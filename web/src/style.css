@@ -2137,9 +2137,6 @@ label small {
   .game-sidebar .turn-card {
     padding: 17px 13px;
   }
-  .game-sidebar .journal {
-    padding: 14px;
-  }
   .player-panel {
     padding: 12px 8px;
     gap: 7px;
@@ -2294,9 +2291,6 @@ label small {
   }
   .turn-card .final-round {
     margin: 0;
-  }
-  .game-sidebar .journal {
-    display: none;
   }
   .players-strip {
     overflow: auto;
@@ -3189,15 +3183,24 @@ label small {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .clock-reading time {
+  flex: 0 0 5ch;
+  width: 5ch;
+  white-space: nowrap;
+  text-align: center;
   font-size: 28px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
+.clock-reading > svg,
+.clock-reading > span {
+  flex-shrink: 0;
+}
 .clock-reading span {
   font-size: 11px;
+  white-space: nowrap;
 }
 .turn-clock.urgent {
   color: #ad342a;
@@ -3471,9 +3474,6 @@ label small {
     position: static;
     order: -1;
     width: 100%;
-  }
-  .room-page.playing .journal {
-    display: none;
   }
   .room-page.playing .turn-card {
     padding: 7px 12px;
@@ -3890,6 +3890,11 @@ label small {
   .room-page.playing .turn-card > p {
     margin: 4px 0;
   }
+  .room-page.playing .turn-clock {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+  }
   .room-page.playing .turn-clock p {
     margin-top: 3px;
   }
@@ -4111,4 +4116,22 @@ label small {
     width: 84px;
     height: 104px;
   }
+}
+
+.journal-dialog {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.journal-dialog ol {
+  margin: 0;
+  padding-left: 16px;
+  max-height: min(55dvh, 480px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.journal-dialog li {
+  font-size: 13px;
+  color: #53634d;
 }

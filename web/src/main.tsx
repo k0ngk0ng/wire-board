@@ -25,6 +25,7 @@ import {
   WifiOff,
   ChevronRight,
   BookOpen,
+  ScrollText,
   RotateCcw,
   Flag,
   Minus,
@@ -335,6 +336,7 @@ function App() {
   const [create, setCreate] = useState("");
   const [join, setJoin] = useState<Room>();
   const [rules, setRules] = useState(false);
+  const [journalRoom, setJournalRoom] = useState("");
   const [sound, setSound] = useState(
     () => localStorage.getItem("wb_sound") !== "off",
   );
@@ -598,6 +600,16 @@ function App() {
                 <h1>{room.name}</h1>
               </div>
               <div className="room-tools">
+                {room.game && (
+                  <button
+                    className="subtle"
+                    aria-haspopup="dialog"
+                    onClick={() => setJournalRoom(room.id)}
+                  >
+                    <ScrollText size={16} />
+                    对局日志
+                  </button>
+                )}
                 <button className="subtle" onClick={() => setRules(true)}>
                   <BookOpen size={16} />
                   玩法速查
@@ -696,29 +708,6 @@ function App() {
                       busy={busy}
                       command={roomCommand}
                     />
-                    <div className="journal">
-                      <h3>
-                        牌桌动态 <span>LIVE</span>
-                      </h3>
-                      <ol>
-                        {room.game?.log
-                          .slice(-12)
-                          .reverse()
-                          .map((line, i) => (
-                            <li key={`${room.version}-${i}`}>
-                              {line.replace(
-                                /玩家 (\d+)/g,
-                                (_, n) =>
-                                  room.seats[Number(n) - 1]?.name ||
-                                  `玩家 ${n}`,
-                              )}
-                            </li>
-                          ))}
-                        {!room.game?.log.length && (
-                          <li>牌已洗好，祝你好运。</li>
-                        )}
-                      </ol>
-                    </div>
                   </aside>
                 </div>
               </>
@@ -773,6 +762,28 @@ function App() {
                 <ArrowRight size={18} />
               </button>
             </form>
+          </Modal>
+        )}
+        {room?.game && journalRoom === room.id && (
+          <Modal title="对局日志" onClose={() => setJournalRoom("")}>
+            <p>最近的行动在最上方，最多保留 80 条记录。</p>
+            <div className="journal journal-dialog">
+              <ol tabIndex={0} aria-label="对局行动记录">
+                {room.game.log
+                  .slice(-80)
+                  .reverse()
+                  .map((line, i) => (
+                    <li key={`${room.version}-${i}`}>
+                      {line.replace(
+                        /玩家 (\d+)/g,
+                        (_, n) =>
+                          room.seats[Number(n) - 1]?.name || `玩家 ${n}`,
+                      )}
+                    </li>
+                  ))}
+                {!room.game.log.length && <li>牌已洗好，祝你好运。</li>}
+              </ol>
+            </div>
           </Modal>
         )}
         {rules && (
