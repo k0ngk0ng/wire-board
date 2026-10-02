@@ -2066,7 +2066,6 @@ function TrainCard({
         `${trainNames[color]}列车牌${count !== undefined ? ` ${count} 张` : ""}`
       }
     >
-      <span>{trainNames[color]}</span>
       <TrainFront size={28} />
       <div className="train-stripes" />
       {count !== undefined && <b>{count}</b>}
