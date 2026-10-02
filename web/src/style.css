@@ -1809,11 +1809,6 @@ label small {
   max-height: 105px;
   overflow: hidden;
 }
-.train-card > span {
-  font-size: 8px;
-  letter-spacing: 1px;
-  z-index: 1;
-}
 .train-card > svg {
   opacity: 0.85;
 }
@@ -2950,10 +2945,6 @@ label small {
     width: 21px;
     height: 21px;
   }
-  .train-card > span {
-    font-size: 6px;
-    letter-spacing: 0;
-  }
   .train-hand {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
@@ -3372,14 +3363,6 @@ label small {
   background-size: 900% 100%;
   border: 1px solid #dac7a0;
   aspect-ratio: 250 / 161;
-}
-.with-artwork .train-card > span {
-  width: fit-content;
-  padding: 1px 4px;
-  border-radius: 3px;
-  background: #fff8e4ec;
-  color: #38352b;
-  font-size: 10px;
 }
 .with-artwork .train-card > b {
   padding: 1px 6px;
