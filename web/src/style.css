@@ -3176,6 +3176,59 @@ label small {
   opacity: 1;
   color: #c6d4b3;
 }
+
+.sound-preview {
+  border: 0;
+  background: transparent;
+  color: var(--green, #1c5346);
+  padding: 8px 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.player-panel.eliminated {
+  opacity: 0.6;
+  border-style: dashed;
+}
+.turn-clock {
+  margin: 16px 0;
+  border-top: 1px solid currentColor;
+  padding-top: 12px;
+}
+.clock-reading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.clock-reading time {
+  font-size: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.clock-reading span {
+  font-size: 11px;
+}
+.turn-clock.urgent {
+  color: #ad342a;
+}
+.turn-card.mine .turn-clock.urgent {
+  color: #ffcf9b;
+}
+.turn-clock p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+.timeout-kick {
+  width: 100%;
+  border: 1px solid #ad342a;
+  background: #fff2e6;
+  color: #902c24;
+  padding: 10px 8px;
+  margin-top: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
 .ticket-choice {
   padding: 18px;
   margin-bottom: 16px;
@@ -3259,4 +3312,746 @@ label small {
 }
 .payment-grid p {
   grid-column: 1 / -1;
+}
+
+/* Game artwork is served from the deployment's asset directory. */
+.with-artwork .dev-card .card-art {
+  inset: 0;
+  background-image: var(--splendor-cards);
+  background-size: 600% 600%;
+  background-position: var(--art-x) var(--art-y);
+}
+.with-artwork .card-art svg,
+.with-artwork .noble > svg,
+.with-artwork .noble-points,
+.with-artwork .token > svg,
+.with-artwork .train-card > svg,
+.with-artwork .train-stripes,
+.with-artwork .deck-ornament {
+  visibility: hidden;
+}
+.with-artwork .dev-card > .costs {
+  width: fit-content;
+  padding: 3px;
+  background: #182c32b3;
+  border-radius: 6px;
+}
+.with-artwork .card-id {
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+.with-artwork .noble {
+  background-image: var(--splendor-nobles);
+  background-size: 500% 300%;
+}
+.with-artwork .noble > .costs {
+  background: #f8f1dddf;
+  border-radius: 3px;
+}
+.with-artwork .token {
+  background-image: var(--splendor-tokens);
+  background-size: 600% 100%;
+  border: 0;
+  box-shadow: none;
+}
+.with-artwork .deck {
+  background-image: var(--splendor-cards);
+  background-size: 600% 600%;
+  color: #fff;
+}
+.with-artwork .deck strong {
+  visibility: hidden;
+}
+.with-artwork .deck small {
+  background: #12382cdd;
+  color: white;
+  padding: 3px;
+}
+.with-artwork .train-card {
+  background-image: var(--rail-cards);
+  background-size: 900% 100%;
+  border: 1px solid #dac7a0;
+  aspect-ratio: 250 / 161;
+}
+.with-artwork .train-card > span {
+  width: fit-content;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #fff8e4ec;
+  color: #38352b;
+  font-size: 10px;
+}
+.with-artwork .train-card > b {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: #24372fed;
+  color: #fff;
+}
+.train-card.empty {
+  background: #dedbca;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+}
+.rail-map .map-city text {
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 22px;
+  stroke-width: 0;
+  fill: #303d34;
+  font-weight: 700;
+}
+.rail-table {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 10px;
+}
+.rail-table .train-market {
+  margin: 0;
+  padding: 9px;
+}
+.rail-table .train-market .section-line {
+  display: block;
+  margin-bottom: 7px;
+}
+.rail-table .train-market .section-line h3 {
+  font-size: 12px;
+}
+.rail-table .train-market .section-line small {
+  display: none;
+}
+.rail-table .train-market-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.rail-table .train-market-cards .train-card {
+  flex: none;
+  width: 100%;
+  height: clamp(37px, calc((100dvh - 440px) / 5), 66px);
+  min-height: 37px;
+  max-height: 66px;
+}
+.rail-table .train-deck,
+.rail-table .ticket-deck {
+  width: 100%;
+  min-width: 0;
+  padding: 5px;
+  min-height: 40px;
+  flex: none;
+}
+.rail-table .train-deck svg,
+.rail-table .ticket-deck svg {
+  display: none;
+}
+.rail-table .train-deck strong,
+.rail-table .ticket-deck strong {
+  font-size: 11px;
+}
+.rail-table .train-deck small,
+.rail-table .ticket-deck small {
+  font-size: 8px;
+}
+.ticket-choice {
+  margin-bottom: 10px;
+}
+@media (min-width: 851px) {
+  .topbar {
+    height: 56px;
+    padding: 0 24px;
+  }
+  .room-page.playing {
+    padding: 10px 22px 12px;
+    max-width: 1640px;
+  }
+  .room-page.playing .room-heading {
+    margin-bottom: 8px;
+  }
+  .room-page.playing .room-heading h1 {
+    font-size: 20px;
+  }
+  .room-page.playing .room-heading .eyebrow {
+    font-size: 8px;
+  }
+  .room-page.playing .players-strip {
+    margin-bottom: 8px;
+    gap: 9px;
+  }
+  .room-page.playing .player-panel {
+    padding: 8px 10px;
+  }
+  .room-page.playing .game-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .room-page.playing .game-sidebar {
+    position: static;
+    order: -1;
+    width: 100%;
+  }
+  .room-page.playing .journal {
+    display: none;
+  }
+  .room-page.playing .turn-card {
+    padding: 7px 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .room-page.playing .turn-card h3,
+  .room-page.playing .turn-card p {
+    margin: 0;
+  }
+  .room-page.playing .turn-card h3 {
+    font-size: 15px;
+  }
+  .room-page.playing .turn-card .save-state {
+    margin: 0 0 0 auto;
+    border: 0;
+    padding: 0;
+  }
+  .room-page.playing .turn-clock {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .room-page.playing .clock-reading time {
+    font-size: 21px;
+  }
+  .room-page.playing .turn-clock p {
+    font-size: 10px;
+  }
+  .room-page.playing .timeout-kick {
+    width: auto;
+    margin: 0;
+    padding: 6px 10px;
+  }
+  .rail-table .map-scroll {
+    height: clamp(300px, calc(100dvh - 360px), 640px);
+  }
+  .rail-table .rail-map {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+  }
+  .map-controls {
+    padding: 2px 10px;
+  }
+  .map-caption {
+    padding: 4px 10px;
+  }
+  .rail-personal {
+    margin-top: 8px;
+    padding: 8px 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    column-gap: 14px;
+  }
+  .rail-personal > .section-line:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .rail-personal .train-hand {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 4px;
+  }
+  .rail-personal .train-hand .train-card {
+    height: 58px;
+    min-width: 0;
+    padding: 3px;
+  }
+  .rail-personal .ticket-heading {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
+  .rail-personal .tickets {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    padding: 2px;
+  }
+  .rail-personal .ticket-card {
+    min-width: 155px;
+    width: 155px;
+    height: 64px;
+    padding: 5px 8px;
+  }
+  .rail-personal .ticket-card > small,
+  .rail-personal .ticket-bottom svg,
+  .rail-personal .ticket-label {
+    display: none;
+  }
+  .rail-personal .ticket-route {
+    margin: 0;
+    gap: 4px;
+  }
+  .rail-personal .ticket-route strong {
+    font-size: 10px;
+  }
+  .rail-personal .ticket-bottom {
+    margin: 2px 0 0;
+  }
+  .rail-personal .ticket-bottom > b {
+    font-size: 17px;
+  }
+  .splendor-board {
+    padding: 10px;
+    gap: 9px;
+    grid-template-columns: minmax(0, 1fr) 170px;
+  }
+  .splendor-board .nobles-row {
+    padding-bottom: 6px;
+  }
+  .splendor-board .noble {
+    height: 65px;
+    width: 65px;
+    margin: 0;
+  }
+  .splendor-board .noble > .costs {
+    gap: 2px;
+    bottom: 2px;
+  }
+  .splendor-board .noble .cost {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+  .splendor-board .market {
+    gap: 7px;
+  }
+  .splendor-board .market-row .dev-card,
+  .splendor-board .market-row .deck {
+    height: clamp(76px, calc((100dvh - 470px) / 3), 122px);
+    min-height: 76px;
+  }
+  .splendor-board .card-top {
+    height: 28px;
+    padding: 3px 6px;
+  }
+  .splendor-board .card-top strong {
+    font-size: 20px;
+  }
+  .splendor-board .card-top svg {
+    width: 24px;
+    height: 24px;
+  }
+  .splendor-board .personal-area {
+    padding: 8px 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 4px 18px;
+  }
+  .splendor-board .personal-area > .section-line {
+    grid-column: 1;
+  }
+  .splendor-board .personal-gems {
+    grid-column: 1;
+    margin-top: 0;
+  }
+  .splendor-board .reserved {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    gap: 7px;
+  }
+  .splendor-board .reserved .dev-card {
+    height: 82px;
+    width: 62px;
+    min-height: 0;
+  }
+  .splendor-board .collection {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 850px) {
+  .rail-table {
+    grid-template-columns: minmax(0, 1fr) 92px;
+    gap: 6px;
+  }
+  .rail-table .map-scroll {
+    height: min(54dvh, 500px);
+  }
+  .rail-table .rail-map {
+    min-width: 620px;
+    min-height: 0;
+    height: 100%;
+    width: auto !important;
+  }
+  .rail-table .train-market {
+    padding: 5px;
+  }
+  .rail-table .train-market-cards .train-card {
+    height: clamp(32px, 5dvh, 50px);
+    min-height: 32px;
+  }
+  .rail-table .train-deck small,
+  .rail-table .ticket-deck small {
+    display: none;
+  }
+  .rail-table .train-deck,
+  .rail-table .ticket-deck {
+    min-height: 30px;
+  }
+  .map-caption {
+    display: none;
+  }
+  .rail-table .map-controls > span {
+    display: none;
+  }
+  .rail-table .map-controls {
+    padding: 1px 4px;
+    justify-content: flex-end;
+  }
+  .rail-personal {
+    margin-top: 8px;
+    padding: 8px;
+  }
+  .rail-personal .train-hand {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 5px;
+    padding: 2px 0 5px;
+  }
+  .rail-personal .train-hand .train-card {
+    flex: 0 0 59px;
+    height: 45px;
+  }
+  .rail-personal .tickets {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .rail-personal .ticket-card {
+    flex: 0 0 165px;
+  }
+  .turn-clock {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .clock-reading time {
+    font-size: 22px;
+  }
+  .sound-preview {
+    font-size: 10px;
+    padding: 4px 2px;
+  }
+}
+
+.with-artwork .ticket-card {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  min-height: 130px;
+  position: relative;
+}
+.with-artwork .ticket-card .ticket-route {
+  background: #fff9e8f2;
+  border-radius: 3px;
+  padding: 2px;
+  font-size: 12px;
+}
+.with-artwork .ticket-card > small,
+.with-artwork .ticket-bottom svg {
+  visibility: hidden;
+}
+.with-artwork .ticket-label {
+  background: #fff9e8ed;
+  font-size: 9px;
+}
+.with-artwork .ticket-bottom {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+}
+.with-artwork .ticket-bottom b {
+  background: #f8f2e5;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+/* Keep the original ticket artwork proportional and cover its printed title. */
+.with-artwork .ticket-card {
+  aspect-ratio: 250 / 161;
+}
+.with-artwork .ticket-card .ticket-label {
+  display: none;
+}
+.with-artwork .ticket-card .ticket-route {
+  position: absolute;
+  inset: 4px 5px auto;
+  margin: 0;
+  height: 25%;
+  justify-content: center;
+  background: #fff9e8;
+}
+.with-artwork .ticket-card .ticket-route strong {
+  font-size: 12px;
+}
+.with-artwork .ticket-card:before,
+.with-artwork .ticket-card:after {
+  display: none;
+}
+@media (min-width: 851px) {
+  .rail-table .map-scroll {
+    height: clamp(250px, calc(100dvh - 455px), 640px);
+  }
+  .rail-table .train-market-cards .train-card {
+    height: clamp(35px, calc((100dvh - 510px) / 5), 60px);
+    min-height: 35px;
+  }
+  .rail-personal .section-line {
+    margin-bottom: 4px;
+  }
+  .with-artwork .rail-personal .ticket-card {
+    min-height: 100px;
+    height: 100px;
+  }
+  .rail-personal .ticket-heading {
+    margin-top: 0;
+  }
+  .ticket-choice {
+    position: fixed;
+    z-index: 70;
+    width: min(820px, calc(100vw - 48px));
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 18px 90px #122e3d66;
+  }
+  .with-artwork .pending-tickets .ticket-card {
+    height: auto;
+    min-height: 130px;
+  }
+}
+@media (min-width: 851px) {
+  .room-page.playing .game-main {
+    width: 100%;
+  }
+  .splendor-board {
+    max-width: 940px;
+    margin: 0 auto;
+  }
+  .splendor-board .gem-bank .section-line {
+    margin-bottom: 7px;
+  }
+  .splendor-board .gem-bank .token-row {
+    gap: 4px;
+  }
+  .splendor-board .gem-bank .token {
+    width: 38px;
+    height: 38px;
+  }
+  .splendor-board .gem-bank .bank-actions {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+  .splendor-board .personal-area {
+    min-height: 0;
+  }
+}
+.with-artwork .train-card > svg {
+  display: none;
+}
+.with-artwork .train-card > b {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  line-height: 1.2;
+}
+@media (min-width: 851px) {
+  .rail-table .map-scroll {
+    height: clamp(250px, calc(100dvh - 500px), 640px);
+  }
+  .rail-personal .ticket-heading {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .splendor-board .pass-button {
+    padding: 0;
+    margin: 0;
+  }
+  .splendor-board .personal-area .section-line {
+    margin-bottom: 4px;
+  }
+}
+@media (max-width: 850px) {
+  .topbar {
+    height: 52px;
+  }
+  .room-page.playing {
+    padding-top: 10px;
+  }
+  .room-page.playing .room-heading {
+    margin-bottom: 10px;
+    min-height: 45px;
+  }
+  .room-page.playing .players-strip {
+    margin-bottom: 10px;
+  }
+  .room-page.playing .player-panel {
+    padding: 8px;
+  }
+  .room-page.playing .turn-card {
+    padding: 9px 11px;
+  }
+  .room-page.playing .turn-card > p {
+    margin: 4px 0;
+  }
+  .room-page.playing .turn-clock p {
+    margin-top: 3px;
+  }
+  .room-page.playing .game-layout {
+    gap: 9px;
+  }
+  .rail-table .map-scroll {
+    height: min(40dvh, 360px);
+  }
+  .rail-table .rail-map {
+    width: calc(620px * var(--map-scale, 1)) !important;
+    height: calc(400px * var(--map-scale, 1)) !important;
+  }
+  .with-artwork .rail-personal .ticket-card {
+    min-height: 100px;
+    height: 106px;
+  }
+  .rail-personal .section-line {
+    margin-bottom: 7px;
+  }
+  .rail-personal .ticket-heading {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+  .splendor-board .nobles-row {
+    padding-bottom: 8px;
+    gap: 8px;
+  }
+  .splendor-board .noble {
+    height: 60px;
+    width: 60px;
+  }
+  .splendor-board .market {
+    padding-top: 9px;
+    gap: 7px;
+  }
+  .splendor-board .market-row .dev-card,
+  .splendor-board .market-row .deck {
+    min-height: 76px;
+    height: 85px;
+  }
+  .splendor-board .gem-bank {
+    margin-top: 9px;
+    padding: 8px;
+  }
+  .splendor-board .gem-bank .section-line {
+    margin-bottom: 7px;
+  }
+  .splendor-board .gem-bank .section-line > small {
+    display: none;
+  }
+}
+@media (min-width: 851px) {
+  .rail-table .train-market-cards .train-card {
+    height: clamp(35px, calc((100dvh - 650px) / 5), 60px);
+  }
+  .rail-board > .pass-button {
+    margin-top: 0;
+  }
+  .splendor-board .gem-bank .section-line small {
+    display: none;
+  }
+  .splendor-board .gem-bank .token-button {
+    padding: 0;
+  }
+  .splendor-board .gem-bank .bank-actions .primary {
+    margin-top: 0;
+    padding: 7px;
+  }
+}
+@media (min-width: 851px) and (max-height: 850px) {
+  .topbar {
+    height: 48px;
+  }
+  .room-page.playing .room-heading {
+    margin-bottom: 4px;
+  }
+  .room-page.playing .players-strip {
+    margin-bottom: 5px;
+  }
+  .room-page.playing .player-panel {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .splendor-board .noble {
+    width: 56px;
+    height: 56px;
+  }
+}
+@media (min-width: 851px) {
+  .room-page.playing .room-heading {
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+  .room-page.playing .room-heading h1 {
+    margin: 3px 0 0;
+    font-size: 18px;
+  }
+  .room-page.playing .player-panel {
+    padding: 5px 9px;
+  }
+  .room-page.playing .turn-card {
+    padding: 4px 10px;
+  }
+  .rail-table .map-scroll {
+    height: clamp(260px, calc(100dvh - 420px), 640px);
+  }
+  .rail-table .map-controls {
+    min-height: 26px;
+    height: 26px;
+  }
+  .rail-table .map-controls .icon-button {
+    width: 24px;
+    height: 24px;
+  }
+  .rail-table .map-caption {
+    display: none;
+  }
+  .rail-table .train-market-cards .train-card {
+    height: clamp(35px, calc((100dvh - 590px) / 5), 60px);
+  }
+  .with-artwork .rail-personal .ticket-card {
+    width: 124px;
+    min-width: 124px;
+    height: 80px;
+    min-height: 80px;
+  }
+  .with-artwork .rail-personal .ticket-route strong {
+    font-size: 10px;
+  }
+  .rail-personal .section-line {
+    height: 24px;
+  }
+  .rail-personal .tag {
+    padding: 3px 6px;
+  }
+}
+@media (min-width: 851px) and (max-height: 850px) {
+  .splendor-board .personal-area {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+@media (min-width: 851px) {
+  .room-page.playing {
+    padding-bottom: 8px;
+  }
 }

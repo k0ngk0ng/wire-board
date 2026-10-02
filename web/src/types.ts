@@ -9,6 +9,7 @@ export type Card = {
 };
 export type Noble = { id: number; cost: number[] };
 export type GemPlayer = {
+  eliminated?: boolean;
   tokens: number[];
   bonus: number[];
   reserved?: Card[];
@@ -25,6 +26,7 @@ export type Ticket = {
   complete: boolean;
 };
 export type RailPlayer = {
+  eliminated?: boolean;
   hand?: number[];
   handCount: number;
   tickets?: Ticket[];
@@ -59,6 +61,7 @@ export type Game = {
     owners: Record<string, number>;
     pending?: Ticket[];
     setup: boolean;
+    setupReady?: boolean[];
     drawn: number;
     lastRemaining: number;
     ticketsRemaining: number;
@@ -66,6 +69,7 @@ export type Game = {
   };
 };
 export type Room = {
+  turnDeadline?: number;
   id: string;
   name: string;
   kind: string;
@@ -79,14 +83,28 @@ export type Room = {
   game?: Game;
   updated: number;
 };
-export type State = { user: User; rooms: Room[]; room?: Room };
-export type City = { id: number; name: string; x: number; y: number };
+export type State = {
+  user: User;
+  rooms: Room[];
+  room?: Room;
+  serverNow: number;
+  receivedAt: number;
+  assetsBaseURL?: string;
+};
+export type City = {
+  id: number;
+  name: string;
+  x: number;
+  y: number;
+  label?: number[];
+};
 export type Route = {
   id: number;
   a: number;
   b: number;
   length: number;
   color: number;
+  segments?: { x: number; y: number; angle: number }[];
 };
 export type Catalog = { cities: City[]; routes: Route[]; tickets: Ticket[] };
 export type Act = (action: Record<string, unknown>) => Promise<void>;

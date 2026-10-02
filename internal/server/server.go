@@ -29,6 +29,7 @@ import (
 
 type Config struct {
 	DataDir, InviteCode, Origin string
+	AssetsBaseURL               string
 	SecureCookie                bool
 }
 type User struct {
@@ -41,23 +42,38 @@ type Seat struct {
 	Left  bool `json:"left"`
 }
 type Room struct {
-	ID       string      `json:"id"`
-	Name     string      `json:"name"`
-	Kind     string      `json:"kind"`
-	Host     string      `json:"host"`
-	Capacity int         `json:"capacity"`
-	Seats    []Seat      `json:"seats"`
-	Version  int         `json:"version"`
-	Status   string      `json:"status"`
-	Password string      `json:"password,omitempty"`
-	Game     *game.State `json:"game,omitempty"`
-	Updated  int64       `json:"updated"`
+	SetupVersion int         `json:"setupVersion,omitempty"`
+	TurnDeadline int64       `json:"turnDeadline,omitempty"`
+	ID           string      `json:"id"`
+	Name         string      `json:"name"`
+	Kind         string      `json:"kind"`
+	Host         string      `json:"host"`
+	Capacity     int         `json:"capacity"`
+	Seats        []Seat      `json:"seats"`
+	Version      int         `json:"version"`
+	Status       string      `json:"status"`
+	Password     string      `json:"password,omitempty"`
+	Game         *game.State `json:"game,omitempty"`
+	Updated      int64       `json:"updated"`
 }
+
+const turnLimit = 120 * time.Second
+
+func (r *Room) startTurnClock(now time.Time) {
+	if r.Status == "playing" {
+		r.TurnDeadline = now.Add(turnLimit).UnixMilli()
+	} else {
+		r.TurnDeadline = 0
+	}
+}
+
 type bucket struct {
 	At    time.Time
 	Count int
 }
 type Server struct {
+	cancel   context.CancelFunc
+	done     chan struct{}
 	mu       sync.Mutex
 	db       *sql.DB
 	cfg      Config
@@ -68,6 +84,13 @@ type Server struct {
 }
 
 func New(cfg Config, files fs.FS) (*Server, error) {
+	if cfg.AssetsBaseURL != "" {
+		u, err := url.Parse(cfg.AssetsBaseURL)
+		if err != nil || u.Scheme != "https" || u.Host == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" || strings.ContainsAny(cfg.AssetsBaseURL, "\r\n\"' ;") {
+			return nil, errors.New("ASSETS_BASE_URL 必须是 HTTPS 素材目录地址")
+		}
+		cfg.AssetsBaseURL = strings.TrimRight(cfg.AssetsBaseURL, "/")
+	}
 	if cfg.InviteCode == "" {
 		return nil, errors.New("请设置 INVITE_CODE 注册邀请码")
 	}
@@ -98,6 +121,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, e
 	}
 	defer rows.Close()
+	var migrated []*Room
 	for rows.Next() {
 		var b []byte
 		if e = rows.Scan(&b); e != nil {
@@ -110,14 +134,77 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			return nil, e
 		}
 		s.rooms[r.ID] = &r
+		changed := r.Game != nil && r.Game.UpgradeRailSetup()
+		if changed {
+			r.SetupVersion = r.Version
+		}
+		if r.Status == "playing" && r.TurnDeadline == 0 {
+			r.startTurnClock(time.Now())
+			changed = true
+		}
+		if changed {
+			migrated = append(migrated, &r)
+		}
 	}
 	if e = rows.Err(); e != nil {
 		db.Close()
 		return nil, e
 	}
+	rows.Close()
+	for _, r := range migrated {
+		if e = s.save(r); e != nil {
+			db.Close()
+			return nil, e
+		}
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	s.cancel, s.done = cancel, make(chan struct{})
+	go s.runTimers(ctx)
 	return s, nil
 }
-func (s *Server) Close() error { return s.db.Close() }
+func (s *Server) Close() error {
+	s.cancel()
+	<-s.done
+	return s.db.Close()
+}
+
+func (s *Server) runTimers(ctx context.Context) {
+	defer close(s.done)
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case now := <-ticker.C:
+			s.mu.Lock()
+			s.expireSetups(now)
+			s.mu.Unlock()
+		}
+	}
+}
+
+// Called with s.mu held. No browser needs to be connected for setup to finish.
+func (s *Server) expireSetups(now time.Time) {
+	for id, room := range s.rooms {
+		if room.Status != "playing" || room.Game.Rail == nil || !room.Game.Rail.Setup || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() {
+			continue
+		}
+		b, _ := json.Marshal(room)
+		var next Room
+		_ = json.Unmarshal(b, &next)
+		next.Game.AutoChooseRailSetup()
+		next.startTurnClock(now)
+		next.Version++
+		next.Updated = now.Unix()
+		if err := s.save(&next); err != nil {
+			log.Printf("save automatic destination selection: %v", err)
+			continue
+		}
+		s.rooms[id] = &next
+		s.broadcast()
+	}
+}
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
@@ -141,7 +228,12 @@ func (s *Server) Handler() http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "same-origin")
 		w.Header().Set("X-Frame-Options", "DENY")
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; media-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
+		imageSource := ""
+		if s.cfg.AssetsBaseURL != "" {
+			u, _ := url.Parse(s.cfg.AssetsBaseURL)
+			imageSource = " " + u.Scheme + "://" + u.Host
+		}
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+imageSource+"; connect-src 'self'; font-src 'self'; media-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
 		if strings.HasPrefix(r.URL.Path, "/api/") {
 			w.Header().Set("Cache-Control", "no-store")
 		}
@@ -322,10 +414,11 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	for _, room := range s.rooms {
 		rooms = append(rooms, summary(room))
 	}
-	out := map[string]any{"user": u, "rooms": rooms}
+	out := map[string]any{"user": u, "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL}
 	if room := s.current(u.ID); room != nil {
 		v := summary(room)
 		v["you"] = seatIndex(room, u.ID)
+		v["turnDeadline"] = room.TurnDeadline
 		if room.Game != nil {
 			v["game"] = room.Game.View(seatIndex(room, u.ID))
 		}
@@ -394,6 +487,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	s.expireSetups(time.Now())
 	u, ok := s.needUser(w, r)
 	if !ok {
 		return
@@ -405,6 +499,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	}
 	var req struct {
 		Type     string      `json:"type"`
+		Target   string      `json:"target,omitempty"`
 		Password string      `json:"password"`
 		Version  int         `json:"version"`
 		Nonce    string      `json:"nonce"`
@@ -422,7 +517,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		respond(w, 200, map[string]int{"version": prior})
 		return
 	}
-	if req.Version != room.Version {
+	parallelSetup := req.Type == "action" && req.Action.Type == "keep" && room.Status == "playing" && room.Game.Rail != nil && room.Game.Rail.Setup && room.SetupVersion > 0 && req.Version >= room.SetupVersion && req.Version <= room.Version
+	if req.Version != room.Version && !parallelSetup {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -430,6 +526,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	var next Room
 	_ = json.Unmarshal(b, &next)
 	idx := seatIndex(&next, u.ID)
+	now := time.Now()
 	var err error
 	switch req.Type {
 	case "join":
@@ -498,6 +595,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			next.Game, err = game.New(next.Kind, len(next.Seats))
 			if err == nil {
 				next.Status = "playing"
+				next.SetupVersion = next.Version + 1
+				next.startTurnClock(now)
 			}
 		}
 	case "action":
@@ -505,16 +604,53 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("无法执行游戏行动")
 			break
 		}
+		turn, round := next.Game.Turn, next.Game.Round
+		setup := next.Game.Rail != nil && next.Game.Rail.Setup
 		err = next.Game.Apply(idx, req.Action)
 		if err == nil && next.Game.Finished {
 			next.Status = "finished"
 		}
+		if err == nil && (next.Game.Turn != turn || next.Game.Round != round || next.Game.Finished || (setup && !next.Game.Rail.Setup)) {
+			next.startTurnClock(now)
+		}
+	case "kick_timeout":
+		if idx < 0 || next.Status != "playing" || idx == next.Game.Turn || (next.Game.Rail != nil && next.Game.Rail.Setup) {
+			err = errors.New("只有同局的其他玩家可以移出超时玩家")
+			break
+		}
+		target := next.Game.Turn
+		if req.Target != next.Seats[target].ID || next.TurnDeadline == 0 || now.UnixMilli() < next.TurnDeadline {
+			err = errors.New("该玩家尚未超时，或当前回合已改变")
+			break
+		}
+		if next.Kind == "splendor" {
+			err = next.Game.EliminateSplendor(target)
+		} else {
+			err = next.Game.EliminateRail(target)
+		}
+		if err != nil {
+			break
+		}
+		next.Seats[target].Left = true
+		if next.Host == req.Target {
+			for _, seat := range next.Seats {
+				if !seat.Left {
+					next.Host = seat.ID
+					break
+				}
+			}
+		}
+		if next.Game.Finished {
+			next.Status = "finished"
+		}
+		next.startTurnClock(now)
 	case "rematch":
 		if next.Host != u.ID || (next.Status != "finished" && next.Status != "closed") {
 			err = errors.New("只有房主能在结束后再开一局")
 			break
 		}
 		next.Game = nil
+		next.TurnDeadline = 0
 		active := []Seat{}
 		for _, seat := range next.Seats {
 			if !seat.Left {
@@ -532,6 +668,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Status = "closed"
+		next.TurnDeadline = 0
 	default:
 		err = errors.New("未知房间操作")
 	}

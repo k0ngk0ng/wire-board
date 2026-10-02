@@ -178,36 +178,42 @@ func TestRailInitialTicketSelectionAndPrivacy(t *testing.T) {
 	if sum(s.Rail.Players[0].Hand) != 4 || s.Phase != "tickets" {
 		t.Fatal("setup")
 	}
-	reject(t, s, Action{Type: "keep", Keep: []int{s.Rail.Pending[0].ID}})
-	ids := []int{s.Rail.Pending[0].ID, s.Rail.Pending[1].ID}
-	reject(t, s, Action{Type: "keep", Keep: []int{ids[0], ids[0]}})
-	apply(t, s, Action{Type: "keep", Keep: ids})
-	if s.Turn != 1 || !s.Rail.Setup {
-		t.Fatal("setup turn")
+	pending := s.Rail.SetupPending[1]
+	if err := s.Apply(1, Action{Type: "keep", Keep: []int{pending[0].ID}}); err == nil {
+		t.Fatal("accepted too few")
 	}
-	v := s.View(0)["rail"].(map[string]any)
-	for _, k := range []string{"deck", "discard", "ticketDeck", "pending"} {
+	if err := s.Apply(1, Action{Type: "keep", Keep: []int{pending[0].ID, pending[0].ID}}); err == nil {
+		t.Fatal("duplicate accepted")
+	}
+	if err := s.Apply(1, Action{Type: "keep", Keep: []int{pending[0].ID, pending[1].ID}}); err != nil {
+		t.Fatal(err)
+	}
+	if !s.Rail.Setup {
+		t.Fatal("setup ended before everyone selected")
+	}
+	v := s.View(1)["rail"].(map[string]any)
+	for _, k := range []string{"deck", "discard", "ticketDeck", "pending", "setupPending"} {
 		if _, ok := v[k]; ok {
 			t.Fatal("leak", k)
 		}
 	}
-	op := v["players"].([]any)[1].(map[string]any)
+	op := v["players"].([]any)[0].(map[string]any)
 	if _, ok := op["hand"]; ok {
 		t.Fatal("hand leaked")
 	}
 	if _, ok := op["tickets"]; ok {
 		t.Fatal("tickets leaked")
 	}
-	apply(t, s, Action{Type: "keep", Keep: []int{s.Rail.Pending[0].ID, s.Rail.Pending[1].ID}})
+	pending = s.Rail.SetupPending[0]
+	apply(t, s, Action{Type: "keep", Keep: []int{pending[0].ID, pending[1].ID}})
 	if s.Rail.Setup || s.Turn != 0 || s.Phase != "turn" {
 		t.Fatal("setup completion")
 	}
+	railInvariant(t, s)
 }
 func playingRail(t *testing.T, n int) *State {
 	s := mustGame(t, "rail", n)
-	for s.Rail.Setup {
-		apply(t, s, Action{Type: "keep", Keep: []int{s.Rail.Pending[0].ID, s.Rail.Pending[1].ID}})
-	}
+	s.AutoChooseRailSetup()
 	return s
 }
 func TestRailDrawWildRules(t *testing.T) {
@@ -384,8 +390,16 @@ func gemInvariant(t *testing.T, s *State) {
 func railInvariant(t *testing.T, s *State) {
 	t.Helper()
 	g := s.Rail
-	cards := len(g.Deck) + len(g.Discard) + len(g.Face)
+	cards := len(g.Deck) + len(g.Discard)
+	for _, c := range g.Face {
+		if c >= 0 {
+			cards++
+		}
+	}
 	tickets := len(g.TicketDeck) + len(g.Pending)
+	for _, pending := range g.SetupPending {
+		tickets += len(pending)
+	}
 	for i, p := range g.Players {
 		cards += sum(p.Hand)
 		tickets += len(p.Tickets)
@@ -405,7 +419,7 @@ func railInvariant(t *testing.T, s *State) {
 }
 func TestFullRailGame(t *testing.T) {
 	for _, n := range []int{2, 5} {
-		s := mustGame(t, "rail", n)
+		s := playingRail(t, n)
 		for step := 0; step < 1600 && !s.Finished; step++ {
 			railInvariant(t, s)
 			if s.Phase == "tickets" {

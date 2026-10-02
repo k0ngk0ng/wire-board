@@ -322,8 +322,11 @@ func TestRailHiddenTasksThroughAPI(t *testing.T) {
 	if _, ok := mine["pending"]; !ok {
 		t.Fatal("active player has no tickets")
 	}
-	if _, ok := other["pending"]; ok {
-		t.Fatal("pending tickets leaked")
+	if pending, ok := other["pending"]; !ok || len(pending.([]any)) != 3 {
+		t.Fatal("each player must receive their own pending tickets")
+	}
+	if _, ok := other["setupPending"]; ok {
+		t.Fatal("other setup hands leaked")
 	}
 	for _, key := range []string{"deck", "ticketDeck", "discard"} {
 		if _, ok := mine[key]; ok {

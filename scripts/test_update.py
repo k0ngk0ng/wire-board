@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise update failure paths without Docker or root; all fixtures stay local."""
 import os
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -16,6 +17,19 @@ p = pathlib.Path(os.environ['FIXTURE'])
 a = sys.argv[1:]
 with (p / 'calls').open('a') as f: f.write(json.dumps(a) + '\n')
 scenario = os.environ['SCENARIO']
+if scenario == 'clean':
+    repo = 'ghcr.io/k0ngk0ng/wire-board'
+    if a == ['ps', '-aq']: print('container-id'); sys.exit(0)
+    if a[:2] == ['image', 'ls']:
+        print('sha256:current\nsha256:rollback\nsha256:old\nsha256:dangling\nsha256:foreign\nsha256:old-image'); sys.exit(0)
+    if a[:2] == ['image', 'inspect']:
+        fmt, ref = a[3], a[4]
+        if fmt == '{{.Id}}': print('sha256:current')
+        elif 'RepoDigests' in fmt: pass
+        elif ref == 'sha256:foreign': print('other-service:latest')
+        elif ref == 'sha256:old': print(repo + ':v0.0.1')
+        sys.exit(0)
+    if a[:2] == ['image', 'rm']: sys.exit(0)
 if a[0] == 'pull':
     sys.exit(1 if scenario == 'pull-failure' else 0)
 if a[:2] == ['image', 'inspect']:
@@ -72,6 +86,16 @@ class UpdateTests(unittest.TestCase):
         self.assertEqual((self.path / '.env').read_text(), 'INVITE_CODE=test-secret\n')
         self.assertFalse(list(self.path.glob('.update.??????')))
         return result
+
+    def test_clean_preserves_current_rollback_containers_and_foreign_images(self):
+        (self.path / '.previous-image').write_text('sha256:rollback\n')
+        result = self.run_update('clean', 'clean')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        calls = [json.loads(line) for line in (self.path / 'calls').read_text().splitlines()]
+        removed = [a[2] for a in calls if a[:2] == ['image', 'rm']]
+        self.assertCountEqual(removed, ['sha256:dangling', 'ghcr.io/k0ngk0ng/wire-board:v0.0.1'])
+        self.assertFalse(any(a[0] == 'pull' or 'prune' in a or '--force' in a for a in calls))
+        self.assertEqual((self.path / 'volume/state.db').read_text(), 'existing accounts and games')
 
     def test_invalid_source_is_rejected(self):
         result = self.run_update('initial', 'other-registry.example/image:latest')

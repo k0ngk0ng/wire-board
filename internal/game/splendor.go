@@ -27,12 +27,13 @@ type Noble struct {
 	Cost []int `json:"cost"`
 }
 type GemPlayer struct {
-	Tokens   []int   `json:"tokens"`
-	Bonus    []int   `json:"bonus"`
-	Reserved []Card  `json:"reserved"`
-	Cards    []Card  `json:"cards"`
-	Nobles   []Noble `json:"nobles"`
-	Score    int     `json:"score"`
+	Eliminated bool    `json:"eliminated,omitempty"`
+	Tokens     []int   `json:"tokens"`
+	Bonus      []int   `json:"bonus"`
+	Reserved   []Card  `json:"reserved"`
+	Cards      []Card  `json:"cards"`
+	Nobles     []Noble `json:"nobles"`
+	Score      int     `json:"score"`
 }
 type Splendor struct {
 	Bank      []int       `json:"bank"`
@@ -304,18 +305,28 @@ func (s *State) gemAfter() {
 }
 func (s *State) gemNext() {
 	g := s.Splendor
-	if g.Players[s.Turn].Score >= 15 {
+	if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= 15 {
 		g.LastRound = true
 	}
-	s.Turn = (s.Turn + 1) % len(g.Players)
 	s.Phase = "turn"
-	if s.Turn == 0 {
+	wrapped := false
+	for range g.Players {
+		s.Turn = (s.Turn + 1) % len(g.Players)
+		wrapped = wrapped || s.Turn == 0
+		if !g.Players[s.Turn].Eliminated {
+			break
+		}
+	}
+	if wrapped {
 		s.Round++
 		if g.LastRound {
 			s.Finished = true
 			s.Phase = "finished"
 			best, cards := -1, 999
 			for i, p := range g.Players {
+				if p.Eliminated {
+					continue
+				}
 				if p.Score > best || (p.Score == best && len(p.Cards) < cards) {
 					best = p.Score
 					cards = len(p.Cards)
@@ -326,6 +337,47 @@ func (s *State) gemNext() {
 			}
 		}
 	}
+}
+
+// EliminateSplendor removes the current seat without changing player indices.
+// The server is responsible for authorizing the timeout and the requesting user.
+func (s *State) EliminateSplendor(player int) error {
+	if s.Kind != "splendor" || s.Finished || player != s.Turn || player < 0 || player >= len(s.Splendor.Players) || s.Splendor.Players[player].Eliminated {
+		return errors.New("无法移除此玩家")
+	}
+	g := s.Splendor
+	p := &g.Players[player]
+	p.Eliminated = true
+	for i, n := range p.Tokens {
+		g.Bank[i] += n
+		p.Tokens[i] = 0
+	}
+	// Return secret reservations to their decks without revealing their identities.
+	touched := [3]bool{}
+	for _, card := range p.Reserved {
+		g.Decks[card.Tier-1] = append(g.Decks[card.Tier-1], card)
+		touched[card.Tier-1] = true
+	}
+	p.Reserved = []Card{}
+	for tier, changed := range touched {
+		if changed {
+			shuffle(g.Decks[tier])
+		}
+	}
+	s.Log = append(s.Log, fmt.Sprintf("玩家 %d 超时被移出，筹码归还供应区，预留卡洗回牌堆", player+1))
+	active := []int{}
+	for i, p := range g.Players {
+		if !p.Eliminated {
+			active = append(active, i)
+		}
+	}
+	if len(active) == 1 {
+		s.Finished, s.Phase, s.Winners, s.Turn = true, "finished", active, active[0]
+		s.Log = append(s.Log, fmt.Sprintf("仅剩玩家 %d，本局获胜", active[0]+1))
+		return nil
+	}
+	s.gemNext()
+	return nil
 }
 func (s *State) gemHasMove() bool {
 	g := s.Splendor
