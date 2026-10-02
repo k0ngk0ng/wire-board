@@ -1,5 +1,5 @@
 export type User = { id: string; name: string };
-export type Seat = User & { ready: boolean; left: boolean };
+export type Seat = User & { ready: boolean; left: boolean; bot?: boolean };
 export type Card = {
   id: number;
   tier: number;

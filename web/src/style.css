@@ -4055,3 +4055,24 @@ label small {
     padding-bottom: 8px;
   }
 }
+
+.bot-badge {
+  font: 600 10px/1.5 sans-serif;
+  color: #34635a;
+  background: #e2eee7;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 5px;
+}
+.bot-remove {
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid #d7ddcc;
+  border-radius: 5px;
+  background: #fffdf4;
+  color: #755546;
+  margin-top: 5px;
+}
+.waiting-actions {
+  flex-wrap: wrap;
+}

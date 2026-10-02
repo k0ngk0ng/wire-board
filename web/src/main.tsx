@@ -1210,7 +1210,8 @@ function Create({
           </label>
         </div>
         <p className="muted small">
-          至少 2 人即可开始，不必坐满。所有玩家准备后，由房主开局。
+          至少 2
+          个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
         </p>
         <button className="primary wide" disabled={busy}>
           创建房间
@@ -1229,7 +1230,7 @@ function Waiting({
   room: Room;
   busy: boolean;
   host: boolean;
-  command: (t: string) => void;
+  command: (t: string, extra?: Record<string, unknown>) => void;
 }) {
   const ready = room.seats.every((p) => p.ready) && room.seats.length >= 2;
   return (
@@ -1250,7 +1251,7 @@ function Waiting({
       </div>
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
-        <h2>朋友到齐，就开局。</h2>
+        <h2>朋友或电脑，到齐就开局。</h2>
         <div className="seats-grid">
           {Array.from({ length: room.capacity }, (_, i) => {
             const p = room.seats[i];
@@ -1265,15 +1266,35 @@ function Waiting({
                 <h3>
                   {p ? p.name : "虚位以待"}
                   {p?.id === room.host && <Crown size={14} />}
+                  {p?.bot && <small className="bot-badge">AI</small>}
                 </h3>
                 <span>
                   {p ? (p.ready ? "✓ 已准备" : "等待准备") : "邀请一位朋友"}
                 </span>
+                {host && p?.bot && (
+                  <button
+                    className="bot-remove"
+                    disabled={busy}
+                    aria-label={`移除${p.name}`}
+                    onClick={() => command("remove_bot", { target: p.id })}
+                  >
+                    移除
+                  </button>
+                )}
               </div>
             );
           })}
         </div>
         <div className="waiting-actions">
+          {host && room.seats.length < room.capacity && (
+            <button
+              className="outline"
+              disabled={busy}
+              onClick={() => command("add_bot")}
+            >
+              添加电脑玩家
+            </button>
+          )}
           <button
             disabled={busy}
             className={room.seats[room.you]?.ready ? "outline" : "primary"}
@@ -1295,7 +1316,7 @@ function Waiting({
         </div>
         <p className="muted small">
           {host
-            ? "所有玩家准备后，你就可以开始游戏。"
+            ? "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
             : "准备好后，等待房主开始游戏。"}
         </p>
       </div>
@@ -1328,6 +1349,7 @@ function Players({ room }: { room: Room }) {
                   </small>
                 )}
                 {i === room.you && <small>你</small>}
+                {p.bot && <small className="bot-badge">AI</small>}
               </strong>
               {g.splendor ? (
                 <div className="mini-resources">

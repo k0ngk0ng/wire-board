@@ -38,10 +38,12 @@ type User struct {
 }
 type Seat struct {
 	User
+	Bot   bool `json:"bot,omitempty"`
 	Ready bool `json:"ready"`
 	Left  bool `json:"left"`
 }
 type Room struct {
+	BotAt        int64       `json:"botAt,omitempty"`
 	SetupVersion int         `json:"setupVersion,omitempty"`
 	TurnDeadline int64       `json:"turnDeadline,omitempty"`
 	ID           string      `json:"id"`
@@ -179,6 +181,7 @@ func (s *Server) runTimers(ctx context.Context) {
 		case now := <-ticker.C:
 			s.mu.Lock()
 			s.expireSetups(now)
+			s.runBots(now)
 			s.mu.Unlock()
 		}
 	}
@@ -562,7 +565,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		active := 0
 		for _, seat := range next.Seats {
-			if !seat.Left {
+			if !seat.Left && !seat.Bot {
 				active++
 				if next.Host == u.ID {
 					next.Host = seat.ID
@@ -573,8 +576,32 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			next.Seats = nil
 		}
 		for i := range next.Seats {
-			next.Seats[i].Ready = false
+			next.Seats[i].Ready = next.Seats[i].Bot
 		}
+	case "add_bot":
+		if idx < 0 || next.Host != u.ID || next.Status != "waiting" || len(next.Seats) >= next.Capacity {
+			err = errors.New("只有房主能在未满的等待房间添加电脑玩家")
+			break
+		}
+		name := ""
+		for number := 1; name == ""; number++ {
+			candidate := fmt.Sprintf("电脑 %d", number)
+			used := false
+			for _, seat := range next.Seats {
+				used = used || seat.Name == candidate
+			}
+			if !used {
+				name = candidate
+			}
+		}
+		next.Seats = append(next.Seats, Seat{User: User{ID: "bot-" + randomID(12), Name: name}, Bot: true, Ready: true})
+	case "remove_bot":
+		target := seatIndex(&next, req.Target)
+		if idx < 0 || next.Host != u.ID || next.Status != "waiting" || target < 0 || !next.Seats[target].Bot {
+			err = errors.New("只有房主能在开局前移除电脑玩家")
+			break
+		}
+		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
 	case "ready":
 		if idx < 0 || next.Status != "waiting" {
 			err = errors.New("无法设置准备状态")
@@ -604,15 +631,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("无法执行游戏行动")
 			break
 		}
-		turn, round := next.Game.Turn, next.Game.Round
-		setup := next.Game.Rail != nil && next.Game.Rail.Setup
-		err = next.Game.Apply(idx, req.Action)
-		if err == nil && next.Game.Finished {
-			next.Status = "finished"
-		}
-		if err == nil && (next.Game.Turn != turn || next.Game.Round != round || next.Game.Finished || (setup && !next.Game.Rail.Setup)) {
-			next.startTurnClock(now)
-		}
+		err = next.applyGameAction(idx, req.Action, now)
 	case "kick_timeout":
 		if idx < 0 || next.Status != "playing" || idx == next.Game.Turn || (next.Game.Rail != nil && next.Game.Rail.Setup) {
 			err = errors.New("只有同局的其他玩家可以移出超时玩家")
@@ -634,7 +653,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		next.Seats[target].Left = true
 		if next.Host == req.Target {
 			for _, seat := range next.Seats {
-				if !seat.Left {
+				if !seat.Left && !seat.Bot {
 					next.Host = seat.ID
 					break
 				}
@@ -660,7 +679,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		next.Seats = active
 		next.Status = "waiting"
 		for i := range next.Seats {
-			next.Seats[i].Ready = false
+			next.Seats[i].Ready = next.Seats[i].Bot
 		}
 	case "close":
 		if next.Host != u.ID || next.Status != "playing" {
@@ -677,6 +696,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	next.Version++
+	next.BotAt = now.Add(900 * time.Millisecond).UnixMilli()
 	next.Updated = time.Now().Unix()
 	snapshot, _ := json.Marshal(next)
 	req.Password = "" // Never persist plaintext room passwords in the action journal.
