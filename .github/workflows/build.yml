@@ -1,0 +1,122 @@
+name: Test, build and publish
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    name: Test and Linux amd64 binary
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Build frontend
+        run: npm --prefix web ci && npm --prefix web run build
+      - name: Check formatting
+        run: test -z "$(gofmt -l main.go internal)"
+      - name: Test rules, privacy, persistence and concurrent requests
+        run: go test -race -count=1 -timeout=10m ./...
+      - name: Vet
+        run: go vet ./...
+      - name: Build Linux amd64
+        env:
+          CGO_ENABLED: '0'
+          GOOS: linux
+          GOARCH: amd64
+        run: |
+          mkdir -p dist/package
+          go build -trimpath -ldflags="-s -w" -o dist/package/wire-board .
+          cp README.md .env.example compose.yaml dist/package/
+          cp -r docs dist/package/
+          tar -C dist/package -czf dist/wire-board-linux-amd64.tar.gz .
+          cd dist && sha256sum wire-board-linux-amd64.tar.gz > SHA256SUMS
+      - name: Smoke test Linux binary
+        env:
+          INVITE_CODE: ci-smoke-only
+          DATA_DIR: /tmp/wire-board-smoke
+          ADDR: 127.0.0.1:18080
+        run: |
+          dist/package/wire-board &
+          pid=$!
+          trap 'kill "$pid"' EXIT
+          for attempt in $(seq 1 20); do
+            if curl --fail --silent http://127.0.0.1:18080/healthz; then break; fi
+            sleep 1
+          done
+          curl --fail http://127.0.0.1:18080/healthz
+          curl --fail http://127.0.0.1:18080/ | grep 'Wire Board'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wire-board-linux-amd64
+          path: |
+            dist/wire-board-linux-amd64.tar.gz
+            dist/SHA256SUMS
+          if-no-files-found: error
+  image:
+    name: Publish Linux amd64 container
+    needs: verify
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha
+            type=ref,event=tag
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  release:
+    name: Publish versioned release
+    needs: [verify, image]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wire-board-linux-amd64
+          path: release
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" release/* --title "Wire Board $RELEASE_TAG" --generate-notes
