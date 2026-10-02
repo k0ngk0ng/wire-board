@@ -63,7 +63,7 @@ func (s *State) applyRailSetup(player int, a Action) error {
 		}
 	}
 	g.SetupPending[player] = nil
-	s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张初始目的地任务", player+1, len(a.Keep)))
+	s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张初始目的地任务，放回 %d 张", player+1, len(a.Keep), len(pending)-len(a.Keep)))
 	for _, tickets := range g.SetupPending {
 		if len(tickets) != 0 {
 			return nil

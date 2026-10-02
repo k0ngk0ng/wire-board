@@ -3207,7 +3207,7 @@ label small {
   font-size: 17px;
   margin-bottom: 9px;
 }
-.ticket-choice > p {
+.ticket-choice p {
   color: #756541;
   font-size: 11px;
   line-height: 1.8;
@@ -3236,7 +3236,7 @@ label small {
 .ticket-choice .ticket-bottom svg {
   display: block;
 }
-.ticket-choice > .primary {
+.ticket-choice .primary {
   margin-top: 12px;
   padding: 10px;
   font-size: 12px;
@@ -3648,7 +3648,6 @@ label small {
     min-width: 620px;
     min-height: 0;
     height: 100%;
-    width: auto !important;
   }
   .rail-table .train-market {
     padding: 5px;
@@ -3883,10 +3882,6 @@ label small {
   }
   .rail-table .map-scroll {
     height: min(40dvh, 360px);
-  }
-  .rail-table .rail-map {
-    width: calc(620px * var(--map-scale, 1)) !important;
-    height: calc(400px * var(--map-scale, 1)) !important;
   }
   .with-artwork .rail-personal .ticket-card {
     min-height: 100px;
@@ -4819,4 +4814,196 @@ label small {
   .splendor-board:not(:has(.personal-area)) .gem-bank {
     grid-column: 2;
   }
+}
+
+/* Keep the viewport still while its map canvas zooms and pans. */
+.map-scroll {
+  cursor: grab;
+  overscroll-behavior: contain;
+  user-select: none;
+}
+.map-scroll.is-dragging,
+.map-scroll.is-dragging * {
+  cursor: grabbing;
+}
+.map-canvas {
+  overflow: hidden;
+}
+.city-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 7px;
+  border: 1px solid #bdb68f;
+  border-radius: 6px;
+  background: #fff9e6;
+  color: #4c5039;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.city-toggle[aria-pressed="false"] {
+  background: #e4e0ce;
+  color: #63645c;
+}
+.log-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  font-weight: 650;
+}
+.log-color i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  border: 1px solid #0005;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px #fff7;
+}
+.log-color i.wild {
+  background: conic-gradient(
+    #c84b43,
+    #e3bc38,
+    #568757,
+    #357bac,
+    #a35e91,
+    #c84b43
+  );
+}
+.journal-dialog li {
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+}
+
+.ticket-progress {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 5px;
+  border-radius: 4px;
+  color: #685d49;
+  background: #fff9e7ed;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  z-index: 1;
+}
+.ticket-progress.done {
+  color: white;
+  background: #226d48;
+  box-shadow: 0 1px 3px #163b3c35;
+}
+.ticket-card.completed {
+  border-color: #38865d;
+}
+
+.hidden-draw-animation {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 70;
+}
+.hidden-train-flight {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 36px;
+  border: 3px double #e0c478;
+  border-radius: 5px;
+  background: repeating-linear-gradient(45deg, #214a42 0 4px, #28564a 4px 8px);
+  color: #f3dfaa;
+  box-shadow: 0 4px 10px #10241e70;
+  animation: hidden-train-draw 850ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
+}
+@keyframes hidden-train-draw {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-8deg) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+    transform: translate(var(--draw-x), var(--draw-y)) rotate(8deg) scale(0.75);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--draw-x), var(--draw-y)) rotate(0) scale(0.4);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hidden-train-flight {
+    animation-name: hidden-train-draw-reduced;
+    animation-duration: 500ms;
+  }
+  @keyframes hidden-train-draw-reduced {
+    from {
+      opacity: 1;
+      transform: translate(var(--draw-x), var(--draw-y));
+    }
+    to {
+      opacity: 0;
+      transform: translate(var(--draw-x), var(--draw-y));
+    }
+  }
+}
+
+/* Nonmodal destination picker: collapse it to inspect the entire map. */
+.ticket-choice {
+  position: fixed;
+  z-index: 30;
+  left: max(12px, env(safe-area-inset-left));
+  top: auto;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  transform: none;
+  width: min(780px, calc(100vw - 24px));
+  max-height: calc(100dvh - 150px);
+  overflow-y: auto;
+  margin: 0;
+  box-shadow: 0 7px 28px #123a3c40;
+}
+.ticket-choice > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ticket-choice > header h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.ticket-choice > header button {
+  white-space: nowrap;
+  font-size: 12px;
+}
+.ticket-choice p {
+  margin-top: 10px;
+}
+.ticket-choice.is-collapsed {
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  width: min(350px, calc(100vw - 112px));
+  padding: 10px;
+}
+.ticket-choice.is-collapsed h3 {
+  font-size: 12px;
+}
+.map-scroll .map-route {
+  cursor: grab;
+}
+.map-scroll.is-dragging .map-route {
+  cursor: grabbing;
+}
+.ticket-choice > header {
+  position: sticky;
+  top: -18px;
+  z-index: 2;
+  background: #f3e7c1;
+  padding-block: 4px;
 }
