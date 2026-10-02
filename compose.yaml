@@ -1,6 +1,6 @@
 services:
   wire-board:
-    image: ghcr.io/k0ngk0ng/wire-board:latest
+    image: ${WIRE_BOARD_IMAGE:-ghcr.io/k0ngk0ng/wire-board:latest}
     platform: linux/amd64
     restart: unless-stopped
     env_file: .env

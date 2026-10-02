@@ -41,20 +41,20 @@ Go 二进制静态编译，不需要服务器安装 Go、Node 或 SQLite。首�
 
 ### 方式二：Docker Compose
 
-把 `compose.yaml` 和 `.env.example` 放到服务器同一目录：
+把 `compose.yaml`、`.env.example` 和 `scripts/update.sh` 放到服务器同一目录（Release 压缩包已包含这些文件）。公开镜像无需 GitHub 登录：
 
 ```sh
 cp .env.example .env
 # 编辑 .env，至少修改 INVITE_CODE；内网直连设置 BIND_ADDRESS=0.0.0.0
-# 私有 GHCR 镜像需先使用有 read:packages 权限的令牌登录：
-docker login ghcr.io -u YOUR_GITHUB_USERNAME
-
-docker compose pull
-docker compose up -d
+chmod 600 .env
+chmod +x update.sh
+sudo ./update.sh
 docker compose logs -f
 ```
 
 默认只监听 `127.0.0.1:8080`，适合接入服务器已有反向代理。SQLite 存在 `board-data` 命名卷；更新镜像不清空账号和对局。不要执行 `docker compose down -v`，这会删除数据卷。单局中断可以刷新或重新登录恢复；房主可以主动结束未完成牌桌。
+
+以后在部署目录执行 `sudo ./update.sh` 更新，或 `sudo ./update.sh v1.0.2` 指定版本。脚本固定从 GHCR 拉取镜像，先下载、再短暂停服备份，健康检查失败会尝试恢复旧镜像。Nginx、Certbot 和备份说明见 [部署说明](docs/deployment.md)。服务器地址、域名、邀请码和凭据仅保存在服务器配置中，不要提交到仓库。
 
 ## 环境变量
 
