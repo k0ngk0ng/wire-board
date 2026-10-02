@@ -1,0 +1,10 @@
+.git
+.local
+node_modules
+web/node_modules
+web/dist
+web/*.tsbuildinfo
+dist
+data
+.env
+*.db*

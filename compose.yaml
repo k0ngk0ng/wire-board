@@ -1,0 +1,23 @@
+services:
+  wire-board:
+    image: ghcr.io/k0ngk0ng/wire-board:latest
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATA_DIR: /data
+      ADDR: :8080
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${PORT:-8080}:8080"
+    volumes:
+      - board-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 15s
+volumes:
+  board-data:

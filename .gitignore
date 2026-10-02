@@ -1,0 +1,11 @@
+.local/
+node_modules/
+web/dist/
+web/*.tsbuildinfo
+wire-board
+*.db
+*.db-shm
+*.db-wal
+.env
+dist/
+.DS_Store
