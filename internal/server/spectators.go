@@ -62,7 +62,7 @@ func (s *Server) watch(w http.ResponseWriter, r *http.Request) {
 			fail(w, 409, "请先离开当前牌桌或结束观战")
 			return
 		}
-		if room.Game == nil || (room.Status != "playing" && room.Status != "finished") {
+		if room.Game == nil || room.Status != "playing" {
 			fail(w, 400, "牌桌尚未开局或已关闭")
 			return
 		}

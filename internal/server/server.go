@@ -43,6 +43,7 @@ type Seat struct {
 	Left  bool `json:"left"`
 }
 type Room struct {
+	MatchID      string        `json:"matchId,omitempty"`
 	Spectators   []User        `json:"spectators,omitempty"`
 	Chat         []ChatMessage `json:"chat,omitempty"`
 	BotAt        int64         `json:"botAt,omitempty"`
@@ -113,7 +114,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, e
 	}
 	db.SetMaxOpenConns(1)
-	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce));`)
+	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce));`)
 	if e != nil {
 		db.Close()
 		return nil, e
@@ -146,7 +147,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			r.startTurnClock(time.Now())
 			changed = true
 		}
-		if changed {
+		if changed || (r.Game != nil && (r.Status == "finished" || r.Status == "closed")) {
 			migrated = append(migrated, &r)
 		}
 	}
@@ -223,6 +224,10 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/login", s.auth)
 	mux.HandleFunc("POST /api/logout", s.logout)
 	mux.HandleFunc("GET /api/state", s.state)
+	mux.HandleFunc("GET /api/players", s.players)
+	mux.HandleFunc("GET /api/players/{id}", s.profile)
+	mux.HandleFunc("GET /api/friends", s.friends)
+	mux.HandleFunc("POST /api/players/{id}/friend", s.friendship)
 	mux.HandleFunc("GET /api/catalog", func(w http.ResponseWriter, r *http.Request) { respond(w, 200, game.MapData()) })
 	mux.HandleFunc("POST /api/rooms", s.create)
 	mux.HandleFunc("POST /api/rooms/{id}", s.command)
@@ -419,7 +424,9 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	}
 	rooms := []any{}
 	for _, room := range s.rooms {
-		rooms = append(rooms, summary(room))
+		if room.Status == "waiting" || room.Status == "playing" {
+			rooms = append(rooms, summary(room))
+		}
 	}
 	out := map[string]any{"user": u, "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL}
 	room := s.current(u.ID)
@@ -444,8 +451,19 @@ func (s *Server) save(r *Room) error {
 	if e != nil {
 		return e
 	}
-	_, e = s.db.Exec("INSERT INTO rooms(id,snapshot) VALUES(?,?) ON CONFLICT(id) DO UPDATE SET snapshot=excluded.snapshot", r.ID, b)
-	return e
+	tx, e := s.db.Begin()
+	if e != nil {
+		return e
+	}
+	_, e = tx.Exec("INSERT INTO rooms(id,snapshot) VALUES(?,?) ON CONFLICT(id) DO UPDATE SET snapshot=excluded.snapshot", r.ID, b)
+	if e == nil {
+		e = archiveGame(tx, r)
+	}
+	if e != nil {
+		_ = tx.Rollback()
+		return e
+	}
+	return tx.Commit()
 }
 func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -636,6 +654,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			next.Game, err = game.New(next.Kind, len(next.Seats))
 			if err == nil {
 				next.Status = "playing"
+				next.MatchID = randomID(12)
 				next.SetupVersion = next.Version + 1
 				next.startTurnClock(now)
 			}
@@ -721,6 +740,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			_, e = tx.Exec("DELETE FROM rooms WHERE id=?", next.ID)
 		} else {
 			_, e = tx.Exec("UPDATE rooms SET snapshot=? WHERE id=?", snapshot, next.ID)
+		}
+		if e == nil {
+			e = archiveGame(tx, room)
+		}
+		if e == nil {
+			e = archiveGame(tx, &next)
 		}
 		if e == nil {
 			_, e = tx.Exec("INSERT INTO actions VALUES(?,?,?,?,?,?)", next.ID, u.ID, req.Nonce, next.Version, action, time.Now().Unix())

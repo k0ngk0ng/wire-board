@@ -1,3 +1,4 @@
+import { PlayerName } from "./profiles";
 import { useEffect, useRef, useState } from "react";
 import { MessageCircle, Send, X } from "lucide-react";
 import type { Room } from "./types";
@@ -115,7 +116,7 @@ export function Chat({
               >
                 <div>
                   <strong>
-                    {m.sender.name}
+                    <PlayerName user={m.sender} />
                     {m.spectator && (
                       <small className="spectator-badge">观战</small>
                     )}

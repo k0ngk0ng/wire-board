@@ -63,6 +63,8 @@ export type Game = {
     lastRound: boolean;
   };
   rail?: {
+    drawId?: number;
+    drawEvents?: { id: number; player: number; slot: number; color?: number }[];
     hiddenDrawId?: number;
     hiddenDrawEvents?: { id: number; player: number }[];
     face: number[];
