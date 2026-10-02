@@ -55,7 +55,7 @@ docker compose logs -f
 
 默认只监听 `127.0.0.1:8080`，适合接入服务器已有反向代理。SQLite 存在 `board-data` 命名卷；更新镜像不清空账号和对局。不要执行 `docker compose down -v`，这会删除数据卷。单局中断可以刷新或重新登录恢复；房主可以主动结束未完成牌桌。
 
-以后在部署目录执行 `sudo ./update.sh` 更新，或 `sudo ./update.sh v1.0.7` 指定版本。脚本固定从 GHCR 拉取镜像，先下载、再短暂停服备份，健康检查失败会尝试恢复旧镜像。Nginx、Certbot 和备份说明见 [部署说明](docs/deployment.md)。服务器地址、域名、邀请码和凭据仅保存在服务器配置中，不要提交到仓库。
+以后在部署目录执行 `sudo ./update.sh` 更新，或 `sudo ./update.sh v1.0.8` 指定版本。脚本固定从 GHCR 拉取镜像，先下载、再短暂停服备份，健康检查失败会尝试恢复旧镜像。Nginx、Certbot 和备份说明见 [部署说明](docs/deployment.md)。服务器地址、域名、邀请码和凭据仅保存在服务器配置中，不要提交到仓库。
 
 运行 `sudo ./update.sh clean` 清理本项目旧镜像，保留当前部署、上一版回滚镜像及所有容器使用中的镜像；不清理其他服务、数据卷或备份。
 
