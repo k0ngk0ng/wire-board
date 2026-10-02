@@ -1733,6 +1733,7 @@ function SplendorBoard({
     mine = g.turn === room.you && !g.finished;
   const [tokens, setTokens] = useState<number[]>(Array(6).fill(0));
   const [selected, setSelected] = useState<Card>();
+  const [blindTier, setBlindTier] = useState<number>();
   const [collection, setCollection] = useState(false);
   const [payment, setPayment] = useState<number[]>(Array(6).fill(0));
   const selectCard = (card: Card) => {
@@ -1751,6 +1752,7 @@ function SplendorBoard({
   useEffect(() => {
     setTokens(Array(6).fill(0));
     setSelected(undefined);
+    setBlindTier(undefined);
   }, [room.version]);
   const taking = mine && g.phase === "turn",
     discard = mine && g.phase === "discard";
@@ -1793,8 +1795,9 @@ function SplendorBoard({
               disabled={
                 !taking || busy || !s.remaining[tier] || p.reserved!.length >= 3
               }
-              onClick={() => void act({ type: "reserve", tier: tier + 1 })}
+              onClick={() => setBlindTier(tier + 1)}
               aria-label={`从 ${tier + 1} 级牌堆预留一张牌`}
+              aria-haspopup="dialog"
             >
               <span className="deck-ornament">✧</span>
               <strong>{["Ⅰ", "Ⅱ", "Ⅲ"][tier]}</strong>
@@ -1969,6 +1972,41 @@ function SplendorBoard({
           >
             归还所选宝石
           </button>
+        </Modal>
+      )}
+      {blindTier !== undefined && taking && (
+        <Modal
+          title={`确认盲预留 · ${blindTier} 级牌堆`}
+          dismissible={!busy}
+          onClose={() => setBlindTier(undefined)}
+        >
+          <p>
+            随机预留一张 {blindTier} 级发展卡，确认前无法查看牌面。
+            这会使用本回合的行动。
+          </p>
+          <p>
+            {s.bank[5] > 0
+              ? "同时获得 1 枚黄金。如果持有宝石超过 10 枚，需要归还多出的宝石。"
+              : "公共供应区没有黄金，本次仅预留卡牌。"}
+          </p>
+          <div className="form-grid">
+            <button
+              className="outline"
+              disabled={busy}
+              onClick={() => setBlindTier(undefined)}
+            >
+              取消
+            </button>
+            <button
+              className="primary"
+              disabled={
+                busy || !s.remaining[blindTier - 1] || p.reserved!.length >= 3
+              }
+              onClick={() => void act({ type: "reserve", tier: blindTier })}
+            >
+              确认预留
+            </button>
+          </div>
         </Modal>
       )}
       {selected && (
