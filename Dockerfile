@@ -16,11 +16,11 @@ ARG TARGETARCH=amd64
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /wire-board .
 
 FROM alpine:3.23
-RUN addgroup -g 10001 board && adduser -D -u 10001 -G board board && mkdir /data && chown board:board /data
+RUN apk add --no-cache sqlite && addgroup -g 10001 board && adduser -D -u 10001 -G board board && mkdir /data && chown board:board /data
 COPY --from=backend /wire-board /usr/local/bin/wire-board
 ENV DATA_DIR=/data ADDR=:8080
 USER 10001:10001
 EXPOSE 8080
 VOLUME /data
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s CMD wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1
+HEALTHCHECK --interval=2s --timeout=2s --start-period=2s --retries=15 CMD wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1
 ENTRYPOINT ["/usr/local/bin/wire-board"]

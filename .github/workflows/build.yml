@@ -29,7 +29,7 @@ jobs:
       - name: Build frontend
         run: npm --prefix web ci && npm --prefix web run build
       - name: Check formatting
-        run: test -z "$(gofmt -l main.go internal)"
+        run: test -z "$(gofmt -l main.go main_test.go internal)"
       - name: Test rules, privacy, persistence and concurrent requests
         run: go test -race -count=1 -timeout=10m ./...
       - name: Vet
@@ -119,6 +119,14 @@ jobs:
           curl --fail http://127.0.0.1:18081/healthz
           curl --fail http://127.0.0.1:18081/ | grep 'Wire Board'
           curl --fail -H 'Content-Type: application/json' --data '{"name":"SmokePlayer","password":"smoke-test-only","invite":"ci-smoke-only"}' http://127.0.0.1:18081/api/register
+          docker run --rm --network none --read-only \
+            --volumes-from wire-board-smoke:ro --tmpfs /snapshot:rw,size=32m \
+            --entrypoint /bin/sh "$IMAGE_REF" -ec '
+              sqlite3 -readonly /data/wire-board.db ".backup /snapshot/wire-board.db"
+              sqlite3 /snapshot/wire-board.db "PRAGMA journal_mode=DELETE;" >/dev/null
+              test "$(sqlite3 -readonly /snapshot/wire-board.db "PRAGMA quick_check;")" = ok
+              test "$(sqlite3 -readonly /snapshot/wire-board.db "SELECT count(*) FROM users;")" = 1
+            '
           docker restart wire-board-smoke
           for attempt in $(seq 1 20); do
             if curl --fail --silent http://127.0.0.1:18081/healthz; then break; fi

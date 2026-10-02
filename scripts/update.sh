@@ -59,13 +59,15 @@ if [[ $tag == clean ]]; then
 fi
 candidate=$(mktemp .update.XXXXXX)
 old_image=
-stopped=false
+backup_tmp=
+backup_partial=
+switching=false
 committed=false
 compose() { docker compose --project-name wire-board --env-file .env --env-file "$candidate" -f compose.yaml "$@"; }
 finish() {
     rc=$?
     trap - EXIT INT TERM
-    if [[ $stopped == true && $committed == false && -n $old_image ]]; then
+    if [[ $switching == true && $committed == false && -n $old_image ]]; then
         echo "Update failed; restarting the previous image. Data backup is retained." >&2
         printf 'WIRE_BOARD_IMAGE=%s\n' "$old_image" > "$candidate"
         if ! compose up -d --no-build --pull never --wait --wait-timeout 90; then
@@ -73,6 +75,8 @@ finish() {
         fi
     fi
     rm -f -- "$candidate"
+    [[ -z $backup_partial ]] || rm -f -- "$backup_partial"
+    [[ -z $backup_tmp ]] || rm -rf -- "$backup_tmp"
     exit "$rc"
 }
 trap finish EXIT
@@ -84,6 +88,8 @@ docker pull "$repo:$tag"
 digest=$(docker image inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$repo:$tag" | awk -v prefix="$repo@sha256:" 'index($0,prefix)==1 {print; exit}')
 [[ $digest =~ ^ghcr\.io/k0ngk0ng/wire-board@sha256:[a-f0-9]{64}$ ]] || die "Cannot resolve published image digest"
 printf 'WIRE_BOARD_IMAGE=%s\n' "$digest" > "$candidate"
+# Reject invalid Compose/environment settings before touching the running service.
+compose config --quiet
 container=$(compose ps --all --quiet wire-board)
 if [[ -n $container ]]; then
     old_image=$(docker inspect --format '{{.Image}}' "$container")
@@ -91,12 +97,35 @@ if [[ -n $container ]]; then
     [[ -n $source_dir && -d $source_dir ]] || die "Cannot locate existing data volume"
     mkdir -p backups
     backup="backups/data-$(date -u +%Y%m%dT%H%M%SZ)-$$.tar.gz"
-    stopped=true
-    compose stop wire-board
-    tar -C "$source_dir" -czf "$backup" .
-    echo "Consistent data backup: $backup"
+    backup_partial="$backup.partial"
+    backup_tmp=$(mktemp -d .update.backup.XXXXXX)
+    echo "Taking an online SQLite backup while the current game remains available..."
+    # Use the already pulled GitHub image as an isolated SQLite client. Never
+    # launch a second game server against the live volume (rooms live in memory).
+    # SQLite's backup API reads committed WAL pages into a standalone snapshot.
+    if ! docker run --rm --network none --read-only --user 0:0 \
+        --cap-drop ALL --cap-add DAC_READ_SEARCH --security-opt no-new-privileges:true \
+        --mount "type=bind,source=$source_dir,target=/source,readonly" \
+        --mount "type=bind,source=$PWD/$backup_tmp,target=/snapshot" \
+        --entrypoint /bin/sh "$digest" -ec '
+            sqlite3 -readonly /source/wire-board.db ".timeout 5000" ".backup /snapshot/wire-board.db"
+            sqlite3 /snapshot/wire-board.db "PRAGMA journal_mode=DELETE;" >/dev/null
+            test "$(sqlite3 -readonly /snapshot/wire-board.db "PRAGMA quick_check;")" = ok
+        '; then
+        die "Online backup failed (the selected image must include sqlite3); current service was not stopped"
+    fi
+    tar -C "$backup_tmp" -czf "$backup_partial" ./wire-board.db
+    mv -f -- "$backup_partial" "$backup"
+    backup_partial=
+    rm -rf -- "$backup_tmp"
+    backup_tmp=
+    echo "Consistent pre-update database snapshot: $backup"
 fi
 
+# Download, validation and compression are finished. Compose now stops the sole
+# writer and recreates it on the same data volume; no offline backup work remains.
+echo "Switching containers; clients will reconnect automatically..."
+switching=true
 compose up -d --no-build --pull never --wait --wait-timeout 90
 # The image health check probes the application's /healthz endpoint.
 container=$(compose ps --quiet wire-board)

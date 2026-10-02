@@ -381,15 +381,22 @@ function App() {
     let stopped = false;
     let socket: WebSocket;
     let timer: ReturnType<typeof setTimeout>;
+    let retryDelay = 250;
     const connect = () => {
       socket = new WebSocket(
         `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/ws`,
       );
-      socket.onopen = () => setOnline(true);
+      socket.onopen = () => {
+        retryDelay = 250;
+        setOnline(true);
+      };
       socket.onmessage = () => void refresh();
       socket.onclose = () => {
         setOnline(false);
-        if (!stopped) timer = setTimeout(connect, 2000);
+        if (!stopped) {
+          timer = setTimeout(connect, retryDelay + Math.random() * 150);
+          retryDelay = Math.min(retryDelay * 2, 2000);
+        }
       };
       socket.onerror = () => socket.close();
     };

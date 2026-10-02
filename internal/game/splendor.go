@@ -116,6 +116,7 @@ func (s *State) applySplendor(a Action) error {
 			p.Tokens[i] -= n
 			g.Bank[i] += n
 		}
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 归还了 %s（持有 %d / 10 枚）", s.Turn+1, splendorGemSummary(a.Tokens), sum(p.Tokens)))
 		s.gemAfter()
 		return nil
 	}
@@ -127,6 +128,7 @@ func (s *State) applySplendor(a Action) error {
 			if n.ID == a.Noble && eligible(p, n) {
 				p.Nobles = append(p.Nobles, n)
 				p.Score += 3
+				s.logSplendorNoble(n)
 				g.Nobles = append(g.Nobles[:i], g.Nobles[i+1:]...)
 				s.gemNext()
 				return nil
@@ -166,7 +168,7 @@ func (s *State) applySplendor(a Action) error {
 			p.Tokens[i] += n
 			g.Bank[i] -= n
 		}
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 拿取了 %d 枚宝石", s.Turn+1, total))
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 拿取了 %s（共 %d 枚）", s.Turn+1, splendorGemSummary(a.Tokens), total))
 	case "reserve", "buy":
 		if a.Type == "reserve" && len(p.Reserved) >= 3 {
 			return errors.New("最多预留三张卡牌")
@@ -203,6 +205,7 @@ func (s *State) applySplendor(a Action) error {
 				return errors.New("卡牌已不在此处")
 			}
 		}
+		var detail string
 		if a.Type == "buy" {
 			pay := make([]int, 6)
 			for i, cost := range c.Cost {
@@ -237,11 +240,30 @@ func (s *State) applySplendor(a Action) error {
 			p.Cards = append(p.Cards, c)
 			p.Bonus[c.Color]++
 			p.Score += c.Points
+			source := "市场"
+			if loc == -1 {
+				source = "预留区"
+			}
+			payment := "无需支付宝石"
+			if sum(pay) > 0 {
+				payment = "支付 " + splendorGemSummary(pay)
+			}
+			detail = fmt.Sprintf("从%s购买了 %s；%s；永久%s +1，当前 %d 分", source, splendorCardSummary(c), payment, splendorGemNames[c.Color], p.Score)
 		} else {
+			// A blind reservation must never include the drawn card's identity,
+			// color, points or cost in the shared log.
+			if idx == -1 {
+				detail = fmt.Sprintf("从 %d 级牌堆盲预留了 1 张发展卡", c.Tier)
+			} else {
+				detail = "从市场预留了 " + splendorCardSummary(c)
+			}
 			p.Reserved = append(p.Reserved, c)
 			if g.Bank[5] > 0 {
 				g.Bank[5]--
 				p.Tokens[5]++
+				detail += "；获得黄金×1"
+			} else {
+				detail += "；黄金已空，未获得黄金"
 			}
 		}
 		if loc == -1 {
@@ -254,11 +276,7 @@ func (s *State) applySplendor(a Action) error {
 		} else {
 			g.Market[loc] = append(g.Market[loc][:idx], g.Market[loc][idx+1:]...)
 		}
-		verb := "购买"
-		if a.Type == "reserve" {
-			verb = "预留"
-		}
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d %s了一张 %d 级发展卡", s.Turn+1, verb, c.Tier))
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d %s", s.Turn+1, detail))
 	case "pass":
 		if s.gemHasMove() {
 			return errors.New("仍有合法行动，不能跳过")
@@ -299,6 +317,7 @@ func (s *State) gemAfter() {
 		i := options[0]
 		p.Nobles = append(p.Nobles, g.Nobles[i])
 		p.Score += 3
+		s.logSplendorNoble(g.Nobles[i])
 		g.Nobles = append(g.Nobles[:i], g.Nobles[i+1:]...)
 	}
 	s.gemNext()
@@ -406,4 +425,26 @@ func (s *State) gemHasMove() bool {
 		}
 	}
 	return false
+}
+
+// Match the gem order used by the rules and the board: green, white, blue,
+// black, red, gold. Explicit color names also make plain-text logs unambiguous.
+var splendorGemNames = [...]string{"祖母绿（绿）", "钻石（白）", "蓝宝石（蓝）", "缟玛瑙（黑）", "红宝石（红）", "黄金"}
+
+func splendorGemSummary(tokens []int) string {
+	parts := []string{}
+	for i, n := range tokens {
+		if n > 0 {
+			parts = append(parts, fmt.Sprintf("%s×%d", splendorGemNames[i], n))
+		}
+	}
+	return strings.Join(parts, "、")
+}
+
+func splendorCardSummary(c Card) string {
+	return fmt.Sprintf("%s发展卡（%d 级，%d 分，#%d）", splendorGemNames[c.Color], c.Tier, c.Points, c.ID)
+}
+
+func (s *State) logSplendorNoble(n Noble) {
+	s.Log = append(s.Log, fmt.Sprintf("玩家 %d 获得贵族 #%d 的来访（+3 分），当前 %d 分", s.Turn+1, n.ID, s.Splendor.Players[s.Turn].Score))
 }
