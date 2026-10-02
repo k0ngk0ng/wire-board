@@ -49,6 +49,10 @@ import "./style.css";
 import { cityName } from "./cities";
 import { GameAudio } from "./audio";
 import { Chat } from "./chat";
+import { LogLine } from "./log-line";
+import { useRailMapControls } from "./rail-map-controls";
+import { useTurnTitle } from "./turn-title";
+import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { AnimatedSlot } from "./animated-slot";
 const AssetsContext = createContext("");
 const gemColors = [
@@ -332,6 +336,7 @@ function Modal({
 }
 function App() {
   const [state, setState] = useState<State>();
+  useTurnTitle(state?.room);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -824,11 +829,7 @@ function App() {
                   .reverse()
                   .map((line, i) => (
                     <li key={`${room.version}-${i}`}>
-                      {line.replace(
-                        /玩家 (\d+)/g,
-                        (_, n) =>
-                          room.seats[Number(n) - 1]?.name || `玩家 ${n}`,
-                      )}
+                      <LogLine line={line} seats={room.seats} />
                     </li>
                   ))}
                 {!room.game.log.length && <li>牌已洗好，祝你好运。</li>}
@@ -1422,6 +1423,7 @@ function Players({ room }: { room: Room }) {
         const stats = g.splendor?.players[i] || g.rail?.players[i];
         return (
           <div
+            data-player-seat={i}
             className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${g.splendor?.players[i].eliminated || g.rail?.players[i].eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
@@ -2303,12 +2305,14 @@ function TicketCard({
   selected,
   onClick,
   showResult = false,
+  showProgress = false,
 }: {
   ticket: Ticket;
   catalog: Catalog;
   selected?: boolean;
   onClick?: () => void;
   showResult?: boolean;
+  showProgress?: boolean;
 }) {
   const assets = useContext(AssetsContext);
   const a = catalog.cities[ticket.a],
@@ -2322,7 +2326,7 @@ function TicketCard({
             }
           : undefined
       }
-      className={`ticket-card ${selected ? "selected" : ""} ${showResult ? (ticket.complete ? "completed" : "incomplete") : ""}`}
+      className={`ticket-card ${selected ? "selected" : ""} ${showResult ? (ticket.complete ? "completed" : "incomplete") : showProgress && ticket.complete ? "completed" : ""}`}
       onClick={onClick}
     >
       <div className="ticket-label">
@@ -2345,6 +2349,18 @@ function TicketCard({
       <small>
         {a.name} — {b.name}
       </small>
+      {showProgress && (
+        <span className={`ticket-progress ${ticket.complete ? "done" : ""}`}>
+          {ticket.complete ? (
+            <>
+              <Check size={12} />
+              已完成
+            </>
+          ) : (
+            "未完成"
+          )}
+        </span>
+      )}
       <div className="ticket-bottom">
         <svg viewBox="0 0 110 35">
           <path
@@ -2365,6 +2381,12 @@ function TicketCard({
     </button>
   );
 }
+const wagonColors = ["blue", "red", "green", "yellow", "black"];
+function wagonViewBox(angle: number) {
+  // The artwork has 36 five-degree views, counterclockwise; route angles are clockwise.
+  const frame = Math.round((((-angle % 180) + 180) % 180) / 5) % 36;
+  return `${(frame % 6) * 160} ${Math.floor(frame / 6) * 160} 160 160`;
+}
 function RailMap({
   catalog,
   owners,
@@ -2378,18 +2400,56 @@ function RailMap({
   onSelect: (r: Route) => void;
   highlight?: Ticket;
 }) {
-  const [zoom, setZoom] = useState(1);
+  const { viewport, zoom, zoomAt, dragging, canvasStyle, mapStyle, handlers } =
+    useRailMapControls();
+  const [showCities, setShowCities] = useState(
+    () => localStorage.getItem("wb_rail_city_names") !== "off",
+  );
   const assets = useContext(AssetsContext);
+  const [wagonReady, setWagonReady] = useState<boolean[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    setWagonReady([]);
+    if (assets)
+      wagonColors.forEach((color, i) => {
+        const image = new Image();
+        image.onload = () => {
+          if (!cancelled)
+            setWagonReady((ready) => {
+              const next = [...ready];
+              next[i] = true;
+              return next;
+            });
+        };
+        image.src = `${assets}/rail/wagons-${color}-v1.webp`;
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [assets]);
   return (
     <div className="map-frame">
       <div className="map-controls">
-        <span>UNITED STATES · 1900</span>
+        <button
+          className="city-toggle"
+          aria-pressed={showCities}
+          onClick={() => {
+            setShowCities(!showCities);
+            localStorage.setItem(
+              "wb_rail_city_names",
+              showCities ? "off" : "on",
+            );
+          }}
+        >
+          <Eye size={15} />
+          城市名{showCities ? "：开" : "：关"}
+        </button>
         <div>
           <button
             className="icon-button"
             aria-label="缩小地图"
             disabled={zoom <= 1}
-            onClick={() => setZoom(Math.max(1, zoom - 0.25))}
+            onClick={() => zoomAt(zoom - 0.25)}
           >
             <ZoomOut size={17} />
           </button>
@@ -2397,154 +2457,199 @@ function RailMap({
           <button
             className="icon-button"
             aria-label="放大地图"
-            disabled={zoom >= 2}
-            onClick={() => setZoom(Math.min(2, zoom + 0.25))}
+            disabled={zoom >= 3}
+            onClick={() => zoomAt(zoom + 0.25)}
           >
             <ZoomIn size={17} />
           </button>
         </div>
       </div>
       <div
-        className="map-scroll"
-        style={zoom > 1 ? { maxHeight: "75vh" } : undefined}
+        ref={viewport}
+        className={`map-scroll ${dragging ? "is-dragging" : ""}`}
+        {...handlers}
       >
-        <svg
-          className="rail-map"
-          viewBox="0 0 1744 1125"
-          style={
-            {
-              "--map-scale": zoom,
-              width: `${zoom * 100}%`,
-              height: zoom > 1 ? "auto" : undefined,
-            } as React.CSSProperties
-          }
-          role="group"
-          aria-label="美国铁路地图，点击路线选择占领"
-        >
-          <rect width="1744" height="1125" fill="#ece8d8" />
-          {assets && (
-            <image
-              href={`${assets}/rail/map.webp`}
-              width="1744"
-              height="1125"
-            />
-          )}
-          {catalog.routes.map((r) => {
-            const a = catalog.cities[r.a],
-              b = catalog.cities[r.b];
-            const owner = owners[r.id],
-              claimed = owner !== undefined;
-            const active = selected?.id === r.id;
-            return (
-              <g
-                key={r.id}
-                className="map-route"
-                role="button"
-                tabIndex={0}
-                aria-label={`${cityName(a.name)} 到 ${cityName(b.name)}，${r.length} 节，${r.color < 0 ? "任意单色" : trainNames[r.color]}${claimed ? "，已占领" : ""}`}
-                onClick={() => onSelect(r)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onSelect(r);
-                  }
-                }}
-              >
-                <title>
-                  {cityName(a.name)} → {cityName(b.name)} · {r.length} 节
-                  {claimed ? ` · 玩家 ${owner + 1}` : ""}
-                </title>
-                {r.segments?.map((segment, i) => (
-                  <g
-                    key={i}
-                    transform={`translate(${segment.x},${segment.y}) rotate(${segment.angle})`}
-                  >
-                    <rect
-                      x="-31"
-                      y="-13"
-                      width="62"
-                      height="26"
-                      rx="4"
-                      fill="transparent"
-                    />
-                    <rect
-                      x="-26"
-                      y="-8"
-                      width="52"
-                      height="16"
-                      rx="3"
-                      fill={
-                        claimed
-                          ? playerColors[owner]
-                          : assets
-                            ? "transparent"
-                            : r.color < 0
-                              ? "#bbb4a1"
-                              : trainColors[r.color]
-                      }
-                      stroke={
-                        active ? "#f5cf47" : claimed ? "#fff9e3" : "transparent"
-                      }
-                      strokeWidth="3"
-                    />
-                    {claimed && (
-                      <path
-                        d="M-20 0H20M-17 7v4M17 7v4"
-                        stroke="white"
-                        strokeWidth="2"
+        <div className="map-canvas" style={canvasStyle}>
+          <svg
+            className="rail-map"
+            viewBox="0 0 1744 1125"
+            style={mapStyle}
+            role="group"
+            aria-label="美国铁路地图，点击路线选择占领"
+          >
+            <rect width="1744" height="1125" fill="#ece8d8" />
+            {assets && (
+              <image
+                href={`${assets}/rail/map.webp`}
+                width="1744"
+                height="1125"
+              />
+            )}
+            {catalog.routes.map((r) => {
+              const a = catalog.cities[r.a],
+                b = catalog.cities[r.b];
+              const owner = owners[r.id],
+                claimed = owner !== undefined;
+              const active = selected?.id === r.id;
+              return (
+                <g
+                  key={r.id}
+                  className="map-route"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${cityName(a.name)} 到 ${cityName(b.name)}，${r.length} 节，${r.color < 0 ? "任意单色" : trainNames[r.color]}${claimed ? "，已占领" : ""}`}
+                  onClick={() => onSelect(r)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onSelect(r);
+                    }
+                  }}
+                >
+                  <title>
+                    {cityName(a.name)} → {cityName(b.name)} · {r.length} 节
+                    {claimed ? ` · 玩家 ${owner + 1}` : ""}
+                  </title>
+                  {r.segments?.map((segment, i) => (
+                    <g
+                      key={i}
+                      transform={`translate(${segment.x},${segment.y}) rotate(${segment.angle})`}
+                    >
+                      <rect
+                        x="-31"
+                        y="-13"
+                        width="62"
+                        height="26"
+                        rx="4"
+                        fill="transparent"
                       />
-                    )}
-                  </g>
-                ))}
-              </g>
-            );
-          })}
-          {catalog.cities.map((c) => {
-            const lit =
-              highlight && (c.id === highlight.a || c.id === highlight.b);
-            const [lx, ly, lw, lh] = c.label || [c.x + 12, c.y - 30, 100, 30];
-            return (
-              <g key={c.id} className="map-city">
-                {lit && (
+                      {active && (
+                        <rect
+                          x="-31"
+                          y="-15"
+                          width="62"
+                          height="30"
+                          rx="6"
+                          fill="#f5cf4740"
+                          stroke="#f5cf47"
+                          strokeWidth="3"
+                        />
+                      )}
+                      {claimed ? (
+                        wagonReady[owner] ? (
+                          <g
+                            transform={`rotate(${-segment.angle})`}
+                            pointerEvents="none"
+                          >
+                            <svg
+                              x="-44"
+                              y="-46"
+                              width="85"
+                              height="85"
+                              viewBox={wagonViewBox(segment.angle)}
+                            >
+                              <image
+                                href={`${assets}/rail/wagons-${wagonColors[owner]}-v1.webp`}
+                                width="960"
+                                height="960"
+                              />
+                            </svg>
+                          </g>
+                        ) : (
+                          <g
+                            fill={playerColors[owner]}
+                            stroke="#17252b"
+                            strokeWidth="1.1"
+                            pointerEvents="none"
+                          >
+                            <path d="M-27-6L-22-11H22L27-6V7H-27Z" />
+                            <path
+                              d="M-22-10H22L25-6H-25Z"
+                              fill="#fff"
+                              opacity=".28"
+                              stroke="none"
+                            />
+                            <path
+                              d="M-27 7H27V10H-27ZM-20 10V13H-13V10M13 10V13H20V10"
+                              fill="#253039"
+                            />
+                            <path
+                              d="M-18-4V5M-9-4V5M0-4V5M9-4V5M18-4V5"
+                              stroke="#000"
+                              opacity=".25"
+                            />
+                          </g>
+                        )
+                      ) : (
+                        <rect
+                          x="-26"
+                          y="-8"
+                          width="52"
+                          height="16"
+                          rx="3"
+                          fill={
+                            assets
+                              ? "transparent"
+                              : r.color < 0
+                                ? "#bbb4a1"
+                                : trainColors[r.color]
+                          }
+                        />
+                      )}
+                    </g>
+                  ))}
+                </g>
+              );
+            })}
+            {catalog.cities.map((c) => {
+              const lit =
+                highlight && (c.id === highlight.a || c.id === highlight.b);
+              const [lx, ly, lw, lh] = c.label || [c.x + 12, c.y - 30, 100, 30];
+              return (
+                <g key={c.id} className="map-city">
+                  {lit && (
+                    <circle
+                      cx={c.x}
+                      cy={c.y}
+                      r="23"
+                      fill="#f1b52f"
+                      opacity=".7"
+                    />
+                  )}
                   <circle
                     cx={c.x}
                     cy={c.y}
-                    r="23"
-                    fill="#f1b52f"
-                    opacity=".7"
+                    r={lit ? 9 : 5}
+                    fill={lit ? "#b53427" : "#f6f0dc"}
+                    stroke="#4d503c"
+                    strokeWidth="2"
                   />
-                )}
-                <circle
-                  cx={c.x}
-                  cy={c.y}
-                  r={lit ? 9 : 5}
-                  fill={lit ? "#b53427" : "#f6f0dc"}
-                  stroke="#4d503c"
-                  strokeWidth="2"
-                />
-                <rect
-                  x={lx}
-                  y={ly}
-                  width={lw}
-                  height={lh}
-                  rx="5"
-                  fill="#f4f0e3"
-                />
-                <text
-                  x={lx + lw / 2}
-                  y={ly + lh / 2}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                >
-                  {cityName(c.name)}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+                  <rect
+                    x={lx}
+                    y={ly}
+                    width={lw}
+                    height={lh}
+                    rx="5"
+                    fill="#f4f0e3"
+                  />
+                  {showCities && (
+                    <text
+                      x={lx + lw / 2}
+                      y={ly + lh / 2}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                    >
+                      {cityName(c.name)}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+          </svg>
+        </div>
       </div>
       <div className="map-caption">
-        <span>点击路线查看费用 · 放大后可拖动滚动条浏览</span>
+        <span>滚轮缩放 · 按住拖动 · 点击路线查看费用</span>
         <span>灰色路线可使用任意一种颜色</span>
       </div>
     </div>
@@ -2565,6 +2670,7 @@ function RailBoard({
   const [color, setColor] = useState(0);
   const [wild, setWild] = useState(0);
   const [keep, setKeep] = useState<number[]>([]);
+  const [ticketChoiceOpen, setTicketChoiceOpen] = useState(true);
   const [highlight, setHighlight] = useState<Ticket>();
   const g = room.game!,
     r = g.rail!,
@@ -2591,6 +2697,7 @@ function RailBoard({
   }, [g.turn, g.phase, g.round]);
   useEffect(() => {
     setKeep([]);
+    setTicketChoiceOpen(true);
   }, [r.pending?.map((t) => t.id).join(",")]);
   if (loadError)
     return <p role="alert">地图加载失败：{loadError}。请刷新重试。</p>;
@@ -2627,42 +2734,66 @@ function RailBoard({
     <div className="rail-board">
       <h2 className="sr-only">铁路环游游戏桌面</h2>
       {mine && g.phase === "tickets" && (
-        <section className="ticket-choice" aria-label="选择目的地任务">
-          <h3>{r.setup ? "选择你的第一段旅程" : "新的目的地，新的机会"}</h3>
-          <p>
-            从这些任务中至少保留 <strong>{r.setup ? 2 : 1}</strong>{" "}
-            张。未完成的任务会在结算时扣分。
-            {r.setup && "所有人同时选择；120 秒后自动保留列表前两张。"}
-          </p>
-          <div className="pending-tickets">
-            {r.pending?.map((t) => (
-              <TicketCard
-                key={t.id}
-                ticket={t}
-                catalog={catalog}
-                selected={keep.includes(t.id)}
-                onClick={() => {
-                  setHighlight(t);
-                  setKeep(
-                    keep.includes(t.id)
-                      ? keep.filter((x) => x !== t.id)
-                      : [...keep, t.id],
-                  );
-                }}
-              />
-            ))}
-          </div>
-          <button
-            className="primary wide"
-            disabled={busy || keep.length < (r.setup ? 2 : 1)}
-            onClick={() => void act({ type: "keep", keep })}
-          >
-            保留 {keep.length} 张目的地任务
-            <Check size={17} />
-          </button>
+        <section
+          className={`ticket-choice ${ticketChoiceOpen ? "" : "is-collapsed"}`}
+          aria-label="选择目的地任务"
+        >
+          <header>
+            <h3>
+              {ticketChoiceOpen
+                ? r.setup
+                  ? "选择你的第一段旅程"
+                  : "新的目的地，新的机会"
+                : `目的地 · 已选 ${keep.length} 张`}
+            </h3>
+            <button
+              className="subtle"
+              aria-expanded={ticketChoiceOpen}
+              aria-controls="ticket-choice-controls"
+              onClick={() => setTicketChoiceOpen(!ticketChoiceOpen)}
+            >
+              {ticketChoiceOpen ? "收起看地图" : "继续选择"}
+            </button>
+          </header>
+          {ticketChoiceOpen && (
+            <div id="ticket-choice-controls">
+              <p>
+                从这些任务中至少保留 <strong>{r.setup ? 2 : 1}</strong>{" "}
+                张。未完成的任务会在结算时扣分。
+                {r.setup && "所有人同时选择；120 秒后自动保留列表前两张。"}
+              </p>
+              <div className="pending-tickets">
+                {r.pending?.map((t) => (
+                  <TicketCard
+                    key={t.id}
+                    ticket={t}
+                    catalog={catalog}
+                    selected={keep.includes(t.id)}
+                    onClick={() => {
+                      setHighlight(t);
+                      setKeep(
+                        keep.includes(t.id)
+                          ? keep.filter((x) => x !== t.id)
+                          : [...keep, t.id],
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+              <button
+                className="primary wide"
+                disabled={busy || keep.length < (r.setup ? 2 : 1)}
+                onClick={() => void act({ type: "keep", keep })}
+              >
+                保留 {keep.length} 张目的地任务
+                <Check size={17} />
+              </button>
+            </div>
+          )}
         </section>
       )}
 
+      <HiddenDrawAnimation room={room} />
       <div className="rail-table">
         <RailMap
           catalog={catalog}
@@ -2736,7 +2867,11 @@ function RailBoard({
           </div>
           <div className="section-line ticket-heading">
             <h3>
-              你的目的地 <span>{p.tickets?.length}</span>
+              你的目的地{" "}
+              <span>
+                已完成 {p.tickets?.filter((t) => t.complete).length || 0} /{" "}
+                {p.tickets?.length || 0}
+              </span>
             </h3>
             <small>点击车票，在地图上标记起终点</small>
           </div>
@@ -2751,6 +2886,7 @@ function RailBoard({
                   setHighlight(highlight?.id === t.id ? undefined : t)
                 }
                 showResult={g.finished}
+                showProgress
               />
             ))}
           </div>

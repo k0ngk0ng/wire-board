@@ -8,6 +8,7 @@
 - `splendor/nobles.webp`：贵族，5 × 3 图集。
 - `splendor/tokens.webp`：六种筹码，6 × 1 图集。
 - `rail/map.webp`：1744 × 1125 美国地图，对应内置路线坐标。
+- `rail/wagons-{blue,red,green,yellow,black}-v1.webp`：五种玩家颜色的立体车厢，每份为 6 × 6 个角度的 960 × 960 透明图集（含阴影），缺失时使用内置棋子。
 - `rail/train-cards.webp`：九种列车牌，9 × 1 图集。
 - `rail/tickets/1.webp` 至 `30.webp`：目的地地图；中文名称和基础版分数由界面叠加。
 

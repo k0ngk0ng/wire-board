@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 )
 
 //go:embed rail_data.json
@@ -72,20 +73,27 @@ type RailPlayer struct {
 	Bonus       int      `json:"bonus"`
 	Completed   int      `json:"completed"`
 }
+type HiddenDrawEvent struct {
+	ID     uint64 `json:"id"`
+	Player int    `json:"player"`
+}
+
 type Rail struct {
-	SetupPending  [][]Ticket   `json:"setupPending,omitempty"`
-	Deck          []int        `json:"deck"`
-	Discard       []int        `json:"discard"`
-	Face          []int        `json:"face"`
-	FaceVersion   [5]uint64    `json:"faceVersion"`
-	TicketDeck    []Ticket     `json:"ticketDeck"`
-	Pending       []Ticket     `json:"pending"`
-	Players       []RailPlayer `json:"players"`
-	Owners        map[int]int  `json:"owners"`
-	Setup         bool         `json:"setup"`
-	Drawn         int          `json:"drawn"`
-	LastRemaining int          `json:"lastRemaining"`
-	Passes        int          `json:"passes"`
+	HiddenDrawID     uint64            `json:"hiddenDrawId,omitempty"`
+	HiddenDrawEvents []HiddenDrawEvent `json:"hiddenDrawEvents,omitempty"`
+	SetupPending     [][]Ticket        `json:"setupPending,omitempty"`
+	Deck             []int             `json:"deck"`
+	Discard          []int             `json:"discard"`
+	Face             []int             `json:"face"`
+	FaceVersion      [5]uint64         `json:"faceVersion"`
+	TicketDeck       []Ticket          `json:"ticketDeck"`
+	Pending          []Ticket          `json:"pending"`
+	Players          []RailPlayer      `json:"players"`
+	Owners           map[int]int       `json:"owners"`
+	Setup            bool              `json:"setup"`
+	Drawn            int               `json:"drawn"`
+	LastRemaining    int               `json:"lastRemaining"`
+	Passes           int               `json:"passes"`
 }
 
 func (s *State) initRail(n int) {
@@ -130,7 +138,7 @@ func (g *Rail) draw() (int, bool) {
 	g.Deck = g.Deck[1:]
 	return c, true
 }
-func (g *Rail) refill() {
+func (g *Rail) refill() (resets int) {
 	for attempt := 0; ; attempt++ {
 		for i, c := range g.Face {
 			if c < 0 {
@@ -158,7 +166,7 @@ func (g *Rail) refill() {
 			}
 		}
 		if wild < 3 {
-			return
+			return resets
 		}
 		for _, pile := range [][]int{g.Deck, g.Discard} {
 			for _, c := range pile {
@@ -168,8 +176,9 @@ func (g *Rail) refill() {
 			}
 		}
 		if nonWild < 3 {
-			return
+			return resets
 		} // A finite market when too few ordinary cards exist; draws remain legal.
+		resets++
 		// All slots change when the market is reset, including identical colors.
 		for i := range g.FaceVersion {
 			g.FaceVersion[i]++
@@ -198,7 +207,7 @@ func (g *Rail) refill() {
 				}
 				g.Face = append(g.Face, c)
 			}
-			return
+			return resets
 		}
 		for _, c := range g.Face {
 			if c >= 0 {
@@ -246,9 +255,10 @@ func (s *State) applyRail(a Action) error {
 				g.TicketDeck = append(g.TicketDeck, t)
 			}
 		}
+		returned := len(g.Pending) - len(a.Keep)
 		g.Pending = []Ticket{}
 		g.Passes = 0
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张目的地任务", s.Turn+1, len(a.Keep)))
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张目的地任务，放回 %d 张", s.Turn+1, len(a.Keep), returned))
 		if g.Setup {
 			s.Turn++
 			if s.Turn == len(g.Players) {
@@ -290,8 +300,21 @@ func (s *State) applyRail(a Action) error {
 		p.Hand[c]++
 		g.Drawn++
 		g.Passes = 0
-		g.refill()
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 摸取了一张列车牌", s.Turn+1))
+		if a.Slot == -1 {
+			g.HiddenDrawID++
+			g.HiddenDrawEvents = append(g.HiddenDrawEvents, HiddenDrawEvent{ID: g.HiddenDrawID, Player: s.Turn})
+			if len(g.HiddenDrawEvents) > 10 {
+				g.HiddenDrawEvents = g.HiddenDrawEvents[len(g.HiddenDrawEvents)-10:]
+			}
+			s.Log = append(s.Log, fmt.Sprintf("玩家 %d 从牌堆摸取 1 张暗牌（第 %d 次摸牌）", s.Turn+1, g.Drawn))
+		} else {
+			detail := fmt.Sprintf("第 %d 次摸牌", g.Drawn)
+			if c == 8 {
+				detail = "公开万能牌，本回合摸牌结束"
+			}
+			s.Log = append(s.Log, fmt.Sprintf("玩家 %d 拿取公开%s×1（市场第 %d 格，%s）", s.Turn+1, railCardName(c), a.Slot+1, detail))
+		}
+		s.refillRailMarket()
 		if g.Drawn == 2 || (a.Slot >= 0 && c == 8) || !g.canDrawSecond() {
 			s.railNext()
 		} else {
@@ -305,6 +328,7 @@ func (s *State) applyRail(a Action) error {
 		g.Pending = append([]Ticket{}, g.TicketDeck[:n]...)
 		g.TicketDeck = g.TicketDeck[n:]
 		s.Phase = "tickets"
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 抽取了 %d 张目的地任务，等待选择（至少保留 1 张）", s.Turn+1, n))
 	case "claim":
 		var route Route
 		for _, r := range MapData().Routes {
@@ -347,13 +371,21 @@ func (s *State) applyRail(a Action) error {
 			g.Discard = append(g.Discard, 8)
 		}
 		p.Trains -= route.Length
-		p.RouteScore += []int{0, 1, 2, 4, 7, 10, 15}[route.Length]
+		points := []int{0, 1, 2, 4, 7, 10, 15}[route.Length]
+		p.RouteScore += points
 		p.Score = p.RouteScore
 		g.Owners[route.ID] = s.Turn
 		g.Passes = 0
-		g.refill()
 		d := MapData()
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 铺设了 %s → %s", s.Turn+1, d.Cities[route.A].Name, d.Cities[route.B].Name))
+		payment := []string{}
+		if route.Length-a.Wild > 0 {
+			payment = append(payment, fmt.Sprintf("%s×%d", railCardName(a.Color), route.Length-a.Wild))
+		}
+		if a.Wild > 0 {
+			payment = append(payment, fmt.Sprintf("万能牌×%d", a.Wild))
+		}
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 铺设了 %s → %s（%d 节）；支付 %s；获得 %d 分，剩余 %d 节车厢", s.Turn+1, d.Cities[route.A].Name, d.Cities[route.B].Name, route.Length, strings.Join(payment, "、"), points, p.Trains))
+		s.refillRailMarket()
 		s.railNext()
 	case "pass":
 		if s.railHasMove() {
@@ -388,6 +420,7 @@ func (s *State) railNext() {
 		g.LastRemaining--
 	} else if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Trains <= 2 {
 		g.LastRemaining = len(g.Players)
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 剩余 %d 节车厢，触发最后一轮（每位玩家再行动一次）", s.Turn+1, g.Players[s.Turn].Trains))
 	}
 	if g.LastRemaining == 0 {
 		s.railFinish()
@@ -555,4 +588,17 @@ func (s *State) railFinish() {
 	}
 	s.Finished = true
 	s.Phase = "finished"
+}
+
+func railCardName(color int) string {
+	if color == 8 {
+		return "万能牌"
+	}
+	return [...]string{"紫色", "白色", "蓝色", "黄色", "橙色", "黑色", "红色", "绿色"}[color] + "列车牌"
+}
+
+func (s *State) refillRailMarket() {
+	if resets := s.Rail.refill(); resets > 0 {
+		s.Log = append(s.Log, fmt.Sprintf("公开市场出现至少 3 张万能牌，已重置市场（%d 次）", resets))
+	}
 }

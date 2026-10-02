@@ -44,7 +44,7 @@ export type RailPlayer = {
   ticketScore: number;
   longest: number;
   bonus: number;
-  completed: number;
+  completed?: number;
 };
 export type Game = {
   kind: string;
@@ -63,6 +63,8 @@ export type Game = {
     lastRound: boolean;
   };
   rail?: {
+    hiddenDrawId?: number;
+    hiddenDrawEvents?: { id: number; player: number }[];
     face: number[];
     faceVersion?: number[];
     players: RailPlayer[];

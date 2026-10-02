@@ -97,6 +97,23 @@ func (s *State) View(player int) map[string]any {
 			m := p.(map[string]any)
 			m["handCount"] = sum(s.Rail.Players[i].Hand)
 			m["ticketCount"] = len(s.Rail.Players[i].Tickets)
+			if !s.Finished {
+				// Progress belongs to this viewer only. Never mutate persisted scoring
+				// fields: final scoring must still count each destination exactly once.
+				delete(m, "completed")
+				if i == player {
+					tickets := append([]Ticket{}, s.Rail.Players[i].Tickets...)
+					completed := 0
+					for j := range tickets {
+						tickets[j].Complete = Connected(s.Rail.Owners, i, tickets[j].A, tickets[j].B)
+						if tickets[j].Complete {
+							completed++
+						}
+					}
+					m["tickets"] = tickets
+					m["completed"] = completed
+				}
+			}
 			if i != player {
 				delete(m, "hand")
 				if !s.Finished {
