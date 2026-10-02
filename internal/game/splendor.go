@@ -209,6 +209,23 @@ func (s *State) applySplendor(a Action) error {
 				pay[i] = min(need, p.Tokens[i])
 				pay[5] += need - pay[i]
 			}
+			if len(a.Tokens) > 0 {
+				if len(a.Tokens) != 6 {
+					return errors.New("请选择六种宝石的支付数量")
+				}
+				pay = append([]int{}, a.Tokens...)
+				goldNeeded := 0
+				for i, cost := range c.Cost {
+					need := max(0, cost-p.Bonus[i])
+					if pay[i] < 0 || pay[i] > need || pay[i] > p.Tokens[i] {
+						return errors.New("支付数量不正确，不能多付或使用未持有的宝石")
+					}
+					goldNeeded += need - pay[i]
+				}
+				if pay[5] != goldNeeded {
+					return errors.New("黄金必须恰好替代未支付的颜色宝石")
+				}
+			}
 			if pay[5] > p.Tokens[5] {
 				return errors.New("宝石不足以购买这张卡牌")
 			}
