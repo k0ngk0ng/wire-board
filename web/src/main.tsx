@@ -26,6 +26,7 @@ import {
   ChevronRight,
   BookOpen,
   ScrollText,
+  Eye,
   RotateCcw,
   Flag,
   Minus,
@@ -47,6 +48,8 @@ import type {
 import "./style.css";
 import { cityName } from "./cities";
 import { GameAudio } from "./audio";
+import { Chat } from "./chat";
+import { AnimatedSlot } from "./animated-slot";
 const AssetsContext = createContext("");
 const gemColors = [
   "#218357",
@@ -335,6 +338,7 @@ function App() {
   const [online, setOnline] = useState(false);
   const [create, setCreate] = useState("");
   const [join, setJoin] = useState<Room>();
+  const [joinMode, setJoinMode] = useState<"join" | "watch">("join");
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
   const [sound, setSound] = useState(
@@ -350,7 +354,11 @@ function App() {
     try {
       const data = await api("/state");
       if (n === seq.current) {
-        if (previousRoom.current?.status === "playing" && !data.room) {
+        if (
+          previousRoom.current?.status === "playing" &&
+          !previousRoom.current.spectating &&
+          !data.room
+        ) {
           setNotice("你已因回合超时被移出本局，可以创建或加入其他房间。");
         }
         previousRoom.current = data.room;
@@ -582,8 +590,14 @@ function App() {
             state={state}
             onCreate={setCreate}
             onJoin={(r) => {
+              setJoinMode("join");
               if (r.locked) setJoin(r);
               else void run(() => command(r, "join"));
+            }}
+            onWatch={(r) => {
+              setJoinMode("watch");
+              if (r.locked) setJoin(r);
+              else void run(() => api(`/rooms/${r.id}/watch`, {}));
             }}
             busy={busy}
           />
@@ -600,6 +614,20 @@ function App() {
                 <h1>{room.name}</h1>
               </div>
               <div className="room-tools">
+                {room.spectating && (
+                  <button
+                    className="subtle"
+                    disabled={busy}
+                    onClick={() =>
+                      void run(() =>
+                        api(`/rooms/${room.id}/watch`, { leave: true }),
+                      )
+                    }
+                  >
+                    <ArrowLeft size={16} />
+                    离开观战
+                  </button>
+                )}
                 {room.game && (
                   <button
                     className="subtle"
@@ -630,7 +658,7 @@ function App() {
                   <Copy size={16} />
                   邀请朋友
                 </button>
-                {room.status !== "playing" && (
+                {!room.spectating && room.status !== "playing" && (
                   <button
                     className="subtle"
                     disabled={busy}
@@ -640,29 +668,37 @@ function App() {
                     离开房间
                   </button>
                 )}
-                {room.status === "playing" && room.host === state.user.id && (
-                  <button
-                    className="subtle danger"
-                    disabled={busy}
-                    onClick={() => {
-                      if (
-                        confirm(
-                          "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
+                {room.status === "playing" &&
+                  !room.spectating &&
+                  room.host === state.user.id && (
+                    <button
+                      className="subtle danger"
+                      disabled={busy}
+                      onClick={() => {
+                        if (
+                          confirm(
+                            "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
+                          )
                         )
-                      )
-                        roomCommand("close");
-                    }}
-                  >
-                    结束牌桌
-                  </button>
-                )}
+                          roomCommand("close");
+                      }}
+                    >
+                      结束牌桌
+                    </button>
+                  )}
               </div>
             </div>
+            {room.spectating && (
+              <div className="spectator-notice">
+                <Eye size={16} />
+                观战中 · 仅展示公开牌面与玩家信息
+              </div>
+            )}
             {room.status === "waiting" ? (
               <Waiting
                 room={room}
                 busy={busy}
-                host={room.host === state.user.id}
+                host={!room.spectating && room.host === state.user.id}
                 command={roomCommand}
               />
             ) : room.status === "closed" ? (
@@ -670,7 +706,7 @@ function App() {
                 <Flag size={40} />
                 <h2>这张牌桌已结束</h2>
                 <p>休息一下，或者准备下一局。</p>
-                {room.host === state.user.id && (
+                {!room.spectating && room.host === state.user.id && (
                   <button
                     className="primary"
                     disabled={busy}
@@ -687,7 +723,7 @@ function App() {
                 {room.game?.finished && (
                   <Results
                     room={room}
-                    host={room.host === state.user.id}
+                    host={!room.spectating && room.host === state.user.id}
                     busy={busy}
                     command={roomCommand}
                   />
@@ -735,7 +771,7 @@ function App() {
         )}
         {join && (
           <Modal
-            title={`加入「${join.name}」`}
+            title={`${joinMode === "watch" ? "观战" : "加入"}「${join.name}」`}
             onClose={() => setJoin(undefined)}
           >
             <form
@@ -743,7 +779,14 @@ function App() {
                 e.preventDefault();
                 const f = new FormData(e.currentTarget);
                 void run(async () => {
-                  await command(join, "join", { password: f.get("password") });
+                  if (joinMode === "watch")
+                    await api(`/rooms/${join.id}/watch`, {
+                      password: f.get("password"),
+                    });
+                  else
+                    await command(join, "join", {
+                      password: f.get("password"),
+                    });
                   setJoin(undefined);
                 });
               }}
@@ -758,7 +801,7 @@ function App() {
                 />
               </label>
               <button className="primary wide" disabled={busy}>
-                加入牌桌
+                {joinMode === "watch" ? "开始观战" : "加入牌桌"}
                 <ArrowRight size={18} />
               </button>
             </form>
@@ -786,7 +829,18 @@ function App() {
             </div>
           </Modal>
         )}
-        {rules && (
+        {room && (
+          <Chat
+            key={`${state.user.id}:${room.id}`}
+            room={room}
+            userId={state.user.id}
+            send={async (text, nonce) => {
+              await api(`/rooms/${room.id}/chat`, { text, nonce });
+              await refresh();
+            }}
+          />
+        )}
+        {rules && room && (
           <Modal
             title={`${gameName(room!.kind)} · 玩法速查`}
             onClose={() => setRules(false)}
@@ -929,11 +983,13 @@ function Lobby({
   state,
   onCreate,
   onJoin,
+  onWatch,
   busy,
 }: {
   state: State;
   onCreate: (v: string) => void;
   onJoin: (r: Room) => void;
+  onWatch: (r: Room) => void;
   busy: boolean;
 }) {
   const [filter, setFilter] = useState("all");
@@ -1077,22 +1133,33 @@ function Lobby({
                 <span className={`status ${r.status}`}>
                   {statusName[r.status]}
                 </span>
-                <button
-                  className="join-button"
-                  disabled={
-                    busy ||
-                    r.status !== "waiting" ||
-                    r.seats.length >= r.capacity
-                  }
-                  onClick={() => onJoin(r)}
-                >
-                  {r.status === "waiting"
-                    ? r.seats.length >= r.capacity
-                      ? "已满员"
-                      : "加入牌桌"
-                    : statusName[r.status]}
-                  <ArrowRight size={16} />
-                </button>
+                {r.status === "playing" || r.status === "finished" ? (
+                  <button
+                    className="join-button"
+                    disabled={busy}
+                    onClick={() => onWatch(r)}
+                  >
+                    <Eye size={16} />
+                    观战{r.spectatorCount ? ` · ${r.spectatorCount}` : ""}
+                  </button>
+                ) : (
+                  <button
+                    className="join-button"
+                    disabled={
+                      busy ||
+                      r.status !== "waiting" ||
+                      r.seats.length >= r.capacity
+                    }
+                    onClick={() => onJoin(r)}
+                  >
+                    {r.status === "waiting"
+                      ? r.seats.length >= r.capacity
+                        ? "已满员"
+                        : "加入牌桌"
+                      : statusName[r.status]}
+                    <ArrowRight size={16} />
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -1296,39 +1363,45 @@ function Waiting({
             );
           })}
         </div>
-        <div className="waiting-actions">
-          {host && room.seats.length < room.capacity && (
-            <button
-              className="outline"
-              disabled={busy}
-              onClick={() => command("add_bot")}
-            >
-              添加电脑玩家
-            </button>
-          )}
-          <button
-            disabled={busy}
-            className={room.seats[room.you]?.ready ? "outline" : "primary"}
-            onClick={() => command("ready")}
-          >
-            {room.seats[room.you]?.ready ? "取消准备" : "我准备好了"}
-            <Check size={18} />
-          </button>
-          {host && (
-            <button
-              className="primary gold"
-              disabled={busy || !ready}
-              onClick={() => command("start")}
-            >
-              开始游戏
-              <ArrowRight size={18} />
-            </button>
-          )}
-        </div>
+        {!room.spectating && (
+          <>
+            <div className="waiting-actions">
+              {host && room.seats.length < room.capacity && (
+                <button
+                  className="outline"
+                  disabled={busy}
+                  onClick={() => command("add_bot")}
+                >
+                  添加电脑玩家
+                </button>
+              )}
+              <button
+                disabled={busy}
+                className={room.seats[room.you]?.ready ? "outline" : "primary"}
+                onClick={() => command("ready")}
+              >
+                {room.seats[room.you]?.ready ? "取消准备" : "我准备好了"}
+                <Check size={18} />
+              </button>
+              {host && (
+                <button
+                  className="primary gold"
+                  disabled={busy || !ready}
+                  onClick={() => command("start")}
+                >
+                  开始游戏
+                  <ArrowRight size={18} />
+                </button>
+              )}
+            </div>
+          </>
+        )}
         <p className="muted small">
-          {host
-            ? "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
-            : "准备好后，等待房主开始游戏。"}
+          {room.spectating
+            ? "等待玩家准备下一局。"
+            : host
+              ? "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
+              : "准备好后，等待房主开始游戏。"}
         </p>
       </div>
     </div>
@@ -1342,7 +1415,7 @@ function Players({ room }: { room: Room }) {
         const stats = g.splendor?.players[i] || g.rail?.players[i];
         return (
           <div
-            className={`player-panel ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${g.splendor?.players[i].eliminated || g.rail?.players[i].eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${g.splendor?.players[i].eliminated || g.rail?.players[i].eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span className="avatar" style={{ background: playerColors[i] }}>
@@ -1363,18 +1436,25 @@ function Players({ room }: { room: Room }) {
                 {p.bot && <small className="bot-badge">AI</small>}
               </strong>
               {g.splendor ? (
-                <div className="mini-resources">
+                <div
+                  className="permanent-resources"
+                  aria-label={`${p.name}的永久折扣`}
+                >
+                  <span className="permanent-label">
+                    永久
+                    <br />
+                    折扣
+                  </span>
                   {g.splendor.players[i].bonus.map((n, c) => (
-                    <span key={c} title={`${gemNames[c]}永久折扣`}>
-                      <Gemstone color={c} size={14} />
-                      {n}
+                    <span
+                      className="bonus-item"
+                      key={c}
+                      title={`${gemNames[c]}永久折扣 ${n}`}
+                    >
+                      <Gemstone color={c} size={18} />
+                      <b>{n}</b>
                     </span>
                   ))}
-                  <span title="预留卡数量">
-                    ▤{" "}
-                    {g.splendor.players[i].reserved?.length ??
-                      g.splendor.players[i].reservedCount}
-                  </span>
                 </div>
               ) : (
                 <small>
@@ -1385,17 +1465,25 @@ function Players({ room }: { room: Room }) {
               )}
               {g.splendor && (
                 <div className="mini-resources tokens-mini">
-                  <span
-                    className="token-total"
-                    title="当前持有的宝石总数，包含黄金；回合结束时最多保留 10 枚"
-                  >
-                    宝石{" "}
-                    {g.splendor.players[i].tokens.reduce(
-                      (sum, n) => sum + n,
-                      0,
-                    )}{" "}
-                    / 10
-                  </span>
+                  <div className="token-summary">
+                    <span
+                      className="token-total"
+                      title="当前持有的宝石总数，包含黄金；回合结束时最多保留 10 枚"
+                    >
+                      宝石{" "}
+                      {g.splendor.players[i].tokens.reduce(
+                        (sum, n) => sum + n,
+                        0,
+                      )}{" "}
+                      / 10
+                    </span>
+                    <span className="reserved-count">
+                      预留{" "}
+                      {g.splendor.players[i].reserved?.length ??
+                        g.splendor.players[i].reservedCount}
+                      /3
+                    </span>
+                  </div>
                   {g.splendor.players[i].tokens.map((n, c) => (
                     <span key={c} title={`${gemNames[c]}筹码`}>
                       <i style={{ background: gemColors[c] }} />
@@ -1431,7 +1519,9 @@ function Turn({
 }) {
   const g = room.game!;
   const setup = !!g.rail?.setup;
-  const mine = setup ? !g.rail?.setupReady?.[room.you] : g.turn === room.you;
+  const mine =
+    !room.spectating &&
+    (setup ? !g.rail?.setupReady?.[room.you] : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -1502,12 +1592,14 @@ function Turn({
           </div>
           {expired && !setup && (
             <p>
-              {mine
-                ? "你已超时，其他玩家可以将你移出。尚未被移出前仍可行动。"
-                : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
+              {room.spectating
+                ? "该玩家已超时，等待牌桌玩家处理。"
+                : mine
+                  ? "你已超时，其他玩家可以将你移出。尚未被移出前仍可行动。"
+                  : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
             </p>
           )}
-          {expired && !mine && !setup && (
+          {expired && !mine && !setup && !room.spectating && (
             <button
               className="timeout-kick"
               disabled={busy}
@@ -1645,13 +1737,14 @@ function DevCard({
       style={
         {
           "--card-color": gemColors[card.color],
+          "--cost-columns": Math.min(2, card.cost.filter((n) => n > 0).length),
           "--art-x": `${((card.tier - 1) * 2 + (card.id % 2)) * 20}%`,
           "--art-y": `${[3, 4, 0, 1, 2][card.color] * 20}%`,
         } as React.CSSProperties
       }
     >
       <div className="card-top">
-        <strong>{card.points || ""}</strong>
+        <strong>{card.points}</strong>
         <Gemstone color={card.color} size={31} />
       </div>
       <div className="card-art">
@@ -1729,11 +1822,19 @@ function SplendorBoard({
 }) {
   const g = room.game!,
     s = g.splendor!,
-    p = s.players[room.you],
-    mine = g.turn === room.you && !g.finished;
+    p = s.players[room.you] ?? {
+      tokens: Array(6).fill(0),
+      bonus: Array(5).fill(0),
+      reserved: [],
+      cards: [],
+      nobles: [],
+      score: 0,
+    },
+    mine = !room.spectating && g.turn === room.you && !g.finished;
   const [tokens, setTokens] = useState<number[]>(Array(6).fill(0));
   const [selected, setSelected] = useState<Card>();
   const [blindTier, setBlindTier] = useState<number>();
+  const [discardOpen, setDiscardOpen] = useState(true);
   const [collection, setCollection] = useState(false);
   const [payment, setPayment] = useState<number[]>(Array(6).fill(0));
   const selectCard = (card: Card) => {
@@ -1754,6 +1855,9 @@ function SplendorBoard({
     setSelected(undefined);
     setBlindTier(undefined);
   }, [room.version]);
+  useEffect(() => {
+    if (g.phase === "discard") setDiscardOpen(true);
+  }, [g.phase, g.turn]);
   const taking = mine && g.phase === "turn",
     discard = mine && g.phase === "discard";
   const pay = selected
@@ -1803,14 +1907,25 @@ function SplendorBoard({
               <strong>{["Ⅰ", "Ⅱ", "Ⅲ"][tier]}</strong>
               <small>{s.remaining[tier]} 张 · 盲预留</small>
             </button>
-            {s.market[tier].map((c) => (
-              <DevCard
-                key={c.id}
-                card={c}
-                selected={selected?.id === c.id}
-                onClick={() => selectCard(c)}
-              />
-            ))}
+            {Array.from({ length: 4 }, (_, index) => {
+              const c = s.market[tier][index];
+              return (
+                <AnimatedSlot key={index} identity={String(c?.id ?? "empty")}>
+                  {c ? (
+                    <DevCard
+                      card={c}
+                      selected={selected?.id === c.id}
+                      onClick={() => selectCard(c)}
+                    />
+                  ) : (
+                    <div
+                      className="dev-card card-placeholder"
+                      aria-label="发展卡牌堆已空"
+                    />
+                  )}
+                </AnimatedSlot>
+              );
+            })}
           </div>
         ))}
       </div>
@@ -1873,106 +1988,138 @@ function SplendorBoard({
           </div>
         )}
       </div>
-      <div className="personal-area">
-        <div className="section-line">
-          <h3>你的商会</h3>
-          <button className="subtle" onClick={() => setCollection(!collection)}>
-            发展卡 {p.cards.length} · 贵族 {p.nobles.length}
-            <ChevronRight size={15} />
-          </button>
-        </div>
-        <div className="personal-gems">
-          {p.tokens.map((n, i) => (
-            <div key={i}>
-              <Gemstone color={i} />
-              <strong>{n}</strong>
-              <small>{i < 5 ? `永久 −${p.bonus[i]}` : "万能支付"}</small>
+      {!room.spectating && (
+        <div className="personal-area">
+          <div className="section-line">
+            <h3>你的商会</h3>
+            <button
+              className="subtle"
+              onClick={() => setCollection(!collection)}
+            >
+              发展卡 {p.cards.length} · 贵族 {p.nobles.length}
+              <ChevronRight size={15} />
+            </button>
+          </div>
+          <div className="personal-resources">
+            <div className="personal-resource-label">
+              手持宝石 · {p.tokens.reduce((sum, n) => sum + n, 0)} / 10
             </div>
-          ))}
-        </div>
-        <div className="reserved">
-          <span>
-            预留卡 <b>{p.reserved?.length || 0}/3</b>
-          </span>
-          {p.reserved?.length ? (
-            p.reserved.map((c) => (
-              <DevCard
-                key={c.id}
-                card={c}
-                selected={selected?.id === c.id}
-                onClick={() => selectCard(c)}
-              />
-            ))
-          ) : (
-            <p>预留心仪的发展卡，也能获得一枚黄金。</p>
+            <div className="personal-gems">
+              {p.tokens.map((n, i) => (
+                <div key={i} title={`${gemNames[i]}筹码 ${n}`}>
+                  <Gemstone color={i} />
+                  <strong>{n}</strong>
+                </div>
+              ))}
+            </div>
+            <div className="personal-permanent" aria-label="你的永久折扣">
+              <span>永久折扣</span>
+              {p.bonus.map((n, i) => (
+                <div key={i} title={`${gemNames[i]}永久折扣 ${n}`}>
+                  <Gemstone color={i} size={22} />
+                  <b>{n}</b>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="reserved">
+            <span>
+              预留卡 <b>{p.reserved?.length || 0}/3</b>
+            </span>
+            {p.reserved?.length ? (
+              p.reserved.map((c) => (
+                <DevCard
+                  key={c.id}
+                  card={c}
+                  selected={selected?.id === c.id}
+                  onClick={() => selectCard(c)}
+                />
+              ))
+            ) : (
+              <p>预留心仪的发展卡，也能获得一枚黄金。</p>
+            )}
+          </div>
+          {collection && (
+            <div className="collection">
+              {p.cards.map((c) => (
+                <DevCard key={c.id} card={c} />
+              ))}
+              {p.nobles.map((n) => (
+                <NobleCard key={n.id} noble={n} eligible onClick={() => {}} />
+              ))}
+            </div>
           )}
         </div>
-        {collection && (
-          <div className="collection">
-            {p.cards.map((c) => (
-              <DevCard key={c.id} card={c} />
-            ))}
-            {p.nobles.map((n) => (
-              <NobleCard key={n.id} noble={n} eligible onClick={() => {}} />
-            ))}
-          </div>
-        )}
-      </div>
+      )}
       {mine && g.phase === "noble" && (
         <div className="action-prompt">
           多位贵族青睐你的商会，请点击上方符合条件的一位。
         </div>
       )}
       {discard && (
-        <Modal
-          dismissible={false}
-          title={`请归还 ${p.tokens.reduce((a, b) => a + b, 0) - 10} 枚宝石`}
-          onClose={() => {}}
+        <section
+          className={`discard-panel ${discardOpen ? "" : "is-collapsed"}`}
+          aria-label="归还宝石"
         >
-          <p>回合结束时最多持有 10 枚，包括黄金。</p>
-          <div className="discard-list">
-            {p.tokens.map((n, i) => (
-              <div key={i}>
-                <Gemstone color={i} />
-                <span>
-                  {gemNames[i]} · 持有 {n}
-                </span>
-                <button
-                  className="icon-button"
-                  aria-label={`减少归还${gemNames[i]}`}
-                  disabled={tokens[i] === 0}
-                  onClick={() =>
-                    setTokens(tokens.map((v, c) => (c === i ? v - 1 : v)))
-                  }
-                >
-                  <Minus size={15} />
-                </button>
-                <b>{tokens[i]}</b>
-                <button
-                  className="icon-button"
-                  aria-label={`增加归还${gemNames[i]}`}
-                  disabled={tokens[i] >= n}
-                  onClick={() =>
-                    setTokens(tokens.map((v, c) => (c === i ? v + 1 : v)))
-                  }
-                >
-                  <Plus size={15} />
-                </button>
+          <header>
+            <h3>请归还 {p.tokens.reduce((a, b) => a + b, 0) - 10} 枚宝石</h3>
+            <button
+              className="subtle"
+              aria-expanded={discardOpen}
+              aria-controls="discard-controls"
+              onClick={() => setDiscardOpen(!discardOpen)}
+            >
+              {discardOpen ? "查看牌桌" : "继续归还"}
+            </button>
+          </header>
+          {discardOpen && (
+            <div id="discard-controls">
+              <p>回合结束时最多持有 10 枚，包括黄金。</p>
+              <div className="discard-list">
+                {p.tokens.map((n, i) => (
+                  <div key={i}>
+                    <Gemstone color={i} />
+                    <span>
+                      {gemNames[i]} · 持有 {n}
+                    </span>
+                    <button
+                      className="icon-button"
+                      aria-label={`减少归还${gemNames[i]}`}
+                      disabled={tokens[i] === 0}
+                      onClick={() =>
+                        setTokens(tokens.map((v, c) => (c === i ? v - 1 : v)))
+                      }
+                    >
+                      <Minus size={15} />
+                    </button>
+                    <b>{tokens[i]}</b>
+                    <button
+                      className="icon-button"
+                      aria-label={`增加归还${gemNames[i]}`}
+                      disabled={tokens[i] >= n}
+                      onClick={() =>
+                        setTokens(tokens.map((v, c) => (c === i ? v + 1 : v)))
+                      }
+                    >
+                      <Plus size={15} />
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <button
-            className="primary wide"
-            disabled={
-              busy ||
-              tokens.reduce((a, b) => a + b, 0) !==
-                p.tokens.reduce((a, b) => a + b, 0) - 10
-            }
-            onClick={() => void act({ type: "discard", tokens })}
-          >
-            归还所选宝石
-          </button>
-        </Modal>
+              <button
+                className="primary wide"
+                disabled={
+                  busy ||
+                  tokens.reduce((a, b) => a + b, 0) !==
+                    p.tokens.reduce((a, b) => a + b, 0) - 10
+                }
+                onClick={() => void act({ type: "discard", tokens })}
+              >
+                归还所选宝石
+              </button>
+            </div>
+          )}
+        </section>
       )}
       {blindTier !== undefined && taking && (
         <Modal
@@ -2018,14 +2165,18 @@ function SplendorBoard({
             <DevCard card={selected} />
             <div>
               <p>永久提供 1 枚{gemNames[selected.color]}折扣</p>
-              <small>扣除永久折扣后的费用</small>
+              <small>
+                {room.spectating ? "购买所需宝石" : "扣除永久折扣后的费用"}
+              </small>
               <Cost cost={pay} />
-              <p className="muted small">
-                {gold ? `需要使用 ${gold} 枚黄金补足` : "无需使用黄金"}
-              </p>
+              {!room.spectating && (
+                <p className="muted small">
+                  {gold ? `需要使用 ${gold} 枚黄金补足` : "无需使用黄金"}
+                </p>
+              )}
             </div>
           </div>
-          {pay.some((n) => n > 0) && (
+          {!room.spectating && pay.some((n) => n > 0) && (
             <div className="payment-grid">
               {pay.map(
                 (need, i) =>
@@ -2063,26 +2214,30 @@ function SplendorBoard({
               </p>
             </div>
           )}
-          <div className="form-grid">
-            <button
-              className="primary"
-              disabled={!taking || busy || !affordable}
-              onClick={() =>
-                void act({ type: "buy", card: selected.id, tokens: payment })
-              }
-            >
-              {affordable ? "购买卡牌" : "宝石不足"}
-            </button>
-            {!reserved && (
+          {!room.spectating && (
+            <div className="form-grid">
               <button
-                className="outline"
-                disabled={!taking || busy || p.reserved!.length >= 3}
-                onClick={() => void act({ type: "reserve", card: selected.id })}
+                className="primary"
+                disabled={!taking || busy || !affordable}
+                onClick={() =>
+                  void act({ type: "buy", card: selected.id, tokens: payment })
+                }
               >
-                预留{s.bank[5] > 0 ? " · 黄金 +1" : ""}
+                {affordable ? "购买卡牌" : "宝石不足"}
               </button>
-            )}
-          </div>
+              {!reserved && (
+                <button
+                  className="outline"
+                  disabled={!taking || busy || p.reserved!.length >= 3}
+                  onClick={() =>
+                    void act({ type: "reserve", card: selected.id })
+                  }
+                >
+                  预留{s.bank[5] > 0 ? " · 黄金 +1" : ""}
+                </button>
+              )}
+            </div>
+          )}
         </Modal>
       )}
       {taking && (
@@ -2403,8 +2558,15 @@ function RailBoard({
   const [highlight, setHighlight] = useState<Ticket>();
   const g = room.game!,
     r = g.rail!,
-    p = r.players[room.you],
+    p = r.players[room.you] ?? {
+      hand: Array(9).fill(0),
+      handCount: 0,
+      tickets: [],
+      ticketCount: 0,
+      trains: 0,
+    },
     mine =
+      !room.spectating &&
       (r.setup ? !r.setupReady?.[room.you] : g.turn === room.you) &&
       !g.finished,
     turn = mine && !r.setup && g.phase === "turn",
@@ -2518,21 +2680,25 @@ function RailBoard({
               <strong>摸一张暗牌</strong>
               <small>可摸 {r.remaining} 张</small>
             </button>
-            {r.face.map((c, i) =>
-              c < 0 ? (
-                <div className="train-card empty" key={i}>
-                  牌堆已空
-                </div>
-              ) : (
-                <TrainCard
-                  key={i}
-                  color={c}
-                  disabled={!drawing || busy || (g.phase === "draw" && c === 8)}
-                  onClick={() => void act({ type: "draw", slot: i })}
-                  label={`拿取公开${trainNames[c]}列车牌，第 ${i + 1} 张`}
-                />
-              ),
-            )}
+            {r.face.map((c, i) => (
+              <AnimatedSlot
+                key={i}
+                identity={`${c}:${r.faceVersion?.[i] ?? 0}`}
+              >
+                {c < 0 ? (
+                  <div className="train-card empty">牌堆已空</div>
+                ) : (
+                  <TrainCard
+                    color={c}
+                    disabled={
+                      !drawing || busy || (g.phase === "draw" && c === 8)
+                    }
+                    onClick={() => void act({ type: "draw", slot: i })}
+                    label={`拿取公开${trainNames[c]}列车牌，第 ${i + 1} 张`}
+                  />
+                )}
+              </AnimatedSlot>
+            ))}
             <button
               className="ticket-deck"
               disabled={!turn || busy || r.ticketsRemaining === 0}
@@ -2545,39 +2711,41 @@ function RailBoard({
           </div>
         </div>
       </div>
-      <div className="personal-area rail-personal">
-        <div className="section-line">
-          <h3>
-            你的列车手牌 <span>{p.handCount}</span>
-          </h3>
-          <span className="tag">剩余车厢 {p.trains} / 45</span>
+      {!room.spectating && (
+        <div className="personal-area rail-personal">
+          <div className="section-line">
+            <h3>
+              你的列车手牌 <span>{p.handCount}</span>
+            </h3>
+            <span className="tag">剩余车厢 {p.trains} / 45</span>
+          </div>
+          <div className="train-hand">
+            {p.hand!.map((n, c) => (
+              <TrainCard key={c} color={c} count={n} disabled={n === 0} />
+            ))}
+          </div>
+          <div className="section-line ticket-heading">
+            <h3>
+              你的目的地 <span>{p.tickets?.length}</span>
+            </h3>
+            <small>点击车票，在地图上标记起终点</small>
+          </div>
+          <div className="tickets">
+            {p.tickets?.map((t) => (
+              <TicketCard
+                key={t.id}
+                ticket={t}
+                catalog={catalog}
+                selected={highlight?.id === t.id}
+                onClick={() =>
+                  setHighlight(highlight?.id === t.id ? undefined : t)
+                }
+                showResult={g.finished}
+              />
+            ))}
+          </div>
         </div>
-        <div className="train-hand">
-          {p.hand!.map((n, c) => (
-            <TrainCard key={c} color={c} count={n} disabled={n === 0} />
-          ))}
-        </div>
-        <div className="section-line ticket-heading">
-          <h3>
-            你的目的地 <span>{p.tickets?.length}</span>
-          </h3>
-          <small>点击车票，在地图上标记起终点</small>
-        </div>
-        <div className="tickets">
-          {p.tickets?.map((t) => (
-            <TicketCard
-              key={t.id}
-              ticket={t}
-              catalog={catalog}
-              selected={highlight?.id === t.id}
-              onClick={() =>
-                setHighlight(highlight?.id === t.id ? undefined : t)
-              }
-              showResult={g.finished}
-            />
-          ))}
-        </div>
-      </div>
+      )}
       {g.finished && (
         <div className="personal-area">
           <h3>所有玩家的目的地结算</h3>
@@ -2621,6 +2789,14 @@ function RailBoard({
             <p>
               这条双线目前不可用。2–3
               人局只能使用其中一条，同一玩家也不能同时占领双线。
+            </p>
+          ) : room.spectating ? (
+            <p>
+              这条路线尚未铺设，需要 {selected.length} 张
+              {selected.color >= 0
+                ? trainNames[selected.color]
+                : "同一种颜色的"}
+              列车牌，可使用万能牌替代。
             </p>
           ) : (
             <>
