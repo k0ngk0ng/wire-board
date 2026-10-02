@@ -5016,19 +5016,6 @@ label small {
     0 0 0 5px #f8d66b55,
     0 3px 9px #88622335;
 }
-.affordable-label {
-  position: absolute;
-  z-index: 4;
-  top: 40%;
-  right: 3px;
-  padding: 2px 5px;
-  border-radius: 4px;
-  background: #ffe69a;
-  color: #634614;
-  font-size: 10px;
-  font-weight: 750;
-  pointer-events: none;
-}
 .map-scroll .map-route {
   cursor: pointer;
 }

@@ -1783,7 +1783,6 @@ function DevCard({
         } as React.CSSProperties
       }
     >
-      {affordable && <span className="affordable-label">可购买</span>}
       <div className="card-top">
         <strong>{card.points}</strong>
         <Gemstone color={card.color} size={31} />
