@@ -10,7 +10,79 @@ board.example.com {
 
 设置 `PUBLIC_ORIGIN=https://board.example.com`、`COOKIE_SECURE=true`。Caddy 默认支持 WebSocket。域名 DNS 指向服务器，开放 80/443 端口。
 
-## Nginx（已有证书）
+## Nginx + Docker + Certbot
+
+服务器需要 Docker Compose v2+、Nginx、Certbot 和 `flock`。以下域名、端口是示例；实际值只写入服务器配置，不写入源码。应用部署目录可使用 `/opt/wire-board`。
+
+1. 将 `compose.yaml`、`scripts/update.sh`（安装为 `update.sh`）、`.env.example` 放入部署目录；复制 `.env.example` 为 `.env` 并设为 `0600`，配置随机邀请码、实际 `PUBLIC_ORIGIN`、`COOKIE_SECURE=true`、`BIND_ADDRESS=127.0.0.1` 和空闲的 `PORT`。
+2. 执行 `chmod +x update.sh && sudo ./update.sh`。只下载 GitHub 发布的镜像，不在服务器构建。
+3. 域名解析到服务器，开放 80/443。创建 `/opt/wire-board/acme/.well-known/acme-challenge`，确保 Nginx 可以遍历父目录。先配置仅监听 80 的 server 块：
+
+```nginx
+server {
+    listen 80;
+    server_name board.example.com;
+    location ^~ /.well-known/acme-challenge/ {
+        root /opt/wire-board/acme;
+        try_files $uri =404;
+    }
+    location / { return 503; }
+}
+```
+
+执行 `nginx -t && systemctl reload nginx`，确认公网能读取 challenge 目录的测试文件，再申请证书（将域名和联系邮箱替换为服务器实际配置）：
+
+```sh
+certbot certonly --webroot -w /opt/wire-board/acme \
+  -d board.example.com --non-interactive --agree-tos --email admin@example.com
+```
+
+4. 证书签发后，将配置替换为：
+
+```nginx
+map $http_upgrade $wire_board_connection {
+    default upgrade;
+    '' close;
+}
+server {
+    listen 80;
+    server_name board.example.com;
+    location ^~ /.well-known/acme-challenge/ {
+        root /opt/wire-board/acme;
+        try_files $uri =404;
+    }
+    location / { return 301 https://$host$request_uri; }
+}
+server {
+    listen 443 ssl;
+    server_name board.example.com;
+    ssl_certificate /etc/letsencrypt/live/board.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/board.example.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $wire_board_connection;
+        proxy_read_timeout 90s;
+    }
+}
+```
+
+执行 `nginx -t && systemctl reload nginx`。创建专属续期钩子 `/etc/letsencrypt/renewal-hooks/deploy/wire-board-nginx`，并赋予执行权限：
+
+```sh
+#!/bin/sh
+set -eu
+[ "${RENEWED_LINEAGE:-}" = /etc/letsencrypt/live/board.example.com ] || exit 0
+/usr/sbin/nginx -t
+/bin/systemctl reload nginx
+```
+
+启用 `systemctl enable --now certbot.timer`，运行 `certbot renew --cert-name board.example.com --dry-run` 验证续期。实际签发后钩子会重载 Nginx 使新证书生效；旧版 Certbot 的 dry-run 不执行 deploy hook，需要单独验证钩子。
+
+## Nginx（已有 HTTPS 站点）
 
 在已有 HTTPS server 块中添加：
 
@@ -76,7 +148,11 @@ WantedBy=multi-user.target
 
 ## 更新和回滚
 
-- 容器：`docker compose pull && docker compose up -d`。可以把镜像标签固定为 `v1.0.0` 或 Actions 输出的 `sha-...` 标签。
+- 容器：进入部署目录运行 `sudo ./update.sh`；可传版本标签，如 `sudo ./update.sh v1.0.2`。每次先拉取 GHCR 镜像，再停止旧服务并将整个数据卷备份到私有的 `backups/`，随后按不可变 digest 启动，等待健康检查。重复运行也会执行备份与重启，会短暂断线。
+- 脚本固定 Compose 项目名 `wire-board`。既有手动部署若使用其他项目名，应先安排数据迁移，不要直接用脚本创建第二套服务。
+- 成功的镜像 digest 保存到 `.image.env`；手动启动时使用 `docker compose -p wire-board --env-file .env --env-file .image.env up -d --no-build`，避免绕过版本固定。
+- 拉取失败不停止现有服务；备份或新容器启动失败会尝试重启旧镜像。数据库不会自动回退，以免丢失新写入。若跨版本出现不兼容迁移，应停服并从备份手动恢复。备份包含敏感数据，保存在服务器上，不自动删除，需自行管理保留周期和异机备份。
+- 更新脚本不会改写 `.env`、Nginx 或证书配置，也不会自动更新自身。升级部署工具时，从所选 GitHub Release 取出 `update.sh` 和 `compose.yaml` 后替换。
 - 二进制：先备份，停止进程，替换二进制，重新启动。
 - 当前版本只在启动时创建缺失表，不执行破坏性迁移。
 - Actions 的 `verify` 工作执行规则测试、竞态检查、前端构建、Linux 二进制构建和真实 Linux 启动检查；通过后才发布容器。
@@ -87,5 +163,5 @@ WantedBy=multi-user.target
 - **登录后反复回到登录页**：HTTP 页面不能设置 secure cookie；内网 HTTP 设 `COOKIE_SECURE=false`，HTTPS 设 `true`。
 - **请求来源不匹配**：`PUBLIC_ORIGIN` 必须与浏览器地址的协议、域名和端口一致，不要加末尾斜杠；代理需要保留 Host。
 - **掉线重连中**：检查代理的 WebSocket Upgrade 设置。页面有定期同步兜底，已提交进度保留。
-- **无法拉取 GHCR**：私有仓库镜像需要有权限的 GitHub 账号和 `read:packages` 令牌。也可使用无需镜像仓库认证的本地二进制部署。
+- **无法拉取 GHCR**：本项目镜像公开，可匿名拉取。若 fork 使用私有镜像，需要有权限的 GitHub 账号和 `read:packages` 令牌；源码仓库和镜像的可见性是独立设置。
 - **忘记账号密码**：当前无邮箱找回；管理员应保留可用账号，或用邀请码注册新账号。不要直接分享数据库。
