@@ -2001,19 +2001,22 @@ function SplendorBoard({
             </button>
           </div>
           <div className="personal-resources">
-            <div className="personal-resource-label">
-              手持宝石 · {p.tokens.reduce((sum, n) => sum + n, 0)} / 10
-            </div>
-            <div className="personal-gems">
+            <div className="personal-gems personal-resource-row">
+              <span className="personal-resource-label">
+                手持宝石 · {p.tokens.reduce((sum, n) => sum + n, 0)} / 10
+              </span>
               {p.tokens.map((n, i) => (
                 <div key={i} title={`${gemNames[i]}筹码 ${n}`}>
-                  <Gemstone color={i} />
+                  <Gemstone color={i} size={22} />
                   <strong>{n}</strong>
                 </div>
               ))}
             </div>
-            <div className="personal-permanent" aria-label="你的永久折扣">
-              <span>永久折扣</span>
+            <div
+              className="personal-permanent personal-resource-row"
+              aria-label="你的永久折扣"
+            >
+              <span className="personal-resource-label">永久折扣</span>
               {p.bonus.map((n, i) => (
                 <div key={i} title={`${gemNames[i]}永久折扣 ${n}`}>
                   <Gemstone color={i} size={22} />
