@@ -124,3 +124,53 @@ func TestRailLegacySetupMigrationAndFinalRoundElimination(t *testing.T) {
 		}
 	}
 }
+
+func TestRailPublicSlotVersionsTrackSameColorAndReset(t *testing.T) {
+	s := mustGame(t, "rail", 2)
+	s.AutoChooseRailSetup()
+	g := s.Rail
+	g.Face = []int{0, 1, 2, 3, 4}
+	g.Deck = []int{1, 6, 7}
+	g.Discard = nil
+	before := g.FaceVersion
+	if err := s.Apply(0, Action{Type: "draw", Slot: 1}); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(g.Face, []int{0, 1, 2, 3, 4}) {
+		t.Fatal("unexpected color replacement")
+	}
+	for i := range g.FaceVersion {
+		if i == 1 && g.FaceVersion[i] == before[i] {
+			t.Fatal("same-color replacement not observable")
+		}
+		if i != 1 && g.FaceVersion[i] != before[i] {
+			t.Fatal("untouched slot changed")
+		}
+	}
+	before = g.FaceVersion
+	if err := s.Apply(0, Action{Type: "draw", Slot: -1}); err != nil {
+		t.Fatal(err)
+	}
+	if g.FaceVersion != before {
+		t.Fatal("blind draw changed market versions")
+	}
+	g.Face = []int{8, 8, 8, 0, 1}
+	g.Deck = []int{2, 3, 4, 5}
+	g.Discard = nil
+	before = g.FaceVersion
+	g.refill()
+	for i := range g.FaceVersion {
+		if g.FaceVersion[i] == before[i] {
+			t.Fatal("reset omitted slot", i)
+		}
+	}
+	// Loading an old snapshot with no versions remains valid and starts tracking changes.
+	g.FaceVersion = [5]uint64{}
+	g.Face = []int{0, -1, 2, 3, 4}
+	g.Deck = []int{1}
+	g.Discard = nil
+	g.refill()
+	if g.FaceVersion[1] == 0 {
+		t.Fatal("legacy snapshot did not track refill")
+	}
+}

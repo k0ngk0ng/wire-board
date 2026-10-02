@@ -1,5 +1,12 @@
 export type User = { id: string; name: string };
 export type Seat = User & { ready: boolean; left: boolean; bot?: boolean };
+export type ChatMessage = {
+  spectator?: boolean;
+  id: string;
+  sender: User;
+  text: string;
+  sentAt: number;
+};
 export type Card = {
   id: number;
   tier: number;
@@ -57,6 +64,7 @@ export type Game = {
   };
   rail?: {
     face: number[];
+    faceVersion?: number[];
     players: RailPlayer[];
     owners: Record<string, number>;
     pending?: Ticket[];
@@ -69,6 +77,9 @@ export type Game = {
   };
 };
 export type Room = {
+  spectating?: boolean;
+  spectatorCount?: number;
+  chat?: ChatMessage[] | null;
   turnDeadline?: number;
   id: string;
   name: string;

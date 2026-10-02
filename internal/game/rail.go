@@ -77,6 +77,7 @@ type Rail struct {
 	Deck          []int        `json:"deck"`
 	Discard       []int        `json:"discard"`
 	Face          []int        `json:"face"`
+	FaceVersion   [5]uint64    `json:"faceVersion"`
 	TicketDeck    []Ticket     `json:"ticketDeck"`
 	Pending       []Ticket     `json:"pending"`
 	Players       []RailPlayer `json:"players"`
@@ -135,6 +136,7 @@ func (g *Rail) refill() {
 			if c < 0 {
 				if replacement, ok := g.draw(); ok {
 					g.Face[i] = replacement
+					g.FaceVersion[i]++
 				}
 			}
 		}
@@ -143,6 +145,7 @@ func (g *Rail) refill() {
 			if !ok {
 				break
 			}
+			g.FaceVersion[len(g.Face)]++
 			g.Face = append(g.Face, c)
 		}
 		wild := 0
@@ -167,6 +170,10 @@ func (g *Rail) refill() {
 		if nonWild < 3 {
 			return
 		} // A finite market when too few ordinary cards exist; draws remain legal.
+		// All slots change when the market is reset, including identical colors.
+		for i := range g.FaceVersion {
+			g.FaceVersion[i]++
+		}
 		if attempt >= 100 {
 			pool := append(append(append([]int{}, g.Face...), g.Deck...), g.Discard...)
 			shuffle(pool)
@@ -278,6 +285,7 @@ func (s *State) applyRail(a Action) error {
 				return errors.New("第二张不能拿公开的万能列车牌")
 			}
 			g.Face[a.Slot] = -1
+			g.FaceVersion[a.Slot]++
 		}
 		p.Hand[c]++
 		g.Drawn++

@@ -43,20 +43,22 @@ type Seat struct {
 	Left  bool `json:"left"`
 }
 type Room struct {
-	BotAt        int64       `json:"botAt,omitempty"`
-	SetupVersion int         `json:"setupVersion,omitempty"`
-	TurnDeadline int64       `json:"turnDeadline,omitempty"`
-	ID           string      `json:"id"`
-	Name         string      `json:"name"`
-	Kind         string      `json:"kind"`
-	Host         string      `json:"host"`
-	Capacity     int         `json:"capacity"`
-	Seats        []Seat      `json:"seats"`
-	Version      int         `json:"version"`
-	Status       string      `json:"status"`
-	Password     string      `json:"password,omitempty"`
-	Game         *game.State `json:"game,omitempty"`
-	Updated      int64       `json:"updated"`
+	Spectators   []User        `json:"spectators,omitempty"`
+	Chat         []ChatMessage `json:"chat,omitempty"`
+	BotAt        int64         `json:"botAt,omitempty"`
+	SetupVersion int           `json:"setupVersion,omitempty"`
+	TurnDeadline int64         `json:"turnDeadline,omitempty"`
+	ID           string        `json:"id"`
+	Name         string        `json:"name"`
+	Kind         string        `json:"kind"`
+	Host         string        `json:"host"`
+	Capacity     int           `json:"capacity"`
+	Seats        []Seat        `json:"seats"`
+	Version      int           `json:"version"`
+	Status       string        `json:"status"`
+	Password     string        `json:"password,omitempty"`
+	Game         *game.State   `json:"game,omitempty"`
+	Updated      int64         `json:"updated"`
 }
 
 const turnLimit = 120 * time.Second
@@ -224,6 +226,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/catalog", func(w http.ResponseWriter, r *http.Request) { respond(w, 200, game.MapData()) })
 	mux.HandleFunc("POST /api/rooms", s.create)
 	mux.HandleFunc("POST /api/rooms/{id}", s.command)
+	mux.HandleFunc("POST /api/rooms/{id}/chat", s.chat)
+	mux.HandleFunc("POST /api/rooms/{id}/watch", s.watch)
 	mux.HandleFunc("GET /api/ws", s.socket)
 	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) { fail(w, 404, "接口不存在") })
 	mux.Handle("/", http.FileServerFS(s.files))
@@ -404,7 +408,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "locked": r.Password != "", "version": r.Version, "updated": r.Updated}
+	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 }
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -418,10 +422,16 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 		rooms = append(rooms, summary(room))
 	}
 	out := map[string]any{"user": u, "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL}
-	if room := s.current(u.ID); room != nil {
+	room := s.current(u.ID)
+	if room == nil {
+		room = s.watching(u.ID)
+	}
+	if room != nil {
 		v := summary(room)
 		v["you"] = seatIndex(room, u.ID)
+		v["spectating"] = seatIndex(room, u.ID) < 0
 		v["turnDeadline"] = room.TurnDeadline
+		v["chat"] = room.Chat
 		if room.Game != nil {
 			v["game"] = room.Game.View(seatIndex(room, u.ID))
 		}
@@ -444,7 +454,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	if s.current(u.ID) != nil {
+	if s.current(u.ID) != nil || s.watching(u.ID) != nil {
 		fail(w, 409, "请先离开当前房间")
 		return
 	}
@@ -529,6 +539,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	var next Room
 	_ = json.Unmarshal(b, &next)
 	idx := seatIndex(&next, u.ID)
+	if idx < 0 && req.Type != "join" {
+		fail(w, 400, "只有牌桌玩家可以操作游戏")
+		return
+	}
 	now := time.Now()
 	var err error
 	switch req.Type {
@@ -536,7 +550,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if idx >= 0 {
 			break
 		}
-		if s.current(u.ID) != nil {
+		if s.current(u.ID) != nil || s.watching(u.ID) != nil {
 			err = errors.New("请先离开当前房间")
 			break
 		}
