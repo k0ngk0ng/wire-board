@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
@@ -38,6 +44,9 @@ import type {
   Act,
 } from "./types";
 import "./style.css";
+import { cityName } from "./cities";
+import { GameAudio } from "./audio";
+const AssetsContext = createContext("");
 const gemColors = [
   "#218357",
   "#f7f2dd",
@@ -332,15 +341,24 @@ function App() {
   const [notice, setNotice] = useState("");
   const seq = useRef(0);
   const previousTurn = useRef("");
-  const audio = useRef<AudioContext | null>(null);
+  const previousRoom = useRef<Room | undefined>(undefined);
+  const audio = useRef<GameAudio>(new GameAudio());
   const refresh = async () => {
     const n = ++seq.current;
     try {
       const data = await api("/state");
-      if (n === seq.current) setState(data);
+      if (n === seq.current) {
+        if (previousRoom.current?.status === "playing" && !data.room) {
+          setNotice("你已因回合超时被移出本局，可以创建或加入其他房间。");
+        }
+        previousRoom.current = data.room;
+        setState({ ...data, receivedAt: performance.now() });
+      }
     } catch (e) {
-      if ((e as { status: number }).status === 401) setState(undefined);
-      else setError((e as Error).message);
+      if ((e as { status: number }).status === 401) {
+        previousRoom.current = undefined;
+        setState(undefined);
+      } else setError((e as Error).message);
     } finally {
       setLoaded(true);
     }
@@ -378,29 +396,18 @@ function App() {
     };
   }, [state?.user.id]);
   useEffect(() => {
-    if (!state?.room?.game) return;
+    if (!state?.room?.game) {
+      previousTurn.current = "";
+      return;
+    }
     const r = state.room;
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}`;
-    if (
-      key !== previousTurn.current &&
-      r.game!.turn === r.you &&
-      previousTurn.current &&
-      sound &&
-      audio.current
-    ) {
-      const ctx = audio.current;
-      void ctx.resume();
-      const o = ctx.createOscillator(),
-        g = ctx.createGain();
-      o.type = "sine";
-      o.frequency.setValueAtTime(660, ctx.currentTime);
-      o.frequency.setValueAtTime(880, ctx.currentTime + 0.13);
-      g.gain.setValueAtTime(0.07, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-      o.connect(g);
-      g.connect(ctx.destination);
-      o.start();
-      o.stop(ctx.currentTime + 0.35);
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}`;
+    if (key !== previousTurn.current && sound) {
+      if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
+        void audio.current.play("finish");
+      } else if (r.status === "playing" && r.game!.turn === r.you) {
+        void audio.current.play("turn");
+      }
     }
     previousTurn.current = key;
   }, [state?.room?.version, sound]);
@@ -440,13 +447,34 @@ function App() {
   };
   const act: Act = async (action) => {
     if (!state?.room) return;
-    await run(() => command(state.room!, "action", { action }));
+    await run(async () => {
+      await command(state.room!, "action", { action });
+      if (sound)
+        void audio.current.play(
+          action.type === "take"
+            ? "take"
+            : action.type === "buy"
+              ? "buy"
+              : action.type === "reserve"
+                ? "reserve"
+                : "move",
+        );
+    });
   };
-  const roomCommand = (type: string) =>
-    void run(() => command(state!.room!, type));
+  const roomCommand = (type: string, extra: Record<string, unknown> = {}) =>
+    void run(() => command(state!.room!, type, extra));
   const enableAudio = () => {
-    if (!audio.current) audio.current = new AudioContext();
-    void audio.current.resume();
+    void audio.current.unlock();
+  };
+  const previewAudio = async () => {
+    setSound(true);
+    localStorage.setItem("wb_sound", "on");
+    const played = await audio.current.play("preview");
+    setNotice(
+      played
+        ? "已播放试听音效。如未听到，请检查设备音量和浏览器标签页是否静音。"
+        : "浏览器未能播放音效，请检查站点声音权限后再次试听。",
+    );
   };
   if (!loaded)
     return (
@@ -460,268 +488,303 @@ function App() {
       <Auth
         busy={busy}
         error={error}
-        submit={(body, register) =>
-          void run(() => api(register ? "/register" : "/login", body))
-        }
+        submit={(body, register) => {
+          if (sound) enableAudio();
+          void run(() => api(register ? "/register" : "/login", body));
+        }}
       />
     );
   const room = state.room;
   return (
-    <div
-      onPointerDown={() => {
-        if (sound) enableAudio();
-      }}
-    >
-      <header className="topbar">
-        <Logo />
-        <nav>
-          <span className="nav-active">{room ? "游戏牌桌" : "桌游大厅"}</span>
-          <span className="nav-caption">让相聚，多一局。</span>
-        </nav>
-        <div className="header-right">
-          <span
-            className={`connection ${online ? "" : "offline"}`}
-            title={online ? "实时连接正常" : "正在重连，座位与进度已保留"}
-          >
-            {online ? <Wifi size={15} /> : <WifiOff size={15} />}
-            <span>{online ? "已连接" : "重连中"}</span>
-          </span>
-          <button
-            className="icon-button"
-            aria-label={sound ? "关闭音效" : "开启音效"}
-            onClick={() => {
-              setSound(!sound);
-              localStorage.setItem("wb_sound", sound ? "off" : "on");
-              if (!sound) enableAudio();
+    <AssetsContext.Provider value={state.assetsBaseURL || ""}>
+      <div
+        className={state.assetsBaseURL ? "with-artwork" : ""}
+        style={
+          state.assetsBaseURL
+            ? ({
+                "--splendor-cards": `url("${state.assetsBaseURL}/splendor/cards.webp")`,
+                "--splendor-nobles": `url("${state.assetsBaseURL}/splendor/nobles.webp")`,
+                "--splendor-tokens": `url("${state.assetsBaseURL}/splendor/tokens.webp")`,
+                "--rail-cards": `url("${state.assetsBaseURL}/rail/train-cards.webp")`,
+              } as React.CSSProperties)
+            : undefined
+        }
+        onPointerDown={() => {
+          if (sound) enableAudio();
+        }}
+        onKeyDown={() => {
+          if (sound) enableAudio();
+        }}
+      >
+        <header className="topbar">
+          <Logo />
+          <nav>
+            <span className="nav-active">{room ? "游戏牌桌" : "桌游大厅"}</span>
+            <span className="nav-caption">让相聚，多一局。</span>
+          </nav>
+          <div className="header-right">
+            <span
+              className={`connection ${online ? "" : "offline"}`}
+              title={online ? "实时连接正常" : "正在重连，座位与进度已保留"}
+            >
+              {online ? <Wifi size={15} /> : <WifiOff size={15} />}
+              <span>{online ? "已连接" : "重连中"}</span>
+            </span>
+            <button
+              className="icon-button"
+              aria-label={sound ? "关闭音效" : "开启音效"}
+              title={sound ? "音效已开启，点击静音" : "音效已关闭，点击开启"}
+              onClick={() => {
+                setSound(!sound);
+                localStorage.setItem("wb_sound", sound ? "off" : "on");
+                if (!sound) void previewAudio();
+              }}
+            >
+              {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
+            </button>
+            <button
+              className="sound-preview"
+              onClick={() => void previewAudio()}
+            >
+              试听音效
+            </button>
+            <span className="avatar">{state.user.name[0]}</span>
+            <span className="username">{state.user.name}</span>
+            <button
+              className="icon-button"
+              aria-label="退出登录"
+              onClick={() => void run(() => api("/logout", {}))}
+            >
+              <LogOut size={17} />
+            </button>
+          </div>
+        </header>
+        {error && (
+          <div className="toast error" role="alert">
+            {error}
+            <button aria-label="关闭错误" onClick={() => setError("")}>
+              <X size={16} />
+            </button>
+          </div>
+        )}
+        {notice && (
+          <div className="toast" role="status">
+            {notice}
+            <button aria-label="关闭提示" onClick={() => setNotice("")}>
+              <X size={16} />
+            </button>
+          </div>
+        )}
+        {!room ? (
+          <Lobby
+            state={state}
+            onCreate={setCreate}
+            onJoin={(r) => {
+              if (r.locked) setJoin(r);
+              else void run(() => command(r, "join"));
             }}
+            busy={busy}
+          />
+        ) : (
+          <main
+            className={`room-page ${room.game ? "playing" : ""} game-${room.kind}`}
           >
-            {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-          </button>
-          <span className="avatar">{state.user.name[0]}</span>
-          <span className="username">{state.user.name}</span>
-          <button
-            className="icon-button"
-            aria-label="退出登录"
-            onClick={() => void run(() => api("/logout", {}))}
-          >
-            <LogOut size={17} />
-          </button>
-        </div>
-      </header>
-      {error && (
-        <div className="toast error" role="alert">
-          {error}
-          <button aria-label="关闭错误" onClick={() => setError("")}>
-            <X size={16} />
-          </button>
-        </div>
-      )}
-      {notice && (
-        <div className="toast" role="status">
-          {notice}
-          <button aria-label="关闭提示" onClick={() => setNotice("")}>
-            <X size={16} />
-          </button>
-        </div>
-      )}
-      {!room ? (
-        <Lobby
-          state={state}
-          onCreate={setCreate}
-          onJoin={(r) => {
-            if (r.locked) setJoin(r);
-            else void run(() => command(r, "join"));
-          }}
-          busy={busy}
-        />
-      ) : (
-        <main className={`room-page ${room.game ? "playing" : ""}`}>
-          <div className="room-heading">
-            <div>
-              <span className="eyebrow">
-                {gameName(room.kind)} <span> / </span> 牌桌{" "}
-                {room.id.toUpperCase()}
-              </span>
-              <h1>{room.name}</h1>
-            </div>
-            <div className="room-tools">
-              <button className="subtle" onClick={() => setRules(true)}>
-                <BookOpen size={16} />
-                玩法速查
-              </button>
-              <button
-                className="subtle"
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(
-                      `${location.origin}/?room=${room.id}`,
-                    );
-                    setNotice("房间链接已复制，发给朋友即可");
-                  } catch {
-                    setNotice(`房间编号：${room.id}`);
-                  }
-                }}
-              >
-                <Copy size={16} />
-                邀请朋友
-              </button>
-              {room.status !== "playing" && (
+            <div className="room-heading">
+              <div>
+                <span className="eyebrow">
+                  {gameName(room.kind)} <span> / </span> 牌桌{" "}
+                  {room.id.toUpperCase()}
+                </span>
+                <h1>{room.name}</h1>
+              </div>
+              <div className="room-tools">
+                <button className="subtle" onClick={() => setRules(true)}>
+                  <BookOpen size={16} />
+                  玩法速查
+                </button>
                 <button
                   className="subtle"
-                  disabled={busy}
-                  onClick={() => roomCommand("leave")}
-                >
-                  <ArrowLeft size={16} />
-                  离开房间
-                </button>
-              )}
-              {room.status === "playing" && room.host === state.user.id && (
-                <button
-                  className="subtle danger"
-                  disabled={busy}
-                  onClick={() => {
-                    if (
-                      confirm(
-                        "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
-                      )
-                    )
-                      roomCommand("close");
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(
+                        `${location.origin}/?room=${room.id}`,
+                      );
+                      setNotice("房间链接已复制，发给朋友即可");
+                    } catch {
+                      setNotice(`房间编号：${room.id}`);
+                    }
                   }}
                 >
-                  结束牌桌
+                  <Copy size={16} />
+                  邀请朋友
                 </button>
-              )}
-            </div>
-          </div>
-          {room.status === "waiting" ? (
-            <Waiting
-              room={room}
-              busy={busy}
-              host={room.host === state.user.id}
-              command={roomCommand}
-            />
-          ) : room.status === "closed" ? (
-            <div className="closed-panel">
-              <Flag size={40} />
-              <h2>这张牌桌已结束</h2>
-              <p>休息一下，或者准备下一局。</p>
-              {room.host === state.user.id && (
-                <button
-                  className="primary"
-                  disabled={busy}
-                  onClick={() => roomCommand("rematch")}
-                >
-                  <RotateCcw size={18} />
-                  再开一局
-                </button>
-              )}
-            </div>
-          ) : (
-            <>
-              <Players room={room} />
-              {room.game?.finished && (
-                <Results
-                  room={room}
-                  host={room.host === state.user.id}
-                  busy={busy}
-                  command={roomCommand}
-                />
-              )}
-              <div className="game-layout">
-                <div className="game-main">
-                  {room.kind === "splendor" ? (
-                    <SplendorBoard room={room} act={act} busy={busy} />
-                  ) : (
-                    <RailBoard room={room} act={act} busy={busy} />
-                  )}
-                </div>
-                <aside className="game-sidebar">
-                  <Turn room={room} />
-                  <div className="journal">
-                    <h3>
-                      牌桌动态 <span>LIVE</span>
-                    </h3>
-                    <ol>
-                      {room.game?.log
-                        .slice(-12)
-                        .reverse()
-                        .map((line, i) => (
-                          <li key={`${room.version}-${i}`}>
-                            {line.replace(
-                              /玩家 (\d+)/g,
-                              (_, n) =>
-                                room.seats[Number(n) - 1]?.name || `玩家 ${n}`,
-                            )}
-                          </li>
-                        ))}
-                      {!room.game?.log.length && <li>牌已洗好，祝你好运。</li>}
-                    </ol>
-                  </div>
-                </aside>
+                {room.status !== "playing" && (
+                  <button
+                    className="subtle"
+                    disabled={busy}
+                    onClick={() => roomCommand("leave")}
+                  >
+                    <ArrowLeft size={16} />
+                    离开房间
+                  </button>
+                )}
+                {room.status === "playing" && room.host === state.user.id && (
+                  <button
+                    className="subtle danger"
+                    disabled={busy}
+                    onClick={() => {
+                      if (
+                        confirm(
+                          "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
+                        )
+                      )
+                        roomCommand("close");
+                    }}
+                  >
+                    结束牌桌
+                  </button>
+                )}
               </div>
-            </>
-          )}
-        </main>
-      )}
-      {!room && (
-        <footer>
-          围桌 WIRE BOARD <span>好游戏，和好朋友一起。</span>
-          <span>私人牌桌 · 自动保存</span>
-        </footer>
-      )}
-      {create && (
-        <Create
-          kind={create}
-          busy={busy}
-          onClose={() => setCreate("")}
-          onSubmit={(body) =>
-            void run(async () => {
-              await api("/rooms", body);
-              setCreate("");
-            })
-          }
-        />
-      )}
-      {join && (
-        <Modal
-          title={`加入「${join.name}」`}
-          onClose={() => setJoin(undefined)}
-        >
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const f = new FormData(e.currentTarget);
-              void run(async () => {
-                await command(join, "join", { password: f.get("password") });
-                setJoin(undefined);
-              });
-            }}
-          >
-            <label>
-              房间密码
-              <input
-                name="password"
-                type="password"
-                required
-                autoComplete="off"
+            </div>
+            {room.status === "waiting" ? (
+              <Waiting
+                room={room}
+                busy={busy}
+                host={room.host === state.user.id}
+                command={roomCommand}
               />
-            </label>
-            <button className="primary wide" disabled={busy}>
-              加入牌桌
-              <ArrowRight size={18} />
-            </button>
-          </form>
-        </Modal>
-      )}
-      {rules && (
-        <Modal
-          title={`${gameName(room!.kind)} · 玩法速查`}
-          onClose={() => setRules(false)}
-        >
-          <Rules kind={room!.kind} />
-        </Modal>
-      )}
-    </div>
+            ) : room.status === "closed" ? (
+              <div className="closed-panel">
+                <Flag size={40} />
+                <h2>这张牌桌已结束</h2>
+                <p>休息一下，或者准备下一局。</p>
+                {room.host === state.user.id && (
+                  <button
+                    className="primary"
+                    disabled={busy}
+                    onClick={() => roomCommand("rematch")}
+                  >
+                    <RotateCcw size={18} />
+                    再开一局
+                  </button>
+                )}
+              </div>
+            ) : (
+              <>
+                <Players room={room} />
+                {room.game?.finished && (
+                  <Results
+                    room={room}
+                    host={room.host === state.user.id}
+                    busy={busy}
+                    command={roomCommand}
+                  />
+                )}
+                <div className="game-layout">
+                  <div className="game-main">
+                    {room.kind === "splendor" ? (
+                      <SplendorBoard room={room} act={act} busy={busy} />
+                    ) : (
+                      <RailBoard room={room} act={act} busy={busy} />
+                    )}
+                  </div>
+                  <aside className="game-sidebar">
+                    <Turn
+                      room={room}
+                      serverNow={state.serverNow}
+                      receivedAt={state.receivedAt}
+                      busy={busy}
+                      command={roomCommand}
+                    />
+                    <div className="journal">
+                      <h3>
+                        牌桌动态 <span>LIVE</span>
+                      </h3>
+                      <ol>
+                        {room.game?.log
+                          .slice(-12)
+                          .reverse()
+                          .map((line, i) => (
+                            <li key={`${room.version}-${i}`}>
+                              {line.replace(
+                                /玩家 (\d+)/g,
+                                (_, n) =>
+                                  room.seats[Number(n) - 1]?.name ||
+                                  `玩家 ${n}`,
+                              )}
+                            </li>
+                          ))}
+                        {!room.game?.log.length && (
+                          <li>牌已洗好，祝你好运。</li>
+                        )}
+                      </ol>
+                    </div>
+                  </aside>
+                </div>
+              </>
+            )}
+          </main>
+        )}
+        {!room && (
+          <footer>
+            围桌 WIRE BOARD <span>好游戏，和好朋友一起。</span>
+            <span>私人牌桌 · 自动保存</span>
+          </footer>
+        )}
+        {create && (
+          <Create
+            kind={create}
+            busy={busy}
+            onClose={() => setCreate("")}
+            onSubmit={(body) =>
+              void run(async () => {
+                await api("/rooms", body);
+                setCreate("");
+              })
+            }
+          />
+        )}
+        {join && (
+          <Modal
+            title={`加入「${join.name}」`}
+            onClose={() => setJoin(undefined)}
+          >
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const f = new FormData(e.currentTarget);
+                void run(async () => {
+                  await command(join, "join", { password: f.get("password") });
+                  setJoin(undefined);
+                });
+              }}
+            >
+              <label>
+                房间密码
+                <input
+                  name="password"
+                  type="password"
+                  required
+                  autoComplete="off"
+                />
+              </label>
+              <button className="primary wide" disabled={busy}>
+                加入牌桌
+                <ArrowRight size={18} />
+              </button>
+            </form>
+          </Modal>
+        )}
+        {rules && (
+          <Modal
+            title={`${gameName(room!.kind)} · 玩法速查`}
+            onClose={() => setRules(false)}
+          >
+            <Rules kind={room!.kind} />
+          </Modal>
+        )}
+      </div>
+    </AssetsContext.Provider>
   );
 }
 function Auth({
@@ -1247,7 +1310,7 @@ function Players({ room }: { room: Room }) {
         const stats = g.splendor?.players[i] || g.rail?.players[i];
         return (
           <div
-            className={`player-panel ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""}`}
+            className={`player-panel ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${g.splendor?.players[i].eliminated || g.rail?.players[i].eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span className="avatar" style={{ background: playerColors[i] }}>
@@ -1256,7 +1319,14 @@ function Players({ room }: { room: Room }) {
             <div className="player-info">
               <strong>
                 {p.name}
-                {p.left && <small>已离桌</small>}
+                {p.left && (
+                  <small>
+                    {g.splendor?.players[i].eliminated ||
+                    g.rail?.players[i].eliminated
+                      ? "超时离场"
+                      : "已离桌"}
+                  </small>
+                )}
                 {i === room.you && <small>你</small>}
               </strong>
               {g.splendor ? (
@@ -1302,9 +1372,41 @@ function Players({ room }: { room: Room }) {
     </div>
   );
 }
-function Turn({ room }: { room: Room }) {
+function Turn({
+  room,
+  serverNow,
+  receivedAt,
+  busy,
+  command,
+}: {
+  room: Room;
+  serverNow: number;
+  receivedAt: number;
+  busy: boolean;
+  command: (type: string, extra?: Record<string, unknown>) => void;
+}) {
   const g = room.game!;
-  const mine = g.turn === room.you;
+  const setup = !!g.rail?.setup;
+  const mine = setup ? !g.rail?.setupReady?.[room.you] : g.turn === room.you;
+  const [tick, setTick] = useState(performance.now());
+  const deadline = room.status === "playing" ? room.turnDeadline : 0;
+  useEffect(() => {
+    if (!deadline) return;
+    const timer = setInterval(() => setTick(performance.now()), 250);
+    return () => clearInterval(timer);
+  }, [deadline]);
+  const remaining = deadline
+    ? Math.max(
+        0,
+        Math.min(
+          120,
+          Math.ceil(
+            (deadline - serverNow - Math.max(0, tick - receivedAt)) / 1000,
+          ),
+        ),
+      )
+    : 0;
+  const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
     turn: "选择一个行动",
     discard: "归还多出的宝石",
@@ -1319,17 +1421,68 @@ function Turn({ room }: { room: Room }) {
       <h3>
         {g.finished
           ? "本局已结束"
-          : mine
-            ? "轮到你了"
-            : `${room.seats[g.turn]?.name} 的回合`}
+          : setup
+            ? mine
+              ? "一起选择目的地"
+              : "等待其他人选好"
+            : mine
+              ? "轮到你了"
+              : `${room.seats[g.turn]?.name} 的回合`}
       </h3>
       <p>
         {g.finished
           ? "感谢同桌，好局下次再来。"
-          : mine
-            ? phase[g.phase]
-            : "稍等片刻，想想下一步。"}
+          : setup
+            ? "所有人同时选牌，超时自动保留前两张。"
+            : mine
+              ? phase[g.phase]
+              : "稍等片刻，想想下一步。"}
       </p>
+      {!!deadline && (
+        <div className={`turn-clock ${remaining <= 20 ? "urgent" : ""}`}>
+          <div className="clock-reading">
+            <Clock size={20} />
+            <time aria-label={`本回合剩余 ${remaining} 秒`}>
+              {String(Math.floor(remaining / 60)).padStart(2, "0")}:
+              {String(remaining % 60).padStart(2, "0")}
+            </time>
+            <span>
+              {expired
+                ? setup
+                  ? "正在自动选牌"
+                  : "已超时"
+                : setup
+                  ? "共同选牌限时"
+                  : "每回合 120 秒"}
+            </span>
+          </div>
+          {expired && !setup && (
+            <p>
+              {mine
+                ? "你已超时，其他玩家可以将你移出。尚未被移出前仍可行动。"
+                : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
+            </p>
+          )}
+          {expired && !mine && !setup && (
+            <button
+              className="timeout-kick"
+              disabled={busy}
+              onClick={() => {
+                const target = room.seats[g.turn];
+                if (
+                  confirm(
+                    `将超时玩家「${target.name}」移出本局？${g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
+                  )
+                ) {
+                  command("kick_timeout", { target: target.id });
+                }
+              }}
+            >
+              移出超时玩家
+            </button>
+          )}
+        </div>
+      )}
       {(g.splendor?.lastRound || (g.rail?.lastRemaining ?? -1) >= 0) &&
         !g.finished && (
           <div className="final-round">
@@ -1366,7 +1519,9 @@ function Results({
         </h2>
         <p>
           {g.splendor
-            ? "达到 15 分后完成本轮；同分时，发展卡更少者获胜。"
+            ? g.splendor.players.filter((p) => !p.eliminated).length === 1
+              ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
+              : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
             : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
         </p>
       </div>
@@ -1443,7 +1598,13 @@ function DevCard({
         .map((n, i) => (n ? `${gemNames[i]}${n}` : ""))
         .filter(Boolean)
         .join("，")}`}
-      style={{ "--card-color": gemColors[card.color] } as React.CSSProperties}
+      style={
+        {
+          "--card-color": gemColors[card.color],
+          "--art-x": `${((card.tier - 1) * 2 + (card.id % 2)) * 20}%`,
+          "--art-y": `${[3, 4, 0, 1, 2][card.color] * 20}%`,
+        } as React.CSSProperties
+      }
     >
       <div className="card-top">
         <strong>{card.points || ""}</strong>
@@ -1492,6 +1653,9 @@ function NobleCard({
   return (
     <button
       className={`noble ${eligible ? "eligible" : ""}`}
+      style={{
+        backgroundPosition: `${((noble.id - 1) % 5) * 25}% ${Math.floor((noble.id - 1) / 5) * 50}%`,
+      }}
       onClick={onClick}
       aria-label={`贵族 ${noble.id}，3 分，需要 ${noble.cost
         .map((n, i) => (n ? `${gemNames[i]}折扣${n}` : ""))
@@ -1581,6 +1745,7 @@ function SplendorBoard({
           <div className="market-row" key={tier}>
             <button
               className={`deck tier-${tier}`}
+              style={{ backgroundPosition: `${tier * 20}% 100%` }}
               disabled={
                 !taking || busy || !s.remaining[tier] || p.reserved!.length >= 3
               }
@@ -1624,7 +1789,12 @@ function SplendorBoard({
             >
               <span
                 className={`token color-${i}`}
-                style={{ "--gem": gemColors[i] } as React.CSSProperties}
+                style={
+                  {
+                    "--gem": gemColors[i],
+                    backgroundPosition: `${i * 20}% 0`,
+                  } as React.CSSProperties
+                }
               >
                 <Gemstone color={i} size={31} />
               </span>
@@ -1845,44 +2015,6 @@ function SplendorBoard({
     </div>
   );
 }
-const cityChinese: Record<string, string> = {
-  Atlanta: "亚特兰大",
-  Boston: "波士顿",
-  Calgary: "卡尔加里",
-  Charleston: "查尔斯顿",
-  Chicago: "芝加哥",
-  Dallas: "达拉斯",
-  Denver: "丹佛",
-  Duluth: "德卢斯",
-  "El Paso": "埃尔帕索",
-  Helena: "海伦娜",
-  Houston: "休斯敦",
-  "Kansas City": "堪萨斯城",
-  "Las Vegas": "拉斯维加斯",
-  "Little Rock": "小石城",
-  "Los Angeles": "洛杉矶",
-  Miami: "迈阿密",
-  Montreal: "蒙特利尔",
-  Nashville: "纳什维尔",
-  "New Orleans": "新奥尔良",
-  "New York": "纽约",
-  "Oklahoma City": "俄克拉何马城",
-  Omaha: "奥马哈",
-  Phoenix: "凤凰城",
-  Pittsburgh: "匹兹堡",
-  Portland: "波特兰",
-  Raleigh: "罗利",
-  "Saint Louis": "圣路易斯",
-  "Salt Lake City": "盐湖城",
-  "San Francisco": "旧金山",
-  "Santa Fe": "圣菲",
-  "Sault St. Marie": "苏圣玛丽",
-  Seattle: "西雅图",
-  Toronto: "多伦多",
-  Vancouver: "温哥华",
-  Washington: "华盛顿",
-  Winnipeg: "温尼伯",
-};
 function TrainCard({
   color,
   count,
@@ -1899,7 +2031,12 @@ function TrainCard({
   return (
     <button
       className={`train-card train-${color}`}
-      style={{ "--train": trainColors[color] } as React.CSSProperties}
+      style={
+        {
+          "--train": trainColors[color],
+          backgroundPosition: `${(color === 8 ? 0 : color + 1) * 12.5}% 0`,
+        } as React.CSSProperties
+      }
       onClick={onClick}
       disabled={disabled}
       aria-label={
@@ -1927,10 +2064,18 @@ function TicketCard({
   onClick?: () => void;
   showResult?: boolean;
 }) {
+  const assets = useContext(AssetsContext);
   const a = catalog.cities[ticket.a],
     b = catalog.cities[ticket.b];
   return (
     <button
+      style={
+        assets
+          ? {
+              backgroundImage: `url("${assets}/rail/tickets/${ticket.id}.webp")`,
+            }
+          : undefined
+      }
       className={`ticket-card ${selected ? "selected" : ""} ${showResult ? (ticket.complete ? "completed" : "incomplete") : ""}`}
       onClick={onClick}
     >
@@ -1947,9 +2092,9 @@ function TicketCard({
         </span>
       </div>
       <div className="ticket-route">
-        <strong>{cityChinese[a.name] || a.name}</strong>
+        <strong>{cityName(a.name)}</strong>
         <ArrowRight size={16} />
-        <strong>{cityChinese[b.name] || b.name}</strong>
+        <strong>{cityName(b.name)}</strong>
       </div>
       <small>
         {a.name} — {b.name}
@@ -1988,6 +2133,7 @@ function RailMap({
   highlight?: Ticket;
 }) {
   const [zoom, setZoom] = useState(1);
+  const assets = useContext(AssetsContext);
   return (
     <div className="map-frame">
       <div className="map-controls">
@@ -2018,231 +2164,133 @@ function RailMap({
       >
         <svg
           className="rail-map"
-          viewBox="0 0 1000 650"
-          style={{ width: `${zoom * 100}%` }}
+          viewBox="0 0 1744 1125"
+          style={
+            {
+              "--map-scale": zoom,
+              width: `${zoom * 100}%`,
+              height: zoom > 1 ? "auto" : undefined,
+            } as React.CSSProperties
+          }
           role="group"
           aria-label="美国铁路地图，点击路线选择占领"
         >
-          <defs>
-            <pattern
-              id="map-grid"
-              width="50"
-              height="50"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M50 0H0v50"
-                fill="none"
-                stroke="#938364"
-                strokeWidth=".4"
-                opacity=".2"
-              />
-            </pattern>
-            <pattern
-              id="map-paper"
-              width="8"
-              height="8"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle cx="1" cy="1" r=".6" fill="#776746" opacity=".07" />
-            </pattern>
-          </defs>
-          <rect width="1000" height="650" fill="#e4debb" />
-          <path
-            d="M0 0h1000v156l-32 22-3 37-42 25-23 45-28 16-4 37-20 22-9 42-8 46 4 28 31 43 17 74-21 18-22-40-21-39-30-31-46 12-69 6-38-10-42 17-44 4-25-14-49-10-22 9-49-40-58-3-61-20-46-19-40-35-40-20-25-41-24-44-20-48 4-56-9-33 5-49-5-45 7-44L0 37Z"
-            fill="#f0e6c9"
-            stroke="#b9b696"
-            strokeWidth="2"
-          />
-          <path
-            d="M15 0l55 80 10 80-26 65 18 80 50 66 33 10 30 32M199 70l21 106 20 25 20 64 15 8 18 62 20 20 27 73"
-            fill="none"
-            stroke="#b1ad85"
-            strokeWidth="20"
-            opacity=".18"
-          />
-          <path
-            d="M575 290q-25 32 1 67t24 44q-19 40 14 73l-5 51"
-            fill="none"
-            stroke="#b9cebd"
-            strokeWidth="4"
-          />
-          <path
-            d="m621 164 45-14 29 13-12 13-42 0ZM676 207l-8-20 10-7 15 38-5 18-11-8ZM707 203l-12-30 16 12 9 17-6 16ZM747 220l19-9 12 7-13 11-21 0Z"
-            fill="#bdd0c5"
-          />
-          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <path
-              key={i}
-              d={`m${190 + i * 13} ${160 + i * 31} 10-18 10 18m-15-9 5-9 5 9`}
-              fill="none"
-              stroke="#ab9d74"
-              strokeWidth="1.5"
-              opacity=".45"
+          <rect width="1744" height="1125" fill="#ece8d8" />
+          {assets && (
+            <image
+              href={`${assets}/rail/map.webp`}
+              width="1744"
+              height="1125"
             />
-          ))}
-          <rect width="1000" height="650" fill="url(#map-grid)" />
-          <rect width="1000" height="650" fill="url(#map-paper)" />
-          <text
-            x="82"
-            y="528"
-            transform="rotate(-65 82 528)"
-            className="ocean-label"
-          >
-            PACIFIC OCEAN
-          </text>
-          <text
-            x="938"
-            y="405"
-            transform="rotate(-65 938 405)"
-            className="ocean-label"
-          >
-            ATLANTIC OCEAN
-          </text>
-          <text x="365" y="47" className="country-label">
-            C A N A D A
-          </text>
-          <text x="377" y="596" className="country-label">
-            M E X I C O
-          </text>
-          <g transform="translate(91 570)" opacity=".55">
-            <path
-              d="M0-24 6-6 24 0 6 6 0 24-6 6-24 0-6-6Z"
-              fill="none"
-              stroke="#526e63"
-            />
-            <path d="M0-24 6-6 0 0Z" fill="#526e63" />
-            <text x="-4" y="-31" fontSize="10" fill="#526e63">
-              N
-            </text>
-          </g>
+          )}
           {catalog.routes.map((r) => {
             const a = catalog.cities[r.a],
               b = catalog.cities[r.b];
-            const dx = b.x - a.x,
-              dy = b.y - a.y,
-              len = Math.hypot(dx, dy);
-            const parallels = catalog.routes.filter(
-              (x) =>
-                (x.a === r.a && x.b === r.b) || (x.a === r.b && x.b === r.a),
-            );
-            const lane =
-              parallels.length > 1
-                ? parallels.findIndex((x) => x.id === r.id) === 0
-                  ? -5.5
-                  : 5.5
-                : 0;
-            const sx = a.x - (dy / len) * lane,
-              sy = a.y + (dx / len) * lane,
-              ex = b.x - (dy / len) * lane,
-              ey = b.y + (dx / len) * lane;
-            const owner = owners[String(r.id)];
-            const claimed = owner !== undefined;
-            const color = claimed
-              ? playerColors[owner]
-              : r.color >= 0
-                ? trainColors[r.color]
-                : "#aeaa96";
+            const owner = owners[r.id],
+              claimed = owner !== undefined;
             const active = selected?.id === r.id;
-            const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-            const piece = Math.max(5, (len - 24) / r.length - 3);
             return (
               <g
                 key={r.id}
-                className={`map-route ${active ? "selected" : ""}`}
-                onClick={() => onSelect(r)}
+                className="map-route"
                 role="button"
                 tabIndex={0}
+                aria-label={`${cityName(a.name)} 到 ${cityName(b.name)}，${r.length} 节，${r.color < 0 ? "任意单色" : trainNames[r.color]}${claimed ? "，已占领" : ""}`}
+                onClick={() => onSelect(r)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     onSelect(r);
                   }
                 }}
-                aria-label={`${a.name} 到 ${b.name}，${r.length} 节，${r.color < 0 ? "任意单色" : trainNames[r.color]}${claimed ? "，已占领" : ""}`}
               >
                 <title>
-                  {a.name} → {b.name} · {r.length} 节 ·{" "}
-                  {claimed
-                    ? `玩家 ${owner + 1}`
-                    : r.color < 0
-                      ? "任意单色"
-                      : trainNames[r.color]}
+                  {cityName(a.name)} → {cityName(b.name)} · {r.length} 节
+                  {claimed ? ` · 玩家 ${owner + 1}` : ""}
                 </title>
-                <line
-                  x1={sx}
-                  y1={sy}
-                  x2={ex}
-                  y2={ey}
-                  stroke={active ? "#174e43" : "transparent"}
-                  strokeWidth={active ? 19 : 20}
-                  opacity={active ? 0.3 : 1}
-                />
-                {Array.from({ length: r.length }, (_, i) => {
-                  const t = (12 + ((i + 0.5) * (len - 24)) / r.length) / len;
-                  return (
-                    <g
-                      key={i}
-                      transform={`translate(${sx + dx * t},${sy + dy * t}) rotate(${angle})`}
-                    >
-                      <rect
-                        x={-piece / 2}
-                        y={-4}
-                        width={piece}
-                        height={8}
-                        rx="1.5"
-                        fill={color}
-                        stroke={claimed ? "#f8f3df" : "#695f4d"}
-                        strokeWidth={claimed ? 1.2 : 0.7}
+                {r.segments?.map((segment, i) => (
+                  <g
+                    key={i}
+                    transform={`translate(${segment.x},${segment.y}) rotate(${segment.angle})`}
+                  >
+                    <rect
+                      x="-31"
+                      y="-13"
+                      width="62"
+                      height="26"
+                      rx="4"
+                      fill="transparent"
+                    />
+                    <rect
+                      x="-26"
+                      y="-8"
+                      width="52"
+                      height="16"
+                      rx="3"
+                      fill={
+                        claimed
+                          ? playerColors[owner]
+                          : assets
+                            ? "transparent"
+                            : r.color < 0
+                              ? "#bbb4a1"
+                              : trainColors[r.color]
+                      }
+                      stroke={
+                        active ? "#f5cf47" : claimed ? "#fff9e3" : "transparent"
+                      }
+                      strokeWidth="3"
+                    />
+                    {claimed && (
+                      <path
+                        d="M-20 0H20M-17 7v4M17 7v4"
+                        stroke="white"
+                        strokeWidth="2"
                       />
-                      {claimed ? (
-                        <path
-                          d={`M${-piece / 2 + 2} -1H${piece / 2 - 2}M${-piece / 2 + 3} 4v2M${piece / 2 - 3} 4v2`}
-                          stroke="#fff"
-                          strokeWidth="1.2"
-                        />
-                      ) : (
-                        <path
-                          d={`M${-piece / 2 + 2} -1H${piece / 2 - 2}`}
-                          stroke="#fff"
-                          opacity=".55"
-                        />
-                      )}
-                    </g>
-                  );
-                })}
+                    )}
+                  </g>
+                ))}
               </g>
             );
           })}
           {catalog.cities.map((c) => {
             const lit =
               highlight && (c.id === highlight.a || c.id === highlight.b);
-            const right = c.x > 900;
+            const [lx, ly, lw, lh] = c.label || [c.x + 12, c.y - 30, 100, 30];
             return (
               <g key={c.id} className="map-city">
                 {lit && (
                   <circle
                     cx={c.x}
                     cy={c.y}
-                    r="16"
-                    fill="#e7b44b"
-                    opacity=".45"
+                    r="23"
+                    fill="#f1b52f"
+                    opacity=".7"
                   />
                 )}
                 <circle
                   cx={c.x}
                   cy={c.y}
-                  r={lit ? 6 : 4.5}
-                  fill={lit ? "#d0553f" : "#f9f3df"}
-                  stroke="#534f3d"
-                  strokeWidth="1.5"
+                  r={lit ? 9 : 5}
+                  fill={lit ? "#b53427" : "#f6f0dc"}
+                  stroke="#4d503c"
+                  strokeWidth="2"
+                />
+                <rect
+                  x={lx}
+                  y={ly}
+                  width={lw}
+                  height={lh}
+                  rx="5"
+                  fill="#f4f0e3"
                 />
                 <text
-                  x={c.x + (right ? -8 : 8)}
-                  y={c.y - 6}
-                  textAnchor={right ? "end" : "start"}
+                  x={lx + lw / 2}
+                  y={ly + lh / 2}
+                  textAnchor="middle"
+                  dominantBaseline="central"
                 >
-                  {c.name}
+                  {cityName(c.name)}
                 </text>
               </g>
             );
@@ -2275,9 +2323,11 @@ function RailBoard({
   const g = room.game!,
     r = g.rail!,
     p = r.players[room.you],
-    mine = g.turn === room.you && !g.finished,
-    turn = mine && g.phase === "turn",
-    drawing = mine && (g.phase === "turn" || g.phase === "draw");
+    mine =
+      (r.setup ? !r.setupReady?.[room.you] : g.turn === room.you) &&
+      !g.finished,
+    turn = mine && !r.setup && g.phase === "turn",
+    drawing = mine && !r.setup && (g.phase === "turn" || g.phase === "draw");
   useEffect(() => {
     api("/catalog")
       .then(setCatalog)
@@ -2285,13 +2335,14 @@ function RailBoard({
   }, []);
   useEffect(() => {
     setSelected(undefined);
+  }, [g.turn, g.phase, g.round]);
+  useEffect(() => {
     setKeep([]);
-  }, [room.version]);
+  }, [r.pending?.map((t) => t.id).join(",")]);
   if (loadError)
     return <p role="alert">地图加载失败：{loadError}。请刷新重试。</p>;
   if (!catalog) return <div className="loading">正在展开地图…</div>;
-  const city = (id: number) =>
-    cityChinese[catalog.cities[id].name] || catalog.cities[id].name;
+  const city = (id: number) => cityName(catalog.cities[id].name);
   const selectRoute = (route: Route) => {
     setSelected(route);
     const c =
@@ -2328,6 +2379,7 @@ function RailBoard({
           <p>
             从这些任务中至少保留 <strong>{r.setup ? 2 : 1}</strong>{" "}
             张。未完成的任务会在结算时扣分。
+            {r.setup && "所有人同时选择；120 秒后自动保留列表前两张。"}
           </p>
           <div className="pending-tickets">
             {r.pending?.map((t) => (
@@ -2358,53 +2410,61 @@ function RailBoard({
         </section>
       )}
 
-      <RailMap
-        catalog={catalog}
-        owners={r.owners}
-        selected={selected}
-        onSelect={selectRoute}
-        highlight={highlight}
-      />
-      <div className="train-market">
-        <div className="section-line">
-          <h3>列车牌市场</h3>
-          <small>
-            {g.phase === "draw" && mine
-              ? "还可以摸 1 张（不能拿公开万能牌）"
-              : "每回合摸两张；公开万能牌占用整个行动"}
-          </small>
-        </div>
-        <div className="train-market-cards">
-          <button
-            className="train-deck"
-            disabled={!drawing || busy}
-            onClick={() => void act({ type: "draw", slot: -1 })}
-          >
-            <TrainFront size={28} />
-            <strong>摸一张暗牌</strong>
-            <small>可摸 {r.remaining} 张</small>
-          </button>
-          {r.face.map((c, i) => (
-            <TrainCard
-              key={i}
-              color={c}
-              disabled={!drawing || busy || (g.phase === "draw" && c === 8)}
-              onClick={() => void act({ type: "draw", slot: i })}
-              label={`拿取公开${trainNames[c]}列车牌，第 ${i + 1} 张`}
-            />
-          ))}
-          <button
-            className="ticket-deck"
-            disabled={!turn || busy || r.ticketsRemaining === 0}
-            onClick={() => void act({ type: "tickets" })}
-          >
-            <Flag size={25} />
-            <strong>领取目的地</strong>
-            <small>抽 3 留至少 1 · 余 {r.ticketsRemaining}</small>
-          </button>
+      <div className="rail-table">
+        <RailMap
+          catalog={catalog}
+          owners={r.owners}
+          selected={selected}
+          onSelect={selectRoute}
+          highlight={highlight}
+        />
+        <div className="train-market">
+          <div className="section-line">
+            <h3>列车牌市场</h3>
+            <small>
+              {g.phase === "draw" && mine
+                ? "还可以摸 1 张（不能拿公开万能牌）"
+                : "每回合摸两张；公开万能牌占用整个行动"}
+            </small>
+          </div>
+          <div className="train-market-cards">
+            <button
+              className="train-deck"
+              disabled={!drawing || busy}
+              onClick={() => void act({ type: "draw", slot: -1 })}
+            >
+              <TrainFront size={28} />
+              <strong>摸一张暗牌</strong>
+              <small>可摸 {r.remaining} 张</small>
+            </button>
+            {r.face.map((c, i) =>
+              c < 0 ? (
+                <div className="train-card empty" key={i}>
+                  牌堆已空
+                </div>
+              ) : (
+                <TrainCard
+                  key={i}
+                  color={c}
+                  disabled={!drawing || busy || (g.phase === "draw" && c === 8)}
+                  onClick={() => void act({ type: "draw", slot: i })}
+                  label={`拿取公开${trainNames[c]}列车牌，第 ${i + 1} 张`}
+                />
+              ),
+            )}
+            <button
+              className="ticket-deck"
+              disabled={!turn || busy || r.ticketsRemaining === 0}
+              onClick={() => void act({ type: "tickets" })}
+            >
+              <Flag size={25} />
+              <strong>领取目的地</strong>
+              <small>抽 3 留至少 1 · 余 {r.ticketsRemaining}</small>
+            </button>
+          </div>
         </div>
       </div>
-      <div className="personal-area">
+      <div className="personal-area rail-personal">
         <div className="section-line">
           <h3>
             你的列车手牌 <span>{p.handCount}</span>
@@ -2594,7 +2654,8 @@ function Rules({ kind }: { kind: string }) {
           <ol>
             <li>
               <b>开局：</b>
-              每人四张列车牌、四十五节车厢；抽三张目的地任务，至少保留两张。
+              每人四张列车牌、四十五节车厢；所有人同时从三张目的地中至少保留两张，120
+              秒后未提交者自动保留前两张。
             </li>
             <li>
               <b>每回合选择一个行动：</b>
@@ -2627,6 +2688,10 @@ function Rules({ kind }: { kind: string }) {
           </p>
         </>
       )}
+      <p>
+        每回合 120
+        秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。
+      </p>
       <p className="muted small">
         操作由服务器验证。每次行动自动保存，刷新或重新登录后回到原来的座位。
       </p>

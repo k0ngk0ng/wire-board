@@ -53,6 +53,9 @@ func (s *State) Apply(player int, a Action) error {
 	if s.Finished {
 		return errors.New("本局已结束")
 	}
+	if s.Rail != nil && s.Rail.Setup {
+		return s.applyRailSetup(player, a)
+	}
 	if player != s.Turn {
 		return errors.New("还没有轮到你")
 	}
@@ -87,6 +90,7 @@ func (s *State) View(player int) map[string]any {
 		delete(g, "deck")
 		delete(g, "ticketDeck")
 		delete(g, "discard")
+		delete(g, "setupPending")
 		g["remaining"] = len(s.Rail.Deck) + len(s.Rail.Discard)
 		g["ticketsRemaining"] = len(s.Rail.TicketDeck)
 		for i, p := range g["players"].([]any) {
@@ -100,7 +104,17 @@ func (s *State) View(player int) map[string]any {
 				}
 			}
 		}
-		if player != s.Turn {
+		if s.Rail.Setup {
+			delete(g, "pending")
+			ready := make([]bool, len(s.Rail.Players))
+			for i := range ready {
+				ready[i] = len(s.Rail.SetupPending[i]) == 0
+			}
+			g["setupReady"] = ready
+			if player >= 0 && player < len(ready) && !ready[player] {
+				g["pending"] = clone(s.Rail.SetupPending[player])
+			}
+		} else if player != s.Turn {
 			delete(g, "pending")
 		}
 	}

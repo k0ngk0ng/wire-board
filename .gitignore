@@ -7,7 +7,10 @@ wire-board
 *.db-shm
 *.db-wal
 .env
+config/secrets
+config/secrets/
 .image.env
+.previous-image
 .update.*
 backups/
 dist/

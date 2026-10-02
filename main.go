@@ -29,7 +29,7 @@ func main() {
 	if e != nil {
 		log.Fatal(e)
 	}
-	app, e := server.New(server.Config{DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"), Origin: os.Getenv("PUBLIC_ORIGIN"), SecureCookie: os.Getenv("COOKIE_SECURE") == "true"}, files)
+	app, e := server.New(server.Config{DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"), Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"), SecureCookie: os.Getenv("COOKIE_SECURE") == "true"}, files)
 	if e != nil {
 		log.Fatal(e)
 	}

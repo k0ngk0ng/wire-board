@@ -11,17 +11,24 @@ import (
 var railJSON []byte
 
 type City struct {
-	ID   int     `json:"id"`
-	Name string  `json:"name"`
-	X    float64 `json:"x"`
-	Y    float64 `json:"y"`
+	ID    int       `json:"id"`
+	Name  string    `json:"name"`
+	X     float64   `json:"x"`
+	Y     float64   `json:"y"`
+	Label []float64 `json:"label,omitempty"`
 }
 type Route struct {
-	ID     int `json:"id"`
-	A      int `json:"a"`
-	B      int `json:"b"`
-	Length int `json:"length"`
-	Color  int `json:"color"`
+	ID       int            `json:"id"`
+	A        int            `json:"a"`
+	B        int            `json:"b"`
+	Length   int            `json:"length"`
+	Color    int            `json:"color"`
+	Segments []RouteSegment `json:"segments,omitempty"`
+}
+type RouteSegment struct {
+	X     float64 `json:"x"`
+	Y     float64 `json:"y"`
+	Angle float64 `json:"angle"`
 }
 type Ticket struct {
 	ID       int  `json:"id"`
@@ -54,6 +61,7 @@ func MapData() RailData {
 }
 
 type RailPlayer struct {
+	Eliminated  bool     `json:"eliminated,omitempty"`
 	Hand        []int    `json:"hand"`
 	Tickets     []Ticket `json:"tickets"`
 	Trains      int      `json:"trains"`
@@ -65,6 +73,7 @@ type RailPlayer struct {
 	Completed   int      `json:"completed"`
 }
 type Rail struct {
+	SetupPending  [][]Ticket   `json:"setupPending,omitempty"`
 	Deck          []int        `json:"deck"`
 	Discard       []int        `json:"discard"`
 	Face          []int        `json:"face"`
@@ -99,8 +108,11 @@ func (s *State) initRail(n int) {
 		}
 	}
 	g.refill()
-	g.Pending = append([]Ticket{}, g.TicketDeck[:3]...)
-	g.TicketDeck = g.TicketDeck[3:]
+	g.SetupPending = make([][]Ticket, n)
+	for i := range g.Players {
+		g.SetupPending[i] = append([]Ticket{}, g.TicketDeck[:3]...)
+		g.TicketDeck = g.TicketDeck[3:]
+	}
 	s.Rail = g
 	s.Phase = "tickets"
 }
@@ -119,6 +131,13 @@ func (g *Rail) draw() (int, bool) {
 }
 func (g *Rail) refill() {
 	for attempt := 0; ; attempt++ {
+		for i, c := range g.Face {
+			if c < 0 {
+				if replacement, ok := g.draw(); ok {
+					g.Face[i] = replacement
+				}
+			}
+		}
 		for len(g.Face) < 5 {
 			c, ok := g.draw()
 			if !ok {
@@ -131,7 +150,7 @@ func (g *Rail) refill() {
 		for _, c := range g.Face {
 			if c == 8 {
 				wild++
-			} else {
+			} else if c >= 0 {
 				nonWild++
 			}
 		}
@@ -154,6 +173,9 @@ func (g *Rail) refill() {
 			g.Face = []int{}
 			rest := []int{}
 			for _, c := range pool {
+				if c < 0 {
+					continue
+				}
 				if c != 8 && len(g.Face) < 3 {
 					g.Face = append(g.Face, c)
 				} else {
@@ -171,7 +193,11 @@ func (g *Rail) refill() {
 			}
 			return
 		}
-		g.Discard = append(g.Discard, g.Face...)
+		for _, c := range g.Face {
+			if c >= 0 {
+				g.Discard = append(g.Discard, c)
+			}
+		}
 		g.Face = []int{}
 	}
 }
@@ -244,14 +270,14 @@ func (s *State) applyRail(a Action) error {
 				return errors.New("牌堆和弃牌堆均已空")
 			}
 		} else {
-			if a.Slot < 0 || a.Slot >= len(g.Face) {
+			if a.Slot < 0 || a.Slot >= len(g.Face) || g.Face[a.Slot] < 0 {
 				return errors.New("这张公开牌已不存在")
 			}
 			c = g.Face[a.Slot]
 			if c == 8 && g.Drawn > 0 {
 				return errors.New("第二张不能拿公开的万能列车牌")
 			}
-			g.Face = append(g.Face[:a.Slot], g.Face[a.Slot+1:]...)
+			g.Face[a.Slot] = -1
 		}
 		p.Hand[c]++
 		g.Drawn++
@@ -327,7 +353,7 @@ func (s *State) applyRail(a Action) error {
 		}
 		g.Passes++
 		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 无可用行动，跳过", s.Turn+1))
-		if g.Passes >= len(g.Players) {
+		if g.Passes >= g.activePlayers() {
 			s.railFinish()
 		} else {
 			s.railNext()
@@ -342,7 +368,7 @@ func (g *Rail) canDrawSecond() bool {
 		return true
 	}
 	for _, c := range g.Face {
-		if c != 8 {
+		if c >= 0 && c != 8 {
 			return true
 		}
 	}
@@ -352,24 +378,41 @@ func (s *State) railNext() {
 	g := s.Rail
 	if g.LastRemaining >= 0 {
 		g.LastRemaining--
-	} else if g.Players[s.Turn].Trains <= 2 {
+	} else if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Trains <= 2 {
 		g.LastRemaining = len(g.Players)
 	}
 	if g.LastRemaining == 0 {
 		s.railFinish()
 		return
 	}
-	s.Turn = (s.Turn + 1) % len(g.Players)
-	if s.Turn == 0 {
-		s.Round++
+	for range g.Players {
+		s.Turn = (s.Turn + 1) % len(g.Players)
+		if s.Turn == 0 {
+			s.Round++
+		}
+		if !g.Players[s.Turn].Eliminated {
+			break
+		}
+		if g.LastRemaining > 0 {
+			g.LastRemaining--
+			if g.LastRemaining == 0 {
+				s.railFinish()
+				return
+			}
+		}
 	}
 	s.Phase = "turn"
 	g.Drawn = 0
 }
 func (s *State) railHasMove() bool {
 	g := s.Rail
-	if len(g.Deck)+len(g.Discard)+len(g.Face)+len(g.TicketDeck) > 0 {
+	if len(g.Deck)+len(g.Discard)+len(g.TicketDeck) > 0 {
 		return true
+	}
+	for _, c := range g.Face {
+		if c >= 0 {
+			return true
+		}
 	}
 	p := g.Players[s.Turn]
 	for _, r := range MapData().Routes {
@@ -467,6 +510,9 @@ func (s *State) railFinish() {
 	longest := 0
 	for i := range g.Players {
 		p := &g.Players[i]
+		if p.Eliminated {
+			continue
+		}
 		p.Longest = Longest(g.Owners, i)
 		longest = max(longest, p.Longest)
 		for j, t := range p.Tickets {
@@ -483,6 +529,9 @@ func (s *State) railFinish() {
 	best, completed, bonus := -999, -1, -1
 	for i := range g.Players {
 		p := &g.Players[i]
+		if p.Eliminated {
+			continue
+		}
 		if p.Longest == longest && longest > 0 {
 			p.Bonus = 10
 		}
