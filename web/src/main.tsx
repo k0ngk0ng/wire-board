@@ -1385,6 +1385,17 @@ function Players({ room }: { room: Room }) {
               )}
               {g.splendor && (
                 <div className="mini-resources tokens-mini">
+                  <span
+                    className="token-total"
+                    title="当前持有的宝石总数，包含黄金；回合结束时最多保留 10 枚"
+                  >
+                    宝石{" "}
+                    {g.splendor.players[i].tokens.reduce(
+                      (sum, n) => sum + n,
+                      0,
+                    )}{" "}
+                    / 10
+                  </span>
                   {g.splendor.players[i].tokens.map((n, c) => (
                     <span key={c} title={`${gemNames[c]}筹码`}>
                       <i style={{ background: gemColors[c] }} />
