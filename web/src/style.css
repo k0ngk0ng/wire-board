@@ -3243,3 +3243,20 @@ label small {
 .train-deck small {
   opacity: 1;
 }
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.payment-grid label {
+  margin-bottom: 0;
+  font-size: 11px;
+}
+.payment-grid select {
+  font-size: 11px;
+  padding: 9px;
+}
+.payment-grid p {
+  grid-column: 1 / -1;
+}

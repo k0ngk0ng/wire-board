@@ -592,3 +592,19 @@ func TestFullSplendorGame(t *testing.T) {
 		}
 	}
 }
+
+func TestSplendorChosenGoldPayment(t *testing.T) {
+	s := mustGame(t, "splendor", 2)
+	s.Splendor.Market[0][0] = Card{ID: 999, Tier: 1, Color: 2, Cost: []int{2, 1, 0, 0, 0}}
+	p := &s.Splendor.Players[0]
+	p.Bonus[0] = 1
+	p.Tokens = []int{1, 1, 0, 0, 0, 1}
+	reject(t, s, Action{Type: "buy", Card: 999, Tokens: []int{1, 1, 0, 0, 0, 1}}) // Overpayment.
+	reject(t, s, Action{Type: "buy", Card: 999, Tokens: []int{0, 1, 0, 0, 0, 0}}) // Missing gold.
+	reject(t, s, Action{Type: "buy", Card: 999, Tokens: []int{-1, 1, 0, 0, 0, 2}})
+	reject(t, s, Action{Type: "buy", Card: 999, Tokens: []int{1, 1}})
+	apply(t, s, Action{Type: "buy", Card: 999, Tokens: []int{0, 1, 0, 0, 0, 1}})
+	if p.Tokens[0] != 1 || p.Tokens[1] != 0 || p.Tokens[5] != 0 || p.Bonus[2] != 1 {
+		t.Fatalf("chosen gold payment not respected: %+v", p)
+	}
+}

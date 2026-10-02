@@ -1526,6 +1526,20 @@ function SplendorBoard({
   const [tokens, setTokens] = useState<number[]>(Array(6).fill(0));
   const [selected, setSelected] = useState<Card>();
   const [collection, setCollection] = useState(false);
+  const [payment, setPayment] = useState<number[]>(Array(6).fill(0));
+  const selectCard = (card: Card) => {
+    const spend = card.cost.map((n, i) =>
+      Math.min(Math.max(0, n - p.bonus[i]), p.tokens[i]),
+    );
+    spend.push(
+      card.cost.reduce(
+        (total, n, i) => total + Math.max(0, n - p.bonus[i]) - spend[i],
+        0,
+      ),
+    );
+    setPayment(spend);
+    setSelected(card);
+  };
   useEffect(() => {
     setTokens(Array(6).fill(0));
     setSelected(undefined);
@@ -1535,7 +1549,7 @@ function SplendorBoard({
   const pay = selected
     ? selected.cost.map((n, i) => Math.max(0, n - p.bonus[i]))
     : [];
-  const gold = pay.reduce((a, n, i) => a + Math.max(0, n - p.tokens[i]), 0);
+  const gold = payment[5];
   const affordable = gold <= p.tokens[5];
   const reserved = selected && p.reserved?.some((c) => c.id === selected.id);
   return (
@@ -1582,7 +1596,7 @@ function SplendorBoard({
                 key={c.id}
                 card={c}
                 selected={selected?.id === c.id}
-                onClick={() => setSelected(c)}
+                onClick={() => selectCard(c)}
               />
             ))}
           </div>
@@ -1669,7 +1683,7 @@ function SplendorBoard({
                 key={c.id}
                 card={c}
                 selected={selected?.id === c.id}
-                onClick={() => setSelected(c)}
+                onClick={() => selectCard(c)}
               />
             ))
           ) : (
@@ -1759,11 +1773,51 @@ function SplendorBoard({
               </p>
             </div>
           </div>
+          {pay.some((n) => n > 0) && (
+            <div className="payment-grid">
+              {pay.map(
+                (need, i) =>
+                  need > 0 && (
+                    <label key={i}>
+                      {gemNames[i]} · 需要 {need}
+                      <select
+                        aria-label={`支付${gemNames[i]}数量`}
+                        value={payment[i]}
+                        onChange={(e) => {
+                          const next = [...payment];
+                          next[i] = Number(e.target.value);
+                          next[5] = pay.reduce(
+                            (total, n, c) => total + n - next[c],
+                            0,
+                          );
+                          setPayment(next);
+                        }}
+                      >
+                        {Array.from(
+                          { length: Math.min(need, p.tokens[i]) + 1 },
+                          (_, n) => (
+                            <option key={n} value={n}>
+                              {n} 枚{gemNames[i]} + {need - n} 枚黄金
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </label>
+                  ),
+              )}
+              <p className="muted small">
+                本次支付黄金 {gold} 枚，你持有 {p.tokens[5]}{" "}
+                枚。可主动使用黄金保留其他宝石。
+              </p>
+            </div>
+          )}
           <div className="form-grid">
             <button
               className="primary"
               disabled={!taking || busy || !affordable}
-              onClick={() => void act({ type: "buy", card: selected.id })}
+              onClick={() =>
+                void act({ type: "buy", card: selected.id, tokens: payment })
+              }
             >
               {affordable ? "购买卡牌" : "宝石不足"}
             </button>
@@ -2515,7 +2569,7 @@ function Rules({ kind }: { kind: string }) {
             </li>
             <li>
               <b>购买：</b>
-              先扣除已购卡牌的永久折扣，再支付宝石，黄金可补足不足部分。
+              先扣除已购卡牌的永久折扣，再支付宝石，黄金可替代任意颜色，可自行调整支付组合。
             </li>
             <li>
               <b>预留：</b>
