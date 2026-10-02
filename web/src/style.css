@@ -4076,3 +4076,56 @@ label small {
 .waiting-actions {
   flex-wrap: wrap;
 }
+/* Reserved cards need their own compact layout: full-size costs used to wrap
+   above the top of the small card and cover its illustration. */
+.splendor-board .reserved .dev-card {
+  width: 96px;
+  height: 82px;
+  min-height: 0;
+  flex: 0 0 auto;
+}
+.splendor-board .reserved .dev-card .card-top {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 23px;
+  padding: 2px 5px;
+}
+.splendor-board .reserved .dev-card .card-top strong {
+  font-size: 17px;
+}
+.splendor-board .reserved .dev-card .card-top svg {
+  width: 20px;
+  height: 20px;
+}
+.splendor-board .reserved .dev-card > .costs {
+  left: 3px;
+  right: auto;
+  bottom: 10px;
+  width: auto;
+  max-width: calc(100% - 6px);
+  padding: 2px;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+.splendor-board .reserved .dev-card .cost {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  font-size: 11px;
+}
+.splendor-board .reserved .dev-card .card-id {
+  font-size: 7px;
+}
+.splendor-board .reserved > span {
+  flex-shrink: 0;
+}
+@media (max-width: 850px) {
+  .splendor-board .reserved {
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+  .splendor-board .reserved .dev-card {
+    width: 84px;
+    height: 104px;
+  }
+}
