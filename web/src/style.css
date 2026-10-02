@@ -3229,3 +3229,17 @@ label small {
     grid-template-columns: 1fr;
   }
 }
+.map-controls > span,
+.map-controls > div,
+.map-caption,
+.ticket-deck,
+.ticket-label,
+.ticket-card > small {
+  color: #70613f;
+}
+.train-market .section-line > small {
+  color: #5d6c57;
+}
+.train-deck small {
+  opacity: 1;
+}

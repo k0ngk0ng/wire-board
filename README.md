@@ -7,6 +7,12 @@
 - **Go + React/TypeScript + SQLite + WebSocket**。前端嵌入 Go 程序，单实例，无 Redis、外部数据库或运行时 CDN。游戏规则和隐藏信息由服务器管理。
 - 原版资源配色、暖白与深绿大厅、SVG 可缩放铁路地图。声音由浏览器本地合成，可静音。电脑、平板优先；窄屏地图可以放大并滚动。
 
+## 界面预览
+
+![围桌大厅](docs/screenshots/lobby.png)
+
+[璀璨宝石桌面](docs/screenshots/splendor.png) · [铁路环游桌面](docs/screenshots/rail.png) · [窄屏示例](docs/screenshots/rail-mobile.png) · [验证记录](docs/verification.md)
+
 ## Linux amd64 部署
 
 GitHub Actions 自动产出 Linux amd64 压缩包、校验和与 `ghcr.io/k0ngk0ng/wire-board` 容器镜像。每次 main push 会测试并发布镜像；`v*` 标签另外创建 GitHub Release。它不自动登录或修改你的服务器。
