@@ -52,6 +52,7 @@ import { Chat } from "./chat";
 import { LogLine } from "./log-line";
 import { useRailMapControls } from "./rail-map-controls";
 import { useTurnTitle } from "./turn-title";
+import { ProfileContext, PlayerName, ProfilePage } from "./profiles";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { AnimatedSlot } from "./animated-slot";
 const AssetsContext = createContext("");
@@ -346,6 +347,7 @@ function App() {
   const [joinMode, setJoinMode] = useState<"join" | "watch">("join");
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
+  const [profileID, setProfileID] = useState("");
   const [sound, setSound] = useState(
     () => localStorage.getItem("wb_sound") !== "off",
   );
@@ -518,346 +520,367 @@ function App() {
     );
   const room = state.room;
   return (
-    <AssetsContext.Provider value={state.assetsBaseURL || ""}>
-      <div
-        className={state.assetsBaseURL ? "with-artwork" : ""}
-        style={
-          state.assetsBaseURL
-            ? ({
-                "--splendor-cards": `url("${state.assetsBaseURL}/splendor/cards.webp")`,
-                "--splendor-nobles": `url("${state.assetsBaseURL}/splendor/nobles.webp")`,
-                "--splendor-tokens": `url("${state.assetsBaseURL}/splendor/tokens.webp")`,
-                "--rail-cards": `url("${state.assetsBaseURL}/rail/train-cards.webp")`,
-              } as React.CSSProperties)
-            : undefined
-        }
-        onPointerDown={() => {
-          if (sound) enableAudio();
-        }}
-        onKeyDown={() => {
-          if (sound) enableAudio();
-        }}
-      >
-        <header className="topbar">
-          <Logo />
-          <nav>
-            <span className="nav-active">{room ? "游戏牌桌" : "桌游大厅"}</span>
-            <span className="nav-caption">让相聚，多一局。</span>
-          </nav>
-          <div className="header-right">
-            <span
-              className={`connection ${online ? "" : "offline"}`}
-              title={online ? "实时连接正常" : "正在重连，座位与进度已保留"}
-            >
-              {online ? <Wifi size={15} /> : <WifiOff size={15} />}
-              <span>{online ? "已连接" : "重连中"}</span>
-            </span>
-            <button
-              className="icon-button"
-              aria-label={sound ? "关闭音效" : "开启音效"}
-              title={sound ? "音效已开启，点击静音" : "音效已关闭，点击开启"}
-              onClick={() => {
-                setSound(!sound);
-                localStorage.setItem("wb_sound", sound ? "off" : "on");
-                if (!sound) void previewAudio();
+    <ProfileContext.Provider value={setProfileID}>
+      <AssetsContext.Provider value={state.assetsBaseURL || ""}>
+        <div
+          className={state.assetsBaseURL ? "with-artwork" : ""}
+          style={
+            state.assetsBaseURL
+              ? ({
+                  "--splendor-cards": `url("${state.assetsBaseURL}/splendor/cards.webp")`,
+                  "--splendor-nobles": `url("${state.assetsBaseURL}/splendor/nobles.webp")`,
+                  "--splendor-tokens": `url("${state.assetsBaseURL}/splendor/tokens.webp")`,
+                  "--rail-cards": `url("${state.assetsBaseURL}/rail/train-cards.webp")`,
+                } as React.CSSProperties)
+              : undefined
+          }
+          onPointerDown={() => {
+            if (sound) enableAudio();
+          }}
+          onKeyDown={() => {
+            if (sound) enableAudio();
+          }}
+        >
+          <header className="topbar">
+            <Logo />
+            <nav>
+              <span className="nav-active">
+                {room ? "游戏牌桌" : "桌游大厅"}
+              </span>
+              <span className="nav-caption">让相聚，多一局。</span>
+            </nav>
+            <div className="header-right">
+              <span
+                className={`connection ${online ? "" : "offline"}`}
+                title={online ? "实时连接正常" : "正在重连，座位与进度已保留"}
+              >
+                {online ? <Wifi size={15} /> : <WifiOff size={15} />}
+                <span>{online ? "已连接" : "重连中"}</span>
+              </span>
+              <button
+                className="icon-button"
+                aria-label={sound ? "关闭音效" : "开启音效"}
+                title={sound ? "音效已开启，点击静音" : "音效已关闭，点击开启"}
+                onClick={() => {
+                  setSound(!sound);
+                  localStorage.setItem("wb_sound", sound ? "off" : "on");
+                  if (!sound) void previewAudio();
+                }}
+              >
+                {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
+              </button>
+              <button
+                className="sound-preview"
+                onClick={() => void previewAudio()}
+              >
+                试听音效
+              </button>
+              <button
+                className="avatar"
+                aria-label="我的战绩与好友"
+                onClick={() => setProfileID(state.user.id)}
+              >
+                {state.user.name[0]}
+              </button>
+              <span className="username">
+                <PlayerName user={state.user} />
+              </span>
+              <button
+                className="icon-button"
+                aria-label="退出登录"
+                onClick={() => void run(() => api("/logout", {}))}
+              >
+                <LogOut size={17} />
+              </button>
+            </div>
+          </header>
+          {error && (
+            <div className="toast error" role="alert">
+              {error}
+              <button aria-label="关闭错误" onClick={() => setError("")}>
+                <X size={16} />
+              </button>
+            </div>
+          )}
+          {notice && (
+            <div className="toast" role="status">
+              {notice}
+              <button aria-label="关闭提示" onClick={() => setNotice("")}>
+                <X size={16} />
+              </button>
+            </div>
+          )}
+          {!room ? (
+            <Lobby
+              state={state}
+              onCreate={setCreate}
+              onJoin={(r) => {
+                setJoinMode("join");
+                if (r.locked) setJoin(r);
+                else void run(() => command(r, "join"));
               }}
+              onWatch={(r) => {
+                setJoinMode("watch");
+                if (r.locked) setJoin(r);
+                else void run(() => api(`/rooms/${r.id}/watch`, {}));
+              }}
+              busy={busy}
+            />
+          ) : (
+            <main
+              className={`room-page ${room.game ? "playing" : ""} game-${room.kind}`}
             >
-              {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
-            <button
-              className="sound-preview"
-              onClick={() => void previewAudio()}
-            >
-              试听音效
-            </button>
-            <span className="avatar">{state.user.name[0]}</span>
-            <span className="username">{state.user.name}</span>
-            <button
-              className="icon-button"
-              aria-label="退出登录"
-              onClick={() => void run(() => api("/logout", {}))}
-            >
-              <LogOut size={17} />
-            </button>
-          </div>
-        </header>
-        {error && (
-          <div className="toast error" role="alert">
-            {error}
-            <button aria-label="关闭错误" onClick={() => setError("")}>
-              <X size={16} />
-            </button>
-          </div>
-        )}
-        {notice && (
-          <div className="toast" role="status">
-            {notice}
-            <button aria-label="关闭提示" onClick={() => setNotice("")}>
-              <X size={16} />
-            </button>
-          </div>
-        )}
-        {!room ? (
-          <Lobby
-            state={state}
-            onCreate={setCreate}
-            onJoin={(r) => {
-              setJoinMode("join");
-              if (r.locked) setJoin(r);
-              else void run(() => command(r, "join"));
-            }}
-            onWatch={(r) => {
-              setJoinMode("watch");
-              if (r.locked) setJoin(r);
-              else void run(() => api(`/rooms/${r.id}/watch`, {}));
-            }}
-            busy={busy}
-          />
-        ) : (
-          <main
-            className={`room-page ${room.game ? "playing" : ""} game-${room.kind}`}
-          >
-            <div className="room-heading">
-              <div>
-                <span className="eyebrow">
-                  {gameName(room.kind)} <span> / </span> 牌桌{" "}
-                  {room.id.toUpperCase()}
-                </span>
-                <h1>{room.name}</h1>
-              </div>
-              <div className="room-tools">
-                {room.spectating && (
-                  <button
-                    className="subtle"
-                    disabled={busy}
-                    onClick={() =>
-                      void run(() =>
-                        api(`/rooms/${room.id}/watch`, { leave: true }),
-                      )
-                    }
-                  >
-                    <ArrowLeft size={16} />
-                    离开观战
-                  </button>
-                )}
-                {room.game && (
-                  <button
-                    className="subtle"
-                    aria-haspopup="dialog"
-                    onClick={() => setJournalRoom(room.id)}
-                  >
-                    <ScrollText size={16} />
-                    对局日志
-                  </button>
-                )}
-                <button className="subtle" onClick={() => setRules(true)}>
-                  <BookOpen size={16} />
-                  玩法速查
-                </button>
-                <button
-                  className="subtle"
-                  onClick={async () => {
-                    try {
-                      await navigator.clipboard.writeText(
-                        `${location.origin}/?room=${room.id}`,
-                      );
-                      setNotice("房间链接已复制，发给朋友即可");
-                    } catch {
-                      setNotice(`房间编号：${room.id}`);
-                    }
-                  }}
-                >
-                  <Copy size={16} />
-                  邀请朋友
-                </button>
-                {!room.spectating && room.status !== "playing" && (
-                  <button
-                    className="subtle"
-                    disabled={busy}
-                    onClick={() => roomCommand("leave")}
-                  >
-                    <ArrowLeft size={16} />
-                    离开房间
-                  </button>
-                )}
-                {room.status === "playing" &&
-                  !room.spectating &&
-                  room.host === state.user.id && (
+              <div className="room-heading">
+                <div>
+                  <span className="eyebrow">
+                    {gameName(room.kind)} <span> / </span> 牌桌{" "}
+                    {room.id.toUpperCase()}
+                  </span>
+                  <h1>{room.name}</h1>
+                </div>
+                <div className="room-tools">
+                  {room.spectating && (
                     <button
-                      className="subtle danger"
+                      className="subtle"
                       disabled={busy}
-                      onClick={() => {
-                        if (
-                          confirm(
-                            "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
-                          )
+                      onClick={() =>
+                        void run(() =>
+                          api(`/rooms/${room.id}/watch`, { leave: true }),
                         )
-                          roomCommand("close");
-                      }}
+                      }
                     >
-                      结束牌桌
+                      <ArrowLeft size={16} />
+                      离开观战
                     </button>
                   )}
-              </div>
-            </div>
-            {room.spectating && (
-              <div className="spectator-notice">
-                <Eye size={16} />
-                观战中 · 仅展示公开牌面与玩家信息
-              </div>
-            )}
-            {room.status === "waiting" ? (
-              <Waiting
-                room={room}
-                busy={busy}
-                host={!room.spectating && room.host === state.user.id}
-                command={roomCommand}
-              />
-            ) : room.status === "closed" ? (
-              <div className="closed-panel">
-                <Flag size={40} />
-                <h2>这张牌桌已结束</h2>
-                <p>休息一下，或者准备下一局。</p>
-                {!room.spectating && room.host === state.user.id && (
-                  <button
-                    className="primary"
-                    disabled={busy}
-                    onClick={() => roomCommand("rematch")}
-                  >
-                    <RotateCcw size={18} />
-                    再开一局
+                  {room.game && (
+                    <button
+                      className="subtle"
+                      aria-haspopup="dialog"
+                      onClick={() => setJournalRoom(room.id)}
+                    >
+                      <ScrollText size={16} />
+                      对局日志
+                    </button>
+                  )}
+                  <button className="subtle" onClick={() => setRules(true)}>
+                    <BookOpen size={16} />
+                    玩法速查
                   </button>
-                )}
-              </div>
-            ) : (
-              <>
-                <Players room={room} />
-                {room.game?.finished && (
-                  <Results
-                    room={room}
-                    host={!room.spectating && room.host === state.user.id}
-                    busy={busy}
-                    command={roomCommand}
-                  />
-                )}
-                <div className="game-layout">
-                  <div className="game-main">
-                    {room.kind === "splendor" ? (
-                      <SplendorBoard room={room} act={act} busy={busy} />
-                    ) : (
-                      <RailBoard room={room} act={act} busy={busy} />
+                  <button
+                    className="subtle"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(
+                          `${location.origin}/?room=${room.id}`,
+                        );
+                        setNotice("房间链接已复制，发给朋友即可");
+                      } catch {
+                        setNotice(`房间编号：${room.id}`);
+                      }
+                    }}
+                  >
+                    <Copy size={16} />
+                    邀请朋友
+                  </button>
+                  {!room.spectating && room.status !== "playing" && (
+                    <button
+                      className="subtle"
+                      disabled={busy}
+                      onClick={() => roomCommand("leave")}
+                    >
+                      <ArrowLeft size={16} />
+                      离开房间
+                    </button>
+                  )}
+                  {room.status === "playing" &&
+                    !room.spectating &&
+                    room.host === state.user.id && (
+                      <button
+                        className="subtle danger"
+                        disabled={busy}
+                        onClick={() => {
+                          if (
+                            confirm(
+                              "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
+                            )
+                          )
+                            roomCommand("close");
+                        }}
+                      >
+                        结束牌桌
+                      </button>
                     )}
-                  </div>
-                  <aside className="game-sidebar">
-                    <Turn
+                </div>
+              </div>
+              {room.spectating && (
+                <div className="spectator-notice">
+                  <Eye size={16} />
+                  观战中 · 仅展示公开牌面与玩家信息
+                </div>
+              )}
+              {room.status === "waiting" ? (
+                <Waiting
+                  room={room}
+                  busy={busy}
+                  host={!room.spectating && room.host === state.user.id}
+                  command={roomCommand}
+                />
+              ) : room.status === "closed" ? (
+                <div className="closed-panel">
+                  <Flag size={40} />
+                  <h2>这张牌桌已结束</h2>
+                  <p>休息一下，或者准备下一局。</p>
+                  {!room.spectating && room.host === state.user.id && (
+                    <button
+                      className="primary"
+                      disabled={busy}
+                      onClick={() => roomCommand("rematch")}
+                    >
+                      <RotateCcw size={18} />
+                      再开一局
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <Players room={room} />
+                  {room.game?.finished && (
+                    <Results
                       room={room}
-                      serverNow={state.serverNow}
-                      receivedAt={state.receivedAt}
+                      host={!room.spectating && room.host === state.user.id}
                       busy={busy}
                       command={roomCommand}
                     />
-                  </aside>
-                </div>
-              </>
-            )}
-          </main>
-        )}
-        {!room && (
-          <footer>
-            围桌 WIRE BOARD <span>好游戏，和好朋友一起。</span>
-            <span>私人牌桌 · 自动保存</span>
-          </footer>
-        )}
-        {create && (
-          <Create
-            kind={create}
-            busy={busy}
-            onClose={() => setCreate("")}
-            onSubmit={(body) =>
-              void run(async () => {
-                await api("/rooms", body);
-                setCreate("");
-              })
-            }
-          />
-        )}
-        {join && (
-          <Modal
-            title={`${joinMode === "watch" ? "观战" : "加入"}「${join.name}」`}
-            onClose={() => setJoin(undefined)}
-          >
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const f = new FormData(e.currentTarget);
+                  )}
+                  <div className="game-layout">
+                    <div className="game-main">
+                      {room.kind === "splendor" ? (
+                        <SplendorBoard room={room} act={act} busy={busy} />
+                      ) : (
+                        <RailBoard room={room} act={act} busy={busy} />
+                      )}
+                    </div>
+                    <aside className="game-sidebar">
+                      <Turn
+                        room={room}
+                        serverNow={state.serverNow}
+                        receivedAt={state.receivedAt}
+                        busy={busy}
+                        command={roomCommand}
+                      />
+                    </aside>
+                  </div>
+                </>
+              )}
+            </main>
+          )}
+          {!room && (
+            <footer>
+              围桌 WIRE BOARD <span>好游戏，和好朋友一起。</span>
+              <span>私人牌桌 · 自动保存</span>
+            </footer>
+          )}
+          {create && (
+            <Create
+              kind={create}
+              busy={busy}
+              onClose={() => setCreate("")}
+              onSubmit={(body) =>
                 void run(async () => {
-                  if (joinMode === "watch")
-                    await api(`/rooms/${join.id}/watch`, {
-                      password: f.get("password"),
-                    });
-                  else
-                    await command(join, "join", {
-                      password: f.get("password"),
-                    });
-                  setJoin(undefined);
-                });
-              }}
+                  await api("/rooms", body);
+                  setCreate("");
+                })
+              }
+            />
+          )}
+          {join && (
+            <Modal
+              title={`${joinMode === "watch" ? "观战" : "加入"}「${join.name}」`}
+              onClose={() => setJoin(undefined)}
             >
-              <label>
-                房间密码
-                <input
-                  name="password"
-                  type="password"
-                  required
-                  autoComplete="off"
-                />
-              </label>
-              <button className="primary wide" disabled={busy}>
-                {joinMode === "watch" ? "开始观战" : "加入牌桌"}
-                <ArrowRight size={18} />
-              </button>
-            </form>
-          </Modal>
-        )}
-        {room?.game && journalRoom === room.id && (
-          <Modal title="对局日志" onClose={() => setJournalRoom("")}>
-            <p>最近的行动在最上方，最多保留 80 条记录。</p>
-            <div className="journal journal-dialog">
-              <ol tabIndex={0} aria-label="对局行动记录">
-                {room.game.log
-                  .slice(-80)
-                  .reverse()
-                  .map((line, i) => (
-                    <li key={`${room.version}-${i}`}>
-                      <LogLine line={line} seats={room.seats} />
-                    </li>
-                  ))}
-                {!room.game.log.length && <li>牌已洗好，祝你好运。</li>}
-              </ol>
-            </div>
-          </Modal>
-        )}
-        {room && (
-          <Chat
-            key={`${state.user.id}:${room.id}`}
-            room={room}
-            userId={state.user.id}
-            send={async (text, nonce) => {
-              await api(`/rooms/${room.id}/chat`, { text, nonce });
-              await refresh();
-            }}
-          />
-        )}
-        {rules && room && (
-          <Modal
-            title={`${gameName(room!.kind)} · 玩法速查`}
-            onClose={() => setRules(false)}
-          >
-            <Rules kind={room!.kind} />
-          </Modal>
-        )}
-      </div>
-    </AssetsContext.Provider>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const f = new FormData(e.currentTarget);
+                  void run(async () => {
+                    if (joinMode === "watch")
+                      await api(`/rooms/${join.id}/watch`, {
+                        password: f.get("password"),
+                      });
+                    else
+                      await command(join, "join", {
+                        password: f.get("password"),
+                      });
+                    setJoin(undefined);
+                  });
+                }}
+              >
+                <label>
+                  房间密码
+                  <input
+                    name="password"
+                    type="password"
+                    required
+                    autoComplete="off"
+                  />
+                </label>
+                <button className="primary wide" disabled={busy}>
+                  {joinMode === "watch" ? "开始观战" : "加入牌桌"}
+                  <ArrowRight size={18} />
+                </button>
+              </form>
+            </Modal>
+          )}
+          {profileID && (
+            <Modal title="玩家页面" onClose={() => setProfileID("")}>
+              <ProfilePage
+                key={profileID}
+                id={profileID}
+                self={state.user.id}
+              />
+            </Modal>
+          )}
+          {room?.game && journalRoom === room.id && (
+            <Modal title="对局日志" onClose={() => setJournalRoom("")}>
+              <p>最近的行动在最上方，最多保留 80 条记录。</p>
+              <div className="journal journal-dialog">
+                <ol tabIndex={0} aria-label="对局行动记录">
+                  {room.game.log
+                    .slice(-80)
+                    .reverse()
+                    .map((line, i) => (
+                      <li key={`${room.version}-${i}`}>
+                        <LogLine line={line} seats={room.seats} />
+                      </li>
+                    ))}
+                  {!room.game.log.length && <li>牌已洗好，祝你好运。</li>}
+                </ol>
+              </div>
+            </Modal>
+          )}
+          {room && (
+            <Chat
+              key={`${state.user.id}:${room.id}`}
+              room={room}
+              userId={state.user.id}
+              send={async (text, nonce) => {
+                await api(`/rooms/${room.id}/chat`, { text, nonce });
+                await refresh();
+              }}
+            />
+          )}
+          {rules && room && (
+            <Modal
+              title={`${gameName(room!.kind)} · 玩法速查`}
+              onClose={() => setRules(false)}
+            >
+              <Rules kind={room!.kind} />
+            </Modal>
+          )}
+        </div>
+      </AssetsContext.Provider>
+    </ProfileContext.Provider>
   );
 }
 function Auth({
@@ -1002,7 +1025,11 @@ function Lobby({
 }) {
   const [filter, setFilter] = useState("all");
   const rooms = state.rooms
-    .filter((r) => filter === "all" || r.kind === filter)
+    .filter(
+      (r) =>
+        (r.status === "waiting" || r.status === "playing") &&
+        (filter === "all" || r.kind === filter),
+    )
     .sort((a, b) => b.updated - a.updated);
   const invited = new URLSearchParams(location.search).get("room");
   return (
@@ -1131,7 +1158,7 @@ function Lobby({
                       style={{ background: playerColors[i] }}
                       title={p.name}
                     >
-                      {p.name[0]}
+                      <PlayerName user={p}>{p.name[0]}</PlayerName>
                     </span>
                   ))}
                   <small>
@@ -1141,7 +1168,7 @@ function Lobby({
                 <span className={`status ${r.status}`}>
                   {statusName[r.status]}
                 </span>
-                {r.status === "playing" || r.status === "finished" ? (
+                {r.status === "playing" ? (
                   <button
                     className="join-button"
                     disabled={busy}
@@ -1350,7 +1377,7 @@ function Waiting({
                   {p ? p.name[0] : <Plus size={22} />}
                 </span>
                 <h3>
-                  {p ? p.name : "虚位以待"}
+                  {p ? <PlayerName user={p} /> : "虚位以待"}
                   {p?.id === room.host && <Crown size={14} />}
                   {p?.bot && <small className="bot-badge">AI</small>}
                 </h3>
@@ -1432,7 +1459,7 @@ function Players({ room }: { room: Room }) {
             </span>
             <div className="player-info">
               <strong>
-                {p.name}
+                <PlayerName user={p} />
                 {p.left && (
                   <small>
                     {g.splendor?.players[i].eliminated ||
@@ -1676,7 +1703,9 @@ function Results({
             const x = g.rail!.players[i];
             return (
               <div key={p.id}>
-                <strong>{p.name}</strong>
+                <strong>
+                  <PlayerName user={p} />
+                </strong>
                 <span>路线 {x.routeScore}</span>
                 <span>
                   任务 {x.ticketScore > 0 ? "+" : ""}
@@ -1730,16 +1759,18 @@ function DevCard({
   card,
   onClick,
   selected = false,
+  affordable = false,
 }: {
   card: Card;
   onClick?: () => void;
   selected?: boolean;
+  affordable?: boolean;
 }) {
   return (
     <button
-      className={`dev-card gem-${card.color} ${selected ? "selected" : ""}`}
+      className={`dev-card gem-${card.color} ${selected ? "selected" : ""} ${affordable ? "affordable" : ""}`}
       onClick={onClick}
-      aria-label={`${gemNames[card.color]}发展卡，${card.points}分，费用 ${card.cost
+      aria-label={`${affordable ? "可购买，" : ""}${gemNames[card.color]}发展卡，${card.points}分，费用 ${card.cost
         .map((n, i) => (n ? `${gemNames[i]}${n}` : ""))
         .filter(Boolean)
         .join("，")}`}
@@ -1752,6 +1783,7 @@ function DevCard({
         } as React.CSSProperties
       }
     >
+      {affordable && <span className="affordable-label">可购买</span>}
       <div className="card-top">
         <strong>{card.points}</strong>
         <Gemstone color={card.color} size={31} />
@@ -1840,6 +1872,14 @@ function SplendorBoard({
       score: 0,
     },
     mine = !room.spectating && g.turn === room.you && !g.finished;
+  const canAfford = (card: Card) =>
+    mine &&
+    g.phase === "turn" &&
+    room.status === "playing" &&
+    card.cost.reduce(
+      (sum, n, i) => sum + Math.max(0, n - p.bonus[i] - p.tokens[i]),
+      0,
+    ) <= p.tokens[5];
   const [tokens, setTokens] = useState<number[]>(Array(6).fill(0));
   const [selected, setSelected] = useState<Card>();
   const [blindTier, setBlindTier] = useState<number>();
@@ -1923,6 +1963,7 @@ function SplendorBoard({
                   {c ? (
                     <DevCard
                       card={c}
+                      affordable={canAfford(c)}
                       selected={selected?.id === c.id}
                       onClick={() => selectCard(c)}
                     />
@@ -2043,6 +2084,7 @@ function SplendorBoard({
                 <DevCard
                   key={c.id}
                   card={c}
+                  affordable={canAfford(c)}
                   selected={selected?.id === c.id}
                   onClick={() => selectCard(c)}
                 />
@@ -2277,9 +2319,28 @@ function TrainCard({
   disabled?: boolean;
   label?: string;
 }) {
+  const previousCount = useRef(count);
+  const [gained, setGained] = useState(0);
+  useEffect(() => {
+    if (
+      count !== undefined &&
+      previousCount.current !== undefined &&
+      count > previousCount.current
+    )
+      setGained((n) => n + 1);
+    previousCount.current = count;
+  }, [count]);
+  useEffect(() => {
+    if (!gained) return;
+    const timer = setTimeout(() => setGained(0), 900);
+    return () => clearTimeout(timer);
+  }, [gained]);
   return (
     <button
-      className={`train-card train-${color}`}
+      key={gained}
+      data-hand-color={count !== undefined ? color : undefined}
+      className={`train-card train-${color} ${gained ? "just-gained" : ""}`}
+      onAnimationEnd={() => setGained(0)}
       style={
         {
           "--train": trainColors[color],
@@ -2382,11 +2443,6 @@ function TicketCard({
   );
 }
 const wagonColors = ["blue", "red", "green", "yellow", "black"];
-function wagonViewBox(angle: number) {
-  // The artwork has 36 five-degree views, counterclockwise; route angles are clockwise.
-  const frame = Math.round((((-angle % 180) + 180) % 180) / 5) % 36;
-  return `${(frame % 6) * 160} ${Math.floor(frame / 6) * 160} 160 160`;
-}
 function RailMap({
   catalog,
   owners,
@@ -2421,7 +2477,7 @@ function RailMap({
               return next;
             });
         };
-        image.src = `${assets}/rail/wagons-${color}-v1.webp`;
+        image.src = `${assets}/rail/wagon-${color}-v2.webp`;
       });
     return () => {
       cancelled = true;
@@ -2480,7 +2536,7 @@ function RailMap({
             <rect width="1744" height="1125" fill="#ece8d8" />
             {assets && (
               <image
-                href={`${assets}/rail/map.webp`}
+                href={`${assets}/rail/map-unlabeled-v4.webp`}
                 width="1744"
                 height="1125"
               />
@@ -2537,24 +2593,16 @@ function RailMap({
                       )}
                       {claimed ? (
                         wagonReady[owner] ? (
-                          <g
-                            transform={`rotate(${-segment.angle})`}
+                          <image
+                            className="claimed-wagon"
+                            href={`${assets}/rail/wagon-${wagonColors[owner]}-v2.webp`}
+                            x="-33"
+                            y="-14"
+                            width="66"
+                            height="28"
+                            preserveAspectRatio="none"
                             pointerEvents="none"
-                          >
-                            <svg
-                              x="-44"
-                              y="-46"
-                              width="85"
-                              height="85"
-                              viewBox={wagonViewBox(segment.angle)}
-                            >
-                              <image
-                                href={`${assets}/rail/wagons-${wagonColors[owner]}-v1.webp`}
-                                width="960"
-                                height="960"
-                              />
-                            </svg>
-                          </g>
+                          />
                         ) : (
                           <g
                             fill={playerColors[owner]}
@@ -2624,14 +2672,16 @@ function RailMap({
                     stroke="#4d503c"
                     strokeWidth="2"
                   />
-                  <rect
-                    x={lx}
-                    y={ly}
-                    width={lw}
-                    height={lh}
-                    rx="5"
-                    fill="#f4f0e3"
-                  />
+                  {showCities && (
+                    <rect
+                      x={lx}
+                      y={ly}
+                      width={lw}
+                      height={lh}
+                      rx="5"
+                      fill="#f4f0e3"
+                    />
+                  )}
                   {showCities && (
                     <text
                       x={lx + lw / 2}
@@ -2671,6 +2721,7 @@ function RailBoard({
   const [wild, setWild] = useState(0);
   const [keep, setKeep] = useState<number[]>([]);
   const [ticketChoiceOpen, setTicketChoiceOpen] = useState(true);
+  const [confirmTickets, setConfirmTickets] = useState(false);
   const [highlight, setHighlight] = useState<Ticket>();
   const g = room.game!,
     r = g.rail!,
@@ -2694,6 +2745,7 @@ function RailBoard({
   }, []);
   useEffect(() => {
     setSelected(undefined);
+    setConfirmTickets(false);
   }, [g.turn, g.phase, g.round]);
   useEffect(() => {
     setKeep([]);
@@ -2793,6 +2845,35 @@ function RailBoard({
         </section>
       )}
 
+      {confirmTickets && (
+        <Modal
+          title="领取新的目的地任务"
+          onClose={() => setConfirmTickets(false)}
+        >
+          <p>
+            将抽取最多 3 张任务，至少保留 1
+            张，并消耗本回合。未完成的任务会在结算时扣分。
+          </p>
+          <div className="modal-actions">
+            <button
+              className="outline"
+              onClick={() => setConfirmTickets(false)}
+            >
+              取消
+            </button>
+            <button
+              className="primary"
+              disabled={!turn || busy || r.ticketsRemaining === 0}
+              onClick={() => {
+                setConfirmTickets(false);
+                void act({ type: "tickets" });
+              }}
+            >
+              确认领取
+            </button>
+          </div>
+        </Modal>
+      )}
       <HiddenDrawAnimation room={room} />
       <div className="rail-table">
         <RailMap
@@ -2825,6 +2906,7 @@ function RailBoard({
               <AnimatedSlot
                 key={i}
                 identity={`${c}:${r.faceVersion?.[i] ?? 0}`}
+                marker={i}
               >
                 {c < 0 ? (
                   <div className="train-card empty">牌堆已空</div>
@@ -2843,7 +2925,7 @@ function RailBoard({
             <button
               className="ticket-deck"
               disabled={!turn || busy || r.ticketsRemaining === 0}
-              onClick={() => void act({ type: "tickets" })}
+              onClick={() => setConfirmTickets(true)}
             >
               <Flag size={25} />
               <strong>领取目的地</strong>
@@ -2898,8 +2980,8 @@ function RailBoard({
           {room.seats.map((seat, i) => (
             <details key={seat.id}>
               <summary>
-                {seat.name} · 完成 {r.players[i].completed} 张 · 净得分{" "}
-                {r.players[i].ticketScore}
+                <PlayerName user={seat} /> · 完成 {r.players[i].completed} 张 ·
+                净得分 {r.players[i].ticketScore}
               </summary>
               <div className="tickets">
                 {r.players[i].tickets?.map((t) => (

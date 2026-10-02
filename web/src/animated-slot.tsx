@@ -10,8 +10,10 @@ import {
 export function AnimatedSlot({
   identity,
   children,
+  marker,
 }: {
   identity: string;
+  marker?: number;
   children: ReactNode;
 }) {
   const previous = useRef({ identity, children });
@@ -32,6 +34,7 @@ export function AnimatedSlot({
   }, [leaving]);
   return (
     <div
+      data-market-slot={marker}
       className={`card-slot ${leaving ? "is-changing" : ""}`}
       aria-busy={!!leaving}
     >

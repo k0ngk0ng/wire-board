@@ -154,3 +154,31 @@ func TestRailHiddenDrawEventsArePublicWithoutCardIdentity(t *testing.T) {
 		t.Fatal("event retention unbounded")
 	}
 }
+
+func TestRailAllDrawEventsPrivacyAndSource(t *testing.T) {
+	var first []RailDrawEvent
+	for color := 0; color < 9; color++ {
+		s := railLogGame(t)
+		s.Rail.Deck[0] = color
+		apply(t, s, Action{Type: "draw", Slot: -1})
+		if color == 0 {
+			first = s.Rail.DrawEvents
+		} else if !reflect.DeepEqual(first, s.Rail.DrawEvents) {
+			t.Fatal("hidden color leaked")
+		}
+		if first[0].Color != nil || first[0].Slot != -1 || first[0].Player != 0 {
+			t.Fatal(first)
+		}
+	}
+	s := railLogGame(t)
+	apply(t, s, Action{Type: "draw", Slot: 2})
+	e := s.Rail.DrawEvents[0]
+	if e.Color == nil || *e.Color != 2 || e.Slot != 2 || e.Player != 0 || s.Rail.DrawID != 1 {
+		t.Fatal(e)
+	}
+	apply(t, s, Action{Type: "draw", Slot: -1})
+	apply(t, s, Action{Type: "draw", Slot: 0})
+	if s.Rail.DrawEvents[2].Player != 1 || s.Rail.DrawEvents[1].Color != nil {
+		t.Fatal(s.Rail.DrawEvents)
+	}
+}

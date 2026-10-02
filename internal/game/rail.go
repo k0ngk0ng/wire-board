@@ -73,12 +73,21 @@ type RailPlayer struct {
 	Bonus       int      `json:"bonus"`
 	Completed   int      `json:"completed"`
 }
+type RailDrawEvent struct {
+	ID     uint64 `json:"id"`
+	Player int    `json:"player"`
+	Slot   int    `json:"slot"`
+	Color  *int   `json:"color,omitempty"`
+}
+
 type HiddenDrawEvent struct {
 	ID     uint64 `json:"id"`
 	Player int    `json:"player"`
 }
 
 type Rail struct {
+	DrawID           uint64            `json:"drawId,omitempty"`
+	DrawEvents       []RailDrawEvent   `json:"drawEvents,omitempty"`
 	HiddenDrawID     uint64            `json:"hiddenDrawId,omitempty"`
 	HiddenDrawEvents []HiddenDrawEvent `json:"hiddenDrawEvents,omitempty"`
 	SetupPending     [][]Ticket        `json:"setupPending,omitempty"`
@@ -296,6 +305,16 @@ func (s *State) applyRail(a Action) error {
 			}
 			g.Face[a.Slot] = -1
 			g.FaceVersion[a.Slot]++
+		}
+		g.DrawID++
+		event := RailDrawEvent{ID: g.DrawID, Player: s.Turn, Slot: a.Slot}
+		if a.Slot >= 0 {
+			color := c
+			event.Color = &color
+		}
+		g.DrawEvents = append(g.DrawEvents, event)
+		if len(g.DrawEvents) > 10 {
+			g.DrawEvents = g.DrawEvents[len(g.DrawEvents)-10:]
 		}
 		p.Hand[c]++
 		g.Drawn++

@@ -66,6 +66,9 @@ func (s *Server) runBots(now time.Time) {
 		if err == nil {
 			_, err = tx.Exec("UPDATE rooms SET snapshot=? WHERE id=?", snapshot, id)
 			if err == nil {
+				err = archiveGame(tx, &next)
+			}
+			if err == nil {
 				_, err = tx.Exec("INSERT INTO actions VALUES(?,?,?,?,?,?)", id, next.Seats[player].ID, fmt.Sprintf("bot-%d", next.Version), next.Version, record, now.Unix())
 			}
 			if err == nil {
