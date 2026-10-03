@@ -6,6 +6,75 @@ import (
 	"testing"
 )
 
+func TestSplendorTokenAnimationEventsFollowActualTransfers(t *testing.T) {
+	s := mustGame(t, "splendor", 2)
+	take := []int{2, 0, 0, 0, 0, 0}
+	apply(t, s, Action{Type: "take", Tokens: take})
+	take[0] = 99 // The journal must not retain the caller's mutable slice.
+	apply(t, s, Action{Type: "take", Tokens: []int{0, 1, 1, 1, 0, 0}})
+	apply(t, s, Action{Type: "reserve", Tier: 1})
+	want := []SplendorTokenEvent{
+		{ID: 1, Player: 0, Action: "take", Tokens: []int{2, 0, 0, 0, 0, 0}},
+		{ID: 2, Player: 1, Action: "take", Tokens: []int{0, 1, 1, 1, 0, 0}},
+		{ID: 3, Player: 0, Action: "gold", Tokens: []int{0, 0, 0, 0, 0, 1}},
+	}
+	if !reflect.DeepEqual(s.Splendor.TokenEvents, want) {
+		t.Fatal("wrong transfer events", s.Splendor.TokenEvents)
+	}
+	// An unaffordable or invalid action must never animate a transfer.
+	if err := s.Apply(s.Turn, Action{Type: "take", Tokens: []int{0, 0, 0, 0, 0, 1}}); err == nil {
+		t.Fatal("gold taken directly")
+	}
+	if !reflect.DeepEqual(s.Splendor.TokenEvents, want) {
+		t.Fatal("rejected action produced animation")
+	}
+	// A reservation without available gold still moves the card, not a token.
+	s.Splendor.Bank[5] = 0
+	apply(t, s, Action{Type: "reserve", Tier: 2})
+	if s.Splendor.TokenEventID != 3 {
+		t.Fatal("animated nonexistent gold")
+	}
+	for _, viewer := range []int{0, 1, -1} {
+		v := s.View(viewer)["splendor"].(map[string]any)
+		raw, _ := json.Marshal(v["tokenEvents"])
+		var events []SplendorTokenEvent
+		if err := json.Unmarshal(raw, &events); err != nil || !reflect.DeepEqual(events, want) {
+			t.Fatal("player or spectator sees different transfers", viewer)
+		}
+	}
+	if !reflect.DeepEqual(clone(*s).Splendor.TokenEvents, want) {
+		t.Fatal("transfer journal lost on restart")
+	}
+}
+
+func TestSplendorTokenPaymentAndReturnAnimations(t *testing.T) {
+	s := mustGame(t, "splendor", 2)
+	p := &s.Splendor.Players[0]
+	p.Tokens = []int{1, 1, 0, 0, 0, 2}
+	card := Card{ID: 999, Tier: 1, Color: 0, Cost: []int{1, 1, 0, 0, 0}}
+	s.Splendor.Market[0][0] = card
+	apply(t, s, Action{Type: "buy", Card: 999, Tokens: []int{0, 0, 0, 0, 0, 2}})
+	e := s.Splendor.TokenEvents[0]
+	if e.Player != 0 || e.Action != "pay" || !reflect.DeepEqual(e.Tokens, []int{0, 0, 0, 0, 0, 2}) {
+		t.Fatal("animation ignored selected gold payment", e)
+	}
+	s.Splendor.Players[1].Tokens = []int{3, 3, 3, 2, 0, 1}
+	s.Phase = "discard"
+	bank := append([]int{}, s.Splendor.Bank...)
+	apply(t, s, Action{Type: "discard", Tokens: []int{1, 0, 0, 0, 0, 1}})
+	e = s.Splendor.TokenEvents[1]
+	if e.Player != 1 || e.Action != "return" || !reflect.DeepEqual(e.Tokens, []int{1, 0, 0, 0, 0, 1}) || s.Splendor.Bank[0] != bank[0]+1 || s.Splendor.Bank[5] != bank[5]+1 {
+		t.Fatal("return animation differs from bank transfer", e)
+	}
+	// Fully discounted purchases do not create empty payment animations.
+	s.Splendor.Market[0][0] = card
+	p.Bonus = []int{10, 10, 10, 10, 10}
+	apply(t, s, Action{Type: "buy", Card: 999})
+	if s.Splendor.TokenEventID != 2 {
+		t.Fatal("free purchase animated payment")
+	}
+}
+
 func TestSplendorCardEventsSourcesAndPrivacy(t *testing.T) {
 	s := mustGame(t, "splendor", 2)
 	market := s.Splendor.Market[1][2]

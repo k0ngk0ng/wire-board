@@ -407,12 +407,12 @@
   .splendor-board:not(:has(.personal-area)) {
     width: min(
       100%,
-      calc(clamp(150px, (100dvh - 450px) / 3, 245px) * 25 / 7 + 212px)
+      calc(clamp(140px, (100dvh - 465px) / 3, 245px) * 25 / 7 + 350px)
     );
     margin: 0 auto;
-    grid-template-columns: minmax(0, 1fr) 96px;
-    grid-template-rows: auto auto auto auto;
-    grid-template-areas: "nobles nobles" "market bank" "personal personal" "prompt prompt";
+    grid-template-columns: minmax(0, 1fr) 88px 192px;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "market bank nobles" "personal personal nobles" "prompt prompt nobles";
   }
   .splendor-board .market,
   .splendor-board:not(:has(.personal-area)) .market {
@@ -421,7 +421,35 @@
   .splendor-board .nobles-row,
   .splendor-board:not(:has(.personal-area)) .nobles-row {
     grid-area: nobles;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-left: 14px;
+    border-left: 1px solid #dad3ba30;
+    gap: 18px;
+  }
+  .splendor-board .nobles-row .board-section-label {
+    justify-content: center;
+    padding-top: 4px;
+  }
+  .splendor-board .nobles-row .board-section-label small {
+    display: block;
+    color: #d6cfbd;
+    font-size: 10px;
+  }
+  .splendor-board .nobles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 10px;
+    align-content: start;
+  }
+  .splendor-board .nobles .noble {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+  .splendor-board .market-row {
+    gap: 12px;
   }
   .splendor-board .gem-bank,
   .splendor-board:not(:has(.personal-area)) .gem-bank {
@@ -620,13 +648,6 @@
   padding-bottom: 14px;
 }
 @media (min-width: 851px) {
-  .splendor-board,
-  .splendor-board:not(:has(.personal-area)) {
-    width: min(
-      100%,
-      calc(clamp(135px, (100dvh - 570px) / 3, 235px) * 25 / 7 + 212px)
-    );
-  }
   .splendor-board .gem-bank .token {
     width: clamp(36px, (100dvh - 560px) / 8, 58px);
     height: clamp(36px, (100dvh - 560px) / 8, 58px);
@@ -634,6 +655,110 @@
   .splendor-board .gem-bank .token-row {
     gap: clamp(6px, 1vh, 12px);
   }
+}
+
+/* One outgoing card flies to the player; only the replacement flips in. */
+.splendor-board .slot-outgoing {
+  display: none;
+}
+.splendor-board .card-slot.is-changing .slot-current {
+  animation: card-arrive 280ms 80ms ease-out both;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .splendor-board .card-slot.is-changing .slot-current {
+    animation: none;
+  }
+}
+.splendor-player .player-nobles {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding-top: 4px;
+  border-top: 1px solid #e8e1cf;
+}
+.splendor-player .player-info > strong {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 3px 5px;
+}
+.splendor-player .player-link {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 850px) {
+  .splendor-player .player-info > strong > .player-link {
+    flex-basis: 100%;
+    text-align: left;
+  }
+  .splendor-player .player-info > strong {
+    min-height: 32px;
+  }
+}
+.player-nobles-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  color: #715622;
+  font-size: 10px;
+  font-weight: 600;
+}
+.player-nobles-empty {
+  color: #777d70;
+  font-size: 10px;
+}
+.player-noble-portraits {
+  display: flex;
+  gap: 5px;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 2px;
+  scrollbar-width: thin;
+}
+.player-nobles .owned-noble-thumbnail {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-width: 1px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.player-nobles .owned-noble-thumbnail svg {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.owned-nobles-detail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+.owned-nobles-detail > div {
+  text-align: center;
+}
+.owned-nobles-detail .noble {
+  width: 108px;
+  height: 108px;
+  margin-bottom: 20px;
+}
+.owned-nobles-detail .noble > .costs {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  padding: 4px;
+  background: #fff7e0;
+}
+.owned-nobles-detail strong {
+  font-size: 12px;
 }
 @media (max-width: 850px) {
   .splendor-board .personal-area {

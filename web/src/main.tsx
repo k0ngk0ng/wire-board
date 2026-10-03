@@ -60,6 +60,7 @@ import {
 } from "./profiles";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { SplendorCardAnimation } from "./splendor-card-animation";
+import { SplendorTokenAnimation } from "./splendor-token-animation";
 import { AnimatedSlot } from "./animated-slot";
 import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
 import "./splendor-layout.css";
@@ -499,6 +500,12 @@ function App() {
   const [create, setCreate] = useState("");
   const [join, setJoin] = useState<Room>();
   const [joinMode, setJoinMode] = useState<"join" | "watch">("join");
+  const [invitedRoom, setInvitedRoom] = useState(
+    () =>
+      new URLSearchParams(location.search).get("room")?.trim().toLowerCase() ||
+      "",
+  );
+  const invitationAttempt = useRef("");
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
   const [closeTableRoom, setCloseTableRoom] = useState("");
@@ -648,6 +655,71 @@ function App() {
         );
     });
   };
+  const clearInvitation = () => {
+    const url = new URL(location.href);
+    url.searchParams.delete("room");
+    history.replaceState(null, "", url);
+    setInvitedRoom("");
+    invitationAttempt.current = "";
+  };
+  useEffect(() => {
+    if (!state || !invitedRoom || busy || join) return;
+    if (state.room?.id === invitedRoom) {
+      clearInvitation();
+      return;
+    }
+    if (state.room) {
+      const blocked = `occupied:${state.room.id}`;
+      if (invitationAttempt.current !== blocked) {
+        invitationAttempt.current = blocked;
+        setNotice("你正在另一张牌桌，请先离开当前牌桌，再进入邀请的房间。");
+      }
+      return;
+    }
+    if (invitationAttempt.current === invitedRoom) return;
+    invitationAttempt.current = invitedRoom;
+    const target = state.rooms.find((r) => r.id === invitedRoom);
+    if (!target || !["waiting", "playing"].includes(target.status)) {
+      setNotice("邀请的房间已结束或不存在，可以在大厅加入其他牌桌。");
+      clearInvitation();
+      return;
+    }
+    if (target.status === "waiting" && target.seats.length >= target.capacity) {
+      setNotice("邀请的房间已满，暂时无法入座；开局后可以观战。");
+      clearInvitation();
+      return;
+    }
+    const mode = target.status === "playing" ? "watch" : "join";
+    setNotice("");
+    if (target.locked) {
+      setJoinMode(mode);
+      setJoin(target);
+      clearInvitation();
+      return;
+    }
+    void run(async () => {
+      if (mode === "watch") {
+        await api(`/rooms/${target.id}/watch`, {});
+        setNotice("这局已经开始，已为你进入观战。");
+      } else {
+        try {
+          await command(target, "join");
+        } catch (e) {
+          if ((e as { status?: number }).status !== 409) throw e;
+          const latest: State = await api("/state");
+          if (latest.room?.id !== target.id) {
+            const updated = latest.rooms.find((r) => r.id === target.id);
+            if (!updated) throw e;
+            if (updated.status === "playing") {
+              await api(`/rooms/${target.id}/watch`, {});
+              setNotice("这局已经开始，已为你进入观战。");
+            } else await command(updated, "join");
+          }
+        }
+      }
+      clearInvitation();
+    });
+  }, [state, invitedRoom, busy, join]);
   const roomCommand = (type: string, extra: Record<string, unknown> = {}) =>
     void run(() => command(state!.room!, type, extra));
   const enableAudio = () => {
@@ -675,6 +747,7 @@ function App() {
       <Auth
         busy={busy}
         error={error}
+        invited={!!invitedRoom}
         submit={(body, register) => {
           if (sound) enableAudio();
           void run(() => api(register ? "/register" : "/login", body));
@@ -993,9 +1066,13 @@ function App() {
                         password: f.get("password"),
                       });
                     else
-                      await command(join, "join", {
-                        password: f.get("password"),
-                      });
+                      await command(
+                        state.rooms.find((r) => r.id === join.id) || join,
+                        "join",
+                        {
+                          password: f.get("password"),
+                        },
+                      );
                     setJoin(undefined);
                   });
                 }}
@@ -1118,10 +1195,12 @@ function App() {
 function Auth({
   busy,
   error,
+  invited,
   submit,
 }: {
   busy: boolean;
   error: string;
+  invited: boolean;
   submit: (body: unknown, register: boolean) => void;
 }) {
   const [register, setRegister] = useState(false);
@@ -1166,7 +1245,9 @@ function Auth({
           <p>
             {register
               ? "使用朋友分享的邀请码，加入这间私人桌游室。"
-              : "桌布铺好了，就等你和朋友们。"}
+              : invited
+                ? "朋友在牌桌等你，登录后将自动进入邀请的房间。"
+                : "桌布铺好了，就等你和朋友们。"}
           </p>
           <div className="auth-tabs">
             <button
@@ -1822,6 +1903,8 @@ function Waiting({
 }
 function Players({ room }: { room: Room }) {
   const g = room.game!;
+  const [nobleOwner, setNobleOwner] = useState<number>();
+  useEffect(() => setNobleOwner(undefined), [room.id]);
   return (
     <div className="players-strip">
       {room.seats.map((p, i) => {
@@ -1937,6 +2020,38 @@ function Players({ room }: { room: Room }) {
                     ))}
                 </div>
               )}
+              {g.splendor && (
+                <div
+                  className="player-nobles"
+                  aria-label={`${p.name}已获得的贵族`}
+                >
+                  <span className="player-nobles-label">
+                    <Crown size={13} />
+                    贵族 {g.splendor.players[i].nobles.length}
+                  </span>
+                  {g.splendor.players[i].nobles.length ? (
+                    <div className="player-noble-portraits">
+                      {g.splendor.players[i].nobles.map((n) => (
+                        <button
+                          key={n.id}
+                          className="noble owned-noble-thumbnail"
+                          style={{
+                            backgroundPosition: `${((n.id - 1) % 5) * 25}% ${Math.floor((n.id - 1) / 5) * 50}%`,
+                          }}
+                          aria-label={`查看${p.name}的贵族 ${n.id}，3 分`}
+                          aria-haspopup="dialog"
+                          onClick={() => setNobleOwner(i)}
+                        >
+                          <Crown size={18} />
+                          <span className="sr-only">贵族 {n.id}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="player-nobles-empty">暂无</span>
+                  )}
+                </div>
+              )}
             </div>
             <div className="player-score">
               {stats?.score}
@@ -1946,6 +2061,22 @@ function Players({ room }: { room: Room }) {
           </div>
         );
       })}
+      {nobleOwner !== undefined && g.splendor && room.seats[nobleOwner] && (
+        <Modal
+          title={`${room.seats[nobleOwner].name}已获得的贵族`}
+          onClose={() => setNobleOwner(undefined)}
+        >
+          <p>每位贵族提供 3 分，已计入该玩家总分。</p>
+          <div className="owned-nobles-detail">
+            {g.splendor.players[nobleOwner].nobles.map((n) => (
+              <div key={n.id}>
+                <NobleCard noble={n} eligible={false} onClick={() => {}} />
+                <strong>贵族 {n.id} · 3 分</strong>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
@@ -2464,6 +2595,7 @@ function SplendorBoard({
               <button
                 key={i}
                 className={`token-button ${tokens[i] > 0 ? "chosen" : ""}`}
+                data-bank-color={i}
                 disabled={!taking || busy || i === 5 || n === 0}
                 onClick={() =>
                   setTokens(
@@ -2809,6 +2941,12 @@ function SplendorBoard({
         room={room}
         assets={assets}
         renderCard={(card) => <DevCard card={card} />}
+      />
+      <SplendorTokenAnimation
+        room={room}
+        assets={assets}
+        colors={gemColors}
+        renderGem={(color) => <Gemstone color={color} size={26} />}
       />
     </div>
   );

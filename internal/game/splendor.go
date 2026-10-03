@@ -36,15 +36,17 @@ type GemPlayer struct {
 	Score      int     `json:"score"`
 }
 type Splendor struct {
-	StartPlayer int                 `json:"startPlayer"`
-	CardEventID uint64              `json:"cardEventId,omitempty"`
-	CardEvents  []SplendorCardEvent `json:"cardEvents,omitempty"`
-	Bank        []int               `json:"bank"`
-	Decks       [][]Card            `json:"decks"`
-	Market      [][]Card            `json:"market"`
-	Nobles      []Noble             `json:"nobles"`
-	Players     []GemPlayer         `json:"players"`
-	LastRound   bool                `json:"lastRound"`
+	StartPlayer  int                  `json:"startPlayer"`
+	CardEventID  uint64               `json:"cardEventId,omitempty"`
+	CardEvents   []SplendorCardEvent  `json:"cardEvents,omitempty"`
+	TokenEventID uint64               `json:"tokenEventId,omitempty"`
+	TokenEvents  []SplendorTokenEvent `json:"tokenEvents,omitempty"`
+	Bank         []int                `json:"bank"`
+	Decks        [][]Card             `json:"decks"`
+	Market       [][]Card             `json:"market"`
+	Nobles       []Noble              `json:"nobles"`
+	Players      []GemPlayer          `json:"players"`
+	LastRound    bool                 `json:"lastRound"`
 }
 
 // Only public card information belongs in the shared animation stream.
@@ -57,6 +59,25 @@ type SplendorCardEvent struct {
 	Tier   int    `json:"tier"`
 	Slot   int    `json:"slot"`
 	Card   *Card  `json:"card,omitempty"`
+}
+
+type SplendorTokenEvent struct {
+	ID     uint64 `json:"id"`
+	Player int    `json:"player"`
+	Action string `json:"action"`
+	Tokens []int  `json:"tokens"`
+}
+
+func (s *State) recordSplendorTokens(action string, tokens []int) {
+	if sum(tokens) == 0 {
+		return
+	}
+	g := s.Splendor
+	g.TokenEventID++
+	g.TokenEvents = append(g.TokenEvents, SplendorTokenEvent{ID: g.TokenEventID, Player: s.Turn, Action: action, Tokens: append([]int{}, tokens...)})
+	if len(g.TokenEvents) > 12 {
+		g.TokenEvents = g.TokenEvents[len(g.TokenEvents)-12:]
+	}
 }
 
 func integers(v []string) []int {
@@ -138,6 +159,7 @@ func (s *State) applySplendor(a Action) error {
 			g.Bank[i] += n
 		}
 		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 归还了 %s（持有 %d / 10 枚）", s.Turn+1, splendorGemSummary(a.Tokens), sum(p.Tokens)))
+		s.recordSplendorTokens("return", a.Tokens)
 		s.gemAfter()
 		return nil
 	}
@@ -190,6 +212,7 @@ func (s *State) applySplendor(a Action) error {
 			g.Bank[i] -= n
 		}
 		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 拿取了 %s（共 %d 枚）", s.Turn+1, splendorGemSummary(a.Tokens), total))
+		s.recordSplendorTokens("take", a.Tokens)
 	case "reserve", "buy":
 		if a.Type == "reserve" && len(p.Reserved) >= 3 {
 			return errors.New("最多预留三张卡牌")
@@ -259,6 +282,7 @@ func (s *State) applySplendor(a Action) error {
 				g.Bank[i] += n
 			}
 			p.Cards = append(p.Cards, c)
+			s.recordSplendorTokens("pay", pay)
 			p.Bonus[c.Color]++
 			p.Score += c.Points
 			source := "市场"
@@ -282,6 +306,7 @@ func (s *State) applySplendor(a Action) error {
 			if g.Bank[5] > 0 {
 				g.Bank[5]--
 				p.Tokens[5]++
+				s.recordSplendorTokens("gold", []int{0, 0, 0, 0, 0, 1})
 				detail += "；获得黄金×1"
 			} else {
 				detail += "；黄金已空，未获得黄金"
