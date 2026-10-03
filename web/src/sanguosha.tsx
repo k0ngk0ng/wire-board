@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Bot } from "lucide-react";
 import type { Act, Room, SanguoshaState } from "./types";
 import { PlayerName } from "./profiles";
 import "./sanguosha.css";
@@ -283,6 +284,12 @@ export function SanguoshaBoard({
                 <strong>
                   <PlayerName user={seat} />
                   {seat.bot && <small>电脑</small>}
+                  {seat.autoPlay && (
+                    <span className="autoplay-badge" title="由电脑代为行动">
+                      <Bot size={12} aria-hidden="true" />
+                      托管
+                    </span>
+                  )}
                 </strong>
                 <span className={`sg-role role-${p.role || "hidden"}`}>
                   {p.role ? roles[p.role] : "身份未知"}

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
-import type { Card, Room, SplendorCardEvent } from "./types";
+import type { Card, Noble, Room, SplendorCardEvent } from "./types";
 import "./splendor-card-animation.css";
 
 type Flight = {
@@ -15,19 +15,22 @@ export function SplendorCardAnimation({
   room,
   assets,
   renderCard,
+  renderNoble,
 }: {
   room: Room;
   assets: string;
   renderCard: (card: Card) => ReactNode;
+  renderNoble: (noble: Noble) => ReactNode;
 }) {
   const splendor = room.game!.splendor!;
   const seen = useRef({ room: room.id, id: splendor.cardEventId ?? 0 });
   const reservedRects = useRef(new Map<number, DOMRect>());
+  const nobleRects = useRef(new Map<number, DOMRect>());
   const [flights, setFlights] = useState<Flight[]>([]);
 
   useLayoutEffect(() => {
     const id = splendor.cardEventId ?? 0;
-    const rememberReservations = () => {
+    const rememberSources = () => {
       reservedRects.current = new Map(
         Array.from(
           document.querySelectorAll<HTMLElement>(".reserved [data-card-id]"),
@@ -36,11 +39,21 @@ export function SplendorCardAnimation({
           element.getBoundingClientRect(),
         ]),
       );
+      nobleRects.current = new Map(
+        Array.from(
+          document.querySelectorAll<HTMLElement>(
+            ".splendor-board .nobles [data-noble-id]",
+          ),
+        ).map((element) => [
+          Number(element.dataset.nobleId),
+          element.getBoundingClientRect(),
+        ]),
+      );
     };
     if (seen.current.room !== room.id || id < seen.current.id) {
       seen.current = { room: room.id, id };
       setFlights([]);
-      rememberReservations();
+      rememberSources();
       return;
     }
     const events = (splendor.cardEvents ?? []).filter(
@@ -61,23 +74,28 @@ export function SplendorCardAnimation({
           if (!target) return [];
           const row = `.market-row[data-splendor-tier="${event.tier}"]`;
           const source =
-            event.source === "market"
-              ? document
-                  .querySelector(`${row} [data-market-slot="${event.slot}"]`)
-                  ?.getBoundingClientRect()
-              : event.source === "deck"
+            event.source === "nobles" && event.noble
+              ? (nobleRects.current.get(event.noble.id) ??
+                document
+                  .querySelector(".splendor-board .nobles")
+                  ?.getBoundingClientRect())
+              : event.source === "market"
                 ? document
-                    .querySelector(`${row} .deck`)
+                    .querySelector(`${row} [data-market-slot="${event.slot}"]`)
                     ?.getBoundingClientRect()
-                : ((event.player === room.you && event.card
-                    ? reservedRects.current.get(event.card.id)
-                    : undefined) ??
-                  player
-                    ?.querySelector(".reserved-count")
-                    ?.getBoundingClientRect());
+                : event.source === "deck"
+                  ? document
+                      .querySelector(`${row} .deck`)
+                      ?.getBoundingClientRect()
+                  : ((event.player === room.you && event.card
+                      ? reservedRects.current.get(event.card.id)
+                      : undefined) ??
+                    player
+                      ?.querySelector(".reserved-count")
+                      ?.getBoundingClientRect());
           if (!source) return [];
           const width = Math.min(104, Math.max(54, source.width));
-          const height = (width * 7) / 5;
+          const height = event.noble ? width : (width * 7) / 5;
           const x = clamp(
             source.x + source.width / 2 - width / 2,
             innerWidth - width - 8,
@@ -93,7 +111,7 @@ export function SplendorCardAnimation({
           return [
             {
               event,
-              label: `${room.seats[event.player]?.name || "玩家"} · ${event.action === "buy" ? "购买" : "预留"}`,
+              label: `${room.seats[event.player]?.name || "玩家"} · ${event.action === "noble" ? "贵族 +3 分" : event.action === "buy" ? "购买" : "预留"}`,
               style: {
                 left: x,
                 top: y,
@@ -113,13 +131,13 @@ export function SplendorCardAnimation({
         });
     if (fresh.length)
       setFlights((previous) => [...previous, ...fresh].slice(-12));
-    rememberReservations();
-    // Keep pre-removal hand positions current when the player scrolls on mobile.
-    window.addEventListener("scroll", rememberReservations, true);
-    window.addEventListener("resize", rememberReservations);
+    rememberSources();
+    // Keep pre-removal card and noble positions current when the player scrolls.
+    window.addEventListener("scroll", rememberSources, true);
+    window.addEventListener("resize", rememberSources);
     return () => {
-      window.removeEventListener("scroll", rememberReservations, true);
-      window.removeEventListener("resize", rememberReservations);
+      window.removeEventListener("scroll", rememberSources, true);
+      window.removeEventListener("resize", rememberSources);
     };
   }, [
     splendor.cardEventId,
@@ -145,6 +163,9 @@ export function SplendorCardAnimation({
           "--splendor-cards": assets
             ? `url("${assets}/splendor/cards.webp")`
             : "none",
+          "--splendor-nobles": assets
+            ? `url("${assets}/splendor/nobles.webp")`
+            : "none",
         } as CSSProperties
       }
     >
@@ -153,9 +174,12 @@ export function SplendorCardAnimation({
           key={event.id}
           data-card-flight={event.id}
           data-flight-player={event.player}
+          data-flight-action={event.action}
         >
           <div className="splendor-card-flight" style={style}>
-            {event.card ? (
+            {event.noble ? (
+              renderNoble(event.noble)
+            ) : event.card ? (
               renderCard(event.card)
             ) : (
               <div

@@ -1,5 +1,10 @@
 export type User = { id: string; name: string };
-export type Seat = User & { ready: boolean; left: boolean; bot?: boolean };
+export type Seat = User & {
+  ready: boolean;
+  left: boolean;
+  bot?: boolean;
+  autoPlay?: boolean;
+};
 export type ChatMessage = {
   spectator?: boolean;
   id: string;
@@ -18,11 +23,12 @@ export type Noble = { id: number; cost: number[] };
 export type SplendorCardEvent = {
   id: number;
   player: number;
-  action: "buy" | "reserve";
-  source: "market" | "deck" | "reserved";
+  action: "buy" | "reserve" | "noble";
+  source: "market" | "deck" | "reserved" | "nobles";
   tier: number;
   slot: number;
   card?: Card;
+  noble?: Noble;
 };
 export type SplendorTokenEvent = {
   id: number;

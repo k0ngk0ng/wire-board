@@ -45,6 +45,27 @@
 .splendor-card-flight .card-id {
   display: none;
 }
+.splendor-card-flight > .noble {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: 1;
+  border: 2px solid #ffebaa;
+  box-shadow: 0 0 12px #eac36580;
+}
+.splendor-card-flight > .noble .costs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  justify-content: center;
+}
+.splendor-card-flight > .noble .cost {
+  width: 17px;
+  height: 17px;
+  font-size: 12px;
+}
 .splendor-card-arrival {
   position: absolute;
   width: 140px;
