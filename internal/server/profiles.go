@@ -11,12 +11,15 @@ import (
 )
 
 type MatchPlayer struct {
+	Rank        int `json:"rank,omitempty"`
+	RatingDelta int `json:"ratingDelta,omitempty"`
 	User
 	Bot   bool `json:"bot,omitempty"`
 	Score *int `json:"score,omitempty"`
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	Rated   bool          `json:"rated"`
 	ID      string        `json:"id"`
 	Room    string        `json:"room"`
 	Kind    string        `json:"kind"`
@@ -44,10 +47,12 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				score = r.Game.Carcassonne.Players[i].Score
 			} else if r.Game.Catan != nil {
 				score = r.Game.Catan.Players[i].Score
-			} else {
+			} else if r.Game.Rail != nil {
 				score = r.Game.Rail.Players[i].Score
 			}
-			p.Score = &score
+			if r.Game.Sanguosha == nil {
+				p.Score = &score
+			}
 			for _, winner := range r.Game.Winners {
 				if winner == i {
 					p.Won = true
@@ -56,11 +61,23 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		}
 		record.Players = append(record.Players, p)
 	}
+	rateMatch(r, &record)
 	raw, err := json.Marshal(record)
 	if err != nil {
 		return err
 	}
-	if _, err = tx.Exec("INSERT OR IGNORE INTO match_history(id,ended,snapshot) VALUES(?,?,?)", id, r.Updated, raw); err != nil {
+	result, err := tx.Exec("INSERT OR IGNORE INTO match_history(id,ended,snapshot) VALUES(?,?,?)", id, r.Updated, raw)
+	if err != nil {
+		return err
+	}
+	inserted, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if inserted == 0 {
+		return nil
+	}
+	if err = saveRatings(tx, record); err != nil {
 		return err
 	}
 	for _, p := range record.Players {
@@ -96,7 +113,7 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	records := []MatchRecord{}
-	stats := map[string]map[string]int{"splendor": {"played": 0, "wins": 0}, "rail": {"played": 0, "wins": 0}, "catan": {"played": 0, "wins": 0}, "carcassonne": {"played": 0, "wins": 0}}
+	stats := map[string]map[string]int{"sanguosha": {"played": 0, "wins": 0}, "splendor": {"played": 0, "wins": 0}, "rail": {"played": 0, "wins": 0}, "catan": {"played": 0, "wins": 0}, "carcassonne": {"played": 0, "wins": 0}}
 	for rows.Next() {
 		var raw []byte
 		if err = rows.Scan(&raw); err != nil {
@@ -135,7 +152,12 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 	if viewer.ID != id {
 		relationship = s.relationship(viewer.ID, id)
 	}
-	respond(w, 200, map[string]any{"user": user, "stats": stats, "history": records[start:end], "total": total, "offset": start, "hasMore": end < total, "relationship": relationship})
+	rating, err := s.rating(id)
+	if err != nil {
+		fail(w, 500, "无法读取积分")
+		return
+	}
+	respond(w, 200, map[string]any{"rating": rating, "user": user, "stats": stats, "history": records[start:end], "total": total, "offset": start, "hasMore": end < total, "relationship": relationship})
 }
 func friendPair(a, b string) (string, string) {
 	if a > b {

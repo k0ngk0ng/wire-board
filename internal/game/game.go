@@ -8,6 +8,11 @@ import (
 )
 
 type Action struct {
+	Cards    []int  `json:"cards"`
+	Targets  []int  `json:"targets"`
+	Choice   string `json:"choice"`
+	Skill    string `json:"skill"`
+	Prompt   int    `json:"prompt"`
 	X        int    `json:"x"`
 	Y        int    `json:"y"`
 	Rotation int    `json:"rotation"`
@@ -31,6 +36,7 @@ type Action struct {
 	Keep     []int  `json:"keep"`
 }
 type State struct {
+	Sanguosha   *Sanguosha   `json:"sanguosha,omitempty"`
 	Carcassonne *Carcassonne `json:"carcassonne,omitempty"`
 	Catan       *Catan       `json:"catan,omitempty"`
 	Kind        string       `json:"kind"`
@@ -47,6 +53,11 @@ type State struct {
 func New(kind string, n int) (*State, error) {
 	s := &State{Kind: kind, Phase: "turn", Round: 1, Log: []string{}}
 	switch kind {
+	case "sanguosha":
+		if n < 4 || n > 8 {
+			return nil, errors.New("三国杀需要 4–8 位玩家")
+		}
+		s.initSanguosha(n)
 	case "carcassonne":
 		if n < 2 || n > 5 {
 			return nil, errors.New("卡卡颂需要 2–5 位玩家")
@@ -75,6 +86,9 @@ func New(kind string, n int) (*State, error) {
 func (s *State) Apply(player int, a Action) error {
 	if s.Finished {
 		return errors.New("本局已结束")
+	}
+	if s.Sanguosha != nil {
+		return s.applySanguosha(player, a)
 	}
 	if s.Carcassonne != nil {
 		err := s.applyCarcassonne(player, a)
@@ -108,6 +122,9 @@ func (s *State) Apply(player int, a Action) error {
 	return err
 }
 func (s *State) View(player int) map[string]any {
+	if s.Sanguosha != nil {
+		return s.sgView(player)
+	}
 	b, _ := json.Marshal(s)
 	var v map[string]any
 	_ = json.Unmarshal(b, &v)

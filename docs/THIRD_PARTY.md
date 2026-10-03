@@ -21,3 +21,5 @@ Splendor / 璀璨宝石、Ticket to Ride / 铁路环游、CATAN / 卡坦岛及 B
 CATAN 素材参考 BGA 当前第六版视觉资源（2026-10-03），按地形、卡片和透明棋子裁切为 36 个 WebP，约 258 KiB。仅存于独立素材服务器。
 
 Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可选地块与随从美术参考 BGA 第二版图集（2026-10-03），裁切为 72 张地块和 5 色随从，共 77 个 WebP（约 1.74 MiB），只存于独立素材服务器，不包含在仓库、Release 或镜像中。基础版不包含修道院长，图中的花园、牲畜等装饰没有额外规则。
+
+三国杀经典武将画像和牌面参考 [Mogara/QSanguosha-v2](https://github.com/Mogara/QSanguosha-v2)，固定提交 `e8768851bd8054db9fd1b63cd6f1feca813590d7` 的 `image/fullskin/generals/full/`（优先怀旧 `nos_`）和 `image/big-card/`。共 25 张画像、32 种牌图，经 WebP 转换后只存于独立素材服务。图片的原有美术权利不因该参考项目的代码许可而改变。本项目独立实现 Go 规则引擎，没有复制该项目的 C++/Lua 引擎源码。经典版规则和卡牌表交叉参考游卡官方卡牌介绍及标准版卡表；详见 [三国杀实现说明](sanguosha.md)。
