@@ -6,7 +6,8 @@ export function useTurnTitle(room?: Room) {
   const player =
     game?.splendor?.players[room?.you ?? -1] ||
     game?.rail?.players[room?.you ?? -1] ||
-    game?.catan?.players[room?.you ?? -1];
+    game?.catan?.players[room?.you ?? -1] ||
+    game?.carcassonne?.players[room?.you ?? -1];
   const needsAction = !!(
     room &&
     game &&

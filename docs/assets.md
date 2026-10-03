@@ -18,6 +18,8 @@
 - `catan/{settlement,city}-{blue,red,white,orange}-v1.webp`：四种玩家颜色的透明村庄与城市。
 - `catan/port-{wood,brick,wool,grain,ore,any}-v1.webp` 与 `catan/robber-v1.webp`：港口船与强盗。
 
+- `carcassonne/tile-{0..71}-v1.webp`：72 张基础版地块（256 × 256），与规则数据中的 `art` 对应，保留原版装饰差异；`meeple-{0..4}-v1.webp` 为蓝、绿、黑、红、黄五色随从。
+
 将准备好的 WebP 文件放在临时目录，OSS 密钥分别放入已忽略的 `config/secrets/oss-access-key-id` 和 `config/secrets/oss-access-key-secret`。上传命令（值均为示例）：
 
 ```sh

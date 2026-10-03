@@ -95,10 +95,6 @@
 .catan-number.red text {
   fill: #b72e24;
 }
-.catan-number text.probability {
-  font-size: 9px;
-  letter-spacing: 1px;
-}
 .catan-robber {
   fill: #44413e;
   stroke: #ece6da;
@@ -113,16 +109,6 @@
 .catan-port circle {
   stroke: #d4bb82;
   stroke-width: 2;
-}
-.catan-port text {
-  font-size: 14px;
-  font-weight: 800;
-  pointer-events: none;
-}
-.catan-port .port-caption {
-  font-size: 9px;
-  fill: #fff;
-  text-shadow: 0 1px 2px #000;
 }
 .available-road {
   stroke: #fff7a4;

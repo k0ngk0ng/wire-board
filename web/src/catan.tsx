@@ -297,16 +297,6 @@ export function CatanBoard({
                     ) : (
                       <circle cx={px} cy={py} r="20" fill="#f4e6c5" />
                     )}
-                    <text
-                      x={px}
-                      y={py + 31}
-                      textAnchor="middle"
-                      className="port-caption"
-                    >
-                      {port.resource < 0
-                        ? "任意 3:1"
-                        : `${catanNames[port.resource]} 2:1`}
-                    </text>
                     <title>
                       {port.resource < 0
                         ? "通用港口，3:1"
@@ -369,16 +359,8 @@ export function CatanBoard({
                         className={`catan-number ${t.number === 6 || t.number === 8 ? "red" : ""}`}
                       >
                         <circle cx={t.x} cy={t.y + 4} r="19" />
-                        <text x={t.x} y={t.y + 6} textAnchor="middle">
+                        <text x={t.x} y={t.y + 4} textAnchor="middle">
                           {t.number}
-                        </text>
-                        <text
-                          className="probability"
-                          x={t.x}
-                          y={t.y + 17}
-                          textAnchor="middle"
-                        >
-                          {"•".repeat(6 - Math.abs(7 - t.number))}
                         </text>
                       </g>
                     )}
