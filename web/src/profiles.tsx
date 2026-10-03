@@ -49,7 +49,8 @@ async function request(path: string, body?: unknown) {
   if (!response.ok) throw Error(data.error || "操作失败");
   return data;
 }
-const name = (kind: string) => (kind === "rail" ? "铁路环游" : "璀璨宝石");
+const name = (kind: string) =>
+  kind === "catan" ? "卡坦岛" : kind === "rail" ? "铁路环游" : "璀璨宝石";
 export function ProfilePage({ id, self }: { id: string; self: string }) {
   const open = useContext(ProfileContext);
   const [profile, setProfile] = useState<Profile>();

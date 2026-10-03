@@ -47,6 +47,7 @@ export type RailPlayer = {
   completed?: number;
 };
 export type Game = {
+  catan?: CatanState;
   kind: string;
   turn: number;
   phase: string;
@@ -123,3 +124,61 @@ export type Route = {
 };
 export type Catalog = { cities: City[]; routes: Route[]; tickets: Ticket[] };
 export type Act = (action: Record<string, unknown>) => Promise<void>;
+
+export type CatanPlayer = {
+  resources?: number[];
+  dev?: number[];
+  newDev?: number[];
+  resourceCount: number;
+  devCount: number;
+  knights: number;
+  roadLength: number;
+  score: number;
+  publicScore: number;
+  eliminated?: boolean;
+  rates: number[];
+  roadsLeft: number;
+  settlementsLeft: number;
+  citiesLeft: number;
+};
+export type CatanState = {
+  tiles: {
+    id: number;
+    x: number;
+    y: number;
+    resource: number;
+    number: number;
+    vertices: number[];
+  }[];
+  vertices: {
+    id: number;
+    x: number;
+    y: number;
+    owner: number;
+    level: number;
+  }[];
+  edges: { id: number; a: number; b: number; owner: number }[];
+  ports: { edge: number; resource: number }[];
+  players: CatanPlayer[];
+  bank: number[];
+  devRemaining: number;
+  robber: number;
+  dice: number[];
+  rollId: number;
+  setupStep: number;
+  setupVertex: number;
+  discardDue: number[];
+  victims: number[];
+  freeRoads: number;
+  playedDev: boolean;
+  longestOwner: number;
+  armyOwner: number;
+  legal: { settlements: number[]; cities: number[]; roads: number[] };
+  trade?: {
+    id: number;
+    from: number;
+    give: number[];
+    take: number[];
+    responses: number[];
+  };
+};

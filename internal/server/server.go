@@ -43,23 +43,25 @@ type Seat struct {
 	Left  bool `json:"left"`
 }
 type Room struct {
-	MatchID      string        `json:"matchId,omitempty"`
-	Spectators   []User        `json:"spectators,omitempty"`
-	Chat         []ChatMessage `json:"chat,omitempty"`
-	BotAt        int64         `json:"botAt,omitempty"`
-	SetupVersion int           `json:"setupVersion,omitempty"`
-	TurnDeadline int64         `json:"turnDeadline,omitempty"`
-	ID           string        `json:"id"`
-	Name         string        `json:"name"`
-	Kind         string        `json:"kind"`
-	Host         string        `json:"host"`
-	Capacity     int           `json:"capacity"`
-	Seats        []Seat        `json:"seats"`
-	Version      int           `json:"version"`
-	Status       string        `json:"status"`
-	Password     string        `json:"password,omitempty"`
-	Game         *game.State   `json:"game,omitempty"`
-	Updated      int64         `json:"updated"`
+	CatanPendingVersion int           `json:"catanPendingVersion,omitempty"`
+	CatanTradeVersion   int           `json:"catanTradeVersion,omitempty"`
+	MatchID             string        `json:"matchId,omitempty"`
+	Spectators          []User        `json:"spectators,omitempty"`
+	Chat                []ChatMessage `json:"chat,omitempty"`
+	BotAt               int64         `json:"botAt,omitempty"`
+	SetupVersion        int           `json:"setupVersion,omitempty"`
+	TurnDeadline        int64         `json:"turnDeadline,omitempty"`
+	ID                  string        `json:"id"`
+	Name                string        `json:"name"`
+	Kind                string        `json:"kind"`
+	Host                string        `json:"host"`
+	Capacity            int           `json:"capacity"`
+	Seats               []Seat        `json:"seats"`
+	Version             int           `json:"version"`
+	Status              string        `json:"status"`
+	Password            string        `json:"password,omitempty"`
+	Game                *game.State   `json:"game,omitempty"`
+	Updated             int64         `json:"updated"`
 }
 
 const turnLimit = 120 * time.Second
@@ -193,13 +195,22 @@ func (s *Server) runTimers(ctx context.Context) {
 // Called with s.mu held. No browser needs to be connected for setup to finish.
 func (s *Server) expireSetups(now time.Time) {
 	for id, room := range s.rooms {
-		if room.Status != "playing" || room.Game.Rail == nil || !room.Game.Rail.Setup || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() {
+		if room.Status != "playing" || room.Game == nil || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() {
+			continue
+		}
+		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
+		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard")
+		if !railSetup && !catanPending {
 			continue
 		}
 		b, _ := json.Marshal(room)
 		var next Room
 		_ = json.Unmarshal(b, &next)
-		next.Game.AutoChooseRailSetup()
+		if railSetup {
+			next.Game.AutoChooseRailSetup()
+		} else {
+			next.Game.AutoCatanPending()
+		}
 		next.startTurnClock(now)
 		next.Version++
 		next.Updated = now.Unix()
@@ -491,13 +502,16 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	maxPlayers := 4
+	minPlayers := 2
 	if req.Kind == "rail" {
 		maxPlayers = 5
+	} else if req.Kind == "catan" {
+		minPlayers = 3
 	} else if req.Kind != "splendor" {
 		fail(w, 400, "未知游戏")
 		return
 	}
-	if req.Capacity < 2 || req.Capacity > maxPlayers {
+	if req.Capacity < minPlayers || req.Capacity > maxPlayers {
 		fail(w, 400, "人数不符合游戏要求")
 		return
 	}
@@ -549,7 +563,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	parallelSetup := req.Type == "action" && req.Action.Type == "keep" && room.Status == "playing" && room.Game.Rail != nil && room.Game.Rail.Setup && room.SetupVersion > 0 && req.Version >= room.SetupVersion && req.Version <= room.Version
-	if req.Version != room.Version && !parallelSetup {
+	parallelCatan := false
+	if req.Type == "action" && room.Status == "playing" && room.Game.Catan != nil {
+		g := room.Game.Catan
+		parallelCatan = (req.Action.Type == "catan_discard" && room.Game.Phase == "catan_discard" && room.CatanPendingVersion > 0 && req.Version >= room.CatanPendingVersion && req.Version <= room.Version) || ((req.Action.Type == "catan_trade_accept" || req.Action.Type == "catan_trade_reject") && g.Trade != nil && req.Action.Offer == g.Trade.ID && room.CatanTradeVersion > 0 && req.Version >= room.CatanTradeVersion && req.Version <= room.Version)
+	}
+	if req.Version != room.Version && !parallelSetup && !parallelCatan {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -675,7 +694,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("该玩家尚未超时，或当前回合已改变")
 			break
 		}
-		if next.Kind == "splendor" {
+		if next.Kind == "catan" {
+			err = next.Game.EliminateCatan(target)
+		} else if next.Kind == "splendor" {
 			err = next.Game.EliminateSplendor(target)
 		} else {
 			err = next.Game.EliminateRail(target)

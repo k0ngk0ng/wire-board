@@ -12,6 +12,9 @@ func (s *State) BotAction(player int) (Action, error) {
 	if s.Finished {
 		return Action{}, errors.New("game finished")
 	}
+	if s.Catan != nil {
+		return s.catanBot(player)
+	}
 	if s.Splendor != nil {
 		if player < 0 || player >= len(s.Splendor.Players) || player != s.Turn || s.Splendor.Players[player].Eliminated {
 			return Action{}, errors.New("inactive bot seat")

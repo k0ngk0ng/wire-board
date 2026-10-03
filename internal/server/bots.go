@@ -11,14 +11,30 @@ import (
 
 func (r *Room) applyGameAction(player int, action game.Action, now time.Time) error {
 	turn, round := r.Game.Turn, r.Game.Round
+	phase := r.Game.Phase
+	setupStep := -1
+	tradeID := -1
+	if r.Game.Catan != nil {
+		setupStep = r.Game.Catan.SetupStep
+		tradeID = r.Game.Catan.TradeID
+	}
 	setup := r.Game.Rail != nil && r.Game.Rail.Setup
 	if err := r.Game.Apply(player, action); err != nil {
 		return err
 	}
+	if r.Game.Catan != nil {
+		if phase != "catan_discard" && r.Game.Phase == "catan_discard" {
+			r.CatanPendingVersion = r.Version + 1
+		}
+		if r.Game.Catan.Trade != nil && r.Game.Catan.TradeID != tradeID {
+			r.CatanTradeVersion = r.Version + 1
+		}
+	}
 	if r.Game.Finished {
 		r.Status = "finished"
 	}
-	if r.Game.Turn != turn || r.Game.Round != round || r.Game.Finished || (setup && !r.Game.Rail.Setup) {
+	catanClock := r.Game.Catan != nil && (r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))
+	if catanClock || r.Game.Turn != turn || r.Game.Round != round || r.Game.Finished || (setup && !r.Game.Rail.Setup) {
 		r.startTurnClock(now)
 	}
 	return nil
@@ -39,6 +55,24 @@ func (s *Server) runBots(now time.Time) {
 				if seat.Bot && !seat.Left && len(g.SetupPending[i]) > 0 {
 					player = i
 					break
+				}
+			}
+		}
+		if g := room.Game.Catan; g != nil {
+			if room.Game.Phase == "catan_discard" {
+				player = -1
+				for i, seat := range room.Seats {
+					if seat.Bot && !seat.Left && g.DiscardDue[i] > 0 {
+						player = i
+						break
+					}
+				}
+			} else if g.Trade != nil {
+				for i, seat := range room.Seats {
+					if i != room.Game.Turn && seat.Bot && !seat.Left && g.Trade.Responses[i] == 0 {
+						player = i
+						break
+					}
 				}
 			}
 		}

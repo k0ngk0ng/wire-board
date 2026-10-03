@@ -1,0 +1,738 @@
+package game
+
+import (
+	"crypto/rand"
+	"errors"
+	"fmt"
+	"math/big"
+	"strings"
+)
+
+type CatanPlayer struct {
+	Resources  []int `json:"resources"`
+	Dev        []int `json:"dev"`
+	NewDev     []int `json:"newDev"`
+	Knights    int   `json:"knights"`
+	RoadLength int   `json:"roadLength"`
+	Score      int   `json:"score"`
+	Eliminated bool  `json:"eliminated,omitempty"`
+}
+type CatanTrade struct {
+	ID        int   `json:"id"`
+	From      int   `json:"from"`
+	Give      []int `json:"give"`
+	Take      []int `json:"take"`
+	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
+}
+type Catan struct {
+	Tiles        []CatanTile   `json:"tiles"`
+	Vertices     []CatanVertex `json:"vertices"`
+	Edges        []CatanEdge   `json:"edges"`
+	Ports        []CatanPort   `json:"ports"`
+	Players      []CatanPlayer `json:"players"`
+	Bank         []int         `json:"bank"`
+	DevDeck      []int         `json:"devDeck"`
+	DevDiscard   []int         `json:"devDiscard"`
+	Robber       int           `json:"robber"`
+	Dice         []int         `json:"dice"`
+	RollID       int           `json:"rollId"`
+	SetupStep    int           `json:"setupStep"`
+	SetupVertex  int           `json:"setupVertex"`
+	DiscardDue   []int         `json:"discardDue"`
+	Victims      []int         `json:"victims"`
+	ResumePhase  string        `json:"resumePhase"`
+	FreeRoads    int           `json:"freeRoads"`
+	PlayedDev    bool          `json:"playedDev"`
+	LongestOwner int           `json:"longestOwner"`
+	ArmyOwner    int           `json:"armyOwner"`
+	TradeID      int           `json:"tradeId"`
+	Trade        *CatanTrade   `json:"trade,omitempty"`
+}
+
+func catanRandom(n int) int {
+	v, e := rand.Int(rand.Reader, big.NewInt(int64(n)))
+	if e != nil {
+		panic(e)
+	}
+	return int(v.Int64())
+}
+func (s *State) initCatan(n int) {
+	g := &Catan{Bank: []int{19, 19, 19, 19, 19}, Robber: -1, SetupVertex: -1, LongestOwner: -1, ArmyOwner: -1, Dice: []int{0, 0}, DiscardDue: make([]int, n), Victims: []int{}, DevDiscard: []int{}}
+	for range n {
+		g.Players = append(g.Players, CatanPlayer{Resources: make([]int, 5), Dev: make([]int, 5), NewDev: make([]int, 5)})
+	}
+	for kind, count := range []int{14, 2, 2, 2, 5} {
+		for range count {
+			g.DevDeck = append(g.DevDeck, kind)
+		}
+	}
+	shuffle(g.DevDeck)
+	g.makeMap()
+	s.Catan = g
+	s.Phase = "catan_setup_settlement"
+	s.Log = append(s.Log, "卡坦岛基础版开局：按顺序放置村庄和道路，再逆序放置第二组")
+}
+func (g *Catan) setup() bool { return g.SetupStep < 2*len(g.Players) }
+func catanBundle(a []int) bool {
+	if len(a) != 5 {
+		return false
+	}
+	for _, n := range a {
+		if n < 0 || n > 19 {
+			return false
+		}
+	}
+	return true
+}
+func catanHas(hand, cost []int) bool {
+	if len(hand) != 5 || len(cost) != 5 {
+		return false
+	}
+	for i, n := range cost {
+		if n < 0 || hand[i] < n {
+			return false
+		}
+	}
+	return true
+}
+func catanMove(from, to, amount []int) {
+	for i, n := range amount {
+		from[i] -= n
+		to[i] += n
+	}
+}
+func catanText(a []int) string {
+	out := []string{}
+	for i, n := range a {
+		if n > 0 {
+			out = append(out, fmt.Sprintf("%s×%d", CatanResources[i], n))
+		}
+	}
+	return strings.Join(out, "、")
+}
+func (s *State) catanLog(p int, format string, args ...any) {
+	s.Log = append(s.Log, fmt.Sprintf("玩家 %d ", p+1)+fmt.Sprintf(format, args...))
+}
+func (g *Catan) awardHolder(old, minValue int, values []int) int {
+	maximum := minValue - 1
+	ties := []int{}
+	for i, n := range values {
+		if g.Players[i].Eliminated {
+			continue
+		}
+		if n > maximum {
+			maximum = n
+			ties = []int{i}
+		} else if n == maximum {
+			ties = append(ties, i)
+		}
+	}
+	if maximum < minValue {
+		return -1
+	}
+	for _, i := range ties {
+		if i == old {
+			return old
+		}
+	}
+	if len(ties) == 1 {
+		return ties[0]
+	}
+	return -1
+}
+func (s *State) catanScores() {
+	g := s.Catan
+	roads, knights := []int{}, []int{}
+	for i := range g.Players {
+		g.Players[i].RoadLength = g.roadLength(i)
+		roads = append(roads, g.Players[i].RoadLength)
+		knights = append(knights, g.Players[i].Knights)
+	}
+	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
+	g.LongestOwner = g.awardHolder(oldRoad, 5, roads)
+	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
+	if g.LongestOwner != oldRoad {
+		if g.LongestOwner < 0 {
+			s.Log = append(s.Log, "最长道路奖励暂时无人持有")
+		} else {
+			s.catanLog(g.LongestOwner, "获得最长道路（%d 段），奖励 2 分", roads[g.LongestOwner])
+		}
+	}
+	if g.ArmyOwner != oldArmy {
+		if g.ArmyOwner < 0 {
+			s.Log = append(s.Log, "最大骑士军队奖励暂时无人持有")
+		} else {
+			s.catanLog(g.ArmyOwner, "获得最大骑士军队，奖励 2 分")
+		}
+	}
+	for i := range g.Players {
+		p := &g.Players[i]
+		p.Score = p.Dev[4]
+		for _, v := range g.Vertices {
+			if v.Owner == i {
+				p.Score += v.Level
+			}
+		}
+		if g.LongestOwner == i {
+			p.Score += 2
+		}
+		if g.ArmyOwner == i {
+			p.Score += 2
+		}
+	}
+}
+func (s *State) catanVictory() {
+	g := s.Catan
+	if !g.setup() && !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= 10 {
+		s.Finished = true
+		s.Phase = "finished"
+		s.Winners = []int{s.Turn}
+		g.Trade = nil
+		s.catanLog(s.Turn, "在自己的回合达到 %d 分，赢得本局", g.Players[s.Turn].Score)
+	}
+}
+func (s *State) catanNext() {
+	g := s.Catan
+	g.Trade = nil
+	g.PlayedDev = false
+	g.FreeRoads = 0
+	g.Victims = []int{}
+	g.ResumePhase = ""
+	for {
+		s.Turn = (s.Turn + 1) % len(g.Players)
+		if s.Turn == 0 {
+			s.Round++
+		}
+		if !g.Players[s.Turn].Eliminated {
+			break
+		}
+	}
+	g.Players[s.Turn].NewDev = make([]int, 5)
+	s.Phase = "catan_roll"
+}
+func (s *State) applyCatan(player int, a Action) error {
+	g := s.Catan
+	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
+		return errors.New("无法操作此座位")
+	}
+	if a.Type == "catan_discard" {
+		return s.catanDiscard(player, a.Tokens)
+	}
+	if a.Type == "catan_trade_accept" || a.Type == "catan_trade_reject" {
+		return s.catanRespondTrade(player, a)
+	}
+	if player != s.Turn {
+		return errors.New("还没有轮到你")
+	}
+	p := &g.Players[player]
+	if g.setup() {
+		return s.catanSetup(a)
+	}
+	switch a.Type {
+	case "catan_roll":
+		if s.Phase != "catan_roll" {
+			return errors.New("当前不能掷骰")
+		}
+		g.Dice = []int{catanRandom(6) + 1, catanRandom(6) + 1}
+		g.RollID++
+		s.catanRoll(sum(g.Dice))
+	case "catan_end":
+		if s.Phase != "catan_turn" {
+			return errors.New("请先完成当前行动")
+		}
+		s.catanVictory()
+		if !s.Finished {
+			s.catanNext()
+			s.catanVictory()
+		}
+	case "catan_road", "catan_settlement", "catan_city":
+		if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && a.Type == "catan_road") {
+			return errors.New("当前不能建造")
+		}
+		roads, settlements, cities := g.pieces(player)
+		switch a.Type {
+		case "catan_road":
+			if roads >= 15 || !g.canRoad(player, a.Edge) {
+				return errors.New("道路必须连接己方建筑或道路，不能穿过对手建筑，且最多 15 条")
+			}
+		case "catan_settlement":
+			if settlements >= 5 || !g.canSettlement(player, a.Vertex, false) {
+				return errors.New("村庄必须连接自己的道路，与所有建筑至少相隔两条边，且最多 5 座")
+			}
+		case "catan_city":
+			if cities >= 4 || a.Vertex < 0 || a.Vertex >= len(g.Vertices) || g.Vertices[a.Vertex].Owner != player || g.Vertices[a.Vertex].Level != 1 {
+				return errors.New("只能升级自己的村庄，且最多 4 座城市")
+			}
+		}
+		free := s.Phase == "catan_roads"
+		if !free {
+			cost := catanPrices[a.Type]
+			if !catanHas(p.Resources, cost) {
+				return errors.New("资源不足")
+			}
+			catanMove(p.Resources, g.Bank, cost)
+		}
+		if a.Type == "catan_road" {
+			g.Edges[a.Edge].Owner = player
+			s.catanLog(player, "修建道路 #%d", a.Edge+1)
+		} else {
+			v := &g.Vertices[a.Vertex]
+			v.Owner = player
+			v.Level++
+			if v.Level == 2 {
+				s.catanLog(player, "将村庄 #%d 升级为城市", a.Vertex+1)
+			} else {
+				s.catanLog(player, "建造村庄 #%d", a.Vertex+1)
+			}
+		}
+		if free {
+			g.FreeRoads--
+			if g.FreeRoads == 0 || !g.hasRoad(player) {
+				s.Phase = g.ResumePhase
+				g.FreeRoads = 0
+			}
+		}
+		g.Trade = nil
+		s.catanScores()
+		s.catanVictory()
+	case "catan_skip_roads":
+		if s.Phase != "catan_roads" || g.hasRoad(player) {
+			return errors.New("仍有可放置的免费道路")
+		}
+		g.FreeRoads = 0
+		s.Phase = g.ResumePhase
+	case "catan_bank":
+		if s.Phase != "catan_turn" {
+			return errors.New("掷骰后才可交易")
+		}
+		if !catanBundle(a.Give) || !catanBundle(a.Take) || !catanHas(p.Resources, a.Give) || !catanHas(g.Bank, a.Take) || sum(a.Take) == 0 {
+			return errors.New("交易数量或库存不符合要求")
+		}
+		units := 0
+		rates := g.rates(player)
+		for i, n := range a.Give {
+			if n > 0 && a.Take[i] > 0 || n%rates[i] != 0 {
+				return errors.New("请按港口比例交换不同资源")
+			}
+			units += n / rates[i]
+		}
+		if units != sum(a.Take) {
+			return errors.New("交换数量不符合港口比例")
+		}
+		catanMove(p.Resources, g.Bank, a.Give)
+		catanMove(g.Bank, p.Resources, a.Take)
+		g.Trade = nil
+		s.catanLog(player, "向银行支付 %s，换得 %s", catanText(a.Give), catanText(a.Take))
+	case "catan_trade_offer":
+		return s.catanOffer(player, a)
+	case "catan_trade_cancel":
+		if s.Phase != "catan_turn" {
+			return errors.New("当前不能交易")
+		}
+		g.Trade = nil
+	case "catan_trade_complete":
+		return s.catanCompleteTrade(player, a)
+	case "catan_buy_dev":
+		if s.Phase != "catan_turn" || len(g.DevDeck) == 0 {
+			return errors.New("当前不能购买发展卡")
+		}
+		cost := catanPrices[a.Type]
+		if !catanHas(p.Resources, cost) {
+			return errors.New("资源不足")
+		}
+		catanMove(p.Resources, g.Bank, cost)
+		card := g.DevDeck[len(g.DevDeck)-1]
+		g.DevDeck = g.DevDeck[:len(g.DevDeck)-1]
+		p.Dev[card]++
+		p.NewDev[card]++
+		g.Trade = nil
+		s.catanLog(player, "支付 羊毛×1、粮食×1、矿石×1，购买一张发展卡")
+		s.catanScores()
+		s.catanVictory()
+	case "catan_dev":
+		return s.catanDev(player, a)
+	case "catan_robber":
+		return s.catanMoveRobber(player, a.Tile)
+	case "catan_steal":
+		return s.catanSteal(player, a.Target)
+	default:
+		return errors.New("未知卡坦岛行动")
+	}
+	return nil
+}
+func (g *Catan) hasRoad(p int) bool {
+	n, _, _ := g.pieces(p)
+	if n >= 15 {
+		return false
+	}
+	for _, e := range g.Edges {
+		if g.canRoad(p, e.ID) {
+			return true
+		}
+	}
+	return false
+}
+func (s *State) catanSetup(a Action) error {
+	g := s.Catan
+	p := s.Turn
+	if s.Phase == "catan_setup_settlement" {
+		if a.Type != "catan_settlement" || !g.canSettlement(p, a.Vertex, true) {
+			return errors.New("请选择与其他建筑至少相隔两条边的空交点")
+		}
+		g.Vertices[a.Vertex].Owner = p
+		g.Vertices[a.Vertex].Level = 1
+		g.SetupVertex = a.Vertex
+		s.Phase = "catan_setup_road"
+		s.catanLog(p, "放置起始村庄 #%d", a.Vertex+1)
+		if g.SetupStep >= len(g.Players) {
+			gain := make([]int, 5)
+			for _, t := range g.Tiles {
+				if t.Resource == 5 {
+					continue
+				}
+				for _, v := range t.Vertices {
+					if v == a.Vertex {
+						gain[t.Resource]++
+					}
+				}
+			}
+			catanMove(g.Bank, g.Players[p].Resources, gain)
+			s.catanLog(p, "从第二座村庄获得 %s", catanText(gain))
+		}
+		s.catanScores()
+		return nil
+	}
+	if a.Type != "catan_road" || a.Edge < 0 || a.Edge >= len(g.Edges) {
+		return errors.New("请在刚放置的村庄旁修建道路")
+	}
+	e := &g.Edges[a.Edge]
+	if e.Owner >= 0 || (e.A != g.SetupVertex && e.B != g.SetupVertex) {
+		return errors.New("道路必须紧邻刚放置的村庄")
+	}
+	e.Owner = p
+	g.SetupStep++
+	g.SetupVertex = -1
+	s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
+	if !g.setup() {
+		s.Turn = 0
+		s.Phase = "catan_roll"
+		s.Log = append(s.Log, "起始建设完成，玩家 1 开始掷骰")
+	} else {
+		n := len(g.Players)
+		if g.SetupStep < n {
+			s.Turn = g.SetupStep
+		} else {
+			s.Turn = 2*n - 1 - g.SetupStep
+		}
+		s.Phase = "catan_setup_settlement"
+	}
+	return nil
+}
+func (s *State) catanRoll(total int) {
+	g := s.Catan
+	s.catanLog(s.Turn, "掷出 %d + %d = %d", g.Dice[0], g.Dice[1], total)
+	if total == 7 {
+		g.ResumePhase = "catan_turn"
+		pending := false
+		for i, p := range g.Players {
+			g.DiscardDue[i] = 0
+			if !p.Eliminated && sum(p.Resources) > 7 {
+				g.DiscardDue[i] = sum(p.Resources) / 2
+				pending = true
+			}
+		}
+		if pending {
+			s.Phase = "catan_discard"
+			s.Log = append(s.Log, "掷出 7：超过 7 张资源的玩家同时弃掉一半（向下取整），120 秒后自动弃牌")
+		} else {
+			s.Phase = "catan_robber"
+		}
+		return
+	}
+	claims := make([][]int, len(g.Players))
+	for i := range claims {
+		claims[i] = make([]int, 5)
+	}
+	for _, t := range g.Tiles {
+		if t.Number != total || t.ID == g.Robber || t.Resource == 5 {
+			continue
+		}
+		for _, id := range t.Vertices {
+			v := g.Vertices[id]
+			if v.Level > 0 && !g.Players[v.Owner].Eliminated {
+				claims[v.Owner][t.Resource] += v.Level
+			}
+		}
+	}
+	for c := 0; c < 5; c++ {
+		demand, people, only := 0, 0, -1
+		for i := range claims {
+			demand += claims[i][c]
+			if claims[i][c] > 0 {
+				people++
+				only = i
+			}
+		}
+		if demand > g.Bank[c] {
+			if people == 1 {
+				claims[only][c] = g.Bank[c]
+			} else {
+				for i := range claims {
+					claims[i][c] = 0
+				}
+			}
+			s.Log = append(s.Log, CatanResources[c]+"供应不足，按基础版库存规则发放")
+		}
+	}
+	for i, gain := range claims {
+		if sum(gain) > 0 {
+			catanMove(g.Bank, g.Players[i].Resources, gain)
+			s.catanLog(i, "获得 %s", catanText(gain))
+		}
+	}
+	s.Phase = "catan_turn"
+}
+func (s *State) catanDiscard(p int, amount []int) error {
+	g := s.Catan
+	if s.Phase != "catan_discard" || g.DiscardDue[p] <= 0 || !catanBundle(amount) || sum(amount) != g.DiscardDue[p] || !catanHas(g.Players[p].Resources, amount) {
+		return errors.New("请准确选择需要弃置的资源数量")
+	}
+	catanMove(g.Players[p].Resources, g.Bank, amount)
+	s.catanLog(p, "弃置 %d 张资源", sum(amount))
+	g.DiscardDue[p] = 0
+	if sum(g.DiscardDue) == 0 {
+		s.Phase = "catan_robber"
+	}
+	return nil
+}
+func (s *State) catanMoveRobber(p, tile int) error {
+	g := s.Catan
+	if s.Phase != "catan_robber" || tile < 0 || tile >= len(g.Tiles) || tile == g.Robber {
+		return errors.New("请将强盗移到另一块陆地")
+	}
+	g.Robber = tile
+	g.Victims = []int{}
+	seen := map[int]bool{}
+	for _, id := range g.Tiles[tile].Vertices {
+		v := g.Vertices[id]
+		if v.Level > 0 && v.Owner != p && !seen[v.Owner] && !g.Players[v.Owner].Eliminated && sum(g.Players[v.Owner].Resources) > 0 {
+			seen[v.Owner] = true
+			g.Victims = append(g.Victims, v.Owner)
+		}
+	}
+	s.catanLog(p, "将强盗移到地块 #%d", tile+1)
+	if len(g.Victims) == 0 {
+		s.Phase = g.ResumePhase
+	} else if len(g.Victims) == 1 {
+		s.Phase = "catan_steal"
+		return s.catanSteal(p, g.Victims[0])
+	} else {
+		s.Phase = "catan_steal"
+	}
+	return nil
+}
+func (s *State) catanSteal(p, target int) error {
+	g := s.Catan
+	if s.Phase != "catan_steal" {
+		return errors.New("当前不能偷取资源")
+	}
+	valid := false
+	for _, v := range g.Victims {
+		valid = valid || v == target
+	}
+	if !valid {
+		return errors.New("请选择强盗旁有资源的对手")
+	}
+	hand := g.Players[target].Resources
+	n := catanRandom(sum(hand))
+	for c, count := range hand {
+		if n < count {
+			hand[c]--
+			g.Players[p].Resources[c]++
+			break
+		}
+		n -= count
+	}
+	s.catanLog(p, "从玩家 %d 随机偷取一张资源", target+1)
+	g.Victims = []int{}
+	s.Phase = g.ResumePhase
+	return nil
+}
+func (s *State) catanDev(p int, a Action) error {
+	g := s.Catan
+	pl := &g.Players[p]
+	kind := a.Card
+	if (s.Phase != "catan_turn" && s.Phase != "catan_roll") || g.PlayedDev || kind < 0 || kind > 3 || pl.Dev[kind]-pl.NewDev[kind] <= 0 {
+		return errors.New("每回合最多使用一张发展卡，当回合购买的卡不能使用")
+	}
+	switch kind {
+	case 1:
+		if !g.hasRoad(p) {
+			return errors.New("没有可放置的道路")
+		}
+	case 2:
+		if !catanBundle(a.Take) || sum(a.Take) != min(2, sum(g.Bank)) || sum(a.Take) == 0 || !catanHas(g.Bank, a.Take) {
+			return errors.New("请选择银行中最多两张资源")
+		}
+	case 3:
+		if a.Color < 0 || a.Color >= 5 {
+			return errors.New("请选择资源类型")
+		}
+	}
+	pl.Dev[kind]--
+	g.DevDiscard = append(g.DevDiscard, kind)
+	g.PlayedDev = true
+	g.Trade = nil
+	g.ResumePhase = s.Phase
+	switch kind {
+	case 0:
+		pl.Knights++
+		s.Phase = "catan_robber"
+		s.catanLog(p, "使用骑士，移动强盗")
+	case 1:
+		g.FreeRoads = 2
+		s.Phase = "catan_roads"
+		s.catanLog(p, "使用道路建设，免费修建两条道路")
+	case 2:
+		catanMove(g.Bank, pl.Resources, a.Take)
+		s.catanLog(p, "使用丰收，获得 %s", catanText(a.Take))
+	case 3:
+		count := 0
+		for i := range g.Players {
+			if i != p && !g.Players[i].Eliminated {
+				n := g.Players[i].Resources[a.Color]
+				count += n
+				g.Players[i].Resources[a.Color] = 0
+				pl.Resources[a.Color] += n
+			}
+		}
+		s.catanLog(p, "使用垄断，收取 %s×%d", CatanResources[a.Color], count)
+	}
+	s.catanScores()
+	s.catanVictory()
+	return nil
+}
+func (s *State) catanOffer(p int, a Action) error {
+	g := s.Catan
+	if s.Phase != "catan_turn" || !catanBundle(a.Give) || !catanBundle(a.Take) || sum(a.Give) == 0 || sum(a.Take) == 0 || !catanHas(g.Players[p].Resources, a.Give) {
+		return errors.New("请提出有效交易，且持有要支付的资源")
+	}
+	for i := range a.Give {
+		if a.Give[i] > 0 && a.Take[i] > 0 {
+			return errors.New("不能同时给出和索取同一种资源")
+		}
+	}
+	g.TradeID++
+	g.Trade = &CatanTrade{g.TradeID, p, append([]int{}, a.Give...), append([]int{}, a.Take...), make([]int, len(g.Players))}
+	s.catanLog(p, "提出交易：给出 %s，换取 %s", catanText(a.Give), catanText(a.Take))
+	return nil
+}
+func (s *State) catanRespondTrade(p int, a Action) error {
+	g := s.Catan
+	t := g.Trade
+	if s.Phase != "catan_turn" || t == nil || a.Offer != t.ID || p == t.From {
+		return errors.New("这笔交易已结束或不能回应自己的交易")
+	}
+	if a.Type == "catan_trade_accept" {
+		if !catanHas(g.Players[p].Resources, t.Take) {
+			return errors.New("持有资源不足")
+		}
+		t.Responses[p] = 1
+	} else {
+		t.Responses[p] = -1
+	}
+	return nil
+}
+func (s *State) catanCompleteTrade(p int, a Action) error {
+	g := s.Catan
+	t := g.Trade
+	target := a.Target
+	if s.Phase != "catan_turn" || t == nil || t.From != p || t.ID != a.Offer || target < 0 || target >= len(g.Players) || target == p || g.Players[target].Eliminated || t.Responses[target] != 1 {
+		return errors.New("请选择已接受本次交易的玩家")
+	}
+	from, to := g.Players[p].Resources, g.Players[target].Resources
+	if !catanHas(from, t.Give) || !catanHas(to, t.Take) {
+		return errors.New("玩家资源已变化，请重新提出交易")
+	}
+	catanMove(from, to, t.Give)
+	catanMove(to, from, t.Take)
+	s.catanLog(p, "与玩家 %d 完成交易：给出 %s，获得 %s", target+1, catanText(t.Give), catanText(t.Take))
+	g.Trade = nil
+	return nil
+}
+func (s *State) AutoCatanPending() {
+	g := s.Catan
+	if g == nil || s.Finished {
+		return
+	}
+	if s.Phase == "catan_discard" {
+		for i, due := range g.DiscardDue {
+			if due == 0 {
+				continue
+			}
+			hand := append([]int{}, g.Players[i].Resources...)
+			give := make([]int, 5)
+			for range due {
+				n := catanRandom(sum(hand))
+				for c, count := range hand {
+					if n < count {
+						hand[c]--
+						give[c]++
+						break
+					}
+					n -= count
+				}
+			}
+			_ = s.catanDiscard(i, give)
+		}
+	} else if g.setup() {
+		step := g.SetupStep
+		for g.SetupStep == step {
+			a, e := s.catanBot(s.Turn)
+			if e != nil {
+				break
+			}
+			if s.applyCatan(s.Turn, a) != nil {
+				break
+			}
+		}
+	}
+	if len(s.Log) > 80 {
+		s.Log = s.Log[len(s.Log)-80:]
+	}
+}
+func (s *State) EliminateCatan(p int) error {
+	g := s.Catan
+	if g == nil || g.setup() || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
+		return errors.New("当前不能移除此玩家")
+	}
+	pl := &g.Players[p]
+	pl.Eliminated = true
+	catanMove(pl.Resources, g.Bank, append([]int{}, pl.Resources...))
+	for k, n := range pl.Dev {
+		for range n {
+			g.DevDiscard = append(g.DevDiscard, k)
+		}
+	}
+	pl.Dev = make([]int, 5)
+	pl.NewDev = make([]int, 5)
+	g.Trade = nil
+	s.catanLog(p, "超时离场：资源归还银行，建筑与道路留在地图上但不再生产")
+	s.catanScores()
+	active := []int{}
+	for i, v := range g.Players {
+		if !v.Eliminated {
+			active = append(active, i)
+		}
+	}
+	if len(active) == 1 {
+		s.Turn = active[0]
+		s.Winners = active
+		s.Finished = true
+		s.Phase = "finished"
+	} else {
+		s.catanNext()
+		s.catanVictory()
+	}
+	return nil
+}

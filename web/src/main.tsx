@@ -55,6 +55,7 @@ import { useTurnTitle } from "./turn-title";
 import { ProfileContext, PlayerName, ProfilePage } from "./profiles";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { AnimatedSlot } from "./animated-slot";
+import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
 const AssetsContext = createContext("");
 const gemColors = [
   "#218357",
@@ -89,7 +90,7 @@ const trainNames = [
 ];
 const playerColors = ["#337ab3", "#cf5347", "#42956b", "#d4a833", "#414753"];
 const gameName = (kind: string) =>
-  kind === "splendor" ? "璀璨宝石" : "铁路环游";
+  kind === "catan" ? "卡坦岛" : kind === "splendor" ? "璀璨宝石" : "铁路环游";
 const statusName: Record<string, string> = {
   waiting: "等待入座",
   playing: "游戏中",
@@ -140,7 +141,44 @@ function Logo() {
 function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
-      {kind === "splendor" ? (
+      {kind === "catan" ? (
+        <svg viewBox="0 0 520 260" aria-hidden="true">
+          <rect width="520" height="260" fill="#1784ad" />
+          {[
+            [220, 75, 0],
+            [295, 75, 3],
+            [183, 140, 1],
+            [257, 140, 2],
+            [331, 140, 4],
+            [220, 205, 3],
+            [295, 205, 0],
+          ].map(([x, y, c], i) => (
+            <g key={i}>
+              <path
+                d={`M${x} ${y - 44}l38 22v44l-38 22-38-22v-44Z`}
+                fill={
+                  ["#34703d", "#b8643d", "#91ac54", "#ddad44", "#78868d"][c]
+                }
+                stroke="#f2d899"
+                strokeWidth="5"
+              />
+              <circle cx={x} cy={y} r="14" fill="#f5e8b9" />
+              <text
+                x={x}
+                y={y + 5}
+                textAnchor="middle"
+                fill="#563c24"
+                fontSize="16"
+              >
+                {[6, 4, 5, 8, 10, 3, 9][i]}
+              </text>
+            </g>
+          ))}
+          <text x="24" y="46" fill="#fff2bb" fontSize="30" fontWeight="800">
+            CATAN
+          </text>
+        </svg>
+      ) : kind === "splendor" ? (
         <svg viewBox="0 0 520 260" preserveAspectRatio="xMidYMid slice">
           <defs>
             <linearGradient id="gemsky" x2="0" y2="1">
@@ -755,7 +793,14 @@ function App() {
                   )}
                   <div className="game-layout">
                     <div className="game-main">
-                      {room.kind === "splendor" ? (
+                      {room.kind === "catan" ? (
+                        <CatanBoard
+                          room={room}
+                          act={act}
+                          busy={busy}
+                          assets={state.assetsBaseURL || ""}
+                        />
+                      ) : room.kind === "splendor" ? (
                         <SplendorBoard room={room} act={act} busy={busy} />
                       ) : (
                         <RailBoard room={room} act={act} busy={busy} />
@@ -922,7 +967,7 @@ function Auth({
               <TrainFront size={17} />
               铁路环游
             </span>
-            <span>两款经典，无限好时光</span>
+            <span>卡坦岛 · 三款经典，无限好时光</span>
           </div>
         </div>
         <small>YOUR FRIENDS. YOUR TABLE. YOUR NEXT MOVE.</small>
@@ -1053,32 +1098,50 @@ function Lobby({
         </div>
       </section>
       <section className="game-selection">
-        {["splendor", "rail"].map((kind) => (
+        {["splendor", "rail", "catan"].map((kind) => (
           <article className="game-feature" key={kind}>
             <Cover kind={kind} />
             <div className="feature-info">
               <div className="feature-kicker">
-                {kind === "splendor"
-                  ? "THE ART OF COLLECTING"
-                  : "EVERY ROUTE TELLS A STORY"}
+                {kind === "catan"
+                  ? "BUILD. TRADE. SETTLE."
+                  : kind === "splendor"
+                    ? "THE ART OF COLLECTING"
+                    : "EVERY ROUTE TELLS A STORY"}
                 <span>基础版</span>
               </div>
               <h2>
                 {gameName(kind)}
                 <small>
-                  {kind === "splendor" ? "Splendor" : "Ticket to Ride"}
+                  {kind === "catan"
+                    ? "CATAN"
+                    : kind === "splendor"
+                      ? "Splendor"
+                      : "Ticket to Ride"}
                 </small>
               </h2>
               <p>
-                {kind === "splendor"
-                  ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
-                  : "从海岸到海岸，让你的铁路连接每一个目的地。"}
+                {kind === "catan"
+                  ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
+                  : kind === "splendor"
+                    ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
+                    : "从海岸到海岸，让你的铁路连接每一个目的地。"}
               </p>
               <div className="feature-bottom">
                 <span>
                   <Users size={15} />
-                  {kind === "splendor" ? "2–4" : "2–5"} 人 <Clock size={15} />
-                  {kind === "splendor" ? "30" : "45–60"} 分钟
+                  {kind === "catan"
+                    ? "3–4"
+                    : kind === "splendor"
+                      ? "2–4"
+                      : "2–5"}{" "}
+                  人 <Clock size={15} />
+                  {kind === "catan"
+                    ? "45–90"
+                    : kind === "splendor"
+                      ? "30"
+                      : "45–60"}{" "}
+                  分钟
                 </span>
                 <button className="primary" onClick={() => onCreate(kind)}>
                   <Plus size={17} />
@@ -1107,6 +1170,7 @@ function Lobby({
             ["all", "全部桌游"],
             ["splendor", "璀璨宝石"],
             ["rail", "铁路环游"],
+            ["catan", "卡坦岛"],
           ].map(([k, label]) => (
             <button
               className={filter === k ? "active" : ""}
@@ -1266,14 +1330,19 @@ function Create({
         }}
       >
         <div className="choose-games">
-          {["splendor", "rail"].map((x) => (
+          {["splendor", "rail", "catan"].map((x) => (
             <button
               type="button"
               className={k === x ? "selected" : ""}
               key={x}
               onClick={() => {
                 setK(x);
-                setCapacity(Math.min(capacity, x === "rail" ? 5 : 4));
+                setCapacity(
+                  Math.max(
+                    x === "catan" ? 3 : 2,
+                    Math.min(capacity, x === "rail" ? 5 : 4),
+                  ),
+                );
               }}
             >
               <Cover kind={x} mini />
@@ -1302,8 +1371,8 @@ function Create({
               onChange={(e) => setCapacity(Number(e.target.value))}
             >
               {Array.from(
-                { length: k === "rail" ? 4 : 3 },
-                (_, i) => i + 2,
+                { length: k === "catan" ? 2 : k === "rail" ? 4 : 3 },
+                (_, i) => i + (k === "catan" ? 3 : 2),
               ).map((n) => (
                 <option key={n} value={n}>
                   {n} 人
@@ -1323,7 +1392,7 @@ function Create({
           </label>
         </div>
         <p className="muted small">
-          至少 2
+          至少 {k === "catan" ? 3 : 2}
           个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
         </p>
         <button className="primary wide" disabled={busy}>
@@ -1345,21 +1414,27 @@ function Waiting({
   host: boolean;
   command: (t: string, extra?: Record<string, unknown>) => void;
 }) {
-  const ready = room.seats.every((p) => p.ready) && room.seats.length >= 2;
+  const ready =
+    room.seats.every((p) => p.ready) &&
+    room.seats.length >= (room.kind === "catan" ? 3 : 2);
   return (
     <div className="waiting-layout">
       <div className="waiting-cover">
         <Cover kind={room.kind} />
         <h2>{gameName(room.kind)}</h2>
         <p>
-          {room.kind === "splendor"
-            ? "每颗宝石，都是通往胜利的可能。"
-            : "下一站，会是你的目的地吗？"}
+          {room.kind === "catan"
+            ? "一座岛屿，无数种通往胜利的道路。"
+            : room.kind === "splendor"
+              ? "每颗宝石，都是通往胜利的可能。"
+              : "下一站，会是你的目的地吗？"}
         </p>
         <span className="tag">
-          {room.kind === "splendor"
-            ? "原版基础规则 · 2–4 人"
-            : "美国基础地图 · 2–5 人"}
+          {room.kind === "catan"
+            ? "基础版 · 3–4 人 · 十分获胜"
+            : room.kind === "splendor"
+              ? "原版基础规则 · 2–4 人"
+              : "美国基础地图 · 2–5 人"}
         </span>
       </div>
       <div className="waiting-seats">
@@ -1447,26 +1522,28 @@ function Players({ room }: { room: Room }) {
   return (
     <div className="players-strip">
       {room.seats.map((p, i) => {
-        const stats = g.splendor?.players[i] || g.rail?.players[i];
+        const stats =
+          g.splendor?.players[i] || g.rail?.players[i] || g.catan?.players[i];
         return (
           <div
             data-player-seat={i}
-            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${g.splendor?.players[i].eliminated || g.rail?.players[i].eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
-            <span className="avatar" style={{ background: playerColors[i] }}>
+            <span
+              className="avatar"
+              style={{
+                background: g.catan ? catanPlayerColors[i] : playerColors[i],
+                color: g.catan && i === 2 ? "#564432" : undefined,
+              }}
+            >
               {p.name[0]}
             </span>
             <div className="player-info">
               <strong>
                 <PlayerName user={p} />
                 {p.left && (
-                  <small>
-                    {g.splendor?.players[i].eliminated ||
-                    g.rail?.players[i].eliminated
-                      ? "超时离场"
-                      : "已离桌"}
-                  </small>
+                  <small>{stats?.eliminated ? "超时离场" : "已离桌"}</small>
                 )}
                 {i === room.you && <small>你</small>}
                 {p.bot && <small className="bot-badge">AI</small>}
@@ -1492,6 +1569,14 @@ function Players({ room }: { room: Room }) {
                     </span>
                   ))}
                 </div>
+              ) : g.catan ? (
+                <small>
+                  资源 {g.catan.players[i].resourceCount} · 发展卡{" "}
+                  {g.catan.players[i].devCount}
+                  <br />
+                  道路 {g.catan.players[i].roadLength} · 骑士{" "}
+                  {g.catan.players[i].knights}
+                </small>
               ) : (
                 <small>
                   车厢 {g.rail!.players[i].trains} · 手牌{" "}
@@ -1554,10 +1639,17 @@ function Turn({
   command: (type: string, extra?: Record<string, unknown>) => void;
 }) {
   const g = room.game!;
+  const catanPending =
+    !!g.catan &&
+    (g.catan.setupStep < 2 * room.seats.length || g.phase === "catan_discard");
   const setup = !!g.rail?.setup;
   const mine =
     !room.spectating &&
-    (setup ? !g.rail?.setupReady?.[room.you] : g.turn === room.you);
+    (g.phase === "catan_discard"
+      ? (g.catan?.discardDue[room.you] || 0) > 0
+      : setup
+        ? !g.rail?.setupReady?.[room.you]
+        : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -1578,6 +1670,7 @@ function Turn({
     : 0;
   const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
+    ...catanPhases,
     turn: "选择一个行动",
     discard: "归还多出的宝石",
     noble: "选择一位贵族",
@@ -1618,15 +1711,17 @@ function Turn({
             </time>
             <span>
               {expired
-                ? setup
-                  ? "正在自动选牌"
-                  : "已超时"
+                ? catanPending
+                  ? "正在自动处理"
+                  : setup
+                    ? "正在自动选牌"
+                    : "已超时"
                 : setup
                   ? "共同选牌限时"
                   : "每回合 120 秒"}
             </span>
           </div>
-          {expired && !setup && (
+          {expired && !setup && !catanPending && (
             <p>
               {room.spectating
                 ? "该玩家已超时，等待牌桌玩家处理。"
@@ -1635,7 +1730,7 @@ function Turn({
                   : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
             </p>
           )}
-          {expired && !mine && !setup && !room.spectating && (
+          {expired && !mine && !setup && !catanPending && !room.spectating && (
             <button
               className="timeout-kick"
               disabled={busy}
@@ -1643,7 +1738,7 @@ function Turn({
                 const target = room.seats[g.turn];
                 if (
                   confirm(
-                    `将超时玩家「${target.name}」移出本局？${g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
+                    `将超时玩家「${target.name}」移出本局？${g.catan ? "资源归还银行，建筑道路保留但不再生产。" : g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
                   )
                 ) {
                   command("kick_timeout", { target: target.id });
@@ -1690,11 +1785,13 @@ function Results({
           {g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜
         </h2>
         <p>
-          {g.splendor
-            ? g.splendor.players.filter((p) => !p.eliminated).length === 1
-              ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
-              : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
-            : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
+          {g.catan
+            ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
+            : g.splendor
+              ? g.splendor.players.filter((p) => !p.eliminated).length === 1
+                ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
+                : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
+              : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
         </p>
       </div>
       {g.rail && (
@@ -3101,7 +3198,40 @@ function RailBoard({
 function Rules({ kind }: { kind: string }) {
   return (
     <div className="rules">
-      {kind === "splendor" ? (
+      {kind === "catan" ? (
+        <>
+          <p>卡坦岛基础版，3–4 人。自己的回合达到 10 分立即获胜。</p>
+          <ol>
+            <li>
+              按顺序放置一座村庄和相邻道路，再逆序放第二组；第二座村庄获得相邻地块各一张资源。
+            </li>
+            <li>
+              回合开始掷两颗骰子。对应数字的地块向相邻村庄发一张、城市发两张资源，强盗所在的地块不生产。
+            </li>
+            <li>
+              掷出 7
+              时，超过七张资源的玩家同时弃掉一半，向下取整；之后当前玩家移动强盗，从相邻一名有资源的对手处随机偷一张。
+            </li>
+            <li>
+              掷骰后可任意顺序交易、建造及购买发展卡。银行 4:1，通用港口
+              3:1，专用港口 2:1；玩家交易须双方同意，由当前玩家确认成交。
+            </li>
+            <li>
+              村庄必须连接自己的道路，且与任何建筑至少相隔两条边。城市升级自己的村庄。道路不能穿过对手建筑。
+            </li>
+            <li>
+              每回合最多使用一张发展卡，刚买的下次自己的回合才能使用。胜利点自动计分并保密；骑士、道路建设、丰收和垄断均按基础规则执行。
+            </li>
+            <li>
+              至少五段连续道路获得最长道路、至少三名骑士获得最大骑士军队，各两分；并列时原持有者保留，原持有者不在并列中则无人持有。
+            </li>
+          </ol>
+          <p>
+            起始建设和同时弃牌限时 120
+            秒，超时自动处理。正常回合超时可由其他玩家移出；建筑、道路保留但不再生产。资源与发展卡种类仅本人可见，结算后公开。
+          </p>
+        </>
+      ) : kind === "splendor" ? (
         <>
           <p>
             成为宝石商人，购买发展卡积累永久折扣和声望。2–4 人，完整基础版。
