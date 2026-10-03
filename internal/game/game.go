@@ -8,34 +8,36 @@ import (
 )
 
 type Action struct {
-	Cards    []int  `json:"cards"`
-	Targets  []int  `json:"targets"`
-	Choice   string `json:"choice"`
-	Skill    string `json:"skill"`
-	Prompt   int    `json:"prompt"`
-	X        int    `json:"x"`
-	Y        int    `json:"y"`
-	Rotation int    `json:"rotation"`
-	Feature  int    `json:"feature"`
-	Vertex   int    `json:"vertex"`
-	Edge     int    `json:"edge"`
-	Tile     int    `json:"tile"`
-	Target   int    `json:"target"`
-	Offer    int    `json:"offer"`
-	Give     []int  `json:"give"`
-	Take     []int  `json:"take"`
-	Type     string `json:"type"`
-	Card     int    `json:"card"`
-	Tier     int    `json:"tier"`
-	Tokens   []int  `json:"tokens"`
-	Noble    int    `json:"noble"`
-	Route    int    `json:"route"`
-	Color    int    `json:"color"`
-	Wild     int    `json:"wild"`
-	Slot     int    `json:"slot"`
-	Keep     []int  `json:"keep"`
+	Dota     *DotaOrder `json:"dota,omitempty"`
+	Cards    []int      `json:"cards"`
+	Targets  []int      `json:"targets"`
+	Choice   string     `json:"choice"`
+	Skill    string     `json:"skill"`
+	Prompt   int        `json:"prompt"`
+	X        int        `json:"x"`
+	Y        int        `json:"y"`
+	Rotation int        `json:"rotation"`
+	Feature  int        `json:"feature"`
+	Vertex   int        `json:"vertex"`
+	Edge     int        `json:"edge"`
+	Tile     int        `json:"tile"`
+	Target   int        `json:"target"`
+	Offer    int        `json:"offer"`
+	Give     []int      `json:"give"`
+	Take     []int      `json:"take"`
+	Type     string     `json:"type"`
+	Card     int        `json:"card"`
+	Tier     int        `json:"tier"`
+	Tokens   []int      `json:"tokens"`
+	Noble    int        `json:"noble"`
+	Route    int        `json:"route"`
+	Color    int        `json:"color"`
+	Wild     int        `json:"wild"`
+	Slot     int        `json:"slot"`
+	Keep     []int      `json:"keep"`
 }
 type State struct {
+	Dota        *Dota        `json:"dota,omitempty"`
 	Sanguosha   *Sanguosha   `json:"sanguosha,omitempty"`
 	Carcassonne *Carcassonne `json:"carcassonne,omitempty"`
 	Catan       *Catan       `json:"catan,omitempty"`
@@ -53,6 +55,11 @@ type State struct {
 func New(kind string, n int) (*State, error) {
 	s := &State{Kind: kind, Phase: "turn", Round: 1, Log: []string{}}
 	switch kind {
+	case "dota":
+		if n != 2 && n != 4 && n != 6 {
+			return nil, errors.New("兵线争锋需要 2、4 或 6 位玩家")
+		}
+		s.initDota(n)
 	case "sanguosha":
 		if n < 4 || n > 8 {
 			return nil, errors.New("三国杀需要 4–8 位玩家")
@@ -86,6 +93,9 @@ func New(kind string, n int) (*State, error) {
 func (s *State) Apply(player int, a Action) error {
 	if s.Finished {
 		return errors.New("本局已结束")
+	}
+	if s.Dota != nil {
+		return s.applyDota(player, a)
 	}
 	if s.Sanguosha != nil {
 		return s.applySanguosha(player, a)
@@ -122,6 +132,9 @@ func (s *State) Apply(player int, a Action) error {
 	return err
 }
 func (s *State) View(player int) map[string]any {
+	if s.Dota != nil {
+		return s.dotaView(player)
+	}
 	if s.Sanguosha != nil {
 		return s.sgView(player)
 	}

@@ -77,6 +77,7 @@ import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { SplendorCardAnimation } from "./splendor-card-animation";
 import { SplendorTokenAnimation } from "./splendor-token-animation";
 import { AnimatedSlot } from "./animated-slot";
+import { DotaBoard, DotaCover, DotaRules } from "./dota";
 import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
 import "./splendor-layout.css";
 import { CarcassonneBoard } from "./carcassonne";
@@ -117,15 +118,17 @@ const trainNames = [
 ];
 const playerColors = ["#337ab3", "#cf5347", "#42956b", "#d4a833", "#414753"];
 const gameName = (kind: string) =>
-  kind === "sanguosha"
-    ? "三国杀"
-    : kind === "carcassonne"
-      ? "卡卡颂"
-      : kind === "catan"
-        ? "卡坦岛"
-        : kind === "splendor"
-          ? "璀璨宝石"
-          : "铁路环游";
+  kind === "dota"
+    ? "兵线争锋"
+    : kind === "sanguosha"
+      ? "三国杀"
+      : kind === "carcassonne"
+        ? "卡卡颂"
+        : kind === "catan"
+          ? "卡坦岛"
+          : kind === "splendor"
+            ? "璀璨宝石"
+            : "铁路环游";
 const statusName: Record<string, string> = {
   waiting: "等待入座",
   playing: "游戏中",
@@ -176,7 +179,9 @@ function Logo() {
 function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
-      {kind === "sanguosha" ? (
+      {kind === "dota" ? (
+        <DotaCover />
+      ) : kind === "sanguosha" ? (
         <SanguoshaCover />
       ) : kind === "carcassonne" ? (
         <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 520 260">
@@ -608,14 +613,19 @@ function App() {
     }
     const r = state.room;
     const sg = r.game!.sanguosha;
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}`;
+    const dota = r.game!.dota;
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}`;
     if (key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
         void audio.current.play("finish");
       } else if (
         r.status === "playing" &&
         !r.seats[r.you]?.autoPlay &&
-        (sg?.pending ? sg.pending.canRespond : r.game!.turn === r.you)
+        (dota
+          ? dota.actors?.includes(r.you)
+          : sg?.pending
+            ? sg.pending.canRespond
+            : r.game!.turn === r.you)
       ) {
         void audio.current.play("turn");
       }
@@ -1051,7 +1061,9 @@ function App() {
                   </div>
                 ) : (
                   <>
-                    {!room.game?.sanguosha && <Players room={room} />}
+                    {!room.game?.sanguosha && !room.game?.dota && (
+                      <Players room={room} />
+                    )}
                     {room.game?.finished && (
                       <Results
                         room={room}
@@ -1062,7 +1074,14 @@ function App() {
                     )}
                     <div className="game-layout">
                       <div className="game-main">
-                        {room.kind === "sanguosha" ? (
+                        {room.kind === "dota" ? (
+                          <DotaBoard
+                            room={room}
+                            act={act}
+                            busy={boardBusy}
+                            assets={state.assetsBaseURL || ""}
+                          />
+                        ) : room.kind === "sanguosha" ? (
                           <SanguoshaBoard
                             room={room}
                             act={act}
@@ -1512,72 +1531,82 @@ function Lobby({
         </div>
       </section>
       <section className="game-selection">
-        {["splendor", "rail", "catan", "carcassonne", "sanguosha"].map(
+        {["splendor", "rail", "catan", "carcassonne", "sanguosha", "dota"].map(
           (kind) => (
             <article className="game-feature" key={kind}>
               <Cover kind={kind} />
               <div className="feature-info">
                 <div className="feature-kicker">
-                  {kind === "sanguosha"
-                    ? "CHOOSE YOUR SIDE."
-                    : kind === "carcassonne"
-                      ? "ONE TILE. A WHOLE WORLD."
-                      : kind === "catan"
-                        ? "BUILD. TRADE. SETTLE."
-                        : kind === "splendor"
-                          ? "THE ART OF COLLECTING"
-                          : "EVERY ROUTE TELLS A STORY"}
-                  <span>基础版</span>
+                  {kind === "dota"
+                    ? "DEFEND. OUTWIT. ADVANCE."
+                    : kind === "sanguosha"
+                      ? "CHOOSE YOUR SIDE."
+                      : kind === "carcassonne"
+                        ? "ONE TILE. A WHOLE WORLD."
+                        : kind === "catan"
+                          ? "BUILD. TRADE. SETTLE."
+                          : kind === "splendor"
+                            ? "THE ART OF COLLECTING"
+                            : "EVERY ROUTE TELLS A STORY"}
+                  <span>{kind === "dota" ? "原创桌游" : "基础版"}</span>
                 </div>
                 <h2>
                   {gameName(kind)}
                   <small>
-                    {kind === "sanguosha"
-                      ? "Sanguosha"
-                      : kind === "carcassonne"
-                        ? "Carcassonne"
-                        : kind === "catan"
-                          ? "CATAN"
-                          : kind === "splendor"
-                            ? "Splendor"
-                            : "Ticket to Ride"}
+                    {kind === "dota"
+                      ? "DotA · Lane Tactics"
+                      : kind === "sanguosha"
+                        ? "Sanguosha"
+                        : kind === "carcassonne"
+                          ? "Carcassonne"
+                          : kind === "catan"
+                            ? "CATAN"
+                            : kind === "splendor"
+                              ? "Splendor"
+                              : "Ticket to Ride"}
                   </small>
                 </h2>
                 <p>
-                  {kind === "sanguosha"
-                    ? "执一手好牌，藏一重身份，与好友共赴三国风云。"
-                    : kind === "carcassonne"
-                      ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
-                      : kind === "catan"
-                        ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
-                        : kind === "splendor"
-                          ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
-                          : "从海岸到海岸，让你的铁路连接每一个目的地。"}
+                  {kind === "dota"
+                    ? "暗选行动，协同进军。以熟悉的英雄，赢下一场桌上遗迹之战。"
+                    : kind === "sanguosha"
+                      ? "执一手好牌，藏一重身份，与好友共赴三国风云。"
+                      : kind === "carcassonne"
+                        ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
+                        : kind === "catan"
+                          ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
+                          : kind === "splendor"
+                            ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
+                            : "从海岸到海岸，让你的铁路连接每一个目的地。"}
                 </p>
                 <div className="feature-bottom">
                   <span>
                     <span>
                       <Users size={15} />
-                      {kind === "sanguosha"
-                        ? "4–8"
-                        : kind === "catan"
-                          ? "3–4"
-                          : kind === "splendor"
-                            ? "2–4"
-                            : "2–5"}{" "}
+                      {kind === "dota"
+                        ? "2 / 4 / 6"
+                        : kind === "sanguosha"
+                          ? "4–8"
+                          : kind === "catan"
+                            ? "3–4"
+                            : kind === "splendor"
+                              ? "2–4"
+                              : "2–5"}{" "}
                       人
                     </span>{" "}
                     <span>
                       <Clock size={15} />
-                      {kind === "sanguosha"
-                        ? "30–60"
-                        : kind === "carcassonne"
-                          ? "30–45"
-                          : kind === "catan"
-                            ? "45–90"
-                            : kind === "splendor"
-                              ? "30"
-                              : "45–60"}{" "}
+                      {kind === "dota"
+                        ? "20–40"
+                        : kind === "sanguosha"
+                          ? "30–60"
+                          : kind === "carcassonne"
+                            ? "30–45"
+                            : kind === "catan"
+                              ? "45–90"
+                              : kind === "splendor"
+                                ? "30"
+                                : "45–60"}{" "}
                       分钟
                     </span>
                   </span>
@@ -1612,6 +1641,7 @@ function Lobby({
             ["catan", "卡坦岛"],
             ["carcassonne", "卡卡颂"],
             ["sanguosha", "三国杀"],
+            ["dota", "兵线争锋"],
           ].map(([k, label]) => (
             <button
               className={filter === k ? "active" : ""}
@@ -1779,39 +1809,46 @@ function Create({
         }}
       >
         <div className="choose-games">
-          {["splendor", "rail", "catan", "carcassonne", "sanguosha"].map(
-            (x) => (
-              <button
-                type="button"
-                className={k === x ? "selected" : ""}
-                key={x}
-                onClick={() => {
-                  setK(x);
-                  setCapacity(
-                    Math.max(
-                      x === "sanguosha" ? 4 : x === "catan" ? 3 : 2,
-                      Math.min(
-                        capacity,
-                        x === "sanguosha"
-                          ? 8
-                          : x === "rail"
-                            ? map?.maxPlayers || 5
-                            : x === "carcassonne"
-                              ? 5
-                              : 4,
+          {[
+            "splendor",
+            "rail",
+            "catan",
+            "carcassonne",
+            "sanguosha",
+            "dota",
+          ].map((x) => (
+            <button
+              type="button"
+              className={k === x ? "selected" : ""}
+              key={x}
+              onClick={() => {
+                setK(x);
+                setCapacity(
+                  x === "dota"
+                    ? Math.min(6, Math.max(2, capacity - (capacity % 2)))
+                    : Math.max(
+                        x === "sanguosha" ? 4 : x === "catan" ? 3 : 2,
+                        Math.min(
+                          capacity,
+                          x === "sanguosha"
+                            ? 8
+                            : x === "rail"
+                              ? map?.maxPlayers || 5
+                              : x === "carcassonne"
+                                ? 5
+                                : 4,
+                        ),
                       ),
-                    ),
-                  );
-                }}
-              >
-                <Cover kind={x} mini />
-                <span>
-                  {gameName(x)}
-                  {k === x && <Check size={16} />}
-                </span>
-              </button>
-            ),
-          )}
+                );
+              }}
+            >
+              <Cover kind={x} mini />
+              <span>
+                {gameName(x)}
+                {k === x && <Check size={16} />}
+              </span>
+            </button>
+          ))}
         </div>
         {k === "rail" && (
           <RailMapPicker
@@ -1843,20 +1880,24 @@ function Create({
               value={capacity}
               onChange={(e) => setCapacity(Number(e.target.value))}
             >
-              {Array.from(
-                {
-                  length:
-                    k === "sanguosha"
-                      ? 5
-                      : k === "catan"
-                        ? 2
-                        : k === "rail"
-                          ? (map?.maxPlayers || 5) - 1
-                          : k === "carcassonne"
-                            ? 4
-                            : 3,
-                },
-                (_, i) => i + (k === "sanguosha" ? 4 : k === "catan" ? 3 : 2),
+              {(k === "dota"
+                ? [2, 4, 6]
+                : Array.from(
+                    {
+                      length:
+                        k === "sanguosha"
+                          ? 5
+                          : k === "catan"
+                            ? 2
+                            : k === "rail"
+                              ? (map?.maxPlayers || 5) - 1
+                              : k === "carcassonne"
+                                ? 4
+                                : 3,
+                    },
+                    (_, i) =>
+                      i + (k === "sanguosha" ? 4 : k === "catan" ? 3 : 2),
+                  )
               ).map((n) => (
                 <option key={n} value={n}>
                   {n} 人
@@ -1878,6 +1919,7 @@ function Create({
         <p className="muted small">
           至少 {k === "sanguosha" ? 4 : k === "catan" ? 3 : 2}
           个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
+          {k === "dota" && " 兵线争锋需 2、4 或 6 人，开始后再分队。"}
         </p>
         <button className="primary wide" disabled={busy}>
           创建房间
@@ -1903,6 +1945,7 @@ function Waiting({
   const map = maps.find((m) => m.id === (room.railMap || "usa"));
   const ready =
     room.seats.every((p) => p.ready) &&
+    (room.kind !== "dota" || room.seats.length % 2 === 0) &&
     room.seats.length >=
       (room.kind === "sanguosha" ? 4 : room.kind === "catan" ? 3 : 2);
   return (
@@ -1911,26 +1954,30 @@ function Waiting({
         <Cover kind={room.kind} />
         <h2>{gameName(room.kind)}</h2>
         <p>
-          {room.kind === "sanguosha"
-            ? "与好友过招，也与身份博弈。"
-            : room.kind === "carcassonne"
-              ? "一块接一块，拼出属于你们的城邦。"
-              : room.kind === "catan"
-                ? "一座岛屿，无数种通往胜利的道路。"
-                : room.kind === "splendor"
-                  ? "每颗宝石，都是通往胜利的可能。"
-                  : "下一站，会是你的目的地吗？"}
+          {room.kind === "dota"
+            ? "先入座，再结盟；让每一次出牌推动兵线。"
+            : room.kind === "sanguosha"
+              ? "与好友过招，也与身份博弈。"
+              : room.kind === "carcassonne"
+                ? "一块接一块，拼出属于你们的城邦。"
+                : room.kind === "catan"
+                  ? "一座岛屿，无数种通往胜利的道路。"
+                  : room.kind === "splendor"
+                    ? "每颗宝石，都是通往胜利的可能。"
+                    : "下一站，会是你的目的地吗？"}
         </p>
         <span className="tag">
-          {room.kind === "sanguosha"
-            ? "经典身份局 · 4–8 人 · 25 将 / 108 张牌"
-            : room.kind === "carcassonne"
-              ? "基础版 · 2–5 人 · 包含农民"
-              : room.kind === "catan"
-                ? "基础版 · 3–4 人 · 十分获胜"
-                : room.kind === "splendor"
-                  ? "原版基础规则 · 2–4 人"
-                  : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
+          {room.kind === "dota"
+            ? "1v1 / 2v2 / 3v3 · 开始后分队 · 全部拆遗迹"
+            : room.kind === "sanguosha"
+              ? "经典身份局 · 4–8 人 · 25 将 / 108 张牌"
+              : room.kind === "carcassonne"
+                ? "基础版 · 2–5 人 · 包含农民"
+                : room.kind === "catan"
+                  ? "基础版 · 3–4 人 · 十分获胜"
+                  : room.kind === "splendor"
+                    ? "原版基础规则 · 2–4 人"
+                    : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
         </span>
       </div>
       <div className="waiting-seats">
@@ -2238,15 +2285,17 @@ function Turn({
   const sgActor = g.sanguosha?.pending?.player ?? g.turn;
   const mine =
     !room.spectating &&
-    (g.sanguosha
-      ? g.sanguosha.pending
-        ? g.sanguosha.pending.canRespond
-        : sgActor === room.you
-      : g.phase === "catan_discard"
-        ? (g.catan?.discardDue[room.you] || 0) > 0
-        : setup
-          ? !g.rail?.setupReady?.[room.you]
-          : g.turn === room.you);
+    (g.dota
+      ? !!g.dota.actors?.includes(room.you)
+      : g.sanguosha
+        ? g.sanguosha.pending
+          ? g.sanguosha.pending.canRespond
+          : sgActor === room.you
+        : g.phase === "catan_discard"
+          ? (g.catan?.discardDue[room.you] || 0) > 0
+          : setup
+            ? !g.rail?.setupReady?.[room.you]
+            : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2268,6 +2317,9 @@ function Turn({
   const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
     ...catanPhases,
+    dota_teams: "确认队伍",
+    dota_draft: "选择英雄",
+    dota_plan: "暗选行动，全部锁定后揭牌",
     sg_select: "选择武将",
     sg_response: "等待响应",
     sg_play: "选择手牌、技能与目标",
@@ -2288,26 +2340,32 @@ function Turn({
           ? "本局已结束"
           : mine && autoPlay
             ? "电脑正在代你行动"
-            : setup
+            : g.dota
               ? mine
-                ? "一起选择目的地"
-                : "等待其他人选好"
-              : mine
-                ? "轮到你了"
-                : g.sanguosha?.pending?.kind === "nullification"
-                  ? "共同响应锦囊"
-                  : `${room.seats[g.sanguosha ? sgActor : g.turn]?.name} ${g.sanguosha?.pending ? "正在响应" : "的回合"}`}
+                ? phase[g.phase]
+                : "等待同伴锁定"
+              : setup
+                ? mine
+                  ? "一起选择目的地"
+                  : "等待其他人选好"
+                : mine
+                  ? "轮到你了"
+                  : g.sanguosha?.pending?.kind === "nullification"
+                    ? "共同响应锦囊"
+                    : `${room.seats[g.sanguosha ? sgActor : g.turn]?.name} ${g.sanguosha?.pending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
           ? "感谢同桌，好局下次再来。"
           : mine && autoPlay
             ? "可随时取消托管，恢复手动操作。"
-            : setup
-              ? "所有人同时选牌，超时自动保留前两张。"
-              : mine
-                ? phase[g.phase]
-                : "稍等片刻，想想下一步。"}
+            : g.dota
+              ? "超时自动托管，回来可随时接管。"
+              : setup
+                ? "所有人同时选牌，超时自动保留前两张。"
+                : mine
+                  ? phase[g.phase]
+                  : "稍等片刻，想想下一步。"}
       </p>
       {!!deadline && (
         <div className={`turn-clock ${remaining <= 20 ? "urgent" : ""}`}>
@@ -2333,6 +2391,7 @@ function Turn({
           </div>
           {expired &&
             !g.sanguosha &&
+            !g.dota &&
             !setup &&
             !catanPending &&
             !turnAutoPlay && (
@@ -2346,6 +2405,7 @@ function Turn({
             )}
           {expired &&
             !g.sanguosha &&
+            !g.dota &&
             !mine &&
             !setup &&
             !catanPending &&
@@ -2405,17 +2465,20 @@ function Results({
           {g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜
         </h2>
         <p>
-          {g.sanguosha
-            ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
-            : g.carcassonne
-              ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
-              : g.catan
-                ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
-                : g.splendor
-                  ? g.splendor.players.filter((p) => !p.eliminated).length === 1
-                    ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
-                    : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
-                  : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
+          {g.dota
+            ? "敌方遗迹已被摧毁，获胜队伍的所有玩家共同获胜。"
+            : g.sanguosha
+              ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
+              : g.carcassonne
+                ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
+                : g.catan
+                  ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
+                  : g.splendor
+                    ? g.splendor.players.filter((p) => !p.eliminated).length ===
+                      1
+                      ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
+                      : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
+                    : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
         </p>
       </div>
       {room.result && (
@@ -4315,7 +4378,9 @@ function RailBoard({
 function Rules({ kind, railMap }: { kind: string; railMap?: RailMapSpec }) {
   return (
     <div className="rules">
-      {kind === "sanguosha" ? (
+      {kind === "dota" ? (
+        <DotaRules />
+      ) : kind === "sanguosha" ? (
         <SanguoshaRules />
       ) : kind === "carcassonne" ? (
         <>

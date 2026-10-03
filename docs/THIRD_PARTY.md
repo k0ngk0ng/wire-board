@@ -27,3 +27,7 @@ Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可
 铁路欧洲、印度、瑞士、北欧和传奇亚洲地图的城市/路线/任务事实与几何坐标，参照 [thoun/tickettoride](https://github.com/thoun/tickettoride) 固定提交 `d0fad9d18f0d92152d443dcff26de221897a5047` 的 `modules/maps/`。本项目仅整理桌游组件事实，Go 支付、隧道、图连通、车站借路、计分与电脑策略均自行实现；没有复制 PHP 游戏逻辑。该参考实现的 `LICENCE_BGA` 是面向 BGA 的限制性许可，不将其视为通用开源代码许可。
 
 这五张地图及对应目的地、欧洲车站的商业美术亦以同一参考提交的 `img/` 为来源；裁切、去除城市标签并转换为 WebP 后，仅存放于部署者的外部素材服务。黑色车站从原紫色棋子调色以匹配现有玩家色。原始商业美术权利仍归各自权利人，不包含在本仓库许可范围内。
+
+## 兵线争锋的经典 DotA 图标
+
+8 位英雄的头像和四个技能、17 件装备共 57 张经典 Warcraft III / DotA 图标来自 [iCCup 英雄资料](https://iccup.com/dota/heroes.html)及[装备资料](https://iccup.com/dota/items.html)。保留图标原色，转换为无损 WebP，共约 246 KiB。来源页、原始及转换后 SHA-256 见 `web/public/dota/v1/sources.json`；转换脚本为 `scripts/prepare_dota_assets.py`。网页优先使用配置的 CDN，随程序保留本地后备副本。原素材权利仍属于各自权利人。本项目的兵线争锋规则是桌游改编，不是原 DotA 电子竞技规则。

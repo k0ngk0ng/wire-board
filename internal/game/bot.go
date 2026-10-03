@@ -12,6 +12,9 @@ func (s *State) BotAction(player int) (Action, error) {
 	if s.Finished {
 		return Action{}, errors.New("game finished")
 	}
+	if s.Dota != nil {
+		return s.dotaBot(player)
+	}
 	if s.Sanguosha != nil {
 		return s.sgBot(player)
 	}

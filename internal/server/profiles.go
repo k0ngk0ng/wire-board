@@ -51,7 +51,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			} else if r.Game.Rail != nil {
 				score = r.Game.Rail.Players[i].Score
 			}
-			if r.Game.Sanguosha == nil {
+			if r.Game.Sanguosha == nil && r.Game.Dota == nil {
 				p.Score = &score
 			}
 			for _, winner := range r.Game.Winners {
@@ -114,7 +114,7 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	records := []MatchRecord{}
-	stats := map[string]map[string]int{"sanguosha": {"played": 0, "wins": 0}, "splendor": {"played": 0, "wins": 0}, "rail": {"played": 0, "wins": 0}, "catan": {"played": 0, "wins": 0}, "carcassonne": {"played": 0, "wins": 0}}
+	stats := map[string]map[string]int{"dota": {"played": 0, "wins": 0}, "sanguosha": {"played": 0, "wins": 0}, "splendor": {"played": 0, "wins": 0}, "rail": {"played": 0, "wins": 0}, "catan": {"played": 0, "wins": 0}, "carcassonne": {"played": 0, "wins": 0}}
 	for rows.Next() {
 		var raw []byte
 		if err = rows.Scan(&raw); err != nil {

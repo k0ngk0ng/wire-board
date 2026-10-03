@@ -1,0 +1,189 @@
+{
+  "1v1": {
+    "heroes": {
+      "axe": {
+        "appearances": 50,
+        "wins": 42,
+        "rate": 0.84
+      },
+      "crystal_maiden": {
+        "appearances": 53,
+        "wins": 22,
+        "rate": 0.415
+      },
+      "earthshaker": {
+        "appearances": 60,
+        "wins": 35,
+        "rate": 0.583
+      },
+      "sven": {
+        "appearances": 44,
+        "wins": 23,
+        "rate": 0.523
+      },
+      "juggernaut": {
+        "appearances": 55,
+        "wins": 30,
+        "rate": 0.545
+      },
+      "drow": {
+        "appearances": 44,
+        "wins": 17,
+        "rate": 0.386
+      },
+      "lina": {
+        "appearances": 47,
+        "wins": 17,
+        "rate": 0.362
+      },
+      "sniper": {
+        "appearances": 47,
+        "wins": 14,
+        "rate": 0.298
+      }
+    },
+    "equipment": {
+      "wand": 42,
+      "wraith_band": 36,
+      "blades_attack": 46,
+      "null_talisman": 45,
+      "bracer": 45,
+      "boots": 51,
+      "quelling_blade": 43,
+      "crystalys": 3,
+      "arcane_boots": 5,
+      "phase_boots": 3,
+      "blade_mail": 2,
+      "vanguard": 1,
+      "bkb": 1,
+      "aghanim": 1
+    },
+    "mean_full_game_seconds": 0.0106
+  },
+  "2v2": {
+    "heroes": {
+      "axe": {
+        "appearances": 90,
+        "wins": 37,
+        "rate": 0.411
+      },
+      "crystal_maiden": {
+        "appearances": 105,
+        "wins": 58,
+        "rate": 0.552
+      },
+      "earthshaker": {
+        "appearances": 100,
+        "wins": 52,
+        "rate": 0.52
+      },
+      "sven": {
+        "appearances": 98,
+        "wins": 39,
+        "rate": 0.398
+      },
+      "juggernaut": {
+        "appearances": 109,
+        "wins": 53,
+        "rate": 0.486
+      },
+      "drow": {
+        "appearances": 96,
+        "wins": 39,
+        "rate": 0.406
+      },
+      "lina": {
+        "appearances": 104,
+        "wins": 53,
+        "rate": 0.51
+      },
+      "sniper": {
+        "appearances": 98,
+        "wins": 69,
+        "rate": 0.704
+      }
+    },
+    "equipment": {
+      "wraith_band": 141,
+      "bracer": 141,
+      "null_talisman": 145,
+      "wand": 140,
+      "boots": 141,
+      "blades_attack": 141,
+      "bkb": 33,
+      "force_staff": 20,
+      "phase_boots": 28,
+      "quelling_blade": 152,
+      "aghanim": 20,
+      "arcane_boots": 59,
+      "mekansm": 19,
+      "blade_mail": 13,
+      "crystalys": 17,
+      "vanguard": 19
+    },
+    "mean_full_game_seconds": 0.0535
+  },
+  "3v3": {
+    "heroes": {
+      "axe": {
+        "appearances": 146,
+        "wins": 77,
+        "rate": 0.527
+      },
+      "crystal_maiden": {
+        "appearances": 153,
+        "wins": 86,
+        "rate": 0.562
+      },
+      "earthshaker": {
+        "appearances": 148,
+        "wins": 68,
+        "rate": 0.459
+      },
+      "sven": {
+        "appearances": 161,
+        "wins": 67,
+        "rate": 0.416
+      },
+      "juggernaut": {
+        "appearances": 151,
+        "wins": 71,
+        "rate": 0.47
+      },
+      "drow": {
+        "appearances": 142,
+        "wins": 66,
+        "rate": 0.465
+      },
+      "lina": {
+        "appearances": 156,
+        "wins": 85,
+        "rate": 0.545
+      },
+      "sniper": {
+        "appearances": 143,
+        "wins": 80,
+        "rate": 0.559
+      }
+    },
+    "equipment": {
+      "bracer": 213,
+      "blades_attack": 191,
+      "boots": 225,
+      "phase_boots": 36,
+      "vanguard": 25,
+      "wraith_band": 194,
+      "wand": 192,
+      "mekansm": 42,
+      "aghanim": 37,
+      "null_talisman": 198,
+      "quelling_blade": 185,
+      "force_staff": 38,
+      "arcane_boots": 110,
+      "blade_mail": 35,
+      "bkb": 24,
+      "crystalys": 38
+    },
+    "mean_full_game_seconds": 0.1035
+  }
+}
