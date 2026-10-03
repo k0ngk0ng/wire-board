@@ -269,10 +269,44 @@
     700 26px/1 Georgia,
     serif;
   z-index: 1;
-  text-shadow: 0 1px 1px #0004;
+  color: #fff9e7;
+  -webkit-text-stroke: 0.65px #413b2c;
+  paint-order: stroke fill;
+  text-shadow:
+    0 -1px 0 #fff,
+    0 1px 0 #7b6741,
+    0 2px 0 #443923,
+    1px 3px 2px #111a2a99;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.wallet-gem.color-1 .wallet-counts b,
+.wallet-gem.color-1 .wallet-counts strong,
+.wallet-gem.color-5 .wallet-counts strong {
+  color: #3d321f;
+  -webkit-text-stroke-color: #fff0bd;
+  text-shadow:
+    0 -1px 0 #fff9df,
+    0 1px 0 #ead49a,
+    0 2px 0 #ac8948,
+    1px 3px 2px #3d2a1c66;
 }
 .wallet-discount.empty {
-  opacity: 0.4;
+  opacity: 0.68;
+}
+.first-player-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 3px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  border: 1px solid #c5a35c;
+  background: #f8e5af;
+  color: #644416;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 .discount-card-icon {
   position: absolute;
