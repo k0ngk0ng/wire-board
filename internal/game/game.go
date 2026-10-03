@@ -8,40 +8,50 @@ import (
 )
 
 type Action struct {
-	Vertex int    `json:"vertex"`
-	Edge   int    `json:"edge"`
-	Tile   int    `json:"tile"`
-	Target int    `json:"target"`
-	Offer  int    `json:"offer"`
-	Give   []int  `json:"give"`
-	Take   []int  `json:"take"`
-	Type   string `json:"type"`
-	Card   int    `json:"card"`
-	Tier   int    `json:"tier"`
-	Tokens []int  `json:"tokens"`
-	Noble  int    `json:"noble"`
-	Route  int    `json:"route"`
-	Color  int    `json:"color"`
-	Wild   int    `json:"wild"`
-	Slot   int    `json:"slot"`
-	Keep   []int  `json:"keep"`
+	X        int    `json:"x"`
+	Y        int    `json:"y"`
+	Rotation int    `json:"rotation"`
+	Feature  int    `json:"feature"`
+	Vertex   int    `json:"vertex"`
+	Edge     int    `json:"edge"`
+	Tile     int    `json:"tile"`
+	Target   int    `json:"target"`
+	Offer    int    `json:"offer"`
+	Give     []int  `json:"give"`
+	Take     []int  `json:"take"`
+	Type     string `json:"type"`
+	Card     int    `json:"card"`
+	Tier     int    `json:"tier"`
+	Tokens   []int  `json:"tokens"`
+	Noble    int    `json:"noble"`
+	Route    int    `json:"route"`
+	Color    int    `json:"color"`
+	Wild     int    `json:"wild"`
+	Slot     int    `json:"slot"`
+	Keep     []int  `json:"keep"`
 }
 type State struct {
-	Catan    *Catan    `json:"catan,omitempty"`
-	Kind     string    `json:"kind"`
-	Turn     int       `json:"turn"`
-	Phase    string    `json:"phase"`
-	Round    int       `json:"round"`
-	Finished bool      `json:"finished"`
-	Winners  []int     `json:"winners"`
-	Log      []string  `json:"log"`
-	Splendor *Splendor `json:"splendor,omitempty"`
-	Rail     *Rail     `json:"rail,omitempty"`
+	Carcassonne *Carcassonne `json:"carcassonne,omitempty"`
+	Catan       *Catan       `json:"catan,omitempty"`
+	Kind        string       `json:"kind"`
+	Turn        int          `json:"turn"`
+	Phase       string       `json:"phase"`
+	Round       int          `json:"round"`
+	Finished    bool         `json:"finished"`
+	Winners     []int        `json:"winners"`
+	Log         []string     `json:"log"`
+	Splendor    *Splendor    `json:"splendor,omitempty"`
+	Rail        *Rail        `json:"rail,omitempty"`
 }
 
 func New(kind string, n int) (*State, error) {
 	s := &State{Kind: kind, Phase: "turn", Round: 1, Log: []string{}}
 	switch kind {
+	case "carcassonne":
+		if n < 2 || n > 5 {
+			return nil, errors.New("卡卡颂需要 2–5 位玩家")
+		}
+		s.initCarcassonne(n)
 	case "catan":
 		if n < 3 || n > 4 {
 			return nil, errors.New("卡坦岛需要 3–4 位玩家")
@@ -65,6 +75,13 @@ func New(kind string, n int) (*State, error) {
 func (s *State) Apply(player int, a Action) error {
 	if s.Finished {
 		return errors.New("本局已结束")
+	}
+	if s.Carcassonne != nil {
+		err := s.applyCarcassonne(player, a)
+		if len(s.Log) > 80 {
+			s.Log = s.Log[len(s.Log)-80:]
+		}
+		return err
 	}
 	if s.Catan != nil {
 		err := s.applyCatan(player, a)
@@ -94,6 +111,10 @@ func (s *State) View(player int) map[string]any {
 	b, _ := json.Marshal(s)
 	var v map[string]any
 	_ = json.Unmarshal(b, &v)
+	if s.Carcassonne != nil {
+		s.carView(v, player)
+		return v
+	}
 	if s.Catan != nil {
 		s.catanView(v, player)
 		return v

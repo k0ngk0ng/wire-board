@@ -12,6 +12,9 @@ func (s *State) BotAction(player int) (Action, error) {
 	if s.Finished {
 		return Action{}, errors.New("game finished")
 	}
+	if s.Carcassonne != nil {
+		return s.carBot(player)
+	}
 	if s.Catan != nil {
 		return s.catanBot(player)
 	}

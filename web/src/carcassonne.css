@@ -1,0 +1,383 @@
+.car-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 12px;
+  align-items: start;
+  min-width: 0;
+}
+.car-map-panel {
+  border: 1px solid #bdad8a;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e8dcbb;
+  box-shadow: 0 5px 16px #473c1710;
+}
+.car-map-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  background: #faf4e2;
+}
+.car-map-tools > span {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.car-map-tools small {
+  font-size: 11px;
+  color: #7c7159;
+  white-space: nowrap;
+}
+.car-map-tools > div {
+  display: flex;
+  gap: 5px;
+}
+.car-map-tools button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #d5c8aa;
+  background: #fffaf0;
+  color: #61583f;
+  border-radius: 7px;
+  padding: 6px;
+  font-size: 12px;
+  min-height: 30px;
+}
+.car-viewport {
+  height: clamp(390px, calc(100dvh - 305px), 780px);
+  overflow: hidden;
+  cursor: grab;
+  background-color: #dfd2b3;
+  background-image: radial-gradient(#b5a17b55 0.8px, transparent 0.8px);
+  background-size: 16px 16px;
+  touch-action: none;
+}
+.car-viewport.dragging,
+.car-viewport.dragging * {
+  cursor: grabbing !important;
+}
+.car-viewport > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  touch-action: none;
+}
+.car-map-panel footer {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  font-size: 11px;
+  text-align: center;
+  padding: 6px;
+  color: #837252;
+  background: #faf4e2;
+}
+.car-empty-cell {
+  cursor: pointer;
+}
+.car-empty-cell rect {
+  fill: #fff9da35;
+  stroke: #8c9b6177;
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+}
+.car-empty-cell:hover rect,
+.car-empty-cell:focus rect {
+  fill: #fff7c577;
+  stroke: #c99d2a;
+}
+.car-empty-cell text {
+  fill: #7d875f;
+  font-size: 24px;
+  pointer-events: none;
+}
+.car-feature-target {
+  cursor: pointer;
+}
+.car-feature-target circle {
+  fill: #fff9dbea;
+  stroke: #866c31;
+  stroke-width: 1.5;
+}
+.car-feature-target text {
+  font-weight: 800;
+  font-size: 14px;
+  fill: #66512a;
+  pointer-events: none;
+}
+.car-feature-target.selected circle,
+.car-feature-target:hover circle {
+  fill: #ffd249;
+  stroke: #fff;
+  stroke-width: 2;
+}
+.car-feature-target:focus {
+  outline: none;
+}
+.car-feature-target:focus circle {
+  stroke: #366aca;
+  stroke-width: 3;
+}
+.car-actions {
+  background: #fffaf0;
+  border: 1px solid #e2d6ba;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 0;
+}
+.car-draw {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.car-draw > svg {
+  width: 128px;
+  height: 128px;
+  align-self: center;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px #4c381f40;
+}
+.car-draw h3 {
+  font-size: 17px;
+  margin: 4px 0 6px;
+}
+.car-draw small {
+  display: block;
+  font-size: 12px;
+  color: #897b62;
+}
+.car-draw small b {
+  font-size: 18px;
+  color: #735b2e;
+}
+.car-draw .eyebrow {
+  font-size: 10px;
+  color: #a28549;
+}
+.car-place-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+.car-place-actions button {
+  justify-content: center;
+  min-height: 39px;
+  font-size: 13px;
+}
+.car-place-actions small,
+.car-deploy small {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #8b7f66;
+}
+.car-deploy p {
+  margin: 0 0 10px;
+  font-size: 13px;
+}
+.car-feature-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.car-feature-list button {
+  background: #f5edda;
+  border: 1px solid #d9cba8;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 8px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.car-feature-list button.selected {
+  background: #ffe09a;
+  border-color: #b99a33;
+}
+.car-feature-list button span {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff7de;
+  width: 19px;
+  height: 19px;
+  font-size: 11px;
+}
+.car-deploy .car-farmer-note {
+  color: #5d743a;
+  font-size: 12px;
+  line-height: 1.6;
+  background: #edf1dc;
+  padding: 8px;
+  border-radius: 7px;
+}
+.car-deploy-buttons {
+  display: flex;
+  gap: 6px;
+}
+.car-deploy-buttons button {
+  flex: 1;
+  justify-content: center;
+  font-size: 13px;
+  padding: 10px 5px;
+}
+.car-scoring {
+  font-size: 12px;
+  color: #81755c;
+  border-top: 1px solid #e8dcc2;
+  padding-top: 10px;
+}
+.car-scoring summary {
+  cursor: pointer;
+}
+.car-scoring dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+  font-size: 11px;
+}
+.car-scoring dd {
+  margin: 0;
+  text-align: right;
+}
+.car-scoring p {
+  line-height: 1.7;
+}
+.car-preview {
+  opacity: 0.92;
+}
+.car-new-tile image {
+  animation: car-tile-appear 0.35s ease-out;
+}
+@keyframes car-tile-appear {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.cover.carcassonne {
+  background: #a7b85c;
+  background-image: var(--car-cover);
+  background-size: cover;
+  background-position: center;
+}
+.cover.carcassonne svg {
+  opacity: 0.9;
+}
+.game-selection {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.choose-games {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (min-width: 1500px) {
+  .game-selection {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1100px) {
+  .car-board {
+    grid-template-columns: minmax(0, 1fr) 210px;
+  }
+  .car-actions {
+    padding: 10px;
+  }
+}
+@media (max-width: 700px) {
+  .car-board {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .car-viewport {
+    height: clamp(190px, calc(100dvh - 630px), 380px);
+  }
+  .car-map-tools {
+    padding: 7px 8px;
+  }
+  .car-map-tools b {
+    font-size: 13px;
+  }
+  .car-map-tools > span {
+    gap: 6px;
+  }
+  .car-map-tools button {
+    font-size: 11px;
+  }
+  .car-map-panel footer {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    font-size: 10px;
+  }
+  .car-actions {
+    gap: 9px;
+    border-radius: 11px;
+    padding: 10px;
+  }
+  .car-draw {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .car-draw > svg {
+    width: 78px;
+    height: 78px;
+    flex: none;
+  }
+  .car-draw h3 {
+    font-size: 15px;
+    margin: 3px 0;
+  }
+  .car-draw small {
+    font-size: 11px;
+  }
+  .car-place-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+  .car-place-actions small {
+    grid-column: 1/-1;
+  }
+  .car-feature-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+  .car-deploy p {
+    margin-bottom: 7px;
+  }
+  .car-feature-list button {
+    padding: 8px 2px;
+  }
+  .car-deploy-buttons button {
+    min-height: 40px;
+  }
+  .car-scoring {
+    padding-top: 7px;
+  }
+  .choose-games {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .game-selection {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .car-new-tile image {
+    animation: none;
+  }
+}

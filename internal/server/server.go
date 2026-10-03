@@ -503,7 +503,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	maxPlayers := 4
 	minPlayers := 2
-	if req.Kind == "rail" {
+	if req.Kind == "rail" || req.Kind == "carcassonne" {
 		maxPlayers = 5
 	} else if req.Kind == "catan" {
 		minPlayers = 3
@@ -694,7 +694,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("该玩家尚未超时，或当前回合已改变")
 			break
 		}
-		if next.Kind == "catan" {
+		if next.Kind == "carcassonne" {
+			err = next.Game.EliminateCarcassonne(target)
+		} else if next.Kind == "catan" {
 			err = next.Game.EliminateCatan(target)
 		} else if next.Kind == "splendor" {
 			err = next.Game.EliminateSplendor(target)

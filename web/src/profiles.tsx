@@ -50,7 +50,13 @@ async function request(path: string, body?: unknown) {
   return data;
 }
 const name = (kind: string) =>
-  kind === "catan" ? "卡坦岛" : kind === "rail" ? "铁路环游" : "璀璨宝石";
+  kind === "carcassonne"
+    ? "卡卡颂"
+    : kind === "catan"
+      ? "卡坦岛"
+      : kind === "rail"
+        ? "铁路环游"
+        : "璀璨宝石";
 export function ProfilePage({ id, self }: { id: string; self: string }) {
   const open = useContext(ProfileContext);
   const [profile, setProfile] = useState<Profile>();

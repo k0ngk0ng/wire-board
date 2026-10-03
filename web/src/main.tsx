@@ -57,6 +57,7 @@ import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { AnimatedSlot } from "./animated-slot";
 import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
 import "./splendor-layout.css";
+import { CarcassonneBoard } from "./carcassonne";
 const gemDisplayOrder = [1, 2, 0, 4, 3, 5];
 const AssetsContext = createContext("");
 const gemColors = [
@@ -92,7 +93,13 @@ const trainNames = [
 ];
 const playerColors = ["#337ab3", "#cf5347", "#42956b", "#d4a833", "#414753"];
 const gameName = (kind: string) =>
-  kind === "catan" ? "卡坦岛" : kind === "splendor" ? "璀璨宝石" : "铁路环游";
+  kind === "carcassonne"
+    ? "卡卡颂"
+    : kind === "catan"
+      ? "卡坦岛"
+      : kind === "splendor"
+        ? "璀璨宝石"
+        : "铁路环游";
 const statusName: Record<string, string> = {
   waiting: "等待入座",
   playing: "游戏中",
@@ -143,7 +150,17 @@ function Logo() {
 function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
-      {kind === "catan" ? (
+      {kind === "carcassonne" ? (
+        <svg viewBox="0 0 520 260">
+          <path
+            d="M170 210V115H190V80H213V115H237V80H260V115H284V80H307V115H330V210Z"
+            fill="#eadbc0"
+            stroke="#6e5b37"
+            strokeWidth="5"
+          />
+          <path d="M220 210V170Q250 125 280 170V210" fill="#a68a50" />
+        </svg>
+      ) : kind === "catan" ? (
         <svg viewBox="0 0 520 260" aria-hidden="true">
           <rect width="520" height="260" fill="#1784ad" />
           {[
@@ -570,6 +587,7 @@ function App() {
                   "--splendor-cards": `url("${state.assetsBaseURL}/splendor/cards.webp")`,
                   "--splendor-nobles": `url("${state.assetsBaseURL}/splendor/nobles.webp")`,
                   "--splendor-tokens": `url("${state.assetsBaseURL}/splendor/tokens.webp")`,
+                  "--car-cover": `url("${state.assetsBaseURL}/carcassonne/tile-71-v1.webp")`,
                   "--rail-cards": `url("${state.assetsBaseURL}/rail/train-cards.webp")`,
                 } as React.CSSProperties)
               : undefined
@@ -795,7 +813,14 @@ function App() {
                   )}
                   <div className="game-layout">
                     <div className="game-main">
-                      {room.kind === "catan" ? (
+                      {room.kind === "carcassonne" ? (
+                        <CarcassonneBoard
+                          room={room}
+                          act={act}
+                          busy={busy}
+                          assets={state.assetsBaseURL || ""}
+                        />
+                      ) : room.kind === "catan" ? (
                         <CatanBoard
                           room={room}
                           act={act}
@@ -969,7 +994,7 @@ function Auth({
               <TrainFront size={17} />
               铁路环游
             </span>
-            <span>卡坦岛 · 三款经典，无限好时光</span>
+            <span>卡坦岛 · 卡卡颂 · 四款经典，无限好时光</span>
           </div>
         </div>
         <small>YOUR FRIENDS. YOUR TABLE. YOUR NEXT MOVE.</small>
@@ -1100,34 +1125,40 @@ function Lobby({
         </div>
       </section>
       <section className="game-selection">
-        {["splendor", "rail", "catan"].map((kind) => (
+        {["splendor", "rail", "catan", "carcassonne"].map((kind) => (
           <article className="game-feature" key={kind}>
             <Cover kind={kind} />
             <div className="feature-info">
               <div className="feature-kicker">
-                {kind === "catan"
-                  ? "BUILD. TRADE. SETTLE."
-                  : kind === "splendor"
-                    ? "THE ART OF COLLECTING"
-                    : "EVERY ROUTE TELLS A STORY"}
+                {kind === "carcassonne"
+                  ? "ONE TILE. A WHOLE WORLD."
+                  : kind === "catan"
+                    ? "BUILD. TRADE. SETTLE."
+                    : kind === "splendor"
+                      ? "THE ART OF COLLECTING"
+                      : "EVERY ROUTE TELLS A STORY"}
                 <span>基础版</span>
               </div>
               <h2>
                 {gameName(kind)}
                 <small>
-                  {kind === "catan"
-                    ? "CATAN"
-                    : kind === "splendor"
-                      ? "Splendor"
-                      : "Ticket to Ride"}
+                  {kind === "carcassonne"
+                    ? "Carcassonne"
+                    : kind === "catan"
+                      ? "CATAN"
+                      : kind === "splendor"
+                        ? "Splendor"
+                        : "Ticket to Ride"}
                 </small>
               </h2>
               <p>
-                {kind === "catan"
-                  ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
-                  : kind === "splendor"
-                    ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
-                    : "从海岸到海岸，让你的铁路连接每一个目的地。"}
+                {kind === "carcassonne"
+                  ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
+                  : kind === "catan"
+                    ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
+                    : kind === "splendor"
+                      ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
+                      : "从海岸到海岸，让你的铁路连接每一个目的地。"}
               </p>
               <div className="feature-bottom">
                 <span>
@@ -1138,11 +1169,13 @@ function Lobby({
                       ? "2–4"
                       : "2–5"}{" "}
                   人 <Clock size={15} />
-                  {kind === "catan"
-                    ? "45–90"
-                    : kind === "splendor"
-                      ? "30"
-                      : "45–60"}{" "}
+                  {kind === "carcassonne"
+                    ? "30–45"
+                    : kind === "catan"
+                      ? "45–90"
+                      : kind === "splendor"
+                        ? "30"
+                        : "45–60"}{" "}
                   分钟
                 </span>
                 <button className="primary" onClick={() => onCreate(kind)}>
@@ -1173,6 +1206,7 @@ function Lobby({
             ["splendor", "璀璨宝石"],
             ["rail", "铁路环游"],
             ["catan", "卡坦岛"],
+            ["carcassonne", "卡卡颂"],
           ].map(([k, label]) => (
             <button
               className={filter === k ? "active" : ""}
@@ -1332,7 +1366,7 @@ function Create({
         }}
       >
         <div className="choose-games">
-          {["splendor", "rail", "catan"].map((x) => (
+          {["splendor", "rail", "catan", "carcassonne"].map((x) => (
             <button
               type="button"
               className={k === x ? "selected" : ""}
@@ -1342,7 +1376,10 @@ function Create({
                 setCapacity(
                   Math.max(
                     x === "catan" ? 3 : 2,
-                    Math.min(capacity, x === "rail" ? 5 : 4),
+                    Math.min(
+                      capacity,
+                      x === "rail" || x === "carcassonne" ? 5 : 4,
+                    ),
                   ),
                 );
               }}
@@ -1373,7 +1410,14 @@ function Create({
               onChange={(e) => setCapacity(Number(e.target.value))}
             >
               {Array.from(
-                { length: k === "catan" ? 2 : k === "rail" ? 4 : 3 },
+                {
+                  length:
+                    k === "catan"
+                      ? 2
+                      : k === "rail" || k === "carcassonne"
+                        ? 4
+                        : 3,
+                },
                 (_, i) => i + (k === "catan" ? 3 : 2),
               ).map((n) => (
                 <option key={n} value={n}>
@@ -1425,18 +1469,22 @@ function Waiting({
         <Cover kind={room.kind} />
         <h2>{gameName(room.kind)}</h2>
         <p>
-          {room.kind === "catan"
-            ? "一座岛屿，无数种通往胜利的道路。"
-            : room.kind === "splendor"
-              ? "每颗宝石，都是通往胜利的可能。"
-              : "下一站，会是你的目的地吗？"}
+          {room.kind === "carcassonne"
+            ? "一块接一块，拼出属于你们的城邦。"
+            : room.kind === "catan"
+              ? "一座岛屿，无数种通往胜利的道路。"
+              : room.kind === "splendor"
+                ? "每颗宝石，都是通往胜利的可能。"
+                : "下一站，会是你的目的地吗？"}
         </p>
         <span className="tag">
-          {room.kind === "catan"
-            ? "基础版 · 3–4 人 · 十分获胜"
-            : room.kind === "splendor"
-              ? "原版基础规则 · 2–4 人"
-              : "美国基础地图 · 2–5 人"}
+          {room.kind === "carcassonne"
+            ? "基础版 · 2–5 人 · 包含农民"
+            : room.kind === "catan"
+              ? "基础版 · 3–4 人 · 十分获胜"
+              : room.kind === "splendor"
+                ? "原版基础规则 · 2–4 人"
+                : "美国基础地图 · 2–5 人"}
         </span>
       </div>
       <div className="waiting-seats">
@@ -1525,7 +1573,10 @@ function Players({ room }: { room: Room }) {
     <div className="players-strip">
       {room.seats.map((p, i) => {
         const stats =
-          g.splendor?.players[i] || g.rail?.players[i] || g.catan?.players[i];
+          g.splendor?.players[i] ||
+          g.rail?.players[i] ||
+          g.catan?.players[i] ||
+          g.carcassonne?.players[i];
         return (
           <div
             data-player-seat={i}
@@ -1574,6 +1625,10 @@ function Players({ room }: { room: Room }) {
                       </span>
                     ))}
                 </div>
+              ) : g.carcassonne ? (
+                <small>
+                  可用随从 <b>{g.carcassonne.players[i].meeples} / 7</b>
+                </small>
               ) : g.catan ? (
                 <small>
                   资源 {g.catan.players[i].resourceCount} · 发展卡{" "}
@@ -1678,6 +1733,8 @@ function Turn({
   const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
     ...catanPhases,
+    car_tile: "放置地块",
+    car_meeple: "派遣随从",
     turn: "选择一个行动",
     discard: "归还多出的宝石",
     noble: "选择一位贵族",
@@ -1745,7 +1802,7 @@ function Turn({
                 const target = room.seats[g.turn];
                 if (
                   confirm(
-                    `将超时玩家「${target.name}」移出本局？${g.catan ? "资源归还银行，建筑道路保留但不再生产。" : g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
+                    `将超时玩家「${target.name}」移出本局？${g.carcassonne ? "随从收回，已放地块保留；未放地块洗回牌堆。" : g.catan ? "资源归还银行，建筑道路保留但不再生产。" : g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
                   )
                 ) {
                   command("kick_timeout", { target: target.id });
@@ -1792,13 +1849,15 @@ function Results({
           {g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜
         </h2>
         <p>
-          {g.catan
-            ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
-            : g.splendor
-              ? g.splendor.players.filter((p) => !p.eliminated).length === 1
-                ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
-                : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
-              : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
+          {g.carcassonne
+            ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
+            : g.catan
+              ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
+              : g.splendor
+                ? g.splendor.players.filter((p) => !p.eliminated).length === 1
+                  ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
+                  : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
+                : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
         </p>
       </div>
       {g.rail && (
@@ -3237,7 +3296,41 @@ function RailBoard({
 function Rules({ kind }: { kind: string }) {
   return (
     <div className="rules">
-      {kind === "catan" ? (
+      {kind === "carcassonne" ? (
+        <>
+          <p>
+            卡卡颂基础版，2–5 人，72 张地块，每人 7
+            名随从，包含农民。不含河流、修道院长等扩展。
+          </p>
+          <ol>
+            <li>
+              抽到地块后旋转并放在相邻空位，所有接边的道路、城市和田地必须匹配。完全无法放置的地块移出本局并重抽。
+            </li>
+            <li>
+              可以在刚放的地块上派遣一名随从，也可以不派遣。相连的整个区域必须没有任何人的随从。
+            </li>
+            <li>
+              完整道路每块 1 分；完整城市每块及每枚盾徽各 2
+              分；修道院自身和八个邻格各 1 分。完成后随从回到手中。
+            </li>
+            <li>
+              终局未完成道路每块 1 分，未完成城市每块及每枚盾徽各 1
+              分，修道院按已占据邻格计分。
+            </li>
+            <li>
+              农民留在田地直到终局，每座相邻完整城市 3
+              分。同一田地的同一城市只计一次；道路和城墙会分隔田地。
+            </li>
+            <li>
+              相连区域随从最多的玩家得分，并列各得全部分数。总分最高者获胜，同分共同获胜。
+            </li>
+          </ol>
+          <p>
+            每回合 120
+            秒，放地块与派随从共用倒计时。超时可由其他玩家移出；随从收回、已放地块保留，未放地块洗回牌堆。剩余一人时获胜。
+          </p>
+        </>
+      ) : kind === "catan" ? (
         <>
           <p>卡坦岛基础版，3–4 人。自己的回合达到 10 分立即获胜。</p>
           <ol>
