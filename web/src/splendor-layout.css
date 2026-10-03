@@ -400,7 +400,12 @@
 .splendor-board > .pass-button,
 .splendor-board > .action-prompt {
   grid-area: prompt;
+}
+.splendor-board > .pass-button {
   color: #f4dca4;
+}
+.splendor-board > .action-prompt {
+  color: var(--ink);
 }
 @media (min-width: 851px) {
   .splendor-board,

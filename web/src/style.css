@@ -852,13 +852,18 @@ label small {
   justify-content: center;
   padding: 24px;
 }
+/* Light overlays must not inherit the dark game board's foreground colors. */
+.modal,
+.discard-panel {
+  color-scheme: light;
+  background: #faf9f1;
+  color: var(--ink);
+}
 .modal {
   width: 560px;
   max-width: 100%;
   max-height: 90vh;
   overflow: auto;
-  background: #faf9f1;
-  color: var(--ink);
   border-radius: 14px;
   padding: 25px 28px;
   box-shadow: 0 25px 80px #07191055;
@@ -882,7 +887,8 @@ label small {
   color: #58674f;
 }
 .modal .primary:disabled,
-.modal .outline:disabled {
+.modal .outline:disabled,
+.discard-panel .primary:disabled {
   background: #e2e7de;
   color: #596452;
   border: 1px solid #cbd3c4;
@@ -1692,12 +1698,12 @@ label small {
   flex-shrink: 0;
 }
 .purchase-preview p {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.8;
   margin-bottom: 15px;
 }
 .purchase-preview small {
-  font-size: 10px;
+  font-size: 12px;
   color: #58674f;
 }
 .purchase-preview .costs {
@@ -1713,10 +1719,33 @@ label small {
   align-items: center;
   padding: 8px 0;
   border-bottom: 1px solid #e5e8db;
-  font-size: 12px;
+  font-size: 13px;
 }
 .discard-list > div > span {
   flex: 1;
+}
+.discard-list > div > b {
+  min-width: 2ch;
+  text-align: center;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.discard-list .icon-button {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid #b4c6a4;
+  background: #fffefa;
+  color: var(--green);
+}
+.discard-list .icon-button:hover:not(:disabled) {
+  background: #e9eee5;
+}
+.discard-list .icon-button:disabled {
+  background: #eeeee6;
+  border-color: #d9ddd1;
+  color: #737d6c;
+  opacity: 1;
 }
 .pass-button {
   display: block;
@@ -2151,7 +2180,7 @@ label small {
 .rules {
   font-size: 13px;
   line-height: 1.9;
-  color: #79856d;
+  color: #58674f;
 }
 .rules p {
   margin-bottom: 15px;
@@ -2927,12 +2956,6 @@ label small {
     height: 20px;
     font-size: 13px;
   }
-  .purchase-preview p {
-    font-size: 10px;
-  }
-  .purchase-preview small {
-    font-size: 9px;
-  }
   .map-controls > span {
     font-size: 8px;
     letter-spacing: 1px;
@@ -3355,14 +3378,22 @@ label small {
 }
 .payment-grid label {
   margin-bottom: 0;
-  font-size: 11px;
+  font-size: 13px;
 }
 .payment-grid select {
-  font-size: 11px;
+  font-size: 13px;
   padding: 9px;
 }
 .payment-grid p {
   grid-column: 1 / -1;
+}
+@media (max-width: 480px) {
+  .payment-grid {
+    grid-template-columns: 1fr;
+  }
+  .payment-grid select {
+    font-size: 16px;
+  }
 }
 
 /* Game artwork is served from the deployment's asset directory. */
@@ -4344,7 +4375,6 @@ label small {
   max-height: calc(100dvh - 112px);
   overflow-y: auto;
   padding: 14px;
-  background: #faf9f1;
   border: 1px solid #b4c6a4;
   border-radius: 12px;
   box-shadow: 0 7px 28px #123a3c40;
