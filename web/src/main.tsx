@@ -151,18 +151,102 @@ function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
       {kind === "carcassonne" ? (
-        <svg viewBox="0 0 520 260">
-          <path
-            d="M170 210V115H190V80H213V115H237V80H260V115H284V80H307V115H330V210Z"
-            fill="#eadbc0"
-            stroke="#6e5b37"
-            strokeWidth="5"
-          />
-          <path d="M220 210V170Q250 125 280 170V210" fill="#a68a50" />
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 520 260">
+          <rect width="520" height="260" fill="#bfd0b7" />
+          <circle cx="422" cy="59" r="34" fill="#f3d992" />
+          <path d="M0 156Q100 96 218 160T520 142V260H0Z" fill="#8fa77f" />
+          <path d="M0 204Q135 154 273 202T520 180V260H0Z" fill="#5d8060" />
+          <g transform="translate(160 35) rotate(8 100 100)">
+            <rect
+              x="5"
+              y="8"
+              width="204"
+              height="204"
+              rx="7"
+              fill="#294a3c"
+              opacity=".2"
+            />
+            {[
+              [0, 0],
+              [102, 0],
+              [0, 102],
+              [102, 102],
+            ].map(([x, y], i) => (
+              <rect
+                key={i}
+                x={x}
+                y={y}
+                width="99"
+                height="99"
+                rx="4"
+                fill={i === 2 ? "#93ad69" : "#abc17d"}
+                stroke="#eddbac"
+                strokeWidth="3"
+              />
+            ))}
+            <path
+              d="M1 48Q52 42 51 99M51 103Q48 151 0 157M103 151Q155 151 154 204"
+              fill="none"
+              stroke="#f3e4b9"
+              strokeWidth="11"
+            />
+            <path
+              d="M104 0H200V59L184 69H118L104 59Z"
+              fill="#be9971"
+              stroke="#ecdbb2"
+              strokeWidth="4"
+            />
+            <path
+              d="M116 61V24H128V33H138V24H150V33H160V24H172V33H184V24H194V61"
+              fill="#ead5a3"
+              stroke="#866c49"
+              strokeWidth="2"
+            />
+            <path d="M147 61V49Q155 38 163 49V61" fill="#856847" />
+            <path
+              d="M26 178l9-19 9 19M70 136l9-19 9 19M164 120l9-19 9 19"
+              fill="#4f8052"
+              stroke="#f0dfad"
+              strokeWidth="1.5"
+            />
+            <g transform="translate(64 67) scale(1.25)">
+              <path
+                d="M-5-13Q0-19 5-13L5-7L14 0L10 5L5 2L10 14H2L0 7L-2 14H-10L-5 2L-10 5L-14 0L-5-7Z"
+                fill="#b95546"
+                stroke="#f5dfae"
+                strokeWidth="2"
+              />
+            </g>
+            <g transform="translate(158 157) scale(1.25)">
+              <path
+                d="M-5-13Q0-19 5-13L5-7L14 0L10 5L5 2L10 14H2L0 7L-2 14H-10L-5 2L-10 5L-14 0L-5-7Z"
+                fill="#376c89"
+                stroke="#f5dfae"
+                strokeWidth="2"
+              />
+            </g>
+          </g>
+          <path d="M34 27h75M34 33h42" stroke="#55726c" opacity=".6" />
         </svg>
       ) : kind === "catan" ? (
-        <svg viewBox="0 0 520 260" aria-hidden="true">
-          <rect width="520" height="260" fill="#1784ad" />
+        <svg
+          preserveAspectRatio="xMidYMid slice"
+          viewBox="0 0 520 260"
+          aria-hidden="true"
+        >
+          <rect width="520" height="260" fill="#527f8a" />
+          <circle cx="423" cy="58" r="34" fill="#e5c986" opacity=".8" />
+          <path
+            d="M0 205Q95 174 180 202T350 203T520 193V260H0Z"
+            fill="#386671"
+          />
+          <path
+            d="M43 187h43M391 211h51M84 224h55"
+            stroke="#acc8bf"
+            strokeWidth="3"
+            strokeLinecap="round"
+            opacity=".5"
+          />
           {[
             [220, 75, 0],
             [295, 75, 3],
@@ -193,12 +277,14 @@ function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
               </text>
             </g>
           ))}
-          <text x="24" y="46" fill="#fff2bb" fontSize="30" fontWeight="800">
-            CATAN
-          </text>
+          <g fill="#b95845" stroke="#f0d5a0" strokeWidth="2">
+            <path d="M217 121v-21l15-13 15 13v21Z" />
+            <path d="M285 186v-21l15-13 15 13v21Z" />
+          </g>
+          <path d="M34 27h75M34 33h42" stroke="#d7c18a" opacity=".6" />
         </svg>
       ) : kind === "splendor" ? (
-        <svg viewBox="0 0 520 260" preserveAspectRatio="xMidYMid slice">
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 520 260">
           <defs>
             <linearGradient id="gemsky" x2="0" y2="1">
               <stop stopColor="#204e58" />
@@ -266,7 +352,7 @@ function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
           <path d="M34 27h75M34 33h42" stroke="#d7c18a" opacity=".6" />
         </svg>
       ) : (
-        <svg viewBox="0 0 520 260" preserveAspectRatio="xMidYMid slice">
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 520 260">
           <rect width="520" height="260" fill="#c4d6d3" />
           <circle cx="422" cy="60" r="33" fill="#f8df9d" />
           <path
@@ -587,7 +673,6 @@ function App() {
                   "--splendor-cards": `url("${state.assetsBaseURL}/splendor/cards.webp")`,
                   "--splendor-nobles": `url("${state.assetsBaseURL}/splendor/nobles.webp")`,
                   "--splendor-tokens": `url("${state.assetsBaseURL}/splendor/tokens.webp")`,
-                  "--car-cover": `url("${state.assetsBaseURL}/carcassonne/tile-71-v1.webp")`,
                   "--rail-cards": `url("${state.assetsBaseURL}/rail/train-cards.webp")`,
                 } as React.CSSProperties)
               : undefined
@@ -1162,21 +1247,26 @@ function Lobby({
               </p>
               <div className="feature-bottom">
                 <span>
-                  <Users size={15} />
-                  {kind === "catan"
-                    ? "3–4"
-                    : kind === "splendor"
-                      ? "2–4"
-                      : "2–5"}{" "}
-                  人 <Clock size={15} />
-                  {kind === "carcassonne"
-                    ? "30–45"
-                    : kind === "catan"
-                      ? "45–90"
+                  <span>
+                    <Users size={15} />
+                    {kind === "catan"
+                      ? "3–4"
                       : kind === "splendor"
-                        ? "30"
-                        : "45–60"}{" "}
-                  分钟
+                        ? "2–4"
+                        : "2–5"}{" "}
+                    人
+                  </span>{" "}
+                  <span>
+                    <Clock size={15} />
+                    {kind === "carcassonne"
+                      ? "30–45"
+                      : kind === "catan"
+                        ? "45–90"
+                        : kind === "splendor"
+                          ? "30"
+                          : "45–60"}{" "}
+                    分钟
+                  </span>
                 </span>
                 <button className="primary" onClick={() => onCreate(kind)}>
                   <Plus size={17} />

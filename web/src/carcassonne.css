@@ -268,23 +268,9 @@
 }
 .cover.carcassonne {
   background: #a7b85c;
-  background-image: var(--car-cover);
-  background-size: cover;
-  background-position: center;
-}
-.cover.carcassonne svg {
-  opacity: 0.9;
-}
-.game-selection {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .choose-games {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-@media (min-width: 1500px) {
-  .game-selection {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 @media (max-width: 1100px) {
   .car-board {
@@ -369,11 +355,6 @@
   }
   .choose-games {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 640px) {
-  .game-selection {
-    grid-template-columns: 1fr;
   }
 }
 @media (prefers-reduced-motion: reduce) {
