@@ -605,27 +605,15 @@
 .catan-private-score small {
   font-size: 10px;
 }
-.game-selection {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.game-feature {
-  min-width: 0;
-}
 .choose-games {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 @media (min-width: 851px) and (max-width: 1150px) {
-  .game-selection {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .catan-board {
     grid-template-columns: minmax(0, 1fr) 275px;
   }
 }
 @media (max-width: 850px) {
-  .game-selection {
-    grid-template-columns: 1fr;
-  }
   .catan-board {
     grid-template-columns: minmax(0, 1fr);
   }
