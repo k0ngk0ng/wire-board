@@ -56,6 +56,8 @@ import { ProfileContext, PlayerName, ProfilePage } from "./profiles";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { AnimatedSlot } from "./animated-slot";
 import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
+import "./splendor-layout.css";
+const gemDisplayOrder = [1, 2, 0, 4, 3, 5];
 const AssetsContext = createContext("");
 const gemColors = [
   "#218357",
@@ -1558,16 +1560,19 @@ function Players({ room }: { room: Room }) {
                     <br />
                     折扣
                   </span>
-                  {g.splendor.players[i].bonus.map((n, c) => (
-                    <span
-                      className="bonus-item"
-                      key={c}
-                      title={`${gemNames[c]}永久折扣 ${n}`}
-                    >
-                      <Gemstone color={c} size={18} />
-                      <b>{n}</b>
-                    </span>
-                  ))}
+                  {gemDisplayOrder
+                    .slice(0, 5)
+                    .map((c) => [c, g.splendor!.players[i].bonus[c]])
+                    .map(([c, n]) => (
+                      <span
+                        className="bonus-item"
+                        key={c}
+                        title={`${gemNames[c]}永久折扣 ${n}`}
+                      >
+                        <Gemstone color={c} size={18} />
+                        <b>{n}</b>
+                      </span>
+                    ))}
                 </div>
               ) : g.catan ? (
                 <small>
@@ -1605,12 +1610,14 @@ function Players({ room }: { room: Room }) {
                       /3
                     </span>
                   </div>
-                  {g.splendor.players[i].tokens.map((n, c) => (
-                    <span key={c} title={`${gemNames[c]}筹码`}>
-                      <i style={{ background: gemColors[c] }} />
-                      {n}
-                    </span>
-                  ))}
+                  {gemDisplayOrder
+                    .map((c) => [c, g.splendor!.players[i].tokens[c]])
+                    .map(([c, n]) => (
+                      <span key={c} title={`${gemNames[c]}筹码`}>
+                        <i style={{ background: gemColors[c] }} />
+                        {n}
+                      </span>
+                    ))}
                 </div>
               )}
             </div>
@@ -2050,7 +2057,10 @@ function SplendorBoard({
             >
               <span className="deck-ornament">✧</span>
               <strong>{["Ⅰ", "Ⅱ", "Ⅲ"][tier]}</strong>
-              <small>{s.remaining[tier]} 张 · 盲预留</small>
+              <small className="deck-count">
+                {s.remaining[tier]}
+                <span className="sr-only"> 张 · 盲预留</span>
+              </small>
             </button>
             {Array.from({ length: 4 }, (_, index) => {
               const c = s.market[tier][index];
@@ -2081,38 +2091,41 @@ function SplendorBoard({
           <small>三种各一枚，或同色两枚（该堆至少四枚）</small>
         </div>
         <div className="token-row">
-          {s.bank.map((n, i) => (
-            <button
-              key={i}
-              className={`token-button ${tokens[i] > 0 ? "chosen" : ""}`}
-              disabled={!taking || busy || i === 5 || n === 0}
-              onClick={() =>
-                setTokens(
-                  tokens.map((v, c) =>
-                    c === i ? (v >= Math.min(2, n) ? 0 : v + 1) : v,
-                  ),
-                )
-              }
-              aria-label={`拿取${gemNames[i]}，供应 ${n}，已选 ${tokens[i]}`}
-            >
-              <span
-                className={`token color-${i}`}
-                style={
-                  {
-                    "--gem": gemColors[i],
-                    backgroundPosition: `${i * 20}% 0`,
-                  } as React.CSSProperties
+          {gemDisplayOrder.map((i) => {
+            const n = s.bank[i];
+            return (
+              <button
+                key={i}
+                className={`token-button ${tokens[i] > 0 ? "chosen" : ""}`}
+                disabled={!taking || busy || i === 5 || n === 0}
+                onClick={() =>
+                  setTokens(
+                    tokens.map((v, c) =>
+                      c === i ? (v >= Math.min(2, n) ? 0 : v + 1) : v,
+                    ),
+                  )
                 }
+                aria-label={`拿取${gemNames[i]}，供应 ${n}，已选 ${tokens[i]}`}
               >
-                <Gemstone color={i} size={31} />
-              </span>
-              <b>{n}</b>
-              <small>{gemNames[i]}</small>
-              {tokens[i] > 0 && (
-                <span className="token-picked">+{tokens[i]}</span>
-              )}
-            </button>
-          ))}
+                <span
+                  className={`token color-${i}`}
+                  style={
+                    {
+                      "--gem": gemColors[i],
+                      backgroundPosition: `${i * 20}% 0`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <Gemstone color={i} size={31} />
+                </span>
+                <b>{n}</b>
+                <small>{gemNames[i]}</small>
+                {tokens[i] > 0 && (
+                  <span className="token-picked">+{tokens[i]}</span>
+                )}
+              </button>
+            );
+          })}
         </div>
         {taking && (
           <div className="bank-actions">
@@ -2146,27 +2159,53 @@ function SplendorBoard({
               <ChevronRight size={15} />
             </button>
           </div>
-          <div className="personal-resources">
-            <div className="personal-gems personal-resource-row">
-              <span className="personal-resource-label">
-                手持宝石 · {p.tokens.reduce((sum, n) => sum + n, 0)} / 10
+          <div className="splendor-wallet" aria-label="你的宝石与永久折扣">
+            <div className="wallet-caption">
+              <span>
+                我的宝石 <small>永久折扣 / 手持筹码</small>
               </span>
-              {p.tokens.map((n, i) => (
-                <div key={i} title={`${gemNames[i]}筹码 ${n}`}>
-                  <Gemstone color={i} size={22} />
-                  <strong>{n}</strong>
-                </div>
-              ))}
+              <b>{p.tokens.reduce((sum, n) => sum + n, 0)} / 10</b>
             </div>
-            <div
-              className="personal-permanent personal-resource-row"
-              aria-label="你的永久折扣"
-            >
-              <span className="personal-resource-label">永久折扣</span>
-              {p.bonus.map((n, i) => (
-                <div key={i} title={`${gemNames[i]}永久折扣 ${n}`}>
-                  <Gemstone color={i} size={22} />
-                  <b>{n}</b>
+            <div className="wallet-colors">
+              {gemDisplayOrder.map((i) => (
+                <div
+                  key={i}
+                  className={`wallet-gem color-${i}`}
+                  style={
+                    {
+                      "--gem": gemColors[i],
+                      "--ink": i === 1 || i === 5 ? "#332d20" : "#fff",
+                    } as React.CSSProperties
+                  }
+                >
+                  <Gemstone color={i} size={24} />
+                  <div className="wallet-counts">
+                    {i < 5 && (
+                      <span
+                        className={`wallet-discount ${p.bonus[i] ? "" : "empty"}`}
+                        title={`${gemNames[i]}永久折扣 ${p.bonus[i]}`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="discount-card-icon"
+                        />
+                        <b>{p.bonus[i]}</b>
+                        <span className="sr-only">永久折扣</span>
+                      </span>
+                    )}
+                    <span
+                      className="wallet-held"
+                      title={`${gemNames[i]}筹码 ${p.tokens[i]}`}
+                    >
+                      <strong>{p.tokens[i]}</strong>
+                      <span
+                        aria-hidden="true"
+                        className="wallet-token"
+                        style={{ backgroundPosition: `${i * 20}% 0` }}
+                      />
+                      <span className="sr-only">手持筹码</span>
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
