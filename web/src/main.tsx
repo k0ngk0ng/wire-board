@@ -59,6 +59,7 @@ import {
   Leaderboard,
 } from "./profiles";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
+import { SplendorCardAnimation } from "./splendor-card-animation";
 import { AnimatedSlot } from "./animated-slot";
 import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
 import "./splendor-layout.css";
@@ -1851,6 +1852,15 @@ function Players({ room }: { room: Room }) {
                   <small>{stats?.eliminated ? "超时离场" : "已离桌"}</small>
                 )}
                 {i === room.you && <small>你</small>}
+                {g.splendor && i === (g.splendor.startPlayer ?? 0) && (
+                  <span
+                    className="first-player-badge"
+                    title="本局先手 · 最后一轮以此座位为起点，所有玩家行动次数相同"
+                  >
+                    <Flag size={11} aria-hidden="true" />
+                    先手
+                  </span>
+                )}
                 {p.bot && <small className="bot-badge">AI</small>}
               </strong>
               {g.splendor ? (
@@ -2224,6 +2234,7 @@ function DevCard({
   return (
     <button
       className={`dev-card gem-${card.color} ${selected ? "selected" : ""} ${affordable ? "affordable" : ""}`}
+      data-card-id={card.id}
       onClick={onClick}
       aria-label={`${affordable ? "可购买，" : ""}${gemNames[card.color]}发展卡，${card.points}分，费用 ${card.cost
         .map((n, i) => (n ? `${gemNames[i]}${n}` : ""))
@@ -2315,6 +2326,7 @@ function SplendorBoard({
   act: Act;
   busy: boolean;
 }) {
+  const assets = useContext(AssetsContext);
   const g = room.game!,
     s = g.splendor!,
     p = s.players[room.you] ?? {
@@ -2395,7 +2407,7 @@ function SplendorBoard({
       </div>
       <div className="market">
         {[2, 1, 0].map((tier) => (
-          <div className="market-row" key={tier}>
+          <div className="market-row" key={tier} data-splendor-tier={tier + 1}>
             <button
               className={`deck tier-${tier}`}
               style={{ backgroundPosition: `${tier * 20}% 100%` }}
@@ -2416,7 +2428,11 @@ function SplendorBoard({
             {Array.from({ length: 4 }, (_, index) => {
               const c = s.market[tier][index];
               return (
-                <AnimatedSlot key={index} identity={String(c?.id ?? "empty")}>
+                <AnimatedSlot
+                  key={index}
+                  marker={index}
+                  identity={String(c?.id ?? "empty")}
+                >
                   {c ? (
                     <DevCard
                       card={c}
@@ -2789,6 +2805,11 @@ function SplendorBoard({
           无合法行动时跳过回合
         </button>
       )}
+      <SplendorCardAnimation
+        room={room}
+        assets={assets}
+        renderCard={(card) => <DevCard card={card} />}
+      />
     </div>
   );
 }

@@ -15,6 +15,15 @@ export type Card = {
   cost: number[];
 };
 export type Noble = { id: number; cost: number[] };
+export type SplendorCardEvent = {
+  id: number;
+  player: number;
+  action: "buy" | "reserve";
+  source: "market" | "deck" | "reserved";
+  tier: number;
+  slot: number;
+  card?: Card;
+};
 export type GemPlayer = {
   eliminated?: boolean;
   tokens: number[];
@@ -58,6 +67,9 @@ export type Game = {
   winners: number[];
   log: string[];
   splendor?: {
+    startPlayer?: number;
+    cardEventId?: number;
+    cardEvents?: SplendorCardEvent[];
     bank: number[];
     market: Card[][];
     nobles: Noble[];

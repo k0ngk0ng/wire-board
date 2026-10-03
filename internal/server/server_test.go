@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/coder/websocket"
+	"github.com/k0ngk0ng/wire-board/internal/game"
 	"io"
 	"net/http"
 	"net/http/cookiejar"
@@ -76,6 +77,15 @@ func setupServer(t *testing.T) (*Server, *httptest.Server) {
 	s, e := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite"}, fstest.MapFS{"index.html": {Data: []byte("<h1>Wire Board</h1>")}})
 	if e != nil {
 		t.Fatal(e)
+	}
+	// Existing HTTP scenarios name seat zero as their opening actor.
+	// Production randomness and non-host starts have dedicated coverage.
+	s.newGame = func(kind string, n int) (*game.State, error) {
+		g, err := game.New(kind, n)
+		if err == nil && g.Splendor != nil {
+			g.Turn, g.Splendor.StartPlayer = 0, 0
+		}
+		return g, err
 	}
 	ts := httptest.NewServer(s.Handler())
 	t.Cleanup(func() { ts.Close(); s.Close() })

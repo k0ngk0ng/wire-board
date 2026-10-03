@@ -36,12 +36,27 @@ type GemPlayer struct {
 	Score      int     `json:"score"`
 }
 type Splendor struct {
-	Bank      []int       `json:"bank"`
-	Decks     [][]Card    `json:"decks"`
-	Market    [][]Card    `json:"market"`
-	Nobles    []Noble     `json:"nobles"`
-	Players   []GemPlayer `json:"players"`
-	LastRound bool        `json:"lastRound"`
+	StartPlayer int                 `json:"startPlayer"`
+	CardEventID uint64              `json:"cardEventId,omitempty"`
+	CardEvents  []SplendorCardEvent `json:"cardEvents,omitempty"`
+	Bank        []int               `json:"bank"`
+	Decks       [][]Card            `json:"decks"`
+	Market      [][]Card            `json:"market"`
+	Nobles      []Noble             `json:"nobles"`
+	Players     []GemPlayer         `json:"players"`
+	LastRound   bool                `json:"lastRound"`
+}
+
+// Only public card information belongs in the shared animation stream.
+// Blind reservations carry a tier and a card back, never a secret card ID.
+type SplendorCardEvent struct {
+	ID     uint64 `json:"id"`
+	Player int    `json:"player"`
+	Action string `json:"action"`
+	Source string `json:"source"`
+	Tier   int    `json:"tier"`
+	Slot   int    `json:"slot"`
+	Card   *Card  `json:"card,omitempty"`
 }
 
 func integers(v []string) []int {
@@ -99,6 +114,12 @@ func (s *State) initSplendor(n int) {
 		g.Players[i] = GemPlayer{Tokens: make([]int, 6), Bonus: make([]int, 5), Reserved: []Card{}, Cards: []Card{}, Nobles: []Noble{}}
 	}
 	s.Splendor = g
+	seats := make([]int, n)
+	for i := range seats {
+		seats[i] = i
+	}
+	shuffle(seats)
+	g.StartPlayer, s.Turn = seats[0], seats[0]
 }
 func (s *State) applySplendor(a Action) error {
 	g := s.Splendor
@@ -266,6 +287,17 @@ func (s *State) applySplendor(a Action) error {
 				detail += "；黄金已空，未获得黄金"
 			}
 		}
+		g.CardEventID++
+		event := SplendorCardEvent{ID: g.CardEventID, Player: s.Turn, Action: a.Type, Source: "market", Tier: c.Tier, Slot: idx, Card: &c}
+		if loc == -1 {
+			event.Source = "reserved"
+		} else if idx == -1 {
+			event.Source, event.Card = "deck", nil
+		}
+		g.CardEvents = append(g.CardEvents, event)
+		if len(g.CardEvents) > 12 {
+			g.CardEvents = g.CardEvents[len(g.CardEvents)-12:]
+		}
 		if loc == -1 {
 			p.Reserved = append(p.Reserved[:idx], p.Reserved[idx+1:]...)
 		} else if idx == -1 {
@@ -331,7 +363,7 @@ func (s *State) gemNext() {
 	wrapped := false
 	for range g.Players {
 		s.Turn = (s.Turn + 1) % len(g.Players)
-		wrapped = wrapped || s.Turn == 0
+		wrapped = wrapped || s.Turn == g.StartPlayer
 		if !g.Players[s.Turn].Eliminated {
 			break
 		}

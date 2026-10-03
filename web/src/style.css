@@ -858,6 +858,7 @@ label small {
   max-height: 90vh;
   overflow: auto;
   background: #faf9f1;
+  color: var(--ink);
   border-radius: 14px;
   padding: 25px 28px;
   box-shadow: 0 25px 80px #07191055;
@@ -878,7 +879,15 @@ label small {
   font-size: 13px;
   line-height: 1.8;
   margin-bottom: 20px;
-  color: #7e8a76;
+  color: #58674f;
+}
+.modal .primary:disabled,
+.modal .outline:disabled {
+  background: #e2e7de;
+  color: #596452;
+  border: 1px solid #cbd3c4;
+  box-shadow: none;
+  opacity: 1;
 }
 .modal-actions {
   display: flex;
@@ -1689,7 +1698,7 @@ label small {
 }
 .purchase-preview small {
   font-size: 10px;
-  color: #8b957a;
+  color: #58674f;
 }
 .purchase-preview .costs {
   margin-top: 10px;

@@ -13,6 +13,10 @@ func mustGame(t *testing.T, kind string, n int) *State {
 	if e != nil {
 		t.Fatal(e)
 	}
+	// Rule fixtures use a fixed seat order; random starts are tested separately.
+	if s.Splendor != nil {
+		s.Turn, s.Splendor.StartPlayer = 0, 0
+	}
 	return s
 }
 func apply(t *testing.T, s *State, a Action) {

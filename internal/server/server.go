@@ -87,6 +87,7 @@ type bucket struct {
 	Count int
 }
 type Server struct {
+	newGame  func(string, int) (*game.State, error)
 	cancel   context.CancelFunc
 	done     chan struct{}
 	mu       sync.Mutex
@@ -129,7 +130,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		db.Close()
 		return nil, e
 	}
-	s := &Server{db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files}
+	s := &Server{newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files}
 	rows, e := db.Query("SELECT snapshot FROM rooms")
 	if e != nil {
 		db.Close()
@@ -715,7 +716,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if err == nil {
-			next.Game, err = game.New(next.Kind, len(next.Seats))
+			next.Game, err = s.newGame(next.Kind, len(next.Seats))
 			if err == nil {
 				next.Status = "playing"
 				next.MatchID = randomID(12)
