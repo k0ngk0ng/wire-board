@@ -500,6 +500,7 @@ function App() {
   const [joinMode, setJoinMode] = useState<"join" | "watch">("join");
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
+  const [closeTableRoom, setCloseTableRoom] = useState("");
   const [profileID, setProfileID] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [sound, setSound] = useState(
@@ -510,6 +511,9 @@ function App() {
   const previousTurn = useRef("");
   const previousRoom = useRef<Room | undefined>(undefined);
   const audio = useRef<GameAudio>(new GameAudio());
+  useEffect(() => {
+    setCloseTableRoom("");
+  }, [state?.room?.id, state?.room?.status]);
   const refresh = async () => {
     const n = ++seq.current;
     try {
@@ -863,14 +867,8 @@ function App() {
                       <button
                         className="subtle danger"
                         disabled={busy}
-                        onClick={() => {
-                          if (
-                            confirm(
-                              "结束当前牌桌？本局不计胜负，所有玩家可以离开或重新开局。",
-                            )
-                          )
-                            roomCommand("close");
-                        }}
+                        aria-haspopup="dialog"
+                        onClick={() => setCloseTableRoom(room.id)}
                       >
                         结束牌桌
                       </button>
@@ -1017,6 +1015,46 @@ function App() {
               </form>
             </Modal>
           )}
+          {room?.status === "playing" &&
+            !room.spectating &&
+            room.host === state.user.id &&
+            closeTableRoom === room.id && (
+              <Modal
+                title="结束当前牌桌？"
+                onClose={() => setCloseTableRoom("")}
+              >
+                <div className="close-table-summary">
+                  <span className="close-table-icon" aria-hidden="true">
+                    <Flag size={24} />
+                  </span>
+                  <div>
+                    <strong>{room.name}</strong>
+                    <span>{gameName(room.kind)} · 对局进行中</span>
+                  </div>
+                </div>
+                <p>
+                  结束后本局不计胜负，也不加减积分。所有玩家可以离开牌桌，或由房主重新开局。
+                </p>
+                <div className="modal-actions">
+                  <button
+                    className="outline"
+                    onClick={() => setCloseTableRoom("")}
+                  >
+                    继续游戏
+                  </button>
+                  <button
+                    className="primary confirm-danger"
+                    disabled={busy}
+                    onClick={() => {
+                      setCloseTableRoom("");
+                      roomCommand("close");
+                    }}
+                  >
+                    确认结束
+                  </button>
+                </div>
+              </Modal>
+            )}
           {showLeaderboard && (
             <Modal
               title="围桌 · 积分排行榜"
