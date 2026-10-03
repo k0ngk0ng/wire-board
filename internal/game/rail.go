@@ -5,26 +5,31 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strings"
 )
 
 //go:embed rail_data.json
 var railJSON []byte
 
 type City struct {
-	ID    int       `json:"id"`
-	Name  string    `json:"name"`
-	X     float64   `json:"x"`
-	Y     float64   `json:"y"`
-	Label []float64 `json:"label,omitempty"`
+	ID      int       `json:"id"`
+	Name    string    `json:"name"`
+	X       float64   `json:"x"`
+	Y       float64   `json:"y"`
+	Label   []float64 `json:"label,omitempty"`
+	Kind    string    `json:"kind,omitempty"`
+	Country string    `json:"country,omitempty"`
 }
 type Route struct {
-	ID       int            `json:"id"`
-	A        int            `json:"a"`
-	B        int            `json:"b"`
-	Length   int            `json:"length"`
-	Color    int            `json:"color"`
-	Segments []RouteSegment `json:"segments,omitempty"`
+	ID         int            `json:"id"`
+	A          int            `json:"a"`
+	B          int            `json:"b"`
+	Length     int            `json:"length"`
+	Color      int            `json:"color"`
+	Segments   []RouteSegment `json:"segments,omitempty"`
+	Tunnel     bool           `json:"tunnel,omitempty"`
+	Ferry      int            `json:"ferry,omitempty"`
+	Mountain   int            `json:"mountain,omitempty"`
+	Substitute int            `json:"substitute,omitempty"`
 }
 type RouteSegment struct {
 	X     float64 `json:"x"`
@@ -32,11 +37,20 @@ type RouteSegment struct {
 	Angle float64 `json:"angle"`
 }
 type Ticket struct {
-	ID       int  `json:"id"`
-	A        int  `json:"a"`
-	B        int  `json:"b"`
-	Points   int  `json:"points"`
-	Complete bool `json:"complete"`
+	ID       int            `json:"id"`
+	A        int            `json:"a"`
+	B        int            `json:"b"`
+	Points   int            `json:"points"`
+	Complete bool           `json:"complete"`
+	Art      int            `json:"art,omitempty"`
+	Long     bool           `json:"long,omitempty"`
+	Options  []TicketOption `json:"options,omitempty"`
+	Value    int            `json:"value,omitempty"`
+	Mandala  bool           `json:"mandala,omitempty"`
+}
+type TicketOption struct {
+	To     int `json:"to"`
+	Points int `json:"points"`
 }
 type RailData struct {
 	Cities  []City   `json:"cities"`
@@ -62,16 +76,24 @@ func MapData() RailData {
 }
 
 type RailPlayer struct {
-	Eliminated  bool     `json:"eliminated,omitempty"`
-	Hand        []int    `json:"hand"`
-	Tickets     []Ticket `json:"tickets"`
-	Trains      int      `json:"trains"`
-	Score       int      `json:"score"`
-	RouteScore  int      `json:"routeScore"`
-	TicketScore int      `json:"ticketScore"`
-	Longest     int      `json:"longest"`
-	Bonus       int      `json:"bonus"`
-	Completed   int      `json:"completed"`
+	Eliminated     bool     `json:"eliminated,omitempty"`
+	Hand           []int    `json:"hand"`
+	Tickets        []Ticket `json:"tickets"`
+	Trains         int      `json:"trains"`
+	Score          int      `json:"score"`
+	RouteScore     int      `json:"routeScore"`
+	TicketScore    int      `json:"ticketScore"`
+	Longest        int      `json:"longest"`
+	Bonus          int      `json:"bonus"`
+	Completed      int      `json:"completed"`
+	Stations       []int    `json:"stations,omitempty"`
+	StationRoutes  []int    `json:"stationRoutes,omitempty"`
+	StationScore   int      `json:"stationScore,omitempty"`
+	MandalaCount   int      `json:"mandalaCount,omitempty"`
+	MandalaScore   int      `json:"mandalaScore,omitempty"`
+	Network        int      `json:"network,omitempty"`
+	MountainTrains int      `json:"mountainTrains,omitempty"`
+	MountainRoutes int      `json:"mountainRoutes,omitempty"`
 }
 type RailDrawEvent struct {
 	ID     uint64 `json:"id"`
@@ -86,6 +108,8 @@ type HiddenDrawEvent struct {
 }
 
 type Rail struct {
+	Map              string            `json:"map,omitempty"`
+	Tunnel           *RailTunnel       `json:"tunnel,omitempty"`
 	DrawID           uint64            `json:"drawId,omitempty"`
 	DrawEvents       []RailDrawEvent   `json:"drawEvents,omitempty"`
 	HiddenDrawID     uint64            `json:"hiddenDrawId,omitempty"`
@@ -106,7 +130,19 @@ type Rail struct {
 }
 
 func (s *State) initRail(n int) {
-	g := &Rail{Players: make([]RailPlayer, n), Owners: map[int]int{}, Setup: true, LastRemaining: -1, TicketDeck: MapData().Tickets, Face: []int{}, Discard: []int{}}
+	s.initRailMap(n, "usa")
+}
+func (s *State) initRailMap(n int, mapID string) {
+	info, _ := RailMapInfo(mapID)
+	g := &Rail{Map: info.ID, Players: make([]RailPlayer, n), Owners: map[int]int{}, Setup: true, LastRemaining: -1, Face: []int{}, Discard: []int{}}
+	long := []Ticket{}
+	for _, t := range g.data().Tickets {
+		if t.Long {
+			long = append(long, t)
+		} else {
+			g.TicketDeck = append(g.TicketDeck, t)
+		}
+	}
 	for color := 0; color < 9; color++ {
 		count := 12
 		if color == 8 {
@@ -118,8 +154,9 @@ func (s *State) initRail(n int) {
 	}
 	shuffle(g.Deck)
 	shuffle(g.TicketDeck)
+	shuffle(long)
 	for i := range g.Players {
-		g.Players[i] = RailPlayer{Hand: make([]int, 9), Tickets: []Ticket{}, Trains: 45}
+		g.Players[i] = RailPlayer{Hand: make([]int, 9), Tickets: []Ticket{}, Trains: info.Trains}
 		for j := 0; j < 4; j++ {
 			c, _ := g.draw()
 			g.Players[i].Hand[c]++
@@ -128,8 +165,13 @@ func (s *State) initRail(n int) {
 	g.refill()
 	g.SetupPending = make([][]Ticket, n)
 	for i := range g.Players {
-		g.SetupPending[i] = append([]Ticket{}, g.TicketDeck[:3]...)
-		g.TicketDeck = g.TicketDeck[3:]
+		count := info.SetupTickets
+		if info.LongTickets {
+			g.SetupPending[i] = append(g.SetupPending[i], long[i])
+			count--
+		}
+		g.SetupPending[i] = append(g.SetupPending[i], g.TicketDeck[:count]...)
+		g.TicketDeck = g.TicketDeck[count:]
 	}
 	s.Rail = g
 	s.Phase = "tickets"
@@ -229,6 +271,9 @@ func (g *Rail) refill() (resets int) {
 func (s *State) applyRail(a Action) error {
 	g := s.Rail
 	p := &g.Players[s.Turn]
+	if g.Tunnel != nil {
+		return s.resolveRailTunnel(a)
+	}
 	if s.Phase == "tickets" {
 		if a.Type != "keep" {
 			return errors.New("请先选择保留的目的地任务")
@@ -260,14 +305,18 @@ func (s *State) applyRail(a Action) error {
 		for _, t := range g.Pending {
 			if selected[t.ID] {
 				p.Tickets = append(p.Tickets, t)
-			} else {
+			} else if g.info().AdditionalReturn {
 				g.TicketDeck = append(g.TicketDeck, t)
 			}
 		}
 		returned := len(g.Pending) - len(a.Keep)
 		g.Pending = []Ticket{}
 		g.Passes = 0
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张目的地任务，放回 %d 张", s.Turn+1, len(a.Keep), returned))
+		verb := "移出游戏"
+		if g.info().AdditionalReturn {
+			verb = "放回"
+		}
+		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张目的地任务，"+verb+" %d 张", s.Turn+1, len(a.Keep), returned))
 		if g.Setup {
 			s.Turn++
 			if s.Turn == len(g.Players) {
@@ -300,7 +349,7 @@ func (s *State) applyRail(a Action) error {
 				return errors.New("这张公开牌已不存在")
 			}
 			c = g.Face[a.Slot]
-			if c == 8 && g.Drawn > 0 {
+			if c == 8 && g.Drawn > 0 && !g.info().WildSingle {
 				return errors.New("第二张不能拿公开的万能列车牌")
 			}
 			g.Face[a.Slot] = -1
@@ -328,13 +377,13 @@ func (s *State) applyRail(a Action) error {
 			s.Log = append(s.Log, fmt.Sprintf("玩家 %d 从牌堆摸取 1 张暗牌（第 %d 次摸牌）", s.Turn+1, g.Drawn))
 		} else {
 			detail := fmt.Sprintf("第 %d 次摸牌", g.Drawn)
-			if c == 8 {
+			if c == 8 && !g.info().WildSingle {
 				detail = "公开万能牌，本回合摸牌结束"
 			}
 			s.Log = append(s.Log, fmt.Sprintf("玩家 %d 拿取公开%s×1（市场第 %d 格，%s）", s.Turn+1, railCardName(c), a.Slot+1, detail))
 		}
 		s.refillRailMarket()
-		if g.Drawn == 2 || (a.Slot >= 0 && c == 8) || !g.canDrawSecond() {
+		if g.Drawn == 2 || (a.Slot >= 0 && c == 8 && !g.info().WildSingle) || !g.canDrawSecond() {
 			s.railNext()
 		} else {
 			s.Phase = "draw"
@@ -349,63 +398,9 @@ func (s *State) applyRail(a Action) error {
 		s.Phase = "tickets"
 		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 抽取了 %d 张目的地任务，等待选择（至少保留 1 张）", s.Turn+1, n))
 	case "claim":
-		var route Route
-		for _, r := range MapData().Routes {
-			if r.ID == a.Route {
-				route = r
-				break
-			}
-		}
-		if route.ID == 0 {
-			return errors.New("不存在这条路线")
-		}
-		if _, ok := g.Owners[a.Route]; ok {
-			return errors.New("路线已被占领")
-		}
-		for _, r := range MapData().Routes {
-			if (r.A == route.A && r.B == route.B) || (r.A == route.B && r.B == route.A) {
-				if owner, ok := g.Owners[r.ID]; ok && (len(g.Players) < 4 || owner == s.Turn) {
-					return errors.New("2–3 人局只能使用双线中的一条；同一人不能占领双线")
-				}
-			}
-		}
-		if p.Trains < route.Length {
-			return errors.New("剩余车厢不足")
-		}
-		if a.Color < 0 || a.Color > 7 || a.Wild < 0 || a.Wild > route.Length {
-			return errors.New("请选择合法的支付组合")
-		}
-		if route.Color >= 0 && a.Color != route.Color {
-			return errors.New("列车牌颜色必须与路线相同")
-		}
-		if p.Hand[a.Color] < route.Length-a.Wild || p.Hand[8] < a.Wild {
-			return errors.New("列车牌不足")
-		}
-		p.Hand[a.Color] -= route.Length - a.Wild
-		p.Hand[8] -= a.Wild
-		for i := 0; i < route.Length-a.Wild; i++ {
-			g.Discard = append(g.Discard, a.Color)
-		}
-		for i := 0; i < a.Wild; i++ {
-			g.Discard = append(g.Discard, 8)
-		}
-		p.Trains -= route.Length
-		points := []int{0, 1, 2, 4, 7, 10, 15}[route.Length]
-		p.RouteScore += points
-		p.Score = p.RouteScore
-		g.Owners[route.ID] = s.Turn
-		g.Passes = 0
-		d := MapData()
-		payment := []string{}
-		if route.Length-a.Wild > 0 {
-			payment = append(payment, fmt.Sprintf("%s×%d", railCardName(a.Color), route.Length-a.Wild))
-		}
-		if a.Wild > 0 {
-			payment = append(payment, fmt.Sprintf("万能牌×%d", a.Wild))
-		}
-		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 铺设了 %s → %s（%d 节）；支付 %s；获得 %d 分，剩余 %d 节车厢", s.Turn+1, d.Cities[route.A].Name, d.Cities[route.B].Name, route.Length, strings.Join(payment, "、"), points, p.Trains))
-		s.refillRailMarket()
-		s.railNext()
+		return s.claimRail(a)
+	case "station":
+		return s.buildRailStation(a)
 	case "pass":
 		if s.railHasMove() {
 			return errors.New("仍有合法行动，不能跳过")
@@ -427,7 +422,7 @@ func (g *Rail) canDrawSecond() bool {
 		return true
 	}
 	for _, c := range g.Face {
-		if c >= 0 && c != 8 {
+		if c >= 0 && (c != 8 || g.info().WildSingle) {
 			return true
 		}
 	}
@@ -474,21 +469,30 @@ func (s *State) railHasMove() bool {
 			return true
 		}
 	}
-	p := g.Players[s.Turn]
-	for _, r := range MapData().Routes {
-		if _, ok := g.Owners[r.ID]; ok || p.Trains < r.Length {
-			continue
+	for _, r := range g.data().Routes {
+		if len(g.paymentOptions(s.Turn, r)) > 0 {
+			return true
 		}
-		for color := 0; color < 8; color++ {
-			if r.Color >= 0 && color != r.Color {
-				continue
+	}
+	p := g.Players[s.Turn]
+	if g.info().Stations > len(p.Stations) {
+		free := false
+		for _, city := range g.data().Cities {
+			occupied := false
+			for _, other := range g.Players {
+				for _, v := range other.Stations {
+					occupied = occupied || v == city.ID
+				}
 			}
-			for wild := 0; wild <= r.Length; wild++ {
-				if p.Hand[color] >= r.Length-wild && p.Hand[8] >= wild {
-					copy := clone(*s)
-					if copy.applyRail(Action{Type: "claim", Route: r.ID, Color: color, Wild: wild}) == nil {
-						return true
-					}
+			if !occupied {
+				free = true
+				break
+			}
+		}
+		if free {
+			for c := 0; c < 8; c++ {
+				if p.Hand[c]+p.Hand[8] >= len(p.Stations)+1 {
+					return true
 				}
 			}
 		}
@@ -496,33 +500,15 @@ func (s *State) railHasMove() bool {
 	return false
 }
 func Connected(owners map[int]int, player, a, b int) bool {
-	adj := map[int][]int{}
-	for _, r := range MapData().Routes {
-		if p, ok := owners[r.ID]; ok && p == player {
-			adj[r.A] = append(adj[r.A], r.B)
-			adj[r.B] = append(adj[r.B], r.A)
-		}
-	}
-	seen := map[int]bool{a: true}
-	q := []int{a}
-	for len(q) > 0 {
-		v := q[0]
-		q = q[1:]
-		if v == b {
-			return true
-		}
-		for _, n := range adj[v] {
-			if !seen[n] {
-				seen[n] = true
-				q = append(q, n)
-			}
-		}
-	}
-	return false
+	g := &Rail{Owners: owners}
+	return g.connected(player, a, b)
 }
 func Longest(owners map[int]int, player int) int {
+	return longestRailRoutes(baseRailData.Routes, owners, player)
+}
+func longestRailRoutes(routes []Route, owners map[int]int, player int) int {
 	edges := []Route{}
-	for _, r := range MapData().Routes {
+	for _, r := range routes {
 		if p, ok := owners[r.ID]; ok && p == player {
 			edges = append(edges, r)
 		}
@@ -565,50 +551,6 @@ func Longest(owners map[int]int, player int) int {
 	}
 	return best
 }
-func (s *State) railFinish() {
-	g := s.Rail
-	longest := 0
-	for i := range g.Players {
-		p := &g.Players[i]
-		if p.Eliminated {
-			continue
-		}
-		p.Longest = Longest(g.Owners, i)
-		longest = max(longest, p.Longest)
-		for j, t := range p.Tickets {
-			ok := Connected(g.Owners, i, t.A, t.B)
-			p.Tickets[j].Complete = ok
-			if ok {
-				p.TicketScore += t.Points
-				p.Completed++
-			} else {
-				p.TicketScore -= t.Points
-			}
-		}
-	}
-	best, completed, bonus := -999, -1, -1
-	for i := range g.Players {
-		p := &g.Players[i]
-		if p.Eliminated {
-			continue
-		}
-		if p.Longest == longest && longest > 0 {
-			p.Bonus = 10
-		}
-		p.Score = p.RouteScore + p.TicketScore + p.Bonus
-		if p.Score > best || (p.Score == best && p.Completed > completed) || (p.Score == best && p.Completed == completed && p.Bonus > bonus) {
-			best = p.Score
-			completed = p.Completed
-			bonus = p.Bonus
-			s.Winners = []int{i}
-		} else if p.Score == best && p.Completed == completed && p.Bonus == bonus {
-			s.Winners = append(s.Winners, i)
-		}
-	}
-	s.Finished = true
-	s.Phase = "finished"
-}
-
 func railCardName(color int) string {
 	if color == 8 {
 		return "万能牌"

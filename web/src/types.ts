@@ -46,7 +46,33 @@ export type GemPlayer = {
   nobles: Noble[];
   score: number;
 };
+export type RailMapSpec = {
+  id: string;
+  name: string;
+  minPlayers: number;
+  maxPlayers: number;
+  width: number;
+  height: number;
+  trains: number;
+  doubleMin: number;
+  setupTickets: number;
+  longTickets: boolean;
+  initialReturn: boolean;
+  additionalReturn: boolean;
+  wildSingle: boolean;
+  wildRule: string;
+  bonus: string;
+  stations: number;
+  art: string;
+  rules: string[];
+};
+export type RailPayment = { color: number; tokens: number[] };
 export type Ticket = {
+  art?: number;
+  long?: boolean;
+  options?: { to: number; points: number }[];
+  value?: number;
+  mandala?: boolean;
   id: number;
   a: number;
   b: number;
@@ -54,6 +80,14 @@ export type Ticket = {
   complete: boolean;
 };
 export type RailPlayer = {
+  stations?: number[];
+  stationRoutes?: number[];
+  stationScore?: number;
+  mandalaCount?: number;
+  mandalaScore?: number;
+  network?: number;
+  mountainTrains?: number;
+  mountainRoutes?: number;
   eliminated?: boolean;
   hand?: number[];
   handCount: number;
@@ -92,6 +126,17 @@ export type Game = {
     lastRound: boolean;
   };
   rail?: {
+    map?: string;
+    mapInfo: RailMapSpec;
+    payments?: Record<string, RailPayment[]>;
+    tunnel?: {
+      route: number;
+      color: number;
+      base: number[];
+      revealed: number[];
+      extra: number;
+      wildOnly: boolean;
+    };
     drawId?: number;
     drawEvents?: { id: number; player: number; slot: number; color?: number }[];
     hiddenDrawId?: number;
@@ -110,6 +155,7 @@ export type Game = {
   };
 };
 export type Room = {
+  railMap?: string;
   result?: {
     rated: boolean;
     players: (User & { ratingDelta?: number; rank?: number; bot?: boolean })[];
@@ -133,6 +179,7 @@ export type Room = {
   updated: number;
 };
 export type State = {
+  railMaps: RailMapSpec[];
   user: User;
   rooms: Room[];
   room?: Room;
@@ -141,6 +188,8 @@ export type State = {
   assetsBaseURL?: string;
 };
 export type City = {
+  kind?: string;
+  country?: string;
   id: number;
   name: string;
   x: number;
@@ -148,6 +197,10 @@ export type City = {
   label?: number[];
 };
 export type Route = {
+  tunnel?: boolean;
+  ferry?: number;
+  mountain?: number;
+  substitute?: number;
   id: number;
   a: number;
   b: number;
@@ -155,7 +208,12 @@ export type Route = {
   color: number;
   segments?: { x: number; y: number; angle: number }[];
 };
-export type Catalog = { cities: City[]; routes: Route[]; tickets: Ticket[] };
+export type Catalog = {
+  map: RailMapSpec;
+  cities: City[];
+  routes: Route[];
+  tickets: Ticket[];
+};
 export type Act = (action: Record<string, unknown>) => Promise<void>;
 
 export type CatanPlayer = {

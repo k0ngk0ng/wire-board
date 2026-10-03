@@ -187,32 +187,29 @@ func gemTakeScore(p GemPlayer, target Card, take []int) int {
 	return 100 + useful*40 - gemMissing(p, target, held)*15 - max(0, sum(held)-10)*20
 }
 
-func (s *State) botRouteOpen(r Route, player int) bool {
-	g := s.Rail
-	if _, ok := g.Owners[r.ID]; ok {
-		return false
-	}
-	for _, other := range baseRailData.Routes {
-		if (other.A == r.A && other.B == r.B) || (other.A == r.B && other.B == r.A) {
-			if owner, ok := g.Owners[other.ID]; ok && (len(g.Players) < 4 || owner == player) {
-				return false
-			}
-		}
-	}
-	return true
-}
+func (s *State) botRouteOpen(r Route, player int) bool { return s.Rail.routeOpen(r, player) }
 
-// Shortest remaining distance uses owned tracks for free and excludes blocked tracks.
+// Multi-source shortest paths keep distinct Swiss border crossings separate.
 func (s *State) botPath(player int, ticket Ticket) (int, []int) {
-	data := baseRailData
+	g := s.Rail
+	data := g.data()
 	n := len(data.Cities)
-	dist := make([]int, n)
+	dist, previous, via := make([]int, n), make([]int, n), make([]int, n)
 	visited := make([]bool, n)
-	prev := make([]Route, n)
 	for i := range dist {
 		dist[i] = 10000
+		previous[i] = -1
 	}
-	dist[ticket.A] = 0
+	for _, start := range g.terminals(ticket.A) {
+		dist[start] = 0
+	}
+	targets := g.terminals(ticket.B)
+	if len(ticket.Options) > 0 {
+		targets = nil
+		for _, o := range ticket.Options {
+			targets = append(targets, g.terminals(o.To)...)
+		}
+	}
 	for range n {
 		at := -1
 		for i := range dist {
@@ -224,9 +221,6 @@ func (s *State) botPath(player int, ticket Ticket) (int, []int) {
 			break
 		}
 		visited[at] = true
-		if at == ticket.B {
-			break
-		}
 		for _, r := range data.Routes {
 			next := -1
 			if r.A == at {
@@ -237,41 +231,51 @@ func (s *State) botPath(player int, ticket Ticket) (int, []int) {
 			if next < 0 || visited[next] {
 				continue
 			}
-			cost := r.Length
-			if owner, ok := s.Rail.Owners[r.ID]; ok {
+			cost := r.Length + r.Mountain
+			if owner, ok := g.Owners[r.ID]; ok {
 				if owner != player {
 					continue
 				}
 				cost = 0
-			} else if !s.botRouteOpen(r, player) {
+			} else if !g.routeOpen(r, player) {
 				continue
 			}
 			if dist[at]+cost < dist[next] {
 				dist[next] = dist[at] + cost
-				prev[next] = r
+				previous[next] = at
+				via[next] = r.ID
 			}
 		}
+	}
+	best := -1
+	for _, end := range targets {
+		if best < 0 || dist[end] < dist[best] {
+			best = end
+		}
+	}
+	if best < 0 || dist[best] >= 10000 {
+		return 10000, nil
 	}
 	path := []int{}
-	if dist[ticket.B] < 10000 {
-		for at := ticket.B; at != ticket.A; {
-			r := prev[at]
-			if r.ID == 0 {
-				break
-			}
-			path = append(path, r.ID)
-			if r.A == at {
-				at = r.B
-			} else {
-				at = r.A
-			}
-		}
+	for at := best; previous[at] >= 0; at = previous[at] {
+		path = append(path, via[at])
 	}
-	return dist[ticket.B], path
+	return dist[best], path
 }
 func (s *State) railBot(player int) (Action, error) {
 	g := s.Rail
 	p := g.Players[player]
+	if t := g.Tunnel; t != nil {
+		pay := make([]int, 9)
+		if !t.WildOnly {
+			pay[t.Color] = min(t.Extra, p.Hand[t.Color])
+		}
+		pay[8] = t.Extra - pay[t.Color]
+		return s.botLegal(player, []botChoice{
+			{Action{Type: "tunnel_pay", Tokens: pay}, 10},
+			{Action{Type: "tunnel_cancel"}, 0},
+		})
+	}
 	if g.Setup || s.Phase == "tickets" {
 		pending := g.Pending
 		minimum := 1
@@ -308,25 +312,72 @@ func (s *State) railBot(player int) (Action, error) {
 	}
 	choices := []botChoice{}
 	wanted := make([]int, 8)
-	for _, r := range baseRailData.Routes {
-		if r.Length > p.Trains || !s.botRouteOpen(r, player) {
+	for _, r := range g.data().Routes {
+		if r.Length+r.Mountain > p.Trains || !s.botRouteOpen(r, player) {
 			continue
+		}
+		if g.Drawn == 0 {
+			for _, pay := range g.paymentOptions(player, r) {
+				score := 1000 + priorities[r.ID] + railRoutePoints(r.Length)*3 + 2*r.Mountain - sum(pay.Tokens)
+				if r.Tunnel {
+					score -= 15
+				}
+				if g.info().Bonus == "network" {
+					groups := g.components(player, nil)
+					if groups[r.A] != groups[r.B] {
+						score += 12
+					}
+				}
+				if g.Map == "india" && g.connected(player, r.A, r.B) {
+					score += 10
+				}
+				choices = append(choices, botChoice{Action{Type: "claim", Route: r.ID, Color: pay.Color, Tokens: pay.Tokens}, score})
+			}
 		}
 		for c := 0; c < 8; c++ {
 			if r.Color >= 0 && r.Color != c {
 				continue
 			}
-			missing := max(0, r.Length-p.Hand[c]-p.Hand[8])
-			if missing == 0 && g.Drawn == 0 {
-				choices = append(choices, botChoice{Action{Type: "claim", Route: r.ID, Color: c, Wild: max(0, r.Length-p.Hand[c])}, 1000 + priorities[r.ID] + r.Length*5})
+			wild := 0
+			if g.wildAllowed(r) {
+				wild = p.Hand[8]
 			}
+			missing := max(0, r.Length-p.Hand[c]-wild)
 			if missing > 0 {
 				wanted[c] = max(wanted[c], priorities[r.ID]+r.Length*3-missing*2)
 			}
 		}
 	}
+	if g.Drawn == 0 && len(p.Stations) < g.info().Stations {
+		_, before, _, _ := g.evaluateTickets(player)
+		occupied := map[int]bool{}
+		for _, other := range g.Players {
+			for _, city := range other.Stations {
+				occupied[city] = true
+			}
+		}
+		cost := len(p.Stations) + 1
+		for _, city := range g.data().Cities {
+			if occupied[city.ID] {
+				continue
+			}
+			// Evaluate a temporary station using only our own tickets and public tracks.
+			g.Players[player].Stations = append(append([]int{}, p.Stations...), city.ID)
+			_, after, _, _ := g.evaluateTickets(player)
+			g.Players[player].Stations = p.Stations
+			if after-before <= 4 {
+				continue
+			}
+			for c := 0; c < 8; c++ {
+				wild := max(0, cost-p.Hand[c])
+				if wild <= p.Hand[8] {
+					choices = append(choices, botChoice{Action{Type: "station", Vertex: city.ID, Color: c, Wild: wild}, 1050 + (after-before)*3})
+				}
+			}
+		}
+	}
 	for i, c := range g.Face {
-		if c < 0 || (c == 8 && g.Drawn > 0) {
+		if c < 0 || (c == 8 && g.Drawn > 0 && !g.info().WildSingle) {
 			continue
 		}
 		score := 10

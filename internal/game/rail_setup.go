@@ -58,12 +58,12 @@ func (s *State) applyRailSetup(player int, a Action) error {
 	for _, ticket := range pending {
 		if selected[ticket.ID] {
 			g.Players[player].Tickets = append(g.Players[player].Tickets, ticket)
-		} else {
+		} else if g.info().InitialReturn {
 			g.TicketDeck = append(g.TicketDeck, ticket)
 		}
 	}
 	g.SetupPending[player] = nil
-	s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张初始目的地任务，放回 %d 张", player+1, len(a.Keep), len(pending)-len(a.Keep)))
+	s.Log = append(s.Log, fmt.Sprintf("玩家 %d 保留了 %d 张初始目的地任务，未保留 %d 张", player+1, len(a.Keep), len(pending)-len(a.Keep)))
 	for _, tickets := range g.SetupPending {
 		if len(tickets) != 0 {
 			return nil
@@ -107,6 +107,13 @@ func (s *State) EliminateRail(player int) error {
 		return errors.New("无法移除此玩家")
 	}
 	p := &g.Players[player]
+	if t := g.Tunnel; t != nil {
+		for c, n := range t.Base {
+			p.Hand[c] += n
+		}
+		g.Discard = append(g.Discard, t.Revealed...)
+		g.Tunnel = nil
+	}
 	p.Eliminated = true
 	for c, n := range p.Hand {
 		for range n {
@@ -115,7 +122,9 @@ func (s *State) EliminateRail(player int) error {
 		p.Hand[c] = 0
 	}
 	// Claimed routes remain occupied; secret held tickets remain out of the draw pile.
-	g.TicketDeck = append(g.TicketDeck, g.Pending...)
+	if g.info().AdditionalReturn {
+		g.TicketDeck = append(g.TicketDeck, g.Pending...)
+	}
 	g.Pending = nil
 	g.Passes = 0
 	g.refill()

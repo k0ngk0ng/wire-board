@@ -22,8 +22,8 @@ func rateMatch(r *Room, record *MatchRecord) {
 		return
 	}
 	type result struct {
-		winner, out      bool
-		score, tie, tie2 int
+		winner, out            bool
+		score, tie, tie2, tie3 int
 	}
 	results := make([]result, len(r.Seats))
 	for i := range results {
@@ -39,8 +39,7 @@ func rateMatch(r *Room, record *MatchRecord) {
 		if g := r.Game.Rail; g != nil {
 			p := g.Players[i]
 			x.score = p.Score
-			x.tie = p.Completed
-			x.tie2 = p.Bonus
+			x.tie, x.tie2, x.tie3 = g.TieBreak(i)
 			x.out = x.out || p.Eliminated
 		}
 		if g := r.Game.Catan; g != nil {
@@ -70,7 +69,10 @@ func rateMatch(r *Room, record *MatchRecord) {
 		if a.tie != b.tie {
 			return a.tie > b.tie
 		}
-		return a.tie2 > b.tie2
+		if a.tie2 != b.tie2 {
+			return a.tie2 > b.tie2
+		}
+		return a.tie3 > b.tie3
 	}
 	for i, x := range results {
 		rank := 1

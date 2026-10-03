@@ -163,17 +163,21 @@ func (s *State) View(player int) map[string]any {
 				// Progress belongs to this viewer only. Never mutate persisted scoring
 				// fields: final scoring must still count each destination exactly once.
 				delete(m, "completed")
+				delete(m, "stationRoutes")
+				delete(m, "mandalaCount")
+				delete(m, "mandalaScore")
+				delete(m, "stationScore")
 				if i == player {
-					tickets := append([]Ticket{}, s.Rail.Players[i].Tickets...)
-					completed := 0
-					for j := range tickets {
-						tickets[j].Complete = Connected(s.Rail.Owners, i, tickets[j].A, tickets[j].B)
-						if tickets[j].Complete {
-							completed++
+					tickets, _, completed, stationRoutes := s.Rail.evaluateTickets(i)
+					if s.Rail.Map == "india" {
+						components := s.Rail.mandalaComponents(i)
+						for j, t := range tickets {
+							tickets[j].Mandala = t.Complete && t.A != t.B && components[t.A] == components[t.B]
 						}
 					}
 					m["tickets"] = tickets
 					m["completed"] = completed
+					m["stationRoutes"] = stationRoutes
 				}
 			}
 			if i != player {
@@ -182,6 +186,17 @@ func (s *State) View(player int) map[string]any {
 					delete(m, "tickets")
 				}
 			}
+		}
+		info := s.Rail.info()
+		g["mapInfo"] = info
+		if player >= 0 && player < len(s.Rail.Players) && !s.Finished {
+			payments := map[int][]RailPayment{}
+			for _, r := range s.Rail.data().Routes {
+				if options := s.Rail.paymentOptions(player, r); len(options) > 0 {
+					payments[r.ID] = options
+				}
+			}
+			g["payments"] = payments
 		}
 		if s.Rail.Setup {
 			delete(g, "pending")
