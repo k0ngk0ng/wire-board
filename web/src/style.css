@@ -277,6 +277,12 @@ nav {
   letter-spacing: 1.5px;
   color: #929c8c;
 }
+.tabletop-mark {
+  display: block;
+  width: 150px;
+  height: 64px;
+  margin: 4px auto;
+}
 .game-selection {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5026,4 +5032,60 @@ label small {
   .splendor-board .noble {
     flex-shrink: 0;
   }
+}
+
+.rating-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 18px 0;
+  flex-wrap: wrap;
+}
+.rating-summary strong {
+  font-size: 32px;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+.rating-summary small,
+.rating-rules {
+  color: #72786c;
+}
+.rating-rules {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.ranking-table {
+  overflow-x: auto;
+}
+.ranking-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.ranking-table th,
+.ranking-table td {
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.ranking-table .podium {
+  background: #f4efdc;
+}
+.rating-gain {
+  color: #36775b;
+}
+.rating-loss {
+  color: #aa5648;
+}
+.result-ratings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  width: 100%;
+  font-size: 13px;
+}
+.result-ratings > span {
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }

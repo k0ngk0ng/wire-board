@@ -12,6 +12,15 @@ import (
 func (r *Room) applyGameAction(player int, action game.Action, now time.Time) error {
 	turn, round := r.Game.Turn, r.Game.Round
 	phase := r.Game.Phase
+	sgSequence := 0
+	sgPending := false
+	if g := r.Game.Sanguosha; g != nil {
+		sgSequence = g.Sequence
+		sgPending = g.Pending != nil
+		if !sgPending {
+			r.SGTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
+		}
+	}
 	setupStep := -1
 	tradeID := -1
 	if r.Game.Catan != nil {
@@ -33,6 +42,26 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 	if r.Game.Finished {
 		r.Status = "finished"
 	}
+	if g := r.Game.Sanguosha; g != nil {
+		if r.Game.Finished {
+			r.TurnDeadline = 0
+			return nil
+		}
+		newTurn := r.Game.Turn != turn || r.Game.Round != round || phase == "sg_select" && !g.Selecting
+		if newTurn {
+			r.SGTimeLeft = turnLimit.Milliseconds()
+		}
+		if g.Pending != nil && g.Sequence != sgSequence {
+			limit := 20 * time.Second
+			if g.Pending.Kind == "general" {
+				limit = turnLimit
+			}
+			r.TurnDeadline = now.Add(limit).UnixMilli()
+		} else if g.Pending == nil && (sgPending || newTurn) {
+			r.TurnDeadline = now.UnixMilli() + r.SGTimeLeft
+		}
+		return nil
+	}
 	catanClock := r.Game.Catan != nil && (r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))
 	if catanClock || r.Game.Turn != turn || r.Game.Round != round || r.Game.Finished || (setup && !r.Game.Rail.Setup) {
 		r.startTurnClock(now)
@@ -49,6 +78,15 @@ func (s *Server) runBots(now time.Time) {
 			continue
 		}
 		player := room.Game.Turn
+		if room.Game.Sanguosha != nil {
+			player = -1
+			for _, actor := range room.Game.SanguoshaActors() {
+				if room.Seats[actor].Bot && !room.Seats[actor].Left {
+					player = actor
+					break
+				}
+			}
+		}
 		if g := room.Game.Rail; g != nil && g.Setup {
 			player = -1
 			for i, seat := range room.Seats {

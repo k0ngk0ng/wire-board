@@ -43,6 +43,8 @@ type Seat struct {
 	Left  bool `json:"left"`
 }
 type Room struct {
+	SGTimeLeft          int64         `json:"sgTimeLeft,omitempty"`
+	Rated               bool          `json:"rated,omitempty"`
 	CatanPendingVersion int           `json:"catanPendingVersion,omitempty"`
 	CatanTradeVersion   int           `json:"catanTradeVersion,omitempty"`
 	MatchID             string        `json:"matchId,omitempty"`
@@ -69,6 +71,12 @@ const turnLimit = 120 * time.Second
 func (r *Room) startTurnClock(now time.Time) {
 	if r.Status == "playing" {
 		r.TurnDeadline = now.Add(turnLimit).UnixMilli()
+		if r.Game != nil && r.Game.Sanguosha != nil {
+			r.SGTimeLeft = turnLimit.Milliseconds()
+			if q := r.Game.Sanguosha.Pending; q != nil && q.Kind != "general" {
+				r.TurnDeadline = now.Add(20 * time.Second).UnixMilli()
+			}
+		}
 	} else {
 		r.TurnDeadline = 0
 	}
@@ -116,7 +124,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, e
 	}
 	db.SetMaxOpenConns(1)
-	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce));`)
+	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS rating_ledger(match_id TEXT NOT NULL,user_id TEXT NOT NULL,delta INTEGER NOT NULL,rank INTEGER NOT NULL,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS rating_user ON rating_ledger(user_id); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce));`)
 	if e != nil {
 		db.Close()
 		return nil, e
@@ -200,18 +208,41 @@ func (s *Server) expireSetups(now time.Time) {
 		}
 		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
 		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard")
-		if !railSetup && !catanPending {
+		sgPending := room.Game.Sanguosha != nil
+		if !railSetup && !catanPending && !sgPending {
 			continue
 		}
 		b, _ := json.Marshal(room)
 		var next Room
 		_ = json.Unmarshal(b, &next)
-		if railSetup {
+		if sgPending {
+			failed := false
+			// A shared nullification deadline expires for all outstanding responders
+			// together, not one additional second per seat.
+			for step := 0; step < len(next.Seats) && next.Status == "playing" && next.TurnDeadline <= now.UnixMilli(); step++ {
+				a, err := next.Game.SanguoshaTimeoutAction()
+				if err != nil {
+					log.Printf("sanguosha timeout: %v", err)
+					failed = true
+					break
+				}
+				if err = next.applyGameAction(next.Game.SanguoshaActor(), a, now); err != nil {
+					log.Printf("sanguosha timeout action: %v", err)
+					failed = true
+					break
+				}
+			}
+			if failed {
+				continue
+			}
+		} else if railSetup {
 			next.Game.AutoChooseRailSetup()
 		} else {
 			next.Game.AutoCatanPending()
 		}
-		next.startTurnClock(now)
+		if !sgPending {
+			next.startTurnClock(now)
+		}
 		next.Version++
 		next.Updated = now.Unix()
 		if err := s.save(&next); err != nil {
@@ -238,6 +269,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/players", s.players)
 	mux.HandleFunc("GET /api/players/{id}", s.profile)
 	mux.HandleFunc("GET /api/friends", s.friends)
+	mux.HandleFunc("GET /api/leaderboard", s.leaderboard)
 	mux.HandleFunc("POST /api/players/{id}/friend", s.friendship)
 	mux.HandleFunc("GET /api/catalog", func(w http.ResponseWriter, r *http.Request) { respond(w, 200, game.MapData()) })
 	mux.HandleFunc("POST /api/rooms", s.create)
@@ -452,6 +484,15 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 		v["chat"] = room.Chat
 		if room.Game != nil {
 			v["game"] = room.Game.View(seatIndex(room, u.ID))
+			if room.Status == "finished" && room.MatchID != "" {
+				var raw []byte
+				if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", room.MatchID).Scan(&raw); err == nil {
+					var result MatchRecord
+					if json.Unmarshal(raw, &result) == nil {
+						v["result"] = result
+					}
+				}
+			}
 		}
 		out["room"] = v
 	}
@@ -503,7 +544,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	maxPlayers := 4
 	minPlayers := 2
-	if req.Kind == "rail" || req.Kind == "carcassonne" {
+	if req.Kind == "sanguosha" {
+		minPlayers = 4
+		maxPlayers = 8
+	} else if req.Kind == "rail" || req.Kind == "carcassonne" {
 		maxPlayers = 5
 	} else if req.Kind == "catan" {
 		minPlayers = 3
@@ -568,7 +612,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		g := room.Game.Catan
 		parallelCatan = (req.Action.Type == "catan_discard" && room.Game.Phase == "catan_discard" && room.CatanPendingVersion > 0 && req.Version >= room.CatanPendingVersion && req.Version <= room.Version) || ((req.Action.Type == "catan_trade_accept" || req.Action.Type == "catan_trade_reject") && g.Trade != nil && req.Action.Offer == g.Trade.ID && room.CatanTradeVersion > 0 && req.Version >= room.CatanTradeVersion && req.Version <= room.Version)
 	}
-	if req.Version != room.Version && !parallelSetup && !parallelCatan {
+	parallelSG := req.Type == "action" && room.Game != nil && room.Game.Sanguosha != nil && room.Game.Sanguosha.Pending != nil && room.Game.Sanguosha.Pending.Kind == "nullification" && req.Action.Prompt == room.Game.Sanguosha.Pending.ID && req.Version <= room.Version
+	if req.Version != room.Version && !parallelSetup && !parallelCatan && !parallelSG {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -674,6 +719,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			if err == nil {
 				next.Status = "playing"
 				next.MatchID = randomID(12)
+				next.Rated = true
+				for _, seat := range next.Seats {
+					if seat.Bot {
+						next.Rated = false
+					}
+				}
 				next.SetupVersion = next.Version + 1
 				next.startTurnClock(now)
 			}
@@ -685,6 +736,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.applyGameAction(idx, req.Action, now)
 	case "kick_timeout":
+		if next.Kind == "sanguosha" {
+			err = errors.New("三国杀超时由系统自动结束操作，不能移除身份角色")
+			break
+		}
 		if idx < 0 || next.Status != "playing" || idx == next.Game.Turn || (next.Game.Rail != nil && next.Game.Rail.Setup) {
 			err = errors.New("只有同局的其他玩家可以移出超时玩家")
 			break

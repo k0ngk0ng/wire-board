@@ -47,6 +47,7 @@ export type RailPlayer = {
   completed?: number;
 };
 export type Game = {
+  sanguosha?: SanguoshaState;
   carcassonne?: CarcassonneState;
   catan?: CatanState;
   kind: string;
@@ -83,6 +84,10 @@ export type Game = {
   };
 };
 export type Room = {
+  result?: {
+    rated: boolean;
+    players: (User & { ratingDelta?: number; rank?: number; bot?: boolean })[];
+  };
   spectating?: boolean;
   spectatorCount?: number;
   chat?: ChatMessage[] | null;
@@ -217,4 +222,64 @@ export type CarcassonneState = {
   catalog: CarDefinition[];
   legal: CarPlacement[];
   meepleChoices: number[];
+};
+
+export type SGCard = { id: number; kind: string; suit: number; rank: number };
+export type SGGeneral = {
+  id: string;
+  name: string;
+  kingdom: string;
+  hp: number;
+  female: boolean;
+  skills: string[];
+};
+export type SGPlayer = {
+  general: string;
+  role?: string;
+  hp: number;
+  maxHP: number;
+  dead: boolean;
+  hand?: number[];
+  handCount: number;
+  equip: number[];
+  judgment: { card: number; kind: string }[];
+  choices?: string[];
+  used: Record<string, number>;
+};
+export type SanguoshaState = {
+  players: SGPlayer[];
+  lord: number;
+  selecting: boolean;
+  remaining: number;
+  discardCount: number;
+  table: number[];
+  grace: number[];
+  generals: SGGeneral[];
+  cardTypes: Record<
+    string,
+    { name: string; text: string; slot?: string; range?: number }
+  >;
+  cards: SGCard[];
+  skills: Record<string, { name: string; text: string }>;
+  sequence: number;
+  distances?: number[];
+  range?: number;
+  pending?: {
+    id: number;
+    player: number;
+    canRespond?: boolean;
+    kind: string;
+    message?: string;
+    cards?: number[];
+    source?: number;
+    target?: number;
+    effect?: string;
+    amount?: number;
+    count?: number;
+    step?: number;
+    choices?: string[];
+    wanted?: string;
+    ignoreArmor?: boolean;
+    cancelled?: boolean;
+  };
 };

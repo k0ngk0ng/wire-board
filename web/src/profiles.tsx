@@ -23,14 +23,22 @@ export function PlayerName({
   );
 }
 type History = {
+  rated: boolean;
   id: string;
   room: string;
   kind: string;
   status: string;
   ended: number;
-  players: (User & { bot?: boolean; won: boolean; score?: number })[];
+  players: (User & {
+    bot?: boolean;
+    won: boolean;
+    score?: number;
+    ratingDelta?: number;
+    rank?: number;
+  })[];
 };
 type Profile = {
+  rating: { points: number; played: number; wins: number };
   user: User;
   stats: Record<string, { played: number; wins: number }>;
   history: History[];
@@ -50,13 +58,15 @@ async function request(path: string, body?: unknown) {
   return data;
 }
 const name = (kind: string) =>
-  kind === "carcassonne"
-    ? "卡卡颂"
-    : kind === "catan"
-      ? "卡坦岛"
-      : kind === "rail"
-        ? "铁路环游"
-        : "璀璨宝石";
+  kind === "sanguosha"
+    ? "三国杀"
+    : kind === "carcassonne"
+      ? "卡卡颂"
+      : kind === "catan"
+        ? "卡坦岛"
+        : kind === "rail"
+          ? "铁路环游"
+          : "璀璨宝石";
 export function ProfilePage({ id, self }: { id: string; self: string }) {
   const open = useContext(ProfileContext);
   const [profile, setProfile] = useState<Profile>();
@@ -166,6 +176,11 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
           </button>
         )}
       </header>
+      <div className="rating-summary">
+        <span>平台积分</span>
+        <strong>{profile.rating.points}</strong>
+        <small>{profile.rating.played} 场计分对局</small>
+      </div>
       <div className="profile-stats">
         {Object.entries(profile.stats).map(([kind, stats]) => (
           <article key={kind}>
@@ -267,7 +282,10 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
               </strong>
               <span>{match.status === "finished" ? "已结算" : "已中止"}</span>
             </header>
-            <time>{new Date(match.ended * 1000).toLocaleString("zh-CN")}</time>
+            <time>
+              {new Date(match.ended * 1000).toLocaleString("zh-CN")} ·{" "}
+              {match.rated ? "计分对局" : "不计积分"}
+            </time>
             <div>
               {match.players.map((player) => (
                 <span
@@ -278,6 +296,17 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                   {player.bot && " · 电脑"}
                   {player.score !== undefined && ` · ${player.score} 分`}
                   {player.won && " · 胜"}
+                  {match.rated && (
+                    <b
+                      className={
+                        player.ratingDelta! > 0 ? "rating-gain" : "rating-loss"
+                      }
+                    >
+                      {" "}
+                      · 积分 {player.ratingDelta! > 0 ? "+" : ""}
+                      {player.ratingDelta}
+                    </b>
+                  )}
                 </span>
               ))}
             </div>
@@ -303,6 +332,96 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
           </button>
         )}
       </section>
+    </div>
+  );
+}
+
+export function Leaderboard() {
+  type Entry = User & {
+    points: number;
+    played: number;
+    wins: number;
+    rank: number;
+  };
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [mine, setMine] = useState<{ points: number; played: number }>();
+  const [more, setMore] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const load = async (offset = 0) => {
+    setBusy(true);
+    setError("");
+    try {
+      const data = await request(`/leaderboard?offset=${offset}`);
+      setEntries((old) => (offset ? [...old, ...data.players] : data.players));
+      setMine(data.self);
+      setMore(data.hasMore);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  useEffect(() => {
+    void load();
+  }, []);
+  return (
+    <div className="leaderboard">
+      <div className="rating-summary">
+        <span>我的平台积分</span>
+        <strong>{mine?.points ?? "—"}</strong>
+        <small>{mine?.played ?? 0} 场计分对局</small>
+      </div>
+      <p className="rating-rules">
+        初始 1000 分 · 第一名 +20 · 第二名 −5，之后每低一名多扣 5
+        分。三国杀获胜阵营各 +20，失败阵营各
+        −10。并列同分；含电脑、中止和积分上线前开始的对局不计分。
+      </p>
+      {error && <p role="alert">{error}</p>}
+      <button className="subtle" disabled={busy} onClick={() => void load()}>
+        刷新榜单
+      </button>
+      <div className="ranking-table">
+        <table>
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>玩家</th>
+              <th>积分</th>
+              <th>胜 / 场</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((p) => (
+              <tr key={p.id} className={p.rank <= 3 ? "podium" : ""}>
+                <td>{p.rank <= 3 ? ["🥇", "🥈", "🥉"][p.rank - 1] : p.rank}</td>
+                <td>
+                  <PlayerName user={p} />
+                </td>
+                <td>
+                  <strong>{p.points}</strong>
+                </td>
+                <td>
+                  {p.wins} / {p.played}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {!entries.length && !busy && (
+        <p>完成第一场纯真人对局，就能登上排行榜。</p>
+      )}
+      {busy && <p role="status">正在读取榜单…</p>}
+      {more && (
+        <button
+          className="outline wide"
+          disabled={busy}
+          onClick={() => void load(entries.length)}
+        >
+          加载更多
+        </button>
+      )}
     </div>
   );
 }

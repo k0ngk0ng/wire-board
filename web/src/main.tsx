@@ -52,12 +52,18 @@ import { Chat } from "./chat";
 import { LogLine } from "./log-line";
 import { useRailMapControls } from "./rail-map-controls";
 import { useTurnTitle } from "./turn-title";
-import { ProfileContext, PlayerName, ProfilePage } from "./profiles";
+import {
+  ProfileContext,
+  PlayerName,
+  ProfilePage,
+  Leaderboard,
+} from "./profiles";
 import { HiddenDrawAnimation } from "./hidden-draw-animation";
 import { AnimatedSlot } from "./animated-slot";
 import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
 import "./splendor-layout.css";
 import { CarcassonneBoard } from "./carcassonne";
+import { SanguoshaBoard, SanguoshaCover, SanguoshaRules } from "./sanguosha";
 const gemDisplayOrder = [1, 2, 0, 4, 3, 5];
 const AssetsContext = createContext("");
 const gemColors = [
@@ -93,13 +99,15 @@ const trainNames = [
 ];
 const playerColors = ["#337ab3", "#cf5347", "#42956b", "#d4a833", "#414753"];
 const gameName = (kind: string) =>
-  kind === "carcassonne"
-    ? "卡卡颂"
-    : kind === "catan"
-      ? "卡坦岛"
-      : kind === "splendor"
-        ? "璀璨宝石"
-        : "铁路环游";
+  kind === "sanguosha"
+    ? "三国杀"
+    : kind === "carcassonne"
+      ? "卡卡颂"
+      : kind === "catan"
+        ? "卡坦岛"
+        : kind === "splendor"
+          ? "璀璨宝石"
+          : "铁路环游";
 const statusName: Record<string, string> = {
   waiting: "等待入座",
   playing: "游戏中",
@@ -150,7 +158,9 @@ function Logo() {
 function Cover({ kind, mini = false }: { kind: string; mini?: boolean }) {
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
-      {kind === "carcassonne" ? (
+      {kind === "sanguosha" ? (
+        <SanguoshaCover />
+      ) : kind === "carcassonne" ? (
         <svg preserveAspectRatio="xMidYMid slice" viewBox="0 0 520 260">
           <rect width="520" height="260" fill="#bfd0b7" />
           <circle cx="422" cy="59" r="34" fill="#f3d992" />
@@ -491,6 +501,7 @@ function App() {
   const [rules, setRules] = useState(false);
   const [journalRoom, setJournalRoom] = useState("");
   const [profileID, setProfileID] = useState("");
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [sound, setSound] = useState(
     () => localStorage.getItem("wb_sound") !== "off",
   );
@@ -568,11 +579,15 @@ function App() {
       return;
     }
     const r = state.room;
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}`;
+    const sg = r.game!.sanguosha;
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}`;
     if (key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
         void audio.current.play("finish");
-      } else if (r.status === "playing" && r.game!.turn === r.you) {
+      } else if (
+        r.status === "playing" &&
+        (sg?.pending ? sg.pending.canRespond : r.game!.turn === r.you)
+      ) {
         void audio.current.play("turn");
       }
     }
@@ -693,6 +708,12 @@ function App() {
               <span className="nav-caption">让相聚，多一局。</span>
             </nav>
             <div className="header-right">
+              <button
+                className="subtle"
+                onClick={() => setShowLeaderboard(true)}
+              >
+                积分榜
+              </button>
               <span
                 className={`connection ${online ? "" : "offline"}`}
                 title={online ? "实时连接正常" : "正在重连，座位与进度已保留"}
@@ -887,7 +908,7 @@ function App() {
                 </div>
               ) : (
                 <>
-                  <Players room={room} />
+                  {!room.game?.sanguosha && <Players room={room} />}
                   {room.game?.finished && (
                     <Results
                       room={room}
@@ -898,7 +919,14 @@ function App() {
                   )}
                   <div className="game-layout">
                     <div className="game-main">
-                      {room.kind === "carcassonne" ? (
+                      {room.kind === "sanguosha" ? (
+                        <SanguoshaBoard
+                          room={room}
+                          act={act}
+                          busy={busy}
+                          assets={state.assetsBaseURL || ""}
+                        />
+                      ) : room.kind === "carcassonne" ? (
                         <CarcassonneBoard
                           room={room}
                           act={act}
@@ -987,6 +1015,14 @@ function App() {
                   <ArrowRight size={18} />
                 </button>
               </form>
+            </Modal>
+          )}
+          {showLeaderboard && (
+            <Modal
+              title="围桌 · 积分排行榜"
+              onClose={() => setShowLeaderboard(false)}
+            >
+              <Leaderboard />
             </Modal>
           )}
           {profileID && (
@@ -1079,7 +1115,7 @@ function Auth({
               <TrainFront size={17} />
               铁路环游
             </span>
-            <span>卡坦岛 · 卡卡颂 · 四款经典，无限好时光</span>
+            <span>卡坦岛 · 卡卡颂 · 三国杀 · 经典桌游，无限好时光</span>
           </div>
         </div>
         <small>YOUR FRIENDS. YOUR TABLE. YOUR NEXT MOVE.</small>
@@ -1201,81 +1237,155 @@ function Lobby({
         </div>
         <div className="welcome-stamp">
           <span>围坐 · 开局 · 尽兴</span>
-          <div>
-            <Gemstone color={4} size={30} />
-            <Gemstone color={2} size={30} />
-            <Gemstone color={0} size={30} />
-          </div>
+          <svg
+            className="tabletop-mark"
+            viewBox="0 0 150 64"
+            role="img"
+            aria-label="骰子、卡牌与棋子，围桌一起玩"
+          >
+            <path
+              d="M12 54 Q75 66 138 54"
+              fill="none"
+              stroke="#d7c9ac"
+              strokeWidth="2"
+            />
+            <g transform="translate(13 12) rotate(-12 20 20)">
+              <rect width="39" height="39" rx="9" fill="#c9654e" />
+              <rect
+                x="3"
+                y="3"
+                width="33"
+                height="33"
+                rx="7"
+                fill="none"
+                stroke="#f4d7bd"
+                strokeWidth="1"
+              />
+              {[
+                [11, 11],
+                [28, 11],
+                [19.5, 19.5],
+                [11, 28],
+                [28, 28],
+              ].map(([cx, cy], i) => (
+                <circle key={i} cx={cx} cy={cy} r="3" fill="#fff5dc" />
+              ))}
+            </g>
+            <g transform="translate(64 8) rotate(9 16 22)">
+              <rect
+                x="-6"
+                y="3"
+                width="31"
+                height="43"
+                rx="4"
+                fill="#ddb45f"
+                transform="rotate(-15 10 22)"
+              />
+              <rect
+                width="31"
+                height="43"
+                rx="4"
+                fill="#fcf5e4"
+                stroke="#486e87"
+                strokeWidth="2"
+              />
+              <path d="M15.5 10 L24 21.5 L15.5 33 L7 21.5Z" fill="#486e87" />
+              <circle cx="6" cy="6" r="1.5" fill="#486e87" />
+              <circle cx="25" cy="37" r="1.5" fill="#486e87" />
+            </g>
+            <g
+              fill="#4f8066"
+              stroke="#f8f1dd"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            >
+              <circle cx="120" cy="18" r="9" />
+              <path d="M115 26 L125 26 Q124 38 132 45 L132 49 L108 49 L108 45 Q116 38 115 26Z" />
+              <rect x="105" y="49" width="30" height="6" rx="3" />
+            </g>
+          </svg>
           <small>MAKE TIME TO PLAY</small>
         </div>
       </section>
       <section className="game-selection">
-        {["splendor", "rail", "catan", "carcassonne"].map((kind) => (
-          <article className="game-feature" key={kind}>
-            <Cover kind={kind} />
-            <div className="feature-info">
-              <div className="feature-kicker">
-                {kind === "carcassonne"
-                  ? "ONE TILE. A WHOLE WORLD."
-                  : kind === "catan"
-                    ? "BUILD. TRADE. SETTLE."
-                    : kind === "splendor"
-                      ? "THE ART OF COLLECTING"
-                      : "EVERY ROUTE TELLS A STORY"}
-                <span>基础版</span>
-              </div>
-              <h2>
-                {gameName(kind)}
-                <small>
-                  {kind === "carcassonne"
-                    ? "Carcassonne"
-                    : kind === "catan"
-                      ? "CATAN"
-                      : kind === "splendor"
-                        ? "Splendor"
-                        : "Ticket to Ride"}
-                </small>
-              </h2>
-              <p>
-                {kind === "carcassonne"
-                  ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
-                  : kind === "catan"
-                    ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
-                    : kind === "splendor"
-                      ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
-                      : "从海岸到海岸，让你的铁路连接每一个目的地。"}
-              </p>
-              <div className="feature-bottom">
-                <span>
-                  <span>
-                    <Users size={15} />
-                    {kind === "catan"
-                      ? "3–4"
-                      : kind === "splendor"
-                        ? "2–4"
-                        : "2–5"}{" "}
-                    人
-                  </span>{" "}
-                  <span>
-                    <Clock size={15} />
-                    {kind === "carcassonne"
-                      ? "30–45"
+        {["splendor", "rail", "catan", "carcassonne", "sanguosha"].map(
+          (kind) => (
+            <article className="game-feature" key={kind}>
+              <Cover kind={kind} />
+              <div className="feature-info">
+                <div className="feature-kicker">
+                  {kind === "sanguosha"
+                    ? "CHOOSE YOUR SIDE."
+                    : kind === "carcassonne"
+                      ? "ONE TILE. A WHOLE WORLD."
                       : kind === "catan"
-                        ? "45–90"
+                        ? "BUILD. TRADE. SETTLE."
                         : kind === "splendor"
-                          ? "30"
-                          : "45–60"}{" "}
-                    分钟
+                          ? "THE ART OF COLLECTING"
+                          : "EVERY ROUTE TELLS A STORY"}
+                  <span>基础版</span>
+                </div>
+                <h2>
+                  {gameName(kind)}
+                  <small>
+                    {kind === "sanguosha"
+                      ? "Sanguosha"
+                      : kind === "carcassonne"
+                        ? "Carcassonne"
+                        : kind === "catan"
+                          ? "CATAN"
+                          : kind === "splendor"
+                            ? "Splendor"
+                            : "Ticket to Ride"}
+                  </small>
+                </h2>
+                <p>
+                  {kind === "sanguosha"
+                    ? "执一手好牌，藏一重身份，与好友共赴三国风云。"
+                    : kind === "carcassonne"
+                      ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
+                      : kind === "catan"
+                        ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
+                        : kind === "splendor"
+                          ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
+                          : "从海岸到海岸，让你的铁路连接每一个目的地。"}
+                </p>
+                <div className="feature-bottom">
+                  <span>
+                    <span>
+                      <Users size={15} />
+                      {kind === "sanguosha"
+                        ? "4–8"
+                        : kind === "catan"
+                          ? "3–4"
+                          : kind === "splendor"
+                            ? "2–4"
+                            : "2–5"}{" "}
+                      人
+                    </span>{" "}
+                    <span>
+                      <Clock size={15} />
+                      {kind === "sanguosha"
+                        ? "30–60"
+                        : kind === "carcassonne"
+                          ? "30–45"
+                          : kind === "catan"
+                            ? "45–90"
+                            : kind === "splendor"
+                              ? "30"
+                              : "45–60"}{" "}
+                      分钟
+                    </span>
                   </span>
-                </span>
-                <button className="primary" onClick={() => onCreate(kind)}>
-                  <Plus size={17} />
-                  开一桌
-                </button>
+                  <button className="primary" onClick={() => onCreate(kind)}>
+                    <Plus size={17} />
+                    开一桌
+                  </button>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ),
+        )}
       </section>
       <section className="room-list">
         <div className="section-heading">
@@ -1297,6 +1407,7 @@ function Lobby({
             ["rail", "铁路环游"],
             ["catan", "卡坦岛"],
             ["carcassonne", "卡卡颂"],
+            ["sanguosha", "三国杀"],
           ].map(([k, label]) => (
             <button
               className={filter === k ? "active" : ""}
@@ -1456,31 +1567,37 @@ function Create({
         }}
       >
         <div className="choose-games">
-          {["splendor", "rail", "catan", "carcassonne"].map((x) => (
-            <button
-              type="button"
-              className={k === x ? "selected" : ""}
-              key={x}
-              onClick={() => {
-                setK(x);
-                setCapacity(
-                  Math.max(
-                    x === "catan" ? 3 : 2,
-                    Math.min(
-                      capacity,
-                      x === "rail" || x === "carcassonne" ? 5 : 4,
+          {["splendor", "rail", "catan", "carcassonne", "sanguosha"].map(
+            (x) => (
+              <button
+                type="button"
+                className={k === x ? "selected" : ""}
+                key={x}
+                onClick={() => {
+                  setK(x);
+                  setCapacity(
+                    Math.max(
+                      x === "sanguosha" ? 4 : x === "catan" ? 3 : 2,
+                      Math.min(
+                        capacity,
+                        x === "sanguosha"
+                          ? 8
+                          : x === "rail" || x === "carcassonne"
+                            ? 5
+                            : 4,
+                      ),
                     ),
-                  ),
-                );
-              }}
-            >
-              <Cover kind={x} mini />
-              <span>
-                {gameName(x)}
-                {k === x && <Check size={16} />}
-              </span>
-            </button>
-          ))}
+                  );
+                }}
+              >
+                <Cover kind={x} mini />
+                <span>
+                  {gameName(x)}
+                  {k === x && <Check size={16} />}
+                </span>
+              </button>
+            ),
+          )}
         </div>
         <label>
           房间名称
@@ -1502,13 +1619,15 @@ function Create({
               {Array.from(
                 {
                   length:
-                    k === "catan"
-                      ? 2
-                      : k === "rail" || k === "carcassonne"
-                        ? 4
-                        : 3,
+                    k === "sanguosha"
+                      ? 5
+                      : k === "catan"
+                        ? 2
+                        : k === "rail" || k === "carcassonne"
+                          ? 4
+                          : 3,
                 },
-                (_, i) => i + (k === "catan" ? 3 : 2),
+                (_, i) => i + (k === "sanguosha" ? 4 : k === "catan" ? 3 : 2),
               ).map((n) => (
                 <option key={n} value={n}>
                   {n} 人
@@ -1528,7 +1647,7 @@ function Create({
           </label>
         </div>
         <p className="muted small">
-          至少 {k === "catan" ? 3 : 2}
+          至少 {k === "sanguosha" ? 4 : k === "catan" ? 3 : 2}
           个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
         </p>
         <button className="primary wide" disabled={busy}>
@@ -1552,29 +1671,34 @@ function Waiting({
 }) {
   const ready =
     room.seats.every((p) => p.ready) &&
-    room.seats.length >= (room.kind === "catan" ? 3 : 2);
+    room.seats.length >=
+      (room.kind === "sanguosha" ? 4 : room.kind === "catan" ? 3 : 2);
   return (
     <div className="waiting-layout">
       <div className="waiting-cover">
         <Cover kind={room.kind} />
         <h2>{gameName(room.kind)}</h2>
         <p>
-          {room.kind === "carcassonne"
-            ? "一块接一块，拼出属于你们的城邦。"
-            : room.kind === "catan"
-              ? "一座岛屿，无数种通往胜利的道路。"
-              : room.kind === "splendor"
-                ? "每颗宝石，都是通往胜利的可能。"
-                : "下一站，会是你的目的地吗？"}
+          {room.kind === "sanguosha"
+            ? "与好友过招，也与身份博弈。"
+            : room.kind === "carcassonne"
+              ? "一块接一块，拼出属于你们的城邦。"
+              : room.kind === "catan"
+                ? "一座岛屿，无数种通往胜利的道路。"
+                : room.kind === "splendor"
+                  ? "每颗宝石，都是通往胜利的可能。"
+                  : "下一站，会是你的目的地吗？"}
         </p>
         <span className="tag">
-          {room.kind === "carcassonne"
-            ? "基础版 · 2–5 人 · 包含农民"
-            : room.kind === "catan"
-              ? "基础版 · 3–4 人 · 十分获胜"
-              : room.kind === "splendor"
-                ? "原版基础规则 · 2–4 人"
-                : "美国基础地图 · 2–5 人"}
+          {room.kind === "sanguosha"
+            ? "经典身份局 · 4–8 人 · 25 将 / 108 张牌"
+            : room.kind === "carcassonne"
+              ? "基础版 · 2–5 人 · 包含农民"
+              : room.kind === "catan"
+                ? "基础版 · 3–4 人 · 十分获胜"
+                : room.kind === "splendor"
+                  ? "原版基础规则 · 2–4 人"
+                  : "美国基础地图 · 2–5 人"}
         </span>
       </div>
       <div className="waiting-seats">
@@ -1795,13 +1919,18 @@ function Turn({
     !!g.catan &&
     (g.catan.setupStep < 2 * room.seats.length || g.phase === "catan_discard");
   const setup = !!g.rail?.setup;
+  const sgActor = g.sanguosha?.pending?.player ?? g.turn;
   const mine =
     !room.spectating &&
-    (g.phase === "catan_discard"
-      ? (g.catan?.discardDue[room.you] || 0) > 0
-      : setup
-        ? !g.rail?.setupReady?.[room.you]
-        : g.turn === room.you);
+    (g.sanguosha
+      ? g.sanguosha.pending
+        ? g.sanguosha.pending.canRespond
+        : sgActor === room.you
+      : g.phase === "catan_discard"
+        ? (g.catan?.discardDue[room.you] || 0) > 0
+        : setup
+          ? !g.rail?.setupReady?.[room.you]
+          : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -1823,6 +1952,9 @@ function Turn({
   const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
     ...catanPhases,
+    sg_select: "选择武将",
+    sg_response: "等待响应",
+    sg_play: "选择手牌、技能与目标",
     car_tile: "放置地块",
     car_meeple: "派遣随从",
     turn: "选择一个行动",
@@ -1844,7 +1976,9 @@ function Turn({
               : "等待其他人选好"
             : mine
               ? "轮到你了"
-              : `${room.seats[g.turn]?.name} 的回合`}
+              : g.sanguosha?.pending?.kind === "nullification"
+                ? "共同响应锦囊"
+                : `${room.seats[g.sanguosha ? sgActor : g.turn]?.name} ${g.sanguosha?.pending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -1872,10 +2006,12 @@ function Turn({
                     : "已超时"
                 : setup
                   ? "共同选牌限时"
-                  : "每回合 120 秒"}
+                  : g.sanguosha?.pending && !g.sanguosha.selecting
+                    ? "响应限时 20 秒"
+                    : "每回合 120 秒"}
             </span>
           </div>
-          {expired && !setup && !catanPending && (
+          {expired && !g.sanguosha && !setup && !catanPending && (
             <p>
               {room.spectating
                 ? "该玩家已超时，等待牌桌玩家处理。"
@@ -1884,24 +2020,29 @@ function Turn({
                   : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
             </p>
           )}
-          {expired && !mine && !setup && !catanPending && !room.spectating && (
-            <button
-              className="timeout-kick"
-              disabled={busy}
-              onClick={() => {
-                const target = room.seats[g.turn];
-                if (
-                  confirm(
-                    `将超时玩家「${target.name}」移出本局？${g.carcassonne ? "随从收回，已放地块保留；未放地块洗回牌堆。" : g.catan ? "资源归还银行，建筑道路保留但不再生产。" : g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
-                  )
-                ) {
-                  command("kick_timeout", { target: target.id });
-                }
-              }}
-            >
-              移出超时玩家
-            </button>
-          )}
+          {expired &&
+            !g.sanguosha &&
+            !mine &&
+            !setup &&
+            !catanPending &&
+            !room.spectating && (
+              <button
+                className="timeout-kick"
+                disabled={busy}
+                onClick={() => {
+                  const target = room.seats[g.turn];
+                  if (
+                    confirm(
+                      `将超时玩家「${target.name}」移出本局？${g.carcassonne ? "随从收回，已放地块保留；未放地块洗回牌堆。" : g.catan ? "资源归还银行，建筑道路保留但不再生产。" : g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
+                    )
+                  ) {
+                    command("kick_timeout", { target: target.id });
+                  }
+                }}
+              >
+                移出超时玩家
+              </button>
+            )}
         </div>
       )}
       {(g.splendor?.lastRound || (g.rail?.lastRemaining ?? -1) >= 0) &&
@@ -1939,17 +2080,40 @@ function Results({
           {g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜
         </h2>
         <p>
-          {g.carcassonne
-            ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
-            : g.catan
-              ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
-              : g.splendor
-                ? g.splendor.players.filter((p) => !p.eliminated).length === 1
-                  ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
-                  : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
-                : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
+          {g.sanguosha
+            ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
+            : g.carcassonne
+              ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
+              : g.catan
+                ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
+                : g.splendor
+                  ? g.splendor.players.filter((p) => !p.eliminated).length === 1
+                    ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
+                    : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
+                  : "总分 = 路线分 + 目的地净得分 + 最长路线奖励。"}
         </p>
       </div>
+      {room.result && (
+        <div className="result-ratings">
+          {room.result.rated ? (
+            room.result.players.map((p) => (
+              <span key={p.id}>
+                <PlayerName user={p} />{" "}
+                <b
+                  className={
+                    (p.ratingDelta || 0) > 0 ? "rating-gain" : "rating-loss"
+                  }
+                >
+                  {(p.ratingDelta || 0) > 0 ? "+" : ""}
+                  {p.ratingDelta} 积分
+                </b>
+              </span>
+            ))
+          ) : (
+            <p>本局不计积分（含电脑或积分上线前开始的对局）。</p>
+          )}
+        </div>
+      )}
       {g.rail && (
         <div className="score-table">
           {room.seats.map((p, i) => {
@@ -3386,7 +3550,9 @@ function RailBoard({
 function Rules({ kind }: { kind: string }) {
   return (
     <div className="rules">
-      {kind === "carcassonne" ? (
+      {kind === "sanguosha" ? (
+        <SanguoshaRules />
+      ) : kind === "carcassonne" ? (
         <>
           <p>
             卡卡颂基础版，2–5 人，72 张地块，每人 7
