@@ -1,0 +1,648 @@
+/* Market, bank and wallet follow the physical table at both screen sizes. */
+.splendor-board {
+  --table-ink: #f4eedc;
+  background: radial-gradient(ellipse at 50% 25%, #3c4265, #292f49 85%);
+  border-color: #454b68;
+  color: var(--table-ink);
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  max-width: none;
+}
+.splendor-board .nobles-row {
+  grid-area: nobles;
+  padding: 0;
+  border: 0;
+  justify-content: center;
+  gap: 14px;
+}
+.splendor-board .board-section-label {
+  color: #e4d2a2;
+}
+.splendor-board .board-section-label small {
+  display: none;
+}
+.splendor-board .nobles {
+  flex: 0 1 auto;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+}
+.splendor-board .noble {
+  width: 65px;
+  height: 65px;
+  margin: 0 0 8px;
+  flex-shrink: 0;
+}
+.splendor-board .market {
+  grid-area: market;
+  padding: 0;
+  gap: 16px;
+  min-width: 0;
+}
+.splendor-board .market-row {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+.splendor-board .market-row .dev-card,
+.splendor-board .market-row .deck {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 5 / 7;
+  border: 2px solid #fff6df;
+  border-radius: 7px;
+  box-shadow: 0 4px 9px #080c2477;
+}
+.splendor-board .market .card-id {
+  display: none;
+}
+.splendor-board .market .card-top {
+  height: 39px;
+  padding: 5px 6px;
+}
+.splendor-board .market .card-top strong {
+  background: none;
+  font-size: 30px;
+  text-shadow:
+    1px 1px 2px #000,
+    -1px -1px 1px #000;
+  padding: 0;
+}
+.splendor-board .market .card-top svg {
+  width: 31px;
+  height: 31px;
+  background: none;
+  filter: drop-shadow(0 1px 1px #111);
+}
+.splendor-board .market .dev-card > .costs {
+  grid-template-columns: repeat(var(--cost-columns, 2), 27px);
+  gap: 4px;
+  left: 5px;
+  bottom: 8px;
+}
+.splendor-board .market .dev-card .cost {
+  width: 27px;
+  height: 27px;
+  font-size: 20px;
+}
+.splendor-board .deck-count,
+.with-artwork .splendor-board .deck-count {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  margin: 0;
+  padding: 2px 4px;
+  min-width: 22px;
+  max-width: none;
+  background: #fff;
+  color: #171b26;
+  border: 1px solid #353a4f;
+  border-radius: 20px;
+  font-size: 13px;
+  opacity: 1;
+}
+.splendor-board .gem-bank {
+  grid-area: bank;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.splendor-board .gem-bank .section-line {
+  display: none;
+}
+.splendor-board .gem-bank .token-row {
+  display: grid;
+  gap: 12px;
+}
+.splendor-board .gem-bank .token-button {
+  padding: 3px;
+  justify-self: center;
+}
+.splendor-board .gem-bank .token {
+  width: 58px;
+  height: 58px;
+}
+.splendor-board .gem-bank .token-button > small {
+  display: none;
+}
+.splendor-board .gem-bank .token-button > b {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  margin: 0;
+  color: #171b26;
+  background: #fff;
+  font: 500 15px/24px sans-serif;
+  border: 1px solid #363d53;
+  min-width: 24px;
+  border-radius: 50%;
+}
+.splendor-board .gem-bank .token-picked {
+  right: -6px;
+  top: auto;
+  bottom: 0;
+  color: #241a00;
+  z-index: 2;
+}
+.splendor-board .gem-bank .bank-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  margin: 10px 0 0;
+  gap: 7px;
+}
+.splendor-board .gem-bank .bank-actions > span {
+  color: #eee9d6;
+  font-size: 11px;
+}
+.splendor-board .gem-bank .bank-actions .subtle {
+  color: #ead9a9;
+  padding: 3px;
+}
+.splendor-board .gem-bank .bank-actions .primary {
+  width: 100%;
+  margin: 0;
+  padding: 9px 5px;
+  font-size: 11px;
+}
+.splendor-board .personal-area {
+  grid-area: personal;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.6fr);
+  gap: 10px 18px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.splendor-board .personal-area > .section-line {
+  grid-column: 1 / -1;
+  margin: 0;
+  min-height: 0;
+}
+.splendor-board .personal-area > .section-line h3 {
+  display: none;
+}
+.splendor-board .personal-area > .section-line .subtle {
+  margin-left: auto;
+  color: #eee5cc;
+  font-size: 11px;
+  padding: 0;
+}
+.splendor-wallet {
+  min-width: 0;
+  border: 1px solid #e0c667;
+  border-radius: 12px;
+  padding: 10px;
+  background: #ffffff08;
+}
+.wallet-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin: -18px 2px 8px;
+  font-size: 12px;
+}
+.wallet-caption > span,
+.wallet-caption > b {
+  background: #303650;
+  padding: 2px 6px;
+  border-radius: 7px;
+}
+.wallet-caption small {
+  color: #c9c5b8;
+  font-size: 9px;
+  margin-left: 5px;
+}
+.wallet-caption > b {
+  font-variant-numeric: tabular-nums;
+  color: #ffde72;
+}
+.wallet-colors {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+.wallet-gem {
+  position: relative;
+  min-width: 0;
+  padding: 7px 4px 3px;
+  border: 1px solid #efda96;
+  border-radius: 8px;
+  background: var(--gem);
+  color: var(--ink);
+}
+.wallet-gem > svg {
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  left: 50%;
+  top: -11px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 1px 2px #181c2f);
+}
+.wallet-counts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 33px;
+}
+.wallet-discount,
+.wallet-held {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 23px;
+}
+.wallet-counts b,
+.wallet-counts strong {
+  position: relative;
+  font:
+    700 26px/1 Georgia,
+    serif;
+  z-index: 1;
+  text-shadow: 0 1px 1px #0004;
+}
+.wallet-discount.empty {
+  opacity: 0.4;
+}
+.discount-card-icon {
+  position: absolute;
+  width: 20px;
+  height: 27px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  background: #ffffff14;
+  transform: rotate(-8deg);
+}
+.wallet-token {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  bottom: -3px;
+  right: -4px;
+  border-radius: 50%;
+  border: 1px solid #fff6;
+  background: #ffffff25;
+}
+.with-artwork .wallet-token {
+  background-image: var(--splendor-tokens);
+  background-size: 600% 100%;
+  border: 0;
+}
+.splendor-board .reserved {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 7px;
+  margin: 0;
+  padding: 8px 10px;
+  min-width: 0;
+  border: 1px solid #998a55;
+  border-radius: 10px;
+}
+.splendor-board .reserved > span {
+  width: 100%;
+  color: #eee3ba;
+  font-size: 11px;
+}
+.splendor-board .reserved > span > b {
+  display: inline;
+  margin-left: 3px;
+}
+.splendor-board .reserved > p {
+  color: #b9bbcd;
+  font-size: 10px;
+  margin: 0;
+}
+.splendor-board .reserved .dev-card {
+  width: 64px;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 5/7;
+}
+.splendor-board .reserved .dev-card .card-top {
+  height: 25px;
+  padding: 2px;
+}
+.splendor-board .reserved .dev-card .card-top strong {
+  font-size: 17px;
+}
+.splendor-board .reserved .dev-card .card-top svg {
+  width: 20px;
+  height: 20px;
+}
+.splendor-board .reserved .dev-card > .costs {
+  grid-template-columns: repeat(var(--cost-columns, 2), 16px);
+  gap: 2px;
+  bottom: 7px;
+  left: 3px;
+}
+.splendor-board .reserved .dev-card .cost {
+  width: 16px;
+  height: 16px;
+  font-size: 11px;
+}
+.splendor-board .collection {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.splendor-board .collection .dev-card {
+  width: 90px;
+  height: auto;
+  aspect-ratio: 5/7;
+}
+.splendor-board > .pass-button,
+.splendor-board > .action-prompt {
+  grid-area: prompt;
+  color: #f4dca4;
+}
+@media (min-width: 851px) {
+  .splendor-board,
+  .splendor-board:not(:has(.personal-area)) {
+    width: min(
+      100%,
+      calc(clamp(150px, (100dvh - 450px) / 3, 245px) * 25 / 7 + 212px)
+    );
+    margin: 0 auto;
+    grid-template-columns: minmax(0, 1fr) 96px;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: "nobles nobles" "market bank" "personal personal" "prompt prompt";
+  }
+  .splendor-board .market,
+  .splendor-board:not(:has(.personal-area)) .market {
+    grid-area: market;
+  }
+  .splendor-board .nobles-row,
+  .splendor-board:not(:has(.personal-area)) .nobles-row {
+    grid-area: nobles;
+    flex-direction: row;
+  }
+  .splendor-board .gem-bank,
+  .splendor-board:not(:has(.personal-area)) .gem-bank {
+    grid-area: bank;
+  }
+  .splendor-board .gem-bank .token-row {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 850px) {
+  .splendor-board {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "nobles" "bank" "market" "personal" "prompt";
+    padding: 12px 8px;
+    gap: 14px;
+  }
+  .splendor-board .nobles-row {
+    display: block;
+  }
+  .splendor-board .board-section-label {
+    display: none;
+  }
+  .splendor-board .nobles {
+    gap: 8px;
+    justify-content: center;
+    padding: 0 0 8px;
+  }
+  .splendor-board .noble {
+    width: clamp(42px, 13vw, 65px);
+    height: clamp(42px, 13vw, 65px);
+    margin: 0;
+  }
+  .splendor-board .gem-bank .token-row {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .splendor-board .gem-bank .token {
+    width: clamp(28px, 8.7vw, 49px);
+    height: clamp(28px, 8.7vw, 49px);
+  }
+  .splendor-board .gem-bank .token-button > b {
+    font-size: 10px;
+    line-height: 17px;
+    min-width: 17px;
+    left: -2px;
+  }
+  .splendor-board .gem-bank .bank-actions {
+    margin-top: 7px;
+  }
+  .splendor-board .gem-bank .bank-actions .primary {
+    width: auto;
+    padding: 6px 9px;
+    margin-left: auto;
+  }
+  .splendor-board .gem-bank .bank-actions > span {
+    margin-right: auto;
+  }
+  .splendor-board .market {
+    gap: 10px;
+  }
+  .splendor-board .market-row {
+    gap: 7px;
+  }
+  .splendor-board .market .card-top {
+    height: 25px;
+    padding: 2px 3px;
+  }
+  .splendor-board .market .card-top strong {
+    font-size: 20px;
+  }
+  .splendor-board .market .card-top svg {
+    width: 21px;
+    height: 21px;
+  }
+  .splendor-board .market .dev-card > .costs {
+    grid-template-columns: repeat(var(--cost-columns, 2), 16px);
+    gap: 2px;
+    left: 3px;
+    bottom: 5px;
+  }
+  .splendor-board .market .dev-card .cost {
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+  }
+  .splendor-board .deck-count,
+  .with-artwork .splendor-board .deck-count {
+    top: 1px;
+    left: 1px;
+    min-width: 16px;
+    padding: 1px 2px;
+    font-size: 9px;
+  }
+  .splendor-board .personal-area {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .splendor-board .personal-area > .section-line {
+    margin-bottom: -2px;
+  }
+  .splendor-wallet {
+    padding: 8px 6px 6px;
+  }
+  .wallet-caption {
+    font-size: 10px;
+    margin-bottom: 9px;
+  }
+  .wallet-caption small {
+    font-size: 8px;
+    margin-left: 3px;
+  }
+  .wallet-colors {
+    gap: 5px;
+  }
+  .wallet-gem {
+    padding: 6px 1px 2px;
+  }
+  .wallet-gem > svg {
+    width: 17px;
+    height: 17px;
+    top: -9px;
+  }
+  .wallet-counts {
+    min-height: 25px;
+    gap: 3px;
+  }
+  .wallet-discount,
+  .wallet-held {
+    min-width: 14px;
+  }
+  .wallet-counts b,
+  .wallet-counts strong {
+    font-size: 20px;
+  }
+  .discount-card-icon {
+    width: 13px;
+    height: 21px;
+  }
+  .wallet-token {
+    width: 18px;
+    height: 18px;
+    right: -3px;
+  }
+  .splendor-board .reserved {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 7px;
+  }
+}
+@media (max-width: 360px) {
+  .splendor-board .market-row {
+    gap: 5px;
+  }
+  .splendor-board .market .card-top strong {
+    font-size: 17px;
+  }
+  .splendor-board .market .card-top svg {
+    width: 17px;
+    height: 17px;
+  }
+  .splendor-board .market .dev-card > .costs {
+    grid-template-columns: repeat(var(--cost-columns, 2), 14px);
+    gap: 2px;
+  }
+  .splendor-board .market .dev-card .cost {
+    width: 14px;
+    height: 14px;
+    font-size: 10px;
+  }
+  .wallet-counts b,
+  .wallet-counts strong {
+    font-size: 17px;
+  }
+  .wallet-caption small {
+    font-size: 7px;
+  }
+}
+/* Explicit slots prevent older compact-table rules from creating empty rows. */
+.splendor-board .personal-area {
+  grid-template-areas: "summary summary" "wallet reserved";
+  grid-template-rows: auto auto;
+  align-items: start;
+}
+.splendor-board .personal-area > .section-line {
+  grid-area: summary;
+}
+.splendor-wallet {
+  grid-area: wallet;
+  margin-top: 8px;
+}
+.splendor-board .reserved {
+  grid-area: reserved;
+}
+.splendor-board .nobles {
+  overflow-y: hidden;
+  padding-bottom: 14px;
+}
+@media (min-width: 851px) {
+  .splendor-board,
+  .splendor-board:not(:has(.personal-area)) {
+    width: min(
+      100%,
+      calc(clamp(135px, (100dvh - 570px) / 3, 235px) * 25 / 7 + 212px)
+    );
+  }
+  .splendor-board .gem-bank .token {
+    width: clamp(36px, (100dvh - 560px) / 8, 58px);
+    height: clamp(36px, (100dvh - 560px) / 8, 58px);
+  }
+  .splendor-board .gem-bank .token-row {
+    gap: clamp(6px, 1vh, 12px);
+  }
+}
+@media (max-width: 850px) {
+  .splendor-board .personal-area {
+    grid-template-areas: "summary" "wallet" "reserved";
+  }
+}
+.splendor-board .nobles {
+  overflow: visible;
+  padding-bottom: 10px;
+}
+.splendor-board .noble {
+  margin-bottom: 0;
+}
+@media (min-width: 851px) {
+  .splendor-board {
+    padding: 10px;
+    gap: 10px;
+  }
+  .splendor-board .nobles-row {
+    min-height: 0;
+  }
+  .splendor-board .personal-area {
+    gap: 4px 14px;
+  }
+  .splendor-wallet {
+    padding: 7px;
+  }
+  .wallet-caption {
+    margin-top: -15px;
+    margin-bottom: 5px;
+  }
+  .wallet-counts {
+    min-height: 28px;
+  }
+  .splendor-board > .pass-button {
+    font-size: 9px;
+    line-height: 1.2;
+  }
+}
+@media (max-width: 850px) {
+  .splendor-board .noble .cost {
+    width: clamp(11px, 3vw, 17px);
+    height: clamp(11px, 3vw, 17px);
+    font-size: clamp(8px, 2.3vw, 11px);
+  }
+}
