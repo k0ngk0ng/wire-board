@@ -12,6 +12,12 @@
 - `rail/train-cards.webp`：九种列车牌，9 × 1 图集。
 - `rail/tickets/1.webp` 至 `30.webp`：目的地地图；中文名称和基础版分数由界面叠加。
 
+- `catan/terrain-{wood,brick,wool,grain,ore,desert}-v1.webp`：六类六边形地形，原版资源颜色。
+- `catan/resource-{wood,brick,wool,grain,ore}-v1.webp`：五种完整资源卡；`icon-{wood,brick,wool,grain,ore}-v1.webp` 为费用、交易和银行使用的圆形图标。
+- `catan/dev-{0,1,2,3,4}-v1.webp`：依次为骑士、道路建设、丰收、垄断、胜利点。
+- `catan/{settlement,city}-{blue,red,white,orange}-v1.webp`：四种玩家颜色的透明村庄与城市。
+- `catan/port-{wood,brick,wool,grain,ore,any}-v1.webp` 与 `catan/robber-v1.webp`：港口船与强盗。
+
 将准备好的 WebP 文件放在临时目录，OSS 密钥分别放入已忽略的 `config/secrets/oss-access-key-id` 和 `config/secrets/oss-access-key-secret`。上传命令（值均为示例）：
 
 ```sh

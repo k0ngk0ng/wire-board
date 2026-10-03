@@ -8,6 +8,13 @@ import (
 )
 
 type Action struct {
+	Vertex int    `json:"vertex"`
+	Edge   int    `json:"edge"`
+	Tile   int    `json:"tile"`
+	Target int    `json:"target"`
+	Offer  int    `json:"offer"`
+	Give   []int  `json:"give"`
+	Take   []int  `json:"take"`
 	Type   string `json:"type"`
 	Card   int    `json:"card"`
 	Tier   int    `json:"tier"`
@@ -20,6 +27,7 @@ type Action struct {
 	Keep   []int  `json:"keep"`
 }
 type State struct {
+	Catan    *Catan    `json:"catan,omitempty"`
 	Kind     string    `json:"kind"`
 	Turn     int       `json:"turn"`
 	Phase    string    `json:"phase"`
@@ -34,6 +42,11 @@ type State struct {
 func New(kind string, n int) (*State, error) {
 	s := &State{Kind: kind, Phase: "turn", Round: 1, Log: []string{}}
 	switch kind {
+	case "catan":
+		if n < 3 || n > 4 {
+			return nil, errors.New("卡坦岛需要 3–4 位玩家")
+		}
+		s.initCatan(n)
 	case "splendor":
 		if n < 2 || n > 4 {
 			return nil, errors.New("璀璨宝石需要 2–4 位玩家")
@@ -52,6 +65,13 @@ func New(kind string, n int) (*State, error) {
 func (s *State) Apply(player int, a Action) error {
 	if s.Finished {
 		return errors.New("本局已结束")
+	}
+	if s.Catan != nil {
+		err := s.applyCatan(player, a)
+		if len(s.Log) > 80 {
+			s.Log = s.Log[len(s.Log)-80:]
+		}
+		return err
 	}
 	if s.Rail != nil && s.Rail.Setup {
 		return s.applyRailSetup(player, a)
@@ -74,6 +94,10 @@ func (s *State) View(player int) map[string]any {
 	b, _ := json.Marshal(s)
 	var v map[string]any
 	_ = json.Unmarshal(b, &v)
+	if s.Catan != nil {
+		s.catanView(v, player)
+		return v
+	}
 	if s.Splendor != nil {
 		g := v["splendor"].(map[string]any)
 		delete(g, "decks")

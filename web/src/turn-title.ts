@@ -5,7 +5,8 @@ export function useTurnTitle(room?: Room) {
   const game = room?.game;
   const player =
     game?.splendor?.players[room?.you ?? -1] ||
-    game?.rail?.players[room?.you ?? -1];
+    game?.rail?.players[room?.you ?? -1] ||
+    game?.catan?.players[room?.you ?? -1];
   const needsAction = !!(
     room &&
     game &&
@@ -15,9 +16,11 @@ export function useTurnTitle(room?: Room) {
     room.you >= 0 &&
     player &&
     !player.eliminated &&
-    (game.rail?.setup
-      ? !game.rail.setupReady?.[room.you]
-      : game.turn === room.you)
+    (game.phase === "catan_discard"
+      ? (game.catan?.discardDue[room.you] || 0) > 0
+      : game.rail?.setup
+        ? !game.rail.setupReady?.[room.you]
+        : game.turn === room.you)
   );
   const prompt = game?.rail?.setup ? "请选择目的地" : "轮到你了";
   useEffect(() => {
