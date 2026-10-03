@@ -85,7 +85,7 @@ func rateMatch(r *Room, record *MatchRecord) {
 		if x.winner {
 			rank = 1
 			delta = 20
-		} else if r.Kind == "sanguosha" {
+		} else if r.Kind == "sanguosha" || r.Kind == "dota" {
 			rank = 2
 			delta = -10
 		} else {

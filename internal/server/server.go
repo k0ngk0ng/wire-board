@@ -223,6 +223,10 @@ func (s *Server) expireSetups(now time.Time) {
 		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
 		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard")
 		sgPending := room.Game.Sanguosha != nil
+		if room.Game.Dota != nil {
+			s.expireDota(room, now)
+			continue
+		}
 		if !railSetup && !catanPending && !sgPending {
 			continue
 		}
@@ -566,7 +570,13 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	maxPlayers := 4
 	minPlayers := 2
-	if req.Kind == "sanguosha" {
+	if req.Kind == "dota" {
+		maxPlayers = 6
+		if req.Capacity%2 != 0 {
+			fail(w, 400, "兵线争锋需要 2、4 或 6 个席位")
+			return
+		}
+	} else if req.Kind == "sanguosha" {
 		minPlayers = 4
 		maxPlayers = 8
 	} else if req.Kind == "rail" {
@@ -647,10 +657,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		parallelCatan = (req.Action.Type == "catan_discard" && room.Game.Phase == "catan_discard" && room.CatanPendingVersion > 0 && req.Version >= room.CatanPendingVersion && req.Version <= room.Version) || ((req.Action.Type == "catan_trade_accept" || req.Action.Type == "catan_trade_reject") && g.Trade != nil && req.Action.Offer == g.Trade.ID && room.CatanTradeVersion > 0 && req.Version >= room.CatanTradeVersion && req.Version <= room.Version)
 	}
 	parallelSG := req.Type == "action" && room.Game != nil && room.Game.Sanguosha != nil && room.Game.Sanguosha.Pending != nil && room.Game.Sanguosha.Pending.Kind == "nullification" && req.Action.Prompt == room.Game.Sanguosha.Pending.ID && req.Version <= room.Version
+	parallelDota := req.Type == "action" && room.Status == "playing" && room.Game != nil && room.Game.Dota != nil && req.Action.Prompt == room.Game.Dota.Sequence && req.Version >= room.SetupVersion && req.Version <= room.Version
 	// Control of one's own seat is independent of board versions. In particular,
 	// a returning player must be able to cancel while the bot is taking actions.
 	seatControl := req.Type == "autoplay" && req.Version >= max(1, room.SetupVersion) && req.Version <= room.Version
-	if req.Version != room.Version && !parallelSetup && !parallelCatan && !parallelSG && !seatControl {
+	if req.Version != room.Version && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -785,6 +796,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 			if err == nil {
 				next.Status = "playing"
+				if next.Game.Dota != nil {
+					next.Game.Dota.Captain = idx
+				}
 				next.MatchID = randomID(12)
 				next.Rated = true
 				for _, seat := range next.Seats {
@@ -827,6 +841,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.applyGameAction(idx, req.Action, now)
 	case "kick_timeout":
+		if next.Kind == "dota" {
+			err = errors.New("兵线争锋超时由电脑接管，保留席位和队伍")
+			break
+		}
 		if next.Kind == "sanguosha" {
 			err = errors.New("三国杀超时由系统自动结束操作，不能移除身份角色")
 			break

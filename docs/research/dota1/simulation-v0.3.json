@@ -1,0 +1,585 @@
+{
+  "rules": "v0.3",
+  "games_per_mode_matchup": 40,
+  "modes": {
+    "1v1": {
+      "balanced": {
+        "balanced_win": 0.35,
+        "opponent_win": 0.325,
+        "draw": 0.325,
+        "mean_rounds": 18.88,
+        "mean_kills": 0.93,
+        "endings": {
+          "round_limit": 27,
+          "ancient": 13
+        },
+        "actions": {
+          "推进": 404,
+          "突袭": 130,
+          "技能一": 142,
+          "技能二": 130,
+          "整备": 377,
+          "固守": 91,
+          "大招": 234,
+          "打钱": 2
+        },
+        "items": {
+          "bracer": 97,
+          "vanguard": 70,
+          "blades_attack": 14,
+          "aghanim": 10,
+          "blade_mail": 4,
+          "boots": 7,
+          "arcane_boots": 4,
+          "crystalys": 4,
+          "wand": 22,
+          "null_talisman": 7,
+          "bkb": 3,
+          "force_staff": 3,
+          "quelling_blade": 6,
+          "wraith_band": 10,
+          "phase_boots": 4,
+          "mekansm": 4
+        }
+      },
+      "random": {
+        "balanced_win": 0.975,
+        "opponent_win": 0.0,
+        "draw": 0.025,
+        "mean_rounds": 13.53,
+        "mean_kills": 0.75,
+        "endings": {
+          "ancient": 37,
+          "round_limit": 3
+        },
+        "actions": {
+          "推进": 232,
+          "整备": 407,
+          "固守": 66,
+          "技能二": 82,
+          "突袭": 94,
+          "技能一": 92,
+          "大招": 72,
+          "打钱": 37
+        },
+        "items": {
+          "null_talisman": 22,
+          "bracer": 53,
+          "blades_attack": 25,
+          "wand": 17,
+          "boots": 29,
+          "quelling_blade": 33,
+          "wraith_band": 22,
+          "arcane_boots": 5,
+          "vanguard": 33,
+          "blade_mail": 2,
+          "force_staff": 2,
+          "phase_boots": 5,
+          "aghanim": 3,
+          "mekansm": 2,
+          "crystalys": 1,
+          "bkb": 5
+        }
+      },
+      "rush": {
+        "balanced_win": 0.7,
+        "opponent_win": 0.225,
+        "draw": 0.075,
+        "mean_rounds": 16.9,
+        "mean_kills": 1.15,
+        "endings": {
+          "round_limit": 16,
+          "ancient": 24
+        },
+        "actions": {
+          "推进": 359,
+          "固守": 191,
+          "整备": 314,
+          "技能一": 144,
+          "技能二": 124,
+          "大招": 114,
+          "突袭": 100,
+          "打钱": 6
+        },
+        "items": {
+          "bracer": 32,
+          "boots": 64,
+          "phase_boots": 36,
+          "vanguard": 35,
+          "force_staff": 23,
+          "quelling_blade": 43,
+          "wand": 8,
+          "arcane_boots": 5,
+          "bkb": 4,
+          "null_talisman": 4,
+          "wraith_band": 3,
+          "blades_attack": 5,
+          "blade_mail": 3,
+          "aghanim": 6,
+          "mekansm": 7,
+          "crystalys": 3
+        }
+      },
+      "hunt": {
+        "balanced_win": 0.8,
+        "opponent_win": 0.05,
+        "draw": 0.15,
+        "mean_rounds": 16.93,
+        "mean_kills": 2.4,
+        "endings": {
+          "round_limit": 13,
+          "ancient": 27
+        },
+        "actions": {
+          "推进": 385,
+          "突袭": 146,
+          "技能二": 95,
+          "整备": 337,
+          "大招": 228,
+          "固守": 33,
+          "打钱": 46,
+          "技能一": 84
+        },
+        "items": {
+          "wraith_band": 52,
+          "crystalys": 31,
+          "vanguard": 31,
+          "bkb": 33,
+          "bracer": 47,
+          "boots": 8,
+          "wand": 7,
+          "quelling_blade": 11,
+          "blades_attack": 46,
+          "aghanim": 7,
+          "blade_mail": 1,
+          "null_talisman": 9,
+          "arcane_boots": 3
+        }
+      },
+      "economy": {
+        "balanced_win": 1.0,
+        "opponent_win": 0.0,
+        "draw": 0.0,
+        "mean_rounds": 16,
+        "mean_kills": 1.93,
+        "endings": {
+          "round_limit": 15,
+          "ancient": 25
+        },
+        "actions": {
+          "推进": 352,
+          "固守": 89,
+          "打钱": 97,
+          "整备": 298,
+          "技能一": 93,
+          "技能二": 80,
+          "大招": 183,
+          "突袭": 88
+        },
+        "items": {
+          "bracer": 41,
+          "blade_mail": 12,
+          "wand": 16,
+          "vanguard": 45,
+          "aghanim": 7,
+          "boots": 1,
+          "phase_boots": 7,
+          "null_talisman": 15,
+          "wraith_band": 28,
+          "bkb": 19,
+          "force_staff": 2,
+          "quelling_blade": 7,
+          "blades_attack": 28,
+          "crystalys": 26,
+          "mekansm": 4,
+          "arcane_boots": 3
+        }
+      }
+    },
+    "2v2": {
+      "balanced": {
+        "balanced_win": 0.375,
+        "opponent_win": 0.525,
+        "draw": 0.1,
+        "mean_rounds": 14.7,
+        "mean_kills": 2.48,
+        "endings": {
+          "round_limit": 7,
+          "ancient": 33
+        },
+        "actions": {
+          "突袭": 291,
+          "技能二": 221,
+          "推进": 622,
+          "整备": 508,
+          "技能一": 227,
+          "大招": 279,
+          "固守": 199,
+          "打钱": 5
+        },
+        "items": {
+          "bracer": 157,
+          "vanguard": 131,
+          "wraith_band": 10,
+          "arcane_boots": 11,
+          "mekansm": 5,
+          "blades_attack": 11,
+          "wand": 26,
+          "quelling_blade": 8,
+          "boots": 10,
+          "phase_boots": 7,
+          "aghanim": 8,
+          "null_talisman": 11,
+          "force_staff": 7,
+          "bkb": 8,
+          "crystalys": 6,
+          "blade_mail": 4
+        }
+      },
+      "random": {
+        "balanced_win": 0.975,
+        "opponent_win": 0.025,
+        "draw": 0.0,
+        "mean_rounds": 11.9,
+        "mean_kills": 1.45,
+        "endings": {
+          "ancient": 39,
+          "round_limit": 1
+        },
+        "actions": {
+          "突袭": 168,
+          "技能二": 145,
+          "推进": 490,
+          "整备": 605,
+          "技能一": 160,
+          "大招": 135,
+          "固守": 149,
+          "打钱": 52
+        },
+        "items": {
+          "bracer": 96,
+          "boots": 44,
+          "quelling_blade": 46,
+          "wraith_band": 43,
+          "wand": 31,
+          "blades_attack": 36,
+          "arcane_boots": 9,
+          "vanguard": 68,
+          "null_talisman": 46,
+          "crystalys": 1,
+          "blade_mail": 4,
+          "phase_boots": 10,
+          "bkb": 3,
+          "force_staff": 6,
+          "aghanim": 4,
+          "mekansm": 1
+        }
+      },
+      "rush": {
+        "balanced_win": 0.825,
+        "opponent_win": 0.1,
+        "draw": 0.075,
+        "mean_rounds": 11.22,
+        "mean_kills": 1.48,
+        "endings": {
+          "ancient": 39,
+          "round_limit": 1
+        },
+        "actions": {
+          "突袭": 131,
+          "推进": 530,
+          "固守": 290,
+          "技能一": 156,
+          "技能二": 153,
+          "整备": 400,
+          "大招": 118,
+          "打钱": 18
+        },
+        "items": {
+          "quelling_blade": 70,
+          "vanguard": 66,
+          "boots": 93,
+          "bracer": 51,
+          "phase_boots": 41,
+          "crystalys": 1,
+          "force_staff": 20,
+          "wraith_band": 5,
+          "aghanim": 5,
+          "bkb": 6,
+          "wand": 7,
+          "null_talisman": 3,
+          "blades_attack": 4,
+          "arcane_boots": 5,
+          "blade_mail": 1,
+          "mekansm": 3
+        }
+      },
+      "hunt": {
+        "balanced_win": 1.0,
+        "opponent_win": 0.0,
+        "draw": 0.0,
+        "mean_rounds": 10.8,
+        "mean_kills": 2.92,
+        "endings": {
+          "ancient": 38,
+          "round_limit": 2
+        },
+        "actions": {
+          "突袭": 231,
+          "推进": 476,
+          "技能二": 144,
+          "整备": 402,
+          "打钱": 113,
+          "大招": 151,
+          "固守": 92,
+          "技能一": 119
+        },
+        "items": {
+          "blades_attack": 70,
+          "bracer": 68,
+          "wraith_band": 70,
+          "bkb": 49,
+          "crystalys": 42,
+          "quelling_blade": 7,
+          "vanguard": 45,
+          "boots": 5,
+          "null_talisman": 5,
+          "force_staff": 2,
+          "wand": 13,
+          "phase_boots": 1,
+          "arcane_boots": 2,
+          "aghanim": 3,
+          "mekansm": 1
+        }
+      },
+      "economy": {
+        "balanced_win": 1.0,
+        "opponent_win": 0.0,
+        "draw": 0.0,
+        "mean_rounds": 10.18,
+        "mean_kills": 2.8,
+        "endings": {
+          "ancient": 40
+        },
+        "actions": {
+          "突袭": 136,
+          "推进": 472,
+          "固守": 137,
+          "技能一": 113,
+          "打钱": 154,
+          "整备": 351,
+          "大招": 152,
+          "技能二": 113
+        },
+        "items": {
+          "bkb": 31,
+          "bracer": 44,
+          "null_talisman": 40,
+          "vanguard": 71,
+          "blades_attack": 34,
+          "aghanim": 20,
+          "wraith_band": 33,
+          "phase_boots": 6,
+          "arcane_boots": 4,
+          "force_staff": 4,
+          "blade_mail": 10,
+          "crystalys": 24,
+          "mekansm": 4,
+          "quelling_blade": 4,
+          "wand": 9,
+          "boots": 1
+        }
+      }
+    },
+    "3v3": {
+      "balanced": {
+        "balanced_win": 0.4,
+        "opponent_win": 0.325,
+        "draw": 0.275,
+        "mean_rounds": 12.95,
+        "mean_kills": 4.6,
+        "endings": {
+          "ancient": 39,
+          "round_limit": 1
+        },
+        "actions": {
+          "突袭": 405,
+          "技能一": 308,
+          "技能二": 316,
+          "固守": 257,
+          "推进": 867,
+          "整备": 624,
+          "大招": 320,
+          "打钱": 11
+        },
+        "items": {
+          "bracer": 223,
+          "vanguard": 179,
+          "wand": 39,
+          "arcane_boots": 12,
+          "quelling_blade": 12,
+          "blades_attack": 14,
+          "aghanim": 10,
+          "bkb": 1,
+          "null_talisman": 14,
+          "boots": 17,
+          "phase_boots": 11,
+          "mekansm": 6,
+          "force_staff": 7,
+          "wraith_band": 8,
+          "blade_mail": 5,
+          "crystalys": 1
+        }
+      },
+      "random": {
+        "balanced_win": 0.975,
+        "opponent_win": 0.0,
+        "draw": 0.025,
+        "mean_rounds": 10.25,
+        "mean_kills": 1.88,
+        "endings": {
+          "ancient": 40
+        },
+        "actions": {
+          "突袭": 222,
+          "技能一": 203,
+          "整备": 747,
+          "推进": 661,
+          "固守": 189,
+          "大招": 164,
+          "打钱": 68,
+          "技能二": 206
+        },
+        "items": {
+          "bracer": 139,
+          "wand": 39,
+          "wraith_band": 51,
+          "mekansm": 2,
+          "vanguard": 89,
+          "null_talisman": 50,
+          "quelling_blade": 47,
+          "boots": 55,
+          "blades_attack": 50,
+          "crystalys": 4,
+          "blade_mail": 3,
+          "arcane_boots": 11,
+          "aghanim": 4,
+          "phase_boots": 7,
+          "force_staff": 6,
+          "bkb": 3
+        }
+      },
+      "rush": {
+        "balanced_win": 0.975,
+        "opponent_win": 0.0,
+        "draw": 0.025,
+        "mean_rounds": 9.57,
+        "mean_kills": 2.52,
+        "endings": {
+          "ancient": 40
+        },
+        "actions": {
+          "突袭": 179,
+          "技能一": 163,
+          "推进": 692,
+          "固守": 401,
+          "技能二": 201,
+          "整备": 477,
+          "大招": 159,
+          "打钱": 26
+        },
+        "items": {
+          "boots": 102,
+          "vanguard": 93,
+          "phase_boots": 48,
+          "force_staff": 30,
+          "quelling_blade": 103,
+          "bracer": 61,
+          "aghanim": 4,
+          "wand": 9,
+          "wraith_band": 5,
+          "null_talisman": 2,
+          "crystalys": 1,
+          "arcane_boots": 4,
+          "blades_attack": 5,
+          "mekansm": 1
+        }
+      },
+      "hunt": {
+        "balanced_win": 1.0,
+        "opponent_win": 0.0,
+        "draw": 0.0,
+        "mean_rounds": 10.25,
+        "mean_kills": 4.88,
+        "endings": {
+          "ancient": 40
+        },
+        "actions": {
+          "突袭": 337,
+          "技能一": 179,
+          "推进": 702,
+          "技能二": 212,
+          "整备": 557,
+          "大招": 213,
+          "打钱": 151,
+          "固守": 109
+        },
+        "items": {
+          "blades_attack": 108,
+          "bracer": 97,
+          "wraith_band": 89,
+          "crystalys": 65,
+          "boots": 13,
+          "bkb": 56,
+          "vanguard": 65,
+          "null_talisman": 4,
+          "wand": 14,
+          "blade_mail": 2,
+          "phase_boots": 4,
+          "mekansm": 3,
+          "arcane_boots": 7,
+          "quelling_blade": 14,
+          "aghanim": 2
+        }
+      },
+      "economy": {
+        "balanced_win": 1.0,
+        "opponent_win": 0.0,
+        "draw": 0.0,
+        "mean_rounds": 9.03,
+        "mean_kills": 3.38,
+        "endings": {
+          "ancient": 40
+        },
+        "actions": {
+          "突袭": 168,
+          "技能一": 164,
+          "推进": 640,
+          "打钱": 211,
+          "技能二": 151,
+          "固守": 185,
+          "整备": 458,
+          "大招": 189
+        },
+        "items": {
+          "null_talisman": 54,
+          "vanguard": 100,
+          "mekansm": 4,
+          "bracer": 66,
+          "arcane_boots": 4,
+          "aghanim": 19,
+          "force_staff": 6,
+          "wraith_band": 41,
+          "phase_boots": 6,
+          "blade_mail": 12,
+          "blades_attack": 52,
+          "crystalys": 34,
+          "bkb": 32,
+          "wand": 13,
+          "boots": 3,
+          "quelling_blade": 5
+        }
+      }
+    }
+  }
+}

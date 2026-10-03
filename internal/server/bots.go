@@ -16,6 +16,10 @@ func (seat Seat) computerControlled() bool {
 func (r *Room) applyGameAction(player int, action game.Action, now time.Time) error {
 	turn, round := r.Game.Turn, r.Game.Round
 	phase := r.Game.Phase
+	dotaSequence := 0
+	if r.Game.Dota != nil {
+		dotaSequence = r.Game.Dota.Sequence
+	}
 	sgSequence := 0
 	sgPending := false
 	if g := r.Game.Sanguosha; g != nil {
@@ -34,6 +38,15 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 	setup := r.Game.Rail != nil && r.Game.Rail.Setup
 	if err := r.Game.Apply(player, action); err != nil {
 		return err
+	}
+	if r.Game.Dota != nil {
+		if r.Game.Finished {
+			r.Status = "finished"
+		}
+		if r.Game.Dota.Sequence != dotaSequence || r.Game.Finished {
+			r.startTurnClock(now)
+		}
+		return nil
 	}
 	if r.Game.Catan != nil {
 		if phase != "catan_discard" && r.Game.Phase == "catan_discard" {
@@ -82,6 +95,15 @@ func (s *Server) runBots(now time.Time) {
 			continue
 		}
 		player := room.Game.Turn
+		if room.Game.Dota != nil {
+			player = -1
+			for _, actor := range room.Game.DotaActors() {
+				if room.Seats[actor].computerControlled() {
+					player = actor
+					break
+				}
+			}
+		}
 		if room.Game.Sanguosha != nil {
 			player = -1
 			for _, actor := range room.Game.SanguoshaActors() {

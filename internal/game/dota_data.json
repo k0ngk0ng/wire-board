@@ -1,0 +1,353 @@
+{
+  "heroes": [
+    {
+      "id": "axe",
+      "name": "斧王",
+      "hp": 8,
+      "passive": "同路突袭命中自己时，向攻击者反伤 1（护盾全挡仍触发）。",
+      "skills": [
+        {
+          "name": "狂战士之吼",
+          "art": "axe_skill_1",
+          "text": "护盾 +4、推进 +2；替同路友军承受突袭。"
+        },
+        {
+          "name": "战斗饥渴",
+          "art": "axe_skill_2",
+          "text": "对目标造成 3 点魔法伤害，推进 +1。"
+        },
+        {
+          "name": "淘汰之刃",
+          "art": "axe_skill_4",
+          "text": "目标生命 ≤4 时造成 7 点伤害，否则 6 点。"
+        }
+      ]
+    },
+    {
+      "id": "crystal_maiden",
+      "name": "冰女",
+      "hp": 7,
+      "passive": "",
+      "skills": [
+        {
+          "name": "冰霜新星",
+          "art": "crystal_maiden_skill_1",
+          "text": "同路敌人各受 2 点魔法伤害，推进 −1；自己推进 +1。"
+        },
+        {
+          "name": "冰封禁制",
+          "art": "crystal_maiden_skill_2",
+          "text": "目标受 4 点魔法伤害，推进 −1；自己推进 +1。"
+        },
+        {
+          "name": "极寒领域",
+          "art": "crystal_maiden_skill_4",
+          "text": "同路敌人各受 4 点魔法伤害。"
+        }
+      ]
+    },
+    {
+      "id": "earthshaker",
+      "name": "撼地神牛",
+      "hp": 8,
+      "passive": "",
+      "skills": [
+        {
+          "name": "沟壑",
+          "art": "earthshaker_skill_1",
+          "text": "目标受 3 点魔法伤害，推进 −2；自己推进 +1。"
+        },
+        {
+          "name": "强化图腾",
+          "art": "earthshaker_skill_2",
+          "text": "目标受 4 点物理伤害；自己推进 +1。"
+        },
+        {
+          "name": "回音击",
+          "art": "earthshaker_skill_4",
+          "text": "同路敌人各受 2＋敌人数的魔法伤害，最多 5。"
+        }
+      ]
+    },
+    {
+      "id": "sven",
+      "name": "流浪剑客",
+      "hp": 8,
+      "passive": "突袭还对同路其他敌人各造成 1 点物理伤害。",
+      "skills": [
+        {
+          "name": "风暴之锤",
+          "art": "sven_skill_1",
+          "text": "目标受 3 点魔法伤害，推进 −2。"
+        },
+        {
+          "name": "战吼",
+          "art": "sven_skill_3",
+          "text": "同路友军各获得 3 点护盾；自己推进 +2。"
+        },
+        {
+          "name": "神之力量",
+          "art": "sven_skill_4",
+          "text": "目标受 6 点物理伤害。"
+        }
+      ]
+    },
+    {
+      "id": "juggernaut",
+      "name": "剑圣",
+      "hp": 7,
+      "passive": "满生命时突袭伤害 +1。",
+      "skills": [
+        {
+          "name": "剑刃风暴",
+          "art": "juggernaut_skill_1",
+          "text": "同路敌人各受 3 点魔法伤害；本轮魔免，推进 +1。"
+        },
+        {
+          "name": "治疗守卫",
+          "art": "juggernaut_skill_2",
+          "text": "同路友军各恢复 3 点生命；自己推进 +1。"
+        },
+        {
+          "name": "无敌斩",
+          "art": "juggernaut_skill_4",
+          "text": "同路敌人各受 4 点魔法伤害。桌游改编效果。"
+        }
+      ]
+    },
+    {
+      "id": "drow",
+      "name": "黑暗游侠",
+      "hp": 7,
+      "passive": "",
+      "skills": [
+        {
+          "name": "霜冻之箭",
+          "art": "drow_skill_1",
+          "text": "目标受 3 点物理伤害，推进 −2。"
+        },
+        {
+          "name": "沉默",
+          "art": "drow_skill_2",
+          "text": "同路敌人的技能和大招失效；自己推进 +2。"
+        },
+        {
+          "name": "射手天赋",
+          "art": "drow_skill_4",
+          "text": "目标受 6 点物理伤害。桌游改编为主动牌。"
+        }
+      ]
+    },
+    {
+      "id": "lina",
+      "name": "秀逗魔导士",
+      "hp": 7,
+      "passive": "",
+      "skills": [
+        {
+          "name": "龙破斩",
+          "art": "lina_skill_1",
+          "text": "同路敌人各受 3 点魔法伤害；自己推进 +1。"
+        },
+        {
+          "name": "光击阵",
+          "art": "lina_skill_2",
+          "text": "同路敌人各受 2 点魔法伤害，推进 −1；自己推进 +1。"
+        },
+        {
+          "name": "神灭斩",
+          "art": "lina_skill_4",
+          "text": "目标受 6 点魔法伤害。"
+        }
+      ]
+    },
+    {
+      "id": "sniper",
+      "name": "矮人狙击手",
+      "hp": 7,
+      "passive": "只有暗杀可以跨路，普通突袭与爆头限同路。",
+      "skills": [
+        {
+          "name": "散弹",
+          "art": "sniper_skill_1",
+          "text": "同路敌人各受 1 点魔法伤害；自己推进 +2。"
+        },
+        {
+          "name": "爆头",
+          "art": "sniper_skill_2",
+          "text": "同路一个目标受 4 点物理伤害。"
+        },
+        {
+          "name": "暗杀",
+          "art": "sniper_skill_4",
+          "text": "任意路一个目标受 6 点魔法伤害。"
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "blink",
+      "name": "跳刀",
+      "price": 6,
+      "role": "spell",
+      "text": "上轮未受实际伤害时，使用技能/大招可先跳到任一路。上轮受伤使本轮跳刀禁用；用一个受伤标记记录即可",
+      "solo": false
+    },
+    {
+      "id": "boots",
+      "name": "速度之靴",
+      "price": 3,
+      "role": "push",
+      "text": "推进换路/出泉水时额外 +1 推进",
+      "solo": true
+    },
+    {
+      "id": "bracer",
+      "name": "护腕",
+      "price": 3,
+      "role": "tank",
+      "text": "最大生命 +2",
+      "solo": true
+    },
+    {
+      "id": "wraith_band",
+      "name": "幽灵系带",
+      "price": 4,
+      "role": "attack",
+      "text": "最大生命 +1，突袭伤害 +1",
+      "solo": true
+    },
+    {
+      "id": "null_talisman",
+      "name": "空灵挂件",
+      "price": 3,
+      "role": "spell",
+      "text": "每个魔法伤害目标额外受 1 伤害",
+      "solo": true
+    },
+    {
+      "id": "wand",
+      "name": "魔杖",
+      "price": 4,
+      "role": "tank",
+      "text": "固守时回复 2 生命",
+      "solo": true
+    },
+    {
+      "id": "blade_mail",
+      "name": "刃甲",
+      "price": 6,
+      "role": "tank",
+      "text": "每次被命中向攻击者反伤 1；固守时反伤为 2",
+      "solo": true
+    },
+    {
+      "id": "bkb",
+      "name": "黑皇杖",
+      "price": 6,
+      "role": "attack",
+      "text": "使用突袭或大招时，本轮魔免",
+      "solo": true
+    },
+    {
+      "id": "mekansm",
+      "name": "梅肯斯姆",
+      "price": 7,
+      "role": "support",
+      "text": "固守时同路友军各回复 2 生命",
+      "solo": false
+    },
+    {
+      "id": "vanguard",
+      "name": "先锋盾",
+      "price": 6,
+      "role": "tank",
+      "text": "最大生命 +2，每个物理伤害事件减 1，再使用护盾抵消",
+      "solo": true
+    },
+    {
+      "id": "crystalys",
+      "name": "水晶剑",
+      "price": 6,
+      "role": "attack",
+      "text": "突袭伤害 +2，固定效果，无暴击骰",
+      "solo": true
+    },
+    {
+      "id": "aghanim",
+      "name": "阿哈利姆神杖",
+      "price": 8,
+      "role": "spell",
+      "text": "大招对每个目标伤害 +2，包括物理大招",
+      "solo": true
+    },
+    {
+      "id": "force_staff",
+      "name": "原力法杖",
+      "price": 6,
+      "role": "push",
+      "text": "使用任意非推进、非整备牌前，可以先移动到相邻一路；不受上轮伤害限制",
+      "solo": false
+    },
+    {
+      "id": "phase_boots",
+      "name": "相位鞋",
+      "price": 6,
+      "role": "push",
+      "text": "保留速度之靴移动收益，使用推进牌时获得 2 护盾；已有速度之靴只补 3 金并消耗原鞋",
+      "solo": true
+    },
+    {
+      "id": "arcane_boots",
+      "name": "秘法鞋",
+      "price": 6,
+      "role": "support",
+      "text": "保留速度之靴移动收益；成功整备时全队额外恢复 1 蓄力；已有速度之靴只补 3 金并消耗原鞋",
+      "solo": true
+    },
+    {
+      "id": "quelling_blade",
+      "name": "补刀斧",
+      "price": 3,
+      "role": "push",
+      "text": "使用推进牌时再 +1 推进",
+      "solo": true
+    },
+    {
+      "id": "blades_attack",
+      "name": "攻击之爪",
+      "price": 3,
+      "role": "attack",
+      "text": "突袭伤害 +1，可与系带叠加",
+      "solo": true
+    }
+  ],
+  "common": [
+    {
+      "name": "推进",
+      "text": "同路推进 +3；换路推进 +2；从泉水出发 +1。",
+      "art": "boots"
+    },
+    {
+      "name": "突袭",
+      "text": "对同路目标造成 3 点物理伤害，推进 +1。",
+      "art": "blades_attack"
+    },
+    {
+      "name": "固守",
+      "text": "本轮获得 3 点护盾，推进 +2。",
+      "art": "wand"
+    },
+    {
+      "name": "打钱",
+      "text": "存活到轮末，额外获得 3 金币。",
+      "art": "quelling_blade"
+    },
+    {
+      "name": "整备",
+      "text": "先承受攻击；存活后回泉水、回满生命、收回行动牌，可购买一件装备。",
+      "art": "arcane_boots"
+    }
+  ]
+}

@@ -16,24 +16,30 @@ export function useTurnTitle(room?: Room) {
     !room.spectating &&
     !room.seats[room.you]?.autoPlay &&
     room.you >= 0 &&
-    (game.sanguosha
-      ? !game.sanguosha.players[room.you]?.dead
-      : player && !player.eliminated) &&
-    (game.sanguosha
-      ? game.sanguosha.pending
-        ? game.sanguosha.pending.canRespond
-        : game.turn === room.you
-      : game.phase === "catan_discard"
-        ? (game.catan?.discardDue[room.you] || 0) > 0
-        : game.rail?.setup
-          ? !game.rail.setupReady?.[room.you]
-          : game.turn === room.you)
+    (game.dota
+      ? true
+      : game.sanguosha
+        ? !game.sanguosha.players[room.you]?.dead
+        : player && !player.eliminated) &&
+    (game.dota
+      ? !!game.dota.actors?.includes(room.you)
+      : game.sanguosha
+        ? game.sanguosha.pending
+          ? game.sanguosha.pending.canRespond
+          : game.turn === room.you
+        : game.phase === "catan_discard"
+          ? (game.catan?.discardDue[room.you] || 0) > 0
+          : game.rail?.setup
+            ? !game.rail.setupReady?.[room.you]
+            : game.turn === room.you)
   );
-  const prompt = game?.sanguosha?.pending
-    ? "请响应牌局"
-    : game?.rail?.setup
-      ? "请选择目的地"
-      : "轮到你了";
+  const prompt = game?.dota
+    ? "请规划行动"
+    : game?.sanguosha?.pending
+      ? "请响应牌局"
+      : game?.rail?.setup
+        ? "请选择目的地"
+        : "轮到你了";
   useEffect(() => {
     const original = document.title;
     let timer: ReturnType<typeof setInterval> | undefined;

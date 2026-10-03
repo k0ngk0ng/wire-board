@@ -1,0 +1,35 @@
+test_all_modes_team_only_after_start_then_draft_then_play (test_lab.SetupFlow.test_all_modes_team_only_after_start_then_draft_then_play) ... ok
+test_human_and_bots_complete_all_modes_without_hidden_plan_response (test_lab.SetupFlow.test_human_and_bots_complete_all_modes_without_hidden_plan_response) ... ok
+test_imbalanced_teams_rejected (test_lab.SetupFlow.test_imbalanced_teams_rejected) ... ok
+test_one_round_autoplay_then_return_to_manual (test_lab.SetupFlow.test_one_round_autoplay_then_return_to_manual) ... ok
+test_teams_locked_after_confirmation (test_lab.SetupFlow.test_teams_locked_after_confirmation) ... ok
+test_all_modes_do_not_end_at_two_kills_or_one_tower (test_rules.PaperRules.test_all_modes_do_not_end_at_two_kills_or_one_tower) ... ok
+test_all_modes_finish_only_with_destroyed_ancient (test_rules.PaperRules.test_all_modes_finish_only_with_destroyed_ancient) ... ok
+test_all_three_modes_finish_without_missing_actions (test_rules.PaperRules.test_all_three_modes_finish_without_missing_actions) ... ok
+test_axe_protects_ally_from_strike (test_rules.PaperRules.test_axe_protects_ally_from_strike) ... ok
+test_bkb_protects_active_attacker (test_rules.PaperRules.test_bkb_protects_active_attacker) ... ok
+test_blink_enables_spell_flank_but_previous_damage_disables_it (test_rules.PaperRules.test_blink_enables_spell_flank_but_previous_damage_disables_it) ... ok
+test_damage_cancels_push (test_rules.PaperRules.test_damage_cancels_push) ... ok
+test_earlier_lethal_attack_prevents_return_attack (test_rules.PaperRules.test_earlier_lethal_attack_prevents_return_attack) ... ok
+test_failed_retreat_does_not_trigger_arcane_boots (test_rules.PaperRules.test_failed_retreat_does_not_trigger_arcane_boots) ... ok
+test_force_staff_adds_real_movement_action (test_rules.PaperRules.test_force_staff_adds_real_movement_action) ... ok
+test_fountain_cannot_be_used_for_endless_recovery (test_rules.PaperRules.test_fountain_cannot_be_used_for_endless_recovery) ... ok
+test_guard_blocks_basic_strike_without_losing_lane_pressure (test_rules.PaperRules.test_guard_blocks_basic_strike_without_losing_lane_pressure) ... ok
+test_invalid_batch_is_atomic (test_rules.PaperRules.test_invalid_batch_is_atomic) ... ok
+test_kills_advance_reinforcements_without_skipping_tower (test_rules.PaperRules.test_kills_advance_reinforcements_without_skipping_tower) ... ok
+test_no_side_or_iteration_order_advantage (test_rules.PaperRules.test_no_side_or_iteration_order_advantage) ... ok
+test_pending_enemy_orders_cannot_change_bot_choice (test_rules.PaperRules.test_pending_enemy_orders_cannot_change_bot_choice) ... ok
+test_reflection_can_still_cause_mutual_death (test_rules.PaperRules.test_reflection_can_still_cause_mutual_death) ... ok
+test_regression_repeated_mutual_death_cannot_stall_these_duels (test_rules.PaperRules.test_regression_repeated_mutual_death_cannot_stall_these_duels) ... ok
+test_restore_roundtrip_including_kill_tiebreak (test_rules.PaperRules.test_restore_roundtrip_including_kill_tiebreak) ... ok
+test_retreat_does_not_dodge_lethal_damage_or_buy_after_death (test_rules.PaperRules.test_retreat_does_not_dodge_lethal_damage_or_buy_after_death) ... ok
+test_silence_also_cancels_defensive_hero_skills (test_rules.PaperRules.test_silence_also_cancels_defensive_hero_skills) ... ok
+test_sven_team_shield_preserves_spellcasters_push (test_rules.PaperRules.test_sven_team_shield_preserves_spellcasters_push) ... ok
+test_three_basic_cards_counter_each_other (test_rules.PaperRules.test_three_basic_cards_counter_each_other) ... ok
+test_upgrading_boots_uses_price_difference_and_same_slot (test_rules.PaperRules.test_upgrading_boots_uses_price_difference_and_same_slot) ... ok
+test_used_card_requires_recovery (test_rules.PaperRules.test_used_card_requires_recovery) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.838s
+
+OK

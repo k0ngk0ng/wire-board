@@ -1,0 +1,44 @@
+{
+  "rules": "v0.9-full-ancient",
+  "tests_passed": 30,
+  "simulation_games": 3000,
+  "all_endings": "ancient",
+  "assets_verified": 57,
+  "asset_bytes": 924460,
+  "gallery_decoded": 57,
+  "browser_mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "document_width": 390,
+    "broken_images": 0
+  },
+  "files_sha256": {
+    "simulate.py": "d9485947e7fb6930bf0590c7c2cd9505b256da22369eca16282951712e6edbab",
+    "lab_server.py": "8e2c00bc9bc450d01d94adc8850ae9746ecbfca39a9fc739738b9a895b346efe",
+    "test_rules.py": "a17d59d42e0d62090b507c4630b6f20693b3a45798e581c523404f730f6c0f5c",
+    "test_lab.py": "f5841e6c5b7c8d9e0c636da4938ffd621ee8cea1b891de2d537b30440ddd6603",
+    "assets.json": "9da3d6ca80b269585f05eb9a5d6a17ff1da6182b770dc99da55e53327b2da205",
+    "simulation-results.json": "98328685bab3cef6169c3beb64d2597b5755d59b11a36086015f9b7f4a3f6f3e",
+    "RULES.md": "dfdbe0f6462d3c0dab3cd5bf41d2d9c1e49bff895848a65d977321fe27ab4f62",
+    "review.html": "2f1c51c2e2de4364da946d7dcc5994b81d89cdff6425162c7bcde12e2426df4d"
+  },
+  "browser_matches": [
+    {
+      "mode": "3v3",
+      "rounds": 13,
+      "winner": "天灾",
+      "manual_skill_submission": true,
+      "ending": "ancient"
+    },
+    {
+      "mode": "3v3",
+      "rounds": 11,
+      "winner": "近卫",
+      "after_ui_round_label_fix": true,
+      "ending": "ancient",
+      "screenshot": "victory-preview.png"
+    }
+  ]
+}
