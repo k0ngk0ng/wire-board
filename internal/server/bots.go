@@ -9,6 +9,10 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
+func (seat Seat) computerControlled() bool {
+	return (seat.Bot || seat.AutoPlay) && !seat.Left
+}
+
 func (r *Room) applyGameAction(player int, action game.Action, now time.Time) error {
 	turn, round := r.Game.Turn, r.Game.Round
 	phase := r.Game.Phase
@@ -81,7 +85,7 @@ func (s *Server) runBots(now time.Time) {
 		if room.Game.Sanguosha != nil {
 			player = -1
 			for _, actor := range room.Game.SanguoshaActors() {
-				if room.Seats[actor].Bot && !room.Seats[actor].Left {
+				if room.Seats[actor].computerControlled() {
 					player = actor
 					break
 				}
@@ -90,7 +94,7 @@ func (s *Server) runBots(now time.Time) {
 		if g := room.Game.Rail; g != nil && g.Setup {
 			player = -1
 			for i, seat := range room.Seats {
-				if seat.Bot && !seat.Left && len(g.SetupPending[i]) > 0 {
+				if seat.computerControlled() && len(g.SetupPending[i]) > 0 {
 					player = i
 					break
 				}
@@ -100,21 +104,21 @@ func (s *Server) runBots(now time.Time) {
 			if room.Game.Phase == "catan_discard" {
 				player = -1
 				for i, seat := range room.Seats {
-					if seat.Bot && !seat.Left && g.DiscardDue[i] > 0 {
+					if seat.computerControlled() && g.DiscardDue[i] > 0 {
 						player = i
 						break
 					}
 				}
 			} else if g.Trade != nil {
 				for i, seat := range room.Seats {
-					if i != room.Game.Turn && seat.Bot && !seat.Left && g.Trade.Responses[i] == 0 {
+					if i != room.Game.Turn && seat.computerControlled() && g.Trade.Responses[i] == 0 {
 						player = i
 						break
 					}
 				}
 			}
 		}
-		if player < 0 || player >= len(room.Seats) || !room.Seats[player].Bot || room.Seats[player].Left {
+		if player < 0 || player >= len(room.Seats) || !room.Seats[player].computerControlled() {
 			continue
 		}
 		action, err := room.Game.BotAction(player)
@@ -133,7 +137,7 @@ func (s *Server) runBots(now time.Time) {
 		next.Updated = now.Unix()
 		next.BotAt = now.Add(900 * time.Millisecond).UnixMilli()
 		snapshot, _ := json.Marshal(&next)
-		record, _ := json.Marshal(map[string]any{"type": "action", "action": action, "bot": true})
+		record, _ := json.Marshal(map[string]any{"type": "action", "action": action, "bot": next.Seats[player].Bot, "autoPlay": next.Seats[player].AutoPlay})
 		tx, err := s.db.Begin()
 		if err == nil {
 			_, err = tx.Exec("UPDATE rooms SET snapshot=? WHERE id=?", snapshot, id)

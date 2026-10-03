@@ -33,6 +33,8 @@ import {
   ZoomIn,
   ZoomOut,
   Crown,
+  Bot,
+  Hand,
 } from "lucide-react";
 import type {
   State,
@@ -46,6 +48,7 @@ import type {
   Act,
 } from "./types";
 import "./style.css";
+import "./autoplay.css";
 import { cityName } from "./cities";
 import { GameAudio } from "./audio";
 import { Chat } from "./chat";
@@ -598,6 +601,7 @@ function App() {
         void audio.current.play("finish");
       } else if (
         r.status === "playing" &&
+        !r.seats[r.you]?.autoPlay &&
         (sg?.pending ? sg.pending.canRespond : r.game!.turn === r.you)
       ) {
         void audio.current.play("turn");
@@ -641,6 +645,10 @@ function App() {
   };
   const act: Act = async (action) => {
     if (!state?.room) return;
+    if (state.room.seats[state.room.you]?.autoPlay) {
+      setNotice("当前由电脑托管，取消托管后即可继续操作。");
+      return;
+    }
     await run(async () => {
       await command(state.room!, "action", { action });
       if (sound)
@@ -755,6 +763,14 @@ function App() {
       />
     );
   const room = state.room;
+  const autoPlay = !!room?.seats[room.you]?.autoPlay;
+  const canAutoPlay =
+    room?.status === "playing" &&
+    !room.spectating &&
+    room.you >= 0 &&
+    !room.seats[room.you]?.left &&
+    !room.game?.sanguosha?.players[room.you]?.dead;
+  const boardBusy = busy || autoPlay;
   return (
     <ProfileContext.Provider value={setProfileID}>
       <AssetsContext.Provider value={state.assetsBaseURL || ""}>
@@ -881,6 +897,19 @@ function App() {
                   <h1>{room.name}</h1>
                 </div>
                 <div className="room-tools">
+                  {canAutoPlay && (
+                    <button
+                      className={`subtle autoplay-control ${autoPlay ? "active" : ""}`}
+                      aria-pressed={autoPlay}
+                      disabled={busy}
+                      onClick={() =>
+                        roomCommand("autoplay", { enabled: !autoPlay })
+                      }
+                    >
+                      {autoPlay ? <Hand size={16} /> : <Bot size={16} />}
+                      {autoPlay ? "取消托管" : "开启托管"}
+                    </button>
+                  )}
                   {room.spectating && (
                     <button
                       className="subtle"
@@ -955,6 +984,22 @@ function App() {
                   观战中 · 仅展示公开牌面与玩家信息
                 </div>
               )}
+              {autoPlay && canAutoPlay && (
+                <div className="autoplay-notice" role="status">
+                  <Bot size={21} aria-hidden="true" />
+                  <div>
+                    <strong>电脑正在为你托管</strong>
+                    <span>离开或关闭网页也会继续，回来后可随时接手。</span>
+                  </div>
+                  <button
+                    className="outline"
+                    disabled={busy}
+                    onClick={() => roomCommand("autoplay", { enabled: false })}
+                  >
+                    恢复手动操作
+                  </button>
+                </div>
+              )}
               {room.status === "waiting" ? (
                 <Waiting
                   room={room}
@@ -995,27 +1040,27 @@ function App() {
                         <SanguoshaBoard
                           room={room}
                           act={act}
-                          busy={busy}
+                          busy={boardBusy}
                           assets={state.assetsBaseURL || ""}
                         />
                       ) : room.kind === "carcassonne" ? (
                         <CarcassonneBoard
                           room={room}
                           act={act}
-                          busy={busy}
+                          busy={boardBusy}
                           assets={state.assetsBaseURL || ""}
                         />
                       ) : room.kind === "catan" ? (
                         <CatanBoard
                           room={room}
                           act={act}
-                          busy={busy}
+                          busy={boardBusy}
                           assets={state.assetsBaseURL || ""}
                         />
                       ) : room.kind === "splendor" ? (
-                        <SplendorBoard room={room} act={act} busy={busy} />
+                        <SplendorBoard room={room} act={act} busy={boardBusy} />
                       ) : (
-                        <RailBoard room={room} act={act} busy={busy} />
+                        <RailBoard room={room} act={act} busy={boardBusy} />
                       )}
                     </div>
                     <aside className="game-sidebar">
@@ -1945,6 +1990,12 @@ function Players({ room }: { room: Room }) {
                   </span>
                 )}
                 {p.bot && <small className="bot-badge">AI</small>}
+                {p.autoPlay && (
+                  <span className="autoplay-badge" title="由电脑代为行动">
+                    <Bot size={12} aria-hidden="true" />
+                    托管
+                  </span>
+                )}
               </strong>
               {g.splendor ? (
                 <div
@@ -2098,6 +2149,9 @@ function Turn({
     !!g.catan &&
     (g.catan.setupStep < 2 * room.seats.length || g.phase === "catan_discard");
   const setup = !!g.rail?.setup;
+  const autoPlay = !!room.seats[room.you]?.autoPlay;
+  const turnAutoPlay =
+    !!room.seats[g.sanguosha?.pending?.player ?? g.turn]?.autoPlay;
   const sgActor = g.sanguosha?.pending?.player ?? g.turn;
   const mine =
     !room.spectating &&
@@ -2149,24 +2203,28 @@ function Turn({
       <h3>
         {g.finished
           ? "本局已结束"
-          : setup
-            ? mine
-              ? "一起选择目的地"
-              : "等待其他人选好"
-            : mine
-              ? "轮到你了"
-              : g.sanguosha?.pending?.kind === "nullification"
-                ? "共同响应锦囊"
-                : `${room.seats[g.sanguosha ? sgActor : g.turn]?.name} ${g.sanguosha?.pending ? "正在响应" : "的回合"}`}
+          : mine && autoPlay
+            ? "电脑正在代你行动"
+            : setup
+              ? mine
+                ? "一起选择目的地"
+                : "等待其他人选好"
+              : mine
+                ? "轮到你了"
+                : g.sanguosha?.pending?.kind === "nullification"
+                  ? "共同响应锦囊"
+                  : `${room.seats[g.sanguosha ? sgActor : g.turn]?.name} ${g.sanguosha?.pending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
           ? "感谢同桌，好局下次再来。"
-          : setup
-            ? "所有人同时选牌，超时自动保留前两张。"
-            : mine
-              ? phase[g.phase]
-              : "稍等片刻，想想下一步。"}
+          : mine && autoPlay
+            ? "可随时取消托管，恢复手动操作。"
+            : setup
+              ? "所有人同时选牌，超时自动保留前两张。"
+              : mine
+                ? phase[g.phase]
+                : "稍等片刻，想想下一步。"}
       </p>
       {!!deadline && (
         <div className={`turn-clock ${remaining <= 20 ? "urgent" : ""}`}>
@@ -2190,20 +2248,25 @@ function Turn({
                     : "每回合 120 秒"}
             </span>
           </div>
-          {expired && !g.sanguosha && !setup && !catanPending && (
-            <p>
-              {room.spectating
-                ? "该玩家已超时，等待牌桌玩家处理。"
-                : mine
-                  ? "你已超时，其他玩家可以将你移出。尚未被移出前仍可行动。"
-                  : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
-            </p>
-          )}
+          {expired &&
+            !g.sanguosha &&
+            !setup &&
+            !catanPending &&
+            !turnAutoPlay && (
+              <p>
+                {room.spectating
+                  ? "该玩家已超时，等待牌桌玩家处理。"
+                  : mine
+                    ? "你已超时，其他玩家可以将你移出。尚未被移出前仍可行动。"
+                    : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
+              </p>
+            )}
           {expired &&
             !g.sanguosha &&
             !mine &&
             !setup &&
             !catanPending &&
+            !turnAutoPlay &&
             !room.spectating && (
               <button
                 className="timeout-kick"
@@ -2427,6 +2490,7 @@ function NobleCard({
   return (
     <button
       className={`noble ${eligible ? "eligible" : ""}`}
+      data-noble-id={noble.id}
       style={{
         backgroundPosition: `${((noble.id - 1) % 5) * 25}% ${Math.floor((noble.id - 1) / 5) * 50}%`,
       }}
@@ -2741,7 +2805,7 @@ function SplendorBoard({
       )}
       {mine && g.phase === "noble" && (
         <div className="action-prompt">
-          多位贵族青睐你的商会，请点击上方符合条件的一位。
+          多位贵族青睐你的商会，请点击一位符合条件的贵族。
         </div>
       )}
       {discard && (
@@ -2941,6 +3005,9 @@ function SplendorBoard({
         room={room}
         assets={assets}
         renderCard={(card) => <DevCard card={card} />}
+        renderNoble={(noble) => (
+          <NobleCard noble={noble} eligible={false} onClick={() => {}} />
+        )}
       />
       <SplendorTokenAnimation
         room={room}

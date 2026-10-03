@@ -6,6 +6,49 @@ import (
 	"testing"
 )
 
+func TestSplendorNobleAcquisitionAnimation(t *testing.T) {
+	for _, choice := range []bool{false, true} {
+		t.Run(map[bool]string{false: "automatic", true: "chosen"}[choice], func(t *testing.T) {
+			s := mustGame(t, "splendor", 2)
+			noble := Noble{ID: 1, Cost: []int{1, 0, 0, 0, 0}}
+			s.Splendor.Nobles = []Noble{noble}
+			if choice {
+				s.Splendor.Nobles = append(s.Splendor.Nobles, Noble{ID: 2, Cost: []int{1, 0, 0, 0, 0}})
+			}
+			s.Splendor.Market[0][0] = Card{ID: 999, Tier: 1, Color: 0, Cost: []int{0, 0, 0, 0, 0}}
+			apply(t, s, Action{Type: "buy", Card: 999})
+			if choice {
+				if s.Phase != "noble" || s.Splendor.CardEventID != 1 {
+					t.Fatal("animated noble before the player selected one")
+				}
+				if err := s.Apply(s.Turn, Action{Type: "noble", Noble: 999}); err == nil || s.Splendor.CardEventID != 1 {
+					t.Fatal("invalid noble choice animated")
+				}
+				apply(t, s, Action{Type: "noble", Noble: noble.ID})
+			}
+			g := s.Splendor
+			if len(g.CardEvents) != 2 || g.CardEvents[0].Action != "buy" {
+				t.Fatal("purchase and noble animations lost order", g.CardEvents)
+			}
+			e := g.CardEvents[1]
+			if e.ID != 2 || e.Player != 0 || e.Action != "noble" || e.Source != "nobles" || e.Card != nil || e.Noble == nil || !reflect.DeepEqual(*e.Noble, noble) || g.Players[0].Score != 3 || len(g.Players[0].Nobles) != 1 || s.Turn != 1 {
+				t.Fatal("noble animation or owner incorrect", e)
+			}
+			for _, viewer := range []int{0, 1, -1} {
+				view := s.View(viewer)["splendor"].(map[string]any)
+				raw, _ := json.Marshal(view["cardEvents"])
+				var events []SplendorCardEvent
+				if err := json.Unmarshal(raw, &events); err != nil || !reflect.DeepEqual(events, g.CardEvents) {
+					t.Fatal("noble animation differs for player, opponent or spectator")
+				}
+			}
+			if !reflect.DeepEqual(clone(*s).Splendor.CardEvents, g.CardEvents) {
+				t.Fatal("noble event lost after restore")
+			}
+		})
+	}
+}
+
 func TestSplendorTokenAnimationEventsFollowActualTransfers(t *testing.T) {
 	s := mustGame(t, "splendor", 2)
 	take := []int{2, 0, 0, 0, 0, 0}

@@ -14,6 +14,7 @@ export function useTurnTitle(room?: Room) {
     room.status === "playing" &&
     !game.finished &&
     !room.spectating &&
+    !room.seats[room.you]?.autoPlay &&
     room.you >= 0 &&
     (game.sanguosha
       ? !game.sanguosha.players[room.you]?.dead

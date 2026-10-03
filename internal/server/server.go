@@ -38,9 +38,10 @@ type User struct {
 }
 type Seat struct {
 	User
-	Bot   bool `json:"bot,omitempty"`
-	Ready bool `json:"ready"`
-	Left  bool `json:"left"`
+	Bot      bool `json:"bot,omitempty"`
+	AutoPlay bool `json:"autoPlay,omitempty"`
+	Ready    bool `json:"ready"`
+	Left     bool `json:"left"`
 }
 type Room struct {
 	SGTimeLeft          int64         `json:"sgTimeLeft,omitempty"`
@@ -594,6 +595,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		Version  int         `json:"version"`
 		Nonce    string      `json:"nonce"`
 		Action   game.Action `json:"action"`
+		Enabled  *bool       `json:"enabled,omitempty"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -614,7 +616,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		parallelCatan = (req.Action.Type == "catan_discard" && room.Game.Phase == "catan_discard" && room.CatanPendingVersion > 0 && req.Version >= room.CatanPendingVersion && req.Version <= room.Version) || ((req.Action.Type == "catan_trade_accept" || req.Action.Type == "catan_trade_reject") && g.Trade != nil && req.Action.Offer == g.Trade.ID && room.CatanTradeVersion > 0 && req.Version >= room.CatanTradeVersion && req.Version <= room.Version)
 	}
 	parallelSG := req.Type == "action" && room.Game != nil && room.Game.Sanguosha != nil && room.Game.Sanguosha.Pending != nil && room.Game.Sanguosha.Pending.Kind == "nullification" && req.Action.Prompt == room.Game.Sanguosha.Pending.ID && req.Version <= room.Version
-	if req.Version != room.Version && !parallelSetup && !parallelCatan && !parallelSG {
+	// Control of one's own seat is independent of board versions. In particular,
+	// a returning player must be able to cancel while the bot is taking actions.
+	seatControl := req.Type == "autoplay" && req.Version >= max(1, room.SetupVersion) && req.Version <= room.Version
+	if req.Version != room.Version && !parallelSetup && !parallelCatan && !parallelSG && !seatControl {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -730,9 +735,33 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.startTurnClock(now)
 			}
 		}
+	case "autoplay":
+		if next.Status != "playing" || next.Game == nil || next.Game.Finished || next.Seats[idx].Bot || req.Target != "" || req.Enabled == nil {
+			err = errors.New("只能在对局中开启或取消自己的托管")
+			break
+		}
+		if g := next.Game.Sanguosha; g != nil && g.Players[idx].Dead {
+			err = errors.New("已阵亡的角色无需托管")
+			break
+		}
+		if next.Seats[idx].AutoPlay != *req.Enabled {
+			next.Seats[idx].AutoPlay = *req.Enabled
+			message := "取消了托管，恢复手动操作"
+			if *req.Enabled {
+				message = "开启了托管，由电脑代为行动"
+			}
+			next.Game.Log = append(next.Game.Log, fmt.Sprintf("玩家 %d %s", idx+1, message))
+			if len(next.Game.Log) > 80 {
+				next.Game.Log = next.Game.Log[len(next.Game.Log)-80:]
+			}
+		}
 	case "action":
 		if idx < 0 || next.Status != "playing" {
 			err = errors.New("无法执行游戏行动")
+			break
+		}
+		if next.Seats[idx].AutoPlay {
+			err = errors.New("当前由电脑托管，请先取消托管再手动操作")
 			break
 		}
 		err = next.applyGameAction(idx, req.Action, now)
@@ -746,6 +775,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		target := next.Game.Turn
+		if next.Seats[target].AutoPlay {
+			err = errors.New("该玩家正在由电脑托管，不能因超时移出")
+			break
+		}
 		if req.Target != next.Seats[target].ID || next.TurnDeadline == 0 || now.UnixMilli() < next.TurnDeadline {
 			err = errors.New("该玩家尚未超时，或当前回合已改变")
 			break
@@ -792,6 +825,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		next.Status = "waiting"
 		for i := range next.Seats {
 			next.Seats[i].Ready = next.Seats[i].Bot
+			next.Seats[i].AutoPlay = false
 		}
 	case "close":
 		if next.Host != u.ID || next.Status != "playing" {
