@@ -135,6 +135,7 @@ func (s *Server) runBots(now time.Time) {
 		}
 		next.Version++
 		next.Updated = now.Unix()
+		next.LastActive = next.Updated
 		next.BotAt = now.Add(900 * time.Millisecond).UnixMilli()
 		snapshot, _ := json.Marshal(&next)
 		record, _ := json.Marshal(map[string]any{"type": "action", "action": action, "bot": next.Seats[player].Bot, "autoPlay": next.Seats[player].AutoPlay})

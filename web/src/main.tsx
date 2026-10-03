@@ -1010,8 +1010,16 @@ function App() {
               ) : room.status === "closed" ? (
                 <div className="closed-panel">
                   <Flag size={40} />
-                  <h2>这张牌桌已结束</h2>
-                  <p>休息一下，或者准备下一局。</p>
+                  <h2>
+                    {room.closeReason === "inactive"
+                      ? "牌桌已因闲置关闭"
+                      : "这张牌桌已结束"}
+                  </h2>
+                  <p>
+                    {room.closeReason === "inactive"
+                      ? "连续 24 小时无人操作，系统已自动关闭牌桌；本局不计胜负与积分。"
+                      : "休息一下，或者准备下一局。"}
+                  </p>
                   {!room.spectating && room.host === state.user.id && (
                     <button
                       className="primary"

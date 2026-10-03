@@ -125,6 +125,7 @@ export type Room = {
   capacity: number;
   seats: Seat[];
   status: string;
+  closeReason?: string;
   locked: boolean;
   version: number;
   you: number;
