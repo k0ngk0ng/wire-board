@@ -62,9 +62,11 @@ type Room struct {
 	Seats               []Seat        `json:"seats"`
 	Version             int           `json:"version"`
 	Status              string        `json:"status"`
+	CloseReason         string        `json:"closeReason,omitempty"`
 	Password            string        `json:"password,omitempty"`
 	Game                *game.State   `json:"game,omitempty"`
 	Updated             int64         `json:"updated"`
+	LastActive          int64         `json:"lastActive"`
 }
 
 const turnLimit = 120 * time.Second
@@ -159,6 +161,13 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			r.startTurnClock(time.Now())
 			changed = true
 		}
+		if r.LastActive == 0 {
+			r.LastActive = r.Updated
+			if r.LastActive == 0 {
+				r.LastActive = time.Now().Unix()
+			}
+			changed = true
+		}
 		if changed || (r.Game != nil && (r.Status == "finished" || r.Status == "closed")) {
 			migrated = append(migrated, &r)
 		}
@@ -174,6 +183,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			return nil, e
 		}
 	}
+	s.expireIdleRooms(time.Now())
 	ctx, cancel := context.WithCancel(context.Background())
 	s.cancel, s.done = cancel, make(chan struct{})
 	go s.runTimers(ctx)
@@ -195,6 +205,7 @@ func (s *Server) runTimers(ctx context.Context) {
 			return
 		case now := <-ticker.C:
 			s.mu.Lock()
+			s.expireIdleRooms(now)
 			s.expireSetups(now)
 			s.runBots(now)
 			s.mu.Unlock()
@@ -458,7 +469,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 }
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -567,6 +578,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		hash = string(h)
 	}
 	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
+	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
 		fail(w, 500, "无法保存房间")
 		return
@@ -578,6 +590,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	s.expireIdleRooms(time.Now())
 	s.expireSetups(time.Now())
 	u, ok := s.needUser(w, r)
 	if !ok {
@@ -823,6 +836,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		next.Seats = active
 		next.Status = "waiting"
+		next.CloseReason = ""
 		for i := range next.Seats {
 			next.Seats[i].Ready = next.Seats[i].Bot
 			next.Seats[i].AutoPlay = false
@@ -844,6 +858,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	next.Version++
 	next.BotAt = now.Add(900 * time.Millisecond).UnixMilli()
 	next.Updated = time.Now().Unix()
+	next.LastActive = next.Updated
 	snapshot, _ := json.Marshal(next)
 	req.Password = "" // Never persist plaintext room passwords in the action journal.
 	action, _ := json.Marshal(req)
