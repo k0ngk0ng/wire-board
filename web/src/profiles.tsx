@@ -1,3 +1,4 @@
+import { railMapNames } from "./rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "./types";
 
@@ -27,6 +28,7 @@ type History = {
   id: string;
   room: string;
   kind: string;
+  railMap?: string;
   status: string;
   ended: number;
   players: (User & {
@@ -278,7 +280,10 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
           <article key={match.id}>
             <header>
               <strong>
-                {name(match.kind)} · {match.room}
+                {name(match.kind)}
+                {match.kind === "rail" &&
+                  ` · ${railMapNames[match.railMap || "usa"]}`}{" "}
+                · {match.room}
               </strong>
               <span>{match.status === "finished" ? "已结算" : "已中止"}</span>
             </header>

@@ -44,6 +44,7 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
+	RailMap             string        `json:"railMap,omitempty"`
 	SGTimeLeft          int64         `json:"sgTimeLeft,omitempty"`
 	Rated               bool          `json:"rated,omitempty"`
 	CatanPendingVersion int           `json:"catanPendingVersion,omitempty"`
@@ -284,7 +285,14 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/friends", s.friends)
 	mux.HandleFunc("GET /api/leaderboard", s.leaderboard)
 	mux.HandleFunc("POST /api/players/{id}/friend", s.friendship)
-	mux.HandleFunc("GET /api/catalog", func(w http.ResponseWriter, r *http.Request) { respond(w, 200, game.MapData()) })
+	mux.HandleFunc("GET /api/catalog", func(w http.ResponseWriter, r *http.Request) {
+		catalog, ok := game.RailCatalog(r.URL.Query().Get("map"))
+		if !ok {
+			fail(w, 400, "未知铁路地图")
+			return
+		}
+		respond(w, 200, catalog)
+	})
 	mux.HandleFunc("POST /api/rooms", s.create)
 	mux.HandleFunc("POST /api/rooms/{id}", s.command)
 	mux.HandleFunc("POST /api/rooms/{id}/chat", s.chat)
@@ -469,7 +477,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 }
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -484,7 +492,7 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 			rooms = append(rooms, summary(room))
 		}
 	}
-	out := map[string]any{"user": u, "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL}
+	out := map[string]any{"user": u, "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "railMaps": game.RailMapList()}
 	room := s.current(u.ID)
 	if room == nil {
 		room = s.watching(u.ID)
@@ -544,6 +552,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Name     string `json:"name"`
 		Kind     string `json:"kind"`
+		RailMap  string `json:"railMap"`
 		Capacity int    `json:"capacity"`
 		Password string `json:"password"`
 	}
@@ -560,7 +569,15 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	if req.Kind == "sanguosha" {
 		minPlayers = 4
 		maxPlayers = 8
-	} else if req.Kind == "rail" || req.Kind == "carcassonne" {
+	} else if req.Kind == "rail" {
+		info, ok := game.RailMapInfo(req.RailMap)
+		if !ok {
+			fail(w, 400, "未知铁路地图")
+			return
+		}
+		req.RailMap = info.ID
+		minPlayers, maxPlayers = info.MinPlayers, info.MaxPlayers
+	} else if req.Kind == "carcassonne" {
 		maxPlayers = 5
 	} else if req.Kind == "catan" {
 		minPlayers = 3
@@ -577,7 +594,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		h, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		hash = string(h)
 	}
-	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
+	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
 	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
 		fail(w, 500, "无法保存房间")
@@ -603,6 +620,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	}
 	var req struct {
 		Type     string      `json:"type"`
+		RailMap  string      `json:"railMap"`
 		Target   string      `json:"target,omitempty"`
 		Password string      `json:"password"`
 		Version  int         `json:"version"`
@@ -717,6 +735,32 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "rail_map":
+		info, ok := game.RailMapInfo(req.RailMap)
+		if next.Host != u.ID || next.Kind != "rail" || next.Status != "waiting" {
+			err = errors.New("只有房主能在开局前选择地图")
+			break
+		}
+		if !ok {
+			err = errors.New("未知铁路地图")
+			break
+		}
+		if len(next.Seats) > info.MaxPlayers {
+			err = fmt.Errorf("%s地图最多 %d 人，请先调整座位", info.Name, info.MaxPlayers)
+			break
+		}
+		if next.RailMap != info.ID {
+			previous, _ := game.RailMapInfo(next.RailMap)
+			if next.Capacity == previous.MaxPlayers {
+				next.Capacity = info.MaxPlayers
+			} else {
+				next.Capacity = min(next.Capacity, info.MaxPlayers)
+			}
+			next.RailMap = info.ID
+			for i := range next.Seats {
+				next.Seats[i].Ready = next.Seats[i].Bot
+			}
+		}
 	case "ready":
 		if idx < 0 || next.Status != "waiting" {
 			err = errors.New("无法设置准备状态")
@@ -734,7 +778,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if err == nil {
-			next.Game, err = s.newGame(next.Kind, len(next.Seats))
+			if next.Kind == "rail" && next.RailMap != "" && next.RailMap != "usa" {
+				next.Game, err = game.NewRailMap(next.RailMap, len(next.Seats))
+			} else {
+				next.Game, err = s.newGame(next.Kind, len(next.Seats))
+			}
 			if err == nil {
 				next.Status = "playing"
 				next.MatchID = randomID(12)

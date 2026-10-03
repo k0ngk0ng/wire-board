@@ -33,3 +33,7 @@ python3 scripts/upload_assets.py .local/asset-pack \
 每次使用新的版本目录；上传前检查文件完整性，上传后核对 CDN 文件，再修改部署配置。密钥、实际服务地址与图片均不要提交。素材使用长期不可变缓存，验证完成后可删除本地临时素材。
 
 补充新游戏素材时，上传目录必须以部署中实际的 `ASSETS_BASE_URL` 路径为准，包含其中已有的版本目录。例如基地址为 `https://assets.example.com/games/version`，三国杀的上传前缀应为 `games/version/sanguosha/v1`。不要改动共用基地址来修复单个游戏，否则会影响其他游戏。验证时使用与线上相同的基地址打开游戏，确认图片元素已解码显示；只验证另一个可访问的图片目录不足以证明页面可用。
+
+铁路新增地图使用 `rail/maps/v1/{europe,india,switzerland,nordiccountries,legendaryasia}/`：每个目录有 `map.webp`、`preview.webp` 和 `tickets/{id}.webp`。欧洲另有 `station-{blue,red,green,yellow,black}.webp`。共 247 个文件；列车牌与车厢沿用 `rail/` 现有素材。印度、北欧底图为 1125×1744，目的地卡为 161×250；其余底图为 1744×1125，目的地卡为 250×161，显示时保持比例。
+
+准备方式：`scripts/prepare_rail_map_assets.py SOURCE_IMG_DIR OUTPUT_DIR`（依赖 Pillow、OpenCV、NumPy）。城市文字轮廓与白边从底图移除，中文由前端绘制；地理装饰文字保留。`scripts/rail_map_labels.json` 同时记录文字区域和显示位置。上传时将输出目录对应到部署素材基地址下的 `rail/maps/v1`，不可遗漏既有版本前缀。图片不写入 Git，密钥不写入脚本。

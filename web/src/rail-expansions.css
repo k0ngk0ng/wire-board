@@ -1,0 +1,305 @@
+.rail-map-picker {
+  margin: 12px 0 18px;
+  text-align: left;
+}
+.rail-map-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.rail-map-options button {
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid #d3c5ad;
+  background: #fff8e8;
+  color: #3c4538;
+  border-radius: 10px;
+  text-align: left;
+}
+.rail-map-options button.selected {
+  border-color: #ae7923;
+  box-shadow: 0 0 0 2px #f0cd73;
+}
+.rail-map-options img {
+  width: 100%;
+  height: 70px;
+  object-fit: cover;
+  display: block;
+}
+.rail-map-options span {
+  display: flex;
+  padding: 7px 8px;
+  gap: 4px;
+  justify-content: space-between;
+  align-items: center;
+}
+.rail-map-options small {
+  white-space: nowrap;
+  color: #6d6251;
+}
+.rail-map-summary {
+  background: #f7f0db;
+  color: #514831;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.rail-map-summary ul {
+  padding-left: 18px;
+  margin: 5px 0 0;
+}
+.rail-payment-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.rail-payment-cards label {
+  padding: 7px;
+  border: 1px solid #d4c6ae;
+  border-radius: 8px;
+  background: #fbf5e8;
+  color: #403c33;
+  margin: 0;
+}
+.rail-payment-cards label > span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 12px;
+}
+.rail-payment-cards small {
+  margin-left: auto;
+  font-size: 10px;
+}
+.rail-payment-cards i {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  border: 1px solid #0003;
+}
+.rail-payment-cards input {
+  padding: 6px;
+  margin-top: 5px;
+  text-align: center;
+}
+.rail-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  align-items: center;
+  padding: 6px 2px;
+}
+.rail-map-legend .tag {
+  padding: 4px 8px;
+}
+.rail-special-note {
+  color: #574825;
+  background: #fbf2d9;
+  border: 1px solid #d4bd82;
+  border-radius: 8px;
+  padding: 10px;
+  line-height: 1.5;
+}
+.rail-map .station-city {
+  cursor: pointer;
+  pointer-events: all;
+}
+.rail-map .map-station {
+  pointer-events: none;
+}
+.tunnel-revealed {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 14px 0;
+}
+.tunnel-revealed .train-card {
+  width: 90px;
+  min-height: 0;
+  aspect-ratio: 250/161;
+}
+.with-artwork .ticket-card.portrait-ticket {
+  aspect-ratio: 161/250;
+  min-height: 220px;
+  width: 142px;
+  flex: 0 0 142px;
+  background-size: 100% 100%;
+}
+.with-artwork .ticket-card.portrait-ticket .ticket-route {
+  height: auto;
+  min-height: 40px;
+  flex-wrap: wrap;
+}
+.ticket-options {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  background: #fff9e8;
+  color: #3f462e;
+  padding: 4px;
+  margin-top: 30px;
+  border-radius: 4px;
+}
+.with-artwork .ticket-card.country-ticket {
+  min-height: 175px;
+}
+.ticket-mandala {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
+  font-size: 11px;
+  color: #175140;
+  background: #eef7d8;
+  border-radius: 4px;
+  padding: 3px 5px;
+}
+@media (max-width: 600px) {
+  .rail-map-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .rail-map-options img {
+    height: 56px;
+  }
+  .rail-payment-cards {
+    gap: 5px;
+  }
+  .rail-payment-cards small {
+    font-size: 9px;
+  }
+  .with-artwork .rail-personal .ticket-card.portrait-ticket {
+    min-height: 160px;
+    width: 105px;
+    flex-basis: 105px;
+  }
+  .with-artwork .ticket-card.country-ticket {
+    min-height: 170px;
+  }
+}
+@media (min-width: 1100px) {
+  .portrait-board {
+    display: grid;
+    grid-template-columns: minmax(450px, 1fr) minmax(330px, 1fr);
+    gap: 10px;
+    align-items: start;
+  }
+  .portrait-board > .rail-map-legend {
+    grid-column: 1/-1;
+  }
+  .portrait-board > .rail-table {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .portrait-board > .rail-personal {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin: 0;
+    padding: 16px;
+  }
+  .portrait-board .rail-personal .train-hand {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .portrait-board .rail-personal .train-card {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 250/161;
+  }
+  .portrait-board .rail-personal .tickets {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: none;
+  }
+  .portrait-board .rail-personal .portrait-ticket {
+    width: 142px;
+    flex-basis: 142px;
+    min-height: 220px;
+  }
+  .portrait-board .rail-table .map-scroll {
+    height: calc(100dvh - 310px);
+    min-height: 400px;
+  }
+  .portrait-board > .pass-button,
+  .portrait-board > .personal-area:not(.rail-personal) {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 600px) {
+  .rail-map-legend {
+    gap: 6px;
+    padding: 0;
+    font-size: 11px;
+  }
+  .rail-map-legend > .outline {
+    margin-left: auto;
+    padding: 6px 8px;
+    min-height: 30px;
+    font-size: 11px;
+  }
+}
+.rail-map-options button {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+.rail-map-options strong {
+  white-space: nowrap;
+}
+.ticket-choice .pending-tickets:has(.portrait-ticket) {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+}
+.with-artwork .pending-tickets .portrait-ticket {
+  width: 100%;
+  min-height: 0;
+  height: auto;
+}
+.portrait-ticket-hint {
+  display: none;
+}
+@media (max-width: 600px) {
+  .modal .choose-games {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .modal .choose-games .cover {
+    height: 48px;
+  }
+  .modal .choose-games > button > span {
+    padding: 6px 3px;
+    gap: 3px;
+    white-space: nowrap;
+  }
+  .ticket-choice .pending-tickets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ticket-choice .pending-tickets:has(.portrait-ticket) {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x proximity;
+  }
+  .with-artwork .pending-tickets .portrait-ticket {
+    width: 144px;
+    flex: 0 0 144px;
+    min-height: 224px;
+    scroll-snap-align: start;
+  }
+  .portrait-ticket-hint {
+    display: block;
+    margin: 7px 0;
+    color: #6f5f3c;
+  }
+}
