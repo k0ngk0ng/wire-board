@@ -20,6 +20,8 @@
 
 - `carcassonne/tile-{0..71}-v1.webp`：72 张基础版地块（256 × 256），与规则数据中的 `art` 对应，保留原版装饰差异；`meeple-{0..4}-v1.webp` 为蓝、绿、黑、红、黄五色随从。
 
+- `sanguosha/v1/generals/{id}.webp` 与 `sanguosha/v1/cards/{kind}.webp`：25 张武将画像和 32 种卡面，准备方式见 `docs/sanguosha.md`。
+
 将准备好的 WebP 文件放在临时目录，OSS 密钥分别放入已忽略的 `config/secrets/oss-access-key-id` 和 `config/secrets/oss-access-key-secret`。上传命令（值均为示例）：
 
 ```sh
@@ -29,3 +31,5 @@ python3 scripts/upload_assets.py .local/asset-pack \
 ```
 
 每次使用新的版本目录；上传前检查文件完整性，上传后核对 CDN 文件，再修改部署配置。密钥、实际服务地址与图片均不要提交。素材使用长期不可变缓存，验证完成后可删除本地临时素材。
+
+补充新游戏素材时，上传目录必须以部署中实际的 `ASSETS_BASE_URL` 路径为准，包含其中已有的版本目录。例如基地址为 `https://assets.example.com/games/version`，三国杀的上传前缀应为 `games/version/sanguosha/v1`。不要改动共用基地址来修复单个游戏，否则会影响其他游戏。验证时使用与线上相同的基地址打开游戏，确认图片元素已解码显示；只验证另一个可访问的图片目录不足以证明页面可用。
