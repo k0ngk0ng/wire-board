@@ -101,8 +101,6 @@ export function SplendorCardAnimation({
                 height,
                 "--flight-x": `${dx}px`,
                 "--flight-y": `${dy}px`,
-                "--flight-mid-x": `${dx * 0.45}px`,
-                "--flight-mid-y": `${dy * 0.45 - 30}px`,
                 animationDelay: `${index * 160}ms`,
               } as CSSProperties,
               arrivalStyle: {
