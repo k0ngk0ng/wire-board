@@ -504,9 +504,11 @@ export function CatanBoard({
                 const available =
                   mine &&
                   ((effective === "robber" &&
-                    t.id !== g.robber &&
-                    t.resource !== 6 &&
-                    t.resource !== 8) ||
+                    (g.legal.robber
+                      ? g.legal.robber.includes(t.id)
+                      : t.id !== g.robber &&
+                        t.resource !== 6 &&
+                        t.resource !== 8)) ||
                     (effective === "pirate" &&
                       !!g.legal.pirate?.includes(t.id)) ||
                     (effective === "helper_desert" && t.resource === 5));

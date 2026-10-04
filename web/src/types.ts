@@ -358,6 +358,7 @@ export type CatanState = {
     roads: number[];
     ships?: number[];
     pirate?: number[];
+    robber?: number[];
   };
   trade?: {
     id: number;

@@ -232,7 +232,7 @@ func (s *Server) expireSetups(now time.Time) {
 			continue
 		}
 		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
-		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard" || room.Game.Catan.HelperPending != nil || room.Game.Catan.GoldPending != nil)
+		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard" || room.Game.CatanPendingActor() >= 0)
 		sgPending := room.Game.Sanguosha != nil
 		if room.Game.Dota != nil {
 			s.expireDota(room, now)

@@ -93,6 +93,19 @@ func (s *State) catanDiscover(player, edge int) (int, error) {
 
 func (s *State) catanAfterRoute(q CatanRouteCompletion) error {
 	s.Catan.Trade = nil
+	if err := s.catanCollectTribe(q.Player, q.Edge); err != nil {
+		return err
+	}
+	if s.Catan.tribe() != nil {
+		s.catanScores()
+		s.catanVictory()
+		if s.Finished {
+			return nil
+		}
+		if s.catanAskTribePort(q.Player, s.Phase, &q, false) {
+			return nil
+		}
+	}
 	gold, err := s.catanDiscover(q.Player, q.Edge)
 	if err != nil {
 		return err

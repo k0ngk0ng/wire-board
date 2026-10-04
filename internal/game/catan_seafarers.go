@@ -21,6 +21,7 @@ type CatanSeafarerSeat struct {
 }
 
 type CatanSeafarers struct {
+	Tribe         *CatanTribeState    `json:"tribe,omitempty"`
 	Fog           *CatanFogState      `json:"fog,omitempty"`
 	Scenario      string              `json:"scenario,omitempty"`
 	Variable      bool                `json:"variable,omitempty"`
@@ -76,7 +77,7 @@ func (g *Catan) landVertex(v int) bool {
 		return true
 	}
 	for _, t := range g.Tiles {
-		if t.Resource != CatanSea && t.Resource != CatanFog && slices.Contains(t.Vertices, v) {
+		if t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0) && slices.Contains(t.Vertices, v) {
 			return true
 		}
 	}
