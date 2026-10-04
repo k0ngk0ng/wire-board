@@ -132,7 +132,7 @@ func TestCatanPirateIslandsPrintedComponentsAndTopology(t *testing.T) {
 					t.Fatal("preset ship does not lead towards beachhead", i)
 				}
 				roads, settlements, cities := g.pieces(i)
-				if roads != 0 || settlements != 1 || cities != 0 || g.shipCount(i) != 1 {
+				if roads != 0 || settlements != 2 || cities != 0 || g.shipCount(i) != 1 {
 					t.Fatal("preset piece stock")
 				}
 			}

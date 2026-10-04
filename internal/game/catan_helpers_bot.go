@@ -161,7 +161,7 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 		}
 	case 7:
 		for i, target := range g.Players {
-			if i != player && !target.Eliminated && target.Score-target.Dev[4] > p.Score-p.Dev[4] && sum(target.Resources) > 0 {
+			if i != player && !target.Eliminated && target.Score-g.hiddenVictoryPoints(i) > p.Score-g.hiddenVictoryPoints(player) && sum(target.Resources) > 0 {
 				add(Action{Type: "catan_helper", Target: i}, 700)
 			}
 		}

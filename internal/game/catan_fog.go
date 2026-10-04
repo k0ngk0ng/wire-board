@@ -92,6 +92,9 @@ func (s *State) catanDiscover(player, edge int) (int, error) {
 }
 
 func (s *State) catanAfterRoute(q CatanRouteCompletion) error {
+	if s.Catan.Edges[q.Edge].Ship && !s.Catan.pirateCommitShip(q.Player, q.Edge) {
+		return errors.New("远征船线必须按最短路径经自己的登陆点通往要塞，不能分叉")
+	}
 	s.Catan.Trade = nil
 	s.catanClothTrade(q.Player)
 	if err := s.catanCollectTribe(q.Player, q.Edge); err != nil {

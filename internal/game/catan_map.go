@@ -168,6 +168,9 @@ func (g *Catan) touching(v int) []int {
 	return out
 }
 func (g *Catan) canSettlement(p, v int, setup bool) bool {
+	if !g.pirateSettlementAllowed(p, v, setup) {
+		return false
+	}
 	if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Level != 0 || !g.landVertex(v) || (setup && g.setup() && !g.seaSetupAllowed(v)) {
 		return false
 	}
@@ -189,6 +192,9 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 }
 func (g *Catan) canRoad(p, id int) bool { return g.canRoute(p, id, false) }
 func (g *Catan) pieces(p int) (roads, settlements, cities int) {
+	if pirates := g.pirateIslands(); pirates != nil && p >= 0 && p < len(pirates.Fortresses) && pirates.Fortresses[p].Strength > 0 {
+		settlements++ // The settlement piece remains reserved on the fortress.
+	}
 	for _, e := range g.Edges {
 		if e.Owner == p && !e.Ship {
 			roads++
