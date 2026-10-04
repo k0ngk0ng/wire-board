@@ -91,7 +91,12 @@ import { SplendorCardAnimation } from "./splendor-card-animation";
 import { SplendorTokenAnimation } from "./splendor-token-animation";
 import { AnimatedSlot } from "./animated-slot";
 import { DotaBoard, DotaCover, DotaRules } from "./dota";
-import { CatanBoard, catanPhases, catanPlayerColors } from "./catan";
+import {
+  CatanBoard,
+  catanPhases,
+  catanSeafarerPhases,
+  catanPlayerColors,
+} from "./catan";
 import "./splendor-layout.css";
 import { CarcassonneBoard } from "./carcassonne";
 import { SanguoshaBoard, SanguoshaCover, SanguoshaRules } from "./sanguosha";
@@ -2329,7 +2334,8 @@ function Players({ room }: { room: Room }) {
                   资源 {g.catan.players[i].resourceCount} · 发展卡{" "}
                   {g.catan.players[i].devCount}
                   <br />
-                  道路 {g.catan.players[i].roadLength} · 骑士{" "}
+                  {g.catan.seafarers ? "路线" : "道路"}{" "}
+                  {g.catan.players[i].roadLength} · 骑士{" "}
                   {g.catan.players[i].knights}
                   {g.catan.paired &&
                     (i === g.catan.paired.primary ||
@@ -2546,6 +2552,7 @@ function Turn({
   const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
     ...catanPhases,
+    ...(g.catan?.seafarers ? catanSeafarerPhases : {}),
     dota_teams: "确认队伍",
     dota_draft: "选择英雄",
     dota_plan: "暗选行动，全部锁定后揭牌",

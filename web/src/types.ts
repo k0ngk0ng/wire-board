@@ -270,10 +270,25 @@ export type CatanPlayer = {
   eliminated?: boolean;
   rates: number[];
   roadsLeft: number;
+  shipsLeft?: number;
   settlementsLeft: number;
   citiesLeft: number;
 };
 export type CatanState = {
+  seafarers?: {
+    scenario: string;
+    victoryPoints: number;
+    pirate: number;
+    islandBonus?: number;
+    movedShip?: boolean;
+    fog?: { remaining: number; startTiles: number[] };
+    seats?: {
+      homeIslands?: number[];
+      settledIslands?: number[];
+      islandPoints?: number;
+    }[];
+  };
+  shipMoves?: Record<string, number[]>;
   goldPending?: { claims: { player: number; count: number }[]; resume: string };
   hexSize?: number;
   startPlayer?: number;
@@ -312,7 +327,14 @@ export type CatanState = {
     owner: number;
     level: number;
   }[];
-  edges: { id: number; a: number; b: number; owner: number }[];
+  edges: {
+    id: number;
+    a: number;
+    b: number;
+    owner: number;
+    ship?: boolean;
+    tiles?: number[];
+  }[];
   ports: { edge: number; resource: number }[];
   players: CatanPlayer[];
   bank: number[];
@@ -328,7 +350,13 @@ export type CatanState = {
   playedDev: boolean;
   longestOwner: number;
   armyOwner: number;
-  legal: { settlements: number[]; cities: number[]; roads: number[] };
+  legal: {
+    settlements: number[];
+    cities: number[];
+    roads: number[];
+    ships?: number[];
+    pirate?: number[];
+  };
   trade?: {
     id: number;
     from: number;
