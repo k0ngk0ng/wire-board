@@ -90,6 +90,9 @@ func (s *State) catanView(view map[string]any, player int) {
 		legal["pirate"] = []int{}
 	}
 	if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
+		if s.Phase == "catan_cloth_start" {
+			legal["robber"] = g.clothStartTiles()
+		}
 		if s.Phase == "catan_robber" {
 			for _, tile := range g.Tiles {
 				if g.robberAllowed(tile.ID) {

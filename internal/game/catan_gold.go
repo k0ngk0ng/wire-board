@@ -97,7 +97,7 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
-	if s.Phase == "catan_cloth_steal" {
+	if s.Phase == "catan_cloth_steal" || s.Phase == "catan_cloth_start" {
 		return s.Turn
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {

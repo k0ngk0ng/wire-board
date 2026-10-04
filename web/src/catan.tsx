@@ -24,6 +24,11 @@ import "./catan.css";
 import "./catan-gold.css";
 import "./catan-seafarers.css";
 import { CatanDesertRegions, CatanPirate, CatanShip } from "./catan-seafarers";
+import {
+  CatanClothVillages,
+  CatanClothStock,
+  CatanClothChoice,
+} from "./catan-cloth";
 import { CatanHelpers } from "./catan-helpers";
 import {
   CatanTribePortChoice,
@@ -75,6 +80,7 @@ export const catanPhases: Record<string, string> = {
   catan_discard: "同时选择要弃置的资源",
   catan_robber: "选择强盗的新位置",
   catan_steal: "选择偷取资源的对手",
+  catan_cloth_start: "选择初始强盗位置",
   catan_cloth_steal: "选择偷取资源或布匹",
   catan_roads: "放置免费的道路",
   catan_helper: "等待助手选择",
@@ -301,17 +307,20 @@ export function CatanBoard({
   const describeDev = (i: number) =>
     i === 4
       ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
-      : sea && i === 0
-        ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
-        : sea && i === 1
-          ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
-          : devDescriptions[i];
+      : sea?.cloth && i === 0
+        ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
+        : sea && i === 0
+          ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
+          : sea && i === 1
+            ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
+            : devDescriptions[i];
   const playing = room.status === "playing" && !game.finished;
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine = canPlay && game.turn === you;
   const portMine = canPlay && sea?.tribe?.pending?.player === you;
   const setup = g.setupStep < (g.setupLimit ?? 2 * g.players.length);
   const phase = game.phase;
+  const [village, setVillage] = useState<number | null>(null);
   const [mode, setMode] = useState("");
   const [chosen, setChosen] = useState<{ type: string; id: number } | null>(
     null,
@@ -324,6 +333,7 @@ export function CatanBoard({
   const [take, setTake] = useState([0, 0, 0, 0, 0]);
   const [monopoly, setMonopoly] = useState(0);
   useEffect(() => {
+    setVillage(null);
     setMode("");
     setHelperPayment(null);
     setMoveFrom(null);
@@ -333,21 +343,23 @@ export function CatanBoard({
     setTake([0, 0, 0, 0, 0]);
   }, [room.id, game.turn, game.round, phase, g.setupStep]);
   const effective =
-    phase === "catan_port"
-      ? "port"
-      : phase === "catan_setup_settlement"
-        ? "settlement"
-        : phase === "catan_setup_road" || phase === "catan_roads"
-          ? sea &&
-            (mode === "ship" ||
-              (!g.legal.roads.length && (g.legal.ships?.length || 0) > 0))
-            ? "ship"
-            : "road"
-          : phase === "catan_robber"
-            ? sea && mode === "pirate"
-              ? "pirate"
-              : "robber"
-            : mode;
+    phase === "catan_cloth_start"
+      ? "cloth_start"
+      : phase === "catan_port"
+        ? "port"
+        : phase === "catan_setup_settlement"
+          ? "settlement"
+          : phase === "catan_setup_road" || phase === "catan_roads"
+            ? sea &&
+              (mode === "ship" ||
+                (!g.legal.roads.length && (g.legal.ships?.length || 0) > 0))
+              ? "ship"
+              : "road"
+            : phase === "catan_robber"
+              ? sea && mode === "pirate"
+                ? "pirate"
+                : "robber"
+              : mode;
   const affordable = (type: string) =>
     costs[type].every((n, c) => hand[c] >= n);
   const submit = async (a: Record<string, unknown>) => {
@@ -428,6 +440,7 @@ export function CatanBoard({
                   fog: "迷雾岛",
                   desert: "穿越沙漠",
                   tribe: "遗忘的部落",
+                  cloth: "卡坦布匹",
                 } as Record<string, string>
               )[sea.scenario] || "航海家"}
               {sea.fog && ` · 待探索 ${sea.fog.remaining} 格`}
@@ -454,6 +467,7 @@ export function CatanBoard({
                       aria-pressed={effective === key}
                       disabled={
                         busy ||
+                        (key === "pirate" && !g.legal.pirate?.length) ||
                         (key === "ship" && !g.legal.ships?.length) ||
                         (key === "road" && !g.legal.roads.length)
                       }
@@ -514,15 +528,19 @@ export function CatanBoard({
               {g.tiles.map((t) => {
                 const available =
                   mine &&
-                  ((effective === "robber" &&
-                    (g.legal.robber
-                      ? g.legal.robber.includes(t.id)
-                      : t.id !== g.robber &&
-                        t.resource !== 6 &&
-                        t.resource !== 8)) ||
+                  ((effective === "cloth_start" &&
+                    g.legal.robber?.includes(t.id)) ||
+                    (effective === "robber" &&
+                      (g.legal.robber
+                        ? g.legal.robber?.includes(t.id)
+                        : t.id !== g.robber &&
+                          t.resource !== 6 &&
+                          t.resource !== 8)) ||
                     (effective === "pirate" &&
                       !!g.legal.pirate?.includes(t.id)) ||
-                    (effective === "helper_desert" && t.resource === 5));
+                    (effective === "helper_desert" &&
+                      t.resource === 5 &&
+                      (!sea?.cloth || sea.cloth.homeTiles.includes(t.id))));
                 return (
                   <g
                     key={`${t.id}-${t.resource}`}
@@ -613,7 +631,8 @@ export function CatanBoard({
                         <title>海盗封锁本海域船只</title>
                       </g>
                     )}
-                    {(chosen?.type === "pirate" ||
+                    {(chosen?.type === "cloth_start" ||
+                      chosen?.type === "pirate" ||
                       chosen?.type === "robber" ||
                       chosen?.type === "helper_desert") &&
                       chosen.id === t.id && (
@@ -879,38 +898,49 @@ export function CatanBoard({
                   </g>
                 );
               })}
+              <CatanClothVillages
+                room={room}
+                assets={assets}
+                inspect={setVillage}
+              />
             </svg>
           </div>
         </div>
         <div className="catan-map-hint">
-          {phase === "catan_port"
-            ? portMine
-              ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
-              : "等待港口安放 · 滚轮缩放 · 按住拖动"
-            : phase === "catan_gold"
-              ? canPlay && g.goldPending?.claims[0]?.player === you
-                ? "请在金矿面板领取资源 · 可收起面板查看地图"
-                : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
-              : mine
-                ? effective === "helper_move" || effective === "move_ship"
-                  ? moveFrom === null
-                    ? effective === "move_ship"
-                      ? "选择要移动的己方末端旧船"
-                      : "选择要迁移的己方末端道路"
-                    : "选择亮起的新位置，再确认移动"
-                  : effective === "ship"
-                    ? "点击虚线选择船只位置，再确认建造"
-                    : effective === "pirate"
-                      ? "选择另一块海洋，或将海盗移至外海"
-                      : effective === "road"
-                        ? "点击虚线选择道路，再确认建造"
-                        : effective === "settlement" || effective === "city"
-                          ? "点击亮起的交点，再确认建造"
-                          : effective === "robber" ||
-                              effective === "helper_desert"
-                            ? "点击地块选择强盗的新位置"
-                            : "选择右侧行动 · 滚轮缩放 · 按住拖动"
-                : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
+          {phase === "catan_cloth_start"
+            ? mine
+              ? "点击亮起的12号地块，再确认强盗起点"
+              : "等待先手选择强盗起点 · 可缩放拖动"
+            : phase === "catan_cloth_steal"
+              ? "请在海盗面板选择对手与物品 · 可收起查看地图"
+              : phase === "catan_port"
+                ? portMine
+                  ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
+                  : "等待港口安放 · 滚轮缩放 · 按住拖动"
+                : phase === "catan_gold"
+                  ? canPlay && g.goldPending?.claims[0]?.player === you
+                    ? "请在金矿面板领取资源 · 可收起面板查看地图"
+                    : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
+                  : mine
+                    ? effective === "helper_move" || effective === "move_ship"
+                      ? moveFrom === null
+                        ? effective === "move_ship"
+                          ? "选择要移动的己方末端旧船"
+                          : "选择要迁移的己方末端道路"
+                        : "选择亮起的新位置，再确认移动"
+                      : effective === "ship"
+                        ? "点击虚线选择船只位置，再确认建造"
+                        : effective === "pirate"
+                          ? "选择另一块海洋，或将海盗移至外海"
+                          : effective === "road"
+                            ? "点击虚线选择道路，再确认建造"
+                            : effective === "settlement" || effective === "city"
+                              ? "点击亮起的交点，再确认建造"
+                              : effective === "robber" ||
+                                  effective === "helper_desert"
+                                ? "点击地块选择强盗的新位置"
+                                : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+                    : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
       <aside className="catan-actions">
@@ -1041,86 +1071,89 @@ export function CatanBoard({
             </button>
           </div>
         )}
-        {chosen && chosen.type !== "port" && mine && (
-          <section className="catan-confirm" aria-label="确认行动">
-            <strong>
-              {
-                (
-                  {
-                    helper_move: "迁移道路",
-                    ship: "建造船只",
-                    move_ship: "移动船只",
-                    pirate: chosen.id === -1 ? "将海盗移至外海" : "移动海盗",
-                    helper_desert: "将强盗赶回沙漠",
-                    road: "修建道路",
-                    settlement: "建造村庄",
-                    city: "升级城市",
-                    robber: "移动强盗",
-                    buy_dev: "购买发展卡",
-                  } as Record<string, string>
-                )[chosen.type]
-              }
-              {chosen.type !== "buy_dev" &&
-                chosen.id >= 0 &&
-                ` #${chosen.id + 1}`}
-            </strong>
-            {costs[chosen.type] && !setup && phase !== "catan_roads" && (
-              <Bundle
-                values={helperPayment || costs[chosen.type]}
-                assets={assets}
-              />
-            )}
-            <div>
-              <button
-                className="subtle"
-                disabled={busy}
-                onClick={() => {
-                  setChosen(null);
-                  setHelperPayment(null);
-                  setMoveFrom(null);
-                  setMode("");
-                }}
-              >
-                取消
-              </button>
-              <button
-                className="primary"
-                disabled={busy}
-                onClick={() =>
-                  void submit({
-                    type:
-                      chosen.type === "helper_move" ||
-                      chosen.type === "helper_desert"
-                        ? "catan_helper"
-                        : "catan_" + chosen.type,
-                    choice:
-                      chosen.type === "helper_desert" ? "desert" : undefined,
-                    color:
-                      chosen.type === "helper_desert"
-                        ? helperResource
-                        : undefined,
-                    skill: helperPayment ? "helper" : undefined,
-                    tokens: helperPayment || undefined,
-                    target:
-                      chosen.type === "helper_move" ||
-                      chosen.type === "move_ship"
-                        ? chosen.id
-                        : undefined,
-                    edge:
-                      chosen.type === "helper_move" ||
-                      chosen.type === "move_ship"
-                        ? moveFrom
-                        : chosen.id,
-                    vertex: chosen.id,
-                    tile: chosen.id,
-                  })
+        {chosen &&
+          chosen.type !== "port" &&
+          chosen.type !== "cloth_start" &&
+          mine && (
+            <section className="catan-confirm" aria-label="确认行动">
+              <strong>
+                {
+                  (
+                    {
+                      helper_move: "迁移道路",
+                      ship: "建造船只",
+                      move_ship: "移动船只",
+                      pirate: chosen.id === -1 ? "将海盗移至外海" : "移动海盗",
+                      helper_desert: "将强盗赶回沙漠",
+                      road: "修建道路",
+                      settlement: "建造村庄",
+                      city: "升级城市",
+                      robber: "移动强盗",
+                      buy_dev: "购买发展卡",
+                    } as Record<string, string>
+                  )[chosen.type]
                 }
-              >
-                确认
-              </button>
-            </div>
-          </section>
-        )}
+                {chosen.type !== "buy_dev" &&
+                  chosen.id >= 0 &&
+                  ` #${chosen.id + 1}`}
+              </strong>
+              {costs[chosen.type] && !setup && phase !== "catan_roads" && (
+                <Bundle
+                  values={helperPayment || costs[chosen.type]}
+                  assets={assets}
+                />
+              )}
+              <div>
+                <button
+                  className="subtle"
+                  disabled={busy}
+                  onClick={() => {
+                    setChosen(null);
+                    setHelperPayment(null);
+                    setMoveFrom(null);
+                    setMode("");
+                  }}
+                >
+                  取消
+                </button>
+                <button
+                  className="primary"
+                  disabled={busy}
+                  onClick={() =>
+                    void submit({
+                      type:
+                        chosen.type === "helper_move" ||
+                        chosen.type === "helper_desert"
+                          ? "catan_helper"
+                          : "catan_" + chosen.type,
+                      choice:
+                        chosen.type === "helper_desert" ? "desert" : undefined,
+                      color:
+                        chosen.type === "helper_desert"
+                          ? helperResource
+                          : undefined,
+                      skill: helperPayment ? "helper" : undefined,
+                      tokens: helperPayment || undefined,
+                      target:
+                        chosen.type === "helper_move" ||
+                        chosen.type === "move_ship"
+                          ? chosen.id
+                          : undefined,
+                      edge:
+                        chosen.type === "helper_move" ||
+                        chosen.type === "move_ship"
+                          ? moveFrom
+                          : chosen.id,
+                      vertex: chosen.id,
+                      tile: chosen.id,
+                    })
+                  }
+                >
+                  确认
+                </button>
+              </div>
+            </section>
+          )}
         {mine && phase === "catan_roads" && (
           <p className="catan-note">
             剩余免费{sea ? "道路／船只" : "道路"} {g.freeRoads} 段。
@@ -1379,6 +1412,18 @@ export function CatanBoard({
           clear={() => setChosen(null)}
         />
         <CatanTribeStock room={room} assets={assets} />
+        <CatanClothStock room={room} assets={assets} />
+        <CatanClothChoice
+          room={room}
+          assets={assets}
+          busy={busy}
+          act={act}
+          selectedTile={chosen?.type === "cloth_start" ? chosen.id : null}
+          clearTile={() => setChosen(null)}
+          village={village}
+          closeVillage={() => setVillage(null)}
+          colors={catanPlayerColors}
+        />
         <CatanHelpers
           room={room}
           act={act}
@@ -1414,16 +1459,18 @@ export function CatanBoard({
           <Bundle values={g.bank} assets={assets} showZero />
         </section>
         <div className="catan-awards">
-          <span>
-            <Route size={16} />
-            {sea ? "最长路线" : "最长道路"}{" "}
-            <b>
-              {g.longestOwner < 0
-                ? "至少 5 段"
-                : room.seats[g.longestOwner].name}
-            </b>
-            <small>+2 分</small>
-          </span>
+          {!sea?.cloth && (
+            <span>
+              <Route size={16} />
+              {sea ? "最长路线" : "最长道路"}{" "}
+              <b>
+                {g.longestOwner < 0
+                  ? "至少 5 段"
+                  : room.seats[g.longestOwner].name}
+              </b>
+              <small>+2 分</small>
+            </span>
+          )}
           <span>
             <Shield size={16} />
             最大骑士军队{" "}

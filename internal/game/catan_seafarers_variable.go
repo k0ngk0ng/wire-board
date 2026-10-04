@@ -5,6 +5,23 @@ import (
 	"slices"
 )
 
+// Use this state-level entry point for playable variable scenarios so initial
+// player choices are included in persistence, clocks, and the action flow.
+func (s *State) randomizeCatanSeafarersMap() error {
+	if s.Catan == nil || s.Catan.SetupStep != 0 || s.Phase != "catan_setup_settlement" || s.Finished {
+		return fmt.Errorf("只能在起始建设之前生成可变地图")
+	}
+	next := clone(*s)
+	if err := next.Catan.randomizeSeafarersMap(); err != nil {
+		return err
+	}
+	if next.Catan.cloth() != nil {
+		next.Phase = "catan_cloth_start"
+	}
+	*s = next
+	return nil
+}
+
 // The printed variable setups keep the sea and island outlines unchanged.
 // New Shores shuffles the main island and the smaller islands separately;
 // Four Islands shuffles all land together and reserves productive numbers

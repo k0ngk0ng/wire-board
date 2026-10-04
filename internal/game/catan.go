@@ -305,6 +305,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	}
 	p := &g.Players[player]
 	if g.setup() {
+		if s.Phase == "catan_cloth_start" {
+			return s.catanClothStart(player, a)
+		}
 		return s.catanSetup(a)
 	}
 	if a.Type == "catan_helper" {
@@ -859,6 +862,10 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if s.Phase == "catan_cloth_start" {
+		_ = s.applyCatan(s.Turn, Action{Type: "catan_cloth_start", Tile: g.Robber})
 		return
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {

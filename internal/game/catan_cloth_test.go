@@ -550,3 +550,56 @@ func TestCatanClothRejectsCorruptProductionWithoutMutatingAction(t *testing.T) {
 	}
 	t.Fatal("no non-seven roll generated")
 }
+
+func TestCatanClothInitialRobberChoicePrivacyRestoreAndTimeout(t *testing.T) {
+	for _, automatic := range []bool{false, true} {
+		s := clothMapGame(t, 4, false)
+		s.Catan.StartPlayer = 2
+		s.Turn = 2
+		if err := s.randomizeCatanSeafarersMap(); err != nil {
+			t.Fatal(err)
+		}
+		if s.Phase != "catan_cloth_start" || s.CatanPendingActor() != 2 {
+			t.Fatal("variable setup skipped initial choice")
+		}
+		candidates := s.Catan.clothStartTiles()
+		if len(candidates) != 2 {
+			t.Fatal("expected two twelve tiles")
+		}
+		for _, viewer := range []int{-1, 0, 1, 2, 3} {
+			legal := s.View(viewer)["catan"].(map[string]any)["legal"].(map[string][]int)
+			if (len(legal["robber"]) == 2) != (viewer == 2) || len(legal["settlements"]) > 0 {
+				t.Fatal("initial actor legal hints", viewer, legal)
+			}
+		}
+		helperReject(t, s, 1, Action{Type: "catan_cloth_start", Tile: candidates[0]})
+		helperReject(t, s, 2, Action{Type: "catan_settlement", Vertex: 0})
+		helperReject(t, s, 2, Action{Type: "catan_cloth_start", Tile: -1})
+		helperReject(t, s, 2, Action{Type: "catan_cloth_start", Tile: 14}) // fixed small gold island
+		before := clone(*s)
+		if s.randomizeCatanSeafarersMap() == nil || !reflect.DeepEqual(*s, before) {
+			t.Fatal("pending setup reshuffled")
+		}
+		restored := clone(*s)
+		s = &restored
+		chosen := candidates[0]
+		if chosen == s.Catan.Robber {
+			chosen = candidates[1]
+		}
+		if automatic {
+			chosen = s.Catan.Robber
+			s.AutoCatanPending()
+		} else {
+			helperApply(t, s, 2, Action{Type: "catan_cloth_start", Tile: chosen})
+		}
+		if s.Catan.Robber != chosen || s.Phase != "catan_setup_settlement" || s.Turn != 2 || s.Catan.SetupStep != 0 || s.CatanPendingActor() != -1 {
+			t.Fatal("choice skipped first setup")
+		}
+		for _, v := range s.Catan.Vertices {
+			if v.Level > 0 {
+				t.Fatal("timeout also built settlement")
+			}
+		}
+		helperReject(t, s, 2, Action{Type: "catan_cloth_start", Tile: chosen})
+	}
+}

@@ -406,10 +406,22 @@ export function CatanHelpers({
                     disabled={
                       g.robber < 0 ||
                       g.tiles[g.robber]?.resource === 5 ||
-                      !g.tiles.some((t) => t.resource === 5)
+                      !g.tiles.some(
+                        (t) =>
+                          t.resource === 5 &&
+                          (!g.seafarers?.cloth ||
+                            g.seafarers.cloth.homeTiles.includes(t.id)),
+                      )
                     }
                     onClick={() => {
-                      if (g.tiles.filter((t) => t.resource === 5).length > 1) {
+                      if (
+                        g.tiles.filter(
+                          (t) =>
+                            t.resource === 5 &&
+                            (!g.seafarers?.cloth ||
+                              g.seafarers.cloth.homeTiles.includes(t.id)),
+                        ).length > 1
+                      ) {
                         onDesert(color);
                         setOpen(false);
                       } else action({ color });

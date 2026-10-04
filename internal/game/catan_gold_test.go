@@ -225,7 +225,7 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 						t.Fatal(err)
 					}
 					if variable {
-						if err = s.Catan.randomizeSeafarersMap(); err != nil {
+						if err = s.randomizeCatanSeafarersMap(); err != nil {
 							t.Fatal(err)
 						}
 					}

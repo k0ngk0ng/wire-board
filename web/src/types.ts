@@ -284,6 +284,18 @@ export type CatanState = {
     islandBonus?: number;
     movedShip?: boolean;
     fog?: { remaining: number; startTiles: number[] };
+    cloth?: {
+      stock: number;
+      held: number[];
+      homeTiles: number[];
+      emptyLimit: number;
+      villages: {
+        vertex: number;
+        number: number;
+        stock: number;
+        traders: number[] | null;
+      }[];
+    };
     tribe?: {
       tokens: number[] | null;
       development: { edge: number }[];
