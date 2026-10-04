@@ -1,3 +1,5 @@
+import { SanguoshaOptions } from "./sanguosha-options";
+import type { SGOptions } from "./types";
 import React, {
   createContext,
   useContext,
@@ -1280,6 +1282,9 @@ function App() {
               >
                 <Rules
                   kind={room!.kind}
+                  sgOptions={
+                    room.game?.sanguosha?.options || room.sanguoshaOptions
+                  }
                   railMap={
                     room!.game?.rail?.mapInfo ||
                     state.railMaps?.find(
@@ -1683,6 +1688,8 @@ function Lobby({
                       {gameName(r.kind)}
                       {r.kind === "rail" &&
                         ` · ${railMapNames[r.railMap || "usa"]}`}{" "}
+                      {r.kind === "sanguosha" &&
+                        ` · ${r.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "经典标准"}`}{" "}
                       · {r.id.toUpperCase()}
                       {invited === r.id ? " · 朋友邀请的牌桌" : ""}
                     </small>
@@ -1790,6 +1797,7 @@ function Create({
   const maps = useContext(RailMapsContext),
     assets = useContext(AssetsContext);
   const [railMap, setRailMap] = useState("usa");
+  const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
   const [capacity, setCapacity] = useState(4);
@@ -1804,6 +1812,7 @@ function Create({
             password: f.get("password"),
             kind: k,
             railMap: k === "rail" ? railMap : undefined,
+            sanguoshaOptions: k === "sanguosha" ? sgOptions : undefined,
             capacity,
           });
         }}
@@ -1850,6 +1859,9 @@ function Create({
             </button>
           ))}
         </div>
+        {k === "sanguosha" && (
+          <SanguoshaOptions value={sgOptions} onChange={setSGOptions} />
+        )}
         {k === "rail" && (
           <RailMapPicker
             maps={maps}
@@ -1970,7 +1982,7 @@ function Waiting({
           {room.kind === "dota"
             ? "1v1 / 2v2 / 3v3 · 开始后分队 · 全部拆遗迹"
             : room.kind === "sanguosha"
-              ? "经典身份局 · 4–8 人 · 25 将 / 108 张牌"
+              ? `经典身份局 · 4–8 人 · ${room.sanguoshaOptions?.deck === "military" ? "标准＋军争 / 160 张牌" : "标准 / 108 张牌"}`
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
@@ -1983,6 +1995,20 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
+        {room.kind === "sanguosha" && (
+          <>
+            <SanguoshaOptions
+              value={room.sanguoshaOptions}
+              disabled={!host || busy}
+              onChange={(sanguoshaOptions) =>
+                command("sanguosha_options", { sanguoshaOptions })
+              }
+            />
+            {host && (
+              <p className="muted small">更换规则后，所有玩家需要重新准备。</p>
+            )}
+          </>
+        )}
         {room.kind === "rail" && (
           <>
             <RailMapPicker
@@ -4375,13 +4401,21 @@ function RailBoard({
     </div>
   );
 }
-function Rules({ kind, railMap }: { kind: string; railMap?: RailMapSpec }) {
+function Rules({
+  kind,
+  railMap,
+  sgOptions,
+}: {
+  kind: string;
+  railMap?: RailMapSpec;
+  sgOptions?: SGOptions;
+}) {
   return (
     <div className="rules">
       {kind === "dota" ? (
         <DotaRules />
       ) : kind === "sanguosha" ? (
-        <SanguoshaRules />
+        <SanguoshaRules options={sgOptions} />
       ) : kind === "carcassonne" ? (
         <>
           <p>
@@ -4483,10 +4517,12 @@ function Rules({ kind, railMap }: { kind: string; railMap?: RailMapSpec }) {
       ) : (
         <>{railMap && <RailMapRules map={railMap} />}</>
       )}
-      <p>
-        每回合 120
-        秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。
-      </p>
+      {kind !== "sanguosha" && (
+        <p>
+          每回合 120
+          秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。
+        </p>
+      )}
       <p className="muted small">
         操作由服务器验证。每次行动自动保存，刷新或重新登录后回到原来的座位。
       </p>

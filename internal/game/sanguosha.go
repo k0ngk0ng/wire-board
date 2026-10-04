@@ -7,6 +7,8 @@ import (
 )
 
 type SGPlayer struct {
+	Chained  bool           `json:"chained,omitempty"`
+	Drank    int            `json:"drank,omitempty"`
 	Role     string         `json:"role"`
 	General  string         `json:"general"`
 	HP       int            `json:"hp"`
@@ -26,6 +28,8 @@ type SGDelayed struct {
 // Every suspended effect is plain data, including nested rescue / counterspell
 // windows. No goroutine, callback or browser state is required to resume play.
 type SGEvent struct {
+	Nature  string   `json:"nature,omitempty"`
+	Chain   bool     `json:"chain,omitempty"`
 	Next    *SGEvent `json:"next,omitempty"`
 	Type    string   `json:"type"`
 	Actor   int      `json:"actor"`
@@ -50,6 +54,9 @@ type SGPrompt struct {
 	Choices []string `json:"choices,omitempty"`
 }
 type Sanguosha struct {
+	Options   SGOptions  `json:"options,omitempty"`
+	SkipDraw  bool       `json:"skipDraw,omitempty"`
+	Revealed  []int      `json:"revealed,omitempty"`
 	Players   []SGPlayer `json:"players"`
 	Deck      []int      `json:"deck"`
 	Discard   []int      `json:"discard"`
@@ -256,25 +263,28 @@ func (s *State) sgCanTarget(a, b int, kind string) bool {
 		return false
 	}
 	p := s.Sanguosha.Players[b]
-	if a == b && kind != "peach" && kind != "lightning" && kind != "ex_nihilo" {
+	if a == b && kind != "peach" && kind != "analeptic" && kind != "lightning" && kind != "ex_nihilo" && kind != "iron_chain" && kind != "fire_attack" {
 		return false
 	}
-	if (kind == "slash" || kind == "duel") && s.sgHas(b, "kongcheng") && len(p.Hand) == 0 {
+	if (sgIsSlash(kind) || kind == "duel") && s.sgHas(b, "kongcheng") && len(p.Hand) == 0 {
 		return false
 	}
 	if (kind == "snatch" || kind == "indulgence") && s.sgHas(b, "qianxun") {
 		return false
 	}
-	if kind == "slash" && s.sgDistance(a, b) > s.sgRange(a) {
+	if sgIsSlash(kind) && s.sgDistance(a, b) > s.sgRange(a) {
 		return false
 	}
-	if kind == "snatch" && !s.sgHas(a, "qicai") && s.sgDistance(a, b) > 1 {
+	if (kind == "snatch" || kind == "supply_shortage") && !s.sgHas(a, "qicai") && s.sgDistance(a, b) > 1 {
 		return false
 	}
 	if (kind == "snatch" || kind == "dismantlement") && len(p.Hand)+len(p.Equip)+len(p.Judgment) == 0 {
 		return false
 	}
-	if kind == "indulgence" || kind == "lightning" {
+	if kind == "fire_attack" && len(p.Hand) == 0 {
+		return false
+	}
+	if sgIsDelayed(kind) {
 		for _, d := range p.Judgment {
 			if d.Kind == kind {
 				return false
@@ -293,6 +303,9 @@ func (s *State) sgLose(i int, ids []int) {
 	for _, id := range ids {
 		if slices.Contains(p.Equip, id) {
 			equip++
+			if sgCard(id).Kind == "silver_lion" {
+				s.sgPush(SGEvent{Type: "heal", Actor: i, Amount: 1})
+			}
 		}
 		p.Hand = sgRemove(p.Hand, id)
 		p.Equip = sgRemove(p.Equip, id)
@@ -347,7 +360,7 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 		return "", err
 	}
 	if skill == "spear" {
-		if desired != "slash" || s.sgWeapon(i) != "spear" || s.sgValidateCards(i, ids, 2, true) != nil {
+		if (desired != "" && desired != "slash") || s.sgWeapon(i) != "spear" || s.sgValidateCards(i, ids, 2, true) != nil {
 			return "", errors.New("丈八蛇矛需要两张手牌")
 		}
 		return "slash", nil
@@ -358,7 +371,12 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 	c := sgCard(ids[0])
 	kind := c.Kind
 	red := c.Suit == 1 || c.Suit == 3
-	if skill != "" {
+	if skill == "fan" {
+		if s.sgWeapon(i) != "fan" || kind != "slash" || !s.sgOwn(i, c.ID, true) {
+			return "", errors.New("朱雀羽扇需要一张普通杀")
+		}
+		kind = "fire_slash"
+	} else if skill != "" {
 		if !s.sgHas(i, skill) {
 			return "", errors.New("没有此技能")
 		}
@@ -374,7 +392,7 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 			}
 			kind = "jink"
 		case "longdan":
-			if kind == "slash" {
+			if sgIsSlash(kind) {
 				kind = "jink"
 			} else if kind == "jink" {
 				kind = "slash"
@@ -402,7 +420,7 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 	} else if !s.sgOwn(i, c.ID, true) {
 		return "", errors.New("装备区的牌需通过技能转化")
 	}
-	if desired != "" && desired != kind {
+	if desired != "" && desired != kind && !(desired == "slash" && sgIsSlash(kind)) {
 		return "", errors.New("响应的牌型不正确")
 	}
 	return kind, nil
@@ -467,7 +485,18 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		s.sgLog("%s 装备「%s」", s.sgName(i), info.Name)
 		return nil
 	}
+	if kind == "iron_chain" && len(targets) == 0 {
+		s.sgPush(SGEvent{Type: "draw", Actor: i, Amount: 1})
+		s.sgDiscard(i, ids)
+		s.sgLog("%s 重铸铁索连环，摸一张牌", s.sgName(i))
+		return nil
+	}
 	switch kind {
+	case "analeptic":
+		if p.Used["analeptic"] > 0 {
+			return errors.New("本回合已经使用过酒")
+		}
+		targets = []int{i}
 	case "peach":
 		if p.HP >= p.MaxHP {
 			return errors.New("体力已满")
@@ -486,7 +515,10 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		}
 	default:
 		maxTargets := 1
-		if kind == "slash" && legality.sgWeapon(i) == "halberd" && len(ids) == 1 && len(p.Hand) == 1 && p.Hand[0] == ids[0] {
+		if kind == "iron_chain" {
+			maxTargets = 2
+		}
+		if sgIsSlash(kind) && legality.sgWeapon(i) == "halberd" && len(ids) == 1 && len(p.Hand) == 1 && p.Hand[0] == ids[0] {
 			maxTargets = 3
 		}
 		if len(targets) < 1 || len(targets) > maxTargets {
@@ -500,13 +532,23 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 			seen[t] = true
 		}
 	}
+	// Multiple targets of the same card resolve in current-turn seat order.
+	if kind != "collateral" && len(targets) > 1 {
+		ordered := []int{}
+		for _, target := range s.sgOrder(s.Turn) {
+			if slices.Contains(targets, target) {
+				ordered = append(ordered, target)
+			}
+		}
+		targets = ordered
+	}
 	if kind == "lightning" && !s.sgCanTarget(i, i, kind) {
 		return errors.New("判定区已有闪电")
 	}
-	if kind == "slash" && !forced && p.Used["slash"] > 0 && !s.sgHas(i, "paoxiao") && legality.sgWeapon(i) != "crossbow" {
+	if sgIsSlash(kind) && !forced && p.Used["slash"] > 0 && !s.sgHas(i, "paoxiao") && legality.sgWeapon(i) != "crossbow" {
 		return errors.New("本阶段已经使用过杀")
 	}
-	if kind == "slash" {
+	if sgIsSlash(kind) {
 		if !forced {
 			p.Used["slash"]++
 		}
@@ -514,15 +556,24 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 			p.Used["keji_slash"]++
 		}
 	}
+	if kind == "analeptic" {
+		p.Used["analeptic"]++
+	}
+	drank := 0
+	if sgIsSlash(kind) {
+		drank = p.Drank
+		p.Drank = 0
+	}
 	events := []SGEvent{}
 	if kind == "amazing_grace" {
 		events = append(events, SGEvent{Type: "grace_reveal", Actor: i})
 	}
 	for _, t := range targets {
-		e := SGEvent{Type: "effect", Actor: i, Target: t, Kind: kind, Cards: ids, Amount: 1, Aux: -1}
-		if kind == "slash" {
+		e := SGEvent{Type: "effect", Actor: i, Target: t, Kind: kind, Cards: ids, Amount: 1, Aux: -1, Nature: sgNature(kind)}
+		if sgIsSlash(kind) {
 			e.Type = "slash_start"
-		} else if kind != "peach" && kind != "indulgence" && kind != "lightning" {
+			e.Amount += drank
+		} else if sgIsTrick(kind) && !sgIsDelayed(kind) {
 			e.Type = "null_window"
 			e.Step = i
 		}
@@ -539,7 +590,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	}
 	s.sgPush(events...)
 	s.sgPay(i, ids)
-	if info.Slot == "" && kind != "slash" && kind != "peach" && kind != "indulgence" && kind != "lightning" {
+	if sgIsTrick(kind) && !sgIsDelayed(kind) {
 		s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
 	}
 	targetNames := ""

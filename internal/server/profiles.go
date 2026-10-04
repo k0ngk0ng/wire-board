@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/k0ngk0ng/wire-board/internal/game"
 	"net/http"
 	"sort"
 	"strconv"
@@ -19,14 +20,15 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
-	RailMap string        `json:"railMap,omitempty"`
-	Rated   bool          `json:"rated"`
-	ID      string        `json:"id"`
-	Room    string        `json:"room"`
-	Kind    string        `json:"kind"`
-	Status  string        `json:"status"`
-	Ended   int64         `json:"ended"`
-	Players []MatchPlayer `json:"players"`
+	SanguoshaOptions game.SGOptions `json:"sanguoshaOptions,omitempty"`
+	RailMap          string         `json:"railMap,omitempty"`
+	Rated            bool           `json:"rated"`
+	ID               string         `json:"id"`
+	Room             string         `json:"room"`
+	Kind             string         `json:"kind"`
+	Status           string         `json:"status"`
+	Ended            int64          `json:"ended"`
+	Players          []MatchPlayer  `json:"players"`
 }
 
 func archiveGame(tx *sql.Tx, r *Room) error {
@@ -37,7 +39,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	if id == "" {
 		id = fmt.Sprintf("%s:%d", r.ID, r.SetupVersion)
 	}
-	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
+	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}
 		if r.Status == "finished" {

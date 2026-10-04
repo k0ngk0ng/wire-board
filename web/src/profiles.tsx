@@ -1,6 +1,6 @@
 import { railMapNames } from "./rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
-import type { User } from "./types";
+import type { User, SGOptions } from "./types";
 
 export const ProfileContext = createContext<(id: string) => void>(() => {});
 export function PlayerName({
@@ -29,6 +29,7 @@ type History = {
   room: string;
   kind: string;
   railMap?: string;
+  sanguoshaOptions?: SGOptions;
   status: string;
   ended: number;
   players: (User & {
@@ -285,6 +286,8 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 {name(match.kind)}
                 {match.kind === "rail" &&
                   ` · ${railMapNames[match.railMap || "usa"]}`}{" "}
+                {match.kind === "sanguosha" &&
+                  ` · ${match.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "经典标准"}`}{" "}
                 · {match.room}
               </strong>
               <span>{match.status === "finished" ? "已结算" : "已中止"}</span>

@@ -24,7 +24,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		out := []Action{}
 		ids := append(append([]int{}, p.Hand...), p.Equip...)
 		for _, id := range ids {
-			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu"} {
+			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan"} {
 				a := Action{Cards: []int{id}, Skill: skill}
 				if _, err := s.sgAs(i, a.Cards, skill, want); err == nil {
 					out = append(out, a)
@@ -85,7 +85,22 @@ func (s *State) sgBot(i int) (Action, error) {
 					add(a)
 				}
 			}
+		case "fire_reveal":
+			for _, id := range p.Hand {
+				add(Action{Cards: []int{id}})
+			}
+		case "fire_discard":
+			for _, id := range p.Hand {
+				if sgCard(id).Suit == e.Aux && sgCard(id).Kind != "peach" {
+					add(Action{Cards: []int{id}})
+				}
+			}
 		case "peach":
+			if e.Target == i {
+				for _, a := range cardsFor("analeptic") {
+					add(a)
+				}
+			}
 			if e.Target == i || ((p.Role == "loyalist" || p.Role == "lord") && e.Target == g.Lord) {
 				for _, a := range cardsFor("peach") {
 					add(a)
@@ -93,7 +108,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 		case "nullification": // Never infer allegiance from another hidden identity.
 			protects := e.Target == i || ((p.Role == "loyalist" || p.Role == "lord") && e.Target == g.Lord)
-			harmful := slices.Contains([]string{"duel", "snatch", "dismantlement", "savage_assault", "archery_attack", "indulgence", "lightning", "collateral"}, e.Kind)
+			harmful := slices.Contains([]string{"duel", "snatch", "dismantlement", "savage_assault", "archery_attack", "indulgence", "lightning", "collateral", "fire_attack", "supply_shortage"}, e.Kind)
 			if protects && harmful && !e.Flag {
 				for _, a := range cardsFor("nullification") {
 					add(a)
@@ -188,7 +203,31 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 			return g.Players[a].HP - g.Players[b].HP
 		})
-		for _, kind := range []string{"slash", "duel", "snatch", "dismantlement", "indulgence"} {
+		// Drink only when a legal slash can follow; use only visible armor/HP.
+		if p.Drank == 0 {
+			canSlash := false
+			for _, attack := range cardsFor("slash") {
+				for _, target := range enemies {
+					trial := clone(*s)
+					attack.Type = "sg_play"
+					attack.Targets = []int{target}
+					if trial.sgApply(i, attack) == nil {
+						canSlash = true
+						break
+					}
+				}
+				if canSlash {
+					break
+				}
+			}
+			if canSlash {
+				for _, a := range cardsFor("analeptic") {
+					a.Type = "sg_play"
+					add(a)
+				}
+			}
+		}
+		for _, kind := range []string{"slash", "duel", "snatch", "dismantlement", "indulgence", "supply_shortage", "fire_attack"} {
 			for _, a := range cardsFor(kind) {
 				for _, t := range enemies {
 					a.Type = "sg_play"
@@ -201,6 +240,13 @@ func (s *State) sgBot(i int) (Action, error) {
 			if kind := sgCard(id).Kind; kind == "savage_assault" || kind == "archery_attack" {
 				add(Action{Type: "sg_play", Cards: []int{id}})
 			}
+		}
+		for _, a := range cardsFor("iron_chain") {
+			a.Type = "sg_play"
+			if p.Chained {
+				a.Targets = []int{i}
+			}
+			add(a)
 		}
 		if p.HP < p.MaxHP && len(p.Hand) > 0 {
 			add(Action{Type: "sg_skill", Skill: "qingnang", Cards: p.Hand[:1], Targets: []int{i}})
@@ -226,8 +272,10 @@ func sgBotValue(id int) int {
 		return 70
 	case "ex_nihilo":
 		return 90
-	case "slash":
+	case "slash", "fire_slash", "thunder_slash":
 		return 40
+	case "analeptic":
+		return 65
 	}
 	if SGCardTypes[c.Kind].Slot != "" {
 		return 30

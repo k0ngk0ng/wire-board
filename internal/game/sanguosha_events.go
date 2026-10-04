@@ -29,6 +29,7 @@ func (s *State) sgEvent(e SGEvent) {
 	g := s.Sanguosha
 	switch e.Type {
 	case "cleanup":
+		g.Revealed = nil
 		s.sgFinishCards(e.Cards)
 	case "draw":
 		s.sgDraw(e.Actor, e.Amount)
@@ -51,6 +52,7 @@ func (s *State) sgEvent(e SGEvent) {
 		s.Turn = e.Actor
 		g.Players[e.Actor].Used = map[string]int{}
 		g.SkipPlay = false
+		g.SkipDraw = false
 		g.InPlay = false
 		s.Phase = "sg_start"
 		s.sgLog("%s 的回合开始", s.sgName(e.Actor))
@@ -75,7 +77,7 @@ func (s *State) sgEvent(e SGEvent) {
 			}
 		}
 	case "draw_phase":
-		if !s.sgAlive(e.Actor) {
+		if g.SkipDraw || !s.sgAlive(e.Actor) {
 			return
 		}
 		if s.sgHas(e.Actor, "tuxi") || s.sgHas(e.Actor, "luoyi") || s.sgHas(e.Actor, "yingzi") {
@@ -106,6 +108,9 @@ func (s *State) sgEvent(e SGEvent) {
 			g.Pending.Cards = p.Hand
 		}
 	case "next":
+		for i := range g.Players {
+			g.Players[i].Drank = 0
+		}
 		next := s.sgNext(e.Actor)
 		if next <= e.Actor {
 			s.Round++
@@ -171,6 +176,9 @@ func (s *State) sgEvent(e SGEvent) {
 			s.sgAsk(e.Actor, "double_sword", "是否发动雌雄双股剑？", e)
 		}
 	case "slash_tieji":
+		if s.sgSlashImmune(e) {
+			return
+		}
 		if s.sgHas(e.Actor, "tieji") {
 			s.sgAsk(e.Actor, "tieji", "是否发动铁骑？", e)
 		} else {
@@ -187,32 +195,22 @@ func (s *State) sgEvent(e SGEvent) {
 		if !s.sgAlive(e.Target) {
 			return
 		}
-		if e.Kind == "slash" && s.sgWeapon(e.Actor) == "ice_sword" && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
+		if sgIsSlash(e.Kind) && s.sgWeapon(e.Actor) == "ice_sword" && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
 			s.sgAsk(e.Actor, "ice_sword", "是否用寒冰剑防止伤害，改为弃对方至多两张牌？", e)
 			return
 		}
 		next := e
 		next.Type = "damage"
 		s.sgPush(next)
-		if e.Kind == "slash" && s.sgWeapon(e.Actor) == "kylin_bow" && (s.sgEquip(e.Target, "offense") != 0 || s.sgEquip(e.Target, "defense") != 0) {
+		if sgIsSlash(e.Kind) && s.sgWeapon(e.Actor) == "kylin_bow" && (s.sgEquip(e.Target, "offense") != 0 || s.sgEquip(e.Target, "defense") != 0) {
 			s.sgAsk(e.Actor, "kylin_bow", "是否弃置目标的一张坐骑？", e)
 		}
+	case "chain_damage":
+		if s.sgAlive(e.Target) && g.Players[e.Target].Chained {
+			s.sgDamage(e)
+		}
 	case "damage":
-		if !s.sgAlive(e.Target) {
-			return
-		}
-		amount := e.Amount
-		if e.Actor >= 0 && e.Actor == s.Turn && g.Players[e.Actor].Used["luoyi"] > 0 && (e.Kind == "slash" || e.Kind == "duel") {
-			amount++
-		}
-		g.Players[e.Target].HP -= amount
-		e.Amount = amount
-		s.sgLog("%s 对 %s 造成 %d 点伤害（%s）", s.sgName(e.Actor), s.sgName(e.Target), amount, SGCardTypes[e.Kind].Name)
-		e.Type = "hurt"
-		s.sgPush(e)
-		if g.Players[e.Target].HP <= 0 {
-			s.sgPush(SGEvent{Type: "dying", Actor: e.Actor, Target: e.Target, Step: s.Turn})
-		}
+		s.sgDamage(e)
 	case "lose_hp":
 		if s.sgAlive(e.Target) {
 			g.Players[e.Target].HP -= e.Amount
@@ -377,22 +375,13 @@ func (s *State) sgResponsePrompt(e SGEvent) {
 	if !s.sgAlive(e.Target) {
 		return
 	}
-	if e.Kind == "slash" && s.sgWeapon(e.Actor) != "qinggang_sword" && sgCard(s.sgEquip(e.Target, "armor")).Kind == "renwang_shield" && len(e.Cards) > 0 {
-		black := true
-		for _, id := range e.Cards {
-			if c := sgCard(id); c.Suit == 1 || c.Suit == 3 {
-				black = false
-			}
-		}
-		if black {
-			s.sgLog("%s 的仁王盾令黑色杀无效", s.sgName(e.Target))
-			return
-		}
+	if s.sgSlashImmune(e) {
+		return
 	}
 	s.sgAsk(e.Target, "card", "请响应「"+SGCardTypes[e.Kind].Name+"」", e)
 }
 func sgWanted(e SGEvent) string {
-	if e.Kind == "slash" || e.Kind == "archery_attack" {
+	if sgIsSlash(e.Kind) || e.Kind == "archery_attack" {
 		return "jink"
 	}
 	return "slash"
@@ -405,7 +394,7 @@ func (s *State) sgResponseSuccess(e SGEvent) {
 		return
 	}
 	switch e.Kind {
-	case "slash":
+	case "slash", "fire_slash", "thunder_slash":
 		e.Type = "defended"
 		s.sgPush(e)
 	case "duel":
@@ -439,7 +428,24 @@ func (s *State) sgEffect(e SGEvent) {
 		s.sgPush(SGEvent{Type: "judge", Actor: e.Target, Target: e.Actor, Kind: e.Kind, Cards: e.Cards})
 		return
 	}
+	if (e.Kind == "savage_assault" || e.Kind == "archery_attack") && sgCard(s.sgEquip(e.Target, "armor")).Kind == "vine" {
+		s.sgLog("%s 的藤甲令「%s」无效", s.sgName(e.Target), SGCardTypes[e.Kind].Name)
+		return
+	}
 	switch e.Kind {
+	case "analeptic":
+		g.Players[e.Target].Drank++
+	case "iron_chain":
+		g.Players[e.Target].Chained = !g.Players[e.Target].Chained
+		word := "重置"
+		if g.Players[e.Target].Chained {
+			word = "横置"
+		}
+		s.sgLog("%s 被%s", s.sgName(e.Target), word)
+	case "fire_attack":
+		if len(g.Players[e.Target].Hand) > 0 {
+			s.sgAsk(e.Target, "fire_reveal", "火攻：展示一张手牌", e)
+		}
 	case "peach":
 		s.sgHeal(e.Target, 1)
 	case "ex_nihilo":
@@ -455,7 +461,7 @@ func (s *State) sgEffect(e SGEvent) {
 		if len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip)+len(g.Players[e.Target].Judgment) > 0 {
 			s.sgAsk(e.Actor, "steal", "选择目标区域的一张牌", e)
 		}
-	case "indulgence", "lightning":
+	case "indulgence", "lightning", "supply_shortage":
 		if len(e.Cards) > 0 {
 			for _, id := range e.Cards {
 				g.Table = sgRemove(g.Table, id)
@@ -539,6 +545,12 @@ func (s *State) sgJudgeResult(e SGEvent) {
 		if c.Suit != 1 && s.sgAlive(e.Target) {
 			s.sgAsk(e.Target, "ganglie", "弃两张手牌，否则受到刚烈的1点伤害", e)
 		}
+	case "supply_shortage":
+		if c.Suit != 2 {
+			g.SkipDraw = true
+			s.sgLog("%s 因兵粮寸断跳过摸牌阶段", s.sgName(e.Actor))
+		}
+		s.sgFinishCards(e.Cards)
 	case "indulgence":
 		if c.Suit != 1 {
 			g.SkipPlay = true
@@ -547,7 +559,7 @@ func (s *State) sgJudgeResult(e SGEvent) {
 		s.sgFinishCards(e.Cards)
 	case "lightning":
 		if c.Suit == 0 && c.Rank >= 2 && c.Rank <= 9 {
-			s.sgPush(SGEvent{Type: "damage", Actor: -1, Target: e.Actor, Kind: "lightning", Cards: e.Cards, Amount: 3}, SGEvent{Type: "cleanup", Cards: e.Cards})
+			s.sgPush(SGEvent{Type: "damage", Actor: -1, Target: e.Actor, Kind: "lightning", Cards: e.Cards, Amount: 3, Nature: "thunder"}, SGEvent{Type: "cleanup", Cards: e.Cards})
 		} else {
 			s.sgPassLightning(e)
 		}

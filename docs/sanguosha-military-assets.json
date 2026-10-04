@@ -1,0 +1,75 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "cards/fire_slash.webp": "image/big-card/fire_slash.png",
+    "cards/thunder_slash.webp": "image/big-card/thunder_slash.png",
+    "cards/analeptic.webp": "image/big-card/analeptic.png",
+    "cards/fire_attack.webp": "image/big-card/fire_attack.png",
+    "cards/iron_chain.webp": "image/big-card/iron_chain.png",
+    "cards/supply_shortage.webp": "image/big-card/supply_shortage.png",
+    "cards/fan.webp": "image/big-card/fan.png",
+    "cards/guding_blade.webp": "image/big-card/guding_blade.png",
+    "cards/vine.webp": "image/big-card/vine.png",
+    "cards/silver_lion.webp": "image/big-card/silver_lion.png",
+    "cards/hualiu.webp": "image/big-card/hualiu.png"
+  },
+  "assets": [
+    {
+      "file": "cards/analeptic.webp",
+      "sha256": "3047c49be1fcf9163697e0ac5020e7a581c2117a69104c94d8e660d30700db66",
+      "bytes": 13522
+    },
+    {
+      "file": "cards/fan.webp",
+      "sha256": "5a4517c9e90d84d70cf5e9615e8fb884e4ec656143a73749e86a9accc9ce0fbe",
+      "bytes": 15260
+    },
+    {
+      "file": "cards/fire_attack.webp",
+      "sha256": "236c067b45236ccb2abf2b0f7ba8aeb7b837f591adf0aaa272db098b3da169be",
+      "bytes": 16246
+    },
+    {
+      "file": "cards/fire_slash.webp",
+      "sha256": "562cf66be6b9f7578c5c9fb0606c706d13ee4211e45d54636c679b19538144a5",
+      "bytes": 15026
+    },
+    {
+      "file": "cards/guding_blade.webp",
+      "sha256": "aa5f397b240bbeabd6a651733b57be1d9ea85b2b4f465b50baa6b719007152ce",
+      "bytes": 14998
+    },
+    {
+      "file": "cards/hualiu.webp",
+      "sha256": "912543daa8bf4891661c4804fa3a13217961864909504a9809967c4df7bba6a4",
+      "bytes": 12676
+    },
+    {
+      "file": "cards/iron_chain.webp",
+      "sha256": "b9a12d147ed6555ca390335f5c43fbb4b6e9e12b110b02c5c45a437c9bdd1b62",
+      "bytes": 18216
+    },
+    {
+      "file": "cards/silver_lion.webp",
+      "sha256": "391362b70f00f7f8cade1ed62df71e0b86a62ccc429f8398b6e9ab830ebbcab1",
+      "bytes": 16290
+    },
+    {
+      "file": "cards/supply_shortage.webp",
+      "sha256": "3a087e135a5f8565a2ce682469287ef113cdef8410bd838b88ac25254e5d162f",
+      "bytes": 16236
+    },
+    {
+      "file": "cards/thunder_slash.webp",
+      "sha256": "8b2ff94f4a42dd6e67f1df46313805e28f5778a249d48a53b7b12edf449953d7",
+      "bytes": 15222
+    },
+    {
+      "file": "cards/vine.webp",
+      "sha256": "66d771c8788c5036c90020edf10c42dc6852d84f8cf750bd697fa016543a6b8c",
+      "bytes": 15092
+    }
+  ],
+  "cdnVerified": true
+}
