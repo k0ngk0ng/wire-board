@@ -147,8 +147,8 @@ func (s *State) sgGodRespond(i int, a Action, q SGPrompt) (bool, error) {
 		}
 		for _, id := range a.Cards {
 			s.sgTakeTable(id)
-			g.Players[i].Hand = append(g.Players[i].Hand, id)
 		}
+		s.sgGain(i, a.Cards)
 		s.sgFinishCards(q.Cards)
 		s.sgLog("%s 涉猎获得 %d 张不同花色的牌", s.sgName(i), len(a.Cards))
 	case "gongxin":

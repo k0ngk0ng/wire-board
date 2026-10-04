@@ -84,7 +84,7 @@ func (s *State) sgGodStarsRespond(i int, a Action, q SGPrompt) (bool, error) {
 		for _, id := range a.Take {
 			p.Stars = sgRemove(p.Stars, id)
 		}
-		p.Hand = append(p.Hand, a.Take...)
+		s.sgGain(i, a.Take)
 		p.Stars = append(p.Stars, a.Cards...)
 		s.sgLog("%s 交换了 %d 张手牌与星", s.sgName(i), len(a.Cards))
 	case "kuangfeng", "dawu":

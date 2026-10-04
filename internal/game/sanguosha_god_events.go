@@ -17,6 +17,9 @@ func (s *State) sgGodAddMark(i int, key string, n int) {
 	p.Marks[key] += n
 }
 func (s *State) sgGodDrawCount(i, n int) int {
+	if s.sgHas(i, "jie_yingzi") {
+		n++
+	}
 	if s.sgHas(i, "juejing") {
 		p := s.Sanguosha.Players[i]
 		n += max(0, p.MaxHP-p.HP)
@@ -121,7 +124,7 @@ func (s *State) sgGodTrick(i int, kind string) {
 	if !sgIsDelayed(kind) {
 		es = append(es, SGEvent{Type: "wumou", Actor: i})
 	}
-	es = append(es, SGEvent{Type: "jilve_jizhi", Actor: i})
+	es = append(es, SGEvent{Type: "jie_jizhi", Actor: i}, SGEvent{Type: "jilve_jizhi", Actor: i})
 	s.sgPush(es...)
 }
 func (s *State) sgGodEvent(e SGEvent) bool {
