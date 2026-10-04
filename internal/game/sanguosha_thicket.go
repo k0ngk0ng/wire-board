@@ -97,7 +97,7 @@ func (s *State) sgThicketDamageDealt(e SGEvent) {
 		es = append(es, next)
 	}
 	g := s.Sanguosha
-	if s.sgAlive(e.Actor) && e.Actor != g.Lord && sgGeneral(g.Players[e.Actor].General).Kingdom == "qun" && s.sgHas(g.Lord, "baonue") {
+	if s.sgAlive(e.Actor) && e.Actor != g.Lord && s.sgKingdom(e.Actor) == "qun" && s.sgHas(g.Lord, "baonue") {
 		es = append(es, SGEvent{Type: "baonue", Actor: e.Actor, Target: g.Lord})
 	}
 	s.sgPush(es...)
@@ -246,6 +246,7 @@ func (s *State) sgThicketEvent(e SGEvent) bool {
 			} else if who == b {
 				before, after = len(bh), len(ah)
 			}
+			s.sgTuntianLoss(who, before > 0)
 			if before > 0 && after == 0 && s.sgHas(who, "lianying") {
 				s.sgPush(SGEvent{Type: "optional_draw", Actor: who, Kind: "lianying", Amount: 1})
 			}

@@ -45,6 +45,9 @@ func (s *State) sgEvent(e SGEvent) {
 	if s.sgFireEvent(e) {
 		return
 	}
+	if s.sgMountainEvent(e) {
+		return
+	}
 	if s.sgThicketEvent(e) {
 		return
 	}
@@ -71,6 +74,8 @@ func (s *State) sgEvent(e SGEvent) {
 			s.sgPush(SGEvent{Type: "next", Actor: e.Actor})
 			return
 		}
+		s.Turn = e.Actor
+		g.TurnSequence++
 		if g.Players[e.Actor].Flipped {
 			g.Players[e.Actor].Flipped = false
 			s.sgLog("%s 将武将牌翻回正面，跳过本回合", s.sgName(e.Actor))
@@ -82,10 +87,12 @@ func (s *State) sgEvent(e SGEvent) {
 		g.SkipPlay = false
 		g.SkipDraw = false
 		g.SkipJudge = false
+		g.SkipDiscard = false
+		g.DiscardPhase = false
 		g.InPlay = false
 		s.Phase = "sg_start"
 		s.sgLog("%s 的回合开始", s.sgName(e.Actor))
-		s.sgPush(SGEvent{Type: "thicket_start", Actor: e.Actor}, SGEvent{Type: "guanxing", Actor: e.Actor}, SGEvent{Type: "luoshen", Actor: e.Actor}, SGEvent{Type: "shensu_judge", Actor: e.Actor}, SGEvent{Type: "delayed", Actor: e.Actor}, SGEvent{Type: "draw_phase", Actor: e.Actor}, SGEvent{Type: "shensu_play", Actor: e.Actor}, SGEvent{Type: "play_phase", Actor: e.Actor})
+		s.sgPush(SGEvent{Type: "huashen_select", Actor: e.Actor}, SGEvent{Type: "mountain_start", Actor: e.Actor}, SGEvent{Type: "thicket_start", Actor: e.Actor}, SGEvent{Type: "guanxing", Actor: e.Actor}, SGEvent{Type: "luoshen", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "judge"}, SGEvent{Type: "shensu_judge", Actor: e.Actor}, SGEvent{Type: "delayed", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "draw"}, SGEvent{Type: "draw_phase", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "play"}, SGEvent{Type: "shensu_play", Actor: e.Actor}, SGEvent{Type: "fangquan", Actor: e.Actor}, SGEvent{Type: "play_phase", Actor: e.Actor})
 	case "guanxing":
 		if !s.sgHas(e.Actor, "guanxing") {
 			return
@@ -122,13 +129,18 @@ func (s *State) sgEvent(e SGEvent) {
 			g.InPlay = true
 		}
 	case "discard_phase":
-		if !s.sgAlive(e.Actor) {
+		if !s.sgAlive(e.Actor) || g.SkipDiscard {
 			return
 		}
 		p := g.Players[e.Actor]
 		if !e.Flag && s.sgHas(e.Actor, "keji") && p.Used["keji_slash"] == 0 && len(p.Hand) > s.sgHandLimit(e.Actor) {
 			s.sgAsk(e.Actor, "keji", "是否发动克己，跳过弃牌？", e)
 			return
+		}
+		if !g.DiscardPhase {
+			g.DiscardedHand = nil
+			g.DiscardedOther = nil
+			g.DiscardPhase = true
 		}
 		due := len(p.Hand) - s.sgHandLimit(e.Actor)
 		if due > 0 {
@@ -139,6 +151,20 @@ func (s *State) sgEvent(e SGEvent) {
 	case "next":
 		for i := range g.Players {
 			g.Players[i].Drank = 0
+		}
+		if len(g.ExtraTurns) > 0 {
+			if len(g.ResumeTurns) == 0 {
+				g.ResumeTurns = append(g.ResumeTurns, e.Actor)
+			}
+			extra := g.ExtraTurns[0]
+			g.ExtraTurns = g.ExtraTurns[1:]
+			s.sgLog("%s 的额外回合", s.sgName(extra))
+			s.sgPush(SGEvent{Type: "begin", Actor: extra})
+			return
+		}
+		if len(g.ResumeTurns) > 0 {
+			e.Actor = g.ResumeTurns[0]
+			g.ResumeTurns = nil
 		}
 		next := s.sgNext(e.Actor)
 		if next <= e.Actor {
@@ -152,7 +178,7 @@ func (s *State) sgEvent(e SGEvent) {
 		}
 		slot := SGCardTypes[e.Kind].Slot
 		if old := s.sgEquip(e.Actor, slot); old != 0 {
-			s.sgDiscard(e.Actor, []int{old})
+			s.sgSpent(e.Actor, []int{old})
 		}
 		for _, id := range e.Cards {
 			s.sgTakeTable(id)
@@ -190,7 +216,7 @@ func (s *State) sgEvent(e SGEvent) {
 		if s.sgHas(e.Target, "kongcheng") && len(g.Players[e.Target].Hand) == 0 {
 			return
 		}
-		e.Type = "slash_weapon"
+		e.Type = "xiangle"
 		s.sgPush(e)
 		if s.sgHas(e.Target, "liuli") && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
 			s.sgAsk(e.Target, "liuli", "是否弃一张牌发动流离，转移此杀？", e)
@@ -201,7 +227,7 @@ func (s *State) sgEvent(e SGEvent) {
 		}
 		e.Type = "slash_tieji"
 		s.sgPush(e)
-		if s.sgWeapon(e.Actor) == "double_sword" && sgGeneral(g.Players[e.Actor].General).Female != sgGeneral(g.Players[e.Target].General).Female {
+		if s.sgWeapon(e.Actor) == "double_sword" && s.sgFemale(e.Actor) != s.sgFemale(e.Target) {
 			s.sgAsk(e.Actor, "double_sword", "是否发动雌雄双股剑？", e)
 		}
 	case "slash_tieji":
@@ -261,6 +287,18 @@ func (s *State) sgEvent(e SGEvent) {
 			return
 		}
 		events := []SGEvent{}
+		if sgIsSlash(e.Kind) {
+			next := e
+			next.Type = "beige"
+			next.Step = 0
+			events = append(events, next)
+		}
+		if s.sgHas(e.Target, "xinsheng") {
+			next := e
+			next.Type = "xinsheng"
+			next.Flag = false
+			events = append(events, next)
+		}
 		for _, skill := range []string{"jianxiong", "fankui", "ganglie", "yiji", "jieming", "fangzhu"} {
 			if s.sgHas(e.Target, skill) {
 				times := 1
@@ -424,7 +462,7 @@ func (s *State) sgEvent(e SGEvent) {
 func (s *State) sgSlashResponse(e SGEvent) SGEvent {
 	e.Type = "response"
 	e.Count = 1
-	if s.sgHas(e.Actor, "wushuang") || s.sgHas(e.Actor, "roulin") && sgGeneral(s.Sanguosha.Players[e.Target].General).Female || s.sgHas(e.Target, "roulin") && sgGeneral(s.Sanguosha.Players[e.Actor].General).Female {
+	if s.sgHas(e.Actor, "wushuang") || s.sgHas(e.Actor, "roulin") && s.sgFemale(e.Target) || s.sgHas(e.Target, "roulin") && s.sgFemale(e.Actor) {
 		e.Count = 2
 	}
 	e.Step = 0
@@ -573,6 +611,26 @@ func (s *State) sgJudgeResult(e SGEvent) {
 	s.sgLog("%s 的判定结果：%s %d「%s」", s.sgName(e.Actor), []string{"♠", "♥", "♣", "♦"}[c.Suit], c.Rank, SGCardTypes[c.Kind].Name)
 	after := SGEvent{Type: "tiandu", Actor: e.Actor, Aux: e.Aux}
 	switch e.Kind {
+	case "tuntian":
+		if c.Suit != 1 && slices.Contains(g.Table, c.ID) && s.sgHas(e.Actor, "tuntian") {
+			s.sgTakeTable(c.ID)
+			g.Players[e.Actor].Fields = append(g.Players[e.Actor].Fields, c.ID)
+			s.sgLog("%s 屯田成功，现有 %d 张田", s.sgName(e.Actor), len(g.Players[e.Actor].Fields))
+		}
+	case "beige":
+		switch c.Suit {
+		case 1:
+			s.sgHeal(e.Actor, 1)
+		case 3:
+			s.sgDraw(e.Actor, 2)
+		case 2:
+			s.sgPush(SGEvent{Type: "beige_discard", Actor: e.Target})
+		case 0:
+			if s.sgAlive(e.Target) {
+				g.Players[e.Target].Flipped = !g.Players[e.Target].Flipped
+				s.sgLog("%s 因悲歌翻面", s.sgName(e.Target))
+			}
+		}
 	case "baonue":
 		if c.Suit == 0 {
 			s.sgHeal(e.Target, 1)
@@ -641,7 +699,7 @@ func (s *State) sgJudgeResult(e SGEvent) {
 			s.sgPassLightning(e)
 		}
 	}
-	if !red && e.Actor != g.Lord && s.sgAlive(e.Actor) && sgGeneral(g.Players[e.Actor].General).Kingdom == "wei" && s.sgHas(g.Lord, "songwei") {
+	if !red && e.Actor != g.Lord && s.sgAlive(e.Actor) && s.sgKingdom(e.Actor) == "wei" && s.sgHas(g.Lord, "songwei") {
 		s.sgPush(SGEvent{Type: "songwei", Actor: e.Actor, Target: g.Lord})
 	}
 	s.sgPush(after)
@@ -649,6 +707,7 @@ func (s *State) sgJudgeResult(e SGEvent) {
 func (s *State) sgDie(i, killer int) {
 	g := s.Sanguosha
 	p := &g.Players[i]
+	duanchang := s.sgHas(i, "duanchang")
 	p.Dead = true
 	s.sgLog("%s 阵亡，身份为%s", s.sgName(i), map[string]string{"lord": "主公", "loyalist": "忠臣", "rebel": "反贼", "renegade": "内奸"}[p.Role])
 	alive := s.sgOrder(0)
@@ -685,6 +744,9 @@ func (s *State) sgDie(i, killer int) {
 		return
 	}
 	s.sgPush(SGEvent{Type: "death_loot", Actor: killer, Target: i})
+	if duanchang {
+		s.sgLoseSkills(killer)
+	}
 }
 func (s *State) sgSupport(e SGEvent) {
 	g := s.Sanguosha
@@ -698,7 +760,7 @@ func (s *State) sgSupport(e SGEvent) {
 		if e.Kind == "jijiang" {
 			kingdom = "shu"
 		}
-		if s.sgAlive(who) && sgGeneral(g.Players[who].General).Kingdom == kingdom {
+		if s.sgAlive(who) && s.sgKingdom(who) == kingdom {
 			e.Target = who
 			s.sgAsk(who, "support", s.sgName(e.Actor)+" 请求「"+SGSkills[e.Kind].Name+"」", e)
 			return
@@ -720,6 +782,8 @@ func (s *State) sgDeathClear(i int) {
 	g.Discard = append(g.Discard, p.Hand...)
 	g.Discard = append(g.Discard, p.Equip...)
 	g.Discard = append(g.Discard, p.Buqu...)
+	g.Discard = append(g.Discard, p.Fields...)
+	p.Fields = nil
 	p.Buqu = nil
 	p.BuquActive = false
 	for _, d := range p.Judgment {

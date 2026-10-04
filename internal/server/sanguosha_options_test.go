@@ -23,7 +23,7 @@ func TestSanguoshaOptionsPermissionsFreezeAndRestore(t *testing.T) {
 	guest.command(current(guest), "ready", nil, 200)
 	change := func(c *testClient, deck string, want int) {
 		r := current(c)
-		c.post("/api/rooms/"+r["id"].(string), map[string]any{"type": "sanguosha_options", "sanguoshaOptions": game.SGOptions{Deck: deck, Packs: []string{"wind", "fire", "thicket"}}, "version": r["version"], "nonce": randomID(12)}, want)
+		c.post("/api/rooms/"+r["id"].(string), map[string]any{"type": "sanguosha_options", "sanguoshaOptions": game.SGOptions{Deck: deck, Packs: []string{"wind", "fire", "thicket", "mountain"}}, "version": r["version"], "nonce": randomID(12)}, want)
 	}
 	change(guest, "standard", 400)
 	change(host, "missing", 400)
@@ -47,8 +47,8 @@ func TestSanguoshaOptionsPermissionsFreezeAndRestore(t *testing.T) {
 	if len(view["cards"].([]any)) != 160 || view["options"].(map[string]any)["deck"] != "military" {
 		t.Fatal("wrong deck in play")
 	}
-	if len(view["generals"].([]any)) != 49 {
-		t.Fatal("wind/fire/thicket catalog missing from room view")
+	if len(view["generals"].([]any)) != 57 {
+		t.Fatal("wind/fire/thicket/mountain catalog missing from room view")
 	}
 	s.mu.Lock()
 	raw, err := json.Marshal(s.rooms[id])
@@ -67,8 +67,8 @@ func TestSanguoshaOptionsPermissionsFreezeAndRestore(t *testing.T) {
 		t.Fatal("deck lost")
 	}
 	for _, options := range []game.SGOptions{restored.SanguoshaOptions, restored.Game.Sanguosha.Options} {
-		if len(options.Packs) != 4 || options.Packs[1] != "wind" || options.Packs[2] != "fire" || options.Packs[3] != "thicket" {
-			t.Fatal("wind/fire/thicket options not persisted", options)
+		if len(options.Packs) != 5 || options.Packs[1] != "wind" || options.Packs[2] != "fire" || options.Packs[3] != "thicket" || options.Packs[4] != "mountain" {
+			t.Fatal("wind/fire/thicket/mountain options not persisted", options)
 		}
 	}
 }

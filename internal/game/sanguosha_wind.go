@@ -48,6 +48,9 @@ func (g *Sanguosha) generalCatalog() []SGGeneral {
 	if slices.Contains(g.Options.Packs, "thicket") {
 		all = append(all, sgThicketGenerals...)
 	}
+	if slices.Contains(g.Options.Packs, "mountain") {
+		all = append(all, sgMountainGenerals...)
+	}
 	return all
 }
 func (s *State) sgLordChoices() {
@@ -61,6 +64,9 @@ func (s *State) sgLordChoices() {
 	}
 	if slices.Contains(g.Options.Packs, "thicket") {
 		lords = append(lords, "caopi", "dongzhuo")
+	}
+	if slices.Contains(g.Options.Packs, "mountain") {
+		lords = append(lords, "liushan", "sunce")
 	}
 	ids := []string{}
 	for _, general := range g.generalCatalog() {
@@ -99,7 +105,7 @@ func (s *State) sgCardColor(i int, ids []int) int {
 }
 
 func (s *State) sgEndPhase(i int) []SGEvent {
-	return []SGEvent{{Type: "discard_phase", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "next", Actor: i}}
+	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
 }
 
 // A separate event stage permits transfer before recipient armor, and avoids
@@ -348,7 +354,7 @@ func (s *State) sgWindRespond(i int, a Action, q SGPrompt) (bool, error) {
 func (s *State) sgHuangtianGive(i int, a Action) error {
 	g := s.Sanguosha
 	p := &g.Players[i]
-	if sgGeneral(p.General).Kingdom != "qun" || i == g.Lord || !s.sgHas(g.Lord, "huangtian") || p.Used["huangtian_give"] > 0 {
+	if s.sgKingdom(i) != "qun" || i == g.Lord || !s.sgHas(g.Lord, "huangtian") || p.Used["huangtian_give"] > 0 {
 		return errors.New("此时不能向主公发动黄天")
 	}
 	if len(a.Targets) != 1 || a.Targets[0] != g.Lord {

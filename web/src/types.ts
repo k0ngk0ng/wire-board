@@ -322,6 +322,15 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  skills?: string[];
+  skillsLost?: boolean;
+  kingdom?: string;
+  female?: boolean;
+  fields?: number[];
+  avatar?: string;
+  avatarSkill?: string;
+  avatarCount?: number;
+  avatars?: string[];
   marks?: Record<string, number>;
   handLimit?: number;
   flipped?: boolean;
@@ -351,6 +360,7 @@ export type SanguoshaState = {
     resolved: boolean;
   };
   huangtianGive?: boolean;
+  zhibaPindian?: boolean;
   options?: SGOptions;
   revealed?: number[];
   players: SGPlayer[];
@@ -371,6 +381,9 @@ export type SanguoshaState = {
   distances?: number[];
   range?: number;
   pending?: {
+    required?: boolean;
+    avatarSkills?: Record<string, string[]>;
+    moves?: { card: number; targets: number[] }[];
     id: number;
     player: number;
     canRespond?: boolean;
