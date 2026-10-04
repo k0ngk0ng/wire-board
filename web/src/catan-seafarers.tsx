@@ -12,11 +12,13 @@ const paints = [
 export function CatanShip({
   assets,
   player,
+  warship = false,
 }: {
   assets: string;
   player: number;
+  warship?: boolean;
 }) {
-  return assets ? (
+  const ship = assets ? (
     <image
       href={`${assets}/catan/seafarers/ship-${colors[player]}-v1.webp`}
       x="-23"
@@ -32,6 +34,23 @@ export function CatanShip({
       stroke="#453b32"
       strokeWidth="1.5"
     />
+  );
+  return (
+    <g>
+      {ship}
+      {warship && (
+        <g pointerEvents="none">
+          <title>战舰</title>
+          <path
+            d="M0-15L9-12V-5Q9 2 0 6Q-9 2-9-5V-12Z"
+            fill="#f9e9ac"
+            stroke="#49341d"
+            strokeWidth="1.5"
+          />
+          <path d="M-4-8L4 0M4-8L-4 0" stroke="#49341d" strokeWidth="2" />
+        </g>
+      )}
+    </g>
   );
 }
 export function CatanPirate({ assets }: { assets: string }) {

@@ -39,14 +39,28 @@ const pattern = new RegExp(
 );
 
 // Parse the stored public text first; a player's chosen name is always literal text.
-export function LogLine({ line, seats }: { line: string; seats: Seat[] }) {
+export function LogLine({
+  line,
+  seats,
+  seatColors,
+}: {
+  line: string;
+  seats: Seat[];
+  seatColors?: string[];
+}) {
   return (
     <>
       {line.split(pattern).map((part, i) => {
         const player = /^玩家 (\d+)$/.exec(part);
         if (player)
           return (
-            <strong key={i}>
+            <strong key={i} className={seatColors ? "log-color" : undefined}>
+              {seatColors && (
+                <i
+                  aria-hidden="true"
+                  style={{ backgroundColor: seatColors[Number(player[1]) - 1] }}
+                />
+              )}
               {seats[Number(player[1]) - 1]?.name || part}
             </strong>
           );
