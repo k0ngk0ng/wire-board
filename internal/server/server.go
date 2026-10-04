@@ -23,14 +23,14 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"unicode"
 	"unicode/utf8"
 )
 
 type Config struct {
-	DataDir, InviteCode, Origin string
-	AssetsBaseURL               string
-	SecureCookie                bool
+	DataDir, InviteCode, Origin                         string
+	AssetsBaseURL                                       string
+	SecureCookie                                        bool
+	AdminUsername, AdminPassword, AdminExistingUsername string
 }
 type User struct {
 	ID   string `json:"id"`
@@ -92,16 +92,19 @@ type bucket struct {
 	Count int
 }
 type Server struct {
-	newGame  func(string, int) (*game.State, error)
-	cancel   context.CancelFunc
-	done     chan struct{}
-	mu       sync.Mutex
-	db       *sql.DB
-	cfg      Config
-	rooms    map[string]*Room
-	watchers map[chan struct{}]bool
-	limits   map[string]bucket
-	files    fs.FS
+	newGame     func(string, int) (*game.State, error)
+	cancel      context.CancelFunc
+	done        chan struct{}
+	mu          sync.Mutex
+	db          *sql.DB
+	cfg         Config
+	rooms       map[string]*Room
+	watchers    map[chan struct{}]bool
+	limits      map[string]bucket
+	files       fs.FS
+	hiddenGames map[string]bool
+	presence    map[string]time.Time
+	connections map[chan struct{}]string
 }
 
 func New(cfg Config, files fs.FS) (*Server, error) {
@@ -135,7 +138,11 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		db.Close()
 		return nil, e
 	}
-	s := &Server{newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files}
+	s := &Server{newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
+	if e = s.initAdmin(); e != nil {
+		db.Close()
+		return nil, e
+	}
 	rows, e := db.Query("SELECT snapshot FROM rooms")
 	if e != nil {
 		db.Close()
@@ -285,6 +292,11 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/login", s.auth)
 	mux.HandleFunc("POST /api/logout", s.logout)
 	mux.HandleFunc("GET /api/state", s.state)
+	mux.HandleFunc("GET /api/admin", s.adminOverview)
+	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
+	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
+	mux.HandleFunc("POST /api/admin/users/{id}", s.adminManageUser)
+	mux.HandleFunc("POST /api/admin/rooms/{id}/close", s.adminCloseRoom)
 	mux.HandleFunc("GET /api/players", s.players)
 	mux.HandleFunc("GET /api/players/{id}", s.profile)
 	mux.HandleFunc("GET /api/friends", s.friends)
@@ -370,7 +382,7 @@ func (s *Server) user(r *http.Request) (User, error) {
 	if e != nil {
 		return u, e
 	}
-	e = s.db.QueryRow("SELECT users.id,users.name FROM sessions JOIN users ON users.id=sessions.user_id WHERE token=? AND expires>?", digest(c.Value), time.Now().Unix()).Scan(&u.ID, &u.Name)
+	e = s.db.QueryRow("SELECT users.id,users.name FROM sessions JOIN users ON users.id=sessions.user_id LEFT JOIN user_controls c ON c.user_id=users.id WHERE token=? AND expires>? AND COALESCE(c.disabled,0)=0", digest(c.Value), time.Now().Unix()).Scan(&u.ID, &u.Name)
 	return u, e
 }
 func (s *Server) needUser(w http.ResponseWriter, r *http.Request) (User, bool) {
@@ -414,11 +426,9 @@ func (s *Server) auth(w http.ResponseWriter, r *http.Request) {
 		fail(w, 400, "昵称需 2–20 字，密码需 8–72 字节")
 		return
 	}
-	for _, c := range req.Name {
-		if !unicode.IsLetter(c) && !unicode.IsNumber(c) && c != '_' && c != '-' {
-			fail(w, 400, "昵称只允许文字、数字、下划线与短横线")
-			return
-		}
+	if !validName(req.Name) {
+		fail(w, 400, "昵称只允许文字、数字、下划线与短横线")
+		return
 	}
 	var u User
 	var hash string
@@ -439,12 +449,17 @@ func (s *Server) auth(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
-		e := s.db.QueryRow("SELECT id,name,password FROM users WHERE name=?", req.Name).Scan(&u.ID, &u.Name, &hash)
+		e := s.db.QueryRow("SELECT u.id,u.name,u.password FROM users u LEFT JOIN user_controls c ON c.user_id=u.id WHERE u.name=? AND COALESCE(c.disabled,0)=0", req.Name).Scan(&u.ID, &u.Name, &hash)
 		if e != nil || bcrypt.CompareHashAndPassword([]byte(hash), []byte(req.Password)) != nil {
 			fail(w, 401, "昵称或密码不正确")
 			return
 		}
 	}
+	if _, err := s.db.Exec(`INSERT INTO user_controls(user_id,created_at,last_login) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET last_login=excluded.last_login`, u.ID, now.Unix(), now.Unix()); err != nil {
+		fail(w, 500, "无法更新账号状态")
+		return
+	}
+	s.seen(u.ID)
 	token := randomID(32)
 	expiry := time.Now().Add(30 * 24 * time.Hour)
 	if _, e := s.db.Exec("INSERT INTO sessions VALUES(?,?,?)", digest(token), u.ID, expiry.Unix()); e != nil {
@@ -456,14 +471,17 @@ func (s *Server) auth(w http.ResponseWriter, r *http.Request) {
 	respond(w, 200, u)
 }
 func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if u, err := s.user(r); err == nil {
+		delete(s.presence, u.ID)
+	}
 	if c, e := r.Cookie("wb_session"); e == nil {
 		_, _ = s.db.Exec("DELETE FROM sessions WHERE token=?", digest(c.Value))
 	}
 	http.SetCookie(w, &http.Cookie{Name: "wb_session", Value: "", Path: "/", HttpOnly: true, Secure: s.cfg.SecureCookie, SameSite: http.SameSiteStrictMode, MaxAge: -1})
 	respond(w, 200, map[string]bool{"ok": true})
-	s.mu.Lock()
 	s.broadcast()
-	s.mu.Unlock()
 }
 func seatIndex(room *Room, id string) int {
 	for i, p := range room.Seats {
@@ -491,13 +509,14 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	s.seen(u.ID)
 	rooms := []any{}
 	for _, room := range s.rooms {
-		if room.Status == "waiting" || room.Status == "playing" {
+		if !s.hiddenGames[room.Kind] && (room.Status == "waiting" || room.Status == "playing") {
 			rooms = append(rooms, summary(room))
 		}
 	}
-	out := map[string]any{"user": u, "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "railMaps": game.RailMapList()}
+	out := map[string]any{"user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "railMaps": game.RailMapList()}
 	room := s.current(u.ID)
 	if room == nil {
 		room = s.watching(u.ID)
@@ -563,6 +582,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		Password         string         `json:"password"`
 	}
 	if !decode(w, r, &req) {
+		return
+	}
+	if s.hiddenGames[req.Kind] {
+		fail(w, 403, "该桌游已下架，暂时不能创建牌桌")
 		return
 	}
 	req.Name = strings.TrimSpace(req.Name)
@@ -648,6 +671,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		Enabled          *bool          `json:"enabled,omitempty"`
 	}
 	if !decode(w, r, &req) {
+		return
+	}
+	if s.hiddenGames[room.Kind] && (req.Type == "join" || req.Type == "start" || req.Type == "rematch") {
+		fail(w, 403, "该桌游已下架，暂时不能加入或新开局")
 		return
 	}
 	if len(req.Nonce) < 8 || len(req.Nonce) > 100 {
@@ -998,7 +1025,8 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
 		fail(w, 403, "请求来源不匹配")
 		return
 	}
-	if _, ok := s.needUser(w, r); !ok {
+	u, ok := s.needUser(w, r)
+	if !ok {
 		return
 	}
 	conn, e := websocket.Accept(w, r, &websocket.AcceptOptions{})
@@ -1010,8 +1038,10 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
 	ch := make(chan struct{}, 1)
 	s.mu.Lock()
 	s.watchers[ch] = true
+	s.connections[ch] = u.ID
+	s.seen(u.ID)
 	s.mu.Unlock()
-	defer func() { s.mu.Lock(); delete(s.watchers, ch); s.mu.Unlock() }()
+	defer func() { s.mu.Lock(); delete(s.watchers, ch); delete(s.connections, ch); s.mu.Unlock() }()
 	ch <- struct{}{}
 	ticker := time.NewTicker(25 * time.Second)
 	defer ticker.Stop()
@@ -1040,6 +1070,11 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
 			if e != nil {
 				return
 			}
+			s.mu.Lock()
+			if _, err := s.user(r); err == nil {
+				s.seen(u.ID)
+			}
+			s.mu.Unlock()
 		}
 	}
 }

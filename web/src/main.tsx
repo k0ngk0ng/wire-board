@@ -1,3 +1,5 @@
+import { AdminDashboard } from "./admin";
+import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
 import type { SGOptions } from "./types";
 import React, {
@@ -514,6 +516,16 @@ function Modal({
   );
 }
 function App() {
+  const [adminOpen, setAdminOpen] = useState(
+    () => new URLSearchParams(location.search).get("admin") === "1",
+  );
+  const openAdmin = (value: boolean) => {
+    setAdminOpen(value);
+    const url = new URL(location.href);
+    if (value) url.searchParams.set("admin", "1");
+    else url.searchParams.delete("admin");
+    history.replaceState(null, "", url);
+  };
   const [state, setState] = useState<State>();
   useTurnTitle(state?.room);
   const [loaded, setLoaded] = useState(false);
@@ -521,6 +533,10 @@ function App() {
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(false);
   const [create, setCreate] = useState("");
+  useEffect(() => {
+    if (create && state && !state.availableGames.includes(create))
+      setCreate("");
+  }, [state?.availableGames, create]);
   const [join, setJoin] = useState<Room>();
   const [joinMode, setJoinMode] = useState<"join" | "watch">("join");
   const [invitedRoom, setInvitedRoom] = useState(
@@ -788,6 +804,8 @@ function App() {
       />
     );
   const room = state.room;
+  const canAdmin =
+    state.user.role === "admin" || state.user.role === "superadmin";
   const autoPlay = !!room?.seats[room.you]?.autoPlay;
   const canAutoPlay =
     room?.status === "playing" &&
@@ -823,11 +841,20 @@ function App() {
               <Logo />
               <nav>
                 <span className="nav-active">
-                  {room ? "游戏牌桌" : "桌游大厅"}
+                  {adminOpen ? "管理后台" : room ? "游戏牌桌" : "桌游大厅"}
                 </span>
                 <span className="nav-caption">让相聚，多一局。</span>
               </nav>
               <div className="header-right">
+                {canAdmin && (
+                  <button
+                    className={`subtle admin-nav-button ${adminOpen ? "active" : ""}`}
+                    onClick={() => openAdmin(!adminOpen)}
+                  >
+                    <ShieldCheck size={16} />
+                    {adminOpen ? "返回游戏" : "管理后台"}
+                  </button>
+                )}
                 <button
                   className="subtle"
                   onClick={() => setShowLeaderboard(true)}
@@ -896,7 +923,23 @@ function App() {
                 </button>
               </div>
             )}
-            {!room ? (
+            {adminOpen ? (
+              canAdmin ? (
+                <AdminDashboard
+                  user={state.user}
+                  onBack={() => openAdmin(false)}
+                  onChange={refresh}
+                />
+              ) : (
+                <main className="admin-entry-denied">
+                  <ShieldCheck size={32} />
+                  <h2>此页面仅向管理员开放</h2>
+                  <button className="outline" onClick={() => openAdmin(false)}>
+                    返回大厅
+                  </button>
+                </main>
+              )
+            ) : !room ? (
               <Lobby
                 state={state}
                 onCreate={setCreate}
@@ -1041,25 +1084,35 @@ function App() {
                   <div className="closed-panel">
                     <Flag size={40} />
                     <h2>
-                      {room.closeReason === "inactive"
-                        ? "牌桌已因闲置关闭"
-                        : "这张牌桌已结束"}
+                      {room.closeReason === "unpublished"
+                        ? "这款桌游已下架"
+                        : room.closeReason === "admin"
+                          ? "管理员已结束牌桌"
+                          : room.closeReason === "inactive"
+                            ? "牌桌已因闲置关闭"
+                            : "这张牌桌已结束"}
                     </h2>
                     <p>
-                      {room.closeReason === "inactive"
-                        ? "连续 24 小时无人操作，系统已自动关闭牌桌；本局不计胜负与积分。"
-                        : "休息一下，或者准备下一局。"}
+                      {room.closeReason === "unpublished"
+                        ? "等待中的牌桌已关闭，可以返回大厅选择其他游戏。"
+                        : room.closeReason === "admin"
+                          ? "本局已中止，不计胜负与积分。"
+                          : room.closeReason === "inactive"
+                            ? "连续 24 小时无人操作，系统已自动关闭牌桌；本局不计胜负与积分。"
+                            : "休息一下，或者准备下一局。"}
                     </p>
-                    {!room.spectating && room.host === state.user.id && (
-                      <button
-                        className="primary"
-                        disabled={busy}
-                        onClick={() => roomCommand("rematch")}
-                      >
-                        <RotateCcw size={18} />
-                        再开一局
-                      </button>
-                    )}
+                    {!room.spectating &&
+                      room.host === state.user.id &&
+                      state.availableGames.includes(room.kind) && (
+                        <button
+                          className="primary"
+                          disabled={busy}
+                          onClick={() => roomCommand("rematch")}
+                        >
+                          <RotateCcw size={18} />
+                          再开一局
+                        </button>
+                      )}
                   </div>
                 ) : (
                   <>
@@ -1069,7 +1122,11 @@ function App() {
                     {room.game?.finished && (
                       <Results
                         room={room}
-                        host={!room.spectating && room.host === state.user.id}
+                        host={
+                          !room.spectating &&
+                          room.host === state.user.id &&
+                          state.availableGames.includes(room.kind)
+                        }
                         busy={busy}
                         command={roomCommand}
                       />
@@ -1128,7 +1185,7 @@ function App() {
                 )}
               </main>
             )}
-            {!room && (
+            {!room && !adminOpen && (
               <footer>
                 围桌 WIRE BOARD <span>好游戏，和好朋友一起。</span>
                 <span>私人牌桌 · 自动保存</span>
@@ -1137,6 +1194,7 @@ function App() {
             {create && (
               <Create
                 kind={create}
+                availableGames={state.availableGames}
                 busy={busy}
                 onClose={() => setCreate("")}
                 onSubmit={(body) =>
@@ -1335,13 +1393,13 @@ function Auth({
           <div className="auth-caption">
             <span>
               <Gem size={17} />
-              璀璨宝石
+              卡牌与策略
             </span>
             <span>
               <TrainFront size={17} />
-              铁路环游
+              探索与冒险
             </span>
-            <span>卡坦岛 · 卡卡颂 · 三国杀 · 经典桌游，无限好时光</span>
+            <span>经典桌游 · 好友相聚 · 无限好时光</span>
           </div>
         </div>
         <small>YOUR FRIENDS. YOUR TABLE. YOUR NEXT MOVE.</small>
@@ -1445,6 +1503,10 @@ function Lobby({
   busy: boolean;
 }) {
   const [filter, setFilter] = useState("all");
+  useEffect(() => {
+    if (filter !== "all" && !state.availableGames.includes(filter))
+      setFilter("all");
+  }, [state.availableGames, filter]);
   const rooms = state.rooms
     .filter(
       (r) =>
@@ -1535,95 +1597,96 @@ function Lobby({
           <small>MAKE TIME TO PLAY</small>
         </div>
       </section>
+      {!state.availableGames.length && (
+        <p className="admin-empty">桌游正在准备中，请稍后再来看看。</p>
+      )}
       <section className="game-selection">
-        {["splendor", "rail", "catan", "carcassonne", "sanguosha", "dota"].map(
-          (kind) => (
-            <article className="game-feature" key={kind}>
-              <Cover kind={kind} />
-              <div className="feature-info">
-                <div className="feature-kicker">
-                  {kind === "dota"
-                    ? "DEFEND. OUTWIT. ADVANCE."
-                    : kind === "sanguosha"
-                      ? "CHOOSE YOUR SIDE."
-                      : kind === "carcassonne"
-                        ? "ONE TILE. A WHOLE WORLD."
-                        : kind === "catan"
-                          ? "BUILD. TRADE. SETTLE."
-                          : kind === "splendor"
-                            ? "THE ART OF COLLECTING"
-                            : "EVERY ROUTE TELLS A STORY"}
-                  <span>{kind === "dota" ? "原创桌游" : "基础版"}</span>
-                </div>
-                <h2>
-                  {gameName(kind)}
-                  <small>
-                    {kind === "dota"
-                      ? "DotA · Lane Tactics"
-                      : kind === "sanguosha"
-                        ? "Sanguosha"
-                        : kind === "carcassonne"
-                          ? "Carcassonne"
-                          : kind === "catan"
-                            ? "CATAN"
-                            : kind === "splendor"
-                              ? "Splendor"
-                              : "Ticket to Ride"}
-                  </small>
-                </h2>
-                <p>
-                  {kind === "dota"
-                    ? "暗选行动，协同进军。以熟悉的英雄，赢下一场桌上遗迹之战。"
-                    : kind === "sanguosha"
-                      ? "执一手好牌，藏一重身份，与好友共赴三国风云。"
-                      : kind === "carcassonne"
-                        ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
-                        : kind === "catan"
-                          ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
-                          : kind === "splendor"
-                            ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
-                            : "从海岸到海岸，让你的铁路连接每一个目的地。"}
-                </p>
-                <div className="feature-bottom">
-                  <span>
-                    <span>
-                      <Users size={15} />
-                      {kind === "dota"
-                        ? "2 / 4 / 6"
-                        : kind === "sanguosha"
-                          ? "4–8"
-                          : kind === "catan"
-                            ? "3–4"
-                            : kind === "splendor"
-                              ? "2–4"
-                              : "2–5"}{" "}
-                      人
-                    </span>{" "}
-                    <span>
-                      <Clock size={15} />
-                      {kind === "dota"
-                        ? "20–40"
-                        : kind === "sanguosha"
-                          ? "30–60"
-                          : kind === "carcassonne"
-                            ? "30–45"
-                            : kind === "catan"
-                              ? "45–90"
-                              : kind === "splendor"
-                                ? "30"
-                                : "45–60"}{" "}
-                      分钟
-                    </span>
-                  </span>
-                  <button className="primary" onClick={() => onCreate(kind)}>
-                    <Plus size={17} />
-                    开一桌
-                  </button>
-                </div>
+        {state.availableGames.map((kind) => (
+          <article className="game-feature" key={kind}>
+            <Cover kind={kind} />
+            <div className="feature-info">
+              <div className="feature-kicker">
+                {kind === "dota"
+                  ? "DEFEND. OUTWIT. ADVANCE."
+                  : kind === "sanguosha"
+                    ? "CHOOSE YOUR SIDE."
+                    : kind === "carcassonne"
+                      ? "ONE TILE. A WHOLE WORLD."
+                      : kind === "catan"
+                        ? "BUILD. TRADE. SETTLE."
+                        : kind === "splendor"
+                          ? "THE ART OF COLLECTING"
+                          : "EVERY ROUTE TELLS A STORY"}
+                <span>{kind === "dota" ? "原创桌游" : "基础版"}</span>
               </div>
-            </article>
-          ),
-        )}
+              <h2>
+                {gameName(kind)}
+                <small>
+                  {kind === "dota"
+                    ? "DotA · Lane Tactics"
+                    : kind === "sanguosha"
+                      ? "Sanguosha"
+                      : kind === "carcassonne"
+                        ? "Carcassonne"
+                        : kind === "catan"
+                          ? "CATAN"
+                          : kind === "splendor"
+                            ? "Splendor"
+                            : "Ticket to Ride"}
+                </small>
+              </h2>
+              <p>
+                {kind === "dota"
+                  ? "暗选行动，协同进军。以熟悉的英雄，赢下一场桌上遗迹之战。"
+                  : kind === "sanguosha"
+                    ? "执一手好牌，藏一重身份，与好友共赴三国风云。"
+                    : kind === "carcassonne"
+                      ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
+                      : kind === "catan"
+                        ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
+                        : kind === "splendor"
+                          ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
+                          : "从海岸到海岸，让你的铁路连接每一个目的地。"}
+              </p>
+              <div className="feature-bottom">
+                <span>
+                  <span>
+                    <Users size={15} />
+                    {kind === "dota"
+                      ? "2 / 4 / 6"
+                      : kind === "sanguosha"
+                        ? "4–8"
+                        : kind === "catan"
+                          ? "3–4"
+                          : kind === "splendor"
+                            ? "2–4"
+                            : "2–5"}{" "}
+                    人
+                  </span>{" "}
+                  <span>
+                    <Clock size={15} />
+                    {kind === "dota"
+                      ? "20–40"
+                      : kind === "sanguosha"
+                        ? "30–60"
+                        : kind === "carcassonne"
+                          ? "30–45"
+                          : kind === "catan"
+                            ? "45–90"
+                            : kind === "splendor"
+                              ? "30"
+                              : "45–60"}{" "}
+                    分钟
+                  </span>
+                </span>
+                <button className="primary" onClick={() => onCreate(kind)}>
+                  <Plus size={17} />
+                  开一桌
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
       </section>
       <section className="room-list">
         <div className="section-heading">
@@ -1633,7 +1696,11 @@ function Lobby({
             </h2>
             <p>朋友已经到了？找张桌子坐下吧。</p>
           </div>
-          <button className="outline" onClick={() => onCreate("splendor")}>
+          <button
+            className="outline"
+            disabled={!state.availableGames.length}
+            onClick={() => onCreate(state.availableGames[0])}
+          >
             <Plus size={17} />
             创建房间
           </button>
@@ -1647,15 +1714,17 @@ function Lobby({
             ["carcassonne", "卡卡颂"],
             ["sanguosha", "三国杀"],
             ["dota", "兵线争锋"],
-          ].map(([k, label]) => (
-            <button
-              className={filter === k ? "active" : ""}
-              key={k}
-              onClick={() => setFilter(k)}
-            >
-              {label}
-            </button>
-          ))}
+          ]
+            .filter(([k]) => k === "all" || state.availableGames.includes(k))
+            .map(([k, label]) => (
+              <button
+                className={filter === k ? "active" : ""}
+                key={k}
+                onClick={() => setFilter(k)}
+              >
+                {label}
+              </button>
+            ))}
           <span className="live-dot">实时更新</span>
         </div>
         {rooms.length ? (
@@ -1758,7 +1827,10 @@ function Lobby({
             <p>创建一个房间，邀请朋友一起入座。</p>
             <button
               className="subtle"
-              onClick={() => onCreate(filter === "all" ? "splendor" : filter)}
+              disabled={!state.availableGames.length}
+              onClick={() =>
+                onCreate(filter === "all" ? state.availableGames[0] : filter)
+              }
             >
               摆好第一张牌桌
               <ArrowRight size={16} />
@@ -1784,11 +1856,13 @@ function Lobby({
   );
 }
 function Create({
+  availableGames,
   kind,
   busy,
   onClose,
   onSubmit,
 }: {
+  availableGames: string[];
   kind: string;
   busy: boolean;
   onClose: () => void;
@@ -1800,6 +1874,9 @@ function Create({
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
+  useEffect(() => {
+    if (!availableGames.includes(k)) setK(availableGames[0] || "");
+  }, [availableGames, k]);
   const [capacity, setCapacity] = useState(4);
   return (
     <Modal title="摆好一张新牌桌" onClose={onClose}>
@@ -1818,14 +1895,7 @@ function Create({
         }}
       >
         <div className="choose-games">
-          {[
-            "splendor",
-            "rail",
-            "catan",
-            "carcassonne",
-            "sanguosha",
-            "dota",
-          ].map((x) => (
+          {availableGames.map((x) => (
             <button
               type="button"
               className={k === x ? "selected" : ""}

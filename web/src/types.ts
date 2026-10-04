@@ -1,4 +1,8 @@
-export type User = { id: string; name: string };
+export type User = {
+  id: string;
+  name: string;
+  role?: "player" | "admin" | "superadmin";
+};
 export type Seat = User & {
   ready: boolean;
   left: boolean;
@@ -181,6 +185,7 @@ export type Room = {
   updated: number;
 };
 export type State = {
+  availableGames: string[];
   railMaps: RailMapSpec[];
   user: User;
   rooms: Room[];
