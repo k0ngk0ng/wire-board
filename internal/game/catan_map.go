@@ -29,12 +29,13 @@ type CatanVertex struct {
 	Level int     `json:"level"`
 }
 type CatanEdge struct {
-	Tiles []int `json:"tiles,omitempty"`
-	Ship  bool  `json:"ship,omitempty"`
-	ID    int   `json:"id"`
-	A     int   `json:"a"`
-	B     int   `json:"b"`
-	Owner int   `json:"owner"`
+	Warship bool  `json:"warship,omitempty"`
+	Tiles   []int `json:"tiles,omitempty"`
+	Ship    bool  `json:"ship,omitempty"`
+	ID      int   `json:"id"`
+	A       int   `json:"a"`
+	B       int   `json:"b"`
+	Owner   int   `json:"owner"`
 }
 type CatanPort struct {
 	Edge     int `json:"edge"`
