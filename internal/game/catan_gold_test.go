@@ -177,6 +177,7 @@ func TestCatanGoldBotsUseOnlyTheirOwnHand(t *testing.T) {
 }
 
 func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
+	fogGames, fogDiscoveries := 0, 0
 	for _, scenario := range []struct {
 		name             string
 		players, victory int
@@ -190,6 +191,10 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 		{"shores6", 6, 14, (*Catan).makeSeafarersShoresSix},
 		{"islands5", 5, 13, (*Catan).makeSeafarersIslandsSix},
 		{"islands6", 6, 13, (*Catan).makeSeafarersIslandsSix},
+		{"fog3", 3, 12, (*Catan).makeSeafarersFogThree},
+		{"fog4", 4, 12, (*Catan).makeSeafarersFogFour},
+		{"fog5", 5, 12, (*Catan).makeSeafarersFogSix},
+		{"fog6", 6, 12, (*Catan).makeSeafarersFogSix},
 	} {
 		for _, variable := range []bool{false, true} {
 			if variable && scenario.players > 4 {
@@ -213,6 +218,12 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 					if scenario.players > 4 {
 						resourceTotal, developmentTotal = 24, 34
 					}
+					var fogTerrain, fogNumbers []int
+					initialFog := 0
+					if s.Catan.Seafarers.Fog != nil {
+						fogTerrain, fogNumbers = fogInventory(s.Catan)
+						initialFog = len(s.Catan.Seafarers.Fog.Terrain)
+					}
 					for steps := 0; !s.Finished && steps < 8000; steps++ {
 						player := s.Turn
 						if actor := s.CatanPendingActor(); actor >= 0 {
@@ -231,6 +242,12 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 						}
 						helperApply(t, s, player, a)
 						g := s.Catan
+						if g.Seafarers.Fog != nil {
+							terrain, numbers := fogInventory(g)
+							if !reflect.DeepEqual(terrain, fogTerrain) || !reflect.DeepEqual(numbers, fogNumbers) {
+								t.Fatal("exploration components not conserved")
+							}
+						}
 						for color, bank := range g.Bank {
 							total := bank
 							if bank < 0 {
@@ -265,12 +282,21 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 							s = &restored
 						}
 					}
+					if s.Catan.Seafarers.Fog != nil {
+						discovered := initialFog - len(s.Catan.Seafarers.Fog.Terrain)
+						fogGames++
+						fogDiscoveries += discovered
+						t.Logf("finished after revealing %d of %d fog hexes", discovered, initialFog)
+					}
 					if !s.Finished || len(s.Winners) != 1 || s.Catan.Players[s.Winners[0]].Score < scenario.victory {
 						t.Fatal("scenario bots did not finish", s.Round, s.Phase)
 					}
 				})
 			}
 		}
+	}
+	if fogGames > 0 && fogDiscoveries == 0 {
+		t.Fatal("fog simulations never exercised discovery")
 	}
 }
 
