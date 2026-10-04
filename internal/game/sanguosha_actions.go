@@ -12,6 +12,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	g.Pending = nil
 	p := &g.Players[i]
 	pass := a.Choice == "pass"
+	if handled, err := s.sgJieRespond(i, a, prompt); handled {
+		return err
+	}
 	if handled, err := s.sgGuhuoRespond(i, a, prompt); handled {
 		return err
 	}
@@ -82,6 +85,23 @@ func (s *State) sgRespond(i int, a Action) error {
 		g.Deck = append(append(append([]int{}, a.Cards...), g.Deck...), a.Take...)
 	case "draw_phase":
 		switch a.Choice {
+		case "jie_tuxi":
+			n := s.sgGodDrawCount(i, 2)
+			if !s.sgHas(i, "jie_tuxi") || len(a.Targets) < 1 || len(a.Targets) > n || !sgSubset(a.Targets, s.sgOrder(0)) {
+				return errors.New("突袭目标数量不合法")
+			}
+			for _, t := range a.Targets {
+				if t == i || len(g.Players[t].Hand) == 0 || len(g.Players[t].Hand) < len(p.Hand) {
+					return errors.New("突袭目标手牌数须不少于自己")
+				}
+			}
+			es := []SGEvent{{Type: "draw", Actor: i, Amount: n - len(a.Targets)}}
+			for _, t := range s.sgOrder(s.Turn) {
+				if slices.Contains(a.Targets, t) {
+					es = append(es, SGEvent{Type: "jie_tuxi_take", Actor: i, Target: t})
+				}
+			}
+			s.sgPush(es...)
 		case "shelie":
 			if !s.sgHas(i, "shelie") {
 				return errors.New("没有涉猎")
@@ -102,7 +122,7 @@ func (s *State) sgRespond(i int, a Action) error {
 				ids := clone(g.Players[t].Hand)
 				shuffle(ids)
 				s.sgLose(t, ids[:1])
-				p.Hand = append(p.Hand, ids[0])
+				s.sgGain(i, ids[:1])
 			}
 			s.sgLog("%s 发动突袭，获得 %d 张手牌", s.sgName(i), len(a.Targets))
 		case "zaiqi", "haoshi":
@@ -162,6 +182,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			e.Flag = !e.Flag
 			e.Targets = nil
 			s.sgPush(e)
+			s.sgJieCardUsed(i, "nullification", a.Cards)
 			s.sgSpent(i, a.Cards)
 			s.sgLog("%s 使用「无懈可击」", s.sgName(i))
 			s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
@@ -208,6 +229,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		if kind != "peach" && !(kind == "analeptic" && i == e.Target) {
 			return errors.New("救人需要桃；酒只能自救")
 		}
+		s.sgJieCardUsed(i, kind, a.Cards)
 		s.sgSpent(i, a.Cards)
 		amount := 1
 		if i != e.Target && s.sgHas(e.Target, "jiuyuan") && s.sgKingdom(i) == "wu" {
@@ -252,6 +274,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			p.Used["keji_slash"]++
 		}
 		s.sgResponseSuccess(e)
+		s.sgJieCardUsed(i, wanted, a.Cards)
 		s.sgSpent(i, a.Cards)
 		if wanted == "jink" {
 			s.sgJinkPlayed(i)
@@ -280,6 +303,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			return err
 		}
 		s.sgLog("%s 响应 %s 的%s", s.sgName(i), s.sgName(e.Actor), SGSkills[e.Kind].Name)
+		s.sgJieCardUsed(i, wanted, a.Cards)
 		if e.Next == nil {
 			s.sgLose(i, a.Cards)
 			return s.sgUse(e.Actor, kind, a.Cards, e.Targets, false)
@@ -397,21 +421,33 @@ func (s *State) sgRespond(i int, a Action) error {
 				return errors.New("请选择装备、判定牌或随机手牌")
 			}
 		}
+		if !sgStealDiscards(e.Kind) && i == e.Target && slices.Contains(p.Hand, id) {
+			return nil
+		}
+		if sgStealDiscards(e.Kind) && !s.sgCanDiscard(i, e.Target, id) {
+			return errors.New("奇才：不能弃置对方的非坐骑装备")
+		}
+		if e.Kind == "chuli" {
+			if s.sgCardFor(e.Target, id).Suit == 0 {
+				e.Cards = append(e.Cards, e.Target)
+			}
+			s.sgPush(e)
+		}
 		if e.Kind == "ice_sword" && e.Count > 1 {
 			next := e
 			next.Count--
 			next.Type = "ice_continue"
 			s.sgPush(next)
 		}
-		if e.Kind == "dismantlement" || e.Kind == "ice_sword" || e.Kind == "mengjin" || e.Kind == "tiaoxin" {
+		if sgStealDiscards(e.Kind) {
 			s.sgRecordDiscard(e.Target, []int{id})
 		}
 		s.sgLose(e.Target, []int{id})
-		if e.Kind == "dismantlement" || e.Kind == "ice_sword" || e.Kind == "mengjin" || e.Kind == "tiaoxin" {
+		if sgStealDiscards(e.Kind) {
 			g.Discard = append(g.Discard, id)
 			s.sgLog("%s 弃置 %s 的「%s」", s.sgName(i), s.sgName(e.Target), SGCardTypes[sgCard(id).Kind].Name)
 		} else {
-			p.Hand = append(p.Hand, id)
+			s.sgGain(i, []int{id})
 			s.sgLog("%s 获得 %s 的一张牌", s.sgName(i), s.sgName(e.Target))
 		}
 
@@ -419,7 +455,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		if !slices.Contains(g.Grace, a.Card) {
 			return errors.New("请选择五谷丰登中的牌")
 		}
-		p.Hand = append(p.Hand, a.Card)
+		s.sgGain(i, []int{a.Card})
 		g.Grace = sgRemove(g.Grace, a.Card)
 		s.sgLog("%s 从五谷丰登获得「%s」", s.sgName(i), SGCardTypes[sgCard(a.Card).Kind].Name)
 	case "guicai":
@@ -436,7 +472,7 @@ func (s *State) sgRespond(i int, a Action) error {
 	case "tiandu":
 		if !pass {
 			s.sgTakeTable(e.Aux)
-			p.Hand = append(p.Hand, e.Aux)
+			s.sgGain(i, []int{e.Aux})
 		} else {
 			s.sgFinishCards([]int{e.Aux})
 		}
@@ -457,7 +493,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			return errors.New("请选择遗计中的牌")
 		}
 		t := a.Targets[0]
-		g.Players[t].Hand = append(g.Players[t].Hand, a.Cards...)
+		s.sgGain(t, a.Cards)
 		remaining := clone(prompt.Cards)
 		for _, id := range a.Cards {
 			remaining = sgRemove(remaining, id)
@@ -478,7 +514,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		shuffle(ids)
 		id := ids[0]
 		s.sgLose(e.Actor, []int{id})
-		p.Hand = append(p.Hand, id)
+		s.sgGain(i, []int{id})
 		s.sgLog("反间：%s 获得 %s %d「%s」", s.sgName(i), []string{"♠", "♥", "♣", "♦"}[sgCard(id).Suit], sgCard(id).Rank, SGCardTypes[sgCard(id).Kind].Name)
 		if sgCard(id).Suit != suit {
 			s.sgPush(SGEvent{Type: "damage", Actor: e.Actor, Target: i, Kind: "fanjian", Amount: 1})
@@ -512,6 +548,9 @@ func (s *State) sgSkill(i int, a Action) error {
 	}
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
+	}
+	if handled, err := s.sgJieSkill(i, a); handled {
+		return err
 	}
 	if handled, err := s.sgGodSkill(i, a); handled {
 		return err
@@ -550,7 +589,7 @@ func (s *State) sgSkill(i int, a Action) error {
 		}
 		before := p.Used[skill]
 		s.sgLose(i, a.Cards)
-		g.Players[target].Hand = append(g.Players[target].Hand, a.Cards...)
+		s.sgGain(target, a.Cards)
 		p.Used[skill] += len(a.Cards)
 		if before < 2 && p.Used[skill] >= 2 {
 			s.sgHeal(i, 1)

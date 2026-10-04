@@ -20,6 +20,18 @@ func (s *State) sgView(viewer int) map[string]any {
 			v["skillsLost"] = p.SkillsLost
 			v["fields"] = p.Fields
 			v["starCount"] = len(p.Stars)
+			v["silenced"] = p.Silenced
+			v["handSealed"] = p.HandSealed
+			v["yijiCount"] = len(p.Yiji)
+			v["qianxunCount"] = len(p.Qianxun)
+			v["jieLuoyi"] = p.JieLuoyi
+			disabled := []string{}
+			for _, skill := range s.sgSkills(i) {
+				if !s.sgHas(i, skill) {
+					disabled = append(disabled, skill)
+				}
+			}
+			v["disabledSkills"] = disabled
 			v["galeTargets"] = p.Gale
 			v["fogTargets"] = p.Fog
 			v["armorDisabled"] = s.sgGodArmorOff(i)
@@ -40,6 +52,8 @@ func (s *State) sgView(viewer int) map[string]any {
 			v["choices"] = p.Choices
 			v["avatars"] = p.Avatars
 			v["stars"] = p.Stars
+			v["yiji"] = p.Yiji
+			v["qianxun"] = p.Qianxun
 		}
 		players = append(players, v)
 	}
@@ -63,6 +77,18 @@ func (s *State) sgView(viewer int) map[string]any {
 			prompt["count"] = e.Count
 			prompt["step"] = e.Step
 			prompt["choices"] = p.Choices
+			if p.Kind == "jie_fanjian" || p.Kind == "jie_tieji_discard" {
+				prompt["suit"] = e.Color
+			}
+			if p.Kind == "steal" && sgStealDiscards(e.Kind) {
+				blocked := []int{}
+				for _, id := range g.Players[e.Target].Equip {
+					if !s.sgCanDiscard(viewer, e.Target, id) {
+						blocked = append(blocked, id)
+					}
+				}
+				prompt["protectedCards"] = blocked
+			}
 			prompt["targets"] = p.Targets
 			if p.Kind == "huashen" {
 				prompt["required"] = p.Event.Flag

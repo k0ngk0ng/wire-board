@@ -1031,3 +1031,8 @@
     align-self: start;
   }
 }
+
+.sg-skill-tag.sg-skill-inactive {
+  text-decoration: line-through;
+  opacity: .65;
+}

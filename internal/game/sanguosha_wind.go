@@ -39,6 +39,13 @@ func init() {
 
 func (g *Sanguosha) generalCatalog() []SGGeneral {
 	all := append([]SGGeneral{}, SGGenerals...)
+	if g.Options.StandardVersion == "breakthrough" {
+		for i, general := range all {
+			if revised := sgGeneral("jie_" + general.ID); revised.ID != "" {
+				all[i] = revised
+			}
+		}
+	}
 	if slices.Contains(g.Options.Packs, "wind") {
 		all = append(all, sgWindGenerals...)
 	}
@@ -59,6 +66,9 @@ func (g *Sanguosha) generalCatalog() []SGGeneral {
 func (s *State) sgLordChoices() {
 	g := s.Sanguosha
 	lords := []string{"caocao", "liubei", "sunquan"}
+	if g.Options.StandardVersion == "breakthrough" {
+		lords = []string{"jie_caocao", "jie_liubei", "sunquan"}
+	}
 	if slices.Contains(g.Options.Packs, "wind") {
 		lords = append(lords, "zhangjiao")
 	}
@@ -111,7 +121,7 @@ func (s *State) sgCardColor(i int, ids []int) int {
 }
 
 func (s *State) sgEndPhase(i int) []SGEvent {
-	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "qinyin", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "god_finish", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
+	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "qinyin", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "stage", Kind: "finish"}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "god_finish", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
 }
 
 // A separate event stage permits transfer before recipient armor, and avoids
@@ -325,7 +335,7 @@ func (s *State) sgWindRespond(i int, a Action, q SGPrompt) (bool, error) {
 			old := e.Aux
 			s.sgTakeTable(old)
 			s.sgPay(i, a.Cards)
-			p.Hand = append(p.Hand, old)
+			s.sgGain(i, []int{old})
 			e.Aux = a.Cards[0]
 			s.sgLog("%s 发动鬼道，替换并获得原判定牌", s.sgName(i))
 		}
@@ -376,7 +386,7 @@ func (s *State) sgHuangtianGive(i int, a Action) error {
 		return errors.New("黄天只能交出闪或闪电")
 	}
 	s.sgLose(i, a.Cards)
-	g.Players[g.Lord].Hand = append(g.Players[g.Lord].Hand, a.Cards...)
+	s.sgGain(g.Lord, a.Cards)
 	p.Used["huangtian_give"]++
 	s.sgLog("%s 发动黄天，将「%s」交给主公", s.sgName(i), SGCardTypes[kind].Name)
 	return nil
@@ -415,7 +425,7 @@ func (s *State) sgVisibleCatalog(viewer int) []SGCard {
 			}
 		}
 	}
-	if q := g.Pending; q != nil && (q.Kind == "guicai" || q.Kind == "jilve_guicai" || q.Kind == "guidao" || q.Kind == "tiandu") {
+	if q := g.Pending; q != nil && (q.Kind == "guicai" || q.Kind == "jie_guicai" || q.Kind == "jilve_guicai" || q.Kind == "guidao" || q.Kind == "tiandu") {
 		filter(q.Event.Actor, q.Event.Aux)
 	}
 	return cards

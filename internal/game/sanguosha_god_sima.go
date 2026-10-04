@@ -79,22 +79,7 @@ func (s *State) sgGodSimaRespond(i int, a Action, q SGPrompt) (bool, error) {
 			return true, errors.New("请选择发动或放弃极略集智")
 		}
 		s.sgGodAddMark(i, "bear", -1)
-		ids := s.sgDrawIDs(1)
-		if len(ids) == 0 {
-			return true, nil
-		}
-		id := ids[0]
-		s.sgPlaceTable(-1, ids)
-		s.sgLog("%s 极略·集智亮出「%s」", s.sgName(i), SGCardTypes[sgCard(id).Kind].Name)
-		if !sgBasic(sgCard(id).Kind) {
-			s.sgTakeTable(id)
-			p.Hand = append(p.Hand, id)
-		} else if len(p.Hand) > 0 {
-			s.sgAsk(i, "jilve_jizhi_exchange", "集智：可将一张手牌置于牌堆顶，获得亮出的基本牌；否则弃置此牌", SGEvent{Actor: i, Cards: ids})
-			g.Pending.Cards = ids
-		} else {
-			s.sgFinishCards(ids)
-		}
+		s.sgJizhiReveal(i)
 	case "jilve_jizhi_exchange":
 		if a.Choice == "pass" {
 			s.sgFinishCards(e.Cards)
@@ -105,7 +90,7 @@ func (s *State) sgGodSimaRespond(i int, a Action, q SGPrompt) (bool, error) {
 		}
 		// Both movements are one exchange. Lianying must not see an empty intermediate hand.
 		p.Hand = sgRemove(p.Hand, a.Cards[0])
-		p.Hand = append(p.Hand, e.Cards[0])
+		s.sgGain(i, e.Cards[:1])
 		s.sgTakeTable(e.Cards[0])
 		g.Deck = append(clone(a.Cards), g.Deck...)
 		s.sgTuntianLoss(i, true)

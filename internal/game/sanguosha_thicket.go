@@ -74,6 +74,7 @@ func (s *State) sgThicketDraw(i int, skill string) error {
 	s.sgPlaceTable(-1, ids)
 	names := []string{}
 	hearts := []int{}
+	got := []int{}
 	for _, id := range ids {
 		c := sgCard(id)
 		names = append(names, fmt.Sprintf("%s%d「%s」", []string{"♠", "♥", "♣", "♦"}[c.Suit], c.Rank, SGCardTypes[c.Kind].Name))
@@ -81,16 +82,22 @@ func (s *State) sgThicketDraw(i int, skill string) error {
 			hearts = append(hearts, id)
 		} else {
 			s.sgTakeTable(id)
-			p.Hand = append(p.Hand, id)
+			got = append(got, id)
 		}
 	}
 	s.sgLog("%s 再起亮出：%s", s.sgName(i), strings.Join(names, "、"))
 	s.sgHeal(i, len(hearts))
 	s.sgFinishCards(hearts)
+	s.sgGain(i, got)
 	return nil
 }
 func (s *State) sgThicketDamageDealt(e SGEvent) {
 	es := []SGEvent{}
+	if sgIsSlash(e.Kind) {
+		next := e
+		next.Type = "liyu"
+		es = append(es, next)
+	}
 	if s.sgHas(e.Actor, "lieren") && sgIsSlash(e.Kind) && !e.Transfer && !e.Chain && s.sgAlive(e.Target) && len(s.Sanguosha.Players[e.Actor].Hand) > 0 && len(s.Sanguosha.Players[e.Target].Hand) > 0 {
 		next := e
 		next.Type = "lieren"
@@ -110,7 +117,7 @@ func (s *State) sgThicketCleanup(e SGEvent) {
 	for _, who := range s.sgOrder(s.Turn) {
 		if who != e.Actor && s.sgHas(who, "juxiang") {
 			s.sgTakeTable(e.Cards[0])
-			g.Players[who].Hand = append(g.Players[who].Hand, e.Cards[0])
+			s.sgGain(who, e.Cards[:1])
 			s.sgLog("%s 发动巨象，获得结算后的南蛮入侵", s.sgName(who))
 			return
 		}
@@ -247,8 +254,11 @@ func (s *State) sgThicketEvent(e SGEvent) bool {
 				before, after = len(bh), len(ah)
 			}
 			s.sgTuntianLoss(who, before > 0)
-			if before > 0 && after == 0 && s.sgHas(who, "lianying") {
-				s.sgPush(SGEvent{Type: "optional_draw", Actor: who, Kind: "lianying", Amount: 1})
+			if before > 0 && after == 0 {
+				s.sgEmptyHand(who, before)
+			}
+			if who == a || who == b {
+				s.sgHandGained(who, g.Players[who].Hand)
 			}
 		}
 		s.sgLog("%s 发动缔盟，%s 与 %s 交换手牌（%d ↔ %d张）", s.sgName(e.Actor), s.sgName(a), s.sgName(b), len(ah), len(bh))
@@ -302,8 +312,7 @@ func (s *State) sgThicketRespond(i int, a Action, q SGPrompt) (bool, error) {
 				return true, errors.New("请选择获得或放弃")
 			}
 			dead := &g.Players[e.Target]
-			p.Hand = append(p.Hand, dead.Hand...)
-			p.Hand = append(p.Hand, dead.Equip...)
+			s.sgGain(i, append(clone(dead.Hand), dead.Equip...))
 			dead.Hand = []int{}
 			dead.Equip = []int{}
 			s.sgLog("%s 发动行殇，获得 %s 的手牌与装备", s.sgName(i), s.sgName(e.Target))
@@ -368,7 +377,7 @@ func (s *State) sgThicketRespond(i int, a Action, q SGPrompt) (bool, error) {
 			return true, errors.New("好施必须交给其他手牌最少的角色")
 		}
 		s.sgLose(i, a.Cards)
-		g.Players[a.Targets[0]].Hand = append(g.Players[a.Targets[0]].Hand, a.Cards...)
+		s.sgGain(a.Targets[0], a.Cards)
 		s.sgLog("%s 发动好施，交给 %s %d 张手牌", s.sgName(i), s.sgName(a.Targets[0]), len(a.Cards))
 	case "benghuai":
 		if a.Choice == "hp" {

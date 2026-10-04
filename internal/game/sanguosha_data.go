@@ -160,7 +160,7 @@ func sgCard(id int) SGCard {
 	return sgCards[id-1]
 }
 func sgGeneral(id string) SGGeneral {
-	for _, catalog := range [][]SGGeneral{SGGenerals, sgWindGenerals, sgFireGenerals, sgThicketGenerals, sgMountainGenerals, sgGodGenerals} {
+	for _, catalog := range [][]SGGeneral{SGGenerals, sgWindGenerals, sgFireGenerals, sgThicketGenerals, sgMountainGenerals, sgGodGenerals, sgJieGenerals} {
 		for _, g := range catalog {
 			if g.ID == id {
 				return g

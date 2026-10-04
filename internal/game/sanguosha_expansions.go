@@ -7,12 +7,19 @@ import (
 
 // Saved with the game; omitted fields in pre-expansion snapshots mean classic.
 type SGOptions struct {
-	Mode  string   `json:"mode,omitempty"`
-	Deck  string   `json:"deck,omitempty"`
-	Packs []string `json:"packs,omitempty"`
+	StandardVersion string   `json:"standardVersion,omitempty"`
+	Mode            string   `json:"mode,omitempty"`
+	Deck            string   `json:"deck,omitempty"`
+	Packs           []string `json:"packs,omitempty"`
 }
 
 func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
+	if o.StandardVersion == "" {
+		o.StandardVersion = "classic"
+	}
+	if o.StandardVersion != "classic" && o.StandardVersion != "breakthrough" {
+		return o, errors.New("未知标准武将版本")
+	}
 	if o.Mode == "" {
 		o.Mode = "identity"
 	}
@@ -170,7 +177,7 @@ func (s *State) sgDamage(e SGEvent) {
 	}
 	amount := e.Amount
 	if e.DamageStage == 0 && !e.Chain && !e.Transfer && s.sgAlive(e.Actor) {
-		if e.Actor == s.Turn && g.Players[e.Actor].Used["luoyi"] > 0 && (sgIsSlash(e.Kind) || e.Kind == "duel") {
+		if (e.Actor == s.Turn && g.Players[e.Actor].Used["luoyi"] > 0 || g.Players[e.Actor].JieLuoyi) && (sgIsSlash(e.Kind) || e.Kind == "duel") {
 			amount++
 		}
 		if sgIsSlash(e.Kind) && s.sgWeapon(e.Actor) == "guding_blade" && len(g.Players[e.Target].Hand) == 0 {

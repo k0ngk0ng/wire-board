@@ -60,7 +60,11 @@ func (s *State) sgMountainStart(i int) {
 		s.sgAwaken(i, "zaoxian", -1, "jixi")
 	}
 	if s.sgHas(i, "hunzi") && p.Marks["hunzi"] == 0 && p.HP == 1 {
-		s.sgAwaken(i, "hunzi", -1, "yingzi", "yinghun")
+		yingzi := "yingzi"
+		if s.Sanguosha.RulesVersion >= 1 {
+			yingzi = "jie_yingzi"
+		}
+		s.sgAwaken(i, "hunzi", -1, yingzi, "yinghun")
 	}
 	if s.sgHas(i, "ruoyu") && p.Marks["ruoyu"] == 0 {
 		lowest := true
@@ -172,7 +176,7 @@ func (s *State) sgMountainEvent(e SGEvent) bool {
 		s.sgAsk(e.Target, "tiaoxin", "挑衅：对发起者使用杀，或令其弃置你的一张手牌或装备", e)
 		g.Pending.Targets = []int{e.Actor}
 	case "tiaoxin_discard":
-		if s.sgAlive(e.Actor) && s.sgAlive(e.Target) && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
+		if s.sgAlive(e.Actor) && len(s.sgDiscardable(e.Actor, e.Target, false)) > 0 {
 			e.Kind = "tiaoxin"
 			s.sgAsk(e.Actor, "steal", "挑衅：弃置对方一张手牌或装备", e)
 		}
@@ -317,7 +321,7 @@ func (s *State) sgMountainRespond(i int, a Action, q SGPrompt) (bool, error) {
 			ids := clone(g.Players[who].Hand)
 			shuffle(ids)
 			s.sgLose(who, ids[:1])
-			p.Hand = append(p.Hand, ids[0])
+			s.sgGain(i, ids[:1])
 		}
 		s.sgLog("%s 发动巧变，获得 %d 张手牌", s.sgName(i), len(a.Targets))
 	case "qiaobian_move":
@@ -409,16 +413,16 @@ func (s *State) sgMountainRespond(i int, a Action, q SGPrompt) (bool, error) {
 			return true, errors.New("请选择该弃牌阶段弃置的手牌")
 		}
 		g.Discard = sgRemove(g.Discard, a.Card)
-		g.Players[e.Actor].Hand = append(g.Players[e.Actor].Hand, a.Card)
-		count := 0
+		s.sgGain(e.Actor, []int{a.Card})
+		got := []int{}
 		for _, id := range append(clone(g.DiscardedHand), g.DiscardedOther...) {
 			if slices.Contains(g.Discard, id) {
 				g.Discard = sgRemove(g.Discard, id)
-				p.Hand = append(p.Hand, id)
-				count++
+				got = append(got, id)
 			}
 		}
-		s.sgLog("%s 固政：返还 %s 一张牌，获得其余 %d 张弃牌", s.sgName(i), s.sgName(e.Actor), count)
+		s.sgLog("%s 固政：返还 %s 一张牌，获得其余 %d 张弃牌", s.sgName(i), s.sgName(e.Actor), len(got))
+		s.sgGain(i, got)
 	case "beige":
 		s.sgPush(e)
 		if pass {
@@ -451,12 +455,14 @@ func (s *State) sgMountainRespond(i int, a Action, q SGPrompt) (bool, error) {
 		if a.Choice != "yes" {
 			return true, errors.New("请选择获得或放弃")
 		}
+		got := []int{}
 		for _, id := range e.Cards {
 			if slices.Contains(g.Table, id) {
 				s.sgTakeTable(id)
-				p.Hand = append(p.Hand, id)
+				got = append(got, id)
 			}
 		}
+		s.sgGain(i, got)
 	case "huashen":
 		return true, s.sgSelectAvatar(i, a, q)
 	default:

@@ -80,7 +80,7 @@ const godGenerals = new Set([
   "shensimayi",
 ]);
 const generalArt = (assets: string, id: string) =>
-  `${assets}/sanguosha/${godGenerals.has(id) ? "v7" : mountainGenerals.has(id) ? "v6" : thicketGenerals.has(id) ? "v5" : fireGenerals.has(id) ? "v4" : windGenerals.has(id) ? "v3" : "v1"}/generals/${id}.webp`;
+  `${assets}/sanguosha/${id.startsWith("jie_") ? "v8" : godGenerals.has(id) ? "v7" : mountainGenerals.has(id) ? "v6" : thicketGenerals.has(id) ? "v5" : fireGenerals.has(id) ? "v4" : windGenerals.has(id) ? "v3" : "v1"}/generals/${id}.webp`;
 const suits = ["♠", "♥", "♣", "♦"];
 const transforms = [
   "longhun",
@@ -100,6 +100,13 @@ const transforms = [
   "jijiu",
 ];
 const activeSkills = [
+  "jie_rende",
+  "yijue",
+  "jie_kurou",
+  "jie_fanjian",
+  "jie_guose",
+  "chuli",
+  "jie_lijian",
   "gongxin",
   "yeyan",
   "wuqian",
@@ -297,6 +304,20 @@ export function SanguoshaBoard({
   const optional =
     (ask === "huashen" && !prompt?.required) ||
     [
+      "qingjian",
+      "jie_rende",
+      "jie_guicai",
+      "jie_yiji_targets",
+      "jie_lianying",
+      "yijue_heal",
+      "tishen",
+      "yajiao",
+      "jie_tieji",
+      "jie_tieji_discard",
+      "jie_qianxun",
+      "liyu",
+      "fenwei",
+      "jie_jianxiong",
       "gongxin",
       "qixing_exchange",
       "kuangfeng",
@@ -355,6 +376,10 @@ export function SanguoshaBoard({
       "guhuo_question",
     ].includes(ask || "");
   const simple = [
+    "tishen",
+    "yijue_heal",
+    "jie_tieji",
+    "jie_qianxun",
     "jilve_jizhi",
     "lianpo",
     "fangquan",
@@ -383,6 +408,20 @@ export function SanguoshaBoard({
       "buqu_remove",
       "guzheng",
       "shelie",
+      "qingjian",
+      "jie_rende",
+      "jie_guicai",
+      "jie_yiji_targets",
+      "jie_lianying",
+      "yijue_heal",
+      "tishen",
+      "yajiao",
+      "jie_tieji",
+      "jie_tieji_discard",
+      "jie_qianxun",
+      "liyu",
+      "fenwei",
+      "jie_jianxiong",
       "gongxin",
       "qixing_exchange",
       "kuangfeng",
@@ -391,6 +430,29 @@ export function SanguoshaBoard({
       ? prompt?.cards || []
       : [];
   const instructions: Record<string, string> = {
+    qingjian:
+      "只可分配本次获得的牌：选一张或多张手牌，再选另一位获得者；可以分多次。",
+    jie_rende:
+      "继续选择发动仁德时已有的手牌及另一位获得者；结束后本阶段不能重新发动。",
+    jie_guicai: "可用一张自己的手牌或装备替换判定牌。",
+    jie_yiji_targets:
+      "可选一至两名其他角色，分别为其扣置手牌；也可保留所有牌。",
+    jie_yiji_give: `为 ${room.seats[prompt?.target ?? -1]?.name || "目标"} 选择 1–${prompt?.amount || 2} 张手牌，扣置到其私有遗计牌堆。`,
+    jie_lianying: `选择 1–${prompt?.amount || 1} 名不同角色，各摸一张，可以选自己。`,
+    jie_jianxiong: "获得伤害牌和摸一张牌只能选择其中一种。",
+    tishen:
+      "回复至自己上回合结束时的体力（不超过上限），摸实际回复量的牌，整局限一次。",
+    yijue_heal: "本次拼点未胜出，可以令对方回复1体力。",
+    yajiao: "同类别可以交给所选角色；不同类别可弃置。放弃会将亮牌放回牌堆顶。",
+    jie_tieji:
+      "先令目标非锁定技能失效，再进行判定；目标需弃同花色牌才能使用闪。",
+    jie_tieji_discard: `弃一张 ${suits[prompt?.suit ?? 0]} 花色的手牌或装备，之后仍须出闪；放弃则不能闪。`,
+    jie_qianxun:
+      "将全部手牌扣置到自己的谦逊牌堆，本回合结束取回；扣牌会触发连营。",
+    jie_fanjian: `反间花色：${suits[prompt?.suit ?? 0]}。选择亮出全部手牌并弃掉该花色手牌/装备，或失去1体力。`,
+    liyu: "由你选择第三者，让吕布获得你一张牌，然后与所选者决斗；也可放弃。",
+    fenwei: "选择这张锦囊的至少一名目标，令其对所选角色无效，整局限一次。",
+
     god_kingdom:
       "选择本局使用的势力，影响激将、护驾等势力技能。身份阵营保持原规则。",
     wuhun_target: "选择梦魇最多的角色；即使你已阵亡，也由你完成这次武魂选择。",
@@ -471,9 +533,57 @@ export function SanguoshaBoard({
     ganglie: "选择两张手牌弃置，或放弃并受到 1 点伤害。",
   };
   const getCard = (id: number) => g.cards.find((c) => c.id === id)!;
-  const godSelectionInvalid = (() => {
+  const selectionInvalid = (() => {
     const allIn = (ids: number[], available?: number[]) =>
       ids.every((id) => available?.includes(id));
+    if (responding) {
+      if (["qingjian", "jie_rende"].includes(ask || ""))
+        return (
+          !cards.length ||
+          !allIn(cards, prompt?.cards) ||
+          targets.length !== 1 ||
+          targets[0] === you
+        );
+      if (ask === "jie_yiji_give")
+        return (
+          cards.length < 1 ||
+          cards.length > (prompt?.amount || 2) ||
+          !allIn(cards, me?.hand)
+        );
+      if (["jie_guicai", "jie_tieji_discard"].includes(ask || ""))
+        return (
+          cards.length !== 1 ||
+          !allIn(cards, [...(me?.hand || []), ...(me?.equip || [])]) ||
+          (ask === "jie_tieji_discard" &&
+            getCard(cards[0]).suit !== prompt?.suit)
+        );
+      if (
+        ["jie_yiji_targets", "jie_lianying", "fenwei", "liyu"].includes(
+          ask || "",
+        )
+      )
+        return (
+          !targets.length ||
+          !allIn(targets, prompt?.targets) ||
+          (ask === "jie_yiji_targets" && targets.length > 2) ||
+          (ask === "jie_lianying" && targets.length > (prompt?.amount || 1)) ||
+          (ask === "liyu" && targets.length !== 1)
+        );
+    }
+    if (
+      me?.handSealed &&
+      cards.some((id) => me.hand?.includes(id)) &&
+      ((playing && !activeSkills.includes(skill)) ||
+        [
+          "card",
+          "support",
+          "peach",
+          "nullification",
+          "tiaoxin",
+          "luanwu",
+        ].includes(ask || ""))
+    )
+      return true;
     if (ask === "qixing_initial")
       return cards.length !== 7 || !allIn(cards, me?.hand);
     if (ask === "qixing_exchange") {
@@ -517,7 +627,9 @@ export function SanguoshaBoard({
       <header className="sg-heading">
         <div>
           <span className="eyebrow">
-            三国杀 · 经典身份局{g.options?.deck === "military" ? " · 军争" : ""}
+            三国杀 · 身份局
+            {g.options?.standardVersion === "breakthrough" ? " · 界限突破" : ""}
+            {g.options?.deck === "military" ? " · 军争" : ""}
           </span>
           <h2>{g.selecting ? "群雄集结" : "一桌风云，各有所谋"}</h2>
         </div>
@@ -566,6 +678,10 @@ export function SanguoshaBoard({
                   !enabled ||
                   p.dead ||
                   ([
+                    "jie_yiji_targets",
+                    "jie_lianying",
+                    "fenwei",
+                    "liyu",
                     "wuhun_target",
                     "quhu_target",
                     "haoshi_give",
@@ -631,6 +747,37 @@ export function SanguoshaBoard({
                 </small>
               </div>
               <div className="sg-status-marks">
+                {p.silenced && (
+                  <span className="sg-flipped">非锁定技能失效</span>
+                )}
+                {p.handSealed && (
+                  <span className="sg-flipped">义绝 · 手牌禁用</span>
+                )}
+                {p.jieLuoyi && (
+                  <span className="sg-drank">裸衣 · 杀/决斗伤害 +1</span>
+                )}
+                {!!p.used.zhaxiang && i === game.turn && (
+                  <span className="sg-drank">
+                    诈降 · 杀 +{p.used.zhaxiang} · 红杀不可闪
+                  </span>
+                )}
+                {!!p.yijiCount && (
+                  <span className="sg-god-mark">
+                    遗计 <b>{p.yijiCount}</b>
+                  </span>
+                )}
+                {!!p.qianxunCount && (
+                  <span className="sg-god-mark">
+                    谦逊 <b>{p.qianxunCount}</b>
+                  </span>
+                )}
+                {["fenwei", "tishen"]
+                  .filter((k) => effectiveSkills.includes(k))
+                  .map((k) => (
+                    <span key={k} className="sg-limited">
+                      {g.skills[k].name} · {p.marks?.[k] ? "已使用" : "可用"}
+                    </span>
+                  ))}
                 {(
                   [
                     ["wrath", "暴怒"],
@@ -668,7 +815,7 @@ export function SanguoshaBoard({
                 {p.skillsLost && (
                   <span className="sg-flipped">断肠 · 技能已失去</span>
                 )}
-                {["zaoxian", "zhiji", "hunzi", "ruoyu", "baiyin"]
+                {["zaoxian", "zhiji", "hunzi", "ruoyu", "baiyin", "qinxue"]
                   .filter((k) => p.marks?.[k])
                   .map((k) => (
                     <span className="sg-limited" key={k}>
@@ -759,7 +906,7 @@ export function SanguoshaBoard({
                 {effectiveSkills.map((k) => (
                   <button
                     key={k}
-                    className="sg-skill-tag"
+                    className={`sg-skill-tag ${p.disabledSkills?.includes(k) ? "sg-skill-inactive" : ""}`}
                     onClick={() => setHelp(k)}
                   >
                     {g.skills[k].name}
@@ -770,7 +917,12 @@ export function SanguoshaBoard({
                 {p.equip.map((id) => (
                   <button
                     key={id}
-                    disabled={busy}
+                    disabled={
+                      busy ||
+                      (responding &&
+                        ask === "steal" &&
+                        !!prompt?.protectedCards?.includes(id))
+                    }
                     className={cards.includes(id) ? "selected" : ""}
                     title={g.cardTypes[getCard(id).kind].text}
                     onClick={() => {
@@ -863,7 +1015,7 @@ export function SanguoshaBoard({
         <div className="sg-center">
           <span className="eyebrow">
             {g.revealed?.length
-              ? "火攻 · 公开展示"
+              ? "公开展示"
               : g.grace?.length
                 ? "五谷丰登"
                 : "正在结算"}
@@ -978,6 +1130,35 @@ export function SanguoshaBoard({
                 </div>
               </details>
             )}
+          {me.handSealed && (
+            <p className="sg-error">
+              本回合不能使用或打出手牌；仍可按要求弃牌、交牌或拼点。
+            </p>
+          )}
+          {[
+            { key: "yiji", label: "遗计", ids: me.yiji },
+            { key: "qianxun", label: "谦逊", ids: me.qianxun },
+          ]
+            .filter((pile) => pile.ids?.length)
+            .map((pile) => (
+              <details className="sg-private-stars" key={pile.key}>
+                <summary>
+                  我的{pile.label}牌 · {pile.ids!.length} 张，仅自己可见
+                </summary>
+                <div className="sg-choice-cards">
+                  {pile.ids!.map((id) => (
+                    <Card
+                      key={id}
+                      id={id}
+                      g={g}
+                      assets={assets}
+                      small
+                      onClick={() => setDetail(id)}
+                    />
+                  ))}
+                </div>
+              </details>
+            ))}
           <div className="sg-skills">
             {me.equip.some((id) => getCard(id).kind === "fan") && (
               <button
@@ -996,7 +1177,7 @@ export function SanguoshaBoard({
             {skills.map((k) => (
               <button
                 key={k}
-                disabled={!enabled}
+                disabled={!enabled || !!me?.disabledSkills?.includes(k)}
                 className={`${skill === k ? "selected" : ""} ${activeSkills.includes(k) || transforms.includes(k) ? "active-skill" : ""}`}
                 title={g.skills[k].text}
                 onClick={() => {
@@ -1210,6 +1391,89 @@ export function SanguoshaBoard({
             </button>
           </div>
         )}
+        {playing && skill === "jie_guose" && (
+          <div className="sg-action-buttons">
+            <button
+              disabled={
+                busy ||
+                cards.length !== 1 ||
+                targets.length !== 1 ||
+                getCard(cards[0]).suit !== 3 ||
+                (!!me?.handSealed && !!me?.hand?.includes(cards[0]))
+              }
+              onClick={() => void send({ choice: "use" })}
+            >
+              当乐不思蜀使用 · 摸一张
+            </button>
+            <button
+              disabled={
+                busy ||
+                cards.length !== 1 ||
+                targets.length !== 1 ||
+                getCard(cards[0]).suit !== 3 ||
+                !g.players[targets[0]]?.judgment.some(
+                  (d) => d.kind === "indulgence",
+                )
+              }
+              onClick={() => void send({ choice: "remove" })}
+            >
+              移除目标的乐不思蜀 · 摸一张
+            </button>
+          </div>
+        )}
+        {responding && ask === "jie_jianxiong" && (
+          <div className="sg-action-buttons">
+            {prompt?.choices?.includes("take") && (
+              <button
+                disabled={busy}
+                onClick={() => void send({ choice: "take" })}
+              >
+                获得伤害牌
+              </button>
+            )}
+            <button
+              disabled={busy}
+              onClick={() => void send({ choice: "draw" })}
+            >
+              摸一张牌
+            </button>
+          </div>
+        )}
+        {responding && ask === "jie_fanjian" && (
+          <div className="sg-action-buttons">
+            <button
+              disabled={busy}
+              onClick={() => void send({ choice: "discard" })}
+            >
+              亮牌 · 弃所有 {suits[prompt?.suit ?? 0]} 牌
+            </button>
+            <button
+              disabled={busy}
+              onClick={() => void send({ choice: "lose_hp" })}
+            >
+              失去 1 体力
+            </button>
+          </div>
+        )}
+        {responding && ask === "yajiao" && (
+          <div className="sg-action-buttons">
+            {prompt?.choices?.includes("give") ? (
+              <button
+                disabled={busy || targets.length !== 1}
+                onClick={() => void send({ choice: "give" })}
+              >
+                交给所选角色
+              </button>
+            ) : (
+              <button
+                disabled={busy}
+                onClick={() => void send({ choice: "discard" })}
+              >
+                弃置亮出的牌
+              </button>
+            )}
+          </div>
+        )}
         {playing && skill === "jilve" && (
           <div className="sg-action-buttons">
             <button
@@ -1261,12 +1525,15 @@ export function SanguoshaBoard({
               "yingzi",
               "luoyi",
               "tuxi",
+              "jie_tuxi",
               "shuangxiong",
               "zaiqi",
               "haoshi",
               "shelie",
             ]
-              .filter((k) => skills.includes(k))
+              .filter(
+                (k) => skills.includes(k) && !me?.disabledSkills?.includes(k),
+              )
               .map((k) => (
                 <button
                   key={k}
@@ -1397,9 +1664,12 @@ export function SanguoshaBoard({
         )}
         {enabled && ask !== "general" && (
           <div className="sg-action-buttons">
-            {!(playing && skill === "jilve") &&
+            {!(playing && ["jilve", "jie_guose"].includes(skill)) &&
               (!responding ||
                 ![
+                  "jie_jianxiong",
+                  "jie_fanjian",
+                  "yajiao",
                   "god_kingdom",
                   "gongxin",
                   "qinyin",
@@ -1418,9 +1688,18 @@ export function SanguoshaBoard({
                   className="primary"
                   disabled={
                     busy ||
+                    selectionInvalid ||
                     (!cards.length &&
                       !simple &&
                       ask !== "guanxing" &&
+                      !(
+                        [
+                          "jie_yiji_targets",
+                          "jie_lianying",
+                          "fenwei",
+                          "liyu",
+                        ].includes(ask || "") && targets.length > 0
+                      ) &&
                       !(
                         ask === "qiaobian_draw" &&
                         targets.length > 0 &&
@@ -1492,7 +1771,13 @@ export function SanguoshaBoard({
                   })
                 }
               >
-                {ask === "guhuo_question" ? "不质疑" : "放弃"}
+                {ask === "guhuo_question"
+                  ? "不质疑"
+                  : ["qingjian", "jie_rende"].includes(ask || "")
+                    ? "结束分配"
+                    : ask === "yajiao"
+                      ? "放回牌堆顶"
+                      : "放弃"}
               </button>
             )}
             {playing && (
@@ -1584,7 +1869,10 @@ export function SanguoshaRules({ options }: { options?: SGOptions }) {
   return (
     <>
       <p>
-        经典身份局，4–8 人，25 名标准武将。
+        身份局，4–8 人，25 名标准系武将。
+        {options?.standardVersion === "breakthrough"
+          ? "使用旧版界限突破，21名界将替换其经典版本，其余4将保持原版。"
+          : "使用经典标准武将。"}
         {options?.deck === "military"
           ? "标准＋军争：160 张牌。"
           : "标准牌堆：108 张牌（含 EX）。"}

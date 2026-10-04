@@ -57,6 +57,9 @@ func (s *State) sgTianyi(i int) int {
 }
 func (s *State) sgHandLimit(i int) int {
 	n := max(0, s.Sanguosha.Players[i].HP)
+	if s.sgHas(i, "jie_yingzi") {
+		n = s.Sanguosha.Players[i].MaxHP
+	}
 	if s.sgHas(i, "juejing") {
 		n += 2
 	}
@@ -139,6 +142,15 @@ func (s *State) sgFireEvent(e SGEvent) bool {
 			}
 			return true
 		}
+		if e.Kind == "yijue" {
+			if win && s.sgAlive(e.Target) {
+				g.Players[e.Target].Silenced = true
+				g.Players[e.Target].HandSealed = true
+			} else if s.sgAlive(e.Actor) && s.sgAlive(e.Target) && g.Players[e.Target].HP < g.Players[e.Target].MaxHP {
+				s.sgAsk(e.Actor, "yijue_heal", "义绝未胜出：是否令目标回复1体力？", e)
+			}
+			return true
+		}
 		if e.Kind == "tianyi" {
 			g.Players[e.Actor].Used["tianyi_result"] = map[bool]int{true: 1, false: -1}[win]
 			return true
@@ -168,7 +180,7 @@ func (s *State) sgFireEvent(e SGEvent) bool {
 			s.sgAsk(e.Target, "jieming", "节命：选择一名角色补充手牌，或放弃剩余次数", e)
 		}
 	case "mengjin":
-		if s.sgHas(e.Actor, "mengjin") && s.sgAlive(e.Target) && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
+		if s.sgHas(e.Actor, "mengjin") && len(s.sgDiscardable(e.Actor, e.Target, false)) > 0 {
 			s.sgAsk(e.Actor, "mengjin", "是否发动猛进，弃置目标一张手牌或装备？", e)
 		}
 	case "niepan_rebirth":
@@ -217,10 +229,10 @@ func (s *State) sgFireRespond(i int, a Action, q SGPrompt) (bool, error) {
 		}
 		to := a.Targets[0]
 		other := g.Players[to]
-		s.sgDraw(to, max(0, min(5, other.MaxHP)-len(other.Hand)))
-		s.sgLog("%s 发动节命 → %s", s.sgName(i), s.sgName(to))
 		e.Amount--
 		s.sgPush(e)
+		s.sgDraw(to, max(0, min(5, other.MaxHP)-len(other.Hand)))
+		s.sgLog("%s 发动节命 → %s", s.sgName(i), s.sgName(to))
 	case "mengjin":
 		if pass {
 			return true, nil

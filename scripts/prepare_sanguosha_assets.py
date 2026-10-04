@@ -25,7 +25,7 @@ CARDS = 'slash jink peach duel snatch dismantlement ex_nihilo amazing_grace god_
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
-    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket','mountain','god'],default='standard')
+    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket','mountain','god','breakthrough'],default='standard')
     args=parser.parse_args()
     root=args.directory.resolve(); root.mkdir(parents=True,exist_ok=True)
     sources={f'generals/{g}.webp':f'image/fullskin/generals/full/{g if g in UNCHANGED else "nos_"+g}.png' for g in GENERALS}
@@ -42,6 +42,8 @@ def main():
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in MOUNTAIN_GENERALS}
     if args.pack == 'god':
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in GOD_GENERALS}
+    if args.pack == 'breakthrough':
+        sources = {f'generals/jie_{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in GENERALS if g not in UNCHANGED}
     def prepare(item):
         target,source=item; output=root/target; output.parent.mkdir(parents=True,exist_ok=True)
         if output.exists() and output.read_bytes()[:4]==b'RIFF':return target

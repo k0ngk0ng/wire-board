@@ -160,7 +160,7 @@ func TestSanguoshaMountainAwakening(t *testing.T) {
 		s.Sanguosha.Players[0].HP = 1
 		s.sgPush(SGEvent{Type: "begin", Actor: 0})
 		s.sgRun()
-		if s.Sanguosha.Players[0].MaxHP != 3 || s.Sanguosha.Pending.Kind != "yinghun" || !s.sgHas(0, "yingzi") {
+		if s.Sanguosha.Players[0].MaxHP != 3 || s.Sanguosha.Pending.Kind != "yinghun" || !s.sgHas(0, "jie_yingzi") {
 			t.Fatal("Hunzi timing", s.Sanguosha.Pending)
 		}
 	})

@@ -23,7 +23,7 @@ func TestSanguoshaOptionsPermissionsFreezeAndRestore(t *testing.T) {
 	guest.command(current(guest), "ready", nil, 200)
 	change := func(c *testClient, deck string, want int) {
 		r := current(c)
-		c.post("/api/rooms/"+r["id"].(string), map[string]any{"type": "sanguosha_options", "sanguoshaOptions": game.SGOptions{Deck: deck, Packs: []string{"wind", "fire", "thicket", "mountain", "god"}}, "version": r["version"], "nonce": randomID(12)}, want)
+		c.post("/api/rooms/"+r["id"].(string), map[string]any{"type": "sanguosha_options", "sanguoshaOptions": game.SGOptions{Deck: deck, StandardVersion: "breakthrough", Packs: []string{"wind", "fire", "thicket", "mountain", "god"}}, "version": r["version"], "nonce": randomID(12)}, want)
 	}
 	change(guest, "standard", 400)
 	change(host, "missing", 400)
@@ -47,6 +47,9 @@ func TestSanguoshaOptionsPermissionsFreezeAndRestore(t *testing.T) {
 	if len(view["cards"].([]any)) != 160 || view["options"].(map[string]any)["deck"] != "military" {
 		t.Fatal("wrong deck in play")
 	}
+	if view["options"].(map[string]any)["standardVersion"] != "breakthrough" {
+		t.Fatal("standard version not applied")
+	}
 	if len(view["generals"].([]any)) != 65 {
 		t.Fatal("wind/fire/thicket/mountain/god catalog missing from room view")
 	}
@@ -67,6 +70,9 @@ func TestSanguoshaOptionsPermissionsFreezeAndRestore(t *testing.T) {
 		t.Fatal("deck lost")
 	}
 	for _, options := range []game.SGOptions{restored.SanguoshaOptions, restored.Game.Sanguosha.Options} {
+		if options.StandardVersion != "breakthrough" {
+			t.Fatal("standard version not saved")
+		}
 		if len(options.Packs) != 6 || options.Packs[1] != "wind" || options.Packs[2] != "fire" || options.Packs[3] != "thicket" || options.Packs[4] != "mountain" || options.Packs[5] != "god" {
 			t.Fatal("wind/fire/thicket/mountain/god options not persisted", options)
 		}

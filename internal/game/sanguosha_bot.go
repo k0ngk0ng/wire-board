@@ -64,6 +64,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		e := q.Event
 		s.sgMountainBotPrompt(i, add, cardsFor)
 		s.sgGodBotPrompt(i, add)
+		s.sgJieBotPrompt(i, add)
 		switch q.Kind {
 		case "xingshang":
 			add(Action{Choice: "yes"})
@@ -404,6 +405,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		})
 		s.sgMountainBotPlay(i, enemies, add)
 		s.sgGodBotPlay(i, enemies, add)
+		s.sgJieBotPlay(i, enemies, add)
 		if s.sgHas(i, "luanwu") && p.Marks["luanwu"] == 0 {
 			add(Action{Type: "sg_skill", Skill: "luanwu"})
 		}

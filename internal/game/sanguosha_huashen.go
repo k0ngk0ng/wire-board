@@ -8,7 +8,7 @@ import (
 func sgAvatarSkills(id string) []string {
 	out := []string{}
 	for _, skill := range sgGeneral(id).Skills {
-		if !sgLordSkill(skill) && !slices.Contains([]string{"niepan", "luanwu", "zaoxian", "zhiji", "hunzi", "huashen", "yeyan", "baiyin"}, skill) {
+		if !sgLordSkill(skill) && !slices.Contains([]string{"niepan", "luanwu", "zaoxian", "zhiji", "hunzi", "huashen", "yeyan", "baiyin", "fenwei", "qinxue", "tishen"}, skill) {
 			out = append(out, skill)
 		}
 	}

@@ -14,6 +14,33 @@ export function SanguoshaOptions({
     <fieldset className="sg-options" disabled={disabled}>
       <legend>三国杀规则</legend>
       <div className="sg-deck-options">
+        {(
+          [
+            { id: "classic", name: "经典标准将", detail: "25 将 · 原版技能" },
+            {
+              id: "breakthrough",
+              name: "界限突破标准将",
+              detail: "21 位界将＋4 位未修订标准将",
+            },
+          ] as const
+        ).map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={
+              (value?.standardVersion || "classic") === item.id
+                ? "selected"
+                : ""
+            }
+            aria-pressed={(value?.standardVersion || "classic") === item.id}
+            onClick={() => onChange({ ...value, standardVersion: item.id })}
+          >
+            <strong>{item.name}</strong>
+            <small>{item.detail}</small>
+          </button>
+        ))}
+      </div>
+      <div className="sg-deck-options">
         {[
           {
             id: "standard",
@@ -71,7 +98,10 @@ export function SanguoshaOptions({
         </label>
       ))}
       <p>
-        武将采用经典技能版本。
+        {value?.standardVersion === "breakthrough"
+          ? "采用旧版界限突破技能；同一人物的经典与界版不会同时入选。"
+          : "标准武将采用经典技能版本。"}
+        扩展包可独立组合。
         {deck === "military" &&
           "军争包含火焰与雷电伤害，铁索会将属性伤害传给其他横置角色。"}
       </p>

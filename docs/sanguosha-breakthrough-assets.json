@@ -1,0 +1,134 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "generals/jie_caocao.webp": "image/fullskin/generals/full/caocao.png",
+    "generals/jie_simayi.webp": "image/fullskin/generals/full/simayi.png",
+    "generals/jie_xiahoudun.webp": "image/fullskin/generals/full/xiahoudun.png",
+    "generals/jie_zhangliao.webp": "image/fullskin/generals/full/zhangliao.png",
+    "generals/jie_xuchu.webp": "image/fullskin/generals/full/xuchu.png",
+    "generals/jie_guojia.webp": "image/fullskin/generals/full/guojia.png",
+    "generals/jie_liubei.webp": "image/fullskin/generals/full/liubei.png",
+    "generals/jie_guanyu.webp": "image/fullskin/generals/full/guanyu.png",
+    "generals/jie_zhangfei.webp": "image/fullskin/generals/full/zhangfei.png",
+    "generals/jie_zhaoyun.webp": "image/fullskin/generals/full/zhaoyun.png",
+    "generals/jie_machao.webp": "image/fullskin/generals/full/machao.png",
+    "generals/jie_huangyueying.webp": "image/fullskin/generals/full/huangyueying.png",
+    "generals/jie_ganning.webp": "image/fullskin/generals/full/ganning.png",
+    "generals/jie_lvmeng.webp": "image/fullskin/generals/full/lvmeng.png",
+    "generals/jie_huanggai.webp": "image/fullskin/generals/full/huanggai.png",
+    "generals/jie_zhouyu.webp": "image/fullskin/generals/full/zhouyu.png",
+    "generals/jie_daqiao.webp": "image/fullskin/generals/full/daqiao.png",
+    "generals/jie_luxun.webp": "image/fullskin/generals/full/luxun.png",
+    "generals/jie_huatuo.webp": "image/fullskin/generals/full/huatuo.png",
+    "generals/jie_lvbu.webp": "image/fullskin/generals/full/lvbu.png",
+    "generals/jie_diaochan.webp": "image/fullskin/generals/full/diaochan.png"
+  },
+  "assets": [
+    {
+      "file": "generals/jie_caocao.webp",
+      "sha256": "979f980bf9ec15e29f6ffaef529a0db85943a8743f28062bc38a46065f93b062",
+      "bytes": 22934
+    },
+    {
+      "file": "generals/jie_daqiao.webp",
+      "sha256": "bee8d2dec9f4215f479f930a1259795bd50df6da0b56a44e9333eb1a571ee282",
+      "bytes": 22222
+    },
+    {
+      "file": "generals/jie_diaochan.webp",
+      "sha256": "833bc191a2b553925ffeb103540425adb3692936e2e6c1240763f9a60f1318e9",
+      "bytes": 18508
+    },
+    {
+      "file": "generals/jie_ganning.webp",
+      "sha256": "17589f2b94c7fe52516832ceb1143cde71b843dd2f4f01edae1ff620fd7979f6",
+      "bytes": 26080
+    },
+    {
+      "file": "generals/jie_guanyu.webp",
+      "sha256": "3fede5542ddee7fa8c0ff8e5def42a4eece2fde88853fabe5aff59e22c21d151",
+      "bytes": 17384
+    },
+    {
+      "file": "generals/jie_guojia.webp",
+      "sha256": "441b745752b3e7e092b201853b68e7e94765526897b3c63fbc744b5bc5e16b5a",
+      "bytes": 14916
+    },
+    {
+      "file": "generals/jie_huanggai.webp",
+      "sha256": "c2b3c79208ab8c3b30495f20674dc1c8eacb6c77e8bb176de072c94587dbb656",
+      "bytes": 25128
+    },
+    {
+      "file": "generals/jie_huangyueying.webp",
+      "sha256": "4eee671a34ead902b125ed3c46b5be78ae2c9536936d2a39ae5e4fbc40a7ae4e",
+      "bytes": 14880
+    },
+    {
+      "file": "generals/jie_huatuo.webp",
+      "sha256": "33331f02c373edff973c580e15189365b1153f32670cd3d20073bbc1d0195868",
+      "bytes": 29444
+    },
+    {
+      "file": "generals/jie_liubei.webp",
+      "sha256": "05ebe37a90a24707d4dd08af4b91c367d126c93959b4e371d9fd90062a3496b7",
+      "bytes": 14810
+    },
+    {
+      "file": "generals/jie_luxun.webp",
+      "sha256": "7503278b43ad86bcfa78f1279a96211e13eb2670d24f79acf7d809258e9d4644",
+      "bytes": 25644
+    },
+    {
+      "file": "generals/jie_lvbu.webp",
+      "sha256": "5437937891e5c71dab33d904a3d63cd3a0239b2f79cc61482d190d6dd6a0c3f0",
+      "bytes": 21438
+    },
+    {
+      "file": "generals/jie_lvmeng.webp",
+      "sha256": "0c7fe12ef987fc4b435cf27fc0a2059aa41b81a7b82a79d49995ebcd49bae212",
+      "bytes": 19008
+    },
+    {
+      "file": "generals/jie_machao.webp",
+      "sha256": "6563cf00090766d001d78f78f97816c0cc2fd121a242a339e21626d2a4f60be5",
+      "bytes": 29146
+    },
+    {
+      "file": "generals/jie_simayi.webp",
+      "sha256": "720e77e9c736d5055848584cde295be687bd495aafbce18fd78778fcf876ef15",
+      "bytes": 24056
+    },
+    {
+      "file": "generals/jie_xiahoudun.webp",
+      "sha256": "543a530c0142f6217869d1a3fe57bd91afc1ca01103e5b18725c1ffcd665e70d",
+      "bytes": 25850
+    },
+    {
+      "file": "generals/jie_xuchu.webp",
+      "sha256": "597175687ce9173baa2e7b0901308eccf8c1fc568eaf39ab04946f1d646d201a",
+      "bytes": 20678
+    },
+    {
+      "file": "generals/jie_zhangfei.webp",
+      "sha256": "b079a61f53f99798dc8a2ba820719a12eec91a2010a38a0fe6b5dfb86407286c",
+      "bytes": 20528
+    },
+    {
+      "file": "generals/jie_zhangliao.webp",
+      "sha256": "402859093a726b61b8d7abe067f214ff569d9ffe4abe9f032e17626528e5d07b",
+      "bytes": 27468
+    },
+    {
+      "file": "generals/jie_zhaoyun.webp",
+      "sha256": "f9f589c66eb74bd9f168c2c27f5a21ff7d553b7da0b6b3f1e8571f17cf017aa6",
+      "bytes": 23104
+    },
+    {
+      "file": "generals/jie_zhouyu.webp",
+      "sha256": "03be516a25a7fae71b4faa249aa26bea18bb628717d612d155e825f59e1508f2",
+      "bytes": 28628
+    }
+  ]
+}

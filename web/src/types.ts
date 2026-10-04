@@ -311,7 +311,12 @@ export type CarcassonneState = {
   meepleChoices: number[];
 };
 
-export type SGOptions = { mode?: string; deck?: string; packs?: string[] };
+export type SGOptions = {
+  standardVersion?: "classic" | "breakthrough";
+  mode?: string;
+  deck?: string;
+  packs?: string[];
+};
 export type SGCard = { id: number; kind: string; suit: number; rank: number };
 export type SGGeneral = {
   id: string;
@@ -322,6 +327,14 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  disabledSkills?: string[];
+  silenced?: boolean;
+  handSealed?: boolean;
+  yiji?: number[];
+  yijiCount?: number;
+  qianxun?: number[];
+  qianxunCount?: number;
+  jieLuoyi?: boolean;
   stars?: number[];
   starCount?: number;
   galeTargets?: number[];
@@ -386,6 +399,8 @@ export type SanguoshaState = {
   distances?: number[];
   range?: number;
   pending?: {
+    suit?: number;
+    protectedCards?: number[];
     required?: boolean;
     avatarSkills?: Record<string, string[]>;
     moves?: { card: number; targets: number[] }[];
