@@ -1,3 +1,4 @@
+import { catanScenarioName, catanLayoutName } from "./catan-scenarios";
 import { railMapNames } from "./rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User, SGOptions } from "./types";
@@ -24,6 +25,7 @@ export function PlayerName({
   );
 }
 type History = {
+  catanLayout?: string;
   rated: boolean;
   id: string;
   room: string;
@@ -287,7 +289,7 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 {name(match.kind)}
                 {match.kind === "catan" &&
                   match.catanScenario &&
-                  ` · ${{ shores: "驶向新海岸", islands: "四岛", fog: "迷雾群岛", desert: "穿越沙漠", tribe: "遗忘的部落", cloth: "卡坦布匹", pirate_islands: "海盗群岛", wonders: "卡坦奇迹", new_world: "新世界" }[match.catanScenario] || "航海家"}`}
+                  ` · ${catanScenarioName(match.catanScenario)}${match.catanLayout ? ` · ${catanLayoutName(match.catanLayout)}` : ""}`}
                 {match.kind === "rail" &&
                   ` · ${railMapNames[match.railMap || "usa"]}`}{" "}
                 {match.kind === "sanguosha" &&

@@ -10,8 +10,8 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// The room selector intentionally remains closed. Inject only the initial
-// official scenario; all subsequent moves use real authenticated HTTP requests,
+// The room selector intentionally remains closed. Provision the waiting-room
+// configuration; start and all moves use real authenticated HTTP requests,
 // the production autoplay dispatcher or the production timeout handler.
 func TestCatanPirateFullHTTPGames(t *testing.T) {
 	for _, n := range []int{3, 4, 5, 6} {
@@ -30,22 +30,11 @@ func TestCatanPirateFullHTTPGames(t *testing.T) {
 				for i := 1; i < n; i++ {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
+				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: "pirate_islands"})
 				for i := 0; i < n; i++ {
 					clients[i].command(current(clients[0]), "ready", nil, 200)
 				}
 				clients[0].command(current(clients[0]), "start", nil, 200)
-				scenario, err := game.NewCatanPirateIslands(n, options)
-				if err != nil {
-					t.Fatal(err)
-				}
-				s.mu.Lock()
-				s.rooms[id].Game = scenario
-				s.rooms[id].startTurnClock(time.Now())
-				err = s.save(s.rooms[id])
-				s.mu.Unlock()
-				if err != nil {
-					t.Fatal(err)
-				}
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 				// Reopen the same database while keeping every client's login cookie.
 				restart := func() {

@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
-// Inject only the official initial state while the room picker is closed.
-// All subsequent moves use normal HTTP actions, autoplay or timeout handling.
+// Provision the waiting-room scenario while the public picker is closed.
+// Start and all moves use normal HTTP actions, autoplay or timeout handling.
 func TestCatanNewWorldFullHTTPGames(t *testing.T) {
 	for _, n := range []int{3, 6} {
 		for _, helpers := range []bool{false, true} {
@@ -28,22 +28,11 @@ func TestCatanNewWorldFullHTTPGames(t *testing.T) {
 				for i := 1; i < n; i++ {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
+				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: "new_world"})
 				for i := 0; i < n; i++ {
 					clients[i].command(current(clients[0]), "ready", nil, 200)
 				}
 				clients[0].command(current(clients[0]), "start", nil, 200)
-				scenario, err := game.NewCatanNewWorld(n, options)
-				if err != nil {
-					t.Fatal(err)
-				}
-				s.mu.Lock()
-				s.rooms[id].Game = scenario
-				s.rooms[id].startTurnClock(time.Now())
-				err = s.save(s.rooms[id])
-				s.mu.Unlock()
-				if err != nil {
-					t.Fatal(err)
-				}
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 				restarted := false
 				steps, automatic, timeouts := 0, 0, 0
