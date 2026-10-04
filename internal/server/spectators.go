@@ -54,6 +54,10 @@ func (s *Server) watch(w http.ResponseWriter, r *http.Request) {
 		}
 		next.Spectators = append(next.Spectators[:index], next.Spectators[index+1:]...)
 	} else {
+		if s.hiddenGames[room.Kind] {
+			fail(w, 403, "该桌游已下架，暂时不能加入观战")
+			return
+		}
 		if index >= 0 {
 			respond(w, 200, map[string]bool{"ok": true})
 			return
