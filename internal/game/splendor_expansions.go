@@ -11,14 +11,22 @@ import (
 const SplendorExpansionRules = "split-box-2025"
 
 type SplendorOptions struct {
+	Orient       bool   `json:"orient,omitempty"`
+	Cities       bool   `json:"cities,omitempty"`
 	Rules        string `json:"rules,omitempty"`
 	TradingPosts bool   `json:"tradingPosts,omitempty"`
 	Strongholds  bool   `json:"strongholds,omitempty"`
 }
 
-func (o SplendorOptions) expanded() bool { return o.TradingPosts || o.Strongholds }
+func (o SplendorOptions) expanded() bool {
+	return o.TradingPosts || o.Strongholds || o.Orient || o.Cities
+}
 
 func (o SplendorOptions) Validate() error {
+	// Enable only after the complete 2025 catalogs and presentation are verified.
+	if o.Orient || o.Cities {
+		return errors.New("东方与城市扩展仍在核对完整卡牌数据，暂未开放")
+	}
 	if o.Rules != "" && o.Rules != SplendorExpansionRules {
 		return errors.New("不支持的璀璨宝石扩展规则版本")
 	}
@@ -181,6 +189,8 @@ func gemPayment(p GemPlayer, c Card, selected []int) ([]int, error) {
 // Effects and empty market slots are saved explicitly, so reconnect/restart
 // cannot skip a choice or reveal replacement cards before a required choice.
 type GemEffect struct {
+	Card    int    `json:"card,omitempty"`
+	Tier    int    `json:"tier,omitempty"`
 	Kind    string `json:"kind"`
 	Exclude int    `json:"exclude"`
 }
@@ -234,7 +244,7 @@ func (s *State) gemConquestCard() int {
 			continue
 		}
 		if c, ok := g.gemMarketCard(id); ok {
-			if _, err := gemPayment(g.Players[s.Turn], c, nil); err == nil {
+			if _, ok := gemBestPurchase(g.Players[s.Turn], c); ok {
 				return id
 			}
 		}
@@ -250,8 +260,10 @@ func (s *State) gemRefillMarket() {
 			g.Decks[refill.Tier] = g.Decks[refill.Tier][1:]
 		}
 	}
-	for i, row := range g.Market {
-		g.Market[i] = slices.DeleteFunc(row, func(c Card) bool { return c.ID == 0 })
+	if !g.Options.Orient {
+		for i, row := range g.Market {
+			g.Market[i] = slices.DeleteFunc(row, func(c Card) bool { return c.ID == 0 })
+		}
 	}
 	g.Refills = nil
 }
@@ -261,6 +273,14 @@ func (s *State) gemContinueEffects() {
 	for len(g.Effects) > 0 {
 		e := g.Effects[0]
 		switch e.Kind {
+		case "copy":
+			s.Phase = "gem_copy"
+			return
+		case "free_card":
+			if len(s.gemFreeCards(e.Tier)) > 0 {
+				s.Phase = "gem_free_card"
+				return
+			}
 		case "token":
 			for i := 0; i < 5; i++ {
 				if i != e.Exclude && g.Bank[i] > 0 {
@@ -325,6 +345,8 @@ func (s *State) gemExpansionAction(a Action) error {
 	g := s.Splendor
 	p := &g.Players[s.Turn]
 	switch s.Phase {
+	case "gem_copy", "gem_free_card":
+		return s.gemOrientAction(a)
 	case "gem_post":
 		if a.Type != "gem_post" || !slices.Contains(s.gemPostOptions(), a.Card) {
 			return errors.New("请选择一个符合条件且未拥有的贸易站")
@@ -355,7 +377,7 @@ func (s *State) gemExpansionAction(a Action) error {
 		p.Reserved = append(p.Reserved, c)
 		for i, other := range g.ReserveChoice {
 			if i != index {
-				g.Decks[other.Tier-1] = append(g.Decks[other.Tier-1], other)
+				g.Decks[other.gemDeck()] = append(g.Decks[other.gemDeck()], other)
 			}
 		}
 		g.ReserveChoice = nil
@@ -367,7 +389,7 @@ func (s *State) gemExpansionAction(a Action) error {
 			detail += "；获得黄金×1"
 		}
 		s.Log = append(s.Log, detail)
-		s.recordSplendorCard(SplendorCardEvent{Action: "reserve", Source: "deck", Tier: c.Tier, Slot: -1})
+		s.recordSplendorCard(SplendorCardEvent{Action: "reserve", Source: "deck", Tier: c.Tier, Orient: c.Orient != "", Slot: -1})
 	case "gem_stronghold":
 		valid := false
 		for _, candidate := range s.gemStrongholdActions() {
@@ -425,7 +447,7 @@ func (s *State) gemCancelEffects() {
 	g := s.Splendor
 	// Pending blind cards are neither owned nor public. Return them privately.
 	for _, c := range g.ReserveChoice {
-		g.Decks[c.Tier-1] = append(g.Decks[c.Tier-1], c)
+		g.Decks[c.gemDeck()] = append(g.Decks[c.gemDeck()], c)
 	}
 	g.ReserveChoice, g.Effects = nil, nil
 	for id, h := range g.Strongholds {
@@ -441,6 +463,16 @@ func (s *State) gemExpansionBot(player int) (Action, bool, error) {
 	p := g.Players[player]
 	choices := []botChoice{}
 	switch s.Phase {
+	case "gem_copy":
+		for _, c := range p.Cards {
+			if c.gemBonus() > 0 && c.ID != g.Effects[0].Card {
+				choices = append(choices, botChoice{Action{Type: "gem_copy", Card: c.ID}, c.gemBonus()*20 - p.Bonus[c.Color]})
+			}
+		}
+	case "gem_free_card":
+		for _, c := range s.gemFreeCards(g.Effects[0].Tier) {
+			choices = append(choices, botChoice{Action{Type: "gem_free_card", Card: c.ID}, c.Points*20 + c.gemBonus()*10 + sum(c.Cost)})
+		}
 	case "gem_post":
 		for _, id := range s.gemPostOptions() {
 			score := 0
@@ -475,7 +507,13 @@ func (s *State) gemExpansionBot(player int) (Action, bool, error) {
 			choices = append(choices, botChoice{a, score})
 		}
 	case "gem_conquest":
-		choices = append(choices, botChoice{Action{Type: "gem_conquest", Card: s.gemConquestCard()}, 100}, botChoice{Action{Type: "gem_conquest_skip"}, 0})
+		if c, ok := g.gemMarketCard(s.gemConquestCard()); ok {
+			if a, ok := gemBestPurchase(p, c); ok {
+				a.Type = "gem_conquest"
+				choices = append(choices, botChoice{a, 100})
+			}
+		}
+		choices = append(choices, botChoice{Action{Type: "gem_conquest_skip"}, 0})
 	default:
 		return Action{}, false, nil
 	}

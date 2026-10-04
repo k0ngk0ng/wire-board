@@ -53,6 +53,18 @@ func (s *State) botLegal(player int, choices []botChoice) (Action, error) {
 }
 
 func gemMissing(p GemPlayer, c Card, tokens []int) int {
+	if !gemCanAcquire(p, c) {
+		return 20
+	}
+	if c.Orient == GemOrientSacrifice {
+		count := 0
+		for _, owned := range p.Cards {
+			if owned.Color == c.SacrificeColor {
+				count++
+			}
+		}
+		return max(0, 2-count) * 5
+	}
 	need := 0
 	value := 1
 	if p.hasPost(GemPostDoubleGold) {
@@ -61,7 +73,13 @@ func gemMissing(p GemPlayer, c Card, tokens []int) int {
 	for i, cost := range c.Cost {
 		need += (max(0, cost-p.Bonus[i]-tokens[i]) + value - 1) / value
 	}
-	return max(0, need-tokens[5])
+	virtual := 0
+	for _, owned := range p.Cards {
+		if owned.Orient == GemOrientGold {
+			virtual += 2
+		}
+	}
+	return max(0, need-tokens[5]-virtual)
 }
 func (s *State) gemBot(player int) (Action, error) {
 	g := s.Splendor
@@ -129,9 +147,12 @@ func (s *State) gemBot(player int) (Action, error) {
 	}
 	choices := []botChoice{}
 	for _, c := range cards {
-		if gemMissing(p, c, p.Tokens) == 0 {
-			score := 10000 + c.Points*100 + sum(c.Cost) - p.Bonus[c.Color]*3
-			choices = append(choices, botChoice{Action{Type: "buy", Card: c.ID}, score})
+		if a, ok := gemBestPurchase(p, c); ok {
+			score := 10000 + c.Points*100 + sum(c.Cost)
+			if c.Color >= 0 && c.Color < 5 {
+				score -= p.Bonus[c.Color] * 3
+			}
+			choices = append(choices, botChoice{a, score})
 		}
 	}
 	// Enumerate the small set of legal take patterns, preferring useful colors.
@@ -182,7 +203,11 @@ func (s *State) gemBot(player int) (Action, error) {
 		}
 		for i, deck := range g.Decks {
 			if len(deck) > 0 {
-				choices = append(choices, botChoice{Action{Type: "reserve", Tier: i + 1}, -500})
+				a := Action{Type: "reserve", Tier: i%3 + 1}
+				if i >= 3 {
+					a.Choice = "orient"
+				}
+				choices = append(choices, botChoice{a, -500})
 			}
 		}
 	}

@@ -16,11 +16,14 @@ var cardCSV string
 var nobleCSV string
 
 type Card struct {
-	ID     int   `json:"id"`
-	Tier   int   `json:"tier"`
-	Points int   `json:"points"`
-	Color  int   `json:"color"`
-	Cost   []int `json:"cost"`
+	Orient         string `json:"orient,omitempty"`
+	BonusCount     int    `json:"bonusCount,omitempty"`
+	SacrificeColor int    `json:"sacrificeColor,omitempty"`
+	ID             int    `json:"id"`
+	Tier           int    `json:"tier"`
+	Points         int    `json:"points"`
+	Color          int    `json:"color"`
+	Cost           []int  `json:"cost"`
 }
 type Noble struct {
 	ID   int   `json:"id"`
@@ -37,6 +40,8 @@ type GemPlayer struct {
 	Score        int     `json:"score"`
 }
 type Splendor struct {
+	Cities        []GemCity             `json:"cities,omitempty"`
+	Exiled        []Card                `json:"exiled,omitempty"`
 	Options       SplendorOptions       `json:"options"`
 	Effects       []GemEffect           `json:"effects,omitempty"`
 	Refills       []GemRefill           `json:"refills,omitempty"`
@@ -59,6 +64,7 @@ type Splendor struct {
 // Only public card information belongs in the shared animation stream.
 // Blind reservations carry a tier and a card back, never a secret card ID.
 type SplendorCardEvent struct {
+	Orient bool   `json:"orient,omitempty"`
 	ID     uint64 `json:"id"`
 	Player int    `json:"player"`
 	Action string `json:"action"`
@@ -122,7 +128,7 @@ func Cards() []Card {
 	r := []Card{}
 	for i, row := range rows[1:] {
 		v := integers(row)
-		r = append(r, Card{i + 1, v[0], v[1], v[2] - 1, v[3:]})
+		r = append(r, Card{ID: i + 1, Tier: v[0], Points: v[1], Color: v[2] - 1, Cost: v[3:]})
 	}
 	return r
 }
@@ -267,10 +273,15 @@ func (s *State) applySplendorStep(a Action) error {
 		var c Card
 		loc, idx := -2, -1
 		if a.Card == 0 && a.Type == "reserve" {
-			if a.Tier < 1 || a.Tier > 3 || len(g.Decks[a.Tier-1]) == 0 {
+			loc = a.Tier - 1
+			if a.Choice == "orient" {
+				loc += 3
+			} else if a.Choice != "" {
+				return errors.New("未知牌堆")
+			}
+			if a.Tier < 1 || a.Tier > 3 || loc >= len(g.Decks) || len(g.Decks[loc]) == 0 {
 				return errors.New("牌堆已空")
 			}
-			loc = a.Tier - 1
 			if p.hasPost(GemPostBlindReserve) {
 				g.ReserveChoice = append([]Card{}, g.Decks[loc][:min(2, len(g.Decks[loc]))]...)
 				g.Decks[loc] = g.Decks[loc][len(g.ReserveChoice):]
@@ -307,18 +318,17 @@ func (s *State) applySplendorStep(a Action) error {
 		}
 		var detail string
 		if a.Type == "buy" {
-			pay, err := gemPayment(*p, c, a.Tokens)
+			pay, discard, err := gemOrientPayment(*p, c, a)
 			if err != nil {
 				return err
 			}
+			s.gemDiscardCards(discard)
 			for i, n := range pay {
 				p.Tokens[i] -= n
 				g.Bank[i] += n
 			}
-			p.Cards = append(p.Cards, c)
+			g.Effects = append(g.Effects, s.gemAcquireCard(c)...)
 			s.recordSplendorTokens("pay", pay)
-			p.Bonus[c.Color]++
-			p.Score += c.Points
 			source := "市场"
 			if loc == -1 {
 				source = "预留区"
@@ -327,7 +337,14 @@ func (s *State) applySplendorStep(a Action) error {
 			if sum(pay) > 0 {
 				payment = "支付 " + splendorGemSummary(pay)
 			}
-			detail = fmt.Sprintf("从%s购买了 %s；%s；永久%s +1，当前 %d 分", source, splendorCardSummary(c), payment, splendorGemNames[c.Color], p.Score)
+			bonus := ""
+			if c.gemBonus() > 0 {
+				bonus = fmt.Sprintf("；永久%s +%d", splendorGemNames[c.Color], c.gemBonus())
+			}
+			if len(discard) > 0 {
+				payment += fmt.Sprintf("；弃置发展卡×%d", len(discard))
+			}
+			detail = fmt.Sprintf("从%s购买了 %s；%s%s，当前 %d 分", source, splendorCardSummary(c), payment, bonus, p.Score)
 		} else {
 			// A blind reservation must never include the drawn card's identity,
 			// color, points or cost in the shared log.
@@ -346,7 +363,7 @@ func (s *State) applySplendorStep(a Action) error {
 				detail += "；黄金已空，未获得黄金"
 			}
 		}
-		event := SplendorCardEvent{Action: a.Type, Source: "market", Tier: c.Tier, Slot: idx, Card: &c}
+		event := SplendorCardEvent{Action: a.Type, Source: "market", Tier: c.Tier, Orient: c.Orient != "", Slot: idx, Card: &c}
 		if loc == -1 {
 			event.Source = "reserved"
 		} else if idx == -1 {
@@ -359,7 +376,7 @@ func (s *State) applySplendorStep(a Action) error {
 		} else if idx == -1 {
 			g.Decks[loc] = g.Decks[loc][1:]
 		} else if g.Options.expanded() {
-			g.Market[loc][idx] = Card{Tier: c.Tier}
+			g.Market[loc][idx] = Card{Tier: c.Tier, Orient: c.Orient}
 			g.Refills = append(g.Refills, GemRefill{Tier: loc, Slot: idx})
 		} else if len(g.Decks[loc]) > 0 {
 			g.Market[loc][idx] = g.Decks[loc][0]
@@ -388,8 +405,16 @@ func (s *State) applySplendorStep(a Action) error {
 	return nil
 }
 func eligible(p *GemPlayer, n Noble) bool {
+	counts := p.Bonus
+	for _, c := range p.Cards {
+		if c.Orient != "" {
+			physical := p.gemCardCounts()
+			counts = physical[:]
+			break
+		}
+	}
 	for i, c := range n.Cost {
-		if p.Bonus[i] < c {
+		if counts[i] < c {
 			return false
 		}
 	}
@@ -398,6 +423,10 @@ func eligible(p *GemPlayer, n Noble) bool {
 func (s *State) gemAfter() {
 	g := s.Splendor
 	p := &g.Players[s.Turn]
+	if g.Options.Cities {
+		s.gemTradingPostCheck()
+		return
+	}
 	options := []int{}
 	for i, n := range g.Nobles {
 		if eligible(p, n) {
@@ -420,7 +449,11 @@ func (s *State) gemAfter() {
 }
 func (s *State) gemNext() {
 	g := s.Splendor
-	if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= 15 {
+	trigger := !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= 15
+	if g.Options.Cities {
+		trigger = s.gemCityTrigger()
+	}
+	if trigger {
 		g.LastRound = true
 	}
 	s.Phase = "turn"
@@ -435,12 +468,19 @@ func (s *State) gemNext() {
 	}
 	if wrapped {
 		s.Round++
+		if g.LastRound && g.Options.Cities {
+			eligible := false
+			for _, p := range g.Players {
+				eligible = eligible || len(g.gemCitiesFor(p)) > 0
+			}
+			g.LastRound = eligible
+		}
 		if g.LastRound {
 			s.Finished = true
 			s.Phase = "finished"
 			best, cards := -1, 999
 			for i, p := range g.Players {
-				if p.Eliminated {
+				if p.Eliminated || (g.Options.Cities && len(g.gemCitiesFor(p)) == 0) {
 					continue
 				}
 				if p.Score > best || (p.Score == best && len(p.Cards) < cards) {
@@ -470,10 +510,10 @@ func (s *State) EliminateSplendor(player int) error {
 		p.Tokens[i] = 0
 	}
 	// Return secret reservations to their decks without revealing their identities.
-	touched := [3]bool{}
+	touched := make([]bool, len(g.Decks))
 	for _, card := range p.Reserved {
-		g.Decks[card.Tier-1] = append(g.Decks[card.Tier-1], card)
-		touched[card.Tier-1] = true
+		g.Decks[card.gemDeck()] = append(g.Decks[card.gemDeck()], card)
+		touched[card.gemDeck()] = true
 	}
 	p.Reserved = []Card{}
 	for tier, changed := range touched {
@@ -503,7 +543,7 @@ func (s *State) gemHasMove() bool {
 		return true
 	}
 	if len(p.Reserved) < 3 {
-		for i := 0; i < 3; i++ {
+		for i := range g.Decks {
 			if len(g.Decks[i]) > 0 {
 				return true
 			}
@@ -522,7 +562,7 @@ func (s *State) gemHasMove() bool {
 		if c.ID == 0 || !g.gemCardAccessible(c.ID, s.Turn) {
 			continue
 		}
-		if _, err := gemPayment(p, c, nil); err == nil {
+		if _, ok := gemBestPurchase(p, c); ok {
 			return true
 		}
 	}
@@ -544,7 +584,16 @@ func splendorGemSummary(tokens []int) string {
 }
 
 func splendorCardSummary(c Card) string {
-	return fmt.Sprintf("%s发展卡（%d 级，%d 分，#%d）", splendorGemNames[c.Color], c.Tier, c.Points, c.ID)
+	color := "无色"
+	if c.Color >= 0 && c.Color < 5 {
+		color = splendorGemNames[c.Color]
+	}
+	if c.Orient == GemOrientGold {
+		color = "东方黄金"
+	} else if c.gemCopy() && c.Color < 0 {
+		color = "东方复制"
+	}
+	return fmt.Sprintf("%s发展卡（%d 级，%d 分，#%d）", color, c.Tier, c.Points, c.ID)
 }
 
 func (s *State) logSplendorNoble(n Noble) {
