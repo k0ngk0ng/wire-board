@@ -19,6 +19,7 @@ import type { Act, Room } from "./types";
 import { PlayerName } from "./profiles";
 import { useRailMapControls } from "./rail-map-controls";
 import "./catan.css";
+import { CatanHelpers } from "./catan-helpers";
 export const catanNames = ["木材", "砖块", "羊毛", "粮食", "矿石"];
 export const catanColors = [
   "#286540",
@@ -54,6 +55,7 @@ export const catanPhases: Record<string, string> = {
   catan_robber: "选择强盗的新位置",
   catan_steal: "选择偷取资源的对手",
   catan_roads: "放置免费的道路",
+  catan_helper: "等待助手选择",
 };
 export function CatanResource({
   color,
@@ -182,12 +184,16 @@ export function CatanBoard({
   const [chosen, setChosen] = useState<{ type: string; id: number } | null>(
     null,
   );
+  const [helperPayment, setHelperPayment] = useState<number[] | null>(null);
+  const [moveFrom, setMoveFrom] = useState<number | null>(null);
   const [dev, setDev] = useState<number | null>(null);
   const [give, setGive] = useState([0, 0, 0, 0, 0]);
   const [take, setTake] = useState([0, 0, 0, 0, 0]);
   const [monopoly, setMonopoly] = useState(0);
   useEffect(() => {
     setMode("");
+    setHelperPayment(null);
+    setMoveFrom(null);
     setChosen(null);
     setDev(null);
     setGive([0, 0, 0, 0, 0]);
@@ -205,6 +211,9 @@ export function CatanBoard({
     costs[type].every((n, c) => hand[c] >= n);
   const submit = async (a: Record<string, unknown>) => {
     await act(a);
+    setHelperPayment(null);
+    setMoveFrom(null);
+    setMode("");
     setChosen(null);
     setDev(null);
   };
@@ -214,6 +223,10 @@ export function CatanBoard({
   const discard = canPlay && phase === "catan_discard" && g.discardDue[you] > 0;
   const select = (type: string, id: number) => {
     if (!mine || busy) return;
+    if (type === "helper_move" && moveFrom === null) {
+      setMoveFrom(id);
+      return;
+    }
     setChosen({ type, id });
     setDev(null);
   };
@@ -398,9 +411,16 @@ export function CatanBoard({
                   b = g.vertices[e.b],
                   ok =
                     mine &&
-                    effective === "road" &&
-                    g.legal.roads.includes(e.id);
-                const picked = chosen?.type === "road" && chosen.id === e.id;
+                    ((effective === "road" && g.legal.roads.includes(e.id)) ||
+                      (effective === "helper_move" &&
+                        (moveFrom === null
+                          ? Object.hasOwn(g.helperRoadMoves || {}, e.id)
+                          : (g.helperRoadMoves?.[moveFrom] || []).includes(
+                              e.id,
+                            ))));
+                const picked =
+                  (chosen?.type === effective && chosen.id === e.id) ||
+                  (effective === "helper_move" && moveFrom === e.id);
                 return (
                   <g
                     key={e.id}
@@ -408,15 +428,16 @@ export function CatanBoard({
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
                     aria-label={`道路位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}`}
-                    onClick={() => ok && select("road", e.id)}
+                    onClick={() => ok && select(effective, e.id)}
                     onKeyDown={(ev) => {
                       if (ok && (ev.key === "Enter" || ev.key === " ")) {
                         ev.preventDefault();
-                        select("road", e.id);
+                        select(effective, e.id);
                       }
                     }}
                   >
-                    {ok && (
+                    {(ok ||
+                      (effective === "helper_move" && moveFrom === e.id)) && (
                       <line
                         x1={a.x + (b.x - a.x) * 0.2}
                         y1={a.y + (b.y - a.y) * 0.2}
@@ -538,13 +559,17 @@ export function CatanBoard({
         </div>
         <div className="catan-map-hint">
           {mine
-            ? effective === "road"
-              ? "点击虚线选择道路，再确认建造"
-              : effective === "settlement" || effective === "city"
-                ? "点击亮起的交点，再确认建造"
-                : effective === "robber"
-                  ? "点击地块选择强盗的新位置"
-                  : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+            ? effective === "helper_move"
+              ? moveFrom === null
+                ? "选择要迁移的己方末端道路"
+                : "选择新位置，再确认迁移道路"
+              : effective === "road"
+                ? "点击虚线选择道路，再确认建造"
+                : effective === "settlement" || effective === "city"
+                  ? "点击亮起的交点，再确认建造"
+                  : effective === "robber"
+                    ? "点击地块选择强盗的新位置"
+                    : "选择右侧行动 · 滚轮缩放 · 按住拖动"
             : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
@@ -595,6 +620,8 @@ export function CatanBoard({
                     className={mode === key ? "selected" : ""}
                     disabled={busy || !affordable(key) || !available}
                     onClick={() => {
+                      setHelperPayment(null);
+                      setMoveFrom(null);
                       setMode(key);
                       setChosen(
                         key === "buy_dev" ? { type: key, id: 0 } : null,
@@ -615,6 +642,8 @@ export function CatanBoard({
               className={mode === "trade" ? "selected" : ""}
               disabled={busy}
               onClick={() => {
+                setHelperPayment(null);
+                setMoveFrom(null);
                 setMode(mode === "trade" ? "" : "trade");
                 setChosen(null);
                 setDev(null);
@@ -641,6 +670,7 @@ export function CatanBoard({
               {
                 (
                   {
+                    helper_move: "迁移道路",
                     road: "修建道路",
                     settlement: "建造村庄",
                     city: "升级城市",
@@ -652,13 +682,21 @@ export function CatanBoard({
               {chosen.type !== "buy_dev" && ` #${chosen.id + 1}`}
             </strong>
             {costs[chosen.type] && !setup && phase !== "catan_roads" && (
-              <Bundle values={costs[chosen.type]} assets={assets} />
+              <Bundle
+                values={helperPayment || costs[chosen.type]}
+                assets={assets}
+              />
             )}
             <div>
               <button
                 className="subtle"
                 disabled={busy}
-                onClick={() => setChosen(null)}
+                onClick={() => {
+                  setChosen(null);
+                  setHelperPayment(null);
+                  setMoveFrom(null);
+                  setMode("");
+                }}
               >
                 取消
               </button>
@@ -667,8 +705,15 @@ export function CatanBoard({
                 disabled={busy}
                 onClick={() =>
                   void submit({
-                    type: "catan_" + chosen.type,
-                    edge: chosen.id,
+                    type:
+                      chosen.type === "helper_move"
+                        ? "catan_helper"
+                        : "catan_" + chosen.type,
+                    skill: helperPayment ? "helper" : undefined,
+                    tokens: helperPayment || undefined,
+                    target:
+                      chosen.type === "helper_move" ? chosen.id : undefined,
+                    edge: chosen.type === "helper_move" ? moveFrom : chosen.id,
                     vertex: chosen.id,
                     tile: chosen.id,
                   })
@@ -925,6 +970,26 @@ export function CatanBoard({
             </div>
           </section>
         )}
+        <CatanHelpers
+          room={room}
+          act={act}
+          busy={busy}
+          assets={assets}
+          onBuild={(kind, payment) => {
+            setMode(kind);
+            setHelperPayment(payment);
+            setMoveFrom(null);
+            setDev(null);
+            setChosen(kind === "buy_dev" ? { type: kind, id: 0 } : null);
+          }}
+          onMove={() => {
+            setMode("helper_move");
+            setMoveFrom(null);
+            setHelperPayment(null);
+            setChosen(null);
+            setDev(null);
+          }}
+        />
         <section className="catan-bank">
           <h3>
             资源银行 <small>发展卡剩余 {g.devRemaining}</small>

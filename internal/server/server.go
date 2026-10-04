@@ -44,6 +44,8 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
+	CatanTimeLeft       int64                `json:"catanTimeLeft,omitempty"`
+	CatanOptions        game.CatanOptions    `json:"catanOptions,omitempty"`
 	SplendorOptions     game.SplendorOptions `json:"splendorOptions,omitempty"`
 	SanguoshaOptions    game.SGOptions       `json:"sanguoshaOptions,omitempty"`
 	RailMap             string               `json:"railMap,omitempty"`
@@ -230,7 +232,7 @@ func (s *Server) expireSetups(now time.Time) {
 			continue
 		}
 		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
-		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard")
+		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard" || room.Game.Catan.HelperPending != nil)
 		sgPending := room.Game.Sanguosha != nil
 		if room.Game.Dota != nil {
 			s.expireDota(room, now)
@@ -267,8 +269,17 @@ func (s *Server) expireSetups(now time.Time) {
 		} else {
 			next.Game.AutoCatanPending()
 		}
+		if next.Game.Finished {
+			next.Status = "finished"
+		}
 		if !sgPending {
 			next.startTurnClock(now)
+			if room.Game.Catan != nil && room.Game.Catan.HelperPending != nil && !next.Game.Finished && next.Game.Phase != "catan_discard" {
+				next.TurnDeadline = now.UnixMilli() + next.CatanTimeLeft
+			}
+		}
+		if next.Game.Catan != nil && room.Game.Phase != "catan_discard" && next.Game.Phase == "catan_discard" {
+			next.CatanPendingVersion = next.Version + 1
 		}
 		next.Version++
 		next.Updated = now.Unix()
@@ -501,7 +512,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 }
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -575,6 +586,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanOptions     game.CatanOptions    `json:"catanOptions"`
 		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
 		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
 		Name             string               `json:"name"`
@@ -623,6 +635,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	} else if req.Kind == "carcassonne" {
 		maxPlayers = 5
 	} else if req.Kind == "catan" {
+		options, err := game.NormalizeCatanOptions(req.CatanOptions)
+		if err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+		req.CatanOptions = options
 		minPlayers = 3
 	} else if req.Kind == "splendor" {
 		options, err := game.NormalizeSplendorOptions(req.SplendorOptions)
@@ -644,7 +662,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		h, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		hash = string(h)
 	}
-	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
+	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
 	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
 		fail(w, 500, "无法保存房间")
@@ -669,6 +687,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanOptions     game.CatanOptions    `json:"catanOptions"`
 		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
 		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
 		Type             string               `json:"type"`
@@ -792,6 +811,17 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "catan_options":
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" {
+			err = errors.New("只有房主能在开局前选择卡坦岛扩展")
+			break
+		}
+		next.CatanOptions, err = game.NormalizeCatanOptions(req.CatanOptions)
+		if err == nil {
+			for i := range next.Seats {
+				next.Seats[i].Ready = next.Seats[i].Bot
+			}
+		}
 	case "splendor_options":
 		if next.Host != u.ID || next.Kind != "splendor" || next.Status != "waiting" {
 			err = errors.New("只有房主能在开局前选择璀璨宝石扩展")
@@ -861,6 +891,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewRailMap(next.RailMap, len(next.Seats))
 			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
+			} else if next.Kind == "catan" && next.CatanOptions.Helpers {
+				next.Game, err = game.NewCatan(len(next.Seats), next.CatanOptions)
 			} else if next.Kind == "sanguosha" {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
 			} else {

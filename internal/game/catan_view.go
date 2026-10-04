@@ -6,6 +6,35 @@ func (s *State) catanView(view map[string]any, player int) {
 	delete(v, "devDeck")
 	delete(v, "devDiscard")
 	v["devRemaining"] = len(g.DevDeck)
+	if g.Options.Helpers {
+		v["helperRules"] = CatanHelpers()
+		if player >= 0 && player < len(g.Players) && g.helperReady(player, 4) && player == s.Turn && s.Phase == "catan_turn" {
+			moves := map[int][]int{}
+			for _, from := range g.Edges {
+				if !g.helperEndRoad(player, from.ID) {
+					continue
+				}
+				temp := *g
+				temp.Edges = append([]CatanEdge{}, g.Edges...)
+				temp.Edges[from.ID].Owner = -1
+				for _, to := range temp.Edges {
+					if to.ID != from.ID && temp.canRoad(player, to.ID) {
+						moves[from.ID] = append(moves[from.ID], to.ID)
+					}
+				}
+			}
+			v["helperRoadMoves"] = moves
+		}
+		if q := g.HelperPending; q != nil {
+			pending := v["helperPending"].(map[string]any)
+			if q.Player != player {
+				delete(pending, "cards")
+			}
+			if q.Kind == "leader" && q.Player == player {
+				pending["resources"] = append([]int{}, g.Players[q.Target].Resources...)
+			}
+		}
+	}
 	for i, raw := range v["players"].([]any) {
 		p := raw.(map[string]any)
 		actual := g.Players[i]
@@ -17,6 +46,9 @@ func (s *State) catanView(view map[string]any, player int) {
 		p["roadsLeft"] = 15 - roads
 		p["settlementsLeft"] = 5 - settlements
 		p["citiesLeft"] = 4 - cities
+		if actual.Helper != nil {
+			p["helperReady"] = g.helperReady(i, actual.Helper.ID)
+		}
 		if i != player && !s.Finished {
 			delete(p, "resources")
 			delete(p, "dev")

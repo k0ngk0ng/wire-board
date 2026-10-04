@@ -9,13 +9,14 @@ import (
 )
 
 type CatanPlayer struct {
-	Resources  []int `json:"resources"`
-	Dev        []int `json:"dev"`
-	NewDev     []int `json:"newDev"`
-	Knights    int   `json:"knights"`
-	RoadLength int   `json:"roadLength"`
-	Score      int   `json:"score"`
-	Eliminated bool  `json:"eliminated,omitempty"`
+	Helper     *CatanHelperSeat `json:"helper,omitempty"`
+	Resources  []int            `json:"resources"`
+	Dev        []int            `json:"dev"`
+	NewDev     []int            `json:"newDev"`
+	Knights    int              `json:"knights"`
+	RoadLength int              `json:"roadLength"`
+	Score      int              `json:"score"`
+	Eliminated bool             `json:"eliminated,omitempty"`
 }
 type CatanTrade struct {
 	ID        int   `json:"id"`
@@ -25,28 +26,34 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
-	Tiles        []CatanTile   `json:"tiles"`
-	Vertices     []CatanVertex `json:"vertices"`
-	Edges        []CatanEdge   `json:"edges"`
-	Ports        []CatanPort   `json:"ports"`
-	Players      []CatanPlayer `json:"players"`
-	Bank         []int         `json:"bank"`
-	DevDeck      []int         `json:"devDeck"`
-	DevDiscard   []int         `json:"devDiscard"`
-	Robber       int           `json:"robber"`
-	Dice         []int         `json:"dice"`
-	RollID       int           `json:"rollId"`
-	SetupStep    int           `json:"setupStep"`
-	SetupVertex  int           `json:"setupVertex"`
-	DiscardDue   []int         `json:"discardDue"`
-	Victims      []int         `json:"victims"`
-	ResumePhase  string        `json:"resumePhase"`
-	FreeRoads    int           `json:"freeRoads"`
-	PlayedDev    bool          `json:"playedDev"`
-	LongestOwner int           `json:"longestOwner"`
-	ArmyOwner    int           `json:"armyOwner"`
-	TradeID      int           `json:"tradeId"`
-	Trade        *CatanTrade   `json:"trade,omitempty"`
+	Options        CatanOptions        `json:"options"`
+	TurnSerial     uint64              `json:"turnSerial,omitempty"`
+	HelperDisplay  []int               `json:"helperDisplay,omitempty"`
+	HelperPending  *CatanHelperPending `json:"helperPending,omitempty"`
+	HelperSequence uint64              `json:"helperSequence,omitempty"`
+	HelperExile    []int               `json:"helperExile,omitempty"`
+	Tiles          []CatanTile         `json:"tiles"`
+	Vertices       []CatanVertex       `json:"vertices"`
+	Edges          []CatanEdge         `json:"edges"`
+	Ports          []CatanPort         `json:"ports"`
+	Players        []CatanPlayer       `json:"players"`
+	Bank           []int               `json:"bank"`
+	DevDeck        []int               `json:"devDeck"`
+	DevDiscard     []int               `json:"devDiscard"`
+	Robber         int                 `json:"robber"`
+	Dice           []int               `json:"dice"`
+	RollID         int                 `json:"rollId"`
+	SetupStep      int                 `json:"setupStep"`
+	SetupVertex    int                 `json:"setupVertex"`
+	DiscardDue     []int               `json:"discardDue"`
+	Victims        []int               `json:"victims"`
+	ResumePhase    string              `json:"resumePhase"`
+	FreeRoads      int                 `json:"freeRoads"`
+	PlayedDev      bool                `json:"playedDev"`
+	LongestOwner   int                 `json:"longestOwner"`
+	ArmyOwner      int                 `json:"armyOwner"`
+	TradeID        int                 `json:"tradeId"`
+	Trade          *CatanTrade         `json:"trade,omitempty"`
 }
 
 func catanRandom(n int) int {
@@ -193,6 +200,7 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
+	g.TurnSerial++
 	g.Trade = nil
 	g.PlayedDev = false
 	g.FreeRoads = 0
@@ -211,9 +219,23 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if s.Catan.Options.Helpers {
+		next := clone(*s)
+		if err := next.applyCatanStep(player, a); err != nil {
+			return err
+		}
+		*s = next
+		return nil
+	}
+	return s.applyCatanStep(player, a)
+}
+func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if g.HelperPending != nil {
+		return s.catanHelperRespond(player, a)
 	}
 	if a.Type == "catan_discard" {
 		return s.catanDiscard(player, a.Tokens)
@@ -227,6 +249,9 @@ func (s *State) applyCatan(player int, a Action) error {
 	p := &g.Players[player]
 	if g.setup() {
 		return s.catanSetup(a)
+	}
+	if a.Type == "catan_helper" {
+		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
 	case "catan_roll":
@@ -267,10 +292,22 @@ func (s *State) applyCatan(player int, a Action) error {
 		free := s.Phase == "catan_roads"
 		if !free {
 			cost := catanPrices[a.Type]
+			if a.Skill == "helper" {
+				var err error
+				cost, err = s.catanHelperBuildCost(player, a)
+				if err != nil {
+					return err
+				}
+			}
 			if !catanHas(p.Resources, cost) {
 				return errors.New("资源不足")
 			}
 			catanMove(p.Resources, g.Bank, cost)
+			if a.Skill == "helper" && p.Helper.ID == 8 {
+				s.catanHelperSpendKnight(player)
+			}
+		} else if a.Skill == "helper" {
+			return errors.New("免费道路不使用助手")
 		}
 		if a.Type == "catan_road" {
 			g.Edges[a.Edge].Owner = player
@@ -295,6 +332,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		g.Trade = nil
 		s.catanScores()
 		s.catanVictory()
+		if a.Skill == "helper" {
+			s.catanHelperComplete(player, "catan_turn")
+		}
 	case "catan_skip_roads":
 		if s.Phase != "catan_roads" || g.hasRoad(player) {
 			return errors.New("仍有可放置的免费道路")
@@ -337,10 +377,20 @@ func (s *State) applyCatan(player int, a Action) error {
 			return errors.New("当前不能购买发展卡")
 		}
 		cost := catanPrices[a.Type]
+		if a.Skill == "helper" {
+			var err error
+			cost, err = s.catanHelperBuildCost(player, a)
+			if err != nil {
+				return err
+			}
+		}
 		if !catanHas(p.Resources, cost) {
 			return errors.New("资源不足")
 		}
 		catanMove(p.Resources, g.Bank, cost)
+		if a.Skill == "helper" {
+			return s.catanHelperDevelopment(player)
+		}
 		card := g.DevDeck[len(g.DevDeck)-1]
 		g.DevDeck = g.DevDeck[:len(g.DevDeck)-1]
 		p.Dev[card]++
@@ -410,10 +460,17 @@ func (s *State) catanSetup(a Action) error {
 		return errors.New("道路必须紧邻刚放置的村庄")
 	}
 	e.Owner = p
+	if g.Options.Helpers && g.SetupStep >= len(g.Players) {
+		// The second setup pass runs backwards. The descending starting stack
+		// therefore gives seat i helper i+1 (helper N is picked first).
+		g.Players[p].Helper = &CatanHelperSeat{ID: p + 1}
+		s.catanLog(p, "获得起始助手「%s」", CatanHelpers()[p].Name)
+	}
 	g.SetupStep++
 	g.SetupVertex = -1
 	s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
 	if !g.setup() {
+		g.TurnSerial = 1
 		s.Turn = 0
 		s.Phase = "catan_roll"
 		s.Log = append(s.Log, "起始建设完成，玩家 1 开始掷骰")
@@ -434,9 +491,18 @@ func (s *State) catanRoll(total int) {
 	if total == 7 {
 		g.ResumePhase = "catan_turn"
 		pending := false
+		protected := -1
+		if g.Options.Helpers {
+			for i := range g.Players {
+				if g.helperReady(i, 5) {
+					protected = i
+					break
+				}
+			}
+		}
 		for i, p := range g.Players {
 			g.DiscardDue[i] = 0
-			if !p.Eliminated && sum(p.Resources) > 7 {
+			if !p.Eliminated && i != protected && sum(p.Resources) > 7 {
 				g.DiscardDue[i] = sum(p.Resources) / 2
 				pending = true
 			}
@@ -446,6 +512,17 @@ func (s *State) catanRoll(total int) {
 			s.Log = append(s.Log, "掷出 7：超过 7 张资源的玩家同时弃掉一半（向下取整），120 秒后自动弃牌")
 		} else {
 			s.Phase = "catan_robber"
+		}
+		if protected >= 0 {
+			resume := s.Phase
+			if sum(g.Players[protected].Resources) > 7 {
+				s.catanLog(protected, "助手托罗夫保护手牌，无需因掷出 7 弃牌")
+				s.catanHelperComplete(protected, resume)
+			} else if sum(g.Bank) > 0 {
+				s.catanHelperAsk(CatanHelperPending{Player: protected, Kind: "resource", Resume: resume})
+			} else {
+				s.catanHelperComplete(protected, resume)
+			}
 		}
 		return
 	}
@@ -491,6 +568,14 @@ func (s *State) catanRoll(total int) {
 		}
 	}
 	s.Phase = "catan_turn"
+	if g.Options.Helpers && sum(g.Bank) > 0 {
+		for i, gain := range claims {
+			if sum(gain) == 0 && g.helperReady(i, 3) {
+				s.catanHelperAsk(CatanHelperPending{Player: i, Kind: "resource", Resume: "catan_turn", Optional: true})
+				break
+			}
+		}
+	}
 }
 func (s *State) catanDiscard(p int, amount []int) error {
 	g := s.Catan
@@ -665,7 +750,18 @@ func (s *State) AutoCatanPending() {
 	if g == nil || s.Finished {
 		return
 	}
-	if s.Phase == "catan_discard" {
+	if g.HelperPending != nil {
+		for step := 0; step < 4 && s.Catan.HelperPending != nil; step++ {
+			actor := s.Catan.HelperPending.Player
+			a, err := s.catanBot(actor)
+			if err != nil {
+				break
+			}
+			if s.applyCatan(actor, a) != nil {
+				break
+			}
+		}
+	} else if s.Phase == "catan_discard" {
 		for i, due := range g.DiscardDue {
 			if due == 0 {
 				continue
@@ -695,6 +791,7 @@ func (s *State) AutoCatanPending() {
 			if s.applyCatan(s.Turn, a) != nil {
 				break
 			}
+			g = s.Catan
 		}
 	}
 	if len(s.Log) > 80 {
@@ -703,7 +800,7 @@ func (s *State) AutoCatanPending() {
 }
 func (s *State) EliminateCatan(p int) error {
 	g := s.Catan
-	if g == nil || g.setup() || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
+	if g == nil || g.setup() || g.HelperPending != nil || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
 		return errors.New("当前不能移除此玩家")
 	}
 	pl := &g.Players[p]
@@ -716,6 +813,10 @@ func (s *State) EliminateCatan(p int) error {
 	}
 	pl.Dev = make([]int, 5)
 	pl.NewDev = make([]int, 5)
+	if pl.Helper != nil {
+		g.HelperDisplay = append(g.HelperDisplay, pl.Helper.ID)
+		pl.Helper = nil
+	}
 	g.Trade = nil
 	s.catanLog(p, "超时离场：资源归还银行，建筑与道路留在地图上但不再生产")
 	s.catanScores()

@@ -1,3 +1,4 @@
+import { CatanOptionPicker } from "./catan-helpers";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
@@ -9,7 +10,7 @@ import {
   gemGoldNeeded,
   splendorRulesLabel,
 } from "./splendor-expansions";
-import type { SGOptions, SplendorOptions } from "./types";
+import type { SGOptions, SplendorOptions, CatanOptions } from "./types";
 import React, {
   createContext,
   useContext,
@@ -1880,6 +1881,7 @@ function Create({
     assets = useContext(AssetsContext);
   const [railMap, setRailMap] = useState("usa");
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
+  const [catanOptions, setCatanOptions] = useState<CatanOptions>({});
   const [gemOptions, setGemOptions] = useState<SplendorOptions>({});
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
@@ -1900,6 +1902,7 @@ function Create({
             railMap: k === "rail" ? railMap : undefined,
             sanguoshaOptions: k === "sanguosha" ? sgOptions : undefined,
             splendorOptions: k === "splendor" ? gemOptions : undefined,
+            catanOptions: k === "catan" ? catanOptions : undefined,
             capacity,
           });
         }}
@@ -1941,6 +1944,9 @@ function Create({
         </div>
         {k === "sanguosha" && (
           <SanguoshaOptions value={sgOptions} onChange={setSGOptions} />
+        )}
+        {k === "catan" && (
+          <CatanOptionPicker value={catanOptions} onChange={setCatanOptions} />
         )}
         {k === "splendor" && (
           <SplendorOptionPicker value={gemOptions} onChange={setGemOptions} />
@@ -2071,7 +2077,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? "基础版 · 3–4 人 · 十分获胜"
+                  ? `${room.catanOptions?.helpers ? "基础版＋Helpers" : "基础版"} · 3–4 人 · 十分获胜`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2080,6 +2086,15 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
+        {room.kind === "catan" && (
+          <CatanOptionPicker
+            value={room.catanOptions}
+            disabled={!host || busy}
+            onChange={(catanOptions) =>
+              command("catan_options", { catanOptions })
+            }
+          />
+        )}
         {room.kind === "splendor" && (
           <SplendorOptionPicker
             value={room.splendorOptions}
@@ -2209,7 +2224,7 @@ function Players({ room }: { room: Room }) {
         return (
           <div
             data-player-seat={i}
-            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === g.turn && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.helperPending?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span
@@ -2280,6 +2295,18 @@ function Players({ room }: { room: Room }) {
                   <br />
                   道路 {g.catan.players[i].roadLength} · 骑士{" "}
                   {g.catan.players[i].knights}
+                  {g.catan.players[i].helper && (
+                    <>
+                      <br />
+                      助手{" "}
+                      {
+                        g.catan.helperRules?.find(
+                          (h) => h.id === g.catan!.players[i].helper!.id,
+                        )?.name
+                      }{" "}
+                      {g.catan.players[i].helper?.moon ? "☾" : "☀"}
+                    </>
+                  )}
                 </small>
               ) : (
                 <small>
@@ -2415,12 +2442,17 @@ function Turn({
   const g = room.game!;
   const catanPending =
     !!g.catan &&
-    (g.catan.setupStep < 2 * room.seats.length || g.phase === "catan_discard");
+    (g.catan.setupStep < 2 * room.seats.length ||
+      g.phase === "catan_discard" ||
+      !!g.catan.helperPending);
   const setup = !!g.rail?.setup;
   const autoPlay = !!room.seats[room.you]?.autoPlay;
   const turnAutoPlay =
-    !!room.seats[g.sanguosha?.pending?.player ?? g.turn]?.autoPlay;
-  const sgActor = g.sanguosha?.pending?.player ?? g.turn;
+    !!room.seats[
+      g.sanguosha?.pending?.player ?? g.catan?.helperPending?.player ?? g.turn
+    ]?.autoPlay;
+  const sgActor =
+    g.sanguosha?.pending?.player ?? g.catan?.helperPending?.player ?? g.turn;
   const mine =
     !room.spectating &&
     (g.dota
@@ -2429,11 +2461,13 @@ function Turn({
         ? g.sanguosha.pending
           ? g.sanguosha.pending.canRespond
           : sgActor === room.you
-        : g.phase === "catan_discard"
-          ? (g.catan?.discardDue[room.you] || 0) > 0
-          : setup
-            ? !g.rail?.setupReady?.[room.you]
-            : g.turn === room.you);
+        : g.catan?.helperPending
+          ? g.catan.helperPending.player === room.you
+          : g.phase === "catan_discard"
+            ? (g.catan?.discardDue[room.you] || 0) > 0
+            : setup
+              ? !g.rail?.setupReady?.[room.you]
+              : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2495,7 +2529,7 @@ function Turn({
                   ? "轮到你了"
                   : g.sanguosha?.pending?.kind === "nullification"
                     ? "共同响应锦囊"
-                    : `${room.seats[g.sanguosha ? sgActor : g.turn]?.name} ${g.sanguosha?.pending ? "正在响应" : "的回合"}`}
+                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.helperPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -2529,7 +2563,9 @@ function Turn({
                   ? "共同选牌限时"
                   : g.sanguosha?.pending && !g.sanguosha.selecting
                     ? "响应限时 20 秒"
-                    : "每回合 120 秒"}
+                    : g.catan?.helperPending
+                      ? "助手选择 120 秒"
+                      : "每回合 120 秒"}
             </span>
           </div>
           {expired &&

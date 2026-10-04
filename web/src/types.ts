@@ -179,6 +179,7 @@ export type Game = {
   };
 };
 export type Room = {
+  catanOptions?: CatanOptions;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
   railMap?: string;
@@ -250,6 +251,13 @@ export type Catalog = {
 export type Act = (action: Record<string, unknown>) => Promise<void>;
 
 export type CatanPlayer = {
+  helper?: {
+    id: number;
+    moon: boolean;
+    acquiredTurn: number;
+    usedTurn: number;
+  };
+  helperReady?: boolean;
   resources?: number[];
   dev?: number[];
   newDev?: number[];
@@ -266,6 +274,25 @@ export type CatanPlayer = {
   citiesLeft: number;
 };
 export type CatanState = {
+  options?: CatanOptions;
+  helperDisplay?: number[];
+  helperRules?: {
+    id: number;
+    name: string;
+    originalName: string;
+    title: string;
+    description: string;
+  }[];
+  helperPending?: {
+    player: number;
+    kind: string;
+    resume: string;
+    cards?: number[];
+    resources?: number[];
+    target?: number;
+    optional?: boolean;
+  };
+  helperRoadMoves?: Record<string, number[]>;
   tiles: {
     id: number;
     x: number;
@@ -305,6 +332,12 @@ export type CatanState = {
     take: number[];
     responses: number[];
   };
+};
+
+export type CatanOptions = {
+  rules?: string;
+  helpers?: boolean;
+  allHelpers?: boolean;
 };
 
 export type CarFeature = {
