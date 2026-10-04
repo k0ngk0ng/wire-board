@@ -26,6 +26,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Seafarers      *CatanSeafarers     `json:"seafarers,omitempty"`
 	StartPlayer    int                 `json:"startPlayer,omitempty"`
 	Paired         *CatanPairedTurn    `json:"paired,omitempty"`
 	HexSize        float64             `json:"hexSize,omitempty"`
@@ -170,14 +171,18 @@ func (s *State) catanScores() {
 		roads = append(roads, g.Players[i].RoadLength)
 		knights = append(knights, g.Players[i].Knights)
 	}
+	routeName := "最长道路"
+	if g.Seafarers != nil {
+		routeName = "最长路线"
+	}
 	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
 	g.LongestOwner = g.awardHolder(oldRoad, 5, roads)
 	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
 	if g.LongestOwner != oldRoad {
 		if g.LongestOwner < 0 {
-			s.Log = append(s.Log, "最长道路奖励暂时无人持有")
+			s.Log = append(s.Log, routeName+"奖励暂时无人持有")
 		} else {
-			s.catanLog(g.LongestOwner, "获得最长道路（%d 段），奖励 2 分", roads[g.LongestOwner])
+			s.catanLog(g.LongestOwner, "获得%s（%d 段），奖励 2 分", routeName, roads[g.LongestOwner])
 		}
 	}
 	if g.ArmyOwner != oldArmy {
@@ -190,6 +195,9 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = p.Dev[4]
+		if g.Seafarers != nil && i < len(g.Seafarers.Seats) {
+			p.Score += g.Seafarers.Seats[i].IslandPoints
+		}
 		for _, v := range g.Vertices {
 			if v.Owner == i {
 				p.Score += v.Level
@@ -205,7 +213,11 @@ func (s *State) catanScores() {
 }
 func (s *State) catanVictory() {
 	g := s.Catan
-	if !g.setup() && !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= 10 {
+	goal := 10
+	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {
+		goal = g.Seafarers.VictoryPoints
+	}
+	if !g.setup() && !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= goal {
 		s.Finished = true
 		s.Phase = "finished"
 		s.Winners = []int{s.Turn}
@@ -218,6 +230,10 @@ func (s *State) catanNext() {
 	g.Trade = nil
 	g.PlayedDev = false
 	g.FreeRoads = 0
+	if g.Seafarers != nil {
+		g.Seafarers.BuiltShips = nil
+		g.Seafarers.MovedShip = false
+	}
 	g.Victims = []int{}
 	g.ResumePhase = ""
 	if g.Paired != nil {
@@ -238,7 +254,7 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix {
+	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -289,12 +305,16 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			s.catanNext()
 			s.catanVictory()
 		}
-	case "catan_road", "catan_settlement", "catan_city":
-		if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && a.Type == "catan_road") {
+	case "catan_road", "catan_ship", "catan_settlement", "catan_city":
+		if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && (a.Type == "catan_road" || a.Type == "catan_ship")) {
 			return errors.New("当前不能建造")
 		}
 		roads, settlements, cities := g.pieces(player)
 		switch a.Type {
+		case "catan_ship":
+			if g.shipCount(player) >= 15 || !g.canShip(player, a.Edge) {
+				return errors.New("船只必须连接己方船只或建筑，不能穿过对手建筑或停入海盗所在海洋，且最多15艘")
+			}
 		case "catan_road":
 			if roads >= 15 || !g.canRoad(player, a.Edge) {
 				return errors.New("道路必须连接己方建筑或道路，不能穿过对手建筑，且最多 15 条")
@@ -328,7 +348,12 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		} else if a.Skill == "helper" {
 			return errors.New("免费道路不使用助手")
 		}
-		if a.Type == "catan_road" {
+		if a.Type == "catan_ship" {
+			g.Edges[a.Edge].Owner = player
+			g.Edges[a.Edge].Ship = true
+			g.Seafarers.BuiltShips = append(g.Seafarers.BuiltShips, a.Edge)
+			s.catanLog(player, "建造船只 #%d", a.Edge+1)
+		} else if a.Type == "catan_road" {
 			g.Edges[a.Edge].Owner = player
 			s.catanLog(player, "修建道路 #%d", a.Edge+1)
 		} else {
@@ -339,11 +364,12 @@ func (s *State) applyCatanStep(player int, a Action) error {
 				s.catanLog(player, "将村庄 #%d 升级为城市", a.Vertex+1)
 			} else {
 				s.catanLog(player, "建造村庄 #%d", a.Vertex+1)
+				s.catanSettleIsland(player, a.Vertex, false)
 			}
 		}
 		if free {
 			g.FreeRoads--
-			if g.FreeRoads == 0 || !g.hasRoad(player) {
+			if g.FreeRoads == 0 || !g.hasRoute(player) {
 				s.Phase = g.ResumePhase
 				g.FreeRoads = 0
 			}
@@ -355,7 +381,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			s.catanHelperComplete(player, "catan_turn")
 		}
 	case "catan_skip_roads":
-		if s.Phase != "catan_roads" || g.hasRoad(player) {
+		if s.Phase != "catan_roads" || g.hasRoute(player) {
 			return errors.New("仍有可放置的免费道路")
 		}
 		g.FreeRoads = 0
@@ -420,6 +446,10 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		s.catanVictory()
 	case "catan_dev":
 		return s.catanDev(player, a)
+	case "catan_move_ship":
+		return s.catanMoveShip(player, a)
+	case "catan_pirate":
+		return s.catanMovePirate(player, a.Tile)
 	case "catan_robber":
 		return s.catanMoveRobber(player, a.Tile)
 	case "catan_steal":
@@ -451,12 +481,13 @@ func (s *State) catanSetup(a Action) error {
 		g.Vertices[a.Vertex].Owner = p
 		g.Vertices[a.Vertex].Level = 1
 		g.SetupVertex = a.Vertex
+		s.catanSettleIsland(p, a.Vertex, true)
 		s.Phase = "catan_setup_road"
 		s.catanLog(p, "放置起始村庄 #%d", a.Vertex+1)
 		if g.SetupStep >= len(g.Players) {
 			gain := make([]int, 5)
 			for _, t := range g.Tiles {
-				if t.Resource == 5 {
+				if t.Resource >= 5 {
 					continue
 				}
 				for _, v := range t.Vertices {
@@ -471,7 +502,7 @@ func (s *State) catanSetup(a Action) error {
 		s.catanScores()
 		return nil
 	}
-	if a.Type != "catan_road" || a.Edge < 0 || a.Edge >= len(g.Edges) {
+	if (a.Type != "catan_road" && a.Type != "catan_ship") || !g.setupRoute(p, a.Edge, a.Type == "catan_ship") {
 		return errors.New("请在刚放置的村庄旁修建道路")
 	}
 	e := &g.Edges[a.Edge]
@@ -479,6 +510,7 @@ func (s *State) catanSetup(a Action) error {
 		return errors.New("道路必须紧邻刚放置的村庄")
 	}
 	e.Owner = p
+	e.Ship = a.Type == "catan_ship"
 	if g.Options.Helpers && g.SetupStep >= len(g.Players) {
 		// The second setup pass runs backwards. The descending starting stack
 		// therefore gives seat i helper i+1 (helper N is picked first).
@@ -488,7 +520,11 @@ func (s *State) catanSetup(a Action) error {
 	}
 	g.SetupStep++
 	g.SetupVertex = -1
-	s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
+	if e.Ship {
+		s.catanLog(p, "放置起始船只 #%d", a.Edge+1)
+	} else {
+		s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
+	}
 	if !g.setup() {
 		g.TurnSerial = 1
 		s.Turn = g.StartPlayer
@@ -551,7 +587,7 @@ func (s *State) catanRoll(total int) {
 		claims[i] = make([]int, 5)
 	}
 	for _, t := range g.Tiles {
-		if t.Number != total || t.ID == g.Robber || t.Resource == 5 {
+		if t.Number != total || t.ID == g.Robber || t.Resource >= 5 {
 			continue
 		}
 		for _, id := range t.Vertices {
@@ -612,7 +648,7 @@ func (s *State) catanDiscard(p int, amount []int) error {
 }
 func (s *State) catanMoveRobber(p, tile int) error {
 	g := s.Catan
-	if s.Phase != "catan_robber" || tile < 0 || tile >= len(g.Tiles) || tile == g.Robber {
+	if s.Phase != "catan_robber" || tile < 0 || tile >= len(g.Tiles) || tile == g.Robber || g.Tiles[tile].Resource == CatanSea || g.Tiles[tile].Resource == CatanFog {
 		return errors.New("请将强盗移到另一块陆地")
 	}
 	g.Robber = tile
@@ -672,7 +708,7 @@ func (s *State) catanDev(p int, a Action) error {
 	}
 	switch kind {
 	case 1:
-		if !g.hasRoad(p) {
+		if !g.hasRoute(p) {
 			return errors.New("没有可放置的道路")
 		}
 	case 2:
@@ -693,11 +729,19 @@ func (s *State) catanDev(p int, a Action) error {
 	case 0:
 		pl.Knights++
 		s.Phase = "catan_robber"
-		s.catanLog(p, "使用骑士，移动强盗")
+		if g.Seafarers != nil {
+			s.catanLog(p, "使用骑士，选择移动强盗或海盗")
+		} else {
+			s.catanLog(p, "使用骑士，移动强盗")
+		}
 	case 1:
 		g.FreeRoads = 2
 		s.Phase = "catan_roads"
-		s.catanLog(p, "使用道路建设，免费修建两条道路")
+		if g.Seafarers != nil {
+			s.catanLog(p, "使用道路建设，免费建造两条道路或船只")
+		} else {
+			s.catanLog(p, "使用道路建设，免费修建两条道路")
+		}
 	case 2:
 		catanMove(g.Bank, pl.Resources, a.Take)
 		s.catanLog(p, "使用丰收，获得 %s", catanText(a.Take))

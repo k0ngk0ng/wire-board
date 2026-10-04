@@ -204,7 +204,7 @@ func (s *State) catanHelperDevelopment(player int) error {
 }
 
 func (g *Catan) helperEndRoad(player, edge int) bool {
-	if edge < 0 || edge >= len(g.Edges) || g.Edges[edge].Owner != player {
+	if edge < 0 || edge >= len(g.Edges) || g.Edges[edge].Owner != player || g.Edges[edge].Ship {
 		return false
 	}
 	e := g.Edges[edge]
