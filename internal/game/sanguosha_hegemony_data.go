@@ -10,7 +10,7 @@ var sgHegemonyGenerals = []SGGeneral{
 	{"heg_zhangliao", "张辽", "wei", 4, false, []string{"tuxi"}},
 	{"heg_xuchu", "许褚", "wei", 4, false, []string{"luoyi"}},
 	{"heg_guojia", "郭嘉", "wei", 3, false, []string{"tiandu", "yiji"}},
-	{"heg_zhenji", "甄姬", "wei", 3, true, []string{"qingguo", "luoshen"}},
+	{"heg_zhenji", "甄姬", "wei", 3, true, []string{"qingguo", "heg_luoshen"}},
 	{"heg_xiahouyuan", "夏侯渊", "wei", 4, false, []string{"shensu"}},
 	{"heg_zhanghe", "张郃", "wei", 4, false, []string{"qiaobian"}},
 	{"heg_xuhuang", "徐晃", "wei", 4, false, []string{"duanliang"}},

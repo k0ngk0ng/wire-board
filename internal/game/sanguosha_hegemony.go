@@ -10,13 +10,15 @@ import (
 // Kept separate from identity roles and from the version of standard generals.
 // Public selection remains disabled until the complete base mode is validated.
 type SGHegemony struct {
-	Version      int           `json:"version"`
-	First        int           `json:"first"`
-	FirstClaimed bool          `json:"firstClaimed,omitempty"`
-	AwaitEffects map[int][]int `json:"awaitEffects,omitempty"`
+	RevealRewards []SGEvent     `json:"revealRewards,omitempty"`
+	Version       int           `json:"version"`
+	First         int           `json:"first"`
+	FirstClaimed  bool          `json:"firstClaimed,omitempty"`
+	AwaitEffects  map[int][]int `json:"awaitEffects,omitempty"`
 }
 
 type SGHegemonyPlayer struct {
+	Luoshen          []int             `json:"luoshen,omitempty"` // References cards still in the shared processing area.
 	KnownGenerals    map[int][2]string `json:"knownGenerals,omitempty"`
 	Deputy           string            `json:"deputy"`
 	Shown            [2]bool           `json:"shown"`
@@ -177,7 +179,7 @@ func (s *State) sgHegShow(i int, slots []int, rewards bool) {
 			es = append(es, SGEvent{Type: "heg_reward", Actor: i, Kind: "half"})
 		}
 	}
-	s.sgPush(es...)
+	g.Hegemony.RevealRewards = append(g.Hegemony.RevealRewards, es...)
 }
 
 func (s *State) sgHegCheckVictory() bool {
@@ -229,7 +231,36 @@ func (s *State) sgHegRespond(i int, a Action, q SGPrompt) (bool, error) {
 	if !s.sgHegemony() {
 		return false, nil
 	}
+	if q.Kind == "draw_phase" && a.Choice == "yingzi+haoshi" {
+		for _, skill := range []string{"yingzi", "haoshi"} {
+			if err := s.sgHegRevealSkill(i, skill); err != nil {
+				return true, err
+			}
+		}
+		s.sgPush(SGEvent{Type: "draw", Actor: i, Amount: 5}, SGEvent{Type: "haoshi_give", Actor: i})
+		return true, nil
+	}
+	if skill := sgHegResponseSkill(q, a); skill != "" {
+		if err := s.sgHegRevealSkill(i, skill); err != nil {
+			return true, err
+		}
+	}
+	if handled, err := s.sgHegLockedRespond(i, a, q); handled {
+		return true, err
+	}
 	if handled, err := s.sgHegCardRespond(i, a, q); handled {
+		return true, err
+	}
+	if handled, err := s.sgHegLuoshenRespond(i, a, q); handled {
+		return true, err
+	}
+	if handled, err := s.sgHegTriggerRespond(i, a, q); handled {
+		return true, err
+	}
+	if handled, err := s.sgHegRulesRespond(i, a, q); handled {
+		return true, err
+	}
+	if handled, err := s.sgHegRevealRespond(i, a, q); handled {
 		return true, err
 	}
 	g := s.Sanguosha
@@ -277,7 +308,25 @@ func (s *State) sgHegEvent(e SGEvent) bool {
 	if !s.sgHegemony() {
 		return false
 	}
+	if s.sgHegLockedEvent(e) {
+		return true
+	}
+	if s.sgHegSavageEvent(e) {
+		return true
+	}
 	if s.sgHegCardEvent(e) {
+		return true
+	}
+	if s.sgHegLuoshenEvent(e) {
+		return true
+	}
+	if s.sgHegTriggerEvent(e) {
+		return true
+	}
+	if s.sgHegRulesEvent(e) {
+		return true
+	}
+	if s.sgHegRevealEvent(e) {
 		return true
 	}
 	if e.Type == "heg_xiongyi_heal" {
@@ -327,7 +376,15 @@ func (s *State) sgHegDie(i, killer int) {
 		s.sgDeathClear(i)
 		return
 	}
-	s.sgPush(SGEvent{Type: "death_loot", Actor: killer, Target: i})
+	es := []SGEvent{}
+	for _, who := range s.sgOrder(s.Turn) {
+		es = append(es, SGEvent{Type: "heg_suishi", Actor: who, Target: i, Kind: "death"})
+	}
+	if slices.Contains(s.sgHegSkills(i, true), "heg_duanchang") && killer >= 0 && killer < len(g.Players) {
+		es = append(es, SGEvent{Type: "heg_duanchang", Actor: i, Target: killer})
+	}
+	es = append(es, SGEvent{Type: "death_loot", Actor: killer, Target: i})
+	s.sgPush(es...)
 }
 
 func (s *State) sgHegDeathReward(victim, killer int) {

@@ -45,13 +45,16 @@ func init() {
 }
 func (s *State) sgThicketStart(e SGEvent) {
 	p := s.Sanguosha.Players[e.Actor]
-	if s.sgHas(e.Actor, "yinghun") && p.HP < p.MaxHP {
+	if s.sgHegMayInvoke(e.Actor, "yinghun") && p.HP < p.MaxHP {
 		e.Amount = p.MaxHP - p.HP
 		s.sgAsk(e.Actor, "yinghun", "英魂：选择另一角色与摸弃方式，或放弃", e)
 	}
 }
 
 func (s *State) sgWeimu(actor, target int, kind string, ids []int) bool {
+	if s.sgHegemony() {
+		return false // National-war Weimu cancels a chosen target by trigger.
+	}
 	if !s.sgHas(target, "weimu") || !sgIsTrick(kind) || s.sgCardColor(actor, ids) != 2 {
 		return false
 	}
@@ -98,7 +101,7 @@ func (s *State) sgThicketDamageDealt(e SGEvent) {
 		next.Type = "liyu"
 		es = append(es, next)
 	}
-	if s.sgHas(e.Actor, "lieren") && sgIsSlash(e.Kind) && !e.Transfer && !e.Chain && s.sgAlive(e.Target) && len(s.Sanguosha.Players[e.Actor].Hand) > 0 && len(s.Sanguosha.Players[e.Target].Hand) > 0 {
+	if s.sgHegMayInvoke(e.Actor, "lieren") && sgIsSlash(e.Kind) && !e.Transfer && !e.Chain && s.sgAlive(e.Target) && len(s.Sanguosha.Players[e.Actor].Hand) > 0 && len(s.Sanguosha.Players[e.Target].Hand) > 0 {
 		next := e
 		next.Type = "lieren"
 		es = append(es, next)
@@ -110,6 +113,9 @@ func (s *State) sgThicketDamageDealt(e SGEvent) {
 	s.sgPush(es...)
 }
 func (s *State) sgThicketCleanup(e SGEvent) {
+	if s.sgHegemony() {
+		return // National-war Juxiang reveals at the discard movement.
+	}
 	g := s.Sanguosha
 	if e.Kind != "savage_assault" || len(e.Cards) != 1 || !slices.Contains(g.Table, e.Cards[0]) {
 		return
@@ -179,7 +185,7 @@ func (s *State) sgThicketEvent(e SGEvent) bool {
 		for e.Step < len(g.Players) && len(dead.Hand)+len(dead.Equip) > 0 {
 			who := (s.Turn + e.Step) % len(g.Players)
 			e.Step++
-			if who != e.Target && s.sgHas(who, "xingshang") {
+			if who != e.Target && s.sgHegMayInvoke(who, "xingshang") {
 				s.sgAsk(who, "xingshang", "行殇：是否获得阵亡角色的所有手牌和装备？", e)
 				return true
 			}
@@ -189,7 +195,7 @@ func (s *State) sgThicketEvent(e SGEvent) bool {
 	case "thicket_start":
 		s.sgThicketStart(e)
 	case "fangzhu":
-		if s.sgHas(e.Target, "fangzhu") {
+		if s.sgHegMayInvoke(e.Target, "fangzhu") {
 			s.sgAsk(e.Target, "fangzhu", "放逐：选择另一角色摸牌并翻面，或放弃", e)
 		}
 	case "songwei":
@@ -201,7 +207,7 @@ func (s *State) sgThicketEvent(e SGEvent) bool {
 			s.sgAsk(e.Actor, "baonue", "是否发动暴虐，判定黑桃让主公回复1点体力？", e)
 		}
 	case "lieren":
-		if s.sgHas(e.Actor, "lieren") && s.sgAlive(e.Target) && len(g.Players[e.Actor].Hand) > 0 && len(g.Players[e.Target].Hand) > 0 {
+		if s.sgHegMayInvoke(e.Actor, "lieren") && s.sgAlive(e.Target) && len(g.Players[e.Actor].Hand) > 0 && len(g.Players[e.Target].Hand) > 0 {
 			s.sgAsk(e.Actor, "lieren", "烈刃：选一张手牌与伤害目标拼点，或放弃", e)
 		}
 	case "haoshi_give":
@@ -408,7 +414,7 @@ func (s *State) sgThicketRespond(i int, a Action, q SGPrompt) (bool, error) {
 			s.sgPush(SGEvent{Type: "support", Actor: i, Kind: "jijiang", Next: &e})
 			return true, nil
 		}
-		kind, err := s.sgAs(i, a.Cards, a.Skill, "slash")
+		kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, "slash")
 		if err != nil {
 			return true, err
 		}

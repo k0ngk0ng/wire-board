@@ -179,7 +179,7 @@ func (s *State) sgRespond(i int, a Action) error {
 				return nil
 			}
 		} else {
-			kind, err := s.sgAs(i, a.Cards, a.Skill, "nullification")
+			kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, "nullification")
 			if err != nil {
 				return err
 			}
@@ -231,7 +231,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgPush(e)
 			break
 		}
-		kind, err := s.sgAs(i, a.Cards, a.Skill, "")
+		kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, "")
 		if err != nil {
 			return err
 		}
@@ -257,6 +257,11 @@ func (s *State) sgRespond(i int, a Action) error {
 			return errors.New("朱雀羽扇只能在使用杀时发动，不能用于打出杀")
 		}
 		if a.Choice == "eight_diagram" {
+			if s.sgHegemony() && wanted == "jink" && e.Step&1 == 0 && !s.sgIgnoreArmor(e) && s.sgEquip(i, "armor") == 0 && s.sgHegMayInvoke(i, "bazhen") {
+				if err := s.sgHegRevealSkill(i, "bazhen"); err != nil {
+					return err
+				}
+			}
 			if wanted != "jink" || e.Step&1 != 0 || s.sgArmor(i) != "eight_diagram" || s.sgIgnoreArmor(e) {
 				return errors.New("此时不能发动八卦阵")
 			}
@@ -271,7 +276,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgPush(SGEvent{Type: "support", Actor: i, Kind: skill, Next: &e})
 			break
 		}
-		kind, err := s.sgAs(i, a.Cards, a.Skill, wanted)
+		kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, wanted)
 		if err != nil {
 			return err
 		}
@@ -307,7 +312,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		if a.Skill == "fan" && e.Next != nil && e.Next.Kind != "collateral" && e.Next.Kind != "luanwu" && e.Next.Kind != "tiaoxin" {
 			return errors.New("此时不能发动朱雀羽扇")
 		}
-		kind, err := s.sgAs(i, a.Cards, a.Skill, wanted)
+		kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, wanted)
 		if err != nil {
 			return err
 		}
@@ -338,7 +343,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		}
 		s.sgDiscard(i, a.Cards)
 		t := a.Targets[0]
-		if s.sgDistance(i, t) > s.sgRange(i) || s.sgHas(t, "kongcheng") && len(g.Players[t].Hand) == 0 {
+		if s.sgDistance(i, t) > s.sgRange(i) || !s.sgHegemony() && s.sgHas(t, "kongcheng") && len(g.Players[t].Hand) == 0 {
 			return errors.New("流离目标不在弃牌后的攻击范围内")
 		}
 		// Replace this slash's continuation, not loss-trigger events prepended by payment.
@@ -383,7 +388,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgPush(e)
 			s.sgDiscard(i, a.Cards)
 		} else {
-			kind, err := s.sgAs(i, a.Cards, a.Skill, "slash")
+			kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, "slash")
 			if err != nil {
 				return err
 			}

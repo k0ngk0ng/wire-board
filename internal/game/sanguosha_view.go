@@ -64,6 +64,7 @@ func (s *State) sgView(viewer int) map[string]any {
 	visible := map[string]any{"players": players, "lord": g.Lord, "selecting": g.Selecting, "remaining": len(g.Deck), "discardCount": len(g.Discard), "table": g.Table, "grace": g.Grace, "generals": g.generalCatalog(), "cardTypes": SGCardTypes, "cards": s.sgVisibleCatalog(viewer), "skills": SGSkills, "sequence": g.Sequence, "options": g.Options, "revealed": g.Revealed}
 	if s.sgHegemony() {
 		visible["lord"] = -1
+		visible["skills"] = sgHegSkillCatalog()
 		visible["first"] = g.Hegemony.First
 		visible["hegemony"] = true
 	}
@@ -74,6 +75,9 @@ func (s *State) sgView(viewer int) map[string]any {
 	if p := g.Pending; p != nil {
 		prompt := map[string]any{"id": p.ID, "player": p.Player, "kind": p.Kind}
 		canRespond := viewer == p.Player || p.Kind == "nullification" && s.sgAlive(viewer) && !slices.Contains(p.Event.Targets, viewer)
+		if !canRespond && s.sgHegPrivatePrompt(*p) {
+			prompt["kind"] = "hegemony_response"
+		}
 		prompt["canRespond"] = canRespond
 		if canRespond {
 			e := p.Event

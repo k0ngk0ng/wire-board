@@ -135,6 +135,10 @@ func (s *State) sgFireEvent(e SGEvent) bool {
 		win := a.Rank > b.Rank
 		s.sgLog("%s 拼点：%s %s%d「%s」，%s %s%d「%s」；%s%s", SGSkills[e.Kind].Name, s.sgName(e.Actor), []string{"♠", "♥", "♣", "♦"}[s.sgCardFor(e.Actor, a.ID).Suit], a.Rank, SGCardTypes[a.Kind].Name, s.sgName(e.Target), []string{"♠", "♥", "♣", "♦"}[s.sgCardFor(e.Target, b.ID).Suit], b.Rank, SGCardTypes[b.Kind].Name, s.sgName(e.Actor), map[bool]string{true: "胜出", false: "未胜出"}[win])
 		s.sgPush(SGEvent{Type: "cleanup", Cards: e.Cards})
+		if e.Kind == "heg_shuangren" {
+			s.sgHegShuangrenResult(e, win)
+			return true
+		}
 		if e.Kind == "zhiba" {
 			if !win {
 				e.Type = "zhiba_obtain"
@@ -176,11 +180,11 @@ func (s *State) sgFireEvent(e SGEvent) bool {
 			g.Pending.Targets = targets
 		}
 	case "jieming":
-		if s.sgHas(e.Target, "jieming") && e.Amount > 0 {
+		if s.sgHegMayInvoke(e.Target, "jieming") && e.Amount > 0 {
 			s.sgAsk(e.Target, "jieming", "节命：选择一名角色补充手牌，或放弃剩余次数", e)
 		}
 	case "mengjin":
-		if s.sgHas(e.Actor, "mengjin") && len(s.sgDiscardable(e.Actor, e.Target, false)) > 0 {
+		if s.sgHegMayInvoke(e.Actor, "mengjin") && len(s.sgDiscardable(e.Actor, e.Target, false)) > 0 {
 			s.sgAsk(e.Actor, "mengjin", "是否发动猛进，弃置目标一张手牌或装备？", e)
 		}
 	case "niepan_rebirth":

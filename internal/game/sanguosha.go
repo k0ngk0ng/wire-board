@@ -54,31 +54,39 @@ type SGDelayed struct {
 // Every suspended effect is plain data, including nested rescue / counterspell
 // windows. No goroutine, callback or browser state is required to resume play.
 type SGEvent struct {
-	HegFactionCounter bool     `json:"hegFactionCounter,omitempty"`
-	CounterDepth      int      `json:"counterDepth,omitempty"`
-	TrickID           int      `json:"trickID,omitempty"`
-	OriginalTargets   []int    `json:"originalTargets,omitempty"`
-	TrickChecked      bool     `json:"trickChecked,omitempty"`
-	Foreseen          bool     `json:"foreseen,omitempty"`
-	SavageSource      int      `json:"savageSource,omitempty"`
-	Color             int      `json:"color,omitempty"`
-	DamageStage       int      `json:"damageStage,omitempty"`
-	Transfer          bool     `json:"transfer,omitempty"`
-	Near              bool     `json:"near,omitempty"`
-	Nature            string   `json:"nature,omitempty"`
-	Chain             bool     `json:"chain,omitempty"`
-	Next              *SGEvent `json:"next,omitempty"`
-	Type              string   `json:"type"`
-	Actor             int      `json:"actor"`
-	Target            int      `json:"target"`
-	Kind              string   `json:"kind,omitempty"`
-	Cards             []int    `json:"cards,omitempty"`
-	Targets           []int    `json:"targets,omitempty"`
-	Amount            int      `json:"amount,omitempty"`
-	Step              int      `json:"step,omitempty"`
-	Count             int      `json:"count,omitempty"`
-	Aux               int      `json:"aux,omitempty"`
-	Flag              bool     `json:"flag,omitempty"`
+	HegProtection     int       `json:"hegProtection,omitempty"`
+	HegWushuang       int       `json:"hegWushuang,omitempty"`
+	HegHongyanChecked bool      `json:"hegHongyanChecked,omitempty"`
+	HegWanshaChecked  bool      `json:"hegWanshaChecked,omitempty"`
+	Fallback          *SGEvent  `json:"fallback,omitempty"`
+	Prompt            *SGPrompt `json:"prompt,omitempty"`
+	HegDamageChecked  bool      `json:"hegDamageChecked,omitempty"`
+	HegDyingChecked   bool      `json:"hegDyingChecked,omitempty"`
+	HegFactionCounter bool      `json:"hegFactionCounter,omitempty"`
+	CounterDepth      int       `json:"counterDepth,omitempty"`
+	TrickID           int       `json:"trickID,omitempty"`
+	OriginalTargets   []int     `json:"originalTargets,omitempty"`
+	TrickChecked      bool      `json:"trickChecked,omitempty"`
+	Foreseen          bool      `json:"foreseen,omitempty"`
+	SavageSource      int       `json:"savageSource,omitempty"`
+	Color             int       `json:"color,omitempty"`
+	DamageStage       int       `json:"damageStage,omitempty"`
+	Transfer          bool      `json:"transfer,omitempty"`
+	Near              bool      `json:"near,omitempty"`
+	Nature            string    `json:"nature,omitempty"`
+	Chain             bool      `json:"chain,omitempty"`
+	Next              *SGEvent  `json:"next,omitempty"`
+	Type              string    `json:"type"`
+	Actor             int       `json:"actor"`
+	Target            int       `json:"target"`
+	Kind              string    `json:"kind,omitempty"`
+	Cards             []int     `json:"cards,omitempty"`
+	Targets           []int     `json:"targets,omitempty"`
+	Amount            int       `json:"amount,omitempty"`
+	Step              int       `json:"step,omitempty"`
+	Count             int       `json:"count,omitempty"`
+	Aux               int       `json:"aux,omitempty"`
+	Flag              bool      `json:"flag,omitempty"`
 }
 type SGPrompt struct {
 	ID      int      `json:"id"`
@@ -217,7 +225,7 @@ func (s *State) sgAsk(player int, kind, msg string, e SGEvent) {
 }
 func (s *State) sgOptional(player int, skill string, e SGEvent) {
 	e.Kind = skill
-	if s.sgHas(player, skill) {
+	if s.sgHegMayInvoke(player, skill) {
 		s.sgAsk(player, "invoke", "是否发动「"+SGSkills[skill].Name+"」？", e)
 		s.Sanguosha.Pending.Choices = []string{"yes", "pass"}
 	}
@@ -262,6 +270,11 @@ func (s *State) sgHeal(i, n int) {
 	p.HP = min(p.MaxHP, p.HP+n)
 	if p.HP > before {
 		s.sgLog("%s 回复 %d 点体力", s.sgName(i), p.HP-before)
+		if s.sgHegemony() {
+			for range p.HP - before {
+				s.sgPush(SGEvent{Type: "heg_shushen", Actor: i})
+			}
+		}
 		if len(p.Buqu) > 0 {
 			s.sgPush(SGEvent{Type: "buqu_trim", Actor: i})
 		}
@@ -350,10 +363,10 @@ func (s *State) sgCanTargetRange(a, b int, kind string, ignoreRange bool) bool {
 	if a == b && kind != "peach" && kind != "analeptic" && kind != "lightning" && kind != "ex_nihilo" && kind != "iron_chain" && kind != "fire_attack" {
 		return false
 	}
-	if (sgIsSlash(kind) || kind == "duel") && s.sgHas(b, "kongcheng") && len(p.Hand) == 0 {
+	if !s.sgHegemony() && (sgIsSlash(kind) || kind == "duel") && s.sgHas(b, "kongcheng") && len(p.Hand) == 0 {
 		return false
 	}
-	if (kind == "snatch" || kind == "indulgence") && s.sgHas(b, "qianxun") {
+	if !s.sgHegemony() && (kind == "snatch" || kind == "indulgence") && s.sgHas(b, "qianxun") {
 		return false
 	}
 	if sgIsSlash(kind) && !ignoreRange && s.sgTianyi(a) != 1 && s.sgDistance(a, b) > s.sgRange(a) {
@@ -412,7 +425,7 @@ func (s *State) sgLose(i int, ids []int) {
 	s.sgTuntianLoss(i, lost)
 	s.sgEmptyHand(i, before-len(p.Hand))
 	for range equip {
-		if s.sgHas(i, "xiaoji") {
+		if s.sgHegMayInvoke(i, "xiaoji") {
 			s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "xiaoji", Amount: 2})
 		}
 	}
@@ -616,7 +629,7 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 	return kind, nil
 }
 func (s *State) applySanguosha(i int, a Action) error {
-	if !s.sgAlive(i) && !s.sgGodDeathResponse(i) {
+	if !s.sgAlive(i) && !s.sgGodDeathResponse(i) && !s.sgHegDeathResponse(i) {
 		return errors.New("该角色无法行动")
 	}
 	// Validation errors are transactional even when checking costs needs to inspect
@@ -649,6 +662,14 @@ func (s *State) sgApply(i int, a Action) error {
 		return nil
 	}
 	if a.Type == "sg_skill" {
+		if s.sgHegemony() && sgHegActiveSkill(a.Skill) {
+			if a.Skill == "heg_huoshui" && s.sgHas(i, a.Skill) {
+				return errors.New("祸水已经明置生效")
+			}
+			if err := s.sgHegRevealSkill(i, a.Skill); err != nil {
+				return err
+			}
+		}
 		return s.sgSkill(i, a)
 	}
 	if a.Type != "sg_play" {
@@ -657,7 +678,7 @@ func (s *State) sgApply(i int, a Action) error {
 	if a.Skill == "guhuo" && g.Virtual == nil {
 		return s.sgStartGuhuo(i, a)
 	}
-	kind, err := s.sgAs(i, a.Cards, a.Skill, "")
+	kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, "")
 	if err != nil {
 		return err
 	}
@@ -667,6 +688,9 @@ func (s *State) sgApply(i int, a Action) error {
 	return s.sgUse(i, kind, a.Cards, a.Targets, false)
 }
 func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error {
+	if err := s.sgHegUseModifiers(i, kind, ids, targets, forced); err != nil {
+		return err
+	}
 	g := s.Sanguosha
 	p := &g.Players[i]
 	info := SGCardTypes[kind]
@@ -735,6 +759,9 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 			maxTargets = 3
 		}
 		if sgIsSlash(kind) && s.sgTianyi(i) == 1 {
+			maxTargets++
+		}
+		if sgIsSlash(kind) && s.sgHas(i, "heg_duanbing") && len(targets) == maxTargets+1 && legality.sgDistance(i, targets[maxTargets]) == 1 {
 			maxTargets++
 		}
 		if len(targets) < 1 || len(targets) > maxTargets {
@@ -811,9 +838,12 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	if kind == "amazing_grace" {
 		events = append(events, SGEvent{Type: "grace_reveal", Actor: i})
 	}
+	if kind == "savage_assault" && s.sgHegemony() {
+		events = append(events, SGEvent{Type: "heg_savage_source", Actor: i, TrickID: trickID})
+	}
 	for _, t := range targets {
 		e := SGEvent{TrickID: trickID, OriginalTargets: clone(original), Type: "effect", Actor: i, Target: t, Kind: kind, Cards: ids, Amount: 1, Aux: -1, Nature: sgNature(kind), Color: s.sgCardColor(i, ids)}
-		if kind == "savage_assault" {
+		if kind == "savage_assault" && !s.sgHegemony() {
 			for _, who := range s.sgOrder(s.Turn) {
 				if who != i && s.sgHas(who, "huoshou") {
 					e.SavageSource = who + 1

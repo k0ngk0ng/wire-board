@@ -9,7 +9,7 @@ import (
 // roles, other hands and deck order are never inspected to rank an action.
 func (s *State) sgBot(i int) (Action, error) {
 	g := s.Sanguosha
-	if !s.sgAlive(i) && !s.sgGodDeathResponse(i) {
+	if !s.sgAlive(i) && !s.sgGodDeathResponse(i) && !s.sgHegDeathResponse(i) {
 		return Action{}, errors.New("inactive seat")
 	}
 	p := g.Players[i]
