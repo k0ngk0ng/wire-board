@@ -22,6 +22,7 @@ type CatanSeafarerSeat struct {
 
 type CatanSeafarers struct {
 	Scenario      string              `json:"scenario,omitempty"`
+	Variable      bool                `json:"variable,omitempty"`
 	VictoryPoints int                 `json:"victoryPoints,omitempty"`
 	IslandBonus   int                 `json:"islandBonus,omitempty"`
 	Islands       []int               `json:"islands,omitempty"`

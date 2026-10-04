@@ -176,72 +176,90 @@ func TestCatanGoldBotsUseOnlyTheirOwnHand(t *testing.T) {
 	helperApply(t, s, 1, a)
 }
 
-func TestCatanSeafarersShoresBotsCompleteWithGoldAndHelpers(t *testing.T) {
-	for _, helpers := range []bool{false, true} {
-		t.Run(map[bool]string{false: "standard", true: "helpers"}[helpers], func(t *testing.T) {
-			s, err := NewCatan(4, CatanOptions{Helpers: helpers, AllHelpers: helpers})
-			if err != nil {
-				t.Fatal(err)
-			}
-			if err = s.Catan.makeSeafarersShoresFour(); err != nil {
-				t.Fatal(err)
-			}
-			for steps := 0; !s.Finished && steps < 8000; steps++ {
-				player := s.Turn
-				if actor := s.CatanPendingActor(); actor >= 0 {
-					player = actor
-				} else if s.Phase == "catan_discard" {
-					for i, due := range s.Catan.DiscardDue {
-						if due > 0 {
-							player = i
-							break
+func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
+	for _, scenario := range []struct {
+		name             string
+		players, victory int
+		build            func(*Catan) error
+	}{
+		{"shores3", 3, 14, (*Catan).makeSeafarersShoresThree},
+		{"shores4", 4, 14, (*Catan).makeSeafarersShoresFour},
+		{"islands3", 3, 13, (*Catan).makeSeafarersIslandsThree},
+		{"islands4", 4, 13, (*Catan).makeSeafarersIslandsFour},
+	} {
+		for _, variable := range []bool{false, true} {
+			for _, helpers := range []bool{false, true} {
+				t.Run(scenario.name+"/"+map[bool]string{false: "fixed", true: "variable"}[variable]+"/"+map[bool]string{false: "standard", true: "helpers"}[helpers], func(t *testing.T) {
+					s, err := NewCatan(scenario.players, CatanOptions{Helpers: helpers, AllHelpers: helpers})
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err = scenario.build(s.Catan); err != nil {
+						t.Fatal(err)
+					}
+					if variable {
+						if err = s.Catan.randomizeSeafarersMap(); err != nil {
+							t.Fatal(err)
 						}
 					}
-				}
-				a, err := s.BotAction(player)
-				if err != nil {
-					t.Fatal(steps, s.Phase, player, err)
-				}
-				helperApply(t, s, player, a)
-				g := s.Catan
-				for color, bank := range g.Bank {
-					total := bank
-					if bank < 0 {
-						t.Fatal("negative bank")
-					}
-					for _, p := range g.Players {
-						if p.Resources[color] < 0 {
-							t.Fatal("negative hand")
+					for steps := 0; !s.Finished && steps < 8000; steps++ {
+						player := s.Turn
+						if actor := s.CatanPendingActor(); actor >= 0 {
+							player = actor
+						} else if s.Phase == "catan_discard" {
+							for i, due := range s.Catan.DiscardDue {
+								if due > 0 {
+									player = i
+									break
+								}
+							}
 						}
-						total += p.Resources[color]
+						a, err := s.BotAction(player)
+						if err != nil {
+							t.Fatal(steps, s.Phase, player, err)
+						}
+						helperApply(t, s, player, a)
+						g := s.Catan
+						for color, bank := range g.Bank {
+							total := bank
+							if bank < 0 {
+								t.Fatal("negative bank")
+							}
+							for _, p := range g.Players {
+								if p.Resources[color] < 0 {
+									t.Fatal("negative hand")
+								}
+								total += p.Resources[color]
+							}
+							if total != 19 {
+								t.Fatal("resource conservation", color, total)
+							}
+						}
+						dev := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
+						if g.HelperPending != nil {
+							dev += len(g.HelperPending.Cards)
+						}
+						for i, p := range g.Players {
+							dev += sum(p.Dev)
+							roads, villages, cities := g.pieces(i)
+							if roads > 15 || g.shipCount(i) > 15 || villages > 5 || cities > 4 {
+								t.Fatal("piece supply exceeded")
+							}
+						}
+						if dev != 25 {
+							t.Fatal("development deck conservation", dev)
+						}
+						if steps%37 == 0 {
+							restored := clone(*s)
+							s = &restored
+						}
 					}
-					if total != 19 {
-						t.Fatal("resource conservation", color, total)
+					if !s.Finished || len(s.Winners) != 1 || s.Catan.Players[s.Winners[0]].Score < scenario.victory {
+						t.Fatal("scenario bots did not finish", s.Round, s.Phase)
 					}
-				}
-				dev := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
-				if g.HelperPending != nil {
-					dev += len(g.HelperPending.Cards)
-				}
-				for i, p := range g.Players {
-					dev += sum(p.Dev)
-					roads, villages, cities := g.pieces(i)
-					if roads > 15 || g.shipCount(i) > 15 || villages > 5 || cities > 4 {
-						t.Fatal("piece supply exceeded")
-					}
-				}
-				if dev != 25 {
-					t.Fatal("development deck conservation", dev)
-				}
-				if steps%37 == 0 {
-					restored := clone(*s)
-					s = &restored
-				}
+				})
 			}
-			if !s.Finished || len(s.Winners) != 1 || s.Catan.Players[s.Winners[0]].Score < 14 {
-				t.Fatal("shores bots did not finish", s.Round, s.Phase)
-			}
-		})
+		}
 	}
 }
 
