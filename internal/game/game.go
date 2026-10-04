@@ -169,7 +169,21 @@ func (s *State) View(player int) map[string]any {
 				g["conquestCard"] = s.gemConquestCard()
 			}
 		}
-		g["remaining"] = []int{len(s.Splendor.Decks[0]), len(s.Splendor.Decks[1]), len(s.Splendor.Decks[2])}
+		remaining := make([]int, len(s.Splendor.Decks))
+		for i, deck := range s.Splendor.Decks {
+			remaining[i] = len(deck)
+		}
+		g["remaining"] = remaining
+		if s.Splendor.Options.Cities {
+			eligible := make([][]int, len(s.Splendor.Players))
+			for i, p := range s.Splendor.Players {
+				eligible[i] = s.Splendor.gemCitiesFor(p)
+			}
+			g["cityEligibility"] = eligible
+		}
+		if player == s.Turn && s.Phase == "gem_free_card" {
+			g["freeCardChoices"] = s.gemFreeCards(s.Splendor.Effects[0].Tier)
+		}
 		for i, p := range g["players"].([]any) {
 			if i != player && !s.Finished {
 				m := p.(map[string]any)
