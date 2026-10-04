@@ -728,6 +728,7 @@ func (s *State) catanDiscard(p int, amount []int) error {
 	g.DiscardDue[p] = 0
 	if sum(g.DiscardDue) == 0 {
 		s.Phase = "catan_robber"
+		return s.catanPirateSeven()
 	}
 	return nil
 }
