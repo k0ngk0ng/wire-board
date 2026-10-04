@@ -95,6 +95,7 @@ func (s *State) sgRecordDiscard(i int, ids []int) {
 	if !g.DiscardPhase {
 		return
 	}
+	s.sgGodDiscard(i, ids)
 	for _, id := range ids {
 		if i == s.Turn && slices.Contains(g.Players[i].Hand, id) {
 			if !slices.Contains(g.DiscardedHand, id) {

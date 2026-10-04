@@ -50,6 +50,7 @@ export function SanguoshaOptions({
         { id: "fire", label: "火包 · 经典八将" },
         { id: "thicket", label: "林包 · 经典八将" },
         { id: "mountain", label: "山包 · 经典八将" },
+        { id: "god", label: "神将 · 经典八将" },
       ].map((pack) => (
         <label className="sg-pack-option" key={pack.id}>
           <input

@@ -8,7 +8,7 @@ import (
 func sgAvatarSkills(id string) []string {
 	out := []string{}
 	for _, skill := range sgGeneral(id).Skills {
-		if !sgLordSkill(skill) && !slices.Contains([]string{"niepan", "luanwu", "zaoxian", "zhiji", "hunzi", "huashen"}, skill) {
+		if !sgLordSkill(skill) && !slices.Contains([]string{"niepan", "luanwu", "zaoxian", "zhiji", "hunzi", "huashen", "yeyan", "baiyin"}, skill) {
 			out = append(out, skill)
 		}
 	}
@@ -58,10 +58,17 @@ func (s *State) sgSelectAvatar(i int, a Action, q SGPrompt) error {
 		return errors.New("化身不能选择主公、限定或觉醒技能")
 	}
 	oldBuqu := s.sgHas(i, "buqu")
+	oldQixing := s.sgHas(i, "qixing")
 	p.Avatar = a.Choice
 	p.AvatarSkill = a.Skill
 	p.AvatarKingdom = ""
 	s.sgLog("%s 化身为 %s，获得「%s」", s.sgName(i), sgGeneral(a.Choice).Name, SGSkills[a.Skill].Name)
+	if sgGeneral(p.Avatar).Kingdom == "god" {
+		s.sgPush(SGEvent{Type: "god_avatar_kingdom", Actor: i})
+	}
+	if oldQixing && !s.sgHas(i, "qixing") {
+		s.sgGodClearStars(i)
+	}
 	if oldBuqu && !s.sgHas(i, "buqu") {
 		s.Sanguosha.Discard = append(s.Sanguosha.Discard, p.Buqu...)
 		p.Buqu = nil

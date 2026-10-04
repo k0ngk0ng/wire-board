@@ -51,6 +51,9 @@ func (g *Sanguosha) generalCatalog() []SGGeneral {
 	if slices.Contains(g.Options.Packs, "mountain") {
 		all = append(all, sgMountainGenerals...)
 	}
+	if slices.Contains(g.Options.Packs, "god") {
+		all = append(all, sgGodGenerals...)
+	}
 	return all
 }
 func (s *State) sgLordChoices() {
@@ -83,6 +86,9 @@ func (s *State) sgCardFor(i, id int) SGCard {
 	if c.Suit == 0 && s.sgHas(i, "hongyan") {
 		c.Suit = 1
 	}
+	if c.Suit == 1 && s.sgHas(i, "wushen") && slices.Contains(s.Sanguosha.Players[i].Hand, id) {
+		c.Kind = "slash"
+	}
 	return c
 }
 func (s *State) sgCardColor(i int, ids []int) int {
@@ -105,7 +111,7 @@ func (s *State) sgCardColor(i int, ids []int) int {
 }
 
 func (s *State) sgEndPhase(i int) []SGEvent {
-	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
+	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "qinyin", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "god_finish", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
 }
 
 // A separate event stage permits transfer before recipient armor, and avoids
@@ -156,6 +162,7 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 			s.sgAsk(e.Actor, "leiji", "雷击：选择一名角色判定，黑桃则造成2点雷电伤害", e)
 		}
 	case "damage_dealt":
+		s.sgGodDamageDealt(e)
 		s.sgThicketDamageDealt(e)
 		if e.Near && s.sgHas(e.Actor, "kuanggu") {
 			s.sgHeal(e.Actor, e.Amount)
@@ -292,6 +299,7 @@ func (s *State) sgWindRespond(i int, a Action, q SGPrompt) (bool, error) {
 		e.Target = a.Targets[0]
 		e.Type = "damage"
 		e.Transfer = true
+		e.Foreseen = false
 		e.DamageStage = 1
 		s.sgPush(e)
 		s.sgDiscard(i, a.Cards)
@@ -384,6 +392,11 @@ func (s *State) sgVisibleCatalog(viewer int) []SGCard {
 			cards[id-1].Suit = suit
 		}
 	}
+	for id, kind := range g.TableKinds {
+		if id > 0 && id <= len(cards) {
+			cards[id-1].Kind = kind
+		}
+	}
 	filter := func(owner, id int) {
 		if id > 0 && id <= len(cards) {
 			cards[id-1] = s.sgCardFor(owner, id)
@@ -397,12 +410,12 @@ func (s *State) sgVisibleCatalog(viewer int) []SGCard {
 			filter(i, d.Card)
 		}
 		for _, id := range p.Hand {
-			if i == viewer || slices.Contains(g.Revealed, id) {
+			if i == viewer || slices.Contains(g.Revealed, id) || g.Pending != nil && g.Pending.Kind == "gongxin" && g.Pending.Player == viewer && g.Pending.Event.Target == i {
 				filter(i, id)
 			}
 		}
 	}
-	if q := g.Pending; q != nil && (q.Kind == "guicai" || q.Kind == "guidao" || q.Kind == "tiandu") {
+	if q := g.Pending; q != nil && (q.Kind == "guicai" || q.Kind == "jilve_guicai" || q.Kind == "guidao" || q.Kind == "tiandu") {
 		filter(q.Event.Actor, q.Event.Aux)
 	}
 	return cards

@@ -964,3 +964,70 @@
   background: #f2e5c7;
   border-radius: 6px;
 }
+
+.sg-god-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #a88339;
+  background: #fff0bf;
+  color: #523c11;
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 11px;
+}
+.sg-god-mark.wrath {
+  background: #ffe3d5;
+  border-color: #bd6c43;
+  color: #7a311b;
+}
+.sg-god-mark.nightmare {
+  background: #ede4f7;
+  border-color: #9873af;
+  color: #553473;
+}
+.sg-god-mark.fog {
+  background: #dff1f6;
+  border-color: #659aa7;
+  color: #285b67;
+}
+.sg-card-choices-section h3 {
+  font-size: 14px;
+  margin: 8px 0;
+  color: #523e26;
+}
+.sg-private-stars {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #b69a5c;
+  border-radius: 8px;
+  background: #faf0d6;
+  color: #49371e;
+}
+.sg-private-stars summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.kingdom-god {
+  --kingdom: #b38525;
+}
+
+@media (min-width: 1100px) {
+  .sg-board.has-choice-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 24px;
+  }
+  .sg-board.has-choice-cards > * {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .sg-board.has-choice-cards > .sg-card-choices-section {
+    grid-column: 1;
+  }
+  .sg-board.has-choice-cards > .sg-hand-section {
+    grid-column: 2;
+    margin-top: 0;
+    align-self: start;
+  }
+}

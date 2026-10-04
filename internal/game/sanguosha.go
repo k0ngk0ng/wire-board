@@ -7,6 +7,13 @@ import (
 )
 
 type SGPlayer struct {
+	BaseKingdom   string         `json:"baseKingdom,omitempty"`
+	Temporary     []string       `json:"temporary,omitempty"`
+	Stars         []int          `json:"stars,omitempty"`
+	Gale          []int          `json:"gale,omitempty"`
+	Fog           []int          `json:"fog,omitempty"`
+	ArmorOff      []int          `json:"armorOff,omitempty"`
+	TurnKills     int            `json:"turnKills,omitempty"`
 	Acquired      []string       `json:"acquired,omitempty"`
 	SkillsLost    bool           `json:"skillsLost,omitempty"`
 	Fields        []int          `json:"fields,omitempty"`
@@ -39,6 +46,7 @@ type SGDelayed struct {
 // Every suspended effect is plain data, including nested rescue / counterspell
 // windows. No goroutine, callback or browser state is required to resume play.
 type SGEvent struct {
+	Foreseen     bool     `json:"foreseen,omitempty"`
 	SavageSource int      `json:"savageSource,omitempty"`
 	Color        int      `json:"color,omitempty"`
 	DamageStage  int      `json:"damageStage,omitempty"`
@@ -70,33 +78,35 @@ type SGPrompt struct {
 	Choices []string `json:"choices,omitempty"`
 }
 type Sanguosha struct {
-	TurnSequence   int         `json:"turnSequence,omitempty"`
-	SkipDiscard    bool        `json:"skipDiscard,omitempty"`
-	ExtraTurns     []int       `json:"extraTurns,omitempty"`
-	ResumeTurns    []int       `json:"resumeTurns,omitempty"`
-	DiscardPhase   bool        `json:"discardPhase,omitempty"`
-	DiscardedHand  []int       `json:"discardedHand,omitempty"`
-	DiscardedOther []int       `json:"discardedOther,omitempty"`
-	TableSuits     map[int]int `json:"tableSuits,omitempty"`
-	Bluffs         []SGBluff   `json:"bluffs,omitempty"`
-	Virtual        *SGVirtual  `json:"-"`
-	SkipJudge      bool        `json:"skipJudge,omitempty"`
-	Options        SGOptions   `json:"options,omitempty"`
-	SkipDraw       bool        `json:"skipDraw,omitempty"`
-	Revealed       []int       `json:"revealed,omitempty"`
-	Players        []SGPlayer  `json:"players"`
-	Deck           []int       `json:"deck"`
-	Discard        []int       `json:"discard"`
-	Table          []int       `json:"table"`
-	Queue          []SGEvent   `json:"queue"`
-	Pending        *SGPrompt   `json:"pending,omitempty"`
-	Sequence       int         `json:"sequence"`
-	Grace          []int       `json:"grace"`
-	Lord           int         `json:"lord"`
-	Selecting      bool        `json:"selecting"`
-	Selected       int         `json:"selected"`
-	InPlay         bool        `json:"inPlay"`
-	SkipPlay       bool        `json:"skipPlay"`
+	TableKinds     map[int]string `json:"tableKinds,omitempty"`
+	DiscardedOwn   int            `json:"discardedOwn,omitempty"`
+	TurnSequence   int            `json:"turnSequence,omitempty"`
+	SkipDiscard    bool           `json:"skipDiscard,omitempty"`
+	ExtraTurns     []int          `json:"extraTurns,omitempty"`
+	ResumeTurns    []int          `json:"resumeTurns,omitempty"`
+	DiscardPhase   bool           `json:"discardPhase,omitempty"`
+	DiscardedHand  []int          `json:"discardedHand,omitempty"`
+	DiscardedOther []int          `json:"discardedOther,omitempty"`
+	TableSuits     map[int]int    `json:"tableSuits,omitempty"`
+	Bluffs         []SGBluff      `json:"bluffs,omitempty"`
+	Virtual        *SGVirtual     `json:"-"`
+	SkipJudge      bool           `json:"skipJudge,omitempty"`
+	Options        SGOptions      `json:"options,omitempty"`
+	SkipDraw       bool           `json:"skipDraw,omitempty"`
+	Revealed       []int          `json:"revealed,omitempty"`
+	Players        []SGPlayer     `json:"players"`
+	Deck           []int          `json:"deck"`
+	Discard        []int          `json:"discard"`
+	Table          []int          `json:"table"`
+	Queue          []SGEvent      `json:"queue"`
+	Pending        *SGPrompt      `json:"pending,omitempty"`
+	Sequence       int            `json:"sequence"`
+	Grace          []int          `json:"grace"`
+	Lord           int            `json:"lord"`
+	Selecting      bool           `json:"selecting"`
+	Selected       int            `json:"selected"`
+	InPlay         bool           `json:"inPlay"`
+	SkipPlay       bool           `json:"skipPlay"`
 }
 
 func (s *State) initSanguosha(n int) {
@@ -148,7 +158,7 @@ func (s *State) sgHas(i int, skill string) bool {
 	if sgLordSkill(skill) && p.Role != "lord" {
 		return false
 	}
-	return !p.SkillsLost && (skill != "" && p.AvatarSkill == skill || slices.Contains(p.Acquired, skill) || slices.Contains(sgGeneral(p.General).Skills, skill))
+	return !p.SkillsLost && (skill != "" && p.AvatarSkill == skill || slices.Contains(p.Acquired, skill) || slices.Contains(p.Temporary, skill) || slices.Contains(sgGeneral(p.General).Skills, skill))
 }
 func (s *State) sgAlive(i int) bool {
 	return i >= 0 && i < len(s.Sanguosha.Players) && !s.Sanguosha.Players[i].Dead
@@ -279,10 +289,16 @@ func (s *State) sgDistance(a, b int) int {
 	if s.sgEquip(b, "defense") != 0 {
 		d++
 	}
+	if s.sgHas(b, "feiying") {
+		d++
+	}
 	return max(1, d)
 }
 func (s *State) sgRange(i int) int { return max(1, SGCardTypes[s.sgWeapon(i)].Range) }
 func (s *State) sgCanTarget(a, b int, kind string) bool {
+	return s.sgCanTargetRange(a, b, kind, false)
+}
+func (s *State) sgCanTargetRange(a, b int, kind string, ignoreRange bool) bool {
 	if !s.sgAlive(a) || !s.sgAlive(b) {
 		return false
 	}
@@ -296,7 +312,7 @@ func (s *State) sgCanTarget(a, b int, kind string) bool {
 	if (kind == "snatch" || kind == "indulgence") && s.sgHas(b, "qianxun") {
 		return false
 	}
-	if sgIsSlash(kind) && s.sgTianyi(a) != 1 && s.sgDistance(a, b) > s.sgRange(a) {
+	if sgIsSlash(kind) && !ignoreRange && s.sgTianyi(a) != 1 && s.sgDistance(a, b) > s.sgRange(a) {
 		return false
 	}
 	limit := 1
@@ -333,7 +349,7 @@ func (s *State) sgLose(i int, ids []int) {
 		lost = lost || slices.Contains(p.Hand, id) || slices.Contains(p.Equip, id)
 		if slices.Contains(p.Equip, id) {
 			equip++
-			if sgCard(id).Kind == "silver_lion" {
+			if sgCard(id).Kind == "silver_lion" && !s.sgGodArmorOff(i) {
 				s.sgPush(SGEvent{Type: "heal", Actor: i, Amount: 1})
 			}
 		}
@@ -383,8 +399,12 @@ func (s *State) sgPlaceTable(i int, ids []int) {
 	if g.TableSuits == nil {
 		g.TableSuits = map[int]int{}
 	}
+	if g.TableKinds == nil {
+		g.TableKinds = map[int]string{}
+	}
 	for _, id := range ids {
 		g.TableSuits[id] = s.sgCardFor(i, id).Suit
+		g.TableKinds[id] = s.sgCardFor(i, id).Kind
 	}
 	g.Table = append(g.Table, ids...)
 }
@@ -392,6 +412,7 @@ func (s *State) sgTakeTable(id int) {
 	g := s.Sanguosha
 	g.Table = sgRemove(g.Table, id)
 	delete(g.TableSuits, id)
+	delete(g.TableKinds, id)
 }
 func (s *State) sgFinishCards(ids []int) {
 	g := s.Sanguosha
@@ -418,6 +439,9 @@ func (s *State) sgValidateCards(i int, ids []int, n int, hand bool) error {
 func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 	if err := s.sgValidateCards(i, ids, -1, false); err != nil {
 		return "", err
+	}
+	if skill == "longhun" {
+		return s.sgGodLonghun(i, ids, desired)
 	}
 	if skill == "guhuo" {
 		v := s.Sanguosha.Virtual
@@ -539,7 +563,7 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 	return kind, nil
 }
 func (s *State) applySanguosha(i int, a Action) error {
-	if !s.sgAlive(i) {
+	if !s.sgAlive(i) && !s.sgGodDeathResponse(i) {
 		return errors.New("该角色无法行动")
 	}
 	// Validation errors are transactional even when checking costs needs to inspect
@@ -651,7 +675,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		}
 		seen := map[int]bool{}
 		for _, t := range targets {
-			if seen[t] || !legality.sgCanTarget(i, t, kind) || s.sgWeimu(i, t, kind, ids) {
+			if seen[t] || !legality.sgCanTargetRange(i, t, kind, s.sgGodWushenRange(i, kind, ids)) || s.sgWeimu(i, t, kind, ids) {
 				return errors.New("目标不符合此牌条件")
 			}
 			seen[t] = true
@@ -741,6 +765,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	if sgIsTrick(kind) && !sgIsDelayed(kind) {
 		s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
 	}
+	s.sgGodTrick(i, kind)
 	targetNames := ""
 	for _, t := range targets {
 		targetNames += " " + s.sgName(t)

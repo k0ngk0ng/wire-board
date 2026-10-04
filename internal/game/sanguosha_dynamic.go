@@ -17,7 +17,7 @@ func (s *State) sgSkills(i int) []string {
 		return []string{}
 	}
 	out := append([]string{}, sgGeneral(p.General).Skills...)
-	for _, skill := range append(append([]string{}, p.Acquired...), p.AvatarSkill) {
+	for _, skill := range append(append(append([]string{}, p.Acquired...), p.Temporary...), p.AvatarSkill) {
 		if skill != "" && !slices.Contains(out, skill) {
 			out = append(out, skill)
 		}
@@ -34,6 +34,9 @@ func (s *State) sgKingdom(i int) string {
 			return p.AvatarKingdom
 		}
 		return sgGeneral(p.Avatar).Kingdom
+	}
+	if p.BaseKingdom != "" {
+		return p.BaseKingdom
 	}
 	return sgGeneral(p.General).Kingdom
 }
@@ -68,7 +71,8 @@ func (s *State) sgLoseSkills(i int) {
 	}
 	p := &s.Sanguosha.Players[i]
 	p.SkillsLost = true
-	p.Acquired, p.Avatars = nil, nil
+	p.Acquired, p.Avatars, p.Temporary = nil, nil, nil
+	s.sgGodClearStars(i)
 	p.Avatar, p.AvatarSkill, p.AvatarKingdom = "", "", ""
 	// Losing Buqu clears its pile and may re-enter dying. Field cards remain
 	// public, but no longer reduce distance without Tuntian.

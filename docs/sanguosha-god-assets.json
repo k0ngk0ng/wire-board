@@ -1,0 +1,56 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "generals/shenguanyu.webp": "image/fullskin/generals/full/shenguanyu.png",
+    "generals/shenlvmeng.webp": "image/fullskin/generals/full/shenlvmeng.png",
+    "generals/shenzhouyu.webp": "image/fullskin/generals/full/shenzhouyu.png",
+    "generals/shenzhugeliang.webp": "image/fullskin/generals/full/shenzhugeliang.png",
+    "generals/shencaocao.webp": "image/fullskin/generals/full/shencaocao.png",
+    "generals/shenlvbu.webp": "image/fullskin/generals/full/shenlvbu.png",
+    "generals/shenzhaoyun.webp": "image/fullskin/generals/full/shenzhaoyun.png",
+    "generals/shensimayi.webp": "image/fullskin/generals/full/shensimayi.png"
+  },
+  "assets": [
+    {
+      "file": "generals/shencaocao.webp",
+      "sha256": "7074aeb34ec47d655744b6e047bfde4e4ee89179dc9eec3b11f38da661b4e213",
+      "bytes": 26844
+    },
+    {
+      "file": "generals/shenguanyu.webp",
+      "sha256": "b0e009bb680d3233a387e8c0d55b537797ce86e3ebd1a8d6f9ec559091291c87",
+      "bytes": 15690
+    },
+    {
+      "file": "generals/shenlvbu.webp",
+      "sha256": "cab0a7f03a151a6537e9a53923cdebb98c42247047d9d508a4a6ceeff3d37776",
+      "bytes": 32994
+    },
+    {
+      "file": "generals/shenlvmeng.webp",
+      "sha256": "f355ecee7d57363666dada1da1913e5a8080150beddc773cd829a794bbea04e1",
+      "bytes": 21310
+    },
+    {
+      "file": "generals/shensimayi.webp",
+      "sha256": "f91ad9856baf639fb5a26886451aa44582fe902b77b4a26a424e5ff279c7e0b8",
+      "bytes": 24376
+    },
+    {
+      "file": "generals/shenzhaoyun.webp",
+      "sha256": "7a5ea1d7f14ecad85a1669551352686ce0ea4dc047143d0b2e234fe769cf01f9",
+      "bytes": 21366
+    },
+    {
+      "file": "generals/shenzhouyu.webp",
+      "sha256": "ed2c7b280a56e38d0b0794328f5b555d187f2a4543663f0539ec5f3480889012",
+      "bytes": 23052
+    },
+    {
+      "file": "generals/shenzhugeliang.webp",
+      "sha256": "e41d26ad0bb22f13e63a40d897863ac98bd2f01b496b65fae0c4d30a4eeee92b",
+      "bytes": 12962
+    }
+  ]
+}
