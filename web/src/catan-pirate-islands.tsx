@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { CatanState, Room } from "./types";
 import {
   catanColorIndex,
@@ -11,6 +13,99 @@ export function catanFortressReady(game: CatanState, player: number) {
   if (!f || f.strength <= 0 || !f.route.length) return false;
   const last = game.edges[f.route[f.route.length - 1]];
   return last?.a === f.vertex || last?.b === f.vertex;
+}
+
+export function CatanEndAction({
+  room,
+  busy,
+  end,
+}: {
+  room: Room;
+  busy: boolean;
+  end: () => Promise<void>;
+}) {
+  const [confirm, setConfirm] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const dialog = useRef<HTMLElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const game = room.game!.catan!,
+    ready = catanFortressReady(game, room.you);
+  const fort = game.seafarers?.pirateIslands?.fortresses[room.you];
+  const warships =
+    fort?.route.filter((id) => game.edges[id].warship).length ?? 0;
+  useEffect(() => {
+    if (!ready) setConfirm(false);
+    else if (confirm) dialog.current?.focus({ preventScroll: true });
+  }, [ready, confirm]);
+  const cancel = () => {
+    setConfirm(false);
+    trigger.current?.focus({ preventScroll: true });
+  };
+  return (
+    <>
+      <button
+        ref={trigger}
+        className="catan-end"
+        disabled={busy}
+        onClick={() => (ready ? setConfirm(true) : void end())}
+      >
+        {ready ? "攻打要塞并结束行动 →" : "结束回合 →"}
+      </button>
+      {confirm &&
+        ready &&
+        createPortal(
+          <section
+            ref={dialog}
+            tabIndex={-1}
+            className="catan-gold-choice catan-fortress-confirm"
+            role="dialog"
+            aria-label="确认攻打要塞"
+            onKeyDown={(event) => {
+              if (event.key === "Escape" && !busy) {
+                event.stopPropagation();
+                cancel();
+              }
+            }}
+          >
+            <header>
+              <strong>攻打你的海盗要塞</strong>
+              <button
+                aria-expanded={!collapsed}
+                onClick={() => setCollapsed(!collapsed)}
+              >
+                {collapsed ? "展开" : "收起"}
+              </button>
+            </header>
+            {!collapsed && (
+              <div className="catan-gold-body">
+                <p>
+                  远征航线有 <b>{warships} 艘战舰</b>，要塞剩余{" "}
+                  <b>{fort!.strength} 层防御</b>
+                  。结束行动时掷一枚战斗骰，点数为海盗力量。
+                </p>
+                <ul>
+                  <li>战舰数大于点数：移除一层防御。</li>
+                  <li>战舰数等于点数：退回末端一艘船。</li>
+                  <li>战舰数小于点数：退回末端两艘船。</li>
+                </ul>
+                <p>战斗结束后交接下一位玩家。你也可以先继续建设或交易。</p>
+                <button
+                  className="primary wide"
+                  disabled={busy}
+                  onClick={() => void end().then(() => setConfirm(false))}
+                >
+                  掷战斗骰并结束行动
+                </button>
+                <button className="wide" disabled={busy} onClick={cancel}>
+                  返回地图，继续行动
+                </button>
+              </div>
+            )}
+          </section>,
+          document.body,
+        )}
+    </>
+  );
 }
 
 export function CatanFleetPath({ game }: { game: CatanState }) {

@@ -38,8 +38,9 @@ import {
   CatanPirateProgress,
   CatanFleetPath,
   CatanPirateMarkers,
-  catanFortressReady,
+  CatanEndAction,
 } from "./catan-pirate-islands";
+import { CatanPirateEffects } from "./catan-pirate-effects";
 import { CatanHelpers } from "./catan-helpers";
 import {
   CatanTribePortChoice,
@@ -720,7 +721,7 @@ export function CatanBoard({
                         <title>强盗阻止本地块生产</title>
                       </g>
                     )}
-                    {sea?.pirate === t.id && (
+                    {!pirates && sea?.pirate === t.id && (
                       <g
                         transform={`translate(${t.x},${t.y}) scale(${pieceScale})`}
                       >
@@ -1006,6 +1007,7 @@ export function CatanBoard({
                 assets={assets}
                 inspect={setVillage}
               />
+              {pirates && <CatanPirateEffects room={room} assets={assets} />}
             </svg>
           </div>
         </div>
@@ -1165,15 +1167,12 @@ export function CatanBoard({
                   : "银行、港口或其他玩家"}
               </small>
             </button>
-            <button
-              className="catan-end"
-              disabled={busy}
-              onClick={() => void submit({ type: "catan_end" })}
-            >
-              {catanFortressReady(g, you)
-                ? "攻打要塞并结束行动 →"
-                : "结束回合 →"}
-            </button>
+            <CatanEndAction
+              key={`${room.id}:${game.turn}:${game.round}`}
+              room={room}
+              busy={busy}
+              end={() => submit({ type: "catan_end" })}
+            />
           </div>
         )}
         {chosen &&
