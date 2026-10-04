@@ -1,8 +1,8 @@
 import { CatanWorldEditor } from "./catan-world-editor";
 import { CatanSeafarersPicker, catanScenarioVictory } from "./catan-scenarios";
-import { CatanNewWorldRules } from "./catan-new-world";
+import { CatanRules } from "./catan-rules";
 import { ClothPicture } from "./catan-cloth";
-import { CatanWonderSeat, CatanWondersRules } from "./catan-wonders";
+import { CatanWonderSeat } from "./catan-wonders";
 import { CatanOptionPicker } from "./catan-helpers";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
@@ -67,7 +67,6 @@ import type {
   RailMapSpec,
   RailPayment,
   RailPlayer,
-  CatanState,
 } from "./types";
 import "./style.css";
 import "./autoplay.css";
@@ -467,9 +466,11 @@ function Modal({
   children,
   onClose,
   dismissible = true,
+  className = "",
 }: {
   title: string;
   dismissible?: boolean;
+  className?: string;
   children: React.ReactNode;
   onClose: () => void;
 }) {
@@ -513,7 +514,7 @@ function Modal({
     >
       <div
         ref={ref}
-        className="modal"
+        className={`modal ${className}`}
         role="dialog"
         aria-modal="true"
         aria-label={title}
@@ -1364,11 +1365,12 @@ function App() {
             {rules && room && (
               <Modal
                 title={`${gameName(room!.kind)} · 玩法速查`}
+                className="rules-modal"
                 onClose={() => setRules(false)}
               >
                 <Rules
                   kind={room!.kind}
-                  catan={room.game?.catan}
+                  room={room}
                   sgOptions={
                     room.game?.sanguosha?.options || room.sanguoshaOptions
                   }
@@ -4756,12 +4758,12 @@ function Rules({
   kind,
   railMap,
   sgOptions,
-  catan,
+  room,
 }: {
   kind: string;
   railMap?: RailMapSpec;
   sgOptions?: SGOptions;
-  catan?: CatanState;
+  room: Room;
 }) {
   return (
     <div className="rules">
@@ -4803,48 +4805,8 @@ function Rules({
             秒，放地块与派随从共用倒计时。超时可由其他玩家移出；随从收回、已放地块保留，未放地块洗回牌堆。剩余一人时获胜。
           </p>
         </>
-      ) : kind === "catan" && catan?.seafarers?.newWorld ? (
-        <CatanNewWorldRules game={catan} />
-      ) : kind === "catan" && catan?.seafarers?.wonders ? (
-        <CatanWondersRules game={catan} />
       ) : kind === "catan" ? (
-        <>
-          <p>
-            卡坦岛基础版支持3–4人，五至六人扩充支持5–6人。自己的行动阶段达到10分立即获胜。
-          </p>
-          <ol>
-            <li>
-              按顺序放置一座村庄和相邻道路，再逆序放第二组；第二座村庄获得相邻地块各一张资源。
-            </li>
-            <li>
-              回合开始掷两颗骰子。对应数字的地块向相邻村庄发一张、城市发两张资源，强盗所在的地块不生产。
-            </li>
-            <li>
-              掷出 7
-              时，超过七张资源的玩家同时弃掉一半，向下取整；之后当前玩家移动强盗，从相邻一名有资源的对手处随机偷一张。
-            </li>
-            <li>
-              掷骰后可任意顺序交易、建造及购买发展卡。银行 4:1，通用港口
-              3:1，专用港口 2:1；玩家交易须双方同意，由当前玩家确认成交。
-            </li>
-            <li>
-              村庄必须连接自己的道路，且与任何建筑至少相隔两条边。城市升级自己的村庄。道路不能穿过对手建筑。
-            </li>
-            <li>
-              每回合最多使用一张发展卡，刚买的下次自己的回合才能使用。胜利点自动计分并保密；骑士、道路建设、丰收和垄断均按基础规则执行。
-            </li>
-            <li>
-              至少五段连续道路获得最长道路、至少三名骑士获得最大骑士军队，各两分；并列时原持有者保留，原持有者不在并列中则无人持有。
-            </li>
-          </ol>
-          <p>
-            启用五至六人扩充后，①号玩家正常行动，随后由其左侧第三位②号玩家行动：不掷骰，不与其他玩家自由交易，仍可建造、使用发展卡及银行/港口交易。两人完成后标记向下一位移动。发展卡在下次自己的行动阶段即可使用。
-          </p>
-          <p>
-            起始建设和同时弃牌限时 120
-            秒，超时自动处理。正常回合超时可由其他玩家移出；建筑、道路保留但不再生产。资源与发展卡种类仅本人可见，结算后公开。
-          </p>
-        </>
+        <CatanRules room={room} />
       ) : kind === "splendor" ? (
         <>
           <p>
@@ -4879,11 +4841,9 @@ function Rules({
       ) : (
         <>{railMap && <RailMapRules map={railMap} />}</>
       )}
-      {kind !== "sanguosha" && (
+      {kind !== "sanguosha" && kind !== "catan" && (
         <p>
-          {kind === "catan"
-            ? "正常回合超时后，同局其他玩家可移出当前玩家；起始建设、弃牌和待回应选择超时由系统自动处理。剩余玩家继续，最后一人获胜。房主可直接结束牌桌。"
-            : "每回合120秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。"}
+          每回合120秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。
         </p>
       )}
       <p className="muted small">
