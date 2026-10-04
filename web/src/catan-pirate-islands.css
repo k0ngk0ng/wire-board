@@ -115,6 +115,55 @@
   cursor: pointer;
   font-weight: 700;
 }
+
+.catan-moving-fleet {
+  will-change: transform;
+}
+.catan-naval-ghost {
+  animation: catan-naval-return 1000ms cubic-bezier(0.2, 0.6, 0.3, 1) both;
+}
+.catan-fortress-flash {
+  animation: catan-fortress-pulse 1100ms ease-out both;
+  transform-origin: 0 0;
+}
+@keyframes catan-naval-return {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--naval-dx), var(--naval-dy)) scale(0.15);
+    opacity: 0;
+  }
+}
+@keyframes catan-fortress-pulse {
+  from {
+    transform: scale(0.65);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.catan-fortress-confirm ul {
+  padding-left: 20px;
+  line-height: 1.8;
+  font-size: 13px;
+}
+.catan-fortress-confirm .wide + .wide {
+  margin-top: 8px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .catan-naval-ghost,
+  .catan-fortress-flash {
+    display: none;
+    animation: none;
+  }
+}
 .catan-pirate-progress details[open] summary {
   margin-bottom: 8px;
 }

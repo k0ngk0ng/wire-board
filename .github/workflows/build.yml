@@ -28,6 +28,8 @@ jobs:
           cache: true
       - name: Build frontend
         run: npm --prefix web ci && npm --prefix web run build
+      - name: Test frontend event replay guards
+        run: npm --prefix web test
       - name: Check formatting
         run: test -z "$(gofmt -l main.go main_test.go internal)"
       - name: Test rules, privacy, persistence and concurrent requests
