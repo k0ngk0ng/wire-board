@@ -93,6 +93,11 @@ func (g *Catan) canRoute(p, id int, ship bool) bool {
 		return false
 	}
 	e := g.Edges[id]
+	if ship && g.pirateIslands() != nil {
+		if _, _, ok := g.pirateShipPlan(p, id); !ok {
+			return false
+		}
+	}
 	for _, v := range []int{e.A, e.B} {
 		vertex := g.Vertices[v]
 		if vertex.Level > 0 {
@@ -172,8 +177,19 @@ func (g *Catan) shipDestinations(p, from int) []int {
 	}
 	temp := *g
 	temp.Edges = append([]CatanEdge{}, g.Edges...)
+	if g.pirateIslands() != nil {
+		sea := *g.Seafarers
+		pirates := *g.pirateIslands()
+		pirates.Fortresses = append([]CatanPirateFortress{}, pirates.Fortresses...)
+		sea.PirateIslands = &pirates
+		temp.Seafarers = &sea
+		if !temp.pirateRemoveRouteTail(p, from) {
+			return result
+		}
+	}
 	temp.Edges[from].Owner = -1
 	temp.Edges[from].Ship = false
+	temp.Edges[from].Warship = false
 	for _, e := range temp.Edges {
 		if e.ID != from && temp.canShip(p, e.ID) {
 			result = append(result, e.ID)
@@ -186,10 +202,16 @@ func (s *State) catanMoveShip(player int, a Action) error {
 	if s.Phase != "catan_turn" || !slices.Contains(g.shipDestinations(player, a.Edge), a.Target) {
 		return errors.New("只能移动本阶段尚未移动过、非本阶段新造且处于开放末端的船；海盗附近不能移入或移出")
 	}
+	warship := g.Edges[a.Edge].Warship
+	if !g.pirateRemoveRouteTail(player, a.Edge) {
+		return errors.New("远征航线只能移动末端船只")
+	}
 	g.Edges[a.Edge].Owner = -1
 	g.Edges[a.Edge].Ship = false
+	g.Edges[a.Edge].Warship = false
 	g.Edges[a.Target].Owner = player
 	g.Edges[a.Target].Ship = true
+	g.Edges[a.Target].Warship = warship
 	g.Seafarers.MovedShip = true
 	g.Trade = nil
 	s.catanLog(player, "将船只从 #%d 移至 #%d", a.Edge+1, a.Target+1)

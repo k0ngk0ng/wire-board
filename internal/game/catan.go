@@ -184,10 +184,13 @@ func (s *State) catanScores() {
 	}
 	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
 	g.LongestOwner = g.awardHolder(oldRoad, 5, roads)
-	if g.cloth() != nil {
+	if g.cloth() != nil || g.pirateIslands() != nil {
 		g.LongestOwner = -1
 	}
 	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
+	if g.pirateIslands() != nil {
+		g.ArmyOwner = -1
+	}
 	if g.LongestOwner != oldRoad {
 		if g.LongestOwner < 0 {
 			s.Log = append(s.Log, routeName+"奖励暂时无人持有")
@@ -204,7 +207,7 @@ func (s *State) catanScores() {
 	}
 	for i := range g.Players {
 		p := &g.Players[i]
-		p.Score = p.Dev[4]
+		p.Score = g.hiddenVictoryPoints(i)
 		if c := g.cloth(); c != nil {
 			p.Score += c.Held[i] / 2
 		}
@@ -227,8 +230,17 @@ func (s *State) catanScores() {
 		}
 	}
 }
+func (g *Catan) hiddenVictoryPoints(player int) int {
+	if g.pirateIslands() != nil {
+		return 0
+	}
+	return g.Players[player].Dev[4]
+}
 func (s *State) catanVictory() {
 	g := s.Catan
+	if p := g.pirateIslands(); p != nil && (s.Turn >= len(p.Fortresses) || p.Fortresses[s.Turn].Strength > 0) {
+		return
+	}
 	goal := 10
 	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {
 		goal = g.Seafarers.VictoryPoints
@@ -332,6 +344,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			return errors.New("请先完成当前行动")
 		}
 		s.catanVictory()
+		if !s.Finished && g.pirateFortressReady(player) {
+			s.catanAttackFortress(player, catanRandom(6)+1)
+		}
 		if !s.Finished && !s.catanClothEnd() {
 			s.catanNext()
 			s.catanVictory()
@@ -773,10 +788,18 @@ func (s *State) catanDev(p int, a Action) error {
 	g := s.Catan
 	pl := &g.Players[p]
 	kind := a.Card
-	if (s.Phase != "catan_turn" && s.Phase != "catan_roll") || g.PlayedDev || kind < 0 || kind > 3 || pl.Dev[kind]-pl.NewDev[kind] <= 0 {
+	maxKind := 3
+	if g.pirateIslands() != nil {
+		maxKind = 4
+	}
+	if (s.Phase != "catan_turn" && s.Phase != "catan_roll") || g.PlayedDev || kind < 0 || kind > maxKind || pl.Dev[kind]-pl.NewDev[kind] <= 0 {
 		return errors.New("每回合最多使用一张发展卡，当回合购买的卡不能使用")
 	}
 	switch kind {
+	case 0, 4:
+		if g.pirateIslands() != nil && g.pirateNextWarship(p) < 0 {
+			return errors.New("远征航线上没有可升级的普通船只")
+		}
 	case 1:
 		if !g.hasRoute(p) {
 			return errors.New("没有可放置的道路")
@@ -796,7 +819,13 @@ func (s *State) catanDev(p int, a Action) error {
 	g.Trade = nil
 	g.ResumePhase = s.Phase
 	switch kind {
-	case 0:
+	case 0, 4:
+		if g.pirateIslands() != nil {
+			id := g.pirateNextWarship(p)
+			g.Edges[id].Warship = true
+			s.catanLog(p, "使用骑士，将远征航线最靠近起点的普通船只 #%d 升级为战舰", id+1)
+			break
+		}
 		pl.Knights++
 		s.Phase = "catan_robber"
 		if g.Seafarers != nil {

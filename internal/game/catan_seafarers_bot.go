@@ -122,6 +122,18 @@ func (g *Catan) seaBuildChoices(player int) []botChoice {
 			result = append(result, botChoice{Action{Type: "catan_road", Edge: e.ID}, 200 + g.seaRouteValue(player, e.ID, false)/4})
 		}
 		if ships < 15 && g.canShip(player, e.ID) {
+			if p := g.pirateIslands(); p != nil {
+				root, route, ok := g.pirateShipPlan(player, e.ID)
+				f := p.Fortresses[player]
+				if ok && (len(route) > len(f.Route) || root != f.Root) {
+					result = append(result, botChoice{Action{Type: "catan_ship", Edge: e.ID}, 450})
+				} else {
+					// A free Road Building placement must still include auxiliary
+					// coastal ships when no expedition extension remains possible.
+					result = append(result, botChoice{Action{Type: "catan_ship", Edge: e.ID}, -1500})
+				}
+				continue
+			}
 			result = append(result, botChoice{Action{Type: "catan_ship", Edge: e.ID}, 200 + g.seaRouteValue(player, e.ID, true)/4})
 		}
 	}
@@ -129,7 +141,7 @@ func (g *Catan) seaBuildChoices(player int) []botChoice {
 }
 func (g *Catan) seaMoveChoices(player int) []botChoice {
 	choices := []botChoice{}
-	if g.Seafarers == nil || g.Seafarers.MovedShip {
+	if g.Seafarers == nil || g.Seafarers.MovedShip || g.pirateIslands() != nil {
 		return choices
 	}
 	for _, from := range g.Edges {

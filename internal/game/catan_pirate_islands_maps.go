@@ -4,16 +4,19 @@ import "fmt"
 
 // Public board state for The Pirate Islands (Seafarers scenario 7). The
 // fortresses are separate from buildings until recaptured: they neither
-// produce resources nor score as settlements. Combat/route rules must be
-// connected before this scenario is offered by room options.
+// produce resources nor score as settlements. Room options remain closed
+// until the scenario interface and full acceptance checks are complete.
 type CatanPirateFortress struct {
-	StartVertex int `json:"startVertex"`
-	StartShip   int `json:"startShip"`
-	Beachhead   int `json:"beachhead"`
-	Vertex      int `json:"vertex"`
-	Strength    int `json:"strength"`
+	Root        int   `json:"root"`
+	Route       []int `json:"route"`
+	StartVertex int   `json:"startVertex"`
+	StartShip   int   `json:"startShip"`
+	Beachhead   int   `json:"beachhead"`
+	Vertex      int   `json:"vertex"`
+	Strength    int   `json:"strength"`
 }
 type CatanPirateIslands struct {
+	Battle       *CatanPirateBattle    `json:"battle,omitempty"`
 	SevenPending bool                  `json:"sevenPending,omitempty"`
 	Raid         *CatanPirateRaid      `json:"raid,omitempty"`
 	Colors       []int                 `json:"colors"` // indices in the shared blue/red/white/orange/purple/green palette
@@ -126,7 +129,15 @@ func (g *Catan) makeSeafarersPirateIslandsFixed(rows [][]seaTerrain, ports []sea
 		}
 		g.Vertices[v].Owner, g.Vertices[v].Level = player, 1
 		g.Edges[edge].Owner, g.Edges[edge].Ship = player, true
-		p.Fortresses = append(p.Fortresses, CatanPirateFortress{StartVertex: v, StartShip: edge, Beachhead: vertex(spec.beach), Vertex: vertex(spec.fort), Strength: 3})
+		p.Fortresses = append(p.Fortresses, CatanPirateFortress{Root: v, Route: []int{edge}, StartVertex: v, StartShip: edge, Beachhead: vertex(spec.beach), Vertex: vertex(spec.fort), Strength: 3})
 	}
+	deck := []int{}
+	for _, card := range g.DevDeck {
+		if card == 4 && len(g.Players) == 3 {
+			continue
+		}
+		deck = append(deck, card)
+	}
+	g.DevDeck = deck
 	return nil
 }

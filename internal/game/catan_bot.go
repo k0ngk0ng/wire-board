@@ -161,6 +161,13 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_road", Edge: best}, nil
 	case "catan_roll":
+		if g.pirateIslands() != nil && !g.PlayedDev && g.pirateNextWarship(player) >= 0 {
+			for _, kind := range []int{0, 4} {
+				if p.Dev[kind] > p.NewDev[kind] {
+					return Action{Type: "catan_dev", Card: kind}, nil
+				}
+			}
+		}
 		if a, ok := g.digurBotAction(player); ok {
 			return a, nil
 		}
@@ -292,7 +299,11 @@ func (s *State) catanBot(player int) (Action, error) {
 		choices = append(choices, botChoice{Action{Type: "catan_road", Edge: road}, 200})
 	}
 	if len(g.DevDeck) > 0 {
-		choices = append(choices, botChoice{Action{Type: "catan_buy_dev"}, 100})
+		priority := 100
+		if g.pirateIslands() != nil && g.pirateNextWarship(player) >= 0 && sum(p.Dev) < 2 {
+			priority = 540
+		}
+		choices = append(choices, botChoice{Action{Type: "catan_buy_dev"}, priority})
 	}
 	choices = append(choices, s.catanHelperBotChoices(player, choices, road)...)
 	// Trade only toward an immediately useful build, with a strictly smaller deficit.
@@ -315,7 +326,11 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 	}
 	if !g.PlayedDev {
-		for kind := 0; kind < 4; kind++ {
+		maxKind := 3
+		if g.pirateIslands() != nil {
+			maxKind = 4
+		}
+		for kind := 0; kind <= maxKind; kind++ {
 			if p.Dev[kind]-p.NewDev[kind] <= 0 {
 				continue
 			}

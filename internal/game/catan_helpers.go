@@ -275,7 +275,7 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			return errors.New("请选择一位领先的对手")
 		}
 		target := g.Players[a.Target]
-		if target.Score-target.Dev[4] <= p.Score-p.Dev[4] || sum(target.Resources) == 0 {
+		if target.Score-g.hiddenVictoryPoints(a.Target) <= p.Score-g.hiddenVictoryPoints(player) || sum(target.Resources) == 0 {
 			return errors.New("该对手公开分数未领先或没有资源")
 		}
 		s.catanHelperAsk(CatanHelperPending{Player: player, Kind: "leader", Resume: resume, Target: a.Target})

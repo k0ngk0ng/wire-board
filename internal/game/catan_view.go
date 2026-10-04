@@ -58,7 +58,7 @@ func (s *State) catanView(view map[string]any, player int) {
 		actual := g.Players[i]
 		p["resourceCount"] = sum(actual.Resources)
 		p["devCount"] = sum(actual.Dev)
-		p["publicScore"] = actual.Score - actual.Dev[4]
+		p["publicScore"] = actual.Score - g.hiddenVictoryPoints(i)
 		p["rates"] = g.rates(i)
 		roads, settlements, cities := g.pieces(i)
 		p["roadsLeft"] = 15 - roads
@@ -74,7 +74,7 @@ func (s *State) catanView(view map[string]any, player int) {
 			delete(p, "resources")
 			delete(p, "dev")
 			delete(p, "newDev")
-			p["score"] = actual.Score - actual.Dev[4]
+			p["score"] = actual.Score - g.hiddenVictoryPoints(i)
 		}
 	}
 	// Legal locations are computed using only public map and the viewer's identity.
