@@ -12,7 +12,7 @@ func (s *State) sgView(viewer int) map[string]any {
 		if g.Selecting && i != g.Lord && i != viewer {
 			general = ""
 		}
-		v := map[string]any{"general": general, "chained": p.Chained, "drank": p.Drank, "hp": p.HP, "maxHP": p.MaxHP, "dead": p.Dead, "handCount": len(p.Hand), "equip": p.Equip, "judgment": p.Judgment, "used": p.Used}
+		v := map[string]any{"general": general, "flipped": p.Flipped, "buqu": p.Buqu, "chained": p.Chained, "drank": p.Drank, "hp": p.HP, "maxHP": p.MaxHP, "dead": p.Dead, "handCount": len(p.Hand), "equip": p.Equip, "judgment": p.Judgment, "used": p.Used}
 		if g.Selecting && general == "" {
 			v["hp"] = 0
 			v["maxHP"] = 0
@@ -26,7 +26,11 @@ func (s *State) sgView(viewer int) map[string]any {
 		}
 		players = append(players, v)
 	}
-	visible := map[string]any{"players": players, "lord": g.Lord, "selecting": g.Selecting, "remaining": len(g.Deck), "discardCount": len(g.Discard), "table": g.Table, "grace": g.Grace, "generals": SGGenerals, "cardTypes": SGCardTypes, "cards": g.cardCatalog(), "skills": SGSkills, "sequence": g.Sequence, "options": g.Options, "revealed": g.Revealed}
+	visible := map[string]any{"players": players, "lord": g.Lord, "selecting": g.Selecting, "remaining": len(g.Deck), "discardCount": len(g.Discard), "table": g.Table, "grace": g.Grace, "generals": g.generalCatalog(), "cardTypes": SGCardTypes, "cards": s.sgVisibleCatalog(viewer), "skills": SGSkills, "sequence": g.Sequence, "options": g.Options, "revealed": g.Revealed}
+	if len(g.Bluffs) > 0 {
+		b := g.Bluffs[len(g.Bluffs)-1]
+		visible["bluff"] = map[string]any{"player": b.Player, "declared": b.Declared, "context": s.sgBluffContext(b), "questioned": b.Questioned, "resolved": b.Resolved}
+	}
 	if p := g.Pending; p != nil {
 		prompt := map[string]any{"id": p.ID, "player": p.Player, "kind": p.Kind}
 		canRespond := viewer == p.Player || p.Kind == "nullification" && s.sgAlive(viewer) && !slices.Contains(p.Event.Targets, viewer)
@@ -66,6 +70,10 @@ func (s *State) sgView(viewer int) map[string]any {
 		}
 		visible["distances"] = dist
 		visible["range"] = s.sgRange(viewer)
+		if s.sgHas(viewer, "guhuo") {
+			visible["guhuoKinds"] = s.sgGuhuoKinds()
+		}
+		visible["huangtianGive"] = viewer != g.Lord && sgGeneral(g.Players[viewer].General).Kingdom == "qun" && s.sgHas(g.Lord, "huangtian")
 	}
 	return map[string]any{"kind": s.Kind, "turn": s.Turn, "phase": s.Phase, "round": s.Round, "finished": s.Finished, "winners": s.Winners, "log": s.Log, "sanguosha": visible}
 }

@@ -29,11 +29,15 @@ func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
 		return o, errors.New("未知三国杀牌堆")
 	}
 	for _, pack := range o.Packs {
-		if pack != "standard" {
+		if pack != "standard" && pack != "wind" {
 			return o, errors.New("该武将包尚未开放")
 		}
 	}
+	wind := slices.Contains(o.Packs, "wind")
 	o.Packs = []string{"standard"}
+	if wind {
+		o.Packs = append(o.Packs, "wind")
+	}
 	return o, nil
 }
 
@@ -47,6 +51,7 @@ func NewSanguosha(n int, options SGOptions) (*State, error) {
 		return nil, err
 	}
 	s.Sanguosha.Options = o
+	s.sgLordChoices()
 	if o.Deck == "military" {
 		for _, c := range sgMilitaryCards {
 			s.Sanguosha.Deck = append(s.Sanguosha.Deck, c.ID)
@@ -120,7 +125,7 @@ func init() {
 }
 
 func (s *State) sgIgnoreArmor(e SGEvent) bool {
-	return sgIsSlash(e.Kind) && !e.Chain && s.sgWeapon(e.Actor) == "qinggang_sword"
+	return sgIsSlash(e.Kind) && !e.Chain && !e.Transfer && s.sgWeapon(e.Actor) == "qinggang_sword"
 }
 func (s *State) sgSlashImmune(e SGEvent) bool {
 	if !sgIsSlash(e.Kind) || s.sgIgnoreArmor(e) {
@@ -131,7 +136,11 @@ func (s *State) sgSlashImmune(e SGEvent) bool {
 		s.sgLog("%s 的藤甲令普通杀无效", s.sgName(e.Target))
 		return true
 	}
-	if armor == "renwang_shield" && len(e.Cards) > 0 {
+	if armor == "renwang_shield" && e.Color == 2 {
+		s.sgLog("%s 的仁王盾令黑色杀无效", s.sgName(e.Target))
+		return true
+	}
+	if armor == "renwang_shield" && e.Color == 0 && len(e.Cards) > 0 {
 		for _, id := range e.Cards {
 			if c := sgCard(id); c.Suit == 1 || c.Suit == 3 {
 				return false
@@ -152,13 +161,20 @@ func (s *State) sgDamage(e SGEvent) {
 		e.Nature = sgNature(e.Kind)
 	}
 	amount := e.Amount
-	if !e.Chain && s.sgAlive(e.Actor) {
+	if e.DamageStage == 0 && !e.Chain && !e.Transfer && s.sgAlive(e.Actor) {
 		if e.Actor == s.Turn && g.Players[e.Actor].Used["luoyi"] > 0 && (sgIsSlash(e.Kind) || e.Kind == "duel") {
 			amount++
 		}
 		if sgIsSlash(e.Kind) && s.sgWeapon(e.Actor) == "guding_blade" && len(g.Players[e.Target].Hand) == 0 {
 			amount++
 		}
+	}
+	e.Amount = amount
+	if e.DamageStage == 0 {
+		e.DamageStage = 1
+	}
+	if s.sgWindDamage(e) {
+		return
 	}
 	if !s.sgIgnoreArmor(e) {
 		switch sgCard(s.sgEquip(e.Target, "armor")).Kind {
@@ -171,10 +187,16 @@ func (s *State) sgDamage(e SGEvent) {
 		}
 	}
 	p := &g.Players[e.Target]
+	e.Near = s.sgAlive(e.Actor) && s.sgDistance(e.Actor, e.Target) <= 1
 	p.HP -= amount
 	e.Amount = amount
 	e.Type = "hurt"
-	es := []SGEvent{e}
+	dealt := e
+	dealt.Type = "damage_dealt"
+	es := []SGEvent{dealt, e}
+	if e.Transfer {
+		es = append(es, SGEvent{Type: "tianxiang_draw", Target: e.Target})
+	}
 	if p.Chained && e.Nature != "" {
 		p.Chained = false
 		if !e.Chain {
@@ -184,6 +206,8 @@ func (s *State) sgDamage(e SGEvent) {
 					spread.Type = "chain_damage"
 					spread.Target = target
 					spread.Chain = true
+					spread.Transfer = false
+					spread.DamageStage = 1
 					es = append(es, spread)
 				}
 			}
@@ -203,6 +227,6 @@ func (s *State) sgDamage(e SGEvent) {
 	s.sgLog("%s 对 %s 造成 %d 点%s伤害（%s）", s.sgName(e.Actor), s.sgName(e.Target), amount, nature, label)
 	s.sgPush(es...)
 	if p.HP <= 0 {
-		s.sgPush(SGEvent{Type: "dying", Actor: e.Actor, Target: e.Target, Step: s.Turn})
+		s.sgEnterDying(SGEvent{Actor: e.Actor, Target: e.Target, Step: s.Turn})
 	}
 }

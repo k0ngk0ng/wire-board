@@ -363,8 +363,7 @@
   margin: 5px 0;
 }
 .sg-actions {
-  position: sticky;
-  bottom: 12px;
+  position: relative;
   z-index: 4;
   padding: 12px 15px;
   background: #fffaf3f5;
@@ -525,7 +524,6 @@
     min-height: 65px;
   }
   .sg-actions {
-    bottom: 6px;
     padding: 10px;
   }
   .sg-action-buttons button {
@@ -814,15 +812,63 @@
   }
 }
 
-/* Keep card selection and its controls in normal flow on narrow screens.
-   A bottom-sticky panel otherwise rises over the very hand it asks to select. */
+/* Leave room for the floating chat button below mobile action controls. */
 @media (max-width: 600px) {
   .sg-actions {
-    position: relative;
-    bottom: auto;
     padding-bottom: 68px;
   }
   .sg-hand .sg-card {
     scroll-margin-block: 80px;
   }
+}
+
+.sg-flipped {
+  background: #e8dcf2;
+  color: #634478;
+  border: 1px solid #b7a1c8;
+}
+.sg-buqu-pile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 4px 6px;
+  font-size: 11px;
+  align-items: center;
+}
+.sg-buqu-pile button {
+  padding: 2px 5px;
+  background: #efe0c4;
+  color: #765124;
+  border: 1px solid #b4976c;
+  border-radius: 4px;
+}
+.sg-pack-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.sg-pack-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: #a96b1f;
+}
+
+.sg-declaration {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #694c24;
+  margin: 8px 0;
+}
+.sg-declaration select {
+  width: auto;
+  min-width: 140px;
+  background: #fffaf0;
+  color: #403b30;
+}
+.sg-declaration small {
+  font-size: 11px;
 }

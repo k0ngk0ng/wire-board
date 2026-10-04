@@ -36,7 +36,7 @@ export function SanguoshaOptions({
                 ...value,
                 mode: "identity",
                 deck: item.id,
-                packs: ["standard"],
+                packs: value?.packs || ["standard"],
               })
             }
           >
@@ -45,8 +45,21 @@ export function SanguoshaOptions({
           </button>
         ))}
       </div>
+      <label className="sg-pack-option">
+        <input
+          type="checkbox"
+          checked={value?.packs?.includes("wind") || false}
+          onChange={(e) =>
+            onChange({
+              ...value,
+              packs: e.target.checked ? ["standard", "wind"] : ["standard"],
+            })
+          }
+        />
+        风包 · 经典八将
+      </label>
       <p>
-        武将采用经典标准版。
+        武将采用经典技能版本。
         {deck === "military" &&
           "军争包含火焰与雷电伤害，铁索会将属性伤害传给其他横置角色。"}
       </p>
