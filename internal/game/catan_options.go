@@ -5,6 +5,7 @@ import "errors"
 const CatanExpansionRules = "catan-2025-helpers-2022"
 
 type CatanOptions struct {
+	FiveSix    bool   `json:"fiveSix,omitempty"`
 	Rules      string `json:"rules,omitempty"`
 	Helpers    bool   `json:"helpers,omitempty"`
 	AllHelpers bool   `json:"allHelpers,omitempty"`
@@ -17,7 +18,7 @@ func NormalizeCatanOptions(o CatanOptions) (CatanOptions, error) {
 	if o.AllHelpers && !o.Helpers {
 		return o, errors.New("使用全部助手需要启用 Helpers 扩展")
 	}
-	if o.Helpers {
+	if o.Helpers || o.FiveSix {
 		o.Rules = CatanExpansionRules
 	} else {
 		o.Rules = ""
@@ -30,10 +31,14 @@ func NewCatan(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
-	s, err := New("catan", n)
-	if err != nil {
-		return nil, err
+	if o.FiveSix && (n < 5 || n > 6) {
+		return nil, errors.New("五至六人扩充需要 5–6 位玩家")
 	}
+	if !o.FiveSix && (n < 3 || n > 4) {
+		return nil, errors.New("基础卡坦岛需要 3–4 位玩家；5–6 人请启用扩充")
+	}
+	s := &State{Kind: "catan", Phase: "turn", Round: 1, Log: []string{}}
+	s.initCatan(n)
 	s.Catan.Options = o
 	if o.Helpers {
 		pool := []int{}

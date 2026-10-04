@@ -33,9 +33,11 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 	}
 	setupStep := -1
 	tradeID := -1
+	var catanTurnSerial uint64
 	if r.Game.Catan != nil {
 		setupStep = r.Game.Catan.SetupStep
 		tradeID = r.Game.Catan.TradeID
+		catanTurnSerial = r.Game.Catan.TurnSerial
 	}
 	setup := r.Game.Rail != nil && r.Game.Rail.Setup
 	if err := r.Game.Apply(player, action); err != nil {
@@ -98,7 +100,7 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 			return nil
 		}
 	}
-	catanClock := r.Game.Catan != nil && (r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))
+	catanClock := r.Game.Catan != nil && (r.Game.Catan.TurnSerial != catanTurnSerial || r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))
 	if catanClock || r.Game.Turn != turn || r.Game.Round != round || r.Game.Finished || (setup && !r.Game.Rail.Setup) {
 		r.startTurnClock(now)
 	}

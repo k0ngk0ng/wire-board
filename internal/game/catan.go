@@ -26,6 +26,9 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	StartPlayer    int                 `json:"startPlayer,omitempty"`
+	Paired         *CatanPairedTurn    `json:"paired,omitempty"`
+	HexSize        float64             `json:"hexSize,omitempty"`
 	Options        CatanOptions        `json:"options"`
 	TurnSerial     uint64              `json:"turnSerial,omitempty"`
 	HelperDisplay  []int               `json:"helperDisplay,omitempty"`
@@ -68,7 +71,16 @@ func (s *State) initCatan(n int) {
 	for range n {
 		g.Players = append(g.Players, CatanPlayer{Resources: make([]int, 5), Dev: make([]int, 5), NewDev: make([]int, 5)})
 	}
-	for kind, count := range []int{14, 2, 2, 2, 5} {
+	counts := []int{14, 2, 2, 2, 5}
+	if n > 4 {
+		g.Options = CatanOptions{Rules: CatanExpansionRules, FiveSix: true}
+		g.StartPlayer = catanRandom(n)
+		s.Turn = g.StartPlayer
+		g.Paired = &CatanPairedTurn{Primary: g.StartPlayer, Secondary: (g.StartPlayer + 3) % n}
+		g.Bank = []int{24, 24, 24, 24, 24}
+		counts = []int{20, 3, 3, 3, 5}
+	}
+	for kind, count := range counts {
 		for range count {
 			g.DevDeck = append(g.DevDeck, kind)
 		}
@@ -77,7 +89,10 @@ func (s *State) initCatan(n int) {
 	g.makeMap()
 	s.Catan = g
 	s.Phase = "catan_setup_settlement"
-	s.Log = append(s.Log, "卡坦岛基础版开局：按顺序放置村庄和道路，再逆序放置第二组")
+	s.Log = append(s.Log, "卡坦岛开局：按顺序放置村庄和道路，再逆序放置第二组")
+	if n > 4 {
+		s.Log = append(s.Log, "五至六人扩充：30块陆地，采用新版配对回合；配对玩家不能与其他玩家自由交易")
+	}
 }
 func (g *Catan) setup() bool { return g.SetupStep < 2*len(g.Players) }
 func catanBundle(a []int) bool {
@@ -85,7 +100,7 @@ func catanBundle(a []int) bool {
 		return false
 	}
 	for _, n := range a {
-		if n < 0 || n > 19 {
+		if n < 0 || n > 24 {
 			return false
 		}
 	}
@@ -200,12 +215,16 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
-	g.TurnSerial++
 	g.Trade = nil
 	g.PlayedDev = false
 	g.FreeRoads = 0
 	g.Victims = []int{}
 	g.ResumePhase = ""
+	if g.Paired != nil {
+		s.catanNextPaired()
+		return
+	}
+	g.TurnSerial++
 	for {
 		s.Turn = (s.Turn + 1) % len(g.Players)
 		if s.Turn == 0 {
@@ -219,7 +238,7 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.Options.Helpers {
+	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -463,23 +482,24 @@ func (s *State) catanSetup(a Action) error {
 	if g.Options.Helpers && g.SetupStep >= len(g.Players) {
 		// The second setup pass runs backwards. The descending starting stack
 		// therefore gives seat i helper i+1 (helper N is picked first).
-		g.Players[p].Helper = &CatanHelperSeat{ID: p + 1}
-		s.catanLog(p, "获得起始助手「%s」", CatanHelpers()[p].Name)
+		helper := (p-g.StartPlayer+len(g.Players))%len(g.Players) + 1
+		g.Players[p].Helper = &CatanHelperSeat{ID: helper}
+		s.catanLog(p, "获得起始助手「%s」", CatanHelpers()[helper-1].Name)
 	}
 	g.SetupStep++
 	g.SetupVertex = -1
 	s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
 	if !g.setup() {
 		g.TurnSerial = 1
-		s.Turn = 0
+		s.Turn = g.StartPlayer
 		s.Phase = "catan_roll"
-		s.Log = append(s.Log, "起始建设完成，玩家 1 开始掷骰")
+		s.catanLog(s.Turn, "起始建设完成，开始掷骰")
 	} else {
 		n := len(g.Players)
 		if g.SetupStep < n {
-			s.Turn = g.SetupStep
+			s.Turn = (g.StartPlayer + g.SetupStep) % n
 		} else {
-			s.Turn = 2*n - 1 - g.SetupStep
+			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
 		}
 		s.Phase = "catan_setup_settlement"
 	}
@@ -699,6 +719,9 @@ func (s *State) catanDev(p int, a Action) error {
 }
 func (s *State) catanOffer(p int, a Action) error {
 	g := s.Catan
+	if g.Paired != nil && g.Paired.Second {
+		return errors.New("配对玩家不能与其他玩家自由交易，可使用银行或港口")
+	}
 	if s.Phase != "catan_turn" || !catanBundle(a.Give) || !catanBundle(a.Take) || sum(a.Give) == 0 || sum(a.Take) == 0 || !catanHas(g.Players[p].Resources, a.Give) {
 		return errors.New("请提出有效交易，且持有要支付的资源")
 	}

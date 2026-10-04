@@ -230,3 +230,52 @@ func TestCatanHelpersTimeoutResumesParallelDiscard(t *testing.T) {
 		t.Fatal("concurrent discards failed after helper timeout")
 	}
 }
+
+func TestCatanFiveSixRoomCapacityAndOptionFreeze(t *testing.T) {
+	s, ts := setupServer(t)
+	stopBotTicker(s)
+	host := newClient(t, ts.URL)
+	host.register("六人岛主")
+	host.post("/api/rooms", map[string]any{"name": "wrong", "kind": "catan", "capacity": 6}, 400)
+	host.post("/api/rooms", map[string]any{"name": "wrong", "kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{FiveSix: true}}, 400)
+	room := host.post("/api/rooms", map[string]any{"name": "五至六人", "kind": "catan", "capacity": 6, "catanOptions": game.CatanOptions{FiveSix: true, Helpers: true}}, 201)
+	id := room["id"].(string)
+	for i := 0; i < 3; i++ {
+		host.command(current(host), "add_bot", nil, 200)
+	}
+	host.command(current(host), "ready", nil, 200)
+	host.command(current(host), "start", nil, 400)
+	host.command(current(host), "add_bot", nil, 200)
+	change := func(options game.CatanOptions, want int) {
+		r := current(host)
+		host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": options, "version": r["version"], "nonce": randomID(12)}, want)
+	}
+	change(game.CatanOptions{}, 400)
+	host.command(current(host), "start", nil, 200)
+	change(game.CatanOptions{FiveSix: true}, 400)
+	if len(s.rooms[id].Game.Catan.Tiles) != 30 || s.rooms[id].Game.Catan.Paired == nil {
+		t.Fatal("five-player game lost extension")
+	}
+	for s.rooms[id].Game.Catan.SetupStep < 10 {
+		s.mu.Lock()
+		s.rooms[id].TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
+		s.expireSetups(time.Now())
+		s.mu.Unlock()
+	}
+	r := s.rooms[id]
+	r.Game.Phase = "catan_turn"
+	actor := r.Game.Turn
+	now := time.Now()
+	r.TurnDeadline = now.Add(20 * time.Second).UnixMilli()
+	if err := r.applyGameAction(actor, game.Action{Type: "catan_end"}, now); err != nil {
+		t.Fatal(err)
+	}
+	if r.Game.Turn == actor || !r.Game.Catan.Paired.Second || r.TurnDeadline != now.Add(turnLimit).UnixMilli() {
+		t.Fatal("secondary action lacks own deadline")
+	}
+	raw, _ := json.Marshal(r)
+	var restored Room
+	if err := json.Unmarshal(raw, &restored); err != nil || !restored.CatanOptions.FiveSix || !restored.Game.Catan.Paired.Second {
+		t.Fatal("pair lost on persistence", err)
+	}
+}

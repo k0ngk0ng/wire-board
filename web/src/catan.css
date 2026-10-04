@@ -223,6 +223,10 @@
   gap: 6px;
 }
 .catan-build-menu > button {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
   padding: 9px 7px;
   border: 1px solid #d8ccac;
   border-radius: 7px;
@@ -236,6 +240,7 @@
   box-shadow: inset 0 0 0 1px #c59830;
 }
 .catan-build-menu > button > span {
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -699,4 +704,20 @@
 .catan-resource.small .catan-resource-art {
   background: transparent;
   border-radius: 50%;
+}
+
+@media (max-width: 760px) {
+  .catan-build-menu .catan-bundle {
+    gap: 3px;
+  }
+  .catan-build-menu .catan-resource.small {
+    gap: 1px;
+  }
+  .catan-build-menu .catan-resource.small .catan-resource-art {
+    width: 14px;
+    height: 14px;
+  }
+  .catan-build-menu > button > small {
+    line-height: 1.4;
+  }
 }

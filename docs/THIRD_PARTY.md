@@ -33,3 +33,5 @@ Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可
 ## 兵线争锋的经典 DotA 图标
 
 8 位英雄的头像和四个技能、17 件装备共 57 张经典 Warcraft III / DotA 图标来自 [iCCup 英雄资料](https://iccup.com/dota/heroes.html)及[装备资料](https://iccup.com/dota/items.html)。保留图标原色，转换为无损 WebP，共约 246 KiB。来源页、原始及转换后 SHA-256 见 `web/public/dota/v1/sources.json`；转换脚本为 `scripts/prepare_dota_assets.py`。网页优先使用配置的 CDN，随程序保留本地后备副本。原素材权利仍属于各自权利人。本项目的兵线争锋规则是桌游改编，不是原 DotA 电子竞技规则。
+
+璀璨宝石新版贸易站及 CATAN Helpers 人物图取自官方规则书，固定来源与哈希见 `board-expansion-rule-sources.json`。CATAN 五至六人扩充的紫、绿建筑棋子沿用既有蓝色原图的轮廓、阴影与透明通道，仅调整着色区域；转换脚本不包含部署地址。上述美术仅存于独立素材服务。

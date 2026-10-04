@@ -29,7 +29,14 @@ export const catanColors = [
   "#7a8390",
   "#dfca95",
 ];
-export const catanPlayerColors = ["#3078be", "#c94737", "#f5eee1", "#e5902e"];
+export const catanPlayerColors = [
+  "#3078be",
+  "#c94737",
+  "#f5eee1",
+  "#e5902e",
+  "#794287",
+  "#388146",
+];
 const resourceKeys = ["wood", "brick", "wool", "grain", "ore"];
 const devNames = ["骑士", "道路建设", "丰收", "垄断", "胜利点"];
 const devDescriptions = [
@@ -175,6 +182,7 @@ export function CatanBoard({
     you = room.you,
     p = g.players[you],
     hand = p?.resources || [0, 0, 0, 0, 0];
+  const hexSize = g.hexSize || 62;
   const playing = room.status === "playing" && !game.finished;
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine = canPlay && game.turn === you;
@@ -320,7 +328,9 @@ export function CatanBoard({
               })}
               {g.tiles.map((t) => {
                 const available =
-                  mine && effective === "robber" && t.id !== g.robber;
+                  mine &&
+                  ((effective === "robber" && t.id !== g.robber) ||
+                    (effective === "helper_desert" && t.resource === 5));
                 return (
                   <g
                     key={t.id}
@@ -328,11 +338,11 @@ export function CatanBoard({
                     tabIndex={available ? 0 : undefined}
                     aria-label={`地块 ${t.id + 1} ${t.resource < 5 ? catanNames[t.resource] : "沙漠"} ${t.number || ""}${g.robber === t.id ? "，强盗所在" : ""}`}
                     className={`catan-hex ${available ? "selectable" : ""} ${liveNumber === t.number && g.robber !== t.id ? "producing" : ""}`}
-                    onClick={() => available && select("robber", t.id)}
+                    onClick={() => available && select(effective, t.id)}
                     onKeyDown={(e) => {
                       if (available && (e.key === "Enter" || e.key === " ")) {
                         e.preventDefault();
-                        select("robber", t.id);
+                        select(effective, t.id);
                       }
                     }}
                   >
@@ -343,10 +353,10 @@ export function CatanBoard({
                     {assets && (
                       <image
                         href={`${assets}/catan/terrain-${[...resourceKeys, "desert"][t.resource]}-v1.webp`}
-                        x={t.x - 54}
-                        y={t.y - 62}
-                        width="108"
-                        height="124"
+                        x={t.x - (hexSize * Math.sqrt(3)) / 2}
+                        y={t.y - hexSize}
+                        width={hexSize * Math.sqrt(3)}
+                        height={hexSize * 2}
                         preserveAspectRatio="xMidYMid slice"
                         clipPath={`url(#catan-hex-${t.id})`}
                         pointerEvents="none"
@@ -396,13 +406,15 @@ export function CatanBoard({
                         <title>强盗阻止本地块生产</title>
                       </g>
                     )}
-                    {chosen?.type === "robber" && chosen.id === t.id && (
-                      <polygon
-                        points={poly(t.id)}
-                        className="catan-picked"
-                        fill="none"
-                      />
-                    )}
+                    {(chosen?.type === "robber" ||
+                      chosen?.type === "helper_desert") &&
+                      chosen.id === t.id && (
+                        <polygon
+                          points={poly(t.id)}
+                          className="catan-picked"
+                          fill="none"
+                        />
+                      )}
                   </g>
                 );
               })}
@@ -522,7 +534,7 @@ export function CatanBoard({
                     {v.level > 0 &&
                       (assets ? (
                         <image
-                          href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${["blue", "red", "white", "orange"][v.owner]}-v1.webp`}
+                          href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${["blue", "red", "white", "orange", "purple", "green"][v.owner]}-v1.webp`}
                           x={v.level === 2 ? -20 : -15}
                           y="-20"
                           width={v.level === 2 ? 40 : 30}
@@ -567,7 +579,7 @@ export function CatanBoard({
                 ? "点击虚线选择道路，再确认建造"
                 : effective === "settlement" || effective === "city"
                   ? "点击亮起的交点，再确认建造"
-                  : effective === "robber"
+                  : effective === "robber" || effective === "helper_desert"
                     ? "点击地块选择强盗的新位置"
                     : "选择右侧行动 · 滚轮缩放 · 按住拖动"
             : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
@@ -580,9 +592,11 @@ export function CatanBoard({
           <div>
             <b>{g.rollId ? `点数 ${liveNumber}` : "等待掷骰"}</b>
             <small>
-              {phase === "catan_discard"
-                ? "所有人同时弃牌"
-                : catanPhases[phase] || "本局已结束"}
+              {g.paired?.second && phase === "catan_turn"
+                ? "② 配对行动 · 不掷骰、不自由交易"
+                : phase === "catan_discard"
+                  ? "所有人同时弃牌"
+                  : catanPhases[phase] || "本局已结束"}
             </small>
           </div>
         </div>
@@ -653,7 +667,11 @@ export function CatanBoard({
                 <ArrowLeftRight size={17} />
                 资源交易
               </span>
-              <small>银行、港口或其他玩家</small>
+              <small>
+                {g.paired?.second
+                  ? "银行或港口（配对行动）"
+                  : "银行、港口或其他玩家"}
+              </small>
             </button>
             <button
               className="catan-end"
@@ -671,6 +689,7 @@ export function CatanBoard({
                 (
                   {
                     helper_move: "迁移道路",
+                    helper_desert: "将强盗赶回沙漠",
                     road: "修建道路",
                     settlement: "建造村庄",
                     city: "升级城市",
@@ -706,9 +725,12 @@ export function CatanBoard({
                 onClick={() =>
                   void submit({
                     type:
-                      chosen.type === "helper_move"
+                      chosen.type === "helper_move" ||
+                      chosen.type === "helper_desert"
                         ? "catan_helper"
                         : "catan_" + chosen.type,
+                    choice:
+                      chosen.type === "helper_desert" ? "desert" : undefined,
                     skill: helperPayment ? "helper" : undefined,
                     tokens: helperPayment || undefined,
                     target:
@@ -802,7 +824,7 @@ export function CatanBoard({
               label="换取"
               values={take}
               onChange={setTake}
-              limits={[19, 19, 19, 19, 19]}
+              limits={Array(5).fill(g.options?.fiveSix ? 24 : 19)}
               assets={assets}
               disabled={busy}
             />
@@ -820,7 +842,9 @@ export function CatanBoard({
               </button>
               <button
                 className="primary"
-                disabled={busy || !total(give) || !total(take)}
+                disabled={
+                  busy || !!g.paired?.second || !total(give) || !total(take)
+                }
                 onClick={() =>
                   void submit({ type: "catan_trade_offer", give, take })
                 }
@@ -981,6 +1005,13 @@ export function CatanBoard({
             setMoveFrom(null);
             setDev(null);
             setChosen(kind === "buy_dev" ? { type: kind, id: 0 } : null);
+          }}
+          onDesert={() => {
+            setMode("helper_desert");
+            setMoveFrom(null);
+            setHelperPayment(null);
+            setChosen(null);
+            setDev(null);
           }}
           onMove={() => {
             setMode("helper_move");

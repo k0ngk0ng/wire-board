@@ -312,6 +312,12 @@ func (s *State) catanHelperAction(player int, a Action) error {
 				break
 			}
 		}
+		if a.Choice == "desert" {
+			if a.Tile < 0 || a.Tile >= len(g.Tiles) || g.Tiles[a.Tile].Resource != 5 {
+				return errors.New("请选择沙漠地块")
+			}
+			desert = a.Tile
+		}
 		if desert < 0 {
 			return errors.New("地图上没有沙漠")
 		}

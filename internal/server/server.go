@@ -642,6 +642,9 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		}
 		req.CatanOptions = options
 		minPlayers = 3
+		if options.FiveSix {
+			minPlayers, maxPlayers = 5, 6
+		}
 	} else if req.Kind == "splendor" {
 		options, err := game.NormalizeSplendorOptions(req.SplendorOptions)
 		if err != nil {
@@ -816,7 +819,19 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("只有房主能在开局前选择卡坦岛扩展")
 			break
 		}
-		next.CatanOptions, err = game.NormalizeCatanOptions(req.CatanOptions)
+		options, optionErr := game.NormalizeCatanOptions(req.CatanOptions)
+		err = optionErr
+		if err == nil && !options.FiveSix && len(next.Seats) > 4 {
+			err = errors.New("基础版最多四人，请先移除多余座位")
+		}
+		if err == nil {
+			if options.FiveSix {
+				next.Capacity = max(5, next.Capacity)
+			} else {
+				next.Capacity = min(4, next.Capacity)
+			}
+			next.CatanOptions = options
+		}
 		if err == nil {
 			for i := range next.Seats {
 				next.Seats[i].Ready = next.Seats[i].Bot
@@ -891,7 +906,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewRailMap(next.RailMap, len(next.Seats))
 			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
-			} else if next.Kind == "catan" && next.CatanOptions.Helpers {
+			} else if next.Kind == "catan" {
 				next.Game, err = game.NewCatan(len(next.Seats), next.CatanOptions)
 			} else if next.Kind == "sanguosha" {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
