@@ -201,6 +201,10 @@ func (s *State) sgDamage(e SGEvent) {
 	if s.sgWindDamage(e) {
 		return
 	}
+	if s.sgHegDamage(&e) {
+		return
+	}
+	amount = e.Amount
 	if !s.sgIgnoreArmor(e) {
 		switch s.sgArmor(e.Target) {
 		case "vine":
@@ -235,6 +239,7 @@ func (s *State) sgDamage(e SGEvent) {
 					spread.Transfer = false
 					spread.DamageStage = 1
 					spread.Foreseen = false
+					spread.HegDamageChecked = false
 					es = append(es, spread)
 				}
 			}

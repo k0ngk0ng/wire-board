@@ -96,6 +96,7 @@ func (s *State) sgTuntianLoss(i int, lost bool) {
 }
 func (s *State) sgRecordDiscard(i int, ids []int) {
 	g := s.Sanguosha
+	s.sgHegDiscarded(i, ids)
 	if !g.DiscardPhase {
 		return
 	}
@@ -125,7 +126,7 @@ func (s *State) sgMountainEvent(e SGEvent) bool {
 			s.sgPush(SGEvent{Type: "judge", Actor: e.Actor, Kind: "tuntian"})
 		}
 	case "qiaobian":
-		if s.sgHas(e.Actor, "qiaobian") && len(g.Players[e.Actor].Hand) > 0 {
+		if s.sgHegMayInvoke(e.Actor, "qiaobian") && len(g.Players[e.Actor].Hand) > 0 {
 			s.sgAsk(e.Actor, "qiaobian", "巧变：弃一张手牌跳过"+map[string]string{"judge": "判定", "draw": "摸牌", "play": "出牌", "discard": "弃牌"}[e.Kind]+"阶段，或放弃", e)
 		}
 	case "qiaobian_benefit":
@@ -146,11 +147,11 @@ func (s *State) sgMountainEvent(e SGEvent) bool {
 			s.sgAsk(e.Actor, "qiaobian_move", "巧变：选择场上的装备或判定牌，移动到合法角色的对应区域", e)
 		}
 	case "fangquan":
-		if !g.SkipPlay && s.sgHas(e.Actor, "fangquan") {
+		if !g.SkipPlay && s.sgHegMayInvoke(e.Actor, "fangquan") {
 			s.sgAsk(e.Actor, "fangquan", "是否发动放权，跳过出牌阶段？", e)
 		}
 	case "fangquan_finish":
-		if s.sgHas(e.Actor, "fangquan") && g.Players[e.Actor].Used["fangquan"] > 0 && len(g.Players[e.Actor].Hand) > 0 {
+		if s.sgHegMayInvoke(e.Actor, "fangquan") && g.Players[e.Actor].Used["fangquan"] > 0 && len(g.Players[e.Actor].Hand) > 0 {
 			s.sgAsk(e.Actor, "fangquan_give", "放权：弃一张手牌，选择获得额外回合的另一角色", e)
 		}
 	case "xiangle":
@@ -197,7 +198,7 @@ func (s *State) sgMountainEvent(e SGEvent) bool {
 		for e.Step < len(order) && len(e.Cards) > 0 {
 			who := order[e.Step]
 			e.Step++
-			if who != e.Actor && s.sgHas(who, "guzheng") {
+			if who != e.Actor && s.sgHegMayInvoke(who, "guzheng") {
 				s.sgAsk(who, "guzheng", "固政：选择返还的一张弃置手牌，然后获得其余弃牌", e)
 				g.Pending.Cards = e.Cards
 				return true
@@ -213,7 +214,7 @@ func (s *State) sgMountainEvent(e SGEvent) bool {
 		for e.Step < len(order) {
 			who := order[e.Step]
 			e.Step++
-			if s.sgHas(who, "beige") && len(g.Players[who].Hand)+len(g.Players[who].Equip) > 0 {
+			if s.sgHegMayInvoke(who, "beige") && len(g.Players[who].Hand)+len(g.Players[who].Equip) > 0 {
 				s.sgAsk(who, "beige", "悲歌：弃一张手牌或装备，令受伤角色判定", e)
 				return true
 			}
@@ -399,7 +400,7 @@ func (s *State) sgMountainRespond(i int, a Action, q SGPrompt) (bool, error) {
 			s.sgPush(SGEvent{Type: "support", Actor: i, Kind: "jijiang", Next: &e})
 			return true, nil
 		}
-		kind, err := s.sgAs(i, a.Cards, a.Skill, "slash")
+		kind, err := s.sgCommittedAs(i, a.Cards, a.Skill, "slash")
 		if err != nil {
 			return true, err
 		}
@@ -490,7 +491,7 @@ func (s *State) sgQiaobianMoves(actor int) []Action {
 				}
 			}
 			for _, d := range g.Players[from].Judgment {
-				valid := !s.sgWeimu(actor, to, d.Kind, []int{d.Card}) && !(d.Kind == "indulgence" && s.sgHas(to, "qianxun"))
+				valid := !s.sgWeimu(actor, to, d.Kind, []int{d.Card}) && !(!s.sgHegemony() && d.Kind == "indulgence" && s.sgHas(to, "qianxun"))
 				for _, other := range g.Players[to].Judgment {
 					if d.Kind == other.Kind {
 						valid = false

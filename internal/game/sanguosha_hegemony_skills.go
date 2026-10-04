@@ -7,6 +7,7 @@ import (
 
 func init() {
 	for id, info := range map[string]SGSkill{
+		"heg_luoshen":   {"洛神·国", "准备阶段可判定，黑色则可继续。整段判定结束后，一次性获得仍在处理区的黑色判定牌。"},
 		"heg_rende":     {"仁德·国", "出牌阶段可将手牌交给其他角色；本阶段首次累计交出至少三张牌时，回复一点体力。"},
 		"heg_jizhi":     {"集智·国", "使用未经过技能转化的非延时锦囊牌时，可以摸一张牌。"},
 		"heg_zhiheng":   {"制衡·国", "出牌阶段限一次：弃置一至体力上限张手牌或装备，再摸等量的牌。"},
@@ -22,7 +23,7 @@ func init() {
 		"heg_mingshi":   {"名士", "锁定技：受到伤害时，若来源仍有暗置武将，将本次伤害减一。"},
 		"heg_lirang":    {"礼让", "自己被弃置的牌进入弃牌堆后，可将其中的牌交给其他角色。"},
 		"heg_shuangren": {"双刃", "出牌阶段开始时可与另一角色拼点；赢则对其或其同势力角色使用无距离限制的虚拟杀，未赢则跳过出牌阶段。"},
-		"heg_sijian":    {"死谏", "失去最后的手牌后，可弃另一名角色的一张手牌、装备或判定牌。"},
+		"heg_sijian":    {"死谏", "失去最后的手牌后，可弃另一名角色的一张手牌或装备。"},
 		"heg_suishi":    {"随势", "锁定技：其他角色因同势力角色造成的伤害进入濒死时，摸一张牌；其他同势力角色阵亡时，失去一点体力。"},
 		"heg_kuangfu":   {"狂斧", "使用杀对目标造成伤害后，可弃其一张装备，或将其移入自己空着的对应装备栏。"},
 		"heg_huoshui":   {"祸水", "出牌阶段可明置本武将；你的回合内，其他角色不能明置武将牌。"},
@@ -49,6 +50,25 @@ func (s *State) sgHegSkill(i int, a Action) (bool, error) {
 	g := s.Sanguosha
 	p := &g.Players[i]
 	switch a.Skill {
+	case "heg_qingcheng":
+		if len(a.Targets) != 1 || a.Targets[0] == i || !s.sgAlive(a.Targets[0]) {
+			return true, errors.New("倾城需要另一名双将明置的角色")
+		}
+		h := g.Players[a.Targets[0]].Hegemony
+		if !h.Shown[0] || !h.Shown[1] {
+			return true, errors.New("倾城的目标须双将均已明置")
+		}
+		if s.sgValidateCards(i, a.Cards, 1, false) != nil || SGCardTypes[sgCard(a.Cards[0]).Kind].Slot == "" {
+			return true, errors.New("倾城需要弃置一张装备牌")
+		}
+		slot := 0
+		if a.Choice == "deputy" {
+			slot = 1
+		} else if a.Choice != "head" {
+			return true, errors.New("请选择暗置主将或副将")
+		}
+		s.sgPush(SGEvent{Type: "heg_hide", Actor: i, Target: a.Targets[0], Aux: slot})
+		s.sgDiscard(i, a.Cards)
 	case "heg_rende":
 		if len(a.Targets) != 1 || a.Targets[0] == i || !s.sgAlive(a.Targets[0]) || len(a.Cards) == 0 {
 			return true, errors.New("仁德需要至少一张手牌和另一名存活角色")
@@ -117,9 +137,10 @@ func (s *State) sgHegSkill(i int, a Action) (bool, error) {
 		es = append(es, SGEvent{Type: "heg_xiongyi_heal", Actor: i})
 		s.sgPush(es...)
 	case "heg_huoshui":
-		// Revealing is handled before skill application. Already face-up Huoshui
-		// is continuous and doesn't need another action.
-		return true, errors.New("祸水在武将明置后自动生效")
+		if len(a.Cards)+len(a.Targets) > 0 {
+			return true, errors.New("祸水只需明置，无需选择牌或目标")
+		}
+		s.sgLog("%s 发动祸水，本回合其他角色不能明置武将", s.sgName(i))
 	default:
 		return false, nil
 	}

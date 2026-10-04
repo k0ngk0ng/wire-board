@@ -41,6 +41,9 @@ func (s *State) sgEmptyHand(i, lost int) {
 	if lost <= 0 || len(s.Sanguosha.Players[i].Hand) != 0 {
 		return
 	}
+	if s.sgHegemony() {
+		s.sgPush(SGEvent{Type: "heg_sijian", Actor: i})
+	}
 	if s.sgHas(i, "lianying") {
 		s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "lianying", Amount: 1})
 	}
@@ -102,7 +105,7 @@ func (s *State) sgDiscardable(actor, owner int, judgment bool) []int {
 }
 
 func sgStealDiscards(kind string) bool {
-	return slices.Contains([]string{"dismantlement", "ice_sword", "mengjin", "tiaoxin", "jie_ganglie", "chuli"}, kind)
+	return slices.Contains([]string{"dismantlement", "ice_sword", "mengjin", "tiaoxin", "jie_ganglie", "chuli", "heg_sijian"}, kind)
 }
 
 func (s *State) sgJieClearPiles(i int) {

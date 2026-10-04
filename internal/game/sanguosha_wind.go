@@ -124,17 +124,18 @@ func (s *State) sgCardColor(i int, ids []int) int {
 }
 
 func (s *State) sgEndPhase(i int) []SGEvent {
-	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "qinyin", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "stage", Kind: "finish"}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "god_finish", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
+	return []SGEvent{{Type: "qiaobian", Actor: i, Kind: "discard"}, {Type: "discard_phase", Actor: i}, {Type: "qinyin", Actor: i}, {Type: "guzheng", Actor: i}, {Type: "stage", Kind: "finish"}, {Type: "heg_finish", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "god_finish", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "fangquan_finish", Actor: i}, {Type: "huashen_select", Actor: i}, {Type: "next", Actor: i}}
 }
 
 // A separate event stage permits transfer before recipient armor, and avoids
 // applying attacker bonuses again when Tianxiang changes the recipient.
 func (s *State) sgWindDamage(e SGEvent) bool {
-	if e.DamageStage >= 2 || !s.sgHas(e.Target, "tianxiang") {
+	if e.DamageStage >= 2 || !s.sgHegMayInvoke(e.Target, "tianxiang") {
 		return false
 	}
 	for _, id := range s.Sanguosha.Players[e.Target].Hand {
-		if s.sgCardFor(e.Target, id).Suit == 1 {
+		c := s.sgCardFor(e.Target, id)
+		if c.Suit == 1 || c.Suit == 0 && s.sgHegMayInvoke(e.Target, "hongyan") {
 			s.sgAsk(e.Target, "tianxiang", "天香：弃一张红桃手牌并选择转移目标，或放弃", e)
 			return true
 		}
@@ -146,7 +147,7 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 	g := s.Sanguosha
 	switch e.Type {
 	case "wind_finish":
-		if !s.sgHas(e.Actor, "jushou") {
+		if !s.sgHegMayInvoke(e.Actor, "jushou") {
 			return true
 		}
 		if !e.Flag {
@@ -157,7 +158,7 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 			s.sgLog("%s 发动据守，将武将牌翻面", s.sgName(e.Actor))
 		}
 	case "shensu_judge", "shensu_play":
-		if !s.sgHas(e.Actor, "shensu") || (e.Type == "shensu_play" && g.SkipPlay) {
+		if !s.sgHegMayInvoke(e.Actor, "shensu") || (e.Type == "shensu_play" && g.SkipPlay) {
 			return true
 		}
 		if e.Type == "shensu_play" {
@@ -171,7 +172,7 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 		}
 		s.sgAsk(e.Actor, e.Type, "神速：选择杀的目标，或放弃；跳过出牌阶段还需弃一张装备牌", e)
 	case "leiji":
-		if s.sgHas(e.Actor, "leiji") {
+		if s.sgHegMayInvoke(e.Actor, "leiji") {
 			s.sgAsk(e.Actor, "leiji", "雷击：选择一名角色判定，黑桃则造成2点雷电伤害", e)
 		}
 	case "damage_dealt":
@@ -180,10 +181,18 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 		if s.sgHegemony() && sgIsSlash(e.Kind) && !e.Chain && !e.Transfer {
 			next := e
 			next.Type = "heg_triblade"
-			s.sgPush(next)
+			axe := e
+			axe.Type = "heg_kuangfu"
+			s.sgPush(next, axe)
 		}
-		if e.Near && s.sgHas(e.Actor, "kuanggu") {
-			s.sgHeal(e.Actor, e.Amount)
+		if e.Near {
+			if s.sgHegemony() {
+				next := e
+				next.Type = "heg_kuanggu"
+				s.sgPush(next)
+			} else if s.sgHas(e.Actor, "kuanggu") {
+				s.sgHeal(e.Actor, e.Amount)
+			}
 		}
 	case "tianxiang_draw":
 		if s.sgAlive(e.Target) {
@@ -194,7 +203,7 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 		if !s.sgAlive(e.Target) || g.Players[e.Target].HP > 0 {
 			return true
 		}
-		if s.sgHas(e.Target, "buqu") {
+		if s.sgHegMayInvoke(e.Target, "buqu") {
 			s.sgAsk(e.Target, "buqu", "是否发动不屈，补充不屈牌并检查重复点数？", e)
 		} else {
 			e.Type = "dying"
@@ -241,13 +250,13 @@ func (s *State) sgBuquSafe(i int) bool {
 
 func (s *State) sgEnterDying(e SGEvent) {
 	e.Type = "dying"
-	if s.sgHas(e.Target, "buqu") {
+	if s.sgHegMayInvoke(e.Target, "buqu") {
 		e.Type = "buqu_enter"
 	}
 	s.sgPush(e)
 }
 func (s *State) sgJinkPlayed(i int) {
-	if s.sgHas(i, "leiji") {
+	if s.sgHegMayInvoke(i, "leiji") {
 		s.sgPush(SGEvent{Type: "leiji", Actor: i})
 	}
 }
@@ -266,7 +275,7 @@ func (s *State) sgWindRespond(i int, a Action, q SGPrompt) (bool, error) {
 			return true, errors.New("神速需要另一名存活角色")
 		}
 		t := a.Targets[0]
-		if s.sgHas(t, "kongcheng") && len(g.Players[t].Hand) == 0 {
+		if !s.sgHegemony() && s.sgHas(t, "kongcheng") && len(g.Players[t].Hand) == 0 {
 			return true, errors.New("空城角色不能成为杀的目标")
 		}
 		if q.Kind == "shensu_play" {
@@ -318,6 +327,7 @@ func (s *State) sgWindRespond(i int, a Action, q SGPrompt) (bool, error) {
 		e.Type = "damage"
 		e.Transfer = true
 		e.Foreseen = false
+		e.HegDamageChecked = false
 		e.DamageStage = 1
 		s.sgPush(e)
 		s.sgDiscard(i, a.Cards)

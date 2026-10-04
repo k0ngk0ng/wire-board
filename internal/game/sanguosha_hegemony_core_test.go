@@ -110,6 +110,11 @@ func TestSanguoshaHegemonyCatalogAndSelection(t *testing.T) {
 		if s.Sanguosha.Selecting || s.Turn != first {
 			t.Fatal("selection didn't begin random first seat")
 		}
+		if q := s.Sanguosha.Pending; q == nil || q.Kind != "heg_reveal_turn" || q.Player != first {
+			t.Fatal("first seat must be able to reveal before start skills and draw", q)
+		}
+		sgDo(t, s, first, Action{Choice: "pass"})
+		sgPassAll(t, s) // Hidden optional start/draw skills may still be offered.
 		for i, p := range s.Sanguosha.Players {
 			want := 4
 			if i == first {

@@ -13,6 +13,7 @@ func (s *State) sgAllPassed(passed []int) bool {
 
 func (s *State) sgRun() {
 	g := s.Sanguosha
+	s.sgHegFlushRewards()
 	for !s.Finished && g.Pending == nil {
 		if len(g.Queue) == 0 {
 			if !g.Selecting && !s.sgAlive(s.Turn) {
@@ -24,6 +25,7 @@ func (s *State) sgRun() {
 		e := g.Queue[0]
 		g.Queue = g.Queue[1:]
 		s.sgEvent(e)
+		s.sgHegFlushRewards()
 	}
 	if !s.Finished && !g.Selecting && g.Pending == nil && len(g.Queue) == 0 {
 		s.Phase = "sg_play"
@@ -107,9 +109,9 @@ func (s *State) sgEvent(e SGEvent) {
 		g.InPlay = false
 		s.Phase = "sg_start"
 		s.sgLog("%s 的回合开始", s.sgName(e.Actor))
-		s.sgPush(SGEvent{Type: "huashen_select", Actor: e.Actor}, SGEvent{Type: "jie_start", Actor: e.Actor}, SGEvent{Type: "god_start", Actor: e.Actor}, SGEvent{Type: "mountain_start", Actor: e.Actor}, SGEvent{Type: "thicket_start", Actor: e.Actor}, SGEvent{Type: "guanxing", Actor: e.Actor}, SGEvent{Type: "luoshen", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "judge"}, SGEvent{Type: "shensu_judge", Actor: e.Actor}, SGEvent{Type: "delayed", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "draw"}, SGEvent{Type: "jie_luoyi", Actor: e.Actor}, SGEvent{Type: "draw_phase", Actor: e.Actor}, SGEvent{Type: "qixing_exchange", Actor: e.Actor}, SGEvent{Type: "stage", Kind: "between"}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "play"}, SGEvent{Type: "shensu_play", Actor: e.Actor}, SGEvent{Type: "fangquan", Actor: e.Actor}, SGEvent{Type: "play_phase", Actor: e.Actor})
+		s.sgPush(SGEvent{Type: "heg_reveal_turn", Actor: e.Actor}, SGEvent{Type: "heg_start", Actor: e.Actor}, SGEvent{Type: "huashen_select", Actor: e.Actor}, SGEvent{Type: "jie_start", Actor: e.Actor}, SGEvent{Type: "god_start", Actor: e.Actor}, SGEvent{Type: "mountain_start", Actor: e.Actor}, SGEvent{Type: "thicket_start", Actor: e.Actor}, SGEvent{Type: "guanxing", Actor: e.Actor}, SGEvent{Type: "luoshen", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "judge"}, SGEvent{Type: "shensu_judge", Actor: e.Actor}, SGEvent{Type: "delayed", Actor: e.Actor}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "draw"}, SGEvent{Type: "jie_luoyi", Actor: e.Actor}, SGEvent{Type: "draw_phase", Actor: e.Actor}, SGEvent{Type: "qixing_exchange", Actor: e.Actor}, SGEvent{Type: "stage", Kind: "between"}, SGEvent{Type: "qiaobian", Actor: e.Actor, Kind: "play"}, SGEvent{Type: "shensu_play", Actor: e.Actor}, SGEvent{Type: "fangquan", Actor: e.Actor}, SGEvent{Type: "play_phase", Actor: e.Actor})
 	case "guanxing":
-		if !s.sgHas(e.Actor, "guanxing") {
+		if !s.sgHegMayInvoke(e.Actor, "guanxing") {
 			return
 		}
 		if !e.Flag {
@@ -140,7 +142,7 @@ func (s *State) sgEvent(e SGEvent) {
 		if !s.sgAlive(e.Actor) {
 			return
 		}
-		if s.sgHas(e.Actor, "jie_tuxi") || s.sgHas(e.Actor, "tuxi") || s.sgHas(e.Actor, "luoyi") || s.sgHas(e.Actor, "yingzi") || s.sgHas(e.Actor, "shuangxiong") || s.sgHas(e.Actor, "zaiqi") || s.sgHas(e.Actor, "haoshi") || s.sgHas(e.Actor, "shelie") {
+		if s.sgHas(e.Actor, "jie_tuxi") || s.sgHegMayInvoke(e.Actor, "tuxi") || s.sgHegMayInvoke(e.Actor, "luoyi") || s.sgHegMayInvoke(e.Actor, "yingzi") || s.sgHegMayInvoke(e.Actor, "shuangxiong") || s.sgHegMayInvoke(e.Actor, "zaiqi") || s.sgHegMayInvoke(e.Actor, "haoshi") || s.sgHas(e.Actor, "shelie") {
 			s.sgAsk(e.Actor, "draw_phase", "选择摸牌阶段行动", e)
 		} else {
 			s.sgDraw(e.Actor, s.sgGodDrawCount(e.Actor, 2))
@@ -149,6 +151,11 @@ func (s *State) sgEvent(e SGEvent) {
 		g.ActivePhase = e.Kind
 	case "play_phase":
 		g.ActivePhase = "play"
+		if s.sgHegemony() && !e.Flag && s.sgAlive(e.Actor) && !g.SkipPlay {
+			e.Flag = true
+			s.sgPush(SGEvent{Type: "heg_shuangren", Actor: e.Actor}, e)
+			return
+		}
 		if !s.sgAlive(e.Actor) || g.SkipPlay {
 			s.sgPush(s.sgEndPhase(e.Actor)...)
 		} else {
@@ -161,7 +168,7 @@ func (s *State) sgEvent(e SGEvent) {
 		}
 		g.ActivePhase = "discard"
 		p := g.Players[e.Actor]
-		if !e.Flag && s.sgHas(e.Actor, "keji") && p.Used["keji_slash"] == 0 && len(p.Hand) > s.sgHandLimit(e.Actor) {
+		if !e.Flag && s.sgHegMayInvoke(e.Actor, "keji") && p.Used["keji_slash"] == 0 && len(p.Hand) > s.sgHandLimit(e.Actor) {
 			s.sgAsk(e.Actor, "keji", "是否发动克己，跳过弃牌？", e)
 			return
 		}
@@ -255,7 +262,7 @@ func (s *State) sgEvent(e SGEvent) {
 		}
 		e.Type = "xiangle"
 		s.sgPush(e)
-		if s.sgHas(e.Target, "liuli") && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
+		if s.sgHegMayInvoke(e.Target, "liuli") && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
 			s.sgAsk(e.Target, "liuli", "是否弃一张牌发动流离，转移此杀？", e)
 		}
 	case "slash_weapon":
@@ -274,11 +281,11 @@ func (s *State) sgEvent(e SGEvent) {
 		if g.Players[e.Actor].Used["zhaxiang"] > 0 && e.Actor == s.Turn && e.Color == 1 {
 			e.Type = "hit"
 			s.sgPush(e)
-		} else if s.sgHas(e.Actor, "liegong") && g.InPlay && e.Actor == s.Turn && (len(g.Players[e.Target].Hand) >= g.Players[e.Actor].HP || len(g.Players[e.Target].Hand) <= s.sgRange(e.Actor)) {
+		} else if s.sgHegMayInvoke(e.Actor, "liegong") && g.InPlay && e.Actor == s.Turn && (len(g.Players[e.Target].Hand) >= g.Players[e.Actor].HP || len(g.Players[e.Target].Hand) <= s.sgRange(e.Actor)) {
 			s.sgAsk(e.Actor, "liegong", "是否发动烈弓，令目标不能使用闪？", e)
 		} else if s.sgHas(e.Actor, "jie_tieji") {
 			s.sgAsk(e.Actor, "jie_tieji", "铁骑：令目标非锁定技能失效并判定，是否发动？", e)
-		} else if s.sgHas(e.Actor, "tieji") {
+		} else if s.sgHegMayInvoke(e.Actor, "tieji") {
 			s.sgAsk(e.Actor, "tieji", "是否发动铁骑？", e)
 		} else {
 			s.sgPush(s.sgSlashResponse(e))
@@ -344,7 +351,7 @@ func (s *State) sgEvent(e SGEvent) {
 			events = append(events, next)
 		}
 		for _, skill := range []string{"jianxiong", "fankui", "ganglie", "yiji", "jieming", "fangzhu"} {
-			if s.sgHas(e.Target, skill) {
+			if s.sgHegMayInvoke(e.Target, skill) {
 				times := 1
 				if skill == "yiji" {
 					times = e.Amount
@@ -423,7 +430,7 @@ func (s *State) sgEvent(e SGEvent) {
 			s.sgPush(e)
 			return
 		}
-		if who == e.Target && !e.Flag && s.sgHas(who, "niepan") && g.Players[who].Marks["niepan"] == 0 {
+		if who == e.Target && !e.Flag && s.sgHegMayInvoke(who, "niepan") && g.Players[who].Marks["niepan"] == 0 {
 			e.Flag = true
 			s.sgAsk(who, "niepan", "是否发动涅槃？整局限一次，弃置所有牌、回复至3体力并摸三张", e)
 			return
@@ -475,7 +482,7 @@ func (s *State) sgEvent(e SGEvent) {
 		for e.Step < len(order) {
 			i := order[e.Step]
 			e.Step++
-			if s.sgHas(i, "guidao") && len(g.Players[i].Hand)+len(g.Players[i].Equip) > 0 {
+			if s.sgHegMayInvoke(i, "guidao") && len(g.Players[i].Hand)+len(g.Players[i].Equip) > 0 {
 				s.sgAsk(i, "guidao", "鬼道：可用黑色牌替换并获得判定牌", e)
 				g.Pending.Cards = []int{e.Aux}
 				return
@@ -490,7 +497,7 @@ func (s *State) sgEvent(e SGEvent) {
 				g.Pending.Cards = []int{e.Aux}
 				return
 			}
-			if s.sgHas(i, "guicai") && len(g.Players[i].Hand) > 0 {
+			if s.sgHegMayInvoke(i, "guicai") && len(g.Players[i].Hand) > 0 {
 				s.sgAsk(i, "guicai", "是否用手牌替换此次判定？", e)
 				g.Pending.Cards = []int{e.Aux}
 				return
@@ -501,7 +508,7 @@ func (s *State) sgEvent(e SGEvent) {
 	case "judge_result":
 		s.sgJudgeResult(e)
 	case "tiandu":
-		if s.sgHas(e.Actor, "tiandu") && slices.Contains(g.Table, e.Aux) {
+		if s.sgHegMayInvoke(e.Actor, "tiandu") && slices.Contains(g.Table, e.Aux) {
 			s.sgAsk(e.Actor, "tiandu", "是否获得你的判定牌？", e)
 		} else {
 			s.sgFinishCards([]int{e.Aux})
@@ -687,6 +694,14 @@ func (s *State) sgJudgeResult(e SGEvent) {
 	s.sgLog("%s 的判定结果：%s %d「%s」", s.sgName(e.Actor), []string{"♠", "♥", "♣", "♦"}[c.Suit], c.Rank, SGCardTypes[c.Kind].Name)
 	after := SGEvent{Type: "tiandu", Actor: e.Actor, Aux: e.Aux}
 	switch e.Kind {
+	case "heg_luoshen":
+		if !red {
+			g.Players[e.Actor].Hegemony.Luoshen = append(g.Players[e.Actor].Hegemony.Luoshen, c.ID)
+			s.sgPush(SGEvent{Type: "heg_luoshen", Actor: e.Actor})
+			after.Type = "heg_luoshen_tiandu"
+		} else {
+			s.sgPush(SGEvent{Type: "heg_luoshen_collect", Actor: e.Actor})
+		}
 	case "wuhun":
 		s.sgPush(SGEvent{Type: "wuhun_resolve", Actor: e.Actor, Target: e.Target, Flag: c.Kind == "peach" || c.Kind == "god_salvation"})
 	case "tuntian":
@@ -881,6 +896,10 @@ func (s *State) sgSupport(e SGEvent) {
 func (s *State) sgDeathClear(i int) {
 	g := s.Sanguosha
 	p := &g.Players[i]
+	if p.Hegemony != nil {
+		s.sgFinishCards(p.Hegemony.Luoshen)
+		p.Hegemony.Luoshen = nil
+	}
 	g.Discard = append(g.Discard, p.Hand...)
 	g.Discard = append(g.Discard, p.Equip...)
 	g.Discard = append(g.Discard, p.Buqu...)
