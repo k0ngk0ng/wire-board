@@ -41,6 +41,7 @@ import {
   CatanEndAction,
 } from "./catan-pirate-islands";
 import { CatanPirateEffects } from "./catan-pirate-effects";
+import { CatanWonderMarkers, CatanWondersPanel } from "./catan-wonders";
 import { CatanHelpers } from "./catan-helpers";
 import {
   CatanTribePortChoice,
@@ -398,15 +399,17 @@ export function CatanBoard({
   const describeDev = (i: number) =>
     pirates && (i === 0 || i === 4)
       ? "将远征航线上最靠近起点的一艘普通船升级为战舰。不移动海盗、不累计骑士军队，也不获得胜利点。"
-      : i === 4
-        ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
-        : sea?.cloth && i === 0
-          ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
-          : sea && i === 0
-            ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
-            : sea && i === 1
-              ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
-              : devDescriptions[i];
+      : sea?.wonders && i === 4
+        ? "自动计入你的私人分数。本剧本还需要已建奇迹等级领先所有对手才能以10分获胜；或将奇迹建至4级直接获胜。"
+        : i === 4
+          ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
+          : sea?.cloth && i === 0
+            ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
+            : sea && !sea.wonders && i === 0
+              ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
+              : sea && i === 1
+                ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
+                : devDescriptions[i];
   const playing = room.status === "playing" && !game.finished;
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine = canPlay && game.turn === you;
@@ -415,6 +418,7 @@ export function CatanBoard({
   const phase = game.phase;
   const [village, setVillage] = useState<number | null>(null);
   const [mode, setMode] = useState("");
+  const [wonderFocus, setWonderFocus] = useState<number | null>(null);
   const [chosen, setChosen] = useState<{ type: string; id: number } | null>(
     null,
   );
@@ -427,6 +431,7 @@ export function CatanBoard({
   const [monopoly, setMonopoly] = useState(0);
   useEffect(() => {
     setVillage(null);
+    setWonderFocus(null);
     setMode("");
     setHelperPayment(null);
     setMoveFrom(null);
@@ -496,7 +501,7 @@ export function CatanBoard({
       (effective === "city" && g.legal.cities.includes(id)));
   return (
     <div
-      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""}`}
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""}`}
     >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
@@ -504,7 +509,9 @@ export function CatanBoard({
             <Flag size={14} /> {setup ? "起始建设" : `第 ${game.round} 轮`} ·
             {pirates
               ? `收复要塞且${targetScore}分获胜`
-              : `${targetScore}分获胜`}
+              : sea?.wonders
+                ? "奇迹4级，或10分且领先"
+                : `${targetScore}分获胜`}
           </span>
           <div>
             <button
@@ -539,15 +546,21 @@ export function CatanBoard({
                   tribe: "遗忘的部落",
                   cloth: "卡坦布匹",
                   pirate_islands: "海盗群岛",
+                  wonders: "卡坦奇迹",
                 } as Record<string, string>
               )[sea.scenario] || "航海家"}
               {sea.fog && ` · 待探索 ${sea.fog.remaining} 格`}
               {sea.scenario === "desert" && " · 区域首次定居 +2分"}
             </span>
+            {sea.wonders && wonderFocus !== null && (
+              <button onClick={() => setWonderFocus(null)}>
+                取消定位{g.wonderRules?.find((r) => r.id === wonderFocus)?.name}
+              </button>
+            )}
             {mine &&
               (phase === "catan_setup_road" ||
                 phase === "catan_roads" ||
-                phase === "catan_robber") && (
+                (phase === "catan_robber" && !sea.wonders)) && (
                 <div
                   role="group"
                   aria-label={
@@ -799,7 +812,7 @@ export function CatanBoard({
                   </g>
                 );
               })}
-              {sea && !pirates && sea.pirate === -1 && (
+              {sea && !pirates && !sea.wonders && sea.pirate === -1 && (
                 <g transform={`translate(340,${mapMaxY + 28})`}>
                   <CatanPirate assets={assets} />
                   <title>海盗在外海</title>
@@ -938,6 +951,12 @@ export function CatanBoard({
                 );
               })}
               <CatanPirateMarkers room={room} assets={assets} />
+              <CatanWonderMarkers
+                game={g}
+                assets={assets}
+                setup={setup}
+                focus={wonderFocus}
+              />
               {g.vertices.map((v) => {
                 const ok = selectableVertex(v.id),
                   picked =
@@ -1059,12 +1078,25 @@ export function CatanBoard({
                 ? "② 配对行动 · 不掷骰、不自由交易"
                 : phase === "catan_discard"
                   ? "所有人同时弃牌"
-                  : (sea && catanSeafarerPhases[phase]) ||
+                  : (sea &&
+                      !(sea.wonders && phase === "catan_robber") &&
+                      catanSeafarerPhases[phase]) ||
                     catanPhases[phase] ||
                     "本局已结束"}
             </small>
           </div>
         </div>
+        <CatanWondersPanel
+          room={room}
+          act={act}
+          busy={busy}
+          assets={assets}
+          locate={(id) => {
+            setWonderFocus(id);
+            zoomAt(1);
+            viewport.current?.scrollIntoView({ block: "center" });
+          }}
+        />
         {mine && phase === "catan_roll" && (
           <button
             className="primary wide"

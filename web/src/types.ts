@@ -276,6 +276,11 @@ export type CatanPlayer = {
 };
 export type CatanState = {
   seafarers?: {
+    wonders?: {
+      cards: { id: number; owner: number; level: number }[];
+      markers: { card: number; vertex: number }[];
+      setupBlocked: number[];
+    };
     pirateIslands?: {
       colors: number[];
       homeTiles: number[];
@@ -335,6 +340,14 @@ export type CatanState = {
     }[];
   };
   shipMoves?: Record<string, number[]>;
+  wonderRules?: {
+    id: number;
+    name: string;
+    requirement: string;
+    cost: number[];
+  }[];
+  wonderClaims?: number[];
+  wonderBuilds?: number[];
   goldPending?: { claims: { player: number; count: number }[]; resume: string };
   hexSize?: number;
   startPlayer?: number;
