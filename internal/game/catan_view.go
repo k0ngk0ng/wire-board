@@ -133,7 +133,7 @@ func (s *State) catanView(view map[string]any, player int) {
 			if settlements < 5 && (s.Phase == "catan_setup_settlement" || s.Phase == "catan_turn") && g.canSettlement(player, v.ID, g.setup()) {
 				legal["settlements"] = append(legal["settlements"], v.ID)
 			}
-			if s.Phase == "catan_turn" && cities < 4 && v.Level == 1 && v.Owner == player {
+			if (s.Phase == "catan_turn" && cities < 4 && v.Level == 1 && v.Owner == player) || (s.Phase == "catan_setup_city" && g.canSettlement(player, v.ID, true)) {
 				legal["cities"] = append(legal["cities"], v.ID)
 			}
 		}

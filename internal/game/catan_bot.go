@@ -79,6 +79,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive bot seat")
 	}
 	p := g.Players[player]
+	if k := g.CitiesKnights; k != nil && k.Pending != nil {
+		return s.catanCityChoiceBot(player)
+	}
 	if fleet := g.pirateIslands(); fleet != nil && fleet.Raid != nil {
 		return s.catanFleetRewardBot(player)
 	}
@@ -93,7 +96,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	}
 	if s.Phase == "catan_discard" && g.DiscardDue[player] > 0 {
 		hand := append([]int{}, p.Resources...)
-		give := make([]int, 5)
+		give := make([]int, len(g.Bank))
 		for range g.DiscardDue[player] {
 			best := 0
 			for c := range hand {
@@ -133,6 +136,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		return s.catanWorldPortBot(player)
 	case "catan_cloth_start", "catan_wonders_start":
 		return Action{Type: s.Phase, Tile: g.Robber}, nil
+	case "catan_setup_city":
+		return Action{Type: "catan_city", Vertex: bestVertex(true)}, nil
 	case "catan_setup_settlement":
 		return Action{Type: "catan_settlement", Vertex: bestVertex(true)}, nil
 	case "catan_setup_road":
@@ -278,6 +283,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	choices = append(choices, g.cityEconomyBotChoices(player)...)
 	choices = append(choices, g.wonderBotChoices(player)...)
 	if g.Seafarers != nil {
 		choices = append(choices, g.seaBuildChoices(player)...)
@@ -313,6 +319,19 @@ func (s *State) catanBot(player int) (Action, error) {
 	targets := append([]botChoice{}, choices...)
 	for _, target := range targets {
 		cost := catanBotBuildCost(target.action)
+		if g.CitiesKnights != nil {
+			switch target.action.Type {
+			case "catan_improvement":
+				cost = make([]int, len(g.Bank))
+				track := target.action.Color
+				cost[5+track] = g.CitiesKnights.Players[player].Improvements[track] + 1
+			case "catan_wall":
+				cost = []int{0, 2, 0, 0, 0}
+			}
+		}
+		if len(cost) < len(g.Bank) {
+			cost = append(append([]int{}, cost...), make([]int, len(g.Bank)-len(cost))...)
+		}
 		for want, n := range cost {
 			if n <= p.Resources[want] || g.Bank[want] == 0 {
 				continue
@@ -321,7 +340,7 @@ func (s *State) catanBot(player int) (Action, error) {
 				if give == want || p.Resources[give]-cost[give] < rate {
 					continue
 				}
-				a := Action{Type: "catan_bank", Give: make([]int, 5), Take: make([]int, 5)}
+				a := Action{Type: "catan_bank", Give: make([]int, len(g.Bank)), Take: make([]int, len(g.Bank))}
 				a.Give[give] = rate
 				a.Take[want] = 1
 				choices = append(choices, botChoice{a, 50 + target.score/20})
