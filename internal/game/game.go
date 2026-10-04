@@ -152,6 +152,23 @@ func (s *State) View(player int) map[string]any {
 	if s.Splendor != nil {
 		g := v["splendor"].(map[string]any)
 		delete(g, "decks")
+		if player != s.Turn {
+			delete(g, "reserveChoice")
+		}
+		if s.Splendor.Options.TradingPosts {
+			g["tradingPostRules"] = GemTradingPosts()
+		}
+		if player == s.Turn && !s.Finished {
+			if s.Phase == "gem_post" {
+				g["postChoices"] = s.gemPostOptions()
+			}
+			if s.Phase == "gem_stronghold" {
+				g["strongholdActions"] = s.gemStrongholdActions()
+			}
+			if s.Phase == "gem_conquest" {
+				g["conquestCard"] = s.gemConquestCard()
+			}
+		}
 		g["remaining"] = []int{len(s.Splendor.Decks[0]), len(s.Splendor.Decks[1]), len(s.Splendor.Decks[2])}
 		for i, p := range g["players"].([]any) {
 			if i != player && !s.Finished {

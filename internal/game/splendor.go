@@ -27,26 +27,33 @@ type Noble struct {
 	Cost []int `json:"cost"`
 }
 type GemPlayer struct {
-	Eliminated bool    `json:"eliminated,omitempty"`
-	Tokens     []int   `json:"tokens"`
-	Bonus      []int   `json:"bonus"`
-	Reserved   []Card  `json:"reserved"`
-	Cards      []Card  `json:"cards"`
-	Nobles     []Noble `json:"nobles"`
-	Score      int     `json:"score"`
+	TradingPosts []int   `json:"tradingPosts,omitempty"`
+	Eliminated   bool    `json:"eliminated,omitempty"`
+	Tokens       []int   `json:"tokens"`
+	Bonus        []int   `json:"bonus"`
+	Reserved     []Card  `json:"reserved"`
+	Cards        []Card  `json:"cards"`
+	Nobles       []Noble `json:"nobles"`
+	Score        int     `json:"score"`
 }
 type Splendor struct {
-	StartPlayer  int                  `json:"startPlayer"`
-	CardEventID  uint64               `json:"cardEventId,omitempty"`
-	CardEvents   []SplendorCardEvent  `json:"cardEvents,omitempty"`
-	TokenEventID uint64               `json:"tokenEventId,omitempty"`
-	TokenEvents  []SplendorTokenEvent `json:"tokenEvents,omitempty"`
-	Bank         []int                `json:"bank"`
-	Decks        [][]Card             `json:"decks"`
-	Market       [][]Card             `json:"market"`
-	Nobles       []Noble              `json:"nobles"`
-	Players      []GemPlayer          `json:"players"`
-	LastRound    bool                 `json:"lastRound"`
+	Options       SplendorOptions       `json:"options"`
+	Effects       []GemEffect           `json:"effects,omitempty"`
+	Refills       []GemRefill           `json:"refills,omitempty"`
+	ReserveChoice []Card                `json:"reserveChoice,omitempty"`
+	Strongholds   map[int]GemStronghold `json:"strongholds,omitempty"`
+	ConquestUsed  bool                  `json:"conquestUsed,omitempty"`
+	StartPlayer   int                   `json:"startPlayer"`
+	CardEventID   uint64                `json:"cardEventId,omitempty"`
+	CardEvents    []SplendorCardEvent   `json:"cardEvents,omitempty"`
+	TokenEventID  uint64                `json:"tokenEventId,omitempty"`
+	TokenEvents   []SplendorTokenEvent  `json:"tokenEvents,omitempty"`
+	Bank          []int                 `json:"bank"`
+	Decks         [][]Card              `json:"decks"`
+	Market        [][]Card              `json:"market"`
+	Nobles        []Noble               `json:"nobles"`
+	Players       []GemPlayer           `json:"players"`
+	LastRound     bool                  `json:"lastRound"`
 }
 
 // Only public card information belongs in the shared animation stream.
@@ -159,8 +166,24 @@ func (s *State) initSplendor(n int) {
 	g.StartPlayer, s.Turn = seats[0], seats[0]
 }
 func (s *State) applySplendor(a Action) error {
+	// Expansion effects can span several requests. Reject an invalid request
+	// without altering a deck, pending choice, animation, or resource count.
+	if s.Splendor.Options.expanded() {
+		next := clone(*s)
+		if err := next.applySplendorStep(a); err != nil {
+			return err
+		}
+		*s = next
+		return nil
+	}
+	return s.applySplendorStep(a)
+}
+func (s *State) applySplendorStep(a Action) error {
 	g := s.Splendor
 	p := &g.Players[s.Turn]
+	if strings.HasPrefix(s.Phase, "gem_") {
+		return s.gemExpansionAction(a)
+	}
 	if s.Phase == "discard" {
 		if a.Type != "discard" || len(a.Tokens) != 6 || sum(a.Tokens) != sum(p.Tokens)-10 {
 			return errors.New("请选择多出的宝石归还，使总数为 10")
@@ -190,7 +213,7 @@ func (s *State) applySplendor(a Action) error {
 				s.logSplendorNoble(n)
 				s.recordSplendorNoble(n)
 				g.Nobles = append(g.Nobles[:i], g.Nobles[i+1:]...)
-				s.gemNext()
+				s.gemTradingPostCheck()
 				return nil
 			}
 		}
@@ -230,6 +253,13 @@ func (s *State) applySplendor(a Action) error {
 		}
 		s.Log = append(s.Log, fmt.Sprintf("玩家 %d 拿取了 %s（共 %d 枚）", s.Turn+1, splendorGemSummary(a.Tokens), total))
 		s.recordSplendorTokens("take", a.Tokens)
+		if twos == 1 && p.hasPost(GemPostExtraToken) {
+			for color, n := range a.Tokens {
+				if n == 2 {
+					g.Effects = append(g.Effects, GemEffect{Kind: "token", Exclude: color})
+				}
+			}
+		}
 	case "reserve", "buy":
 		if a.Type == "reserve" && len(p.Reserved) >= 3 {
 			return errors.New("最多预留三张卡牌")
@@ -241,12 +271,18 @@ func (s *State) applySplendor(a Action) error {
 				return errors.New("牌堆已空")
 			}
 			loc = a.Tier - 1
+			if p.hasPost(GemPostBlindReserve) {
+				g.ReserveChoice = append([]Card{}, g.Decks[loc][:min(2, len(g.Decks[loc]))]...)
+				g.Decks[loc] = g.Decks[loc][len(g.ReserveChoice):]
+				s.Phase = "gem_reserve"
+				return nil
+			}
 			c = g.Decks[loc][0]
 			idx = -1
 		} else {
 			for tier, cards := range g.Market {
 				for j, x := range cards {
-					if x.ID == a.Card {
+					if x.ID > 0 && x.ID == a.Card {
 						c = x
 						loc = tier
 						idx = j
@@ -266,33 +302,14 @@ func (s *State) applySplendor(a Action) error {
 				return errors.New("卡牌已不在此处")
 			}
 		}
+		if !g.gemCardAccessible(c.ID, s.Turn) {
+			return errors.New("该卡牌由对手的要塞占据")
+		}
 		var detail string
 		if a.Type == "buy" {
-			pay := make([]int, 6)
-			for i, cost := range c.Cost {
-				need := max(0, cost-p.Bonus[i])
-				pay[i] = min(need, p.Tokens[i])
-				pay[5] += need - pay[i]
-			}
-			if len(a.Tokens) > 0 {
-				if len(a.Tokens) != 6 {
-					return errors.New("请选择六种宝石的支付数量")
-				}
-				pay = append([]int{}, a.Tokens...)
-				goldNeeded := 0
-				for i, cost := range c.Cost {
-					need := max(0, cost-p.Bonus[i])
-					if pay[i] < 0 || pay[i] > need || pay[i] > p.Tokens[i] {
-						return errors.New("支付数量不正确，不能多付或使用未持有的宝石")
-					}
-					goldNeeded += need - pay[i]
-				}
-				if pay[5] != goldNeeded {
-					return errors.New("黄金必须恰好替代未支付的颜色宝石")
-				}
-			}
-			if pay[5] > p.Tokens[5] {
-				return errors.New("宝石不足以购买这张卡牌")
+			pay, err := gemPayment(*p, c, a.Tokens)
+			if err != nil {
+				return err
 			}
 			for i, n := range pay {
 				p.Tokens[i] -= n
@@ -336,10 +353,14 @@ func (s *State) applySplendor(a Action) error {
 			event.Source, event.Card = "deck", nil
 		}
 		s.recordSplendorCard(event)
+		delete(g.Strongholds, c.ID)
 		if loc == -1 {
 			p.Reserved = append(p.Reserved[:idx], p.Reserved[idx+1:]...)
 		} else if idx == -1 {
 			g.Decks[loc] = g.Decks[loc][1:]
+		} else if g.Options.expanded() {
+			g.Market[loc][idx] = Card{Tier: c.Tier}
+			g.Refills = append(g.Refills, GemRefill{Tier: loc, Slot: idx})
 		} else if len(g.Decks[loc]) > 0 {
 			g.Market[loc][idx] = g.Decks[loc][0]
 			g.Decks[loc] = g.Decks[loc][1:]
@@ -347,6 +368,14 @@ func (s *State) applySplendor(a Action) error {
 			g.Market[loc] = append(g.Market[loc][:idx], g.Market[loc][idx+1:]...)
 		}
 		s.Log = append(s.Log, fmt.Sprintf("玩家 %d %s", s.Turn+1, detail))
+		if a.Type == "buy" {
+			if p.hasPost(GemPostPurchaseToken) {
+				g.Effects = append(g.Effects, GemEffect{Kind: "token", Exclude: -1})
+			}
+			if g.Options.Strongholds {
+				g.Effects = append(g.Effects, GemEffect{Kind: "stronghold"})
+			}
+		}
 	case "pass":
 		if s.gemHasMove() {
 			return errors.New("仍有合法行动，不能跳过")
@@ -355,11 +384,7 @@ func (s *State) applySplendor(a Action) error {
 	default:
 		return errors.New("未知操作")
 	}
-	if sum(p.Tokens) > 10 {
-		s.Phase = "discard"
-	} else {
-		s.gemAfter()
-	}
+	s.gemContinueEffects()
 	return nil
 }
 func eligible(p *GemPlayer, n Noble) bool {
@@ -391,7 +416,7 @@ func (s *State) gemAfter() {
 		s.recordSplendorNoble(g.Nobles[i])
 		g.Nobles = append(g.Nobles[:i], g.Nobles[i+1:]...)
 	}
-	s.gemNext()
+	s.gemTradingPostCheck()
 }
 func (s *State) gemNext() {
 	g := s.Splendor
@@ -399,6 +424,7 @@ func (s *State) gemNext() {
 		g.LastRound = true
 	}
 	s.Phase = "turn"
+	g.ConquestUsed = false
 	wrapped := false
 	for range g.Players {
 		s.Turn = (s.Turn + 1) % len(g.Players)
@@ -437,6 +463,7 @@ func (s *State) EliminateSplendor(player int) error {
 	}
 	g := s.Splendor
 	p := &g.Players[player]
+	s.gemCancelEffects()
 	p.Eliminated = true
 	for i, n := range p.Tokens {
 		g.Bank[i] += n
@@ -477,8 +504,13 @@ func (s *State) gemHasMove() bool {
 	}
 	if len(p.Reserved) < 3 {
 		for i := 0; i < 3; i++ {
-			if len(g.Decks[i])+len(g.Market[i]) > 0 {
+			if len(g.Decks[i]) > 0 {
 				return true
+			}
+			for _, c := range g.Market[i] {
+				if c.ID > 0 && g.gemCardAccessible(c.ID, s.Turn) {
+					return true
+				}
 			}
 		}
 	}
@@ -487,11 +519,10 @@ func (s *State) gemHasMove() bool {
 		cards = append(cards, m...)
 	}
 	for _, c := range cards {
-		gold := 0
-		for i, cost := range c.Cost {
-			gold += max(0, cost-p.Bonus[i]-p.Tokens[i])
+		if c.ID == 0 || !g.gemCardAccessible(c.ID, s.Turn) {
+			continue
 		}
-		if gold <= p.Tokens[5] {
+		if _, err := gemPayment(p, c, nil); err == nil {
 			return true
 		}
 	}

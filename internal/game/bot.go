@@ -54,17 +54,28 @@ func (s *State) botLegal(player int, choices []botChoice) (Action, error) {
 
 func gemMissing(p GemPlayer, c Card, tokens []int) int {
 	need := 0
+	value := 1
+	if p.hasPost(GemPostDoubleGold) {
+		value = 2
+	}
 	for i, cost := range c.Cost {
-		need += max(0, cost-p.Bonus[i]-tokens[i])
+		need += (max(0, cost-p.Bonus[i]-tokens[i]) + value - 1) / value
 	}
 	return max(0, need-tokens[5])
 }
 func (s *State) gemBot(player int) (Action, error) {
 	g := s.Splendor
 	p := g.Players[player]
+	if a, handled, err := s.gemExpansionBot(player); handled {
+		return a, err
+	}
 	cards := append([]Card{}, p.Reserved...)
 	for _, row := range g.Market {
-		cards = append(cards, row...)
+		for _, c := range row {
+			if c.ID > 0 && g.gemCardAccessible(c.ID, player) {
+				cards = append(cards, c)
+			}
+		}
 	}
 	// A nearby affordable card gives the bot a consistent collection/discard goal.
 	target := Card{Cost: make([]int, 5)}

@@ -1,7 +1,15 @@
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
-import type { SGOptions } from "./types";
+import {
+  SplendorOptionPicker,
+  SplendorExpansionBoard,
+  StrongholdBadge,
+  gemPostNames,
+  gemGoldNeeded,
+  splendorRulesLabel,
+} from "./splendor-expansions";
+import type { SGOptions, SplendorOptions } from "./types";
 import React, {
   createContext,
   useContext,
@@ -1872,6 +1880,7 @@ function Create({
     assets = useContext(AssetsContext);
   const [railMap, setRailMap] = useState("usa");
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
+  const [gemOptions, setGemOptions] = useState<SplendorOptions>({});
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
   useEffect(() => {
@@ -1890,6 +1899,7 @@ function Create({
             kind: k,
             railMap: k === "rail" ? railMap : undefined,
             sanguoshaOptions: k === "sanguosha" ? sgOptions : undefined,
+            splendorOptions: k === "splendor" ? gemOptions : undefined,
             capacity,
           });
         }}
@@ -1931,6 +1941,9 @@ function Create({
         </div>
         {k === "sanguosha" && (
           <SanguoshaOptions value={sgOptions} onChange={setSGOptions} />
+        )}
+        {k === "splendor" && (
+          <SplendorOptionPicker value={gemOptions} onChange={setGemOptions} />
         )}
         {k === "rail" && (
           <RailMapPicker
@@ -2060,13 +2073,22 @@ function Waiting({
                 : room.kind === "catan"
                   ? "基础版 · 3–4 人 · 十分获胜"
                   : room.kind === "splendor"
-                    ? "原版基础规则 · 2–4 人"
+                    ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
         </span>
       </div>
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
+        {room.kind === "splendor" && (
+          <SplendorOptionPicker
+            value={room.splendorOptions}
+            disabled={!host || busy}
+            onChange={(splendorOptions) =>
+              command("splendor_options", { splendorOptions })
+            }
+          />
+        )}
         {room.kind === "sanguosha" && (
           <>
             <SanguoshaOptions
@@ -2331,6 +2353,24 @@ function Players({ room }: { room: Room }) {
                   )}
                 </div>
               )}
+              {!!g.splendor?.players[i].tradingPosts?.length && (
+                <div
+                  className="player-gem-posts"
+                  aria-label={`${p.name}的贸易站`}
+                >
+                  {g.splendor.players[i].tradingPosts!.map((id) => (
+                    <span
+                      key={id}
+                      title={
+                        g.splendor!.tradingPostRules?.find((r) => r.id === id)
+                          ?.description
+                      }
+                    >
+                      {gemPostNames[id]}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="player-score">
               {stats?.score}
@@ -2426,6 +2466,11 @@ function Turn({
     turn: "选择一个行动",
     discard: "归还多出的宝石",
     noble: "选择一位贵族",
+    gem_post: "选择一个贸易站",
+    gem_token: "领取贸易站宝石",
+    gem_reserve: "选择一张盲预留卡",
+    gem_stronghold: "放置、移动或移除要塞",
+    gem_conquest: "选择是否发动征服",
     tickets: "选择目的地任务",
     draw: "摸取第二张列车牌",
     finished: "查看本局结算",
@@ -2789,10 +2834,8 @@ function SplendorBoard({
     mine &&
     g.phase === "turn" &&
     room.status === "playing" &&
-    card.cost.reduce(
-      (sum, n, i) => sum + Math.max(0, n - p.bonus[i] - p.tokens[i]),
-      0,
-    ) <= p.tokens[5];
+    (!s.strongholds?.[card.id] || s.strongholds[card.id].player === room.you) &&
+    gemGoldNeeded(p, card.cost) <= p.tokens[5];
   const [tokens, setTokens] = useState<number[]>(Array(6).fill(0));
   const [selected, setSelected] = useState<Card>();
   const [blindTier, setBlindTier] = useState<number>();
@@ -2803,12 +2846,7 @@ function SplendorBoard({
     const spend = card.cost.map((n, i) =>
       Math.min(Math.max(0, n - p.bonus[i]), p.tokens[i]),
     );
-    spend.push(
-      card.cost.reduce(
-        (total, n, i) => total + Math.max(0, n - p.bonus[i]) - spend[i],
-        0,
-      ),
-    );
+    spend.push(gemGoldNeeded(p, card.cost, spend));
     setPayment(spend);
     setSelected(card);
   };
@@ -2827,6 +2865,10 @@ function SplendorBoard({
     : [];
   const gold = payment[5];
   const affordable = gold <= p.tokens[5];
+  const occupied =
+    selected &&
+    s.strongholds?.[selected.id] &&
+    s.strongholds[selected.id].player !== room.you;
   const reserved = selected && p.reserved?.some((c) => c.id === selected.id);
   return (
     <div className="splendor-board">
@@ -2880,13 +2922,16 @@ function SplendorBoard({
                   marker={index}
                   identity={String(c?.id ?? "empty")}
                 >
-                  {c ? (
-                    <DevCard
-                      card={c}
-                      affordable={canAfford(c)}
-                      selected={selected?.id === c.id}
-                      onClick={() => selectCard(c)}
-                    />
+                  {c?.id ? (
+                    <div className="gem-market-card">
+                      <DevCard
+                        card={c}
+                        affordable={canAfford(c)}
+                        selected={selected?.id === c.id}
+                        onClick={() => selectCard(c)}
+                      />
+                      <StrongholdBadge room={room} card={c} />
+                    </div>
                   ) : (
                     <div
                       className="dev-card card-placeholder"
@@ -2899,6 +2944,17 @@ function SplendorBoard({
           </div>
         ))}
       </div>
+      <SplendorExpansionBoard
+        room={room}
+        assets={assets}
+        act={act}
+        busy={busy}
+        renderCard={(card, onClick) => (
+          <DevCard card={card} onClick={onClick} />
+        )}
+        renderCost={(cost) => <Cost cost={cost} />}
+        renderGem={(color) => <Gemstone color={color} />}
+      />
       <div className="gem-bank">
         <div className="section-line">
           <h3>公共宝石</h3>
@@ -3132,7 +3188,9 @@ function SplendorBoard({
           onClose={() => setBlindTier(undefined)}
         >
           <p>
-            随机预留一张 {blindTier} 级发展卡，确认前无法查看牌面。
+            {p.tradingPosts?.includes(2)
+              ? `查看 ${blindTier} 级牌堆顶部两张发展卡，选择一张预留，另一张放回牌堆底部。`
+              : `随机预留一张 ${blindTier} 级发展卡，确认前无法查看牌面。`}
             这会使用本回合的行动。
           </p>
           <p>
@@ -3193,10 +3251,7 @@ function SplendorBoard({
                         onChange={(e) => {
                           const next = [...payment];
                           next[i] = Number(e.target.value);
-                          next[5] = pay.reduce(
-                            (total, n, c) => total + n - next[c],
-                            0,
-                          );
+                          next[5] = gemGoldNeeded(p, selected.cost, next);
                           setPayment(next);
                         }}
                       >
@@ -3204,7 +3259,12 @@ function SplendorBoard({
                           { length: Math.min(need, p.tokens[i]) + 1 },
                           (_, n) => (
                             <option key={n} value={n}>
-                              {n} 枚{gemNames[i]} + {need - n} 枚黄金
+                              {n} 枚{gemNames[i]} +{" "}
+                              {Math.ceil(
+                                (need - n) /
+                                  (p.tradingPosts?.includes(4) ? 2 : 1),
+                              )}{" "}
+                              枚黄金
                             </option>
                           ),
                         )}
@@ -3222,17 +3282,23 @@ function SplendorBoard({
             <div className="form-grid">
               <button
                 className="primary"
-                disabled={!taking || busy || !affordable}
+                disabled={!taking || busy || !affordable || !!occupied}
                 onClick={() =>
                   void act({ type: "buy", card: selected.id, tokens: payment })
                 }
               >
-                {affordable ? "购买卡牌" : "宝石不足"}
+                {occupied
+                  ? "对手要塞占据"
+                  : affordable
+                    ? "购买卡牌"
+                    : "宝石不足"}
               </button>
               {!reserved && (
                 <button
                   className="outline"
-                  disabled={!taking || busy || p.reserved!.length >= 3}
+                  disabled={
+                    !taking || busy || p.reserved!.length >= 3 || !!occupied
+                  }
                   onClick={() =>
                     void act({ type: "reserve", card: selected.id })
                   }

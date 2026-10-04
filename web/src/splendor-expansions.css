@@ -1,0 +1,266 @@
+.gem-expansion-options {
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px solid #b9aa7f;
+  border-radius: 14px;
+}
+.gem-expansion-options legend {
+  font-weight: 800;
+}
+.gem-expansion-options p {
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+.gem-expansion-options > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.gem-expansion-options button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  text-align: left;
+  padding: 12px;
+  border: 2px solid #bcad8d;
+  background: #fff8e9;
+  color: #382e20;
+  border-radius: 10px;
+}
+.gem-expansion-options button.selected {
+  border-color: #c69b28;
+  background: #f9e6aa;
+}
+.gem-expansion-options small {
+  display: block;
+  margin-top: 4px;
+}
+.gem-trading-posts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+.gem-trading-posts details {
+  border: 1px solid #bba87a;
+  border-radius: 10px;
+  background: #fff4d9;
+  color: #372e21;
+  padding: 8px;
+}
+.gem-trading-posts summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 12px;
+}
+.gem-trading-posts .costs {
+  position: static;
+  display: flex;
+  margin-left: auto;
+}
+.gem-trading-posts .cost {
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+}
+.gem-trading-posts p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.gem-post-owners {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+.gem-post-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 8px auto 0;
+  max-width: 206px;
+}
+.gem-post-choice-art {
+  grid-column: 1/-1;
+  width: 130px;
+  height: auto;
+  justify-self: center;
+}
+.gem-post-owners span {
+  background: #e5cea0;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+.gem-market-card {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+}
+.gem-stronghold-badge {
+  position: absolute;
+  top: 40%;
+  left: 5%;
+  right: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid #ffe596;
+  background: #253851;
+  color: #fff9eb;
+  border-radius: 5px;
+  pointer-events: none;
+  padding: 3px;
+  box-shadow: 0 2px 6px #0008;
+}
+.gem-stronghold-badge small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.splendor-board .gem-effect-panel {
+  width: min(620px, calc(100vw - 24px));
+  z-index: 70;
+}
+.gem-effect-content {
+  max-height: min(65dvh, 620px);
+  overflow: auto;
+  padding: 2px;
+}
+.gem-effect-cards {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+.gem-effect-cards > div {
+  width: min(40%, 150px);
+  display: grid;
+  gap: 8px;
+}
+.gem-effect-cards .dev-card {
+  width: 150px;
+  max-width: 100%;
+  aspect-ratio: 63 / 88;
+}
+.gem-effect-tokens {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.gem-effect-tokens button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  color: #332c20;
+  background: #fff6dc;
+  border: 1px solid #bca76f;
+  border-radius: 8px;
+}
+.gem-post-choices {
+  display: grid;
+  gap: 8px;
+}
+.gem-post-choices button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  text-align: left;
+  padding: 12px;
+  color: #332c20;
+  background: #fff6dc;
+  border: 1px solid #bca76f;
+  border-radius: 8px;
+}
+.gem-post-choices button > span {
+  grid-column: 1/-1;
+  font-size: 13px;
+}
+.gem-post-choices .costs {
+  position: static;
+  display: flex;
+}
+.gem-stronghold-targets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 4px;
+}
+.gem-stronghold-targets > div {
+  position: relative;
+  border-radius: 8px;
+}
+.gem-stronghold-targets > div.selected {
+  outline: 3px solid #d7a52b;
+  outline-offset: 2px;
+}
+.gem-stronghold-targets .dev-card {
+  width: 100%;
+  aspect-ratio: 63 / 88;
+}
+.gem-effect-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  flex-shrink: 0;
+}
+.gem-effect-content:has(.gem-stronghold-targets) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.gem-stronghold-targets {
+  min-height: 0;
+  overflow-y: auto;
+}
+.gem-stronghold-badge.seat-1 {
+  background: #296344;
+}
+.gem-stronghold-badge.seat-2 {
+  background: #942f33;
+}
+.gem-stronghold-badge.seat-3 {
+  background: #925018;
+}
+@media (max-width: 650px) {
+  .gem-trading-posts {
+    display: flex;
+    overflow-x: auto;
+    align-items: flex-start;
+    padding-bottom: 5px;
+    scroll-snap-type: x proximity;
+  }
+  .gem-trading-posts details {
+    flex: 0 0 155px;
+    scroll-snap-align: start;
+  }
+  .gem-expansion-options > div {
+    grid-template-columns: 1fr;
+  }
+  .gem-stronghold-targets {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .gem-stronghold-badge small {
+    display: none;
+  }
+}
+.player-gem-posts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+.player-gem-posts span {
+  font-size: 10px;
+  color: #614413;
+  background: #ffedb6;
+  border: 1px solid #cfb778;
+  border-radius: 4px;
+  padding: 2px 4px;
+}

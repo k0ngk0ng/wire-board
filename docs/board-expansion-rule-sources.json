@@ -1,0 +1,72 @@
+{
+  "catan-base-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-03/CN3081%20CATAN%E2%80%93The%20Game%20Rulebook%20secure%20%281%29.pdf",
+    "sha256": "0d81a40c1d4eb5eb438a62f80d71cdaab5f00404722c3cfa0b106d79b635ebc6",
+    "bytes": 11653913
+  },
+  "catan-base-5-6-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-03/CN3082%20CATAN%20%E2%80%93%205-6%20Rulebook%202025%20reduced.pdf",
+    "sha256": "7b7285e178689585ca39c2c72f78ce20a78c02608c40dd3be2cd9f97c8d95ea1",
+    "bytes": 3971248
+  },
+  "catan-seafarers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-03/CN3083%20CATAN%E2%80%93Seafarers%20Rulebook%202025%20secured%20reduced.pdf",
+    "sha256": "a499abe2b613afd618dd3c806790400c7e84adebcc9b9ab19a24fb80dd04b099",
+    "bytes": 13769276
+  },
+  "catan-seafarers-5-6-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-03/CN3084%20CATAN%20%E2%80%93%20Seafarers_%205-6%20Player_%20Rulebook.pdf",
+    "sha256": "746ac86ef5262c666ac204ede77bbd2886960590a9e82c2bcdbe2533e78bb0fe",
+    "bytes": 14163652
+  },
+  "catan-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-03/CN3087%20CATAN%E2%80%93Cities%26Knights_%20Rulebook.pdf",
+    "sha256": "dac9f01afe9006e3b517aa257363c844eb2a9ff4b6578d3127f5d8d861c9a540",
+    "bytes": 12000564
+  },
+  "catan-knights-5-6-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-03/CN3088%20CATAN%E2%80%93Cities%20%26%20Knights%205-6_%20Rulebook.pdf",
+    "sha256": "eab1b29e2804f54d5fe79fb1a95e7d3199d37fb73483e4807a247a931be536c9",
+    "bytes": 3592582
+  },
+  "catan-traders-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+    "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+    "bytes": 27843748
+  },
+  "catan-traders-5-6-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3090%20CATAN%20%E2%80%93%20T%26B%205-6%20Expansion%20Rulebook.pdf",
+    "sha256": "3b9134dc72d6f755a1cd039299ef947187f5d3bf3718b002050b262323295954",
+    "bytes": 12115165
+  },
+  "catan-pirates-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3085%20CATAN%20%E2%80%93%20E%26P%20Rulebook.pdf",
+    "sha256": "3b337981de81a45d1052e0459909c693156f47152b46761438659653bc308dba",
+    "bytes": 14480651
+  },
+  "catan-pirates-missions-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3085%20CATAN%20%E2%80%93%20E%26P%20Missions.pdf",
+    "sha256": "6414208f21fd75b5f43b1b23b32959a343e09174b71163aa416e38e52a52f746",
+    "bytes": 13921288
+  },
+  "catan-pirates-5-6-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3086%20CATAN%20%E2%80%93%20E%26P%205-6%20Expansion%20Rules.pdf",
+    "sha256": "d16279b92383160946efe1b3e2045790bbf814a017c886f35504d3e0f7a16e13",
+    "bytes": 13966868
+  },
+  "splendor-silk-road": {
+    "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/10/SCSPL03EN_SILKROAD_RULES_20241002_WEB.pdf",
+    "sha256": "0e97099be08138eaeb22046d3dc254a3ff4cfca9341b29312fc1c3d9324d32c6",
+    "bytes": 981236
+  },
+  "splendor-sun-never-sets": {
+    "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/10/SCSPL04EN_SPLENDOR_SNS_RULES_20241126.pdf",
+    "sha256": "fedb3cda5ff5130c8cf5b77e8cf499e5c73c704c9f5438c07818de01015317f9",
+    "bytes": 7220202
+  },
+  "catan-helpers": {
+    "url": "https://www.catan.com/sites/default/files/2023-02/Helpers_Rules.pdf",
+    "sha256": "3bca9a8a5f3bb6f6588094bddd78f4d5f88bd8c55fda8006576de8c45b97be99",
+    "bytes": 862060
+  }
+}

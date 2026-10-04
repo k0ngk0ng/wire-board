@@ -20,15 +20,16 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
-	SanguoshaOptions game.SGOptions `json:"sanguoshaOptions,omitempty"`
-	RailMap          string         `json:"railMap,omitempty"`
-	Rated            bool           `json:"rated"`
-	ID               string         `json:"id"`
-	Room             string         `json:"room"`
-	Kind             string         `json:"kind"`
-	Status           string         `json:"status"`
-	Ended            int64          `json:"ended"`
-	Players          []MatchPlayer  `json:"players"`
+	SplendorOptions  game.SplendorOptions `json:"splendorOptions,omitempty"`
+	SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions,omitempty"`
+	RailMap          string               `json:"railMap,omitempty"`
+	Rated            bool                 `json:"rated"`
+	ID               string               `json:"id"`
+	Room             string               `json:"room"`
+	Kind             string               `json:"kind"`
+	Status           string               `json:"status"`
+	Ended            int64                `json:"ended"`
+	Players          []MatchPlayer        `json:"players"`
 }
 
 func archiveGame(tx *sql.Tx, r *Room) error {
@@ -39,7 +40,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	if id == "" {
 		id = fmt.Sprintf("%s:%d", r.ID, r.SetupVersion)
 	}
-	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
+	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, SplendorOptions: r.SplendorOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}
 		if r.Status == "finished" {
