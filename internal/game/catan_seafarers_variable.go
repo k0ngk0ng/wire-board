@@ -11,6 +11,9 @@ import (
 // for forests/pastures. The latter scenario does not prescribe the New
 // Shores red-number restriction (2025 rulebook pages 5 and 7).
 func (g *Catan) randomizeSeafarersMap() error {
+	if g.Seafarers != nil && g.Seafarers.Fog != nil {
+		return g.randomizeFogMap()
+	}
 	if len(g.Players) > 4 || g.Seafarers == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "islands") {
 		return fmt.Errorf("该剧本尚未支持可变布局")
 	}
