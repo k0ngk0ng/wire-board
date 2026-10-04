@@ -1,3 +1,5 @@
+import type { CatanState } from "./types";
+
 const colors = ["blue", "red", "white", "orange", "purple", "green"];
 const paints = [
   "#3078be",
@@ -49,5 +51,60 @@ export function CatanPirate({ assets }: { assets: string }) {
       stroke="#ddd9cb"
       strokeWidth="1.5"
     />
+  );
+}
+
+export function CatanDesertRegions({ game }: { game: CatanState }) {
+  const sea = game.seafarers;
+  if (sea?.scenario !== "desert" || !sea.islands || !sea.startIslands)
+    return null;
+  const regions = sea.islands;
+  const boundaries = game.edges.flatMap((edge) => {
+    const tiles =
+      edge.tiles ||
+      game.tiles
+        .filter(
+          (tile) =>
+            tile.vertices.includes(edge.a) && tile.vertices.includes(edge.b),
+        )
+        .map((tile) => tile.id);
+    const ids = [...new Set(tiles.map((id) => regions[id]))];
+    const region = ids.find((id) => id >= 0 && !sea.startIslands!.includes(id));
+    if (region === undefined || (tiles.length > 1 && ids.length === 1))
+      return [];
+    return [{ edge, region }];
+  });
+  const acrossDesert = new Set(
+    boundaries
+      .filter(({ edge }) =>
+        edge.tiles?.some((id) => game.tiles[id].resource === 5),
+      )
+      .map(({ region }) => region),
+  );
+  return (
+    <g className="catan-exploration-borders" pointerEvents="none">
+      <title>边框标示探索区域；每位玩家首次在各区域定居额外获得2分</title>
+      {boundaries.map(({ edge, region }) => {
+        const a = game.vertices[edge.a],
+          b = game.vertices[edge.b];
+        return (
+          <line
+            key={edge.id}
+            x1={a.x}
+            y1={a.y}
+            x2={b.x}
+            y2={b.y}
+            stroke={
+              game.players.length <= 4 && acrossDesert.has(region)
+                ? "#34713d"
+                : "#243e73"
+            }
+            strokeWidth="3"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        );
+      })}
+    </g>
   );
 }

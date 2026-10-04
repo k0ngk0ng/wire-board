@@ -23,7 +23,7 @@ import { useRailMapControls } from "./rail-map-controls";
 import "./catan.css";
 import "./catan-gold.css";
 import "./catan-seafarers.css";
-import { CatanPirate, CatanShip } from "./catan-seafarers";
+import { CatanDesertRegions, CatanPirate, CatanShip } from "./catan-seafarers";
 import { CatanHelpers } from "./catan-helpers";
 export const catanNames = ["木材", "砖块", "羊毛", "粮食", "矿石"];
 export const catanColors = [
@@ -348,7 +348,17 @@ export function CatanBoard({
     setChosen(null);
     setDev(null);
   };
-  const control = useRailMapControls({ aspect: 680 / 620, minMobileWidth: 0 });
+  const mapMinX = sea ? Math.min(...g.vertices.map((v) => v.x)) - 45 : 0;
+  const mapMinY = sea ? Math.min(...g.vertices.map((v) => v.y)) - 45 : -15;
+  const mapMaxY = sea ? Math.max(...g.vertices.map((v) => v.y)) : 530;
+  const mapWidth = sea
+    ? Math.max(...g.vertices.map((v) => v.x)) + 45 - mapMinX
+    : 680;
+  // Keep room for ports and the pirate on the frame, even while it is at sea,
+  // so moving the pirate never changes the view or the player's zoom center.
+  const mapHeight = sea ? mapMaxY + 56 - mapMinY : 620;
+  const mapAspect = mapWidth / mapHeight;
+  const control = useRailMapControls({ aspect: mapAspect, minMobileWidth: 0 });
   const { viewport, zoom, zoomAt, dragging } = control;
   const liveNumber = total(g.dice);
   const discard = canPlay && phase === "catan_discard" && g.discardDue[you] > 0;
@@ -406,9 +416,11 @@ export function CatanBoard({
                   islands: "四岛",
                   six_islands: "六岛",
                   fog: "迷雾岛",
+                  desert: "穿越沙漠",
                 } as Record<string, string>
               )[sea.scenario] || "航海家"}
               {sea.fog && ` · 待探索 ${sea.fog.remaining} 格`}
+              {sea.scenario === "desert" && " · 区域首次定居 +2分"}
             </span>
             {mine &&
               (phase === "catan_setup_road" ||
@@ -470,12 +482,13 @@ export function CatanBoard({
         <div
           className={`map-scroll catan-map-scroll ${dragging ? "is-dragging" : ""}`}
           ref={viewport}
+          style={{ "--catan-map-aspect": mapAspect } as CSSProperties}
           {...control.handlers}
         >
           <div className="map-canvas" style={control.canvasStyle}>
             <svg
               className="catan-map"
-              viewBox="0 -15 680 620"
+              viewBox={`${mapMinX} ${mapMinY} ${mapWidth} ${mapHeight}`}
               role="group"
               aria-label="卡坦岛地图，可缩放拖动，选择地块、道路或交点"
               style={control.mapStyle}
@@ -600,6 +613,7 @@ export function CatanBoard({
                   </g>
                 );
               })}
+              <CatanDesertRegions game={g} />
               {g.ports.map((port) => {
                 const e = g.edges[port.edge],
                   a = g.vertices[e.a],
@@ -647,7 +661,7 @@ export function CatanBoard({
                 );
               })}
               {sea && sea.pirate === -1 && (
-                <g transform="translate(340,560)">
+                <g transform={`translate(340,${mapMaxY + 28})`}>
                   <CatanPirate assets={assets} />
                   <title>海盗在外海</title>
                 </g>
