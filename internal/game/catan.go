@@ -371,12 +371,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 				s.catanSettleIsland(player, a.Vertex, false)
 			}
 		}
-		if free {
-			g.FreeRoads--
-			if g.FreeRoads == 0 || !g.hasRoute(player) {
-				s.Phase = g.ResumePhase
-				g.FreeRoads = 0
-			}
+		if a.Type == "catan_road" || a.Type == "catan_ship" {
+			return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Edge, Free: free, Helper: a.Skill == "helper"})
 		}
 		g.Trade = nil
 		s.catanScores()
@@ -523,6 +519,15 @@ func (s *State) catanSetup(a Action) error {
 	}
 	e.Owner = p
 	e.Ship = a.Type == "catan_ship"
+	if e.Ship {
+		s.catanLog(p, "放置起始船只 #%d", a.Edge+1)
+	} else {
+		s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
+	}
+	return s.catanAfterRoute(CatanRouteCompletion{Player: p, Edge: a.Edge, Setup: true})
+}
+func (s *State) catanFinishSetupRoute(p, edge int) {
+	g := s.Catan
 	if g.Options.Helpers && g.SetupStep >= len(g.Players) {
 		// The second setup pass runs backwards. The descending starting stack
 		// therefore gives seat i helper i+1 (helper N is picked first).
@@ -532,11 +537,6 @@ func (s *State) catanSetup(a Action) error {
 	}
 	g.SetupStep++
 	g.SetupVertex = -1
-	if e.Ship {
-		s.catanLog(p, "放置起始船只 #%d", a.Edge+1)
-	} else {
-		s.catanLog(p, "放置起始道路 #%d", a.Edge+1)
-	}
 	if !g.setup() {
 		g.TurnSerial = 1
 		s.Turn = g.StartPlayer
@@ -551,7 +551,6 @@ func (s *State) catanSetup(a Action) error {
 		}
 		s.Phase = "catan_setup_settlement"
 	}
-	return nil
 }
 func (s *State) catanRoll(total int) {
 	g := s.Catan

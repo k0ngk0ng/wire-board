@@ -269,8 +269,7 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		}
 		g.Edges[a.Target].Owner = player
 		s.catanLog(player, "通过助手将道路 #%d 移到 #%d", a.Edge+1, a.Target+1)
-		s.catanScores()
-		s.catanVictory()
+		return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Target, Helper: true})
 	case 7:
 		if a.Target < 0 || a.Target >= len(g.Players) || a.Target == player || g.Players[a.Target].Eliminated {
 			return errors.New("请选择一位领先的对手")

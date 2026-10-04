@@ -84,7 +84,7 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 		}
 		return nil
 	}
-	if r.adjustCatanResponseClock(phase, catanActor, now) {
+	if r.adjustCatanResponseClock(phase, catanActor, setupStep, now) {
 		return nil
 	}
 	catanClock := r.Game.Catan != nil && (r.Game.Catan.TurnSerial != catanTurnSerial || r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))

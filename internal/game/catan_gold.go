@@ -7,8 +7,9 @@ type CatanGoldClaim struct {
 	Count  int `json:"count"`
 }
 type CatanGoldPending struct {
-	Claims []CatanGoldClaim `json:"claims"`
-	Resume string           `json:"resume"`
+	AfterRoute *CatanRouteCompletion `json:"afterRoute,omitempty"`
+	Claims     []CatanGoldClaim      `json:"claims"`
+	Resume     string                `json:"resume"`
 	// Non-nil only for production: Hilda is checked after all gold choices.
 	Received []int `json:"received,omitempty"`
 }
@@ -43,6 +44,9 @@ func (s *State) catanContinueGold() {
 	}
 	g.GoldPending = nil
 	s.Phase = q.Resume
+	if q.AfterRoute != nil {
+		s.catanFinishRoute(*q.AfterRoute)
+	}
 	if q.Received != nil {
 		s.catanAfterProduction(q.Received)
 	}

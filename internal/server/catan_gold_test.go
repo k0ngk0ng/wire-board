@@ -21,7 +21,7 @@ func TestCatanGoldHTTPActorsPrivacyRestartAndBotClock(t *testing.T) {
 	r.Game.Phase = "catan_gold"
 	now := time.Now()
 	r.TurnDeadline = now.Add(45 * time.Second).UnixMilli()
-	if !r.adjustCatanResponseClock("catan_roll", -1, now) || r.CatanTimeLeft != 45000 || r.TurnDeadline != now.Add(turnLimit).UnixMilli() {
+	if !r.adjustCatanResponseClock("catan_roll", -1, g.SetupStep, now) || r.CatanTimeLeft != 45000 || r.TurnDeadline != now.Add(turnLimit).UnixMilli() {
 		t.Fatal("gold did not pause the active clock")
 	}
 	if err := s.save(r); err != nil {

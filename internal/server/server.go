@@ -272,7 +272,11 @@ func (s *Server) expireSetups(now time.Time) {
 		if next.Game.Finished {
 			next.Status = "finished"
 		}
-		if !sgPending && !next.adjustCatanResponseClock(room.Game.Phase, room.Game.CatanPendingActor(), now) {
+		previousSetupStep := -1
+		if room.Game.Catan != nil {
+			previousSetupStep = room.Game.Catan.SetupStep
+		}
+		if !sgPending && !next.adjustCatanResponseClock(room.Game.Phase, room.Game.CatanPendingActor(), previousSetupStep, now) {
 			next.startTurnClock(now)
 		}
 		if next.Game.Catan != nil && room.Game.Phase != "catan_discard" && next.Game.Phase == "catan_discard" {

@@ -5,7 +5,7 @@ import "time"
 // Required choices pause the normal action clock. A gold claimant gets a fresh
 // response window; a helper's follow-up exchange stays in the same window.
 // Both manual actions and automatic timeout choices go through this transition.
-func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor int, now time.Time) bool {
+func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, previousSetupStep int, now time.Time) bool {
 	if r.Game.Catan == nil || r.Game.Finished {
 		return false
 	}
@@ -21,7 +21,9 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor int,
 		return true
 	}
 	if response(previousPhase) {
-		if current == "catan_discard" {
+		// Finishing a setup route after its discovery reward starts the next
+		// setup seat (or the first production turn), with a full action clock.
+		if current == "catan_discard" || r.Game.Catan.SetupStep != previousSetupStep {
 			r.startTurnClock(now)
 		} else {
 			r.TurnDeadline = now.UnixMilli() + r.CatanTimeLeft
