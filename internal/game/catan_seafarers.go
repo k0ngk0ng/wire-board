@@ -21,6 +21,7 @@ type CatanSeafarerSeat struct {
 }
 
 type CatanSeafarers struct {
+	Fog           *CatanFogState      `json:"fog,omitempty"`
 	Scenario      string              `json:"scenario,omitempty"`
 	Variable      bool                `json:"variable,omitempty"`
 	VictoryPoints int                 `json:"victoryPoints,omitempty"`
@@ -189,9 +190,7 @@ func (s *State) catanMoveShip(player int, a Action) error {
 	g.Seafarers.MovedShip = true
 	g.Trade = nil
 	s.catanLog(player, "将船只从 #%d 移至 #%d", a.Edge+1, a.Target+1)
-	s.catanScores()
-	s.catanVictory()
-	return nil
+	return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Target})
 }
 func (s *State) catanMovePirate(player, tile int) error {
 	g := s.Catan
@@ -265,11 +264,19 @@ func (g *Catan) islandAt(v int) int {
 	return -1
 }
 func (g *Catan) seaSetupAllowed(v int) bool {
+	if g.Seafarers != nil && g.Seafarers.Fog != nil {
+		for _, id := range g.Seafarers.Fog.StartTiles {
+			if id >= 0 && id < len(g.Tiles) && slices.Contains(g.Tiles[id].Vertices, v) {
+				return true
+			}
+		}
+		return false
+	}
 	return g.Seafarers == nil || len(g.Seafarers.StartIslands) == 0 || slices.Contains(g.Seafarers.StartIslands, g.islandAt(v))
 }
 func (s *State) catanSettleIsland(player, v int, setup bool) {
 	g := s.Catan
-	if g.Seafarers == nil || len(g.Seafarers.Islands) == 0 {
+	if g.Seafarers == nil || g.Seafarers.Fog != nil || len(g.Seafarers.Islands) == 0 {
 		return
 	}
 	island := g.islandAt(v)

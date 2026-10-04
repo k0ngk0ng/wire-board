@@ -3,6 +3,10 @@ package game
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	if g.Seafarers != nil && g.Seafarers.Fog != nil {
+		sea := v["seafarers"].(map[string]any)
+		sea["fog"] = map[string]any{"remaining": len(g.Seafarers.Fog.Terrain), "startTiles": append([]int{}, g.Seafarers.Fog.StartTiles...)}
+	}
 	delete(v, "devDeck")
 	delete(v, "devDiscard")
 	v["devRemaining"] = len(g.DevDeck)

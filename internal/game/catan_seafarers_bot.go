@@ -61,6 +61,19 @@ func (g *Catan) seaRouteValue(player, edge int, ship bool) int {
 			score = max(score, g.vertexValue(player, v.ID)-distance*95)
 		}
 	}
+	if g.Seafarers != nil && g.Seafarers.Fog != nil {
+		for _, t := range g.Tiles {
+			if t.Resource != CatanFog {
+				continue
+			}
+			for _, v := range t.Vertices {
+				distance := min(dist[v][0], dist[v][1])
+				if distance < unreachable {
+					score = max(score, 200-distance*95)
+				}
+			}
+		}
+	}
 	return score
 }
 func (g *Catan) seaBuildChoices(player int) []botChoice {
