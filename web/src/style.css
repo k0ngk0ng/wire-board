@@ -5093,13 +5093,24 @@ label small {
   border: 0;
 }
 
+@media (max-width: 360px) {
+  .topbar .header-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+  .topbar .logo {
+    flex-shrink: 0;
+  }
+}
+
 @media (max-width: 600px) {
   .topbar nav {
     display: none;
   }
   .topbar .header-right {
     margin-left: auto;
-    flex-shrink: 0;
+    flex-shrink: 1;
   }
   .topbar {
     gap: 10px;

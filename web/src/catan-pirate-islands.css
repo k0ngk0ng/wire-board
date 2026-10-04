@@ -1,0 +1,125 @@
+.catan-fleet-path path {
+  fill: none;
+  stroke: #173d50;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (min-width: 851px) {
+  .catan-pirate-islands .catan-map-scroll {
+    height: clamp(230px, calc(100dvh - 550px), 660px);
+  }
+  .catan-pirate-islands > .catan-actions {
+    max-height: clamp(321px, calc(100dvh - 459px), 751px);
+  }
+}
+.catan-pirate-progress {
+  background: #fff8e8;
+  color: #3e3023;
+  border: 1px solid #bfa06c;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.catan-pirate-progress h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.catan-pirate-progress p {
+  margin: 6px 0 10px;
+}
+.catan-pirate-progress-seat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 10px;
+  border-top: 1px solid #dfcfaf;
+  padding: 7px 0;
+}
+.catan-pirate-progress-seat strong {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+.catan-pirate-progress-seat i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 1px solid #66513e;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.catan-pirate-progress > small {
+  display: block;
+  color: #64513a;
+}
+.catan-pirate-battle {
+  border-top: 2px solid #c7a462;
+  margin-top: 10px;
+  padding-top: 8px;
+}
+.catan-pirate-battle > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 6px;
+}
+.catan-battle-die {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  background: #962e23;
+  color: #fff1ce;
+  font-size: 23px;
+  font-weight: 800;
+  box-shadow:
+    inset 0 2px #ffffff45,
+    0 2px 3px #3d241844;
+  animation: catan-battle-reveal 300ms ease-out;
+}
+.catan-fleet-resources {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+.catan-fleet-resources > button {
+  min-width: 0;
+  padding: 8px 3px;
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+}
+.catan-fleet-resources > button[aria-pressed="true"] {
+  outline: 3px solid #977028;
+  background: #ffe49c;
+}
+@keyframes catan-battle-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-12deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catan-battle-die {
+    animation: none;
+  }
+}
+
+.catan-pirate-progress summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.catan-pirate-progress details[open] summary {
+  margin-bottom: 8px;
+}
+@media (max-width: 850px) {
+  .catan-pirate-progress {
+    grid-column: 1 / -1;
+  }
+}

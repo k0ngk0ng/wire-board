@@ -29,6 +29,17 @@ import {
   CatanClothStock,
   CatanClothChoice,
 } from "./catan-cloth";
+import {
+  catanColorIndex,
+  catanPieceColors,
+  catanSeatColor,
+} from "./catan-player-colors";
+import {
+  CatanPirateProgress,
+  CatanFleetPath,
+  CatanPirateMarkers,
+  catanFortressReady,
+} from "./catan-pirate-islands";
 import { CatanHelpers } from "./catan-helpers";
 import {
   CatanTribePortChoice,
@@ -47,14 +58,7 @@ export const catanColors = [
   "#d6b05b",
   "#eaf3f4",
 ];
-export const catanPlayerColors = [
-  "#3078be",
-  "#c94737",
-  "#f5eee1",
-  "#e5902e",
-  "#794287",
-  "#388146",
-];
+
 const resourceKeys = ["wood", "brick", "wool", "grain", "ore"];
 const devNames = ["骑士", "道路建设", "丰收", "垄断", "胜利点"];
 const devDescriptions = [
@@ -85,6 +89,7 @@ export const catanPhases: Record<string, string> = {
   catan_roads: "放置免费的道路",
   catan_helper: "等待助手选择",
   catan_gold: "选择金矿出产的资源",
+  catan_fleet_reward: "选择击退海盗的奖励",
   catan_port: "安放领取的港口",
 };
 export const catanSeafarerPhases: Record<string, string> = {
@@ -283,6 +288,88 @@ function CatanGoldChoice({
     </section>
   );
 }
+function CatanFleetChoice({
+  room,
+  act,
+  busy,
+  assets,
+}: {
+  room: Room;
+  act: Act;
+  busy: boolean;
+  assets: string;
+}) {
+  const g = room.game!.catan!,
+    actor = g.seafarers?.pirateIslands?.raid?.rewards[0];
+  const [collapsed, setCollapsed] = useState(false);
+  const [color, setColor] = useState<number | null>(null);
+  useEffect(() => {
+    setCollapsed(false);
+    setColor(null);
+  }, [room.id, actor, g.rollId]);
+  if (
+    actor === undefined ||
+    room.status !== "playing" ||
+    room.game!.finished ||
+    room.game!.phase !== "catan_fleet_reward"
+  )
+    return null;
+  const mine =
+    !room.spectating && actor === room.you && !g.players[actor].eliminated;
+  return (
+    <section className="catan-gold-choice" aria-label="海盗防守奖励">
+      <header>
+        <strong>
+          {mine
+            ? "击退海盗：选择一张资源"
+            : `${room.seats[actor].name} 正在选择防守奖励`}
+        </strong>
+        <button
+          aria-expanded={!collapsed}
+          onClick={() => setCollapsed(!collapsed)}
+        >
+          {collapsed ? "展开" : "收起"}
+        </button>
+      </header>
+      {!collapsed && (
+        <div className="catan-gold-body">
+          <p>奖励领取后继续结算本次掷骰。限时 120 秒，超时自动选择。</p>
+          {mine && (
+            <>
+              <div
+                className="catan-fleet-resources"
+                role="group"
+                aria-label="选择防守奖励资源"
+              >
+                {g.bank.map((n, i) => (
+                  <button
+                    key={i}
+                    disabled={busy || n <= 0}
+                    aria-pressed={color === i}
+                    onClick={() => setColor(i)}
+                  >
+                    <CatanResource color={i} assets={assets} small />
+                    <small>库存 {n}</small>
+                  </button>
+                ))}
+              </div>
+              <button
+                className="primary wide"
+                disabled={busy || color === null || g.bank[color] <= 0}
+                onClick={() =>
+                  color !== null &&
+                  void act({ type: "catan_fleet_reward", color })
+                }
+              >
+                确认领取{color !== null ? ` ${catanNames[color]}` : ""}
+              </button>
+            </>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
 export function CatanBoard({
   room,
   act,
@@ -301,19 +388,24 @@ export function CatanBoard({
     hand = p?.resources || [0, 0, 0, 0, 0];
   const hexSize = g.hexSize || 62;
   const sea = g.seafarers;
+  const pirates = sea?.pirateIslands;
+  const devLabel = (i: number) =>
+    pirates && i === 4 ? "胜利点卡 · 当作骑士" : devNames[i];
   const pieceScale = sea ? Math.max(0.64, hexSize / 62) : 1;
   const targetScore = sea?.victoryPoints || 10;
   const terrainNames = [...catanNames, "沙漠", "海洋", "金矿", "未探索迷雾"];
   const describeDev = (i: number) =>
-    i === 4
-      ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
-      : sea?.cloth && i === 0
-        ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
-        : sea && i === 0
-          ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
-          : sea && i === 1
-            ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
-            : devDescriptions[i];
+    pirates && (i === 0 || i === 4)
+      ? "将远征航线上最靠近起点的一艘普通船升级为战舰。不移动海盗、不累计骑士军队，也不获得胜利点。"
+      : i === 4
+        ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
+        : sea?.cloth && i === 0
+          ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
+          : sea && i === 0
+            ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
+            : sea && i === 1
+              ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
+              : devDescriptions[i];
   const playing = room.status === "playing" && !game.finished;
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine = canPlay && game.turn === you;
@@ -402,12 +494,16 @@ export function CatanBoard({
     ((effective === "settlement" && g.legal.settlements.includes(id)) ||
       (effective === "city" && g.legal.cities.includes(id)));
   return (
-    <div className={`catan-board ${sea ? "catan-seafarers" : ""}`}>
+    <div
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""}`}
+    >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
           <span>
             <Flag size={14} /> {setup ? "起始建设" : `第 ${game.round} 轮`} ·
-            {targetScore}分获胜
+            {pirates
+              ? `收复要塞且${targetScore}分获胜`
+              : `${targetScore}分获胜`}
           </span>
           <div>
             <button
@@ -441,6 +537,7 @@ export function CatanBoard({
                   desert: "穿越沙漠",
                   tribe: "遗忘的部落",
                   cloth: "卡坦布匹",
+                  pirate_islands: "海盗群岛",
                 } as Record<string, string>
               )[sea.scenario] || "航海家"}
               {sea.fog && ` · 待探索 ${sea.fog.remaining} 格`}
@@ -646,6 +743,7 @@ export function CatanBoard({
                 );
               })}
               <CatanDesertRegions game={g} />
+              <CatanFleetPath game={g} />
               <CatanTribeRewards game={g} assets={assets} />
               {[...g.ports, ...(sea?.tribe?.ports || [])].map((port) => {
                 const unclaimed = sea?.tribe?.ports?.some(
@@ -700,7 +798,7 @@ export function CatanBoard({
                   </g>
                 );
               })}
-              {sea && sea.pirate === -1 && (
+              {sea && !pirates && sea.pirate === -1 && (
                 <g transform={`translate(340,${mapMaxY + 28})`}>
                   <CatanPirate assets={assets} />
                   <title>海盗在外海</title>
@@ -739,7 +837,7 @@ export function CatanBoard({
                     className={`catan-edge ${ok ? "selectable" : ""}`}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`${effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "move_ship")) ? "船只" : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}`}
+                    aria-label={`${effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "move_ship")) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}`}
                     onClick={() => ok && select(effective, e.id)}
                     onKeyDown={(ev) => {
                       if (ok && (ev.key === "Enter" || ev.key === " ")) {
@@ -771,7 +869,11 @@ export function CatanBoard({
                       >
                         <g transform={`scale(${pieceScale})`}>
                           {e.ship ? (
-                            <CatanShip assets={assets} player={e.owner} />
+                            <CatanShip
+                              assets={assets}
+                              player={catanColorIndex(g, e.owner)}
+                              warship={e.warship}
+                            />
                           ) : (
                             <>
                               <rect
@@ -780,7 +882,7 @@ export function CatanBoard({
                                 width="44"
                                 height="10"
                                 rx="2"
-                                fill={catanPlayerColors[e.owner]}
+                                fill={catanSeatColor(g, e.owner)}
                                 stroke="#523829"
                                 strokeWidth="1.5"
                               />
@@ -834,6 +936,7 @@ export function CatanBoard({
                   </g>
                 );
               })}
+              <CatanPirateMarkers room={room} assets={assets} />
               {g.vertices.map((v) => {
                 const ok = selectableVertex(v.id),
                   picked =
@@ -866,7 +969,7 @@ export function CatanBoard({
                     {v.level > 0 &&
                       (assets ? (
                         <image
-                          href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${["blue", "red", "white", "orange", "purple", "green"][v.owner]}-v1.webp`}
+                          href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${catanPieceColors[catanColorIndex(g, v.owner)]}-v1.webp`}
                           x={v.level === 2 ? -20 : -15}
                           y="-20"
                           width={v.level === 2 ? 40 : 30}
@@ -889,7 +992,7 @@ export function CatanBoard({
                               ? "M-14 10V-5L-5-13L4-5V0H13V10Z"
                               : "M-10 10V-3L0-12L10-3V10Z"
                           }
-                          fill={catanPlayerColors[v.owner]}
+                          fill={catanSeatColor(g, v.owner)}
                           stroke="#523829"
                           strokeWidth="1.8"
                         />
@@ -1067,7 +1170,9 @@ export function CatanBoard({
               disabled={busy}
               onClick={() => void submit({ type: "catan_end" })}
             >
-              结束回合 →
+              {catanFortressReady(g, you)
+                ? "攻打要塞并结束行动 →"
+                : "结束回合 →"}
             </button>
           </div>
         )}
@@ -1170,6 +1275,7 @@ export function CatanBoard({
         {mine && phase === "catan_steal" && (
           <section className="catan-confirm">
             <strong>选择偷取一张资源的对手</strong>
+            {pirates && <p>可从任一有资源的对手偷取，也可放弃。</p>}
             {g.victims.map((i) => (
               <button
                 className="outline"
@@ -1181,6 +1287,15 @@ export function CatanBoard({
               </button>
             ))}
           </section>
+        )}
+        {mine && pirates && phase === "catan_steal" && (
+          <button
+            className="outline"
+            disabled={busy}
+            onClick={() => void submit({ type: "catan_skip_steal" })}
+          >
+            放弃偷取
+          </button>
         )}
         {phase === "catan_discard" && (
           <section className="catan-confirm">
@@ -1351,7 +1466,7 @@ export function CatanBoard({
         )}
         {dev !== null && mine && (
           <section className="catan-confirm">
-            <strong>{devNames[dev]}</strong>
+            <strong>{devLabel(dev)}</strong>
             <p>{describeDev(dev)}</p>
             {dev === 2 && (
               <ResourcePicker
@@ -1422,7 +1537,7 @@ export function CatanBoard({
           clearTile={() => setChosen(null)}
           village={village}
           closeVillage={() => setVillage(null)}
-          colors={catanPlayerColors}
+          colors={g.players.map((_, i) => catanSeatColor(g, i))}
         />
         <CatanHelpers
           room={room}
@@ -1452,34 +1567,38 @@ export function CatanBoard({
             setDev(null);
           }}
         />
+        <CatanPirateProgress room={room} />
         <section className="catan-bank">
           <h3>
             资源银行 <small>发展卡剩余 {g.devRemaining}</small>
           </h3>
           <Bundle values={g.bank} assets={assets} showZero />
         </section>
-        <div className="catan-awards">
-          {!sea?.cloth && (
+        <CatanFleetChoice room={room} act={act} busy={busy} assets={assets} />
+        {!pirates && (
+          <div className="catan-awards">
+            {!sea?.cloth && (
+              <span>
+                <Route size={16} />
+                {sea ? "最长路线" : "最长道路"}{" "}
+                <b>
+                  {g.longestOwner < 0
+                    ? "至少 5 段"
+                    : room.seats[g.longestOwner].name}
+                </b>
+                <small>+2 分</small>
+              </span>
+            )}
             <span>
-              <Route size={16} />
-              {sea ? "最长路线" : "最长道路"}{" "}
+              <Shield size={16} />
+              最大骑士军队{" "}
               <b>
-                {g.longestOwner < 0
-                  ? "至少 5 段"
-                  : room.seats[g.longestOwner].name}
+                {g.armyOwner < 0 ? "至少 3 名" : room.seats[g.armyOwner].name}
               </b>
               <small>+2 分</small>
             </span>
-          )}
-          <span>
-            <Shield size={16} />
-            最大骑士军队{" "}
-            <b>
-              {g.armyOwner < 0 ? "至少 3 名" : room.seats[g.armyOwner].name}
-            </b>
-            <small>+2 分</small>
-          </span>
-        </div>
+          </div>
+        )}
       </aside>
       {p && !room.spectating && (
         <section className="catan-hand">
@@ -1508,7 +1627,12 @@ export function CatanBoard({
                       title={describeDev(i)}
                       className={`catan-dev-card dev-${i}`}
                       disabled={
-                        i === 4 ||
+                        (i === 4 && !pirates) ||
+                        (!!pirates &&
+                          (i === 0 || i === 4) &&
+                          !pirates.fortresses[you]?.route.some(
+                            (id) => !g.edges[id].warship,
+                          )) ||
                         !mine ||
                         busy ||
                         g.playedDev ||
@@ -1525,9 +1649,9 @@ export function CatanBoard({
                         <img src={`${assets}/catan/dev-${i}-v1.webp`} alt="" />
                       )}
                       <span>
-                        {devNames[i]} <b>{n}</b>
+                        {devLabel(i)} <b>{n}</b>
                       </span>
-                      {(p.newDev?.[i] || 0) > 0 && i !== 4 && (
+                      {(p.newDev?.[i] || 0) > 0 && (i !== 4 || !!pirates) && (
                         <small>{p.newDev?.[i]} 张新购</small>
                       )}
                     </button>

@@ -276,6 +276,30 @@ export type CatanPlayer = {
 };
 export type CatanState = {
   seafarers?: {
+    pirateIslands?: {
+      colors: number[];
+      homeTiles: number[];
+      fleetPath: number[];
+      safeTile: number;
+      fortresses: {
+        root: number;
+        route: number[];
+        startVertex: number;
+        startShip: number;
+        beachhead: number;
+        vertex: number;
+        strength: number;
+      }[];
+      raid?: { rewards: number[]; total: number };
+      battle?: {
+        id: number;
+        player: number;
+        die: number;
+        warships: number;
+        removed: number[];
+        remaining: number;
+      };
+    };
     islands?: number[];
     startIslands?: number[];
     scenario: string;
@@ -355,6 +379,7 @@ export type CatanState = {
     b: number;
     owner: number;
     ship?: boolean;
+    warship?: boolean;
     tiles?: number[];
   }[];
   ports: { edge: number; resource: number }[];
