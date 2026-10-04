@@ -42,6 +42,9 @@ func (s *State) sgEvent(e SGEvent) {
 	if s.sgWindEvent(e) {
 		return
 	}
+	if s.sgFireEvent(e) {
+		return
+	}
 	switch e.Type {
 	case "cleanup":
 		g.Revealed = nil
@@ -102,7 +105,7 @@ func (s *State) sgEvent(e SGEvent) {
 		if g.SkipDraw || !s.sgAlive(e.Actor) {
 			return
 		}
-		if s.sgHas(e.Actor, "tuxi") || s.sgHas(e.Actor, "luoyi") || s.sgHas(e.Actor, "yingzi") {
+		if s.sgHas(e.Actor, "tuxi") || s.sgHas(e.Actor, "luoyi") || s.sgHas(e.Actor, "yingzi") || s.sgHas(e.Actor, "shuangxiong") {
 			s.sgAsk(e.Actor, "draw_phase", "选择摸牌阶段行动", e)
 		} else {
 			s.sgDraw(e.Actor, 2)
@@ -119,11 +122,11 @@ func (s *State) sgEvent(e SGEvent) {
 			return
 		}
 		p := g.Players[e.Actor]
-		if !e.Flag && s.sgHas(e.Actor, "keji") && p.Used["keji_slash"] == 0 && len(p.Hand) > p.HP {
+		if !e.Flag && s.sgHas(e.Actor, "keji") && p.Used["keji_slash"] == 0 && len(p.Hand) > s.sgHandLimit(e.Actor) {
 			s.sgAsk(e.Actor, "keji", "是否发动克己，跳过弃牌？", e)
 			return
 		}
-		due := len(p.Hand) - max(0, p.HP)
+		due := len(p.Hand) - s.sgHandLimit(e.Actor)
 		if due > 0 {
 			e.Amount = due
 			s.sgAsk(e.Actor, "discard", "弃牌至当前体力值", e)
@@ -212,6 +215,12 @@ func (s *State) sgEvent(e SGEvent) {
 		s.sgResponsePrompt(e)
 	case "defended":
 		s.sgLog("%s 抵消了「杀」", s.sgName(e.Target))
+		next := e
+		next.Type = "weapon_missed"
+		mengjin := e
+		mengjin.Type = "mengjin"
+		s.sgPush(mengjin, next)
+	case "weapon_missed":
 		if s.sgAlive(e.Actor) && (s.sgWeapon(e.Actor) == "axe" || s.sgWeapon(e.Actor) == "blade") {
 			s.sgAsk(e.Actor, "weapon_after_jink", "是否发动武器效果？", e)
 		}
@@ -248,7 +257,7 @@ func (s *State) sgEvent(e SGEvent) {
 			return
 		}
 		events := []SGEvent{}
-		for _, skill := range []string{"jianxiong", "fankui", "ganglie", "yiji"} {
+		for _, skill := range []string{"jianxiong", "fankui", "ganglie", "yiji", "jieming"} {
 			if s.sgHas(e.Target, skill) {
 				times := 1
 				if skill == "yiji" {
@@ -265,6 +274,11 @@ func (s *State) sgEvent(e SGEvent) {
 		s.sgPush(events...)
 	case "hurt_skill":
 		if !s.sgAlive(e.Target) {
+			return
+		}
+		if e.Kind == "jieming" {
+			e.Type = "jieming"
+			s.sgPush(e)
 			return
 		}
 		if e.Kind == "jianxiong" {
@@ -321,6 +335,11 @@ func (s *State) sgEvent(e SGEvent) {
 		if !s.sgAlive(who) {
 			e.Count++
 			s.sgPush(e)
+			return
+		}
+		if who == e.Target && !e.Flag && s.sgHas(who, "niepan") && g.Players[who].Marks["niepan"] == 0 {
+			e.Flag = true
+			s.sgAsk(who, "niepan", "是否发动涅槃？整局限一次，弃置所有牌、回复至3体力并摸三张", e)
 			return
 		}
 		s.sgAsk(who, "peach", "濒死求桃：救助 "+s.sgName(e.Target), e)
@@ -546,6 +565,10 @@ func (s *State) sgJudgeResult(e SGEvent) {
 	s.sgLog("%s 的判定结果：%s %d「%s」", s.sgName(e.Actor), []string{"♠", "♥", "♣", "♦"}[c.Suit], c.Rank, SGCardTypes[c.Kind].Name)
 	after := SGEvent{Type: "tiandu", Actor: e.Actor, Aux: e.Aux}
 	switch e.Kind {
+	case "shuangxiong":
+		g.Players[e.Actor].Used["shuangxiong"] = map[bool]int{true: 1, false: 2}[red]
+		s.sgTakeTable(c.ID)
+		g.Players[e.Actor].Hand = append(g.Players[e.Actor].Hand, c.ID)
 	case "luoshen":
 		if !red {
 			s.sgTakeTable(c.ID)

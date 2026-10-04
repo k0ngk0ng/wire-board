@@ -806,6 +806,11 @@
   color: #83390f;
   border: 1px solid #bc6f30;
 }
+.sg-limited {
+  background: #f4e6bf;
+  color: #624911;
+  border: 1px solid #ba9953;
+}
 @media (max-width: 480px) {
   .sg-deck-options {
     grid-template-columns: 1fr;

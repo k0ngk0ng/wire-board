@@ -18,6 +18,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	if handled, err := s.sgWindRespond(i, a, prompt); handled {
 		return err
 	}
+	if handled, err := s.sgFireRespond(i, a, prompt); handled {
+		return err
+	}
 	switch prompt.Kind {
 	case "general":
 		if !slices.Contains(p.Choices, a.Choice) {
@@ -91,6 +94,11 @@ func (s *State) sgRespond(i int, a Action) error {
 				p.Hand = append(p.Hand, ids[0])
 			}
 			s.sgLog("%s 发动突袭，获得 %d 张手牌", s.sgName(i), len(a.Targets))
+		case "shuangxiong":
+			if !s.sgHas(i, "shuangxiong") {
+				return errors.New("没有双雄")
+			}
+			s.sgPush(SGEvent{Type: "judge", Actor: i, Kind: "shuangxiong"})
 		case "luoyi":
 			if !s.sgHas(i, "luoyi") {
 				return errors.New("没有裸衣")
@@ -201,7 +209,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			return errors.New("朱雀羽扇只能在使用杀时发动，不能用于打出杀")
 		}
 		if a.Choice == "eight_diagram" {
-			if wanted != "jink" || e.Step&1 != 0 || sgCard(s.sgEquip(i, "armor")).Kind != "eight_diagram" || s.sgIgnoreArmor(e) {
+			if wanted != "jink" || e.Step&1 != 0 || s.sgArmor(i) != "eight_diagram" || s.sgIgnoreArmor(e) {
 				return errors.New("此时不能发动八卦阵")
 			}
 			s.sgPush(SGEvent{Type: "judge", Actor: i, Kind: "eight_diagram", Next: &e})
@@ -233,7 +241,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		}
 	case "support":
 		if a.Choice == "eight_diagram" {
-			if e.Kind != "hujia" || e.Step&1 != 0 || sgCard(s.sgEquip(i, "armor")).Kind != "eight_diagram" {
+			if e.Kind != "hujia" || e.Step&1 != 0 || s.sgArmor(i) != "eight_diagram" {
 				return errors.New("此时不能发动八卦阵")
 			}
 			s.sgPush(SGEvent{Type: "judge", Actor: i, Kind: "support_eight", Next: &e})
@@ -379,7 +387,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgPush(next)
 		}
 		s.sgLose(e.Target, []int{id})
-		if e.Kind == "dismantlement" || e.Kind == "ice_sword" {
+		if e.Kind == "dismantlement" || e.Kind == "ice_sword" || e.Kind == "mengjin" {
 			g.Discard = append(g.Discard, id)
 			s.sgLog("%s 弃置 %s 的「%s」", s.sgName(i), s.sgName(e.Target), SGCardTypes[sgCard(id).Kind].Name)
 		} else {
@@ -481,6 +489,9 @@ func (s *State) sgSkill(i int, a Action) error {
 	}
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
+	}
+	if handled, err := s.sgFireSkill(i, a); handled {
+		return err
 	}
 	for _, t := range a.Targets {
 		if !s.sgAlive(t) {

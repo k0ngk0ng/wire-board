@@ -7,6 +7,7 @@ import (
 )
 
 type SGPlayer struct {
+	Marks      map[string]int `json:"marks,omitempty"`
 	Flipped    bool           `json:"flipped,omitempty"`
 	Buqu       []int          `json:"buqu,omitempty"`
 	BuquActive bool           `json:"buquActive,omitempty"`
@@ -129,7 +130,7 @@ func (s *State) sgHas(i int, skill string) bool {
 	if p.Dead {
 		return false
 	}
-	if (skill == "hujia" || skill == "jijiang" || skill == "jiuyuan" || skill == "huangtian") && p.Role != "lord" {
+	if (skill == "hujia" || skill == "jijiang" || skill == "jiuyuan" || skill == "huangtian" || skill == "xueyi") && p.Role != "lord" {
 		return false
 	}
 	return slices.Contains(sgGeneral(p.General).Skills, skill)
@@ -277,7 +278,7 @@ func (s *State) sgCanTarget(a, b int, kind string) bool {
 	if (kind == "snatch" || kind == "indulgence") && s.sgHas(b, "qianxun") {
 		return false
 	}
-	if sgIsSlash(kind) && s.sgDistance(a, b) > s.sgRange(a) {
+	if sgIsSlash(kind) && s.sgTianyi(a) != 1 && s.sgDistance(a, b) > s.sgRange(a) {
 		return false
 	}
 	if (kind == "snatch" || kind == "supply_shortage") && !s.sgHas(a, "qicai") && s.sgDistance(a, b) > 1 {
@@ -396,6 +397,12 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 		}
 		return v.Kind, nil
 	}
+	if skill == "luanji" {
+		if !s.sgHas(i, skill) || s.sgValidateCards(i, ids, 2, true) != nil || s.sgCardFor(i, ids[0]).Suit != s.sgCardFor(i, ids[1]).Suit || desired != "" && desired != "archery_attack" {
+			return "", errors.New("乱击需要两张同花色手牌")
+		}
+		return "archery_attack", nil
+	}
 	if skill == "spear" {
 		if (desired != "" && desired != "slash") || s.sgWeapon(i) != "spear" || s.sgValidateCards(i, ids, 2, true) != nil {
 			return "", errors.New("丈八蛇矛需要两张手牌")
@@ -418,6 +425,33 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 			return "", errors.New("没有此技能")
 		}
 		switch skill {
+		case "huoji", "kanpo", "lianhuan", "shuangxiong":
+			if !s.sgOwn(i, c.ID, true) {
+				return "", errors.New("此技能需要手牌")
+			}
+			switch skill {
+			case "huoji":
+				if !red {
+					return "", errors.New("火计需要红色手牌")
+				}
+				kind = "fire_attack"
+			case "kanpo":
+				if red {
+					return "", errors.New("看破需要黑色手牌")
+				}
+				kind = "nullification"
+			case "lianhuan":
+				if c.Suit != 2 {
+					return "", errors.New("连环需要梅花手牌")
+				}
+				kind = "iron_chain"
+			case "shuangxiong":
+				mark := s.Sanguosha.Players[i].Used["shuangxiong"]
+				if i != s.Turn || mark == 0 || (mark == 1) == red {
+					return "", errors.New("双雄需要本回合与判定颜色不同的手牌")
+				}
+				kind = "duel"
+			}
 		case "wusheng":
 			if !red {
 				return "", errors.New("武圣需要红色牌")
@@ -516,6 +550,9 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	info := SGCardTypes[kind]
 	legality := clone(*s)
 	legality.sgLose(i, ids)
+	if sgIsSlash(kind) && s.sgTianyi(i) == -1 {
+		return errors.New("天义拼点未赢，本回合不能使用杀")
+	}
 	if kind == "jink" || kind == "nullification" {
 		return errors.New("此牌只能响应时使用")
 	}
@@ -564,6 +601,9 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		if sgIsSlash(kind) && legality.sgWeapon(i) == "halberd" && len(ids) == 1 && ((len(p.Hand) == 1 && p.Hand[0] == ids[0]) || (g.Virtual != nil && g.Virtual.Paid && len(p.Hand) == 0 && g.Virtual.Card == ids[0])) {
 			maxTargets = 3
 		}
+		if sgIsSlash(kind) && s.sgTianyi(i) == 1 {
+			maxTargets++
+		}
 		if len(targets) < 1 || len(targets) > maxTargets {
 			return errors.New("请选择正确数量的目标")
 		}
@@ -588,7 +628,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	if kind == "lightning" && !s.sgCanTarget(i, i, kind) {
 		return errors.New("判定区已有闪电")
 	}
-	if sgIsSlash(kind) && !forced && p.Used["slash"] > 0 && !s.sgHas(i, "paoxiao") && legality.sgWeapon(i) != "crossbow" {
+	if sgIsSlash(kind) && !forced && p.Used["slash"] >= 1+max(0, s.sgTianyi(i)) && !s.sgHas(i, "paoxiao") && legality.sgWeapon(i) != "crossbow" {
 		return errors.New("本阶段已经使用过杀")
 	}
 	if sgIsSlash(kind) {

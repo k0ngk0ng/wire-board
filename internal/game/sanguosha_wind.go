@@ -42,6 +42,9 @@ func (g *Sanguosha) generalCatalog() []SGGeneral {
 	if slices.Contains(g.Options.Packs, "wind") {
 		all = append(all, sgWindGenerals...)
 	}
+	if slices.Contains(g.Options.Packs, "fire") {
+		all = append(all, sgFireGenerals...)
+	}
 	return all
 }
 func (s *State) sgLordChoices() {
@@ -49,6 +52,9 @@ func (s *State) sgLordChoices() {
 	lords := []string{"caocao", "liubei", "sunquan"}
 	if slices.Contains(g.Options.Packs, "wind") {
 		lords = append(lords, "zhangjiao")
+	}
+	if slices.Contains(g.Options.Packs, "fire") {
+		lords = append(lords, "yuanshao")
 	}
 	ids := []string{}
 	for _, general := range g.generalCatalog() {

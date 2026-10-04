@@ -322,6 +322,8 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  marks?: Record<string, number>;
+  handLimit?: number;
   flipped?: boolean;
   buqu?: number[];
   chained?: boolean;
@@ -339,6 +341,7 @@ export type SGPlayer = {
   used: Record<string, number>;
 };
 export type SanguoshaState = {
+  armor?: string;
   guhuoKinds?: string[];
   bluff?: {
     player: number;
@@ -384,6 +387,7 @@ export type SanguoshaState = {
     wanted?: string;
     ignoreArmor?: boolean;
     cancelled?: boolean;
+    targets?: number[];
   };
 };
 

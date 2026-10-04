@@ -29,14 +29,16 @@ func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
 		return o, errors.New("未知三国杀牌堆")
 	}
 	for _, pack := range o.Packs {
-		if pack != "standard" && pack != "wind" {
+		if pack != "standard" && pack != "wind" && pack != "fire" {
 			return o, errors.New("该武将包尚未开放")
 		}
 	}
-	wind := slices.Contains(o.Packs, "wind")
+	requested := o.Packs
 	o.Packs = []string{"standard"}
-	if wind {
-		o.Packs = append(o.Packs, "wind")
+	for _, pack := range []string{"wind", "fire"} {
+		if slices.Contains(requested, pack) {
+			o.Packs = append(o.Packs, pack)
+		}
 	}
 	return o, nil
 }
