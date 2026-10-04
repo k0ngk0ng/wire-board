@@ -1,3 +1,4 @@
+import { CatanNewWorldPortChoice } from "./catan-new-world";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import {
@@ -23,6 +24,7 @@ import { useRailMapControls } from "./rail-map-controls";
 import "./catan.css";
 import "./catan-gold.css";
 import "./catan-seafarers.css";
+import "./catan-layout.css";
 import { CatanDesertRegions, CatanPirate, CatanShip } from "./catan-seafarers";
 import {
   CatanClothVillages,
@@ -92,6 +94,7 @@ export const catanPhases: Record<string, string> = {
   catan_steal: "选择偷取资源的对手",
   catan_cloth_start: "选择初始强盗位置",
   catan_wonders_start: "选择初始强盗位置",
+  catan_world_ports: "轮流放置随机港口",
   catan_cloth_steal: "选择偷取资源或布匹",
   catan_roads: "放置免费的道路",
   catan_helper: "等待助手选择",
@@ -418,7 +421,10 @@ export function CatanBoard({
   const playing = room.status === "playing" && !game.finished;
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine = canPlay && game.turn === you;
-  const portMine = canPlay && sea?.tribe?.pending?.player === you;
+  const portMine =
+    canPlay &&
+    (sea?.tribe?.pending?.player === you ||
+      (game.phase === "catan_world_ports" && game.turn === you));
   const setup = g.setupStep < (g.setupLimit ?? 2 * g.players.length);
   const phase = game.phase;
   const [village, setVillage] = useState<number | null>(null);
@@ -448,7 +454,7 @@ export function CatanBoard({
   const effective =
     phase === "catan_cloth_start" || phase === "catan_wonders_start"
       ? "robber_start"
-      : phase === "catan_port"
+      : phase === "catan_port" || phase === "catan_world_ports"
         ? "port"
         : phase === "catan_setup_settlement"
           ? "settlement"
@@ -506,7 +512,7 @@ export function CatanBoard({
       (effective === "city" && g.legal.cities.includes(id)));
   return (
     <div
-      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""}`}
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${sea?.wonders || sea?.newWorld ? "catan-map-side-hand" : ""}`}
     >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
@@ -552,6 +558,7 @@ export function CatanBoard({
                   cloth: "卡坦布匹",
                   pirate_islands: "海盗群岛",
                   wonders: "卡坦奇迹",
+                  new_world: "新世界",
                 } as Record<string, string>
               )[sea.scenario] || "航海家"}
               {sea.fog && ` · 待探索 ${sea.fog.remaining} 格`}
@@ -818,9 +825,34 @@ export function CatanBoard({
                 );
               })}
               {sea && !pirates && !sea.wonders && sea.pirate === -1 && (
-                <g transform={`translate(340,${mapMaxY + 28})`}>
+                <g
+                  transform={
+                    sea.newWorld
+                      ? `translate(${mapMinX + 22},290)`
+                      : `translate(340,${mapMaxY + 28})`
+                  }
+                >
                   <CatanPirate assets={assets} />
                   <title>海盗在外海</title>
+                </g>
+              )}
+              {sea?.newWorld && g.robber === -1 && (
+                <g
+                  transform={`translate(${mapMinX + mapWidth - 24},320)`}
+                  role="img"
+                  aria-label="强盗在外框"
+                >
+                  {assets ? (
+                    <image
+                      href={`${assets}/catan/robber-v1.webp`}
+                      x="-12"
+                      y="-18"
+                      width="24"
+                      height="40"
+                    />
+                  ) : (
+                    <text textAnchor="middle">强盗</text>
+                  )}
                 </g>
               )}
               {g.edges.map((e) => {
@@ -1042,7 +1074,7 @@ export function CatanBoard({
               : "等待先手选择强盗起点 · 可缩放拖动"
             : phase === "catan_cloth_steal"
               ? "请在海盗面板选择对手与物品 · 可收起查看地图"
-              : phase === "catan_port"
+              : phase === "catan_port" || phase === "catan_world_ports"
                 ? portMine
                   ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
                   : "等待港口安放 · 滚轮缩放 · 按住拖动"
@@ -1554,6 +1586,14 @@ export function CatanBoard({
           </section>
         )}
         <CatanGoldChoice room={room} act={act} busy={busy} assets={assets} />
+        <CatanNewWorldPortChoice
+          room={room}
+          assets={assets}
+          busy={busy}
+          act={act}
+          edge={chosen?.type === "port" ? chosen.id : null}
+          clear={() => setChosen(null)}
+        />
         <CatanTribePortChoice
           room={room}
           act={act}

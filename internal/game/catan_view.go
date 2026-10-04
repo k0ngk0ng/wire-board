@@ -4,6 +4,13 @@ func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
+	if w := g.newWorld(); w != nil {
+		public := map[string]any{"index": w.Index, "total": len(w.Ports), "remaining": len(w.Ports) - w.Index}
+		if w.Index < len(w.Ports) {
+			public["current"] = w.Ports[w.Index]
+		}
+		v["seafarers"].(map[string]any)["newWorld"] = public
+	}
 	if w := g.wonders(); w != nil {
 		v["wonderRules"] = append([]CatanWonderRule{}, catanWonderRules[:len(w.Cards)]...)
 		claims, builds := []int{}, []int{}
@@ -105,6 +112,9 @@ func (s *State) catanView(view map[string]any, player int) {
 		legal["pirate"] = []int{}
 	}
 	if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
+		if s.Phase == "catan_world_ports" {
+			legal["ports"] = g.worldPortEdges()
+		}
 		if s.Phase == "catan_wonders_start" {
 			legal["robber"] = g.wonderStartTiles()
 		}

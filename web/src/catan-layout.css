@@ -1,0 +1,73 @@
+/* Spacious desktop map with actions and private hand in the right column. */
+@media (min-width: 851px) {
+  .catan-map-side-hand {
+    grid-template-rows: minmax(0, 1fr) auto;
+    height: clamp(430px, calc(100dvh - 290px), 800px);
+  }
+  .catan-map-side-hand > .catan-map-panel {
+    grid-row: 1 / 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .catan-map-side-hand .catan-map-scroll {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+  .catan-map-side-hand .catan-map-toolbar,
+  .catan-map-side-hand .catan-sea-tools,
+  .catan-map-side-hand .catan-map-hint {
+    flex-shrink: 0;
+  }
+  .catan-map-side-hand > .catan-actions {
+    grid-column: 2;
+    grid-row: 1;
+    max-height: 100%;
+    min-height: 0;
+  }
+  .catan-map-side-hand > .catan-hand {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 8px;
+    max-height: 230px;
+    overflow: auto;
+  }
+  .catan-map-side-hand .catan-hand > header {
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+  .catan-map-side-hand .catan-hand-resources {
+    gap: 4px;
+  }
+  .catan-map-side-hand .catan-hand-resources > .catan-resource {
+    flex-direction: column;
+    gap: 1px;
+    padding: 4px 3px;
+  }
+  .catan-map-side-hand .catan-hand-resources .catan-resource-art {
+    width: 23px;
+    height: 35px;
+  }
+  .catan-map-side-hand .catan-hand-resources .catan-resource > b {
+    margin: 0;
+    font-size: 19px;
+  }
+  .catan-map-side-hand .catan-development {
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .catan-map-side-hand .catan-private-score {
+    margin-left: 0;
+  }
+  .catan-map-side-hand:not(:has(> .catan-hand)) {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .catan-map-side-hand:not(:has(> .catan-hand)) > .catan-map-panel {
+    grid-row: 1;
+  }
+  .catan-map-side-hand:not(:has(> .catan-hand)) > .catan-actions {
+    height: 100%;
+  }
+}
