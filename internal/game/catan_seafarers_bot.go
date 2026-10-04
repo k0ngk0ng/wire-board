@@ -1,5 +1,7 @@
 package game
 
+import "slices"
+
 // Price a route by the reachable public settlement sites, without reading
 // opponents' hands or unrevealed terrain. Roads and ships cannot swap mode at
 // an empty intersection; a building we already own permits that transition.
@@ -52,6 +54,16 @@ func (g *Catan) seaRouteValue(player, edge int, ship bool) int {
 		}
 	}
 	score := -1000
+	if c := g.cloth(); c != nil {
+		for _, village := range c.Villages {
+			if village.Stock <= 0 || slices.Contains(village.Traders, player) {
+				continue
+			}
+			if distance := dist[village.Vertex][1]; distance < unreachable {
+				score = max(score, 350+(6-absCatan(7-village.Number))*15+min(village.Stock, 3)*60-distance*95)
+			}
+		}
+	}
 	for _, v := range g.Vertices {
 		if !g.canSettlement(player, v.ID, true) {
 			continue
@@ -141,7 +153,7 @@ func (g *Catan) seaMoveChoices(player int) []botChoice {
 }
 func (g *Catan) pirateBotChoices(player int) []botChoice {
 	choices := []botChoice{}
-	if g.Seafarers == nil {
+	if !g.pirateAllowed(player) {
 		return choices
 	}
 	for _, tile := range g.Tiles {

@@ -309,13 +309,13 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		}
 		desert := -1
 		for _, tile := range g.Tiles {
-			if tile.Resource == 5 {
+			if tile.Resource == 5 && g.clothLand(tile.ID) {
 				desert = tile.ID
 				break
 			}
 		}
 		if a.Choice == "desert" {
-			if a.Tile < 0 || a.Tile >= len(g.Tiles) || g.Tiles[a.Tile].Resource != 5 {
+			if a.Tile < 0 || a.Tile >= len(g.Tiles) || g.Tiles[a.Tile].Resource != 5 || !g.clothLand(a.Tile) {
 				return errors.New("请选择沙漠地块")
 			}
 			desert = a.Tile

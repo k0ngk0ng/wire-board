@@ -188,6 +188,8 @@ func (s *State) catanBot(player int) (Action, error) {
 			choices = append(choices, botChoice{Action{Type: "catan_robber", Tile: best}, score})
 		}
 		return s.botLegal(player, choices)
+	case "catan_cloth_steal":
+		return s.catanClothStealBot(player)
 	case "catan_steal":
 		best := g.Victims[0]
 		for _, i := range g.Victims {

@@ -96,7 +96,13 @@ func (s *State) initCatan(n int) {
 		s.Log = append(s.Log, "五至六人扩充：30块陆地，采用新版配对回合；配对玩家不能与其他玩家自由交易")
 	}
 }
-func (g *Catan) setup() bool { return g.SetupStep < 2*len(g.Players) }
+func (g *Catan) SetupLimit() int {
+	if g.cloth() != nil {
+		return 3 * len(g.Players)
+	}
+	return 2 * len(g.Players)
+}
+func (g *Catan) setup() bool { return g.SetupStep < g.SetupLimit() }
 func catanBundle(a []int) bool {
 	if len(a) != 5 {
 		return false
@@ -178,6 +184,9 @@ func (s *State) catanScores() {
 	}
 	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
 	g.LongestOwner = g.awardHolder(oldRoad, 5, roads)
+	if g.cloth() != nil {
+		g.LongestOwner = -1
+	}
 	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
 	if g.LongestOwner != oldRoad {
 		if g.LongestOwner < 0 {
@@ -196,6 +205,9 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = p.Dev[4]
+		if c := g.cloth(); c != nil {
+			p.Score += c.Held[i] / 2
+		}
 		if t := g.tribe(); t != nil && i < len(t.Points) {
 			p.Score += t.Points[i]
 		}
@@ -305,13 +317,13 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		}
 		g.Dice = []int{catanRandom(6) + 1, catanRandom(6) + 1}
 		g.RollID++
-		s.catanRoll(sum(g.Dice))
+		return s.catanRoll(sum(g.Dice))
 	case "catan_end":
 		if s.Phase != "catan_turn" {
 			return errors.New("请先完成当前行动")
 		}
 		s.catanVictory()
-		if !s.Finished {
+		if !s.Finished && !s.catanClothEnd() {
 			s.catanNext()
 			s.catanVictory()
 		}
@@ -381,6 +393,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Edge, Free: free, Helper: a.Skill == "helper"})
 		}
 		g.Trade = nil
+		s.catanClothTrade(player)
 		s.catanScores()
 		s.catanVictory()
 		if s.catanAskTribePort(player, s.Phase, nil, a.Skill == "helper") {
@@ -463,6 +476,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanMoveRobber(player, a.Tile)
 	case "catan_steal":
 		return s.catanSteal(player, a.Target)
+	case "catan_cloth_steal":
+		return s.catanClothSteal(player, a)
 	default:
 		return errors.New("未知卡坦岛行动")
 	}
@@ -493,7 +508,7 @@ func (s *State) catanSetup(a Action) error {
 		s.catanSettleIsland(p, a.Vertex, true)
 		s.Phase = "catan_setup_road"
 		s.catanLog(p, "放置起始村庄 #%d", a.Vertex+1)
-		if g.SetupStep >= len(g.Players) {
+		if g.SetupStep >= g.SetupLimit()-len(g.Players) {
 			gain := make([]int, 5)
 			gold := make([]int, len(g.Players))
 			for _, t := range g.Tiles {
@@ -511,7 +526,7 @@ func (s *State) catanSetup(a Action) error {
 				}
 			}
 			catanMove(g.Bank, g.Players[p].Resources, gain)
-			s.catanLog(p, "从第二座村庄获得 %s", catanText(gain))
+			s.catanLog(p, "从第 %d 座起始村庄获得 %s", g.SetupLimit()/len(g.Players), catanText(gain))
 			if gold[p] > 0 {
 				s.catanStartGold(gold, nil, "catan_setup_road")
 			}
@@ -537,7 +552,7 @@ func (s *State) catanSetup(a Action) error {
 }
 func (s *State) catanFinishSetupRoute(p, edge int) {
 	g := s.Catan
-	if g.Options.Helpers && g.SetupStep >= len(g.Players) {
+	if g.Options.Helpers && g.SetupStep >= len(g.Players) && g.SetupStep < 2*len(g.Players) {
 		// The second setup pass runs backwards. The descending starting stack
 		// therefore gives seat i helper i+1 (helper N is picked first).
 		helper := (p-g.StartPlayer+len(g.Players))%len(g.Players) + 1
@@ -553,7 +568,7 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 		s.catanLog(s.Turn, "起始建设完成，开始掷骰")
 	} else {
 		n := len(g.Players)
-		if g.SetupStep < n {
+		if g.SetupStep < n || g.SetupStep >= 2*n {
 			s.Turn = (g.StartPlayer + g.SetupStep) % n
 		} else {
 			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
@@ -561,7 +576,7 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 		s.Phase = "catan_setup_settlement"
 	}
 }
-func (s *State) catanRoll(total int) {
+func (s *State) catanRoll(total int) error {
 	g := s.Catan
 	s.catanLog(s.Turn, "掷出 %d + %d = %d", g.Dice[0], g.Dice[1], total)
 	if total == 7 {
@@ -600,7 +615,10 @@ func (s *State) catanRoll(total int) {
 				s.catanHelperComplete(protected, resume)
 			}
 		}
-		return
+		return nil
+	}
+	if err := s.catanProduceCloth(total); err != nil {
+		return err
 	}
 	gold := make([]int, len(g.Players))
 	claims := make([][]int, len(g.Players))
@@ -657,6 +675,7 @@ func (s *State) catanRoll(total int) {
 	} else {
 		s.catanAfterProduction(received)
 	}
+	return nil
 }
 func (s *State) catanDiscard(p int, amount []int) error {
 	g := s.Catan
@@ -870,6 +889,10 @@ func (s *State) AutoCatanPending() {
 		if a, err := s.catanGoldBot(actor); err == nil {
 			_ = s.applyCatan(actor, a)
 		}
+	} else if s.Phase == "catan_cloth_steal" {
+		if a, err := s.catanClothStealBot(s.Turn); err == nil {
+			_ = s.applyCatan(s.Turn, a)
+		}
 	} else if s.Phase == "catan_discard" {
 		for i, due := range g.DiscardDue {
 			if due == 0 {
@@ -909,7 +932,7 @@ func (s *State) AutoCatanPending() {
 }
 func (s *State) EliminateCatan(p int) error {
 	g := s.Catan
-	if g == nil || g.setup() || g.HelperPending != nil || g.GoldPending != nil || (g.tribe() != nil && g.tribe().Pending != nil) || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
+	if g == nil || g.setup() || s.CatanPendingActor() >= 0 || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
 		return errors.New("当前不能移除此玩家")
 	}
 	pl := &g.Players[p]
@@ -940,7 +963,7 @@ func (s *State) EliminateCatan(p int) error {
 		s.Winners = active
 		s.Finished = true
 		s.Phase = "finished"
-	} else {
+	} else if !s.catanClothEnd() {
 		s.catanNext()
 		s.catanVictory()
 	}

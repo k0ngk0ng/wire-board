@@ -37,7 +37,7 @@ func (g *Catan) robberAllowed(tile int) bool {
 		return false
 	}
 	t := g.Tiles[tile]
-	return t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0)
+	return t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0) && g.clothLand(tile)
 }
 func (g *Catan) tribePortEdges(player int) []int {
 	result := []int{}

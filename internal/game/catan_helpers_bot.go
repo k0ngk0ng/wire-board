@@ -190,7 +190,7 @@ func (g *Catan) digurBotAction(player int) (Action, bool) {
 	}
 	desert := false
 	for _, t := range g.Tiles {
-		desert = desert || t.Resource == CatanDesert
+		desert = desert || (t.Resource == CatanDesert && g.clothLand(t.ID))
 	}
 	if !desert {
 		return a, false

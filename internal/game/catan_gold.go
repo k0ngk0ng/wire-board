@@ -73,6 +73,13 @@ func (s *State) catanChooseGold(player int, a Action) error {
 func (s *State) catanAfterProduction(received []int) {
 	g := s.Catan
 	s.Phase = "catan_turn"
+	if g.cloth() != nil {
+		s.catanScores()
+		s.catanVictory()
+		if s.Finished {
+			return
+		}
+	}
 	if g.Options.Helpers && sum(g.Bank) > 0 {
 		for i, count := range received {
 			if count == 0 && g.helperReady(i, 3) {
@@ -89,6 +96,9 @@ func (s *State) CatanPendingActor() int {
 	g := s.Catan
 	if g == nil || s.Finished {
 		return -1
+	}
+	if s.Phase == "catan_cloth_steal" {
+		return s.Turn
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {
 		return t.Pending.Player

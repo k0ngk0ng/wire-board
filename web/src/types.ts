@@ -353,6 +353,7 @@ export type CatanState = {
   dice: number[];
   rollId: number;
   setupStep: number;
+  setupLimit?: number;
   setupVertex: number;
   discardDue: number[];
   victims: number[];
