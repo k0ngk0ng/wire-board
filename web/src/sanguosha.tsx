@@ -48,10 +48,22 @@ const fireGenerals = new Set([
   "yanliangwenchou",
   "pangde",
 ]);
+const thicketGenerals = new Set([
+  "caopi",
+  "xuhuang",
+  "menghuo",
+  "zhurong",
+  "sunjian",
+  "lusu",
+  "dongzhuo",
+  "jiaxu",
+]);
 const generalArt = (assets: string, id: string) =>
-  `${assets}/sanguosha/${fireGenerals.has(id) ? "v4" : windGenerals.has(id) ? "v3" : "v1"}/generals/${id}.webp`;
+  `${assets}/sanguosha/${thicketGenerals.has(id) ? "v5" : fireGenerals.has(id) ? "v4" : windGenerals.has(id) ? "v3" : "v1"}/generals/${id}.webp`;
 const suits = ["♠", "♥", "♣", "♦"];
 const transforms = [
+  "duanliang",
+  "jiuchi",
   "huoji",
   "kanpo",
   "lianhuan",
@@ -66,6 +78,8 @@ const transforms = [
   "jijiu",
 ];
 const activeSkills = [
+  "dimeng",
+  "luanwu",
   "qiangxi",
   "quhu",
   "tianyi",
@@ -183,8 +197,15 @@ export function SanguoshaBoard({
     ...(g.huangtianGive ? ["huangtian_give"] : []),
   ].filter(
     (x) =>
-      !["hujia", "jijiang", "jiuyuan", "huangtian", "xueyi"].includes(x) ||
-      me?.role === "lord",
+      ![
+        "hujia",
+        "jijiang",
+        "jiuyuan",
+        "huangtian",
+        "xueyi",
+        "songwei",
+        "baonue",
+      ].includes(x) || me?.role === "lord",
   );
   useEffect(() => {
     setCards([]);
@@ -233,6 +254,13 @@ export function SanguoshaBoard({
   };
   const ask = prompt?.kind;
   const optional = [
+    "xingshang",
+    "fangzhu",
+    "songwei",
+    "baonue",
+    "lieren",
+    "yinghun",
+    "luanwu",
     "niepan",
     "mengjin",
     "jieming",
@@ -263,6 +291,9 @@ export function SanguoshaBoard({
     "guhuo_question",
   ].includes(ask || "");
   const simple = [
+    "xingshang",
+    "songwei",
+    "baonue",
     "niepan",
     "mengjin",
     "invoke",
@@ -280,6 +311,14 @@ export function SanguoshaBoard({
       ? prompt?.cards || []
       : [];
   const instructions: Record<string, string> = {
+    fangzhu: "选择另一名角色，摸你已损失体力数的牌并翻面。背面角色会翻回正面。",
+    lieren: "选择一张手牌拼点，胜出后可获得伤害目标的一张手牌或装备。",
+    yinghun: "先选择另一名角色，再选择摸牌与弃牌方式。弃牌可以包含装备。",
+    yinghun_discard: `选择 ${prompt?.amount} 张手牌或装备弃置。`,
+    haoshi_give: `选择 ${prompt?.amount} 张手牌，交给可选择的角色之一。`,
+    luanwu: "选择杀与一名距离最近的角色；需符合杀的范围。放弃则失去1点体力。",
+    benghuai: "有其他角色体力低于你，须失去1点体力或1点体力上限。",
+
     pindian: "选择一张手牌拼点；双方选好后才会一起揭示。同点时发起者未胜出。",
     quhu_target: "选择对方攻击范围内的一名角色，由对方对其造成1点伤害。",
     jieming: "选择一名角色，将其手牌补至体力上限（最多5张）。",
@@ -374,7 +413,10 @@ export function SanguoshaBoard({
                 disabled={
                   !enabled ||
                   p.dead ||
-                  (ask === "quhu_target" && !prompt?.targets?.includes(i))
+                  (["quhu_target", "haoshi_give", "luanwu"].includes(
+                    ask || "",
+                  ) &&
+                    !prompt?.targets?.includes(i))
                 }
                 onClick={() => selectTarget(i)}
                 aria-label={`选择${seat.name}为目标`}
@@ -435,6 +477,11 @@ export function SanguoshaBoard({
               <div className="sg-status-marks">
                 {p.flipped && (
                   <span className="sg-flipped">背面 · 下回合跳过</span>
+                )}
+                {general?.skills.includes("luanwu") && (
+                  <span className="sg-limited">
+                    乱武 · {p.marks?.luanwu ? "已使用" : "可用"}
+                  </span>
                 )}
                 {general?.skills.includes("niepan") && (
                   <span className="sg-limited">
@@ -750,7 +797,7 @@ export function SanguoshaBoard({
             >
               正常摸两张
             </button>
-            {["yingzi", "luoyi", "tuxi", "shuangxiong"]
+            {["yingzi", "luoyi", "tuxi", "shuangxiong", "zaiqi", "haoshi"]
               .filter((k) => skills.includes(k))
               .map((k) => (
                 <button
@@ -763,6 +810,51 @@ export function SanguoshaBoard({
               ))}
           </div>
         )}
+        {responding && ask === "yinghun" && (
+          <div className="sg-action-buttons">
+            <button
+              className="outline"
+              disabled={busy || targets.length !== 1}
+              onClick={() => void send({ choice: "draw_many" })}
+            >
+              摸 {prompt?.amount} 张 · 弃 1 张
+            </button>
+            <button
+              className="outline"
+              disabled={busy || targets.length !== 1}
+              onClick={() => void send({ choice: "draw_one" })}
+            >
+              摸 1 张 · 弃 {prompt?.amount} 张
+            </button>
+          </div>
+        )}
+        {responding && ask === "benghuai" && (
+          <div className="sg-action-buttons">
+            <button disabled={busy} onClick={() => void send({ choice: "hp" })}>
+              失去 1 点体力
+            </button>
+            <button
+              className="outline"
+              disabled={busy}
+              onClick={() => void send({ choice: "maxhp" })}
+            >
+              失去 1 点体力上限
+            </button>
+          </div>
+        )}
+        {responding &&
+          ask === "luanwu" &&
+          skills.includes("jijiang") &&
+          !(prompt.step! & 2) && (
+            <button
+              disabled={busy || targets.length !== 1}
+              onClick={() =>
+                void send({ choice: "jijiang", cards: [], skill: "" })
+              }
+            >
+              激将
+            </button>
+          )}
         {responding && ask === "guhuo_question" && (
           <button
             className="primary"
@@ -838,9 +930,14 @@ export function SanguoshaBoard({
         {enabled && ask !== "general" && (
           <div className="sg-action-buttons">
             {(!responding ||
-              !["draw_phase", "fanjian", "steal", "guhuo_question"].includes(
-                ask || "",
-              )) && (
+              ![
+                "draw_phase",
+                "fanjian",
+                "steal",
+                "guhuo_question",
+                "yinghun",
+                "benghuai",
+              ].includes(ask || "")) && (
               <button
                 className="primary"
                 disabled={
@@ -854,11 +951,19 @@ export function SanguoshaBoard({
                         "leiji",
                         "jieming",
                         "quhu_target",
+                        "fangzhu",
                       ].includes(ask || "") && targets.length === 1
                     ) &&
                     !(
                       playing &&
-                      ["kurou", "fanjian", "jijiang", "qiangxi"].includes(skill)
+                      [
+                        "kurou",
+                        "fanjian",
+                        "jijiang",
+                        "qiangxi",
+                        "luanwu",
+                        "dimeng",
+                      ].includes(skill)
                     ))
                 }
                 onClick={() =>
