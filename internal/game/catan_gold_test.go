@@ -186,11 +186,18 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 		{"shores4", 4, 14, (*Catan).makeSeafarersShoresFour},
 		{"islands3", 3, 13, (*Catan).makeSeafarersIslandsThree},
 		{"islands4", 4, 13, (*Catan).makeSeafarersIslandsFour},
+		{"shores5", 5, 14, (*Catan).makeSeafarersShoresSix},
+		{"shores6", 6, 14, (*Catan).makeSeafarersShoresSix},
+		{"islands5", 5, 13, (*Catan).makeSeafarersIslandsSix},
+		{"islands6", 6, 13, (*Catan).makeSeafarersIslandsSix},
 	} {
 		for _, variable := range []bool{false, true} {
+			if variable && scenario.players > 4 {
+				continue
+			}
 			for _, helpers := range []bool{false, true} {
 				t.Run(scenario.name+"/"+map[bool]string{false: "fixed", true: "variable"}[variable]+"/"+map[bool]string{false: "standard", true: "helpers"}[helpers], func(t *testing.T) {
-					s, err := NewCatan(scenario.players, CatanOptions{Helpers: helpers, AllHelpers: helpers})
+					s, err := NewCatan(scenario.players, CatanOptions{Helpers: helpers, AllHelpers: helpers, FiveSix: scenario.players > 4})
 					if err != nil {
 						t.Fatal(err)
 					}
@@ -201,6 +208,10 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 						if err = s.Catan.randomizeSeafarersMap(); err != nil {
 							t.Fatal(err)
 						}
+					}
+					resourceTotal, developmentTotal := 19, 25
+					if scenario.players > 4 {
+						resourceTotal, developmentTotal = 24, 34
 					}
 					for steps := 0; !s.Finished && steps < 8000; steps++ {
 						player := s.Turn
@@ -231,7 +242,7 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 								}
 								total += p.Resources[color]
 							}
-							if total != 19 {
+							if total != resourceTotal {
 								t.Fatal("resource conservation", color, total)
 							}
 						}
@@ -246,7 +257,7 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 								t.Fatal("piece supply exceeded")
 							}
 						}
-						if dev != 25 {
+						if dev != developmentTotal {
 							t.Fatal("development deck conservation", dev)
 						}
 						if steps%37 == 0 {
