@@ -179,6 +179,7 @@ func TestCatanGoldBotsUseOnlyTheirOwnHand(t *testing.T) {
 func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 	fogGames, fogDiscoveries := 0, 0
 	desertGames, desertRewards := 0, 0
+	tribeGames, tribeRewards := 0, 0
 	for _, scenario := range []struct {
 		name             string
 		players, victory int
@@ -200,6 +201,10 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 		{"desert4", 4, 14, (*Catan).makeSeafarersDesertFour},
 		{"desert5", 5, 14, (*Catan).makeSeafarersDesertSix},
 		{"desert6", 6, 14, (*Catan).makeSeafarersDesertSix},
+		{"tribe3", 3, 13, (*Catan).makeSeafarersTribeFour},
+		{"tribe4", 4, 13, (*Catan).makeSeafarersTribeFour},
+		{"tribe5", 5, 13, (*Catan).makeSeafarersTribeSix},
+		{"tribe6", 6, 13, (*Catan).makeSeafarersTribeSix},
 	} {
 		for _, variable := range []bool{false, true} {
 			if variable && scenario.players > 4 {
@@ -269,6 +274,10 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 							}
 						}
 						dev := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
+						if tribe := g.tribe(); tribe != nil {
+							dev += len(tribe.Development)
+							assertTribeInventory(t, g)
+						}
 						if g.HelperPending != nil {
 							dev += len(g.HelperPending.Cards)
 						}
@@ -302,6 +311,11 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 						desertRewards += rewards
 						t.Logf("finished with %d exploration points", rewards)
 					}
+					if tribe := s.Catan.tribe(); tribe != nil {
+						tribeGames++
+						tribeRewards += sum(tribe.Points)
+						t.Logf("finished with %d tribe points, %d unclaimed development cards, %d placed ports", sum(tribe.Points), len(tribe.Development), len(s.Catan.Ports))
+					}
 					if !s.Finished || len(s.Winners) != 1 || s.Catan.Players[s.Winners[0]].Score < scenario.victory {
 						t.Fatal("scenario bots did not finish", s.Round, s.Phase)
 					}
@@ -311,6 +325,9 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 	}
 	if desertGames > 0 && desertRewards == 0 {
 		t.Fatal("desert simulations never exercised exploration rewards")
+	}
+	if tribeGames > 0 && tribeRewards == 0 {
+		t.Fatal("tribe simulations never collected rewards")
 	}
 	if fogGames > 0 && fogDiscoveries == 0 {
 		t.Fatal("fog simulations never exercised discovery")

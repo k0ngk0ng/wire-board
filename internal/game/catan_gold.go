@@ -90,6 +90,9 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
+	if t := g.tribe(); t != nil && t.Pending != nil {
+		return t.Pending.Player
+	}
 	if g.HelperPending != nil {
 		return g.HelperPending.Player
 	}

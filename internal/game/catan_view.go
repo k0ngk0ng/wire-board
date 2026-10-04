@@ -7,6 +7,19 @@ func (s *State) catanView(view map[string]any, player int) {
 		sea := v["seafarers"].(map[string]any)
 		sea["fog"] = map[string]any{"remaining": len(g.Seafarers.Fog.Terrain), "startTiles": append([]int{}, g.Seafarers.Fog.StartTiles...)}
 	}
+	if t := g.tribe(); t != nil {
+		tribe := v["seafarers"].(map[string]any)["tribe"].(map[string]any)
+		// Old saves may have no placed ports yet. Keep the public collection
+		// iterable, just like other map arrays.
+		if g.Ports == nil {
+			v["ports"] = []CatanPort{}
+		}
+		cards := []map[string]int{}
+		for _, card := range t.Development {
+			cards = append(cards, map[string]int{"edge": card.Edge})
+		}
+		tribe["development"] = cards
+	}
 	delete(v, "devDeck")
 	delete(v, "devDiscard")
 	v["devRemaining"] = len(g.DevDeck)
@@ -64,12 +77,25 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 	}
 	// Legal locations are computed using only public map and the viewer's identity.
-	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}}
+	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}}
+	if t := g.tribe(); t != nil {
+		legal["ports"] = []int{}
+		if t.Pending != nil && t.Pending.Player == player && !s.Finished {
+			legal["ports"] = g.tribePortEdges(player)
+		}
+	}
 	if g.Seafarers != nil {
 		legal["ships"] = []int{}
 		legal["pirate"] = []int{}
 	}
 	if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
+		if s.Phase == "catan_robber" {
+			for _, tile := range g.Tiles {
+				if g.robberAllowed(tile.ID) {
+					legal["robber"] = append(legal["robber"], tile.ID)
+				}
+			}
+		}
 		roads, settlements, cities := g.pieces(player)
 		for _, v := range g.Vertices {
 			if settlements < 5 && (s.Phase == "catan_setup_settlement" || s.Phase == "catan_turn") && g.canSettlement(player, v.ID, g.setup()) {

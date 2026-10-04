@@ -196,6 +196,9 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = p.Dev[4]
+		if t := g.tribe(); t != nil && i < len(t.Points) {
+			p.Score += t.Points[i]
+		}
 		if g.Seafarers != nil && i < len(g.Seafarers.Seats) {
 			p.Score += g.Seafarers.Seats[i].IslandPoints
 		}
@@ -269,6 +272,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if t := g.tribe(); t != nil && t.Pending != nil {
+		return s.catanPlaceTribePort(player, a)
 	}
 	if g.HelperPending != nil {
 		return s.catanHelperRespond(player, a)
@@ -377,6 +383,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		g.Trade = nil
 		s.catanScores()
 		s.catanVictory()
+		if s.catanAskTribePort(player, s.Phase, nil, a.Skill == "helper") {
+			return nil
+		}
 		if a.Skill == "helper" {
 			s.catanHelperComplete(player, "catan_turn")
 		}
@@ -664,7 +673,7 @@ func (s *State) catanDiscard(p int, amount []int) error {
 }
 func (s *State) catanMoveRobber(p, tile int) error {
 	g := s.Catan
-	if s.Phase != "catan_robber" || tile < 0 || tile >= len(g.Tiles) || tile == g.Robber || g.Tiles[tile].Resource == CatanSea || g.Tiles[tile].Resource == CatanFog {
+	if s.Phase != "catan_robber" || !g.robberAllowed(tile) {
 		return errors.New("请将强盗移到另一块陆地")
 	}
 	g.Robber = tile
@@ -833,7 +842,19 @@ func (s *State) AutoCatanPending() {
 	if g == nil || s.Finished {
 		return
 	}
-	if g.HelperPending != nil {
+	if t := g.tribe(); t != nil && t.Pending != nil {
+		for step := 0; step < 16 && g.tribe().Pending != nil; step++ {
+			actor := g.tribe().Pending.Player
+			a, err := s.catanTribePortBot(actor)
+			if err != nil {
+				break
+			}
+			if s.applyCatan(actor, a) != nil {
+				break
+			}
+			g = s.Catan
+		}
+	} else if g.HelperPending != nil {
 		for step := 0; step < 4 && s.Catan.HelperPending != nil; step++ {
 			actor := s.Catan.HelperPending.Player
 			a, err := s.catanBot(actor)
@@ -888,7 +909,7 @@ func (s *State) AutoCatanPending() {
 }
 func (s *State) EliminateCatan(p int) error {
 	g := s.Catan
-	if g == nil || g.setup() || g.HelperPending != nil || g.GoldPending != nil || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
+	if g == nil || g.setup() || g.HelperPending != nil || g.GoldPending != nil || (g.tribe() != nil && g.tribe().Pending != nil) || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
 		return errors.New("当前不能移除此玩家")
 	}
 	pl := &g.Players[p]

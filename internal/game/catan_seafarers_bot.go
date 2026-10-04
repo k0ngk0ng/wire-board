@@ -74,6 +74,31 @@ func (g *Catan) seaRouteValue(player, edge int, ship bool) int {
 			}
 		}
 	}
+	if t := g.tribe(); t != nil {
+		rewards := map[int]int{}
+		for _, id := range t.Tokens {
+			rewards[id] += 300
+		}
+		for _, card := range t.Development {
+			rewards[card.Edge] += 240
+		}
+		for _, port := range t.Ports {
+			rewards[port.Edge] += 200
+		}
+		for id, value := range rewards {
+			target := g.Edges[id]
+			if target.Owner >= 0 || g.pirateBlocks(id) {
+				continue
+			}
+			distance := min(dist[target.A][1], dist[target.B][1])
+			if id != edge {
+				distance++
+			}
+			if distance < unreachable {
+				score = max(score, value-distance*95)
+			}
+		}
+	}
 	return score
 }
 func (g *Catan) seaBuildChoices(player int) []botChoice {

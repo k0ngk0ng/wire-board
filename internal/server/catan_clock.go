@@ -9,7 +9,9 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 	if r.Game.Catan == nil || r.Game.Finished {
 		return false
 	}
-	response := func(phase string) bool { return phase == "catan_helper" || phase == "catan_gold" }
+	response := func(phase string) bool {
+		return phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port"
+	}
 	current := r.Game.Phase
 	if response(current) {
 		if !response(previousPhase) {

@@ -11,6 +11,9 @@ func (g *Catan) vertexValue(p, v int) int {
 	values := []int{0, 0, 0, 0, 0}
 	goldValue := 0
 	for _, t := range g.Tiles {
+		if t.Number <= 0 {
+			continue
+		}
 		if t.Resource == CatanGold {
 			for _, id := range t.Vertices {
 				if id == v {
@@ -33,6 +36,9 @@ func (g *Catan) vertexValue(p, v int) int {
 			continue
 		}
 		for _, t := range g.Tiles {
+			if t.Number <= 0 {
+				continue
+			}
 			if t.Resource >= 5 {
 				continue
 			}
@@ -73,6 +79,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive bot seat")
 	}
 	p := g.Players[player]
+	if t := g.tribe(); t != nil && t.Pending != nil {
+		return s.catanTribePortBot(player)
+	}
 	if g.HelperPending != nil {
 		return s.catanHelperPendingBot(player)
 	}
@@ -155,7 +164,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		choices := g.pirateBotChoices(player)
 		best, score := -1, -999
 		for _, t := range g.Tiles {
-			if t.ID == g.Robber || t.Resource == CatanSea || t.Resource == CatanFog {
+			if !g.robberAllowed(t.ID) {
 				continue
 			}
 			value := 0
