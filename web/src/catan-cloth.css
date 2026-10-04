@@ -1,0 +1,145 @@
+.catan-cloth-village {
+  cursor: pointer;
+  outline: none;
+}
+.cloth-village-disc {
+  fill: #ffedb9;
+  stroke: #715124;
+  stroke-width: 2;
+}
+.catan-cloth-village.connected .cloth-village-disc {
+  stroke: #125d42;
+  stroke-width: 4;
+}
+.catan-cloth-village:focus-visible .cloth-village-disc {
+  stroke: #087ea4;
+  stroke-width: 5;
+}
+.catan-cloth-village.empty .cloth-village-disc {
+  fill: #e7deca;
+}
+.cloth-village-number {
+  fill: #302216;
+  font:
+    800 23px Georgia,
+    serif;
+}
+.cloth-village-number.red {
+  fill: #b32321;
+}
+.cloth-village-stock {
+  fill: #fff7db;
+  stroke: #715124;
+  stroke-width: 1.5;
+}
+.cloth-village-count {
+  fill: #39291b;
+  font-size: 17px;
+  font-weight: 800;
+}
+.catan-cloth-stock {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border: 1px solid #b69967;
+  border-radius: 12px;
+  background: #faf0d8;
+  color: #39291b;
+}
+.catan-cloth-stock h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+.catan-cloth-stock img,
+.catan-cloth-choice img {
+  width: 28px;
+  height: 22px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+.catan-cloth-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 13px;
+}
+.catan-cloth-counts span {
+  white-space: nowrap;
+}
+.catan-cloth-stock p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+.catan-cloth-stock .cloth-ending {
+  color: #9b361a;
+  font-weight: 700;
+}
+.cloth-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+.cloth-confirm-actions .primary {
+  margin-top: 0;
+}
+.cloth-theft-target {
+  padding: 10px 0;
+  border-top: 1px solid #d6c298;
+}
+.cloth-theft-target > div {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.cloth-theft-target button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+.cloth-theft-target button > span {
+  white-space: nowrap;
+}
+.cloth-theft-target small {
+  display: block;
+  margin-top: 5px;
+  color: #665031;
+}
+.cloth-theft-target button:disabled {
+  opacity: 0.6;
+}
+.cloth-traders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+}
+.cloth-traders span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.cloth-traders i {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #665031;
+  border-radius: 3px;
+}
+.catan-cloth-seat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.catan-cloth-seat img {
+  width: 23px;
+  height: 16px;
+  object-fit: contain;
+}

@@ -21,6 +21,30 @@ type CatanClothState struct {
 	EmptyLimit int                 `json:"emptyLimit"`
 }
 
+// Variable cloth setups let the starting seat choose either large-island 12.
+// The generator's legal default remains available for timeout/autoplay.
+func (s *State) catanClothStart(player int, a Action) error {
+	g := s.Catan
+	if g.cloth() == nil || !g.Seafarers.Variable || g.SetupStep != 0 || s.Phase != "catan_cloth_start" || player != s.Turn || a.Type != "catan_cloth_start" || !slices.Contains(g.clothStartTiles(), a.Tile) {
+		return errors.New("请由先手选择大岛上的12号地块作为强盗起点")
+	}
+	g.Robber = a.Tile
+	s.Phase = "catan_setup_settlement"
+	s.catanLog(player, "选择12号地块 #%d 作为强盗起点，开始放置起始村庄", a.Tile+1)
+	return nil
+}
+func (g *Catan) clothStartTiles() []int {
+	result := []int{}
+	if c := g.cloth(); c != nil {
+		for _, id := range c.HomeTiles {
+			if g.Tiles[id].Number == 12 {
+				result = append(result, id)
+			}
+		}
+	}
+	return result
+}
+
 func (g *Catan) cloth() *CatanClothState {
 	if g.Seafarers == nil {
 		return nil

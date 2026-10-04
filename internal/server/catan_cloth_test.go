@@ -153,3 +153,61 @@ func TestCatanClothThirdSetupPassTimeout(t *testing.T) {
 		t.Fatal("third pass did not start first production")
 	}
 }
+
+func TestCatanClothInitialRobberHTTPRestartAndFreshSetupClock(t *testing.T) {
+	s, ts, clients, id := newCatanTable(t)
+	s.mu.Lock()
+	r := s.rooms[id]
+	clothServerFixture(r)
+	g := r.Game.Catan
+	g.Seafarers.Variable = true
+	g.Seafarers.Cloth.HomeTiles = []int{1, 2}
+	g.Tiles[1].Number = 12
+	g.Tiles[2].Number = 12
+	g.Robber = 1
+	g.SetupStep = 0
+	g.StartPlayer = 0
+	r.Game.Phase = "catan_cloth_start"
+	now := time.Now()
+	r.TurnDeadline = now.Add(40 * time.Second).UnixMilli()
+	if err := s.save(r); err != nil {
+		t.Fatal(err)
+	}
+	s.mu.Unlock()
+	clients[1].command(current(clients[1]), "action", map[string]any{"type": "catan_cloth_start", "tile": 2}, 400)
+	clients[0].command(current(clients[0]), "action", map[string]any{"type": "catan_cloth_start", "tile": 0}, 400)
+	before, _ := json.Marshal(s.rooms[id])
+	ts.Close()
+	s.Close()
+	next, err := New(s.cfg, s.files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer next.Close()
+	stopBotTicker(next)
+	after, _ := json.Marshal(next.rooms[id])
+	if string(before) != string(after) {
+		t.Fatal("initial choice lost on restart")
+	}
+	ts2 := httptest.NewServer(next.Handler())
+	defer ts2.Close()
+	for _, c := range clients {
+		c.base = ts2.URL
+	}
+	clients[0].command(current(clients[0]), "action", map[string]any{"type": "catan_cloth_start", "tile": 2}, 200)
+	r = next.rooms[id]
+	left := r.TurnDeadline - time.Now().UnixMilli()
+	if r.Game.Phase != "catan_setup_settlement" || r.Game.Catan.Robber != 2 || r.Game.Catan.SetupStep != 0 || left < 119000 || left > 120000 {
+		t.Fatal("first settlement did not get full clock", left)
+	}
+	// The same transition runs automatically when the initial choice expires.
+	next.mu.Lock()
+	defer next.mu.Unlock()
+	r.Game.Phase = "catan_cloth_start"
+	r.TurnDeadline = now.Add(-time.Second).UnixMilli()
+	next.expireSetups(now)
+	r = next.rooms[id]
+	if r.Game.Phase != "catan_setup_settlement" || r.Game.Catan.SetupStep != 0 || r.TurnDeadline != now.Add(turnLimit).UnixMilli() {
+		t.Fatal("initial timeout skipped/reset wrong step")
+	}
+}

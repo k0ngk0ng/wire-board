@@ -1,3 +1,4 @@
+import { ClothPicture } from "./catan-cloth";
 import { CatanOptionPicker } from "./catan-helpers";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
@@ -2251,6 +2252,7 @@ function Waiting({
   );
 }
 function Players({ room }: { room: Room }) {
+  const assets = useContext(AssetsContext);
   const g = room.game!;
   const [nobleOwner, setNobleOwner] = useState<number>();
   useEffect(() => setNobleOwner(undefined), [room.id]);
@@ -2337,6 +2339,16 @@ function Players({ room }: { room: Room }) {
                   {g.catan.seafarers ? "路线" : "道路"}{" "}
                   {g.catan.players[i].roadLength} · 骑士{" "}
                   {g.catan.players[i].knights}
+                  {g.catan.seafarers?.cloth && (
+                    <>
+                      <br />
+                      <span className="catan-cloth-seat">
+                        <ClothPicture assets={assets} />
+                        布匹 {g.catan.seafarers.cloth.held[i]} ·{" "}
+                        {Math.floor(g.catan.seafarers.cloth.held[i] / 2)} 分
+                      </span>
+                    </>
+                  )}
                   {g.catan.seafarers?.tribe && (
                     <>
                       <br />
