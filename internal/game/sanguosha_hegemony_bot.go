@@ -66,7 +66,7 @@ func (s *State) sgHegBotPrompt(i int, add func(Action)) {
 		}
 	case "heg_lirang":
 		for _, target := range q.Targets {
-			if s.sgHegFriend(i, target) {
+			if s.sgHegBotAlly(i, target) {
 				add(Action{Cards: q.Cards, Targets: []int{target}})
 			}
 		}
@@ -92,7 +92,7 @@ func (s *State) sgHegBotPrompt(i int, add func(Action)) {
 		}
 	case "heg_shushen", "heg_sijian":
 		for _, target := range q.Targets {
-			if s.sgHegFriend(i, target) == (q.Kind == "heg_shushen") {
+			if s.sgHegBotAlly(i, target) == (q.Kind == "heg_shushen") {
 				add(Action{Targets: []int{target}})
 			}
 		}

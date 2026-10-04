@@ -15,6 +15,9 @@ func (s *State) sgBot(i int) (Action, error) {
 	p := g.Players[i]
 	candidates := []Action{}
 	add := func(a Action) {
+		if s.sgHegemony() && !s.sgHegBotActionAllowed(i, a) {
+			return
+		}
 		if g.Pending != nil {
 			a.Prompt = g.Pending.ID
 		}
@@ -30,7 +33,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan", "huoji", "kanpo", "lianhuan", "shuangxiong", "duanliang", "jiuchi"} {
 				a := Action{Cards: []int{id}, Skill: skill}
-				if _, err := s.sgAs(i, a.Cards, skill, want); err == nil {
+				if _, err := s.sgBotAs(i, a.Cards, skill, want); err == nil {
 					out = append(out, a)
 				}
 			}
@@ -62,10 +65,11 @@ func (s *State) sgBot(i int) (Action, error) {
 			return Action{}, errors.New("not responding")
 		}
 		e := q.Event
+		s.sgHegBotCommonPrompt(i, add, cardsFor)
+		s.sgHegBotPrompt(i, add)
 		s.sgMountainBotPrompt(i, add, cardsFor)
 		s.sgGodBotPrompt(i, add)
 		s.sgJieBotPrompt(i, add)
-		s.sgHegBotPrompt(i, add)
 		switch q.Kind {
 		case "xingshang":
 			add(Action{Choice: "yes"})
@@ -380,7 +384,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		}
 		enemies := []int{}
 		for _, t := range s.sgOrder(s.sgNext(i)) {
-			if t == i || ((p.Role == "lord" || p.Role == "loyalist") && t == g.Lord) {
+			if t == i || s.sgHegemony() && s.sgHegBotAlly(i, t) || ((p.Role == "lord" || p.Role == "loyalist") && t == g.Lord) {
 				continue
 			}
 			enemies = append(enemies, t)
@@ -407,6 +411,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		s.sgMountainBotPlay(i, enemies, add)
 		s.sgGodBotPlay(i, enemies, add)
 		s.sgJieBotPlay(i, enemies, add)
+		s.sgHegBotPlay(i, enemies, add, cardsFor)
 		if s.sgHas(i, "luanwu") && p.Marks["luanwu"] == 0 {
 			add(Action{Type: "sg_skill", Skill: "luanwu"})
 		}
