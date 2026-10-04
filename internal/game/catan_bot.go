@@ -56,6 +56,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive bot seat")
 	}
 	p := g.Players[player]
+	if g.HelperPending != nil {
+		return s.catanHelperPendingBot(player)
+	}
 	if s.Phase == "catan_discard" && g.DiscardDue[player] > 0 {
 		hand := append([]int{}, p.Resources...)
 		give := make([]int, 5)
@@ -112,6 +115,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_road", Edge: best}, nil
 	case "catan_roll":
+		if g.helperReady(player, 10) && g.Tiles[g.Robber].Resource != 5 {
+			return Action{Type: "catan_helper"}, nil
+		}
 		return Action{Type: "catan_roll"}, nil
 	case "catan_robber":
 		best, score := -1, -999
@@ -227,6 +233,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	if len(g.DevDeck) > 0 {
 		choices = append(choices, botChoice{Action{Type: "catan_buy_dev"}, 100})
 	}
+	choices = append(choices, s.catanHelperBotChoices(player, choices, road)...)
 	// Trade only toward an immediately useful build, with a strictly smaller deficit.
 	targets := append([]botChoice{}, choices...)
 	for _, target := range targets {

@@ -81,6 +81,23 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 		}
 		return nil
 	}
+	if r.Game.Catan != nil && !r.Game.Finished {
+		if phase != "catan_helper" && r.Game.Phase == "catan_helper" {
+			r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
+			r.startTurnClock(now)
+			return nil
+		}
+		if phase == "catan_helper" {
+			if r.Game.Phase != "catan_helper" {
+				if r.Game.Phase == "catan_discard" {
+					r.startTurnClock(now)
+				} else {
+					r.TurnDeadline = now.UnixMilli() + r.CatanTimeLeft
+				}
+			}
+			return nil
+		}
+	}
 	catanClock := r.Game.Catan != nil && (r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))
 	if catanClock || r.Game.Turn != turn || r.Game.Round != round || r.Game.Finished || (setup && !r.Game.Rail.Setup) {
 		r.startTurnClock(now)
@@ -125,7 +142,9 @@ func (s *Server) runBots(now time.Time) {
 			}
 		}
 		if g := room.Game.Catan; g != nil {
-			if room.Game.Phase == "catan_discard" {
+			if g.HelperPending != nil {
+				player = g.HelperPending.Player
+			} else if room.Game.Phase == "catan_discard" {
 				player = -1
 				for i, seat := range room.Seats {
 					if seat.computerControlled() && g.DiscardDue[i] > 0 {

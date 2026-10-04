@@ -1,0 +1,554 @@
+import { useEffect, useState } from "react";
+import type { Act, CatanOptions, Room } from "./types";
+import "./catan-helpers.css";
+const names = ["木材", "砖块", "羊毛", "粮食", "矿石"];
+const devs = ["骑士", "道路建设", "丰收", "垄断", "胜利点"];
+const sum = (a: number[]) => a.reduce((n, v) => n + v, 0);
+export function CatanOptionPicker({
+  value = {},
+  onChange,
+  disabled = false,
+}: {
+  value?: CatanOptions;
+  onChange: (v: CatanOptions) => void;
+  disabled?: boolean;
+}) {
+  return (
+    <fieldset className="catan-helper-options" disabled={disabled}>
+      <legend>卡坦岛扩展</legend>
+      <label>
+        <input
+          type="checkbox"
+          checked={!!value.helpers}
+          onChange={(e) => onChange(e.target.checked ? { helpers: true } : {})}
+        />{" "}
+        Helpers · 十二位助手
+      </label>
+      {value.helpers && (
+        <label>
+          <input
+            type="checkbox"
+            checked={!!value.allHelpers}
+            onChange={(e) =>
+              onChange({ ...value, allHelpers: e.target.checked })
+            }
+          />{" "}
+          展示全部备用助手
+        </label>
+      )}
+      <small>
+        使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+      </small>
+    </fieldset>
+  );
+}
+function ResourceSelect({
+  value,
+  onChange,
+  label,
+}: {
+  value: number;
+  onChange: (n: number) => void;
+  label: string;
+}) {
+  return (
+    <label>
+      {label}
+      <select value={value} onChange={(e) => onChange(Number(e.target.value))}>
+        {names.map((n, i) => (
+          <option key={n} value={i}>
+            {n}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+function Counts({
+  values,
+  limits,
+  onChange,
+  label,
+}: {
+  values: number[];
+  limits: number[];
+  onChange: (v: number[]) => void;
+  label: string;
+}) {
+  return (
+    <fieldset className="helper-counts">
+      <legend>
+        {label} · {sum(values)} 张
+      </legend>
+      {names.map((n, i) => (
+        <label key={n}>
+          {n}
+          <input
+            aria-label={`${label}${n}`}
+            type="number"
+            min={0}
+            max={limits[i]}
+            value={values[i]}
+            onChange={(e) =>
+              onChange(
+                values.map((v, j) =>
+                  i === j
+                    ? Math.max(
+                        0,
+                        Math.min(limits[i], Number(e.target.value) || 0),
+                      )
+                    : v,
+                ),
+              )
+            }
+          />
+        </label>
+      ))}
+    </fieldset>
+  );
+}
+export function CatanHelpers({
+  room,
+  act,
+  busy,
+  assets,
+  onBuild,
+  onMove,
+}: {
+  room: Room;
+  act: Act;
+  busy: boolean;
+  assets: string;
+  onBuild: (kind: string, payment: number[]) => void;
+  onMove: () => void;
+}) {
+  const g = room.game!.catan!,
+    p = g.players[room.you],
+    rules = g.helperRules || [],
+    helper = p?.helper,
+    rule = rules.find((h) => h.id === helper?.id),
+    pending = g.helperPending;
+  const [open, setOpen] = useState(false),
+    [collapsed, setCollapsed] = useState(false),
+    [color, setColor] = useState(0),
+    [target, setTarget] = useState(-1),
+    [target2, setTarget2] = useState(-1),
+    [offer, setOffer] = useState(0),
+    [offer2, setOffer2] = useState(0),
+    [card, setCard] = useState(0),
+    [payment, setPayment] = useState([0, 0, 0, 0, 0]),
+    [take, setTake] = useState([0, 0, 0, 0, 0]);
+  useEffect(() => {
+    setCollapsed(false);
+    setOpen(false);
+  }, [room.id, helper?.id, pending?.kind, pending?.player]);
+  if (!g.options?.helpers) return null;
+  const hand = p?.resources || [0, 0, 0, 0, 0],
+    active =
+      room.status === "playing" &&
+      !room.game!.finished &&
+      !room.spectating &&
+      !p?.eliminated;
+  const response = active && pending?.player === room.you;
+  const canUse =
+    active &&
+    room.game!.turn === room.you &&
+    p?.helperReady &&
+    (room.game!.phase === "catan_turn" ||
+      (room.game!.phase === "catan_roll" && helper?.id === 10));
+  const send = async (a: Record<string, unknown>) => {
+    await act(a);
+    setOpen(false);
+  };
+  const choice = (a: Record<string, unknown>) =>
+    void send({ type: "catan_helper_choice", ...a });
+  const action = (a: Record<string, unknown> = {}) =>
+    void send({ type: "catan_helper", ...a });
+  const opponents = g.players
+    .map((v, i) => ({ v, i }))
+    .filter(({ v, i }) => i !== room.you && !v.eliminated);
+  const targetPicker = (
+    v: number,
+    change: (n: number) => void,
+    optional = false,
+  ) => (
+    <label>
+      {optional ? "第二位对手（可选）" : "选择对手"}
+      <select value={v} onChange={(e) => change(Number(e.target.value))}>
+        <option value={-1}>{optional ? "不选择" : "请选择"}</option>
+        {opponents.map(({ i }) => (
+          <option key={i} value={i}>
+            {room.seats[i].name}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+  const badge = (id: number) => {
+    const r = rules.find((h) => h.id === id);
+    return (
+      <span className="helper-card-copy">
+        {assets && (
+          <img
+            className="helper-portrait"
+            src={`${assets}/catan/helpers/helper-${id}.webp`}
+            alt=""
+          />
+        )}
+        <b>{r?.name}</b>
+        <span>{r?.title}</span>
+        <small>{r?.description}</small>
+      </span>
+    );
+  };
+  return (
+    <section className="catan-helpers">
+      <header>
+        <strong>Helpers 助手</strong>
+        <button type="button" className="subtle" onClick={() => setOpen(!open)}>
+          {open ? "收起" : "查看 / 使用"}
+        </button>
+      </header>
+      {rule ? (
+        <p className="helper-owned">
+          {assets && (
+            <img
+              className="helper-portrait"
+              src={`${assets}/catan/helpers/helper-${rule.id}.webp`}
+              alt=""
+            />
+          )}
+          <b>
+            {rule.name} · {rule.title}
+          </b>{" "}
+          <span>{helper?.moon ? "☾ 月面" : "☀ 太阳面"}</span>
+          <small>{p.helperReady ? "本回合尚未使用" : "下一回合可用"}</small>
+        </p>
+      ) : (
+        <p>完成起始建设后领取助手</p>
+      )}
+      {open && (
+        <div className="helper-details">
+          <p>{rule?.description}</p>
+          {canUse && rule && (
+            <fieldset disabled={busy} className="helper-use">
+              {rule.id === 1 && (
+                <>
+                  <ResourceSelect
+                    label="索取"
+                    value={color}
+                    onChange={setColor}
+                  />
+                  {targetPicker(target, setTarget)}
+                  <ResourceSelect
+                    label="给第一位"
+                    value={offer}
+                    onChange={setOffer}
+                  />
+                  {targetPicker(target2, setTarget2, true)}
+                  <ResourceSelect
+                    label="给第二位"
+                    value={offer2}
+                    onChange={setOffer2}
+                  />
+                  <button
+                    disabled={target < 0 || target === target2}
+                    onClick={() =>
+                      action({
+                        color,
+                        targets: target2 < 0 ? [target] : [target, target2],
+                        cards: target2 < 0 ? [offer] : [offer, offer2],
+                      })
+                    }
+                  >
+                    确认强制交易
+                  </button>
+                </>
+              )}
+              {[2, 6].includes(rule.id) && (
+                <>
+                  <Counts
+                    label="实际支付（最多替换一张）"
+                    values={payment}
+                    limits={hand}
+                    onChange={setPayment}
+                  />
+                  <button
+                    disabled={
+                      sum(payment) !== (rule.id === 2 ? 2 : 3) ||
+                      (rule.id === 2
+                        ? g.legal.roads.length === 0
+                        : g.devRemaining === 0)
+                    }
+                    onClick={() => {
+                      onBuild(rule.id === 2 ? "road" : "buy_dev", payment);
+                      setOpen(false);
+                    }}
+                  >
+                    确认支付，
+                    {rule.id === 2 ? "在地图选修路位置" : "购买发展卡"}
+                  </button>
+                </>
+              )}
+              {rule.id === 4 && (
+                <button
+                  disabled={!Object.keys(g.helperRoadMoves || {}).length}
+                  onClick={() => {
+                    onMove();
+                    setOpen(false);
+                  }}
+                >
+                  在地图选择末端道路和新位置
+                </button>
+              )}
+              {rule.id === 7 && (
+                <>
+                  {targetPicker(target, setTarget)}
+                  <button
+                    disabled={
+                      target < 0 ||
+                      g.players[target].publicScore <= p.publicScore ||
+                      !g.players[target].resourceCount
+                    }
+                    onClick={() => action({ target })}
+                  >
+                    查看领先对手手牌
+                  </button>
+                </>
+              )}
+              {rule.id === 8 && (
+                <>
+                  {(["settlement", "city"] as const).map((kind, i) => {
+                    const cost = i ? [0, 0, 0, 1, 2] : [1, 1, 0, 0, 0];
+                    return (
+                      <button
+                        key={kind}
+                        disabled={
+                          !p.knights ||
+                          cost.some((n, c) => n > hand[c]) ||
+                          !(i ? g.legal.cities : g.legal.settlements).length
+                        }
+                        onClick={() => {
+                          onBuild(kind, cost);
+                          setOpen(false);
+                        }}
+                      >
+                        移除骑士，
+                        {i
+                          ? "矿石×2＋粮食×1 升级城市"
+                          : "木材×1＋砖块×1 建村庄"}
+                      </button>
+                    );
+                  })}
+                </>
+              )}
+              {rule.id === 9 && (
+                <>
+                  <ResourceSelect
+                    label="给出的资源（二比一）"
+                    value={color}
+                    onChange={setColor}
+                  />
+                  <Counts
+                    label="从银行换取"
+                    values={take}
+                    limits={g.bank.map((n, i) => (i === color ? 0 : n))}
+                    onChange={setTake}
+                  />
+                  <button
+                    disabled={
+                      !sum(take) ||
+                      take[color] > 0 ||
+                      sum(take) * 2 > hand[color]
+                    }
+                    onClick={() =>
+                      action({
+                        give: hand.map((_, i) =>
+                          i === color ? sum(take) * 2 : 0,
+                        ),
+                        take,
+                      })
+                    }
+                  >
+                    支付 {sum(take) * 2} 张{names[color]}并交易
+                  </button>
+                </>
+              )}
+              {rule.id === 10 && (
+                <button
+                  disabled={g.tiles[g.robber].resource === 5}
+                  onClick={() => action()}
+                >
+                  确认将强盗赶回沙漠
+                </button>
+              )}
+              {rule.id === 11 && (
+                <>
+                  {g.tiles[g.robber].resource === 5 && (
+                    <ResourceSelect
+                      label="领取资源"
+                      value={color}
+                      onChange={setColor}
+                    />
+                  )}
+                  <button onClick={() => action({ color })}>
+                    领取强盗所在地资源
+                  </button>
+                </>
+              )}
+              {rule.id === 12 && (
+                <>
+                  <label>
+                    换回牌堆底的发展卡
+                    <select
+                      value={card}
+                      onChange={(e) => setCard(Number(e.target.value))}
+                    >
+                      {devs.map((n, i) => (
+                        <option key={n} value={i} disabled={!p.dev?.[i]}>
+                          {n} · {p.dev?.[i] || 0} 张
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    disabled={!p.dev?.[card]}
+                    onClick={() => action({ card })}
+                  >
+                    确认交换一张发展卡
+                  </button>
+                </>
+              )}
+              {[3, 5].includes(rule.id) && (
+                <small>掷骰结算符合条件时自动提示你响应。</small>
+              )}
+            </fieldset>
+          )}
+          <details>
+            <summary>
+              公共助手展示区 · {g.helperDisplay?.length || 0} 位
+            </summary>
+            <div className="helper-card-grid">
+              {g.helperDisplay?.map((id) => (
+                <article key={id}>{badge(id)}</article>
+              ))}
+            </div>
+          </details>
+          <details>
+            <summary>所有玩家的助手</summary>
+            {g.players.map((v, i) => (
+              <p key={i}>
+                {room.seats[i].name}：
+                {rules.find((r) => r.id === v.helper?.id)?.name || "待领取"}{" "}
+                {v.helper && (v.helper.moon ? "☾" : "☀")}
+              </p>
+            ))}
+          </details>
+        </div>
+      )}
+      {pending && (
+        <small>
+          {room.seats[pending.player]?.name} 正在
+          {pending.kind === "exchange" ? "翻面或交换助手" : "使用助手"}
+        </small>
+      )}
+      {response && (
+        <section
+          className={`helper-response ${collapsed ? "collapsed" : ""}`}
+          role="dialog"
+          aria-label="助手选择"
+          aria-modal="false"
+        >
+          <header>
+            <strong>{rule?.name} · 助手选择</strong>
+            <button className="subtle" onClick={() => setCollapsed(!collapsed)}>
+              {collapsed ? "展开选择" : "收起看地图"}
+            </button>
+          </header>
+          {!collapsed && (
+            <div className="helper-response-body">
+              {pending.kind === "exchange" && (
+                <>
+                  <p>
+                    {helper?.moon
+                      ? "月面已使用，请交换另一位助手。"
+                      : "翻至月面保留一次，或交换另一位助手。"}
+                  </p>
+                  {!helper?.moon && (
+                    <button
+                      disabled={busy}
+                      onClick={() => choice({ choice: "flip" })}
+                    >
+                      保留并翻至月面
+                    </button>
+                  )}
+                  <div className="helper-card-grid">
+                    {g.helperDisplay?.map((id) => (
+                      <button
+                        key={id}
+                        disabled={busy}
+                        onClick={() => choice({ choice: "exchange", card: id })}
+                      >
+                        {badge(id)}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+              {["resource", "leader"].includes(pending.kind) && (
+                <>
+                  <p>
+                    {pending.kind === "leader"
+                      ? "只有你能看到对方资源，选择拿走一张。"
+                      : "选择领取一张资源。"}
+                  </p>
+                  <div className="helper-resources">
+                    {(pending.resources || g.bank).map((n, i) => (
+                      <button
+                        key={i}
+                        disabled={busy || n === 0}
+                        onClick={() => choice({ color: i })}
+                      >
+                        {names[i]} <b>{n}</b>
+                      </button>
+                    ))}
+                  </div>
+                  {pending.optional && (
+                    <button
+                      disabled={busy}
+                      onClick={() => choice({ choice: "skip" })}
+                    >
+                      本次不使用
+                    </button>
+                  )}
+                </>
+              )}
+              {pending.kind === "development" && (
+                <>
+                  <p>只有你能看到这些牌。选择一张，其余洗回牌堆。</p>
+                  <div className="helper-dev-options">
+                    {pending.cards?.map((id, i) => (
+                      <button
+                        key={i}
+                        disabled={busy}
+                        onClick={() => choice({ card: id })}
+                      >
+                        {assets && (
+                          <img
+                            src={`${assets}/catan/dev-${id}-v1.webp`}
+                            alt=""
+                          />
+                        )}
+                        <b>{devs[id]}</b>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </section>
+      )}
+    </section>
+  );
+}

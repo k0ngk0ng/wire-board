@@ -27,11 +27,13 @@ export function useTurnTitle(room?: Room) {
         ? game.sanguosha.pending
           ? game.sanguosha.pending.canRespond
           : game.turn === room.you
-        : game.phase === "catan_discard"
-          ? (game.catan?.discardDue[room.you] || 0) > 0
-          : game.rail?.setup
-            ? !game.rail.setupReady?.[room.you]
-            : game.turn === room.you)
+        : game.catan?.helperPending
+          ? game.catan.helperPending.player === room.you
+          : game.phase === "catan_discard"
+            ? (game.catan?.discardDue[room.you] || 0) > 0
+            : game.rail?.setup
+              ? !game.rail.setupReady?.[room.you]
+              : game.turn === room.you)
   );
   const prompt = game?.dota
     ? "请规划行动"
