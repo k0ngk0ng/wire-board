@@ -139,7 +139,7 @@ export function CatanHelpers({
   assets: string;
   onBuild: (kind: string, payment: number[]) => void;
   onMove: () => void;
-  onDesert: () => void;
+  onDesert: (color: number) => void;
 }) {
   const g = room.game!.catan!,
     p = g.players[room.you],
@@ -394,21 +394,34 @@ export function CatanHelpers({
                 </>
               )}
               {rule.id === 10 && (
-                <button
-                  disabled={g.tiles[g.robber].resource === 5}
-                  onClick={() => {
-                    if (g.tiles.filter((t) => t.resource === 5).length > 1) {
-                      onDesert();
-                      setOpen(false);
-                    } else action();
-                  }}
-                >
-                  选择沙漠并驱逐强盗
-                </button>
+                <>
+                  {g.tiles[g.robber]?.resource === 7 && (
+                    <ResourceSelect
+                      label="金矿领取资源"
+                      value={color}
+                      onChange={setColor}
+                    />
+                  )}
+                  <button
+                    disabled={
+                      g.robber < 0 ||
+                      g.tiles[g.robber]?.resource === 5 ||
+                      !g.tiles.some((t) => t.resource === 5)
+                    }
+                    onClick={() => {
+                      if (g.tiles.filter((t) => t.resource === 5).length > 1) {
+                        onDesert(color);
+                        setOpen(false);
+                      } else action({ color });
+                    }}
+                  >
+                    选择沙漠并驱逐强盗
+                  </button>
+                </>
               )}
               {rule.id === 11 && (
                 <>
-                  {g.tiles[g.robber].resource === 5 && (
+                  {[5, 7].includes(g.tiles[g.robber]?.resource) && (
                     <ResourceSelect
                       label="领取资源"
                       value={color}

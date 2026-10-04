@@ -232,7 +232,7 @@ func (s *Server) expireSetups(now time.Time) {
 			continue
 		}
 		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
-		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard" || room.Game.Catan.HelperPending != nil)
+		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < 2*len(room.Seats) || room.Game.Phase == "catan_discard" || room.Game.Catan.HelperPending != nil || room.Game.Catan.GoldPending != nil)
 		sgPending := room.Game.Sanguosha != nil
 		if room.Game.Dota != nil {
 			s.expireDota(room, now)
@@ -272,11 +272,8 @@ func (s *Server) expireSetups(now time.Time) {
 		if next.Game.Finished {
 			next.Status = "finished"
 		}
-		if !sgPending {
+		if !sgPending && !next.adjustCatanResponseClock(room.Game.Phase, room.Game.CatanPendingActor(), now) {
 			next.startTurnClock(now)
-			if room.Game.Catan != nil && room.Game.Catan.HelperPending != nil && !next.Game.Finished && next.Game.Phase != "catan_discard" {
-				next.TurnDeadline = now.UnixMilli() + next.CatanTimeLeft
-			}
 		}
 		if next.Game.Catan != nil && room.Game.Phase != "catan_discard" && next.Game.Phase == "catan_discard" {
 			next.CatanPendingVersion = next.Version + 1

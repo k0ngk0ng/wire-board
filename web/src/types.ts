@@ -274,6 +274,7 @@ export type CatanPlayer = {
   citiesLeft: number;
 };
 export type CatanState = {
+  goldPending?: { claims: { player: number; count: number }[]; resume: string };
   hexSize?: number;
   startPlayer?: number;
   paired?: { primary: number; secondary: number; second: boolean };

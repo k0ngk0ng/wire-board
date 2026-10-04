@@ -1,12 +1,23 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 // Catan AI evaluates public production odds and its own hand, never the next
 // development card or another player's resource composition.
 func (g *Catan) vertexValue(p, v int) int {
 	values := []int{0, 0, 0, 0, 0}
+	goldValue := 0
 	for _, t := range g.Tiles {
+		if t.Resource == CatanGold {
+			for _, id := range t.Vertices {
+				if id == v {
+					goldValue += (6 - absCatan(7-t.Number)) * 14
+				}
+			}
+		}
 		if t.Resource >= 5 {
 			continue
 		}
@@ -32,7 +43,13 @@ func (g *Catan) vertexValue(p, v int) int {
 			}
 		}
 	}
-	score := 0
+	score := goldValue
+	if g.Seafarers != nil && !g.setup() && p < len(g.Seafarers.Seats) {
+		island := g.islandAt(v)
+		if island >= 0 && !slices.Contains(g.Seafarers.Seats[p].SettledIslands, island) {
+			score += g.Seafarers.IslandBonus * 80
+		}
+	}
 	for c, n := range values {
 		score += n * 10
 		if n > 0 && existing[c] == 0 {
@@ -58,6 +75,9 @@ func (s *State) catanBot(player int) (Action, error) {
 	p := g.Players[player]
 	if g.HelperPending != nil {
 		return s.catanHelperPendingBot(player)
+	}
+	if g.GoldPending != nil {
+		return s.catanGoldBot(player)
 	}
 	if s.Phase == "catan_discard" && g.DiscardDue[player] > 0 {
 		hand := append([]int{}, p.Resources...)
@@ -127,8 +147,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_road", Edge: best}, nil
 	case "catan_roll":
-		if g.helperReady(player, 10) && g.Tiles[g.Robber].Resource != 5 {
-			return Action{Type: "catan_helper"}, nil
+		if a, ok := g.digurBotAction(player); ok {
+			return a, nil
 		}
 		return Action{Type: "catan_roll"}, nil
 	case "catan_robber":

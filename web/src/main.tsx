@@ -2260,7 +2260,7 @@ function Players({ room }: { room: Room }) {
         return (
           <div
             data-player-seat={i}
-            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.helperPending?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span
@@ -2492,15 +2492,22 @@ function Turn({
     !!g.catan &&
     (g.catan.setupStep < 2 * room.seats.length ||
       g.phase === "catan_discard" ||
-      !!g.catan.helperPending);
+      !!g.catan.helperPending ||
+      !!g.catan.goldPending);
   const setup = !!g.rail?.setup;
   const autoPlay = !!room.seats[room.you]?.autoPlay;
   const turnAutoPlay =
     !!room.seats[
-      g.sanguosha?.pending?.player ?? g.catan?.helperPending?.player ?? g.turn
+      g.sanguosha?.pending?.player ??
+        g.catan?.helperPending?.player ??
+        g.catan?.goldPending?.claims[0]?.player ??
+        g.turn
     ]?.autoPlay;
   const sgActor =
-    g.sanguosha?.pending?.player ?? g.catan?.helperPending?.player ?? g.turn;
+    g.sanguosha?.pending?.player ??
+    g.catan?.helperPending?.player ??
+    g.catan?.goldPending?.claims[0]?.player ??
+    g.turn;
   const mine =
     !room.spectating &&
     (g.dota
@@ -2511,11 +2518,13 @@ function Turn({
           : sgActor === room.you
         : g.catan?.helperPending
           ? g.catan.helperPending.player === room.you
-          : g.phase === "catan_discard"
-            ? (g.catan?.discardDue[room.you] || 0) > 0
-            : setup
-              ? !g.rail?.setupReady?.[room.you]
-              : g.turn === room.you);
+          : g.catan?.goldPending
+            ? g.catan.goldPending.claims[0]?.player === room.you
+            : g.phase === "catan_discard"
+              ? (g.catan?.discardDue[room.you] || 0) > 0
+              : setup
+                ? !g.rail?.setupReady?.[room.you]
+                : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2577,7 +2586,7 @@ function Turn({
                   ? "轮到你了"
                   : g.sanguosha?.pending?.kind === "nullification"
                     ? "共同响应锦囊"
-                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.helperPending ? "正在响应" : "的回合"}`}
+                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -2613,7 +2622,9 @@ function Turn({
                     ? "响应限时 20 秒"
                     : g.catan?.helperPending
                       ? "助手选择 120 秒"
-                      : "每回合 120 秒"}
+                      : g.catan?.goldPending
+                        ? "金矿选择 120 秒"
+                        : "每回合 120 秒"}
             </span>
           </div>
           {expired &&
