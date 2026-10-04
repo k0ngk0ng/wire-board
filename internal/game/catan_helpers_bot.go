@@ -166,8 +166,8 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 			}
 		}
 	case 10:
-		if g.Tiles[g.Robber].Resource != 5 {
-			add(Action{Type: "catan_helper"}, 700)
+		if a, ok := g.digurBotAction(player); ok {
+			add(a, 700)
 		}
 	case 11:
 		for color := 0; color < 5; color++ {
@@ -181,4 +181,30 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 		}
 	}
 	return choices
+}
+
+func (g *Catan) digurBotAction(player int) (Action, bool) {
+	a := Action{Type: "catan_helper"}
+	if !g.helperReady(player, 10) || g.Robber < 0 || g.Robber >= len(g.Tiles) || g.Tiles[g.Robber].Resource == CatanDesert {
+		return a, false
+	}
+	desert := false
+	for _, t := range g.Tiles {
+		desert = desert || t.Resource == CatanDesert
+	}
+	if !desert {
+		return a, false
+	}
+	if g.Tiles[g.Robber].Resource == CatanGold {
+		best := -1
+		for color, n := range g.Bank {
+			if n > 0 && (best < 0 || g.Players[player].Resources[color] < g.Players[player].Resources[best]) {
+				best = color
+			}
+		}
+		if best >= 0 {
+			a.Color = best
+		}
+	}
+	return a, true
 }

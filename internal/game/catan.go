@@ -26,6 +26,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	GoldPending    *CatanGoldPending   `json:"goldPending,omitempty"`
 	Seafarers      *CatanSeafarers     `json:"seafarers,omitempty"`
 	StartPlayer    int                 `json:"startPlayer,omitempty"`
 	Paired         *CatanPairedTurn    `json:"paired,omitempty"`
@@ -272,6 +273,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	if g.HelperPending != nil {
 		return s.catanHelperRespond(player, a)
 	}
+	if g.GoldPending != nil {
+		return s.catanChooseGold(player, a)
+	}
 	if a.Type == "catan_discard" {
 		return s.catanDiscard(player, a.Tokens)
 	}
@@ -486,18 +490,26 @@ func (s *State) catanSetup(a Action) error {
 		s.catanLog(p, "放置起始村庄 #%d", a.Vertex+1)
 		if g.SetupStep >= len(g.Players) {
 			gain := make([]int, 5)
+			gold := make([]int, len(g.Players))
 			for _, t := range g.Tiles {
-				if t.Resource >= 5 {
+				if t.Resource >= 5 && t.Resource != CatanGold {
 					continue
 				}
 				for _, v := range t.Vertices {
 					if v == a.Vertex {
-						gain[t.Resource]++
+						if t.Resource == CatanGold {
+							gold[p]++
+						} else {
+							gain[t.Resource]++
+						}
 					}
 				}
 			}
 			catanMove(g.Bank, g.Players[p].Resources, gain)
 			s.catanLog(p, "从第二座村庄获得 %s", catanText(gain))
+			if gold[p] > 0 {
+				s.catanStartGold(gold, nil, "catan_setup_road")
+			}
 		}
 		s.catanScores()
 		return nil
@@ -582,18 +594,23 @@ func (s *State) catanRoll(total int) {
 		}
 		return
 	}
+	gold := make([]int, len(g.Players))
 	claims := make([][]int, len(g.Players))
 	for i := range claims {
 		claims[i] = make([]int, 5)
 	}
 	for _, t := range g.Tiles {
-		if t.Number != total || t.ID == g.Robber || t.Resource >= 5 {
+		if t.Number != total || t.ID == g.Robber || (t.Resource >= 5 && t.Resource != CatanGold) {
 			continue
 		}
 		for _, id := range t.Vertices {
 			v := g.Vertices[id]
 			if v.Level > 0 && !g.Players[v.Owner].Eliminated {
-				claims[v.Owner][t.Resource] += v.Level
+				if t.Resource == CatanGold {
+					gold[v.Owner] += v.Level
+				} else {
+					claims[v.Owner][t.Resource] += v.Level
+				}
 			}
 		}
 	}
@@ -623,14 +640,14 @@ func (s *State) catanRoll(total int) {
 			s.catanLog(i, "获得 %s", catanText(gain))
 		}
 	}
-	s.Phase = "catan_turn"
-	if g.Options.Helpers && sum(g.Bank) > 0 {
-		for i, gain := range claims {
-			if sum(gain) == 0 && g.helperReady(i, 3) {
-				s.catanHelperAsk(CatanHelperPending{Player: i, Kind: "resource", Resume: "catan_turn", Optional: true})
-				break
-			}
-		}
+	received := make([]int, len(g.Players))
+	for i, gain := range claims {
+		received[i] = sum(gain)
+	}
+	if sum(gold) > 0 {
+		s.catanStartGold(gold, received, "catan_turn")
+	} else {
+		s.catanAfterProduction(received)
 	}
 }
 func (s *State) catanDiscard(p int, amount []int) error {
@@ -828,6 +845,11 @@ func (s *State) AutoCatanPending() {
 				break
 			}
 		}
+	} else if g.GoldPending != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanGoldBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 	} else if s.Phase == "catan_discard" {
 		for i, due := range g.DiscardDue {
 			if due == 0 {
@@ -867,7 +889,7 @@ func (s *State) AutoCatanPending() {
 }
 func (s *State) EliminateCatan(p int) error {
 	g := s.Catan
-	if g == nil || g.setup() || g.HelperPending != nil || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
+	if g == nil || g.setup() || g.HelperPending != nil || g.GoldPending != nil || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
 		return errors.New("当前不能移除此玩家")
 	}
 	pl := &g.Players[p]

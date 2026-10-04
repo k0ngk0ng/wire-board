@@ -19,6 +19,7 @@ import type { Act, Room } from "./types";
 import { PlayerName } from "./profiles";
 import { useRailMapControls } from "./rail-map-controls";
 import "./catan.css";
+import "./catan-gold.css";
 import { CatanHelpers } from "./catan-helpers";
 export const catanNames = ["木材", "砖块", "羊毛", "粮食", "矿石"];
 export const catanColors = [
@@ -63,6 +64,7 @@ export const catanPhases: Record<string, string> = {
   catan_steal: "选择偷取资源的对手",
   catan_roads: "放置免费的道路",
   catan_helper: "等待助手选择",
+  catan_gold: "选择金矿出产的资源",
 };
 export function CatanResource({
   color,
@@ -166,6 +168,95 @@ function ResourcePicker({
     </fieldset>
   );
 }
+function CatanGoldChoice({
+  room,
+  act,
+  busy,
+  assets,
+}: {
+  room: Room;
+  act: Act;
+  busy: boolean;
+  assets: string;
+}) {
+  const g = room.game!.catan!,
+    claim = g.goldPending?.claims[0];
+  const [take, setTake] = useState([0, 0, 0, 0, 0]);
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    setTake([0, 0, 0, 0, 0]);
+    setCollapsed(false);
+  }, [room.id, claim?.player, g.rollId, g.setupStep]);
+  if (
+    !claim ||
+    room.status !== "playing" ||
+    room.game!.finished ||
+    room.game!.phase !== "catan_gold"
+  )
+    return null;
+  const mine =
+    !room.spectating &&
+    claim.player === room.you &&
+    !g.players[room.you]?.eliminated;
+  const due = Math.min(claim.count, total(g.bank)),
+    picked = total(take);
+  return (
+    <section className="catan-gold-choice" aria-label="金矿资源选择">
+      <header>
+        <strong>
+          {mine
+            ? `金矿：选择 ${due} 张资源`
+            : `${room.seats[claim.player].name} 正在选择金矿资源`}
+        </strong>
+        <button
+          type="button"
+          aria-expanded={!collapsed}
+          onClick={() => setCollapsed(!collapsed)}
+        >
+          {collapsed ? "展开" : "收起"}
+        </button>
+      </header>
+      {!collapsed && (
+        <div className="catan-gold-body">
+          <p>可以选择同种或不同资源。每人限时 120 秒，超时自动选择。</p>
+          {mine ? (
+            <>
+              <ResourcePicker
+                label="金矿领取"
+                values={take}
+                onChange={setTake}
+                limits={g.bank.map((n, i) =>
+                  Math.min(n, take[i] + Math.max(0, due - picked)),
+                )}
+                assets={assets}
+                disabled={busy}
+              />
+              <div className="catan-gold-stock">
+                银行库存：
+                {g.bank.map((n, i) => (
+                  <span key={i}>
+                    {catanNames[i]} {n}
+                  </span>
+                ))}
+              </div>
+              <button
+                className="primary wide"
+                disabled={
+                  busy || picked !== due || take.some((n, i) => n > g.bank[i])
+                }
+                onClick={() => void act({ type: "catan_gold", take })}
+              >
+                确认领取 {picked} / {due}
+              </button>
+            </>
+          ) : (
+            <p>选择完成后继续当前回合。</p>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
 export function CatanBoard({
   room,
   act,
@@ -193,6 +284,7 @@ export function CatanBoard({
     null,
   );
   const [helperPayment, setHelperPayment] = useState<number[] | null>(null);
+  const [helperResource, setHelperResource] = useState(0);
   const [moveFrom, setMoveFrom] = useState<number | null>(null);
   const [dev, setDev] = useState<number | null>(null);
   const [give, setGive] = useState([0, 0, 0, 0, 0]);
@@ -570,19 +662,23 @@ export function CatanBoard({
           </div>
         </div>
         <div className="catan-map-hint">
-          {mine
-            ? effective === "helper_move"
-              ? moveFrom === null
-                ? "选择要迁移的己方末端道路"
-                : "选择新位置，再确认迁移道路"
-              : effective === "road"
-                ? "点击虚线选择道路，再确认建造"
-                : effective === "settlement" || effective === "city"
-                  ? "点击亮起的交点，再确认建造"
-                  : effective === "robber" || effective === "helper_desert"
-                    ? "点击地块选择强盗的新位置"
-                    : "选择右侧行动 · 滚轮缩放 · 按住拖动"
-            : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
+          {phase === "catan_gold"
+            ? canPlay && g.goldPending?.claims[0]?.player === you
+              ? "请在金矿面板领取资源 · 可收起面板查看地图"
+              : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
+            : mine
+              ? effective === "helper_move"
+                ? moveFrom === null
+                  ? "选择要迁移的己方末端道路"
+                  : "选择新位置，再确认迁移道路"
+                : effective === "road"
+                  ? "点击虚线选择道路，再确认建造"
+                  : effective === "settlement" || effective === "city"
+                    ? "点击亮起的交点，再确认建造"
+                    : effective === "robber" || effective === "helper_desert"
+                      ? "点击地块选择强盗的新位置"
+                      : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+              : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
       <aside className="catan-actions">
@@ -731,6 +827,10 @@ export function CatanBoard({
                         : "catan_" + chosen.type,
                     choice:
                       chosen.type === "helper_desert" ? "desert" : undefined,
+                    color:
+                      chosen.type === "helper_desert"
+                        ? helperResource
+                        : undefined,
                     skill: helperPayment ? "helper" : undefined,
                     tokens: helperPayment || undefined,
                     target:
@@ -994,6 +1094,7 @@ export function CatanBoard({
             </div>
           </section>
         )}
+        <CatanGoldChoice room={room} act={act} busy={busy} assets={assets} />
         <CatanHelpers
           room={room}
           act={act}
@@ -1006,7 +1107,8 @@ export function CatanBoard({
             setDev(null);
             setChosen(kind === "buy_dev" ? { type: kind, id: 0 } : null);
           }}
-          onDesert={() => {
+          onDesert={(color) => {
+            setHelperResource(color);
             setMode("helper_desert");
             setMoveFrom(null);
             setHelperPayment(null);

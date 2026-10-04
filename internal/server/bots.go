@@ -16,6 +16,7 @@ func (seat Seat) computerControlled() bool {
 func (r *Room) applyGameAction(player int, action game.Action, now time.Time) error {
 	turn, round := r.Game.Turn, r.Game.Round
 	phase := r.Game.Phase
+	catanActor := r.Game.CatanPendingActor()
 	dotaSequence := 0
 	if r.Game.Dota != nil {
 		dotaSequence = r.Game.Dota.Sequence
@@ -83,22 +84,8 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 		}
 		return nil
 	}
-	if r.Game.Catan != nil && !r.Game.Finished {
-		if phase != "catan_helper" && r.Game.Phase == "catan_helper" {
-			r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
-			r.startTurnClock(now)
-			return nil
-		}
-		if phase == "catan_helper" {
-			if r.Game.Phase != "catan_helper" {
-				if r.Game.Phase == "catan_discard" {
-					r.startTurnClock(now)
-				} else {
-					r.TurnDeadline = now.UnixMilli() + r.CatanTimeLeft
-				}
-			}
-			return nil
-		}
+	if r.adjustCatanResponseClock(phase, catanActor, now) {
+		return nil
 	}
 	catanClock := r.Game.Catan != nil && (r.Game.Catan.TurnSerial != catanTurnSerial || r.Game.Catan.SetupStep != setupStep || (phase != r.Game.Phase && (phase == "catan_discard" || r.Game.Phase == "catan_discard")))
 	if catanClock || r.Game.Turn != turn || r.Game.Round != round || r.Game.Finished || (setup && !r.Game.Rail.Setup) {
@@ -144,8 +131,8 @@ func (s *Server) runBots(now time.Time) {
 			}
 		}
 		if g := room.Game.Catan; g != nil {
-			if g.HelperPending != nil {
-				player = g.HelperPending.Player
+			if actor := room.Game.CatanPendingActor(); actor >= 0 {
+				player = actor
 			} else if room.Game.Phase == "catan_discard" {
 				player = -1
 				for i, seat := range room.Seats {

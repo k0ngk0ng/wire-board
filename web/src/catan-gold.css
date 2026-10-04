@@ -1,0 +1,77 @@
+.catan-gold-choice {
+  position: fixed;
+  z-index: 65;
+  right: 20px;
+  bottom: 85px;
+  width: min(470px, calc(100vw - 24px));
+  max-height: 70dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  background: #fff9e9;
+  color: #39291b;
+  border: 2px solid #b38a3e;
+  border-radius: 14px;
+  box-shadow: 0 10px 35px #23180744;
+}
+.catan-gold-choice header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.catan-gold-choice header strong {
+  font-size: 16px;
+}
+.catan-gold-choice button {
+  background: #efdcad;
+  color: #39291b;
+  border: 1px solid #b38a3e;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.catan-gold-choice button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.catan-gold-choice .primary {
+  background: #795422;
+  color: #fff;
+  margin-top: 12px;
+  min-height: 40px;
+}
+.catan-gold-choice .catan-stepper {
+  color: #39291b;
+}
+.catan-gold-choice .catan-picker {
+  color: #39291b;
+}
+.catan-gold-body {
+  overflow: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.catan-gold-body p {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+.catan-gold-stock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 12px;
+  color: #665031;
+}
+@media (max-width: 600px) {
+  .catan-gold-choice {
+    right: 12px;
+    bottom: 76px;
+    padding: 12px;
+  }
+  .catan-gold-choice .catan-stepper button {
+    padding: 6px;
+    min-width: 26px;
+  }
+}

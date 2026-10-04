@@ -29,19 +29,23 @@ export function useTurnTitle(room?: Room) {
           : game.turn === room.you
         : game.catan?.helperPending
           ? game.catan.helperPending.player === room.you
-          : game.phase === "catan_discard"
-            ? (game.catan?.discardDue[room.you] || 0) > 0
-            : game.rail?.setup
-              ? !game.rail.setupReady?.[room.you]
-              : game.turn === room.you)
+          : game.catan?.goldPending
+            ? game.catan.goldPending.claims[0]?.player === room.you
+            : game.phase === "catan_discard"
+              ? (game.catan?.discardDue[room.you] || 0) > 0
+              : game.rail?.setup
+                ? !game.rail.setupReady?.[room.you]
+                : game.turn === room.you)
   );
   const prompt = game?.dota
     ? "请规划行动"
     : game?.sanguosha?.pending
       ? "请响应牌局"
-      : game?.rail?.setup
-        ? "请选择目的地"
-        : "轮到你了";
+      : game?.catan?.goldPending
+        ? "请选择金矿资源"
+        : game?.rail?.setup
+          ? "请选择目的地"
+          : "轮到你了";
   useEffect(() => {
     const original = document.title;
     let timer: ReturnType<typeof setInterval> | undefined;

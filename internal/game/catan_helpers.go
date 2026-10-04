@@ -301,6 +301,9 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		catanMove(g.Bank, p.Resources, a.Take)
 		s.catanLog(player, "通过助手支付%s，换得%s", catanText(a.Give), catanText(a.Take))
 	case 10:
+		if g.Robber < 0 || g.Robber >= len(g.Tiles) {
+			return errors.New("强盗当前不在陆地上")
+		}
 		resource := g.Tiles[g.Robber].Resource
 		if resource == 5 {
 			return errors.New("强盗已经在沙漠")
@@ -321,6 +324,12 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		if desert < 0 {
 			return errors.New("地图上没有沙漠")
 		}
+		if resource == CatanGold {
+			if sum(g.Bank) > 0 && (a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] == 0) {
+				return errors.New("请选择金矿可提供且银行有库存的一种资源")
+			}
+			resource = a.Color
+		}
 		g.Robber = desert
 		if resource >= 0 && resource < 5 && g.Bank[resource] > 0 {
 			g.Bank[resource]--
@@ -328,8 +337,11 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		}
 		s.catanLog(player, "通过助手将强盗赶回沙漠")
 	case 11:
+		if g.Robber < 0 || g.Robber >= len(g.Tiles) {
+			return errors.New("强盗当前不在陆地上")
+		}
 		resource := g.Tiles[g.Robber].Resource
-		if resource == 5 {
+		if resource == CatanDesert || resource == CatanGold {
 			resource = a.Color
 		}
 		if resource < 0 || resource >= 5 || g.Bank[resource] == 0 {
