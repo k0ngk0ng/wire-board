@@ -28,8 +28,28 @@ const militaryArt = new Set([
   "silver_lion",
   "hualiu",
 ]);
+const windGenerals = new Set([
+  "caoren",
+  "xiahouyuan",
+  "huangzhong",
+  "weiyan",
+  "xiaoqiao",
+  "zhoutai",
+  "zhangjiao",
+  "yuji",
+]);
+const generalArt = (assets: string, id: string) =>
+  `${assets}/sanguosha/${windGenerals.has(id) ? "v3" : "v1"}/generals/${id}.webp`;
 const suits = ["♠", "♥", "♣", "♦"];
-const transforms = ["wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu"];
+const transforms = [
+  "guhuo",
+  "wusheng",
+  "qingguo",
+  "longdan",
+  "qixi",
+  "guose",
+  "jijiu",
+];
 const activeSkills = [
   "rende",
   "zhiheng",
@@ -39,6 +59,7 @@ const activeSkills = [
   "qingnang",
   "lijian",
   "jijiang",
+  "huangtian_give",
 ];
 function Card({
   id,
@@ -134,12 +155,18 @@ export function SanguoshaBoard({
   const [cards, setCards] = useState<number[]>([]),
     [targets, setTargets] = useState<number[]>([]),
     [skill, setSkill] = useState(""),
+    [declaration, setDeclaration] = useState("slash"),
     [help, setHelp] = useState(""),
     [error, setError] = useState("");
   const [detail, setDetail] = useState<number>();
   const mineGeneral = g.generals.find((x) => x.id === me?.general);
-  const skills = (mineGeneral?.skills || []).filter(
-    (x) => !["hujia", "jijiang", "jiuyuan"].includes(x) || me?.role === "lord",
+  const skills = [
+    ...(mineGeneral?.skills || []),
+    ...(g.huangtianGive ? ["huangtian_give"] : []),
+  ].filter(
+    (x) =>
+      !["hujia", "jijiang", "jiuyuan", "huangtian"].includes(x) ||
+      me?.role === "lord",
   );
   useEffect(() => {
     setCards([]);
@@ -174,6 +201,7 @@ export function SanguoshaBoard({
         cards,
         targets,
         skill,
+        choice: skill === "guhuo" ? declaration : undefined,
         prompt: prompt?.id,
         card: cards[0] || 0,
         ...extra,
@@ -204,6 +232,14 @@ export function SanguoshaBoard({
     "tiandu",
     "ganglie",
     "fire_discard",
+    "shensu_judge",
+    "shensu_play",
+    "liegong",
+    "tianxiang",
+    "leiji",
+    "guidao",
+    "buqu",
+    "guhuo_question",
   ].includes(ask || "");
   const simple = [
     "invoke",
@@ -212,12 +248,25 @@ export function SanguoshaBoard({
     "tieji",
     "ice_sword",
     "tiandu",
+    "liegong",
+    "buqu",
   ].includes(ask || "");
   const extraCards =
-    responding && ["guanxing", "yiji", "grace"].includes(ask || "")
+    responding &&
+    ["guanxing", "yiji", "grace", "buqu_remove"].includes(ask || "")
       ? prompt?.cards || []
       : [];
   const instructions: Record<string, string> = {
+    shensu_judge: "选择一名目标，跳过判定和摸牌，视为使用无距离限制的杀。",
+    shensu_play:
+      "选择一张手牌或装备区的装备牌，再选择一名目标；跳过出牌阶段并使用无距离限制的杀。",
+    tianxiang:
+      "选择一张红桃手牌及另一名角色，转移本次伤害。红颜会将黑桃视为红桃。",
+    leiji: "选择一名角色判定；黑桃将造成2点雷电伤害。",
+    guidao: "选择一张黑色手牌或装备牌，替换并获得原判定牌。",
+    buqu_remove: `选择 ${prompt?.amount} 张不屈牌移去，避免留下重复点数。`,
+    guhuo_question:
+      "牌面尚未公开。质疑真牌会失去1点体力；质疑假牌摸一张牌。有人质疑时，仅真实的红桃牌生效。",
     card: `需要 ${prompt?.count || 1} 张${prompt?.wanted === "jink" ? "闪" : "杀"}，每次响应一张。`,
     nullification: prompt?.cancelled
       ? "当前效果已被抵消；再次无懈会恢复效果。"
@@ -264,6 +313,21 @@ export function SanguoshaBoard({
           </span>
         </div>
       </header>
+      {g.bluff && !g.bluff.resolved && (
+        <aside className="sg-help">
+          <strong>
+            {room.seats[g.bluff.player]?.name} 发动蛊惑：
+            {g.cardTypes[g.bluff.declared]?.name}
+          </strong>
+          <p>{g.bluff.context}</p>
+          <p>
+            牌面扣置，正在询问质疑。
+            {g.bluff.questioned?.length
+              ? `已有 ${g.bluff.questioned.length} 人质疑。`
+              : ""}
+          </p>
+        </aside>
+      )}
       <div
         className="sg-seats"
         style={{ "--sg-seat-count": room.seats.length } as React.CSSProperties}
@@ -286,7 +350,7 @@ export function SanguoshaBoard({
               >
                 {general && assets && (
                   <img
-                    src={`${assets}/sanguosha/v1/generals/${general.id}.webp`}
+                    src={generalArt(assets, general.id)}
                     alt=""
                     draggable={false}
                   />
@@ -336,11 +400,28 @@ export function SanguoshaBoard({
                 </small>
               </div>
               <div className="sg-status-marks">
+                {p.flipped && (
+                  <span className="sg-flipped">背面 · 下回合跳过</span>
+                )}
                 {p.chained && <span className="sg-chained">连环 · 已横置</span>}
                 {!!p.drank && (
                   <span className="sg-drank">酒 · 下一张杀伤害 +{p.drank}</span>
                 )}
               </div>
+              {!!p.buqu?.length && (
+                <div className="sg-buqu-pile">
+                  <span>不屈</span>
+                  {p.buqu.map((id) => (
+                    <button
+                      key={id}
+                      title={g.cardTypes[getCard(id).kind].name}
+                      onClick={() => setDetail(id)}
+                    >
+                      {getCard(id).rank}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="sg-seat-skills">
                 {general?.skills.map((k) => (
                   <button
@@ -430,12 +511,7 @@ export function SanguoshaBoard({
                 key={id}
                 onClick={() => void send({ choice: id })}
               >
-                {assets && (
-                  <img
-                    src={`${assets}/sanguosha/v1/generals/${id}.webp`}
-                    alt=""
-                  />
-                )}
+                {assets && <img src={generalArt(assets, id)} alt="" />}
                 <strong>
                   {general.name} · {kingdoms[general.kingdom]}
                 </strong>
@@ -523,6 +599,23 @@ export function SanguoshaBoard({
             ))}
           </div>
           {!me.hand?.length && <p className="muted">暂时没有手牌</p>}
+          {skill === "guhuo" && (
+            <label className="sg-declaration">
+              蛊惑声明
+              <select
+                value={declaration}
+                onChange={(e) => setDeclaration(e.target.value)}
+                disabled={!enabled}
+              >
+                {g.guhuoKinds?.map((k) => (
+                  <option key={k} value={k}>
+                    {g.cardTypes[k].name}
+                  </option>
+                ))}
+              </select>
+              <small>选择一张手牌扣下，按声明的牌选择目标，再确认。</small>
+            </label>
+          )}
           <div className="sg-skills">
             {me.equip.some((id) => getCard(id).kind === "fan") && (
               <button
@@ -619,6 +712,22 @@ export function SanguoshaBoard({
               ))}
           </div>
         )}
+        {responding && ask === "guhuo_question" && (
+          <button
+            className="primary"
+            disabled={busy}
+            onClick={() =>
+              void send({
+                choice: "challenge",
+                cards: [],
+                targets: [],
+                skill: "",
+              })
+            }
+          >
+            质疑
+          </button>
+        )}
         {responding && ask === "fanjian" && (
           <div className="sg-action-buttons">
             {["spade", "heart", "club", "diamond"].map((v, i) => (
@@ -673,7 +782,9 @@ export function SanguoshaBoard({
         {enabled && ask !== "general" && (
           <div className="sg-action-buttons">
             {(!responding ||
-              !["draw_phase", "fanjian", "steal"].includes(ask || "")) && (
+              !["draw_phase", "fanjian", "steal", "guhuo_question"].includes(
+                ask || "",
+              )) && (
               <button
                 className="primary"
                 disabled={
@@ -681,6 +792,10 @@ export function SanguoshaBoard({
                   (!cards.length &&
                     !simple &&
                     ask !== "guanxing" &&
+                    !(
+                      ["shensu_judge", "leiji"].includes(ask || "") &&
+                      targets.length === 1
+                    ) &&
                     !(
                       playing && ["kurou", "fanjian", "jijiang"].includes(skill)
                     ))
@@ -719,7 +834,7 @@ export function SanguoshaBoard({
                   })
                 }
               >
-                放弃
+                {ask === "guhuo_question" ? "不质疑" : "放弃"}
               </button>
             )}
             {playing && (

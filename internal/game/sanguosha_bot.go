@@ -24,6 +24,10 @@ func (s *State) sgBot(i int) (Action, error) {
 		out := []Action{}
 		ids := append(append([]int{}, p.Hand...), p.Equip...)
 		for _, id := range ids {
+			c := s.sgCardFor(i, id)
+			if s.sgHas(i, "guhuo") && slices.Contains(p.Hand, id) && c.Suit == 1 && (c.Kind == want || want == "slash" && sgIsSlash(c.Kind)) {
+				out = append(out, Action{Cards: []int{id}, Skill: "guhuo", Choice: want})
+			}
 			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan"} {
 				a := Action{Cards: []int{id}, Skill: skill}
 				if _, err := s.sgAs(i, a.Cards, skill, want); err == nil {
@@ -34,6 +38,13 @@ func (s *State) sgBot(i int) (Action, error) {
 		if want == "slash" && s.sgWeapon(i) == "spear" && len(p.Hand) >= 2 {
 			out = append(out, Action{Cards: append([]int{}, p.Hand[:2]...), Skill: "spear"})
 		}
+		if s.sgHas(i, "guhuo") && slices.Contains(s.sgGuhuoKinds(), want) {
+			for _, id := range p.Hand {
+				if sgBotValue(id) <= 50 {
+					out = append(out, Action{Cards: []int{id}, Skill: "guhuo", Choice: want})
+				}
+			}
+		}
 		return out
 	}
 	if q := g.Pending; q != nil {
@@ -42,9 +53,81 @@ func (s *State) sgBot(i int) (Action, error) {
 		}
 		e := q.Event
 		switch q.Kind {
+		case "guhuo_question":
+			// Use only the public declaration, turn token and our own HP/role.
+			// Never inspect the private card in the resumable bluff context.
+			if p.HP > 1 && !(p.Role == "loyalist" && e.Actor == g.Lord) && q.ID%3 == 0 {
+				add(Action{Choice: "challenge"})
+			}
 		case "general":
 			for _, id := range p.Choices {
 				add(Action{Choice: id})
+			}
+		case "shensu_judge", "shensu_play":
+			for _, target := range s.sgOrder(s.sgNext(i)) {
+				if target == i || (p.Role == "loyalist" && target == g.Lord) {
+					continue
+				}
+				if q.Kind == "shensu_judge" {
+					if g.Players[target].HP <= 2 {
+						add(Action{Targets: []int{target}})
+					}
+				} else {
+					for _, id := range append(append([]int{}, p.Hand...), p.Equip...) {
+						if SGCardTypes[sgCard(id).Kind].Slot != "" {
+							add(Action{Cards: []int{id}, Targets: []int{target}})
+						}
+					}
+				}
+			}
+		case "liegong", "buqu":
+			add(Action{Choice: "yes"})
+		case "leiji":
+			for _, target := range s.sgOrder(s.sgNext(i)) {
+				if target != i && !(p.Role == "loyalist" && target == g.Lord) {
+					add(Action{Targets: []int{target}})
+				}
+			}
+		case "tianxiang":
+			for _, id := range p.Hand {
+				if s.sgCardFor(i, id).Suit == 1 {
+					for _, target := range s.sgOrder(s.sgNext(i)) {
+						if target != i && !(p.Role == "loyalist" && target == g.Lord) {
+							add(Action{Cards: []int{id}, Targets: []int{target}})
+						}
+					}
+				}
+			}
+		case "buqu_remove":
+			// Prefer removing duplicate ranks so recovery can resolve a failed Buqu.
+			ids := clone(p.Buqu)
+			remove := []int{}
+			for len(remove) < e.Amount {
+				counts := map[int]int{}
+				for _, id := range ids {
+					counts[sgCard(id).Rank]++
+				}
+				pick := ids[0]
+				for _, id := range ids {
+					if counts[sgCard(id).Rank] > 1 {
+						pick = id
+						break
+					}
+				}
+				remove = append(remove, pick)
+				ids = sgRemove(ids, pick)
+			}
+			add(Action{Cards: remove})
+		case "guidao":
+			for _, id := range append(append([]int{}, p.Hand...), p.Equip...) {
+				c := s.sgCardFor(i, id)
+				if c.Suit != 0 && c.Suit != 2 {
+					continue
+				}
+				protect := e.Actor == i || (p.Role == "loyalist" && e.Actor == g.Lord)
+				if (e.Kind == "leiji" && !protect && c.Suit == 0) || (e.Kind == "lightning" && protect && !(c.Suit == 0 && c.Rank >= 2 && c.Rank <= 9)) || (e.Kind == "supply_shortage" && protect && c.Suit == 2) {
+					add(Action{Cards: []int{id}})
+				}
 			}
 		case "invoke", "keji":
 			add(Action{Choice: "yes"})
@@ -162,6 +245,13 @@ func (s *State) sgBot(i int) (Action, error) {
 	} else {
 		if i != s.Turn || s.Phase != "sg_play" {
 			return Action{}, errors.New("not playing")
+		}
+		if p.Role == "loyalist" && sgGeneral(p.General).Kingdom == "qun" {
+			for _, id := range p.Hand {
+				if k := sgCard(id).Kind; k == "jink" || k == "lightning" {
+					add(Action{Type: "sg_skill", Skill: "huangtian_give", Cards: []int{id}, Targets: []int{g.Lord}})
+				}
+			}
 		}
 		for _, a := range cardsFor("peach") {
 			a.Type = "sg_play"

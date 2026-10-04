@@ -12,6 +12,12 @@ func (s *State) sgRespond(i int, a Action) error {
 	g.Pending = nil
 	p := &g.Players[i]
 	pass := a.Choice == "pass"
+	if handled, err := s.sgGuhuoRespond(i, a, prompt); handled {
+		return err
+	}
+	if handled, err := s.sgWindRespond(i, a, prompt); handled {
+		return err
+	}
 	switch prompt.Kind {
 	case "general":
 		if !slices.Contains(p.Choices, a.Choice) {
@@ -27,7 +33,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		g.Selected++
 		if i == g.Lord {
 			ids := []string{}
-			for _, x := range SGGenerals {
+			for _, x := range g.generalCatalog() {
 				if x.ID != p.General {
 					ids = append(ids, x.ID)
 				}
@@ -120,7 +126,7 @@ func (s *State) sgRespond(i int, a Action) error {
 				return errors.New("你已经放弃本次无懈响应")
 			}
 			e.Targets = append(e.Targets, i)
-			if len(e.Targets) < len(s.sgOrder(0)) {
+			if !s.sgAllPassed(e.Targets) {
 				prompt.Event = e
 				g.Pending = &prompt
 				return nil
@@ -143,7 +149,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			return err
 		}
 		id := a.Cards[0]
-		e.Aux = sgCard(id).Suit
+		e.Aux = s.sgCardFor(i, id).Suit
 		g.Revealed = []int{id}
 		s.sgLog("火攻：%s 展示 %s %d「%s」", s.sgName(i), []string{"♠", "♥", "♣", "♦"}[e.Aux], sgCard(id).Rank, SGCardTypes[sgCard(id).Kind].Name)
 		if s.sgAlive(e.Actor) {
@@ -155,7 +161,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			if err := s.sgValidateCards(i, a.Cards, 1, true); err != nil {
 				return err
 			}
-			if sgCard(a.Cards[0]).Suit != e.Aux {
+			if s.sgCardFor(i, a.Cards[0]).Suit != e.Aux {
 				return errors.New("火攻需要弃置与展示牌花色相同的手牌")
 			}
 			e.Type = "damage"
@@ -182,11 +188,9 @@ func (s *State) sgRespond(i int, a Action) error {
 		if i != e.Target && s.sgHas(e.Target, "jiuyuan") && sgGeneral(p.General).Kingdom == "wu" {
 			amount++
 		}
+		s.sgPush(e)
 		s.sgHeal(e.Target, amount)
 		s.sgLog("%s 使用%s救助 %s", s.sgName(i), SGCardTypes[kind].Name, s.sgName(e.Target))
-		if g.Players[e.Target].HP <= 0 {
-			s.sgPush(e)
-		}
 	case "card":
 		if pass {
 			s.sgResponseFail(e)
@@ -224,6 +228,9 @@ func (s *State) sgRespond(i int, a Action) error {
 		}
 		s.sgResponseSuccess(e)
 		s.sgDiscard(i, a.Cards)
+		if wanted == "jink" {
+			s.sgJinkPlayed(i)
+		}
 	case "support":
 		if a.Choice == "eight_diagram" {
 			if e.Kind != "hujia" || e.Step&1 != 0 || sgCard(s.sgEquip(i, "armor")).Kind != "eight_diagram" {
@@ -258,6 +265,9 @@ func (s *State) sgRespond(i int, a Action) error {
 		}
 		s.sgResponseSuccess(*e.Next)
 		s.sgDiscard(i, a.Cards)
+		if wanted == "jink" {
+			s.sgJinkPlayed(i)
+		}
 	case "liuli":
 		if pass {
 			break
@@ -397,7 +407,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		s.sgPush(e)
 	case "tiandu":
 		if !pass {
-			g.Table = sgRemove(g.Table, e.Aux)
+			s.sgTakeTable(e.Aux)
 			p.Hand = append(p.Hand, e.Aux)
 		} else {
 			s.sgFinishCards([]int{e.Aux})
@@ -466,6 +476,9 @@ func (s *State) sgSkill(i int, a Action) error {
 	g := s.Sanguosha
 	p := &g.Players[i]
 	skill := a.Skill
+	if skill == "huangtian_give" {
+		return s.sgHuangtianGive(i, a)
+	}
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
 	}

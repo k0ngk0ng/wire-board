@@ -322,6 +322,8 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  flipped?: boolean;
+  buqu?: number[];
   chained?: boolean;
   drank?: number;
   general: string;
@@ -337,6 +339,15 @@ export type SGPlayer = {
   used: Record<string, number>;
 };
 export type SanguoshaState = {
+  guhuoKinds?: string[];
+  bluff?: {
+    player: number;
+    declared: string;
+    context: string;
+    questioned: number[] | null;
+    resolved: boolean;
+  };
+  huangtianGive?: boolean;
   options?: SGOptions;
   revealed?: number[];
   players: SGPlayer[];

@@ -1,0 +1,57 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "generals/caoren.webp": "image/fullskin/generals/full/nos_caoren.png",
+    "generals/xiahouyuan.webp": "image/fullskin/generals/full/xiahouyuan.png",
+    "generals/huangzhong.webp": "image/fullskin/generals/full/huangzhong.png",
+    "generals/weiyan.webp": "image/fullskin/generals/full/weiyan.png",
+    "generals/xiaoqiao.webp": "image/fullskin/generals/full/xiaoqiao.png",
+    "generals/zhoutai.webp": "image/fullskin/generals/full/nos_zhoutai.png",
+    "generals/zhangjiao.webp": "image/fullskin/generals/full/nos_zhangjiao.png",
+    "generals/yuji.webp": "image/fullskin/generals/full/nos_yuji.png"
+  },
+  "assets": [
+    {
+      "file": "generals/caoren.webp",
+      "sha256": "7006888766c78f6f05e9f7ac6585caa29ee60c19038796b9fda011a93f8bb0ce",
+      "bytes": 19878
+    },
+    {
+      "file": "generals/huangzhong.webp",
+      "sha256": "eadbe926b7a9168d97ae89a430fbbb49b677f7587c0aa5567e935a81da04ab9e",
+      "bytes": 27370
+    },
+    {
+      "file": "generals/weiyan.webp",
+      "sha256": "7221c8f766f11aadb406a292ed22e4d7ef3c7b3012cd58948dc7f6250b98c594",
+      "bytes": 16356
+    },
+    {
+      "file": "generals/xiahouyuan.webp",
+      "sha256": "42fcbc46e0ca281b8ca06ad60e3ea9aa198e46b4e72f5f5c37ab155747abd6fa",
+      "bytes": 24328
+    },
+    {
+      "file": "generals/xiaoqiao.webp",
+      "sha256": "736d0b92ce9ccd276156ae84d04462204de832ba64c6538317253cace6ac7942",
+      "bytes": 18338
+    },
+    {
+      "file": "generals/yuji.webp",
+      "sha256": "0c0e9466c2cd069504ea9093e51d14d7fb08886e4565e70bddb5d45e379aa514",
+      "bytes": 16312
+    },
+    {
+      "file": "generals/zhangjiao.webp",
+      "sha256": "88b3b78eaee15756b1c651a82d6cc4149c48f46ffa2a862d68b06d4e5244ad20",
+      "bytes": 21060
+    },
+    {
+      "file": "generals/zhoutai.webp",
+      "sha256": "78a5fa3a248649d8bbef41480483ad7282d81da52e4b20b64e1b291a538e0073",
+      "bytes": 21442
+    }
+  ],
+  "cdnVerified": true
+}
