@@ -93,6 +93,7 @@ func (s *State) catanDiscover(player, edge int) (int, error) {
 
 func (s *State) catanAfterRoute(q CatanRouteCompletion) error {
 	s.Catan.Trade = nil
+	s.catanClothTrade(q.Player)
 	if err := s.catanCollectTribe(q.Player, q.Edge); err != nil {
 		return err
 	}
@@ -122,6 +123,7 @@ func (s *State) catanAfterRoute(q CatanRouteCompletion) error {
 func (s *State) catanFinishRoute(q CatanRouteCompletion) {
 	g := s.Catan
 	if q.Setup {
+		s.catanScores()
 		s.catanFinishSetupRoute(q.Player, q.Edge)
 		return
 	}

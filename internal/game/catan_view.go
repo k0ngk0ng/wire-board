@@ -3,6 +3,7 @@ package game
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	v["setupLimit"] = g.SetupLimit()
 	if g.Seafarers != nil && g.Seafarers.Fog != nil {
 		sea := v["seafarers"].(map[string]any)
 		sea["fog"] = map[string]any{"remaining": len(g.Seafarers.Fog.Terrain), "startTiles": append([]int{}, g.Seafarers.Fog.StartTiles...)}
@@ -132,7 +133,7 @@ func (s *State) catanView(view map[string]any, player int) {
 				}
 			}
 		}
-		if s.Phase == "catan_robber" {
+		if s.Phase == "catan_robber" && g.pirateAllowed(player) {
 			for _, t := range g.Tiles {
 				if t.Resource == CatanSea && t.ID != g.Seafarers.Pirate {
 					legal["pirate"] = append(legal["pirate"], t.ID)

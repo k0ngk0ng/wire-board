@@ -21,6 +21,7 @@ type CatanSeafarerSeat struct {
 }
 
 type CatanSeafarers struct {
+	Cloth         *CatanClothState    `json:"cloth,omitempty"`
 	Tribe         *CatanTribeState    `json:"tribe,omitempty"`
 	Fog           *CatanFogState      `json:"fog,omitempty"`
 	Scenario      string              `json:"scenario,omitempty"`
@@ -77,7 +78,7 @@ func (g *Catan) landVertex(v int) bool {
 		return true
 	}
 	for _, t := range g.Tiles {
-		if t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0) && slices.Contains(t.Vertices, v) {
+		if t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0) && g.clothLand(t.ID) && slices.Contains(t.Vertices, v) {
 			return true
 		}
 	}
@@ -145,7 +146,7 @@ func (g *Catan) movableShip(p, id int) bool {
 	}
 	e := g.Edges[id]
 	for _, v := range []int{e.A, e.B} {
-		if g.Vertices[v].Owner == p && g.Vertices[v].Level > 0 {
+		if (g.Vertices[v].Owner == p && g.Vertices[v].Level > 0) || g.clothShipAnchor(p, v) {
 			continue
 		}
 		open := true
@@ -195,13 +196,16 @@ func (s *State) catanMoveShip(player int, a Action) error {
 }
 func (s *State) catanMovePirate(player, tile int) error {
 	g := s.Catan
+	if !g.pirateAllowed(player) {
+		return errors.New("必须先与布匹村落建立贸易，才能移动海盗")
+	}
 	if g.Seafarers == nil || s.Phase != "catan_robber" || tile < -1 || tile >= len(g.Tiles) || tile == g.Seafarers.Pirate || (tile >= 0 && g.Tiles[tile].Resource != CatanSea) {
 		return errors.New("请将海盗移至另一块海洋或地图外框")
 	}
 	g.Seafarers.Pirate = tile
 	g.Victims = []int{}
 	for _, e := range g.Edges {
-		if e.Ship && e.Owner >= 0 && e.Owner != player && !g.Players[e.Owner].Eliminated && sum(g.Players[e.Owner].Resources) > 0 && g.pirateBlocks(e.ID) && !slices.Contains(g.Victims, e.Owner) {
+		if e.Ship && e.Owner >= 0 && e.Owner != player && !g.Players[e.Owner].Eliminated && (sum(g.Players[e.Owner].Resources) > 0 || (g.cloth() != nil && g.cloth().Held[e.Owner] > 0)) && g.pirateBlocks(e.ID) && !slices.Contains(g.Victims, e.Owner) {
 			g.Victims = append(g.Victims, e.Owner)
 		}
 	}
@@ -212,6 +216,10 @@ func (s *State) catanMovePirate(player, tile int) error {
 	}
 	if len(g.Victims) == 0 {
 		s.Phase = g.ResumePhase
+		return nil
+	}
+	if g.cloth() != nil {
+		s.Phase = "catan_cloth_steal"
 		return nil
 	}
 	s.Phase = "catan_steal"

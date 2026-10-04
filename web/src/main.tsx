@@ -2511,8 +2511,9 @@ function Turn({
   const g = room.game!;
   const catanPending =
     !!g.catan &&
-    (g.catan.setupStep < 2 * room.seats.length ||
+    (g.catan.setupStep < (g.catan.setupLimit ?? 2 * room.seats.length) ||
       g.phase === "catan_discard" ||
+      g.phase === "catan_cloth_steal" ||
       !!g.catan.helperPending ||
       !!g.catan.seafarers?.tribe?.pending ||
       !!g.catan.goldPending);

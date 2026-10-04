@@ -75,6 +75,7 @@ export const catanPhases: Record<string, string> = {
   catan_discard: "同时选择要弃置的资源",
   catan_robber: "选择强盗的新位置",
   catan_steal: "选择偷取资源的对手",
+  catan_cloth_steal: "选择偷取资源或布匹",
   catan_roads: "放置免费的道路",
   catan_helper: "等待助手选择",
   catan_gold: "选择金矿出产的资源",
@@ -309,7 +310,7 @@ export function CatanBoard({
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine = canPlay && game.turn === you;
   const portMine = canPlay && sea?.tribe?.pending?.player === you;
-  const setup = g.setupStep < 2 * g.players.length;
+  const setup = g.setupStep < (g.setupLimit ?? 2 * g.players.length);
   const phase = game.phase;
   const [mode, setMode] = useState("");
   const [chosen, setChosen] = useState<{ type: string; id: number } | null>(
