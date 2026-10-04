@@ -238,6 +238,15 @@ func (g *Catan) hiddenVictoryPoints(player int) int {
 }
 func (s *State) catanVictory() {
 	g := s.Catan
+	if g.wonders() != nil {
+		if !g.setup() && !g.Players[s.Turn].Eliminated && g.wonderVictory(s.Turn) {
+			s.Finished, s.Phase, s.Winners = true, "finished", []int{s.Turn}
+			g.Trade = nil
+			card := g.wonders().Cards[g.wonderOwned(s.Turn)]
+			s.catanLog(s.Turn, "凭借第 %d 级奇迹「%s」和 %d 分，赢得本局", card.Level, catanWonderRules[card.ID].Name, g.Players[s.Turn].Score)
+		}
+		return
+	}
 	if p := g.pirateIslands(); p != nil && (s.Turn >= len(p.Fortresses) || p.Fortresses[s.Turn].Strength > 0) {
 		return
 	}
@@ -332,6 +341,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_wonder_claim", "catan_wonder_build":
+		return s.catanWonderAction(player, a)
 	case "catan_roll":
 		if s.Phase != "catan_roll" {
 			return errors.New("当前不能掷骰")
