@@ -7,43 +7,44 @@ import (
 )
 
 type SGPlayer struct {
-	Silenced      bool           `json:"silenced,omitempty"`
-	HandSealed    bool           `json:"handSealed,omitempty"`
-	Yiji          []int          `json:"yiji,omitempty"`
-	Qianxun       []int          `json:"qianxun,omitempty"`
-	PreviousHP    int            `json:"previousHP,omitempty"`
-	PreviousHPSet bool           `json:"previousHPSet,omitempty"`
-	JieLuoyi      bool           `json:"jieLuoyi,omitempty"`
-	BaseKingdom   string         `json:"baseKingdom,omitempty"`
-	Temporary     []string       `json:"temporary,omitempty"`
-	Stars         []int          `json:"stars,omitempty"`
-	Gale          []int          `json:"gale,omitempty"`
-	Fog           []int          `json:"fog,omitempty"`
-	ArmorOff      []int          `json:"armorOff,omitempty"`
-	TurnKills     int            `json:"turnKills,omitempty"`
-	Acquired      []string       `json:"acquired,omitempty"`
-	SkillsLost    bool           `json:"skillsLost,omitempty"`
-	Fields        []int          `json:"fields,omitempty"`
-	Avatars       []string       `json:"avatars,omitempty"`
-	Avatar        string         `json:"avatar,omitempty"`
-	AvatarSkill   string         `json:"avatarSkill,omitempty"`
-	AvatarKingdom string         `json:"avatarKingdom,omitempty"`
-	Marks         map[string]int `json:"marks,omitempty"`
-	Flipped       bool           `json:"flipped,omitempty"`
-	Buqu          []int          `json:"buqu,omitempty"`
-	BuquActive    bool           `json:"buquActive,omitempty"`
-	Chained       bool           `json:"chained,omitempty"`
-	Drank         int            `json:"drank,omitempty"`
-	Role          string         `json:"role"`
-	General       string         `json:"general"`
-	HP            int            `json:"hp"`
-	MaxHP         int            `json:"maxHP"`
-	Dead          bool           `json:"dead"`
-	Hand          []int          `json:"hand"`
-	Equip         []int          `json:"equip"`
-	Judgment      []SGDelayed    `json:"judgment"`
-	Used          map[string]int `json:"used"`
-	Choices       []string       `json:"choices"`
+	Hegemony      *SGHegemonyPlayer `json:"hegemony,omitempty"`
+	Silenced      bool              `json:"silenced,omitempty"`
+	HandSealed    bool              `json:"handSealed,omitempty"`
+	Yiji          []int             `json:"yiji,omitempty"`
+	Qianxun       []int             `json:"qianxun,omitempty"`
+	PreviousHP    int               `json:"previousHP,omitempty"`
+	PreviousHPSet bool              `json:"previousHPSet,omitempty"`
+	JieLuoyi      bool              `json:"jieLuoyi,omitempty"`
+	BaseKingdom   string            `json:"baseKingdom,omitempty"`
+	Temporary     []string          `json:"temporary,omitempty"`
+	Stars         []int             `json:"stars,omitempty"`
+	Gale          []int             `json:"gale,omitempty"`
+	Fog           []int             `json:"fog,omitempty"`
+	ArmorOff      []int             `json:"armorOff,omitempty"`
+	TurnKills     int               `json:"turnKills,omitempty"`
+	Acquired      []string          `json:"acquired,omitempty"`
+	SkillsLost    bool              `json:"skillsLost,omitempty"`
+	Fields        []int             `json:"fields,omitempty"`
+	Avatars       []string          `json:"avatars,omitempty"`
+	Avatar        string            `json:"avatar,omitempty"`
+	AvatarSkill   string            `json:"avatarSkill,omitempty"`
+	AvatarKingdom string            `json:"avatarKingdom,omitempty"`
+	Marks         map[string]int    `json:"marks,omitempty"`
+	Flipped       bool              `json:"flipped,omitempty"`
+	Buqu          []int             `json:"buqu,omitempty"`
+	BuquActive    bool              `json:"buquActive,omitempty"`
+	Chained       bool              `json:"chained,omitempty"`
+	Drank         int               `json:"drank,omitempty"`
+	Role          string            `json:"role"`
+	General       string            `json:"general"`
+	HP            int               `json:"hp"`
+	MaxHP         int               `json:"maxHP"`
+	Dead          bool              `json:"dead"`
+	Hand          []int             `json:"hand"`
+	Equip         []int             `json:"equip"`
+	Judgment      []SGDelayed       `json:"judgment"`
+	Used          map[string]int    `json:"used"`
+	Choices       []string          `json:"choices"`
 }
 type SGDelayed struct {
 	Card int    `json:"card"`
@@ -53,29 +54,31 @@ type SGDelayed struct {
 // Every suspended effect is plain data, including nested rescue / counterspell
 // windows. No goroutine, callback or browser state is required to resume play.
 type SGEvent struct {
-	TrickID         int      `json:"trickID,omitempty"`
-	OriginalTargets []int    `json:"originalTargets,omitempty"`
-	TrickChecked    bool     `json:"trickChecked,omitempty"`
-	Foreseen        bool     `json:"foreseen,omitempty"`
-	SavageSource    int      `json:"savageSource,omitempty"`
-	Color           int      `json:"color,omitempty"`
-	DamageStage     int      `json:"damageStage,omitempty"`
-	Transfer        bool     `json:"transfer,omitempty"`
-	Near            bool     `json:"near,omitempty"`
-	Nature          string   `json:"nature,omitempty"`
-	Chain           bool     `json:"chain,omitempty"`
-	Next            *SGEvent `json:"next,omitempty"`
-	Type            string   `json:"type"`
-	Actor           int      `json:"actor"`
-	Target          int      `json:"target"`
-	Kind            string   `json:"kind,omitempty"`
-	Cards           []int    `json:"cards,omitempty"`
-	Targets         []int    `json:"targets,omitempty"`
-	Amount          int      `json:"amount,omitempty"`
-	Step            int      `json:"step,omitempty"`
-	Count           int      `json:"count,omitempty"`
-	Aux             int      `json:"aux,omitempty"`
-	Flag            bool     `json:"flag,omitempty"`
+	HegFactionCounter bool     `json:"hegFactionCounter,omitempty"`
+	CounterDepth      int      `json:"counterDepth,omitempty"`
+	TrickID           int      `json:"trickID,omitempty"`
+	OriginalTargets   []int    `json:"originalTargets,omitempty"`
+	TrickChecked      bool     `json:"trickChecked,omitempty"`
+	Foreseen          bool     `json:"foreseen,omitempty"`
+	SavageSource      int      `json:"savageSource,omitempty"`
+	Color             int      `json:"color,omitempty"`
+	DamageStage       int      `json:"damageStage,omitempty"`
+	Transfer          bool     `json:"transfer,omitempty"`
+	Near              bool     `json:"near,omitempty"`
+	Nature            string   `json:"nature,omitempty"`
+	Chain             bool     `json:"chain,omitempty"`
+	Next              *SGEvent `json:"next,omitempty"`
+	Type              string   `json:"type"`
+	Actor             int      `json:"actor"`
+	Target            int      `json:"target"`
+	Kind              string   `json:"kind,omitempty"`
+	Cards             []int    `json:"cards,omitempty"`
+	Targets           []int    `json:"targets,omitempty"`
+	Amount            int      `json:"amount,omitempty"`
+	Step              int      `json:"step,omitempty"`
+	Count             int      `json:"count,omitempty"`
+	Aux               int      `json:"aux,omitempty"`
+	Flag              bool     `json:"flag,omitempty"`
 }
 type SGPrompt struct {
 	ID      int      `json:"id"`
@@ -88,6 +91,7 @@ type SGPrompt struct {
 	Choices []string `json:"choices,omitempty"`
 }
 type Sanguosha struct {
+	Hegemony       *SGHegemony    `json:"hegemony,omitempty"`
 	TrickSequence  int            `json:"trickSequence,omitempty"`
 	RulesVersion   int            `json:"rulesVersion,omitempty"`
 	ActivePhase    string         `json:"activePhase,omitempty"`
@@ -153,6 +157,9 @@ func (s *State) sgName(i int) string {
 	if i < 0 || i >= len(s.Sanguosha.Players) {
 		return "天灾"
 	}
+	if s.sgHegemony() {
+		return s.sgHegName(i)
+	}
 	p := s.Sanguosha.Players[i]
 	name := sgGeneral(p.General).Name
 	if name == "" {
@@ -167,6 +174,9 @@ func (s *State) sgHas(i int, skill string) bool {
 	p := s.Sanguosha.Players[i]
 	if p.Dead || p.Silenced && !sgCompulsory(skill) {
 		return false
+	}
+	if s.sgHegemony() {
+		return slices.Contains(s.sgHegSkills(i, true), skill)
 	}
 	if sgLordSkill(skill) && p.Role != "lord" {
 		return false
@@ -201,7 +211,7 @@ func (s *State) sgAsk(player int, kind, msg string, e SGEvent) {
 	g.Sequence++
 	g.Pending = &SGPrompt{ID: g.Sequence, Player: player, Kind: kind, Message: msg, Event: e}
 	s.Phase = "sg_response"
-	if kind == "general" {
+	if kind == "general" || kind == "heg_generals" {
 		s.Phase = "sg_select"
 	}
 }
@@ -285,6 +295,9 @@ func (s *State) sgDistance(a, b int) int {
 	if x < 0 || y < 0 {
 		return 999
 	}
+	if s.sgHegemony() && a == s.Turn && s.Sanguosha.ActivePhase != "inactive" && s.Sanguosha.Players[a].Used["heg_fenxun"] == b+1 {
+		return 1
+	}
 	d := x - y
 	if d < 0 {
 		d = -d
@@ -307,7 +320,17 @@ func (s *State) sgDistance(a, b int) int {
 	}
 	return max(1, d)
 }
-func (s *State) sgRange(i int) int { return max(1, SGCardTypes[s.sgWeapon(i)].Range) }
+func (s *State) sgRange(i int) int {
+	n := max(1, SGCardTypes[s.sgWeapon(i)].Range)
+	if s.sgHegemony() {
+		for _, who := range s.sgOrder(0) {
+			if who != i && s.sgHegFriend(i, who) && s.sgWeapon(who) == "six_swords" {
+				return n + 1 // Multiple allied swords do not stack.
+			}
+		}
+	}
+	return n
+}
 func (s *State) sgCanTarget(a, b int, kind string) bool {
 	return s.sgCanTargetRange(a, b, kind, false)
 }
@@ -316,6 +339,14 @@ func (s *State) sgCanTargetRange(a, b int, kind string, ignoreRange bool) bool {
 		return false
 	}
 	p := s.Sanguosha.Players[b]
+	if s.sgHegemony() {
+		if kind == "befriend_attacking" && (!s.sgHegShown(a) || !s.sgHegShown(b) || s.sgHegFriend(a, b)) {
+			return false
+		}
+		if kind == "known_both" && len(p.Hand) == 0 && p.Hegemony.Shown[0] && p.Hegemony.Shown[1] {
+			return false
+		}
+	}
 	if a == b && kind != "peach" && kind != "analeptic" && kind != "lightning" && kind != "ex_nihilo" && kind != "iron_chain" && kind != "fire_attack" {
 		return false
 	}
@@ -563,6 +594,11 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 				return "", errors.New("国色需要方块牌")
 			}
 			kind = "indulgence"
+		case "heg_duoshi":
+			if !s.sgHegemony() || !red || !s.sgOwn(i, c.ID, true) || s.Sanguosha.Players[i].Used[skill] >= 4 {
+				return "", errors.New("度势需要红色手牌，每阶段至多四次")
+			}
+			kind = "await_exhausted"
 		case "jijiu":
 			if !red || i == s.Turn {
 				return "", errors.New("急救只能在回合外使用红色牌")
@@ -574,7 +610,7 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 	} else if !s.sgOwn(i, c.ID, true) {
 		return "", errors.New("装备区的牌需通过技能转化")
 	}
-	if desired != "" && desired != kind && !(desired == "slash" && sgIsSlash(kind)) {
+	if desired != "" && desired != kind && !(desired == "slash" && sgIsSlash(kind)) && !(s.sgHegemony() && desired == "nullification" && kind == "heg_nullification") {
 		return "", errors.New("响应的牌型不正确")
 	}
 	return kind, nil
@@ -625,6 +661,9 @@ func (s *State) sgApply(i int, a Action) error {
 	if err != nil {
 		return err
 	}
+	if a.Skill == "heg_duoshi" {
+		g.Players[i].Used[a.Skill]++
+	}
 	return s.sgUse(i, kind, a.Cards, a.Targets, false)
 }
 func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error {
@@ -636,7 +675,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	if sgIsSlash(kind) && s.sgTianyi(i) == -1 {
 		return errors.New("天义拼点未赢，本回合不能使用杀")
 	}
-	if kind == "jink" || kind == "nullification" {
+	if kind == "jink" || kind == "nullification" || kind == "heg_nullification" {
 		return errors.New("此牌只能响应时使用")
 	}
 	if info.Slot != "" {
@@ -649,10 +688,10 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		s.sgLog("%s 装备「%s」", s.sgName(i), info.Name)
 		return nil
 	}
-	if kind == "iron_chain" && len(targets) == 0 {
+	if (kind == "iron_chain" || kind == "known_both") && len(targets) == 0 {
 		s.sgPush(SGEvent{Type: "draw", Actor: i, Amount: 1})
 		s.sgSpent(i, ids)
-		s.sgLog("%s 重铸铁索连环，摸一张牌", s.sgName(i))
+		s.sgLog("%s 重铸%s，摸一张牌", s.sgName(i), info.Name)
 		return nil
 	}
 	switch kind {
@@ -670,6 +709,16 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		targets = []int{i}
 	case "amazing_grace", "god_salvation":
 		targets = s.sgOrder(i)
+	case "await_exhausted":
+		if !s.sgHegemony() {
+			return errors.New("此牌仅用于国战")
+		}
+		targets = nil
+		for _, who := range s.sgOrder(i) {
+			if s.sgHegFriend(i, who) {
+				targets = append(targets, who)
+			}
+		}
 	case "savage_assault", "archery_attack":
 		targets = s.sgOrder(s.sgNext(i))
 		targets = sgRemove(targets, i)
@@ -700,7 +749,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		}
 	}
 	// Global tricks omit prohibited targets, while explicit targets reject above.
-	if slices.Contains([]string{"amazing_grace", "god_salvation", "savage_assault", "archery_attack"}, kind) {
+	if slices.Contains([]string{"amazing_grace", "god_salvation", "savage_assault", "archery_attack", "await_exhausted"}, kind) {
 		targets = slices.DeleteFunc(targets, func(t int) bool { return s.sgWeimu(i, t, kind, ids) })
 	}
 	if kind == "lightning" && s.sgWeimu(i, i, kind, ids) {
@@ -786,6 +835,12 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		}
 		events = append(events, e)
 	}
+	if kind == "await_exhausted" {
+		for _, target := range targets {
+			events = append(events, SGEvent{Type: "heg_await_discard", Target: target, TrickID: trickID})
+		}
+		events = append(events, SGEvent{Type: "heg_await_cleanup", TrickID: trickID})
+	}
 	events = append(events, SGEvent{Type: "cleanup", Actor: i, Kind: kind, Cards: ids})
 	if kind == "amazing_grace" {
 		events = append(events, SGEvent{Type: "grace_cleanup"})
@@ -797,6 +852,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
 	}
 	s.sgGodTrick(i, kind)
+	s.sgHegJizhi(i, kind, ids)
 	targetNames := ""
 	for _, t := range targets {
 		targetNames += " " + s.sgName(t)

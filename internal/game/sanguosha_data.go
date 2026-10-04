@@ -151,6 +151,9 @@ func sgDeck() []SGCard {
 var sgCards = sgDeck()
 
 func sgCard(id int) SGCard {
+	if id >= 1001 && id < 1001+len(sgHegemonyCards) {
+		return sgHegemonyCards[id-1001]
+	}
 	if id > len(sgCards) && id <= len(sgCards)+len(sgMilitaryCards) {
 		return sgMilitaryCards[id-len(sgCards)-1]
 	}
@@ -160,7 +163,7 @@ func sgCard(id int) SGCard {
 	return sgCards[id-1]
 }
 func sgGeneral(id string) SGGeneral {
-	for _, catalog := range [][]SGGeneral{SGGenerals, sgWindGenerals, sgFireGenerals, sgThicketGenerals, sgMountainGenerals, sgGodGenerals, sgJieGenerals} {
+	for _, catalog := range [][]SGGeneral{SGGenerals, sgWindGenerals, sgFireGenerals, sgThicketGenerals, sgMountainGenerals, sgGodGenerals, sgJieGenerals, sgHegemonyGenerals} {
 		for _, g := range catalog {
 			if g.ID == id {
 				return g

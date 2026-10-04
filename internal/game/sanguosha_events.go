@@ -36,6 +36,9 @@ func (s *State) sgRun() {
 }
 func (s *State) sgEvent(e SGEvent) {
 	g := s.Sanguosha
+	if s.sgHegEvent(e) {
+		return
+	}
 	if s.sgJieEvent(e) {
 		return
 	}
@@ -232,6 +235,7 @@ func (s *State) sgEvent(e SGEvent) {
 				e.Type = "effect"
 				s.sgPush(e)
 			} else {
+				s.sgHegCancelFaction(e)
 				if e.Aux == -2 {
 					s.sgDelayCancelled(e)
 				}
@@ -260,7 +264,7 @@ func (s *State) sgEvent(e SGEvent) {
 		}
 		e.Type = "slash_tieji"
 		s.sgPush(e)
-		if s.sgWeapon(e.Actor) == "double_sword" && s.sgFemale(e.Actor) != s.sgFemale(e.Target) {
+		if s.sgWeapon(e.Actor) == "double_sword" && (s.sgFemale(e.Actor) && s.sgMale(e.Target) || s.sgMale(e.Actor) && s.sgFemale(e.Target)) {
 			s.sgAsk(e.Actor, "double_sword", "是否发动雌雄双股剑？", e)
 		}
 	case "slash_tieji":
@@ -575,6 +579,9 @@ func (s *State) sgEffect(e SGEvent) {
 	if !s.sgAlive(e.Target) {
 		return
 	}
+	if s.sgHegEffect(e) {
+		return
+	}
 	if !e.TrickChecked && sgIsTrick(e.Kind) && len(e.OriginalTargets) <= 1 && (e.Aux == -2 || !sgIsDelayed(e.Kind) && e.Actor != e.Target) && s.sgHas(e.Target, "jie_qianxun") && len(g.Players[e.Target].Hand) > 0 {
 		e.TrickChecked = true
 		e.Type = "effect"
@@ -788,6 +795,10 @@ func (s *State) sgJudgeResult(e SGEvent) {
 	s.sgPush(after)
 }
 func (s *State) sgDie(i, killer int) {
+	if s.sgHegemony() {
+		s.sgHegDie(i, killer)
+		return
+	}
 	g := s.Sanguosha
 	p := &g.Players[i]
 	duanchang := s.sgHas(i, "duanchang")
@@ -888,6 +899,10 @@ func (s *State) sgDeathClear(i int) {
 
 }
 func (s *State) sgDeathReward(i, killer int) {
+	if s.sgHegemony() {
+		s.sgHegDeathReward(i, killer)
+		return
+	}
 	g := s.Sanguosha
 	p := &g.Players[i]
 	if s.sgAlive(killer) {

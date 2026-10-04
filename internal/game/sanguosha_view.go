@@ -8,6 +8,10 @@ func (s *State) sgView(viewer int) map[string]any {
 	g := s.Sanguosha
 	players := []map[string]any{}
 	for i, p := range g.Players {
+		if s.sgHegemony() {
+			players = append(players, s.sgHegPlayerView(i, viewer))
+			continue
+		}
 		general := p.General
 		if g.Selecting && i != g.Lord && i != viewer {
 			general = ""
@@ -58,6 +62,11 @@ func (s *State) sgView(viewer int) map[string]any {
 		players = append(players, v)
 	}
 	visible := map[string]any{"players": players, "lord": g.Lord, "selecting": g.Selecting, "remaining": len(g.Deck), "discardCount": len(g.Discard), "table": g.Table, "grace": g.Grace, "generals": g.generalCatalog(), "cardTypes": SGCardTypes, "cards": s.sgVisibleCatalog(viewer), "skills": SGSkills, "sequence": g.Sequence, "options": g.Options, "revealed": g.Revealed}
+	if s.sgHegemony() {
+		visible["lord"] = -1
+		visible["first"] = g.Hegemony.First
+		visible["hegemony"] = true
+	}
 	if len(g.Bluffs) > 0 {
 		b := g.Bluffs[len(g.Bluffs)-1]
 		visible["bluff"] = map[string]any{"player": b.Player, "declared": b.Declared, "context": s.sgBluffContext(b), "questioned": b.Questioned, "resolved": b.Resolved}
@@ -90,6 +99,16 @@ func (s *State) sgView(viewer int) map[string]any {
 				prompt["protectedCards"] = blocked
 			}
 			prompt["targets"] = p.Targets
+			if s.sgHegemony() && p.Kind == "heg_intel" && e.Kind != "hand" {
+				slot := 0
+				if e.Kind == "deputy" {
+					slot = 1
+				}
+				prompt["general"] = s.sgHegGeneralIDs(e.Target)[slot]
+			}
+			if s.sgHegemony() && p.Kind == "nullification" {
+				prompt["factionCounter"] = e.CounterDepth == 0 && e.Aux != -2 && !sgIsDelayed(e.Kind)
+			}
 			if p.Kind == "huashen" {
 				prompt["required"] = p.Event.Flag
 				choices := map[string][]string{}

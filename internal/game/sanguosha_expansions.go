@@ -71,6 +71,9 @@ func NewSanguosha(n int, options SGOptions) (*State, error) {
 }
 
 func (g *Sanguosha) cardCatalog() []SGCard {
+	if g.Hegemony != nil {
+		return sgHegemonyCards
+	}
 	if g.Options.Deck != "military" {
 		return sgCards
 	}

@@ -12,6 +12,7 @@ func sgCompulsory(skill string) bool {
 		"weimu", "wansha", "roulin", "benghuai", "xiangle", "duanchang",
 		"wushen", "wuhun", "feiying", "kuangbao", "wumou", "juejing", "renjie",
 		"jie_qicai", "jie_yingzi", "zhaxiang",
+		"heg_duanchang", "heg_mingshi", "heg_suishi",
 	}, skill)
 }
 

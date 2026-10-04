@@ -38,6 +38,9 @@ func init() {
 }
 
 func (g *Sanguosha) generalCatalog() []SGGeneral {
+	if g.Hegemony != nil {
+		return sgHegemonyGenerals
+	}
 	all := append([]SGGeneral{}, SGGenerals...)
 	if g.Options.StandardVersion == "breakthrough" {
 		for i, general := range all {
@@ -174,6 +177,11 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 	case "damage_dealt":
 		s.sgGodDamageDealt(e)
 		s.sgThicketDamageDealt(e)
+		if s.sgHegemony() && sgIsSlash(e.Kind) && !e.Chain && !e.Transfer {
+			next := e
+			next.Type = "heg_triblade"
+			s.sgPush(next)
+		}
 		if e.Near && s.sgHas(e.Actor, "kuanggu") {
 			s.sgHeal(e.Actor, e.Amount)
 		}
@@ -397,19 +405,25 @@ func (s *State) sgHuangtianGive(i int, a Action) error {
 func (s *State) sgVisibleCatalog(viewer int) []SGCard {
 	g := s.Sanguosha
 	cards := append([]SGCard{}, g.cardCatalog()...)
+	positions := make(map[int]int, len(cards))
+	for j, card := range cards {
+		positions[card.ID] = j
+	}
 	for _, id := range g.Table {
-		if suit, ok := g.TableSuits[id]; ok && id > 0 && id <= len(cards) {
-			cards[id-1].Suit = suit
+		if pos, exists := positions[id]; exists {
+			if suit, ok := g.TableSuits[id]; ok {
+				cards[pos].Suit = suit
+			}
 		}
 	}
 	for id, kind := range g.TableKinds {
-		if id > 0 && id <= len(cards) {
-			cards[id-1].Kind = kind
+		if pos, exists := positions[id]; exists {
+			cards[pos].Kind = kind
 		}
 	}
 	filter := func(owner, id int) {
-		if id > 0 && id <= len(cards) {
-			cards[id-1] = s.sgCardFor(owner, id)
+		if pos, exists := positions[id]; exists {
+			cards[pos] = s.sgCardFor(owner, id)
 		}
 	}
 	for i, p := range g.Players {
@@ -420,7 +434,7 @@ func (s *State) sgVisibleCatalog(viewer int) []SGCard {
 			filter(i, d.Card)
 		}
 		for _, id := range p.Hand {
-			if i == viewer || slices.Contains(g.Revealed, id) || g.Pending != nil && g.Pending.Kind == "gongxin" && g.Pending.Player == viewer && g.Pending.Event.Target == i {
+			if i == viewer || slices.Contains(g.Revealed, id) || g.Pending != nil && g.Pending.Player == viewer && g.Pending.Event.Target == i && (g.Pending.Kind == "gongxin" || g.Pending.Kind == "heg_intel" && g.Pending.Event.Kind == "hand") {
 				filter(i, id)
 			}
 		}
