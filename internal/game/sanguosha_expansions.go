@@ -29,13 +29,13 @@ func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
 		return o, errors.New("未知三国杀牌堆")
 	}
 	for _, pack := range o.Packs {
-		if pack != "standard" && pack != "wind" && pack != "fire" {
+		if pack != "standard" && pack != "wind" && pack != "fire" && pack != "thicket" {
 			return o, errors.New("该武将包尚未开放")
 		}
 	}
 	requested := o.Packs
 	o.Packs = []string{"standard"}
-	for _, pack := range []string{"wind", "fire"} {
+	for _, pack := range []string{"wind", "fire", "thicket"} {
 		if slices.Contains(requested, pack) {
 			o.Packs = append(o.Packs, pack)
 		}
@@ -158,6 +158,12 @@ func (s *State) sgDamage(e SGEvent) {
 	g := s.Sanguosha
 	if !s.sgAlive(e.Target) || e.Amount <= 0 {
 		return
+	}
+	if e.SavageSource > 0 {
+		e.Actor = e.SavageSource - 1
+		if !s.sgAlive(e.Actor) {
+			e.Actor = -1
+		}
 	}
 	if e.Nature == "" {
 		e.Nature = sgNature(e.Kind)

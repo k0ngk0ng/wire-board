@@ -45,6 +45,9 @@ func (g *Sanguosha) generalCatalog() []SGGeneral {
 	if slices.Contains(g.Options.Packs, "fire") {
 		all = append(all, sgFireGenerals...)
 	}
+	if slices.Contains(g.Options.Packs, "thicket") {
+		all = append(all, sgThicketGenerals...)
+	}
 	return all
 }
 func (s *State) sgLordChoices() {
@@ -55,6 +58,9 @@ func (s *State) sgLordChoices() {
 	}
 	if slices.Contains(g.Options.Packs, "fire") {
 		lords = append(lords, "yuanshao")
+	}
+	if slices.Contains(g.Options.Packs, "thicket") {
+		lords = append(lords, "caopi", "dongzhuo")
 	}
 	ids := []string{}
 	for _, general := range g.generalCatalog() {
@@ -93,7 +99,7 @@ func (s *State) sgCardColor(i int, ids []int) int {
 }
 
 func (s *State) sgEndPhase(i int) []SGEvent {
-	return []SGEvent{{Type: "discard_phase", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "wind_finish", Actor: i}, {Type: "next", Actor: i}}
+	return []SGEvent{{Type: "discard_phase", Actor: i}, {Type: "optional_draw", Actor: i, Kind: "biyue", Amount: 1}, {Type: "benghuai", Actor: i}, {Type: "wind_finish", Actor: i}, {Type: "next", Actor: i}}
 }
 
 // A separate event stage permits transfer before recipient armor, and avoids
@@ -144,6 +150,7 @@ func (s *State) sgWindEvent(e SGEvent) bool {
 			s.sgAsk(e.Actor, "leiji", "雷击：选择一名角色判定，黑桃则造成2点雷电伤害", e)
 		}
 	case "damage_dealt":
+		s.sgThicketDamageDealt(e)
 		if e.Near && s.sgHas(e.Actor, "kuanggu") {
 			s.sgHeal(e.Actor, e.Amount)
 		}

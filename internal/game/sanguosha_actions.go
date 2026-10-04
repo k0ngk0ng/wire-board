@@ -21,6 +21,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	if handled, err := s.sgFireRespond(i, a, prompt); handled {
 		return err
 	}
+	if handled, err := s.sgThicketRespond(i, a, prompt); handled {
+		return err
+	}
 	switch prompt.Kind {
 	case "general":
 		if !slices.Contains(p.Choices, a.Choice) {
@@ -94,6 +97,11 @@ func (s *State) sgRespond(i int, a Action) error {
 				p.Hand = append(p.Hand, ids[0])
 			}
 			s.sgLog("%s 发动突袭，获得 %d 张手牌", s.sgName(i), len(a.Targets))
+		case "zaiqi", "haoshi":
+			if !s.sgHas(i, a.Choice) {
+				return errors.New("没有此摸牌技能")
+			}
+			return s.sgThicketDraw(i, a.Choice)
 		case "shuangxiong":
 			if !s.sgHas(i, "shuangxiong") {
 				return errors.New("没有双雄")
@@ -255,7 +263,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		if e.Kind == "jijiang" {
 			wanted = "slash"
 		}
-		if a.Skill == "fan" && e.Next != nil && e.Next.Kind != "collateral" {
+		if a.Skill == "fan" && e.Next != nil && e.Next.Kind != "collateral" && e.Next.Kind != "luanwu" {
 			return errors.New("此时不能发动朱雀羽扇")
 		}
 		kind, err := s.sgAs(i, a.Cards, a.Skill, wanted)
@@ -267,7 +275,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgLose(i, a.Cards)
 			return s.sgUse(e.Actor, kind, a.Cards, e.Targets, false)
 		}
-		if e.Next.Kind == "collateral" {
+		if e.Next.Kind == "collateral" || e.Next.Kind == "luanwu" {
 			s.sgLose(i, a.Cards)
 			return s.sgUse(e.Actor, kind, a.Cards, []int{e.Next.Aux}, true)
 		}
@@ -489,6 +497,9 @@ func (s *State) sgSkill(i int, a Action) error {
 	}
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
+	}
+	if handled, err := s.sgThicketSkill(i, a); handled {
+		return err
 	}
 	if handled, err := s.sgFireSkill(i, a); handled {
 		return err

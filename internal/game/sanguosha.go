@@ -32,24 +32,25 @@ type SGDelayed struct {
 // Every suspended effect is plain data, including nested rescue / counterspell
 // windows. No goroutine, callback or browser state is required to resume play.
 type SGEvent struct {
-	Color       int      `json:"color,omitempty"`
-	DamageStage int      `json:"damageStage,omitempty"`
-	Transfer    bool     `json:"transfer,omitempty"`
-	Near        bool     `json:"near,omitempty"`
-	Nature      string   `json:"nature,omitempty"`
-	Chain       bool     `json:"chain,omitempty"`
-	Next        *SGEvent `json:"next,omitempty"`
-	Type        string   `json:"type"`
-	Actor       int      `json:"actor"`
-	Target      int      `json:"target"`
-	Kind        string   `json:"kind,omitempty"`
-	Cards       []int    `json:"cards,omitempty"`
-	Targets     []int    `json:"targets,omitempty"`
-	Amount      int      `json:"amount,omitempty"`
-	Step        int      `json:"step,omitempty"`
-	Count       int      `json:"count,omitempty"`
-	Aux         int      `json:"aux,omitempty"`
-	Flag        bool     `json:"flag,omitempty"`
+	SavageSource int      `json:"savageSource,omitempty"`
+	Color        int      `json:"color,omitempty"`
+	DamageStage  int      `json:"damageStage,omitempty"`
+	Transfer     bool     `json:"transfer,omitempty"`
+	Near         bool     `json:"near,omitempty"`
+	Nature       string   `json:"nature,omitempty"`
+	Chain        bool     `json:"chain,omitempty"`
+	Next         *SGEvent `json:"next,omitempty"`
+	Type         string   `json:"type"`
+	Actor        int      `json:"actor"`
+	Target       int      `json:"target"`
+	Kind         string   `json:"kind,omitempty"`
+	Cards        []int    `json:"cards,omitempty"`
+	Targets      []int    `json:"targets,omitempty"`
+	Amount       int      `json:"amount,omitempty"`
+	Step         int      `json:"step,omitempty"`
+	Count        int      `json:"count,omitempty"`
+	Aux          int      `json:"aux,omitempty"`
+	Flag         bool     `json:"flag,omitempty"`
 }
 type SGPrompt struct {
 	ID      int      `json:"id"`
@@ -130,7 +131,7 @@ func (s *State) sgHas(i int, skill string) bool {
 	if p.Dead {
 		return false
 	}
-	if (skill == "hujia" || skill == "jijiang" || skill == "jiuyuan" || skill == "huangtian" || skill == "xueyi") && p.Role != "lord" {
+	if (skill == "hujia" || skill == "jijiang" || skill == "jiuyuan" || skill == "huangtian" || skill == "xueyi" || skill == "songwei" || skill == "baonue") && p.Role != "lord" {
 		return false
 	}
 	return slices.Contains(sgGeneral(p.General).Skills, skill)
@@ -281,7 +282,11 @@ func (s *State) sgCanTarget(a, b int, kind string) bool {
 	if sgIsSlash(kind) && s.sgTianyi(a) != 1 && s.sgDistance(a, b) > s.sgRange(a) {
 		return false
 	}
-	if (kind == "snatch" || kind == "supply_shortage") && !s.sgHas(a, "qicai") && s.sgDistance(a, b) > 1 {
+	limit := 1
+	if kind == "supply_shortage" && s.sgHas(a, "duanliang") {
+		limit = 2
+	}
+	if (kind == "snatch" || kind == "supply_shortage") && !s.sgHas(a, "qicai") && s.sgDistance(a, b) > limit {
 		return false
 	}
 	if (kind == "snatch" || kind == "dismantlement") && len(p.Hand)+len(p.Equip)+len(p.Judgment) == 0 {
@@ -340,7 +345,7 @@ func (s *State) sgDiscard(i int, ids []int) {
 	s.Sanguosha.Discard = append(s.Sanguosha.Discard, ids...)
 }
 func (s *State) sgPay(i int, ids []int) {
-	if v := s.Sanguosha.Virtual; v != nil && v.Paid && v.Player == i && len(ids) == 1 && ids[0] == v.Card {
+	if v := s.Sanguosha.Virtual; v != nil && v.Paid && len(ids) == 1 && ids[0] == v.Card && slices.Contains(s.Sanguosha.Table, v.Card) {
 		return
 	}
 	s.sgPlaceTable(i, ids)
@@ -452,6 +457,16 @@ func (s *State) sgAs(i int, ids []int, skill, desired string) (string, error) {
 				}
 				kind = "duel"
 			}
+		case "duanliang":
+			if red || sgIsTrick(kind) && SGCardTypes[kind].Slot == "" {
+				return "", errors.New("断粮需要黑色基本牌或装备牌")
+			}
+			kind = "supply_shortage"
+		case "jiuchi":
+			if c.Suit != 0 || !s.sgOwn(i, c.ID, true) {
+				return "", errors.New("酒池需要黑桃手牌")
+			}
+			kind = "analeptic"
 		case "wusheng":
 			if !red {
 				return "", errors.New("武圣需要红色牌")
@@ -609,11 +624,18 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		}
 		seen := map[int]bool{}
 		for _, t := range targets {
-			if seen[t] || !legality.sgCanTarget(i, t, kind) {
+			if seen[t] || !legality.sgCanTarget(i, t, kind) || s.sgWeimu(i, t, kind, ids) {
 				return errors.New("目标不符合此牌条件")
 			}
 			seen[t] = true
 		}
+	}
+	// Global tricks omit prohibited targets, while explicit targets reject above.
+	if slices.Contains([]string{"amazing_grace", "god_salvation", "savage_assault", "archery_attack"}, kind) {
+		targets = slices.DeleteFunc(targets, func(t int) bool { return s.sgWeimu(i, t, kind, ids) })
+	}
+	if kind == "lightning" && s.sgWeimu(i, i, kind, ids) {
+		return errors.New("帷幕不能成为黑色锦囊目标")
 	}
 	// Multiple targets of the same card resolve in current-turn seat order.
 	if kind != "collateral" && len(targets) > 1 {
@@ -653,6 +675,14 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	}
 	for _, t := range targets {
 		e := SGEvent{Type: "effect", Actor: i, Target: t, Kind: kind, Cards: ids, Amount: 1, Aux: -1, Nature: sgNature(kind), Color: s.sgCardColor(i, ids)}
+		if kind == "savage_assault" {
+			for _, who := range s.sgOrder(s.Turn) {
+				if who != i && s.sgHas(who, "huoshou") {
+					e.SavageSource = who + 1
+					break
+				}
+			}
+		}
 		if sgIsSlash(kind) {
 			e.Type = "slash_start"
 			e.Amount += drank
@@ -667,7 +697,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		}
 		events = append(events, e)
 	}
-	events = append(events, SGEvent{Type: "cleanup", Cards: ids})
+	events = append(events, SGEvent{Type: "cleanup", Actor: i, Kind: kind, Cards: ids})
 	if kind == "amazing_grace" {
 		events = append(events, SGEvent{Type: "grace_cleanup"})
 	}

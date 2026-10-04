@@ -1,0 +1,57 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "generals/caopi.webp": "image/fullskin/generals/full/caopi.png",
+    "generals/xuhuang.webp": "image/fullskin/generals/full/xuhuang.png",
+    "generals/menghuo.webp": "image/fullskin/generals/full/menghuo.png",
+    "generals/zhurong.webp": "image/fullskin/generals/full/zhurong.png",
+    "generals/sunjian.webp": "image/fullskin/generals/full/sunjian.png",
+    "generals/lusu.webp": "image/fullskin/generals/full/lusu.png",
+    "generals/dongzhuo.webp": "image/fullskin/generals/full/dongzhuo.png",
+    "generals/jiaxu.webp": "image/fullskin/generals/full/jiaxu.png"
+  },
+  "assets": [
+    {
+      "file": "generals/caopi.webp",
+      "sha256": "b36b00d3c34be550d934952a1c02131d9e9722f8124bdff04819749cac090b87",
+      "bytes": 18038
+    },
+    {
+      "file": "generals/dongzhuo.webp",
+      "sha256": "d8cf21b2ca58054c13c8f1c6e0b72fa070178940104b02620d755a75f9c4a9b7",
+      "bytes": 25022
+    },
+    {
+      "file": "generals/jiaxu.webp",
+      "sha256": "93967a84a7095bee57bd26605fcc98b64ff32b9755dff8d2391b2768a7f5705f",
+      "bytes": 16030
+    },
+    {
+      "file": "generals/lusu.webp",
+      "sha256": "4439725ef9b52b42df2eeb515255beed041fea6493b7e3c819f574f085078d93",
+      "bytes": 18054
+    },
+    {
+      "file": "generals/menghuo.webp",
+      "sha256": "1d0e46d93b083af9cc24c76f820cfdf15877d07c493e53c6e3cd0ae03e3831eb",
+      "bytes": 25582
+    },
+    {
+      "file": "generals/sunjian.webp",
+      "sha256": "fbce7c22789b0ca303074e24c062740a1bba2f981363f30ed5c2acde119cab1b",
+      "bytes": 21042
+    },
+    {
+      "file": "generals/xuhuang.webp",
+      "sha256": "aa6676f41b90bd2e9dbef00be2efe6debb51af2c493ca8fd1e124249ad5e3008",
+      "bytes": 21758
+    },
+    {
+      "file": "generals/zhurong.webp",
+      "sha256": "1b80d7bc7450bd0af8563426c3d79f50b004313d59cc6cfe980d7c08ab2ca91e",
+      "bytes": 19624
+    }
+  ],
+  "cdnVerified": true
+}

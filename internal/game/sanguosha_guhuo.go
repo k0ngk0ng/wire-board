@@ -49,7 +49,7 @@ func (s *State) sgStartGuhuo(i int, a Action) error {
 	if a.Choice == "iron_chain" && len(a.Targets) == 0 {
 		return errors.New("蛊惑的铁索不能重铸，请选择目标")
 	}
-	if q := g.Pending; q != nil && !slices.Contains([]string{"card", "support", "peach", "nullification", "weapon_after_jink"}, q.Kind) {
+	if q := g.Pending; q != nil && !slices.Contains([]string{"card", "support", "peach", "nullification", "weapon_after_jink", "luanwu"}, q.Kind) {
 		return errors.New("此响应不能发动蛊惑")
 	}
 	trial := clone(*s)
@@ -80,6 +80,12 @@ func (s *State) sgBluffContext(b SGBluff) string {
 			return prefix + "「" + SGCardTypes[e.Kind].Name + "」对" + s.sgName(e.Target) + "的效果"
 		case "peach":
 			return "救助" + s.sgName(e.Target)
+		case "luanwu":
+			names := []string{}
+			for _, t := range b.Action.Targets {
+				names = append(names, s.sgName(t))
+			}
+			return "乱武：对" + strings.Join(names, "、") + "使用杀"
 		case "support":
 			return "响应" + s.sgName(e.Actor) + "的「" + SGSkills[e.Kind].Name + "」"
 		default:

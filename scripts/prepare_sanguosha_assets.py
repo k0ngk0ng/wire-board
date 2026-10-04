@@ -14,6 +14,7 @@ BASE = f'https://raw.githubusercontent.com/Mogara/QSanguosha-v2/{REVISION}/'
 GENERALS = 'caocao simayi xiahoudun zhangliao xuchu guojia zhenji liubei guanyu zhangfei zhugeliang zhaoyun machao huangyueying sunquan ganning lvmeng huanggai zhouyu daqiao luxun sunshangxiang huatuo lvbu diaochan'.split()
 UNCHANGED = {'zhenji','zhugeliang','sunquan','sunshangxiang'}
 WIND_GENERALS = 'caoren xiahouyuan huangzhong weiyan xiaoqiao zhoutai zhangjiao yuji'.split()
+THICKET_GENERALS = 'caopi xuhuang menghuo zhurong sunjian lusu dongzhuo jiaxu'.split()
 FIRE_GENERALS = 'dianwei xunyu wolong pangtong taishici yuanshao yanliangwenchou pangde'.split()
 WIND_NOSTALGIA = {'caoren','zhoutai','zhangjiao','yuji'}
 MILITARY_CARDS = 'fire_slash thunder_slash analeptic fire_attack iron_chain supply_shortage fan guding_blade vine silver_lion hualiu'.split()
@@ -22,7 +23,7 @@ CARDS = 'slash jink peach duel snatch dismantlement ex_nihilo amazing_grace god_
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
-    parser.add_argument('--pack',choices=['standard','military','wind','fire'],default='standard')
+    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket'],default='standard')
     args=parser.parse_args()
     root=args.directory.resolve(); root.mkdir(parents=True,exist_ok=True)
     sources={f'generals/{g}.webp':f'image/fullskin/generals/full/{g if g in UNCHANGED else "nos_"+g}.png' for g in GENERALS}
@@ -33,6 +34,8 @@ def main():
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{"nos_"+g if g in WIND_NOSTALGIA else g}.png' for g in WIND_GENERALS}
     if args.pack == 'fire':
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in FIRE_GENERALS}
+    if args.pack == 'thicket':
+        sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in THICKET_GENERALS}
     def prepare(item):
         target,source=item; output=root/target; output.parent.mkdir(parents=True,exist_ok=True)
         if output.exists() and output.read_bytes()[:4]==b'RIFF':return target

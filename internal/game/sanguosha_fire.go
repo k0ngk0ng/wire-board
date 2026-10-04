@@ -130,6 +130,12 @@ func (s *State) sgFireEvent(e SGEvent) bool {
 			g.Players[e.Actor].Used["tianyi_result"] = map[bool]int{true: 1, false: -1}[win]
 			return true
 		}
+		if e.Kind == "lieren" {
+			if win && s.sgAlive(e.Actor) && s.sgAlive(e.Target) && len(g.Players[e.Target].Hand)+len(g.Players[e.Target].Equip) > 0 {
+				s.sgAsk(e.Actor, "steal", "烈刃胜出：获得目标一张手牌或装备", e)
+			}
+			return true
+		}
 		if !win {
 			s.sgPush(SGEvent{Type: "damage", Actor: e.Target, Target: e.Actor, Kind: "quhu", Amount: 1})
 			return true

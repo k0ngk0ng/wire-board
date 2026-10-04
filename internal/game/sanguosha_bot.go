@@ -28,7 +28,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			if s.sgHas(i, "guhuo") && slices.Contains(p.Hand, id) && c.Suit == 1 && (c.Kind == want || want == "slash" && sgIsSlash(c.Kind)) {
 				out = append(out, Action{Cards: []int{id}, Skill: "guhuo", Choice: want})
 			}
-			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan", "huoji", "kanpo", "lianhuan", "shuangxiong"} {
+			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan", "huoji", "kanpo", "lianhuan", "shuangxiong", "duanliang", "jiuchi"} {
 				a := Action{Cards: []int{id}, Skill: skill}
 				if _, err := s.sgAs(i, a.Cards, skill, want); err == nil {
 					out = append(out, a)
@@ -62,6 +62,62 @@ func (s *State) sgBot(i int) (Action, error) {
 		}
 		e := q.Event
 		switch q.Kind {
+		case "xingshang":
+			add(Action{Choice: "yes"})
+		case "songwei", "baonue":
+			if p.Role == "loyalist" {
+				add(Action{Choice: "yes"})
+			}
+		case "fangzhu":
+			for _, target := range s.sgOrder(s.sgNext(i)) {
+				if target != i && !(p.Role == "loyalist" && target == g.Lord && !g.Players[target].Flipped) {
+					add(Action{Targets: []int{target}})
+				}
+			}
+		case "lieren":
+			ids := clone(p.Hand)
+			slices.SortStableFunc(ids, func(a, b int) int { return sgCard(b).Rank - sgCard(a).Rank })
+			if len(ids) > 0 && sgCard(ids[0]).Rank >= 8 {
+				add(Action{Cards: ids[:1]})
+			}
+		case "yinghun":
+			if p.Role == "loyalist" {
+				add(Action{Choice: "draw_many", Targets: []int{g.Lord}})
+			}
+			for _, target := range s.sgOrder(s.sgNext(i)) {
+				if target != i && !(p.Role == "loyalist" && target == g.Lord) {
+					add(Action{Choice: "draw_one", Targets: []int{target}})
+				}
+			}
+		case "haoshi_give":
+			ids := clone(p.Hand)
+			slices.SortStableFunc(ids, func(a, b int) int { return sgBotValue(a) - sgBotValue(b) })
+			if p.Role == "loyalist" && slices.Contains(q.Targets, g.Lord) {
+				add(Action{Cards: ids[:e.Amount], Targets: []int{g.Lord}})
+			}
+			for _, target := range q.Targets {
+				add(Action{Cards: ids[:e.Amount], Targets: []int{target}})
+			}
+		case "yinghun_discard":
+			ids := append(clone(p.Hand), p.Equip...)
+			slices.SortStableFunc(ids, func(a, b int) int { return sgBotValue(a) - sgBotValue(b) })
+			add(Action{Cards: ids[:e.Amount]})
+		case "benghuai":
+			if p.MaxHP > p.HP {
+				add(Action{Choice: "maxhp"})
+			}
+			add(Action{Choice: "hp"})
+		case "luanwu":
+			for _, target := range q.Targets {
+				if target == g.Lord && p.Role == "loyalist" {
+					continue
+				}
+				for _, a := range cardsFor("slash") {
+					a.Targets = []int{target}
+					add(a)
+				}
+				add(Action{Choice: "jijiang", Targets: []int{target}})
+			}
 		case "pindian":
 			ids := clone(p.Hand)
 			slices.SortStableFunc(ids, func(a, b int) int { return sgCard(b).Rank - sgCard(a).Rank })
@@ -172,6 +228,12 @@ func (s *State) sgBot(i int) (Action, error) {
 		case "guanxing":
 			add(Action{Cards: q.Cards})
 		case "draw_phase":
+			if s.sgHas(i, "haoshi") {
+				add(Action{Choice: "haoshi"})
+			}
+			if s.sgHas(i, "zaiqi") && p.MaxHP-p.HP >= 2 {
+				add(Action{Choice: "zaiqi"})
+			}
 			if s.sgHas(i, "shuangxiong") && len(p.Hand) >= 3 {
 				add(Action{Choice: "shuangxiong"})
 			}
@@ -334,6 +396,29 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 			return g.Players[a].HP - g.Players[b].HP
 		})
+		if s.sgHas(i, "luanwu") && p.Marks["luanwu"] == 0 {
+			add(Action{Type: "sg_skill", Skill: "luanwu"})
+		}
+		if s.sgHas(i, "dimeng") && p.Used["dimeng"] == 0 {
+			ids := append(clone(p.Hand), p.Equip...)
+			slices.SortStableFunc(ids, func(a, b int) int { return sgBotValue(a) - sgBotValue(b) })
+			for _, poor := range s.sgOrder(s.sgNext(i)) {
+				if poor == i {
+					continue
+				}
+				for _, rich := range enemies {
+					if rich == poor || len(g.Players[rich].Hand) <= len(g.Players[poor].Hand) {
+						continue
+					}
+					if p.Role != "loyalist" && rich == g.Lord || p.Role == "loyalist" && poor == g.Lord {
+						due := len(g.Players[rich].Hand) - len(g.Players[poor].Hand)
+						if due <= len(ids) {
+							add(Action{Type: "sg_skill", Skill: "dimeng", Cards: ids[:due], Targets: []int{poor, rich}})
+						}
+					}
+				}
+			}
+		}
 		if s.sgHas(i, "qiangxi") {
 			for _, target := range enemies {
 				for _, id := range append(append([]int{}, p.Hand...), p.Equip...) {
