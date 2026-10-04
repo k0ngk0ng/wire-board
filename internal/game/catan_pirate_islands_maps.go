@@ -2,6 +2,24 @@ package game
 
 import "fmt"
 
+// NewCatanPirateIslands builds the fixed official scenario with the normal
+// setup, Helpers and paired-turn machinery. It is not a public room option yet.
+func NewCatanPirateIslands(n int, options CatanOptions) (*State, error) {
+	s, err := NewCatan(n, options)
+	if err != nil {
+		return nil, err
+	}
+	if n > 4 {
+		err = s.Catan.makeSeafarersPirateIslandsSix()
+	} else {
+		err = s.Catan.makeSeafarersPirateIslandsFour()
+	}
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
 // Public board state for The Pirate Islands (Seafarers scenario 7). The
 // fortresses are separate from buildings until recaptured: they neither
 // produce resources nor score as settlements. Room options remain closed

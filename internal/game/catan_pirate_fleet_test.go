@@ -337,3 +337,61 @@ func TestCatanPirateFleetMultipleBuildingsOnlyAttackOwnerOnce(t *testing.T) {
 	}
 	fleetSupply(t, g)
 }
+
+func TestCatanPirateDiscardTimeoutContinuesWithoutRobber(t *testing.T) {
+	for _, n := range []int{3, 4, 5, 6} {
+		for _, opponentsHaveCards := range []bool{false, true} {
+			s, err := NewCatanPirateIslands(n, CatanOptions{FiveSix: n > 4})
+			if err != nil {
+				t.Fatal(err)
+			}
+			g := s.Catan
+			g.SetupStep = g.SetupLimit()
+			g.ResumePhase = "catan_turn"
+			g.pirateIslands().SevenPending = true
+			s.Phase = "catan_discard"
+			s.Turn = 0
+			for i := range g.Players {
+				if i == 0 || opponentsHaveCards {
+					hand := make([]int, 5)
+					hand[i%5] = 8
+					fleetGive(g, i, hand)
+					g.DiscardDue[i] = 4
+				}
+			}
+			fleetSupply(t, g)
+			pirate := g.Seafarers.Pirate
+			saved := clone(*s)
+			s = &saved
+			s.AutoCatanPending()
+			g = s.Catan
+			want := "catan_turn"
+			if opponentsHaveCards {
+				want = "catan_steal"
+			}
+			if s.Phase != want || sum(g.DiscardDue) != 0 || g.pirateIslands().SevenPending || g.Seafarers.Pirate != pirate {
+				t.Fatalf("n=%d phase=%s due=%v", n, s.Phase, g.DiscardDue)
+			}
+			for i, p := range g.Players {
+				want := 0
+				if i == 0 || opponentsHaveCards {
+					want = 4
+				}
+				if sum(p.Resources) != want {
+					t.Fatal("incorrect timeout discard", i, p.Resources)
+				}
+			}
+			fleetSupply(t, g)
+			if opponentsHaveCards {
+				a, e := s.BotAction(0)
+				if e != nil {
+					t.Fatal(e)
+				}
+				helperApply(t, s, 0, a)
+				if s.Phase != "catan_turn" {
+					t.Fatal("theft failed to resume")
+				}
+			}
+		}
+	}
+}
