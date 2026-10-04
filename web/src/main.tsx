@@ -1,3 +1,4 @@
+import { CatanWorldEditor } from "./catan-world-editor";
 import { CatanNewWorldRules } from "./catan-new-world";
 import { ClothPicture } from "./catan-cloth";
 import { CatanWonderSeat, CatanWondersRules } from "./catan-wonders";
@@ -2089,6 +2090,7 @@ function Waiting({
   host: boolean;
   command: (t: string, extra?: Record<string, unknown>) => void;
 }) {
+  const [mapDirty, setMapDirty] = useState(false);
   const maps = useContext(RailMapsContext),
     assets = useContext(AssetsContext);
   const map = maps.find((m) => m.id === (room.railMap || "usa"));
@@ -2105,6 +2107,17 @@ function Waiting({
           : 2);
   return (
     <div className="waiting-layout">
+      {room.kind === "catan" && room.catanNewWorldMap && (
+        <CatanWorldEditor
+          room={room}
+          assets={assets}
+          host={host}
+          busy={busy}
+          command={command}
+          onDirty={setMapDirty}
+        />
+      )}
+
       <div className="waiting-cover">
         <Cover kind={room.kind} />
         <h2>{gameName(room.kind)}</h2>
@@ -2131,7 +2144,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? `${room.catanOptions?.helpers ? "基础版＋Helpers" : "基础版"} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · 十分获胜`
+                  ? `${room.catanNewWorldMap ? "航海家 · 新世界" : "基础版"}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${room.catanNewWorldMap ? "十二" : "十"}分获胜`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2143,7 +2156,7 @@ function Waiting({
         {room.kind === "catan" && (
           <CatanOptionPicker
             value={room.catanOptions}
-            disabled={!host || busy}
+            disabled={!host || busy || mapDirty}
             onChange={(catanOptions) =>
               command("catan_options", { catanOptions })
             }
@@ -2232,7 +2245,7 @@ function Waiting({
                 </button>
               )}
               <button
-                disabled={busy}
+                disabled={busy || mapDirty}
                 className={room.seats[room.you]?.ready ? "outline" : "primary"}
                 onClick={() => command("ready")}
               >
@@ -2242,7 +2255,7 @@ function Waiting({
               {host && (
                 <button
                   className="primary gold"
-                  disabled={busy || !ready}
+                  disabled={busy || !ready || mapDirty}
                   onClick={() => command("start")}
                 >
                   开始游戏

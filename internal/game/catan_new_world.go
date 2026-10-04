@@ -39,14 +39,10 @@ func (g *Catan) makeNewWorldMap() error {
 	if len(g.Players) < 3 || len(g.Players) > 6 {
 		return errors.New("新世界需要3至6位玩家")
 	}
-	// Same seven-row frame silhouettes as the official question-mark diagrams.
-	rows := []int{5, 6, 7, 6, 7, 6, 5}
-	starts := []int{0, -1, -2, -2, -3, -3, -3}
 	terrainCounts := []int{5, 4, 5, 5, 4, 0, 19, 0}
 	numberCounts := []int{0, 0, 1, 3, 3, 3, 2, 0, 2, 3, 3, 2, 1}
 	ports := []int{-1, -1, -1, -1, -1, 0, 1, 2, 3, 4}
 	if len(g.Players) > 4 {
-		rows = []int{8, 9, 10, 9, 10, 9, 8}
 		terrainCounts = []int{7, 7, 7, 7, 7, 3, 21, 4}
 		numberCounts = []int{0, 0, 2, 3, 4, 5, 5, 0, 5, 5, 4, 4, 2}
 		ports = append(ports, 2) // The sixth special port in the extension is wool.
@@ -65,11 +61,9 @@ func (g *Catan) makeNewWorldMap() error {
 	shuffle(terrain)
 	shuffle(numbers)
 	shuffle(ports)
-	specs := []CatanHexSpec{}
-	for row, count := range rows {
-		for col := 0; col < count; col++ {
-			specs = append(specs, CatanHexSpec{Q: starts[row] + col, R: row, Resource: terrain[len(specs)]})
-		}
+	specs := newWorldFrame(len(g.Players))
+	for i := range specs {
+		specs[i].Resource = terrain[i]
 	}
 	if err := g.makeScenarioMap(specs); err != nil {
 		return err

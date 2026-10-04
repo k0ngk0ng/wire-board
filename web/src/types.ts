@@ -178,7 +178,11 @@ export type Game = {
     remaining: number;
   };
 };
+export type CatanNewWorldMap = {
+  hexes: { resource: number; number: number }[];
+};
 export type Room = {
+  catanNewWorldMap?: CatanNewWorldMap;
   catanOptions?: CatanOptions;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
