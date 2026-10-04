@@ -44,31 +44,32 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
-	SanguoshaOptions    game.SGOptions `json:"sanguoshaOptions,omitempty"`
-	RailMap             string         `json:"railMap,omitempty"`
-	SGTimeLeft          int64          `json:"sgTimeLeft,omitempty"`
-	Rated               bool           `json:"rated,omitempty"`
-	CatanPendingVersion int            `json:"catanPendingVersion,omitempty"`
-	CatanTradeVersion   int            `json:"catanTradeVersion,omitempty"`
-	MatchID             string         `json:"matchId,omitempty"`
-	Spectators          []User         `json:"spectators,omitempty"`
-	Chat                []ChatMessage  `json:"chat,omitempty"`
-	BotAt               int64          `json:"botAt,omitempty"`
-	SetupVersion        int            `json:"setupVersion,omitempty"`
-	TurnDeadline        int64          `json:"turnDeadline,omitempty"`
-	ID                  string         `json:"id"`
-	Name                string         `json:"name"`
-	Kind                string         `json:"kind"`
-	Host                string         `json:"host"`
-	Capacity            int            `json:"capacity"`
-	Seats               []Seat         `json:"seats"`
-	Version             int            `json:"version"`
-	Status              string         `json:"status"`
-	CloseReason         string         `json:"closeReason,omitempty"`
-	Password            string         `json:"password,omitempty"`
-	Game                *game.State    `json:"game,omitempty"`
-	Updated             int64          `json:"updated"`
-	LastActive          int64          `json:"lastActive"`
+	SplendorOptions     game.SplendorOptions `json:"splendorOptions,omitempty"`
+	SanguoshaOptions    game.SGOptions       `json:"sanguoshaOptions,omitempty"`
+	RailMap             string               `json:"railMap,omitempty"`
+	SGTimeLeft          int64                `json:"sgTimeLeft,omitempty"`
+	Rated               bool                 `json:"rated,omitempty"`
+	CatanPendingVersion int                  `json:"catanPendingVersion,omitempty"`
+	CatanTradeVersion   int                  `json:"catanTradeVersion,omitempty"`
+	MatchID             string               `json:"matchId,omitempty"`
+	Spectators          []User               `json:"spectators,omitempty"`
+	Chat                []ChatMessage        `json:"chat,omitempty"`
+	BotAt               int64                `json:"botAt,omitempty"`
+	SetupVersion        int                  `json:"setupVersion,omitempty"`
+	TurnDeadline        int64                `json:"turnDeadline,omitempty"`
+	ID                  string               `json:"id"`
+	Name                string               `json:"name"`
+	Kind                string               `json:"kind"`
+	Host                string               `json:"host"`
+	Capacity            int                  `json:"capacity"`
+	Seats               []Seat               `json:"seats"`
+	Version             int                  `json:"version"`
+	Status              string               `json:"status"`
+	CloseReason         string               `json:"closeReason,omitempty"`
+	Password            string               `json:"password,omitempty"`
+	Game                *game.State          `json:"game,omitempty"`
+	Updated             int64                `json:"updated"`
+	LastActive          int64                `json:"lastActive"`
 }
 
 const turnLimit = 120 * time.Second
@@ -500,7 +501,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 }
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -574,12 +575,13 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		SanguoshaOptions game.SGOptions `json:"sanguoshaOptions"`
-		Name             string         `json:"name"`
-		Kind             string         `json:"kind"`
-		RailMap          string         `json:"railMap"`
-		Capacity         int            `json:"capacity"`
-		Password         string         `json:"password"`
+		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
+		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
+		Name             string               `json:"name"`
+		Kind             string               `json:"kind"`
+		RailMap          string               `json:"railMap"`
+		Capacity         int                  `json:"capacity"`
+		Password         string               `json:"password"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -622,7 +624,14 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		maxPlayers = 5
 	} else if req.Kind == "catan" {
 		minPlayers = 3
-	} else if req.Kind != "splendor" {
+	} else if req.Kind == "splendor" {
+		options, err := game.NormalizeSplendorOptions(req.SplendorOptions)
+		if err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+		req.SplendorOptions = options
+	} else {
 		fail(w, 400, "未知游戏")
 		return
 	}
@@ -635,7 +644,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		h, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		hash = string(h)
 	}
-	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
+	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
 	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
 		fail(w, 500, "无法保存房间")
@@ -660,15 +669,16 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		SanguoshaOptions game.SGOptions `json:"sanguoshaOptions"`
-		Type             string         `json:"type"`
-		RailMap          string         `json:"railMap"`
-		Target           string         `json:"target,omitempty"`
-		Password         string         `json:"password"`
-		Version          int            `json:"version"`
-		Nonce            string         `json:"nonce"`
-		Action           game.Action    `json:"action"`
-		Enabled          *bool          `json:"enabled,omitempty"`
+		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
+		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
+		Type             string               `json:"type"`
+		RailMap          string               `json:"railMap"`
+		Target           string               `json:"target,omitempty"`
+		Password         string               `json:"password"`
+		Version          int                  `json:"version"`
+		Nonce            string               `json:"nonce"`
+		Action           game.Action          `json:"action"`
+		Enabled          *bool                `json:"enabled,omitempty"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -782,6 +792,17 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "splendor_options":
+		if next.Host != u.ID || next.Kind != "splendor" || next.Status != "waiting" {
+			err = errors.New("只有房主能在开局前选择璀璨宝石扩展")
+			break
+		}
+		next.SplendorOptions, err = game.NormalizeSplendorOptions(req.SplendorOptions)
+		if err == nil {
+			for i := range next.Seats {
+				next.Seats[i].Ready = next.Seats[i].Bot
+			}
+		}
 	case "sanguosha_options":
 		if next.Host != u.ID || next.Kind != "sanguosha" || next.Status != "waiting" {
 			err = errors.New("只有房主能在开局前选择三国杀规则")
@@ -838,6 +859,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			if next.Kind == "rail" && next.RailMap != "" && next.RailMap != "usa" {
 				next.Game, err = game.NewRailMap(next.RailMap, len(next.Seats))
+			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
+				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "sanguosha" {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
 			} else {

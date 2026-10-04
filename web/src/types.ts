@@ -41,6 +41,7 @@ export type SplendorTokenEvent = {
   tokens: number[];
 };
 export type GemPlayer = {
+  tradingPosts?: number[];
   eliminated?: boolean;
   tokens: number[];
   bonus: number[];
@@ -118,6 +119,24 @@ export type Game = {
   winners: number[];
   log: string[];
   splendor?: {
+    options?: SplendorOptions;
+    tradingPostRules?: {
+      id: number;
+      name: string;
+      description: string;
+      cost: number[];
+    }[];
+    postChoices?: number[];
+    reserveChoice?: Card[];
+    effects?: { kind: string; exclude: number }[];
+    strongholds?: Record<string, { player: number; count: number }>;
+    strongholdActions?: {
+      type: string;
+      choice: string;
+      card: number;
+      target: number;
+    }[];
+    conquestCard?: number;
     startPlayer?: number;
     cardEventId?: number;
     cardEvents?: SplendorCardEvent[];
@@ -160,6 +179,7 @@ export type Game = {
   };
 };
 export type Room = {
+  splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
   railMap?: string;
   result?: {
@@ -183,6 +203,12 @@ export type Room = {
   you: number;
   game?: Game;
   updated: number;
+};
+
+export type SplendorOptions = {
+  rules?: string;
+  tradingPosts?: boolean;
+  strongholds?: boolean;
 };
 export type State = {
   availableGames: string[];
