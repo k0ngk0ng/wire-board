@@ -43,6 +43,8 @@ func sgWindConservation(t *testing.T, s *State) {
 	for i, p := range trial.Sanguosha.Players {
 		trial.Sanguosha.Discard = append(trial.Sanguosha.Discard, p.Buqu...)
 		trial.Sanguosha.Discard = append(trial.Sanguosha.Discard, p.Fields...)
+		trial.Sanguosha.Discard = append(trial.Sanguosha.Discard, p.Stars...)
+		trial.Sanguosha.Players[i].Stars = nil
 		trial.Sanguosha.Players[i].Fields = nil
 		trial.Sanguosha.Players[i].Buqu = nil
 	}

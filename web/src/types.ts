@@ -322,6 +322,11 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  stars?: number[];
+  starCount?: number;
+  galeTargets?: number[];
+  fogTargets?: number[];
+  armorDisabled?: boolean;
   skills?: string[];
   skillsLost?: boolean;
   kingdom?: string;

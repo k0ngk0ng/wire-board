@@ -29,13 +29,13 @@ func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
 		return o, errors.New("未知三国杀牌堆")
 	}
 	for _, pack := range o.Packs {
-		if pack != "standard" && pack != "wind" && pack != "fire" && pack != "thicket" && pack != "mountain" {
+		if pack != "standard" && pack != "wind" && pack != "fire" && pack != "thicket" && pack != "mountain" && pack != "god" {
 			return o, errors.New("该武将包尚未开放")
 		}
 	}
 	requested := o.Packs
 	o.Packs = []string{"standard"}
-	for _, pack := range []string{"wind", "fire", "thicket", "mountain"} {
+	for _, pack := range []string{"wind", "fire", "thicket", "mountain", "god"} {
 		if slices.Contains(requested, pack) {
 			o.Packs = append(o.Packs, pack)
 		}
@@ -127,13 +127,13 @@ func init() {
 }
 
 func (s *State) sgIgnoreArmor(e SGEvent) bool {
-	return sgIsSlash(e.Kind) && !e.Chain && !e.Transfer && s.sgWeapon(e.Actor) == "qinggang_sword"
+	return s.sgGodArmorOff(e.Target) || sgIsSlash(e.Kind) && !e.Chain && !e.Transfer && s.sgWeapon(e.Actor) == "qinggang_sword"
 }
 func (s *State) sgSlashImmune(e SGEvent) bool {
 	if !sgIsSlash(e.Kind) || s.sgIgnoreArmor(e) {
 		return false
 	}
-	armor := sgCard(s.sgEquip(e.Target, "armor")).Kind
+	armor := s.sgArmor(e.Target)
 	if armor == "vine" && e.Nature == "" && e.Kind == "slash" {
 		s.sgLog("%s 的藤甲令普通杀无效", s.sgName(e.Target))
 		return true
@@ -181,11 +181,18 @@ func (s *State) sgDamage(e SGEvent) {
 	if e.DamageStage == 0 {
 		e.DamageStage = 1
 	}
+	if !e.Foreseen {
+		e.Foreseen = true
+		if s.sgGodForeseen(&e) {
+			return
+		}
+		amount = e.Amount
+	}
 	if s.sgWindDamage(e) {
 		return
 	}
 	if !s.sgIgnoreArmor(e) {
-		switch sgCard(s.sgEquip(e.Target, "armor")).Kind {
+		switch s.sgArmor(e.Target) {
 		case "vine":
 			if e.Nature == "fire" {
 				amount++
@@ -196,6 +203,7 @@ func (s *State) sgDamage(e SGEvent) {
 	}
 	p := &g.Players[e.Target]
 	e.Near = s.sgAlive(e.Actor) && s.sgDistance(e.Actor, e.Target) <= 1
+	s.sgGodBeforeDamage(e.Target, e.Actor, amount)
 	p.HP -= amount
 	e.Amount = amount
 	e.Type = "hurt"
@@ -216,6 +224,7 @@ func (s *State) sgDamage(e SGEvent) {
 					spread.Chain = true
 					spread.Transfer = false
 					spread.DamageStage = 1
+					spread.Foreseen = false
 					es = append(es, spread)
 				}
 			}

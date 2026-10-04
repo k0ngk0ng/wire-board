@@ -16,6 +16,7 @@ UNCHANGED = {'zhenji','zhugeliang','sunquan','sunshangxiang'}
 WIND_GENERALS = 'caoren xiahouyuan huangzhong weiyan xiaoqiao zhoutai zhangjiao yuji'.split()
 THICKET_GENERALS = 'caopi xuhuang menghuo zhurong sunjian lusu dongzhuo jiaxu'.split()
 MOUNTAIN_GENERALS = 'zhanghe dengai jiangwei liushan sunce erzhang caiwenji zuoci'.split()
+GOD_GENERALS = 'shenguanyu shenlvmeng shenzhouyu shenzhugeliang shencaocao shenlvbu shenzhaoyun shensimayi'.split()
 FIRE_GENERALS = 'dianwei xunyu wolong pangtong taishici yuanshao yanliangwenchou pangde'.split()
 WIND_NOSTALGIA = {'caoren','zhoutai','zhangjiao','yuji'}
 MILITARY_CARDS = 'fire_slash thunder_slash analeptic fire_attack iron_chain supply_shortage fan guding_blade vine silver_lion hualiu'.split()
@@ -24,7 +25,7 @@ CARDS = 'slash jink peach duel snatch dismantlement ex_nihilo amazing_grace god_
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
-    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket','mountain'],default='standard')
+    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket','mountain','god'],default='standard')
     args=parser.parse_args()
     root=args.directory.resolve(); root.mkdir(parents=True,exist_ok=True)
     sources={f'generals/{g}.webp':f'image/fullskin/generals/full/{g if g in UNCHANGED else "nos_"+g}.png' for g in GENERALS}
@@ -39,6 +40,8 @@ def main():
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in THICKET_GENERALS}
     if args.pack == 'mountain':
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in MOUNTAIN_GENERALS}
+    if args.pack == 'god':
+        sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in GOD_GENERALS}
     def prepare(item):
         target,source=item; output=root/target; output.parent.mkdir(parents=True,exist_ok=True)
         if output.exists() and output.read_bytes()[:4]==b'RIFF':return target

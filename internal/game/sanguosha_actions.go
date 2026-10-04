@@ -27,6 +27,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	if handled, err := s.sgThicketRespond(i, a, prompt); handled {
 		return err
 	}
+	if handled, err := s.sgGodRespond(i, a, prompt); handled {
+		return err
+	}
 	switch prompt.Kind {
 	case "general":
 		if !slices.Contains(p.Choices, a.Choice) {
@@ -60,15 +63,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgAsk(s.sgNext(i), "general", "选择你的武将", SGEvent{})
 		} else {
 			g.Selecting = false
-			for j := range g.Players {
-				s.sgDraw(j, 4)
-			}
-			s.sgPush(SGEvent{Type: "begin", Actor: g.Lord})
-			es := []SGEvent{}
-			for _, who := range s.sgOrder(g.Lord) {
-				es = append(es, SGEvent{Type: "huashen_init", Actor: who})
-			}
-			s.sgPush(es...)
+			s.sgGodGameStart()
 		}
 	case "invoke":
 		if !pass {
@@ -87,6 +82,11 @@ func (s *State) sgRespond(i int, a Action) error {
 		g.Deck = append(append(append([]int{}, a.Cards...), g.Deck...), a.Take...)
 	case "draw_phase":
 		switch a.Choice {
+		case "shelie":
+			if !s.sgHas(i, "shelie") {
+				return errors.New("没有涉猎")
+			}
+			s.sgGodShelie(i)
 		case "tuxi":
 			if !s.sgHas(i, "tuxi") || len(a.Targets) < 1 || len(a.Targets) > 2 {
 				return errors.New("突袭选择一至两名角色")
@@ -120,14 +120,14 @@ func (s *State) sgRespond(i int, a Action) error {
 				return errors.New("没有裸衣")
 			}
 			p.Used["luoyi"] = 1
-			s.sgDraw(i, 1)
+			s.sgDraw(i, s.sgGodDrawCount(i, 1))
 		case "yingzi":
 			if !s.sgHas(i, "yingzi") {
 				return errors.New("没有英姿")
 			}
-			s.sgDraw(i, 3)
+			s.sgDraw(i, s.sgGodDrawCount(i, 3))
 		case "normal", "pass":
-			s.sgDraw(i, 2)
+			s.sgDraw(i, s.sgGodDrawCount(i, 2))
 		default:
 			return errors.New("未知摸牌方式")
 		}
@@ -165,6 +165,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgSpent(i, a.Cards)
 			s.sgLog("%s 使用「无懈可击」", s.sgName(i))
 			s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
+			s.sgGodTrick(i, "nullification")
 			return nil
 		}
 		s.sgPush(e)
@@ -387,7 +388,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			id = ids[0]
 		} else {
 			valid := slices.Contains(target.Equip, id)
-			if e.Kind == "snatch" || e.Kind == "dismantlement" {
+			if e.Kind == "snatch" || e.Kind == "dismantlement" || e.Kind == "guixin" {
 				for _, d := range target.Judgment {
 					valid = valid || d.Card == id
 				}
@@ -511,6 +512,9 @@ func (s *State) sgSkill(i int, a Action) error {
 	}
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
+	}
+	if handled, err := s.sgGodSkill(i, a); handled {
+		return err
 	}
 	if handled, err := s.sgMountainSkill(i, a); handled {
 		return err

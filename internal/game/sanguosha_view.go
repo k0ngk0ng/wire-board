@@ -19,6 +19,10 @@ func (s *State) sgView(viewer int) map[string]any {
 			v["female"] = s.sgFemale(i)
 			v["skillsLost"] = p.SkillsLost
 			v["fields"] = p.Fields
+			v["starCount"] = len(p.Stars)
+			v["galeTargets"] = p.Gale
+			v["fogTargets"] = p.Fog
+			v["armorDisabled"] = s.sgGodArmorOff(i)
 			v["avatar"] = p.Avatar
 			v["avatarSkill"] = p.AvatarSkill
 			v["avatarCount"] = len(p.Avatars)
@@ -35,6 +39,7 @@ func (s *State) sgView(viewer int) map[string]any {
 			v["hand"] = p.Hand
 			v["choices"] = p.Choices
 			v["avatars"] = p.Avatars
+			v["stars"] = p.Stars
 		}
 		players = append(players, v)
 	}

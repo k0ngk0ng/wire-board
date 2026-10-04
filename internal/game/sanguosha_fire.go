@@ -37,6 +37,9 @@ func init() {
 }
 
 func (s *State) sgArmor(i int) string {
+	if s.sgGodArmorOff(i) {
+		return ""
+	}
 	id := s.sgEquip(i, "armor")
 	if id != 0 {
 		return sgCard(id).Kind
@@ -54,6 +57,9 @@ func (s *State) sgTianyi(i int) int {
 }
 func (s *State) sgHandLimit(i int) int {
 	n := max(0, s.Sanguosha.Players[i].HP)
+	if s.sgHas(i, "juejing") {
+		n += 2
+	}
 	if s.sgHas(i, "xueyi") {
 		for _, j := range s.sgOrder(0) {
 			if j != i && s.sgKingdom(j) == "qun" {

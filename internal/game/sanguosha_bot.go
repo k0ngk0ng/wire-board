@@ -9,7 +9,7 @@ import (
 // roles, other hands and deck order are never inspected to rank an action.
 func (s *State) sgBot(i int) (Action, error) {
 	g := s.Sanguosha
-	if !s.sgAlive(i) {
+	if !s.sgAlive(i) && !s.sgGodDeathResponse(i) {
 		return Action{}, errors.New("inactive seat")
 	}
 	p := g.Players[i]
@@ -54,6 +54,7 @@ func (s *State) sgBot(i int) (Action, error) {
 				}
 			}
 		}
+		out = append(out, s.sgGodBotLonghun(i, want)...)
 		return out
 	}
 	if q := g.Pending; q != nil {
@@ -62,6 +63,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		}
 		e := q.Event
 		s.sgMountainBotPrompt(i, add, cardsFor)
+		s.sgGodBotPrompt(i, add)
 		switch q.Kind {
 		case "xingshang":
 			add(Action{Choice: "yes"})
@@ -229,6 +231,9 @@ func (s *State) sgBot(i int) (Action, error) {
 		case "guanxing":
 			add(Action{Cards: q.Cards})
 		case "draw_phase":
+			if s.sgHas(i, "shelie") {
+				add(Action{Choice: "shelie"})
+			}
 			if s.sgHas(i, "haoshi") {
 				add(Action{Choice: "haoshi"})
 			}
@@ -314,7 +319,7 @@ func (s *State) sgBot(i int) (Action, error) {
 				add(Action{Card: id})
 			}
 			add(Action{Choice: "hand"})
-			if e.Kind == "snatch" || e.Kind == "dismantlement" {
+			if e.Kind == "snatch" || e.Kind == "dismantlement" || e.Kind == "guixin" {
 				for _, d := range g.Players[e.Target].Judgment {
 					add(Action{Card: d.Card})
 				}
@@ -398,6 +403,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			return g.Players[a].HP - g.Players[b].HP
 		})
 		s.sgMountainBotPlay(i, enemies, add)
+		s.sgGodBotPlay(i, enemies, add)
 		if s.sgHas(i, "luanwu") && p.Marks["luanwu"] == 0 {
 			add(Action{Type: "sg_skill", Skill: "luanwu"})
 		}
