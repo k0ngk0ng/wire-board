@@ -129,8 +129,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		return best
 	}
 	switch s.Phase {
-	case "catan_cloth_start":
-		return Action{Type: "catan_cloth_start", Tile: g.Robber}, nil
+	case "catan_cloth_start", "catan_wonders_start":
+		return Action{Type: s.Phase, Tile: g.Robber}, nil
 	case "catan_setup_settlement":
 		return Action{Type: "catan_settlement", Vertex: bestVertex(true)}, nil
 	case "catan_setup_road":

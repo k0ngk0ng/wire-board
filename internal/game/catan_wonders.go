@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 // IDs and costs follow the 2025 Seafarers component tiles. Costs use the
 // engine's wood, brick, wool, grain, ore order and apply to EACH of four levels.
@@ -179,4 +182,29 @@ func catanBotBuildCost(a Action) []int {
 		return catanWonderRules[a.Card].Cost[:]
 	}
 	return catanPrices[a.Type]
+}
+
+// The official fixed and variable setups both allow any desert. Let the
+// starting seat resolve that shared setup choice before placing any pieces.
+func (g *Catan) wonderStartTiles() []int {
+	tiles := []int{}
+	if g.wonders() != nil {
+		for _, tile := range g.Tiles {
+			if tile.Resource == CatanDesert {
+				tiles = append(tiles, tile.ID)
+			}
+		}
+	}
+	return tiles
+}
+
+func (s *State) catanWondersStart(player int, a Action) error {
+	g := s.Catan
+	if g.wonders() == nil || g.SetupStep != 0 || s.Phase != "catan_wonders_start" || player != s.Turn || a.Type != "catan_wonders_start" || !slices.Contains(g.wonderStartTiles(), a.Tile) {
+		return errors.New("请由先手选择沙漠地块作为强盗起点")
+	}
+	g.Robber = a.Tile
+	s.Phase = "catan_setup_settlement"
+	s.catanLog(player, "选择沙漠地块 #%d 作为强盗起点，开始放置起始村庄", a.Tile+1)
+	return nil
 }

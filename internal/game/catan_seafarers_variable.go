@@ -8,7 +8,16 @@ import (
 // Use this state-level entry point for playable variable scenarios so initial
 // player choices are included in persistence, clocks, and the action flow.
 func (s *State) randomizeCatanSeafarersMap() error {
-	if s.Catan == nil || s.Catan.SetupStep != 0 || s.Phase != "catan_setup_settlement" || s.Finished {
+	if s.Catan == nil || s.Catan.SetupStep != 0 || s.Finished {
+		return fmt.Errorf("只能在起始建设之前生成可变地图")
+	}
+	// A Wonders game starts with a desert choice even on the fixed map.
+	// Randomization must precede confirmation and cannot be repeated.
+	if s.Catan.wonders() != nil {
+		if s.Phase != "catan_wonders_start" || s.Catan.Seafarers.Variable {
+			return fmt.Errorf("请在确认强盗起点之前生成一次可变地图")
+		}
+	} else if s.Phase != "catan_setup_settlement" {
 		return fmt.Errorf("只能在起始建设之前生成可变地图")
 	}
 	next := clone(*s)

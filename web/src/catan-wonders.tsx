@@ -30,7 +30,7 @@ export function CatanWondersRules({ game }: { game: CatanState }) {
       <ol>
         <li>
           <b>起始建设：</b>
-          按顺序放一组村庄与道路或船只，再逆序放第二组；第二座村庄领取相邻资源。起始村庄限主岛，不能放在奇迹标记或叉号交点。
+          先手先在沙漠中确认强盗起点，然后按顺序放一组村庄与道路或船只，再逆序放第二组；第二座村庄领取相邻资源。起始村庄限主岛，不能放在奇迹标记或叉号交点。
         </li>
         <li>
           <b>生产与强盗：</b>
@@ -599,5 +599,97 @@ export function CatanWondersPanel({
           document.body,
         )}
     </>
+  );
+}
+
+export function CatanWondersStart({
+  room,
+  busy,
+  act,
+  selectedTile,
+  clearTile,
+}: {
+  room: Room;
+  busy: boolean;
+  act: Act;
+  selectedTile: number | null;
+  clearTile: () => void;
+}) {
+  const [collapsed, setCollapsed] = useState(false);
+  const game = room.game!,
+    g = game.catan!;
+  useEffect(() => setCollapsed(false), [room.id, game.phase, selectedTile]);
+  if (
+    !g.seafarers?.wonders ||
+    game.phase !== "catan_wonders_start" ||
+    game.finished ||
+    room.status !== "playing"
+  )
+    return null;
+  const mine =
+    !room.spectating &&
+    room.you >= 0 &&
+    room.you === game.turn &&
+    !g.players[room.you]?.eliminated;
+  return (
+    <section
+      className="catan-gold-choice catan-wonders-start"
+      aria-label="选择初始强盗位置"
+    >
+      <header>
+        <strong>
+          {mine
+            ? "选择初始强盗位置"
+            : `${room.seats[game.turn].name} 正在选择强盗起点`}
+        </strong>
+        <button
+          aria-expanded={!collapsed}
+          onClick={() => setCollapsed(!collapsed)}
+        >
+          {collapsed ? "展开" : "收起"}
+        </button>
+      </header>
+      {!collapsed && (
+        <div className="catan-gold-body">
+          <p>
+            先手选择一块沙漠作为强盗起点，再开始放置村庄与道路或船只。本剧本不使用海盗。
+          </p>
+          <p>限时120秒，超时自动选择。可收起面板查看地图。</p>
+          {mine && (
+            <>
+              <p>
+                {selectedTile === null
+                  ? "点击地图上亮起的沙漠，再确认起点。"
+                  : `已选择沙漠地块 #${selectedTile + 1}。`}
+              </p>
+              <div className="cloth-confirm-actions">
+                {selectedTile !== null && (
+                  <button disabled={busy} onClick={clearTile}>
+                    重选位置
+                  </button>
+                )}
+                <button
+                  className="primary"
+                  disabled={
+                    busy ||
+                    selectedTile === null ||
+                    !g.legal.robber?.includes(selectedTile)
+                  }
+                  onClick={async () => {
+                    await act({
+                      type: "catan_wonders_start",
+                      tile: selectedTile,
+                    });
+                    clearTile();
+                  }}
+                >
+                  确认起点
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
