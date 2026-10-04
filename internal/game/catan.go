@@ -26,6 +26,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	BaseSetup      *CatanBaseSetup     `json:"baseSetup,omitempty"`
 	GoldPending    *CatanGoldPending   `json:"goldPending,omitempty"`
 	Seafarers      *CatanSeafarers     `json:"seafarers,omitempty"`
 	StartPlayer    int                 `json:"startPlayer,omitempty"`
@@ -689,7 +690,7 @@ func (s *State) catanRollProduction(total int) error {
 		}
 		for _, id := range t.Vertices {
 			v := g.Vertices[id]
-			if v.Level > 0 && !g.Players[v.Owner].Eliminated {
+			if v.Level > 0 && v.Owner >= 0 && !g.Players[v.Owner].Eliminated {
 				if t.Resource == CatanGold {
 					gold[v.Owner] += v.Level
 				} else {
@@ -759,7 +760,7 @@ func (s *State) catanMoveRobber(p, tile int) error {
 	seen := map[int]bool{}
 	for _, id := range g.Tiles[tile].Vertices {
 		v := g.Vertices[id]
-		if v.Level > 0 && v.Owner != p && !seen[v.Owner] && !g.Players[v.Owner].Eliminated && sum(g.Players[v.Owner].Resources) > 0 {
+		if v.Level > 0 && v.Owner >= 0 && v.Owner != p && !seen[v.Owner] && !g.Players[v.Owner].Eliminated && sum(g.Players[v.Owner].Resources) > 0 {
 			seen[v.Owner] = true
 			g.Victims = append(g.Victims, v.Owner)
 		}

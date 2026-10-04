@@ -184,7 +184,7 @@ func (s *State) catanBot(player int) (Action, error) {
 			value := 0
 			for _, id := range t.Vertices {
 				v := g.Vertices[id]
-				if v.Level == 0 {
+				if v.Level == 0 || v.Owner < 0 {
 					continue
 				}
 				n := v.Level * (6 - absCatan(7-t.Number))
@@ -244,7 +244,7 @@ func (s *State) catanBot(player int) (Action, error) {
 					}
 					for _, pair := range [][2]int{{edge.A, edge.B}, {edge.B, edge.A}} {
 						a, b := pair[0], pair[1]
-						if g.Vertices[a].Owner >= 0 && g.Vertices[a].Owner != player {
+						if g.Vertices[a].Level > 0 && g.Vertices[a].Owner != player {
 							continue
 						}
 						if dist[a]+cost < dist[b] {

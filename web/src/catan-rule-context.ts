@@ -22,6 +22,9 @@ export function catanRuleContext(room: Room) {
     layout,
     players,
     waiting: !game,
+    fixedBase: game?.baseSetup?.layout === "fixed",
+    neutral:
+      game?.baseSetup?.neutralColor != null && game.baseSetup.neutralColor >= 0,
     fiveSix: game ? !!game.paired || !!options.fiveSix : !!options.fiveSix,
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,

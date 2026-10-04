@@ -18,7 +18,12 @@ export const catanPieceColors = [
 ];
 
 export function catanColorIndex(game: CatanState, seat: number) {
-  return game.seafarers?.pirateIslands?.colors[seat] ?? seat;
+  if (seat < 0) return game.baseSetup?.neutralColor ?? 2;
+  return (
+    game.seafarers?.pirateIslands?.colors[seat] ??
+    game.baseSetup?.colors[seat] ??
+    seat
+  );
 }
 
 export function catanSeatColor(game: CatanState, seat: number) {

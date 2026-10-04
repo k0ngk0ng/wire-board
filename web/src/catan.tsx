@@ -1006,7 +1006,7 @@ export function CatanBoard({
                     transform={`translate(${v.x},${v.y}) scale(${pieceScale})`}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`交点 ${v.id + 1}${v.level > 0 ? "，" + room.seats[v.owner].name + (v.level === 2 ? "的城市" : "的村庄") : ""}`}
+                    aria-label={`交点 ${v.id + 1}${v.level > 0 ? "，" + (v.owner < 0 ? "中立" : room.seats[v.owner].name + "的") + (v.level === 2 ? "城市" : "村庄") : ""}`}
                     onClick={() => ok && select(effective, v.id)}
                     onKeyDown={(e) => {
                       if (ok && (e.key === "Enter" || e.key === " ")) {
@@ -1032,7 +1032,7 @@ export function CatanBoard({
                           width={v.level === 2 ? 40 : 30}
                           height="34"
                           className={
-                            g.players[v.owner].eliminated
+                            g.players[v.owner]?.eliminated
                               ? "eliminated-piece"
                               : ""
                           }
@@ -1040,7 +1040,7 @@ export function CatanBoard({
                       ) : (
                         <path
                           className={
-                            g.players[v.owner].eliminated
+                            g.players[v.owner]?.eliminated
                               ? "eliminated-piece"
                               : ""
                           }

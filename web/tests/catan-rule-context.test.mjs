@@ -87,3 +87,23 @@ test("legacy scenario snapshots and prepared waiting maps keep their rules", () 
   assert.equal(catanRuleContext(room).layout, "prepared");
   assert.equal(catanRuleContext(room).target, 12);
 });
+
+test("fixed base snapshots preserve neutral setup rules independently of capacity", () => {
+  const room = {
+    capacity: 6,
+    game: { catan: {
+      players: Array(5).fill({}),
+      baseSetup: { layout: "fixed", rules: "catan-base-5-6-2025", colors: [2, 1, 4, 5, 3], neutralColor: 0 },
+      paired: { primary: 0 },
+    } },
+  };
+  assert.equal(catanRuleContext(room).fixedBase, true);
+  assert.equal(catanRuleContext(room).neutral, true);
+  assert.equal(catanRuleContext(room).players, 5);
+  assert.equal(catanRuleContext(room).scenario, "");
+  room.game.catan.baseSetup.neutralColor = -1;
+  assert.equal(catanRuleContext(room).neutral, false);
+  delete room.game.catan.baseSetup;
+  assert.equal(catanRuleContext(room).fixedBase, false);
+  assert.equal(catanRuleContext(room).neutral, false);
+});
