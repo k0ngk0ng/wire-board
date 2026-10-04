@@ -8,10 +8,12 @@ export function CatanOptionPicker({
   value = {},
   onChange,
   disabled = false,
+  seafarers = false,
 }: {
   value?: CatanOptions;
   onChange: (v: CatanOptions) => void;
   disabled?: boolean;
+  seafarers?: boolean;
 }) {
   return (
     <fieldset className="catan-helper-options" disabled={disabled}>
@@ -48,7 +50,10 @@ export function CatanOptionPicker({
       )}
       {value.fiveSix && (
         <small>
-          30块陆地，5–6人。①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
+          {seafarers
+            ? "使用所选航海家剧本的五至六人地图。"
+            : "30块陆地，5–6人。"}
+          ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
       {value.helpers && (

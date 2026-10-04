@@ -1,4 +1,5 @@
 import { CatanWorldEditor } from "./catan-world-editor";
+import { CatanSeafarersPicker, catanScenarioVictory } from "./catan-scenarios";
 import { CatanNewWorldRules } from "./catan-new-world";
 import { ClothPicture } from "./catan-cloth";
 import { CatanWonderSeat, CatanWondersRules } from "./catan-wonders";
@@ -2094,6 +2095,9 @@ function Waiting({
   const maps = useContext(RailMapsContext),
     assets = useContext(AssetsContext);
   const map = maps.find((m) => m.id === (room.railMap || "usa"));
+  const seaInfo = room.catanSeafarersChoices?.find(
+    (s) => s.id === room.catanSeafarers?.scenario,
+  );
   const ready =
     room.seats.every((p) => p.ready) &&
     (room.kind !== "dota" || room.seats.length % 2 === 0) &&
@@ -2144,7 +2148,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? `${room.catanNewWorldMap ? "航海家 · 新世界" : "基础版"}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${room.catanNewWorldMap ? "十二" : "十"}分获胜`
+                  ? `${seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : "基础版"}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${seaInfo ? catanScenarioVictory(seaInfo.id, seaInfo.victoryPoints) : room.catanNewWorldMap ? "12分获胜" : "10分获胜"}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2154,8 +2158,16 @@ function Waiting({
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
         {room.kind === "catan" && (
+          <CatanSeafarersPicker
+            room={room}
+            disabled={!host || busy || mapDirty}
+            command={command}
+          />
+        )}
+        {room.kind === "catan" && (
           <CatanOptionPicker
             value={room.catanOptions}
+            seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
             disabled={!host || busy || mapDirty}
             onChange={(catanOptions) =>
               command("catan_options", { catanOptions })

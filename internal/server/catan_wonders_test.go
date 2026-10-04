@@ -94,8 +94,8 @@ func TestCatanWondersHTTPClaimsClockPrivacyAndRestart(t *testing.T) {
 	}
 }
 
-// Only inject the official initial scenario while public room selection is
-// closed. Every subsequent move uses HTTP, real autoplay, or timeout handling.
+// Provision only the waiting-room configuration while public selection is
+// closed. Start and every move use HTTP, real autoplay, or timeout handling.
 func TestCatanWondersFullHTTPGames(t *testing.T) {
 	for _, n := range []int{3, 6} {
 		for _, helpers := range []bool{false, true} {
@@ -113,22 +113,11 @@ func TestCatanWondersFullHTTPGames(t *testing.T) {
 				for i := 1; i < n; i++ {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
+				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: "wonders"})
 				for i := 0; i < n; i++ {
 					clients[i].command(current(clients[0]), "ready", nil, 200)
 				}
 				clients[0].command(current(clients[0]), "start", nil, 200)
-				scenario, err := game.NewCatanWonders(n, options)
-				if err != nil {
-					t.Fatal(err)
-				}
-				s.mu.Lock()
-				s.rooms[id].Game = scenario
-				s.rooms[id].startTurnClock(time.Now())
-				err = s.save(s.rooms[id])
-				s.mu.Unlock()
-				if err != nil {
-					t.Fatal(err)
-				}
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 				restarted := false
 				steps, automatic, timeouts := 0, 0, 0

@@ -182,6 +182,13 @@ export type CatanNewWorldMap = {
   hexes: { resource: number; number: number }[];
 };
 export type Room = {
+  catanSeafarers?: { scenario: string; layout: string; rules: string };
+  catanSeafarersChoices?: {
+    id: string;
+    name: string;
+    layouts: string[];
+    victoryPoints: number;
+  }[];
   catanNewWorldMap?: CatanNewWorldMap;
   catanOptions?: CatanOptions;
   splendorOptions?: SplendorOptions;
@@ -280,6 +287,8 @@ export type CatanPlayer = {
 };
 export type CatanState = {
   seafarers?: {
+    rules?: string;
+    layout?: string;
     newWorld?: {
       index: number;
       total: number;

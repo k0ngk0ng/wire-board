@@ -1,0 +1,40 @@
+.catan-scenario-options {
+  min-width: 0;
+}
+.catan-helper-options.catan-scenario-options label {
+  display: grid;
+  grid-template-columns: 5em minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+.catan-scenario-options select {
+  min-width: 0;
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #b7a575;
+  border-radius: 7px;
+  color: #3e392c;
+  background: #fffaf0;
+  font: inherit;
+}
+.catan-scenario-options p {
+  margin: 10px 0;
+  color: #514a39;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.catan-scenario-victory {
+  display: block;
+  color: #72551c;
+  line-height: 1.6;
+}
+.catan-scenario-options .catan-scenario-layout {
+  color: #72551c;
+  font-weight: 600;
+}
+@media (max-width: 420px) {
+  .catan-helper-options.catan-scenario-options label {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}

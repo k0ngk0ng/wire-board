@@ -21,6 +21,8 @@ type CatanSeafarerSeat struct {
 }
 
 type CatanSeafarers struct {
+	Rules         string              `json:"rules,omitempty"`
+	Layout        string              `json:"layout,omitempty"`
 	NewWorld      *CatanNewWorld      `json:"newWorld,omitempty"`
 	Wonders       *CatanWonders       `json:"wonders,omitempty"`
 	PirateIslands *CatanPirateIslands `json:"pirateIslands,omitempty"`

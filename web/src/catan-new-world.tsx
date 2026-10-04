@@ -10,7 +10,7 @@ export function CatanNewWorldRules({ game }: { game: CatanState }) {
     <>
       <p>
         航海家 · 新世界，{game.players.length}
-        人。地图随机生成，在自己的行动阶段达到12分获胜。
+        人。地图在开局前共同确认，在自己的行动阶段达到12分获胜。
       </p>
       <ol>
         <li>
