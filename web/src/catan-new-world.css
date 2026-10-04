@@ -1,0 +1,27 @@
+.catan-world-current {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid #c1a36a;
+  border-radius: 8px;
+  background: #fff6d9;
+  color: #49361c;
+}
+.catan-world-current img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+.catan-world-current p {
+  margin: 5px 0 0;
+  font-size: 12px;
+}
+.catan-world-choice header strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.catan-world-choice header button {
+  flex-shrink: 0;
+}

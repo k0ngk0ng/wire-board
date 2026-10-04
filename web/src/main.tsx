@@ -1,3 +1,4 @@
+import { CatanNewWorldRules } from "./catan-new-world";
 import { ClothPicture } from "./catan-cloth";
 import { CatanWonderSeat, CatanWondersRules } from "./catan-wonders";
 import { CatanOptionPicker } from "./catan-helpers";
@@ -4777,6 +4778,8 @@ function Rules({
             秒，放地块与派随从共用倒计时。超时可由其他玩家移出；随从收回、已放地块保留，未放地块洗回牌堆。剩余一人时获胜。
           </p>
         </>
+      ) : kind === "catan" && catan?.seafarers?.newWorld ? (
+        <CatanNewWorldRules game={catan} />
       ) : kind === "catan" && catan?.seafarers?.wonders ? (
         <CatanWondersRules game={catan} />
       ) : kind === "catan" ? (

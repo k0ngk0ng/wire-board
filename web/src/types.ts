@@ -276,6 +276,12 @@ export type CatanPlayer = {
 };
 export type CatanState = {
   seafarers?: {
+    newWorld?: {
+      index: number;
+      total: number;
+      remaining: number;
+      current?: number;
+    };
     wonders?: {
       cards: { id: number; owner: number; level: number }[];
       markers: { card: number; vertex: number }[];
