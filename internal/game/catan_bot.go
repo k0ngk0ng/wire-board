@@ -7,7 +7,7 @@ import "errors"
 func (g *Catan) vertexValue(p, v int) int {
 	values := []int{0, 0, 0, 0, 0}
 	for _, t := range g.Tiles {
-		if t.Resource == 5 {
+		if t.Resource >= 5 {
 			continue
 		}
 		for _, id := range t.Vertices {
@@ -22,7 +22,7 @@ func (g *Catan) vertexValue(p, v int) int {
 			continue
 		}
 		for _, t := range g.Tiles {
-			if t.Resource == 5 {
+			if t.Resource >= 5 {
 				continue
 			}
 			for _, id := range t.Vertices {
@@ -102,7 +102,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	case "catan_setup_road":
 		best, score := -1, -1
 		for _, e := range g.Edges {
-			if e.Owner < 0 && (e.A == g.SetupVertex || e.B == g.SetupVertex) {
+			if g.setupRoute(player, e.ID, false) {
 				next := e.A
 				if next == g.SetupVertex {
 					next = e.B
@@ -113,6 +113,18 @@ func (s *State) catanBot(player int) (Action, error) {
 				}
 			}
 		}
+		if g.Seafarers != nil {
+			choices := []botChoice{}
+			if best >= 0 {
+				choices = append(choices, botChoice{Action{Type: "catan_road", Edge: best}, score})
+			}
+			for _, e := range g.Edges {
+				if g.setupRoute(player, e.ID, true) {
+					choices = append(choices, botChoice{Action{Type: "catan_ship", Edge: e.ID}, max(g.vertexValue(player, e.A), g.vertexValue(player, e.B))})
+				}
+			}
+			return s.botLegal(player, choices)
+		}
 		return Action{Type: "catan_road", Edge: best}, nil
 	case "catan_roll":
 		if g.helperReady(player, 10) && g.Tiles[g.Robber].Resource != 5 {
@@ -120,9 +132,10 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_roll"}, nil
 	case "catan_robber":
+		choices := g.pirateBotChoices(player)
 		best, score := -1, -999
 		for _, t := range g.Tiles {
-			if t.ID == g.Robber {
+			if t.ID == g.Robber || t.Resource == CatanSea || t.Resource == CatanFog {
 				continue
 			}
 			value := 0
@@ -142,7 +155,10 @@ func (s *State) catanBot(player int) (Action, error) {
 				best, score = t.ID, value
 			}
 		}
-		return Action{Type: "catan_robber", Tile: best}, nil
+		if best >= 0 {
+			choices = append(choices, botChoice{Action{Type: "catan_robber", Tile: best}, score})
+		}
+		return s.botLegal(player, choices)
 	case "catan_steal":
 		best := g.Victims[0]
 		for _, i := range g.Victims {
@@ -156,7 +172,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	// Choose a reachable vacant intersection by distance from the current network.
 	road, roadScore := -1, -99999
 	for _, e := range g.Edges {
-		if !g.canRoad(player, e.ID) {
+		if g.Seafarers != nil || !g.canRoad(player, e.ID) {
 			continue
 		}
 		score := -9999
@@ -203,6 +219,11 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 	}
 	if s.Phase == "catan_roads" {
+		if g.Seafarers != nil {
+			choices := g.seaBuildChoices(player)
+			choices = append(choices, botChoice{Action{Type: "catan_skip_roads"}, -99999})
+			return s.botLegal(player, choices)
+		}
 		if road >= 0 && roads < 15 {
 			return Action{Type: "catan_road", Edge: road}, nil
 		}
@@ -212,6 +233,10 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	if g.Seafarers != nil {
+		choices = append(choices, g.seaBuildChoices(player)...)
+		choices = append(choices, g.seaMoveChoices(player)...)
+	}
 	bestCity, cityScore := -1, -1
 	for _, v := range g.Vertices {
 		if v.Owner == player && v.Level == 1 {
@@ -284,7 +309,7 @@ func (s *State) catanBot(player int) (Action, error) {
 				a.Color = 3
 				production := make([]int, 5)
 				for _, t := range g.Tiles {
-					if t.Resource == 5 {
+					if t.Resource >= 5 {
 						continue
 					}
 					for _, v := range t.Vertices {

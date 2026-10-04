@@ -9,7 +9,7 @@ import (
 // Resource order is shared by the bank, prices, cards and trade offers.
 var CatanResources = []string{"木材", "砖块", "羊毛", "粮食", "矿石"}
 var catanPrices = map[string][]int{
-	"catan_road": {1, 1, 0, 0, 0}, "catan_settlement": {1, 1, 1, 1, 0},
+	"catan_ship": {1, 0, 1, 0, 0}, "catan_road": {1, 1, 0, 0, 0}, "catan_settlement": {1, 1, 1, 1, 0},
 	"catan_city": {0, 0, 0, 2, 3}, "catan_buy_dev": {0, 0, 1, 1, 1},
 }
 
@@ -29,10 +29,12 @@ type CatanVertex struct {
 	Level int     `json:"level"`
 }
 type CatanEdge struct {
-	ID    int `json:"id"`
-	A     int `json:"a"`
-	B     int `json:"b"`
-	Owner int `json:"owner"`
+	Tiles []int `json:"tiles,omitempty"`
+	Ship  bool  `json:"ship,omitempty"`
+	ID    int   `json:"id"`
+	A     int   `json:"a"`
+	B     int   `json:"b"`
+	Owner int   `json:"owner"`
 }
 type CatanPort struct {
 	Edge     int `json:"edge"`
@@ -76,9 +78,10 @@ func (g *Catan) makeMap() {
 				if !ok {
 					id = len(g.Edges)
 					edges[key] = id
-					g.Edges = append(g.Edges, CatanEdge{id, a, b, -1})
+					g.Edges = append(g.Edges, CatanEdge{ID: id, A: a, B: b, Owner: -1})
 				}
 				uses[id]++
+				g.Edges[id].Tiles = append(g.Edges[id].Tiles, t.ID)
 			}
 			g.Tiles = append(g.Tiles, t)
 		}
@@ -164,7 +167,7 @@ func (g *Catan) touching(v int) []int {
 	return out
 }
 func (g *Catan) canSettlement(p, v int, setup bool) bool {
-	if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Level != 0 {
+	if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Level != 0 || !g.landVertex(v) || (setup && g.setup() && !g.seaSetupAllowed(v)) {
 		return false
 	}
 	connected := false
@@ -183,30 +186,10 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 	}
 	return setup || connected
 }
-func (g *Catan) canRoad(p, id int) bool {
-	if id < 0 || id >= len(g.Edges) || g.Edges[id].Owner >= 0 {
-		return false
-	}
-	e := g.Edges[id]
-	for _, v := range []int{e.A, e.B} {
-		vertex := g.Vertices[v]
-		if vertex.Level > 0 {
-			if vertex.Owner == p {
-				return true
-			}
-			continue
-		}
-		for _, next := range g.touching(v) {
-			if g.Edges[next].Owner == p {
-				return true
-			}
-		}
-	}
-	return false
-}
+func (g *Catan) canRoad(p, id int) bool { return g.canRoute(p, id, false) }
 func (g *Catan) pieces(p int) (roads, settlements, cities int) {
 	for _, e := range g.Edges {
-		if e.Owner == p {
+		if e.Owner == p && !e.Ship {
 			roads++
 		}
 	}
@@ -241,8 +224,8 @@ func (g *Catan) rates(p int) []int {
 func (g *Catan) roadLength(p int) int {
 	used := make([]bool, len(g.Edges))
 	best := 0
-	var walk func(int, int)
-	walk = func(v, n int) {
+	var walk func(int, int, int)
+	walk = func(v, n, previous int) {
 		best = max(best, n)
 		if n > 0 && g.Vertices[v].Level > 0 && g.Vertices[v].Owner != p {
 			return
@@ -252,17 +235,20 @@ func (g *Catan) roadLength(p int) int {
 			if e.Owner != p || used[id] {
 				continue
 			}
+			if previous >= 0 && g.Edges[previous].Ship != e.Ship && !(g.Vertices[v].Owner == p && g.Vertices[v].Level > 0) {
+				continue
+			}
 			next := e.A
 			if next == v {
 				next = e.B
 			}
 			used[id] = true
-			walk(next, n+1)
+			walk(next, n+1, id)
 			used[id] = false
 		}
 	}
 	for _, v := range g.Vertices {
-		walk(v.ID, 0)
+		walk(v.ID, 0, -1)
 	}
 	return best
 }

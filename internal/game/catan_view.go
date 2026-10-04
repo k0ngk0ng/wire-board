@@ -44,6 +44,9 @@ func (s *State) catanView(view map[string]any, player int) {
 		p["rates"] = g.rates(i)
 		roads, settlements, cities := g.pieces(i)
 		p["roadsLeft"] = 15 - roads
+		if g.Seafarers != nil {
+			p["shipsLeft"] = 15 - g.shipCount(i)
+		}
 		p["settlementsLeft"] = 5 - settlements
 		p["citiesLeft"] = 4 - cities
 		if actual.Helper != nil {
@@ -58,6 +61,10 @@ func (s *State) catanView(view map[string]any, player int) {
 	}
 	// Legal locations are computed using only public map and the viewer's identity.
 	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}}
+	if g.Seafarers != nil {
+		legal["ships"] = []int{}
+		legal["pirate"] = []int{}
+	}
 	if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
 		roads, settlements, cities := g.pieces(player)
 		for _, v := range g.Vertices {
@@ -74,7 +81,7 @@ func (s *State) catanView(view map[string]any, player int) {
 			}
 			valid := false
 			if s.Phase == "catan_setup_road" {
-				valid = e.Owner < 0 && (e.A == g.SetupVertex || e.B == g.SetupVertex)
+				valid = g.setupRoute(player, e.ID, false)
 			} else if s.Phase == "catan_turn" || s.Phase == "catan_roads" {
 				valid = g.canRoad(player, e.ID)
 			}
@@ -82,6 +89,30 @@ func (s *State) catanView(view map[string]any, player int) {
 				legal["roads"] = append(legal["roads"], e.ID)
 			}
 		}
+	}
+	if g.Seafarers != nil && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
+		moves := map[int][]int{}
+		for _, e := range g.Edges {
+			if g.shipCount(player) < 15 && ((s.Phase == "catan_setup_road" && g.setupRoute(player, e.ID, true)) || ((s.Phase == "catan_turn" || s.Phase == "catan_roads") && g.canShip(player, e.ID))) {
+				legal["ships"] = append(legal["ships"], e.ID)
+			}
+			if s.Phase == "catan_turn" {
+				if destinations := g.shipDestinations(player, e.ID); len(destinations) > 0 {
+					moves[e.ID] = destinations
+				}
+			}
+		}
+		if s.Phase == "catan_robber" {
+			for _, t := range g.Tiles {
+				if t.Resource == CatanSea && t.ID != g.Seafarers.Pirate {
+					legal["pirate"] = append(legal["pirate"], t.ID)
+				}
+			}
+			if g.Seafarers.Pirate >= 0 {
+				legal["pirate"] = append(legal["pirate"], -1)
+			}
+		}
+		v["shipMoves"] = moves
 	}
 	v["legal"] = legal
 }
