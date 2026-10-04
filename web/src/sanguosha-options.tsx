@@ -45,19 +45,28 @@ export function SanguoshaOptions({
           </button>
         ))}
       </div>
-      <label className="sg-pack-option">
-        <input
-          type="checkbox"
-          checked={value?.packs?.includes("wind") || false}
-          onChange={(e) =>
-            onChange({
-              ...value,
-              packs: e.target.checked ? ["standard", "wind"] : ["standard"],
-            })
-          }
-        />
-        风包 · 经典八将
-      </label>
+      {[
+        { id: "wind", label: "风包 · 经典八将" },
+        { id: "fire", label: "火包 · 经典八将" },
+      ].map((pack) => (
+        <label className="sg-pack-option" key={pack.id}>
+          <input
+            type="checkbox"
+            checked={value?.packs?.includes(pack.id) || false}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                packs: e.target.checked
+                  ? [...(value?.packs || ["standard"]), pack.id]
+                  : (value?.packs || ["standard"]).filter(
+                      (id) => id !== pack.id,
+                    ),
+              })
+            }
+          />
+          {pack.label}
+        </label>
+      ))}
       <p>
         武将采用经典技能版本。
         {deck === "military" &&

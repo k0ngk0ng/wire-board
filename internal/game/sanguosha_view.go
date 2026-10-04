@@ -12,10 +12,11 @@ func (s *State) sgView(viewer int) map[string]any {
 		if g.Selecting && i != g.Lord && i != viewer {
 			general = ""
 		}
-		v := map[string]any{"general": general, "flipped": p.Flipped, "buqu": p.Buqu, "chained": p.Chained, "drank": p.Drank, "hp": p.HP, "maxHP": p.MaxHP, "dead": p.Dead, "handCount": len(p.Hand), "equip": p.Equip, "judgment": p.Judgment, "used": p.Used}
+		v := map[string]any{"general": general, "marks": p.Marks, "handLimit": s.sgHandLimit(i), "flipped": p.Flipped, "buqu": p.Buqu, "chained": p.Chained, "drank": p.Drank, "hp": p.HP, "maxHP": p.MaxHP, "dead": p.Dead, "handCount": len(p.Hand), "equip": p.Equip, "judgment": p.Judgment, "used": p.Used}
 		if g.Selecting && general == "" {
 			v["hp"] = 0
 			v["maxHP"] = 0
+			v["handLimit"] = 0
 		}
 		if i == viewer || p.Role == "lord" || p.Dead || s.Finished {
 			v["role"] = p.Role
@@ -46,6 +47,7 @@ func (s *State) sgView(viewer int) map[string]any {
 			prompt["count"] = e.Count
 			prompt["step"] = e.Step
 			prompt["choices"] = p.Choices
+			prompt["targets"] = p.Targets
 			if p.Kind == "card" {
 				prompt["wanted"] = sgWanted(e)
 				prompt["ignoreArmor"] = s.sgIgnoreArmor(e)
@@ -70,6 +72,7 @@ func (s *State) sgView(viewer int) map[string]any {
 		}
 		visible["distances"] = dist
 		visible["range"] = s.sgRange(viewer)
+		visible["armor"] = s.sgArmor(viewer)
 		if s.sgHas(viewer, "guhuo") {
 			visible["guhuoKinds"] = s.sgGuhuoKinds()
 		}

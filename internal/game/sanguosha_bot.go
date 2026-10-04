@@ -28,10 +28,19 @@ func (s *State) sgBot(i int) (Action, error) {
 			if s.sgHas(i, "guhuo") && slices.Contains(p.Hand, id) && c.Suit == 1 && (c.Kind == want || want == "slash" && sgIsSlash(c.Kind)) {
 				out = append(out, Action{Cards: []int{id}, Skill: "guhuo", Choice: want})
 			}
-			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan"} {
+			for _, skill := range []string{"", "wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu", "fan", "huoji", "kanpo", "lianhuan", "shuangxiong"} {
 				a := Action{Cards: []int{id}, Skill: skill}
 				if _, err := s.sgAs(i, a.Cards, skill, want); err == nil {
 					out = append(out, a)
+				}
+			}
+		}
+		if want == "archery_attack" && s.sgHas(i, "luanji") {
+			for j, id := range p.Hand {
+				for _, other := range p.Hand[j+1:] {
+					if s.sgCardFor(i, id).Suit == s.sgCardFor(i, other).Suit {
+						out = append(out, Action{Cards: []int{id, other}, Skill: "luanji"})
+					}
 				}
 			}
 		}
@@ -53,6 +62,35 @@ func (s *State) sgBot(i int) (Action, error) {
 		}
 		e := q.Event
 		switch q.Kind {
+		case "pindian":
+			ids := clone(p.Hand)
+			slices.SortStableFunc(ids, func(a, b int) int { return sgCard(b).Rank - sgCard(a).Rank })
+			for _, id := range ids {
+				add(Action{Cards: []int{id}})
+			}
+		case "quhu_target":
+			for _, target := range q.Targets {
+				if target != i && !(p.Role == "loyalist" && target == g.Lord) {
+					add(Action{Targets: []int{target}})
+				}
+			}
+			for _, target := range q.Targets {
+				add(Action{Targets: []int{target}})
+			}
+		case "jieming":
+			targets := []int{i}
+			if p.Role == "loyalist" {
+				targets = append(targets, g.Lord)
+			}
+			slices.SortStableFunc(targets, func(a, b int) int {
+				pa, pb := g.Players[a], g.Players[b]
+				return (min(5, pb.MaxHP) - len(pb.Hand)) - (min(5, pa.MaxHP) - len(pa.Hand))
+			})
+			for _, target := range targets {
+				add(Action{Targets: []int{target}})
+			}
+		case "niepan", "mengjin":
+			add(Action{Choice: "yes"})
 		case "guhuo_question":
 			// Use only the public declaration, turn token and our own HP/role.
 			// Never inspect the private card in the resumable bluff context.
@@ -134,6 +172,9 @@ func (s *State) sgBot(i int) (Action, error) {
 		case "guanxing":
 			add(Action{Cards: q.Cards})
 		case "draw_phase":
+			if s.sgHas(i, "shuangxiong") && len(p.Hand) >= 3 {
+				add(Action{Choice: "shuangxiong"})
+			}
 			if s.sgHas(i, "yingzi") {
 				add(Action{Choice: "yingzi"})
 			}
@@ -174,7 +215,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 		case "fire_discard":
 			for _, id := range p.Hand {
-				if sgCard(id).Suit == e.Aux && sgCard(id).Kind != "peach" {
+				if s.sgCardFor(i, id).Suit == e.Aux && sgCard(id).Kind != "peach" {
 					add(Action{Cards: []int{id}})
 				}
 			}
@@ -293,6 +334,29 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 			return g.Players[a].HP - g.Players[b].HP
 		})
+		if s.sgHas(i, "qiangxi") {
+			for _, target := range enemies {
+				for _, id := range append(append([]int{}, p.Hand...), p.Equip...) {
+					if SGCardTypes[sgCard(id).Kind].Slot == "weapon" {
+						add(Action{Type: "sg_skill", Skill: "qiangxi", Cards: []int{id}, Targets: []int{target}})
+					}
+				}
+				if p.HP > 1 {
+					add(Action{Type: "sg_skill", Skill: "qiangxi", Targets: []int{target}})
+				}
+			}
+		}
+		for _, skill := range []string{"quhu", "tianyi"} {
+			if s.sgHas(i, skill) {
+				ids := clone(p.Hand)
+				slices.SortStableFunc(ids, func(a, b int) int { return sgCard(b).Rank - sgCard(a).Rank })
+				if len(ids) > 0 && sgCard(ids[0]).Rank >= 9 {
+					for _, target := range enemies {
+						add(Action{Type: "sg_skill", Skill: skill, Cards: ids[:1], Targets: []int{target}})
+					}
+				}
+			}
+		}
 		// Drink only when a legal slash can follow; use only visible armor/HP.
 		if p.Drank == 0 {
 			canSlash := false
@@ -326,9 +390,10 @@ func (s *State) sgBot(i int) (Action, error) {
 				}
 			}
 		}
-		for _, id := range p.Hand {
-			if kind := sgCard(id).Kind; kind == "savage_assault" || kind == "archery_attack" {
-				add(Action{Type: "sg_play", Cards: []int{id}})
+		for _, kind := range []string{"savage_assault", "archery_attack"} {
+			for _, a := range cardsFor(kind) {
+				a.Type = "sg_play"
+				add(a)
 			}
 		}
 		for _, a := range cardsFor("iron_chain") {

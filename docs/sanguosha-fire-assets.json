@@ -1,0 +1,57 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "generals/dianwei.webp": "image/fullskin/generals/full/dianwei.png",
+    "generals/xunyu.webp": "image/fullskin/generals/full/xunyu.png",
+    "generals/wolong.webp": "image/fullskin/generals/full/wolong.png",
+    "generals/pangtong.webp": "image/fullskin/generals/full/pangtong.png",
+    "generals/taishici.webp": "image/fullskin/generals/full/taishici.png",
+    "generals/yuanshao.webp": "image/fullskin/generals/full/yuanshao.png",
+    "generals/yanliangwenchou.webp": "image/fullskin/generals/full/yanliangwenchou.png",
+    "generals/pangde.webp": "image/fullskin/generals/full/pangde.png"
+  },
+  "assets": [
+    {
+      "file": "generals/dianwei.webp",
+      "sha256": "697f93f73a0441082643aa7b9261bbaa5fbce4ebd2790e793bc6ca018dde009a",
+      "bytes": 30546
+    },
+    {
+      "file": "generals/pangde.webp",
+      "sha256": "daa0897e6162d893dfb0bd11062793cdeb42972dd08b4ae185a46d8461355eb6",
+      "bytes": 18462
+    },
+    {
+      "file": "generals/pangtong.webp",
+      "sha256": "261c672b22e6f0d7b698fd8edc715df1c5ad14444e042e123d6eabc024bf5002",
+      "bytes": 22598
+    },
+    {
+      "file": "generals/taishici.webp",
+      "sha256": "84ae2631e5615a7a17b79030c2ad73e7c1a5a02c318384e3081d847380917f6d",
+      "bytes": 22654
+    },
+    {
+      "file": "generals/wolong.webp",
+      "sha256": "e247ddcf0aedffc9ad6424801de5522d6c3b3009f3a6e9d1faf92e593bd99314",
+      "bytes": 15250
+    },
+    {
+      "file": "generals/xunyu.webp",
+      "sha256": "d56ae23e28bcd50fc222905f08f72b67b795631d003ed3b9887842ed582ae316",
+      "bytes": 18390
+    },
+    {
+      "file": "generals/yanliangwenchou.webp",
+      "sha256": "8ec62763aa433b561465dbb4f6d53b2c5d7443d12ac1c5712d1c2c8d6bdd140d",
+      "bytes": 30218
+    },
+    {
+      "file": "generals/yuanshao.webp",
+      "sha256": "7ce49652c1a4da765f0a8c14baa3ecae7e84db0f5d2b837b310d7e1e996d53e0",
+      "bytes": 20168
+    }
+  ],
+  "cdnVerified": true
+}
