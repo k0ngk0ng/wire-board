@@ -4,6 +4,21 @@ func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
+	if w := g.wonders(); w != nil {
+		v["wonderRules"] = append([]CatanWonderRule{}, catanWonderRules[:len(w.Cards)]...)
+		claims, builds := []int{}, []int{}
+		if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn && s.Phase == "catan_turn" && g.HelperPending == nil && g.GoldPending == nil {
+			for _, card := range w.Cards {
+				if g.wonderClaimable(player, card.ID) {
+					claims = append(claims, card.ID)
+				}
+				if card.Owner == player && card.Level < 4 && catanHas(g.Players[player].Resources, catanWonderRules[card.ID].Cost[:]) {
+					builds = append(builds, card.ID)
+				}
+			}
+		}
+		v["wonderClaims"], v["wonderBuilds"] = claims, builds
+	}
 	if g.Seafarers != nil && g.Seafarers.Fog != nil {
 		sea := v["seafarers"].(map[string]any)
 		sea["fog"] = map[string]any{"remaining": len(g.Seafarers.Fog.Terrain), "startTiles": append([]int{}, g.Seafarers.Fog.StartTiles...)}

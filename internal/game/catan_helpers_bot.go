@@ -115,7 +115,7 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 			add(a, build.score+10)
 		}
 		if h.ID == 9 {
-			cost := catanPrices[a.Type]
+			cost := catanBotBuildCost(a)
 			for want, n := range cost {
 				if n <= p.Resources[want] || g.Bank[want] == 0 {
 					continue

@@ -21,6 +21,7 @@ type CatanSeafarerSeat struct {
 }
 
 type CatanSeafarers struct {
+	Wonders       *CatanWonders       `json:"wonders,omitempty"`
 	PirateIslands *CatanPirateIslands `json:"pirateIslands,omitempty"`
 	Cloth         *CatanClothState    `json:"cloth,omitempty"`
 	Tribe         *CatanTribeState    `json:"tribe,omitempty"`
@@ -301,6 +302,9 @@ func (g *Catan) islandAt(v int) int {
 	return -1
 }
 func (g *Catan) seaSetupAllowed(v int) bool {
+	if w := g.wonders(); w != nil && slices.Contains(w.SetupBlocked, v) {
+		return false
+	}
 	if g.Seafarers != nil && g.Seafarers.Fog != nil {
 		for _, id := range g.Seafarers.Fog.StartTiles {
 			if id >= 0 && id < len(g.Tiles) && slices.Contains(g.Tiles[id].Vertices, v) {

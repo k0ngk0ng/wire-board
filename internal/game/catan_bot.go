@@ -49,7 +49,7 @@ func (g *Catan) vertexValue(p, v int) int {
 			}
 		}
 	}
-	score := goldValue
+	score := goldValue + g.wonderVertexValue(p, v)
 	if g.Seafarers != nil && !g.setup() && p < len(g.Seafarers.Seats) {
 		island := g.islandAt(v)
 		if island >= 0 && !slices.Contains(g.Seafarers.Seats[p].SettledIslands, island) {
@@ -276,6 +276,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	choices = append(choices, g.wonderBotChoices(player)...)
 	if g.Seafarers != nil {
 		choices = append(choices, g.seaBuildChoices(player)...)
 		choices = append(choices, g.seaMoveChoices(player)...)
@@ -309,7 +310,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	// Trade only toward an immediately useful build, with a strictly smaller deficit.
 	targets := append([]botChoice{}, choices...)
 	for _, target := range targets {
-		cost := catanPrices[target.action.Type]
+		cost := catanBotBuildCost(target.action)
 		for want, n := range cost {
 			if n <= p.Resources[want] || g.Bank[want] == 0 {
 				continue
