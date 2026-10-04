@@ -66,13 +66,11 @@ func TestSanguoshaHegemonyCatalogAndSelection(t *testing.T) {
 			t.Fatal(kind, types[kind], want)
 		}
 	}
-	// This internal foundation must not expose a partially implemented mode.
-	if _, err := NormalizeSGOptions(SGOptions{Mode: "hegemony"}); err == nil {
-		t.Fatal("unfinished national-war mode enabled")
-	}
 	for n := 4; n <= 8; n++ {
-		s := &State{Kind: "sanguosha", Round: 1}
-		s.initSGHegemony(n)
+		s, err := NewSanguosha(n, SGOptions{Mode: "hegemony"})
+		if err != nil {
+			t.Fatal(err)
+		}
 		seen := map[string]bool{}
 		for _, p := range s.Sanguosha.Players {
 			if len(p.Choices) != 7 || p.Role != "" {

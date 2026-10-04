@@ -67,6 +67,7 @@ func (s *State) sgView(viewer int) map[string]any {
 		visible["skills"] = sgHegSkillCatalog()
 		visible["first"] = g.Hegemony.First
 		visible["hegemony"] = true
+		visible["companions"] = sgHegemonyCompanions
 	}
 	if len(g.Bluffs) > 0 {
 		b := g.Bluffs[len(g.Bluffs)-1]

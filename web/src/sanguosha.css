@@ -212,9 +212,27 @@
 }
 .sg-public-cards {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 12px;
+  width: max-content;
+  max-width: 100%;
+  margin: 6px auto 0;
+  padding: 5px 3px 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.sg-public-cards .sg-card.small {
+  width: 112px;
+  flex: 0 0 112px;
+}
+.sg-public-cards .sg-card.small .sg-card-heading {
+  min-height: 43px;
+  padding: 5px 4px;
+}
+.sg-public-cards .sg-card.small .sg-card-heading b {
+  font-size: 18px;
+}
+.sg-public-cards .sg-card.small .sg-card-heading span {
+  font-size: 14px;
 }
 .sg-card {
   position: relative;
@@ -700,10 +718,11 @@
     padding: 2px;
   }
   .sg-center {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     padding: 6px;
     min-height: 40px;
   }
@@ -723,6 +742,24 @@
   }
   .sg-card.small .sg-card-heading span {
     font-size: 8px;
+  }
+  .sg-public-cards {
+    gap: 8px;
+    margin-top: 0;
+  }
+  .sg-public-cards .sg-card.small {
+    width: 76px;
+    flex-basis: 76px;
+  }
+  .sg-public-cards .sg-card.small .sg-card-heading {
+    min-height: 35px;
+    padding: 4px 2px;
+  }
+  .sg-public-cards .sg-card.small .sg-card-heading b {
+    font-size: 15px;
+  }
+  .sg-public-cards .sg-card.small .sg-card-heading span {
+    font-size: 12px;
   }
   .sg-hand-section {
     padding-top: 8px;
@@ -1034,5 +1071,301 @@
 
 .sg-skill-tag.sg-skill-inactive {
   text-decoration: line-through;
-  opacity: .65;
+  opacity: 0.65;
+}
+
+/* National-war slots stay distinct, including the owner's private dark generals. */
+.sg-hegemony .sg-seats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.sg-hegemony .sg-seat-target {
+  height: 140px;
+}
+.sg-dual-portraits {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 100%;
+}
+.sg-general-slot {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+.sg-general-slot + .sg-general-slot {
+  border-left: 2px solid #eadfc5;
+}
+.sg-general-slot img {
+  object-position: center 18%;
+}
+.sg-slot-name {
+  position: absolute;
+  inset: auto 0 0;
+  color: #fff5dc;
+  background: linear-gradient(transparent, #18251af0);
+  padding: 20px 5px 7px;
+  font: 700 17px/1.3 serif;
+  text-shadow: 0 1px 2px #000;
+}
+.sg-slot-state {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  color: #fff5df;
+  background: #28342beb;
+  padding: 3px 4px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+.sg-general-slot.hidden .sg-slot-state {
+  background: #584943eb;
+}
+.sg-hegemony .sg-target-number {
+  top: auto;
+  bottom: 35px;
+}
+.sg-first-seat {
+  display: inline-block;
+  margin-left: 7px;
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #725216;
+  background: #f2dfaa;
+}
+.role-wei {
+  color: #315e7b;
+}
+.role-shu {
+  color: #a14637;
+}
+.role-wu {
+  color: #2d6b47;
+}
+.role-qun {
+  color: #796041;
+}
+.role-careerist {
+  color: #785394;
+}
+.sg-hidden-skill {
+  margin-left: 5px;
+  padding: 1px 3px;
+  border: 1px dashed currentColor;
+  border-radius: 3px;
+  font-size: 10px;
+}
+.sg-private-note {
+  color: #72624c;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.sg-heg-draft {
+  margin: 20px 0;
+}
+.sg-heg-draft h3 {
+  margin-bottom: 5px;
+}
+.sg-heg-draft h3 small,
+.sg-draft-faction h4 small {
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 6px;
+}
+.sg-heg-draft > p {
+  font-size: 13px;
+}
+.sg-draft-faction {
+  border-top: 2px solid var(--kingdom);
+  margin: 16px 0;
+}
+.sg-draft-faction h4 {
+  color: var(--kingdom);
+  margin: 8px 0;
+}
+.sg-heg-candidates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  align-items: start;
+  gap: 10px;
+}
+.sg-heg-candidates > article {
+  overflow: hidden;
+  background: #fff8e9;
+  border: 2px solid #ccc0a5;
+  border-radius: 9px;
+}
+.sg-heg-candidates > article.selected {
+  border-color: #a57c21;
+  box-shadow: 0 0 0 2px #e8c76c;
+}
+.sg-heg-candidate {
+  position: relative;
+  border: 0;
+  padding: 0 0 9px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  gap: 5px;
+  border-radius: 0;
+  color: #493d2b;
+  background: #fff8e9;
+}
+.sg-heg-candidate img {
+  width: 100%;
+  height: 125px;
+  object-fit: cover;
+  object-position: center 17%;
+}
+.sg-heg-candidate strong {
+  font-size: 16px;
+}
+.sg-heg-candidate small {
+  font-size: 12px;
+}
+.sg-draft-slot {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #f4d67c;
+  color: #543914;
+}
+.sg-heg-candidates details {
+  padding: 8px;
+  border-top: 1px solid #e2d7bd;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.sg-heg-candidates summary {
+  color: var(--kingdom);
+  cursor: pointer;
+  font-weight: 600;
+}
+.sg-heg-candidates details p {
+  margin: 6px 0;
+}
+.sg-draft-confirm {
+  padding: 13px;
+  background: #fff8e9;
+  border: 1px solid #c9b587;
+  border-radius: 9px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.sg-draft-confirm p {
+  font-size: 13px;
+  margin: 5px 0 0;
+}
+.sg-intel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.sg-general-intel {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border-left: 3px solid var(--kingdom);
+  background: #fff8e9;
+  color: #493d2b;
+}
+.sg-general-intel img {
+  width: 68px;
+  flex: 0 0 68px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 5px;
+}
+.sg-general-intel strong {
+  color: var(--kingdom);
+}
+.sg-general-intel p {
+  font-size: 12px;
+  line-height: 1.65;
+  margin: 4px 0;
+}
+.sg-heg-intel > p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.sg-heg-intel h4 {
+  margin: 10px 0 6px;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .sg-hegemony .sg-seats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .sg-hegemony .sg-seat-target {
+    height: 106px;
+  }
+  .sg-slot-name {
+    font-size: 15px;
+    padding-inline: 4px;
+  }
+  .sg-slot-state {
+    font-size: 9px;
+    padding: 2px;
+  }
+  .sg-hegemony .sg-seat-info {
+    padding: 7px;
+  }
+  .sg-hegemony .sg-health span {
+    display: block;
+    font-size: 13px;
+  }
+  .sg-heg-candidates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .sg-heg-candidate img {
+    height: 112px;
+  }
+  .sg-intel-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sg-draft-confirm {
+    padding: 10px;
+  }
+}
+.sg-heg-factions {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.sg-heg-factions .sg-draft-faction {
+  flex: var(--sg-draft-cols) 1 0;
+  min-width: 0;
+}
+.sg-heg-factions .sg-heg-candidates {
+  grid-template-columns: repeat(var(--sg-draft-cols), minmax(0, 1fr));
+}
+.sg-hegemony.sg-selecting .sg-seat-target {
+  height: 75px;
+}
+.sg-hegemony.sg-selecting .sg-health,
+.sg-hegemony.sg-selecting .sg-seat-info > small {
+  display: none;
+}
+@media (max-width: 1000px) {
+  .sg-heg-factions {
+    display: block;
+  }
+  .sg-heg-factions .sg-heg-candidates {
+    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .sg-heg-factions .sg-heg-candidates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

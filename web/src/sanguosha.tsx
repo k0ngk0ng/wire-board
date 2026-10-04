@@ -2,12 +2,26 @@ import { useEffect, useState } from "react";
 import { Bot } from "lucide-react";
 import type { Act, Room, SanguoshaState, SGOptions } from "./types";
 import { PlayerName } from "./profiles";
+import { generalArt, cardArt } from "./sanguosha-art";
+import {
+  HegemonyDraft,
+  HegemonyPortraits,
+  HegemonyIntel,
+  HegemonyResponseActions,
+  HegemonyRules,
+  hegemonyInstructions,
+} from "./sanguosha-hegemony";
 import "./sanguosha.css";
 const roles: Record<string, string> = {
   lord: "主公",
   loyalist: "忠臣",
   rebel: "反贼",
   renegade: "内奸",
+  wei: "魏势力",
+  shu: "蜀势力",
+  wu: "吴势力",
+  qun: "群势力",
+  careerist: "野心家",
 };
 const kingdoms: Record<string, string> = {
   wei: "魏",
@@ -16,73 +30,9 @@ const kingdoms: Record<string, string> = {
   qun: "群",
   god: "神",
 };
-const militaryArt = new Set([
-  "fire_slash",
-  "thunder_slash",
-  "analeptic",
-  "fire_attack",
-  "iron_chain",
-  "supply_shortage",
-  "fan",
-  "guding_blade",
-  "vine",
-  "silver_lion",
-  "hualiu",
-]);
-const windGenerals = new Set([
-  "caoren",
-  "xiahouyuan",
-  "huangzhong",
-  "weiyan",
-  "xiaoqiao",
-  "zhoutai",
-  "zhangjiao",
-  "yuji",
-]);
-const fireGenerals = new Set([
-  "dianwei",
-  "xunyu",
-  "wolong",
-  "pangtong",
-  "taishici",
-  "yuanshao",
-  "yanliangwenchou",
-  "pangde",
-]);
-const thicketGenerals = new Set([
-  "caopi",
-  "xuhuang",
-  "menghuo",
-  "zhurong",
-  "sunjian",
-  "lusu",
-  "dongzhuo",
-  "jiaxu",
-]);
-const mountainGenerals = new Set([
-  "zhanghe",
-  "dengai",
-  "jiangwei",
-  "liushan",
-  "sunce",
-  "erzhang",
-  "caiwenji",
-  "zuoci",
-]);
-const godGenerals = new Set([
-  "shenguanyu",
-  "shenlvmeng",
-  "shenzhouyu",
-  "shenzhugeliang",
-  "shencaocao",
-  "shenlvbu",
-  "shenzhaoyun",
-  "shensimayi",
-]);
-const generalArt = (assets: string, id: string) =>
-  `${assets}/sanguosha/${id.startsWith("jie_") ? "v8" : godGenerals.has(id) ? "v7" : mountainGenerals.has(id) ? "v6" : thicketGenerals.has(id) ? "v5" : fireGenerals.has(id) ? "v4" : windGenerals.has(id) ? "v3" : "v1"}/generals/${id}.webp`;
 const suits = ["♠", "♥", "♣", "♦"];
 const transforms = [
+  "heg_duoshi",
   "longhun",
   "duanliang",
   "jiuchi",
@@ -100,6 +50,13 @@ const transforms = [
   "jijiu",
 ];
 const activeSkills = [
+  "heg_rende",
+  "heg_zhiheng",
+  "heg_lijian",
+  "heg_fenxun",
+  "heg_xiongyi",
+  "heg_huoshui",
+  "heg_qingcheng",
   "jie_rende",
   "yijue",
   "jie_kurou",
@@ -183,7 +140,7 @@ function Card({
       </span>
       {assets && !failed ? (
         <img
-          src={`${assets}/sanguosha/${militaryArt.has(c.kind) ? "v2" : "v1"}/cards/${c.kind}.webp`}
+          src={cardArt(assets, c.kind)}
           alt={info.name}
           onError={() => setFailed(true)}
           draggable={false}
@@ -231,7 +188,7 @@ export function SanguoshaBoard({
   const [detail, setDetail] = useState<number>();
   const mineGeneral = g.generals.find((x) => x.id === me?.general);
   const skills = [
-    ...(me?.skills || mineGeneral?.skills || []),
+    ...(me?.ownSkills || me?.skills || mineGeneral?.skills || []),
     ...(g.zhibaPindian ? ["zhiba_pindian"] : []),
     ...(g.huangtianGive ? ["huangtian_give"] : []),
   ].filter(
@@ -304,6 +261,7 @@ export function SanguoshaBoard({
   const optional =
     (ask === "huashen" && !prompt?.required) ||
     [
+      "kuanggu",
       "qingjian",
       "jie_rende",
       "jie_guicai",
@@ -376,6 +334,7 @@ export function SanguoshaBoard({
       "guhuo_question",
     ].includes(ask || "");
   const simple = [
+    "kuanggu",
     "tishen",
     "yijue_heal",
     "jie_tieji",
@@ -402,6 +361,11 @@ export function SanguoshaBoard({
   const extraCards =
     responding &&
     [
+      "heg_guzheng_obtain",
+      "heg_intel",
+      "heg_lirang",
+      "heg_kuangfu",
+      "heg_xiaoguo",
       "guanxing",
       "yiji",
       "grace",
@@ -430,6 +394,7 @@ export function SanguoshaBoard({
       ? prompt?.cards || []
       : [];
   const instructions: Record<string, string> = {
+    ...hegemonyInstructions,
     qingjian:
       "只可分配本次获得的牌：选一张或多张手牌，再选另一位获得者；可以分多次。",
     jie_rende:
@@ -481,7 +446,9 @@ export function SanguoshaBoard({
     xiangle: "必须额外弃一张基本手牌；放弃后，这张杀对享乐角色无效。",
     tiaoxin:
       "选择一张杀或可转化为杀的牌；目标固定为挑衅者。放弃会让其弃你的牌。",
-    guzheng: "在展示的弃牌中选择一张返还，自己获得该弃牌阶段的其他弃置牌。",
+    guzheng: g.hegemony
+      ? "先选择一张弃置手牌返还，再决定是否获得其余弃牌。"
+      : "在展示的弃牌中选择一张返还，自己获得该弃牌阶段的其他弃置牌。",
     beige: "弃一张手牌或装备，让受到杀伤害的角色判定。",
     beige_discard: `选择 ${prompt?.amount} 张手牌或装备弃置。`,
     huashen:
@@ -622,16 +589,22 @@ export function SanguoshaBoard({
       : "选择手牌、技能和目标，再确认出牌。";
   return (
     <section
-      className={`sg-board ${extraCards.length ? "has-choice-cards" : ""}`}
+      className={`sg-board ${g.hegemony ? "sg-hegemony" : ""} ${g.selecting ? "sg-selecting" : ""} ${extraCards.length ? "has-choice-cards" : ""}`}
     >
       <header className="sg-heading">
         <div>
           <span className="eyebrow">
-            三国杀 · 身份局
+            三国杀 · {g.hegemony ? "国战" : "身份局"}
             {g.options?.standardVersion === "breakthrough" ? " · 界限突破" : ""}
             {g.options?.deck === "military" ? " · 军争" : ""}
           </span>
-          <h2>{g.selecting ? "群雄集结" : "一桌风云，各有所谋"}</h2>
+          <h2>
+            {g.selecting
+              ? "群雄集结"
+              : g.hegemony
+                ? "双将同心，四方争雄"
+                : "一桌风云，各有所谋"}
+          </h2>
         </div>
         <div className="sg-piles">
           <span>
@@ -665,7 +638,10 @@ export function SanguoshaBoard({
           const p = g.players[i],
             general = g.generals.find((x) => x.id === p.general),
             effectiveSkills = p.skills || general?.skills || [],
-            kingdom = p.kingdom || general?.kingdom || "unknown";
+            kingdom =
+              p.kingdom ||
+              (g.hegemony ? "unknown" : general?.kingdom) ||
+              "unknown";
           return (
             <article
               key={seat.id}
@@ -676,8 +652,15 @@ export function SanguoshaBoard({
                 className="sg-seat-target"
                 disabled={
                   !enabled ||
+                  g.selecting ||
                   p.dead ||
                   ([
+                    "heg_shushen",
+                    "heg_sijian",
+                    "heg_shuangren",
+                    "heg_shuangren_slash",
+                    "heg_lirang",
+                    "heg_triblade",
                     "jie_yiji_targets",
                     "jie_lianying",
                     "fenwei",
@@ -694,17 +677,23 @@ export function SanguoshaBoard({
                 aria-label={`选择${seat.name}为目标`}
                 aria-pressed={targets.includes(i)}
               >
-                {general && assets && (
-                  <img
-                    src={generalArt(assets, general.id)}
-                    alt=""
-                    draggable={false}
-                  />
+                {g.hegemony ? (
+                  <HegemonyPortraits player={p} g={g} assets={assets} />
+                ) : (
+                  <>
+                    {general && assets && (
+                      <img
+                        src={generalArt(assets, general.id)}
+                        alt=""
+                        draggable={false}
+                      />
+                    )}
+                    <span className="sg-general-name">
+                      {general?.name || "待选武将"}{" "}
+                      <small>{general ? kingdoms[kingdom] : ""}</small>
+                    </span>
+                  </>
                 )}
-                <span className="sg-general-name">
-                  {general?.name || "待选武将"}{" "}
-                  <small>{general ? kingdoms[kingdom] : ""}</small>
-                </span>
                 <span className="sg-target-number">
                   {targets.includes(i)
                     ? `目标 ${targets.indexOf(i) + 1}`
@@ -725,7 +714,14 @@ export function SanguoshaBoard({
                   )}
                 </strong>
                 <span className={`sg-role role-${p.role || "hidden"}`}>
-                  {p.role ? roles[p.role] : "身份未知"}
+                  {p.role
+                    ? roles[p.role]
+                    : g.hegemony
+                      ? "势力未明"
+                      : "身份未知"}
+                  {g.hegemony && g.first === i && (
+                    <span className="sg-first-seat">先手</span>
+                  )}
                   {p.dead ? " · 阵亡" : ""}
                 </span>
                 <div
@@ -747,6 +743,21 @@ export function SanguoshaBoard({
                 </small>
               </div>
               <div className="sg-status-marks">
+                {effectiveSkills.includes("heg_xiongyi") && (
+                  <span className="sg-limited">
+                    雄异 · {p.marks?.heg_xiongyi ? "已使用" : "可用"}
+                  </span>
+                )}
+                {p.lost?.some(Boolean) && (
+                  <span className="sg-flipped">
+                    断肠 ·{" "}
+                    {p.lost
+                      .map((lost, slot) => (lost ? ["主将", "副将"][slot] : ""))
+                      .filter(Boolean)
+                      .join("、")}
+                    技能失去
+                  </span>
+                )}
                 {p.silenced && (
                   <span className="sg-flipped">非锁定技能失效</span>
                 )}
@@ -985,7 +996,17 @@ export function SanguoshaBoard({
           </button>
         </aside>
       )}
-      {g.selecting && responding && (
+      {g.selecting && responding && g.hegemony && (
+        <HegemonyDraft
+          key={prompt?.id}
+          g={g}
+          player={me}
+          assets={assets}
+          busy={busy}
+          send={send}
+        />
+      )}
+      {g.selecting && responding && !g.hegemony && (
         <div className="sg-general-options">
           {me?.choices?.map((id) => {
             const general = g.generals.find((x) => x.id === id)!;
@@ -1045,13 +1066,17 @@ export function SanguoshaBoard({
       {!!extraCards.length && (
         <section className="sg-card-choices-section">
           <h3>
-            {ask === "gongxin"
-              ? "攻心 · 目标手牌，仅你可见"
-              : ["qixing_exchange", "kuangfeng", "dawu"].includes(ask || "")
-                ? "七星 · 选择要使用的星"
-                : ask === "shelie"
-                  ? "涉猎 · 每种花色选择一张"
-                  : "选择牌"}
+            {ask === "heg_guzheng_obtain"
+              ? "固政 · 可获得的剩余弃牌"
+              : ask === "heg_intel"
+                ? "知己知彼 · 对方手牌，仅你可见"
+                : ask === "gongxin"
+                  ? "攻心 · 目标手牌，仅你可见"
+                  : ["qixing_exchange", "kuangfeng", "dawu"].includes(ask || "")
+                    ? "七星 · 选择要使用的星"
+                    : ask === "shelie"
+                      ? "涉猎 · 每种花色选择一张"
+                      : "选择牌"}
           </h3>
           <div className="sg-choice-cards">
             {extraCards.map((id) => (
@@ -1061,7 +1086,11 @@ export function SanguoshaBoard({
                   g={g}
                   assets={assets}
                   selected={cards.includes(id)}
-                  onClick={() => selectCard(id)}
+                  onClick={
+                    ask === "heg_guzheng_obtain"
+                      ? undefined
+                      : () => selectCard(id)
+                  }
                 />
                 {ask === "guanxing" && cards.includes(id) && (
                   <small>牌堆顶第 {cards.indexOf(id) + 1} 张</small>
@@ -1078,7 +1107,9 @@ export function SanguoshaBoard({
               我的手牌 <small>{me.handCount} 张</small>
             </h3>
             <span className={`sg-role role-${me.role}`}>
-              你的身份：{roles[me.role || ""]}
+              {g.hegemony
+                ? `你的势力：${roles[me.role || ""] || `${kingdoms[me.ownKingdom || ""] || "未定"}（未明置）`}`
+                : `你的身份：${roles[me.role || ""]}`}
             </span>
             <span>攻击范围 {g.range}</span>
           </header>
@@ -1159,6 +1190,18 @@ export function SanguoshaBoard({
                 </div>
               </details>
             ))}
+          {g.hegemony && (
+            <HegemonyIntel player={me} g={g} room={room} assets={assets} />
+          )}
+          {g.hegemony && (
+            <p className="sg-private-note">
+              {me.canReveal
+                ? "暗置技能发动后，会公开对应武将。"
+                : !me.dead
+                  ? "祸水生效：本回合不能明置暗将，已明置技能仍可使用。"
+                  : ""}
+            </p>
+          )}
           <div className="sg-skills">
             {me.equip.some((id) => getCard(id).kind === "fan") && (
               <button
@@ -1177,7 +1220,11 @@ export function SanguoshaBoard({
             {skills.map((k) => (
               <button
                 key={k}
-                disabled={!enabled || !!me?.disabledSkills?.includes(k)}
+                disabled={
+                  !enabled ||
+                  !!me?.disabledSkills?.includes(k) ||
+                  (g.hegemony && !me.canReveal && !me.skills?.includes(k))
+                }
                 className={`${skill === k ? "selected" : ""} ${activeSkills.includes(k) || transforms.includes(k) ? "active-skill" : ""}`}
                 title={g.skills[k].text}
                 onClick={() => {
@@ -1189,6 +1236,9 @@ export function SanguoshaBoard({
                 }}
               >
                 {g.skills[k].name}
+                {g.hegemony && !me.skills?.includes(k) && (
+                  <small className="sg-hidden-skill">暗置</small>
+                )}
                 {skill === k ? " ✓" : ""}
               </button>
             ))}
@@ -1233,6 +1283,17 @@ export function SanguoshaBoard({
           <p role="alert" className="sg-error">
             {error}
           </p>
+        )}
+        {responding && ask?.startsWith("heg_") && (
+          <HegemonyResponseActions
+            g={g}
+            player={me}
+            assets={assets}
+            cards={cards}
+            targets={targets}
+            busy={busy}
+            send={send}
+          />
         )}
         {responding && ask === "huashen" && (
           <div className="sg-avatar-options">
@@ -1391,6 +1452,39 @@ export function SanguoshaBoard({
             </button>
           </div>
         )}
+        {playing && skill === "heg_qingcheng" && (
+          <div className="sg-action-buttons">
+            {["head", "deputy"].map((slot, index) => (
+              <button
+                key={slot}
+                disabled={
+                  busy ||
+                  cards.length !== 1 ||
+                  targets.length !== 1 ||
+                  !g.cardTypes[getCard(cards[0]).kind].slot ||
+                  !g.players[targets[0]]?.shown?.every(Boolean)
+                }
+                onClick={() => void send({ choice: slot })}
+              >
+                暗置目标的{["主将", "副将"][index]}
+              </button>
+            ))}
+          </div>
+        )}
+        {responding &&
+          ask === "nullification" &&
+          g.hegemony &&
+          prompt.factionCounter &&
+          !skill &&
+          cards.length === 1 &&
+          getCard(cards[0]).kind === "heg_nullification" && (
+            <button
+              disabled={busy}
+              onClick={() => void send({ choice: "faction" })}
+            >
+              国无懈 · 抵消整个势力的后续效果
+            </button>
+          )}
         {playing && skill === "jie_guose" && (
           <div className="sg-action-buttons">
             <button
@@ -1515,6 +1609,16 @@ export function SanguoshaBoard({
         )}
         {responding && ask === "draw_phase" && (
           <div className="sg-action-buttons">
+            {g.hegemony &&
+              skills.includes("yingzi") &&
+              skills.includes("haoshi") && (
+                <button
+                  disabled={busy}
+                  onClick={() => void send({ choice: "yingzi+haoshi" })}
+                >
+                  英姿＋好施 · 摸五张
+                </button>
+              )}
             <button
               disabled={busy}
               onClick={() => void send({ choice: "normal" })}
@@ -1532,7 +1636,10 @@ export function SanguoshaBoard({
               "shelie",
             ]
               .filter(
-                (k) => skills.includes(k) && !me?.disabledSkills?.includes(k),
+                (k) =>
+                  skills.includes(k) &&
+                  !me?.disabledSkills?.includes(k) &&
+                  (!g.hegemony || me?.canReveal || me?.skills?.includes(k)),
               )
               .map((k) => (
                 <button
@@ -1632,7 +1739,13 @@ export function SanguoshaBoard({
             {prompt.wanted === "jink" &&
               !prompt.ignoreArmor &&
               !(prompt.step! & 1) &&
-              g.armor === "eight_diagram" && (
+              (g.armor === "eight_diagram" ||
+                (g.hegemony &&
+                  me.canReveal &&
+                  skills.includes("bazhen") &&
+                  !me.equip.some(
+                    (id) => g.cardTypes[getCard(id).kind].slot === "armor",
+                  ))) && (
                 <button
                   disabled={busy}
                   onClick={() => void send({ choice: "eight_diagram" })}
@@ -1662,9 +1775,13 @@ export function SanguoshaBoard({
               )}
           </div>
         )}
-        {enabled && ask !== "general" && (
+        {enabled && ask !== "general" && ask !== "heg_generals" && (
           <div className="sg-action-buttons">
-            {!(playing && ["jilve", "jie_guose"].includes(skill)) &&
+            {!ask?.startsWith("heg_") &&
+              !(
+                playing &&
+                ["jilve", "jie_guose", "heg_qingcheng"].includes(skill)
+              ) &&
               (!responding ||
                 ![
                   "jie_jianxiong",
@@ -1719,6 +1836,8 @@ export function SanguoshaBoard({
                       !(
                         playing &&
                         [
+                          "heg_huoshui",
+                          "heg_xiongyi",
                           "gongxin",
                           "yeyan",
                           "wuqian",
@@ -1866,6 +1985,7 @@ export function SanguoshaCover() {
   );
 }
 export function SanguoshaRules({ options }: { options?: SGOptions }) {
+  if (options?.mode === "hegemony") return <HegemonyRules />;
   return (
     <>
       <p>

@@ -78,7 +78,7 @@ func (r *Room) startTurnClock(now time.Time) {
 		r.TurnDeadline = now.Add(turnLimit).UnixMilli()
 		if r.Game != nil && r.Game.Sanguosha != nil {
 			r.SGTimeLeft = turnLimit.Milliseconds()
-			if q := r.Game.Sanguosha.Pending; q != nil && q.Kind != "general" {
+			if q := r.Game.Sanguosha.Pending; q != nil && q.Kind != "general" && q.Kind != "heg_generals" {
 				r.TurnDeadline = now.Add(20 * time.Second).UnixMilli()
 			}
 		}

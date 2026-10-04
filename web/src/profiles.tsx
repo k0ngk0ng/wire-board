@@ -287,7 +287,7 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 {match.kind === "rail" &&
                   ` · ${railMapNames[match.railMap || "usa"]}`}{" "}
                 {match.kind === "sanguosha" &&
-                  ` · ${match.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "经典标准"}`}{" "}
+                  ` · ${match.sanguoshaOptions?.mode === "hegemony" ? "国战双将" : match.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "身份局"}`}{" "}
                 · {match.room}
               </strong>
               <span>{match.status === "finished" ? "已结算" : "已中止"}</span>

@@ -8,6 +8,22 @@ import (
 func (s *State) sgHegTriggerEvent(e SGEvent) bool {
 	g := s.Sanguosha
 	switch e.Type {
+	case "heg_guzheng_obtain":
+		if !s.sgAlive(e.Actor) {
+			return true
+		}
+		cards := []int{}
+		for _, id := range e.Cards {
+			if slices.Contains(g.Discard, id) {
+				cards = append(cards, id)
+			}
+		}
+		if len(cards) > 0 {
+			e.Cards = cards
+			s.sgAsk(e.Actor, "heg_guzheng_obtain", "固政：是否获得其余仍在弃牌堆的弃置牌？", e)
+			g.Pending.Cards = clone(cards)
+			g.Pending.Choices = []string{"yes", "pass"}
+		}
 	case "heg_start":
 		if s.sgHegMayInvoke(e.Actor, "heg_shenzhi") && len(g.Players[e.Actor].Hand) > 0 {
 			s.sgAsk(e.Actor, "heg_shenzhi", "神智：可弃全部手牌，弃牌数不少于当前体力时回复一点体力", e)
@@ -93,6 +109,22 @@ func (s *State) sgHegTriggerRespond(i int, a Action, q SGPrompt) (bool, error) {
 	e := q.Event
 	p := &g.Players[i]
 	switch q.Kind {
+	case "heg_guzheng_obtain":
+		if a.Choice == "pass" {
+			return true, nil
+		}
+		if a.Choice != "yes" {
+			return true, errors.New("请选择获得或放弃其余弃牌")
+		}
+		got := []int{}
+		for _, id := range e.Cards {
+			if slices.Contains(g.Discard, id) {
+				g.Discard = sgRemove(g.Discard, id)
+				got = append(got, id)
+			}
+		}
+		s.sgGain(i, got)
+		s.sgLog("%s 固政：获得其余 %d 张弃牌", s.sgName(i), len(got))
 	case "heg_shenzhi":
 		if a.Choice == "pass" {
 			return true, nil
