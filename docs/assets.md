@@ -15,7 +15,8 @@
 - `catan/terrain-{wood,brick,wool,grain,ore,desert}-v1.webp`：六类六边形地形，原版资源颜色。
 - `catan/resource-{wood,brick,wool,grain,ore}-v1.webp`：五种完整资源卡；`icon-{wood,brick,wool,grain,ore}-v1.webp` 为费用、交易和银行使用的圆形图标。
 - `catan/dev-{0,1,2,3,4}-v1.webp`：依次为骑士、道路建设、丰收、垄断、胜利点。
-- `catan/{settlement,city}-{blue,red,white,orange}-v1.webp`：四种玩家颜色的透明村庄与城市。
+- `catan/{settlement,city}-{blue,red,white,orange}-v1.webp`：四种基础玩家颜色的透明村庄与城市。五至六人扩充另有 `purple` 与 `green` 两色，保留同一棋子轮廓与明暗，由 `scripts/prepare_catan_player_colors.py` 生成。
+- `catan/helpers/helper-{1..12}.webp`：官方 Helpers 十二位人物图；可由 `scripts/prepare_catan_helper_assets.py` 从固定版本规则书重现提取。
 - `catan/port-{wood,brick,wool,grain,ore,any}-v1.webp` 与 `catan/robber-v1.webp`：港口船与强盗。
 
 - `carcassonne/tile-{0..71}-v1.webp`：72 张基础版地块（256 × 256），与规则数据中的 `art` 对应，保留原版装饰差异；`meeple-{0..4}-v1.webp` 为蓝、绿、黑、红、黄五色随从。

@@ -1919,7 +1919,13 @@ function Create({
                   x === "dota"
                     ? Math.min(6, Math.max(2, capacity - (capacity % 2)))
                     : Math.max(
-                        x === "sanguosha" ? 4 : x === "catan" ? 3 : 2,
+                        x === "sanguosha"
+                          ? 4
+                          : x === "catan"
+                            ? catanOptions.fiveSix
+                              ? 5
+                              : 3
+                            : 2,
                         Math.min(
                           capacity,
                           x === "sanguosha"
@@ -1928,7 +1934,9 @@ function Create({
                               ? map?.maxPlayers || 5
                               : x === "carcassonne"
                                 ? 5
-                                : 4,
+                                : x === "catan" && catanOptions.fiveSix
+                                  ? 6
+                                  : 4,
                         ),
                       ),
                 );
@@ -1946,7 +1954,15 @@ function Create({
           <SanguoshaOptions value={sgOptions} onChange={setSGOptions} />
         )}
         {k === "catan" && (
-          <CatanOptionPicker value={catanOptions} onChange={setCatanOptions} />
+          <CatanOptionPicker
+            value={catanOptions}
+            onChange={(o) => {
+              setCatanOptions(o);
+              setCapacity(
+                o.fiveSix ? Math.max(5, capacity) : Math.min(4, capacity),
+              );
+            }}
+          />
         )}
         {k === "splendor" && (
           <SplendorOptionPicker value={gemOptions} onChange={setGemOptions} />
@@ -1997,7 +2013,14 @@ function Create({
                                 : 3,
                     },
                     (_, i) =>
-                      i + (k === "sanguosha" ? 4 : k === "catan" ? 3 : 2),
+                      i +
+                      (k === "sanguosha"
+                        ? 4
+                        : k === "catan"
+                          ? catanOptions.fiveSix
+                            ? 5
+                            : 3
+                          : 2),
                   )
               ).map((n) => (
                 <option key={n} value={n}>
@@ -2018,7 +2041,14 @@ function Create({
           </label>
         </div>
         <p className="muted small">
-          至少 {k === "sanguosha" ? 4 : k === "catan" ? 3 : 2}
+          至少{" "}
+          {k === "sanguosha"
+            ? 4
+            : k === "catan"
+              ? catanOptions.fiveSix
+                ? 5
+                : 3
+              : 2}
           个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
           {k === "dota" && " 兵线争锋需 2、4 或 6 人，开始后再分队。"}
         </p>
@@ -2048,7 +2078,13 @@ function Waiting({
     room.seats.every((p) => p.ready) &&
     (room.kind !== "dota" || room.seats.length % 2 === 0) &&
     room.seats.length >=
-      (room.kind === "sanguosha" ? 4 : room.kind === "catan" ? 3 : 2);
+      (room.kind === "sanguosha"
+        ? 4
+        : room.kind === "catan"
+          ? room.catanOptions?.fiveSix
+            ? 5
+            : 3
+          : 2);
   return (
     <div className="waiting-layout">
       <div className="waiting-cover">
@@ -2077,7 +2113,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? `${room.catanOptions?.helpers ? "基础版＋Helpers" : "基础版"} · 3–4 人 · 十分获胜`
+                  ? `${room.catanOptions?.helpers ? "基础版＋Helpers" : "基础版"} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · 十分获胜`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2295,6 +2331,18 @@ function Players({ room }: { room: Room }) {
                   <br />
                   道路 {g.catan.players[i].roadLength} · 骑士{" "}
                   {g.catan.players[i].knights}
+                  {g.catan.paired &&
+                    (i === g.catan.paired.primary ||
+                      i === g.catan.paired.secondary) && (
+                      <>
+                        <br />
+                        <b>
+                          {i === g.catan.paired.primary
+                            ? "① 正常回合"
+                            : "② 配对行动"}
+                        </b>
+                      </>
+                    )}
                   {g.catan.players[i].helper && (
                     <>
                       <br />
@@ -4626,7 +4674,9 @@ function Rules({
         </>
       ) : kind === "catan" ? (
         <>
-          <p>卡坦岛基础版，3–4 人。自己的回合达到 10 分立即获胜。</p>
+          <p>
+            卡坦岛基础版支持3–4人，五至六人扩充支持5–6人。自己的行动阶段达到10分立即获胜。
+          </p>
           <ol>
             <li>
               按顺序放置一座村庄和相邻道路，再逆序放第二组；第二座村庄获得相邻地块各一张资源。
@@ -4652,6 +4702,9 @@ function Rules({
               至少五段连续道路获得最长道路、至少三名骑士获得最大骑士军队，各两分；并列时原持有者保留，原持有者不在并列中则无人持有。
             </li>
           </ol>
+          <p>
+            启用五至六人扩充后，①号玩家正常行动，随后由其左侧第三位②号玩家行动：不掷骰，不与其他玩家自由交易，仍可建造、使用发展卡及银行/港口交易。两人完成后标记向下一位移动。发展卡在下次自己的行动阶段即可使用。
+          </p>
           <p>
             起始建设和同时弃牌限时 120
             秒，超时自动处理。正常回合超时可由其他玩家移出；建筑、道路保留但不再生产。资源与发展卡种类仅本人可见，结算后公开。

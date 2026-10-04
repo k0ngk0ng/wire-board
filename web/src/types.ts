@@ -274,6 +274,9 @@ export type CatanPlayer = {
   citiesLeft: number;
 };
 export type CatanState = {
+  hexSize?: number;
+  startPlayer?: number;
+  paired?: { primary: number; secondary: number; second: boolean };
   options?: CatanOptions;
   helperDisplay?: number[];
   helperRules?: {
@@ -335,6 +338,7 @@ export type CatanState = {
 };
 
 export type CatanOptions = {
+  fiveSix?: boolean;
   rules?: string;
   helpers?: boolean;
   allHelpers?: boolean;

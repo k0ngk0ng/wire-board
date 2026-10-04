@@ -40,18 +40,23 @@ type CatanPort struct {
 }
 
 func (g *Catan) makeMap() {
+	radius, qmin, size, offset := 2, -2, 62.0, 0.0
+	if len(g.Players) > 4 {
+		radius, qmin, size, offset = 3, -3, 46, 0.5
+	}
+	g.HexSize = size
 	vertices := map[string]int{}
 	edges := map[string]int{}
 	uses := map[int]int{}
-	for r := -2; r <= 2; r++ {
-		for q := max(-2, -r-2); q <= min(2, -r+2); q++ {
-			x := math.Sqrt(3)*(float64(q)+float64(r)/2)*62 + 340
-			y := float64(r)*93 + 290
+	for r := -radius; r <= radius; r++ {
+		for q := max(qmin, -r-radius); q <= min(2, -r+2); q++ {
+			x := math.Sqrt(3)*(float64(q)+float64(r)/2+offset)*size + 340
+			y := float64(r)*size*1.5 + 290
 			t := CatanTile{ID: len(g.Tiles), X: x, Y: y, Vertices: []int{}}
 			for k := 0; k < 6; k++ {
 				a := (30 + float64(k)*60) * math.Pi / 180
-				vx := x + 62*math.Cos(a)
-				vy := y + 62*math.Sin(a)
+				vx := x + size*math.Cos(a)
+				vy := y + size*math.Sin(a)
 				key := fmt.Sprintf("%.3f:%.3f", vx, vy)
 				id, ok := vertices[key]
 				if !ok {
@@ -79,12 +84,28 @@ func (g *Catan) makeMap() {
 		}
 	}
 	terrain := []int{0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5}
+	if len(g.Players) > 4 {
+		terrain = append(terrain, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5)
+	}
 	shuffle(terrain)
 	numbers := []int{2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12}
+	order := make([]int, len(g.Tiles))
+	for i := range order {
+		order[i] = i
+	}
+	if len(g.Players) > 4 {
+		numbers = []int{2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 2, 6}
+		// Counterclockwise spiral from the upper-right corner, rulebook page 4.
+		order = []int{2, 1, 0, 3, 7, 12, 18, 23, 27, 28, 29, 26, 22, 17, 11, 6, 5, 4, 8, 13, 19, 24, 25, 21, 16, 10, 9, 14, 20, 15}
+	}
 	for {
-		shuffle(numbers)
+		if len(g.Players) > 4 {
+			shuffle(terrain)
+		} else {
+			shuffle(numbers)
+		}
 		at := 0
-		for i := range g.Tiles {
+		for _, i := range order {
 			g.Tiles[i].Resource = terrain[i]
 			if terrain[i] == 5 {
 				g.Robber = i
@@ -101,7 +122,7 @@ func (g *Catan) makeMap() {
 			}
 			for j := i + 1; j < len(g.Tiles); j++ {
 				u := g.Tiles[j]
-				if (u.Number == 6 || u.Number == 8) && math.Hypot(t.X-u.X, t.Y-u.Y) < 110 {
+				if (u.Number == 6 || u.Number == 8) && math.Hypot(t.X-u.X, t.Y-u.Y) < math.Sqrt(3)*size+1 {
 					valid = false
 				}
 			}
@@ -123,8 +144,13 @@ func (g *Catan) makeMap() {
 	}
 	sort.Slice(boundary, func(i, j int) bool { return angle(boundary[i]) < angle(boundary[j]) })
 	ports := []int{-1, -1, -1, -1, 0, 1, 2, 3, 4}
+	positions := []int{0, 3, 7, 10, 13, 17, 20, 23, 27}
+	if len(g.Players) > 4 {
+		ports = append(ports, -1, 2)
+		positions = []int{0, 3, 6, 10, 13, 16, 20, 23, 26, 30, 33}
+	}
 	shuffle(ports)
-	for i, at := range []int{0, 3, 7, 10, 13, 17, 20, 23, 27} {
+	for i, at := range positions {
 		g.Ports = append(g.Ports, CatanPort{boundary[at], ports[i]})
 	}
 }

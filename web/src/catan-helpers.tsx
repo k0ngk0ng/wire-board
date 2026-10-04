@@ -19,8 +19,18 @@ export function CatanOptionPicker({
       <label>
         <input
           type="checkbox"
+          checked={!!value.fiveSix}
+          onChange={(e) => onChange({ ...value, fiveSix: e.target.checked })}
+        />{" "}
+        五至六人扩充 · 新版配对回合
+      </label>
+      <label>
+        <input
+          type="checkbox"
           checked={!!value.helpers}
-          onChange={(e) => onChange(e.target.checked ? { helpers: true } : {})}
+          onChange={(e) =>
+            onChange({ ...value, helpers: e.target.checked, allHelpers: false })
+          }
         />{" "}
         Helpers · 十二位助手
       </label>
@@ -36,9 +46,16 @@ export function CatanOptionPicker({
           展示全部备用助手
         </label>
       )}
-      <small>
-        使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
-      </small>
+      {value.fiveSix && (
+        <small>
+          30块陆地，5–6人。①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
+        </small>
+      )}
+      {value.helpers && (
+        <small>
+          使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+        </small>
+      )}
     </fieldset>
   );
 }
@@ -114,6 +131,7 @@ export function CatanHelpers({
   assets,
   onBuild,
   onMove,
+  onDesert,
 }: {
   room: Room;
   act: Act;
@@ -121,6 +139,7 @@ export function CatanHelpers({
   assets: string;
   onBuild: (kind: string, payment: number[]) => void;
   onMove: () => void;
+  onDesert: () => void;
 }) {
   const g = room.game!.catan!,
     p = g.players[room.you],
@@ -377,9 +396,14 @@ export function CatanHelpers({
               {rule.id === 10 && (
                 <button
                   disabled={g.tiles[g.robber].resource === 5}
-                  onClick={() => action()}
+                  onClick={() => {
+                    if (g.tiles.filter((t) => t.resource === 5).length > 1) {
+                      onDesert();
+                      setOpen(false);
+                    } else action();
+                  }}
                 >
-                  确认将强盗赶回沙漠
+                  选择沙漠并驱逐强盗
                 </button>
               )}
               {rule.id === 11 && (
