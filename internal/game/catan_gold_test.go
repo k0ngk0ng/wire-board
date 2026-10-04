@@ -180,6 +180,7 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 	fogGames, fogDiscoveries := 0, 0
 	desertGames, desertRewards := 0, 0
 	tribeGames, tribeRewards := 0, 0
+	clothGames, clothCollected := 0, 0
 	for _, scenario := range []struct {
 		name             string
 		players, victory int
@@ -205,6 +206,10 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 		{"tribe4", 4, 13, (*Catan).makeSeafarersTribeFour},
 		{"tribe5", 5, 13, (*Catan).makeSeafarersTribeSix},
 		{"tribe6", 6, 13, (*Catan).makeSeafarersTribeSix},
+		{"cloth3", 3, 14, (*Catan).makeSeafarersClothFour},
+		{"cloth4", 4, 14, (*Catan).makeSeafarersClothFour},
+		{"cloth5", 5, 14, (*Catan).makeSeafarersClothSix},
+		{"cloth6", 6, 14, (*Catan).makeSeafarersClothSix},
 	} {
 		for _, variable := range []bool{false, true} {
 			if variable && scenario.players > 4 {
@@ -252,6 +257,9 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 						}
 						helperApply(t, s, player, a)
 						g := s.Catan
+						if g.cloth() != nil {
+							assertClothInventory(t, g)
+						}
 						if g.Seafarers.Fog != nil {
 							terrain, numbers := fogInventory(g)
 							if !reflect.DeepEqual(terrain, fogTerrain) || !reflect.DeepEqual(numbers, fogNumbers) {
@@ -316,12 +324,20 @@ func TestCatanSeafarersFixedMapsBotsCompleteWithGoldAndHelpers(t *testing.T) {
 						tribeRewards += sum(tribe.Points)
 						t.Logf("finished with %d tribe points, %d unclaimed development cards, %d placed ports", sum(tribe.Points), len(tribe.Development), len(s.Catan.Ports))
 					}
-					if !s.Finished || len(s.Winners) != 1 || s.Catan.Players[s.Winners[0]].Score < scenario.victory {
+					if c := s.Catan.cloth(); c != nil {
+						clothGames++
+						clothCollected += sum(c.Held)
+						t.Logf("finished with %d cloth distributed, %d common stock", sum(c.Held), c.Stock)
+						assertClothFinished(t, s)
+					} else if !s.Finished || len(s.Winners) != 1 || s.Catan.Players[s.Winners[0]].Score < scenario.victory {
 						t.Fatal("scenario bots did not finish", s.Round, s.Phase)
 					}
 				})
 			}
 		}
+	}
+	if clothGames > 0 && clothCollected == 0 {
+		t.Fatal("cloth simulations never traded for cloth")
 	}
 	if desertGames > 0 && desertRewards == 0 {
 		t.Fatal("desert simulations never exercised exploration rewards")

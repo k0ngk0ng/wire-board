@@ -31,6 +31,7 @@ def prepare(output: Path, rules_directory: Path | None):
             'terrain-gold': (21453, (444, 482), (54, 48, 389, 434)),
             'vp-token': (9588, (83, 83), None),
             'development-back': (1700, (1156, 1223), (859, 145, 996, 238)),
+            'cloth': (21379, (94, 66), None),
         },
         'catan-seafarers-5-6-2025': {
             'ship-purple': (19406, (97, 80), None),
