@@ -21,6 +21,7 @@ type CatanSeafarerSeat struct {
 }
 
 type CatanSeafarers struct {
+	PirateIslands *CatanPirateIslands `json:"pirateIslands,omitempty"`
 	Cloth         *CatanClothState    `json:"cloth,omitempty"`
 	Tribe         *CatanTribeState    `json:"tribe,omitempty"`
 	Fog           *CatanFogState      `json:"fog,omitempty"`
