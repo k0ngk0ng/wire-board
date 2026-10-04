@@ -79,6 +79,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive bot seat")
 	}
 	p := g.Players[player]
+	if fleet := g.pirateIslands(); fleet != nil && fleet.Raid != nil {
+		return s.catanFleetRewardBot(player)
+	}
 	if t := g.tribe(); t != nil && t.Pending != nil {
 		return s.catanTribePortBot(player)
 	}

@@ -14,14 +14,14 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		return true
 	}
 	response := func(phase string) bool {
-		return phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal"
+		return phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward"
 	}
 	current := r.Game.Phase
 	if response(current) {
 		if !response(previousPhase) {
 			r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
 			r.startTurnClock(now)
-		} else if current != previousPhase || (current == "catan_gold" && r.Game.CatanPendingActor() != previousActor) {
+		} else if current != previousPhase || ((current == "catan_gold" || current == "catan_fleet_reward") && r.Game.CatanPendingActor() != previousActor) {
 			r.startTurnClock(now)
 		}
 		return true

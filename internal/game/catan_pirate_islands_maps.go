@@ -14,11 +14,13 @@ type CatanPirateFortress struct {
 	Strength    int `json:"strength"`
 }
 type CatanPirateIslands struct {
-	Colors     []int                 `json:"colors"` // indices in the shared blue/red/white/orange/purple/green palette
-	HomeTiles  []int                 `json:"homeTiles"`
-	FleetPath  []int                 `json:"fleetPath"`  // cyclic, in printed arrow order; first is the initial tile
-	SafeTile   int                   `json:"safeTile"`   // -1 in 3–4; the printed ! sea hex in 5–6
-	Fortresses []CatanPirateFortress `json:"fortresses"` // indexed by seat, matching the six player colors
+	SevenPending bool                  `json:"sevenPending,omitempty"`
+	Raid         *CatanPirateRaid      `json:"raid,omitempty"`
+	Colors       []int                 `json:"colors"` // indices in the shared blue/red/white/orange/purple/green palette
+	HomeTiles    []int                 `json:"homeTiles"`
+	FleetPath    []int                 `json:"fleetPath"`  // cyclic, in printed arrow order; first is the initial tile
+	SafeTile     int                   `json:"safeTile"`   // -1 in 3–4; the printed ! sea hex in 5–6
+	Fortresses   []CatanPirateFortress `json:"fortresses"` // indexed by seat, matching the six player colors
 }
 
 // A printed marker uses row, column, corner; a ship uses row, column, side.

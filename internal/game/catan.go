@@ -275,6 +275,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
 		}
+		if err := next.catanPirateSeven(); err != nil {
+			return err
+		}
 		*s = next
 		return nil
 	}
@@ -284,6 +287,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if p := g.pirateIslands(); p != nil && p.Raid != nil {
+		return s.catanFleetReward(player, a)
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {
 		return s.catanPlaceTribePort(player, a)
@@ -479,6 +485,13 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanMoveRobber(player, a.Tile)
 	case "catan_steal":
 		return s.catanSteal(player, a.Target)
+	case "catan_skip_steal":
+		if g.pirateIslands() == nil || s.Phase != "catan_steal" {
+			return errors.New("当前不能放弃偷取")
+		}
+		g.Victims = []int{}
+		s.Phase = g.ResumePhase
+		s.catanLog(player, "放弃本次7点偷取资源")
 	case "catan_cloth_steal":
 		return s.catanClothSteal(player, a)
 	default:
@@ -582,7 +595,17 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 func (s *State) catanRoll(total int) error {
 	g := s.Catan
 	s.catanLog(s.Turn, "掷出 %d + %d = %d", g.Dice[0], g.Dice[1], total)
+	if pending, err := s.catanRaidFleet(total); err != nil || pending {
+		return err
+	}
+	return s.catanRollProduction(total)
+}
+func (s *State) catanRollProduction(total int) error {
+	g := s.Catan
 	if total == 7 {
+		if p := g.pirateIslands(); p != nil {
+			p.SevenPending = true
+		}
 		g.ResumePhase = "catan_turn"
 		pending := false
 		protected := -1
@@ -862,6 +885,13 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if p := g.pirateIslands(); p != nil && p.Raid != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanFleetRewardBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 		return
 	}
 	if s.Phase == "catan_cloth_start" {
