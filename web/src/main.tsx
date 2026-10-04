@@ -1,3 +1,5 @@
+import { CatanBasePicker } from "./catan-base-setup";
+import { catanBaseLayoutName } from "./catan-base-layout";
 import { CatanWorldEditor } from "./catan-world-editor";
 import { CatanSeafarersPicker, catanScenarioVictory } from "./catan-scenarios";
 import { CatanRules } from "./catan-rules";
@@ -577,6 +579,9 @@ function App() {
   const audio = useRef<GameAudio>(new GameAudio());
   useEffect(() => {
     setCloseTableRoom("");
+    if (state?.room?.status === "playing") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
   }, [state?.room?.id, state?.room?.status]);
   const refresh = async () => {
     const n = ++seq.current;
@@ -2150,7 +2155,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? `${seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : "基础版"}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${seaInfo ? catanScenarioVictory(seaInfo.id, seaInfo.victoryPoints) : room.catanNewWorldMap ? "12分获胜" : "10分获胜"}`
+                  ? `${seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${seaInfo ? catanScenarioVictory(seaInfo.id, seaInfo.victoryPoints) : room.catanNewWorldMap ? "12分获胜" : "10分获胜"}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2159,6 +2164,13 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
+        {room.kind === "catan" && (
+          <CatanBasePicker
+            room={room}
+            disabled={!host || busy || mapDirty}
+            command={command}
+          />
+        )}
         {room.kind === "catan" && (
           <CatanSeafarersPicker
             room={room}

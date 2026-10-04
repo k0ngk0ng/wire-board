@@ -49,6 +49,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		record.CatanScenario = r.Game.Catan.Seafarers.Scenario
 		record.CatanLayout = r.Game.Catan.Seafarers.Layout
 		record.CatanRules = r.Game.Catan.Seafarers.Rules
+	} else if r.Game != nil && r.Game.Catan != nil && r.Game.Catan.BaseSetup != nil {
+		record.CatanLayout = r.Game.Catan.BaseSetup.Layout
+		record.CatanRules = r.Game.Catan.BaseSetup.Rules
 	}
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}
