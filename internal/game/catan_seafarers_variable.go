@@ -13,6 +13,9 @@ import (
 // Through the Desert keeps the desert belt fixed, shuffles the mainland and
 // unexplored land separately, and forbids red numbers on gold (page 11).
 func (g *Catan) randomizeSeafarersMap() error {
+	if g.cloth() != nil {
+		return g.randomizeClothMap()
+	}
 	if g.tribe() != nil {
 		return g.randomizeTribeMap()
 	}
