@@ -16,7 +16,7 @@ func (s *State) sgHegBotPrompt(i int, add func(Action)) {
 		if s.sgHegMayInvoke(i, "yingzi") && s.sgHegMayInvoke(i, "haoshi") {
 			add(Action{Choice: "yingzi+haoshi"})
 		}
-	case "heg_invoke":
+	case "heg_invoke", "heg_guzheng_obtain":
 		add(Action{Choice: "yes"})
 	case "heg_mingshi", "kuanggu":
 		add(Action{Choice: "yes"})

@@ -6,6 +6,7 @@ func sgHegSkillCatalog() map[string]SGSkill {
 		info[id] = skill
 	}
 	for id, description := range map[string]string{
+		"guzheng":   "其他角色弃牌阶段结束时，可以返还其在该阶段弃置的一张手牌，然后选择是否获得该阶段其余仍在弃牌堆的弃置牌。",
 		"kongcheng": "锁定技：成为杀或决斗的目标时，若没有手牌，取消自己作为目标。暗置时可选择是否明置发动。",
 		"qianxun":   "锁定技：成为顺手牵羊或乐不思蜀的目标时，取消自己作为目标。暗置时可选择是否明置发动。",
 		"weimu":     "锁定技：成为黑色锦囊牌的目标时，取消自己作为目标。暗置时可选择是否明置发动。",
@@ -35,7 +36,7 @@ func (s *State) sgHegPlayerView(i, viewer int) map[string]any {
 		"handCount": len(p.Hand), "handLimit": s.sgHandLimit(i),
 		"equip": p.Equip, "judgment": p.Judgment, "flipped": p.Flipped,
 		"chained": p.Chained, "drank": p.Drank, "buqu": p.Buqu,
-		"skills": s.sgHegSkills(i, true), "used": p.Used,
+		"skills": s.sgHegSkills(i, true), "used": p.Used, "marks": p.Marks,
 	}
 	if s.sgHegShown(i) || p.Dead || s.Finished {
 		v["role"] = p.Role
@@ -50,6 +51,7 @@ func (s *State) sgHegPlayerView(i, viewer int) map[string]any {
 		v["hand"] = p.Hand
 		v["choices"] = p.Choices
 		v["ownSkills"] = s.sgHegSkills(i, false)
+		v["canReveal"] = s.sgHegCanShow(i)
 		v["ownKingdom"] = sgGeneral(p.General).Kingdom
 		v["companion"] = sgHegCompanions(p.General, h.Deputy)
 		v["companionClaimed"] = h.CompanionClaimed

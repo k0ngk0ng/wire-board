@@ -72,7 +72,7 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 		}
 		if g.Pending != nil && g.Sequence != sgSequence {
 			limit := 20 * time.Second
-			if g.Pending.Kind == "general" {
+			if g.Pending.Kind == "general" || g.Pending.Kind == "heg_generals" {
 				limit = turnLimit
 			}
 			r.TurnDeadline = now.Add(limit).UnixMilli()

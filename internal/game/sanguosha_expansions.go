@@ -14,6 +14,17 @@ type SGOptions struct {
 }
 
 func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
+	if o.Mode == "hegemony" {
+		if o.StandardVersion != "" || o.Deck != "" && o.Deck != "hegemony" {
+			return o, errors.New("国战使用独立武将与牌堆，不能混入身份局版本")
+		}
+		for _, pack := range o.Packs {
+			if pack != "hegemony" {
+				return o, errors.New("国战使用60名基础国战武将，不能混入身份局武将包")
+			}
+		}
+		return SGOptions{Mode: "hegemony", Deck: "hegemony", Packs: []string{"hegemony"}}, nil
+	}
 	if o.StandardVersion == "" {
 		o.StandardVersion = "classic"
 	}
@@ -58,6 +69,10 @@ func NewSanguosha(n int, options SGOptions) (*State, error) {
 	s, err := New("sanguosha", n)
 	if err != nil {
 		return nil, err
+	}
+	if o.Mode == "hegemony" {
+		s.initSGHegemony(n)
+		return s, nil
 	}
 	s.Sanguosha.Options = o
 	s.sgLordChoices()

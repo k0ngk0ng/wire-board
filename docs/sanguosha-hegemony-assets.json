@@ -1,0 +1,410 @@
+{
+  "repository": "Mogara/QSanguosha-For-Hegemony",
+  "revision": "c787f870ac8f30084800c08782c89ba4ca32b039",
+  "files": {
+    "generals/heg_caocao.webp": "image/fullskin/generals/full/caocao.png",
+    "generals/heg_simayi.webp": "image/fullskin/generals/full/simayi.png",
+    "generals/heg_xiahoudun.webp": "image/fullskin/generals/full/xiahoudun.png",
+    "generals/heg_zhangliao.webp": "image/fullskin/generals/full/zhangliao.png",
+    "generals/heg_xuchu.webp": "image/fullskin/generals/full/xuchu.png",
+    "generals/heg_guojia.webp": "image/fullskin/generals/full/guojia.png",
+    "generals/heg_zhenji.webp": "image/fullskin/generals/full/zhenji.png",
+    "generals/heg_xiahouyuan.webp": "image/fullskin/generals/full/xiahouyuan.png",
+    "generals/heg_zhanghe.webp": "image/fullskin/generals/full/zhanghe.png",
+    "generals/heg_xuhuang.webp": "image/fullskin/generals/full/xuhuang.png",
+    "generals/heg_caoren.webp": "image/fullskin/generals/full/caoren.png",
+    "generals/heg_dianwei.webp": "image/fullskin/generals/full/dianwei.png",
+    "generals/heg_xunyu.webp": "image/fullskin/generals/full/xunyu.png",
+    "generals/heg_caopi.webp": "image/fullskin/generals/full/caopi.png",
+    "generals/heg_yuejin.webp": "image/fullskin/generals/full/yuejin.png",
+    "generals/heg_liubei.webp": "image/fullskin/generals/full/liubei.png",
+    "generals/heg_guanyu.webp": "image/fullskin/generals/full/guanyu.png",
+    "generals/heg_zhangfei.webp": "image/fullskin/generals/full/zhangfei.png",
+    "generals/heg_zhugeliang.webp": "image/fullskin/generals/full/zhugeliang.png",
+    "generals/heg_zhaoyun.webp": "image/fullskin/generals/full/zhaoyun.png",
+    "generals/heg_machao.webp": "image/fullskin/generals/full/machao.png",
+    "generals/heg_huangyueying.webp": "image/fullskin/generals/full/huangyueying.png",
+    "generals/heg_huangzhong.webp": "image/fullskin/generals/full/huangzhong.png",
+    "generals/heg_weiyan.webp": "image/fullskin/generals/full/weiyan.png",
+    "generals/heg_pangtong.webp": "image/fullskin/generals/full/pangtong.png",
+    "generals/heg_wolong.webp": "image/fullskin/generals/full/wolong.png",
+    "generals/heg_liushan.webp": "image/fullskin/generals/full/liushan.png",
+    "generals/heg_menghuo.webp": "image/fullskin/generals/full/menghuo.png",
+    "generals/heg_zhurong.webp": "image/fullskin/generals/full/zhurong.png",
+    "generals/heg_ganfuren.webp": "image/fullskin/generals/full/ganfuren.png",
+    "generals/heg_sunquan.webp": "image/fullskin/generals/full/sunquan.png",
+    "generals/heg_ganning.webp": "image/fullskin/generals/full/ganning.png",
+    "generals/heg_lvmeng.webp": "image/fullskin/generals/full/lvmeng.png",
+    "generals/heg_huanggai.webp": "image/fullskin/generals/full/huanggai.png",
+    "generals/heg_zhouyu.webp": "image/fullskin/generals/full/zhouyu.png",
+    "generals/heg_daqiao.webp": "image/fullskin/generals/full/daqiao.png",
+    "generals/heg_luxun.webp": "image/fullskin/generals/full/luxun.png",
+    "generals/heg_sunshangxiang.webp": "image/fullskin/generals/full/sunshangxiang.png",
+    "generals/heg_sunjian.webp": "image/fullskin/generals/full/sunjian.png",
+    "generals/heg_xiaoqiao.webp": "image/fullskin/generals/full/xiaoqiao.png",
+    "generals/heg_taishici.webp": "image/fullskin/generals/full/taishici.png",
+    "generals/heg_zhoutai.webp": "image/fullskin/generals/full/zhoutai.png",
+    "generals/heg_lusu.webp": "image/fullskin/generals/full/lusu.png",
+    "generals/heg_erzhang.webp": "image/fullskin/generals/full/erzhang.png",
+    "generals/heg_dingfeng.webp": "image/fullskin/generals/full/dingfeng.png",
+    "generals/heg_huatuo.webp": "image/fullskin/generals/full/huatuo.png",
+    "generals/heg_lvbu.webp": "image/fullskin/generals/full/lvbu.png",
+    "generals/heg_diaochan.webp": "image/fullskin/generals/full/diaochan.png",
+    "generals/heg_yuanshao.webp": "image/fullskin/generals/full/yuanshao.png",
+    "generals/heg_yanliangwenchou.webp": "image/fullskin/generals/full/yanliangwenchou.png",
+    "generals/heg_jiaxu.webp": "image/fullskin/generals/full/jiaxu.png",
+    "generals/heg_pangde.webp": "image/fullskin/generals/full/pangde.png",
+    "generals/heg_zhangjiao.webp": "image/fullskin/generals/full/zhangjiao.png",
+    "generals/heg_caiwenji.webp": "image/fullskin/generals/full/caiwenji.png",
+    "generals/heg_mateng.webp": "image/fullskin/generals/full/mateng.png",
+    "generals/heg_kongrong.webp": "image/fullskin/generals/full/kongrong.png",
+    "generals/heg_jiling.webp": "image/fullskin/generals/full/jiling.png",
+    "generals/heg_tianfeng.webp": "image/fullskin/generals/full/tianfeng.png",
+    "generals/heg_panfeng.webp": "image/fullskin/generals/full/panfeng.png",
+    "generals/heg_zoushi.webp": "image/fullskin/generals/full/zoushi.png",
+    "generals/heg_anjiang.webp": "image/fullskin/generals/full/anjiang.png",
+    "cards/heg_nullification.webp": "image/big-card/heg_nullification.png",
+    "cards/await_exhausted.webp": "image/big-card/await_exhausted.png",
+    "cards/known_both.webp": "image/big-card/known_both.png",
+    "cards/befriend_attacking.webp": "image/big-card/befriend_attacking.png",
+    "cards/six_swords.webp": "image/big-card/SixSwords.png",
+    "cards/triblade.webp": "image/big-card/Triblade.png"
+  },
+  "assets": [
+    {
+      "file": "cards/await_exhausted.webp",
+      "sha256": "fc414becd25c55c43058f1b33460198d64b9b40b4d9398952d5508b96f632234",
+      "bytes": 21074
+    },
+    {
+      "file": "cards/befriend_attacking.webp",
+      "sha256": "729c0bd081410a914aa01c68912d79b278a125349f9a88b8d9b431ad639568ed",
+      "bytes": 20104
+    },
+    {
+      "file": "cards/heg_nullification.webp",
+      "sha256": "47a6c97267d15a56a11bd86716dcb918db456c17b265638efd8ba0b6b920e88e",
+      "bytes": 21640
+    },
+    {
+      "file": "cards/known_both.webp",
+      "sha256": "ed6309655532b48eb616f6b0d1915da75c380d06970900a58523a069298b09e8",
+      "bytes": 19072
+    },
+    {
+      "file": "cards/six_swords.webp",
+      "sha256": "7f5ae3d6b7e45ee515abed4f4b1fa8bcb66d631ce48d95a8e9f70aab928344d2",
+      "bytes": 18468
+    },
+    {
+      "file": "cards/triblade.webp",
+      "sha256": "b00c34341e878096e8a340b3e9eba215f087540e41bff0688efac2e28748c4bb",
+      "bytes": 19156
+    },
+    {
+      "file": "generals/heg_anjiang.webp",
+      "sha256": "b8acd5d0d4c4775883856aaea1b36696388683289463582bd1ea974c747b21bc",
+      "bytes": 6318
+    },
+    {
+      "file": "generals/heg_caiwenji.webp",
+      "sha256": "f23dc9623c10af8ed03a600cf4984e6b9c581ee4730b15c006b475cfc619fd72",
+      "bytes": 10866
+    },
+    {
+      "file": "generals/heg_caocao.webp",
+      "sha256": "651ef1bf1b74db662a91afcc5795111dc81a19854fd5576544f7409a2aa8f50f",
+      "bytes": 19918
+    },
+    {
+      "file": "generals/heg_caopi.webp",
+      "sha256": "dd76623fe656dc202a22543b0cbf96f25127dd322036ffad4cc689000618e701",
+      "bytes": 22138
+    },
+    {
+      "file": "generals/heg_caoren.webp",
+      "sha256": "7006888766c78f6f05e9f7ac6585caa29ee60c19038796b9fda011a93f8bb0ce",
+      "bytes": 19878
+    },
+    {
+      "file": "generals/heg_daqiao.webp",
+      "sha256": "755f1d6d1df79f35aacda667ce1305fb67b6a6687d479f19a1f5ce750fd663e4",
+      "bytes": 17478
+    },
+    {
+      "file": "generals/heg_dianwei.webp",
+      "sha256": "697f93f73a0441082643aa7b9261bbaa5fbce4ebd2790e793bc6ca018dde009a",
+      "bytes": 30546
+    },
+    {
+      "file": "generals/heg_diaochan.webp",
+      "sha256": "2008fedfc814cbf20c57865bc4952d7b25ccd94a3605ac6fdf5e1bdde16add7f",
+      "bytes": 21822
+    },
+    {
+      "file": "generals/heg_dingfeng.webp",
+      "sha256": "c5d25bd0aad3549e8b210fd0b9dbe3af0490bd074c68ffe534a87ef2fcc76108",
+      "bytes": 27432
+    },
+    {
+      "file": "generals/heg_erzhang.webp",
+      "sha256": "f3343531f134b40d586fb27cf89a336fccf657ec09f711bec88f4910e21e8a1d",
+      "bytes": 19656
+    },
+    {
+      "file": "generals/heg_ganfuren.webp",
+      "sha256": "1084fb50bfd5ebdd257201ce17ef8ba1e414353e4e5f05b3856638d8a9ba8cc1",
+      "bytes": 26382
+    },
+    {
+      "file": "generals/heg_ganning.webp",
+      "sha256": "87a86e883c1933c5188860059b10061ed61428a12bd7e94745e2b7e3e26a2b2c",
+      "bytes": 24108
+    },
+    {
+      "file": "generals/heg_guanyu.webp",
+      "sha256": "186f4c0bb0633fe1700e6071fb795e046773474fe44198ecc092d0e544cca321",
+      "bytes": 16508
+    },
+    {
+      "file": "generals/heg_guojia.webp",
+      "sha256": "63c933adc5cfd5ebc56d141455bddb7278222705635250216cc53ab03daa7439",
+      "bytes": 17288
+    },
+    {
+      "file": "generals/heg_huanggai.webp",
+      "sha256": "f4a24f3d6b1887d2f9d90d62dfc2fd7616c171d960c4a9f1104ddcfca39f6e3f",
+      "bytes": 20874
+    },
+    {
+      "file": "generals/heg_huangyueying.webp",
+      "sha256": "264f82bcc5b1199da77456fec2da81c8b812a833e72693c47d2e6fde5e84b170",
+      "bytes": 12466
+    },
+    {
+      "file": "generals/heg_huangzhong.webp",
+      "sha256": "eadbe926b7a9168d97ae89a430fbbb49b677f7587c0aa5567e935a81da04ab9e",
+      "bytes": 27370
+    },
+    {
+      "file": "generals/heg_huatuo.webp",
+      "sha256": "8ea01f34f4466b63d119c67dfd85af147a340dc99e47846262039d92bb9df2d2",
+      "bytes": 17128
+    },
+    {
+      "file": "generals/heg_jiaxu.webp",
+      "sha256": "93967a84a7095bee57bd26605fcc98b64ff32b9755dff8d2391b2768a7f5705f",
+      "bytes": 16030
+    },
+    {
+      "file": "generals/heg_jiling.webp",
+      "sha256": "4ee97a3e6e809e31c666b7de715320392ee282a26418be14573b9406b3101dc4",
+      "bytes": 28052
+    },
+    {
+      "file": "generals/heg_kongrong.webp",
+      "sha256": "b747948aacab58c743a6391e41207c4506358db35d6de858d02acc77deb861c0",
+      "bytes": 32312
+    },
+    {
+      "file": "generals/heg_liubei.webp",
+      "sha256": "51633795563615148cc09dd077b64c87d059f57ae99a50e878174821877b5d5e",
+      "bytes": 20704
+    },
+    {
+      "file": "generals/heg_liushan.webp",
+      "sha256": "468eb8c5fb89344f9eb113e4673e31b34452dba45f450ce76cebe4bda675ae8e",
+      "bytes": 13328
+    },
+    {
+      "file": "generals/heg_lusu.webp",
+      "sha256": "4439725ef9b52b42df2eeb515255beed041fea6493b7e3c819f574f085078d93",
+      "bytes": 18054
+    },
+    {
+      "file": "generals/heg_luxun.webp",
+      "sha256": "549c79bfb6f8c4202042d0e484ab6a8673512dbdb541f45fa4e066e4fed478ef",
+      "bytes": 20694
+    },
+    {
+      "file": "generals/heg_lvbu.webp",
+      "sha256": "f7e7f18838f070bdd86df99412de163455ab0130b8c050f03865159bc15eee9e",
+      "bytes": 13864
+    },
+    {
+      "file": "generals/heg_lvmeng.webp",
+      "sha256": "87e678f47e597539b35c2c33f4fde0d4671a5587b10021e2c16649f12a101417",
+      "bytes": 12970
+    },
+    {
+      "file": "generals/heg_machao.webp",
+      "sha256": "fb51cf1d0556d417f95a908e72501e625940397f893ae394dd05c9dc97388545",
+      "bytes": 19266
+    },
+    {
+      "file": "generals/heg_mateng.webp",
+      "sha256": "37d2ae6fa2ab1fcc49dfc830c08979cb55798e3fd5c5533d28ff0fcf6a6f4b58",
+      "bytes": 24840
+    },
+    {
+      "file": "generals/heg_menghuo.webp",
+      "sha256": "1d0e46d93b083af9cc24c76f820cfdf15877d07c493e53c6e3cd0ae03e3831eb",
+      "bytes": 25582
+    },
+    {
+      "file": "generals/heg_panfeng.webp",
+      "sha256": "7d8c739307fac2488954e6ffd926fbad5e7fd8c214425cd1982e0a307671cda9",
+      "bytes": 17414
+    },
+    {
+      "file": "generals/heg_pangde.webp",
+      "sha256": "daa0897e6162d893dfb0bd11062793cdeb42972dd08b4ae185a46d8461355eb6",
+      "bytes": 18462
+    },
+    {
+      "file": "generals/heg_pangtong.webp",
+      "sha256": "261c672b22e6f0d7b698fd8edc715df1c5ad14444e042e123d6eabc024bf5002",
+      "bytes": 22598
+    },
+    {
+      "file": "generals/heg_simayi.webp",
+      "sha256": "4e1ab9ed6dc5b50a29e4759004be11a36239a6b3399ee51a548266f363172596",
+      "bytes": 16652
+    },
+    {
+      "file": "generals/heg_sunjian.webp",
+      "sha256": "fbce7c22789b0ca303074e24c062740a1bba2f981363f30ed5c2acde119cab1b",
+      "bytes": 21042
+    },
+    {
+      "file": "generals/heg_sunquan.webp",
+      "sha256": "3cf11ffb3c300ca71a8716fa24887d2de59271fa5fed7da3b6c0d911095acec2",
+      "bytes": 23718
+    },
+    {
+      "file": "generals/heg_sunshangxiang.webp",
+      "sha256": "4c9092371c8922b99d72a6c973a7e07c50bb9c5fd4dcc530034e95475877c751",
+      "bytes": 13758
+    },
+    {
+      "file": "generals/heg_taishici.webp",
+      "sha256": "84ae2631e5615a7a17b79030c2ad73e7c1a5a02c318384e3081d847380917f6d",
+      "bytes": 22654
+    },
+    {
+      "file": "generals/heg_tianfeng.webp",
+      "sha256": "a17d7b66f0523fd6511844bc34435011f7711dff7e45ae97ab7a30e2093f836d",
+      "bytes": 20586
+    },
+    {
+      "file": "generals/heg_weiyan.webp",
+      "sha256": "7221c8f766f11aadb406a292ed22e4d7ef3c7b3012cd58948dc7f6250b98c594",
+      "bytes": 16356
+    },
+    {
+      "file": "generals/heg_wolong.webp",
+      "sha256": "e247ddcf0aedffc9ad6424801de5522d6c3b3009f3a6e9d1faf92e593bd99314",
+      "bytes": 15250
+    },
+    {
+      "file": "generals/heg_xiahoudun.webp",
+      "sha256": "aa4ac5cf4d3ee30575e6c6bd37cda4693523cc83e04fb3e40ebf87b804cfc89b",
+      "bytes": 22224
+    },
+    {
+      "file": "generals/heg_xiahouyuan.webp",
+      "sha256": "42fcbc46e0ca281b8ca06ad60e3ea9aa198e46b4e72f5f5c37ab155747abd6fa",
+      "bytes": 24328
+    },
+    {
+      "file": "generals/heg_xiaoqiao.webp",
+      "sha256": "0716dc865b8d1ad16fae92a52a75177678d3ba5ec37b21ff878585444ed13e39",
+      "bytes": 30976
+    },
+    {
+      "file": "generals/heg_xuchu.webp",
+      "sha256": "08ad3761f9a8641af3c410862534e58e00b9dd4974906ad4d8305caae6a0c120",
+      "bytes": 19698
+    },
+    {
+      "file": "generals/heg_xuhuang.webp",
+      "sha256": "aa6676f41b90bd2e9dbef00be2efe6debb51af2c493ca8fd1e124249ad5e3008",
+      "bytes": 21758
+    },
+    {
+      "file": "generals/heg_xunyu.webp",
+      "sha256": "d56ae23e28bcd50fc222905f08f72b67b795631d003ed3b9887842ed582ae316",
+      "bytes": 18390
+    },
+    {
+      "file": "generals/heg_yanliangwenchou.webp",
+      "sha256": "8ec62763aa433b561465dbb4f6d53b2c5d7443d12ac1c5712d1c2c8d6bdd140d",
+      "bytes": 30218
+    },
+    {
+      "file": "generals/heg_yuanshao.webp",
+      "sha256": "7ce49652c1a4da765f0a8c14baa3ecae7e84db0f5d2b837b310d7e1e996d53e0",
+      "bytes": 20168
+    },
+    {
+      "file": "generals/heg_yuejin.webp",
+      "sha256": "53be28989f6885dac1e52ebced1c4208c37dd529631e0b3985f98ce13720b3d0",
+      "bytes": 23212
+    },
+    {
+      "file": "generals/heg_zhangfei.webp",
+      "sha256": "c5130a82f0e26ca9dd87fef27b62585800ca3e4e93939c936ccd18f6e7da2176",
+      "bytes": 13814
+    },
+    {
+      "file": "generals/heg_zhanghe.webp",
+      "sha256": "b349a2a7de3483263b4968cb65eea460c1a5dfb5280f89bbe66836b78b722af8",
+      "bytes": 17428
+    },
+    {
+      "file": "generals/heg_zhangjiao.webp",
+      "sha256": "88b3b78eaee15756b1c651a82d6cc4149c48f46ffa2a862d68b06d4e5244ad20",
+      "bytes": 21060
+    },
+    {
+      "file": "generals/heg_zhangliao.webp",
+      "sha256": "7b022e543254b1d3840c00d5a0db27582a5380bd01e158fe52a13f1c17d129e0",
+      "bytes": 16588
+    },
+    {
+      "file": "generals/heg_zhaoyun.webp",
+      "sha256": "45857839bd7e1323875242b4f168b8d44635f90f8153cf7305a6fcbdc89939aa",
+      "bytes": 16036
+    },
+    {
+      "file": "generals/heg_zhenji.webp",
+      "sha256": "519e83ba98e5b39e103a8a22c72688625809373afc621e2bb0dcd369e5608b73",
+      "bytes": 21920
+    },
+    {
+      "file": "generals/heg_zhoutai.webp",
+      "sha256": "78a5fa3a248649d8bbef41480483ad7282d81da52e4b20b64e1b291a538e0073",
+      "bytes": 21442
+    },
+    {
+      "file": "generals/heg_zhouyu.webp",
+      "sha256": "15e888046b7d4c194de057f8f8eb97daacbce02577c1252a91d7880c1aee5afc",
+      "bytes": 32932
+    },
+    {
+      "file": "generals/heg_zhugeliang.webp",
+      "sha256": "d1819b5f048eaec42db26cd2603e6322bb9c00ea8c693bade118d581903471f0",
+      "bytes": 13144
+    },
+    {
+      "file": "generals/heg_zhurong.webp",
+      "sha256": "1b80d7bc7450bd0af8563426c3d79f50b004313d59cc6cfe980d7c08ab2ca91e",
+      "bytes": 19624
+    },
+    {
+      "file": "generals/heg_zoushi.webp",
+      "sha256": "9a7093773c05e6a1d10365ce21c6a210ca5d5e8b71de16a32ef91d806eee5a46",
+      "bytes": 21872
+    }
+  ]
+}

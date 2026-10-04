@@ -11,6 +11,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 REVISION = 'e8768851bd8054db9fd1b63cd6f1feca813590d7'
 BASE = f'https://raw.githubusercontent.com/Mogara/QSanguosha-v2/{REVISION}/'
+HEGEMONY_REVISION = 'c787f870ac8f30084800c08782c89ba4ca32b039'
+HEGEMONY_GENERALS = 'caocao simayi xiahoudun zhangliao xuchu guojia zhenji xiahouyuan zhanghe xuhuang caoren dianwei xunyu caopi yuejin liubei guanyu zhangfei zhugeliang zhaoyun machao huangyueying huangzhong weiyan pangtong wolong liushan menghuo zhurong ganfuren sunquan ganning lvmeng huanggai zhouyu daqiao luxun sunshangxiang sunjian xiaoqiao taishici zhoutai lusu erzhang dingfeng huatuo lvbu diaochan yuanshao yanliangwenchou jiaxu pangde zhangjiao caiwenji mateng kongrong jiling tianfeng panfeng zoushi'.split()
 GENERALS = 'caocao simayi xiahoudun zhangliao xuchu guojia zhenji liubei guanyu zhangfei zhugeliang zhaoyun machao huangyueying sunquan ganning lvmeng huanggai zhouyu daqiao luxun sunshangxiang huatuo lvbu diaochan'.split()
 UNCHANGED = {'zhenji','zhugeliang','sunquan','sunshangxiang'}
 WIND_GENERALS = 'caoren xiahouyuan huangzhong weiyan xiaoqiao zhoutai zhangjiao yuji'.split()
@@ -25,7 +27,7 @@ CARDS = 'slash jink peach duel snatch dismantlement ex_nihilo amazing_grace god_
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
-    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket','mountain','god','breakthrough'],default='standard')
+    parser.add_argument('--pack',choices=['standard','military','wind','fire','thicket','mountain','god','breakthrough','hegemony'],default='standard')
     args=parser.parse_args()
     root=args.directory.resolve(); root.mkdir(parents=True,exist_ok=True)
     sources={f'generals/{g}.webp':f'image/fullskin/generals/full/{g if g in UNCHANGED else "nos_"+g}.png' for g in GENERALS}
@@ -44,12 +46,22 @@ def main():
         sources = {f'generals/{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in GOD_GENERALS}
     if args.pack == 'breakthrough':
         sources = {f'generals/jie_{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in GENERALS if g not in UNCHANGED}
+    repository, revision = 'Mogara/QSanguosha-v2', REVISION
+    if args.pack == 'hegemony':
+        repository, revision = 'Mogara/QSanguosha-For-Hegemony', HEGEMONY_REVISION
+        sources = {f'generals/heg_{g}.webp':f'image/fullskin/generals/full/{g}.png' for g in HEGEMONY_GENERALS + ['anjiang']}
+        sources.update({f'cards/{card}.webp':f'image/big-card/{source}.png' for card, source in {
+            'heg_nullification':'heg_nullification', 'await_exhausted':'await_exhausted',
+            'known_both':'known_both', 'befriend_attacking':'befriend_attacking',
+            'six_swords':'SixSwords', 'triblade':'Triblade',
+        }.items()})
+    base = f'https://raw.githubusercontent.com/{repository}/{revision}/'
     def prepare(item):
         target,source=item; output=root/target; output.parent.mkdir(parents=True,exist_ok=True)
         if output.exists() and output.read_bytes()[:4]==b'RIFF':return target
         for attempt in range(3):
             try:
-                with urllib.request.urlopen(BASE+source,timeout=25) as response: raw=response.read()
+                with urllib.request.urlopen(base+source,timeout=25) as response: raw=response.read()
                 break
             except (OSError, TimeoutError):
                 if attempt==2:raise
@@ -62,6 +74,6 @@ def main():
         return target
     with ThreadPoolExecutor(max_workers=3) as pool:
         for target in pool.map(prepare,sources.items()):print(target,flush=True)
-    (root/'sources.json').write_text(json.dumps({'repository':'Mogara/QSanguosha-v2','revision':REVISION,'files':sources},ensure_ascii=False,indent=2))
+    (root/'sources.json').write_text(json.dumps({'repository':repository,'revision':revision,'files':sources},ensure_ascii=False,indent=2))
     print(f'Prepared {len(sources)} WebP images.')
 if __name__=='__main__':main()

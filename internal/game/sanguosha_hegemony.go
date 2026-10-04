@@ -8,7 +8,6 @@ import (
 )
 
 // Kept separate from identity roles and from the version of standard generals.
-// Public selection remains disabled until the complete base mode is validated.
 type SGHegemony struct {
 	RevealRewards []SGEvent     `json:"revealRewards,omitempty"`
 	Version       int           `json:"version"`
@@ -39,6 +38,7 @@ func (s *State) initSGHegemony(n int) {
 	g := &Sanguosha{
 		RulesVersion: 1, ActivePhase: "setup", Selecting: true, Lord: first,
 		Hegemony: &SGHegemony{Version: 1, First: first}, Players: make([]SGPlayer, n),
+		Discard: []int{}, Table: []int{}, Queue: []SGEvent{},
 		Options: SGOptions{Mode: "hegemony", Deck: "hegemony", Packs: []string{"hegemony"}},
 	}
 	s.Sanguosha = g
@@ -51,7 +51,7 @@ func (s *State) initSGHegemony(n int) {
 	for i := range g.Players {
 		// Seven distinct candidates guarantee a same-kingdom pair among four
 		// kingdoms; all eight seats receive disjoint pools from the 60 generals.
-		g.Players[i] = SGPlayer{Choices: clone(ids[i*7 : i*7+7]), Used: map[string]int{}, Hegemony: &SGHegemonyPlayer{}}
+		g.Players[i] = SGPlayer{Choices: clone(ids[i*7 : i*7+7]), Hand: []int{}, Equip: []int{}, Judgment: []SGDelayed{}, Used: map[string]int{}, Hegemony: &SGHegemonyPlayer{}}
 	}
 	for _, c := range sgHegemonyCards {
 		g.Deck = append(g.Deck, c.ID)

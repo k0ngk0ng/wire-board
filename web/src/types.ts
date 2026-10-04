@@ -327,6 +327,17 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  deputy?: string;
+  shown?: [boolean, boolean];
+  lost?: [boolean, boolean];
+  ownSkills?: string[];
+  ownKingdom?: string;
+  canReveal?: boolean;
+  knownGenerals?: Record<string, [string, string]>;
+  companion?: boolean;
+  companionClaimed?: boolean;
+  halfHP?: boolean;
+  halfClaimed?: boolean;
   disabledSkills?: string[];
   silenced?: boolean;
   handSealed?: boolean;
@@ -368,6 +379,9 @@ export type SGPlayer = {
   used: Record<string, number>;
 };
 export type SanguoshaState = {
+  hegemony?: boolean;
+  first?: number;
+  companions?: [string, string][];
   armor?: string;
   guhuoKinds?: string[];
   bluff?: {
@@ -399,6 +413,8 @@ export type SanguoshaState = {
   distances?: number[];
   range?: number;
   pending?: {
+    general?: string;
+    factionCounter?: boolean;
     suit?: number;
     protectedCards?: number[];
     required?: boolean;

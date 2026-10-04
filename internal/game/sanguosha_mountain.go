@@ -199,7 +199,11 @@ func (s *State) sgMountainEvent(e SGEvent) bool {
 			who := order[e.Step]
 			e.Step++
 			if who != e.Actor && s.sgHegMayInvoke(who, "guzheng") {
-				s.sgAsk(who, "guzheng", "固政：选择返还的一张弃置手牌，然后获得其余弃牌", e)
+				message := "固政：选择返还的一张弃置手牌，然后获得其余弃牌"
+				if s.sgHegemony() {
+					message = "固政：可返还一张弃置手牌，再选择是否获得其余弃牌"
+				}
+				s.sgAsk(who, "guzheng", message, e)
 				g.Pending.Cards = e.Cards
 				return true
 			}
@@ -414,6 +418,20 @@ func (s *State) sgMountainRespond(i int, a Action, q SGPrompt) (bool, error) {
 			return true, errors.New("请选择该弃牌阶段弃置的手牌")
 		}
 		g.Discard = sgRemove(g.Discard, a.Card)
+		if s.sgHegemony() {
+			remaining := []int{}
+			for _, id := range append(clone(g.DiscardedHand), g.DiscardedOther...) {
+				if slices.Contains(g.Discard, id) && !slices.Contains(remaining, id) {
+					remaining = append(remaining, id)
+				}
+			}
+			// Capture this discard phase before the continuation clears it.
+			// Reveal rewards and gain triggers resolve before the second choice.
+			s.sgPush(SGEvent{Type: "heg_guzheng_obtain", Actor: i, Cards: remaining})
+			s.sgGain(e.Actor, []int{a.Card})
+			s.sgLog("%s 固政：返还 %s 一张弃置手牌", s.sgName(i), s.sgName(e.Actor))
+			return true, nil
+		}
 		s.sgGain(e.Actor, []int{a.Card})
 		got := []int{}
 		for _, id := range append(clone(g.DiscardedHand), g.DiscardedOther...) {
