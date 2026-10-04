@@ -1,0 +1,352 @@
+.catan-wonders-panel {
+  grid-column: 1 / -1;
+  border: 1px solid #b99a5a;
+  border-radius: 10px;
+  background: #fff4d6;
+  color: #46331c;
+  padding: 10px;
+}
+@media (min-width: 851px) {
+  .catan-wonders {
+    grid-template-rows: minmax(0, 1fr) auto;
+    height: clamp(430px, calc(100dvh - 290px), 800px);
+  }
+  .catan-wonders > .catan-map-panel {
+    grid-row: 1 / 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .catan-wonders .catan-map-scroll {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+  .catan-wonders .catan-map-toolbar,
+  .catan-wonders .catan-sea-tools,
+  .catan-wonders .catan-map-hint {
+    flex-shrink: 0;
+  }
+  .catan-wonders > .catan-actions {
+    grid-column: 2;
+    grid-row: 1;
+    max-height: 100%;
+    min-height: 0;
+  }
+  .catan-wonders > .catan-hand {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 8px;
+    max-height: 230px;
+    overflow: auto;
+  }
+  .catan-wonders .catan-hand > header {
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+  .catan-wonders .catan-hand-resources {
+    gap: 4px;
+  }
+  .catan-wonders .catan-hand-resources > .catan-resource {
+    flex-direction: column;
+    gap: 1px;
+    padding: 4px 3px;
+  }
+  .catan-wonders .catan-hand-resources .catan-resource-art {
+    width: 23px;
+    height: 35px;
+  }
+  .catan-wonders .catan-hand-resources .catan-resource > b {
+    margin: 0;
+    font-size: 19px;
+  }
+  .catan-wonders .catan-development {
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .catan-wonders .catan-private-score {
+    margin-left: 0;
+  }
+  .catan-wonders:not(:has(> .catan-hand)) {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .catan-wonders:not(:has(> .catan-hand)) > .catan-map-panel {
+    grid-row: 1;
+  }
+  .catan-wonders:not(:has(> .catan-hand)) > .catan-actions {
+    height: 100%;
+  }
+}
+.catan-wonders-panel header,
+.catan-wonders-panel h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+.catan-wonders-panel header {
+  justify-content: space-between;
+}
+.catan-wonders-panel h3 {
+  font-size: 14px;
+}
+.catan-wonders-panel button {
+  color: #49341c;
+  background: #efdda8;
+  border: 1px solid #b69753;
+  border-radius: 7px;
+  padding: 7px;
+  font-size: 12px;
+}
+.catan-wonders-panel p {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 7px 0;
+}
+.catan-wonders-panel p:last-child {
+  margin-bottom: 0;
+}
+.catan-wonder-own {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+}
+.catan-wonder-own > img {
+  width: 44px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+.catan-wonder-own > span {
+  flex: 1;
+}
+.catan-wonder-own > b {
+  font-size: 11px;
+}
+.catan-wonder-own strong {
+  display: block;
+  margin-bottom: 5px;
+}
+.catan-wonder-steps {
+  display: flex;
+  gap: 4px;
+  width: fit-content;
+}
+.catan-wonder-steps > span {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #bdac88;
+  border-radius: 5px;
+  background: #eee6d4;
+  color: #66583f;
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    background-color 0.18s,
+    color 0.18s;
+}
+.catan-wonder-steps > .built {
+  background: #e4b84e;
+  color: #39270a;
+  border-color: #997326;
+  box-shadow: inset 0 1px 0 #fff3ba;
+}
+.catan-wonder-seat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 3px 5px;
+  color: #fbe7a9;
+  background: #624824;
+  border-radius: 4px;
+}
+.catan-wonder-markers {
+  filter: drop-shadow(0 1px 1px #253d4855);
+}
+.catan-wonders-dialog {
+  width: min(480px, calc(100vw - 24px));
+}
+.catan-wonders-dialog > header > div {
+  display: flex;
+  gap: 6px;
+}
+.catan-wonders-dialog > header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 7px;
+}
+.catan-wonders-dialog button:focus-visible {
+  outline: 3px solid #236883;
+  outline-offset: 2px;
+}
+.catan-wonders-dialog .catan-wonder-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  background: transparent;
+  border: 0;
+  padding: 5px 0;
+  font-size: 12px;
+}
+.catan-wonder-list {
+  display: grid;
+  gap: 8px;
+}
+.catan-wonders-dialog .catan-wonder-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  text-align: left;
+  border-left: 5px solid var(--wonder-owner);
+  background: #fffdf5;
+  padding: 9px;
+  min-height: 92px;
+}
+.catan-wonders-dialog .catan-wonder-card:hover {
+  background: #f9efcf;
+}
+.catan-wonders-dialog .catan-wonder-card.mine {
+  box-shadow: inset 0 0 0 1px #997424;
+}
+.catan-wonder-card > img {
+  width: 68px;
+  height: 62px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.catan-wonder-card > span {
+  flex: 1;
+  min-width: 0;
+}
+.catan-wonder-card strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.catan-wonder-card small {
+  font-size: 11px;
+  font-weight: 500;
+  color: #705d3d;
+  overflow-wrap: anywhere;
+}
+.catan-wonder-requirement {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 5px;
+  color: #675333;
+}
+.catan-wonder-cost {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-top: 5px;
+}
+.catan-wonder-cost > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.catan-wonder-cost img {
+  width: 19px;
+  height: 19px;
+  object-fit: contain;
+}
+.catan-wonder-cost b {
+  font-size: 15px;
+  color: #3d2a13;
+}
+.catan-wonder-cost .missing,
+.catan-wonder-cost .missing b {
+  color: #9e3125;
+}
+.catan-wonder-detail {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+.catan-wonder-detail .catan-wonder-art {
+  width: 120px;
+  height: 108px;
+  object-fit: contain;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+.catan-wonder-detail > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.catan-wonder-detail strong {
+  display: block;
+  margin-bottom: 10px;
+}
+.catan-wonder-price {
+  border-block: 1px solid #dbc596;
+  padding-block: 10px;
+  font-size: 13px;
+}
+.catan-wonder-price .catan-wonder-cost img {
+  width: 26px;
+  height: 26px;
+}
+.catan-wonder-price .catan-wonder-cost > span {
+  font-size: 13px;
+}
+.catan-wonder-price .catan-wonder-cost b {
+  font-size: 19px;
+}
+.catan-wonders-dialog .catan-wonder-shortage {
+  color: #972f22;
+  font-weight: 600;
+}
+.catan-wonder-rules {
+  margin-top: 12px;
+  font-size: 13px;
+}
+.catan-wonder-rules summary {
+  cursor: pointer;
+  padding-block: 7px;
+}
+@media (max-width: 600px) {
+  .catan-wonders-dialog {
+    max-height: 68dvh;
+  }
+  .catan-wonder-card > img {
+    width: 55px;
+    height: 50px;
+  }
+  .catan-wonders-dialog .catan-wonder-card {
+    gap: 8px;
+    padding: 8px 6px;
+  }
+  .catan-wonder-detail .catan-wonder-art {
+    width: 100px;
+    height: 90px;
+  }
+  .catan-wonder-detail {
+    gap: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catan-wonder-steps > span {
+    transition: none;
+  }
+}

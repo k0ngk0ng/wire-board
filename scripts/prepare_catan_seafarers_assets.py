@@ -37,6 +37,15 @@ def prepare(output: Path, rules_directory: Path | None):
         'catan-seafarers-5-6-2025': {
             'ship-purple': (19406, (97, 80), None),
             'ship-green': (19428, (97, 80), None),
+            # Same 2025 paintings, at roughly twice the base PDF's resolution.
+            # Keep their native color/aspect; labels and costs are live game data.
+            'wonder-castle': (19403, (144, 130), None),
+            'wonder-monument': (19401, (141, 127), None),
+            'wonder-theater': (19402, (141, 127), None),
+            'wonder-bridge': (19400, (141, 127), None),
+            'wonder-wall': (19399, (137, 124), None),
+            'wonder-lighthouse': (19286, (155, 139), None),
+            'wonder-library': (19270, (139, 124), None),
         },
     }
     provenance = {}
@@ -65,7 +74,7 @@ def prepare(output: Path, rules_directory: Path | None):
                     art.putalpha(mask.resize(art.size, Image.Resampling.LANCZOS))
                 if crop:
                     art = art.crop(crop)
-                if not name.startswith('terrain-') and name != 'development-back':
+                if not name.startswith(('terrain-', 'wonder-')) and name != 'development-back':
                     if not masks.get(xref):
                         raise ValueError(f'Missing piece transparency: {name}')
                     art = art.crop(art.getbbox())

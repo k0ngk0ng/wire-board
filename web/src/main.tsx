@@ -1,4 +1,5 @@
 import { ClothPicture } from "./catan-cloth";
+import { CatanWonderSeat, CatanWondersRules } from "./catan-wonders";
 import { CatanOptionPicker } from "./catan-helpers";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
@@ -63,6 +64,7 @@ import type {
   RailMapSpec,
   RailPayment,
   RailPlayer,
+  CatanState,
 } from "./types";
 import "./style.css";
 import "./autoplay.css";
@@ -1363,6 +1365,7 @@ function App() {
               >
                 <Rules
                   kind={room!.kind}
+                  catan={room.game?.catan}
                   sgOptions={
                     room.game?.sanguosha?.options || room.sanguoshaOptions
                   }
@@ -2380,6 +2383,12 @@ function Players({ room }: { room: Room }) {
                       </span>
                     </>
                   )}
+                  {g.catan.seafarers?.wonders && (
+                    <>
+                      <br />
+                      <CatanWonderSeat game={g.catan} seat={i} />
+                    </>
+                  )}
                   {g.catan.seafarers?.tribe && (
                     <>
                       <br />
@@ -2622,6 +2631,9 @@ function Turn({
   const phase: Record<string, string> = {
     ...catanPhases,
     ...(g.catan?.seafarers ? catanSeafarerPhases : {}),
+    ...(g.catan?.seafarers?.wonders
+      ? { catan_robber: catanPhases.catan_robber }
+      : {}),
     dota_teams: "确认队伍",
     dota_draft: "选择英雄",
     dota_plan: "暗选行动，全部锁定后揭牌",
@@ -4718,10 +4730,12 @@ function Rules({
   kind,
   railMap,
   sgOptions,
+  catan,
 }: {
   kind: string;
   railMap?: RailMapSpec;
   sgOptions?: SGOptions;
+  catan?: CatanState;
 }) {
   return (
     <div className="rules">
@@ -4763,6 +4777,8 @@ function Rules({
             秒，放地块与派随从共用倒计时。超时可由其他玩家移出；随从收回、已放地块保留，未放地块洗回牌堆。剩余一人时获胜。
           </p>
         </>
+      ) : kind === "catan" && catan?.seafarers?.wonders ? (
+        <CatanWondersRules game={catan} />
       ) : kind === "catan" ? (
         <>
           <p>
@@ -4837,8 +4853,9 @@ function Rules({
       )}
       {kind !== "sanguosha" && (
         <p>
-          每回合 120
-          秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。
+          {kind === "catan"
+            ? "正常回合超时后，同局其他玩家可移出当前玩家；起始建设、弃牌和待回应选择超时由系统自动处理。剩余玩家继续，最后一人获胜。房主可直接结束牌桌。"
+            : "每回合120秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。"}
         </p>
       )}
       <p className="muted small">
