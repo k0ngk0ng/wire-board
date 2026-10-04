@@ -68,6 +68,9 @@
   border: 2px solid #b38a3e;
 }
 @media (max-width: 850px) {
+  .catan-seafarers .catan-map-scroll {
+    height: clamp(230px, calc((100vw - 26px) / var(--catan-map-aspect)), 440px);
+  }
   .catan-sea-tools {
     font-size: 11px;
   }

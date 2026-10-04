@@ -220,14 +220,19 @@ func (s *State) catanMovePirate(player, tile int) error {
 	return nil
 }
 
-func (g *Catan) findIslands() []int {
+func (g *Catan) findIslands() []int { return g.findLandRegions(false) }
+
+func (g *Catan) findLandRegions(splitDeserts bool) []int {
+	isLand := func(resource int) bool {
+		return resource != CatanSea && resource != CatanFog && (!splitDeserts || resource != CatanDesert)
+	}
 	islands := make([]int, len(g.Tiles))
 	for i := range islands {
 		islands[i] = -1
 	}
 	nextIsland := 0
 	for _, tile := range g.Tiles {
-		if islands[tile.ID] >= 0 || tile.Resource == CatanSea || tile.Resource == CatanFog {
+		if islands[tile.ID] >= 0 || !isLand(tile.Resource) {
 			continue
 		}
 		queue := []int{tile.ID}
@@ -241,7 +246,7 @@ func (g *Catan) findIslands() []int {
 					continue
 				}
 				for _, neighbor := range tiles {
-					if islands[neighbor] < 0 && g.Tiles[neighbor].Resource != CatanSea && g.Tiles[neighbor].Resource != CatanFog {
+					if islands[neighbor] < 0 && isLand(g.Tiles[neighbor].Resource) {
 						islands[neighbor] = nextIsland
 						queue = append(queue, neighbor)
 					}
@@ -294,7 +299,11 @@ func (s *State) catanSettleIsland(player, v int, setup bool) {
 		seat.SettledIslands = append(seat.SettledIslands, island)
 		if !setup && !slices.Contains(seat.HomeIslands, island) && g.Seafarers.IslandBonus > 0 {
 			seat.IslandPoints += g.Seafarers.IslandBonus
-			s.catanLog(player, "首次在新的岛屿建造村庄，额外获得 %d 分", g.Seafarers.IslandBonus)
+			region := "岛屿"
+			if g.Seafarers.Scenario == "desert" {
+				region = "区域"
+			}
+			s.catanLog(player, "首次在新的%s建造村庄，额外获得 %d 分", region, g.Seafarers.IslandBonus)
 		}
 	}
 }

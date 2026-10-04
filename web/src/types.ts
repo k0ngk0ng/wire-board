@@ -276,6 +276,8 @@ export type CatanPlayer = {
 };
 export type CatanState = {
   seafarers?: {
+    islands?: number[];
+    startIslands?: number[];
     scenario: string;
     victoryPoints: number;
     pirate: number;

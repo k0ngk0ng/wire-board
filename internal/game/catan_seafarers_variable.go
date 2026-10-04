@@ -10,24 +10,28 @@ import (
 // Four Islands shuffles all land together and reserves productive numbers
 // for forests/pastures. The latter scenario does not prescribe the New
 // Shores red-number restriction (2025 rulebook pages 5 and 7).
+// Through the Desert keeps the desert belt fixed, shuffles the mainland and
+// unexplored land separately, and forbids red numbers on gold (page 11).
 func (g *Catan) randomizeSeafarersMap() error {
 	if g.Seafarers != nil && g.Seafarers.Fog != nil {
 		return g.randomizeFogMap()
 	}
-	if len(g.Players) > 4 || g.Seafarers == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "islands") {
+	if len(g.Players) > 4 || g.Seafarers == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "islands" && g.Seafarers.Scenario != "desert") {
 		return fmt.Errorf("该剧本尚未支持可变布局")
 	}
 	groups := [][]int{{}}
+	desert := g.Seafarers.Scenario == "desert"
 	shores := g.Seafarers.Scenario == "shores"
-	if shores {
+	separate := shores || desert
+	if separate {
 		groups = append(groups, []int{})
 	}
 	for _, t := range g.Tiles {
-		if t.Resource == CatanSea {
+		if t.Resource == CatanSea || (desert && t.Resource == CatanDesert) {
 			continue
 		}
 		group := 0
-		if shores && !slices.Contains(g.Seafarers.StartIslands, g.Seafarers.Islands[t.ID]) {
+		if separate && !slices.Contains(g.Seafarers.StartIslands, g.Seafarers.Islands[t.ID]) {
 			group = 1
 		}
 		groups[group] = append(groups[group], t.ID)
@@ -56,7 +60,7 @@ func (g *Catan) randomizeSeafarersMap() error {
 			return fmt.Errorf("剧本数字牌与陆地数量不符")
 		}
 		shuffle(land)
-		if shores {
+		if separate {
 			reds, others := []int{}, []int{}
 			for _, n := range numbers {
 				if n == 6 || n == 8 {
@@ -82,6 +86,9 @@ func (g *Catan) randomizeSeafarersMap() error {
 				}
 				for i := start; i <= len(land)-(len(reds)-at); i++ {
 					id := land[i]
+					if desert && tiles[id].Resource == CatanGold {
+						continue
+					}
 					valid := true
 					for _, other := range neighbors[id] {
 						if tiles[other].Number == 6 || tiles[other].Number == 8 {
@@ -140,7 +147,13 @@ func (g *Catan) randomizeSeafarersMap() error {
 		}
 	}
 	robber := -1
+	if desert {
+		robber = g.Robber
+	}
 	for _, t := range tiles {
+		if desert {
+			break
+		}
 		if (shores && len(g.Players) == 4 && t.Resource == CatanDesert) || ((!shores || len(g.Players) == 3) && t.Number == 12) {
 			robber = t.ID
 			break
