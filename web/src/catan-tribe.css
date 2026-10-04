@@ -1,0 +1,76 @@
+.catan-tribe-stock {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border: 1px solid #b69967;
+  border-radius: 12px;
+  background: #faf0d8;
+  color: #39291b;
+}
+.catan-tribe-stock h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.catan-tribe-stock p {
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.catan-tribe-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 12px;
+}
+.catan-tribe-held,
+.catan-tribe-port-options {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 3px;
+}
+.catan-tribe-held > span,
+.catan-tribe-port-options button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 4px;
+}
+.catan-tribe-held img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+.catan-tribe-choice .catan-tribe-port-options button {
+  background: #fff9e9;
+  min-width: 104px;
+  border: 2px solid #b8a27a;
+}
+.catan-tribe-choice .catan-tribe-port-options button[aria-pressed="true"] {
+  border-color: #976211;
+  background: #f4de9a;
+  box-shadow: 0 0 0 1px #976211;
+}
+.catan-tribe-port-options img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+.catan-tribe-port-options span {
+  font-size: 12px;
+}
+.catan-tribe-confirm-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.catan-tribe-choice .catan-tribe-confirm-buttons .primary {
+  margin-top: 0;
+}
+.catan-port.unclaimed line {
+  stroke-dasharray: 2 2;
+}
+.catan-tribe-seat-ports {
+  white-space: nowrap;
+}
