@@ -1,0 +1,15 @@
+.modal.rules-modal {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.rules-modal > .modal-head {
+  flex: 0 0 auto;
+}
+.rules-modal > .rules {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 5px;
+}

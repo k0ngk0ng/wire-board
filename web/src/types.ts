@@ -287,6 +287,7 @@ export type CatanPlayer = {
 };
 export type CatanState = {
   seafarers?: {
+    variable?: boolean;
     rules?: string;
     layout?: string;
     newWorld?: {
