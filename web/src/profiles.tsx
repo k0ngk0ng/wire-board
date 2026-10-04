@@ -29,6 +29,7 @@ type History = {
   room: string;
   kind: string;
   railMap?: string;
+  catanScenario?: string;
   sanguoshaOptions?: SGOptions;
   status: string;
   ended: number;
@@ -284,6 +285,9 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
             <header>
               <strong>
                 {name(match.kind)}
+                {match.kind === "catan" &&
+                  match.catanScenario &&
+                  ` · ${{ shores: "驶向新海岸", islands: "四岛", fog: "迷雾群岛", desert: "穿越沙漠", tribe: "遗忘的部落", cloth: "卡坦布匹", pirate_islands: "海盗群岛", wonders: "卡坦奇迹", new_world: "新世界" }[match.catanScenario] || "航海家"}`}
                 {match.kind === "rail" &&
                   ` · ${railMapNames[match.railMap || "usa"]}`}{" "}
                 {match.kind === "sanguosha" &&

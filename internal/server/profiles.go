@@ -20,6 +20,7 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	CatanScenario    string               `json:"catanScenario,omitempty"`
 	CatanOptions     game.CatanOptions    `json:"catanOptions,omitempty"`
 	SplendorOptions  game.SplendorOptions `json:"splendorOptions,omitempty"`
 	SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions,omitempty"`
@@ -42,6 +43,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		id = fmt.Sprintf("%s:%d", r.ID, r.SetupVersion)
 	}
 	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, SplendorOptions: r.SplendorOptions, CatanOptions: r.CatanOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
+	if r.Game.Catan != nil && r.Game.Catan.Seafarers != nil {
+		record.CatanScenario = r.Game.Catan.Seafarers.Scenario
+	}
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}
 		if r.Status == "finished" {

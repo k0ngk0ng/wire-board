@@ -20,6 +20,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -44,34 +45,35 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
-	CatanTimeLeft       int64                `json:"catanTimeLeft,omitempty"`
-	CatanOptions        game.CatanOptions    `json:"catanOptions,omitempty"`
-	SplendorOptions     game.SplendorOptions `json:"splendorOptions,omitempty"`
-	SanguoshaOptions    game.SGOptions       `json:"sanguoshaOptions,omitempty"`
-	RailMap             string               `json:"railMap,omitempty"`
-	SGTimeLeft          int64                `json:"sgTimeLeft,omitempty"`
-	Rated               bool                 `json:"rated,omitempty"`
-	CatanPendingVersion int                  `json:"catanPendingVersion,omitempty"`
-	CatanTradeVersion   int                  `json:"catanTradeVersion,omitempty"`
-	MatchID             string               `json:"matchId,omitempty"`
-	Spectators          []User               `json:"spectators,omitempty"`
-	Chat                []ChatMessage        `json:"chat,omitempty"`
-	BotAt               int64                `json:"botAt,omitempty"`
-	SetupVersion        int                  `json:"setupVersion,omitempty"`
-	TurnDeadline        int64                `json:"turnDeadline,omitempty"`
-	ID                  string               `json:"id"`
-	Name                string               `json:"name"`
-	Kind                string               `json:"kind"`
-	Host                string               `json:"host"`
-	Capacity            int                  `json:"capacity"`
-	Seats               []Seat               `json:"seats"`
-	Version             int                  `json:"version"`
-	Status              string               `json:"status"`
-	CloseReason         string               `json:"closeReason,omitempty"`
-	Password            string               `json:"password,omitempty"`
-	Game                *game.State          `json:"game,omitempty"`
-	Updated             int64                `json:"updated"`
-	LastActive          int64                `json:"lastActive"`
+	CatanNewWorldMap    *game.CatanNewWorldMap `json:"catanNewWorldMap,omitempty"`
+	CatanTimeLeft       int64                  `json:"catanTimeLeft,omitempty"`
+	CatanOptions        game.CatanOptions      `json:"catanOptions,omitempty"`
+	SplendorOptions     game.SplendorOptions   `json:"splendorOptions,omitempty"`
+	SanguoshaOptions    game.SGOptions         `json:"sanguoshaOptions,omitempty"`
+	RailMap             string                 `json:"railMap,omitempty"`
+	SGTimeLeft          int64                  `json:"sgTimeLeft,omitempty"`
+	Rated               bool                   `json:"rated,omitempty"`
+	CatanPendingVersion int                    `json:"catanPendingVersion,omitempty"`
+	CatanTradeVersion   int                    `json:"catanTradeVersion,omitempty"`
+	MatchID             string                 `json:"matchId,omitempty"`
+	Spectators          []User                 `json:"spectators,omitempty"`
+	Chat                []ChatMessage          `json:"chat,omitempty"`
+	BotAt               int64                  `json:"botAt,omitempty"`
+	SetupVersion        int                    `json:"setupVersion,omitempty"`
+	TurnDeadline        int64                  `json:"turnDeadline,omitempty"`
+	ID                  string                 `json:"id"`
+	Name                string                 `json:"name"`
+	Kind                string                 `json:"kind"`
+	Host                string                 `json:"host"`
+	Capacity            int                    `json:"capacity"`
+	Seats               []Seat                 `json:"seats"`
+	Version             int                    `json:"version"`
+	Status              string                 `json:"status"`
+	CloseReason         string                 `json:"closeReason,omitempty"`
+	Password            string                 `json:"password,omitempty"`
+	Game                *game.State            `json:"game,omitempty"`
+	Updated             int64                  `json:"updated"`
+	LastActive          int64                  `json:"lastActive"`
 }
 
 const turnLimit = 120 * time.Second
@@ -513,7 +515,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 }
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -691,17 +693,18 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		CatanOptions     game.CatanOptions    `json:"catanOptions"`
-		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
-		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
-		Type             string               `json:"type"`
-		RailMap          string               `json:"railMap"`
-		Target           string               `json:"target,omitempty"`
-		Password         string               `json:"password"`
-		Version          int                  `json:"version"`
-		Nonce            string               `json:"nonce"`
-		Action           game.Action          `json:"action"`
-		Enabled          *bool                `json:"enabled,omitempty"`
+		CatanNewWorldMap *game.CatanNewWorldMap `json:"catanNewWorldMap"`
+		CatanOptions     game.CatanOptions      `json:"catanOptions"`
+		SplendorOptions  game.SplendorOptions   `json:"splendorOptions"`
+		SanguoshaOptions game.SGOptions         `json:"sanguoshaOptions"`
+		Type             string                 `json:"type"`
+		RailMap          string                 `json:"railMap"`
+		Target           string                 `json:"target,omitempty"`
+		Password         string                 `json:"password"`
+		Version          int                    `json:"version"`
+		Nonce            string                 `json:"nonce"`
+		Action           game.Action            `json:"action"`
+		Enabled          *bool                  `json:"enabled,omitempty"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -815,6 +818,25 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "catan_world_map", "catan_world_map_shuffle":
+		// Drafts are provisioned internally until the complete scenario picker ships.
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanNewWorldMap == nil {
+			err = errors.New("只有房主能在新世界开局前调整地图")
+			break
+		}
+		layout := req.CatanNewWorldMap
+		if req.Type == "catan_world_map_shuffle" {
+			layout, err = game.GenerateCatanNewWorldMap(max(3, next.Capacity))
+		}
+		if err == nil {
+			err = game.ValidateCatanNewWorldMap(max(3, next.Capacity), layout)
+		}
+		if err == nil && !slices.Equal(next.CatanNewWorldMap.Hexes, layout.Hexes) {
+			next.CatanNewWorldMap = layout
+			for i := range next.Seats {
+				next.Seats[i].Ready = next.Seats[i].Bot
+			}
+		}
 	case "catan_options":
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" {
 			err = errors.New("只有房主能在开局前选择卡坦岛扩展")
@@ -830,6 +852,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Capacity = max(5, next.Capacity)
 			} else {
 				next.Capacity = min(4, next.Capacity)
+			}
+			if next.CatanNewWorldMap != nil && options.FiveSix != next.CatanOptions.FiveSix {
+				next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(max(3, next.Capacity))
 			}
 			next.CatanOptions = options
 		}
@@ -908,7 +933,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
-				next.Game, err = game.NewCatan(len(next.Seats), next.CatanOptions)
+				if next.CatanNewWorldMap != nil {
+					next.Game, err = game.NewCatanNewWorldWithMap(len(next.Seats), next.CatanOptions, next.CatanNewWorldMap)
+				} else {
+					next.Game, err = game.NewCatan(len(next.Seats), next.CatanOptions)
+				}
 			} else if next.Kind == "sanguosha" {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
 			} else {
