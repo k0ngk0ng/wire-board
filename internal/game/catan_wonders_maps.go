@@ -2,7 +2,7 @@ package game
 
 import "fmt"
 
-// Internal constructor until scenario controls, art and full UI acceptance
+// Internal constructor until room controls and expansion-wide acceptance
 // are complete. Three/four and five/six each share an official fixed layout.
 func NewCatanWonders(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatan(n, options)
@@ -17,6 +17,7 @@ func NewCatanWonders(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
+	s.Phase = "catan_wonders_start"
 	return s, nil
 }
 

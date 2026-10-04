@@ -41,7 +41,11 @@ import {
   CatanEndAction,
 } from "./catan-pirate-islands";
 import { CatanPirateEffects } from "./catan-pirate-effects";
-import { CatanWonderMarkers, CatanWondersPanel } from "./catan-wonders";
+import {
+  CatanWonderMarkers,
+  CatanWondersPanel,
+  CatanWondersStart,
+} from "./catan-wonders";
 import { CatanHelpers } from "./catan-helpers";
 import {
   CatanTribePortChoice,
@@ -87,6 +91,7 @@ export const catanPhases: Record<string, string> = {
   catan_robber: "选择强盗的新位置",
   catan_steal: "选择偷取资源的对手",
   catan_cloth_start: "选择初始强盗位置",
+  catan_wonders_start: "选择初始强盗位置",
   catan_cloth_steal: "选择偷取资源或布匹",
   catan_roads: "放置免费的道路",
   catan_helper: "等待助手选择",
@@ -441,8 +446,8 @@ export function CatanBoard({
     setTake([0, 0, 0, 0, 0]);
   }, [room.id, game.turn, game.round, phase, g.setupStep]);
   const effective =
-    phase === "catan_cloth_start"
-      ? "cloth_start"
+    phase === "catan_cloth_start" || phase === "catan_wonders_start"
+      ? "robber_start"
       : phase === "catan_port"
         ? "port"
         : phase === "catan_setup_settlement"
@@ -639,7 +644,7 @@ export function CatanBoard({
               {g.tiles.map((t) => {
                 const available =
                   mine &&
-                  ((effective === "cloth_start" &&
+                  ((effective === "robber_start" &&
                     g.legal.robber?.includes(t.id)) ||
                     (effective === "robber" &&
                       (g.legal.robber
@@ -742,7 +747,7 @@ export function CatanBoard({
                         <title>海盗封锁本海域船只</title>
                       </g>
                     )}
-                    {(chosen?.type === "cloth_start" ||
+                    {(chosen?.type === "robber_start" ||
                       chosen?.type === "pirate" ||
                       chosen?.type === "robber" ||
                       chosen?.type === "helper_desert") &&
@@ -1031,9 +1036,9 @@ export function CatanBoard({
           </div>
         </div>
         <div className="catan-map-hint">
-          {phase === "catan_cloth_start"
+          {phase === "catan_cloth_start" || phase === "catan_wonders_start"
             ? mine
-              ? "点击亮起的12号地块，再确认强盗起点"
+              ? `点击亮起的${sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
               : "等待先手选择强盗起点 · 可缩放拖动"
             : phase === "catan_cloth_steal"
               ? "请在海盗面板选择对手与物品 · 可收起查看地图"
@@ -1209,7 +1214,7 @@ export function CatanBoard({
         )}
         {chosen &&
           chosen.type !== "port" &&
-          chosen.type !== "cloth_start" &&
+          chosen.type !== "robber_start" &&
           mine && (
             <section className="catan-confirm" aria-label="确认行动">
               <strong>
@@ -1559,12 +1564,19 @@ export function CatanBoard({
         />
         <CatanTribeStock room={room} assets={assets} />
         <CatanClothStock room={room} assets={assets} />
+        <CatanWondersStart
+          room={room}
+          busy={busy}
+          act={act}
+          selectedTile={chosen?.type === "robber_start" ? chosen.id : null}
+          clearTile={() => setChosen(null)}
+        />
         <CatanClothChoice
           room={room}
           assets={assets}
           busy={busy}
           act={act}
-          selectedTile={chosen?.type === "cloth_start" ? chosen.id : null}
+          selectedTile={chosen?.type === "robber_start" ? chosen.id : null}
           clearTile={() => setChosen(null)}
           village={village}
           closeVillage={() => setVillage(null)}

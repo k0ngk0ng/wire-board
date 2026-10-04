@@ -332,6 +332,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	}
 	p := &g.Players[player]
 	if g.setup() {
+		if s.Phase == "catan_wonders_start" {
+			return s.catanWondersStart(player, a)
+		}
 		if s.Phase == "catan_cloth_start" {
 			return s.catanClothStart(player, a)
 		}
@@ -935,8 +938,8 @@ func (s *State) AutoCatanPending() {
 		}
 		return
 	}
-	if s.Phase == "catan_cloth_start" {
-		_ = s.applyCatan(s.Turn, Action{Type: "catan_cloth_start", Tile: g.Robber})
+	if s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
+		_ = s.applyCatan(s.Turn, Action{Type: s.Phase, Tile: g.Robber})
 		return
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {

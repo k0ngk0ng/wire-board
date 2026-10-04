@@ -380,3 +380,89 @@ func TestCatanWondersBotsTradeForTheirWonder(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanWondersInitialRobberChoice(t *testing.T) {
+	for _, n := range []int{3, 4, 5, 6} {
+		for _, mode := range []string{"manual", "timeout", "bot"} {
+			for _, variable := range []bool{false, true} {
+				if variable && n > 4 {
+					continue
+				}
+				t.Run(fmt.Sprintf("%d/%s/variable=%v", n, mode, variable), func(t *testing.T) {
+					s := wondersGame(t, n, true)
+					s.Turn, s.Catan.StartPlayer = n-1, n-1
+					if variable {
+						if err := s.randomizeCatanSeafarersMap(); err != nil {
+							t.Fatal(err)
+						}
+					}
+					candidates := s.Catan.wonderStartTiles()
+					want := 3
+					if n > 4 {
+						want = 4
+					}
+					if len(candidates) != want || s.Phase != "catan_wonders_start" || s.CatanPendingActor() != n-1 {
+						t.Fatal("missing desert choice", candidates, s.Phase)
+					}
+					for viewer := -1; viewer < n; viewer++ {
+						legal := s.View(viewer)["catan"].(map[string]any)["legal"].(map[string][]int)
+						if (len(legal["robber"]) == want) != (viewer == n-1) || len(legal["settlements"]) > 0 || len(legal["pirate"]) > 0 {
+							t.Fatal("wrong initial hints", viewer, legal)
+						}
+					}
+					helperReject(t, s, 0, Action{Type: "catan_wonders_start", Tile: candidates[0]})
+					helperReject(t, s, n-1, Action{Type: "catan_wonders_start", Tile: -1})
+					helperReject(t, s, n-1, Action{Type: "catan_wonders_start", Tile: 0}) // gold, not desert
+					helperReject(t, s, n-1, Action{Type: "catan_settlement", Vertex: 0})
+					if variable {
+						before := clone(*s)
+						if s.randomizeCatanSeafarersMap() == nil || !reflect.DeepEqual(*s, before) {
+							t.Fatal("repeated shuffle accepted")
+						}
+					}
+					restored := clone(*s)
+					s = &restored
+					chosen := candidates[0]
+					if chosen == s.Catan.Robber {
+						chosen = candidates[1]
+					}
+					switch mode {
+					case "manual":
+						helperApply(t, s, n-1, Action{Type: "catan_wonders_start", Tile: chosen})
+					case "timeout":
+						chosen = s.Catan.Robber
+						s.AutoCatanPending()
+					case "bot":
+						chosen = s.Catan.Robber
+						a, err := s.BotAction(n - 1)
+						if err != nil {
+							t.Fatal(err)
+						}
+						helperApply(t, s, n-1, a)
+					}
+					if s.Catan.Robber != chosen || s.Phase != "catan_setup_settlement" || s.Catan.SetupStep != 0 || s.Turn != n-1 || s.CatanPendingActor() != -1 {
+						t.Fatal("choice skipped setup")
+					}
+					for _, v := range s.Catan.Vertices {
+						if v.Level > 0 {
+							t.Fatal("choice also placed building")
+						}
+					}
+					helperReject(t, s, n-1, Action{Type: "catan_wonders_start", Tile: chosen})
+					before := clone(*s)
+					if s.randomizeCatanSeafarersMap() == nil || !reflect.DeepEqual(*s, before) {
+						t.Fatal("reshuffled after confirmation")
+					}
+					a, err := s.BotAction(n - 1)
+					if err != nil {
+						t.Fatal(err)
+					}
+					helperApply(t, s, n-1, a)
+					if s.Phase != "catan_setup_road" || s.Catan.SetupVertex < 0 {
+						t.Fatal("first settlement unavailable")
+					}
+				})
+			}
+		}
+	}
+}

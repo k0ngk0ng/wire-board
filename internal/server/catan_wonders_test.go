@@ -134,11 +134,13 @@ func TestCatanWondersFullHTTPGames(t *testing.T) {
 				steps, automatic, timeouts := 0, 0, 0
 				for ; steps < 10000 && !s.rooms[id].Game.Finished; steps++ {
 					room := s.rooms[id]
-					built := false
+					claimed := false
 					for _, c := range room.Game.Catan.Seafarers.Wonders.Cards {
-						built = built || c.Level > 0
+						claimed = claimed || c.Owner >= 0
 					}
-					if built && !restarted {
+					// A first build can already win at 10 VP; restart after claiming,
+					// which always leaves a legal continuation to exercise.
+					if claimed && !restarted {
 						before, _ := json.Marshal(room)
 						ts.Close()
 						s.Close()
@@ -236,5 +238,76 @@ func TestCatanWondersFullHTTPGames(t *testing.T) {
 				t.Logf("steps=%d autoplay=%d timeouts=%d winner=%d wonder=%d level=%d", steps, automatic, timeouts, winner, own.ID, own.Level)
 			})
 		}
+	}
+}
+
+func TestCatanWondersInitialRobberHTTPRestartAndClock(t *testing.T) {
+	s, ts, clients, id := newCatanTable(t)
+	clients[3].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
+	scenario, err := game.NewCatanWonders(3, game.CatanOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	scenario.Turn, scenario.Catan.StartPlayer = 2, 2
+	choice := -1
+	for _, tile := range scenario.Catan.Tiles {
+		if tile.Resource == game.CatanDesert && tile.ID != scenario.Catan.Robber {
+			choice = tile.ID
+			break
+		}
+	}
+	if choice < 0 {
+		t.Fatal("no alternative desert")
+	}
+	s.mu.Lock()
+	r := s.rooms[id]
+	r.Game = scenario
+	deadline := time.Now().Add(40 * time.Second).UnixMilli()
+	r.TurnDeadline = deadline
+	if err = s.save(r); err != nil {
+		t.Fatal(err)
+	}
+	s.mu.Unlock()
+	for _, viewer := range []int{0, 3} {
+		clients[viewer].command(current(clients[viewer]), "action", game.Action{Type: "catan_wonders_start", Tile: choice}, 400)
+	}
+	clients[2].command(current(clients[2]), "action", game.Action{Type: "catan_wonders_start", Tile: 0}, 400)
+	if s.rooms[id].TurnDeadline != deadline {
+		t.Fatal("invalid choice reset clock")
+	}
+	before, _ := json.Marshal(s.rooms[id])
+	ts.Close()
+	s.Close()
+	next, err := New(s.cfg, s.files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer next.Close()
+	stopBotTicker(next)
+	after, _ := json.Marshal(next.rooms[id])
+	if string(before) != string(after) {
+		t.Fatal("choice/clock lost on restart")
+	}
+	ts2 := httptest.NewServer(next.Handler())
+	defer ts2.Close()
+	for _, c := range clients {
+		c.base = ts2.URL
+	}
+	clients[2].command(current(clients[2]), "action", game.Action{Type: "catan_wonders_start", Tile: choice}, 200)
+	r = next.rooms[id]
+	left := r.TurnDeadline - time.Now().UnixMilli()
+	if r.Game.Phase != "catan_setup_settlement" || r.Game.Turn != 2 || r.Game.Catan.SetupStep != 0 || r.Game.Catan.Robber != choice || left < 119000 || left > 120000 {
+		t.Fatal("manual choice setup/clock", left)
+	}
+	clients[2].command(current(clients[2]), "action", game.Action{Type: "catan_wonders_start", Tile: choice}, 400)
+	next.mu.Lock()
+	defer next.mu.Unlock()
+	r.Game.Phase = "catan_wonders_start"
+	now := time.Now()
+	r.TurnDeadline = now.Add(-time.Second).UnixMilli()
+	next.expireSetups(now)
+	r = next.rooms[id]
+	if r.Game.Phase != "catan_setup_settlement" || r.Game.Catan.SetupStep != 0 || r.Game.Catan.Robber != choice || r.TurnDeadline != now.Add(turnLimit).UnixMilli() {
+		t.Fatal("timeout did not begin first setup with full clock")
 	}
 }
