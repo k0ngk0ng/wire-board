@@ -21,9 +21,11 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 		dotaSequence = r.Game.Dota.Sequence
 	}
 	sgSequence := 0
+	sgTurnSequence := 0
 	sgPending := false
 	if g := r.Game.Sanguosha; g != nil {
 		sgSequence = g.Sequence
+		sgTurnSequence = g.TurnSequence
 		sgPending = g.Pending != nil
 		if !sgPending {
 			r.SGTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
@@ -64,7 +66,7 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 			r.TurnDeadline = 0
 			return nil
 		}
-		newTurn := r.Game.Turn != turn || r.Game.Round != round || phase == "sg_select" && !g.Selecting
+		newTurn := g.TurnSequence != sgTurnSequence || r.Game.Turn != turn || r.Game.Round != round || phase == "sg_select" && !g.Selecting
 		if newTurn {
 			r.SGTimeLeft = turnLimit.Milliseconds()
 		}

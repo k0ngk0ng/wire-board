@@ -21,6 +21,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	if handled, err := s.sgFireRespond(i, a, prompt); handled {
 		return err
 	}
+	if handled, err := s.sgMountainRespond(i, a, prompt); handled {
+		return err
+	}
 	if handled, err := s.sgThicketRespond(i, a, prompt); handled {
 		return err
 	}
@@ -61,6 +64,11 @@ func (s *State) sgRespond(i int, a Action) error {
 				s.sgDraw(j, 4)
 			}
 			s.sgPush(SGEvent{Type: "begin", Actor: g.Lord})
+			es := []SGEvent{}
+			for _, who := range s.sgOrder(g.Lord) {
+				es = append(es, SGEvent{Type: "huashen_init", Actor: who})
+			}
+			s.sgPush(es...)
 		}
 	case "invoke":
 		if !pass {
@@ -154,7 +162,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			e.Flag = !e.Flag
 			e.Targets = nil
 			s.sgPush(e)
-			s.sgDiscard(i, a.Cards)
+			s.sgSpent(i, a.Cards)
 			s.sgLog("%s 使用「无懈可击」", s.sgName(i))
 			s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
 			return nil
@@ -199,9 +207,9 @@ func (s *State) sgRespond(i int, a Action) error {
 		if kind != "peach" && !(kind == "analeptic" && i == e.Target) {
 			return errors.New("救人需要桃；酒只能自救")
 		}
-		s.sgDiscard(i, a.Cards)
+		s.sgSpent(i, a.Cards)
 		amount := 1
-		if i != e.Target && s.sgHas(e.Target, "jiuyuan") && sgGeneral(p.General).Kingdom == "wu" {
+		if i != e.Target && s.sgHas(e.Target, "jiuyuan") && s.sgKingdom(i) == "wu" {
 			amount++
 		}
 		s.sgPush(e)
@@ -243,7 +251,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			p.Used["keji_slash"]++
 		}
 		s.sgResponseSuccess(e)
-		s.sgDiscard(i, a.Cards)
+		s.sgSpent(i, a.Cards)
 		if wanted == "jink" {
 			s.sgJinkPlayed(i)
 		}
@@ -263,7 +271,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		if e.Kind == "jijiang" {
 			wanted = "slash"
 		}
-		if a.Skill == "fan" && e.Next != nil && e.Next.Kind != "collateral" && e.Next.Kind != "luanwu" {
+		if a.Skill == "fan" && e.Next != nil && e.Next.Kind != "collateral" && e.Next.Kind != "luanwu" && e.Next.Kind != "tiaoxin" {
 			return errors.New("此时不能发动朱雀羽扇")
 		}
 		kind, err := s.sgAs(i, a.Cards, a.Skill, wanted)
@@ -275,12 +283,12 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgLose(i, a.Cards)
 			return s.sgUse(e.Actor, kind, a.Cards, e.Targets, false)
 		}
-		if e.Next.Kind == "collateral" || e.Next.Kind == "luanwu" {
+		if e.Next.Kind == "collateral" || e.Next.Kind == "luanwu" || e.Next.Kind == "tiaoxin" {
 			s.sgLose(i, a.Cards)
 			return s.sgUse(e.Actor, kind, a.Cards, []int{e.Next.Aux}, true)
 		}
 		s.sgResponseSuccess(*e.Next)
-		s.sgDiscard(i, a.Cards)
+		s.sgSpent(i, a.Cards)
 		if wanted == "jink" {
 			s.sgJinkPlayed(i)
 		}
@@ -301,7 +309,7 @@ func (s *State) sgRespond(i int, a Action) error {
 		}
 		// Replace this slash's continuation, not loss-trigger events prepended by payment.
 		for j := range g.Queue {
-			if g.Queue[j].Type == "slash_weapon" && g.Queue[j].Actor == e.Actor && g.Queue[j].Target == i {
+			if (g.Queue[j].Type == "slash_weapon" || g.Queue[j].Type == "xiangle") && g.Queue[j].Actor == e.Actor && g.Queue[j].Target == i {
 				g.Queue[j].Target = t
 				break
 			}
@@ -394,8 +402,11 @@ func (s *State) sgRespond(i int, a Action) error {
 			next.Type = "ice_continue"
 			s.sgPush(next)
 		}
+		if e.Kind == "dismantlement" || e.Kind == "ice_sword" || e.Kind == "mengjin" || e.Kind == "tiaoxin" {
+			s.sgRecordDiscard(e.Target, []int{id})
+		}
 		s.sgLose(e.Target, []int{id})
-		if e.Kind == "dismantlement" || e.Kind == "ice_sword" || e.Kind == "mengjin" {
+		if e.Kind == "dismantlement" || e.Kind == "ice_sword" || e.Kind == "mengjin" || e.Kind == "tiaoxin" {
 			g.Discard = append(g.Discard, id)
 			s.sgLog("%s 弃置 %s 的「%s」", s.sgName(i), s.sgName(e.Target), SGCardTypes[sgCard(id).Kind].Name)
 		} else {
@@ -495,8 +506,14 @@ func (s *State) sgSkill(i int, a Action) error {
 	if skill == "huangtian_give" {
 		return s.sgHuangtianGive(i, a)
 	}
+	if skill == "zhiba_pindian" {
+		return s.sgZhiba(i, a)
+	}
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
+	}
+	if handled, err := s.sgMountainSkill(i, a); handled {
+		return err
 	}
 	if handled, err := s.sgThicketSkill(i, a); handled {
 		return err
@@ -553,7 +570,7 @@ func (s *State) sgSkill(i int, a Action) error {
 		if target < 0 || g.Players[target].HP >= g.Players[target].MaxHP {
 			return errors.New("选择已受伤角色")
 		}
-		if skill == "jieyin" && (target == i || sgGeneral(g.Players[target].General).Female) {
+		if skill == "jieyin" && (target == i || s.sgFemale(target)) {
 			return errors.New("结姻需要另一名已受伤男性角色")
 		}
 		if err := s.sgValidateCards(i, a.Cards, n, true); err != nil {
@@ -574,7 +591,7 @@ func (s *State) sgSkill(i int, a Action) error {
 			return errors.New("离间需要两名不同男性角色")
 		}
 		for _, t := range a.Targets {
-			if t == i || sgGeneral(g.Players[t].General).Female {
+			if t == i || s.sgFemale(t) {
 				return errors.New("离间需要其他男性角色")
 			}
 		}
@@ -585,6 +602,7 @@ func (s *State) sgSkill(i int, a Action) error {
 			return err
 		}
 		s.sgPush(SGEvent{Type: "effect", Actor: a.Targets[1], Target: a.Targets[0], Kind: "duel", Amount: 1, Aux: -1})
+		s.sgPush(SGEvent{Type: "optional_draw", Actor: a.Targets[1], Kind: "jiang", Amount: 1}, SGEvent{Type: "optional_draw", Actor: a.Targets[0], Kind: "jiang", Amount: 1})
 		s.sgDiscard(i, a.Cards)
 	case "jijiang":
 		if target < 0 || !s.sgCanTarget(i, target, "slash") {

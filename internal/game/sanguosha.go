@@ -7,22 +7,29 @@ import (
 )
 
 type SGPlayer struct {
-	Marks      map[string]int `json:"marks,omitempty"`
-	Flipped    bool           `json:"flipped,omitempty"`
-	Buqu       []int          `json:"buqu,omitempty"`
-	BuquActive bool           `json:"buquActive,omitempty"`
-	Chained    bool           `json:"chained,omitempty"`
-	Drank      int            `json:"drank,omitempty"`
-	Role       string         `json:"role"`
-	General    string         `json:"general"`
-	HP         int            `json:"hp"`
-	MaxHP      int            `json:"maxHP"`
-	Dead       bool           `json:"dead"`
-	Hand       []int          `json:"hand"`
-	Equip      []int          `json:"equip"`
-	Judgment   []SGDelayed    `json:"judgment"`
-	Used       map[string]int `json:"used"`
-	Choices    []string       `json:"choices"`
+	Acquired      []string       `json:"acquired,omitempty"`
+	SkillsLost    bool           `json:"skillsLost,omitempty"`
+	Fields        []int          `json:"fields,omitempty"`
+	Avatars       []string       `json:"avatars,omitempty"`
+	Avatar        string         `json:"avatar,omitempty"`
+	AvatarSkill   string         `json:"avatarSkill,omitempty"`
+	AvatarKingdom string         `json:"avatarKingdom,omitempty"`
+	Marks         map[string]int `json:"marks,omitempty"`
+	Flipped       bool           `json:"flipped,omitempty"`
+	Buqu          []int          `json:"buqu,omitempty"`
+	BuquActive    bool           `json:"buquActive,omitempty"`
+	Chained       bool           `json:"chained,omitempty"`
+	Drank         int            `json:"drank,omitempty"`
+	Role          string         `json:"role"`
+	General       string         `json:"general"`
+	HP            int            `json:"hp"`
+	MaxHP         int            `json:"maxHP"`
+	Dead          bool           `json:"dead"`
+	Hand          []int          `json:"hand"`
+	Equip         []int          `json:"equip"`
+	Judgment      []SGDelayed    `json:"judgment"`
+	Used          map[string]int `json:"used"`
+	Choices       []string       `json:"choices"`
 }
 type SGDelayed struct {
 	Card int    `json:"card"`
@@ -63,26 +70,33 @@ type SGPrompt struct {
 	Choices []string `json:"choices,omitempty"`
 }
 type Sanguosha struct {
-	TableSuits map[int]int `json:"tableSuits,omitempty"`
-	Bluffs     []SGBluff   `json:"bluffs,omitempty"`
-	Virtual    *SGVirtual  `json:"-"`
-	SkipJudge  bool        `json:"skipJudge,omitempty"`
-	Options    SGOptions   `json:"options,omitempty"`
-	SkipDraw   bool        `json:"skipDraw,omitempty"`
-	Revealed   []int       `json:"revealed,omitempty"`
-	Players    []SGPlayer  `json:"players"`
-	Deck       []int       `json:"deck"`
-	Discard    []int       `json:"discard"`
-	Table      []int       `json:"table"`
-	Queue      []SGEvent   `json:"queue"`
-	Pending    *SGPrompt   `json:"pending,omitempty"`
-	Sequence   int         `json:"sequence"`
-	Grace      []int       `json:"grace"`
-	Lord       int         `json:"lord"`
-	Selecting  bool        `json:"selecting"`
-	Selected   int         `json:"selected"`
-	InPlay     bool        `json:"inPlay"`
-	SkipPlay   bool        `json:"skipPlay"`
+	TurnSequence   int         `json:"turnSequence,omitempty"`
+	SkipDiscard    bool        `json:"skipDiscard,omitempty"`
+	ExtraTurns     []int       `json:"extraTurns,omitempty"`
+	ResumeTurns    []int       `json:"resumeTurns,omitempty"`
+	DiscardPhase   bool        `json:"discardPhase,omitempty"`
+	DiscardedHand  []int       `json:"discardedHand,omitempty"`
+	DiscardedOther []int       `json:"discardedOther,omitempty"`
+	TableSuits     map[int]int `json:"tableSuits,omitempty"`
+	Bluffs         []SGBluff   `json:"bluffs,omitempty"`
+	Virtual        *SGVirtual  `json:"-"`
+	SkipJudge      bool        `json:"skipJudge,omitempty"`
+	Options        SGOptions   `json:"options,omitempty"`
+	SkipDraw       bool        `json:"skipDraw,omitempty"`
+	Revealed       []int       `json:"revealed,omitempty"`
+	Players        []SGPlayer  `json:"players"`
+	Deck           []int       `json:"deck"`
+	Discard        []int       `json:"discard"`
+	Table          []int       `json:"table"`
+	Queue          []SGEvent   `json:"queue"`
+	Pending        *SGPrompt   `json:"pending,omitempty"`
+	Sequence       int         `json:"sequence"`
+	Grace          []int       `json:"grace"`
+	Lord           int         `json:"lord"`
+	Selecting      bool        `json:"selecting"`
+	Selected       int         `json:"selected"`
+	InPlay         bool        `json:"inPlay"`
+	SkipPlay       bool        `json:"skipPlay"`
 }
 
 func (s *State) initSanguosha(n int) {
@@ -131,10 +145,10 @@ func (s *State) sgHas(i int, skill string) bool {
 	if p.Dead {
 		return false
 	}
-	if (skill == "hujia" || skill == "jijiang" || skill == "jiuyuan" || skill == "huangtian" || skill == "xueyi" || skill == "songwei" || skill == "baonue") && p.Role != "lord" {
+	if sgLordSkill(skill) && p.Role != "lord" {
 		return false
 	}
-	return slices.Contains(sgGeneral(p.General).Skills, skill)
+	return !p.SkillsLost && (skill != "" && p.AvatarSkill == skill || slices.Contains(p.Acquired, skill) || slices.Contains(sgGeneral(p.General).Skills, skill))
 }
 func (s *State) sgAlive(i int) bool {
 	return i >= 0 && i < len(s.Sanguosha.Players) && !s.Sanguosha.Players[i].Dead
@@ -259,6 +273,9 @@ func (s *State) sgDistance(a, b int) int {
 	if s.sgHas(a, "mashu") {
 		d--
 	}
+	if s.sgHas(a, "tuntian") {
+		d -= len(s.Sanguosha.Players[a].Fields)
+	}
 	if s.sgEquip(b, "defense") != 0 {
 		d++
 	}
@@ -311,7 +328,9 @@ func (s *State) sgLose(i int, ids []int) {
 	p := &s.Sanguosha.Players[i]
 	before := len(p.Hand)
 	equip := 0
+	lost := false
 	for _, id := range ids {
+		lost = lost || slices.Contains(p.Hand, id) || slices.Contains(p.Equip, id)
 		if slices.Contains(p.Equip, id) {
 			equip++
 			if sgCard(id).Kind == "silver_lion" {
@@ -327,6 +346,7 @@ func (s *State) sgLose(i int, ids []int) {
 			}
 		}
 	}
+	s.sgTuntianLoss(i, lost)
 	if before > 0 && len(p.Hand) == 0 && s.sgHas(i, "lianying") {
 		s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "lianying", Amount: 1})
 	}
@@ -337,6 +357,13 @@ func (s *State) sgLose(i int, ids []int) {
 	}
 }
 func (s *State) sgDiscard(i int, ids []int) {
+	s.sgRecordDiscard(i, ids)
+	s.sgSpent(i, ids)
+}
+
+// Used/responded cards and replaced equipment are not discard costs. Keeping
+// the movement reason distinct prevents Guzheng from reclaiming responses.
+func (s *State) sgSpent(i int, ids []int) {
 	if v := s.Sanguosha.Virtual; v != nil && v.Paid && v.Player == i && len(ids) == 1 && ids[0] == v.Card {
 		s.sgFinishCards(ids)
 		return
@@ -531,7 +558,7 @@ func (s *State) sgApply(i int, a Action) error {
 		if (i != g.Pending.Player && !(g.Pending.Kind == "nullification" && !slices.Contains(g.Pending.Event.Targets, i))) || a.Prompt != g.Pending.ID {
 			return errors.New("响应已变化，请刷新后重试")
 		}
-		if a.Skill == "guhuo" && g.Virtual == nil {
+		if a.Skill == "guhuo" && g.Virtual == nil && g.Pending.Kind != "huashen" {
 			return s.sgStartGuhuo(i, a)
 		}
 		return s.sgRespond(i, a)
@@ -582,7 +609,7 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	}
 	if kind == "iron_chain" && len(targets) == 0 {
 		s.sgPush(SGEvent{Type: "draw", Actor: i, Amount: 1})
-		s.sgDiscard(i, ids)
+		s.sgSpent(i, ids)
 		s.sgLog("%s 重铸铁索连环，摸一张牌", s.sgName(i))
 		return nil
 	}
@@ -670,6 +697,14 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 		p.Drank = 0
 	}
 	events := []SGEvent{}
+	if kind == "duel" || sgIsSlash(kind) && s.sgCardColor(i, ids) == 1 {
+		events = append(events, SGEvent{Type: "optional_draw", Actor: i, Kind: "jiang", Amount: 1})
+		if kind == "duel" {
+			for _, target := range targets {
+				events = append(events, SGEvent{Type: "optional_draw", Actor: target, Kind: "jiang", Amount: 1})
+			}
+		}
+	}
 	if kind == "amazing_grace" {
 		events = append(events, SGEvent{Type: "grace_reveal", Actor: i})
 	}

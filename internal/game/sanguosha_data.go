@@ -160,7 +160,7 @@ func sgCard(id int) SGCard {
 	return sgCards[id-1]
 }
 func sgGeneral(id string) SGGeneral {
-	for _, g := range append(append(append(append([]SGGeneral{}, SGGenerals...), sgWindGenerals...), sgFireGenerals...), sgThicketGenerals...) {
+	for _, g := range append(append(append(append(append([]SGGeneral{}, SGGenerals...), sgWindGenerals...), sgFireGenerals...), sgThicketGenerals...), sgMountainGenerals...) {
 		if g.ID == id {
 			return g
 		}

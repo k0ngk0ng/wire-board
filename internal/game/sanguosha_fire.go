@@ -56,7 +56,7 @@ func (s *State) sgHandLimit(i int) int {
 	n := max(0, s.Sanguosha.Players[i].HP)
 	if s.sgHas(i, "xueyi") {
 		for _, j := range s.sgOrder(0) {
-			if j != i && sgGeneral(s.Sanguosha.Players[j].General).Kingdom == "qun" {
+			if j != i && s.sgKingdom(j) == "qun" {
 				n += 2
 			}
 		}
@@ -126,6 +126,13 @@ func (s *State) sgFireEvent(e SGEvent) bool {
 		win := a.Rank > b.Rank
 		s.sgLog("%s 拼点：%s %s%d「%s」，%s %s%d「%s」；%s%s", SGSkills[e.Kind].Name, s.sgName(e.Actor), []string{"♠", "♥", "♣", "♦"}[s.sgCardFor(e.Actor, a.ID).Suit], a.Rank, SGCardTypes[a.Kind].Name, s.sgName(e.Target), []string{"♠", "♥", "♣", "♦"}[s.sgCardFor(e.Target, b.ID).Suit], b.Rank, SGCardTypes[b.Kind].Name, s.sgName(e.Actor), map[bool]string{true: "胜出", false: "未胜出"}[win])
 		s.sgPush(SGEvent{Type: "cleanup", Cards: e.Cards})
+		if e.Kind == "zhiba" {
+			if !win {
+				e.Type = "zhiba_obtain"
+				s.sgPush(e)
+			}
+			return true
+		}
 		if e.Kind == "tianyi" {
 			g.Players[e.Actor].Used["tianyi_result"] = map[bool]int{true: 1, false: -1}[win]
 			return true
@@ -185,6 +192,7 @@ func (s *State) sgFireRespond(i int, a Action, q SGPrompt) (bool, error) {
 		if !s.sgOwn(e.Actor, e.Cards[0], true) {
 			return true, errors.New("拼点发起者的牌已不可用")
 		}
+		e.Type = "pindian_result"
 		e.Cards = append(e.Cards, a.Cards[0])
 		s.sgPush(e)
 		s.sgPay(e.Actor, e.Cards[:1])

@@ -13,6 +13,16 @@ func (s *State) sgView(viewer int) map[string]any {
 			general = ""
 		}
 		v := map[string]any{"general": general, "marks": p.Marks, "handLimit": s.sgHandLimit(i), "flipped": p.Flipped, "buqu": p.Buqu, "chained": p.Chained, "drank": p.Drank, "hp": p.HP, "maxHP": p.MaxHP, "dead": p.Dead, "handCount": len(p.Hand), "equip": p.Equip, "judgment": p.Judgment, "used": p.Used}
+		if general != "" {
+			v["skills"] = s.sgSkills(i)
+			v["kingdom"] = s.sgKingdom(i)
+			v["female"] = s.sgFemale(i)
+			v["skillsLost"] = p.SkillsLost
+			v["fields"] = p.Fields
+			v["avatar"] = p.Avatar
+			v["avatarSkill"] = p.AvatarSkill
+			v["avatarCount"] = len(p.Avatars)
+		}
 		if g.Selecting && general == "" {
 			v["hp"] = 0
 			v["maxHP"] = 0
@@ -24,6 +34,7 @@ func (s *State) sgView(viewer int) map[string]any {
 		if i == viewer {
 			v["hand"] = p.Hand
 			v["choices"] = p.Choices
+			v["avatars"] = p.Avatars
 		}
 		players = append(players, v)
 	}
@@ -48,6 +59,17 @@ func (s *State) sgView(viewer int) map[string]any {
 			prompt["step"] = e.Step
 			prompt["choices"] = p.Choices
 			prompt["targets"] = p.Targets
+			if p.Kind == "huashen" {
+				prompt["required"] = p.Event.Flag
+				choices := map[string][]string{}
+				for _, id := range p.Choices {
+					choices[id] = sgAvatarSkills(id)
+				}
+				prompt["avatarSkills"] = choices
+			}
+			if p.Kind == "qiaobian_move" {
+				prompt["moves"] = s.sgQiaobianMoves(viewer)
+			}
 			if p.Kind == "card" {
 				prompt["wanted"] = sgWanted(e)
 				prompt["ignoreArmor"] = s.sgIgnoreArmor(e)
@@ -76,7 +98,8 @@ func (s *State) sgView(viewer int) map[string]any {
 		if s.sgHas(viewer, "guhuo") {
 			visible["guhuoKinds"] = s.sgGuhuoKinds()
 		}
-		visible["huangtianGive"] = viewer != g.Lord && sgGeneral(g.Players[viewer].General).Kingdom == "qun" && s.sgHas(g.Lord, "huangtian")
+		visible["zhibaPindian"] = viewer != g.Lord && s.sgKingdom(viewer) == "wu" && s.sgHas(g.Lord, "zhiba")
+		visible["huangtianGive"] = viewer != g.Lord && s.sgKingdom(viewer) == "qun" && s.sgHas(g.Lord, "huangtian")
 	}
 	return map[string]any{"kind": s.Kind, "turn": s.Turn, "phase": s.Phase, "round": s.Round, "finished": s.Finished, "winners": s.Winners, "log": s.Log, "sanguosha": visible}
 }

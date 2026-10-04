@@ -139,6 +139,31 @@ func TestSanguoshaClockPausesAndTimeoutResponds(t *testing.T) {
 		t.Fatal("thinking time reset", r.SGTimeLeft)
 	}
 }
+
+func TestSanguoshaExtraTurnToSameSeatResetsClock(t *testing.T) {
+	s, _ := game.New("sanguosha", 4)
+	g := s.Sanguosha
+	g.Selecting = false
+	g.Pending = nil
+	g.Queue = nil
+	g.InPlay = true
+	g.ResumeTurns = []int{0}
+	s.Turn = 1
+	s.Phase = "sg_play"
+	for i := range g.Players {
+		g.Players[i].General = "zhangfei"
+		g.Players[i].HP = 4
+		g.Players[i].MaxHP = 4
+	}
+	now := time.Now()
+	r := &Room{Game: s, Kind: "sanguosha", Status: "playing", SGTimeLeft: 5000, TurnDeadline: now.Add(5 * time.Second).UnixMilli()}
+	if err := r.applyGameAction(1, game.Action{Type: "sg_end"}, now); err != nil {
+		t.Fatal(err)
+	}
+	if s.Turn != 1 || s.Sanguosha.TurnSequence != 1 || r.SGTimeLeft != 120000 || r.TurnDeadline != now.Add(120*time.Second).UnixMilli() {
+		t.Fatal("same seat consecutive turns inherited old clock", s.Turn, s.Sanguosha.TurnSequence, r.SGTimeLeft, r.TurnDeadline)
+	}
+}
 func TestSanguoshaConcurrentHTTPPassAndSharedTimeout(t *testing.T) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)

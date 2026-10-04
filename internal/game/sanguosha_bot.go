@@ -61,6 +61,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			return Action{}, errors.New("not responding")
 		}
 		e := q.Event
+		s.sgMountainBotPrompt(i, add, cardsFor)
 		switch q.Kind {
 		case "xingshang":
 			add(Action{Choice: "yes"})
@@ -349,7 +350,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		if i != s.Turn || s.Phase != "sg_play" {
 			return Action{}, errors.New("not playing")
 		}
-		if p.Role == "loyalist" && sgGeneral(p.General).Kingdom == "qun" {
+		if p.Role == "loyalist" && s.sgKingdom(i) == "qun" {
 			for _, id := range p.Hand {
 				if k := sgCard(id).Kind; k == "jink" || k == "lightning" {
 					add(Action{Type: "sg_skill", Skill: "huangtian_give", Cards: []int{id}, Targets: []int{g.Lord}})
@@ -396,6 +397,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			}
 			return g.Players[a].HP - g.Players[b].HP
 		})
+		s.sgMountainBotPlay(i, enemies, add)
 		if s.sgHas(i, "luanwu") && p.Marks["luanwu"] == 0 {
 			add(Action{Type: "sg_skill", Skill: "luanwu"})
 		}

@@ -1,0 +1,57 @@
+{
+  "repository": "Mogara/QSanguosha-v2",
+  "revision": "e8768851bd8054db9fd1b63cd6f1feca813590d7",
+  "files": {
+    "generals/zhanghe.webp": "image/fullskin/generals/full/zhanghe.png",
+    "generals/dengai.webp": "image/fullskin/generals/full/dengai.png",
+    "generals/jiangwei.webp": "image/fullskin/generals/full/jiangwei.png",
+    "generals/liushan.webp": "image/fullskin/generals/full/liushan.png",
+    "generals/sunce.webp": "image/fullskin/generals/full/sunce.png",
+    "generals/erzhang.webp": "image/fullskin/generals/full/erzhang.png",
+    "generals/caiwenji.webp": "image/fullskin/generals/full/caiwenji.png",
+    "generals/zuoci.webp": "image/fullskin/generals/full/zuoci.png"
+  },
+  "assets": [
+    {
+      "file": "generals/caiwenji.webp",
+      "sha256": "f23dc9623c10af8ed03a600cf4984e6b9c581ee4730b15c006b475cfc619fd72",
+      "bytes": 10866
+    },
+    {
+      "file": "generals/dengai.webp",
+      "sha256": "f6853673d771be277ad334ac91f84bc8c271cc5bf83799b90522a41c1905ca4d",
+      "bytes": 24486
+    },
+    {
+      "file": "generals/erzhang.webp",
+      "sha256": "f3343531f134b40d586fb27cf89a336fccf657ec09f711bec88f4910e21e8a1d",
+      "bytes": 19656
+    },
+    {
+      "file": "generals/jiangwei.webp",
+      "sha256": "2b66e7edefd683dc7c854e0671930d640f031a5eef63b00bbbb46651db04e11e",
+      "bytes": 24278
+    },
+    {
+      "file": "generals/liushan.webp",
+      "sha256": "468eb8c5fb89344f9eb113e4673e31b34452dba45f450ce76cebe4bda675ae8e",
+      "bytes": 13328
+    },
+    {
+      "file": "generals/sunce.webp",
+      "sha256": "e1f3ae1fd05e8cae4357eece5331ad8ee9a8a2a615daf213047d5fe6b441a8c8",
+      "bytes": 31228
+    },
+    {
+      "file": "generals/zhanghe.webp",
+      "sha256": "b349a2a7de3483263b4968cb65eea460c1a5dfb5280f89bbe66836b78b722af8",
+      "bytes": 17428
+    },
+    {
+      "file": "generals/zuoci.webp",
+      "sha256": "01e4e1b0f2bb0247fee08a98174c191b947420677d30114b649ec27efab7f796",
+      "bytes": 12656
+    }
+  ],
+  "cdnVerified": true
+}
