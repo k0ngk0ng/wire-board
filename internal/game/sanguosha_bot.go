@@ -65,6 +65,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		s.sgMountainBotPrompt(i, add, cardsFor)
 		s.sgGodBotPrompt(i, add)
 		s.sgJieBotPrompt(i, add)
+		s.sgHegBotPrompt(i, add)
 		switch q.Kind {
 		case "xingshang":
 			add(Action{Choice: "yes"})
@@ -518,7 +519,7 @@ func sgBotValue(id int) int {
 		return 100
 	case "jink":
 		return 80
-	case "nullification":
+	case "nullification", "heg_nullification":
 		return 70
 	case "ex_nihilo":
 		return 90

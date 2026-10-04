@@ -12,6 +12,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	g.Pending = nil
 	p := &g.Players[i]
 	pass := a.Choice == "pass"
+	if handled, err := s.sgHegRespond(i, a, prompt); handled {
+		return err
+	}
 	if handled, err := s.sgJieRespond(i, a, prompt); handled {
 		return err
 	}
@@ -176,9 +179,14 @@ func (s *State) sgRespond(i int, a Action) error {
 				return nil
 			}
 		} else {
-			if _, err := s.sgAs(i, a.Cards, a.Skill, "nullification"); err != nil {
+			kind, err := s.sgAs(i, a.Cards, a.Skill, "nullification")
+			if err != nil {
 				return err
 			}
+			if err := s.sgHegCounterScope(i, kind, a.Choice, &e); err != nil {
+				return err
+			}
+			e.CounterDepth++
 			e.Flag = !e.Flag
 			e.Targets = nil
 			s.sgPush(e)
@@ -187,6 +195,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgLog("%s 使用「无懈可击」", s.sgName(i))
 			s.sgPush(SGEvent{Type: "optional_draw", Actor: i, Kind: "jizhi", Amount: 1})
 			s.sgGodTrick(i, "nullification")
+			s.sgHegJizhi(i, kind, a.Cards)
 			return nil
 		}
 		s.sgPush(e)
@@ -549,6 +558,9 @@ func (s *State) sgSkill(i int, a Action) error {
 	if !s.sgHas(i, skill) {
 		return errors.New("没有此技能")
 	}
+	if handled, err := s.sgHegSkill(i, a); handled {
+		return err
+	}
 	if handled, err := s.sgJieSkill(i, a); handled {
 		return err
 	}
@@ -613,7 +625,7 @@ func (s *State) sgSkill(i int, a Action) error {
 		if target < 0 || g.Players[target].HP >= g.Players[target].MaxHP {
 			return errors.New("选择已受伤角色")
 		}
-		if skill == "jieyin" && (target == i || s.sgFemale(target)) {
+		if skill == "jieyin" && (target == i || !s.sgMale(target)) {
 			return errors.New("结姻需要另一名已受伤男性角色")
 		}
 		if err := s.sgValidateCards(i, a.Cards, n, true); err != nil {
@@ -634,7 +646,7 @@ func (s *State) sgSkill(i int, a Action) error {
 			return errors.New("离间需要两名不同男性角色")
 		}
 		for _, t := range a.Targets {
-			if t == i || s.sgFemale(t) {
+			if t == i || !s.sgMale(t) {
 				return errors.New("离间需要其他男性角色")
 			}
 		}

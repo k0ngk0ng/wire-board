@@ -16,6 +16,9 @@ func (s *State) sgSkills(i int) []string {
 	if p.SkillsLost {
 		return []string{}
 	}
+	if s.sgHegemony() {
+		return s.sgHegSkills(i, true)
+	}
 	out := append([]string{}, sgGeneral(p.General).Skills...)
 	for _, skill := range append(append(append([]string{}, p.Acquired...), p.Temporary...), p.AvatarSkill) {
 		if skill != "" && !slices.Contains(out, skill) {
@@ -29,6 +32,9 @@ func (s *State) sgKingdom(i int) string {
 		return ""
 	}
 	p := s.Sanguosha.Players[i]
+	if s.sgHegemony() && !s.sgHegShown(i) {
+		return ""
+	}
 	if p.Avatar != "" && !p.SkillsLost {
 		if p.AvatarKingdom != "" {
 			return p.AvatarKingdom
@@ -45,6 +51,14 @@ func (s *State) sgFemale(i int) bool {
 		return false
 	}
 	p := s.Sanguosha.Players[i]
+	if s.sgHegemony() {
+		for slot, id := range s.sgHegGeneralIDs(i) {
+			if p.Hegemony.Shown[slot] {
+				return sgGeneral(id).Female
+			}
+		}
+		return false
+	}
 	if p.Avatar != "" && !p.SkillsLost {
 		return sgGeneral(p.Avatar).Female
 	}
