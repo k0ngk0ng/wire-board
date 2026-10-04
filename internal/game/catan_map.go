@@ -212,7 +212,10 @@ func (g *Catan) pieces(p int) (roads, settlements, cities int) {
 	return
 }
 func (g *Catan) rates(p int) []int {
-	rates := []int{4, 4, 4, 4, 4}
+	rates := make([]int, len(g.Bank))
+	for i := range rates {
+		rates[i] = 4
+	}
 	for _, port := range g.Ports {
 		e := g.Edges[port.Edge]
 		if g.Vertices[e.A].Owner != p && g.Vertices[e.B].Owner != p {
@@ -224,6 +227,11 @@ func (g *Catan) rates(p int) []int {
 			}
 		} else {
 			rates[port.Resource] = 2
+		}
+	}
+	if k := g.CitiesKnights; k != nil && k.Players[p].Improvements[CatanCommerce] >= 3 {
+		for c := 5; c < 8; c++ {
+			rates[c] = 2
 		}
 	}
 	return rates

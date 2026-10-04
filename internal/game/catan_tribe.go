@@ -33,6 +33,9 @@ func (g *Catan) tribe() *CatanTribeState {
 	return g.Seafarers.Tribe
 }
 func (g *Catan) robberAllowed(tile int) bool {
+	if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
+		return false
+	}
 	if g.pirateIslands() != nil {
 		return false
 	}

@@ -73,6 +73,10 @@ func (s *State) catanChooseGold(player int, a Action) error {
 func (s *State) catanAfterProduction(received []int) {
 	g := s.Catan
 	s.Phase = "catan_turn"
+	if g.CitiesKnights != nil {
+		s.catanStartAqueduct(received)
+		return
+	}
 	if g.cloth() != nil {
 		s.catanScores()
 		s.catanVictory()
@@ -96,6 +100,9 @@ func (s *State) CatanPendingActor() int {
 	g := s.Catan
 	if g == nil || s.Finished {
 		return -1
+	}
+	if k := g.CitiesKnights; k != nil && k.Pending != nil && len(k.Pending.Players) > 0 {
+		return k.Pending.Players[0]
 	}
 	if p := g.pirateIslands(); p != nil && p.Raid != nil && len(p.Raid.Rewards) > 0 {
 		return p.Raid.Rewards[0]

@@ -26,6 +26,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	CitiesKnights  *CatanCitiesKnights `json:"citiesKnights,omitempty"`
 	BaseSetup      *CatanBaseSetup     `json:"baseSetup,omitempty"`
 	GoldPending    *CatanGoldPending   `json:"goldPending,omitempty"`
 	Seafarers      *CatanSeafarers     `json:"seafarers,omitempty"`
@@ -116,7 +117,7 @@ func catanBundle(a []int) bool {
 	return true
 }
 func catanHas(hand, cost []int) bool {
-	if len(hand) != 5 || len(cost) != 5 {
+	if (len(hand) != 5 && len(hand) != 8) || (len(cost) != 5 && len(cost) != 8) || len(cost) > len(hand) {
 		return false
 	}
 	for i, n := range cost {
@@ -136,7 +137,7 @@ func catanText(a []int) string {
 	out := []string{}
 	for i, n := range a {
 		if n > 0 {
-			out = append(out, fmt.Sprintf("%s×%d", CatanResources[i], n))
+			out = append(out, fmt.Sprintf("%s×%d", catanCardName(i), n))
 		}
 	}
 	return strings.Join(out, "、")
@@ -189,7 +190,7 @@ func (s *State) catanScores() {
 		g.LongestOwner = -1
 	}
 	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
-	if g.pirateIslands() != nil {
+	if g.pirateIslands() != nil || g.CitiesKnights != nil {
 		g.ArmyOwner = -1
 	}
 	if g.LongestOwner != oldRoad {
@@ -209,6 +210,14 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = g.hiddenVictoryPoints(i)
+		if k := g.CitiesKnights; k != nil {
+			p.Score += k.Players[i].DefenderPoints + k.Players[i].ProgressPoints
+			for track := range 3 {
+				if g.cityMetropolisOwner(track) == i {
+					p.Score += 2
+				}
+			}
+		}
 		if c := g.cloth(); c != nil {
 			p.Score += c.Held[i] / 2
 		}
@@ -232,7 +241,7 @@ func (s *State) catanScores() {
 	}
 }
 func (g *Catan) hiddenVictoryPoints(player int) int {
-	if g.pirateIslands() != nil {
+	if g.pirateIslands() != nil || g.CitiesKnights != nil {
 		return 0
 	}
 	return g.Players[player].Dev[4]
@@ -252,6 +261,9 @@ func (s *State) catanVictory() {
 		return
 	}
 	goal := 10
+	if g.CitiesKnights != nil {
+		goal = 13
+	}
 	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {
 		goal = g.Seafarers.VictoryPoints
 	}
@@ -292,7 +304,7 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil {
+	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -309,6 +321,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if k := g.CitiesKnights; k != nil && k.Pending != nil {
+		return s.catanCityChoice(player, a)
 	}
 	if p := g.pirateIslands(); p != nil && p.Raid != nil {
 		return s.catanFleetReward(player, a)
@@ -348,9 +363,14 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_wall", "catan_improvement":
+		return s.catanCityAction(player, a)
 	case "catan_wonder_claim", "catan_wonder_build":
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
+		if g.CitiesKnights != nil {
+			return errors.New("城市与骑士事件骰流程尚未接入，不能按基础版掷骰")
+		}
 		if s.Phase != "catan_roll" {
 			return errors.New("当前不能掷骰")
 		}
@@ -454,7 +474,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if s.Phase != "catan_turn" {
 			return errors.New("掷骰后才可交易")
 		}
-		if !catanBundle(a.Give) || !catanBundle(a.Take) || !catanHas(p.Resources, a.Give) || !catanHas(g.Bank, a.Take) || sum(a.Take) == 0 {
+		if !g.cardBundle(a.Give) || !g.cardBundle(a.Take) || !catanHas(p.Resources, a.Give) || !catanHas(g.Bank, a.Take) || sum(a.Take) == 0 {
 			return errors.New("交易数量或库存不符合要求")
 		}
 		units := 0
@@ -509,6 +529,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		s.catanScores()
 		s.catanVictory()
 	case "catan_dev":
+		if g.CitiesKnights != nil {
+			return errors.New("城市与骑士不使用基础发展卡")
+		}
 		return s.catanDev(player, a)
 	case "catan_move_ship":
 		return s.catanMoveShip(player, a)
@@ -547,16 +570,27 @@ func (g *Catan) hasRoad(p int) bool {
 func (s *State) catanSetup(a Action) error {
 	g := s.Catan
 	p := s.Turn
-	if s.Phase == "catan_setup_settlement" {
-		if a.Type != "catan_settlement" || !g.canSettlement(p, a.Vertex, true) {
+	if s.Phase == "catan_setup_settlement" || s.Phase == "catan_setup_city" {
+		want := "catan_settlement"
+		if s.Phase == "catan_setup_city" {
+			want = "catan_city"
+		}
+		if a.Type != want || !g.canSettlement(p, a.Vertex, true) {
 			return errors.New("请选择与其他建筑至少相隔两条边的空交点")
 		}
 		g.Vertices[a.Vertex].Owner = p
 		g.Vertices[a.Vertex].Level = 1
+		if want == "catan_city" {
+			g.Vertices[a.Vertex].Level = 2
+		}
 		g.SetupVertex = a.Vertex
 		s.catanSettleIsland(p, a.Vertex, true)
 		s.Phase = "catan_setup_road"
-		s.catanLog(p, "放置起始村庄 #%d", a.Vertex+1)
+		if want == "catan_city" {
+			s.catanLog(p, "放置起始城市 #%d", a.Vertex+1)
+		} else {
+			s.catanLog(p, "放置起始村庄 #%d", a.Vertex+1)
+		}
 		if g.SetupStep >= g.SetupLimit()-len(g.Players) {
 			gain := make([]int, 5)
 			gold := make([]int, len(g.Players))
@@ -575,7 +609,11 @@ func (s *State) catanSetup(a Action) error {
 				}
 			}
 			catanMove(g.Bank, g.Players[p].Resources, gain)
-			s.catanLog(p, "从第 %d 座起始村庄获得 %s", g.SetupLimit()/len(g.Players), catanText(gain))
+			if want == "catan_city" {
+				s.catanLog(p, "从起始城市获得普通资源 %s", catanText(gain))
+			} else {
+				s.catanLog(p, "从第 %d 座起始村庄获得 %s", g.SetupLimit()/len(g.Players), catanText(gain))
+			}
 			if gold[p] > 0 {
 				s.catanStartGold(gold, nil, "catan_setup_road")
 			}
@@ -623,6 +661,9 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
 		}
 		s.Phase = "catan_setup_settlement"
+		if g.CitiesKnights != nil && g.SetupStep >= n {
+			s.Phase = "catan_setup_city"
+		}
 	}
 }
 func (s *State) catanRoll(total int) error {
@@ -652,16 +693,20 @@ func (s *State) catanRollProduction(total int) error {
 		}
 		for i, p := range g.Players {
 			g.DiscardDue[i] = 0
-			if !p.Eliminated && i != protected && sum(p.Resources) > 7 {
+			if !p.Eliminated && i != protected && sum(p.Resources) > g.catanDiscardLimit(i) {
 				g.DiscardDue[i] = sum(p.Resources) / 2
 				pending = true
 			}
 		}
 		if pending {
 			s.Phase = "catan_discard"
-			s.Log = append(s.Log, "掷出 7：超过 7 张资源的玩家同时弃掉一半（向下取整），120 秒后自动弃牌")
+			if g.CitiesKnights != nil {
+				s.Log = append(s.Log, "掷出7：资源与商品合计超过个人城墙上限的玩家同时弃一半，120秒后自动弃牌")
+			} else {
+				s.Log = append(s.Log, "掷出 7：超过 7 张资源的玩家同时弃掉一半（向下取整），120 秒后自动弃牌")
+			}
 		} else {
-			s.Phase = "catan_robber"
+			s.catanAfterSevenDiscards()
 		}
 		if protected >= 0 {
 			resume := s.Phase
@@ -682,7 +727,7 @@ func (s *State) catanRollProduction(total int) error {
 	gold := make([]int, len(g.Players))
 	claims := make([][]int, len(g.Players))
 	for i := range claims {
-		claims[i] = make([]int, 5)
+		claims[i] = make([]int, len(g.Bank))
 	}
 	for _, t := range g.Tiles {
 		if t.Number != total || t.ID == g.Robber || (t.Resource >= 5 && t.Resource != CatanGold) {
@@ -694,12 +739,12 @@ func (s *State) catanRollProduction(total int) error {
 				if t.Resource == CatanGold {
 					gold[v.Owner] += v.Level
 				} else {
-					claims[v.Owner][t.Resource] += v.Level
+					g.cityProduction(claims[v.Owner], t.Resource, v.Level)
 				}
 			}
 		}
 	}
-	for c := 0; c < 5; c++ {
+	for c := range g.Bank {
 		demand, people, only := 0, 0, -1
 		for i := range claims {
 			demand += claims[i][c]
@@ -716,7 +761,7 @@ func (s *State) catanRollProduction(total int) error {
 					claims[i][c] = 0
 				}
 			}
-			s.Log = append(s.Log, CatanResources[c]+"供应不足，按基础版库存规则发放")
+			s.Log = append(s.Log, catanCardName(c)+"供应不足，按基础版库存规则发放")
 		}
 	}
 	for i, gain := range claims {
@@ -738,14 +783,18 @@ func (s *State) catanRollProduction(total int) error {
 }
 func (s *State) catanDiscard(p int, amount []int) error {
 	g := s.Catan
-	if s.Phase != "catan_discard" || g.DiscardDue[p] <= 0 || !catanBundle(amount) || sum(amount) != g.DiscardDue[p] || !catanHas(g.Players[p].Resources, amount) {
+	if s.Phase != "catan_discard" || g.DiscardDue[p] <= 0 || !g.cardBundle(amount) || sum(amount) != g.DiscardDue[p] || !catanHas(g.Players[p].Resources, amount) {
 		return errors.New("请准确选择需要弃置的资源数量")
 	}
 	catanMove(g.Players[p].Resources, g.Bank, amount)
-	s.catanLog(p, "弃置 %d 张资源", sum(amount))
+	if g.CitiesKnights != nil {
+		s.catanLog(p, "弃置 %d 张资源或商品", sum(amount))
+	} else {
+		s.catanLog(p, "弃置 %d 张资源", sum(amount))
+	}
 	g.DiscardDue[p] = 0
 	if sum(g.DiscardDue) == 0 {
-		s.Phase = "catan_robber"
+		s.catanAfterSevenDiscards()
 		return s.catanPirateSeven()
 	}
 	return nil
@@ -798,7 +847,11 @@ func (s *State) catanSteal(p, target int) error {
 		}
 		n -= count
 	}
-	s.catanLog(p, "从玩家 %d 随机偷取一张资源", target+1)
+	if g.CitiesKnights != nil {
+		s.catanLog(p, "从玩家 %d 随机偷取一张资源或商品", target+1)
+	} else {
+		s.catanLog(p, "从玩家 %d 随机偷取一张资源", target+1)
+	}
 	g.Victims = []int{}
 	s.Phase = g.ResumePhase
 	return nil
@@ -884,7 +937,7 @@ func (s *State) catanOffer(p int, a Action) error {
 	if g.Paired != nil && g.Paired.Second {
 		return errors.New("配对玩家不能与其他玩家自由交易，可使用银行或港口")
 	}
-	if s.Phase != "catan_turn" || !catanBundle(a.Give) || !catanBundle(a.Take) || sum(a.Give) == 0 || sum(a.Take) == 0 || !catanHas(g.Players[p].Resources, a.Give) {
+	if s.Phase != "catan_turn" || !g.cardBundle(a.Give) || !g.cardBundle(a.Take) || sum(a.Give) == 0 || sum(a.Take) == 0 || !catanHas(g.Players[p].Resources, a.Give) {
 		return errors.New("请提出有效交易，且持有要支付的资源")
 	}
 	for i := range a.Give {
@@ -933,6 +986,13 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if k := g.CitiesKnights; k != nil && k.Pending != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanCityChoiceBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 		return
 	}
 	if p := g.pirateIslands(); p != nil && p.Raid != nil {
@@ -990,7 +1050,7 @@ func (s *State) AutoCatanPending() {
 				continue
 			}
 			hand := append([]int{}, g.Players[i].Resources...)
-			give := make([]int, 5)
+			give := make([]int, len(g.Bank))
 			for range due {
 				n := catanRandom(sum(hand))
 				for c, count := range hand {
