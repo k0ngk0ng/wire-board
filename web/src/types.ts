@@ -372,6 +372,12 @@ export type CatanState = {
   hexSize?: number;
   startPlayer?: number;
   paired?: { primary: number; secondary: number; second: boolean };
+  baseSetup?: {
+    layout: "fixed";
+    rules: string;
+    colors: number[];
+    neutralColor: number;
+  };
   options?: CatanOptions;
   helperDisplay?: number[];
   helperRules?: {
