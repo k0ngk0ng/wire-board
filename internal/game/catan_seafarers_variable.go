@@ -11,7 +11,7 @@ import (
 // for forests/pastures. The latter scenario does not prescribe the New
 // Shores red-number restriction (2025 rulebook pages 5 and 7).
 func (g *Catan) randomizeSeafarersMap() error {
-	if g.Seafarers == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "islands") {
+	if len(g.Players) > 4 || g.Seafarers == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "islands") {
 		return fmt.Errorf("该剧本尚未支持可变布局")
 	}
 	groups := [][]int{{}}
@@ -146,14 +146,7 @@ func (g *Catan) randomizeSeafarersMap() error {
 	if robber < 0 {
 		return fmt.Errorf("剧本缺少强盗起始地块")
 	}
-	resources := []int{}
-	for _, p := range g.Ports {
-		resources = append(resources, p.Resource)
-	}
-	shuffle(resources)
-	for i := range g.Ports {
-		g.Ports[i].Resource = resources[i]
-	}
+	g.shuffleSeafarersPorts()
 	g.Tiles, g.Robber = tiles, robber
 	g.Seafarers.Variable = true
 	return nil
