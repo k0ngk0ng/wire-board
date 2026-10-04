@@ -107,3 +107,15 @@ test("fixed base snapshots preserve neutral setup rules independently of capacit
   assert.equal(catanRuleContext(room).fixedBase, false);
   assert.equal(catanRuleContext(room).neutral, false);
 });
+
+test("waiting base layout changes the quick reference but cannot override a running game", () => {
+  const room = { capacity: 6, catanOptions: { fiveSix: true }, catanBaseConfiguration: { layout: "fixed" } };
+  assert.equal(catanRuleContext(room).fixedBase, true);
+  assert.equal(catanRuleContext(room).neutral, true); // Explain five-player case before actual player count is known.
+  room.game = { catan: { players: Array(6).fill({}), baseSetup: { layout: "variable", neutralColor: -1 }, options: { fiveSix: true } } };
+  assert.equal(catanRuleContext(room).fixedBase, false);
+  assert.equal(catanRuleContext(room).neutral, false);
+  delete room.game;
+  room.catanSeafarers = { scenario: "fog", layout: "fixed" };
+  assert.equal(catanRuleContext(room).fixedBase, false);
+});

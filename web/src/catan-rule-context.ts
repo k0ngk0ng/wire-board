@@ -17,14 +17,19 @@ export function catanRuleContext(room: Room) {
     ? sea?.layout ||
       (sea?.newWorld ? "prepared" : sea?.variable ? "variable" : "fixed")
     : room.catanSeafarers?.layout || (room.catanNewWorldMap ? "prepared" : "");
+  const fixedBase =
+    !scenario &&
+    (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
+      "fixed";
   return {
     scenario,
     layout,
     players,
     waiting: !game,
-    fixedBase: game?.baseSetup?.layout === "fixed",
-    neutral:
-      game?.baseSetup?.neutralColor != null && game.baseSetup.neutralColor >= 0,
+    fixedBase,
+    neutral: game
+      ? game.baseSetup?.neutralColor != null && game.baseSetup.neutralColor >= 0
+      : fixedBase,
     fiveSix: game ? !!game.paired || !!options.fiveSix : !!options.fiveSix,
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,

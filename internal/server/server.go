@@ -45,36 +45,37 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
-	CatanSeafarers      *game.CatanSeafarersSetup `json:"catanSeafarers,omitempty"`
-	CatanNewWorldMap    *game.CatanNewWorldMap    `json:"catanNewWorldMap,omitempty"`
-	CatanTimeLeft       int64                     `json:"catanTimeLeft,omitempty"`
-	CatanOptions        game.CatanOptions         `json:"catanOptions,omitempty"`
-	SplendorOptions     game.SplendorOptions      `json:"splendorOptions,omitempty"`
-	SanguoshaOptions    game.SGOptions            `json:"sanguoshaOptions,omitempty"`
-	RailMap             string                    `json:"railMap,omitempty"`
-	SGTimeLeft          int64                     `json:"sgTimeLeft,omitempty"`
-	Rated               bool                      `json:"rated,omitempty"`
-	CatanPendingVersion int                       `json:"catanPendingVersion,omitempty"`
-	CatanTradeVersion   int                       `json:"catanTradeVersion,omitempty"`
-	MatchID             string                    `json:"matchId,omitempty"`
-	Spectators          []User                    `json:"spectators,omitempty"`
-	Chat                []ChatMessage             `json:"chat,omitempty"`
-	BotAt               int64                     `json:"botAt,omitempty"`
-	SetupVersion        int                       `json:"setupVersion,omitempty"`
-	TurnDeadline        int64                     `json:"turnDeadline,omitempty"`
-	ID                  string                    `json:"id"`
-	Name                string                    `json:"name"`
-	Kind                string                    `json:"kind"`
-	Host                string                    `json:"host"`
-	Capacity            int                       `json:"capacity"`
-	Seats               []Seat                    `json:"seats"`
-	Version             int                       `json:"version"`
-	Status              string                    `json:"status"`
-	CloseReason         string                    `json:"closeReason,omitempty"`
-	Password            string                    `json:"password,omitempty"`
-	Game                *game.State               `json:"game,omitempty"`
-	Updated             int64                     `json:"updated"`
-	LastActive          int64                     `json:"lastActive"`
+	CatanBaseConfiguration *game.CatanBaseConfiguration `json:"catanBaseConfiguration,omitempty"`
+	CatanSeafarers         *game.CatanSeafarersSetup    `json:"catanSeafarers,omitempty"`
+	CatanNewWorldMap       *game.CatanNewWorldMap       `json:"catanNewWorldMap,omitempty"`
+	CatanTimeLeft          int64                        `json:"catanTimeLeft,omitempty"`
+	CatanOptions           game.CatanOptions            `json:"catanOptions,omitempty"`
+	SplendorOptions        game.SplendorOptions         `json:"splendorOptions,omitempty"`
+	SanguoshaOptions       game.SGOptions               `json:"sanguoshaOptions,omitempty"`
+	RailMap                string                       `json:"railMap,omitempty"`
+	SGTimeLeft             int64                        `json:"sgTimeLeft,omitempty"`
+	Rated                  bool                         `json:"rated,omitempty"`
+	CatanPendingVersion    int                          `json:"catanPendingVersion,omitempty"`
+	CatanTradeVersion      int                          `json:"catanTradeVersion,omitempty"`
+	MatchID                string                       `json:"matchId,omitempty"`
+	Spectators             []User                       `json:"spectators,omitempty"`
+	Chat                   []ChatMessage                `json:"chat,omitempty"`
+	BotAt                  int64                        `json:"botAt,omitempty"`
+	SetupVersion           int                          `json:"setupVersion,omitempty"`
+	TurnDeadline           int64                        `json:"turnDeadline,omitempty"`
+	ID                     string                       `json:"id"`
+	Name                   string                       `json:"name"`
+	Kind                   string                       `json:"kind"`
+	Host                   string                       `json:"host"`
+	Capacity               int                          `json:"capacity"`
+	Seats                  []Seat                       `json:"seats"`
+	Version                int                          `json:"version"`
+	Status                 string                       `json:"status"`
+	CloseReason            string                       `json:"closeReason,omitempty"`
+	Password               string                       `json:"password,omitempty"`
+	Game                   *game.State                  `json:"game,omitempty"`
+	Updated                int64                        `json:"updated"`
+	LastActive             int64                        `json:"lastActive"`
 }
 
 const turnLimit = 120 * time.Second
@@ -516,7 +517,10 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
+		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
+	}
 	if r.CatanSeafarers != nil && r.Status == "waiting" {
 		result["catanSeafarersChoices"] = game.CatanSeafarersScenarios(max(3, r.Capacity))
 	}
@@ -698,19 +702,20 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		CatanNewWorldMap *game.CatanNewWorldMap    `json:"catanNewWorldMap"`
-		CatanSeafarers   *game.CatanSeafarersSetup `json:"catanSeafarers"`
-		CatanOptions     game.CatanOptions         `json:"catanOptions"`
-		SplendorOptions  game.SplendorOptions      `json:"splendorOptions"`
-		SanguoshaOptions game.SGOptions            `json:"sanguoshaOptions"`
-		Type             string                    `json:"type"`
-		RailMap          string                    `json:"railMap"`
-		Target           string                    `json:"target,omitempty"`
-		Password         string                    `json:"password"`
-		Version          int                       `json:"version"`
-		Nonce            string                    `json:"nonce"`
-		Action           game.Action               `json:"action"`
-		Enabled          *bool                     `json:"enabled,omitempty"`
+		CatanNewWorldMap       *game.CatanNewWorldMap       `json:"catanNewWorldMap"`
+		CatanSeafarers         *game.CatanSeafarersSetup    `json:"catanSeafarers"`
+		CatanBaseConfiguration *game.CatanBaseConfiguration `json:"catanBaseConfiguration"`
+		CatanOptions           game.CatanOptions            `json:"catanOptions"`
+		SplendorOptions        game.SplendorOptions         `json:"splendorOptions"`
+		SanguoshaOptions       game.SGOptions               `json:"sanguoshaOptions"`
+		Type                   string                       `json:"type"`
+		RailMap                string                       `json:"railMap"`
+		Target                 string                       `json:"target,omitempty"`
+		Password               string                       `json:"password"`
+		Version                int                          `json:"version"`
+		Nonce                  string                       `json:"nonce"`
+		Action                 game.Action                  `json:"action"`
+		Enabled                *bool                        `json:"enabled,omitempty"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -824,6 +829,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "catan_base_configuration":
+		if next.Host != u.ID || next.CatanBaseConfiguration == nil || req.CatanBaseConfiguration == nil {
+			err = errors.New("只有房主能在已启用布局选择的房间调整基础地图")
+			break
+		}
+		err = next.setCatanBaseConfiguration(*req.CatanBaseConfiguration)
 	case "catan_seafarers":
 		// Internally provisioned rooms only until all expansion acceptance passes.
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanSeafarers == nil || req.CatanSeafarers == nil {
@@ -872,6 +883,21 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			setup, err = game.NormalizeCatanSeafarersSetup(n, setup)
 			if err == nil {
 				next.CatanSeafarers = &setup
+			}
+		}
+		if err == nil && next.CatanBaseConfiguration != nil && options.FiveSix != next.CatanOptions.FiveSix {
+			n := 4
+			if options.FiveSix {
+				n = 6
+			}
+			setup := *next.CatanBaseConfiguration
+			setup.Rules = ""
+			if !options.FiveSix {
+				setup.Layout = "variable"
+			}
+			setup, err = game.NormalizeCatanBaseConfiguration(n, setup)
+			if err == nil {
+				next.CatanBaseConfiguration = &setup
 			}
 		}
 		if err == nil {
@@ -960,7 +986,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
-				if next.CatanSeafarers != nil {
+				if next.CatanBaseConfiguration != nil && (next.CatanSeafarers != nil || next.CatanNewWorldMap != nil) {
+					err = errors.New("基础布局不能与航海家剧本混用")
+				} else if next.CatanBaseConfiguration != nil {
+					next.Game, err = game.NewCatanConfigured(len(next.Seats), next.CatanOptions, *next.CatanBaseConfiguration)
+				} else if next.CatanSeafarers != nil {
 					next.Game, err = game.NewCatanSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 				} else if next.CatanNewWorldMap != nil {
 					next.Game, err = game.NewCatanNewWorldWithMap(len(next.Seats), next.CatanOptions, next.CatanNewWorldMap)

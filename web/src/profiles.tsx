@@ -1,3 +1,4 @@
+import { catanBaseLayoutName } from "./catan-base-layout";
 import { catanScenarioName, catanLayoutName } from "./catan-scenarios";
 import { railMapNames } from "./rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -290,6 +291,10 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 {match.kind === "catan" &&
                   match.catanScenario &&
                   ` · ${catanScenarioName(match.catanScenario)}${match.catanLayout ? ` · ${catanLayoutName(match.catanLayout)}` : ""}`}
+                {match.kind === "catan" &&
+                  !match.catanScenario &&
+                  match.catanLayout &&
+                  ` · ${catanBaseLayoutName(match.catanLayout)}`}
                 {match.kind === "rail" &&
                   ` · ${railMapNames[match.railMap || "usa"]}`}{" "}
                 {match.kind === "sanguosha" &&

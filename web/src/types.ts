@@ -182,6 +182,8 @@ export type CatanNewWorldMap = {
   hexes: { resource: number; number: number }[];
 };
 export type Room = {
+  catanBaseConfiguration?: { layout: "fixed" | "variable"; rules: string };
+  catanBaseLayouts?: string[];
   catanSeafarers?: { scenario: string; layout: string; rules: string };
   catanSeafarersChoices?: {
     id: string;
@@ -373,7 +375,7 @@ export type CatanState = {
   startPlayer?: number;
   paired?: { primary: number; secondary: number; second: boolean };
   baseSetup?: {
-    layout: "fixed";
+    layout: "fixed" | "variable";
     rules: string;
     colors: number[];
     neutralColor: number;

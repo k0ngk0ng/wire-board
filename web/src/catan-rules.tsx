@@ -224,7 +224,7 @@ export function CatanRules({ room }: { room: Room }) {
         {info.fixedBase && (
           <li>
             <b>固定新手布局：</b>
-            村庄、道路、港口和数字按官方地图预放，从图中黑框标出的第二座村庄领取三张起始资源，直接由随机先手掷骰。
+            村庄、道路、港口和数字按官方地图预放，从官方规则图中黑框标出的第二座村庄领取三张起始资源，直接由随机先手掷骰。
             {info.neutral &&
               "五人局保留未使用颜色的两座中立村庄，不放道路；中立村庄不生产、不能升级或偷取，仍阻挡相邻建村和穿越道路。"}
           </li>
@@ -315,7 +315,9 @@ export function CatanRules({ room }: { room: Room }) {
           <h4>Helpers 助手</h4>
           <p>
             {info.fixedBase
-              ? "每人已按先手顺序领取一位起始助手"
+              ? info.waiting
+                ? "开局时每人按先手顺序领取一位初始助手"
+                : "每人已按先手顺序领取一位起始助手"
               : "每人完成第二组起始建设后领取一位助手"}
             {cloth ? "，第三组建设不重发" : ""}。
             {info.allHelpers
