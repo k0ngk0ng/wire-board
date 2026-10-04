@@ -138,14 +138,44 @@ func (s *State) sgRespond(i int, a Action) error {
 			return nil
 		}
 		s.sgPush(e)
+	case "fire_reveal":
+		if err := s.sgValidateCards(i, a.Cards, 1, true); err != nil {
+			return err
+		}
+		id := a.Cards[0]
+		e.Aux = sgCard(id).Suit
+		g.Revealed = []int{id}
+		s.sgLog("火攻：%s 展示 %s %d「%s」", s.sgName(i), []string{"♠", "♥", "♣", "♦"}[e.Aux], sgCard(id).Rank, SGCardTypes[sgCard(id).Kind].Name)
+		if s.sgAlive(e.Actor) {
+			s.sgAsk(e.Actor, "fire_discard", "火攻：弃置相同花色的手牌造成火焰伤害，或放弃", e)
+			g.Pending.Cards = []int{id}
+		}
+	case "fire_discard":
+		if !pass {
+			if err := s.sgValidateCards(i, a.Cards, 1, true); err != nil {
+				return err
+			}
+			if sgCard(a.Cards[0]).Suit != e.Aux {
+				return errors.New("火攻需要弃置与展示牌花色相同的手牌")
+			}
+			e.Type = "damage"
+			e.Amount = 1
+			e.Nature = "fire"
+			s.sgPush(e)
+			s.sgDiscard(i, a.Cards)
+		}
 	case "peach":
 		if pass {
 			e.Count++
 			s.sgPush(e)
 			break
 		}
-		if _, err := s.sgAs(i, a.Cards, a.Skill, "peach"); err != nil {
+		kind, err := s.sgAs(i, a.Cards, a.Skill, "")
+		if err != nil {
 			return err
+		}
+		if kind != "peach" && !(kind == "analeptic" && i == e.Target) {
+			return errors.New("救人需要桃；酒只能自救")
 		}
 		s.sgDiscard(i, a.Cards)
 		amount := 1
@@ -153,7 +183,7 @@ func (s *State) sgRespond(i int, a Action) error {
 			amount++
 		}
 		s.sgHeal(e.Target, amount)
-		s.sgLog("%s 使用桃救助 %s", s.sgName(i), s.sgName(e.Target))
+		s.sgLog("%s 使用%s救助 %s", s.sgName(i), SGCardTypes[kind].Name, s.sgName(e.Target))
 		if g.Players[e.Target].HP <= 0 {
 			s.sgPush(e)
 		}
@@ -163,8 +193,11 @@ func (s *State) sgRespond(i int, a Action) error {
 			break
 		}
 		wanted := sgWanted(e)
+		if a.Skill == "fan" && e.Kind != "collateral" {
+			return errors.New("朱雀羽扇只能在使用杀时发动，不能用于打出杀")
+		}
 		if a.Choice == "eight_diagram" {
-			if wanted != "jink" || e.Step&1 != 0 || sgCard(s.sgEquip(i, "armor")).Kind != "eight_diagram" || (e.Kind == "slash" && s.sgWeapon(e.Actor) == "qinggang_sword") {
+			if wanted != "jink" || e.Step&1 != 0 || sgCard(s.sgEquip(i, "armor")).Kind != "eight_diagram" || s.sgIgnoreArmor(e) {
 				return errors.New("此时不能发动八卦阵")
 			}
 			s.sgPush(SGEvent{Type: "judge", Actor: i, Kind: "eight_diagram", Next: &e})
@@ -178,11 +211,12 @@ func (s *State) sgRespond(i int, a Action) error {
 			s.sgPush(SGEvent{Type: "support", Actor: i, Kind: skill, Next: &e})
 			break
 		}
-		if _, err := s.sgAs(i, a.Cards, a.Skill, wanted); err != nil {
+		kind, err := s.sgAs(i, a.Cards, a.Skill, wanted)
+		if err != nil {
 			return err
 		}
 		if e.Kind == "collateral" {
-			return s.sgUse(i, "slash", a.Cards, []int{e.Aux}, true)
+			return s.sgUse(i, kind, a.Cards, []int{e.Aux}, true)
 		}
 		s.sgLog("%s 打出「%s」", s.sgName(i), SGCardTypes[wanted].Name)
 		if wanted == "slash" && i == s.Turn && g.InPlay {
@@ -206,17 +240,21 @@ func (s *State) sgRespond(i int, a Action) error {
 		if e.Kind == "jijiang" {
 			wanted = "slash"
 		}
-		if _, err := s.sgAs(i, a.Cards, a.Skill, wanted); err != nil {
+		if a.Skill == "fan" && e.Next != nil && e.Next.Kind != "collateral" {
+			return errors.New("此时不能发动朱雀羽扇")
+		}
+		kind, err := s.sgAs(i, a.Cards, a.Skill, wanted)
+		if err != nil {
 			return err
 		}
 		s.sgLog("%s 响应 %s 的%s", s.sgName(i), s.sgName(e.Actor), SGSkills[e.Kind].Name)
 		if e.Next == nil {
 			s.sgLose(i, a.Cards)
-			return s.sgUse(e.Actor, "slash", a.Cards, e.Targets, false)
+			return s.sgUse(e.Actor, kind, a.Cards, e.Targets, false)
 		}
 		if e.Next.Kind == "collateral" {
 			s.sgLose(i, a.Cards)
-			return s.sgUse(e.Actor, "slash", a.Cards, []int{e.Next.Aux}, true)
+			return s.sgUse(e.Actor, kind, a.Cards, []int{e.Next.Aux}, true)
 		}
 		s.sgResponseSuccess(*e.Next)
 		s.sgDiscard(i, a.Cards)
@@ -273,13 +311,15 @@ func (s *State) sgRespond(i int, a Action) error {
 			if slices.Contains(a.Cards, s.sgEquip(i, "weapon")) {
 				return errors.New("贯石斧不能弃置自身")
 			}
-			s.sgPush(SGEvent{Type: "hit", Actor: e.Actor, Target: e.Target, Kind: e.Kind, Cards: e.Cards, Amount: e.Amount})
+			e.Type = "hit"
+			s.sgPush(e)
 			s.sgDiscard(i, a.Cards)
 		} else {
-			if _, err := s.sgAs(i, a.Cards, a.Skill, "slash"); err != nil {
+			kind, err := s.sgAs(i, a.Cards, a.Skill, "slash")
+			if err != nil {
 				return err
 			}
-			return s.sgUse(i, "slash", a.Cards, []int{e.Target}, true)
+			return s.sgUse(i, kind, a.Cards, []int{e.Target}, true)
 		}
 	case "ice_sword":
 		if pass {

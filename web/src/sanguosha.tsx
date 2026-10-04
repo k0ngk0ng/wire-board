@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Bot } from "lucide-react";
-import type { Act, Room, SanguoshaState } from "./types";
+import type { Act, Room, SanguoshaState, SGOptions } from "./types";
 import { PlayerName } from "./profiles";
 import "./sanguosha.css";
 const roles: Record<string, string> = {
@@ -15,6 +15,19 @@ const kingdoms: Record<string, string> = {
   wu: "吴",
   qun: "群",
 };
+const militaryArt = new Set([
+  "fire_slash",
+  "thunder_slash",
+  "analeptic",
+  "fire_attack",
+  "iron_chain",
+  "supply_shortage",
+  "fan",
+  "guding_blade",
+  "vine",
+  "silver_lion",
+  "hualiu",
+]);
 const suits = ["♠", "♥", "♣", "♦"];
 const transforms = ["wusheng", "qingguo", "longdan", "qixi", "guose", "jijiu"];
 const activeSkills = [
@@ -79,7 +92,7 @@ function Card({
       </span>
       {assets && !failed ? (
         <img
-          src={`${assets}/sanguosha/v1/cards/${c.kind}.webp`}
+          src={`${assets}/sanguosha/${militaryArt.has(c.kind) ? "v2" : "v1"}/cards/${c.kind}.webp`}
           alt={info.name}
           onError={() => setFailed(true)}
           draggable={false}
@@ -190,6 +203,7 @@ export function SanguoshaBoard({
     "guicai",
     "tiandu",
     "ganglie",
+    "fire_discard",
   ].includes(ask || "");
   const simple = [
     "invoke",
@@ -208,7 +222,13 @@ export function SanguoshaBoard({
     nullification: prompt?.cancelled
       ? "当前效果已被抵消；再次无懈会恢复效果。"
       : "无懈可抵消此次锦囊对这一名角色的效果。",
-    peach: "每次使用一张桃，体力恢复到 1 才脱离濒死。",
+    peach:
+      prompt?.target === you
+        ? "每次使用一张桃或酒自救，体力恢复到 1 才脱离濒死。"
+        : "每次使用一张桃，体力恢复到 1 才脱离濒死。酒只能自救。",
+    fire_reveal: "请选择一张手牌公开展示；这张牌仍留在你手中。",
+    fire_discard:
+      "弃置一张与展示牌花色相同的手牌，造成 1 点火焰伤害；也可放弃。",
     discard: `请选择 ${prompt?.amount} 张手牌。`,
     liuli: "选一张自己的牌，再选择另一名目标；距离按弃牌后计算。",
     yiji: "选要分配的牌，再选一位获得者，可分多次。",
@@ -221,7 +241,8 @@ export function SanguoshaBoard({
   };
   const getCard = (id: number) => g.cards.find((c) => c.id === id)!;
   const actionHint = skill
-    ? g.skills[skill]?.text || "选择两张手牌当杀。"
+    ? g.skills[skill]?.text ||
+      (skill === "fan" ? "选择一张普通杀，当火杀使用。" : "选择两张手牌当杀。")
     : cards.length === 1
       ? g.cardTypes[getCard(cards[0]).kind].text
       : "选择手牌、技能和目标，再确认出牌。";
@@ -229,7 +250,9 @@ export function SanguoshaBoard({
     <section className="sg-board">
       <header className="sg-heading">
         <div>
-          <span className="eyebrow">三国杀 · 经典身份局</span>
+          <span className="eyebrow">
+            三国杀 · 经典身份局{g.options?.deck === "military" ? " · 军争" : ""}
+          </span>
           <h2>{g.selecting ? "群雄集结" : "一桌风云，各有所谋"}</h2>
         </div>
         <div className="sg-piles">
@@ -311,6 +334,12 @@ export function SanguoshaBoard({
                   手牌 {p.handCount}
                   {i !== you && g.distances ? ` · 距离 ${g.distances[i]}` : ""}
                 </small>
+              </div>
+              <div className="sg-status-marks">
+                {p.chained && <span className="sg-chained">连环 · 已横置</span>}
+                {!!p.drank && (
+                  <span className="sg-drank">酒 · 下一张杀伤害 +{p.drank}</span>
+                )}
               </div>
               <div className="sg-seat-skills">
                 {general?.skills.map((k) => (
@@ -424,10 +453,19 @@ export function SanguoshaBoard({
       {!g.selecting && (
         <div className="sg-center">
           <span className="eyebrow">
-            {g.grace?.length ? "五谷丰登" : "正在结算"}
+            {g.revealed?.length
+              ? "火攻 · 公开展示"
+              : g.grace?.length
+                ? "五谷丰登"
+                : "正在结算"}
           </span>
           <div className="sg-public-cards">
-            {(g.grace?.length ? g.grace : g.table || []).map((id) => (
+            {(g.revealed?.length
+              ? g.revealed
+              : g.grace?.length
+                ? g.grace
+                : g.table || []
+            ).map((id) => (
               <Card
                 key={id}
                 id={id}
@@ -486,6 +524,20 @@ export function SanguoshaBoard({
           </div>
           {!me.hand?.length && <p className="muted">暂时没有手牌</p>}
           <div className="sg-skills">
+            {me.equip.some((id) => getCard(id).kind === "fan") && (
+              <button
+                disabled={
+                  !enabled ||
+                  (responding &&
+                    ask === "card" &&
+                    prompt?.effect !== "collateral")
+                }
+                className={skill === "fan" ? "selected" : ""}
+                onClick={() => setSkill(skill === "fan" ? "" : "fan")}
+              >
+                朱雀羽扇 · 转火杀
+              </button>
+            )}
             {skills.map((k) => (
               <button
                 key={k}
@@ -755,10 +807,15 @@ export function SanguoshaCover() {
     </svg>
   );
 }
-export function SanguoshaRules() {
+export function SanguoshaRules({ options }: { options?: SGOptions }) {
   return (
     <>
-      <p>经典身份局，4–8 人，25 名标准武将、108 张牌（含 EX）。</p>
+      <p>
+        经典身份局，4–8 人，25 名标准武将。
+        {options?.deck === "military"
+          ? "标准＋军争：160 张牌。"
+          : "标准牌堆：108 张牌（含 EX）。"}
+      </p>
       <ol>
         <li>
           主公与忠臣消灭全部反贼和内奸获胜；反贼令主公死亡获胜；内奸须先消灭其他角色，最后击败主公。除主公外的身份起初保密。
@@ -786,6 +843,31 @@ export function SanguoshaRules() {
           −10；含电脑或中止不计分。
         </li>
       </ol>
+      {options?.deck === "military" && (
+        <>
+          <h3>军争篇</h3>
+          <ul>
+            <li>
+              火杀与雷杀造成属性伤害，与普通杀共用出杀次数。龙胆等需要杀的技能可以使用属性杀。
+            </li>
+            <li>
+              酒：每回合主动使用一次，令本回合下一张杀伤害加一；自己濒死时可以用酒自救，救命不计次数。
+            </li>
+            <li>
+              铁索连环：选择一至两人横置或重置；横置角色受到属性伤害，会传导给其他横置角色并重置。可以不选目标，重铸摸一张。
+            </li>
+            <li>
+              火攻：目标展示一张手牌，你弃同花色手牌才能造成火焰伤害。兵粮寸断：判定不为梅花，跳过摸牌阶段。
+            </li>
+            <li>
+              藤甲抵挡普通杀、南蛮与万箭，但增加火伤；白银狮子将伤害限制为一点，失去装备后回复一点体力。
+            </li>
+            <li>
+              朱雀羽扇可将普通杀转为火杀；古锭刀对没有手牌的目标出杀，伤害加一。
+            </li>
+          </ul>
+        </>
+      )}
     </>
   );
 }

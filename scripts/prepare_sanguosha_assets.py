@@ -13,15 +13,19 @@ REVISION = 'e8768851bd8054db9fd1b63cd6f1feca813590d7'
 BASE = f'https://raw.githubusercontent.com/Mogara/QSanguosha-v2/{REVISION}/'
 GENERALS = 'caocao simayi xiahoudun zhangliao xuchu guojia zhenji liubei guanyu zhangfei zhugeliang zhaoyun machao huangyueying sunquan ganning lvmeng huanggai zhouyu daqiao luxun sunshangxiang huatuo lvbu diaochan'.split()
 UNCHANGED = {'zhenji','zhugeliang','sunquan','sunshangxiang'}
+MILITARY_CARDS = 'fire_slash thunder_slash analeptic fire_attack iron_chain supply_shortage fan guding_blade vine silver_lion hualiu'.split()
 CARDS = 'slash jink peach duel snatch dismantlement ex_nihilo amazing_grace god_salvation savage_assault archery_attack collateral nullification indulgence lightning crossbow double_sword qinggang_sword blade spear axe halberd kylin_bow ice_sword eight_diagram renwang_shield jueying dilu zhuahuangfeidian chitu dayuan zixing'.split()
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
+    parser.add_argument('--pack',choices=['standard','military'],default='standard')
     args=parser.parse_args()
     root=args.directory.resolve(); root.mkdir(parents=True,exist_ok=True)
     sources={f'generals/{g}.webp':f'image/fullskin/generals/full/{g if g in UNCHANGED else "nos_"+g}.png' for g in GENERALS}
     sources.update({f'cards/{c}.webp':f'image/big-card/{c}.png' for c in CARDS})
+    if args.pack == 'military':
+        sources = {f'cards/{c}.webp':f'image/big-card/{c}.png' for c in MILITARY_CARDS}
     def prepare(item):
         target,source=item; output=root/target; output.parent.mkdir(parents=True,exist_ok=True)
         if output.exists() and output.read_bytes()[:4]==b'RIFF':return target

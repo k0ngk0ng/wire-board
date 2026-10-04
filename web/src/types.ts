@@ -156,6 +156,7 @@ export type Game = {
   };
 };
 export type Room = {
+  sanguoshaOptions?: SGOptions;
   railMap?: string;
   result?: {
     rated: boolean;
@@ -310,6 +311,7 @@ export type CarcassonneState = {
   meepleChoices: number[];
 };
 
+export type SGOptions = { mode?: string; deck?: string; packs?: string[] };
 export type SGCard = { id: number; kind: string; suit: number; rank: number };
 export type SGGeneral = {
   id: string;
@@ -320,6 +322,8 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  chained?: boolean;
+  drank?: number;
   general: string;
   role?: string;
   hp: number;
@@ -333,6 +337,8 @@ export type SGPlayer = {
   used: Record<string, number>;
 };
 export type SanguoshaState = {
+  options?: SGOptions;
+  revealed?: number[];
   players: SGPlayer[];
   lord: number;
   selecting: boolean;

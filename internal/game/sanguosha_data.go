@@ -151,6 +151,9 @@ func sgDeck() []SGCard {
 var sgCards = sgDeck()
 
 func sgCard(id int) SGCard {
+	if id > len(sgCards) && id <= len(sgCards)+len(sgMilitaryCards) {
+		return sgMilitaryCards[id-len(sgCards)-1]
+	}
 	if id < 1 || id > len(sgCards) {
 		return SGCard{}
 	}
