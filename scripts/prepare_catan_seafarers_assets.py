@@ -29,6 +29,8 @@ def prepare(output: Path, rules_directory: Path | None):
             'pirate': (21545, (106, 91), None),
             'terrain-sea': (21402, (444, 507), None),
             'terrain-gold': (21453, (444, 482), (54, 48, 389, 434)),
+            'vp-token': (9588, (83, 83), None),
+            'development-back': (1700, (1156, 1223), (859, 145, 996, 238)),
         },
         'catan-seafarers-5-6-2025': {
             'ship-purple': (19406, (97, 80), None),
@@ -46,7 +48,7 @@ def prepare(output: Path, rules_directory: Path | None):
         if hashlib.sha256(data).hexdigest() != source['sha256']:
             raise ValueError('Rulebook changed: verify the source before updating the pin')
         with pymupdf.open(stream=data, filetype='pdf') as doc:
-            masks = {row[0]: row[1] for row in doc[0].get_images(full=True)}
+            masks = {row[0]: row[1] for page in doc for row in page.get_images(full=True)}
             for name, (xref, dimensions, crop) in objects.items():
                 pix = pymupdf.Pixmap(doc, xref)
                 if pix.colorspace.n > 3:
@@ -61,7 +63,7 @@ def prepare(output: Path, rules_directory: Path | None):
                     art.putalpha(mask.resize(art.size, Image.Resampling.LANCZOS))
                 if crop:
                     art = art.crop(crop)
-                if not name.startswith('terrain-'):
+                if not name.startswith('terrain-') and name != 'development-back':
                     if not masks.get(xref):
                         raise ValueError(f'Missing piece transparency: {name}')
                     art = art.crop(art.getbbox())
@@ -71,7 +73,7 @@ def prepare(output: Path, rules_directory: Path | None):
         'sources': {key: sources[key] for key in groups},
         'artwork': provenance,
     }, ensure_ascii=False, indent=2) + '\n')
-    print('Prepared nine original Seafarers images; no scratch files retained.')
+    print(f'Prepared {len(provenance)} original Seafarers images; no scratch files retained.')
 
 
 if __name__ == '__main__':

@@ -2265,7 +2265,7 @@ function Players({ room }: { room: Room }) {
         return (
           <div
             data-player-seat={i}
-            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.seafarers?.tribe?.pending?.player ?? g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span
@@ -2337,6 +2337,21 @@ function Players({ room }: { room: Room }) {
                   {g.catan.seafarers ? "路线" : "道路"}{" "}
                   {g.catan.players[i].roadLength} · 骑士{" "}
                   {g.catan.players[i].knights}
+                  {g.catan.seafarers?.tribe && (
+                    <>
+                      <br />
+                      <span className="catan-tribe-seat-ports">
+                        部落奖励 {g.catan.seafarers.tribe.points[i]} 分
+                      </span>
+                      {!!g.catan.seafarers.tribe.heldPorts[i]?.length && (
+                        <span className="catan-tribe-seat-ports">
+                          {" "}
+                          · 暂存港口{" "}
+                          {g.catan.seafarers.tribe.heldPorts[i]!.length}
+                        </span>
+                      )}
+                    </>
+                  )}
                   {g.catan.paired &&
                     (i === g.catan.paired.primary ||
                       i === g.catan.paired.secondary) && (
@@ -2499,18 +2514,21 @@ function Turn({
     (g.catan.setupStep < 2 * room.seats.length ||
       g.phase === "catan_discard" ||
       !!g.catan.helperPending ||
+      !!g.catan.seafarers?.tribe?.pending ||
       !!g.catan.goldPending);
   const setup = !!g.rail?.setup;
   const autoPlay = !!room.seats[room.you]?.autoPlay;
   const turnAutoPlay =
     !!room.seats[
       g.sanguosha?.pending?.player ??
+        g.catan?.seafarers?.tribe?.pending?.player ??
         g.catan?.helperPending?.player ??
         g.catan?.goldPending?.claims[0]?.player ??
         g.turn
     ]?.autoPlay;
   const sgActor =
     g.sanguosha?.pending?.player ??
+    g.catan?.seafarers?.tribe?.pending?.player ??
     g.catan?.helperPending?.player ??
     g.catan?.goldPending?.claims[0]?.player ??
     g.turn;
@@ -2522,15 +2540,17 @@ function Turn({
         ? g.sanguosha.pending
           ? g.sanguosha.pending.canRespond
           : sgActor === room.you
-        : g.catan?.helperPending
-          ? g.catan.helperPending.player === room.you
-          : g.catan?.goldPending
-            ? g.catan.goldPending.claims[0]?.player === room.you
-            : g.phase === "catan_discard"
-              ? (g.catan?.discardDue[room.you] || 0) > 0
-              : setup
-                ? !g.rail?.setupReady?.[room.you]
-                : g.turn === room.you);
+        : g.catan?.seafarers?.tribe?.pending
+          ? g.catan.seafarers.tribe.pending.player === room.you
+          : g.catan?.helperPending
+            ? g.catan.helperPending.player === room.you
+            : g.catan?.goldPending
+              ? g.catan.goldPending.claims[0]?.player === room.you
+              : g.phase === "catan_discard"
+                ? (g.catan?.discardDue[room.you] || 0) > 0
+                : setup
+                  ? !g.rail?.setupReady?.[room.you]
+                  : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2593,7 +2613,7 @@ function Turn({
                   ? "轮到你了"
                   : g.sanguosha?.pending?.kind === "nullification"
                     ? "共同响应锦囊"
-                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
+                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -2627,11 +2647,13 @@ function Turn({
                   ? "共同选牌限时"
                   : g.sanguosha?.pending && !g.sanguosha.selecting
                     ? "响应限时 20 秒"
-                    : g.catan?.helperPending
-                      ? "助手选择 120 秒"
-                      : g.catan?.goldPending
-                        ? "金矿选择 120 秒"
-                        : "每回合 120 秒"}
+                    : g.catan?.seafarers?.tribe?.pending
+                      ? "港口安放 120 秒"
+                      : g.catan?.helperPending
+                        ? "助手选择 120 秒"
+                        : g.catan?.goldPending
+                          ? "金矿选择 120 秒"
+                          : "每回合 120 秒"}
             </span>
           </div>
           {expired &&

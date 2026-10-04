@@ -284,6 +284,14 @@ export type CatanState = {
     islandBonus?: number;
     movedShip?: boolean;
     fog?: { remaining: number; startTiles: number[] };
+    tribe?: {
+      tokens: number[] | null;
+      development: { edge: number }[];
+      ports: { edge: number; resource: number }[] | null;
+      points: number[];
+      heldPorts: (number[] | null)[];
+      pending?: { player: number; resume: string };
+    };
     seats?: {
       homeIslands?: number[];
       settledIslands?: number[];
@@ -359,6 +367,7 @@ export type CatanState = {
     ships?: number[];
     pirate?: number[];
     robber?: number[];
+    ports?: number[];
   };
   trade?: {
     id: number;
