@@ -168,6 +168,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_road", Edge: best}, nil
 	case "catan_roll":
+		if k := g.CitiesKnights; k != nil && slices.Contains(k.Players[player].Progress, 0) {
+			return Action{Type: "catan_progress", Card: 0, Tokens: g.alchemyBotDice(player)}, nil
+		}
 		if g.pirateIslands() != nil && !g.PlayedDev && g.pirateNextWarship(player) >= 0 {
 			for _, kind := range []int{0, 4} {
 				if p.Dev[kind] > p.NewDev[kind] {
@@ -284,6 +287,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	choices = append(choices, g.scienceBotChoices(player)...)
 	choices = append(choices, g.knightBotChoices(player)...)
 	choices = append(choices, g.cityEconomyBotChoices(player)...)
 	choices = append(choices, g.wonderBotChoices(player)...)
@@ -323,6 +327,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		cost := catanBotBuildCost(target.action)
 		if g.CitiesKnights != nil {
 			switch target.action.Type {
+			case "catan_progress":
+				cost = g.progressBotBuildCost(player, target.action)
 			case "catan_improvement":
 				cost = make([]int, len(g.Bank))
 				track := target.action.Color

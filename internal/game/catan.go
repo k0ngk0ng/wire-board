@@ -367,6 +367,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_progress":
+		return s.catanPlayProgress(player, a)
 	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase":
 		return s.catanKnightAction(player, a)
 	case "catan_wall", "catan_improvement":
@@ -402,83 +404,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			s.catanVictory()
 		}
 	case "catan_road", "catan_ship", "catan_settlement", "catan_city":
-		if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && (a.Type == "catan_road" || a.Type == "catan_ship")) {
-			return errors.New("当前不能建造")
-		}
-		roads, _, _ := g.pieces(player)
-		switch a.Type {
-		case "catan_ship":
-			if g.shipCount(player) >= 15 || !g.canShip(player, a.Edge) {
-				return errors.New("船只必须连接己方船只或建筑，不能穿过对手建筑或停入海盗所在海洋，且最多15艘")
-			}
-		case "catan_road":
-			if roads >= 15 || !g.canRoad(player, a.Edge) {
-				return errors.New("道路必须连接己方建筑或道路，不能穿过对手建筑，且最多 15 条")
-			}
-		case "catan_settlement":
-			if g.settlementPiecesLeft(player) <= 0 || !g.canSettlement(player, a.Vertex, false) {
-				return errors.New("村庄必须连接自己的道路，与所有建筑至少相隔两条边，且最多 5 座")
-			}
-		case "catan_city":
-			if !g.canCityUpgrade(player, a.Vertex) {
-				return errors.New("只能升级自己的村庄，且最多 4 座城市")
-			}
-		}
-		free := s.Phase == "catan_roads"
-		if !free {
-			cost := catanPrices[a.Type]
-			if a.Skill == "helper" {
-				var err error
-				cost, err = s.catanHelperBuildCost(player, a)
-				if err != nil {
-					return err
-				}
-			}
-			if !catanHas(p.Resources, cost) {
-				return errors.New("资源不足")
-			}
-			catanMove(p.Resources, g.Bank, cost)
-			if a.Skill == "helper" && p.Helper.ID == 8 {
-				s.catanHelperSpendKnight(player)
-			}
-		} else if a.Skill == "helper" {
-			return errors.New("免费道路不使用助手")
-		}
-		if a.Type == "catan_ship" {
-			g.Edges[a.Edge].Owner = player
-			g.Edges[a.Edge].Ship = true
-			g.Seafarers.BuiltShips = append(g.Seafarers.BuiltShips, a.Edge)
-			s.catanLog(player, "建造船只 #%d", a.Edge+1)
-		} else if a.Type == "catan_road" {
-			g.Edges[a.Edge].Owner = player
-			s.catanLog(player, "修建道路 #%d", a.Edge+1)
-		} else {
-			v := &g.Vertices[a.Vertex]
-			v.Owner = player
-			v.Level++
-			if v.Level == 2 {
-				if k := g.CitiesKnights; k != nil {
-					k.FallenCities = slices.DeleteFunc(k.FallenCities, func(id int) bool { return id == a.Vertex })
-				}
-				s.catanLog(player, "将村庄 #%d 升级为城市", a.Vertex+1)
-			} else {
-				s.catanLog(player, "建造村庄 #%d", a.Vertex+1)
-				s.catanSettleIsland(player, a.Vertex, false)
-			}
-		}
-		if a.Type == "catan_road" || a.Type == "catan_ship" {
-			return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Edge, Free: free, Helper: a.Skill == "helper"})
-		}
-		g.Trade = nil
-		s.catanClothTrade(player)
-		s.catanScores()
-		s.catanVictory()
-		if s.catanAskTribePort(player, s.Phase, nil, a.Skill == "helper") {
-			return nil
-		}
-		if a.Skill == "helper" {
-			s.catanHelperComplete(player, "catan_turn")
-		}
+		return s.catanBuild(player, a, false)
 	case "catan_skip_roads":
 		if s.Phase != "catan_roads" || g.hasRoute(player) {
 			return errors.New("仍有可放置的免费道路")

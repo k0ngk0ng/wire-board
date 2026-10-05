@@ -120,6 +120,10 @@ func (g *Catan) knightCanChase(n *CatanKnight) bool {
 	return slices.Contains(g.Tiles[g.Robber].Vertices, n.Vertex)
 }
 func (s *State) catanKnightAction(player int, a Action) error {
+	return s.catanKnightActionCost(player, a, false)
+}
+
+func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) error {
 	g := s.Catan
 	k := g.CitiesKnights
 	if k == nil || player != s.Turn || s.Phase != "catan_turn" {
@@ -148,6 +152,9 @@ func (s *State) catanKnightAction(player int, a Action) error {
 				return errors.New("骑士每回合只能升级一次，须有对应棋子；三级骑士需要政治三级")
 			}
 			cost = []int{0, 0, 1, 0, 1}
+			if freePromotion {
+				cost = []int{0, 0, 0, 0, 0}
+			}
 		case "catan_knight_move":
 			if !g.knightCanAct(n) || !slices.Contains(g.knightDestinations(*n, false), a.Target) {
 				return errors.New("只能移动本行动阶段开始前已激活的骑士，沿自己的连续路线到达空位或较弱敌方骑士")
@@ -176,7 +183,7 @@ func (s *State) catanKnightAction(player int, a Action) error {
 	case "catan_knight_promote":
 		n.Strength++
 		n.PromotedAt = k.ActionSerial
-		s.catanLog(player, "支付羊毛×1、矿石×1，将交点 #%d 的骑士升至%d级", a.Vertex+1, n.Strength)
+		s.catanLog(player, "支付羊毛×%d、矿石×%d，将交点 #%d 的骑士升至%d级", cost[2], cost[4], a.Vertex+1, n.Strength)
 	case "catan_knight_move":
 		var displaced *CatanKnight
 		if other := g.knightAt(a.Target); other != nil {
