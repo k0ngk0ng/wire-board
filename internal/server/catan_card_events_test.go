@@ -87,6 +87,16 @@ func cardEventHTTPAction(t *testing.T, state *game.State) game.Action {
 	g := state.Catan
 	switch state.Phase {
 	case "catan_card_event":
+		if g.CardEvent.Kind == "plentiful_year" {
+			return game.Action{Type: "catan_event_resource", Take: []int{1, 0, 0, 0, 0}}
+		}
+		if g.CardEvent.Kind == "robber_flees" {
+			for _, tile := range g.Tiles {
+				if tile.Resource == game.CatanDesert {
+					return game.Action{Type: "catan_robber_flees", Tile: tile.ID}
+				}
+			}
+		}
 		for _, e := range g.Edges {
 			if e.Owner == actor && !e.Ship && !e.Damaged {
 				return game.Action{Type: "catan_earthquake", Edge: e.ID}

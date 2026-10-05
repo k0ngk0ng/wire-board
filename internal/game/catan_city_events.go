@@ -14,6 +14,7 @@ type CatanCityEventTask struct {
 	Track  int    `json:"track"`
 }
 type CatanCityEvent struct {
+	Epidemic   bool                 `json:"epidemic,omitempty"`
 	Production int                  `json:"production,omitempty"` // Event-card number; zero means legacy red + yellow dice.
 	Red        int                  `json:"red"`
 	Yellow     int                  `json:"yellow"`
@@ -33,16 +34,16 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 	}
 	g.Dice = []int{red, yellow}
 	g.RollID++
-	return s.catanStartCityDiceEvent(red, yellow, face, 0)
+	return s.catanStartCityDiceEvent(red, yellow, face, 0, false)
 }
 
 // Card text has already resolved before this shared event-die pipeline starts.
 // A nonzero production number is independent of the separately rolled red die.
-func (s *State) catanStartCityDiceEvent(red, yellow, face, production int) error {
+func (s *State) catanStartCityDiceEvent(red, yellow, face, production int, epidemic bool) error {
 	g := s.Catan
 	k := g.CitiesKnights
 	k.EventDie = face
-	k.Event = &CatanCityEvent{Red: red, Yellow: yellow, Face: face, Production: production, Tasks: []CatanCityEventTask{}}
+	k.Event = &CatanCityEvent{Red: red, Yellow: yellow, Face: face, Production: production, Epidemic: epidemic, Tasks: []CatanCityEventTask{}}
 	if face >= 3 {
 		k.BarbarianPosition++
 		if production > 0 {
@@ -224,7 +225,7 @@ func (s *State) catanContinueCityEvent() error {
 	if total == 0 {
 		total = e.Red + e.Yellow
 	}
-	return s.catanRollProduction(total)
+	return s.catanRollProductionEffect(total, e.Epidemic)
 }
 func (s *State) catanEventChoice(player int, a Action) error {
 	g := s.Catan
