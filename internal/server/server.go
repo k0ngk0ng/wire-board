@@ -524,6 +524,13 @@ func summary(r *Room) map[string]any {
 	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
+	if r.CatanFriendlyRobber != nil && r.Status == "waiting" {
+		reason := ""
+		if err := r.validateCatanFriendlyRobber(max(3, r.Capacity)); err != nil {
+			reason = err.Error()
+		}
+		result["catanFriendlyRobberAvailability"] = map[string]any{"allowed": reason == "", "reason": reason, "minPlayers": r.catanFriendlyMinimumPlayers()}
+	}
 	if r.CatanSeafarers != nil && r.Status == "waiting" {
 		choices := game.CatanSeafarersScenarios(max(3, r.Capacity))
 		if r.CatanCitiesKnights != nil {
@@ -538,6 +545,11 @@ func summary(r *Room) map[string]any {
 			for i := range choices {
 				choices[i].VictoryPoints++
 			}
+		}
+		if r.friendlyRobberEnabled() {
+			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
+				return !game.CatanFriendlySeafarersSupported(max(3, r.Capacity), info.ID)
+			})
 		}
 		result["catanSeafarersChoices"] = choices
 	}
@@ -974,6 +986,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(max(3, next.Capacity))
 			}
 			next.CatanOptions = options
+			if err == nil && next.friendlyRobberEnabled() {
+				err = next.validateCatanFriendlyRobber(max(3, next.Capacity))
+			}
 		}
 		if err == nil {
 			for i := range next.Seats {
@@ -1043,6 +1058,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			if !p.Ready {
 				err = errors.New("请等待所有玩家准备")
 			}
+		}
+		if err == nil && next.Kind == "catan" && next.friendlyRobberEnabled() {
+			err = next.validateCatanFriendlyRobber(len(next.Seats))
 		}
 		if err == nil {
 			if next.Kind == "rail" && next.RailMap != "" && next.RailMap != "usa" {

@@ -16,7 +16,7 @@ func NormalizeCatanFriendlyRobberSetup(setup CatanFriendlyRobberSetup) (CatanFri
 	return setup, nil
 }
 
-// Only verified base layouts (optionally with Harbors) can enable the variant.
+// Apply only to a new base game or a verified sea recipe, optionally with Harbors.
 func (s *State) ConfigureCatanFriendlyRobber(request CatanFriendlyRobberSetup) error {
 	setup, err := NormalizeCatanFriendlyRobberSetup(request)
 	if err != nil {
@@ -32,8 +32,11 @@ func (s *State) ConfigureCatanFriendlyRobber(request CatanFriendlyRobberSetup) e
 		return errors.New("友善强盗只能在创建游戏时配置")
 	}
 	if setup.Enabled {
-		if g.Seafarers != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Options.AllHelpers {
-			return errors.New("友善强盗目前仅核验基础版及港口霸主组合")
+		if g.CitiesKnights != nil || g.Options.Helpers || g.Options.AllHelpers {
+			return errors.New("友善强盗与城市骑士或助手的组合尚未核验")
+		}
+		if g.Seafarers != nil && !CatanFriendlySeafarersSupported(len(g.Players), g.Seafarers.Scenario) {
+			return errors.New("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")
 		}
 		s.enableCatanFriendlyRobber()
 	}
