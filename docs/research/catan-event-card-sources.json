@@ -1,0 +1,49 @@
+{
+  "status": "Research only: cross-checked legacy deck, NOT verified as the complete 2025 physical deck. Do not ship as a verified 2025 catalogue.",
+  "checked_on": "2026-10-05",
+  "rules_source": "../board-expansion-rule-sources.json#catan-traders-2025",
+  "sources": [
+    {
+      "url": "https://github.com/gateszeng/catan-event-cards/blob/master/app/src/main/java/com/example/gates/catancards/Deck.java",
+      "blob_url": "https://api.github.com/repos/gateszeng/catan-event-cards/git/blobs/c66cbdd1784a3a7c672acb20a0f915fd6fa3f377",
+      "git_blob_sha1": "c66cbdd1784a3a7c672acb20a0f915fd6fa3f377",
+      "sha256": "830363177ab529cafb07d652dec54162c289beac5733cd4348c2d6063cacc05e",
+      "bytes": 4452,
+      "role": "36 number/event pairs"
+    },
+    {
+      "url": "https://github.com/jlangson/catan-board/blob/master/Catan_Components_List.doc",
+      "blob_url": "https://api.github.com/repos/jlangson/catan-board/git/blobs/bddb76d217a009c9dd07aecc6092a71df75331a2",
+      "git_blob_sha1": "bddb76d217a009c9dd07aecc6092a71df75331a2",
+      "sha256": "9f0dbbf8d9c93072daa1672df6597b15bbe45a57ca75a13287d542e6633c3fe7",
+      "bytes": 13518,
+      "role": "36 number/red-die/event triples for legacy standalone deck"
+    },
+    {
+      "url": "https://github.com/SPcodec/Catan_Event_Cards/blob/master/Catan_Event_Cards/Program.cs",
+      "blob_url": "https://api.github.com/repos/SPcodec/Catan_Event_Cards/git/blobs/6281e3802d64d91f81292c1badb3e2e6d7a4e27e",
+      "git_blob_sha1": "6281e3802d64d91f81292c1badb3e2e6d7a4e27e",
+      "sha256": "fa9f9f2b1af44cdbb60793df0420f2f159213d4b1bad1b4fbda4ac5bd78ca1a2",
+      "bytes": 5761,
+      "role": "36 number/event pairs; legacy effect text must not be reused"
+    },
+    {
+      "url": "https://github.com/AaronH1998/CatanEventCards/blob/master/src/stores/gameStore.ts",
+      "blob_url": "https://api.github.com/repos/AaronH1998/CatanEventCards/git/blobs/c4e78cf82d6fb9917b3ea456a65b7a40a62a7601",
+      "git_blob_sha1": "c4e78cf82d6fb9917b3ea456a65b7a40a62a7601",
+      "sha256": "b3456e1fae9ff5e4b881cfcb01f3eb04b63290a8583df4f8fb285378c4532f3c",
+      "bytes": 7015,
+      "role": "event multiplicities only; not a complete number mapping"
+    }
+  ],
+  "reference": {
+    "file": "catan-event-cards-legacy-reference.csv",
+    "sha256": "e2bdebf972fc9634c161f6518082decb234788ca452abe5eb2913101dbf2f5c8",
+    "cards": 36,
+    "agreement": "All three complete sources agree on the multiset of production/event pairs; only the component list supplies legacy red-die values. Source implementations are not reused."
+  },
+  "faq": {
+    "url": "https://www.catan.com/faq/traders-barbarians",
+    "sha256": "9443d536c318a4e629d5bcd37a7c2c72e3403f81255915cd3cf6cf9cb77a734d"
+  }
+}
