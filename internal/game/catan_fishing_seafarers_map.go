@@ -102,6 +102,10 @@ func (g *Catan) FishingCoasts() []CatanFishingCoast {
 		coasts, _ := g.fishingFogCoasts()
 		return coasts
 	}
+	if g.Seafarers.Scenario == "tribe" {
+		coasts, _ := g.fishingTribeCoasts()
+		return coasts
+	}
 	return g.fishingCoasts(g.findIslands())
 }
 func (g *Catan) fishingFourIslandGroups() ([]int, []int, error) {
