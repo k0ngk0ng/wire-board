@@ -9,6 +9,22 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 	if r.Game.Catan == nil || r.Game.Finished {
 		return false
 	}
+	caravanResponse := func(phase string) bool {
+		return phase == "catan_caravan_bid" || phase == "catan_caravan_vote" || phase == "catan_caravan_place"
+	}
+	if caravanResponse(r.Game.Phase) {
+		if previousPhase != r.Game.Phase || previousActor != r.Game.CatanPendingActor() {
+			r.startTurnClock(now)
+		}
+		return true
+	}
+	if caravanResponse(previousPhase) {
+		// A completed vote ends an action phase, including paired secondary play.
+		// Give the new actor a full turn; never restore the ended action's time.
+		r.CatanTimeLeft = 0
+		r.startTurnClock(now)
+		return true
+	}
 	if previousPhase == "catan_world_ports" || previousPhase == "catan_world_fish" {
 		r.startTurnClock(now)
 		return true

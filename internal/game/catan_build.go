@@ -78,6 +78,9 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 		v := &g.Vertices[a.Vertex]
 		v.Owner = player
 		v.Level++
+		if g.Caravans != nil {
+			g.Caravans.Built = true
+		}
 		if v.Level == 2 {
 			if k := g.CitiesKnights; k != nil {
 				k.FallenCities = slices.DeleteFunc(k.FallenCities, func(id int) bool { return id == a.Vertex })
