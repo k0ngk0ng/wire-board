@@ -201,6 +201,7 @@ export type Room = {
   }[];
   catanNewWorldMap?: CatanNewWorldMap;
   catanOptions?: CatanOptions;
+  catanTwoRules?: string;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
   railMap?: string;
@@ -360,7 +361,25 @@ export type CatanRevealedEvent = {
   productionStarted: boolean;
 };
 export type CatanWagon = { edge: number; from: number };
+export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
 export type CatanState = {
+  two?: {
+    rules: string;
+    rolls: number[];
+    sequence: number;
+    tokens: number[];
+    bank: number;
+    spent: boolean;
+    knightExchanged: boolean;
+    pending?: { kind: "road" | "settlement"; resume: string };
+    trade?: { resume: string; drawn?: number[] };
+    actor: number;
+    canAct: boolean;
+    cost?: number;
+    tokenWindow?: boolean;
+    choices?: CatanTwoChoice[];
+    neutralRoadLengths: number[];
+  };
   caravans?: {
     map: { wateringHoles: number[]; starts: CatanWagon[]; supply: number };
     wagons: CatanWagon[];
