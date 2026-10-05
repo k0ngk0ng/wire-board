@@ -258,6 +258,12 @@ func (s *State) catanView(view map[string]any, player int) {
 		legal["pirate"] = []int{}
 	}
 	if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
+		if s.Phase == "catan_world_fish" {
+			legal["fishGrounds"] = []int{}
+			for _, coast := range g.worldFishCoasts() {
+				legal["fishGrounds"] = append(legal["fishGrounds"], coast.Vertices[1])
+			}
+		}
 		if s.Phase == "catan_world_ports" {
 			legal["ports"] = g.worldPortEdges()
 		}

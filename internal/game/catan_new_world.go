@@ -153,7 +153,7 @@ func (g *Catan) worldPortEdges() []int {
 		blocked[e.A], blocked[e.B] = true, true
 	}
 	for _, e := range g.Edges {
-		if !blocked[e.A] && !blocked[e.B] && g.edgeTerrain(e.ID, true) && g.edgeTerrain(e.ID, false) {
+		if !blocked[e.A] && !blocked[e.B] && g.edgeTerrain(e.ID, true) && g.edgeTerrain(e.ID, false) && g.fishingWorldPortFits(e.ID) {
 			result = append(result, e.ID)
 		}
 	}
@@ -173,6 +173,9 @@ func (s *State) catanWorldPort(player int, a Action) error {
 	if w.Index == len(w.Ports) {
 		s.Turn = g.StartPlayer
 		s.Phase = "catan_setup_settlement"
+		if g.fishingWorldSetup() != nil {
+			s.Phase = "catan_world_fish"
+		}
 	} else {
 		s.Turn = (s.Turn + 1) % len(g.Players)
 	}

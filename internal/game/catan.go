@@ -368,6 +368,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	}
 	p := &g.Players[player]
 	if g.setup() {
+		if s.Phase == "catan_world_fish" {
+			return s.catanWorldFish(player, a)
+		}
 		if s.Phase == "catan_world_ports" {
 			return s.catanWorldPort(player, a)
 		}
@@ -1024,6 +1027,12 @@ func (s *State) AutoCatanPending() {
 		actor := s.CatanPendingActor()
 		if a, err := s.catanFleetRewardBot(actor); err == nil {
 			_ = s.applyCatan(actor, a)
+		}
+		return
+	}
+	if s.Phase == "catan_world_fish" {
+		if a, err := s.catanWorldFishBot(s.Turn); err == nil {
+			_ = s.applyCatan(s.Turn, a)
 		}
 		return
 	}

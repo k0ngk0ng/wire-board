@@ -113,7 +113,7 @@ func (s *State) CatanPendingActor() int {
 	if p := g.pirateIslands(); p != nil && p.Raid != nil && len(p.Raid.Rewards) > 0 {
 		return p.Raid.Rewards[0]
 	}
-	if s.Phase == "catan_world_ports" {
+	if s.Phase == "catan_world_ports" || s.Phase == "catan_world_fish" {
 		return s.Turn
 	}
 	if s.Phase == "catan_cloth_steal" || s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
