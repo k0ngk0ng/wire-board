@@ -27,6 +27,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	CardEvent      *CatanCardEvent      `json:"cardEvent,omitempty"`
 	FriendlyRobber *CatanFriendlyRobber `json:"friendlyRobber,omitempty"`
 	Harbors        *CatanHarbors        `json:"harbors,omitempty"`
 	CitiesKnights  *CatanCitiesKnights  `json:"citiesKnights,omitempty"`
@@ -312,7 +313,7 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -329,6 +330,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if g.CardEvent != nil {
+		return s.catanCardEventChoice(player, a)
 	}
 	if k := g.CitiesKnights; k != nil && k.Pending != nil {
 		return s.catanCityChoice(player, a)
@@ -618,6 +622,9 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 func (s *State) catanRoll(total int) error {
 	g := s.Catan
 	s.catanLog(s.Turn, "掷出 %d + %d = %d", g.Dice[0], g.Dice[1], total)
+	return s.catanResolveProductionNumber(total)
+}
+func (s *State) catanResolveProductionNumber(total int) error {
 	if pending, err := s.catanRaidFleet(total); err != nil || pending {
 		return err
 	}
@@ -948,6 +955,13 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if g.CardEvent != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanCardEventBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 		return
 	}
 	if k := g.CitiesKnights; k != nil && k.Pending != nil {

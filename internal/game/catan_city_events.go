@@ -14,11 +14,12 @@ type CatanCityEventTask struct {
 	Track  int    `json:"track"`
 }
 type CatanCityEvent struct {
-	Red    int                  `json:"red"`
-	Yellow int                  `json:"yellow"`
-	Face   int                  `json:"face"` // science/trade/politics 0–2; three ship faces 3–5
-	Attack bool                 `json:"attack"`
-	Tasks  []CatanCityEventTask `json:"tasks"`
+	Production int                  `json:"production,omitempty"` // Event-card number; zero means legacy red + yellow dice.
+	Red        int                  `json:"red"`
+	Yellow     int                  `json:"yellow"`
+	Face       int                  `json:"face"` // science/trade/politics 0–2; three ship faces 3–5
+	Attack     bool                 `json:"attack"`
+	Tasks      []CatanCityEventTask `json:"tasks"`
 }
 
 // Callers use server dice, never a client's preferred event result.
@@ -31,17 +32,33 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 		return errors.New("无效城市与骑士掷骰状态")
 	}
 	g.Dice = []int{red, yellow}
-	k.EventDie = face
 	g.RollID++
-	k.Event = &CatanCityEvent{Red: red, Yellow: yellow, Face: face, Tasks: []CatanCityEventTask{}}
+	return s.catanStartCityDiceEvent(red, yellow, face, 0)
+}
+
+// Card text has already resolved before this shared event-die pipeline starts.
+// A nonzero production number is independent of the separately rolled red die.
+func (s *State) catanStartCityDiceEvent(red, yellow, face, production int) error {
+	g := s.Catan
+	k := g.CitiesKnights
+	k.EventDie = face
+	k.Event = &CatanCityEvent{Red: red, Yellow: yellow, Face: face, Production: production, Tasks: []CatanCityEventTask{}}
 	if face >= 3 {
 		k.BarbarianPosition++
-		s.catanLog(s.Turn, "掷出红骰%d、普通骰%d、蛮族船：船前进至%d/%d", red, yellow, k.BarbarianPosition, catanBarbarianDistance)
+		if production > 0 {
+			s.catanLog(s.Turn, "事件牌点数%d；红骰%d、蛮族船：船前进至%d/%d", production, red, k.BarbarianPosition, catanBarbarianDistance)
+		} else {
+			s.catanLog(s.Turn, "掷出红骰%d、普通骰%d、蛮族船：船前进至%d/%d", red, yellow, k.BarbarianPosition, catanBarbarianDistance)
+		}
 		if k.BarbarianPosition == catanBarbarianDistance {
 			s.catanPrepareBarbarians()
 		}
 	} else {
-		s.catanLog(s.Turn, "掷出红骰%d、普通骰%d、%s事件", red, yellow, catanCityTracks[face])
+		if production > 0 {
+			s.catanLog(s.Turn, "事件牌点数%d；红骰%d、%s事件", production, red, catanCityTracks[face])
+		} else {
+			s.catanLog(s.Turn, "掷出红骰%d、普通骰%d、%s事件", red, yellow, catanCityTracks[face])
+		}
 		for offset := range len(g.Players) {
 			player := (s.Turn + offset) % len(g.Players)
 			level := k.Players[player].Improvements[face]
@@ -203,7 +220,11 @@ func (s *State) catanContinueCityEvent() error {
 	if s.Finished {
 		return nil
 	}
-	return s.catanRollProduction(e.Red + e.Yellow)
+	total := e.Production
+	if total == 0 {
+		total = e.Red + e.Yellow
+	}
+	return s.catanRollProduction(total)
 }
 func (s *State) catanEventChoice(player int, a Action) error {
 	g := s.Catan

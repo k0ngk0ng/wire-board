@@ -18,14 +18,14 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		return true
 	}
 	response := func(phase string) bool {
-		return phase == "catan_diplomacy" || phase == "catan_espionage" || phase == "catan_sabotage" || phase == "catan_wedding" || phase == "catan_treason_remove" || phase == "catan_treason_place" || phase == "catan_guild_dues" || phase == "catan_commercial_harbor" || phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis" || phase == "catan_knight_retreat" || phase == "catan_pillage" || phase == "catan_defender_reward" || phase == "catan_progress_discard" || phase == "catan_progress_end"
+		return phase == "catan_card_event" || phase == "catan_diplomacy" || phase == "catan_espionage" || phase == "catan_sabotage" || phase == "catan_wedding" || phase == "catan_treason_remove" || phase == "catan_treason_place" || phase == "catan_guild_dues" || phase == "catan_commercial_harbor" || phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis" || phase == "catan_knight_retreat" || phase == "catan_pillage" || phase == "catan_defender_reward" || phase == "catan_progress_discard" || phase == "catan_progress_end"
 	}
 	current := r.Game.Phase
 	if response(current) {
 		if !response(previousPhase) {
 			r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
 			r.startTurnClock(now)
-		} else if current != previousPhase || ((current == "catan_sabotage" || current == "catan_wedding" || current == "catan_gold" || current == "catan_fleet_reward" || current == "catan_aqueduct" || current == "catan_pillage" || current == "catan_defender_reward" || current == "catan_progress_discard") && r.Game.CatanPendingActor() != previousActor) {
+		} else if current != previousPhase || ((current == "catan_card_event" || current == "catan_sabotage" || current == "catan_wedding" || current == "catan_gold" || current == "catan_fleet_reward" || current == "catan_aqueduct" || current == "catan_pillage" || current == "catan_defender_reward" || current == "catan_progress_discard") && r.Game.CatanPendingActor() != previousActor) {
 			r.startTurnClock(now)
 		}
 		return true

@@ -101,6 +101,9 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
+	if q := g.CardEvent; q != nil && len(q.Players) > 0 {
+		return q.Players[0]
+	}
 	if k := g.CitiesKnights; k != nil && k.Pending != nil && len(k.Pending.Players) > 0 {
 		return k.Pending.Players[0]
 	}
