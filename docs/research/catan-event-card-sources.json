@@ -45,5 +45,21 @@
   "faq": {
     "url": "https://www.catan.com/faq/traders-barbarians",
     "sha256": "9443d536c318a4e629d5bcd37a7c2c72e3403f81255915cd3cf6cf9cb77a734d"
-  }
+  },
+  "additional_faq_checks": [
+    {
+      "url": "https://www.catan.com/faq/cities-knights",
+      "sha256": "e4293106d0b7557222be37735ff7ed1120da94d25630e514384c51ede87d4f54",
+      "bytes": 152085,
+      "checked_on": "2026-10-05",
+      "finding": "No direct clarification found for Trade Advantage commodity handling or Helpful Neighbor hidden VP ranking."
+    },
+    {
+      "url": "https://www.catan.com/faq/basegame",
+      "sha256": "973bf8c18ae0b5b7ecacdbe81f8484bc8a15f3ef27ec663d95104f63e1668210",
+      "bytes": 113977,
+      "checked_on": "2026-10-05",
+      "finding": "Question 14 confirms VP cards are revealed together to win on your turn; it does not explicitly adjudicate Helpful Neighbor ranking."
+    }
+  ]
 }

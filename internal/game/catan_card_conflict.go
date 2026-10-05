@@ -34,12 +34,12 @@ func (g *Catan) cardTheftTargets(player int) []int {
 	return targets
 }
 
-func (s *State) catanCardConflictChoice(player int, a Action) error {
+func (s *State) catanCardTheftChoice(player int, a Action) error {
 	g := s.Catan
 	if len(a.Take)+len(a.Give)+len(a.Cards) != 0 {
-		return errors.New("冲突只能选择对手，不能指定偷取的牌")
+		return errors.New("事件偷牌只能选择对手，不能指定偷取的牌")
 	}
-	if a.Type == "catan_event_skip" && g.CardEvent.Optional {
+	if a.Type == "catan_event_skip" && g.CardEvent.Kind == "conflict" && g.CardEvent.Optional {
 		s.catanLog(player, "冲突：放弃本次可选偷牌")
 		return nil
 	}
@@ -57,6 +57,6 @@ func (s *State) catanCardConflictChoice(player int, a Action) error {
 		n -= count
 	}
 	// Color is visible only through the participants' own resulting hands.
-	s.catanLog(player, "冲突：从玩家%d随机偷取1张牌", a.Target+1)
+	s.catanLog(player, "%s：从玩家%d随机偷取1张牌", catanCardEventNames[g.CardEvent.Kind], a.Target+1)
 	return nil
 }

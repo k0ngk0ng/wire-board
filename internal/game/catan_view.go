@@ -174,7 +174,7 @@ func (s *State) catanView(view map[string]any, player int) {
 	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}, "eventResources": {}, "fleeDeserts": {}, "eventGifts": {}, "eventTargets": {}}
 	if q := g.CardEvent; q != nil && s.Phase == "catan_card_event" && !s.Finished && s.CatanPendingActor() == player {
 		switch q.Kind {
-		case "conflict":
+		case "conflict", "trade_advantage":
 			legal["eventTargets"] = g.cardTheftTargets(player)
 		case "earthquake":
 			legal["earthquakeRoads"] = g.earthquakeRoads(player)
@@ -186,7 +186,10 @@ func (s *State) catanView(view map[string]any, player int) {
 			}
 		case "robber_flees":
 			legal["fleeDeserts"] = g.fleeDeserts()
-		case "good_neighbors":
+		case "good_neighbors", "helpful_neighbor":
+			if q.Kind == "helpful_neighbor" {
+				legal["eventTargets"] = append([]int{}, q.Targets...)
+			}
 			legal["eventGifts"] = []int{}
 			for color, count := range g.Players[player].Resources {
 				if count > 0 {
