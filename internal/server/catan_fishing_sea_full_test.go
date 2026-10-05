@@ -21,6 +21,10 @@ func TestCatanFishingFogExtendedFullHTTPGames(t *testing.T) {
 	testFishingSeaExtendedFullHTTP(t, "fog")
 }
 
+func TestCatanFishingWondersExtendedFullHTTPGames(t *testing.T) {
+	testFishingSeaExtendedFullHTTP(t, "wonders")
+}
+
 func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 	totalPaid := 0
 	for _, n := range []int{5, 6} {
@@ -37,7 +41,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 					}
 					initial, err = game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: true}, layout)
 				} else {
-					initial, err = game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: true}, game.CatanSeafarersSetup{Scenario: "fog"}, nil)
+					initial, err = game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: true}, game.CatanSeafarersSetup{Scenario: scenario}, nil)
 				}
 				if err != nil {
 					t.Fatal(err)
@@ -233,10 +237,28 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 				totalPaid += paid
 				winner := r.Game.Winners[0]
 				target := 12
+				if scenario == "wonders" {
+					target = 10
+				}
 				if r.Game.Catan.Fishing.Tokens.BootOwner == winner {
 					target++
 				}
-				if r.Game.Catan.Players[winner].Score < target || len(r.Game.Catan.Ports) != 11 || len(r.Game.Catan.Fishing.Map.Grounds) != 8 {
+				won := r.Game.Catan.Players[winner].Score >= target
+				if scenario == "wonders" {
+					level, other := 0, 0
+					for _, card := range r.Game.Catan.Seafarers.Wonders.Cards {
+						if card.Owner == winner {
+							level = card.Level
+						} else if card.Owner >= 0 && !r.Game.Catan.Players[card.Owner].Eliminated {
+							other = max(other, card.Level)
+						}
+					}
+					won = level == 4 || level > 0 && level > other && won
+					if len(r.Game.Catan.Seafarers.Wonders.Cards) != 7 || r.Game.Catan.Seafarers.Pirate != -1 {
+						t.Fatal("extended wonder rules changed")
+					}
+				}
+				if !won || len(r.Game.Catan.Ports) != 11 || len(r.Game.Catan.Fishing.Map.Grounds) != 8 {
 					t.Fatal("wrong finished layout/victory")
 				}
 				restart("finished")

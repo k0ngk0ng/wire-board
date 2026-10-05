@@ -9,8 +9,19 @@ import (
 // the large and small islands. The scenario retains its absent pirate.
 func (g *Catan) fishingWondersCoasts() ([]CatanFishingCoast, error) {
 	if g.Seafarers == nil || g.Seafarers.Scenario != "wonders" || g.wonders() == nil ||
-		len(g.Players) < 3 || len(g.Players) > 4 || len(g.Tiles) != 49 || len(g.Seafarers.StartIslands) != 1 {
-		return nil, errors.New("仅已核对的三/四人奇迹捕鱼布局")
+		len(g.Players) < 3 || len(g.Players) > 6 || len(g.Seafarers.StartIslands) != 1 {
+		return nil, errors.New("仅已核对的三至六人奇迹捕鱼布局")
+	}
+	wantTiles, mainland := 49, 25
+	wantSizes := []int{2, 3, 25}
+	if len(g.Players) > 4 {
+		wantTiles, mainland, wantSizes = 63, 35, []int{1, 1, 2, 35}
+		if !g.Options.FiveSix || g.Paired == nil || g.Seafarers.Variable {
+			return nil, errors.New("五至六人奇迹捕鱼须保留扩充地图和配对回合")
+		}
+	}
+	if len(g.Tiles) != wantTiles {
+		return nil, errors.New("奇迹捕鱼地图大小不符")
 	}
 	islands := g.findIslands()
 	if !slices.Equal(islands, g.Seafarers.Islands) {
@@ -27,8 +38,8 @@ func (g *Catan) fishingWondersCoasts() ([]CatanFishingCoast, error) {
 		sizes = append(sizes, size)
 	}
 	slices.Sort(sizes)
-	if !slices.Equal(sizes, []int{2, 3, 25}) || counts[g.Seafarers.StartIslands[0]] != 25 {
-		return nil, errors.New("奇迹捕鱼必须保留主岛和两座小岛")
+	if !slices.Equal(sizes, wantSizes) || counts[g.Seafarers.StartIslands[0]] != mainland {
+		return nil, errors.New("奇迹捕鱼必须保留对应人数的主岛和小岛")
 	}
 	return g.fishingCoasts(islands), nil
 }
@@ -53,8 +64,8 @@ func (f catanFishingMap) validateWonders(g *Catan) error {
 	if err != nil {
 		return err
 	}
-	if len(f.Lakes) != 0 || len(f.Grounds) != 6 || len(f.ExtraNumbers) != 0 {
-		return errors.New("奇迹捕鱼不使用湖泊，必须有六个渔场")
+	if len(f.Lakes) != 0 || len(f.Grounds) != len(catanFishingGroundNumbers(len(g.Players))) || len(f.ExtraNumbers) != 0 {
+		return errors.New("奇迹捕鱼不使用湖泊，渔场数量须符合人数")
 	}
 	if err = f.validateCoastalGrounds(coasts, len(g.Players)); err != nil {
 		return err
