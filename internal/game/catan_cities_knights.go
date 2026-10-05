@@ -27,11 +27,14 @@ type CatanCityPlayer struct {
 	ProgressPoints int    `json:"progressPoints"`
 }
 type CatanCityPending struct {
-	Kind    string `json:"kind"`
-	Players []int  `json:"players"`
-	Track   int    `json:"track"`
+	Knight  *CatanKnight `json:"knight,omitempty"`
+	Kind    string       `json:"kind"`
+	Players []int        `json:"players"`
+	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
+	Knights      []CatanKnight     `json:"knights"`
+	ActionSerial uint64            `json:"actionSerial"`
 	Rules        string            `json:"rules"`
 	Players      []CatanCityPlayer `json:"players"`
 	Walls        []int             `json:"walls"`
@@ -40,7 +43,7 @@ type CatanCitiesKnights struct {
 	Pending      *CatanCityPending `json:"pending,omitempty"`
 }
 
-// Internal construction only. Event dice, knights and progress cards are still
+// Internal construction only. Event dice, barbarians and progress cards are still
 // under implementation; catan_roll explicitly refuses to use base-game dice.
 func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
@@ -51,7 +54,7 @@ func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 		return nil, err
 	}
 	g := s.Catan
-	g.CitiesKnights = &CatanCitiesKnights{Rules: CatanCitiesKnightsRules, Players: make([]CatanCityPlayer, n), Walls: []int{}, Metropolises: [3]int{-1, -1, -1}}
+	g.CitiesKnights = &CatanCitiesKnights{Rules: CatanCitiesKnightsRules, Players: make([]CatanCityPlayer, n), Walls: []int{}, Metropolises: [3]int{-1, -1, -1}, Knights: []CatanKnight{}, ActionSerial: 1}
 	commodities := 12
 	if n > 4 {
 		commodities = 18
@@ -223,6 +226,10 @@ func (s *State) catanCityChoice(player int, a Action) error {
 	}
 	q := k.Pending
 	switch q.Kind {
+	case "knight_retreat":
+		if err := s.catanKnightRetreat(player, a); err != nil {
+			return err
+		}
 	case "metropolis":
 		if s.Phase != "catan_metropolis" || a.Type != "catan_metropolis" || !slices.Contains(g.cityMetropolisSites(player), a.Vertex) {
 			return errors.New("请选择自己的无大都会城市")
@@ -274,6 +281,12 @@ func (s *State) catanCityChoiceBot(player int) (Action, error) {
 			return Action{Type: "catan_metropolis", Vertex: sites[0]}, nil
 		}
 	}
+	if k.Pending.Kind == "knight_retreat" && k.Pending.Knight != nil {
+		sites := g.knightDestinations(*k.Pending.Knight, true)
+		if len(sites) > 0 {
+			return Action{Type: "catan_knight_retreat", Vertex: sites[0]}, nil
+		}
+	}
 	if k.Pending.Kind == "aqueduct" {
 		best := -1
 		for c, n := range g.Bank[:5] {
@@ -290,7 +303,7 @@ func (s *State) catanCityChoiceBot(player int) (Action, error) {
 }
 
 // Economic priorities use only public improvements/cities and this seat's
-// hand. Knight defense and progress-card priorities are added with those rules.
+// hand. Knight priorities are separate; progress-card priorities are still pending.
 func (g *Catan) cityEconomyBotChoices(player int) []botChoice {
 	k := g.CitiesKnights
 	if k == nil {

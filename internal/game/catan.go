@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"slices"
 	"strings"
 )
 
@@ -277,6 +278,9 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
+	if g.CitiesKnights != nil {
+		g.CitiesKnights.ActionSerial++
+	}
 	g.Trade = nil
 	g.PlayedDev = false
 	g.FreeRoads = 0
@@ -293,7 +297,7 @@ func (s *State) catanNext() {
 	g.TurnSerial++
 	for {
 		s.Turn = (s.Turn + 1) % len(g.Players)
-		if s.Turn == 0 {
+		if s.Turn == g.StartPlayer {
 			s.Round++
 		}
 		if !g.Players[s.Turn].Eliminated {
@@ -363,6 +367,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase":
+		return s.catanKnightAction(player, a)
 	case "catan_wall", "catan_improvement":
 		return s.catanCityAction(player, a)
 	case "catan_wonder_claim", "catan_wonder_build":
@@ -1088,6 +1094,12 @@ func (s *State) EliminateCatan(p int) error {
 	}
 	pl := &g.Players[p]
 	pl.Eliminated = true
+	if k := g.CitiesKnights; k != nil {
+		// Platform timeout removal is outside the board-game rules. Recover
+		// mobile pieces so nobody can later wait on this absent seat to retreat.
+		k.Knights = slices.DeleteFunc(k.Knights, func(n CatanKnight) bool { return n.Owner == p })
+		s.catanLog(p, "离场骑士返回库存")
+	}
 	catanMove(pl.Resources, g.Bank, append([]int{}, pl.Resources...))
 	for k, n := range pl.Dev {
 		for range n {

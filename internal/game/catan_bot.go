@@ -249,7 +249,7 @@ func (s *State) catanBot(player int) (Action, error) {
 					}
 					for _, pair := range [][2]int{{edge.A, edge.B}, {edge.B, edge.A}} {
 						a, b := pair[0], pair[1]
-						if g.Vertices[a].Level > 0 && g.Vertices[a].Owner != player {
+						if g.opponentPiece(player, a) {
 							continue
 						}
 						if dist[a]+cost < dist[b] {
@@ -283,6 +283,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	choices = append(choices, g.knightBotChoices(player)...)
 	choices = append(choices, g.cityEconomyBotChoices(player)...)
 	choices = append(choices, g.wonderBotChoices(player)...)
 	if g.Seafarers != nil {

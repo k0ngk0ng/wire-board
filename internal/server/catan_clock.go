@@ -18,7 +18,7 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		return true
 	}
 	response := func(phase string) bool {
-		return phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis"
+		return phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis" || phase == "catan_knight_retreat"
 	}
 	current := r.Game.Phase
 	if response(current) {
