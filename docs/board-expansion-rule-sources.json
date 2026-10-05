@@ -68,5 +68,10 @@
     "url": "https://www.catan.com/sites/default/files/2023-02/Helpers_Rules.pdf",
     "sha256": "3bca9a8a5f3bb6f6588094bddd78f4d5f88bd8c55fda8006576de8c45b97be99",
     "bytes": 862060
+  },
+  "catan-pirates-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-08/ExplorersPirates%20w%20CnK.pdf",
+    "sha256": "704d23a467988b155c47e9909b3d3a3f2fee87ad48c1b8e9ced47908151493cc",
+    "bytes": 459720
   }
 }

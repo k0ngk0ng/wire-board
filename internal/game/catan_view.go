@@ -4,6 +4,10 @@ func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
+	v["victoryTarget"] = g.victoryTarget()
+	if g.Harbors != nil {
+		v["harbors"].(map[string]any)["points"] = g.harborPoints()
+	}
 	if k := g.CitiesKnights; k != nil {
 		public := v["citiesKnights"].(map[string]any)
 		delete(public, "progressDecks")
