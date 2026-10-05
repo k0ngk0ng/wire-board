@@ -1,0 +1,130 @@
+.catan-coins,
+.catan-river-seat,
+.catan-wealth {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.catan-coins {
+  color: #714a18;
+  white-space: nowrap;
+}
+.catan-coins > img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.catan-river-seat {
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 3px;
+}
+.catan-wealth {
+  background: #fff0be;
+  border: 1px solid #d6b762;
+  border-radius: 4px;
+  padding: 2px 5px;
+  color: #69400e;
+  font-weight: 700;
+}
+.catan-wealth.poor {
+  background: #f0e6d9;
+  border-color: #bca98f;
+  color: #6b4c35;
+}
+.catan-wealth img {
+  width: 32px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+.catan-river-bank {
+  grid-column: 1 / -1;
+  border: 1px solid #cfb983;
+  border-radius: 9px;
+  padding: 10px;
+  background: #fff9e9;
+  color: #4b3a24;
+}
+.catan-river-bank > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  min-height: 32px;
+}
+.catan-river-bank > summary::after {
+  content: "展开";
+  margin-left: auto;
+  font-size: 12px;
+}
+.catan-river-bank[open] > summary::after {
+  content: "收起";
+}
+.catan-river-bank > summary > span {
+  font-size: 12px;
+  font-weight: 400;
+}
+.catan-river-bank p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 9px;
+}
+.catan-coin-options > div {
+  display: grid;
+  grid-template-columns: minmax(50px, 1fr) 45px 62px 62px;
+  align-items: center;
+  gap: 3px;
+  margin-top: 6px;
+}
+.catan-coin-options > div > span {
+  font-size: 11px;
+}
+.catan-coin-options button {
+  min-height: 40px;
+  padding: 4px;
+  border: 1px solid #cdb57e;
+  background: #fffdf6;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.catan-coin-options button.selected {
+  background: #ffe3a1;
+  border-color: #967023;
+}
+.catan-coin-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.catan-coin-confirm > strong {
+  width: 100%;
+  font-size: 13px;
+}
+.catan-gold-trade {
+  border: 1px solid #d4bf8c;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0;
+  min-width: 0;
+}
+.catan-gold-trade > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.catan-gold-trade small {
+  font-size: 11px;
+  line-height: 1.5;
+  display: block;
+}
+.catan-bridge-site {
+  stroke: #fff1a9;
+  stroke-width: 5;
+  stroke-dasharray: 3 3;
+  filter: drop-shadow(0 1px 1px #4d361e);
+  pointer-events: none;
+}

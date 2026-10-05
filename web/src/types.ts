@@ -291,6 +291,7 @@ export type CatanPlayer = {
   eliminated?: boolean;
   rates: number[];
   roadsLeft: number;
+  bridgesLeft?: number;
   shipsLeft?: number;
   settlementsLeft: number;
   citiesLeft: number;
@@ -359,6 +360,19 @@ export type CatanRevealedEvent = {
   productionStarted: boolean;
 };
 export type CatanState = {
+  rivers?: {
+    map: {
+      channels: { tiles: number[]; outlet: number }[];
+      bridges: number[];
+      swamps: number[];
+      doubleNumberTile: number;
+    };
+    gold: number[];
+    bank: number;
+    bought: number;
+    richest: number;
+    poor: number[] | null;
+  };
   fishing?: {
     worldSetup?: {
       index: number;
@@ -561,6 +575,7 @@ export type CatanState = {
     owner: number;
     ship?: boolean;
     warship?: boolean;
+    bridge?: boolean;
     damaged?: boolean;
     tiles?: number[];
   }[];
@@ -597,6 +612,7 @@ export type CatanState = {
     settlements: number[];
     cities: number[];
     roads: number[];
+    bridges?: number[];
     ships?: number[];
     pirate?: number[];
     robber?: number[];
@@ -609,6 +625,8 @@ export type CatanState = {
     give: number[];
     take: number[];
     responses: number[];
+    goldGive?: number;
+    goldTake?: number;
   };
 };
 

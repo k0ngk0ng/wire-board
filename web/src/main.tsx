@@ -1,3 +1,4 @@
+import { CatanRiverSeat } from "./catan-rivers";
 import { fishResponder } from "./catan-fishing-state";
 import {
   CatanFriendlyRobberPicker,
@@ -2456,6 +2457,12 @@ function Players({ room }: { room: Room }) {
                     <>
                       <br />
                       <CatanFriendlyRobberSeat game={g.catan} seat={i} />
+                    </>
+                  )}
+                  {g.catan.rivers && (
+                    <>
+                      <br />
+                      <CatanRiverSeat game={g.catan} seat={i} assets={assets} />
                     </>
                   )}
                   {g.catan.harbors && (
