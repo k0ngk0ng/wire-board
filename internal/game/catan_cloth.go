@@ -242,7 +242,7 @@ func (s *State) catanClothEnd() bool {
 func (s *State) catanClothSteal(player int, a Action) error {
 	g := s.Catan
 	c := g.cloth()
-	if c == nil || s.Phase != "catan_cloth_steal" || player != s.Turn || !slices.Contains(g.Victims, a.Target) {
+	if c == nil || s.Phase != "catan_cloth_steal" || player != s.Turn || !slices.Contains(g.Victims, a.Target) || g.friendlyProtected(a.Target) {
 		return errors.New("请选择海盗旁有资源或布匹的对手")
 	}
 	switch a.Choice {

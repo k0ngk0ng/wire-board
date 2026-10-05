@@ -169,7 +169,7 @@ func (g *Catan) pirateBotChoices(player int) []botChoice {
 		return choices
 	}
 	for _, tile := range g.Tiles {
-		if tile.Resource != CatanSea || tile.ID == g.Seafarers.Pirate {
+		if !g.pirateDestinationAllowed(player, tile.ID) {
 			continue
 		}
 		value := 0
@@ -192,7 +192,7 @@ func (g *Catan) pirateBotChoices(player int) []botChoice {
 		}
 		choices = append(choices, botChoice{Action{Type: "catan_pirate", Tile: tile.ID}, value})
 	}
-	if g.Seafarers.Pirate >= 0 {
+	if g.pirateDestinationAllowed(player, -1) {
 		choices = append(choices, botChoice{Action{Type: "catan_pirate", Tile: -1}, -1})
 	}
 	return choices

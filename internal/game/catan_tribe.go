@@ -33,13 +33,33 @@ func (g *Catan) tribe() *CatanTribeState {
 	return g.Seafarers.Tribe
 }
 func (g *Catan) robberAllowed(tile int) bool {
+	if !g.robberLandAllowed(tile) {
+		return false
+	}
+	if tile != g.Robber && !g.friendlyRobberBlocks(tile) {
+		return true
+	}
+	if g.FriendlyRobber == nil || g.Tiles[tile].Resource != CatanDesert {
+		return false
+	}
+	// The printed fallback takes precedence over adjacency protection. If the
+	// robber is already on the only available desert it remains there; the
+	// stealing filter still protects players with fewer than three visible VPs.
+	for _, t := range g.Tiles {
+		if t.ID != g.Robber && g.robberLandAllowed(t.ID) && !g.friendlyRobberBlocks(t.ID) {
+			return false
+		}
+	}
+	return true
+}
+func (g *Catan) robberLandAllowed(tile int) bool {
 	if k := g.CitiesKnights; k != nil && (k.Invasions == 0 || k.Chase == "pirate") {
 		return false
 	}
 	if g.pirateIslands() != nil {
 		return false
 	}
-	if tile < 0 || tile >= len(g.Tiles) || tile == g.Robber {
+	if tile < 0 || tile >= len(g.Tiles) {
 		return false
 	}
 	t := g.Tiles[tile]

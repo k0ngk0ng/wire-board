@@ -27,42 +27,43 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
-	Harbors        *CatanHarbors       `json:"harbors,omitempty"`
-	CitiesKnights  *CatanCitiesKnights `json:"citiesKnights,omitempty"`
-	BaseSetup      *CatanBaseSetup     `json:"baseSetup,omitempty"`
-	GoldPending    *CatanGoldPending   `json:"goldPending,omitempty"`
-	Seafarers      *CatanSeafarers     `json:"seafarers,omitempty"`
-	StartPlayer    int                 `json:"startPlayer,omitempty"`
-	Paired         *CatanPairedTurn    `json:"paired,omitempty"`
-	HexSize        float64             `json:"hexSize,omitempty"`
-	Options        CatanOptions        `json:"options"`
-	TurnSerial     uint64              `json:"turnSerial,omitempty"`
-	HelperDisplay  []int               `json:"helperDisplay,omitempty"`
-	HelperPending  *CatanHelperPending `json:"helperPending,omitempty"`
-	HelperSequence uint64              `json:"helperSequence,omitempty"`
-	HelperExile    []int               `json:"helperExile,omitempty"`
-	Tiles          []CatanTile         `json:"tiles"`
-	Vertices       []CatanVertex       `json:"vertices"`
-	Edges          []CatanEdge         `json:"edges"`
-	Ports          []CatanPort         `json:"ports"`
-	Players        []CatanPlayer       `json:"players"`
-	Bank           []int               `json:"bank"`
-	DevDeck        []int               `json:"devDeck"`
-	DevDiscard     []int               `json:"devDiscard"`
-	Robber         int                 `json:"robber"`
-	Dice           []int               `json:"dice"`
-	RollID         int                 `json:"rollId"`
-	SetupStep      int                 `json:"setupStep"`
-	SetupVertex    int                 `json:"setupVertex"`
-	DiscardDue     []int               `json:"discardDue"`
-	Victims        []int               `json:"victims"`
-	ResumePhase    string              `json:"resumePhase"`
-	FreeRoads      int                 `json:"freeRoads"`
-	PlayedDev      bool                `json:"playedDev"`
-	LongestOwner   int                 `json:"longestOwner"`
-	ArmyOwner      int                 `json:"armyOwner"`
-	TradeID        int                 `json:"tradeId"`
-	Trade          *CatanTrade         `json:"trade,omitempty"`
+	FriendlyRobber *CatanFriendlyRobber `json:"friendlyRobber,omitempty"`
+	Harbors        *CatanHarbors        `json:"harbors,omitempty"`
+	CitiesKnights  *CatanCitiesKnights  `json:"citiesKnights,omitempty"`
+	BaseSetup      *CatanBaseSetup      `json:"baseSetup,omitempty"`
+	GoldPending    *CatanGoldPending    `json:"goldPending,omitempty"`
+	Seafarers      *CatanSeafarers      `json:"seafarers,omitempty"`
+	StartPlayer    int                  `json:"startPlayer,omitempty"`
+	Paired         *CatanPairedTurn     `json:"paired,omitempty"`
+	HexSize        float64              `json:"hexSize,omitempty"`
+	Options        CatanOptions         `json:"options"`
+	TurnSerial     uint64               `json:"turnSerial,omitempty"`
+	HelperDisplay  []int                `json:"helperDisplay,omitempty"`
+	HelperPending  *CatanHelperPending  `json:"helperPending,omitempty"`
+	HelperSequence uint64               `json:"helperSequence,omitempty"`
+	HelperExile    []int                `json:"helperExile,omitempty"`
+	Tiles          []CatanTile          `json:"tiles"`
+	Vertices       []CatanVertex        `json:"vertices"`
+	Edges          []CatanEdge          `json:"edges"`
+	Ports          []CatanPort          `json:"ports"`
+	Players        []CatanPlayer        `json:"players"`
+	Bank           []int                `json:"bank"`
+	DevDeck        []int                `json:"devDeck"`
+	DevDiscard     []int                `json:"devDiscard"`
+	Robber         int                  `json:"robber"`
+	Dice           []int                `json:"dice"`
+	RollID         int                  `json:"rollId"`
+	SetupStep      int                  `json:"setupStep"`
+	SetupVertex    int                  `json:"setupVertex"`
+	DiscardDue     []int                `json:"discardDue"`
+	Victims        []int                `json:"victims"`
+	ResumePhase    string               `json:"resumePhase"`
+	FreeRoads      int                  `json:"freeRoads"`
+	PlayedDev      bool                 `json:"playedDev"`
+	LongestOwner   int                  `json:"longestOwner"`
+	ArmyOwner      int                  `json:"armyOwner"`
+	TradeID        int                  `json:"tradeId"`
+	Trade          *CatanTrade          `json:"trade,omitempty"`
 }
 
 func catanRandom(n int) int {
@@ -311,7 +312,7 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil {
+	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -748,8 +749,12 @@ func (s *State) catanDiscard(p int, amount []int) error {
 func (s *State) catanMoveRobber(p, tile int) error {
 	g := s.Catan
 	if s.Phase != "catan_robber" || !g.robberAllowed(tile) {
+		if g.FriendlyRobber != nil {
+			return errors.New("请选择合法的强盗位置；友善强盗不能影响公开分数不足3分的玩家")
+		}
 		return errors.New("请将强盗移到另一块陆地")
 	}
+	previous := g.Robber
 	g.Robber = tile
 	if g.CitiesKnights != nil {
 		g.CitiesKnights.Chase = ""
@@ -758,12 +763,16 @@ func (s *State) catanMoveRobber(p, tile int) error {
 	seen := map[int]bool{}
 	for _, id := range g.Tiles[tile].Vertices {
 		v := g.Vertices[id]
-		if v.Level > 0 && v.Owner >= 0 && v.Owner != p && !seen[v.Owner] && !g.Players[v.Owner].Eliminated && sum(g.Players[v.Owner].Resources) > 0 {
+		if v.Level > 0 && v.Owner >= 0 && v.Owner != p && !seen[v.Owner] && !g.Players[v.Owner].Eliminated && !g.friendlyProtected(v.Owner) && sum(g.Players[v.Owner].Resources) > 0 {
 			seen[v.Owner] = true
 			g.Victims = append(g.Victims, v.Owner)
 		}
 	}
-	s.catanLog(p, "将强盗移到地块 #%d", tile+1)
+	if previous == tile {
+		s.catanLog(p, "没有其他合法位置，友善强盗留在沙漠")
+	} else {
+		s.catanLog(p, "将强盗移到地块 #%d", tile+1)
+	}
 	if len(g.Victims) == 0 {
 		s.Phase = g.ResumePhase
 	} else if len(g.Victims) == 1 {
@@ -783,8 +792,8 @@ func (s *State) catanSteal(p, target int) error {
 	for _, v := range g.Victims {
 		valid = valid || v == target
 	}
-	if !valid {
-		return errors.New("请选择强盗旁有资源的对手")
+	if !valid || g.friendlyProtected(target) {
+		return errors.New("请选择可偷取资源的对手")
 	}
 	hand := g.Players[target].Resources
 	n := catanRandom(sum(hand))

@@ -5,6 +5,15 @@ func (s *State) catanView(view map[string]any, player int) {
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
 	v["victoryTarget"] = g.victoryTarget()
+	if g.FriendlyRobber != nil {
+		protected := []int{}
+		for i := range g.Players {
+			if g.friendlyProtected(i) {
+				protected = append(protected, i)
+			}
+		}
+		v["friendlyRobber"].(map[string]any)["protectedPlayers"] = protected
+	}
 	if g.Harbors != nil {
 		v["harbors"].(map[string]any)["points"] = g.harborPoints()
 	}
@@ -261,11 +270,11 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 		if s.Phase == "catan_robber" && g.pirateAllowed(player) {
 			for _, t := range g.Tiles {
-				if t.Resource == CatanSea && t.ID != g.Seafarers.Pirate {
+				if g.pirateDestinationAllowed(player, t.ID) {
 					legal["pirate"] = append(legal["pirate"], t.ID)
 				}
 			}
-			if g.Seafarers.Pirate >= 0 {
+			if g.pirateDestinationAllowed(player, -1) {
 				legal["pirate"] = append(legal["pirate"], -1)
 			}
 		}
