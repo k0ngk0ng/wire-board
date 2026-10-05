@@ -1,0 +1,238 @@
+{
+  "sources": {
+    "catan-traders-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+      "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+      "bytes": 27843748
+    },
+    "catan-traders-5-6-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3090%20CATAN%20%E2%80%93%20T%26B%205-6%20Expansion%20Rulebook.pdf",
+      "sha256": "3b9134dc72d6f755a1cd039299ef947187f5d3bf3718b002050b262323295954",
+      "bytes": 12115165
+    }
+  },
+  "artwork": {
+    "river-long": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 14600,
+      "soft_mask": 14599,
+      "soft_mask_size": [
+        401,
+        1259
+      ],
+      "size": [
+        401,
+        1259
+      ],
+      "file": "catan/rivers/river-long-v1.webp",
+      "bytes": 475974,
+      "sha256": "2e8655d6462a8d344ed4adf9c97e4856abf03473432483fcb9385119b2000fcc"
+    },
+    "river-short": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 14610,
+      "soft_mask": 14609,
+      "soft_mask_size": [
+        393,
+        936
+      ],
+      "size": [
+        393,
+        936
+      ],
+      "file": "catan/rivers/river-short-v1.webp",
+      "bytes": 338946,
+      "sha256": "8d4c3b8e844cbbfe690a3237ca922db6fe15c11fe45c86cc65e2ad4347d9435e"
+    },
+    "bridge-blue": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 45177,
+      "soft_mask": 45192,
+      "soft_mask_size": [
+        163,
+        85
+      ],
+      "size": [
+        103,
+        54
+      ],
+      "file": "catan/rivers/bridge-blue-v1.webp",
+      "bytes": 6966,
+      "sha256": "476b1829a576ee96f42a61752342bf3cdba39103922a4f0605c8ac6b00e53309"
+    },
+    "bridge-orange": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 45179,
+      "soft_mask": 45190,
+      "soft_mask_size": [
+        163,
+        85
+      ],
+      "size": [
+        103,
+        54
+      ],
+      "file": "catan/rivers/bridge-orange-v1.webp",
+      "bytes": 6536,
+      "sha256": "cbca54047655e470e689bb2a53d439fc23966c80851a32750e6b8c4b074ade07"
+    },
+    "bridge-white": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 45183,
+      "soft_mask": 45194,
+      "soft_mask_size": [
+        163,
+        85
+      ],
+      "size": [
+        103,
+        54
+      ],
+      "file": "catan/rivers/bridge-white-v1.webp",
+      "bytes": 5190,
+      "sha256": "b3afa7fa2e2fcf10ed1fc5e71dd04edd321027d1337eef7193749ea86841729e"
+    },
+    "bridge-red": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 45195,
+      "soft_mask": 45180,
+      "soft_mask_size": [
+        163,
+        85
+      ],
+      "size": [
+        103,
+        54
+      ],
+      "file": "catan/rivers/bridge-red-v1.webp",
+      "bytes": 6918,
+      "sha256": "8be6414a7fa9180398b22f7f22c9c03e2f259e3640c831b593f41128d0be827e"
+    },
+    "coin-5": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 45369,
+      "soft_mask": 45367,
+      "soft_mask_size": [
+        172,
+        172
+      ],
+      "size": [
+        109,
+        109
+      ],
+      "file": "catan/rivers/coin-5-v1.webp",
+      "bytes": 17340,
+      "sha256": "6d9693c33547841ccd3b524a83f84834fa7d0c359546b58d44747036f6a991f7"
+    },
+    "coin-1": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 45364,
+      "soft_mask": 45365,
+      "soft_mask_size": [
+        143,
+        143
+      ],
+      "size": [
+        91,
+        91
+      ],
+      "file": "catan/rivers/coin-1-v1.webp",
+      "bytes": 11566,
+      "sha256": "34f60f18d4bc645d520c71ab1a28d544b1c89dddd4e3c7aaaf8adb66bbc2c301"
+    },
+    "wealthiest": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 14632,
+      "soft_mask": 14631,
+      "soft_mask_size": [
+        412,
+        227
+      ],
+      "size": [
+        261,
+        144
+      ],
+      "file": "catan/rivers/wealthiest-v1.webp",
+      "bytes": 38442,
+      "sha256": "57ab3d54b6b7794404d0ed759feb102cc2ffce1e27a308f104e48b9d81840c92"
+    },
+    "poor": {
+      "source": "catan-traders-2025",
+      "page": 11,
+      "object": 14640,
+      "soft_mask": 14639,
+      "soft_mask_size": [
+        404,
+        219
+      ],
+      "size": [
+        256,
+        139
+      ],
+      "file": "catan/rivers/poor-v1.webp",
+      "bytes": 32140,
+      "sha256": "9d3aaf409535902d0281e80dc05ba3091166af33b3e73bfa1a23c8ce535fbd21"
+    },
+    "river-extended": {
+      "source": "catan-traders-5-6-2025",
+      "page": 6,
+      "object": 6074,
+      "soft_mask": 6073,
+      "soft_mask_size": [
+        346,
+        824
+      ],
+      "size": [
+        346,
+        824
+      ],
+      "file": "catan/rivers/river-extended-v1.webp",
+      "bytes": 261032,
+      "sha256": "67315313bb9e0ea91a143c896da803ccc63b32f1502d7a92c7c805d81655b4b3"
+    },
+    "bridge-purple": {
+      "source": "catan-traders-5-6-2025",
+      "page": 6,
+      "object": 6059,
+      "soft_mask": 6058,
+      "soft_mask_size": [
+        130,
+        68
+      ],
+      "size": [
+        83,
+        43
+      ],
+      "file": "catan/rivers/bridge-purple-v1.webp",
+      "bytes": 4116,
+      "sha256": "1c57dcd9c04ba3f75221238597ba2bfb2840fdeadf753822cfcbf7994cb28f5b"
+    },
+    "bridge-green": {
+      "source": "catan-traders-5-6-2025",
+      "page": 6,
+      "object": 6061,
+      "soft_mask": 6060,
+      "soft_mask_size": [
+        131,
+        68
+      ],
+      "size": [
+        83,
+        43
+      ],
+      "file": "catan/rivers/bridge-green-v1.webp",
+      "bytes": 3790,
+      "sha256": "e22fb391e462b853b53155f5eb7784d7097e0aa4b601871c06caf1f473aeb0e8"
+    }
+  },
+  "scope": "Original three complete river components, six bridge colors, 1/5 gold coins and wealth status paintings. Printed text, scores and terrain numbers are separate runtime overlays. Native rectangular river art requires board hex clipping and source-to-mouth alignment."
+}
