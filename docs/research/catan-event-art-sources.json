@@ -1,0 +1,180 @@
+{
+  "sources": {
+    "catan-traders-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+      "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+      "bytes": 27843748
+    }
+  },
+  "artwork": {
+    "back": {
+      "source": "catan-traders-2025",
+      "page": 4,
+      "object": 44946,
+      "size": [
+        173,
+        247
+      ],
+      "file": "catan/events/back-v1.webp",
+      "bytes": 40418,
+      "sha256": "0585416dd9ba1c03a3ebfbf86ac2476cd0bcf645232802b2cf20eeffdd6580b1"
+    },
+    "beautiful_day": {
+      "source": "catan-traders-2025",
+      "page": 5,
+      "object": 6797,
+      "size": [
+        203,
+        177
+      ],
+      "file": "catan/events/beautiful_day-v1.webp",
+      "bytes": 57464,
+      "sha256": "54941519a1ed8482cf2d1e28fbace19e56a4e68d0666ff865bc1197853394956"
+    },
+    "calm_seas": {
+      "source": "catan-traders-2025",
+      "page": 5,
+      "object": 6798,
+      "size": [
+        208,
+        177
+      ],
+      "file": "catan/events/calm_seas-v1.webp",
+      "bytes": 46986,
+      "sha256": "17077d4f37d609de0e0235029101feb23c985bdc9c4599a2aff6721041e3a8f0"
+    },
+    "conflict": {
+      "source": "catan-traders-2025",
+      "page": 5,
+      "object": 6796,
+      "size": [
+        208,
+        172
+      ],
+      "file": "catan/events/conflict-v1.webp",
+      "bytes": 52584,
+      "sha256": "8f6c26456688ef9c671448c521aeb52a32d21195d31d7f1fd13af48deda1c977"
+    },
+    "earthquake": {
+      "source": "catan-traders-2025",
+      "page": 5,
+      "object": 6801,
+      "size": [
+        208,
+        172
+      ],
+      "file": "catan/events/earthquake-v1.webp",
+      "bytes": 50162,
+      "sha256": "2db72b3a198dd6fa6e629f2d49d84352e3d7ea6a40ad84df84182d050d42148c"
+    },
+    "epidemic": {
+      "source": "catan-traders-2025",
+      "page": 5,
+      "object": 6799,
+      "size": [
+        203,
+        177
+      ],
+      "file": "catan/events/epidemic-v1.webp",
+      "bytes": 34958,
+      "sha256": "e614500a4af692b92e38a9bec888536c42318d0f49987b3123c0e1978764f40b"
+    },
+    "good_neighbors": {
+      "source": "catan-traders-2025",
+      "page": 5,
+      "object": 6800,
+      "size": [
+        203,
+        177
+      ],
+      "file": "catan/events/good_neighbors-v1.webp",
+      "bytes": 51228,
+      "sha256": "39454b66beeea91a09fb15a51b40480a10a654e89d502e8843750179308b167b"
+    },
+    "helpful_neighbor": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6863,
+      "size": [
+        208,
+        172
+      ],
+      "file": "catan/events/helpful_neighbor-v1.webp",
+      "bytes": 51746,
+      "sha256": "e59239fc5f2befd86bbbeee33b3af0079b487101915bc6f8aa8b11a42f93aed3"
+    },
+    "new_year": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6860,
+      "size": [
+        208,
+        177
+      ],
+      "file": "catan/events/new_year-v1.webp",
+      "bytes": 57346,
+      "sha256": "56e77aaed28586f64d398db444b8ffcfe20785e94087ea62882f9cab4f35cb00"
+    },
+    "plentiful_year": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6861,
+      "size": [
+        203,
+        177
+      ],
+      "file": "catan/events/plentiful_year-v1.webp",
+      "bytes": 58316,
+      "sha256": "980ae52f1fa12b740ec39b6d3c0db4548f2d5ebe66787dc80a2abacfa3e19b45"
+    },
+    "robber_attacks": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6862,
+      "size": [
+        208,
+        177
+      ],
+      "file": "catan/events/robber_attacks-v1.webp",
+      "bytes": 51894,
+      "sha256": "4507a31268e45815fcba7d6834a31db7f26c9e52a8e37ecf91a3560d547f12ab"
+    },
+    "robber_flees": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6859,
+      "size": [
+        203,
+        177
+      ],
+      "file": "catan/events/robber_flees-v1.webp",
+      "bytes": 31690,
+      "sha256": "a3545cd57c53d5fb4ae754593924242758b550e6b3574d9582b5cfbb13264a2a"
+    },
+    "tournament": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6858,
+      "size": [
+        208,
+        172
+      ],
+      "file": "catan/events/tournament-v1.webp",
+      "bytes": 57412,
+      "sha256": "2e98aee4dc75d1c2802c7cd90373cff071d879fce523e13fa4a8461bc2ce0a0b"
+    },
+    "trade_advantage": {
+      "source": "catan-traders-2025",
+      "page": 6,
+      "object": 6857,
+      "size": [
+        208,
+        177
+      ],
+      "file": "catan/events/trade_advantage-v1.webp",
+      "bytes": 61910,
+      "sha256": "d3e3a171c86101251b14fb6e6dfb95130c01c172c8daf4be065b3ee520984fb2"
+    }
+  },
+  "scope": "13 event illustrations and one card back; NOT a verified 36-card production/event catalogue or complete numbered card faces."
+}

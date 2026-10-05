@@ -38,3 +38,8 @@ python3 scripts/upload_assets.py .local/asset-pack \
 铁路新增地图使用 `rail/maps/v1/{europe,india,switzerland,nordiccountries,legendaryasia}/`：每个目录有 `map.webp`、`preview.webp` 和 `tickets/{id}.webp`。欧洲另有 `station-{blue,red,green,yellow,black}.webp`。共 247 个文件；列车牌与车厢沿用 `rail/` 现有素材。印度、北欧底图为 1125×1744，目的地卡为 161×250；其余底图为 1744×1125，目的地卡为 250×161，显示时保持比例。
 
 准备方式：`scripts/prepare_rail_map_assets.py SOURCE_IMG_DIR OUTPUT_DIR`（依赖 Pillow、OpenCV、NumPy）。城市文字轮廓与白边从底图移除，中文由前端绘制；地理装饰文字保留。`scripts/rail_map_labels.json` 同时记录文字区域和显示位置。上传时将输出目录对应到部署素材基地址下的 `rail/maps/v1`，不可遗漏既有版本前缀。图片不写入 Git，密钥不写入脚本。
+
+
+卡坦事件插画使用 `catan/events/{kind}-v1.webp`，包括 `beautiful_day`、`calm_seas`、`conflict`、`earthquake`、`epidemic`、`good_neighbors`、`helpful_neighbor`、`new_year`、`plentiful_year`、`robber_attacks`、`robber_flees`、`tournament`、`trade_advantage`；另有 `catan/events/back-v1.webp`。13张事件插画原生为203–208×172–177，牌背173×247，均保留原比例，不拉伸或放大。它们是官方插画和牌背，**不是带生产点数的完整36张实体牌面**；点数、中文事件文字须由核验后的游戏数据与界面独立呈现。
+
+`scripts/prepare_catan_event_assets.py OUTPUT_DIR --rules-directory RULES_DIR` 从固定SHA256的2025 T&B规则书第4–6页提取；省略规则目录时在内存下载同一固定文件。依赖PyMuPDF、Pillow。PDF内部图片顺序与正文顺序不同，使用经逐项视觉核对的对象ID映射；检查来源哈希、对象所在页及原生尺寸，输出无损WebP与来源清单。14张合计704,114字节。可复现的对象/尺寸/路径/文件哈希见`docs/research/catan-event-art-sources.json`。上传时保持既有素材基地址，用上述新文件路径；更新画面需提升文件版本，避免覆盖不可变缓存。该批素材准备不代表事件扩展已开放或完整牌表已核验。
