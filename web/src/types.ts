@@ -360,6 +360,12 @@ export type CatanRevealedEvent = {
 };
 export type CatanState = {
   fishing?: {
+    worldSetup?: {
+      index: number;
+      total: number;
+      remaining: number;
+      current?: number;
+    };
     map: {
       lakes: { tile: number; numbers: number[] }[];
       extraNumbers?: { tile: number; number: number }[];
@@ -595,6 +601,7 @@ export type CatanState = {
     pirate?: number[];
     robber?: number[];
     ports?: number[];
+    fishGrounds?: number[];
   };
   trade?: {
     id: number;
