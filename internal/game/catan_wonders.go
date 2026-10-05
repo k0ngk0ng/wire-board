@@ -135,7 +135,7 @@ func (g *Catan) wonderVictory(player int) bool {
 	if level == 4 {
 		return true
 	}
-	if level == 0 || g.Players[player].Score < g.wonderVictoryPoints() {
+	if level == 0 || g.Players[player].Score < g.victoryTargetFor(player) {
 		return false
 	}
 	for _, other := range w.Cards {
@@ -144,10 +144,6 @@ func (g *Catan) wonderVictory(player int) bool {
 		}
 	}
 	return true
-}
-
-func (g *Catan) wonderVictoryPoints() int {
-	return g.victoryTarget()
 }
 
 func (g *Catan) wonderBotChoices(player int) []botChoice {

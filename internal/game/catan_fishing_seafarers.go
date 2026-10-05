@@ -9,7 +9,7 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")
 	}
-	if setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" || n < 3 || n > 4 {
+	if setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" && setup.Scenario != "wonders" || n < 3 || n > 4 {
 		return nil, errors.New("此捕鱼航海家剧本或人数尚未接入")
 	}
 	s, err := NewCatanSeafarers(n, options, setup, nil)
@@ -26,6 +26,8 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 		m, err = g.makeFishingTribe(placements)
 	} else if setup.Scenario == "cloth" {
 		m, err = g.makeFishingCloth(placements)
+	} else if setup.Scenario == "wonders" {
+		m, err = g.makeFishingWonders(placements)
 	} else {
 		m, err = g.makeFishingFourIslands(placements)
 	}
@@ -47,6 +49,8 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 		s.Log = append(s.Log, "部落捕鱼：12点麦田替换为湖泊，六处渔场沿主岛海岸放置；强盗只能移至主岛，奖励港口不能覆盖渔场；13分获胜，持旧靴子需14分")
 	} else if setup.Scenario == "cloth" {
 		s.Log = append(s.Log, "布匹捕鱼：不放湖泊，两座大岛各放三处渔场；第三座起始村庄领取资源和鱼；建立村落贸易后才可用2鱼驱离海盗；14分获胜，持旧靴子需15分，五村耗尽的终局规则保留")
+	} else if setup.Scenario == "wonders" {
+		s.Log = append(s.Log, "奇迹捕鱼：不放湖泊与海盗，渔场沿大小岛屿海岸放置；建成4级奇迹获胜，或达到10分且奇迹等级领先，持旧靴子时分数门槛为11分")
 	} else {
 		s.Log = append(s.Log, "四岛捕鱼：不放湖泊，保留四岛起始强盗与海盗；2鱼可驱离海盗，5鱼可造船；13分获胜，持旧靴子需14分")
 	}
@@ -54,7 +58,7 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 }
 
 func (g *Catan) fishingSeaSupported() bool {
-	return g.Seafarers != nil && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "cloth" || (g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe") && !g.Seafarers.Variable) &&
+	return g.Seafarers != nil && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "cloth" || g.Seafarers.Scenario == "wonders" || (g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe") && !g.Seafarers.Variable) &&
 		len(g.Players) >= 3 && len(g.Players) <= 4 && g.CitiesKnights == nil
 }
 
