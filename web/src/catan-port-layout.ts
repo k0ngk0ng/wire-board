@@ -11,8 +11,8 @@ const box = (x: number, y: number, half: number): Box => ({
 const overlaps = (a: Box, b: Box) =>
   a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 
-// The port's gameplay edge never moves. If its artwork covers a fishing number,
-// find a nearby clear callout position; its two leader lines still name that edge.
+// The port's gameplay edge never moves. If its artwork covers a fishing number
+// or another port, find a nearby clear callout; leader lines still name that edge.
 export function catanPortLayout(g: CatanState) {
   const sea = g.seafarers,
     h = g.hexSize || 62;
@@ -79,9 +79,17 @@ export function catanPortLayout(g: CatanState) {
   };
   const original = ports.map((p) => box(p.px, p.py, p.size / 2));
   ports.forEach((p, index) => {
-    if (!numbers.some((n) => overlaps(original[index], n))) return;
+    if (
+      !numbers.some((n) => overlaps(original[index], n)) &&
+      !original.some(
+        (other, i) => i !== index && overlaps(original[index], other),
+      )
+    )
+      return;
+    // Earlier callouts have already moved. Their vacated positions must not
+    // block a later port in a narrow inlet shared with fishing numbers.
     const occupied = ports.flatMap((other, i) =>
-      i === index ? [] : [original[i], box(other.px, other.py, other.size / 2)],
+      i === index ? [] : [box(other.px, other.py, other.size / 2)],
     );
     const blocked = [...obstacles, ...occupied];
     const candidates = [];

@@ -76,3 +76,84 @@ test("ordinary ports and clear fishing coasts retain their original geometry", (
     Math.abs(Math.hypot(base.px - base.x, base.py - base.y) - 34) < 1e-8,
   );
 });
+
+// Two nonadjacent legal port edges face one small sea inlet on the 63-hex
+// New World fixture. Their default artwork overlaps even before any fish is
+// placed. The illustration can move, but never its edge or leader endpoints.
+test("extended New World inlet separates port artwork before fishing setup", () => {
+  for (let turn = 0; turn < 6; turn++) {
+    const angle = (turn * Math.PI) / 3;
+    const rotate = ([x, y]) => ({
+      x: x * Math.cos(angle) - y * Math.sin(angle),
+      y: x * Math.sin(angle) + y * Math.cos(angle),
+    });
+    const h = 33.4863156129983;
+    const coordinates = [
+      [398, 323.4863156129983],
+      [398, 356.97263122599657],
+      [456, 356.97263122599657],
+      [427, 373.7157890324957],
+      [427, 306.74315780649914],
+      [456, 323.4863156129983],
+    ];
+    const g = {
+      hexSize: h,
+      vertices: [...coordinates, [-1000, -1000], [1000, 1000]].map((v, id) => ({
+        id,
+        ...rotate(v),
+      })),
+      edges: [
+        { id: 0, a: 0, b: 1, tiles: [0] },
+        { id: 1, a: 2, b: 3, tiles: [1] },
+      ],
+      ports: [
+        { edge: 0, resource: 0 },
+        { edge: 1, resource: 1 },
+      ],
+      tiles: [
+        {
+          id: 0,
+          ...rotate([369, 340.2294734194974]),
+          vertices: [0, 1],
+          resource: 0,
+          number: 3,
+        },
+        {
+          id: 1,
+          ...rotate([456, 390.4589468389949]),
+          vertices: [2, 3],
+          resource: 0,
+          number: 12,
+        },
+      ],
+      seafarers: { scenario: "new_world", pirate: -1 },
+      fishing: { map: { grounds: [] } },
+    };
+    const saved = structuredClone(g);
+    const original = catanPortLayout({ ...g, fishing: undefined });
+    const overlap = ([a, b]) =>
+      Math.abs(a.px - b.px) < (a.size + b.size) / 2 &&
+      Math.abs(a.py - b.py) < (a.size + b.size) / 2;
+    assert.equal(overlap(original), true);
+    const moved = catanPortLayout(g);
+    assert.equal(overlap(moved), false);
+    assert.deepEqual(g, saved);
+    moved.forEach((p, i) => {
+      assert.equal(p.port.edge, i);
+      assert.deepEqual(p.a, g.vertices[i * 2]);
+      assert.deepEqual(p.b, g.vertices[i * 2 + 1]);
+      assert.equal(p.size, original[i].size);
+      assert.ok(
+        (p.px - p.x) * Math.cos(p.angle) + (p.py - p.y) * Math.sin(p.angle) >=
+          h * 0.4,
+      );
+    });
+    assert.deepEqual(catanPortLayout(g), moved);
+    // The later 8-point ground occupies this same inlet. Vacated artwork
+    // locations must be reusable so the second port can clear its number.
+    g.fishing.map.grounds = [{ number: 8, vertices: [4, 5, 2] }];
+    const withGround = catanPortLayout(g);
+    assert.equal(overlap(withGround), false);
+    withGround.forEach((p) => assert.equal(collides(p, g), false));
+  }
+});
