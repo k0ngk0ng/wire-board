@@ -10,9 +10,9 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Internal-constructor fixture: this exercises whole games through the real
-// action/autoplay/timeout interfaces, not unfinished room configuration or UI.
-func TestCatanCitiesKnightsInternalFullHTTPGames(t *testing.T) {
+// The creation catalog remains closed. Provision the waiting-room setting,
+// then use formal readiness/start and real actions/autoplay/timeouts through victory.
+func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 	for _, n := range []int{3, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
@@ -28,21 +28,12 @@ func TestCatanCitiesKnightsInternalFullHTTPGames(t *testing.T) {
 			for p := 1; p < n; p++ {
 				clients[p].command(current(clients[0]), "join", nil, 200)
 			}
+			provisionCatanCitiesKnights(t, s, id)
 			for p := 0; p < n; p++ {
 				clients[p].command(current(clients[0]), "ready", nil, 200)
 			}
 			clients[0].command(current(clients[0]), "start", nil, 200)
-			state, err := game.NewCatanCitiesKnights(n, options)
-			if err != nil {
-				t.Fatal(err)
-			}
-			s.mu.Lock()
-			s.rooms[id].Game = state
-			s.rooms[id].startTurnClock(time.Now())
-			if err = s.save(s.rooms[id]); err != nil {
-				t.Fatal(err)
-			}
-			s.mu.Unlock()
+			state := s.rooms[id].Game
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 			restart := func() {
 				before, _ := json.Marshal(s.rooms[id])
@@ -162,6 +153,10 @@ func TestCatanCitiesKnightsInternalFullHTTPGames(t *testing.T) {
 				t.Fatal(code)
 			}
 			stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
+			history := profile["history"].([]any)[0].(map[string]any)
+			if history["catanLayout"] != "variable" || history["catanRules"] != room.Game.Catan.CitiesKnightsSetup().Rules || history["catanExpansions"].([]any)[0] != "cities_knights" {
+				t.Fatal("missing frozen expansion identity")
+			}
 			if stats["wins"] != float64(1) || stats["played"] != float64(1) {
 				t.Fatal("missing history result")
 			}

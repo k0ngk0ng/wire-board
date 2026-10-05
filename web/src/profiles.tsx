@@ -26,6 +26,7 @@ export function PlayerName({
   );
 }
 type History = {
+  catanExpansions?: string[];
   catanLayout?: string;
   rated: boolean;
   id: string;
@@ -288,6 +289,9 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
             <header>
               <strong>
                 {name(match.kind)}
+                {match.kind === "catan" &&
+                  match.catanExpansions?.includes("cities_knights") &&
+                  " · 城市与骑士"}
                 {match.kind === "catan" &&
                   match.catanScenario &&
                   ` · ${catanScenarioName(match.catanScenario)}${match.catanLayout ? ` · ${catanLayoutName(match.catanLayout)}` : ""}`}

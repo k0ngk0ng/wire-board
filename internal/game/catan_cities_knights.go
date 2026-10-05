@@ -37,6 +37,7 @@ type CatanCityPending struct {
 	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
+	Layout            string            `json:"layout"`
 	Merchant          *CatanMerchant    `json:"merchant,omitempty"`
 	TradePowers       *CatanTradePowers `json:"tradePowers,omitempty"`
 	EventDie          int               `json:"eventDie"`
@@ -66,7 +67,7 @@ func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 		return nil, err
 	}
 	g := s.Catan
-	g.CitiesKnights = &CatanCitiesKnights{Rules: CatanCitiesKnightsRules, Players: make([]CatanCityPlayer, n), Walls: []int{}, Metropolises: [3]int{-1, -1, -1}, Knights: []CatanKnight{}, ActionSerial: 1}
+	g.CitiesKnights = &CatanCitiesKnights{Layout: "variable", Rules: catanCitiesKnightsRules(n), Players: make([]CatanCityPlayer, n), Walls: []int{}, Metropolises: [3]int{-1, -1, -1}, Knights: []CatanKnight{}, ActionSerial: 1}
 	g.CitiesKnights.initProgress()
 	g.CitiesKnights.EventDie = -1
 	g.CitiesKnights.RobberStart = g.Robber

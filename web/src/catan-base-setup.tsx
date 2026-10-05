@@ -15,6 +15,7 @@ export function CatanBasePicker({
   const layouts = room.catanBaseLayouts;
   if (
     !setup ||
+    room.catanCitiesKnights ||
     !layouts?.length ||
     room.catanSeafarers ||
     room.catanNewWorldMap
