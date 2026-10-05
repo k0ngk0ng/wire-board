@@ -32,6 +32,9 @@ export function catanRuleContext(room: Room) {
   return {
     citiesKnights,
     harbors,
+    friendlyRobber: game
+      ? !!game.friendlyRobber
+      : !!room.catanFriendlyRobber?.enabled,
     scenario,
     layout,
     players,
