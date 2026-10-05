@@ -89,6 +89,7 @@ import { Chat } from "./chat";
 import { LogLine } from "./log-line";
 import { useRailMapControls } from "./rail-map-controls";
 import { useTurnTitle } from "./turn-title";
+import { catanResultDescription } from "./catan-results";
 import {
   ProfileContext,
   PlayerName,
@@ -2859,7 +2860,7 @@ function Results({
               : g.carcassonne
                 ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
                 : g.catan
-                  ? "在自己的回合达到十分即获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡。"
+                  ? catanResultDescription(g.catan)
                   : g.splendor
                     ? g.splendor.players.filter((p) => !p.eliminated).length ===
                       1
