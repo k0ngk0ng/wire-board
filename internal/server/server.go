@@ -45,6 +45,7 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
+	CatanTwoRules          string                         `json:"catanTwoRules,omitempty"`
 	CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber,omitempty"`
 	CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors,omitempty"`
 	CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights,omitempty"`
@@ -521,6 +522,9 @@ func (s *Server) current(id string) *Room {
 }
 func summary(r *Room) map[string]any {
 	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	if r.CatanTwoRules != "" {
+		result["catanTwoRules"] = r.CatanTwoRules
+	}
 	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
@@ -1068,7 +1072,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
-				if next.CatanCitiesKnights != nil {
+				if next.CatanTwoRules != "" {
+					err = next.validateCatanTwoSetup()
+					if err == nil {
+						next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
+					}
+				} else if next.CatanCitiesKnights != nil {
 					err = next.validateCatanCitiesKnightsMap()
 					if err == nil {
 						_, err = game.NormalizeCatanCitiesKnightsSetup(len(next.Seats), *next.CatanCitiesKnights)
@@ -1222,6 +1231,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		next.TurnDeadline = 0
 	default:
 		err = errors.New("未知房间操作")
+	}
+	if err == nil && next.Status == "waiting" {
+		err = next.validateCatanTwoSetup()
 	}
 	if err != nil {
 		fail(w, 400, err.Error())

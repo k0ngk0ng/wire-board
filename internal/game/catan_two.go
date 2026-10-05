@@ -6,7 +6,10 @@ import (
 	"slices"
 )
 
+const CatanTwoRules = "catan-for-two-2025"
+
 type CatanTwo struct {
+	Rules           string           `json:"rules"`
 	Rolls           []int            `json:"rolls"`
 	Sequence        int              `json:"sequence"`
 	Pending         *CatanTwoPending `json:"pending,omitempty"`
@@ -17,13 +20,26 @@ type CatanTwo struct {
 	Trade           *CatanTwoTrade   `json:"trade,omitempty"`
 }
 
+// Internal acceptance constructor. The public lobby still rejects two-player
+// creation until the rules boundaries, UI and combinations are accepted.
+func NewCatanTwo(n int, options CatanOptions) (*State, error) {
+	o, err := NormalizeCatanOptions(options)
+	if err != nil {
+		return nil, err
+	}
+	if n != 2 || o != (CatanOptions{}) {
+		return nil, errors.New("双人卡坦需要两位玩家；组合规则尚未开放")
+	}
+	return newCatanTwoCore()
+}
+
 type CatanTwoPending struct {
 	Kind   string `json:"kind"`
 	Resume string `json:"resume"`
 }
 
-// Internal core acceptance only. Complete games, UI, supply exhaustion and
-// compatible scenarios remain pending; public two-player creation stays shut.
+// Core construction is shared with the internal server acceptance entrypoint.
+// UI, supply exhaustion and combinations still gate public two-player play.
 func newCatanTwoCore() (*State, error) {
 	s := &State{Kind: "catan", Round: 1}
 	s.initCatan(2)
@@ -33,7 +49,7 @@ func newCatanTwoCore() (*State, error) {
 	}
 	g.StartPlayer = catanRandom(2)
 	s.Turn = g.StartPlayer
-	g.Two = &CatanTwo{Rolls: []int{}, Tokens: []int{5, 5}, Bank: 10}
+	g.Two = &CatanTwo{Rules: CatanTwoRules, Rolls: []int{}, Tokens: []int{5, 5}, Bank: 10}
 	s.catanScores()
 	return s, s.validateCatanTwo()
 }
@@ -43,6 +59,9 @@ func (s *State) validateCatanTwo() error {
 	q := g.Two
 	if q == nil {
 		return nil
+	}
+	if q.Rules != CatanTwoRules {
+		return errors.New("双人规则版本无效")
 	}
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err

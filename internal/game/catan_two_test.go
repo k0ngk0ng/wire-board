@@ -396,7 +396,7 @@ func TestCatanTwoCoreNeutralAwardUsesNeutralName(t *testing.T) {
 func TestCatanTwoCoreNeutralTakesRealLongestPoints(t *testing.T) {
 	s := twoNeutralFixture(t)
 	g := s.Catan
-	g.Two = &CatanTwo{Tokens: []int{5, 5}, Bank: 10, Rolls: []int{2, 12}, Sequence: 1, Pending: &CatanTwoPending{Kind: "road", Resume: "catan_turn"}}
+	g.Two = &CatanTwo{Rules: CatanTwoRules, Tokens: []int{5, 5}, Bank: 10, Rolls: []int{2, 12}, Sequence: 1, Pending: &CatanTwoPending{Kind: "road", Resume: "catan_turn"}}
 	g.SetupStep = g.SetupLimit()
 	s.Phase = "catan_two_build"
 	v := g.Tiles[0].Vertices[4]
