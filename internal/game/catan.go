@@ -383,7 +383,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
 		if g.CitiesKnights != nil {
-			return errors.New("城市与骑士进步牌效果尚未全部接入，暂不开放完整对局")
+			return s.catanCityRoll(catanRandom(6)+1, catanRandom(6)+1, catanRandom(6))
 		}
 		if s.Phase != "catan_roll" {
 			return errors.New("当前不能掷骰")

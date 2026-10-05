@@ -55,8 +55,8 @@ type CatanCitiesKnights struct {
 	Pending           *CatanCityPending `json:"pending,omitempty"`
 }
 
-// Internal construction only. Progress-card effects are still under
-// implementation; catan_roll refuses to expose an incomplete expansion.
+// Internal construction only. Room configuration and expansion UI are not
+// exposed until complete combination and end-to-end acceptance.
 func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("Helpers尚无与城市与骑士组合的官方兼容规则")
@@ -248,6 +248,8 @@ func (s *State) catanCityChoice(player int, a Action) error {
 	}
 	q := k.Pending
 	switch q.Kind {
+	case "diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place":
+		return s.catanPoliticsChoice(player, a)
 	case "guild_dues", "commercial_harbor":
 		return s.catanTradeProgressChoice(player, a)
 	case "pillage", "defender_reward", "progress_discard":
@@ -300,6 +302,9 @@ func (s *State) catanCityChoiceBot(player int) (Action, error) {
 	k := g.CitiesKnights
 	if k == nil || k.Pending == nil || len(k.Pending.Players) == 0 || k.Pending.Players[0] != player {
 		return Action{}, errors.New("inactive city choice seat")
+	}
+	if slices.Contains([]string{"diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place"}, k.Pending.Kind) {
+		return s.catanPoliticsChoiceBot(player)
 	}
 	if k.Pending.Kind == "guild_dues" || k.Pending.Kind == "commercial_harbor" {
 		return s.catanTradeProgressChoiceBot(player)

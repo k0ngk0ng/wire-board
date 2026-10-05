@@ -81,7 +81,10 @@ func TestCatanCitiesKnightsInitialCitiesAndInventory(t *testing.T) {
 		if !reflect.DeepEqual(*s, restored) {
 			t.Fatal("setup persistence")
 		}
-		helperReject(t, s, s.Turn, Action{Type: "catan_roll"}) // Never silently run the two-die base game.
+		helperApply(t, s, s.Turn, Action{Type: "catan_roll", Tokens: []int{99, 99}, Color: 99})
+		if s.Catan.CitiesKnights.EventDie < 0 || s.Catan.CitiesKnights.EventDie > 5 || len(s.Catan.Dice) != 2 || s.Catan.Dice[0] < 1 || s.Catan.Dice[0] > 6 || s.Catan.Dice[1] < 1 || s.Catan.Dice[1] > 6 {
+			t.Fatal("normal roll bypassed event die or trusted client dice")
+		}
 	}
 	if _, e := NewCatanCitiesKnights(3, CatanOptions{Helpers: true}); e == nil {
 		t.Fatal("unverified Helpers combination accepted")

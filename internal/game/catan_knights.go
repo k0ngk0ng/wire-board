@@ -35,7 +35,7 @@ func (g *Catan) knightCount(player, strength int) int {
 				count++
 			}
 		}
-		if k.Pending != nil && k.Pending.Knight != nil && k.Pending.Knight.Owner == player && k.Pending.Knight.Strength == strength {
+		if k.Pending != nil && k.Pending.Kind == "knight_retreat" && k.Pending.Knight != nil && k.Pending.Knight.Owner == player && k.Pending.Knight.Strength == strength {
 			count++
 		}
 	}
@@ -50,7 +50,10 @@ func (g *Catan) opponentPiece(player, vertex int) bool {
 	return n != nil && n.Owner != player
 }
 func (g *Catan) knightRecruitable(player, vertex int) bool {
-	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil || g.knightCount(player, 1) >= 2 {
+	return g.knightCount(player, 1) < 2 && g.knightPlaceable(player, vertex)
+}
+func (g *Catan) knightPlaceable(player, vertex int) bool {
+	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil {
 		return false
 	}
 	for _, edge := range g.touching(vertex) {

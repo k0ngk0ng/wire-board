@@ -8,7 +8,7 @@ import (
 
 func TestCatanProgressSciencePhaseGuardsAndAlchemy(t *testing.T) {
 	s := ckEvent(t)
-	ckProgressGive(t, s, 0, 0, 1, 16)
+	ckProgressGive(t, s, 0, 0, 1)
 	helperReject(t, s, 1, Action{Type: "catan_progress", Card: 0, Tokens: []int{1, 5}})
 	helperReject(t, s, 0, Action{Type: "catan_progress", Card: 1})
 	for _, dice := range [][]int{nil, {1}, {0, 6}, {1, 7}, {1, 2, 3}} {
@@ -20,7 +20,6 @@ func TestCatanProgressSciencePhaseGuardsAndAlchemy(t *testing.T) {
 		t.Fatal("alchemy did not select two production dice and resolve an independent event")
 	}
 	helperReject(t, s, 0, Action{Type: "catan_progress", Card: 0, Tokens: []int{1, 5}})
-	helperReject(t, s, 0, Action{Type: "catan_progress", Card: 16})
 	helperReject(t, s, 0, Action{Type: "catan_progress", Card: 9})
 	ckProgressStock(t, s.Catan)
 }
