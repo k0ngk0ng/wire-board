@@ -1,6 +1,6 @@
 {
   "checked_on": "2026-10-05",
-  "status": "Printed token/production/frame data verified; internal token economy, map generation and aggregate claims implemented. Runtime scenario/production continuation/actions/UI not yet integrated.",
+  "status": "Verified frame/token data and internal setup/production/replacement/persistence implemented. Paid actions, boot passing, combinations, assets and UI not yet integrated; no public room option.",
   "sources": [
     {
       "source": "../board-expansion-rule-sources.json#catan-traders-2025",

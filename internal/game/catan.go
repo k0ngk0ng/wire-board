@@ -27,6 +27,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Fishing        *CatanFishing        `json:"fishing,omitempty"`
 	RevealedEvent  *CatanRevealedEvent  `json:"revealedEvent,omitempty"`
 	CardEvent      *CatanCardEvent      `json:"cardEvent,omitempty"`
 	FriendlyRobber *CatanFriendlyRobber `json:"friendlyRobber,omitempty"`
@@ -272,7 +273,7 @@ func (s *State) catanVictory() {
 	if p := g.pirateIslands(); p != nil && (s.Turn >= len(p.Fortresses) || p.Fortresses[s.Turn].Strength > 0) {
 		return
 	}
-	goal := g.victoryTarget()
+	goal := g.victoryTargetFor(s.Turn)
 	if !g.setup() && !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= goal {
 		s.Finished = true
 		s.Phase = "finished"
@@ -314,7 +315,10 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if err := s.Catan.validateFishing(); err != nil {
+		return err
+	}
+	if s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -331,6 +335,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if g.Fishing != nil && g.Fishing.Pending != nil {
+		return s.catanReplaceFish(player, a)
 	}
 	if g.CardEvent != nil {
 		return s.catanCardEventChoice(player, a)
@@ -569,6 +576,9 @@ func (s *State) catanSetup(a Action) error {
 			} else {
 				s.catanLog(p, "从第 %d 座起始村庄获得 %s", g.SetupLimit()/len(g.Players), catanText(gain))
 			}
+			if err := s.catanStartingFish(p, a.Vertex); err != nil {
+				return err
+			}
 			if gold[p] > 0 {
 				s.catanStartGold(gold, nil, "catan_setup_road")
 			}
@@ -640,6 +650,21 @@ func (s *State) catanRollProduction(total int) error {
 // their already computed counts, so no turn-wide flag can leak into a later roll.
 func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 	g := s.Catan
+	var fish []int
+	if f := g.Fishing; f != nil {
+		if err := g.validateFishing(); err != nil {
+			return err
+		}
+		if epidemic || f.Pending != nil || f.LastRollID == g.RollID {
+			return errors.New("捕鱼生产已结算或组合尚未接入")
+		}
+		var err error
+		fish, err = f.Map.production(g, total)
+		if err != nil {
+			return err
+		}
+		f.LastRollID = g.RollID
+	}
 	if q := g.RevealedEvent; q != nil && q.RollID == g.RollID {
 		q.ProductionStarted = true
 	}
@@ -744,6 +769,9 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 	received := make([]int, len(g.Players))
 	for i, gain := range claims {
 		received[i] = sum(gain)
+	}
+	if g.Fishing != nil {
+		return s.catanStartFishing(fish, received, "catan_turn")
 	}
 	if sum(gold) > 0 {
 		s.catanStartGold(gold, received, "catan_turn")
@@ -972,6 +1000,13 @@ func (s *State) AutoCatanPending() {
 	if g == nil || s.Finished {
 		return
 	}
+	if g.Fishing != nil && g.Fishing.Pending != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanFishBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
+		return
+	}
 	if g.CardEvent != nil {
 		actor := s.CatanPendingActor()
 		if a, err := s.catanCardEventBot(actor); err == nil {
@@ -1079,6 +1114,10 @@ func (s *State) EliminateCatan(p int) error {
 	if g == nil || g.setup() || s.CatanPendingActor() >= 0 || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
 		return errors.New("当前不能移除此玩家")
 	}
+	if err := g.validateFishing(); err != nil {
+		return err
+	}
+	s.catanReturnFishing(p)
 	pl := &g.Players[p]
 	pl.Eliminated = true
 	if k := g.CitiesKnights; k != nil {

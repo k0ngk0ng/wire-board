@@ -3,6 +3,7 @@ package game
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	s.catanFishingView(v, player)
 	v["setupLimit"] = g.SetupLimit()
 	v["victoryTarget"] = g.victoryTarget()
 	delete(v, "revealedEvent")
