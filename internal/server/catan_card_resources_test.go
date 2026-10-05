@@ -11,7 +11,8 @@ import (
 )
 
 func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
-	for _, kind := range []string{"plentiful_year", "robber_flees", "good_neighbors"} {
+	for _, kind := range []string{"plentiful_year", "robber_flees", "good_neighbors", "calm_seas", "tournament"} {
+		reward := kind == "plentiful_year" || kind == "calm_seas" || kind == "tournament"
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(fmt.Sprintf("%s/%s", kind, mode), func(t *testing.T) {
 				s, ts, clients, id := newCatanTable(t)
@@ -22,6 +23,10 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 				g := r.Game.Catan
 				g.CardEvent.Kind = kind
 				g.CardEvent.Production, g.Tiles[0].Number = 2, 2
+				if kind == "calm_seas" {
+					// All players tie at zero installed port buildings.
+					g.Ports = nil
+				}
 				if kind == "good_neighbors" {
 					for p := range g.Players {
 						g.Players[p].Resources[p+1]++
@@ -55,7 +60,7 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 				if string(before) != string(after) {
 					t.Fatal("invalid event choice changed room")
 				}
-				if kind == "plentiful_year" {
+				if reward {
 					clients[0].command(current(clients[0]), "action", first, 200)
 					if s.rooms[id].Game.Catan.Players[0].Resources[0] != 1 || s.rooms[id].Game.Catan.Players[1].Resources[0] != 0 {
 						t.Fatal("gift not applied immediately or production ran too early")
@@ -156,7 +161,7 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 						total += count
 					}
 					want := 1
-					if kind == "plentiful_year" || kind == "good_neighbors" {
+					if reward || kind == "good_neighbors" {
 						want = 2
 					}
 					if total != want || p.Resources[0] < 1 {
