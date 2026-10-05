@@ -1,0 +1,63 @@
+{
+  "sources": {
+    "catan-traders-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+      "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+      "bytes": 27843748
+    }
+  },
+  "artwork": {
+    "watering-hole": {
+      "source": "catan-traders-2025",
+      "page": 14,
+      "object": 19706,
+      "soft_mask": 19705,
+      "soft_mask_size": [
+        483,
+        539
+      ],
+      "size": [
+        245,
+        274
+      ],
+      "file": "catan/caravans/watering-hole-v1.webp",
+      "bytes": 57352,
+      "sha256": "76d51213262f11bc291f8f8014823cd9abc5571a9e79760fe951358b16d68d17"
+    },
+    "wagon": {
+      "source": "catan-traders-2025",
+      "page": 13,
+      "object": 44975,
+      "soft_mask": 44986,
+      "soft_mask_size": [
+        156,
+        131
+      ],
+      "size": [
+        99,
+        83
+      ],
+      "file": "catan/caravans/wagon-v1.webp",
+      "bytes": 7228,
+      "sha256": "80f9cd1c9ac216d4b5db0f6cb04841aa1fdb9739c86ec5f46525d2e40599f7b9"
+    },
+    "wagon-south": {
+      "source": "catan-traders-2025",
+      "page": 14,
+      "object": 19902,
+      "soft_mask": 19901,
+      "soft_mask_size": [
+        74,
+        119
+      ],
+      "size": [
+        38,
+        60
+      ],
+      "file": "catan/caravans/wagon-south-v1.webp",
+      "bytes": 2618,
+      "sha256": "16ce81619792b4f2ea0b7d1e7a913549739eab5da56affd3d64314698fabc93c"
+    }
+  },
+  "scope": "Original watering-hole terrain, supply wagon and south-facing map wagon. Native colors and sizes retained. Terrain requires hex clipping; map wagon rotates from its verified south orientation. Voting text and direction markers are runtime overlays."
+}
