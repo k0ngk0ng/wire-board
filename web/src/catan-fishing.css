@@ -252,6 +252,27 @@
   stroke-width: 3;
   filter: drop-shadow(0 0 3px #ffd237);
 }
+.fish-number.blocked > circle {
+  stroke: #a32d27;
+  stroke-width: 2.5;
+}
+.fish-blocked-badge circle {
+  fill: #a32d27;
+  stroke: #fff7e5;
+  stroke-width: 1;
+}
+.fish-blocked-badge path {
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.fish-panel-body .fish-blockade-notice {
+  color: #792c23;
+  background: #fff0d9;
+  border-left: 3px solid #a32d27;
+  border-radius: 5px;
+  padding: 7px 9px;
+}
 @media (max-width: 600px) {
   .fish-player-counts {
     grid-template-columns: repeat(2, minmax(0, 1fr));

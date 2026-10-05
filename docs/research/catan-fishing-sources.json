@@ -46,7 +46,7 @@
         1,
         2
       ],
-      "role": "Official scenario-specific combinations; pirate blocks coastal fish, free ship and pirate removal, prescribed lake/ground placements, Pirate Islands expressly incompatible. Internal 3/4-player Four Islands engine and services implemented; sea UI and remaining scenarios pending."
+      "role": "Official scenario-specific combinations; pirate blocks coastal fish, free ship and pirate removal, prescribed lake/ground placements, Pirate Islands expressly incompatible. Internal 3/4-player Four Islands engine/services plus original-art desktop/mobile action UI verified; remaining sea scenarios and expansion-wide acceptance pending."
     },
     {
       "source": "../board-expansion-rule-sources.json#catan-fishing-seafarers-de-2021",

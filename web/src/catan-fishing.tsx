@@ -4,7 +4,9 @@ import type { Act, CatanState, Room } from "./types";
 import { CatanResource } from "./catan-resources";
 import {
   fishAction,
-  fishActions,
+  fishActionsFor,
+  fishMapMode,
+  fishGroundBlocked,
   fishGroundGeometry,
   fishResponder,
   fishTurn,
@@ -21,6 +23,7 @@ function NumberDisk({
   value,
   radius,
   active,
+  blocked,
 }: {
   assets: string;
   x: number;
@@ -28,11 +31,12 @@ function NumberDisk({
   value: number;
   radius: number;
   active?: boolean;
+  blocked?: boolean;
 }) {
   const id = useId();
   return (
     <g
-      className={`fish-number ${active ? "active" : ""}`}
+      className={`fish-number ${active && !blocked ? "active" : ""} ${blocked ? "blocked" : ""}`}
       transform={`translate(${x},${y})`}
       pointerEvents="none"
     >
@@ -59,6 +63,17 @@ function NumberDisk({
       >
         {value}
       </text>
+      {blocked && (
+        <g
+          className="fish-blocked-badge"
+          transform={`translate(${radius * 0.9},${-radius * 0.9})`}
+        >
+          <circle r={radius * 0.47} />
+          <path
+            d={`M ${-radius * 0.18} ${-radius * 0.18} L ${radius * 0.18} ${radius * 0.18} M ${radius * 0.18} ${-radius * 0.18} L ${-radius * 0.18} ${radius * 0.18}`}
+          />
+        </g>
+      )}
     </g>
   );
 }
@@ -107,8 +122,15 @@ export function CatanFishingGrounds({
       {g.fishing?.map.grounds.map((ground, i) => {
         const pos = fishGroundGeometry(g, ground.vertices);
         if (!pos) return null;
+        const blocked = fishGroundBlocked(g, ground);
         return (
-          <g key={i} aria-label={`渔场 ${i + 1}，点数 ${ground.number}`}>
+          <g
+            key={i}
+            aria-label={`渔场 ${i + 1}，点数 ${ground.number}${blocked ? "，海盗封锁，暂停产鱼" : ""}`}
+          >
+            <title>
+              {blocked ? "海盗封锁：本渔场暂停产鱼" : `${ground.number} 点产鱼`}
+            </title>
             {assets ? (
               <g
                 transform={`translate(${pos.x},${pos.y}) rotate(${pos.angle}) scale(${pos.scale})`}
@@ -138,6 +160,7 @@ export function CatanFishingGrounds({
               y={pos.labelY}
               radius={(g.hexSize || 62) * 0.2}
               active={total === ground.number}
+              blocked={blocked}
             />
           </g>
         );
@@ -170,12 +193,25 @@ export function CatanFishingPanel({
     [target, setTarget] = useState<number | null>(null);
   const panel = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (chosen?.type === "fish_road") {
+    if (chosen?.type === "fish_road" || chosen?.type === "fish_ship") {
       setCollapsed(false);
-      if (window.innerWidth < 700)
-        panel.current?.scrollIntoView({ block: "center", behavior: "smooth" });
     }
   }, [chosen?.type, chosen?.id]);
+  useEffect(() => {
+    if (collapsed || !["fish_road", "fish_ship"].includes(chosen?.type || ""))
+      return;
+    // Wait for the reopened panel, then reveal confirmation within either
+    // the desktop action scroller or the mobile page, keeping the map choice.
+    const frame = requestAnimationFrame(() => {
+      panel.current
+        ?.querySelector(".fish-confirm-actions")
+        ?.scrollIntoView({
+          block: window.innerWidth < 851 ? "center" : "nearest",
+          behavior: "smooth",
+        });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [collapsed, chosen?.type, chosen?.id]);
   const g = room.game?.catan,
     f = g?.fishing;
   if (!g || !f) return null;
@@ -184,12 +220,17 @@ export function CatanFishingPanel({
   const mine = fishTurn(room),
     hand = f.tokens.players[room.you]?.tokens || [];
   const activeKind = replace ? "catan_fish_replace" : kind;
+  const mapMode = fishMapMode(activeKind),
+    routeName = activeKind === "catan_fish_ship" ? "船只" : "道路",
+    blockedGrounds = f.map.grounds.filter((ground) =>
+      fishGroundBlocked(g, ground),
+    );
   const selection = {
     kind: activeKind,
     ids,
     color,
     target,
-    edge: chosen?.type === "fish_road" ? chosen.id : null,
+    edge: mapMode && chosen?.type === mapMode ? chosen.id : null,
   };
   const action = fishAction(room, selection),
     paid = fishValue(room, ids),
@@ -207,7 +248,7 @@ export function CatanFishingPanel({
     setIds([]);
     setColor(null);
     setTarget(null);
-    onMode(next === "catan_fish_road" ? "fish_road" : "");
+    onMode(fishMapMode(next));
   };
   const tokenSelectable =
     (mine && !!kind && kind !== "catan_fish_boot") || replace;
@@ -250,6 +291,13 @@ export function CatanFishingPanel({
               </div>
             ))}
           </div>
+          {blockedGrounds.length > 0 && (
+            <p className="fish-blockade-notice">
+              海盗封锁{" "}
+              {blockedGrounds.map((ground) => ground.number).join("、")}{" "}
+              点渔场，暂不产鱼。
+            </p>
+          )}
           {responder !== undefined && !replace && (
             <p className="fish-notice">
               等待{room.seats[responder]?.name || "玩家"}选择是否更换鱼筹码。
@@ -262,36 +310,28 @@ export function CatanFishingPanel({
           )}
           {mine && !replace && (
             <div className="fish-actions" aria-label="选择捕鱼行动">
-              {fishActions
-                .filter(
-                  ([type]) =>
-                    type !==
-                    (g.citiesKnights
-                      ? "catan_fish_dev"
-                      : "catan_fish_progress"),
-                )
-                .map(([type, label]) => {
-                  const enabled =
-                    type === "catan_fish_boot"
-                      ? f.legal.bootTargets.length > 0
-                      : f.legal.actions.includes(type);
-                  return (
-                    <button
-                      key={type}
-                      type="button"
-                      disabled={busy || !enabled}
-                      aria-pressed={kind === type}
-                      onClick={() => selectKind(type)}
-                    >
-                      <span>{label}</span>
-                      <b>
-                        {type === "catan_fish_boot"
-                          ? "不耗鱼"
-                          : `${f.legal.costs[type]} 鱼`}
-                      </b>
-                    </button>
-                  );
-                })}
+              {fishActionsFor(g).map(([type, label]) => {
+                const enabled =
+                  type === "catan_fish_boot"
+                    ? f.legal.bootTargets.length > 0
+                    : f.legal.actions.includes(type);
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    disabled={busy || !enabled}
+                    aria-pressed={kind === type}
+                    onClick={() => selectKind(type)}
+                  >
+                    <span>{label}</span>
+                    <b>
+                      {type === "catan_fish_boot"
+                        ? "不耗鱼"
+                        : `${f.legal.costs[type]} 鱼`}
+                    </b>
+                  </button>
+                );
+              })}
             </div>
           )}
           {!room.spectating && room.you >= 0 && (
@@ -419,21 +459,26 @@ export function CatanFishingPanel({
               ))}
             </div>
           )}
-          {mine && kind === "catan_fish_road" && (
+          {mine && !!mapMode && (
             <p className="fish-map-hint">
               {selection.edge !== null
-                ? `已选道路 #${selection.edge + 1}`
-                : "点击地图上亮起的道路，再确认支付。"}
+                ? `已选${routeName} #${selection.edge + 1}`
+                : `点击地图上亮起的${routeName}位置，再确认支付。`}
               <button
                 type="button"
                 onClick={() => {
                   setCollapsed(true);
-                  onMode("fish_road");
+                  onMode(mapMode);
                   showMap();
                 }}
               >
                 查看地图
               </button>
+            </p>
+          )}
+          {mine && kind === "catan_fish_pirate" && (
+            <p className="fish-notice">
+              支付后将海盗移到场外，解除封锁；不会偷牌，也不会移动强盗。
             </p>
           )}
           {(replace || (mine && !!kind)) && (

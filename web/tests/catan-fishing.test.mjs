@@ -2,6 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   fishAction,
+  fishActionsFor,
+  fishMapMode,
+  fishGroundBlocked,
   fishGroundGeometry,
   fishResponder,
   fishTurn,
@@ -286,4 +289,86 @@ test("combined progress purchase selects a nonempty public stack, revalidates su
     fishAction(r, { ...s, kind: "catan_fish_resource", color: 5 }),
     null,
   );
+});
+
+test("sea fish actions use private payment and current ship targets, never road targets", () => {
+  const r = fixture(),
+    g = r.game.catan,
+    f = g.fishing;
+  g.seafarers = { pirate: 0, scenario: "islands" };
+  f.legal.costs.catan_fish_ship = 5;
+  f.legal.costs.catan_fish_pirate = 2;
+  f.legal.actions.push("catan_fish_ship", "catan_fish_pirate");
+  f.legal.ships = [12];
+  const ship = selection({ kind: "catan_fish_ship", ids: [11, 21], edge: 12 });
+  const pirate = selection({ kind: "catan_fish_pirate", ids: [21] });
+  for (const phase of ["catan_roll", "catan_turn"]) {
+    r.game.phase = phase;
+    assert.deepEqual(fishAction(r, ship), {
+      type: "catan_fish_ship",
+      tokens: [11, 21],
+      edge: 12,
+    });
+    assert.deepEqual(fishAction(r, pirate), {
+      type: "catan_fish_pirate",
+      tokens: [21],
+    });
+  }
+  for (const edge of [null, -1, 8, 9, 12.5])
+    assert.equal(fishAction(r, { ...ship, edge }), null);
+  assert.equal(fishAction(r, { ...ship, ids: [21] }), null);
+  assert.equal(fishAction(r, { ...ship, ids: [21, 21] }), null);
+  f.legal.ships = [];
+  assert.equal(fishAction(r, ship), null);
+  delete f.legal.ships;
+  assert.equal(fishAction(r, ship), null);
+  f.legal.ships = [12];
+  g.seafarers.pirate = -1;
+  assert.equal(fishAction(r, pirate), null);
+  g.seafarers.pirate = 0;
+  f.legal.actions = f.legal.actions.filter((k) => k !== "catan_fish_pirate");
+  assert.equal(fishAction(r, pirate), null);
+  f.legal.actions.push("catan_fish_pirate");
+  for (const delta of [
+    { you: 1 },
+    { you: -1 },
+    { spectating: true },
+    { status: "finished" },
+  ]) {
+    assert.equal(fishAction({ ...r, ...delta }, ship), null);
+    assert.equal(fishAction({ ...r, ...delta }, pirate), null);
+  }
+  delete g.seafarers;
+  assert.equal(fishAction(r, ship), null);
+  assert.equal(fishAction(r, pirate), null);
+});
+test("fish menus distinguish variants and ship/road selection modes", () => {
+  const g = fixture().game.catan;
+  const kinds = () => fishActionsFor(g).map(([kind]) => kind);
+  assert.ok(!kinds().includes("catan_fish_ship"));
+  assert.ok(!kinds().includes("catan_fish_pirate"));
+  assert.ok(kinds().includes("catan_fish_dev"));
+  assert.ok(!kinds().includes("catan_fish_progress"));
+  g.seafarers = { pirate: -1 };
+  assert.ok(kinds().includes("catan_fish_ship"));
+  assert.ok(kinds().includes("catan_fish_pirate"));
+  g.seafarers.wonders = {};
+  assert.ok(!kinds().includes("catan_fish_pirate"));
+  g.citiesKnights = {};
+  assert.ok(!kinds().includes("catan_fish_dev"));
+  assert.ok(kinds().includes("catan_fish_progress"));
+  assert.equal(fishMapMode("catan_fish_ship"), "fish_ship");
+  assert.equal(fishMapMode("catan_fish_road"), "fish_road");
+  assert.equal(fishMapMode("catan_fish_pirate"), "");
+  assert.equal(fishMapMode("catan_fish_keep"), "");
+});
+test("pirate stops only its own sea-hex ground, including hex zero; frame and base grounds keep producing", () => {
+  const g = { seafarers: { pirate: 0 } };
+  assert.equal(fishGroundBlocked(g, { seaTile: 0 }), true);
+  for (const seaTile of [undefined, null, -1, 1, NaN, 0.5])
+    assert.equal(fishGroundBlocked(g, { seaTile }), false);
+  g.seafarers.pirate = -1;
+  assert.equal(fishGroundBlocked(g, { seaTile: 0 }), false);
+  assert.equal(fishGroundBlocked(g, {}), false);
+  assert.equal(fishGroundBlocked({}, { seaTile: 0 }), false);
 });

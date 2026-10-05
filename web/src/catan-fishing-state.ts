@@ -9,13 +9,43 @@ export type FishSelection = {
 };
 export const fishActions = [
   ["catan_fish_robber", "驱离强盗"],
+  ["catan_fish_pirate", "驱离海盗"],
   ["catan_fish_steal", "随机偷牌"],
   ["catan_fish_resource", "领取资源"],
   ["catan_fish_road", "修建道路"],
+  ["catan_fish_ship", "建造船只"],
   ["catan_fish_dev", "购买发展卡"],
   ["catan_fish_progress", "领取进步牌"],
   ["catan_fish_boot", "传递旧靴子"],
 ] as const;
+
+export function fishActionsFor(g: CatanState) {
+  return fishActions.filter(([kind]) => {
+    if (kind === "catan_fish_ship") return !!g.seafarers;
+    if (kind === "catan_fish_pirate")
+      return (
+        !!g.seafarers && !g.seafarers.wonders && !g.seafarers.pirateIslands
+      );
+    return (
+      kind !== (g.citiesKnights ? "catan_fish_dev" : "catan_fish_progress")
+    );
+  });
+}
+export function fishMapMode(kind: string) {
+  return kind === "catan_fish_ship"
+    ? "fish_ship"
+    : kind === "catan_fish_road"
+      ? "fish_road"
+      : "";
+}
+export function fishGroundBlocked(g: CatanState, ground: { seaTile?: number }) {
+  return (
+    Number.isInteger(ground.seaTile) &&
+    ground.seaTile! >= 0 &&
+    !!g.seafarers &&
+    g.seafarers.pirate === ground.seaTile
+  );
+}
 
 function activeViewer(room: Room) {
   return !!(
@@ -111,6 +141,18 @@ export function fishAction(
   } else if (kind === "catan_fish_road") {
     if (edge === null || !f.legal.roads.includes(edge)) return null;
     action.edge = edge;
+  } else if (kind === "catan_fish_ship") {
+    if (!g.seafarers || edge === null || !(f.legal.ships || []).includes(edge))
+      return null;
+    action.edge = edge;
+  } else if (kind === "catan_fish_pirate") {
+    if (
+      !g.seafarers ||
+      g.seafarers.pirate < 0 ||
+      g.seafarers.wonders ||
+      g.seafarers.pirateIslands
+    )
+      return null;
   } else if (!["catan_fish_robber", "catan_fish_dev"].includes(kind))
     return null;
   return action;
