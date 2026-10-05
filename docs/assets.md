@@ -43,3 +43,7 @@ python3 scripts/upload_assets.py .local/asset-pack \
 卡坦事件插画使用 `catan/events/{kind}-v1.webp`，包括 `beautiful_day`、`calm_seas`、`conflict`、`earthquake`、`epidemic`、`good_neighbors`、`helpful_neighbor`、`new_year`、`plentiful_year`、`robber_attacks`、`robber_flees`、`tournament`、`trade_advantage`；另有 `catan/events/back-v1.webp`。13张事件插画原生为203–208×172–177，牌背173×247，均保留原比例，不拉伸或放大。它们是官方插画和牌背，**不是带生产点数的完整36张实体牌面**；点数、中文事件文字须由核验后的游戏数据与界面独立呈现。
 
 `scripts/prepare_catan_event_assets.py OUTPUT_DIR --rules-directory RULES_DIR` 从固定SHA256的2025 T&B规则书第4–6页提取；省略规则目录时在内存下载同一固定文件。依赖PyMuPDF、Pillow。PDF内部图片顺序与正文顺序不同，使用经逐项视觉核对的对象ID映射；检查来源哈希、对象所在页及原生尺寸，输出无损WebP与来源清单。14张合计704,114字节。可复现的对象/尺寸/路径/文件哈希见`docs/research/catan-event-art-sources.json`。上传时保持既有素材基地址，用上述新文件路径；更新画面需提升文件版本，避免覆盖不可变缓存。该批素材准备不代表事件扩展已开放或完整牌表已核验。
+
+卡坦河流素材使用 `catan/rivers/`：`river-{long,short,extended}-v1.webp` 为三组完整河流地形，`bridge-{blue,orange,white,red,purple,green}-v1.webp` 为六色透明桥梁，`coin-{1,5}-v1.webp` 为金币，`{wealthiest,poor}-v1.webp` 为贫富标记插画。共13张、1,208,956字节。中文名称、加减分和生产数字由界面单独显示；河流保留完整原图，接入时须按源头至河口方向变换并按地图六边形裁剪，不能把长图拉伸成单块地形。
+
+复现命令：`scripts/prepare_catan_rivers_assets.py OUTPUT_DIR --rules-directory RULES_DIR`，依赖PyMuPDF、Pillow。来源为固定哈希2025 T&B第11页及五至六人第6页，原生尺寸与颜色保留，软遮罩单独适配，输出无损WebP。对象编号、原生尺寸、遮罩、文件路径/大小/哈希记录于 `docs/research/catan-rivers-art-sources.json`。既有素材基地址不变，仅补充新文件；后续修改须升级文件版本。素材准备与上传不代表该剧本已开放或界面验收通过。
