@@ -4,6 +4,7 @@ import {
   CatanFishingPanel,
 } from "./catan-fishing";
 import { fishResponder } from "./catan-fishing-state";
+import { catanPortLayout } from "./catan-port-layout";
 import { catanProductionNumbers, catanTileProducing } from "./catan-production";
 import { CatanFriendlyRobberStatus } from "./catan-friendly-robber";
 import {
@@ -51,7 +52,7 @@ import {
   catanBankReason,
 } from "./catan-cards";
 import { CatanNewWorldPortChoice } from "./catan-new-world";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   ArrowLeftRight,
@@ -372,6 +373,7 @@ export function CatanBoard({
   const cardCount = g.bank.length;
   const hexSize = g.hexSize || 62;
   const sea = g.seafarers;
+  const portLayout = useMemo(() => catanPortLayout(g), [g]);
   const pirates = sea?.pirateIslands;
   const devLabel = (i: number) =>
     pirates && i === 4 ? "胜利点卡 · 当作骑士" : devNames[i];
@@ -875,63 +877,53 @@ export function CatanBoard({
                   </g>
                 );
               })}
-              <CatanFishingGrounds g={g} assets={assets} total={liveNumber} />
+              <CatanFishingGrounds
+                g={g}
+                assets={assets}
+                total={liveNumber}
+                layer="artwork"
+              />
               <CatanDesertRegions game={g} />
               <CatanFleetPath game={g} />
               <CatanTribeRewards game={g} assets={assets} />
-              {[...g.ports, ...(sea?.tribe?.ports || [])].map((port) => {
-                const unclaimed = sea?.tribe?.ports?.some(
-                  (p) => p.edge === port.edge,
-                );
-                const e = g.edges[port.edge],
-                  a = g.vertices[e.a],
-                  b = g.vertices[e.b],
-                  x = (a.x + b.x) / 2,
-                  y = (a.y + b.y) / 2,
-                  land = sea
-                    ? g.tiles.find(
-                        (t) =>
-                          (e.tiles?.includes(t.id) ||
-                            (t.vertices.includes(e.a) &&
-                              t.vertices.includes(e.b))) &&
-                          t.resource !== 6 &&
-                          t.resource !== 8,
-                      )
-                    : undefined,
-                  angle = land
-                    ? Math.atan2(y - land.y, x - land.x)
-                    : Math.atan2(y - 290, x - 340),
-                  offset = sea ? hexSize * 0.62 : 34,
-                  size = sea ? hexSize * 1.02 : 52,
-                  px = x + offset * Math.cos(angle),
-                  py = y + offset * Math.sin(angle);
-                return (
-                  <g
-                    key={port.edge}
-                    className={`catan-port ${unclaimed ? "unclaimed" : ""}`}
-                  >
-                    <line x1={a.x} y1={a.y} x2={px} y2={py} />
-                    <line x1={b.x} y1={b.y} x2={px} y2={py} />
-                    {assets ? (
-                      <image
-                        href={`${assets}/catan/port-${port.resource < 0 ? "any" : terrainResourceKeys[port.resource]}-v1.webp`}
-                        x={px - size / 2}
-                        y={py - size / 2}
-                        width={size}
-                        height={size}
-                      />
-                    ) : (
-                      <circle cx={px} cy={py} r="20" fill="#f4e6c5" />
-                    )}
-                    <title>
-                      {unclaimed ? "待领取：造船或移船到此领取。" : "已安放："}
-                      {port.resource < 0
-                        ? "通用港口，3:1"
-                        : catanNames[port.resource] + "港口，2:1"}
-                    </title>
-                  </g>
-                );
-              })}
+              {portLayout.map(
+                ({ port, unclaimed, a, b, px, py, size }) => {
+                  return (
+                    <g
+                      key={port.edge}
+                      className={`catan-port ${unclaimed ? "unclaimed" : ""}`}
+                    >
+                      <line x1={a.x} y1={a.y} x2={px} y2={py} />
+                      <line x1={b.x} y1={b.y} x2={px} y2={py} />
+                      {assets ? (
+                        <image
+                          href={`${assets}/catan/port-${port.resource < 0 ? "any" : terrainResourceKeys[port.resource]}-v1.webp`}
+                          x={px - size / 2}
+                          y={py - size / 2}
+                          width={size}
+                          height={size}
+                        />
+                      ) : (
+                        <circle cx={px} cy={py} r="20" fill="#f4e6c5" />
+                      )}
+                      <title>
+                        {unclaimed
+                          ? "待领取：造船或移船到此领取。"
+                          : "已安放："}
+                        {port.resource < 0
+                          ? "通用港口，3:1"
+                          : catanNames[port.resource] + "港口，2:1"}
+                      </title>
+                    </g>
+                  );
+                },
+              )}
+              <CatanFishingGrounds
+                g={g}
+                assets={assets}
+                total={liveNumber}
+                layer="numbers"
+              />
               {sea && !pirates && !sea.wonders && sea.pirate === -1 && (
                 <g
                   transform={

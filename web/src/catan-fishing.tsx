@@ -117,13 +117,19 @@ export function CatanFishingGrounds({
   g,
   assets,
   total,
+  layer = "all",
 }: {
   g: CatanState;
   assets: string;
   total: number;
+  layer?: "all" | "artwork" | "numbers";
 }) {
   return (
-    <g className="catan-fishing-grounds" pointerEvents="none">
+    <g
+      className="catan-fishing-grounds"
+      pointerEvents="none"
+      aria-hidden={layer === "artwork" || undefined}
+    >
       {g.fishing?.map.grounds.map((ground, i) => {
         const pos = fishGroundGeometry(g, ground.vertices);
         if (!pos) return null;
@@ -136,37 +142,40 @@ export function CatanFishingGrounds({
             <title>
               {blocked ? "海盗封锁：本渔场暂停产鱼" : `${ground.number} 点产鱼`}
             </title>
-            {assets ? (
-              <g
-                transform={`translate(${pos.x},${pos.y}) rotate(${pos.angle}) scale(${pos.scale})`}
-              >
-                <image
-                  href={art(assets, "ground")}
-                  x={-181.5}
-                  y={-116.5}
-                  width={182}
-                  height={233}
+            {layer !== "numbers" &&
+              (assets ? (
+                <g
+                  transform={`translate(${pos.x},${pos.y}) rotate(${pos.angle}) scale(${pos.scale})`}
+                >
+                  <image
+                    href={art(assets, "ground")}
+                    x={-181.5}
+                    y={-116.5}
+                    width={182}
+                    height={233}
+                  />
+                </g>
+              ) : (
+                <polyline
+                  points={ground.vertices
+                    .map((id) => `${g.vertices[id].x},${g.vertices[id].y}`)
+                    .join(" ")}
+                  fill="none"
+                  stroke="#10a6cb"
+                  strokeWidth={14}
                 />
-              </g>
-            ) : (
-              <polyline
-                points={ground.vertices
-                  .map((id) => `${g.vertices[id].x},${g.vertices[id].y}`)
-                  .join(" ")}
-                fill="none"
-                stroke="#10a6cb"
-                strokeWidth={14}
+              ))}
+            {layer !== "artwork" && (
+              <NumberDisk
+                assets={assets}
+                value={ground.number}
+                x={pos.labelX}
+                y={pos.labelY}
+                radius={(g.hexSize || 62) * 0.2}
+                active={total === ground.number}
+                blocked={blocked}
               />
             )}
-            <NumberDisk
-              assets={assets}
-              value={ground.number}
-              x={pos.labelX}
-              y={pos.labelY}
-              radius={(g.hexSize || 62) * 0.2}
-              active={total === ground.number}
-              blocked={blocked}
-            />
           </g>
         );
       })}
