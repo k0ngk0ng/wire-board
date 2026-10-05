@@ -362,6 +362,7 @@ export type CatanState = {
   fishing?: {
     map: {
       lakes: { tile: number; numbers: number[] }[];
+      extraNumbers?: { tile: number; number: number }[];
       grounds: {
         number: number;
         edges: number[];

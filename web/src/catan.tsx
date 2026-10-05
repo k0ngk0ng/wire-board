@@ -4,6 +4,7 @@ import {
   CatanFishingPanel,
 } from "./catan-fishing";
 import { fishResponder } from "./catan-fishing-state";
+import { catanProductionNumbers, catanTileProducing } from "./catan-production";
 import { CatanFriendlyRobberStatus } from "./catan-friendly-robber";
 import {
   CatanCardEventChoice,
@@ -751,13 +752,14 @@ export function CatanBoard({
                       (effective === "helper_desert" &&
                         t.resource === 5 &&
                         (!sea?.cloth || sea.cloth.homeTiles.includes(t.id)))));
+                const numbers = catanProductionNumbers(g, t.id);
                 return (
                   <g
                     key={`${t.id}-${t.resource}`}
                     role={available ? "button" : undefined}
                     tabIndex={available ? 0 : undefined}
-                    aria-label={`地块 ${t.id + 1} ${terrainNames[t.resource]} ${t.number || ""}${g.robber === t.id ? "，强盗所在" : ""}`}
-                    className={`catan-hex terrain-${t.resource} ${available ? "selectable" : ""} ${(!revealedEvent || revealedEvent.productionStarted) && ((t.number > 0 && liveNumber === t.number) || !!g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.includes(liveNumber)) && g.robber !== t.id ? "producing" : ""}`}
+                    aria-label={`地块 ${t.id + 1} ${terrainNames[t.resource]} ${numbers.join("、")}${g.robber === t.id ? "，强盗所在" : ""}`}
+                    className={`catan-hex terrain-${t.resource} ${available ? "selectable" : ""} ${(!revealedEvent || revealedEvent.productionStarted) && catanTileProducing(g, t.id, liveNumber) ? "producing" : ""}`}
                     onClick={() => available && select(effective, t.id)}
                     onKeyDown={(e) => {
                       if (available && (e.key === "Enter" || e.key === " ")) {
@@ -807,15 +809,17 @@ export function CatanBoard({
                       points={poly(t.id)}
                       fill="none"
                     />
-                    {t.number > 0 && (
-                      <g
-                        className={`catan-number ${t.number === 6 || t.number === 8 ? "red" : ""}`}
-                        transform={`translate(${t.x},${t.y + 4}) scale(${pieceScale})`}
-                      >
-                        <circle r="19" />
-                        <text textAnchor="middle">{t.number}</text>
-                      </g>
-                    )}
+                    {t.number > 0 &&
+                      numbers.map((number, i) => (
+                        <g
+                          key={number}
+                          className={`catan-number ${number === 6 || number === 8 ? "red" : ""}`}
+                          transform={`translate(${t.x + (i - (numbers.length - 1) / 2) * 33 * pieceScale},${t.y + 4}) scale(${pieceScale * (numbers.length > 1 ? 0.78 : 1)})`}
+                        >
+                          <circle r="19" />
+                          <text textAnchor="middle">{number}</text>
+                        </g>
+                      ))}
                     <CatanFishLakeNumbers
                       g={g}
                       tile={t.id}
@@ -825,7 +829,7 @@ export function CatanBoard({
                     {g.robber === t.id && (
                       <g
                         className="catan-robber"
-                        transform={`translate(${t.x + 18 * pieceScale},${t.y - 20 * pieceScale}) scale(${pieceScale})`}
+                        transform={`translate(${t.x + (numbers.length > 1 ? 0 : 18 * pieceScale)},${t.y - (numbers.length > 1 ? 42 : 20) * pieceScale}) scale(${pieceScale})`}
                       >
                         {assets ? (
                           <image

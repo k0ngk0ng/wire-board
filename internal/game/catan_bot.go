@@ -17,7 +17,7 @@ func (g *Catan) vertexValue(p, v int) int {
 		if t.Resource == CatanGold {
 			for _, id := range t.Vertices {
 				if id == v {
-					goldValue += (6 - absCatan(7-t.Number)) * 14
+					goldValue += g.tileNumberWeight(t) * 14
 				}
 			}
 		}
@@ -26,7 +26,7 @@ func (g *Catan) vertexValue(p, v int) int {
 		}
 		for _, id := range t.Vertices {
 			if id == v {
-				values[t.Resource] += 6 - absCatan(7-t.Number)
+				values[t.Resource] += g.tileNumberWeight(t)
 			}
 		}
 	}
@@ -44,7 +44,7 @@ func (g *Catan) vertexValue(p, v int) int {
 			}
 			for _, id := range t.Vertices {
 				if id == u.ID {
-					existing[t.Resource] += 6 - absCatan(7-t.Number)
+					existing[t.Resource] += g.tileNumberWeight(t)
 				}
 			}
 		}
@@ -209,7 +209,7 @@ func (s *State) catanBot(player int) (Action, error) {
 				if v.Level == 0 || v.Owner < 0 {
 					continue
 				}
-				odds := 6 - absCatan(7-t.Number)
+				odds := g.tileNumberWeight(t)
 				if t.Resource == catanLake {
 					odds = g.fishLakeOdds(t.ID)
 				}
@@ -419,7 +419,7 @@ func (s *State) catanBot(player int) (Action, error) {
 					}
 					for _, v := range t.Vertices {
 						if g.Vertices[v].Owner >= 0 && g.Vertices[v].Owner != player {
-							production[t.Resource] += g.Vertices[v].Level * (6 - absCatan(7-t.Number))
+							production[t.Resource] += g.Vertices[v].Level * g.tileNumberWeight(t)
 						}
 					}
 				}
