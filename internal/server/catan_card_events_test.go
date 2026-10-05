@@ -87,6 +87,17 @@ func cardEventHTTPAction(t *testing.T, state *game.State) game.Action {
 	g := state.Catan
 	switch state.Phase {
 	case "catan_card_event":
+		if g.CardEvent.Kind == "conflict" {
+			for p := range g.Players {
+				if p != actor && !g.Players[p].Eliminated {
+					for _, count := range g.Players[p].Resources {
+						if count > 0 {
+							return game.Action{Type: "catan_event_steal", Target: p}
+						}
+					}
+				}
+			}
+		}
 		if g.CardEvent.Kind == "good_neighbors" {
 			give := make([]int, len(g.Bank))
 			for color, count := range g.Players[actor].Resources {

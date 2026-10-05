@@ -8,6 +8,9 @@ func (s *State) catanView(view map[string]any, player int) {
 	if q := g.CardEvent; q != nil {
 		public := v["cardEvent"].(map[string]any)
 		delete(public, "gifts")
+		if q.Kind == "conflict" {
+			public["canSkip"] = q.Optional && s.Phase == "catan_card_event" && !s.Finished && s.CatanPendingActor() == player
+		}
 		for _, gift := range q.Gifts {
 			if gift.From == player {
 				public["ownGift"] = gift
@@ -168,9 +171,11 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 	}
 	// Legal choices use public state and the viewer's own hand only.
-	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}, "eventResources": {}, "fleeDeserts": {}, "eventGifts": {}}
+	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}, "eventResources": {}, "fleeDeserts": {}, "eventGifts": {}, "eventTargets": {}}
 	if q := g.CardEvent; q != nil && s.Phase == "catan_card_event" && !s.Finished && s.CatanPendingActor() == player {
 		switch q.Kind {
+		case "conflict":
+			legal["eventTargets"] = g.cardTheftTargets(player)
 		case "earthquake":
 			legal["earthquakeRoads"] = g.earthquakeRoads(player)
 		case "plentiful_year", "calm_seas", "tournament":

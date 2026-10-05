@@ -14,7 +14,8 @@ type CatanCardEvent struct {
 	Red        int              `json:"red"`  // Independently rolled for C&K; zero otherwise.
 	Face       int              `json:"face"` // C&K event die 0–5; zero without C&K.
 	Players    []int            `json:"players"`
-	Gifts      []CatanEventGift `json:"gifts,omitempty"` // Private choices; never serialize to viewers.
+	Gifts      []CatanEventGift `json:"gifts,omitempty"`    // Private choices; never serialize to viewers.
+	Optional   bool             `json:"optional,omitempty"` // Printed "may" for unawarded base conflict leader.
 }
 
 var catanCardEventNames = map[string]string{
@@ -22,6 +23,7 @@ var catanCardEventNames = map[string]string{
 	"epidemic": "瘟疫", "robber_attacks": "强盗袭击", "robber_flees": "强盗逃跑",
 	"good_neighbors": "好邻居",
 	"calm_seas":      "风平浪静", "tournament": "比武大会",
+	"conflict": "冲突",
 }
 
 func (g *Catan) earthquakeRoads(player int) []int {
@@ -93,6 +95,9 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "calm_seas" || kind == "tournament" {
 		g.CardEvent.Players = g.cardEventLeaders(kind, next.Turn)
 	}
+	if kind == "conflict" {
+		g.beginCardConflict(next.Turn)
+	}
 	if kind == "robber_flees" {
 		if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
 			next.catanLog(next.Turn, "强盗尚未入场，保持休眠")
@@ -140,6 +145,8 @@ func (s *State) catanContinueCardEvent() error {
 				canChoose = len(g.fleeDeserts()) > 0
 			case "good_neighbors":
 				canChoose = true // Eligibility was frozen before anyone received a card.
+			case "conflict":
+				canChoose = len(g.cardTheftTargets(p)) > 0
 			default:
 				return errors.New("该事件不需要玩家选择")
 			}
@@ -175,6 +182,10 @@ func (s *State) catanCardEventChoice(player int, a Action) error {
 		return errors.New("请等待对应玩家完成事件牌选择")
 	}
 	switch q.Kind {
+	case "conflict":
+		if err := s.catanCardConflictChoice(player, a); err != nil {
+			return err
+		}
 	case "good_neighbors":
 		if err := g.chooseNeighborGift(player, a); err != nil {
 			return err
@@ -212,6 +223,18 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 	}
 	if (q.Kind == "plentiful_year" || q.Kind == "calm_seas" || q.Kind == "tournament") && sum(g.Bank[:5]) > 0 {
 		return Action{Type: "catan_event_resource", Take: g.catanResourceChoiceBot(player, 1)}, nil
+	}
+	if q.Kind == "conflict" {
+		target := -1
+		for _, p := range g.cardTheftTargets(player) {
+			// Public score only; exclude hidden VP cards and resource colors.
+			if target < 0 || g.Players[p].Score-g.hiddenVictoryPoints(p) > g.Players[target].Score-g.hiddenVictoryPoints(target) {
+				target = p
+			}
+		}
+		if target >= 0 {
+			return Action{Type: "catan_event_steal", Target: target}, nil
+		}
 	}
 	if q.Kind == "good_neighbors" {
 		// Give the most plentiful card in our own hand. Never inspect the
