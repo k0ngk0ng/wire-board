@@ -211,7 +211,10 @@ func (s *State) catanMovePirate(player, tile int) error {
 	if !g.pirateAllowed(player) {
 		return errors.New("必须先与布匹村落建立贸易，才能移动海盗")
 	}
-	if g.Seafarers == nil || s.Phase != "catan_robber" || tile < -1 || tile >= len(g.Tiles) || tile == g.Seafarers.Pirate || (tile >= 0 && g.Tiles[tile].Resource != CatanSea) {
+	if s.Phase != "catan_robber" || !g.pirateDestinationAllowed(player, tile) {
+		if g.FriendlyRobber != nil {
+			return errors.New("请选择合法的海盗位置；友善海盗不能影响公开分数不足3分的船主")
+		}
 		return errors.New("请将海盗移至另一块海洋或地图外框")
 	}
 	g.Seafarers.Pirate = tile
@@ -220,7 +223,7 @@ func (s *State) catanMovePirate(player, tile int) error {
 	}
 	g.Victims = []int{}
 	for _, e := range g.Edges {
-		if e.Ship && e.Owner >= 0 && e.Owner != player && !g.Players[e.Owner].Eliminated && (sum(g.Players[e.Owner].Resources) > 0 || (g.cloth() != nil && g.cloth().Held[e.Owner] > 0)) && g.pirateBlocks(e.ID) && !slices.Contains(g.Victims, e.Owner) {
+		if e.Ship && e.Owner >= 0 && e.Owner != player && !g.Players[e.Owner].Eliminated && !g.friendlyProtected(e.Owner) && (sum(g.Players[e.Owner].Resources) > 0 || (g.cloth() != nil && g.cloth().Held[e.Owner] > 0)) && g.pirateBlocks(e.ID) && !slices.Contains(g.Victims, e.Owner) {
 			g.Victims = append(g.Victims, e.Owner)
 		}
 	}
