@@ -96,7 +96,7 @@ func (g *Catan) canRoute(p, id int, ship bool) bool {
 	if !ship && g.hasDamagedRoad(p) {
 		return false
 	}
-	if id < 0 || id >= len(g.Edges) || g.Edges[id].Owner >= 0 || !g.edgeTerrain(id, ship) || (ship && g.pirateBlocks(id)) {
+	if id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != -1 || !g.edgeTerrain(id, ship) || (ship && g.pirateBlocks(id)) {
 		return false
 	}
 	e := g.Edges[id]
@@ -150,7 +150,7 @@ func (g *Catan) hasRoute(p int) bool {
 	return false
 }
 func (g *Catan) setupRoute(p, id int, ship bool) bool {
-	if id < 0 || id >= len(g.Edges) || g.Edges[id].Owner >= 0 || !g.edgeTerrain(id, ship) || (ship && g.pirateBlocks(id)) {
+	if id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != -1 || !g.edgeTerrain(id, ship) || (ship && g.pirateBlocks(id)) {
 		return false
 	}
 	e := g.Edges[id]

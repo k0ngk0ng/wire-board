@@ -635,7 +635,7 @@ func (s *State) catanSetup(a Action) error {
 		return errors.New("请在刚放置的村庄旁修建道路")
 	}
 	e := &g.Edges[a.Edge]
-	if e.Owner >= 0 || (e.A != g.SetupVertex && e.B != g.SetupVertex) {
+	if e.Owner != -1 || (e.A != g.SetupVertex && e.B != g.SetupVertex) {
 		return errors.New("道路必须紧邻刚放置的村庄")
 	}
 	e.Owner = p
