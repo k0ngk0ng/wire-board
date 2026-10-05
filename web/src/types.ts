@@ -337,6 +337,8 @@ export type CatanState = {
     victory: boolean;
   }[];
   progressPlayable?: number[];
+  diplomacyPlacements?: number[];
+  treasonPlacements?: number[];
   knightMoves?: Record<string, number[]>;
   seafarers?: {
     variable?: boolean;

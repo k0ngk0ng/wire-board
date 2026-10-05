@@ -8,6 +8,9 @@ export const cityTrackPowers = [
   "三级：可以将骑士提升至三级",
 ];
 export const cityActionNames: Record<string, string> = {
+  diplomacy: "重建道路",
+  treason_remove: "移除骑士",
+  treason_place: "放置骑士",
   wall: "建造城墙",
   metropolis: "放置大都会",
   pillage: "降级城市",

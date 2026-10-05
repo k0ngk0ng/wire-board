@@ -1,3 +1,5 @@
+import { CatanProgressChoice } from "./catan-progress-choice";
+import { progressChoiceLabels } from "./catan-progress-choice-state";
 import { catanProgressNames } from "./catan-progress-names";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
@@ -36,7 +38,8 @@ export function CatanCitySeat({
   return (
     <span className="catan-city-seat">
       <span>
-        骑士防御 {cityDefense(game, seat)} · 城墙{" "}
+        最长道路 {game.players[seat].roadLength} · 骑士防御{" "}
+        {cityDefense(game, seat)} · 城墙{" "}
         {(cityDiscardLimit(game, seat) - 7) / 2}
       </span>
       <span>
@@ -424,11 +427,13 @@ export function CatanCityChoice({
   act,
   busy,
   assets,
+  chosen,
 }: {
   room: Room;
   act: Act;
   busy: boolean;
   assets: string;
+  chosen: { type: string; id: number } | null;
 }) {
   const g = room.game!.catan!,
     k = g.citiesKnights,
@@ -441,8 +446,14 @@ export function CatanCityChoice({
   }, [room.id, q?.kind, q?.players[0], q?.track, q?.target, room.game!.phase]);
   if (!q || !k) return null;
   const mine =
-    !room.spectating && room.status === "playing" && q.players[0] === room.you;
+    !room.spectating &&
+    room.status === "playing" &&
+    !room.game!.finished &&
+    room.you >= 0 &&
+    !g.players[room.you]?.eliminated &&
+    q.players[0] === room.you;
   const labels: Record<string, string> = {
+    ...progressChoiceLabels,
     aqueduct: "引水渠补偿",
     metropolis: "大都会选址",
     pillage: "蛮族劫掠",
@@ -572,6 +583,16 @@ export function CatanCityChoice({
                 确认弃置 {cards.length} 张
               </button>
             </>
+          )}
+          {progressChoiceLabels[q.kind] && (
+            <CatanProgressChoice
+              key={`${room.id}:${q.kind}:${q.players[0]}:${q.target}:${room.turnDeadline}`}
+              room={room}
+              act={act}
+              busy={busy}
+              assets={assets}
+              chosen={chosen}
+            />
           )}
           <small>回应限时120秒；可收起本面板查看地图，超时由系统代选。</small>
         </>

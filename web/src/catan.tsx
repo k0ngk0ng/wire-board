@@ -1,3 +1,4 @@
+import { progressMapChoices } from "./catan-progress-choice-state";
 import {
   CatanCityActions,
   CatanCityChoice,
@@ -127,6 +128,14 @@ export const catanPhases: Record<string, string> = {
   catan_progress_discard: "选择超出上限的进步牌弃置",
   catan_progress_end: "结束行动前将进步手牌弃至四张",
   catan_knight_retreat: "为被驱逐的骑士选择退路",
+  catan_guild_dues: "从展示的手牌中选择资源或商品",
+  catan_commercial_harbor: "选择用于商业港交换的商品",
+  catan_espionage: "从展示的进步牌中选择一张",
+  catan_wedding: "选择赠送的资源或商品",
+  catan_sabotage: "选择弃置的资源或商品",
+  catan_diplomacy: "选择免费重建道路的位置",
+  catan_treason_remove: "选择被叛变移除的骑士",
+  catan_treason_place: "选择骑士等级和放置位置",
 };
 export const catanSeafarerPhases: Record<string, string> = {
   catan_setup_road: "在刚放置的村庄旁修路或造船",
@@ -384,11 +393,13 @@ export function CatanBoard({
     g.setupStep,
     cardCount,
     city?.pending?.players[0],
+    city?.pending?.kind,
+    city?.pending ? room.turnDeadline : undefined,
   ]);
   const cityChoiceMine = canPlay && city?.pending?.players[0] === you;
   const cityChoiceMode =
     cityChoiceMine &&
-    ["metropolis", "pillage", "knight_retreat"].includes(
+    ["metropolis", "pillage", "knight_retreat", ...progressMapChoices].includes(
       city?.pending?.kind || "",
     )
       ? city!.pending!.kind
@@ -466,6 +477,9 @@ export function CatanBoard({
     knight_promote: g.legal.knightPromote || [],
     knight_chase: g.legal.knightChase || [],
     knight_retreat: g.legal.knightRetreat || [],
+    treason_remove:
+      city?.knights.filter((n) => n.owner === you).map((n) => n.vertex) || [],
+    treason_place: g.treasonPlacements || [],
     knight_move:
       moveFrom === null
         ? Object.entries(g.knightMoves || {})
@@ -829,23 +843,26 @@ export function CatanBoard({
                   ok =
                     effective === "port"
                       ? portMine && !!g.legal.ports?.includes(e.id)
-                      : mine &&
-                        ((effective === "road" &&
-                          g.legal.roads.includes(e.id)) ||
-                          (effective === "ship" &&
-                            !!g.legal.ships?.includes(e.id)) ||
-                          (effective === "move_ship" &&
-                            (moveFrom === null
-                              ? Object.hasOwn(g.shipMoves || {}, e.id)
-                              : (g.shipMoves?.[moveFrom] || []).includes(
-                                  e.id,
-                                ))) ||
-                          (effective === "helper_move" &&
-                            (moveFrom === null
-                              ? Object.hasOwn(g.helperRoadMoves || {}, e.id)
-                              : (g.helperRoadMoves?.[moveFrom] || []).includes(
-                                  e.id,
-                                ))));
+                      : effective === "diplomacy"
+                        ? cityChoiceMine &&
+                          !!g.diplomacyPlacements?.includes(e.id)
+                        : mine &&
+                          ((effective === "road" &&
+                            g.legal.roads.includes(e.id)) ||
+                            (effective === "ship" &&
+                              !!g.legal.ships?.includes(e.id)) ||
+                            (effective === "move_ship" &&
+                              (moveFrom === null
+                                ? Object.hasOwn(g.shipMoves || {}, e.id)
+                                : (g.shipMoves?.[moveFrom] || []).includes(
+                                    e.id,
+                                  ))) ||
+                            (effective === "helper_move" &&
+                              (moveFrom === null
+                                ? Object.hasOwn(g.helperRoadMoves || {}, e.id)
+                                : (
+                                    g.helperRoadMoves?.[moveFrom] || []
+                                  ).includes(e.id))));
                 const picked =
                   (chosen?.type === effective && chosen.id === e.id) ||
                   ((effective === "helper_move" || effective === "move_ship") &&
@@ -1117,7 +1134,13 @@ export function CatanBoard({
           </div>
         </div>
         <CatanCityOverview room={room} assets={assets} />
-        <CatanCityChoice room={room} act={act} busy={busy} assets={assets} />
+        <CatanCityChoice
+          room={room}
+          act={act}
+          busy={busy}
+          assets={assets}
+          chosen={chosen}
+        />
         <CatanCityActions
           room={room}
           act={act}
@@ -1256,6 +1279,7 @@ export function CatanBoard({
           </div>
         )}
         {chosen &&
+          !progressMapChoices.includes(chosen.type) &&
           chosen.type !== "port" &&
           chosen.type !== "robber_start" &&
           (mine || cityChoiceMine) && (
