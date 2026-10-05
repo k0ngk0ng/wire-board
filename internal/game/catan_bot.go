@@ -218,7 +218,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_steal", Target: best}, nil
 	}
-	roads, settlements, cities := g.pieces(player)
+	roads, _, _ := g.pieces(player)
+	settlements := 5 - g.settlementPiecesLeft(player)
 	// Choose a reachable vacant intersection by distance from the current network.
 	road, roadScore := -1, -99999
 	for _, e := range g.Edges {
@@ -292,14 +293,14 @@ func (s *State) catanBot(player int) (Action, error) {
 	}
 	bestCity, cityScore := -1, -1
 	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 1 {
+		if g.canCityUpgrade(player, v.ID) {
 			n := g.vertexValue(player, v.ID)
 			if n > cityScore {
 				bestCity, cityScore = v.ID, n
 			}
 		}
 	}
-	if bestCity >= 0 && cities < 4 {
+	if bestCity >= 0 {
 		choices = append(choices, botChoice{Action{Type: "catan_city", Vertex: bestCity}, 600})
 	}
 	if v := bestVertex(false); v >= 0 && settlements < 5 {

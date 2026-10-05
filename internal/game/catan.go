@@ -375,7 +375,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
 		if g.CitiesKnights != nil {
-			return errors.New("城市与骑士事件骰流程尚未接入，不能按基础版掷骰")
+			return errors.New("城市与骑士进步牌效果尚未全部接入，暂不开放完整对局")
 		}
 		if s.Phase != "catan_roll" {
 			return errors.New("当前不能掷骰")
@@ -388,6 +388,12 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			return errors.New("请先完成当前行动")
 		}
 		s.catanVictory()
+		if k := g.CitiesKnights; k != nil && !s.Finished && len(k.Players[player].Progress) > 4 {
+			k.Pending = &CatanCityPending{Kind: "progress_discard", Players: []int{player}}
+			s.Phase = "catan_progress_end"
+			g.Trade = nil
+			return nil
+		}
 		if !s.Finished && g.pirateFortressReady(player) {
 			s.catanAttackFortress(player, catanRandom(6)+1)
 		}
@@ -399,7 +405,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && (a.Type == "catan_road" || a.Type == "catan_ship")) {
 			return errors.New("当前不能建造")
 		}
-		roads, settlements, cities := g.pieces(player)
+		roads, _, _ := g.pieces(player)
 		switch a.Type {
 		case "catan_ship":
 			if g.shipCount(player) >= 15 || !g.canShip(player, a.Edge) {
@@ -410,11 +416,11 @@ func (s *State) applyCatanStep(player int, a Action) error {
 				return errors.New("道路必须连接己方建筑或道路，不能穿过对手建筑，且最多 15 条")
 			}
 		case "catan_settlement":
-			if settlements >= 5 || !g.canSettlement(player, a.Vertex, false) {
+			if g.settlementPiecesLeft(player) <= 0 || !g.canSettlement(player, a.Vertex, false) {
 				return errors.New("村庄必须连接自己的道路，与所有建筑至少相隔两条边，且最多 5 座")
 			}
 		case "catan_city":
-			if cities >= 4 || a.Vertex < 0 || a.Vertex >= len(g.Vertices) || g.Vertices[a.Vertex].Owner != player || g.Vertices[a.Vertex].Level != 1 {
+			if !g.canCityUpgrade(player, a.Vertex) {
 				return errors.New("只能升级自己的村庄，且最多 4 座城市")
 			}
 		}
@@ -451,6 +457,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			v.Owner = player
 			v.Level++
 			if v.Level == 2 {
+				if k := g.CitiesKnights; k != nil {
+					k.FallenCities = slices.DeleteFunc(k.FallenCities, func(id int) bool { return id == a.Vertex })
+				}
 				s.catanLog(player, "将村庄 #%d 升级为城市", a.Vertex+1)
 			} else {
 				s.catanLog(player, "建造村庄 #%d", a.Vertex+1)
@@ -1098,6 +1107,8 @@ func (s *State) EliminateCatan(p int) error {
 		// Platform timeout removal is outside the board-game rules. Recover
 		// mobile pieces so nobody can later wait on this absent seat to retreat.
 		k.Knights = slices.DeleteFunc(k.Knights, func(n CatanKnight) bool { return n.Owner == p })
+		k.returnProgress(k.Players[p].Progress)
+		k.Players[p].Progress = []int{}
 		s.catanLog(p, "离场骑士返回库存")
 	}
 	catanMove(pl.Resources, g.Bank, append([]int{}, pl.Resources...))
