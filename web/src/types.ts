@@ -288,8 +288,56 @@ export type CatanPlayer = {
   settlementsLeft: number;
   citiesLeft: number;
 };
+export type CatanKnight = {
+  owner: number;
+  vertex: number;
+  strength: number;
+  active: boolean;
+  activatedAt: number;
+  promotedAt: number;
+};
+export type CatanCitiesKnights = {
+  rules: string;
+  layout?: string;
+  barbarianPosition: number;
+  eventDie: number;
+  invasions: number;
+  actionSerial: number;
+  walls: number[];
+  metropolises: number[];
+  fallenCities: number[];
+  knights: CatanKnight[];
+  progressRemaining: number[];
+  players: {
+    improvements: number[];
+    progress?: number[];
+    progressCount: number;
+    publicProgress: number[];
+    defenderPoints: number;
+    progressPoints: number;
+  }[];
+  pending?: {
+    kind: string;
+    players: number[];
+    track: number;
+    target: number;
+    color: number;
+    knight?: CatanKnight;
+    resources?: number[];
+    progress?: number[];
+  };
+};
 export type CatanState = {
-  citiesKnights?: { rules: string; layout?: string };
+  citiesKnights?: CatanCitiesKnights;
+  progressRules?: {
+    id: number;
+    name: string;
+    track: number;
+    count: number;
+    victory: boolean;
+  }[];
+  progressPlayable?: number[];
+  knightMoves?: Record<string, number[]>;
   seafarers?: {
     variable?: boolean;
     rules?: string;
@@ -442,6 +490,12 @@ export type CatanState = {
   longestOwner: number;
   armyOwner: number;
   legal: {
+    knightRecruit?: number[];
+    knightActivate?: number[];
+    knightPromote?: number[];
+    knightChase?: number[];
+    knightRetreat?: number[];
+    pillage?: number[];
     settlements: number[];
     cities: number[];
     roads: number[];
