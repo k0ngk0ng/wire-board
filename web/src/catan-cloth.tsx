@@ -122,6 +122,9 @@ export function CatanClothStock({
         )}
       </div>
       <p>每两枚布匹得1分。点击村落查看贸易关系。没有最长路线奖励。</p>
+      {room.game?.catan?.citiesKnights && (
+        <p>布匹是计分筹码，与城市建设使用的布料商品牌不同。</p>
+      )}
       {empty >= c.emptyLimit ? (
         <p className="cloth-ending">本回合结束时比较总分，同分比较布匹数。</p>
       ) : (
@@ -208,7 +211,10 @@ export function CatanClothChoice({
           {start && !v && (
             <>
               <p>
-                由先手选择大岛上一块12号地块作为强盗起点。之后每人放置三组起始村庄与路线，只从第三座村庄领取资源。
+                由先手选择大岛上一块12号地块作为强盗起点。
+                {g.citiesKnights
+                  ? "首次蛮族进攻后强盗才入场。之后依次放置村庄、城市、村庄及配套路线，仅第三座领取普通起始资源。"
+                  : "之后每人放置三组起始村庄与路线，只从第三座村庄领取资源。"}
               </p>
               {mine && (
                 <>

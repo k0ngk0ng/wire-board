@@ -208,6 +208,7 @@ test("combined maps retain sea layout and add two points only to waiting recipes
     ["fog", 14],
     ["desert", 16],
     ["new_world", 14],
+    ["cloth", 16],
   ]) {
     const room = {
       capacity: 6,

@@ -7,19 +7,13 @@ import (
 	"testing"
 )
 
-// Only exercise confirmed rule composition. The combination constructor and
-// room catalog deliberately still reject cloth while special rules are audited.
+// Public creation remains closed; this exercises the internal constructor.
 func ckClothFixture(t *testing.T, n int, layout string) *State {
 	t.Helper()
-	s, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "cloth", Layout: layout}, nil)
+	s, err := NewCatanCitiesKnightsSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "cloth", Layout: layout}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	s.enableCitiesKnights()
-	g := s.Catan
-	g.CitiesKnights.PirateStart = g.Seafarers.Pirate
-	g.Seafarers.Pirate = -1
-	g.Seafarers.VictoryPoints += 2
 	return s
 }
 
@@ -177,7 +171,7 @@ func TestCatanCitiesKnightsClothAutomaticOriginStaysDormant(t *testing.T) {
 // villages, the fourth can require three tokens while only one remains. Neither
 // the five-empty-villages ending nor the VP target makes this boundary moot.
 // Keep the internal fail-closed protection until a shortage rule is verified.
-func TestCatanClothCommonSupplyBoundaryRemainsGated(t *testing.T) {
+func TestCatanClothCommonSupplyBoundaryProtection(t *testing.T) {
 	for _, n := range []int{4, 6} {
 		s := ckClothFixture(t, n, "fixed")
 		g := s.Catan
@@ -203,11 +197,91 @@ func TestCatanClothCommonSupplyBoundaryRemainsGated(t *testing.T) {
 		if !reflect.DeepEqual(*s, before) {
 			t.Fatal("failed first production should not consume cloth")
 		}
-		if CatanCitiesKnightsSeafarersSupported("cloth") {
-			t.Fatal("unfinished cloth combination was exposed")
+	}
+}
+
+func TestCatanCitiesKnightsClothBotsComplete(t *testing.T) {
+	clothAcrossGames := 0
+	for _, n := range []int{3, 4, 5, 6} {
+		layouts := []string{"fixed"}
+		if n < 5 {
+			layouts = append(layouts, "variable")
 		}
-		if _, err := NewCatanCitiesKnightsSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "cloth", Layout: "fixed"}, nil); err == nil {
-			t.Fatal("unfinished combination constructor accepted cloth")
+		for _, layout := range layouts {
+			t.Run(fmt.Sprintf("%d/%s", n, layout), func(t *testing.T) {
+				s := ckClothFixture(t, n, layout)
+				total, steps := clothTotal(s.Catan), 0
+				for ; steps < 10000 && !s.Finished; steps++ {
+					actor := ckActor(s)
+					a, err := s.BotAction(actor)
+					if err != nil {
+						t.Fatal(steps, s.Phase, err)
+					}
+					if err := s.Apply(actor, a); err != nil {
+						t.Fatal(steps, s.Phase, a, err)
+					}
+					g := s.Catan
+					ckProgressStock(t, g)
+					ckKnightStock(t, g)
+					if clothTotal(g) != total || g.cloth().Stock < 0 || g.LongestOwner != -1 || g.ArmyOwner != -1 || len(g.DevDeck) != 0 {
+						t.Fatal("incorrect cloth/award/development components")
+					}
+					for p := range g.Players {
+						if g.shipCount(p) > 15 || g.cityPiecesLeft(p) < 0 || g.settlementPiecesLeft(p) < 0 {
+							t.Fatal("piece inventory")
+						}
+					}
+					for _, knight := range g.CitiesKnights.Knights {
+						if g.clothVillageAt(knight.Vertex) {
+							t.Fatal("knight occupied village")
+						}
+					}
+					if steps%53 == 0 {
+						saved := clone(*s)
+						if !reflect.DeepEqual(*s, saved) {
+							t.Fatal("persistence")
+						}
+						s = &saved
+					}
+				}
+				g := s.Catan
+				if !s.Finished || len(s.Winners) == 0 || g.CitiesKnights.Invasions == 0 {
+					t.Fatal("incomplete or unexercised combined cloth game", steps, s.Phase)
+				}
+				clothAcrossGames += sum(g.cloth().Held)
+				if g.Players[s.Turn].Score >= 16 {
+					if !reflect.DeepEqual(s.Winners, []int{s.Turn}) {
+						t.Fatal("own-turn points victory has priority")
+					}
+				} else {
+					empty, best, held := 0, -1, -1
+					for _, v := range g.cloth().Villages {
+						if v.Stock == 0 {
+							empty++
+						}
+					}
+					winners := []int{}
+					for p, player := range g.Players {
+						if player.Eliminated {
+							continue
+						}
+						if player.Score > best || (player.Score == best && g.cloth().Held[p] > held) {
+							best, held, winners = player.Score, g.cloth().Held[p], []int{p}
+						} else if player.Score == best && g.cloth().Held[p] == held {
+							winners = append(winners, p)
+						}
+					}
+					if empty < g.cloth().EmptyLimit || !reflect.DeepEqual(s.Winners, winners) {
+						t.Fatal("wrong depletion winners", empty, winners, s.Winners)
+					}
+				}
+				t.Logf("steps=%d invasions=%d cloth=%d supply=%d winners=%v", steps, g.CitiesKnights.Invasions, sum(g.cloth().Held), g.cloth().Stock, s.Winners)
+			})
 		}
+	}
+	// A legal city/progress-heavy win need not collect cloth, particularly on
+	// a variable map. Require scenario exercise across the full matrix instead.
+	if clothAcrossGames == 0 {
+		t.Fatal("full matrix never exercised cloth trade/production")
 	}
 }

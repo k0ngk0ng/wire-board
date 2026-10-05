@@ -2,8 +2,9 @@ package game
 
 import "fmt"
 
-// Internal combination constructor. Scenario-specific variants remain gated
-// until their special components and end conditions have been verified.
+// Internal combination constructor; public expansion creation remains gated.
+// Recipe support alone does not mean release acceptance is complete (notably
+// cloth common-supply exhaustion; see the expansion checklist).
 func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, fmt.Errorf("Helpers与城市骑士组合尚未接入")
@@ -26,12 +27,17 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	s.Phase = phase
 	// Keep each map's setup prelude, but replace the two-settlement wording.
 	win := fmt.Sprintf("%d分获胜", g.Seafarers.VictoryPoints)
+	opening := "顺序放村庄，逆序放城市；普通起始资源"
 	bandits := "首次蛮族进攻前，强盗与海盗都休眠；金矿只产普通资源"
 	if g.wonders() != nil {
 		win = fmt.Sprintf("建成4级奇迹，或%d分且奇迹等级独自领先", g.Seafarers.VictoryPoints)
 		bandits = "本剧本不使用海盗；先手选择强盗起点，首次蛮族进攻后强盗入场；金矿只产普通资源"
 	}
-	s.Log = []string{logs[0], "加入城市与骑士：顺序放村庄，逆序放城市；普通起始资源；" + win, bandits}
+	if g.cloth() != nil {
+		opening = "顺序放村庄，逆序放城市，再顺序放村庄；仅第三座建筑领取普通起始资源"
+		win += "；回合结束时5座村落耗尽也会结算；不使用最长路线或最大骑士军队"
+	}
+	s.Log = []string{logs[0], "加入城市与骑士：" + opening + "；" + win, bandits}
 	if phase == "catan_world_ports" {
 		s.Log = append(s.Log, "先按确认地图轮流放置随机港口，再开始起始建设")
 	}
@@ -44,7 +50,7 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 // Recipe IDs only; persisted five/six-player islands use a separate alias.
 func CatanCitiesKnightsSeafarersSupported(scenario string) bool {
 	switch scenario {
-	case "shores", "islands", "fog", "desert", "new_world", "wonders":
+	case "shores", "islands", "fog", "desert", "new_world", "wonders", "cloth":
 		return true
 	}
 	return false
@@ -55,7 +61,7 @@ func (g *Catan) citySeaSupported() bool {
 		return true
 	}
 	switch g.Seafarers.Scenario {
-	case "shores", "islands", "six_islands", "fog", "desert", "new_world", "wonders":
+	case "shores", "islands", "six_islands", "fog", "desert", "new_world", "wonders", "cloth":
 		return true
 	}
 	return false

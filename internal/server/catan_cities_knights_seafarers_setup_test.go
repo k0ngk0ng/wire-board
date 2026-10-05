@@ -18,6 +18,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 	city := game.CatanCitiesKnightsSetup{}
 	sea := game.CatanSeafarersSetup{Scenario: "shores"}
 	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未开放组合", "capacity": 4, "catanCitiesKnights": city, "catanSeafarers": sea}, 400)
+	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未开放布匹组合", "capacity": 4, "catanCitiesKnights": city, "catanSeafarers": game.CatanSeafarersSetup{Scenario: "cloth"}}, 400)
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "内部组合配置", "capacity": 4}, 201)
 	id := raw["id"].(string)
 	guest.command(current(host), "join", nil, 200)
@@ -28,7 +29,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 	provisionSeafarers(t, s, id, sea)
 	r := current(host)
 	choices := r["catanSeafarersChoices"].([]any)
-	if len(choices) != 6 {
+	if len(choices) != 7 {
 		t.Fatal("wrong combination catalog", choices)
 	}
 	for _, raw := range choices {
@@ -36,7 +37,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 		if !game.CatanCitiesKnightsSeafarersSupported(item["id"].(string)) {
 			t.Fatal("unfinished combination exposed")
 		}
-		if item["id"] == "shores" && item["victoryPoints"] != float64(16) {
+		if (item["id"] == "shores" || item["id"] == "cloth") && item["victoryPoints"] != float64(16) {
 			t.Fatal("wrong combined target")
 		}
 	}
@@ -45,7 +46,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 	before, _ := json.Marshal(s.rooms[id])
 	selectSeafarers(guest, &sea, 400)
 	selectCatanCitiesKnights(guest, &city, 400)
-	for _, scenario := range []string{"tribe", "cloth", "pirate_islands"} {
+	for _, scenario := range []string{"tribe", "pirate_islands"} {
 		selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: scenario}, 400)
 	}
 	options := func(o game.CatanOptions, status int) {

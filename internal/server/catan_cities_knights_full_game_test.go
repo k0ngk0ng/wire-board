@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http/httptest"
+	"slices"
 	"testing"
 	"time"
 
@@ -17,7 +18,7 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 }
 
 func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
-	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world", "wonders"} {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world", "wonders", "cloth"} {
 		t.Run(scenario, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scenario) })
 	}
 }
@@ -75,6 +76,23 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				room := s.rooms[id]
 				state = room.Game
 				g := state.Catan
+				if scenario == "cloth" {
+					c := g.Seafarers.Cloth
+					total := c.Stock
+					for _, held := range c.Held {
+						total += held
+					}
+					for _, village := range c.Villages {
+						total += village.Stock
+					}
+					want := 50
+					if n > 4 {
+						want = 70
+					}
+					if total != want || c.Stock < 0 {
+						t.Fatal("HTTP cloth inventory", total, want)
+					}
+				}
 				if (g.RollID >= 4 && !restartedRoll) || (state.CatanPendingActor() >= 0 && !restartedResponse) {
 					if g.RollID >= 4 {
 						restartedRoll = true
@@ -154,7 +172,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[actor].command(current(clients[actor]), "action", action, 200)
 			}
 			room := s.rooms[id]
-			if !room.Game.Finished || room.Status != "finished" || len(room.Game.Winners) != 1 || !restartedRoll || automatic == 0 || timeouts == 0 {
+			if !room.Game.Finished || room.Status != "finished" || len(room.Game.Winners) == 0 || (scenario != "cloth" && len(room.Game.Winners) != 1) || !restartedRoll || automatic == 0 || timeouts == 0 {
 				t.Fatal("incomplete city game", steps, room.Game.Phase)
 			}
 			winner := room.Game.Winners[0]
@@ -162,7 +180,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			if sea := room.Game.Catan.Seafarers; sea != nil {
 				target = sea.VictoryPoints
 			}
-			if (scenario != "wonders" && room.Game.Catan.Players[winner].Score < target) || room.Game.Catan.CitiesKnights.Invasions == 0 {
+			if (scenario != "wonders" && scenario != "cloth" && room.Game.Catan.Players[winner].Score < target) || room.Game.Catan.CitiesKnights.Invasions == 0 {
 				t.Fatal("wrong expansion victory")
 			}
 			if scenario == "wonders" {
@@ -176,6 +194,39 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				}
 				if target != 12 || (level != 4 && (level <= rival || room.Game.Catan.Players[winner].Score < target)) {
 					t.Fatal("wrong combined wonder victory")
+				}
+			}
+			if scenario == "cloth" {
+				g := room.Game.Catan
+				c := g.Seafarers.Cloth
+				if target != 16 {
+					t.Fatal("wrong cloth target")
+				}
+				if g.Players[room.Game.Turn].Score >= 16 {
+					if !slices.Equal(room.Game.Winners, []int{room.Game.Turn}) {
+						t.Fatal("cloth points priority")
+					}
+				} else {
+					empty, best, held := 0, -1, -1
+					for _, v := range c.Villages {
+						if v.Stock == 0 {
+							empty++
+						}
+					}
+					winners := []int{}
+					for p, player := range g.Players {
+						if player.Eliminated {
+							continue
+						}
+						if player.Score > best || (player.Score == best && c.Held[p] > held) {
+							best, held, winners = player.Score, c.Held[p], []int{p}
+						} else if player.Score == best && c.Held[p] == held {
+							winners = append(winners, p)
+						}
+					}
+					if empty < c.EmptyLimit || !slices.Equal(room.Game.Winners, winners) {
+						t.Fatal("incorrect depletion result")
+					}
 				}
 			}
 			code, profile := clients[n].request("GET", "/api/players/"+room.Seats[winner].ID, nil)
