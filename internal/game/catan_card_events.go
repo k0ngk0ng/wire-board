@@ -14,6 +14,7 @@ type CatanCardEvent struct {
 	Red        int              `json:"red"`  // Independently rolled for C&K; zero otherwise.
 	Face       int              `json:"face"` // C&K event die 0–5; zero without C&K.
 	Players    []int            `json:"players"`
+	Targets    []int            `json:"targets,omitempty"`  // Frozen lower public-score recipients.
 	Gifts      []CatanEventGift `json:"gifts,omitempty"`    // Private choices; never serialize to viewers.
 	Optional   bool             `json:"optional,omitempty"` // Printed "may" for unawarded base conflict leader.
 }
@@ -21,9 +22,11 @@ type CatanCardEvent struct {
 var catanCardEventNames = map[string]string{
 	"beautiful_day": "美好的一天", "earthquake": "地震", "plentiful_year": "丰收年",
 	"epidemic": "瘟疫", "robber_attacks": "强盗袭击", "robber_flees": "强盗逃跑",
-	"good_neighbors": "好邻居",
-	"calm_seas":      "风平浪静", "tournament": "比武大会",
-	"conflict": "冲突",
+	"good_neighbors":   "好邻居",
+	"helpful_neighbor": "援助邻居",
+	"calm_seas":        "风平浪静", "tournament": "比武大会",
+	"conflict":        "冲突",
+	"trade_advantage": "贸易优势",
 }
 
 func (g *Catan) earthquakeRoads(player int) []int {
@@ -50,6 +53,9 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	}
 	if kind == "robber_attacks" && production != 7 {
 		return errors.New("强盗袭击必须按点数7处理")
+	}
+	if kind == "trade_advantage" && g.CitiesKnights != nil {
+		return errors.New("贸易优势与城市骑士的商品规则尚未核验")
 	}
 	if g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("事件牌与助手的组合尚未核验")
@@ -92,11 +98,17 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "good_neighbors" {
 		g.beginNeighborGifts(next.Turn)
 	}
+	if kind == "helpful_neighbor" {
+		g.beginHelpfulNeighbor(next.Turn)
+	}
 	if kind == "calm_seas" || kind == "tournament" {
 		g.CardEvent.Players = g.cardEventLeaders(kind, next.Turn)
 	}
 	if kind == "conflict" {
 		g.beginCardConflict(next.Turn)
+	}
+	if kind == "trade_advantage" && g.LongestOwner >= 0 && g.LongestOwner < len(g.Players) && !g.Players[g.LongestOwner].Eliminated {
+		g.CardEvent.Players = []int{g.LongestOwner}
 	}
 	if kind == "robber_flees" {
 		if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
@@ -145,7 +157,9 @@ func (s *State) catanContinueCardEvent() error {
 				canChoose = len(g.fleeDeserts()) > 0
 			case "good_neighbors":
 				canChoose = true // Eligibility was frozen before anyone received a card.
-			case "conflict":
+			case "helpful_neighbor":
+				canChoose = sum(g.Players[p].Resources) > 0 && len(q.Targets) > 0
+			case "conflict", "trade_advantage":
 				canChoose = len(g.cardTheftTargets(p)) > 0
 			default:
 				return errors.New("该事件不需要玩家选择")
@@ -182,8 +196,12 @@ func (s *State) catanCardEventChoice(player int, a Action) error {
 		return errors.New("请等待对应玩家完成事件牌选择")
 	}
 	switch q.Kind {
-	case "conflict":
-		if err := s.catanCardConflictChoice(player, a); err != nil {
+	case "helpful_neighbor":
+		if err := s.catanHelpfulNeighborChoice(player, a); err != nil {
+			return err
+		}
+	case "conflict", "trade_advantage":
+		if err := s.catanCardTheftChoice(player, a); err != nil {
 			return err
 		}
 	case "good_neighbors":
@@ -224,7 +242,7 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 	if (q.Kind == "plentiful_year" || q.Kind == "calm_seas" || q.Kind == "tournament") && sum(g.Bank[:5]) > 0 {
 		return Action{Type: "catan_event_resource", Take: g.catanResourceChoiceBot(player, 1)}, nil
 	}
-	if q.Kind == "conflict" {
+	if q.Kind == "conflict" || q.Kind == "trade_advantage" {
 		target := -1
 		for _, p := range g.cardTheftTargets(player) {
 			// Public score only; exclude hidden VP cards and resource colors.
@@ -236,7 +254,7 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 			return Action{Type: "catan_event_steal", Target: target}, nil
 		}
 	}
-	if q.Kind == "good_neighbors" {
+	if q.Kind == "good_neighbors" || q.Kind == "helpful_neighbor" {
 		// Give the most plentiful card in our own hand. Never inspect the
 		// recipient's hand or another player's pending private selection.
 		hand := g.Players[player].Resources
@@ -249,7 +267,19 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 		if color >= 0 {
 			give := make([]int, len(hand))
 			give[color] = 1
-			return Action{Type: "catan_event_gift", Give: give}, nil
+			a := Action{Type: "catan_event_gift", Give: give}
+			if q.Kind == "helpful_neighbor" {
+				if len(q.Targets) == 0 {
+					return Action{}, errors.New("no lower-score neighbor")
+				}
+				a.Target = q.Targets[0]
+				for _, target := range q.Targets[1:] {
+					if g.Players[target].Score-g.hiddenVictoryPoints(target) < g.Players[a.Target].Score-g.hiddenVictoryPoints(a.Target) {
+						a.Target = target
+					}
+				}
+			}
+			return a, nil
 		}
 	}
 	if q.Kind == "robber_flees" {

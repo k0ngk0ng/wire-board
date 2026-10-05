@@ -11,7 +11,7 @@ import (
 )
 
 func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
-	for _, kind := range []string{"plentiful_year", "robber_flees", "good_neighbors", "calm_seas", "tournament"} {
+	for _, kind := range []string{"plentiful_year", "robber_flees", "good_neighbors", "calm_seas", "tournament", "helpful_neighbor"} {
 		reward := kind == "plentiful_year" || kind == "calm_seas" || kind == "tournament"
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(fmt.Sprintf("%s/%s", kind, mode), func(t *testing.T) {
@@ -26,6 +26,22 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 				if kind == "calm_seas" {
 					// All players tie at zero installed port buildings.
 					g.Ports = nil
+				}
+				if kind == "helpful_neighbor" {
+					g.CardEvent.Players, g.CardEvent.Targets = []int{0, 1}, []int{2}
+					for p := range 2 {
+						// Make two public leaders by upgrading their other building;
+						// all three selected production buildings remain settlements.
+						for i, v := range g.Vertices {
+							if v.Owner == p && v.ID != g.Tiles[0].Vertices[p] {
+								g.Vertices[i].Level = 2
+								g.Players[p].Score++
+								break
+							}
+						}
+						g.Players[p].Resources[p+1]++
+						g.Bank[p+1]--
+					}
 				}
 				if kind == "good_neighbors" {
 					for p := range g.Players {
@@ -73,12 +89,26 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 						t.Fatal("private gift missing or transferred before all selections")
 					}
 				}
+				if kind == "helpful_neighbor" {
+					clients[0].command(current(clients[0]), "action", first, 200)
+					g = s.rooms[id].Game.Catan
+					if g.Players[0].Resources[1] != 0 || g.Players[2].Resources[1] != 1 || g.Players[0].Resources[0] != 0 {
+						t.Fatal("first helpful gift not transferred or production ran early")
+					}
+				}
 				actor := s.rooms[id].Game.CatanPendingActor()
 				for viewer, c := range clients {
 					view := current(c)["game"].(map[string]any)["catan"].(map[string]any)
 					key := "eventResources"
 					if kind == "robber_flees" {
 						key = "fleeDeserts"
+					}
+					if kind == "helpful_neighbor" {
+						key = "eventGifts"
+						targets := view["legal"].(map[string]any)["eventTargets"].([]any)
+						if (len(targets) == 1) != (viewer == actor) || len(targets) == 1 && targets[0].(float64) != 2 {
+							t.Fatal("helpful recipient choices shown to wrong actor")
+						}
 					}
 					if kind == "good_neighbors" {
 						key = "eventGifts"
@@ -163,6 +193,9 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 					want := 1
 					if reward || kind == "good_neighbors" {
 						want = 2
+					}
+					if kind == "helpful_neighbor" && seat == 2 {
+						want = 3
 					}
 					if total != want || p.Resources[0] < 1 {
 						t.Fatal("wrong event reward/production count", p.Resources)
