@@ -7,7 +7,7 @@ import (
 
 // Public creation cannot provision this setting until expansion acceptance.
 func (r *Room) setCatanBaseConfiguration(request game.CatanBaseConfiguration) error {
-	if r.Kind != "catan" || r.Status != "waiting" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if r.Kind != "catan" || r.Status != "waiting" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
 		return fmt.Errorf("基础布局只能用于尚未开局的基础卡坦岛房间")
 	}
 	setup, err := game.NormalizeCatanBaseConfiguration(max(3, r.Capacity), request)

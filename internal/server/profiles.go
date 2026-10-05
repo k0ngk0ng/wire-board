@@ -20,6 +20,7 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	CatanExpansions  []string             `json:"catanExpansions,omitempty"`
 	CatanLayout      string               `json:"catanLayout,omitempty"`
 	CatanRules       string               `json:"catanRules,omitempty"`
 	CatanScenario    string               `json:"catanScenario,omitempty"`
@@ -52,6 +53,20 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	} else if r.Game != nil && r.Game.Catan != nil && r.Game.Catan.BaseSetup != nil {
 		record.CatanLayout = r.Game.Catan.BaseSetup.Layout
 		record.CatanRules = r.Game.Catan.BaseSetup.Rules
+	}
+	if g := r.Game.Catan; g != nil {
+		record.CatanOptions = g.Options
+		if g.Seafarers != nil {
+			record.CatanExpansions = append(record.CatanExpansions, "seafarers")
+		}
+		if g.CitiesKnights != nil {
+			record.CatanExpansions = append(record.CatanExpansions, "cities_knights")
+			setup := g.CitiesKnightsSetup()
+			record.CatanRules = setup.Rules
+			if g.Seafarers == nil {
+				record.CatanLayout = setup.Layout
+			}
+		}
 	}
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}

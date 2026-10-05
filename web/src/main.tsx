@@ -1,3 +1,4 @@
+import { CatanCitiesKnightsSetup } from "./catan-cities-knights-setup";
 import { CatanBasePicker } from "./catan-base-setup";
 import { catanBaseLayoutName } from "./catan-base-layout";
 import { CatanWorldEditor } from "./catan-world-editor";
@@ -2155,7 +2156,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? `${seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${seaInfo ? catanScenarioVictory(seaInfo.id, seaInfo.victoryPoints) : room.catanNewWorldMap ? "12分获胜" : "10分获胜"}`
+                  ? `${room.catanCitiesKnights ? "城市与骑士 · 随机地图" : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${room.catanCitiesKnights ? "13分获胜" : seaInfo ? catanScenarioVictory(seaInfo.id, seaInfo.victoryPoints) : room.catanNewWorldMap ? "12分获胜" : "10分获胜"}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2164,6 +2165,7 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
+        {room.kind === "catan" && <CatanCitiesKnightsSetup room={room} />}
         {room.kind === "catan" && (
           <CatanBasePicker
             room={room}
@@ -2182,6 +2184,7 @@ function Waiting({
           <CatanOptionPicker
             value={room.catanOptions}
             seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
+            citiesKnights={!!room.catanCitiesKnights}
             disabled={!host || busy || mapDirty}
             onChange={(catanOptions) =>
               command("catan_options", { catanOptions })

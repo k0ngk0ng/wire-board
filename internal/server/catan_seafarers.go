@@ -8,8 +8,8 @@ import (
 // Called on command's private room copy. Creation deliberately cannot provision
 // this field yet, so standard rooms cannot activate unfinished expansions.
 func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
-	if r.CatanBaseConfiguration != nil {
-		return fmt.Errorf("基础布局不能与航海家剧本混用")
+	if r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil {
+		return fmt.Errorf("该房间尚不能与航海家剧本组合")
 	}
 	setup, err := game.NormalizeCatanSeafarersSetup(max(3, r.Capacity), request)
 	if err != nil {

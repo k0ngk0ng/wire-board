@@ -1,3 +1,4 @@
+import { CatanCitiesKnightsRules } from "./catan-cities-knights-rules";
 import type { Room } from "./types";
 import "./catan-rules.css";
 import { catanRuleContext, type CatanRuleContext } from "./catan-rule-context";
@@ -194,6 +195,7 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
 export function CatanRules({ room }: { room: Room }) {
   const info = catanRuleContext(room);
   const { scenario, players, fiveSix, helpers } = info;
+  if (info.citiesKnights) return <CatanCitiesKnightsRules info={info} />;
   const seafarers = !!scenario;
   const pirate = scenario === "pirate_islands";
   const cloth = scenario === "cloth";

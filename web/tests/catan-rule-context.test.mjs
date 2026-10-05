@@ -2,6 +2,70 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { catanRuleContext } from "../src/catan-rule-context.ts";
 
+test("cities and knights waiting rules use thirteen points and hide stale base layout", () => {
+  const room = {
+    capacity: 6,
+    catanOptions: { fiveSix: true },
+    catanCitiesKnights: { layout: "variable", rules: "catan-knights-5-6-2025" },
+    catanBaseConfiguration: { layout: "fixed" },
+  };
+  const rules = catanRuleContext(room);
+  assert.equal(rules.citiesKnights, true);
+  assert.equal(rules.target, 13);
+  assert.equal(rules.layout, "variable");
+  assert.equal(rules.fixedBase, false);
+  assert.equal(rules.neutral, false);
+  assert.equal(rules.fiveSix, true);
+  assert.equal(rules.helpers, false);
+  assert.equal(rules.waiting, true);
+});
+
+test("cities and knights saved games resolve actual players and legacy layout", () => {
+  for (const count of [3, 6]) {
+    const room = {
+      capacity: 4,
+      catanOptions: { helpers: true },
+      catanSeafarers: { scenario: "shores", layout: "fixed" },
+      game: {
+        catan: {
+          players: Array(count).fill({}),
+          citiesKnights: { rules: "catan-knights-2025" },
+          paired: count > 4 ? { primary: 0 } : undefined,
+        },
+      },
+    };
+    const rules = catanRuleContext(room);
+    assert.equal(rules.citiesKnights, true);
+    assert.equal(rules.target, 13);
+    assert.equal(rules.layout, "variable");
+    assert.equal(rules.players, count);
+    assert.equal(rules.fiveSix, count > 4);
+    assert.equal(rules.helpers, false);
+    assert.equal(rules.scenario, "");
+    assert.equal(rules.waiting, false);
+  }
+});
+
+test("a cities and knights waiting draft cannot change saved base or seafarers rules", () => {
+  const room = {
+    capacity: 6,
+    catanOptions: { fiveSix: true },
+    catanCitiesKnights: { layout: "variable" },
+    game: { catan: { players: Array(3).fill({}) } },
+  };
+  assert.equal(catanRuleContext(room).citiesKnights, false);
+  assert.equal(catanRuleContext(room).target, 10);
+  assert.equal(catanRuleContext(room).fiveSix, false);
+  room.game.catan.seafarers = {
+    scenario: "shores",
+    layout: "fixed",
+    victoryPoints: 14,
+  };
+  assert.equal(catanRuleContext(room).citiesKnights, false);
+  assert.equal(catanRuleContext(room).target, 14);
+  assert.equal(catanRuleContext(room).layout, "fixed");
+});
+
 test("waiting rules follow scenario selection, player extension and Helpers", () => {
   const room = {
     capacity: 4,
@@ -91,11 +155,18 @@ test("legacy scenario snapshots and prepared waiting maps keep their rules", () 
 test("fixed base snapshots preserve neutral setup rules independently of capacity", () => {
   const room = {
     capacity: 6,
-    game: { catan: {
-      players: Array(5).fill({}),
-      baseSetup: { layout: "fixed", rules: "catan-base-5-6-2025", colors: [2, 1, 4, 5, 3], neutralColor: 0 },
-      paired: { primary: 0 },
-    } },
+    game: {
+      catan: {
+        players: Array(5).fill({}),
+        baseSetup: {
+          layout: "fixed",
+          rules: "catan-base-5-6-2025",
+          colors: [2, 1, 4, 5, 3],
+          neutralColor: 0,
+        },
+        paired: { primary: 0 },
+      },
+    },
   };
   assert.equal(catanRuleContext(room).fixedBase, true);
   assert.equal(catanRuleContext(room).neutral, true);
@@ -109,10 +180,20 @@ test("fixed base snapshots preserve neutral setup rules independently of capacit
 });
 
 test("waiting base layout changes the quick reference but cannot override a running game", () => {
-  const room = { capacity: 6, catanOptions: { fiveSix: true }, catanBaseConfiguration: { layout: "fixed" } };
+  const room = {
+    capacity: 6,
+    catanOptions: { fiveSix: true },
+    catanBaseConfiguration: { layout: "fixed" },
+  };
   assert.equal(catanRuleContext(room).fixedBase, true);
   assert.equal(catanRuleContext(room).neutral, true); // Explain five-player case before actual player count is known.
-  room.game = { catan: { players: Array(6).fill({}), baseSetup: { layout: "variable", neutralColor: -1 }, options: { fiveSix: true } } };
+  room.game = {
+    catan: {
+      players: Array(6).fill({}),
+      baseSetup: { layout: "variable", neutralColor: -1 },
+      options: { fiveSix: true },
+    },
+  };
   assert.equal(catanRuleContext(room).fixedBase, false);
   assert.equal(catanRuleContext(room).neutral, false);
   delete room.game;
