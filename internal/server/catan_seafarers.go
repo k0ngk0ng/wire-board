@@ -11,8 +11,8 @@ func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" || r.CatanBaseConfiguration != nil {
 		return fmt.Errorf("该房间尚不能与航海家剧本组合")
 	}
-	if r.friendlyRobberEnabled() {
-		return fmt.Errorf("友善强盗目前仅核验基础版及港口霸主组合")
+	if r.friendlyRobberEnabled() && !game.CatanFriendlySeafarersSupported(max(3, r.Capacity), request.Scenario) {
+		return fmt.Errorf("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")
 	}
 	if r.CatanCitiesKnights != nil && !game.CatanCitiesKnightsSeafarersSupported(request.Scenario) {
 		return fmt.Errorf("该航海家剧本的城市骑士组合规则尚未接入")

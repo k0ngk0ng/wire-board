@@ -182,6 +182,11 @@ export type CatanNewWorldMap = {
   hexes: { resource: number; number: number }[];
 };
 export type Room = {
+  catanFriendlyRobberAvailability?: {
+    allowed: boolean;
+    reason: string;
+    minPlayers: number;
+  };
   catanFriendlyRobber?: { enabled: boolean; rules: string };
   catanHarbors?: { enabled: boolean; rules: string };
   catanCitiesKnights?: { layout: "variable"; rules: string };

@@ -213,7 +213,7 @@ export function CatanRules({ room }: { room: Room }) {
       <>
         <CatanCitiesKnightsRules info={info} />
         {info.harbors && <CatanHarborsRules />}
-        {info.friendlyRobber && <CatanFriendlyRobberRules />}
+        {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
         {scenario && (
           <>
             <h4>本剧本规则</h4>
@@ -236,12 +236,19 @@ export function CatanRules({ room }: { room: Room }) {
             ? `航海家 · ${catanScenarioName(scenario)}`
             : "卡坦岛基础版"}
         </b>{" "}
-        · {info.waiting ? (fiveSix ? "5–6人" : "3–4人") : `${players}人`}
+        ·{" "}
+        {info.waiting
+          ? fiveSix
+            ? "5–6人"
+            : info.friendlyRobber && scenario === "shores"
+              ? "4人"
+              : "3–4人"
+          : `${players}人`}
         {seafarers && info.layout ? ` · ${catanLayoutName(info.layout)}` : ""}。
         {catanScenarioVictory(scenario, info.target)}。
       </p>
       {info.harbors && <CatanHarborsRules />}
-      {info.friendlyRobber && <CatanFriendlyRobberRules />}
+      {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
       {!cloth && <p>达标获胜在自己的行动阶段判定。</p>}
       {seafarers && (
         <>

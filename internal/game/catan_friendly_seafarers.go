@@ -32,6 +32,8 @@ func NewCatanFriendlySeafarers(n int, options CatanOptions, setup CatanSeafarers
 	if err != nil {
 		return nil, err
 	}
-	s.enableCatanFriendlyRobber()
+	if err = s.ConfigureCatanFriendlyRobber(CatanFriendlyRobberSetup{Enabled: true}); err != nil {
+		return nil, err
+	}
 	return s, nil
 }
