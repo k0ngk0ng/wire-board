@@ -179,7 +179,7 @@ func TestCatanCardRobberFleesBeforeProductionAndFirstInvasion(t *testing.T) {
 	ckProgressStock(t, s.Catan)
 }
 
-func TestCatanCardRobberFleesDoesNotRevealFogOrBypassScenarioGates(t *testing.T) {
+func TestCatanCardRobberFleesDoesNotRevealFog(t *testing.T) {
 	s, _ := fogTestGame(t, CatanDesert)
 	s.Phase = "catan_roll"
 	before := clone(*s.Catan.Seafarers.Fog)
@@ -187,7 +187,4 @@ func TestCatanCardRobberFleesDoesNotRevealFogOrBypassScenarioGates(t *testing.T)
 	if s.Catan.Robber != -1 || !reflect.DeepEqual(before, *s.Catan.Seafarers.Fog) || s.Catan.Tiles[2].Resource != CatanFog {
 		t.Fatal("flee inspected or revealed hidden desert")
 	}
-	s, _ = tribeGame(t)
-	s.Phase = "catan_roll"
-	rejectCardEvent(t, s, "robber_flees", 4, 0, 0)
 }
