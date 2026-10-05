@@ -347,7 +347,7 @@ export function CatanBoard({
   const pirates = sea?.pirateIslands;
   const devLabel = (i: number) =>
     pirates && i === 4 ? "胜利点卡 · 当作骑士" : devNames[i];
-  const pieceScale = sea ? Math.max(0.64, hexSize / 62) : 1;
+  const pieceScale = Math.max(0.64, hexSize / 62);
   const targetScore = city ? 13 : sea?.victoryPoints || 10;
   const terrainNames = [...catanNames, "沙漠", "海洋", "金矿", "未探索迷雾"];
   const describeDev = (i: number) =>
@@ -916,6 +916,7 @@ export function CatanBoard({
                   <g
                     key={e.id}
                     className={`catan-edge ${ok ? "selectable" : ""}`}
+                    pointerEvents={ok ? undefined : "none"}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
                     aria-label={`${effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "move_ship")) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}`}
@@ -1037,6 +1038,7 @@ export function CatanBoard({
                   <g
                     key={v.id}
                     className={`catan-vertex ${ok ? "selectable" : ""}`}
+                    pointerEvents={ok ? undefined : "none"}
                     transform={`translate(${v.x},${v.y}) scale(${pieceScale})`}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
