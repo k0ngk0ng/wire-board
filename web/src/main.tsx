@@ -3807,6 +3807,7 @@ function RailMap({
     useRailMapControls({
       aspect: catalog.map.width / catalog.map.height,
       minMobileWidth: catalog.map.width < catalog.map.height ? 360 : 620,
+      fillMobileHeight: true,
     });
   const [showCities, setShowCities] = useState(
     () => localStorage.getItem("wb_rail_city_names") !== "off",
@@ -4535,11 +4536,17 @@ function RailBoard({
           <div className="train-market-cards">
             <button
               className="train-deck"
+              aria-label="摸一张暗牌"
               disabled={!drawing || busy}
               onClick={() => void act({ type: "draw", slot: -1 })}
             >
               <TrainFront size={28} />
-              <strong>摸一张暗牌</strong>
+              <strong>
+                <span className="train-deck-label-full">摸一张暗牌</span>
+                <span className="train-deck-label-short" aria-hidden="true">
+                  暗牌
+                </span>
+              </strong>
               <small>可摸 {r.remaining} 张</small>
             </button>
             {r.face.map((c, i) => (
@@ -4564,16 +4571,16 @@ function RailBoard({
                 )}
               </AnimatedSlot>
             ))}
-            <button
-              className="ticket-deck"
-              disabled={!turn || busy || r.ticketsRemaining === 0}
-              onClick={() => setConfirmTickets(true)}
-            >
-              <Flag size={25} />
-              <strong>领取目的地</strong>
-              <small>抽 3 留至少 1 · 余 {r.ticketsRemaining}</small>
-            </button>
           </div>
+          <button
+            className="ticket-deck"
+            disabled={!turn || busy || r.ticketsRemaining === 0}
+            onClick={() => setConfirmTickets(true)}
+          >
+            <Flag size={25} />
+            <strong>领取目的地</strong>
+            <small>抽 3 留至少 1 · 余 {r.ticketsRemaining}</small>
+          </button>
         </div>
       </div>
       {!room.spectating && (

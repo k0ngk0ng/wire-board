@@ -5184,3 +5184,74 @@ label small {
   gap: 6px;
   align-items: center;
 }
+
+/* A full-width map and six equal draw slots on narrow screens. The market
+   cannot stretch a separate, fixed-height map frame and leave a blank footer. */
+.train-deck-label-short {
+  display: none;
+}
+.rail-table .train-market > .ticket-deck {
+  margin-top: 5px;
+}
+@media (max-width: 850px) {
+  .rail-table {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .rail-table .map-scroll {
+    height: clamp(260px, 48dvh, 440px);
+  }
+  .rail-table .map-controls {
+    justify-content: space-between;
+    padding: 3px 7px;
+  }
+  .rail-table .train-market {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 6px;
+    padding: 7px;
+  }
+  .rail-table .train-market .section-line {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+  }
+  .rail-table .train-market > .ticket-deck {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    min-height: 32px;
+    margin: 0;
+    padding: 5px 9px;
+  }
+  .rail-table .train-market-cards {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    align-items: center;
+    gap: 5px;
+  }
+  .rail-table .train-market-cards .card-slot,
+  .rail-table .train-market-cards .slot-current {
+    width: 100%;
+    min-width: 0;
+  }
+  .rail-table .train-market-cards .train-card,
+  .rail-table .train-market-cards .train-deck {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 250 / 161;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .rail-table .train-deck-label-full {
+    display: none;
+  }
+  .rail-table .train-deck-label-short {
+    display: inline;
+  }
+}
