@@ -253,6 +253,10 @@ export function CatanWondersPanel({
   const canClaim = !!card && canAct && !!game.wonderClaims?.includes(card.id);
   const canBuild = !!card && canAct && !!game.wonderBuilds?.includes(card.id);
   const hand = !room.spectating ? game.players[room.you]?.resources : undefined;
+  const victoryTarget =
+    (!room.spectating && room.you >= 0
+      ? game.fishing?.victoryTargets[room.you]
+      : undefined) ?? catanSavedVictoryTarget(game);
   const deficit =
     card?.owner === room.you && rule && hand
       ? rule.cost
@@ -295,8 +299,13 @@ export function CatanWondersPanel({
         </header>
         <p>
           建至 <b>4级</b> 即获胜，或{" "}
-          <b>{catanSavedVictoryTarget(game)}分且等级领先</b>。
+          <b>{victoryTarget}分且等级领先</b>。
         </p>
+        {game.fishing && (
+          <p>
+            旧靴子只使持有者的分数门槛增加1分；建成4级仍直接获胜。
+          </p>
+        )}
         {own && ownRule ? (
           <button
             className="catan-wonder-own"
@@ -530,7 +539,7 @@ export function CatanWondersPanel({
                       <summary>本剧本规则</summary>
                       <p>
                         在自己的行动中，将奇迹建至4级即获胜；或者达到
-                        {catanSavedVictoryTarget(game)}
+                        {victoryTarget}
                         分，且已建等级严格高于其他所有玩家。并列不算领先，尚未建造也不能获胜。
                       </p>
                       <p>

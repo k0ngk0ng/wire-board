@@ -9,7 +9,7 @@ export function catanResultDescription(g: CatanState) {
   const target = catanSavedVictoryTarget(g);
   const harbors = g.harbors ? "港口霸主＋" : "";
   if (sea?.wonders || sea?.scenario === "wonders")
-    return `${harbors}${g.citiesKnights ? "城市与骑士＋" : ""}卡坦奇迹：建成4级奇迹，或达到${target}分且奇迹等级独自领先，即可在自己的行动阶段获胜。`;
+    return `${harbors}${g.citiesKnights ? "城市与骑士＋" : ""}${g.fishing ? "捕鱼＋" : ""}卡坦奇迹：建成4级奇迹，或达到${target}分且奇迹等级独自领先，即可在自己的行动阶段获胜。${g.fishing ? "持旧靴子时分数门槛增加1分，建成4级仍直接获胜。" : ""}`;
   if (sea?.cloth || sea?.scenario === "cloth")
     return `${harbors}${g.citiesKnights ? "城市与骑士＋" : ""}卡坦布匹：在自己的行动阶段达到${target}分获胜；回合结束时至少五座村落的布匹耗尽也会结算，比较总分，同分比较布匹数量。`;
   if (g.citiesKnights)

@@ -74,6 +74,17 @@ test("combined wonders retain the alternative four-level victory and require twe
   assert.doesNotMatch(text, /10分|13分/);
 });
 
+test("fishing wonders explain the boot's extra point without changing four-level completion", () => {
+  const text = catanResultDescription({
+    ...base(),
+    fishing: { victoryTargets: [11, 10, 10] },
+    seafarers: { scenario: "wonders", wonders: {}, victoryPoints: 10 },
+  });
+  assert.match(text, /捕鱼＋卡坦奇迹/);
+  assert.match(text, /10分且奇迹等级独自领先/);
+  assert.match(text, /持旧靴子时分数门槛增加1分，建成4级仍直接获胜/);
+});
+
 test("cloth combination retains depletion ending and uses sixteen points without route awards", () => {
   const text = catanResultDescription({
     ...base(),
