@@ -158,6 +158,11 @@ func (g *Catan) cityMetropolisSites(player int) []int {
 	return out
 }
 func (s *State) catanCityAction(player int, a Action) error {
+	return s.catanCityBuild(player, a, 0)
+}
+
+// Discounts come only from validated progress-card play, never Action fields.
+func (s *State) catanCityBuild(player int, a Action, discount int) error {
 	g := s.Catan
 	k := g.CitiesKnights
 	if k == nil || s.Phase != "catan_turn" || player != s.Turn {
@@ -171,14 +176,14 @@ func (s *State) catanCityAction(player int, a Action) error {
 		if g.catanDiscardLimit(player) >= 13 {
 			return errors.New("每人最多三座城墙")
 		}
-		cost := []int{0, 2, 0, 0, 0}
+		cost := []int{0, max(0, 2-discount), 0, 0, 0}
 		if !catanHas(g.Players[player].Resources, cost) {
 			return errors.New("城墙需要两张砖块")
 		}
 		catanMove(g.Players[player].Resources, g.Bank, cost)
 		k.Walls = append(k.Walls, v)
 		g.Trade = nil
-		s.catanLog(player, "支付砖块×2，为城市 #%d 建造城墙，弃牌上限为%d张", v+1, g.catanDiscardLimit(player))
+		s.catanLog(player, "支付砖块×%d，为城市 #%d 建造城墙，弃牌上限为%d张", cost[1], v+1, g.catanDiscardLimit(player))
 		return nil
 	}
 	track := a.Color
@@ -198,14 +203,15 @@ func (s *State) catanCityAction(player int, a Action) error {
 		return errors.New("需要一座未放置大都会的城市才能购买第四或第五级建设")
 	}
 	card := 5 + track
-	if g.Players[player].Resources[card] < next {
+	cost := max(0, next-discount)
+	if g.Players[player].Resources[card] < cost {
 		return errors.New("相应商品不足")
 	}
-	g.Players[player].Resources[card] -= next
-	g.Bank[card] += next
+	g.Players[player].Resources[card] -= cost
+	g.Bank[card] += cost
 	k.Players[player].Improvements[track] = next
 	g.Trade = nil
-	s.catanLog(player, "支付%s×%d，将%s建设提升至%d级", catanCardName(card), next, catanCityTracks[track], next)
+	s.catanLog(player, "支付%s×%d，将%s建设提升至%d级", catanCardName(card), cost, catanCityTracks[track], next)
 	if next >= 4 && owner != player && (owner < 0 || k.Players[owner].Improvements[track] < next) {
 		k.Pending = &CatanCityPending{Kind: "metropolis", Players: []int{player}, Track: track}
 		s.Phase = "catan_metropolis"
