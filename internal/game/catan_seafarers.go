@@ -157,25 +157,7 @@ func (g *Catan) movableShip(p, id int) bool {
 	if g.Seafarers == nil || g.Seafarers.MovedShip || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != p || !g.Edges[id].Ship || g.pirateBlocks(id) || slices.Contains(g.Seafarers.BuiltShips, id) {
 		return false
 	}
-	e := g.Edges[id]
-	for _, v := range []int{e.A, e.B} {
-		if (g.Vertices[v].Owner == p && g.Vertices[v].Level > 0) || g.clothShipAnchor(p, v) {
-			continue
-		}
-		open := true
-		// Opponent buildings interrupt longest routes, but do not open an otherwise
-		// closed shipping line between our buildings for movement purposes.
-		for _, next := range g.touching(v) {
-			if next != id && g.Edges[next].Owner == p && g.Edges[next].Ship {
-				open = false
-				break
-			}
-		}
-		if open {
-			return true
-		}
-	}
-	return false
+	return g.openRoute(p, id)
 }
 func (g *Catan) shipDestinations(p, from int) []int {
 	result := []int{}

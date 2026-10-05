@@ -21,8 +21,8 @@ type CatanCityEvent struct {
 	Tasks  []CatanCityEventTask `json:"tasks"`
 }
 
-// Internal until every progress-card effect is supported. Callers use server
-// dice, never a client's preferred result. This method exercises the real
+// Callers use server dice, never a client's preferred event result.
+// This method implements the real
 // event -> response -> production pipeline without substituting base rules.
 func (s *State) catanCityRoll(red, yellow, face int) error {
 	g := s.Catan
