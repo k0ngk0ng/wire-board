@@ -10,6 +10,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 export function useRailMapControls({
   aspect = 1744 / 1125,
   minMobileWidth = 620,
+  fillMobileHeight = false,
 } = {}) {
   const viewport = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0, mobile: false });
@@ -27,7 +28,11 @@ export function useRailMapControls({
     null,
   );
   const baseWidth = size.mobile
-    ? Math.max(minMobileWidth, size.width)
+    ? Math.max(
+        minMobileWidth,
+        size.width,
+        fillMobileHeight ? size.height * aspect : 0,
+      )
     : Math.min(size.width, size.height * aspect);
   const width = baseWidth * zoom;
   const height = width / aspect;
