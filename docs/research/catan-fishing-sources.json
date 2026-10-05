@@ -1,0 +1,90 @@
+{
+  "checked_on": "2026-10-05",
+  "status": "Printed token and production data verified; runtime scenario map/production/actions/UI not yet integrated.",
+  "sources": [
+    {
+      "source": "../board-expansion-rule-sources.json#catan-traders-2025",
+      "pdf_pages": [
+        9,
+        10
+      ],
+      "role": "Fishing grounds, lake faces, 29 fish plus boot, seven-token cap, secret draws, payments, boot and actions"
+    },
+    {
+      "source": "../board-expansion-rule-sources.json#catan-traders-5-6-2025",
+      "pdf_page": 5,
+      "role": "Extra lake, two fishing grounds, 14 additional fish tokens and paired second-player actions"
+    },
+    {
+      "url": "https://www.catan.com/faq/traders-barbarians",
+      "sha256": "9443d536c318a4e629d5bcd37a7c2c72e3403f81255915cd3cf6cf9cb77a734d",
+      "bytes": 102213,
+      "questions": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "role": "Aqueduct, pre-invasion fish theft, visible VP for boot, starting fish, no score deduction, cap, separate payments, lake robber, no trading, face-down replacement"
+    }
+  ],
+  "data": {
+    "base": {
+      "fish_tokens": {
+        "1": 11,
+        "2": 10,
+        "3": 8
+      },
+      "old_boot": 1,
+      "lake_numbers": [
+        [
+          2,
+          3,
+          11,
+          12
+        ]
+      ],
+      "fishing_ground_numbers": [
+        4,
+        5,
+        6,
+        8,
+        9,
+        10
+      ]
+    },
+    "five_six_additions": {
+      "fish_tokens": {
+        "1": 4,
+        "2": 5,
+        "3": 5
+      },
+      "old_boot": 0,
+      "lake_numbers": [
+        [
+          4,
+          10
+        ]
+      ],
+      "fishing_ground_numbers": [
+        5,
+        9
+      ]
+    },
+    "hand_token_cap": 7,
+    "boot_extra_victory_point": 1,
+    "fish_costs": {
+      "remove_robber": 2,
+      "steal_resource": 3,
+      "take_resource": 4,
+      "build_road": 5,
+      "buy_development": 7
+    }
+  }
+}
