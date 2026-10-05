@@ -21,8 +21,14 @@ type catanFishingGround struct {
 }
 
 type catanFishingMap struct {
-	Lakes   []catanFishingLake   `json:"lakes"`
-	Grounds []catanFishingGround `json:"grounds"`
+	Lakes        []catanFishingLake        `json:"lakes"`
+	Grounds      []catanFishingGround      `json:"grounds"`
+	ExtraNumbers []catanFishingExtraNumber `json:"extraNumbers,omitempty"`
+}
+
+type catanFishingExtraNumber struct {
+	Tile   int `json:"tile"`
+	Number int `json:"number"`
 }
 
 // Tile/side pairs transcribed from the light-blue Vs and harbor piers in
@@ -144,7 +150,13 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if len(f.ExtraNumbers) > 0 && (g.Seafarers == nil || g.Seafarers.Scenario != "desert") {
+		return errors.New("此捕鱼地图不能迁移生产点数")
+	}
 	if g.Seafarers != nil {
+		if g.Seafarers.Scenario == "desert" {
+			return f.validateDesert(g)
+		}
 		if g.Seafarers.Scenario == "fog" {
 			return f.validateFog(g)
 		}

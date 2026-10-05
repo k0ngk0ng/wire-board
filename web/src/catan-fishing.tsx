@@ -101,7 +101,12 @@ export function CatanFishLakeNumbers({
           value={n}
           radius={12 * scale}
           x={t.x + (i % 2 ? 14 : -14) * scale}
-          y={t.y + (lake.numbers.length === 2 ? 0 : i < 2 ? -14 : 14) * scale}
+          y={
+            t.y +
+            ((lake.numbers.length === 2 ? 0 : i < 2 ? -14 : 14) +
+              (g.robber === tile ? 14 : 0)) *
+              scale
+          }
           active={g.robber !== tile && total === n}
         />
       ))}
@@ -203,12 +208,10 @@ export function CatanFishingPanel({
     // Wait for the reopened panel, then reveal confirmation within either
     // the desktop action scroller or the mobile page, keeping the map choice.
     const frame = requestAnimationFrame(() => {
-      panel.current
-        ?.querySelector(".fish-confirm-actions")
-        ?.scrollIntoView({
-          block: window.innerWidth < 851 ? "center" : "nearest",
-          behavior: "smooth",
-        });
+      panel.current?.querySelector(".fish-confirm-actions")?.scrollIntoView({
+        block: window.innerWidth < 851 ? "center" : "nearest",
+        behavior: "smooth",
+      });
     });
     return () => cancelAnimationFrame(frame);
   }, [collapsed, chosen?.type, chosen?.id]);

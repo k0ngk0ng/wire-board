@@ -721,7 +721,7 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 		claims[i] = make([]int, len(g.Bank))
 	}
 	for _, t := range g.Tiles {
-		if t.Number != total || t.ID == g.Robber || (t.Resource >= 5 && t.Resource != CatanGold) {
+		if !g.tileProduces(t, total) || t.ID == g.Robber || (t.Resource >= 5 && t.Resource != CatanGold) {
 			continue
 		}
 		for _, id := range t.Vertices {
