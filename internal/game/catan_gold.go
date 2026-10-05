@@ -101,6 +101,9 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
+	if g.Caravans != nil && g.Caravans.Pending != nil {
+		return g.Caravans.Pending.actor()
+	}
 	if f := g.Fishing; f != nil && f.Pending != nil && len(f.Tokens.Pending) > 0 {
 		return f.Tokens.Pending[0].Player
 	}

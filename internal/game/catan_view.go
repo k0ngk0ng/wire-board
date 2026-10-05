@@ -5,6 +5,15 @@ import "slices"
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	if c := g.Caravans; c != nil {
+		public := v["caravans"].(map[string]any)
+		public["remaining"] = c.Map.Supply - len(c.Wagons)
+		public["actor"] = s.CatanPendingActor()
+		public["canAct"] = !s.Finished && player >= 0 && player == s.CatanPendingActor()
+		if c.Pending != nil && !s.Finished {
+			public["choices"] = c.choices(g)
+		}
+	}
 	s.catanFishingView(v, player)
 	if g.Rivers != nil {
 		richest, poor := g.riverWealth()

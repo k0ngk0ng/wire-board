@@ -29,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Caravans       *catanCaravans       `json:"caravans,omitempty"`
 	Rivers         *CatanRivers         `json:"rivers,omitempty"`
 	Fishing        *CatanFishing        `json:"fishing,omitempty"`
 	RevealedEvent  *CatanRevealedEvent  `json:"revealedEvent,omitempty"`
@@ -191,7 +192,7 @@ func (s *State) catanScores() {
 		knights = append(knights, g.Players[i].Knights)
 	}
 	routeName := "最长道路"
-	if g.Seafarers != nil || g.Rivers != nil {
+	if g.Seafarers != nil || g.Rivers != nil || g.Caravans != nil {
 		routeName = "最长路线"
 	}
 	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
@@ -246,6 +247,9 @@ func (s *State) catanScores() {
 		for _, v := range g.Vertices {
 			if v.Owner == i {
 				p.Score += v.Level
+				if g.Caravans != nil && v.Level > 0 {
+					p.Score += g.Caravans.buildingBonus(g, v.ID)
+				}
 			}
 		}
 		if g.LongestOwner == i {
@@ -287,6 +291,9 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
+	if g.Caravans != nil {
+		g.Caravans.Built = false
+	}
 	if g.Rivers != nil {
 		g.Rivers.Bought = 0
 	}
@@ -321,13 +328,16 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.validateCaravans(); err != nil {
+		return err
+	}
 	if err := s.Catan.validateRivers(); err != nil {
 		return err
 	}
 	if err := s.Catan.validateFishing(); err != nil {
 		return err
 	}
-	if s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -336,6 +346,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		if err := next.Catan.validateRivers(); err != nil {
+			return err
+		}
+		if err := next.validateCaravans(); err != nil {
 			return err
 		}
 		*s = next
@@ -347,6 +360,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if g.Caravans != nil && g.Caravans.Pending != nil {
+		return s.catanCaravanAction(player, a)
 	}
 	if g.Fishing != nil && g.Fishing.Pending != nil {
 		return s.catanReplaceFish(player, a)
@@ -441,6 +457,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		}
 		if !s.Finished && g.pirateFortressReady(player) {
 			s.catanAttackFortress(player, catanRandom(6)+1)
+		}
+		if !s.Finished && s.catanBeginCaravanVote() {
+			return nil
 		}
 		if !s.Finished && !s.catanClothEnd() {
 			s.catanNext()
@@ -1034,6 +1053,13 @@ func (s *State) AutoCatanPending() {
 	if g == nil || s.Finished {
 		return
 	}
+	if g.Caravans != nil && g.Caravans.Pending != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanCaravanBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
+		return
+	}
 	if g.Fishing != nil && g.Fishing.Pending != nil {
 		actor := s.CatanPendingActor()
 		if a, err := s.catanFishBot(actor); err == nil {
@@ -1158,6 +1184,9 @@ func (s *State) EliminateCatan(p int) error {
 		return err
 	}
 	if err := g.validateRivers(); err != nil {
+		return err
+	}
+	if err := s.validateCaravans(); err != nil {
 		return err
 	}
 	s.catanReturnFishing(p)

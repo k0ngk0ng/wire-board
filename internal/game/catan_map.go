@@ -278,7 +278,11 @@ func (g *Catan) roadLength(p int) int {
 				next = e.B
 			}
 			used[id] = true
-			walk(next, n+1, id)
+			weight := 1
+			if g.Caravans != nil {
+				weight = g.Caravans.roadWeight(id)
+			}
+			walk(next, n+weight, id)
 			used[id] = false
 		}
 	}

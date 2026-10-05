@@ -7,10 +7,13 @@ import (
 )
 
 // Chronological directed wagons can be replayed to validate a saved network.
-// Voting/turn bookkeeping will attach to this model in the next stage.
+// Pending holds public bids while the action owner remains State.Turn.
 type catanCaravans struct {
-	Map    *catanCaravanMap    `json:"map"`
-	Wagons []catanCaravanWagon `json:"wagons"`
+	Map      *catanCaravanMap    `json:"map"`
+	Wagons   []catanCaravanWagon `json:"wagons"`
+	Built    bool                `json:"built"`
+	Sequence int                 `json:"sequence"`
+	Pending  *catanCaravanVote   `json:"pending,omitempty"`
 }
 
 func (c catanCaravans) choices(g *Catan) []catanCaravanWagon {
