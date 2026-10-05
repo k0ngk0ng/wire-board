@@ -29,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Two            *CatanTwo            `json:"two,omitempty"`
 	Caravans       *catanCaravans       `json:"caravans,omitempty"`
 	Rivers         *CatanRivers         `json:"rivers,omitempty"`
 	Fishing        *CatanFishing        `json:"fishing,omitempty"`
@@ -197,6 +198,9 @@ func (s *State) catanScores() {
 	}
 	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
 	g.LongestOwner = g.awardHolder(oldRoad, 5, roads)
+	if g.Two != nil {
+		g.LongestOwner = g.twoLongestOwner(oldRoad)
+	}
 	if g.cloth() != nil || g.pirateIslands() != nil {
 		g.LongestOwner = -1
 	}
@@ -205,7 +209,9 @@ func (s *State) catanScores() {
 		g.ArmyOwner = -1
 	}
 	if g.LongestOwner != oldRoad {
-		if g.LongestOwner < 0 {
+		if g.Two != nil && g.LongestOwner < -1 {
+			s.Log = append(s.Log, fmt.Sprintf("%s获得最长路线（%d 段）", catanTwoOwnerName(g.LongestOwner), g.roadLength(g.LongestOwner)))
+		} else if g.LongestOwner < 0 {
 			s.Log = append(s.Log, routeName+"奖励暂时无人持有")
 		} else {
 			s.catanLog(g.LongestOwner, "获得%s（%d 段），奖励 2 分", routeName, roads[g.LongestOwner])
@@ -291,6 +297,9 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
+	if g.Two != nil {
+		g.Two.Rolls = []int{}
+	}
 	if g.Caravans != nil {
 		g.Caravans.Built = false
 	}
@@ -328,6 +337,9 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.validateCatanTwo(); err != nil {
+		return err
+	}
 	if err := s.validateCaravans(); err != nil {
 		return err
 	}
@@ -337,9 +349,13 @@ func (s *State) applyCatan(player int, a Action) error {
 	if err := s.Catan.validateFishing(); err != nil {
 		return err
 	}
-	if s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if s.Catan.Two != nil || s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
+			return err
+		}
+		next.catanTwoAfterAction(s, a)
+		if err := next.validateCatanTwo(); err != nil {
 			return err
 		}
 		if err := next.catanPirateSeven(); err != nil {
@@ -360,6 +376,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if g.Two != nil && g.Two.Pending != nil {
+		return s.catanTwoBuild(player, a)
 	}
 	if g.Caravans != nil && g.Caravans.Pending != nil {
 		return s.catanCaravanAction(player, a)
@@ -434,6 +453,13 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	case "catan_wonder_claim", "catan_wonder_build":
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
+		if g.Two != nil {
+			a, b := catanRandom(6)+1, catanRandom(6)+1
+			for len(g.Two.Rolls) == 1 && a+b == g.Two.Rolls[0] {
+				a, b = catanRandom(6)+1, catanRandom(6)+1
+			}
+			return s.catanTwoRoll(a, b)
+		}
 		if g.CitiesKnights != nil {
 			return s.catanCityRoll(catanRandom(6)+1, catanRandom(6)+1, catanRandom(6))
 		}
@@ -1051,6 +1077,12 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if g.Two != nil && g.Two.Pending != nil {
+		if a, err := s.catanTwoBot(s.Turn); err == nil {
+			_ = s.applyCatan(s.Turn, a)
+		}
 		return
 	}
 	if g.Caravans != nil && g.Caravans.Pending != nil {

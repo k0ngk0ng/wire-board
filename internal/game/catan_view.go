@@ -5,6 +5,15 @@ import "slices"
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	if q := g.Two; q != nil {
+		public := v["two"].(map[string]any)
+		public["canAct"] = !s.Finished && q.Pending != nil && player == s.Turn
+		public["actor"] = s.CatanPendingActor()
+		if q.Pending != nil && !s.Finished {
+			public["choices"] = g.twoNeutralChoices(q.Pending.Kind)
+		}
+		public["neutralRoadLengths"] = []int{g.roadLength(-2), g.roadLength(-3)}
+	}
 	if c := g.Caravans; c != nil {
 		public := v["caravans"].(map[string]any)
 		public["remaining"] = c.Map.Supply - len(c.Wagons)

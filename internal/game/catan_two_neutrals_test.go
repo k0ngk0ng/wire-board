@@ -282,44 +282,46 @@ func TestCatanTwoSettlementTradeTokenRewards(t *testing.T) {
 	}
 }
 
+func twoSixEdgePath(t *testing.T, g *Catan, owner int) []int {
+	t.Helper()
+	var walk func(int, []int, map[int]bool) []int
+	walk = func(v int, edges []int, seen map[int]bool) []int {
+		if len(edges) == 6 {
+			return append([]int{}, edges...)
+		}
+		for _, id := range g.touching(v) {
+			e := g.Edges[id]
+			to := e.A + e.B - v
+			if seen[to] || g.opponentPiece(owner, to) || !g.canRoad(owner, id) {
+				continue
+			}
+			g.Edges[id].Owner = owner
+			seen[to] = true
+			if found := walk(to, append(edges, id), seen); found != nil {
+				return found
+			}
+			g.Edges[id].Owner = -1
+			delete(seen, to)
+		}
+		return nil
+	}
+	for _, v := range g.Vertices {
+		if v.Owner == owner && v.Level > 0 {
+			if found := walk(v.ID, nil, map[int]bool{v.ID: true}); found != nil {
+				return found
+			}
+		}
+	}
+	t.Fatal("could not construct six-edge path", owner)
+	return nil
+}
+
 func TestCatanTwoNeutralLongestRoute(t *testing.T) {
 	s := twoNeutralFixture(t)
 	g := s.Catan
 	g.Vertices[g.Tiles[0].Vertices[4]].Owner = 0
 	g.Vertices[g.Tiles[0].Vertices[4]].Level = 1
-	path := func(owner int) []int {
-		var walk func(int, []int, map[int]bool) []int
-		walk = func(v int, edges []int, seen map[int]bool) []int {
-			if len(edges) == 6 {
-				return append([]int{}, edges...)
-			}
-			for _, id := range g.touching(v) {
-				e := g.Edges[id]
-				to := e.A + e.B - v
-				if seen[to] || g.opponentPiece(owner, to) || !g.canRoad(owner, id) {
-					continue
-				}
-				g.Edges[id].Owner = owner
-				seen[to] = true
-				if found := walk(to, append(edges, id), seen); found != nil {
-					return found
-				}
-				g.Edges[id].Owner = -1
-				delete(seen, to)
-			}
-			return nil
-		}
-		for _, v := range g.Vertices {
-			if v.Owner == owner && v.Level > 0 {
-				if found := walk(v.ID, nil, map[int]bool{v.ID: true}); found != nil {
-					return found
-				}
-			}
-		}
-		t.Fatal("could not construct six-edge path", owner)
-		return nil
-	}
-	neutral, real := path(-2), path(0)
+	neutral, real := twoSixEdgePath(t, g, -2), twoSixEdgePath(t, g, 0)
 	g.Edges[neutral[5]].Owner = -1
 	g.Edges[real[5]].Owner = -1
 	if g.roadLength(-2) != 5 || g.roadLength(0) != 5 {
