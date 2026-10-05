@@ -138,6 +138,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		return best
 	}
 	switch s.Phase {
+	case "catan_world_fish":
+		return s.catanWorldFishBot(player)
 	case "catan_world_ports":
 		return s.catanWorldPortBot(player)
 	case "catan_cloth_start", "catan_wonders_start":

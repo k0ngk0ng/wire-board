@@ -6,11 +6,12 @@ import (
 )
 
 type CatanFishing struct {
-	Map        catanFishingMap      `json:"map"`
-	Tokens     catanFishingTokens   `json:"tokens"`
-	LastRollID int                  `json:"lastRollId"`
-	Started    []bool               `json:"started"`
-	Pending    *CatanFishingPending `json:"pending,omitempty"`
+	WorldSetup *CatanFishingWorldSetup `json:"worldSetup,omitempty"`
+	Map        catanFishingMap         `json:"map"`
+	Tokens     catanFishingTokens      `json:"tokens"`
+	LastRollID int                     `json:"lastRollId"`
+	Started    []bool                  `json:"started"`
+	Pending    *CatanFishingPending    `json:"pending,omitempty"`
 }
 
 type CatanFishingPending struct {
@@ -54,6 +55,9 @@ func (g *Catan) validateFishing() error {
 	}
 	if len(f.Started) != len(g.Players) || len(f.Tokens.Hands) != len(g.Players) || f.LastRollID < -1 || f.LastRollID > g.RollID {
 		return errors.New("invalid fishing turn state")
+	}
+	if f.WorldSetup != nil && (g.Seafarers == nil || g.Seafarers.Scenario != "new_world") {
+		return errors.New("非新世界不能包含渔场轮流放置状态")
 	}
 	if err := f.Map.validate(g); err != nil {
 		return err
@@ -239,4 +243,11 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 	}
 	v["fishing"] = map[string]any{"map": clone(f.Map), "tokens": public, "victoryTargets": targets,
 		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
+	if q := f.WorldSetup; q != nil {
+		setup := map[string]any{"index": q.Index, "total": len(q.Numbers), "remaining": len(q.Numbers) - q.Index}
+		if s.Phase == "catan_world_fish" && q.Index >= 0 && q.Index < len(q.Numbers) {
+			setup["current"] = q.Numbers[q.Index]
+		}
+		v["fishing"].(map[string]any)["worldSetup"] = setup
+	}
 }
