@@ -14,6 +14,7 @@ type catanFishingLake struct {
 }
 
 type catanFishingGround struct {
+	SeaTile  *int   `json:"seaTile,omitempty"`
 	Number   int    `json:"number"`
 	Edges    [2]int `json:"edges"`
 	Vertices [3]int `json:"vertices"`
@@ -131,7 +132,7 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 		if last == joint {
 			last = eb.B
 		}
-		f.Grounds = append(f.Grounds, catanFishingGround{numbers[i], [2]int{a, b}, [3]int{first, joint, last}})
+		f.Grounds = append(f.Grounds, catanFishingGround{Number: numbers[i], Edges: [2]int{a, b}, Vertices: [3]int{first, joint, last}})
 	}
 	board.Robber = -1
 	if err := f.validate(board); err != nil {
@@ -143,6 +144,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if g.Seafarers != nil {
+		return f.validateFourIslands(g)
+	}
 	n := len(g.Players)
 	inner, portPositions, groundPositions := catanFishingFrame(n > 4)
 	wantTiles, wantLakes := 19, 1
@@ -178,6 +182,9 @@ func (f catanFishingMap) validate(g *Catan) error {
 	}
 	numbers := []int{}
 	for i, ground := range f.Grounds {
+		if ground.SeaTile != nil {
+			return errors.New("基础捕鱼渔场不能关联海洋地块")
+		}
 		at := groundPositions[i]
 		if ground.Edges != [2]int{catanFishingSide(g, at[0], at[1]), catanFishingSide(g, at[2], at[3])} {
 			return errors.New("fishing ground is not on its frame section")
@@ -237,7 +244,7 @@ func (f catanFishingMap) production(g *Catan, total int) ([]int, error) {
 		}
 	}
 	for _, ground := range f.Grounds {
-		if ground.Number == total {
+		if ground.Number == total && !(g.Seafarers != nil && ground.SeaTile != nil && g.Seafarers.Pirate == *ground.SeaTile) {
 			add(ground.Vertices[:])
 		}
 	}
