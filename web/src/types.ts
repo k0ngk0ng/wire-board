@@ -359,6 +359,29 @@ export type CatanRevealedEvent = {
   productionStarted: boolean;
 };
 export type CatanState = {
+  fishing?: {
+    map: {
+      lakes: { tile: number; numbers: number[] }[];
+      grounds: { number: number; edges: number[]; vertices: number[] }[];
+    };
+    tokens: {
+      remaining: number;
+      discard: { id: number; fish: number }[];
+      players: { count: number; tokens?: { id: number; fish: number }[] }[];
+      bootOwner: number;
+      responder?: number;
+    };
+    victoryTargets: number[];
+    canReplace: boolean;
+    legal: {
+      costs: Record<string, number>;
+      actions: string[];
+      resources: number[];
+      targets: number[];
+      roads: number[];
+      bootTargets: number[];
+    };
+  };
   revealedEvent?: CatanRevealedEvent;
   cardEvent?: {
     kind: string;
