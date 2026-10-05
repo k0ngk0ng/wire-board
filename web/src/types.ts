@@ -380,6 +380,7 @@ export type CatanState = {
       targets: number[];
       roads: number[];
       bootTargets: number[];
+      progressTracks?: number[];
     };
   };
   revealedEvent?: CatanRevealedEvent;

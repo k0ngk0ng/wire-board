@@ -7,7 +7,7 @@ import (
 
 var catanFishCosts = map[string]int{
 	"catan_fish_robber": 2, "catan_fish_steal": 3, "catan_fish_resource": 4,
-	"catan_fish_road": 5, "catan_fish_dev": 7,
+	"catan_fish_road": 5, "catan_fish_dev": 7, "catan_fish_progress": 7,
 }
 
 // 2025 T&B p.10 says "during your turn", not only the Action phase. Complete
@@ -107,8 +107,13 @@ func (s *State) catanFishAction(player int, a Action) error {
 			return errors.New("请选择合法连接位置，且需有剩余道路棋子")
 		}
 	case "catan_fish_dev":
-		if len(g.DevDeck) == 0 {
+		if g.CitiesKnights != nil || len(g.DevDeck) == 0 {
 			return errors.New("发展卡牌堆已空")
+		}
+	case "catan_fish_progress":
+		k := g.CitiesKnights
+		if k == nil || a.Color < 0 || a.Color > 2 || len(k.ProgressDecks[a.Color]) == 0 {
+			return errors.New("请选择仍有牌的科学、贸易或政治牌堆")
 		}
 	}
 	if err := f.Tokens.spend(player, a.Tokens, cost); err != nil {
@@ -135,7 +140,11 @@ func (s *State) catanFishAction(player int, a Action) error {
 			}
 			n -= count
 		}
-		s.catanLog(player, "用鱼从玩家 %d 随机偷取一张资源", a.Target+1)
+		label := "资源"
+		if g.CitiesKnights != nil {
+			label = "资源或商品"
+		}
+		s.catanLog(player, "用鱼从玩家 %d 随机偷取一张%s", a.Target+1, label)
 	case "catan_fish_resource":
 		g.Bank[a.Color]--
 		g.Players[player].Resources[a.Color]++
@@ -146,6 +155,9 @@ func (s *State) catanFishAction(player int, a Action) error {
 		// A paid fish road is not one of Road Building's free roads. Keep
 		// the current roll/action phase while using all normal route effects.
 		return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Edge})
+	case "catan_fish_progress":
+		s.catanLog(player, "用鱼领取一张%s进步牌（从牌堆顶抽取）", catanCityTracks[a.Color])
+		s.catanDrawProgress(player, a.Color)
 	case "catan_fish_dev":
 		card := g.DevDeck[len(g.DevDeck)-1]
 		g.DevDeck = g.DevDeck[:len(g.DevDeck)-1]
@@ -159,14 +171,14 @@ func (s *State) catanFishAction(player int, a Action) error {
 }
 
 func (s *State) catanFishLegal(player int) map[string]any {
-	legal := map[string]any{"costs": clone(catanFishCosts), "actions": []string{}, "resources": []int{}, "targets": []int{}, "roads": []int{}, "bootTargets": []int{}}
+	legal := map[string]any{"costs": clone(catanFishCosts), "actions": []string{}, "resources": []int{}, "targets": []int{}, "roads": []int{}, "bootTargets": []int{}, "progressTracks": []int{}}
 	if !s.catanFishActionReady(player) {
 		return legal
 	}
 	g := s.Catan
 	legal["bootTargets"] = g.fishBootTargets(player)
 	actions := []string{}
-	for _, kind := range []string{"catan_fish_robber", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_dev"} {
+	for _, kind := range []string{"catan_fish_robber", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_dev", "catan_fish_progress"} {
 		if g.fishPayment(player, catanFishCosts[kind]) == nil {
 			continue
 		}
@@ -197,7 +209,17 @@ func (s *State) catanFishLegal(player int) map[string]any {
 			}
 			legal["roads"], available = roads, len(roads) > 0
 		case "catan_fish_dev":
-			available = len(g.DevDeck) > 0
+			available = g.CitiesKnights == nil && len(g.DevDeck) > 0
+		case "catan_fish_progress":
+			tracks := []int{}
+			if k := g.CitiesKnights; k != nil {
+				for track, deck := range k.ProgressDecks {
+					if len(deck) > 0 {
+						tracks = append(tracks, track)
+					}
+				}
+			}
+			legal["progressTracks"], available = tracks, len(tracks) > 0
 		}
 		if available {
 			actions = append(actions, kind)

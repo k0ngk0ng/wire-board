@@ -73,5 +73,15 @@
     "url": "https://www.catan.com/sites/default/files/2025-08/ExplorersPirates%20w%20CnK.pdf",
     "sha256": "704d23a467988b155c47e9909b3d3a3f2fee87ad48c1b8e9ced47908151493cc",
     "bytes": 459720
+  },
+  "catan-fishing-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-08/Fishing%20on%20Catan%20w%20CnK.pdf",
+    "sha256": "b111a4cf77b9a120c499e91534d27ae93ccb0cf57cc8637cf84219ed3056be45",
+    "bytes": 439153
+  },
+  "catan-fishing-seafarers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Fishing%20on%20Catan%20w%20SEA.pdf",
+    "sha256": "e17c9caed51519986465d647e72a56233a7fdae6dcd5b3b1db5cce787d85c915",
+    "bytes": 272589
   }
 }

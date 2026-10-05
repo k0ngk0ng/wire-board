@@ -1,3 +1,4 @@
+import { cityTrackKeys, cityTracks } from "./catan-city-state";
 import { useEffect, useId, useRef, useState } from "react";
 import type { Act, CatanState, Room } from "./types";
 import { CatanResource } from "./catan-resources";
@@ -261,28 +262,36 @@ export function CatanFishingPanel({
           )}
           {mine && !replace && (
             <div className="fish-actions" aria-label="选择捕鱼行动">
-              {fishActions.map(([type, label]) => {
-                const enabled =
-                  type === "catan_fish_boot"
-                    ? f.legal.bootTargets.length > 0
-                    : f.legal.actions.includes(type);
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    disabled={busy || !enabled}
-                    aria-pressed={kind === type}
-                    onClick={() => selectKind(type)}
-                  >
-                    <span>{label}</span>
-                    <b>
-                      {type === "catan_fish_boot"
-                        ? "不耗鱼"
-                        : `${f.legal.costs[type]} 鱼`}
-                    </b>
-                  </button>
-                );
-              })}
+              {fishActions
+                .filter(
+                  ([type]) =>
+                    type !==
+                    (g.citiesKnights
+                      ? "catan_fish_dev"
+                      : "catan_fish_progress"),
+                )
+                .map(([type, label]) => {
+                  const enabled =
+                    type === "catan_fish_boot"
+                      ? f.legal.bootTargets.length > 0
+                      : f.legal.actions.includes(type);
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      disabled={busy || !enabled}
+                      aria-pressed={kind === type}
+                      onClick={() => selectKind(type)}
+                    >
+                      <span>{label}</span>
+                      <b>
+                        {type === "catan_fish_boot"
+                          ? "不耗鱼"
+                          : `${f.legal.costs[type]} 鱼`}
+                      </b>
+                    </button>
+                  );
+                })}
             </div>
           )}
           {!room.spectating && room.you >= 0 && (
@@ -328,6 +337,40 @@ export function CatanFishingPanel({
               {!hand.length && (
                 <small>在湖泊或渔场旁建设，点数掷中时领取筹码。</small>
               )}
+            </div>
+          )}
+          {mine && kind === "catan_fish_progress" && g.citiesKnights && (
+            <div
+              className="fish-progress-picker"
+              role="group"
+              aria-label="选择进步牌堆"
+            >
+              {cityTracks.map((name, c) => (
+                <button
+                  type="button"
+                  key={c}
+                  disabled={
+                    busy ||
+                    !(f.legal.progressTracks || []).includes(c) ||
+                    !g.citiesKnights!.progressRemaining[c]
+                  }
+                  aria-pressed={color === c}
+                  onClick={() => setColor(c)}
+                >
+                  {assets && (
+                    <img
+                      src={`${assets}/catan/cities-knights/progress-back-${cityTrackKeys[c]}-v1.webp`}
+                      alt=""
+                    />
+                  )}
+                  <span>
+                    {name} · {g.citiesKnights!.progressRemaining[c]} 张
+                  </span>
+                </button>
+              ))}
+              <small>
+                从所选牌堆顶抽一张；普通牌面仅自己可见，胜利点牌立即公开。
+              </small>
             </div>
           )}
           {mine && kind === "catan_fish_resource" && (

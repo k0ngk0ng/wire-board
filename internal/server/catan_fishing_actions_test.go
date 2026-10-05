@@ -33,6 +33,9 @@ func newFishingActionTable(t *testing.T, n int, phase, kind string) (*Server, *h
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 	state, err := game.NewCatanFishing(n, opts)
+	if kind == "progress" {
+		state, err = game.NewCatanFishingCitiesKnights(n, opts)
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,6 +53,9 @@ func newFishingActionTable(t *testing.T, n int, phase, kind string) (*Server, *h
 	g.Vertices[10].Owner, g.Vertices[10].Level = target, 1
 	g.Players[target].Score = 1
 	g.Robber = g.Fishing.Map.Lakes[0].Tile
+	if g.CitiesKnights != nil {
+		g.Robber = -1
+	}
 	for _, id := range []int{0, 1, 11, 12, 21, 22, 23} {
 		at := slices.Index(g.Fishing.Tokens.DrawPile, id)
 		g.Fishing.Tokens.DrawPile = slices.Delete(g.Fishing.Tokens.DrawPile, at, at+1)
@@ -75,6 +81,12 @@ func newFishingActionTable(t *testing.T, n int, phase, kind string) (*Server, *h
 		a.Tokens = []int{0, 21, 22}
 		at := slices.Index(g.DevDeck, 0)
 		g.DevDeck[at], g.DevDeck[len(g.DevDeck)-1] = g.DevDeck[len(g.DevDeck)-1], g.DevDeck[at]
+	case "progress":
+		a.Tokens = []int{0, 21, 22}
+		a.Color = 2
+		deck := g.CitiesKnights.ProgressDecks[2]
+		at := slices.Index(deck, 16)
+		deck[at], deck[len(deck)-1] = deck[len(deck)-1], deck[at]
 	case "boot":
 		a.Tokens = nil
 		at := slices.Index(g.Fishing.Tokens.DrawPile, 29)
