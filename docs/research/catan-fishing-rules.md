@@ -9,9 +9,10 @@ were also checked. Pinned references and data are in
 `catan-fishing-sources.json`; original PDF hashes are in
 `../board-expansion-rule-sources.json`.
 
-The **internal token economy, map generator and aggregate production calculator**
-are implemented. Fishing is not attached to a room, runtime production
-pipeline, legal player actions or UI and is not playable yet.
+The **internal token economy, map, setup/production pipeline, replacement
+responses and persistence** are implemented. Fishing is not exposed in room
+configuration. Five paid actions, boot passing, original-art UI and complete
+scenario/combination acceptance remain; it is not ready for public play.
 
 ## Token economy (completed 2026-10-05)
 
@@ -80,22 +81,68 @@ check the single replacement limit. All ten fishing tests pass (0.644s), as
 do related base/fixed/paired/five-six regressions (7.649s including fishing)
 and `go vet ./internal/game`.
 
-This is still a map/calculation component: no production continuation, HTTP
-restart, bot match, original-art UI or browser acceptance has occurred. Owned
+At the map stage this was a calculation component, without production
+continuation, HTTP restart, bot match, original-art UI or browser acceptance. Owned
 research crops, overlays, generated map renders/JSON and temporary export
 code were cleaned after verification. No assets uploaded, push or deployment.
 
+## Runtime production and response stage (2026-10-05)
+
+An internal constructor now attaches the map and tokens to the persistent Catan
+state. The ordinary roll action computes all fish claims, distributes normal
+resources once, then draws fish. At the cap, the responding player may exchange
+one owned token or keep their hand; further claims for that player are lost,
+including when the replacement is the boot. The active turn stays on the
+original roller throughout. A saved roll ID prevents running that production
+twice, and saved ordinary-resource counts continue the turn without repaying
+resources. Five/six-player second actions do not produce again.
+
+Second starting settlements adjoining a lake or ground receive one token and
+continue to their starting road. The literal 2025 setup sentence says “a random
+fish token”; this is implemented as one award even beside both lakes, rather
+than applying city/ordinary production rules to setup. The FAQ explicitly
+confirms a token beside a coastal ground; no dedicated two-lake setup FAQ was
+found. This interpretation remains recorded for final combination review.
+
+Fish are excluded from resource discard/trade/theft machinery. The robber may
+enter a lake. The boot owner needs one additional victory point, with unchanged
+score. Public views contain map, supply size, face-up discards, ownership,
+counts and the viewer's own faces; the saved draw pile, raw hands and continuation
+are always removed. Bot replacement decisions use only their own faces.
+
+Each responder receives 120 seconds; successive responders reset that response
+window, and completing the queue restores the original action's remaining
+time. Manual, autoplay and timeout paths use the same game actions. Removal is
+a platform policy outside printed rules: eliminated players' fish return
+faceup to discard and their boot is shuffled into the face-down supply. This
+keeps absent players from trapping components.
+
+Five new engine tests cover starting lake/coast awards, boot victory target,
+replacement/decline, frozen resources, repeat rejection, paired turns, private
+views and hidden-information-independent bots, seven/robber/removal, all 3–6
+player bot setup sequences with restoration after every action, and atomic
+invalid-state/unsupported-combination rejection. Three HTTP paths (manual,
+autoplay, timeout) enter the fixture through the actual roll action and each
+restart the real service three times: before responses, after replacing with
+the boot, and after completing production. Full Room equality, ownership,
+privacy, illegal actions, 120-second response windows, original 45-second
+restoration and nonrepeated resources pass. HTTP tests pass in 1.630s; race
+checks pass in 11.451s. Related fishing/gold/event/fixed/paired/helper/friendly/harbor/production regressions pass (game 155.890s, server 95.170s), including all 15 fishing engine tests. Game/server static checks also pass.
+
+This stage has no paid fish actions, client UI or complete bot match. Helpers,
+Seafarers, Cities & Knights, Friendly Robber, Harbors and event-card combinations
+are deliberately refused at the internal boundary until their integrations
+are verified; they remain in the overall scope. No public room option or
+deployment was added, no assets were downloaded/uploaded, and test temporary
+directories are cleaned automatically.
+
 ## Integration still required
 
-- Initial settlement token, ordinary production, robber blocking of lakes,
-  pending response and production continuation using the verified map/claims.
-  The token helper deliberately has no global turn serial; integration must
-  prevent a second replacement claim in the same production.
 - Five separately paid actions (2/3/4/5/7 fish), legal timing, deck/bank/piece
-  shortages, atomic payment/effect, public-VP boot passing and per-player
-  victory thresholds. Timing of spending before production remains to verify.
-- Three/six-player turn handling, paired second action, bots, 120-second
-  responses, true service restart, private views and combinations. Fish do not
-  count as resources for seven/robber/trading or Aqueduct compensation.
+  shortages, atomic payment/effect and public-VP boot passing. Timing of spending
+  before production remains to verify.
+- Bots for paid actions, strategic lake/coast valuations, complete games and
+  combinations, including fish-only Aqueduct compensation. The existing base
+  5–6 number catalogue verification and two-lake setup interpretation remain.
 - Original assets, room options, desktop/mobile UI and complete-game QA.
   No public entry, push or deployment until these acceptance requirements pass.
