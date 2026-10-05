@@ -122,7 +122,10 @@ func TestCatanPairedTurnOrderAndNoProductionOrPlayerTrade(t *testing.T) {
 	helperReject(t, s, s.Turn, Action{Type: "catan_roll"})
 	helperGrant(s, s.Turn, []int{4, 0, 0, 0, 0})
 	helperReject(t, s, s.Turn, Action{Type: "catan_trade_offer", Give: []int{1, 0, 0, 0, 0}, Take: []int{0, 1, 0, 0, 0}})
-	helperApply(t, s, s.Turn, Action{Type: "catan_bank", Give: []int{4, 0, 0, 0, 0}, Take: []int{0, 1, 0, 0, 0}})
+	// Random setup can grant a 2:1/3:1 harbor. This test verifies the second
+	// player's bank-trade permission, not a fixed no-harbor exchange rate.
+	rate := s.Catan.rates(s.Turn)[0]
+	helperApply(t, s, s.Turn, Action{Type: "catan_bank", Give: []int{rate, 0, 0, 0, 0}, Take: []int{0, 1, 0, 0, 0}})
 	helperApply(t, s, s.Turn, Action{Type: "catan_dev", Card: 2, Take: []int{0, 0, 0, 1, 1}})
 	helperApply(t, s, s.Turn, Action{Type: "catan_end"})
 	g = s.Catan

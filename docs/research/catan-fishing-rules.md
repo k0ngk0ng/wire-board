@@ -10,9 +10,10 @@ were also checked. Pinned references and data are in
 `../board-expansion-rule-sources.json`.
 
 The **internal token economy, map, setup/production pipeline, replacement
-responses and persistence** are implemented. Fishing is not exposed in room
-configuration. Five paid actions, boot passing, original-art UI and complete
-scenario/combination acceptance remain; it is not ready for public play.
+responses, five paid actions, boot passing, bots and persistence** are
+implemented. Fishing is not exposed in room configuration. Original-art UI
+and complete scenario/combination acceptance remain; it is not ready for
+public play.
 
 ## Token economy (completed 2026-10-05)
 
@@ -129,20 +130,75 @@ privacy, illegal actions, 120-second response windows, original 45-second
 restoration and nonrepeated resources pass. HTTP tests pass in 1.630s; race
 checks pass in 11.451s. Related fishing/gold/event/fixed/paired/helper/friendly/harbor/production regressions pass (game 155.890s, server 95.170s), including all 15 fishing engine tests. Game/server static checks also pass.
 
-This stage has no paid fish actions, client UI or complete bot match. Helpers,
+At the production stage there were no paid fish actions, client UI or complete bot match. Helpers,
 Seafarers, Cities & Knights, Friendly Robber, Harbors and event-card combinations
 are deliberately refused at the internal boundary until their integrations
 are verified; they remain in the overall scope. No public room option or
 deployment was added, no assets were downloaded/uploaded, and test temporary
 directories are cleaned automatically.
 
+## Paid actions, boot passing and complete bot games (2026-10-05)
+
+All five costs now execute real game effects: 2 removes the robber without
+theft, 3 steals a random ordinary resource from a present opponent, 4 takes a
+chosen available bank resource, 5 builds a legal connected road using normal
+route/award/victory completion, and 7 buys a face-down development card and
+marks it newly purchased. Inventory limits and new-card use restrictions
+remain. Each action identifies distinct owned fish tokens, validates its
+effect, then pays separately; overpayment gives neither change nor credit.
+Invalid actions leave the entire game unchanged. Fish are never temporarily
+converted into resource cards to reuse a building cost.
+
+The printed p.10 wording is “During your turn ... take special actions”, with
+each action completed before another. The implementation therefore permits
+the pre-roll and ordinary action phases, but no interruption of setup, seven
+discards, robber theft, free-road resolution or other pending responses. This
+is the direct printed-text interpretation, not a claimed dedicated timing FAQ.
+The 5–6 rule on p.5 explicitly permits the second player to spend fish and pass
+the boot in their action phase. All successful ordinary fish actions retain
+the current phase and action deadline.
+
+Boot passing uses only public points, excludes absent players and does not
+change anyone's score. Lowering the current player's target by passing the boot
+can immediately end the game. Fish-funded roads can immediately win through
+Longest Road; a bought hidden point also counts immediately, while a bought
+Knight remains unplayable until the next own action phase.
+
+Views expose affordable actions and public eligible targets only to the active
+viewer. Bot payments minimize overpayment, then free small-token slots; choices
+use own resources/fish and public points, counts, map and bank. Lake and coast
+production influence settlement/city positions, and lake robber valuation uses
+all printed lake numbers. Bots may remove an own blocking robber before rolling,
+pass the boot, buy cards, build roads, steal or fill a resource shortfall.
+
+Six new engine tests cover 20 cost/phase/player cases, immediate route/hidden-VP
+wins, payment and stock/connection/piece failures, public-point boot passing,
+private views and hidden-information-independent bot choices. Four complete
+bot games (3/4/5/6 players) finished at the correct boot-adjusted targets;
+every action checked fish/resource/development/piece inventories, with periodic
+full state restoration. They used 21/16/14/31 paid fish actions and ended in
+rounds 29/14/17/13 (4.825s including test startup). These are rule/bot matches,
+not client/browser acceptance.
+
+Eighteen HTTP cases cover all six actions in pre-roll, ordinary 3-player turns
+and 6-player second actions. Each really restarts the service before and after
+payment (36 restarts total), checking full Room equality, permissions, private
+faces, newly bought cards, resource effects and unchanged deadline. They pass
+in 6.780s, with race checks passing in 65.278s. Game/server static checks pass.
+
+The related regression exposed an existing random-fixture issue: the paired
+bank-trade test assumed 4:1 even when setup gave a 2:1 or 3:1 harbor. The test
+now uses the actual rate to verify second-player trade permission. Production
+trading behavior was not changed. The corrected case passes 30 consecutive runs (1.157s); related game regressions pass in 3.710s and server response regressions in 1.530s.
+
+No room/UI option, assets or deployment was added. Existing test temporary
+directories clean themselves; no owned downloads or screenshots were produced.
+
 ## Integration still required
 
-- Five separately paid actions (2/3/4/5/7 fish), legal timing, deck/bank/piece
-  shortages, atomic payment/effect and public-VP boot passing. Timing of spending
-  before production remains to verify.
-- Bots for paid actions, strategic lake/coast valuations, complete games and
-  combinations, including fish-only Aqueduct compensation. The existing base
-  5–6 number catalogue verification and two-lake setup interpretation remain.
+- Combinations, including fish-only Aqueduct compensation and Catan for Two's
+  different initial fish allotment/discount. The existing base 5–6 number
+  catalogue verification and two-lake setup interpretation remain for final
+  acceptance; all original expansion/variant scope is retained.
 - Original assets, room options, desktop/mobile UI and complete-game QA.
   No public entry, push or deployment until these acceptance requirements pass.

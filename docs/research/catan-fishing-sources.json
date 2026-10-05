@@ -1,6 +1,6 @@
 {
   "checked_on": "2026-10-05",
-  "status": "Verified frame/token data and internal setup/production/replacement/persistence implemented. Paid actions, boot passing, combinations, assets and UI not yet integrated; no public room option.",
+  "status": "Internal map, setup/production/responses, five paid actions, boot passing, bots and persistence implemented and tested. Combinations, original assets and UI still pending; no public room option.",
   "sources": [
     {
       "source": "../board-expansion-rule-sources.json#catan-traders-2025",
@@ -290,5 +290,10 @@
         ]
       ]
     }
+  },
+  "timing": {
+    "source": "catan-traders-2025 p.10; catan-traders-5-6-2025 p.5",
+    "quote": "During your turn, you may spend fish tokens to take special actions. You may take as many of these actions as you like and can afford. Pay for each action completely before taking a new action.",
+    "implementation": "Pre-roll or ordinary active action phase; resolve other actions/responses first. Paired second player may use fish/pass boot during their Action phase. Printed wording interpretation, not a dedicated FAQ."
   }
 }

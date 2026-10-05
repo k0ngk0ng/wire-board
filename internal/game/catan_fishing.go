@@ -18,8 +18,8 @@ type CatanFishingPending struct {
 	Received []int  `json:"received,omitempty"`
 }
 
-// Internal constructor: no room configuration exposes Fishing until actions,
-// artwork, UI and complete-game acceptance are ready.
+// Internal constructor: no room configuration exposes Fishing until artwork,
+// UI and full scenario/combination acceptance are ready.
 func NewCatanFishing(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")
@@ -216,5 +216,5 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 		targets[p] = s.Catan.victoryTargetFor(p)
 	}
 	v["fishing"] = map[string]any{"map": clone(f.Map), "tokens": public, "victoryTargets": targets,
-		"canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
+		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
 }
