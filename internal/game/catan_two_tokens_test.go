@@ -318,18 +318,23 @@ func TestCatanTwoTokensTimingAndInsufficientFunds(t *testing.T) {
 	if err := twoCoreRoll(t, s, 1, 1); err != nil {
 		t.Fatal(err)
 	}
-	// Actions between the two production phases remain gated until the
-	// official timing is verified. No pending choice can bypass this gate.
+	// The next production roll is still a pre-roll window. Trading must return
+	// to that exact roll, retaining the first total and the spent-token flag.
 	s.Catan.Two.Bank--
 	s.Catan.Two.Tokens[p]++
+	twoTokenHand(s, 1-p, []int{0, 2, 0, 0, 0})
+	helperApply(t, s, p, Action{Type: "catan_two_trade"})
+	twoCoreRestore(t, s)
+	s.AutoCatanPending()
+	if s.Phase != "catan_roll" || !slices.Equal(s.Catan.Two.Rolls, []int{2}) || !s.Catan.Two.Spent {
+		t.Fatal("between-roll trade lost production or once-per-turn state")
+	}
 	helperReject(t, s, p, Action{Type: "catan_two_trade"})
 	helperReject(t, s, p, Action{Type: "catan_two_knight"})
 	if err := twoCoreRoll(t, s, 6, 6); err != nil {
 		t.Fatal(err)
 	}
-	twoTokenHand(s, 1-p, []int{0, 2, 0, 0, 0})
-	helperApply(t, s, p, Action{Type: "catan_two_trade"})
-	s.AutoCatanPending()
+	helperReject(t, s, p, Action{Type: "catan_two_trade"})
 	if s.Phase != "catan_turn" {
 		t.Fatal("action phase not restored")
 	}
