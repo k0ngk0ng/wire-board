@@ -1,0 +1,285 @@
+.catan-fishing-panel {
+  background: #f1faf8;
+  border: 1px solid #6faaa9;
+  border-radius: 14px;
+  color: #153e45;
+  overflow: hidden;
+  min-width: 0;
+  flex-shrink: 0;
+  grid-column: 1 / -1;
+}
+.catan-fishing-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #d8efed;
+}
+.catan-fishing-panel header strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 16px;
+}
+.catan-fishing-panel small {
+  color: #486b70;
+  font-size: 12px;
+}
+.catan-fishing-panel button {
+  font: inherit;
+  line-height: 1.35;
+  color: #193f45;
+  background: #fffdf3;
+  border: 1px solid #93b7b4;
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.catan-fishing-panel button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.catan-fishing-panel button[aria-pressed="true"] {
+  border-color: #ae7411;
+  box-shadow: 0 0 0 2px #eabb53;
+  background: #fff2bc;
+}
+.catan-fishing-panel button:focus-visible {
+  outline: 3px solid #d48216;
+  outline-offset: 2px;
+}
+.fish-panel-body {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+.fish-panel-body p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.fish-player-counts {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+}
+.fish-player-counts > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.fish-player-counts > div > img {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+}
+.fish-player-counts > div > span:not(.fish-boot) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.fish-player-counts b {
+  white-space: nowrap;
+}
+.fish-player-counts .self {
+  font-weight: 700;
+}
+.fish-boot {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #643d0c;
+  background: #f9e7c4;
+  border-radius: 5px;
+  padding: 2px 4px;
+}
+.fish-boot img {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  margin-right: 3px;
+}
+.fish-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.fish-actions button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 13px;
+  min-height: 50px;
+}
+.fish-actions b {
+  font-size: 12px;
+  color: #0b6880;
+}
+.fish-own-hand > p {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.fish-own-hand > p span {
+  font-size: 12px;
+}
+.fish-token-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 6px;
+}
+.fish-token-list button {
+  position: relative;
+  padding: 0;
+  aspect-ratio: 1;
+  min-height: 42px;
+  max-width: 68px;
+  border: 2px solid #68a5ab;
+  overflow: hidden;
+  background: #147c9f;
+}
+.fish-token-list button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.fish-token-list img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.fish-token-list b {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  border-radius: 4px;
+  background: #fdf4d9;
+  color: #163b43;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 1px 4px;
+  box-shadow: 0 1px 3px #0006;
+}
+.fish-token-list button[aria-pressed="true"] {
+  border-color: #b67e17;
+  box-shadow: 0 0 0 2px #eabb53;
+}
+.fish-resource-picker,
+.fish-target-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.fish-resource-picker button {
+  padding: 5px;
+  flex: 1;
+  min-width: 44px;
+}
+.fish-notice,
+.fish-payment-summary {
+  background: #e0f0eb;
+  border-radius: 8px;
+  padding: 9px;
+  color: #224e53;
+}
+.fish-map-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.fish-confirm-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.fish-confirm-actions button {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  min-height: 44px;
+}
+.fish-confirm-actions .fish-confirm {
+  background: #136778;
+  border-color: #115565;
+  color: #fff;
+}
+.fish-discard {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  font-size: 12px;
+}
+.fish-discard > span {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.fish-discard img {
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+.catan-fishing-panel summary {
+  font-size: 12px;
+  cursor: pointer;
+}
+.fish-number > circle {
+  stroke: #f4fcff;
+  stroke-width: 1;
+}
+.fish-number text {
+  fill: white;
+  font-weight: 900;
+  paint-order: stroke;
+  stroke: #075879;
+  stroke-width: 0.65px;
+}
+.fish-number.active > circle {
+  stroke: #ffe168;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 3px #ffd237);
+}
+@media (max-width: 600px) {
+  .fish-player-counts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .fish-player-counts > div {
+    flex-wrap: wrap;
+  }
+  .fish-boot {
+    margin-left: 25px;
+  }
+  .fish-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .fish-actions button {
+    padding: 6px 3px;
+    font-size: 12px;
+    min-height: 48px;
+  }
+  .fish-token-list {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+  }
+  .fish-token-list button {
+    min-height: 34px;
+  }
+  .fish-token-list b {
+    font-size: 11px;
+    padding: 1px 2px;
+  }
+}

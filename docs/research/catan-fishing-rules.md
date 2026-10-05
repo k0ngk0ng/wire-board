@@ -239,3 +239,9 @@ browser acceptance, room entry, push or deployment occurred in this stage.
   acceptance; all original expansion/variant scope is retained.
 - Room options, original-art desktop/mobile UI and complete-game QA.
   No public entry, push or deployment until these acceptance requirements pass.
+
+## 前端交互验收（2026-10-05）
+
+原图地图及私有筹码面板已接入，五种支付、传靴子、满额盲换/保留、合法目标与旧选择校验均已验证。六人扩充使用两张两点数湖泊图；沿海渔场按三个顶点定位，不拦截道路/建筑点击。自己的靴子额外目标显示在地图栏，公众只见他人筹码数量。
+
+本地真实引擎测试牌桌在1440/390/320px完成消费与选择交互、图片加载、无横向溢出、换筹码高亮/标题/120秒提示和观战隐私核验。52项前端测试及构建通过。仅是界面与引擎夹具验收，未开放公开房间、未发布，未完成的组合、动画和整体验收仍需继续；详见总进度文档本阶段记录。
