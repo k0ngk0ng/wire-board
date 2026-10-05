@@ -9,16 +9,18 @@ import (
 // continuation. This is not the C&K event die or a verified event catalogue.
 // No room option or client action can start an arbitrary event.
 type CatanCardEvent struct {
-	Kind       string `json:"kind"`
-	Production int    `json:"production"`
-	Red        int    `json:"red"`  // Independently rolled for C&K; zero otherwise.
-	Face       int    `json:"face"` // C&K event die 0–5; zero without C&K.
-	Players    []int  `json:"players"`
+	Kind       string           `json:"kind"`
+	Production int              `json:"production"`
+	Red        int              `json:"red"`  // Independently rolled for C&K; zero otherwise.
+	Face       int              `json:"face"` // C&K event die 0–5; zero without C&K.
+	Players    []int            `json:"players"`
+	Gifts      []CatanEventGift `json:"gifts,omitempty"` // Private choices; never serialize to viewers.
 }
 
 var catanCardEventNames = map[string]string{
 	"beautiful_day": "美好的一天", "earthquake": "地震", "plentiful_year": "丰收年",
 	"epidemic": "瘟疫", "robber_attacks": "强盗袭击", "robber_flees": "强盗逃跑",
+	"good_neighbors": "好邻居",
 }
 
 func (g *Catan) earthquakeRoads(player int) []int {
@@ -84,6 +86,9 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 		}
 	}
 	next.catanLog(next.Turn, "事件牌：%s，生产点数%d；先结算事件，再生产", catanCardEventNames[kind], production)
+	if kind == "good_neighbors" {
+		g.beginNeighborGifts(next.Turn)
+	}
 	if kind == "robber_flees" {
 		if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
 			next.catanLog(next.Turn, "强盗尚未入场，保持休眠")
@@ -129,6 +134,8 @@ func (s *State) catanContinueCardEvent() error {
 				}
 			case "robber_flees":
 				canChoose = len(g.fleeDeserts()) > 0
+			case "good_neighbors":
+				canChoose = true // Eligibility was frozen before anyone received a card.
 			default:
 				return errors.New("该事件不需要玩家选择")
 			}
@@ -138,6 +145,11 @@ func (s *State) catanContinueCardEvent() error {
 			return nil
 		}
 		q.Players = q.Players[1:]
+	}
+	if q.Kind == "good_neighbors" {
+		if err := s.catanTransferNeighborGifts(); err != nil {
+			return err
+		}
 	}
 	if g.CitiesKnights != nil {
 		if q.Red < 1 || q.Red > 6 || q.Face < 0 || q.Face > 5 || g.CitiesKnights.Event != nil || g.CitiesKnights.Pending != nil {
@@ -159,6 +171,10 @@ func (s *State) catanCardEventChoice(player int, a Action) error {
 		return errors.New("请等待对应玩家完成事件牌选择")
 	}
 	switch q.Kind {
+	case "good_neighbors":
+		if err := g.chooseNeighborGift(player, a); err != nil {
+			return err
+		}
 	case "earthquake":
 		if a.Type != "catan_earthquake" {
 			return errors.New("请选择地震损坏的道路")
@@ -192,6 +208,22 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 	}
 	if q.Kind == "plentiful_year" && sum(g.Bank[:5]) > 0 {
 		return Action{Type: "catan_event_resource", Take: g.catanResourceChoiceBot(player, 1)}, nil
+	}
+	if q.Kind == "good_neighbors" {
+		// Give the most plentiful card in our own hand. Never inspect the
+		// recipient's hand or another player's pending private selection.
+		hand := g.Players[player].Resources
+		color := -1
+		for i, count := range hand {
+			if count > 0 && (color < 0 || count > hand[color]) {
+				color = i
+			}
+		}
+		if color >= 0 {
+			give := make([]int, len(hand))
+			give[color] = 1
+			return Action{Type: "catan_event_gift", Give: give}, nil
+		}
 	}
 	if q.Kind == "robber_flees" {
 		if deserts := g.fleeDeserts(); len(deserts) > 0 {

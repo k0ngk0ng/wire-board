@@ -11,7 +11,7 @@ import (
 )
 
 func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
-	for _, kind := range []string{"plentiful_year", "robber_flees"} {
+	for _, kind := range []string{"plentiful_year", "robber_flees", "good_neighbors"} {
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(fmt.Sprintf("%s/%s", kind, mode), func(t *testing.T) {
 				s, ts, clients, id := newCatanTable(t)
@@ -22,6 +22,13 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 				g := r.Game.Catan
 				g.CardEvent.Kind = kind
 				g.CardEvent.Production, g.Tiles[0].Number = 2, 2
+				if kind == "good_neighbors" {
+					for p := range g.Players {
+						g.Players[p].Resources[p+1]++
+						g.Bank[p+1]--
+						g.CardEvent.Gifts = append(g.CardEvent.Gifts, game.CatanEventGift{From: p, To: (p + 1) % 3, Color: -1})
+					}
+				}
 				if kind == "robber_flees" {
 					g.CardEvent.Players = []int{0}
 					g.CardEvent.Production, g.Tiles[0].Number = 4, 4
@@ -54,12 +61,33 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 						t.Fatal("gift not applied immediately or production ran too early")
 					}
 				}
+				if kind == "good_neighbors" {
+					clients[0].command(current(clients[0]), "action", first, 200)
+					g = s.rooms[id].Game.Catan
+					if g.CardEvent.Gifts[0].Color != 1 || g.Players[0].Resources[1] != 1 || g.Players[1].Resources[1] != 0 {
+						t.Fatal("private gift missing or transferred before all selections")
+					}
+				}
 				actor := s.rooms[id].Game.CatanPendingActor()
 				for viewer, c := range clients {
 					view := current(c)["game"].(map[string]any)["catan"].(map[string]any)
 					key := "eventResources"
 					if kind == "robber_flees" {
 						key = "fleeDeserts"
+					}
+					if kind == "good_neighbors" {
+						key = "eventGifts"
+						q := view["cardEvent"].(map[string]any)
+						if _, leaked := q["gifts"]; leaked {
+							t.Fatal("private selections exposed over HTTP")
+						}
+						own, ok := q["ownGift"].(map[string]any)
+						if viewer == 3 && ok || viewer < 3 && (!ok || int(own["from"].(float64)) != viewer) {
+							t.Fatal("wrong viewer received private selection")
+						}
+						if viewer == 0 && own["color"].(float64) != 1 {
+							t.Fatal("giver cannot see their pending choice")
+						}
 					}
 					if (len(view["legal"].(map[string]any)[key].([]any)) > 0) != (viewer == actor) {
 						t.Fatal("event legal choices exposed to wrong seat")
@@ -122,17 +150,20 @@ func TestCatanCardResourceAndFleeHTTPRestart(t *testing.T) {
 				if g.CardEvent != nil || r.Game.Phase != "catan_turn" || g.RollID != 1 || r.Game.Turn != 0 {
 					t.Fatal("event did not finish once")
 				}
-				for _, p := range g.Players {
+				for seat, p := range g.Players {
 					total := 0
 					for _, count := range p.Resources {
 						total += count
 					}
 					want := 1
-					if kind == "plentiful_year" {
+					if kind == "plentiful_year" || kind == "good_neighbors" {
 						want = 2
 					}
 					if total != want || p.Resources[0] < 1 {
 						t.Fatal("wrong event reward/production count", p.Resources)
+					}
+					if kind == "good_neighbors" && p.Resources[(seat+2)%3+1] != 1 {
+						t.Fatal("gift transfer lost, duplicated or sent to wrong neighbor", p.Resources)
 					}
 				}
 				if kind == "robber_flees" && (g.Robber < 0 || g.Tiles[g.Robber].Resource != game.CatanDesert || len(g.Victims) != 0) {

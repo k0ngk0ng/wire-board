@@ -5,6 +5,15 @@ func (s *State) catanView(view map[string]any, player int) {
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
 	v["victoryTarget"] = g.victoryTarget()
+	if q := g.CardEvent; q != nil {
+		public := v["cardEvent"].(map[string]any)
+		delete(public, "gifts")
+		for _, gift := range q.Gifts {
+			if gift.From == player {
+				public["ownGift"] = gift
+			}
+		}
+	}
 	if g.FriendlyRobber != nil {
 		protected := []int{}
 		for i := range g.Players {
@@ -158,8 +167,8 @@ func (s *State) catanView(view map[string]any, player int) {
 			p["score"] = actual.Score - g.hiddenVictoryPoints(i)
 		}
 	}
-	// Legal locations are computed using only public map and the viewer's identity.
-	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}, "eventResources": {}, "fleeDeserts": {}}
+	// Legal choices use public state and the viewer's own hand only.
+	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}, "eventResources": {}, "fleeDeserts": {}, "eventGifts": {}}
 	if q := g.CardEvent; q != nil && s.Phase == "catan_card_event" && !s.Finished && s.CatanPendingActor() == player {
 		switch q.Kind {
 		case "earthquake":
@@ -172,6 +181,13 @@ func (s *State) catanView(view map[string]any, player int) {
 			}
 		case "robber_flees":
 			legal["fleeDeserts"] = g.fleeDeserts()
+		case "good_neighbors":
+			legal["eventGifts"] = []int{}
+			for color, count := range g.Players[player].Resources {
+				if count > 0 {
+					legal["eventGifts"] = append(legal["eventGifts"], color)
+				}
+			}
 		}
 	}
 	if k := g.CitiesKnights; k != nil {
