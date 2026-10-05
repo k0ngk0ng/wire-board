@@ -10,6 +10,7 @@ export function catanProductionNumbers(g: CatanState, tile: number): number[] {
   return [
     ...new Set([
       t.number,
+      ...(g.rivers?.map.doubleNumberTile === tile ? [2] : []),
       ...(g.fishing?.map.extraNumbers || [])
         .filter((n) => n.tile === tile)
         .map((n) => n.number),

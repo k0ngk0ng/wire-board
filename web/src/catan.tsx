@@ -1,4 +1,12 @@
 import {
+  CatanBridge,
+  CatanCoins,
+  CatanGoldTradePicker,
+  CatanRiverBank,
+  CatanRiverStart,
+} from "./catan-rivers";
+import { catanRiverImages } from "./catan-rivers-layout";
+import {
   CatanFishLakeNumbers,
   CatanFishingGrounds,
   CatanFishingPanel,
@@ -121,6 +129,7 @@ export const catanColors = [
   "#d6b05b",
   "#eaf3f4",
   "#258bb4",
+  "#a4a16a",
 ];
 
 const terrainResourceKeys = ["wood", "brick", "wool", "grain", "ore"];
@@ -134,6 +143,7 @@ const devDescriptions = [
 ];
 const costs: Record<string, number[]> = {
   road: [1, 1, 0, 0, 0],
+  bridge: [1, 2, 0, 0, 0],
   repair_road: [1, 1, 0, 0, 0],
   ship: [1, 0, 1, 0, 0],
   settlement: [1, 1, 1, 1, 0],
@@ -152,6 +162,7 @@ export const catanPhases: Record<string, string> = {
   catan_steal: "选择偷取资源的对手",
   catan_cloth_start: "选择初始强盗位置",
   catan_wonders_start: "选择初始强盗位置",
+  catan_rivers_start: "选择沼泽中的强盗起点",
   catan_world_ports: "轮流放置随机港口",
   catan_world_fish: "轮流安放随机渔场",
   catan_cloth_steal: "选择偷取资源或布匹",
@@ -378,6 +389,7 @@ export function CatanBoard({
   const cardCount = g.bank.length;
   const hexSize = g.hexSize || 62;
   const sea = g.seafarers;
+  const riverImages = useMemo(() => catanRiverImages(g), [g]);
   const portLayout = useMemo(() => catanPortLayout(g), [g]);
   const pirates = sea?.pirateIslands;
   const devLabel = (i: number) =>
@@ -392,6 +404,7 @@ export function CatanBoard({
     "金矿",
     "未探索迷雾",
     "湖泊",
+    "沼泽",
   ];
   const describeDev = (i: number) =>
     pirates && (i === 0 || i === 4)
@@ -436,6 +449,8 @@ export function CatanBoard({
   const [give, setGive] = useState(() => Array(cardCount).fill(0));
   const [take, setTake] = useState(() => Array(cardCount).fill(0));
   const [monopoly, setMonopoly] = useState(0);
+  const [goldGive, setGoldGive] = useState(0);
+  const [goldTake, setGoldTake] = useState(0);
   useEffect(() => {
     setVillage(null);
     setWonderFocus(null);
@@ -445,6 +460,8 @@ export function CatanBoard({
     setMoveFrom(null);
     setChosen(null);
     setDev(null);
+    setGoldGive(0);
+    setGoldTake(0);
     setGive(Array(cardCount).fill(0));
     setTake(Array(cardCount).fill(0));
   }, [
@@ -484,7 +501,9 @@ export function CatanBoard({
     eventMode ||
     cityChoiceMode ||
     progressMode ||
-    (phase === "catan_cloth_start" || phase === "catan_wonders_start"
+    (phase === "catan_cloth_start" ||
+    phase === "catan_wonders_start" ||
+    phase === "catan_rivers_start"
       ? "robber_start"
       : phase === "catan_world_fish"
         ? "fish_ground"
@@ -596,7 +615,7 @@ export function CatanBoard({
       (!!city && (cityVertices[effective] || []).includes(id)));
   return (
     <div
-      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing ? "catan-map-side-hand" : ""}`}
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing || g.rivers ? "catan-map-side-hand" : ""}`}
     >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
@@ -740,7 +759,55 @@ export function CatanBoard({
                     <polygon points={poly(t.id)} />
                   </clipPath>
                 ))}
+                {riverImages.map((r, i) => (
+                  <clipPath key={i} id={`catan-river-${i}`}>
+                    {r.tiles.map((id) => (
+                      <polygon key={id} points={poly(id)} />
+                    ))}
+                  </clipPath>
+                ))}
               </defs>
+              {riverImages.map((r, i) => {
+                const outlet = g.edges[g.rivers!.map.channels[i].outlet],
+                  a = g.vertices[outlet.a],
+                  b = g.vertices[outlet.b];
+                return (
+                  <g
+                    key={i}
+                    clipPath={`url(#catan-river-${i})`}
+                    pointerEvents="none"
+                    aria-hidden="true"
+                  >
+                    {r.tiles.map((id) => (
+                      <polygon
+                        key={id}
+                        points={poly(id)}
+                        fill={catanColors[g.tiles[id].resource]}
+                      />
+                    ))}
+                    {assets ? (
+                      <image
+                        href={`${assets}/catan/rivers/river-${r.kind}-v1.webp`}
+                        width={r.width}
+                        height={r.height}
+                        transform={r.transform}
+                      />
+                    ) : (
+                      <polyline
+                        points={[
+                          ...r.tiles.map(
+                            (id) => `${g.tiles[id].x},${g.tiles[id].y}`,
+                          ),
+                          `${(a.x + b.x) / 2},${(a.y + b.y) / 2}`,
+                        ].join(" ")}
+                        fill="none"
+                        stroke="#63c4dc"
+                        strokeWidth={hexSize * 0.15}
+                      />
+                    )}
+                  </g>
+                );
+              })}
               {g.tiles.map((t) => {
                 const available =
                   (eventMine &&
@@ -763,6 +830,9 @@ export function CatanBoard({
                         t.resource === 5 &&
                         (!sea?.cloth || sea.cloth.homeTiles.includes(t.id)))));
                 const numbers = catanProductionNumbers(g, t.id);
+                const riverImage = riverImages.find((r) =>
+                  r.tiles.includes(t.id),
+                );
                 return (
                   <g
                     key={`${t.id}-${t.resource}`}
@@ -780,9 +850,11 @@ export function CatanBoard({
                   >
                     <polygon
                       points={poly(t.id)}
-                      fill={catanColors[t.resource]}
+                      fill={
+                        riverImage ? "transparent" : catanColors[t.resource]
+                      }
                     />
-                    {assets && t.resource !== 8 && (
+                    {assets && t.resource !== 8 && !riverImage && (
                       <image
                         href={
                           t.resource < 6
@@ -808,9 +880,19 @@ export function CatanBoard({
                         textAnchor="middle"
                       >
                         {
-                          ["♣", "▰", "♧", "❧", "◆", "☀", "≈", "◆", "？", "≈"][
-                            t.resource
-                          ]
+                          [
+                            "♣",
+                            "▰",
+                            "♧",
+                            "❧",
+                            "◆",
+                            "☀",
+                            "≈",
+                            "◆",
+                            "？",
+                            "≈",
+                            "≈",
+                          ][t.resource]
                         }
                       </text>
                     )}
@@ -978,6 +1060,8 @@ export function CatanBoard({
                                 !!g.fishing?.legal.ships?.includes(e.id)) ||
                               (effective === "progress_edge" &&
                                 progressTargets.includes(e.id)) ||
+                              (effective === "bridge" &&
+                                !!g.legal.bridges?.includes(e.id)) ||
                               (effective === "road" &&
                                 g.legal.roads.includes(e.id)) ||
                               (effective === "repair_road" &&
@@ -1009,7 +1093,7 @@ export function CatanBoard({
                     pointerEvents={ok ? undefined : "none"}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`${effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "fish_ship" || effective === "move_ship" || (effective === "diplomacy" && city?.pending?.ship))) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}${e.damaged ? "，已受损" : ""}`}
+                    aria-label={`${e.bridge || g.rivers?.map.bridges.includes(e.id) ? "桥梁" : effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "fish_ship" || effective === "move_ship" || (effective === "diplomacy" && city?.pending?.ship))) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}${e.damaged ? "，已受损" : ""}`}
                     onClick={() => ok && select(effective, e.id)}
                     onKeyDown={(ev) => {
                       if (ok && (ev.key === "Enter" || ev.key === " ")) {
@@ -1018,6 +1102,15 @@ export function CatanBoard({
                       }
                     }}
                   >
+                    {e.owner < 0 && g.rivers?.map.bridges.includes(e.id) && (
+                      <line
+                        className="catan-bridge-site"
+                        x1={a.x + (b.x - a.x) * 0.24}
+                        y1={a.y + (b.y - a.y) * 0.24}
+                        x2={a.x + (b.x - a.x) * 0.76}
+                        y2={a.y + (b.y - a.y) * 0.76}
+                      />
+                    )}
                     {(ok ||
                       ((effective === "helper_move" ||
                         effective === "move_ship") &&
@@ -1040,7 +1133,13 @@ export function CatanBoard({
                         }
                       >
                         <g transform={`scale(${pieceScale})`}>
-                          {e.ship ? (
+                          {e.bridge ? (
+                            <CatanBridge
+                              game={g}
+                              seat={e.owner}
+                              assets={assets}
+                            />
+                          ) : e.ship ? (
                             <CatanShip
                               assets={assets}
                               player={catanColorIndex(g, e.owner)}
@@ -1226,9 +1325,10 @@ export function CatanBoard({
                 : cityChoiceMine && cityChoiceMode
                   ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
                   : phase === "catan_cloth_start" ||
-                      phase === "catan_wonders_start"
+                      phase === "catan_wonders_start" ||
+                      phase === "catan_rivers_start"
                     ? mine
-                      ? `点击亮起的${sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
+                      ? `点击亮起的${g.rivers ? "沼泽" : sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
                       : "等待先手选择强盗起点 · 可缩放拖动"
                     : phase === "catan_cloth_steal"
                       ? "请在海盗面板选择对手与物品 · 可收起查看地图"
@@ -1435,10 +1535,19 @@ export function CatanBoard({
               ? (["road", "settlement", "city"] as const)
               : sea
                 ? (["road", "ship", "settlement", "city", "buy_dev"] as const)
-                : (["road", "settlement", "city", "buy_dev"] as const)
+                : g.rivers
+                  ? ([
+                      "road",
+                      "bridge",
+                      "settlement",
+                      "city",
+                      "buy_dev",
+                    ] as const)
+                  : (["road", "settlement", "city", "buy_dev"] as const)
             ).map((key) => {
               const Icon = {
                 road: Route,
+                bridge: Route,
                 ship: Ship,
                 settlement: Home,
                 city: Castle,
@@ -1446,6 +1555,7 @@ export function CatanBoard({
               }[key];
               const label = {
                 road: "修建道路",
+                bridge: "建造桥梁",
                 ship: "建造船只",
                 settlement: "建造村庄",
                 city: "升级城市",
@@ -1454,13 +1564,15 @@ export function CatanBoard({
               const available =
                 key === "buy_dev"
                   ? g.devRemaining > 0
-                  : key === "ship"
-                    ? (g.legal.ships?.length || 0) > 0
-                    : key === "road"
-                      ? g.legal.roads.length > 0
-                      : key === "city"
-                        ? g.legal.cities.length > 0
-                        : g.legal.settlements.length > 0;
+                  : key === "bridge"
+                    ? !!g.legal.bridges?.length
+                    : key === "ship"
+                      ? (g.legal.ships?.length || 0) > 0
+                      : key === "road"
+                        ? g.legal.roads.length > 0
+                        : key === "city"
+                          ? g.legal.cities.length > 0
+                          : g.legal.settlements.length > 0;
               return (
                 <button
                   key={key}
@@ -1557,6 +1669,7 @@ export function CatanBoard({
                       helper_desert: "将强盗赶回沙漠",
                       road: "修建道路",
                       repair_road: "修复受损道路",
+                      bridge: "建造桥梁",
                       settlement: "建造村庄",
                       city:
                         phase === "catan_setup_city"
@@ -1599,7 +1712,12 @@ export function CatanBoard({
                 </button>
                 <button
                   className="primary"
-                  disabled={busy}
+                  disabled={
+                    busy ||
+                    (chosen.type === "bridge" &&
+                      (!g.legal.bridges?.includes(chosen.id) ||
+                        !affordable("bridge")))
+                  }
                   onClick={() =>
                     void submit({
                       type:
@@ -1744,6 +1862,24 @@ export function CatanBoard({
               assets={assets}
               disabled={busy}
             />
+            {g.rivers && !g.paired?.second && (
+              <CatanGoldTradePicker
+                give={goldGive}
+                take={goldTake}
+                giveLimit={g.rivers.gold[you]}
+                takeLimit={Math.max(
+                  0,
+                  ...g.rivers.gold.filter(
+                    (_, i) => i !== you && !g.players[i].eliminated,
+                  ),
+                )}
+                onChange={(give, take) => {
+                  setGoldGive(give);
+                  setGoldTake(take);
+                }}
+                disabled={busy}
+              />
+            )}
             <small>
               {catanBankReason(give, take, hand, g.bank, p.rates) ||
                 "可按所选比例与银行交换"}
@@ -1755,7 +1891,10 @@ export function CatanBoard({
               <button
                 className="outline"
                 disabled={
-                  busy || !!catanBankReason(give, take, hand, g.bank, p.rates)
+                  busy ||
+                  goldGive > 0 ||
+                  goldTake > 0 ||
+                  !!catanBankReason(give, take, hand, g.bank, p.rates)
                 }
                 title={catanBankReason(give, take, hand, g.bank, p.rates)}
                 onClick={() => void submit({ type: "catan_bank", give, take })}
@@ -1765,10 +1904,21 @@ export function CatanBoard({
               <button
                 className="primary"
                 disabled={
-                  busy || !!g.paired?.second || !total(give) || !total(take)
+                  busy ||
+                  !!g.paired?.second ||
+                  !(total(give) + goldGive) ||
+                  !(total(take) + goldTake) ||
+                  give.some((n, c) => n > hand[c]) ||
+                  goldGive > (g.rivers?.gold[you] ?? 0)
                 }
                 onClick={() =>
-                  void submit({ type: "catan_trade_offer", give, take })
+                  void submit({
+                    type: "catan_trade_offer",
+                    give,
+                    take,
+                    goldGive,
+                    goldTake,
+                  })
                 }
               >
                 向玩家提议
@@ -1781,8 +1931,14 @@ export function CatanBoard({
             <strong>{room.seats[g.trade.from].name} 的交易提议</strong>
             <small>给出</small>
             <Bundle values={g.trade.give} assets={assets} />
+            {!!g.trade.goldGive && (
+              <CatanCoins count={g.trade.goldGive} assets={assets} />
+            )}
             <small>换取</small>
             <Bundle values={g.trade.take} assets={assets} />
+            {!!g.trade.goldTake && (
+              <CatanCoins count={g.trade.goldTake} assets={assets} />
+            )}
             {canPlay &&
               (mine ? (
                 <>
@@ -1846,7 +2002,8 @@ export function CatanBoard({
                     disabled={
                       busy ||
                       g.trade.responses[you] === 1 ||
-                      g.trade.take.some((n, c) => n > hand[c])
+                      g.trade.take.some((n, c) => n > hand[c]) ||
+                      (g.trade.goldTake ?? 0) > (g.rivers?.gold[you] ?? 0)
                     }
                     onClick={() =>
                       void submit({
@@ -1943,6 +2100,14 @@ export function CatanBoard({
         />
         <CatanTribeStock room={room} assets={assets} />
         <CatanClothStock room={room} assets={assets} />
+        <CatanRiverBank room={room} busy={busy} act={act} assets={assets} />
+        <CatanRiverStart
+          room={room}
+          busy={busy}
+          act={act}
+          selectedTile={chosen?.type === "robber_start" ? chosen.id : null}
+          clearTile={() => setChosen(null)}
+        />
         <CatanWondersStart
           room={room}
           busy={busy}
@@ -2036,8 +2201,9 @@ export function CatanBoard({
               <small>{p.resourceCount} 张</small>
             </h3>
             <span>
-              道路 {p.roadsLeft}/15 {sea && `· 船只 ${p.shipsLeft}/15 `}· 村庄{" "}
-              {p.settlementsLeft}/5 · 城市 {p.citiesLeft}/4 可建
+              {g.rivers && `桥梁 ${p.bridgesLeft}/3 · `}道路 {p.roadsLeft}/15{" "}
+              {sea && `· 船只 ${p.shipsLeft}/15 `}· 村庄 {p.settlementsLeft}/5 ·
+              城市 {p.citiesLeft}/4 可建
             </span>
           </header>
           <div className="catan-hand-resources">
