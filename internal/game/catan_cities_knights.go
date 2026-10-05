@@ -22,6 +22,8 @@ var catanCommodities = []string{"纸张", "布料", "钱币"}
 var catanCityTracks = []string{"科学", "贸易", "政治"}
 
 type CatanCityPlayer struct {
+	Progress       []int  `json:"progress"`
+	PublicProgress []int  `json:"publicProgress"`
 	Improvements   [3]int `json:"improvements"`
 	DefenderPoints int    `json:"defenderPoints"`
 	ProgressPoints int    `json:"progressPoints"`
@@ -33,18 +35,24 @@ type CatanCityPending struct {
 	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
-	Knights      []CatanKnight     `json:"knights"`
-	ActionSerial uint64            `json:"actionSerial"`
-	Rules        string            `json:"rules"`
-	Players      []CatanCityPlayer `json:"players"`
-	Walls        []int             `json:"walls"`
-	Metropolises [3]int            `json:"metropolises"` // vertex IDs; -1 means unclaimed
-	Invasions    int               `json:"invasions"`
-	Pending      *CatanCityPending `json:"pending,omitempty"`
+	EventDie          int               `json:"eventDie"`
+	ProgressDecks     [3][]int          `json:"progressDecks"`
+	Event             *CatanCityEvent   `json:"event,omitempty"`
+	BarbarianPosition int               `json:"barbarianPosition"`
+	RobberStart       int               `json:"robberStart"`
+	FallenCities      []int             `json:"fallenCities"`
+	Knights           []CatanKnight     `json:"knights"`
+	ActionSerial      uint64            `json:"actionSerial"`
+	Rules             string            `json:"rules"`
+	Players           []CatanCityPlayer `json:"players"`
+	Walls             []int             `json:"walls"`
+	Metropolises      [3]int            `json:"metropolises"` // vertex IDs; -1 means unclaimed
+	Invasions         int               `json:"invasions"`
+	Pending           *CatanCityPending `json:"pending,omitempty"`
 }
 
-// Internal construction only. Event dice, barbarians and progress cards are still
-// under implementation; catan_roll explicitly refuses to use base-game dice.
+// Internal construction only. Progress-card effects are still under
+// implementation; catan_roll refuses to expose an incomplete expansion.
 func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("Helpers尚无与城市与骑士组合的官方兼容规则")
@@ -55,6 +63,10 @@ func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	}
 	g := s.Catan
 	g.CitiesKnights = &CatanCitiesKnights{Rules: CatanCitiesKnightsRules, Players: make([]CatanCityPlayer, n), Walls: []int{}, Metropolises: [3]int{-1, -1, -1}, Knights: []CatanKnight{}, ActionSerial: 1}
+	g.CitiesKnights.initProgress()
+	g.CitiesKnights.EventDie = -1
+	g.CitiesKnights.RobberStart = g.Robber
+	g.CitiesKnights.FallenCities = []int{}
 	commodities := 12
 	if n > 4 {
 		commodities = 18
@@ -226,6 +238,8 @@ func (s *State) catanCityChoice(player int, a Action) error {
 	}
 	q := k.Pending
 	switch q.Kind {
+	case "pillage", "defender_reward", "progress_discard":
+		return s.catanEventChoice(player, a)
 	case "knight_retreat":
 		if err := s.catanKnightRetreat(player, a); err != nil {
 			return err
@@ -279,6 +293,35 @@ func (s *State) catanCityChoiceBot(player int) (Action, error) {
 		sites := g.cityMetropolisSites(player)
 		if len(sites) > 0 {
 			return Action{Type: "catan_metropolis", Vertex: sites[0]}, nil
+		}
+	}
+	if k.Pending.Kind == "progress_discard" {
+		hand := k.Players[player].Progress
+		if len(hand) > 4 {
+			return Action{Type: "catan_progress_discard", Cards: append([]int{}, hand[:len(hand)-4]...)}, nil
+		}
+	}
+	if k.Pending.Kind == "pillage" {
+		sites := g.pillageSites(player)
+		if len(sites) > 0 {
+			best := sites[0]
+			for _, site := range sites {
+				if g.vertexValue(player, site) < g.vertexValue(player, best) {
+					best = site
+				}
+			}
+			return Action{Type: "catan_pillage", Vertex: best}, nil
+		}
+	}
+	if k.Pending.Kind == "defender_reward" {
+		best := -1
+		for track, deck := range k.ProgressDecks {
+			if len(deck) > 0 && (best < 0 || k.Players[player].Improvements[track] > k.Players[player].Improvements[best]) {
+				best = track
+			}
+		}
+		if best >= 0 {
+			return Action{Type: "catan_defender_reward", Color: best}, nil
 		}
 	}
 	if k.Pending.Kind == "knight_retreat" && k.Pending.Knight != nil {

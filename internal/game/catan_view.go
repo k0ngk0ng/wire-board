@@ -4,6 +4,19 @@ func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
+	if k := g.CitiesKnights; k != nil {
+		public := v["citiesKnights"].(map[string]any)
+		delete(public, "progressDecks")
+		public["progressRemaining"] = []int{len(k.ProgressDecks[0]), len(k.ProgressDecks[1]), len(k.ProgressDecks[2])}
+		v["progressRules"] = CatanProgressRules()
+		for i, raw := range public["players"].([]any) {
+			seat := raw.(map[string]any)
+			seat["progressCount"] = len(k.Players[i].Progress)
+			if i != player && !s.Finished {
+				delete(seat, "progress")
+			}
+		}
+	}
 	if w := g.newWorld(); w != nil {
 		public := map[string]any{"index": w.Index, "total": len(w.Ports), "remaining": len(w.Ports) - w.Index}
 		if w.Index < len(w.Ports) {
@@ -82,13 +95,13 @@ func (s *State) catanView(view map[string]any, player int) {
 		p["devCount"] = sum(actual.Dev)
 		p["publicScore"] = actual.Score - g.hiddenVictoryPoints(i)
 		p["rates"] = g.rates(i)
-		roads, settlements, cities := g.pieces(i)
+		roads, _, _ := g.pieces(i)
 		p["roadsLeft"] = 15 - roads
 		if g.Seafarers != nil {
 			p["shipsLeft"] = 15 - g.shipCount(i)
 		}
-		p["settlementsLeft"] = 5 - settlements
-		p["citiesLeft"] = 4 - cities
+		p["settlementsLeft"] = g.settlementPiecesLeft(i)
+		p["citiesLeft"] = g.cityPiecesLeft(i)
 		if actual.Helper != nil {
 			p["helperReady"] = g.helperReady(i, actual.Helper.ID)
 		}
@@ -102,6 +115,10 @@ func (s *State) catanView(view map[string]any, player int) {
 	// Legal locations are computed using only public map and the viewer's identity.
 	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}}
 	if k := g.CitiesKnights; k != nil {
+		legal["pillage"] = []int{}
+		if !s.Finished && s.CatanPendingActor() == player && k.Pending != nil && k.Pending.Kind == "pillage" {
+			legal["pillage"] = g.pillageSites(player)
+		}
 		moves := map[int][]int{}
 		for _, key := range []string{"knightRecruit", "knightActivate", "knightPromote", "knightChase", "knightRetreat"} {
 			legal[key] = []int{}
@@ -165,12 +182,13 @@ func (s *State) catanView(view map[string]any, player int) {
 				}
 			}
 		}
-		roads, settlements, cities := g.pieces(player)
+		roads, _, _ := g.pieces(player)
+		settlementsLeft := g.settlementPiecesLeft(player)
 		for _, v := range g.Vertices {
-			if settlements < 5 && (s.Phase == "catan_setup_settlement" || s.Phase == "catan_turn") && g.canSettlement(player, v.ID, g.setup()) {
+			if settlementsLeft > 0 && (s.Phase == "catan_setup_settlement" || s.Phase == "catan_turn") && g.canSettlement(player, v.ID, g.setup()) {
 				legal["settlements"] = append(legal["settlements"], v.ID)
 			}
-			if (s.Phase == "catan_turn" && cities < 4 && v.Level == 1 && v.Owner == player) || (s.Phase == "catan_setup_city" && g.canSettlement(player, v.ID, true)) {
+			if (s.Phase == "catan_turn" && g.canCityUpgrade(player, v.ID)) || (s.Phase == "catan_setup_city" && g.canSettlement(player, v.ID, true)) {
 				legal["cities"] = append(legal["cities"], v.ID)
 			}
 		}
