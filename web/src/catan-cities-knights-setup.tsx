@@ -23,7 +23,10 @@ export function CatanCitiesKnightsSetup({ room }: { room: Room }) {
         · {catanScenarioVictory(info.scenario, info.target)}
       </p>
       <p>
-        先放村庄，再逆序放城市。建设城墙和大都会，派出骑士抵御蛮族，运用科学、贸易和政治进步牌。
+        {info.scenario === "cloth"
+          ? "顺序村庄、逆序城市、再顺序村庄，仅第三座领取普通起始资源。"
+          : "先放村庄，再逆序放城市。"}
+        建设城墙和大都会，派出骑士抵御蛮族，运用科学、贸易和政治进步牌。
       </p>
       <small>
         使用纸张、布料和钱币三种商品；本扩展不使用基础发展卡和最大骑士军队。

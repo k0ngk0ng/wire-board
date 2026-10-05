@@ -7,6 +7,7 @@ import type { CatanRuleContext } from "./catan-rule-context";
 
 export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
   const wonders = info.scenario === "wonders";
+  const cloth = info.scenario === "cloth";
   return (
     <>
       <p>
@@ -26,7 +27,9 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           <b>开局：</b>
           随机先手，顺序放一座村庄和{info.scenario ? "道路或船只" : "道路"}
           ，再逆序放一座城市和{info.scenario ? "道路或船只" : "道路"}
-          ；起始城市只领取相邻地块各一张普通资源。
+          {cloth
+            ? "，最后再顺序放一座村庄和道路或船只；仅第三座村庄领取普通起始资源。"
+            : "；起始城市只领取相邻地块各一张普通资源。"}
         </li>
         <li>
           <b>每回合：</b>
@@ -59,14 +62,19 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
         </li>
         <li>
           <b>获胜：</b>在自己的行动中
-          {catanScenarioVictory(info.scenario, info.target)}
-          。保留最长路线两分，取消最大骑士军队；商人控制权值一分，发展牌中的隐藏胜利点不适用。
+          {catanScenarioVictory(info.scenario, info.target)}。
+          {cloth
+            ? "不使用最长路线和最大骑士军队"
+            : "保留最长路线两分，取消最大骑士军队"}
+          ；商人控制权值一分，发展牌中的隐藏胜利点不适用。
         </li>
         {info.scenario && (
           <>
             <li>
               <b>海上建设：</b>
-              木材＋羊毛造船。道路与船只只在己方建筑处接续成贸易路线；最长路线可包含两者。每次行动可移动一艘开放航线末端的旧船，新船本阶段不能移动；不能切断骑士与己方建筑的连接。
+              木材＋羊毛造船。道路与船只只在己方建筑处接续成贸易路线。
+              {!cloth && "最长路线可包含两者。"}
+              每次行动可移动一艘开放航线末端的旧船，新船本阶段不能移动；不能切断骑士与己方建筑的连接。
             </li>
             <li>
               <b>跨岛防御与金矿：</b>
@@ -77,6 +85,8 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
               {wonders
                 ? "本剧本不使用海盗。骑士可沿己方道路和船只移动。先手选择强盗的沙漠起点，但首次蛮族进攻后强盗才入场。"
                 : "骑士可沿己方道路和船只移动，并驱逐相邻强盗或海盗；选择后必须移动指定的棋子。首次进攻前两者都休眠。海盗封锁相邻造船和普通移船，移动后可偷取相邻船只主人一张手牌。"}
+              {cloth &&
+                "布匹场景还须先建立村落贸易才能移动海盗；偷取时可改选一枚布匹。"}
             </li>
             <li>
               <b>进步牌组合：</b>

@@ -73,3 +73,15 @@ test("combined wonders retain the alternative four-level victory and require twe
   assert.match(text, /4级奇迹.*12分且奇迹等级独自领先/);
   assert.doesNotMatch(text, /10分|13分/);
 });
+
+test("cloth combination retains depletion ending and uses sixteen points without route awards", () => {
+  const text = catanResultDescription({
+    ...base(),
+    citiesKnights: {},
+    seafarers: { scenario: "cloth", victoryPoints: 16 },
+  });
+  assert.match(text, /城市与骑士＋卡坦布匹/);
+  assert.match(text, /16分/);
+  assert.match(text, /五座村落.*同分比较布匹/);
+  assert.doesNotMatch(text, /14分|13分|最长路线/);
+});

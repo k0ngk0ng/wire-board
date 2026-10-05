@@ -24,7 +24,7 @@ export const catanLayoutName = (id: string) =>
 export function catanScenarioVictory(id: string, target: number) {
   if (id === "wonders") return `建成4级奇迹，或${target}分且奇迹等级独自领先`;
   if (id === "pirate_islands") return "10分且夺回自己的要塞";
-  if (id === "cloth") return "14分获胜；回合结束时5座村落耗尽也会结算";
+  if (id === "cloth") return `${target}分获胜；回合结束时5座村落耗尽也会结算`;
   return `${target}分获胜`;
 }
 
@@ -102,7 +102,11 @@ export function CatanSeafarersPicker({
       ) : (
         <p className="catan-scenario-layout">{catanLayoutName(setup.layout)}</p>
       )}
-      <p>{descriptions[info.id]}</p>
+      <p>
+        {info.id === "cloth" && room.catanCitiesKnights
+          ? "依次放置村庄、城市、村庄，仅第三座领取普通起始资源。船线连接村落，每两枚布匹得1分，没有最长路线奖励。"
+          : descriptions[info.id]}
+      </p>
       <strong className="catan-scenario-victory">
         {catanScenarioVictory(info.id, info.victoryPoints)}
       </strong>
