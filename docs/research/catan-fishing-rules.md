@@ -668,3 +668,63 @@ four-NewWorld plus four-Fog HTTP run passed82.404s (Fog40.68s). No rule was chan
 to force payments or extend a finished game. No browser process or persistent
 QA service was started; owned temporary test logs were removed. Expanded Fog
 visual acceptance is next; no upload, public entry, push or deployment.
+
+
+## Extended Fog Islands desktop/mobile acceptance (2026-10-06)
+
+Verified the complete production CatanBoard against a temporary local Go
+constructor/Apply/private-View adapter. Five/six-player initial setups were
+advanced by real bot actions through the first setup round. Directed paid-ship,
+pirate and fish→gold fixtures reuse the previously declared engine fixtures;
+they are not represented as positions played naturally from setup. Checked
+1440×1000 and1366×768 desktop,390×844 and320×740 mobile. This is component/engine
+interaction acceptance; app login, WebSocket, player header and title/timer
+integration remain covered by their separate service/app checks, not this page.
+
+Six-player390px: selecting coastal vertex102 and confirming the second
+settlement draws exactly one fish, reduces supply44→43 and returns to that
+player's route placement. Five-player320px repeats the second-settlement action
+with keyboard focus/Enter on vertex102, followed by confirmation: one fish,
+correct route phase and no page overflow.
+
+Six-player390px secondary action: select2+3fish, choose ship payment, use the map
+button, select actual edge7 and confirm. The ship is built, fish hand2→0,
+exploration18→16 reveals gold plus a resource, and gold selection becomes active.
+Choosing ore, collapsing to66px, expanding and confirming preserves the choice.
+The action returns to the same secondary player; JSON restore retains the
+ship, exploration, zero fish, the ordinary brick and chosen ore, and paired
+markers(primary3/secondary0/second=true). No resource construction charge or
+repeated fish payment occurs.
+
+Five-player320px: all seven private fish and both response buttons fit inside
+the panel. Player1 chooses the seventh token and confirms a blind replacement,
+retaining seven; player2 keeps their seven. Then player1 receives two grain
+from gold and player2 one ore, returning to the original turn. An intervening
+observer view shows waiting information, no private hand/fish faces, and no
+confirm/receive/pay controls. The final response has no error or overflow.
+
+Six-player1366px: a2fish pirate removal succeeds before rolling, spends the
+single selected token, moves the pirate offboard and retains the roll phase.
+Actual map assets decode:35distinct images on the explored board and32on the
+initial board, with no failed loads. Port-layout geometry finds no port-port
+or port-fishing-number overlaps among11ports/8grounds on the inspected initial
+and explored boards. Screenshots at desktop/mobile sizes corroborate readable
+original art and no page horizontal overflow; mobile whole-board scale remains
+small by design and is enlarged using map zoom.
+
+Native wheel was verified this time. Agent-browser's wheel command emitted a
+trusted event at(0,0), outside the map, despite the preceding pointer move.
+Sending one coordinate-explicit native CDP wheel event to the same owned QA
+page at(450,275), deltaY=-200, changes100%→149% and scrollTop0→100. Toolbar zoom
+then reaches215%; real pointer dragging changes scroll(29,273)→(58,303), with
+no build selection or game action. This is distinct from synthetic JS event
+verification and resolves the earlier tooling limitation for this tested page.
+
+A temporary harness JSX typo was fixed before the successful runs; final
+browser errors were empty. No production/UI source needed changing. The named
+browser was closed, Go adapter/Vite were intentionally interrupted (the Go
+adapter's interrupt exit is not a failed game-rule test), ports5179/8189 were
+confirmed quiet, and all owned temporary source/pages/profile/screenshots and
+CDP helper were removed. No repeated unit suite was necessary without a
+production change. No upload, public entry, push or release; continue remaining
+extended fishing recipes and the original complete expansion scope.
