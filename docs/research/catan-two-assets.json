@@ -1,0 +1,29 @@
+{
+  "sources": {
+    "catan-traders-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+      "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+      "bytes": 27843748
+    }
+  },
+  "artwork": {
+    "trade-token": {
+      "source": "catan-traders-2025",
+      "page": 7,
+      "object": 44950,
+      "soft_mask": 44953,
+      "soft_mask_size": [
+        165,
+        164
+      ],
+      "size": [
+        105,
+        104
+      ],
+      "file": "catan/two/trade-token-v1.webp",
+      "bytes": 17374,
+      "sha256": "82bc2423651b2315fdbf12b60cec4c3a2f05371a76156b4f126739ed86498ced"
+    }
+  },
+  "scope": "Original 2025 trade token, visually verified on printed page 7. Native size and colors retained; renderer applies the printed circular clipping."
+}

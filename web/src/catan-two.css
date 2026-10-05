@@ -1,0 +1,202 @@
+.catan-two-stock {
+  grid-column: 1/-1;
+  border: 1px solid #c7a35e;
+  border-radius: 10px;
+  background: #fff6dd;
+  color: #49341d;
+  padding: 10px;
+  min-width: 0;
+}
+.catan-two-stock header {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.catan-two-stock header img {
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.catan-two-stock small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.catan-two-stock p {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.two-stocks,
+.two-production {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 9px 0;
+}
+.two-stocks > span,
+.two-production > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  background: #fffdf5;
+  border: 1px solid #dbc697;
+  border-radius: 6px;
+  padding: 7px;
+  font-size: 12px;
+}
+.two-stocks b,
+.two-production b {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 17px;
+}
+.two-production b {
+  font-size: 13px;
+}
+.two-production .done {
+  background: #e3f2dd;
+  border-color: #83a46e;
+}
+.catan-two-stock i,
+.two-owner-choice i {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #78664b;
+  border-radius: 3px;
+}
+.two-neutral-status {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 11px;
+}
+.two-neutral-status span {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.two-token-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.two-token-actions button:last-child {
+  grid-column: 1/-1;
+}
+.catan-two-stock button {
+  background: #f3dfb0;
+  color: #49341d;
+  border: 1px solid #bd9550;
+  border-radius: 6px;
+  min-height: 40px;
+  padding: 7px;
+  font-size: 12px;
+}
+.catan-two-stock details {
+  margin-top: 8px;
+  font-size: 12px;
+}
+.catan-two-stock summary {
+  cursor: pointer;
+}
+.two-candidate {
+  cursor: pointer;
+}
+.two-candidate > line:not(.two-hit) {
+  stroke: #ffe387;
+  stroke-width: 11;
+  stroke-linecap: round;
+  filter: drop-shadow(0 1px 2px #52371d);
+}
+.two-candidate .two-hit {
+  stroke: transparent;
+  stroke-width: 24;
+}
+.two-candidate circle {
+  fill: #ffe387;
+  stroke: #795123;
+  stroke-width: 2.5;
+}
+.two-candidate.picked > line:not(.two-hit),
+.two-candidate:focus-visible > line:not(.two-hit) {
+  stroke: #fff;
+  stroke-width: 14;
+}
+.two-candidate.picked circle,
+.two-candidate:focus-visible circle {
+  fill: #fff;
+  stroke-width: 4;
+}
+.two-owner-choice {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.two-owner-choice button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-height: 42px;
+}
+.two-owner-choice button[aria-pressed="true"] {
+  background: #795422;
+  color: #fff;
+}
+.catan-two-choice {
+  max-height: 70dvh;
+}
+.catan-two-choice .catan-picker {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.catan-two-choice .catan-stepper button {
+  min-width: 32px;
+  min-height: 36px;
+}
+.catan-two-choice .cloth-confirm-actions > button {
+  min-height: 42px;
+}
+@media (max-width: 600px) {
+  .catan-two-choice {
+    bottom: 78px;
+    right: 12px;
+  }
+  .catan-two-choice header strong {
+    font-size: 14px;
+  }
+  .catan-two-choice .catan-picker {
+    gap: 6px;
+  }
+  .catan-two-choice .catan-stepper {
+    gap: 3px;
+  }
+  .catan-two-choice .catan-stepper button {
+    min-width: 29px;
+    padding: 5px;
+  }
+  .catan-two-stock {
+    padding: 9px;
+  }
+}
+
+.two-candidate circle.two-hit-disc {
+  fill: transparent;
+  stroke: none;
+}
+.catan-two-choice .catan-picker .catan-stepper button {
+  width: 38px;
+  min-width: 38px;
+  min-height: 40px;
+  padding: 6px;
+}
+
+.catan-two-choice .two-return-submit {
+  flex-shrink: 0;
+  min-height: 42px;
+}

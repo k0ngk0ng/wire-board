@@ -232,17 +232,21 @@ export function CatanRules({ room }: { room: Room }) {
     <>
       <p>
         <b>
-          {seafarers
-            ? `航海家 · ${catanScenarioName(scenario)}`
-            : "卡坦岛基础版"}
+          {info.two
+            ? "双人卡坦"
+            : seafarers
+              ? `航海家 · ${catanScenarioName(scenario)}`
+              : "卡坦岛基础版"}
         </b>{" "}
         ·{" "}
         {info.waiting
-          ? fiveSix
-            ? "5–6人"
-            : info.friendlyRobber && scenario === "shores"
-              ? "4人"
-              : "3–4人"
+          ? info.two
+            ? "2人"
+            : fiveSix
+              ? "5–6人"
+              : info.friendlyRobber && scenario === "shores"
+                ? "4人"
+                : "3–4人"
           : `${players}人`}
         {seafarers && info.layout ? ` · ${catanLayoutName(info.layout)}` : ""}。
         {catanScenarioVictory(scenario, info.target)}。
@@ -250,6 +254,28 @@ export function CatanRules({ room }: { room: Room }) {
       {info.harbors && <CatanHarborsRules />}
       {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
       {!cloth && <p>达标获胜在自己的行动阶段判定。</p>}
+      {info.two && (
+        <>
+          <h4>双人变体</h4>
+          <ol>
+            <li>
+              每回合完整生产两次，第二次总点数必须不同，重复时系统重掷。两次都要分别处理7点弃牌、强盗与偷牌。
+            </li>
+            <li>
+              两家中立势力各预放一座村庄，不领资源、不行动。正常建道路或村庄后，还须免费为一家中立势力建同类棋子；两家都不能建村时改修路。道路建设卡的每条路也分别触发。
+            </li>
+            <li>
+              每人起始5枚贸易筹码。起始和后续村庄相邻沙漠得2枚、沿海得1枚，可叠加。每回合另可弃一张已打出的骑士换2枚，可能失去最大骑士军队。
+            </li>
+            <li>
+              掷骰前或行动阶段，每回合可消费筹码一次：随机取对手最多2张资源，再交还自选2张；或把强盗移回沙漠、不偷牌。对手仅1张时仍需交还2张，可以交还刚抽到的牌。
+            </li>
+            <li>
+              公开分数不高于对手时消费1枚，否则2枚；隐藏胜利点不影响费用。中立势力也能取得最长路线，使真人失去该奖励。
+            </li>
+          </ol>
+        </>
+      )}
       {seafarers && (
         <>
           <h4>本剧本规则</h4>
@@ -279,6 +305,7 @@ export function CatanRules({ room }: { room: Room }) {
         <li>
           <b>生产：</b>
           回合开始掷两颗骰子，按点数向相邻村庄发一张、城市发两张资源。
+          {info.two && "本变体需完整执行两次不同总点数的生产。"}
           {!pirate && "强盗所在的地块不生产。"}
           {seafarers &&
             "金矿每份产出可分别选择一种银行现有资源，按提示依次领取。"}

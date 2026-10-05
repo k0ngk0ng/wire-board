@@ -8,6 +8,8 @@ export function catanResultDescription(g: CatanState) {
   const sea = g.seafarers;
   const target = catanSavedVictoryTarget(g);
   const harbors = g.harbors ? "港口霸主＋" : "";
+  if (g.two)
+    return `双人卡坦：在自己的回合达到${target}分获胜。两家中立势力也可取得最长路线；总分包含建筑、当前持有的路线与军队奖励，以及胜利点卡。`;
   if (sea?.wonders || sea?.scenario === "wonders")
     return `${harbors}${g.citiesKnights ? "城市与骑士＋" : ""}${g.fishing ? "捕鱼＋" : ""}卡坦奇迹：建成4级奇迹，或达到${target}分且奇迹等级独自领先，即可在自己的行动阶段获胜。${g.fishing ? "持旧靴子时分数门槛增加1分，建成4级仍直接获胜。" : ""}`;
   if (sea?.cloth || sea?.scenario === "cloth")

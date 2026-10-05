@@ -1,3 +1,6 @@
+import { CatanTwoMap, CatanTwoPanel } from "./catan-two";
+import { twoNeutralName, twoResponder } from "./catan-two-state";
+import type { TwoSelection } from "./catan-two-state";
 import {
   CatanCaravanMap,
   CatanCaravanBonuses,
@@ -164,6 +167,8 @@ export const catanPhases: Record<string, string> = {
   catan_setup_road: "在刚放置的建筑旁修路",
   catan_roll: "掷骰，生产资源",
   catan_turn: "交易、建造，或结束回合",
+  catan_two_build: "为中立势力完成免费建设",
+  catan_two_trade: "选择交还两张资源",
   catan_discard: "同时选择要弃置的资源",
   catan_robber: "选择强盗的新位置",
   catan_steal: "选择偷取资源的对手",
@@ -436,6 +441,8 @@ export function CatanBoard({
   const mine =
     canPlay &&
     game.turn === you &&
+    !g.two?.pending &&
+    !g.two?.trade &&
     !g.caravans?.pending &&
     !g.cardEvent &&
     fishResponder(room) === undefined;
@@ -449,6 +456,7 @@ export function CatanBoard({
   const phase = game.phase;
   const [village, setVillage] = useState<number | null>(null);
   const [mode, setMode] = useState("");
+  const [twoSelection, setTwoSelection] = useState<TwoSelection | null>(null);
   const [caravanSelection, setCaravanSelection] =
     useState<CaravanSelection | null>(null);
   const [progress, setProgress] = useState<ProgressSelection | null>(null);
@@ -468,6 +476,7 @@ export function CatanBoard({
   useEffect(() => {
     setVillage(null);
     setCaravanSelection(null);
+    setTwoSelection(null);
     setWonderFocus(null);
     setMode("");
     setProgress(null);
@@ -486,6 +495,7 @@ export function CatanBoard({
     phase,
     g.setupStep,
     g.caravans?.sequence,
+    g.two?.sequence,
     g.caravans?.actor,
     g.fishing?.tokens.responder,
     room.you,
@@ -632,7 +642,7 @@ export function CatanBoard({
       (!!city && (cityVertices[effective] || []).includes(id)));
   return (
     <div
-      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing || g.rivers || g.caravans ? "catan-map-side-hand" : ""}`}
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing || g.rivers || g.caravans || g.two ? "catan-map-side-hand" : ""}`}
     >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
@@ -1113,7 +1123,7 @@ export function CatanBoard({
                     pointerEvents={ok ? undefined : "none"}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`${e.bridge || g.rivers?.map.bridges.includes(e.id) ? "桥梁" : effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "fish_ship" || effective === "move_ship" || (effective === "diplomacy" && city?.pending?.ship))) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}${e.damaged ? "，已受损" : ""}`}
+                    aria-label={`${e.bridge || g.rivers?.map.bridges.includes(e.id) ? "桥梁" : effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "fish_ship" || effective === "move_ship" || (effective === "diplomacy" && city?.pending?.ship))) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : g.two && e.owner < -1 ? "，" + twoNeutralName(e.owner) + "已占领" : ""}${e.damaged ? "，已受损" : ""}`}
                     onClick={() => ok && select(effective, e.id)}
                     onKeyDown={(ev) => {
                       if (ok && (ev.key === "Enter" || ev.key === " ")) {
@@ -1143,11 +1153,11 @@ export function CatanBoard({
                         className={picked ? "picked-road" : "available-road"}
                       />
                     )}
-                    {e.owner >= 0 && (
+                    {(e.owner >= 0 || (g.two && e.owner < -1)) && (
                       <g
                         transform={`translate(${(a.x + b.x) / 2},${(a.y + b.y) / 2}) rotate(${(((Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI + 270) % 180) - 90})`}
                         className={
-                          g.players[e.owner].eliminated
+                          g.players[e.owner]?.eliminated
                             ? "eliminated-piece"
                             : ""
                         }
@@ -1272,7 +1282,7 @@ export function CatanBoard({
                     transform={`translate(${v.x},${v.y}) scale(${pieceScale})`}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`${effective === "fish_ground" ? "渔场凹角" : cityActionNames[effective] || "交点"} ${v.id + 1}${v.level > 0 ? "，" + (v.owner < 0 ? "中立" : room.seats[v.owner].name + "的") + (v.level === 2 ? "城市" : "村庄") : ""}`}
+                    aria-label={`${effective === "fish_ground" ? "渔场凹角" : cityActionNames[effective] || "交点"} ${v.id + 1}${v.level > 0 ? "，" + (v.owner < 0 ? (g.two ? twoNeutralName(v.owner) + "的" : "中立") : room.seats[v.owner].name + "的") + (v.level === 2 ? "城市" : "村庄") : ""}`}
                     onClick={() => ok && select(effective, v.id)}
                     onKeyDown={(e) => {
                       if (ok && (e.key === "Enter" || e.key === " ")) {
@@ -1331,6 +1341,12 @@ export function CatanBoard({
                   </g>
                 );
               })}
+              <CatanTwoMap
+                room={room}
+                busy={busy}
+                selected={twoSelection}
+                onSelect={setTwoSelection}
+              />
               <CatanCaravanBonuses g={g} />
               <CatanClothVillages
                 room={room}
@@ -1342,75 +1358,88 @@ export function CatanBoard({
           </div>
         </div>
         <div className="catan-map-hint">
-          {g.caravans?.pending
-            ? g.caravans.canAct
-              ? g.caravans.pending.kind === "bid"
-                ? "请在商队面板选择出价 · 可收起面板查看地图"
-                : "点击亮起的路线，再确认方向与选位 · 可缩放拖动"
-              : "等待商队投票 · 滚轮缩放 · 按住拖动"
-            : fishResponder(room) !== undefined
-              ? canPlay && fishResponder(room) === you
-                ? "请在捕鱼面板换筹码或保留 · 可收起面板查看地图"
-                : "等待鱼筹码选择 · 滚轮缩放 · 按住拖动"
-              : ["fish_road", "fish_ship"].includes(effective) && mine
-                ? `点击亮起的${effective === "fish_ship" ? "船只位置" : "道路"}，再到捕鱼面板确认支付`
-                : progressMode
-                  ? "点击地图上亮起的目标，再在进步牌面板确认 · 滚轮缩放 · 按住拖动"
-                  : cityChoiceMine && cityChoiceMode
-                    ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
-                    : phase === "catan_cloth_start" ||
-                        phase === "catan_wonders_start" ||
-                        phase === "catan_rivers_start"
-                      ? mine
-                        ? `点击亮起的${g.rivers ? "沼泽" : sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
-                        : "等待先手选择强盗起点 · 可缩放拖动"
-                      : phase === "catan_cloth_steal"
-                        ? "请在海盗面板选择对手与物品 · 可收起查看地图"
-                        : phase === "catan_port" ||
-                            phase === "catan_world_ports"
-                          ? portMine
-                            ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
-                            : "等待港口安放 · 滚轮缩放 · 按住拖动"
-                          : phase === "catan_world_fish"
-                            ? mine
-                              ? "选择亮起的凹角，预览后确认渔场 · 可收起面板查看地图"
-                              : "等待渔场安放 · 滚轮缩放 · 按住拖动"
-                            : phase === "catan_card_event"
-                              ? eventMine
-                                ? "请完成事件牌选择 · 可收起面板查看地图"
-                                : "等待事件牌回应 · 滚轮缩放 · 按住拖动"
-                              : phase === "catan_gold"
-                                ? canPlay &&
-                                  g.goldPending?.claims[0]?.player === you
-                                  ? "请在金矿面板领取资源 · 可收起面板查看地图"
-                                  : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
-                                : mine
-                                  ? effective === "helper_move" ||
-                                    effective === "move_ship"
-                                    ? moveFrom === null
-                                      ? effective === "move_ship"
-                                        ? "选择要移动的己方末端旧船"
-                                        : "选择要迁移的己方末端道路"
-                                      : "选择亮起的新位置，再确认移动"
-                                    : effective === "ship"
-                                      ? "点击虚线选择船只位置，再确认建造"
-                                      : effective === "pirate"
-                                        ? "选择另一块海洋，或将海盗移至外海"
-                                        : effective === "repair_road"
-                                          ? "点击受损道路，再确认修复"
-                                          : effective === "road"
-                                            ? "点击虚线选择道路，再确认建造"
-                                            : effective === "settlement" ||
-                                                effective === "city"
-                                              ? "点击亮起的交点，再确认建造"
-                                              : effective === "robber" ||
-                                                  effective === "helper_desert"
-                                                ? "点击地块选择强盗的新位置"
-                                                : "选择右侧行动 · 滚轮缩放 · 按住拖动"
-                                  : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
+          {twoResponder(room) !== undefined
+            ? g.two?.trade
+              ? "在面板选择交还资源 · 可收起查看地图"
+              : "点击亮起的位置，为中立势力建设 · 可收起面板"
+            : g.caravans?.pending
+              ? g.caravans.canAct
+                ? g.caravans.pending.kind === "bid"
+                  ? "请在商队面板选择出价 · 可收起面板查看地图"
+                  : "点击亮起的路线，再确认方向与选位 · 可缩放拖动"
+                : "等待商队投票 · 滚轮缩放 · 按住拖动"
+              : fishResponder(room) !== undefined
+                ? canPlay && fishResponder(room) === you
+                  ? "请在捕鱼面板换筹码或保留 · 可收起面板查看地图"
+                  : "等待鱼筹码选择 · 滚轮缩放 · 按住拖动"
+                : ["fish_road", "fish_ship"].includes(effective) && mine
+                  ? `点击亮起的${effective === "fish_ship" ? "船只位置" : "道路"}，再到捕鱼面板确认支付`
+                  : progressMode
+                    ? "点击地图上亮起的目标，再在进步牌面板确认 · 滚轮缩放 · 按住拖动"
+                    : cityChoiceMine && cityChoiceMode
+                      ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
+                      : phase === "catan_cloth_start" ||
+                          phase === "catan_wonders_start" ||
+                          phase === "catan_rivers_start"
+                        ? mine
+                          ? `点击亮起的${g.rivers ? "沼泽" : sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
+                          : "等待先手选择强盗起点 · 可缩放拖动"
+                        : phase === "catan_cloth_steal"
+                          ? "请在海盗面板选择对手与物品 · 可收起查看地图"
+                          : phase === "catan_port" ||
+                              phase === "catan_world_ports"
+                            ? portMine
+                              ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
+                              : "等待港口安放 · 滚轮缩放 · 按住拖动"
+                            : phase === "catan_world_fish"
+                              ? mine
+                                ? "选择亮起的凹角，预览后确认渔场 · 可收起面板查看地图"
+                                : "等待渔场安放 · 滚轮缩放 · 按住拖动"
+                              : phase === "catan_card_event"
+                                ? eventMine
+                                  ? "请完成事件牌选择 · 可收起面板查看地图"
+                                  : "等待事件牌回应 · 滚轮缩放 · 按住拖动"
+                                : phase === "catan_gold"
+                                  ? canPlay &&
+                                    g.goldPending?.claims[0]?.player === you
+                                    ? "请在金矿面板领取资源 · 可收起面板查看地图"
+                                    : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
+                                  : mine
+                                    ? effective === "helper_move" ||
+                                      effective === "move_ship"
+                                      ? moveFrom === null
+                                        ? effective === "move_ship"
+                                          ? "选择要移动的己方末端旧船"
+                                          : "选择要迁移的己方末端道路"
+                                        : "选择亮起的新位置，再确认移动"
+                                      : effective === "ship"
+                                        ? "点击虚线选择船只位置，再确认建造"
+                                        : effective === "pirate"
+                                          ? "选择另一块海洋，或将海盗移至外海"
+                                          : effective === "repair_road"
+                                            ? "点击受损道路，再确认修复"
+                                            : effective === "road"
+                                              ? "点击虚线选择道路，再确认建造"
+                                              : effective === "settlement" ||
+                                                  effective === "city"
+                                                ? "点击亮起的交点，再确认建造"
+                                                : effective === "robber" ||
+                                                    effective ===
+                                                      "helper_desert"
+                                                  ? "点击地块选择强盗的新位置"
+                                                  : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+                                    : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
       <aside className="catan-actions">
+        <CatanTwoPanel
+          room={room}
+          assets={assets}
+          busy={busy}
+          act={submit}
+          selected={twoSelection}
+          onSelect={setTwoSelection}
+        />
         <CatanCaravanPanel
           room={room}
           assets={assets}
@@ -1443,15 +1472,17 @@ export function CatanBoard({
             <div>
               <b>{g.rollId ? `点数 ${liveNumber}` : "等待掷骰"}</b>
               <small>
-                {g.paired?.second && phase === "catan_turn"
-                  ? "② 配对行动 · 不掷骰、不自由交易"
-                  : phase === "catan_discard"
-                    ? "所有人同时弃牌"
-                    : (sea &&
-                        !(sea.wonders && phase === "catan_robber") &&
-                        catanSeafarerPhases[phase]) ||
-                      catanPhases[phase] ||
-                      "本局已结束"}
+                {g.two && phase === "catan_roll"
+                  ? `第 ${g.two.rolls.length + 1} 次生产 · 共两次`
+                  : g.paired?.second && phase === "catan_turn"
+                    ? "② 配对行动 · 不掷骰、不自由交易"
+                    : phase === "catan_discard"
+                      ? "所有人同时弃牌"
+                      : (sea &&
+                          !(sea.wonders && phase === "catan_robber") &&
+                          catanSeafarerPhases[phase]) ||
+                        catanPhases[phase] ||
+                        "本局已结束"}
               </small>
             </div>
           </div>
@@ -2216,11 +2247,15 @@ export function CatanBoard({
                 <Route size={16} />
                 {sea ? "最长路线" : "最长道路"}{" "}
                 <b>
-                  {g.longestOwner < 0
-                    ? "至少 5 段"
-                    : room.seats[g.longestOwner].name}
+                  {g.two && g.longestOwner < -1
+                    ? twoNeutralName(g.longestOwner)
+                    : g.longestOwner < 0
+                      ? "至少 5 段"
+                      : room.seats[g.longestOwner].name}
                 </b>
-                <small>+2 分</small>
+                <small>
+                  {g.two && g.longestOwner < -1 ? "真人暂不获分" : "+2 分"}
+                </small>
               </span>
             )}
             {!city && (
