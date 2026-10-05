@@ -213,6 +213,9 @@ func (s *State) catanScores() {
 		p.Score = g.hiddenVictoryPoints(i)
 		if k := g.CitiesKnights; k != nil {
 			p.Score += k.Players[i].DefenderPoints + k.Players[i].ProgressPoints
+			if k.Merchant != nil && k.Merchant.Owner == i {
+				p.Score++
+			}
 			for track := range 3 {
 				if g.cityMetropolisOwner(track) == i {
 					p.Score += 2
@@ -280,6 +283,7 @@ func (s *State) catanNext() {
 	g := s.Catan
 	if g.CitiesKnights != nil {
 		g.CitiesKnights.ActionSerial++
+		g.CitiesKnights.TradePowers = nil
 	}
 	g.Trade = nil
 	g.PlayedDev = false
@@ -367,6 +371,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_commercial_offer":
+		return s.catanCommercialOffer(player, a)
 	case "catan_progress":
 		return s.catanPlayProgress(player, a)
 	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase":
@@ -1035,6 +1041,9 @@ func (s *State) EliminateCatan(p int) error {
 		k.Knights = slices.DeleteFunc(k.Knights, func(n CatanKnight) bool { return n.Owner == p })
 		k.returnProgress(k.Players[p].Progress)
 		k.Players[p].Progress = []int{}
+		if k.Merchant != nil && k.Merchant.Owner == p {
+			k.Merchant = nil
+		}
 		s.catanLog(p, "离场骑士返回库存")
 	}
 	catanMove(pl.Resources, g.Bank, append([]int{}, pl.Resources...))

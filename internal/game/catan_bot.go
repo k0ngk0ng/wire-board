@@ -288,6 +288,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	}
 	choices := []botChoice{}
 	choices = append(choices, g.scienceBotChoices(player)...)
+	choices = append(choices, g.tradeProgressBotChoices(player)...)
 	choices = append(choices, g.knightBotChoices(player)...)
 	choices = append(choices, g.cityEconomyBotChoices(player)...)
 	choices = append(choices, g.wonderBotChoices(player)...)

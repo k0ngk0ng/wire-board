@@ -235,6 +235,18 @@ func (g *Catan) rates(p int) []int {
 			rates[c] = 2
 		}
 	}
+	if k := g.CitiesKnights; k != nil {
+		if m := k.Merchant; m != nil && m.Owner == p && m.Tile >= 0 && m.Tile < len(g.Tiles) {
+			if c := g.Tiles[m.Tile].Resource; c >= 0 && c < 5 {
+				rates[c] = 2
+			}
+		}
+		if powers := k.TradePowers; powers != nil && powers.Player == p {
+			for _, c := range powers.Fleets {
+				rates[c] = 2
+			}
+		}
+	}
 	return rates
 }
 func (g *Catan) roadLength(p int) int {
