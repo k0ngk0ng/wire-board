@@ -205,6 +205,13 @@ func TestCatanCardEventHTTPResponseRestartAutoplayTimeoutAndProduction(t *testin
 				for next.rooms[id].Game.CatanPendingActor() >= 0 && steps < 8 {
 					r := next.rooms[id]
 					actor := r.Game.CatanPendingActor()
+					for _, c := range clients {
+						view := current(c)["game"].(map[string]any)["catan"].(map[string]any)
+						face, ok := view["revealedEvent"].(map[string]any)
+						if !ok || len(face) != 6 || face["kind"] != "earthquake" || face["production"] != float64(6) || face["productionStarted"] != (r.Game.Phase == "catan_gold") {
+							t.Fatal("event face lost or production displayed early during response", r.Game.Phase, face)
+						}
+					}
 					if r.Game.Catan.CardEvent != nil {
 						for _, p := range r.Game.Catan.Players {
 							for _, count := range p.Resources {
@@ -265,6 +272,31 @@ func TestCatanCardEventHTTPResponseRestartAutoplayTimeoutAndProduction(t *testin
 				}
 				if variant == "city" && (g.CitiesKnights.Invasions != 1 || g.CitiesKnights.Event != nil || g.Players[0].Resources[5] != 1) {
 					t.Fatal("city continuation used wrong dice or pre-pillage buildings")
+				}
+				// Restart again after the transient response queue has gone.
+				// The face/production number must still be visible to every viewer.
+				before, _ = json.Marshal(next.rooms[id])
+				ts2.Close()
+				next.Close()
+				restored, err := New(next.cfg, next.files)
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer restored.Close()
+				stopBotTicker(restored)
+				after, _ = json.Marshal(restored.rooms[id])
+				if string(before) != string(after) {
+					t.Fatal("settled event changed on restart")
+				}
+				ts3 := httptest.NewServer(restored.Handler())
+				defer ts3.Close()
+				for _, c := range clients {
+					c.base = ts3.URL
+					view := current(c)["game"].(map[string]any)["catan"].(map[string]any)
+					face, ok := view["revealedEvent"].(map[string]any)
+					if !ok || len(face) != 6 || face["kind"] != "earthquake" || face["production"] != float64(6) || face["productionStarted"] != true {
+						t.Fatal("settled event face absent or leaked private information", face)
+					}
 				}
 			})
 		}

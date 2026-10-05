@@ -1,8 +1,12 @@
 import { CatanFriendlyRobberStatus } from "./catan-friendly-robber";
-import { CatanCardEventChoice } from "./catan-card-event";
+import {
+  CatanCardEventChoice,
+  CatanCardEventSummary,
+} from "./catan-card-event";
 import {
   catanCardEventActor,
   catanCardEventMapMode,
+  catanRevealedEvent,
 } from "./catan-card-event-state";
 import { CatanHarborsStatus } from "./catan-harbors";
 import { catanSavedVictoryTarget } from "./catan-rule-context";
@@ -498,7 +502,8 @@ export function CatanBoard({
   const mapAspect = mapWidth / mapHeight;
   const control = useRailMapControls({ aspect: mapAspect, minMobileWidth: 0 });
   const { viewport, zoom, zoomAt, dragging } = control;
-  const liveNumber = g.cardEvent?.production ?? total(g.dice);
+  const revealedEvent = catanRevealedEvent(g);
+  const liveNumber = revealedEvent?.production ?? total(g.dice);
   const discard = canPlay && phase === "catan_discard" && g.discardDue[you] > 0;
   const select = (type: string, id: number) => {
     if (
@@ -729,7 +734,7 @@ export function CatanBoard({
                     role={available ? "button" : undefined}
                     tabIndex={available ? 0 : undefined}
                     aria-label={`地块 ${t.id + 1} ${terrainNames[t.resource]} ${t.number || ""}${g.robber === t.id ? "，强盗所在" : ""}`}
-                    className={`catan-hex terrain-${t.resource} ${available ? "selectable" : ""} ${!g.cardEvent && t.number > 0 && liveNumber === t.number && g.robber !== t.id ? "producing" : ""}`}
+                    className={`catan-hex terrain-${t.resource} ${available ? "selectable" : ""} ${(!revealedEvent || revealedEvent.productionStarted) && t.number > 0 && liveNumber === t.number && g.robber !== t.id ? "producing" : ""}`}
                     onClick={() => available && select(effective, t.id)}
                     onKeyDown={(e) => {
                       if (available && (e.key === "Enter" || e.key === " ")) {
@@ -1217,55 +1222,43 @@ export function CatanBoard({
         </div>
       </section>
       <aside className="catan-actions">
-        <div className="catan-dice" key={g.rollId}>
-          {g.cardEvent ? (
-            <span className="catan-card-production" title="事件牌生产点数">
-              {g.cardEvent.production}
+        <CatanCardEventSummary room={room} assets={assets} />
+        {!revealedEvent && (
+          <div className="catan-dice" key={g.rollId}>
+            <span
+              className={`${g.rollId ? "rolled" : ""} ${city ? "catan-red-die" : ""}`}
+            >
+              {g.dice[0] || "—"}
             </span>
-          ) : (
-            <>
-              <span
-                className={`${g.rollId ? "rolled" : ""} ${city ? "catan-red-die" : ""}`}
-              >
-                {g.dice[0] || "—"}
+            <span className={g.rollId ? "rolled" : ""}>{g.dice[1] || "—"}</span>
+            {city && (
+              <span className="catan-event-die" title="事件骰">
+                {city.eventDie < 0 ? (
+                  "—"
+                ) : city.eventDie >= 3 ? (
+                  <Ship size={20} />
+                ) : (
+                  ["科学", "贸易", "政治"][city.eventDie]
+                )}
               </span>
-              <span className={g.rollId ? "rolled" : ""}>
-                {g.dice[1] || "—"}
-              </span>
-              {city && (
-                <span className="catan-event-die" title="事件骰">
-                  {city.eventDie < 0 ? (
-                    "—"
-                  ) : city.eventDie >= 3 ? (
-                    <Ship size={20} />
-                  ) : (
-                    ["科学", "贸易", "政治"][city.eventDie]
-                  )}
-                </span>
-              )}
-            </>
-          )}
-          <div>
-            <b>
-              {g.cardEvent
-                ? "事件牌生产点数"
-                : g.rollId
-                  ? `点数 ${liveNumber}`
-                  : "等待掷骰"}
-            </b>
-            <small>
-              {g.paired?.second && phase === "catan_turn"
-                ? "② 配对行动 · 不掷骰、不自由交易"
-                : phase === "catan_discard"
-                  ? "所有人同时弃牌"
-                  : (sea &&
-                      !(sea.wonders && phase === "catan_robber") &&
-                      catanSeafarerPhases[phase]) ||
-                    catanPhases[phase] ||
-                    "本局已结束"}
-            </small>
+            )}
+
+            <div>
+              <b>{g.rollId ? `点数 ${liveNumber}` : "等待掷骰"}</b>
+              <small>
+                {g.paired?.second && phase === "catan_turn"
+                  ? "② 配对行动 · 不掷骰、不自由交易"
+                  : phase === "catan_discard"
+                    ? "所有人同时弃牌"
+                    : (sea &&
+                        !(sea.wonders && phase === "catan_robber") &&
+                        catanSeafarerPhases[phase]) ||
+                      catanPhases[phase] ||
+                      "本局已结束"}
+              </small>
+            </div>
           </div>
-        </div>
+        )}
         <CatanProgressHand
           room={room}
           act={act}
