@@ -40,13 +40,8 @@ func (g *Catan) makeSeafarersFogFour() error {
 	return g.makeFogMap(rows, ports, [2]int{1, 5}, []int{0, 1, 1, 2, 3, 3, 4, 4, 6, 6, 7, 7}, []int{3, 4, 5, 6, 8, 9, 10, 11, 11, 12})
 }
 
-// 2025 Seafarers 5–6, page 6. This recipe includes a desert in the hidden
-// pile; revealing it must not consume one of the fourteen number discs.
-func (g *Catan) makeSeafarersFogSix() error {
-	if len(g.Players) < 5 || len(g.Players) > 6 {
-		return errors.New("此迷雾岛地图需要5至6位玩家")
-	}
-	rows := [][]seaTerrain{
+func catanFogSixRows() [][]seaTerrain {
+	return [][]seaTerrain{
 		{{0, 10}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {0, 9}, {3, 2}},
 		{{2, 6}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {3, 5}, {4, 12}},
 		{{3, 12}, {1, 4}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {2, 4}, {1, 8}},
@@ -55,6 +50,15 @@ func (g *Catan) makeSeafarersFogSix() error {
 		{{1, 9}, {2, 8}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {1, 10}},
 		{{1, 11}, {4, 10}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {0, 8}},
 	}
+}
+
+// 2025 Seafarers 5–6, page 6. This recipe includes a desert in the hidden
+// pile; revealing it must not consume one of the fourteen number discs.
+func (g *Catan) makeSeafarersFogSix() error {
+	if len(g.Players) < 5 || len(g.Players) > 6 {
+		return errors.New("此迷雾岛地图需要5至6位玩家")
+	}
+	rows := catanFogSixRows()
 	ports := []seaPort{{1, 0, 3, -1}, {0, 5, 4, 0}, {2, 8, 4, -1}, {1, 6, 1, 2}, {2, 1, 5, 2}, {3, 0, 2, 4}, {4, 8, 4, 1}, {4, 8, 0, 3}, {5, 0, 2, -1}, {5, 7, 2, -1}, {6, 1, 4, -1}}
 	return g.makeFogMap(rows, ports, [2]int{2, 0}, []int{0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7}, []int{2, 2, 3, 3, 4, 5, 5, 6, 8, 9, 10, 11, 11, 12})
 }

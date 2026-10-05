@@ -581,3 +581,90 @@ CLI reference copy and terminal logs were cleaned, and the owned browser and
 Go/Vite services stopped (5179/8189quiet). No asset upload, public entry, push or
 deployment. Continue with the five/six-player doubled-number cloth-village stock
 boundary, the remaining fishing recipes and the original full expansion scope.
+
+
+## Fog Islands five/six-player engine and service integration (2026-10-06)
+
+The internal Fishing+Seafarers constructor now accepts the official five/six
+Fog Islands fixed map. Seafarers extension p.6 retains 56 hexes: 24 faceup
+resource hexes, 14 faceup sea hexes, and 18 facedown exploration hexes (including
+three gold and one desert); 24 faceup and 14 facedown number discs; 11 ports.
+T&B extension p.5 adds the 5/9 grounds and fourteen fish tokens. Combination
+p.2 removes the lake and places grounds only on initially faceup islands.
+Thus there are eight grounds with 4/5/5/6/8/9/9/10 and 44 tokens including the
+boot. The hidden desert stays in the exploration stack, never becomes a lake,
+and still consumes no number disc on discovery. Victory is 12VP, boot13.
+
+The shared coastal builder/validator now takes the player count and uses the
+appropriate six/eight inventory; New World uses the same number catalogue.
+Other not-yet-verified extended scenario constructors remain closed. Initial
+Fog geometry is reconstructed from the same three/four/six-player recipe as
+map creation, independently of hidden stack order and subsequent discovery.
+Consequently newly discovered sea cannot create placement candidates and
+newly discovered land cannot invalidate an existing ground. The extended
+validator requires the FiveSix option, paired markers, and the prescribed
+fixed layout. Helpers and the C&K triple remain gated.
+
+Map/host-position/complete-discovery/restore checks now cover 24 constructions
+for each of 3/4 fixed/variable and 5/6 fixed (144 total). Independent component
+counts, corrupt extended options/ground inventory, and all-viewer hidden-stack
+privacy checks pass. Actual two-round setup tests for5/6 check no first-round
+fish, exactly one pile draw for a qualifying second settlement (even if multiple
+grounds touch it), consumed entitlements for all seats, route continuation,
+per-action serialization and the first primary roll.
+
+Sixteen directed extended production cases cover5/6 × doubled5/9 × full/nonfull
+hands × pirate absent/present, with distance-legal fixture buildings (city plus
+settlement). Both grounds produce together; the pirate blocks only its ground.
+Responses proceed clockwise across seat zero; full hands get one replacement
+per entitled player. Serialization, wrong actor, duplicate production, finite
+supply and secondary-no-roll/no-production checks pass. These are explicitly
+midgame fixtures, not claimed naturally played layouts.
+
+Gold-continuation tests now cover3/5/6 × full/nonfull fish × ordinary/scarce/empty
+resource bank. Fish responses finish before gold and return to the original
+turn without duplicate resources. Paid discovery routes cover primary
+pre-roll/post-roll and secondary action for5/6 (roads and ships): actual
+fish payment, hidden gold reveal, response/restore, new-ship movement lock,
+original phase and paired markers preserved. Six complete engine games
+(3/4 fixed/variable,5/6 fixed) all reach the proper boot-adjusted target, with
+piece/resource/fish validation and periodic serialization. Focused continuation,
+route and full-engine checks passed25.470s; setup/new paired-route checks0.697s;
+extended inventory/duplicate-production0.693s.
+
+HTTP fish→fish→gold→gold response tests cover3/5/6 × manual/autoplay/timeout.
+All nine paths use actual Apply rolls after explicit midgame fixture setup;
+initial response and each response completion are actually persisted/restarted.
+For5/6 the primary end then enters the correct secondary action, with no new
+production, rejects a secondary roll, and is restarted again. This gives51
+actual restarts. Responses each receive120seconds, restore the original45second
+primary remainder, and the secondary action receives a new120seconds. All
+player/observer views hide private fish, hidden terrain/discs and internal
+queues. Wrong actors and observers cannot mutate room state or deadlines.
+HTTP4.687s and race45.175s pass. Shared coastal/map/NewWorld-layout regressions
+42.888s and game/server vet pass.
+
+No frontend or new asset changed in this stage. Expanded-map desktop/mobile
+rendering and visual placement acceptance remain to be checked separately;
+service tests do not establish UI quality. Public configuration remains gated.
+
+
+Complete HTTP gameplay now shares a helper between New World and Fog Islands,
+retaining both scenarios' distinct hidden-state checks. Four Fog games (two per
+extended player count) passed:708–774 steps,41–45 autoplay actions,1–3 timeouts,
+29–43 manual fish payments. All reached12/13 as appropriate; all four restarted
+at initial setup, after discovery, during gold response, during secondary
+action and after finishing, and winner history remained correct. None naturally
+entered a full-hand fish response, which remains covered by the directed HTTP
+matrix above. Per-step resource/dev/fish inventories and periodic privacy checks
+remain. This is a full game through real handlers after injecting only the
+initial gated expansion state, not a public room-selection acceptance test.
+
+The first common-helper run had one New World game win legitimately with zero
+manual fish payments; the old per-game coverage assertion failed. It was
+replaced with batch coverage while preserving each game's victory, inventories,
+restart and privacy assertions and the directed paid-action tests. The final
+four-NewWorld plus four-Fog HTTP run passed82.404s (Fog40.68s). No rule was changed
+to force payments or extend a finished game. No browser process or persistent
+QA service was started; owned temporary test logs were removed. Expanded Fog
+visual acceptance is next; no upload, public entry, push or deployment.

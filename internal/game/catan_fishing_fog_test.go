@@ -10,7 +10,7 @@ import (
 
 func fishFogGame(t *testing.T, n int, layout string) *State {
 	t.Helper()
-	s, err := NewCatanFishingSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "fog", Layout: layout}, nil)
+	s, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "fog", Layout: layout}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -18,13 +18,17 @@ func fishFogGame(t *testing.T, n int, layout string) *State {
 }
 
 func TestCatanFishingFogMapsAndExploration(t *testing.T) {
-	for _, n := range []int{3, 4} {
-		for _, layout := range []string{"fixed", "variable"} {
+	for _, n := range []int{3, 4, 5, 6} {
+		layouts := []string{"fixed", "variable"}
+		if n > 4 {
+			layouts = []string{"fixed"}
+		}
+		for _, layout := range layouts {
 			t.Run(fmt.Sprintf("%d/%s", n, layout), func(t *testing.T) {
 				for range 24 {
 					s := fishFogGame(t, n, layout)
 					g := s.Catan
-					if len(g.Fishing.Map.Lakes) != 0 || len(g.Fishing.Map.Grounds) != 6 || g.victoryTargetFor(0) != 12 {
+					if len(g.Fishing.Map.Lakes) != 0 || len(g.Fishing.Map.Grounds) != len(catanFishingGroundNumbers(n)) || g.victoryTargetFor(0) != 12 {
 						t.Fatal("wrong recipe/target")
 					}
 					coasts := g.FishingCoasts()
@@ -32,7 +36,7 @@ func TestCatanFishingFogMapsAndExploration(t *testing.T) {
 					placements := []CatanFishingGroundPlacement{}
 					for i, ground := range before.Grounds {
 						// Fog has no Four Islands' mandatory number groups.
-						placements = append(placements, CatanFishingGroundPlacement{before.Grounds[(i+1)%6].Number, [2]int{ground.Edges[1], ground.Edges[0]}})
+						placements = append(placements, CatanFishingGroundPlacement{before.Grounds[(i+1)%len(before.Grounds)].Number, [2]int{ground.Edges[1], ground.Edges[0]}})
 					}
 					if _, err := g.makeFishingFog(placements); err != nil {
 						t.Fatal("host-selected grounds rejected", err)
@@ -83,17 +87,17 @@ func TestCatanFishingFogRejectsInvalidRecipe(t *testing.T) {
 		t.Fatal("invalid placement not atomic")
 	}
 	for _, n := range []int{5, 6} {
-		if _, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: true}, CatanSeafarersSetup{Scenario: "fog"}, nil); err == nil {
-			t.Fatal("unverified five/six recipe accepted")
+		if _, err := NewCatanFishingSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "fog"}, nil); err == nil {
+			t.Fatal("missing explicit five/six option accepted")
 		}
 	}
 }
 
 // Production fixture uses the real scenario and discovery stack, with chosen
 // buildings/numbers so fish, ordinary resources and gold trigger together.
-func fishFogProduction(t *testing.T, full bool) *State {
+func fishFogProduction(t *testing.T, n int, full bool) *State {
 	t.Helper()
-	s := fishFogGame(t, 3, "fixed")
+	s := fishFogGame(t, n, "fixed")
 	g := s.Catan
 	for _, e := range g.Edges {
 		if _, err := s.catanDiscover(0, e.ID); err != nil {
@@ -105,6 +109,9 @@ func fishFogProduction(t *testing.T, full bool) *State {
 	}
 	g.SetupStep, g.TurnSerial, g.RollID = g.SetupLimit(), 1, 1
 	s.Turn, s.Phase = 0, "catan_roll"
+	if n > 4 {
+		g.Paired.Primary, g.Paired.Secondary, g.Paired.Second = 0, 3, false
+	}
 	g.Seafarers.Pirate, g.Robber = -1, -1
 	ground := g.Fishing.Map.Grounds[0]
 	for i := range g.Tiles {
@@ -140,10 +147,16 @@ func fishFogProduction(t *testing.T, full bool) *State {
 }
 
 func TestCatanFishingFogGoldProductionContinuation(t *testing.T) {
+	for _, n := range []int{3, 5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) { testFishingFogGoldProduction(t, n) })
+	}
+}
+
+func testFishingFogGoldProduction(t *testing.T, n int) {
 	for _, full := range []bool{true, false} {
 		for _, bank := range []int{95, 1, 0} {
 			t.Run(fmt.Sprintf("responses=%t/bank=%d", full, bank), func(t *testing.T) {
-				s := fishFogProduction(t, full)
+				s := fishFogProduction(t, n, full)
 				g := s.Catan
 				if bank < 95 {
 					for c, amount := range g.Bank {
@@ -162,7 +175,9 @@ func TestCatanFishingFogGoldProductionContinuation(t *testing.T) {
 				ordinary := clone(g.Players)
 				available := sum(g.Bank)
 				if full {
-					if s.Phase != "catan_fish_replace" || g.GoldPending != nil || !slices.Equal(g.Fishing.Pending.Gold, []int{0, 2, 1}) {
+					wantGold := make([]int, n)
+					wantGold[1], wantGold[2] = 2, 1
+					if s.Phase != "catan_fish_replace" || g.GoldPending != nil || !slices.Equal(g.Fishing.Pending.Gold, wantGold) {
 						t.Fatal("lost/premature gold", g.Fishing.Pending)
 					}
 					for _, p := range []int{1, 2} {
@@ -177,7 +192,7 @@ func TestCatanFishingFogGoldProductionContinuation(t *testing.T) {
 						}
 					}
 				}
-				paid := []int{0, 0, 0}
+				paid := make([]int, n)
 				for s.Phase == "catan_gold" {
 					copy := clone(*s)
 					s = &copy
@@ -221,7 +236,7 @@ func TestCatanFishingFogGoldProductionContinuation(t *testing.T) {
 }
 
 func TestCatanFishingFogContinuationPrivacyAndValidation(t *testing.T) {
-	s := fishFogProduction(t, true)
+	s := fishFogProduction(t, 3, true)
 	if err := s.catanRollProduction(s.Catan.Fishing.Map.Grounds[0].Number); err != nil {
 		t.Fatal(err)
 	}
@@ -329,12 +344,18 @@ func TestCatanFishingFogSetupGoldDoesNotOverwriteFish(t *testing.T) {
 	}
 }
 
-func fishFogDiscoveryRoute(t *testing.T, phase string, ship bool) (*State, int) {
+func fishFogDiscoveryRoute(t *testing.T, n int, phase string, ship, secondary bool) (*State, int) {
 	t.Helper()
-	s := fishFogGame(t, 3, "fixed")
+	s := fishFogGame(t, n, "fixed")
 	g := s.Catan
 	s.Turn, s.Phase = 0, phase
 	g.SetupStep, g.TurnSerial = g.SetupLimit(), 1
+	if n > 4 {
+		g.Paired.Primary, g.Paired.Secondary, g.Paired.Second = 0, 3, false
+		if secondary {
+			g.Paired.Primary, g.Paired.Secondary, g.Paired.Second = n-3, 0, true
+		}
+	}
 	g.Seafarers.Pirate = -1
 	fishOwn(&g.Fishing.Tokens, 0, 11, 21)
 	if !ship {
@@ -382,10 +403,24 @@ func fishFogDiscoveryRoute(t *testing.T, phase string, ship bool) (*State, int) 
 }
 
 func TestCatanFishingFogPaidRouteGoldAndResume(t *testing.T) {
+	for _, n := range []int{3, 5, 6} {
+		for _, secondary := range []bool{false, true} {
+			if n == 3 && secondary {
+				continue
+			}
+			t.Run(fmt.Sprintf("%d/secondary%v", n, secondary), func(t *testing.T) { testFishingFogPaidRoute(t, n, secondary) })
+		}
+	}
+}
+
+func testFishingFogPaidRoute(t *testing.T, n int, secondary bool) {
 	for _, phase := range []string{"catan_roll", "catan_turn"} {
+		if secondary && phase == "catan_roll" {
+			continue
+		}
 		for _, ship := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%s/ship=%t", phase, ship), func(t *testing.T) {
-				s, edge := fishFogDiscoveryRoute(t, phase, ship)
+				s, edge := fishFogDiscoveryRoute(t, n, phase, ship, secondary)
 				kind := "catan_fish_road"
 				if ship {
 					kind = "catan_fish_ship"
@@ -418,6 +453,13 @@ func TestCatanFishingFogPaidRouteGoldAndResume(t *testing.T) {
 				if s.Phase != phase || s.Turn != 0 || s.Catan.GoldPending != nil || s.Catan.FreeRoads != 0 {
 					t.Fatal("gold lost original phase")
 				}
+				wantSecondary := 3
+				if secondary {
+					wantSecondary = 0
+				}
+				if n > 4 && (s.Catan.Paired.Second != secondary || s.Catan.Paired.Secondary != wantSecondary) {
+					t.Fatal("gold response changed paired action")
+				}
 				if ship && len(s.Catan.shipDestinations(0, edge)) > 0 {
 					t.Fatal("fresh fish ship movable")
 				}
@@ -431,8 +473,12 @@ func TestCatanFishingFogPaidRouteGoldAndResume(t *testing.T) {
 }
 
 func TestCatanFishingFogBotsFinishAndConserve(t *testing.T) {
-	for _, n := range []int{3, 4} {
-		for _, layout := range []string{"fixed", "variable"} {
+	for _, n := range []int{3, 4, 5, 6} {
+		layouts := []string{"fixed", "variable"}
+		if n > 4 {
+			layouts = []string{"fixed"}
+		}
+		for _, layout := range layouts {
 			t.Run(fmt.Sprintf("%d/%s", n, layout), func(t *testing.T) {
 				s := fishFogGame(t, n, layout)
 				paid, gold := 0, 0

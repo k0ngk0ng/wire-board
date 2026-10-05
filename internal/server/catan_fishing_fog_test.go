@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http/httptest"
 	"slices"
 	"testing"
@@ -10,15 +11,18 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func fogFishingResponseFixture(t *testing.T, r *Room, now time.Time) {
+func fogFishingResponseFixture(t *testing.T, r *Room, n int, now time.Time) {
 	t.Helper()
-	state, err := game.NewCatanFishingSeafarers(3, game.CatanOptions{}, game.CatanSeafarersSetup{Scenario: "fog"}, nil)
+	state, err := game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: n > 4}, game.CatanSeafarersSetup{Scenario: "fog"}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	g := state.Catan
 	g.SetupStep, g.TurnSerial = g.SetupLimit(), 1
 	state.Turn, state.Phase = 0, "catan_roll"
+	if n > 4 {
+		g.Paired.Primary, g.Paired.Secondary, g.Paired.Second = 0, 3, false
+	}
 	g.Seafarers.Pirate = -1
 	for i := range g.Tiles {
 		if g.Tiles[i].Resource < 5 {
@@ -81,12 +85,16 @@ func fogFishingResponseFixture(t *testing.T, r *Room, now time.Time) {
 	}
 }
 func TestCatanFishingFogGoldResponseHTTP(t *testing.T) {
+	for _, n := range []int{3, 5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) { testFishingFogGoldResponseHTTP(t, n) })
+	}
+}
+func testFishingFogGoldResponseHTTP(t *testing.T, n int) {
 	for _, mode := range []string{"manual", "autoplay", "timeout"} {
 		t.Run(mode, func(t *testing.T) {
-			s, ts, clients, id := newCatanTable(t)
-			clients[3].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
+			s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "resource")
 			s.mu.Lock()
-			fogFishingResponseFixture(t, s.rooms[id], time.Now())
+			fogFishingResponseFixture(t, s.rooms[id], n, time.Now())
 			if err := s.save(s.rooms[id]); err != nil {
 				t.Fatal(err)
 			}
@@ -114,7 +122,7 @@ func TestCatanFishingFogGoldResponseHTTP(t *testing.T) {
 				}
 			}
 			restart()
-			ordinary := make([]int, 3)
+			ordinary := make([]int, n)
 			for p, seat := range s.rooms[id].Game.Catan.Players {
 				for _, count := range seat.Resources {
 					ordinary[p] += count
@@ -152,7 +160,7 @@ func TestCatanFishingFogGoldResponseHTTP(t *testing.T) {
 					}
 					for seat, raw := range tokens["players"].([]any) {
 						_, visible := raw.(map[string]any)["tokens"]
-						if visible != (viewer == seat && seat > 0) {
+						if visible != (viewer == seat && (seat == 1 || seat == 2)) {
 							t.Fatal("fish faces leaked")
 						}
 					}
@@ -163,7 +171,7 @@ func TestCatanFishingFogGoldResponseHTTP(t *testing.T) {
 				}
 				before, _ := json.Marshal(r)
 				clients[0].command(current(clients[0]), "action", a, 400)
-				clients[3].command(current(clients[3]), "action", a, 400)
+				clients[n].command(current(clients[n]), "action", a, 400)
 				after, _ := json.Marshal(s.rooms[id])
 				if string(before) != string(after) {
 					t.Fatal("wrong actor changed response")
@@ -205,12 +213,28 @@ func TestCatanFishingFogGoldResponseHTTP(t *testing.T) {
 					count += n
 				}
 				gold := 0
-				if p > 0 {
+				if p == 1 || p == 2 {
 					gold = 3 - p
 				}
 				if count != ordinary[p]+gold {
 					t.Fatal("lost or duplicate payout", p, count, ordinary[p], gold)
 				}
+			}
+			if n > 4 {
+				before, _ := json.Marshal(g.Fishing.Tokens)
+				at := time.Now()
+				clients[0].command(current(clients[0]), "action", game.Action{Type: "catan_end"}, 200)
+				r := s.rooms[id]
+				after, _ := json.Marshal(r.Game.Catan.Fishing.Tokens)
+				if string(before) != string(after) || r.Game.Catan.RollID != 1 || r.Game.Turn != 3 || r.Game.Phase != "catan_turn" || !r.Game.Catan.Paired.Second {
+					t.Fatal("secondary action lost or repeated production")
+				}
+				remaining := r.TurnDeadline - at.UnixMilli()
+				if remaining < 120000 || remaining > 121000 {
+					t.Fatal("secondary clock", remaining)
+				}
+				clients[3].command(current(clients[3]), "action", game.Action{Type: "catan_roll"}, 400)
+				restart()
 			}
 		})
 	}
