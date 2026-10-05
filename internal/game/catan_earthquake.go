@@ -2,8 +2,8 @@ package game
 
 import "errors"
 
-// Earthquake's board effects are shared by builds, legal hints and bots. Event
-// draws and the multi-player damage selection will be connected separately;
+// Earthquake's board effects are shared by builds, legal hints and bots. The
+// card-event queue invokes damage after validating the responding player;
 // clients cannot invoke catanDamageRoad directly.
 func (g *Catan) roadDamageable(player, edge int) bool {
 	return player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated &&
