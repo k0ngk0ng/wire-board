@@ -1,3 +1,4 @@
+import { caravanResponder } from "./catan-caravans-state";
 import { CatanRiverSeat } from "./catan-rivers";
 import { fishResponder } from "./catan-fishing-state";
 import {
@@ -666,11 +667,12 @@ function App() {
     const sg = r.game!.sanguosha;
     const dota = r.game!.dota;
     const fleetActor =
+      caravanResponder(r) ??
       fishResponder(r) ??
       r.game!.catan?.cardEvent?.players[0] ??
       r.game!.catan?.citiesKnights?.pending?.players[0] ??
       r.game!.catan?.seafarers?.pirateIslands?.raid?.rewards[0];
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.caravans?.pending?.kind ?? ""}:${r.game!.catan?.caravans?.sequence ?? 0}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
     if (key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
         void audio.current.play("finish");
@@ -2353,7 +2355,7 @@ function Players({ room }: { room: Room }) {
         return (
           <div
             data-player-seat={i}
-            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (fishResponder(room) ?? g.catan?.cardEvent?.players[0] ?? g.catan?.citiesKnights?.pending?.players[0] ?? g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ?? g.catan?.seafarers?.tribe?.pending?.player ?? g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (caravanResponder(room) ?? fishResponder(room) ?? g.catan?.cardEvent?.players[0] ?? g.catan?.citiesKnights?.pending?.players[0] ?? g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ?? g.catan?.seafarers?.tribe?.pending?.player ?? g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span
@@ -2665,6 +2667,7 @@ function Turn({
       g.phase === "catan_discard" ||
       g.phase === "catan_cloth_steal" ||
       fishResponder(room) !== undefined ||
+      !!g.catan.caravans?.pending ||
       !!g.catan.cardEvent ||
       !!g.catan.citiesKnights?.pending ||
       !!g.catan.helperPending ||
@@ -2676,6 +2679,7 @@ function Turn({
   const turnAutoPlay =
     !!room.seats[
       g.sanguosha?.pending?.player ??
+        caravanResponder(room) ??
         fishResponder(room) ??
         g.catan?.cardEvent?.players[0] ??
         g.catan?.citiesKnights?.pending?.players[0] ??
@@ -2687,6 +2691,7 @@ function Turn({
     ]?.autoPlay;
   const sgActor =
     g.sanguosha?.pending?.player ??
+    caravanResponder(room) ??
     fishResponder(room) ??
     g.catan?.cardEvent?.players[0] ??
     g.catan?.citiesKnights?.pending?.players[0] ??
@@ -2703,25 +2708,27 @@ function Turn({
         ? g.sanguosha.pending
           ? g.sanguosha.pending.canRespond
           : sgActor === room.you
-        : fishResponder(room) !== undefined
-          ? fishResponder(room) === room.you
-          : g.catan?.cardEvent
-            ? g.catan.cardEvent.players[0] === room.you
-            : g.catan?.citiesKnights?.pending
-              ? g.catan.citiesKnights.pending.players[0] === room.you
-              : g.catan?.seafarers?.pirateIslands?.raid
-                ? g.catan.seafarers.pirateIslands.raid.rewards[0] === room.you
-                : g.catan?.seafarers?.tribe?.pending
-                  ? g.catan.seafarers.tribe.pending.player === room.you
-                  : g.catan?.helperPending
-                    ? g.catan.helperPending.player === room.you
-                    : g.catan?.goldPending
-                      ? g.catan.goldPending.claims[0]?.player === room.you
-                      : g.phase === "catan_discard"
-                        ? (g.catan?.discardDue[room.you] || 0) > 0
-                        : setup
-                          ? !g.rail?.setupReady?.[room.you]
-                          : g.turn === room.you);
+        : caravanResponder(room) !== undefined
+          ? caravanResponder(room) === room.you
+          : fishResponder(room) !== undefined
+            ? fishResponder(room) === room.you
+            : g.catan?.cardEvent
+              ? g.catan.cardEvent.players[0] === room.you
+              : g.catan?.citiesKnights?.pending
+                ? g.catan.citiesKnights.pending.players[0] === room.you
+                : g.catan?.seafarers?.pirateIslands?.raid
+                  ? g.catan.seafarers.pirateIslands.raid.rewards[0] === room.you
+                  : g.catan?.seafarers?.tribe?.pending
+                    ? g.catan.seafarers.tribe.pending.player === room.you
+                    : g.catan?.helperPending
+                      ? g.catan.helperPending.player === room.you
+                      : g.catan?.goldPending
+                        ? g.catan.goldPending.claims[0]?.player === room.you
+                        : g.phase === "catan_discard"
+                          ? (g.catan?.discardDue[room.you] || 0) > 0
+                          : setup
+                            ? !g.rail?.setupReady?.[room.you]
+                            : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2787,7 +2794,7 @@ function Turn({
                   ? "轮到你了"
                   : g.sanguosha?.pending?.kind === "nullification"
                     ? "共同响应锦囊"
-                    : `${room.seats[sgActor]?.name} ${fishResponder(room) !== undefined || g.sanguosha?.pending || g.catan?.cardEvent || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
+                    : `${room.seats[sgActor]?.name} ${caravanResponder(room) !== undefined || fishResponder(room) !== undefined || g.sanguosha?.pending || g.catan?.cardEvent || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -2825,21 +2832,23 @@ function Turn({
                       ? "共同选牌限时"
                       : g.sanguosha?.pending && !g.sanguosha.selecting
                         ? "响应限时 20 秒"
-                        : fishResponder(room) !== undefined
-                          ? "捕鱼换筹码 120 秒"
-                          : g.catan?.cardEvent
-                            ? "事件牌响应 120 秒"
-                            : g.catan?.citiesKnights?.pending
-                              ? "城市与骑士响应 120 秒"
-                              : g.catan?.seafarers?.pirateIslands?.raid
-                                ? "防守奖励 120 秒"
-                                : g.catan?.seafarers?.tribe?.pending
-                                  ? "港口安放 120 秒"
-                                  : g.catan?.helperPending
-                                    ? "助手选择 120 秒"
-                                    : g.catan?.goldPending
-                                      ? "金矿选择 120 秒"
-                                      : "每回合 120 秒"}
+                        : caravanResponder(room) !== undefined
+                          ? "商队响应 120 秒"
+                          : fishResponder(room) !== undefined
+                            ? "捕鱼换筹码 120 秒"
+                            : g.catan?.cardEvent
+                              ? "事件牌响应 120 秒"
+                              : g.catan?.citiesKnights?.pending
+                                ? "城市与骑士响应 120 秒"
+                                : g.catan?.seafarers?.pirateIslands?.raid
+                                  ? "防守奖励 120 秒"
+                                  : g.catan?.seafarers?.tribe?.pending
+                                    ? "港口安放 120 秒"
+                                    : g.catan?.helperPending
+                                      ? "助手选择 120 秒"
+                                      : g.catan?.goldPending
+                                        ? "金矿选择 120 秒"
+                                        : "每回合 120 秒"}
             </span>
           </div>
           {expired &&

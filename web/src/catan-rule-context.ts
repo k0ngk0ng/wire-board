@@ -79,6 +79,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 // New views provide the server-derived target; old saves retain the fallback.
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
+  if (g.caravans) return 12;
   const sea = g.seafarers;
   const scenario =
     sea?.scenario ||

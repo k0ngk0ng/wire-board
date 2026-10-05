@@ -1,0 +1,162 @@
+.caravan-stock {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: #fff4d8;
+  color: #553c1e;
+  border: 1px solid #cdb077;
+  border-radius: 9px;
+}
+.caravan-stock img {
+  width: 39px;
+  height: 34px;
+  object-fit: contain;
+}
+.caravan-stock strong {
+  font-size: 13px;
+}
+.caravan-stock small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.caravan-start {
+  fill: none;
+  stroke: #795827;
+  stroke-width: 3;
+  paint-order: stroke;
+  filter: drop-shadow(0 1px 1px #fff9);
+}
+.caravan-candidate {
+  cursor: pointer;
+}
+.caravan-candidate > line {
+  stroke: #ffe787;
+  stroke-width: 10;
+  stroke-linecap: round;
+  filter: drop-shadow(0 1px 2px #362e1d);
+}
+.caravan-candidate.picked > line,
+.caravan-candidate:focus-visible > line {
+  stroke: #fff;
+  stroke-width: 13;
+}
+.caravan-origin circle,
+.caravan-building-bonuses circle {
+  fill: #fff3bf;
+  stroke: #78542a;
+  stroke-width: 1.5;
+}
+.caravan-origin text,
+.caravan-building-bonuses text {
+  fill: #503017;
+  font-size: 11px;
+  font-weight: 800;
+}
+.caravan-wagon {
+  filter: drop-shadow(0 1px 1px #2b241a88);
+}
+.caravan-choice {
+  max-height: min(620px, 72dvh);
+}
+.caravan-choice button {
+  min-height: 40px;
+}
+.caravan-bids {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}
+.caravan-bids > div {
+  min-width: 0;
+  padding: 6px;
+  border: 1px solid #e4d6ad;
+  border-radius: 6px;
+  background: #fffcf3;
+  font-size: 12px;
+}
+.caravan-bids > div.responding {
+  border-color: #946329;
+  box-shadow: inset 0 0 0 1px #946329;
+}
+.caravan-bids b {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+.caravan-bids b i {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid #0002;
+}
+.caravan-bids small {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+}
+.caravan-bid-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 3px;
+}
+.caravan-bid-cards .catan-resource {
+  padding: 2px;
+  gap: 2px;
+  font-size: 10px;
+}
+.caravan-bid-cards .catan-resource-art {
+  width: 15px;
+  height: 16px;
+}
+.caravan-bid-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+.caravan-bid-picker > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.caravan-bid-picker > div > small {
+  font-size: 11px;
+}
+.caravan-bid-picker .catan-stepper {
+  margin-left: auto;
+}
+.caravan-bid-picker .catan-stepper button {
+  width: 38px;
+  padding: 4px;
+}
+.caravan-submit {
+  width: 100%;
+}
+.caravan-directions {
+  display: flex;
+  gap: 8px;
+}
+.caravan-directions > button {
+  flex: 1;
+}
+.caravan-directions > .selected {
+  background: #7a542a;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .caravan-choice {
+    right: 12px;
+    bottom: 78px;
+    padding: 10px;
+  }
+  .caravan-choice header strong {
+    font-size: 14px;
+  }
+}
