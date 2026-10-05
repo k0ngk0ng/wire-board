@@ -13,7 +13,7 @@ func (s *State) catanView(view map[string]any, player int) {
 		if !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && k.Pending == nil && !g.setup() {
 			seen := map[int]bool{}
 			for _, card := range k.Players[player].Progress {
-				if !seen[card] && ((card == 0 && s.Phase == "catan_roll") || (card > 0 && card <= 8 && s.Phase == "catan_turn")) {
+				if !seen[card] && ((card == 0 && s.Phase == "catan_roll") || (card > 0 && card <= 15 && !catanProgressRules[card].Victory && s.Phase == "catan_turn")) {
 					playable = append(playable, card)
 					seen[card] = true
 				}
@@ -21,9 +21,14 @@ func (s *State) catanView(view map[string]any, player int) {
 			if s.Phase == "catan_turn" {
 				v["inventionTiles"] = g.inventionTiles()
 				v["smithingOptions"] = g.smithingOptions(player)
+				v["merchantTiles"] = g.merchantTiles(player)
+				v["guildDuesTargets"] = g.guildDuesTargets(player)
 			}
 		}
 		v["progressPlayable"] = playable
+		if q := k.Pending; q != nil && q.Kind == "guild_dues" && s.CatanPendingActor() == player {
+			public["pending"].(map[string]any)["resources"] = append([]int{}, g.Players[q.Target].Resources...)
+		}
 		for i, raw := range public["players"].([]any) {
 			seat := raw.(map[string]any)
 			seat["progressCount"] = len(k.Players[i].Progress)

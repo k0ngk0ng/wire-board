@@ -29,12 +29,16 @@ type CatanCityPlayer struct {
 	ProgressPoints int    `json:"progressPoints"`
 }
 type CatanCityPending struct {
+	Target  int          `json:"target"`
+	Color   int          `json:"color"`
 	Knight  *CatanKnight `json:"knight,omitempty"`
 	Kind    string       `json:"kind"`
 	Players []int        `json:"players"`
 	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
+	Merchant          *CatanMerchant    `json:"merchant,omitempty"`
+	TradePowers       *CatanTradePowers `json:"tradePowers,omitempty"`
 	EventDie          int               `json:"eventDie"`
 	ProgressDecks     [3][]int          `json:"progressDecks"`
 	Event             *CatanCityEvent   `json:"event,omitempty"`
@@ -244,6 +248,8 @@ func (s *State) catanCityChoice(player int, a Action) error {
 	}
 	q := k.Pending
 	switch q.Kind {
+	case "guild_dues", "commercial_harbor":
+		return s.catanTradeProgressChoice(player, a)
 	case "pillage", "defender_reward", "progress_discard":
 		return s.catanEventChoice(player, a)
 	case "knight_retreat":
@@ -294,6 +300,9 @@ func (s *State) catanCityChoiceBot(player int) (Action, error) {
 	k := g.CitiesKnights
 	if k == nil || k.Pending == nil || len(k.Pending.Players) == 0 || k.Pending.Players[0] != player {
 		return Action{}, errors.New("inactive city choice seat")
+	}
+	if k.Pending.Kind == "guild_dues" || k.Pending.Kind == "commercial_harbor" {
+		return s.catanTradeProgressChoiceBot(player)
 	}
 	if k.Pending.Kind == "metropolis" {
 		sites := g.cityMetropolisSites(player)

@@ -41,7 +41,7 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 	if at < 0 || rule.Victory {
 		return errors.New("没有这张可使用的进步牌")
 	}
-	if a.Card > 8 {
+	if a.Card > 15 {
 		return errors.New("该进步牌效果尚未接入，不能按其他卡牌处理")
 	}
 	if (a.Card == 0 && s.Phase != "catan_roll") || (a.Card != 0 && s.Phase != "catan_turn") {
@@ -55,7 +55,7 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 	k.Players[player].Progress = slices.Delete(k.Players[player].Progress, at, at+1)
 	k.returnProgress([]int{a.Card})
 	g.Trade = nil
-	names := []string{"炼金术", "起重机", "工程学", "发明", "灌溉", "医学", "采矿", "道路建设", "锻造"}
+	names := []string{"炼金术", "起重机", "工程学", "发明", "灌溉", "医学", "采矿", "道路建设", "锻造", "印刷术", "商业港", "行会征费", "商人", "商船队", "资源垄断", "商品垄断"}
 	s.catanLog(player, "使用进步牌「%s」", names[a.Card])
 	if a.Card != 0 && a.Choice == "skip" {
 		s.catanLog(player, "放弃此次卡牌收益，卡牌仍放回牌堆底部")
@@ -63,6 +63,9 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 	}
 	if a.Choice != "" {
 		return errors.New("未知进步牌选项")
+	}
+	if a.Card >= 10 {
+		return s.catanTradeProgress(player, a)
 	}
 	switch a.Card {
 	case 0:
