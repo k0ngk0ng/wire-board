@@ -132,7 +132,7 @@ func (s *State) catanFinishRoute(q CatanRouteCompletion) {
 	}
 	if q.Free {
 		g.FreeRoads--
-		if g.FreeRoads == 0 || !g.hasRoute(q.Player) {
+		if g.FreeRoads == 0 || !g.hasFreeRouteAction(q.Player) {
 			s.Phase = g.ResumePhase
 			g.FreeRoads = 0
 		}

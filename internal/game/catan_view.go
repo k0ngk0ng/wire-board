@@ -159,7 +159,7 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 	}
 	// Legal locations are computed using only public map and the viewer's identity.
-	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}}
+	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}}
 	if k := g.CitiesKnights; k != nil {
 		legal["pillage"] = []int{}
 		if !s.Finished && s.CatanPendingActor() == player && k.Pending != nil && k.Pending.Kind == "pillage" {
@@ -242,6 +242,9 @@ func (s *State) catanView(view map[string]any, player int) {
 			}
 		}
 		for _, e := range g.Edges {
+			if (s.Phase == "catan_turn" || (s.Phase == "catan_roads" && g.FreeRoads > 0)) && g.roadRepairable(player, e.ID) {
+				legal["repairRoads"] = append(legal["repairRoads"], e.ID)
+			}
 			if roads >= 15 {
 				continue
 			}

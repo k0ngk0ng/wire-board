@@ -277,6 +277,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 	}
 	if s.Phase == "catan_roads" {
+		if repairs := g.repairRoadBotChoices(player); len(repairs) > 0 {
+			return s.botLegal(player, repairs)
+		}
 		if g.Seafarers != nil {
 			choices := g.seaBuildChoices(player)
 			choices = append(choices, botChoice{Action{Type: "catan_skip_roads"}, -99999})
@@ -291,6 +294,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	choices = append(choices, g.repairRoadBotChoices(player)...)
 	choices = append(choices, g.scienceBotChoices(player)...)
 	choices = append(choices, g.tradeProgressBotChoices(player)...)
 	choices = append(choices, g.politicsBotChoices(player)...)
