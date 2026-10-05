@@ -154,6 +154,9 @@ func (f catanFishingMap) validate(g *Catan) error {
 		return errors.New("此捕鱼地图不能迁移生产点数")
 	}
 	if g.Seafarers != nil {
+		if g.Seafarers.Scenario == "tribe" {
+			return f.validateTribe(g)
+		}
 		if g.Seafarers.Scenario == "desert" {
 			return f.validateDesert(g)
 		}

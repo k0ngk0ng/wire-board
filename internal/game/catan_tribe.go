@@ -63,7 +63,16 @@ func (g *Catan) robberLandAllowed(tile int) bool {
 		return false
 	}
 	t := g.Tiles[tile]
-	return t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0) && g.clothLand(tile)
+	return t.Resource != CatanSea && t.Resource != CatanFog && g.tribeLand(tile) && g.clothLand(tile)
+}
+
+func (g *Catan) tribeLand(tile int) bool {
+	if g.tribe() == nil || g.Tiles[tile].Number > 0 {
+		return true
+	}
+	// The replacement lake has four printed production numbers rather than
+	// an ordinary disc. It remains part of the buildable/robbable mainland.
+	return g.Fishing != nil && slices.ContainsFunc(g.Fishing.Map.Lakes, func(l catanFishingLake) bool { return l.Tile == tile })
 }
 func (g *Catan) tribePortEdges(player int) []int {
 	result := []int{}
@@ -78,7 +87,7 @@ func (g *Catan) tribePortEdges(player int) []int {
 		blocked[e.B] = true
 	}
 	for _, e := range g.Edges {
-		if blocked[e.A] || blocked[e.B] || !g.edgeTerrain(e.ID, true) || !g.edgeTerrain(e.ID, false) {
+		if blocked[e.A] || blocked[e.B] || g.fishingGroundEdge(e.ID) || !g.edgeTerrain(e.ID, true) || !g.edgeTerrain(e.ID, false) {
 			continue
 		}
 		a, b := g.Vertices[e.A], g.Vertices[e.B]

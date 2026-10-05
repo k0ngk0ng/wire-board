@@ -83,7 +83,7 @@ func (g *Catan) landVertex(v int) bool {
 		return true
 	}
 	for _, t := range g.Tiles {
-		if t.Resource != CatanSea && t.Resource != CatanFog && (g.tribe() == nil || t.Number > 0) && g.clothLand(t.ID) && slices.Contains(t.Vertices, v) {
+		if t.Resource != CatanSea && t.Resource != CatanFog && g.tribeLand(t.ID) && g.clothLand(t.ID) && slices.Contains(t.Vertices, v) {
 			return true
 		}
 	}
