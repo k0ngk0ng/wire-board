@@ -5,6 +5,7 @@ import {
   catanCardEventAction,
   catanCardEventActor,
   catanEventNames,
+  catanRevealedEvent,
 } from "./catan-card-event-state";
 import "./catan-card-event.css";
 
@@ -197,6 +198,65 @@ export function CatanCardEventChoice({
           )}
         </div>
       )}
+    </section>
+  );
+}
+
+export function CatanCardEventSummary({
+  room,
+  assets,
+}: {
+  room: Room;
+  assets: string;
+}) {
+  const g = room.game?.catan;
+  if (!g) return null;
+  const card = catanRevealedEvent(g);
+  if (!card) return null;
+  const name = catanEventNames[card.kind] || "事件牌";
+  const status = room.game?.finished
+    ? "本局已结束"
+    : g.cardEvent
+      ? "先完成事件选择，再生产"
+      : !card.productionStarted
+        ? "等待城市与骑士结算，再生产"
+        : g.paired?.second
+          ? "② 配对行动 · 不重复生产"
+          : room.game?.phase === "catan_gold"
+            ? "正在选择金矿资源"
+            : room.game?.phase === "catan_discard"
+              ? "点数7 · 等待玩家弃牌"
+              : room.game?.phase === "catan_robber"
+                ? "点数7 · 移动强盗或海盗"
+                : room.game?.phase === "catan_steal"
+                  ? "点数7 · 选择偷牌对手"
+                  : room.game?.phase === "catan_roll"
+                    ? "上一回合的事件牌"
+                    : "本次生产点数";
+  return (
+    <section className="catan-revealed-event" aria-label="本次事件牌">
+      {assets && catanEventNames[card.kind] && (
+        <img
+          src={`${assets}/catan/events/${card.kind}-v1.webp`}
+          alt={`${name}原版插画`}
+        />
+      )}
+      <div className="catan-revealed-description">
+        <strong>{name}</strong>
+        <small>{status}</small>
+        {g.citiesKnights && !g.cardEvent && (
+          <small className="catan-revealed-dice">
+            独立红骰 {card.red} ·{" "}
+            {card.face >= 3 ? "蛮族船" : ["科学", "贸易", "政治"][card.face]}
+          </small>
+        )}
+      </div>
+      <b
+        className="catan-revealed-number"
+        aria-label={`事件牌生产点数 ${card.production}`}
+      >
+        {card.production}
+      </b>
     </section>
   );
 }

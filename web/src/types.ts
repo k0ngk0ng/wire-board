@@ -350,7 +350,16 @@ export type CatanCitiesKnights = {
     progress?: number[];
   };
 };
+export type CatanRevealedEvent = {
+  kind: string;
+  production: number;
+  red: number;
+  face: number;
+  rollId: number;
+  productionStarted: boolean;
+};
 export type CatanState = {
+  revealedEvent?: CatanRevealedEvent;
   cardEvent?: {
     kind: string;
     production: number;

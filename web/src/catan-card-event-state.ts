@@ -1,4 +1,4 @@
-import type { Room } from "./types";
+import type { Room, CatanState, CatanRevealedEvent } from "./types";
 
 export const catanEventNames: Record<string, string> = {
   beautiful_day: "美好的一天",
@@ -104,4 +104,21 @@ export function catanCardEventAction(
     return { type: "catan_event_gift", give };
   }
   return null;
+}
+
+// The response queue is transient. Keep the public face throughout city-die
+// responses, production, paired turns and refreshes, until the next roll.
+export function catanRevealedEvent(
+  g: CatanState,
+): CatanRevealedEvent | undefined {
+  if (g.cardEvent)
+    return {
+      kind: g.cardEvent.kind,
+      production: g.cardEvent.production,
+      red: g.cardEvent.red,
+      face: g.cardEvent.face,
+      rollId: g.rollId,
+      productionStarted: false,
+    };
+  return g.revealedEvent?.rollId === g.rollId ? g.revealedEvent : undefined;
 }

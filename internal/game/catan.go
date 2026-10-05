@@ -27,6 +27,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	RevealedEvent  *CatanRevealedEvent  `json:"revealedEvent,omitempty"`
 	CardEvent      *CatanCardEvent      `json:"cardEvent,omitempty"`
 	FriendlyRobber *CatanFriendlyRobber `json:"friendlyRobber,omitempty"`
 	Harbors        *CatanHarbors        `json:"harbors,omitempty"`
@@ -392,6 +393,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if s.Phase != "catan_roll" {
 			return errors.New("当前不能掷骰")
 		}
+		g.RevealedEvent = nil
 		g.Dice = []int{catanRandom(6) + 1, catanRandom(6) + 1}
 		g.RollID++
 		return s.catanRoll(sum(g.Dice))
@@ -638,6 +640,9 @@ func (s *State) catanRollProduction(total int) error {
 // their already computed counts, so no turn-wide flag can leak into a later roll.
 func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 	g := s.Catan
+	if q := g.RevealedEvent; q != nil && q.RollID == g.RollID {
+		q.ProductionStarted = true
+	}
 	if total == 7 {
 		if p := g.pirateIslands(); p != nil {
 			p.SevenPending = true

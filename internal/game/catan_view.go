@@ -5,6 +5,10 @@ func (s *State) catanView(view map[string]any, player int) {
 	v := view["catan"].(map[string]any)
 	v["setupLimit"] = g.SetupLimit()
 	v["victoryTarget"] = g.victoryTarget()
+	delete(v, "revealedEvent")
+	if revealed := g.revealedEventView(); revealed != nil {
+		v["revealedEvent"] = *revealed
+	}
 	if q := g.CardEvent; q != nil {
 		public := v["cardEvent"].(map[string]any)
 		delete(public, "gifts")

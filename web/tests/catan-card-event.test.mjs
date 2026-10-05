@@ -133,3 +133,52 @@ test("theft uses public legal targets; only explicitly optional conflict may be 
     assert.equal(catanCardEventAction(r, selection({ target: 2 })), null);
   }
 });
+
+test("revealed face survives queue removal, city responses, gold choices and subsequent turns; ignores an older roll", async () => {
+  const { catanRevealedEvent } =
+    await import("../src/catan-card-event-state.ts");
+  const r = fixture("earthquake"),
+    g = r.game.catan;
+  g.rollId = 7;
+  g.cardEvent.red = 2;
+  g.cardEvent.face = 3;
+  // Old saves have only the response queue and must not imply production.
+  assert.deepEqual(catanRevealedEvent(g), {
+    kind: "earthquake",
+    production: 6,
+    red: 2,
+    face: 3,
+    rollId: 7,
+    productionStarted: false,
+  });
+  g.revealedEvent = {
+    kind: "earthquake",
+    production: 6,
+    red: 2,
+    face: 3,
+    rollId: 7,
+    productionStarted: false,
+  };
+  delete g.cardEvent;
+  r.game.phase = "catan_pillage";
+  g.dice = [2, 0];
+  assert.equal(catanRevealedEvent(g).production, 6);
+  assert.equal(catanRevealedEvent(g).productionStarted, false);
+  g.revealedEvent.productionStarted = true;
+  for (const phase of ["catan_gold", "catan_turn", "catan_roll"]) {
+    r.game.phase = phase;
+    assert.equal(catanRevealedEvent(g).production, 6);
+    assert.equal(catanRevealedEvent(g).productionStarted, true);
+  }
+  g.rollId = 8;
+  assert.equal(catanRevealedEvent(g), undefined);
+  g.cardEvent = {
+    kind: "plentiful_year",
+    production: 2,
+    red: 0,
+    face: 0,
+    players: [1],
+  };
+  assert.equal(catanRevealedEvent(g).kind, "plentiful_year");
+  assert.equal(catanRevealedEvent(g).productionStarted, false);
+});

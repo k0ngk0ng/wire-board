@@ -138,6 +138,7 @@ func (s *State) catanContinueCardEvent() error {
 	if q == nil || catanCardEventNames[q.Kind] == "" || q.Production < 2 || q.Production > 12 || (q.Kind == "robber_attacks" && q.Production != 7) {
 		return errors.New("缺少有效的事件牌后续状态")
 	}
+	g.rememberCardEvent()
 	for len(q.Players) > 0 {
 		p := q.Players[0]
 		if p < 0 || p >= len(g.Players) {

@@ -136,9 +136,46 @@
   font-weight: 600;
   min-height: 44px;
 }
-.catan-dice > .catan-card-production {
-  background: #fff4d5;
-  color: #6a431e;
+.catan-revealed-event {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ad8953;
+  border-radius: 10px;
+  background: #fff8e7;
+  color: #39291b;
+}
+.catan-revealed-event > img {
+  width: 56px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 5px;
+  flex: 0 0 auto;
+}
+.catan-revealed-description {
+  flex: 1;
+  min-width: 0;
+}
+.catan-revealed-description strong {
+  font-size: 15px;
+}
+.catan-revealed-description small {
+  display: block;
+  color: #675034;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.catan-revealed-event .catan-revealed-number {
+  flex: 0 0 auto;
+  min-width: 38px;
+  padding: 2px 7px;
   border: 2px solid #ad8953;
   border-radius: 6px;
+  background: #fff4d5;
+  color: #6a431e;
+  font-size: 28px;
+  text-align: center;
+  box-shadow: 0 2px 3px #51351b33;
 }

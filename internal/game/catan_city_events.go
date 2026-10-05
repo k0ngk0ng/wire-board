@@ -32,6 +32,7 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 	if k == nil || !g.citySeaSupported() || s.Phase != "catan_roll" || k.Event != nil || k.Pending != nil || red < 1 || red > 6 || yellow < 1 || yellow > 6 || face < 0 || face > 5 {
 		return errors.New("无效城市与骑士掷骰状态")
 	}
+	g.RevealedEvent = nil
 	g.Dice = []int{red, yellow}
 	g.RollID++
 	return s.catanStartCityDiceEvent(red, yellow, face, 0, false)
