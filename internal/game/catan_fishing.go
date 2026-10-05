@@ -16,6 +16,9 @@ type CatanFishing struct {
 type CatanFishingPending struct {
 	Resume   string `json:"resume"`
 	Received []int  `json:"received,omitempty"`
+	// Gold is computed once with ordinary production, then offered after all
+	// fish responses. Never start two response queues at the same time.
+	Gold []int `json:"gold,omitempty"`
 }
 
 // Internal constructor: no room configuration exposes Fishing until artwork,
@@ -65,11 +68,23 @@ func (g *Catan) validateFishing() error {
 		if q.Resume != "catan_turn" && q.Resume != "catan_setup_road" || q.Resume == "catan_turn" && len(q.Received) != len(g.Players) || q.Resume == "catan_setup_road" && q.Received != nil {
 			return errors.New("invalid fishing continuation")
 		}
+		if g.GoldPending != nil || q.Gold != nil && (len(q.Gold) != len(g.Players) || g.Seafarers == nil) {
+			return errors.New("invalid fishing gold continuation")
+		}
+		for _, count := range append(slices.Clone(q.Received), q.Gold...) {
+			if count < 0 {
+				return errors.New("negative fishing production continuation")
+			}
+		}
 	}
 	return nil
 }
 
 func (s *State) catanStartFishing(due, received []int, resume string) error {
+	return s.catanStartFishingGold(due, received, nil, resume)
+}
+
+func (s *State) catanStartFishingGold(due, received, gold []int, resume string) error {
 	f := s.Catan.Fishing
 	before := f.Tokens.copy()
 	if err := f.Tokens.beginDraw(s.Turn, due); err != nil {
@@ -78,19 +93,29 @@ func (s *State) catanStartFishing(due, received []int, resume string) error {
 	s.catanLogFishDraws(before)
 	if len(f.Tokens.Pending) > 0 {
 		f.Pending = &CatanFishingPending{Resume: resume, Received: slices.Clone(received)}
+		if sum(gold) > 0 {
+			f.Pending.Gold = slices.Clone(gold)
+		}
 		s.Phase = "catan_fish_replace"
 	} else {
-		s.Phase = resume
-		if received != nil {
-			s.catanAfterProduction(received)
-		}
+		s.catanFinishFishing(received, gold, resume)
 	}
 	return nil
 }
 
-func (s *State) catanStartingFish(player, vertex int) error {
+func (s *State) catanFinishFishing(received, gold []int, resume string) {
+	s.Phase = resume
+	if sum(gold) > 0 {
+		s.catanStartGold(gold, received, resume)
+	} else if received != nil {
+		s.catanAfterProduction(received)
+	}
+}
+
+func (s *State) catanStartingFish(player, vertex int, gold []int) error {
 	g, f := s.Catan, s.Catan.Fishing
 	if f == nil {
+		s.catanFinishFishing(nil, gold, "catan_setup_road")
 		return nil
 	}
 	if f.Started[player] {
@@ -109,7 +134,7 @@ func (s *State) catanStartingFish(player, vertex int) error {
 			due[player] = 1
 		}
 	}
-	if err := s.catanStartFishing(due, nil, "catan_setup_road"); err != nil {
+	if err := s.catanStartFishingGold(due, nil, gold, "catan_setup_road"); err != nil {
 		return err
 	}
 	f.Started[player] = true
@@ -154,10 +179,7 @@ func (s *State) catanReplaceFish(player int, a Action) error {
 	if len(f.Tokens.Pending) == 0 {
 		q := f.Pending
 		f.Pending = nil
-		s.Phase = q.Resume
-		if q.Received != nil {
-			s.catanAfterProduction(q.Received)
-		}
+		s.catanFinishFishing(q.Received, q.Gold, q.Resume)
 	}
 	return nil
 }

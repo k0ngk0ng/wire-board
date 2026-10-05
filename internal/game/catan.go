@@ -578,11 +578,8 @@ func (s *State) catanSetup(a Action) error {
 			} else {
 				s.catanLog(p, "从第 %d 座起始村庄获得 %s", g.SetupLimit()/len(g.Players), catanText(gain))
 			}
-			if err := s.catanStartingFish(p, a.Vertex); err != nil {
+			if err := s.catanStartingFish(p, a.Vertex, gold); err != nil {
 				return err
-			}
-			if gold[p] > 0 {
-				s.catanStartGold(gold, nil, "catan_setup_road")
 			}
 		}
 		s.catanScores()
@@ -773,7 +770,7 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 		received[i] = sum(gain)
 	}
 	if g.Fishing != nil {
-		return s.catanStartFishing(fish, received, "catan_turn")
+		return s.catanStartFishingGold(fish, received, gold, "catan_turn")
 	}
 	if sum(gold) > 0 {
 		s.catanStartGold(gold, received, "catan_turn")

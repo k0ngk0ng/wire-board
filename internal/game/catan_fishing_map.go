@@ -145,6 +145,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 
 func (f catanFishingMap) validate(g *Catan) error {
 	if g.Seafarers != nil {
+		if g.Seafarers.Scenario == "fog" {
+			return f.validateFog(g)
+		}
 		return f.validateFourIslands(g)
 	}
 	n := len(g.Players)

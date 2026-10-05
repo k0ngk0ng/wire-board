@@ -230,7 +230,7 @@ func TestCatanFishingFourIslandsPlacementRejectionIsAtomic(t *testing.T) {
 			t.Fatal("rejected placement mutated state/input")
 		}
 	}
-	// Other sea combinations remain rejected even though Four Islands is wired.
+	// Relabeling a Four Islands save cannot make it a valid Fog Islands map.
 	tokens, err := newCatanFishingTokens(4)
 	if err != nil {
 		t.Fatal(err)
@@ -238,6 +238,6 @@ func TestCatanFishingFourIslandsPlacementRejectionIsAtomic(t *testing.T) {
 	s.Catan.Fishing = &CatanFishing{Map: *f, Tokens: *tokens, Started: make([]bool, 4), LastRollID: -1}
 	s.Catan.Seafarers.Scenario = "fog"
 	if err := s.Catan.validateFishing(); err == nil {
-		t.Fatal("unfinished Fishing + Seafarers became playable")
+		t.Fatal("Four Islands grounds accepted as Fog Islands")
 	}
 }
