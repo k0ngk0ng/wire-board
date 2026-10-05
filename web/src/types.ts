@@ -359,7 +359,27 @@ export type CatanRevealedEvent = {
   rollId: number;
   productionStarted: boolean;
 };
+export type CatanWagon = { edge: number; from: number };
 export type CatanState = {
+  caravans?: {
+    map: { wateringHoles: number[]; starts: CatanWagon[]; supply: number };
+    wagons: CatanWagon[];
+    built: boolean;
+    sequence: number;
+    remaining: number;
+    actor: number;
+    canAct: boolean;
+    choices?: CatanWagon[];
+    pending?: {
+      kind: "bid" | "vote" | "place";
+      active: number;
+      order: number[];
+      cursor: number;
+      chooser: number;
+      bids: (number[] | null)[];
+      votes: (CatanWagon | null)[];
+    };
+  };
   rivers?: {
     map: {
       channels: { tiles: number[]; outlet: number }[];
