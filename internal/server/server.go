@@ -523,7 +523,16 @@ func summary(r *Room) map[string]any {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
 	if r.CatanSeafarers != nil && r.Status == "waiting" {
-		result["catanSeafarersChoices"] = game.CatanSeafarersScenarios(max(3, r.Capacity))
+		choices := game.CatanSeafarersScenarios(max(3, r.Capacity))
+		if r.CatanCitiesKnights != nil {
+			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
+				return !game.CatanCitiesKnightsSeafarersSupported(info.ID)
+			})
+			for i := range choices {
+				choices[i].VictoryPoints += 2
+			}
+		}
+		result["catanSeafarersChoices"] = choices
 	}
 	return result
 }
@@ -852,7 +861,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		err = next.setCatanSeafarers(*req.CatanSeafarers)
 	case "catan_world_map", "catan_world_map_shuffle":
 		// Drafts are provisioned internally until the complete scenario picker ships.
-		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanNewWorldMap == nil || next.CatanCitiesKnights != nil {
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanNewWorldMap == nil || (next.CatanCitiesKnights != nil && next.validateCatanCitiesKnightsMap() != nil) {
 			err = errors.New("只有房主能在新世界开局前调整地图")
 			break
 		}
@@ -880,8 +889,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			if options.Helpers || options.AllHelpers {
 				err = errors.New("Helpers尚无与城市与骑士组合的官方兼容规则")
 			}
-			if next.CatanBaseConfiguration != nil || next.CatanSeafarers != nil || next.CatanNewWorldMap != nil {
-				err = errors.New("城市与骑士尚不支持与其他地图配置组合")
+			if mapErr := next.validateCatanCitiesKnightsMap(); mapErr != nil {
+				err = mapErr
 			}
 			if err == nil && options.FiveSix != next.CatanOptions.FiveSix {
 				n := 4
@@ -1015,9 +1024,13 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
 				if next.CatanCitiesKnights != nil {
-					if next.CatanBaseConfiguration != nil || next.CatanSeafarers != nil || next.CatanNewWorldMap != nil {
-						err = errors.New("城市与骑士尚不支持与其他地图配置组合")
-					} else {
+					err = next.validateCatanCitiesKnightsMap()
+					if err == nil {
+						_, err = game.NormalizeCatanCitiesKnightsSetup(len(next.Seats), *next.CatanCitiesKnights)
+					}
+					if err == nil && next.CatanSeafarers != nil {
+						next.Game, err = game.NewCatanCitiesKnightsSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+					} else if err == nil {
 						next.Game, err = game.NewCatanCitiesKnightsConfigured(len(next.Seats), next.CatanOptions, *next.CatanCitiesKnights)
 					}
 				} else if next.CatanBaseConfiguration != nil && (next.CatanSeafarers != nil || next.CatanNewWorldMap != nil) {

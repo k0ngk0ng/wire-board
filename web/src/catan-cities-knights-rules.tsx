@@ -1,3 +1,4 @@
+import { catanLayoutName, catanScenarioName } from "./catan-scenarios";
 import type { CatanRuleContext } from "./catan-rule-context";
 
 export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
@@ -5,13 +6,22 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
     <>
       <p>
         <b>
-          城市与骑士 · {info.fiveSix ? "5–6 人配对回合" : "3–4 人"} · 13 分获胜
+          城市与骑士 · {info.fiveSix ? "5–6 人配对回合" : "3–4 人"} ·{" "}
+          {info.target} 分获胜
         </b>
       </p>
+      {info.scenario && (
+        <p>
+          航海家 · {catanScenarioName(info.scenario)} ·{" "}
+          {catanLayoutName(info.layout)}
+        </p>
+      )}
       <ol className="catan-rules-list">
         <li>
           <b>开局：</b>
-          随机先手，顺序放一座村庄和道路，再逆序放一座城市和道路；起始城市只领取相邻地块各一张普通资源。
+          随机先手，顺序放一座村庄和{info.scenario ? "道路或船只" : "道路"}
+          ，再逆序放一座城市和{info.scenario ? "道路或船只" : "道路"}
+          ；起始城市只领取相邻地块各一张普通资源。
         </li>
         <li>
           <b>每回合：</b>
@@ -22,8 +32,9 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           船前进七次发起进攻，以城市数量对比所有活跃骑士的等级总和。胜利时贡献最高者独得一分，并列者改选进步牌；失败时有可劫掠城市且贡献最少的玩家，各降级一座非大都会城市。进攻结束后所有骑士失活。
         </li>
         <li>
-          <b>强盗和城墙：</b>首次蛮族进攻前，掷出 7
-          仍弃牌，但不移动强盗或偷牌。每堵城墙花费两砖块，让弃牌上限增加两张，最多三堵；城市被劫掠时失去城墙。
+          <b>强盗和城墙：</b>首次蛮族进攻前，掷出 7 仍弃牌，但不移动强盗
+          {info.scenario ? "、海盗" : ""}
+          或偷牌。每堵城墙花费两砖块，让弃牌上限增加两张，最多三堵；城市被劫掠时失去城墙。
         </li>
         <li>
           <b>骑士：</b>
@@ -42,9 +53,29 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           事件骰与建设等级决定抽牌资格，胜利点牌立即公开。其他牌可在获得当回合使用，数量不限；只有炼金术在掷骰前使用。非当前玩家超过四张立即弃牌，当前玩家在结束行动时弃至四张。进步牌不能交易，使用或弃置后回对应牌堆底部。
         </li>
         <li>
-          <b>获胜：</b>在自己的行动中达到 13
+          <b>获胜：</b>在自己的行动中达到 {info.target}{" "}
           分。保留最长道路两分，取消最大骑士军队；商人控制权值一分，发展牌中的隐藏胜利点不适用。
         </li>
+        {info.scenario && (
+          <>
+            <li>
+              <b>海上建设：</b>
+              木材＋羊毛造船。道路与船只只在己方建筑处接续成贸易路线；最长路线可包含两者。每次行动可移动一艘开放航线末端的旧船，新船本阶段不能移动；不能切断骑士与己方建筑的连接。
+            </li>
+            <li>
+              <b>跨岛防御与金矿：</b>
+              蛮族同时攻击所有岛屿，劫掠先于本次生产；金矿只领取普通资源，城市两张。领取金矿后不再领取引水渠补偿。商人不能放在金矿。
+            </li>
+            <li>
+              <b>骑士与海盗：</b>
+              骑士可沿己方道路和船只移动，并驱逐相邻强盗或海盗；选择后必须移动指定的棋子。首次进攻前两者都休眠。海盗封锁相邻造船和普通移船，移动后可偷取相邻船只主人一张手牌。
+            </li>
+            <li>
+              <b>进步牌组合：</b>
+              道路建设可免费造两条道路或船只；外交可移除开放道路或船只，己方重放必须保持类型，可搬移海盗旁的船，但不能切断骑士连接。征税只移动强盗。
+            </li>
+          </>
+        )}
         {info.fiveSix && (
           <li>
             <b>配对回合：</b>

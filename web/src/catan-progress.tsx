@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import type { Act, Room, CatanState } from "./types";
 import {
   catanProgressNames,
-  catanProgressDescriptions,
+  catanProgressDescription,
 } from "./catan-progress-names";
 import {
   cityImprovementReason,
@@ -134,7 +134,7 @@ export function CatanProgressHand({
               取消
             </button>
           </header>
-          <p>{catanProgressDescriptions[s.card]}</p>
+          <p>{catanProgressDescription(s.card, !!g.seafarers)}</p>
           {!g.progressPlayable?.includes(s.card) ? (
             <p>
               {s.card === 0
@@ -237,7 +237,7 @@ export function CatanProgressHand({
                       ? "在地图上选择两个亮起的数字地块。"
                       : s.card === 8
                         ? "按顺序选择一至两名亮起的骑士。再次点击已选骑士可撤回该步及后续选择。"
-                        : `在地图上选择亮起的${selectedMode === "progress_tile" ? "地块" : selectedMode === "progress_edge" ? "道路" : "交点"}。`}
+                        : `在地图上选择亮起的${selectedMode === "progress_tile" ? "地块" : selectedMode === "progress_edge" ? (g.seafarers ? "道路或船只" : "道路") : "交点"}。`}
                   </p>
                   <p aria-live="polite">
                     {s.picks.length

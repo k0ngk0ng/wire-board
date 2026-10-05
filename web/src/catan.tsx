@@ -145,7 +145,7 @@ export const catanPhases: Record<string, string> = {
   catan_espionage: "从展示的进步牌中选择一张",
   catan_wedding: "选择赠送的资源或商品",
   catan_sabotage: "选择弃置的资源或商品",
-  catan_diplomacy: "选择免费重建道路的位置",
+  catan_diplomacy: "选择免费重放路线的位置",
   catan_treason_remove: "选择被叛变移除的骑士",
   catan_treason_place: "选择骑士等级和放置位置",
 };
@@ -184,7 +184,8 @@ function CatanGoldChoice({
     !room.spectating &&
     claim.player === room.you &&
     !g.players[room.you]?.eliminated;
-  const due = Math.min(claim.count, total(g.bank)),
+  const bank = g.bank.slice(0, 5);
+  const due = Math.min(claim.count, total(bank)),
     picked = total(take);
   return (
     <section className="catan-gold-choice" aria-label="金矿资源选择">
@@ -204,14 +205,17 @@ function CatanGoldChoice({
       </header>
       {!collapsed && (
         <div className="catan-gold-body">
-          <p>可以选择同种或不同资源。每人限时 120 秒，超时自动选择。</p>
+          <p>
+            可以选择同种或不同的普通资源，不能领取商品。每人限时 120
+            秒，超时自动选择。
+          </p>
           {mine ? (
             <>
               <ResourcePicker
                 label="金矿领取"
                 values={take}
                 onChange={setTake}
-                limits={g.bank.map((n, i) =>
+                limits={bank.map((n, i) =>
                   Math.min(n, take[i] + Math.max(0, due - picked)),
                 )}
                 assets={assets}
@@ -219,7 +223,7 @@ function CatanGoldChoice({
               />
               <div className="catan-gold-stock">
                 银行库存：
-                {g.bank.map((n, i) => (
+                {bank.map((n, i) => (
                   <span key={i}>
                     {catanNames[i]} {n}
                   </span>
@@ -228,7 +232,7 @@ function CatanGoldChoice({
               <button
                 className="primary wide"
                 disabled={
-                  busy || picked !== due || take.some((n, i) => n > g.bank[i])
+                  busy || picked !== due || take.some((n, i) => n > bank[i])
                 }
                 onClick={() => void act({ type: "catan_gold", take })}
               >
@@ -349,7 +353,7 @@ export function CatanBoard({
   const devLabel = (i: number) =>
     pirates && i === 4 ? "胜利点卡 · 当作骑士" : devNames[i];
   const pieceScale = Math.max(0.64, hexSize / 62);
-  const targetScore = city ? 13 : sea?.victoryPoints || 10;
+  const targetScore = sea?.victoryPoints || (city ? 13 : 10);
   const terrainNames = [...catanNames, "沙漠", "海洋", "金矿", "未探索迷雾"];
   const describeDev = (i: number) =>
     pirates && (i === 0 || i === 4)
@@ -444,7 +448,9 @@ export function CatanBoard({
                 ? "ship"
                 : "road"
               : phase === "catan_robber"
-                ? sea && mode === "pirate"
+                ? sea &&
+                  (city?.chase === "pirate" ||
+                    (!city?.chase && mode === "pirate"))
                   ? "pirate"
                   : "robber"
                 : mode);
@@ -504,6 +510,7 @@ export function CatanBoard({
     knight_activate: g.legal.knightActivate || [],
     knight_promote: g.legal.knightPromote || [],
     knight_chase: g.legal.knightChase || [],
+    knight_chase_pirate: g.legal.knightChasePirate || [],
     knight_retreat: g.legal.knightRetreat || [],
     treason_remove:
       city?.knights.filter((n) => n.owner === you).map((n) => n.vertex) || [],
@@ -601,7 +608,12 @@ export function CatanBoard({
                       aria-pressed={effective === key}
                       disabled={
                         busy ||
-                        (key === "pirate" && !g.legal.pirate?.length) ||
+                        (key === "pirate" &&
+                          (!g.legal.pirate?.length ||
+                            city?.chase === "robber")) ||
+                        (key === "robber" &&
+                          (!g.legal.robber?.length ||
+                            city?.chase === "pirate")) ||
                         (key === "ship" && !g.legal.ships?.length) ||
                         (key === "road" && !g.legal.roads.length)
                       }
@@ -920,7 +932,7 @@ export function CatanBoard({
                     pointerEvents={ok ? undefined : "none"}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`${effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "move_ship")) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}`}
+                    aria-label={`${effective === "port" ? "港口" : e.ship || (e.owner < 0 && (effective === "ship" || effective === "move_ship" || (effective === "diplomacy" && city?.pending?.ship))) ? (e.warship ? "战舰" : "船只") : "道路"}位置 ${e.id + 1}${e.owner >= 0 ? "，" + room.seats[e.owner].name + "已占领" : ""}`}
                     onClick={() => ok && select(effective, e.id)}
                     onKeyDown={(ev) => {
                       if (ok && (ev.key === "Enter" || ev.key === " ")) {
@@ -1422,9 +1434,15 @@ export function CatanBoard({
                         chosen.type === "helper_move" ||
                         chosen.type === "helper_desert"
                           ? "catan_helper"
-                          : "catan_" + chosen.type,
+                          : chosen.type === "knight_chase_pirate"
+                            ? "catan_knight_chase"
+                            : "catan_" + chosen.type,
                       choice:
-                        chosen.type === "helper_desert" ? "desert" : undefined,
+                        chosen.type === "helper_desert"
+                          ? "desert"
+                          : chosen.type === "knight_chase_pirate"
+                            ? "pirate"
+                            : undefined,
                       color:
                         chosen.type === "helper_desert"
                           ? helperResource

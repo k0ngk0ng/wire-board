@@ -6,7 +6,7 @@ export const progressChoiceLabels: Record<string, string> = {
   espionage: "间谍 · 选取进步牌",
   wedding: "婚礼 · 赠送手牌",
   sabotage: "破坏 · 弃置手牌",
-  diplomacy: "外交 · 重建道路",
+  diplomacy: "外交 · 重放路线",
   treason_remove: "叛变 · 移除骑士",
   treason_place: "叛变 · 放置骑士",
 };

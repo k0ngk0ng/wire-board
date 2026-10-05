@@ -10,8 +10,8 @@ func (r *Room) setCatanCitiesKnights(setup game.CatanCitiesKnightsSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" {
 		return fmt.Errorf("只能在城市与骑士开局前调整设置")
 	}
-	if r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
-		return fmt.Errorf("城市与骑士尚不支持与其他地图配置组合")
+	if err := r.validateCatanCitiesKnightsMap(); err != nil {
+		return err
 	}
 	if r.CatanOptions.Helpers || r.CatanOptions.AllHelpers {
 		return fmt.Errorf("Helpers尚无与城市与骑士组合的官方兼容规则")
@@ -29,6 +29,29 @@ func (r *Room) setCatanCitiesKnights(setup game.CatanCitiesKnightsSetup) error {
 	r.CatanCitiesKnights = &normalized
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot
+	}
+	return nil
+}
+
+// Both expansion fields are provisioned internally. HTTP commands only edit
+// an existing field, so this does not enable a public combination entry point.
+func (r *Room) validateCatanCitiesKnightsMap() error {
+	if r.CatanBaseConfiguration != nil {
+		return fmt.Errorf("城市与骑士不能使用基础地图配置")
+	}
+	if r.CatanSeafarers != nil {
+		if !game.CatanCitiesKnightsSeafarersSupported(r.CatanSeafarers.Scenario) {
+			return fmt.Errorf("该航海家剧本的城市骑士组合规则尚未接入")
+		}
+		if r.CatanSeafarers.Scenario == "new_world" {
+			if r.CatanNewWorldMap == nil {
+				return fmt.Errorf("请先确认新世界地图")
+			}
+			return nil
+		}
+	}
+	if r.CatanNewWorldMap != nil {
+		return fmt.Errorf("只有新世界组合可以使用预设地图")
 	}
 	return nil
 }

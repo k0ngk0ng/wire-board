@@ -50,6 +50,7 @@ export function CatanProgressChoice({
     map: chosen,
     skip,
   });
+  const routeName = q.ship ? "船只" : "道路";
   const targetName = room.seats[q.target]?.name || "对方";
   const optional = ["diplomacy", "espionage", "treason_place"].includes(q.kind);
   return (
@@ -137,7 +138,8 @@ export function CatanProgressChoice({
       )}
       {q.kind === "diplomacy" && (
         <p>
-          在地图上选择亮起的道路位置，免费重建刚移除的道路，也可以放弃重建。
+          在地图上选择亮起的{routeName}位置，免费重放刚移除的{routeName}
+          ，也可以放弃重放。
         </p>
       )}
       {q.kind === "treason_remove" && (
@@ -173,7 +175,7 @@ export function CatanProgressChoice({
       {["diplomacy", "treason_remove", "treason_place"].includes(q.kind) && (
         <p aria-live="polite">
           {chosen?.type === q.kind
-            ? `已选${q.kind === "diplomacy" ? "道路" : "交点"} #${chosen.id + 1}`
+            ? `已选${q.kind === "diplomacy" ? routeName : "交点"} #${chosen.id + 1}`
             : "请在地图上选择目标"}
         </p>
       )}
@@ -188,7 +190,7 @@ export function CatanProgressChoice({
           {q.kind === "espionage"
             ? "放弃取牌"
             : q.kind === "diplomacy"
-              ? "放弃免费重建道路"
+              ? `放弃免费重放${routeName}`
               : "放弃免费放置骑士"}
         </label>
       )}

@@ -8,7 +8,7 @@ export const cityTrackPowers = [
   "三级：可以将骑士提升至三级",
 ];
 export const cityActionNames: Record<string, string> = {
-  diplomacy: "重建道路",
+  diplomacy: "重放路线",
   treason_remove: "移除骑士",
   treason_place: "放置骑士",
   wall: "建造城墙",
@@ -19,6 +19,7 @@ export const cityActionNames: Record<string, string> = {
   knight_promote: "升级骑士",
   knight_move: "移动骑士",
   knight_chase: "驱逐强盗",
+  knight_chase_pirate: "驱逐海盗",
   knight_retreat: "骑士退让",
 };
 export const cityActionCosts: Record<string, number[]> = {

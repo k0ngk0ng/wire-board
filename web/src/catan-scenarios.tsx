@@ -30,7 +30,7 @@ export function catanScenarioVictory(id: string, target: number) {
 
 const descriptions: Record<string, string> = {
   shores: "从主岛出发，探索其他岛屿；每位玩家首次在各个新区域定居额外得2分。",
-  islands: "两座起始村庄所在的岛是自己的家乡岛；在其他岛首次定居额外得2分。",
+  islands: "两处起始建筑所在的岛是自己的家乡岛；在其他岛首次定居额外得2分。",
   fog: "沿路线发现未知地形，陆地产生发现奖励；未知地形和数字在探索前保密。",
   desert: "从主岛出发，穿越沙漠或驶向外岛；各个新区域首次定居额外得2分。",
   tribe: "驾船接触部落，领取胜利点、发展卡和可带回安放的港口。",

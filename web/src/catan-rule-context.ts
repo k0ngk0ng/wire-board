@@ -15,13 +15,14 @@ export function catanRuleContext(room: Room) {
     : room.catanSeafarers?.scenario ||
       (room.catanNewWorldMap ? "new_world" : "");
   if (scenario === "islands" && players > 4) scenario = "six_islands";
-  const layout = citiesKnights
-    ? citySetup?.layout || "variable"
-    : game
-      ? sea?.layout ||
-        (sea?.newWorld ? "prepared" : sea?.variable ? "variable" : "fixed")
-      : room.catanSeafarers?.layout ||
-        (room.catanNewWorldMap ? "prepared" : "");
+  const layout =
+    citiesKnights && !scenario
+      ? citySetup?.layout || "variable"
+      : game
+        ? sea?.layout ||
+          (sea?.newWorld ? "prepared" : sea?.variable ? "variable" : "fixed")
+        : room.catanSeafarers?.layout ||
+          (room.catanNewWorldMap ? "prepared" : "");
   const fixedBase =
     !scenario &&
     !citiesKnights &&
@@ -40,23 +41,30 @@ export function catanRuleContext(room: Room) {
     fiveSix: game ? !!game.paired || !!options.fiveSix : !!options.fiveSix,
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,
-    target: citiesKnights
-      ? 13
-      : sea?.victoryPoints ||
-        ({
-          shores: 14,
-          islands: 13,
-          six_islands: 13,
-          fog: 12,
-          desert: 14,
-          tribe: 13,
-          cloth: 14,
-          pirate_islands: 10,
-          wonders: 10,
-          new_world: 12,
-        }[scenario] ??
-          10),
+    target: sea?.victoryPoints || catanVictoryTarget(scenario, citiesKnights),
   };
 }
 
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
+
+export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  const target = (
+    {
+      shores: 14,
+      islands: 13,
+      six_islands: 13,
+      fog: 12,
+      desert: 14,
+      tribe: 13,
+      cloth: 14,
+      pirate_islands: 10,
+      wonders: 10,
+      new_world: 12,
+    } as Record<string, number>
+  )[scenario];
+  return target !== undefined
+    ? target + (citiesKnights ? 2 : 0)
+    : citiesKnights
+      ? 13
+      : 10;
+}

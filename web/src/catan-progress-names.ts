@@ -54,3 +54,11 @@ export const catanProgressDescriptions = [
   "抽到后立即公开，获得一分，不占进步手牌上限。",
   "公开分数高于自己的对手依次赠送两张资源或商品，不足两张全交。",
 ];
+
+export function catanProgressDescription(card: number, seafarers: boolean) {
+  if (seafarers && card === 7)
+    return "免费放置两条道路或船只，可混合选择，仍遵守连接和棋子库存规则。";
+  if (seafarers && card === 16)
+    return "移除一条开放道路或船只；自己的棋子可免费重放到同类型合法位置，对手的归还库存。船只可从海盗旁迁移，但不能切断己方骑士与建筑的连接。";
+  return catanProgressDescriptions[card];
+}

@@ -16,7 +16,7 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
         <>
           <li>
             <b>从主岛出发：</b>
-            两座起始村庄都必须放在主岛。每位玩家首次在每个小岛区域建村，额外获得2分；别人已定居不影响自己的奖励。
+            两处起始建筑都必须放在主岛。每位玩家首次在每个小岛区域建村，额外获得2分；别人已定居不影响自己的奖励。
           </li>
           {players > 4 && (
             <li>
@@ -31,7 +31,7 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
       return (
         <li>
           <b>自己的家乡岛：</b>
-          两座起始村庄可以同岛或分处两岛，这些岛是自己的家乡岛。每位玩家首次在各个非家乡岛建村额外获得2分；家乡岛和探索奖励按玩家分别记录。
+          两处起始建筑可以同岛或分处两岛，这些岛是自己的家乡岛。每位玩家首次在各个非家乡岛建村额外获得2分；家乡岛和探索奖励按玩家分别记录。
         </li>
       );
     case "fog":
@@ -39,7 +39,7 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
         <>
           <li>
             <b>起始区域：</b>
-            两座起始村庄可以放在同一座或两座已知岛上。起始建设期间发现新地形，也不能把新的地形当作起始定居区。
+            两处起始建筑可以放在同一座或两座已知岛上。起始建设期间发现新地形，也不能把新的地形当作起始定居区。
           </li>
           <li>
             <b>探索迷雾：</b>
@@ -55,7 +55,7 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
         <>
           <li>
             <b>穿越沙漠：</b>
-            两座起始村庄限于沙漠带这一侧的主岛。沙漠另一侧的陆地区域和外围小岛分别是未探索区域。
+            两处起始建筑限于沙漠带这一侧的主岛。沙漠另一侧的陆地区域和外围小岛分别是未探索区域。
           </li>
           <li>
             每位玩家首次在每个新区域建村额外得2分，不要求是全桌第一个到达。沙漠另一侧虽与主岛相连，仍单独计算区域奖励。
@@ -183,7 +183,7 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
           </li>
           <li>
             <b>家乡岛：</b>
-            两座起始村庄所在的一座或两座岛是自己的家乡岛。每位玩家首次在各个非家乡岛建村额外得1分，别人先到不影响自己的奖励。
+            两处起始建筑所在的一座或两座岛是自己的家乡岛。每位玩家首次在各个非家乡岛建村额外得1分，别人先到不影响自己的奖励。
           </li>
         </>
       );
@@ -195,7 +195,20 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
 export function CatanRules({ room }: { room: Room }) {
   const info = catanRuleContext(room);
   const { scenario, players, fiveSix, helpers } = info;
-  if (info.citiesKnights) return <CatanCitiesKnightsRules info={info} />;
+  if (info.citiesKnights)
+    return (
+      <>
+        <CatanCitiesKnightsRules info={info} />
+        {scenario && (
+          <>
+            <h4>本剧本规则</h4>
+            <ol>
+              <ScenarioRules info={info} />
+            </ol>
+          </>
+        )}
+      </>
+    );
   const seafarers = !!scenario;
   const pirate = scenario === "pirate_islands";
   const cloth = scenario === "cloth";

@@ -324,6 +324,14 @@ export function CatanCityActions({
       Object.values(g.knightMoves || {}).filter((a) => a.length).length,
     ],
     ["knight_chase", g.legal.knightChase?.length || 0],
+    ...(g.seafarers
+      ? [
+          ["knight_chase_pirate", g.legal.knightChasePirate?.length || 0] as [
+            string,
+            number,
+          ],
+        ]
+      : []),
   ];
   return (
     <section className="catan-city-actions" aria-label="城市建设与骑士">

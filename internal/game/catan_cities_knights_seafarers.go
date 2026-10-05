@@ -8,9 +8,7 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	if options.Helpers || options.AllHelpers {
 		return nil, fmt.Errorf("Helpers与城市骑士组合尚未接入")
 	}
-	switch setup.Scenario {
-	case "shores", "islands", "fog", "desert", "new_world":
-	default:
+	if !CatanCitiesKnightsSeafarersSupported(setup.Scenario) {
 		return nil, fmt.Errorf("该航海家剧本的城市骑士组合规则尚未接入")
 	}
 	s, err := NewCatanSeafarers(n, options, setup, world)
@@ -36,6 +34,16 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	}
 	return s, nil
 }
+
+// Recipe IDs only; persisted five/six-player islands use a separate alias.
+func CatanCitiesKnightsSeafarersSupported(scenario string) bool {
+	switch scenario {
+	case "shores", "islands", "fog", "desert", "new_world":
+		return true
+	}
+	return false
+}
+
 func (g *Catan) citySeaSupported() bool {
 	if g.Seafarers == nil {
 		return true

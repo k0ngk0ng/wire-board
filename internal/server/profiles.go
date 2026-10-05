@@ -20,21 +20,22 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
-	CatanExpansions  []string             `json:"catanExpansions,omitempty"`
-	CatanLayout      string               `json:"catanLayout,omitempty"`
-	CatanRules       string               `json:"catanRules,omitempty"`
-	CatanScenario    string               `json:"catanScenario,omitempty"`
-	CatanOptions     game.CatanOptions    `json:"catanOptions,omitempty"`
-	SplendorOptions  game.SplendorOptions `json:"splendorOptions,omitempty"`
-	SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions,omitempty"`
-	RailMap          string               `json:"railMap,omitempty"`
-	Rated            bool                 `json:"rated"`
-	ID               string               `json:"id"`
-	Room             string               `json:"room"`
-	Kind             string               `json:"kind"`
-	Status           string               `json:"status"`
-	Ended            int64                `json:"ended"`
-	Players          []MatchPlayer        `json:"players"`
+	CatanExpansionRules map[string]string    `json:"catanExpansionRules,omitempty"`
+	CatanExpansions     []string             `json:"catanExpansions,omitempty"`
+	CatanLayout         string               `json:"catanLayout,omitempty"`
+	CatanRules          string               `json:"catanRules,omitempty"`
+	CatanScenario       string               `json:"catanScenario,omitempty"`
+	CatanOptions        game.CatanOptions    `json:"catanOptions,omitempty"`
+	SplendorOptions     game.SplendorOptions `json:"splendorOptions,omitempty"`
+	SanguoshaOptions    game.SGOptions       `json:"sanguoshaOptions,omitempty"`
+	RailMap             string               `json:"railMap,omitempty"`
+	Rated               bool                 `json:"rated"`
+	ID                  string               `json:"id"`
+	Room                string               `json:"room"`
+	Kind                string               `json:"kind"`
+	Status              string               `json:"status"`
+	Ended               int64                `json:"ended"`
+	Players             []MatchPlayer        `json:"players"`
 }
 
 func archiveGame(tx *sql.Tx, r *Room) error {
@@ -58,12 +59,17 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		record.CatanOptions = g.Options
 		if g.Seafarers != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "seafarers")
+			record.CatanExpansionRules = map[string]string{"seafarers": g.Seafarers.Rules}
 		}
 		if g.CitiesKnights != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "cities_knights")
 			setup := g.CitiesKnightsSetup()
-			record.CatanRules = setup.Rules
+			if record.CatanExpansionRules == nil {
+				record.CatanExpansionRules = map[string]string{}
+			}
+			record.CatanExpansionRules["cities_knights"] = setup.Rules
 			if g.Seafarers == nil {
+				record.CatanRules = setup.Rules
 				record.CatanLayout = setup.Layout
 			}
 		}

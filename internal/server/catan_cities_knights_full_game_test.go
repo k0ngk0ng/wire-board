@@ -13,6 +13,16 @@ import (
 // The creation catalog remains closed. Provision the waiting-room setting,
 // then use formal readiness/start and real actions/autoplay/timeouts through victory.
 func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "")
+}
+
+func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world"} {
+		t.Run(scenario, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scenario) })
+	}
+}
+
+func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string) {
 	for _, n := range []int{3, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
@@ -27,6 +37,9 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 			id := r["id"].(string)
 			for p := 1; p < n; p++ {
 				clients[p].command(current(clients[0]), "join", nil, 200)
+			}
+			if scenario != "" {
+				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: scenario})
 			}
 			provisionCatanCitiesKnights(t, s, id)
 			for p := 0; p < n; p++ {
@@ -145,7 +158,11 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 				t.Fatal("incomplete city game", steps, room.Game.Phase)
 			}
 			winner := room.Game.Winners[0]
-			if room.Game.Catan.Players[winner].Score < 13 || room.Game.Catan.CitiesKnights.Invasions == 0 {
+			target := 13
+			if sea := room.Game.Catan.Seafarers; sea != nil {
+				target = sea.VictoryPoints
+			}
+			if room.Game.Catan.Players[winner].Score < target || room.Game.Catan.CitiesKnights.Invasions == 0 {
 				t.Fatal("wrong expansion victory")
 			}
 			code, profile := clients[n].request("GET", "/api/players/"+room.Seats[winner].ID, nil)
@@ -154,7 +171,12 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 			}
 			stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 			history := profile["history"].([]any)[0].(map[string]any)
-			if history["catanLayout"] != "variable" || history["catanRules"] != room.Game.Catan.CitiesKnightsSetup().Rules || history["catanExpansions"].([]any)[0] != "cities_knights" {
+			if sea := room.Game.Catan.Seafarers; sea != nil {
+				versions := history["catanExpansionRules"].(map[string]any)
+				if history["catanScenario"] != sea.Scenario || history["catanLayout"] != sea.Layout || history["catanRules"] != sea.Rules || versions["seafarers"] != sea.Rules || versions["cities_knights"] != room.Game.Catan.CitiesKnightsSetup().Rules || len(history["catanExpansions"].([]any)) != 2 {
+					t.Fatal("missing combined frozen identity", history)
+				}
+			} else if history["catanLayout"] != "variable" || history["catanRules"] != room.Game.Catan.CitiesKnightsSetup().Rules || history["catanExpansions"].([]any)[0] != "cities_knights" {
 				t.Fatal("missing frozen expansion identity")
 			}
 			if stats["wins"] != float64(1) || stats["played"] != float64(1) {
