@@ -49,7 +49,7 @@ func (g *Catan) makeFishingDesert(placements []CatanFishingGroundPlacement) (*ca
 	board := *g
 	board.Tiles = slices.Clone(g.Tiles)
 	board.Tiles[r.lake].Resource, board.Tiles[r.lake].Number = catanLake, 0
-	f, err := makeFishingCoastalMap(board.fishingCoasts(board.findIslands()), placements)
+	f, err := makeFishingCoastalMap(board.fishingCoasts(board.findIslands()), placements, len(g.Players))
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (f catanFishingMap) validateDesert(g *Catan) error {
 	if g.Robber < -1 || g.Robber >= len(g.Tiles) || g.Robber >= 0 && (g.Tiles[g.Robber].Resource == CatanSea || g.Tiles[g.Robber].Resource == CatanFog) {
 		return errors.New("非法强盗位置")
 	}
-	return f.validateCoastalGrounds(g.fishingCoasts(g.findIslands()))
+	return f.validateCoastalGrounds(g.fishingCoasts(g.findIslands()), len(g.Players))
 }
 
 // Production and AI use all publicly printed number discs. A matched hex

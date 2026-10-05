@@ -38,7 +38,7 @@ func (g *Catan) makeFishingWonders(placements []CatanFishingGroundPlacement) (*c
 	if err != nil {
 		return nil, err
 	}
-	f, err := makeFishingCoastalMap(coasts, placements)
+	f, err := makeFishingCoastalMap(coasts, placements, len(g.Players))
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (f catanFishingMap) validateWonders(g *Catan) error {
 	if len(f.Lakes) != 0 || len(f.Grounds) != 6 || len(f.ExtraNumbers) != 0 {
 		return errors.New("奇迹捕鱼不使用湖泊，必须有六个渔场")
 	}
-	if err = f.validateCoastalGrounds(coasts); err != nil {
+	if err = f.validateCoastalGrounds(coasts, len(g.Players)); err != nil {
 		return err
 	}
 	for _, tile := range g.Tiles {

@@ -49,7 +49,7 @@ func (g *Catan) makeFishingTribe(placements []CatanFishingGroundPlacement) (*cat
 			return nil, errors.New("捕鱼地图不能覆盖已有路线")
 		}
 	}
-	f, err := makeFishingCoastalMap(coasts, placements)
+	f, err := makeFishingCoastalMap(coasts, placements, len(g.Players))
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (f catanFishingMap) validateTribe(g *Catan) error {
 		g.Seafarers.Islands[g.Robber] != g.Seafarers.StartIslands[0] {
 		return errors.New("遗忘部落捕鱼强盗位置不符")
 	}
-	return f.validateCoastalGrounds(coasts)
+	return f.validateCoastalGrounds(coasts, len(g.Players))
 }
 
 func (g *Catan) fishingGroundEdge(edge int) bool {

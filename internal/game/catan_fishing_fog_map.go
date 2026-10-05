@@ -10,12 +10,17 @@ import (
 // generating a board or consulting the hidden stacks. Discovered sea must not
 // create new legal ground positions; discovered land cannot move old ones.
 func (g *Catan) fishingFogCoasts() ([]CatanFishingCoast, error) {
-	if g.Seafarers == nil || g.Seafarers.Scenario != "fog" || g.Seafarers.Fog == nil || len(g.Players) < 3 || len(g.Players) > 4 {
-		return nil, errors.New("仅已核对的三/四人迷雾群岛捕鱼位置")
+	if g.Seafarers == nil || g.Seafarers.Scenario != "fog" || g.Seafarers.Fog == nil || len(g.Players) < 3 || len(g.Players) > 6 {
+		return nil, errors.New("仅已核对的三至六人迷雾群岛捕鱼位置")
+	}
+	if len(g.Players) > 4 && (!g.Options.FiveSix || g.Paired == nil || g.Seafarers.Variable) {
+		return nil, errors.New("五至六人迷雾捕鱼须保留扩充地图和配对回合")
 	}
 	rows := catanFogThreeRows()
 	if len(g.Players) == 4 {
 		rows = catanFogFourRows()
+	} else if len(g.Players) > 4 {
+		rows = catanFogSixRows()
 	}
 	board := *g
 	board.Tiles = slices.Clone(g.Tiles)
@@ -43,7 +48,7 @@ func (g *Catan) makeFishingFog(placements []CatanFishingGroundPlacement) (*catan
 	if err != nil {
 		return nil, err
 	}
-	f, err := makeFishingCoastalMap(coasts, placements)
+	f, err := makeFishingCoastalMap(coasts, placements, len(g.Players))
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +63,10 @@ func (f catanFishingMap) validateFog(g *Catan) error {
 	if err != nil {
 		return err
 	}
-	if len(f.Lakes) != 0 || len(f.Grounds) != 6 {
-		return errors.New("迷雾捕鱼不使用湖泊，必须有六个渔场")
+	if len(f.Lakes) != 0 || len(f.Grounds) != len(catanFishingGroundNumbers(len(g.Players))) || len(f.ExtraNumbers) != 0 {
+		return errors.New("迷雾捕鱼不使用湖泊或额外数字，渔场数量须符合人数")
 	}
-	if err := f.validateCoastalGrounds(coasts); err != nil {
+	if err := f.validateCoastalGrounds(coasts, len(g.Players)); err != nil {
 		return err
 	}
 	for _, tile := range g.Tiles {

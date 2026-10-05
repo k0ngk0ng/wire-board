@@ -5,11 +5,19 @@ import (
 	"slices"
 )
 
-// Build the six freely placed coastal grounds used by several scenario
+func catanFishingGroundNumbers(n int) []int {
+	if n > 4 {
+		// T&B 5–6 (2025), p.5: the additional grounds show 5 and 9.
+		return []int{4, 5, 5, 6, 8, 9, 9, 10}
+	}
+	return []int{4, 5, 6, 8, 9, 10}
+}
+
+// Build the freely placed coastal grounds used by several scenario
 // recipes. Scenario-specific lake/number changes are validated by the caller.
-func makeFishingCoastalMap(coasts []CatanFishingCoast, placements []CatanFishingGroundPlacement) (*catanFishingMap, error) {
+func makeFishingCoastalMap(coasts []CatanFishingCoast, placements []CatanFishingGroundPlacement, n int) (*catanFishingMap, error) {
 	if placements == nil {
-		numbers := []int{4, 5, 6, 8, 9, 10}
+		numbers := catanFishingGroundNumbers(n)
 		used := map[int]bool{}
 		var choose func(int) bool
 		choose = func(next int) bool {
@@ -33,7 +41,7 @@ func makeFishingCoastalMap(coasts []CatanFishingCoast, placements []CatanFishing
 			return false
 		}
 		if !choose(0) {
-			return nil, errors.New("海岸没有六个不重叠且不占港口的渔场位置")
+			return nil, errors.New("海岸无法容纳全部不重叠且不占港口的渔场")
 		}
 	}
 	byEdges := map[[2]int]CatanFishingCoast{}
@@ -48,13 +56,13 @@ func makeFishingCoastalMap(coasts []CatanFishingCoast, placements []CatanFishing
 		}
 		f.Grounds = append(f.Grounds, fishingSeaGround(p.Number, c))
 	}
-	if err := f.validateCoastalGrounds(coasts); err != nil {
+	if err := f.validateCoastalGrounds(coasts, n); err != nil {
 		return nil, err
 	}
 	return f, nil
 }
 
-func (f catanFishingMap) validateCoastalGrounds(coasts []CatanFishingCoast) error {
+func (f catanFishingMap) validateCoastalGrounds(coasts []CatanFishingCoast, n int) error {
 	byEdges := map[[2]int]CatanFishingCoast{}
 	for _, c := range coasts {
 		byEdges[c.Edges] = c
@@ -74,7 +82,7 @@ func (f catanFishingMap) validateCoastalGrounds(coasts []CatanFishingCoast) erro
 		numbers = append(numbers, ground.Number)
 	}
 	slices.Sort(numbers)
-	if !slices.Equal(numbers, []int{4, 5, 6, 8, 9, 10}) {
+	if !slices.Equal(numbers, catanFishingGroundNumbers(n)) {
 		return errors.New("海岸渔场点数不符")
 	}
 	return nil

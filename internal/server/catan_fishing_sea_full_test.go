@@ -14,15 +14,31 @@ import (
 // table; every layout, build, roll, response and action then uses production
 // HTTP handlers, autoplay or timeout handling, through final history recording.
 func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
+	testFishingSeaExtendedFullHTTP(t, "new_world")
+}
+
+func TestCatanFishingFogExtendedFullHTTPGames(t *testing.T) {
+	testFishingSeaExtendedFullHTTP(t, "fog")
+}
+
+func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
+	totalPaid := 0
 	for _, n := range []int{5, 6} {
 		for sample := 0; sample < 2; sample++ {
 			t.Run(fmt.Sprintf("%d/sample%d", n, sample), func(t *testing.T) {
 				s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "resource")
-				layout, err := game.GenerateCatanNewWorldMap(n)
-				if err != nil {
-					t.Fatal(err)
+				var initial *game.State
+				var err error
+				if scenario == "new_world" {
+					var layout *game.CatanNewWorldMap
+					layout, err = game.GenerateCatanNewWorldMap(n)
+					if err != nil {
+						t.Fatal(err)
+					}
+					initial, err = game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: true}, layout)
+				} else {
+					initial, err = game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: true}, game.CatanSeafarersSetup{Scenario: "fog"}, nil)
 				}
-				initial, err := game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: true}, layout)
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -58,6 +74,7 @@ func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 					}
 					restored[label] = true
 				}
+				restart("setup")
 				steps, automatic, timeouts, paid := 0, 0, 0, 0
 				for ; steps < 10000 && !s.rooms[id].Game.Finished; steps++ {
 					r = s.rooms[id]
@@ -74,6 +91,9 @@ func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 						label = "gold-response"
 					case state.Phase == "catan_turn" && g.Paired.Second:
 						label = "secondary"
+					}
+					if label == "" && g.Seafarers.Fog != nil && len(g.Seafarers.Fog.Terrain) < 18 {
+						label = "discovery"
 					}
 					if label != "" && !restored[label] {
 						restart(label)
@@ -129,7 +149,7 @@ func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
 							fish := v["fishing"].(map[string]any)
 							tokens := fish["tokens"].(map[string]any)
-							if tokens["drawPile"] != nil || fish["pending"] != nil || fish["worldSetup"].(map[string]any)["numbers"] != nil {
+							if tokens["drawPile"] != nil || fish["pending"] != nil {
 								t.Fatal("hidden fishing state exposed")
 							}
 							for p, raw := range tokens["players"].([]any) {
@@ -138,9 +158,15 @@ func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 									t.Fatal("fish privacy")
 								}
 							}
-							world := v["seafarers"].(map[string]any)["newWorld"].(map[string]any)
-							if world["ports"] != nil {
+							sea := v["seafarers"].(map[string]any)
+							if world, ok := sea["newWorld"].(map[string]any); ok && world["ports"] != nil {
 								t.Fatal("hidden port order")
+							}
+							if setup, ok := fish["worldSetup"].(map[string]any); ok && setup["numbers"] != nil {
+								t.Fatal("hidden ground order")
+							}
+							if fog, ok := sea["fog"].(map[string]any); ok && (fog["terrain"] != nil || fog["numbers"] != nil) {
+								t.Fatal("hidden exploration order")
 							}
 							for p, raw := range v["players"].([]any) {
 								seat := raw.(map[string]any)
@@ -201,9 +227,10 @@ func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 					clients[actor].command(current(clients[actor]), "action", action, 200)
 				}
 				r = s.rooms[id]
-				if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || !restored["ports"] || !restored["grounds"] || !restored["secondary"] || automatic == 0 || timeouts == 0 || paid == 0 {
+				if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || !restored["setup"] || scenario == "new_world" && (!restored["ports"] || !restored["grounds"]) || !restored["secondary"] || automatic == 0 || timeouts == 0 {
 					t.Fatal("incomplete full-game coverage", steps, automatic, timeouts, paid, restored)
 				}
+				totalPaid += paid
 				winner := r.Game.Winners[0]
 				target := 12
 				if r.Game.Catan.Fishing.Tokens.BootOwner == winner {
@@ -220,5 +247,10 @@ func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 				t.Logf("steps=%d autoplay=%d timeouts=%d paid=%d winner=%d score=%d restarts=%v", steps, automatic, timeouts, paid, winner, s.rooms[id].Game.Catan.Players[winner].Score, restored)
 			})
 		}
+	}
+	// A legal game can finish without a manual fish payment. Require this
+	// coverage across the batch; directed action tests verify each paid action.
+	if totalPaid == 0 {
+		t.Fatal("full-game batch never spent fish manually")
 	}
 }

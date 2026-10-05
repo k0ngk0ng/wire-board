@@ -69,7 +69,7 @@ func (g *Catan) makeFishingCloth(placements []CatanFishingGroundPlacement) (*cat
 			return nil, errors.New("两座大岛各需三个不重叠且不占港口的渔场位置")
 		}
 	}
-	f, err := makeFishingCoastalMap(coasts, placements)
+	f, err := makeFishingCoastalMap(coasts, placements, len(g.Players))
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (f catanFishingMap) validateCloth(g *Catan) error {
 	if len(f.Lakes) != 0 || len(f.Grounds) != 6 || len(f.ExtraNumbers) != 0 {
 		return errors.New("布匹捕鱼不使用湖泊，必须有六个渔场")
 	}
-	if err = f.validateCoastalGrounds(coasts); err != nil {
+	if err = f.validateCoastalGrounds(coasts, len(g.Players)); err != nil {
 		return err
 	}
 	counts := map[int]int{}

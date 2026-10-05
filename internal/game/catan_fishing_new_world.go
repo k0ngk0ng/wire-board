@@ -11,14 +11,6 @@ type CatanFishingWorldSetup struct {
 	Index   int   `json:"index"`
 }
 
-func fishingWorldNumbers(n int) []int {
-	if n > 4 {
-		// T&B 5–6 (2025), p.5: the additional grounds show 5 and 9.
-		return []int{4, 5, 5, 6, 8, 9, 9, 10}
-	}
-	return []int{4, 5, 6, 8, 9, 10}
-}
-
 // July 2025 Fishing + Seafarers p.2: no lake; after all ports, place the
 // randomly drawn grounds in turn. Always retain the pre-game approved map.
 // Public room creation stays gated until complete combination acceptance.
@@ -31,7 +23,7 @@ func NewCatanFishingNewWorld(n int, options CatanOptions, layout *CatanNewWorldM
 		return nil, err
 	}
 	g := s.Catan
-	numbers := fishingWorldNumbers(n)
+	numbers := catanFishingGroundNumbers(n)
 	if !g.fishingWorldCanFinish(len(g.newWorld().Ports), len(numbers)) {
 		return nil, fmt.Errorf("此地图无法同时放下%d个港口和%d个渔场，请在开局前调整海岸布局", len(g.newWorld().Ports), len(numbers))
 	}
@@ -59,7 +51,7 @@ func (g *Catan) fishingWorldSetup() *CatanFishingWorldSetup {
 func (f catanFishingMap) validateNewWorld(g *Catan) error {
 	w, q := g.newWorld(), g.fishingWorldSetup()
 	n := len(g.Players)
-	wantNumbers, ports := fishingWorldNumbers(n), 10
+	wantNumbers, ports := catanFishingGroundNumbers(n), 10
 	if n > 4 {
 		ports = 11
 	}

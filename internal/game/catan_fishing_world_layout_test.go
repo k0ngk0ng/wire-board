@@ -137,7 +137,7 @@ func TestCatanFishingWorldCapacityActualMapsAndConstructiveCompletion(t *testing
 					t.Fatal("joint feasibility lost before all grounds placed", i)
 				}
 			}
-			if err := g.Fishing.Map.validateCoastalGrounds(g.fishingCoasts(g.findIslands())); err != nil {
+			if err := g.Fishing.Map.validateCoastalGrounds(g.fishingCoasts(g.findIslands()), len(g.Players)); err != nil {
 				t.Fatal("witness did not produce six real nonoverlapping grounds", err)
 			}
 			if !reflect.DeepEqual(before.Tiles, g.Tiles) || !reflect.DeepEqual(before.Edges, g.Edges) || !reflect.DeepEqual(before.Vertices, g.Vertices) {
