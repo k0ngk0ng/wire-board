@@ -49,7 +49,7 @@ func (g *Catan) vertexValue(p, v int) int {
 			}
 		}
 	}
-	score := goldValue + g.wonderVertexValue(p, v) + g.harborVertexValue(p, v)
+	score := goldValue + g.wonderVertexValue(p, v) + g.harborVertexValue(p, v) + g.fishVertexValue(v)
 	if g.Seafarers != nil && !g.setup() && p < len(g.Seafarers.Seats) {
 		island := g.islandAt(v)
 		if island >= 0 && !slices.Contains(g.Seafarers.Seats[p].SettledIslands, island) {
@@ -191,6 +191,10 @@ func (s *State) catanBot(player int) (Action, error) {
 		if a, ok := g.digurBotAction(player); ok {
 			return a, nil
 		}
+		if g.Fishing != nil {
+			choices := s.catanFishBotChoices(player, nil, -1)
+			return s.botLegal(player, append(choices, botChoice{Action{Type: "catan_roll"}, 0}))
+		}
 		return Action{Type: "catan_roll"}, nil
 	case "catan_robber":
 		choices := g.pirateBotChoices(player)
@@ -205,7 +209,11 @@ func (s *State) catanBot(player int) (Action, error) {
 				if v.Level == 0 || v.Owner < 0 {
 					continue
 				}
-				n := v.Level * (6 - absCatan(7-t.Number))
+				odds := 6 - absCatan(7-t.Number)
+				if t.Resource == catanLake {
+					odds = g.fishLakeOdds(t.ID)
+				}
+				n := v.Level * odds
 				if v.Owner == player {
 					value -= n * 4
 				} else if !g.Players[v.Owner].Eliminated {
@@ -424,6 +432,7 @@ func (s *State) catanBot(player int) (Action, error) {
 			choices = append(choices, botChoice{a, 800})
 		}
 	}
+	choices = append(choices, s.catanFishBotChoices(player, choices, road)...)
 	choices = append(choices, botChoice{Action{Type: "catan_end"}, -1000})
 	return s.botLegal(player, choices)
 }

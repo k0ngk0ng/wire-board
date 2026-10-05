@@ -1,0 +1,95 @@
+package game
+
+import "slices"
+
+func (g *Catan) fishLakeOdds(tile int) int {
+	if g.Fishing != nil {
+		for _, lake := range g.Fishing.Map.Lakes {
+			if lake.Tile == tile {
+				odds := 0
+				for _, number := range lake.Numbers {
+					odds += 6 - absCatan(7-number)
+				}
+				return odds
+			}
+		}
+	}
+	return 0
+}
+
+func (g *Catan) fishVertexValue(vertex int) int {
+	if g.Fishing == nil {
+		return 0
+	}
+	odds := 0
+	for _, lake := range g.Fishing.Map.Lakes {
+		if slices.Contains(g.Tiles[lake.Tile].Vertices, vertex) {
+			odds += g.fishLakeOdds(lake.Tile)
+		}
+	}
+	for _, ground := range g.Fishing.Map.Grounds {
+		if slices.Contains(ground.Vertices[:], vertex) {
+			odds += 6 - absCatan(7-ground.Number)
+		}
+	}
+	// A token averages about two fish, while a chosen bank resource costs four.
+	return odds * 5
+}
+
+func (s *State) catanFishBotChoices(player int, builds []botChoice, road int) []botChoice {
+	choices := []botChoice{}
+	if !s.catanFishActionReady(player) {
+		return choices
+	}
+	g := s.Catan
+	for _, target := range g.fishBootTargets(player) {
+		points := g.Players[target].Score - g.hiddenVictoryPoints(target)
+		choices = append(choices, botChoice{Action{Type: "catan_fish_boot", Target: target}, 1500 + points})
+	}
+	add := func(a Action, score int) {
+		if ids := g.fishPayment(player, catanFishCosts[a.Type]); ids != nil {
+			a.Tokens = ids
+			choices = append(choices, botChoice{a, score})
+		}
+	}
+	if g.Robber >= 0 {
+		for _, vertex := range g.Tiles[g.Robber].Vertices {
+			if g.Vertices[vertex].Owner == player && g.Vertices[vertex].Level > 0 {
+				add(Action{Type: "catan_fish_robber"}, 750)
+				break
+			}
+		}
+	}
+	if s.Phase == "catan_roll" {
+		return choices // Remove a blocking robber before production; spend the rest after it.
+	}
+	for _, target := range g.cardTheftTargets(player) {
+		points := g.Players[target].Score - g.hiddenVictoryPoints(target)
+		add(Action{Type: "catan_fish_steal", Target: target}, 100+points*6)
+	}
+	if len(g.DevDeck) > 0 {
+		add(Action{Type: "catan_fish_dev"}, 220)
+	}
+	if road >= 0 {
+		add(Action{Type: "catan_fish_road", Edge: road}, 210)
+	}
+	for color, count := range g.Bank[:5] {
+		if count <= 0 {
+			continue
+		}
+		score := 60 - g.Players[player].Resources[color]*10
+		for _, build := range builds {
+			cost := catanBotBuildCost(build.action)
+			if len(cost) < 5 || cost[color] <= g.Players[player].Resources[color] {
+				continue
+			}
+			missing := 0
+			for c, amount := range cost[:5] {
+				missing += max(0, amount-g.Players[player].Resources[c])
+			}
+			score = max(score, build.score/2-45*(missing-1))
+		}
+		add(Action{Type: "catan_fish_resource", Color: color}, score)
+	}
+	return choices
+}
