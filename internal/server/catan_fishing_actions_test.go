@@ -36,6 +36,9 @@ func newFishingActionTable(t *testing.T, n int, phase, kind string) (*Server, *h
 	if kind == "progress" {
 		state, err = game.NewCatanFishingCitiesKnights(n, opts)
 	}
+	if kind == "ship" || kind == "pirate" {
+		state, err = game.NewCatanFishingSeafarers(n, opts, game.CatanSeafarersSetup{Scenario: "islands"}, nil)
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,7 +55,9 @@ func newFishingActionTable(t *testing.T, n int, phase, kind string) (*Server, *h
 	g.Players[p].Score = 1
 	g.Vertices[10].Owner, g.Vertices[10].Level = target, 1
 	g.Players[target].Score = 1
-	g.Robber = g.Fishing.Map.Lakes[0].Tile
+	if g.Seafarers == nil {
+		g.Robber = g.Fishing.Map.Lakes[0].Tile
+	}
 	if g.CitiesKnights != nil {
 		g.Robber = -1
 	}
@@ -63,6 +68,28 @@ func newFishingActionTable(t *testing.T, n int, phase, kind string) (*Server, *h
 	}
 	a := game.Action{Type: "catan_fish_" + kind, Tokens: []int{21}, Target: target, Color: 4}
 	switch kind {
+	case "ship", "pirate":
+		for i := range g.Vertices {
+			g.Vertices[i].Owner, g.Vertices[i].Level = -1, 0
+		}
+		v := g.Fishing.Map.Grounds[0].Vertices[1]
+		g.Vertices[v].Owner, g.Vertices[v].Level = p, 1
+		for _, tile := range g.Tiles {
+			if tile.Resource == game.CatanSea {
+				g.Seafarers.Pirate = tile.ID
+				break
+			}
+		}
+		if kind == "ship" {
+			g.Seafarers.Pirate = -1
+			a.Tokens = []int{11, 21}
+			view := state.View(p)["catan"].(map[string]any)["fishing"].(map[string]any)["legal"].(map[string]any)
+			ships := view["ships"].([]int)
+			if len(ships) == 0 {
+				t.Fatal("fixture has no ship")
+			}
+			a.Edge = ships[0]
+		}
 	case "steal":
 		g.Bank[3]--
 		g.Players[target].Resources[3]++

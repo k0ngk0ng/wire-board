@@ -383,7 +383,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
-	case "catan_fish_robber", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_dev", "catan_fish_progress", "catan_fish_boot":
+	case "catan_fish_robber", "catan_fish_pirate", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_ship", "catan_fish_dev", "catan_fish_progress", "catan_fish_boot":
 		return s.catanFishAction(player, a)
 	case "catan_commercial_offer":
 		return s.catanCommercialOffer(player, a)
