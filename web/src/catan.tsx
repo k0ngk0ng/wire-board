@@ -1,6 +1,7 @@
 import { CatanTwoMap, CatanTwoPanel } from "./catan-two";
 import { twoNeutralName, twoResponder } from "./catan-two-state";
 import type { TwoSelection } from "./catan-two-state";
+import { useTwoNeutralMotion } from "./catan-two-motion";
 import {
   CatanCaravanMap,
   CatanCaravanBonuses,
@@ -457,6 +458,7 @@ export function CatanBoard({
   const [village, setVillage] = useState<number | null>(null);
   const [mode, setMode] = useState("");
   const [twoSelection, setTwoSelection] = useState<TwoSelection | null>(null);
+  const twoMap = useTwoNeutralMotion(room);
   const [caravanSelection, setCaravanSelection] =
     useState<CaravanSelection | null>(null);
   const [progress, setProgress] = useState<ProgressSelection | null>(null);
@@ -774,6 +776,7 @@ export function CatanBoard({
         >
           <div className="map-canvas" style={control.canvasStyle}>
             <svg
+              ref={twoMap}
               className="catan-map"
               viewBox={`${mapMinX} ${mapMinY} ${mapWidth} ${mapHeight}`}
               role="group"
@@ -1176,7 +1179,12 @@ export function CatanBoard({
                               warship={e.warship}
                             />
                           ) : (
-                            <g transform={e.damaged ? "rotate(90)" : undefined}>
+                            <g
+                              data-two-road={
+                                e.owner < -1 && g.two ? e.id : undefined
+                              }
+                              transform={e.damaged ? "rotate(90)" : undefined}
+                            >
                               <rect
                                 x="-22"
                                 y="-5"

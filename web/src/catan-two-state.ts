@@ -66,3 +66,49 @@ export function twoReturnValid(hand: number[], give: number[]) {
   );
 }
 export const twoNeutralName = (owner: number) => `中立势力 ${-owner - 1}`;
+
+// Compare public board state so observers see the same confirmed placement.
+// Never replay a placement after a reconnect, rematch or viewer change.
+export function twoNeutralAdded(
+  before: Room,
+  after: Room,
+): CatanTwoChoice | null {
+  const a = before.game?.catan,
+    b = after.game?.catan;
+  if (
+    !a?.two ||
+    !b?.two ||
+    before.id !== after.id ||
+    before.you !== after.you ||
+    !!before.spectating !== !!after.spectating ||
+    before.status !== "playing" ||
+    !["playing", "finished"].includes(after.status) ||
+    after.version !== before.version + 1 ||
+    a.rollId !== b.rollId ||
+    a.two.sequence !== b.two.sequence ||
+    !a.two.pending ||
+    b.two.pending ||
+    a.setupStep < (a.setupLimit ?? a.players.length * 2) ||
+    b.setupStep < (b.setupLimit ?? b.players.length * 2) ||
+    a.edges.length !== b.edges.length ||
+    a.vertices.length !== b.vertices.length
+  )
+    return null;
+  const added: CatanTwoChoice[] = [];
+  for (const e of b.edges) {
+    const prior = a.edges[e.id];
+    if (!prior || prior.id !== e.id) return null;
+    if (prior.owner === e.owner) continue;
+    if (prior.owner !== -1 || ![-2, -3].includes(e.owner)) return null;
+    added.push({ owner: e.owner, edge: e.id, vertex: -1 });
+  }
+  for (const v of b.vertices) {
+    const prior = a.vertices[v.id];
+    if (!prior || prior.id !== v.id) return null;
+    if (prior.owner === v.owner && prior.level === v.level) continue;
+    if (prior.level !== 0 || v.level !== 1 || ![-2, -3].includes(v.owner))
+      return null;
+    added.push({ owner: v.owner, edge: -1, vertex: v.id });
+  }
+  return added.length === 1 ? added[0] : null;
+}
