@@ -1,5 +1,9 @@
 import { catanRuleContext } from "./catan-rule-context";
-import { catanLayoutName, catanScenarioName } from "./catan-scenarios";
+import {
+  catanLayoutName,
+  catanScenarioName,
+  catanScenarioVictory,
+} from "./catan-scenarios";
 import type { Room } from "./types";
 import "./catan-scenarios.css";
 
@@ -16,7 +20,7 @@ export function CatanCitiesKnightsSetup({ room }: { room: Room }) {
         {info.scenario
           ? `航海家 · ${catanScenarioName(info.scenario)} · ${catanLayoutName(info.layout)}`
           : "随机地图"}{" "}
-        · {info.target} 分获胜
+        · {catanScenarioVictory(info.scenario, info.target)}
       </p>
       <p>
         先放村庄，再逆序放城市。建设城墙和大都会，派出骑士抵御蛮族，运用科学、贸易和政治进步牌。

@@ -22,7 +22,7 @@ export const catanLayoutName = (id: string) =>
   })[id] || "";
 
 export function catanScenarioVictory(id: string, target: number) {
-  if (id === "wonders") return "建成4级奇迹，或10分且奇迹等级独自领先";
+  if (id === "wonders") return `建成4级奇迹，或${target}分且奇迹等级独自领先`;
   if (id === "pirate_islands") return "10分且夺回自己的要塞";
   if (id === "cloth") return "14分获胜；回合结束时5座村落耗尽也会结算";
   return `${target}分获胜`;

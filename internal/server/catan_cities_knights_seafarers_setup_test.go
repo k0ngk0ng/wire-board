@@ -28,7 +28,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 	provisionSeafarers(t, s, id, sea)
 	r := current(host)
 	choices := r["catanSeafarersChoices"].([]any)
-	if len(choices) != 5 {
+	if len(choices) != 6 {
 		t.Fatal("wrong combination catalog", choices)
 	}
 	for _, raw := range choices {
@@ -45,7 +45,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 	before, _ := json.Marshal(s.rooms[id])
 	selectSeafarers(guest, &sea, 400)
 	selectCatanCitiesKnights(guest, &city, 400)
-	for _, scenario := range []string{"tribe", "cloth", "pirate_islands", "wonders"} {
+	for _, scenario := range []string{"tribe", "cloth", "pirate_islands"} {
 		selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: scenario}, 400)
 	}
 	options := func(o game.CatanOptions, status int) {

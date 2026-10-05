@@ -157,11 +157,11 @@ func (s *State) catanFinishBarbarians() {
 	k.Invasions++
 	if k.Invasions == 1 {
 		g.Robber = k.RobberStart
-		if g.Seafarers != nil {
+		if g.Seafarers != nil && g.wonders() == nil {
 			g.Seafarers.Pirate = k.PirateStart
 			s.Log = append(s.Log, "首次蛮族进攻结束，海盗进入本剧本规定的起始位置")
 		}
-		s.Log = append(s.Log, "首次蛮族进攻结束，强盗进入沙漠；此后掷出7会移动强盗")
+		s.Log = append(s.Log, "首次蛮族进攻结束，强盗进入本局规定的起始位置；此后掷出7会移动强盗")
 	}
 	s.Log = append(s.Log, "蛮族船返回起点，所有骑士转为未激活")
 }

@@ -17,7 +17,7 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 }
 
 func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
-	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world"} {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world", "wonders"} {
 		t.Run(scenario, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scenario) })
 	}
 }
@@ -162,8 +162,21 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			if sea := room.Game.Catan.Seafarers; sea != nil {
 				target = sea.VictoryPoints
 			}
-			if room.Game.Catan.Players[winner].Score < target || room.Game.Catan.CitiesKnights.Invasions == 0 {
+			if (scenario != "wonders" && room.Game.Catan.Players[winner].Score < target) || room.Game.Catan.CitiesKnights.Invasions == 0 {
 				t.Fatal("wrong expansion victory")
+			}
+			if scenario == "wonders" {
+				level, rival := 0, 0
+				for _, card := range room.Game.Catan.Seafarers.Wonders.Cards {
+					if card.Owner == winner {
+						level = card.Level
+					} else if card.Owner >= 0 {
+						rival = max(rival, card.Level)
+					}
+				}
+				if target != 12 || (level != 4 && (level <= rival || room.Game.Catan.Players[winner].Score < target)) {
+					t.Fatal("wrong combined wonder victory")
+				}
 			}
 			code, profile := clients[n].request("GET", "/api/players/"+room.Seats[winner].ID, nil)
 			if code != 200 {

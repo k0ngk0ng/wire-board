@@ -162,7 +162,7 @@ export function CatanWonderMarkers({
                 key={id}
                 transform={`translate(${v.x},${v.y}) scale(${scale})`}
               >
-                <title>此交点不能放置起始村庄</title>
+                <title>此交点不能放置起始建筑</title>
                 <circle
                   r="10"
                   fill="#9f281e"
@@ -293,7 +293,8 @@ export function CatanWondersPanel({
           </button>
         </header>
         <p>
-          建至 <b>4级</b> 即获胜，或 <b>10分且等级领先</b>。
+          建至 <b>4级</b> 即获胜，或{" "}
+          <b>{game.seafarers?.victoryPoints || 10}分且等级领先</b>。
         </p>
         {own && ownRule ? (
           <button
@@ -527,7 +528,9 @@ export function CatanWondersPanel({
                     <details className="catan-wonder-rules">
                       <summary>本剧本规则</summary>
                       <p>
-                        在自己的行动中，将奇迹建至4级即获胜；或者达到10分，且已建等级严格高于其他所有玩家。并列不算领先，尚未建造也不能获胜。
+                        在自己的行动中，将奇迹建至4级即获胜；或者达到
+                        {game.seafarers?.victoryPoints || 10}
+                        分，且已建等级严格高于其他所有玩家。并列不算领先，尚未建造也不能获胜。
                       </p>
                       <p>
                         每位玩家首次在每座小岛建村额外得1分。起始村庄只能放在主岛，奇迹标记与叉号交点禁止起始建设。本剧本不使用海盗，保留最长路线与最大骑士军队奖励。
@@ -595,6 +598,7 @@ export function CatanWondersStart({
         <div className="catan-gold-body">
           <p>
             先手选择一块沙漠作为强盗起点，再开始放置村庄与道路或船只。本剧本不使用海盗。
+            {g.citiesKnights && "这里只记录起点；首次蛮族进攻后强盗才入场。"}
           </p>
           <p>限时120秒，超时自动选择。可收起面板查看地图。</p>
           {mine && (

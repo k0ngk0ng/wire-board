@@ -135,7 +135,11 @@ func (s *State) catanBot(player int) (Action, error) {
 	case "catan_world_ports":
 		return s.catanWorldPortBot(player)
 	case "catan_cloth_start", "catan_wonders_start":
-		return Action{Type: s.Phase, Tile: g.Robber}, nil
+		origin := g.Robber
+		if g.CitiesKnights != nil {
+			origin = g.CitiesKnights.RobberStart
+		}
+		return Action{Type: s.Phase, Tile: origin}, nil
 	case "catan_setup_city":
 		return Action{Type: "catan_city", Vertex: bestVertex(true)}, nil
 	case "catan_setup_settlement":
