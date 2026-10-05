@@ -411,9 +411,11 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		}
 	case "catan_road", "catan_ship", "catan_settlement", "catan_city":
 		return s.catanBuild(player, a, false)
+	case "catan_repair_road":
+		return s.catanRepairRoad(player, a)
 	case "catan_skip_roads":
-		if s.Phase != "catan_roads" || g.hasRoute(player) {
-			return errors.New("仍有可放置的免费道路")
+		if s.Phase != "catan_roads" || g.hasFreeRouteAction(player) {
+			return errors.New("仍有可建造或修复的免费路线")
 		}
 		g.FreeRoads = 0
 		s.Phase = g.ResumePhase
@@ -831,8 +833,8 @@ func (s *State) catanDev(p int, a Action) error {
 			return errors.New("远征航线上没有可升级的普通船只")
 		}
 	case 1:
-		if !g.hasRoute(p) {
-			return errors.New("没有可放置的道路")
+		if !g.hasFreeRouteAction(p) {
+			return errors.New("没有可建造或修复的路线")
 		}
 	case 2:
 		if !catanBundle(a.Take) || sum(a.Take) != min(2, sum(g.Bank)) || sum(a.Take) == 0 || !catanHas(g.Bank, a.Take) {
@@ -866,7 +868,9 @@ func (s *State) catanDev(p int, a Action) error {
 	case 1:
 		g.FreeRoads = 2
 		s.Phase = "catan_roads"
-		if g.Seafarers != nil {
+		if g.hasDamagedRoad(p) {
+			s.catanLog(p, "使用道路建设：免费建造或修复，共两次")
+		} else if g.Seafarers != nil {
 			s.catanLog(p, "使用道路建设，免费建造两条道路或船只")
 		} else {
 			s.catanLog(p, "使用道路建设，免费修建两条道路")

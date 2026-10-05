@@ -11,7 +11,8 @@ var CatanResources = []string{"木材", "砖块", "羊毛", "粮食", "矿石"}
 var catanPrices = map[string][]int{
 	"catan_knight_recruit": {0, 0, 1, 0, 1}, "catan_knight_promote": {0, 0, 1, 0, 1}, "catan_knight_activate": {0, 0, 0, 1, 0},
 	"catan_ship": {1, 0, 1, 0, 0}, "catan_road": {1, 1, 0, 0, 0}, "catan_settlement": {1, 1, 1, 1, 0},
-	"catan_city": {0, 0, 0, 2, 3}, "catan_buy_dev": {0, 0, 1, 1, 1},
+	"catan_repair_road": {1, 1, 0, 0, 0},
+	"catan_city":        {0, 0, 0, 2, 3}, "catan_buy_dev": {0, 0, 1, 1, 1},
 }
 
 type CatanTile struct {
@@ -30,6 +31,7 @@ type CatanVertex struct {
 	Level int     `json:"level"`
 }
 type CatanEdge struct {
+	Damaged bool  `json:"damaged,omitempty"`
 	Warship bool  `json:"warship,omitempty"`
 	Tiles   []int `json:"tiles,omitempty"`
 	Ship    bool  `json:"ship,omitempty"`
@@ -185,7 +187,7 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 		if g.Vertices[other].Level > 0 {
 			return false
 		}
-		if e.Owner == p {
+		if e.Owner == p && (e.Ship || !e.Damaged) {
 			connected = true
 		}
 	}

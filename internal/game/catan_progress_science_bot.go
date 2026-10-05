@@ -146,7 +146,7 @@ func (g *Catan) scienceBotChoices(player int) []botChoice {
 				}
 			}
 		case 7:
-			if g.hasRoute(player) {
+			if g.hasFreeRouteAction(player) {
 				choices = append(choices, botChoice{a, 700})
 			}
 		case 8:

@@ -86,7 +86,7 @@ func (g *Catan) openRoute(player, edge int) bool {
 func (g *Catan) diplomacyRoads() []int {
 	out := []int{}
 	for _, e := range g.Edges {
-		if e.Owner >= 0 && !g.Players[e.Owner].Eliminated && g.openRoute(e.Owner, e.ID) && g.preservesKnightConnections(e.Owner, e.ID) {
+		if e.Owner >= 0 && !e.Damaged && !g.Players[e.Owner].Eliminated && g.openRoute(e.Owner, e.ID) && g.preservesKnightConnections(e.Owner, e.ID) {
 			out = append(out, e.ID)
 		}
 	}

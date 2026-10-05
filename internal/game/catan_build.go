@@ -28,6 +28,9 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 			return errors.New("船只必须连接己方船只或建筑，不能穿过对手建筑或停入海盗所在海洋，且最多15艘")
 		}
 	case "catan_road":
+		if g.hasDamagedRoad(player) {
+			return errors.New("请先修复所有受损道路，再新建道路")
+		}
 		if roads >= 15 || !g.canRoad(player, a.Edge) {
 			return errors.New("道路必须连接己方建筑或道路，不能穿过对手建筑，且最多 15 条")
 		}

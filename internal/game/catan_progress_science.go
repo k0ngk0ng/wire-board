@@ -101,7 +101,7 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 		return s.catanBuild(player, Action{Type: "catan_city", Vertex: a.Vertex}, true)
 	case 7:
 		g.ResumePhase = "catan_turn"
-		if g.hasRoute(player) {
+		if g.hasFreeRouteAction(player) {
 			g.FreeRoads = 2
 			s.Phase = "catan_roads"
 		} else {
