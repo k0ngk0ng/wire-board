@@ -1,3 +1,4 @@
+import { CatanCitySeat } from "./catan-city";
 import { CatanCitiesKnightsSetup } from "./catan-cities-knights-setup";
 import { CatanBasePicker } from "./catan-base-setup";
 import { catanBaseLayoutName } from "./catan-base-layout";
@@ -656,8 +657,9 @@ function App() {
     const sg = r.game!.sanguosha;
     const dota = r.game!.dota;
     const fleetActor =
+      r.game!.catan?.citiesKnights?.pending?.players[0] ??
       r.game!.catan?.seafarers?.pirateIslands?.raid?.rewards[0];
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}`;
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}`;
     if (key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
         void audio.current.play("finish");
@@ -2392,10 +2394,15 @@ function Players({ room }: { room: Room }) {
                 </small>
               ) : g.catan ? (
                 <small>
-                  资源 {g.catan.players[i].resourceCount} · 发展卡{" "}
-                  {g.catan.players[i].devCount}
+                  {g.catan.citiesKnights ? "资源与商品" : "资源"}{" "}
+                  {g.catan.players[i].resourceCount} ·{" "}
+                  {g.catan.citiesKnights ? "进步牌" : "发展卡"}{" "}
+                  {g.catan.citiesKnights?.players[i].progressCount ??
+                    g.catan.players[i].devCount}
                   <br />
-                  {g.catan.seafarers?.pirateIslands ? (
+                  {g.catan.citiesKnights ? (
+                    <CatanCitySeat game={g.catan} seat={i} />
+                  ) : g.catan.seafarers?.pirateIslands ? (
                     <>
                       战舰{" "}
                       {
@@ -2609,6 +2616,7 @@ function Turn({
     (g.catan.setupStep < (g.catan.setupLimit ?? 2 * room.seats.length) ||
       g.phase === "catan_discard" ||
       g.phase === "catan_cloth_steal" ||
+      !!g.catan.citiesKnights?.pending ||
       !!g.catan.helperPending ||
       !!g.catan.seafarers?.tribe?.pending ||
       !!g.catan.goldPending ||
@@ -2618,6 +2626,7 @@ function Turn({
   const turnAutoPlay =
     !!room.seats[
       g.sanguosha?.pending?.player ??
+        g.catan?.citiesKnights?.pending?.players[0] ??
         g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ??
         g.catan?.seafarers?.tribe?.pending?.player ??
         g.catan?.helperPending?.player ??
@@ -2626,6 +2635,7 @@ function Turn({
     ]?.autoPlay;
   const sgActor =
     g.sanguosha?.pending?.player ??
+    g.catan?.citiesKnights?.pending?.players[0] ??
     g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ??
     g.catan?.seafarers?.tribe?.pending?.player ??
     g.catan?.helperPending?.player ??
@@ -2639,19 +2649,21 @@ function Turn({
         ? g.sanguosha.pending
           ? g.sanguosha.pending.canRespond
           : sgActor === room.you
-        : g.catan?.seafarers?.pirateIslands?.raid
-          ? g.catan.seafarers.pirateIslands.raid.rewards[0] === room.you
-          : g.catan?.seafarers?.tribe?.pending
-            ? g.catan.seafarers.tribe.pending.player === room.you
-            : g.catan?.helperPending
-              ? g.catan.helperPending.player === room.you
-              : g.catan?.goldPending
-                ? g.catan.goldPending.claims[0]?.player === room.you
-                : g.phase === "catan_discard"
-                  ? (g.catan?.discardDue[room.you] || 0) > 0
-                  : setup
-                    ? !g.rail?.setupReady?.[room.you]
-                    : g.turn === room.you);
+        : g.catan?.citiesKnights?.pending
+          ? g.catan.citiesKnights.pending.players[0] === room.you
+          : g.catan?.seafarers?.pirateIslands?.raid
+            ? g.catan.seafarers.pirateIslands.raid.rewards[0] === room.you
+            : g.catan?.seafarers?.tribe?.pending
+              ? g.catan.seafarers.tribe.pending.player === room.you
+              : g.catan?.helperPending
+                ? g.catan.helperPending.player === room.you
+                : g.catan?.goldPending
+                  ? g.catan.goldPending.claims[0]?.player === room.you
+                  : g.phase === "catan_discard"
+                    ? (g.catan?.discardDue[room.you] || 0) > 0
+                    : setup
+                      ? !g.rail?.setupReady?.[room.you]
+                      : g.turn === room.you);
   const [tick, setTick] = useState(performance.now());
   const deadline = room.status === "playing" ? room.turnDeadline : 0;
   useEffect(() => {
@@ -2717,7 +2729,7 @@ function Turn({
                   ? "轮到你了"
                   : g.sanguosha?.pending?.kind === "nullification"
                     ? "共同响应锦囊"
-                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
+                    : `${room.seats[sgActor]?.name} ${g.sanguosha?.pending || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -2751,15 +2763,17 @@ function Turn({
                   ? "共同选牌限时"
                   : g.sanguosha?.pending && !g.sanguosha.selecting
                     ? "响应限时 20 秒"
-                    : g.catan?.seafarers?.pirateIslands?.raid
-                      ? "防守奖励 120 秒"
-                      : g.catan?.seafarers?.tribe?.pending
-                        ? "港口安放 120 秒"
-                        : g.catan?.helperPending
-                          ? "助手选择 120 秒"
-                          : g.catan?.goldPending
-                            ? "金矿选择 120 秒"
-                            : "每回合 120 秒"}
+                    : g.catan?.citiesKnights?.pending
+                      ? "城市与骑士响应 120 秒"
+                      : g.catan?.seafarers?.pirateIslands?.raid
+                        ? "防守奖励 120 秒"
+                        : g.catan?.seafarers?.tribe?.pending
+                          ? "港口安放 120 秒"
+                          : g.catan?.helperPending
+                            ? "助手选择 120 秒"
+                            : g.catan?.goldPending
+                              ? "金矿选择 120 秒"
+                              : "每回合 120 秒"}
             </span>
           </div>
           {expired &&

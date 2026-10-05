@@ -1,0 +1,340 @@
+{
+  "sources": {
+    "catan-knights-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-03/CN3087%20CATAN%E2%80%93Cities%26Knights_%20Rulebook.pdf",
+      "sha256": "dac9f01afe9006e3b517aa257363c844eb2a9ff4b6578d3127f5d8d861c9a540",
+      "bytes": 12000564
+    },
+    "catan-knights-5-6-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-03/CN3088%20CATAN%E2%80%93Cities%20%26%20Knights%205-6_%20Rulebook.pdf",
+      "sha256": "eab1b29e2804f54d5fe79fb1a95e7d3199d37fb73483e4807a247a931be536c9",
+      "bytes": 3592582
+    }
+  },
+  "artwork": {
+    "commodity-paper": {
+      "source": "catan-knights-2025",
+      "object": 3184,
+      "size": [
+        155,
+        221
+      ],
+      "sha256": "1cb11f00218a328a13db93d3931bf5b995b0d19de9c2538600e9c8181a52b737"
+    },
+    "commodity-cloth": {
+      "source": "catan-knights-2025",
+      "object": 3185,
+      "size": [
+        155,
+        221
+      ],
+      "sha256": "ea2555e98e24b7ee2fc7e6db3854201c9517dc2e25e4988f8be3fa93d4b4334c"
+    },
+    "commodity-coin": {
+      "source": "catan-knights-2025",
+      "object": 3186,
+      "size": [
+        155,
+        221
+      ],
+      "sha256": "2b49eb0dd7d5e21078daba4e68ad7917edc329584eeb85010e51daf8aff13669"
+    },
+    "progress-back-science": {
+      "source": "catan-knights-2025",
+      "object": 3249,
+      "size": [
+        155,
+        220
+      ],
+      "sha256": "36fe14d171b9a6e626ef452449a933f593b2be9fac1b1ee8ad36957b784b7e2b"
+    },
+    "progress-back-trade": {
+      "source": "catan-knights-2025",
+      "object": 3238,
+      "size": [
+        155,
+        220
+      ],
+      "sha256": "b2f9815cf4720be230951265e10ae1a32fb6c06b6b2337686b6f4089a3abd699"
+    },
+    "progress-back-politics": {
+      "source": "catan-knights-2025",
+      "object": 3259,
+      "size": [
+        155,
+        220
+      ],
+      "sha256": "1870927b4a60703e3d0cef6b3deca79e3dea9223456859026035ecc4fb84f14d"
+    },
+    "metropolis-science": {
+      "source": "catan-knights-2025",
+      "object": 11080,
+      "size": [
+        90,
+        93
+      ],
+      "sha256": "33e667b62f3bccd34c4204061ad9f0541e90c13117206f6df2a9be9bb3818365"
+    },
+    "metropolis-trade": {
+      "source": "catan-knights-2025",
+      "object": 11078,
+      "size": [
+        90,
+        93
+      ],
+      "sha256": "184320737572c8ad6808179e80b64f0f0103ba0e7f2ef19fe30bd678f509a484"
+    },
+    "metropolis-politics": {
+      "source": "catan-knights-2025",
+      "object": 11082,
+      "size": [
+        90,
+        93
+      ],
+      "sha256": "901d540b27bb2ae586e338cfa6a48cc394e0be1e8548f9a7fa0ad7771986ef77"
+    },
+    "barbarian-ship": {
+      "source": "catan-knights-2025",
+      "object": 3226,
+      "size": [
+        96,
+        83
+      ],
+      "sha256": "a9fe7cb240a4f82c01812aaa0b615774ac0b7f05a44f6422a365eb9c17221db1"
+    },
+    "merchant": {
+      "source": "catan-knights-2025",
+      "object": 3229,
+      "size": [
+        76,
+        88
+      ],
+      "sha256": "5d8be21d42a7044533fac62712f6699148243156e535bbe17bf1485db61414de"
+    },
+    "defender": {
+      "source": "catan-knights-2025",
+      "object": 10937,
+      "size": [
+        98,
+        99
+      ],
+      "sha256": "41d2cc46012c681a3c5ddfa0a164fc87bd10261827d5441c8a63f50b332946b6"
+    },
+    "wall-blue": {
+      "source": "catan-knights-2025",
+      "object": 3323,
+      "size": [
+        104,
+        45
+      ],
+      "sha256": "2d8241cb538a0f367d22c1e0d2a225b697b81b16b1420cab3037f2dfa5b00e8c"
+    },
+    "knight-blue-1": {
+      "source": "catan-knights-2025",
+      "object": 3188,
+      "size": [
+        38,
+        75
+      ],
+      "sha256": "ea3425352543958c3096d7d1f38ed9a52e3ac2e128d1947eb1fb37a52ad0fba3"
+    },
+    "knight-blue-2": {
+      "source": "catan-knights-2025",
+      "object": 3196,
+      "size": [
+        53,
+        74
+      ],
+      "sha256": "fe48f93bf7f0c7bbc89ea9924e5b9ea0df512f2ef07954068863bbad067de08d"
+    },
+    "knight-blue-3": {
+      "source": "catan-knights-2025",
+      "object": 3205,
+      "size": [
+        71,
+        77
+      ],
+      "sha256": "202fc68aef10fcafb891d017d848cd8e1857b398ff1cd84eb67f0fdb8c4ee1f3"
+    },
+    "wall-red": {
+      "source": "catan-knights-2025",
+      "object": 3327,
+      "size": [
+        104,
+        45
+      ],
+      "sha256": "2e98d8bd2cf3cc482d5d95d7fde361e0759c55538d7c0835fb7947d75a9200e5"
+    },
+    "knight-red-1": {
+      "source": "catan-knights-2025",
+      "object": 3192,
+      "size": [
+        38,
+        75
+      ],
+      "sha256": "22ade9d5b114d78c85a730d4d22493c1039b5909c44ba3c9fe09bbfa1863d4ef"
+    },
+    "knight-red-2": {
+      "source": "catan-knights-2025",
+      "object": 3201,
+      "size": [
+        53,
+        74
+      ],
+      "sha256": "07e1b52dfebe4b0375082b32fe0694bd6901748f61432e6c932e7b224004d604"
+    },
+    "knight-red-3": {
+      "source": "catan-knights-2025",
+      "object": 3209,
+      "size": [
+        71,
+        77
+      ],
+      "sha256": "3fb140bd5dd621cba679ab3e27d6f054d932e8ba8fce21f846eb7c7dec78c015"
+    },
+    "wall-white": {
+      "source": "catan-knights-2025",
+      "object": 3329,
+      "size": [
+        104,
+        45
+      ],
+      "sha256": "a05fd18905df3b4219c8accaf6d8aaafa4d92ed69ff427582b23fe1a58937523"
+    },
+    "knight-white-1": {
+      "source": "catan-knights-2025",
+      "object": 3194,
+      "size": [
+        38,
+        75
+      ],
+      "sha256": "5da616bae0c8959791d299e6dc74a31506513b8cffad2fb31c32a3ebef3d5a30"
+    },
+    "knight-white-2": {
+      "source": "catan-knights-2025",
+      "object": 3203,
+      "size": [
+        53,
+        74
+      ],
+      "sha256": "7112e7b1d8d34616fef1642a00ff9c24039bb49105a8b1b216b621358ce4e221"
+    },
+    "knight-white-3": {
+      "source": "catan-knights-2025",
+      "object": 3211,
+      "size": [
+        71,
+        77
+      ],
+      "sha256": "9bc31096c2b7ed67c8477666e7b22f7d7783bc78210f1cf2f546ad0bdbe76e3f"
+    },
+    "wall-orange": {
+      "source": "catan-knights-2025",
+      "object": 3325,
+      "size": [
+        104,
+        45
+      ],
+      "sha256": "9c1c46ba0ff7186fece4972462f0add23cb9d991de7cf75382395f6f6062deb1"
+    },
+    "knight-orange-1": {
+      "source": "catan-knights-2025",
+      "object": 3190,
+      "size": [
+        38,
+        75
+      ],
+      "sha256": "4a7d302c188ec6aded4da06ed26a0298cbed80a1b1fc5cfa46c30de44d34885f"
+    },
+    "knight-orange-2": {
+      "source": "catan-knights-2025",
+      "object": 3199,
+      "size": [
+        53,
+        74
+      ],
+      "sha256": "c2c3e84462d83c9273a35f441956e116eb60159b5f9ab1356188cc395b4fb3eb"
+    },
+    "knight-orange-3": {
+      "source": "catan-knights-2025",
+      "object": 3207,
+      "size": [
+        71,
+        77
+      ],
+      "sha256": "f67174ae8b5cd60bc0dfc2f2e0adf5885f7ec989205f95c66b75198c4ad11186"
+    },
+    "wall-purple": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2948,
+      "size": [
+        94,
+        41
+      ],
+      "sha256": "514d74f41a93f549ddc0582c315e13e58066dcc95818f854481651c4655b54ed"
+    },
+    "knight-purple-1": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2936,
+      "size": [
+        42,
+        83
+      ],
+      "sha256": "6c56827edc56ec8270190eb44aeba74e0b9aa0b63c2b0d2eb51de508273ef3c0"
+    },
+    "knight-purple-2": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2944,
+      "size": [
+        62,
+        86
+      ],
+      "sha256": "d6ef00e440ce0faee44e0e40953bd9a60e0ba45f985488bea7658a889125d807"
+    },
+    "knight-purple-3": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2940,
+      "size": [
+        83,
+        89
+      ],
+      "sha256": "90d0e93404dd98307bf191971a62d59f1dc50b8749b7e5af88533f143823c39d"
+    },
+    "wall-green": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2950,
+      "size": [
+        94,
+        41
+      ],
+      "sha256": "0451cfb5aaf552fef861836e5d7dde5e1c4414b3db2e6d99751e5698256707a1"
+    },
+    "knight-green-1": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2938,
+      "size": [
+        42,
+        84
+      ],
+      "sha256": "e1d746424ee2dcbd4637805b851c9e9d94a8bf734270cd4bad4331f9b7c98ac8"
+    },
+    "knight-green-2": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2946,
+      "size": [
+        62,
+        87
+      ],
+      "sha256": "edb9de270eb5cbaf3fb7541d91b2f33e61322de601f55786d37e2d234557aabb"
+    },
+    "knight-green-3": {
+      "source": "catan-knights-5-6-2025",
+      "object": 2942,
+      "size": [
+        84,
+        91
+      ],
+      "sha256": "c87f5a9a80248d596deeeb857faa6d08500bac0e1c7b3321ce996dbc16d4b210"
+    }
+  }
+}
