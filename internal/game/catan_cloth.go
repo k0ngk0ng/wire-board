@@ -190,8 +190,9 @@ func (s *State) catanProduceCloth(number int) error {
 		}
 		needed := max(0, len(traders)-v.Stock)
 		if needed > c.Stock {
-			// This fail-closed invariant is not a verified shortage rule. Resolve
-			// common-supply exhaustion before exposing the scenario (see checklist).
+			// Corrupt saves and the unresolved 5/6 simultaneous-village boundary
+			// fail closed; this is not an invented shortage allocation rule. The
+			// 3/4 unique-number board fits the proven two-token-per-village bound.
 			return errors.New("布匹公共库存不足以补足本次产出")
 		}
 		v.Stock -= min(v.Stock, len(traders))

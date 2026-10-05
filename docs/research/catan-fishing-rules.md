@@ -362,3 +362,13 @@ Complete CatanBoard backed by a temporary local real Go constructor/Apply/privat
 34 referenced images decode, fish-number bounds do not intersect cloth village number/stock bounds, no horizontal overflow or browser errors.320px observer sees no private fish faces, action menu or replacement controls.61 existing frontend tests pass. Named browser and local Go/Vite processes closed; temporary fixture source/pages/profile/screenshots removed. This component/engine QA complements prior HTTP restart/timer evidence. No public entry/push/deployment; common-supply shortage, five/six recipes and remaining expansion scope are still outstanding.
 
 TypeScript/Vite production build passes, retaining the existing >500kB bundle warning.
+
+## Correction: small-board cloth supply bound (2026-10-05)
+
+The earlier four-trader shortage fixture was not physically reachable: each village has three incident edges, different traders cannot share an incoming ship, and established closed ship routes cannot be removed. It is now named `TestCatanClothCorruptCommonSupplyProtection`, retaining its corrupted-save guard without claiming a legal counterexample. Ordinary ship movement, knight interruptions/diplomacy, and platform elimination preserve those occupied entrances; eliminated players do not produce.
+
+For the3/4-player board, each village can need at most2common tokens, only on its final production. Fewer than5villages depleted at the preceding turn end means at most8common tokens consumed. Pre-roll ship connections may empty additional villages but never draw common tokens. All eight village numbers are distinct, so one roll needs at most2more common tokens before the next end-turn check. This proves the10-token common stock sufficient for the audited3/4 ordinary, knights and fishing variants. It is a bound derived from printed rules/topology, not a newly found official FAQ or a rule to substitute counters. Future multi-production variants require a fresh audit.
+
+New tests enumerate16single-village inventories and verify the actual3/4fixed/variable×ordinary/knights/fishing constructors, distinct numbers, degree-three vertices and the worst four-empty→fifth-production→ending accounting envelope. The5/6map explicitly has doubled4/5/9/10, so simultaneous production remains an independent unresolved case; the small-board proof is not extended to it. Earlier historical statements of a blanket cloth-shortage blocker are superseded by this narrower finding. Public expansion gating/release scope is unchanged.
+
+New bounds tests0.617s, related Cloth/CK-Cloth/Fishing-Cloth regression30.073s, game vet pass. Temporary fetched HTML/plaintext removed; no public option, push or deployment.

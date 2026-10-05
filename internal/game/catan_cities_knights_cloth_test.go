@@ -165,13 +165,11 @@ func TestCatanCitiesKnightsClothAutomaticOriginStaysDormant(t *testing.T) {
 	}
 }
 
-// This is a component-accounting counterexample, not a full legal playthrough.
-// Four traders receive eight tokens per depleted village (four on connecting,
-// four on production), consuming three common tokens each. After three such
-// villages, the fourth can require three tokens while only one remains. Neither
-// the five-empty-villages ending nor the VP target makes this boundary moot.
-// Keep the internal fail-closed protection until a shortage rule is verified.
-func TestCatanClothCommonSupplyBoundaryProtection(t *testing.T) {
+// Deliberately corrupted accounting state: four traders cannot all retain a
+// closed route into a degree-three village. This verifies the error guard,
+// NOT the reachability of a shortage in real play. See the small-map bound and
+// the still-unresolved duplicated production numbers on the 5/6-player board.
+func TestCatanClothCorruptCommonSupplyProtection(t *testing.T) {
 	for _, n := range []int{4, 6} {
 		s := ckClothFixture(t, n, "fixed")
 		g := s.Catan
@@ -188,7 +186,7 @@ func TestCatanClothCommonSupplyBoundaryProtection(t *testing.T) {
 		}
 		c.Villages[3].Stock = 1
 		if clothTotal(g) != total || s.catanClothEnd() {
-			t.Fatal("counterexample must conserve cloth and precede ending")
+			t.Fatal("corrupt fixture must conserve cloth and precede ending")
 		}
 		before := clone(*s)
 		if err := s.catanProduceCloth(c.Villages[3].Number); err == nil {
