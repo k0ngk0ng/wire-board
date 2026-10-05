@@ -351,6 +351,16 @@ export type CatanCitiesKnights = {
   };
 };
 export type CatanState = {
+  cardEvent?: {
+    kind: string;
+    production: number;
+    red: number;
+    face: number;
+    players: number[];
+    targets?: number[];
+    canSkip?: boolean;
+    ownGift?: { from: number; to: number; color: number };
+  };
   victoryTarget?: number;
   friendlyRobber?: { rules: string; protectedPlayers: number[] };
   harbors?: { rules: string; owner: number; points: number[] };
@@ -505,6 +515,7 @@ export type CatanState = {
     owner: number;
     ship?: boolean;
     warship?: boolean;
+    damaged?: boolean;
     tiles?: number[];
   }[];
   ports: { edge: number; resource: number }[];
@@ -524,6 +535,12 @@ export type CatanState = {
   longestOwner: number;
   armyOwner: number;
   legal: {
+    earthquakeRoads?: number[];
+    repairRoads?: number[];
+    fleeDeserts?: number[];
+    eventResources?: number[];
+    eventGifts?: number[];
+    eventTargets?: number[];
     knightRecruit?: number[];
     knightActivate?: number[];
     knightPromote?: number[];

@@ -1,0 +1,144 @@
+.catan-card-event {
+  position: fixed;
+  z-index: 65;
+  right: 20px;
+  bottom: 85px;
+  width: min(440px, calc(100vw - 24px));
+  max-height: 65dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: #fff8e7;
+  color: #39291b;
+  border: 2px solid #ae7836;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px #271b1744;
+}
+.catan-card-event header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.catan-card-event header strong {
+  font-size: 18px;
+}
+.catan-card-event small {
+  display: block;
+  color: #675034;
+  font-size: 12px;
+}
+.catan-card-event button {
+  padding: 8px 12px;
+  min-height: 40px;
+  border: 1px solid #ad8953;
+  border-radius: 8px;
+  background: #f1dfb6;
+  color: #39291b;
+}
+.catan-card-event button[aria-pressed="true"] {
+  background: #f8ce60;
+  border-color: #674913;
+  box-shadow: 0 0 0 2px #8b601f;
+}
+.catan-card-event button:focus-visible {
+  outline: 3px solid #267664;
+  outline-offset: 3px;
+}
+.catan-card-event button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.catan-card-event-body {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 3px;
+}
+.catan-card-event-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.catan-card-event-summary img {
+  width: 108px;
+  height: auto;
+  flex: 0 0 auto;
+  border-radius: 8px;
+}
+.catan-card-event p {
+  color: #49341f;
+  line-height: 1.6;
+  font-size: 13px;
+  margin: 8px 0;
+}
+.catan-event-resources {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 2px;
+}
+.catan-event-resources button {
+  padding: 6px;
+}
+.catan-event-targets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 2px;
+}
+.catan-event-targets button {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.catan-card-event footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 10px;
+}
+.catan-card-event footer .primary {
+  background: #78501e;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .catan-card-event {
+    right: 12px;
+    bottom: 76px;
+    padding: 10px;
+    max-height: 58dvh;
+  }
+  .catan-card-event-summary img {
+    width: 82px;
+  }
+  .catan-event-resources {
+    gap: 6px;
+  }
+}
+
+.catan-repair-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid #ac7137;
+  border-radius: 10px;
+  padding: 8px;
+  background: #f1ddaf;
+  color: #49341f;
+}
+
+.catan-card-event footer button {
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 44px;
+}
+.catan-dice > .catan-card-production {
+  background: #fff4d5;
+  color: #6a431e;
+  border: 2px solid #ad8953;
+  border-radius: 6px;
+}
