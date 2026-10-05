@@ -194,11 +194,48 @@ trading behavior was not changed. The corrected case passes 30 consecutive runs 
 No room/UI option, assets or deployment was added. Existing test temporary
 directories clean themselves; no owned downloads or screenshots were produced.
 
+## Original artwork (completed 2026-10-05)
+
+Nine original component images were extracted from the pinned official 2025
+PDFs: base and extended lakes, coastal ground, 1/2/3-fish tokens, old boot,
+token back and blue number disk. The selected image objects were matched
+visually to the printed component rows. Nested/clipped PDF examples contain
+other similar images; the extraction script therefore pins both object IDs
+and native dimensions rather than picking the largest object automatically.
+
+The artwork retains native proportions and pixel dimensions. PDF soft masks
+have different pixel grids from their color images, so only the mask is sampled
+to the color image's native grid. Lossless WebP output totals 201,294 bytes.
+Every uploaded CDN image returned HTTP 200, decoded as WebP, and matched its
+native dimensions and SHA-256; a second extraction reproduced all nine hashes.
+Evidence is in `catan-fishing-art-sources.json`; the reproducible script is
+`../../scripts/prepare_catan_fishing_assets.py`.
+
+Integration notes for the next UI stage:
+
+- The lake and ground images have no baked-in production numbers; those were
+  separate overlays in the printed rulebook. Render the actual saved map's
+  lake number arrays and shuffled ground numbers using the blue disk and
+  readable text. Clip the disk to a circle to remove its white square corners.
+- The ground image faces right, with its land-facing tip near native pixel
+  `(181.5, 116.5)` and ends near `(115.5, 0)` and `(115.5, 233)`. Anchor the tip
+  to the ground's middle vertex and rotate the sea side toward the vector from
+  that vertex to the midpoint of its two endpoints. Preserve proportions and
+  scale to the two coastal edges; do not treat the ground as another hex.
+- Choose the extended lake artwork for the saved two-number face, not from a
+  fixed tile index. Opponents expose token counts only; do not derive or show
+  their total fish value. The boot changes the corresponding per-player target.
+
+Owned contact sheets, prepared WebPs, repeat-extraction files and temporary
+research files were cleaned after verification. Original pinned rulebooks
+remain for other expansion research. No game/frontend code changed and no
+browser acceptance, room entry, push or deployment occurred in this stage.
+
 ## Integration still required
 
 - Combinations, including fish-only Aqueduct compensation and Catan for Two's
   different initial fish allotment/discount. The existing base 5–6 number
   catalogue verification and two-lake setup interpretation remain for final
   acceptance; all original expansion/variant scope is retained.
-- Original assets, room options, desktop/mobile UI and complete-game QA.
+- Room options, original-art desktop/mobile UI and complete-game QA.
   No public entry, push or deployment until these acceptance requirements pass.
