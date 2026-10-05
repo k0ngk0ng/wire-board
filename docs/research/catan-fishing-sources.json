@@ -1,6 +1,6 @@
 {
   "checked_on": "2026-10-05",
-  "status": "Internal map, setup/production/responses, five paid actions, boot passing, bots and persistence implemented and tested. Combinations, original assets and UI still pending; no public room option.",
+  "status": "Internal rules/bots/persistence verified; nine original component assets extracted, uploaded and CDN/hash verified. Combinations and desktop/mobile UI still pending; no public room option.",
   "sources": [
     {
       "source": "../board-expansion-rule-sources.json#catan-traders-2025",

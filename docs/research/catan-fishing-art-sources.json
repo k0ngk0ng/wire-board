@@ -1,0 +1,176 @@
+{
+  "sources": {
+    "catan-traders-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+      "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+      "bytes": 27843748
+    },
+    "catan-traders-5-6-2025": {
+      "url": "https://www.catan.com/sites/default/files/2025-04/CN3090%20CATAN%20%E2%80%93%20T%26B%205-6%20Expansion%20Rulebook.pdf",
+      "sha256": "3b9134dc72d6f755a1cd039299ef947187f5d3bf3718b002050b262323295954",
+      "bytes": 12115165
+    }
+  },
+  "artwork": {
+    "lake": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 11817,
+      "soft_mask": 11816,
+      "soft_mask_size": [
+        352,
+        412
+      ],
+      "size": [
+        223,
+        261
+      ],
+      "file": "catan/fishing/lake-v1.webp",
+      "bytes": 64788,
+      "sha256": "e2ed770aa733f2f14145fae3f299606290c5a639487b4212733459a6837cf782"
+    },
+    "ground": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 11823,
+      "soft_mask": 11822,
+      "soft_mask_size": [
+        288,
+        369
+      ],
+      "size": [
+        182,
+        233
+      ],
+      "file": "catan/fishing/ground-v1.webp",
+      "bytes": 41280,
+      "sha256": "fc42dabbd3a770cb1a75d2aed8b412f6acc1ec3697901e56ad011be065ca5054"
+    },
+    "token-1": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 45313,
+      "soft_mask": 45328,
+      "soft_mask_size": [
+        146,
+        146
+      ],
+      "size": [
+        93,
+        93
+      ],
+      "file": "catan/fishing/token-1-v1.webp",
+      "bytes": 9346,
+      "sha256": "79607dfe81f4b8b287dc20a839c568425c88ab86a974e2b802eac4eafaaef3ba"
+    },
+    "token-2": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 45330,
+      "soft_mask": 45321,
+      "soft_mask_size": [
+        146,
+        146
+      ],
+      "size": [
+        93,
+        93
+      ],
+      "file": "catan/fishing/token-2-v1.webp",
+      "bytes": 10496,
+      "sha256": "145882249f0200377c7e5377a69fb272701734fd38c2eac8d41dab06a9fb0d86"
+    },
+    "token-3": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 45315,
+      "soft_mask": 45323,
+      "soft_mask_size": [
+        146,
+        146
+      ],
+      "size": [
+        93,
+        93
+      ],
+      "file": "catan/fishing/token-3-v1.webp",
+      "bytes": 11766,
+      "sha256": "e20e7dcc1ef5d1395bf34e2b653bcd2cb18170ab0d91a15cac8ea4bb7bf404e9"
+    },
+    "boot": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 45320,
+      "soft_mask": 45318,
+      "soft_mask_size": [
+        146,
+        146
+      ],
+      "size": [
+        93,
+        93
+      ],
+      "file": "catan/fishing/boot-v1.webp",
+      "bytes": 10430,
+      "sha256": "5c35bc22205b62bab1f3afb2b35de6bd669a557bb20f90c4e4579efc2e2a9c73"
+    },
+    "back": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 45329,
+      "soft_mask": 45327,
+      "soft_mask_size": [
+        146,
+        146
+      ],
+      "size": [
+        93,
+        93
+      ],
+      "file": "catan/fishing/back-v1.webp",
+      "bytes": 7302,
+      "sha256": "06a4199e5ca14359e063cfea139220d668e57618227dfe0a0ee500604d57104a"
+    },
+    "number": {
+      "source": "catan-traders-2025",
+      "page": 9,
+      "object": 45303,
+      "soft_mask": 45302,
+      "soft_mask_size": [
+        83,
+        83
+      ],
+      "size": [
+        53,
+        53
+      ],
+      "file": "catan/fishing/number-v1.webp",
+      "bytes": 3222,
+      "sha256": "6016b374eabc9304015eec7b448a514d1ddda6c7e5a28c2e42f7f67d66c5f68f"
+    },
+    "lake-extended": {
+      "source": "catan-traders-5-6-2025",
+      "page": 5,
+      "object": 5721,
+      "soft_mask": 5720,
+      "soft_mask_size": [
+        276,
+        323
+      ],
+      "size": [
+        175,
+        204
+      ],
+      "file": "catan/fishing/lake-extended-v1.webp",
+      "bytes": 42664,
+      "sha256": "59d29ab5467ff0fa9068d3f93085e773d9c0168fa8f1a6366a9a8d01f34b5cb5"
+    }
+  },
+  "scope": "Original lake/ground terrain, 1/2/3-fish tokens, boot, token back and blue number disk. Lake and ground production numbers are separate runtime overlays.",
+  "verification": {
+    "date": "2026-10-05",
+    "method": "Every CDN object fetched with HTTP 200, decoded as WebP and compared against native dimensions and SHA-256.",
+    "objects": 9,
+    "reproduced": true
+  }
+}
