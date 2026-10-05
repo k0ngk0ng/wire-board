@@ -1,3 +1,4 @@
+import { CatanFriendlyRobberRules } from "./catan-friendly-robber";
 import { CatanHarborsRules } from "./catan-harbors";
 import { CatanCitiesKnightsRules } from "./catan-cities-knights-rules";
 import type { Room } from "./types";
@@ -212,6 +213,7 @@ export function CatanRules({ room }: { room: Room }) {
       <>
         <CatanCitiesKnightsRules info={info} />
         {info.harbors && <CatanHarborsRules />}
+        {info.friendlyRobber && <CatanFriendlyRobberRules />}
         {scenario && (
           <>
             <h4>本剧本规则</h4>
@@ -239,6 +241,7 @@ export function CatanRules({ room }: { room: Room }) {
         {catanScenarioVictory(scenario, info.target)}。
       </p>
       {info.harbors && <CatanHarborsRules />}
+      {info.friendlyRobber && <CatanFriendlyRobberRules />}
       {!cloth && <p>达标获胜在自己的行动阶段判定。</p>}
       {seafarers && (
         <>

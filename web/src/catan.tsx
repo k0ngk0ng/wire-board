@@ -1,3 +1,4 @@
+import { CatanFriendlyRobberStatus } from "./catan-friendly-robber";
 import { CatanHarborsStatus } from "./catan-harbors";
 import { catanSavedVictoryTarget } from "./catan-rule-context";
 import { CatanCityEffects } from "./catan-city-effects";
@@ -565,6 +566,7 @@ export function CatanBoard({
           </div>
         </div>
         <CatanHarborsStatus room={room} />
+        <CatanFriendlyRobberStatus room={room} />
         {sea && (
           <div className="catan-sea-tools">
             <span>

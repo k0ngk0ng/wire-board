@@ -276,3 +276,18 @@ test("harbors target is added once and comes from the running game instead of it
   assert.equal(catanRuleContext(room).target,expected-1);
  }
 });
+
+test("friendly robber follows the actual game rather than a stale waiting draft and does not change target", () => {
+  const room = { capacity: 3, catanFriendlyRobber: { enabled: true } };
+  assert.equal(catanRuleContext(room).friendlyRobber, true);
+  assert.equal(catanRuleContext(room).target, 10);
+  room.catanHarbors = { enabled: true };
+  assert.equal(catanRuleContext(room).target, 11);
+  room.game = { catan: { players: [{}, {}, {}] } };
+  assert.equal(catanRuleContext(room).friendlyRobber, false);
+  assert.equal(catanRuleContext(room).target, 10);
+  room.game.catan.friendlyRobber = { rules: "catan-friendly-robber-2025", protectedPlayers: [0, 1] };
+  room.catanFriendlyRobber.enabled = false;
+  assert.equal(catanRuleContext(room).friendlyRobber, true);
+  assert.equal(catanRuleContext(room).target, 10);
+});

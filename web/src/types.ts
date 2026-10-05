@@ -182,6 +182,7 @@ export type CatanNewWorldMap = {
   hexes: { resource: number; number: number }[];
 };
 export type Room = {
+  catanFriendlyRobber?: { enabled: boolean; rules: string };
   catanHarbors?: { enabled: boolean; rules: string };
   catanCitiesKnights?: { layout: "variable"; rules: string };
   catanBaseConfiguration?: { layout: "fixed" | "variable"; rules: string };
@@ -346,6 +347,7 @@ export type CatanCitiesKnights = {
 };
 export type CatanState = {
   victoryTarget?: number;
+  friendlyRobber?: { rules: string; protectedPlayers: number[] };
   harbors?: { rules: string; owner: number; points: number[] };
   citiesKnights?: CatanCitiesKnights;
   progressRules?: {

@@ -11,11 +11,16 @@ import (
 
 // Only the waiting selection is provisioned. Start, manual moves, autoplay and
 // timeout handling are production paths; no running game state is substituted.
-func TestCatanBaseFixedFullHTTPGames(t *testing.T)   { testCatanBaseFullHTTPGames(t, false) }
-func TestCatanHarborsBaseFullHTTPGames(t *testing.T) { testCatanBaseFullHTTPGames(t, true) }
-func testCatanBaseFullHTTPGames(t *testing.T, harbors bool) {
+func TestCatanBaseFixedFullHTTPGames(t *testing.T)   { testCatanBaseFullHTTPGames(t, false, false) }
+func TestCatanHarborsBaseFullHTTPGames(t *testing.T) { testCatanBaseFullHTTPGames(t, true, false) }
+func TestCatanFriendlyRobberBaseFullHTTPGames(t *testing.T) {
+	for _, harbors := range []bool{false, true} {
+		t.Run(fmt.Sprintf("harbors=%v", harbors), func(t *testing.T) { testCatanBaseFullHTTPGames(t, harbors, true) })
+	}
+}
+func testCatanBaseFullHTTPGames(t *testing.T, harbors, friendly bool) {
 	players := []int{5, 6}
-	if harbors {
+	if harbors || friendly {
 		players = []int{3, 6}
 	}
 	for _, n := range players {
@@ -28,7 +33,7 @@ func testCatanBaseFullHTTPGames(t *testing.T, harbors bool) {
 			target++
 		}
 		for _, helpers := range []bool{false, true} {
-			if harbors && helpers {
+			if (harbors || friendly) && helpers {
 				continue
 			}
 			t.Run(fmt.Sprintf("%d/helpers=%v", n, helpers), func(t *testing.T) {
@@ -45,6 +50,9 @@ func testCatanBaseFullHTTPGames(t *testing.T, harbors bool) {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
 				provisionCatanBase(t, s, id, layout)
+				if friendly {
+					provisionCatanFriendlyRobber(t, s, id)
+				}
 				if harbors {
 					provisionCatanHarbors(t, s, id)
 				}
@@ -191,6 +199,9 @@ func testCatanBaseFullHTTPGames(t *testing.T, harbors bool) {
 				stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 				if stats["wins"] != float64(1) || stats["played"] != float64(1) || match["catanLayout"] != layout || match["catanRules"] != rules {
 					t.Fatal("fixed results not archived")
+				}
+				if friendly && (room.Game.Catan.FriendlyRobber == nil || match["catanExpansionRules"].(map[string]any)["friendly_robber"] != game.CatanFriendlyRobberRules) {
+					t.Fatal("friendly robber rules missing from game/history")
 				}
 				if harbors && (room.Game.Catan.Harbors == nil || match["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules) {
 					t.Fatal("harbor rules missing from game/history")
