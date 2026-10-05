@@ -752,6 +752,9 @@ func (s *State) catanMoveRobber(p, tile int) error {
 		return errors.New("请将强盗移到另一块陆地")
 	}
 	g.Robber = tile
+	if g.CitiesKnights != nil {
+		g.CitiesKnights.Chase = ""
+	}
 	g.Victims = []int{}
 	seen := map[int]bool{}
 	for _, id := range g.Tiles[tile].Vertices {

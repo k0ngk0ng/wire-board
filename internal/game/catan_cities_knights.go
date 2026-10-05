@@ -29,6 +29,7 @@ type CatanCityPlayer struct {
 	ProgressPoints int    `json:"progressPoints"`
 }
 type CatanCityPending struct {
+	Ship    bool         `json:"ship,omitempty"`
 	Target  int          `json:"target"`
 	Color   int          `json:"color"`
 	Knight  *CatanKnight `json:"knight,omitempty"`
@@ -37,6 +38,8 @@ type CatanCityPending struct {
 	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
+	PirateStart       int                  `json:"pirateStart"`
+	Chase             string               `json:"chase,omitempty"`
 	ProgressEventID   uint64               `json:"progressEventId,omitempty"`
 	ProgressEvents    []CatanProgressEvent `json:"progressEvents,omitempty"`
 	Layout            string               `json:"layout"`
@@ -68,7 +71,13 @@ func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
+	s.enableCitiesKnights()
+	return s, nil
+}
+
+func (s *State) enableCitiesKnights() {
 	g := s.Catan
+	n := len(g.Players)
 	g.CitiesKnights = &CatanCitiesKnights{Layout: "variable", Rules: catanCitiesKnightsRules(n), Players: make([]CatanCityPlayer, n), Walls: []int{}, Metropolises: [3]int{-1, -1, -1}, Knights: []CatanKnight{}, ActionSerial: 1}
 	g.CitiesKnights.initProgress()
 	g.CitiesKnights.EventDie = -1
@@ -80,7 +89,7 @@ func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	}
 	g.Bank = append(g.Bank, commodities, commodities, commodities)
 	for i := range g.Players {
-		g.Players[i].Resources = make([]int, 8)
+		g.Players[i].Resources = append(g.Players[i].Resources, 0, 0, 0)
 	}
 	g.DevDeck, g.DevDiscard = []int{}, []int{}
 	g.Robber = -1
@@ -91,7 +100,6 @@ func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 		g.Paired.Secondary = (g.StartPlayer + 3) % n
 	}
 	s.Log = []string{"城市与骑士开局：顺序放村庄，逆序放城市；第二座建筑只领取普通起始资源，13分获胜"}
-	return s, nil
 }
 func catanCardName(card int) string {
 	if card >= 5 && card < 8 {

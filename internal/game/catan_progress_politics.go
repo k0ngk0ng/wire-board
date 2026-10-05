@@ -28,18 +28,27 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 	k := g.CitiesKnights
 	switch a.Card {
 	case 16:
-		if g.Seafarers != nil {
-			return errors.New("外交与航海家组合尚未接入")
-		}
 		if !slices.Contains(g.diplomacyRoads(), a.Edge) {
-			return errors.New("外交只能移除开放道路，不能拆开建筑或骑士间的封闭路线")
+			return errors.New("外交只能移除开放道路或船只，不能拆断骑士与己方建筑的连接")
 		}
-		owner := g.Edges[a.Edge].Owner
+		owner, ship := g.Edges[a.Edge].Owner, g.Edges[a.Edge].Ship
 		g.Edges[a.Edge].Owner = -1
-		s.catanLog(player, "外交：移除玩家 %d 的道路 #%d", owner+1, a.Edge+1)
-		if owner == player && len(g.diplomacyPlacements(player)) > 0 {
-			k.Pending = &CatanCityPending{Kind: "diplomacy", Players: []int{player}}
-			s.Phase = "catan_diplomacy"
+		g.Edges[a.Edge].Ship = false
+		if g.Seafarers != nil {
+			g.Seafarers.BuiltShips = slices.DeleteFunc(g.Seafarers.BuiltShips, func(id int) bool { return id == a.Edge })
+		}
+		piece := "道路"
+		if ship {
+			piece = "船只"
+		}
+		s.catanLog(player, "外交：移除玩家 %d 的%s #%d", owner+1, piece, a.Edge+1)
+		if owner == player {
+			k.Pending = &CatanCityPending{Kind: "diplomacy", Players: []int{player}, Ship: ship}
+			if len(g.diplomacyPlacements(player)) > 0 {
+				s.Phase = "catan_diplomacy"
+			} else {
+				k.Pending = nil
+			}
 		}
 	case 17:
 		count := 0
@@ -158,13 +167,18 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 			if a.Choice != "" || !slices.Contains(g.diplomacyPlacements(player), a.Edge) {
 				return errors.New("请选择合法位置重建道路，或放弃重建")
 			}
+			ship := q.Ship
 			k.Pending = nil
 			g.FreeRoads = 1
 			g.ResumePhase = "catan_turn"
 			s.Phase = "catan_roads"
-			return s.catanBuild(player, Action{Type: "catan_road", Edge: a.Edge}, false)
+			kind := "catan_road"
+			if ship {
+				kind = "catan_ship"
+			}
+			return s.catanBuildOptions(player, Action{Type: kind, Edge: a.Edge}, false, ship)
 		}
-		s.catanLog(player, "放弃外交的免费重建道路")
+		s.catanLog(player, "放弃外交的免费重建路线")
 	case "espionage":
 		if a.Choice == "skip" {
 			s.catanLog(player, "查看进步牌后放弃取牌")

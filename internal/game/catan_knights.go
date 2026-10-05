@@ -122,6 +122,12 @@ func (g *Catan) knightCanChase(n *CatanKnight) bool {
 	}
 	return slices.Contains(g.Tiles[g.Robber].Vertices, n.Vertex)
 }
+func (g *Catan) knightCanChasePirate(n *CatanKnight) bool {
+	if !g.knightCanAct(n) || !g.pirateAllowed(n.Owner) || g.Seafarers.Pirate < 0 || g.Seafarers.Pirate >= len(g.Tiles) {
+		return false
+	}
+	return slices.Contains(g.Tiles[g.Seafarers.Pirate].Vertices, n.Vertex)
+}
 func (s *State) catanKnightAction(player int, a Action) error {
 	return s.catanKnightActionCost(player, a, false)
 }
@@ -163,8 +169,8 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 				return errors.New("只能移动本行动阶段开始前已激活的骑士，沿自己的连续路线到达空位或较弱敌方骑士")
 			}
 		case "catan_knight_chase":
-			if !g.knightCanChase(n) {
-				return errors.New("需要相邻且此前已激活的骑士才能驱逐已入场强盗")
+			if (a.Choice != "" && a.Choice != "robber" && a.Choice != "pirate") || (a.Choice == "pirate" && !g.knightCanChasePirate(n)) || (a.Choice != "pirate" && !g.knightCanChase(n)) {
+				return errors.New("需要相邻且此前已激活的骑士才能驱逐所选的强盗或海盗")
 			}
 		}
 	default:
@@ -213,7 +219,13 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 		n.Active = false
 		g.ResumePhase = "catan_turn"
 		s.Phase = "catan_robber"
-		s.catanLog(player, "交点 #%d 的骑士驱逐强盗，骑士转为未激活", a.Vertex+1)
+		k.Chase = "robber"
+		target := "强盗"
+		if a.Choice == "pirate" {
+			k.Chase = "pirate"
+			target = "海盗"
+		}
+		s.catanLog(player, "交点 #%d 的骑士驱逐%s，骑士转为未激活", a.Vertex+1, target)
 	}
 	// Resolve a displaced knight's final position before awarding longest route.
 	if k.Pending == nil {
@@ -268,6 +280,14 @@ func (g *Catan) knightBotChoices(player int) []botChoice {
 			for _, v := range g.Tiles[g.Robber].Vertices {
 				if g.Vertices[v].Owner == player && g.Vertices[v].Level > 0 {
 					choices = append(choices, botChoice{Action{Type: "catan_knight_chase", Vertex: n.Vertex}, 810})
+					break
+				}
+			}
+		}
+		if g.knightCanChasePirate(n) {
+			for _, e := range g.Edges {
+				if e.Ship && e.Owner == player && g.pirateBlocks(e.ID) {
+					choices = append(choices, botChoice{Action{Type: "catan_knight_chase", Vertex: n.Vertex, Choice: "pirate"}, 810})
 					break
 				}
 			}

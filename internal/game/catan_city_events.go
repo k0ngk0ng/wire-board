@@ -27,7 +27,7 @@ type CatanCityEvent struct {
 func (s *State) catanCityRoll(red, yellow, face int) error {
 	g := s.Catan
 	k := g.CitiesKnights
-	if k == nil || g.Seafarers != nil || s.Phase != "catan_roll" || k.Event != nil || k.Pending != nil || red < 1 || red > 6 || yellow < 1 || yellow > 6 || face < 0 || face > 5 {
+	if k == nil || !g.citySeaSupported() || s.Phase != "catan_roll" || k.Event != nil || k.Pending != nil || red < 1 || red > 6 || yellow < 1 || yellow > 6 || face < 0 || face > 5 {
 		return errors.New("无效城市与骑士掷骰状态")
 	}
 	g.Dice = []int{red, yellow}
@@ -157,6 +157,10 @@ func (s *State) catanFinishBarbarians() {
 	k.Invasions++
 	if k.Invasions == 1 {
 		g.Robber = k.RobberStart
+		if g.Seafarers != nil {
+			g.Seafarers.Pirate = k.PirateStart
+			s.Log = append(s.Log, "首次蛮族进攻结束，海盗进入本剧本规定的起始位置")
+		}
 		s.Log = append(s.Log, "首次蛮族进攻结束，强盗进入沙漠；此后掷出7会移动强盗")
 	}
 	s.Log = append(s.Log, "蛮族船返回起点，所有骑士转为未激活")

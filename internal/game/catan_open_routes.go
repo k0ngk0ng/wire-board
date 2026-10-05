@@ -86,7 +86,7 @@ func (g *Catan) openRoute(player, edge int) bool {
 func (g *Catan) diplomacyRoads() []int {
 	out := []int{}
 	for _, e := range g.Edges {
-		if e.Owner >= 0 && !g.Players[e.Owner].Eliminated && !e.Ship && g.openRoute(e.Owner, e.ID) {
+		if e.Owner >= 0 && !g.Players[e.Owner].Eliminated && g.openRoute(e.Owner, e.ID) && g.preservesKnightConnections(e.Owner, e.ID) {
 			out = append(out, e.ID)
 		}
 	}
@@ -95,7 +95,8 @@ func (g *Catan) diplomacyRoads() []int {
 func (g *Catan) diplomacyPlacements(player int) []int {
 	out := []int{}
 	for _, e := range g.Edges {
-		if g.canRoad(player, e.ID) {
+		ship := g.CitiesKnights != nil && g.CitiesKnights.Pending != nil && g.CitiesKnights.Pending.Kind == "diplomacy" && g.CitiesKnights.Pending.Ship
+		if (ship && g.canDiplomacyShip(player, e.ID)) || (!ship && g.canRoad(player, e.ID)) {
 			out = append(out, e.ID)
 		}
 	}
