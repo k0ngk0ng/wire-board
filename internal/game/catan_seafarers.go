@@ -157,7 +157,7 @@ func (g *Catan) movableShip(p, id int) bool {
 	if g.Seafarers == nil || g.Seafarers.MovedShip || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != p || !g.Edges[id].Ship || g.pirateBlocks(id) || slices.Contains(g.Seafarers.BuiltShips, id) {
 		return false
 	}
-	return g.openRoute(p, id)
+	return g.openRoute(p, id) && g.preservesKnightConnections(p, id)
 }
 func (g *Catan) shipDestinations(p, from int) []int {
 	result := []int{}
@@ -215,6 +215,9 @@ func (s *State) catanMovePirate(player, tile int) error {
 		return errors.New("请将海盗移至另一块海洋或地图外框")
 	}
 	g.Seafarers.Pirate = tile
+	if g.CitiesKnights != nil {
+		g.CitiesKnights.Chase = ""
+	}
 	g.Victims = []int{}
 	for _, e := range g.Edges {
 		if e.Ship && e.Owner >= 0 && e.Owner != player && !g.Players[e.Owner].Eliminated && (sum(g.Players[e.Owner].Resources) > 0 || (g.cloth() != nil && g.cloth().Held[e.Owner] > 0)) && g.pirateBlocks(e.ID) && !slices.Contains(g.Victims, e.Owner) {

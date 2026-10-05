@@ -7,6 +7,11 @@ import (
 
 // Medicine is an internal price override; client fields cannot activate it.
 func (s *State) catanBuild(player int, a Action, medicine bool) error {
+	return s.catanBuildOptions(player, a, medicine, false)
+}
+
+// Pirate immunity is internal to Diplomacy, never a client-provided flag.
+func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip bool) error {
 	g := s.Catan
 	p := &g.Players[player]
 	if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && (a.Type == "catan_road" || a.Type == "catan_ship")) {
@@ -15,7 +20,11 @@ func (s *State) catanBuild(player int, a Action, medicine bool) error {
 	roads, _, _ := g.pieces(player)
 	switch a.Type {
 	case "catan_ship":
-		if g.shipCount(player) >= 15 || !g.canShip(player, a.Edge) {
+		allowed := g.canShip(player, a.Edge)
+		if diplomacyShip {
+			allowed = g.canDiplomacyShip(player, a.Edge)
+		}
+		if g.shipCount(player) >= 15 || !allowed {
 			return errors.New("船只必须连接己方船只或建筑，不能穿过对手建筑或停入海盗所在海洋，且最多15艘")
 		}
 	case "catan_road":

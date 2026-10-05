@@ -55,6 +55,9 @@ func (g *Catan) clothLand(tile int) bool {
 	return g.cloth() == nil || slices.Contains(g.cloth().HomeTiles, tile)
 }
 func (g *Catan) pirateAllowed(player int) bool {
+	if k := g.CitiesKnights; k != nil && (k.Invasions == 0 || k.Chase == "robber") {
+		return false
+	}
 	if g.Seafarers == nil || g.pirateIslands() != nil || g.wonders() != nil {
 		return false
 	}

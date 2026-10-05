@@ -33,7 +33,7 @@ func (s *State) catanContinueGold() {
 	q := g.GoldPending
 	for len(q.Claims) > 0 {
 		claim := q.Claims[0]
-		if !g.Players[claim.Player].Eliminated && sum(g.Bank) > 0 {
+		if !g.Players[claim.Player].Eliminated && sum(g.Bank[:5]) > 0 {
 			s.Phase = "catan_gold"
 			return
 		}
@@ -57,7 +57,7 @@ func (s *State) catanChooseGold(player int, a Action) error {
 	if q == nil || s.Phase != "catan_gold" || len(q.Claims) == 0 || q.Claims[0].Player != player || a.Type != "catan_gold" {
 		return errors.New("请等待对应玩家选择金矿资源")
 	}
-	count := min(q.Claims[0].Count, sum(g.Bank))
+	count := min(q.Claims[0].Count, sum(g.Bank[:5]))
 	if !catanBundle(a.Take) || sum(a.Take) != count || !catanHas(g.Bank, a.Take) {
 		return errors.New("请选择金矿应得数量的资源，且不能超出银行库存")
 	}
@@ -84,7 +84,7 @@ func (s *State) catanAfterProduction(received []int) {
 			return
 		}
 	}
-	if g.Options.Helpers && sum(g.Bank) > 0 {
+	if g.Options.Helpers && sum(g.Bank[:5]) > 0 {
 		for i, count := range received {
 			if count == 0 && g.helperReady(i, 3) {
 				s.catanHelperAsk(CatanHelperPending{Player: i, Kind: "resource", Resume: "catan_turn", Optional: true})
@@ -131,7 +131,7 @@ func (s *State) catanGoldBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive gold choice seat")
 	}
 	take := make([]int, 5)
-	bank := append([]int{}, g.Bank...)
+	bank := append([]int{}, g.Bank[:5]...)
 	for range min(q.Claims[0].Count, sum(bank)) {
 		best, priority := -1, -999
 		for color, n := range bank {

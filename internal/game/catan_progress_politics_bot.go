@@ -23,6 +23,7 @@ func (s *State) catanPoliticsChoiceBot(player int) (Action, error) {
 		for _, edge := range g.diplomacyPlacements(player) {
 			next := clone(*g)
 			next.Edges[edge].Owner = player
+			next.Edges[edge].Ship = q.Ship
 			e := g.Edges[edge]
 			score := next.roadLength(player)*100 + g.vertexValue(player, e.A) + g.vertexValue(player, e.B)
 			if score > value {
