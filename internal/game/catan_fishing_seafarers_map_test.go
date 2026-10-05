@@ -230,12 +230,13 @@ func TestCatanFishingFourIslandsPlacementRejectionIsAtomic(t *testing.T) {
 			t.Fatal("rejected placement mutated state/input")
 		}
 	}
-	// This stage must not silently enable unfinished runtime combination rules.
+	// Other sea combinations remain rejected even though Four Islands is wired.
 	tokens, err := newCatanFishingTokens(4)
 	if err != nil {
 		t.Fatal(err)
 	}
 	s.Catan.Fishing = &CatanFishing{Map: *f, Tokens: *tokens, Started: make([]bool, 4), LastRollID: -1}
+	s.Catan.Seafarers.Scenario = "fog"
 	if err := s.Catan.validateFishing(); err == nil {
 		t.Fatal("unfinished Fishing + Seafarers became playable")
 	}

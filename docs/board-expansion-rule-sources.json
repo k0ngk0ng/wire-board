@@ -83,5 +83,10 @@
     "url": "https://www.catan.com/sites/default/files/2025-07/Fishing%20on%20Catan%20w%20SEA.pdf",
     "sha256": "e17c9caed51519986465d647e72a56233a7fdae6dcd5b3b1db5cce787d85c915",
     "bytes": 272589
+  },
+  "catan-fishing-seafarers-de-2021": {
+    "url": "https://www.catan.de/sites/default/files/2021-07/Die%20Fischer%20von%20Catan%20%E2%80%93%20Seefahrer-2.pdf",
+    "sha256": "9571400a9b99adad51e7a33c6b648e0d8a038704617df6eb97e227fb7688df12",
+    "bytes": 247139
   }
 }

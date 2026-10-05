@@ -60,6 +60,24 @@ func (s *State) catanFishBotChoices(player int, builds []botChoice, road int) []
 			}
 		}
 	}
+	if g.fishCanRemovePirate(player) {
+		blocked := false
+		for _, ground := range g.Fishing.Map.Grounds {
+			if ground.SeaTile == nil || *ground.SeaTile != g.Seafarers.Pirate {
+				continue
+			}
+			for _, id := range ground.Vertices {
+				v := g.Vertices[id]
+				blocked = blocked || v.Owner == player && v.Level > 0
+			}
+		}
+		for _, edge := range g.Edges {
+			blocked = blocked || edge.Owner == player && edge.Ship && g.pirateBlocks(edge.ID)
+		}
+		if blocked {
+			add(Action{Type: "catan_fish_pirate"}, 760)
+		}
+	}
 	if s.Phase == "catan_roll" {
 		return choices // Remove a blocking robber before production; spend the rest after it.
 	}
@@ -79,6 +97,13 @@ func (s *State) catanFishBotChoices(player int, builds []botChoice, road int) []
 	}
 	if road >= 0 {
 		add(Action{Type: "catan_fish_road", Edge: road}, 210)
+	}
+	// Reuse the existing public-route evaluation; do not inspect hidden
+	// terrain, other players' fish or development-card order.
+	for _, build := range builds {
+		if build.action.Type == "catan_ship" {
+			add(Action{Type: "catan_fish_ship", Edge: build.action.Edge}, build.score+10)
+		}
 	}
 	for color, count := range g.Bank[:5] {
 		if count <= 0 {

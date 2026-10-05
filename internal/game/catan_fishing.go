@@ -46,7 +46,7 @@ func (g *Catan) validateFishing() error {
 	if f == nil {
 		return nil
 	}
-	if g.Seafarers != nil || g.Options.Helpers || g.FriendlyRobber != nil || g.Harbors != nil {
+	if g.Seafarers != nil && !g.fishingSeaSupported() || g.Options.Helpers || g.FriendlyRobber != nil || g.Harbors != nil {
 		return errors.New("此捕鱼扩展组合尚未接入")
 	}
 	if len(f.Started) != len(g.Players) || len(f.Tokens.Hands) != len(g.Players) || f.LastRollID < -1 || f.LastRollID > g.RollID {

@@ -46,7 +46,14 @@
         1,
         2
       ],
-      "role": "Official scenario-specific combinations; pirate blocks coastal fish, free ship and pirate removal, prescribed lake/ground placements, Pirate Islands expressly incompatible. Not implemented by this evidence record."
+      "role": "Official scenario-specific combinations; pirate blocks coastal fish, free ship and pirate removal, prescribed lake/ground placements, Pirate Islands expressly incompatible. Internal 3/4-player Four Islands engine and services implemented; sea UI and remaining scenarios pending."
+    },
+    {
+      "source": "../board-expansion-rule-sources.json#catan-fishing-seafarers-de-2021",
+      "pdf_pages": [
+        1
+      ],
+      "role": "Official German legacy combination, page visually verified: 5 Fische for a ship and 2 Fische to remove the pirate corroborate value-based payment. Used only to resolve English fish tokens terminology, never to replace 2025 scenario recipes."
     }
   ],
   "data": {
@@ -99,7 +106,9 @@
       "steal_resource": 3,
       "take_resource": 4,
       "build_road": 5,
-      "buy_development": 7
+      "buy_development": 7,
+      "remove_pirate": 2,
+      "build_ship": 5
     }
   },
   "frame": {

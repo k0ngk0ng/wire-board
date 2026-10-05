@@ -173,6 +173,25 @@ func (g *Catan) pirateBotChoices(player int) []botChoice {
 			continue
 		}
 		value := 0
+		if g.Fishing != nil {
+			for _, ground := range g.Fishing.Map.Grounds {
+				if ground.SeaTile == nil || *ground.SeaTile != tile.ID {
+					continue
+				}
+				for _, id := range ground.Vertices {
+					v := g.Vertices[id]
+					if v.Owner < 0 || v.Level == 0 || g.Players[v.Owner].Eliminated {
+						continue
+					}
+					weight := v.Level * (6 - absCatan(7-ground.Number))
+					if v.Owner == player {
+						value -= weight * 4
+					} else {
+						value += weight * 2
+					}
+				}
+			}
+		}
 		for _, edge := range g.Edges {
 			if !edge.Ship || edge.Owner < 0 {
 				continue
