@@ -352,3 +352,13 @@ Twelve HTTP paths cover3/4 players × fixed/variable × manual/autoplay/timeout.
 This does not resolve the existing base-cloth common-supply exhaustion ambiguity: the engine still fails closed when the common stock cannot supplement all entitled traders. `TestCatanClothCommonSupplyBoundaryProtection` remains the explicit counterexample. No invented shortage allocation or release claim is made. Combined desktop/mobile board acceptance is next, and this combination remains inaccessible in public room creation. No new asset downloads/uploads, public option, push or deployment.
 
 Related Fishing/Cloth engine regression also passes (55.140s). All test processes have finished; this stage started no persistent browser or QA server.
+
+## Cloth fishing browser acceptance (2026-10-05)
+
+Complete CatanBoard backed by a temporary local real Go constructor/Apply/private-View service:1440px fixed3-player ship payment (2+3fish)→first village trade→one cloth→2fish pirate removal→original pre-roll;390px variable4-player ship payment also establishes trade and enables the previously prohibited pirate action. Village details show actual own trader and remaining stock. Combination-specific copy explains third-settlement resources/fish, three grounds per large island/no lake, and the fish-pirate trade prerequisite; the last disappears once trade is established.
+
+390px variable4-player production: first full-hand player blind-replaces,320px second player keeps; real state resumes action with unchanged cloth payout and village stock. All seven private faces and both controls fit.320px variable4-player initial robber choice collapses to66px, selecting a legal12-number tile reopens confirmation and starts settlement placement.390px fixed3-player setup after real bot-completed first two placement rounds starts with no resources/fish; manually placing a third settlement beside a ground awards wood/grain and one private fish before the road/ship step.
+
+34 referenced images decode, fish-number bounds do not intersect cloth village number/stock bounds, no horizontal overflow or browser errors.320px observer sees no private fish faces, action menu or replacement controls.61 existing frontend tests pass. Named browser and local Go/Vite processes closed; temporary fixture source/pages/profile/screenshots removed. This component/engine QA complements prior HTTP restart/timer evidence. No public entry/push/deployment; common-supply shortage, five/six recipes and remaining expansion scope are still outstanding.
+
+TypeScript/Vite production build passes, retaining the existing >500kB bundle warning.
