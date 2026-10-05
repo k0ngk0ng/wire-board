@@ -93,31 +93,42 @@ export function catanPortLayout(g: CatanState) {
     );
     const blocked = [...obstacles, ...occupied];
     const candidates = [];
-    for (let dx = -12; dx <= 12; dx++)
-      for (let dy = -12; dy <= 12; dy++) {
-        const x = p.px + (dx * h) / 8,
-          y = p.py + (dy * h) / 8;
-        // Keep the callout on the water side of its actual coastal edge.
-        if (
-          (x - p.x) * Math.cos(p.angle) + (y - p.y) * Math.sin(p.angle) <
-          h * 0.4
-        )
-          continue;
-        const b = box(x, y, p.size / 2);
-        if (
-          b.left < bounds.left ||
-          b.right > bounds.right ||
-          b.top < bounds.top ||
-          b.bottom > bounds.bottom ||
-          blocked.some((o) => overlaps(b, o))
-        )
-          continue;
-        candidates.push({ x, y, distance: dx * dx + dy * dy });
-      }
+    // A narrow Wonders inlet can have no full-size slot. Reduce only that
+    // callout before moving it so far that its coastal association is lost.
+    for (const scale of [1, 0.85, 0.7]) {
+      for (let dx = -12; dx <= 12; dx++)
+        for (let dy = -12; dy <= 12; dy++) {
+          const x = p.px + (dx * h) / 8,
+            y = p.py + (dy * h) / 8;
+          // Keep the callout on the water side of its actual coastal edge.
+          if (
+            (x - p.x) * Math.cos(p.angle) + (y - p.y) * Math.sin(p.angle) <
+            h * 0.4
+          )
+            continue;
+          const b = box(x, y, (p.size * scale) / 2);
+          if (
+            b.left < bounds.left ||
+            b.right > bounds.right ||
+            b.top < bounds.top ||
+            b.bottom > bounds.bottom ||
+            blocked.some((o) => overlaps(b, o))
+          )
+            continue;
+          candidates.push({
+            x,
+            y,
+            size: p.size * scale,
+            distance: dx * dx + dy * dy,
+          });
+        }
+      if (candidates.length) break;
+    }
     candidates.sort((a, b) => a.distance - b.distance);
     if (candidates.length) {
       p.px = candidates[0].x;
       p.py = candidates[0].y;
+      p.size = candidates[0].size;
     }
   });
   return ports;
