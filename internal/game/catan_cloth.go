@@ -55,6 +55,32 @@ func (g *Catan) cloth() *CatanClothState {
 	}
 	return g.Seafarers.Cloth
 }
+
+// The numbered discs represent occupied village intersections. They do not
+// belong to an opponent and do not prevent routes from extending past them.
+func (g *Catan) clothVillageAt(vertex int) bool {
+	if c := g.cloth(); c != nil {
+		for _, village := range c.Villages {
+			if village.Vertex == vertex {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// Knight movement/removal can open another player's existing ship route.
+// Resolve the entire retreat or Treason placement before checking connections;
+// an intermediate gap must not permanently award a trade relation.
+func (s *State) catanClothKnightRoutes() {
+	g := s.Catan
+	if g.cloth() == nil || g.CitiesKnights == nil || g.CitiesKnights.Pending != nil {
+		return
+	}
+	for p := range g.Players {
+		s.catanClothTrade(p)
+	}
+}
 func (g *Catan) clothLand(tile int) bool {
 	return g.cloth() == nil || slices.Contains(g.cloth().HomeTiles, tile)
 }
@@ -87,12 +113,12 @@ func (g *Catan) clothShipAnchor(player, vertex int) bool {
 }
 
 // Starting at every own building enforces the road/ship junction rule: roads
-// alone cannot establish a village trade route. Opponent buildings cannot be
-// traversed to establish a new relation; existing relations are retained.
+// alone cannot establish a village trade route. Opponent buildings and knights
+// cannot be traversed to establish a new relation; existing relations remain.
 func (s *State) catanClothTrade(player int) {
 	g := s.Catan
 	c := g.cloth()
-	if c == nil {
+	if c == nil || g.Players[player].Eliminated {
 		return
 	}
 	reached := map[int]bool{}
@@ -106,7 +132,7 @@ func (s *State) catanClothTrade(player int) {
 	for len(queue) > 0 {
 		v := queue[0]
 		queue = queue[1:]
-		if g.Vertices[v].Level > 0 && g.Vertices[v].Owner != player {
+		if g.opponentPiece(player, v) {
 			continue
 		}
 		for _, id := range g.touching(v) {

@@ -1065,6 +1065,7 @@ func (s *State) EliminateCatan(p int) error {
 	}
 	g.Trade = nil
 	s.catanLog(p, "超时离场：资源归还银行，建筑与道路留在地图上但不再生产")
+	s.catanClothKnightRoutes()
 	s.catanScores()
 	active := []int{}
 	for i, v := range g.Players {

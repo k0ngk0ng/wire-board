@@ -53,7 +53,7 @@ func (g *Catan) knightRecruitable(player, vertex int) bool {
 	return g.knightCount(player, 1) < 2 && g.knightPlaceable(player, vertex)
 }
 func (g *Catan) knightPlaceable(player, vertex int) bool {
-	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil {
+	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil || g.clothVillageAt(vertex) {
 		return false
 	}
 	for _, edge := range g.touching(vertex) {
@@ -106,7 +106,7 @@ func (g *Catan) knightReachable(player, from int) []bool {
 func (g *Catan) knightDestinations(n CatanKnight, retreat bool) []int {
 	out := []int{}
 	for v, reachable := range g.knightReachable(n.Owner, n.Vertex) {
-		if !reachable || v == n.Vertex || g.Vertices[v].Level > 0 {
+		if !reachable || v == n.Vertex || g.Vertices[v].Level > 0 || g.clothVillageAt(v) {
 			continue
 		}
 		other := g.knightAt(v)
@@ -229,6 +229,7 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 	}
 	// Resolve a displaced knight's final position before awarding longest route.
 	if k.Pending == nil {
+		s.catanClothKnightRoutes()
 		s.catanScores()
 		s.catanVictory()
 	}
