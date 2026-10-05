@@ -7,6 +7,7 @@ import {
   caravanResponder,
   caravanCanRespond,
   caravanBonus,
+  caravanAdded,
 } from "../src/catan-caravans-state.ts";
 import { catanSavedVictoryTarget } from "../src/catan-rule-context.ts";
 
@@ -49,6 +50,106 @@ test("south-facing original wagon rotates to all six actual travel directions", 
     ),
     null,
   );
+});
+
+function placement() {
+  const before = {
+    id: "table",
+    version: 10,
+    status: "playing",
+    you: 1,
+    game: {
+      catan: {
+        setupStep: 6,
+        setupLimit: 6,
+        rollId: 9,
+        players: [{}, {}, {}],
+        vertices: [
+          { id: 0, x: 100, y: 100 },
+          { id: 1, x: 100, y: 162 },
+        ],
+        edges: [{ a: 0, b: 1 }],
+        caravans: {
+          sequence: 2,
+          wagons: [],
+          pending: { kind: "vote" },
+          choices: [{ edge: 0, from: 0 }],
+        },
+      },
+    },
+  };
+  const after = structuredClone(before);
+  after.version++;
+  delete after.game.catan.caravans.pending;
+  after.game.catan.caravans.wagons.push({ edge: 0, from: 0 });
+  return { before, after };
+}
+
+test("only a newly confirmed public wagon animates, including the winning placement", () => {
+  const { before, after } = placement();
+  assert.deepEqual(caravanAdded(before, after), { edge: 0, from: 0 });
+  before.game.catan.caravans.pending.kind = "place";
+  after.status = "finished";
+  assert.deepEqual(caravanAdded(before, after), { edge: 0, from: 0 });
+  before.spectating = after.spectating = true;
+  before.you = after.you = -1;
+  assert.deepEqual(caravanAdded(before, after), { edge: 0, from: 0 });
+  assert.equal(caravanAdded(after, after), null);
+});
+
+test("reconnect gaps, rematches and viewer switches never replay wagon placements", () => {
+  for (const change of [
+    (r) => {
+      r.version += 1;
+    },
+    (r) => {
+      r.version -= 1;
+    },
+    (r) => {
+      r.id = "another";
+    },
+    (r) => {
+      r.you = 2;
+    },
+    (r) => {
+      r.spectating = true;
+    },
+    (r) => {
+      r.status = "closed";
+    },
+    (r) => {
+      r.game.catan.setupStep = 0;
+    },
+    (r) => {
+      r.game.catan.rollId = 0;
+    },
+    (r) => {
+      r.game.catan.caravans.sequence++;
+    },
+    (r) => {
+      r.game.catan.caravans.wagons.push({ edge: 1, from: 2 });
+    },
+    (r) => {
+      r.game.catan.caravans.pending = { kind: "bid" };
+    },
+  ]) {
+    const { before, after } = placement();
+    change(after);
+    assert.equal(caravanAdded(before, after), null);
+  }
+});
+
+test("placement motion rejects unconfirmed directions, changed history and invalid geometry", () => {
+  const { before, after } = placement();
+  after.game.catan.caravans.wagons[0].from = 1;
+  assert.equal(caravanAdded(before, after), null);
+  after.game.catan.caravans.wagons[0].from = 0;
+  after.game.catan.vertices[1].y = 100;
+  assert.equal(caravanAdded(before, after), null);
+  after.game.catan.vertices[1].y = 162;
+  before.game.catan.caravans.wagons.unshift({ edge: 2, from: 3 });
+  after.game.catan.caravans.wagons.unshift({ edge: 2, from: 4 });
+  assert.equal(caravanAdded(before, after), null);
 });
 
 test("a shared edge never silently picks one of two legal directions", () => {

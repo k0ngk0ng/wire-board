@@ -10,6 +10,7 @@ import {
   caravanSelected,
 } from "./catan-caravans-state";
 import type { CaravanSelection } from "./catan-caravans-state";
+import { useCaravanMotion } from "./catan-caravans-motion";
 import "./catan-caravans.css";
 
 const art = (assets: string, name: string) =>
@@ -37,42 +38,44 @@ function Wagon({
       pointerEvents="none"
       transform={`translate(${geometry.x},${geometry.y}) rotate(${geometry.rotation}) scale(${scale})`}
     >
-      {preview && (
-        <rect
-          x={-14}
-          y={-22}
-          width={28}
-          height={44}
-          rx={7}
-          fill="#ffeb90"
-          stroke="#724417"
-          strokeWidth={2}
-        />
-      )}
-      {assets ? (
-        <image
-          href={art(assets, "wagon-south")}
-          x={-11}
-          y={-18}
-          width={22}
-          height={35}
-          preserveAspectRatio="xMidYMid meet"
-        />
-      ) : (
+      <g data-caravan-piece={preview ? undefined : wagon.edge}>
+        {preview && (
+          <rect
+            x={-14}
+            y={-22}
+            width={28}
+            height={44}
+            rx={7}
+            fill="#ffeb90"
+            stroke="#724417"
+            strokeWidth={2}
+          />
+        )}
+        {assets ? (
+          <image
+            href={art(assets, "wagon-south")}
+            x={-11}
+            y={-18}
+            width={22}
+            height={35}
+            preserveAspectRatio="xMidYMid meet"
+          />
+        ) : (
+          <path
+            d="M-8-15H8V9H4V15H-4V9H-8Z"
+            fill="#92968e"
+            stroke="#3c423c"
+            strokeWidth={2}
+          />
+        )}
         <path
-          d="M-8-15H8V9H4V15H-4V9H-8Z"
-          fill="#92968e"
-          stroke="#3c423c"
-          strokeWidth={2}
+          d="M-4 20L0 24L4 20"
+          fill="none"
+          stroke={preview ? "#714110" : "#fff5da"}
+          strokeWidth={2.6}
+          strokeLinecap="round"
         />
-      )}
-      <path
-        d="M-4 20L0 24L4 20"
-        fill="none"
-        stroke={preview ? "#714110" : "#fff5da"}
-        strokeWidth={2.6}
-        strokeLinecap="round"
-      />
+      </g>
     </g>
   );
 }
@@ -92,6 +95,7 @@ export function CatanCaravanMap({
 }) {
   const g = room.game!.catan!,
     c = g.caravans;
+  const root = useCaravanMotion(room);
   if (!c) return null;
   const selecting =
     caravanCanRespond(room) && c.pending?.kind !== "bid" && !busy;
@@ -99,7 +103,7 @@ export function CatanCaravanMap({
   const chosen = caravanSelected(g, selected);
   const edges = [...new Set((c.choices || []).map((w) => w.edge))];
   return (
-    <g className="caravan-map">
+    <g ref={root} className="caravan-map">
       {!c.pending &&
         c.map.starts
           .filter(
@@ -192,6 +196,7 @@ export function CatanCaravanBonuses({ g }: { g: CatanState }) {
         .map((v) => (
           <g
             key={v.id}
+            data-caravan-bonus={v.id}
             transform={`translate(${v.x + 14 * scale},${v.y + 13 * scale}) scale(${scale})`}
           >
             <circle r={10} />

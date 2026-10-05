@@ -82,3 +82,43 @@ export function caravanBonus(g: CatanState, vertex: number) {
     }).length >= 2
   );
 }
+
+// Animate only one confirmed placement between consecutive public snapshots.
+// Initial loads, missed updates and a different viewer must never replay moves.
+export function caravanAdded(before: Room, after: Room): CatanWagon | null {
+  const a = before.game?.catan,
+    b = after.game?.catan,
+    old = a?.caravans,
+    next = b?.caravans;
+  if (
+    !a ||
+    !b ||
+    !old ||
+    !next ||
+    before.id !== after.id ||
+    before.you !== after.you ||
+    !!before.spectating !== !!after.spectating ||
+    before.status !== "playing" ||
+    !["playing", "finished"].includes(after.status) ||
+    after.version !== before.version + 1 ||
+    a.setupStep < (a.setupLimit ?? a.players.length * 2) ||
+    b.setupStep < (b.setupLimit ?? b.players.length * 2) ||
+    a.rollId !== b.rollId ||
+    old.sequence !== next.sequence ||
+    !old.pending ||
+    !["vote", "place"].includes(old.pending.kind) ||
+    next.pending ||
+    next.wagons.length !== old.wagons.length + 1 ||
+    !old.wagons.every(
+      (w, i) =>
+        next.wagons[i]?.edge === w.edge && next.wagons[i]?.from === w.from,
+    )
+  )
+    return null;
+  const added = next.wagons.at(-1)!;
+  return old.choices?.some(
+    (w) => w.edge === added.edge && w.from === added.from,
+  ) && caravanGeometry(b, added)
+    ? added
+    : null;
+}
