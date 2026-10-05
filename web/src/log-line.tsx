@@ -2,6 +2,11 @@ import { cityChinese } from "./cities";
 import type { Seat } from "./types";
 
 const colors: Record<string, string> = {
+  科学: "#417e3c",
+  贸易: "#879a33",
+  政治: "#637d99",
+  防御者: "#ac7733",
+  蛮族: "#934534",
   城市: "#b8845b",
   道路: "#bb9e63",
   田地: "#72953d",

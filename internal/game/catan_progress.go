@@ -50,12 +50,14 @@ func (s *State) catanDrawProgress(player, track int) {
 	rule := catanProgressRules[card]
 	p := &k.Players[player]
 	if rule.Victory {
+		k.recordProgress("draw", player, -1, track, 1, &card)
 		p.PublicProgress = append(p.PublicProgress, card)
 		p.ProgressPoints++
-		s.catanLog(player, "抽到并立即公开胜利点牌「%s」，获得1分", rule.Name)
+		s.catanLog(player, "抽到并立即公开胜利点牌「%s」，获得1分", map[int]string{9: "印刷术", 23: "宪法"}[card])
 		s.catanScores()
 		s.catanVictory()
 	} else {
+		k.recordProgress("draw", player, -1, track, 1, nil)
 		p.Progress = append(p.Progress, card)
 		s.catanLog(player, "抽取一张%s进步牌", catanCityTracks[track])
 	}
@@ -88,6 +90,7 @@ func (s *State) catanDiscardProgress(player int, a Action) error {
 	}
 	k.Players[player].Progress = hand
 	k.returnProgress(a.Cards)
+	k.recordProgress("return", player, -1, -1, len(a.Cards), nil)
 	s.catanLog(player, "将%d张进步牌放回对应牌堆底部", len(a.Cards))
 	return nil
 }

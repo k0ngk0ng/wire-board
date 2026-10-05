@@ -1,0 +1,90 @@
+.catan-barbarian-track {
+  position: relative;
+}
+.catan-barbarian-track > .catan-barbarian-ship {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 12.5%;
+  border: 0;
+  color: #693a24;
+  pointer-events: none;
+  background: #dcecf0;
+  border-radius: 6px;
+}
+.catan-city-flights {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  pointer-events: none;
+  overflow: hidden;
+}
+.catan-city-flight {
+  position: absolute;
+  width: 140px;
+  height: 80px;
+  pointer-events: none;
+  animation: catan-progress-flight 1100ms cubic-bezier(0.22, 0.7, 0.25, 1) both;
+  will-change: transform, opacity;
+}
+.catan-city-flight > img,
+.catan-city-flight > .catan-progress-art,
+.catan-neutral-progress {
+  display: block;
+  width: 56px;
+  height: 80px;
+  object-fit: contain;
+  margin: 0 auto;
+  background: #fff6df;
+  border: 2px solid #bd974a;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px #33271144;
+}
+.catan-neutral-progress {
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  color: #e2c679;
+  background: #594933;
+}
+.catan-city-flight small {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 140px;
+  padding: 3px 5px;
+  border-radius: 4px;
+  color: #fff8e5;
+  background: #352e22;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+}
+@keyframes catan-progress-flight {
+  0% {
+    transform: translate(0, 0) scale(0.9);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  65% {
+    transform: translate(var(--city-flight-x), var(--city-flight-y)) scale(0.85);
+    opacity: 1;
+  }
+  85% {
+    transform: translate(var(--city-flight-x), var(--city-flight-y)) scale(0.85);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--city-flight-x), var(--city-flight-y)) scale(0.75);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catan-city-flights {
+    display: none;
+  }
+}

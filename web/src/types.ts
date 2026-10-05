@@ -296,7 +296,18 @@ export type CatanKnight = {
   activatedAt: number;
   promotedAt: number;
 };
+export type CatanProgressEvent = {
+  id: number;
+  kind: "draw" | "play" | "return" | "transfer";
+  player: number;
+  other: number;
+  track: number;
+  count: number;
+  card?: number;
+};
 export type CatanCitiesKnights = {
+  progressEventId?: number;
+  progressEvents?: CatanProgressEvent[];
   rules: string;
   layout?: string;
   barbarianPosition: number;

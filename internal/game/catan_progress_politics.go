@@ -176,6 +176,7 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 			}
 			k.Players[q.Target].Progress = slices.Delete(hand, at, at+1)
 			k.Players[player].Progress = append(k.Players[player].Progress, a.Card)
+			k.recordProgress("transfer", player, q.Target, -1, 1, nil)
 			s.catanLog(player, "从玩家 %d 的进步手牌中取得一张牌", q.Target+1)
 		}
 	case "wedding", "sabotage":
