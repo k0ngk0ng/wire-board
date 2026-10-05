@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"slices"
 )
 
@@ -10,26 +11,34 @@ type CatanFishingWorldSetup struct {
 	Index   int   `json:"index"`
 }
 
+func fishingWorldNumbers(n int) []int {
+	if n > 4 {
+		// T&B 5–6 (2025), p.5: the additional grounds show 5 and 9.
+		return []int{4, 5, 5, 6, 8, 9, 9, 10}
+	}
+	return []int{4, 5, 6, 8, 9, 10}
+}
+
 // July 2025 Fishing + Seafarers p.2: no lake; after all ports, place the
 // randomly drawn grounds in turn. Always retain the pre-game approved map.
 // Public room creation stays gated until complete combination acceptance.
 func NewCatanFishingNewWorld(n int, options CatanOptions, layout *CatanNewWorldMap) (*State, error) {
-	if n < 3 || n > 4 || options.Helpers || options.AllHelpers {
-		return nil, errors.New("新世界捕鱼目前仅接入三/四人，不使用助手")
+	if n < 3 || n > 6 || options.Helpers || options.AllHelpers {
+		return nil, errors.New("新世界捕鱼需要三至六人，目前不使用助手")
 	}
 	s, err := NewCatanNewWorldWithMap(n, options, layout)
 	if err != nil {
 		return nil, err
 	}
 	g := s.Catan
-	if !g.fishingWorldCanFinish(len(g.newWorld().Ports), 6) {
-		return nil, errors.New("此地图无法同时放下十个港口和六个渔场，请在开局前调整海岸布局")
+	numbers := fishingWorldNumbers(n)
+	if !g.fishingWorldCanFinish(len(g.newWorld().Ports), len(numbers)) {
+		return nil, fmt.Errorf("此地图无法同时放下%d个港口和%d个渔场，请在开局前调整海岸布局", len(g.newWorld().Ports), len(numbers))
 	}
 	tokens, err := newCatanFishingTokens(n)
 	if err != nil {
 		return nil, err
 	}
-	numbers := []int{4, 5, 6, 8, 9, 10}
 	shuffle(numbers)
 	g.Fishing = &CatanFishing{
 		Map:    catanFishingMap{Lakes: []catanFishingLake{}, Grounds: []catanFishingGround{}},
@@ -49,15 +58,21 @@ func (g *Catan) fishingWorldSetup() *CatanFishingWorldSetup {
 
 func (f catanFishingMap) validateNewWorld(g *Catan) error {
 	w, q := g.newWorld(), g.fishingWorldSetup()
-	if w == nil || q == nil || g.Seafarers.Scenario != "new_world" || len(g.Players) < 3 || len(g.Players) > 4 ||
-		len(w.Ports) != 10 || w.Index < 0 || w.Index > 10 || len(g.Ports) != w.Index ||
-		q.Index < 0 || q.Index > 6 || len(q.Numbers) != 6 || len(f.Grounds) != q.Index ||
-		len(f.Lakes) != 0 || len(f.ExtraNumbers) != 0 || w.Index < 10 && q.Index != 0 || g.SetupStep > 0 && q.Index != 6 {
+	n := len(g.Players)
+	wantNumbers, ports := fishingWorldNumbers(n), 10
+	if n > 4 {
+		ports = 11
+	}
+	grounds := len(wantNumbers)
+	if w == nil || q == nil || g.Seafarers.Scenario != "new_world" || n < 3 || n > 6 || g.Options.FiveSix != (n > 4) || (g.Paired != nil) != (n > 4) ||
+		len(w.Ports) != ports || w.Index < 0 || w.Index > ports || len(g.Ports) != w.Index ||
+		q.Index < 0 || q.Index > grounds || len(q.Numbers) != grounds || len(f.Grounds) != q.Index ||
+		len(f.Lakes) != 0 || len(f.ExtraNumbers) != 0 || w.Index < ports && q.Index != 0 || g.SetupStep > 0 && q.Index != grounds {
 		return errors.New("新世界捕鱼布局阶段或组件数量不符")
 	}
 	numbers := slices.Clone(q.Numbers)
 	slices.Sort(numbers)
-	if !slices.Equal(numbers, []int{4, 5, 6, 8, 9, 10}) {
+	if !slices.Equal(numbers, wantNumbers) {
 		return errors.New("新世界渔场点数不符")
 	}
 	for _, tile := range g.Tiles {
@@ -76,7 +91,7 @@ func (f catanFishingMap) validateNewWorld(g *Catan) error {
 			return errors.New("新世界渔场与已抽取点数或海岸位置不符")
 		}
 	}
-	if !g.fishingWorldCanFinish(10-w.Index, 6-q.Index) {
+	if !g.fishingWorldCanFinish(ports-w.Index, grounds-q.Index) {
 		return errors.New("新世界剩余港口和渔场没有足够的互不重叠位置")
 	}
 	if g.Robber < -1 || g.Robber >= len(g.Tiles) || g.Robber >= 0 && g.Tiles[g.Robber].Resource == CatanSea {

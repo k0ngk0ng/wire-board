@@ -76,7 +76,10 @@ export function CatanNewWorldPortChoice({
             {g.fishing?.worldSetup ? "轮流安放渔场，再开始建村" : "开始建村"}。
           </p>
           {g.fishing?.worldSetup && (
-            <p>亮起的位置会为剩余港口和六个渔场保留足够空间。</p>
+            <p>
+              亮起的位置会为剩余港口和{g.fishing.worldSetup.total}
+              个渔场保留足够空间。
+            </p>
           )}
           <p>限时120秒，超时自动安放。可收起面板查看地图。</p>
           {mine && (

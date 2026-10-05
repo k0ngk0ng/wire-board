@@ -14,7 +14,7 @@ func fishWorldGame(t *testing.T, n int) *State {
 	if err != nil {
 		t.Fatal(err)
 	}
-	s, err := NewCatanFishingNewWorld(n, CatanOptions{}, layout)
+	s, err := NewCatanFishingNewWorld(n, CatanOptions{FiveSix: n > 4}, layout)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -36,17 +36,24 @@ func finishFishWorldLayout(t *testing.T, s *State) {
 }
 
 func TestCatanFishingNewWorldSetupOrderRestoreAndPrivacy(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		for sample := 0; sample < 8; sample++ {
 			s := fishWorldGame(t, n)
+			ports, grounds := 10, 6
+			if n > 4 {
+				ports, grounds = 11, 8
+			}
 			first := (sample + 1) % n
 			s.Turn, s.Catan.StartPlayer = first, first
+			if pair := s.Catan.Paired; pair != nil {
+				pair.Primary, pair.Secondary, pair.Second = first, (first+3)%n, false
+			}
 			layout := s.Catan.NewWorldMap()
-			for index := 0; index < 16; index++ {
+			for index := 0; index < ports+grounds; index++ {
 				g := s.Catan
 				step, phase := index, "catan_world_ports"
-				if index >= 10 {
-					step, phase = index-10, "catan_world_fish"
+				if index >= ports {
+					step, phase = index-ports, "catan_world_fish"
 				}
 				if s.Phase != phase || s.Turn != (first+step)%n || s.CatanPendingActor() != s.Turn || g.SetupStep != 0 {
 					t.Fatal("setup handoff/order", index, s.Phase, s.Turn)
@@ -59,18 +66,18 @@ func TestCatanFishingNewWorldSetupOrderRestoreAndPrivacy(t *testing.T) {
 						t.Fatal("hidden ground order leaked")
 					}
 					current, exposed := setup["current"]
-					if exposed != (index >= 10) || exposed && current != g.Fishing.WorldSetup.Numbers[index-10] {
+					if exposed != (index >= ports) || exposed && current != g.Fishing.WorldSetup.Numbers[index-ports] {
 						t.Fatal("current ground exposure")
 					}
 					legal := view["legal"].(map[string][]int)
-					if (len(legal["fishGrounds"]) > 0) != (index >= 10 && viewer == s.Turn) || len(legal["settlements"]) > 0 {
+					if (len(legal["fishGrounds"]) > 0) != (index >= ports && viewer == s.Turn) || len(legal["settlements"]) > 0 {
 						t.Fatal("private legal hints or premature building")
 					}
 				}
 				before, _ := json.Marshal(s.View(s.Turn))
 				// Alter only unseen order. Current and already placed faces stay.
 				at := g.Fishing.WorldSetup.Index
-				if index >= 10 {
+				if index >= ports {
 					at++
 				}
 				slices.Reverse(g.Fishing.WorldSetup.Numbers[at:])
@@ -91,7 +98,7 @@ func TestCatanFishingNewWorldSetupOrderRestoreAndPrivacy(t *testing.T) {
 					helperApply(t, s, s.Turn, a)
 				}
 				g = s.Catan
-				if g.SetupStep != 0 || g.Fishing.WorldSetup.Index != max(0, index-9) || g.newWorld().Index != min(10, index+1) {
+				if g.SetupStep != 0 || g.Fishing.WorldSetup.Index != max(0, index-ports+1) || g.newWorld().Index != min(ports, index+1) {
 					t.Fatal("timeout or move skipped a piece")
 				}
 				for _, seat := range g.Players {
@@ -113,8 +120,8 @@ func TestCatanFishingNewWorldSetupOrderRestoreAndPrivacy(t *testing.T) {
 				}
 				s = &restored
 			}
-			if s.Phase != "catan_setup_settlement" || s.Turn != first || len(s.Catan.Fishing.Map.Grounds) != 6 {
-				t.Fatal("did not start first settlement after six grounds")
+			if s.Phase != "catan_setup_settlement" || s.Turn != first || len(s.Catan.Fishing.Map.Grounds) != grounds {
+				t.Fatal("did not start first settlement after all grounds")
 			}
 		}
 	}
@@ -130,9 +137,9 @@ func TestCatanFishingNewWorldRejectsCorruptStateAndUnsupportedOptions(t *testing
 			t.Fatal("unsupported combination accepted", options)
 		}
 	}
-	for _, n := range []int{2, 5, 6} {
+	for _, n := range []int{2, 5, 6, 7} {
 		if _, err := NewCatanFishingNewWorld(n, CatanOptions{FiveSix: n > 4}, layout); err == nil {
-			t.Fatal("unverified player count accepted")
+			t.Fatal("invalid player count or mismatched approved map accepted")
 		}
 	}
 	if _, err := NewCatanFishingNewWorld(3, CatanOptions{}, nil); err == nil {
@@ -160,101 +167,112 @@ func TestCatanFishingNewWorldRejectsCorruptStateAndUnsupportedOptions(t *testing
 }
 
 func TestCatanFishingNewWorldStartingEntitlementAndPirate(t *testing.T) {
-	s, err := NewCatanFishingNewWorld(4, CatanOptions{}, fishWorldCompactLayout())
-	if err != nil {
-		t.Fatal(err)
-	}
-	for s.Phase == "catan_world_ports" {
-		helperApply(t, s, s.Turn, Action{Type: "catan_world_port", Edge: s.Catan.worldPortEdges()[0]})
-	}
-	for s.Phase == "catan_world_fish" {
-		coasts := s.Catan.worldFishCoasts()
-		chosen := coasts[0]
-		for _, c := range coasts {
-			if c.SeaTile >= 0 {
-				chosen = c
-				break
+	for _, n := range []int{3, 4, 5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) {
+			var s *State
+			if n > 4 {
+				s = fishWorldExtendedGame(t, n)
+			} else {
+				var err error
+				s, err = NewCatanFishingNewWorld(n, CatanOptions{}, fishWorldCompactLayout())
+				if err != nil {
+					t.Fatal(err)
+				}
 			}
-		}
-		helperApply(t, s, s.Turn, Action{Type: "catan_world_fish", Vertex: chosen.Vertices[1]})
-	}
-	startingDraws := 0
-	for s.Catan.setup() {
-		g, actor := s.Catan, s.Turn
-		var a Action
-		var err error
-		// Prefer an available ground on the second settlement to exercise fish.
-		a, err = s.BotAction(actor)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if s.Phase == "catan_setup_settlement" && g.SetupStep >= 4 {
-			for _, ground := range g.Fishing.Map.Grounds {
-				for _, v := range ground.Vertices {
-					if g.canSettlement(actor, v, true) {
-						a.Vertex = v
+			for s.Phase == "catan_world_ports" {
+				helperApply(t, s, s.Turn, Action{Type: "catan_world_port", Edge: s.Catan.worldPortEdges()[0]})
+			}
+			for s.Phase == "catan_world_fish" {
+				coasts := s.Catan.worldFishCoasts()
+				chosen := coasts[0]
+				for _, c := range coasts {
+					if c.SeaTile >= 0 {
+						chosen = c
 						break
 					}
 				}
+				helperApply(t, s, s.Turn, Action{Type: "catan_world_fish", Vertex: chosen.Vertices[1]})
 			}
-		}
-		before := len(g.Fishing.Tokens.Hands[actor])
-		pileBefore, wantFish := len(g.Fishing.Tokens.DrawPile), 0
-		if a.Type == "catan_settlement" && g.SetupStep >= 4 {
-			for _, ground := range g.Fishing.Map.Grounds {
-				if slices.Contains(ground.Vertices[:], a.Vertex) {
-					wantFish = 1
+			startingDraws := 0
+			for s.Catan.setup() {
+				g, actor := s.Catan, s.Turn
+				var a Action
+				var err error
+				// Prefer an available ground on the second settlement to exercise fish.
+				a, err = s.BotAction(actor)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if s.Phase == "catan_setup_settlement" && g.SetupStep >= n {
+					for _, ground := range g.Fishing.Map.Grounds {
+						for _, v := range ground.Vertices {
+							if g.canSettlement(actor, v, true) {
+								a.Vertex = v
+								break
+							}
+						}
+					}
+				}
+				before := len(g.Fishing.Tokens.Hands[actor])
+				pileBefore, wantFish := len(g.Fishing.Tokens.DrawPile), 0
+				if a.Type == "catan_settlement" && g.SetupStep >= n {
+					for _, ground := range g.Fishing.Map.Grounds {
+						if slices.Contains(ground.Vertices[:], a.Vertex) {
+							wantFish = 1
+						}
+					}
+				}
+				helperApply(t, s, actor, a)
+				g = s.Catan
+				if pileBefore-len(g.Fishing.Tokens.DrawPile) != wantFish {
+					t.Fatal("second-settlement fish entitlement missing or duplicated")
+				}
+				startingDraws += wantFish
+				if g.SetupStep < n && len(g.Fishing.Tokens.Hands[actor]) > 0 {
+					t.Fatal("first settlement awarded fish")
+				}
+				if len(g.Fishing.Tokens.Hands[actor])-before > 1 {
+					t.Fatal("starting settlement got multiple fish")
 				}
 			}
-		}
-		helperApply(t, s, actor, a)
-		g = s.Catan
-		if pileBefore-len(g.Fishing.Tokens.DrawPile) != wantFish {
-			t.Fatal("second-settlement fish entitlement missing or duplicated")
-		}
-		startingDraws += wantFish
-		if g.SetupStep < 4 && len(g.Fishing.Tokens.Hands[actor]) > 0 {
-			t.Fatal("first settlement awarded fish")
-		}
-		if len(g.Fishing.Tokens.Hands[actor])-before > 1 {
-			t.Fatal("starting settlement got multiple fish")
-		}
+			if startingDraws == 0 {
+				t.Fatal("fixture failed to exercise starting fish draw")
+			}
+			g := s.Catan
+			for _, started := range g.Fishing.Started {
+				if !started {
+					t.Fatal("second-settlement entitlement not recorded")
+				}
+			}
+			// A ground on a sea hex is blocked only by the pirate on that hex.
+			for _, ground := range g.Fishing.Map.Grounds {
+				if ground.SeaTile == nil {
+					continue
+				}
+				for i := range g.Vertices {
+					g.Vertices[i].Owner, g.Vertices[i].Level = -1, 0
+				}
+				g.Vertices[ground.Vertices[0]].Owner, g.Vertices[ground.Vertices[0]].Level = 0, 1
+				g.Seafarers.Pirate = -1
+				due, err := g.Fishing.Map.production(g, ground.Number)
+				if err != nil || due[0] != 1 {
+					t.Fatal("unblocked fishing production", due, err)
+				}
+				g.Seafarers.Pirate = *ground.SeaTile
+				due, err = g.Fishing.Map.production(g, ground.Number)
+				if err != nil || due[0] != 0 {
+					t.Fatal("pirate failed to block ground", due, err)
+				}
+				return
+			}
+			t.Fatal("fixture has no inner-sea fishing ground")
+
+		})
 	}
-	if startingDraws == 0 {
-		t.Fatal("fixture failed to exercise starting fish draw")
-	}
-	g := s.Catan
-	for _, started := range g.Fishing.Started {
-		if !started {
-			t.Fatal("second-settlement entitlement not recorded")
-		}
-	}
-	// A ground on a sea hex is blocked only by the pirate on that hex.
-	for _, ground := range g.Fishing.Map.Grounds {
-		if ground.SeaTile == nil {
-			continue
-		}
-		for i := range g.Vertices {
-			g.Vertices[i].Owner, g.Vertices[i].Level = -1, 0
-		}
-		g.Vertices[ground.Vertices[0]].Owner, g.Vertices[ground.Vertices[0]].Level = 0, 1
-		g.Seafarers.Pirate = -1
-		due, err := g.Fishing.Map.production(g, ground.Number)
-		if err != nil || due[0] != 1 {
-			t.Fatal("unblocked fishing production", due, err)
-		}
-		g.Seafarers.Pirate = *ground.SeaTile
-		due, err = g.Fishing.Map.production(g, ground.Number)
-		if err != nil || due[0] != 0 {
-			t.Fatal("pirate failed to block ground", due, err)
-		}
-		return
-	}
-	t.Fatal("fixture has no inner-sea fishing ground")
 }
 
 func TestCatanFishingNewWorldBotsComplete(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s := fishWorldGame(t, n)
 			paid := 0
@@ -291,7 +309,11 @@ func TestCatanFishingNewWorldBotsComplete(t *testing.T) {
 						t.Fatal("piece supply")
 					}
 				}
-				if cards != 25 {
+				wantCards := 25
+				if n > 4 {
+					wantCards = 34
+				}
+				if cards != wantCards {
 					t.Fatal("development supply")
 				}
 				if step%31 == 0 {
