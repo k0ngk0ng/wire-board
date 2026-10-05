@@ -608,7 +608,7 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
 		}
 		s.Phase = "catan_setup_settlement"
-		if g.CitiesKnights != nil && g.SetupStep >= n {
+		if g.CitiesKnights != nil && g.SetupStep >= n && g.SetupStep < 2*n {
 			s.Phase = "catan_setup_city"
 		}
 	}

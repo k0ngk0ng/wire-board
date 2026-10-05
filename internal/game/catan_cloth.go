@@ -29,6 +29,10 @@ func (s *State) catanClothStart(player int, a Action) error {
 		return errors.New("请由先手选择大岛上的12号地块作为强盗起点")
 	}
 	g.Robber = a.Tile
+	if k := g.CitiesKnights; k != nil {
+		k.RobberStart = a.Tile
+		g.Robber = -1
+	}
 	s.Phase = "catan_setup_settlement"
 	s.catanLog(player, "选择12号地块 #%d 作为强盗起点，开始放置起始村庄", a.Tile+1)
 	return nil
