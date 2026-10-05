@@ -101,6 +101,43 @@ func (s *State) catanView(view map[string]any, player int) {
 	}
 	// Legal locations are computed using only public map and the viewer's identity.
 	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}}
+	if k := g.CitiesKnights; k != nil {
+		moves := map[int][]int{}
+		for _, key := range []string{"knightRecruit", "knightActivate", "knightPromote", "knightChase", "knightRetreat"} {
+			legal[key] = []int{}
+		}
+		if !s.Finished && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated {
+			if q := k.Pending; q != nil && q.Kind == "knight_retreat" && q.Knight != nil && s.CatanPendingActor() == player {
+				legal["knightRetreat"] = g.knightDestinations(*q.Knight, true)
+			}
+			if player == s.Turn && s.Phase == "catan_turn" && k.Pending == nil {
+				for _, v := range g.Vertices {
+					if g.knightRecruitable(player, v.ID) {
+						legal["knightRecruit"] = append(legal["knightRecruit"], v.ID)
+					}
+				}
+				for i := range k.Knights {
+					n := &k.Knights[i]
+					if n.Owner != player {
+						continue
+					}
+					if !n.Active {
+						legal["knightActivate"] = append(legal["knightActivate"], n.Vertex)
+					}
+					if g.knightCanPromote(n) {
+						legal["knightPromote"] = append(legal["knightPromote"], n.Vertex)
+					}
+					if g.knightCanAct(n) {
+						moves[n.Vertex] = g.knightDestinations(*n, false)
+					}
+					if g.knightCanChase(n) {
+						legal["knightChase"] = append(legal["knightChase"], n.Vertex)
+					}
+				}
+			}
+		}
+		v["knightMoves"] = moves
+	}
 	if t := g.tribe(); t != nil {
 		legal["ports"] = []int{}
 		if t.Pending != nil && t.Pending.Player == player && !s.Finished {

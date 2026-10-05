@@ -9,6 +9,7 @@ import (
 // Resource order is shared by the bank, prices, cards and trade offers.
 var CatanResources = []string{"木材", "砖块", "羊毛", "粮食", "矿石"}
 var catanPrices = map[string][]int{
+	"catan_knight_recruit": {0, 0, 1, 0, 1}, "catan_knight_promote": {0, 0, 1, 0, 1}, "catan_knight_activate": {0, 0, 0, 1, 0},
 	"catan_ship": {1, 0, 1, 0, 0}, "catan_road": {1, 1, 0, 0, 0}, "catan_settlement": {1, 1, 1, 1, 0},
 	"catan_city": {0, 0, 0, 2, 3}, "catan_buy_dev": {0, 0, 1, 1, 1},
 }
@@ -171,7 +172,7 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 	if !g.pirateSettlementAllowed(p, v, setup) {
 		return false
 	}
-	if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Level != 0 || !g.landVertex(v) || (setup && g.setup() && !g.seaSetupAllowed(v)) {
+	if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Level != 0 || g.knightAt(v) != nil || !g.landVertex(v) || (setup && g.setup() && !g.seaSetupAllowed(v)) {
 		return false
 	}
 	connected := false
@@ -242,7 +243,7 @@ func (g *Catan) roadLength(p int) int {
 	var walk func(int, int, int)
 	walk = func(v, n, previous int) {
 		best = max(best, n)
-		if n > 0 && g.Vertices[v].Level > 0 && g.Vertices[v].Owner != p {
+		if n > 0 && g.opponentPiece(p, v) {
 			return
 		}
 		for _, id := range g.touching(v) {

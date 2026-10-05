@@ -103,6 +103,9 @@ func (g *Catan) canRoute(p, id int, ship bool) bool {
 		}
 	}
 	for _, v := range []int{e.A, e.B} {
+		if g.opponentPiece(p, v) {
+			continue
+		}
 		vertex := g.Vertices[v]
 		if vertex.Level > 0 {
 			if vertex.Owner == p {
