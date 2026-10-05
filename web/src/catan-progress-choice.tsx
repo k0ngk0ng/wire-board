@@ -1,3 +1,4 @@
+import { CatanProgressArt } from "./catan-progress";
 import { useState } from "react";
 import type { Act, Room } from "./types";
 import { Bundle, CatanResource, ResourcePicker } from "./catan-resources";
@@ -127,6 +128,7 @@ export function CatanProgressChoice({
                   setCard(n);
                 }}
               >
+                <CatanProgressArt card={n} assets={assets} />
                 {catanProgressNames[n]}
               </button>
             ))}

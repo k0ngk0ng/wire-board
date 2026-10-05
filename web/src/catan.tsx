@@ -1,3 +1,14 @@
+import {
+  CatanProgressHand,
+  CatanTradePowers,
+  CatanMerchant,
+} from "./catan-progress";
+import {
+  pickProgressTarget,
+  progressMapMode,
+  progressMapTargets,
+} from "./catan-progress-state";
+import type { ProgressSelection } from "./catan-progress-state";
 import { progressMapChoices } from "./catan-progress-choice-state";
 import {
   CatanCityActions,
@@ -364,6 +375,7 @@ export function CatanBoard({
   const phase = game.phase;
   const [village, setVillage] = useState<number | null>(null);
   const [mode, setMode] = useState("");
+  const [progress, setProgress] = useState<ProgressSelection | null>(null);
   const [wonderFocus, setWonderFocus] = useState<number | null>(null);
   const [chosen, setChosen] = useState<{ type: string; id: number } | null>(
     null,
@@ -379,6 +391,7 @@ export function CatanBoard({
     setVillage(null);
     setWonderFocus(null);
     setMode("");
+    setProgress(null);
     setHelperPayment(null);
     setMoveFrom(null);
     setChosen(null);
@@ -396,6 +409,14 @@ export function CatanBoard({
     city?.pending?.kind,
     city?.pending ? room.turnDeadline : undefined,
   ]);
+  const progressHandKey = city?.players[you]?.progress?.join(",");
+  useEffect(() => setProgress(null), [progressHandKey]);
+  const progressMode =
+    mine && progress && g.progressPlayable?.includes(progress.card)
+      ? progressMapMode(progress.card)
+      : "";
+  const progressTargets =
+    progress && progressMode ? progressMapTargets(g, you, progress) : [];
   const cityChoiceMine = canPlay && city?.pending?.players[0] === you;
   const cityChoiceMode =
     cityChoiceMine &&
@@ -406,6 +427,7 @@ export function CatanBoard({
       : "";
   const effective =
     cityChoiceMode ||
+    progressMode ||
     (phase === "catan_cloth_start" || phase === "catan_wonders_start"
       ? "robber_start"
       : phase === "catan_port" || phase === "catan_world_ports"
@@ -432,6 +454,7 @@ export function CatanBoard({
     setHelperPayment(null);
     setMoveFrom(null);
     setMode("");
+    setProgress(null);
     setChosen(null);
     setDev(null);
   };
@@ -452,6 +475,10 @@ export function CatanBoard({
   const select = (type: string, id: number) => {
     if ((!mine && !cityChoiceMine && !(type === "port" && portMine)) || busy)
       return;
+    if (type.startsWith("progress_") && progress) {
+      setProgress(pickProgressTarget(g, you, progress, id));
+      return;
+    }
     if (
       (type === "helper_move" ||
         type === "move_ship" ||
@@ -489,12 +516,13 @@ export function CatanBoard({
   };
   const selectableVertex = (id: number) =>
     (mine || cityChoiceMine) &&
-    ((effective === "settlement" && g.legal.settlements.includes(id)) ||
+    ((effective === "progress_vertex" && progressTargets.includes(id)) ||
+      (effective === "settlement" && g.legal.settlements.includes(id)) ||
       (effective === "city" && g.legal.cities.includes(id)) ||
       (!!city && (cityVertices[effective] || []).includes(id)));
   return (
     <div
-      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${city || sea?.wonders || sea?.newWorld ? "catan-map-side-hand" : ""}`}
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld ? "catan-map-side-hand" : ""}`}
     >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
@@ -578,6 +606,7 @@ export function CatanBoard({
                       }
                       onClick={() => {
                         setMode(key);
+                        setProgress(null);
                         setChosen(null);
                         setMoveFrom(null);
                       }}
@@ -601,6 +630,7 @@ export function CatanBoard({
                   disabled={busy}
                   onClick={() => {
                     setMode("pirate");
+                    setProgress(null);
                     select("pirate", -1);
                   }}
                 >
@@ -633,8 +663,10 @@ export function CatanBoard({
               {g.tiles.map((t) => {
                 const available =
                   mine &&
-                  ((effective === "robber_start" &&
-                    g.legal.robber?.includes(t.id)) ||
+                  ((effective === "progress_tile" &&
+                    progressTargets.includes(t.id)) ||
+                    (effective === "robber_start" &&
+                      g.legal.robber?.includes(t.id)) ||
                     (effective === "robber" &&
                       (g.legal.robber
                         ? g.legal.robber?.includes(t.id)
@@ -736,6 +768,14 @@ export function CatanBoard({
                         <title>海盗封锁本海域船只</title>
                       </g>
                     )}
+                    {progressMode === "progress_tile" &&
+                      progress?.picks.includes(t.id) && (
+                        <polygon
+                          points={poly(t.id)}
+                          className="catan-picked"
+                          fill="none"
+                        />
+                      )}
                     {(chosen?.type === "robber_start" ||
                       chosen?.type === "pirate" ||
                       chosen?.type === "robber" ||
@@ -837,6 +877,7 @@ export function CatanBoard({
                   )}
                 </g>
               )}
+              <CatanMerchant game={g} assets={assets} />
               {g.edges.map((e) => {
                 const a = g.vertices[e.a],
                   b = g.vertices[e.b],
@@ -847,8 +888,10 @@ export function CatanBoard({
                         ? cityChoiceMine &&
                           !!g.diplomacyPlacements?.includes(e.id)
                         : mine &&
-                          ((effective === "road" &&
-                            g.legal.roads.includes(e.id)) ||
+                          ((effective === "progress_edge" &&
+                            progressTargets.includes(e.id)) ||
+                            (effective === "road" &&
+                              g.legal.roads.includes(e.id)) ||
                             (effective === "ship" &&
                               !!g.legal.ships?.includes(e.id)) ||
                             (effective === "move_ship" &&
@@ -864,6 +907,8 @@ export function CatanBoard({
                                     g.helperRoadMoves?.[moveFrom] || []
                                   ).includes(e.id))));
                 const picked =
+                  (progressMode === "progress_edge" &&
+                    !!progress?.picks.includes(e.id)) ||
                   (chosen?.type === effective && chosen.id === e.id) ||
                   ((effective === "helper_move" || effective === "move_ship") &&
                     moveFrom === e.id);
@@ -982,10 +1027,12 @@ export function CatanBoard({
               {g.vertices.map((v) => {
                 const ok = selectableVertex(v.id),
                   picked =
-                    chosen?.id === v.id &&
-                    (chosen.type === "city" ||
-                      chosen.type === "settlement" ||
-                      !!cityActionNames[chosen.type]);
+                    (progressMode === "progress_vertex" &&
+                      !!progress?.picks.includes(v.id)) ||
+                    (chosen?.id === v.id &&
+                      (chosen.type === "city" ||
+                        chosen.type === "settlement" ||
+                        !!cityActionNames[chosen.type]));
                 return (
                   <g
                     key={v.id}
@@ -1060,43 +1107,46 @@ export function CatanBoard({
           </div>
         </div>
         <div className="catan-map-hint">
-          {cityChoiceMine && cityChoiceMode
-            ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
-            : phase === "catan_cloth_start" || phase === "catan_wonders_start"
-              ? mine
-                ? `点击亮起的${sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
-                : "等待先手选择强盗起点 · 可缩放拖动"
-              : phase === "catan_cloth_steal"
-                ? "请在海盗面板选择对手与物品 · 可收起查看地图"
-                : phase === "catan_port" || phase === "catan_world_ports"
-                  ? portMine
-                    ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
-                    : "等待港口安放 · 滚轮缩放 · 按住拖动"
-                  : phase === "catan_gold"
-                    ? canPlay && g.goldPending?.claims[0]?.player === you
-                      ? "请在金矿面板领取资源 · 可收起面板查看地图"
-                      : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
-                    : mine
-                      ? effective === "helper_move" || effective === "move_ship"
-                        ? moveFrom === null
-                          ? effective === "move_ship"
-                            ? "选择要移动的己方末端旧船"
-                            : "选择要迁移的己方末端道路"
-                          : "选择亮起的新位置，再确认移动"
-                        : effective === "ship"
-                          ? "点击虚线选择船只位置，再确认建造"
-                          : effective === "pirate"
-                            ? "选择另一块海洋，或将海盗移至外海"
-                            : effective === "road"
-                              ? "点击虚线选择道路，再确认建造"
-                              : effective === "settlement" ||
-                                  effective === "city"
-                                ? "点击亮起的交点，再确认建造"
-                                : effective === "robber" ||
-                                    effective === "helper_desert"
-                                  ? "点击地块选择强盗的新位置"
-                                  : "选择右侧行动 · 滚轮缩放 · 按住拖动"
-                      : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
+          {progressMode
+            ? "点击地图上亮起的目标，再在进步牌面板确认 · 滚轮缩放 · 按住拖动"
+            : cityChoiceMine && cityChoiceMode
+              ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
+              : phase === "catan_cloth_start" || phase === "catan_wonders_start"
+                ? mine
+                  ? `点击亮起的${sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
+                  : "等待先手选择强盗起点 · 可缩放拖动"
+                : phase === "catan_cloth_steal"
+                  ? "请在海盗面板选择对手与物品 · 可收起查看地图"
+                  : phase === "catan_port" || phase === "catan_world_ports"
+                    ? portMine
+                      ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
+                      : "等待港口安放 · 滚轮缩放 · 按住拖动"
+                    : phase === "catan_gold"
+                      ? canPlay && g.goldPending?.claims[0]?.player === you
+                        ? "请在金矿面板领取资源 · 可收起面板查看地图"
+                        : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
+                      : mine
+                        ? effective === "helper_move" ||
+                          effective === "move_ship"
+                          ? moveFrom === null
+                            ? effective === "move_ship"
+                              ? "选择要移动的己方末端旧船"
+                              : "选择要迁移的己方末端道路"
+                            : "选择亮起的新位置，再确认移动"
+                          : effective === "ship"
+                            ? "点击虚线选择船只位置，再确认建造"
+                            : effective === "pirate"
+                              ? "选择另一块海洋，或将海盗移至外海"
+                              : effective === "road"
+                                ? "点击虚线选择道路，再确认建造"
+                                : effective === "settlement" ||
+                                    effective === "city"
+                                  ? "点击亮起的交点，再确认建造"
+                                  : effective === "robber" ||
+                                      effective === "helper_desert"
+                                    ? "点击地块选择强盗的新位置"
+                                    : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+                        : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
       <aside className="catan-actions">
@@ -1133,6 +1183,24 @@ export function CatanBoard({
             </small>
           </div>
         </div>
+        <CatanProgressHand
+          room={room}
+          act={act}
+          busy={busy}
+          assets={assets}
+          selection={progress}
+          onChange={(next) => {
+            if (next?.card !== progress?.card) {
+              setMode("");
+              setMoveFrom(null);
+              setChosen(null);
+              setDev(null);
+              setHelperPayment(null);
+            }
+            setProgress(next);
+          }}
+        />
+        <CatanTradePowers room={room} act={act} busy={busy} assets={assets} />
         <CatanCityOverview room={room} assets={assets} />
         <CatanCityChoice
           room={room}
@@ -1149,6 +1217,7 @@ export function CatanBoard({
           mode={mode}
           selectMode={(next) => {
             setMode(next);
+            setProgress(null);
             setMoveFrom(null);
             setChosen(null);
             setDev(null);
@@ -1216,6 +1285,7 @@ export function CatanBoard({
                     setHelperPayment(null);
                     setMoveFrom(null);
                     setMode(key);
+                    setProgress(null);
                     setChosen(key === "buy_dev" ? { type: key, id: 0 } : null);
                     setDev(null);
                   }}
@@ -1234,6 +1304,7 @@ export function CatanBoard({
                 disabled={busy || !Object.keys(g.shipMoves || {}).length}
                 onClick={() => {
                   setMode("move_ship");
+                  setProgress(null);
                   setMoveFrom(null);
                   setChosen(null);
                   setHelperPayment(null);
@@ -1256,6 +1327,7 @@ export function CatanBoard({
                 setHelperPayment(null);
                 setMoveFrom(null);
                 setMode(mode === "trade" ? "" : "trade");
+                setProgress(null);
                 setChosen(null);
                 setDev(null);
               }}
@@ -1330,6 +1402,7 @@ export function CatanBoard({
                     setHelperPayment(null);
                     setMoveFrom(null);
                     setMode("");
+                    setProgress(null);
                   }}
                 >
                   取消
@@ -1689,6 +1762,7 @@ export function CatanBoard({
           assets={assets}
           onBuild={(kind, payment) => {
             setMode(kind);
+            setProgress(null);
             setHelperPayment(payment);
             setMoveFrom(null);
             setDev(null);
@@ -1697,6 +1771,7 @@ export function CatanBoard({
           onDesert={(color) => {
             setHelperResource(color);
             setMode("helper_desert");
+            setProgress(null);
             setMoveFrom(null);
             setHelperPayment(null);
             setChosen(null);
@@ -1704,6 +1779,7 @@ export function CatanBoard({
           }}
           onMove={() => {
             setMode("helper_move");
+            setProgress(null);
             setMoveFrom(null);
             setHelperPayment(null);
             setChosen(null);

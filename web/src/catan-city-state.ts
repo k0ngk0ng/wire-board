@@ -54,6 +54,7 @@ export function cityImprovementReason(
   g: CatanState,
   player: number,
   track: number,
+  discount = 0,
 ) {
   const k = g.citiesKnights,
     level = k?.players[player]?.improvements[track] ?? 5;
@@ -64,8 +65,9 @@ export function cityImprovementReason(
     owner = metro >= 0 ? g.vertices[metro].owner : -1;
   if (level >= 3 && owner !== player && !cityMetropolisSites(g, player).length)
     return "需要一座没有大都会的城市";
-  if ((g.players[player]?.resources?.[5 + track] ?? 0) < level + 1)
-    return `需要${level + 1}张${["纸张", "布料", "钱币"][track]}`;
+  const cost = Math.max(0, level + 1 - discount);
+  if ((g.players[player]?.resources?.[5 + track] ?? 0) < cost)
+    return `需要${cost}张${["纸张", "布料", "钱币"][track]}`;
   return "";
 }
 export function cityDiscardLimit(g: CatanState, player: number) {
