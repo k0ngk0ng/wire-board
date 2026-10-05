@@ -7,9 +7,14 @@ import (
 )
 
 type CatanTwo struct {
-	Rolls    []int            `json:"rolls"`
-	Sequence int              `json:"sequence"`
-	Pending  *CatanTwoPending `json:"pending,omitempty"`
+	Rolls           []int            `json:"rolls"`
+	Sequence        int              `json:"sequence"`
+	Pending         *CatanTwoPending `json:"pending,omitempty"`
+	Tokens          []int            `json:"tokens"`
+	Bank            int              `json:"bank"`
+	Spent           bool             `json:"spent"`
+	KnightExchanged bool             `json:"knightExchanged"`
+	Trade           *CatanTwoTrade   `json:"trade,omitempty"`
 }
 
 type CatanTwoPending struct {
@@ -17,8 +22,8 @@ type CatanTwoPending struct {
 	Resume string `json:"resume"`
 }
 
-// Internal core acceptance only. Trade tokens and compatible scenarios are
-// still pending; NewCatan(2, ...) and public room creation remain unavailable.
+// Internal core acceptance only. Complete games, UI, supply exhaustion and
+// compatible scenarios remain pending; public two-player creation stays shut.
 func newCatanTwoCore() (*State, error) {
 	s := &State{Kind: "catan", Round: 1}
 	s.initCatan(2)
@@ -28,7 +33,7 @@ func newCatanTwoCore() (*State, error) {
 	}
 	g.StartPlayer = catanRandom(2)
 	s.Turn = g.StartPlayer
-	g.Two = &CatanTwo{Rolls: []int{}}
+	g.Two = &CatanTwo{Rolls: []int{}, Tokens: []int{5, 5}, Bank: 10}
 	s.catanScores()
 	return s, s.validateCatanTwo()
 }
@@ -38,6 +43,9 @@ func (s *State) validateCatanTwo() error {
 	q := g.Two
 	if q == nil {
 		return nil
+	}
+	if err := s.validateCatanTwoTokens(); err != nil {
+		return err
 	}
 	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.Seafarers != nil || g.CitiesKnights != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
@@ -119,10 +127,20 @@ func (s *State) catanTwoRoll(a, b int) error {
 	return s.catanRoll(a + b)
 }
 
-func (s *State) catanTwoAfterAction(before *State, a Action) {
+func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	g, q := s.Catan, s.Catan.Two
-	if q == nil || s.Finished {
-		return
+	if q == nil {
+		return nil
+	}
+	// Includes initial settlements. Use the previous actor because completing
+	// setup can advance Turn; upgrades and neutral villages earn no tokens.
+	if a.Type == "catan_settlement" {
+		if err := s.catanTwoEarn(before.Turn, g.twoSettlementTokens(before.Turn, a.Vertex)); err != nil {
+			return err
+		}
+	}
+	if s.Finished {
+		return nil
 	}
 	// The first seven must finish discards, robber movement and theft before
 	// returning here. Saving at any intervening phase keeps the first total.
@@ -130,7 +148,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) {
 		s.Phase = "catan_roll"
 	}
 	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement") {
-		return
+		return nil
 	}
 	kind := "road"
 	if a.Type == "catan_settlement" {
@@ -138,13 +156,14 @@ func (s *State) catanTwoAfterAction(before *State, a Action) {
 	}
 	if len(g.twoNeutralChoices(kind)) == 0 {
 		s.Log = append(s.Log, "两家中立势力均无合法建设位置，本次无需额外建设")
-		return
+		return nil
 	}
 	q.Sequence++
 	q.Pending = &CatanTwoPending{Kind: kind, Resume: s.Phase}
 	g.Trade = nil
 	s.Phase = "catan_two_build"
 	s.catanLog(s.Turn, "请为一家中立势力完成额外建设")
+	return nil
 }
 
 func (s *State) catanTwoBuild(player int, a Action) error {

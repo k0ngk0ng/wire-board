@@ -34,7 +34,7 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		return true
 	}
 	response := func(phase string) bool {
-		return phase == "catan_two_build" || phase == "catan_fish_replace" || phase == "catan_card_event" || phase == "catan_diplomacy" || phase == "catan_espionage" || phase == "catan_sabotage" || phase == "catan_wedding" || phase == "catan_treason_remove" || phase == "catan_treason_place" || phase == "catan_guild_dues" || phase == "catan_commercial_harbor" || phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis" || phase == "catan_knight_retreat" || phase == "catan_pillage" || phase == "catan_defender_reward" || phase == "catan_progress_discard" || phase == "catan_progress_end"
+		return phase == "catan_two_build" || phase == "catan_two_trade" || phase == "catan_fish_replace" || phase == "catan_card_event" || phase == "catan_diplomacy" || phase == "catan_espionage" || phase == "catan_sabotage" || phase == "catan_wedding" || phase == "catan_treason_remove" || phase == "catan_treason_place" || phase == "catan_guild_dues" || phase == "catan_commercial_harbor" || phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis" || phase == "catan_knight_retreat" || phase == "catan_pillage" || phase == "catan_defender_reward" || phase == "catan_progress_discard" || phase == "catan_progress_end"
 	}
 	current := r.Game.Phase
 	if response(current) {
