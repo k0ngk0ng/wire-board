@@ -192,17 +192,21 @@ func testFishingWondersGold(t *testing.T, n int) {
 			}
 			g.SetupStep, g.TurnSerial, g.RollID, g.Robber = g.SetupLimit(), 1, 1, -1
 			ground := g.Fishing.Map.Grounds[0]
-			g.Vertices[ground.Vertices[1]].Owner, g.Vertices[ground.Vertices[1]].Level = 0, 2
-			other := -1
-			for _, v := range ground.Vertices {
-				if !slices.Contains(g.Tiles[gold].Vertices, v) {
-					other = v
+			goldVertex, other := ground.Vertices[0], ground.Vertices[2]
+			if !slices.Contains(g.Tiles[gold].Vertices, goldVertex) {
+				goldVertex, other = other, goldVertex
+			}
+			if !slices.Contains(g.Tiles[gold].Vertices, goldVertex) || slices.Contains(g.Tiles[gold].Vertices, other) {
+				t.Fatal("gold coast endpoints")
+			}
+			g.Vertices[goldVertex].Owner, g.Vertices[goldVertex].Level = 0, 2
+			g.Vertices[other].Owner, g.Vertices[other].Level = 1, 1
+			for _, edge := range g.Edges {
+				if g.Vertices[edge.A].Level > 0 && g.Vertices[edge.B].Level > 0 {
+					t.Fatal("fixture violates building distance")
 				}
 			}
-			if other < 0 {
-				t.Fatal("missing nongold endpoint")
-			}
-			g.Vertices[other].Owner, g.Vertices[other].Level = 1, 1
+
 			if full {
 				fishOwn(&g.Fishing.Tokens, 0, 0, 1, 2, 3, 4, 5, 6)
 				fishOwn(&g.Fishing.Tokens, 1, 11, 12, 13, 14, 15, 16, 17)

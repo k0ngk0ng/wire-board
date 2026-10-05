@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { catanPortLayout } from "../src/catan-port-layout.ts";
 import { fishGroundGeometry } from "../src/catan-fishing-state.ts";
 
@@ -47,6 +48,59 @@ function collides(p, g) {
     );
   });
 }
+
+test("printed five/six-player Wonders inlet clears fish numbers and nearby markers", () => {
+  // Geometry exported from the actual NewCatanFishingSeafarers fixed board,
+  // with no player hands/state. Edge 53 overlaps both the 5 and 9 fish discs.
+  const g = JSON.parse(
+    readFileSync(
+      new URL(
+        "./fixtures/catan-wonders-fishing-five-six.json",
+        import.meta.url,
+      ),
+    ),
+  );
+  const saved = structuredClone(g);
+  const original = catanPortLayout({ ...g, fishing: undefined });
+  assert.equal(
+    collides(
+      original.find((p) => p.port.edge === 53),
+      g,
+    ),
+    true,
+  );
+  const moved = catanPortLayout(g);
+  const overlap = (p, x, y, half) =>
+    Math.abs(p.px - x) < p.size / 2 + half &&
+    Math.abs(p.py - y) < p.size / 2 + half;
+  moved.forEach((p, i) => {
+    assert.equal(collides(p, g), false, `port ${p.port.edge}`);
+    moved
+      .slice(i + 1)
+      .forEach((other) =>
+        assert.equal(overlap(p, other.px, other.py, other.size / 2), false),
+      );
+    for (const t of g.tiles.filter((t) => t.number > 0))
+      assert.equal(overlap(p, t.x, t.y, g.hexSize * 0.3), false);
+    for (const marker of g.seafarers.wonders.markers) {
+      const v = g.vertices[marker.vertex];
+      assert.equal(overlap(p, v.x, v.y, g.hexSize * 0.3), false);
+    }
+    assert.deepEqual(p.port, original[i].port);
+    assert.deepEqual(p.a, original[i].a);
+    assert.deepEqual(p.b, original[i].b);
+    assert.ok(p.size >= original[i].size * 0.7 && p.size <= original[i].size);
+    assert.ok(
+      Math.hypot(p.px - original[i].px, p.py - original[i].py) < g.hexSize * 2,
+    );
+  });
+  assert.ok(
+    moved.find((p) => p.port.edge === 53).size <
+      original.find((p) => p.port.edge === 53).size,
+  );
+  assert.deepEqual(g, saved);
+  assert.deepEqual(catanPortLayout(g), moved);
+});
 
 test("port callout clears flanking fishing numbers without moving the gameplay edge", () => {
   for (let turn = 0; turn < 6; turn++) {
