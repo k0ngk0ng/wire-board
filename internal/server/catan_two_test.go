@@ -12,7 +12,7 @@ import (
 // Targeted response fixtures complement the untouched full-game tests. Only
 // these fixtures set production phase and resource inventories explicitly.
 func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
-	for _, scenario := range []string{"trade_roll", "trade_turn", "build_turn"} {
+	for _, scenario := range []string{"trade_roll", "trade_between", "trade_turn", "build_turn"} {
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(scenario+"/"+mode, func(t *testing.T) {
 				s, ts, clients, id := newTwoFullTable(t)
@@ -28,7 +28,11 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 				}
 				p := state.Turn
 				resume := "catan_roll"
-				if scenario != "trade_roll" {
+				if scenario == "trade_between" {
+					state.Catan.Two.Rolls = []int{2}
+					state.Catan.RollID = 1
+				}
+				if scenario == "trade_turn" || scenario == "build_turn" {
 					resume = "catan_turn"
 					state.Phase = resume
 					state.Catan.Two.Rolls = []int{2, 12}
@@ -116,6 +120,9 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 				r = s.rooms[id]
 				if r.Game.Phase != resume || r.Game.CatanPendingActor() != -1 || r.TurnDeadline < at.UnixMilli()+remaining-100 || r.TurnDeadline > at.UnixMilli()+remaining+1000 {
 					t.Fatal("response did not restore original time", phase, mode, r.Game.Phase, r.TurnDeadline-at.UnixMilli(), remaining)
+				}
+				if scenario == "trade_between" && (len(r.Game.Catan.Two.Rolls) != 1 || r.Game.Catan.Two.Rolls[0] != 2 || r.Game.Catan.RollID != 1) {
+					t.Fatal("between-roll response repeated or lost production")
 				}
 				assertTwoHTTPInventory(t, r.Game)
 				s, ts = restartRiversHTTP(t, s, ts, clients, id)

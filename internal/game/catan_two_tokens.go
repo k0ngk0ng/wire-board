@@ -21,7 +21,7 @@ func (s *State) validateCatanTwoTokens() error {
 		if s.Finished || s.Turn < 0 || s.Turn >= len(g.Players) || q.Pending != nil || !q.Spent || q.Sequence == 0 || s.Phase != "catan_two_trade" || g.Trade != nil || !catanBundle(trade.Drawn) || sum(trade.Drawn) < 1 || sum(trade.Drawn) > 2 || !catanHas(g.Players[s.Turn].Resources, trade.Drawn) || sum(g.Players[s.Turn].Resources) < 2 {
 			return errors.New("双人强制交易响应无效")
 		}
-		if (trade.Resume != "catan_roll" || len(q.Rolls) != 0) && (trade.Resume != "catan_turn" || len(q.Rolls) != 2) {
+		if (trade.Resume != "catan_roll" || len(q.Rolls) >= 2) && (trade.Resume != "catan_turn" || len(q.Rolls) != 2) {
 			return errors.New("强制交易返回阶段无效")
 		}
 	} else if s.Phase == "catan_two_trade" {
@@ -32,7 +32,10 @@ func (s *State) validateCatanTwoTokens() error {
 
 func (s *State) catanTwoTokenWindow(player int) bool {
 	g := s.Catan
-	return g.Two != nil && !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !g.setup() && g.Two.Pending == nil && g.Two.Trade == nil && ((s.Phase == "catan_roll" && len(g.Two.Rolls) == 0) || (s.Phase == "catan_turn" && len(g.Two.Rolls) == 2))
+	// 2025 T&B p8 permits spending before rolling dice, including the second
+	// production roll. A complete first production (discard/robber/theft) must
+	// finish before the state returns to catan_roll; never interrupt a choice.
+	return g.Two != nil && !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !g.setup() && g.Two.Pending == nil && g.Two.Trade == nil && ((s.Phase == "catan_roll" && len(g.Two.Rolls) < 2) || (s.Phase == "catan_turn" && len(g.Two.Rolls) == 2))
 }
 
 func (g *Catan) twoTokenCost(player int) int {
