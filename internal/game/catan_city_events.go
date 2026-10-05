@@ -233,6 +233,7 @@ func (s *State) catanEventChoice(player int, a Action) error {
 		}
 		k.Event.Tasks = k.Event.Tasks[1:]
 		k.Pending = nil
+		s.catanLog(player, "防御贡献并列最高，选择%s进步牌作为奖励", catanCityTracks[a.Color])
 		s.catanDrawProgress(player, a.Color)
 		if k.Pending != nil {
 			return nil

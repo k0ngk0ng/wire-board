@@ -1,3 +1,4 @@
+import { CatanCityEffects } from "./catan-city-effects";
 import {
   CatanProgressHand,
   CatanTradePowers,
@@ -1062,39 +1063,41 @@ export function CatanBoard({
                         }
                       />
                     )}
-                    <CatanCityWall game={g} vertex={v.id} assets={assets} />
-                    {v.level > 0 &&
-                      (assets ? (
-                        <image
-                          href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${catanPieceColors[catanColorIndex(g, v.owner)]}-v1.webp`}
-                          x={v.level === 2 ? -20 : -15}
-                          y="-20"
-                          width={v.level === 2 ? 40 : 30}
-                          height="34"
-                          className={
-                            g.players[v.owner]?.eliminated
-                              ? "eliminated-piece"
-                              : ""
-                          }
-                        />
-                      ) : (
-                        <path
-                          className={
-                            g.players[v.owner]?.eliminated
-                              ? "eliminated-piece"
-                              : ""
-                          }
-                          d={
-                            v.level === 2
-                              ? "M-14 10V-5L-5-13L4-5V0H13V10Z"
-                              : "M-10 10V-3L0-12L10-3V10Z"
-                          }
-                          fill={catanSeatColor(g, v.owner)}
-                          stroke="#523829"
-                          strokeWidth="1.8"
-                        />
-                      ))}
-                    <CatanCityPiece game={g} vertex={v.id} assets={assets} />
+                    <g data-city-piece={v.id}>
+                      <CatanCityWall game={g} vertex={v.id} assets={assets} />
+                      {v.level > 0 &&
+                        (assets ? (
+                          <image
+                            href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${catanPieceColors[catanColorIndex(g, v.owner)]}-v1.webp`}
+                            x={v.level === 2 ? -20 : -15}
+                            y="-20"
+                            width={v.level === 2 ? 40 : 30}
+                            height="34"
+                            className={
+                              g.players[v.owner]?.eliminated
+                                ? "eliminated-piece"
+                                : ""
+                            }
+                          />
+                        ) : (
+                          <path
+                            className={
+                              g.players[v.owner]?.eliminated
+                                ? "eliminated-piece"
+                                : ""
+                            }
+                            d={
+                              v.level === 2
+                                ? "M-14 10V-5L-5-13L4-5V0H13V10Z"
+                                : "M-10 10V-3L0-12L10-3V10Z"
+                            }
+                            fill={catanSeatColor(g, v.owner)}
+                            stroke="#523829"
+                            strokeWidth="1.8"
+                          />
+                        ))}
+                      <CatanCityPiece game={g} vertex={v.id} assets={assets} />
+                    </g>
                     {ok && <circle r="19" fill="transparent" />}
                   </g>
                 );
@@ -1204,6 +1207,7 @@ export function CatanBoard({
         />
         <CatanTradePowers room={room} act={act} busy={busy} assets={assets} />
         <CatanCityOverview room={room} assets={assets} />
+        {city && <CatanCityEffects room={room} assets={assets} />}
         <CatanCityChoice
           room={room}
           act={act}

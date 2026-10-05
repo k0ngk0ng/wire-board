@@ -421,26 +421,28 @@ export function CatanMerchant({
   if (!m || !t) return null;
   return (
     <g transform={`translate(${t.x - 21},${t.y + 17})`} pointerEvents="none">
-      <title>商人 · 玩家{m.owner + 1} · 持有获得1分</title>
-      <ellipse
-        cy="11"
-        rx="12"
-        ry="5"
-        fill={catanSeatColor(g, m.owner)}
-        stroke="#fff"
-        strokeWidth="2"
-      />
-      {assets ? (
-        <image
-          href={`${assets}/catan/cities-knights/merchant-v1.webp`}
-          x="-10"
-          y="-15"
-          width="20"
-          height="26"
+      <g data-city-merchant>
+        <title>商人 · 玩家{m.owner + 1} · 持有获得1分</title>
+        <ellipse
+          cy="11"
+          rx="12"
+          ry="5"
+          fill={catanSeatColor(g, m.owner)}
+          stroke="#fff"
+          strokeWidth="2"
         />
-      ) : (
-        <text textAnchor="middle">商</text>
-      )}
+        {assets ? (
+          <image
+            href={`${assets}/catan/cities-knights/merchant-v1.webp`}
+            x="-10"
+            y="-15"
+            width="20"
+            height="26"
+          />
+        ) : (
+          <text textAnchor="middle">商</text>
+        )}
+      </g>
     </g>
   );
 }

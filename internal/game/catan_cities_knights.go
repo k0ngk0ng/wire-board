@@ -37,23 +37,25 @@ type CatanCityPending struct {
 	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
-	Layout            string            `json:"layout"`
-	Merchant          *CatanMerchant    `json:"merchant,omitempty"`
-	TradePowers       *CatanTradePowers `json:"tradePowers,omitempty"`
-	EventDie          int               `json:"eventDie"`
-	ProgressDecks     [3][]int          `json:"progressDecks"`
-	Event             *CatanCityEvent   `json:"event,omitempty"`
-	BarbarianPosition int               `json:"barbarianPosition"`
-	RobberStart       int               `json:"robberStart"`
-	FallenCities      []int             `json:"fallenCities"`
-	Knights           []CatanKnight     `json:"knights"`
-	ActionSerial      uint64            `json:"actionSerial"`
-	Rules             string            `json:"rules"`
-	Players           []CatanCityPlayer `json:"players"`
-	Walls             []int             `json:"walls"`
-	Metropolises      [3]int            `json:"metropolises"` // vertex IDs; -1 means unclaimed
-	Invasions         int               `json:"invasions"`
-	Pending           *CatanCityPending `json:"pending,omitempty"`
+	ProgressEventID   uint64               `json:"progressEventId,omitempty"`
+	ProgressEvents    []CatanProgressEvent `json:"progressEvents,omitempty"`
+	Layout            string               `json:"layout"`
+	Merchant          *CatanMerchant       `json:"merchant,omitempty"`
+	TradePowers       *CatanTradePowers    `json:"tradePowers,omitempty"`
+	EventDie          int                  `json:"eventDie"`
+	ProgressDecks     [3][]int             `json:"progressDecks"`
+	Event             *CatanCityEvent      `json:"event,omitempty"`
+	BarbarianPosition int                  `json:"barbarianPosition"`
+	RobberStart       int                  `json:"robberStart"`
+	FallenCities      []int                `json:"fallenCities"`
+	Knights           []CatanKnight        `json:"knights"`
+	ActionSerial      uint64               `json:"actionSerial"`
+	Rules             string               `json:"rules"`
+	Players           []CatanCityPlayer    `json:"players"`
+	Walls             []int                `json:"walls"`
+	Metropolises      [3]int               `json:"metropolises"` // vertex IDs; -1 means unclaimed
+	Invasions         int                  `json:"invasions"`
+	Pending           *CatanCityPending    `json:"pending,omitempty"`
 }
 
 // Internal construction only. Room configuration and expansion UI are not

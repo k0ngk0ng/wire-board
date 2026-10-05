@@ -55,6 +55,7 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 	// back the complete effect, including consumption and the bottom-of-deck return.
 	k.Players[player].Progress = slices.Delete(k.Players[player].Progress, at, at+1)
 	k.returnProgress([]int{a.Card})
+	k.recordProgress("play", player, -1, rule.Track, 1, &a.Card)
 	g.Trade = nil
 	names := []string{"炼金术", "起重机", "工程学", "发明", "灌溉", "医学", "采矿", "道路建设", "锻造", "印刷术", "商业港", "行会征费", "商人", "商船队", "资源垄断", "商品垄断", "外交", "鼓舞", "间谍", "阴谋", "破坏", "征税", "叛变", "宪法", "婚礼"}
 	s.catanLog(player, "使用进步牌「%s」", names[a.Card])

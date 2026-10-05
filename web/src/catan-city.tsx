@@ -235,22 +235,23 @@ export function CatanCityOverview({
       >
         {Array.from({ length: 8 }, (_, i) => (
           <span key={i} className={i <= k.barbarianPosition ? "reached" : ""}>
-            {i === k.barbarianPosition ? (
-              assets ? (
-                <img
-                  src={`${assets}/catan/cities-knights/barbarian-ship-v1.webp`}
-                  alt="蛮族船"
-                />
-              ) : (
-                <Ship size={20} />
-              )
-            ) : i === 7 ? (
-              <Castle size={16} />
-            ) : (
-              i
-            )}
+            {i === 7 ? <Castle size={16} /> : i}
           </span>
         ))}
+        <span
+          className="catan-barbarian-ship"
+          data-city-ship
+          style={{ transform: `translateX(${k.barbarianPosition * 100}%)` }}
+        >
+          {assets ? (
+            <img
+              src={`${assets}/catan/cities-knights/barbarian-ship-v1.webp`}
+              alt="蛮族船"
+            />
+          ) : (
+            <Ship size={20} />
+          )}
+        </span>
       </div>
       <p>
         <Shield size={15} /> 防御 {cityDefense(g)}{" "}
@@ -264,7 +265,11 @@ export function CatanCityOverview({
       {k.invasions === 0 && <small>首次进攻前强盗休眠，掷出7仍需弃牌。</small>}
       <div className="catan-progress-stocks">
         {cityTracks.map((name, i) => (
-          <span key={name} style={{ color: cityTrackColors[i] }}>
+          <span
+            key={name}
+            data-progress-deck={i}
+            style={{ color: cityTrackColors[i] }}
+          >
             {assets && (
               <img
                 src={`${assets}/catan/cities-knights/progress-back-${cityTrackKeys[i]}-v1.webp`}

@@ -2324,7 +2324,7 @@ function Players({ room }: { room: Room }) {
         return (
           <div
             data-player-seat={i}
-            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ?? g.catan?.seafarers?.tribe?.pending?.player ?? g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
+            className={`player-panel ${g.splendor ? "splendor-player" : ""} ${i === (g.catan?.citiesKnights?.pending?.players[0] ?? g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ?? g.catan?.seafarers?.tribe?.pending?.player ?? g.catan?.helperPending?.player ?? g.catan?.goldPending?.claims[0]?.player ?? g.turn) && !g.finished ? "current" : ""} ${i === room.you ? "self" : ""} ${stats?.eliminated ? "eliminated" : ""}`}
             key={p.id}
           >
             <span
