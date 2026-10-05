@@ -3,12 +3,14 @@ package game
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 )
 
 // Resource order is shared by the bank, prices, cards and trade offers.
 var CatanResources = []string{"木材", "砖块", "羊毛", "粮食", "矿石"}
 var catanPrices = map[string][]int{
+	"catan_bridge":         {1, 2, 0, 0, 0},
 	"catan_knight_recruit": {0, 0, 1, 0, 1}, "catan_knight_promote": {0, 0, 1, 0, 1}, "catan_knight_activate": {0, 0, 0, 1, 0},
 	"catan_ship": {1, 0, 1, 0, 0}, "catan_road": {1, 1, 0, 0, 0}, "catan_settlement": {1, 1, 1, 1, 0},
 	"catan_repair_road": {1, 1, 0, 0, 0},
@@ -31,6 +33,7 @@ type CatanVertex struct {
 	Level int     `json:"level"`
 }
 type CatanEdge struct {
+	Bridge  bool  `json:"bridge,omitempty"`
 	Damaged bool  `json:"damaged,omitempty"`
 	Warship bool  `json:"warship,omitempty"`
 	Tiles   []int `json:"tiles,omitempty"`
@@ -193,13 +196,15 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 	}
 	return setup || connected
 }
-func (g *Catan) canRoad(p, id int) bool { return g.canRoute(p, id, false) }
+func (g *Catan) canRoad(p, id int) bool {
+	return (g.Rivers == nil || !slices.Contains(g.Rivers.Map.Bridges, id)) && g.canRoute(p, id, false)
+}
 func (g *Catan) pieces(p int) (roads, settlements, cities int) {
 	if pirates := g.pirateIslands(); pirates != nil && p >= 0 && p < len(pirates.Fortresses) && pirates.Fortresses[p].Strength > 0 {
 		settlements++ // The settlement piece remains reserved on the fortress.
 	}
 	for _, e := range g.Edges {
-		if e.Owner == p && !e.Ship {
+		if e.Owner == p && !e.Ship && !e.Bridge {
 			roads++
 		}
 	}

@@ -46,7 +46,7 @@ func catanRiverNumberRecipe(extended bool) (order, numbers []int) {
 
 func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 	n := len(g.Players)
-	if n < 3 || n > 6 || g.SetupStep != 0 || g.Seafarers != nil || g.BaseSetup != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers || (n > 4) != g.Options.FiveSix {
+	if n < 3 || n > 6 || g.SetupStep != 0 || g.Rivers != nil || g.Seafarers != nil || g.BaseSetup != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers || (n > 4) != g.Options.FiveSix {
 		return nil, errors.New("河流地图仅用于尚未建设的对应人数基础地图")
 	}
 	for _, v := range g.Vertices {

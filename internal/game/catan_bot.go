@@ -117,7 +117,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	}
 	if g.Trade != nil && player != s.Turn && g.Trade.Responses[player] == 0 {
 		a := Action{Type: "catan_trade_reject", Offer: g.Trade.ID}
-		if catanHas(p.Resources, g.Trade.Take) && sum(g.Trade.Give) >= sum(g.Trade.Take) {
+		if catanHas(p.Resources, g.Trade.Take) && g.hasTradeGold(player, g.Trade.GoldTake) && 2*sum(g.Trade.Give)+g.Trade.GoldGive >= 2*sum(g.Trade.Take)+g.Trade.GoldTake {
 			a.Type = "catan_trade_accept"
 		}
 		return a, nil
@@ -142,6 +142,8 @@ func (s *State) catanBot(player int) (Action, error) {
 		return s.catanWorldFishBot(player)
 	case "catan_world_ports":
 		return s.catanWorldPortBot(player)
+	case "catan_rivers_start":
+		return Action{Type: "catan_rivers_start", Tile: g.Rivers.Map.Swamps[0]}, nil
 	case "catan_cloth_start", "catan_wonders_start":
 		origin := g.Robber
 		if g.CitiesKnights != nil {
@@ -310,6 +312,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("no bot action in phase")
 	}
 	choices := []botChoice{}
+	choices = append(choices, g.riverBotChoices(player)...)
 	choices = append(choices, g.repairRoadBotChoices(player)...)
 	choices = append(choices, g.scienceBotChoices(player)...)
 	choices = append(choices, g.tradeProgressBotChoices(player)...)
@@ -369,6 +372,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		for want, n := range cost {
 			if n <= p.Resources[want] || g.Bank[want] == 0 {
 				continue
+			}
+			if r := g.Rivers; r != nil && r.Bought < 2 && r.Gold[player] >= 2 {
+				choices = append(choices, botChoice{Action{Type: "catan_coin_buy", Color: want}, 65 + target.score/20})
 			}
 			for give, rate := range g.rates(player) {
 				if give == want || p.Resources[give]-cost[give] < rate {

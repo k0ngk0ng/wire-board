@@ -1,9 +1,16 @@
 package game
 
+import "slices"
+
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
 	s.catanFishingView(v, player)
+	if g.Rivers != nil {
+		richest, poor := g.riverWealth()
+		v["rivers"].(map[string]any)["richest"] = richest
+		v["rivers"].(map[string]any)["poor"] = poor
+	}
 	v["setupLimit"] = g.SetupLimit()
 	v["victoryTarget"] = g.victoryTarget()
 	delete(v, "revealedEvent")
@@ -160,6 +167,9 @@ func (s *State) catanView(view map[string]any, player int) {
 		p["rates"] = g.rates(i)
 		roads, _, _ := g.pieces(i)
 		p["roadsLeft"] = 15 - roads
+		if g.Rivers != nil {
+			p["bridgesLeft"] = 3 - g.bridgeCount(i)
+		}
 		if g.Seafarers != nil {
 			p["shipsLeft"] = 15 - g.shipCount(i)
 		}
@@ -258,6 +268,17 @@ func (s *State) catanView(view map[string]any, player int) {
 		legal["pirate"] = []int{}
 	}
 	if player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !s.Finished && player == s.Turn {
+		if s.Phase == "catan_rivers_start" && g.Rivers != nil {
+			legal["robber"] = slices.Clone(g.Rivers.Map.Swamps)
+		}
+		if s.Phase == "catan_turn" && g.Rivers != nil {
+			legal["bridges"] = []int{}
+			for _, id := range g.Rivers.Map.Bridges {
+				if g.canBridge(player, id) {
+					legal["bridges"] = append(legal["bridges"], id)
+				}
+			}
+		}
 		if s.Phase == "catan_world_fish" {
 			legal["fishGrounds"] = []int{}
 			for _, coast := range g.worldFishCoasts() {

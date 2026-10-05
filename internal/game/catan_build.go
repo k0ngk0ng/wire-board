@@ -85,6 +85,11 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 			s.catanLog(player, "将村庄 #%d 升级为城市", a.Vertex+1)
 		} else {
 			s.catanLog(player, "建造村庄 #%d", a.Vertex+1)
+			if g.riverVertex(a.Vertex) {
+				if err := s.catanRiverReward(player, 1); err != nil {
+					return err
+				}
+			}
 			s.catanSettleIsland(player, a.Vertex, false)
 		}
 	}
