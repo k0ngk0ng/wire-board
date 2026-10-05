@@ -362,7 +362,12 @@ export type CatanState = {
   fishing?: {
     map: {
       lakes: { tile: number; numbers: number[] }[];
-      grounds: { number: number; edges: number[]; vertices: number[] }[];
+      grounds: {
+        number: number;
+        edges: number[];
+        vertices: number[];
+        seaTile?: number;
+      }[];
     };
     tokens: {
       remaining: number;
@@ -381,6 +386,7 @@ export type CatanState = {
       roads: number[];
       bootTargets: number[];
       progressTracks?: number[];
+      ships?: number[];
     };
   };
   revealedEvent?: CatanRevealedEvent;
