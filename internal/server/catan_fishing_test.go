@@ -13,11 +13,27 @@ import (
 
 func fishingResponseFixture(t *testing.T, r *Room, now time.Time) {
 	t.Helper()
+	fishingResponseVariant(t, r, now, false)
+}
+
+func fishingResponseVariant(t *testing.T, r *Room, now time.Time, city bool) {
+	t.Helper()
 	state, err := game.NewCatanFishing(3, game.CatanOptions{})
+	if city {
+		state, err = game.NewCatanFishingCitiesKnights(3, game.CatanOptions{})
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
 	g := state.Catan
+	if city {
+		g.CitiesKnights.Players[1].Improvements[game.CatanScience] = 3
+		for i := range g.Tiles {
+			if g.Tiles[i].Resource < 5 {
+				g.Tiles[i].Number = 6
+			}
+		}
+	}
 	g.SetupStep, g.TurnSerial = g.SetupLimit(), 1
 	state.Turn, state.Phase = 0, "catan_roll"
 	f := g.Fishing
@@ -47,7 +63,7 @@ func fishingResponseFixture(t *testing.T, r *Room, now time.Time) {
 		if err := next.Apply(0, game.Action{Type: "catan_roll"}); err != nil {
 			t.Fatal(err)
 		}
-		if next.CatanPendingActor() == 1 {
+		if next.CatanPendingActor() == 1 && next.Phase == "catan_fish_replace" {
 			state = &next
 			break
 		}

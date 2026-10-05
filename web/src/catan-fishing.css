@@ -283,3 +283,25 @@
     padding: 1px 2px;
   }
 }
+
+.fish-progress-picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.fish-progress-picker button {
+  padding: 6px 2px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+.fish-progress-picker img {
+  width: 38px;
+  height: 58px;
+  object-fit: contain;
+}
+.fish-progress-picker small {
+  grid-column: 1 / -1;
+  line-height: 1.5;
+}

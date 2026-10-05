@@ -1,6 +1,6 @@
 {
   "checked_on": "2026-10-05",
-  "status": "Internal rules/bots/persistence verified; nine original component assets extracted, uploaded and CDN/hash verified. Combinations and desktop/mobile UI still pending; no public room option.",
+  "status": "Internal fishing rules/bots/persistence and original-art desktop/mobile UI verified; combination implementation ongoing; no public room option.",
   "sources": [
     {
       "source": "../board-expansion-rule-sources.json#catan-traders-2025",
@@ -32,6 +32,21 @@
         52
       ],
       "role": "Aqueduct, pre-invasion fish theft, visible VP for boot, starting fish, no score deduction, cap, separate payments, lake robber, no trading, face-down replacement"
+    },
+    {
+      "source": "../board-expansion-rule-sources.json#catan-fishing-knights-2025",
+      "pdf_pages": [
+        1
+      ],
+      "role": "Official combination: fish excluded from resources/commodities/progress effects; Aqueduct for fish-only production, theft includes commodities, bank only resources, seven fish buys progress, target13/14."
+    },
+    {
+      "source": "../board-expansion-rule-sources.json#catan-fishing-seafarers-2025",
+      "pdf_pages": [
+        1,
+        2
+      ],
+      "role": "Official scenario-specific combinations; pirate blocks coastal fish, free ship and pirate removal, prescribed lake/ground placements, Pirate Islands expressly incompatible. Not implemented by this evidence record."
     }
   ],
   "data": {

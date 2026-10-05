@@ -13,6 +13,7 @@ export const fishActions = [
   ["catan_fish_resource", "领取资源"],
   ["catan_fish_road", "修建道路"],
   ["catan_fish_dev", "购买发展卡"],
+  ["catan_fish_progress", "领取进步牌"],
   ["catan_fish_boot", "传递旧靴子"],
 ] as const;
 
@@ -84,8 +85,23 @@ export function fishAction(
   if (kind === "catan_fish_resource") {
     if (
       color === null ||
+      !Number.isInteger(color) ||
+      color < 0 ||
+      color > 4 ||
       !f.legal.resources.includes(color) ||
       !(g.bank[color] > 0)
+    )
+      return null;
+    action.color = color;
+  } else if (kind === "catan_fish_progress") {
+    if (
+      color === null ||
+      !Number.isInteger(color) ||
+      color < 0 ||
+      color > 2 ||
+      !g.citiesKnights ||
+      !(f.legal.progressTracks || []).includes(color) ||
+      !(g.citiesKnights.progressRemaining[color] > 0)
     )
       return null;
     action.color = color;

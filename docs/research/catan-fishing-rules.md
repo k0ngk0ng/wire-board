@@ -11,8 +11,9 @@ were also checked. Pinned references and data are in
 
 The **internal token economy, map, setup/production pipeline, replacement
 responses, five paid actions, boot passing, bots and persistence** are
-implemented. Fishing is not exposed in room configuration. Original-art UI
-and complete scenario/combination acceptance remain; it is not ready for
+implemented, with original-art desktop/mobile UI verified on local engine fixtures.
+Fishing is not exposed in room configuration; complete scenario/combination
+acceptance remains, and it is not ready for
 public play.
 
 ## Token economy (completed 2026-10-05)
@@ -242,6 +243,18 @@ browser acceptance, room entry, push or deployment occurred in this stage.
 
 ## 前端交互验收（2026-10-05）
 
-原图地图及私有筹码面板已接入，五种支付、传靴子、满额盲换/保留、合法目标与旧选择校验均已验证。六人扩充使用两张两点数湖泊图；沿海渔场按三个顶点定位，不拦截道路/建筑点击。自己的靴子额外目标显示在地图栏，公众只见他人筹码数量。
+原图地图及私有筹码面板已接入，五种支付、传靴子、满额盲换/保留、合法目标与旧选择校验均已验证。六人扩充使用原湖泊四点数（2/3/11/12）和额外湖泊两点数（4/10）；沿海渔场按三个顶点定位，不拦截道路/建筑点击。自己的靴子额外目标显示在地图栏，公众只见他人筹码数量。
 
 本地真实引擎测试牌桌在1440/390/320px完成消费与选择交互、图片加载、无横向溢出、换筹码高亮/标题/120秒提示和观战隐私核验。52项前端测试及构建通过。仅是界面与引擎夹具验收，未开放公开房间、未发布，未完成的组合、动画和整体验收仍需继续；详见总进度文档本阶段记录。
+
+## Fishing + Cities & Knights (2026-10-05)
+
+Pinned the one-page official August 2025 combination PDF in the rule-source manifest and visually checked the page. `NewCatanFishingCitiesKnights` is internal only. It builds the Fishing board, enables C&K components and second-city setup, preserves fish secrecy and the separate token economy, and derives 13/14 victory targets from the saved combination plus boot owner.
+
+The 7-fish action is `catan_fish_progress`, with a public track index and owned token IDs. It draws from the chosen nonempty face-down stack; it never offers hidden individual card identities. The 3-fish action includes commodity-only hands even before the first barbarian attack (per the existing official FAQ); the 4-fish action rejects commodities. Progress cards use the existing immediate-play, public-point, active-player end-of-turn cap and private-view rules. Fish-only production still has a zero resource/commodity production count for Aqueduct. Any capped fish replacements finish before the Aqueduct response starts, without repaying normal production.
+
+Seven new engine tests cover setup, payments, continuations, limits, immediate wins, privacy, progress effects excluding fish and bot independence. Four full 3–6 player bot games completed with per-step conservation and periodic restore. Six HTTP paths and 18 real restarts verify payment phases, permissions/privacy and manual/autoplay/timeout replacement→Aqueduct→original clock recovery; race passes. 53 frontend tests, build and game/server vet pass. Real-engine browser fixtures at1440/320px verified the original three progress-card backs, seven-fish payment, private card receipt and replacement→Aqueduct UI handoff. Full evidence/timings are in the main expansion checklist. No public option or deployment.
+
+Helpers is not silently enabled: the pinned 2022 12-helper rules only expressly list base CATAN and Seafarers plus their extensions. No official Fishing interpretation for the now-absent desert was found, and the current official Helpers FAQ still describes the older 10-character edition. This is an evidence gap, not a claim that every possible unofficial combination is forbidden.
+
+The separately pinned July 2025 Fishing + Seafarers PDF expressly excludes Pirate Islands. Other scenarios have different lake/ground placements and pirate/ship rules, including number-token relocation in Through the Desert; these remain implementation work. Its shipbuilding paragraph says “fish tokens” whereas the base action table prices fish values; preserve this wording issue for implementation review rather than silently changing payment units.

@@ -249,3 +249,41 @@ test("coastal art anchors the original tip and faces outwards in every rotation 
     null,
   );
 });
+
+test("combined progress purchase selects a nonempty public stack, revalidates supply and keeps resources separate", () => {
+  const r = fixture(),
+    g = r.game.catan,
+    f = g.fishing;
+  g.citiesKnights = { progressRemaining: [18, 0, 17] };
+  f.legal.costs.catan_fish_progress = 7;
+  f.legal.actions.push("catan_fish_progress");
+  f.legal.progressTracks = [0, 2];
+  const s = selection({
+    kind: "catan_fish_progress",
+    ids: [0, 21, 22],
+    color: 2,
+  });
+  assert.deepEqual(fishAction(r, s), {
+    type: "catan_fish_progress",
+    tokens: [0, 21, 22],
+    color: 2,
+  });
+  for (const color of [null, -1, 1, 3, 2.5])
+    assert.equal(fishAction(r, { ...s, color }), null);
+  assert.equal(fishAction(r, { ...s, ids: [0, 21] }), null);
+  g.citiesKnights.progressRemaining[2] = 0;
+  assert.equal(fishAction(r, s), null);
+  g.citiesKnights.progressRemaining[2] = 17;
+  f.legal.progressTracks = [0];
+  assert.equal(fishAction(r, s), null);
+  f.legal.progressTracks = [0, 2];
+  delete g.citiesKnights;
+  assert.equal(fishAction(r, s), null);
+  f.legal.resources.push(5);
+  g.bank[5] = 12;
+  // Even a stale or malformed legal list cannot turn the four-fish action into a commodity purchase.
+  assert.equal(
+    fishAction(r, { ...s, kind: "catan_fish_resource", color: 5 }),
+    null,
+  );
+});

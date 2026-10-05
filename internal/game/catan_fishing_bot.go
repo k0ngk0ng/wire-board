@@ -67,8 +67,15 @@ func (s *State) catanFishBotChoices(player int, builds []botChoice, road int) []
 		points := g.Players[target].Score - g.hiddenVictoryPoints(target)
 		add(Action{Type: "catan_fish_steal", Target: target}, 100+points*6)
 	}
-	if len(g.DevDeck) > 0 {
+	if g.CitiesKnights == nil && len(g.DevDeck) > 0 {
 		add(Action{Type: "catan_fish_dev"}, 220)
+	}
+	if k := g.CitiesKnights; k != nil {
+		for track, deck := range k.ProgressDecks {
+			if len(deck) > 0 {
+				add(Action{Type: "catan_fish_progress", Color: track}, 230-track*5)
+			}
+		}
 	}
 	if road >= 0 {
 		add(Action{Type: "catan_fish_road", Edge: road}, 210)
