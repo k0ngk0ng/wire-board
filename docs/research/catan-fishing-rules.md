@@ -434,3 +434,81 @@ Twelve HTTP paths3/4 × ample/scarce × manual/autoplay/timeout use real Apply r
 Full-board real-Go browser QA:390px blind replacement→boot, second fish keep→two grain (choice preserved by66pxcollapse/reopen)→one ore→normal action;320px one-ore bank correctly allows only one ore, skips the next empty-bank claimant with a log, closes the panel and resumes action.320px observer sees waiting only, with no gold controls/private fish faces;1440px displays both gold tiles, ground and separated buildings.26images decode, no overflow or browser errors.
 
 No production/UI source changed in this verification stage. Named browser and Go/Vite stopped; ports5179/8189quiet. Temporary exporter/state JSON/pages/server source/screenshots/profiles/logs removed; shared permanent fixture retained. No asset upload, public entry, push or deployment. Next is the New World5/6recipe/paired-turn audit; the full remaining expansion scope is unchanged.
+
+## New World five/six-player engine and HTTP integration (2026-10-06)
+
+The New World constructor now accepts 3–6 players, with the explicit FiveSix
+option required for five/six. It retains the exact approved map. The 2025
+Seafarers extension p.12 supplies the 63-hex recipe: 21 sea, four gold, seven of
+each ordinary resource, three deserts, 39 number discs and eleven ports (the
+extra special port is wool). T&B extension pp.4–5 supplies paired turns, two
+additional grounds (5 and 9), and fourteen additional fish tokens (4/5/5 of
+values 1/2/3). The July2025 Fishing + Seafarers New World exception still removes
+all lakes. Consequently the complete ground inventory is 4/5/5/6/8/9/9/10 and
+the fish inventory is 15/15/13 plus one boot. No new asset is required: grounds
+reuse the verified original artwork and number faces.
+
+The joint coastline solver now checks the appropriate 10+6 or 11+8 inventory,
+including every intermediate port/ground placement, without altering the map
+or reserving hidden future components. Restored extended layouts must also
+retain the expansion option and paired-turn markers. Other five/six-player
+Fishing + Seafarers recipes and the Fishing + Seafarers + C&K combination remain
+gated. Both setup-panel sentences now use the public server ground total rather
+than hardcoding six.
+
+The shared setup tests cover 3/4/5/6 × eight generated maps: 560 actual Apply or
+timeout placement steps with per-step JSON roundtrips, turn/order assertions,
+hidden future-face permutations, private legal hints and atomic illegal-action
+checks. HTTP setup covers all four counts × manual/autoplay/timeout, 210
+placements and sixty actual service restarts, preserving the approved map,
+private component stacks and fresh120-second placement clocks. Complete engine
+bot games cover all four counts, with resource, development-card, fish-token and
+piece conservation and periodic serialization; extended development supply is34.
+Starting settlement tests now include all four player counts and require exactly
+one fish draw from qualifying second settlements, followed by the normal route
+step. First settlements grant no fish; all entitlements are marked consumed.
+
+`testdata/catan-new-world-five-six.json` is one frozen generated legal random
+map and its complete nineteen-placement plan, **not an official fixed recipe**.
+Focused midgame fixtures replay all placements through Apply, then explicitly
+install distance-legal buildings and declared fish holdings; they do not claim
+the fixture positions arose naturally in a complete game. Sixteen paths cover
+5/6 × doubled5/9 × full/nonfull fish hands × pirate present/absent. Each doubled
+face has one inner-sea ground and one frame ground; a city and settlement earn
+2+1, and the pirate removes only the inner-ground production. Full hands get
+one optional replacement per player, clockwise from the active seat across seat
+zero. Per-response restore, wrong-actor rejection, duplicate-roll rejection,
+resource conservation and no production when entering the second action are
+checked. Separate paths exercise five-fish ship building, seven-fish development
+purchase, new-card prohibition, secondary-to-primary aging, player-trade rejection,
+boot passing, and eight primary/secondary×boot/no-boot immediate twelve-point
+victory cases.
+
+Twelve HTTP response paths (5/6 × rolled5/9 × manual/autoplay/timeout) enter via
+real engine dice/production, then use normal action endpoints/automation. Each
+responder retains an independent120-second window through restart; response
+completion restores the original45seconds, and both paired action handoffs get
+fresh120seconds without producing again. Manual replacement draws the boot;
+the second player declines. Each viewer's fish faces remain private, observers
+cannot act, and invalid actions cannot mutate the room or deadline. The second
+paired player spends expansion-only tokens30+39 (four fish) for an ore card
+without refreshing the clock. The final suite includes six actual restarts per
+path,72in total. A first test assertion incorrectly expected the saved paused-time
+field to clear; the existing clock intentionally retains that field after using
+it to restore the deadline. The assertion was corrected to the documented45seconds;
+no clock implementation was changed.
+
+This stage is engine/service integration. Five/six-player original-art browser
+acceptance and complete Fishing New World HTTP games remain next; prior3/4browser
+evidence does not prove the larger map is usable on mobile. No public room option,
+asset upload, push or deployment is enabled by this stage. The wider original
+expansion scope and final release gate are unchanged.
+
+Validation: related Fishing New World/coastline planner/Seafarers/New World/
+paired/five-six regressions pass (game137.014s, server65.351s); the final extended
+response HTTP suite with expansion-token payment passes race107.051s. After the
+last missing-paired-marker rejection was added, its component/gate test passes
+1.289s and game/server vet passes. All66frontend tests and production build pass;
+the existing >500kB bundle warning remains. No browser or QA server was started
+in this stage. The owned temporary fixture exporter and terminal test logs were
+removed; the permanent regression fixture is retained.

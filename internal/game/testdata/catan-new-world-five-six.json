@@ -1,0 +1,291 @@
+{
+  "fishNumbers": [
+    5,
+    4,
+    5,
+    10,
+    9,
+    6,
+    8,
+    9
+  ],
+  "fishVertices": [
+    78,
+    70,
+    36,
+    44,
+    120,
+    94,
+    92,
+    139
+  ],
+  "layout": {
+    "hexes": [
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 7,
+        "number": 11
+      },
+      {
+        "resource": 4,
+        "number": 11
+      },
+      {
+        "resource": 3,
+        "number": 8
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 4,
+        "number": 8
+      },
+      {
+        "resource": 1,
+        "number": 10
+      },
+      {
+        "resource": 1,
+        "number": 8
+      },
+      {
+        "resource": 1,
+        "number": 5
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 5,
+        "number": 0
+      },
+      {
+        "resource": 7,
+        "number": 9
+      },
+      {
+        "resource": 3,
+        "number": 4
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 2,
+        "number": 12
+      },
+      {
+        "resource": 0,
+        "number": 2
+      },
+      {
+        "resource": 4,
+        "number": 6
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 3,
+        "number": 10
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 3,
+        "number": 10
+      },
+      {
+        "resource": 2,
+        "number": 11
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 1,
+        "number": 4
+      },
+      {
+        "resource": 7,
+        "number": 9
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 0,
+        "number": 8
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 7,
+        "number": 9
+      },
+      {
+        "resource": 2,
+        "number": 5
+      },
+      {
+        "resource": 0,
+        "number": 6
+      },
+      {
+        "resource": 1,
+        "number": 4
+      },
+      {
+        "resource": 4,
+        "number": 8
+      },
+      {
+        "resource": 5,
+        "number": 0
+      },
+      {
+        "resource": 3,
+        "number": 6
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 1,
+        "number": 5
+      },
+      {
+        "resource": 3,
+        "number": 9
+      },
+      {
+        "resource": 0,
+        "number": 3
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 4,
+        "number": 5
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 1,
+        "number": 5
+      },
+      {
+        "resource": 4,
+        "number": 9
+      },
+      {
+        "resource": 0,
+        "number": 6
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 0,
+        "number": 12
+      },
+      {
+        "resource": 4,
+        "number": 2
+      },
+      {
+        "resource": 6,
+        "number": 0
+      },
+      {
+        "resource": 2,
+        "number": 3
+      },
+      {
+        "resource": 2,
+        "number": 11
+      },
+      {
+        "resource": 2,
+        "number": 10
+      },
+      {
+        "resource": 2,
+        "number": 3
+      },
+      {
+        "resource": 0,
+        "number": 4
+      },
+      {
+        "resource": 3,
+        "number": 6
+      },
+      {
+        "resource": 5,
+        "number": 0
+      },
+      {
+        "resource": 6,
+        "number": 0
+      }
+    ]
+  },
+  "portEdges": [
+    141,
+    150,
+    29,
+    181,
+    73,
+    151,
+    152,
+    34,
+    83,
+    129,
+    26
+  ]
+}

@@ -126,7 +126,8 @@ export function CatanWorldFishChoice({
             </div>
           </div>
           <p>
-            轮流安放到海岸凹角，避开港口和已有渔场。六个放完后，由先手开始建村。
+            轮流安放到海岸凹角，避开港口和已有渔场。{setup.total}
+            个放完后，由先手开始建村。
           </p>
           <p>限时 120 秒，超时自动安放。可收起面板查看地图。</p>
           {mine ? (

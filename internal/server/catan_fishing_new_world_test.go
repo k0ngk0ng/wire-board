@@ -11,20 +11,27 @@ import (
 )
 
 func TestCatanFishingNewWorldLayoutHTTPAndRestart(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(fmt.Sprintf("%d/%s", n, mode), func(t *testing.T) {
-				s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "ship")
+				s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "resource")
 				layout, err := game.GenerateCatanNewWorldMap(n)
 				if err != nil {
 					t.Fatal(err)
 				}
-				state, err := game.NewCatanFishingNewWorld(n, game.CatanOptions{}, layout)
+				state, err := game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: n > 4}, layout)
 				if err != nil {
 					t.Fatal(err)
 				}
+				ports, grounds := 10, 6
+				if n > 4 {
+					ports, grounds = 11, 8
+				}
 				first := n - 1
 				state.Turn, state.Catan.StartPlayer = first, first
+				if pair := state.Catan.Paired; pair != nil {
+					pair.Primary, pair.Secondary, pair.Second = first, (first+3)%n, false
+				}
 				s.mu.Lock()
 				r := s.rooms[id]
 				r.Game = state
@@ -55,8 +62,8 @@ func TestCatanFishingNewWorldLayoutHTTPAndRestart(t *testing.T) {
 						t.Fatal("restart changed layout/hidden decks/actor/clock")
 					}
 				}
-				for step := 0; step < 16; step++ {
-					if step == 0 || step == 9 || step == 10 || step == 15 {
+				for step := 0; step < ports+grounds; step++ {
+					if step == 0 || step == ports-1 || step == ports || step == ports+grounds-1 {
 						restart()
 					}
 					r = s.rooms[id]
@@ -70,12 +77,12 @@ func TestCatanFishingNewWorldLayoutHTTPAndRestart(t *testing.T) {
 						f := view["fishing"].(map[string]any)
 						q := f["worldSetup"].(map[string]any)
 						_, shown := q["current"]
-						if q["numbers"] != nil || shown != (step >= 10) || f["tokens"].(map[string]any)["drawPile"] != nil {
+						if q["numbers"] != nil || shown != (step >= ports) || f["tokens"].(map[string]any)["drawPile"] != nil {
 							t.Fatal("unrevealed layout/fish deck exposed")
 						}
 						legal := view["legal"].(map[string]any)
 						grounds, _ := legal["fishGrounds"].([]any)
-						if (len(grounds) > 0) != (step >= 10 && viewer == actor) {
+						if (len(grounds) > 0) != (step >= ports && viewer == actor) {
 							t.Fatal("ground placement permission")
 						}
 					}
@@ -108,13 +115,13 @@ func TestCatanFishingNewWorldLayoutHTTPAndRestart(t *testing.T) {
 					g := r.Game.Catan
 					left := r.TurnDeadline - at.UnixMilli()
 					wantTurn, wantPhase := (first+step+1)%n, "catan_world_ports"
-					if step >= 9 {
-						wantTurn, wantPhase = (first+step-9)%n, "catan_world_fish"
+					if step >= ports-1 {
+						wantTurn, wantPhase = (first+step-ports+1)%n, "catan_world_fish"
 					}
-					if step == 15 {
+					if step == ports+grounds-1 {
 						wantTurn, wantPhase = first, "catan_setup_settlement"
 					}
-					if g.SetupStep != 0 || len(g.Ports) != min(10, step+1) || len(g.Fishing.Map.Grounds) != max(0, step-9) ||
+					if g.SetupStep != 0 || len(g.Ports) != min(ports, step+1) || len(g.Fishing.Map.Grounds) != max(0, step-ports+1) ||
 						r.Game.Turn != wantTurn || r.Game.Phase != wantPhase || left < 120000 || left > 121000 {
 						t.Fatal("one-piece handoff/clock", step, r.Game.Turn, r.Game.Phase, left)
 					}

@@ -58,7 +58,10 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 }
 
 func (g *Catan) fishingSeaSupported() bool {
-	return g.Seafarers != nil && (g.Seafarers.Scenario == "new_world" || g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "cloth" || g.Seafarers.Scenario == "wonders" || (g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe") && !g.Seafarers.Variable) &&
+	if g.Seafarers != nil && g.Seafarers.Scenario == "new_world" {
+		return len(g.Players) >= 3 && len(g.Players) <= 6 && g.CitiesKnights == nil
+	}
+	return g.Seafarers != nil && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "cloth" || g.Seafarers.Scenario == "wonders" || (g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe") && !g.Seafarers.Variable) &&
 		len(g.Players) >= 3 && len(g.Players) <= 4 && g.CitiesKnights == nil
 }
 
