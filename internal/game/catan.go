@@ -959,7 +959,9 @@ func (s *State) AutoCatanPending() {
 		return
 	}
 	if s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
-		_ = s.applyCatan(s.Turn, Action{Type: s.Phase, Tile: g.Robber})
+		if a, err := s.catanBot(s.Turn); err == nil {
+			_ = s.applyCatan(s.Turn, a)
+		}
 		return
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {

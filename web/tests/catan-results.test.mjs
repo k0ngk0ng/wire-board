@@ -62,3 +62,14 @@ test("combined results retain saved scenario score instead of independent thirte
     assert.doesNotMatch(text, /13分|最大骑士军队|隐藏胜利点/);
   }
 });
+
+test("combined wonders retain the alternative four-level victory and require twelve points to lead", () => {
+  const text = catanResultDescription({
+    ...base(),
+    citiesKnights: {},
+    seafarers: { scenario: "wonders", wonders: {}, victoryPoints: 12 },
+  });
+  assert.match(text, /城市与骑士＋卡坦奇迹/);
+  assert.match(text, /4级奇迹.*12分且奇迹等级独自领先/);
+  assert.doesNotMatch(text, /10分|13分/);
+});

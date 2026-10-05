@@ -1,13 +1,18 @@
-import { catanLayoutName, catanScenarioName } from "./catan-scenarios";
+import {
+  catanLayoutName,
+  catanScenarioName,
+  catanScenarioVictory,
+} from "./catan-scenarios";
 import type { CatanRuleContext } from "./catan-rule-context";
 
 export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
+  const wonders = info.scenario === "wonders";
   return (
     <>
       <p>
         <b>
           城市与骑士 · {info.fiveSix ? "5–6 人配对回合" : "3–4 人"} ·{" "}
-          {info.target} 分获胜
+          {catanScenarioVictory(info.scenario, info.target)}
         </b>
       </p>
       {info.scenario && (
@@ -33,7 +38,7 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
         </li>
         <li>
           <b>强盗和城墙：</b>首次蛮族进攻前，掷出 7 仍弃牌，但不移动强盗
-          {info.scenario ? "、海盗" : ""}
+          {info.scenario && !wonders ? "、海盗" : ""}
           或偷牌。每堵城墙花费两砖块，让弃牌上限增加两张，最多三堵；城市被劫掠时失去城墙。
         </li>
         <li>
@@ -53,8 +58,9 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           事件骰与建设等级决定抽牌资格，胜利点牌立即公开。其他牌可在获得当回合使用，数量不限；只有炼金术在掷骰前使用。非当前玩家超过四张立即弃牌，当前玩家在结束行动时弃至四张。进步牌不能交易，使用或弃置后回对应牌堆底部。
         </li>
         <li>
-          <b>获胜：</b>在自己的行动中达到 {info.target}{" "}
-          分。保留最长道路两分，取消最大骑士军队；商人控制权值一分，发展牌中的隐藏胜利点不适用。
+          <b>获胜：</b>在自己的行动中
+          {catanScenarioVictory(info.scenario, info.target)}
+          。保留最长路线两分，取消最大骑士军队；商人控制权值一分，发展牌中的隐藏胜利点不适用。
         </li>
         {info.scenario && (
           <>
@@ -67,12 +73,16 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
               蛮族同时攻击所有岛屿，劫掠先于本次生产；金矿只领取普通资源，城市两张。领取金矿后不再领取引水渠补偿。商人不能放在金矿。
             </li>
             <li>
-              <b>骑士与海盗：</b>
-              骑士可沿己方道路和船只移动，并驱逐相邻强盗或海盗；选择后必须移动指定的棋子。首次进攻前两者都休眠。海盗封锁相邻造船和普通移船，移动后可偷取相邻船只主人一张手牌。
+              <b>骑士与海上路线：</b>
+              {wonders
+                ? "本剧本不使用海盗。骑士可沿己方道路和船只移动。先手选择强盗的沙漠起点，但首次蛮族进攻后强盗才入场。"
+                : "骑士可沿己方道路和船只移动，并驱逐相邻强盗或海盗；选择后必须移动指定的棋子。首次进攻前两者都休眠。海盗封锁相邻造船和普通移船，移动后可偷取相邻船只主人一张手牌。"}
             </li>
             <li>
               <b>进步牌组合：</b>
-              道路建设可免费造两条道路或船只；外交可移除开放道路或船只，己方重放必须保持类型，可搬移海盗旁的船，但不能切断骑士连接。征税只移动强盗。
+              道路建设可免费造两条道路或船只；外交可移除开放道路或船只，己方重放必须保持类型，
+              {!wonders && "可搬移海盗旁的船，"}
+              但不能切断骑士连接。征税只移动强盗。
             </li>
           </>
         )}

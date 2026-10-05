@@ -135,7 +135,7 @@ func (g *Catan) wonderVictory(player int) bool {
 	if level == 4 {
 		return true
 	}
-	if level == 0 || g.Players[player].Score < 10 {
+	if level == 0 || g.Players[player].Score < g.wonderVictoryPoints() {
 		return false
 	}
 	for _, other := range w.Cards {
@@ -144,6 +144,13 @@ func (g *Catan) wonderVictory(player int) bool {
 		}
 	}
 	return true
+}
+
+func (g *Catan) wonderVictoryPoints() int {
+	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {
+		return g.Seafarers.VictoryPoints
+	}
+	return 10
 }
 
 func (g *Catan) wonderBotChoices(player int) []botChoice {
@@ -203,7 +210,13 @@ func (s *State) catanWondersStart(player int, a Action) error {
 	if g.wonders() == nil || g.SetupStep != 0 || s.Phase != "catan_wonders_start" || player != s.Turn || a.Type != "catan_wonders_start" || !slices.Contains(g.wonderStartTiles(), a.Tile) {
 		return errors.New("请由先手选择沙漠地块作为强盗起点")
 	}
-	g.Robber = a.Tile
+	if k := g.CitiesKnights; k != nil {
+		// Select the future origin without waking the robber before invasion.
+		k.RobberStart = a.Tile
+		g.Robber = -1
+	} else {
+		g.Robber = a.Tile
+	}
 	s.Phase = "catan_setup_settlement"
 	s.catanLog(player, "选择沙漠地块 #%d 作为强盗起点，开始放置起始村庄", a.Tile+1)
 	return nil

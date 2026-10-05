@@ -324,7 +324,7 @@ export function CatanCityActions({
       Object.values(g.knightMoves || {}).filter((a) => a.length).length,
     ],
     ["knight_chase", g.legal.knightChase?.length || 0],
-    ...(g.seafarers
+    ...(g.seafarers && !g.seafarers.wonders
       ? [
           ["knight_chase_pirate", g.legal.knightChasePirate?.length || 0] as [
             string,

@@ -238,3 +238,22 @@ test("combined maps retain sea layout and add two points only to waiting recipes
     assert.equal(playing.scenario, scenario);
   }
 });
+
+test("combined wonders use twelve-point threshold and preserve variable sea layout", () => {
+  const room = {
+    capacity: 4,
+    catanCitiesKnights: { layout: "variable" },
+    catanSeafarers: { scenario: "wonders", layout: "fixed" },
+  };
+  assert.equal(catanRuleContext(room).target, 12);
+  assert.equal(catanRuleContext(room).layout, "fixed");
+  room.game = {
+    catan: {
+      players: Array(3).fill({}),
+      citiesKnights: {},
+      seafarers: { scenario: "wonders", layout: "variable", victoryPoints: 12 },
+    },
+  };
+  assert.equal(catanRuleContext(room).target, 12);
+  assert.equal(catanRuleContext(room).layout, "variable");
+});

@@ -539,7 +539,7 @@ export function CatanBoard({
             {pirates
               ? `收复要塞且${targetScore}分获胜`
               : sea?.wonders
-                ? "奇迹4级，或10分且领先"
+                ? `奇迹4级，或${targetScore}分且领先`
                 : `${targetScore}分获胜`}
           </span>
           <div>
