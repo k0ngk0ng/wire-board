@@ -147,10 +147,7 @@ func (g *Catan) wonderVictory(player int) bool {
 }
 
 func (g *Catan) wonderVictoryPoints() int {
-	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {
-		return g.Seafarers.VictoryPoints
-	}
-	return 10
+	return g.victoryTarget()
 }
 
 func (g *Catan) wonderBotChoices(player int) []botChoice {

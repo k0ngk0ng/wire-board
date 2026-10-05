@@ -49,7 +49,7 @@ func (g *Catan) vertexValue(p, v int) int {
 			}
 		}
 	}
-	score := goldValue + g.wonderVertexValue(p, v)
+	score := goldValue + g.wonderVertexValue(p, v) + g.harborVertexValue(p, v)
 	if g.Seafarers != nil && !g.setup() && p < len(g.Seafarers.Seats) {
 		island := g.islandAt(v)
 		if island >= 0 && !slices.Contains(g.Seafarers.Seats[p].SettledIslands, island) {

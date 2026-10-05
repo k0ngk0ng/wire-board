@@ -27,6 +27,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Harbors        *CatanHarbors       `json:"harbors,omitempty"`
 	CitiesKnights  *CatanCitiesKnights `json:"citiesKnights,omitempty"`
 	BaseSetup      *CatanBaseSetup     `json:"baseSetup,omitempty"`
 	GoldPending    *CatanGoldPending   `json:"goldPending,omitempty"`
@@ -175,6 +176,7 @@ func (g *Catan) awardHolder(old, minValue int, values []int) int {
 }
 func (s *State) catanScores() {
 	g := s.Catan
+	s.catanHarborsScore()
 	roads, knights := []int{}, []int{}
 	for i := range g.Players {
 		g.Players[i].RoadLength = g.roadLength(i)
@@ -211,6 +213,9 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = g.hiddenVictoryPoints(i)
+		if g.Harbors != nil && g.Harbors.Owner == i {
+			p.Score += 2
+		}
 		if k := g.CitiesKnights; k != nil {
 			p.Score += k.Players[i].DefenderPoints + k.Players[i].ProgressPoints
 			if k.Merchant != nil && k.Merchant.Owner == i {
@@ -264,13 +269,7 @@ func (s *State) catanVictory() {
 	if p := g.pirateIslands(); p != nil && (s.Turn >= len(p.Fortresses) || p.Fortresses[s.Turn].Strength > 0) {
 		return
 	}
-	goal := 10
-	if g.CitiesKnights != nil {
-		goal = 13
-	}
-	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {
-		goal = g.Seafarers.VictoryPoints
-	}
+	goal := g.victoryTarget()
 	if !g.setup() && !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= goal {
 		s.Finished = true
 		s.Phase = "finished"
@@ -312,7 +311,7 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
-	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil {
+	if s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err

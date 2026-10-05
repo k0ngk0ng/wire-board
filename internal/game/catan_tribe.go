@@ -142,6 +142,12 @@ func (s *State) catanPlaceTribePort(player int, a Action) error {
 	g.Ports = append(g.Ports, CatanPort{Edge: a.Edge, Resource: resource})
 	t.HeldPorts[player] = append(t.HeldPorts[player][:a.Slot], t.HeldPorts[player][a.Slot+1:]...)
 	s.catanLog(player, "在海岸 #%d 安放%s，可立即使用", a.Edge+1, catanPortName(resource))
+	s.catanScores()
+	s.catanVictory()
+	if s.Finished {
+		t.Pending = nil
+		return nil
+	}
 	if len(t.HeldPorts[player]) > 0 && len(g.tribePortEdges(player)) > 0 {
 		return nil
 	}
@@ -175,7 +181,7 @@ func (s *State) catanTribePortBot(player int) (Action, error) {
 			}
 		}
 		for _, edge := range g.tribePortEdges(player) {
-			choices = append(choices, botChoice{Action{Type: "catan_port", Slot: slot, Edge: edge}, value})
+			choices = append(choices, botChoice{Action{Type: "catan_port", Slot: slot, Edge: edge}, value + g.harborPortValue(player, edge)})
 		}
 	}
 	return s.botLegal(player, choices)
