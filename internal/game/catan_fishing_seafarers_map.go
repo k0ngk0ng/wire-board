@@ -98,6 +98,10 @@ func (g *Catan) FishingCoasts() []CatanFishingCoast {
 	if g.Seafarers == nil {
 		return []CatanFishingCoast{}
 	}
+	if g.Seafarers.Scenario == "fog" {
+		coasts, _ := g.fishingFogCoasts()
+		return coasts
+	}
 	return g.fishingCoasts(g.findIslands())
 }
 func (g *Catan) fishingFourIslandGroups() ([]int, []int, error) {

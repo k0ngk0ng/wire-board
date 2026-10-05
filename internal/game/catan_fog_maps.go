@@ -4,8 +4,8 @@ import "errors"
 
 // 2025 Seafarers, pages 8–9. The white hexes are locations to reveal, not
 // preassigned hidden tiles: their contents come from the separate shuffled pile.
-func (g *Catan) makeSeafarersFogThree() error {
-	rows := [][]seaTerrain{
+func catanFogThreeRows() [][]seaTerrain {
+	return [][]seaTerrain{
 		{{CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {1, 6}, {0, 11}},
 		{{CatanFog, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {0, 5}, {3, 3}},
 		{{CatanSea, 0}, {CatanSea, 0}, {CatanSea, 0}, {CatanFog, 0}, {CatanSea, 0}, {2, 8}, {2, 9}},
@@ -14,12 +14,16 @@ func (g *Catan) makeSeafarersFogThree() error {
 		{{CatanSea, 0}, {4, 8}, {3, 10}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}},
 		{{CatanSea, 0}, {2, 12}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}},
 	}
+}
+
+func (g *Catan) makeSeafarersFogThree() error {
+	rows := catanFogThreeRows()
 	ports := []seaPort{{0, 3, 4, -1}, {0, 4, 5, 2}, {2, 6, 4, 3}, {3, 5, 5, -1}, {3, 0, 1, 4}, {4, 1, 1, 0}, {5, 2, 0, 1}, {6, 1, 2, -1}}
 	return g.makeFogMap(rows, ports, [2]int{6, 1}, []int{0, 1, 1, 2, 3, 3, 4, 4, 6, 6, 7, 7}, []int{3, 3, 4, 5, 6, 8, 9, 10, 11, 12})
 }
 
-func (g *Catan) makeSeafarersFogFour() error {
-	rows := [][]seaTerrain{
+func catanFogFourRows() [][]seaTerrain {
+	return [][]seaTerrain{
 		{{CatanFog, 0}, {CatanSea, 0}, {1, 4}, {3, 10}, {4, 3}},
 		{{CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}, {2, 9}, {0, 6}, {1, 12}},
 		{{CatanSea, 0}, {CatanSea, 0}, {CatanFog, 0}, {CatanSea, 0}, {CatanSea, 0}, {2, 10}, {4, 8}},
@@ -28,6 +32,10 @@ func (g *Catan) makeSeafarersFogFour() error {
 		{{1, 9}, {2, 8}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}, {CatanSea, 0}},
 		{{2, 2}, {0, 5}, {CatanSea, 0}, {CatanFog, 0}, {CatanFog, 0}},
 	}
+}
+
+func (g *Catan) makeSeafarersFogFour() error {
+	rows := catanFogFourRows()
 	ports := []seaPort{{0, 2, 4, 2}, {0, 3, 4, 3}, {0, 4, 5, -1}, {2, 6, 4, 1}, {4, 6, 4, -1}, {3, 0, 2, 0}, {4, 0, 1, 4}, {6, 0, 2, -1}, {6, 0, 0, -1}}
 	return g.makeFogMap(rows, ports, [2]int{1, 5}, []int{0, 1, 1, 2, 3, 3, 4, 4, 6, 6, 7, 7}, []int{3, 4, 5, 6, 8, 9, 10, 11, 11, 12})
 }
