@@ -52,6 +52,10 @@ import {
   catanBankReason,
 } from "./catan-cards";
 import { CatanNewWorldPortChoice } from "./catan-new-world";
+import {
+  CatanWorldFishChoice,
+  CatanWorldFishPreview,
+} from "./catan-world-fishing";
 import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import {
@@ -149,6 +153,7 @@ export const catanPhases: Record<string, string> = {
   catan_cloth_start: "选择初始强盗位置",
   catan_wonders_start: "选择初始强盗位置",
   catan_world_ports: "轮流放置随机港口",
+  catan_world_fish: "轮流安放随机渔场",
   catan_cloth_steal: "选择偷取资源或布匹",
   catan_roads: "免费修建道路、船只或修复受损道路",
   catan_helper: "等待助手选择",
@@ -481,30 +486,32 @@ export function CatanBoard({
     progressMode ||
     (phase === "catan_cloth_start" || phase === "catan_wonders_start"
       ? "robber_start"
-      : phase === "catan_port" || phase === "catan_world_ports"
-        ? "port"
-        : phase === "catan_setup_city"
-          ? "city"
-          : phase === "catan_setup_settlement"
-            ? "settlement"
-            : phase === "catan_setup_road" || phase === "catan_roads"
-              ? sea &&
-                (mode === "ship" ||
-                  (mode !== "repair_road" &&
-                    !g.legal.repairRoads?.length &&
-                    !g.legal.roads.length &&
-                    (g.legal.ships?.length || 0) > 0))
-                ? "ship"
-                : phase === "catan_roads" && g.legal.repairRoads?.length
-                  ? "repair_road"
-                  : "road"
-              : phase === "catan_robber"
+      : phase === "catan_world_fish"
+        ? "fish_ground"
+        : phase === "catan_port" || phase === "catan_world_ports"
+          ? "port"
+          : phase === "catan_setup_city"
+            ? "city"
+            : phase === "catan_setup_settlement"
+              ? "settlement"
+              : phase === "catan_setup_road" || phase === "catan_roads"
                 ? sea &&
-                  (city?.chase === "pirate" ||
-                    (!city?.chase && mode === "pirate"))
-                  ? "pirate"
-                  : "robber"
-                : mode);
+                  (mode === "ship" ||
+                    (mode !== "repair_road" &&
+                      !g.legal.repairRoads?.length &&
+                      !g.legal.roads.length &&
+                      (g.legal.ships?.length || 0) > 0))
+                  ? "ship"
+                  : phase === "catan_roads" && g.legal.repairRoads?.length
+                    ? "repair_road"
+                    : "road"
+                : phase === "catan_robber"
+                  ? sea &&
+                    (city?.chase === "pirate" ||
+                      (!city?.chase && mode === "pirate"))
+                    ? "pirate"
+                    : "robber"
+                  : mode);
   const affordable = (type: string) =>
     costs[type].every((n, c) => hand[c] >= n);
   const submit = async (a: Record<string, unknown>) => {
@@ -583,6 +590,7 @@ export function CatanBoard({
   const selectableVertex = (id: number) =>
     (mine || cityChoiceMine) &&
     ((effective === "progress_vertex" && progressTargets.includes(id)) ||
+      (effective === "fish_ground" && !!g.legal.fishGrounds?.includes(id)) ||
       (effective === "settlement" && g.legal.settlements.includes(id)) ||
       (effective === "city" && g.legal.cities.includes(id)) ||
       (!!city && (cityVertices[effective] || []).includes(id)));
@@ -886,38 +894,34 @@ export function CatanBoard({
               <CatanDesertRegions game={g} />
               <CatanFleetPath game={g} />
               <CatanTribeRewards game={g} assets={assets} />
-              {portLayout.map(
-                ({ port, unclaimed, a, b, px, py, size }) => {
-                  return (
-                    <g
-                      key={port.edge}
-                      className={`catan-port ${unclaimed ? "unclaimed" : ""}`}
-                    >
-                      <line x1={a.x} y1={a.y} x2={px} y2={py} />
-                      <line x1={b.x} y1={b.y} x2={px} y2={py} />
-                      {assets ? (
-                        <image
-                          href={`${assets}/catan/port-${port.resource < 0 ? "any" : terrainResourceKeys[port.resource]}-v1.webp`}
-                          x={px - size / 2}
-                          y={py - size / 2}
-                          width={size}
-                          height={size}
-                        />
-                      ) : (
-                        <circle cx={px} cy={py} r="20" fill="#f4e6c5" />
-                      )}
-                      <title>
-                        {unclaimed
-                          ? "待领取：造船或移船到此领取。"
-                          : "已安放："}
-                        {port.resource < 0
-                          ? "通用港口，3:1"
-                          : catanNames[port.resource] + "港口，2:1"}
-                      </title>
-                    </g>
-                  );
-                },
-              )}
+              {portLayout.map(({ port, unclaimed, a, b, px, py, size }) => {
+                return (
+                  <g
+                    key={port.edge}
+                    className={`catan-port ${unclaimed ? "unclaimed" : ""}`}
+                  >
+                    <line x1={a.x} y1={a.y} x2={px} y2={py} />
+                    <line x1={b.x} y1={b.y} x2={px} y2={py} />
+                    {assets ? (
+                      <image
+                        href={`${assets}/catan/port-${port.resource < 0 ? "any" : terrainResourceKeys[port.resource]}-v1.webp`}
+                        x={px - size / 2}
+                        y={py - size / 2}
+                        width={size}
+                        height={size}
+                      />
+                    ) : (
+                      <circle cx={px} cy={py} r="20" fill="#f4e6c5" />
+                    )}
+                    <title>
+                      {unclaimed ? "待领取：造船或移船到此领取。" : "已安放："}
+                      {port.resource < 0
+                        ? "通用港口，3:1"
+                        : catanNames[port.resource] + "港口，2:1"}
+                    </title>
+                  </g>
+                );
+              })}
               <CatanFishingGrounds
                 g={g}
                 assets={assets}
@@ -1119,13 +1123,19 @@ export function CatanBoard({
                 setup={setup}
                 focus={wonderFocus}
               />
+              <CatanWorldFishPreview
+                room={room}
+                assets={assets}
+                vertex={chosen?.type === "fish_ground" ? chosen.id : null}
+              />
               {g.vertices.map((v) => {
                 const ok = selectableVertex(v.id),
                   picked =
                     (progressMode === "progress_vertex" &&
                       !!progress?.picks.includes(v.id)) ||
                     (chosen?.id === v.id &&
-                      (chosen.type === "city" ||
+                      (chosen.type === "fish_ground" ||
+                        chosen.type === "city" ||
                         chosen.type === "settlement" ||
                         !!cityActionNames[chosen.type]));
                 return (
@@ -1136,7 +1146,7 @@ export function CatanBoard({
                     transform={`translate(${v.x},${v.y}) scale(${pieceScale})`}
                     role={ok ? "button" : undefined}
                     tabIndex={ok ? 0 : undefined}
-                    aria-label={`${cityActionNames[effective] || "交点"} ${v.id + 1}${v.level > 0 ? "，" + (v.owner < 0 ? "中立" : room.seats[v.owner].name + "的") + (v.level === 2 ? "城市" : "村庄") : ""}`}
+                    aria-label={`${effective === "fish_ground" ? "渔场凹角" : cityActionNames[effective] || "交点"} ${v.id + 1}${v.level > 0 ? "，" + (v.owner < 0 ? "中立" : room.seats[v.owner].name + "的") + (v.level === 2 ? "城市" : "村庄") : ""}`}
                     onClick={() => ok && select(effective, v.id)}
                     onKeyDown={(e) => {
                       if (ok && (e.key === "Enter" || e.key === " ")) {
@@ -1226,39 +1236,43 @@ export function CatanBoard({
                         ? portMine
                           ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
                           : "等待港口安放 · 滚轮缩放 · 按住拖动"
-                        : phase === "catan_card_event"
-                          ? eventMine
-                            ? "请完成事件牌选择 · 可收起面板查看地图"
-                            : "等待事件牌回应 · 滚轮缩放 · 按住拖动"
-                          : phase === "catan_gold"
-                            ? canPlay &&
-                              g.goldPending?.claims[0]?.player === you
-                              ? "请在金矿面板领取资源 · 可收起面板查看地图"
-                              : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
-                            : mine
-                              ? effective === "helper_move" ||
-                                effective === "move_ship"
-                                ? moveFrom === null
-                                  ? effective === "move_ship"
-                                    ? "选择要移动的己方末端旧船"
-                                    : "选择要迁移的己方末端道路"
-                                  : "选择亮起的新位置，再确认移动"
-                                : effective === "ship"
-                                  ? "点击虚线选择船只位置，再确认建造"
-                                  : effective === "pirate"
-                                    ? "选择另一块海洋，或将海盗移至外海"
-                                    : effective === "repair_road"
-                                      ? "点击受损道路，再确认修复"
-                                      : effective === "road"
-                                        ? "点击虚线选择道路，再确认建造"
-                                        : effective === "settlement" ||
-                                            effective === "city"
-                                          ? "点击亮起的交点，再确认建造"
-                                          : effective === "robber" ||
-                                              effective === "helper_desert"
-                                            ? "点击地块选择强盗的新位置"
-                                            : "选择右侧行动 · 滚轮缩放 · 按住拖动"
-                              : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
+                        : phase === "catan_world_fish"
+                          ? mine
+                            ? "选择亮起的凹角，预览后确认渔场 · 可收起面板查看地图"
+                            : "等待渔场安放 · 滚轮缩放 · 按住拖动"
+                          : phase === "catan_card_event"
+                            ? eventMine
+                              ? "请完成事件牌选择 · 可收起面板查看地图"
+                              : "等待事件牌回应 · 滚轮缩放 · 按住拖动"
+                            : phase === "catan_gold"
+                              ? canPlay &&
+                                g.goldPending?.claims[0]?.player === you
+                                ? "请在金矿面板领取资源 · 可收起面板查看地图"
+                                : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
+                              : mine
+                                ? effective === "helper_move" ||
+                                  effective === "move_ship"
+                                  ? moveFrom === null
+                                    ? effective === "move_ship"
+                                      ? "选择要移动的己方末端旧船"
+                                      : "选择要迁移的己方末端道路"
+                                    : "选择亮起的新位置，再确认移动"
+                                  : effective === "ship"
+                                    ? "点击虚线选择船只位置，再确认建造"
+                                    : effective === "pirate"
+                                      ? "选择另一块海洋，或将海盗移至外海"
+                                      : effective === "repair_road"
+                                        ? "点击受损道路，再确认修复"
+                                        : effective === "road"
+                                          ? "点击虚线选择道路，再确认建造"
+                                          : effective === "settlement" ||
+                                              effective === "city"
+                                            ? "点击亮起的交点，再确认建造"
+                                            : effective === "robber" ||
+                                                effective === "helper_desert"
+                                              ? "点击地块选择强盗的新位置"
+                                              : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+                                : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
       <aside className="catan-actions">
@@ -1527,6 +1541,7 @@ export function CatanBoard({
             chosen.type,
           ) &&
           chosen.type !== "port" &&
+          chosen.type !== "fish_ground" &&
           chosen.type !== "robber_start" &&
           (mine || cityChoiceMine) && (
             <section className="catan-confirm" aria-label="确认行动">
@@ -1908,6 +1923,14 @@ export function CatanBoard({
           busy={busy}
           act={act}
           edge={chosen?.type === "port" ? chosen.id : null}
+          clear={() => setChosen(null)}
+        />
+        <CatanWorldFishChoice
+          room={room}
+          assets={assets}
+          busy={busy}
+          act={act}
+          vertex={chosen?.type === "fish_ground" ? chosen.id : null}
           clear={() => setChosen(null)}
         />
         <CatanTribePortChoice

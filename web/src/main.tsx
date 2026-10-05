@@ -2810,25 +2810,29 @@ function Turn({
                   : setup
                     ? "正在自动选牌"
                     : "已超时"
-                : setup
-                  ? "共同选牌限时"
-                  : g.sanguosha?.pending && !g.sanguosha.selecting
-                    ? "响应限时 20 秒"
-                    : fishResponder(room) !== undefined
-                      ? "捕鱼换筹码 120 秒"
-                      : g.catan?.cardEvent
-                        ? "事件牌响应 120 秒"
-                        : g.catan?.citiesKnights?.pending
-                          ? "城市与骑士响应 120 秒"
-                          : g.catan?.seafarers?.pirateIslands?.raid
-                            ? "防守奖励 120 秒"
-                            : g.catan?.seafarers?.tribe?.pending
-                              ? "港口安放 120 秒"
-                              : g.catan?.helperPending
-                                ? "助手选择 120 秒"
-                                : g.catan?.goldPending
-                                  ? "金矿选择 120 秒"
-                                  : "每回合 120 秒"}
+                : g.phase === "catan_world_fish"
+                  ? "渔场安放 120 秒"
+                  : g.phase === "catan_world_ports"
+                    ? "港口安放 120 秒"
+                    : setup
+                      ? "共同选牌限时"
+                      : g.sanguosha?.pending && !g.sanguosha.selecting
+                        ? "响应限时 20 秒"
+                        : fishResponder(room) !== undefined
+                          ? "捕鱼换筹码 120 秒"
+                          : g.catan?.cardEvent
+                            ? "事件牌响应 120 秒"
+                            : g.catan?.citiesKnights?.pending
+                              ? "城市与骑士响应 120 秒"
+                              : g.catan?.seafarers?.pirateIslands?.raid
+                                ? "防守奖励 120 秒"
+                                : g.catan?.seafarers?.tribe?.pending
+                                  ? "港口安放 120 秒"
+                                  : g.catan?.helperPending
+                                    ? "助手选择 120 秒"
+                                    : g.catan?.goldPending
+                                      ? "金矿选择 120 秒"
+                                      : "每回合 120 秒"}
             </span>
           </div>
           {expired &&
