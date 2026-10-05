@@ -48,3 +48,17 @@ test("seafarer results retain scenario thresholds and alternate victory conditio
     /最后留在/,
   );
 });
+
+test("combined results retain saved scenario score instead of independent thirteen points", () => {
+  for (const target of [14, 15, 16]) {
+    const text = catanResultDescription({
+      ...base(),
+      citiesKnights: {},
+      seafarers: { victoryPoints: target },
+    });
+    assert.ok(text.includes(`${target}分`));
+    assert.match(text, /航海家＋城市与骑士/);
+    assert.match(text, /本剧本的额外得分/);
+    assert.doesNotMatch(text, /13分|最大骑士军队|隐藏胜利点/);
+  }
+});

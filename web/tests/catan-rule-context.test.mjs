@@ -200,3 +200,41 @@ test("waiting base layout changes the quick reference but cannot override a runn
   room.catanSeafarers = { scenario: "fog", layout: "fixed" };
   assert.equal(catanRuleContext(room).fixedBase, false);
 });
+
+test("combined maps retain sea layout and add two points only to waiting recipes", () => {
+  for (const [scenario, target] of [
+    ["shores", 16],
+    ["islands", 15],
+    ["fog", 14],
+    ["desert", 16],
+    ["new_world", 14],
+  ]) {
+    const room = {
+      capacity: 6,
+      catanCitiesKnights: { layout: "variable" },
+      catanSeafarers: {
+        scenario,
+        layout: scenario === "new_world" ? "prepared" : "fixed",
+      },
+    };
+    const waiting = catanRuleContext(room);
+    assert.equal(waiting.target, target);
+    assert.equal(waiting.layout, room.catanSeafarers.layout);
+    assert.equal(
+      waiting.scenario,
+      scenario === "islands" ? "six_islands" : scenario,
+    );
+    room.game = {
+      catan: {
+        players: Array(3).fill({}),
+        citiesKnights: { layout: "variable" },
+        seafarers: { scenario, layout: "fixed", victoryPoints: target },
+      },
+    };
+    room.catanSeafarers = { scenario: "shores", layout: "variable" };
+    const playing = catanRuleContext(room);
+    assert.equal(playing.target, target); // Never add the two-point adjustment twice.
+    assert.equal(playing.layout, "fixed");
+    assert.equal(playing.scenario, scenario);
+  }
+});

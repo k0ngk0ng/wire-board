@@ -310,6 +310,8 @@ export type CatanCitiesKnights = {
   progressEvents?: CatanProgressEvent[];
   rules: string;
   layout?: string;
+  chase?: "robber" | "pirate";
+  pirateStart?: number;
   barbarianPosition: number;
   eventDie: number;
   invasions: number;
@@ -335,6 +337,7 @@ export type CatanCitiesKnights = {
     track: number;
     target: number;
     color: number;
+    ship?: boolean;
     knight?: CatanKnight;
     resources?: number[];
     progress?: number[];
@@ -515,6 +518,7 @@ export type CatanState = {
     knightActivate?: number[];
     knightPromote?: number[];
     knightChase?: number[];
+    knightChasePirate?: number[];
     knightRetreat?: number[];
     pillage?: number[];
     settlements: number[];
