@@ -44,3 +44,30 @@ func TestCatanTwoResponseClockPauseAndRestore(t *testing.T) {
 		})
 	}
 }
+
+func TestCatanTwoTradeClockPauseAndRestore(t *testing.T) {
+	for _, resume := range []string{"catan_roll", "catan_turn"} {
+		t.Run(resume, func(t *testing.T) {
+			now := time.Unix(2000000000, 0)
+			r := Room{Status: "playing", TurnDeadline: now.Add(45 * time.Second).UnixMilli(), Game: &game.State{Kind: "catan", Turn: 1, Phase: "catan_two_trade", Catan: &game.Catan{SetupStep: 4, Two: &game.CatanTwo{Sequence: 1, Spent: true, Trade: &game.CatanTwoTrade{Resume: resume, Drawn: []int{0, 1, 0, 0, 1}}}}}}
+			if !r.adjustCatanResponseClock(resume, -1, 4, now) || r.TurnDeadline != now.Add(120*time.Second).UnixMilli() || r.CatanTimeLeft != 45000 || r.Game.CatanPendingActor() != 1 {
+				t.Fatal("trade choice did not pause original clock")
+			}
+			b, _ := json.Marshal(r)
+			var restored Room
+			if err := json.Unmarshal(b, &restored); err != nil {
+				t.Fatal(err)
+			}
+			r = restored
+			if !r.adjustCatanResponseClock("catan_two_trade", 1, 4, now.Add(30*time.Second)) || r.TurnDeadline != now.Add(120*time.Second).UnixMilli() {
+				t.Fatal("restore renewed trade response")
+			}
+			r.Game.Catan.Two.Trade = nil
+			r.Game.Phase = resume
+			at := now.Add(120 * time.Second)
+			if !r.adjustCatanResponseClock("catan_two_trade", 1, 4, at) || r.TurnDeadline != at.Add(45*time.Second).UnixMilli() || r.Game.CatanPendingActor() != -1 {
+				t.Fatal("trade response did not restore remaining time")
+			}
+		})
+	}
+}

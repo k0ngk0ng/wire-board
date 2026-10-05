@@ -50,7 +50,9 @@ func twoCoreRoll(t *testing.T, s *State, a, b int) error {
 	if err := next.catanTwoRoll(a, b); err != nil {
 		return err
 	}
-	next.catanTwoAfterAction(s, Action{Type: "catan_roll"})
+	if err := next.catanTwoAfterAction(s, Action{Type: "catan_roll"}); err != nil {
+		return err
+	}
 	if err := next.validateCatanTwo(); err != nil {
 		return err
 	}
@@ -277,7 +279,15 @@ func TestCatanTwoCorePaidBuildsAndPrivateChoices(t *testing.T) {
 			catanGive(s.Catan, p, c, max(0, n-s.Catan.Players[p].Resources[c]))
 		}
 		before := slices.Clone(s.Catan.Players[p].Resources)
+		tokens := slices.Clone(s.Catan.Two.Tokens)
+		reward := 0
+		if a.Type == "catan_settlement" {
+			reward = s.Catan.twoSettlementTokens(p, a.Vertex)
+		}
 		helperApply(t, s, p, a)
+		if s.Catan.Two.Tokens[p] != tokens[p]+reward || s.Catan.Two.Tokens[1-p] != tokens[1-p] {
+			t.Fatal("paid construction token reward")
+		}
 		if s.Catan.Two.Pending == nil {
 			t.Fatal("paid construction did not require neutral")
 		}
@@ -311,6 +321,9 @@ func TestCatanTwoCorePaidBuildsAndPrivateChoices(t *testing.T) {
 			t.Fatal("neutral bot used rival hand/deck")
 		}
 		helperApply(t, s, p, bot)
+		if s.Catan.Two.Tokens[p] != tokens[p]+reward || s.Catan.Two.Tokens[1-p] != tokens[1-p] {
+			t.Fatal("neutral build awarded tokens")
+		}
 		helperReject(t, s, p, bot)
 		twoCoreRestore(t, s)
 		if vertex >= 0 {
@@ -320,6 +333,9 @@ func TestCatanTwoCorePaidBuildsAndPrivateChoices(t *testing.T) {
 				catanGive(s.Catan, p, c, max(0, n-s.Catan.Players[p].Resources[c]))
 			}
 			helperApply(t, s, p, Action{Type: "catan_city", Vertex: vertex})
+			if s.Catan.Two.Tokens[p] != tokens[p]+reward {
+				t.Fatal("city awarded settlement tokens again")
+			}
 			if s.Catan.Two.Pending != nil || s.Catan.Two.Sequence != sequence {
 				t.Fatal("city triggered neutral build")
 			}
@@ -380,7 +396,7 @@ func TestCatanTwoCoreNeutralAwardUsesNeutralName(t *testing.T) {
 func TestCatanTwoCoreNeutralTakesRealLongestPoints(t *testing.T) {
 	s := twoNeutralFixture(t)
 	g := s.Catan
-	g.Two = &CatanTwo{Rolls: []int{2, 12}, Sequence: 1, Pending: &CatanTwoPending{Kind: "road", Resume: "catan_turn"}}
+	g.Two = &CatanTwo{Tokens: []int{5, 5}, Bank: 10, Rolls: []int{2, 12}, Sequence: 1, Pending: &CatanTwoPending{Kind: "road", Resume: "catan_turn"}}
 	g.SetupStep = g.SetupLimit()
 	s.Phase = "catan_two_build"
 	v := g.Tiles[0].Vertices[4]

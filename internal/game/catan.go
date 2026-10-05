@@ -299,6 +299,8 @@ func (s *State) catanNext() {
 	g := s.Catan
 	if g.Two != nil {
 		g.Two.Rolls = []int{}
+		g.Two.Spent = false
+		g.Two.KnightExchanged = false
 	}
 	if g.Caravans != nil {
 		g.Caravans.Built = false
@@ -354,7 +356,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
 		}
-		next.catanTwoAfterAction(s, a)
+		if err := next.catanTwoAfterAction(s, a); err != nil {
+			return err
+		}
 		if err := next.validateCatanTwo(); err != nil {
 			return err
 		}
@@ -376,6 +380,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	g := s.Catan
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
+	}
+	if g.Two != nil && g.Two.Trade != nil {
+		return s.catanTwoReturn(player, a)
 	}
 	if g.Two != nil && g.Two.Pending != nil {
 		return s.catanTwoBuild(player, a)
@@ -436,6 +443,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_two_trade", "catan_two_robber", "catan_two_knight":
+		return s.catanTwoTokenAction(player, a)
 	case "catan_bridge":
 		return s.catanBuildBridge(player, a)
 	case "catan_coin_buy", "catan_coin_sell":
@@ -1077,6 +1086,12 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if g.Two != nil && g.Two.Trade != nil {
+		if a, err := s.catanTwoReturnBot(s.Turn); err == nil {
+			_ = s.applyCatan(s.Turn, a)
+		}
 		return
 	}
 	if g.Two != nil && g.Two.Pending != nil {

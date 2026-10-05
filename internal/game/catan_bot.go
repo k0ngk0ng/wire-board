@@ -79,6 +79,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive bot seat")
 	}
 	p := g.Players[player]
+	if g.Two != nil && g.Two.Trade != nil {
+		return s.catanTwoReturnBot(player)
+	}
 	if g.Two != nil && g.Two.Pending != nil {
 		return s.catanTwoBot(player)
 	}
@@ -130,6 +133,9 @@ func (s *State) catanBot(player int) (Action, error) {
 	}
 	if player != s.Turn {
 		return Action{}, errors.New("inactive bot seat")
+	}
+	if a, ok := s.catanTwoOptionalBot(player); ok {
+		return a, nil
 	}
 	bestVertex := func(setup bool) int {
 		best, score := -1, -1

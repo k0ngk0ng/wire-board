@@ -7,8 +7,15 @@ func (s *State) catanView(view map[string]any, player int) {
 	v := view["catan"].(map[string]any)
 	if q := g.Two; q != nil {
 		public := v["two"].(map[string]any)
-		public["canAct"] = !s.Finished && q.Pending != nil && player == s.Turn
+		public["canAct"] = !s.Finished && (q.Pending != nil || q.Trade != nil) && player == s.Turn
 		public["actor"] = s.CatanPendingActor()
+		if q.Trade != nil && player != s.Turn {
+			delete(public["trade"].(map[string]any), "drawn")
+		}
+		if player >= 0 && player < len(g.Players) {
+			public["cost"] = g.twoTokenCost(player)
+			public["tokenWindow"] = s.catanTwoTokenWindow(player)
+		}
 		if q.Pending != nil && !s.Finished {
 			public["choices"] = g.twoNeutralChoices(q.Pending.Kind)
 		}
