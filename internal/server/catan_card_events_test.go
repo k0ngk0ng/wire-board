@@ -96,7 +96,7 @@ func cardEventHTTPAction(t *testing.T, state *game.State) game.Action {
 				}
 			}
 		}
-		if g.CardEvent.Kind == "plentiful_year" {
+		if g.CardEvent.Kind == "plentiful_year" || g.CardEvent.Kind == "calm_seas" || g.CardEvent.Kind == "tournament" {
 			return game.Action{Type: "catan_event_resource", Take: []int{1, 0, 0, 0, 0}}
 		}
 		if g.CardEvent.Kind == "robber_flees" {

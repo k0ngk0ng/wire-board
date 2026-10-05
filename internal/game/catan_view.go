@@ -173,7 +173,7 @@ func (s *State) catanView(view map[string]any, player int) {
 		switch q.Kind {
 		case "earthquake":
 			legal["earthquakeRoads"] = g.earthquakeRoads(player)
-		case "plentiful_year":
+		case "plentiful_year", "calm_seas", "tournament":
 			for color, count := range g.Bank[:5] {
 				if count > 0 {
 					legal["eventResources"] = append(legal["eventResources"], color)

@@ -21,6 +21,7 @@ var catanCardEventNames = map[string]string{
 	"beautiful_day": "美好的一天", "earthquake": "地震", "plentiful_year": "丰收年",
 	"epidemic": "瘟疫", "robber_attacks": "强盗袭击", "robber_flees": "强盗逃跑",
 	"good_neighbors": "好邻居",
+	"calm_seas":      "风平浪静", "tournament": "比武大会",
 }
 
 func (g *Catan) earthquakeRoads(player int) []int {
@@ -89,6 +90,9 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "good_neighbors" {
 		g.beginNeighborGifts(next.Turn)
 	}
+	if kind == "calm_seas" || kind == "tournament" {
+		g.CardEvent.Players = g.cardEventLeaders(kind, next.Turn)
+	}
 	if kind == "robber_flees" {
 		if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
 			next.catanLog(next.Turn, "强盗尚未入场，保持休眠")
@@ -127,10 +131,10 @@ func (s *State) catanContinueCardEvent() error {
 			switch q.Kind {
 			case "earthquake":
 				canChoose = len(g.earthquakeRoads(p)) > 0
-			case "plentiful_year":
+			case "plentiful_year", "calm_seas", "tournament":
 				canChoose = sum(g.Bank[:5]) > 0
 				if !canChoose {
-					s.catanLog(p, "丰收年：银行没有剩余普通资源，无法领取")
+					s.catanLog(p, "%s：银行没有剩余普通资源，无法领取", catanCardEventNames[q.Kind])
 				}
 			case "robber_flees":
 				canChoose = len(g.fleeDeserts()) > 0
@@ -182,12 +186,12 @@ func (s *State) catanCardEventChoice(player int, a Action) error {
 		if err := s.catanDamageRoad(player, a.Edge); err != nil {
 			return err
 		}
-	case "plentiful_year":
+	case "plentiful_year", "calm_seas", "tournament":
 		if a.Type != "catan_event_resource" || !catanBundle(a.Take) || sum(a.Take) != 1 || !catanHas(g.Bank, a.Take) {
 			return errors.New("请选择银行中一张普通资源，不能选择商品")
 		}
 		catanMove(g.Bank, g.Players[player].Resources, a.Take)
-		s.catanLog(player, "丰收年：领取 %s", catanText(a.Take))
+		s.catanLog(player, "%s：领取 %s", catanCardEventNames[q.Kind], catanText(a.Take))
 	case "robber_flees":
 		if a.Type != "catan_robber_flees" || !slices.Contains(g.fleeDeserts(), a.Tile) {
 			return errors.New("请选择强盗逃往的沙漠")
@@ -206,7 +210,7 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 	if q == nil || s.Phase != "catan_card_event" || len(q.Players) == 0 || q.Players[0] != player {
 		return Action{}, errors.New("inactive card-event response seat")
 	}
-	if q.Kind == "plentiful_year" && sum(g.Bank[:5]) > 0 {
+	if (q.Kind == "plentiful_year" || q.Kind == "calm_seas" || q.Kind == "tournament") && sum(g.Bank[:5]) > 0 {
 		return Action{Type: "catan_event_resource", Take: g.catanResourceChoiceBot(player, 1)}, nil
 	}
 	if q.Kind == "good_neighbors" {
