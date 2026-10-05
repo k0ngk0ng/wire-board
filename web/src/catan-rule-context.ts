@@ -1,4 +1,4 @@
-import type { Room } from "./types";
+import type { Room, CatanState } from "./types";
 
 // Running games are authoritative: a stale room draft must never change the
 // rules shown for a saved game. Waiting rooms use the approved configuration.
@@ -7,6 +7,7 @@ export function catanRuleContext(room: Room) {
   const sea = game?.seafarers;
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
   const citiesKnights = !!citySetup;
+  const harbors = game ? !!game.harbors : !!room.catanHarbors?.enabled;
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
@@ -30,6 +31,7 @@ export function catanRuleContext(room: Room) {
       "fixed";
   return {
     citiesKnights,
+    harbors,
     scenario,
     layout,
     players,
@@ -41,7 +43,9 @@ export function catanRuleContext(room: Room) {
     fiveSix: game ? !!game.paired || !!options.fiveSix : !!options.fiveSix,
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,
-    target: sea?.victoryPoints || catanVictoryTarget(scenario, citiesKnights),
+    target: game
+      ? catanSavedVictoryTarget(game)
+      : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
   };
 }
 
@@ -67,4 +71,25 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
     : citiesKnights
       ? 13
       : 10;
+}
+
+// New views provide the server-derived target; old saves retain the fallback.
+export function catanSavedVictoryTarget(g: CatanState) {
+  if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
+  const sea = g.seafarers;
+  const scenario =
+    sea?.scenario ||
+    (sea?.wonders
+      ? "wonders"
+      : sea?.cloth
+        ? "cloth"
+        : sea?.pirateIslands
+          ? "pirate_islands"
+          : sea?.newWorld
+            ? "new_world"
+            : "");
+  return (
+    (sea?.victoryPoints || catanVictoryTarget(scenario, !!g.citiesKnights)) +
+    (g.harbors ? 1 : 0)
+  );
 }

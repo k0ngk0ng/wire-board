@@ -1,3 +1,5 @@
+import { CatanHarborsPicker, CatanHarborsSeat } from "./catan-harbors";
+import { catanRuleContext } from "./catan-rule-context";
 import { CatanCitySeat } from "./catan-city";
 import { CatanCitiesKnightsSetup } from "./catan-cities-knights-setup";
 import { CatanBasePicker } from "./catan-base-setup";
@@ -2159,7 +2161,7 @@ function Waiting({
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
-                  ? `${room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${seaInfo ? catanScenarioVictory(seaInfo.id, seaInfo.victoryPoints) : room.catanCitiesKnights ? "13分获胜" : room.catanNewWorldMap ? "12分获胜" : "10分获胜"}`
+                  ? `${room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2169,6 +2171,13 @@ function Waiting({
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
         {room.kind === "catan" && <CatanCitiesKnightsSetup room={room} />}
+        {room.kind === "catan" && (
+          <CatanHarborsPicker
+            room={room}
+            disabled={!host || busy || mapDirty}
+            command={command}
+          />
+        )}
         {room.kind === "catan" && (
           <CatanBasePicker
             room={room}
@@ -2188,6 +2197,7 @@ function Waiting({
             value={room.catanOptions}
             seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
             citiesKnights={!!room.catanCitiesKnights}
+            harbors={!!room.catanHarbors?.enabled}
             disabled={!host || busy || mapDirty}
             onChange={(catanOptions) =>
               command("catan_options", { catanOptions })
@@ -2422,6 +2432,12 @@ function Players({ room }: { room: Room }) {
                       {g.catan.seafarers ? "路线" : "道路"}{" "}
                       {g.catan.players[i].roadLength} · 骑士{" "}
                       {g.catan.players[i].knights}
+                    </>
+                  )}
+                  {g.catan.harbors && (
+                    <>
+                      <br />
+                      <CatanHarborsSeat game={g.catan} seat={i} />
                     </>
                   )}
                   {g.catan.seafarers?.cloth && (

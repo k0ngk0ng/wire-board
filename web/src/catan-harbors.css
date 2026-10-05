@@ -1,0 +1,46 @@
+.catan-harbors-options p {
+  color: #514a39;
+  line-height: 1.6;
+  font-size: 13px;
+}
+.catan-harbors-options strong {
+  display: block;
+  color: #72551c;
+  margin: 8px 0;
+}
+.catan-harbors-seat {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  color: #345b64;
+  margin-top: 3px;
+}
+.catan-harbors-seat b {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #72500b;
+  background: #fff0b8;
+  padding: 2px 5px;
+  border: 1px solid #bc9446;
+  border-radius: 5px;
+}
+.catan-harbors-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 8px;
+  padding: 7px 10px;
+  background: #f8efd9;
+  color: #55452c;
+  font-size: 12px;
+  border-bottom: 1px solid #d9c9a2;
+}
+.catan-harbors-status span {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.catan-harbors-status svg {
+  flex-shrink: 0;
+}

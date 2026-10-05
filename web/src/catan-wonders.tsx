@@ -1,3 +1,4 @@
+import { catanSavedVictoryTarget } from "./catan-rule-context";
 import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
@@ -294,7 +295,7 @@ export function CatanWondersPanel({
         </header>
         <p>
           建至 <b>4级</b> 即获胜，或{" "}
-          <b>{game.seafarers?.victoryPoints || 10}分且等级领先</b>。
+          <b>{catanSavedVictoryTarget(game)}分且等级领先</b>。
         </p>
         {own && ownRule ? (
           <button
@@ -529,7 +530,7 @@ export function CatanWondersPanel({
                       <summary>本剧本规则</summary>
                       <p>
                         在自己的行动中，将奇迹建至4级即获胜；或者达到
-                        {game.seafarers?.victoryPoints || 10}
+                        {catanSavedVictoryTarget(game)}
                         分，且已建等级严格高于其他所有玩家。并列不算领先，尚未建造也不能获胜。
                       </p>
                       <p>

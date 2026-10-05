@@ -45,6 +45,7 @@ type Seat struct {
 	Left     bool `json:"left"`
 }
 type Room struct {
+	CatanHarbors           *game.CatanHarborsSetup       `json:"catanHarbors,omitempty"`
 	CatanCitiesKnights     *game.CatanCitiesKnightsSetup `json:"catanCitiesKnights,omitempty"`
 	CatanBaseConfiguration *game.CatanBaseConfiguration  `json:"catanBaseConfiguration,omitempty"`
 	CatanSeafarers         *game.CatanSeafarersSetup     `json:"catanSeafarers,omitempty"`
@@ -518,7 +519,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
@@ -530,6 +531,11 @@ func summary(r *Room) map[string]any {
 			})
 			for i := range choices {
 				choices[i].VictoryPoints += 2
+			}
+		}
+		if r.CatanHarbors != nil && r.CatanHarbors.Enabled {
+			for i := range choices {
+				choices[i].VictoryPoints++
 			}
 		}
 		result["catanSeafarersChoices"] = choices
@@ -712,6 +718,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanHarbors           *game.CatanHarborsSetup       `json:"catanHarbors"`
 		CatanCitiesKnights     *game.CatanCitiesKnightsSetup `json:"catanCitiesKnights"`
 		CatanNewWorldMap       *game.CatanNewWorldMap        `json:"catanNewWorldMap"`
 		CatanSeafarers         *game.CatanSeafarersSetup     `json:"catanSeafarers"`
@@ -840,6 +847,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "catan_harbors":
+		if next.Host != u.ID || next.CatanHarbors == nil || req.CatanHarbors == nil {
+			err = errors.New("只有房主能在已启用港口霸主设置的房间调整变体")
+			break
+		}
+		err = next.setCatanHarbors(*req.CatanHarbors)
 	case "catan_cities_knights":
 		if next.Host != u.ID || next.CatanCitiesKnights == nil || req.CatanCitiesKnights == nil {
 			err = errors.New("只有房主能在已启用城市与骑士的房间调整设置")
@@ -885,6 +898,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		options, optionErr := game.NormalizeCatanOptions(req.CatanOptions)
 		err = optionErr
+		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && (options.Helpers || options.AllHelpers) {
+			err = errors.New("港口霸主与助手的组合尚未核验")
+		}
 		if err == nil && next.CatanCitiesKnights != nil {
 			if options.Helpers || options.AllHelpers {
 				err = errors.New("Helpers尚无与城市与骑士组合的官方兼容规则")
@@ -1043,6 +1059,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					next.Game, err = game.NewCatanNewWorldWithMap(len(next.Seats), next.CatanOptions, next.CatanNewWorldMap)
 				} else {
 					next.Game, err = game.NewCatan(len(next.Seats), next.CatanOptions)
+				}
+				if err == nil && next.CatanHarbors != nil {
+					err = next.Game.ConfigureCatanHarbors(*next.CatanHarbors)
 				}
 			} else if next.Kind == "sanguosha" {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)

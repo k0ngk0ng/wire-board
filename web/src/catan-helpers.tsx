@@ -10,12 +10,14 @@ export function CatanOptionPicker({
   disabled = false,
   seafarers = false,
   citiesKnights = false,
+  harbors = false,
 }: {
   value?: CatanOptions;
   onChange: (v: CatanOptions) => void;
   disabled?: boolean;
   seafarers?: boolean;
   citiesKnights?: boolean;
+  harbors?: boolean;
 }) {
   return (
     <fieldset className="catan-helper-options" disabled={disabled}>
@@ -28,7 +30,7 @@ export function CatanOptionPicker({
         />{" "}
         五至六人扩充 · 新版配对回合
       </label>
-      {!citiesKnights && (
+      {!citiesKnights && !harbors && (
         <label>
           <input
             type="checkbox"
@@ -44,7 +46,7 @@ export function CatanOptionPicker({
           Helpers · 十二位助手
         </label>
       )}
-      {!citiesKnights && value.helpers && (
+      {!citiesKnights && !harbors && value.helpers && (
         <label>
           <input
             type="checkbox"
@@ -64,7 +66,7 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {!citiesKnights && value.helpers && (
+      {!citiesKnights && !harbors && value.helpers && (
         <small>
           使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
         </small>

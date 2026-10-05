@@ -11,9 +11,26 @@ import (
 
 // Only the waiting selection is provisioned. Start, manual moves, autoplay and
 // timeout handling are production paths; no running game state is substituted.
-func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
-	for _, n := range []int{5, 6} {
+func TestCatanBaseFixedFullHTTPGames(t *testing.T)   { testCatanBaseFullHTTPGames(t, false) }
+func TestCatanHarborsBaseFullHTTPGames(t *testing.T) { testCatanBaseFullHTTPGames(t, true) }
+func testCatanBaseFullHTTPGames(t *testing.T, harbors bool) {
+	players := []int{5, 6}
+	if harbors {
+		players = []int{3, 6}
+	}
+	for _, n := range players {
+		layout, target, neutralWant := "fixed", 10, (6-n)*2
+		rules := "catan-base-5-6-2025"
+		if n < 5 {
+			layout, rules, neutralWant = "variable", "catan-base-2025", 0
+		}
+		if harbors {
+			target++
+		}
 		for _, helpers := range []bool{false, true} {
+			if harbors && helpers {
+				continue
+			}
 			t.Run(fmt.Sprintf("%d/helpers=%v", n, helpers), func(t *testing.T) {
 				s, ts := setupServer(t)
 				stopBotTicker(s)
@@ -22,18 +39,21 @@ func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
 					clients[i] = newClient(t, ts.URL)
 					clients[i].register(fmt.Sprintf("固定布局%d", i))
 				}
-				raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "固定布局整局", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: true, Helpers: helpers, AllHelpers: helpers}}, 201)
+				raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "固定布局整局", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers}}, 201)
 				id := raw["id"].(string)
 				for i := 1; i < n; i++ {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
-				provisionCatanBase(t, s, id, "fixed")
+				provisionCatanBase(t, s, id, layout)
+				if harbors {
+					provisionCatanHarbors(t, s, id)
+				}
 				for i := 0; i < n; i++ {
 					clients[i].command(current(clients[i]), "ready", nil, 200)
 				}
 				clients[0].command(current(clients[0]), "start", nil, 200)
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
-				if s.rooms[id].Game.Phase != "catan_roll" {
+				if layout == "fixed" && s.rooms[id].Game.Phase != "catan_roll" {
 					t.Fatal("fixed layout started manual setup")
 				}
 				restart := func() {
@@ -63,7 +83,7 @@ func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
 					room := s.rooms[id]
 					state := room.Game
 					g := state.Catan
-					if g.Paired.Second && !restartedPaired {
+					if g.Paired != nil && g.Paired.Second && !restartedPaired {
 						restart()
 						restartedPaired = true
 						room = s.rooms[id]
@@ -108,7 +128,7 @@ func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
 							if _, leak := v["devDeck"]; leak {
 								t.Fatal("deck order leaked")
 							}
-							if v["baseSetup"].(map[string]any)["layout"] != "fixed" {
+							if v["baseSetup"].(map[string]any)["layout"] != layout {
 								t.Fatal("public layout disappeared")
 							}
 							for i, raw := range v["players"].([]any) {
@@ -148,7 +168,7 @@ func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
 					t.Fatal("fixed game did not finish", steps, room.Game.Phase)
 				}
 				winner := room.Game.Winners[0]
-				if room.Game.Catan.Players[winner].Score < 10 || automatic == 0 || !restartedPaired {
+				if room.Game.Catan.Players[winner].Score < target || automatic == 0 || (n > 4 && !restartedPaired) {
 					t.Fatal("victory or paired/autoplay coverage missing")
 				}
 				if restartedPending && timeouts == 0 {
@@ -160,7 +180,7 @@ func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
 						neutral++
 					}
 				}
-				if neutral != (6-n)*2 {
+				if neutral != neutralWant {
 					t.Fatal("neutral villages changed")
 				}
 				code, profile := clients[n].request("GET", "/api/players/"+room.Seats[winner].ID, nil)
@@ -169,8 +189,11 @@ func TestCatanBaseFixedFullHTTPGames(t *testing.T) {
 				}
 				match := profile["history"].([]any)[0].(map[string]any)
 				stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
-				if stats["wins"] != float64(1) || stats["played"] != float64(1) || match["catanLayout"] != "fixed" || match["catanRules"] != "catan-base-5-6-2025" {
+				if stats["wins"] != float64(1) || stats["played"] != float64(1) || match["catanLayout"] != layout || match["catanRules"] != rules {
 					t.Fatal("fixed results not archived")
+				}
+				if harbors && (room.Game.Catan.Harbors == nil || match["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules) {
+					t.Fatal("harbor rules missing from game/history")
 				}
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{"leave": true}, 200)
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 400)
