@@ -337,6 +337,15 @@ export function CatanFishingPanel({
               })}
             </div>
           )}
+          {mine &&
+            g.seafarers?.cloth &&
+            !g.seafarers.cloth.villages.some((v) =>
+              (v.traders || []).includes(room.you),
+            ) && (
+              <p className="fish-notice">
+                与布匹村落建立贸易后，才可用2鱼驱离海盗。
+              </p>
+            )}
           {!room.spectating && room.you >= 0 && (
             <div className="fish-own-hand">
               <p>
