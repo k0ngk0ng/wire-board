@@ -99,6 +99,9 @@ func (f catanFishingMap) validateDesert(g *Catan) error {
 // Production and AI use all publicly printed number discs. A matched hex
 // produces once, regardless of which of its two numbers was rolled.
 func (g *Catan) tileProduces(t CatanTile, number int) bool {
+	if g.Rivers != nil && g.Rivers.Map.DoubleNumberTile == t.ID && number == 2 {
+		return true
+	}
 	if t.Number == number {
 		return true
 	}
@@ -114,8 +117,11 @@ func (g *Catan) tileProduces(t CatanTile, number int) bool {
 
 func (g *Catan) tileNumberWeight(t CatanTile) int {
 	weight := 0
+	if g.Rivers != nil && g.Rivers.Map.DoubleNumberTile == t.ID {
+		weight++
+	}
 	if t.Number >= 2 && t.Number <= 12 && t.Number != 7 {
-		weight = 6 - absCatan(7-t.Number)
+		weight += 6 - absCatan(7-t.Number)
 	}
 	if g.Fishing != nil {
 		for _, extra := range g.Fishing.Map.ExtraNumbers {

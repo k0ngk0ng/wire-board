@@ -13,7 +13,7 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		r.startTurnClock(now)
 		return true
 	}
-	if (previousPhase == "catan_cloth_start" || previousPhase == "catan_wonders_start") && r.Game.Phase == "catan_setup_settlement" {
+	if (previousPhase == "catan_rivers_start" || previousPhase == "catan_cloth_start" || previousPhase == "catan_wonders_start") && r.Game.Phase == "catan_setup_settlement" {
 		r.startTurnClock(now)
 		return true
 	}

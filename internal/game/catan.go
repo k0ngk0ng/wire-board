@@ -20,6 +20,8 @@ type CatanPlayer struct {
 	Eliminated bool             `json:"eliminated,omitempty"`
 }
 type CatanTrade struct {
+	GoldGive  int   `json:"goldGive,omitempty"`
+	GoldTake  int   `json:"goldTake,omitempty"`
 	ID        int   `json:"id"`
 	From      int   `json:"from"`
 	Give      []int `json:"give"`
@@ -27,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Rivers         *CatanRivers         `json:"rivers,omitempty"`
 	Fishing        *CatanFishing        `json:"fishing,omitempty"`
 	RevealedEvent  *CatanRevealedEvent  `json:"revealedEvent,omitempty"`
 	CardEvent      *CatanCardEvent      `json:"cardEvent,omitempty"`
@@ -188,7 +191,7 @@ func (s *State) catanScores() {
 		knights = append(knights, g.Players[i].Knights)
 	}
 	routeName := "最长道路"
-	if g.Seafarers != nil {
+	if g.Seafarers != nil || g.Rivers != nil {
 		routeName = "最长路线"
 	}
 	oldRoad, oldArmy := g.LongestOwner, g.ArmyOwner
@@ -216,7 +219,7 @@ func (s *State) catanScores() {
 	}
 	for i := range g.Players {
 		p := &g.Players[i]
-		p.Score = g.hiddenVictoryPoints(i)
+		p.Score = g.hiddenVictoryPoints(i) + g.riverPoints(i)
 		if g.Harbors != nil && g.Harbors.Owner == i {
 			p.Score += 2
 		}
@@ -284,6 +287,9 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
+	if g.Rivers != nil {
+		g.Rivers.Bought = 0
+	}
 	if g.CitiesKnights != nil {
 		g.CitiesKnights.ActionSerial++
 		g.CitiesKnights.TradePowers = nil
@@ -315,15 +321,21 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.Catan.validateRivers(); err != nil {
+		return err
+	}
 	if err := s.Catan.validateFishing(); err != nil {
 		return err
 	}
-	if s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
 		}
 		if err := next.catanPirateSeven(); err != nil {
+			return err
+		}
+		if err := next.Catan.validateRivers(); err != nil {
 			return err
 		}
 		*s = next
@@ -368,6 +380,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	}
 	p := &g.Players[player]
 	if g.setup() {
+		if s.Phase == "catan_rivers_start" {
+			return s.catanRiversStart(a)
+		}
 		if s.Phase == "catan_world_fish" {
 			return s.catanWorldFish(player, a)
 		}
@@ -386,6 +401,10 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanHelperAction(player, a)
 	}
 	switch a.Type {
+	case "catan_bridge":
+		return s.catanBuildBridge(player, a)
+	case "catan_coin_buy", "catan_coin_sell":
+		return s.catanCoins(player, a)
 	case "catan_fish_robber", "catan_fish_pirate", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_ship", "catan_fish_dev", "catan_fish_progress", "catan_fish_boot":
 		return s.catanFishAction(player, a)
 	case "catan_commercial_offer":
@@ -549,6 +568,11 @@ func (s *State) catanSetup(a Action) error {
 		g.Vertices[a.Vertex].Level = 1
 		if want == "catan_city" {
 			g.Vertices[a.Vertex].Level = 2
+		}
+		if want == "catan_settlement" && g.riverVertex(a.Vertex) {
+			if err := s.catanRiverReward(p, 1); err != nil {
+				return err
+			}
 		}
 		g.SetupVertex = a.Vertex
 		s.catanSettleIsland(p, a.Vertex, true)
@@ -951,7 +975,7 @@ func (s *State) catanOffer(p int, a Action) error {
 	if g.Paired != nil && g.Paired.Second {
 		return errors.New("配对玩家不能与其他玩家自由交易，可使用银行或港口")
 	}
-	if s.Phase != "catan_turn" || !g.cardBundle(a.Give) || !g.cardBundle(a.Take) || sum(a.Give) == 0 || sum(a.Take) == 0 || !catanHas(g.Players[p].Resources, a.Give) {
+	if s.Phase != "catan_turn" || !g.cardBundle(a.Give) || !g.cardBundle(a.Take) || (!g.validTradeGold(a.GoldGive) || !g.validTradeGold(a.GoldTake)) || sum(a.Give)+a.GoldGive == 0 || sum(a.Take)+a.GoldTake == 0 || !g.hasTradeGold(p, a.GoldGive) || (a.GoldGive > 0 && a.GoldTake > 0) || !catanHas(g.Players[p].Resources, a.Give) {
 		return errors.New("请提出有效交易，且持有要支付的资源")
 	}
 	for i := range a.Give {
@@ -960,8 +984,8 @@ func (s *State) catanOffer(p int, a Action) error {
 		}
 	}
 	g.TradeID++
-	g.Trade = &CatanTrade{g.TradeID, p, append([]int{}, a.Give...), append([]int{}, a.Take...), make([]int, len(g.Players))}
-	s.catanLog(p, "提出交易：给出 %s，换取 %s", catanText(a.Give), catanText(a.Take))
+	g.Trade = &CatanTrade{ID: g.TradeID, From: p, Give: append([]int{}, a.Give...), Take: append([]int{}, a.Take...), Responses: make([]int, len(g.Players)), GoldGive: a.GoldGive, GoldTake: a.GoldTake}
+	s.catanLog(p, "提出交易：给出 %s，换取 %s", catanTradeText(a.Give, a.GoldGive), catanTradeText(a.Take, a.GoldTake))
 	return nil
 }
 func (s *State) catanRespondTrade(p int, a Action) error {
@@ -971,7 +995,7 @@ func (s *State) catanRespondTrade(p int, a Action) error {
 		return errors.New("这笔交易已结束或不能回应自己的交易")
 	}
 	if a.Type == "catan_trade_accept" {
-		if !catanHas(g.Players[p].Resources, t.Take) {
+		if !catanHas(g.Players[p].Resources, t.Take) || !g.hasTradeGold(p, t.GoldTake) {
 			return errors.New("持有资源不足")
 		}
 		t.Responses[p] = 1
@@ -988,13 +1012,21 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 		return errors.New("请选择已接受本次交易的玩家")
 	}
 	from, to := g.Players[p].Resources, g.Players[target].Resources
-	if !catanHas(from, t.Give) || !catanHas(to, t.Take) {
+	if !catanHas(from, t.Give) || !catanHas(to, t.Take) || !g.hasTradeGold(p, t.GoldGive) || !g.hasTradeGold(target, t.GoldTake) {
 		return errors.New("玩家资源已变化，请重新提出交易")
 	}
 	catanMove(from, to, t.Give)
 	catanMove(to, from, t.Take)
-	s.catanLog(p, "与玩家 %d 完成交易：给出 %s，获得 %s", target+1, catanText(t.Give), catanText(t.Take))
+	if r := g.Rivers; r != nil {
+		r.Gold[p] += t.GoldTake - t.GoldGive
+		r.Gold[target] += t.GoldGive - t.GoldTake
+	}
+	s.catanLog(p, "与玩家 %d 完成交易：给出 %s，获得 %s", target+1, catanTradeText(t.Give, t.GoldGive), catanTradeText(t.Take, t.GoldTake))
 	g.Trade = nil
+	if g.Rivers != nil {
+		s.catanScores()
+		s.catanVictory()
+	}
 	return nil
 }
 func (s *State) AutoCatanPending() {
@@ -1042,7 +1074,7 @@ func (s *State) AutoCatanPending() {
 		}
 		return
 	}
-	if s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
+	if s.Phase == "catan_rivers_start" || s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
 		if a, err := s.catanBot(s.Turn); err == nil {
 			_ = s.applyCatan(s.Turn, a)
 		}
@@ -1125,9 +1157,16 @@ func (s *State) EliminateCatan(p int) error {
 	if err := g.validateFishing(); err != nil {
 		return err
 	}
+	if err := g.validateRivers(); err != nil {
+		return err
+	}
 	s.catanReturnFishing(p)
 	pl := &g.Players[p]
 	pl.Eliminated = true
+	if r := g.Rivers; r != nil {
+		r.Bank += r.Gold[p]
+		r.Gold[p] = 0
+	}
 	if k := g.CitiesKnights; k != nil {
 		// Platform timeout removal is outside the board-game rules. Recover
 		// mobile pieces so nobody can later wait on this absent seat to retreat.

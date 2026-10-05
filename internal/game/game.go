@@ -8,6 +8,8 @@ import (
 )
 
 type Action struct {
+	GoldGive int        `json:"goldGive,omitempty"`
+	GoldTake int        `json:"goldTake,omitempty"`
 	Dota     *DotaOrder `json:"dota,omitempty"`
 	Cards    []int      `json:"cards"`
 	Targets  []int      `json:"targets"`

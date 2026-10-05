@@ -116,7 +116,7 @@ func (s *State) CatanPendingActor() int {
 	if s.Phase == "catan_world_ports" || s.Phase == "catan_world_fish" {
 		return s.Turn
 	}
-	if s.Phase == "catan_cloth_steal" || s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
+	if s.Phase == "catan_rivers_start" || s.Phase == "catan_cloth_steal" || s.Phase == "catan_cloth_start" || s.Phase == "catan_wonders_start" {
 		return s.Turn
 	}
 	if t := g.tribe(); t != nil && t.Pending != nil {
