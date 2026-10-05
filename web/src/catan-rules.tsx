@@ -1,3 +1,4 @@
+import { CatanHarborsRules } from "./catan-harbors";
 import { CatanCitiesKnightsRules } from "./catan-cities-knights-rules";
 import type { Room } from "./types";
 import "./catan-rules.css";
@@ -210,6 +211,7 @@ export function CatanRules({ room }: { room: Room }) {
     return (
       <>
         <CatanCitiesKnightsRules info={info} />
+        {info.harbors && <CatanHarborsRules />}
         {scenario && (
           <>
             <h4>本剧本规则</h4>
@@ -236,6 +238,7 @@ export function CatanRules({ room }: { room: Room }) {
         {seafarers && info.layout ? ` · ${catanLayoutName(info.layout)}` : ""}。
         {catanScenarioVictory(scenario, info.target)}。
       </p>
+      {info.harbors && <CatanHarborsRules />}
       {!cloth && <p>达标获胜在自己的行动阶段判定。</p>}
       {seafarers && (
         <>

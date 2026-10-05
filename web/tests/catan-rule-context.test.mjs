@@ -258,3 +258,21 @@ test("combined wonders use twelve-point threshold and preserve variable sea layo
   assert.equal(catanRuleContext(room).target, 12);
   assert.equal(catanRuleContext(room).layout, "variable");
 });
+
+test("harbors target is added once and comes from the running game instead of its room draft", () => {
+ for (const [scenario, ck, expected] of [["",false,11],["",true,14],["wonders",true,13],["cloth",false,15],["pirate_islands",false,11],["shores",true,17]]) {
+  const room = { capacity: 3, catanHarbors: {enabled:true}, ...(ck ? {catanCitiesKnights:{}} : {}), ...(scenario ? {catanSeafarers:{scenario}} : {}) };
+  assert.equal(catanRuleContext(room).target,expected);
+  room.game = {catan:{players:[{},{},{}], harbors:{owner:-1,points:[0,0,0]}, ...(ck ? {citiesKnights:{}} : {}), ...(scenario ? {seafarers:{scenario,victoryPoints:expected-1}} : {})}};
+  room.catanHarbors.enabled=false;
+  assert.equal(catanRuleContext(room).harbors,true);
+  assert.equal(catanRuleContext(room).target,expected);
+  room.game.catan.victoryTarget=expected;
+  assert.equal(catanRuleContext(room).target,expected);
+  delete room.game.catan.harbors;
+  room.catanHarbors.enabled=true;
+  room.game.catan.victoryTarget=expected-1;
+  assert.equal(catanRuleContext(room).harbors,false);
+  assert.equal(catanRuleContext(room).target,expected-1);
+ }
+});

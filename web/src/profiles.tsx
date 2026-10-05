@@ -290,6 +290,9 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
               <strong>
                 {name(match.kind)}
                 {match.kind === "catan" &&
+                  match.catanExpansions?.includes("harbors") &&
+                  " · 港口霸主"}
+                {match.kind === "catan" &&
                   match.catanExpansions?.includes("cities_knights") &&
                   " · 城市与骑士"}
                 {match.kind === "catan" &&

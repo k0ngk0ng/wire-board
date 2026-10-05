@@ -85,3 +85,15 @@ test("cloth combination retains depletion ending and uses sixteen points without
   assert.match(text, /五座村落.*同分比较布匹/);
   assert.doesNotMatch(text, /14分|13分|最长路线/);
 });
+
+test("harbors results use actual targets and preserve special endings", () => {
+ for (const [scenario,ck,target,condition] of [["",false,11,/最大骑士军队/],["",true,14,/大都会/],["wonders",true,13,/4级奇迹.*独自领先/],["cloth",true,17,/五座村落.*同分比较布匹/],["pirate_islands",false,11,/夺回自己的要塞/]]) {
+  const g={...base(),harbors:{owner:0,points:[3,0,0]},victoryTarget:target,...(ck?{citiesKnights:{}}:{}),...(scenario?{seafarers:{scenario,victoryPoints:target-1}}:{})};
+  const text=catanResultDescription(g);
+  assert.ok(text.includes(`${target}分`));
+  assert.match(text,/港口霸主/);
+  assert.match(text,condition);
+  delete g.victoryTarget;
+  assert.ok(catanResultDescription(g).includes(`${target}分`));
+ }
+});

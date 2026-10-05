@@ -1,3 +1,5 @@
+import { CatanHarborsStatus } from "./catan-harbors";
+import { catanSavedVictoryTarget } from "./catan-rule-context";
 import { CatanCityEffects } from "./catan-city-effects";
 import {
   CatanProgressHand,
@@ -353,7 +355,7 @@ export function CatanBoard({
   const devLabel = (i: number) =>
     pirates && i === 4 ? "胜利点卡 · 当作骑士" : devNames[i];
   const pieceScale = Math.max(0.64, hexSize / 62);
-  const targetScore = sea?.victoryPoints || (city ? 13 : 10);
+  const targetScore = catanSavedVictoryTarget(g);
   const terrainNames = [...catanNames, "沙漠", "海洋", "金矿", "未探索迷雾"];
   const describeDev = (i: number) =>
     pirates && (i === 0 || i === 4)
@@ -562,6 +564,7 @@ export function CatanBoard({
             </button>
           </div>
         </div>
+        <CatanHarborsStatus room={room} />
         {sea && (
           <div className="catan-sea-tools">
             <span>
