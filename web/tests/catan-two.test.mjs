@@ -102,3 +102,58 @@ test("two-player rules follow the actual save and retain ten-point victory", asy
   room.catanTwoRules = "catan-for-two-2025";
   assert.equal(catanRuleContext(room).two, false);
 });
+
+test("neutral placement animation uses one confirmed public change for players and observers", async () => {
+  const { twoNeutralAdded } = await import("../src/catan-two-state.ts");
+  const before = fixture();
+  Object.assign(before, { id: "two", version: 8 });
+  Object.assign(before.game.catan, {
+    rollId: 4,
+    setupStep: 4,
+    edges: [
+      { id: 0, owner: -1 },
+      { id: 1, owner: -2 },
+    ],
+    vertices: [
+      { id: 0, owner: -1, level: 0 },
+      { id: 1, owner: -3, level: 1 },
+    ],
+  });
+  const after = structuredClone(before);
+  after.version++;
+  delete after.game.catan.two.pending;
+  after.game.catan.edges[0].owner = -3;
+  assert.deepEqual(twoNeutralAdded(before, after), choice(-3, 0));
+  // Observer has no legal choice list, but still sees the public placed piece.
+  for (const r of [before, after]) {
+    r.you = -1;
+    r.spectating = true;
+    delete r.game.catan.two.choices;
+  }
+  assert.deepEqual(twoNeutralAdded(before, after), choice(-3, 0));
+  after.game.catan.edges[0].owner = -1;
+  Object.assign(after.game.catan.vertices[0], { owner: -2, level: 1 });
+  assert.deepEqual(twoNeutralAdded(before, after), choice(-2, -1, 0));
+  after.status = "finished";
+  assert.deepEqual(twoNeutralAdded(before, after), choice(-2, -1, 0));
+  const reject = (modify) => {
+    const b = structuredClone(before),
+      a = structuredClone(after);
+    modify(b, a);
+    assert.equal(twoNeutralAdded(b, a), null);
+  };
+  reject((b, a) => a.version++);
+  reject((b, a) => (a.version = b.version));
+  reject((b, a) => (a.id = "rematch"));
+  reject((b, a) => (a.you = 0));
+  reject((b, a) => (a.spectating = false));
+  reject((b, a) => a.game.catan.two.sequence++);
+  reject((b, a) => a.game.catan.rollId++);
+  reject((b) => (b.game.catan.setupStep = 0));
+  reject((b, a) => (a.game.catan.two.pending = { kind: "road" }));
+  reject((b) => delete b.game.catan.two.pending);
+  reject((b, a) => (a.game.catan.edges[0].owner = -3)); // Multiple pieces.
+  reject((b, a) => (a.game.catan.vertices[0].owner = 0)); // Not neutral.
+  reject((b, a) => (a.game.catan.vertices[0].level = 2)); // Not a village.
+  reject((b, a) => (a.game.catan.vertices = b.game.catan.vertices)); // No change.
+});
