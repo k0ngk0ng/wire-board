@@ -117,7 +117,12 @@ export function CatanTribeStock({
   return (
     <section className="catan-tribe-stock" aria-label="部落奖励">
       <h3>遗忘的部落</h3>
-      <p>船只到达奖励边即可领取。只能在有数字的陆地旁定居。</p>
+      <p>
+        船只到达奖励边即可领取。
+        {room.game?.catan?.fishing
+          ? "村庄可建在主岛（含湖泊）旁；移动强盗时也限于主岛。"
+          : "只能在有数字的陆地旁定居。"}
+      </p>
       <div className="catan-tribe-counts">
         <span>
           胜利点剩余 <b>{tribe.tokens?.length || 0}</b>
@@ -232,6 +237,7 @@ export function CatanTribePortChoice({
                 {edge === null
                   ? "点击地图上亮起的海岸位置。港口须邻接自己的建筑，并与其他港口间隔至少一条边。"
                   : `已选择海岸位置 #${edge + 1}。确认后可立即使用。`}
+                {g.fishing && "港口不能覆盖渔场占据的两条海岸边。"}
               </p>
               <div className="catan-tribe-confirm-buttons">
                 {edge !== null && (
