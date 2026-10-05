@@ -631,6 +631,12 @@ func (s *State) catanResolveProductionNumber(total int) error {
 	return s.catanRollProduction(total)
 }
 func (s *State) catanRollProduction(total int) error {
+	return s.catanRollProductionEffect(total, false)
+}
+
+// Epidemic modifies only this production's claims. Pending gold choices keep
+// their already computed counts, so no turn-wide flag can leak into a later roll.
+func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 	g := s.Catan
 	if total == 7 {
 		if p := g.pirateIslands(); p != nil {
@@ -692,10 +698,14 @@ func (s *State) catanRollProduction(total int) error {
 		for _, id := range t.Vertices {
 			v := g.Vertices[id]
 			if v.Level > 0 && v.Owner >= 0 && !g.Players[v.Owner].Eliminated {
+				level := v.Level
+				if epidemic && level == 2 {
+					level = 1
+				}
 				if t.Resource == CatanGold {
-					gold[v.Owner] += v.Level
+					gold[v.Owner] += level
 				} else {
-					g.cityProduction(claims[v.Owner], t.Resource, v.Level)
+					g.cityProduction(claims[v.Owner], t.Resource, level)
 				}
 			}
 		}

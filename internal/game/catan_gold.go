@@ -133,9 +133,14 @@ func (s *State) catanGoldBot(player int) (Action, error) {
 	if q == nil || len(q.Claims) == 0 || q.Claims[0].Player != player {
 		return Action{}, errors.New("inactive gold choice seat")
 	}
+	return Action{Type: "catan_gold", Take: g.catanResourceChoiceBot(player, q.Claims[0].Count)}, nil
+}
+
+// Only the choosing player's hand and public bank affect resource selection.
+func (g *Catan) catanResourceChoiceBot(player, count int) []int {
 	take := make([]int, 5)
 	bank := append([]int{}, g.Bank[:5]...)
-	for range min(q.Claims[0].Count, sum(bank)) {
+	for range min(count, sum(bank)) {
 		best, priority := -1, -999
 		for color, n := range bank {
 			if n <= 0 {
@@ -152,5 +157,5 @@ func (s *State) catanGoldBot(player int) (Action, error) {
 		take[best]++
 		bank[best]--
 	}
-	return Action{Type: "catan_gold", Take: take}, nil
+	return take
 }

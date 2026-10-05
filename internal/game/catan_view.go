@@ -159,9 +159,20 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 	}
 	// Legal locations are computed using only public map and the viewer's identity.
-	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}}
-	if q := g.CardEvent; q != nil && q.Kind == "earthquake" && s.Phase == "catan_card_event" && !s.Finished && s.CatanPendingActor() == player {
-		legal["earthquakeRoads"] = g.earthquakeRoads(player)
+	legal := map[string][]int{"settlements": {}, "cities": {}, "roads": {}, "robber": {}, "repairRoads": {}, "earthquakeRoads": {}, "eventResources": {}, "fleeDeserts": {}}
+	if q := g.CardEvent; q != nil && s.Phase == "catan_card_event" && !s.Finished && s.CatanPendingActor() == player {
+		switch q.Kind {
+		case "earthquake":
+			legal["earthquakeRoads"] = g.earthquakeRoads(player)
+		case "plentiful_year":
+			for color, count := range g.Bank[:5] {
+				if count > 0 {
+					legal["eventResources"] = append(legal["eventResources"], color)
+				}
+			}
+		case "robber_flees":
+			legal["fleeDeserts"] = g.fleeDeserts()
+		}
 	}
 	if k := g.CitiesKnights; k != nil {
 		legal["pillage"] = []int{}
