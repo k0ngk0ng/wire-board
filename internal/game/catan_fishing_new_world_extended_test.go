@@ -76,7 +76,7 @@ func TestCatanFishingNewWorldExtendedComponentsAndGates(t *testing.T) {
 				t.Fatal("incompatible options accepted", options)
 			}
 		}
-		for _, scenario := range []string{"islands", "desert", "tribe", "cloth", "wonders", "pirate_islands"} {
+		for _, scenario := range []string{"islands", "desert", "tribe", "cloth", "pirate_islands"} {
 			copy := clone(*s)
 			copy.Catan.Seafarers.Scenario = scenario
 			if copy.Catan.fishingSeaSupported() {

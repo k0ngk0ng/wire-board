@@ -728,3 +728,72 @@ confirmed quiet, and all owned temporary source/pages/profile/screenshots and
 CDP helper were removed. No repeated unit suite was necessary without a
 production change. No upload, public entry, push or release; continue remaining
 extended fishing recipes and the original complete expansion scope.
+
+
+## Wonders five/six-player rules and service stage (2026-10-06)
+
+The internal Fishing+Seafarers constructor now accepts the official5/6Wonders
+fixed map. Seafarers extension p.11 supplies63hexes (24sea,3gold,6brick,7wood,
+7wool,6grain,6ore,4desert),35number discs,11ports and7wonders. Its land components
+are35/2/1/1hexes. Combination p.2 removes lakes and permits grounds on the
+large/small islands; T&B extension p.5 supplies the additional5/9grounds and
+fourteen tokens. Thus all four deserts remain, eight grounds show
+4/5/5/6/8/9/9/10, and44fish tokens include the boot. Single-hex islets have no
+concave two-edge V and therefore no legal ground placement, while the mainland
+and two-hex island are eligible. Ground legality does not replace setup-blocked
+bridge/wall/lighthouse vertices or allow starting on small islands.
+
+The constructor/validator retains initial desert choice, no pirate,1VP foreign
+island bonus, paired turns and the scenario's distinct victory conditions:
+level4wins regardless of boot; otherwise10VP (boot11) with an owned wonder
+strictly above all other players' levels. Extended maps require explicit
+FiveSix, paired markers and the prescribed fixed layout. Unsupported extended
+recipes, Helpers and the C&K triple stay gated. Independent tests verify the
+printed terrain/number/fish/dev/ground inventories, seven cards, nine markers,
+seventeen setup-blocked vertices, four candidate deserts and11ports.
+
+Map/host-selection/setup tests cover3/4fixed/variable and5/6fixed, each with
+12constructions (72total), including legal reversed-edge/permuted-number host
+placements and no constructor mutation. Actual two-round setup and periodic
+serialization verify fish only on the second settlement, no duplicate awards,
+and the first roll. Gold-coast fixtures now cover3/5/6 with full/nonfull fish;
+fish responses finish before the city's two-resource gold claim, then resume
+the original turn with conserved bank and no repeated payout.
+
+Eight extended duplicate-number cases cover5/6 × rolled5/9 × full/nonfull fish,
+with distance-legal city/village production fixtures. They verify3normal draws
+or one replacement per player at the cap, clockwise responses, JSON restore,
+wrong-actor and repeated-production rejection, and secondary action without a
+second roll or fish production. Eight ship/no-pirate action paths and eight
+boot-pass paths cover three players, plus5/6primary pre/post-roll and secondary
+action. Ninety-six isolated victory boundaries cover no wonder, tied level,
+strictly leading level,10/11VP and level4 with/without boot across these phases.
+These boundary scores are explicit fixtures, not claimed naturally built games.
+
+Six full engine games (3/4fixed/variable and5/6fixed) conserve resources,
+development cards, fish and piece supplies and all end under wonder rules.
+The extended examples finished at level4with9/7points; other cases exercised
+score-based victory. Map/gold/full-engine run26.752s; action/inventory/victory
+boundaries0.397s; duplicate-number and NewWorld gate regression1.291s pass.
+
+HTTP victory coverage now includes24paths:3/4fixed/variable,5/6fixed primary and
+secondary, each plain VP purchase, boot-adjusted two-purchase victory, or
+boot-carrying level4construction. Fifty-six real restarts preserve full rooms
+before/after actions and results; invalid actors/observers preserve state.
+At10VP with boot the room remains active and retains its original deadline;
+11VPwins with a leading wonder, and level4wins at9VP despite the boot. Resource
+and VP-card setup is explicitly accounted midgame fixture data; actual payment,
+construction, victory recording and restart go through production handlers.
+HTTP9.765s, extended-path race58.848s and game/server vet pass.
+
+Four additional full HTTP games (two5player/two6player) pass36.734s,482–806steps,
+28–47autoplay actions,1–2timeouts and4–14manual fish payments. Each starts with
+only the gated initial state injected; subsequent desert selection, setup,
+rolls and actions use production handlers. Restarts at initial setup, secondary
+action and finished result retain complete room state and winner history.
+Victory is checked independently against level4or boot-adjusted score plus
+strict level lead, rather than the NewWorld/Fog12VP expectation. This natural
+batch reached neither full-hand fish nor gold responses; dedicated extended
+Wonders HTTP fish→gold response/clock and desktop/mobile visual acceptance
+remain next. No frontend/art change, upload, public entry, push or deployment.
+Temporary test logs were removed; no browser or persistent QA process started.

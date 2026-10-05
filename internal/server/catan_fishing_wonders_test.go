@@ -11,15 +11,21 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func fishingWondersVictoryState(t *testing.T, n int, layout, mode string) *game.State {
+func fishingWondersVictoryState(t *testing.T, n int, layout, mode string, secondary bool) *game.State {
 	t.Helper()
-	s, err := game.NewCatanFishingSeafarers(n, game.CatanOptions{}, game.CatanSeafarersSetup{Scenario: "wonders", Layout: layout}, nil)
+	s, err := game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: n > 4}, game.CatanSeafarersSetup{Scenario: "wonders", Layout: layout}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	g := s.Catan
 	s.Phase, s.Turn = "catan_turn", 0
 	g.SetupStep, g.TurnSerial = g.SetupLimit(), 1
+	if n > 4 {
+		g.Paired.Primary, g.Paired.Secondary, g.Paired.Second = 0, 3, false
+		if secondary {
+			g.Paired.Primary, g.Paired.Secondary, g.Paired.Second = n-3, 0, true
+		}
+	}
 	// Four separated cities plus one VP card give nine points. This is an
 	// explicit midgame accounting fixture, not a full natural game transcript.
 	cities := 0
@@ -80,101 +86,111 @@ func fishingWondersVictoryState(t *testing.T, n int, layout, mode string) *game.
 }
 
 func TestCatanFishingWondersVictoryHTTPAndRestart(t *testing.T) {
-	for _, n := range []int{3, 4} {
-		for _, layout := range []string{"fixed", "variable"} {
-			for _, mode := range []string{"plain-vp", "boot-vp", "boot-four"} {
-				t.Run(fmt.Sprintf("%d/%s/%s", n, layout, mode), func(t *testing.T) {
-					s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "ship")
-					state := fishingWondersVictoryState(t, n, layout, mode)
-					s.mu.Lock()
-					r := s.rooms[id]
-					r.Game = state
-					deadline := time.Now().Add(45 * time.Second).UnixMilli()
-					r.TurnDeadline = deadline
-					if err := s.save(r); err != nil {
-						t.Fatal(err)
-					}
-					s.mu.Unlock()
-					restart := func() {
-						t.Helper()
-						before, _ := json.Marshal(s.rooms[id])
-						ts.Close()
-						s.Close()
-						next, err := New(s.cfg, s.files)
-						if err != nil {
-							t.Fatal(err)
-						}
-						stopBotTicker(next)
-						t.Cleanup(func() { next.Close() })
-						ts = httptest.NewServer(next.Handler())
-						t.Cleanup(ts.Close)
-						for _, c := range clients {
-							c.base = ts.URL
-						}
-						s = next
-						after, _ := json.Marshal(s.rooms[id])
-						if string(before) != string(after) {
-							t.Fatal("restart changed wonder/boot/payment/result")
-						}
-					}
-					restart()
-					a := game.Action{Type: "catan_fish_dev", Tokens: []int{0, 21, 22}}
-					if mode == "boot-four" {
-						a = game.Action{Type: "catan_wonder_build", Card: 0}
-					}
-					for viewer, c := range clients {
-						v := current(c)["game"].(map[string]any)["catan"].(map[string]any)
-						f := v["fishing"].(map[string]any)
-						target := f["victoryTargets"].([]any)[0].(float64)
-						want := float64(10)
-						if mode != "plain-vp" {
-							want++
-						}
-						if target != want || f["tokens"].(map[string]any)["drawPile"] != nil {
-							t.Fatal("boot target/private pile")
-						}
-						for p, raw := range f["tokens"].(map[string]any)["players"].([]any) {
-							_, shown := raw.(map[string]any)["tokens"]
-							if shown != (p == 0 && viewer == 0) {
-								t.Fatal("fish faces leaked")
-							}
-						}
-					}
-					before, _ := json.Marshal(s.rooms[id])
-					clients[1].command(current(clients[1]), "action", a, 400)
-					clients[n].command(current(clients[n]), "action", a, 400)
-					after, _ := json.Marshal(s.rooms[id])
-					if string(before) != string(after) {
-						t.Fatal("wrong actor mutated room")
-					}
-					clients[0].command(current(clients[0]), "action", a, 200)
-					if mode == "boot-vp" {
-						r = s.rooms[id]
-						if r.Game.Finished || r.Status != "playing" || r.Game.Catan.Players[0].Score != 10 || r.TurnDeadline != deadline {
-							t.Fatal("boot wrongly won at ten or reset clock")
-						}
-						restart()
-						clients[0].command(current(clients[0]), "action", game.Action{Type: "catan_fish_dev", Tokens: []int{1, 23, 24}}, 200)
-					}
-					r = s.rooms[id]
-					if !r.Game.Finished || r.Status != "finished" || !slices.Equal(r.Game.Winners, []int{0}) {
-						t.Fatal("wonder victory did not finish room")
-					}
-					wantScore, wantDiscard := 10, 3
-					if mode == "boot-vp" {
-						wantScore, wantDiscard = 11, 6
-					} else if mode == "boot-four" {
-						wantScore, wantDiscard = 9, 0
-						if r.Game.Catan.Seafarers.Wonders.Cards[0].Level != 4 {
-							t.Fatal("fourth level missing")
-						}
-					}
-					if r.Game.Catan.Players[0].Score != wantScore || len(r.Game.Catan.Fishing.Tokens.Discard) != wantDiscard {
-						t.Fatal("wrong winning score/payment")
-					}
-					restart()
-				})
+	for _, n := range []int{3, 4, 5, 6} {
+		layouts := []string{"fixed", "variable"}
+		if n > 4 {
+			layouts = []string{"fixed"}
+		}
+		for _, layout := range layouts {
+			for _, secondary := range []bool{false, true} {
+				if secondary && n < 5 {
+					continue
+				}
+				for _, mode := range []string{"plain-vp", "boot-vp", "boot-four"} {
+					t.Run(fmt.Sprintf("%d/%s/%s/secondary%v", n, layout, mode, secondary), func(t *testing.T) { testFishingWondersVictoryHTTP(t, n, layout, mode, secondary) })
+				}
 			}
 		}
 	}
+}
+func testFishingWondersVictoryHTTP(t *testing.T, n int, layout, mode string, secondary bool) {
+	s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "resource")
+	state := fishingWondersVictoryState(t, n, layout, mode, secondary)
+	s.mu.Lock()
+	r := s.rooms[id]
+	r.Game = state
+	deadline := time.Now().Add(45 * time.Second).UnixMilli()
+	r.TurnDeadline = deadline
+	if err := s.save(r); err != nil {
+		t.Fatal(err)
+	}
+	s.mu.Unlock()
+	restart := func() {
+		t.Helper()
+		before, _ := json.Marshal(s.rooms[id])
+		ts.Close()
+		s.Close()
+		next, err := New(s.cfg, s.files)
+		if err != nil {
+			t.Fatal(err)
+		}
+		stopBotTicker(next)
+		t.Cleanup(func() { next.Close() })
+		ts = httptest.NewServer(next.Handler())
+		t.Cleanup(ts.Close)
+		for _, c := range clients {
+			c.base = ts.URL
+		}
+		s = next
+		after, _ := json.Marshal(s.rooms[id])
+		if string(before) != string(after) {
+			t.Fatal("restart changed wonder/boot/payment/result")
+		}
+	}
+	restart()
+	a := game.Action{Type: "catan_fish_dev", Tokens: []int{0, 21, 22}}
+	if mode == "boot-four" {
+		a = game.Action{Type: "catan_wonder_build", Card: 0}
+	}
+	for viewer, c := range clients {
+		v := current(c)["game"].(map[string]any)["catan"].(map[string]any)
+		f := v["fishing"].(map[string]any)
+		target := f["victoryTargets"].([]any)[0].(float64)
+		want := float64(10)
+		if mode != "plain-vp" {
+			want++
+		}
+		if target != want || f["tokens"].(map[string]any)["drawPile"] != nil {
+			t.Fatal("boot target/private pile")
+		}
+		for p, raw := range f["tokens"].(map[string]any)["players"].([]any) {
+			_, shown := raw.(map[string]any)["tokens"]
+			if shown != (p == 0 && viewer == 0) {
+				t.Fatal("fish faces leaked")
+			}
+		}
+	}
+	before, _ := json.Marshal(s.rooms[id])
+	clients[1].command(current(clients[1]), "action", a, 400)
+	clients[n].command(current(clients[n]), "action", a, 400)
+	after, _ := json.Marshal(s.rooms[id])
+	if string(before) != string(after) {
+		t.Fatal("wrong actor mutated room")
+	}
+	clients[0].command(current(clients[0]), "action", a, 200)
+	if mode == "boot-vp" {
+		r = s.rooms[id]
+		if r.Game.Finished || r.Status != "playing" || r.Game.Catan.Players[0].Score != 10 || r.TurnDeadline != deadline {
+			t.Fatal("boot wrongly won at ten or reset clock")
+		}
+		restart()
+		clients[0].command(current(clients[0]), "action", game.Action{Type: "catan_fish_dev", Tokens: []int{1, 23, 24}}, 200)
+	}
+	r = s.rooms[id]
+	if !r.Game.Finished || r.Status != "finished" || !slices.Equal(r.Game.Winners, []int{0}) {
+		t.Fatal("wonder victory did not finish room")
+	}
+	wantScore, wantDiscard := 10, 3
+	if mode == "boot-vp" {
+		wantScore, wantDiscard = 11, 6
+	} else if mode == "boot-four" {
+		wantScore, wantDiscard = 9, 0
+		if r.Game.Catan.Seafarers.Wonders.Cards[0].Level != 4 {
+			t.Fatal("fourth level missing")
+		}
+	}
+	if r.Game.Catan.Players[0].Score != wantScore || len(r.Game.Catan.Fishing.Tokens.Discard) != wantDiscard {
+		t.Fatal("wrong winning score/payment")
+	}
+	restart()
 }
