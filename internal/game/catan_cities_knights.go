@@ -304,6 +304,9 @@ func (s *State) catanCityChoice(player int, a Action) error {
 		k.Pending = nil
 		s.Phase = "catan_turn"
 	}
+	if q.Kind == "knight_retreat" {
+		s.catanClothKnightRoutes()
+	}
 	s.catanScores()
 	s.catanVictory()
 	return nil

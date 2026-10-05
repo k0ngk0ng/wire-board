@@ -149,6 +149,7 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 	// A displaced/removed knight may temporarily change the longest route. Do
 	// not award victory until its mandatory response and final placement finish.
 	if k.Pending == nil {
+		s.catanClothKnightRoutes()
 		s.catanScores()
 		s.catanVictory()
 	}
@@ -243,6 +244,7 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 	if len(q.Players) == 0 {
 		k.Pending = nil
 		s.Phase = "catan_turn"
+		s.catanClothKnightRoutes()
 		s.catanScores()
 		s.catanVictory()
 	}
