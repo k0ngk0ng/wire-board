@@ -512,3 +512,72 @@ last missing-paired-marker rejection was added, its component/gate test passes
 the existing >500kB bundle warning remains. No browser or QA server was started
 in this stage. The owned temporary fixture exporter and terminal test logs were
 removed; the permanent regression fixture is retained.
+
+## New World five/six full HTTP games and browser acceptance (2026-10-06)
+
+Added `TestCatanFishingNewWorldExtendedFullHTTPGames`: two five-player and two
+six-player games start at unplaced ports on freshly approved random maps. The
+initial Fishing state is provisioned into a real table because its public room
+option is still gated; subsequent layout, setup, dice, production, responses,
+actions, automation and final history use production HTTP/server paths. Every
+step checks24resources/color,34development cards, all44unique fish identities
+and the seven-token cap. Periodic player/observer views check private resources,
+development cards, fish faces and hidden layout/deck data.
+
+All four completed in578–817steps, with33–48autoplay actions,2–3timeouts and
+8–23manually submitted fish payments (additional autoplay payments are not
+included in that count). Each game actually restarted at partial ports, ground
+placement, a gold response, the secondary action and the final result, preserving
+the entire room and clock; all four histories reported the winning player after
+restart. They did not naturally reach a full-hand fish response in this run;
+that case is covered by the previous stage's explicit twelve HTTP response
+paths and72restarts, not falsely counted as natural coverage here. Full suite
+46.933s, server vet pass. No Go production rules changed in this stage.
+
+Original-art CatanBoard browser acceptance used a temporary local Go adapter
+calling actual Apply/View and the frozen63-hex placement fixture. This exercises
+the production board component, not the full application's login, WebSocket,
+player header or title timers; the separate complete HTTP games provide server
+integration evidence. Checked1440×1000,1366×768desktop and390×844,320×740mobile.
+Last port11/11 correctly advances to first fish1/8; previews clear/reselect and
+confirm. At320px the last fish8/8 can be selected by keyboard, Escape collapses
+the panel to66px with focus on Expand, Enter reopens and confirmation starts the
+original first player's settlement. Normal settlement confirmation advances to
+its route step with no first-settlement fish. Inactive and observer views have
+no legal hints or placement confirmation; observers have no private hand/fish
+faces or fish-action controls. The mobile document never overflows horizontally.
+
+Mobile primary/secondary UI correctly distinguishes the second action and lacks
+a roll button. A declared seven-token midgame fixture (not a claimed natural
+hand) pays4fish for ore, retains selection through panel collapse/reopen, and
+preserves the resulting ore/fish/paired state after reload. Passing the boot
+costs no fish and lowers the owner's displayed target13→12. At1366px, selecting
+a fish-funded ship site scrolls its confirmation into the sidebar viewport;
+actual Apply builds the selected ship without ordinary resource payment. On
+390px, seven fish buys a development card, the deck34→33, and the new Year of
+Plenty card remains disabled as newly purchased. Ending the second action gives
+the next primary a roll phase without another fish draw. Up to42distinct image
+URLs decode successfully; browser errors remain empty.
+
+A real display defect was found: nonadjacent ports151/152 face the same narrow
+inlet and their artwork overlaps even before fish placement. The existing
+callout search only ran for fish-number overlap. It now also runs for port-art
+overlap, and considers earlier ports' current artwork boxes rather than also
+reserving their vacated boxes. This latter change clears the later8-point
+fishing number once all grounds are placed. Artwork size, owning edges and
+leader endpoints, public legality and map dimensions remain unchanged; clear
+ports preserve their original location. The search radius and fallback are
+unchanged. Regression uses the actual inlet's normalized geometry across all
+six rotations, both before and after its ground, checking overlap, immutability,
+water-side placement, endpoints and deterministic rendering. Actual browser
+geometry and screenshots show eleven separated port images and eight readable
+fish labels. Zoom-button120% and native mouse dragging were checked (nested
+scroll29/9→59/17without a game action); the CLI wheel attempt produced no visible
+zoom change, so this stage does not claim native wheel verification.
+
+All67frontend tests and production build pass; existing >500kB bundle warning
+remains. Temporary QA page/component, adapter, browser profile/socket/screenshots,
+CLI reference copy and terminal logs were cleaned, and the owned browser and
+Go/Vite services stopped (5179/8189quiet). No asset upload, public entry, push or
+deployment. Continue with the five/six-player doubled-number cloth-village stock
+boundary, the remaining fishing recipes and the original full expansion scope.
