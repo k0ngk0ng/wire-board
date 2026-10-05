@@ -64,9 +64,9 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 		return errors.New("事件牌与海盗群岛的舰队骰子规则尚未核验")
 	}
 	if kind == "robber_flees" {
-		if g.tribe() != nil {
-			return errors.New("强盗逃跑与遗忘部落的沙漠限制尚未核验")
-		}
+		// Forgotten Tribe restricts moves caused by a seven or Knight to
+		// numbered hexes. Robber Flees is a separate card instruction and
+		// returns the robber to a revealed desert; it does not use robberAllowed.
 		for _, tile := range g.fleeDeserts() {
 			if !g.clothLand(tile) {
 				return errors.New("强盗逃跑与布匹剧本的沙漠限制尚未核验")

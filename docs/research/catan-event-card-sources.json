@@ -61,5 +61,30 @@
       "checked_on": "2026-10-05",
       "finding": "Question 14 confirms VP cards are revealed together to win on your turn; it does not explicitly adjudicate Helpful Neighbor ranking."
     }
-  ]
+  ],
+  "forgotten_tribe_interpretation": {
+    "checked_on": "2026-10-05",
+    "sources": [
+      {
+        "source": "../board-expansion-rule-sources.json#catan-traders-2025",
+        "pdf_page": 6,
+        "quotes": [
+          "Move the robber to a desert hex. Do not steal a card from any player.",
+          "This variant can be played with CATAN and all other Traders & Barbarians variants and scenarios and Seafarers scenarios without additional changes."
+        ]
+      },
+      {
+        "source": "../board-expansion-rule-sources.json#catan-seafarers-2025",
+        "pdf_page": 12,
+        "quote": "the robber may only be moved to a hex with a number disc (whether due to a 7 roll or a Knight card)."
+      },
+      {
+        "source": "../board-expansion-rule-sources.json#catan-seafarers-5-6-2025",
+        "pdf_page": 8,
+        "role": "Corresponding Forgotten Tribe five/six-player map; underlying scenario rules retained."
+      }
+    ],
+    "decision": "Apply the explicit Robber Flees desert instruction as an event-specific exception. Keep the ordinary numbered-terrain restriction for sevens and Knights. This is an interpretation combining the printed rules, not a claim of a dedicated FAQ.",
+    "qr_check": "Decoded the QR on T&B PDF page 3 in memory: https://www.catan.com/traders-barbarians#combinations. No separate event/Tribe clarification or complete 2025 numbered event deck found there."
+  }
 }
