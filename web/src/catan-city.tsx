@@ -1,3 +1,4 @@
+import { CatanProgressArt } from "./catan-progress";
 import { CatanProgressChoice } from "./catan-progress-choice";
 import { progressChoiceLabels } from "./catan-progress-choice-state";
 import { catanProgressNames } from "./catan-progress-names";
@@ -53,6 +54,7 @@ export function CatanCitySeat({
           </b>
         ))}
       </span>
+      {k.merchant?.owner === seat && <span>商人 +1 分</span>}
       {!!(p.defenderPoints + p.progressPoints) && (
         <span>
           防御者 {p.defenderPoints} 分 · 公开进步牌 {p.progressPoints} 分
@@ -564,6 +566,7 @@ export function CatanCityChoice({
                       )
                     }
                   >
+                    <CatanProgressArt card={card} assets={assets} />
                     {catanProgressNames[card] ||
                       g.progressRules?.find((r) => r.id === card)?.name ||
                       `进步牌 ${card + 1}`}

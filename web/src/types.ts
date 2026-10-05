@@ -308,6 +308,8 @@ export type CatanCitiesKnights = {
   fallenCities: number[];
   knights: CatanKnight[];
   progressRemaining: number[];
+  merchant?: { owner: number; tile: number };
+  tradePowers?: { player: number; fleets: number[]; harbors: number[][] };
   players: {
     improvements: number[];
     progress?: number[];
@@ -337,6 +339,12 @@ export type CatanState = {
     victory: boolean;
   }[];
   progressPlayable?: number[];
+  inventionTiles?: number[];
+  smithingOptions?: number[][];
+  merchantTiles?: number[];
+  guildDuesTargets?: number[];
+  intrigueTargets?: number[];
+  diplomacyRoads?: number[];
   diplomacyPlacements?: number[];
   treasonPlacements?: number[];
   knightMoves?: Record<string, number[]>;

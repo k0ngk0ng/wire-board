@@ -1,0 +1,138 @@
+.catan-progress-panel {
+  min-width: 0;
+  grid-column: 1 / -1;
+  padding: 10px;
+  border: 1px solid #cdb67b;
+  border-radius: 8px;
+  background: #fcf5e4;
+  color: #3b3427;
+  font-size: 12px;
+}
+.catan-progress-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.catan-progress-panel small {
+  color: #6e5b3e;
+  line-height: 1.5;
+}
+.catan-progress-panel p {
+  line-height: 1.6;
+}
+.catan-progress-hand {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0;
+}
+.catan-progress-hand > button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 5px;
+  min-width: 0;
+  background: #fffaf0;
+  border: 1px solid #cdb67b;
+  border-top: 4px solid var(--track-color);
+  border-radius: 5px;
+  color: #382f22;
+}
+.catan-progress-hand > button[aria-pressed="true"] {
+  outline: 2px solid #bd8625;
+}
+.catan-progress-hand strong {
+  font-size: 12px;
+}
+.catan-progress-hand small {
+  display: block;
+  font-size: 10px;
+}
+.catan-progress-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 298/268;
+  object-fit: contain;
+}
+.catan-progress-symbol {
+  font-size: 35px;
+  line-height: 1.8;
+}
+.catan-progress-use {
+  margin-top: 8px;
+  padding-top: 9px;
+  border-top: 1px solid #cdb67b;
+}
+.catan-progress-use header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.catan-progress-use header > button {
+  padding: 6px;
+}
+.catan-progress-panel .wide {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+}
+.catan-alchemy-dice fieldset {
+  display: flex;
+  gap: 4px;
+  border: 0;
+  padding: 5px 0;
+  margin: 0;
+}
+.catan-alchemy-dice button {
+  flex: 1;
+  padding: 7px 0;
+  background: #fff3cb;
+  color: #443421;
+  border: 1px solid #c7b277;
+  border-radius: 4px;
+}
+.catan-alchemy-dice fieldset:first-child button {
+  background: #a83530;
+  color: #fff7de;
+}
+.catan-alchemy-dice button[aria-pressed="true"] {
+  outline: 2px solid #245a4b;
+  outline-offset: 1px;
+}
+.catan-harbor-offers {
+  margin: 9px 0;
+}
+.catan-harbor-offers strong {
+  display: block;
+  margin-bottom: 5px;
+}
+@media (max-width: 360px) {
+  .catan-progress-hand {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Keep map, resource counts and the active card's choices visible together. */
+@media (min-width: 851px) {
+  .catan-cities-knights.catan-progress-open
+    .catan-hand-resources
+    > .catan-resource {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 2px;
+    padding: 4px;
+  }
+  .catan-cities-knights.catan-progress-open
+    .catan-hand-resources
+    .catan-resource-art {
+    width: 18px;
+    height: 24px;
+    grid-row: 1 / 3;
+  }
+  .catan-cities-knights.catan-progress-open
+    .catan-hand-resources
+    .catan-resource
+    > b {
+    grid-column: 2;
+    font-size: 16px;
+  }
+}

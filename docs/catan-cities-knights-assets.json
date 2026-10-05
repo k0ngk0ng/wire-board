@@ -120,6 +120,231 @@
       ],
       "sha256": "41d2cc46012c681a3c5ddfa0a164fc87bd10261827d5441c8a63f50b332946b6"
     },
+    "progress-art-0": {
+      "source": "catan-knights-2025",
+      "object": 10463,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "0fdd91daa7e6ba07cad875461feb6af06a69b4985de3bd0cce679ae79a86a026"
+    },
+    "progress-art-1": {
+      "source": "catan-knights-2025",
+      "object": 10468,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "86889b9a80e054540066b44a22526f8fb9262bcba3ab910974c38088be6ef089"
+    },
+    "progress-art-2": {
+      "source": "catan-knights-2025",
+      "object": 10469,
+      "size": [
+        311,
+        280
+      ],
+      "sha256": "9ad4d3c69be4e7c938f263a8bbe13dd91e59b02305cb8afa70fca4c684d47de8"
+    },
+    "progress-art-3": {
+      "source": "catan-knights-2025",
+      "object": 10472,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "5e54ecdfcc8ad4c9332a71f181b5e7448a1a1c542bbf2a6cb50f77cadfcbd3ec"
+    },
+    "progress-art-4": {
+      "source": "catan-knights-2025",
+      "object": 10473,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "4001908ebf5ed3d0162db3dbddd68dcdb90eee861056852b593f46120b883802"
+    },
+    "progress-art-5": {
+      "source": "catan-knights-2025",
+      "object": 10474,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "2295ca4029efecfc0fe205bc6eeebf5a4fd37a5d43d8864982d5d904cc500365"
+    },
+    "progress-art-6": {
+      "source": "catan-knights-2025",
+      "object": 10623,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "e7c3cf1d0337cb0f19303edb952afe6ecb2eb2e30dc5f75fb9c4a6053b9842c8"
+    },
+    "progress-art-7": {
+      "source": "catan-knights-2025",
+      "object": 10627,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "46ce3de474cbd2a886787edc5b43ceaf48dd865385e7a6ec902d3912dd26b1b2"
+    },
+    "progress-art-8": {
+      "source": "catan-knights-2025",
+      "object": 10628,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "15ec717edbece51104e2e21878bab27776d2c067c773515af46c0dc0722e0f27"
+    },
+    "progress-art-9": {
+      "source": "catan-knights-2025",
+      "object": 10626,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "a52170c8380a803365b34f5d83c7ab7141cad0ea446af5d7c8a9f2cc6178592d"
+    },
+    "progress-art-10": {
+      "source": "catan-knights-2025",
+      "object": 10629,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "dee280a4a13aa686834b8d187d7baffb84a226bdff12d84b7020654e6ab96d6e"
+    },
+    "progress-art-11": {
+      "source": "catan-knights-2025",
+      "object": 10630,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "06a95eaefb98e02fd59c9a4a7dca75ae0973adecde0d2ed69641425d3be62a5e"
+    },
+    "progress-art-12": {
+      "source": "catan-knights-2025",
+      "object": 10631,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "7aca28e6eb4efe3de6cf9932042b48365c3e20318fde34d4564f68bf1b384763"
+    },
+    "progress-art-13": {
+      "source": "catan-knights-2025",
+      "object": 10827,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "1342a2324e997e11dbd812e7340591d0c69ce0603b5640ff1b04de2220b0ac93"
+    },
+    "progress-art-14": {
+      "source": "catan-knights-2025",
+      "object": 10828,
+      "size": [
+        317,
+        285
+      ],
+      "sha256": "471dadc7d5728595020d00a9a4f27a4ac8a6372d8874f46157bc4edff1d207af"
+    },
+    "progress-art-15": {
+      "source": "catan-knights-2025",
+      "object": 10829,
+      "size": [
+        302,
+        272
+      ],
+      "sha256": "70a0aaa32fb4a7d7aec428cfc7178c3b744a7c9cf91c4039f1d7e035c3d2c9fc"
+    },
+    "progress-art-16": {
+      "source": "catan-knights-2025",
+      "object": 10822,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "ec59b52368ea92d73f4b11be5f79648c841e50b380e7e5a60aa55dd89d02c9ae"
+    },
+    "progress-art-17": {
+      "source": "catan-knights-2025",
+      "object": 10826,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "0f700f51866430921d4cb48274b4e10884ac29fe7540f665abce6aec7953958c"
+    },
+    "progress-art-18": {
+      "source": "catan-knights-2025",
+      "object": 10825,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "d1e09258e0627399abc007b3360e83af9599a359f0c50dfcd03b6a5eb269dc55"
+    },
+    "progress-art-19": {
+      "source": "catan-knights-2025",
+      "object": 10830,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "20c3c9073af392fcd064ce48572da90c79eedc5171f7cac489a3bac8f0de9e17"
+    },
+    "progress-art-20": {
+      "source": "catan-knights-2025",
+      "object": 10935,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "f9964dd2aa6cbbe59770ecb5c97c9896e4d4ea7c7dcdf79b4df12630864af4af"
+    },
+    "progress-art-21": {
+      "source": "catan-knights-2025",
+      "object": 10931,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "2baffe25cbd8e14928dfcea460a2f22a209ed45b9f481599a000241a9e426ee0"
+    },
+    "progress-art-22": {
+      "source": "catan-knights-2025",
+      "object": 10933,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "24c001415399468d3d6ef4e3d19651876249655ff0ae86a46ed3c7c221c9d75c"
+    },
+    "progress-art-23": {
+      "source": "catan-knights-2025",
+      "object": 10932,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "9368b1a8b59698f299503fd31b622bf8eca60c3d1560108b741a6d55fb26410b"
+    },
+    "progress-art-24": {
+      "source": "catan-knights-2025",
+      "object": 10934,
+      "size": [
+        298,
+        268
+      ],
+      "sha256": "ae7873c33c58dad804de2513249f154d52d4a7deb57df6e7e493a13f2ba8eee9"
+    },
     "wall-blue": {
       "source": "catan-knights-2025",
       "object": 3323,

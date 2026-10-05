@@ -33,6 +33,15 @@ def prepare(output: Path, rules_directory: Path | None):
         'catan-knights-5-6-2025': {},
     }
     base = groups['catan-knights-2025']
+    # Original illustrations from the card glossary, not fabricated full faces.
+    # IDs follow the pinned 2025 progress-card catalogue used by the server.
+    for card, xref in enumerate([
+        10463, 10468, 10469, 10472, 10473, 10474, 10623, 10627, 10628,
+        10626, 10629, 10630, 10631, 10827, 10828, 10829, 10822,
+        10826, 10825, 10830, 10935, 10931, 10933, 10932, 10934,
+    ]):
+        size = {2: (311, 280), 14: (317, 285), 15: (302, 272)}.get(card, (298, 268))
+        base[f'progress-art-{card}'] = (xref, size)
     for color, objects in {
         'blue': (3323, 3188, 3196, 3205),
         'red': (3327, 3192, 3201, 3209),
@@ -75,7 +84,7 @@ def prepare(output: Path, rules_directory: Path | None):
                     mask = pymupdf.Pixmap(doc, masks[xref])
                     alpha = Image.frombytes('L', (mask.width, mask.height), mask.samples)
                     art.putalpha(alpha.resize(art.size, Image.Resampling.LANCZOS))
-                if not name.startswith(('commodity-', 'progress-back-')):
+                if not name.startswith(('commodity-', 'progress-back-', 'progress-art-')):
                     if not masks.get(xref):
                         raise ValueError(f'Missing piece transparency: {name}')
                     art = art.crop(art.getbbox())
