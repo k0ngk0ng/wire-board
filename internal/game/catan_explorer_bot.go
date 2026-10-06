@@ -183,8 +183,12 @@ func catanExplorerBotVoyage(g *Catan, player, ship int) []int {
 	limit := min(len(bestPath), x.Fleet.Turn.Ships[ship].Remaining)
 	// Passing occupied edges is allowed, but stop before the point budget runs
 	// out on an edge holding two other ships. Quote also guards actual topology.
+	pirateOwner, pirateTile := -1, -1
+	if x.Pirate != nil {
+		pirateOwner, pirateTile = x.Pirate.Owner, x.Pirate.Tile
+	}
 	for limit > 0 {
-		if _, err := x.Fleet.quote(g, player, g.TurnSerial, ship, bestPath[:limit], -1, -1); err == nil {
+		if quote, err := x.Fleet.quote(g, player, g.TurnSerial, ship, bestPath[:limit], pirateOwner, pirateTile); err == nil && quote.Gold <= x.Economy.Gold[player] {
 			return bestPath[:limit]
 		}
 		limit--
@@ -226,6 +230,12 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 			return a, nil
 		}
 		return a, errors.New("not explorer turn")
+	}
+	if actions, handled := s.catanExplorerSpecialChoices(player); handled {
+		if len(actions) == 0 {
+			return a, errors.New("no explorer response")
+		}
+		return actions[0], nil
 	}
 	switch s.Phase {
 	case "catan_roll":

@@ -36,6 +36,13 @@ func (s *State) validateCatanExplorer() error {
 	if err := x.validate(g); err != nil {
 		return err
 	}
+	if x.Setup != nil {
+		step := x.Setup.current(len(g.Players))
+		if step == nil || s.Kind != "catan" || s.Phase != "catan_explorer_setup" || s.Turn != step.Player || s.Round != 1 || s.Finished || len(s.Winners) > 0 || g.RollID != 0 {
+			return errors.New("巢穴主状态开局阶段无效")
+		}
+		return nil
+	}
 	if s.Kind != "catan" || s.Turn < 0 || s.Turn >= len(g.Players) || g.StartPlayer < 0 || g.StartPlayer >= len(g.Players) || s.Round < 1 || g.SetupStep != 2*len(g.Players) || g.TurnSerial == 0 || g.TurnSerial > uint64(^uint(0)>>1) || len(g.Dice) != 2 || len(g.DiscardDue) != len(g.Players) {
 		return errors.New("探险家整局人数、轮次或起始状态无效")
 	}
@@ -60,19 +67,7 @@ func (s *State) validateCatanExplorer() error {
 	if allPresent && (s.Turn != (g.StartPlayer+int((g.TurnSerial-1)%uint64(len(g.Players))))%len(g.Players) || s.Round != 1+int((g.TurnSerial-1)/uint64(len(g.Players)))) {
 		return errors.New("探险家随机先手后的顺时针轮转不一致")
 	}
-	phase := ""
-	switch t.Phase {
-	case "roll":
-		phase = "catan_roll"
-	case "discard":
-		phase = "catan_discard"
-	case "ready":
-		if x.Cargo.Turn.Phase == "action" {
-			phase = "catan_turn"
-		} else if x.Cargo.Turn.Phase == "movement" {
-			phase = "catan_explorer_move"
-		}
-	}
+	phase := s.catanExplorerPhase()
 	if s.Finished {
 		alive := 0
 		for _, p := range g.Players {
@@ -104,21 +99,10 @@ func (s *State) validateCatanExplorer() error {
 
 func (s *State) catanExplorerSyncPhase() {
 	g := s.Catan
-	x := g.Explorer
-	t := x.Economy.Turn
-	g.DiscardDue = slices.Clone(t.Discard)
-	switch t.Phase {
-	case "roll":
-		s.Phase = "catan_roll"
-	case "discard":
-		s.Phase = "catan_discard"
-	case "ready":
-		if x.Cargo.Turn.Phase == "action" {
-			s.Phase = "catan_turn"
-		} else {
-			s.Phase = "catan_explorer_move"
-		}
+	if g.Explorer.Economy.Turn != nil {
+		g.DiscardDue = slices.Clone(g.Explorer.Economy.Turn.Discard)
 	}
+	s.Phase = s.catanExplorerPhase()
 }
 
 func (s *State) catanExplorerVictory() {
@@ -126,7 +110,7 @@ func (s *State) catanExplorerVictory() {
 	if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= g.Explorer.Board.Target {
 		s.Finished, s.Phase, s.Winners = true, "finished", []int{s.Turn}
 		g.Trade = nil
-		s.catanLog(s.Turn, "达到 %d 分，赢得初航", g.Players[s.Turn].Score)
+		s.catanLog(s.Turn, "达到 %d 分，赢得探险任务", g.Players[s.Turn].Score)
 	}
 }
 
@@ -145,8 +129,7 @@ func (s *State) catanExplorerRoll(dice [2]int) error {
 			s.catanLog(p, "生产获得 %s", catanTradeText(resources, result.Gold[p]))
 		}
 	}
-	s.catanExplorerSyncPhase()
-	return nil
+	return s.catanExplorerAfterProduction()
 }
 
 func (s *State) catanExplorerDiscoverLog(player int, awards []catanExplorerDiscovery) {
@@ -158,17 +141,22 @@ func (s *State) catanExplorerDiscoverLog(player int, awards []catanExplorerDisco
 func (s *State) applyCatanExplorer(player int, a Action) error {
 	g := s.Catan
 	x := g.Explorer
+	if x.Setup != nil {
+		return s.applyCatanExplorerSetup(player, a)
+	}
 	sequence := g.TurnSerial
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || a.Prompt < 1 || uint64(a.Prompt) != sequence {
 		return errors.New("探险行动玩家或回合序号无效")
+	}
+	if handled, err := s.applyCatanExplorerMission(player, a); handled {
+		return err
 	}
 	if a.Type == "catan_discard" {
 		if err := x.Economy.discard(g, x.Fleet, x.Cargo, player, sequence, a.Tokens); err != nil {
 			return err
 		}
 		s.catanLog(player, "七点归还 %d 张资源", sum(a.Tokens)) // Do not reveal discarded composition.
-		s.catanExplorerSyncPhase()
-		return nil
+		return s.catanExplorerAfterProduction()
 	}
 	if a.Type == "catan_trade_accept" || a.Type == "catan_trade_reject" {
 		return s.catanRespondTrade(player, a)
@@ -232,7 +220,11 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 	case "catan_explorer_unit":
 		err = x.Cargo.buildUnit(g, x.Fleet, player, sequence, a.Card, catanExplorerCargoLocation{a.Choice, a.Target}, a.Cards)
 		if err == nil {
-			s.catanLog(player, "支付 木砖羊粮各1，建造移民")
+			if a.Card%11 < 2 {
+				s.catanLog(player, "支付 木砖羊粮各1，建造移民")
+			} else {
+				s.catanLog(player, "支付 羊毛×1、矿石×1，招募船员")
+			}
 		}
 	case "catan_explorer_begin_move":
 		err = x.Cargo.beginMovement(g, x.Fleet, player, sequence, 0)
@@ -255,7 +247,7 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 	case "catan_explorer_transfer":
 		err = x.Cargo.transfer(g, x.Fleet, player, sequence, a.Slot, a.Vertex, a.Give, a.Take)
 		if err == nil {
-			s.catanLog(player, "在港口 #%d 装卸移民", a.Vertex+1)
+			s.catanLog(player, "在港口 #%d 装卸货物", a.Vertex+1)
 		}
 	case "catan_explorer_settle":
 		err = x.Cargo.settle(g, x.Fleet, player, sequence, a.Slot, a.Vertex)
@@ -266,27 +258,11 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 		if err = x.Cargo.endMovement(g, x.Fleet, player, sequence); err != nil {
 			return err
 		}
-		s.catanExplorerVictory()
-		if s.Finished {
+		if x.Lairs != nil && s.catanExplorerHasReadyLair() {
+			s.catanExplorerSyncPhase()
 			return nil
 		}
-		g.Trade = nil
-		for {
-			s.Turn = (s.Turn + 1) % len(g.Players)
-			if s.Turn == g.StartPlayer {
-				s.Round++
-			}
-			if !g.Players[s.Turn].Eliminated {
-				break
-			}
-		}
-		g.TurnSerial++
-		if err = x.Economy.beginProduction(g, x.Fleet, x.Cargo, s.Turn, g.TurnSerial); err != nil {
-			return err
-		}
-		s.catanExplorerSyncPhase()
-		s.catanExplorerVictory()
-		return nil
+		return s.catanExplorerNextTurn()
 	default:
 		return errors.New("此行动不适用于初航")
 	}
@@ -296,6 +272,7 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 	// x may have committed a copied aggregate during sailing/construction.
 	g = s.Catan
 	g.Trade = nil
+	s.catanExplorerMissionScore()
 	s.catanExplorerVictory()
 	return nil
 }
@@ -306,6 +283,16 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	v["explorer"] = map[string]any{"board": x.Board.publicView(), "fleet": clone(x.Fleet), "cargo": clone(x.Cargo), "economy": x.Economy.publicView(), "sequence": g.TurnSerial, "choices": catanExplorerChoiceView(s.catanExplorerChoices(viewer))}
 	v["explorer"].(map[string]any)["actionId"] = x.ActionID
 	v["explorer"].(map[string]any)["motion"] = clone(x.Motion)
+	if x.Setup != nil {
+		v["explorer"].(map[string]any)["setup"] = clone(x.Setup)
+		v["explorer"].(map[string]any)["sequence"] = x.Setup.Step + 1
+	}
+	if x.Pirate != nil {
+		v["explorer"].(map[string]any)["pirate"] = clone(x.Pirate)
+	}
+	if x.Lairs != nil {
+		v["explorer"].(map[string]any)["lairs"] = x.Lairs.publicView()
+	}
 	v["victoryTarget"] = x.Board.Target
 	v["setupLimit"] = g.SetupLimit()
 	delete(v, "devDeck")
