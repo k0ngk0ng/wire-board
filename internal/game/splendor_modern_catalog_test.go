@@ -345,3 +345,25 @@ func TestSplendorModernCityPhysicalUnboxingExamples(t *testing.T) {
 		}
 	}
 }
+
+func TestSplendorModernOrientPhysicalVideoExamples(t *testing.T) {
+	catalog, err := readSplendorModernCatalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Independently read from The Brosey Game Company's physical 2025
+	// Sun Never Sets unboxing and Game4LifeBG's physical rules demonstration.
+	// The sources, presented frame times and retained crops
+	// are recorded in docs/research/splendor-orient-video-evidence.json.
+	// Obscured cards in the fan are deliberately excluded.
+	for _, want := range []Card{
+		{ID: 1006, Tier: 1, Color: -1, Orient: GemOrientCopy, Cost: []int{0, 3, 0, 0, 2}},
+		{ID: 1007, Tier: 1, Color: -1, Orient: GemOrientCopy, Cost: []int{2, 0, 3, 0, 0}},
+		{ID: 1018, Tier: 2, Points: 1, Color: -1, Orient: GemOrientCopyCascade, Cost: []int{4, 3, 1, 0, 0}},
+		{ID: 1024, Tier: 3, Points: 1, Color: 4, Orient: GemOrientCascade, Cost: []int{0, 3, 1, 6, 0}},
+	} {
+		if got := catalog.Orient[want.ID-1001]; !reflect.DeepEqual(got, want) {
+			t.Fatal("physical Orient card mismatch", want.ID, got, want)
+		}
+	}
+}
