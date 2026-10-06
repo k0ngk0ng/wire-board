@@ -16,6 +16,7 @@ type catanExplorerLairs struct {
 	Arrival   []uint64                 `json:"arrival"` // Physical stack: earlier arrival is lower.
 	Serial    uint64                   `json:"serial"`
 	Battle    *catanExplorerLairBattle `json:"battle,omitempty"`
+	Retired   []bool                   `json:"retired,omitempty"` // Platform departure; history stays intact.
 }
 type catanExplorerLair struct {
 	Tile          int     `json:"tile"`
@@ -48,7 +49,7 @@ func (l catanExplorerLairs) site(tile int) int {
 func (l catanExplorerLairs) leader() int {
 	best := -1
 	for p, step := range l.Progress {
-		if step > 0 && (best < 0 || step > l.Progress[best] || step == l.Progress[best] && l.Arrival[p] < l.Arrival[best]) {
+		if (len(l.Retired) == 0 || !l.Retired[p]) && step > 0 && (best < 0 || step > l.Progress[best] || step == l.Progress[best] && l.Arrival[p] < l.Arrival[best]) {
 			best = p
 		}
 	}
@@ -85,6 +86,14 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 	if err := e.validate(g, f, c); err != nil {
 		return err
 	}
+	if len(l.Retired) != 0 && len(l.Retired) != len(g.Players) {
+		return errors.New("巢穴离场记录人数无效")
+	}
+	for p, player := range g.Players {
+		if player.Eliminated != (len(l.Retired) > 0 && l.Retired[p]) {
+			return errors.New("巢穴离场记录与玩家状态不一致")
+		}
+	}
 	all := slices.Clone(l.Deck)
 	tiles := []int{}
 	seenArrival := map[uint64]bool{}
@@ -103,6 +112,9 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 		tiles = append(tiles, s.Tile)
 		all = append(all, s.Number)
 		ids := c.contents(catanExplorerCargoLocation{"lair", s.Tile})
+		if s.Ready > 0 && s.Resolved == 0 && !slices.ContainsFunc(ids, func(id int) bool { return id/11 == s.Captor }) {
+			return errors.New("尚未结算巢穴缺少攻陷玩家的船员")
+		}
 		if s.Resolved == 0 {
 			if b.Liberated[s.Tile] != 0 || g.Tiles[s.Tile].Number != 0 || (len(ids) == 3) != (s.Ready > 0) || s.Hero != -1 {
 				return errors.New("未结算巢穴不能产金或提前获胜")
