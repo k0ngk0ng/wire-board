@@ -10,7 +10,8 @@
   "limits": {
     "orient": "All 30 fields cross-check against the existing catalog and its 24 independently photographed faces. This is the licensed online adaptation material, not 30 new physical photographs.",
     "cities": "15 source records for seven physical double-sided tiles. IDs 4, 11, 15 share Madrid artwork/name with three distinct conditions. Record 11 cost uses black but its English tooltip says blue, and record 15 uses blue. Do not treat this source alone as resolving physical Madrid faces or reverse pairing.",
-    "city11Tooltip": "To fulfill the requirements of this City, you must have at least 12 Prestige points, 3 white cards, 3 green cards, 3 red cards, and 3 blue cards"
+    "city11Tooltip": "To fulfill the requirements of this City, you must have at least 12 Prestige points, 3 white cards, 3 green cards, 3 red cards, and 3 blue cards",
+    "physicalFollowup": "2026-10-07: The 2025 Brosey physical Silk Road unboxing independently shows both candidate Madrid condition sets (records 11 and 4). At 53.516666 seconds white/green/red/black each 3 is explicit; at 48.5 seconds the underlying tile shows green/red/blue/black each 3, with much of its illustration covered. Record 15 is not substituted into the candidate. This does not establish why BGA retained a third record or prove physical reverse-side pairings. See splendor-city-video-evidence.json."
   },
   "encoding": {
     "costLetters": {

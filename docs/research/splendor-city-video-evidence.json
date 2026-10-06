@@ -159,6 +159,126 @@
       "retained": ".local/board-expansion-research/city-video-amboise-black-green.webp",
       "sha256": "2f81a5b2b782eb1a2c37c21eb3ae93101e21aa3b9bfee80c509611e81f5b637c",
       "bytes": 265582
+    },
+    {
+      "tile": 3,
+      "side": 0,
+      "points": 13,
+      "cost": [
+        0,
+        3,
+        4,
+        0,
+        0
+      ],
+      "any": 0,
+      "source": "brosey-unboxing",
+      "mediaTime": 45.2,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        500,
+        180,
+        1080,
+        620
+      ],
+      "retained": ".local/board-expansion-research/city-video-timbuktu-blue-white.webp",
+      "sha256": "ccc524111226a838c03f448bfabf05ec83ae53556f6c28e1f5785ac3128d6e28",
+      "bytes": 170486,
+      "note": "All printed conditions and the city illustration are visible."
+    },
+    {
+      "tile": 7,
+      "side": 1,
+      "points": 17,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "any": 0,
+      "source": "brosey-unboxing",
+      "mediaTime": 47.016666,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        480,
+        235,
+        1040,
+        650
+      ],
+      "retained": ".local/board-expansion-research/city-video-krakow-seventeen.webp",
+      "sha256": "de4d4e13ec0fe363a673ed77199a25c35179dfb3296ca5eae6fe67ff140a40d8",
+      "bytes": 170294,
+      "note": "The 17-point banner is the entire condition; there are no card requirements."
+    },
+    {
+      "tile": 1,
+      "side": 0,
+      "points": 12,
+      "cost": [
+        3,
+        3,
+        0,
+        3,
+        3
+      ],
+      "any": 0,
+      "source": "brosey-unboxing",
+      "mediaTime": 53.516666,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        525,
+        150,
+        990,
+        535
+      ],
+      "retained": ".local/board-expansion-research/city-video-madrid-white-black.webp",
+      "sha256": "f174d4b23c44caba77e2e5c4cda2628951bdd45a19ac1aba05660593e9d6b344",
+      "bytes": 140016,
+      "note": "White, green, red and black each 3 are directly visible; this supports BGA record 11, not record 15."
+    },
+    {
+      "tile": 1,
+      "side": 1,
+      "points": 12,
+      "cost": [
+        3,
+        0,
+        3,
+        3,
+        3
+      ],
+      "any": 0,
+      "source": "brosey-unboxing",
+      "mediaTime": 48.5,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        1010,
+        100,
+        1290,
+        470
+      ],
+      "retained": ".local/board-expansion-research/city-video-madrid-blue-black.webp",
+      "sha256": "e9a84017598a30349914424e95583b331a5b313210a090a68728c2160fe80d25",
+      "bytes": 77322,
+      "note": "All printed conditions are visible on the underlying Madrid tile: 12 points; green/red/blue/black each 3. Much of the illustration is covered by Amboise. This is condition evidence, not an unobscured full-face scan or proof of reverse pairing."
     }
   ],
   "sources": [
