@@ -115,7 +115,7 @@ func (s *State) validateCatanAttack() error {
 			}
 		}
 	}
-	return nil
+	return s.validateCatanAttackEnd()
 }
 
 // Resolve every required landing immediately. Dice only select coastal
