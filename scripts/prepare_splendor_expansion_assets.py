@@ -148,6 +148,27 @@ def prepare(output: Path, rules_directory: Path | None):
                 tuple(v for point in quad for v in point), Image.Resampling.BICUBIC)
             art = art.crop(tuple(face_geometry['crops'][kind]))
             art.save(targets / f'orient-art-{kind}.webp', quality=94, method=6)
+        noble_sources = {}
+        for noble_id, spec in geometry['extraNobles'].items():
+            noble_source = sources[spec['source']]
+            if rules_directory:
+                data = (rules_directory / spec['file']).read_bytes()
+            else:
+                with urllib.request.urlopen(noble_source['url'], timeout=45) as response:
+                    data = response.read()
+            if hashlib.sha256(data).hexdigest() != noble_source['sha256']:
+                raise ValueError(f'Official noble {noble_id} photograph changed')
+            photo = scratch / f'noble-{noble_id}.jpg'
+            photo.write_bytes(data)
+            noble = Image.open(photo).convert('RGB')
+            if list(noble.size) != spec['size']:
+                raise ValueError('Unexpected noble photograph dimensions')
+            art = noble.transform((240, 240), Image.Transform.QUAD,
+                tuple(v for point in spec['quad'] for v in point), Image.Resampling.BICUBIC)
+            # Original portrait only: the live three-point badge and requirements
+            # must remain legible at small sizes and never duplicate photo text.
+            art.crop(tuple(spec['crop'])).save(targets / f'noble-{noble_id}.webp', quality=94, method=6)
+            noble_sources[noble_id] = noble_source
     (targets / 'sources.json').write_text(json.dumps({
         'rules': 'split-box-2025',
         'tradingPosts': source,
@@ -156,9 +177,10 @@ def prepare(output: Path, rules_directory: Path | None):
         'strongholdPieces': piece_source,
         'cityIllustrations': city_source,
         'orientIllustrations': face_source,
+        'extraNobles': noble_sources,
         'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols. Rectified three Orient backs from the page 2 setup illustration; four un-recolored wooden pieces from the pinned publisher photograph. Seven cropped city illustrations exclude printed costs and are not evidence of final rules or paired sides. Six original Orient scene crops omit printed fields and are not full-face scans or proof of all 30 card data rows. Geometry is recorded in scripts/splendor_asset_geometry.json. Promotional prototype images differ.',
     }, ensure_ascii=False, indent=2) + '\n')
-    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs, four stronghold pieces, seven city illustrations and six Orient illustrations; temporary files removed.')
+    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs, four stronghold pieces, seven city illustrations, six Orient illustrations and two bonus noble portraits; temporary files removed.')
 
 
 if __name__ == '__main__':

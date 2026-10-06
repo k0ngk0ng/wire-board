@@ -23,7 +23,7 @@ func TestSplendorOptionsPermissionsFreezeAndArchive(t *testing.T) {
 		r := current(c)
 		c.post("/api/rooms/"+r["id"].(string), map[string]any{"type": "splendor_options", "splendorOptions": o, "version": r["version"], "nonce": randomID(12)}, want)
 	}
-	options := game.SplendorOptions{TradingPosts: true, Strongholds: true}
+	options := game.SplendorOptions{TradingPosts: true, Strongholds: true, ExtraNobles: true}
 	change(guest, options, 400)
 	change(host, game.SplendorOptions{Rules: "unknown"}, 400)
 	change(host, options, 200)
@@ -55,7 +55,7 @@ func TestSplendorOptionsPermissionsFreezeAndArchive(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, o := range []game.SplendorOptions{restored.SplendorOptions, restored.Game.Splendor.Options} {
-		if !o.TradingPosts || !o.Strongholds || o.Rules != game.SplendorExpansionRules {
+		if !o.TradingPosts || !o.Strongholds || !o.ExtraNobles || o.Rules != game.SplendorExpansionRules {
 			t.Fatal("lost saved expansion rules", o)
 		}
 	}
@@ -87,7 +87,7 @@ func TestSplendorOldRoomDefaultsToBase(t *testing.T) {
 		t.Fatal(err)
 	}
 	s, err := game.NewSplendor(2, r.SplendorOptions)
-	if err != nil || s.Splendor.Options.TradingPosts || s.Splendor.Options.Strongholds {
+	if err != nil || s.Splendor.Options.TradingPosts || s.Splendor.Options.Strongholds || s.Splendor.Options.ExtraNobles {
 		t.Fatal("old room gained expansion rules", err)
 	}
 }

@@ -101,7 +101,11 @@ func newSplendorModernCatalogState(n int, options SplendorOptions) (*State, erro
 	if err != nil {
 		return nil, err
 	}
-	s, err := NewSplendor(n, SplendorOptions{TradingPosts: options.TradingPosts, Strongholds: options.Strongholds})
+	// Cities remove all nobles, including the optional bonus pair.
+	if options.Cities {
+		options.ExtraNobles = false
+	}
+	s, err := NewSplendor(n, SplendorOptions{TradingPosts: options.TradingPosts, Strongholds: options.Strongholds, ExtraNobles: options.ExtraNobles})
 	if err != nil {
 		return nil, err
 	}

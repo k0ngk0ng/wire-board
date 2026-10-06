@@ -114,5 +114,10 @@
     "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/11/04.jpg",
     "sha256": "a63bc3a45c19097afabbd4963dd4b487ee5c3d2e1dddaead5afb7e858eeedd21",
     "bytes": 2615459
+  },
+  "splendor-silk-noble-photo": {
+    "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/10/11-1.jpg",
+    "sha256": "4015008c28921b081e3552ef1eed72775e6a6009578fd96a9f7d2a297623b104",
+    "bytes": 2106749
   }
 }

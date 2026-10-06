@@ -367,5 +367,31 @@
       "cascade": [70, 92, 209, 309],
       "sacrifice": [70, 92, 222, 309]
     }
+  },
+  "extraNobles": {
+    "101": {
+      "source": "splendor-silk-noble-photo",
+      "file": "silk-noble-original.jpg",
+      "size": [1920, 1280],
+      "quad": [
+        [658, 80],
+        [492, 1014],
+        [1426, 1174],
+        [1597, 245]
+      ],
+      "crop": [78, 28, 215, 174]
+    },
+    "102": {
+      "source": "splendor-orient-product-3",
+      "file": "sun-product-3.jpg",
+      "size": [2000, 2000],
+      "quad": [
+        [838, 1214],
+        [918, 1345],
+        [1138, 1280],
+        [1041, 1156]
+      ],
+      "crop": [75, 25, 225, 175]
+    }
   }
 }

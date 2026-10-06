@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Castle, Store } from "lucide-react";
+import { Castle, Crown, Store } from "lucide-react";
 import type { Act, Card, Room, SplendorOptions } from "./types";
 import { gemOrientChoices } from "./splendor-orient-state";
 import "./splendor-expansions.css";
@@ -19,6 +19,7 @@ export function splendorRulesLabel(options?: SplendorOptions) {
     options?.tradingPosts && "贸易站",
     options?.orient && "东方",
     options?.strongholds && "要塞",
+    options?.extraNobles && !options?.cities && "附赠贵族",
   ].filter(Boolean);
   return names.length ? `基础＋${names.join("＋")}` : "基础版";
 }
@@ -57,6 +58,25 @@ export function SplendorOptionPicker({
             </span>
           </button>
         ))}
+        <button
+          type="button"
+          className={value?.extraNobles && !value?.cities ? "selected" : ""}
+          disabled={!!value?.cities}
+          aria-pressed={!!value?.extraNobles && !value?.cities}
+          onClick={() =>
+            onChange({ ...value, extraNobles: !value?.extraNobles })
+          }
+        >
+          <Crown size={22} />
+          <span>
+            <strong>附赠贵族</strong>
+            <small>
+              {value?.cities
+                ? "城市模式不使用贵族"
+                : "加入两盒附赠贵族，仍随机抽取人数＋1位"}
+            </small>
+          </span>
+        </button>
       </div>
     </fieldset>
   );

@@ -29,6 +29,7 @@ import { SanguoshaOptions } from "./sanguosha-options";
 import { SplendorMarket } from "./splendor-market";
 import { SplendorPurchase } from "./splendor-purchase";
 import { OrientCard } from "./splendor-orient-card";
+import { extraNobleName, nobleArtwork } from "./splendor-nobles";
 import { gemCanBuy, gemNames } from "./splendor-orient-state";
 import { SplendorRules } from "./splendor-rules";
 import { SplendorCities } from "./splendor-cities";
@@ -2642,15 +2643,15 @@ function Players({ room }: { room: Room }) {
                         <button
                           key={n.id}
                           className="noble owned-noble-thumbnail"
-                          style={{
-                            backgroundPosition: `${((n.id - 1) % 5) * 25}% ${Math.floor((n.id - 1) / 5) * 50}%`,
-                          }}
-                          aria-label={`查看${p.name}的贵族 ${n.id}，3 分`}
+                          style={nobleArtwork(n.id, assets)}
+                          aria-label={`查看${p.name}的${extraNobleName(n.id) || `贵族 ${n.id}`}，3 分`}
                           aria-haspopup="dialog"
                           onClick={() => setNobleOwner(i)}
                         >
                           <Crown size={18} />
-                          <span className="sr-only">贵族 {n.id}</span>
+                          <span className="sr-only">
+                            {extraNobleName(n.id) || `贵族 ${n.id}`}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -2696,7 +2697,7 @@ function Players({ room }: { room: Room }) {
             {g.splendor.players[nobleOwner].nobles.map((n) => (
               <div key={n.id}>
                 <NobleCard noble={n} eligible={false} onClick={() => {}} />
-                <strong>贵族 {n.id} · 3 分</strong>
+                <strong>{extraNobleName(n.id) || `贵族 ${n.id}`} · 3 分</strong>
               </div>
             ))}
           </div>
@@ -3186,16 +3187,15 @@ function NobleCard({
   eligible: boolean;
   onClick: () => void;
 }) {
+  const assets = useContext(AssetsContext);
   return (
     <button
-      className={`noble ${eligible ? "eligible" : ""}`}
+      className={`noble ${extraNobleName(noble.id) ? "extra-noble" : ""} ${eligible ? "eligible" : ""}`}
       data-noble-id={noble.id}
-      style={{
-        backgroundPosition: `${((noble.id - 1) % 5) * 25}% ${Math.floor((noble.id - 1) / 5) * 50}%`,
-      }}
+      style={nobleArtwork(noble.id, assets)}
       onClick={onClick}
-      aria-label={`贵族 ${noble.id}，3 分，需要 ${noble.cost
-        .map((n, i) => (n ? `${gemNames[i]}折扣${n}` : ""))
+      aria-label={`${extraNobleName(noble.id) || `贵族 ${noble.id}`}，3 分，需要 ${noble.cost
+        .map((n, i) => (n ? `${gemNames[i]}发展卡${n}张` : ""))
         .filter(Boolean)
         .join("，")}`}
     >
