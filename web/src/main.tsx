@@ -1,3 +1,4 @@
+import { CatanAttackSeat } from "./catan-attack";
 import { twoResponder } from "./catan-two-state";
 import { caravanResponder, caravanPlacementStep } from "./catan-caravans-state";
 import { CatanRiverSeat } from "./catan-rivers";
@@ -2475,8 +2476,10 @@ function Players({ room }: { room: Room }) {
                   ) : (
                     <>
                       {g.catan.seafarers ? "路线" : "道路"}{" "}
-                      {g.catan.players[i].roadLength} · 骑士{" "}
-                      {g.catan.players[i].knights}
+                      {g.catan.players[i].roadLength}
+                      {!g.catan.attack && (
+                        <> · 骑士 {g.catan.players[i].knights}</>
+                      )}
                     </>
                   )}
                   {g.catan.two && (
@@ -2489,6 +2492,16 @@ function Players({ room }: { room: Room }) {
                     <>
                       <br />
                       <CatanFriendlyRobberSeat game={g.catan} seat={i} />
+                    </>
+                  )}
+                  {g.catan.attack && (
+                    <>
+                      <br />
+                      <CatanAttackSeat
+                        game={g.catan}
+                        seat={i}
+                        assets={assets}
+                      />
                     </>
                   )}
                   {g.catan.rivers && (
@@ -2715,6 +2728,8 @@ function Turn({
       !!g.catan.two?.pending ||
       !!g.catan.two?.trade ||
       !!g.catan.caravans?.pending ||
+      !!g.catan.attack?.pending ||
+      !!g.catan.attack?.endPlan ||
       !!g.catan.cardEvent ||
       !!g.catan.citiesKnights?.pending ||
       !!g.catan.helperPending ||
@@ -2848,7 +2863,7 @@ function Turn({
                   ? "轮到你了"
                   : g.sanguosha?.pending?.kind === "nullification"
                     ? "共同响应锦囊"
-                    : `${room.seats[sgActor]?.name} ${twoResponder(room) !== undefined || caravanResponder(room) !== undefined || fishResponder(room) !== undefined || g.sanguosha?.pending || g.catan?.cardEvent || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
+                    : `${room.seats[sgActor]?.name} ${twoResponder(room) !== undefined || caravanResponder(room) !== undefined || fishResponder(room) !== undefined || g.sanguosha?.pending || g.catan?.attack?.pending || g.catan?.attack?.endPlan || g.catan?.cardEvent || g.catan?.citiesKnights?.pending || g.catan?.seafarers?.pirateIslands?.raid || g.catan?.seafarers?.tribe?.pending || g.catan?.helperPending || g.catan?.goldPending ? "正在响应" : "的回合"}`}
       </h3>
       <p>
         {g.finished
@@ -2878,33 +2893,35 @@ function Turn({
                   : setup
                     ? "正在自动选牌"
                     : "已超时"
-                : g.phase === "catan_world_fish"
-                  ? "渔场安放 120 秒"
-                  : g.phase === "catan_world_ports"
-                    ? "港口安放 120 秒"
-                    : setup
-                      ? "共同选牌限时"
-                      : g.sanguosha?.pending && !g.sanguosha.selecting
-                        ? "响应限时 20 秒"
-                        : twoResponder(room) !== undefined
-                          ? "双人选择 120 秒"
-                          : caravanResponder(room) !== undefined
-                            ? "商队响应 120 秒"
-                            : fishResponder(room) !== undefined
-                              ? "捕鱼换筹码 120 秒"
-                              : g.catan?.cardEvent
-                                ? "事件牌响应 120 秒"
-                                : g.catan?.citiesKnights?.pending
-                                  ? "城市与骑士响应 120 秒"
-                                  : g.catan?.seafarers?.pirateIslands?.raid
-                                    ? "防守奖励 120 秒"
-                                    : g.catan?.seafarers?.tribe?.pending
-                                      ? "港口安放 120 秒"
-                                      : g.catan?.helperPending
-                                        ? "助手选择 120 秒"
-                                        : g.catan?.goldPending
-                                          ? "金矿选择 120 秒"
-                                          : "每回合 120 秒"}
+                : g.catan?.attack?.pending || g.catan?.attack?.endPlan
+                  ? "蛮族进攻响应 120 秒"
+                  : g.phase === "catan_world_fish"
+                    ? "渔场安放 120 秒"
+                    : g.phase === "catan_world_ports"
+                      ? "港口安放 120 秒"
+                      : setup
+                        ? "共同选牌限时"
+                        : g.sanguosha?.pending && !g.sanguosha.selecting
+                          ? "响应限时 20 秒"
+                          : twoResponder(room) !== undefined
+                            ? "双人选择 120 秒"
+                            : caravanResponder(room) !== undefined
+                              ? "商队响应 120 秒"
+                              : fishResponder(room) !== undefined
+                                ? "捕鱼换筹码 120 秒"
+                                : g.catan?.cardEvent
+                                  ? "事件牌响应 120 秒"
+                                  : g.catan?.citiesKnights?.pending
+                                    ? "城市与骑士响应 120 秒"
+                                    : g.catan?.seafarers?.pirateIslands?.raid
+                                      ? "防守奖励 120 秒"
+                                      : g.catan?.seafarers?.tribe?.pending
+                                        ? "港口安放 120 秒"
+                                        : g.catan?.helperPending
+                                          ? "助手选择 120 秒"
+                                          : g.catan?.goldPending
+                                            ? "金矿选择 120 秒"
+                                            : "每回合 120 秒"}
             </span>
           </div>
           {expired &&

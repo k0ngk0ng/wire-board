@@ -33,6 +33,7 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
+    attack: !!game?.attack,
     caravans,
     rivers: game ? !!game.rivers : room.catanTwoScenario === "rivers",
     two: game ? !!game.two : !!room.catanTwoRules,
@@ -87,7 +88,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 // New views provide the server-derived target; old saves retain the fallback.
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
-  if (g.caravans) return 12;
+  if (g.caravans || g.attack) return 12;
   const sea = g.seafarers;
   const scenario =
     sea?.scenario ||
