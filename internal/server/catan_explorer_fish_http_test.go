@@ -51,7 +51,7 @@ func fishHTTPPreview(t *testing.T, view map[string]any, intent game.Action) game
 		// JSON previews may encode an empty transfer side as [] instead of
 		// nil. Both are the same intent; still submit the actual wire choice.
 		normalize := func(a game.Action) game.Action {
-			for _, field := range []*[]int{&a.Cards, &a.Targets, &a.Give, &a.Take, &a.Tokens, &a.Keep} {
+			for _, field := range []*[]int{&a.Cards, &a.Targets, &a.Give, &a.Take, &a.Tokens, &a.Keep, &a.SpiceLoad, &a.SpiceUnload} {
 				if len(*field) == 0 {
 					*field = nil
 				}
