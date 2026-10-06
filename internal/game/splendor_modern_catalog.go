@@ -7,9 +7,10 @@ import (
 	"fmt"
 )
 
-// This secondary-source catalog is partially cross-checked against publisher
-// photographs, not independently verified in full. Only the private constructor
-// below may use it until the remaining data/art/presentation release gates pass.
+// All 30 Orient entries are cross-checked against BGA component facts; 24 also
+// have independent physical-image evidence. Cities remain partially verified,
+// including an unresolved Madrid variant and reverse pairings. Only the private
+// constructor may use this catalog until the remaining release gates pass.
 // See docs/research/splendor-modern-catalog.md for the exact evidence limits.
 //
 //go:embed splendor_modern_catalog.json

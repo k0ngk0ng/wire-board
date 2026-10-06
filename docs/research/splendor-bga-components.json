@@ -1,0 +1,533 @@
+{
+  "source": {
+    "url": "https://en.boardgamearena.com/archive/replay/260129-1046/?table=798993013&player=84660241&comments=",
+    "discoveredFrom": "https://en.boardgamearena.com/gamepanel?game=splendor",
+    "retrieved": "2026-10-07",
+    "clientAssetVersion": "splendor/250604-1803",
+    "method": "Read only public static gameui.gamedatas.orientcarddb and citiesdb from the anonymous example replay. No player/deck state or implementation code is retained. Rendered six previously unverified card types with the loaded BGA renderer in a temporary local DOM gallery without issuing game actions.",
+    "canonicalMaterialSHA256": "386949dda7d008bec86ec947b14f1df31e9c1a9ff58f3757b631aca15dba4e86"
+  },
+  "limits": {
+    "orient": "All 30 fields cross-check against the existing catalog and its 24 independently photographed faces. This is the licensed online adaptation material, not 30 new physical photographs.",
+    "cities": "15 source records for seven physical double-sided tiles. IDs 4, 11, 15 share Madrid artwork/name with three distinct conditions. Record 11 cost uses black but its English tooltip says blue, and record 15 uses blue. Do not treat this source alone as resolving physical Madrid faces or reverse pairing.",
+    "city11Tooltip": "To fulfill the requirements of this City, you must have at least 12 Prestige points, 3 white cards, 3 green cards, 3 red cards, and 3 blue cards"
+  },
+  "encoding": {
+    "costLetters": {
+      "E": "green",
+      "C": "white",
+      "S": "blue",
+      "O": "black",
+      "R": "red",
+      "X": "other same color"
+    },
+    "bonusTypes": {
+      "0": "white",
+      "1": "blue",
+      "2": "green",
+      "3": "red",
+      "4": "black",
+      "5": "copy",
+      "6": "gold"
+    },
+    "levels": {
+      "11": 1,
+      "12": 2,
+      "13": 3
+    }
+  },
+  "renderedSix": {
+    "bgaIDs": [
+      209,
+      210,
+      213,
+      220,
+      218,
+      230
+    ],
+    "localIDs": [
+      1001,
+      1005,
+      1013,
+      1016,
+      1020,
+      1025
+    ],
+    "retained": ".local/board-expansion-research/orient-bga-six.webp",
+    "sha256": "09d6fbe8729feb2f71b7c8c9bdc1e01f13e69ec8725c0397b1b8f3328de4a225",
+    "bytes": 156376,
+    "crop": [
+      210,
+      10,
+      1710,
+      250
+    ],
+    "screenshotSize": [
+      1920,
+      1080
+    ],
+    "note": "Original BGA rendering; an inspection-only gallery, not a played match or our UI."
+  },
+  "material": {
+    "orient": {
+      "201": {
+        "cost": "CCCRR",
+        "costCard": "",
+        "img": 1,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 1,
+        "symbolTake": 0,
+        "type": 5
+      },
+      "202": {
+        "cost": "RRRSS",
+        "costCard": "",
+        "img": 1,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 1,
+        "symbolTake": 0,
+        "type": 5
+      },
+      "203": {
+        "cost": "SSSEE",
+        "costCard": "",
+        "img": 1,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 1,
+        "symbolTake": 0,
+        "type": 5
+      },
+      "204": {
+        "cost": "EEEOO",
+        "costCard": "",
+        "img": 1,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 1,
+        "symbolTake": 0,
+        "type": 5
+      },
+      "205": {
+        "cost": "OOOCC",
+        "costCard": "",
+        "img": 1,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 1,
+        "symbolTake": 0,
+        "type": 5
+      },
+      "206": {
+        "cost": "RRR",
+        "costCard": "",
+        "img": 2,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 6
+      },
+      "207": {
+        "cost": "EEE",
+        "costCard": "",
+        "img": 2,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 6
+      },
+      "208": {
+        "cost": "SSS",
+        "costCard": "",
+        "img": 2,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 6
+      },
+      "209": {
+        "cost": "CCC",
+        "costCard": "",
+        "img": 2,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 6
+      },
+      "210": {
+        "cost": "OOO",
+        "costCard": "",
+        "img": 2,
+        "lvl": 11,
+        "nbBonus": 0,
+        "points": 0,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 6
+      },
+      "211": {
+        "cost": "RRRREEE",
+        "costCard": "",
+        "img": 8,
+        "lvl": 12,
+        "nbBonus": 2,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 0
+      },
+      "212": {
+        "cost": "OOOORRR",
+        "costCard": "",
+        "img": 9,
+        "lvl": 12,
+        "nbBonus": 2,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 1
+      },
+      "213": {
+        "cost": "CCCCOOO",
+        "costCard": "",
+        "img": 10,
+        "lvl": 12,
+        "nbBonus": 2,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 2
+      },
+      "214": {
+        "cost": "SSSSCCC",
+        "costCard": "",
+        "img": 7,
+        "lvl": 12,
+        "nbBonus": 2,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 3
+      },
+      "215": {
+        "cost": "EEEESSS",
+        "costCard": "",
+        "img": 6,
+        "lvl": 12,
+        "nbBonus": 2,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 4
+      },
+      "216": {
+        "cost": "RRRREEEC",
+        "costCard": "",
+        "img": 3,
+        "lvl": 12,
+        "nbBonus": 0,
+        "points": 1,
+        "symbolCopy": 1,
+        "symbolTake": 1,
+        "type": 5
+      },
+      "217": {
+        "cost": "SSSSOOOR",
+        "costCard": "",
+        "img": 3,
+        "lvl": 12,
+        "nbBonus": 0,
+        "points": 1,
+        "symbolCopy": 1,
+        "symbolTake": 1,
+        "type": 5
+      },
+      "218": {
+        "cost": "OOOORRRE",
+        "costCard": "",
+        "img": 3,
+        "lvl": 12,
+        "nbBonus": 0,
+        "points": 1,
+        "symbolCopy": 1,
+        "symbolTake": 1,
+        "type": 5
+      },
+      "219": {
+        "cost": "EEEECCCS",
+        "costCard": "",
+        "img": 3,
+        "lvl": 12,
+        "nbBonus": 0,
+        "points": 1,
+        "symbolCopy": 1,
+        "symbolTake": 1,
+        "type": 5
+      },
+      "220": {
+        "cost": "CCCCSSSO",
+        "costCard": "",
+        "img": 3,
+        "lvl": 12,
+        "nbBonus": 0,
+        "points": 1,
+        "symbolCopy": 1,
+        "symbolTake": 1,
+        "type": 5
+      },
+      "221": {
+        "cost": "",
+        "costCard": "SS",
+        "img": 11,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 3,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 4
+      },
+      "222": {
+        "cost": "",
+        "costCard": "OO",
+        "img": 15,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 3,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 2
+      },
+      "223": {
+        "cost": "",
+        "costCard": "CC",
+        "img": 12,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 3,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 3
+      },
+      "224": {
+        "cost": "",
+        "costCard": "EE",
+        "img": 13,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 3,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 0
+      },
+      "225": {
+        "cost": "",
+        "costCard": "RR",
+        "img": 14,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 3,
+        "symbolCopy": 0,
+        "symbolTake": 0,
+        "type": 1
+      },
+      "226": {
+        "cost": "SSSSSSEEER",
+        "costCard": "",
+        "img": 18,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 2,
+        "type": 0
+      },
+      "227": {
+        "cost": "EEEEEERRRO",
+        "costCard": "",
+        "img": 19,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 2,
+        "type": 1
+      },
+      "228": {
+        "cost": "RRRRRROOOC",
+        "costCard": "",
+        "img": 20,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 2,
+        "type": 2
+      },
+      "229": {
+        "cost": "OOOOOOCCCS",
+        "costCard": "",
+        "img": 17,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 2,
+        "type": 3
+      },
+      "230": {
+        "cost": "CCCCCCSSSE",
+        "costCard": "",
+        "img": 16,
+        "lvl": 13,
+        "nbBonus": 1,
+        "points": 1,
+        "symbolCopy": 0,
+        "symbolTake": 2,
+        "type": 4
+      }
+    },
+    "cities": {
+      "1": {
+        "cost": "OOOOEEE",
+        "id": 1,
+        "name": "François Ier in Amboise",
+        "points": 13,
+        "promo": false
+      },
+      "10": {
+        "cost": "CEROS",
+        "id": 10,
+        "name": "Elisabeth von Habsburg in Krakow",
+        "points": 16,
+        "promo": false
+      },
+      "11": {
+        "cost": "CCCEEERRROOO",
+        "id": 11,
+        "name": "Isabella the Catholic in Madrid",
+        "points": 12,
+        "promo": false
+      },
+      "12": {
+        "cost": "OOOOXXXX",
+        "id": 12,
+        "name": "Muhammad Shaybani Khan in Samarkand",
+        "points": 14,
+        "promo": false
+      },
+      "13": {
+        "cost": "XXXXXX",
+        "id": 13,
+        "name": "Sejong the Great in Seoule",
+        "points": 13,
+        "promo": false
+      },
+      "14": {
+        "cost": "CCSSEERROO",
+        "id": 14,
+        "name": "Bega Begum in Delhi",
+        "points": 14,
+        "promo": false
+      },
+      "15": {
+        "cost": "CCCEEERRRSSS",
+        "id": 15,
+        "name": "Isabella the Catholic in Madrid",
+        "points": 12,
+        "promo": false
+      },
+      "2": {
+        "cost": "SSSSCCC",
+        "id": 2,
+        "name": "Al-Qadi Aqib ibn Mahmud ibn Umar in Timbuktu",
+        "points": 13,
+        "promo": false
+      },
+      "3": {
+        "cost": "",
+        "id": 3,
+        "name": "Elisabeth von Habsburg in Krakow",
+        "points": 17,
+        "promo": false
+      },
+      "4": {
+        "cost": "EEERRRSSSOOO",
+        "id": 4,
+        "name": "Isabella the Catholic in Madrid",
+        "points": 12,
+        "promo": false
+      },
+      "5": {
+        "cost": "CCCCXXXX",
+        "id": 5,
+        "name": "Muhammad Shaybani Khan in Samarkand",
+        "points": 14,
+        "promo": false
+      },
+      "6": {
+        "cost": "XXXXX",
+        "id": 6,
+        "name": "Sejong the Great in Seoul",
+        "points": 15,
+        "promo": false
+      },
+      "7": {
+        "cost": "EEEESSS",
+        "id": 7,
+        "name": "Bega Begum in Delhi",
+        "points": 13,
+        "promo": false
+      },
+      "8": {
+        "cost": "RRRROOO",
+        "id": 8,
+        "name": "François Ier in Amboise",
+        "points": 13,
+        "promo": false
+      },
+      "9": {
+        "cost": "CCCCRRR",
+        "id": 9,
+        "name": "Al-Qadi Aqib ibn Mahmud ibn Umar in Timbuktu",
+        "points": 13,
+        "promo": false
+      }
+    }
+  },
+  "madridConflictRendering": {
+    "bgaIDs": [
+      4,
+      11,
+      15
+    ],
+    "retained": ".local/board-expansion-research/city-bga-madrid-conflict.webp",
+    "sha256": "eaeb57427dfa9eed9d5ee57753a6a36fb87f36c4caa705a2f404713b9cad9285",
+    "bytes": 124826,
+    "crop": [
+      325,
+      10,
+      1600,
+      225
+    ],
+    "screenshotSize": [
+      1920,
+      1080
+    ],
+    "note": "Same BGA artwork but three distinct cost renderings. Not physical reverse-side evidence."
+  }
+}

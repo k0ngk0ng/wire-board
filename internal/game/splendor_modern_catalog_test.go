@@ -367,3 +367,22 @@ func TestSplendorModernOrientPhysicalVideoExamples(t *testing.T) {
 		}
 	}
 }
+
+// These three additional faces are independently readable in the 2025 Never
+// Bored Gaming review, at the exact frames recorded in the city evidence file.
+// This verifies the face facts, not physical reverse-side pairing.
+func TestSplendorModernCityPhysicalReviewExamples(t *testing.T) {
+	catalog, err := readSplendorModernCatalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []GemCity{
+		{Tile: 2, Side: 0, Name: "昂布瓦兹", Points: 13, Cost: [5]int{3, 0, 0, 4, 0}},
+		{Tile: 4, Side: 0, Name: "德里", Points: 13, Cost: [5]int{4, 0, 3, 0, 0}},
+		{Tile: 7, Side: 0, Name: "克拉科夫", Points: 16, Cost: [5]int{1, 1, 1, 1, 1}},
+	} {
+		if got := catalog.Cities[(want.Tile-1)*2+want.Side]; got != want {
+			t.Fatal("physical review city face mismatch", got, want)
+		}
+	}
+}
