@@ -13,9 +13,10 @@ type catanExplorerCargoLocation struct {
 	Index int    `json:"index"`
 }
 type catanExplorerCargoTurn struct {
-	Player   int    `json:"player"`
-	Sequence uint64 `json:"sequence"`
-	Phase    string `json:"phase"` // action, movement, ended.
+	Player       int    `json:"player"`
+	Sequence     uint64 `json:"sequence"`
+	Phase        string `json:"phase"`                  // action, movement, ended.
+	BuildStopped []int  `json:"buildStopped,omitempty"` // Newly built ships that discovered fog before movement.
 }
 type catanExplorerCargo struct {
 	Scenario string                       `json:"scenario"`
@@ -125,10 +126,13 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		if e.A < 0 || e.A >= len(g.Vertices) || e.B < 0 || e.B >= len(g.Vertices) || g.Vertices[e.A].Level > 0 && g.Vertices[e.B].Level > 0 {
 			return errors.New("探险建筑违反距离规则")
 		}
-		if e.Ship || e.Bridge || e.Warship || e.Owner < -3 || e.Owner >= len(g.Players) || e.Owner < -1 && len(g.Players) != 2 {
+		if e.Ship || e.Bridge || e.Warship || e.Damaged || e.Owner < -3 || e.Owner >= len(g.Players) || e.Owner < -1 && len(g.Players) != 2 {
 			return errors.New("探险道路组件或所有者无效")
 		}
 		if e.Owner != -1 {
+			if !catanExplorerLandEdge(g, e.ID) {
+				return errors.New("探险道路不能位于纯海、迷雾或未解放金矿边")
+			}
 			roads[e.Owner]++
 			if roads[e.Owner] > 15 || e.Owner < -1 && roads[e.Owner] > 1 {
 				return errors.New("探险道路库存超额")
@@ -161,6 +165,11 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	} else if q == nil || q.Player != t.Player || q.Sequence != t.Sequence || q.Open != (t.Phase == "movement") {
 		return errors.New("货物与航行阶段不一致")
 	}
+	for i, ship := range t.BuildStopped {
+		if ship < 0 || ship >= len(fleet.Positions) || ship/3 != t.Player || slices.Contains(t.BuildStopped[:i], ship) || t.Phase == "action" && fleet.Positions[ship] < 0 || t.Phase != "action" && !q.Ships[ship].Closed {
+			return errors.New("造船探索后的停船记录无效")
+		}
+	}
 	return nil
 }
 func (c *catanExplorerCargo) beginAction(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64) error {
@@ -191,6 +200,9 @@ func (c *catanExplorerCargo) beginMovement(g *Catan, fleet *catanExplorerSailing
 	}
 	if err := fleet.begin(g, player, sequence, speed); err != nil {
 		return err
+	}
+	for _, ship := range c.Turn.BuildStopped {
+		fleet.Turn.Ships[ship].Remaining, fleet.Turn.Ships[ship].Closed = 0, true
 	}
 	c.Turn.Phase = "movement"
 	return nil
@@ -313,6 +325,9 @@ func (c *catanExplorerCargo) buildShip(g *Catan, fleet *catanExplorerSailing, pl
 		c.Units[unit] = catanExplorerCargoLocation{"supply", -1}
 	}
 	fleet.Positions[ship] = edge
+	// Returning a ship and paying to build a new one creates a new vessel;
+	// the discovery controller will mark it again if its new berth reveals fog.
+	c.Turn.BuildStopped = slices.DeleteFunc(c.Turn.BuildStopped, func(id int) bool { return id == ship })
 	// An ended prior movement record must not retain the recycled ship's MPs.
 	if fleet.Turn != nil {
 		fleet.Turn.Ships[ship] = catanExplorerShipMove{Closed: true}
