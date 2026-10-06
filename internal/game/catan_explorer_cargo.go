@@ -9,7 +9,7 @@ import (
 // + component slot. Locations partition the physical inventory, including the
 // supply. Fish are six shared, size-two pieces tracked separately from units.
 type catanExplorerCargoLocation struct {
-	Kind  string `json:"kind"` // supply, ship, harbor; lair (crew only), shoal (fish only).
+	Kind  string `json:"kind"` // supply, ship, harbor; lair/farm (crew), shoal (fish), farm (spice).
 	Index int    `json:"index"`
 }
 type catanExplorerCargoTurn struct {
@@ -22,6 +22,7 @@ type catanExplorerCargo struct {
 	Scenario string                       `json:"scenario"`
 	Units    []catanExplorerCargoLocation `json:"units"`
 	Fish     []catanExplorerCargoLocation `json:"fish,omitempty"`
+	Spice    []catanExplorerSpiceSack     `json:"spice,omitempty"`
 	Turn     *catanExplorerCargoTurn      `json:"turn,omitempty"`
 }
 
@@ -45,10 +46,16 @@ func newCatanExplorerCargo(g *Catan, fleet *catanExplorerSailing, scenario strin
 	for i := range c.Units {
 		c.Units[i] = catanExplorerCargoLocation{"supply", -1}
 	}
-	if scenario == "fish-for-catan" {
+	if catanExplorerFishScenario(scenario) {
 		c.Fish = make([]catanExplorerCargoLocation, 6)
 		for i := range c.Fish {
 			c.Fish[i] = catanExplorerCargoLocation{"supply", -1}
+		}
+	}
+	if scenario == "spices-for-catan" {
+		c.Spice = make([]catanExplorerSpiceSack, 24)
+		for i := range c.Spice {
+			c.Spice[i] = catanExplorerSpiceSack{Origin: -1, Owner: -1, At: catanExplorerCargoLocation{"supply", -1}}
 		}
 	}
 	return c, c.validate(g, fleet)
@@ -96,6 +103,11 @@ func (c catanExplorerCargo) used(location catanExplorerCargoLocation) int {
 			used += 2
 		}
 	}
+	for _, sack := range c.Spice {
+		if sack.At == location {
+			used++
+		}
+	}
 	return used
 }
 func (c catanExplorerCargo) holder(g *Catan, fleet *catanExplorerSailing, owner int, location catanExplorerCargoLocation) bool {
@@ -108,7 +120,7 @@ func (c catanExplorerCargo) holder(g *Catan, fleet *catanExplorerSailing, owner 
 	return false
 }
 func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) error {
-	if g == nil || fleet == nil || len(c.Units) != len(g.Players)*11 || c.Scenario != "land-ho" && c.Scenario != "pirate-lairs" && c.Scenario != "fish-for-catan" || g.Seafarers != nil || g.Two != nil || g.CitiesKnights != nil || g.Transport != nil {
+	if g == nil || fleet == nil || len(c.Units) != len(g.Players)*11 || c.Scenario != "land-ho" && c.Scenario != "pirate-lairs" && !catanExplorerFishScenario(c.Scenario) || g.Seafarers != nil || g.Two != nil || g.CitiesKnights != nil || g.Transport != nil {
 		return errors.New("探险货物库存、剧本或组合无效")
 	}
 	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.RevealedEvent != nil || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Paired != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
@@ -122,7 +134,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		if v.Level == 0 && v.Owner == -1 {
 			continue
 		}
-		if v.Level < 1 || v.Level > 2 || v.Owner == -1 || v.Owner >= len(g.Players) || v.Owner < 0 && (len(g.Players) != 2 || v.Owner < -3) || !catanExplorerLandVertex(g, v.ID) || v.Level == 2 && !catanExplorerCoast(g, v.ID) {
+		if v.Level < 1 || v.Level > 2 || v.Owner == -1 || v.Owner >= len(g.Players) || v.Owner < 0 && (len(g.Players) != 2 || v.Owner < -3) || !c.landVertex(g, v.Owner, v.ID) || v.Level == 2 && !catanExplorerCoast(g, v.ID) {
 			return errors.New("探险村庄或港口位置无效")
 		}
 		if v.Level == 1 {
@@ -142,7 +154,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 			return errors.New("探险道路组件或所有者无效")
 		}
 		if e.Owner != -1 {
-			if !catanExplorerLandEdge(g, e.ID) {
+			if !c.landEdge(g, e.Owner, e.ID) {
 				return errors.New("探险道路不能位于纯海、迷雾或未解放金矿边")
 			}
 			roads[e.Owner]++
@@ -161,11 +173,22 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 			}
 			continue
 		}
+		if loc.Kind == "farm" {
+			if c.Scenario != "spices-for-catan" || id%11 < 2 || g.Players[id/11].Eliminated || loc.Index < 0 || loc.Index >= len(g.Tiles) || g.Tiles[loc.Index].Resource != CatanDesert || !c.farmFriend(id/11, loc.Index) {
+				return errors.New("香料农场只能派驻已建立联系的己方船员")
+			}
+			for other := id / 11 * 11; other < id; other++ {
+				if c.Units[other] == loc {
+					return errors.New("每位玩家在每座农场只能派驻一名船员")
+				}
+			}
+			continue
+		}
 		if c.Scenario == "land-ho" && id%11 >= 2 || !c.holder(g, fleet, id/11, loc) || c.used(loc) > 2 {
 			return errors.New("探险单位位置、所属玩家或舱位容量无效")
 		}
 	}
-	if c.Scenario == "fish-for-catan" && len(c.Fish) != 6 || c.Scenario != "fish-for-catan" && len(c.Fish) != 0 {
+	if catanExplorerFishScenario(c.Scenario) && len(c.Fish) != 6 || !catanExplorerFishScenario(c.Scenario) && len(c.Fish) != 0 {
 		return errors.New("鱼群实体库存与剧本不符")
 	}
 	for _, loc := range c.Fish {
@@ -185,6 +208,9 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		if owner < 0 || owner >= len(g.Players) || g.Players[owner].Eliminated || !c.holder(g, fleet, owner, loc) || c.used(loc) != 2 {
 			return errors.New("鱼群位置、归属或舱位容量无效")
 		}
+	}
+	if err := c.validateSpiceCargo(g, fleet); err != nil {
+		return err
 	}
 	t := c.Turn
 	if t == nil {
@@ -368,6 +394,11 @@ func (c *catanExplorerCargo) buildShip(g *Catan, fleet *catanExplorerSailing, pl
 			c.Fish[id] = catanExplorerCargoLocation{"supply", -1}
 		}
 	}
+	for id, sack := range c.Spice {
+		if sack.At == (catanExplorerCargoLocation{"ship", ship}) {
+			c.Spice[id].At = catanExplorerCargoLocation{"supply", -1}
+		}
+	}
 	fleet.Positions[ship] = edge
 	// Returning a ship and paying to build a new one creates a new vessel;
 	// the discovery controller will mark it again if its new berth reveals fog.
@@ -440,10 +471,13 @@ func (c *catanExplorerCargo) transfer(g *Catan, fleet *catanExplorerSailing, pla
 	return c.transferFreight(g, fleet, player, sequence, ship, harbor, load, unload, nil, nil)
 }
 func (c *catanExplorerCargo) transferFreight(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, ship, harbor int, load, unload, loadFish, unloadFish []int) error {
+	return c.transferAllFreight(g, fleet, player, sequence, ship, harbor, load, unload, loadFish, unloadFish, nil, nil)
+}
+func (c *catanExplorerCargo) transferAllFreight(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, ship, harbor int, load, unload, loadFish, unloadFish, loadSpice, unloadSpice []int) error {
 	if err := c.allowed(g, fleet, player, sequence, "movement"); err != nil {
 		return err
 	}
-	if !c.docked(g, fleet, player, ship, harbor) || len(load)+len(unload)+len(loadFish)+len(unloadFish) == 0 {
+	if !c.docked(g, fleet, player, ship, harbor) || len(load)+len(unload)+len(loadFish)+len(unloadFish)+len(loadSpice)+len(unloadSpice) == 0 {
 		return errors.New("只能在实际停靠的己方港口装卸或交换")
 	}
 	shipLoc, harborLoc := catanExplorerCargoLocation{"ship", ship}, catanExplorerCargoLocation{"harbor", harbor}
@@ -480,6 +514,20 @@ func (c *catanExplorerCargo) transferFreight(g *Catan, fleet *catanExplorerSaili
 			shipUsed, harborUsed = shipUsed+delta, harborUsed-delta
 		}
 	}
+	seenSpice := map[int]bool{}
+	for group, ids := range [][]int{loadSpice, unloadSpice} {
+		source, delta := harborLoc, 1
+		if group == 1 {
+			source, delta = shipLoc, -1
+		}
+		for _, id := range ids {
+			if id < 0 || id >= len(c.Spice) || seenSpice[id] || c.Spice[id].At != source || c.Spice[id].Owner != player {
+				return errors.New("香料不在来源舱位、重复或属于其他玩家")
+			}
+			seenSpice[id] = true
+			shipUsed, harborUsed = shipUsed+delta, harborUsed-delta
+		}
+	}
 	if shipUsed > 2 || harborUsed > 2 {
 		return errors.New("交换后的船舱或港口超出容量")
 	}
@@ -495,6 +543,12 @@ func (c *catanExplorerCargo) transferFreight(g *Catan, fleet *catanExplorerSaili
 	for _, id := range unloadFish {
 		c.Fish[id] = harborLoc
 	}
+	for _, id := range loadSpice {
+		c.Spice[id].At = shipLoc
+	}
+	for _, id := range unloadSpice {
+		c.Spice[id].At = harborLoc
+	}
 	return nil
 }
 func (c *catanExplorerCargo) settle(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, ship, vertex int) error {
@@ -502,7 +556,7 @@ func (c *catanExplorerCargo) settle(g *Catan, fleet *catanExplorerSailing, playe
 		return err
 	}
 	loc := catanExplorerCargoLocation{"ship", ship}
-	if !c.holder(g, fleet, player, loc) || !catanExplorerLandVertex(g, vertex) || g.Vertices[vertex].Level != 0 {
+	if !c.holder(g, fleet, player, loc) || !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
 		return errors.New("移民只能在己方船端相邻的已探索陆地定居")
 	}
 	e := g.Edges[fleet.Positions[ship]]

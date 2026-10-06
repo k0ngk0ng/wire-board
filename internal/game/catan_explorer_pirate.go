@@ -28,6 +28,7 @@ type catanExplorerChase struct {
 	Sequence uint64 `json:"sequence"`
 	Die      int    `json:"die"`
 	Success  bool   `json:"success"`
+	Bonus    []int  `json:"bonus,omitempty"` // Farm die faces owned when this roll happened.
 }
 
 // Resource composition must only be shown to the two involved players. Public
@@ -79,7 +80,7 @@ func (p catanExplorerPirate) victims(g *Catan, f *catanExplorerSailing, e *catan
 	return result
 }
 func (p catanExplorerPirate) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
-	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario {
+	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerPirateScenario(b.Scenario) || c.Scenario != b.Scenario {
 		return errors.New("海盗船需要探险家海盗任务组件")
 	}
 	if err := b.validate(g); err != nil {
@@ -100,8 +101,14 @@ func (p catanExplorerPirate) validate(g *Catan, b *catanExplorerBoard, f *catanE
 		}
 	}
 	if last := p.LastChase; last != nil {
-		if last.Sequence != p.ChaseSequence || e.Turn != nil && last.Sequence == e.Turn.Sequence && last.Player != e.Turn.Player || last.Player < 0 || last.Player >= len(g.Players) || last.Ship/3 != last.Player || !slices.Contains(p.Attempted, last.Ship) || last.Die < 1 || last.Die > 6 || last.Success != (last.Die == 6) {
+		if last.Sequence != p.ChaseSequence || e.Turn != nil && last.Sequence == e.Turn.Sequence && last.Player != e.Turn.Player || last.Player < 0 || last.Player >= len(g.Players) || last.Ship/3 != last.Player || !slices.Contains(p.Attempted, last.Ship) || last.Die < 1 || last.Die > 6 || last.Success != (last.Die == 6 || slices.Contains(last.Bonus, last.Die)) {
 			return errors.New("驱赶骰子记录无效")
+		}
+		owned := c.pirateFarmDice(b, last.Player)
+		for i, die := range last.Bonus {
+			if !slices.Contains(owned, die) || slices.Contains(last.Bonus[:i], die) {
+				return errors.New("驱赶奖励骰面缺少农场来源")
+			}
 		}
 	} else if p.ChaseSequence != 0 {
 		return errors.New("缺少驱赶骰子记录")
@@ -225,8 +232,9 @@ func (p *catanExplorerPirate) applyUnchecked(g *Catan, b *catanExplorerBoard, f 
 			p.ChaseSequence = sequence
 		}
 		p.Attempted = append(p.Attempted, target)
-		p.LastChase = &catanExplorerChase{Player: player, Ship: target, Sequence: sequence, Die: die, Success: die == 6}
-		if die == 6 {
+		bonus := c.pirateFarmDice(b, player)
+		p.LastChase = &catanExplorerChase{Player: player, Ship: target, Sequence: sequence, Die: die, Success: die == 6 || slices.Contains(bonus, die), Bonus: bonus}
+		if p.LastChase.Success {
 			p.Pending = &catanExplorerPiratePending{Player: player, Sequence: sequence, Stage: "place", Resume: "movement"}
 		}
 	default:

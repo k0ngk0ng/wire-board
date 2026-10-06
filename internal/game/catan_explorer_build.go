@@ -26,7 +26,7 @@ func (c *catanExplorerCargo) buildRoad(g *Catan, f *catanExplorerSailing, player
 	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
 		return err
 	}
-	if !catanExplorerLandEdge(g, edge) || g.Edges[edge].Owner != -1 {
+	if !c.landEdge(g, player, edge) || g.Edges[edge].Owner != -1 {
 		return errors.New("道路必须建在已探索、未占用的可建设陆地边")
 	}
 	count := 0
@@ -62,7 +62,7 @@ func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, 
 	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
 		return err
 	}
-	if !catanExplorerLandVertex(g, vertex) || g.Vertices[vertex].Level != 0 {
+	if !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
 		return errors.New("村庄必须建在已探索的空陆地点，不能接触迷雾或未解放金矿")
 	}
 	connected, count := false, 0
