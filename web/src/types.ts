@@ -202,6 +202,7 @@ export type Room = {
   catanNewWorldMap?: CatanNewWorldMap;
   catanOptions?: CatanOptions;
   catanTwoRules?: string;
+  catanTwoScenario?: string;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
   railMap?: string;

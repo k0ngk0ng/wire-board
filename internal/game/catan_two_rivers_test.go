@@ -365,3 +365,16 @@ func TestCatanTwoRiversCompleteEngineGames(t *testing.T) {
 	}
 	t.Log(coverage)
 }
+
+func TestCatanTwoRiversRuleVersionCompatibility(t *testing.T) {
+	s := twoRiverFixture(t)
+	if s.Catan.Rivers.Rules != CatanRiversRules {
+		t.Fatal("new river save omitted rule version")
+	}
+	s.Catan.Rivers.Rules = "unsupported"
+	helperReject(t, s, s.Turn, Action{Type: "catan_end"})
+	// Old internal river saves had no field; their2025map/inventory stay valid.
+	s.Catan.Rivers.Rules = ""
+	helperApply(t, s, s.Turn, Action{Type: "catan_end"})
+	twoRiverCheck(t, s)
+}

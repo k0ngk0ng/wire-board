@@ -63,7 +63,7 @@ func newCatanTwoBoard(rivers bool) (*State, error) {
 		if err != nil {
 			return nil, err
 		}
-		g.Rivers = &CatanRivers{Map: m, Gold: make([]int, 2), Bank: 100}
+		g.Rivers = &CatanRivers{Rules: CatanRiversRules, Map: m, Gold: make([]int, 2), Bank: 100}
 		s.Phase = "catan_rivers_start"
 	}
 	if err := g.prepareTwoNeutrals(); err != nil {

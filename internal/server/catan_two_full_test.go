@@ -13,6 +13,9 @@ import (
 // Provision only the waiting draft; the real ready/start commands construct
 // the game. No running state, cards, resources, dice or winners are installed.
 func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, string) {
+	return newTwoScenarioFullTable(t, "")
+}
+func newTwoScenarioFullTable(t *testing.T, scenario string) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -26,7 +29,7 @@ func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, st
 	raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 3}, 201)
 	id := raw["id"].(string)
 	s.mu.Lock()
-	if err := s.rooms[id].setCatanTwo(); err != nil {
+	if err := s.rooms[id].setCatanTwoScenario(scenario); err != nil {
 		t.Fatal(err)
 	}
 	if err := s.save(s.rooms[id]); err != nil {
@@ -41,7 +44,14 @@ func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, st
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	clients[2].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 	r := s.rooms[id]
-	if len(r.Seats) != 2 || len(r.Game.Catan.Players) != 2 || r.Game.Phase != "catan_setup_settlement" || r.Game.Catan.Two == nil || r.Game.Catan.Two.Bank != 10 {
+	phase := "catan_setup_settlement"
+	if scenario == "rivers" {
+		phase = "catan_rivers_start"
+		if r.Game.Catan.Rivers == nil || r.Game.Catan.Rivers.Rules != game.CatanRiversRules {
+			t.Fatal("formal start omitted river rules")
+		}
+	}
+	if len(r.Seats) != 2 || len(r.Game.Catan.Players) != 2 || r.Game.Phase != phase || r.Game.Catan.Two == nil || r.Game.Catan.Two.Bank != 10 {
 		t.Fatal("formal start did not construct two-player setup")
 	}
 	return s, ts, clients, id
@@ -81,6 +91,21 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			t.Fatal("resource conservation", color, total)
 		}
 	}
+	if g.Rivers != nil {
+		if g.Rivers.Rules != game.CatanRiversRules || len(g.Rivers.Gold) != 2 || g.Rivers.Bank < 0 {
+			t.Fatal("river rule/player inventory")
+		}
+		total := g.Rivers.Bank
+		for _, amount := range g.Rivers.Gold {
+			if amount < 0 {
+				t.Fatal("negative gold")
+			}
+			total += amount
+		}
+		if total != 100 {
+			t.Fatal("gold conservation")
+		}
+	}
 	dev := len(g.DevDeck) + len(g.DevDiscard)
 	for p, seat := range g.Players {
 		if seat.Eliminated {
@@ -101,6 +126,14 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		if g.ArmyOwner == p {
 			score += 2
 		}
+		if g.Rivers != nil {
+			if g.Rivers.Gold[p] > g.Rivers.Gold[1-p] {
+				score++
+			}
+			if g.Rivers.Gold[p] <= g.Rivers.Gold[1-p] {
+				score -= 2
+			}
+		}
 		if score != seat.Score {
 			t.Fatal("incorrect real score", p, score, seat.Score)
 		}
@@ -109,10 +142,14 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		t.Fatal("development inventory", dev)
 	}
 	for _, owner := range []int{0, 1, -2, -3} {
-		roads, villages, cities := 0, 0, 0
+		roads, villages, cities, bridges := 0, 0, 0, 0
 		for _, e := range g.Edges {
 			if e.Owner == owner {
-				roads++
+				if e.Bridge {
+					bridges++
+				} else {
+					roads++
+				}
 			}
 			if g.Vertices[e.A].Level > 0 && g.Vertices[e.B].Level > 0 {
 				t.Fatal("adjacent settlements")
@@ -127,7 +164,7 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 				}
 			}
 		}
-		if roads > 15 || villages > 5 || cities > 4 || owner < 0 && (villages < 1 || cities != 0) {
+		if bridges > 3 || roads > 15 || villages > 5 || cities > 4 || owner < 0 && (villages < 1 || cities != 0) {
 			t.Fatal("piece inventory", owner, roads, villages, cities)
 		}
 	}
@@ -152,17 +189,19 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 				t.Fatal("forced draw privacy")
 			}
 		}
-		if q["canAct"] != (viewer == s.CatanPendingActor()) {
+		if q["canAct"] != (!s.Finished && viewer == s.Turn && (s.Catan.Two.Pending != nil || s.Catan.Two.Trade != nil)) {
 			t.Fatal("incorrect response permission")
 		}
 	}
 }
 
-func TestCatanTwoCompleteHTTPGames(t *testing.T) {
+func TestCatanTwoCompleteHTTPGames(t *testing.T)       { runTwoCompleteHTTPGames(t, "") }
+func TestCatanTwoRiversCompleteHTTPGames(t *testing.T) { runTwoCompleteHTTPGames(t, "rivers") }
+func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 	coverage := map[string]int{}
 	for sample := range 3 {
 		t.Run(fmt.Sprint(sample), func(t *testing.T) {
-			s, ts, clients, id := newTwoFullTable(t)
+			s, ts, clients, id := newTwoScenarioFullTable(t, scenario)
 			restored, modes := map[string]bool{}, map[string]int{}
 			restart := func(label string) { s, ts = restartRiversHTTP(t, s, ts, clients, id); restored[label] = true }
 			restart("initial")
@@ -172,6 +211,9 @@ func TestCatanTwoCompleteHTTPGames(t *testing.T) {
 				state := r.Game
 				assertTwoHTTPInventory(t, state)
 				label := fmt.Sprintf("%s/rolls=%d", state.Phase, len(state.Catan.Two.Rolls))
+				if state.Catan.Two.Pending != nil {
+					label += "/" + state.Catan.Two.Pending.Kind
+				}
 				if !restored[label] {
 					restart(label)
 					r = s.rooms[id]
@@ -185,6 +227,10 @@ func TestCatanTwoCompleteHTTPGames(t *testing.T) {
 				action, err := state.BotAction(actor)
 				if err != nil {
 					t.Fatal(steps, state.Phase, err)
+				}
+				coverage["action/"+action.Type]++
+				if state.Catan.Two.Pending != nil {
+					coverage["build/"+state.Catan.Two.Pending.Kind]++
 				}
 				mode := "manual"
 				if pending {
@@ -264,6 +310,9 @@ func TestCatanTwoCompleteHTTPGames(t *testing.T) {
 						t.Fatal("duplicate or absent history")
 					}
 					record := history[0].(map[string]any)
+					if scenario == "rivers" && (record["catanScenario"] != "rivers" || record["catanExpansionRules"].(map[string]any)["rivers"] != game.CatanRiversRules) {
+						t.Fatal("river combination history missing", record)
+					}
 					stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 					want := float64(0)
 					if p == winner {
@@ -287,4 +336,13 @@ func TestCatanTwoCompleteHTTPGames(t *testing.T) {
 			}
 		}
 	}
+	if scenario == "rivers" {
+		for _, key := range []string{"action/catan_bridge", "build/bridge", "action/catan_coin_buy", "action/catan_two_robber"} {
+			if coverage[key] == 0 {
+				t.Fatal("missing natural river combination path", key, coverage)
+			}
+		}
+	}
+	t.Logf("scenario=%s coverage=%v", scenario, coverage)
+
 }
