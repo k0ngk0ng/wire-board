@@ -5,6 +5,10 @@ import "slices"
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	if g.Explorer != nil {
+		s.catanExplorerView(v, player)
+		return
+	}
 	s.catanAttackView(v, player)
 	if g.Transport != nil {
 		s.catanTransportView(v, player)

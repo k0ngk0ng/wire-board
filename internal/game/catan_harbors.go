@@ -130,6 +130,9 @@ func (s *State) catanHarborsScore() {
 // Scenario targets stay authored in Seafarers state. Variant adjustments are
 // derived once, preserving special endings such as wonders and cloth depletion.
 func (g *Catan) victoryTarget() int {
+	if g.Explorer != nil {
+		return g.Explorer.Board.Target
+	}
 	goal := 10
 	if g.Transport != nil {
 		goal = 13
