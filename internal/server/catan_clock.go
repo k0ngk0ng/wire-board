@@ -10,14 +10,46 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		return false
 	}
 	if r.Game.Catan.Explorer != nil {
-		if r.Game.Phase == "catan_discard" {
-			if previousPhase != "catan_discard" {
+		current := r.Game.Phase
+		if previousPhase == "catan_explorer_setup" {
+			// Every confirmed piece (including two consecutive pieces by the
+			// same actor) and the first production turn get their own window.
+			r.CatanTimeLeft = 0
+			r.startTurnClock(now)
+			return true
+		}
+		endResponse := func(phase string) bool {
+			return phase == "catan_explorer_resolve" || phase == "catan_explorer_battle"
+		}
+		if endResponse(current) {
+			// Resolution and all hero rerolls share a deadline. After expiry
+			// the server continues one automatic response per tick.
+			if !endResponse(previousPhase) {
+				r.CatanTimeLeft = 0
+				r.startTurnClock(now)
+			}
+			return true
+		}
+		if endResponse(previousPhase) {
+			r.CatanTimeLeft = 0
+			r.startTurnClock(now)
+			return true
+		}
+		response := func(phase string) bool {
+			return phase == "catan_discard" || phase == "catan_explorer_pirate_place" || phase == "catan_explorer_pirate_steal"
+		}
+		if response(current) {
+			if !response(previousPhase) {
 				r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
+				r.startTurnClock(now)
+			} else if current != previousPhase {
+				// Discard -> placement -> theft must preserve the original
+				// construction/sailing time across the whole response chain.
 				r.startTurnClock(now)
 			}
 			return true // Every discarder shares this response deadline.
 		}
-		if previousPhase == "catan_discard" {
+		if response(previousPhase) {
 			r.TurnDeadline = now.UnixMilli() + r.CatanTimeLeft
 			r.CatanTimeLeft = 0
 			return true
