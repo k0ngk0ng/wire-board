@@ -252,10 +252,16 @@ export function SplendorCardAnimation({
               renderCard(event.card)
             ) : (
               <div
-                className={`deck tier-${event.tier - 1} ${event.orient ? "orient-deck" : ""}`}
+                className={`deck tier-${event.tier - 1} ${event.orient ? `orient-deck ${assets ? "has-orient-back" : ""}` : ""}`}
                 style={
                   event.orient
-                    ? undefined
+                    ? assets
+                      ? {
+                          backgroundImage: `url("${assets}/splendor/expansions/orient-back-${event.tier}.webp")`,
+                          backgroundSize: "100% 100%",
+                          backgroundPosition: "center",
+                        }
+                      : undefined
                     : { backgroundPosition: `${(event.tier - 1) * 20}% 100%` }
                 }
               >

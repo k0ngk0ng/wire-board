@@ -62,7 +62,15 @@ export function SplendorOptionPicker({
   );
 }
 
-export function StrongholdBadge({ room, card }: { room: Room; card: Card }) {
+export function StrongholdBadge({
+  room,
+  card,
+  assets,
+}: {
+  room: Room;
+  card: Card;
+  assets: string;
+}) {
   const hold = room.game?.splendor?.strongholds?.[card.id];
   if (!hold) return null;
   return (
@@ -70,7 +78,15 @@ export function StrongholdBadge({ room, card }: { room: Room; card: Card }) {
       className={`gem-stronghold-badge seat-${hold.player}`}
       title={`${room.seats[hold.player]?.name}的要塞：${hold.count} 座`}
     >
-      <Castle size={15} />
+      {assets ? (
+        <img
+          className="gem-stronghold-piece"
+          src={`${assets}/splendor/expansions/stronghold-${["blue", "red", "green", "orange"][hold.player]}.webp`}
+          alt=""
+        />
+      ) : (
+        <Castle size={15} />
+      )}
       <b>{hold.count}</b>
       <small>{room.seats[hold.player]?.name}</small>
     </span>
@@ -293,7 +309,7 @@ export function SplendorExpansionBoard({
                         className={target === c.id ? "selected" : ""}
                       >
                         {renderCard(c, () => setTarget(c.id))}
-                        <StrongholdBadge room={room} card={c} />
+                        <StrongholdBadge room={room} card={c} assets={assets} />
                       </div>
                     ))}
                   </div>

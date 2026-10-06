@@ -91,6 +91,7 @@
 }
 .gem-market-tier {
   display: grid;
+  align-items: start;
   grid-template-columns: 5fr 3fr;
   gap: 16px;
   min-width: 0;
@@ -176,16 +177,6 @@
   white-space: normal;
   overflow-wrap: anywhere;
   padding: 10px 6px;
-}
-.gem-market-card:has(.orient-card) .gem-stronghold-badge {
-  top: auto;
-  bottom: 18px;
-  left: auto;
-  right: 3px;
-  gap: 2px;
-}
-.gem-market-card:has(.orient-card) .gem-stronghold-badge small {
-  display: none;
 }
 .gem-effect-content .gem-orient-choices {
   display: grid;
@@ -294,4 +285,12 @@
   .splendor-board .show-orient .orient-card-effects {
     top: 29%;
   }
+}
+
+/* The official backs already show their one/two/three grade dots. Keep the
+   count badge, but don't cover the illustration with the fallback face. */
+.deck.orient-deck.has-orient-back > strong,
+.deck.orient-deck.has-orient-back > .orient-deck-label,
+.deck.orient-deck.has-orient-back > .orient-deck-symbol {
+  display: none;
 }

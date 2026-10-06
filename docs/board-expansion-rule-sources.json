@@ -88,5 +88,10 @@
     "url": "https://www.catan.de/sites/default/files/2021-07/Die%20Fischer%20von%20Catan%20%E2%80%93%20Seefahrer-2.pdf",
     "sha256": "9571400a9b99adad51e7a33c6b648e0d8a038704617df6eb97e227fb7688df12",
     "bytes": 247139
+  },
+  "splendor-strongholds-photo": {
+    "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/11/05.jpg",
+    "sha256": "3bebd5b904581fa0eede416602d19348513cbb912916114dd7dd4d8d637fdfc4",
+    "bytes": 1482869
   }
 }

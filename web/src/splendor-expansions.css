@@ -102,20 +102,24 @@
 }
 .gem-stronghold-badge {
   position: absolute;
-  top: 40%;
-  left: 5%;
-  right: 5%;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   border: 2px solid #ffe596;
   background: #253851;
   color: #fff9eb;
   border-radius: 5px;
   pointer-events: none;
-  padding: 3px;
+  padding: 2px;
   box-shadow: 0 2px 6px #0008;
+}
+.market-row:has(.gem-stronghold-badge) {
+  padding-bottom: 32px;
 }
 .gem-stronghold-badge small {
   overflow: hidden;
@@ -195,6 +199,13 @@
   position: relative;
   border-radius: 8px;
 }
+.gem-stronghold-targets > div:has(.gem-stronghold-badge) {
+  padding-bottom: 32px;
+}
+.gem-stronghold-targets .gem-stronghold-badge {
+  top: auto;
+  bottom: 0;
+}
 .gem-stronghold-targets > div.selected {
   outline: 3px solid #d7a52b;
   outline-offset: 2px;
@@ -220,10 +231,10 @@
   overflow-y: auto;
 }
 .gem-stronghold-badge.seat-1 {
-  background: #296344;
+  background: #942f33;
 }
 .gem-stronghold-badge.seat-2 {
-  background: #942f33;
+  background: #296344;
 }
 .gem-stronghold-badge.seat-3 {
   background: #925018;
@@ -263,4 +274,27 @@
   border: 1px solid #cfb778;
   border-radius: 4px;
   padding: 2px 4px;
+}
+
+.gem-stronghold-piece {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex: 0 0 20px;
+}
+@media (max-width: 650px) {
+  .gem-stronghold-badge {
+    height: 24px;
+    line-height: 16px;
+    font-size: 12px;
+  }
+  .market-row:has(.gem-stronghold-badge),
+  .gem-stronghold-targets > div:has(.gem-stronghold-badge) {
+    padding-bottom: 28px;
+  }
+  .gem-stronghold-piece {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+  }
 }
