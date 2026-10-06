@@ -21,6 +21,7 @@ type catanExplorerHidden struct {
 	Revealed bool `json:"revealed"`
 }
 type catanExplorerBoard struct {
+	Liberated    map[int]int            `json:"liberated,omitempty"` // Public lair numbers, supplied only by the mission controller.
 	Rules        string                 `json:"rules"`
 	Scenario     string                 `json:"scenario"`
 	Layout       string                 `json:"layout"`
@@ -249,6 +250,11 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	r, _ := catanExplorerRecipe(m.Scenario)
 	seen := map[int]bool{}
 	resources, numbers := [2][]int{}, [2][]int{slices.Clone(m.Numbers[0]), slices.Clone(m.Numbers[1])}
+	for tile, number := range m.Liberated {
+		if !slices.ContainsFunc(m.Hidden, func(h catanExplorerHidden) bool { return h.Tile == tile && h.Revealed && h.Resource == CatanGold }) || number < 2 || number > 12 || number == 7 {
+			return errors.New("已解放金矿数字或地块无效")
+		}
+	}
 	for _, h := range m.Hidden {
 		if h.Region < 0 || h.Region > 1 || !slices.Contains(m.Regions[h.Region], h.Tile) || seen[h.Tile] {
 			return errors.New("探险隐藏地块位置、区域或唯一性损坏")
@@ -261,7 +267,11 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 				return errors.New("未探索地块不能已有公开地形或数字")
 			}
 		} else {
-			if tile.Resource != h.Resource || tile.Number != h.Number || h.Resource >= CatanDesert && h.Number != 0 || h.Resource < CatanDesert && h.Number == 0 {
+			wantNumber := h.Number
+			if h.Resource == CatanGold {
+				wantNumber = m.Liberated[h.Tile]
+			}
+			if tile.Resource != h.Resource || tile.Number != wantNumber || h.Resource >= CatanDesert && h.Number != 0 || h.Resource < CatanDesert && h.Number == 0 {
 				return errors.New("探索地块与已取数字不一致")
 			}
 			if h.Resource < CatanDesert {

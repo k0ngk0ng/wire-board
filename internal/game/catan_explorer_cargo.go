@@ -7,9 +7,9 @@ import (
 
 // Each player owns two settlers followed by nine crew: stable ID = player*11
 // + component slot. Locations partition the physical inventory, including the
-// supply. Fish/spice components and mission landings are not installed yet.
+// supply. Lair landings use the same crew identities; fish/spice cargo is not installed yet.
 type catanExplorerCargoLocation struct {
-	Kind  string `json:"kind"` // supply, ship, harbor.
+	Kind  string `json:"kind"` // supply, ship, harbor, lair (crew only).
 	Index int    `json:"index"`
 }
 type catanExplorerCargoTurn struct {
@@ -141,6 +141,12 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	}
 	for id, loc := range c.Units {
 		if loc.Kind == "supply" && loc.Index == -1 {
+			continue
+		}
+		if loc.Kind == "lair" {
+			if c.Scenario != "pirate-lairs" || id%11 < 2 || loc.Index < 0 || loc.Index >= len(g.Tiles) || g.Tiles[loc.Index].Resource != CatanGold || c.used(loc) > 3 {
+				return errors.New("巢穴船员位置、种类或数量无效")
+			}
 			continue
 		}
 		if c.Scenario == "land-ho" && id%11 >= 2 || !c.holder(g, fleet, id/11, loc) || c.used(loc) > 2 {
