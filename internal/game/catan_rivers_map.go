@@ -46,16 +46,16 @@ func catanRiverNumberRecipe(extended bool) (order, numbers []int) {
 
 func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 	n := len(g.Players)
-	if n < 3 || n > 6 || g.SetupStep != 0 || g.Rivers != nil || g.Seafarers != nil || g.BaseSetup != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers || (n > 4) != g.Options.FiveSix {
+	if n < 2 || n > 6 || n == 2 && g.Two == nil || g.SetupStep != 0 || g.Rivers != nil || g.Seafarers != nil || g.BaseSetup != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers || (n > 4) != g.Options.FiveSix {
 		return nil, errors.New("河流地图仅用于尚未建设的对应人数基础地图")
 	}
 	for _, v := range g.Vertices {
-		if v.Level != 0 || v.Owner >= 0 {
+		if v.Level != 0 || v.Owner != -1 {
 			return nil, errors.New("河流地图不能覆盖建筑")
 		}
 	}
 	for _, e := range g.Edges {
-		if e.Owner >= 0 {
+		if e.Owner != -1 {
 			return nil, errors.New("河流地图不能覆盖路线")
 		}
 	}
@@ -140,7 +140,7 @@ func (f catanRiversMap) validate(g *Catan) error {
 	if n > 4 {
 		expectedTiles, expectedVertices, expectedEdges = 30, 80, 109
 	}
-	if n < 3 || n > 6 || len(g.Tiles) != expectedTiles || len(g.Vertices) != expectedVertices || len(g.Edges) != expectedEdges {
+	if n < 2 || n > 6 || len(g.Tiles) != expectedTiles || len(g.Vertices) != expectedVertices || len(g.Edges) != expectedEdges {
 		return errors.New("河流棋盘尺寸不符")
 	}
 	paths, terrain, outlets := catanRiverRecipe(n > 4)

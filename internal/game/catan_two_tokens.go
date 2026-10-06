@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 // Drawn is persisted to prevent refresh from rerolling the random draw. Only
 // the active player sees it; all participants see their own resulting hands.
@@ -70,6 +73,16 @@ func (g *Catan) twoDesert() int {
 	return -1
 }
 
+func (g *Catan) twoRetreatTiles() []int {
+	if g.Rivers != nil {
+		return slices.DeleteFunc(slices.Clone(g.Rivers.Map.Swamps), func(id int) bool { return id == g.Robber })
+	}
+	if desert := g.twoDesert(); desert >= 0 && desert != g.Robber {
+		return []int{desert}
+	}
+	return []int{}
+}
+
 func (s *State) catanTwoTokenAction(player int, a Action) error {
 	if !s.catanTwoTokenWindow(player) {
 		return errors.New("请在自己的掷骰前或行动阶段使用贸易筹码")
@@ -124,12 +137,15 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		s.Phase = "catan_two_trade"
 		s.catanLog(player, "花费 %d 枚贸易筹码，从玩家 %d 随机取 %d 张资源，待选择交还 2 张", cost, 2-player, count)
 	case "catan_two_robber":
-		desert := g.twoDesert()
-		if desert < 0 || g.Robber == desert {
-			return errors.New("强盗已经在沙漠，或没有可用沙漠")
+		target, terrain := g.twoDesert(), "沙漠"
+		if g.Rivers != nil {
+			target, terrain = a.Tile, "沼泽"
 		}
-		g.Robber = desert
-		s.catanLog(player, "花费 %d 枚贸易筹码，将强盗移回沙漠，不偷牌", cost)
+		if !slices.Contains(g.twoRetreatTiles(), target) {
+			return errors.New("请选择另一处允许强盗退回的地形")
+		}
+		g.Robber = target
+		s.catanLog(player, "花费 %d 枚贸易筹码，将强盗移回%s #%d，不偷牌", cost, terrain, target+1)
 	default:
 		return errors.New("未知贸易筹码行动")
 	}
@@ -190,10 +206,10 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	if q.Spent || q.Tokens[player] < g.twoTokenCost(player) {
 		return Action{}, false
 	}
-	if g.Robber >= 0 && g.Robber != g.twoDesert() {
+	if targets := g.twoRetreatTiles(); g.Robber >= 0 && len(targets) > 0 && g.Tiles[g.Robber].Resource < 5 {
 		for _, vertex := range g.Tiles[g.Robber].Vertices {
 			if g.Vertices[vertex].Owner == player && g.Vertices[vertex].Level > 0 {
-				return Action{Type: "catan_two_robber"}, true
+				return Action{Type: "catan_two_robber", Tile: targets[0]}, true
 			}
 		}
 	}

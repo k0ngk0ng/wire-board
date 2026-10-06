@@ -6,13 +6,12 @@ import (
 )
 
 // Neutral colors occupy the real board without becoming resource-owning seats.
-// -1 remains the only empty road owner. These primitives are not a public
-// two-player constructor: production, compulsory responses and tokens follow.
+// -1 remains the only empty road owner. Shared by base and river variants.
 var catanTwoNeutralOwners = [2]int{-2, -3}
 
 func (g *Catan) prepareTwoNeutrals() error {
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.SetupStep != 0 || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Rivers != nil || g.Fishing != nil || g.Caravans != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil {
-		return errors.New("双人中立布局目前仅用于未开始的基础随机地图")
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.SetupStep != 0 || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Fishing != nil || g.Caravans != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil {
+		return errors.New("双人中立布局目前仅用于未开始的基础或河流地图")
 	}
 	for _, v := range g.Vertices {
 		if v.Level != 0 || v.Owner != -1 {
@@ -58,6 +57,17 @@ func (g *Catan) twoNeutralChoices(kind string) []catanTwoNeutralChoice {
 		if len(choices) > 0 {
 			return choices
 		}
+	} else if kind == "bridge" && g.Rivers != nil {
+		for _, owner := range catanTwoNeutralOwners {
+			for _, edge := range g.Rivers.Map.Bridges {
+				if g.canBridge(owner, edge) {
+					choices = append(choices, catanTwoNeutralChoice{owner, -1, edge})
+				}
+			}
+		}
+		if len(choices) > 0 {
+			return choices
+		}
 	} else if kind != "road" {
 		return choices
 	}
@@ -83,6 +93,7 @@ func (g *Catan) placeTwoNeutral(kind string, choice catanTwoNeutralChoice) error
 		g.Vertices[choice.Vertex].Owner, g.Vertices[choice.Vertex].Level = choice.Owner, 1
 	} else {
 		g.Edges[choice.Edge].Owner = choice.Owner
+		g.Edges[choice.Edge].Bridge = kind == "bridge" && g.Rivers != nil && slices.Contains(g.Rivers.Map.Bridges, choice.Edge)
 	}
 	return nil
 }
@@ -120,7 +131,7 @@ func (g *Catan) twoSettlementTokens(owner, vertex int) int {
 	}
 	reward := 0
 	for _, tile := range g.Tiles {
-		if tile.Resource == CatanDesert && slices.Contains(tile.Vertices, vertex) {
+		if (tile.Resource == CatanDesert || g.Rivers != nil && tile.Resource == catanSwamp) && slices.Contains(tile.Vertices, vertex) {
 			reward = 2
 			break
 		}

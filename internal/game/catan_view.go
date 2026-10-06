@@ -15,6 +15,9 @@ func (s *State) catanView(view map[string]any, player int) {
 		if player >= 0 && player < len(g.Players) {
 			public["cost"] = g.twoTokenCost(player)
 			public["tokenWindow"] = s.catanTwoTokenWindow(player)
+			if s.catanTwoTokenWindow(player) {
+				public["retreatTiles"] = g.twoRetreatTiles()
+			}
 		}
 		if q.Pending != nil && !s.Finished {
 			public["choices"] = g.twoNeutralChoices(q.Pending.Kind)
