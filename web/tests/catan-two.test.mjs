@@ -253,3 +253,48 @@ test("two-player merchant-train room shows twelve points while the running game 
   assert.equal(catanRuleContext(r).caravans, true);
   assert.equal(catanRuleContext(r).target, 12);
 });
+
+test("merchant-train retreat explicitly moves offboard, never to a waterhole or invented desert", () => {
+  const r = fixture(),
+    g = r.game.catan;
+  g.caravans = {};
+  g.tiles = [
+    { id: 0, resource: 0 },
+    { id: 1, resource: 5 },
+  ];
+  g.robber = 0;
+  Object.assign(g.two, {
+    pending: undefined,
+    tokenWindow: true,
+    tokens: [5, 5],
+    cost: 2,
+    retreatTiles: [-1],
+  });
+  assert.deepEqual(twoRetreatTargets(r), [-1]);
+  for (const mutate of [
+    (r) => (r.game.catan.robber = -1),
+    (r) => delete r.game.catan.two.retreatTiles,
+    (r) => (r.game.catan.two.retreatTiles = [1]),
+    (r) => (r.game.catan.two.spent = true),
+    (r) => (r.game.catan.two.tokenWindow = false),
+    (r) => (r.game.catan.two.tokens[0] = 1),
+    (r) => (r.spectating = true),
+    (r) => (r.you = -1),
+    (r) => (r.game.finished = true),
+    (r) => (r.status = "closed"),
+  ]) {
+    const copy = structuredClone(r);
+    mutate(copy);
+    assert.deepEqual(twoRetreatTargets(copy), []);
+  }
+});
+
+test("two-player merchant-train results include actual wagon building bonuses", async () => {
+  const { catanResultDescription } = await import("../src/catan-results.ts");
+  const r = fixture();
+  r.game.catan.caravans = {};
+  assert.match(
+    catanResultDescription(r.game.catan),
+    /商队.*12分.*马车.*每座＋1/,
+  );
+});

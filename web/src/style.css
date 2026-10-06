@@ -1013,6 +1013,9 @@ label small {
   grid-template-columns: 0.8fr 1.2fr;
   min-height: 500px;
 }
+.waiting-two-summary {
+  display: none;
+}
 .waiting-cover {
   background: #eef1e6;
   text-align: center;
@@ -2434,6 +2437,13 @@ label small {
   }
   .waiting-cover {
     display: none;
+  }
+  .waiting-two-summary {
+    display: block;
+    color: #31584a;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0 0 16px;
   }
   .waiting-seats {
     padding: 30px;

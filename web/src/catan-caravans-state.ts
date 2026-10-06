@@ -2,6 +2,24 @@ import type { CatanState, CatanWagon, Room } from "./types";
 
 export type CaravanSelection = { edge: number; from: number | null };
 
+export function caravanPlacementStep(g?: CatanState) {
+  const q = g?.caravans?.pending;
+  return g?.two && q?.kind === "place" && q.two
+    ? q.two.first
+      ? 2
+      : 1
+    : undefined;
+}
+
+export function caravanPrompt(g?: CatanState) {
+  const step = caravanPlacementStep(g);
+  return step
+    ? `请放置第${step}辆马车`
+    : g?.caravans?.pending?.kind === "place"
+      ? "请决定马车位置"
+      : "请完成商队投票";
+}
+
 export function caravanResponder(room: Room) {
   const c = room.game?.catan?.caravans;
   return room.status === "playing" &&
@@ -107,7 +125,6 @@ export function caravanAdded(before: Room, after: Room): CatanWagon | null {
     old.sequence !== next.sequence ||
     !old.pending ||
     !["vote", "place"].includes(old.pending.kind) ||
-    next.pending ||
     next.wagons.length !== old.wagons.length + 1 ||
     !old.wagons.every(
       (w, i) =>
@@ -116,6 +133,23 @@ export function caravanAdded(before: Room, after: Room): CatanWagon | null {
   )
     return null;
   const added = next.wagons.at(-1)!;
+  if (next.pending) {
+    // The first of two wagons keeps the same round (and may keep the same
+    // actor). Only a matching persisted first placement may animate here.
+    const first = next.pending.two?.first;
+    if (
+      caravanPlacementStep(a) !== 1 ||
+      caravanPlacementStep(b) !== 2 ||
+      old.pending.two!.start !== old.wagons.length ||
+      next.pending.two!.start !== old.pending.two!.start ||
+      next.pending.active !== old.pending.active ||
+      after.status !== "playing" ||
+      after.game?.finished ||
+      first?.edge !== added.edge ||
+      first?.from !== added.from
+    )
+      return null;
+  }
   return old.choices?.some(
     (w) => w.edge === added.edge && w.from === added.from,
   ) && caravanGeometry(b, added)

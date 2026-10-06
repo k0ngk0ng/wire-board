@@ -7,6 +7,7 @@ import {
   CatanCaravanBonuses,
   CatanCaravanPanel,
 } from "./catan-caravans";
+import { caravanPlacementStep } from "./catan-caravans-state";
 import type { CaravanSelection } from "./catan-caravans-state";
 import {
   CatanBridge,
@@ -499,6 +500,7 @@ export function CatanBoard({
     phase,
     g.setupStep,
     g.caravans?.sequence,
+    caravanPlacementStep(g),
     g.two?.sequence,
     g.caravans?.actor,
     g.fishing?.tokens.responder,

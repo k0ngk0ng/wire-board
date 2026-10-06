@@ -4,6 +4,7 @@ import { CatanResource } from "./catan-resources";
 import { catanSeatColor } from "./catan-player-colors";
 import {
   caravanBonus,
+  caravanPlacementStep,
   caravanCanRespond,
   caravanGeometry,
   caravanPick,
@@ -228,12 +229,21 @@ export function CatanCaravanPanel({
   const g = room.game!.catan!,
     c = g.caravans,
     q = c?.pending;
+  const step = caravanPlacementStep(g);
   const [collapsed, setCollapsed] = useState(false);
   const [bid, setBid] = useState([0, 0, 0, 0, 0]);
   useEffect(() => {
     setCollapsed(false);
     setBid([0, 0, 0, 0, 0]);
-  }, [room.id, c?.sequence, c?.actor, q?.kind, room.you, room.spectating]);
+  }, [
+    room.id,
+    c?.sequence,
+    c?.actor,
+    q?.kind,
+    step,
+    room.you,
+    room.spectating,
+  ]);
   useEffect(() => {
     if (selected) setCollapsed(false);
   }, [selected]);
@@ -270,8 +280,10 @@ export function CatanCaravanPanel({
                   ? "商队：出价"
                   : q.kind === "vote"
                     ? "商队：分配选票"
-                    : "商队：决定位置"
-                : `${room.seats[c.actor]?.name} 正在${q.kind === "bid" ? "出价" : "选位"}`}
+                    : step
+                      ? `商队：第${step}辆马车`
+                      : "商队：决定位置"
+                : `${room.seats[c.actor]?.name} 正在${q.kind === "bid" ? "出价" : step ? `放置第${step}辆马车` : "选位"}`}
             </strong>
             <button
               aria-expanded={!collapsed}
@@ -284,7 +296,7 @@ export function CatanCaravanPanel({
             <div className="catan-gold-body">
               <p>
                 {q.kind === "bid"
-                  ? "每张羊毛或粮食算1票，可不出价。确认后无法更改，投票结束后归还银行。"
+                  ? "每张羊毛或粮食算1票，可不出价。确认后无法更改，放车结束后归还银行。"
                   : q.kind === "vote"
                     ? "可在聊天中协商，再把全部选票投给一个位置；确认后无法更改。"
                     : mine
@@ -292,6 +304,47 @@ export function CatanCaravanPanel({
                       : `等待${room.seats[c.actor]?.name}决定马车位置与前进方向。`}{" "}
                 每次响应120秒，超时自动处理。
               </p>
+              {q.two && (
+                <>
+                  <p>
+                    {q.kind === "bid"
+                      ? "双方各出价一次，共放两辆马车。票多者决定两辆，分别延伸不同商队；平票时各放一辆，本回合玩家先放。"
+                      : votes(q.bids[0]) === votes(q.bids[1])
+                        ? `双方平票，各放一辆；${room.seats[q.active]?.name}先放。`
+                        : "票多者连续决定两辆马车，第二辆须延伸另一支商队。"}
+                    出价的资源在两辆放置结束后一起归还银行。
+                  </p>
+                  {step && (
+                    <ol className="caravan-steps" aria-label="本轮马车进度">
+                      {[1, 2].map((n) => (
+                        <li
+                          key={n}
+                          className={
+                            n < step ? "done" : n === step ? "current" : ""
+                          }
+                          aria-current={n === step ? "step" : undefined}
+                        >
+                          <b>{n < step ? "✓" : n}</b>
+                          <span>
+                            第{n}辆
+                            {n < step
+                              ? "已放置"
+                              : n === step
+                                ? "待确认"
+                                : "待放置"}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                  {q.two.first && (
+                    <small>
+                      第一辆：路线 #{q.two.first.edge + 1} ·{" "}
+                      {caravanGeometry(g, q.two.first)?.direction}
+                    </small>
+                  )}
+                </>
+              )}
               <div className="caravan-bids">
                 {q.order.map((p) => (
                   <div key={p} className={c.actor === p ? "responding" : ""}>
@@ -416,7 +469,9 @@ export function CatanCaravanPanel({
                     >
                       {q.kind === "vote"
                         ? `确认投出全部 ${votes(q.bids[room.you])} 票`
-                        : "确认放置马车"}
+                        : step
+                          ? `确认放置第${step}辆马车`
+                          : "确认放置马车"}
                     </button>
                   </div>
                 </>

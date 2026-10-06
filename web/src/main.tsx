@@ -1,5 +1,5 @@
 import { twoResponder } from "./catan-two-state";
-import { caravanResponder } from "./catan-caravans-state";
+import { caravanResponder, caravanPlacementStep } from "./catan-caravans-state";
 import { CatanRiverSeat } from "./catan-rivers";
 import { fishResponder } from "./catan-fishing-state";
 import {
@@ -678,7 +678,7 @@ function App() {
       r.game!.catan?.cardEvent?.players[0] ??
       r.game!.catan?.citiesKnights?.pending?.players[0] ??
       r.game!.catan?.seafarers?.pirateIslands?.raid?.rewards[0];
-    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.two?.sequence ?? 0}:${r.game!.catan?.two?.pending ? "two_build" : r.game!.catan?.two?.trade ? "two_trade" : ""}:${r.game!.catan?.caravans?.pending?.kind ?? ""}:${r.game!.catan?.caravans?.sequence ?? 0}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
+    const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.two?.sequence ?? 0}:${r.game!.catan?.two?.pending ? "two_build" : r.game!.catan?.two?.trade ? "two_trade" : ""}:${r.game!.catan?.caravans?.pending?.kind ?? ""}:${r.game!.catan?.caravans?.sequence ?? 0}:${caravanPlacementStep(r.game!.catan) ?? 0}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
     if (key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
         void audio.current.play("finish");
@@ -2127,6 +2127,10 @@ function Waiting({
   const seaInfo = room.catanSeafarersChoices?.find(
     (s) => s.id === room.catanSeafarers?.scenario,
   );
+  const twoLabel =
+    room.kind === "catan" && room.catanTwoRules
+      ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`
+      : "";
   const ready =
     room.seats.every((p) => p.ready) &&
     (!room.catanFriendlyRobber?.enabled ||
@@ -2183,7 +2187,7 @@ function Waiting({
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
                   ? room.catanTwoRules
-                    ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`
+                    ? twoLabel
                     : `${room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
@@ -2193,6 +2197,7 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
+        {twoLabel && <p className="waiting-two-summary">{twoLabel}</p>}
         {room.kind === "catan" && !room.catanTwoRules && (
           <CatanCitiesKnightsSetup room={room} />
         )}

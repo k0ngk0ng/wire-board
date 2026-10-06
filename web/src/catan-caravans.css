@@ -160,3 +160,48 @@
     font-size: 14px;
   }
 }
+
+.caravan-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+.caravan-steps li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 5px;
+  border: 1px solid #dbcfb0;
+  border-radius: 7px;
+  color: #65553c;
+  background: #fffaf0;
+  font-size: 12px;
+}
+.caravan-steps b {
+  display: grid;
+  place-items: center;
+  flex: 0 0 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ede2c9;
+}
+.caravan-steps .current {
+  border-color: #8b6124;
+  color: #513915;
+  background: #ffefb9;
+}
+.caravan-steps .current b {
+  background: #8b6124;
+  color: #fff;
+}
+.caravan-steps .done {
+  color: #315b40;
+  background: #edf8ec;
+}
+.caravan-steps .done b {
+  background: #346447;
+  color: #fff;
+}

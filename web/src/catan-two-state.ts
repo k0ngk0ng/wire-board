@@ -143,6 +143,8 @@ export function twoRetreatTargets(room: Room): number[] {
     q.tokens[room.you] < (q.cost || 1)
   )
     return [];
+  if (g.caravans)
+    return g.robber >= 0 && q.retreatTiles?.includes(-1) ? [-1] : [];
   // Respect server choices; only old base saves may fall back to the desert.
   const targets =
     q.retreatTiles ??
