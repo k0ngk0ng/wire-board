@@ -2455,11 +2455,31 @@ function Players({ room }: { room: Room }) {
                 <small>
                   {g.catan.citiesKnights ? "资源与商品" : "资源"}{" "}
                   {g.catan.players[i].resourceCount} ·{" "}
-                  {g.catan.citiesKnights ? "进步牌" : "发展卡"}{" "}
-                  {g.catan.citiesKnights?.players[i].progressCount ??
+                  {g.catan.explorer
+                    ? "金币"
+                    : g.catan.citiesKnights
+                      ? "进步牌"
+                      : "发展卡"}{" "}
+                  {g.catan.explorer?.economy.gold[i] ??
+                    g.catan.citiesKnights?.players[i].progressCount ??
                     g.catan.players[i].devCount}
                   <br />
-                  {g.catan.citiesKnights ? (
+                  {g.catan.explorer ? (
+                    <>
+                      船只{" "}
+                      {
+                        g.catan.explorer.fleet.positions.filter(
+                          (at, slot) => Math.floor(slot / 3) === i && at >= 0,
+                        ).length
+                      }{" "}
+                      / 3 · 港口{" "}
+                      {
+                        g.catan.vertices.filter(
+                          (v) => v.owner === i && v.level === 2,
+                        ).length
+                      }
+                    </>
+                  ) : g.catan.citiesKnights ? (
                     <CatanCitySeat game={g.catan} seat={i} />
                   ) : g.catan.seafarers?.pirateIslands ? (
                     <>
@@ -2829,6 +2849,7 @@ function Turn({
   const expired = !!deadline && remaining === 0;
   const phase: Record<string, string> = {
     ...catanPhases,
+    ...(g.catan?.explorer ? { catan_turn: "交易建设，然后开始航行" } : {}),
     ...(g.catan?.seafarers ? catanSeafarerPhases : {}),
     ...(g.catan?.seafarers?.wonders
       ? { catan_robber: catanPhases.catan_robber }

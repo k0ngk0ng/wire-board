@@ -501,6 +501,7 @@ export type CatanTransport = {
   };
 };
 export type CatanState = {
+  explorer?: import("./catan-explorer-state").ExplorerView;
   transport?: CatanTransport;
   developmentNames?: string[];
   attack?: CatanAttack;

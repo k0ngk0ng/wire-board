@@ -208,6 +208,33 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
 export function CatanRules({ room }: { room: Room }) {
   const info = catanRuleContext(room);
   const { scenario, players, fiveSix, helpers } = info;
+  if (info.explorer)
+    return (
+      <section className="catan-rules">
+        <h3>探索者与海盗 · 初航 · 8分</h3>
+        <ul>
+          <li>
+            按印刷位置开局，随机先手；每人有村庄、港口、道路和装有移民的船，另有2金币。双人局的白色和橙色建筑、道路是静态障碍。
+          </li>
+          <li>
+            村庄1分，港口2分，自己回合达到8分立即获胜。港口每块邻格只产1资源；无发展卡、强盗、最长道路和最大军队。
+          </li>
+          <li>
+            掷出非7点而没有获得资源时补偿1金币。7点仅让超过7张资源牌的玩家同时弃半，金币不算资源牌。
+          </li>
+          <li>
+            先交易建设，再移动船只；整个回合共用120秒，强制弃牌期间暂停。3同类资源可换1其他资源或金币；2金币买1资源，每回合最多2次。
+          </li>
+          <li>
+            每船4步，可付1羊毛加2步；切换船只后不能再移动上一艘。触及迷雾必须揭示并停止本船，仍可移民定居。
+          </li>
+          <li>
+            船和港口各2格，移民占2格；通过实际停靠的己方港口装卸。移民在船端合法陆地点定居，不再付资源，船与移民回供应。
+          </li>
+          <li>探索有资源地形领取对应1资源，无对应资源的地形领取2金币。</li>
+        </ul>
+      </section>
+    );
   if (info.transport)
     return (
       <section className="catan-rules">
