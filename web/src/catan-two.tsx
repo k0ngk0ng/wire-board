@@ -159,6 +159,9 @@ export function CatanTwoPanel({
   const retreatValid =
     retreat?.tile != null && retreatTargets.includes(retreat.tile);
   const retreatName = g.rivers ? "沼泽" : "沙漠";
+  const retreatAction = g.caravans
+    ? "将强盗移出棋盘"
+    : `将强盗移回${retreatName}`;
   const openConfirm = (action: TokenAction) => {
     setConfirm(action);
     setCollapsed(false);
@@ -194,7 +197,9 @@ export function CatanTwoPanel({
             />
           )}
           <div>
-            <strong>双人卡坦{g.rivers ? "＋河流" : ""}</strong>
+            <strong>
+              双人卡坦{g.rivers ? "＋河流" : g.caravans ? "＋商队" : ""}
+            </strong>
             <small>筹码供应 {q.bank} / 20</small>
           </div>
         </header>
@@ -242,7 +247,7 @@ export function CatanTwoPanel({
                 disabled={busy || !canRobber}
                 onClick={() => openConfirm("robber")}
               >
-                移回强盗
+                {g.caravans ? "移出强盗" : "移回强盗"}
               </button>
               <button
                 disabled={busy || !canKnight}
@@ -261,9 +266,10 @@ export function CatanTwoPanel({
             {g.rivers ? "、金币或筹码" : ""}，不行动，但可以取得最长路线。
           </p>
           <p>
-            在{retreatName}旁建村得 2 枚筹码，沿海得 1
-            枚，两者可叠加。每回合可消费筹码一次，也可另弃一张已打出的骑士换 2
-            枚筹码。
+            {g.caravans
+              ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
+              : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
+            每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
           </p>
         </details>
       </section>
@@ -281,7 +287,7 @@ export function CatanTwoPanel({
                     : "为中立势力建设"
                   : `${room.seats[q.actor]?.name} 正在${q.trade ? "归还资源" : "建设中立棋子"}`
                 : confirm === "robber"
-                  ? `将强盗移回${retreatName}`
+                  ? retreatAction
                   : titles[confirm!]}
             </strong>
             <button
@@ -397,10 +403,10 @@ export function CatanTwoPanel({
                       {confirm === "trade"
                         ? `消费 ${cost} 枚筹码，随机取对手最多 2 张资源，再选择交还 2 张。确认后不能取消。`
                         : confirm === "robber"
-                          ? `消费 ${cost} 枚筹码，将强盗移回${retreatName}，不偷牌。`
+                          ? `消费 ${cost} 枚筹码，${retreatAction}，不偷牌。`
                           : "弃掉一张已打出的骑士，获得 2 枚筹码。可能失去最大骑士军队的 2 分。"}
                     </p>
-                    {confirm === "robber" && (
+                    {confirm === "robber" && !g.caravans && (
                       <>
                         <p>
                           选择{retreatName}
@@ -482,7 +488,7 @@ export function CatanTwoRetreatMap({
   onSelect: (s: TwoRetreatSelection) => void;
   poly: (id: number) => string;
 }) {
-  if (!selected || busy) return null;
+  if (!selected || busy || room.game?.catan?.caravans) return null;
   const name = room.game!.catan!.rivers ? "沼泽" : "沙漠";
   return (
     <g className="catan-two-retreat-map">

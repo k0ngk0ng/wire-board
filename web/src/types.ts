@@ -400,6 +400,7 @@ export type CatanState = {
       chooser: number;
       bids: (number[] | null)[];
       votes: (CatanWagon | null)[];
+      two?: { start: number; first?: CatanWagon; train?: number };
     };
   };
   rivers?: {

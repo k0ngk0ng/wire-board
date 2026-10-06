@@ -1,5 +1,5 @@
 import { twoResponder } from "./catan-two-state";
-import { caravanResponder } from "./catan-caravans-state";
+import { caravanResponder, caravanPrompt } from "./catan-caravans-state";
 import { fishResponder } from "./catan-fishing-state";
 import { useEffect } from "react";
 import type { Room } from "./types";
@@ -65,7 +65,7 @@ export function useTurnTitle(room?: Room) {
         : game?.catan?.two?.trade
           ? "请选择归还资源"
           : game?.catan?.caravans?.pending
-            ? "请完成商队投票"
+            ? caravanPrompt(game.catan)
             : room && fishResponder(room) !== undefined
               ? "请选择鱼筹码"
               : game?.catan?.cardEvent

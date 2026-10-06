@@ -8,6 +8,8 @@ import {
   caravanCanRespond,
   caravanBonus,
   caravanAdded,
+  caravanPlacementStep,
+  caravanPrompt,
 } from "../src/catan-caravans-state.ts";
 import { catanSavedVictoryTarget } from "../src/catan-rule-context.ts";
 
@@ -218,4 +220,85 @@ test("the public building badge marks one bonus for two or three incident wagons
   assert.equal(caravanBonus(g, 0), false);
   g.caravans.wagons.push({ edge: 2, from: 3 });
   assert.equal(caravanBonus(g, 1), true);
+});
+
+function twoPlacements(tie = false) {
+  const { before } = placement();
+  const g = before.game.catan;
+  g.players = [{}, {}];
+  g.setupStep = g.setupLimit = 4;
+  g.two = {};
+  g.vertices.push({ id: 2, x: 160, y: 100 }, { id: 3, x: 160, y: 162 });
+  g.edges.push({ a: 2, b: 3 });
+  Object.assign(g.caravans, {
+    actor: 0,
+    pending: { kind: "place", active: 0, chooser: 0, two: { start: 0 } },
+    choices: [
+      { edge: 0, from: 0 },
+      { edge: 1, from: 2 },
+    ],
+  });
+  const first = structuredClone(before);
+  first.version++;
+  const c = first.game.catan.caravans;
+  c.wagons.push({ edge: 0, from: 0 });
+  c.pending.two.first = { edge: 0, from: 0 };
+  c.actor = c.pending.chooser = tie ? 1 : 0;
+  c.choices = [{ edge: 1, from: 2 }];
+  const second = structuredClone(first);
+  second.version++;
+  second.game.catan.caravans.wagons.push({ edge: 1, from: 2 });
+  delete second.game.catan.caravans.pending;
+  return { before, first, second };
+}
+
+test("both two-player placements animate when the same bidder continues or a tie changes players", () => {
+  for (const tie of [false, true]) {
+    const { before, first, second } = twoPlacements(tie);
+    assert.equal(caravanPlacementStep(before.game.catan), 1);
+    assert.equal(caravanPlacementStep(first.game.catan), 2);
+    assert.equal(caravanPlacementStep(second.game.catan), undefined);
+    assert.equal(caravanPrompt(before.game.catan), "请放置第1辆马车");
+    assert.equal(caravanPrompt(first.game.catan), "请放置第2辆马车");
+    assert.deepEqual(caravanAdded(before, first), { edge: 0, from: 0 });
+    assert.deepEqual(caravanAdded(first, second), { edge: 1, from: 2 });
+    assert.equal(caravanAdded(first, first), null);
+    for (const r of [before, first, second]) {
+      r.you = -1;
+      r.spectating = true;
+    }
+    assert.deepEqual(caravanAdded(before, first), { edge: 0, from: 0 });
+    assert.deepEqual(caravanAdded(first, second), { edge: 1, from: 2 });
+    first.status = "finished";
+    delete first.game.catan.caravans.pending;
+    assert.deepEqual(caravanAdded(before, first), { edge: 0, from: 0 });
+  }
+});
+
+test("unfinished wagon animation requires matching persisted progress and consecutive snapshots", () => {
+  for (const mutate of [
+    (b, a) => delete a.game.catan.two,
+    (b, a) => delete b.game.catan.two,
+    (b, a) => delete b.game.catan.caravans.pending.two,
+    (b, a) => delete a.game.catan.caravans.pending.two.first,
+    (b, a) => a.game.catan.caravans.pending.two.start++,
+    (b, a) => b.game.catan.caravans.pending.two.start++,
+    (b, a) => a.game.catan.caravans.pending.two.first.from++,
+    (b, a) => a.game.catan.caravans.pending.active++,
+    (b, a) => (a.game.catan.caravans.pending.kind = "bid"),
+    (b, a) => (b.game.catan.caravans.pending.kind = "bid"),
+    (b, a) => a.game.catan.caravans.sequence++,
+    (b, a) => (a.game.finished = true),
+    (b, a) => a.version++,
+    (b, a) => a.you++,
+    (b, a) => (a.spectating = true),
+  ]) {
+    const { before, first } = twoPlacements();
+    mutate(before, first);
+    assert.equal(caravanAdded(before, first), null);
+  }
+  const { before } = twoPlacements();
+  before.game.catan.caravans.pending.kind = "bid";
+  assert.equal(caravanPlacementStep(before.game.catan), undefined);
+  assert.equal(caravanPrompt(before.game.catan), "请完成商队投票");
 });
