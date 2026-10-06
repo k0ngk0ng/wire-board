@@ -414,3 +414,79 @@ test("fish confirmations expire when the fish is collected or the roll is consum
     assert.equal(explorerSelectedAction(r, pick), null);
   }
 });
+
+test("fish flights use real berths, survive map scrolling and distinguish delivery from removal", async () => {
+  const { explorerFishFlight, explorerFishPoint } =
+    await import("../src/catan-explorer-state.ts");
+  const before = room().game.catan;
+  before.tiles = [
+    { x: 40, y: 30 },
+    { x: 180, y: 220 },
+  ];
+  before.explorer.board = { council: { tile: 1, anchors: [0, 2] } };
+  before.explorer.cargo.fish = [{ kind: "shoal", index: 0 }];
+  const after = structuredClone(before);
+  after.explorer.cargo.fish[0] = { kind: "ship", index: 3 };
+  const load = {
+    kind: "catan_explorer_fish_load",
+    fish: [
+      {
+        fish: 0,
+        from: before.explorer.cargo.fish[0],
+        to: after.explorer.cargo.fish[0],
+      },
+    ],
+  };
+  const f = explorerFishFlight(before, after, load, 0);
+  assert.deepEqual(f.points, [{ x: 40, y: 50 }, explorerFishPoint(after, 0)]);
+  assert.equal(f.retire, false);
+  assert.equal(f.appear, false);
+  // Return supply on delivery flies to the council; pirate/removal fades locally.
+  const supply = structuredClone(after);
+  supply.explorer.cargo.fish[0] = { kind: "supply", index: -1 };
+  const retire = {
+    ...load,
+    kind: "catan_explorer_fish_deliver",
+    fish: [
+      {
+        fish: 0,
+        from: after.explorer.cargo.fish[0],
+        to: supply.explorer.cargo.fish[0],
+      },
+    ],
+  };
+  assert.deepEqual(explorerFishFlight(after, supply, retire, 0).points[1], {
+    x: 180,
+    y: 220,
+  });
+  assert.equal(
+    explorerFishFlight(
+      after,
+      supply,
+      { ...retire, kind: "catan_explorer_ship" },
+      0,
+    ).delivered,
+    false,
+  );
+  const spawn = {
+    kind: "catan_explorer_fish_roll",
+    fish: [
+      {
+        fish: 0,
+        from: supply.explorer.cargo.fish[0],
+        to: before.explorer.cargo.fish[0],
+      },
+    ],
+  };
+  assert.deepEqual(explorerFishFlight(supply, before, spawn, 0), {
+    points: [
+      { x: 40, y: 32 },
+      { x: 40, y: 50 },
+    ],
+    appear: true,
+    retire: false,
+    delivered: false,
+    width: 34,
+  });
+  assert.equal(explorerFishFlight(supply, before, spawn, 1), null);
+});

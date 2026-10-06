@@ -47,6 +47,8 @@ export type ExplorerMotion = {
     success: boolean;
   };
   revealed?: number[];
+  fishRoll?: { player: number; sequence: number; die: number; spawned: number };
+  fish?: { fish: number; from: ExplorerLocation; to: ExplorerLocation }[];
   cargo?: { unit: number; from: ExplorerLocation; to: ExplorerLocation }[];
 };
 export type ExplorerView = {
@@ -253,6 +255,37 @@ export function explorerFishPoint(g: CatanState, id: number) {
           : null;
   if (!p) return null;
   return { x: p.x, y: p.y + (loc.kind === "ship" ? -12 : 20) };
+}
+// Every point is in map coordinates, so zoom/scroll moves pieces and flights together.
+export function explorerFishFlight(
+  before: CatanState,
+  after: CatanState,
+  motion: ExplorerMotion,
+  id: number,
+) {
+  const change = motion.fish?.find((f) => f.fish === id);
+  if (!change) return null;
+  const from = explorerFishPoint(before, id),
+    to = explorerFishPoint(after, id);
+  if (!from && !to) return null;
+  const council = after.explorer?.board.council;
+  const delivered =
+    motion.kind === "catan_explorer_fish_deliver" && council
+      ? after.tiles[council.tile]
+      : null;
+  const start = from ?? { x: to!.x, y: to!.y - 18 };
+  const end =
+    to ??
+    (delivered
+      ? { x: delivered.x, y: delivered.y }
+      : { x: start.x, y: start.y - 24 });
+  return {
+    points: [start, end],
+    appear: !from,
+    retire: !to,
+    delivered: !!delivered,
+    width: change.to.kind === "shoal" ? 34 : 27,
+  };
 }
 export function explorerShipPosition(g: CatanState, slot: number) {
   const positions = g.explorer?.fleet.positions,

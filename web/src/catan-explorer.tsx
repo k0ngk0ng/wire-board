@@ -534,6 +534,7 @@ export function CatanExplorerBoard({
                 const p = explorerFishPoint(g, id);
                 if (
                   !p ||
+                  motion?.event.fish?.some((f) => f.fish === id) ||
                   (loc.kind === "ship" &&
                     motion?.event.kind === "catan_explorer_sail" &&
                     motion.event.ship === loc.index)
@@ -733,7 +734,13 @@ export function CatanExplorerBoard({
               群鱼 · 运到议会岛锚点交付。
             </p>
             {x.fish.lastRoll && (
-              <p role="status">
+              <p
+                role="status"
+                key={x.fish.lastRoll.sequence}
+                className={
+                  motion?.event.fishRoll ? "explorer-fish-roll" : undefined
+                }
+              >
                 最近捕鱼骰：{room.seats[x.fish.lastRoll.player]?.name}掷出{" "}
                 {x.fish.lastRoll.die}，
                 {x.fish.lastRoll.spawned >= 0 ? "出现一群鱼" : "未出现鱼群"}。

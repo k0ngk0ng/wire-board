@@ -31,9 +31,11 @@ func TestCatanExplorerFishNaturalBotMatches(t *testing.T) {
 				if err != nil {
 					t.Fatal(step, s.Phase, err)
 				}
+				beforeFish := slices.Clone(s.Catan.Explorer.Cargo.Fish)
 				if err = s.Apply(p, a); err != nil {
 					t.Fatalf("step %d phase %s action %+v: %v", step, s.Phase, a, err)
 				}
+				assertExplorerFishMotion(t, beforeFish, s, a)
 				actions[a.Type]++
 				if step%37 == 0 {
 					s = explorerStateRestore(t, s)
