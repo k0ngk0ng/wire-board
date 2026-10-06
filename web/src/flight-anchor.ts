@@ -1,4 +1,9 @@
-type Bounds = { left: number; top: number; right: number; bottom: number };
+export type Bounds = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+};
 
 // Keep the real center: clamping an offscreen seat onto the viewport edge can
 // make a flight appear to belong to a different, visible player.
@@ -19,7 +24,7 @@ export function flightCenter(rect: Bounds, clips: Bounds[]) {
   return { x, y };
 }
 
-export function visibleFlightAnchor(element: Element) {
+export function visibleFlightBounds(rect: Bounds, ancestor: Element | null) {
   const view = window.visualViewport;
   const clips: Bounds[] = [
     {
@@ -33,12 +38,9 @@ export function visibleFlightAnchor(element: Element) {
         : document.documentElement.clientHeight,
     },
   ];
-  for (
-    let parent = element.parentElement;
-    parent;
-    parent = parent.parentElement
-  ) {
+  for (let parent = ancestor; parent; parent = parent.parentElement) {
     const style = getComputedStyle(parent);
+    if (style.visibility === "hidden" || style.display === "none") return null;
     const clipX = /^(auto|scroll|hidden|clip)$/.test(style.overflowX);
     const clipY = /^(auto|scroll|hidden|clip)$/.test(style.overflowY);
     if (!clipX && !clipY) continue;
@@ -52,5 +54,13 @@ export function visibleFlightAnchor(element: Element) {
       bottom: clipY ? top + parent.clientHeight : Infinity,
     });
   }
-  return flightCenter(element.getBoundingClientRect(), clips);
+  return flightCenter(rect, clips);
+}
+
+export function visibleFlightAnchor(element: Element) {
+  if (getComputedStyle(element).visibility === "hidden") return null;
+  return visibleFlightBounds(
+    element.getBoundingClientRect(),
+    element.parentElement,
+  );
 }
