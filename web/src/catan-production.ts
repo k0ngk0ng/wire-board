@@ -19,5 +19,9 @@ export function catanProductionNumbers(g: CatanState, tile: number): number[] {
 }
 
 export function catanTileProducing(g: CatanState, tile: number, roll: number) {
-  return g.robber !== tile && catanProductionNumbers(g, tile).includes(roll);
+  return (
+    !g.attack?.conquered.includes(tile) &&
+    g.robber !== tile &&
+    catanProductionNumbers(g, tile).includes(roll)
+  );
 }

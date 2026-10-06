@@ -381,7 +381,59 @@ export type CatanRevealedEvent = {
 };
 export type CatanWagon = { edge: number; from: number };
 export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
+export type CatanAttackKnight = { player: number; edge: number };
+export type CatanAttackMove = { from: number; to: number; wheat?: boolean };
+export type CatanAttack = {
+  rules: string;
+  map: { castles: number[]; coast: number[]; barbarians: number; gold: number };
+  barbarians: number[];
+  knights: CatanAttackKnight[];
+  prisoners: number[];
+  gold: number[];
+  goldBank: number;
+  bought: number;
+  supply: number;
+  conquered: number[];
+  conqueredBuildings: number[];
+  knightsLeft: number[];
+  devRemaining: number;
+  discard: string[];
+  canAct: boolean;
+  canBuyCard: boolean;
+  pending?: { id: number; player: number; card: string };
+  endPlan?: { id: number; player: number; moves?: CatanAttackMove[] };
+  moveChoices?: {
+    from: number;
+    required: boolean;
+    normal: number[];
+    wheat: number[];
+  }[];
+  previewKnights?: CatanAttackKnight[];
+  previewWheat?: number;
+  canConfirm?: boolean;
+  targets?: number[];
+  edges?: number[];
+  sources?: number[];
+  destinations?: number[];
+  fromBoard?: number;
+  end?: {
+    id: number;
+    player: number;
+    moves: CatanAttackMove[];
+    battles: {
+      tile: number;
+      barbarians: number;
+      knights: CatanAttackKnight[];
+      prisoners: number[];
+      gold: number[];
+      contests?: { players: number[]; dice: number[] }[];
+      lossDie?: number;
+      lost?: CatanAttackKnight[];
+    }[];
+  };
+};
 export type CatanState = {
+  attack?: CatanAttack;
   two?: {
     rules: string;
     rolls: number[];

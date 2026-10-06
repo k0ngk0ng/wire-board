@@ -1,0 +1,191 @@
+.attack-panel {
+  color: #49351f;
+}
+.attack-panel .catan-gold-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.attack-panel p {
+  margin: 0;
+  line-height: 1.5;
+}
+.attack-stock,
+.attack-buttons,
+.attack-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.attack-stock {
+  font-size: 12px;
+  justify-content: space-between;
+  background: #ead7af;
+  padding: 8px;
+  border-radius: 8px;
+}
+.attack-buttons > button {
+  flex: 1 1 120px;
+}
+.attack-panel button {
+  white-space: normal;
+  min-width: 0;
+}
+.attack-panel .selected {
+  background: #ffe18a;
+  border: 2px solid #8b601b;
+  color: #49351f;
+}
+.attack-wheat {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.attack-wheat input {
+  width: 18px;
+  height: 18px;
+}
+.attack-plan {
+  margin: 0;
+  padding-left: 24px;
+  max-height: 110px;
+  overflow: auto;
+}
+.attack-plan li {
+  margin: 3px 0;
+}
+.attack-coin-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+}
+.attack-coin-grid > div {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  min-width: 0;
+}
+.attack-panel .attack-coin-grid button {
+  padding: 7px 2px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.attack-coin-grid .catan-resource {
+  align-self: center;
+}
+.attack-seat {
+  display: inline;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.attack-battles {
+  border-top: 1px solid #ccb78c;
+  padding-top: 10px;
+  font-size: 12px;
+}
+.attack-battles summary {
+  cursor: pointer;
+  font-weight: 750;
+}
+.attack-battles > div {
+  margin-top: 8px;
+  padding: 9px;
+  border-radius: 8px;
+  background: #ecdfc1;
+}
+.attack-battles p {
+  margin: 5px 0;
+}
+.attack-map .attack-label {
+  fill: #3b2a19;
+  font-size: 13px;
+  font-weight: 850;
+  paint-order: stroke;
+  stroke: #fff1d1;
+  stroke-width: 3px;
+}
+.attack-conquered {
+  fill: #71382d44;
+  stroke: #b33126;
+  stroke-width: 3px;
+  stroke-dasharray: 5 3;
+}
+.attack-tile-choice {
+  fill: #ffe58516;
+  stroke: #ffe576;
+  stroke-width: 4px;
+  cursor: pointer;
+}
+.attack-tile-choice.picked {
+  fill: #ffe58544;
+  stroke: #fff8ba;
+}
+.attack-edge-choice {
+  cursor: pointer;
+}
+.attack-edge-choice line {
+  stroke: #ffda61;
+  stroke-width: 10px;
+  stroke-linecap: round;
+  stroke-dasharray: 3 5;
+}
+.attack-edge-choice.picked line {
+  stroke: #fff6b6;
+  stroke-dasharray: none;
+  stroke-width: 13px;
+}
+.attack-knight.selectable {
+  cursor: pointer;
+}
+.attack-knight.picked ellipse {
+  stroke: #795119;
+  stroke-width: 4px;
+}
+.attack-map [role="button"]:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 3px #fff);
+}
+@media (max-width: 600px) {
+  .attack-panel .catan-gold-body {
+    max-height: min(58dvh, 460px);
+    overflow: auto;
+  }
+
+  .attack-panel.pending .attack-buttons {
+    position: sticky;
+    bottom: 0;
+    padding: 6px 0;
+    background: #fff2cf;
+  }
+  .attack-panel .attack-coin-grid button {
+    min-height: 36px;
+  }
+}
+
+.attack-panel:not(.pending) {
+  grid-column: 1 / -1;
+  position: static;
+  width: auto;
+  max-height: none;
+  box-shadow: none;
+}
+.attack-seat > span {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.attack-coin-grid .catan-resource {
+  flex-direction: column;
+  gap: 3px;
+}
+.attack-coin-grid .catan-resource > span:last-child {
+  white-space: nowrap;
+}
+.attack-panel:not(.pending) .catan-gold-body {
+  max-height: none;
+  overflow: visible;
+}

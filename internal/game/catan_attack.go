@@ -193,6 +193,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	public := v["attack"].(map[string]any)
 	delete(public, "deck")
 	public["devRemaining"] = len(a.Deck)
+	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && a.cardSupplyReady()
 	public["supply"] = a.supply()
 	conquered, buildings := []int{}, []int{}
 	for _, t := range g.Tiles {
