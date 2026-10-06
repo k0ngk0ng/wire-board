@@ -74,6 +74,12 @@ func (g *Catan) twoDesert() int {
 }
 
 func (g *Catan) twoRetreatTiles() []int {
+	if g.Caravans != nil {
+		if g.Robber >= 0 {
+			return []int{-1}
+		}
+		return []int{}
+	}
 	if g.Rivers != nil {
 		return slices.DeleteFunc(slices.Clone(g.Rivers.Map.Swamps), func(id int) bool { return id == g.Robber })
 	}
@@ -141,11 +147,18 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		if g.Rivers != nil {
 			target, terrain = a.Tile, "沼泽"
 		}
+		if g.Caravans != nil {
+			target, terrain = -1, "棋盘外"
+		}
 		if !slices.Contains(g.twoRetreatTiles(), target) {
 			return errors.New("请选择另一处允许强盗退回的地形")
 		}
 		g.Robber = target
-		s.catanLog(player, "花费 %d 枚贸易筹码，将强盗移回%s #%d，不偷牌", cost, terrain, target+1)
+		if target < 0 {
+			s.catanLog(player, "花费 %d 枚贸易筹码，将强盗移到棋盘外，不偷牌", cost)
+		} else {
+			s.catanLog(player, "花费 %d 枚贸易筹码，将强盗移回%s #%d，不偷牌", cost, terrain, target+1)
+		}
 	default:
 		return errors.New("未知贸易筹码行动")
 	}

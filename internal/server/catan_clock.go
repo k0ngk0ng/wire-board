@@ -13,7 +13,9 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		return phase == "catan_caravan_bid" || phase == "catan_caravan_vote" || phase == "catan_caravan_place"
 	}
 	if caravanResponse(r.Game.Phase) {
-		if previousPhase != r.Game.Phase || previousActor != r.Game.CatanPendingActor() {
+		// A two-player winning bidder places two wagons separately. The second
+		// confirmed placement is a fresh response even when the actor is unchanged.
+		if previousPhase != r.Game.Phase || previousActor != r.Game.CatanPendingActor() || r.Game.Catan.Two != nil && previousPhase == "catan_caravan_place" {
 			r.startTurnClock(now)
 		}
 		return true

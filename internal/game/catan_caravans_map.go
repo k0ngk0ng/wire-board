@@ -62,7 +62,7 @@ func caravanStarts(g *Catan, holes []int) ([]catanCaravanWagon, error) {
 
 func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 	n := len(g.Players)
-	if n < 3 || n > 6 || (n > 4) != g.Options.FiveSix || g.SetupStep != 0 || g.BaseSetup != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers {
+	if n < 2 || n == 2 && g.Two == nil || n > 6 || (n > 4) != g.Options.FiveSix || g.SetupStep != 0 || g.BaseSetup != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers {
 		return nil, errors.New("商队地图仅用于尚未建设的对应人数基础地图")
 	}
 	for _, v := range g.Vertices {
@@ -71,7 +71,7 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 		}
 	}
 	for _, e := range g.Edges {
-		if e.Owner >= 0 {
+		if e.Owner != -1 {
 			return nil, errors.New("商队地图不能覆盖路线")
 		}
 	}
@@ -80,7 +80,7 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 			return nil, errors.New("商队地图不能覆盖其他剧本地形")
 		}
 	}
-	board := &Catan{Players: make([]CatanPlayer, n)}
+	board := &Catan{Players: make([]CatanPlayer, n), Two: g.Two}
 	board.makeMap()
 	holes, order, numbers := catanCaravanRecipe(n > 4)
 	f := &catanCaravanMap{WateringHoles: holes, Supply: 22}
@@ -140,7 +140,7 @@ func (f catanCaravanMap) validate(g *Catan) error {
 	if n > 4 {
 		tiles, vertices, edges, supply = 30, 80, 109, 33
 	}
-	if n < 3 || n > 6 || len(g.Tiles) != tiles || len(g.Vertices) != vertices || len(g.Edges) != edges || f.Supply != supply {
+	if n < 2 || n == 2 && g.Two == nil || n > 6 || len(g.Tiles) != tiles || len(g.Vertices) != vertices || len(g.Edges) != edges || f.Supply != supply {
 		return errors.New("商队地图尺寸或马车供应不符")
 	}
 	holes, order, numbers := catanCaravanRecipe(n > 4)

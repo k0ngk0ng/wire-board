@@ -10,8 +10,8 @@ import (
 var catanTwoNeutralOwners = [2]int{-2, -3}
 
 func (g *Catan) prepareTwoNeutrals() error {
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.SetupStep != 0 || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Fishing != nil || g.Caravans != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil {
-		return errors.New("双人中立布局目前仅用于未开始的基础或河流地图")
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.SetupStep != 0 || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Fishing != nil || g.Caravans != nil && g.Rivers != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil {
+		return errors.New("双人中立布局目前仅用于未开始的基础、河流或商队地图")
 	}
 	for _, v := range g.Vertices {
 		if v.Level != 0 || v.Owner != -1 {

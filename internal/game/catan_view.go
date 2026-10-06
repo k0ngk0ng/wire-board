@@ -30,7 +30,7 @@ func (s *State) catanView(view map[string]any, player int) {
 		public["actor"] = s.CatanPendingActor()
 		public["canAct"] = !s.Finished && player >= 0 && player == s.CatanPendingActor()
 		if c.Pending != nil && !s.Finished {
-			public["choices"] = c.choices(g)
+			public["choices"] = c.responseChoices(g)
 		}
 	}
 	s.catanFishingView(v, player)
