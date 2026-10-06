@@ -910,29 +910,28 @@ export function CatanBoard({
                         riverImage ? "transparent" : catanColors[t.resource]
                       }
                     />
-                    {assets &&
-                      t.resource !== 8 &&
-                      t.resource !== 12 &&
-                      !riverImage && (
-                        <image
-                          href={
-                            t.resource === 11
+                    {assets && t.resource !== 8 && !riverImage && (
+                      <image
+                        href={
+                          t.resource === 12
+                            ? `${assets}/catan/attack/castle-v1.webp`
+                            : t.resource === 11
                               ? `${assets}/catan/caravans/watering-hole-v1.webp`
                               : t.resource < 6
                                 ? `${assets}/catan/terrain-${[...terrainResourceKeys, "desert"][t.resource]}-v1.webp`
                                 : t.resource === 9
                                   ? `${assets}/catan/fishing/lake${g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}-v1.webp`
                                   : `${assets}/catan/seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}-v1.webp`
-                          }
-                          x={t.x - (hexSize * Math.sqrt(3)) / 2}
-                          y={t.y - hexSize}
-                          width={hexSize * Math.sqrt(3)}
-                          height={hexSize * 2}
-                          preserveAspectRatio="xMidYMid slice"
-                          clipPath={`url(#catan-hex-${t.id})`}
-                          pointerEvents="none"
-                        />
-                      )}
+                        }
+                        x={t.x - (hexSize * Math.sqrt(3)) / 2}
+                        y={t.y - hexSize}
+                        width={hexSize * Math.sqrt(3)}
+                        height={hexSize * 2}
+                        preserveAspectRatio="xMidYMid slice"
+                        clipPath={`url(#catan-hex-${t.id})`}
+                        pointerEvents="none"
+                      />
+                    )}
                     {(!assets || t.resource === 8) && (
                       <text
                         className="terrain-symbol"

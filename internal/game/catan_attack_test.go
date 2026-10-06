@@ -307,3 +307,30 @@ func TestCatanAttackKnightMovementAndPrintedLossOrientations(t *testing.T) {
 		}
 	}
 }
+
+// Independent visual reference: upright official 2025 castle on printed p15,
+// and the losses example on p18. Purple 1/6 is the upper-left/lower-right pair,
+// green 2/5 upper-right/lower-left, brown 3/4 the vertical pair. The artwork must
+// remain upright; an internally consistent but rotated side index is not proof.
+func TestCatanAttackPrintedCastleDiceMatchScreenGeometry(t *testing.T) {
+	for _, n := range []int{3, 6} {
+		g, a := attackFixture(t, n)
+		for _, edge := range g.Edges {
+			p, q := g.Vertices[edge.A], g.Vertices[edge.B]
+			dx, dy := q.X-p.X, q.Y-p.Y
+			var dice []int
+			if dx > -0.001 && dx < 0.001 {
+				dice = []int{3, 4}
+			} else if dx*dy < 0 {
+				dice = []int{1, 6}
+			} else {
+				dice = []int{2, 5}
+			}
+			for _, die := range dice {
+				if a.Map.edgeOrientation(g, edge.ID) != catanAttackLossOrientation(die) {
+					t.Fatal("printed castle die does not match actual screen orientation", n, edge.ID, die, dx, dy)
+				}
+			}
+		}
+	}
+}
