@@ -50,12 +50,18 @@ func catanExplorerBotRetireCargo(g *Catan, ship, harbor int) (load, unload []int
 func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 	g := s.Catan
 	x := g.Explorer
-	if x.Lairs == nil {
+	if x.Lairs == nil && x.Spice == nil {
 		return nil
 	}
 	prompt := int(g.TurnSerial)
 	plans := []catanExplorerBotPlan{}
-	unresolved := catanExplorerMissionUnfinished(g)
+	unresolved := false
+	if x.Lairs != nil {
+		unresolved = catanExplorerMissionUnfinished(g)
+	}
+	if x.Spice != nil {
+		unresolved = catanExplorerBotSpiceRemaining(g, player) > 0
+	}
 	ships, freeShip := 0, -1
 	for id := player * 3; id < (player+1)*3; id++ {
 		if x.Fleet.Positions[id] >= 0 {
@@ -100,7 +106,9 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 			}
 		} else {
 			if x.Cargo.Units[id].Kind != "supply" {
-				crew++
+				if x.Spice == nil || x.Cargo.Units[id].Kind != "farm" {
+					crew++
+				}
 			} else if freeCrew < 0 {
 				freeCrew = id
 			}
@@ -125,12 +133,16 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 			settlements++
 		}
 	}
+	crewTarget := 3
+	if x.Spice != nil {
+		crewTarget = min(2, catanExplorerBotSpiceRemaining(g, player))
+	}
 	for _, loc := range locations {
 		if loc.Kind == "ship" && catanExplorerBotFishingShip(g, player, loc.Index) {
 			continue
 		}
 		used := x.Cargo.used(loc)
-		if unresolved && crew < 3 && freeCrew >= 0 && used < 2 {
+		if unresolved && crew < crewTarget && freeCrew >= 0 && used < 2 {
 			value := 125
 			if loc.Kind == "ship" {
 				value += 25
@@ -157,6 +169,9 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 // so ships wait there for next-turn recruitment rather than oscillating.
 func catanExplorerMissionGoal(g *Catan, player, ship, edge int) int {
 	x := g.Explorer
+	if x.Spice != nil {
+		return catanExplorerSpiceGoal(g, player, ship, edge)
+	}
 	shipLoc := catanExplorerCargoLocation{"ship", ship}
 	units := x.Cargo.contents(shipLoc)
 	fishGoal := catanExplorerBotFishGoal(g, player, ship, edge)
@@ -296,6 +311,9 @@ func catanExplorerMissionVoyage(g *Catan, player, ship int) []int {
 func (s *State) catanExplorerMissionCargo(player int) (Action, bool) {
 	g := s.Catan
 	x := g.Explorer
+	if x.Spice != nil {
+		return s.catanExplorerSpiceBotCargo(player)
+	}
 	if x.Lairs == nil {
 		return Action{}, false
 	}
