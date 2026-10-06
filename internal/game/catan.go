@@ -29,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Attack         *catanAttack         `json:"attack,omitempty"`
 	Two            *CatanTwo            `json:"two,omitempty"`
 	Caravans       *catanCaravans       `json:"caravans,omitempty"`
 	Rivers         *CatanRivers         `json:"rivers,omitempty"`
@@ -205,7 +206,7 @@ func (s *State) catanScores() {
 		g.LongestOwner = -1
 	}
 	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
-	if g.pirateIslands() != nil || g.CitiesKnights != nil {
+	if g.pirateIslands() != nil || g.CitiesKnights != nil || g.Attack != nil {
 		g.ArmyOwner = -1
 	}
 	if g.LongestOwner != oldRoad {
@@ -227,6 +228,9 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = g.hiddenVictoryPoints(i) + g.riverPoints(i)
+		if g.Attack != nil {
+			p.Score += g.Attack.Prisoners[i] / 2
+		}
 		if g.Harbors != nil && g.Harbors.Owner == i {
 			p.Score += 2
 		}
@@ -251,7 +255,7 @@ func (s *State) catanScores() {
 			p.Score += g.Seafarers.Seats[i].IslandPoints
 		}
 		for _, v := range g.Vertices {
-			if v.Owner == i {
+			if v.Owner == i && (g.Attack == nil || !g.Attack.conqueredBuilding(g, v.ID)) {
 				p.Score += v.Level
 				if g.Caravans != nil && v.Level > 0 {
 					p.Score += g.Caravans.buildingBonus(g, v.ID)
@@ -267,7 +271,7 @@ func (s *State) catanScores() {
 	}
 }
 func (g *Catan) hiddenVictoryPoints(player int) int {
-	if g.pirateIslands() != nil || g.CitiesKnights != nil {
+	if g.pirateIslands() != nil || g.CitiesKnights != nil || g.Attack != nil {
 		return 0
 	}
 	return g.Players[player].Dev[4]
@@ -297,6 +301,9 @@ func (s *State) catanVictory() {
 }
 func (s *State) catanNext() {
 	g := s.Catan
+	if g.Attack != nil {
+		g.Attack.Bought = 0
+	}
 	if g.Two != nil {
 		g.Two.Rolls = []int{}
 		g.Two.Spent = false
@@ -339,6 +346,9 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.validateCatanAttack(); err != nil {
+		return err
+	}
 	if err := s.validateCatanTwo(); err != nil {
 		return err
 	}
@@ -351,7 +361,7 @@ func (s *State) applyCatan(player int, a Action) error {
 	if err := s.Catan.validateFishing(); err != nil {
 		return err
 	}
-	if s.Catan.Two != nil || s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if s.Catan.Attack != nil || s.Catan.Two != nil || s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -369,6 +379,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		if err := next.validateCaravans(); err != nil {
+			return err
+		}
+		if err := next.validateCatanAttack(); err != nil {
 			return err
 		}
 		*s = next
@@ -483,6 +496,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if s.Phase != "catan_turn" {
 			return errors.New("请先完成当前行动")
 		}
+		if g.Attack != nil && len(g.Attack.Knights) > 0 {
+			return errors.New("蛮族进攻回合末战斗流程尚未接入，不能跳过骑士阶段")
+		}
 		s.catanVictory()
 		if k := g.CitiesKnights; k != nil && !s.Finished && len(k.Players[player].Progress) > 4 {
 			k.Pending = &CatanCityPending{Kind: "progress_discard", Players: []int{player}}
@@ -542,6 +558,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	case "catan_trade_complete":
 		return s.catanCompleteTrade(player, a)
 	case "catan_buy_dev":
+		if g.Attack != nil {
+			return errors.New("蛮族进攻独立发展卡流程尚未接入，内部剧本不能使用普通牌堆")
+		}
 		if s.Phase != "catan_turn" || len(g.DevDeck) == 0 {
 			return errors.New("当前不能购买发展卡")
 		}
@@ -569,6 +588,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		s.catanScores()
 		s.catanVictory()
 	case "catan_dev":
+		if g.Attack != nil {
+			return errors.New("蛮族进攻不使用基础发展卡")
+		}
 		if g.CitiesKnights != nil {
 			return errors.New("城市与骑士不使用基础发展卡")
 		}
@@ -706,7 +728,7 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
 		}
 		s.Phase = "catan_setup_settlement"
-		if g.CitiesKnights != nil && g.SetupStep >= n && g.SetupStep < 2*n {
+		if (g.CitiesKnights != nil || g.Attack != nil) && g.SetupStep >= n && g.SetupStep < 2*n {
 			s.Phase = "catan_setup_city"
 		}
 	}
@@ -1071,9 +1093,9 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 	}
 	catanMove(from, to, t.Give)
 	catanMove(to, from, t.Take)
-	if r := g.Rivers; r != nil {
-		r.Gold[p] += t.GoldTake - t.GoldGive
-		r.Gold[target] += t.GoldGive - t.GoldTake
+	if gold := g.tradeGold(); gold != nil {
+		gold[p] += t.GoldTake - t.GoldGive
+		gold[target] += t.GoldGive - t.GoldTake
 	}
 	s.catanLog(p, "与玩家 %d 完成交易：给出 %s，获得 %s", target+1, catanTradeText(t.Give, t.GoldGive), catanTradeText(t.Take, t.GoldTake))
 	g.Trade = nil
@@ -1235,6 +1257,14 @@ func (s *State) EliminateCatan(p int) error {
 	}
 	if err := s.validateCaravans(); err != nil {
 		return err
+	}
+	if err := s.validateCatanAttack(); err != nil {
+		return err
+	}
+	if a := g.Attack; a != nil {
+		a.GoldBank += a.Gold[p]
+		a.Gold[p] = 0
+		a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return k.Player == p })
 	}
 	s.catanReturnFishing(p)
 	pl := &g.Players[p]

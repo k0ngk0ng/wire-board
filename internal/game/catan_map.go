@@ -174,6 +174,9 @@ func (g *Catan) touching(v int) []int {
 	return out
 }
 func (g *Catan) canSettlement(p, v int, setup bool) bool {
+	if g.Attack != nil && g.Attack.buildBlocked(g, -1, v) {
+		return false
+	}
 	if !g.pirateSettlementAllowed(p, v, setup) {
 		return false
 	}
@@ -197,6 +200,9 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 	return setup || connected
 }
 func (g *Catan) canRoad(p, id int) bool {
+	if g.Attack != nil && g.Attack.buildBlocked(g, id, -1) {
+		return false
+	}
 	return (g.Rivers == nil || !slices.Contains(g.Rivers.Map.Bridges, id)) && g.canRoute(p, id, false)
 }
 func (g *Catan) pieces(p int) (roads, settlements, cities int) {
@@ -227,6 +233,9 @@ func (g *Catan) rates(p int) []int {
 	for _, port := range g.Ports {
 		e := g.Edges[port.Edge]
 		if g.Vertices[e.A].Owner != p && g.Vertices[e.B].Owner != p {
+			continue
+		}
+		if g.Attack != nil && !(g.Vertices[e.A].Owner == p && !g.Attack.conqueredBuilding(g, e.A)) && !(g.Vertices[e.B].Owner == p && !g.Attack.conqueredBuilding(g, e.B)) {
 			continue
 		}
 		if port.Resource < 0 {

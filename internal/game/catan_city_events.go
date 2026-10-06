@@ -100,6 +100,9 @@ func (g *Catan) cityPiecesLeft(player int) int {
 	return 4 - cities - len(g.fallenCities(player))
 }
 func (g *Catan) canCityUpgrade(player, vertex int) bool {
+	if g.Attack != nil && g.Attack.buildBlocked(g, -1, vertex) {
+		return false
+	}
 	if vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Owner != player || g.Vertices[vertex].Level != 1 {
 		return false
 	}

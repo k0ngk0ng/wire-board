@@ -239,31 +239,37 @@ func (g *Catan) riverPoints(p int) int {
 }
 func (s *State) catanCoins(p int, a Action) error {
 	g := s.Catan
-	r := g.Rivers
-	if r == nil || s.Phase != "catan_turn" || a.Color < 0 || a.Color >= 5 {
+	gold := g.tradeGold()
+	var bank, bought *int
+	if g.Rivers != nil {
+		bank, bought = &g.Rivers.Bank, &g.Rivers.Bought
+	} else if g.Attack != nil {
+		bank, bought = &g.Attack.GoldBank, &g.Attack.Bought
+	}
+	if gold == nil || s.Phase != "catan_turn" || a.Color < 0 || a.Color >= 5 {
 		return errors.New("金币交易仅可在自己掷骰后的行动阶段进行")
 	}
 	c := a.Color
 	switch a.Type {
 	case "catan_coin_buy":
-		if r.Bought >= 2 || r.Gold[p] < 2 || g.Bank[c] <= 0 {
+		if *bought >= 2 || gold[p] < 2 || g.Bank[c] <= 0 {
 			return errors.New("每次行动最多用金币买2张资源，每张2金币，银行必须有库存")
 		}
-		r.Gold[p] -= 2
-		r.Bank += 2
-		r.Bought++
+		gold[p] -= 2
+		*bank += 2
+		*bought++
 		g.Bank[c]--
 		g.Players[p].Resources[c]++
-		s.catanLog(p, "支付 金币×2，购买 %s×1（本次行动 %d/2）", CatanResources[c], r.Bought)
+		s.catanLog(p, "支付 金币×2，购买 %s×1（本次行动 %d/2）", CatanResources[c], *bought)
 	case "catan_coin_sell":
 		rate := g.rates(p)[c]
-		if g.Players[p].Resources[c] < rate || r.Bank < 1 {
+		if g.Players[p].Resources[c] < rate || *bank < 1 {
 			return errors.New("资源或金币库存不足")
 		}
 		g.Players[p].Resources[c] -= rate
 		g.Bank[c] += rate
-		r.Bank--
-		r.Gold[p]++
+		*bank--
+		gold[p]++
 		s.catanLog(p, "支付 %s×%d，兑换 金币×1", CatanResources[c], rate)
 	default:
 		return errors.New("未知金币交易")
@@ -273,11 +279,20 @@ func (s *State) catanCoins(p int, a Action) error {
 	s.catanVictory()
 	return nil
 }
+func (g *Catan) tradeGold() []int {
+	if g.Rivers != nil {
+		return g.Rivers.Gold
+	}
+	if g.Attack != nil {
+		return g.Attack.Gold
+	}
+	return nil
+}
 func (g *Catan) validTradeGold(amount int) bool {
-	return amount >= 0 && amount <= 152 && (g.Rivers != nil || amount == 0)
+	return amount >= 0 && amount <= 152 && (g.tradeGold() != nil || amount == 0)
 }
 func (g *Catan) hasTradeGold(p, amount int) bool {
-	return g.validTradeGold(amount) && (amount == 0 || g.Rivers.Gold[p] >= amount)
+	return g.validTradeGold(amount) && (amount == 0 || p >= 0 && p < len(g.tradeGold()) && g.tradeGold()[p] >= amount)
 }
 func catanTradeText(cards []int, gold int) string {
 	text := catanText(cards)
