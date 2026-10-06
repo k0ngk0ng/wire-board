@@ -17,7 +17,8 @@ from PIL import Image
 
 def prepare(output: Path, rules_directory: Path | None):
     source_file = Path(__file__).resolve().parent.parent / 'docs/board-expansion-rule-sources.json'
-    source = json.loads(source_file.read_text())['splendor-silk-road']
+    sources = json.loads(source_file.read_text())
+    source = sources['splendor-silk-road']
     output.mkdir(parents=True, exist_ok=True)
     targets = output / 'splendor/expansions'
     targets.mkdir(parents=True, exist_ok=True)
@@ -42,12 +43,37 @@ def prepare(output: Path, rules_directory: Path | None):
                 raise ValueError(f'Unexpected embedded image for trading post {post}')
             art.putalpha(alpha)
             art.save(targets / f'post-{post}.webp', quality=94, method=6)
+        orient_source = sources['splendor-sun-never-sets']
+        if rules_directory:
+            data = (rules_directory / 'splendor-sun-never-sets.pdf').read_bytes()
+        else:
+            with urllib.request.urlopen(orient_source['url'], timeout=45) as response:
+                data = response.read()
+        if hashlib.sha256(data).hexdigest() != orient_source['sha256']:
+            raise ValueError('Official Orient PDF changed; review before updating the pin')
+        pdf = scratch / 'sun-never-sets.pdf'
+        pdf.write_bytes(data)
+        subprocess.run(['pdfimages', '-f', '2', '-l', '2', '-png', str(pdf), str(scratch / 'orient')], check=True)
+        # Original symbols only, not complete card illustrations. Avoid the
+        # double-white and sacrifice-black examples for other card colors.
+        for name, index, size in (
+            ('orient', 2, (66, 66)), ('orient-gold', 18, (168, 87)),
+            ('orient-copy', 21, (100, 100)), ('orient-free-1', 27, (100, 100)),
+            ('orient-free-2', 36, (100, 100)),
+        ):
+            art = Image.open(scratch / f'orient-{index:03}.png').convert('RGBA')
+            alpha = Image.open(scratch / f'orient-{index+1:03}.png').convert('L')
+            if art.size != size or alpha.size != size:
+                raise ValueError(f'Unexpected embedded Orient symbol {name}')
+            art.putalpha(alpha)
+            art.save(targets / f'{name}.webp', quality=94, method=6)
     (targets / 'sources.json').write_text(json.dumps({
         'rules': 'split-box-2025',
         'tradingPosts': source,
-        'note': 'Page 2 embedded tiles, matched to the five power descriptions; promotional prototype images differ.',
+        'orientSymbols': orient_source,
+        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols; not full Orient card illustrations. Matched visually to rule descriptions; promotional prototype images differ.',
     }, ensure_ascii=False, indent=2) + '\n')
-    print('Prepared five official trading-post tiles; temporary files removed.')
+    print('Prepared five official trading-post tiles and five Orient symbols; temporary files removed.')
 
 
 if __name__ == '__main__':

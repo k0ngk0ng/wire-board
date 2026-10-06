@@ -25,6 +25,10 @@ import { CatanOptionPicker } from "./catan-helpers";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
+import { SplendorMarket } from "./splendor-market";
+import { SplendorPurchase } from "./splendor-purchase";
+import { OrientCard } from "./splendor-orient-card";
+import { gemCanBuy, gemNames } from "./splendor-orient-state";
 import { SplendorRules } from "./splendor-rules";
 import { SplendorCities } from "./splendor-cities";
 import {
@@ -34,9 +38,7 @@ import {
 import {
   SplendorOptionPicker,
   SplendorExpansionBoard,
-  StrongholdBadge,
   gemPostNames,
-  gemGoldNeeded,
   splendorRulesLabel,
 } from "./splendor-expansions";
 import type { SGOptions, SplendorOptions, CatanOptions } from "./types";
@@ -137,7 +139,6 @@ const gemColors = [
   "#c94440",
   "#dcac38",
 ];
-const gemNames = ["祖母绿", "钻石", "蓝宝石", "缟玛瑙", "红宝石", "黄金"];
 const trainColors = [
   "#a35e91",
   "#eee6d1",
@@ -2821,6 +2822,8 @@ function Turn({
     gem_reserve: "选择一张盲预留卡",
     gem_stronghold: "放置、移动或移除要塞",
     gem_conquest: "选择是否发动征服",
+    gem_copy: "选择复制的永久奖励",
+    gem_free_card: "免费取得一张发展卡",
     tickets: "选择目的地任务",
     draw: "摸取第二张列车牌",
     finished: "查看本局结算",
@@ -3091,6 +3094,19 @@ function DevCard({
   selected?: boolean;
   affordable?: boolean;
 }) {
+  const assets = useContext(AssetsContext);
+  if (card.orient)
+    return (
+      <OrientCard
+        card={card}
+        assets={assets}
+        onClick={onClick}
+        selected={selected}
+        affordable={affordable}
+        renderGem={(color) => <Gemstone color={color} size={26} />}
+        renderCost={(cost) => <Cost cost={cost} />}
+      />
+    );
   return (
     <button
       className={`dev-card gem-${card.color} ${selected ? "selected" : ""} ${affordable ? "affordable" : ""}`}
@@ -3204,19 +3220,15 @@ function SplendorBoard({
     g.phase === "turn" &&
     room.status === "playing" &&
     (!s.strongholds?.[card.id] || s.strongholds[card.id].player === room.you) &&
-    gemGoldNeeded(p, card.cost) <= p.tokens[5];
+    gemCanBuy(p, card);
   const [tokens, setTokens] = useState<number[]>(Array(6).fill(0));
   const [selected, setSelected] = useState<Card>();
   const [blindTier, setBlindTier] = useState<number>();
+  const [conquestPurchase, setConquestPurchase] = useState(false);
   const [discardOpen, setDiscardOpen] = useState(true);
   const [collection, setCollection] = useState(false);
-  const [payment, setPayment] = useState<number[]>(Array(6).fill(0));
-  const selectCard = (card: Card) => {
-    const spend = card.cost.map((n, i) =>
-      Math.min(Math.max(0, n - p.bonus[i]), p.tokens[i]),
-    );
-    spend.push(gemGoldNeeded(p, card.cost, spend));
-    setPayment(spend);
+  const selectCard = (card: Card, conquest = false) => {
+    setConquestPurchase(conquest);
     setSelected(card);
   };
   useEffect(() => {
@@ -3229,18 +3241,8 @@ function SplendorBoard({
   }, [g.phase, g.turn]);
   const taking = mine && g.phase === "turn",
     discard = mine && g.phase === "discard";
-  const pay = selected
-    ? selected.cost.map((n, i) => Math.max(0, n - p.bonus[i]))
-    : [];
-  const gold = payment[5];
-  const affordable = gold <= p.tokens[5];
-  const occupied =
-    selected &&
-    s.strongholds?.[selected.id] &&
-    s.strongholds[selected.id].player !== room.you;
-  const reserved = selected && p.reserved?.some((c) => c.id === selected.id);
   return (
-    <div className="splendor-board">
+    <div className={`splendor-board ${s.options?.orient ? "has-orient" : ""}`}>
       <h2 className="sr-only">璀璨宝石游戏桌面</h2>
       {s.options?.cities ? (
         <SplendorCities
@@ -3270,57 +3272,22 @@ function SplendorBoard({
           </div>
         </div>
       )}
-      <div className="market">
-        {[2, 1, 0].map((tier) => (
-          <div className="market-row" key={tier} data-splendor-tier={tier + 1}>
-            <button
-              className={`deck tier-${tier}`}
-              style={{ backgroundPosition: `${tier * 20}% 100%` }}
-              disabled={
-                !taking || busy || !s.remaining[tier] || p.reserved!.length >= 3
-              }
-              onClick={() => setBlindTier(tier + 1)}
-              aria-label={`从 ${tier + 1} 级牌堆预留一张牌`}
-              aria-haspopup="dialog"
-            >
-              <span className="deck-ornament">✧</span>
-              <strong>{["Ⅰ", "Ⅱ", "Ⅲ"][tier]}</strong>
-              <small className="deck-count">
-                {s.remaining[tier]}
-                <span className="sr-only"> 张 · 盲预留</span>
-              </small>
-            </button>
-            {Array.from({ length: 4 }, (_, index) => {
-              const c = s.market[tier][index];
-              return (
-                <AnimatedSlot
-                  key={index}
-                  marker={index}
-                  identity={String(c?.id ?? "empty")}
-                >
-                  {c?.id ? (
-                    <div className="gem-market-card">
-                      <DevCard
-                        card={c}
-                        affordable={canAfford(c)}
-                        selected={selected?.id === c.id}
-                        onClick={() => selectCard(c)}
-                      />
-                      <StrongholdBadge room={room} card={c} />
-                    </div>
-                  ) : (
-                    <div
-                      className="dev-card card-placeholder"
-                      aria-label="发展卡牌堆已空"
-                    />
-                  )}
-                </AnimatedSlot>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+      <SplendorMarket
+        assets={assets}
+        room={room}
+        busy={busy}
+        onReserve={setBlindTier}
+        renderCard={(c) => (
+          <DevCard
+            card={c}
+            affordable={canAfford(c)}
+            selected={selected?.id === c.id}
+            onClick={() => selectCard(c)}
+          />
+        )}
+      />
       <SplendorExpansionBoard
+        onConquest={(card) => selectCard(card, true)}
         room={room}
         assets={assets}
         act={act}
@@ -3560,14 +3527,16 @@ function SplendorBoard({
       )}
       {blindTier !== undefined && taking && (
         <Modal
-          title={`确认盲预留 · ${blindTier} 级牌堆`}
+          title={`确认盲预留 · ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级牌堆`}
           dismissible={!busy}
           onClose={() => setBlindTier(undefined)}
         >
           <p>
             {p.tradingPosts?.includes(2)
-              ? `查看 ${blindTier} 级牌堆顶部两张发展卡，选择一张预留，另一张放回牌堆底部。`
-              : `随机预留一张 ${blindTier} 级发展卡，确认前无法查看牌面。`}
+              ? s.remaining[blindTier] === 1
+                ? "牌堆只剩一张发展卡，查看后预留这一张。"
+                : `查看 ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级牌堆顶部两张发展卡，选择一张预留，另一张放回牌堆底部。`
+              : `随机预留一张 ${blindTier >= 3 ? "东方 " : ""}${(blindTier % 3) + 1} 级发展卡，确认前无法查看牌面。`}
             这会使用本回合的行动。
           </p>
           <p>
@@ -3586,9 +3555,15 @@ function SplendorBoard({
             <button
               className="primary"
               disabled={
-                busy || !s.remaining[blindTier - 1] || p.reserved!.length >= 3
+                busy || !s.remaining[blindTier] || p.reserved!.length >= 3
               }
-              onClick={() => void act({ type: "reserve", tier: blindTier })}
+              onClick={() =>
+                void act({
+                  type: "reserve",
+                  tier: (blindTier % 3) + 1,
+                  choice: blindTier >= 3 ? "orient" : "",
+                })
+              }
             >
               确认预留
             </button>
@@ -3596,96 +3571,18 @@ function SplendorBoard({
         </Modal>
       )}
       {selected && (
-        <Modal
-          title={`${gemNames[selected.color]}发展卡 · ${selected.points} 分`}
+        <SplendorPurchase
+          room={room}
+          card={selected}
+          conquest={conquestPurchase}
+          act={act}
+          busy={busy}
           onClose={() => setSelected(undefined)}
-        >
-          <div className="purchase-preview">
-            <DevCard card={selected} />
-            <div>
-              <p>永久提供 1 枚{gemNames[selected.color]}折扣</p>
-              <small>
-                {room.spectating ? "购买所需宝石" : "扣除永久折扣后的费用"}
-              </small>
-              <Cost cost={pay} />
-              {!room.spectating && (
-                <p className="muted small">
-                  {gold ? `需要使用 ${gold} 枚黄金补足` : "无需使用黄金"}
-                </p>
-              )}
-            </div>
-          </div>
-          {!room.spectating && pay.some((n) => n > 0) && (
-            <div className="payment-grid">
-              {pay.map(
-                (need, i) =>
-                  need > 0 && (
-                    <label key={i}>
-                      {gemNames[i]} · 需要 {need}
-                      <select
-                        aria-label={`支付${gemNames[i]}数量`}
-                        value={payment[i]}
-                        onChange={(e) => {
-                          const next = [...payment];
-                          next[i] = Number(e.target.value);
-                          next[5] = gemGoldNeeded(p, selected.cost, next);
-                          setPayment(next);
-                        }}
-                      >
-                        {Array.from(
-                          { length: Math.min(need, p.tokens[i]) + 1 },
-                          (_, n) => (
-                            <option key={n} value={n}>
-                              {n} 枚{gemNames[i]} +{" "}
-                              {Math.ceil(
-                                (need - n) /
-                                  (p.tradingPosts?.includes(4) ? 2 : 1),
-                              )}{" "}
-                              枚黄金
-                            </option>
-                          ),
-                        )}
-                      </select>
-                    </label>
-                  ),
-              )}
-              <p className="muted small">
-                本次支付黄金 {gold} 枚，你持有 {p.tokens[5]}{" "}
-                枚。可主动使用黄金保留其他宝石。
-              </p>
-            </div>
+          renderCard={(card, onClick) => (
+            <DevCard card={card} onClick={onClick} />
           )}
-          {!room.spectating && (
-            <div className="form-grid">
-              <button
-                className="primary"
-                disabled={!taking || busy || !affordable || !!occupied}
-                onClick={() =>
-                  void act({ type: "buy", card: selected.id, tokens: payment })
-                }
-              >
-                {occupied
-                  ? "对手要塞占据"
-                  : affordable
-                    ? "购买卡牌"
-                    : "宝石不足"}
-              </button>
-              {!reserved && (
-                <button
-                  className="outline"
-                  disabled={
-                    !taking || busy || p.reserved!.length >= 3 || !!occupied
-                  }
-                  onClick={() =>
-                    void act({ type: "reserve", card: selected.id })
-                  }
-                >
-                  预留{s.bank[5] > 0 ? " · 黄金 +1" : ""}
-                </button>
-              )}
-            </div>
-          )}
-        </Modal>
+          renderCost={(cost) => <Cost cost={cost} />}
+        />
       )}
       {taking && (
         <button
