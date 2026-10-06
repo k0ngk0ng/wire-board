@@ -30,9 +30,17 @@ export function SplendorMarket({
     const index = tier + (orient ? 3 : 0);
     const deck = (
       <button
-        className={`deck tier-${tier} ${orient ? "orient-deck" : ""}`}
+        className={`deck tier-${tier} ${orient ? `orient-deck ${assets ? "has-orient-back" : ""}` : ""}`}
         style={
-          orient ? undefined : { backgroundPosition: `${tier * 20}% 100%` }
+          orient
+            ? assets
+              ? {
+                  backgroundImage: `url("${assets}/splendor/expansions/orient-back-${tier + 1}.webp")`,
+                  backgroundSize: "100% 100%",
+                  backgroundPosition: "center",
+                }
+              : undefined
+            : { backgroundPosition: `${tier * 20}% 100%` }
         }
         disabled={
           !taking ||
@@ -78,7 +86,7 @@ export function SplendorMarket({
               {card?.id ? (
                 <div className="gem-market-card">
                   {renderCard(card)}
-                  <StrongholdBadge room={room} card={card} />
+                  <StrongholdBadge room={room} card={card} assets={assets} />
                 </div>
               ) : (
                 <div

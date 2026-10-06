@@ -12,12 +12,13 @@ import subprocess
 import tempfile
 import urllib.request
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 def prepare(output: Path, rules_directory: Path | None):
     source_file = Path(__file__).resolve().parent.parent / 'docs/board-expansion-rule-sources.json'
     sources = json.loads(source_file.read_text())
+    geometry = json.loads(Path(__file__).with_name('splendor_asset_geometry.json').read_text())
     source = sources['splendor-silk-road']
     output.mkdir(parents=True, exist_ok=True)
     targets = output / 'splendor/expansions'
@@ -67,13 +68,51 @@ def prepare(output: Path, rules_directory: Path | None):
                 raise ValueError(f'Unexpected embedded Orient symbol {name}')
             art.putalpha(alpha)
             art.save(targets / f'{name}.webp', quality=94, method=6)
+        # The six-deck setup illustration includes three complete Orient backs.
+        # Rectify only the printed face, excluding the illustrated deck thickness.
+        layout = Image.open(scratch / 'orient-010.png').convert('RGBA')
+        alpha = Image.open(scratch / 'orient-011.png').convert('L')
+        if layout.size != (1377, 1033) or alpha.size != layout.size:
+            raise ValueError('Unexpected Orient setup illustration')
+        layout.putalpha(alpha)
+        for tier, quad in geometry['orientBacks']['quads'].items():
+            art = layout.transform(tuple(geometry['orientBacks']['size']), Image.Transform.QUAD,
+                tuple(v for point in quad for v in point), Image.Resampling.BICUBIC)
+            art.save(targets / f'orient-back-{tier}.webp', quality=94, method=6)
+        # Original painted wooden pieces; masks only remove photographic scenery.
+        # Keep highlights, windows and surface texture, without recoloring tokens.
+        piece_source = sources['splendor-strongholds-photo']
+        if rules_directory:
+            data = (rules_directory / 'sun-photo05.jpg').read_bytes()
+        else:
+            with urllib.request.urlopen(piece_source['url'], timeout=45) as response:
+                data = response.read()
+        if hashlib.sha256(data).hexdigest() != piece_source['sha256']:
+            raise ValueError('Official stronghold photograph changed')
+        photo = scratch / 'strongholds.jpg'
+        photo.write_bytes(data)
+        pieces = Image.open(photo).convert('RGBA')
+        if pieces.size != (1920, 1280):
+            raise ValueError('Unexpected stronghold photo dimensions')
+        for color, points in geometry['strongholdOutlines'].items():
+            mask = Image.new('L', pieces.size)
+            ImageDraw.Draw(mask).polygon([tuple(point) for point in points], fill=255)
+            art = pieces.copy()
+            art.putalpha(mask)
+            art = art.crop(mask.getbbox())
+            art.thumbnail((144, 144), Image.Resampling.LANCZOS)
+            canvas = Image.new('RGBA', (160, 160))
+            canvas.alpha_composite(art, ((160 - art.width) // 2, 152 - art.height))
+            canvas.save(targets / f'stronghold-{color}.webp', quality=94, method=6)
     (targets / 'sources.json').write_text(json.dumps({
         'rules': 'split-box-2025',
         'tradingPosts': source,
         'orientSymbols': orient_source,
-        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols; not full Orient card illustrations. Matched visually to rule descriptions; promotional prototype images differ.',
+        'orientBacks': orient_source,
+        'strongholdPieces': piece_source,
+        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols; not full Orient card illustrations. Rectified three Orient backs from the page 2 setup illustration; four un-recolored wooden pieces from the pinned publisher photograph. Geometry is recorded in scripts/splendor_asset_geometry.json. Promotional prototype images differ.',
     }, ensure_ascii=False, indent=2) + '\n')
-    print('Prepared five official trading-post tiles and five Orient symbols; temporary files removed.')
+    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs and four stronghold pieces; temporary files removed.')
 
 
 if __name__ == '__main__':
