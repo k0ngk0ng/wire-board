@@ -14,9 +14,11 @@ import {
   transportSites,
   transportCargo,
   transportStepDescription,
+  transportWagonPosition,
 } from "./catan-transport-state";
 import type { TransportPick } from "./catan-transport-state";
 import "./catan-transport.css";
+import { CatanTransportEffects } from "./catan-transport-effects";
 type Props = {
   room: Room;
   assets: string;
@@ -187,18 +189,14 @@ export function CatanTransportMap({
         );
       })}
       {t.state.wagons.map((w, seat) => {
-        if (w.position < 0) return null;
-        const v = g.vertices[w.position],
-          peers = t.state.wagons
-            .map((x, i) => (x.position === w.position ? i : -1))
-            .filter((i) => i >= 0),
-          offset = (peers.indexOf(seat) - (peers.length - 1) / 2) * 21 * scale;
+        const v = transportWagonPosition(g, seat);
+        if (!v) return null;
         return (
           <g
             key={seat}
             className="transport-wagon"
             data-transport-wagon={seat}
-            style={{ transform: `translate(${v.x + offset}px,${v.y}px)` }}
+            style={{ transform: `translate(${v.x}px,${v.y}px)` }}
             pointerEvents="none"
           >
             <ellipse
@@ -225,6 +223,7 @@ export function CatanTransportMap({
           </g>
         );
       })}
+      <CatanTransportEffects room={room} assets={assets} />
     </g>
   );
 }
