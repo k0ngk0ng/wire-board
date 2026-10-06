@@ -97,27 +97,28 @@ export function CatanAttackMap({
   const knights = mine && a.endPlan ? a.previewKnights || a.knights : a.knights;
   return (
     <g className="attack-map">
-      {a.map.castles.map((id) => {
-        const t = g.tiles[id];
-        return (
-          <g
-            key={id}
-            transform={`translate(${t.x},${t.y}) scale(${scale})`}
-            pointerEvents="none"
-          >
-            <path
-              d="M-27 22V-18H-20V-11H-11V-18H-4V-11H5V-18H12V-11H21V-18H28V22H8V5A8 8 0 0 0-8 5V22Z"
-              fill="#d8c7a2"
-              stroke="#5a422d"
-              strokeWidth="3"
-            />
-            <text y="39" textAnchor="middle" className="attack-label">
-              城堡
-            </text>
-            <title>城堡不生产资源 · 在此授勋，回合末必须离开</title>
-          </g>
-        );
-      })}
+      {!assets &&
+        a.map.castles.map((id) => {
+          const t = g.tiles[id];
+          return (
+            <g
+              key={id}
+              transform={`translate(${t.x},${t.y}) scale(${scale})`}
+              pointerEvents="none"
+            >
+              <path
+                d="M-27 22V-18H-20V-11H-11V-18H-4V-11H5V-18H12V-11H21V-18H28V22H8V5A8 8 0 0 0-8 5V22Z"
+                fill="#d8c7a2"
+                stroke="#5a422d"
+                strokeWidth="3"
+              />
+              <text y="39" textAnchor="middle" className="attack-label">
+                城堡
+              </text>
+              <title>城堡不生产资源 · 在此授勋，回合末必须离开</title>
+            </g>
+          );
+        })}
       {a.map.coast.map((id, order) => {
         const t = g.tiles[id],
           n = a.barbarians[id],
@@ -143,6 +144,20 @@ export function CatanAttackMap({
                 {...clickProps(`选择蛮族地块 ${id + 1}`, () => pickTile(id))}
               />
             )}
+            {assets &&
+              Array.from({ length: n }, (_, i) => (
+                <image
+                  key={i}
+                  data-attack-barbarian={`${id}-${i}`}
+                  href={`${assets}/catan/attack/barbarian-v1.webp`}
+                  x={t.x + ((i - (n - 1) / 2) * 17 - 7.5) * scale}
+                  y={t.y - 48 * scale}
+                  width={15 * scale}
+                  height={24 * scale}
+                  preserveAspectRatio="xMidYMid meet"
+                  pointerEvents="none"
+                />
+              ))}
             <g
               transform={`translate(${t.x},${t.y + 27 * scale}) scale(${scale})`}
               pointerEvents="none"
@@ -243,7 +258,7 @@ export function CatanAttackMap({
             />
             {assets ? (
               <image
-                href={`${assets}/catan/cities-knights/knight-${catanPieceColors[catanColorIndex(g, k.player)]}-1-v1.webp`}
+                href={`${assets}/catan/attack/knight-${catanPieceColors[catanColorIndex(g, k.player)]}-v1.webp`}
                 x="-13"
                 y="-22"
                 width="26"
@@ -274,7 +289,7 @@ export function CatanAttackMap({
             <text textAnchor="middle" y="4" fill="white" fontSize="11">
               停用
             </text>
-            <title>所有相邻资源地块均被征服，建筑暂停计分与港口</title>
+            <title>相邻地块全部被征服（外框不计），建筑暂停计分与港口</title>
           </g>
         );
       })}
@@ -352,7 +367,13 @@ export function CatanAttackPanel({
             <span>
               金币供应 <b>{a.goldBank}</b>
             </span>
-            <span>
+            <span className="attack-deck">
+              {assets && (
+                <img
+                  src={`${assets}/catan/attack/card-back-v1.webp`}
+                  alt="发展卡背面"
+                />
+              )}
               发展卡 <b>{a.devRemaining}</b>
             </span>
           </div>
@@ -460,18 +481,28 @@ export function CatanAttackPanel({
                 </>
               ) : (
                 <>
-                  <p>
-                    {
+                  <div className="attack-card-explanation">
+                    {assets && (
+                      <img
+                        className="attack-card-face"
+                        src={`${assets}/catan/attack/card-${q!.card}-v1.webp`}
+                        alt={`${attackCardNames[q!.card]}原版牌面`}
+                      />
+                    )}
+                    <p>
                       {
-                        capture: "选择沿海地块，俘获1个蛮族。每2个俘虏计1分。",
-                        knighthood:
-                          "在城堡的空边放置1名骑士；本回合结束时再移动。",
-                        swift_knight:
-                          "在地图任意空边放置1名骑士；本回合结束时再移动。",
-                        treason: `先从${a.fromBoard || 0}个不同地块各取1个蛮族，再放入两个不同的未征服地块；不足的从供应领取，同时获得2金币。`,
-                      }[q!.card]
-                    }
-                  </p>
+                        {
+                          capture:
+                            "选择沿海地块，俘获1个蛮族。每2个俘虏计1分。",
+                          knighthood:
+                            "在城堡的空边放置1名骑士；本回合结束时再移动。",
+                          swift_knight:
+                            "在地图任意空边放置1名骑士；本回合结束时再移动。",
+                          treason: `先从${a.fromBoard || 0}个不同地块各取1个蛮族，再放入两个不同的未征服地块；不足的从供应领取，同时获得2金币。`,
+                        }[q!.card]
+                      }
+                    </p>
+                  </div>
                   {q?.card === "treason" ? (
                     <>
                       <p>

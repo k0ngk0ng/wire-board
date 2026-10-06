@@ -189,3 +189,38 @@
   max-height: none;
   overflow: visible;
 }
+
+.attack-card-explanation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.attack-card-face {
+  width: 104px;
+  height: auto;
+  aspect-ratio: 7/10;
+  flex: none;
+  object-fit: contain;
+}
+.attack-card-explanation p {
+  flex: 1;
+  min-width: 0;
+}
+.attack-deck {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.attack-deck img {
+  width: 17px;
+  height: 24px;
+  object-fit: contain;
+}
+.attack-map [data-attack-barbarian] {
+  filter: drop-shadow(0 1px 1px #23180788);
+}
+@media (max-width: 600px) {
+  .attack-card-face {
+    width: 88px;
+  }
+}
