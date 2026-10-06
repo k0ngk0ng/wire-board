@@ -9,10 +9,10 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 	if r.Game.Catan == nil || r.Game.Finished {
 		return false
 	}
-	caravanResponse := func(phase string) bool {
-		return phase == "catan_caravan_bid" || phase == "catan_caravan_vote" || phase == "catan_caravan_place"
+	endResponse := func(phase string) bool {
+		return phase == "catan_attack_end" || phase == "catan_caravan_bid" || phase == "catan_caravan_vote" || phase == "catan_caravan_place"
 	}
-	if caravanResponse(r.Game.Phase) {
+	if endResponse(r.Game.Phase) {
 		// A two-player winning bidder places two wagons separately. The second
 		// confirmed placement is a fresh response even when the actor is unchanged.
 		if previousPhase != r.Game.Phase || previousActor != r.Game.CatanPendingActor() || r.Game.Catan.Two != nil && previousPhase == "catan_caravan_place" {
@@ -20,8 +20,8 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		}
 		return true
 	}
-	if caravanResponse(previousPhase) {
-		// A completed vote ends an action phase, including paired secondary play.
+	if endResponse(previousPhase) {
+		// Battles and caravan votes end an action phase, including paired secondary play.
 		// Give the new actor a full turn; never restore the ended action's time.
 		r.CatanTimeLeft = 0
 		r.startTurnClock(now)

@@ -511,7 +511,13 @@ func TestCatanAttackHiddenDeckPublicInventoryAndUnsupportedCards(t *testing.T) {
 	attackReject(t, s, s.Turn, Action{Type: "catan_buy_dev", Skill: "helper"})
 	attackReject(t, s, s.Turn, Action{Type: "catan_dev", Card: 0})
 	s.Catan.Attack.Knights = append(s.Catan.Attack.Knights, catanAttackKnight{Player: s.Turn, Edge: 0})
-	attackReject(t, s, s.Turn, Action{Type: "catan_end"}) // Do not silently skip an unfinished battle phase.
+	pending := clone(*s)
+	if err := pending.Apply(pending.Turn, Action{Type: "catan_end"}); err != nil || pending.Phase != "catan_attack_end" {
+		t.Fatal("end action must enter knight planning", err)
+	}
+	if err := pending.EliminateCatan(pending.Turn); err == nil {
+		t.Fatal("mandatory responder must be resolved, not eliminated")
+	}
 	eliminated := s.Turn
 	attackCoins(s, eliminated, 7)
 	if e := s.EliminateCatan(eliminated); e != nil {

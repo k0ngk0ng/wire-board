@@ -79,6 +79,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive bot seat")
 	}
 	p := g.Players[player]
+	if g.Attack != nil && g.Attack.EndPlan != nil {
+		return s.catanAttackEndBot(player)
+	}
 	if g.Attack != nil && g.Attack.Pending != nil {
 		return s.catanAttackCardBot(player)
 	}

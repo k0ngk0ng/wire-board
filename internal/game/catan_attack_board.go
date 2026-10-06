@@ -13,6 +13,7 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
+	EndPlan      *catanAttackEndPlan       `json:"endPlan,omitempty"`
 	EndSequence  int                       `json:"endSequence,omitempty"`
 	End          *catanAttackEndRecord     `json:"end,omitempty"`
 	CardSequence int                       `json:"cardSequence"`
@@ -172,7 +173,7 @@ func (a catanAttack) castleEdge(g *Catan, edge int) bool {
 // Knights move on the edge graph, ignoring road owners, buildings and other
 // knights while passing. Only their final edge must be empty and non-castle.
 // A normal move allows 3 steps; paid wheat allows 5. Zero-step stays are dealt
-// with by the eventual turn controller, which must force castle knights out.
+// with by the end-phase controller, which forces castle knights out.
 func (a catanAttack) knightDestinations(g *Catan, index, steps int) map[int]int {
 	result := map[int]int{}
 	if index < 0 || index >= len(a.Knights) || steps != 3 && steps != 5 {
