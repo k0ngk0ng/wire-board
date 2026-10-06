@@ -13,6 +13,7 @@ import {
   transportSelectedAction,
   transportSites,
   transportCargo,
+  transportStepDescription,
 } from "./catan-transport-state";
 import type { TransportPick } from "./catan-transport-state";
 import "./catan-transport.css";
@@ -156,7 +157,9 @@ export function CatanTransportMap({
           <g
             key={piece}
             className={`transport-barbarian ${selectable ? "selectable" : ""} ${selected.piece === piece ? "picked" : ""}`}
-            transform={`translate(${(a.x + b.x) / 2},${(a.y + b.y) / 2}) scale(${scale})`}
+            style={{
+              transform: `translate(${(a.x + b.x) / 2}px,${(a.y + b.y) / 2}px) scale(${scale})`,
+            }}
             {...(selectable
               ? button(`选择蛮族 ${piece + 1}`, () =>
                   onSelect({ ...selected, piece }),
@@ -400,6 +403,13 @@ export function CatanTransportPanel({
               ) : (
                 <>
                   <p>选路线，再确认移动；到达中心后停下。</p>
+                  {g.two && (
+                    <small className="transport-neutral-tolls">
+                      本次中立道路 {q.neutralTolls || 0} 段 · 已付银行{" "}
+                      {Math.ceil((q.neutralTolls || 0) / 2)} 金币 / 对手{" "}
+                      {Math.floor((q.neutralTolls || 0) / 2)} 金币
+                    </small>
+                  )}
                   <div className="transport-buttons">
                     {choices.canWheat && (
                       <button
@@ -458,7 +468,7 @@ export function CatanTransportPanel({
               <p>
                 {selected.edge === null
                   ? "尚未选择道路"
-                  : `道路 #${selected.edge + 1}${step ? `：${step.mp}移动点、${step.toll}金币${step.pay >= 0 ? `（支付给${room.seats[step.pay]?.name}）` : ""}` : ""}`}
+                  : `道路 #${selected.edge + 1}${step ? `：${transportStepDescription(room, step)}` : ""}`}
               </p>
               <button
                 className="primary wide"

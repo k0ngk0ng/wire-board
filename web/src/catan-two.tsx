@@ -11,6 +11,9 @@ import {
   twoReturnValid,
   twoChoiceName,
   twoRetreatTargets,
+  twoRetreatEdges,
+  twoRetreatCost,
+  twoRetreatAction,
 } from "./catan-two-state";
 import type { TwoSelection, TwoRetreatSelection } from "./catan-two-state";
 import "./catan-two.css";
@@ -117,6 +120,9 @@ export function CatanTwoPanel({
     p = g.players[room.you];
   const [collapsed, setCollapsed] = useState(false),
     [give, setGive] = useState([0, 0, 0, 0, 0]);
+  const [stockCollapsed, setStockCollapsed] = useState(
+    () => !!g.transport && window.matchMedia("(max-width: 600px)").matches,
+  );
   const [confirm, setConfirm] = useState<TokenAction | null>(null);
   useEffect(() => {
     setCollapsed(false);
@@ -126,6 +132,7 @@ export function CatanTwoPanel({
     room.id,
     room.you,
     room.spectating,
+    room.seats[room.you]?.autoPlay,
     room.game!.turn,
     room.game!.round,
     room.game!.phase,
@@ -145,6 +152,7 @@ export function CatanTwoPanel({
       !room.spectating &&
       room.you >= 0 &&
       q.tokenWindow &&
+      !room.seats[room.you]?.autoPlay &&
       !p?.eliminated;
   const hand = p?.resources || [0, 0, 0, 0, 0],
     cost = q.cost || 1;
@@ -155,19 +163,29 @@ export function CatanTwoPanel({
     opponent > 0 &&
     hand.reduce((a, b) => a + b, 0) + Math.min(2, opponent) >= 2;
   const retreatTargets = twoRetreatTargets(room);
-  const canRobber = retreatTargets.length > 0;
-  const retreatValid =
-    retreat?.tile != null && retreatTargets.includes(retreat.tile);
+  const retreatEdges = twoRetreatEdges(room),
+    retreatCost = twoRetreatCost(room);
+  const canRobber = g.transport
+    ? retreatEdges.length > 0
+    : retreatTargets.length > 0;
+  const retreatRequest = twoRetreatAction(room, retreat);
+  const retreatValid = !!retreatRequest;
   const retreatName = g.rivers ? "沼泽" : "沙漠";
-  const retreatAction = g.caravans
-    ? "将强盗移出棋盘"
-    : `将强盗移回${retreatName}`;
+  const retreatAction = g.transport
+    ? "移开一名蛮族"
+    : g.caravans
+      ? "将强盗移出棋盘"
+      : `将强盗移回${retreatName}`;
   const openConfirm = (action: TokenAction) => {
     setConfirm(action);
     setCollapsed(false);
     onRetreat(
       action === "robber"
-        ? { tile: retreatTargets.length === 1 ? retreatTargets[0] : null }
+        ? {
+            tile: retreatTargets.length === 1 ? retreatTargets[0] : null,
+            edge: null,
+            piece: null,
+          }
         : null,
     );
   };
@@ -198,80 +216,123 @@ export function CatanTwoPanel({
           )}
           <div>
             <strong>
-              双人卡坦{g.rivers ? "＋河流" : g.caravans ? "＋商队" : ""}
+              双人卡坦
+              {g.transport
+                ? "＋运输"
+                : g.rivers
+                  ? "＋河流"
+                  : g.caravans
+                    ? "＋商队"
+                    : ""}
             </strong>
-            <small>筹码供应 {q.bank} / 20</small>
+            <small>
+              {room.you >= 0 && !room.spectating
+                ? `你的筹码 ${q.tokens[room.you]} · `
+                : ""}
+              筹码供应 {q.bank} / 20
+            </small>
           </div>
+          {g.transport && (
+            <button
+              className="two-stock-toggle"
+              aria-label={stockCollapsed ? "展开双人行动" : "收起双人行动"}
+              aria-expanded={!stockCollapsed}
+              onClick={() => setStockCollapsed(!stockCollapsed)}
+            >
+              {stockCollapsed ? "展开" : "收起"}
+            </button>
+          )}
         </header>
-        <div className="two-stocks">
-          {q.tokens.map((n, i) => (
-            <span key={i}>
-              <i style={{ background: catanSeatColor(g, i) }} />
-              {room.seats[i]?.name}
-              <b>{n}</b>
-            </span>
-          ))}
-        </div>
-        <div className="two-production" aria-label="本回合两次生产">
-          {[0, 1].map((i) => (
-            <span key={i} className={q.rolls[i] ? "done" : ""}>
-              {i + 1} 次生产<b>{q.rolls[i] ?? "待掷"}</b>
-            </span>
-          ))}
-        </div>
-        <small>两次生产总点数不同 · 每次先处理完弃牌与强盗</small>
-        <div className="two-neutral-status">
-          {[-2, -3].map((owner, i) => (
-            <span key={owner}>
-              <i style={{ background: catanSeatColor(g, owner) }} />
-              {twoNeutralName(owner)} · {q.neutralRoadLengths[i]} 段
-              {g.longestOwner === owner ? " · 最长路线" : ""}
-            </span>
-          ))}
-        </div>
-        {canUse && (
+        {!stockCollapsed && (
           <>
-            <p>
-              {q.spent
-                ? "本回合已消费筹码"
-                : `本次消费 ${cost} 枚 · 按公开分数计算`}
-            </p>
-            <div className="two-token-actions">
-              <button
-                disabled={busy || !canTrade}
-                onClick={() => openConfirm("trade")}
-              >
-                强制交易
-              </button>
-              <button
-                disabled={busy || !canRobber}
-                onClick={() => openConfirm("robber")}
-              >
-                {g.caravans ? "移出强盗" : "移回强盗"}
-              </button>
-              <button
-                disabled={busy || !canKnight}
-                onClick={() => openConfirm("knight")}
-              >
-                弃骑士换 2 枚
-              </button>
+            <div className="two-stocks">
+              {q.tokens.map((n, i) => (
+                <span key={i}>
+                  <i style={{ background: catanSeatColor(g, i) }} />
+                  {room.seats[i]?.name}
+                  <b>{n}</b>
+                </span>
+              ))}
             </div>
+            <div className="two-production" aria-label="本回合两次生产">
+              {[0, 1].map((i) => (
+                <span key={i} className={q.rolls[i] ? "done" : ""}>
+                  {i + 1} 次生产<b>{q.rolls[i] ?? "待掷"}</b>
+                </span>
+              ))}
+            </div>
+            <small>
+              两次生产总点数不同 · 每次先处理完弃牌与
+              {g.transport ? "蛮族" : "强盗"}
+            </small>
+            <div className="two-neutral-status">
+              {[-2, -3].map((owner, i) => (
+                <span key={owner}>
+                  <i style={{ background: catanSeatColor(g, owner) }} />
+                  {twoNeutralName(owner)} · {q.neutralRoadLengths[i]} 段
+                  {g.longestOwner === owner ? " · 最长路线" : ""}
+                </span>
+              ))}
+            </div>
+            {canUse && (
+              <>
+                <p>
+                  {q.spent
+                    ? "本回合已消费筹码"
+                    : g.transport
+                      ? `强制交易 ${cost} 枚 · 移开蛮族 ${retreatCost} 枚`
+                      : `本次消费 ${cost} 枚 · 按公开分数计算`}
+                </p>
+                <div className="two-token-actions">
+                  <button
+                    disabled={busy || !canTrade}
+                    onClick={() => openConfirm("trade")}
+                  >
+                    强制交易
+                  </button>
+                  <button
+                    disabled={busy || !canRobber}
+                    onClick={() => openConfirm("robber")}
+                  >
+                    {g.transport
+                      ? "移开蛮族"
+                      : g.caravans
+                        ? "移出强盗"
+                        : "移回强盗"}
+                  </button>
+                  <button
+                    disabled={busy || !canKnight}
+                    onClick={() => openConfirm("knight")}
+                  >
+                    弃骑士换 2 枚
+                  </button>
+                </div>
+              </>
+            )}
+            <details>
+              <summary>双人规则提示</summary>
+              <p>
+                建道路{g.rivers ? "、桥梁" : ""}
+                或村庄后，还需免费为中立势力建设一次。中立势力不领资源
+                {g.rivers || g.transport ? "、金币或筹码" : ""}，不行动。
+                {!g.transport && "中立势力可以取得最长路线。"}
+              </p>
+              <p>
+                {g.transport
+                  ? "货物地块旁建村得 1 枚筹码，沿海另得 1 枚，可叠加；起始城市不领村庄筹码。"
+                  : g.caravans
+                    ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
+                    : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
+                每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
+              </p>
+              {g.transport && (
+                <p>
+                  中立路每段付1金币，每次马车移动合计：银行取一半（向上取整），对手取另一半。快速旅程第二次移动重新累计。本剧本不授予最长道路。
+                </p>
+              )}
+            </details>
           </>
         )}
-        <details>
-          <summary>双人规则提示</summary>
-          <p>
-            建道路{g.rivers ? "、桥梁" : ""}
-            或村庄后，还需免费为中立势力建设一次。中立势力不领资源
-            {g.rivers ? "、金币或筹码" : ""}，不行动，但可以取得最长路线。
-          </p>
-          <p>
-            {g.caravans
-              ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
-              : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
-            每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
-          </p>
-        </details>
       </section>
       {(pending || confirm) && playing && (
         <section
@@ -403,10 +464,56 @@ export function CatanTwoPanel({
                       {confirm === "trade"
                         ? `消费 ${cost} 枚筹码，随机取对手最多 2 张资源，再选择交还 2 张。确认后不能取消。`
                         : confirm === "robber"
-                          ? `消费 ${cost} 枚筹码，${retreatAction}，不偷牌。`
+                          ? `消费 ${retreatCost} 枚贸易筹码，${retreatAction}，不偷牌。`
                           : "弃掉一张已打出的骑士，获得 2 枚筹码。可能失去最大骑士军队的 2 分。"}
                     </p>
-                    {confirm === "robber" && !g.caravans && (
+                    {confirm === "robber" && g.transport && (
+                      <>
+                        <p>
+                          选一名蛮族，再点地图上的空路。可收起面板查看地图。
+                        </p>
+                        <div
+                          className="two-owner-choice two-barbarian-choice"
+                          aria-label="选择移开的蛮族"
+                        >
+                          {g.transport.state.barbarians.map((edge, piece) => (
+                            <button
+                              key={piece}
+                              disabled={busy}
+                              aria-pressed={retreat?.piece === piece}
+                              onClick={() =>
+                                onRetreat({
+                                  ...(retreat || { tile: null }),
+                                  piece,
+                                })
+                              }
+                            >
+                              {assets && (
+                                <img
+                                  src={`${assets}/catan/attack/barbarian-v1.webp`}
+                                  alt=""
+                                />
+                              )}
+                              <span>
+                                蛮族 {piece + 1}
+                                <small>道路 #{edge + 1}</small>
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                        <p>
+                          {retreat?.piece != null
+                            ? `已选蛮族 ${retreat.piece + 1}`
+                            : "尚未选择蛮族"}{" "}
+                          ·{" "}
+                          {retreat?.edge != null &&
+                          retreatEdges.includes(retreat.edge)
+                            ? `空路 #${retreat.edge + 1}`
+                            : "请在地图上选择空路"}
+                        </p>
+                      </>
+                    )}
+                    {confirm === "robber" && !g.caravans && !g.transport && (
                       <>
                         <p>
                           选择{retreatName}
@@ -443,16 +550,19 @@ export function CatanTwoPanel({
                         disabled={busy || !validConfirm}
                         onClick={async () => {
                           if (!validConfirm) return;
-                          await act({
-                            type: `catan_two_${confirm}`,
-                            ...(confirm === "robber"
-                              ? { tile: retreat!.tile }
-                              : {}),
-                          });
+                          const action =
+                            confirm === "robber"
+                              ? retreatRequest
+                              : { type: `catan_two_${confirm}` };
+                          if (!action) return;
+                          await act(action);
                           closeConfirm();
                         }}
                       >
-                        确认{confirm === "knight" ? "兑换" : `消费 ${cost} 枚`}
+                        确认
+                        {confirm === "knight"
+                          ? "兑换"
+                          : `消费 ${confirm === "robber" ? retreatCost : cost} 枚`}
                       </button>
                     </div>
                   </>
@@ -489,7 +599,69 @@ export function CatanTwoRetreatMap({
   poly: (id: number) => string;
 }) {
   if (!selected || busy || room.game?.catan?.caravans) return null;
-  const name = room.game!.catan!.rivers ? "沼泽" : "沙漠";
+  const g = room.game!.catan!;
+  if (g.transport) {
+    const edges = twoRetreatEdges(room);
+    if (!edges.length) return null;
+    const pickButton = (label: string, fn: () => void) => ({
+      role: "button",
+      tabIndex: 0,
+      "aria-label": label,
+      onClick: fn,
+      onKeyDown: (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          fn();
+        }
+      },
+    });
+    return (
+      <g className="catan-two-transport-retreat">
+        {edges.map((id) => {
+          const e = g.edges[id],
+            a = g.vertices[e.a],
+            b = g.vertices[e.b];
+          return (
+            <g
+              key={id}
+              className={`transport-edge ${selected.edge === id ? "picked" : ""}`}
+              {...pickButton(`选择蛮族退回空路 ${id + 1}`, () =>
+                onSelect({ ...selected, edge: id }),
+              )}
+            >
+              <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+              <line
+                className="transport-edge-hit"
+                x1={a.x}
+                y1={a.y}
+                x2={b.x}
+                y2={b.y}
+              />
+            </g>
+          );
+        })}
+        {g.transport.state.barbarians.map((id, piece) => {
+          const e = g.edges[id],
+            a = g.vertices[e.a],
+            b = g.vertices[e.b];
+          return (
+            <circle
+              key={piece}
+              className={selected.piece === piece ? "picked" : ""}
+              cx={(a.x + b.x) / 2}
+              cy={(a.y + b.y) / 2}
+              r={(17 * (g.hexSize || 62)) / 62}
+              aria-pressed={selected.piece === piece}
+              {...pickButton(`选择移开蛮族 ${piece + 1}`, () =>
+                onSelect({ ...selected, piece }),
+              )}
+            />
+          );
+        })}
+      </g>
+    );
+  }
+  const name = g.rivers ? "沼泽" : "沙漠";
   return (
     <g className="catan-two-retreat-map">
       {twoRetreatTargets(room).map((tile) => {

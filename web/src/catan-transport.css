@@ -171,3 +171,17 @@
   vertical-align: middle;
   margin-right: 3px;
 }
+
+.transport-neutral-tolls {
+  display: block;
+  color: #614721;
+  line-height: 1.6;
+}
+.transport-barbarian {
+  transition: transform 360ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .transport-barbarian {
+    transition: none;
+  }
+}

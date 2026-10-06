@@ -1420,13 +1420,6 @@ export function CatanBoard({
                   </g>
                 );
               })}
-              <CatanTwoRetreatMap
-                room={room}
-                busy={busy}
-                selected={twoRetreat}
-                onSelect={setTwoRetreat}
-                poly={poly}
-              />
               <CatanTwoMap
                 room={room}
                 busy={busy}
@@ -1439,6 +1432,13 @@ export function CatanBoard({
                 busy={busy}
                 selected={transportSelection}
                 onSelect={setTransportSelection}
+              />
+              <CatanTwoRetreatMap
+                room={room}
+                busy={busy}
+                selected={twoRetreat}
+                onSelect={setTwoRetreat}
+                poly={poly}
               />
               <CatanAttackMap
                 room={room}
@@ -1562,7 +1562,10 @@ export function CatanBoard({
           selected={twoSelection}
           onSelect={setTwoSelection}
           retreat={twoRetreat}
-          onRetreat={setTwoRetreat}
+          onRetreat={(selection) => {
+            setTwoRetreat(selection);
+            if (selection) setMode("");
+          }}
         />
         <CatanCaravanPanel
           room={room}

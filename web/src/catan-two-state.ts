@@ -23,6 +23,7 @@ export function twoCanRespond(room: Room) {
     room.you >= 0 &&
     twoResponder(room) === room.you &&
     !!room.game?.catan?.two?.canAct &&
+    !room.seats?.[room.you]?.autoPlay &&
     !room.game.catan.players[room.you]?.eliminated
   );
 }
@@ -113,7 +114,70 @@ export function twoNeutralAdded(
   return added.length === 1 ? added[0] : null;
 }
 
-export type TwoRetreatSelection = { tile: number | null } | null;
+export type TwoRetreatSelection = {
+  tile: number | null;
+  edge?: number | null;
+  piece?: number | null;
+} | null;
+
+export function twoRetreatCost(room: Room): number {
+  const g = room.game?.catan;
+  return g?.transport ? (g.two?.retreatCost ?? 1) : (g?.two?.cost ?? 1);
+}
+
+function twoMayRetreat(room: Room): boolean {
+  const g = room.game?.catan,
+    q = g?.two;
+  return !!(
+    g &&
+    q &&
+    room.status === "playing" &&
+    !room.game?.finished &&
+    !room.spectating &&
+    room.you >= 0 &&
+    room.game?.turn === room.you &&
+    g.players[room.you] &&
+    !g.players[room.you].eliminated &&
+    !room.seats?.[room.you]?.autoPlay &&
+    q.tokenWindow &&
+    !q.spent &&
+    q.tokens[room.you] >= twoRetreatCost(room)
+  );
+}
+
+export function twoRetreatEdges(room: Room): number[] {
+  const g = room.game?.catan;
+  if (!g?.transport || !twoMayRetreat(room)) return [];
+  return [...new Set(g.two?.retreatEdges || [])].filter(
+    (id) =>
+      g.edges[id]?.id === id &&
+      g.edges[id].owner === -1 &&
+      !g.transport!.state.barbarians.includes(id),
+  );
+}
+
+export function twoRetreatAction(
+  room: Room,
+  selected: TwoRetreatSelection,
+): Record<string, unknown> | null {
+  if (!selected) return null;
+  const t = room.game?.catan?.transport;
+  if (t) {
+    const { edge, piece } = selected;
+    return edge != null &&
+      piece != null &&
+      Number.isInteger(piece) &&
+      piece >= 0 &&
+      piece < t.state.barbarians.length &&
+      twoRetreatEdges(room).includes(edge)
+      ? { type: "catan_two_robber", card: piece, edge }
+      : null;
+  }
+  return selected.tile != null &&
+    twoRetreatTargets(room).includes(selected.tile)
+    ? { type: "catan_two_robber", tile: selected.tile }
+    : null;
+}
 
 export function twoChoiceName(
   g: CatanState,
@@ -129,20 +193,7 @@ export function twoChoiceName(
 export function twoRetreatTargets(room: Room): number[] {
   const g = room.game?.catan,
     q = g?.two;
-  if (
-    !g ||
-    !q ||
-    room.status !== "playing" ||
-    room.game?.finished ||
-    room.spectating ||
-    room.you < 0 ||
-    !g.players[room.you] ||
-    g.players[room.you].eliminated ||
-    !q.tokenWindow ||
-    q.spent ||
-    q.tokens[room.you] < (q.cost || 1)
-  )
-    return [];
+  if (!g || !q || g.transport || !twoMayRetreat(room)) return [];
   if (g.caravans)
     return g.robber >= 0 && q.retreatTiles?.includes(-1) ? [-1] : [];
   // Respect server choices; only old base saves may fall back to the desert.

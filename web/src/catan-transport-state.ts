@@ -1,4 +1,4 @@
-import type { Room } from "./types";
+import type { Room, CatanTransport } from "./types";
 export type TransportPick = { edge: number | null; piece: number | null };
 export const emptyTransportPick = (): TransportPick => ({
   edge: null,
@@ -59,4 +59,17 @@ export function transportSelectedAction(
     offer: t.state.sequence,
     edge: pick.edge,
   };
+}
+
+export function transportStepDescription(
+  room: Room,
+  step: NonNullable<CatanTransport["choices"]["steps"]>[number],
+): string {
+  const cost = `${step.mp}移动点`;
+  if (!step.toll) return `${cost} · 无过路费`;
+  const toBank =
+    (step.bank || 0) > 0 ||
+    (step.pay >= 0 && room.game?.catan?.players[step.pay]?.eliminated);
+  const recipient = toBank ? "银行" : room.seats[step.pay]?.name || "对手";
+  return `${cost} · ${step.toll}金币付给${recipient}${step.neutral ? "（中立道路）" : ""}`;
 }

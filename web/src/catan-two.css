@@ -214,3 +214,44 @@
   stroke: #fff;
   stroke-width: 7;
 }
+
+.catan-two-stock .two-stock-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 6px 10px;
+}
+.two-barbarian-choice {
+  gap: 6px;
+}
+.two-barbarian-choice button {
+  flex: 1 1 0;
+  justify-content: center;
+  padding: 7px 4px;
+  min-width: 0;
+  font-size: 12px;
+}
+.two-barbarian-choice img {
+  width: 15px;
+  height: 27px;
+  object-fit: contain;
+}
+.two-barbarian-choice small {
+  display: block;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.catan-two-transport-retreat > circle {
+  fill: transparent;
+  stroke: #ffe27f;
+  stroke-width: 3;
+  cursor: pointer;
+}
+.catan-two-transport-retreat > circle.picked,
+.catan-two-transport-retreat > circle:focus-visible {
+  stroke: #fff;
+  stroke-width: 5;
+}
+.catan-two-transport-retreat [role="button"]:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 3px #fff);
+}
