@@ -1,0 +1,177 @@
+.splendor-board .gem-cities {
+  grid-area: nobles;
+  align-self: start;
+  min-width: 0;
+  color: #f7eed5;
+}
+.gem-cities > header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.gem-cities h3 {
+  font-size: 15px;
+  margin: 0;
+}
+.gem-cities details {
+  display: contents;
+}
+.gem-cities summary {
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 12px;
+  padding: 6px;
+}
+.gem-cities details p {
+  flex-basis: 100%;
+  margin: 2px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.gem-city-list {
+  display: grid;
+  gap: 8px;
+}
+.gem-city {
+  border: 1px solid #c7aa69;
+  border-radius: 9px;
+  padding: 10px;
+  background: #fff1ce;
+  color: #342813;
+  box-shadow: 0 3px 7px #11152744;
+  min-width: 0;
+}
+.gem-city.is-eligible {
+  border: 2px solid #f1c347;
+  padding: 9px;
+  box-shadow: 0 0 0 2px #f1c34738;
+}
+.gem-city h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+.gem-city-score {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 7px;
+}
+.gem-city-score > b {
+  font-size: 26px;
+  line-height: 1;
+}
+.gem-city-score small {
+  margin-left: auto;
+}
+.gem-city-requirements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gem-city-requirement {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 4px;
+  border-radius: 5px;
+  background: #fdfaf1;
+  border: 1px solid #c9b991;
+}
+.gem-city-requirement svg {
+  width: 22px;
+  height: 22px;
+}
+.gem-city-requirement b {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.gem-city-requirement small {
+  font-size: 10px;
+}
+.gem-city-any > span {
+  font-size: 11px;
+}
+.gem-city-requirement.is-met {
+  border-color: #55825f;
+  background: #eaf5df;
+}
+.gem-city-score .is-met {
+  color: #235a35;
+  font-weight: 700;
+}
+.gem-city-owners {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  font-size: 11px;
+  margin: 7px 0 0;
+  overflow-wrap: anywhere;
+  color: #235a35;
+}
+.gem-city-owners svg {
+  flex-shrink: 0;
+}
+.gem-city-caption {
+  display: block;
+  margin-top: 7px;
+  color: #e2d7bf;
+  font-size: 11px;
+}
+.player-gem-cities {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #355a36;
+  margin-top: 6px;
+}
+@media (max-width: 850px) {
+  .gem-city-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+  .gem-city {
+    padding: 7px;
+  }
+  .gem-city.is-eligible {
+    padding: 6px;
+  }
+  .gem-city h4 {
+    font-size: 12px;
+  }
+  .gem-city-score {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .gem-city-score > b {
+    font-size: 22px;
+  }
+  .gem-city-score small {
+    margin-left: 2px;
+    font-size: 10px;
+  }
+  .gem-city-requirements {
+    gap: 3px;
+  }
+  .gem-city-requirement {
+    padding: 2px;
+    gap: 1px;
+  }
+  .gem-city-requirement svg {
+    width: 17px;
+    height: 17px;
+  }
+  .gem-city-requirement b {
+    font-size: 12px;
+  }
+  .gem-city-requirement small {
+    display: none;
+  }
+}
