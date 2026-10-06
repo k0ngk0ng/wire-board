@@ -25,6 +25,12 @@ import { CatanOptionPicker } from "./catan-helpers";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
+import { SplendorRules } from "./splendor-rules";
+import { SplendorCities } from "./splendor-cities";
+import {
+  gemNobleEligible,
+  splendorResultDescription,
+} from "./splendor-city-state";
 import {
   SplendorOptionPicker,
   SplendorExpansionBoard,
@@ -2592,7 +2598,22 @@ function Players({ room }: { room: Room }) {
                     ))}
                 </div>
               )}
-              {g.splendor && (
+              {g.splendor?.options?.cities && (
+                <div
+                  className="player-gem-cities"
+                  aria-label={`${p.name}已达成的城市`}
+                >
+                  {!!g.splendor.cityEligibility?.[i]?.length && (
+                    <Check size={13} />
+                  )}
+                  {g.splendor.cityEligibility?.[i]?.length
+                    ? g.splendor.cityEligibility[i]
+                        .map((index) => g.splendor!.cities?.[index]?.name)
+                        .join("、")
+                    : "尚未达成城市"}
+                </div>
+              )}
+              {g.splendor && !g.splendor.options?.cities && (
                 <div
                   className="player-nobles"
                   aria-label={`${p.name}已获得的贵族`}
@@ -2968,10 +2989,7 @@ function Results({
                 : g.catan
                   ? catanResultDescription(g.catan)
                   : g.splendor
-                    ? g.splendor.players.filter((p) => !p.eliminated).length ===
-                      1
-                      ? "其他玩家已超时离场，最后留在牌桌的玩家获胜。"
-                      : "达到 15 分后完成本轮；同分时，发展卡更少者获胜。超时离场的玩家不参与排名。"
+                    ? splendorResultDescription(g.splendor)
                     : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
         </p>
       </div>
@@ -3224,27 +3242,34 @@ function SplendorBoard({
   return (
     <div className="splendor-board">
       <h2 className="sr-only">璀璨宝石游戏桌面</h2>
-      <div className="nobles-row">
-        <div className="board-section-label">
-          <Crown size={18} />
-          <span>
-            贵族来访<small>满足条件 · 获得 3 分</small>
-          </span>
+      {s.options?.cities ? (
+        <SplendorCities
+          room={room}
+          renderGem={(color) => <Gemstone color={color} />}
+        />
+      ) : (
+        <div className="nobles-row">
+          <div className="board-section-label">
+            <Crown size={18} />
+            <span>
+              贵族来访<small>满足条件 · 获得 3 分</small>
+            </span>
+          </div>
+          <div className="nobles">
+            {s.nobles.map((n) => (
+              <NobleCard
+                key={n.id}
+                noble={n}
+                eligible={gemNobleEligible(p, n)}
+                onClick={() => {
+                  if (mine && g.phase === "noble")
+                    void act({ type: "noble", noble: n.id });
+                }}
+              />
+            ))}
+          </div>
         </div>
-        <div className="nobles">
-          {s.nobles.map((n) => (
-            <NobleCard
-              key={n.id}
-              noble={n}
-              eligible={n.cost.every((v, i) => v <= p.bonus[i])}
-              onClick={() => {
-                if (mine && g.phase === "noble")
-                  void act({ type: "noble", noble: n.id });
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      )}
       <div className="market">
         {[2, 1, 0].map((tier) => (
           <div className="market-row" key={tier} data-splendor-tier={tier + 1}>
@@ -3377,7 +3402,8 @@ function SplendorBoard({
               className="subtle"
               onClick={() => setCollection(!collection)}
             >
-              发展卡 {p.cards.length} · 贵族 {p.nobles.length}
+              发展卡 {p.cards.length}
+              {!s.options?.cities && ` · 贵族 ${p.nobles.length}`}
               <ChevronRight size={15} />
             </button>
           </div>
@@ -4951,36 +4977,7 @@ function Rules({
       ) : kind === "catan" ? (
         <CatanRules room={room} />
       ) : kind === "splendor" ? (
-        <>
-          <p>
-            成为宝石商人，购买发展卡积累永久折扣和声望。2–4 人，完整基础版。
-          </p>
-          <ol>
-            <li>
-              <b>每回合选择一个行动：</b>
-              拿取三种不同宝石各一枚；拿取同色两枚（供应至少四枚）；购买一张公开或预留的发展卡；预留一张公开或牌堆顶牌。
-            </li>
-            <li>
-              <b>购买：</b>
-              先扣除已购卡牌的永久折扣，再支付宝石，黄金可替代任意颜色，可自行调整支付组合。
-            </li>
-            <li>
-              <b>预留：</b>
-              最多三张，若供应中有黄金，获得一枚。预留卡对他人保密。
-            </li>
-            <li>
-              <b>回合收尾：</b>
-              持有超过十枚宝石时必须归还。满足贵族条件时获得一位贵族及三分，多位符合条件时自行选择。
-            </li>
-            <li>
-              <b>结束：</b>
-              任意玩家达到十五分后完成当前轮，让所有玩家行动次数相同。最高分获胜；同分时发展卡更少者获胜，仍相同则共同获胜。
-            </li>
-          </ol>
-          <p>
-            白色钻石、蓝色蓝宝石、绿色祖母绿、红色红宝石、黑色缟玛瑙，以及黄色黄金。
-          </p>
-        </>
+        <SplendorRules room={room} />
       ) : (
         <>{railMap && <RailMapRules map={railMap} />}</>
       )}

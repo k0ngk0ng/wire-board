@@ -17,11 +17,23 @@ export type ChatMessage = {
   sentAt: number;
 };
 export type Card = {
+  orient?:
+    "gold" | "copy" | "copy_cascade" | "double" | "cascade" | "sacrifice";
+  bonusCount?: number;
+  sacrificeColor?: number;
   id: number;
   tier: number;
   points: number;
   color: number;
   cost: number[];
+};
+export type GemCity = {
+  tile: number;
+  side: number;
+  name: string;
+  points: number;
+  cost: number[];
+  any?: number;
 };
 export type Noble = { id: number; cost: number[] };
 export type SplendorCardEvent = {
@@ -119,6 +131,8 @@ export type Game = {
   winners: number[];
   log: string[];
   splendor?: {
+    cities?: GemCity[];
+    cityEligibility?: number[][];
     options?: SplendorOptions;
     tradingPostRules?: {
       id: number;
@@ -230,6 +244,8 @@ export type Room = {
 };
 
 export type SplendorOptions = {
+  cities?: boolean;
+  orient?: boolean;
   rules?: string;
   tradingPosts?: boolean;
   strongholds?: boolean;

@@ -14,7 +14,9 @@ export const gemPostNames = [
 
 export function splendorRulesLabel(options?: SplendorOptions) {
   const names = [
+    options?.cities && "城市",
     options?.tradingPosts && "贸易站",
+    options?.orient && "东方",
     options?.strongholds && "要塞",
   ].filter(Boolean);
   return names.length ? `基础＋${names.join("＋")}` : "基础版";
