@@ -285,6 +285,7 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	v["explorer"].(map[string]any)["motion"] = clone(x.Motion)
 	if x.Setup != nil {
 		v["explorer"].(map[string]any)["setup"] = clone(x.Setup)
+		v["explorer"].(map[string]any)["setupPlacement"] = x.Setup.current(len(g.Players))
 		v["explorer"].(map[string]any)["sequence"] = x.Setup.Step + 1
 	}
 	if x.Pirate != nil {

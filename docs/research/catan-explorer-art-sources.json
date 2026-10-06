@@ -5,6 +5,142 @@
     "bytes": 14480651
   },
   "artwork": {
+    "crew-blue": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11925,
+      "soft_mask": 11924,
+      "mask_size": [
+        52,
+        104
+      ],
+      "size": [
+        33,
+        66
+      ],
+      "bytes": 3528,
+      "sha256": "f000d4c6d9a0cd9a79fadf4eb66652fa4d7405bef2e53c515a7378777c02869c"
+    },
+    "crew-red": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11954,
+      "soft_mask": 11953,
+      "mask_size": [
+        52,
+        104
+      ],
+      "size": [
+        33,
+        66
+      ],
+      "bytes": 3682,
+      "sha256": "9bad52b01dc1952b74d1b216d7ac85b208a19103004a5129593dc2a71a71ae65"
+    },
+    "crew-white": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11976,
+      "soft_mask": 11975,
+      "mask_size": [
+        52,
+        104
+      ],
+      "size": [
+        33,
+        66
+      ],
+      "bytes": 2846,
+      "sha256": "d79ee9d5cab852d99ecf83a281138c810acc83339cd3bd03eba1a3de35fe466a"
+    },
+    "crew-orange": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11935,
+      "soft_mask": 11934,
+      "mask_size": [
+        52,
+        104
+      ],
+      "size": [
+        33,
+        66
+      ],
+      "bytes": 3524,
+      "sha256": "02c3f0f2e09f9f894130d2321537a0073358f7b575c77c6e933c5283785e2be4"
+    },
+    "pirate-blue": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11996,
+      "soft_mask": 11995,
+      "mask_size": [
+        166,
+        111
+      ],
+      "size": [
+        105,
+        70
+      ],
+      "bytes": 8092,
+      "sha256": "e949a9cc8bf0cbde9da8ca15e78a3e4bc1135e723373db92b37614dd400327b1"
+    },
+    "pirate-red": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 12002,
+      "soft_mask": 12001,
+      "mask_size": [
+        166,
+        111
+      ],
+      "size": [
+        105,
+        70
+      ],
+      "bytes": 7896,
+      "sha256": "78d8dc855a6ba4870d691b4d86065427497f418a32b57e70314263f537d7d3ee"
+    },
+    "pirate-white": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 12004,
+      "soft_mask": 12003,
+      "mask_size": [
+        166,
+        111
+      ],
+      "size": [
+        105,
+        70
+      ],
+      "bytes": 6414,
+      "sha256": "5aedfc627750ed4b00c969c2ebc771cfccb404f50a1bd7c42e00a7ff915b1b2f"
+    },
+    "pirate-orange": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 12000,
+      "soft_mask": 11999,
+      "mask_size": [
+        166,
+        111
+      ],
+      "size": [
+        105,
+        70
+      ],
+      "bytes": 7772,
+      "sha256": "4b92ae72963da6e7430d3f47af51f38e17937ef0ed4ba59128e91cba327ddf29"
+    },
     "settler-blue": {
       "source": "catan-pirates-2025",
       "page": 4,

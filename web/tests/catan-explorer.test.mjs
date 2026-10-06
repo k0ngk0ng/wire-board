@@ -156,7 +156,7 @@ test("destructive rebuilding, full cargo replacement and switching ships are exp
       target: 0,
       cards: [0],
     }),
-    /归还.*原移民/,
+    /归还1枚移民/,
   );
   g.explorer.fleet.turn.current = 1;
   g.tiles = [{ resource: 8, vertices: [2] }];
@@ -249,4 +249,71 @@ test("motion progresses continuously by distance through bends, including zero-l
     y: 0,
   });
   assert.deepEqual(explorerPathPoint([points[0], points[0]], 1), points[0]);
+});
+
+test("mission targets and descriptions distinguish setup, crew and mandatory responses", () => {
+  const g = room().game.catan;
+  g.explorer.setupPlacement = { player: 0, owner: -2, kind: "harbor" };
+  for (const choice of ["harbor", "settlement", "road", "ship"]) {
+    const a = { type: "catan_explorer_setup", prompt: 1, target: 0, choice };
+    assert.deepEqual(explorerTarget(g, a), {
+      kind: ["harbor", "settlement"].includes(choice) ? "vertex" : "edge",
+      id: 0,
+    });
+    assert.match(explorerActionDescription(g, a), /中立方/);
+  }
+  for (const type of [
+    "catan_explorer_pirate_place",
+    "catan_explorer_land",
+    "catan_explorer_pickup",
+    "catan_explorer_resolve",
+    "catan_explorer_battle",
+  ]) {
+    const a = { type, prompt: 5, target: 0, slot: 0, cards: [2, 3] };
+    assert.deepEqual(explorerTarget(g, a), { kind: "tile", id: 0 });
+    assert.notEqual(explorerActionDescription(g, a), "掷骰并按点数生产资源。");
+  }
+  assert.deepEqual(
+    explorerTarget(g, { type: "catan_explorer_chase", prompt: 5, target: 0 }),
+    { kind: "edge", id: 0 },
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_explorer_unit",
+      prompt: 5,
+      card: 2,
+      choice: "ship",
+      target: 0,
+    }),
+    /1羊毛、1矿石.*船员1，占1格/,
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_explorer_transfer",
+      prompt: 5,
+      slot: 0,
+      vertex: 0,
+      give: [0],
+      take: [2, 3],
+    }),
+    /装入1枚移民并卸下2名船员/,
+  );
+});
+
+test("same-actor setup advances its own prompt and invalidates the prior confirmation", () => {
+  const r = room();
+  r.game.phase = "catan_explorer_setup";
+  const x = r.game.catan.explorer;
+  x.sequence = 7;
+  x.choices = [
+    { type: "catan_explorer_setup", prompt: 7, choice: "road", target: 0 },
+  ];
+  const pick = { room: r.id, action: structuredClone(x.choices[0]) };
+  assert.deepEqual(explorerSelectedAction(r, pick), x.choices[0]);
+  x.sequence = 8;
+  x.choices = [
+    { type: "catan_explorer_setup", prompt: 8, choice: "ship", target: 0 },
+  ];
+  assert.equal(explorerSelectedAction(r, pick), null);
+  assert.equal(explorerChoices(r)[0].choice, "ship");
 });

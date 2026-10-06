@@ -455,3 +455,52 @@
     animation: none;
   }
 }
+
+.explorer-target-tile {
+  fill: #f8d45818;
+  stroke: #ffe17b;
+  stroke-width: 4;
+  cursor: pointer;
+}
+.explorer-target-tile.picked,
+.explorer-target-tile:focus-visible {
+  fill: #f8d45840;
+  stroke: #754d10;
+  stroke-width: 5;
+  outline: none;
+}
+.explorer-lair-marker circle {
+  fill: #593c2b;
+  stroke: #ead6a2;
+  stroke-width: 2;
+}
+.explorer-lair-marker text {
+  fill: #fff5d4;
+  font-size: 12px;
+  font-weight: 800;
+}
+.explorer-mission {
+  grid-column: 1/-1;
+}
+.explorer-mission > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 10px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+.explorer-mission > div > span:first-child {
+  border-left: 5px solid;
+  padding-left: 6px;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.explorer-mission .retired {
+  opacity: 0.5;
+}
+.explorer-mission p {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
