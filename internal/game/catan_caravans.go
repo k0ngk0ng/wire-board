@@ -8,13 +8,14 @@ import (
 // Public, irrevocable bids are held aside until the wagon has been placed.
 // Turn always remains the action owner; Cursor/Chooser identify responders.
 type catanCaravanVote struct {
-	Kind    string               `json:"kind"`
-	Active  int                  `json:"active"`
-	Order   []int                `json:"order"`
-	Cursor  int                  `json:"cursor"`
-	Chooser int                  `json:"chooser"`
-	Bids    [][]int              `json:"bids"`
-	Votes   []*catanCaravanWagon `json:"votes"`
+	Two     *catanTwoCaravanPlacement `json:"two,omitempty"`
+	Kind    string                    `json:"kind"`
+	Active  int                       `json:"active"`
+	Order   []int                     `json:"order"`
+	Cursor  int                       `json:"cursor"`
+	Chooser int                       `json:"chooser"`
+	Bids    [][]int                   `json:"bids"`
+	Votes   []*catanCaravanWagon      `json:"votes"`
 }
 
 // Internal acceptance constructor; public scenario selection stays disabled.
@@ -74,6 +75,9 @@ func (s *State) validateCaravans() error {
 		}
 	}
 	q := c.Pending
+	if g.Two != nil && !s.Finished && q == nil && len(c.Wagons)%2 != 0 {
+		return errors.New("双人商队尚缺第二辆马车的待处理记录")
+	}
 	if q == nil {
 		if slices.Contains([]string{"catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place"}, s.Phase) {
 			return errors.New("商队响应缺失")
@@ -83,7 +87,10 @@ func (s *State) validateCaravans() error {
 	if s.Finished || g.setup() || c.Built || c.Sequence < 1 || q.Active != s.Turn || q.Active < 0 || q.Active >= n || g.Players[q.Active].Eliminated || !slices.Equal(q.Order, g.caravanOrder(q.Active)) || len(q.Bids) != n || len(q.Votes) != n || g.Trade != nil || s.Phase != "catan_caravan_"+q.Kind {
 		return errors.New("商队投票状态无效")
 	}
-	choices := c.choices(g)
+	if err := s.validateTwoCaravanPlacement(); err != nil {
+		return err
+	}
+	choices := c.responseChoices(g)
 	if len(choices) == 0 {
 		return errors.New("商队没有可放置位置")
 	}
@@ -117,7 +124,7 @@ func (s *State) validateCaravans() error {
 	if q.Kind == "vote" && sum(q.Bids[q.actor()]) == 0 {
 		return errors.New("未出价者不能分配选票")
 	}
-	if q.Kind != "bid" {
+	if q.Kind != "bid" && g.Two == nil {
 		majority, largest := q.leaders()
 		if majority >= 0 {
 			if q.Kind != "place" || q.Chooser != majority {
@@ -184,6 +191,9 @@ func (s *State) catanBeginCaravanVote() bool {
 	}
 	c.Sequence++
 	c.Pending = &catanCaravanVote{Kind: "bid", Active: s.Turn, Order: g.caravanOrder(s.Turn), Chooser: -1, Bids: make([][]int, len(g.Players)), Votes: make([]*catanCaravanWagon, len(g.Players))}
+	if g.Two != nil {
+		c.Pending.Two = &catanTwoCaravanPlacement{Start: len(c.Wagons)}
+	}
 	g.Trade = nil
 	s.Phase = "catan_caravan_bid"
 	s.catanLog(s.Turn, "结束建设，开始商队投票：每张羊毛或粮食算一票")
@@ -269,6 +279,14 @@ func (s *State) catanCaravanAction(player int, a Action) error {
 		if q.Cursor < len(q.Order) {
 			return nil
 		}
+		if g.Two != nil {
+			leader, _ := q.leaders()
+			if leader < 0 {
+				leader = q.Active
+			}
+			s.catanCaravanChooser(leader)
+			return nil
+		}
 		majority, _ := q.leaders()
 		if majority >= 0 {
 			s.catanCaravanChooser(majority)
@@ -284,7 +302,7 @@ func (s *State) catanCaravanAction(player int, a Action) error {
 		}
 	case "vote", "place":
 		w := catanCaravanWagon{Edge: a.Edge, From: a.Vertex}
-		if !slices.Contains(g.Caravans.choices(g), w) {
+		if !slices.Contains(g.Caravans.responseChoices(g), w) {
 			return errors.New("请选择合法的商队位置与前进方向")
 		}
 		if q.Kind == "place" {
@@ -306,6 +324,9 @@ func (s *State) catanFinishCaravan(w catanCaravanWagon) error {
 	g := s.Catan
 	c := g.Caravans
 	q := c.Pending
+	if g.Two != nil {
+		return s.catanTwoPlaceWagon(w)
+	}
 	if err := c.place(g, w); err != nil {
 		return err
 	}
@@ -332,7 +353,7 @@ func (s *State) catanCaravanBot(player int) (Action, error) {
 	if q == nil || q.actor() != player {
 		return Action{}, errors.New("inactive caravan responder")
 	}
-	choices := c.choices(g)
+	choices := c.responseChoices(g)
 	if len(choices) == 0 {
 		return Action{}, errors.New("no caravan placement")
 	}
