@@ -19,8 +19,18 @@ type catanExplorerHidden struct {
 	Resource int  `json:"resource"`
 	Number   int  `json:"number"` // Drawn on discovery, not secretly paired at setup.
 	Revealed bool `json:"revealed"`
+	Fish     int  `json:"fish,omitempty"` // Printed die face of a shoal, secret until discovery.
+}
+type catanExplorerCouncil struct {
+	Tile    int   `json:"tile"`
+	Anchors []int `json:"anchors"`
+}
+type catanExplorerShoal struct {
+	Tile   int `json:"tile"`
+	Number int `json:"number"`
 }
 type catanExplorerBoard struct {
+	Council      *catanExplorerCouncil  `json:"council,omitempty"`
 	Liberated    map[int]int            `json:"liberated,omitempty"` // Public lair numbers, supplied only by the mission controller.
 	Rules        string                 `json:"rules"`
 	Scenario     string                 `json:"scenario"`
@@ -38,12 +48,11 @@ type catanExplorerBoard struct {
 }
 
 type catanExplorerMapRecipe struct {
-	width      int
-	parrot     [3][]int // Columns in rows 0/1/2; goose is the reflected shape.
-	resources  []int    // All 15 starting slots, including the fixed frame pasture.
-	numbers    []int
-	goldFields bool
-	target     int
+	width     int
+	parrot    [3][]int // Columns in rows 0/1/2; goose is the reflected shape.
+	resources []int    // All 15 starting slots, including the fixed frame pasture.
+	numbers   []int
+	target    int
 }
 
 // Mission Guide 2025 pp4/8. The tables count loose hexes: include both the
@@ -55,10 +64,13 @@ func catanExplorerRecipe(scenario string) (catanExplorerMapRecipe, error) {
 		r.width, r.target = 6, 8
 		r.parrot = [3][]int{{4, 5}, {4, 5, 6}, {4, 6, 7}}
 		r.resources = []int{4, 0, 3, 2, 1, 2, 2, 4, 0, 3, 2, 0, 1, 4, 0}
-	case "pirate-lairs":
-		r.width, r.target, r.goldFields = 7, 12, true
+	case "pirate-lairs", "fish-for-catan":
+		r.width, r.target = 7, 12
 		r.parrot = [3][]int{{4, 5, 6}, {4, 5, 6, 7}, {4, 5, 7, 8}}
 		r.resources = []int{2, 0, 3, 2, 1, 4, 2, 4, 0, 3, 2, 0, 4, 1, 0}
+		if scenario == "fish-for-catan" {
+			r.target = 15
+		}
 	default:
 		return r, errors.New("此探险家与海盗剧本地图尚未接入")
 	}
@@ -83,8 +95,18 @@ func catanExplorerRegionNumbers(region int) []int {
 	return []int{4, 5, 8, 9, 10, 11}
 }
 
+func catanExplorerScenarioResources(region int, scenario string) []int {
+	resources := catanExplorerRegionResources(region, scenario != "land-ho")
+	// Mission guide p14: two randomly chosen parrot shoals, all three goose
+	// shoals. In the goose region one gold field is left in the box.
+	if scenario == "fish-for-catan" && region == 1 {
+		resources[len(resources)-1] = CatanSea
+	}
+	return resources
+}
+
 func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catanExplorerBoard, error) {
-	if players < 2 || players > 4 || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" {
+	if players < 2 || players > 4 || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || scenario == "fish-for-catan" && layout != "variable" {
 		return nil, nil, errors.New("此探险地图需要2至4人；初航使用固定布局")
 	}
 	r, err := catanExplorerRecipe(scenario)
@@ -128,6 +150,12 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 	if err = g.makeScenarioMap(specs); err != nil {
 		return nil, nil, err
 	}
+	if scenario == "fish-for-catan" {
+		// The English mission overview p14 omits the island artwork. Its
+		// position is explicit in the English setup p6 and German scenario p18.
+		tile := rows[3][3]
+		m.Council = &catanExplorerCouncil{Tile: tile, Anchors: []int{g.Tiles[tile].Vertices[4], g.Tiles[tile].Vertices[1]}}
+	}
 	// Green harbor symbols on p8 trace the eastern coast facing explicit sea.
 	// Top/bottom outward frame coastline has no green symbol.
 	for _, v := range g.Vertices {
@@ -167,7 +195,6 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 	if err != nil {
 		return nil, nil, err
 	}
-	r, _ := catanExplorerRecipe(scenario)
 	if layout == "variable" {
 		resources := []int{}
 		for _, tile := range m.Starting {
@@ -183,10 +210,18 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 		}
 	}
 	for region, tiles := range m.Regions {
-		resources := catanExplorerRegionResources(region, r.goldFields)
+		resources := catanExplorerScenarioResources(region, scenario)
 		shuffle(resources)
+		faces := []int{1 + 3*region, 2 + 3*region, 3 + 3*region}
+		if scenario == "fish-for-catan" {
+			shuffle(faces)
+		}
 		for i, tile := range tiles {
-			m.Hidden = append(m.Hidden, catanExplorerHidden{Tile: tile, Region: region, Resource: resources[i]})
+			h := catanExplorerHidden{Tile: tile, Region: region, Resource: resources[i]}
+			if scenario == "fish-for-catan" && h.Resource == CatanSea {
+				h.Fish, faces = faces[0], faces[1:]
+			}
+			m.Hidden = append(m.Hidden, h)
 		}
 		m.Numbers[region] = catanExplorerRegionNumbers(region)
 		shuffle(m.Numbers[region])
@@ -204,6 +239,9 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	}
 	if m.Target != spec.Target || m.FramePasture != spec.FramePasture || m.FrameSea != spec.FrameSea || !slices.Equal(m.Starting, spec.Starting) || !slices.Equal(m.HarborStarts, spec.HarborStarts) || len(m.Opening) != len(spec.Opening) || len(m.Hidden) != len(spec.Regions[0])+len(spec.Regions[1]) || len(g.Tiles) != len(base.Tiles) || len(g.Vertices) != len(base.Vertices) || len(g.Edges) != len(base.Edges) || len(g.Ports) != 0 || !catanExplorerCoordinate(g.HexSize, base.HexSize) {
 		return errors.New("探险地图形状、标记或开局位置不符")
+	}
+	if (m.Council == nil) != (spec.Council == nil) || m.Council != nil && (m.Council.Tile != spec.Council.Tile || !slices.Equal(m.Council.Anchors, spec.Council.Anchors)) {
+		return errors.New("议会岛或交付锚点与地图不符")
 	}
 	for region := range m.Regions {
 		if !slices.Equal(m.Regions[region], spec.Regions[region]) {
@@ -247,8 +285,8 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	if !catanExplorerSameInventory(land, expected) {
 		return errors.New("探险起始岛地形数量不守恒")
 	}
-	r, _ := catanExplorerRecipe(m.Scenario)
 	seen := map[int]bool{}
+	shoals := map[int]bool{}
 	resources, numbers := [2][]int{}, [2][]int{slices.Clone(m.Numbers[0]), slices.Clone(m.Numbers[1])}
 	for tile, number := range m.Liberated {
 		if !slices.ContainsFunc(m.Hidden, func(h catanExplorerHidden) bool { return h.Tile == tile && h.Revealed && h.Resource == CatanGold }) || number < 2 || number > 12 || number == 7 {
@@ -260,6 +298,14 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 			return errors.New("探险隐藏地块位置、区域或唯一性损坏")
 		}
 		seen[h.Tile] = true
+		if m.Scenario == "fish-for-catan" && h.Resource == CatanSea {
+			if h.Fish < 1+3*h.Region || h.Fish > 3+3*h.Region || shoals[h.Fish] {
+				return errors.New("渔场骰面、背面区域或组件唯一性不符")
+			}
+			shoals[h.Fish] = true
+		} else if h.Fish != 0 {
+			return errors.New("普通地形不能带有渔场骰面")
+		}
 		resources[h.Region] = append(resources[h.Region], h.Resource)
 		tile := g.Tiles[h.Tile]
 		if !h.Revealed {
@@ -280,7 +326,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 		}
 	}
 	for region := range m.Regions {
-		if !catanExplorerSameInventory(resources[region], catanExplorerRegionResources(region, r.goldFields)) || !catanExplorerSameInventory(numbers[region], catanExplorerRegionNumbers(region)) {
+		if !catanExplorerSameInventory(resources[region], catanExplorerScenarioResources(region, m.Scenario)) || !catanExplorerSameInventory(numbers[region], catanExplorerRegionNumbers(region)) {
 			return errors.New("探险地区地块或数字库存不守恒")
 		}
 	}
@@ -326,6 +372,8 @@ func (m *catanExplorerBoard) reveal(g *Catan, tile int) (catanExplorerHidden, er
 }
 
 type catanExplorerBoardView struct {
+	Council      *catanExplorerCouncil  `json:"council,omitempty"`
+	Shoals       []catanExplorerShoal   `json:"shoals,omitempty"`
 	Rules        string                 `json:"rules"`
 	Scenario     string                 `json:"scenario"`
 	Layout       string                 `json:"layout"`
@@ -340,10 +388,14 @@ type catanExplorerBoardView struct {
 
 func (m catanExplorerBoard) publicView() catanExplorerBoardView {
 	v := catanExplorerBoardView{Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
+	v.Council = clone(m.Council)
 	for i := range v.Opening {
 		v.Opening[i].Resources = slices.Clone(v.Opening[i].Resources)
 	}
 	for _, h := range m.Hidden {
+		if h.Revealed && h.Fish > 0 {
+			v.Shoals = append(v.Shoals, catanExplorerShoal{Tile: h.Tile, Number: h.Fish})
+		}
 		if !h.Revealed {
 			v.Unexplored[h.Region]++
 		}
