@@ -73,9 +73,11 @@ func explorerHTTPActor(g *game.State) int {
 func assertExplorerHTTPPrivacy(t *testing.T, clients []*testClient) {
 	t.Helper()
 	for viewer, c := range clients {
-		v := current(c)["game"].(map[string]any)["catan"].(map[string]any)
+		state := current(c)["game"].(map[string]any)
+		finished, _ := state["finished"].(bool)
+		v := state["catan"].(map[string]any)
 		x := v["explorer"].(map[string]any)
-		if viewer != int(current(c)["game"].(map[string]any)["turn"].(float64)) && len(x["choices"].([]any)) != 0 {
+		if (finished || viewer != int(state["turn"].(float64))) && len(x["choices"].([]any)) != 0 {
 			t.Fatal("actor choices leaked to another viewer")
 		}
 		if lairs, ok := x["lairs"].(map[string]any); ok {
@@ -95,10 +97,11 @@ func assertExplorerHTTPPrivacy(t *testing.T, clients []*testClient) {
 		}
 		for owner, raw := range v["players"].([]any) {
 			p := raw.(map[string]any)
-			if owner != viewer && (p["resources"] != nil || p["dev"] != nil) {
+			if !finished && owner != viewer && (p["resources"] != nil || p["dev"] != nil) {
 				t.Fatal("opponent resources leaked")
 			}
-			if owner == viewer && p["resources"] == nil {
+			// CATAN's existing postgame review reveals all player hands.
+			if (finished || owner == viewer) && p["resources"] == nil {
 				t.Fatal("own hand missing")
 			}
 		}
