@@ -54,7 +54,7 @@ func (m catanExplorerFish) publicView(players int) catanExplorerFishView {
 	return catanExplorerFishView{clone(m.LastRoll), progress, scores, leader}
 }
 func (m catanExplorerFish) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo) error {
-	if g == nil || b == nil || f == nil || c == nil || b.Scenario != "fish-for-catan" || c.Scenario != b.Scenario {
+	if g == nil || b == nil || f == nil || c == nil || !catanExplorerFishScenario(b.Scenario) || c.Scenario != b.Scenario {
 		return errors.New("鱼群任务组件缺失")
 	}
 	if err := b.validate(g); err != nil {
