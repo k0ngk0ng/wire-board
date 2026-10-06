@@ -4,6 +4,8 @@ import {
   transportCanAct,
   transportEdges,
   transportSelectedAction,
+  transportArrivalMotion,
+  transportWagonPosition,
 } from "../src/catan-transport-state.ts";
 import {
   catanSavedVictoryTarget,
@@ -30,6 +32,145 @@ const room = () => ({
       },
     },
   },
+});
+
+function arrivalRooms() {
+  const before = room();
+  before.id = "transport-animation";
+  before.version = 40;
+  before.game.catan.transport.map = {
+    sites: [{ kind: "glassworks", center: 4, tile: 2 }],
+  };
+  before.game.catan.transport.state = {
+    sequence: 14,
+    arrivalResolved: false,
+    travel: { player: 0, ended: true, arrived: 0 },
+    supply: [10, 11, 12],
+    wagons: [
+      {
+        position: 4,
+        level: 2,
+        delivered: 1,
+        gold: 5,
+        cargo: { id: 7, cargo: "sand", origin: "quarry" },
+      },
+    ],
+  };
+  const after = structuredClone(before);
+  after.version++;
+  after.game.phase = "catan_roll";
+  after.game.turn = 1;
+  const state = after.game.catan.transport.state;
+  delete state.travel;
+  state.supply[1]--;
+  state.wagons[0] = {
+    position: 4,
+    level: 2,
+    delivered: 2,
+    gold: 8,
+    cargo: { id: 13, cargo: "glass", origin: "glassworks" },
+  };
+  return { before, after };
+}
+test("cargo shares the wagon's map anchor, including overlapping players and map scale", () => {
+  const game = {
+    hexSize: 31,
+    vertices: [{ x: 100, y: 200 }],
+    transport: {
+      state: { wagons: [{ position: 0 }, { position: -1 }, { position: 0 }] },
+    },
+  };
+  assert.deepEqual(transportWagonPosition(game, 0), { x: 94.75, y: 200 });
+  assert.deepEqual(transportWagonPosition(game, 2), { x: 105.25, y: 200 });
+  assert.equal(transportWagonPosition(game, 1), null);
+  game.transport.state.wagons[2].position = -1;
+  assert.deepEqual(transportWagonPosition(game, 0), { x: 100, y: 200 });
+});
+test("arrival animates public cargo for actor, opponent and observer across turn handoff", () => {
+  for (const [you, spectating] of [
+    [0, false],
+    [1, false],
+    [-1, true],
+  ]) {
+    const { before, after } = arrivalRooms();
+    before.you = after.you = you;
+    before.spectating = after.spectating = spectating;
+    assert.deepEqual(transportArrivalMotion(before, after), {
+      id: "transport-animation:14:0",
+      player: 0,
+      site: 0,
+      delivered: "sand",
+      loaded: "glass",
+      gold: 3,
+    });
+    assert.equal(transportArrivalMotion(after, after), null);
+  }
+});
+test("arrival distinguishes first loading, keeping cargo, winning delivery and Swift Journey", () => {
+  {
+    const { before, after } = arrivalRooms();
+    delete before.game.catan.transport.state.wagons[0].cargo;
+    const wagon = after.game.catan.transport.state.wagons[0];
+    wagon.delivered = 1;
+    wagon.gold = 5;
+    assert.equal(transportArrivalMotion(before, after).delivered, undefined);
+    assert.equal(transportArrivalMotion(before, after).loaded, "glass");
+  }
+  {
+    const { before, after } = arrivalRooms();
+    after.game.catan.transport.state.wagons = structuredClone(
+      before.game.catan.transport.state.wagons,
+    );
+    after.game.catan.transport.state.supply = [
+      ...before.game.catan.transport.state.supply,
+    ];
+    assert.equal(transportArrivalMotion(before, after), null);
+  }
+  {
+    const { before, after } = arrivalRooms();
+    after.status = "finished";
+    after.game.finished = true;
+    delete after.game.catan.transport.state.wagons[0].cargo;
+    after.game.catan.transport.state.supply = [
+      ...before.game.catan.transport.state.supply,
+    ];
+    const event = transportArrivalMotion(before, after);
+    assert.equal(event.delivered, "sand");
+    assert.equal(event.loaded, undefined);
+    assert.equal(event.gold, 3);
+  }
+  {
+    const { before, after } = arrivalRooms();
+    after.game.phase = "catan_transport_move";
+    after.game.turn = 0;
+    after.game.catan.transport.state.sequence++;
+    assert.equal(transportArrivalMotion(before, after).loaded, "glass");
+  }
+});
+test("arrival never replays a reconnect, changed viewer, reset or unrelated inventory change", () => {
+  const mutations = [
+    (b, a) => a.version++,
+    (b, a) => (a.version = b.version),
+    (b, a) => (a.id = "another"),
+    (b, a) => (a.you = -1),
+    (b, a) => (a.spectating = true),
+    (b, a) => (a.status = "waiting"),
+    (b) => (b.game.phase = "catan_action"),
+    (b) => (b.game.catan.transport.state.arrivalResolved = true),
+    (b) => (b.game.catan.transport.state.travel.ended = false),
+    (b) => (b.game.catan.transport.state.travel.arrived = -1),
+    (b, a) => (a.game.catan.transport.state.sequence += 2),
+    (b, a) => a.game.catan.transport.state.wagons[0].position++,
+    (b, a) => a.game.catan.transport.state.wagons[0].gold++,
+    (b, a) => a.game.catan.transport.state.wagons[0].delivered++,
+    (b, a) => (a.game.catan.transport.state.wagons[0].cargo.origin = "castle"),
+    (b, a) => a.game.catan.transport.state.supply[0]--,
+  ];
+  for (const mutate of mutations) {
+    const { before, after } = arrivalRooms();
+    mutate(before, after);
+    assert.equal(transportArrivalMotion(before, after), null, String(mutate));
+  }
 });
 test("transport movement only uses server legal edges and correct persisted response sequence", () => {
   const r = room();
