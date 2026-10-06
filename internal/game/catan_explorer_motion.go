@@ -4,7 +4,14 @@ import "slices"
 
 // Only public board changes belong here. Never copy an Action wholesale:
 // trade/discard payloads may contain private hand information.
+type catanExplorerSpiceMotion struct {
+	Sack int                        `json:"sack"`
+	From catanExplorerCargoLocation `json:"from"`
+	To   catanExplorerCargoLocation `json:"to"`
+}
+
 type catanExplorerMotion struct {
+	Spice    []catanExplorerSpiceMotion `json:"spice,omitempty"`
 	ID       uint64                     `json:"id"`
 	Player   int                        `json:"player"`
 	Kind     string                     `json:"kind"`
@@ -51,7 +58,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 	x.ActionID = old.ActionID + 1
 	x.Motion = nil
 	switch a.Type {
-	case "catan_explorer_fish_roll", "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
+	case "catan_explorer_spice_land", "catan_explorer_spice_deliver", "catan_explorer_fish_roll", "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
 	default:
 		return
 	}
@@ -66,7 +73,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 		m.Ship, m.Vertex = a.Slot, a.Vertex
 	case "catan_explorer_harbor":
 		m.Vertex = a.Vertex
-	case "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup":
+	case "catan_explorer_spice_land", "catan_explorer_spice_deliver", "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup":
 		m.Ship = a.Slot
 	case "catan_explorer_chase":
 		m.Ship = a.Target
@@ -102,6 +109,11 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 	}
 	if a.Type == "catan_explorer_fish_roll" && x.Fish != nil {
 		m.FishRoll = clone(x.Fish.LastRoll)
+	}
+	for id, sack := range x.Cargo.Spice {
+		if sack.At != old.Cargo.Spice[id].At {
+			m.Spice = append(m.Spice, catanExplorerSpiceMotion{Sack: id, From: old.Cargo.Spice[id].At, To: sack.At})
+		}
 	}
 	x.Motion = m
 }

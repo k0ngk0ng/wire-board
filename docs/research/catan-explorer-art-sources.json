@@ -395,6 +395,91 @@
       ],
       "bytes": 34026,
       "sha256": "b5c109c8a0f2eb9bef3c90de656db9f72bcaa79f3804165e14f4e50900512f2c"
+    },
+    "spice": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11822,
+      "soft_mask": 11821,
+      "mask_size": [
+        65,
+        92
+      ],
+      "size": [
+        41,
+        58
+      ],
+      "bytes": 3358,
+      "sha256": "7af138c028e6e93d99c28ddf600f92ab9c46cb3a119ea3a5a1ffda6978c72124"
+    },
+    "farm-swift": {
+      "source": "catan-pirates-2025",
+      "page": 3,
+      "method": "native-image",
+      "object": 5191,
+      "soft_mask": 5190,
+      "mask_size": [
+        310,
+        336
+      ],
+      "size": [
+        197,
+        213
+      ],
+      "bytes": 44470,
+      "sha256": "f65375a37042a9305d332750755b155140822f493f733a51cc20a30f3cf44e1e"
+    },
+    "farm-gold": {
+      "source": "catan-pirates-2025",
+      "page": 3,
+      "method": "native-image",
+      "object": 5186,
+      "soft_mask": 5185,
+      "mask_size": [
+        310,
+        336
+      ],
+      "size": [
+        197,
+        213
+      ],
+      "bytes": 43890,
+      "sha256": "1a6311e3c579265aff26208233649dcf6998be52fa727016a0b8059b48330dd2"
+    },
+    "farm-pirate-5": {
+      "source": "catan-pirates-2025",
+      "page": 3,
+      "method": "native-image",
+      "object": 5179,
+      "soft_mask": 5178,
+      "mask_size": [
+        310,
+        336
+      ],
+      "size": [
+        197,
+        213
+      ],
+      "bytes": 43652,
+      "sha256": "c04965a75bf76be557932b0be00e3034b7518c488286928cdd6de0b362ae83d2"
+    },
+    "farm-pirate-4": {
+      "source": "catan-pirates-2025",
+      "page": 3,
+      "method": "native-image",
+      "object": 5226,
+      "soft_mask": 5225,
+      "mask_size": [
+        310,
+        336
+      ],
+      "size": [
+        197,
+        213
+      ],
+      "bytes": 45286,
+      "sha256": "735ad2113563b4b91bd3a5323337b6dc9d41ae8c8f49976b417194ec7787df27"
     }
   }
 }
