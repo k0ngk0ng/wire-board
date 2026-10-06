@@ -145,3 +145,29 @@
 - `noble-102.webp`：4926字节，150×150，SHA256 `a32cc01338ed33c722df1379245e1373c35f1e17f211a47969b642699bc58812`。
 
 引擎与真实HTTP完整局、配置权限/准备/冻结/归档、手机/电脑领取与展示证据见主清单。本项仅本地完成、尚未推送或部署；城市/东方公开门槛不变，仍需10张东方卡和12个城市面/配对独立核实及整批发布验收。
+
+## 新版实体开箱：新增三个城市面（2026-10-07）
+
+本轮新增独立来源为 The Brosey Game Company 于2025-05-06发布的新版实体开箱：[Splendor: Silk Road Expansion - Game Unboxing & Reboxing](https://www.youtube.com/watch?v=sADleQgXSPs)。盒面为拆盒新版《The Silk Road》。它是零售商的实体展示，**不是出版社官方扫描件，也不是此前候选代码的自述**。
+
+使用浏览器播放和截图，先跳过播放器提供的广告，再以 `requestVideoFrameCallback` 的 `mediaTime` 确认目标帧已真正呈现。早先拖动时遇到错误/缓冲以及超时截图，均未作为时间或数值证据。已读全条件的新增三面：
+
+| 视频实际帧时间 | 本地候选标识 | 直接可见条件 |
+| --- | --- | --- |
+| 52.016666秒 | 撒马尔罕 tile5/side1 | 14分、黑4、另一个同色4 |
+| 54秒 | 德里 tile4/side1 | 14分、白/蓝/绿/红/黑各2 |
+| 61.5秒 | 首尔 tile6/side1 | 13分、任一同色6，没有固定颜色条件 |
+
+三行与现有候选表一致，新增独立固定断言，未修改或补造候选数据。**当前完整城市条件独立核对5/14，仍缺9面；正反实体配对仍未验证。** 撒马尔罕和首尔的两个条件面分别可见，并不等于已连续看清同一实体板块翻面，因此没有将配对提升为已证。其余城市在开箱中有局部可见，但手指/反光或缓冲帧不足以完整认定，本阶段不计入核实数量。东方仍20/30，缺失10张不变。
+
+只保留上述3个原始帧的矩形裁片，lossless WebP合计336974字节，作为本地研究证据留在 `.local/board-expansion-research/city-video-*.webp`；完整来源、实际帧时间、裁切坐标及SHA256见 `docs/research/splendor-city-video-evidence.json`。没有重绘、改色或把视频图作为产品素材上传。临时全屏截图、联系表、浏览器配置/缓存和预览图清理，研究浏览器关闭。
+
+定向组件验证与新增三面断言通过。没有改变游戏行为，未重复执行无关完整局或前端构建；城市/东方入口继续关闭，未推送/发布。
+
+下一步线索（已在YouTube搜索结果中实际出现，内容尚未核实）：
+
+- [The Brosey Game Company 日不落开箱](https://www.youtube.com/watch?v=HSQnZjHwOSU)，可能补东方30张牌的实物。
+- [BOARD GAME MAN Episode #334 Silk Road](https://www.youtube.com/watch?v=l2oGcO5jA68)，可能有城市条件的近景及翻面。
+- [Never Bored Gaming Silk Road review](https://www.youtube.com/watch?v=qK3ex8EVGR0)。
+
+本轮官方商城公开商品接口仍只列原来已查看的图片，没有新增牌表事实。官方CDN同名06/07/10原片实际属于其他游戏，辨认后立即删除约47MB下载；不混作宝石素材。Google要求验证，改用可用的YouTube公开搜索，未发送外部消息。

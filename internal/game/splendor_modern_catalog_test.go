@@ -323,3 +323,25 @@ func TestSplendorModernHTTPFixtureIntegrity(t *testing.T) {
 		assertSplendorCatalogInventory(t, &s, bank, 120)
 	}
 }
+
+func TestSplendorModernCityPhysicalUnboxingExamples(t *testing.T) {
+	catalog, err := readSplendorModernCatalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// These three faces are directly readable in The Brosey Game Company's
+	// physical 2025 Silk Road unboxing, not copied from the secondary data file.
+	// Video ID, confirmed frame times and retained crops are recorded in
+	// docs/research/splendor-city-video-evidence.json. Local tile/side numbers
+	// identify candidate rows only; this does not verify their reverse pairing.
+	for _, want := range []GemCity{
+		{Tile: 5, Side: 1, Name: "撒马尔罕", Points: 14, Cost: [5]int{0, 0, 0, 4, 0}, Any: 4},
+		{Tile: 4, Side: 1, Name: "德里", Points: 14, Cost: [5]int{2, 2, 2, 2, 2}},
+		{Tile: 6, Side: 1, Name: "首尔", Points: 13, Cost: [5]int{}, Any: 6},
+	} {
+		got := catalog.Cities[(want.Tile-1)*2+want.Side]
+		if got != want {
+			t.Fatal("physical city face mismatch", got, want)
+		}
+	}
+}

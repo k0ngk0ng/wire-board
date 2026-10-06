@@ -1,0 +1,83 @@
+{
+  "source": {
+    "url": "https://www.youtube.com/watch?v=sADleQgXSPs",
+    "title": "Splendor: Silk Road Expansion - Game Unboxing & Reboxing - See What's In The Box",
+    "channel": "The Brosey Game Company",
+    "published": "2025-05-06",
+    "retrieved": "2026-10-07",
+    "kind": "independent-physical-unboxing",
+    "method": "Browser screenshot after requestVideoFrameCallback confirmed mediaTime; rectangular crop only, lossless WebP; no recoloring or upscaling."
+  },
+  "limits": "Face facts only. Does not independently establish physical front/back pairings or all fourteen faces; tile/side use local candidate identifiers. Crops are retained research evidence, not product assets.",
+  "faces": [
+    {
+      "tile": 5,
+      "side": 1,
+      "points": 14,
+      "cost": [
+        0,
+        0,
+        0,
+        4,
+        0
+      ],
+      "any": 4,
+      "mediaTime": 52.016666,
+      "crop": [
+        525,
+        150,
+        1025,
+        530
+      ],
+      "retained": ".local/board-expansion-research/city-video-samarkand-dark.webp",
+      "sha256": "b8a78a1edefd34b1f7f0d559289172bf6bff7eec5a3d088fc0d61983506ed302",
+      "bytes": 134324
+    },
+    {
+      "tile": 4,
+      "side": 1,
+      "points": 14,
+      "cost": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "any": 0,
+      "mediaTime": 54,
+      "crop": [
+        790,
+        220,
+        1210,
+        570
+      ],
+      "retained": ".local/board-expansion-research/city-video-delhi-five-colors.webp",
+      "sha256": "d6f0ee532d9d1f39c7f4fd1082d27f5d17075d636f16554e7f4757ef92d089e6",
+      "bytes": 114212
+    },
+    {
+      "tile": 6,
+      "side": 1,
+      "points": 13,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "any": 6,
+      "mediaTime": 61.5,
+      "crop": [
+        575,
+        495,
+        955,
+        790
+      ],
+      "retained": ".local/board-expansion-research/city-video-seoul-six.webp",
+      "sha256": "e6b19ddbe381d6764ca24cfff8f537f79bd6ce142d991edae552de5df7e2ef97",
+      "bytes": 88438
+    }
+  ]
+}
