@@ -397,6 +397,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	if g.Attack != nil && g.Attack.Pending != nil {
 		return s.catanAttackCardChoice(player, a)
 	}
+	if g.Attack != nil && g.Attack.EndPlan != nil {
+		return s.catanAttackEndChoice(player, a)
+	}
 	if g.Two != nil && g.Two.Trade != nil {
 		return s.catanTwoReturn(player, a)
 	}
@@ -499,8 +502,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if s.Phase != "catan_turn" {
 			return errors.New("请先完成当前行动")
 		}
-		if g.Attack != nil && len(g.Attack.Knights) > 0 {
-			return errors.New("蛮族进攻回合末战斗流程尚未接入，不能跳过骑士阶段")
+		if g.Attack != nil {
+			return s.catanAttackBeginEnd()
 		}
 		s.catanVictory()
 		if k := g.CitiesKnights; k != nil && !s.Finished && len(k.Players[player].Progress) > 4 {
@@ -1111,6 +1114,13 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if g.Attack != nil && g.Attack.EndPlan != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanAttackEndBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 		return
 	}
 	if g.Attack != nil && g.Attack.Pending != nil {

@@ -101,6 +101,9 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
+	if g.Attack != nil && g.Attack.EndPlan != nil {
+		return g.Attack.EndPlan.Player
+	}
 	if g.Attack != nil && g.Attack.Pending != nil {
 		return g.Attack.Pending.Player
 	}

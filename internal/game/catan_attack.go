@@ -62,7 +62,7 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_attack_card", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_attack_card", "catan_attack_end", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
@@ -114,6 +114,9 @@ func (s *State) validateCatanAttack() error {
 				}
 			}
 		}
+	}
+	if err := s.validateCatanAttackPlan(); err != nil {
+		return err
 	}
 	return s.validateCatanAttackEnd()
 }
@@ -212,7 +215,8 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		left[k.Player]--
 	}
 	public["knightsLeft"] = left
-	public["canAct"] = !s.Finished && a.Pending != nil && a.Pending.Player == player
+	public["canAct"] = !s.Finished && (a.Pending != nil && a.Pending.Player == player || a.EndPlan != nil && a.EndPlan.Player == player)
+	s.catanAttackPlanView(public, player)
 	if a.Pending != nil && a.Pending.Player == player && !s.Finished {
 		switch a.Pending.Card {
 		case "capture":

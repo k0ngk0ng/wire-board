@@ -33,8 +33,7 @@ type catanAttackEndRecord struct {
 	Battles []catanAttackBattle `json:"battles"`
 }
 
-// Internal transactional end-phase kernel. Public catan_end remains gated
-// until the movement UI, autoplay and server timeout lifecycle are connected.
+// Transactional end-phase kernel, shared by confirmed plans and internal tests.
 func (s *State) catanAttackResolveEnd(moves []catanAttackMove, die func() int) error {
 	if s.Catan == nil || s.Catan.Attack == nil || s.Phase != "catan_turn" || s.Finished || s.Turn < 0 || s.Turn >= len(s.Catan.Players) || s.Catan.Players[s.Turn].Eliminated || die == nil {
 		return errors.New("当前不能结算蛮族进攻回合末阶段")
@@ -58,38 +57,8 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 	a.EndSequence++
 	a.End = &catanAttackEndRecord{ID: a.EndSequence, Player: s.Turn, Moves: slices.Clone(moves), Battles: []catanAttackBattle{}}
 	g.Trade = nil
-	originals := map[int]int{}
-	for i, k := range a.Knights {
-		originals[k.Edge] = i
-	}
-	moved := map[int]bool{}
-	for _, move := range moves {
-		i, ok := originals[move.From]
-		if !ok || moved[i] || a.Knights[i].Player != s.Turn || move.From == move.To {
-			return errors.New("每名己方骑士只能移动一次，请使用其阶段开始时的位置")
-		}
-		steps := 3
-		if move.Wheat {
-			steps = 5
-			if g.Players[s.Turn].Resources[3] < 1 {
-				return errors.New("延长骑士移动需要独立支付1张粮食")
-			}
-		}
-		if _, ok := a.knightDestinations(g, i, steps)[move.To]; !ok {
-			return errors.New("骑士目的地超出移动距离、已被占据或属于城堡")
-		}
-		if move.Wheat {
-			g.Players[s.Turn].Resources[3]--
-			g.Bank[3]++
-		}
-		a.Knights[i].Edge = move.To
-		moved[i] = true
-		s.catanLog(s.Turn, "骑士从路线 #%d 移至 #%d（最多%d步）", move.From+1, move.To+1, steps)
-	}
-	for _, k := range a.Knights {
-		if k.Player == s.Turn && a.castleEdge(g, k.Edge) {
-			return errors.New("必须先将自己的所有城堡骑士移出")
-		}
+	if err := s.catanAttackMoveKnights(moves, true); err != nil {
+		return err
 	}
 	for _, tile := range a.Map.Coast {
 		count := a.Barbarians[tile]
@@ -318,6 +287,45 @@ func (s *State) validateCatanAttackEnd() error {
 					return errors.New("俘虏掷骰参与者或点数无效")
 				}
 			}
+		}
+	}
+	return nil
+}
+
+// Replayed on a clone for drafts; only confirmation changes public pieces.
+func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture bool) error {
+	g, a := s.Catan, s.Catan.Attack
+	originals := map[int]int{}
+	for i, k := range a.Knights {
+		originals[k.Edge] = i
+	}
+	moved := map[int]bool{}
+	for _, move := range moves {
+		i, ok := originals[move.From]
+		if !ok || moved[i] || a.Knights[i].Player != s.Turn || move.From == move.To {
+			return errors.New("每名己方骑士只能移动一次，请使用其阶段开始时的位置")
+		}
+		steps := 3
+		if move.Wheat {
+			steps = 5
+			if g.Players[s.Turn].Resources[3] < 1 {
+				return errors.New("延长骑士移动需要独立支付1张粮食")
+			}
+		}
+		if _, ok := a.knightDestinations(g, i, steps)[move.To]; !ok {
+			return errors.New("骑士目的地超出移动距离、已被占据或属于城堡")
+		}
+		if move.Wheat {
+			g.Players[s.Turn].Resources[3]--
+			g.Bank[3]++
+		}
+		a.Knights[i].Edge = move.To
+		moved[i] = true
+		s.catanLog(s.Turn, "骑士从路线 #%d 移至 #%d（最多%d步）", move.From+1, move.To+1, steps)
+	}
+	for _, k := range a.Knights {
+		if requireDeparture && k.Player == s.Turn && a.castleEdge(g, k.Edge) {
+			return errors.New("必须先将自己的所有城堡骑士移出")
 		}
 	}
 	return nil
