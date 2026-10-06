@@ -28,7 +28,7 @@ func NewCatanCaravans(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
-	s.Catan.Caravans = &catanCaravans{Map: m, Wagons: []catanCaravanWagon{}}
+	s.Catan.Caravans = &catanCaravans{Rules: CatanCaravansRules, Map: m, Wagons: []catanCaravanWagon{}}
 	s.Log = append(s.Log, "商队：建设建筑后，行动结束时投票放置一辆马车；自己回合达到12分获胜")
 	s.catanScores()
 	return s, s.validateCaravans()

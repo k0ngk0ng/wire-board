@@ -78,6 +78,22 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanRules = rules
 			}
 		}
+		if g.Caravans != nil {
+			record.CatanScenario = "caravans"
+			record.CatanLayout = "variable"
+			record.CatanExpansions = append(record.CatanExpansions, "caravans")
+			if record.CatanExpansionRules == nil {
+				record.CatanExpansionRules = map[string]string{}
+			}
+			rules := g.Caravans.Rules
+			if rules == "" {
+				rules = game.CatanCaravansRules
+			}
+			record.CatanExpansionRules["caravans"] = rules
+			if g.Two == nil {
+				record.CatanRules = rules
+			}
+		}
 		if g.FriendlyRobber != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "friendly_robber")
 			if record.CatanExpansionRules == nil {

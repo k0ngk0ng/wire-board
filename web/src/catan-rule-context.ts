@@ -8,6 +8,9 @@ export function catanRuleContext(room: Room) {
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
   const citiesKnights = !!citySetup;
   const harbors = game ? !!game.harbors : !!room.catanHarbors?.enabled;
+  const caravans = game
+    ? !!game.caravans
+    : room.catanTwoScenario === "caravans";
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
@@ -30,6 +33,7 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
+    caravans,
     rivers: game ? !!game.rivers : room.catanTwoScenario === "rivers",
     two: game ? !!game.two : !!room.catanTwoRules,
     citiesKnights,
@@ -50,7 +54,9 @@ export function catanRuleContext(room: Room) {
     allHelpers: !!options.allHelpers,
     target: game
       ? catanSavedVictoryTarget(game)
-      : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
+      : caravans
+        ? 12
+        : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
   };
 }
 

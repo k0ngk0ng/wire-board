@@ -233,7 +233,7 @@ export function CatanRules({ room }: { room: Room }) {
       <p>
         <b>
           {info.two
-            ? `双人卡坦${info.rivers ? "＋河流" : ""}`
+            ? `双人卡坦${info.rivers ? "＋河流" : info.caravans ? "＋商队" : ""}`
             : info.rivers
               ? "卡坦河流"
               : seafarers

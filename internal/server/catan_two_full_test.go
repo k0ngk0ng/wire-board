@@ -51,6 +51,9 @@ func newTwoScenarioFullTable(t *testing.T, scenario string) (*Server, *httptest.
 			t.Fatal("formal start omitted river rules")
 		}
 	}
+	if scenario == "caravans" && (r.Game.Catan.Caravans == nil || r.Game.Catan.Caravans.Rules != game.CatanCaravansRules) {
+		t.Fatal("formal start omitted merchant train rules")
+	}
 	if len(r.Seats) != 2 || len(r.Game.Catan.Players) != 2 || r.Game.Phase != phase || r.Game.Catan.Two == nil || r.Game.Catan.Two.Bank != 10 {
 		t.Fatal("formal start did not construct two-player setup")
 	}
@@ -87,6 +90,13 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			}
 			total += seat.Resources[color]
 		}
+		if g.Caravans != nil && g.Caravans.Pending != nil {
+			for _, bid := range g.Caravans.Pending.Bids {
+				if bid != nil {
+					total += bid[color]
+				}
+			}
+		}
 		if total != 19 {
 			t.Fatal("resource conservation", color, total)
 		}
@@ -106,6 +116,12 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			t.Fatal("gold conservation")
 		}
 	}
+	if g.Caravans != nil {
+		if g.Caravans.Rules != game.CatanCaravansRules {
+			t.Fatal("missing merchant train rules")
+		}
+		assertCaravansFullInventory(t, s)
+	}
 	dev := len(g.DevDeck) + len(g.DevDiscard)
 	for p, seat := range g.Players {
 		if seat.Eliminated {
@@ -118,6 +134,18 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		for _, v := range g.Vertices {
 			if v.Owner == p {
 				score += v.Level
+				if g.Caravans != nil {
+					adjacent := 0
+					for _, w := range g.Caravans.Wagons {
+						e := g.Edges[w.Edge]
+						if e.A == v.ID || e.B == v.ID {
+							adjacent++
+						}
+					}
+					if adjacent >= 2 {
+						score++
+					}
+				}
 			}
 		}
 		if g.LongestOwner == p {
@@ -172,6 +200,9 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 
 func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 	t.Helper()
+	if s.Catan.Caravans != nil {
+		assertCaravansFullPrivacy(t, clients, s)
+	}
 	for viewer, client := range clients {
 		v := current(client)["game"].(map[string]any)["catan"].(map[string]any)
 		if v["devDeck"] != nil || v["devDiscard"] != nil {
@@ -195,8 +226,9 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 	}
 }
 
-func TestCatanTwoCompleteHTTPGames(t *testing.T)       { runTwoCompleteHTTPGames(t, "") }
-func TestCatanTwoRiversCompleteHTTPGames(t *testing.T) { runTwoCompleteHTTPGames(t, "rivers") }
+func TestCatanTwoCompleteHTTPGames(t *testing.T)         { runTwoCompleteHTTPGames(t, "") }
+func TestCatanTwoRiversCompleteHTTPGames(t *testing.T)   { runTwoCompleteHTTPGames(t, "rivers") }
+func TestCatanTwoCaravansCompleteHTTPGames(t *testing.T) { runTwoCompleteHTTPGames(t, "caravans") }
 func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 	coverage := map[string]int{}
 	for sample := range 3 {
@@ -213,6 +245,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 				label := fmt.Sprintf("%s/rolls=%d", state.Phase, len(state.Catan.Two.Rolls))
 				if state.Catan.Two.Pending != nil {
 					label += "/" + state.Catan.Two.Pending.Kind
+				}
+				if q := state.Catan.Caravans; q != nil && q.Pending != nil {
+					label += fmt.Sprintf("/cursor=%d/second=%v", q.Pending.Cursor, q.Pending.Two.First != nil)
 				}
 				if !restored[label] {
 					restart(label)
@@ -285,7 +320,8 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 					}
 					timeouts++
 				}
-				if pending && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
+				wagonAdvanced := state.Catan.Caravans != nil && len(s.rooms[id].Game.Catan.Caravans.Wagons) == len(state.Catan.Caravans.Wagons)+1
+				if pending && !wagonAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
 					t.Fatal("response did not advance", state.Phase, mode)
 				}
 			}
@@ -295,7 +331,11 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 				t.Fatal("full game incomplete", steps, automatic, timeouts)
 			}
 			winner := r.Game.Winners[0]
-			if winner != r.Game.Turn || r.Game.Catan.Players[winner].Score < 10 {
+			target := 10
+			if scenario == "caravans" {
+				target = 12
+			}
+			if winner != r.Game.Turn || r.Game.Catan.Players[winner].Score < target {
 				t.Fatal("wrong victory")
 			}
 			restart("finished")
@@ -313,6 +353,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 					if scenario == "rivers" && (record["catanScenario"] != "rivers" || record["catanExpansionRules"].(map[string]any)["rivers"] != game.CatanRiversRules) {
 						t.Fatal("river combination history missing", record)
 					}
+					if scenario == "caravans" && (record["catanScenario"] != "caravans" || record["catanExpansionRules"].(map[string]any)["caravans"] != game.CatanCaravansRules) {
+						t.Fatal("merchant train combination history missing", record)
+					}
 					stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 					want := float64(0)
 					if p == winner {
@@ -329,7 +372,11 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 			t.Logf("steps=%d autoplay=%d timeouts=%d restarts=%d phases=%v", steps, automatic, timeouts, len(restored)+1, modes)
 		})
 	}
-	for _, phase := range []string{"catan_two_build", "catan_two_trade"} {
+	phases := []string{"catan_two_build", "catan_two_trade"}
+	if scenario == "caravans" {
+		phases = append(phases, "catan_caravan_bid", "catan_caravan_place")
+	}
+	for _, phase := range phases {
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			if coverage[phase+"/"+mode] == 0 {
 				t.Fatal("missing full-game response path", phase, mode)

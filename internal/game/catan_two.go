@@ -80,7 +80,7 @@ func newCatanTwoBoard(scenario string) (*State, error) {
 		if err != nil {
 			return nil, err
 		}
-		g.Caravans = &catanCaravans{Map: m, Wagons: []catanCaravanWagon{}}
+		g.Caravans = &catanCaravans{Rules: CatanCaravansRules, Map: m, Wagons: []catanCaravanWagon{}}
 	}
 	if err := g.prepareTwoNeutrals(); err != nil {
 		return nil, err

@@ -3,6 +3,7 @@ import "./catan-scenarios.css";
 
 const names: Record<string, string> = {
   rivers: "河流",
+  caravans: "商队",
   shores: "驶向新海岸",
   islands: "四岛",
   six_islands: "六岛",

@@ -411,3 +411,33 @@ func TestCatanTwoCaravansDetectMergedOriginsWithoutGuessing(t *testing.T) {
 	}
 	twoCaravanCheck(t, s)
 }
+
+func TestCatanTwoCaravansRuleVersionCompatibility(t *testing.T) {
+	for _, two := range []bool{false, true} {
+		s := caravanFixture(t, 3)
+		if two {
+			s = twoCaravanFixture(t)
+		}
+		if s.Catan.Caravans.Rules != CatanCaravansRules {
+			t.Fatal("constructor omitted rules")
+		}
+		s.Catan.Caravans.Rules = "unsupported"
+		helperReject(t, s, s.Turn, Action{Type: "catan_end"})
+		// Earlier internal 2025 snapshots omitted the field; map/network validation
+		// still applies instead of reinterpreting them as a different edition.
+		s.Catan.Caravans.Rules = ""
+		raw, _ := json.Marshal(s)
+		var restored State
+		if e := json.Unmarshal(raw, &restored); e != nil {
+			t.Fatal(e)
+		}
+		helperApply(t, &restored, restored.Turn, Action{Type: "catan_end"})
+		if two {
+			twoCaravanCheck(t, &restored)
+		} else {
+			caravanConserved(t, &restored)
+		}
+		restored.Catan.Caravans.Map.Supply++
+		helperReject(t, &restored, restored.Turn, Action{Type: "catan_roll"})
+	}
+}
