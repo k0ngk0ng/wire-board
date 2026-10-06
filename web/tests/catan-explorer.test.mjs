@@ -317,3 +317,40 @@ test("same-actor setup advances its own prompt and invalidates the prior confirm
   assert.equal(explorerSelectedAction(r, pick), null);
   assert.equal(explorerChoices(r)[0].choice, "ship");
 });
+
+test("cargo flights anchor each unit to its actual map row without using viewport coordinates", async () => {
+  const { explorerCargoPoint } = await import("../src/catan-explorer-state.ts");
+  const g = room().game.catan;
+  g.tiles = [{ x: 300, y: 400 }];
+  g.explorer.cargo.units = Array.from({ length: 15 }, () => ({
+    kind: "supply",
+    index: -1,
+  }));
+  g.explorer.cargo.units[2] = { kind: "ship", index: 0 };
+  g.explorer.cargo.units[3] = { kind: "ship", index: 0 };
+  assert.deepEqual(explorerCargoPoint(g, 2, { kind: "ship", index: 0 }), {
+    x: 42,
+    y: -23,
+  });
+  assert.deepEqual(explorerCargoPoint(g, 3, { kind: "ship", index: 0 }), {
+    x: 58,
+    y: -23,
+  });
+  g.explorer.cargo.units[2] = { kind: "lair", index: 0 };
+  g.explorer.cargo.units[3] = { kind: "lair", index: 0 };
+  g.explorer.cargo.units[13] = { kind: "lair", index: 0 };
+  assert.deepEqual(explorerCargoPoint(g, 2, { kind: "lair", index: 0 }), {
+    x: 282,
+    y: 434,
+  });
+  assert.deepEqual(explorerCargoPoint(g, 3, { kind: "lair", index: 0 }), {
+    x: 300,
+    y: 434,
+  });
+  assert.deepEqual(explorerCargoPoint(g, 13, { kind: "lair", index: 0 }), {
+    x: 318,
+    y: 434,
+  });
+  assert.equal(explorerCargoPoint(g, 4, { kind: "lair", index: 0 }), null);
+  assert.equal(explorerCargoPoint(g, 2, { kind: "supply", index: -1 }), null);
+});

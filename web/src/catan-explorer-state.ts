@@ -26,6 +26,26 @@ export type ExplorerMotion = {
   ship: number;
   vertex: number;
   path?: number[];
+  pirate?: {
+    fromOwner: number;
+    fromTile: number;
+    toOwner: number;
+    toTile: number;
+  };
+  lair?: {
+    tile: number;
+    ready: boolean;
+    resolved: boolean;
+    hero: number;
+    dice?: number[];
+  };
+  chase?: {
+    player: number;
+    ship: number;
+    sequence: number;
+    die: number;
+    success: boolean;
+  };
   revealed?: number[];
   cargo?: { unit: number; from: ExplorerLocation; to: ExplorerLocation }[];
 };
@@ -382,4 +402,28 @@ export function explorerPhaseLabel(phase: string) {
       } as Record<string, string>
     )[phase] || "探险行动"
   );
+}
+
+// Anchors use the exact same map-space row spacing as static cargo pieces.
+export function explorerCargoPoint(
+  g: CatanState,
+  unit: number,
+  loc: ExplorerLocation,
+) {
+  const p =
+    loc.kind === "ship"
+      ? explorerShipPosition(g, loc.index)
+      : loc.kind === "harbor"
+        ? g.vertices[loc.index]
+        : loc.kind === "lair"
+          ? g.tiles[loc.index]
+          : null;
+  if (!p) return null;
+  const peers = explorerContents(g, loc.kind, loc.index),
+    index = peers.indexOf(unit);
+  if (index < 0) return null;
+  return {
+    x: p.x + (index - (peers.length - 1) / 2) * (loc.kind === "lair" ? 18 : 16),
+    y: p.y + (loc.kind === "ship" ? -12 : loc.kind === "lair" ? 34 : 20),
+  };
 }
