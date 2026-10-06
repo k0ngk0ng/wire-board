@@ -12,6 +12,8 @@ type catanExplorerMotion struct {
 	Path     []int                      `json:"path,omitempty"`
 	Revealed []int                      `json:"revealed,omitempty"`
 	Vertex   int                        `json:"vertex"`
+	Fish     []catanExplorerFishMotion  `json:"fish,omitempty"`
+	FishRoll *catanExplorerFishRoll     `json:"fishRoll,omitempty"`
 	Cargo    []catanExplorerCargoMotion `json:"cargo,omitempty"`
 	Pirate   *catanExplorerPirateMotion `json:"pirate,omitempty"`
 	Lair     *catanExplorerLairMotion   `json:"lair,omitempty"`
@@ -32,6 +34,12 @@ type catanExplorerLairMotion struct {
 	Dice     []int `json:"dice,omitempty"`
 }
 
+type catanExplorerFishMotion struct {
+	Fish int                        `json:"fish"`
+	From catanExplorerCargoLocation `json:"from"`
+	To   catanExplorerCargoLocation `json:"to"`
+}
+
 type catanExplorerCargoMotion struct {
 	Unit int                        `json:"unit"`
 	From catanExplorerCargoLocation `json:"from"`
@@ -43,7 +51,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 	x.ActionID = old.ActionID + 1
 	x.Motion = nil
 	switch a.Type {
-	case "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
+	case "catan_explorer_fish_roll", "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
 	default:
 		return
 	}
@@ -58,7 +66,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 		m.Ship, m.Vertex = a.Slot, a.Vertex
 	case "catan_explorer_harbor":
 		m.Vertex = a.Vertex
-	case "catan_explorer_land", "catan_explorer_pickup":
+	case "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup":
 		m.Ship = a.Slot
 	case "catan_explorer_chase":
 		m.Ship = a.Target
@@ -86,6 +94,14 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 		if loc != old.Cargo.Units[id] {
 			m.Cargo = append(m.Cargo, catanExplorerCargoMotion{Unit: id, From: old.Cargo.Units[id], To: loc})
 		}
+	}
+	for id, loc := range x.Cargo.Fish {
+		if loc != old.Cargo.Fish[id] {
+			m.Fish = append(m.Fish, catanExplorerFishMotion{Fish: id, From: old.Cargo.Fish[id], To: loc})
+		}
+	}
+	if a.Type == "catan_explorer_fish_roll" && x.Fish != nil {
+		m.FishRoll = clone(x.Fish.LastRoll)
 	}
 	x.Motion = m
 }

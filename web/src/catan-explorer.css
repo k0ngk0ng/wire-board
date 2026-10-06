@@ -535,3 +535,21 @@
 .explorer-council-anchor {
   color: #174e65;
 }
+
+@keyframes explorer-fish-roll-highlight {
+  from {
+    background: #f9d579;
+  }
+  to {
+    background: transparent;
+  }
+}
+.explorer-fish-roll {
+  animation: explorer-fish-roll-highlight 1200ms ease-out;
+  border-radius: 6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .explorer-fish-roll {
+    animation: none;
+  }
+}

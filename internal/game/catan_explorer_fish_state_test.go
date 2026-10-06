@@ -44,9 +44,11 @@ func explorerFishRevealExcept(t *testing.T, s *State, except int) {
 func explorerFishApply(t *testing.T, s *State, a Action) {
 	t.Helper()
 	a.Prompt = int(s.Catan.TurnSerial)
+	beforeFish := slices.Clone(s.Catan.Explorer.Cargo.Fish)
 	if err := s.Apply(s.Turn, a); err != nil {
 		t.Fatal(a, err)
 	}
+	assertExplorerFishMotion(t, beforeFish, s, a)
 	if err := s.validateCatanExplorer(); err != nil {
 		t.Fatal(err)
 	}
@@ -229,9 +231,11 @@ func TestCatanExplorerFishStateLoadTransferAndDeliverPreviews(t *testing.T) {
 			if err := json.Unmarshal(raw, &wire); err != nil {
 				t.Fatal(err)
 			}
+			beforeFish := slices.Clone(s.Catan.Explorer.Cargo.Fish)
 			if err := s.Apply(s.Turn, wire); err != nil {
 				t.Fatal("preview cannot execute", a, err)
 			}
+			assertExplorerFishMotion(t, beforeFish, s, wire)
 			return
 		}
 		t.Fatal("missing preview", kind)
@@ -271,9 +275,11 @@ func TestCatanExplorerFishStateLoadTransferAndDeliverPreviews(t *testing.T) {
 	if err := json.Unmarshal(raw, &wire); err != nil {
 		t.Fatal(err)
 	}
+	beforeFish := slices.Clone(s.Catan.Explorer.Cargo.Fish)
 	if err := s.Apply(s.Turn, wire); err != nil {
 		t.Fatal(err)
 	}
+	assertExplorerFishMotion(t, beforeFish, s, wire)
 	if s.Catan.Explorer.Cargo.Fish[0] != (catanExplorerCargoLocation{"harbor", harbor}) {
 		t.Fatal("wire lost fish field")
 	}

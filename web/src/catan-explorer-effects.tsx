@@ -8,6 +8,7 @@ import {
 import {
   explorerContents,
   explorerFishContents,
+  explorerFishFlight,
   explorerCargoPoint,
   explorerMotionBetween,
   explorerMotionPath,
@@ -197,7 +198,9 @@ export function ExplorerEffects({
       duration: Number(node.dataset.duration),
     }));
     const fading = [
-      ...group.current.querySelectorAll<SVGElement>("[data-fade]"),
+      ...group.current.querySelectorAll<SVGElement>(
+        "[data-fade], [data-appear]",
+      ),
     ];
     let frame = 0;
     const start = performance.now();
@@ -208,12 +211,18 @@ export function ExplorerEffects({
         node.setAttribute("transform", `translate(${p.x},${p.y})`);
       }
       for (const node of fading) {
-        const [delay, duration] = node.dataset.fade!.split(",").map(Number);
+        const [delay, duration] = (node.dataset.fade ?? node.dataset.appear!)
+          .split(",")
+          .map(Number);
         const fraction = Math.max(0, Math.min(1, (elapsed - delay) / duration));
         node.setAttribute(
           "opacity",
           String(
-            node.dataset.pulse ? Math.sin(fraction * Math.PI) : 1 - fraction,
+            node.dataset.appear
+              ? fraction
+              : node.dataset.pulse
+                ? Math.sin(fraction * Math.PI)
+                : 1 - fraction,
           ),
         );
       }
@@ -371,6 +380,33 @@ export function ExplorerEffects({
             </g>
           );
         })()}
+      {e.fish?.map((c) => {
+        const flight = explorerFishFlight(before, after, e, c.fish);
+        if (!flight) return null;
+        const end = flight.points[1];
+        return (
+          <g key={`fish-${c.fish}`} data-fish-motion={c.fish}>
+            <g
+              data-flight={JSON.stringify(flight.points)}
+              data-duration="650"
+              data-appear={flight.appear ? "0,250" : undefined}
+              data-fade={flight.retire ? "650,350" : undefined}
+            >
+              <ExplorerFishPiece assets={assets} width={flight.width} />
+            </g>
+            {flight.delivered && (
+              <g
+                transform={`translate(${end.x},${end.y - 30})`}
+                data-fade="900,450"
+                className="explorer-motion-label"
+              >
+                <rect x="-40" y="-14" width="80" height="24" rx="8" />
+                <text y="3">鱼群已交付</text>
+              </g>
+            )}
+          </g>
+        );
+      })}
       {e.cargo?.map((c) => {
         const from = explorerCargoPoint(before, c.unit, c.from),
           to =
