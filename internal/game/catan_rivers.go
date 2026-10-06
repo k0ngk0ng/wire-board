@@ -6,7 +6,10 @@ import (
 	"slices"
 )
 
+const CatanRiversRules = "catan-rivers-2025"
+
 type CatanRivers struct {
+	Rules  string          `json:"rules,omitempty"`
 	Map    *catanRiversMap `json:"map"`
 	Gold   []int           `json:"gold"`
 	Bank   int             `json:"bank"`
@@ -28,7 +31,7 @@ func NewCatanRivers(n int, options CatanOptions) (*State, error) {
 	if n > 4 {
 		supply = 152
 	}
-	s.Catan.Rivers = &CatanRivers{Map: m, Gold: make([]int, n), Bank: supply}
+	s.Catan.Rivers = &CatanRivers{Rules: CatanRiversRules, Map: m, Gold: make([]int, n), Bank: supply}
 	s.Phase = "catan_rivers_start"
 	s.catanScores()
 	return s, nil
@@ -38,6 +41,11 @@ func (g *Catan) validateRivers() error {
 	r := g.Rivers
 	if r == nil {
 		return nil
+	}
+	// Existing internal saves predate this field; their pinned 2025 map and
+	// inventory are still validated below. Unknown explicit versions fail.
+	if r.Rules != "" && r.Rules != CatanRiversRules {
+		return errors.New("河流规则版本无效")
 	}
 	if r.Map == nil || len(r.Gold) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
 		return errors.New("河流状态或尚未核对的组合无效")

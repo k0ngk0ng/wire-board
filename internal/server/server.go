@@ -46,6 +46,7 @@ type Seat struct {
 }
 type Room struct {
 	CatanTwoRules          string                         `json:"catanTwoRules,omitempty"`
+	CatanTwoScenario       string                         `json:"catanTwoScenario,omitempty"`
 	CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber,omitempty"`
 	CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors,omitempty"`
 	CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights,omitempty"`
@@ -524,6 +525,9 @@ func summary(r *Room) map[string]any {
 	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanTwoRules != "" {
 		result["catanTwoRules"] = r.CatanTwoRules
+		if r.CatanTwoScenario != "" {
+			result["catanTwoScenario"] = r.CatanTwoScenario
+		}
 	}
 	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
@@ -1072,10 +1076,14 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
-				if next.CatanTwoRules != "" {
+				if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {
 					err = next.validateCatanTwoSetup()
 					if err == nil {
-						next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
+						if next.CatanTwoScenario == "rivers" {
+							next.Game, err = game.NewCatanTwoRivers(len(next.Seats), next.CatanOptions)
+						} else {
+							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
+						}
 					}
 				} else if next.CatanCitiesKnights != nil {
 					err = next.validateCatanCitiesKnightsMap()
