@@ -94,6 +94,21 @@ func (x catanExplorer) validate(g *Catan) error {
 		return errors.New("初航不使用强盗、发展卡或最长道路/军队奖")
 	}
 	for p, player := range g.Players {
+		if player.Eliminated {
+			if sum(player.Resources) != 0 || x.Economy.Gold[p] != 0 {
+				return errors.New("离场探险玩家不能保留资源或金币")
+			}
+			for ship := p * 3; ship < (p+1)*3; ship++ {
+				if x.Fleet.Positions[ship] != -1 {
+					return errors.New("离场探险玩家的船须归还供应区")
+				}
+			}
+			for unit := p * 11; unit < (p+1)*11; unit++ {
+				if x.Cargo.Units[unit] != (catanExplorerCargoLocation{"supply", -1}) {
+					return errors.New("离场探险玩家的移民和船员须归还供应区")
+				}
+			}
+		}
 		score := 0
 		for _, v := range g.Vertices {
 			if v.Owner == p {

@@ -8,7 +8,7 @@ func (s *State) eliminateCatanExplorer(player int) error {
 	g := s.Catan
 	x := g.Explorer
 	if s.Finished || player < 0 || player >= len(g.Players) || player != s.Turn || g.Players[player].Eliminated || s.Phase != "catan_roll" && s.Phase != "catan_turn" && s.Phase != "catan_explorer_move" {
-		return errors.New("当前不能移除此探险玩家；必须先处理七点弃牌")
+		return errors.New("当前不能移除此探险玩家；开局、弃牌、海盗和战斗回应由系统先完成")
 	}
 	if s.Phase == "catan_roll" {
 		x.SkippedRolls++
@@ -28,6 +28,25 @@ func (s *State) eliminateCatanExplorer(player int) error {
 	}
 	g.Trade = nil
 	p.Eliminated = true
+	if x.Pirate != nil && x.Pirate.Owner == player {
+		x.Pirate.Owner, x.Pirate.Tile = -1, -1
+	}
+	if x.Lairs != nil {
+		if len(x.Lairs.Retired) == 0 {
+			x.Lairs.Retired = make([]bool, len(g.Players))
+		}
+		x.Lairs.Retired[player] = true
+		for i := range x.Lairs.Sites {
+			site := &x.Lairs.Sites[i]
+			if site.Resolved == 0 && site.Ready > 0 {
+				// No rewards have been awarded in the movement phase. Returning
+				// the captor's crew drops this site below three; other crew stay.
+				site.Ready, site.Captor = 0, -1
+				s.catanLog(player, "离场撤回船员，巢穴 #%d 恢复待攻陷", site.Tile+1)
+			}
+		}
+		s.catanExplorerMissionScore()
+	}
 	// Even a pre-production departure must close its serial without inventing
 	// a production roll or restoring previous-vessel movement points.
 	x.Cargo.Turn = &catanExplorerCargoTurn{Player: player, Sequence: g.TurnSerial, Phase: "ended"}
