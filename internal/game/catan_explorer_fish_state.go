@@ -4,7 +4,7 @@ import "errors"
 
 // These scenarios contain the lair mission. Spice uses pirates without lairs.
 func catanExplorerMissionScenario(scenario string) bool {
-	return scenario == "pirate-lairs" || scenario == "fish-for-catan"
+	return scenario == "pirate-lairs" || scenario == "fish-for-catan" || scenario == "explorers-and-pirates"
 }
 
 // Private: the six lair numbers are still explicit acceptance components,

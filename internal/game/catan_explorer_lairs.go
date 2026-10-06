@@ -79,6 +79,9 @@ func (l catanExplorerLairs) playerScore(g *Catan, player int) int {
 	if g.Explorer != nil && g.Explorer.Fish != nil {
 		score += g.Explorer.Fish.publicView(len(g.Players)).Scores[player]
 	}
+	if g.Explorer != nil && g.Explorer.Spice != nil {
+		score += g.Explorer.Spice.publicView(g).Scores[player]
+	}
 	for _, v := range g.Vertices {
 		if v.Owner == player {
 			score += v.Level

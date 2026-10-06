@@ -14,8 +14,11 @@ type catanExplorerSpiceSack struct {
 	At     catanExplorerCargoLocation `json:"at"`
 }
 
+func catanExplorerSpiceScenario(s string) bool {
+	return s == "spices-for-catan" || s == "explorers-and-pirates"
+}
 func catanExplorerFishScenario(s string) bool {
-	return s == "fish-for-catan" || s == "spices-for-catan"
+	return s == "fish-for-catan" || catanExplorerSpiceScenario(s)
 }
 func catanExplorerPirateScenario(s string) bool {
 	return catanExplorerMissionScenario(s) || s == "spices-for-catan"
@@ -27,7 +30,7 @@ func (c catanExplorerCargo) landVertex(g *Catan, player, vertex int) bool {
 	if !catanExplorerLandVertex(g, vertex) {
 		return false
 	}
-	if c.Scenario == "spices-for-catan" {
+	if catanExplorerSpiceScenario(c.Scenario) {
 		for _, t := range g.Tiles {
 			if t.Resource == CatanDesert && slices.Contains(t.Vertices, vertex) && !c.farmFriend(player, t.ID) {
 				return false
@@ -40,7 +43,7 @@ func (c catanExplorerCargo) landEdge(g *Catan, player, edge int) bool {
 	if !catanExplorerLandEdge(g, edge) {
 		return false
 	}
-	if c.Scenario == "spices-for-catan" {
+	if catanExplorerSpiceScenario(c.Scenario) {
 		for _, tile := range g.Edges[edge].Tiles {
 			if g.Tiles[tile].Resource == CatanDesert && !c.farmFriend(player, tile) {
 				return false
@@ -50,7 +53,7 @@ func (c catanExplorerCargo) landEdge(g *Catan, player, edge int) bool {
 	return true
 }
 func (c catanExplorerCargo) validateSpiceCargo(g *Catan, f *catanExplorerSailing) error {
-	if c.Scenario != "spices-for-catan" {
+	if !catanExplorerSpiceScenario(c.Scenario) {
 		if len(c.Spice) != 0 {
 			return errors.New("本剧本没有香料货物")
 		}
@@ -120,7 +123,7 @@ func (c *catanExplorerCargo) discoverSpice(g *Catan, b *catanExplorerBoard, f *c
 	if err := c.validate(g, f); err != nil {
 		return err
 	}
-	if c.Scenario != "spices-for-catan" || b.Scenario != c.Scenario || !slices.ContainsFunc(b.Hidden, func(h catanExplorerHidden) bool { return h.Tile == tile && h.Revealed && h.Farm != "" }) || slices.ContainsFunc(c.Spice, func(s catanExplorerSpiceSack) bool { return s.Origin == tile }) {
+	if !catanExplorerSpiceScenario(c.Scenario) || b.Scenario != c.Scenario || !slices.ContainsFunc(b.Hidden, func(h catanExplorerHidden) bool { return h.Tile == tile && h.Revealed && h.Farm != "" }) || slices.ContainsFunc(c.Spice, func(s catanExplorerSpiceSack) bool { return s.Origin == tile }) {
 		return errors.New("只能为新发现的农场放置一次香料")
 	}
 	next := clone(*c)

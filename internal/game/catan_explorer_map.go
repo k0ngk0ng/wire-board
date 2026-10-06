@@ -62,8 +62,8 @@ type catanExplorerMapRecipe struct {
 	target    int
 }
 
-// Mission Guide 2025 pp4/8/16. The tables count loose hexes: include both the
-// printed frame's 6-pasture and its opposite sea hex in playable geometry.
+// Mission Guide 2025 pp4/8/16 and full Rulebook pp6–7. Tables count loose hexes:
+// include the printed frame's 6-pasture and opposite sea in playable geometry.
 func catanExplorerRecipe(scenario string) (catanExplorerMapRecipe, error) {
 	r := catanExplorerMapRecipe{numbers: []int{11, 9, 3, 8, 4, 10, 6, 12, 8, 10, 4, 11, 6, 3, 5}}
 	switch scenario {
@@ -81,6 +81,10 @@ func catanExplorerRecipe(scenario string) (catanExplorerMapRecipe, error) {
 	case "spices-for-catan":
 		r.width, r.target = 8, 15
 		r.parrot = [3][]int{{4, 5, 6, 7}, {4, 5, 6, 7, 8}, {4, 5, 7, 9}}
+		r.resources = []int{2, 0, 3, 2, 1, 4, 2, 4, 0, 3, 2, 0, 4, 1, 0}
+	case "explorers-and-pirates":
+		r.width, r.target = 9, 17
+		r.parrot = [3][]int{{4, 5, 6, 7, 8}, {4, 5, 6, 7, 8, 9}, {4, 5, 7, 9, 10}}
 		r.resources = []int{2, 0, 3, 2, 1, 4, 2, 4, 0, 3, 2, 0, 4, 1, 0}
 	default:
 		return r, errors.New("此探险家与海盗剧本地图尚未接入")
@@ -107,10 +111,16 @@ func catanExplorerRegionNumbers(region int) []int {
 }
 
 func catanExplorerScenarioResources(region int, scenario string) []int {
-	if scenario == "spices-for-catan" {
+	if catanExplorerSpiceScenario(scenario) {
 		// Mission guide p16: six ordinary land, one sea, three shoals,
-		// three non-producing farms. No gold fields or pirate lairs.
-		return append(catanExplorerRegionResources(region, false), CatanSea, CatanSea, CatanDesert, CatanDesert, CatanDesert)
+		// three non-producing farms. The full scenario adds three gold fields.
+		resources := append(catanExplorerRegionResources(region, false), CatanSea, CatanSea, CatanDesert, CatanDesert, CatanDesert)
+		if scenario == "explorers-and-pirates" {
+			// Full rulebook pp6–7: sixteen of each region's seventeen
+			// hexes; remove one ordinary sea, keep all three gold fields.
+			resources = append(resources, CatanGold, CatanGold, CatanGold)
+		}
+		return resources
 	}
 	resources := catanExplorerRegionResources(region, scenario != "land-ho")
 	// Mission guide p14: two randomly chosen parrot shoals, all three goose
@@ -122,7 +132,7 @@ func catanExplorerScenarioResources(region int, scenario string) []int {
 }
 
 func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catanExplorerBoard, error) {
-	if players < 2 || players > 4 || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || (scenario == "fish-for-catan" || scenario == "spices-for-catan") && layout != "variable" {
+	if players < 2 || players > 4 || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || catanExplorerFishScenario(scenario) && layout != "variable" {
 		return nil, nil, errors.New("此探险地图需要2至4人；初航使用固定布局")
 	}
 	r, err := catanExplorerRecipe(scenario)
@@ -166,7 +176,7 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 	if err = g.makeScenarioMap(specs); err != nil {
 		return nil, nil, err
 	}
-	if scenario == "fish-for-catan" || scenario == "spices-for-catan" {
+	if catanExplorerFishScenario(scenario) {
 		// The English mission overview p14 omits the island artwork. Its
 		// position is explicit in the English setup p6 and German scenario p18.
 		tile := rows[3][3]
@@ -229,14 +239,14 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 		resources := catanExplorerScenarioResources(region, scenario)
 		shuffle(resources)
 		faces := []int{1 + 3*region, 2 + 3*region, 3 + 3*region}
-		if scenario == "spices-for-catan" {
+		if catanExplorerSpiceScenario(scenario) {
 			faces = append(faces, 0)
 		}
-		if scenario == "fish-for-catan" || scenario == "spices-for-catan" {
+		if catanExplorerFishScenario(scenario) {
 			shuffle(faces)
 		}
 		farms := []string{"swift", "pirate", "gold"}
-		if scenario == "spices-for-catan" {
+		if catanExplorerSpiceScenario(scenario) {
 			shuffle(farms)
 		}
 		for i, tile := range tiles {
@@ -244,12 +254,12 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 			if scenario == "fish-for-catan" && h.Resource == CatanSea {
 				h.Fish, faces = faces[0], faces[1:]
 			}
-			if scenario == "spices-for-catan" && h.Resource == CatanSea {
+			if catanExplorerSpiceScenario(scenario) && h.Resource == CatanSea {
 				// Four independently shuffled sea slots: one ordinary sea and
 				// the region's three printed fish shoals.
 				h.Fish, faces = faces[0], faces[1:]
 			}
-			if scenario == "spices-for-catan" && h.Resource == CatanDesert {
+			if catanExplorerSpiceScenario(scenario) && h.Resource == CatanDesert {
 				h.Farm, farms = farms[0], farms[1:]
 				// German 2025 rulebook p20 shows both regional component
 				// sets explicitly: parrot bonus 5, goose bonus 4.
@@ -336,7 +346,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 			return errors.New("探险隐藏地块位置、区域或唯一性损坏")
 		}
 		seen[h.Tile] = true
-		if (m.Scenario == "fish-for-catan" || m.Scenario == "spices-for-catan" && h.Fish != 0) && h.Resource == CatanSea {
+		if (m.Scenario == "fish-for-catan" || catanExplorerSpiceScenario(m.Scenario) && h.Fish != 0) && h.Resource == CatanSea {
 			if h.Fish < 1+3*h.Region || h.Fish > 3+3*h.Region || shoals[h.Fish] {
 				return errors.New("渔场骰面、背面区域或组件唯一性不符")
 			}
@@ -344,7 +354,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 		} else if h.Fish != 0 {
 			return errors.New("普通地形不能带有渔场骰面")
 		}
-		if m.Scenario == "spices-for-catan" && h.Resource == CatanDesert {
+		if catanExplorerSpiceScenario(m.Scenario) && h.Resource == CatanDesert {
 			if !slices.Contains([]string{"swift", "pirate", "gold"}, h.Farm) || h.Farm == "pirate" && h.PirateDie != 5-h.Region || h.Farm != "pirate" && h.PirateDie != 0 {
 				return errors.New("香料农场能力或海盗奖励骰面无效")
 			}
@@ -378,14 +388,14 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 		if !catanExplorerSameInventory(resources[region], catanExplorerScenarioResources(region, m.Scenario)) || !catanExplorerSameInventory(numbers[region], catanExplorerRegionNumbers(region)) {
 			return errors.New("探险地区地块或数字库存不守恒")
 		}
-		if m.Scenario == "spices-for-catan" {
+		if catanExplorerSpiceScenario(m.Scenario) {
 			slices.Sort(farms[region])
 			if !slices.Equal(farms[region], []string{"gold", "pirate", "swift"}) || !shoals[region*3+1] || !shoals[region*3+2] || !shoals[region*3+3] {
 				return errors.New("各区域须有三种不同农场与三个渔场")
 			}
 		}
 	}
-	if m.Scenario == "spices-for-catan" && !catanExplorerSameInventory(pirateDice, []int{4, 5}) {
+	if catanExplorerSpiceScenario(m.Scenario) && !catanExplorerSameInventory(pirateDice, []int{4, 5}) {
 		return errors.New("海盗奖励农场组件不守恒")
 	}
 	return nil

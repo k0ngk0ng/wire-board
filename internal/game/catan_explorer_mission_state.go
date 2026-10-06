@@ -29,9 +29,12 @@ func newCatanExplorerMissionState(players int, scenario, layout string, numbers 
 		label = "鱼群任务"
 		g.Explorer.Fish = &catanExplorerFish{Deliveries: []catanExplorerFishDelivery{}}
 	}
-	if scenario == "spices-for-catan" {
+	if catanExplorerSpiceScenario(scenario) {
 		label = "香料与鱼群任务"
 		g.Explorer.Spice = &catanExplorerSpice{Deliveries: []catanExplorerSpiceDelivery{}}
+	}
+	if scenario == "explorers-and-pirates" {
+		label = "探险家与海盗三任务"
 	}
 	s := &State{Kind: "catan", Catan: g, Turn: setup.Start, Round: 1, Phase: "catan_explorer_setup", Log: []string{label + "：随机先手，顺序港口、逆序村庄，再放道路与移民船"}}
 	return s, s.validateCatanExplorer()

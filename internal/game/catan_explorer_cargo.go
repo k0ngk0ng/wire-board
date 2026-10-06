@@ -52,7 +52,7 @@ func newCatanExplorerCargo(g *Catan, fleet *catanExplorerSailing, scenario strin
 			c.Fish[i] = catanExplorerCargoLocation{"supply", -1}
 		}
 	}
-	if scenario == "spices-for-catan" {
+	if catanExplorerSpiceScenario(scenario) {
 		c.Spice = make([]catanExplorerSpiceSack, 24)
 		for i := range c.Spice {
 			c.Spice[i] = catanExplorerSpiceSack{Origin: -1, Owner: -1, At: catanExplorerCargoLocation{"supply", -1}}
@@ -174,7 +174,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 			continue
 		}
 		if loc.Kind == "farm" {
-			if c.Scenario != "spices-for-catan" || id%11 < 2 || g.Players[id/11].Eliminated || loc.Index < 0 || loc.Index >= len(g.Tiles) || g.Tiles[loc.Index].Resource != CatanDesert || !c.farmFriend(id/11, loc.Index) {
+			if !catanExplorerSpiceScenario(c.Scenario) || id%11 < 2 || g.Players[id/11].Eliminated || loc.Index < 0 || loc.Index >= len(g.Tiles) || g.Tiles[loc.Index].Resource != CatanDesert || !c.farmFriend(id/11, loc.Index) {
 				return errors.New("香料农场只能派驻已建立联系的己方船员")
 			}
 			for other := id / 11 * 11; other < id; other++ {

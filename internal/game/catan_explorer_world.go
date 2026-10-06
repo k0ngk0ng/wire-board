@@ -107,7 +107,7 @@ func (x catanExplorer) validate(g *Catan) error {
 			}
 		}
 	}
-	if (x.Board.Scenario == "spices-for-catan") != (x.Spice != nil) {
+	if (catanExplorerSpiceScenario(x.Board.Scenario)) != (x.Spice != nil) {
 		return errors.New("香料任务与地图剧本不符")
 	}
 	if x.Spice != nil {
