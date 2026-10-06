@@ -372,13 +372,14 @@ export type CatanState = {
     bank: number;
     spent: boolean;
     knightExchanged: boolean;
-    pending?: { kind: "road" | "settlement"; resume: string };
+    pending?: { kind: "road" | "settlement" | "bridge"; resume: string };
     trade?: { resume: string; drawn?: number[] };
     actor: number;
     canAct: boolean;
     cost?: number;
     tokenWindow?: boolean;
     choices?: CatanTwoChoice[];
+    retreatTiles?: number[];
     neutralRoadLengths: number[];
   };
   caravans?: {
@@ -401,6 +402,7 @@ export type CatanState = {
     };
   };
   rivers?: {
+    rules?: string;
     map: {
       channels: { tiles: number[]; outlet: number }[];
       bridges: number[];

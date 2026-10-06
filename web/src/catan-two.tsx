@@ -9,8 +9,10 @@ import {
   twoSelected,
   twoNeutralName,
   twoReturnValid,
+  twoChoiceName,
+  twoRetreatTargets,
 } from "./catan-two-state";
-import type { TwoSelection } from "./catan-two-state";
+import type { TwoSelection, TwoRetreatSelection } from "./catan-two-state";
 import "./catan-two.css";
 
 export function CatanTwoMap({
@@ -50,7 +52,7 @@ export function CatanTwoMap({
             className={`two-candidate ${picked ? "picked" : ""}`}
             role="button"
             tabIndex={0}
-            aria-label={`选择中立${edge ? "道路" : "村庄"}位置 ${(edge ? c.edge : c.vertex) + 1}`}
+            aria-label={`选择中立${twoChoiceName(g, c)}位置 ${(edge ? c.edge : c.vertex) + 1}`}
             onClick={pick}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
@@ -98,6 +100,8 @@ export function CatanTwoPanel({
   act,
   selected,
   onSelect,
+  retreat,
+  onRetreat,
 }: {
   room: Room;
   assets: string;
@@ -105,6 +109,8 @@ export function CatanTwoPanel({
   act: (a: Record<string, unknown>) => Promise<unknown>;
   selected: TwoSelection | null;
   onSelect: (s: TwoSelection | null) => void;
+  retreat: TwoRetreatSelection;
+  onRetreat: (s: TwoRetreatSelection) => void;
 }) {
   const g = room.game!.catan!,
     q = g.two,
@@ -128,6 +134,9 @@ export function CatanTwoPanel({
   useEffect(() => {
     if (selected) setCollapsed(false);
   }, [selected]);
+  useEffect(() => {
+    if (retreat) setCollapsed(false);
+  }, [retreat]);
   if (!q) return null;
   const playing = room.status === "playing" && !room.game!.finished;
   const mine = twoCanRespond(room),
@@ -145,15 +154,31 @@ export function CatanTwoPanel({
     available &&
     opponent > 0 &&
     hand.reduce((a, b) => a + b, 0) + Math.min(2, opponent) >= 2;
-  const canRobber =
-    available && g.tiles.some((t) => t.resource === 5 && t.id !== g.robber);
+  const retreatTargets = twoRetreatTargets(room);
+  const canRobber = retreatTargets.length > 0;
+  const retreatValid =
+    retreat?.tile != null && retreatTargets.includes(retreat.tile);
+  const retreatName = g.rivers ? "沼泽" : "沙漠";
+  const openConfirm = (action: TokenAction) => {
+    setConfirm(action);
+    setCollapsed(false);
+    onRetreat(
+      action === "robber"
+        ? { tile: retreatTargets.length === 1 ? retreatTargets[0] : null }
+        : null,
+    );
+  };
+  const closeConfirm = () => {
+    setConfirm(null);
+    onRetreat(null);
+  };
   const canKnight =
     !!canUse && !q.knightExchanged && p.knights > 0 && q.bank >= 2;
   const validConfirm =
     confirm === "trade"
       ? canTrade
       : confirm === "robber"
-        ? canRobber
+        ? canRobber && retreatValid
         : canKnight;
   const choice = twoSelected(g, selected),
     choices = twoChoices(g, selected);
@@ -169,7 +194,7 @@ export function CatanTwoPanel({
             />
           )}
           <div>
-            <strong>双人卡坦</strong>
+            <strong>双人卡坦{g.rivers ? "＋河流" : ""}</strong>
             <small>筹码供应 {q.bank} / 20</small>
           </div>
         </header>
@@ -209,19 +234,19 @@ export function CatanTwoPanel({
             <div className="two-token-actions">
               <button
                 disabled={busy || !canTrade}
-                onClick={() => setConfirm("trade")}
+                onClick={() => openConfirm("trade")}
               >
                 强制交易
               </button>
               <button
                 disabled={busy || !canRobber}
-                onClick={() => setConfirm("robber")}
+                onClick={() => openConfirm("robber")}
               >
                 移回强盗
               </button>
               <button
                 disabled={busy || !canKnight}
-                onClick={() => setConfirm("knight")}
+                onClick={() => openConfirm("knight")}
               >
                 弃骑士换 2 枚
               </button>
@@ -231,10 +256,12 @@ export function CatanTwoPanel({
         <details>
           <summary>双人规则提示</summary>
           <p>
-            建道路或村庄后，还需免费为中立势力建设一次。中立势力不领资源、不行动，但可以取得最长路线。
+            建道路{g.rivers ? "、桥梁" : ""}
+            或村庄后，还需免费为中立势力建设一次。中立势力不领资源
+            {g.rivers ? "、金币或筹码" : ""}，不行动，但可以取得最长路线。
           </p>
           <p>
-            在沙漠旁建村得 2 枚筹码，沿海得 1
+            在{retreatName}旁建村得 2 枚筹码，沿海得 1
             枚，两者可叠加。每回合可消费筹码一次，也可另弃一张已打出的骑士换 2
             枚筹码。
           </p>
@@ -253,7 +280,9 @@ export function CatanTwoPanel({
                     ? "选择交还 2 张资源"
                     : "为中立势力建设"
                   : `${room.seats[q.actor]?.name} 正在${q.trade ? "归还资源" : "建设中立棋子"}`
-                : titles[confirm!]}
+                : confirm === "robber"
+                  ? `将强盗移回${retreatName}`
+                  : titles[confirm!]}
             </strong>
             <button
               aria-expanded={!collapsed}
@@ -298,12 +327,17 @@ export function CatanTwoPanel({
                         {q.pending.kind === "settlement" &&
                         q.choices?.every((c) => c.vertex < 0)
                           ? "两家均无法建村，请改为中立势力修一条道路。"
-                          : "点击地图上亮起的位置，再确认建设。"}
+                          : q.pending.kind === "bridge" &&
+                              q.choices?.every(
+                                (c) => twoChoiceName(g, c) === "道路",
+                              )
+                            ? "两家均无法建桥，请改为中立势力修一条道路。"
+                            : `点击地图上亮起的${q.pending.kind === "bridge" ? "桥梁" : ""}位置，再确认建设。`}
                       </p>
                       {selected && choices.length > 0 && (
                         <>
                           <p>
-                            已选{selected.vertex >= 0 ? "村庄" : "道路"}位置 #
+                            已选{twoChoiceName(g, selected)}位置 #
                             {(selected.vertex >= 0
                               ? selected.vertex
                               : selected.edge) + 1}
@@ -363,19 +397,53 @@ export function CatanTwoPanel({
                       {confirm === "trade"
                         ? `消费 ${cost} 枚筹码，随机取对手最多 2 张资源，再选择交还 2 张。确认后不能取消。`
                         : confirm === "robber"
-                          ? `消费 ${cost} 枚筹码，将强盗移回沙漠，不偷牌。`
+                          ? `消费 ${cost} 枚筹码，将强盗移回${retreatName}，不偷牌。`
                           : "弃掉一张已打出的骑士，获得 2 枚筹码。可能失去最大骑士军队的 2 分。"}
                     </p>
+                    {confirm === "robber" && (
+                      <>
+                        <p>
+                          选择{retreatName}
+                          后确认。可收起面板，在地图上选择亮起的地块。
+                        </p>
+                        <div
+                          className="two-owner-choice"
+                          aria-label="强盗退回位置"
+                        >
+                          {retreatTargets.map((tile) => (
+                            <button
+                              key={tile}
+                              disabled={busy}
+                              aria-pressed={retreat?.tile === tile}
+                              onClick={() => onRetreat({ tile })}
+                            >
+                              {retreatName} #{tile + 1}
+                            </button>
+                          ))}
+                        </div>
+                        <p>
+                          {retreatValid
+                            ? `已选${retreatName} #${retreat!.tile! + 1}`
+                            : "请先选择位置"}
+                        </p>
+                      </>
+                    )}
                     <div className="cloth-confirm-actions">
-                      <button disabled={busy} onClick={() => setConfirm(null)}>
+                      <button disabled={busy} onClick={closeConfirm}>
                         取消
                       </button>
                       <button
                         className="primary"
                         disabled={busy || !validConfirm}
                         onClick={async () => {
-                          await act({ type: `catan_two_${confirm}` });
-                          setConfirm(null);
+                          if (!validConfirm) return;
+                          await act({
+                            type: `catan_two_${confirm}`,
+                            ...(confirm === "robber"
+                              ? { tile: retreat!.tile }
+                              : {}),
+                          });
+                          closeConfirm();
                         }}
                       >
                         确认{confirm === "knight" ? "兑换" : `消费 ${cost} 枚`}
@@ -398,5 +466,47 @@ export function CatanTwoPanel({
         </section>
       )}
     </>
+  );
+}
+
+export function CatanTwoRetreatMap({
+  room,
+  busy,
+  selected,
+  onSelect,
+  poly,
+}: {
+  room: Room;
+  busy: boolean;
+  selected: TwoRetreatSelection;
+  onSelect: (s: TwoRetreatSelection) => void;
+  poly: (id: number) => string;
+}) {
+  if (!selected || busy) return null;
+  const name = room.game!.catan!.rivers ? "沼泽" : "沙漠";
+  return (
+    <g className="catan-two-retreat-map">
+      {twoRetreatTargets(room).map((tile) => {
+        const pick = () => onSelect({ tile });
+        return (
+          <polygon
+            key={tile}
+            points={poly(tile)}
+            className={selected.tile === tile ? "picked" : ""}
+            role="button"
+            tabIndex={0}
+            aria-pressed={selected.tile === tile}
+            aria-label={`将强盗移回${name} #${tile + 1}`}
+            onClick={pick}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                pick();
+              }
+            }}
+          />
+        );
+      })}
+    </g>
   );
 }

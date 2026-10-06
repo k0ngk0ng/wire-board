@@ -7,6 +7,8 @@ import {
   twoChoices,
   twoSelected,
   twoReturnValid,
+  twoChoiceName,
+  twoRetreatTargets,
 } from "../src/catan-two-state.ts";
 import { catanColorIndex } from "../src/catan-player-colors.ts";
 const choice = (owner, edge, vertex = -1) => ({ owner, edge, vertex });
@@ -124,6 +126,8 @@ test("neutral placement animation uses one confirmed public change for players a
   delete after.game.catan.two.pending;
   after.game.catan.edges[0].owner = -3;
   assert.deepEqual(twoNeutralAdded(before, after), choice(-3, 0));
+  after.game.catan.edges[0].bridge = true;
+  assert.deepEqual(twoNeutralAdded(before, after), choice(-3, 0));
   // Observer has no legal choice list, but still sees the public placed piece.
   for (const r of [before, after]) {
     r.you = -1;
@@ -156,4 +160,75 @@ test("neutral placement animation uses one confirmed public change for players a
   reject((b, a) => (a.game.catan.vertices[0].owner = 0)); // Not neutral.
   reject((b, a) => (a.game.catan.vertices[0].level = 2)); // Not a village.
   reject((b, a) => (a.game.catan.vertices = b.game.catan.vertices)); // No change.
+});
+
+test("river response identifies bridges and retains explicit neutral owners and fallback roads", () => {
+  const g = fixture().game.catan;
+  g.rivers = { map: { bridges: [4], swamps: [1, 2] } };
+  g.two.pending.kind = "bridge";
+  assert.equal(twoChoiceName(g, choice(-2, 4)), "桥梁");
+  assert.equal(twoChoiceName(g, choice(-2, 7)), "道路");
+  assert.equal(twoChoiceName(g, choice(-2, -1, 4)), "村庄");
+  assert.equal(twoSelected(g, twoPick(g, 4, -1)), undefined);
+  assert.deepEqual(
+    twoSelected(g, { ...twoPick(g, 4, -1), owner: -3 }),
+    choice(-3, 4),
+  );
+});
+
+test("retreat uses only live legal swamp targets and cannot leak controls to an observer", () => {
+  const r = fixture(),
+    g = r.game.catan;
+  g.tiles = [0, 1, 2, 3].map((id) => ({ id, resource: id === 3 ? 5 : 0 }));
+  g.rivers = { map: { bridges: [], swamps: [1, 2] } };
+  g.robber = 0;
+  Object.assign(g.two, {
+    pending: undefined,
+    tokenWindow: true,
+    tokens: [5, 5],
+    cost: 2,
+    retreatTiles: [1, 2],
+  });
+  assert.deepEqual(twoRetreatTargets(r), [1, 2]);
+  g.robber = 1;
+  assert.deepEqual(twoRetreatTargets(r), [2]);
+  g.two.retreatTiles = [0, 1, 2, 2, 3, 90];
+  assert.deepEqual(twoRetreatTargets(r), [2]);
+  const deny = (modify) => {
+    const copy = structuredClone(r);
+    modify(copy, copy.game.catan.two);
+    assert.deepEqual(twoRetreatTargets(copy), []);
+  };
+  deny((r) => (r.spectating = true));
+  deny((r) => (r.you = -1));
+  deny((r) => (r.status = "finished"));
+  deny((r) => (r.game.finished = true));
+  deny((r, q) => (q.spent = true));
+  deny((r, q) => (q.tokenWindow = false));
+  deny((r, q) => (q.tokens[0] = 1));
+  deny((r, q) => delete q.retreatTiles);
+  deny((r) => (r.game.catan.players[0].eliminated = true));
+  g.rivers = undefined;
+  delete g.two.retreatTiles;
+  assert.deepEqual(twoRetreatTargets(r), [3]);
+  g.two.retreatTiles = [];
+  assert.deepEqual(twoRetreatTargets(r), []);
+});
+
+test("river rules and wealth result follow the actual game rather than a waiting draft", async () => {
+  const { catanRuleContext } = await import("../src/catan-rule-context.ts");
+  const { catanResultDescription } = await import("../src/catan-results.ts");
+  const r = fixture();
+  r.catanTwoScenario = "rivers";
+  assert.equal(catanRuleContext(r).rivers, false);
+  r.game.catan.rivers = { map: { bridges: [], swamps: [1, 2] } };
+  assert.equal(catanRuleContext(r).rivers, true);
+  assert.equal(catanRuleContext(r).scenario, "");
+  assert.match(catanResultDescription(r.game.catan), /河流.*财富/);
+  delete r.game;
+  r.catanTwoRules = "catan-for-two-2025";
+  r.capacity = 2;
+  assert.equal(catanRuleContext(r).rivers, true);
+  assert.equal(catanRuleContext(r).two, true);
+  assert.equal(catanRuleContext(r).target, 10);
 });
