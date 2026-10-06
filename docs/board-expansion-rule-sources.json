@@ -131,5 +131,11 @@
     "sha256": "d8b84823bf22492e530d0ea4a3dbc607160a1fdaf6c9b93f5d46f94006fb7bf9",
     "bytes": 18842031,
     "note": "Page 24 explicitly uses Handelschip (trade chip), not a commodity token, and rounds neutral-road gold on the total for a wagon movement. English 2025 p24 names the wrong token kind."
+  },
+  "catan-pirates-de-2025": {
+    "url": "https://www.catan.de/sites/default/files/2025-08/685164_CATAN_EuP_Manual_250408_web.pdf",
+    "sha256": "c64290ddc992a51f2da3115c5191e4df358f58e6935183f055e8022566273f0a",
+    "bytes": 12237888,
+    "note": "Page 7 explicitly excludes seven from no-resource gold compensation and permits returning cargo from ships at any time; the latter differs from English 2025 p10 full-storage replacement wording. Do not silently mix cargo rules. Gold shortage handling remains unverified."
   }
 }
