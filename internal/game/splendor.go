@@ -40,6 +40,7 @@ type GemPlayer struct {
 	Score        int     `json:"score"`
 }
 type Splendor struct {
+	Catalog       string                `json:"catalog,omitempty"`
 	Cities        []GemCity             `json:"cities,omitempty"`
 	Exiled        []Card                `json:"exiled,omitempty"`
 	Options       SplendorOptions       `json:"options"`
