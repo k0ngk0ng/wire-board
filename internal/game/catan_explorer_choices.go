@@ -12,6 +12,9 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	if g == nil || g.Explorer == nil || s.Finished || viewer < 0 || viewer >= len(g.Players) || g.Players[viewer].Eliminated || viewer != s.Turn {
 		return result
 	}
+	if actions, handled := s.catanExplorerSpecialChoices(viewer); handled {
+		return actions
+	}
 	sequence := g.TurnSerial
 	add := func(a Action) { a.Prompt = int(sequence); result = append(result, a) }
 	if s.Phase == "catan_roll" {
@@ -91,14 +94,17 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 				locations = append(locations, loc)
 			}
 		}
-		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) {
+		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) || x.Lairs != nil && catanExplorerCanPay(g, viewer, []int{0, 0, 1, 0, 1}) {
 			for _, loc := range locations {
 				discards := [][]int{nil}
 				for _, unit := range x.Cargo.contents(loc) {
 					discards = append(discards, []int{unit})
 				}
-				// Land Ho has settlers only. Later missions add crew after their rules are integrated.
-				for unit := viewer * 11; unit < viewer*11+2; unit++ {
+				limit := 2
+				if x.Lairs != nil {
+					limit = 11
+				}
+				for unit := viewer * 11; unit < viewer*11+limit; unit++ {
 					for _, discard := range discards {
 						offer(Action{Type: "catan_explorer_unit", Card: unit, Choice: loc.Kind, Target: loc.Index, Cards: discard})
 					}
@@ -140,6 +146,9 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 			}
 		}
 	}
+	for _, a := range s.catanExplorerLandingChoices(viewer) {
+		add(a)
+	}
 	add(Action{Type: "catan_end"})
 	return result
 }
@@ -154,8 +163,8 @@ func explorerCargoSubsets(units []int) [][]int {
 	return out
 }
 
-// One shortest path per destination suffices in Land Ho: no directional tolls
-// or mission events. Occupied edges may be crossed; touching fog always stops
+// Keep a shortest path for each destination/toll pair. A longer toll-free
+// path must survive a shorter paid route. Occupied edges may be crossed; fog stops
 // expansion, even when the compulsory stopping edge itself is overcrowded.
 func (f catanExplorerSailing) destinations(g *Catan, player int, sequence uint64, ship int) [][]int {
 	out := [][]int{}
@@ -166,9 +175,14 @@ func (f catanExplorerSailing) destinations(g *Catan, player int, sequence uint64
 	type route struct {
 		edge int
 		path []int
+		toll bool
 	}
 	queue := []route{{edge: from}}
-	seen := map[int]bool{from: true}
+	pirateOwner, pirateTile, gold := -1, -1, 0
+	if g.Explorer != nil && g.Explorer.Pirate != nil {
+		pirateOwner, pirateTile, gold = g.Explorer.Pirate.Owner, g.Explorer.Pirate.Tile, g.Explorer.Economy.Gold[player]
+	}
+	seen := map[[2]int]bool{{from, 0}: true}
 	for len(queue) > 0 {
 		item := queue[0]
 		queue = queue[1:]
@@ -176,12 +190,21 @@ func (f catanExplorerSailing) destinations(g *Catan, player int, sequence uint64
 			continue
 		}
 		for _, edge := range g.Edges {
-			if seen[edge.ID] || !catanExplorerAdjacentEdges(g.Edges[item.edge], edge) || !catanExplorerSeaEdge(g, edge.ID) {
+			if edge.ID == item.edge || !catanExplorerAdjacentEdges(g.Edges[item.edge], edge) || !catanExplorerSeaEdge(g, edge.ID) {
 				continue
 			}
-			seen[edge.ID] = true
+			toll := item.toll || pirateOwner >= 0 && pirateOwner != player && !f.Turn.Ships[ship].Tribute && (slices.Contains(g.Edges[item.edge].Tiles, pirateTile) || slices.Contains(edge.Tiles, pirateTile))
+			cost := 0
+			if toll {
+				cost = 1
+			}
+			key := [2]int{edge.ID, cost}
+			if seen[key] || toll && gold == 0 {
+				continue
+			}
+			seen[key] = true
 			path := append(slices.Clone(item.path), edge.ID)
-			if _, err := f.quote(g, player, sequence, ship, path, -1, -1); err == nil {
+			if _, err := f.quote(g, player, sequence, ship, path, pirateOwner, pirateTile); err == nil {
 				out = append(out, path)
 			}
 			fog := false
@@ -192,7 +215,7 @@ func (f catanExplorerSailing) destinations(g *Catan, player int, sequence uint64
 				}
 			}
 			if !fog {
-				queue = append(queue, route{edge.ID, path})
+				queue = append(queue, route{edge.ID, path, toll})
 			}
 		}
 	}
@@ -205,6 +228,15 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 	for _, a := range actions {
 		v := map[string]any{"type": a.Type, "prompt": a.Prompt}
 		switch a.Type {
+		case "catan_explorer_setup":
+			v["choice"], v["target"] = a.Choice, a.Target
+		case "catan_explorer_pirate_place", "catan_explorer_pirate_steal", "catan_explorer_chase", "catan_explorer_resolve", "catan_explorer_battle":
+			v["target"] = a.Target
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_explorer_land", "catan_explorer_pickup":
+			v["target"], v["slot"], v["cards"] = a.Target, a.Slot, a.Cards
 		case "catan_road":
 			v["edge"] = a.Edge
 		case "catan_settlement", "catan_explorer_harbor":
