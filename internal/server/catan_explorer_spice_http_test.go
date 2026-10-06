@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"net/http/httptest"
 	"os"
 	"reflect"
 	"strings"
@@ -274,9 +275,14 @@ func spiceHTTPDeliveryBoundary(t *testing.T, s *Server, id string) game.Action {
 }
 
 func TestCatanExplorerSpiceHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
+	explorerHTTPExpiredMovementTakeoverAndRemoval(t, newExplorerSpiceHTTP)
+}
+
+func explorerHTTPExpiredMovementTakeoverAndRemoval(t *testing.T, create func(*testing.T) (*Server, *httptest.Server, []*testClient, string)) {
+	t.Helper()
 	for _, mode := range []string{"takeover", "remove"} {
 		t.Run(mode, func(t *testing.T) {
-			s, ts, clients, id := newExplorerSpiceHTTP(t)
+			s, ts, clients, id := create(t)
 			a := spiceHTTPDeliveryBoundary(t, s, id)
 			r := s.rooms[id]
 			actor := r.Game.Turn
@@ -323,7 +329,7 @@ func TestCatanExplorerSpiceHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
 				kick(clients[other], current(clients[other]), target, 200)
 				r = s.rooms[id]
 				x := r.Game.Catan.Explorer
-				if !r.Seats[actor].Left || !x.Fish.Retired[actor] || r.Game.Turn == actor {
+				if !r.Seats[actor].Left || !x.Fish.Retired[actor] || x.Lairs != nil && !x.Lairs.Retired[actor] || r.Game.Turn == actor {
 					t.Fatal("loaded player was not retired")
 				}
 				for i, sack := range old.Cargo.Spice {
@@ -339,6 +345,43 @@ func TestCatanExplorerSpiceHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
 				for unit := actor * 11; unit < (actor+1)*11; unit++ {
 					if x.Cargo.Units[unit].Kind != "supply" {
 						t.Fatal("departed permanent crew not returned")
+					}
+				}
+				for ship, position := range old.Fleet.Positions {
+					if ship/3 == actor {
+						if x.Fleet.Positions[ship] != -1 {
+							t.Fatal("departed ship remains")
+						}
+					} else if x.Fleet.Positions[ship] != position {
+						t.Fatal("other ship changed")
+					}
+				}
+				for unit, loc := range old.Cargo.Units {
+					if unit/11 != actor && x.Cargo.Units[unit] != loc {
+						t.Fatal("other crew changed")
+					}
+				}
+				for id, loc := range old.Cargo.Fish {
+					owned := loc.Kind == "ship" && loc.Index/3 == actor || loc.Kind == "harbor" && r.Game.Catan.Vertices[loc.Index].Owner == actor
+					if owned {
+						if x.Cargo.Fish[id].Kind != "supply" {
+							t.Fatal("departed fish cargo remains")
+						}
+					} else if x.Cargo.Fish[id] != loc {
+						t.Fatal("other fish cargo changed")
+					}
+				}
+				if !reflect.DeepEqual(old.Fish.Deliveries, x.Fish.Deliveries) {
+					t.Fatal("departure erased fish history")
+				}
+				if x.Lairs != nil {
+					if !reflect.DeepEqual(old.Lairs.Progress, x.Lairs.Progress) {
+						t.Fatal("departure erased lair progress")
+					}
+					for i, site := range old.Lairs.Sites {
+						if site.Resolved > 0 && !reflect.DeepEqual(site, x.Lairs.Sites[i]) {
+							t.Fatal("departure changed resolved lair history")
+						}
 					}
 				}
 				if !reflect.DeepEqual(old.Spice.Deliveries, x.Spice.Deliveries) {
@@ -373,7 +416,12 @@ func TestCatanExplorerSpiceHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
 }
 
 func TestCatanExplorerSpiceHTTPSetupTimeoutAndRestart(t *testing.T) {
-	s, ts, clients, id := newExplorerSpiceHTTP(t)
+	explorerHTTPSetupTimeoutAndRestart(t, newExplorerSpiceHTTP)
+}
+
+func explorerHTTPSetupTimeoutAndRestart(t *testing.T, create func(*testing.T) (*Server, *httptest.Server, []*testClient, string)) {
+	t.Helper()
+	s, ts, clients, id := create(t)
 	first := s.rooms[id].Game.Turn
 	for step := 0; s.rooms[id].Game.Catan.Explorer.Setup != nil; step++ {
 		if step >= 12 {
