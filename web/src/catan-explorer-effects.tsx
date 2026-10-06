@@ -24,12 +24,20 @@ export function ExplorerPiece({
   g: CatanState;
   assets: string;
   player: number;
-  kind: "ship" | "harbor" | "settler";
+  kind: "ship" | "harbor" | "settler" | "crew" | "pirate";
   width?: number;
 }) {
   const height =
     width *
-    (kind === "ship" ? 61 / 103 : kind === "harbor" ? 78 / 83 : 66 / 55);
+    (kind === "crew"
+      ? 2
+      : kind === "pirate"
+        ? 70 / 105
+        : kind === "ship"
+          ? 61 / 103
+          : kind === "harbor"
+            ? 78 / 83
+            : 66 / 55);
   return assets ? (
     <image
       href={`${assets}/catan/explorer/${kind}-${catanPieceColors[catanColorIndex(g, player)]}-v1.webp`}
@@ -42,9 +50,46 @@ export function ExplorerPiece({
     <g>
       <circle r={width / 2} fill={catanSeatColor(g, player)} stroke="#453b29" />
       <text y="4" fontSize="11" fill="#171717">
-        {kind === "ship" ? "船" : kind === "harbor" ? "港" : "移民"}
+        {
+          {
+            ship: "船",
+            harbor: "港",
+            settler: "移民",
+            crew: "船员",
+            pirate: "海盗",
+          }[kind]
+        }
       </text>
     </g>
+  );
+}
+
+export function ExplorerCargoPieces({
+  g,
+  assets,
+  units,
+}: {
+  g: CatanState;
+  assets: string;
+  units: number[];
+}) {
+  return (
+    <>
+      {units.map((id, i) => (
+        <g
+          key={id}
+          transform={`translate(${(i - (units.length - 1) / 2) * 16},0)`}
+        >
+          <ExplorerPiece
+            g={g}
+            assets={assets}
+            player={Math.floor(id / 11)}
+            kind={id % 11 < 2 ? "settler" : "crew"}
+            width={id % 11 < 2 ? 18 : 11}
+          />
+        </g>
+      ))}
+    </>
   );
 }
 
@@ -180,12 +225,10 @@ export function ExplorerEffects({
           />
           {explorerContents(before, "ship", e.ship).length > 0 && (
             <g transform="translate(0,-12)">
-              <ExplorerPiece
+              <ExplorerCargoPieces
                 g={after}
                 assets={assets}
-                player={e.player}
-                kind="settler"
-                width={18}
+                units={explorerContents(before, "ship", e.ship)}
               />
             </g>
           )}
@@ -233,8 +276,8 @@ export function ExplorerEffects({
               g={after}
               assets={assets}
               player={Math.floor(c.unit / 11)}
-              kind="settler"
-              width={24}
+              kind={c.unit % 11 < 2 ? "settler" : "crew"}
+              width={c.unit % 11 < 2 ? 24 : 12}
             />
           </g>
         );

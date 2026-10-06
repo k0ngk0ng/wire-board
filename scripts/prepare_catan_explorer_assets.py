@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract the original four-color 2025 E&P ships, settlers and harbors.
+"""Extract the original four-color 2025 E&P ships, crew, pirates, settlers and harbors.
 
 Uses native PDF images and their soft alpha masks; no drawing or recoloring.
 """
@@ -12,6 +12,10 @@ from PIL import Image
 
 SOURCE = 'catan-pirates-2025'
 PIECES = {
+    'crew-blue': 11925, 'crew-red': 11954,
+    'crew-white': 11976, 'crew-orange': 11935,
+    'pirate-blue': 11996, 'pirate-red': 12002,
+    'pirate-white': 12004, 'pirate-orange': 12000,
     'settler-blue': 11909, 'settler-red': 11913,
     'settler-white': 11915, 'settler-orange': 11911,
     'ship-blue': 11917, 'ship-red': 11921,

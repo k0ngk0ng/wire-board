@@ -5,6 +5,7 @@ import type { Act, Room } from "./types";
 import { Bundle, ResourcePicker } from "./catan-resources";
 import {
   ExplorerPiece,
+  ExplorerCargoPieces,
   ExplorerEffects,
   useExplorerMotion,
 } from "./catan-explorer-effects";
@@ -26,6 +27,8 @@ import {
   explorerShipPosition,
   explorerTarget,
   explorerResources,
+  explorerCargoLabel,
+  explorerPhaseLabel,
 } from "./catan-explorer-state";
 import type { ExplorerAction, ExplorerPick } from "./catan-explorer-state";
 import "./catan-explorer.css";
@@ -109,9 +112,21 @@ export function CatanExplorerBoard({
   const options = choices.filter(
     (a) =>
       a.type === effective &&
-      (ship < 0 || a.slot === undefined || a.slot === ship),
+      (ship < 0 ||
+        (a.type === "catan_explorer_chase"
+          ? a.target === ship
+          : a.slot === undefined || a.slot === ship)),
   );
   const selected = explorerSelectedAction(room, pick);
+  const describe = (a: ExplorerAction) => {
+    const description = explorerActionDescription(g, a);
+    return a.type === "catan_explorer_pirate_steal" && a.target !== undefined
+      ? description.replace(
+          `玩家${a.target + 1}`,
+          room.seats[a.target]?.name || `玩家${a.target + 1}`,
+        )
+      : description;
+  };
   const select = (a: ExplorerAction) => {
     setPick({ room: room.id, action: a });
     setCollapsed(false);
@@ -139,7 +154,7 @@ export function CatanExplorerBoard({
   });
   const targets = new Map<
     string,
-    { kind: "edge" | "vertex"; id: number; actions: ExplorerAction[] }
+    { kind: "edge" | "vertex" | "tile"; id: number; actions: ExplorerAction[] }
   >();
   for (const a of options) {
     const target = explorerTarget(g, a);
@@ -170,15 +185,8 @@ export function CatanExplorerBoard({
       (n) => Number.isInteger(n) && n >= 0 && n <= 148,
     ) &&
     give.every((n, i) => n <= hand[i]);
-  const phase = game.finished
-    ? "本局已结束"
-    : game.phase === "catan_roll"
-      ? "掷骰生产"
-      : game.phase === "catan_discard"
-        ? "所有人同时弃牌"
-        : game.phase === "catan_turn"
-          ? "交易与建设"
-          : "船只航行";
+  const phase = explorerPhaseLabel(game.finished ? "finished" : game.phase);
+  const scenario = x.lairs ? "海盗巢穴" : "初航";
   const path =
     selected?.type === "catan_explorer_sail"
       ? [x.fleet.positions[selected.slot!], ...selected.targets!]
@@ -191,12 +199,14 @@ export function CatanExplorerBoard({
           .join(" ")
       : "";
   return (
-    <section className="explorer-board" aria-label="探索者与海盗初航">
+    <section className="explorer-board" aria-label={`探索者与海盗${scenario}`}>
       <div className="explorer-map-column">
         <header className="explorer-heading">
           <div>
-            <strong>探索者与海盗 · 初航</strong>
-            <span>{phase} · 目标8分</span>
+            <strong>探索者与海盗 · {scenario}</strong>
+            <span>
+              {phase} · 目标{x.board.target}分
+            </span>
           </div>
           <div
             className="explorer-dice"
@@ -243,7 +253,7 @@ export function CatanExplorerBoard({
               viewBox={`${minX} ${minY} ${width} ${height}`}
               style={controls.mapStyle}
               role="group"
-              aria-label="初航地图"
+              aria-label={`${scenario}地图`}
             >
               <defs>
                 {g.tiles.map((t) => (
@@ -364,12 +374,10 @@ export function CatanExplorerBoard({
                         }
                         transform="translate(0,20)"
                       >
-                        <ExplorerPiece
+                        <ExplorerCargoPieces
                           g={g}
                           assets={assets}
-                          player={v.owner}
-                          kind="settler"
-                          width={18}
+                          units={explorerContents(g, "harbor", v.id)}
                         />
                       </g>
                     )}
@@ -379,6 +387,54 @@ export function CatanExplorerBoard({
                     </title>
                   </g>
                 ))}
+              {x.lairs?.sites.map((site) => {
+                const t = g.tiles[site.tile],
+                  units = explorerContents(g, "lair", site.tile);
+                return (
+                  <g key={`lair-${site.tile}`} pointerEvents="none">
+                    {!site.resolved && (
+                      <g className="explorer-lair-marker">
+                        <circle cx={t.x} cy={t.y} r="21" />
+                        <text x={t.x} y={t.y + 4}>
+                          {site.ready ? "待结算" : "巢穴"}
+                        </text>
+                      </g>
+                    )}
+                    {units.map((id, i) => (
+                      <g
+                        key={id}
+                        transform={`translate(${t.x + (i - (units.length - 1) / 2) * 18},${t.y + 34})`}
+                      >
+                        <ExplorerPiece
+                          g={g}
+                          assets={assets}
+                          player={Math.floor(id / 11)}
+                          kind="crew"
+                          width={12}
+                        />
+                        <title>
+                          {room.seats[Math.floor(id / 11)]?.name}的船员
+                        </title>
+                      </g>
+                    ))}
+                  </g>
+                );
+              })}
+              {x.pirate && x.pirate.owner >= 0 && g.tiles[x.pirate.tile] && (
+                <g
+                  transform={`translate(${g.tiles[x.pirate.tile].x},${g.tiles[x.pirate.tile].y})`}
+                  pointerEvents="none"
+                >
+                  <ExplorerPiece
+                    g={g}
+                    assets={assets}
+                    player={x.pirate.owner}
+                    kind="pirate"
+                    width={44}
+                  />
+                  <title>{room.seats[x.pirate.owner]?.name}的海盗船</title>
+                </g>
+              )}
               {path && (
                 <polyline
                   points={path}
@@ -419,12 +475,10 @@ export function CatanExplorerBoard({
                         }
                         transform="translate(0,-12)"
                       >
-                        <ExplorerPiece
+                        <ExplorerCargoPieces
                           g={g}
                           assets={assets}
-                          player={Math.floor(id / 3)}
-                          kind="settler"
-                          width={18}
+                          units={explorerContents(g, "ship", id)}
                         />
                       </g>
                     )}
@@ -447,10 +501,23 @@ export function CatanExplorerBoard({
                   const props = {
                     role: "button",
                     tabIndex: 0,
-                    "aria-label": `${explorerActionNames[effective]}${item.kind === "edge" ? (effective === "catan_road" ? "道路" : "海边") : "位置"}${item.id + 1}`,
+                    "aria-label": `${explorerActionNames[effective]}${item.kind === "edge" ? (effective === "catan_road" ? "道路" : "海边") : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
                     onClick: click,
                     onKeyDown: (e: KeyboardEvent) => buttonKeys(e, click),
                   };
+                  if (item.kind === "tile") {
+                    const t = g.tiles[item.id];
+                    return (
+                      <polygon
+                        key={key}
+                        className={`explorer-target-tile ${chosen ? "picked" : ""}`}
+                        points={t.vertices
+                          .map((v) => `${g.vertices[v].x},${g.vertices[v].y}`)
+                          .join(" ")}
+                        {...props}
+                      />
+                    );
+                  }
                   if (item.kind === "vertex") {
                     const v = g.vertices[item.id];
                     return (
@@ -527,6 +594,52 @@ export function CatanExplorerBoard({
             </button>
           </section>
         )}
+        {x.setup && (
+          <p className="explorer-notice">
+            开局第{x.setup.step + 1}步
+            {x.setupPlacement && x.setupPlacement.owner < 0
+              ? "（为中立方放置）"
+              : ""}
+            ：按顺序放港口、逆序放村庄，再放道路和载移民的船。所有人完成后领取起始资源。
+          </p>
+        )}
+        {x.lairs && (
+          <section className="explorer-mission" aria-label="巢穴任务进度">
+            <strong>巢穴任务</strong>
+            {g.players.map((p, id) => (
+              <div key={id} className={p.eliminated ? "retired" : ""}>
+                <span style={{ borderColor: catanSeatColor(g, id) }}>
+                  {room.seats[id]?.name}
+                </span>
+                <b>进度 {x.lairs!.progress[id]} / 7</b>
+                <span>
+                  任务 {x.lairs!.scores[id]}分
+                  {x.lairs!.leader === id ? " · 领先" : ""}
+                </span>
+              </div>
+            ))}
+            <p>
+              已解放{x.lairs.sites.filter((site) => site.resolved).length} /
+              6处；未攻陷前数字隐藏。
+            </p>
+            {x.lairs.battle && (
+              <p role="status">
+                巢穴{x.lairs.battle.tile + 1}：
+                {x.lairs.battle.candidates
+                  .map((id) => room.seats[id]?.name)
+                  .join("、")}
+                掷英雄骰。
+              </p>
+            )}
+            {x.pirate?.lastChase && (
+              <p>
+                最近驱赶：{room.seats[x.pirate.lastChase.player]?.name}掷出
+                {x.pirate.lastChase.die}，
+                {x.pirate.lastChase.success ? "成功" : "未成功"}。
+              </p>
+            )}
+          </section>
+        )}
         {choices.length > 0 && (
           <>
             <div className="explorer-primary">
@@ -589,9 +702,8 @@ export function CatanExplorerBoard({
                       {x.fleet.turn?.ships[id].closed
                         ? "已停止"
                         : `${x.fleet.turn?.ships[id].remaining ?? 0}步`}
-                      {explorerContents(g, "ship", id).length
-                        ? " · 移民"
-                        : " · 空舱"}
+                      {" · " +
+                        explorerCargoLabel(explorerContents(g, "ship", id))}
                     </button>
                   ) : null,
                 )}
@@ -611,7 +723,7 @@ export function CatanExplorerBoard({
                     disabled={busy}
                     onClick={() => select(a)}
                   >
-                    {explorerActionDescription(g, a)}
+                    {describe(a)}
                   </button>
                 ))}
             </div>
@@ -654,15 +766,13 @@ export function CatanExplorerBoard({
                         key={explorerActionKey(a)}
                         value={explorerActionKey(a)}
                       >
-                        {a.type === "catan_explorer_unit"
-                          ? `移民${(a.card! % 11) + 1} · ${a.choice === "ship" ? `船${(a.target! % 3) + 1}` : `港口${a.target! + 1}`}${a.cards?.length ? "（替换原移民）" : ""}`
-                          : `船${(a.slot! % 3) + 1}${a.give?.length && a.take?.length ? " · 交换" : a.give?.length ? " · 装载" : a.take?.length ? " · 卸载" : ""}`}
+                        {describe(a)}
                       </option>
                     ))}
                   </select>
                 </label>
               )}
-              <p>{explorerActionDescription(g, selected)}</p>
+              <p>{describe(selected)}</p>
               <div className="explorer-confirm-actions">
                 <button disabled={busy} onClick={() => setPick(null)}>
                   取消
@@ -834,13 +944,13 @@ export function CatanExplorerBoard({
         )}
         <details className="explorer-rules">
           <summary>
-            <Anchor size={16} /> 初航规则与银行
+            <Anchor size={16} /> {scenario}规则与银行
           </summary>
           <p>
             每船4步，可付1羊毛加2步。切换船只后不能回到上一艘；发现地块会停止本船。船端移民可在合法陆地点定居，船和移民回供应。
           </p>
           <p>
-            每个港口和船舱有2格，一枚移民占2格。只能通过实际停靠的己方港口装卸。
+            每个港口和船舱有2格，一枚移民占2格，一名船员占1格。只能通过实际停靠的己方港口装卸。
           </p>
           <p>
             非7点未获资源的玩家获1金币补偿。3同类资源可换1其他资源或金币；2金币可买1资源，每回合最多2次。无发展卡、强盗、最长道路或最大军队。
