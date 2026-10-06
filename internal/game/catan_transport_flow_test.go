@@ -47,7 +47,7 @@ func transportRestoreState(t *testing.T, s *State) *State {
 	return &next
 }
 func TestCatanTransportNaturalMatches(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, e := newCatanTransportState(n, CatanOptions{})
 			if e != nil {
@@ -420,7 +420,7 @@ func TestCatanTransportGoldPlayerTradeAndRoadRestrictions(t *testing.T) {
 	if e := s.validateCatanTransport(); e != nil {
 		t.Fatal(e)
 	}
-	for _, n := range []int{2, 5, 6} {
+	for _, n := range []int{5, 6} {
 		if _, e := newCatanTransportState(n, CatanOptions{FiveSix: n > 4}); e == nil {
 			t.Fatal("unverified whole-game recipe opened", n)
 		}
@@ -516,7 +516,7 @@ func TestCatanTransportChoicesUseAuthoritativeCostsAndPrivacy(t *testing.T) {
 }
 
 func TestCatanTransportHTTPFixturesAreFreshAndValid(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{2, 3, 4} {
 		data, e := os.ReadFile(fmt.Sprintf("../server/testdata/catan_transport_%d.json", n))
 		if e != nil {
 			t.Fatal(e)
@@ -530,6 +530,19 @@ func TestCatanTransportHTTPFixturesAreFreshAndValid(t *testing.T) {
 		}
 		if s.Catan.SetupStep != 0 || s.Phase != "catan_setup_settlement" || len(s.Catan.Players) != n || len(s.Catan.DevDeck) != 25 {
 			t.Fatal("not a fresh setup")
+		}
+		if n == 2 {
+			q := s.Catan.Two
+			if q == nil || q.Bank != 10 || !slices.Equal(q.Tokens, []int{5, 5}) || len(q.Rolls) != 0 || q.Spent || q.KnightExchanged || q.Sequence != 0 {
+				t.Fatal("two-player fixture has noninitial trade chips or production")
+			}
+			for i, pair := range [][2]int{{1, 1}, {17, 4}} {
+				v := s.Catan.Vertices[s.Catan.Tiles[pair[0]].Vertices[pair[1]]]
+				roads, villages, cities := s.Catan.pieces(-2 - i)
+				if v.Owner != -2-i || v.Level != 1 || roads != 0 || villages != 1 || cities != 0 {
+					t.Fatal("two-player fixture has noninitial neutral pieces")
+				}
+			}
 		}
 		for p, pl := range s.Catan.Players {
 			if sum(pl.Resources) != 0 || sum(pl.Dev) != 0 || s.Catan.Transport.Wagons[p].Position != -1 || s.Catan.Transport.Gold[p] != 5 {

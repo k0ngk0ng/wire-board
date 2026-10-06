@@ -21,6 +21,10 @@ func (s *State) catanView(view map[string]any, player int) {
 			public["tokenWindow"] = s.catanTwoTokenWindow(player)
 			if s.catanTwoTokenWindow(player) {
 				public["retreatTiles"] = g.twoRetreatTiles()
+				if g.Transport != nil {
+					public["retreatCost"] = 1
+					public["retreatEdges"] = g.twoTransportRetreatEdges()
+				}
 			}
 		}
 		if q.Pending != nil && !s.Finished {

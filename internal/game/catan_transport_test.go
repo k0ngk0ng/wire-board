@@ -414,6 +414,6 @@ func TestCatanTransportRejectCorruptTravelAndInvalidActions(t *testing.T) {
 func TestCatanTransportTwoPlayerRequiresNeutralRoadController(t *testing.T) {
 	g, m := transportBoard(t, 2)
 	if _, err := newCatanTransportTravel(g, m, 0, 0, 0); err == nil {
-		t.Fatal("two-player board does not imply neutral road tolls are implemented")
+		t.Fatal("two-player geometry alone must not bypass the neutral-road controller")
 	}
 }

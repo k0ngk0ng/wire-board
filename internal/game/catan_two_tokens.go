@@ -74,6 +74,9 @@ func (g *Catan) twoDesert() int {
 }
 
 func (g *Catan) twoRetreatTiles() []int {
+	if g.Transport != nil {
+		return []int{}
+	}
 	if g.Caravans != nil {
 		if g.Robber >= 0 {
 			return []int{-1}
@@ -87,6 +90,18 @@ func (g *Catan) twoRetreatTiles() []int {
 		return []int{desert}
 	}
 	return []int{}
+}
+
+func (g *Catan) twoTransportRetreatEdges() []int {
+	out := []int{}
+	if g.Two != nil && g.Transport != nil {
+		for _, e := range g.Edges {
+			if e.Owner == -1 && !slices.Contains(g.Transport.Barbarians[:], e.ID) {
+				out = append(out, e.ID)
+			}
+		}
+	}
+	return out
 }
 
 func (s *State) catanTwoTokenAction(player int, a Action) error {
@@ -114,6 +129,11 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		return nil
 	}
 	cost := g.twoTokenCost(player)
+	// 2025 transport p24 specifies one trade token for this replacement
+	// action. The ordinary score-dependent cost still applies to forced trade.
+	if a.Type == "catan_two_robber" && g.Transport != nil {
+		cost = 1
+	}
 	if q.Spent || q.Tokens[player] < cost {
 		return errors.New("本回合已使用贸易筹码，或筹码不足")
 	}
@@ -143,6 +163,14 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		s.Phase = "catan_two_trade"
 		s.catanLog(player, "花费 %d 枚贸易筹码，从玩家 %d 随机取 %d 张资源，待选择交还 2 张", cost, 2-player, count)
 	case "catan_two_robber":
+		if t := g.Transport; t != nil {
+			if a.Card < 0 || a.Card >= len(t.Barbarians) || !slices.Contains(g.twoTransportRetreatEdges(), a.Edge) {
+				return errors.New("请选择一名蛮族及没有道路、没有其他蛮族的边")
+			}
+			t.Barbarians[a.Card] = a.Edge
+			s.catanLog(player, "花费1枚贸易筹码，将蛮族%d移到空路 #%d，不偷牌", a.Card+1, a.Edge+1)
+			break
+		}
 		target, terrain := g.twoDesert(), "沙漠"
 		if g.Rivers != nil {
 			target, terrain = a.Tile, "沼泽"
@@ -216,7 +244,27 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	if !q.KnightExchanged && q.Tokens[player] < 2 && q.Bank >= 2 && g.Players[player].Knights > 0 && g.ArmyOwner != player {
 		return Action{Type: "catan_two_knight"}, true
 	}
-	if q.Spent || q.Tokens[player] < g.twoTokenCost(player) {
+	if q.Spent || q.Tokens[player] < 1 {
+		return Action{}, false
+	}
+	if t := g.Transport; t != nil {
+		// Remove an immediate wagon obstruction before moving. Use only
+		// public piece positions; do not inspect cargo/development stacks.
+		position := t.Wagons[player].Position
+		for piece, edge := range t.Barbarians {
+			e := g.Edges[edge]
+			if e.A != position && e.B != position {
+				continue
+			}
+			for _, target := range g.twoTransportRetreatEdges() {
+				d := g.Edges[target]
+				if d.A != position && d.B != position {
+					return Action{Type: "catan_two_robber", Card: piece, Edge: target}, true
+				}
+			}
+		}
+	}
+	if q.Tokens[player] < g.twoTokenCost(player) {
 		return Action{}, false
 	}
 	if targets := g.twoRetreatTiles(); g.Robber >= 0 && len(targets) > 0 && g.Tiles[g.Robber].Resource < 5 {

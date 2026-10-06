@@ -115,6 +115,7 @@ func (t *catanTransport) move(g *Catan, player int, sequence uint64, edge int) (
 	step, err := t.Travel.move(g, t.Map, t.Barbarians, t.Gold, edge)
 	if err == nil {
 		t.Wagons[player].Position = t.Travel.Position
+		t.GoldBank += step.Bank
 	}
 	return step, err
 }

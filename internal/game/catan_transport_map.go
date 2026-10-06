@@ -251,13 +251,13 @@ func (m catanTransportMap) validate(g *Catan) error {
 	}
 	for i, v := range g.Vertices {
 		want := base.Vertices[i]
-		if v.ID != i || !near(v.X, want.X) || !near(v.Y, want.Y) || v.Owner < -1 || v.Owner >= len(g.Players) || v.Level < 0 || v.Level > 2 || (v.Owner == -1) != (v.Level == 0) || m.siteAt(i) >= 0 && v.Level != 0 {
+		if v.ID != i || !near(v.X, want.X) || !near(v.Y, want.Y) || v.Owner < -1 && (g.Two == nil || len(g.Players) != 2 || v.Owner < -3 || v.Level != 1) || v.Owner >= len(g.Players) || v.Level < 0 || v.Level > 2 || (v.Owner == -1) != (v.Level == 0) || m.siteAt(i) >= 0 && v.Level != 0 {
 			return errors.New("运输交点无效，货物地块中心不可建设建筑")
 		}
 	}
 	for i, e := range g.Edges {
 		want := base.Edges[i]
-		if e.ID != i || e.A != want.A || e.B != want.B || !slices.Equal(e.Tiles, want.Tiles) || e.Owner < -1 || e.Owner >= len(g.Players) || e.Ship || e.Bridge || e.Warship || !m.canBuildRoad(g, i) && e.Owner != -1 {
+		if e.ID != i || e.A != want.A || e.B != want.B || !slices.Equal(e.Tiles, want.Tiles) || e.Owner < -1 && (g.Two == nil || len(g.Players) != 2 || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge || e.Warship || !m.canBuildRoad(g, i) && e.Owner != -1 {
 			return errors.New("运输路线拓扑、种类或禁行边无效")
 		}
 	}

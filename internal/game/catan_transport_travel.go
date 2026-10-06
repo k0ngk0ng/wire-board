@@ -5,26 +5,29 @@ import (
 	"slices"
 )
 
-// Private movement kernel; the end-turn/commodity controller will own this
-// persisted record. It is not an alternative public action path.
+// Private movement kernel owned by the end-turn/commodity controller.
+// It is not an alternative public action path.
 type catanTransportTravel struct {
-	Player    int     `json:"player"`
-	Level     int     `json:"level"` // 0–4, four paid upgrades.
-	Position  int     `json:"position"`
-	Points    int     `json:"points"`
-	WheatUsed bool    `json:"wheatUsed"`
-	Attempted [3]bool `json:"attempted"` // Stable piece IDs, not edge IDs.
-	Pending   int     `json:"pending"`   // Successful drive-off awaiting destination; -1 otherwise.
-	Arrived   int     `json:"arrived"`   // Site index reached this movement; -1 otherwise.
-	Ended     bool    `json:"ended"`
+	NeutralTolls int     `json:"neutralTolls,omitempty"` // Aggregate for this Move Wagon action; bank gets ceil(total/2).
+	Player       int     `json:"player"`
+	Level        int     `json:"level"` // 0–4, four paid upgrades.
+	Position     int     `json:"position"`
+	Points       int     `json:"points"`
+	WheatUsed    bool    `json:"wheatUsed"`
+	Attempted    [3]bool `json:"attempted"` // Stable piece IDs, not edge IDs.
+	Pending      int     `json:"pending"`   // Successful drive-off awaiting destination; -1 otherwise.
+	Arrived      int     `json:"arrived"`   // Site index reached this movement; -1 otherwise.
+	Ended        bool    `json:"ended"`
 }
 
 type catanTransportStep struct {
-	Edge int `json:"edge"`
-	To   int `json:"to"`
-	MP   int `json:"mp"`
-	Toll int `json:"toll"`
-	Pay  int `json:"pay"` // Road owner, or -1 for no toll.
+	Edge    int  `json:"edge"`
+	To      int  `json:"to"`
+	MP      int  `json:"mp"`
+	Toll    int  `json:"toll"`
+	Pay     int  `json:"pay"`            // Player recipient, or -1 if no player is paid.
+	Bank    int  `json:"bank,omitempty"` // Neutral-road share paid to the supply.
+	Neutral bool `json:"neutral,omitempty"`
 }
 
 func catanTransportMovement(level int) int {
@@ -44,21 +47,25 @@ func catanTransportUpgradeCost(level int) []int {
 	}
 	return []int{wood, 0, 1, 0, 1}
 }
+func catanTransportPlayersValid(g *Catan) bool {
+	return g != nil && ((len(g.Players) == 2 && g.Two != nil) || (len(g.Players) >= 3 && len(g.Players) <= 6 && g.Two == nil))
+}
+
 func newCatanTransportTravel(g *Catan, m *catanTransportMap, player, position, level int) (*catanTransportTravel, error) {
-	if g == nil || m == nil || len(g.Players) < 3 || len(g.Players) > 6 || g.Two != nil || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || position < 0 || position >= len(g.Vertices) || catanTransportMovement(level) == 0 {
-		return nil, errors.New("运输移动玩家、位置、等级或尚未接入的双人组合无效")
+	if !catanTransportPlayersValid(g) || m == nil || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || position < 0 || position >= len(g.Vertices) || catanTransportMovement(level) == 0 {
+		return nil, errors.New("运输移动玩家、位置、等级或双人控制器无效")
 	}
 	return &catanTransportTravel{Player: player, Level: level, Position: position, Points: catanTransportMovement(level), Pending: -1, Arrived: -1}, nil
 }
 func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarians [3]int, gold []int) error {
-	if g == nil || m == nil || len(g.Players) < 3 || len(g.Players) > 6 || g.Two != nil || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated || q.Position < 0 || q.Position >= len(g.Vertices) || catanTransportMovement(q.Level) == 0 || len(gold) != len(g.Players) {
+	if !catanTransportPlayersValid(g) || m == nil || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated || q.Position < 0 || q.Position >= len(g.Vertices) || catanTransportMovement(q.Level) == 0 || len(gold) != len(g.Players) {
 		return errors.New("马车移动记录无效")
 	}
 	maxMP := catanTransportMovement(q.Level)
 	if q.WheatUsed {
 		maxMP += 2
 	}
-	if q.Points < 0 || q.Points > maxMP || q.Pending < -1 || q.Pending >= len(barbarians) || q.Arrived < -1 || q.Arrived >= len(m.Sites) || q.Ended && q.Points != 0 || q.Arrived >= 0 && (!q.Ended || m.Sites[q.Arrived].Center != q.Position) {
+	if q.NeutralTolls < 0 || q.NeutralTolls+q.Points > maxMP || g.Two == nil && q.NeutralTolls != 0 || q.Points < 0 || q.Points > maxMP || q.Pending < -1 || q.Pending >= len(barbarians) || q.Arrived < -1 || q.Arrived >= len(m.Sites) || q.Ended && q.Points != 0 || q.Arrived >= 0 && (!q.Ended || m.Sites[q.Arrived].Center != q.Position) {
 		return errors.New("马车步数、到达或结束状态无效")
 	}
 	for id, edge := range barbarians {
@@ -102,16 +109,25 @@ func (q catanTransportTravel) quote(g *Catan, m *catanTransportMap, barbarians [
 	} else {
 		return step, errors.New("马车只能移动到相邻交点")
 	}
-	if e.Owner < -1 || e.Owner >= len(g.Players) || e.Ship || e.Bridge || e.Warship {
+	if e.Owner < -1 && (g.Two == nil || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge || e.Warship {
 		return step, errors.New("运输道路所有者或种类无效")
 	}
 	step.MP = 2
-	if e.Owner >= 0 {
+	if e.Owner != -1 {
 		if !e.Damaged {
 			step.MP = 1
 		}
 		if e.Owner != q.Player {
 			step.Toll, step.Pay = 1, e.Owner
+			if e.Owner < -1 {
+				step.Neutral = true
+				step.Pay = -1
+				if q.NeutralTolls%2 == 0 {
+					step.Bank = 1
+				} else {
+					step.Pay = 1 - q.Player
+				}
+			}
 		}
 	}
 	if slices.Contains(barbarians[:], edge) {
@@ -129,9 +145,12 @@ func (q *catanTransportTravel) move(g *Catan, m *catanTransportMap, barbarians [
 	}
 	q.Points -= step.MP
 	q.Position = step.To
+	gold[q.Player] -= step.Toll
 	if step.Pay >= 0 {
-		gold[q.Player] -= step.Toll
-		gold[step.Pay] += step.Toll
+		gold[step.Pay] += step.Toll - step.Bank
+	}
+	if step.Neutral {
+		q.NeutralTolls++
 	}
 	if site := m.siteAt(q.Position); site >= 0 {
 		q.Arrived, q.Ended, q.Points = site, true, 0
