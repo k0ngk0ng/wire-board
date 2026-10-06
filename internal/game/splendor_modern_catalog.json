@@ -1,0 +1,630 @@
+{
+  "rules": "split-box-2025",
+  "status": "secondary-source-partially-crosschecked",
+  "source": {
+    "url": "https://gemerchant.org/modules/en/expansion-data.mjs?v=dfea0daf39da",
+    "sha256": "a1a1f80191715bec1de8c113f4c0ce27c17a777018df955d170f6cea65fa7447",
+    "retrieved": "2026-10-06",
+    "note": "Public component data, not publisher data. Its cited physical-photo research is not publicly available (404). See docs/research/splendor-modern-catalog.md; public options remain disabled."
+  },
+  "orient": [
+    {
+      "id": 1001,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      "orient": "gold"
+    },
+    {
+      "id": 1002,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      "orient": "gold"
+    },
+    {
+      "id": 1003,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "orient": "gold"
+    },
+    {
+      "id": 1004,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        3
+      ],
+      "orient": "gold"
+    },
+    {
+      "id": 1005,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      "orient": "gold"
+    },
+    {
+      "id": 1006,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        3,
+        0,
+        0,
+        2
+      ],
+      "orient": "copy"
+    },
+    {
+      "id": 1007,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        2,
+        0,
+        3,
+        0,
+        0
+      ],
+      "orient": "copy"
+    },
+    {
+      "id": 1008,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        3,
+        0,
+        0,
+        2,
+        0
+      ],
+      "orient": "copy"
+    },
+    {
+      "id": 1009,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        0,
+        2,
+        0,
+        3
+      ],
+      "orient": "copy"
+    },
+    {
+      "id": 1010,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "cost": [
+        0,
+        2,
+        0,
+        3,
+        0
+      ],
+      "orient": "copy"
+    },
+    {
+      "id": 1011,
+      "tier": 2,
+      "points": 1,
+      "color": 1,
+      "cost": [
+        3,
+        0,
+        0,
+        0,
+        4
+      ],
+      "orient": "double",
+      "bonusCount": 2
+    },
+    {
+      "id": 1012,
+      "tier": 2,
+      "points": 1,
+      "color": 2,
+      "cost": [
+        0,
+        0,
+        0,
+        4,
+        3
+      ],
+      "orient": "double",
+      "bonusCount": 2
+    },
+    {
+      "id": 1013,
+      "tier": 2,
+      "points": 1,
+      "color": 0,
+      "cost": [
+        0,
+        4,
+        0,
+        3,
+        0
+      ],
+      "orient": "double",
+      "bonusCount": 2
+    },
+    {
+      "id": 1014,
+      "tier": 2,
+      "points": 1,
+      "color": 4,
+      "cost": [
+        0,
+        3,
+        4,
+        0,
+        0
+      ],
+      "orient": "double",
+      "bonusCount": 2
+    },
+    {
+      "id": 1015,
+      "tier": 2,
+      "points": 1,
+      "color": 3,
+      "cost": [
+        4,
+        0,
+        3,
+        0,
+        0
+      ],
+      "orient": "double",
+      "bonusCount": 2
+    },
+    {
+      "id": 1016,
+      "tier": 2,
+      "points": 1,
+      "color": -1,
+      "cost": [
+        0,
+        4,
+        3,
+        1,
+        0
+      ],
+      "orient": "copy_cascade"
+    },
+    {
+      "id": 1017,
+      "tier": 2,
+      "points": 1,
+      "color": -1,
+      "cost": [
+        0,
+        0,
+        4,
+        3,
+        1
+      ],
+      "orient": "copy_cascade"
+    },
+    {
+      "id": 1018,
+      "tier": 2,
+      "points": 1,
+      "color": -1,
+      "cost": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "orient": "copy_cascade"
+    },
+    {
+      "id": 1019,
+      "tier": 2,
+      "points": 1,
+      "color": -1,
+      "cost": [
+        3,
+        1,
+        0,
+        0,
+        4
+      ],
+      "orient": "copy_cascade"
+    },
+    {
+      "id": 1020,
+      "tier": 2,
+      "points": 1,
+      "color": -1,
+      "cost": [
+        1,
+        0,
+        0,
+        4,
+        3
+      ],
+      "orient": "copy_cascade"
+    },
+    {
+      "id": 1021,
+      "tier": 3,
+      "points": 1,
+      "color": 1,
+      "cost": [
+        3,
+        0,
+        6,
+        0,
+        1
+      ],
+      "orient": "cascade"
+    },
+    {
+      "id": 1022,
+      "tier": 3,
+      "points": 1,
+      "color": 2,
+      "cost": [
+        6,
+        0,
+        0,
+        1,
+        3
+      ],
+      "orient": "cascade"
+    },
+    {
+      "id": 1023,
+      "tier": 3,
+      "points": 1,
+      "color": 0,
+      "cost": [
+        0,
+        1,
+        0,
+        3,
+        6
+      ],
+      "orient": "cascade"
+    },
+    {
+      "id": 1024,
+      "tier": 3,
+      "points": 1,
+      "color": 4,
+      "cost": [
+        0,
+        3,
+        1,
+        6,
+        0
+      ],
+      "orient": "cascade"
+    },
+    {
+      "id": 1025,
+      "tier": 3,
+      "points": 1,
+      "color": 3,
+      "cost": [
+        1,
+        6,
+        3,
+        0,
+        0
+      ],
+      "orient": "cascade"
+    },
+    {
+      "id": 1026,
+      "tier": 3,
+      "points": 3,
+      "color": 1,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "orient": "sacrifice",
+      "sacrificeColor": 0
+    },
+    {
+      "id": 1027,
+      "tier": 3,
+      "points": 3,
+      "color": 2,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "orient": "sacrifice",
+      "sacrificeColor": 4
+    },
+    {
+      "id": 1028,
+      "tier": 3,
+      "points": 3,
+      "color": 0,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "orient": "sacrifice",
+      "sacrificeColor": 3
+    },
+    {
+      "id": 1029,
+      "tier": 3,
+      "points": 3,
+      "color": 4,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "orient": "sacrifice",
+      "sacrificeColor": 1
+    },
+    {
+      "id": 1030,
+      "tier": 3,
+      "points": 3,
+      "color": 3,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "orient": "sacrifice",
+      "sacrificeColor": 2
+    }
+  ],
+  "cities": [
+    {
+      "tile": 1,
+      "side": 0,
+      "name": "马德里",
+      "points": 12,
+      "cost": [
+        3,
+        3,
+        0,
+        3,
+        3
+      ]
+    },
+    {
+      "tile": 1,
+      "side": 1,
+      "name": "马德里",
+      "points": 12,
+      "cost": [
+        3,
+        0,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "tile": 2,
+      "side": 0,
+      "name": "昂布瓦兹",
+      "points": 13,
+      "cost": [
+        3,
+        0,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "tile": 2,
+      "side": 1,
+      "name": "昂布瓦兹",
+      "points": 13,
+      "cost": [
+        0,
+        0,
+        0,
+        3,
+        4
+      ]
+    },
+    {
+      "tile": 3,
+      "side": 0,
+      "name": "廷巴克图",
+      "points": 13,
+      "cost": [
+        0,
+        3,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "tile": 3,
+      "side": 1,
+      "name": "廷巴克图",
+      "points": 13,
+      "cost": [
+        0,
+        4,
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "tile": 4,
+      "side": 0,
+      "name": "德里",
+      "points": 13,
+      "cost": [
+        4,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "tile": 4,
+      "side": 1,
+      "name": "德里",
+      "points": 14,
+      "cost": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "tile": 5,
+      "side": 0,
+      "name": "撒马尔罕",
+      "points": 14,
+      "cost": [
+        0,
+        4,
+        0,
+        0,
+        0
+      ],
+      "any": 4
+    },
+    {
+      "tile": 5,
+      "side": 1,
+      "name": "撒马尔罕",
+      "points": 14,
+      "cost": [
+        0,
+        0,
+        0,
+        4,
+        0
+      ],
+      "any": 4
+    },
+    {
+      "tile": 6,
+      "side": 0,
+      "name": "首尔",
+      "points": 15,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "any": 5
+    },
+    {
+      "tile": 6,
+      "side": 1,
+      "name": "首尔",
+      "points": 13,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "any": 6
+    },
+    {
+      "tile": 7,
+      "side": 0,
+      "name": "克拉科夫",
+      "points": 16,
+      "cost": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "tile": 7,
+      "side": 1,
+      "name": "克拉科夫",
+      "points": 17,
+      "cost": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}
