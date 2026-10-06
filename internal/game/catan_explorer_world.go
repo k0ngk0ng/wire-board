@@ -7,12 +7,13 @@ import (
 )
 
 // Private integration aggregate. Land Ho is the first complete map/inventory
-// combination; this is not yet a State constructor or a public room recipe.
+// combination; public room recipes remain gated on complete acceptance.
 type catanExplorer struct {
-	Board   *catanExplorerBoard   `json:"board"`
-	Fleet   *catanExplorerSailing `json:"fleet"`
-	Cargo   *catanExplorerCargo   `json:"cargo"`
-	Economy *catanExplorerEconomy `json:"economy"`
+	SkippedRolls int                   `json:"skippedRolls,omitempty"` // Platform removal before production, never a fabricated dice roll.
+	Board        *catanExplorerBoard   `json:"board"`
+	Fleet        *catanExplorerSailing `json:"fleet"`
+	Cargo        *catanExplorerCargo   `json:"cargo"`
+	Economy      *catanExplorerEconomy `json:"economy"`
 }
 
 type catanExplorerDiscovery struct {

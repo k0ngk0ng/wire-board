@@ -19,7 +19,7 @@ type catanExplorerEconomy struct {
 type catanExplorerEconomyTurn struct {
 	Player   int    `json:"player"`
 	Sequence uint64 `json:"sequence"`
-	Phase    string `json:"phase"` // roll, discard, pirate, ready (cargo controls action/movement/ended).
+	Phase    string `json:"phase"` // roll, discard, pirate, ready, abandoned (trusted platform removal only).
 	Dice     [2]int `json:"dice"`
 	Bought   int    `json:"bought"`
 	Discard  []int  `json:"discard"`
@@ -74,10 +74,10 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 		}
 		return nil
 	}
-	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated || t.Sequence == 0 || !slices.Contains([]string{"roll", "discard", "pirate", "ready"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
+	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated != (t.Phase == "abandoned") || t.Sequence == 0 || !slices.Contains([]string{"roll", "discard", "pirate", "ready", "abandoned"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Phase != "abandoned" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
 		return errors.New("探险生产阶段、玩家或购买次数无效")
 	}
-	if t.Phase == "roll" {
+	if t.Phase == "roll" || t.Phase == "abandoned" && t.Dice == [2]int{} {
 		if t.Dice != [2]int{} {
 			return errors.New("尚未掷骰不能已有生产点数")
 		}
@@ -95,9 +95,12 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 	if (t.Phase == "discard") != pending || (t.Phase == "discard" || t.Phase == "pirate") && !seven || t.Phase == "pirate" && c.Scenario != "pirate-lairs" {
 		return errors.New("探险七点响应与剧本不一致")
 	}
-	if t.Phase == "ready" {
+	if t.Phase == "ready" || t.Phase == "abandoned" {
 		if c.Turn == nil || c.Turn.Player != t.Player || c.Turn.Sequence != t.Sequence {
 			return errors.New("经济与建设航行回合不一致")
+		}
+		if t.Phase == "abandoned" && c.Turn.Phase != "ended" {
+			return errors.New("离场玩家的航行尚未结束")
 		}
 	} else {
 		if c.Turn == nil && t.Sequence != 1 || c.Turn != nil && (c.Turn.Phase != "ended" || c.Turn.Sequence == ^uint64(0) || c.Turn.Sequence+1 != t.Sequence) {
@@ -115,7 +118,7 @@ func (e *catanExplorerEconomy) beginProduction(g *Catan, f *catanExplorerSailing
 	}
 	previous := uint64(0)
 	if e.Turn != nil {
-		if e.Turn.Phase != "ready" || c.Turn.Phase != "ended" {
+		if e.Turn.Phase != "ready" && e.Turn.Phase != "abandoned" || c.Turn.Phase != "ended" {
 			return errors.New("上一回合生产、响应或航行尚未完成")
 		}
 		previous = e.Turn.Sequence
