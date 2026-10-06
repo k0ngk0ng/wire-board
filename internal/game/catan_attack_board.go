@@ -13,6 +13,8 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
+	EndSequence  int                       `json:"endSequence,omitempty"`
+	End          *catanAttackEndRecord     `json:"end,omitempty"`
 	CardSequence int                       `json:"cardSequence"`
 	Pending      *catanAttackCardPending   `json:"pending,omitempty"`
 	Bought       int                       `json:"bought"`
