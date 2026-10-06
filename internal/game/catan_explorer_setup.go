@@ -102,7 +102,7 @@ func (s catanExplorerSetup) current(players int) *catanExplorerSetupStep {
 	return &plan[s.Step]
 }
 func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
-	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario || s.Start < 0 || s.Start >= len(g.Players) || g.StartPlayer != s.Start {
+	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerPirateScenario(b.Scenario) || c.Scenario != b.Scenario || s.Start < 0 || s.Start >= len(g.Players) || g.StartPlayer != s.Start {
 		return errors.New("巢穴开局组件或先手无效")
 	}
 	for _, loc := range c.Fish {

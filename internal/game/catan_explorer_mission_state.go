@@ -15,16 +15,23 @@ func newCatanExplorerMissionState(players int, scenario, layout string, numbers 
 	if err != nil {
 		return nil, err
 	}
-	lairs, err := newCatanExplorerLairs(players, numbers)
-	if err != nil {
-		return nil, err
-	}
-	shuffle(lairs.Deck)
-	g.Explorer = &catanExplorer{Board: b, Fleet: f, Cargo: c, Economy: e, Setup: setup, Pirate: newCatanExplorerPirate(), Lairs: lairs}
+	g.Explorer = &catanExplorer{Board: b, Fleet: f, Cargo: c, Economy: e, Setup: setup, Pirate: newCatanExplorerPirate()}
 	label := "海盗巢穴"
-	if scenario == "fish-for-catan" {
+	if catanExplorerMissionScenario(scenario) {
+		lairs, err := newCatanExplorerLairs(players, numbers)
+		if err != nil {
+			return nil, err
+		}
+		shuffle(lairs.Deck)
+		g.Explorer.Lairs = lairs
+	}
+	if catanExplorerFishScenario(scenario) {
 		label = "鱼群任务"
 		g.Explorer.Fish = &catanExplorerFish{Deliveries: []catanExplorerFishDelivery{}}
+	}
+	if scenario == "spices-for-catan" {
+		label = "香料与鱼群任务"
+		g.Explorer.Spice = &catanExplorerSpice{Deliveries: []catanExplorerSpiceDelivery{}}
 	}
 	s := &State{Kind: "catan", Catan: g, Turn: setup.Start, Round: 1, Phase: "catan_explorer_setup", Log: []string{label + "：随机先手，顺序港口、逆序村庄，再放道路与移民船"}}
 	return s, s.validateCatanExplorer()
@@ -95,10 +102,15 @@ func (s *State) catanExplorerAfterProduction() error {
 func (s *State) catanExplorerMissionScore() {
 	g := s.Catan
 	x := g.Explorer
-	if x.Lairs == nil {
-		return
+	scores := make([]int, len(g.Players))
+	if x.Lairs != nil {
+		scores = x.Lairs.scores()
 	}
-	scores := x.Lairs.scores()
+	if x.Spice != nil {
+		for p, score := range x.Spice.publicView(g).Scores {
+			scores[p] += score
+		}
+	}
 	if x.Fish != nil {
 		for p, score := range x.Fish.publicView(len(g.Players)).Scores {
 			scores[p] += score
@@ -155,10 +167,10 @@ func (s *State) catanExplorerNextTurn() error {
 func (s *State) applyCatanExplorerMission(player int, a Action) (bool, error) {
 	g := s.Catan
 	x := g.Explorer
-	if x.Lairs == nil {
+	if x.Pirate == nil {
 		return false, nil
 	}
-	mandatory := x.Pirate.Pending != nil || x.Lairs.Battle != nil || s.Phase == "catan_explorer_resolve"
+	mandatory := x.Pirate.Pending != nil || (x.Lairs != nil && x.Lairs.Battle != nil) || s.Phase == "catan_explorer_resolve"
 	if player != s.Turn {
 		if mandatory {
 			return true, errors.New("请等待当前玩家完成探险回应")
@@ -167,7 +179,7 @@ func (s *State) applyCatanExplorerMission(player int, a Action) (bool, error) {
 	}
 	pKinds := map[string]string{"catan_explorer_pirate_place": "place", "catan_explorer_pirate_steal": "steal", "catan_explorer_chase": "chase"}
 	if kind := pKinds[a.Type]; kind != "" {
-		if x.Lairs.Battle != nil || s.Phase == "catan_explorer_resolve" {
+		if x.Lairs != nil && x.Lairs.Battle != nil || s.Phase == "catan_explorer_resolve" {
 			return true, errors.New("先完成巢穴战斗")
 		}
 		result, err := x.Pirate.apply(g, x.Board, x.Fleet, x.Cargo, x.Economy, player, g.TurnSerial, kind, a.Target, a.Choice == "skip", catanRandom)
@@ -192,6 +204,9 @@ func (s *State) applyCatanExplorerMission(player int, a Action) (bool, error) {
 	}
 	kinds := map[string]string{"catan_explorer_land": "land", "catan_explorer_pickup": "pickup", "catan_explorer_resolve": "begin", "catan_explorer_battle": "roll"}
 	if kind := kinds[a.Type]; kind != "" {
+		if x.Lairs == nil {
+			return true, errors.New("本场景没有巢穴任务")
+		}
 		if x.Pirate.Pending != nil {
 			return true, errors.New("先完成海盗回应")
 		}
@@ -213,6 +228,9 @@ func (s *State) applyCatanExplorerMission(player int, a Action) (bool, error) {
 	if mandatory {
 		return true, errors.New("请先完成海盗或巢穴回应")
 	}
+	if handled, err := s.applyCatanExplorerSpice(player, a); handled {
+		return true, err
+	}
 	return s.applyCatanExplorerFish(player, a)
 }
 
@@ -230,7 +248,7 @@ func (s *State) catanExplorerSpecialChoices(player int) ([]Action, bool) {
 		}
 		return out, true
 	}
-	if x.Lairs == nil {
+	if x.Pirate == nil {
 		return nil, false
 	}
 	if pending := x.Pirate.Pending; pending != nil {
@@ -250,7 +268,7 @@ func (s *State) catanExplorerSpecialChoices(player int) ([]Action, bool) {
 		}
 		return out, true
 	}
-	if x.Lairs.Battle != nil {
+	if x.Lairs != nil && x.Lairs.Battle != nil {
 		if player == s.Turn {
 			add(Action{Type: "catan_explorer_battle", Target: x.Lairs.Battle.Tile})
 		}
@@ -272,7 +290,7 @@ func (s *State) catanExplorerLandingChoices(player int) []Action {
 	g := s.Catan
 	x := g.Explorer
 	out := []Action{}
-	if x.Lairs == nil || s.Phase != "catan_explorer_move" {
+	if x.Pirate == nil || s.Phase != "catan_explorer_move" {
 		return out
 	}
 	for ship := player * 3; ship < (player+1)*3; ship++ {
@@ -281,6 +299,9 @@ func (s *State) catanExplorerLandingChoices(player int) []Action {
 		}
 		if x.Pirate.battleReady(g, x.Fleet, player, g.TurnSerial, ship) {
 			out = append(out, Action{Type: "catan_explorer_chase", Target: ship})
+		}
+		if x.Lairs == nil {
+			continue
 		}
 		for _, site := range x.Lairs.Sites {
 			if !catanExplorerTouches(g, x.Fleet.Positions[ship], site.Tile) {

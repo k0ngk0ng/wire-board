@@ -56,7 +56,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		case "catan_explorer_settle":
 			return cargo.settle(&base, &fleet, viewer, sequence, a.Slot, a.Vertex) == nil
 		case "catan_explorer_transfer":
-			return cargo.transferFreight(&base, &fleet, viewer, sequence, a.Slot, a.Vertex, a.Give, a.Take, a.Cards, a.Targets) == nil
+			return cargo.transferAllFreight(&base, &fleet, viewer, sequence, a.Slot, a.Vertex, a.Give, a.Take, a.Cards, a.Targets, a.SpiceLoad, a.SpiceUnload) == nil
 		}
 		return false
 	}
@@ -67,7 +67,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	}
 	if s.Phase == "catan_turn" {
 		for _, edge := range g.Edges {
-			if edge.Owner == -1 && catanExplorerLandEdge(g, edge.ID) && catanExplorerCanPay(g, viewer, []int{1, 1, 0, 0, 0}) {
+			if edge.Owner == -1 && x.Cargo.landEdge(g, viewer, edge.ID) && catanExplorerCanPay(g, viewer, []int{1, 1, 0, 0, 0}) {
 				offer(Action{Type: "catan_road", Edge: edge.ID})
 			}
 			if catanExplorerSeaEdge(g, edge.ID) && (g.Vertices[edge.A].Owner == viewer && g.Vertices[edge.A].Level == 2 || g.Vertices[edge.B].Owner == viewer && g.Vertices[edge.B].Level == 2) {
@@ -94,14 +94,14 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 				locations = append(locations, loc)
 			}
 		}
-		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) || x.Lairs != nil && catanExplorerCanPay(g, viewer, []int{0, 0, 1, 0, 1}) {
+		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) || (x.Lairs != nil || x.Spice != nil) && catanExplorerCanPay(g, viewer, []int{0, 0, 1, 0, 1}) {
 			for _, loc := range locations {
 				discards := [][]int{nil}
 				for _, unit := range x.Cargo.contents(loc) {
 					discards = append(discards, []int{unit})
 				}
 				limit := 2
-				if x.Lairs != nil {
+				if x.Lairs != nil || x.Spice != nil {
 					limit = 11
 				}
 				for unit := viewer * 11; unit < viewer*11+limit; unit++ {
@@ -117,6 +117,9 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 					offer(Action{Type: "catan_explorer_bank", Color: give, Target: take})
 				}
 			}
+		}
+		for _, a := range s.catanExplorerSpiceChoices(viewer) {
+			add(a)
 		}
 		add(Action{Type: "catan_explorer_begin_move"})
 		return result
@@ -139,12 +142,18 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 			unload := explorerCargoSubsets(x.Cargo.contents(catanExplorerCargoLocation{"ship", ship}))
 			loadFish := explorerCargoSubsets(x.Cargo.fishContents(catanExplorerCargoLocation{"harbor", v}))
 			unloadFish := explorerCargoSubsets(x.Cargo.fishContents(catanExplorerCargoLocation{"ship", ship}))
+			loadSpice := explorerCargoSubsets(x.Cargo.spiceContents(catanExplorerCargoLocation{"harbor", v}))
+			unloadSpice := explorerCargoSubsets(x.Cargo.spiceContents(catanExplorerCargoLocation{"ship", ship}))
 			for _, give := range load {
 				for _, take := range unload {
 					for _, lf := range loadFish {
 						for _, uf := range unloadFish {
-							if len(give)+len(take)+len(lf)+len(uf) > 0 {
-								offer(Action{Type: "catan_explorer_transfer", Slot: ship, Vertex: v, Give: give, Take: take, Cards: lf, Targets: uf})
+							for _, ls := range loadSpice {
+								for _, us := range unloadSpice {
+									if len(give)+len(take)+len(lf)+len(uf)+len(ls)+len(us) > 0 {
+										offer(Action{Type: "catan_explorer_transfer", Slot: ship, Vertex: v, Give: give, Take: take, Cards: lf, Targets: uf, SpiceLoad: ls, SpiceUnload: us})
+									}
+								}
 							}
 						}
 					}
@@ -153,6 +162,9 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		}
 	}
 	for _, a := range s.catanExplorerLandingChoices(viewer) {
+		add(a)
+	}
+	for _, a := range s.catanExplorerSpiceChoices(viewer) {
 		add(a)
 	}
 	for _, a := range s.catanExplorerFishChoices(viewer) {
@@ -262,9 +274,19 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 			v["slot"], v["targets"] = a.Slot, a.Targets
 		case "catan_explorer_settle":
 			v["slot"], v["vertex"] = a.Slot, a.Vertex
-		case "catan_explorer_fish_load", "catan_explorer_fish_deliver":
+		case "catan_explorer_spice_gold":
+			v["card"] = a.Card
+		case "catan_explorer_spice_land":
+			v["target"], v["slot"], v["card"] = a.Target, a.Slot, a.Card
+		case "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_spice_deliver":
 			v["slot"], v["card"] = a.Slot, a.Card
 		case "catan_explorer_transfer":
+			if len(a.SpiceLoad) > 0 {
+				v["spiceLoad"] = a.SpiceLoad
+			}
+			if len(a.SpiceUnload) > 0 {
+				v["spiceUnload"] = a.SpiceUnload
+			}
 			if len(a.Cards) > 0 {
 				v["cards"] = a.Cards
 			}

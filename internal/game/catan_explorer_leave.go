@@ -31,6 +31,11 @@ func (s *State) eliminateCatanExplorer(player int) error {
 			x.Cargo.Fish[id] = catanExplorerCargoLocation{"supply", -1}
 		}
 	}
+	for id, sack := range x.Cargo.Spice {
+		if sack.Owner == player {
+			x.Cargo.Spice[id].At = catanExplorerCargoLocation{"supply", -1}
+		}
+	}
 	if x.Fish != nil {
 		if len(x.Fish.Retired) == 0 {
 			x.Fish.Retired = make([]bool, len(g.Players))
@@ -56,8 +61,8 @@ func (s *State) eliminateCatanExplorer(player int) error {
 				s.catanLog(player, "离场撤回船员，巢穴 #%d 恢复待攻陷", site.Tile+1)
 			}
 		}
-		s.catanExplorerMissionScore()
 	}
+	s.catanExplorerMissionScore()
 	// Even a pre-production departure must close its serial without inventing
 	// a production roll or restoring previous-vessel movement points.
 	x.Cargo.Turn = &catanExplorerCargoTurn{Player: player, Sequence: g.TurnSerial, Phase: "ended"}

@@ -230,7 +230,7 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 			}
 		}
 	case "catan_explorer_begin_move":
-		err = x.Cargo.beginMovement(g, x.Fleet, player, sequence, 0)
+		err = x.Cargo.beginMovement(g, x.Fleet, player, sequence, x.Cargo.farmCount(x.Board, player, "swift"))
 		if err == nil {
 			s.Phase = "catan_explorer_move"
 			s.catanLog(player, "结束交易建设，开始航行")
@@ -248,7 +248,7 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 			s.catanLog(player, "支付 羊毛×1，为船只增加2点移动")
 		}
 	case "catan_explorer_transfer":
-		err = x.Cargo.transferFreight(g, x.Fleet, player, sequence, a.Slot, a.Vertex, a.Give, a.Take, a.Cards, a.Targets)
+		err = x.Cargo.transferAllFreight(g, x.Fleet, player, sequence, a.Slot, a.Vertex, a.Give, a.Take, a.Cards, a.Targets, a.SpiceLoad, a.SpiceUnload)
 		if err == nil {
 			s.catanLog(player, "在港口 #%d 装卸货物", a.Vertex+1)
 		}
@@ -296,6 +296,9 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	}
 	if x.Lairs != nil {
 		v["explorer"].(map[string]any)["lairs"] = x.Lairs.publicView()
+	}
+	if x.Spice != nil {
+		v["explorer"].(map[string]any)["spice"] = x.Spice.publicView(g)
 	}
 	if x.Fish != nil {
 		v["explorer"].(map[string]any)["fish"] = x.Fish.publicView(len(g.Players))
