@@ -33,7 +33,7 @@ func (r *Room) validateCatanTwoSetup() error {
 	if r.CatanTwoRules == "" && r.CatanTwoScenario == "" {
 		return nil
 	}
-	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" {
+	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" {
 		return errors.New("双人剧本尚未接入")
 	}
 	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || r.CatanOptions != (game.CatanOptions{}) || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {

@@ -1079,7 +1079,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {
 					err = next.validateCatanTwoSetup()
 					if err == nil {
-						if next.CatanTwoScenario == "rivers" {
+						if next.CatanTwoScenario == "caravans" {
+							next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
+						} else if next.CatanTwoScenario == "rivers" {
 							next.Game, err = game.NewCatanTwoRivers(len(next.Seats), next.CatanOptions)
 						} else {
 							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)

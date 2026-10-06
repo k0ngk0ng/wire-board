@@ -232,3 +232,24 @@ test("river rules and wealth result follow the actual game rather than a waiting
   assert.equal(catanRuleContext(r).two, true);
   assert.equal(catanRuleContext(r).target, 10);
 });
+
+test("two-player merchant-train room shows twelve points while the running game remains authoritative", async () => {
+  const { catanRuleContext } = await import("../src/catan-rule-context.ts");
+  const r = fixture();
+  r.capacity = 2;
+  r.catanTwoRules = "catan-for-two-2025";
+  r.catanTwoScenario = "caravans";
+  assert.equal(catanRuleContext(r).caravans, false);
+  assert.equal(catanRuleContext(r).target, 10);
+  r.game.catan.caravans = { rules: "catan-caravans-2025" };
+  r.catanTwoScenario = "rivers";
+  assert.equal(catanRuleContext(r).caravans, true);
+  assert.equal(catanRuleContext(r).rivers, false);
+  assert.equal(catanRuleContext(r).scenario, "");
+  assert.equal(catanRuleContext(r).target, 12);
+  delete r.game;
+  r.catanTwoScenario = "caravans";
+  assert.equal(catanRuleContext(r).two, true);
+  assert.equal(catanRuleContext(r).caravans, true);
+  assert.equal(catanRuleContext(r).target, 12);
+});

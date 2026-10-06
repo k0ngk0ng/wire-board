@@ -383,6 +383,7 @@ export type CatanState = {
     neutralRoadLengths: number[];
   };
   caravans?: {
+    rules?: string;
     map: { wateringHoles: number[]; starts: CatanWagon[]; supply: number };
     wagons: CatanWagon[];
     built: boolean;

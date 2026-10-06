@@ -6,9 +6,12 @@ import (
 	"sort"
 )
 
+const CatanCaravansRules = "catan-caravans-2025"
+
 // Chronological directed wagons can be replayed to validate a saved network.
 // Pending holds public bids while the action owner remains State.Turn.
 type catanCaravans struct {
+	Rules    string              `json:"rules,omitempty"`
 	Map      *catanCaravanMap    `json:"map"`
 	Wagons   []catanCaravanWagon `json:"wagons"`
 	Built    bool                `json:"built"`
@@ -60,6 +63,10 @@ func (c catanCaravans) choices(g *Catan) []catanCaravanWagon {
 }
 
 func (c catanCaravans) validate(g *Catan) error {
+	if c.Rules != "" && c.Rules != CatanCaravansRules {
+		return errors.New("商队规则版本无效")
+	}
+
 	if c.Map == nil {
 		return errors.New("商队地图缺失")
 	}
