@@ -131,7 +131,7 @@ func (s *State) catanHarborsScore() {
 // derived once, preserving special endings such as wonders and cloth depletion.
 func (g *Catan) victoryTarget() int {
 	goal := 10
-	if g.Caravans != nil {
+	if g.Caravans != nil || g.Attack != nil {
 		goal = 12
 	}
 	if g.CitiesKnights != nil && g.wonders() == nil {

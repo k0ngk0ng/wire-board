@@ -10,18 +10,21 @@ type catanAttackKnight struct {
 	Edge   int `json:"edge"`
 }
 
-// Independent foundation for the scenario. It is deliberately not installed
-// on Catan yet: ordinary development/robber actions cannot drive these pieces.
+// Scenario state uses its own development deck; ordinary development/robber
+// actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
-	Rules      string              `json:"rules"`
-	Map        *catanAttackMap     `json:"map"`
-	Barbarians []int               `json:"barbarians"`
-	Knights    []catanAttackKnight `json:"knights"`
-	Prisoners  []int               `json:"prisoners"`
-	Gold       []int               `json:"gold"`
-	GoldBank   int                 `json:"goldBank"`
-	Deck       []string            `json:"deck"`
-	Discard    []string            `json:"discard"`
+	Bought     int                       `json:"bought"`
+	Sequence   int                       `json:"sequence"`
+	Landing    *catanAttackLandingRecord `json:"landing,omitempty"`
+	Rules      string                    `json:"rules"`
+	Map        *catanAttackMap           `json:"map"`
+	Barbarians []int                     `json:"barbarians"`
+	Knights    []catanAttackKnight       `json:"knights"`
+	Prisoners  []int                     `json:"prisoners"`
+	Gold       []int                     `json:"gold"`
+	GoldBank   int                       `json:"goldBank"`
+	Deck       []string                  `json:"deck"`
+	Discard    []string                  `json:"discard"`
 }
 
 func catanAttackCardCounts() map[string]int {

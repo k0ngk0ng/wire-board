@@ -152,6 +152,17 @@ func (g *Catan) cityProduction(claim []int, terrain, level int) {
 	}
 }
 func (s *State) catanAfterSevenDiscards() {
+	if g := s.Catan; g.Attack != nil {
+		g.Victims = g.cardTheftTargets(s.Turn)
+		s.Phase = "catan_steal"
+		if len(g.Victims) == 0 {
+			s.Phase = g.ResumePhase
+		}
+		if len(g.Victims) == 1 {
+			_ = s.catanSteal(s.Turn, g.Victims[0])
+		}
+		return
+	}
 	s.Phase = "catan_robber"
 	if k := s.Catan.CitiesKnights; k != nil && k.Invasions == 0 {
 		s.Phase = "catan_turn"

@@ -5,6 +5,7 @@ import "slices"
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	s.catanAttackView(v)
 	if q := g.Two; q != nil {
 		public := v["two"].(map[string]any)
 		public["canAct"] = !s.Finished && (q.Pending != nil || q.Trade != nil) && player == s.Turn
@@ -157,6 +158,9 @@ func (s *State) catanView(view map[string]any, player int) {
 	delete(v, "devDeck")
 	delete(v, "devDiscard")
 	v["devRemaining"] = len(g.DevDeck)
+	if g.Attack != nil {
+		v["devRemaining"] = len(g.Attack.Deck)
+	}
 	if g.Options.Helpers {
 		v["helperRules"] = CatanHelpers()
 		if player >= 0 && player < len(g.Players) && g.helperReady(player, 4) && player == s.Turn && s.Phase == "catan_turn" {
