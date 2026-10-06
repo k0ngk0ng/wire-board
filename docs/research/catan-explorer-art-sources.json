@@ -1,0 +1,213 @@
+{
+  "source": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3085%20CATAN%20%E2%80%93%20E%26P%20Rulebook.pdf",
+    "sha256": "3b337981de81a45d1052e0459909c693156f47152b46761438659653bc308dba",
+    "bytes": 14480651
+  },
+  "artwork": {
+    "settler-blue": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11909,
+      "soft_mask": 11908,
+      "mask_size": [
+        86,
+        104
+      ],
+      "size": [
+        55,
+        66
+      ],
+      "bytes": 5170,
+      "sha256": "88b8f3725c72a61f7e6fbc98e090aa07434f0392727c6bd2c1b0bae0d60a055c"
+    },
+    "settler-red": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11913,
+      "soft_mask": 11912,
+      "mask_size": [
+        86,
+        104
+      ],
+      "size": [
+        55,
+        66
+      ],
+      "bytes": 4992,
+      "sha256": "7153a58f2c252fff7d6b5f16dcf6b742a4db066a766de6553a00a55b1570b84b"
+    },
+    "settler-white": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11915,
+      "soft_mask": 11914,
+      "mask_size": [
+        86,
+        104
+      ],
+      "size": [
+        54,
+        66
+      ],
+      "bytes": 3964,
+      "sha256": "6170fce63ccd95988aa412af7ba3cbfeb4cc8d32157540d6d5ffcde5bdef88ad"
+    },
+    "settler-orange": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11911,
+      "soft_mask": 11910,
+      "mask_size": [
+        86,
+        104
+      ],
+      "size": [
+        54,
+        66
+      ],
+      "bytes": 4774,
+      "sha256": "be4dff03d510d089f004858806e4ffb97c589d2d18a78b604118761fe5dff8c6"
+    },
+    "ship-blue": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11917,
+      "soft_mask": 11916,
+      "mask_size": [
+        162,
+        96
+      ],
+      "size": [
+        103,
+        61
+      ],
+      "bytes": 7432,
+      "sha256": "d17076fbd0b2c89d3990dba6b7f6fc14105322fd839c41e8762057f6e62e8f6e"
+    },
+    "ship-red": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11921,
+      "soft_mask": 11920,
+      "mask_size": [
+        162,
+        96
+      ],
+      "size": [
+        103,
+        61
+      ],
+      "bytes": 7360,
+      "sha256": "87ef7a8783d40a6e676a75a7d60d0ead74ae56f68fa77e66ad619b3fd8179939"
+    },
+    "ship-white": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11923,
+      "soft_mask": 11922,
+      "mask_size": [
+        162,
+        96
+      ],
+      "size": [
+        103,
+        61
+      ],
+      "bytes": 5868,
+      "sha256": "4b610538300503206fc6ef2e98a9ebf0fb0c54bc096405201db05036dbf62bf5"
+    },
+    "ship-orange": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11919,
+      "soft_mask": 11918,
+      "mask_size": [
+        162,
+        96
+      ],
+      "size": [
+        103,
+        61
+      ],
+      "bytes": 7210,
+      "sha256": "f879fad0e848a4740f18ed77b20c5b029855e1049db29ab598e3312146db5afd"
+    },
+    "harbor-blue": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11931,
+      "soft_mask": 11930,
+      "mask_size": [
+        131,
+        122
+      ],
+      "size": [
+        83,
+        78
+      ],
+      "bytes": 6926,
+      "sha256": "5a2fe6ad42e4690e842e3a12cbd6a04ad24a0af27e23dfa8ec9744dd4e2c9eb4"
+    },
+    "harbor-red": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11937,
+      "soft_mask": 11936,
+      "mask_size": [
+        131,
+        122
+      ],
+      "size": [
+        83,
+        78
+      ],
+      "bytes": 6602,
+      "sha256": "b1544bb4285d2c056a8ceed4682049b5779799bbb8d0060c4805726740180a3d"
+    },
+    "harbor-white": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11939,
+      "soft_mask": 11938,
+      "mask_size": [
+        130,
+        122
+      ],
+      "size": [
+        83,
+        78
+      ],
+      "bytes": 5372,
+      "sha256": "bd8f94e2d4262fe27b78983951ac33b3ec5b124daa546644f6c3e08ac4b6ea48"
+    },
+    "harbor-orange": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11933,
+      "soft_mask": 11932,
+      "mask_size": [
+        130,
+        122
+      ],
+      "size": [
+        83,
+        78
+      ],
+      "bytes": 6556,
+      "sha256": "a79693058204289769c42b0746ffc0b5926286174ea2dcab86e4a3f01e10ef94"
+    }
+  }
+}

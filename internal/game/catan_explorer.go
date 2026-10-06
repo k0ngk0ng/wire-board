@@ -304,6 +304,8 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	g := s.Catan
 	x := g.Explorer
 	v["explorer"] = map[string]any{"board": x.Board.publicView(), "fleet": clone(x.Fleet), "cargo": clone(x.Cargo), "economy": x.Economy.publicView(), "sequence": g.TurnSerial, "choices": catanExplorerChoiceView(s.catanExplorerChoices(viewer))}
+	v["explorer"].(map[string]any)["actionId"] = x.ActionID
+	v["explorer"].(map[string]any)["motion"] = clone(x.Motion)
 	v["victoryTarget"] = x.Board.Target
 	v["setupLimit"] = g.SetupLimit()
 	delete(v, "devDeck")
@@ -322,6 +324,6 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 		}
 	}
 	// No generic base-game choices: explorer actions have different costs and
-	// ships. Resource-sensitive legal choices will be added with the UI stage.
+	// ships. Actor-only choices above provide the Explorer action previews.
 	v["legal"] = map[string][]int{}
 }

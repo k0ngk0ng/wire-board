@@ -359,6 +359,7 @@ func (s *State) applyCatan(player int, a Action) error {
 		if err := next.applyCatanExplorer(player, a); err != nil {
 			return err
 		}
+		next.recordCatanExplorerMotion(s, player, a)
 		if err := next.validateCatanExplorer(); err != nil {
 			return err
 		}
