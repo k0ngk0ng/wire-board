@@ -78,6 +78,9 @@ func (s *State) catanBot(player int) (Action, error) {
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || s.Finished {
 		return Action{}, errors.New("inactive bot seat")
 	}
+	if g.Explorer != nil {
+		return s.catanExplorerBot(player)
+	}
 	if g.Transport != nil {
 		if a, ok, err := s.catanTransportBot(player); ok || err != nil {
 			return a, err

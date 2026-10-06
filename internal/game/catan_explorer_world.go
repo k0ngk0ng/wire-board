@@ -91,13 +91,18 @@ func (x catanExplorer) copy(g *Catan) (*Catan, *catanExplorer, error) {
 		Game     *Catan         `json:"game"`
 		Explorer *catanExplorer `json:"explorer"`
 	}
-	b, err := json.Marshal(snapshot{g, &x})
+	base := *g
+	base.Explorer = nil // Do not serialize the aggregate twice through Catan.
+	b, err := json.Marshal(snapshot{&base, &x})
 	if err != nil {
 		return nil, nil, err
 	}
 	var out snapshot
 	if err = json.Unmarshal(b, &out); err != nil {
 		return nil, nil, err
+	}
+	if g.Explorer != nil {
+		out.Game.Explorer = out.Explorer
 	}
 	return out.Game, out.Explorer, nil
 }
@@ -163,6 +168,9 @@ func (x *catanExplorer) sail(g *Catan, player int, sequence uint64, ship int, pa
 		return catanExplorerVoyage{}, err
 	}
 	*g, *x = *q, *next
+	if g.Explorer != nil {
+		g.Explorer = x
+	}
 	return result, nil
 }
 
@@ -194,5 +202,8 @@ func (x *catanExplorer) buildShip(g *Catan, player int, sequence uint64, ship, e
 		return nil, err
 	}
 	*g, *x = *q, *next
+	if g.Explorer != nil {
+		g.Explorer = x
+	}
 	return result, nil
 }

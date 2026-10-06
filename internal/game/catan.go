@@ -29,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Explorer       *catanExplorer       `json:"explorer,omitempty"`
 	Transport      *catanTransport      `json:"transport,omitempty"`
 	Attack         *catanAttack         `json:"attack,omitempty"`
 	Two            *CatanTwo            `json:"two,omitempty"`
@@ -350,6 +351,20 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if s.Catan.Explorer != nil {
+		if err := s.validateCatanExplorer(); err != nil {
+			return err
+		}
+		next := clone(*s)
+		if err := next.applyCatanExplorer(player, a); err != nil {
+			return err
+		}
+		if err := next.validateCatanExplorer(); err != nil {
+			return err
+		}
+		*s = next
+		return nil
+	}
 	if s.Catan.Transport != nil {
 		if err := s.validateCatanTransport(); err != nil {
 			return err
@@ -1134,6 +1149,18 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 }
 func (s *State) AutoCatanPending() {
 	g := s.Catan
+	if g != nil && g.Explorer != nil {
+		if s.Phase == "catan_discard" && !s.Finished {
+			for player, due := range slices.Clone(g.DiscardDue) {
+				if due > 0 {
+					if a, err := s.catanExplorerBot(player); err == nil {
+						_ = s.Apply(player, a)
+					}
+				}
+			}
+		}
+		return
+	}
 	if g != nil && g.Transport != nil && s.CatanPendingActor() >= 0 {
 		if a, err := s.catanBot(s.Turn); err == nil {
 			_ = s.applyCatan(s.Turn, a)
@@ -1292,6 +1319,9 @@ func (s *State) AutoCatanPending() {
 	}
 }
 func (s *State) EliminateCatan(p int) error {
+	if s.Catan != nil && s.Catan.Explorer != nil {
+		return errors.New("探险家离场处理尚未接入；未开放的剧本不能使用基础离场流程")
+	}
 	if err := s.validateCatanTransport(); err != nil {
 		return err
 	}
