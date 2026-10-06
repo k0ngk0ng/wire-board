@@ -508,7 +508,7 @@ func TestCatanAttackHiddenDeckPublicInventoryAndUnsupportedCards(t *testing.T) {
 			}
 		}
 	}
-	attackReject(t, s, s.Turn, Action{Type: "catan_buy_dev"})
+	attackReject(t, s, s.Turn, Action{Type: "catan_buy_dev", Skill: "helper"})
 	attackReject(t, s, s.Turn, Action{Type: "catan_dev", Card: 0})
 	s.Catan.Attack.Knights = append(s.Catan.Attack.Knights, catanAttackKnight{Player: s.Turn, Edge: 0})
 	attackReject(t, s, s.Turn, Action{Type: "catan_end"}) // Do not silently skip an unfinished battle phase.

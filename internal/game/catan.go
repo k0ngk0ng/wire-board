@@ -394,6 +394,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
 	}
+	if g.Attack != nil && g.Attack.Pending != nil {
+		return s.catanAttackCardChoice(player, a)
+	}
 	if g.Two != nil && g.Two.Trade != nil {
 		return s.catanTwoReturn(player, a)
 	}
@@ -559,7 +562,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanCompleteTrade(player, a)
 	case "catan_buy_dev":
 		if g.Attack != nil {
-			return errors.New("蛮族进攻独立发展卡流程尚未接入，内部剧本不能使用普通牌堆")
+			return s.catanAttackBuyCard(player, a)
 		}
 		if s.Phase != "catan_turn" || len(g.DevDeck) == 0 {
 			return errors.New("当前不能购买发展卡")
@@ -1108,6 +1111,13 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g == nil || s.Finished {
+		return
+	}
+	if g.Attack != nil && g.Attack.Pending != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanAttackCardBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 		return
 	}
 	if g.Two != nil && g.Two.Trade != nil {
