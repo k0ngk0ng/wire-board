@@ -7,12 +7,13 @@ import {
 } from "./catan-player-colors";
 import {
   explorerContents,
+  explorerCargoPoint,
   explorerMotionBetween,
   explorerMotionPath,
   explorerPathPoint,
   explorerShipPosition,
 } from "./catan-explorer-state";
-import type { ExplorerLocation, ExplorerMotion } from "./catan-explorer-state";
+import type { ExplorerMotion } from "./catan-explorer-state";
 
 export function ExplorerPiece({
   g,
@@ -68,16 +69,21 @@ export function ExplorerCargoPieces({
   g,
   assets,
   units,
+  arriving = [],
 }: {
   g: CatanState;
   assets: string;
   units: number[];
+  arriving?: number[];
 }) {
   return (
     <>
       {units.map((id, i) => (
         <g
           key={id}
+          className={
+            arriving.includes(id) ? "explorer-cargo-arriving" : undefined
+          }
           transform={`translate(${(i - (units.length - 1) / 2) * 16},0)`}
         >
           <ExplorerPiece
@@ -147,16 +153,6 @@ export function useExplorerMotion(room: Room) {
     };
   }, []);
   return active;
-}
-
-function cargoPoint(g: CatanState, loc: ExplorerLocation) {
-  const p =
-    loc.kind === "ship"
-      ? explorerShipPosition(g, loc.index)
-      : loc.kind === "harbor"
-        ? g.vertices[loc.index]
-        : null;
-  return p ? { x: p.x, y: p.y + (loc.kind === "ship" ? -12 : 20) } : null;
 }
 
 // Update only SVG attributes per frame; no React render or screen-coordinate math.
@@ -252,10 +248,105 @@ export function ExplorerEffects({
           />
         );
       })}
+      {e.pirate &&
+        (() => {
+          const p = e.pirate,
+            old = before.tiles[p.fromTile],
+            next = after.tiles[p.toTile];
+          if (!next) return null;
+          const same = p.fromOwner >= 0 && p.fromOwner === p.toOwner && old;
+          return (
+            <>
+              {!same && p.fromOwner >= 0 && old && (
+                <g transform={`translate(${old.x},${old.y})`} data-fade="0,500">
+                  <ExplorerPiece
+                    g={before}
+                    assets={assets}
+                    player={p.fromOwner}
+                    kind="pirate"
+                    width={44}
+                  />
+                </g>
+              )}
+              <g
+                data-flight={JSON.stringify(
+                  same
+                    ? [
+                        { x: old.x, y: old.y },
+                        { x: next.x, y: next.y },
+                      ]
+                    : [
+                        { x: next.x, y: next.y - 20 },
+                        { x: next.x, y: next.y },
+                      ],
+                )}
+                data-duration="650"
+                data-fade="650,200"
+              >
+                <ExplorerPiece
+                  g={after}
+                  assets={assets}
+                  player={p.toOwner}
+                  kind="pirate"
+                  width={44}
+                />
+              </g>
+            </>
+          );
+        })()}
+      {e.chase &&
+        (() => {
+          const p = explorerShipPosition(after, e.chase.ship);
+          return (
+            p && (
+              <g
+                transform={`translate(${p.x},${p.y - 36})`}
+                data-fade="850,450"
+                className="explorer-motion-label"
+              >
+                <rect x="-38" y="-14" width="76" height="24" rx="8" />
+                <text y="3">
+                  {e.chase.die} · {e.chase.success ? "驱赶成功" : "未成功"}
+                </text>
+              </g>
+            )
+          );
+        })()}
+      {e.lair &&
+        (() => {
+          const l = e.lair,
+            t = after.tiles[l.tile];
+          if (!t) return null;
+          const text = l.resolved
+            ? "金矿已解放"
+            : l.ready
+              ? "巢穴已攻陷"
+              : l.dice?.length
+                ? l.dice.filter(Boolean).join(" · ")
+                : e.kind === "catan_explorer_land"
+                  ? "船员已登陆"
+                  : "结算战果";
+          return (
+            <g transform={`translate(${t.x},${t.y})`} data-fade="750,650">
+              <circle
+                r="33"
+                fill="none"
+                stroke="#ffe987"
+                strokeWidth="4"
+                data-pulse="true"
+                data-fade="0,1400"
+              />
+              <g transform="translate(0,-38)" className="explorer-motion-label">
+                <rect x="-48" y="-14" width="96" height="24" rx="8" />
+                <text y="3">{text}</text>
+              </g>
+            </g>
+          );
+        })()}
       {e.cargo?.map((c) => {
-        const from = cargoPoint(before, c.from),
+        const from = explorerCargoPoint(before, c.unit, c.from),
           to =
-            cargoPoint(after, c.to) ??
+            explorerCargoPoint(after, c.unit, c.to) ??
             (e.kind === "catan_explorer_settle"
               ? after.vertices[e.vertex]
               : null);

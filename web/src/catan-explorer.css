@@ -504,3 +504,14 @@
   line-height: 1.5;
   margin: 8px 0 0;
 }
+
+.explorer-motion-label rect {
+  fill: #fff5d9;
+  stroke: #85612c;
+  stroke-width: 1.4;
+}
+.explorer-motion-label text {
+  fill: #493318;
+  font-size: 11px;
+  font-weight: 800;
+}

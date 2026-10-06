@@ -77,6 +77,7 @@ export function CatanExplorerBoard({
     x = g.explorer!,
     you = room.you;
   const motion = useExplorerMotion(room);
+  const arriving = motion?.event.cargo?.map((c) => c.unit) || [];
   const hand = g.players[you]?.resources || empty();
   const [pick, setPick] = useState<ExplorerPick | null>(null);
   const [collapsed, setCollapsed] = useState(false);
@@ -363,18 +364,9 @@ export function CatanExplorerBoard({
                       />
                     )}
                     {explorerContents(g, "harbor", v.id).length > 0 && (
-                      <g
-                        className={
-                          motion?.event.cargo?.some(
-                            (c) =>
-                              c.to.kind === "harbor" && c.to.index === v.id,
-                          )
-                            ? "explorer-cargo-arriving"
-                            : undefined
-                        }
-                        transform="translate(0,20)"
-                      >
+                      <g transform="translate(0,20)">
                         <ExplorerCargoPieces
+                          arriving={arriving}
                           g={g}
                           assets={assets}
                           units={explorerContents(g, "harbor", v.id)}
@@ -403,6 +395,11 @@ export function CatanExplorerBoard({
                     {units.map((id, i) => (
                       <g
                         key={id}
+                        className={
+                          arriving.includes(id)
+                            ? "explorer-cargo-arriving"
+                            : undefined
+                        }
                         transform={`translate(${t.x + (i - (units.length - 1) / 2) * 18},${t.y + 34})`}
                       >
                         <ExplorerPiece
@@ -422,7 +419,11 @@ export function CatanExplorerBoard({
               })}
               {x.pirate && x.pirate.owner >= 0 && g.tiles[x.pirate.tile] && (
                 <g
+                  key={motion?.event.pirate ? motion.event.id : "pirate"}
                   transform={`translate(${g.tiles[x.pirate.tile].x},${g.tiles[x.pirate.tile].y})`}
+                  className={
+                    motion?.event.pirate ? "explorer-cargo-arriving" : undefined
+                  }
                   pointerEvents="none"
                 >
                   <ExplorerPiece
@@ -465,17 +466,9 @@ export function CatanExplorerBoard({
                       kind="ship"
                     />
                     {explorerContents(g, "ship", id).length > 0 && (
-                      <g
-                        className={
-                          motion?.event.cargo?.some(
-                            (c) => c.to.kind === "ship" && c.to.index === id,
-                          )
-                            ? "explorer-cargo-arriving"
-                            : undefined
-                        }
-                        transform="translate(0,-12)"
-                      >
+                      <g transform="translate(0,-12)">
                         <ExplorerCargoPieces
+                          arriving={arriving}
                           g={g}
                           assets={assets}
                           units={explorerContents(g, "ship", id)}

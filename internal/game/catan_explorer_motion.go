@@ -13,6 +13,23 @@ type catanExplorerMotion struct {
 	Revealed []int                      `json:"revealed,omitempty"`
 	Vertex   int                        `json:"vertex"`
 	Cargo    []catanExplorerCargoMotion `json:"cargo,omitempty"`
+	Pirate   *catanExplorerPirateMotion `json:"pirate,omitempty"`
+	Lair     *catanExplorerLairMotion   `json:"lair,omitempty"`
+	Chase    *catanExplorerChase        `json:"chase,omitempty"`
+}
+
+type catanExplorerPirateMotion struct {
+	FromOwner int `json:"fromOwner"`
+	FromTile  int `json:"fromTile"`
+	ToOwner   int `json:"toOwner"`
+	ToTile    int `json:"toTile"`
+}
+type catanExplorerLairMotion struct {
+	Tile     int   `json:"tile"`
+	Ready    bool  `json:"ready"`
+	Resolved bool  `json:"resolved"`
+	Hero     int   `json:"hero"`
+	Dice     []int `json:"dice,omitempty"`
 }
 
 type catanExplorerCargoMotion struct {
@@ -26,7 +43,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 	x.ActionID = old.ActionID + 1
 	x.Motion = nil
 	switch a.Type {
-	case "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
+	case "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
 	default:
 		return
 	}
@@ -41,6 +58,24 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 		m.Ship, m.Vertex = a.Slot, a.Vertex
 	case "catan_explorer_harbor":
 		m.Vertex = a.Vertex
+	case "catan_explorer_land", "catan_explorer_pickup":
+		m.Ship = a.Slot
+	case "catan_explorer_chase":
+		m.Ship = a.Target
+		m.Chase = clone(x.Pirate.LastChase)
+	}
+	if a.Type == "catan_explorer_pirate_place" && old.Pirate != nil && x.Pirate != nil {
+		m.Pirate = &catanExplorerPirateMotion{old.Pirate.Owner, old.Pirate.Tile, x.Pirate.Owner, x.Pirate.Tile}
+	}
+	if x.Lairs != nil && (a.Type == "catan_explorer_land" || a.Type == "catan_explorer_resolve" || a.Type == "catan_explorer_battle") {
+		at := x.Lairs.site(a.Target)
+		if at >= 0 {
+			site, prior := x.Lairs.Sites[at], old.Lairs.Sites[old.Lairs.site(a.Target)]
+			m.Lair = &catanExplorerLairMotion{Tile: site.Tile, Ready: site.Ready > 0 && prior.Ready == 0, Resolved: site.Resolved > 0 && prior.Resolved == 0, Hero: site.Hero}
+			if len(site.Rounds) > len(prior.Rounds) {
+				m.Lair.Dice = slices.Clone(site.Rounds[len(site.Rounds)-1])
+			}
+		}
 	}
 	for i, tile := range s.Catan.Tiles {
 		if before.Catan.Tiles[i].Resource == 8 && tile.Resource != 8 {
