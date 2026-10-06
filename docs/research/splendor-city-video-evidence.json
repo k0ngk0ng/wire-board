@@ -1,13 +1,4 @@
 {
-  "source": {
-    "url": "https://www.youtube.com/watch?v=sADleQgXSPs",
-    "title": "Splendor: Silk Road Expansion - Game Unboxing & Reboxing - See What's In The Box",
-    "channel": "The Brosey Game Company",
-    "published": "2025-05-06",
-    "retrieved": "2026-10-07",
-    "kind": "independent-physical-unboxing",
-    "method": "Browser screenshot after requestVideoFrameCallback confirmed mediaTime; rectangular crop only, lossless WebP; no recoloring or upscaling."
-  },
   "limits": "Face facts only. Does not independently establish physical front/back pairings or all fourteen faces; tile/side use local candidate identifiers. Crops are retained research evidence, not product assets.",
   "faces": [
     {
@@ -31,7 +22,8 @@
       ],
       "retained": ".local/board-expansion-research/city-video-samarkand-dark.webp",
       "sha256": "b8a78a1edefd34b1f7f0d559289172bf6bff7eec5a3d088fc0d61983506ed302",
-      "bytes": 134324
+      "bytes": 134324,
+      "source": "brosey-unboxing"
     },
     {
       "tile": 4,
@@ -54,7 +46,8 @@
       ],
       "retained": ".local/board-expansion-research/city-video-delhi-five-colors.webp",
       "sha256": "d6f0ee532d9d1f39c7f4fd1082d27f5d17075d636f16554e7f4757ef92d089e6",
-      "bytes": 114212
+      "bytes": 114212,
+      "source": "brosey-unboxing"
     },
     {
       "tile": 6,
@@ -77,7 +70,117 @@
       ],
       "retained": ".local/board-expansion-research/city-video-seoul-six.webp",
       "sha256": "e6b19ddbe381d6764ca24cfff8f537f79bd6ce142d991edae552de5df7e2ef97",
-      "bytes": 88438
+      "bytes": 88438,
+      "source": "brosey-unboxing"
+    },
+    {
+      "tile": 7,
+      "side": 0,
+      "points": 16,
+      "cost": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "any": 0,
+      "source": "never-bored-review",
+      "mediaTime": 47.013633,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        0,
+        60,
+        915,
+        515
+      ],
+      "retained": ".local/board-expansion-research/city-video-krakow-five-colors.webp",
+      "sha256": "5379161b47e3f3ee24fad92785268f30a5d206198b2e3400f0a0c7dfbb6e2b21",
+      "bytes": 452276
+    },
+    {
+      "tile": 4,
+      "side": 0,
+      "points": 13,
+      "cost": [
+        4,
+        0,
+        3,
+        0,
+        0
+      ],
+      "any": 0,
+      "source": "never-bored-review",
+      "mediaTime": 180.013166,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        265,
+        110,
+        1560,
+        1025
+      ],
+      "retained": ".local/board-expansion-research/city-video-delhi-green-blue.webp",
+      "sha256": "2184f926fb9f1661844b30aeb368d35630c72d5c1f4e72d82d8ef87fa2ad0485",
+      "bytes": 1117700
+    },
+    {
+      "tile": 2,
+      "side": 0,
+      "points": 13,
+      "cost": [
+        3,
+        0,
+        0,
+        4,
+        0
+      ],
+      "any": 0,
+      "source": "never-bored-review",
+      "mediaTime": 33.033,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        780,
+        180,
+        1465,
+        560
+      ],
+      "retained": ".local/board-expansion-research/city-video-amboise-black-green.webp",
+      "sha256": "2f81a5b2b782eb1a2c37c21eb3ae93101e21aa3b9bfee80c509611e81f5b637c",
+      "bytes": 265582
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.youtube.com/watch?v=sADleQgXSPs",
+      "title": "Splendor: Silk Road Expansion - Game Unboxing & Reboxing - See What's In The Box",
+      "channel": "The Brosey Game Company",
+      "published": "2025-05-06",
+      "retrieved": "2026-10-07",
+      "kind": "independent-physical-unboxing",
+      "method": "Browser screenshot after requestVideoFrameCallback confirmed mediaTime; rectangular crop only, lossless WebP; no recoloring or upscaling.",
+      "id": "brosey-unboxing"
+    },
+    {
+      "id": "never-bored-review",
+      "url": "https://www.youtube.com/watch?v=qK3ex8EVGR0",
+      "title": "Splendor: The Silk Road | Our Thoughts | Board Game Review",
+      "channel": "Never Bored Gaming",
+      "published": "2025-05-02",
+      "retrieved": "2026-10-07",
+      "kind": "independent-physical-review",
+      "method": "Browser fullscreen screenshot after requestVideoFrameCallback confirmed mediaTime and native 1920px width; rectangular lossless WebP crops, no recoloring or upscaling."
     }
   ]
 }
