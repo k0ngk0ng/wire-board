@@ -242,12 +242,7 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		a.Type = "catan_roll"
 		return a, nil
 	case "catan_turn":
-		type plan struct {
-			action Action
-			cost   []int
-			value  int
-		}
-		plans := []plan{}
+		plans := s.catanExplorerMissionPlans(player)
 		harbors := 0
 		for _, v := range g.Vertices {
 			if v.Owner == player && v.Level == 2 {
@@ -256,14 +251,14 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		}
 		for _, v := range g.Vertices {
 			if harbors < 4 && v.Owner == player && v.Level == 1 && catanExplorerCoast(g, v.ID) {
-				plans = append(plans, plan{Action{Type: "catan_explorer_harbor", Vertex: v.ID, Prompt: a.Prompt}, []int{0, 0, 0, 2, 2}, 110})
+				plans = append(plans, catanExplorerBotPlan{Action{Type: "catan_explorer_harbor", Vertex: v.ID, Prompt: a.Prompt}, []int{0, 0, 0, 2, 2}, 110})
 			}
 			if catanExplorerBotSite(g, player, v.ID, true) {
-				plans = append(plans, plan{Action{Type: "catan_settlement", Vertex: v.ID, Prompt: a.Prompt}, []int{1, 1, 1, 1, 0}, 130 + g.vertexValue(player, v.ID)/10})
+				plans = append(plans, catanExplorerBotPlan{Action{Type: "catan_settlement", Vertex: v.ID, Prompt: a.Prompt}, []int{1, 1, 1, 1, 0}, 130 + g.vertexValue(player, v.ID)/10})
 			}
 		}
 		if road := catanExplorerBotRoad(g, player); road >= 0 {
-			plans = append(plans, plan{Action{Type: "catan_road", Edge: road, Prompt: a.Prompt}, []int{1, 1, 0, 0, 0}, 60})
+			plans = append(plans, catanExplorerBotPlan{Action{Type: "catan_road", Edge: road, Prompt: a.Prompt}, []int{1, 1, 0, 0, 0}, 60})
 		}
 		best := -1
 		value := -100000
@@ -304,6 +299,9 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		a.Type = "catan_explorer_begin_move"
 		return a, nil
 	case "catan_explorer_move":
+		if action, ok := s.catanExplorerMissionCargo(player); ok {
+			return action, nil
+		}
 		for ship, edge := range x.Fleet.Positions {
 			if ship/3 != player || edge < 0 {
 				continue
@@ -324,10 +322,16 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 				continue
 			}
 			units := x.Cargo.contents(catanExplorerCargoLocation{"ship", ship})
-			if len(units) != 1 || units[0]%11 >= 2 {
+			if x.Lairs == nil && (len(units) != 1 || units[0]%11 >= 2) {
 				continue
 			}
-			if path := catanExplorerBotVoyage(g, player, ship); len(path) > 0 {
+			var path []int
+			if x.Lairs != nil {
+				path = catanExplorerMissionVoyage(g, player, ship)
+			} else {
+				path = catanExplorerBotVoyage(g, player, ship)
+			}
+			if len(path) > 0 {
 				a.Type, a.Slot, a.Targets = "catan_explorer_sail", ship, path
 				return a, nil
 			}
