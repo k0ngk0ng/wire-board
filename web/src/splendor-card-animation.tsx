@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import type { Card, Noble, Room, SplendorCardEvent } from "./types";
 import { visibleFlightAnchor } from "./flight-anchor";
+import { orientBackStyle } from "./splendor-orient-art";
 import {
   captureCardOrigin,
   resolveCardOrigin,
@@ -256,11 +257,7 @@ export function SplendorCardAnimation({
                 style={
                   event.orient
                     ? assets
-                      ? {
-                          backgroundImage: `url("${assets}/splendor/expansions/orient-back-${event.tier}.webp")`,
-                          backgroundSize: "100% 100%",
-                          backgroundPosition: "center",
-                        }
+                      ? orientBackStyle(assets, event.tier)
                       : undefined
                     : { backgroundPosition: `${(event.tier - 1) * 20}% 100%` }
                 }

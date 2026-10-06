@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { Card } from "./types";
+import { orientArtCell, orientAtlasStyle } from "./splendor-orient-art";
 import {
   gemBonus,
   gemCardDescription,
@@ -47,10 +48,9 @@ export function OrientCard({
       }
     >
       {assets && card.orient && (
-        <img
+        <span
           className="orient-card-art"
-          src={`${assets}/splendor/expansions/orient-art-${card.orient}.webp`}
-          alt=""
+          style={orientAtlasStyle(assets, orientArtCell(card))}
           aria-hidden="true"
         />
       )}
