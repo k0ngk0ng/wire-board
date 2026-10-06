@@ -49,7 +49,7 @@ func (m catanExplorerSpice) publicView(g *Catan) catanExplorerSpiceView {
 	return catanExplorerSpiceView{progress, scores, leader, clone(m.GoldUse)}
 }
 func (m catanExplorerSpice) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
-	if g == nil || b == nil || f == nil || c == nil || e == nil || b.Scenario != "spices-for-catan" || c.Scenario != b.Scenario {
+	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerSpiceScenario(b.Scenario) || c.Scenario != b.Scenario {
 		return errors.New("香料任务组件不匹配")
 	}
 	if err := b.validate(g); err != nil {
