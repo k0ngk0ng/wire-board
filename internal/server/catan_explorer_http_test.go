@@ -75,6 +75,9 @@ func assertExplorerHTTPPrivacy(t *testing.T, clients []*testClient) {
 	for viewer, c := range clients {
 		v := current(c)["game"].(map[string]any)["catan"].(map[string]any)
 		x := v["explorer"].(map[string]any)
+		if viewer != int(current(c)["game"].(map[string]any)["turn"].(float64)) && len(x["choices"].([]any)) != 0 {
+			t.Fatal("actor choices leaked to another viewer")
+		}
 		board := x["board"].(map[string]any)
 		if board["hidden"] != nil || board["numbers"] != nil || x["economy"].(map[string]any)["turn"] != nil {
 			t.Fatal("private explorer state leaked")
@@ -103,6 +106,30 @@ func TestCatanExplorerNaturalHTTPMatches(t *testing.T) {
 				a, err := g.BotAction(actor)
 				if err != nil {
 					t.Fatal(steps, g.Phase, err)
+				}
+				// Play the actual wire preview, using BotAction only to choose an
+				// intent. A shortest advertised voyage may differ from the bot's path.
+				if g.Phase != "catan_discard" {
+					view := current(clients[actor])["game"].(map[string]any)["catan"].(map[string]any)["explorer"].(map[string]any)
+					found := false
+					for _, raw := range view["choices"].([]any) {
+						data, _ := json.Marshal(raw)
+						var candidate game.Action
+						if err := json.Unmarshal(data, &candidate); err != nil {
+							t.Fatal(err)
+						}
+						match := reflect.DeepEqual(a, candidate)
+						if a.Type == "catan_explorer_sail" && candidate.Type == a.Type && candidate.Slot == a.Slot && len(candidate.Targets) > 0 && len(a.Targets) > 0 {
+							match = candidate.Targets[len(candidate.Targets)-1] == a.Targets[len(a.Targets)-1]
+						}
+						if match {
+							a, found = candidate, true
+							break
+						}
+					}
+					if !found {
+						t.Fatal("bot intent missing from network choices", a)
+					}
 				}
 				phase, serial, deadline := g.Phase, g.Catan.TurnSerial, r.TurnDeadline
 				if phase == "catan_explorer_move" {

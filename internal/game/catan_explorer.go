@@ -303,7 +303,7 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	g := s.Catan
 	x := g.Explorer
-	v["explorer"] = map[string]any{"board": x.Board.publicView(), "fleet": clone(x.Fleet), "cargo": clone(x.Cargo), "economy": x.Economy.publicView(), "sequence": g.TurnSerial}
+	v["explorer"] = map[string]any{"board": x.Board.publicView(), "fleet": clone(x.Fleet), "cargo": clone(x.Cargo), "economy": x.Economy.publicView(), "sequence": g.TurnSerial, "choices": catanExplorerChoiceView(s.catanExplorerChoices(viewer))}
 	v["victoryTarget"] = x.Board.Target
 	v["setupLimit"] = g.SetupLimit()
 	delete(v, "devDeck")
