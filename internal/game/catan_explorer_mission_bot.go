@@ -10,6 +10,9 @@ type catanExplorerBotPlan struct {
 
 func catanExplorerMissionUnfinished(g *Catan) bool {
 	l := g.Explorer.Lairs
+	if l == nil {
+		return false
+	}
 	total := 6
 	if g.Explorer.Board.Scenario == "fish-for-catan" {
 		total = 5
@@ -23,6 +26,10 @@ func catanExplorerMissionUnfinished(g *Catan) bool {
 		}
 	}
 	return false
+}
+
+func catanExplorerBotNeedsCrew(g *Catan, player int) bool {
+	return catanExplorerMissionUnfinished(g) || g.Explorer.Spice != nil && catanExplorerBotSpiceRemaining(g, player) > 0
 }
 
 // After the last mission, reuse crew ships for settlers. A harbor exchange is
@@ -55,13 +62,7 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 	}
 	prompt := int(g.TurnSerial)
 	plans := []catanExplorerBotPlan{}
-	unresolved := false
-	if x.Lairs != nil {
-		unresolved = catanExplorerMissionUnfinished(g)
-	}
-	if x.Spice != nil {
-		unresolved = catanExplorerBotSpiceRemaining(g, player) > 0
-	}
+	unresolved := catanExplorerBotNeedsCrew(g, player)
 	ships, freeShip := 0, -1
 	for id := player * 3; id < (player+1)*3; id++ {
 		if x.Fleet.Positions[id] >= 0 {
@@ -134,7 +135,7 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 		}
 	}
 	crewTarget := 3
-	if x.Spice != nil {
+	if x.Spice != nil && !catanExplorerMissionUnfinished(g) {
 		crewTarget = min(2, catanExplorerBotSpiceRemaining(g, player))
 	}
 	for _, loc := range locations {
@@ -170,8 +171,20 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 func catanExplorerMissionGoal(g *Catan, player, ship, edge int) int {
 	x := g.Explorer
 	if x.Spice != nil {
-		return catanExplorerSpiceGoal(g, player, ship, edge)
+		value := catanExplorerSpiceGoal(g, player, ship, edge)
+		loc := catanExplorerCargoLocation{"ship", ship}
+		// Deliver existing mission freight first. An empty fishing vessel also
+		// keeps its assignment; other ships can serve either crew mission.
+		if x.Lairs == nil || len(x.Cargo.spiceContents(loc)) > 0 || len(x.Cargo.fishContents(loc)) > 0 || len(x.Cargo.contents(loc)) == 0 && catanExplorerBotFishingShip(g, player, ship) {
+			return value
+		}
+		return max(value, catanExplorerLairGoal(g, player, ship, edge))
 	}
+	return catanExplorerLairGoal(g, player, ship, edge)
+}
+
+func catanExplorerLairGoal(g *Catan, player, ship, edge int) int {
+	x := g.Explorer
 	shipLoc := catanExplorerCargoLocation{"ship", ship}
 	units := x.Cargo.contents(shipLoc)
 	fishGoal := catanExplorerBotFishGoal(g, player, ship, edge)
@@ -184,7 +197,7 @@ func catanExplorerMissionGoal(g *Catan, player, ship, edge int) int {
 		crew = 0
 	}
 	value := fishGoal
-	unfinished := catanExplorerMissionUnfinished(g)
+	unfinished := catanExplorerBotNeedsCrew(g, player)
 	for _, tile := range g.Tiles {
 		if tile.Resource == CatanFog && catanExplorerTouches(g, edge, tile.ID) {
 			if settler || crew > 0 {
@@ -317,10 +330,19 @@ func (s *State) catanExplorerMissionCargo(player int) (Action, bool) {
 	if x.Lairs == nil {
 		return Action{}, false
 	}
-	unfinished := catanExplorerMissionUnfinished(g)
+	unfinished := catanExplorerBotNeedsCrew(g, player)
 	if a, ok := s.catanExplorerFishBotCargo(player); ok {
 		return a, true
 	}
+	if a, ok := s.catanExplorerBotLanding(player); ok {
+		return a, true
+	}
+	return s.catanExplorerLairPortCargo(player, unfinished)
+}
+
+func (s *State) catanExplorerBotLanding(player int) (Action, bool) {
+	g := s.Catan
+	unfinished := catanExplorerBotNeedsCrew(g, player)
 	// Land before collecting or sailing; do not strand a third crew contribution.
 	var best Action
 	score := -1
@@ -344,6 +366,11 @@ func (s *State) catanExplorerMissionCargo(player int) (Action, bool) {
 		best.Prompt = int(g.TurnSerial)
 		return best, true
 	}
+	return Action{}, false
+}
+
+func (s *State) catanExplorerLairPortCargo(player int, unfinished bool) (Action, bool) {
+	g, x := s.Catan, s.Catan.Explorer
 	for ship := player * 3; ship < (player+1)*3; ship++ {
 		edge := x.Fleet.Positions[ship]
 		if edge < 0 {

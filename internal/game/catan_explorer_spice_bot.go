@@ -52,7 +52,7 @@ func catanExplorerSpiceGoal(g *Catan, player, ship, edge int) int {
 		}
 		return value
 	}
-	remaining := catanExplorerBotSpiceRemaining(g, player)
+	needed := catanExplorerBotNeedsCrew(g, player)
 	if crew > 0 {
 		for _, farm := range x.Board.publicView().Farms {
 			if !x.Cargo.farmFriend(player, farm.Tile) && catanExplorerTouches(g, edge, farm.Tile) {
@@ -74,7 +74,7 @@ func catanExplorerSpiceGoal(g *Catan, player, ship, edge int) int {
 		}
 		if crew == 0 {
 			value = max(value, 700+50*x.Cargo.used(bay))
-		} else if remaining == 0 {
+		} else if !needed {
 			if _, _, ok := catanExplorerBotRetireCargo(g, ship, v); ok {
 				value = max(value, 850)
 			}
@@ -114,13 +114,10 @@ func (s *State) catanExplorerSpiceBotCargo(player int) (Action, bool) {
 	if a, ok := s.catanExplorerFishBotCargo(player); ok {
 		return a, true
 	}
-	for _, a := range s.catanExplorerLandingChoices(player) {
-		if a.Type == "catan_explorer_chase" {
-			a.Prompt = prompt
-			return a, true
-		}
+	if a, ok := s.catanExplorerBotLanding(player); ok {
+		return a, true
 	}
-	remaining := catanExplorerBotSpiceRemaining(g, player)
+	needed := catanExplorerBotNeedsCrew(g, player)
 	for ship := player * 3; ship < (player+1)*3; ship++ {
 		pos := x.Fleet.Positions[ship]
 		if pos < 0 {
@@ -152,7 +149,7 @@ func (s *State) catanExplorerSpiceBotCargo(player int) (Action, bool) {
 					}
 				}
 			}
-			if remaining == 0 {
+			if !needed {
 				if load, unload, ok := catanExplorerBotRetireCargo(g, ship, v); ok {
 					return Action{Type: "catan_explorer_transfer", Prompt: prompt, Slot: ship, Vertex: v, Give: load, Take: unload}, true
 				}
@@ -163,7 +160,7 @@ func (s *State) catanExplorerSpiceBotCargo(player int) (Action, bool) {
 			space := 2 - x.Cargo.used(loc)
 			load := []int{}
 			for _, id := range x.Cargo.contents(bay) {
-				if id%11 >= 2 && remaining == 0 {
+				if id%11 >= 2 && !needed {
 					continue
 				}
 				size := catanExplorerUnitSize(id)

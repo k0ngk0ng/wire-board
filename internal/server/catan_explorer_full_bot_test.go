@@ -9,12 +9,12 @@ import (
 	"time"
 )
 
-func newExplorerSpiceHTTP(t *testing.T) (*Server, *httptest.Server, []*testClient, string) {
+func newExplorerFullHTTP(t *testing.T) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts, clients, id := newExplorerHTTP(t, 3, false)
-	// Exact private three-player constructor; no artificial mission numbers,
-	// injected resources or altered scores. Public room options remain closed.
-	raw, err := os.ReadFile("testdata/catan_explorer_spice_setup.json")
+	// Normal private full constructor with explicit artificial lair numbers;
+	// no injected resources or scores. Public room options remain closed.
+	raw, err := os.ReadFile("testdata/catan_explorer_full_setup.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,53 +33,8 @@ func newExplorerSpiceHTTP(t *testing.T) (*Server, *httptest.Server, []*testClien
 	return s, ts, clients, id
 }
 
-func assertExplorerSpiceHTTPPrivacy(t *testing.T, clients []*testClient, state *game.State) {
-	t.Helper()
-	assertExplorerFishHTTPPrivacy(t, clients, state)
-	revealed := map[int]string{}
-	dice := map[int]int{}
-	for _, h := range state.Catan.Explorer.Board.Hidden {
-		if h.Revealed && h.Farm != "" {
-			revealed[h.Tile] = h.Farm
-			dice[h.Tile] = h.PirateDie
-		}
-	}
-	for _, c := range clients {
-		x := current(c)["game"].(map[string]any)["catan"].(map[string]any)["explorer"].(map[string]any)
-		board := x["board"].(map[string]any)
-		farms, _ := board["farms"].([]any)
-		if len(farms) != len(revealed) {
-			t.Fatal("public farm count disagrees with discoveries")
-		}
-		seen := map[int]bool{}
-		for _, raw := range farms {
-			farm := raw.(map[string]any)
-			tile := int(farm["tile"].(float64))
-			die, _ := farm["pirateDie"].(float64)
-			if seen[tile] || revealed[tile] != farm["ability"] || dice[tile] != int(die) {
-				t.Fatal("hidden or incorrect farm disclosed")
-			}
-			seen[tile] = true
-		}
-		sacks := x["cargo"].(map[string]any)["spice"].([]any)
-		if len(sacks) != 24 {
-			t.Fatal("shared spice inventory missing")
-		}
-		for _, raw := range sacks {
-			sack := raw.(map[string]any)
-			origin := int(sack["origin"].(float64))
-			if origin >= 0 && revealed[origin] == "" {
-				t.Fatal("sack exposed hidden farm")
-			}
-		}
-		if (x["lairs"] != nil) != (state.Catan.Explorer.Lairs != nil) || x["spice"] == nil {
-			t.Fatal("wrong missions in spice view")
-		}
-	}
-}
-
-func TestCatanExplorerSpiceNaturalHTTPAutoplayMatch(t *testing.T) {
-	s, ts, clients, id := newExplorerSpiceHTTP(t)
+func TestCatanExplorerFullNaturalHTTPAutoplayMatch(t *testing.T) {
+	s, ts, clients, id := newExplorerFullHTTP(t)
 	r := s.rooms[id]
 	for p := 0; p < 3; p++ {
 		setAutoPlay(clients[p], current(clients[p]), true, 200)
@@ -110,7 +65,7 @@ func TestCatanExplorerSpiceNaturalHTTPAutoplayMatch(t *testing.T) {
 		}
 		s.mu.Unlock()
 		if !advanced {
-			t.Fatal("spice autoplay stalled", step, r.Game.Phase)
+			t.Fatal("full mission autoplay stalled", step, r.Game.Phase)
 		}
 		if step%47 == 0 {
 			s, ts = restartRiversHTTP(t, s, ts, clients, id)
@@ -123,8 +78,14 @@ func TestCatanExplorerSpiceNaturalHTTPAutoplayMatch(t *testing.T) {
 		}
 	}
 	r = s.rooms[id]
-	if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.TurnDeadline != 0 || r.Game.Catan.Players[r.Game.Winners[0]].Score < 15 {
-		t.Fatal("spice autoplay did not finish")
+	if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.TurnDeadline != 0 || r.Game.Catan.Players[r.Game.Winners[0]].Score < 17 {
+		t.Fatal("full mission autoplay did not finish")
+	}
+	resolved := 0
+	for _, site := range r.Game.Catan.Explorer.Lairs.Sites {
+		if site.Resolved > 0 {
+			resolved++
+		}
 	}
 	spiceDeliveries := len(r.Game.Catan.Explorer.Spice.Deliveries)
 	claimed := 0
@@ -141,5 +102,5 @@ func TestCatanExplorerSpiceNaturalHTTPAutoplayMatch(t *testing.T) {
 	if s.rooms[id].Status != "finished" || len(s.rooms[id].Game.Catan.Explorer.Fish.Deliveries) != deliveries || len(s.rooms[id].Game.Catan.Explorer.Spice.Deliveries) != spiceDeliveries {
 		t.Fatal("restart lost fish result")
 	}
-	t.Log("round", r.Game.Round, "fish rolls", rolls, "deliveries", deliveries, "spice deliveries", spiceDeliveries, "farms claimed", claimed)
+	t.Log("round", r.Game.Round, "fish rolls", rolls, "deliveries", deliveries, "spice deliveries", spiceDeliveries, "farms claimed", claimed, "resolved lairs", resolved)
 }
