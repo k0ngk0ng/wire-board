@@ -276,12 +276,12 @@ func TestCatanExplorerSailingDiscoveryStopsAndPersists(t *testing.T) {
 func TestCatanExplorerSailingSwiftVoyageAndCoast(t *testing.T) {
 	g, f, gold, bank := explorerSailingFixture(t, 3, CatanHexSpec{Resource: CatanSea}, CatanHexSpec{Q: 1, Resource: 0}, CatanHexSpec{Q: 1, R: 1, Resource: 1})
 	for id, edge := range g.Edges {
-		sea := false
+		sea := len(edge.Tiles) == 1
 		for _, tile := range edge.Tiles {
 			sea = sea || tile == 0
 		}
 		if catanExplorerSeaEdge(g, id) != sea {
-			t.Fatal("land/land and land/frame are not ocean", id)
+			t.Fatal("sea and known frame coast are navigable; inland is not", id)
 		}
 	}
 	if _, err := f.sail(g, 0, 1, 0, []int{1}, -1, -1, gold, bank); err != nil {
