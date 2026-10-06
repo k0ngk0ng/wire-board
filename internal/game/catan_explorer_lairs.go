@@ -76,6 +76,9 @@ func (l catanExplorerLairs) scores() []int {
 }
 func (l catanExplorerLairs) playerScore(g *Catan, player int) int {
 	score := l.scores()[player]
+	if g.Explorer != nil && g.Explorer.Fish != nil {
+		score += g.Explorer.Fish.publicView(len(g.Players)).Scores[player]
+	}
 	for _, v := range g.Vertices {
 		if v.Owner == player {
 			score += v.Level
@@ -94,7 +97,7 @@ func (l *catanExplorerLairs) advance(player int) {
 	l.Arrival[player] = l.Serial
 }
 func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
-	if g == nil || b == nil || f == nil || c == nil || e == nil || b.Scenario != "pirate-lairs" || c.Scenario != b.Scenario || len(l.Inventory) != 6 || len(l.Deck)+len(l.Sites) != 6 || len(l.Progress) != len(g.Players) || len(l.Arrival) != len(l.Progress) {
+	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario || len(l.Inventory) != 6 || len(l.Deck)+len(l.Sites) != 6 || len(l.Progress) != len(g.Players) || len(l.Arrival) != len(l.Progress) {
 		return errors.New("巢穴地图、组件或人数无效")
 	}
 	if err := b.validate(g); err != nil {
@@ -102,6 +105,11 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 	}
 	if err := e.validate(g, f, c); err != nil {
 		return err
+	}
+	if g.Explorer != nil && g.Explorer.Fish != nil {
+		if err := g.Explorer.Fish.validate(g, b, f, c); err != nil {
+			return err
+		}
 	}
 	if len(l.Retired) != 0 && len(l.Retired) != len(g.Players) {
 		return errors.New("巢穴离场记录人数无效")
@@ -206,6 +214,8 @@ func (l *catanExplorerLairs) apply(g *Catan, b *catanExplorerBoard, f *catanExpl
 	base := *g
 	base.Explorer = nil
 	ng, nb, nf, nc, ne, nl := clone(base), clone(*b), clone(*f), clone(*c), clone(*e), clone(*l)
+	// Other mission scores are read-only during a lair transaction.
+	ng.Explorer = g.Explorer
 	if err := nl.applyUnchecked(&ng, &nb, &nf, &nc, &ne, player, sequence, kind, tile, ship, units, randN); err != nil {
 		return err
 	}

@@ -26,6 +26,17 @@ func (s *State) eliminateCatanExplorer(player int) error {
 	for ship := player * 3; ship < (player+1)*3; ship++ {
 		x.Fleet.Positions[ship] = -1
 	}
+	for id, loc := range x.Cargo.Fish {
+		if loc.Kind == "ship" && loc.Index/3 == player || loc.Kind == "harbor" && g.Vertices[loc.Index].Owner == player {
+			x.Cargo.Fish[id] = catanExplorerCargoLocation{"supply", -1}
+		}
+	}
+	if x.Fish != nil {
+		if len(x.Fish.Retired) == 0 {
+			x.Fish.Retired = make([]bool, len(g.Players))
+		}
+		x.Fish.Retired[player] = true
+	}
 	g.Trade = nil
 	p.Eliminated = true
 	if x.Pirate != nil && x.Pirate.Owner == player {

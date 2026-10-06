@@ -8,6 +8,7 @@ import (
 // Private fish-mission kernel. Its board is official; room creation stays
 // closed until full State/Apply, pirate/lair integration and UI acceptance.
 type catanExplorerFish struct {
+	Retired    []bool                      `json:"retired,omitempty"`
 	LastRoll   *catanExplorerFishRoll      `json:"lastRoll,omitempty"`
 	Deliveries []catanExplorerFishDelivery `json:"deliveries"`
 }
@@ -43,7 +44,7 @@ func (m catanExplorerFish) publicView(players int) catanExplorerFishView {
 	scores := make([]int, players)
 	for p, step := range progress {
 		scores[p] = catanExplorerLairPoints[step]
-		if step > 0 && (leader < 0 || step > progress[leader] || step == progress[leader] && arrival[p] < arrival[leader]) {
+		if (len(m.Retired) == 0 || !m.Retired[p]) && step > 0 && (leader < 0 || step > progress[leader] || step == progress[leader] && arrival[p] < arrival[leader]) {
 			leader = p
 		}
 	}
@@ -61,6 +62,14 @@ func (m catanExplorerFish) validate(g *Catan, b *catanExplorerBoard, f *catanExp
 	}
 	if err := c.validate(g, f); err != nil {
 		return err
+	}
+	if len(m.Retired) != 0 && len(m.Retired) != len(g.Players) {
+		return errors.New("鱼群任务离场记录人数无效")
+	}
+	for p, player := range g.Players {
+		if player.Eliminated != (len(m.Retired) > 0 && m.Retired[p]) {
+			return errors.New("鱼群任务离场记录与玩家不符")
+		}
 	}
 	for _, loc := range c.Fish {
 		if loc.Kind == "shoal" && !slices.ContainsFunc(b.Hidden, func(h catanExplorerHidden) bool { return h.Tile == loc.Index && h.Revealed && h.Fish > 0 }) {

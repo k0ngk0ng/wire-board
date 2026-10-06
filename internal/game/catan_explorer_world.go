@@ -9,6 +9,7 @@ import (
 // Private integration aggregate. Land Ho is the first complete map/inventory
 // combination; public room recipes remain gated on complete acceptance.
 type catanExplorer struct {
+	Fish         *catanExplorerFish    `json:"fish,omitempty"`
 	Setup        *catanExplorerSetup   `json:"setup,omitempty"`
 	Pirate       *catanExplorerPirate  `json:"pirate,omitempty"`
 	Lairs        *catanExplorerLairs   `json:"lairs,omitempty"`
@@ -48,7 +49,7 @@ func newCatanExplorerLandHoWorld(players int) (*Catan, *catanExplorer, error) {
 }
 
 func (x catanExplorer) validate(g *Catan) error {
-	if x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && x.Board.Scenario != "pirate-lairs" || x.Cargo.Scenario != x.Board.Scenario {
+	if x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerMissionScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
 		return errors.New("探险地图、航行、货物或经济组件不匹配；其他任务尚未完整接入")
 	}
 	if err := x.Board.validate(g); err != nil {
@@ -90,6 +91,19 @@ func (x catanExplorer) validate(g *Catan) error {
 			}
 		}
 	}
+	if (x.Board.Scenario == "fish-for-catan") != (x.Fish != nil) {
+		return errors.New("鱼群任务与地图剧本不符")
+	}
+	if x.Fish != nil {
+		if err := x.Fish.validate(g, x.Board, x.Fleet, x.Cargo); err != nil {
+			return err
+		}
+		for _, loc := range x.Cargo.Fish {
+			if loc.Kind == "shoal" && x.Pirate.Owner >= 0 && loc.Index == x.Pirate.Tile {
+				return errors.New("海盗所在渔场不能残留鱼群")
+			}
+		}
+	}
 	if g.Robber != -1 || g.LongestOwner != -1 || g.ArmyOwner != -1 || len(g.DevDeck)+len(g.DevDiscard) != 0 {
 		return errors.New("初航不使用强盗、发展卡或最长道路/军队奖")
 	}
@@ -117,6 +131,9 @@ func (x catanExplorer) validate(g *Catan) error {
 		}
 		if x.Lairs != nil {
 			score += x.Lairs.scores()[p]
+		}
+		if x.Fish != nil {
+			score += x.Fish.publicView(len(g.Players)).Scores[p]
 		}
 		if player.Score != score || !catanBundle(player.Dev) || !catanBundle(player.NewDev) || sum(player.Dev)+sum(player.NewDev) != 0 {
 			return errors.New("初航建筑分数或发展卡库存不符")

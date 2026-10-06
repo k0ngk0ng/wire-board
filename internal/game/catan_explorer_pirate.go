@@ -79,7 +79,7 @@ func (p catanExplorerPirate) victims(g *Catan, f *catanExplorerSailing, e *catan
 	return result
 }
 func (p catanExplorerPirate) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
-	if g == nil || b == nil || f == nil || c == nil || e == nil || b.Scenario != "pirate-lairs" || c.Scenario != b.Scenario {
+	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario {
 		return errors.New("海盗船需要探险家海盗任务组件")
 	}
 	if err := b.validate(g); err != nil {
@@ -179,6 +179,7 @@ func (p *catanExplorerPirate) applyUnchecked(g *Catan, b *catanExplorerBoard, f 
 			return result, errors.New("请选择不同于原位置且不邻起始岛的海格")
 		}
 		p.Owner, p.Tile = player, target
+		c.removeShoalFish(target)
 		if len(p.victims(g, f, e)) == 0 {
 			return result, p.finish(g, f, c, e)
 		}
