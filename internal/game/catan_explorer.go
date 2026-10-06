@@ -68,6 +68,9 @@ func (s *State) validateCatanExplorer() error {
 		return errors.New("探险家随机先手后的顺时针轮转不一致")
 	}
 	phase := s.catanExplorerPhase()
+	if x.Lairs != nil && x.Lairs.RewardVictory != nil && (!s.Finished || x.Lairs.RewardVictory.Player != s.Turn) {
+		return errors.New("巢穴领奖达到目标后必须立即结束")
+	}
 	if s.Finished {
 		alive := 0
 		for _, p := range g.Players {

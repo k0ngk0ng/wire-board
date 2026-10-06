@@ -9,14 +9,22 @@ import (
 // verified-component input, not guessed constants; no public recipe uses this
 // constructor until the full 2025 token inventory has been checked.
 type catanExplorerLairs struct {
-	Inventory []int                    `json:"inventory"`
-	Deck      []int                    `json:"deck"`
-	Sites     []catanExplorerLair      `json:"sites"`
-	Progress  []int                    `json:"progress"`
-	Arrival   []uint64                 `json:"arrival"` // Physical stack: earlier arrival is lower.
-	Serial    uint64                   `json:"serial"`
-	Battle    *catanExplorerLairBattle `json:"battle,omitempty"`
-	Retired   []bool                   `json:"retired,omitempty"` // Platform departure; history stays intact.
+	Inventory     []int                     `json:"inventory"`
+	Deck          []int                     `json:"deck"`
+	Sites         []catanExplorerLair       `json:"sites"`
+	Progress      []int                     `json:"progress"`
+	Arrival       []uint64                  `json:"arrival"` // Physical stack: earlier arrival is lower.
+	Serial        uint64                    `json:"serial"`
+	Battle        *catanExplorerLairBattle  `json:"battle,omitempty"`
+	Retired       []bool                    `json:"retired,omitempty"` // Platform departure; history stays intact.
+	RewardVictory *catanExplorerLairVictory `json:"rewardVictory,omitempty"`
+}
+
+// The active contributor receives the first reward. If that wins the game,
+// later contributors and the hero battle never happen (2025 mission guide p13).
+type catanExplorerLairVictory struct {
+	Tile   int `json:"tile"`
+	Player int `json:"player"`
 }
 type catanExplorerLair struct {
 	Tile          int     `json:"tile"`
@@ -65,6 +73,15 @@ func (l catanExplorerLairs) scores() []int {
 		}
 	}
 	return result
+}
+func (l catanExplorerLairs) playerScore(g *Catan, player int) int {
+	score := l.scores()[player]
+	for _, v := range g.Vertices {
+		if v.Owner == player {
+			score += v.Level
+		}
+	}
+	return score
 }
 func (l *catanExplorerLairs) advance(player int) {
 	// A marker at the last printed space stays at the bottom of its existing
@@ -151,6 +168,12 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 			}
 		}
 	}
+	if win := l.RewardVictory; win != nil {
+		i := l.site(win.Tile)
+		if i < 0 || win.Player < 0 || win.Player >= len(g.Players) || g.Players[win.Player].Eliminated || l.Battle != nil || e.Turn == nil || c.Turn == nil || c.Turn.Phase != "ended" || e.Turn.Player != win.Player || l.Sites[i].Captor != win.Player || l.Sites[i].Ready != e.Turn.Sequence || l.Sites[i].Resolved != 0 || len(l.Sites[i].Rounds) != 0 || l.playerScore(g, win.Player) < b.Target {
+			return errors.New("巢穴奖励即时获胜记录无效")
+		}
+	}
 	return l.validateHistory(c)
 }
 
@@ -173,6 +196,9 @@ func (l *catanExplorerLairs) discover(g *Catan, b *catanExplorerBoard, tile int)
 func (l *catanExplorerLairs) apply(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy, player int, sequence uint64, kind string, tile, ship int, units []int, randN func(int) int) error {
 	if err := l.validate(g, b, f, c, e); err != nil {
 		return err
+	}
+	if l.RewardVictory != nil {
+		return errors.New("已达到任务目标，游戏结束")
 	}
 	if e.Turn == nil || e.Turn.Player != player || e.Turn.Sequence != sequence || e.Turn.Phase != "ready" || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("巢穴行动玩家或回合序号无效")
@@ -247,14 +273,18 @@ func (l *catanExplorerLairs) applyUnchecked(g *Catan, b *catanExplorerBoard, f *
 				order = append(order, p)
 			}
 		}
-		if e.GoldBank < 2*len(order) {
-			return errors.New("巢穴奖金金币耗尽规则尚待核验")
-		}
 		s.Contributions = counts
 		for _, p := range order {
+			if e.GoldBank < 2 {
+				return errors.New("巢穴奖金金币耗尽规则尚待核验")
+			}
 			e.GoldBank -= 2
 			e.Gold[p] += 2
 			l.advance(p)
+			if p == player && l.playerScore(g, player) >= b.Target {
+				l.RewardVictory = &catanExplorerLairVictory{Tile: tile, Player: player}
+				return nil
+			}
 		}
 		l.Battle = &catanExplorerLairBattle{Tile: tile, Player: player, Sequence: sequence, Candidates: order}
 		if len(order) == 1 {
@@ -370,6 +400,7 @@ func (l catanExplorerLairs) validateHistory(c *catanExplorerCargo) error {
 	expected := make([]int, len(l.Progress))
 	for _, s := range l.Sites {
 		pending := l.Battle != nil && l.Battle.Tile == s.Tile
+		won := l.RewardVictory != nil && l.RewardVictory.Tile == s.Tile
 		if s.Ready == 0 {
 			if s.Captor != -1 {
 				return errors.New("未攻陷巢穴不能已有攻陷玩家")
@@ -377,7 +408,7 @@ func (l catanExplorerLairs) validateHistory(c *catanExplorerCargo) error {
 		} else if s.Captor < 0 || s.Captor >= len(expected) {
 			return errors.New("攻陷玩家无效")
 		}
-		if s.Resolved == 0 && !pending {
+		if s.Resolved == 0 && !pending && !won {
 			if len(s.Contributions)+len(s.Rounds) != 0 {
 				return errors.New("未开始结算不能发奖或掷骰")
 			}
@@ -395,14 +426,16 @@ func (l catanExplorerLairs) validateHistory(c *catanExplorerCargo) error {
 			p := (s.Captor + offset) % len(expected)
 			count := s.Contributions[p]
 			if count > 0 {
-				expected[p]++
+				if !won || p == l.RewardVictory.Player {
+					expected[p]++
+				}
 				candidates = append(candidates, p)
 			}
 			available := count
 			if p == s.Hero {
 				available--
 			}
-			if actual[p] > available || pending && actual[p] != count {
+			if actual[p] > available || (pending || won) && actual[p] != count {
 				return errors.New("战斗记录和船员实体不一致")
 			}
 		}
@@ -416,7 +449,12 @@ func (l catanExplorerLairs) validateHistory(c *catanExplorerCargo) error {
 				return err
 			}
 		}
-		if pending {
+		if won {
+			// Only the active player's first participation reward was granted.
+			if len(candidates) == 0 || candidates[0] != l.RewardVictory.Player {
+				return errors.New("即时获胜者必须是首位参战领奖者")
+			}
+		} else if pending {
 			if l.Battle.Player != s.Captor || !slices.Equal(candidates, l.Battle.Candidates) {
 				return errors.New("重掷候选与骰子历史不一致")
 			}
