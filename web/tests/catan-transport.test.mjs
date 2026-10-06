@@ -83,3 +83,40 @@ test("saved transport rules override ordinary ten-point fallback", () => {
   assert.equal(catanRuleContext(r).transport, true);
   assert.equal(catanRuleContext(r).target, 13);
 });
+
+test("movement quote names bank or opponent without inferring neutral rounding in the browser", async () => {
+  const { transportStepDescription } =
+    await import("../src/catan-transport-state.ts");
+  const r = room();
+  r.seats = [{ name: "自己" }, { name: "对手甲" }];
+  r.game.catan.players = [{}, {}];
+  const step = { edge: 5, mp: 1, toll: 1, pay: -1, bank: 1, neutral: true };
+  assert.equal(
+    transportStepDescription(r, step),
+    "1移动点 · 1金币付给银行（中立道路）",
+  );
+  assert.equal(
+    transportStepDescription(r, { ...step, pay: 1, bank: 0 }),
+    "1移动点 · 1金币付给对手甲（中立道路）",
+  );
+  assert.equal(
+    transportStepDescription(r, { ...step, pay: 1, bank: 0, neutral: false }),
+    "1移动点 · 1金币付给对手甲",
+  );
+  r.game.catan.players[1].eliminated = true;
+  assert.equal(
+    transportStepDescription(r, { ...step, pay: 1, bank: 0, neutral: false }),
+    "1移动点 · 1金币付给银行",
+  );
+  assert.equal(
+    transportStepDescription(r, {
+      ...step,
+      mp: 2,
+      toll: 0,
+      pay: -1,
+      bank: 0,
+      neutral: false,
+    }),
+    "2移动点 · 无过路费",
+  );
+});

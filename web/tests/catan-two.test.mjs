@@ -298,3 +298,75 @@ test("two-player merchant-train results include actual wagon building bonuses", 
     /商队.*12分.*马车.*每座＋1/,
   );
 });
+
+test("transport retreat uses one trade chip, a real barbarian and a live roadless edge", async () => {
+  const { twoRetreatCost, twoRetreatEdges, twoRetreatAction } =
+    await import("../src/catan-two-state.ts");
+  const r = fixture(),
+    g = r.game.catan;
+  r.seats = [{}, {}];
+  g.edges = [0, 1, 2, 3, 4, 5].map((id) => ({
+    id,
+    owner: id === 3 ? -2 : id === 4 ? 1 : -1,
+  }));
+  g.transport = { state: { barbarians: [0, 1, 2] } };
+  Object.assign(g.two, {
+    pending: undefined,
+    tokenWindow: true,
+    tokens: [1, 5],
+    cost: 2,
+    retreatCost: 1,
+    retreatEdges: [0, 1, 2, 3, 4, 5, 5, 90],
+  });
+  assert.equal(twoRetreatCost(r), 1);
+  assert.deepEqual(twoRetreatTargets(r), []);
+  assert.deepEqual(twoRetreatEdges(r), [5]);
+  const selected = { tile: null, piece: 2, edge: 5 };
+  assert.deepEqual(twoRetreatAction(r, selected), {
+    type: "catan_two_robber",
+    card: 2,
+    edge: 5,
+  });
+  for (const s of [
+    null,
+    { ...selected, piece: null },
+    { ...selected, piece: 3 },
+    { ...selected, piece: 0.5 },
+    { ...selected, edge: null },
+    { ...selected, edge: 0 },
+    { ...selected, edge: 3 },
+    { ...selected, edge: 4 },
+  ])
+    assert.equal(twoRetreatAction(r, s), null);
+  for (const change of [
+    (r) => (r.spectating = true),
+    (r) => (r.you = 1),
+    (r) => (r.you = -1),
+    (r) => (r.game.finished = true),
+    (r) => (r.status = "finished"),
+    (r) => (r.seats[0].autoPlay = true),
+    (r) => (r.game.catan.players[0].eliminated = true),
+    (r) => (r.game.catan.two.spent = true),
+    (r) => (r.game.catan.two.tokenWindow = false),
+    (r) => (r.game.catan.two.tokens[0] = 0),
+    (r) => delete r.game.catan.two.retreatEdges,
+    (r) => (r.game.catan.edges[5].owner = -3),
+    (r) => (r.game.catan.transport.state.barbarians[0] = 5),
+  ]) {
+    const other = structuredClone(r);
+    change(other);
+    assert.equal(twoRetreatEdges(other).includes(selected.edge), false);
+    assert.equal(twoRetreatAction(other, selected), null);
+  }
+});
+
+test("transport two-player results do not claim a neutral longest-road award", async () => {
+  const { catanResultDescription } = await import("../src/catan-results.ts");
+  const r = fixture();
+  r.game.catan.transport = {};
+  const text = catanResultDescription(r.game.catan);
+  assert.match(text, /双人卡坦＋运输任务.*13分/);
+  assert.match(text, /已交付货物/);
+  assert.match(text, /不授予最长道路/);
+  assert.doesNotMatch(text, /也可取得最长路线/);
+});

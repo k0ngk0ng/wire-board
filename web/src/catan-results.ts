@@ -8,6 +8,8 @@ export function catanResultDescription(g: CatanState) {
   const sea = g.seafarers;
   const target = catanSavedVictoryTarget(g);
   const harbors = g.harbors ? "港口霸主＋" : "";
+  if (g.transport)
+    return `${g.two ? "双人卡坦＋" : ""}运输任务：在自己的回合达到${target}分立即获胜。总分包含建筑、胜利点卡、最大骑士军队、已交付货物（每件1分）与马车满级奖励（1分）。本剧本不授予最长道路。`;
   if (g.two)
     return `双人卡坦${g.rivers ? "＋河流" : g.caravans ? "＋商队" : ""}：在自己的回合达到${target}分获胜。两家中立势力也可取得最长路线；总分包含建筑、当前持有的路线与军队奖励，以及胜利点卡${g.rivers ? "和当前最富（＋1）／最贫（−2）的财富分数，中立势力不参与财富比较" : g.caravans ? "和相邻至少两辆马车的建筑奖励（每座＋1）" : ""}。`;
   if (sea?.wonders || sea?.scenario === "wonders")

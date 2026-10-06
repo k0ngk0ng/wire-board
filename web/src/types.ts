@@ -465,6 +465,7 @@ export type CatanTransport = {
       position: number;
       points: number;
       wheatUsed: boolean;
+      neutralTolls?: number;
       attempted: boolean[];
       pending: number;
       arrived: number;
@@ -485,6 +486,8 @@ export type CatanTransport = {
       mp: number;
       toll: number;
       pay: number;
+      bank?: number;
+      neutral?: boolean;
     }[];
     drive?: number[];
     relocate?: number[];
@@ -517,6 +520,8 @@ export type CatanState = {
     tokenWindow?: boolean;
     choices?: CatanTwoChoice[];
     retreatTiles?: number[];
+    retreatEdges?: number[];
+    retreatCost?: number;
     neutralRoadLengths: number[];
   };
   caravans?: {
