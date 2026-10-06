@@ -1,0 +1,439 @@
+.explorer-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
+  gap: 14px;
+  width: 100%;
+  color: #352b20;
+}
+.explorer-map-column {
+  min-width: 0;
+  border: 1px solid #bcb098;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #c8e3e9;
+  align-self: start;
+}
+.explorer-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f3e8ce;
+  align-items: center;
+}
+.explorer-heading strong {
+  display: block;
+  font-size: 18px;
+}
+.explorer-heading span {
+  font-size: 12px;
+  color: #6c563b;
+}
+.explorer-dice {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: 800;
+}
+.explorer-map-tools {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #e9f2ed;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.explorer-map-tools > span {
+  flex: 1;
+}
+.explorer-map-tools button {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  padding: 6px;
+  border: 1px solid #9dbfc2;
+  background: #f9faf3;
+  color: #33525d;
+  border-radius: 8px;
+}
+.explorer-map-scroll {
+  height: clamp(320px, calc(100svh - 380px), 770px);
+  min-height: 0;
+  position: relative;
+  background: radial-gradient(ellipse at center, #92c8d6, #5198b3);
+  overflow: auto;
+  cursor: grab;
+  touch-action: pan-x pan-y;
+}
+.explorer-map-scroll.is-dragging {
+  cursor: grabbing;
+}
+.explorer-map {
+  display: block;
+  user-select: none;
+}
+.explorer-map text {
+  text-anchor: middle;
+  font-family: inherit;
+  pointer-events: none;
+}
+.explorer-fog {
+  font-size: 30px;
+  fill: #78939e;
+  font-weight: 600;
+}
+.explorer-number circle {
+  fill: #f8efd7;
+  stroke: #a78e64;
+  stroke-width: 1.4;
+  filter: drop-shadow(0 2px 1px #41352170);
+}
+.explorer-number text {
+  font-size: 17px;
+  font-weight: 850;
+  fill: #382c1d;
+}
+.explorer-number.hot text {
+  fill: #b0392c;
+}
+.explorer-harbor-label,
+.explorer-ship-label {
+  font-size: 12px;
+  font-weight: 800;
+  fill: #27323c;
+  paint-order: stroke;
+  stroke: #fff9e9;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.explorer-target {
+  fill: #f8d45870;
+  stroke: #a97003;
+  stroke-width: 2;
+  cursor: pointer;
+}
+.explorer-target.picked,
+.explorer-target:focus-visible {
+  fill: #ffe686;
+  stroke: #613c09;
+  stroke-width: 3;
+  outline: none;
+}
+.explorer-target-edge {
+  cursor: pointer;
+  outline: none;
+}
+.explorer-target-edge line {
+  stroke: #f9d759;
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+.explorer-target-edge .hit {
+  stroke: transparent;
+  stroke-width: 24;
+}
+.explorer-target-edge.picked line:not(.hit),
+.explorer-target-edge:focus-visible line:not(.hit) {
+  stroke: #fff3a0;
+  stroke-width: 11;
+  filter: drop-shadow(0 0 2px #73500a);
+}
+.explorer-voyage-preview {
+  fill: none;
+  stroke: #fff5ae;
+  stroke-width: 5;
+  stroke-dasharray: 8 5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 2px #34525a);
+}
+.explorer-map-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  font-size: 11px;
+  background: #eef2e4;
+  flex-wrap: wrap;
+}
+.explorer-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  align-self: start;
+}
+.explorer-panel > section,
+.explorer-panel > details,
+.explorer-hand {
+  border: 1px solid #caba9f;
+  border-radius: 12px;
+  background: #fbf4e4;
+  padding: 12px;
+}
+.explorer-panel button,
+.explorer-panel select,
+.explorer-panel input {
+  font: inherit;
+  color: #3d3020;
+  background: #fffaf0;
+  border: 1px solid #bba685;
+  border-radius: 8px;
+  padding: 8px;
+}
+.explorer-panel button {
+  cursor: pointer;
+  line-height: 1.45;
+}
+.explorer-panel button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.explorer-panel button[aria-pressed="true"] {
+  background: #e6bd63;
+  border-color: #936627;
+  box-shadow: inset 0 0 0 1px #b47b20;
+}
+.explorer-panel button:focus-visible,
+.explorer-panel select:focus-visible {
+  outline: 3px solid #28718e;
+  outline-offset: 2px;
+}
+.explorer-hand > strong {
+  font-size: 14px;
+}
+.explorer-gold {
+  float: right;
+  color: #775014;
+  background: #f4de92;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 13px;
+}
+.explorer-hand .catan-bundle {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+}
+.explorer-panel .catan-resource {
+  color: #3c3020;
+}
+.explorer-hand .catan-resource.small {
+  min-width: 0;
+  width: 100%;
+}
+.explorer-primary,
+.explorer-modes,
+.explorer-fleet,
+.explorer-trade-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.explorer-primary > button {
+  flex: 1;
+  background: #376951;
+  color: #fff9e8;
+  border-color: #28523d;
+  font-weight: 750;
+}
+.explorer-modes > button {
+  flex: 1 0 28%;
+  font-size: 13px;
+}
+.explorer-fleet > button {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 12px;
+}
+.explorer-option-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  max-height: 220px;
+  overflow: auto;
+}
+.explorer-option-list > button {
+  text-align: left;
+  font-size: 12px;
+}
+.explorer-confirm {
+  border: 2px solid #b58c33 !important;
+  box-shadow: 0 3px 12px #5741211c;
+  scroll-margin: 12px;
+}
+.explorer-confirm strong {
+  font-size: 16px;
+}
+.explorer-confirm p,
+.explorer-rules p {
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 8px 0;
+}
+.explorer-confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.explorer-confirm .primary {
+  background: #396c53;
+  color: #fff9e8;
+  border-color: #2f5944;
+}
+.explorer-panel label {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+.explorer-panel select {
+  max-width: 100%;
+}
+.explorer-panel input {
+  width: 80px;
+}
+.explorer-panel details summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+}
+.explorer-rules summary > svg {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.explorer-panel .catan-picker {
+  color: #3c3020;
+  margin: 8px 0;
+}
+.explorer-panel .catan-picker legend {
+  color: #3c3020;
+}
+.explorer-panel .catan-picker > div {
+  min-width: 0;
+}
+.explorer-panel .catan-stepper button {
+  padding: 4px;
+}
+.explorer-notice,
+.explorer-hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #5b5341;
+}
+.explorer-error {
+  color: #a22626;
+  background: #fff0e4;
+  padding: 8px;
+  border-radius: 8px;
+}
+.explorer-trade p {
+  font-size: 12px;
+  margin: 7px 0 4px;
+}
+@media (max-width: 900px) {
+  .explorer-board {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .explorer-map-scroll {
+    height: auto;
+    aspect-ratio: var(--explorer-map-aspect);
+    min-height: 250px;
+    max-height: 470px;
+  }
+  .explorer-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .explorer-hand,
+  .explorer-confirm,
+  .explorer-discard,
+  .explorer-trade,
+  .explorer-rules,
+  .explorer-notice,
+  .explorer-error {
+    grid-column: 1/-1;
+  }
+  .explorer-modes,
+  .explorer-fleet,
+  .explorer-option-list,
+  .explorer-hint,
+  .explorer-primary {
+    grid-column: 1/-1;
+  }
+  .explorer-heading {
+    padding: 9px 11px;
+  }
+  .explorer-heading strong {
+    font-size: 16px;
+  }
+  .explorer-hand .catan-bundle {
+    max-width: 430px;
+    margin-inline: auto;
+  }
+  .explorer-map-caption {
+    font-size: 10px;
+  }
+  .explorer-panel .explorer-confirm {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 74px;
+    max-height: 45svh;
+    overflow: auto;
+    z-index: 45;
+    background: #fff5da;
+  }
+  .explorer-modes > button {
+    min-height: 40px;
+  }
+  .explorer-confirm-actions > button {
+    min-height: 42px;
+  }
+  .explorer-option-list {
+    max-height: 160px;
+  }
+}
+@media (max-width: 380px) {
+  .explorer-heading strong {
+    font-size: 14px;
+  }
+  .explorer-heading span {
+    font-size: 11px;
+  }
+  .explorer-map-tools {
+    padding: 5px;
+  }
+  .explorer-map-scroll {
+    height: auto;
+    min-height: 220px;
+  }
+  .explorer-panel > section,
+  .explorer-panel > details,
+  .explorer-hand {
+    padding: 9px;
+  }
+}
+
+.explorer-confirm-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.explorer-confirm-heading button {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+.explorer-confirm [hidden] {
+  display: none;
+}

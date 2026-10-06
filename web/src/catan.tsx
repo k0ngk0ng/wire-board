@@ -1,3 +1,4 @@
+import { CatanExplorerBoard } from "./catan-explorer";
 import { CatanTransportMap, CatanTransportPanel } from "./catan-transport";
 import { emptyTransportPick } from "./catan-transport-state";
 import { CatanAttackMap, CatanAttackPanel } from "./catan-attack";
@@ -183,6 +184,7 @@ export const catanPhases: Record<string, string> = {
   catan_wonders_start: "选择初始强盗位置",
   catan_rivers_start: "选择沼泽中的强盗起点",
   catan_attack_card: "完成蛮族进攻发展卡选择",
+  catan_explorer_move: "船只航行、装卸或移民定居",
   catan_transport_move: "移动马车并完成装卸",
   catan_transport_barbarian: "选择蛮族与新位置",
   catan_attack_end: "安排骑士移动并确认战斗",
@@ -395,7 +397,20 @@ function CatanFleetChoice({
     </section>
   );
 }
-export function CatanBoard({
+export function CatanBoard(props: {
+  room: Room;
+  act: Act;
+  busy: boolean;
+  assets: string;
+}) {
+  return props.room.game?.catan?.explorer ? (
+    <CatanExplorerBoard {...props} />
+  ) : (
+    <CatanBaseBoard {...props} />
+  );
+}
+
+function CatanBaseBoard({
   room,
   act,
   busy,

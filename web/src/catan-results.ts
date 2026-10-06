@@ -8,6 +8,8 @@ export function catanResultDescription(g: CatanState) {
   const sea = g.seafarers;
   const target = catanSavedVictoryTarget(g);
   const harbors = g.harbors ? "港口霸主＋" : "";
+  if (g.explorer)
+    return `探索者与海盗·初航：在自己的回合达到${target}分立即获胜。村庄1分、港口2分，不授予最长道路或最大军队奖励。`;
   if (g.transport)
     return `${g.two ? "双人卡坦＋" : ""}运输任务：在自己的回合达到${target}分立即获胜。总分包含建筑、胜利点卡、最大骑士军队、已交付货物（每件1分）与马车满级奖励（1分）。本剧本不授予最长道路。`;
   if (g.two)

@@ -33,6 +33,7 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
+    explorer: !!game?.explorer,
     transport: !!game?.transport,
     attack: !!game?.attack,
     caravans,
