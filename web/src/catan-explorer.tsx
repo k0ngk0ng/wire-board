@@ -1,3 +1,4 @@
+import { ExplorerSpiceMission } from "./catan-explorer-spice";
 import { useEffect, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { Anchor, Dices, Minus, Plus, RotateCcw, Ship } from "lucide-react";
@@ -6,6 +7,7 @@ import { Bundle, ResourcePicker } from "./catan-resources";
 import {
   ExplorerPiece,
   ExplorerFishPiece,
+  ExplorerSpicePiece,
   ExplorerCargoPieces,
   ExplorerEffects,
   useExplorerMotion,
@@ -30,6 +32,10 @@ import {
   explorerResources,
   explorerFreightLabel,
   explorerFishContents,
+  explorerSpiceContents,
+  explorerSpicePoint,
+  explorerCargoPoint,
+  explorerFarmDescription,
   explorerFishPoint,
   explorerScenarioLabel,
   explorerPhaseLabel,
@@ -197,6 +203,7 @@ export function CatanExplorerBoard({
     give.every((n, i) => n <= hand[i]);
   const phase = explorerPhaseLabel(game.finished ? "finished" : game.phase);
   const scenario = explorerScenarioLabel(g);
+  const farms = new Map(x.board.farms?.map((f) => [f.tile, f]));
   const shoals = new Map(x.board.shoals?.map((s) => [s.tile, s.number]));
   const path =
     selected?.type === "catan_explorer_sail"
@@ -289,7 +296,7 @@ export function CatanExplorerBoard({
                   />
                   {assets && t.resource !== 8 && (
                     <image
-                      href={`${assets}/catan/${x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
+                      href={`${assets}/catan/${x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : farms.has(t.id) ? `explorer/farm-${farms.get(t.id)!.ability}${farms.get(t.id)!.ability === "pirate" ? `-${farms.get(t.id)!.pirateDie}` : ""}` : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
                       x={t.x - (size * Math.sqrt(3)) / 2}
                       y={t.y - size}
                       width={size * Math.sqrt(3)}
@@ -320,6 +327,27 @@ export function CatanExplorerBoard({
                       </text>
                     </g>
                   )}
+                  {farms.has(t.id) && (
+                    <g
+                      className="explorer-farm-label"
+                      aria-label={explorerFarmDescription(farms.get(t.id)!)}
+                    >
+                      <rect
+                        x={t.x - 31}
+                        y={t.y - 28}
+                        width="62"
+                        height="19"
+                        rx="6"
+                      />
+                      <text x={t.x} y={t.y - 15}>
+                        {farms.get(t.id)!.ability === "swift"
+                          ? "航速＋1"
+                          : farms.get(t.id)!.ability === "gold"
+                            ? "换金币"
+                            : `${farms.get(t.id)!.pirateDie}点也成功`}
+                      </text>
+                    </g>
+                  )}
                   {t.number > 0 && (
                     <g
                       className={`explorer-number ${[6, 8].includes(t.number) ? "hot" : ""}`}
@@ -335,7 +363,9 @@ export function CatanExplorerBoard({
                       ? "议会岛"
                       : shoals.has(t.id)
                         ? `渔场 · 骰面${shoals.get(t.id)}`
-                        : terrainNames[t.resource]}
+                        : farms.has(t.id)
+                          ? `香料农场 · ${explorerFarmDescription(farms.get(t.id)!)}`
+                          : terrainNames[t.resource]}
                     {t.number > 0 ? ` · ${t.number}` : ""}
                   </title>
                 </g>
@@ -416,6 +446,9 @@ export function CatanExplorerBoard({
                           g={g}
                           assets={assets}
                           units={explorerContents(g, "harbor", v.id)}
+                          spiceCount={
+                            explorerSpiceContents(g, "harbor", v.id).length
+                          }
                         />
                       </g>
                     )}
@@ -518,6 +551,9 @@ export function CatanExplorerBoard({
                           g={g}
                           assets={assets}
                           units={explorerContents(g, "ship", id)}
+                          spiceCount={
+                            explorerSpiceContents(g, "ship", id).length
+                          }
                         />
                       </g>
                     )}
@@ -557,6 +593,58 @@ export function CatanExplorerBoard({
                           ? "港口"
                           : "渔场"}{" "}
                       · 一群鱼
+                    </title>
+                  </g>
+                );
+              })}
+              {x.cargo.units.map((loc, id) => {
+                if (loc.kind !== "farm") return null;
+                const p = explorerCargoPoint(g, id, loc);
+                if (!p) return null;
+                return (
+                  <g
+                    key={`farm-crew-${id}`}
+                    transform={`translate(${p.x},${p.y})`}
+                    pointerEvents="none"
+                    className={
+                      arriving.includes(id)
+                        ? "explorer-cargo-arriving"
+                        : undefined
+                    }
+                  >
+                    <ExplorerPiece
+                      g={g}
+                      assets={assets}
+                      player={Math.floor(id / 11)}
+                      kind="crew"
+                      width={11}
+                    />
+                    <title>
+                      {room.seats[Math.floor(id / 11)]?.name} · 永久派驻船员
+                    </title>
+                  </g>
+                );
+              })}
+              {x.cargo.spice?.map((sack, id) => {
+                const p = explorerSpicePoint(g, id);
+                if (
+                  !p ||
+                  motion?.event.spice?.some((s) => s.sack === id) ||
+                  (sack.at.kind === "ship" &&
+                    motion?.event.kind === "catan_explorer_sail" &&
+                    motion.event.ship === sack.at.index)
+                )
+                  return null;
+                return (
+                  <g
+                    key={`spice-${id}`}
+                    transform={`translate(${p.x},${p.y})`}
+                    pointerEvents="none"
+                  >
+                    <ExplorerSpicePiece assets={assets} />
+                    <title>
+                      {sack.owner < 0 ? "待领取" : room.seats[sack.owner]?.name}{" "}
+                      · 一袋香料
                     </title>
                   </g>
                 );
@@ -673,81 +761,6 @@ export function CatanExplorerBoard({
             ：按顺序放港口、逆序放村庄，再放道路和载移民的船。所有人完成后领取起始资源。
           </p>
         )}
-        {x.lairs && (
-          <section className="explorer-mission" aria-label="巢穴任务进度">
-            <strong>巢穴任务</strong>
-            {g.players.map((p, id) => (
-              <div key={id} className={p.eliminated ? "retired" : ""}>
-                <span style={{ borderColor: catanSeatColor(g, id) }}>
-                  {room.seats[id]?.name}
-                </span>
-                <b>进度 {x.lairs!.progress[id]} / 7</b>
-                <span>
-                  任务 {x.lairs!.scores[id]}分
-                  {x.lairs!.leader === id ? " · 领先" : ""}
-                </span>
-              </div>
-            ))}
-            <p>
-              已解放{x.lairs.sites.filter((site) => site.resolved).length} /
-              {x.fish ? 5 : 6}处；未攻陷前数字隐藏。
-            </p>
-            {x.lairs.battle && (
-              <p role="status">
-                巢穴{x.lairs.battle.tile + 1}：
-                {x.lairs.battle.candidates
-                  .map((id) => room.seats[id]?.name)
-                  .join("、")}
-                掷英雄骰。
-              </p>
-            )}
-            {x.pirate?.lastChase && (
-              <p>
-                最近驱赶：{room.seats[x.pirate.lastChase.player]?.name}掷出
-                {x.pirate.lastChase.die}，
-                {x.pirate.lastChase.success ? "成功" : "未成功"}。
-              </p>
-            )}
-          </section>
-        )}
-        {x.fish && (
-          <section
-            className="explorer-mission explorer-fish-mission"
-            aria-label="鱼群任务进度"
-          >
-            <strong>鱼群任务</strong>
-            {g.players.map((p, id) => (
-              <div key={id} className={p.eliminated ? "retired" : ""}>
-                <span style={{ borderColor: catanSeatColor(g, id) }}>
-                  {room.seats[id]?.name}
-                </span>
-                <b>进度 {x.fish!.progress[id]} / 7</b>
-                <span>
-                  任务 {x.fish!.scores[id]}分
-                  {x.fish!.leader === id ? " · 领先" : ""}
-                </span>
-              </div>
-            ))}
-            <p>
-              供应剩余{" "}
-              {x.cargo.fish?.filter((loc) => loc.kind === "supply").length ?? 0}{" "}
-              群鱼 · 运到议会岛锚点交付。
-            </p>
-            {x.fish.lastRoll && (
-              <p
-                role="status"
-                key={x.fish.lastRoll.sequence}
-                className={
-                  motion?.event.fishRoll ? "explorer-fish-roll" : undefined
-                }
-              >
-                最近捕鱼骰：{room.seats[x.fish.lastRoll.player]?.name}掷出{" "}
-                {x.fish.lastRoll.die}，
-                {x.fish.lastRoll.spawned >= 0 ? "出现一群鱼" : "未出现鱼群"}。
-              </p>
-            )}
-          </section>
-        )}
         {choices.length > 0 && (
           <>
             <div className="explorer-primary">
@@ -814,6 +827,7 @@ export function CatanExplorerBoard({
                         explorerFreightLabel(
                           explorerContents(g, "ship", id),
                           explorerFishContents(g, "ship", id),
+                          explorerSpiceContents(g, "ship", id),
                         )}
                     </button>
                   ) : null,
@@ -906,6 +920,82 @@ export function CatanExplorerBoard({
           <p role="alert" className="explorer-error">
             {error}
           </p>
+        )}
+        {x.lairs && (
+          <section className="explorer-mission" aria-label="巢穴任务进度">
+            <strong>巢穴任务</strong>
+            {g.players.map((p, id) => (
+              <div key={id} className={p.eliminated ? "retired" : ""}>
+                <span style={{ borderColor: catanSeatColor(g, id) }}>
+                  {room.seats[id]?.name}
+                </span>
+                <b>进度 {x.lairs!.progress[id]} / 7</b>
+                <span>
+                  任务 {x.lairs!.scores[id]}分
+                  {x.lairs!.leader === id ? " · 领先" : ""}
+                </span>
+              </div>
+            ))}
+            <p>
+              已解放{x.lairs.sites.filter((site) => site.resolved).length} /
+              {x.fish ? 5 : 6}处；未攻陷前数字隐藏。
+            </p>
+            {x.lairs.battle && (
+              <p role="status">
+                巢穴{x.lairs.battle.tile + 1}：
+                {x.lairs.battle.candidates
+                  .map((id) => room.seats[id]?.name)
+                  .join("、")}
+                掷英雄骰。
+              </p>
+            )}
+            {x.pirate?.lastChase && (
+              <p>
+                最近驱赶：{room.seats[x.pirate.lastChase.player]?.name}掷出
+                {x.pirate.lastChase.die}，
+                {x.pirate.lastChase.success ? "成功" : "未成功"}。
+              </p>
+            )}
+          </section>
+        )}
+        {x.spice && <ExplorerSpiceMission room={room} assets={assets} />}
+        {x.fish && (
+          <section
+            className="explorer-mission explorer-fish-mission"
+            aria-label="鱼群任务进度"
+          >
+            <strong>鱼群任务</strong>
+            {g.players.map((p, id) => (
+              <div key={id} className={p.eliminated ? "retired" : ""}>
+                <span style={{ borderColor: catanSeatColor(g, id) }}>
+                  {room.seats[id]?.name}
+                </span>
+                <b>进度 {x.fish!.progress[id]} / 7</b>
+                <span>
+                  任务 {x.fish!.scores[id]}分
+                  {x.fish!.leader === id ? " · 领先" : ""}
+                </span>
+              </div>
+            ))}
+            <p>
+              供应剩余{" "}
+              {x.cargo.fish?.filter((loc) => loc.kind === "supply").length ?? 0}{" "}
+              群鱼 · 运到议会岛锚点交付。
+            </p>
+            {x.fish.lastRoll && (
+              <p
+                role="status"
+                key={x.fish.lastRoll.sequence}
+                className={
+                  motion?.event.fishRoll ? "explorer-fish-roll" : undefined
+                }
+              >
+                最近捕鱼骰：{room.seats[x.fish.lastRoll.player]?.name}掷出{" "}
+                {x.fish.lastRoll.die}，
+                {x.fish.lastRoll.spawned >= 0 ? "出现一群鱼" : "未出现鱼群"}。
+              </p>
+            )}
+          </section>
         )}
         {trade && (
           <section className="explorer-trade">
@@ -1061,11 +1151,18 @@ export function CatanExplorerBoard({
             每船4步，可付1羊毛加2步。切换船只后不能回到上一艘；发现地块会停止本船。船端移民可在合法陆地点定居，船和移民回供应。
           </p>
           <p>
-            每个港口和船舱有2格，一枚移民占2格，一名船员占1格。只能通过实际停靠的己方港口装卸。
+            每个港口和船舱有2格，一枚移民占2格，一名船员占1格
+            {x.spice ? "，一袋香料也占1格" : ""}
+            。只能通过实际停靠的己方港口装卸。
           </p>
           <p>
             非7点未获资源的玩家获1金币补偿。3同类资源可换1其他资源或金币；2金币可买1资源，每回合最多2次。无发展卡、强盗、最长道路或最大军队。
           </p>
+          {x.spice && (
+            <p>
+              每座农场只可派驻一次，取得香料后才能在该农场建造；船员永久留驻。航速农场各加1步，海盗农场增加成功骰面，金币农场各提供每回合1次资源换金币。香料轨道六格为1、1、2、2、3、3分，领先额外1分，同进度先到者保留领先。
+            </p>
+          )}
           {x.fish && (
             <p>
               每航行阶段可掷一次捕鱼骰；一群鱼占2格，可在相邻渔场装船、经己方港口换载，或在议会岛两个锚点交付。装卸不消耗移动点；海盗会清除尚未装船的鱼群。发现渔场得2金币并停止本船移动。

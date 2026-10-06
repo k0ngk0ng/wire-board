@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract original 2025 E&P player pieces and fish mission artwork.
+"""Extract original 2025 E&P player pieces and mission artwork.
 
 Uses native PDF images and their soft alpha masks; no drawing or recoloring.
 """
@@ -24,7 +24,9 @@ PIECES = {
     'harbor-white': 11939, 'harbor-orange': 11933,
 }
 
-MISSION_ART = {'fish': (3, 11814), 'council': (3, 11816), 'fish-shoal': (2, 5201)}
+MISSION_ART = {'fish': (3, 11814), 'council': (3, 11816), 'fish-shoal': (2, 5201),
+    'spice': (3, 11822), 'farm-swift': (2, 5191), 'farm-gold': (2, 5186),
+    'farm-pirate-5': (2, 5179), 'farm-pirate-4': (2, 5226)}
 
 def prepare(output, rules):
     root = Path(__file__).resolve().parent.parent

@@ -8,6 +8,8 @@ import {
 import {
   explorerContents,
   explorerFishContents,
+  explorerSpiceContents,
+  explorerSpiceFlight,
   explorerFishFlight,
   explorerCargoPoint,
   explorerMotionBetween,
@@ -89,16 +91,40 @@ export function ExplorerFishPiece({
   );
 }
 
+export function ExplorerSpicePiece({
+  assets,
+  width = 13,
+}: {
+  assets: string;
+  width?: number;
+}) {
+  return assets ? (
+    <image
+      href={`${assets}/catan/explorer/spice-v1.webp`}
+      x={-width / 2}
+      y={(-width * 58) / 41 / 2}
+      width={width}
+      height={(width * 58) / 41}
+    />
+  ) : (
+    <text y="4" textAnchor="middle" fontSize="10" fill="#63391d">
+      香料
+    </text>
+  );
+}
+
 export function ExplorerCargoPieces({
   g,
   assets,
   units,
   arriving = [],
+  spiceCount = 0,
 }: {
   g: CatanState;
   assets: string;
   units: number[];
   arriving?: number[];
+  spiceCount?: number;
 }) {
   return (
     <>
@@ -108,7 +134,7 @@ export function ExplorerCargoPieces({
           className={
             arriving.includes(id) ? "explorer-cargo-arriving" : undefined
           }
-          transform={`translate(${(i - (units.length - 1) / 2) * 16},0)`}
+          transform={`translate(${(i - (units.length + spiceCount - 1) / 2) * 16},0)`}
         >
           <ExplorerPiece
             g={g}
@@ -262,9 +288,24 @@ export function ExplorerEffects({
                 g={after}
                 assets={assets}
                 units={explorerContents(before, "ship", e.ship)}
+                spiceCount={
+                  explorerSpiceContents(before, "ship", e.ship).length
+                }
               />
             </g>
           )}
+          {explorerSpiceContents(before, "ship", e.ship).map((id, i) => {
+            const units = explorerContents(before, "ship", e.ship).length,
+              sacks = explorerSpiceContents(before, "ship", e.ship).length;
+            return (
+              <g
+                key={id}
+                transform={`translate(${(units + i - (units + sacks - 1) / 2) * 16},-12)`}
+              >
+                <ExplorerSpicePiece assets={assets} />
+              </g>
+            );
+          })}
           <text y="30" className="explorer-ship-label">
             {(e.ship % 3) + 1}
           </text>
@@ -402,6 +443,33 @@ export function ExplorerEffects({
               >
                 <rect x="-40" y="-14" width="80" height="24" rx="8" />
                 <text y="3">鱼群已交付</text>
+              </g>
+            )}
+          </g>
+        );
+      })}
+      {e.spice?.map((c) => {
+        const flight = explorerSpiceFlight(before, after, e, c.sack);
+        if (!flight) return null;
+        const end = flight.points[1];
+        return (
+          <g key={`spice-${c.sack}`} data-spice-motion={c.sack}>
+            <g
+              data-flight={JSON.stringify(flight.points)}
+              data-duration="650"
+              data-appear={flight.appear ? "0,250" : undefined}
+              data-fade={flight.retire ? "650,350" : undefined}
+            >
+              <ExplorerSpicePiece assets={assets} />
+            </g>
+            {flight.delivered && (
+              <g
+                transform={`translate(${end.x},${end.y - 30})`}
+                data-fade="900,450"
+                className="explorer-motion-label"
+              >
+                <rect x="-40" y="-14" width="80" height="24" rx="8" />
+                <text y="3">香料已交付</text>
               </g>
             )}
           </g>

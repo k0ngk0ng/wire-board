@@ -30,10 +30,12 @@ func TestCatanExplorerSpiceNaturalBotMatches(t *testing.T) {
 				if err != nil {
 					t.Fatal(step, s.Phase, err)
 				}
+				beforeSpice := slices.Clone(s.Catan.Explorer.Cargo.Spice)
 				beforeFish := slices.Clone(s.Catan.Explorer.Cargo.Fish)
 				if err = s.Apply(p, a); err != nil {
 					t.Fatalf("step %d phase %s action %+v: %v", step, s.Phase, a, err)
 				}
+				assertExplorerSpiceMotion(t, beforeSpice, s, a)
 				assertExplorerFishMotion(t, beforeFish, s, a)
 				actions[a.Type]++
 				if step%37 == 0 {
@@ -130,7 +132,7 @@ func TestCatanExplorerSpiceBotIgnoresHiddenFarmsAndOpponentHands(t *testing.T) {
 		if err = s.Apply(actor, first); err != nil {
 			t.Fatal(err)
 		}
-		if seen["catan_explorer_fish_roll"] && seen["catan_explorer_fish_load"] && seen["catan_explorer_fish_deliver"] && seen["catan_explorer_spice_land"] && seen["catan_explorer_spice_deliver"] && seen["catan_explorer_spice_gold"] {
+		if seen["catan_explorer_fish_roll"] && seen["catan_explorer_fish_load"] && seen["catan_explorer_fish_deliver"] && seen["catan_explorer_spice_land"] && seen["catan_explorer_spice_deliver"] {
 			return
 		}
 	}
@@ -223,6 +225,72 @@ func TestCatanExplorerSpiceBotPermanentCrewAndGoldReserve(t *testing.T) {
 	a, ok := s.catanExplorerSpiceBotGold(actor, reserve)
 	if !ok || a.Type != "catan_explorer_spice_gold" || a.Card != 0 {
 		t.Fatal("missed surplus exchange", a)
+	}
+	explorerSpiceApply(t, s, a)
+}
+
+// A natural match may win without needing a farm gold exchange. Verify its
+// privacy with a deterministic shortage rather than requiring that optional
+// action in every random match.
+func TestCatanExplorerSpiceBotGoldIgnoresPrivateInformation(t *testing.T) {
+	s := explorerSpiceStarted(t, 3)
+	if err := s.catanExplorerRoll([2]int{1, 2}); err != nil {
+		t.Fatal(err)
+	}
+	g, x := s.Catan, s.Catan.Explorer
+	p := s.Turn
+	farm := -1
+	for _, h := range x.Board.Hidden {
+		if h.Farm == "gold" {
+			farm = h.Tile
+			break
+		}
+	}
+	if _, err := x.discover(g, p, []int{farm}); err != nil {
+		t.Fatal(err)
+	}
+	explorerSpiceClaimFixture(t, s, p, farm, 2, catanExplorerCargoLocation{"supply", -1})
+	for r, n := range g.Players[p].Resources {
+		g.Bank[r] += n
+		g.Players[p].Resources[r] = 0
+	}
+	g.Bank[4] -= 3
+	g.Players[p].Resources[4] = 3
+	x.Economy.GoldBank += x.Economy.Gold[p]
+	x.Economy.Gold[p] = 0
+	a, err := s.BotAction(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a.Type != "catan_explorer_spice_gold" {
+		t.Fatal("gold shortage fixture missed exchange", a)
+	}
+	other := clone(*s)
+	y := other.Catan.Explorer
+	for region := 0; region < 2; region++ {
+		slices.Reverse(y.Board.Numbers[region])
+		ids := []int{}
+		for i, h := range y.Board.Hidden {
+			if !h.Revealed && h.Region == region {
+				ids = append(ids, i)
+			}
+		}
+		for i, j := 0, len(ids)-1; i < j; i, j = i+1, j-1 {
+			a, b := ids[i], ids[j]
+			ha, hb := y.Board.Hidden[a], y.Board.Hidden[b]
+			ha.Tile, hb.Tile = hb.Tile, ha.Tile
+			y.Board.Hidden[a], y.Board.Hidden[b] = hb, ha
+		}
+	}
+	if err := other.validateCatanExplorer(); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(s.View(p), other.View(p)) {
+		t.Fatal("secret permutation changed view")
+	}
+	b, err := other.BotAction(p)
+	if err != nil || !reflect.DeepEqual(a, b) {
+		t.Fatal("gold plan used private information", a, b, err)
 	}
 	explorerSpiceApply(t, s, a)
 }

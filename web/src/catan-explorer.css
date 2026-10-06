@@ -553,3 +553,36 @@
     animation: none;
   }
 }
+
+.explorer-farm-label rect {
+  fill: #fff4d9;
+  stroke: #835e2e;
+  stroke-width: 1;
+}
+.explorer-farm-label text {
+  fill: #503516;
+  font-size: 11px;
+  font-weight: 800;
+}
+.explorer-spice-mission > strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.explorer-spice-mission > strong img {
+  width: 18px;
+  height: 26px;
+  object-fit: contain;
+}
+.explorer-spice-abilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 9px;
+  flex-basis: 100%;
+  color: #695034;
+}
+.explorer-spice-abilities span {
+  background: #f4e4be;
+  border-radius: 5px;
+  padding: 1px 5px;
+}

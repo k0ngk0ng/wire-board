@@ -14,9 +14,11 @@ export type ExplorerAction = {
   targets?: number[];
   give?: number[];
   take?: number[];
+  spiceLoad?: number[];
+  spiceUnload?: number[];
 };
 export type ExplorerLocation = {
-  kind: "supply" | "ship" | "harbor" | "lair" | "shoal";
+  kind: "supply" | "ship" | "harbor" | "lair" | "shoal" | "farm";
   index: number;
 };
 export type ExplorerMotion = {
@@ -49,6 +51,7 @@ export type ExplorerMotion = {
   revealed?: number[];
   fishRoll?: { player: number; sequence: number; die: number; spawned: number };
   fish?: { fish: number; from: ExplorerLocation; to: ExplorerLocation }[];
+  spice?: { sack: number; from: ExplorerLocation; to: ExplorerLocation }[];
   cargo?: { unit: number; from: ExplorerLocation; to: ExplorerLocation }[];
 };
 export type ExplorerView = {
@@ -100,6 +103,12 @@ export type ExplorerView = {
     scores: number[];
     leader: number;
   };
+  spice?: {
+    progress: number[];
+    scores: number[];
+    leader: number;
+    goldUse?: { player: number; sequence: number; count: number };
+  };
   choices: ExplorerAction[];
   board: {
     scenario: string;
@@ -108,6 +117,11 @@ export type ExplorerView = {
     numbersLeft: number[];
     council?: { tile: number; anchors: number[] };
     shoals?: { tile: number; number: number }[];
+    farms?: {
+      tile: number;
+      ability: "swift" | "gold" | "pirate";
+      pirateDie?: number;
+    }[];
   };
   economy: { gold: number[]; goldBank: number; bought: number };
   fleet: {
@@ -128,6 +142,7 @@ export type ExplorerView = {
   cargo: {
     units: ExplorerLocation[];
     fish?: ExplorerLocation[];
+    spice?: { origin: number; owner: number; at: ExplorerLocation }[];
     turn?: { phase: string; buildStopped?: number[] };
   };
 };
@@ -143,6 +158,9 @@ export const explorerActionNames: Record<string, string> = {
   catan_explorer_pirate_place: "移动海盗",
   catan_explorer_pirate_steal: "选择偷取",
   catan_explorer_chase: "驱赶海盗",
+  catan_explorer_spice_land: "派驻农场",
+  catan_explorer_spice_deliver: "交付香料",
+  catan_explorer_spice_gold: "农场换金币",
   catan_explorer_fish_roll: "掷捕鱼骰",
   catan_explorer_fish_load: "装载鱼群",
   catan_explorer_fish_deliver: "交付鱼群",
@@ -225,22 +243,29 @@ export function explorerFishContents(
     ) ?? []
   );
 }
-export function explorerFreightLabel(units: number[], fish: number[]) {
+export function explorerFreightLabel(
+  units: number[],
+  fish: number[],
+  spice: number[] = [],
+) {
   return (
     [
       units.length ? explorerCargoLabel(units) : "",
       fish.length ? `${fish.length}群鱼` : "",
+      spice.length ? `${spice.length}袋香料` : "",
     ]
       .filter(Boolean)
       .join("、") || "空舱"
   );
 }
 export function explorerScenarioLabel(g: CatanState) {
-  return g.explorer?.fish
-    ? "鱼群任务"
-    : g.explorer?.lairs
-      ? "海盗巢穴"
-      : "初航";
+  return g.explorer?.spice
+    ? "香料与鱼群"
+    : g.explorer?.fish
+      ? "鱼群任务"
+      : g.explorer?.lairs
+        ? "海盗巢穴"
+        : "初航";
 }
 export function explorerFishPoint(g: CatanState, id: number) {
   const loc = g.explorer?.cargo.fish?.[id];
@@ -312,7 +337,10 @@ export function explorerTarget(
     const loc = g.explorer?.cargo.fish?.[a.card ?? -1];
     return loc?.kind === "shoal" ? { kind: "tile", id: loc.index } : null;
   }
-  if (a.type === "catan_explorer_fish_deliver") {
+  if (
+    a.type === "catan_explorer_fish_deliver" ||
+    a.type === "catan_explorer_spice_deliver"
+  ) {
     const council = g.explorer?.board.council;
     return council ? { kind: "tile", id: council.tile } : null;
   }
@@ -326,6 +354,7 @@ export function explorerTarget(
     [
       "catan_explorer_pirate_place",
       "catan_explorer_land",
+      "catan_explorer_spice_land",
       "catan_explorer_pickup",
       "catan_explorer_resolve",
       "catan_explorer_battle",
@@ -359,8 +388,19 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
       return a.choice === "skip"
         ? `放弃偷取玩家${a.target! + 1}的金币。`
         : `从玩家${a.target! + 1}随机偷取1张资源；对方空手时偷取1金币。`;
-    case "catan_explorer_chase":
-      return `船${(a.target! % 3) + 1}掷骰驱赶海盗，6点成功；本船本回合限一次，不消耗移动点。`;
+    case "catan_explorer_chase": {
+      const player = Math.floor(a.target! / 3),
+        bonus = explorerFarmAbilities(g, player).pirate;
+      return `船${(a.target! % 3) + 1}掷骰驱赶海盗，${[...bonus, 6].join("、")}点成功；本船本回合限一次，不消耗移动点。`;
+    }
+    case "catan_explorer_spice_land": {
+      const farm = g.explorer?.board.farms?.find((f) => f.tile === a.target);
+      return `${ship}向农场${a.target! + 1}永久派驻1名船员，领取1袋香料（占1格）。船员不能召回，每人每座农场限一次；${farm ? explorerFarmDescription(farm) : "获得此农场能力"}。不消耗移动点。`;
+    }
+    case "catan_explorer_spice_deliver":
+      return `${ship}向议会岛交付1袋香料，推进香料任务并归还香料袋；农场能力保留，不消耗移动点。`;
+    case "catan_explorer_spice_gold":
+      return `支付1${explorerResources[a.card!]}，获得1金币；每座已派驻金币农场每行动阶段限一次，与2金币购买资源的额度独立。`;
     case "catan_explorer_fish_roll":
       return "本航行阶段可掷一次捕鱼骰；点数对应已探索且未被海盗封锁的空渔场时，从供应放入一群鱼。没有合适渔场或供应耗尽时也会用掉这次掷骰。";
     case "catan_explorer_fish_load":
@@ -402,8 +442,16 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     case "catan_explorer_wool":
       return `支付1羊毛，为${ship}增加2点移动，每船每回合限一次。`;
     case "catan_explorer_transfer": {
-      const load = explorerFreightLabel(a.give || [], a.cards || []),
-        unload = explorerFreightLabel(a.take || [], a.targets || []);
+      const load = explorerFreightLabel(
+          a.give || [],
+          a.cards || [],
+          a.spiceLoad || [],
+        ),
+        unload = explorerFreightLabel(
+          a.take || [],
+          a.targets || [],
+          a.spiceUnload || [],
+        );
       return `${ship}在港口${a.vertex! + 1}${[load !== "空舱" ? `装入${load}` : "", unload !== "空舱" ? `卸下${unload}` : ""].filter(Boolean).join("并")}，不消耗移动点。`;
     }
     case "catan_explorer_settle":
@@ -524,7 +572,7 @@ export function explorerCargoPoint(
       ? explorerShipPosition(g, loc.index)
       : loc.kind === "harbor"
         ? g.vertices[loc.index]
-        : loc.kind === "lair"
+        : loc.kind === "lair" || loc.kind === "farm"
           ? g.tiles[loc.index]
           : null;
   if (!p) return null;
@@ -532,7 +580,111 @@ export function explorerCargoPoint(
     index = peers.indexOf(unit);
   if (index < 0) return null;
   return {
-    x: p.x + (index - (peers.length - 1) / 2) * (loc.kind === "lair" ? 18 : 16),
-    y: p.y + (loc.kind === "ship" ? -12 : loc.kind === "lair" ? 34 : 20),
+    x:
+      p.x +
+      (index -
+        (peers.length +
+          (["ship", "harbor"].includes(loc.kind)
+            ? explorerSpiceContents(g, loc.kind, loc.index).length
+            : 0) -
+          1) /
+          2) *
+        (["lair", "farm"].includes(loc.kind) ? 18 : 16),
+    y:
+      p.y +
+      (loc.kind === "ship"
+        ? -12
+        : ["lair", "farm"].includes(loc.kind)
+          ? 34
+          : 20),
+  };
+}
+
+export function explorerSpiceContents(
+  g: CatanState,
+  kind: string,
+  index: number,
+) {
+  return (
+    g.explorer?.cargo.spice?.flatMap((s, id) =>
+      s.at.kind === kind && s.at.index === index ? [id] : [],
+    ) ?? []
+  );
+}
+export function explorerFarmAbilities(g: CatanState, player: number) {
+  const claimed = new Set(
+    g.explorer?.cargo.spice
+      ?.filter((s) => s.owner === player)
+      .map((s) => s.origin),
+  );
+  const farms =
+    g.explorer?.board.farms?.filter((f) => claimed.has(f.tile)) ?? [];
+  return {
+    swift: farms.filter((f) => f.ability === "swift").length,
+    gold: farms.filter((f) => f.ability === "gold").length,
+    pirate: farms
+      .filter((f) => f.ability === "pirate")
+      .map((f) => f.pirateDie!)
+      .sort(),
+    count: farms.length,
+  };
+}
+export function explorerFarmDescription(farm: {
+  ability: string;
+  pirateDie?: number;
+}) {
+  return farm.ability === "swift"
+    ? "所有己方船航速＋1，已停止的船不重开"
+    : farm.ability === "gold"
+      ? "每行动阶段可用1资源换1金币"
+      : `驱赶海盗掷出${farm.pirateDie}也成功`;
+}
+export function explorerSpicePoint(g: CatanState, id: number) {
+  const loc = g.explorer?.cargo.spice?.[id]?.at;
+  if (!loc) return null;
+  const p =
+    loc.kind === "ship"
+      ? explorerShipPosition(g, loc.index)
+      : loc.kind === "harbor"
+        ? g.vertices[loc.index]
+        : loc.kind === "farm"
+          ? g.tiles[loc.index]
+          : null;
+  if (!p) return null;
+  const sacks = explorerSpiceContents(g, loc.kind, loc.index),
+    units =
+      loc.kind === "farm" ? 0 : explorerContents(g, loc.kind, loc.index).length;
+  return {
+    x: p.x + (units + sacks.indexOf(id) - (units + sacks.length - 1) / 2) * 16,
+    y: p.y + (loc.kind === "ship" ? -12 : loc.kind === "farm" ? 6 : 20),
+  };
+}
+export function explorerSpiceFlight(
+  before: CatanState,
+  after: CatanState,
+  motion: ExplorerMotion,
+  id: number,
+) {
+  if (!motion.spice?.some((s) => s.sack === id)) return null;
+  const from = explorerSpicePoint(before, id),
+    to = explorerSpicePoint(after, id);
+  if (!from && !to) return null;
+  const council = after.explorer?.board.council;
+  const delivered =
+    motion.kind === "catan_explorer_spice_deliver" && council
+      ? after.tiles[council.tile]
+      : null;
+  const start = from ?? { x: to!.x, y: to!.y - 18 };
+  return {
+    points: [
+      start,
+      to ??
+        (delivered
+          ? { x: delivered.x, y: delivered.y }
+          : { x: start.x, y: start.y - 24 }),
+    ],
+    appear: !from,
+    retire: !to,
+    delivered: !!delivered,
   };
 }

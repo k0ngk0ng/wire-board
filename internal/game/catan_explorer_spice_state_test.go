@@ -41,9 +41,11 @@ func explorerSpiceApply(t *testing.T, s *State, a Action) {
 	if err = json.Unmarshal(raw, &wire); err != nil {
 		t.Fatal(err)
 	}
+	beforeSpice := slices.Clone(s.Catan.Explorer.Cargo.Spice)
 	if err = s.Apply(s.Turn, wire); err != nil {
 		t.Fatal(a, err)
 	}
+	assertExplorerSpiceMotion(t, beforeSpice, s, wire)
 	*s = *explorerStateRestore(t, s)
 }
 
