@@ -1,9 +1,7 @@
 package server
 
 import (
-	"encoding/json"
 	"github.com/k0ngk0ng/wire-board/internal/game"
-	"os"
 	"testing"
 	"time"
 )
@@ -40,25 +38,8 @@ func assertExplorerFishHTTPPrivacy(t *testing.T, clients []*testClient, state *g
 }
 
 func TestCatanExplorerFishNaturalHTTPAutoplayMatch(t *testing.T) {
-	s, ts, clients, id := newExplorerHTTP(t, 3, false)
-	// Normal fish constructor snapshot; six lair numbers are still artificial
-	// private acceptance inputs. No game resources, ships or scores are injected.
-	raw, err := os.ReadFile("testdata/catan_explorer_fish_setup.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var state game.State
-	if err = json.Unmarshal(raw, &state); err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Lock()
+	s, ts, clients, id := newExplorerFishHTTP(t)
 	r := s.rooms[id]
-	r.Game = &state
-	r.startTurnClock(time.Now())
-	if err = s.save(r); err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Unlock()
 	for p := 0; p < 3; p++ {
 		setAutoPlay(clients[p], current(clients[p]), true, 200)
 	}
