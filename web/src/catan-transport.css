@@ -1,0 +1,173 @@
+.transport-panel {
+  color: #49351f;
+}
+.transport-panel .catan-gold-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.transport-panel p {
+  margin: 0;
+  line-height: 1.5;
+}
+.transport-panel:not(.pending) {
+  grid-column: 1/-1;
+  position: static;
+  width: auto;
+  max-height: none;
+  box-shadow: none;
+}
+.transport-panel:not(.pending) .catan-gold-body {
+  max-height: none;
+  overflow: visible;
+}
+.transport-stock,
+.transport-movement,
+.transport-buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.transport-stock {
+  background: #ead7af;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  justify-content: space-between;
+}
+.transport-buttons > button {
+  flex: 1 1 120px;
+}
+.transport-panel button {
+  white-space: normal;
+  min-width: 0;
+}
+.transport-panel button[aria-pressed="true"] {
+  background: #ffe18a;
+  border-color: #946320;
+  color: #49351f;
+}
+.transport-movement {
+  background: #fbe7a8;
+  padding: 8px;
+  border-radius: 8px;
+}
+.transport-movement b {
+  font-size: 24px;
+}
+.transport-confirm {
+  border-top: 1px solid #cfb67f;
+  padding-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+.transport-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 4px;
+}
+.transport-coin-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 8px;
+}
+.transport-coin-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.transport-panel .transport-coin-grid button {
+  padding: 8px 1px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.transport-coin-grid .catan-resource {
+  flex-direction: column;
+  align-self: center;
+}
+.transport-coin-grid .catan-resource > span:last-child {
+  white-space: nowrap;
+}
+.transport-site-label,
+.transport-blocked {
+  font-size: 11px;
+  font-weight: 800;
+  fill: #4e341d;
+  paint-order: stroke;
+  stroke: #fff3d5;
+  stroke-width: 3px;
+}
+.transport-blocked {
+  font-size: 21px;
+  fill: #9e3329;
+}
+.transport-edge {
+  cursor: pointer;
+}
+.transport-edge line {
+  stroke: #ffda67;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 3 5;
+}
+.transport-edge.picked line {
+  stroke: #fff9c9;
+  stroke-width: 11;
+  stroke-dasharray: none;
+}
+.transport-edge .transport-edge-hit {
+  stroke: transparent;
+  stroke-width: 21;
+  stroke-dasharray: none;
+}
+.transport-barbarian.selectable {
+  cursor: pointer;
+}
+.transport-barbarian.picked circle {
+  stroke: #c98413;
+  stroke-width: 4;
+  fill: #fff9ab;
+}
+.transport-wagon {
+  transition: transform 360ms ease-out;
+}
+.transport-seat {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.transport-map [role="button"]:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 3px #fff);
+}
+@media (max-width: 600px) {
+  .transport-panel.pending .catan-gold-body {
+    max-height: min(54dvh, 440px);
+    overflow: auto;
+  }
+  .transport-panel .transport-coin-grid button {
+    min-height: 36px;
+  }
+  .transport-confirm {
+    position: sticky;
+    bottom: 0;
+    background: #fff2cf;
+    padding-bottom: 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .transport-wagon {
+    transition: none;
+  }
+}
+.transport-seat .transport-cargo-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 3px;
+}

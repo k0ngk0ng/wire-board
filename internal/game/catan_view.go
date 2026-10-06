@@ -6,6 +6,9 @@ func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
 	s.catanAttackView(v, player)
+	if g.Transport != nil {
+		s.catanTransportView(v, player)
+	}
 	if q := g.Two; q != nil {
 		public := v["two"].(map[string]any)
 		public["canAct"] = !s.Finished && (q.Pending != nil || q.Trade != nil) && player == s.Turn

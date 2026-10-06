@@ -154,6 +154,10 @@ func (t catanTransport) canDeliver() bool {
 // takes the top token of the corresponding shared source stack; a full wagon
 // never swaps/discards its cargo. Resolve exactly once per genuine arrival.
 func (t *catanTransport) resolveArrival(g *Catan, player int, sequence uint64, deliver bool) (catanTransportArrivalResult, error) {
+	return t.resolveArrivalWithStop(g, player, sequence, deliver, false)
+}
+
+func (t *catanTransport) resolveArrivalWithStop(g *Catan, player int, sequence uint64, deliver, stopAfterDelivery bool) (catanTransportArrivalResult, error) {
 	result := catanTransportArrivalResult{}
 	if err := t.travelAllowed(g, player, sequence); err != nil {
 		return result, err
@@ -184,7 +188,7 @@ func (t *catanTransport) resolveArrival(g *Catan, player int, sequence uint64, d
 		t.GoldBank -= payment
 	}
 	stack := catanTransportOriginIndex(t.Map.Sites[q.Arrived].Kind)
-	if w.Cargo == 0 && len(t.Stacks[stack]) > 0 {
+	if !(deliver && stopAfterDelivery) && w.Cargo == 0 && len(t.Stacks[stack]) > 0 {
 		w.Cargo = t.Stacks[stack][0]
 		t.Stacks[stack] = t.Stacks[stack][1:]
 		result.Loaded = w.Cargo

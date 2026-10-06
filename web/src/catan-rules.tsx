@@ -208,6 +208,32 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
 export function CatanRules({ room }: { room: Room }) {
   const info = catanRuleContext(room);
   const { scenario, players, fiveSix, helpers } = info;
+  if (info.transport)
+    return (
+      <section className="catan-rules">
+        <h3>运输任务 · 13分</h3>
+        <ul>
+          <li>
+            先建村庄，再逆序建城市；城市开局每邻格只领1张资源，马车放在自己的城市。无强盗和最长道路奖励，保留最大骑士军队。
+          </li>
+          <li>
+            三四人掷出2或12重掷；7仍弃牌，再移动一名蛮族。骑士同样移动蛮族；落到对手道路时随机偷1张资源。
+          </li>
+          <li>
+            建设与交易结束后移动马车：无路2点、有路1点，对手道路另付1金币，有蛮族再加2点。每回合可付1粮增加2点。
+          </li>
+          <li>
+            进入中心立即停止本次移动。采石场收工具；玻璃工坊收沙；城堡收大理石或玻璃。交货可选，每件1分并按马车等级得1至5金币；随后空车自动装货，满车不能换货。
+          </li>
+          <li>
+            四次升级后额外1分。升级马车可驱赶相邻蛮族，每名蛮族每回合只尝试一次；成功后移往空边，不偷资源。快速旅程提供第二次完整移动，两次移动仍共用一次加粮及逐枚驱赶次数。
+          </li>
+          <li>
+            自己回合13分立即获胜。全部运输操作共用120秒，可收起面板查看地图。
+          </li>
+        </ul>
+      </section>
+    );
   if (info.attack)
     return (
       <>

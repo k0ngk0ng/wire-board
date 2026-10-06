@@ -280,6 +280,9 @@ func (s *State) catanCoins(p int, a Action) error {
 	return nil
 }
 func (g *Catan) tradeGold() []int {
+	if g.Transport != nil {
+		return g.Transport.Gold
+	}
 	if g.Rivers != nil {
 		return g.Rivers.Gold
 	}

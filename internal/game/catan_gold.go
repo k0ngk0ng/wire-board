@@ -101,6 +101,9 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
+	if g.Transport != nil && (s.Phase == "catan_transport_move" || s.Phase == "catan_transport_barbarian") {
+		return s.Turn
+	}
 	if g.Attack != nil && g.Attack.EndPlan != nil {
 		return g.Attack.EndPlan.Player
 	}

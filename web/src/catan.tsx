@@ -1,3 +1,5 @@
+import { CatanTransportMap, CatanTransportPanel } from "./catan-transport";
+import { emptyTransportPick } from "./catan-transport-state";
 import { CatanAttackMap, CatanAttackPanel } from "./catan-attack";
 import { emptyAttackSelection } from "./catan-attack-state";
 import { CatanTwoMap, CatanTwoPanel, CatanTwoRetreatMap } from "./catan-two";
@@ -181,6 +183,8 @@ export const catanPhases: Record<string, string> = {
   catan_wonders_start: "选择初始强盗位置",
   catan_rivers_start: "选择沼泽中的强盗起点",
   catan_attack_card: "完成蛮族进攻发展卡选择",
+  catan_transport_move: "移动马车并完成装卸",
+  catan_transport_barbarian: "选择蛮族与新位置",
   catan_attack_end: "安排骑士移动并确认战斗",
   catan_caravan_bid: "为商队出价：选择羊毛或粮食",
   catan_caravan_vote: "将全部选票投给一个商队位置",
@@ -408,7 +412,10 @@ export function CatanBoard({
     p = g.players[you],
     hand = p?.resources || g.bank.map(() => 0);
   const city = g.citiesKnights;
-  const tradeGold = g.rivers?.gold ?? g.attack?.gold;
+  const tradeGold =
+    g.rivers?.gold ??
+    g.attack?.gold ??
+    g.transport?.state.wagons.map((w) => w.gold);
   const cardCount = g.bank.length;
   const hexSize = g.hexSize || 62;
   const sea = g.seafarers;
@@ -416,7 +423,9 @@ export function CatanBoard({
   const portLayout = useMemo(() => catanPortLayout(g), [g]);
   const pirates = sea?.pirateIslands;
   const devLabel = (i: number) =>
-    pirates && i === 4 ? "胜利点卡 · 当作骑士" : devNames[i];
+    pirates && i === 4
+      ? "胜利点卡 · 当作骑士"
+      : g.developmentNames?.[i] || devNames[i];
   const pieceScale = Math.max(0.64, hexSize / 62);
   const targetScore =
     g.fishing?.victoryTargets[you] ?? catanSavedVictoryTarget(g);
@@ -430,21 +439,26 @@ export function CatanBoard({
     "沼泽",
     "水源",
     "城堡",
+    "运输货物点",
   ];
   const describeDev = (i: number) =>
-    pirates && (i === 0 || i === 4)
-      ? "将远征航线上最靠近起点的一艘普通船升级为战舰。不移动海盗、不累计骑士军队，也不获得胜利点。"
-      : sea?.wonders && i === 4
-        ? `自动计入你的私人分数。本剧本还需要已建奇迹等级领先所有对手才能以${targetScore}分获胜；或将奇迹建至4级直接获胜。`
-        : i === 4
-          ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
-          : sea?.cloth && i === 0
-            ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
-            : sea && !sea.wonders && i === 0
-              ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
-              : sea && i === 1
-                ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
-                : devDescriptions[i];
+    g.transport && i === 0
+      ? "移动一名蛮族；移到对手道路时随机拿取1张资源。累计三名骑士可争夺最大骑士军队。"
+      : g.transport && i === 2
+        ? "本回合正常马车移动结束后，再获得一次完整移动；全回合仍只可加粮一次，每名蛮族也只尝试驱赶一次。"
+        : pirates && (i === 0 || i === 4)
+          ? "将远征航线上最靠近起点的一艘普通船升级为战舰。不移动海盗、不累计骑士军队，也不获得胜利点。"
+          : sea?.wonders && i === 4
+            ? `自动计入你的私人分数。本剧本还需要已建奇迹等级领先所有对手才能以${targetScore}分获胜；或将奇迹建至4级直接获胜。`
+            : i === 4
+              ? `自动计入你的私人分数，达到${targetScore}点时在自己的回合获胜。`
+              : sea?.cloth && i === 0
+                ? "移动强盗并偷资源；建立村落贸易后也可移动海盗，选择偷资源或布匹。累计三名骑士可争夺最大骑士军队。"
+                : sea && !sea.wonders && i === 0
+                  ? "移动强盗或海盗并随机偷取一张资源；累计三名骑士可争夺最大骑士军队。"
+                  : sea && i === 1
+                    ? "免费建造两条道路、两艘船，或各一；完成第一段后再放置第二段。"
+                    : devDescriptions[i];
   const playing = room.status === "playing" && !game.finished;
   const canPlay = playing && !room.spectating && you >= 0 && !p?.eliminated;
   const mine =
@@ -455,6 +469,9 @@ export function CatanBoard({
     !g.caravans?.pending &&
     !g.attack?.pending &&
     !g.attack?.endPlan &&
+    !["catan_transport_move", "catan_transport_barbarian"].includes(
+      game.phase,
+    ) &&
     !g.cardEvent &&
     fishResponder(room) === undefined;
   const eventMine = catanCardEventActor(room);
@@ -470,6 +487,22 @@ export function CatanBoard({
   const [twoSelection, setTwoSelection] = useState<TwoSelection | null>(null);
   const [twoRetreat, setTwoRetreat] = useState<TwoRetreatSelection>(null);
   const twoMap = useTwoNeutralMotion(room);
+  const [transportSelection, setTransportSelection] =
+    useState(emptyTransportPick);
+  useEffect(
+    () => setTransportSelection(emptyTransportPick()),
+    [
+      room.id,
+      room.you,
+      room.spectating,
+      room.seats[you]?.autoPlay,
+      game.phase,
+      g.transport?.state.sequence,
+      g.transport?.state.travel?.position,
+      g.transport?.state.travel?.pending,
+      g.transport?.barbarianSequence,
+    ],
+  );
   const [attackSelection, setAttackSelection] = useState(emptyAttackSelection);
   useEffect(
     () => setAttackSelection(emptyAttackSelection()),
@@ -670,7 +703,7 @@ export function CatanBoard({
       (!!city && (cityVertices[effective] || []).includes(id)));
   return (
     <div
-      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing || g.rivers || g.caravans || g.two || g.attack ? "catan-map-side-hand" : ""}`}
+      className={`catan-board ${sea ? "catan-seafarers" : ""} ${pirates ? "catan-pirate-islands" : ""} ${sea?.wonders ? "catan-wonders" : ""} ${sea?.newWorld ? "catan-new-world" : ""} ${city ? "catan-cities-knights" : ""} ${progress ? "catan-progress-open" : ""} ${city || sea?.wonders || sea?.newWorld || g.fishing || g.rivers || g.caravans || g.two || g.attack || g.transport ? "catan-map-side-hand" : ""}`}
     >
       <section className="catan-map-panel">
         <div className="catan-map-toolbar">
@@ -907,21 +940,25 @@ export function CatanBoard({
                     <polygon
                       points={poly(t.id)}
                       fill={
-                        riverImage ? "transparent" : catanColors[t.resource]
+                        riverImage
+                          ? "transparent"
+                          : catanColors[t.resource] || "#dac08b"
                       }
                     />
                     {assets && t.resource !== 8 && !riverImage && (
                       <image
                         href={
-                          t.resource === 12
-                            ? `${assets}/catan/attack/castle-v1.webp`
-                            : t.resource === 11
-                              ? `${assets}/catan/caravans/watering-hole-v1.webp`
-                              : t.resource < 6
-                                ? `${assets}/catan/terrain-${[...terrainResourceKeys, "desert"][t.resource]}-v1.webp`
-                                : t.resource === 9
-                                  ? `${assets}/catan/fishing/lake${g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}-v1.webp`
-                                  : `${assets}/catan/seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}-v1.webp`
+                          t.resource === 13 && g.transport
+                            ? `${assets}/catan/transport/site-${g.transport.map.sites.find((s) => s.tile === t.id)?.kind}-v1.webp`
+                            : t.resource === 12
+                              ? `${assets}/catan/attack/castle-v1.webp`
+                              : t.resource === 11
+                                ? `${assets}/catan/caravans/watering-hole-v1.webp`
+                                : t.resource < 6
+                                  ? `${assets}/catan/terrain-${[...terrainResourceKeys, "desert"][t.resource]}-v1.webp`
+                                  : t.resource === 9
+                                    ? `${assets}/catan/fishing/lake${g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}-v1.webp`
+                                    : `${assets}/catan/seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}-v1.webp`
                         }
                         x={t.x - (hexSize * Math.sqrt(3)) / 2}
                         y={t.y - hexSize}
@@ -1396,6 +1433,13 @@ export function CatanBoard({
                 selected={twoSelection}
                 onSelect={setTwoSelection}
               />
+              <CatanTransportMap
+                room={room}
+                assets={assets}
+                busy={busy}
+                selected={transportSelection}
+                onSelect={setTransportSelection}
+              />
               <CatanAttackMap
                 room={room}
                 assets={assets}
@@ -1414,82 +1458,94 @@ export function CatanBoard({
           </div>
         </div>
         <div className="catan-map-hint">
-          {g.attack?.pending || g.attack?.endPlan
-            ? "点击地图选择目标 · 在蛮族进攻面板确认 · 可收起、缩放和拖动"
-            : twoResponder(room) !== undefined
-              ? g.two?.trade
-                ? "在面板选择交还资源 · 可收起查看地图"
-                : "点击亮起的位置，为中立势力建设 · 可收起面板"
-              : g.caravans?.pending
-                ? g.caravans.canAct
-                  ? g.caravans.pending.kind === "bid"
-                    ? "请在商队面板选择出价 · 可收起面板查看地图"
-                    : "点击亮起的路线，再确认方向与选位 · 可缩放拖动"
-                  : "等待商队投票 · 滚轮缩放 · 按住拖动"
-                : fishResponder(room) !== undefined
-                  ? canPlay && fishResponder(room) === you
-                    ? "请在捕鱼面板换筹码或保留 · 可收起面板查看地图"
-                    : "等待鱼筹码选择 · 滚轮缩放 · 按住拖动"
-                  : ["fish_road", "fish_ship"].includes(effective) && mine
-                    ? `点击亮起的${effective === "fish_ship" ? "船只位置" : "道路"}，再到捕鱼面板确认支付`
-                    : progressMode
-                      ? "点击地图上亮起的目标，再在进步牌面板确认 · 滚轮缩放 · 按住拖动"
-                      : cityChoiceMine && cityChoiceMode
-                        ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
-                        : phase === "catan_cloth_start" ||
-                            phase === "catan_wonders_start" ||
-                            phase === "catan_rivers_start"
-                          ? mine
-                            ? `点击亮起的${g.rivers ? "沼泽" : sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
-                            : "等待先手选择强盗起点 · 可缩放拖动"
-                          : phase === "catan_cloth_steal"
-                            ? "请在海盗面板选择对手与物品 · 可收起查看地图"
-                            : phase === "catan_port" ||
-                                phase === "catan_world_ports"
-                              ? portMine
-                                ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
-                                : "等待港口安放 · 滚轮缩放 · 按住拖动"
-                              : phase === "catan_world_fish"
-                                ? mine
-                                  ? "选择亮起的凹角，预览后确认渔场 · 可收起面板查看地图"
-                                  : "等待渔场安放 · 滚轮缩放 · 按住拖动"
-                                : phase === "catan_card_event"
-                                  ? eventMine
-                                    ? "请完成事件牌选择 · 可收起面板查看地图"
-                                    : "等待事件牌回应 · 滚轮缩放 · 按住拖动"
-                                  : phase === "catan_gold"
-                                    ? canPlay &&
-                                      g.goldPending?.claims[0]?.player === you
-                                      ? "请在金矿面板领取资源 · 可收起面板查看地图"
-                                      : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
-                                    : mine
-                                      ? effective === "helper_move" ||
-                                        effective === "move_ship"
-                                        ? moveFrom === null
-                                          ? effective === "move_ship"
-                                            ? "选择要移动的己方末端旧船"
-                                            : "选择要迁移的己方末端道路"
-                                          : "选择亮起的新位置，再确认移动"
-                                        : effective === "ship"
-                                          ? "点击虚线选择船只位置，再确认建造"
-                                          : effective === "pirate"
-                                            ? "选择另一块海洋，或将海盗移至外海"
-                                            : effective === "repair_road"
-                                              ? "点击受损道路，再确认修复"
-                                              : effective === "road"
-                                                ? "点击虚线选择道路，再确认建造"
-                                                : effective === "settlement" ||
-                                                    effective === "city"
-                                                  ? "点击亮起的交点，再确认建造"
-                                                  : effective === "robber" ||
-                                                      effective ===
-                                                        "helper_desert"
-                                                    ? "点击地块选择强盗的新位置"
-                                                    : "选择右侧行动 · 滚轮缩放 · 按住拖动"
-                                      : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
+          {g.transport &&
+          ["catan_transport_move", "catan_transport_barbarian"].includes(phase)
+            ? "点击亮起的路线，在运输面板确认 · 可收起、缩放和拖动"
+            : g.attack?.pending || g.attack?.endPlan
+              ? "点击地图选择目标 · 在蛮族进攻面板确认 · 可收起、缩放和拖动"
+              : twoResponder(room) !== undefined
+                ? g.two?.trade
+                  ? "在面板选择交还资源 · 可收起查看地图"
+                  : "点击亮起的位置，为中立势力建设 · 可收起面板"
+                : g.caravans?.pending
+                  ? g.caravans.canAct
+                    ? g.caravans.pending.kind === "bid"
+                      ? "请在商队面板选择出价 · 可收起面板查看地图"
+                      : "点击亮起的路线，再确认方向与选位 · 可缩放拖动"
+                    : "等待商队投票 · 滚轮缩放 · 按住拖动"
+                  : fishResponder(room) !== undefined
+                    ? canPlay && fishResponder(room) === you
+                      ? "请在捕鱼面板换筹码或保留 · 可收起面板查看地图"
+                      : "等待鱼筹码选择 · 滚轮缩放 · 按住拖动"
+                    : ["fish_road", "fish_ship"].includes(effective) && mine
+                      ? `点击亮起的${effective === "fish_ship" ? "船只位置" : "道路"}，再到捕鱼面板确认支付`
+                      : progressMode
+                        ? "点击地图上亮起的目标，再在进步牌面板确认 · 滚轮缩放 · 按住拖动"
+                        : cityChoiceMine && cityChoiceMode
+                          ? `请在地图上选择${cityActionNames[cityChoiceMode] || "目标"}位置，再确认 · 可收起选择面板`
+                          : phase === "catan_cloth_start" ||
+                              phase === "catan_wonders_start" ||
+                              phase === "catan_rivers_start"
+                            ? mine
+                              ? `点击亮起的${g.rivers ? "沼泽" : sea?.wonders ? "沙漠" : "12号地块"}，再确认强盗起点`
+                              : "等待先手选择强盗起点 · 可缩放拖动"
+                            : phase === "catan_cloth_steal"
+                              ? "请在海盗面板选择对手与物品 · 可收起查看地图"
+                              : phase === "catan_port" ||
+                                  phase === "catan_world_ports"
+                                ? portMine
+                                  ? "选择亮起的海岸位置，再确认安放港口 · 可收起面板查看地图"
+                                  : "等待港口安放 · 滚轮缩放 · 按住拖动"
+                                : phase === "catan_world_fish"
+                                  ? mine
+                                    ? "选择亮起的凹角，预览后确认渔场 · 可收起面板查看地图"
+                                    : "等待渔场安放 · 滚轮缩放 · 按住拖动"
+                                  : phase === "catan_card_event"
+                                    ? eventMine
+                                      ? "请完成事件牌选择 · 可收起面板查看地图"
+                                      : "等待事件牌回应 · 滚轮缩放 · 按住拖动"
+                                    : phase === "catan_gold"
+                                      ? canPlay &&
+                                        g.goldPending?.claims[0]?.player === you
+                                        ? "请在金矿面板领取资源 · 可收起面板查看地图"
+                                        : "等待金矿资源选择 · 滚轮缩放 · 按住拖动"
+                                      : mine
+                                        ? effective === "helper_move" ||
+                                          effective === "move_ship"
+                                          ? moveFrom === null
+                                            ? effective === "move_ship"
+                                              ? "选择要移动的己方末端旧船"
+                                              : "选择要迁移的己方末端道路"
+                                            : "选择亮起的新位置，再确认移动"
+                                          : effective === "ship"
+                                            ? "点击虚线选择船只位置，再确认建造"
+                                            : effective === "pirate"
+                                              ? "选择另一块海洋，或将海盗移至外海"
+                                              : effective === "repair_road"
+                                                ? "点击受损道路，再确认修复"
+                                                : effective === "road"
+                                                  ? "点击虚线选择道路，再确认建造"
+                                                  : effective ===
+                                                        "settlement" ||
+                                                      effective === "city"
+                                                    ? "点击亮起的交点，再确认建造"
+                                                    : effective === "robber" ||
+                                                        effective ===
+                                                          "helper_desert"
+                                                      ? "点击地块选择强盗的新位置"
+                                                      : "选择右侧行动 · 滚轮缩放 · 按住拖动"
+                                        : "滚轮缩放 · 按住拖动 · 等待其他玩家行动"}
         </div>
       </section>
       <aside className="catan-actions">
+        <CatanTransportPanel
+          room={room}
+          assets={assets}
+          busy={busy}
+          act={submit}
+          selected={transportSelection}
+          onSelect={setTransportSelection}
+        />
         <CatanAttackPanel
           room={room}
           assets={assets}
@@ -2168,7 +2224,7 @@ export function CatanBoard({
           <section className="catan-confirm">
             <strong>{devLabel(dev)}</strong>
             <p>{describeDev(dev)}</p>
-            {dev === 2 && (
+            {dev === 2 && !g.transport && (
               <ResourcePicker
                 label="丰收领取"
                 values={take}
@@ -2201,7 +2257,9 @@ export function CatanBoard({
                 className="primary"
                 disabled={
                   busy ||
-                  (dev === 2 && total(take) !== Math.min(2, total(g.bank)))
+                  (dev === 2 &&
+                    !g.transport &&
+                    total(take) !== Math.min(2, total(g.bank)))
                 }
                 onClick={() =>
                   void submit({
@@ -2312,7 +2370,7 @@ export function CatanBoard({
         <CatanFleetChoice room={room} act={act} busy={busy} assets={assets} />
         {!pirates && (
           <div className="catan-awards">
-            {!sea?.cloth && (
+            {!sea?.cloth && !g.transport && (
               <span>
                 <Route size={16} />
                 {sea ? "最长路线" : "最长道路"}{" "}
@@ -2391,7 +2449,11 @@ export function CatanBoard({
                       >
                         {assets && (
                           <img
-                            src={`${assets}/catan/dev-${i}-v1.webp`}
+                            src={
+                              g.transport
+                                ? `${assets}/catan/transport/card-${i === 4 ? "vp" : i === 2 ? "swift" : i === 1 ? "road" : "knight"}-v1.webp`
+                                : `${assets}/catan/dev-${i}-v1.webp`
+                            }
                             alt=""
                           />
                         )}

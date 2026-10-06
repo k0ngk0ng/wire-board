@@ -1,3 +1,4 @@
+import { CatanTransportSeat } from "./catan-transport";
 import { CatanAttackSeat } from "./catan-attack";
 import { twoResponder } from "./catan-two-state";
 import { caravanResponder, caravanPlacementStep } from "./catan-caravans-state";
@@ -2493,6 +2494,16 @@ function Players({ room }: { room: Room }) {
                     <>
                       <br />
                       <CatanFriendlyRobberSeat game={g.catan} seat={i} />
+                    </>
+                  )}
+                  {g.catan.transport && (
+                    <>
+                      <br />
+                      <CatanTransportSeat
+                        game={g.catan}
+                        seat={i}
+                        assets={assets}
+                      />
                     </>
                   )}
                   {g.catan.attack && (

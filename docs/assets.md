@@ -47,3 +47,8 @@ python3 scripts/upload_assets.py .local/asset-pack \
 卡坦河流素材使用 `catan/rivers/`：`river-{long,short,extended}-v1.webp` 为三组完整河流地形，`bridge-{blue,orange,white,red,purple,green}-v1.webp` 为六色透明桥梁，`coin-{1,5}-v1.webp` 为金币，`{wealthiest,poor}-v1.webp` 为贫富标记插画。共13张、1,208,956字节。中文名称、加减分和生产数字由界面单独显示；河流保留完整原图，接入时须按源头至河口方向变换并按地图六边形裁剪，不能把长图拉伸成单块地形。
 
 复现命令：`scripts/prepare_catan_rivers_assets.py OUTPUT_DIR --rules-directory RULES_DIR`，依赖PyMuPDF、Pillow。来源为固定哈希2025 T&B第11页及五至六人第6页，原生尺寸与颜色保留，软遮罩单独适配，输出无损WebP。对象编号、原生尺寸、遮罩、文件路径/大小/哈希记录于 `docs/research/catan-rivers-art-sources.json`。既有素材基地址不变，仅补充新文件；后续修改须升级文件版本。素材准备与上传不代表该剧本已开放或界面验收通过。
+
+
+卡坦运输素材使用 `catan/transport/`：四种原色 `wagon-{blue,red,white,orange}-v1.webp`、三块 `site-{quarry,glassworks,castle}-v1.webp`、四种 `cargo-{marble,sand,glass,tools}-v1.webp`、`card-{knight,road,swift,vp,back}-v1.webp`。共16张原版图，来自固定2025 T&B第20页；卡面为完整英文正面，界面提供中文说明。`card-vp`使用Toolmaking正面代表引擎共用的胜利点牌种，不改变分数。无需改动共用素材基地址。
+
+复现：`scripts/prepare_catan_transport_assets.py OUTPUT_DIR --rules-directory RULES_DIR`，依赖PyMuPDF、Pillow；固定摘要、原生对象尺寸和中文映射，原色保留，不自行重绘。胜利点卡从重叠组件图精确裁出前景卡，避免相邻卡边缘。对象/几何/输出哈希见 `docs/research/catan-transport-art-sources.json`。三四人素材与操作验收不等于五六人、双人和全部组合已完成；这些创建选项仍按实际验收门槛开放。
