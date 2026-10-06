@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-// Private mission kernel; full State/Apply and room options remain gated.
+// Private mission rules; public room options remain gated on final acceptance.
 // German 2025 p20: six spaces, unlike the seven-space fish/lair tracks.
 var catanExplorerSpicePoints = [...]int{0, 1, 1, 2, 2, 3, 3}
 

@@ -9,6 +9,7 @@ import (
 // Private integration aggregate. Land Ho is the first complete map/inventory
 // combination; public room recipes remain gated on complete acceptance.
 type catanExplorer struct {
+	Spice        *catanExplorerSpice   `json:"spice,omitempty"`
 	Fish         *catanExplorerFish    `json:"fish,omitempty"`
 	Setup        *catanExplorerSetup   `json:"setup,omitempty"`
 	Pirate       *catanExplorerPirate  `json:"pirate,omitempty"`
@@ -49,7 +50,7 @@ func newCatanExplorerLandHoWorld(players int) (*Catan, *catanExplorer, error) {
 }
 
 func (x catanExplorer) validate(g *Catan) error {
-	if x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerMissionScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
+	if x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerPirateScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
 		return errors.New("探险地图、航行、货物或经济组件不匹配；其他任务尚未完整接入")
 	}
 	if err := x.Board.validate(g); err != nil {
@@ -63,23 +64,25 @@ func (x catanExplorer) validate(g *Catan) error {
 			return errors.New("初航不能包含海盗任务")
 		}
 	} else {
-		if x.Pirate == nil || x.Lairs == nil {
+		if x.Pirate == nil || (catanExplorerMissionScenario(x.Board.Scenario) != (x.Lairs != nil)) {
 			return errors.New("海盗巢穴任务组件缺失")
 		}
 		if err := x.Pirate.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
 			return err
 		}
-		if err := x.Lairs.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
-			return err
-		}
-		for _, site := range x.Lairs.Sites {
-			if site.Ready > 0 && site.Resolved == 0 && (x.Economy.Turn == nil || site.Ready != x.Economy.Turn.Sequence || site.Captor != x.Economy.Turn.Player) {
-				return errors.New("尚未结算的巢穴不能跨回合")
+		if x.Lairs != nil {
+			if err := x.Lairs.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
+				return err
 			}
-		}
-		for _, h := range x.Board.Hidden {
-			if h.Revealed && h.Resource == CatanGold && x.Lairs.site(h.Tile) < 0 {
-				return errors.New("已发现的金矿缺少巢穴标记")
+			for _, site := range x.Lairs.Sites {
+				if site.Ready > 0 && site.Resolved == 0 && (x.Economy.Turn == nil || site.Ready != x.Economy.Turn.Sequence || site.Captor != x.Economy.Turn.Player) {
+					return errors.New("尚未结算的巢穴不能跨回合")
+				}
+			}
+			for _, h := range x.Board.Hidden {
+				if h.Revealed && h.Resource == CatanGold && x.Lairs.site(h.Tile) < 0 {
+					return errors.New("已发现的金矿缺少巢穴标记")
+				}
 			}
 		}
 		if x.Setup == nil && x.Economy.Turn != nil && x.Economy.Turn.Phase == "pirate" && (x.Pirate.Pending == nil || x.Pirate.Pending.Resume != "action") {
@@ -91,7 +94,7 @@ func (x catanExplorer) validate(g *Catan) error {
 			}
 		}
 	}
-	if (x.Board.Scenario == "fish-for-catan") != (x.Fish != nil) {
+	if catanExplorerFishScenario(x.Board.Scenario) != (x.Fish != nil) {
 		return errors.New("鱼群任务与地图剧本不符")
 	}
 	if x.Fish != nil {
@@ -102,6 +105,14 @@ func (x catanExplorer) validate(g *Catan) error {
 			if loc.Kind == "shoal" && x.Pirate.Owner >= 0 && loc.Index == x.Pirate.Tile {
 				return errors.New("海盗所在渔场不能残留鱼群")
 			}
+		}
+	}
+	if (x.Board.Scenario == "spices-for-catan") != (x.Spice != nil) {
+		return errors.New("香料任务与地图剧本不符")
+	}
+	if x.Spice != nil {
+		if err := x.Spice.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
+			return err
 		}
 	}
 	if g.Robber != -1 || g.LongestOwner != -1 || g.ArmyOwner != -1 || len(g.DevDeck)+len(g.DevDiscard) != 0 {
@@ -134,6 +145,9 @@ func (x catanExplorer) validate(g *Catan) error {
 		}
 		if x.Fish != nil {
 			score += x.Fish.publicView(len(g.Players)).Scores[p]
+		}
+		if x.Spice != nil {
+			score += x.Spice.publicView(g).Scores[p]
 		}
 		if player.Score != score || !catanBundle(player.Dev) || !catanBundle(player.NewDev) || sum(player.Dev)+sum(player.NewDev) != 0 {
 			return errors.New("初航建筑分数或发展卡库存不符")
@@ -198,9 +212,14 @@ func (x *catanExplorer) discover(g *Catan, player int, tiles []int) ([]catanExpl
 			g.Bank[hidden.Resource]--
 			g.Players[player].Resources[hidden.Resource]++
 			award.Resources[hidden.Resource] = 1
-		} else if hidden.Resource == CatanSea || hidden.Resource == CatanGold && x.Lairs != nil {
+		} else if hidden.Resource == CatanSea || hidden.Resource == CatanGold && x.Lairs != nil || hidden.Farm != "" && x.Spice != nil {
 			if hidden.Resource == CatanGold {
 				if err := x.Lairs.discover(g, x.Board, tile); err != nil {
+					return nil, err
+				}
+			}
+			if hidden.Farm != "" {
+				if err := x.Cargo.discoverSpice(g, x.Board, x.Fleet, tile); err != nil {
 					return nil, err
 				}
 			}

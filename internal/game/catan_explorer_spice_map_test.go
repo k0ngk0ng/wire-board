@@ -198,7 +198,7 @@ func TestCatanExplorerSpiceMapHiddenPrivacyAndCorruption(t *testing.T) {
 	if _, _, err := newCatanExplorerBoard(3, "spices-for-catan", "fixed"); err == nil {
 		t.Fatal("invented fixed layout accepted")
 	}
-	if _, err := newCatanExplorerMissionState(3, "spices-for-catan", "variable", nil); err == nil {
-		t.Fatal("unfinished spice mission became playable")
+	if _, err := newCatanExplorerSpiceState(3); err != nil {
+		t.Fatal(err)
 	}
 }

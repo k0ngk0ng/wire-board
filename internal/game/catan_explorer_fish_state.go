@@ -2,6 +2,7 @@ package game
 
 import "errors"
 
+// These scenarios contain the lair mission. Spice uses pirates without lairs.
 func catanExplorerMissionScenario(scenario string) bool {
 	return scenario == "pirate-lairs" || scenario == "fish-for-catan"
 }
