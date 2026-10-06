@@ -246,6 +246,7 @@ export type Room = {
 };
 
 export type SplendorOptions = {
+  extraNobles?: boolean;
   cities?: boolean;
   orient?: boolean;
   rules?: string;

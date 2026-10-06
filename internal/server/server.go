@@ -1073,7 +1073,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			if next.Kind == "rail" && next.RailMap != "" && next.RailMap != "usa" {
 				next.Game, err = game.NewRailMap(next.RailMap, len(next.Seats))
-			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds) {
+			} else if next.Kind == "splendor" && (next.SplendorOptions.TradingPosts || next.SplendorOptions.Strongholds || next.SplendorOptions.ExtraNobles) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
 				if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {

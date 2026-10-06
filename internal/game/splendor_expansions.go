@@ -11,6 +11,7 @@ import (
 const SplendorExpansionRules = "split-box-2025"
 
 type SplendorOptions struct {
+	ExtraNobles  bool   `json:"extraNobles,omitempty"`
 	Orient       bool   `json:"orient,omitempty"`
 	Cities       bool   `json:"cities,omitempty"`
 	Rules        string `json:"rules,omitempty"`
@@ -19,7 +20,7 @@ type SplendorOptions struct {
 }
 
 func (o SplendorOptions) expanded() bool {
-	return o.TradingPosts || o.Strongholds || o.Orient || o.Cities
+	return o.TradingPosts || o.Strongholds || o.Orient || o.Cities || o.ExtraNobles
 }
 
 func (o SplendorOptions) Validate() error {
@@ -57,10 +58,26 @@ func NewSplendor(n int, options SplendorOptions) (*State, error) {
 		options.Rules = SplendorExpansionRules
 	}
 	s.Splendor.Options = options
+	if options.ExtraNobles {
+		nobles := append(Nobles(), SplendorExtraNobles()...)
+		shuffle(nobles)
+		s.Splendor.Nobles = nobles[:n+1]
+	}
 	if options.Strongholds {
 		s.Splendor.Strongholds = map[int]GemStronghold{}
 	}
 	return s, nil
+}
+
+// The two 2025 split boxes each contain one ordinary three-point noble.
+// They are an optional addition to the draw pool, not two extra face-up tiles.
+// Publisher photographs and exact source hashes are recorded in the catalog
+// research log. IDs are separate from the ten base nobles and their atlas.
+func SplendorExtraNobles() []Noble {
+	return []Noble{
+		{ID: 101, Cost: []int{3, 0, 3, 3, 0}}, // The Silk Road
+		{ID: 102, Cost: []int{0, 4, 0, 0, 4}}, // The Sun Never Sets
+	}
 }
 
 const (

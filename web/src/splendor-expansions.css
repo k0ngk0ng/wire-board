@@ -35,6 +35,15 @@
   display: block;
   margin-top: 4px;
 }
+.with-artwork .noble.extra-noble .noble-points {
+  visibility: visible;
+  color: white;
+  background: #34425a;
+  border-radius: 3px;
+  padding: 1px 5px;
+  line-height: 1.1;
+  text-shadow: 0 1px 1px #1e2230;
+}
 .gem-trading-posts {
   grid-column: 1 / -1;
   display: grid;

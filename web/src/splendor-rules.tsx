@@ -35,6 +35,12 @@ export function SplendorRules({ room }: { room: Room }) {
           同分时发展卡更少者获胜，仍相同则共同获胜。
         </li>
       </ol>
+      {options?.extraNobles && !options?.cities && (
+        <p>
+          <b>附赠贵族：</b>
+          两盒扩展各附赠的一位贵族加入基础十位的抽选池，开局仍随机公开玩家人数加一位。每位提供三分，沿用普通贵族的领取规则。
+        </p>
+      )}
       {options?.cities && (
         <p>
           <b>城市条件：</b>
