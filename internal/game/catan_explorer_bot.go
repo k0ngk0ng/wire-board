@@ -295,6 +295,9 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 					}
 				}
 			}
+			if action, ok := s.catanExplorerSpiceBotGold(player, p.cost); ok {
+				return action, nil
+			}
 		}
 		a.Type = "catan_explorer_begin_move"
 		return a, nil
@@ -322,11 +325,11 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 				continue
 			}
 			units := x.Cargo.contents(catanExplorerCargoLocation{"ship", ship})
-			if x.Lairs == nil && (len(units) != 1 || units[0]%11 >= 2) {
+			if x.Lairs == nil && x.Spice == nil && (len(units) != 1 || units[0]%11 >= 2) {
 				continue
 			}
 			var path []int
-			if x.Lairs != nil {
+			if x.Lairs != nil || x.Spice != nil {
 				path = catanExplorerMissionVoyage(g, player, ship)
 			} else {
 				path = catanExplorerBotVoyage(g, player, ship)
