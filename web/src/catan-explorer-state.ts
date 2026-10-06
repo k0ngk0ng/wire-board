@@ -16,7 +16,7 @@ export type ExplorerAction = {
   take?: number[];
 };
 export type ExplorerLocation = {
-  kind: "supply" | "ship" | "harbor" | "lair";
+  kind: "supply" | "ship" | "harbor" | "lair" | "shoal";
   index: number;
 };
 export type ExplorerMotion = {
@@ -87,12 +87,25 @@ export type ExplorerView = {
       candidates: number[];
     };
   };
+  fish?: {
+    lastRoll?: {
+      player: number;
+      sequence: number;
+      die: number;
+      spawned: number;
+    };
+    progress: number[];
+    scores: number[];
+    leader: number;
+  };
   choices: ExplorerAction[];
   board: {
     scenario: string;
     target: number;
     unexplored: number[];
     numbersLeft: number[];
+    council?: { tile: number; anchors: number[] };
+    shoals?: { tile: number; number: number }[];
   };
   economy: { gold: number[]; goldBank: number; bought: number };
   fleet: {
@@ -112,6 +125,7 @@ export type ExplorerView = {
   };
   cargo: {
     units: ExplorerLocation[];
+    fish?: ExplorerLocation[];
     turn?: { phase: string; buildStopped?: number[] };
   };
 };
@@ -127,6 +141,9 @@ export const explorerActionNames: Record<string, string> = {
   catan_explorer_pirate_place: "移动海盗",
   catan_explorer_pirate_steal: "选择偷取",
   catan_explorer_chase: "驱赶海盗",
+  catan_explorer_fish_roll: "掷捕鱼骰",
+  catan_explorer_fish_load: "装载鱼群",
+  catan_explorer_fish_deliver: "交付鱼群",
   catan_explorer_land: "船员登陆",
   catan_explorer_pickup: "接回船员",
   catan_explorer_resolve: "结算巢穴",
@@ -195,6 +212,48 @@ export function explorerContents(g: CatanState, kind: string, index: number) {
     ) ?? []
   );
 }
+export function explorerFishContents(
+  g: CatanState,
+  kind: string,
+  index: number,
+) {
+  return (
+    g.explorer?.cargo.fish?.flatMap((loc, id) =>
+      loc.kind === kind && loc.index === index ? [id] : [],
+    ) ?? []
+  );
+}
+export function explorerFreightLabel(units: number[], fish: number[]) {
+  return (
+    [
+      units.length ? explorerCargoLabel(units) : "",
+      fish.length ? `${fish.length}群鱼` : "",
+    ]
+      .filter(Boolean)
+      .join("、") || "空舱"
+  );
+}
+export function explorerScenarioLabel(g: CatanState) {
+  return g.explorer?.fish
+    ? "鱼群任务"
+    : g.explorer?.lairs
+      ? "海盗巢穴"
+      : "初航";
+}
+export function explorerFishPoint(g: CatanState, id: number) {
+  const loc = g.explorer?.cargo.fish?.[id];
+  if (!loc) return null;
+  const p =
+    loc.kind === "ship"
+      ? explorerShipPosition(g, loc.index)
+      : loc.kind === "harbor"
+        ? g.vertices[loc.index]
+        : loc.kind === "shoal"
+          ? g.tiles[loc.index]
+          : null;
+  if (!p) return null;
+  return { x: p.x, y: p.y + (loc.kind === "ship" ? -12 : 20) };
+}
 export function explorerShipPosition(g: CatanState, slot: number) {
   const positions = g.explorer?.fleet.positions,
     at = positions?.[slot];
@@ -216,6 +275,14 @@ export function explorerTarget(
   g: CatanState,
   a: ExplorerAction,
 ): { kind: "edge" | "vertex" | "tile"; id: number } | null {
+  if (a.type === "catan_explorer_fish_load") {
+    const loc = g.explorer?.cargo.fish?.[a.card ?? -1];
+    return loc?.kind === "shoal" ? { kind: "tile", id: loc.index } : null;
+  }
+  if (a.type === "catan_explorer_fish_deliver") {
+    const council = g.explorer?.board.council;
+    return council ? { kind: "tile", id: council.tile } : null;
+  }
   if (a.type === "catan_explorer_setup")
     return {
       kind:
@@ -261,6 +328,12 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
         : `从玩家${a.target! + 1}随机偷取1张资源；对方空手时偷取1金币。`;
     case "catan_explorer_chase":
       return `船${(a.target! % 3) + 1}掷骰驱赶海盗，6点成功；本船本回合限一次，不消耗移动点。`;
+    case "catan_explorer_fish_roll":
+      return "本航行阶段可掷一次捕鱼骰；点数对应已探索且未被海盗封锁的空渔场时，从供应放入一群鱼。没有合适渔场或供应耗尽时也会用掉这次掷骰。";
+    case "catan_explorer_fish_load":
+      return `${ship}从相邻渔场装入一群鱼，占满2格船舱，不消耗移动点。`;
+    case "catan_explorer_fish_deliver":
+      return `${ship}在议会岛锚点交付一群鱼，推进鱼群任务并把鱼群归还供应，不消耗移动点。`;
     case "catan_explorer_land":
       return `${ship}向巢穴${a.target! + 1}派出${a.cards?.length || 0}名船员，不消耗移动点。凑满3人后，结束航行时结算。`;
     case "catan_explorer_pickup":
@@ -295,8 +368,11 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     }
     case "catan_explorer_wool":
       return `支付1羊毛，为${ship}增加2点移动，每船每回合限一次。`;
-    case "catan_explorer_transfer":
-      return `${ship}在港口${a.vertex! + 1}${a.give?.length ? `装入${explorerCargoLabel(a.give)}` : ""}${a.give?.length && a.take?.length ? "并" : ""}${a.take?.length ? `卸下${explorerCargoLabel(a.take)}` : ""}，不消耗移动点。`;
+    case "catan_explorer_transfer": {
+      const load = explorerFreightLabel(a.give || [], a.cards || []),
+        unload = explorerFreightLabel(a.take || [], a.targets || []);
+      return `${ship}在港口${a.vertex! + 1}${[load !== "空舱" ? `装入${load}` : "", unload !== "空舱" ? `卸下${unload}` : ""].filter(Boolean).join("并")}，不消耗移动点。`;
+    }
     case "catan_explorer_settle":
       return `${ship}的移民在${vertex}定居，获得1分；归还船和移民，不再支付资源。`;
     case "catan_explorer_begin_move":

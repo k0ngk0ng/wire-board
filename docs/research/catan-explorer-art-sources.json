@@ -344,6 +344,57 @@
       ],
       "bytes": 6556,
       "sha256": "a79693058204289769c42b0746ffc0b5926286174ea2dcab86e4a3f01e10ef94"
+    },
+    "fish": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11814,
+      "soft_mask": 11813,
+      "mask_size": [
+        107,
+        96
+      ],
+      "size": [
+        68,
+        61
+      ],
+      "bytes": 4622,
+      "sha256": "1e757b19a4c227342c6622172a41b6889bf03405afbb16befe19514424ce21b7"
+    },
+    "council": {
+      "source": "catan-pirates-2025",
+      "page": 4,
+      "method": "native-image",
+      "object": 11816,
+      "soft_mask": 11815,
+      "mask_size": [
+        298,
+        323
+      ],
+      "size": [
+        189,
+        204
+      ],
+      "bytes": 34928,
+      "sha256": "4dbd46911dec604ca873011402e3db0af2c226173a58f5812b53bb0a03f7c8e2"
+    },
+    "fish-shoal": {
+      "source": "catan-pirates-2025",
+      "page": 3,
+      "method": "native-image",
+      "object": 5201,
+      "soft_mask": 5200,
+      "mask_size": [
+        299,
+        341
+      ],
+      "size": [
+        190,
+        216
+      ],
+      "bytes": 34026,
+      "sha256": "b5c109c8a0f2eb9bef3c90de656db9f72bcaa79f3804165e14f4e50900512f2c"
     }
   }
 }
