@@ -188,6 +188,10 @@ func (s *State) applyCatanExplorerMission(player int, a Action) (bool, error) {
 		s.catanExplorerMissionScore()
 		s.catanExplorerSyncPhase()
 		s.catanLog(player, "%s巢穴 #%d", map[string]string{"land": "派船员登陆", "pickup": "接回船员自", "begin": "结算", "roll": "掷英雄骰于"}[kind], a.Target+1)
+		s.catanExplorerVictory()
+		if s.Finished {
+			return true, nil
+		}
 		if x.Cargo.Turn.Phase == "ended" && x.Lairs.Battle == nil && !s.catanExplorerHasReadyLair() {
 			return true, s.catanExplorerNextTurn()
 		}
