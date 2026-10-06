@@ -49,9 +49,9 @@ func newCatanExplorerSailing(players int) (*catanExplorerSailing, error) {
 	return f, nil
 }
 
-// Only explicit sea hexes are navigable. A board constructor must model the
-// actual frame's sea spaces; a missing neighbor must not invent extra ocean.
-// Fish shoals and the Council will use sea terrain plus mission metadata.
+// Sea edges include coastlines against the surrounding sea frame (official
+// E&P FAQ "Sea Routes"). This does not invent an extra hex on which to place
+// a pirate. Fish shoals and the Council use sea terrain plus mission metadata.
 func catanExplorerSeaEdge(g *Catan, edge int) bool {
 	if g == nil || edge < 0 || edge >= len(g.Edges) {
 		return false
@@ -66,6 +66,9 @@ func catanExplorerSeaEdge(g *Catan, edge int) bool {
 			return false
 		}
 		sea = sea || g.Tiles[tile].Resource == CatanSea
+	}
+	if len(e.Tiles) == 1 && g.Tiles[e.Tiles[0]].Resource != CatanFog {
+		sea = true
 	}
 	return sea
 }
