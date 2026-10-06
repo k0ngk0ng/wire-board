@@ -200,3 +200,17 @@
   flex-shrink: 0;
   min-height: 42px;
 }
+
+.catan-two-retreat-map polygon {
+  cursor: pointer;
+  fill: #ffdc6a30;
+  stroke: #ffdf72;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+.catan-two-retreat-map polygon.picked,
+.catan-two-retreat-map polygon:focus-visible {
+  fill: #ffffff35;
+  stroke: #fff;
+  stroke-width: 7;
+}

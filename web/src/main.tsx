@@ -2133,9 +2133,11 @@ function Waiting({
       (room.kind === "sanguosha"
         ? 4
         : room.kind === "catan"
-          ? room.catanOptions?.fiveSix
-            ? 5
-            : 3
+          ? room.catanTwoRules
+            ? 2
+            : room.catanOptions?.fiveSix
+              ? 5
+              : 3
           : 2);
   return (
     <div className="waiting-layout">
@@ -2187,36 +2189,38 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
-        {room.kind === "catan" && <CatanCitiesKnightsSetup room={room} />}
-        {room.kind === "catan" && (
+        {room.kind === "catan" && !room.catanTwoRules && (
+          <CatanCitiesKnightsSetup room={room} />
+        )}
+        {room.kind === "catan" && !room.catanTwoRules && (
           <CatanFriendlyRobberPicker
             room={room}
             disabled={!host || busy || mapDirty}
             command={command}
           />
         )}
-        {room.kind === "catan" && (
+        {room.kind === "catan" && !room.catanTwoRules && (
           <CatanHarborsPicker
             room={room}
             disabled={!host || busy || mapDirty}
             command={command}
           />
         )}
-        {room.kind === "catan" && (
+        {room.kind === "catan" && !room.catanTwoRules && (
           <CatanBasePicker
             room={room}
             disabled={!host || busy || mapDirty}
             command={command}
           />
         )}
-        {room.kind === "catan" && (
+        {room.kind === "catan" && !room.catanTwoRules && (
           <CatanSeafarersPicker
             room={room}
             disabled={!host || busy || mapDirty}
             command={command}
           />
         )}
-        {room.kind === "catan" && (
+        {room.kind === "catan" && !room.catanTwoRules && (
           <CatanOptionPicker
             value={room.catanOptions}
             seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}

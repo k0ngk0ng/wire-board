@@ -30,6 +30,7 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
+    rivers: game ? !!game.rivers : room.catanTwoScenario === "rivers",
     two: game ? !!game.two : !!room.catanTwoRules,
     citiesKnights,
     harbors,

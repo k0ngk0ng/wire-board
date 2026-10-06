@@ -1,6 +1,6 @@
-import { CatanTwoMap, CatanTwoPanel } from "./catan-two";
+import { CatanTwoMap, CatanTwoPanel, CatanTwoRetreatMap } from "./catan-two";
 import { twoNeutralName, twoResponder } from "./catan-two-state";
-import type { TwoSelection } from "./catan-two-state";
+import type { TwoSelection, TwoRetreatSelection } from "./catan-two-state";
 import { useTwoNeutralMotion } from "./catan-two-motion";
 import {
   CatanCaravanMap,
@@ -458,6 +458,7 @@ export function CatanBoard({
   const [village, setVillage] = useState<number | null>(null);
   const [mode, setMode] = useState("");
   const [twoSelection, setTwoSelection] = useState<TwoSelection | null>(null);
+  const [twoRetreat, setTwoRetreat] = useState<TwoRetreatSelection>(null);
   const twoMap = useTwoNeutralMotion(room);
   const [caravanSelection, setCaravanSelection] =
     useState<CaravanSelection | null>(null);
@@ -479,6 +480,7 @@ export function CatanBoard({
     setVillage(null);
     setCaravanSelection(null);
     setTwoSelection(null);
+    setTwoRetreat(null);
     setWonderFocus(null);
     setMode("");
     setProgress(null);
@@ -1167,11 +1169,17 @@ export function CatanBoard({
                       >
                         <g transform={`scale(${pieceScale})`}>
                           {e.bridge ? (
-                            <CatanBridge
-                              game={g}
-                              seat={e.owner}
-                              assets={assets}
-                            />
+                            <g
+                              data-two-road={
+                                e.owner < -1 && g.two ? e.id : undefined
+                              }
+                            >
+                              <CatanBridge
+                                game={g}
+                                seat={e.owner}
+                                assets={assets}
+                              />
+                            </g>
                           ) : e.ship ? (
                             <CatanShip
                               assets={assets}
@@ -1349,6 +1357,13 @@ export function CatanBoard({
                   </g>
                 );
               })}
+              <CatanTwoRetreatMap
+                room={room}
+                busy={busy}
+                selected={twoRetreat}
+                onSelect={setTwoRetreat}
+                poly={poly}
+              />
               <CatanTwoMap
                 room={room}
                 busy={busy}
@@ -1447,6 +1462,8 @@ export function CatanBoard({
           act={submit}
           selected={twoSelection}
           onSelect={setTwoSelection}
+          retreat={twoRetreat}
+          onRetreat={setTwoRetreat}
         />
         <CatanCaravanPanel
           room={room}

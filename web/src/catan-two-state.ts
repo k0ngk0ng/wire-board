@@ -112,3 +112,47 @@ export function twoNeutralAdded(
   }
   return added.length === 1 ? added[0] : null;
 }
+
+export type TwoRetreatSelection = { tile: number | null } | null;
+
+export function twoChoiceName(
+  g: CatanState,
+  c: { edge: number; vertex: number },
+) {
+  return c.vertex >= 0
+    ? "村庄"
+    : g.rivers?.map.bridges.includes(c.edge)
+      ? "桥梁"
+      : "道路";
+}
+
+export function twoRetreatTargets(room: Room): number[] {
+  const g = room.game?.catan,
+    q = g?.two;
+  if (
+    !g ||
+    !q ||
+    room.status !== "playing" ||
+    room.game?.finished ||
+    room.spectating ||
+    room.you < 0 ||
+    !g.players[room.you] ||
+    g.players[room.you].eliminated ||
+    !q.tokenWindow ||
+    q.spent ||
+    q.tokens[room.you] < (q.cost || 1)
+  )
+    return [];
+  // Respect server choices; only old base saves may fall back to the desert.
+  const targets =
+    q.retreatTiles ??
+    (g.rivers ? [] : g.tiles.filter((t) => t.resource === 5).map((t) => t.id));
+  return [...new Set(targets)].filter(
+    (id) =>
+      g.tiles[id]?.id === id &&
+      id !== g.robber &&
+      (g.rivers
+        ? g.rivers.map.swamps.includes(id)
+        : g.tiles[id].resource === 5),
+  );
+}
