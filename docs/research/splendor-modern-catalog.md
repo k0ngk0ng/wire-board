@@ -82,3 +82,19 @@
 - `stronghold-green.webp 8032B (160, 160) d9b92bf630488292639d621e983c1e06d82fe3e50aa60569dbfd9c4f934d0697`
 - `stronghold-orange.webp 9948B (160, 160) 0b9cbcef5b8ad37d4817c6461a88b845ea315ce390ea557bc8f54fa5778c9e32`
 - `stronghold-red.webp 6906B (160, 160) 57a17face6403d987ef90a2f75dd470273495c27bca8ef5bef8c73df4c04780a`
+
+## 七座城市插画阶段（2026-10-06后续）
+
+官方宣传图 `https://cdn.svc.asmodee.net/production-spacecowboys/uploads/image-converter/2025/10/02.webp`（1500×1000，292602字节，SHA256 `f08002c10e6776c46ba5be74847f4f408dbe8311788fc3b01526a8abf8ad0587`）与已缓存的 `silk-02.webp` 逐字节一致。七个城市的原插画均可裁出；图内贸易站存在与新版规则不同的图案，故该图只作为插画来源，不将所见城市条件提升为最终组件核实，也不能证明反面或配对。
+
+提取脚本读取来源清单的固定摘要、检查尺寸，按几何表校正七个城市区域，再裁除印刷条件区，生成320×95的原画横幅。界面按城市实体tile选图，两面使用同城横幅，保留独立的实际分数/条件/个人进度。它们不是两面完整扫描件；不重新着色、不把图片中的旧数值叠加到游戏条件上。七张WebP共66536字节，原路径HEAD均404，上传后逐文件GET与本地字节一致、解码尺寸正确：
+
+- `city-1.webp 11096B d30b9c34aad3ae11989b4d88a3b64f1321e37a4312f29957923fd63b4ac39ee6`
+- `city-2.webp 9140B 0e1a5b12cbdc21befc2fcaeb845698d16951ef384a688a6fbd48d0cd48706cca`
+- `city-3.webp 8236B 36a73715b47f36a8931b3b0c9c4bdab48cf3c23d81dea045cc895e8df854102c`
+- `city-4.webp 10750B 0d7c672b2c0497000d99955dc291fb55d9a343a6d60f0f9eb01af97cbe506c15`
+- `city-5.webp 10440B 491226544b09be2f0ed400f42cb0a880a04a0cb40f6c92c6edfce527d620033f`
+- `city-6.webp 5958B f225974425201c6665dbf6369e007c79658e2dbf216f4049030164f45ea2a071`
+- `city-7.webp 10916B 19038e013adcac28d71856ae0b775bef6bd74808f8cbfd0090046c7200eb0ae2`
+
+本阶段外部检索：Bing多词结果只返回泛化首词结果，没有提供完整牌表证据；Google/ DuckDuckGo要求验证，Brave429，Yahoo500，Asmodee商品接口429，Space Cowboys官网跳转spacecowboys-games.com后访问拒绝。额外查看官方12-1/13-1实拍，仅重复已知弃牌购买/黄金卡且条件遮挡，没有增加独立完整核实行。一次同名02.jpg实际是其他游戏照片，已辨认并删除，没有用于产品。临时搜索页、照片、拼图和浏览器资料均清理；保留已有固定官方源文件。规则核实数量仍东方15/30、城市2/14，正反配对与附赠贵族未解决。

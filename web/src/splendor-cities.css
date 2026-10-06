@@ -35,18 +35,27 @@
   gap: 8px;
 }
 .gem-city {
+  --city-inset: 10px;
   border: 1px solid #c7aa69;
   border-radius: 9px;
-  padding: 10px;
+  padding: var(--city-inset);
   background: #fff1ce;
   color: #342813;
   box-shadow: 0 3px 7px #11152744;
   min-width: 0;
 }
 .gem-city.is-eligible {
+  --city-inset: 9px;
   border: 2px solid #f1c347;
-  padding: 9px;
   box-shadow: 0 0 0 2px #f1c34738;
+}
+.gem-city-art {
+  display: block;
+  width: calc(100% + var(--city-inset) * 2);
+  height: auto;
+  aspect-ratio: 320 / 95;
+  margin: calc(-1 * var(--city-inset)) calc(-1 * var(--city-inset)) 8px;
+  border-radius: 7px 7px 0 0;
 }
 .gem-city h4 {
   display: flex;
@@ -138,10 +147,10 @@
     gap: 5px;
   }
   .gem-city {
-    padding: 7px;
+    --city-inset: 7px;
   }
   .gem-city.is-eligible {
-    padding: 6px;
+    --city-inset: 6px;
   }
   .gem-city h4 {
     font-size: 12px;

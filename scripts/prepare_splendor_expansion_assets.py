@@ -104,15 +104,37 @@ def prepare(output: Path, rules_directory: Path | None):
             canvas = Image.new('RGBA', (160, 160))
             canvas.alpha_composite(art, ((160 - art.width) // 2, 152 - art.height))
             canvas.save(targets / f'stronghold-{color}.webp', quality=94, method=6)
+        # Use only the city illustrations: printed costs in this promotional
+        # photograph are not a source of final rules or reverse-side pairing.
+        city_source = sources['splendor-cities-photo']
+        if rules_directory:
+            data = (rules_directory / 'silk-02.webp').read_bytes()
+        else:
+            with urllib.request.urlopen(city_source['url'], timeout=45) as response:
+                data = response.read()
+        if hashlib.sha256(data).hexdigest() != city_source['sha256']:
+            raise ValueError('Official city photograph changed')
+        photo = scratch / 'cities.webp'
+        photo.write_bytes(data)
+        cities = Image.open(photo).convert('RGB')
+        if cities.size != (1500, 1000):
+            raise ValueError('Unexpected city photo dimensions')
+        city_geometry = geometry['cityIllustrations']
+        for tile, quad in city_geometry['quads'].items():
+            art = cities.transform(tuple(city_geometry['rectifiedSize']), Image.Transform.QUAD,
+                tuple(v for point in quad for v in point), Image.Resampling.BICUBIC)
+            art = art.crop(tuple(city_geometry['illustrationCrop']))
+            art.save(targets / f'city-{tile}.webp', quality=94, method=6)
     (targets / 'sources.json').write_text(json.dumps({
         'rules': 'split-box-2025',
         'tradingPosts': source,
         'orientSymbols': orient_source,
         'orientBacks': orient_source,
         'strongholdPieces': piece_source,
-        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols; not full Orient card illustrations. Rectified three Orient backs from the page 2 setup illustration; four un-recolored wooden pieces from the pinned publisher photograph. Geometry is recorded in scripts/splendor_asset_geometry.json. Promotional prototype images differ.',
+        'cityIllustrations': city_source,
+        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols; not full Orient card illustrations. Rectified three Orient backs from the page 2 setup illustration; four un-recolored wooden pieces from the pinned publisher photograph. Seven cropped city illustrations exclude printed costs and are not evidence of final rules or paired sides. Geometry is recorded in scripts/splendor_asset_geometry.json. Promotional prototype images differ.',
     }, ensure_ascii=False, indent=2) + '\n')
-    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs and four stronghold pieces; temporary files removed.')
+    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs, four stronghold pieces and seven city illustrations; temporary files removed.')
 
 
 if __name__ == '__main__':
