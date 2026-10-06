@@ -92,7 +92,7 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 		}
 		pending = pending || amount > 0
 	}
-	if (t.Phase == "discard") != pending || (t.Phase == "discard" || t.Phase == "pirate") && !seven || t.Phase == "pirate" && c.Scenario != "pirate-lairs" {
+	if (t.Phase == "discard") != pending || (t.Phase == "discard" || t.Phase == "pirate") && !seven || t.Phase == "pirate" && !catanExplorerMissionScenario(c.Scenario) {
 		return errors.New("探险七点响应与剧本不一致")
 	}
 	if t.Phase == "ready" || t.Phase == "abandoned" {
@@ -155,7 +155,7 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 	}
 	phase := "ready"
 	if number == 7 {
-		if c.Scenario == "pirate-lairs" {
+		if catanExplorerMissionScenario(c.Scenario) {
 			phase = "pirate" // Activation/stealing controller still to be installed.
 		}
 		for p, hand := range g.Players {

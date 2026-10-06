@@ -56,7 +56,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		case "catan_explorer_settle":
 			return cargo.settle(&base, &fleet, viewer, sequence, a.Slot, a.Vertex) == nil
 		case "catan_explorer_transfer":
-			return cargo.transfer(&base, &fleet, viewer, sequence, a.Slot, a.Vertex, a.Give, a.Take) == nil
+			return cargo.transferFreight(&base, &fleet, viewer, sequence, a.Slot, a.Vertex, a.Give, a.Take, a.Cards, a.Targets) == nil
 		}
 		return false
 	}
@@ -137,16 +137,25 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 			}
 			load := explorerCargoSubsets(x.Cargo.contents(catanExplorerCargoLocation{"harbor", v}))
 			unload := explorerCargoSubsets(x.Cargo.contents(catanExplorerCargoLocation{"ship", ship}))
+			loadFish := explorerCargoSubsets(x.Cargo.fishContents(catanExplorerCargoLocation{"harbor", v}))
+			unloadFish := explorerCargoSubsets(x.Cargo.fishContents(catanExplorerCargoLocation{"ship", ship}))
 			for _, give := range load {
 				for _, take := range unload {
-					if len(give)+len(take) > 0 {
-						offer(Action{Type: "catan_explorer_transfer", Slot: ship, Vertex: v, Give: give, Take: take})
+					for _, lf := range loadFish {
+						for _, uf := range unloadFish {
+							if len(give)+len(take)+len(lf)+len(uf) > 0 {
+								offer(Action{Type: "catan_explorer_transfer", Slot: ship, Vertex: v, Give: give, Take: take, Cards: lf, Targets: uf})
+							}
+						}
 					}
 				}
 			}
 		}
 	}
 	for _, a := range s.catanExplorerLandingChoices(viewer) {
+		add(a)
+	}
+	for _, a := range s.catanExplorerFishChoices(viewer) {
 		add(a)
 	}
 	add(Action{Type: "catan_end"})
@@ -253,7 +262,15 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 			v["slot"], v["targets"] = a.Slot, a.Targets
 		case "catan_explorer_settle":
 			v["slot"], v["vertex"] = a.Slot, a.Vertex
+		case "catan_explorer_fish_load", "catan_explorer_fish_deliver":
+			v["slot"], v["card"] = a.Slot, a.Card
 		case "catan_explorer_transfer":
+			if len(a.Cards) > 0 {
+				v["cards"] = a.Cards
+			}
+			if len(a.Targets) > 0 {
+				v["targets"] = a.Targets
+			}
 			v["slot"], v["vertex"], v["give"], v["take"] = a.Slot, a.Vertex, a.Give, a.Take
 		}
 		out = append(out, v)

@@ -5,10 +5,13 @@ import "errors"
 // Private full-state constructor. The token list is deliberately explicit:
 // release still needs verified physical inventory, complete bot/UI acceptance.
 func newCatanExplorerLairsState(players int, layout string, numbers []int) (*State, error) {
+	return newCatanExplorerMissionState(players, "pirate-lairs", layout, numbers)
+}
+func newCatanExplorerMissionState(players int, scenario, layout string, numbers []int) (*State, error) {
 	if players < 2 || players > 4 {
 		return nil, errors.New("海盗巢穴需要二至四人")
 	}
-	g, b, f, c, e, setup, err := newCatanExplorerLairsSetup(players, layout, catanRandom(players))
+	g, b, f, c, e, setup, err := newCatanExplorerMissionSetup(players, scenario, layout, catanRandom(players))
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +21,12 @@ func newCatanExplorerLairsState(players int, layout string, numbers []int) (*Sta
 	}
 	shuffle(lairs.Deck)
 	g.Explorer = &catanExplorer{Board: b, Fleet: f, Cargo: c, Economy: e, Setup: setup, Pirate: newCatanExplorerPirate(), Lairs: lairs}
-	s := &State{Kind: "catan", Catan: g, Turn: setup.Start, Round: 1, Phase: "catan_explorer_setup", Log: []string{"海盗巢穴：随机先手，顺序港口、逆序村庄，再放道路与移民船；12分获胜"}}
+	label := "海盗巢穴"
+	if scenario == "fish-for-catan" {
+		label = "鱼群任务"
+		g.Explorer.Fish = &catanExplorerFish{Deliveries: []catanExplorerFishDelivery{}}
+	}
+	s := &State{Kind: "catan", Catan: g, Turn: setup.Start, Round: 1, Phase: "catan_explorer_setup", Log: []string{label + "：随机先手，顺序港口、逆序村庄，再放道路与移民船"}}
 	return s, s.validateCatanExplorer()
 }
 func (s *State) applyCatanExplorerSetup(player int, a Action) error {
@@ -91,6 +99,11 @@ func (s *State) catanExplorerMissionScore() {
 		return
 	}
 	scores := x.Lairs.scores()
+	if x.Fish != nil {
+		for p, score := range x.Fish.publicView(len(g.Players)).Scores {
+			scores[p] += score
+		}
+	}
 	for p := range g.Players {
 		score := scores[p]
 		for _, v := range g.Vertices {
@@ -200,7 +213,7 @@ func (s *State) applyCatanExplorerMission(player int, a Action) (bool, error) {
 	if mandatory {
 		return true, errors.New("请先完成海盗或巢穴回应")
 	}
-	return false, nil
+	return s.applyCatanExplorerFish(player, a)
 }
 
 func (s *State) catanExplorerSpecialChoices(player int) ([]Action, bool) {
