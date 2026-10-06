@@ -62,8 +62,19 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_attack_card", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
+	}
+	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
+		return errors.New("蛮族进攻发展卡响应状态无效")
+	}
+	if q := a.Pending; q != nil {
+		if q.ID != a.CardSequence || q.ID < 1 || q.Player != s.Turn || q.Player < 0 || q.Player >= n || g.Players[q.Player].Eliminated || g.Trade != nil || s.Finished {
+			return errors.New("蛮族进攻发展卡回应者或序号无效")
+		}
+		if q.Card == "capture" && len(a.captureTargets()) == 0 || (q.Card == "knighthood" || q.Card == "swift_knight") && len(a.recruitEdges(g, q.Player, q.Card)) == 0 || q.Card == "treason" && !a.cardSupplyReady() {
+			return errors.New("蛮族进攻发展卡没有可完成的效果")
+		}
 	}
 	supply := 19
 	if n > 4 {
@@ -170,7 +181,7 @@ func (s *State) catanAttackLanding(roll func() [2]int) error {
 	return nil
 }
 
-func (s *State) catanAttackView(v map[string]any) {
+func (s *State) catanAttackView(v map[string]any, player int) {
 	g := s.Catan
 	a := g.Attack
 	if a == nil {
@@ -201,4 +212,17 @@ func (s *State) catanAttackView(v map[string]any) {
 		left[k.Player]--
 	}
 	public["knightsLeft"] = left
+	public["canAct"] = !s.Finished && a.Pending != nil && a.Pending.Player == player
+	if a.Pending != nil && a.Pending.Player == player && !s.Finished {
+		switch a.Pending.Card {
+		case "capture":
+			public["targets"] = a.captureTargets()
+		case "knighthood", "swift_knight":
+			public["edges"] = a.recruitEdges(g, player, a.Pending.Card)
+		case "treason":
+			public["sources"] = a.captureTargets()
+			public["destinations"] = a.treasonDestinations(nil)
+			public["fromBoard"] = min(2, len(a.captureTargets()))
+		}
+	}
 }

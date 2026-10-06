@@ -13,18 +13,20 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
-	Bought     int                       `json:"bought"`
-	Sequence   int                       `json:"sequence"`
-	Landing    *catanAttackLandingRecord `json:"landing,omitempty"`
-	Rules      string                    `json:"rules"`
-	Map        *catanAttackMap           `json:"map"`
-	Barbarians []int                     `json:"barbarians"`
-	Knights    []catanAttackKnight       `json:"knights"`
-	Prisoners  []int                     `json:"prisoners"`
-	Gold       []int                     `json:"gold"`
-	GoldBank   int                       `json:"goldBank"`
-	Deck       []string                  `json:"deck"`
-	Discard    []string                  `json:"discard"`
+	CardSequence int                       `json:"cardSequence"`
+	Pending      *catanAttackCardPending   `json:"pending,omitempty"`
+	Bought       int                       `json:"bought"`
+	Sequence     int                       `json:"sequence"`
+	Landing      *catanAttackLandingRecord `json:"landing,omitempty"`
+	Rules        string                    `json:"rules"`
+	Map          *catanAttackMap           `json:"map"`
+	Barbarians   []int                     `json:"barbarians"`
+	Knights      []catanAttackKnight       `json:"knights"`
+	Prisoners    []int                     `json:"prisoners"`
+	Gold         []int                     `json:"gold"`
+	GoldBank     int                       `json:"goldBank"`
+	Deck         []string                  `json:"deck"`
+	Discard      []string                  `json:"discard"`
 }
 
 func catanAttackCardCounts() map[string]int {
@@ -95,6 +97,9 @@ func (a catanAttack) validate(g *Catan) error {
 		}
 	}
 	counts := map[string]int{}
+	if a.Pending != nil {
+		counts[a.Pending.Card]++
+	}
 	for _, cards := range [][]string{a.Deck, a.Discard} {
 		for _, card := range cards {
 			counts[card]++
