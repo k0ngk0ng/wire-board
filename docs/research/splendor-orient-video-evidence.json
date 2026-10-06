@@ -1,0 +1,146 @@
+{
+  "limits": "Four readable physical card faces only; does not verify obscured cards or the remaining six unverified Orient cards. Local IDs identify candidate rows. Retained crops are research evidence, not product assets.",
+  "cards": [
+    {
+      "id": 1006,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "orient": "copy",
+      "cost": [
+        0,
+        3,
+        0,
+        0,
+        2
+      ],
+      "mediaTime": 84.133333,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        390,
+        90,
+        1085,
+        1018
+      ],
+      "retained": ".local/board-expansion-research/orient-video-1006.webp",
+      "sha256": "3fd7032694eed2678deb663310f5e6a3eb04d962dfee2c96e863d8cb0d158c44",
+      "bytes": 430512,
+      "source": "brosey-unboxing"
+    },
+    {
+      "id": 1007,
+      "tier": 1,
+      "points": 0,
+      "color": -1,
+      "orient": "copy",
+      "cost": [
+        2,
+        0,
+        3,
+        0,
+        0
+      ],
+      "source": "game4life-rules",
+      "mediaTime": 400.032966,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        1495,
+        521,
+        1690,
+        790
+      ],
+      "retained": ".local/board-expansion-research/orient-video-1007.webp",
+      "sha256": "295b74510a1c66722f97633f98413e50efdafc6f0b0c500ab43e2958c0ae3dbe",
+      "bytes": 42376
+    },
+    {
+      "id": 1018,
+      "tier": 2,
+      "points": 1,
+      "color": -1,
+      "orient": "copy_cascade",
+      "cost": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "mediaTime": 91.25,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        645,
+        130,
+        1135,
+        760
+      ],
+      "retained": ".local/board-expansion-research/orient-video-1018.webp",
+      "sha256": "5d0afe4faf2f0cc062534ce0c12e988a835372b8eb3b935f729acec3acd96033",
+      "bytes": 240084,
+      "source": "brosey-unboxing"
+    },
+    {
+      "id": 1024,
+      "tier": 3,
+      "points": 1,
+      "color": 4,
+      "orient": "cascade",
+      "cost": [
+        0,
+        3,
+        1,
+        6,
+        0
+      ],
+      "source": "game4life-rules",
+      "mediaTime": 400.032966,
+      "videoWidth": 1920,
+      "screenshotSize": [
+        1920,
+        1080
+      ],
+      "crop": [
+        1500,
+        1,
+        1694,
+        263
+      ],
+      "retained": ".local/board-expansion-research/orient-video-1024.webp",
+      "sha256": "e01fd1d5f7d389c4adf37b39e018e348b783f99d1427947f00b14828386170d8",
+      "bytes": 41252
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.youtube.com/watch?v=HSQnZjHwOSU",
+      "title": "Splendor: The Sun Never Sets Expansion - Game Unboxing & Reboxing - See What's In The Box",
+      "channel": "The Brosey Game Company",
+      "retrieved": "2026-10-07",
+      "kind": "independent-physical-unboxing",
+      "method": "Browser screenshot after requestVideoFrameCallback confirmed mediaTime at 1920px video width; rectangular crop only, lossless WebP; no recoloring or upscaling.",
+      "id": "brosey-unboxing"
+    },
+    {
+      "id": "game4life-rules",
+      "url": "https://www.youtube.com/watch?v=UOn5_mwhNmg",
+      "title": "Splendor: The Sun Never Sets, Rules overview of the 2 expansions for Splendor",
+      "channel": "Game4LifeBG",
+      "published": "2025-08-01",
+      "retrieved": "2026-10-07",
+      "kind": "independent-physical-rules-demonstration",
+      "method": "Browser fullscreen screenshot after requestVideoFrameCallback confirmed mediaTime at 1920px native video width; rectangular crop only, lossless WebP; no recoloring or upscaling."
+    }
+  ]
+}
