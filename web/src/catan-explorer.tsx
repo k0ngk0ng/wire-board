@@ -1,4 +1,5 @@
 import { ExplorerSpiceMission } from "./catan-explorer-spice";
+import { ExplorerFullMissions } from "./catan-explorer-full-missions";
 import { useEffect, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { Anchor, Dices, Minus, Plus, RotateCcw, Ship } from "lucide-react";
@@ -38,6 +39,7 @@ import {
   explorerFarmDescription,
   explorerFishPoint,
   explorerScenarioLabel,
+  explorerLairTotal,
   explorerPhaseLabel,
 } from "./catan-explorer-state";
 import type { ExplorerAction, ExplorerPick } from "./catan-explorer-state";
@@ -921,81 +923,93 @@ export function CatanExplorerBoard({
             {error}
           </p>
         )}
-        {x.lairs && (
-          <section className="explorer-mission" aria-label="巢穴任务进度">
-            <strong>巢穴任务</strong>
-            {g.players.map((p, id) => (
-              <div key={id} className={p.eliminated ? "retired" : ""}>
-                <span style={{ borderColor: catanSeatColor(g, id) }}>
-                  {room.seats[id]?.name}
-                </span>
-                <b>进度 {x.lairs!.progress[id]} / 7</b>
-                <span>
-                  任务 {x.lairs!.scores[id]}分
-                  {x.lairs!.leader === id ? " · 领先" : ""}
-                </span>
-              </div>
-            ))}
-            <p>
-              已解放{x.lairs.sites.filter((site) => site.resolved).length} /
-              {x.fish ? 5 : 6}处；未攻陷前数字隐藏。
-            </p>
-            {x.lairs.battle && (
-              <p role="status">
-                巢穴{x.lairs.battle.tile + 1}：
-                {x.lairs.battle.candidates
-                  .map((id) => room.seats[id]?.name)
-                  .join("、")}
-                掷英雄骰。
-              </p>
+        {x.lairs && x.spice && x.fish ? (
+          <ExplorerFullMissions
+            room={room}
+            assets={assets}
+            fishRolling={Boolean(motion?.event.fishRoll)}
+          />
+        ) : (
+          <>
+            {x.lairs && (
+              <section className="explorer-mission" aria-label="巢穴任务进度">
+                <strong>巢穴任务</strong>
+                {g.players.map((p, id) => (
+                  <div key={id} className={p.eliminated ? "retired" : ""}>
+                    <span style={{ borderColor: catanSeatColor(g, id) }}>
+                      {room.seats[id]?.name}
+                    </span>
+                    <b>进度 {x.lairs!.progress[id]} / 7</b>
+                    <span>
+                      任务 {x.lairs!.scores[id]}分
+                      {x.lairs!.leader === id ? " · 领先" : ""}
+                    </span>
+                  </div>
+                ))}
+                <p>
+                  已解放{x.lairs.sites.filter((site) => site.resolved).length} /
+                  {explorerLairTotal(g)}处；未攻陷前数字隐藏。
+                </p>
+                {x.lairs.battle && (
+                  <p role="status">
+                    巢穴{x.lairs.battle.tile + 1}：
+                    {x.lairs.battle.candidates
+                      .map((id) => room.seats[id]?.name)
+                      .join("、")}
+                    掷英雄骰。
+                  </p>
+                )}
+                {x.pirate?.lastChase && (
+                  <p>
+                    最近驱赶：{room.seats[x.pirate.lastChase.player]?.name}掷出
+                    {x.pirate.lastChase.die}，
+                    {x.pirate.lastChase.success ? "成功" : "未成功"}。
+                  </p>
+                )}
+              </section>
             )}
-            {x.pirate?.lastChase && (
-              <p>
-                最近驱赶：{room.seats[x.pirate.lastChase.player]?.name}掷出
-                {x.pirate.lastChase.die}，
-                {x.pirate.lastChase.success ? "成功" : "未成功"}。
-              </p>
-            )}
-          </section>
-        )}
-        {x.spice && <ExplorerSpiceMission room={room} assets={assets} />}
-        {x.fish && (
-          <section
-            className="explorer-mission explorer-fish-mission"
-            aria-label="鱼群任务进度"
-          >
-            <strong>鱼群任务</strong>
-            {g.players.map((p, id) => (
-              <div key={id} className={p.eliminated ? "retired" : ""}>
-                <span style={{ borderColor: catanSeatColor(g, id) }}>
-                  {room.seats[id]?.name}
-                </span>
-                <b>进度 {x.fish!.progress[id]} / 7</b>
-                <span>
-                  任务 {x.fish!.scores[id]}分
-                  {x.fish!.leader === id ? " · 领先" : ""}
-                </span>
-              </div>
-            ))}
-            <p>
-              供应剩余{" "}
-              {x.cargo.fish?.filter((loc) => loc.kind === "supply").length ?? 0}{" "}
-              群鱼 · 运到议会岛锚点交付。
-            </p>
-            {x.fish.lastRoll && (
-              <p
-                role="status"
-                key={x.fish.lastRoll.sequence}
-                className={
-                  motion?.event.fishRoll ? "explorer-fish-roll" : undefined
-                }
+            {x.spice && <ExplorerSpiceMission room={room} assets={assets} />}
+            {x.fish && (
+              <section
+                className="explorer-mission explorer-fish-mission"
+                aria-label="鱼群任务进度"
               >
-                最近捕鱼骰：{room.seats[x.fish.lastRoll.player]?.name}掷出{" "}
-                {x.fish.lastRoll.die}，
-                {x.fish.lastRoll.spawned >= 0 ? "出现一群鱼" : "未出现鱼群"}。
-              </p>
+                <strong>鱼群任务</strong>
+                {g.players.map((p, id) => (
+                  <div key={id} className={p.eliminated ? "retired" : ""}>
+                    <span style={{ borderColor: catanSeatColor(g, id) }}>
+                      {room.seats[id]?.name}
+                    </span>
+                    <b>进度 {x.fish!.progress[id]} / 7</b>
+                    <span>
+                      任务 {x.fish!.scores[id]}分
+                      {x.fish!.leader === id ? " · 领先" : ""}
+                    </span>
+                  </div>
+                ))}
+                <p>
+                  供应剩余{" "}
+                  {x.cargo.fish?.filter((loc) => loc.kind === "supply")
+                    .length ?? 0}{" "}
+                  群鱼 · 运到议会岛锚点交付。
+                </p>
+                {x.fish.lastRoll && (
+                  <p
+                    role="status"
+                    key={x.fish.lastRoll.sequence}
+                    className={
+                      motion?.event.fishRoll ? "explorer-fish-roll" : undefined
+                    }
+                  >
+                    最近捕鱼骰：{room.seats[x.fish.lastRoll.player]?.name}掷出{" "}
+                    {x.fish.lastRoll.die}，
+                    {x.fish.lastRoll.spawned >= 0 ? "出现一群鱼" : "未出现鱼群"}
+                    。
+                  </p>
+                )}
+              </section>
             )}
-          </section>
+          </>
         )}
         {trade && (
           <section className="explorer-trade">
