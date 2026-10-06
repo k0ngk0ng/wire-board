@@ -152,6 +152,10 @@ func (g *Catan) cityProduction(claim []int, terrain, level int) {
 	}
 }
 func (s *State) catanAfterSevenDiscards() {
+	if s.Catan.Transport != nil {
+		s.catanTransportBeginBarbarian()
+		return
+	}
 	if g := s.Catan; g.Attack != nil {
 		g.Victims = g.cardTheftTargets(s.Turn)
 		s.Phase = "catan_steal"

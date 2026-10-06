@@ -433,7 +433,73 @@ export type CatanAttack = {
     }[];
   };
 };
+export type CatanTransport = {
+  rules: string;
+  map: {
+    sites: {
+      tile: number;
+      kind: string;
+      center: number;
+      paths: number[];
+      blocked: number[];
+    }[];
+  };
+  state: {
+    wagons: {
+      position: number;
+      level: number;
+      cargo?: { id: number; origin: string; cargo: string };
+      delivered: number;
+      points: number;
+      gold: number;
+    }[];
+    supply: number[];
+    goldBank: number;
+    barbarians: number[];
+    active: number;
+    sequence: number;
+    arrivalResolved: boolean;
+    travel?: {
+      player: number;
+      level: number;
+      position: number;
+      points: number;
+      wheatUsed: boolean;
+      attempted: boolean[];
+      pending: number;
+      arrived: number;
+      ended: boolean;
+    };
+  };
+  canAct: boolean;
+  canDeliver: boolean;
+  swift: boolean;
+  moves: number;
+  barbarianPending: boolean;
+  barbarianSequence: number;
+  bought: number;
+  choices: {
+    steps?: {
+      edge: number;
+      to: number;
+      mp: number;
+      toll: number;
+      pay: number;
+    }[];
+    drive?: number[];
+    relocate?: number[];
+    canWheat?: boolean;
+    canStop?: boolean;
+    upgradeCost?: number[];
+    canUpgrade?: boolean;
+    buy?: number[];
+    sell?: number[];
+    rates?: number[];
+  };
+};
 export type CatanState = {
+  transport?: CatanTransport;
+  developmentNames?: string[];
   attack?: CatanAttack;
   two?: {
     rules: string;

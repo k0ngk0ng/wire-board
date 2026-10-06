@@ -49,7 +49,11 @@ export function CatanEndAction({
         disabled={busy}
         onClick={() => (ready ? setConfirm(true) : void end())}
       >
-        {ready ? "攻打要塞并结束行动 →" : "结束回合 →"}
+        {ready
+          ? "攻打要塞并结束行动 →"
+          : game.transport
+            ? "结束建设，开始运输 →"
+            : "结束回合 →"}
       </button>
       {confirm &&
         ready &&

@@ -174,6 +174,9 @@ func (g *Catan) touching(v int) []int {
 	return out
 }
 func (g *Catan) canSettlement(p, v int, setup bool) bool {
+	if g.Transport != nil && g.Transport.Map.siteAt(v) >= 0 {
+		return false
+	}
 	if g.Attack != nil && g.Attack.buildBlocked(g, -1, v) {
 		return false
 	}
@@ -200,6 +203,9 @@ func (g *Catan) canSettlement(p, v int, setup bool) bool {
 	return setup || connected
 }
 func (g *Catan) canRoad(p, id int) bool {
+	if g.Transport != nil && !g.Transport.Map.canBuildRoad(g, id) {
+		return false
+	}
 	if g.Attack != nil && g.Attack.buildBlocked(g, id, -1) {
 		return false
 	}

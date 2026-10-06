@@ -1,0 +1,241 @@
+{
+  "source": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3089%20CATAN%20%E2%80%93%20T%26B%20Rulebook.pdf",
+    "sha256": "7c4938dc45480ed28fde1fccbeca450c815b36ee2f4ed57107650013313acaaf",
+    "bytes": 27843748
+  },
+  "artwork": {
+    "wagon-blue": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45188,
+      "soft_mask": 45181,
+      "size": [
+        80,
+        92
+      ],
+      "bytes": 9518,
+      "sha256": "57ec8d270328b0aa70420ea24e471250fb967064493e46bcd19a5186d8a3bee6"
+    },
+    "wagon-orange": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45187,
+      "soft_mask": 45175,
+      "size": [
+        80,
+        92
+      ],
+      "bytes": 8816,
+      "sha256": "5b1ce80cc113a18553544611ad44e883edc340da8a8b1632a6d1897c2beb0783"
+    },
+    "wagon-white": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45182,
+      "soft_mask": 45174,
+      "size": [
+        80,
+        92
+      ],
+      "bytes": 7280,
+      "sha256": "998f9f926037e16f80eb18342efbfbdc948bfec8239f5bac7e1a5f6a8438a972"
+    },
+    "wagon-red": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45189,
+      "soft_mask": 45178,
+      "size": [
+        80,
+        92
+      ],
+      "bytes": 9240,
+      "sha256": "6c13819af324a8bdf42e6c5e86e0e40a56e5f40a459cd216a5e7524ccf215d1f"
+    },
+    "site-quarry": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45176,
+      "soft_mask": 45184,
+      "size": [
+        237,
+        265
+      ],
+      "bytes": 59946,
+      "sha256": "245d11c7d5531c517c6c4b2c28b47050e517d10685a8b2532bab3c86fba73345"
+    },
+    "site-glassworks": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45186,
+      "soft_mask": 45185,
+      "size": [
+        237,
+        265
+      ],
+      "bytes": 69672,
+      "sha256": "28c63408b6dc4bf8cb834c31a3bab54f4b49c4739888e52182f5a39fd2e57b36"
+    },
+    "site-castle": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 45193,
+      "soft_mask": 45191,
+      "size": [
+        237,
+        265
+      ],
+      "bytes": 61854,
+      "sha256": "cebd7a0b3cdd2d201bad5a19effbb24be8884065ce9e9988ca3227f927b215ec"
+    },
+    "cargo-marble": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 32259,
+      "soft_mask": 32258,
+      "size": [
+        82,
+        82
+      ],
+      "bytes": 7220,
+      "sha256": "88cc50fc0f3ee79ee87573d88bf9bdaf54cea36ad64fcc1b1fa952b58aac31ef"
+    },
+    "cargo-sand": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 32261,
+      "soft_mask": 32260,
+      "size": [
+        82,
+        82
+      ],
+      "bytes": 7860,
+      "sha256": "f182cc1c18e758f318d3fbb3cd99d4c98df4518e82694dcbd03bb83f923846b4"
+    },
+    "cargo-tools": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 32263,
+      "soft_mask": 32262,
+      "size": [
+        82,
+        82
+      ],
+      "bytes": 7138,
+      "sha256": "c65d59266a95e79707e420b9f0afe1e12a313c13df4f7227f069af2419120e5d"
+    },
+    "cargo-glass": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 32265,
+      "soft_mask": 32264,
+      "size": [
+        82,
+        82
+      ],
+      "bytes": 8062,
+      "sha256": "e5f1ed86928c324a128273a54fc00429cfb91ea9d799e5bf129d2db726fe50b7"
+    },
+    "card-back": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "native-image",
+      "object": 32233,
+      "soft_mask": null,
+      "size": [
+        173,
+        246
+      ],
+      "bytes": 40634,
+      "sha256": "65d2dddd3d0282a8c3459d9de9a155269dc1898018b55dbcbd7279ff5f6b3a12"
+    },
+    "card-knight": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "page-composite",
+      "clip": [
+        102.66803,
+        401.479065,
+        167.901428,
+        494.66095
+      ],
+      "language": "Original English; Chinese rules in UI",
+      "note": "",
+      "size": [
+        196,
+        280
+      ],
+      "bytes": 57768,
+      "sha256": "f061226251969f82c4285445cc4d7ac3a5bd2953d93d6df7f17bd540000e16af"
+    },
+    "card-road": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "page-composite",
+      "clip": [
+        167.609344,
+        401.479065,
+        232.842742,
+        494.66095
+      ],
+      "language": "Original English; Chinese rules in UI",
+      "note": "",
+      "size": [
+        196,
+        280
+      ],
+      "bytes": 53692,
+      "sha256": "f76f615474300ab015474a92d43b1a29d5eae0dc83a9ec41a314db9cf055ca70"
+    },
+    "card-swift": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "page-composite",
+      "clip": [
+        232.55066,
+        401.479065,
+        297.78406,
+        494.66095
+      ],
+      "language": "Original English; Chinese rules in UI",
+      "note": "",
+      "size": [
+        196,
+        280
+      ],
+      "bytes": 55094,
+      "sha256": "8e6b682eb3eb20ae1fe7a4938b1570e5928e5c1b8111cf776e2d3fa6be44c7c2"
+    },
+    "card-vp": {
+      "source": "catan-traders-2025",
+      "page": 20,
+      "method": "page-composite",
+      "clip": [
+        351.1,
+        404.5,
+        409.0,
+        491.4
+      ],
+      "language": "Original English; Chinese rules in UI",
+      "note": "VP uses original Toolmaking face for the shared victory-point card type",
+      "size": [
+        196,
+        280
+      ],
+      "bytes": 63004,
+      "sha256": "2ae30ac390d2f7d521c89c2bdfab2078e500813ddda7c49698096a336d1667e0"
+    }
+  }
+}

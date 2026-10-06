@@ -29,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	Transport      *catanTransport      `json:"transport,omitempty"`
 	Attack         *catanAttack         `json:"attack,omitempty"`
 	Two            *CatanTwo            `json:"two,omitempty"`
 	Caravans       *catanCaravans       `json:"caravans,omitempty"`
@@ -202,7 +203,7 @@ func (s *State) catanScores() {
 	if g.Two != nil {
 		g.LongestOwner = g.twoLongestOwner(oldRoad)
 	}
-	if g.cloth() != nil || g.pirateIslands() != nil {
+	if g.cloth() != nil || g.pirateIslands() != nil || g.Transport != nil {
 		g.LongestOwner = -1
 	}
 	g.ArmyOwner = g.awardHolder(oldArmy, 3, knights)
@@ -228,6 +229,9 @@ func (s *State) catanScores() {
 	for i := range g.Players {
 		p := &g.Players[i]
 		p.Score = g.hiddenVictoryPoints(i) + g.riverPoints(i)
+		if g.Transport != nil {
+			p.Score += g.Transport.extraPoints(i)
+		}
 		if g.Attack != nil {
 			p.Score += g.Attack.Prisoners[i] / 2
 		}
@@ -346,6 +350,20 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if s.Catan.Transport != nil {
+		if err := s.validateCatanTransport(); err != nil {
+			return err
+		}
+		next := clone(*s)
+		if err := next.applyCatanTransport(player, a); err != nil {
+			return err
+		}
+		if err := next.validateCatanTransport(); err != nil {
+			return err
+		}
+		*s = next
+		return nil
+	}
 	if err := s.validateCatanAttack(); err != nil {
 		return err
 	}
@@ -734,7 +752,7 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
 		}
 		s.Phase = "catan_setup_settlement"
-		if (g.CitiesKnights != nil || g.Attack != nil) && g.SetupStep >= n && g.SetupStep < 2*n {
+		if (g.CitiesKnights != nil || g.Attack != nil || g.Transport != nil) && g.SetupStep >= n && g.SetupStep < 2*n {
 			s.Phase = "catan_setup_city"
 		}
 	}
@@ -1113,6 +1131,12 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 }
 func (s *State) AutoCatanPending() {
 	g := s.Catan
+	if g != nil && g.Transport != nil && s.CatanPendingActor() >= 0 {
+		if a, err := s.catanBot(s.Turn); err == nil {
+			_ = s.applyCatan(s.Turn, a)
+		}
+		return
+	}
 	if g == nil || s.Finished {
 		return
 	}
@@ -1265,6 +1289,9 @@ func (s *State) AutoCatanPending() {
 	}
 }
 func (s *State) EliminateCatan(p int) error {
+	if err := s.validateCatanTransport(); err != nil {
+		return err
+	}
 	g := s.Catan
 	if g == nil || g.setup() || s.CatanPendingActor() >= 0 || s.Finished || p != s.Turn || p < 0 || p >= len(g.Players) || s.Phase == "catan_discard" || g.Players[p].Eliminated {
 		return errors.New("当前不能移除此玩家")
@@ -1285,6 +1312,14 @@ func (s *State) EliminateCatan(p int) error {
 		a.GoldBank += a.Gold[p]
 		a.Gold[p] = 0
 		a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return k.Player == p })
+	}
+	if t := g.Transport; t != nil {
+		t.GoldBank += t.Gold[p]
+		t.Gold[p] = 0
+		t.Travel = nil
+		t.ArrivalResolved = false
+		t.Swift = false
+		t.Moves = 0
 	}
 	s.catanReturnFishing(p)
 	pl := &g.Players[p]
@@ -1335,5 +1370,5 @@ func (s *State) EliminateCatan(p int) error {
 		s.catanNext()
 		s.catanVictory()
 	}
-	return nil
+	return s.catanTransportSyncTurn()
 }

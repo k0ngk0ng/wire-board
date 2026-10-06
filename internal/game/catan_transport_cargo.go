@@ -26,22 +26,27 @@ type catanTransportArrivalResult struct {
 	Gold      int    `json:"gold"`
 }
 
-// Private scenario state. This is not yet attached to Catan/Apply: the
-// development deck, production, victory and response controller remain gates.
+// Persisted internal scenario state. Three/four-player Apply is connected;
+// public recipes remain closed pending extended rules, UI and final acceptance.
 type catanTransport struct {
-	Map             *catanTransportMap           `json:"map"`
-	Wagons          []catanTransportWagon        `json:"wagons"`
-	Stacks          [3][]int                     `json:"stacks"` // quarry, glassworks, castle; top at index 0.
-	Gold            []int                        `json:"gold"`
-	GoldBank        int                          `json:"goldBank"`
-	Barbarians      [3]int                       `json:"barbarians"`
-	Active          int                          `json:"active"`
-	TurnSerial      uint64                       `json:"turnSerial"`
-	Bought          int                          `json:"bought"`
-	Sequence        uint64                       `json:"sequence"`
-	Travel          *catanTransportTravel        `json:"travel,omitempty"`
-	ArrivalResolved bool                         `json:"arrivalResolved"`
-	LastArrival     *catanTransportArrivalResult `json:"lastArrival,omitempty"`
+	GameTurn          uint64                       `json:"gameTurn"`
+	Swift             bool                         `json:"swift"`
+	Moves             int                          `json:"moves"`
+	BarbarianSequence uint64                       `json:"barbarianSequence"`
+	BarbarianPending  bool                         `json:"barbarianPending"`
+	Map               *catanTransportMap           `json:"map"`
+	Wagons            []catanTransportWagon        `json:"wagons"`
+	Stacks            [3][]int                     `json:"stacks"` // quarry, glassworks, castle; top at index 0.
+	Gold              []int                        `json:"gold"`
+	GoldBank          int                          `json:"goldBank"`
+	Barbarians        [3]int                       `json:"barbarians"`
+	Active            int                          `json:"active"`
+	TurnSerial        uint64                       `json:"turnSerial"`
+	Bought            int                          `json:"bought"`
+	Sequence          uint64                       `json:"sequence"`
+	Travel            *catanTransportTravel        `json:"travel,omitempty"`
+	ArrivalResolved   bool                         `json:"arrivalResolved"`
+	LastArrival       *catanTransportArrivalResult `json:"lastArrival,omitempty"`
 }
 
 func catanTransportOrigins() [3]string { return [3]string{"quarry", "glassworks", "castle"} }
