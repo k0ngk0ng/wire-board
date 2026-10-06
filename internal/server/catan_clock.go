@@ -9,6 +9,23 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 	if r.Game.Catan == nil || r.Game.Finished {
 		return false
 	}
+	if r.Game.Catan.Explorer != nil {
+		if r.Game.Phase == "catan_discard" {
+			if previousPhase != "catan_discard" {
+				r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
+				r.startTurnClock(now)
+			}
+			return true // Every discarder shares this response deadline.
+		}
+		if previousPhase == "catan_discard" {
+			r.TurnDeadline = now.UnixMilli() + r.CatanTimeLeft
+			r.CatanTimeLeft = 0
+			return true
+		}
+		// Construction and sailing share the original turn budget. The caller
+		// starts a full new clock only when the turn serial/actor changes.
+		return false
+	}
 	endResponse := func(phase string) bool {
 		return phase == "catan_transport_move" || phase == "catan_attack_end" || phase == "catan_caravan_bid" || phase == "catan_caravan_vote" || phase == "catan_caravan_place"
 	}

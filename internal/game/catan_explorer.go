@@ -6,7 +6,7 @@ import (
 )
 
 // Private acceptance constructor. Public room options remain closed until
-// inventory edge cases, networking, departure, UI and remaining missions pass.
+// inventory edge cases, UI and remaining missions pass final acceptance.
 func newCatanExplorerState(players int) (*State, error) {
 	g, x, err := newCatanExplorerLandHoWorld(players)
 	if err != nil {
@@ -43,7 +43,10 @@ func (s *State) validateCatanExplorer() error {
 	if t == nil || t.Player != s.Turn || t.Sequence != g.TurnSerial || !slices.Equal(t.Discard, g.DiscardDue) {
 		return errors.New("探险家主回合与经济回应不一致")
 	}
-	rolled := int(g.TurnSerial)
+	if x.SkippedRolls < 0 || uint64(x.SkippedRolls) >= g.TurnSerial {
+		return errors.New("离场跳过的生产回合数量无效")
+	}
+	rolled := int(g.TurnSerial) - x.SkippedRolls
 	if t.Phase == "roll" {
 		rolled--
 	}
@@ -71,7 +74,13 @@ func (s *State) validateCatanExplorer() error {
 		}
 	}
 	if s.Finished {
-		if s.Phase != "finished" || len(s.Winners) != 1 || s.Winners[0] != s.Turn || g.Players[s.Turn].Score < x.Board.Target || g.Trade != nil {
+		alive := 0
+		for _, p := range g.Players {
+			if !p.Eliminated {
+				alive++
+			}
+		}
+		if s.Phase != "finished" || len(s.Winners) != 1 || s.Winners[0] != s.Turn || g.Players[s.Turn].Eliminated || g.Players[s.Turn].Score < x.Board.Target && alive != 1 || g.Trade != nil {
 			return errors.New("初航胜负或结束阶段无效")
 		}
 	} else if phase == "" || s.Phase != phase || len(s.Winners) != 0 {

@@ -1320,7 +1320,18 @@ func (s *State) AutoCatanPending() {
 }
 func (s *State) EliminateCatan(p int) error {
 	if s.Catan != nil && s.Catan.Explorer != nil {
-		return errors.New("探险家离场处理尚未接入；未开放的剧本不能使用基础离场流程")
+		if err := s.validateCatanExplorer(); err != nil {
+			return err
+		}
+		next := clone(*s)
+		if err := next.eliminateCatanExplorer(p); err != nil {
+			return err
+		}
+		if err := next.validateCatanExplorer(); err != nil {
+			return err
+		}
+		*s = next
+		return nil
 	}
 	if err := s.validateCatanTransport(); err != nil {
 		return err
