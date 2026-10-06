@@ -125,6 +125,29 @@ def prepare(output: Path, rules_directory: Path | None):
                 tuple(v for point in quad for v in point), Image.Resampling.BICUBIC)
             art = art.crop(tuple(city_geometry['illustrationCrop']))
             art.save(targets / f'city-{tile}.webp', quality=94, method=6)
+        # Retain original photographic illustrations, but exclude every printed
+        # game field. Costs/bonuses/effects are rendered from the actual card.
+        # The five variants of an effect share a scene; the double-bonus crop
+        # also excludes its color-specific gemstone pile at the bottom.
+        face_source = sources['splendor-orient-photo']
+        if rules_directory:
+            data = (rules_directory / 'sun-photo04.jpg').read_bytes()
+        else:
+            with urllib.request.urlopen(face_source['url'], timeout=45) as response:
+                data = response.read()
+        if hashlib.sha256(data).hexdigest() != face_source['sha256']:
+            raise ValueError('Official Orient photograph changed')
+        photo = scratch / 'orient-faces.jpg'
+        photo.write_bytes(data)
+        faces = Image.open(photo).convert('RGB')
+        if faces.size != (1920, 1280):
+            raise ValueError('Unexpected Orient photograph dimensions')
+        face_geometry = geometry['orientIllustrations']
+        for kind, quad in face_geometry['quads'].items():
+            art = faces.transform(tuple(face_geometry['rectifiedSize']), Image.Transform.QUAD,
+                tuple(v for point in quad for v in point), Image.Resampling.BICUBIC)
+            art = art.crop(tuple(face_geometry['crops'][kind]))
+            art.save(targets / f'orient-art-{kind}.webp', quality=94, method=6)
     (targets / 'sources.json').write_text(json.dumps({
         'rules': 'split-box-2025',
         'tradingPosts': source,
@@ -132,9 +155,10 @@ def prepare(output: Path, rules_directory: Path | None):
         'orientBacks': orient_source,
         'strongholdPieces': piece_source,
         'cityIllustrations': city_source,
-        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols; not full Orient card illustrations. Rectified three Orient backs from the page 2 setup illustration; four un-recolored wooden pieces from the pinned publisher photograph. Seven cropped city illustrations exclude printed costs and are not evidence of final rules or paired sides. Geometry is recorded in scripts/splendor_asset_geometry.json. Promotional prototype images differ.',
+        'orientIllustrations': face_source,
+        'note': 'Page 2 embedded trading-post tiles and original Orient effect symbols. Rectified three Orient backs from the page 2 setup illustration; four un-recolored wooden pieces from the pinned publisher photograph. Seven cropped city illustrations exclude printed costs and are not evidence of final rules or paired sides. Six original Orient scene crops omit printed fields and are not full-face scans or proof of all 30 card data rows. Geometry is recorded in scripts/splendor_asset_geometry.json. Promotional prototype images differ.',
     }, ensure_ascii=False, indent=2) + '\n')
-    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs, four stronghold pieces and seven city illustrations; temporary files removed.')
+    print('Prepared five trading-post tiles, five Orient symbols, three Orient backs, four stronghold pieces, seven city illustrations and six Orient illustrations; temporary files removed.')
 
 
 if __name__ == '__main__':

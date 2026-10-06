@@ -317,5 +317,55 @@
         [801, 687]
       ]
     }
+  },
+  "orientIllustrations": {
+    "note": "Original illustration crops only. Exclude printed bonus, points, effects and costs. Double-bonus crop also excludes the color-specific gemstone pile. Card fields remain live UI, not baked into these images.",
+    "rectifiedSize": [240, 336],
+    "quads": {
+      "gold": [
+        [659, 31],
+        [505, 191],
+        [688, 292],
+        [855, 117]
+      ],
+      "copy": [
+        [870, 428],
+        [688, 630],
+        [894, 754],
+        [1086, 549]
+      ],
+      "double": [
+        [1240, 330],
+        [1058, 548],
+        [1256, 639],
+        [1419, 435]
+      ],
+      "copy_cascade": [
+        [668, 627],
+        [486, 833],
+        [673, 955],
+        [866, 732]
+      ],
+      "cascade": [
+        [694, 307],
+        [502, 509],
+        [690, 627],
+        [883, 418]
+      ],
+      "sacrifice": [
+        [1610, 224],
+        [1444, 423],
+        [1638, 547],
+        [1790, 326]
+      ]
+    },
+    "crops": {
+      "gold": [70, 92, 222, 309],
+      "copy": [70, 92, 207, 309],
+      "double": [72, 94, 224, 230],
+      "copy_cascade": [70, 92, 222, 309],
+      "cascade": [70, 92, 209, 309],
+      "sacrifice": [70, 92, 222, 309]
+    }
   }
 }
