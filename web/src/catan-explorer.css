@@ -515,3 +515,23 @@
   font-size: 11px;
   font-weight: 800;
 }
+
+.explorer-shoal-number rect {
+  fill: #fff7d8;
+  stroke: #1d6680;
+  stroke-width: 2;
+}
+.explorer-shoal-number text {
+  fill: #173d50;
+  font-size: 20px;
+  font-weight: 900;
+  text-anchor: middle;
+}
+.explorer-council-anchor circle {
+  fill: #fff5d5;
+  stroke: #17607b;
+  stroke-width: 2;
+}
+.explorer-council-anchor {
+  color: #174e65;
+}

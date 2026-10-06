@@ -5,6 +5,7 @@ import type { Act, Room } from "./types";
 import { Bundle, ResourcePicker } from "./catan-resources";
 import {
   ExplorerPiece,
+  ExplorerFishPiece,
   ExplorerCargoPieces,
   ExplorerEffects,
   useExplorerMotion,
@@ -27,7 +28,10 @@ import {
   explorerShipPosition,
   explorerTarget,
   explorerResources,
-  explorerCargoLabel,
+  explorerFreightLabel,
+  explorerFishContents,
+  explorerFishPoint,
+  explorerScenarioLabel,
   explorerPhaseLabel,
 } from "./catan-explorer-state";
 import type { ExplorerAction, ExplorerPick } from "./catan-explorer-state";
@@ -53,7 +57,12 @@ const terrainNames = [
   "金矿",
   "未探索区域",
 ];
-const primaryTypes = ["catan_roll", "catan_explorer_begin_move", "catan_end"];
+const primaryTypes = [
+  "catan_roll",
+  "catan_explorer_begin_move",
+  "catan_explorer_fish_roll",
+  "catan_end",
+];
 const buttonKeys = (event: KeyboardEvent, click: () => void) => {
   if (event.key === "Enter" || event.key === " ") {
     event.preventDefault();
@@ -187,7 +196,8 @@ export function CatanExplorerBoard({
     ) &&
     give.every((n, i) => n <= hand[i]);
   const phase = explorerPhaseLabel(game.finished ? "finished" : game.phase);
-  const scenario = x.lairs ? "海盗巢穴" : "初航";
+  const scenario = explorerScenarioLabel(g);
+  const shoals = new Map(x.board.shoals?.map((s) => [s.tile, s.number]));
   const path =
     selected?.type === "catan_explorer_sail"
       ? [x.fleet.positions[selected.slot!], ...selected.targets!]
@@ -279,7 +289,7 @@ export function CatanExplorerBoard({
                   />
                   {assets && t.resource !== 8 && (
                     <image
-                      href={`${assets}/catan/${t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
+                      href={`${assets}/catan/${x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
                       x={t.x - (size * Math.sqrt(3)) / 2}
                       y={t.y - size}
                       width={size * Math.sqrt(3)}
@@ -293,6 +303,23 @@ export function CatanExplorerBoard({
                       ?
                     </text>
                   )}
+                  {shoals.has(t.id) && (
+                    <g
+                      className="explorer-shoal-number"
+                      aria-label={`渔场骰面${shoals.get(t.id)}`}
+                    >
+                      <rect
+                        x={t.x - 13}
+                        y={t.y - 28}
+                        width="26"
+                        height="26"
+                        rx="5"
+                      />
+                      <text x={t.x} y={t.y - 9}>
+                        {shoals.get(t.id)}
+                      </text>
+                    </g>
+                  )}
                   {t.number > 0 && (
                     <g
                       className={`explorer-number ${[6, 8].includes(t.number) ? "hot" : ""}`}
@@ -304,11 +331,30 @@ export function CatanExplorerBoard({
                     </g>
                   )}
                   <title>
-                    {terrainNames[t.resource]}
+                    {x.board.council?.tile === t.id
+                      ? "议会岛"
+                      : shoals.has(t.id)
+                        ? `渔场 · 骰面${shoals.get(t.id)}`
+                        : terrainNames[t.resource]}
                     {t.number > 0 ? ` · ${t.number}` : ""}
                   </title>
                 </g>
               ))}
+              {x.board.council?.anchors.map((id) => {
+                const v = g.vertices[id];
+                return (
+                  <g
+                    key={`council-${id}`}
+                    transform={`translate(${v.x},${v.y})`}
+                    pointerEvents="none"
+                    className="explorer-council-anchor"
+                  >
+                    <circle r="12" />
+                    <Anchor x="-8" y="-8" width="16" height="16" />
+                    <title>议会岛交付锚点</title>
+                  </g>
+                );
+              })}
               {g.edges
                 .filter((e) => e.owner !== -1)
                 .map((e) => {
@@ -484,6 +530,36 @@ export function CatanExplorerBoard({
                   </g>
                 );
               })}
+              {x.cargo.fish?.map((loc, id) => {
+                const p = explorerFishPoint(g, id);
+                if (
+                  !p ||
+                  (loc.kind === "ship" &&
+                    motion?.event.kind === "catan_explorer_sail" &&
+                    motion.event.ship === loc.index)
+                )
+                  return null;
+                return (
+                  <g
+                    key={`fish-${id}`}
+                    transform={`translate(${p.x},${p.y})`}
+                    pointerEvents="none"
+                  >
+                    <ExplorerFishPiece
+                      assets={assets}
+                      width={loc.kind === "shoal" ? 34 : 27}
+                    />
+                    <title>
+                      {loc.kind === "ship"
+                        ? `${room.seats[Math.floor(loc.index / 3)]?.name}的船${(loc.index % 3) + 1}`
+                        : loc.kind === "harbor"
+                          ? "港口"
+                          : "渔场"}{" "}
+                      · 一群鱼
+                    </title>
+                  </g>
+                );
+              })}
               <ExplorerEffects active={motion} assets={assets} />
               {!busy &&
                 [...targets.entries()].map(([key, item]) => {
@@ -613,7 +689,7 @@ export function CatanExplorerBoard({
             ))}
             <p>
               已解放{x.lairs.sites.filter((site) => site.resolved).length} /
-              6处；未攻陷前数字隐藏。
+              {x.fish ? 5 : 6}处；未攻陷前数字隐藏。
             </p>
             {x.lairs.battle && (
               <p role="status">
@@ -629,6 +705,38 @@ export function CatanExplorerBoard({
                 最近驱赶：{room.seats[x.pirate.lastChase.player]?.name}掷出
                 {x.pirate.lastChase.die}，
                 {x.pirate.lastChase.success ? "成功" : "未成功"}。
+              </p>
+            )}
+          </section>
+        )}
+        {x.fish && (
+          <section
+            className="explorer-mission explorer-fish-mission"
+            aria-label="鱼群任务进度"
+          >
+            <strong>鱼群任务</strong>
+            {g.players.map((p, id) => (
+              <div key={id} className={p.eliminated ? "retired" : ""}>
+                <span style={{ borderColor: catanSeatColor(g, id) }}>
+                  {room.seats[id]?.name}
+                </span>
+                <b>进度 {x.fish!.progress[id]} / 7</b>
+                <span>
+                  任务 {x.fish!.scores[id]}分
+                  {x.fish!.leader === id ? " · 领先" : ""}
+                </span>
+              </div>
+            ))}
+            <p>
+              供应剩余{" "}
+              {x.cargo.fish?.filter((loc) => loc.kind === "supply").length ?? 0}{" "}
+              群鱼 · 运到议会岛锚点交付。
+            </p>
+            {x.fish.lastRoll && (
+              <p role="status">
+                最近捕鱼骰：{room.seats[x.fish.lastRoll.player]?.name}掷出{" "}
+                {x.fish.lastRoll.die}，
+                {x.fish.lastRoll.spawned >= 0 ? "出现一群鱼" : "未出现鱼群"}。
               </p>
             )}
           </section>
@@ -696,7 +804,10 @@ export function CatanExplorerBoard({
                         ? "已停止"
                         : `${x.fleet.turn?.ships[id].remaining ?? 0}步`}
                       {" · " +
-                        explorerCargoLabel(explorerContents(g, "ship", id))}
+                        explorerFreightLabel(
+                          explorerContents(g, "ship", id),
+                          explorerFishContents(g, "ship", id),
+                        )}
                     </button>
                   ) : null,
                 )}
@@ -948,6 +1059,11 @@ export function CatanExplorerBoard({
           <p>
             非7点未获资源的玩家获1金币补偿。3同类资源可换1其他资源或金币；2金币可买1资源，每回合最多2次。无发展卡、强盗、最长道路或最大军队。
           </p>
+          {x.fish && (
+            <p>
+              每航行阶段可掷一次捕鱼骰；一群鱼占2格，可在相邻渔场装船、经己方港口换载，或在议会岛两个锚点交付。装卸不消耗移动点；海盗会清除尚未装船的鱼群。发现渔场得2金币并停止本船移动。
+            </p>
+          )}
           <Bundle values={g.bank} assets={assets} showZero />
           <p>
             金币银行 {x.economy.goldBank} · 本回合金币购资源 {x.economy.bought}

@@ -354,3 +354,63 @@ test("cargo flights anchor each unit to its actual map row without using viewpor
   assert.equal(explorerCargoPoint(g, 4, { kind: "lair", index: 0 }), null);
   assert.equal(explorerCargoPoint(g, 2, { kind: "supply", index: -1 }), null);
 });
+
+test("fish zero ID targets its public shoal and mixed cargo keeps distinct IDs", async () => {
+  const { explorerFishContents, explorerFreightLabel, explorerFishPoint } =
+    await import("../src/catan-explorer-state.ts");
+  const g = room().game.catan;
+  g.tiles = [{ x: 40, y: 30 }];
+  g.explorer.board = {
+    scenario: "fish-for-catan",
+    council: { tile: 0, anchors: [0, 2] },
+  };
+  g.explorer.fish = { progress: [1, 0], scores: [2, 0], leader: 0 };
+  g.explorer.cargo.fish = [
+    { kind: "shoal", index: 0 },
+    { kind: "ship", index: 3 },
+  ];
+  assert.deepEqual(
+    explorerTarget(g, { type: "catan_explorer_fish_load", card: 0, slot: 0 }),
+    { kind: "tile", id: 0 },
+  );
+  assert.deepEqual(
+    explorerTarget(g, {
+      type: "catan_explorer_fish_deliver",
+      card: 1,
+      slot: 3,
+    }),
+    { kind: "tile", id: 0 },
+  );
+  assert.deepEqual(explorerFishContents(g, "ship", 3), [1]);
+  assert.deepEqual(explorerFishPoint(g, 1), { x: 50, y: -1 });
+  assert.equal(explorerFreightLabel([], [0]), "1群鱼");
+  const description = explorerActionDescription(g, {
+    type: "catan_explorer_transfer",
+    slot: 0,
+    vertex: 0,
+    cards: [0],
+    take: [0],
+  });
+  assert.match(description, /装入1群鱼并卸下1枚移民/);
+  g.explorer.cargo.fish[0] = { kind: "supply", index: -1 };
+  assert.equal(
+    explorerTarget(g, { type: "catan_explorer_fish_load", card: 0 }),
+    null,
+  );
+  assert.equal(explorerFishPoint(g, 0), null);
+  assert.match(catanResultDescription(g), /鱼群任务.*鱼群任务进度/);
+});
+
+test("fish confirmations expire when the fish is collected or the roll is consumed", () => {
+  const r = room();
+  for (const action of [
+    { type: "catan_explorer_fish_load", prompt: 5, slot: 0, card: 0 },
+    { type: "catan_explorer_fish_roll", prompt: 5 },
+  ]) {
+    r.game.catan.explorer.choices = [action];
+    const pick = { room: r.id, action };
+    assert.deepEqual(explorerSelectedAction(r, pick), action);
+    r.game.catan.explorer.choices = [];
+    assert.equal(explorerSelectedAction(r, pick), null);
+  }
+});

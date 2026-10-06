@@ -7,6 +7,7 @@ import {
 } from "./catan-player-colors";
 import {
   explorerContents,
+  explorerFishContents,
   explorerCargoPoint,
   explorerMotionBetween,
   explorerMotionPath,
@@ -62,6 +63,28 @@ export function ExplorerPiece({
         }
       </text>
     </g>
+  );
+}
+
+export function ExplorerFishPiece({
+  assets,
+  width = 27,
+}: {
+  assets: string;
+  width?: number;
+}) {
+  return assets ? (
+    <image
+      href={`${assets}/catan/explorer/fish-v1.webp`}
+      x={-width / 2}
+      y={(-width * 61) / 68 / 2}
+      width={width}
+      height={(width * 61) / 68}
+    />
+  ) : (
+    <text textAnchor="middle" y="4" fontSize="12" fill="#17394b">
+      鱼群
+    </text>
   );
 }
 
@@ -219,6 +242,11 @@ export function ExplorerEffects({
             player={e.player}
             kind="ship"
           />
+          {explorerFishContents(before, "ship", e.ship).length > 0 && (
+            <g transform="translate(0,-12)">
+              <ExplorerFishPiece assets={assets} />
+            </g>
+          )}
           {explorerContents(before, "ship", e.ship).length > 0 && (
             <g transform="translate(0,-12)">
               <ExplorerCargoPieces
