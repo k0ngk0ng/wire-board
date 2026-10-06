@@ -6,9 +6,11 @@ import "./splendor-cities.css";
 
 export function SplendorCities({
   room,
+  assets,
   renderGem,
 }: {
   room: Room;
+  assets: string;
   renderGem: (color: number) => ReactNode;
 }) {
   const s = room.game!.splendor!;
@@ -45,6 +47,15 @@ export function SplendorCities({
               className={`gem-city ${eligible ? "is-eligible" : ""}`}
               aria-label={city.name}
             >
+              {assets && (
+                <img
+                  className="gem-city-art"
+                  src={`${assets}/splendor/expansions/city-${city.tile}.webp`}
+                  alt=""
+                  width={320}
+                  height={95}
+                />
+              )}
               <h4>
                 {city.name}
                 {eligible && <Check size={17} aria-label="已达成" />}

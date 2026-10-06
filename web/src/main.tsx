@@ -3247,6 +3247,7 @@ function SplendorBoard({
       {s.options?.cities ? (
         <SplendorCities
           room={room}
+          assets={assets}
           renderGem={(color) => <Gemstone color={color} />}
         />
       ) : (

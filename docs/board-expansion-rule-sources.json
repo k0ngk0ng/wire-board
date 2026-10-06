@@ -93,5 +93,11 @@
     "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/11/05.jpg",
     "sha256": "3bebd5b904581fa0eede416602d19348513cbb912916114dd7dd4d8d637fdfc4",
     "bytes": 1482869
+  },
+  "splendor-cities-photo": {
+    "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/image-converter/2025/10/02.webp",
+    "sha256": "f08002c10e6776c46ba5be74847f4f408dbe8311788fc3b01526a8abf8ad0587",
+    "bytes": 292602,
+    "note": "Promotional photograph used for city illustrations only; its Trading Post artwork differs from the final rules. Do not infer rules or reverse-side pairing from it."
   }
 }
