@@ -72,7 +72,7 @@ func assertExplorerSpiceHTTPPrivacy(t *testing.T, clients []*testClient, state *
 				t.Fatal("sack exposed hidden farm")
 			}
 		}
-		if x["lairs"] != nil || x["spice"] == nil {
+		if (x["lairs"] != nil) != (state.Catan.Explorer.Lairs != nil) || x["spice"] == nil {
 			t.Fatal("wrong missions in spice view")
 		}
 	}
