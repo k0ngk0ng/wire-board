@@ -329,7 +329,7 @@ func TestSplendorModernCityPhysicalUnboxingExamples(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// These three faces are directly readable in The Brosey Game Company's
+	// These seven faces' conditions are readable in The Brosey Game Company's
 	// physical 2025 Silk Road unboxing, not copied from the secondary data file.
 	// Video ID, confirmed frame times and retained crops are recorded in
 	// docs/research/splendor-city-video-evidence.json. Local tile/side numbers
@@ -338,6 +338,12 @@ func TestSplendorModernCityPhysicalUnboxingExamples(t *testing.T) {
 		{Tile: 5, Side: 1, Name: "撒马尔罕", Points: 14, Cost: [5]int{0, 0, 0, 4, 0}, Any: 4},
 		{Tile: 4, Side: 1, Name: "德里", Points: 14, Cost: [5]int{2, 2, 2, 2, 2}},
 		{Tile: 6, Side: 1, Name: "首尔", Points: 13, Cost: [5]int{}, Any: 6},
+		{Tile: 3, Side: 0, Name: "廷巴克图", Points: 13, Cost: [5]int{0, 3, 4, 0, 0}},
+		{Tile: 7, Side: 1, Name: "克拉科夫", Points: 17, Cost: [5]int{}},
+		{Tile: 1, Side: 0, Name: "马德里", Points: 12, Cost: [5]int{3, 3, 0, 3, 3}},
+		// Illustration partly covered by Amboise, but all printed conditions
+		// on the underlying Madrid tile are visible. No reverse pairing claim.
+		{Tile: 1, Side: 1, Name: "马德里", Points: 12, Cost: [5]int{3, 0, 3, 3, 3}},
 	} {
 		got := catalog.Cities[(want.Tile-1)*2+want.Side]
 		if got != want {
