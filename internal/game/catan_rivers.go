@@ -39,7 +39,7 @@ func (g *Catan) validateRivers() error {
 	if r == nil {
 		return nil
 	}
-	if r.Map == nil || len(r.Gold) != len(g.Players) || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
+	if r.Map == nil || len(r.Gold) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
 		return errors.New("河流状态或尚未核对的组合无效")
 	}
 	board := *g
@@ -68,13 +68,21 @@ func (g *Catan) validateRivers() error {
 		return errors.New("金币不守恒")
 	}
 	for _, e := range g.Edges {
-		if e.Owner < -1 || e.Owner >= len(g.Players) || e.Bridge && (e.Owner < 0 || !slices.Contains(r.Map.Bridges, e.ID) || e.Ship || e.Damaged) || e.Owner >= 0 && slices.Contains(r.Map.Bridges, e.ID) && !e.Bridge {
+		neutral := g.Two != nil && slices.Contains(catanTwoNeutralOwners[:], e.Owner)
+		if e.Owner < -1 && !neutral || e.Owner >= len(g.Players) || e.Bridge && (e.Owner == -1 || !slices.Contains(r.Map.Bridges, e.ID) || e.Ship || e.Damaged) || e.Owner != -1 && slices.Contains(r.Map.Bridges, e.ID) && !e.Bridge {
 			return errors.New("桥梁位置或棋子无效")
 		}
 	}
 	for p := range g.Players {
 		if g.bridgeCount(p) > 3 {
 			return errors.New("桥梁数量超出库存")
+		}
+	}
+	if g.Two != nil {
+		for _, owner := range catanTwoNeutralOwners {
+			if g.bridgeCount(owner) > 3 {
+				return errors.New("中立桥梁数量超出库存")
+			}
 		}
 	}
 	return nil
@@ -127,7 +135,8 @@ func (g *Catan) bridgeCount(p int) int {
 	return n
 }
 func (g *Catan) canBridge(p, id int) bool {
-	if g.Rivers == nil || p < 0 || p >= len(g.Players) || g.Players[p].Eliminated || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner >= 0 || !slices.Contains(g.Rivers.Map.Bridges, id) || g.bridgeCount(p) >= 3 {
+	neutral := g.Two != nil && slices.Contains(catanTwoNeutralOwners[:], p)
+	if g.Rivers == nil || !neutral && (p < 0 || p >= len(g.Players) || g.Players[p].Eliminated) || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != -1 || !slices.Contains(g.Rivers.Map.Bridges, id) || g.bridgeCount(p) >= 3 {
 		return false
 	}
 	e := g.Edges[id]
@@ -152,7 +161,7 @@ func (g *Catan) canBridge(p, id int) bool {
 }
 
 func (s *State) catanRiverReward(p, amount int) error {
-	if s.Catan.Rivers == nil || amount == 0 {
+	if s.Catan.Rivers == nil || amount == 0 || p < 0 {
 		return nil
 	}
 	r := s.Catan.Rivers
