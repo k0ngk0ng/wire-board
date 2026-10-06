@@ -46,6 +46,14 @@ export function OrientCard({
         } as CSSProperties
       }
     >
+      {assets && card.orient && (
+        <img
+          className="orient-card-art"
+          src={`${assets}/splendor/expansions/orient-art-${card.orient}.webp`}
+          alt=""
+          aria-hidden="true"
+        />
+      )}
       <div className="card-top">
         <strong>{card.points}</strong>
         <span className="orient-bonus">

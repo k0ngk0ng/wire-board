@@ -99,5 +99,20 @@
     "sha256": "f08002c10e6776c46ba5be74847f4f408dbe8311788fc3b01526a8abf8ad0587",
     "bytes": 292602,
     "note": "Promotional photograph used for city illustrations only; its Trading Post artwork differs from the final rules. Do not infer rules or reverse-side pairing from it."
+  },
+  "splendor-orient-product-3": {
+    "url": "https://cdn.shopify.com/s/files/1/0694/1402/7563/files/SCSPL04en-image3_2000.jpg?v=1743699175",
+    "sha256": "876a469d4799901eaab1a31a220396aadfdf44bd2bbfa156d14b0d94924a378a",
+    "bytes": 633219
+  },
+  "splendor-orient-product-4": {
+    "url": "https://cdn.shopify.com/s/files/1/0694/1402/7563/files/SCSPL04en-image4_2000.jpg?v=1743699175",
+    "sha256": "f92a3585e04da32d5d31aa37e5240e500552c0a52ea2f55ca260313b50cfc24e",
+    "bytes": 733854
+  },
+  "splendor-orient-photo": {
+    "url": "https://cdn.svc.asmodee.net/production-spacecowboys/uploads/2025/11/04.jpg",
+    "sha256": "a63bc3a45c19097afabbd4963dd4b487ee5c3d2e1dddaead5afb7e858eeedd21",
+    "bytes": 2615459
   }
 }

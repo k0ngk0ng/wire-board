@@ -17,6 +17,9 @@ func TestSplendorModernCatalogPublisherExamplesAndValidation(t *testing.T) {
 	// These rows can be read on the retained publisher photo sun-photo04.jpg.
 	// Three additional rows (1014, 1019, 1023) are visible in the official
 	// Sun Never Sets rulebook page 2 setup illustration, PDF object 75.
+	// Five more (1011, 1012, 1021, 1026, 1029) are readable in Asmodee's
+	// SCSPL04en-image3_2000.jpg and image4_2000.jpg product photographs.
+	// Exact source hashes and visible fields are recorded in the research log.
 	// This checks those examples only, not all 30 component faces.
 	for _, want := range []Card{
 		{ID: 1002, Tier: 1, Color: -1, Orient: GemOrientGold, Cost: []int{0, 0, 3, 0, 0}},
@@ -25,14 +28,19 @@ func TestSplendorModernCatalogPublisherExamplesAndValidation(t *testing.T) {
 		{ID: 1008, Tier: 1, Color: -1, Orient: GemOrientCopy, Cost: []int{3, 0, 0, 2, 0}},
 		{ID: 1009, Tier: 1, Color: -1, Orient: GemOrientCopy, Cost: []int{0, 0, 2, 0, 3}},
 		{ID: 1010, Tier: 1, Color: -1, Orient: GemOrientCopy, Cost: []int{0, 2, 0, 3, 0}},
+		{ID: 1011, Tier: 2, Points: 1, Color: 1, BonusCount: 2, Orient: GemOrientDouble, Cost: []int{3, 0, 0, 0, 4}},
+		{ID: 1012, Tier: 2, Points: 1, Color: 2, BonusCount: 2, Orient: GemOrientDouble, Cost: []int{0, 0, 0, 4, 3}},
 		{ID: 1014, Tier: 2, Points: 1, Color: 4, BonusCount: 2, Orient: GemOrientDouble, Cost: []int{0, 3, 4, 0, 0}},
 		{ID: 1015, Tier: 2, Points: 1, Color: 3, BonusCount: 2, Orient: GemOrientDouble, Cost: []int{4, 0, 3, 0, 0}},
 		{ID: 1017, Tier: 2, Points: 1, Color: -1, Orient: GemOrientCopyCascade, Cost: []int{0, 0, 4, 3, 1}},
 		{ID: 1019, Tier: 2, Points: 1, Color: -1, Orient: GemOrientCopyCascade, Cost: []int{3, 1, 0, 0, 4}},
+		{ID: 1021, Tier: 3, Points: 1, Color: 1, Orient: GemOrientCascade, Cost: []int{3, 0, 6, 0, 1}},
 		{ID: 1022, Tier: 3, Points: 1, Color: 2, Orient: GemOrientCascade, Cost: []int{6, 0, 0, 1, 3}},
 		{ID: 1023, Tier: 3, Points: 1, Color: 0, Orient: GemOrientCascade, Cost: []int{0, 1, 0, 3, 6}},
+		{ID: 1026, Tier: 3, Points: 3, Color: 1, Orient: GemOrientSacrifice, SacrificeColor: 0, Cost: []int{0, 0, 0, 0, 0}},
 		{ID: 1027, Tier: 3, Points: 3, Color: 2, Orient: GemOrientSacrifice, SacrificeColor: 4, Cost: []int{0, 0, 0, 0, 0}},
 		{ID: 1028, Tier: 3, Points: 3, Color: 0, Orient: GemOrientSacrifice, SacrificeColor: 3, Cost: []int{0, 0, 0, 0, 0}},
+		{ID: 1029, Tier: 3, Points: 3, Color: 4, Orient: GemOrientSacrifice, SacrificeColor: 1, Cost: []int{0, 0, 0, 0, 0}},
 		{ID: 1030, Tier: 3, Points: 3, Color: 3, Orient: GemOrientSacrifice, SacrificeColor: 2, Cost: []int{0, 0, 0, 0, 0}},
 	} {
 		if got := c.Orient[want.ID-1001]; !reflect.DeepEqual(got, want) {
