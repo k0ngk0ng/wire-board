@@ -9,6 +9,8 @@ import (
 // Private integration aggregate. Land Ho is the first complete map/inventory
 // combination; public room recipes remain gated on complete acceptance.
 type catanExplorer struct {
+	ActionID     uint64                `json:"actionId,omitempty"`
+	Motion       *catanExplorerMotion  `json:"motion,omitempty"`
 	SkippedRolls int                   `json:"skippedRolls,omitempty"` // Platform removal before production, never a fabricated dice roll.
 	Board        *catanExplorerBoard   `json:"board"`
 	Fleet        *catanExplorerSailing `json:"fleet"`

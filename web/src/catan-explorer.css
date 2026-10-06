@@ -437,3 +437,21 @@
 .explorer-confirm [hidden] {
   display: none;
 }
+
+.explorer-cargo-arriving {
+  animation: explorer-cargo-arrival 850ms both;
+}
+@keyframes explorer-cargo-arrival {
+  0%,
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .explorer-cargo-arriving {
+    animation: none;
+  }
+}

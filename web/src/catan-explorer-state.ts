@@ -19,7 +19,19 @@ export type ExplorerLocation = {
   kind: "supply" | "ship" | "harbor";
   index: number;
 };
+export type ExplorerMotion = {
+  id: number;
+  player: number;
+  kind: string;
+  ship: number;
+  vertex: number;
+  path?: number[];
+  revealed?: number[];
+  cargo?: { unit: number; from: ExplorerLocation; to: ExplorerLocation }[];
+};
 export type ExplorerView = {
+  actionId?: number;
+  motion?: ExplorerMotion | null;
   sequence: number;
   choices: ExplorerAction[];
   board: {
@@ -194,4 +206,67 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     default:
       return "掷骰并按点数生产资源。";
   }
+}
+
+// Consecutive authoritative updates only: initial/reconnected snapshots never replay.
+export function explorerMotionBetween(before: Room, after: Room) {
+  const old = before.game?.catan?.explorer,
+    next = after.game?.catan?.explorer;
+  if (
+    !old ||
+    !next ||
+    before.id !== after.id ||
+    before.you !== after.you ||
+    !!before.spectating !== !!after.spectating ||
+    before.status !== "playing" ||
+    !["playing", "finished"].includes(after.status) ||
+    after.version !== before.version + 1 ||
+    next.actionId !== (old.actionId ?? 0) + 1 ||
+    next.motion?.id !== next.actionId
+  )
+    return null;
+  return next.motion ?? null;
+}
+export function explorerMotionPath(
+  before: CatanState,
+  after: CatanState,
+  motion: ExplorerMotion,
+) {
+  if (!motion.path?.length) return [];
+  const start = explorerShipPosition(before, motion.ship),
+    end = explorerShipPosition(after, motion.ship);
+  if (!start || !end) return [];
+  const middle = motion.path.slice(1, -1).map((id) => {
+    const e = after.edges[id];
+    if (!e) return null;
+    const a = after.vertices[e.a],
+      b = after.vertices[e.b];
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  });
+  return middle.some((p) => !p)
+    ? []
+    : [start, ...(middle as { x: number; y: number }[]), end];
+}
+
+export function explorerPathPoint(
+  points: { x: number; y: number }[],
+  progress: number,
+) {
+  if (points.length < 2) return points[0] ?? { x: 0, y: 0 };
+  const lengths = points
+    .slice(1)
+    .map((p, i) => Math.hypot(p.x - points[i].x, p.y - points[i].y));
+  let distance =
+    lengths.reduce((a, b) => a + b, 0) * Math.max(0, Math.min(1, progress));
+  for (let i = 0; i < lengths.length; i++) {
+    if (distance <= lengths[i] && lengths[i] > 0) {
+      const t = distance / lengths[i];
+      return {
+        x: points[i].x + (points[i + 1].x - points[i].x) * t,
+        y: points[i].y + (points[i + 1].y - points[i].y) * t,
+      };
+    }
+    distance -= lengths[i];
+  }
+  return points[points.length - 1];
 }

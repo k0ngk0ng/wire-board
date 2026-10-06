@@ -171,3 +171,82 @@ test("destructive rebuilding, full cargo replacement and switching ships are exp
   assert.equal(catanColorIndex(g, -2), 2);
   assert.equal(catanColorIndex(g, -3), 3);
 });
+
+import {
+  explorerMotionBetween,
+  explorerMotionPath,
+} from "../src/catan-explorer-state.ts";
+test("motion requires consecutive action and room versions, but accepts opponents and spectators", () => {
+  const a = room();
+  a.version = 8;
+  a.game.catan.explorer.actionId = 3;
+  const b = structuredClone(a);
+  b.version++;
+  b.game.catan.explorer.actionId = 4;
+  b.game.catan.explorer.motion = {
+    id: 4,
+    player: 1,
+    kind: "catan_explorer_sail",
+    ship: 3,
+    path: [0, 1],
+    vertex: -1,
+  };
+  assert.equal(explorerMotionBetween(a, b)?.player, 1);
+  a.spectating = b.spectating = true;
+  a.you = b.you = -1;
+  assert.equal(explorerMotionBetween(a, b)?.player, 1);
+  assert.equal(explorerMotionBetween(b, b), null);
+  for (const change of [
+    (r) => r.version++,
+    (r) => r.version--,
+    (r) => (r.id = "new"),
+    (r) => (r.you = 0),
+    (r) => (r.spectating = false),
+    (r) => (r.status = "closed"),
+    (r) => r.game.catan.explorer.actionId++,
+    (r) => r.game.catan.explorer.motion.id--,
+    (r) => (r.game.catan.explorer.motion = null),
+  ]) {
+    const invalid = structuredClone(b);
+    change(invalid);
+    assert.equal(explorerMotionBetween(a, invalid), null);
+  }
+  b.status = "finished";
+  assert.ok(explorerMotionBetween(a, b));
+});
+test("sailing uses all actual path edges and shared-edge offsets, never a guessed route", () => {
+  const before = room().game.catan,
+    after = structuredClone(before);
+  after.explorer.fleet.positions[0] = 1;
+  const path = explorerMotionPath(before, after, {
+    ship: 0,
+    path: [0, 1, 0, 1],
+  });
+  assert.deepEqual(path, [
+    { x: 50, y: -11 },
+    { x: 100, y: 50 },
+    { x: 50, y: 0 },
+    { x: 100, y: 50 },
+  ]);
+  assert.deepEqual(
+    explorerMotionPath(before, after, { ship: 0, path: [0, 99, 1] }),
+    [],
+  );
+});
+
+import { explorerPathPoint } from "../src/catan-explorer-state.ts";
+test("motion progresses continuously by distance through bends, including zero-length edges", () => {
+  const points = [
+    { x: 0, y: 0 },
+    { x: 10, y: 0 },
+    { x: 10, y: 30 },
+  ];
+  assert.deepEqual(explorerPathPoint(points, 0.125), { x: 5, y: 0 });
+  assert.deepEqual(explorerPathPoint(points, 0.5), { x: 10, y: 10 });
+  assert.deepEqual(explorerPathPoint(points, 1), points[2]);
+  assert.deepEqual(explorerPathPoint([points[0], points[0], points[1]], 0.5), {
+    x: 5,
+    y: 0,
+  });
+  assert.deepEqual(explorerPathPoint([points[0], points[0]], 1), points[0]);
+});

@@ -3,7 +3,11 @@ import type { CSSProperties, KeyboardEvent } from "react";
 import { Anchor, Dices, Minus, Plus, RotateCcw, Ship } from "lucide-react";
 import type { Act, Room } from "./types";
 import { Bundle, ResourcePicker } from "./catan-resources";
-import { CatanShip } from "./catan-seafarers";
+import {
+  ExplorerPiece,
+  ExplorerEffects,
+  useExplorerMotion,
+} from "./catan-explorer-effects";
 import {
   catanColorIndex,
   catanPieceColors,
@@ -69,6 +73,7 @@ export function CatanExplorerBoard({
     g = game.catan!,
     x = g.explorer!,
     you = room.you;
+  const motion = useExplorerMotion(room);
   const hand = g.players[you]?.resources || empty();
   const [pick, setPick] = useState<ExplorerPick | null>(null);
   const [collapsed, setCollapsed] = useState(false);
@@ -319,7 +324,15 @@ export function CatanExplorerBoard({
                     transform={`translate(${v.x} ${v.y})`}
                     pointerEvents="none"
                   >
-                    {assets ? (
+                    {v.level === 2 ? (
+                      <ExplorerPiece
+                        g={g}
+                        assets={assets}
+                        player={v.owner}
+                        kind="harbor"
+                        width={34}
+                      />
+                    ) : assets ? (
                       <image
                         href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${catanPieceColors[catanColorIndex(g, v.owner)]}-v1.webp`}
                         x="-17"
@@ -339,13 +352,26 @@ export function CatanExplorerBoard({
                         strokeWidth="2"
                       />
                     )}
-                    {v.level === 2 && (
-                      <text className="explorer-harbor-label" y="22">
-                        ⚓
-                        {explorerContents(g, "harbor", v.id).length > 0
-                          ? " 移民"
-                          : ""}
-                      </text>
+                    {explorerContents(g, "harbor", v.id).length > 0 && (
+                      <g
+                        className={
+                          motion?.event.cargo?.some(
+                            (c) =>
+                              c.to.kind === "harbor" && c.to.index === v.id,
+                          )
+                            ? "explorer-cargo-arriving"
+                            : undefined
+                        }
+                        transform="translate(0,20)"
+                      >
+                        <ExplorerPiece
+                          g={g}
+                          assets={assets}
+                          player={v.owner}
+                          kind="settler"
+                          width={18}
+                        />
+                      </g>
                     )}
                     <title>
                       {v.owner < 0 ? "中立" : room.seats[v.owner]?.name} ·{" "}
@@ -362,7 +388,13 @@ export function CatanExplorerBoard({
               )}
               {x.fleet.positions.map((at, id) => {
                 const p = explorerShipPosition(g, id);
-                if (at < 0 || !p) return null;
+                if (
+                  at < 0 ||
+                  !p ||
+                  (motion?.event.kind === "catan_explorer_sail" &&
+                    motion.event.ship === id)
+                )
+                  return null;
                 return (
                   <g
                     key={id}
@@ -370,10 +402,34 @@ export function CatanExplorerBoard({
                     className="explorer-vessel"
                     pointerEvents="none"
                   >
-                    <CatanShip assets={assets} player={Math.floor(id / 3)} />
+                    <ExplorerPiece
+                      g={g}
+                      assets={assets}
+                      player={Math.floor(id / 3)}
+                      kind="ship"
+                    />
+                    {explorerContents(g, "ship", id).length > 0 && (
+                      <g
+                        className={
+                          motion?.event.cargo?.some(
+                            (c) => c.to.kind === "ship" && c.to.index === id,
+                          )
+                            ? "explorer-cargo-arriving"
+                            : undefined
+                        }
+                        transform="translate(0,-12)"
+                      >
+                        <ExplorerPiece
+                          g={g}
+                          assets={assets}
+                          player={Math.floor(id / 3)}
+                          kind="settler"
+                          width={18}
+                        />
+                      </g>
+                    )}
                     <text y="30" className="explorer-ship-label">
                       {(id % 3) + 1}
-                      {explorerContents(g, "ship", id).length ? " · 移民" : ""}
                     </text>
                     <title>
                       {room.seats[Math.floor(id / 3)]?.name} · 船{(id % 3) + 1}
@@ -381,6 +437,7 @@ export function CatanExplorerBoard({
                   </g>
                 );
               })}
+              <ExplorerEffects active={motion} assets={assets} />
               {!busy &&
                 [...targets.entries()].map(([key, item]) => {
                   const chosen =
