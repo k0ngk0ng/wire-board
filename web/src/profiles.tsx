@@ -2,7 +2,8 @@ import { catanBaseLayoutName } from "./catan-base-layout";
 import { catanScenarioName, catanLayoutName } from "./catan-scenarios";
 import { railMapNames } from "./rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
-import type { User, SGOptions } from "./types";
+import type { User, SGOptions, SplendorOptions } from "./types";
+import { splendorRulesLabel } from "./splendor-expansions";
 
 export const ProfileContext = createContext<(id: string) => void>(() => {});
 export function PlayerName({
@@ -26,6 +27,7 @@ export function PlayerName({
   );
 }
 type History = {
+  splendorOptions?: SplendorOptions;
   catanExpansions?: string[];
   catanLayout?: string;
   rated: boolean;
@@ -289,6 +291,8 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
             <header>
               <strong>
                 {name(match.kind)}
+                {match.kind === "splendor" &&
+                  ` · ${splendorRulesLabel(match.splendorOptions)}`}
                 {match.kind === "catan" &&
                   match.catanExpansions?.includes("two_player") &&
                   " · 双人卡坦"}

@@ -47,6 +47,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		id = fmt.Sprintf("%s:%d", r.ID, r.SetupVersion)
 	}
 	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, SplendorOptions: r.SplendorOptions, CatanOptions: r.CatanOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
+	if r.Game.Splendor != nil {
+		record.SplendorOptions = r.Game.Splendor.Options
+	}
 	if r.Game.Catan != nil && r.Game.Catan.Seafarers != nil {
 		record.CatanScenario = r.Game.Catan.Seafarers.Scenario
 		record.CatanLayout = r.Game.Catan.Seafarers.Layout

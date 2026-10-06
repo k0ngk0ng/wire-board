@@ -1,7 +1,9 @@
 package game
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"reflect"
 	"slices"
 	"testing"
@@ -36,6 +38,11 @@ func TestSplendorModernCatalogPublisherExamplesAndValidation(t *testing.T) {
 	// and 4 of another color. It does not verify this tile's opposite face.
 	if face := c.Cities[8]; face.Points != 14 || face.Cost != [5]int{0, 4, 0, 0, 0} || face.Any != 4 {
 		t.Fatal("official city example mismatch")
+	}
+	// Publisher silk-photo09.jpg shows the entire Seoul face: 15 points,
+	// five physical cards of one color, with no fixed-color requirements.
+	if face := c.Cities[10]; face.Points != 15 || face.Cost != [5]int{} || face.Any != 5 {
+		t.Fatal("publisher Seoul face mismatch")
 	}
 	for _, change := range []func(*splendorModernCatalog){
 		func(c *splendorModernCatalog) { c.Rules = "cities-2017" },
@@ -232,5 +239,74 @@ func TestSplendorModernCatalogCombinationGames(t *testing.T) {
 				t.Logf("%d actions, %d cards conserved, winners %v", steps, want, s.Winners)
 			})
 		}
+	}
+}
+
+// Persisted HTTP fixtures must remain genuine untouched starts with the exact
+// candidate component facts. Their shuffled order is intentionally fixed.
+func TestSplendorModernHTTPFixtureIntegrity(t *testing.T) {
+	catalog, err := readSplendorModernCatalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	known := map[int]Card{}
+	for _, c := range append(Cards(), catalog.Orient...) {
+		known[c.ID] = c
+	}
+	for n := 2; n <= 4; n++ {
+		raw, err := os.ReadFile(fmt.Sprintf("../server/testdata/splendor_modern_%d.json", n))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var s State
+		if err = json.Unmarshal(raw, &s); err != nil {
+			t.Fatal(err)
+		}
+		g := s.Splendor
+		if s.Finished || s.Phase != "turn" || s.Round != 1 || len(s.Log) != 0 || len(s.Winners) != 0 || g.StartPlayer != s.Turn || s.Turn < 0 || s.Turn >= n || len(g.Players) != n || len(g.Effects) != 0 || len(g.Refills) != 0 || len(g.Exiled) != 0 || len(g.ReserveChoice) != 0 || len(g.Strongholds) != 0 || g.LastRound {
+			t.Fatal("fixture is not a normal initial state", n)
+		}
+		if g.Options != (SplendorOptions{Rules: SplendorExpansionRules, TradingPosts: true, Strongholds: true, Cities: true, Orient: true}) || g.Catalog != "2025-secondary-v1" {
+			t.Fatal("fixture rules")
+		}
+		bank := []int{n + 2, n + 2, n + 2, n + 2, n + 2, 5}
+		if n == 4 {
+			bank = []int{7, 7, 7, 7, 7, 5}
+		}
+		if !slices.Equal(g.Bank, bank) {
+			t.Fatal("fixture bank", n, g.Bank)
+		}
+		for _, p := range g.Players {
+			if p.Score != 0 || p.Eliminated || len(p.Cards) != 0 || len(p.Reserved) != 0 || len(p.Nobles) != 0 || len(p.TradingPosts) != 0 || sum(p.Tokens) != 0 || sum(p.Bonus) != 0 {
+				t.Fatal("fixture grants player progress")
+			}
+		}
+		if len(g.Market) != 6 || len(g.Decks) != 6 || len(g.Cities) != 3 || len(g.Nobles) != 0 {
+			t.Fatal("fixture market/cities")
+		}
+		for row, market := range g.Market {
+			count := 4
+			want := []int{40, 30, 20}[row%3]
+			if row >= 3 {
+				count = 2
+				want = 10
+			}
+			if len(market) != count || len(market)+len(g.Decks[row]) != want {
+				t.Fatal("fixture deck size")
+			}
+			for _, c := range append(slices.Clone(market), g.Decks[row]...) {
+				if c.gemDeck() != row || !reflect.DeepEqual(c, known[c.ID]) {
+					t.Fatal("fixture invented/altered card", c)
+				}
+			}
+		}
+		tiles := map[int]bool{}
+		for _, city := range g.Cities {
+			if tiles[city.Tile] || !slices.Contains(catalog.Cities, city) {
+				t.Fatal("fixture city")
+			}
+			tiles[city.Tile] = true
+		}
+		assertSplendorCatalogInventory(t, &s, bank, 120)
 	}
 }
