@@ -101,6 +101,13 @@ func (s *State) CatanPendingActor() int {
 	if g == nil || s.Finished {
 		return -1
 	}
+	if g.Explorer != nil {
+		switch s.Phase {
+		case "catan_explorer_setup", "catan_explorer_pirate_place", "catan_explorer_pirate_steal", "catan_explorer_resolve", "catan_explorer_battle":
+			return s.Turn
+		}
+		return -1
+	}
 	if g.Transport != nil && (s.Phase == "catan_transport_move" || s.Phase == "catan_transport_barbarian") {
 		return s.Turn
 	}

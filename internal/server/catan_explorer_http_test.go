@@ -78,6 +78,17 @@ func assertExplorerHTTPPrivacy(t *testing.T, clients []*testClient) {
 		if viewer != int(current(c)["game"].(map[string]any)["turn"].(float64)) && len(x["choices"].([]any)) != 0 {
 			t.Fatal("actor choices leaked to another viewer")
 		}
+		if lairs, ok := x["lairs"].(map[string]any); ok {
+			if lairs["deck"] != nil || lairs["inventory"] != nil {
+				t.Fatal("secret lair inventory leaked")
+			}
+			for _, raw := range lairs["sites"].([]any) {
+				site := raw.(map[string]any)
+				if (site["resolved"] == nil || site["resolved"] == float64(0)) && site["number"] != nil && site["number"] != float64(0) {
+					t.Fatal("unliberated lair number leaked")
+				}
+			}
+		}
 		board := x["board"].(map[string]any)
 		if board["hidden"] != nil || board["numbers"] != nil || x["economy"].(map[string]any)["turn"] != nil {
 			t.Fatal("private explorer state leaked")

@@ -1151,6 +1151,12 @@ func (s *State) catanCompleteTrade(p int, a Action) error {
 func (s *State) AutoCatanPending() {
 	g := s.Catan
 	if g != nil && g.Explorer != nil {
+		if actor := s.CatanPendingActor(); actor >= 0 {
+			if a, err := s.catanExplorerBot(actor); err == nil {
+				_ = s.Apply(actor, a)
+			}
+			return
+		}
 		if s.Phase == "catan_discard" && !s.Finished {
 			for player, due := range slices.Clone(g.DiscardDue) {
 				if due > 0 {
