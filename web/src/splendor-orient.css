@@ -1,0 +1,297 @@
+.dev-card.orient-card {
+  background: #fcf0d3;
+  color: #36233d;
+  border-color: #bc9561;
+  position: relative;
+}
+.orient-card .card-top {
+  background: #34425a !important;
+}
+.orient-card .orient-bonus {
+  display: flex;
+  align-items: center;
+  color: white;
+  gap: 1px;
+}
+.orient-bonus > b {
+  font-size: 14px;
+}
+.orient-bonus img {
+  max-width: 60px;
+  height: 28px;
+  object-fit: contain;
+}
+.orient-card-effects {
+  position: absolute;
+  top: 32%;
+  left: 5%;
+  right: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.orient-card-effects img {
+  width: min(32%, 35px);
+  height: auto;
+}
+.orient-card-effects > span {
+  font-size: 12px;
+  font-weight: 700;
+}
+.orient-card-effects .orient-sacrifice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.orient-sacrifice svg {
+  width: 24px;
+  height: 24px;
+}
+.orient-card .orient-card-tier {
+  position: absolute;
+  right: 5px;
+  bottom: 4px;
+  font-size: 9px;
+  color: #654373;
+}
+.orient-card > .costs {
+  bottom: 18px;
+}
+.with-artwork .splendor-board .market .deck.orient-deck,
+.splendor-card-animation .deck.orient-deck {
+  background: #315970;
+  background-image: none;
+}
+.with-artwork .deck.orient-deck strong,
+.deck.orient-deck strong {
+  visibility: visible;
+  font-size: 26px;
+}
+.orient-deck-label {
+  display: block;
+  font-size: 12px;
+}
+.orient-deck-symbol {
+  width: 36px;
+  height: 36px;
+}
+.deck.orient-deck .deck-ornament {
+  display: none;
+}
+.splendor-board .market .deck.orient-deck {
+  padding: 8px 4px;
+  gap: 4px;
+}
+.splendor-board .market .deck.orient-deck strong {
+  margin: 0;
+  line-height: 1;
+}
+.gem-market-tier {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  gap: 16px;
+  min-width: 0;
+}
+.splendor-board .market-row.orient-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.gem-market-switch {
+  display: none;
+}
+.splendor-board .gem-purchase-panel {
+  width: min(620px, calc(100vw - 24px));
+  z-index: 75;
+}
+.gem-purchase-panel header h3 {
+  flex: 1;
+}
+.gem-purchase-panel .gem-purchase-content {
+  max-height: min(70dvh, 700px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.gem-purchase-panel .purchase-preview > .dev-card {
+  width: 112px;
+  aspect-ratio: 5/7;
+  flex-shrink: 0;
+}
+.gem-purchase-panel .purchase-preview p {
+  margin-top: 0;
+}
+.gem-payment-cards {
+  padding: 8px;
+  border: 1px solid #b6a179;
+  border-radius: 8px;
+}
+.gem-payment-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 3px;
+}
+.gem-payment-card-grid > div {
+  display: grid;
+  gap: 5px;
+  border-radius: 7px;
+}
+.gem-payment-card-grid > div.selected {
+  outline: 3px solid #bf9625;
+  outline-offset: 2px;
+}
+.gem-payment-card-grid .dev-card {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5/7;
+}
+.gem-payment-card-grid .outline {
+  padding: 7px 3px;
+  font-size: 12px;
+}
+.gem-payment-summary,
+.gem-payment-error {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.gem-payment-summary select {
+  width: auto;
+  margin: 0 8px;
+}
+.gem-payment-summary small {
+  display: block;
+}
+.gem-payment-error {
+  color: #8e3024;
+}
+.gem-purchase-actions {
+  position: sticky;
+  bottom: 0;
+  background: #fff6e5;
+  padding: 9px 0 2px;
+}
+.gem-purchase-actions button {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding: 10px 6px;
+}
+.gem-market-card:has(.orient-card) .gem-stronghold-badge {
+  top: auto;
+  bottom: 18px;
+  left: auto;
+  right: 3px;
+  gap: 2px;
+}
+.gem-market-card:has(.orient-card) .gem-stronghold-badge small {
+  display: none;
+}
+.gem-effect-content .gem-orient-choices {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 4px;
+}
+.gem-orient-choices > div {
+  display: grid;
+  gap: 6px;
+}
+.gem-orient-choices .dev-card {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5/7;
+}
+.gem-orient-choices > div.selected {
+  outline: 3px solid #b59028;
+  border-radius: 7px;
+}
+.gem-effect-content:has(.gem-orient-choices) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.gem-effect-content .gem-orient-choices {
+  min-height: 0;
+  overflow-y: auto;
+}
+.gem-effect-content:has(.gem-orient-choices) > p,
+.gem-effect-content:has(.gem-orient-choices) > button {
+  flex-shrink: 0;
+}
+.gem-effect-content:has(.gem-orient-choices) > button {
+  margin-top: 8px;
+}
+@media (min-width: 851px) {
+  .splendor-board.has-orient,
+  .splendor-board.has-orient:not(:has(.personal-area)) {
+    width: min(
+      100%,
+      calc(clamp(140px, (100dvh - 465px)/3, 245px) * 40 / 7 + 350px)
+    );
+  }
+  .has-orient .market .dev-card > .costs {
+    bottom: 17px;
+  }
+}
+@media (max-width: 850px) {
+  .gem-market-tier {
+    display: block;
+  }
+  .gem-market-switch {
+    display: flex;
+    gap: 6px;
+  }
+  .gem-market-switch button {
+    flex: 1;
+    min-height: 38px;
+    color: #fff4d7;
+    background: #394763;
+    border: 1px solid #66748b;
+    border-radius: 7px;
+  }
+  .gem-market-switch button[aria-pressed="true"] {
+    background: #f2dfad;
+    border-color: #e7c678;
+    color: #362b1c;
+  }
+  .show-base .orient-row,
+  .show-orient .base-row {
+    display: none;
+  }
+  .splendor-board .show-orient .market-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 270px;
+    margin: 0 auto;
+  }
+  .gem-payment-card-grid,
+  .gem-effect-content .gem-orient-choices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .gem-purchase-panel .purchase-preview {
+    gap: 10px;
+  }
+  .gem-purchase-panel .purchase-preview > .dev-card {
+    width: 88px;
+  }
+  .gem-purchase-panel .purchase-preview p {
+    font-size: 13px;
+  }
+  .splendor-board .market .dev-card.orient-card > .costs {
+    bottom: 16px;
+  }
+  .splendor-board .show-orient .orient-card .card-top {
+    height: 28px;
+  }
+  .splendor-board .market.show-orient .dev-card.orient-card > .costs {
+    grid-template-columns: repeat(var(--cost-columns, 2), 21px);
+  }
+  .splendor-board .market.show-orient .dev-card.orient-card .cost {
+    width: 21px;
+    height: 21px;
+    font-size: 15px;
+  }
+  .splendor-board .show-orient .orient-card-effects {
+    top: 29%;
+  }
+}

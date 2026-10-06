@@ -72,7 +72,7 @@ export function SplendorCardAnimation({
             player?.querySelector(".avatar") ?? player
           )?.getBoundingClientRect();
           if (!target) return [];
-          const row = `.market-row[data-splendor-tier="${event.tier}"]`;
+          const row = `.market-row[data-splendor-tier="${event.tier}"][data-splendor-orient="${event.orient ? "true" : "false"}"]`;
           const source =
             event.source === "nobles" && event.noble
               ? (nobleRects.current.get(event.noble.id) ??
@@ -93,7 +93,7 @@ export function SplendorCardAnimation({
                     player
                       ?.querySelector(".reserved-count")
                       ?.getBoundingClientRect());
-          if (!source) return [];
+          if (!source || source.width === 0 || source.height === 0) return [];
           const width = Math.min(104, Math.max(54, source.width));
           const height = event.noble ? width : (width * 7) / 5;
           const x = clamp(
@@ -111,7 +111,7 @@ export function SplendorCardAnimation({
           return [
             {
               event,
-              label: `${room.seats[event.player]?.name || "玩家"} · ${event.action === "noble" ? "贵族 +3 分" : event.action === "buy" ? "购买" : "预留"}`,
+              label: `${room.seats[event.player]?.name || "玩家"} · ${event.action === "noble" ? "贵族 +3 分" : event.action === "buy" ? "购买" : event.action === "free" ? "免费取得" : "预留"}`,
               style: {
                 left: x,
                 top: y,
@@ -183,11 +183,18 @@ export function SplendorCardAnimation({
               renderCard(event.card)
             ) : (
               <div
-                className={`deck tier-${event.tier - 1}`}
-                style={{ backgroundPosition: `${(event.tier - 1) * 20}% 100%` }}
+                className={`deck tier-${event.tier - 1} ${event.orient ? "orient-deck" : ""}`}
+                style={
+                  event.orient
+                    ? undefined
+                    : { backgroundPosition: `${(event.tier - 1) * 20}% 100%` }
+                }
               >
                 <span className="deck-ornament">✧</span>
                 <strong>{["Ⅰ", "Ⅱ", "Ⅲ"][event.tier - 1]}</strong>
+                {event.orient && (
+                  <span className="orient-deck-label">东方</span>
+                )}
               </div>
             )}
           </div>

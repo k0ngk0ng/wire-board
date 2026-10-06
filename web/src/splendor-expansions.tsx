@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Castle, Store } from "lucide-react";
-import type { Act, Card, GemPlayer, Room, SplendorOptions } from "./types";
+import type { Act, Card, Room, SplendorOptions } from "./types";
+import { gemOrientChoices } from "./splendor-orient-state";
 import "./splendor-expansions.css";
 
 export const gemPostNames = [
@@ -61,18 +62,6 @@ export function SplendorOptionPicker({
   );
 }
 
-export function gemGoldNeeded(p: GemPlayer, cost: number[], spent?: number[]) {
-  const value = p.tradingPosts?.includes(4) ? 2 : 1;
-  return cost.reduce(
-    (total, n, i) =>
-      total +
-      Math.ceil(
-        Math.max(0, n - p.bonus[i] - (spent?.[i] ?? p.tokens[i])) / value,
-      ),
-    0,
-  );
-}
-
 export function StrongholdBadge({ room, card }: { room: Room; card: Card }) {
   const hold = room.game?.splendor?.strongholds?.[card.id];
   if (!hold) return null;
@@ -96,6 +85,7 @@ export function SplendorExpansionBoard({
   renderCard,
   renderCost,
   renderGem,
+  onConquest,
 }: {
   room: Room;
   assets: string;
@@ -104,16 +94,23 @@ export function SplendorExpansionBoard({
   renderCard: (card: Card, onClick?: () => void) => ReactNode;
   renderCost: (cost: number[]) => ReactNode;
   renderGem: (color: number) => ReactNode;
+  onConquest: (card: Card) => void;
 }) {
   const g = room.game!,
     s = g.splendor!;
-  const mine = !room.spectating && room.you === g.turn && !g.finished;
+  const mine =
+    room.status === "playing" &&
+    !room.spectating &&
+    room.you === g.turn &&
+    !g.finished &&
+    !room.seats[room.you]?.autoPlay;
   const [open, setOpen] = useState(true);
   const [target, setTarget] = useState(0);
   useEffect(() => {
     setOpen(true);
     setTarget(0);
-  }, [g.phase, room.version]);
+  }, [g.phase, room.version, room.id, room.you]);
+  const orientChoices = gemOrientChoices(room);
   const pending = mine && g.phase.startsWith("gem_");
   const rules = s.tradingPostRules || [];
   const actions = s.strongholdActions || [];
@@ -127,6 +124,8 @@ export function SplendorExpansionBoard({
     gem_reserve: "选择一张预留卡",
     gem_stronghold: "布置一座要塞",
     gem_conquest: "发动征服",
+    gem_copy: "选择复制的永久奖励",
+    gem_free_card: "免费取得发展卡",
   };
   return (
     <>
@@ -179,6 +178,34 @@ export function SplendorExpansionBoard({
           </header>
           {open && (
             <div className="gem-effect-content">
+              {(g.phase === "gem_copy" || g.phase === "gem_free_card") && (
+                <>
+                  <p>
+                    {g.phase === "gem_copy"
+                      ? "选一张自己已拥有的发展卡，复制它的颜色和永久奖励数量。"
+                      : `免费取得一张 ${s.effects?.[0]?.tier} 级公开卡，可选基础或东方卡；继续结算该卡效果后才补牌。`}
+                  </p>
+                  <div className="gem-orient-choices">
+                    {orientChoices.map((card) => (
+                      <div
+                        key={card.id}
+                        className={target === card.id ? "selected" : ""}
+                      >
+                        {renderCard(card, () => setTarget(card.id))}
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    className="primary wide"
+                    disabled={
+                      busy || !orientChoices.some((c) => c.id === target)
+                    }
+                    onClick={() => void act({ type: g.phase, card: target })}
+                  >
+                    {g.phase === "gem_copy" ? "确认复制奖励" : "确认免费取得"}
+                  </button>
+                </>
+              )}
               {g.phase === "gem_post" && (
                 <div className="gem-post-choices">
                   {rules
@@ -309,9 +336,10 @@ export function SplendorExpansionBoard({
                     <button
                       className="primary"
                       disabled={busy}
-                      onClick={() =>
-                        void act({ type: "gem_conquest", card: conquest.id })
-                      }
+                      onClick={() => {
+                        setOpen(false);
+                        onConquest(conquest);
+                      }}
                     >
                       征服并购买
                     </button>

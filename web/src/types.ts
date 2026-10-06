@@ -37,9 +37,10 @@ export type GemCity = {
 };
 export type Noble = { id: number; cost: number[] };
 export type SplendorCardEvent = {
+  orient?: boolean;
   id: number;
   player: number;
-  action: "buy" | "reserve" | "noble";
+  action: "buy" | "reserve" | "noble" | "free";
   source: "market" | "deck" | "reserved" | "nobles";
   tier: number;
   slot: number;
@@ -142,7 +143,8 @@ export type Game = {
     }[];
     postChoices?: number[];
     reserveChoice?: Card[];
-    effects?: { kind: string; exclude: number }[];
+    effects?: { kind: string; exclude: number; card?: number; tier?: number }[];
+    freeCardChoices?: Card[];
     strongholds?: Record<string, { player: number; count: number }>;
     strongholdActions?: {
       type: string;

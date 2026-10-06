@@ -78,9 +78,13 @@ export function useTurnTitle(room?: Room) {
                       ? "请安放港口"
                       : game?.catan?.goldPending
                         ? "请选择金矿资源"
-                        : game?.rail?.setup
-                          ? "请选择目的地"
-                          : "轮到你了";
+                        : game?.phase === "gem_copy"
+                          ? "请选择复制奖励"
+                          : game?.phase === "gem_free_card"
+                            ? "请免费取得发展卡"
+                            : game?.rail?.setup
+                              ? "请选择目的地"
+                              : "轮到你了";
   useEffect(() => {
     const original = document.title;
     let timer: ReturnType<typeof setInterval> | undefined;
