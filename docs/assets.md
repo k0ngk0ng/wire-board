@@ -52,3 +52,8 @@ python3 scripts/upload_assets.py .local/asset-pack \
 卡坦运输素材使用 `catan/transport/`：四种原色 `wagon-{blue,red,white,orange}-v1.webp`、三块 `site-{quarry,glassworks,castle}-v1.webp`、四种 `cargo-{marble,sand,glass,tools}-v1.webp`、`card-{knight,road,swift,vp,back}-v1.webp`。共16张原版图，来自固定2025 T&B第20页；卡面为完整英文正面，界面提供中文说明。`card-vp`使用Toolmaking正面代表引擎共用的胜利点牌种，不改变分数。无需改动共用素材基地址。
 
 复现：`scripts/prepare_catan_transport_assets.py OUTPUT_DIR --rules-directory RULES_DIR`，依赖PyMuPDF、Pillow；固定摘要、原生对象尺寸和中文映射，原色保留，不自行重绘。胜利点卡从重叠组件图精确裁出前景卡，避免相邻卡边缘。对象/几何/输出哈希见 `docs/research/catan-transport-art-sources.json`。三四人素材与操作验收不等于五六人、双人和全部组合已完成；这些创建选项仍按实际验收门槛开放。
+
+
+东方牌面改用 `splendor/expansions/orient-cards-v1.webp`：一张 BGA 原始图集，1235×1715、5×5 格，每格247×343，共18种插画和三级牌背，180,960字节。彩色插画对应真实奖励颜色；复制卡获得颜色后仍保留复制插画。图集不含费用、分数和效果，继续由游戏数据覆盖显示，不加改变宝石颜色的遮罩。牌市、详情/选择弹框、预留卡与明牌飞行动画共用卡面组件，牌堆和隐藏飞牌共用牌背映射。
+
+复现：`python scripts/prepare_splendor_orient_atlas.py OUTPUT_DIR [--source ORIGINAL_ATLAS]`，依赖Pillow。来源虽以`.jpg`结尾，实际返回WebP；检查固定SHA256、编码和尺寸后原字节输出，不重编码或放大。来源、格位、摘要见 `docs/research/splendor-orient-art-sources.json`；30张牌的图位与独立BGA组件数据交叉测试。按现有素材基地址上传新的版本文件，保持旧缓存文件不变。本次素材上传不表示扩展代码已上线。

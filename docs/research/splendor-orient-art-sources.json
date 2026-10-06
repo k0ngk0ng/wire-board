@@ -1,0 +1,28 @@
+{
+  "source": "https://x.boardgamearena.net/data/themereleases/current/games/splendor/250604-1803/img/sns_cards.jpg",
+  "sha256": "4802bd7ebb939cb17f35e45b64b4ca057c92848ba984714483922f4755c309a9",
+  "bytes": 180960,
+  "output": "splendor/expansions/orient-cards-v1.webp",
+  "format": "WEBP",
+  "size": [
+    1235,
+    1715
+  ],
+  "grid": [
+    5,
+    5
+  ],
+  "cell": [
+    247,
+    343
+  ],
+  "transformation": "none; original bytes, source suffix corrected",
+  "rows": [
+    "copy, gold, copy_cascade, empty, empty",
+    "double: black, red, white, blue, green",
+    "sacrifice: black, red, white, blue, green",
+    "cascade: black, red, white, blue, green",
+    "back tier 1, back tier 2, back tier 3, empty, empty"
+  ],
+  "overlays": "Costs, points and effects rendered from game state; absent from atlas"
+}

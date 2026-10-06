@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import type { Card, Room } from "./types";
 import { AnimatedSlot } from "./animated-slot";
 import { StrongholdBadge } from "./splendor-expansions";
+import { orientBackStyle } from "./splendor-orient-art";
 
 export function SplendorMarket({
   room,
@@ -34,11 +35,7 @@ export function SplendorMarket({
         style={
           orient
             ? assets
-              ? {
-                  backgroundImage: `url("${assets}/splendor/expansions/orient-back-${tier + 1}.webp")`,
-                  backgroundSize: "100% 100%",
-                  backgroundPosition: "center",
-                }
+              ? orientBackStyle(assets, tier + 1)
               : undefined
             : { backgroundPosition: `${tier * 20}% 100%` }
         }
