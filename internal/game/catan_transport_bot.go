@@ -34,7 +34,7 @@ func catanTransportPath(g *Catan, m *catanTransportMap, from, to, player, gold i
 				continue
 			}
 			paid := here.paid
-			if e.Owner >= 0 && e.Owner != player {
+			if e.Owner != -1 && e.Owner != player {
 				paid++
 			}
 			if paid > gold {

@@ -26,7 +26,7 @@ type catanTransportArrivalResult struct {
 	Gold      int    `json:"gold"`
 }
 
-// Persisted internal scenario state. Three/four-player Apply is connected;
+// Persisted internal scenario state. Two-to-four-player Apply is connected;
 // public recipes remain closed pending extended rules, UI and final acceptance.
 type catanTransport struct {
 	GameTurn          uint64                       `json:"gameTurn"`
@@ -85,8 +85,8 @@ func (t catanTransport) token(id int) (catanTransportToken, bool) {
 	return all[id-1], true
 }
 func newCatanTransportPieces(g *Catan, m *catanTransportMap) (*catanTransport, error) {
-	if g == nil || m == nil || len(g.Players) < 3 || len(g.Players) > 6 || g.Two != nil {
-		return nil, errors.New("运输组件目前仅接入3至6人独立剧本")
+	if !catanTransportPlayersValid(g) || m == nil {
+		return nil, errors.New("运输组件人数或双人控制器无效")
 	}
 	if err := m.validate(g); err != nil {
 		return nil, err
@@ -107,7 +107,7 @@ func newCatanTransportPieces(g *Catan, m *catanTransportMap) (*catanTransport, e
 }
 
 func (t catanTransport) validate(g *Catan) error {
-	if g == nil || t.Map == nil || len(g.Players) < 3 || len(g.Players) > 6 || g.Two != nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
+	if !catanTransportPlayersValid(g) || t.Map == nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
 		return errors.New("运输组件或人数无效")
 	}
 	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Options.AllHelpers {

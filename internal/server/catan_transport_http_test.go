@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -25,9 +26,17 @@ func transportHTTPFixture(t *testing.T, n int) *game.State {
 	return &s
 }
 func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "resource")
+			var s *Server
+			var ts *httptest.Server
+			var clients []*testClient
+			var id string
+			if n == 2 {
+				s, ts, clients, id = newTwoFullTable(t)
+			} else {
+				s, ts, clients, id, _, _ = newFishingActionTable(t, n, "catan_turn", "resource")
+			}
 			state := transportHTTPFixture(t, n)
 			s.mu.Lock()
 			r := s.rooms[id]
@@ -39,6 +48,7 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 			}
 			s.mu.Unlock()
 			restored := false
+			twoRestored := map[string]bool{}
 			steps := 0
 			moves := 0
 			for ; steps < 4000 && !s.rooms[id].Game.Finished; steps++ {
@@ -98,6 +108,18 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 						restored = true
 					}
 				}
+				if n == 2 && (phase == "catan_two_trade" || phase == "catan_two_build") && !twoRestored[phase] {
+					assertTwoHTTPPrivacy(t, clients, g)
+					before, _ := json.Marshal(r)
+					clients[1-actor].command(current(clients[1-actor]), "action", action, 400)
+					clients[2].command(current(clients[2]), "action", action, 400)
+					after, _ := json.Marshal(s.rooms[id])
+					if string(before) != string(after) {
+						t.Fatal("two-player response rejection mutated state")
+					}
+					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+					twoRestored[phase] = true
+				}
 				clients[actor].command(current(clients[actor]), "action", action, 200)
 				after := s.rooms[id]
 				if phase == "catan_transport_move" && after.Game.Phase == phase && after.TurnDeadline != deadline {
@@ -107,6 +129,9 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 			r = s.rooms[id]
 			if !r.Game.Finished || len(r.Game.Winners) != 1 || r.Game.Catan.Players[r.Game.Winners[0]].Score < 13 || !restored || moves == 0 {
 				t.Fatal("incomplete transport match", steps, moves, r.Status)
+			}
+			if n == 2 && (!twoRestored["catan_two_build"] || !twoRestored["catan_two_trade"]) {
+				t.Fatal("natural game did not cover both two-player responses", twoRestored)
 			}
 			t.Logf("%dp full HTTP match: %d actions, %d movement actions", n, steps, moves)
 		})
@@ -174,5 +199,112 @@ func TestCatanTransportHTTPAutomaticMovement(t *testing.T) {
 				t.Fatal("automatic movement did not hand off", r.Game.Phase)
 			}
 		})
+	}
+}
+
+// Reach the response from a fresh constructor through legal actions. Return
+// its preceding state so the HTTP command must actually start the 120s window.
+func transportTwoBeforeResponse(t *testing.T, phase string) (*game.State, game.Action) {
+	t.Helper()
+	state := transportHTTPFixture(t, 2)
+	for step := 0; step < 1500 && !state.Finished; step++ {
+		actor := twoHTTPActor(state)
+		a, err := state.BotAction(actor)
+		if err != nil {
+			t.Fatal(err)
+		}
+		data, err := json.Marshal(state)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = state.Apply(actor, a); err != nil {
+			t.Fatal(step, state.Phase, a, err)
+		}
+		if state.Phase == phase {
+			var before game.State
+			if err = json.Unmarshal(data, &before); err != nil {
+				t.Fatal(err)
+			}
+			return &before, a
+		}
+	}
+	t.Fatal("natural transport game did not reach response", phase)
+	return nil, game.Action{}
+}
+
+func TestCatanTransportTwoHTTPResponseAutomation(t *testing.T) {
+	for _, phase := range []string{"catan_two_build", "catan_two_trade"} {
+		before, action := transportTwoBeforeResponse(t, phase)
+		data, err := json.Marshal(before)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, mode := range []string{"manual", "autoplay", "timeout"} {
+			t.Run(phase+"/"+mode, func(t *testing.T) {
+				s, ts, clients, id := newTwoFullTable(t)
+				var state game.State
+				if err := json.Unmarshal(data, &state); err != nil {
+					t.Fatal(err)
+				}
+				actor := state.Turn
+				s.mu.Lock()
+				r := s.rooms[id]
+				r.Game = &state
+				r.TurnDeadline = time.Now().Add(43 * time.Second).UnixMilli()
+				r.CatanTimeLeft = 0
+				if err := s.save(r); err != nil {
+					t.Fatal(err)
+				}
+				s.mu.Unlock()
+				clients[actor].command(current(clients[actor]), "action", action, 200)
+				r = s.rooms[id]
+				if r.Game.Phase != phase || r.TurnDeadline-time.Now().UnixMilli() < 119000 || r.CatanTimeLeft < 42000 || r.CatanTimeLeft > 43000 {
+					t.Fatal("response did not pause 43s action", r.Game.Phase, r.CatanTimeLeft)
+				}
+				saved := r.CatanTimeLeft
+				deadline := r.TurnDeadline
+				resume := ""
+				if r.Game.Catan.Two.Pending != nil {
+					resume = r.Game.Catan.Two.Pending.Resume
+				} else {
+					resume = r.Game.Catan.Two.Trade.Resume
+				}
+				assertTwoHTTPPrivacy(t, clients, r.Game)
+				s, ts = restartRiversHTTP(t, s, ts, clients, id)
+				if s.rooms[id].TurnDeadline != deadline || s.rooms[id].CatanTimeLeft != saved {
+					t.Fatal("restart reset response clock")
+				}
+				now := time.Now()
+				switch mode {
+				case "manual":
+					a, e := s.rooms[id].Game.BotAction(actor)
+					if e != nil {
+						t.Fatal(e)
+					}
+					clients[actor].command(current(clients[actor]), "action", a, 200)
+					now = time.Now()
+				case "autoplay":
+					setAutoPlay(clients[actor], current(clients[actor]), true, 200)
+					s.mu.Lock()
+					s.rooms[id].BotAt = 0
+					now = time.Now()
+					s.runBots(now)
+					s.mu.Unlock()
+				case "timeout":
+					now = time.UnixMilli(deadline)
+					s.mu.Lock()
+					s.expireSetups(now)
+					s.mu.Unlock()
+				}
+				r = s.rooms[id]
+				if r.Game.Phase != resume || r.Game.Turn != actor || r.Game.Catan.Two.Pending != nil || r.Game.Catan.Two.Trade != nil {
+					t.Fatal("response did not resume", mode, r.Game.Phase, resume)
+				}
+				remaining := r.TurnDeadline - now.UnixMilli()
+				if remaining < saved-1000 || remaining > saved+1000 {
+					t.Fatal("response lost action time", mode, remaining, saved)
+				}
+			})
+		}
 	}
 }

@@ -125,5 +125,11 @@
     "sha256": "5d1e542f8ef50a8218bd85c994e8424b3f9ff862b0805e46e19d9bf1b37f4690",
     "bytes": 12295737,
     "note": "Page 2 visually confirms twelve extra transport development cards, but not individual counts. The separate two knights label refers to player miniatures, not cards."
+  },
+  "catan-traders-de-2025": {
+    "url": "https://www.catan.de/sites/default/files/2025-08/685140_CATAN_HuB_Manual_DE_web.pdf",
+    "sha256": "d8b84823bf22492e530d0ea4a3dbc607160a1fdaf6c9b93f5d46f94006fb7bf9",
+    "bytes": 18842031,
+    "note": "Page 24 explicitly uses Handelschip (trade chip), not a commodity token, and rounds neutral-road gold on the total for a wagon movement. English 2025 p24 names the wrong token kind."
   }
 }

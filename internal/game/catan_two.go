@@ -109,11 +109,11 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err
 	}
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.Seafarers != nil || g.CitiesKnights != nil || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {
-		if n < 2 || n > 12 {
+		if n < 2 || n > 12 || g.Transport != nil && (n == 2 || n == 12) {
 			return errors.New("双人生产点数无效")
 		}
 	}
@@ -123,7 +123,7 @@ func (s *State) validateCatanTwo() error {
 	if g.setup() && (len(q.Rolls) != 0 || q.Pending != nil || q.Sequence != 0) {
 		return errors.New("双人起始状态无效")
 	}
-	if !s.Finished && s.Phase == "catan_turn" && len(q.Rolls) != 2 {
+	if !s.Finished && (s.Phase == "catan_turn" || s.Phase == "catan_transport_move") && len(q.Rolls) != 2 {
 		return errors.New("请先完成两次生产")
 	}
 	if s.Phase == "catan_roll" && len(q.Rolls) == 2 {

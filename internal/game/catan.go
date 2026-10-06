@@ -358,6 +358,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		if err := next.applyCatanTransport(player, a); err != nil {
 			return err
 		}
+		if err := next.catanTwoAfterAction(s, a); err != nil {
+			return err
+		}
 		if err := next.validateCatanTransport(); err != nil {
 			return err
 		}

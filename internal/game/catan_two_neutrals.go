@@ -9,9 +9,16 @@ import (
 // -1 remains the only empty road owner. Shared by base and river variants.
 var catanTwoNeutralOwners = [2]int{-2, -3}
 
+func (g *Catan) twoBoardDimensions() bool {
+	if g.Transport != nil {
+		return len(g.Vertices) == 57 && len(g.Edges) == 84
+	}
+	return len(g.Vertices) == 54 && len(g.Edges) == 72
+}
+
 func (g *Catan) prepareTwoNeutrals() error {
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || len(g.Vertices) != 54 || len(g.Edges) != 72 || g.SetupStep != 0 || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Fishing != nil || g.Caravans != nil && g.Rivers != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil {
-		return errors.New("双人中立布局目前仅用于未开始的基础、河流或商队地图")
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.SetupStep != 0 || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Fishing != nil || g.Caravans != nil && g.Rivers != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.CardEvent != nil || g.RevealedEvent != nil {
+		return errors.New("双人中立布局目前仅用于未开始的基础、河流、商队或运输地图")
 	}
 	for _, v := range g.Vertices {
 		if v.Level != 0 || v.Owner != -1 {
@@ -136,8 +143,24 @@ func (g *Catan) twoSettlementTokens(owner, vertex int) int {
 			break
 		}
 	}
+	// Commodity centers grant one token per settlement, including setup.
+	// The initial city is not a settlement and earns no such token.
+	if g.Transport != nil {
+		for _, site := range g.Transport.Map.Sites {
+			if slices.Contains(g.Tiles[site.Tile].Vertices, vertex) {
+				reward++
+				break
+			}
+		}
+	}
 	for _, edge := range g.touching(vertex) {
-		if len(g.edgeTiles(edge)) == 1 {
+		interior := false
+		if g.Transport != nil {
+			for _, site := range g.Transport.Map.Sites {
+				interior = interior || slices.Contains(site.Paths, edge)
+			}
+		}
+		if !interior && len(g.edgeTiles(edge)) == 1 {
 			return reward + 1
 		}
 	}

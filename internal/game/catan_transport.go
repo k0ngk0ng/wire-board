@@ -7,12 +7,18 @@ import (
 )
 
 // Private acceptance constructor: 5–6's extra development-card breakdown,
-// two-player and combinations are still separate gates. No public recipe.
+// combinations and final two-player acceptance remain gates. No public recipe.
 func newCatanTransportState(n int, options CatanOptions) (*State, error) {
-	if n < 3 || n > 4 || options.Helpers || options.AllHelpers || options.FiveSix {
-		return nil, errors.New("运输整局目前仅验收3至4人；扩充牌表及组合仍待核实")
+	if n < 2 || n > 4 || options.Helpers || options.AllHelpers || options.FiveSix {
+		return nil, errors.New("运输整局目前仅接入2至4人；扩充牌表及组合仍待核实")
 	}
-	s, err := NewCatan(n, options)
+	var s *State
+	var err error
+	if n == 2 {
+		s, err = NewCatanTwo(n, options)
+	} else {
+		s, err = NewCatan(n, options)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -26,6 +32,11 @@ func newCatanTransportState(n int, options CatanOptions) (*State, error) {
 	g.Transport, err = newCatanTransportPieces(g, m)
 	if err != nil {
 		return nil, err
+	}
+	if n == 2 {
+		if err := g.prepareTwoNeutrals(); err != nil {
+			return nil, err
+		}
 	}
 	g.DevDeck = []int{}
 	for kind, count := range []int{16, 3, 3, 0, 3} {
@@ -44,14 +55,17 @@ func (s *State) validateCatanTransport() error {
 		return nil
 	}
 	t := g.Transport
-	if len(g.Players) < 3 || len(g.Players) > 4 || g.Paired != nil || g.Options.FiveSix || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Robber != -1 || g.LongestOwner != -1 {
+	if len(g.Players) < 2 || len(g.Players) > 4 || g.Paired != nil || g.Options.FiveSix || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
 	}
 	if err := t.validate(g); err != nil {
 		return err
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "finished"}, s.Phase) {
 		return errors.New("运输游戏阶段无效")
+	}
+	if strings.HasPrefix(s.Phase, "catan_two_") && g.Two == nil {
+		return errors.New("双人响应缺少双人控制器")
 	}
 	if s.Finished != (s.Phase == "finished") || t.BarbarianPending && g.ResumePhase != "catan_roll" && g.ResumePhase != "catan_turn" {
 		return errors.New("运输结束标志或蛮族返回阶段无效")
@@ -94,7 +108,7 @@ func (s *State) validateCatanTransport() error {
 	if !slices.Equal(counts, []int{16, 3, 3, 0, 3}) {
 		return errors.New("运输发展牌库存不守恒")
 	}
-	return nil
+	return s.validateCatanTwo()
 }
 func (s *State) catanTransportSyncTurn() error {
 	g := s.Catan
@@ -134,6 +148,8 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 	}
 	var err error
 	switch {
+	case g.Two != nil && (g.Two.Pending != nil || g.Two.Trade != nil):
+		err = s.applyCatanStep(player, a)
 	case g.setup():
 		err = s.applyCatanStep(player, a)
 		if err == nil && a.Type == "catan_city" {
@@ -210,6 +226,13 @@ func (s *State) catanTransportRoll(roll func() [2]int) error {
 		if total == 2 || total == 12 {
 			s.catanLog(s.Turn, "运输掷出%d，重新掷骰", total)
 			continue
+		}
+		if g.Two != nil {
+			if len(g.Two.Rolls) == 1 && total == g.Two.Rolls[0] {
+				s.catanLog(s.Turn, "双人第二次掷出相同点数%d，重新掷骰", total)
+				continue
+			}
+			return s.catanTwoRoll(dice[0], dice[1])
 		}
 		g.Dice = []int{dice[0], dice[1]}
 		g.RollID++
