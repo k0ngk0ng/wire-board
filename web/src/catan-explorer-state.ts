@@ -259,6 +259,7 @@ export function explorerFreightLabel(
   );
 }
 export function explorerScenarioLabel(g: CatanState) {
+  if (g.explorer?.spice && g.explorer.lairs) return "完整三任务";
   return g.explorer?.spice
     ? "香料与鱼群"
     : g.explorer?.fish
@@ -266,6 +267,9 @@ export function explorerScenarioLabel(g: CatanState) {
       : g.explorer?.lairs
         ? "海盗巢穴"
         : "初航";
+}
+export function explorerLairTotal(g: CatanState) {
+  return g.explorer?.board.scenario === "fish-for-catan" ? 5 : 6;
 }
 export function explorerFishPoint(g: CatanState, id: number) {
   const loc = g.explorer?.cargo.fish?.[id];

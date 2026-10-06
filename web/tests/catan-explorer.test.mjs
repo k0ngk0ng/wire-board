@@ -10,6 +10,8 @@ import {
   explorerShipPosition,
   explorerContents,
   explorerActionDescription,
+  explorerScenarioLabel,
+  explorerLairTotal,
 } from "../src/catan-explorer-state.ts";
 import { catanColorIndex } from "../src/catan-player-colors.ts";
 import { catanResultDescription } from "../src/catan-results.ts";
@@ -51,6 +53,22 @@ const room = () => ({
       },
     },
   },
+});
+test("full mission labels and lair total distinguish it from the fish scenario", () => {
+  const g = room().game.catan;
+  g.explorer.board = { scenario: "fish-for-catan", target: 15 };
+  g.explorer.lairs = {};
+  g.explorer.fish = {};
+  assert.equal(explorerLairTotal(g), 5);
+  assert.equal(explorerScenarioLabel(g), "鱼群任务");
+  g.explorer.spice = {};
+  g.explorer.board = { scenario: "explorers-and-pirates", target: 17 };
+  g.victoryTarget = 17;
+  assert.equal(explorerLairTotal(g), 6);
+  assert.equal(explorerScenarioLabel(g), "完整三任务");
+  const result = catanResultDescription(g);
+  for (const text of ["完整三任务", "17分", "巢穴", "香料", "鱼群"])
+    assert.ok(result.includes(text));
 });
 test("only present humans can act; observers and autoplay have no controls", () => {
   for (const change of [
@@ -491,40 +509,133 @@ test("fish flights use real berths, survive map scrolling and distinguish delive
   assert.equal(explorerFishFlight(supply, before, spawn, 1), null);
 });
 
-test("spice confirmations keep cargo identities, farm bonuses and six-step mission", async()=>{
- const {explorerFarmAbilities,explorerScenarioLabel,explorerFreightLabel}=await import("../src/catan-explorer-state.ts");
- const r=room(),g=r.game.catan;
- g.explorer.board={council:{tile:0},farms:[{tile:0,ability:"swift"},{tile:1,ability:"gold"},{tile:2,ability:"pirate",pirateDie:4}]};
- g.explorer.spice={progress:[1,0],scores:[2,0],leader:0};
- g.explorer.cargo.spice=[{origin:0,owner:0,at:{kind:"supply",index:-1}},{origin:1,owner:0,at:{kind:"harbor",index:0}},{origin:2,owner:0,at:{kind:"ship",index:0}}];
- assert.deepEqual(explorerFarmAbilities(g,0),{swift:1,gold:1,pirate:[4],count:3});
- assert.equal(explorerScenarioLabel(g),"香料与鱼群");
- const a={type:"catan_explorer_spice_land",prompt:5,target:0,slot:0,card:2};
- assert.deepEqual(explorerTarget(g,a),{kind:"tile",id:0});
- assert.match(explorerActionDescription(g,a),/永久派驻.*不能召回.*航速＋1/);
- assert.match(explorerActionDescription(g,{type:"catan_explorer_chase",target:0}),/4、6点成功/);
- assert.match(explorerActionDescription(g,{type:"catan_explorer_spice_gold",card:0}),/支付1木材.*独立/);
- assert.match(explorerActionDescription(g,{type:"catan_explorer_transfer",slot:0,vertex:0,spiceLoad:[0,1],take:[0]}),/装入2袋香料并卸下1枚移民/);
- assert.equal(explorerFreightLabel([2],[],[0]),"1名船员、1袋香料");
- r.game.catan.explorer.choices=[a];assert.ok(explorerSelectedAction(r,{room:r.id,action:a}));
- r.game.catan.explorer.choices=[];assert.equal(explorerSelectedAction(r,{room:r.id,action:a}),null);
- assert.match(catanResultDescription(g),/香料任务进度/);
+test("spice confirmations keep cargo identities, farm bonuses and six-step mission", async () => {
+  const { explorerFarmAbilities, explorerScenarioLabel, explorerFreightLabel } =
+    await import("../src/catan-explorer-state.ts");
+  const r = room(),
+    g = r.game.catan;
+  g.explorer.board = {
+    council: { tile: 0 },
+    farms: [
+      { tile: 0, ability: "swift" },
+      { tile: 1, ability: "gold" },
+      { tile: 2, ability: "pirate", pirateDie: 4 },
+    ],
+  };
+  g.explorer.spice = { progress: [1, 0], scores: [2, 0], leader: 0 };
+  g.explorer.cargo.spice = [
+    { origin: 0, owner: 0, at: { kind: "supply", index: -1 } },
+    { origin: 1, owner: 0, at: { kind: "harbor", index: 0 } },
+    { origin: 2, owner: 0, at: { kind: "ship", index: 0 } },
+  ];
+  assert.deepEqual(explorerFarmAbilities(g, 0), {
+    swift: 1,
+    gold: 1,
+    pirate: [4],
+    count: 3,
+  });
+  assert.equal(explorerScenarioLabel(g), "香料与鱼群");
+  const a = {
+    type: "catan_explorer_spice_land",
+    prompt: 5,
+    target: 0,
+    slot: 0,
+    card: 2,
+  };
+  assert.deepEqual(explorerTarget(g, a), { kind: "tile", id: 0 });
+  assert.match(explorerActionDescription(g, a), /永久派驻.*不能召回.*航速＋1/);
+  assert.match(
+    explorerActionDescription(g, { type: "catan_explorer_chase", target: 0 }),
+    /4、6点成功/,
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_explorer_spice_gold",
+      card: 0,
+    }),
+    /支付1木材.*独立/,
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_explorer_transfer",
+      slot: 0,
+      vertex: 0,
+      spiceLoad: [0, 1],
+      take: [0],
+    }),
+    /装入2袋香料并卸下1枚移民/,
+  );
+  assert.equal(explorerFreightLabel([2], [], [0]), "1名船员、1袋香料");
+  r.game.catan.explorer.choices = [a];
+  assert.ok(explorerSelectedAction(r, { room: r.id, action: a }));
+  r.game.catan.explorer.choices = [];
+  assert.equal(explorerSelectedAction(r, { room: r.id, action: a }), null);
+  assert.match(catanResultDescription(g), /香料任务进度/);
 });
 
-test("mixed spice and crew use separate map slots, including sailing and permanent farms",async()=>{
- const {explorerCargoPoint,explorerSpicePoint,explorerSpiceFlight}=await import("../src/catan-explorer-state.ts");
- const before=room().game.catan;before.tiles=[{x:300,y:400},{x:500,y:500}];before.explorer.board={council:{tile:1}};
- before.explorer.cargo.units=[{kind:"ship",index:0}];
- before.explorer.cargo.spice=[{origin:0,owner:0,at:{kind:"ship",index:0}}];
- assert.deepEqual(explorerCargoPoint(before,0,{kind:"ship",index:0}),{x:42,y:-23});
- assert.deepEqual(explorerSpicePoint(before,0),{x:58,y:-23});
- const after=structuredClone(before);after.explorer.cargo.spice[0].at={kind:"supply",index:-1};
- const motion={kind:"catan_explorer_spice_deliver",spice:[{sack:0,from:{kind:"ship",index:0},to:{kind:"supply",index:-1}}]};
- assert.deepEqual(explorerSpiceFlight(before,after,motion,0),{points:[{x:58,y:-23},{x:500,y:500}],appear:false,retire:true,delivered:true});
- assert.equal(explorerSpiceFlight(before,after,{...motion,kind:"catan_explorer_ship"},0).delivered,false);
- after.explorer.cargo.units[0]={kind:"farm",index:0};
- assert.deepEqual(explorerCargoPoint(after,0,{kind:"farm",index:0}),{x:300,y:434});
- const spawn=structuredClone(after);spawn.explorer.cargo.spice[0].at={kind:"farm",index:0};
- assert.equal(explorerSpiceFlight(after,spawn,{...motion,kind:"catan_explorer_sail"},0).appear,true);
- assert.equal(explorerSpicePoint(after,0),null);
+test("mixed spice and crew use separate map slots, including sailing and permanent farms", async () => {
+  const { explorerCargoPoint, explorerSpicePoint, explorerSpiceFlight } =
+    await import("../src/catan-explorer-state.ts");
+  const before = room().game.catan;
+  before.tiles = [
+    { x: 300, y: 400 },
+    { x: 500, y: 500 },
+  ];
+  before.explorer.board = { council: { tile: 1 } };
+  before.explorer.cargo.units = [{ kind: "ship", index: 0 }];
+  before.explorer.cargo.spice = [
+    { origin: 0, owner: 0, at: { kind: "ship", index: 0 } },
+  ];
+  assert.deepEqual(explorerCargoPoint(before, 0, { kind: "ship", index: 0 }), {
+    x: 42,
+    y: -23,
+  });
+  assert.deepEqual(explorerSpicePoint(before, 0), { x: 58, y: -23 });
+  const after = structuredClone(before);
+  after.explorer.cargo.spice[0].at = { kind: "supply", index: -1 };
+  const motion = {
+    kind: "catan_explorer_spice_deliver",
+    spice: [
+      {
+        sack: 0,
+        from: { kind: "ship", index: 0 },
+        to: { kind: "supply", index: -1 },
+      },
+    ],
+  };
+  assert.deepEqual(explorerSpiceFlight(before, after, motion, 0), {
+    points: [
+      { x: 58, y: -23 },
+      { x: 500, y: 500 },
+    ],
+    appear: false,
+    retire: true,
+    delivered: true,
+  });
+  assert.equal(
+    explorerSpiceFlight(
+      before,
+      after,
+      { ...motion, kind: "catan_explorer_ship" },
+      0,
+    ).delivered,
+    false,
+  );
+  after.explorer.cargo.units[0] = { kind: "farm", index: 0 };
+  assert.deepEqual(explorerCargoPoint(after, 0, { kind: "farm", index: 0 }), {
+    x: 300,
+    y: 434,
+  });
+  const spawn = structuredClone(after);
+  spawn.explorer.cargo.spice[0].at = { kind: "farm", index: 0 };
+  assert.equal(
+    explorerSpiceFlight(
+      after,
+      spawn,
+      { ...motion, kind: "catan_explorer_sail" },
+      0,
+    ).appear,
+    true,
+  );
+  assert.equal(explorerSpicePoint(after, 0), null);
 });
