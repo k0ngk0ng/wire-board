@@ -53,8 +53,14 @@ func (r *Room) validateCatanScenario() error {
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err
 		}
-		if r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil {
+		if r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil {
 			return errors.New("所选航海家剧本与该扩展的组合尚未开放")
+		}
+		if r.CatanCitiesKnights != nil {
+			setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
+			if err != nil || setup != *r.CatanCitiesKnights || r.CatanOptions.Helpers || r.CatanOptions.AllHelpers || !game.CatanCitiesKnightsSeafarersSupported(r.CatanScenario) {
+				return errors.New("该航海家与城市骑士配置无效，不能混用Helpers")
+			}
 		}
 		if r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario {
 			return errors.New("航海家剧本与地图配置不一致")
@@ -125,7 +131,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if r.CatanScenario == "cities-knights" {
+	} else if r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if err := next.validateCatanScenario(); err != nil {

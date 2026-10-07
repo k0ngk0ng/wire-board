@@ -19,7 +19,7 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 
 func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
 	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world", "wonders", "cloth"} {
-		t.Run(scenario, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scenario, false) })
+		t.Run(scenario, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scenario, false, 3, 4, 6) })
 	}
 }
 
@@ -31,8 +31,30 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 	if len(players) == 0 {
 		players = []int{3, 6}
 	}
+	type recipe struct {
+		players int
+		layout  string
+	}
+	recipes := []recipe{}
 	for _, n := range players {
-		t.Run(fmt.Sprint(n), func(t *testing.T) {
+		layouts := []string{""}
+		if scenario != "" && n <= 4 && !harbors {
+			layouts = []string{"fixed", "variable"}
+			if scenario == "new_world" {
+				layouts = []string{"prepared"}
+			}
+		}
+		for _, layout := range layouts {
+			recipes = append(recipes, recipe{n, layout})
+		}
+	}
+	for _, config := range recipes {
+		n, layout := config.players, config.layout
+		name := fmt.Sprint(n)
+		if layout != "" {
+			name += "/" + layout
+		}
+		t.Run(name, func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
 			clients := make([]*testClient, n+1)
@@ -41,10 +63,14 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[p].register(fmt.Sprintf("骑士玩家%d", p))
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
-			public := scenario == "" && !harbors && n <= 4
+			public := !harbors && n <= 4
 			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
 			if public {
 				body["catanScenario"] = "cities-knights"
+				if scenario != "" {
+					body["catanScenario"] = scenario
+					body["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{}
+				}
 			}
 			r := clients[0].post("/api/rooms", body, 201)
 			id := r["id"].(string)
@@ -52,7 +78,11 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[p].command(current(clients[0]), "join", nil, 200)
 			}
 			if scenario != "" {
-				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: scenario})
+				if public {
+					selectSeafarers(clients[0], &game.CatanSeafarersSetup{Scenario: scenario, Layout: layout}, 200)
+				} else {
+					provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: scenario})
+				}
 			}
 			if !public {
 				provisionCatanCitiesKnights(t, s, id)
@@ -65,6 +95,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			}
 			clients[0].command(current(clients[0]), "start", nil, 200)
 			state := s.rooms[id].Game
+			if public && scenario != "" && (state.Catan.Seafarers == nil || state.Catan.CitiesKnights == nil || state.Catan.Seafarers.Layout != layout) {
+				t.Fatal("public combination ignored selected layout")
+			}
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 			restart := func() {
 				before, _ := json.Marshal(s.rooms[id])

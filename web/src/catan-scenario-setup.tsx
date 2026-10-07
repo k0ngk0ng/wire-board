@@ -1,3 +1,6 @@
+import { catanVictoryTarget } from "./catan-rule-context";
+import { catanScenarioVictory } from "./catan-scenarios";
+
 const scenarios = [
   {
     id: "cities-knights",
@@ -75,6 +78,47 @@ const scenarios = [
   },
 ];
 
+export const supportsPublicCatanSeaKnights = (scenario?: string) =>
+  [
+    "shores",
+    "islands",
+    "fog",
+    "desert",
+    "new_world",
+    "wonders",
+    "cloth",
+  ].includes(scenario || "");
+
+export function CatanSeaKnightsPicker({
+  value,
+  onChange,
+  disabled = false,
+  helpers = false,
+}: {
+  value: boolean;
+  onChange: (enabled: boolean) => void;
+  disabled?: boolean;
+  helpers?: boolean;
+}) {
+  return (
+    <fieldset className="catan-helper-options" disabled={disabled || helpers}>
+      <label>
+        <input
+          type="checkbox"
+          checked={value}
+          onChange={(e) => onChange(e.target.checked)}
+        />
+        城市与骑士＋航海家
+      </label>
+      <p className="muted small">
+        {helpers
+          ? "先关闭 Helpers，才能加入城市与骑士。"
+          : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
+      </p>
+    </fieldset>
+  );
+}
+
 export const isPublicCatanExplorer = (scenario?: string) =>
   ["land-ho", "spices-for-catan"].includes(scenario || "");
 
@@ -96,12 +140,14 @@ export function CatanScenarioPicker({
   onChange,
   disabled = false,
   helpers = false,
+  knights = false,
   players = 3,
 }: {
   value: string;
   onChange: (scenario: string) => void;
   disabled?: boolean;
   helpers?: boolean;
+  knights?: boolean;
   players?: number;
 }) {
   return (
@@ -126,7 +172,10 @@ export function CatanScenarioPicker({
                     "land-ho",
                     "spices-for-catan",
                   ].includes(s.id)) ||
-                (players > 4 && s.id !== "spices-for-catan")
+                (players > 4 && s.id !== "spices-for-catan") ||
+                (knights &&
+                  isPublicCatanSea(s.id) &&
+                  !supportsPublicCatanSeaKnights(s.id))
               }
             >
               {s.name}
@@ -135,7 +184,9 @@ export function CatanScenarioPicker({
         </select>
       </label>
       <p className="muted small">
-        {scenarios.find((s) => s.id === value)?.description}
+        {knights && supportsPublicCatanSeaKnights(value)
+          ? catanScenarioVictory(value, catanVictoryTarget(value, true))
+          : scenarios.find((s) => s.id === value)?.description}
       </p>
       {value === "rivers" && (
         <p className="muted small">本站补充：金币用完继续记账发放。</p>
