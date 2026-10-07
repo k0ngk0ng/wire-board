@@ -133,7 +133,13 @@ export type ExplorerView = {
       pirateDie?: number;
     }[];
   };
-  economy: { gold: number[]; goldBank: number; bought: number };
+  economy: {
+    gold: number[];
+    goldBank: number;
+    bought: number;
+    goldRule?: "ledger";
+    goldIssued?: number;
+  };
   fleet: {
     positions: number[];
     turn?: {

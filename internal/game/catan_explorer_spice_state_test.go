@@ -208,8 +208,7 @@ func TestCatanExplorerSpiceDiscoveryAtomicReward(t *testing.T) {
 	explorerSpiceApply(t, s, Action{Type: "catan_explorer_begin_move"})
 	g, x = s.Catan, s.Catan.Explorer
 	action := Action{Type: "catan_explorer_sail", Slot: ship, Targets: []int{end}, Prompt: int(g.TurnSerial)}
-	// Resource starvation must reject the complete sail/reveal transaction, not
-	// partially reveal the farm or allocate sacks. Preview cannot reveal this.
+	// Empty physical coins must not prevent farm discovery or affect previews.
 	starved := clone(*s)
 	q := starved.Catan.Explorer
 	q.Economy.Gold[(s.Turn+1)%3] += q.Economy.GoldBank
@@ -222,7 +221,10 @@ func TestCatanExplorerSpiceDiscoveryAtomicReward(t *testing.T) {
 	if string(before) != string(after) {
 		t.Fatal("reward shortage affected hidden destination preview")
 	}
-	explorerFishReject(t, &starved, s.Turn, action)
+	explorerSpiceApply(t, &starved, action)
+	if starved.Catan.Explorer.Economy.GoldIssued != 2 {
+		t.Fatal("farm discovery did not issue two ledger gold")
+	}
 	gold, bank, numbers := x.Economy.Gold[s.Turn], x.Economy.GoldBank, clone(x.Board.Numbers)
 	explorerSpiceApply(t, s, action)
 	x = s.Catan.Explorer

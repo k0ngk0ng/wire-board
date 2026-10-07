@@ -115,6 +115,10 @@ func TestCatanExplorerCityAlchemyGuardsAndFailedPayout(t *testing.T) {
 	s := explorerCityProductionFixture(t, 3)
 	ckProgressGive(t, s, 0, 0)
 	x := s.Catan.Explorer
+	// Exhaust the safety bound, not the physical coin supply: ordinary coin
+	// shortages now use the explicit supplemental ledger rule.
+	x.Economy.GoldIssued = catanExplorerGoldLedgerLimit
+	x.Economy.Gold[1] += x.Economy.GoldIssued
 	x.Economy.Gold[1] += x.Economy.GoldBank
 	x.Economy.GoldBank = 0
 	before := clone(*s)
@@ -170,19 +174,16 @@ func TestCatanExplorerCityAlchemyOverflowAndPillageResume(t *testing.T) {
 		v := s.Catan.pillageSites(p)[0]
 		response := Action{Type: "catan_pillage", Vertex: v, Prompt: 1}
 		if step == 2 {
-			explorerCityReject(t, s, p, response)
 			if slices.Contains(s.Catan.CitiesKnights.Players[0].Progress, 0) {
-				t.Fatal("later response failure refunded already-played Alchemy")
+				t.Fatal("pillage refunded already-played Alchemy")
 			}
-			s.Catan.Explorer.Economy.Gold[1] -= 3
-			s.Catan.Explorer.Economy.GoldBank += 3
 		}
 		if err := s.catanExplorerCityRespond(p, response); err != nil {
 			t.Fatal(err)
 		}
 		explorerCityRestore(t, s)
 	}
-	if s.Phase != "catan_turn" || s.Catan.RollID != 1 || s.Catan.CitiesKnights.Invasions != 1 {
+	if s.Phase != "catan_turn" || s.Catan.RollID != 1 || s.Catan.CitiesKnights.Invasions != 1 || s.Catan.Explorer.Economy.GoldIssued != 3 {
 		t.Fatal("pillage did not resume Alchemy production")
 	}
 }

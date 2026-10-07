@@ -297,7 +297,10 @@ export function CatanExplorerBoard({
     total(take) + goldTake > 0 &&
     goldGive <= gold &&
     [goldGive, goldTake].every(
-      (n) => Number.isInteger(n) && n >= 0 && n <= supply.gold,
+      (n) =>
+        Number.isInteger(n) &&
+        n >= 0 &&
+        n <= supply.gold + (x.economy.goldIssued || 0),
     ) &&
     give.every((n, i) => n <= hand[i]);
   const phase = explorerPhaseLabel(game.finished ? "finished" : game.phase);
@@ -1411,7 +1414,7 @@ export function CatanExplorerBoard({
               <input
                 type="number"
                 min="0"
-                max={supply.gold}
+                max={supply.gold + (x.economy.goldIssued || 0)}
                 value={goldTake}
                 disabled={busy}
                 onChange={(e) => setGoldTake(Number(e.target.value))}
@@ -1477,8 +1480,21 @@ export function CatanExplorerBoard({
             </p>
           )}
           <Bundle values={g.bank} assets={assets} showZero />
+          {x.lairs && (
+            <p>
+              掷中已解放金矿的点数时，每座相邻建筑产2金币，城市也一样；只获得金币、没有获得资源或商品的玩家仍领取1金币补偿。
+            </p>
+          )}
+          {x.economy.goldRule === "ledger" && (
+            <p>
+              本站补充规则：金币供应不设上限，实体金币用完后继续记账发放；资源牌与商品仍受银行库存限制。
+            </p>
+          )}
           <p>
-            金币银行 {x.economy.goldBank} · 本回合金币购资源 {x.economy.bought}
+            {x.economy.goldRule === "ledger"
+              ? "金币供应不限"
+              : `金币银行 ${x.economy.goldBank}`}{" "}
+            · 本回合金币购资源 {x.economy.bought}
             /2
           </p>
         </details>

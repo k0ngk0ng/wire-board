@@ -244,8 +244,8 @@ func (x *catanExplorer) discover(g *Catan, player int, tiles []int) ([]catanExpl
 					return nil, err
 				}
 			}
-			if x.Economy.GoldBank < 2 {
-				return nil, errors.New("探索金币供应不足的官方奖励规则尚未核对，不能部分揭示或领奖")
+			if err := x.Economy.ensureGold(2); err != nil {
+				return nil, err
 			}
 			x.Economy.GoldBank -= 2
 			x.Economy.Gold[player] += 2

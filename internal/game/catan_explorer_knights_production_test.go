@@ -346,10 +346,12 @@ func TestCatanExplorerCitySevenIncludesCommoditiesAndWalls(t *testing.T) {
 	}
 	explorerCityRestore(t, s)
 }
-func TestCatanExplorerCityLastResponsePayoutFailureIsAtomic(t *testing.T) {
+func TestCatanExplorerCityLastResponseLedgerOverflowIsAtomic(t *testing.T) {
 	s := explorerCityProductionFixture(t, 3)
 	s.Catan.CitiesKnights.BarbarianPosition = 6
 	e := s.Catan.Explorer.Economy
+	e.GoldIssued = catanExplorerGoldLedgerLimit
+	e.Gold[1] += e.GoldIssued
 	e.Gold[1] += e.GoldBank
 	e.GoldBank = 0
 	if err := s.catanExplorerCityRoll(1, 1, 3); err != nil {

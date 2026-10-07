@@ -37,8 +37,13 @@ func (s *State) catanExplorerCityBank(player int, a Action) error {
 			cost = 3 // The separate E&P resource-for-gold exchange.
 		}
 	}
-	if give == -1 && (x.Economy.Turn.Bought >= 2 || x.Economy.Gold[player] < cost) || give >= 0 && g.Players[player].Resources[give] < cost || take == -1 && x.Economy.GoldBank < 1 || take >= 0 && g.Bank[take] < 1 {
+	if give == -1 && (x.Economy.Turn.Bought >= 2 || x.Economy.Gold[player] < cost) || give >= 0 && g.Players[player].Resources[give] < cost || take >= 0 && g.Bank[take] < 1 {
 		return errors.New("支付卡牌、金币或银行库存不足，或本行动段金币购牌已达两次")
+	}
+	if take == -1 {
+		if err := x.Economy.ensureGold(1); err != nil {
+			return err
+		}
 	}
 	paid, received := make([]int, 8), make([]int, 8)
 	goldPaid, goldReceived := 0, 0

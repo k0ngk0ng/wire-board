@@ -240,7 +240,8 @@ func TestCatanExplorerCityFlowDiscoveryAtomicAndCommoditySafe(t *testing.T) {
 					before := clone(*s.Catan)
 					if len(quote.Exploring) > 0 {
 						// Empty the corresponding reward bank without breaking conservation.
-						// Failure must not reveal fog, consume digits or move/pay the ship.
+						// Resource shortages still reject atomically; empty coins now
+						// use ledger credits without concealing a legal destination.
 						bad := clone(*s)
 						hidden := x.Board.Hidden[slices.IndexFunc(x.Board.Hidden, func(h catanExplorerHidden) bool { return h.Tile == quote.Exploring[0] })]
 						if hidden.Resource < 5 {
@@ -253,7 +254,14 @@ func TestCatanExplorerCityFlowDiscoveryAtomicAndCommoditySafe(t *testing.T) {
 							e.GoldBank = 0
 						}
 						explorerCityFlowRestore(t, &bad)
-						explorerCityActionReject(t, &bad, 0, a)
+						if hidden.Resource < 5 {
+							explorerCityActionReject(t, &bad, 0, a)
+						} else {
+							explorerCityFlowAct(t, &bad, a)
+							if bad.Catan.Explorer.Economy.GoldIssued == 0 {
+								t.Fatal("gold discovery failed to use ledger")
+							}
+						}
 					}
 					explorerCityFlowAct(t, s, a)
 					if !reflect.DeepEqual(s.Catan.CitiesKnights, before.CitiesKnights) || !slices.Equal(s.Catan.Players[0].Resources[5:], before.Players[0].Resources[5:]) {

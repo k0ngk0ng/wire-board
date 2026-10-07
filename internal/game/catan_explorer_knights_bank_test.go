@@ -195,7 +195,15 @@ func TestCatanExplorerCityBankGoldLimitsShortagesAndGuards(t *testing.T) {
 			e.GoldBank = 0
 			a.Target = -1
 		}
-		explorerCityActionReject(t, q, 0, a)
+		if kind == "gold" {
+			before := q.Catan.Explorer.Economy.Gold[0]
+			explorerKnightAct(t, q, a)
+			if q.Catan.Explorer.Economy.GoldIssued != 1 || q.Catan.Explorer.Economy.Gold[0] != before+1 {
+				t.Fatal("combo bank did not issue ledger gold")
+			}
+		} else {
+			explorerCityActionReject(t, q, 0, a)
+		}
 	}
 }
 

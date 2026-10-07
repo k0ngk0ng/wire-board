@@ -295,7 +295,11 @@ func (g *Catan) tradeGold() []int {
 	return nil
 }
 func (g *Catan) validTradeGold(amount int) bool {
-	return amount >= 0 && amount <= 152 && (g.tradeGold() != nil || amount == 0)
+	limit := 152
+	if g.Explorer != nil && g.Explorer.Economy != nil {
+		limit = catanExplorerStock(len(g.Players)).gold + g.Explorer.Economy.GoldIssued
+	}
+	return amount >= 0 && amount <= limit && (g.tradeGold() != nil || amount == 0)
 }
 func (g *Catan) hasTradeGold(p, amount int) bool {
 	return g.validTradeGold(amount) && (amount == 0 || p >= 0 && p < len(g.tradeGold()) && g.tradeGold()[p] >= amount)

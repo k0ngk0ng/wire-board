@@ -159,13 +159,15 @@ func TestCatanExplorerCityFastGoldPairedResetAndGuards(t *testing.T) {
 		t.Fatal("next action allowance did not reset", err)
 	}
 	explorerCityRestore(t, s)
-	for _, reason := range []string{"empty_gold", "unowned_farm", "movement", "commodity_missing"} {
+	for _, reason := range []string{"ledger_overflow", "unowned_farm", "movement", "commodity_missing"} {
 		t.Run(reason, func(t *testing.T) {
 			trial := explorerCityGoldFixture(t, 3)
 			g, x := trial.Catan, trial.Catan.Explorer
 			a := Action{Type: "catan_explorer_spice_gold", Card: 6, Prompt: int(g.TurnSerial)}
 			switch reason {
-			case "empty_gold":
+			case "ledger_overflow":
+				x.Economy.GoldIssued = catanExplorerGoldLedgerLimit
+				x.Economy.Gold[1] += x.Economy.GoldIssued
 				x.Economy.Gold[1] += x.Economy.GoldBank
 				x.Economy.GoldBank = 0
 			case "unowned_farm":
