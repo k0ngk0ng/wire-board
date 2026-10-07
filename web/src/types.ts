@@ -556,6 +556,8 @@ export type CatanState = {
   };
   rivers?: {
     rules?: string;
+    goldRule?: "ledger";
+    goldIssued?: number;
     map: {
       channels: { tiles: number[]; outlet: number }[];
       bridges: number[];

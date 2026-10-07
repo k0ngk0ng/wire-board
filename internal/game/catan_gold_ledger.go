@@ -25,3 +25,15 @@ func (a *catanAttack) ensureGold(amount int) error {
 	a.GoldBank += missing
 	return nil
 }
+
+// Site supplement, approved for Rivers: reuse returned coins first and issue
+// only the missing amount. Physical coins do not limit earned rewards.
+func (r *CatanRivers) ensureGold(amount int) error {
+	missing, err := catanGoldShortfall(r.Bank, r.GoldIssued, amount)
+	if err != nil {
+		return err
+	}
+	r.GoldIssued += missing
+	r.Bank += missing
+	return nil
+}

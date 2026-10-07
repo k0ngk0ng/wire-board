@@ -123,6 +123,8 @@ func TestCatanRiversHTTPBridgeCoinsTradeAndRestore(t *testing.T) {
 			g.Bank[0] -= 2
 			g.Rivers.Gold[0] = 10
 			g.Rivers.Bank -= 10
+			// Exhausted physical supply must not block bridge rewards.
+			g.Rivers.Gold[2], g.Rivers.Bank = g.Rivers.Bank, 0
 			deadline := time.Now().Add(45 * time.Second).UnixMilli()
 			s.mu.Lock()
 			r := s.rooms[id]
@@ -149,7 +151,7 @@ func TestCatanRiversHTTPBridgeCoinsTradeAndRestore(t *testing.T) {
 			}
 			clients[0].command(current(clients[0]), "action", game.Action{Type: "catan_coin_buy", Color: 1}, 400)
 			g = s.rooms[id].Game.Catan
-			if g.Rivers.Bought != 2 || g.Rivers.Gold[0] != 9 || !g.Edges[bridge].Bridge || !slices.Equal(g.Players[0].Resources, []int{1, 0, 0, 0, 1}) {
+			if g.Rivers.GoldIssued != 3 || g.Rivers.Bought != 2 || g.Rivers.Gold[0] != 9 || !g.Edges[bridge].Bridge || !slices.Equal(g.Players[0].Resources, []int{1, 0, 0, 0, 1}) {
 				t.Fatal("bridge payment/coin restoration")
 			}
 			for p, c := range clients {

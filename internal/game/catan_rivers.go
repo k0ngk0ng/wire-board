@@ -9,11 +9,12 @@ import (
 const CatanRiversRules = "catan-rivers-2025"
 
 type CatanRivers struct {
-	Rules  string          `json:"rules,omitempty"`
-	Map    *catanRiversMap `json:"map"`
-	Gold   []int           `json:"gold"`
-	Bank   int             `json:"bank"`
-	Bought int             `json:"bought"` // Current action phase; reset once at catanNext.
+	Rules      string          `json:"rules,omitempty"`
+	Map        *catanRiversMap `json:"map"`
+	Gold       []int           `json:"gold"`
+	Bank       int             `json:"bank"`
+	GoldIssued int             `json:"goldIssued,omitempty"`
+	Bought     int             `json:"bought"` // Current action phase; reset once at catanNext.
 }
 
 // Internal scenario constructor. Public room selection remains unavailable
@@ -62,17 +63,21 @@ func (g *Catan) validateRivers() error {
 	if len(g.Players) > 4 {
 		supply = 152
 	}
-	total := r.Bank
-	if total < 0 || total > supply {
+	if r.GoldIssued < 0 || r.GoldIssued > catanGoldLedgerLimit || g.setup() && r.GoldIssued != 0 {
+		return errors.New("河流金币记账无效")
+	}
+	supply += r.GoldIssued
+	total := int64(r.Bank)
+	if r.Bank < 0 || r.Bank > supply {
 		return errors.New("金币库存无效")
 	}
 	for _, held := range r.Gold {
 		if held < 0 || held > supply {
 			return errors.New("玩家金币无效")
 		}
-		total += held
+		total += int64(held)
 	}
-	if total != supply {
+	if total != int64(supply) {
 		return errors.New("金币不守恒")
 	}
 	for _, e := range g.Edges {
@@ -173,10 +178,11 @@ func (s *State) catanRiverReward(p, amount int) error {
 		return nil
 	}
 	r := s.Catan.Rivers
-	// Guard against inventing coins while the official depleted-supply rule
-	// remains unverified. This unresolved boundary blocks public release.
-	if amount < 0 || r.Bank < amount {
-		return errors.New("金币供应不足：此边界规则尚待核实，不能透支")
+	if p >= len(r.Gold) {
+		return errors.New("金币领取玩家无效")
+	}
+	if err := r.ensureGold(amount); err != nil {
+		return err
 	}
 	r.Bank -= amount
 	r.Gold[p] += amount
@@ -263,10 +269,14 @@ func (s *State) catanCoins(p int, a Action) error {
 		s.catanLog(p, "支付 金币×2，购买 %s×1（本次行动 %d/2）", CatanResources[c], *bought)
 	case "catan_coin_sell":
 		rate := g.rates(p)[c]
-		if g.Players[p].Resources[c] < rate || g.Attack == nil && *bank < 1 {
-			return errors.New("资源或金币库存不足")
+		if g.Players[p].Resources[c] < rate {
+			return errors.New("资源库存不足")
 		}
-		if g.Attack != nil {
+		if g.Rivers != nil {
+			if err := g.Rivers.ensureGold(1); err != nil {
+				return err
+			}
+		} else if g.Attack != nil {
 			if err := g.Attack.ensureGold(1); err != nil {
 				return err
 			}
@@ -303,6 +313,11 @@ func (g *Catan) validTradeGold(amount int) bool {
 	limit := 152
 	if g.Explorer != nil && g.Explorer.Economy != nil {
 		limit = catanExplorerStock(len(g.Players)).gold + g.Explorer.Economy.GoldIssued
+	} else if g.Rivers != nil {
+		limit = 100 + g.Rivers.GoldIssued
+		if len(g.Players) > 4 {
+			limit += 52
+		}
 	} else if g.Attack != nil {
 		limit = g.Attack.Map.Gold + g.Attack.GoldIssued
 	}
@@ -340,7 +355,8 @@ func (g *Catan) riverBotChoices(p int) []botChoice {
 	copy.Rivers = &river
 	river.Gold = slices.Clone(river.Gold)
 	river.Gold[p]++
-	if g.Rivers.Bank > 0 && copy.riverPoints(p) > before {
+	_, goldErr := catanGoldShortfall(g.Rivers.Bank, g.Rivers.GoldIssued, 1)
+	if goldErr == nil && copy.riverPoints(p) > before {
 		for color, rate := range g.rates(p) {
 			if g.Players[p].Resources[color] >= rate {
 				choices = append(choices, botChoice{Action{Type: "catan_coin_sell", Color: color}, 310 + (copy.riverPoints(p)-before)*30})

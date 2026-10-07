@@ -66,7 +66,7 @@ export function catanCoinReason(
   } else {
     if (p.resources[color] < p.rates[color])
       return `需要${p.rates[color]}张同类资源`;
-    if (r.bank <= 0) return "金币供给不足";
+    if (r.bank <= 0 && r.goldRule !== "ledger") return "金币供给不足";
   }
   return "";
 }

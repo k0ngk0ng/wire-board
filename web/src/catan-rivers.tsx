@@ -222,10 +222,11 @@ export function CatanRiverBank({
   return (
     <details className="catan-river-bank">
       <summary>
-        <Coins size={18} /> 金币兑换 <span>供给 {r.bank}</span>
+        <Coins size={18} /> 金币兑换 <span>银行 {r.bank}</span>
       </summary>
       <p>
         2金币买1张资源，每次行动最多买2张。出售资源按自己的银行或港口比例，每组获得1金币。
+        {r.goldRule === "ledger" && "本站补充规则：金币用完仍照常记账发放，归还银行的金币优先复用。"}
       </p>
       {mine ? (
         <>

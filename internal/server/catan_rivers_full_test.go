@@ -78,7 +78,7 @@ func assertRiversFullInventory(t *testing.T, state *game.State) {
 	if ties != 1 {
 		richest = -1
 	}
-	if gold != coinSupply {
+	if gold != coinSupply+r.GoldIssued {
 		t.Fatal("gold conservation", gold, coinSupply)
 	}
 	for c, total := range g.Bank {

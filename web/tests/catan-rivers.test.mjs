@@ -121,6 +121,10 @@ test("coin controls respect private holdings, public stock, purchase cap and act
   assert.match(catanCoinReason(g, 0, 0, true), /2金币/);
   g.rivers.bank = 0;
   assert.match(catanCoinReason(g, 0, 0, false), /供给/);
+  g.rivers.goldRule = "ledger";
+  assert.equal(catanCoinReason(g, 0, 0, false), "");
+  assert.match(catanCoinReason(g, 0, 3, false), /需要4/);
+  assert.match(catanCoinReason(g, 0, 1, true), /2金币/);
   assert.notEqual(catanCoinReason(g, -1, 0, true), "");
   delete g.players[0].resources;
   assert.notEqual(catanCoinReason(g, 0, 0, true), "");
