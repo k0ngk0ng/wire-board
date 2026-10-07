@@ -18,7 +18,7 @@ func newPublicFishingSeaTable(t *testing.T, n int, scenario, layout string) (*Se
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("海图捕鱼玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true}, 201)
+	raw := clients[0].post("/api/rooms", map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true, "catanOptions": game.CatanOptions{FiveSix: n > 4}}, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -31,6 +31,9 @@ func newPublicFishingSeaTable(t *testing.T, n int, scenario, layout string) (*Se
 	g := s.rooms[id].Game.Catan
 	if g.Fishing == nil || g.Seafarers == nil || g.Seafarers.Scenario != scenario || g.Seafarers.Layout != layout || g.CitiesKnights != nil || !s.rooms[id].CatanFishing {
 		t.Fatal("wrong public fish sea opening")
+	}
+	if (g.Paired != nil) != (n > 4) || g.Options.FiveSix != (n > 4) {
+		t.Fatal("wrong public fish sea player-count rules")
 	}
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 	return s, ts, clients, id

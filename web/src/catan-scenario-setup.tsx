@@ -153,23 +153,28 @@ export const supportsPublicCatanFishingSea = (scenario?: string) =>
     "new_world",
   ].includes(scenario || "");
 
+export const supportsPublicCatanFishingSeaExtended = (scenario?: string) =>
+  ["fog", "wonders", "new_world"].includes(scenario || "");
+
 export function CatanFishingSeaPicker({
   value,
   onChange,
   disabled = false,
   blocked = false,
   fixedRequired = false,
+  extended = false,
 }: {
   value: boolean;
   onChange: (enabled: boolean) => void;
   disabled?: boolean;
   blocked?: boolean;
   fixedRequired?: boolean;
+  extended?: boolean;
 }) {
   return (
     <fieldset
       className="catan-helper-options"
-      disabled={disabled || blocked || fixedRequired}
+      disabled={disabled || blocked || fixedRequired || extended}
     >
       <label>
         <input
@@ -180,11 +185,13 @@ export function CatanFishingSeaPicker({
         渔夫＋航海家
       </label>
       <p className="muted small">
-        {fixedRequired
-          ? "先将海图切为固定布局，才能加入渔夫。"
-          : blocked
-            ? "先关闭 Helpers、城市骑士、港口霸主和友善强盗，才能加入渔夫。"
-            : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
+        {extended
+          ? "五六人使用扩大地图、8处渔场和配对回合。要关闭渔夫，请先取消下方五至六人扩充。"
+          : fixedRequired
+            ? "先将海图切为固定布局，才能加入渔夫。"
+            : blocked
+              ? "先关闭 Helpers、城市骑士、港口霸主和友善强盗，才能加入渔夫。"
+              : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
     </fieldset>
   );
@@ -256,7 +263,11 @@ export function CatanScenarioPicker({
                     "spices-for-catan",
                   ].includes(s.id)) ||
                 (players > 4 &&
-                  !["spices-for-catan", "barbarian-attack"].includes(s.id)) ||
+                  (fishing
+                    ? !supportsPublicCatanFishingSeaExtended(s.id)
+                    : !["spices-for-catan", "barbarian-attack"].includes(
+                        s.id,
+                      ))) ||
                 (friendly && s.id === "shores" && players < 4) ||
                 (friendly &&
                   isPublicCatanSea(s.id) &&
