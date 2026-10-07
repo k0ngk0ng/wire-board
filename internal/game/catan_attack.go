@@ -7,8 +7,9 @@ import (
 )
 
 type catanAttackLandingRoll struct {
-	Dice  [2]int `json:"dice"`
-	Tiles []int  `json:"tiles"`
+	Dice     [2]int `json:"dice"`
+	Tiles    []int  `json:"tiles"`
+	Shortage bool   `json:"shortage,omitempty"`
 }
 type catanAttackLandingRecord struct {
 	ID     int                      `json:"id"`
@@ -16,7 +17,7 @@ type catanAttackLandingRecord struct {
 	Rolls  []catanAttackLandingRoll `json:"rolls"`
 }
 
-// Internal constructor until special-card and end-turn battle acceptance.
+// Internal constructor until remaining supply boundaries and combinations pass acceptance.
 // No public waiting-room recipe may select the incomplete scenario.
 func newCatanAttackState(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
@@ -102,12 +103,15 @@ func (s *State) validateCatanAttack() error {
 			return errors.New("登陆记录无效")
 		}
 		seen := map[int]bool{}
-		for _, roll := range q.Rolls {
+		for index, roll := range q.Rolls {
 			total := roll.Dice[0] + roll.Dice[1]
 			if roll.Dice[0] < 1 || roll.Dice[0] > 6 || roll.Dice[1] < 1 || roll.Dice[1] > 6 || total == 7 || seen[total] || len(roll.Tiles) > 2 {
 				return errors.New("登陆点数记录无效")
 			}
 			seen[total] = true
+			if roll.Shortage && (n < 5 || total != 5 && total != 9 || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
+				return errors.New("最后一枚蛮族的随机登陆记录无效")
+			}
 			for i, id := range roll.Tiles {
 				if !slices.Contains(a.Map.Coast, id) || g.Tiles[id].Number != total || slices.Contains(roll.Tiles[:i], id) {
 					return errors.New("登陆地块记录无效")
@@ -124,7 +128,7 @@ func (s *State) validateCatanAttack() error {
 // Resolve every required landing immediately. Dice only select coastal
 // numbers; they do not advance production RollID or overwrite its dice.
 // Compute off to the side so a supply/rule error cannot partly place pieces.
-func (s *State) catanAttackLanding(roll func() [2]int) error {
+func (s *State) catanAttackLanding(roll func() [2]int, choose func(int) int) error {
 	g := s.Catan
 	a := g.Attack
 	if a == nil || g.setup() || s.Phase != "catan_turn" || s.Finished {
@@ -150,21 +154,32 @@ func (s *State) catanAttackLanding(roll func() [2]int) error {
 				targets = append(targets, id)
 			}
 		}
-		if len(targets) > remaining {
-			// 5–6 has two matching coastal 5s/9s. No invented priority for a last
-			// single piece: this unresolved rule boundary remains a release gate.
-			return errors.New("扩充同点数双地块的蛮族供应不足分配尚待核对")
+		shortage := len(targets) > remaining
+		if shortage {
+			// Site supplemental rule: uniformly choose one eligible coastal hex
+			// when the final piece cannot cover both matching 5–6 player hexes.
+			if remaining != 1 || len(targets) != 2 || choose == nil {
+				return errors.New("最后一枚蛮族的随机分配无效")
+			}
+			pick := choose(len(targets))
+			if pick < 0 || pick >= len(targets) {
+				return errors.New("蛮族登陆随机目标无效")
+			}
+			targets = []int{targets[pick]}
 		}
 		for _, id := range targets {
 			counts[id]++
 			remaining--
 		}
-		event.Rolls = append(event.Rolls, catanAttackLandingRoll{dice, targets})
+		event.Rolls = append(event.Rolls, catanAttackLandingRoll{Dice: dice, Tiles: targets, Shortage: shortage})
 	}
 	a.Barbarians = counts
 	a.Sequence = event.ID
 	a.Landing = event
 	for _, r := range event.Rolls {
+		if r.Shortage {
+			s.catanLog(s.Turn, "本站补充规则：仅剩1个蛮族，在同点数的两个可登陆地块中随机分配至地块 #%d", r.Tiles[0]+1)
+		}
 		if len(r.Tiles) == 0 {
 			s.catanLog(s.Turn, "蛮族登陆掷出 %d+%d：对应沿海地块已被征服", r.Dice[0], r.Dice[1])
 			continue
@@ -195,6 +210,8 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	public["devRemaining"] = len(a.Deck)
 	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && a.cardSupplyReady()
 	public["supply"] = a.supply()
+	public["landingSupplyRule"] = "random-last"
+	public["goldRule"] = "ledger"
 	conquered, buildings := []int{}, []int{}
 	for _, t := range g.Tiles {
 		if a.conquered(t.ID) {

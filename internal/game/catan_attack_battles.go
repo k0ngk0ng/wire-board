@@ -101,10 +101,8 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 			}
 			a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return slices.Contains(battle.Lost, k) })
 		}
-		// Keep this boundary explicit until an official exhausted-gold rule is
-		// available. Never invent partial compensation or mint extra supply.
-		if sum(battle.Gold) > a.GoldBank {
-			return errors.New("战斗补偿金币供应不足规则尚待核对")
+		if err := a.ensureGold(sum(battle.Gold)); err != nil {
+			return err
 		}
 		for p, n := range battle.Gold {
 			a.Gold[p] += n

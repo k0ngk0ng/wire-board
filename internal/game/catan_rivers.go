@@ -263,8 +263,13 @@ func (s *State) catanCoins(p int, a Action) error {
 		s.catanLog(p, "支付 金币×2，购买 %s×1（本次行动 %d/2）", CatanResources[c], *bought)
 	case "catan_coin_sell":
 		rate := g.rates(p)[c]
-		if g.Players[p].Resources[c] < rate || *bank < 1 {
+		if g.Players[p].Resources[c] < rate || g.Attack == nil && *bank < 1 {
 			return errors.New("资源或金币库存不足")
+		}
+		if g.Attack != nil {
+			if err := g.Attack.ensureGold(1); err != nil {
+				return err
+			}
 		}
 		g.Players[p].Resources[c] -= rate
 		g.Bank[c] += rate
@@ -298,6 +303,8 @@ func (g *Catan) validTradeGold(amount int) bool {
 	limit := 152
 	if g.Explorer != nil && g.Explorer.Economy != nil {
 		limit = catanExplorerStock(len(g.Players)).gold + g.Explorer.Economy.GoldIssued
+	} else if g.Attack != nil {
+		limit = g.Attack.Map.Gold + g.Attack.GoldIssued
 	}
 	return amount >= 0 && amount <= limit && (g.tradeGold() != nil || amount == 0)
 }

@@ -77,10 +77,11 @@ func (a catanAttack) treasonDestinations(from []int) []int {
 
 // Only PUBLIC information is used by this temporary boundary gate. Never
 // reject a purchase based on the next hidden card: that would reveal its type.
-// Official exhausted-gold / insufficient-treason-piece rules remain a release
+// Official insufficient-treason-piece rules remain a release
 // gate for the scenario, rather than inventing a partial effect or a redraw.
 func (a catanAttack) cardSupplyReady() bool {
-	if a.GoldBank < 2 || min(2, len(a.captureTargets()))+a.supply() < 2 {
+	_, err := catanGoldShortfall(a.GoldBank, a.GoldIssued, 2)
+	if err != nil || min(2, len(a.captureTargets()))+a.supply() < 2 {
 		return false
 	}
 	for _, from := range a.treasonSources() {
@@ -191,13 +192,16 @@ func (s *State) catanAttackTreason(player int, from, to []int) error {
 			board++
 		}
 	}
-	if board != min(2, len(a.captureTargets())) || supply > a.supply() || a.GoldBank < 2 {
-		return errors.New("优先移动棋盘上不同地块的蛮族，仅不足部分从供应领取；组件或金币不足")
+	if board != min(2, len(a.captureTargets())) || supply > a.supply() {
+		return errors.New("优先移动棋盘上不同地块的蛮族，仅不足部分从供应领取；来源或组件数量不足")
 	}
 	for _, id := range to {
 		if !slices.Contains(a.treasonDestinations(from), id) {
 			return errors.New("目的地必须是来源以外的两个未被征服沿海地块")
 		}
+	}
+	if err := a.ensureGold(2); err != nil {
+		return err
 	}
 	a.GoldBank -= 2
 	a.Gold[player] += 2

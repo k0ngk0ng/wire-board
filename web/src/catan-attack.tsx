@@ -341,7 +341,8 @@ export function CatanAttackPanel({
     (buy
       ? a.bought < 2 && a.gold[room.you] >= 2 && g.bank[color] > 0
       : (g.players[room.you].resources?.[color] || 0) >=
-          (g.players[room.you]?.rates?.[color] || 4) && a.goldBank > 0);
+          (g.players[room.you]?.rates?.[color] || 4) &&
+        (a.goldRule === "ledger" || a.goldBank > 0));
   return (
     <section
       className={`catan-gold-choice attack-panel ${pending ? "pending" : ""}`}
@@ -365,7 +366,7 @@ export function CatanAttackPanel({
               蛮族供应 <b>{a.supply}</b>
             </span>
             <span>
-              金币供应 <b>{a.goldBank}</b>
+              金币供应 <b>{a.goldRule === "ledger" ? "不限" : a.goldBank}</b>
             </span>
             <span className="attack-deck">
               {assets && (
@@ -600,6 +601,22 @@ export function CatanAttackPanel({
                 </>
               )}
             </>
+          )}
+          {a.goldRule === "ledger" && (
+            <details>
+              <summary>本站补充规则 · 金币供应</summary>
+              <p>
+                实体金币用完后继续记账发放，战斗补偿和卡牌奖励照常领取；资源牌库存仍有限。
+              </p>
+            </details>
+          )}
+          {a.landingSupplyRule === "random-last" && (
+            <details>
+              <summary>本站补充规则 · 最后一枚蛮族</summary>
+              <p>
+                五至六人游戏中，若只剩1个蛮族而骰子命中两个可登陆地块，系统等概率随机选择其中一块放置，然后结束本次登陆。
+              </p>
+            </details>
           )}
           {a.end && a.end.battles.length > 0 && (
             <details className="attack-battles">

@@ -104,7 +104,7 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 	s.catanScores()
 	s.catanVictory()
 	if g.Attack != nil && !s.Finished {
-		return s.catanAttackLanding(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} })
+		return s.catanAttackLanding(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} }, catanRandom)
 	}
 	if s.catanAskTribePort(player, s.Phase, nil, a.Skill == "helper") {
 		return nil

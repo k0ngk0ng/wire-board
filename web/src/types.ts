@@ -385,6 +385,9 @@ export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
 export type CatanAttackKnight = { player: number; edge: number };
 export type CatanAttackMove = { from: number; to: number; wheat?: boolean };
 export type CatanAttack = {
+  landingSupplyRule?: "random-last";
+  goldRule?: "ledger";
+  goldIssued?: number;
   rules: string;
   map: { castles: number[]; coast: number[]; barbarians: number; gold: number };
   barbarians: number[];
