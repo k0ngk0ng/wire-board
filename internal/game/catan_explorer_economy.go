@@ -6,14 +6,40 @@ import (
 )
 
 // 2025 English rulebook p4: 40 one-gold and 36 three-gold coins. Store
-// denominations as fungible value; exchanging change cannot mint gold.
-// Depleted-gold rules remain a separate rule-source gate.
+// denominations as fungible value. The site's explicit supplemental rule uses
+// ledger credits when the physical supply runs out, tracked separately below.
 const catanExplorerGoldSupply = 40 + 36*3
 
 type catanExplorerEconomy struct {
-	Gold     []int                     `json:"gold"`
-	GoldBank int                       `json:"goldBank"`
-	Turn     *catanExplorerEconomyTurn `json:"turn,omitempty"`
+	GoldIssued int                       `json:"goldIssued,omitempty"`
+	Gold       []int                     `json:"gold"`
+	GoldBank   int                       `json:"goldBank"`
+	Turn       *catanExplorerEconomyTurn `json:"turn,omitempty"`
+}
+
+// Bound persisted integers well below both Go and JavaScript overflow. This is
+// a corruption guard, not a physical coin limit or a normal gameplay limit.
+const catanExplorerGoldLedgerLimit = 1_000_000_000
+
+func (e catanExplorerEconomy) goldShortfall(amount int) (int, error) {
+	if amount < 0 || amount > catanExplorerGoldLedgerLimit || e.GoldIssued < 0 || e.GoldIssued > catanExplorerGoldLedgerLimit || e.GoldBank < 0 {
+		return 0, errors.New("金币记账数量无效")
+	}
+	missing := max(0, amount-e.GoldBank)
+	if missing > catanExplorerGoldLedgerLimit-e.GoldIssued {
+		return 0, errors.New("金币记账超出安全范围")
+	}
+	return missing, nil
+}
+
+func (e *catanExplorerEconomy) ensureGold(amount int) error {
+	missing, err := e.goldShortfall(amount)
+	if err != nil {
+		return err
+	}
+	e.GoldIssued += missing
+	e.GoldBank += missing
+	return nil
 }
 
 type catanExplorerEconomyTurn struct {
@@ -44,7 +70,7 @@ func newCatanExplorerEconomy(g *Catan, f *catanExplorerSailing, c *catanExplorer
 }
 
 func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *catanExplorerCargo) error {
-	if g == nil || c == nil || len(g.Players) < 2 || len(g.Players) > 6 || len(e.Gold) != len(g.Players) || e.GoldBank < 0 || e.GoldBank > catanExplorerStock(len(g.Players)).gold {
+	if g == nil || c == nil || len(g.Players) < 2 || len(g.Players) > 6 || len(e.Gold) != len(g.Players) || e.GoldIssued < 0 || e.GoldIssued > catanExplorerGoldLedgerLimit || e.GoldBank < 0 || e.GoldBank > catanExplorerStock(len(g.Players)).gold+e.GoldIssued {
 		return errors.New("探险经济人数或金币库存无效")
 	}
 	if err := c.validate(g, f); err != nil {
@@ -53,18 +79,21 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 	if !catanExplorerCanPay(g, 0, []int{0, 0, 0, 0, 0}) {
 		return errors.New("探险资源银行与手牌不守恒")
 	}
-	total := e.GoldBank
+	total := int64(e.GoldBank)
 	for _, gold := range e.Gold {
-		if gold < 0 || gold > catanExplorerStock(len(g.Players)).gold {
+		if gold < 0 || gold > catanExplorerStock(len(g.Players)).gold+e.GoldIssued {
 			return errors.New("探险玩家金币数无效")
 		}
-		total += gold
+		total += int64(gold)
 	}
-	if total != catanExplorerStock(len(g.Players)).gold {
+	if total != int64(catanExplorerStock(len(g.Players)).gold)+int64(e.GoldIssued) {
 		return errors.New("探险金币总值不守恒")
 	}
 	t := e.Turn
 	if t == nil {
+		if e.GoldIssued != 0 {
+			return errors.New("尚未生产不能增发记账金币")
+		}
 		if c.Turn != nil {
 			return errors.New("探险经济回合缺失")
 		}
@@ -192,9 +221,8 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 					continue
 				}
 				if tile.Resource == CatanGold {
-					if g.CitiesKnights != nil && g.cityAt(vertex) {
-						return catanExplorerProduction{}, errors.New("组合城市在金矿的金币产量尚待官方核对")
-					}
+					// 2025 mission guide: two gold per building, including cities
+					// under the combination's unchanged Explorer production rule.
 					result.Gold[v.Owner] += 2
 				} else {
 					level := 1
@@ -231,9 +259,10 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 				result.Gold[p]++ // Gold-field income is not a resource; FAQ confirms compensation too.
 			}
 		}
-		if sum(result.Gold) > e.GoldBank {
-			return catanExplorerProduction{}, errors.New("金币供应不足的官方结算规则尚未核对，不能部分结算生产")
-		}
+	}
+	extraGold, err := e.goldShortfall(sum(result.Gold))
+	if err != nil {
+		return catanExplorerProduction{}, err
 	}
 	// All costs/inventory have been checked. Entering action is the only
 	// remaining fallible operation, so perform it before modifying payouts.
@@ -245,6 +274,8 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 			return catanExplorerProduction{}, err
 		}
 	}
+	e.GoldIssued += extraGold
+	e.GoldBank += extraGold
 	for p, resources := range result.Resources {
 		for resource, amount := range resources {
 			g.Players[p].Resources[resource] += amount
@@ -312,8 +343,10 @@ func (e *catanExplorerEconomy) bankTrade(g *Catan, f *catanExplorerSailing, c *c
 		if g.Players[player].Resources[give] < 3 || receive >= 0 && g.Bank[receive] == 0 {
 			return errors.New("须支付同类3资源，且银行有目标资源")
 		}
-		if receive == -1 && e.GoldBank == 0 {
-			return errors.New("金币供应耗尽的官方交易规则尚未核对")
+		if receive == -1 {
+			if err := e.ensureGold(1); err != nil {
+				return err
+			}
 		}
 		g.Players[player].Resources[give] -= 3
 		g.Bank[give] += 3
@@ -329,13 +362,15 @@ func (e *catanExplorerEconomy) bankTrade(g *Catan, f *catanExplorerSailing, c *c
 }
 
 type catanExplorerEconomyView struct {
-	Gold     []int `json:"gold"`
-	GoldBank int   `json:"goldBank"`
-	Bought   int   `json:"bought"`
+	GoldRule   string `json:"goldRule"`
+	GoldIssued int    `json:"goldIssued"`
+	Gold       []int  `json:"gold"`
+	GoldBank   int    `json:"goldBank"`
+	Bought     int    `json:"bought"`
 }
 
 func (e catanExplorerEconomy) publicView() catanExplorerEconomyView {
-	v := catanExplorerEconomyView{Gold: slices.Clone(e.Gold), GoldBank: e.GoldBank}
+	v := catanExplorerEconomyView{Gold: slices.Clone(e.Gold), GoldBank: e.GoldBank, GoldIssued: e.GoldIssued, GoldRule: "ledger"}
 	if e.Turn != nil {
 		v.Bought = e.Turn.Bought
 	}

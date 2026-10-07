@@ -174,8 +174,8 @@ func (m *catanExplorerSpice) applyUnchecked(g *Catan, b *catanExplorerBoard, f *
 		if used >= c.farmCount(b, player, "gold") || piece < 0 || piece >= len(g.Bank) || g.Players[player].Resources[piece] < 1 {
 			return errors.New("每座已派驻的金币农场每行动阶段可用一张资源或商品换一金币")
 		}
-		if e.GoldBank == 0 {
-			return errors.New("金币供应耗尽的官方交易规则尚未核对")
+		if err := e.ensureGold(1); err != nil {
+			return err
 		}
 		g.Players[player].Resources[piece]--
 		g.Bank[piece]++

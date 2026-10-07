@@ -299,8 +299,8 @@ func (l *catanExplorerLairs) applyUnchecked(g *Catan, b *catanExplorerBoard, f *
 		}
 		s.Contributions = counts
 		for _, p := range order {
-			if e.GoldBank < 2 {
-				return errors.New("巢穴奖金金币耗尽规则尚待核验")
+			if err := e.ensureGold(2); err != nil {
+				return err
 			}
 			e.GoldBank -= 2
 			e.Gold[p] += 2

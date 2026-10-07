@@ -146,7 +146,7 @@ func TestCatanExplorerEconomyProductionHarborsGoldAndCompensation(t *testing.T) 
 	if err = json.Unmarshal(b, &fields); err != nil {
 		t.Fatal(err)
 	}
-	if len(fields) != 3 || fields["resources"] != nil || fields["discard"] != nil {
+	if len(fields) != 5 || fields["goldRule"] != "ledger" || fields["goldIssued"] != float64(0) || fields["resources"] != nil || fields["discard"] != nil {
 		t.Fatal("economic view exposes hands or response internals")
 	}
 }
@@ -326,7 +326,7 @@ func TestCatanExplorerEconomyBankTradesAndPerTurnLimits(t *testing.T) {
 	explorerEconomyRestore(t, g, f, c, e)
 }
 
-func TestCatanExplorerEconomyRejectsStaleCorruptAndDepletedStates(t *testing.T) {
+func TestCatanExplorerEconomyGuardsAndLedgerShortage(t *testing.T) {
 	g, f, c, e := explorerEconomyFixture(t, "land-ho")
 	for _, dice := range [][2]int{{0, 6}, {7, 1}, {-1, 4}} {
 		explorerEconomyReject(t, g, f, c, e, func() error { _, err := e.resolveProduction(g, f, c, 0, 1, dice); return err })
@@ -335,9 +335,12 @@ func TestCatanExplorerEconomyRejectsStaleCorruptAndDepletedStates(t *testing.T) 
 	explorerEconomyReject(t, g, f, c, e, func() error { return e.beginProduction(g, f, c, 0, 2) })
 	e.Gold[3] += e.GoldBank
 	e.GoldBank = 0
-	// This is an explicit unresolved release gate, not an asserted official
-	// no-payout rule. Even successful resource recipients must not be paid first.
-	explorerEconomyReject(t, g, f, c, e, func() error { _, err := e.resolveProduction(g, f, c, 0, 1, [2]int{3, 3}); return err })
+	if _, err := e.resolveProduction(g, f, c, 0, 1, [2]int{3, 3}); err != nil {
+		t.Fatal(err)
+	}
+	if e.GoldIssued != 4 || e.GoldBank != 0 {
+		t.Fatal("empty coin supply must issue exactly the missing rewards")
+	}
 	for name, damage := range map[string]func(*Catan, *catanExplorerEconomy){
 		"gold value":          func(g *Catan, e *catanExplorerEconomy) { e.Gold[0]++ },
 		"negative gold":       func(g *Catan, e *catanExplorerEconomy) { e.Gold[0] = -1; e.GoldBank += 3 },
@@ -388,7 +391,16 @@ func TestCatanExplorerEconomyBankShortagesAndNoDiscardSeven(t *testing.T) {
 				e.GoldBank++
 				give = -1
 			}
-			explorerEconomyReject(t, g, f, c, e, func() error { return e.bankTrade(g, f, c, 0, 1, give, receive) })
+			if kind == "gold" {
+				if err := e.bankTrade(g, f, c, 0, 1, give, receive); err != nil {
+					t.Fatal(err)
+				}
+				if e.GoldIssued != 1 || e.GoldBank != 0 || e.Gold[0] != 3 || g.Players[0].Resources[0] != 0 {
+					t.Fatal("ledger bank exchange failed")
+				}
+			} else {
+				explorerEconomyReject(t, g, f, c, e, func() error { return e.bankTrade(g, f, c, 0, 1, give, receive) })
+			}
 			explorerEconomyRestore(t, g, f, c, e)
 		})
 	}

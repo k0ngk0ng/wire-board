@@ -46,7 +46,7 @@ func (s *State) catanExplorerSpiceChoices(player int) []Action {
 		if u := x.Spice.GoldUse; u != nil && u.Sequence == g.TurnSerial {
 			used = u.Count
 		}
-		if used < x.Cargo.farmCount(x.Board, player, "gold") && x.Economy.GoldBank > 0 {
+		if used < x.Cargo.farmCount(x.Board, player, "gold") {
 			for r, n := range g.Players[player].Resources {
 				if n > 0 {
 					out = append(out, Action{Type: "catan_explorer_spice_gold", Card: r})

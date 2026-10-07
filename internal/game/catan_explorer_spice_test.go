@@ -466,11 +466,17 @@ func TestCatanExplorerSpiceGoldLimitsAndLostCargo(t *testing.T) {
 	w.reject(t, func() error { return w.act("land", tile, 0, 4) })
 	w = w.restore(t)
 	w.next(t, 0)
-	// Existing unresolved empty-gold-bank rule remains an atomic rejection.
+	// Supplemental ledger keeps the paid farm exchange available at zero coins.
 	w.Economy.Gold[1] += w.Economy.GoldBank
 	w.Economy.GoldBank = 0
 	w.stock(0, 1, 1)
-	w.reject(t, func() error { return w.act("gold", 0, 0, 1) })
+	if err := w.act("gold", 0, 0, 1); err != nil {
+		t.Fatal(err)
+	}
+	if w.Economy.GoldIssued != 1 {
+		t.Fatal("farm exchange did not issue one ledger gold")
+	}
+	w.restore(t)
 }
 func TestCatanExplorerSpicePermissionsAndInvalidRequests(t *testing.T) {
 	w := explorerSpiceWorld(t)

@@ -273,7 +273,7 @@ func TestCatanExplorerWorldNewShipDiscoveryStopsBeforeMovement(t *testing.T) {
 	explorerWorldRestore(t, g, x)
 }
 
-func TestCatanExplorerWorldBuildDiscoveryRollsBackPaymentAndMap(t *testing.T) {
+func TestCatanExplorerWorldBuildDiscoveryGoldLedgerAndReplay(t *testing.T) {
 	g, x, _, edge := explorerWorldBuildDiscoveryFixture(t)
 	// Force its still-hidden contact to be sea by swapping two unrevealed
 	// pieces in the same region; official component inventory stays unchanged.
@@ -305,16 +305,12 @@ func TestCatanExplorerWorldBuildDiscoveryRollsBackPaymentAndMap(t *testing.T) {
 	if err := x.validate(g); err != nil {
 		t.Fatal(err)
 	}
-	explorerWorldReject(t, g, x, func() error { _, err := x.buildShip(g, 0, 1, 1, edge); return err })
-	if x.Fleet.Positions[1] != -1 || x.Board.Hidden[contact].Revealed {
-		t.Fatal("shortage must not pay, place ship or reveal map")
-	}
-	// Restore exactly one coin from the holder to the bank and retry the
-	// identical action: it should succeed once, not award a second reveal.
-	x.Economy.Gold[1]--
-	x.Economy.GoldBank++
+	// One available coin plus one ledger credit pays the full discovery reward.
 	if _, err := x.buildShip(g, 0, 1, 1, edge); err != nil {
 		t.Fatal(err)
+	}
+	if x.Economy.GoldIssued != 1 || !x.Board.Hidden[contact].Revealed || x.Fleet.Positions[1] != edge {
+		t.Fatal("partial coin supply blocked discovery")
 	}
 	explorerWorldReject(t, g, x, func() error { _, err := x.buildShip(g, 0, 1, 1, edge); return err })
 	explorerWorldRestore(t, g, x)

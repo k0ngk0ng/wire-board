@@ -160,7 +160,7 @@ func TestCatanExplorerPairedDepartureAndCorruption(t *testing.T) {
 				if len(s.Winners) != 1 {
 					t.Fatal("missing departure winner")
 				}
-				if sum(s.Catan.Explorer.Economy.Gold)+s.Catan.Explorer.Economy.GoldBank != 172 {
+				if sum(s.Catan.Explorer.Economy.Gold)+s.Catan.Explorer.Economy.GoldBank != 172+s.Catan.Explorer.Economy.GoldIssued {
 					t.Fatal("departure shrank inventory")
 				}
 			})

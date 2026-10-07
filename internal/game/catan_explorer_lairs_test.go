@@ -205,7 +205,7 @@ func TestCatanExplorerLairsThreeWayTieRerollsOnlyTiedPlayers(t *testing.T) {
 	}
 	q.restore(t)
 }
-func TestCatanExplorerLairsGoldShortageAtomicAndSoloHero(t *testing.T) {
+func TestCatanExplorerLairsGoldLedgerAndSoloHero(t *testing.T) {
 	q := newExplorerLairsFixture(t, 2)
 	q.start(t, 0, 1)
 	q.must(t, "land", 0, []int{2, 3})
@@ -220,10 +220,10 @@ func TestCatanExplorerLairsGoldShortageAtomicAndSoloHero(t *testing.T) {
 	remaining := q.E.GoldBank
 	q.E.Gold[1] += remaining
 	q.E.GoldBank = 0
-	q.reject(t, "begin", 0, nil)
-	q.E.Gold[1] -= 2
-	q.E.GoldBank = 2
 	q.must(t, "begin", 0, nil)
+	if q.E.GoldIssued != 2 {
+		t.Fatal("solo reward did not use supplemental ledger")
+	}
 	s := q.L.Sites[q.L.site(q.Tile)]
 	if s.Hero != 0 || len(s.Rounds) != 0 || q.L.Battle != nil || !slices.Equal(q.L.Progress, []int{2, 0}) || q.E.GoldBank != 0 {
 		t.Fatal("solo hero or atomic reward failure", s)
