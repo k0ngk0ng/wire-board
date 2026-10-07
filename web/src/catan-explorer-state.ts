@@ -1,4 +1,5 @@
 import type { CatanState, Room } from "./types";
+import { catanCardNames } from "./catan-cards.ts";
 
 export type ExplorerAction = {
   type: string;
@@ -156,6 +157,20 @@ export type ExplorerView = {
 };
 export const explorerResources = ["木材", "砖块", "羊毛", "粮食", "矿石"];
 export const explorerActionNames: Record<string, string> = {
+  catan_city: "升级城市",
+  catan_wall: "建造城墙",
+  catan_improvement: "城市改良",
+  catan_knight_recruit: "招募骑士",
+  catan_knight_activate: "激活骑士",
+  catan_knight_promote: "晋升骑士",
+  catan_knight_move: "移动骑士",
+  catan_knight_retreat: "骑士退让",
+  catan_metropolis: "放置大都会",
+  catan_pillage: "降级城市",
+  catan_diplomacy: "重放道路",
+  catan_treason_remove: "移除骑士",
+  catan_treason_place: "放置骑士",
+  catan_skip_roads: "完成免费道路",
   catan_roll: "掷骰",
   catan_road: "修路",
   catan_settlement: "建村庄",
@@ -422,13 +437,13 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     vertex = `位置${(a.vertex ?? 0) + 1}`;
   switch (a.type) {
     case "catan_explorer_setup":
-      return `${(g.explorer?.setupPlacement?.owner ?? 0) < 0 ? "为中立方" : "为自己"}免费放置${{ harbor: "港口", settlement: "村庄", road: "道路", ship: "载移民的船" }[a.choice!] || "棋子"}，确认后进入下一步。`;
+      return `${(g.explorer?.setupPlacement?.owner ?? 0) < 0 ? "为中立方" : "为自己"}免费放置${{ city: "城市", harbor: "港口", settlement: "村庄", road: "道路", ship: "载移民的船" }[a.choice!] || "棋子"}，确认后进入下一步。`;
     case "catan_explorer_pirate_place":
       return `把你的海盗放到海格${a.target! + 1}；原海盗被替换，有合适对手时再选择偷取对象。`;
     case "catan_explorer_pirate_steal":
       return a.choice === "skip"
         ? `放弃偷取玩家${a.target! + 1}的金币。`
-        : `从玩家${a.target! + 1}随机偷取1张资源；对方空手时偷取1金币。`;
+        : `从玩家${a.target! + 1}随机偷取1张${g.citiesKnights ? "资源或商品" : "资源"}；对方空手时偷取1金币。`;
     case "catan_explorer_chase": {
       const player = Math.floor(a.target! / 3),
         bonus = explorerFarmAbilities(g, player).pirate;
@@ -441,7 +456,7 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     case "catan_explorer_spice_deliver":
       return `${ship}向议会岛交付1袋香料，推进香料任务并归还香料袋；农场能力保留，不消耗移动点。`;
     case "catan_explorer_spice_gold":
-      return `支付1${explorerResources[a.card!]}，获得1金币；每座已派驻金币农场每行动阶段限一次，与2金币购买资源的额度独立。`;
+      return `支付1${catanCardNames[a.card!]}，获得1金币；每座已派驻金币农场每行动阶段限一次，与2金币购买资源的额度独立。`;
     case "catan_explorer_fish_roll":
       return "本航行阶段可掷一次捕鱼骰；点数对应已探索且未被海盗封锁的空渔场时，从供应放入一群鱼。没有合适渔场或供应耗尽时也会用掉这次掷骰。";
     case "catan_explorer_fish_load":
@@ -457,7 +472,39 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     case "catan_explorer_battle":
       return "参与者掷骰加己方船员数，比总点数；同分比船员数，仍相同者重掷。英雄额外推进一步并归还一名船员。";
     case "catan_road":
-      return "支付1木材、1砖块。";
+      return g.freeRoads > 0
+        ? "免费修建这条道路，不支付木材或砖块；不能用此机会造船。"
+        : "支付1木材、1砖块。";
+    case "catan_skip_roads":
+      return "已没有合法的免费道路位置，完成道路建设并恢复行动。";
+    case "catan_city":
+      return "支付2粮食、3矿石，将村庄升级为城市，增加1分；横置城市必须优先修复。";
+    case "catan_wall":
+      return "支付2砖块，为城市建造城墙，七点弃牌上限增加2张；每人最多三座。";
+    case "catan_knight_recruit":
+      return `支付1羊毛、1矿石，在交点${a.vertex! + 1}招募一级骑士（未激活）。`;
+    case "catan_knight_activate":
+      return `支付1粮食，激活交点${a.vertex! + 1}的骑士；本行动阶段不能再让它移动。`;
+    case "catan_knight_promote":
+      return `支付1羊毛、1矿石，将交点${a.vertex! + 1}的骑士晋升一级。`;
+    case "catan_knight_move":
+      return `将骑士从交点${a.vertex! + 1}移到${a.target! + 1}，随后转为未激活；较弱敌方骑士须退让。`;
+    case "catan_knight_retreat":
+      return `将被驱逐的骑士退到交点${a.vertex! + 1}，保留原激活状态。`;
+    case "catan_metropolis":
+      return `在城市${a.vertex! + 1}放置大都会，额外获得2分。`;
+    case "catan_pillage":
+      return `城市${a.vertex! + 1}横置，降为村庄生产并失去1分；城墙归还，港口不受此劫掠。`;
+    case "catan_diplomacy":
+      return a.choice === "skip"
+        ? "放弃免费重建道路。"
+        : `免费将道路重放到位置${a.edge! + 1}。`;
+    case "catan_treason_remove":
+      return `因叛变移除交点${a.vertex! + 1}的骑士；对方随后选择放置。`;
+    case "catan_treason_place":
+      return a.choice === "skip"
+        ? "放弃免费放置骑士。"
+        : `在交点${a.vertex! + 1}放置${a.color}级骑士，保留被移除骑士的激活状态。`;
     case "catan_settlement":
       return "支付木、砖、羊、粮各1，建造村庄，获得1分。";
     case "catan_explorer_harbor":
@@ -466,10 +513,16 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
       return `支付1木材、1羊毛，建造${ship}。${(g.explorer?.fleet.positions[a.slot!] ?? -1) >= 0 ? "将拆回原船及全部货物，再建造新船。" : ""}`;
     case "catan_explorer_unit":
       return `支付${(a.card ?? 0) % 11 < 2 ? "木、砖、羊、粮各1" : "1羊毛、1矿石"}，在${a.choice === "ship" ? `船${(a.target! % 3) + 1}` : `港口${a.target! + 1}`}放置${explorerUnitLabel(a.card ?? 0)}，占${(a.card ?? 0) % 11 < 2 ? 2 : 1}格。${a.cards?.length ? `先归还${explorerCargoLabel(a.cards)}。` : ""}${a.targets?.length ? "先归还1群鱼，不推进鱼群任务。" : ""}${a.spiceUnload?.length ? "先归还1袋香料，不推进香料任务；农场能力保留，不能再次领取这袋香料。" : ""}`;
-    case "catan_explorer_bank":
+    case "catan_explorer_bank": {
+      const rate =
+        a.target === -1
+          ? 3
+          : (g.players[g.explorer?.actor ?? -1]?.rates?.[a.color!] ??
+            (a.color! >= 5 ? 4 : 3));
       return a.color === -1
-        ? `支付2金币，领取1${explorerResources[a.target!]}（本回合最多2次）。`
-        : `支付3${explorerResources[a.color!]}，领取1${a.target === -1 ? "金币" : explorerResources[a.target!]}。`;
+        ? `支付2金币，领取1${catanCardNames[a.target!]}（本行动阶段最多2次）。`
+        : `支付${rate}${catanCardNames[a.color!]}，领取1${a.target === -1 ? "金币" : catanCardNames[a.target!]}。`;
+    }
     case "catan_explorer_sail": {
       const target = g.edges[a.targets!.at(-1)!];
       const fog = g.tiles.some(
@@ -591,6 +644,22 @@ export function explorerPhaseLabel(phase: string) {
         catan_roll: "掷骰生产",
         catan_discard: "所有人同时弃牌",
         catan_turn: "交易与建设",
+        catan_roads: "免费修建道路",
+        catan_aqueduct: "引水渠补偿",
+        catan_metropolis: "大都会选址",
+        catan_pillage: "蛮族劫掠",
+        catan_defender_reward: "防御者奖励",
+        catan_progress_discard: "进步牌超限",
+        catan_progress_end: "航行前整理进步牌",
+        catan_knight_retreat: "骑士退让",
+        catan_guild_dues: "行会征费",
+        catan_commercial_harbor: "商业港交换",
+        catan_diplomacy: "外交迁路",
+        catan_espionage: "间谍选牌",
+        catan_sabotage: "破坏弃牌",
+        catan_wedding: "婚礼赠牌",
+        catan_treason_remove: "叛变移除骑士",
+        catan_treason_place: "叛变安放骑士",
         catan_explorer_move: "船只航行",
         catan_explorer_pirate_place: "放置海盗",
         catan_explorer_pirate_steal: "海盗偷取",

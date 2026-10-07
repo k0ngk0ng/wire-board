@@ -55,7 +55,15 @@ export const catanProgressDescriptions = [
   "公开分数高于自己的对手依次赠送两张资源或商品，不足两张全交。",
 ];
 
-export function catanProgressDescription(card: number, seafarers: boolean) {
+export function catanProgressDescription(
+  card: number,
+  seafarers: boolean,
+  explorer = false,
+) {
+  if (explorer && card === 5)
+    return "将村庄升级为城市（1粮食＋2矿石）或港口（1粮食＋1矿石），先选择建筑类型，再选择地图位置。";
+  if (explorer && card === 21)
+    return "首次蛮族进攻后，移动探险海盗，再选择可偷取的对手；完成后返回建设阶段。";
   if (seafarers && card === 7)
     return "免费放置两条道路或船只，可混合选择，仍遵守连接和棋子库存规则。";
   if (seafarers && card === 16)

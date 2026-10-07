@@ -813,3 +813,98 @@ test("recruitment explicitly confirms fish/spice returns and retires them withou
     });
   }
 });
+
+test("combined bank descriptions use the responding player's rates and all eight card names", () => {
+  const g = room().game.catan;
+  g.explorer.actor = 1;
+  g.players[1].rates = [3, 3, 3, 3, 3, 2, 4, 4];
+  assert.equal(
+    explorerActionDescription(g, {
+      type: "catan_explorer_bank",
+      color: 5,
+      target: 7,
+    }),
+    "支付2纸张，领取1钱币。",
+  );
+  assert.equal(
+    explorerActionDescription(g, {
+      type: "catan_explorer_bank",
+      color: 6,
+      target: 3,
+    }),
+    "支付4布料，领取1粮食。",
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_explorer_bank",
+      color: -1,
+      target: 2,
+    }),
+    /2金币.*羊毛/,
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_explorer_bank",
+      color: 0,
+      target: -1,
+    }),
+    /支付3木材.*金币/,
+  );
+});
+
+test("free roads and city responses explain costs, losses and optional continuations", () => {
+  const g = room().game.catan;
+  g.freeRoads = 2;
+  assert.match(
+    explorerActionDescription(g, { type: "catan_road", edge: 0 }),
+    /免费.*不支付/,
+  );
+  g.freeRoads = 0;
+  assert.match(
+    explorerActionDescription(g, { type: "catan_road", edge: 0 }),
+    /支付1木材、1砖块/,
+  );
+  assert.match(
+    explorerActionDescription(g, { type: "catan_pillage", vertex: 0 }),
+    /横置.*失去1分.*港口不受/,
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_treason_place",
+      choice: "skip",
+    }),
+    /放弃/,
+  );
+  assert.match(
+    explorerActionDescription(g, {
+      type: "catan_knight_move",
+      vertex: 0,
+      target: 2,
+    }),
+    /交点1移到3/,
+  );
+});
+
+test("combined progress instructions distinguish harbor medicine and pirate taxation from base rules", async () => {
+  const { catanProgressDescription } =
+    await import("../src/catan-progress-names.ts");
+  const { explorerPhaseLabel } = await import("../src/catan-explorer-state.ts");
+  assert.match(
+    catanProgressDescription(5, false, true),
+    /城市（1粮食＋2矿石）.*港口（1粮食＋1矿石）/,
+  );
+  assert.match(
+    catanProgressDescription(21, false, true),
+    /探险海盗.*返回建设阶段/,
+  );
+  assert.doesNotMatch(
+    catanProgressDescription(21, false, true),
+    /每位相邻建筑/,
+  );
+  assert.match(catanProgressDescription(21, false), /每位相邻建筑/);
+  assert.match(catanProgressDescription(7, false, true), /两条道路/);
+  assert.doesNotMatch(catanProgressDescription(7, false, true), /船只/);
+  assert.match(catanProgressDescription(7, true), /船只/);
+  assert.match(explorerPhaseLabel("catan_progress_end"), /航行前/);
+  assert.match(explorerPhaseLabel("catan_commercial_harbor"), /商业港/);
+});

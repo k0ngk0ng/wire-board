@@ -73,7 +73,7 @@ export function CatanProgressHand({
   const update = (change: Partial<ProgressSelection>) => {
     if (s) onChange({ ...s, ...change });
   };
-  const selectedMode = s ? progressMapMode(s.card) : "";
+  const selectedMode = s ? progressMapMode(s.card, !!g.explorer) : "";
   return (
     <section className="catan-progress-panel" aria-label="你的进步牌">
       <details open={!s}>
@@ -109,7 +109,12 @@ export function CatanProgressHand({
           ))}
         </div>
         {!cards.length && <p>尚未持有进步牌。</p>}
-        <small>回合结束时最多保留4张；其他玩家回合超限需立即弃置。</small>
+        <small>
+          {g.explorer
+            ? "建设结束、航行开始前最多保留4张"
+            : "回合结束时最多保留4张"}
+          ；其他玩家回合超限需立即弃置。
+        </small>
         {!!publicCards.length && (
           <p>
             已公开得分：
@@ -134,7 +139,7 @@ export function CatanProgressHand({
               取消
             </button>
           </header>
-          <p>{catanProgressDescription(s.card, !!g.seafarers)}</p>
+          <p>{catanProgressDescription(s.card, !!g.seafarers, !!g.explorer)}</p>
           {!g.progressPlayable?.includes(s.card) ? (
             <p>
               {s.card === 0
@@ -226,6 +231,28 @@ export function CatanProgressHand({
                           ? `${k.players[i].progressCount}张进步牌`
                           : `${g.players[i].publicScore}分`}
                       </small>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {s.card === 5 && g.explorer && (
+                <div
+                  className="catan-city-choice-cards"
+                  role="group"
+                  aria-label="医学升级建筑"
+                >
+                  {(["city", "harbor"] as const).map((upgrade) => (
+                    <button
+                      key={upgrade}
+                      disabled={busy}
+                      aria-pressed={(s.upgrade || "city") === upgrade}
+                      onClick={() =>
+                        update({ upgrade, picks: [], skip: false })
+                      }
+                    >
+                      {upgrade === "city"
+                        ? "城市 · 1粮食＋2矿石"
+                        : "港口 · 1粮食＋1矿石"}
                     </button>
                   ))}
                 </div>

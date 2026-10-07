@@ -39,9 +39,10 @@ export function CatanCitySeat({
   const p = k.players[seat];
   return (
     <span className="catan-city-seat">
+      {game.explorer && <span>进步牌 {p.progressCount} 张</span>}
       <span>
-        最长道路 {game.players[seat].roadLength} · 骑士防御{" "}
-        {cityDefense(game, seat)} · 城墙{" "}
+        {!game.explorer && <>最长道路 {game.players[seat].roadLength} · </>}
+        骑士防御 {cityDefense(game, seat)} · 城墙{" "}
         {(cityDiscardLimit(game, seat) - 7) / 2}
       </span>
       <span>
@@ -265,7 +266,13 @@ export function CatanCityOverview({
             ? "· 目前可抵御"
             : "· 防御不足"}
       </p>
-      {k.invasions === 0 && <small>首次进攻前强盗休眠，掷出7仍需弃牌。</small>}
+      {k.invasions === 0 && (
+        <small>
+          {g.explorer
+            ? "掷出7仍需弃牌并移动探险海盗；首次蛮族进攻后可使用征税。"
+            : "首次进攻前强盗休眠，掷出7仍需弃牌。"}
+        </small>
+      )}
       <div className="catan-progress-stocks">
         {cityTracks.map((name, i) => (
           <span
@@ -306,7 +313,16 @@ export function CatanCityActions({
     k = g.citiesKnights,
     you = room.you;
   const [track, setTrack] = useState<number | null>(null);
-  useEffect(() => setTrack(null), [room.id, room.game!.turn, room.game!.phase]);
+  useEffect(
+    () => setTrack(null),
+    [
+      room.id,
+      room.game!.turn,
+      room.game!.phase,
+      g.explorer?.sequence,
+      room.you,
+    ],
+  );
   if (!k || room.spectating || you < 0 || g.players[you]?.eliminated)
     return null;
   const mine =
@@ -326,7 +342,9 @@ export function CatanCityActions({
       "knight_move",
       Object.values(g.knightMoves || {}).filter((a) => a.length).length,
     ],
-    ["knight_chase", g.legal.knightChase?.length || 0],
+    ...(!g.explorer
+      ? [["knight_chase", g.legal.knightChase?.length || 0] as [string, number]]
+      : []),
     ...(g.seafarers && !g.seafarers.wonders
       ? [
           ["knight_chase_pirate", g.legal.knightChasePirate?.length || 0] as [
@@ -508,13 +526,25 @@ export function CatanCityChoice({
                   </button>
                 ))}
               </div>
-              <button
-                className="primary wide"
-                disabled={busy || color === null || !g.bank[color]}
-                onClick={() => void act({ type: "catan_aqueduct", color })}
-              >
-                确认领取
-              </button>
+              {g.bank.slice(0, 5).some((n) => n > 0) ? (
+                <button
+                  className="primary wide"
+                  disabled={busy || color === null || !g.bank[color]}
+                  onClick={() => void act({ type: "catan_aqueduct", color })}
+                >
+                  确认领取
+                </button>
+              ) : (
+                <button
+                  className="primary wide"
+                  disabled={busy}
+                  onClick={() =>
+                    void act({ type: "catan_aqueduct", choice: "skip" })
+                  }
+                >
+                  银行无普通资源，继续
+                </button>
+              )}
             </>
           )}
           {q.kind === "metropolis" && (

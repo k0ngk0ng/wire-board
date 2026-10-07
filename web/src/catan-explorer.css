@@ -115,6 +115,12 @@
   background: #c8e3e9;
   align-self: start;
 }
+@media (min-width: 901px) {
+  .explorer-board.has-cities-knights .explorer-map-column {
+    position: sticky;
+    top: 12px;
+  }
+}
 .explorer-heading {
   display: flex;
   justify-content: space-between;
@@ -321,6 +327,17 @@
 }
 .explorer-panel .catan-resource {
   color: #3c3020;
+}
+.explorer-board.has-cities-knights .explorer-hand .catan-bundle {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.explorer-panel > .catan-city-overview,
+.explorer-panel > .catan-city-choice,
+.explorer-panel > .catan-progress-panel,
+.explorer-panel > .catan-trade-powers,
+.explorer-panel > .catan-city-actions {
+  grid-column: 1 / -1;
+  min-width: 0;
 }
 .explorer-hand .catan-resource.small {
   min-width: 0;
