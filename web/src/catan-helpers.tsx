@@ -486,7 +486,11 @@ export function CatanHelpers({
                 </>
               )}
               {[3, 5].includes(rule.id) && (
-                <small>掷骰结算符合条件时自动提示你响应。</small>
+                <small>
+                  {g.eventDeck
+                    ? "事件效果结束并按牌面点数生产后，符合条件时自动提示你响应。"
+                    : "掷骰结算符合条件时自动提示你响应。"}
+                </small>
               )}
             </fieldset>
           )}

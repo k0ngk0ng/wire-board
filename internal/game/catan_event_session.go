@@ -103,6 +103,16 @@ func newCatanRiversReferenceEvents(n int) (*State, error) {
 	return s, s.validateCatanEventSession()
 }
 
+func newCatanHelperReferenceEvents(n int, all bool) (*State, error) {
+	s, err := NewCatan(n, CatanOptions{FiveSix: n > 4, Helpers: true, AllHelpers: all})
+	if err != nil {
+		return nil, err
+	}
+	s.Catan.EventDeck = &catanEventSession{Catalogue: catanEventReferenceCatalogue, Deck: newCatanEventDeck()}
+	s.Log = append(s.Log, "内部测试：Helpers接续事件效果与生产；使用旧版参考事件牌表，尚非已核验的2025正式牌表")
+	return s, s.validateCatanEventSession()
+}
+
 func (s *State) validateCatanEventSession() error {
 	g := s.Catan
 	if g == nil || g.EventDeck == nil {
@@ -112,8 +122,11 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Transport != nil || g.Caravans != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers {
+	if g.Explorer != nil || g.Transport != nil || g.Caravans != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.AllHelpers && !g.Options.Helpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
+	}
+	if err := s.validateEventHelpers(); err != nil {
+		return err
 	}
 	if len(g.Players) < 2 || len(g.Players) > 6 || (len(g.Players) == 2) != (g.Two != nil) || g.Options.FiveSix != (len(g.Players) > 4) {
 		return errors.New("事件牌玩家数量与规则不一致")

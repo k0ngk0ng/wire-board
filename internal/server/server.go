@@ -55,6 +55,7 @@ type Room struct {
 	CatanSeafarers         *game.CatanSeafarersSetup      `json:"catanSeafarers,omitempty"`
 	CatanNewWorldMap       *game.CatanNewWorldMap         `json:"catanNewWorldMap,omitempty"`
 	CatanTimeLeft          int64                          `json:"catanTimeLeft,omitempty"`
+	CatanDiscardPaused     bool                           `json:"catanDiscardPaused,omitempty"`
 	CatanOptions           game.CatanOptions              `json:"catanOptions,omitempty"`
 	SplendorOptions        game.SplendorOptions           `json:"splendorOptions,omitempty"`
 	SanguoshaOptions       game.SGOptions                 `json:"sanguoshaOptions,omitempty"`
@@ -820,6 +821,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		err = next.Game.ResetCatanExplorerSetup()
 		if err == nil {
 			next.CatanTimeLeft, next.CatanPendingVersion, next.CatanTradeVersion = 0, 0, 0
+			next.CatanDiscardPaused = false
 			next.startTurnClock(now)
 		}
 	case "catan_friendly_robber":
