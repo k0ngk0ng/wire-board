@@ -381,6 +381,22 @@ export function explorerTarget(
   }
   return null;
 }
+// Compact select text puts the actual choice before fees and explanation.
+// The full confirmation below continues to show destination, cost and effects.
+export function explorerActionOptionLabel(g: CatanState, a: ExplorerAction) {
+  if (a.type !== "catan_explorer_unit") return explorerActionDescription(g, a);
+  const returned = explorerFreightLabel(
+    a.cards || [],
+    a.targets || [],
+    a.spiceUnload || [],
+  );
+  const hasReturn =
+    (a.cards?.length || 0) +
+      (a.targets?.length || 0) +
+      (a.spiceUnload?.length || 0) >
+    0;
+  return `${explorerUnitLabel(a.card ?? 0)}${hasReturn ? ` · 归还${returned}` : ""}`;
+}
 export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
   const ship = `船${((a.slot ?? 0) % 3) + 1}`,
     vertex = `位置${(a.vertex ?? 0) + 1}`;

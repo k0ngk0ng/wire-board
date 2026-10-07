@@ -23,6 +23,7 @@ import { useRailMapControls } from "./rail-map-controls";
 import {
   explorerActionNames,
   explorerActionDescription,
+  explorerActionOptionLabel,
   explorerActionKey,
   explorerChoices,
   explorerCanRespond,
@@ -672,64 +673,71 @@ export function CatanExplorerBoard({
               })}
               <ExplorerEffects active={motion} assets={assets} />
               {!busy &&
-                [...targets.entries()].map(([key, item]) => {
-                  const chosen =
-                    selectedTarget?.kind === item.kind &&
-                    selectedTarget.id === item.id;
-                  const click = () => select(item.actions[0]);
-                  const props = {
-                    role: "button",
-                    tabIndex: 0,
-                    "aria-label": `${explorerActionNames[effective]}${item.kind === "edge" ? (effective === "catan_road" ? "道路" : "海边") : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
-                    onClick: click,
-                    onKeyDown: (e: KeyboardEvent) => buttonKeys(e, click),
-                  };
-                  if (item.kind === "tile") {
-                    const t = g.tiles[item.id];
+                [...targets.entries()]
+                  // A docked ship's edge ends at the harbor. Render its hit
+                  // area first so it cannot intercept the harbor's center.
+                  .sort(([, a], [, b]) => {
+                    const layer = { tile: 0, edge: 1, vertex: 2 };
+                    return layer[a.kind] - layer[b.kind];
+                  })
+                  .map(([key, item]) => {
+                    const chosen =
+                      selectedTarget?.kind === item.kind &&
+                      selectedTarget.id === item.id;
+                    const click = () => select(item.actions[0]);
+                    const props = {
+                      role: "button",
+                      tabIndex: 0,
+                      "aria-label": `${explorerActionNames[effective]}${item.kind === "edge" ? (effective === "catan_road" ? "道路" : "海边") : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
+                      onClick: click,
+                      onKeyDown: (e: KeyboardEvent) => buttonKeys(e, click),
+                    };
+                    if (item.kind === "tile") {
+                      const t = g.tiles[item.id];
+                      return (
+                        <polygon
+                          key={key}
+                          className={`explorer-target-tile ${chosen ? "picked" : ""}`}
+                          points={t.vertices
+                            .map((v) => `${g.vertices[v].x},${g.vertices[v].y}`)
+                            .join(" ")}
+                          {...props}
+                        />
+                      );
+                    }
+                    if (item.kind === "vertex") {
+                      const v = g.vertices[item.id];
+                      return (
+                        <circle
+                          key={key}
+                          className={`explorer-target ${chosen ? "picked" : ""}`}
+                          cx={v.x}
+                          cy={v.y}
+                          r="14"
+                          {...props}
+                        />
+                      );
+                    }
+                    const e = g.edges[item.id],
+                      a = g.vertices[e.a],
+                      b = g.vertices[e.b];
                     return (
-                      <polygon
+                      <g
                         key={key}
-                        className={`explorer-target-tile ${chosen ? "picked" : ""}`}
-                        points={t.vertices
-                          .map((v) => `${g.vertices[v].x},${g.vertices[v].y}`)
-                          .join(" ")}
+                        className={`explorer-target-edge ${chosen ? "picked" : ""}`}
                         {...props}
-                      />
+                      >
+                        <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+                        <line
+                          className="hit"
+                          x1={a.x}
+                          y1={a.y}
+                          x2={b.x}
+                          y2={b.y}
+                        />
+                      </g>
                     );
-                  }
-                  if (item.kind === "vertex") {
-                    const v = g.vertices[item.id];
-                    return (
-                      <circle
-                        key={key}
-                        className={`explorer-target ${chosen ? "picked" : ""}`}
-                        cx={v.x}
-                        cy={v.y}
-                        r="14"
-                        {...props}
-                      />
-                    );
-                  }
-                  const e = g.edges[item.id],
-                    a = g.vertices[e.a],
-                    b = g.vertices[e.b];
-                  return (
-                    <g
-                      key={key}
-                      className={`explorer-target-edge ${chosen ? "picked" : ""}`}
-                      {...props}
-                    >
-                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
-                      <line
-                        className="hit"
-                        x1={a.x}
-                        y1={a.y}
-                        x2={b.x}
-                        y2={b.y}
-                      />
-                    </g>
-                  );
-                })}
+                  })}
             </svg>
           </div>
         </div>
@@ -897,7 +905,9 @@ export function CatanExplorerBoard({
             <div hidden={collapsed}>
               {alternatives.length > 1 && (
                 <label>
-                  选择船只或舱位
+                  {selected.type === "catan_explorer_unit"
+                    ? "选择招募单位与归还货物"
+                    : "选择船只或舱位"}
                   <select
                     value={explorerActionKey(selected)}
                     onChange={(e) => {
@@ -912,7 +922,7 @@ export function CatanExplorerBoard({
                         key={explorerActionKey(a)}
                         value={explorerActionKey(a)}
                       >
-                        {describe(a)}
+                        {explorerActionOptionLabel(g, a)}
                       </option>
                     ))}
                   </select>
