@@ -6,6 +6,9 @@ func (s *State) catanCityView(v map[string]any, player int) {
 	if k := g.CitiesKnights; k != nil {
 		public := v["citiesKnights"].(map[string]any)
 		delete(public, "progressDecks")
+		// The saved production queue is server-only. Clients receive the
+		// current response through pending and the public result through eventDie.
+		delete(public, "event")
 		public["progressRemaining"] = []int{len(k.ProgressDecks[0]), len(k.ProgressDecks[1]), len(k.ProgressDecks[2])}
 		v["progressRules"] = CatanProgressRules()
 		playable := []int{}

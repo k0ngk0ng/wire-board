@@ -137,6 +137,12 @@ func TestCatanCityEventsProgressDiscardBeforeProductionAndPrivacy(t *testing.T) 
 	}
 	for _, viewer := range []int{-1, 0, 1, 2} {
 		view := s.View(viewer)["catan"].(map[string]any)["citiesKnights"].(map[string]any)
+		if _, ok := view["event"]; ok {
+			t.Fatal("internal production queue exposed to viewer", viewer)
+		}
+		if view["pending"] == nil || view["eventDie"] != float64(0) {
+			t.Fatal("public response or rolled event die missing")
+		}
 		if _, ok := view["progressDecks"]; ok {
 			t.Fatal("progress deck leaked")
 		}
