@@ -1,5 +1,11 @@
 const scenarios = [
   {
+    id: "cities-knights",
+    name: "城市与骑士",
+    description:
+      "发展科学、贸易和政治，派骑士抵御蛮族；三至四人随机地图，13 分获胜。",
+  },
+  {
     id: "spices-for-catan",
     name: "探索者与海盗 · 卡坦香料",
     description:
@@ -116,6 +122,7 @@ export function CatanScenarioPicker({
                   [
                     "rivers",
                     "caravans",
+                    "cities-knights",
                     "land-ho",
                     "spices-for-catan",
                   ].includes(s.id)) ||

@@ -62,8 +62,8 @@ type CatanCitiesKnights struct {
 	Pending           *CatanCityPending    `json:"pending,omitempty"`
 }
 
-// Internal construction only. Room configuration and expansion UI are not
-// exposed until complete combination and end-to-end acceptance.
+// Public three/four-player rooms use this through the configured constructor.
+// Larger games and combinations retain their separate setup validation.
 func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("Helpers尚无与城市与骑士组合的官方兼容规则")
