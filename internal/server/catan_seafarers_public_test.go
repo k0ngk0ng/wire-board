@@ -253,8 +253,8 @@ func TestCatanSeafarersPublicRejectsCorruptSavedSetup(t *testing.T) {
 		func(r *Room) { r.CatanOptions.FiveSix = true },
 		func(r *Room) { r.CatanTwoRules = game.CatanTwoRules },
 		func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} },
-		func(r *Room) { r.CatanFriendlyRobber = &game.CatanFriendlyRobberSetup{} },
-		func(r *Room) { r.CatanHarbors = &game.CatanHarborsSetup{} },
+		func(r *Room) { r.CatanFriendlyRobber = &game.CatanFriendlyRobberSetup{Rules: "wrong"} },
+		func(r *Room) { r.CatanHarbors = &game.CatanHarborsSetup{Rules: "wrong"} },
 		func(r *Room) { r.CatanBaseConfiguration = &game.CatanBaseConfiguration{} },
 		func(r *Room) { r.CatanNewWorldMap = &game.CatanNewWorldMap{} },
 	} {
@@ -269,6 +269,31 @@ func TestCatanSeafarersPublicRejectsCorruptSavedSetup(t *testing.T) {
 		after, _ := json.Marshal(s.rooms[id])
 		if string(before) != string(after) || s.rooms[id].Game != nil {
 			t.Fatal("invalid save started or partially changed")
+		}
+	}
+	// Public variants may now be switched off without deleting their draft.
+	// Both legacy missing versions and normalized current versions remain
+	// valid when disabled; neither may silently enable a variant on restart.
+	for _, versioned := range []bool{false, true} {
+		var r Room
+		if err := json.Unmarshal(valid, &r); err != nil {
+			t.Fatal(err)
+		}
+		r.CatanFriendlyRobber = &game.CatanFriendlyRobberSetup{}
+		r.CatanHarbors = &game.CatanHarborsSetup{}
+		if versioned {
+			r.CatanFriendlyRobber.Rules = game.CatanFriendlyRobberRules
+			r.CatanHarbors.Rules = game.CatanHarborsRules
+		}
+		s.rooms[id] = &r
+		if err := s.save(&r); err != nil {
+			t.Fatal(err)
+		}
+		s, ts = restartRiversHTTP(t, s, ts, []*testClient{host}, id)
+		host.command(current(host), "start", nil, 200)
+		g := s.rooms[id].Game.Catan
+		if g.FriendlyRobber != nil || g.Harbors != nil || g.Seafarers.VictoryPoints != 14 {
+			t.Fatal("disabled saved variant changed the new game", versioned)
 		}
 	}
 }
