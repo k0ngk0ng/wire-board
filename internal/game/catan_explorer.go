@@ -308,7 +308,7 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 		v["explorer"].(map[string]any)["pirate"] = clone(x.Pirate)
 	}
 	if x.Lairs != nil {
-		v["explorer"].(map[string]any)["lairs"] = x.Lairs.publicView()
+		v["explorer"].(map[string]any)["lairs"] = x.Lairs.publicView(x.Board)
 	}
 	if x.Spice != nil {
 		v["explorer"].(map[string]any)["spice"] = x.Spice.publicView(g)

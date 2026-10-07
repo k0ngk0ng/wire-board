@@ -96,7 +96,13 @@ func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) in
 			return errors.New("请选择两个不同地块上的数字，不能交换2、6、8、12")
 		}
 		left, right := g.Tiles[a.Tile].Number, g.Tiles[a.Target].Number
-		g.Tiles[a.Tile].Number, g.Tiles[a.Target].Number = right, left
+		if g.Explorer != nil {
+			if err := g.Explorer.Board.swapNumbers(g, a.Tile, a.Target); err != nil {
+				return err
+			}
+		} else {
+			g.Tiles[a.Tile].Number, g.Tiles[a.Target].Number = right, left
+		}
 		s.catanLog(player, "交换地块 #%d 的%d和地块 #%d 的%d，强盗位置不变", a.Tile+1, left, a.Target+1, right)
 	case 4, 6:
 		color := 3

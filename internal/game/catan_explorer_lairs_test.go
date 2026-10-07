@@ -232,18 +232,18 @@ func TestCatanExplorerLairsGoldShortageAtomicAndSoloHero(t *testing.T) {
 }
 func TestCatanExplorerLairsHiddenNumbersAndPublicCopies(t *testing.T) {
 	q := newExplorerLairsFixture(t, 2)
-	before, _ := json.Marshal(q.L.publicView())
+	before, _ := json.Marshal(q.L.publicView(q.B))
 	q.L.Sites[0].Number, q.L.Sites[1].Number = q.L.Sites[1].Number, q.L.Sites[0].Number
-	after, _ := json.Marshal(q.L.publicView())
+	after, _ := json.Marshal(q.L.publicView(q.B))
 	if string(before) != string(after) {
 		t.Fatal("hidden token numbers leaked")
 	}
 	q.restore(t)
 	beforeState := q.bytes()
-	view := q.L.publicView()
+	view := q.L.publicView(q.B)
 	view.Progress[0] = 7
 	view.Sites[0].Tile = -1
-	raw, _ := json.Marshal(q.L.publicView())
+	raw, _ := json.Marshal(q.L.publicView(q.B))
 	var v map[string]any
 	if err := json.Unmarshal(raw, &v); err != nil {
 		t.Fatal(err)
