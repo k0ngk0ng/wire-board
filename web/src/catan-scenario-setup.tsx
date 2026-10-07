@@ -183,7 +183,7 @@ export function CatanFishingSeaPicker({
         {fixedRequired
           ? "先将海图切为固定布局，才能加入渔夫。"
           : blocked
-            ? "先关闭 Helpers、城市骑士和港口霸主，才能加入渔夫。"
+            ? "先关闭 Helpers、城市骑士、港口霸主和友善强盗，才能加入渔夫。"
             : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
     </fieldset>
@@ -216,6 +216,8 @@ export function CatanScenarioPicker({
   helpers = false,
   knights = false,
   fishing = false,
+  friendly = false,
+  harbors = false,
   players = 3,
 }: {
   value: string;
@@ -224,6 +226,8 @@ export function CatanScenarioPicker({
   helpers?: boolean;
   knights?: boolean;
   fishing?: boolean;
+  friendly?: boolean;
+  harbors?: boolean;
   players?: number;
 }) {
   return (
@@ -253,6 +257,16 @@ export function CatanScenarioPicker({
                   ].includes(s.id)) ||
                 (players > 4 &&
                   !["spices-for-catan", "barbarian-attack"].includes(s.id)) ||
+                (friendly && s.id === "shores" && players < 4) ||
+                (friendly &&
+                  isPublicCatanSea(s.id) &&
+                  ![
+                    "shores",
+                    "desert",
+                    "cloth",
+                    "pirate_islands",
+                    "wonders",
+                  ].includes(s.id)) ||
                 (fishing &&
                   isPublicCatanSea(s.id) &&
                   !supportsPublicCatanFishingSea(s.id)) ||
@@ -267,8 +281,12 @@ export function CatanScenarioPicker({
         </select>
       </label>
       <p className="muted small">
-        {knights && supportsPublicCatanKnightsCombination(value)
-          ? catanScenarioVictory(value, catanVictoryTarget(value, true))
+        {harbors || (knights && supportsPublicCatanKnightsCombination(value))
+          ? catanScenarioVictory(
+              value,
+              catanVictoryTarget(value, knights || value === "cities-knights") +
+                (harbors ? 1 : 0),
+            )
           : scenarios.find((s) => s.id === value)?.description}
       </p>
       {["rivers", "transport"].includes(value) && (

@@ -110,8 +110,19 @@ func assertPublicHarborPoints(t *testing.T, state *game.State) {
 }
 
 func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
+	testCatanPublicVariantsFullHTTP(t, false, true)
+}
+func TestCatanFriendlyPublicFullHTTPGames(t *testing.T) {
+	for _, harbors := range []bool{false, true} {
+		t.Run(fmt.Sprintf("harbors=%v", harbors), func(t *testing.T) { testCatanPublicVariantsFullHTTP(t, true, harbors) })
+	}
+}
+func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 	for _, scene := range []string{"", "shores", "islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world"} {
 		for _, n := range []int{3, 4} {
+			if friendly && scene != "" && !game.CatanFriendlySeafarersSupported(n, scene) {
+				continue
+			}
 			t.Run(fmt.Sprintf("%s/%d", scene, n), func(t *testing.T) {
 				s, ts := setupServer(t)
 				stopBotTicker(s)
@@ -120,7 +131,14 @@ func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
 					clients[p] = newClient(t, ts.URL)
 					clients[p].register(fmt.Sprintf("港口整局%d", p))
 				}
-				raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "公开港口整局", "capacity": n, "catanScenario": scene, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 201)
+				body := map[string]any{"kind": "catan", "name": "公开变体整局", "capacity": n, "catanScenario": scene}
+				if harbors {
+					body["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
+				}
+				if friendly {
+					body["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+				}
+				raw := clients[0].post("/api/rooms", body, 201)
 				id := raw["id"].(string)
 				for p := 1; p < n; p++ {
 					clients[p].command(current(clients[0]), "join", nil, 200)
@@ -141,6 +159,9 @@ func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
 				clients[0].command(current(clients[0]), "start", nil, 200)
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 				expected := map[string]int{"": 11, "shores": 15, "islands": 14, "fog": 13, "desert": 15, "tribe": 14, "cloth": 15, "pirate_islands": 11, "wonders": 11, "new_world": 13}[scene]
+				if !harbors {
+					expected--
+				}
 				steps, automatic, timeouts := 0, 0, 0
 				for ; steps < 10000 && !s.rooms[id].Game.Finished; steps++ {
 					r := s.rooms[id]
@@ -149,7 +170,12 @@ func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
 						s, ts = restartRiversHTTP(t, s, ts, clients, id)
 						r, state = s.rooms[id], s.rooms[id].Game
 					}
-					assertPublicHarborPoints(t, state)
+					if harbors {
+						assertPublicHarborPoints(t, state)
+					}
+					if friendly {
+						assertPublicFriendlyProtection(t, state)
+					}
 					g := state.Catan
 					for color, total := range g.Bank {
 						for _, p := range g.Players {
@@ -166,7 +192,7 @@ func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
 					if steps%53 == 0 {
 						for _, viewer := range []int{actor, n} {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
-							if v["victoryTarget"] != float64(expected) || v["harbors"] == nil {
+							if v["victoryTarget"] != float64(expected) || (v["harbors"] != nil) != harbors {
 								t.Fatal("wrong combined target", v["victoryTarget"], expected)
 							}
 							for p, raw := range v["players"].([]any) {
@@ -212,7 +238,12 @@ func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
 				if r.Status != "finished" || !r.Game.Finished || automatic == 0 || timeouts == 0 {
 					t.Fatal("incomplete game", steps)
 				}
-				assertPublicHarborPoints(t, r.Game)
+				if harbors {
+					assertPublicHarborPoints(t, r.Game)
+				}
+				if friendly {
+					assertPublicFriendlyProtection(t, r.Game)
+				}
 				winner := r.Game.Winners[0]
 				if scene == "cloth" {
 					assertPublicHarborsClothVictory(t, r.Game, expected)
@@ -244,8 +275,11 @@ func TestCatanHarborsSeaPublicFullHTTPGames(t *testing.T) {
 					t.Fatal("duplicate history")
 				}
 				record := records[0].(map[string]any)
-				if record["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules {
+				if harbors && record["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules {
 					t.Fatal("missing award history")
+				}
+				if friendly && record["catanExpansionRules"].(map[string]any)["friendly_robber"] != game.CatanFriendlyRobberRules {
+					t.Fatal("missing friendly history")
 				}
 				if scene != "" && record["catanScenario"] != scene {
 					t.Fatal("wrong map history")

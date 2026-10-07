@@ -13,19 +13,56 @@ export function CatanFriendlyRobberPicker({
   command: (type: string, extra?: Record<string, unknown>) => void;
 }) {
   const setup = room.catanFriendlyRobber;
-  if (!setup) return null;
+  const eligible =
+    room.capacity >= 3 &&
+    room.capacity <= 4 &&
+    !room.catanTwoRules &&
+    !room.catanFishing &&
+    (!room.catanScenario || !!room.catanSeafarers);
+  if (room.catanFishing || (!setup && !eligible)) return null;
   const availability = room.catanFriendlyRobberAvailability;
-  const incompatible = availability
-    ? !availability.allowed
-    : !!(
-        room.catanSeafarers ||
-        room.catanNewWorldMap ||
-        room.catanCitiesKnights ||
-        room.catanOptions?.helpers ||
-        room.catanOptions?.allHelpers
-      );
-  const info = catanRuleContext(room);
-  const threeBuildings = ["cloth", "pirate_islands"].includes(info.scenario);
+  const reason = !eligible
+    ? "此组合当前开放三至四人，请先关闭五至六人扩充。"
+    : !availability?.allowed
+      ? availability?.reason || "该组合尚未开放。"
+      : "";
+  return (
+    <CatanFriendlyRobberChoice
+      value={!!setup?.enabled}
+      onChange={(enabled) =>
+        command("catan_friendly_robber", { catanFriendlyRobber: { enabled } })
+      }
+      disabled={disabled}
+      reason={reason}
+      scenario={catanRuleContext(room).scenario}
+      needed={
+        setup?.enabled
+          ? Math.max(0, (availability?.minPlayers || 3) - room.seats.length)
+          : 0
+      }
+    />
+  );
+}
+
+export const supportsPublicCatanFriendly = (scenario?: string) =>
+  !scenario ||
+  ["shores", "desert", "cloth", "pirate_islands", "wonders"].includes(scenario);
+
+export function CatanFriendlyRobberChoice({
+  value,
+  onChange,
+  disabled = false,
+  reason = "",
+  scenario = "",
+  needed = 0,
+}: {
+  value: boolean;
+  onChange: (enabled: boolean) => void;
+  disabled?: boolean;
+  reason?: string;
+  scenario?: string;
+  needed?: number;
+}) {
   return (
     <fieldset
       className="catan-helper-options catan-friendly-options"
@@ -35,35 +72,25 @@ export function CatanFriendlyRobberPicker({
       <label>
         <input
           type="checkbox"
-          checked={setup.enabled}
-          disabled={disabled || (!setup.enabled && incompatible)}
-          onChange={(e) =>
-            command("catan_friendly_robber", {
-              catanFriendlyRobber: { enabled: e.target.checked },
-            })
-          }
+          checked={value}
+          disabled={disabled || (!value && !!reason)}
+          onChange={(e) => onChange(e.target.checked)}
         />{" "}
         启用友善强盗
       </label>
       <p>
-        {threeBuildings
+        {["cloth", "pirate_islands"].includes(scenario)
           ? "本剧本完成起始建设后，每人至少有3点建筑分，正常行动中不会触发友善保护。"
           : "公开分数不足3分的玩家受到保护，强盗不能放到其建筑旁。隐藏胜利点不计入判断。"}
       </p>
       <small>
-        {incompatible
-          ? availability?.reason || "该扩展的友善强盗组合尚未核验。"
-          : "不改变获胜门槛、弃牌规则或回合时间。更改后需要重新准备。"}
+        {reason || "不改变获胜门槛、弃牌规则或回合时间。更改后需要重新准备。"}
       </small>
-      {setup.enabled && room.catanSeafarers?.scenario === "shores" && (
+      {value && scenario === "shores" && (
         <small>友善强盗的新海岸组合至少需要4位玩家；三人地图没有沙漠。</small>
       )}
-      {setup.enabled && room.seats.length < (availability?.minPlayers || 3) && (
-        <strong>
-          还需{" "}
-          {Math.max(0, (availability?.minPlayers || 3) - room.seats.length)}{" "}
-          位玩家才能开局，可添加电脑。
-        </strong>
+      {needed > 0 && (
+        <strong>还需 {needed} 位玩家才能开局，可添加电脑。</strong>
       )}
     </fieldset>
   );

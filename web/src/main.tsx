@@ -7,6 +7,8 @@ import { CatanRiverSeat } from "./catan-rivers";
 import { fishResponder } from "./catan-fishing-state";
 import {
   CatanFriendlyRobberPicker,
+  CatanFriendlyRobberChoice,
+  supportsPublicCatanFriendly,
   CatanFriendlyRobberSeat,
 } from "./catan-friendly-robber";
 import {
@@ -1962,6 +1964,7 @@ function Create({
   const [catanScenario, setCatanScenario] = useState("");
   const [catanFishing, setCatanFishing] = useState(false);
   const [catanHarbors, setCatanHarbors] = useState(false);
+  const [catanFriendly, setCatanFriendly] = useState(false);
   const [catanSeaKnights, setCatanSeaKnights] = useState(false);
   const [gemOptions, setGemOptions] = useState<SplendorOptions>({});
   const map = maps.find((m) => m.id === railMap);
@@ -1992,6 +1995,15 @@ function Create({
                     ? catanTwoScenario
                     : undefined
                   : catanScenario
+                : undefined,
+            catanFriendlyRobber:
+              k === "catan" &&
+              capacity >= 3 &&
+              capacity <= 4 &&
+              catanFriendly &&
+              !catanFishing &&
+              supportsPublicCatanFriendly(catanScenario)
+                ? { enabled: true }
                 : undefined,
             catanHarbors:
               k === "catan" &&
@@ -2041,18 +2053,21 @@ function Create({
                         x === "sanguosha"
                           ? 4
                           : x === "catan"
-                            ? catanOptions.fiveSix
-                              ? 5
-                              : catanSeaKnights ||
-                                  catanFishing ||
-                                  catanHarbors ||
-                                  [
-                                    "cities-knights",
-                                    "fishing",
-                                    "barbarian-attack",
-                                  ].includes(catanScenario)
-                                ? 3
-                                : 2
+                            ? catanFriendly && catanScenario === "shores"
+                              ? 4
+                              : catanOptions.fiveSix
+                                ? 5
+                                : catanSeaKnights ||
+                                    catanFishing ||
+                                    catanHarbors ||
+                                    catanFriendly ||
+                                    [
+                                      "cities-knights",
+                                      "fishing",
+                                      "barbarian-attack",
+                                    ].includes(catanScenario)
+                                  ? 3
+                                  : 2
                             : 2,
                         Math.min(
                           capacity,
@@ -2102,12 +2117,18 @@ function Create({
               catanScenario,
             )) && (
             <CatanScenarioPicker
+              players={capacity}
               value={catanScenario}
               helpers={!!catanOptions.helpers}
               knights={catanSeaKnights}
               fishing={catanFishing}
+              friendly={catanFriendly}
+              harbors={catanHarbors}
               onChange={(scenario) => {
                 setCatanScenario(scenario);
+                if (!supportsPublicCatanFriendly(scenario))
+                  setCatanFriendly(false);
+                if (scenario === "shores" && catanFriendly) setCapacity(4);
                 if (!supportsPublicCatanHarbors(scenario))
                   setCatanHarbors(false);
                 if (!supportsPublicCatanFishingSea(scenario))
@@ -2119,7 +2140,11 @@ function Create({
                 if (
                   !["spices-for-catan", "barbarian-attack"].includes(scenario)
                 )
-                  setCapacity(Math.min(4, capacity));
+                  setCapacity(
+                    scenario === "shores" && catanFriendly
+                      ? 4
+                      : Math.min(4, capacity),
+                  );
                 if (scenario && !isPublicCatanSea(scenario))
                   setCatanOptions({});
               }}
@@ -2132,7 +2157,10 @@ function Create({
               value={catanFishing}
               onChange={setCatanFishing}
               blocked={
-                !!catanOptions.helpers || catanSeaKnights || catanHarbors
+                !!catanOptions.helpers ||
+                catanSeaKnights ||
+                catanHarbors ||
+                catanFriendly
               }
             />
           )}
@@ -2140,7 +2168,7 @@ function Create({
           capacity >= 3 &&
           supportsPublicCatanKnightsCombination(catanScenario) && (
             <CatanCombinationKnightsPicker
-              disabled={catanFishing}
+              disabled={catanFishing || catanFriendly}
               fishing={catanScenario === "fishing"}
               value={catanSeaKnights}
               helpers={!!catanOptions.helpers}
@@ -2165,6 +2193,24 @@ function Create({
             />
           )}
         {k === "catan" &&
+          capacity >= 3 &&
+          capacity <= 4 &&
+          !catanFishing &&
+          supportsPublicCatanFriendly(catanScenario) && (
+            <CatanFriendlyRobberChoice
+              value={catanFriendly}
+              onChange={setCatanFriendly}
+              scenario={catanScenario}
+              reason={
+                catanOptions.helpers || catanSeaKnights
+                  ? "请先关闭 Helpers 和城市骑士。"
+                  : catanScenario === "shores" && capacity < 4
+                    ? "新海岸的友善强盗需要四人，请先选择四个座位。"
+                    : ""
+              }
+            />
+          )}
+        {k === "catan" &&
           capacity !== 2 &&
           !catanSeaKnights &&
           !catanFishing &&
@@ -2174,8 +2220,11 @@ function Create({
               seafarers={isPublicCatanSea(catanScenario)}
               citiesKnights={catanSeaKnights}
               harbors={catanHarbors}
+              friendlyRobber={catanFriendly}
               fiveSixAvailable={
-                !isPublicCatanSea(catanScenario) && !catanHarbors
+                !isPublicCatanSea(catanScenario) &&
+                !catanHarbors &&
+                !catanFriendly
               }
               onChange={(o) => {
                 setCatanOptions(o);
@@ -2230,21 +2279,24 @@ function Create({
                         k === "sanguosha"
                           ? 5
                           : k === "catan"
-                            ? catanScenario === "spices-for-catan"
-                              ? 5
-                              : catanScenario === "barbarian-attack"
-                                ? 4
-                                : catanOptions.fiveSix ||
-                                    catanSeaKnights ||
-                                    catanFishing ||
-                                    catanHarbors ||
-                                    [
-                                      "cities-knights",
-                                      "fishing",
-                                      "barbarian-attack",
-                                    ].includes(catanScenario)
-                                  ? 2
-                                  : 3
+                            ? catanFriendly && catanScenario === "shores"
+                              ? 1
+                              : catanScenario === "spices-for-catan"
+                                ? 5
+                                : catanScenario === "barbarian-attack"
+                                  ? 4
+                                  : catanOptions.fiveSix ||
+                                      catanSeaKnights ||
+                                      catanFishing ||
+                                      catanHarbors ||
+                                      catanFriendly ||
+                                      [
+                                        "cities-knights",
+                                        "fishing",
+                                        "barbarian-attack",
+                                      ].includes(catanScenario)
+                                    ? 2
+                                    : 3
                             : k === "rail"
                               ? (map?.maxPlayers || 5) - 1
                               : k === "carcassonne"
@@ -2256,18 +2308,21 @@ function Create({
                       (k === "sanguosha"
                         ? 4
                         : k === "catan"
-                          ? catanOptions.fiveSix
-                            ? 5
-                            : catanSeaKnights ||
-                                catanFishing ||
-                                catanHarbors ||
-                                [
-                                  "cities-knights",
-                                  "fishing",
-                                  "barbarian-attack",
-                                ].includes(catanScenario)
-                              ? 3
-                              : 2
+                          ? catanFriendly && catanScenario === "shores"
+                            ? 4
+                            : catanOptions.fiveSix
+                              ? 5
+                              : catanSeaKnights ||
+                                  catanFishing ||
+                                  catanHarbors ||
+                                  catanFriendly ||
+                                  [
+                                    "cities-knights",
+                                    "fishing",
+                                    "barbarian-attack",
+                                  ].includes(catanScenario)
+                                ? 3
+                                : 2
                           : 2),
                   )
               ).map((n) => (
@@ -2343,8 +2398,7 @@ function Waiting({
       room.catanScenario === "fishing" ||
       isPublicCatanSea(room.catanScenario)) &&
     (!room.catanSeafarers || isPublicCatanSea(room.catanScenario)) &&
-    (!room.catanNewWorldMap || room.catanScenario === "new_world") &&
-    !room.catanFriendlyRobber;
+    (!room.catanNewWorldMap || room.catanScenario === "new_world");
   const twoLabel =
     room.kind === "catan" && room.catanTwoRules
       ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`
@@ -2438,6 +2492,8 @@ function Waiting({
             value={room.catanScenario || ""}
             players={room.capacity}
             fishing={!!room.catanFishing}
+            friendly={!!room.catanFriendlyRobber?.enabled}
+            harbors={!!room.catanHarbors?.enabled}
             helpers={!!room.catanOptions?.helpers}
             knights={
               !!room.catanCitiesKnights &&
@@ -2461,7 +2517,8 @@ function Waiting({
               blocked={
                 !!room.catanOptions?.helpers ||
                 !!room.catanCitiesKnights ||
-                !!room.catanHarbors?.enabled
+                !!room.catanHarbors?.enabled ||
+                !!room.catanFriendlyRobber?.enabled
               }
               onChange={(enabled) => command("catan_fishing", { enabled })}
             />
@@ -2472,7 +2529,13 @@ function Waiting({
               fishing={room.catanScenario === "fishing"}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}
-              disabled={!host || busy || mapDirty || !!room.catanFishing}
+              disabled={
+                !host ||
+                busy ||
+                mapDirty ||
+                !!room.catanFishing ||
+                !!room.catanFriendlyRobber?.enabled
+              }
               onChange={(enabled) =>
                 command("catan_cities_knights", {
                   catanCitiesKnights: enabled ? { layout: "variable" } : null,
@@ -2485,7 +2548,7 @@ function Waiting({
         )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
-          !room.catanScenario && (
+          (!room.catanScenario || isPublicCatanSea(room.catanScenario)) && (
             <CatanFriendlyRobberPicker
               room={room}
               disabled={!host || busy || mapDirty}
@@ -2532,7 +2595,9 @@ function Waiting({
               value={room.catanOptions}
               fiveSixAvailable={
                 !isPublicCatanSea(room.catanScenario) &&
-                (!room.catanHarbors?.enabled || !!room.catanOptions?.fiveSix)
+                (!room.catanHarbors?.enabled || !!room.catanOptions?.fiveSix) &&
+                (!room.catanFriendlyRobber?.enabled ||
+                  !!room.catanOptions?.fiveSix)
               }
               seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
               citiesKnights={!!room.catanCitiesKnights}

@@ -30,6 +30,11 @@ func (r *Room) validateCatanScenario() error {
 	if err := r.validateCatanFishing(); err != nil {
 		return err
 	}
+	if r.friendlyRobberEnabled() {
+		if err := r.validateCatanFriendlyRobber(max(3, r.Capacity)); err != nil {
+			return err
+		}
+	}
 	if r.CatanScenario == "" {
 		return nil
 	}
@@ -46,7 +51,7 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "cities-knights" {
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights == nil {
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.friendlyRobberEnabled() || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights == nil {
 			return errors.New("城市与骑士当前支持三至四人随机地图；其他组合需使用对应配置")
 		}
 		setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
@@ -72,7 +77,7 @@ func (r *Room) validateCatanScenario() error {
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err
 		}
-		if r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanBaseConfiguration != nil {
+		if r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil {
 			return errors.New("所选航海家剧本与该扩展的组合尚未开放")
 		}
 		if r.CatanCitiesKnights != nil {
@@ -123,6 +128,9 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if scenario != "" && !publicCatanSeaScenario(scenario) {
+		next.CatanFriendlyRobber = nil
+	}
 	if !publicCatanHarborsScenario(scenario) {
 		next.CatanHarbors = nil
 	}
@@ -173,6 +181,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	r.CatanScenario = scenario
 	r.CatanHarbors = next.CatanHarbors
+	r.CatanFriendlyRobber = next.CatanFriendlyRobber
 	r.CatanFishing = next.CatanFishing
 	r.CatanTwoRules, r.CatanTwoScenario = next.CatanTwoRules, next.CatanTwoScenario
 	r.CatanCitiesKnights = next.CatanCitiesKnights

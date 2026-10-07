@@ -5,7 +5,11 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Public commands may edit an existing internally provisioned field only.
+func (r *Room) publicCatanFriendlyAvailable() bool {
+	return r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 4 && !r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && (r.CatanScenario == "" || publicCatanSeaScenario(r.CatanScenario))
+}
+
+// Existing internal recipes continue to use the same normalized setup.
 func (r *Room) setCatanFriendlyRobber(request game.CatanFriendlyRobberSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" {
 		return errors.New("只能在卡坦岛开局前调整友善强盗")
@@ -34,8 +38,8 @@ func (r *Room) friendlyRobberEnabled() bool {
 }
 
 func (r *Room) validateCatanFriendlyRobber(n int) error {
-	if r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanOptions.Helpers || r.CatanOptions.AllHelpers {
-		return errors.New("友善强盗与新世界、城市骑士或助手的组合尚未核验")
+	if r.CatanFishing || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanOptions.Helpers || r.CatanOptions.AllHelpers {
+		return errors.New("友善强盗与渔夫、新世界、城市骑士或助手的组合尚未核验")
 	}
 	if r.CatanSeafarers != nil && r.CatanSeafarers.Scenario == "shores" && n == 3 {
 		return errors.New("新海岸的三人地图没有沙漠，请凑齐4人或更换剧本")
