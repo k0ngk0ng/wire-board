@@ -14,7 +14,8 @@ const (
 
 // catanEventDeck implements the 2025 T&B deck lifecycle only. Normal card IDs
 // are opaque slots, NOT production numbers or a verified card catalogue.
-// Keep this internal until the catalogue and event resolution are integrated.
+// catanEventSession binds slots to an internal legacy-reference catalogue;
+// keep public creation gated until the current physical catalogue is verified.
 // DrawPile is stored bottom first; New Year always sits above five hidden cards.
 type catanEventDeck struct {
 	DrawPile []int  `json:"drawPile"`

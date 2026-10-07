@@ -86,5 +86,21 @@
     ],
     "decision": "Apply the explicit Robber Flees desert instruction as an event-specific exception. Keep the ordinary numbered-terrain restriction for sevens and Knights. This is an interpretation combining the printed rules, not a claim of a dedicated FAQ.",
     "qr_check": "Decoded the QR on T&B PDF page 3 in memory: https://www.catan.com/traders-barbarians#combinations. No separate event/Tribe clarification or complete 2025 numbered event deck found there."
-  }
+  },
+  "additional_catalogue_checks": [
+    {
+      "url": "https://www.catan.com/traders-barbarians",
+      "checked_on": "2026-10-07",
+      "sha256": "6f498314be7021cc5d8b162410297db6a6ed8002949b3d90c239e7c3107c4f28",
+      "bytes": 82745,
+      "finding": "Current product page links the 2025 rulebooks and combination PDFs. Its images show the box/board rather than all 36 numbered event faces."
+    },
+    {
+      "url": "https://catanshop.com/catan-traders-barbarians-6th-edition",
+      "checked_on": "2026-10-07",
+      "sha256": "8383576b940b5549b839bcc67c71d2b4b08739378d9a166db78e37ce187790aa",
+      "bytes": 32227,
+      "finding": "Official shop product page exposes only the sixth-edition box image, not the numbered event catalogue."
+    }
+  ]
 }

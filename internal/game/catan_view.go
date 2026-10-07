@@ -5,6 +5,18 @@ import "slices"
 func (s *State) catanView(view map[string]any, player int) {
 	g := s.Catan
 	v := view["catan"].(map[string]any)
+	// Remove hidden storage before any scenario-specific early return.
+	delete(v, "eventDeck")
+	if g.EventDeck != nil && s.validateCatanEventSession() == nil {
+		public, err := g.EventDeck.Deck.view()
+		if err == nil {
+			v["eventDeck"] = struct {
+				catanEventDeckView
+				Catalogue     string `json:"catalogue"`
+				ReferenceOnly bool   `json:"referenceOnly"`
+			}{public, g.EventDeck.Catalogue, true}
+		}
+	}
 	s.catanCityView(v, player)
 	if g.Explorer != nil {
 		s.catanExplorerView(v, player)
