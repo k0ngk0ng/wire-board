@@ -5,8 +5,12 @@ import (
 	"slices"
 )
 
-// Private acceptance constructor. Public room options remain closed until
-// inventory edge cases, UI and remaining missions pass final acceptance.
+// NewCatanExplorerLandHo starts the 2025 printed opening for two to four players.
+// Mission scenarios and expansion combinations use separate constructors.
+func NewCatanExplorerLandHo(players int) (*State, error) {
+	return newCatanExplorerState(players)
+}
+
 func newCatanExplorerState(players int) (*State, error) {
 	g, x, err := newCatanExplorerLandHoWorld(players)
 	if err != nil {

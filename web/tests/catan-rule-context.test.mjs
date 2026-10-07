@@ -327,3 +327,31 @@ test("public Rivers and Caravans drafts use the chosen recipe, saved games win",
     assert.equal(catanRuleContext(room).target, target);
   }
 });
+
+test("public Land Ho waiting rules support two players without trade tokens and saved rules prevail", () => {
+  const room = { capacity: 2, catanScenario: "land-ho", catanOptions: {} };
+  let info = catanRuleContext(room);
+  assert.equal(info.explorer, true);
+  assert.equal(info.two, false);
+  assert.equal(info.target, 8);
+  assert.equal(info.scenario, "land-ho");
+  room.game = {
+    catan: {
+      players: [{}, {}, {}],
+      explorer: { board: { scenario: "land-ho", target: 8 } },
+    },
+  };
+  room.catanScenario = "shores";
+  room.catanTwoRules = "catan-two-2025";
+  info = catanRuleContext(room);
+  assert.equal(info.explorer, true);
+  assert.equal(info.players, 3);
+  assert.equal(info.two, false);
+  assert.equal(info.target, 8);
+  assert.equal(info.scenario, "land-ho");
+  delete room.game.catan.explorer;
+  info = catanRuleContext(room);
+  assert.equal(info.explorer, false);
+  assert.equal(info.target, 10);
+  assert.equal(info.scenario, "");
+});

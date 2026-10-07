@@ -14,11 +14,18 @@ func publicCatanSeaScenario(scenario string) bool {
 	return false
 }
 
-// Public three/four-player recipes. The other scenarios/combinations retain
+// Public recipes (Land Ho: two to four; other scenarios: three to four).
+// The other scenarios/combinations retain
 // their separate acceptance gates; public sea rooms carry both the selected
 // scenario and its normalized map configuration.
 func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
+		return nil
+	}
+	if r.CatanScenario == "land-ho" {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+			return errors.New("初航支持两至四人，使用印刷开局，不能混用其他扩展配置")
+		}
 		return nil
 	}
 	if publicCatanSeaScenario(r.CatanScenario) {
@@ -59,11 +66,16 @@ func (r *Room) validateCatanScenario() error {
 }
 
 func (r *Room) setCatanScenario(scenario string) error {
-	if r.Kind != "catan" || r.Status != "waiting" || r.CatanTwoRules != "" {
-		return errors.New("只能在三至四人卡坦开局前选择剧本")
+	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && scenario != "land-ho") {
+		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if scenario == "land-ho" {
+		next.CatanTwoRules, next.CatanTwoScenario = "", ""
+	} else if r.Capacity == 2 {
+		return errors.New("两人牌桌请通过双人剧本选择器切回双人规则")
+	}
 	if publicCatanSeaScenario(scenario) {
 		if r.CatanSeafarers != nil && !publicCatanSeaScenario(r.CatanScenario) {
 			return errors.New("此组合房间不能切换为普通航海剧本")
@@ -93,6 +105,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 		return nil
 	}
 	r.CatanScenario = scenario
+	r.CatanTwoRules, r.CatanTwoScenario = next.CatanTwoRules, next.CatanTwoScenario
 	r.CatanSeafarers = next.CatanSeafarers
 	r.CatanNewWorldMap = next.CatanNewWorldMap
 	for i := range r.Seats {

@@ -606,7 +606,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		fail(w, 403, "该桌游已下架，暂时不能创建牌桌")
 		return
 	}
-	if req.CatanTwoScenario != "" && (req.Kind != "catan" || req.Capacity != 2) {
+	if req.CatanTwoScenario != "" && (req.Kind != "catan" || req.Capacity != 2 || req.CatanScenario != "") {
 		fail(w, 400, "双人剧本需要两人卡坦牌桌")
 		return
 	}
@@ -681,7 +681,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		hash = string(h)
 	}
 	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
-	if room.Kind == "catan" && room.Capacity == 2 {
+	if room.Kind == "catan" && room.Capacity == 2 && req.CatanScenario != "land-ho" {
 		if err := room.setCatanTwoScenario(req.CatanTwoScenario); err != nil {
 			fail(w, 400, err.Error())
 			return
@@ -917,7 +917,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanScenario(*req.CatanScenario)
 	case "catan_two_scenario":
-		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanTwoRules != game.CatanTwoRules || req.CatanTwoScenario == nil {
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || (next.CatanTwoRules != game.CatanTwoRules && !(next.Capacity == 2 && next.CatanScenario == "land-ho")) || req.CatanTwoScenario == nil {
 			err = errors.New("只有房主能在双人卡坦开局前选择剧本")
 			break
 		}
@@ -1093,6 +1093,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
 						}
 					}
+				} else if next.CatanScenario == "land-ho" {
+					next.Game, err = game.NewCatanExplorerLandHo(len(next.Seats))
 				} else if next.CatanScenario == "rivers" {
 					next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "caravans" {

@@ -1970,9 +1970,17 @@ function Create({
             catanOptions:
               k === "catan" ? (capacity === 2 ? {} : catanOptions) : undefined,
             catanScenario:
-              k === "catan" && capacity !== 2 ? catanScenario : undefined,
+              k === "catan"
+                ? capacity === 2
+                  ? catanTwoScenario === "land-ho"
+                    ? "land-ho"
+                    : undefined
+                  : catanScenario
+                : undefined,
             catanTwoScenario:
-              k === "catan" && capacity === 2 ? catanTwoScenario : undefined,
+              k === "catan" && capacity === 2 && catanTwoScenario !== "land-ho"
+                ? catanTwoScenario
+                : undefined,
             capacity,
           });
         }}
@@ -2122,7 +2130,7 @@ function Create({
                   )
               ).map((n) => (
                 <option key={n} value={n}>
-                  {n} 人{k === "catan" && n === 2 ? "（双人变体）" : ""}
+                  {n} 人
                 </option>
               ))}
             </select>
@@ -2204,7 +2212,7 @@ function Waiting({
       (room.kind === "sanguosha"
         ? 4
         : room.kind === "catan"
-          ? room.catanTwoRules
+          ? room.catanTwoRules || room.catanScenario === "land-ho"
             ? 2
             : room.catanOptions?.fiveSix
               ? 5
@@ -2251,7 +2259,7 @@ function Waiting({
                 : room.kind === "catan"
                   ? room.catanTwoRules
                     ? twoLabel
-                    : `${room.catanScenario ? catanScenarioName(room.catanScenario) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
+                    : `${room.catanScenario ? catanScenarioName(room.catanScenario) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : room.catanScenario === "land-ho" ? "2–4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2260,12 +2268,21 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
-        {twoLabel && (
+        {(twoLabel ||
+          (room.kind === "catan" &&
+            room.capacity === 2 &&
+            room.catanScenario === "land-ho")) && (
           <CatanTwoScenarioPicker
-            value={room.catanTwoScenario || ""}
+            value={
+              room.catanScenario === "land-ho"
+                ? "land-ho"
+                : room.catanTwoScenario || ""
+            }
             disabled={!host || busy}
             onChange={(catanTwoScenario) =>
-              command("catan_two_scenario", { catanTwoScenario })
+              catanTwoScenario === "land-ho"
+                ? command("catan_scenario", { catanScenario: "land-ho" })
+                : command("catan_two_scenario", { catanTwoScenario })
             }
           />
         )}

@@ -6,8 +6,7 @@ import (
 	"slices"
 )
 
-// Private integration aggregate. Land Ho is the first complete map/inventory
-// combination; public room recipes remain gated on complete acceptance.
+// Saved Explorer aggregate; each public room recipe has its own acceptance gate.
 type catanExplorer struct {
 	Spice        *catanExplorerSpice   `json:"spice,omitempty"`
 	Fish         *catanExplorerFish    `json:"fish,omitempty"`

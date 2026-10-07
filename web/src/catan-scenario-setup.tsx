@@ -1,4 +1,9 @@
 const scenarios = [
+  {
+    id: "land-ho",
+    name: "探索者与海盗 · 初航",
+    description: "印刷开局，装载移民并航行探索新岛，8 分获胜；支持两至四人。",
+  },
   { id: "", name: "基础版", description: "采集资源、贸易和建设，10 分获胜。" },
   {
     id: "rivers",
@@ -95,7 +100,9 @@ export function CatanScenarioPicker({
             <option
               key={s.id}
               value={s.id}
-              disabled={helpers && ["rivers", "caravans"].includes(s.id)}
+              disabled={
+                helpers && ["rivers", "caravans", "land-ho"].includes(s.id)
+              }
             >
               {s.name}
             </option>

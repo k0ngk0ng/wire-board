@@ -213,13 +213,13 @@ export function CatanRules({ room }: { room: Room }) {
     return (
       <section className="catan-rules">
         <h3>
-          探索者与海盗 · {explorerScenarioLabel(room.game!.catan!)}
+          探索者与海盗 ·{" "}
+          {room.game?.catan ? explorerScenarioLabel(room.game.catan) : "初航"}
           {info.citiesKnights ? "＋城市与骑士" : ""} · {info.target}分
         </h3>
         <ul>
           <li>
-            {room.game!.catan!.explorer!.board.scenario === "land-ho" &&
-            players <= 4
+            {scenario === "land-ho" && players <= 4
               ? "按印刷位置开局，随机先手；每人有村庄、港口、道路和装有移民的船，另有2金币。双人局的白色和橙色建筑、道路是静态障碍。"
               : info.citiesKnights
                 ? "依次放置起始城市、道路、港口与装有移民的船，另有2金币；起始城市领取相邻地块的一份普通资源。"
@@ -234,7 +234,7 @@ export function CatanRules({ room }: { room: Room }) {
           <li>
             掷出非7点而没有获得资源{info.citiesKnights ? "或商品" : ""}
             时补偿1金币。7点需要超出手牌上限的玩家同时弃半，金币不算手牌。
-            {room.game!.catan!.explorer!.pirate &&
+            {room.game?.catan?.explorer?.pirate &&
               "随后按海盗规则处理海盗移动与偷取。"}
           </li>
           <li>
