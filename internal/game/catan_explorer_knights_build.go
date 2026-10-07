@@ -55,6 +55,12 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	if err := s.validateExplorerCityProduction(); err != nil {
 		return err
 	}
+	if s.Phase == "catan_discard" {
+		return s.catanExplorerCityDiscard(player, a)
+	}
+	if s.Catan.Explorer.Pirate.Pending != nil {
+		return s.catanExplorerCityPirateAction(player, a, catanRandom)
+	}
 	if s.Phase == "catan_roads" {
 		return s.catanExplorerCityRoadAction(player, a)
 	}
@@ -131,7 +137,7 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 		}
 		next.catanLog(player, "将村庄 #%d 升级为%s", a.Vertex+1, map[string]string{"city": "城市", "harbor": "港口"}[kind])
 	case "catan_progress":
-		if !slices.Contains([]int{1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24}, a.Card) {
+		if !slices.Contains([]int{1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24}, a.Card) {
 			return errors.New("本组合尚未接入这张主动进步牌")
 		}
 		if err := next.catanPlayProgress(player, a); err != nil {
