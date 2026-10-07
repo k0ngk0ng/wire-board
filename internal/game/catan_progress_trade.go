@@ -144,7 +144,7 @@ func (s *State) catanCommercialOffer(player int, a Action) error {
 	// pending; no other actions can spend it. Exchange both cards atomically.
 	k.Pending = &CatanCityPending{Kind: "commercial_harbor", Players: []int{a.Target}, Target: player, Color: a.Color}
 	s.Phase = "catan_commercial_harbor"
-	s.catanLog(player, "向玩家 %d 给出%s×1，等待对方选择一张商品", a.Target+1, catanCardName(a.Color))
+	s.catanLog(player, "向玩家 %d 给出1张资源，等待对方选择一张商品", a.Target+1)
 	return nil
 }
 func (s *State) catanTradeProgressChoice(player int, a Action) error {
@@ -168,7 +168,7 @@ func (s *State) catanTradeProgressChoice(player int, a Action) error {
 		g.Players[q.Target].Resources[a.Color]++
 		g.Players[q.Target].Resources[q.Color]--
 		g.Players[player].Resources[q.Color]++
-		s.catanLog(q.Target, "与玩家 %d 完成商业港交换：%s×1换得%s×1", player+1, catanCardName(q.Color), catanCardName(a.Color))
+		s.catanLog(q.Target, "与玩家 %d 完成商业港交换：1张资源换得1张商品", player+1)
 	default:
 		return errors.New("未知贸易进步牌回应")
 	}
