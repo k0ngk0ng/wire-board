@@ -58,6 +58,9 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	if s.Phase == "catan_roads" {
 		return s.catanExplorerCityRoadAction(player, a)
 	}
+	if s.Phase == "catan_roll" {
+		return s.catanExplorerCityRollAction(player, a, catanRandom)
+	}
 	g, x := s.Catan, s.Catan.Explorer
 	respond := a.Type == "catan_trade_accept" || a.Type == "catan_trade_reject"
 	if s.Finished || s.Phase != "catan_turn" || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || player != s.Turn && !respond || a.Prompt < 1 || uint64(a.Prompt) != g.TurnSerial || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || a.Skill != "" {

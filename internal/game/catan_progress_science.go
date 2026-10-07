@@ -31,6 +31,12 @@ func (g *Catan) inventionTiles() []int {
 }
 
 func (s *State) catanPlayProgress(player int, a Action) error {
+	return s.catanPlayProgressRandom(player, a, catanRandom)
+}
+
+// The random source belongs to the server, never to Action. Alchemy changes
+// production dice only; keep the event roll independently testable.
+func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) int) error {
 	g := s.Catan
 	k := g.CitiesKnights
 	if k == nil || g.setup() || player != s.Turn || a.Card < 0 || a.Card >= len(catanProgressRules) {
@@ -75,7 +81,11 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 	switch a.Card {
 	case 0:
 		// Only the production dice are chosen. The event die remains server-random.
-		return s.catanCityRoll(a.Tokens[0], a.Tokens[1], catanRandom(6))
+		face := randN(6)
+		if g.Explorer != nil {
+			return s.catanExplorerCityRoll(a.Tokens[0], a.Tokens[1], face)
+		}
+		return s.catanCityRoll(a.Tokens[0], a.Tokens[1], face)
 	case 1:
 		return s.catanCityBuild(player, Action{Type: "catan_improvement", Color: a.Color}, 1)
 	case 2:
