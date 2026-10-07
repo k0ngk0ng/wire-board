@@ -25,7 +25,7 @@ func (s *State) applyCatanExplorerSpice(player int, a Action) (bool, error) {
 	case "deliver":
 		s.catanLog(player, "向议会岛交付一袋香料，任务前进一步")
 	case "gold":
-		s.catanLog(player, "使用金币农场，将1张资源换为1金币")
+		s.catanLog(player, "使用金币农场，将%s×1换为1金币", catanCardName(a.Card))
 	}
 	g.Trade = nil
 	s.catanExplorerMissionScore()

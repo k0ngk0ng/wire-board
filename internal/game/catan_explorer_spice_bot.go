@@ -91,7 +91,7 @@ func (s *State) catanExplorerSpiceBotGold(player int, reserve []int) (Action, bo
 		return Action{}, false
 	}
 	for _, a := range s.catanExplorerSpiceChoices(player) {
-		if a.Type == "catan_explorer_spice_gold" && g.Players[player].Resources[a.Card] > reserve[a.Card] {
+		if a.Type == "catan_explorer_spice_gold" && a.Card < len(reserve) && g.Players[player].Resources[a.Card] > reserve[a.Card] {
 			a.Prompt = int(g.TurnSerial)
 			return a, true
 		}

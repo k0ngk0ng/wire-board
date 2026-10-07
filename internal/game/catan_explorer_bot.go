@@ -11,14 +11,8 @@ func catanExplorerBotSite(g *Catan, player, vertex int, roadRequired bool) bool 
 	if !catanExplorerLandVertex(g, vertex) || g.Explorer != nil && !g.Explorer.Cargo.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
 		return false
 	}
-	count := 0
 	connected := false
-	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 1 {
-			count++
-		}
-	}
-	if count >= 5 {
+	if g.settlementPiecesLeft(player) <= 0 {
 		return false
 	}
 	for _, edge := range g.Edges {

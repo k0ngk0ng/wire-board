@@ -135,6 +135,15 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	if err := fleet.validate(g); err != nil {
 		return err
 	}
+	fallen := map[int]bool{}
+	if k := g.CitiesKnights; k != nil {
+		for _, v := range k.FallenCities {
+			if v < 0 || v >= len(g.Vertices) || fallen[v] || g.Vertices[v].Level != 1 || g.Vertices[v].Harbor || g.Vertices[v].Owner < 0 {
+				return errors.New("横置城市记录无效")
+			}
+			fallen[v] = true
+		}
+	}
 	settlements, harbors, cities, roads := map[int]int{}, map[int]int{}, map[int]int{}, map[int]int{}
 	for _, v := range g.Vertices {
 		if v.Level == 0 && v.Owner == -1 && !v.Harbor {
@@ -143,7 +152,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		if v.Harbor && v.Level != 2 || v.Level < 1 || v.Level > 2 || v.Owner == -1 || v.Owner >= len(g.Players) || v.Owner < 0 && (len(g.Players) != 2 || v.Owner < -3) || !c.landVertex(g, v.Owner, v.ID) || catanExplorerHarborAt(g, v.ID) && !catanExplorerCoast(g, v.ID) {
 			return errors.New("探险村庄或港口位置无效")
 		}
-		if v.Level == 1 {
+		if v.Level == 1 && !fallen[v.ID] {
 			settlements[v.Owner]++
 		} else if catanExplorerHarborAt(g, v.ID) {
 			harbors[v.Owner]++
@@ -348,26 +357,7 @@ func (c catanExplorerCargo) buildLocation(g *Catan, fleet *catanExplorerSailing,
 }
 
 func (c *catanExplorerCargo) buildHarbor(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, vertex int) error {
-	if err := c.allowed(g, fleet, player, sequence, "action"); err != nil {
-		return err
-	}
-	if vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Owner != player || g.Vertices[vertex].Level != 1 || !catanExplorerCoast(g, vertex) {
-		return errors.New("只能将己方沿海村庄升级为港口")
-	}
-	count := 0
-	for _, v := range g.Vertices {
-		if v.Owner == player && catanExplorerHarborAt(g, v.ID) {
-			count++
-		}
-	}
-	cost := []int{0, 0, 0, 2, 2}
-	if count >= 4 || !catanExplorerCanPay(g, player, cost) {
-		return errors.New("港口组件不足或无法支付2粮食2矿石")
-	}
-	catanExplorerPay(g, player, cost)
-	g.Vertices[vertex].Level, g.Vertices[vertex].Harbor = 2, true
-	g.Players[player].Score++
-	return nil
+	return c.upgradeSettlement(g, fleet, player, sequence, vertex, "harbor", false)
 }
 func (c *catanExplorerCargo) buildShip(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, ship, edge int) error {
 	if err := c.allowed(g, fleet, player, sequence, "action"); err != nil {
@@ -608,13 +598,7 @@ func (c *catanExplorerCargo) settle(g *Catan, fleet *catanExplorerSailing, playe
 			return errors.New("移民定居必须遵守建筑距离规则")
 		}
 	}
-	count := 0
-	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 1 {
-			count++
-		}
-	}
-	if count >= 5 {
+	if g.settlementPiecesLeft(player) <= 0 {
 		return errors.New("村庄组件已全部使用")
 	}
 	g.Vertices[vertex].Owner, g.Vertices[vertex].Level = player, 1
