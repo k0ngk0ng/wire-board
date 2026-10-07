@@ -194,7 +194,9 @@ export function CatanTwoPanel({
     onRetreat(null);
   };
   const canKnight =
-    !!canUse && !q.knightExchanged && p.knights > 0 && q.bank >= 2;
+    !!canUse &&
+    (q.canExchangeKnight ??
+      (!q.knightExchanged && p.knights > 0 && q.bank >= 2));
   const validConfirm =
     confirm === "trade"
       ? canTrade
@@ -229,7 +231,8 @@ export function CatanTwoPanel({
               {room.you >= 0 && !room.spectating
                 ? `你的筹码 ${q.tokens[room.you]} · `
                 : ""}
-              筹码供应 {q.bank} / 20
+              筹码供应 {q.bank}
+              {q.tokenRule !== "ledger" && " / 20"}
             </small>
           </div>
           {g.transport && (
@@ -331,6 +334,8 @@ export function CatanTwoPanel({
                     ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
                     : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
                 每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
+                {q.tokenRule === "ledger" &&
+                  "本站补充规则：筹码用完继续记账发放，归还供应的筹码优先复用；与金币分别计算。"}
               </p>
               {g.transport && (
                 <p>
