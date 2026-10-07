@@ -36,15 +36,23 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 			return true
 		}
 		response := func(phase string) bool {
-			return phase == "catan_discard" || phase == "catan_explorer_pirate_place" || phase == "catan_explorer_pirate_steal"
+			switch phase {
+			case "catan_discard", "catan_explorer_pirate_place", "catan_explorer_pirate_steal",
+				"catan_diplomacy", "catan_espionage", "catan_sabotage", "catan_wedding",
+				"catan_treason_remove", "catan_treason_place", "catan_guild_dues", "catan_commercial_harbor",
+				"catan_aqueduct", "catan_metropolis", "catan_knight_retreat", "catan_pillage",
+				"catan_defender_reward", "catan_progress_discard", "catan_progress_end":
+				return true
+			}
+			return false
 		}
 		if response(current) {
 			if !response(previousPhase) {
 				r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
 				r.startTurnClock(now)
-			} else if current != previousPhase {
-				// Discard -> placement -> theft must preserve the original
-				// construction/sailing time across the whole response chain.
+			} else if current != previousPhase || current != "catan_discard" && r.Game.CatanPendingActor() != previousActor {
+				// Each new city responder gets a window. All seven discarders
+				// share one; the original action budget survives the full chain.
 				r.startTurnClock(now)
 			}
 			return true // Every discarder shares this response deadline.

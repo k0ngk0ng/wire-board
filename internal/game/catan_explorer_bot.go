@@ -197,9 +197,14 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive explorer seat")
 	}
 	a := Action{Prompt: int(g.TurnSerial)}
+	if k := g.CitiesKnights; k != nil && k.Pending != nil {
+		choice, err := s.catanCityChoiceBot(player)
+		choice.Prompt = a.Prompt
+		return choice, err
+	}
 	if s.Phase == "catan_discard" && g.DiscardDue[player] > 0 {
 		a.Type = "catan_discard"
-		a.Tokens = make([]int, 5)
+		a.Tokens = make([]int, len(g.Bank))
 		hand := slices.Clone(g.Players[player].Resources)
 		for i := 0; i < g.DiscardDue[player]; i++ {
 			most := 0
@@ -233,10 +238,28 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 	}
 	switch s.Phase {
 	case "catan_roll":
+		if k := g.CitiesKnights; k != nil && slices.Contains(k.Players[player].Progress, 0) {
+			a.Type, a.Card, a.Tokens = "catan_progress", 0, g.alchemyBotDice(player)
+			return a, nil
+		}
 		a.Type = "catan_roll"
 		return a, nil
+	case "catan_roads":
+		if g.CitiesKnights != nil {
+			a.Type = "catan_skip_roads"
+			if sites := s.catanExplorerFreeRoadSites(player); len(sites) > 0 {
+				a.Type, a.Edge = "catan_road", sites[0]
+			}
+			return a, nil
+		}
 	case "catan_turn":
+		if g.CitiesKnights != nil {
+			if choice, ok := s.catanExplorerCityProgressBot(player); ok {
+				return choice, nil
+			}
+		}
 		plans := s.catanExplorerMissionPlans(player)
+		plans = append(plans, s.catanExplorerCityBotPlans(player)...)
 		harbors := 0
 		for _, v := range g.Vertices {
 			if v.Owner == player && catanExplorerHarborAt(g, v.ID) {
@@ -244,7 +267,7 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 			}
 		}
 		for _, v := range g.Vertices {
-			if harbors < 4 && v.Owner == player && v.Level == 1 && catanExplorerCoast(g, v.ID) {
+			if harbors < 4 && v.Owner == player && v.Level == 1 && catanExplorerCoast(g, v.ID) && (g.CitiesKnights == nil || !slices.Contains(g.CitiesKnights.FallenCities, v.ID)) {
 				plans = append(plans, catanExplorerBotPlan{Action{Type: "catan_explorer_harbor", Vertex: v.ID, Prompt: a.Prompt}, []int{0, 0, 0, 2, 2}, 110})
 			}
 			if catanExplorerBotSite(g, player, v.ID, true) {
@@ -257,6 +280,10 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		best := -1
 		value := -100000
 		for i, p := range plans {
+			// Mission costs have five resources; city costs also reserve commodities.
+			cost := make([]int, len(g.Bank))
+			copy(cost, p.cost)
+			plans[i].cost = cost
 			score := p.value
 			for r, n := range p.cost {
 				score -= 20 * max(0, n-g.Players[player].Resources[r])
@@ -274,16 +301,23 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 			if catanHas(hand, p.cost) {
 				return p.action, nil
 			}
+			rates := make([]int, len(g.Bank))
+			for r := range rates {
+				rates[r] = 3
+			}
+			if g.CitiesKnights != nil {
+				rates = g.explorerCityRates(player)
+			}
 			for missing, n := range p.cost {
 				if hand[missing] >= n || g.Bank[missing] == 0 {
 					continue
 				}
-				if x.Economy.Gold[player] >= 2 && x.Economy.Turn.Bought < 2 {
+				if missing < 5 && x.Economy.Gold[player] >= 2 && x.Economy.Turn.Bought < 2 {
 					a.Type, a.Color, a.Target = "catan_explorer_bank", -1, missing
 					return a, nil
 				}
 				for surplus, count := range hand {
-					if surplus != missing && count-p.cost[surplus] >= 3 {
+					if surplus != missing && count-p.cost[surplus] >= rates[surplus] {
 						a.Type, a.Color, a.Target = "catan_explorer_bank", surplus, missing
 						return a, nil
 					}
