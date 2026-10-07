@@ -234,6 +234,15 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		if len(actions) == 0 {
 			return a, errors.New("no explorer response")
 		}
+		if x.Setup != nil && x.Setup.CitiesKnights {
+			if target, ok := x.Setup.botOpening(g, x.Board, x.Fleet, 4096); ok {
+				for _, choice := range actions {
+					if choice.Target == target {
+						return choice, nil
+					}
+				}
+			}
+		}
 		return actions[0], nil
 	}
 	switch s.Phase {
