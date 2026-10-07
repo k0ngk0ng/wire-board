@@ -8,7 +8,7 @@ import (
 // Geometry-only queries used by the private bot. They inspect visible tiles,
 // roads and buildings, never hidden terrain/number stacks or opponents' hands.
 func catanExplorerBotSite(g *Catan, player, vertex int, roadRequired bool) bool {
-	if !catanExplorerLandVertex(g, vertex) || g.Explorer != nil && !g.Explorer.Cargo.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
+	if !catanExplorerLandVertex(g, vertex) || g.Explorer != nil && !g.Explorer.Cargo.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil {
 		return false
 	}
 	connected := false
@@ -50,7 +50,7 @@ func catanExplorerBotRoad(g *Catan, player int) int {
 		if e.Owner == player {
 			count++
 			for _, v := range []int{e.A, e.B} {
-				if g.Vertices[v].Level == 0 || g.Vertices[v].Owner == player {
+				if !g.opponentPiece(player, v) {
 					dist[v] = 0
 				}
 			}
@@ -83,7 +83,7 @@ func catanExplorerBotRoad(g *Catan, player int) int {
 			if to < 0 {
 				continue
 			}
-			if g.Vertices[to].Level > 0 && g.Vertices[to].Owner != player {
+			if g.opponentPiece(player, to) {
 				continue
 			}
 			cost := 1

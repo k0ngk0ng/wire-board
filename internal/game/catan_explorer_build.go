@@ -38,6 +38,9 @@ func (c *catanExplorerCargo) buildRoad(g *Catan, f *catanExplorerSailing, player
 	connected := false
 	target := g.Edges[edge]
 	for _, at := range []int{target.A, target.B} {
+		if g.opponentPiece(player, at) {
+			continue
+		}
 		v := g.Vertices[at]
 		if v.Owner == player && v.Level > 0 {
 			connected = true
@@ -51,7 +54,7 @@ func (c *catanExplorerCargo) buildRoad(g *Catan, f *catanExplorerSailing, player
 	}
 	cost := []int{1, 1, 0, 0, 0}
 	if !connected || count >= 15 || !catanExplorerCanPay(g, player, cost) {
-		return errors.New("修路需要连接己方道路或建筑、剩余道路棋子及1木1砖；不能穿过对手或中立建筑")
+		return errors.New("修路需要连接己方道路或建筑、剩余道路棋子及1木1砖；不能穿过对手建筑、骑士或中立建筑")
 	}
 	catanExplorerPay(g, player, cost)
 	g.Edges[edge].Owner = player
@@ -62,7 +65,7 @@ func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, 
 	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
 		return err
 	}
-	if !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
+	if !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil {
 		return errors.New("村庄必须建在已探索的空陆地点，不能接触迷雾或未解放金矿")
 	}
 	connected := false

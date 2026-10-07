@@ -37,7 +37,7 @@ func (s *State) catanExplorerCityRespond(player int, a Action) error {
 		return err
 	}
 	q := s.Catan.CitiesKnights.Pending
-	if s.Finished || q == nil || len(q.Players) == 0 || q.Players[0] != player || a.Prompt < 1 || uint64(a.Prompt) != s.Catan.TurnSerial || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis"}, q.Kind) {
+	if s.Finished || q == nil || len(q.Players) == 0 || q.Players[0] != player || a.Prompt < 1 || uint64(a.Prompt) != s.Catan.TurnSerial || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat"}, q.Kind) {
 		return errors.New("不是当前组合城市回应玩家或序号")
 	}
 	next := clone(*s)
@@ -109,6 +109,9 @@ func (s *State) validateExplorerCityProduction() error {
 	if err := s.validateExplorerCityDevelopment(); err != nil {
 		return err
 	}
+	if err := s.validateExplorerKnights(); err != nil {
+		return err
+	}
 	turn := x.Economy.Turn
 	if len(g.Dice) != 2 || turn.Phase != "roll" && turn.Dice != [2]int{g.Dice[0], g.Dice[1]} {
 		return errors.New("组合事件与生产骰子不一致")
@@ -125,7 +128,7 @@ func (s *State) validateExplorerCityProduction() error {
 		}
 	}
 	if q := k.Pending; q != nil {
-		if len(q.Players) == 0 || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis"}, q.Kind) || s.Phase != "catan_"+q.Kind {
+		if len(q.Players) == 0 || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat"}, q.Kind) || s.Phase != "catan_"+q.Kind {
 			return errors.New("组合城市回应与生产阶段不一致")
 		}
 		for _, p := range q.Players {
@@ -134,6 +137,10 @@ func (s *State) validateExplorerCityProduction() error {
 			}
 		}
 		switch q.Kind {
+		case "knight_retreat":
+			if turn.Phase != "ready" || k.Event != nil || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" {
+				return errors.New("组合骑士撤退不在行动阶段")
+			}
 		case "metropolis":
 			if turn.Phase != "ready" || k.Event != nil || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" || len(q.Players) != 1 || q.Players[0] != s.Turn || q.Track < 0 || q.Track > 2 || k.Players[s.Turn].Improvements[q.Track] < 4 || len(g.cityMetropolisSites(s.Turn)) == 0 {
 				return errors.New("组合大都会选择缺少有效建设或可用城市")
