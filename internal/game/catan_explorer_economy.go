@@ -7,7 +7,7 @@ import (
 
 // 2025 English rulebook p4: 40 one-gold and 36 three-gold coins. Store
 // denominations as fungible value; exchanging change cannot mint gold.
-// Five/six-player supplies and depleted-gold rules are not installed yet.
+// Depleted-gold rules remain a separate rule-source gate.
 const catanExplorerGoldSupply = 40 + 36*3
 
 type catanExplorerEconomy struct {
@@ -35,7 +35,7 @@ func newCatanExplorerEconomy(g *Catan, f *catanExplorerSailing, c *catanExplorer
 	if g == nil || c == nil || c.Turn != nil {
 		return nil, errors.New("金币系统只能随探险组件开局初始化")
 	}
-	e := &catanExplorerEconomy{Gold: make([]int, len(g.Players)), GoldBank: catanExplorerGoldSupply - 2*len(g.Players)}
+	e := &catanExplorerEconomy{Gold: make([]int, len(g.Players)), GoldBank: catanExplorerStock(len(g.Players)).gold - 2*len(g.Players)}
 	for p := range e.Gold {
 		e.Gold[p] = 2
 	}
@@ -43,7 +43,7 @@ func newCatanExplorerEconomy(g *Catan, f *catanExplorerSailing, c *catanExplorer
 }
 
 func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *catanExplorerCargo) error {
-	if g == nil || c == nil || len(g.Players) < 2 || len(g.Players) > 4 || len(e.Gold) != len(g.Players) || e.GoldBank < 0 || e.GoldBank > catanExplorerGoldSupply {
+	if g == nil || c == nil || len(g.Players) < 2 || len(g.Players) > 6 || len(e.Gold) != len(g.Players) || e.GoldBank < 0 || e.GoldBank > catanExplorerStock(len(g.Players)).gold {
 		return errors.New("探险经济人数或金币库存无效")
 	}
 	if err := c.validate(g, f); err != nil {
@@ -54,12 +54,12 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 	}
 	total := e.GoldBank
 	for _, gold := range e.Gold {
-		if gold < 0 || gold > catanExplorerGoldSupply {
+		if gold < 0 || gold > catanExplorerStock(len(g.Players)).gold {
 			return errors.New("探险玩家金币数无效")
 		}
 		total += gold
 	}
-	if total != catanExplorerGoldSupply {
+	if total != catanExplorerStock(len(g.Players)).gold {
 		return errors.New("探险金币总值不守恒")
 	}
 	t := e.Turn

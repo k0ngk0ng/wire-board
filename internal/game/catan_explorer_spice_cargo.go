@@ -7,7 +7,7 @@ import (
 
 // Sacks are identical physical pieces. Origin and Owner retain the one-per-
 // farm entitlement after delivery/loss; they do not make cargo private.
-// Each farm allocates N previously unused IDs on discovery, at most 6*4=24.
+// Each farm allocates N previously unused IDs on discovery, at most 6*4=24 (base) or 6*6=36 (extension).
 type catanExplorerSpiceSack struct {
 	Origin int                        `json:"origin"`
 	Owner  int                        `json:"owner"`
@@ -59,7 +59,7 @@ func (c catanExplorerCargo) validateSpiceCargo(g *Catan, f *catanExplorerSailing
 		}
 		return nil
 	}
-	if len(c.Spice) != 24 || len(g.Players) > 4 {
+	if len(c.Spice) != catanExplorerStock(len(g.Players)).spice || len(g.Players) > 6 {
 		return errors.New("香料实体库存或人数无效")
 	}
 	counts := map[int]int{}

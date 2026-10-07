@@ -7,7 +7,7 @@ import (
 
 // Each player owns two settlers followed by nine crew: stable ID = player*11
 // + component slot. Locations partition the physical inventory, including the
-// supply. Fish are six shared, size-two pieces tracked separately from units.
+// supply. Fish are shared size-two pieces tracked separately from units.
 type catanExplorerCargoLocation struct {
 	Kind  string `json:"kind"` // supply, ship, harbor; lair/farm (crew), shoal (fish), farm (spice).
 	Index int    `json:"index"`
@@ -47,13 +47,13 @@ func newCatanExplorerCargo(g *Catan, fleet *catanExplorerSailing, scenario strin
 		c.Units[i] = catanExplorerCargoLocation{"supply", -1}
 	}
 	if catanExplorerFishScenario(scenario) {
-		c.Fish = make([]catanExplorerCargoLocation, 6)
+		c.Fish = make([]catanExplorerCargoLocation, catanExplorerStock(len(g.Players)).fish)
 		for i := range c.Fish {
 			c.Fish[i] = catanExplorerCargoLocation{"supply", -1}
 		}
 	}
 	if catanExplorerSpiceScenario(scenario) {
-		c.Spice = make([]catanExplorerSpiceSack, 24)
+		c.Spice = make([]catanExplorerSpiceSack, catanExplorerStock(len(g.Players)).spice)
 		for i := range c.Spice {
 			c.Spice[i] = catanExplorerSpiceSack{Origin: -1, Owner: -1, At: catanExplorerCargoLocation{"supply", -1}}
 		}
@@ -188,7 +188,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 			return errors.New("探险单位位置、所属玩家或舱位容量无效")
 		}
 	}
-	if catanExplorerFishScenario(c.Scenario) && len(c.Fish) != 6 || !catanExplorerFishScenario(c.Scenario) && len(c.Fish) != 0 {
+	if catanExplorerFishScenario(c.Scenario) && len(c.Fish) != catanExplorerStock(len(g.Players)).fish || !catanExplorerFishScenario(c.Scenario) && len(c.Fish) != 0 {
 		return errors.New("鱼群实体库存与剧本不符")
 	}
 	for _, loc := range c.Fish {
@@ -287,10 +287,7 @@ func catanExplorerCanPay(g *Catan, player int, cost []int) bool {
 	if player < 0 || player >= len(g.Players) || !catanBundle(g.Bank) || !catanBundle(cost) {
 		return false
 	}
-	stock := 19
-	if len(g.Players) > 4 {
-		stock = 24
-	}
+	stock := catanExplorerStock(len(g.Players)).resources
 	for _, p := range g.Players {
 		if !catanBundle(p.Resources) {
 			return false

@@ -5,7 +5,7 @@ import (
 	"slices"
 )
 
-// Private mission controller. The six printed token numbers are an explicit
+// Private mission controller. The six/eight printed token numbers are an explicit
 // verified-component input, not guessed constants; no public recipe uses this
 // constructor until the full 2025 token inventory has been checked.
 type catanExplorerLairs struct {
@@ -46,8 +46,8 @@ type catanExplorerLairBattle struct {
 var catanExplorerLairPoints = [...]int{0, 1, 1, 2, 2, 2, 3, 3} // 2025 rulebook p4.
 
 func newCatanExplorerLairs(players int, numbers []int) (*catanExplorerLairs, error) {
-	if players < 2 || players > 4 || len(numbers) != 6 || slices.ContainsFunc(numbers, func(n int) bool { return n < 2 || n > 12 || n == 7 }) {
-		return nil, errors.New("巢穴需要二至四人及六枚已核验数字")
+	if players < 2 || players > 6 || len(numbers) != catanExplorerStock(players).lairs || slices.ContainsFunc(numbers, func(n int) bool { return n < 2 || n > 12 || n == 7 }) {
+		return nil, errors.New("巢穴需要二至六人及对应人数的已核验数字库存")
 	}
 	return &catanExplorerLairs{Inventory: slices.Clone(numbers), Deck: slices.Clone(numbers), Sites: []catanExplorerLair{}, Progress: make([]int, players), Arrival: make([]uint64, players)}, nil
 }
@@ -100,7 +100,7 @@ func (l *catanExplorerLairs) advance(player int) {
 	l.Arrival[player] = l.Serial
 }
 func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
-	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario || len(l.Inventory) != 6 || len(l.Deck)+len(l.Sites) != 6 || len(l.Progress) != len(g.Players) || len(l.Arrival) != len(l.Progress) {
+	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario || len(l.Inventory) != catanExplorerStock(len(g.Players)).lairs || len(l.Deck)+len(l.Sites) != len(l.Inventory) || len(l.Progress) != len(g.Players) || len(l.Arrival) != len(l.Progress) {
 		return errors.New("巢穴地图、组件或人数无效")
 	}
 	if err := b.validate(g); err != nil {
@@ -155,7 +155,7 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 		}
 	}
 	if !catanExplorerSameInventory(all, l.Inventory) || slices.ContainsFunc(l.Inventory, func(n int) bool { return n < 2 || n > 12 || n == 7 }) {
-		return errors.New("六枚巢穴数字不守恒")
+		return errors.New("巢穴数字库存不守恒")
 	}
 	for tile := range b.Liberated {
 		i := l.site(tile)
