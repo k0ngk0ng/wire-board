@@ -55,10 +55,20 @@ type catanEventSession struct {
 	Deck      catanEventDeck `json:"deck"`
 }
 
-// Private research entry: only base 3–6 player games are integrated here.
-// Additional module combinations need their own acceptance before enabling.
+// Private research entry. Additional module combinations need their own
+// acceptance before enabling; neither constructor is a public room option.
 func newCatanReferenceEvents(n int) (*State, error) {
 	s, err := NewCatan(n, CatanOptions{FiveSix: n > 4})
+	if err != nil {
+		return nil, err
+	}
+	s.Catan.EventDeck = &catanEventSession{Catalogue: catanEventReferenceCatalogue, Deck: newCatanEventDeck()}
+	s.Log = append(s.Log, "内部测试：使用旧版参考事件牌表，尚非已核验的2025正式牌表")
+	return s, s.validateCatanEventSession()
+}
+
+func newCatanAttackReferenceEvents(n int) (*State, error) {
+	s, err := newCatanAttackState(n, CatanOptions{FiveSix: n > 4})
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +86,7 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Transport != nil || g.Attack != nil || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers {
+	if g.Explorer != nil || g.Transport != nil || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
 	}
 	if len(g.Players) < 3 || len(g.Players) > 6 || g.Options.FiveSix != (len(g.Players) > 4) {
@@ -84,6 +94,11 @@ func (s *State) validateCatanEventSession() error {
 	}
 	d := session.Deck
 	if err := d.validate(); err != nil {
+		return err
+	}
+	// The scenario independently checks resource/piece supply, conquered
+	// buildings, private gifts, event responders and end-of-turn battles.
+	if err := s.validateCatanAttack(); err != nil {
 		return err
 	}
 	// Compare using division rather than multiplying a potentially corrupt cycle.
