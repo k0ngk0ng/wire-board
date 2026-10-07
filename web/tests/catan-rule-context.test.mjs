@@ -420,3 +420,19 @@ test("public Barbarian Attack uses twelve points and actual player pairing", () 
  assert.equal(catanRuleContext(room).attack,false);
  assert.equal(catanRuleContext(room).target,10);
 });
+
+
+test("transport waiting rules and actual players retain thirteen points and neutral rules", () => {
+ const room = {capacity:2,catanScenario:"transport"};
+ let info=catanRuleContext(room);
+ assert.equal(info.transport,true); assert.equal(info.two,true);
+ assert.equal(info.explorer,false); assert.equal(info.target,13);
+ room.capacity=4;
+ assert.equal(catanRuleContext(room).two,false);
+ room.game={catan:{players:[{},{}],transport:{},two:{}}};
+ info=catanRuleContext(room);
+ assert.equal(info.players,2); assert.equal(info.two,true); assert.equal(info.target,13);
+ delete room.game.catan.transport; delete room.game.catan.two;
+ info=catanRuleContext(room);
+ assert.equal(info.transport,false); assert.equal(info.two,false); assert.equal(info.target,10);
+});

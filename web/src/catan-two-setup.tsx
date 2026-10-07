@@ -1,5 +1,11 @@
 const scenarios = [
   {
+    id: "transport",
+    name: "双人＋运输",
+    description:
+      "升级马车并运送货物，13分获胜；两次生产、贸易筹码和中立建设，通行中立道路累计支付过路费。",
+  },
+  {
     id: "spices-for-catan",
     name: "探索者与海盗 · 卡坦香料",
     description:
@@ -59,7 +65,8 @@ export function CatanTwoScenarioPicker({
       {!["land-ho", "spices-for-catan"].includes(value) && (
         <p className="muted small">
           采用 2025 双人规则。本站补充：贸易筹码
-          {value === "rivers" ? "与金币" : ""}用完继续记账发放。
+          {["rivers", "transport"].includes(value) ? "与金币" : ""}
+          用完继续记账发放。
           {value === "caravans" && "商队确实无法放满时，只放能放的数量。"}
         </p>
       )}

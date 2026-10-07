@@ -6,8 +6,12 @@ import (
 	"strings"
 )
 
-// Private acceptance constructor: 5–6's extra development-card breakdown,
-// combinations and final two-player acceptance remain gates. No public recipe.
+// NewCatanTransport starts the verified two-to-four-player transport recipe.
+// Five/six-player development cards and combinations remain separate gates.
+func NewCatanTransport(n int) (*State, error) {
+	return newCatanTransportState(n, CatanOptions{})
+}
+
 func newCatanTransportState(n int, options CatanOptions) (*State, error) {
 	if n < 2 || n > 4 || options.Helpers || options.AllHelpers || options.FiveSix {
 		return nil, errors.New("运输整局目前仅接入2至4人；扩充牌表及组合仍待核实")

@@ -687,7 +687,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		hash = string(h)
 	}
 	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
-	if room.Kind == "catan" && room.Capacity == 2 && !publicCatanExplorerScenario(req.CatanScenario) {
+	if room.Kind == "catan" && room.Capacity == 2 && !publicCatanFlexibleScenario(req.CatanScenario) {
 		if err := room.setCatanTwoScenario(req.CatanTwoScenario); err != nil {
 			fail(w, 400, err.Error())
 			return
@@ -933,7 +933,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanScenario(*req.CatanScenario)
 	case "catan_two_scenario":
-		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || (next.CatanTwoRules != game.CatanTwoRules && !(next.Capacity == 2 && publicCatanExplorerScenario(next.CatanScenario))) || req.CatanTwoScenario == nil {
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || (next.CatanTwoRules != game.CatanTwoRules && !(next.Capacity == 2 && publicCatanFlexibleScenario(next.CatanScenario))) || req.CatanTwoScenario == nil {
 			err = errors.New("只有房主能在双人卡坦开局前选择剧本")
 			break
 		}
@@ -1115,6 +1115,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					next.Game, err = game.NewCatanExplorerLandHo(len(next.Seats))
 				} else if next.CatanScenario == "barbarian-attack" {
 					next.Game, err = game.NewCatanAttack(len(next.Seats))
+				} else if next.CatanScenario == "transport" {
+					next.Game, err = game.NewCatanTransport(len(next.Seats))
 				} else if next.CatanScenario == "fishing" {
 					next.Game, err = game.NewCatanFishing(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "rivers" {
