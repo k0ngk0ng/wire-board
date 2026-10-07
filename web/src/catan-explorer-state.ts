@@ -429,7 +429,7 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
     case "catan_explorer_ship":
       return `支付1木材、1羊毛，建造${ship}。${(g.explorer?.fleet.positions[a.slot!] ?? -1) >= 0 ? "将拆回原船及全部货物，再建造新船。" : ""}`;
     case "catan_explorer_unit":
-      return `支付${(a.card ?? 0) % 11 < 2 ? "木、砖、羊、粮各1" : "1羊毛、1矿石"}，在${a.choice === "ship" ? `船${(a.target! % 3) + 1}` : `港口${a.target! + 1}`}放置${explorerUnitLabel(a.card ?? 0)}，占${(a.card ?? 0) % 11 < 2 ? 2 : 1}格。${a.cards?.length ? `先归还${explorerCargoLabel(a.cards)}。` : ""}`;
+      return `支付${(a.card ?? 0) % 11 < 2 ? "木、砖、羊、粮各1" : "1羊毛、1矿石"}，在${a.choice === "ship" ? `船${(a.target! % 3) + 1}` : `港口${a.target! + 1}`}放置${explorerUnitLabel(a.card ?? 0)}，占${(a.card ?? 0) % 11 < 2 ? 2 : 1}格。${a.cards?.length ? `先归还${explorerCargoLabel(a.cards)}。` : ""}${a.targets?.length ? "先归还1群鱼，不推进鱼群任务。" : ""}${a.spiceUnload?.length ? "先归还1袋香料，不推进香料任务；农场能力保留，不能再次领取这袋香料。" : ""}`;
     case "catan_explorer_bank":
       return a.color === -1
         ? `支付2金币，领取1${explorerResources[a.target!]}（本回合最多2次）。`

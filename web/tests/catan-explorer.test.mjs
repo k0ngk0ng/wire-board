@@ -672,3 +672,84 @@ test("second paired player cannot open domestic trades while first player can", 
   r.seats[1].autoPlay = true;
   assert.equal(explorerCanOffer(r), false);
 });
+
+test("recruitment explicitly confirms fish/spice returns and retires them without delivery", async () => {
+  const { explorerFishFlight, explorerSpiceFlight } =
+    await import("../src/catan-explorer-state.ts");
+  const r = room();
+  r.game.phase = "catan_turn";
+  const g = r.game.catan;
+  const base = {
+    type: "catan_explorer_unit",
+    prompt: 5,
+    card: 2,
+    choice: "ship",
+    target: 0,
+  };
+  const fish = { ...base, targets: [0] };
+  const spice = { ...base, spiceUnload: [0] };
+  g.explorer.choices = [fish, spice];
+  assert.notEqual(explorerActionKey(fish), explorerActionKey(spice));
+  assert.deepEqual(explorerTarget(g, fish), { kind: "edge", id: 0 });
+  assert.match(
+    explorerActionDescription(g, fish),
+    /先归还1群鱼，不推进鱼群任务/,
+  );
+  assert.match(
+    explorerActionDescription(g, spice),
+    /先归还1袋香料，不推进香料任务.*能力保留.*不能再次领取/,
+  );
+  for (const kind of ["fish", "spice"]) {
+    const before = structuredClone(g);
+    before.explorer.board = { council: { tile: 0 } };
+    before.tiles = [{ x: 500, y: 500 }];
+    before.explorer.cargo.units =
+      kind === "fish"
+        ? [
+            { kind: "supply", index: -1 },
+            { kind: "harbor", index: 0 },
+          ]
+        : [
+            { kind: "supply", index: -1 },
+            { kind: "harbor", index: 0 },
+            { kind: "ship", index: 0 },
+          ];
+    before.explorer.cargo.fish =
+      kind === "fish" ? [{ kind: "ship", index: 0 }] : [];
+    before.explorer.cargo.spice =
+      kind === "spice"
+        ? [{ owner: 0, origin: 1, at: { kind: "ship", index: 0 } }]
+        : [];
+    const after = structuredClone(before);
+    const motion = { kind: "catan_explorer_unit" };
+    let flight;
+    if (kind === "fish") {
+      after.explorer.cargo.fish[0] = { kind: "supply", index: -1 };
+      motion.fish = [
+        {
+          fish: 0,
+          from: before.explorer.cargo.fish[0],
+          to: after.explorer.cargo.fish[0],
+        },
+      ];
+      flight = explorerFishFlight(before, after, motion, 0);
+    } else {
+      after.explorer.cargo.spice[0].at = { kind: "supply", index: -1 };
+      motion.spice = [
+        {
+          sack: 0,
+          from: before.explorer.cargo.spice[0].at,
+          to: after.explorer.cargo.spice[0].at,
+        },
+      ];
+      flight = explorerSpiceFlight(before, after, motion, 0);
+    }
+    assert.equal(flight.retire, true);
+    assert.equal(flight.appear, false);
+    assert.equal(flight.delivered, false);
+    assert.deepEqual(flight.points[1], {
+      x: flight.points[0].x,
+      y: flight.points[0].y - 24,
+    });
+  }
+});

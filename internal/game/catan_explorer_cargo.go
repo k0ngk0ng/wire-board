@@ -413,6 +413,12 @@ func (c *catanExplorerCargo) buildShip(g *Catan, fleet *catanExplorerSailing, pl
 	return nil
 }
 func (c *catanExplorerCargo) buildUnit(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, unit int, target catanExplorerCargoLocation, discard []int) error {
+	return c.buildUnitFreight(g, fleet, player, sequence, unit, target, discard, nil, nil)
+}
+
+// Return at most one piece from the destination when every build berth is full.
+// Fish and spice have independent ID spaces, as in cargo transfer actions.
+func (c *catanExplorerCargo) buildUnitFreight(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, unit int, target catanExplorerCargoLocation, discard, discardFish, discardSpice []int) error {
 	if err := c.allowed(g, fleet, player, sequence, "action"); err != nil {
 		return err
 	}
@@ -423,10 +429,10 @@ func (c *catanExplorerCargo) buildUnit(g *Catan, fleet *catanExplorerSailing, pl
 	// The English 2025 rule explicitly permits removing "a piece". Whether
 	// two crew may be cleared for one large settler still needs source review;
 	// this private kernel does not install that unresolved boundary yet.
-	if len(discard) > 1 {
-		return errors.New("同时归还多个单位腾出移民舱位的规则尚未核对")
+	if len(discard)+len(discardFish)+len(discardSpice) > 1 {
+		return errors.New("同时归还多件货物腾出移民舱位的规则尚未核对")
 	}
-	if len(discard) > 0 {
+	if len(discard)+len(discardFish)+len(discardSpice) > 0 {
 		// 2025 rulebook p10 permits clearing cargo only when every available
 		// harbor/adjacent-ship slot is full. Never a free discard action.
 		for _, v := range g.Vertices {
@@ -447,10 +453,20 @@ func (c *catanExplorerCargo) buildUnit(g *Catan, fleet *catanExplorerSailing, pl
 			}
 			remaining -= catanExplorerUnitSize(id)
 		}
-		for _, id := range discard {
-			if remaining+catanExplorerUnitSize(id)+size <= 2 {
-				return errors.New("不能为建造额外弃置不需要归还的单位")
+		for _, id := range discardFish {
+			if id < 0 || id >= len(c.Fish) || c.Fish[id] != target {
+				return errors.New("只能归还目标舱位中的鱼群")
 			}
+			remaining -= 2
+		}
+		for _, id := range discardSpice {
+			if id < 0 || id >= len(c.Spice) || c.Spice[id].Owner != player || c.Spice[id].At != target {
+				return errors.New("只能归还目标舱位中的己方香料")
+			}
+			remaining--
+		}
+		if c.used(target)+size <= 2 {
+			return errors.New("不能为建造额外弃置不需要归还的货物")
 		}
 	}
 	if remaining+size > 2 || c.Units[unit].Kind != "supply" && !slices.Contains(discard, unit) || !catanExplorerCanPay(g, player, catanExplorerUnitCost(unit)) {
@@ -459,6 +475,14 @@ func (c *catanExplorerCargo) buildUnit(g *Catan, fleet *catanExplorerSailing, pl
 	catanExplorerPay(g, player, catanExplorerUnitCost(unit))
 	for _, id := range discard {
 		c.Units[id] = catanExplorerCargoLocation{"supply", -1}
+	}
+	for _, id := range discardFish {
+		c.Fish[id] = catanExplorerCargoLocation{"supply", -1}
+	}
+	for _, id := range discardSpice {
+		// Preserve the farm claim and its permanent crew/ability. Returning a
+		// sack is not delivery and must not allow claiming another from the farm.
+		c.Spice[id].At = catanExplorerCargoLocation{"supply", -1}
 	}
 	c.Units[unit] = target
 	return nil

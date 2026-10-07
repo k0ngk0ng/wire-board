@@ -48,7 +48,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		case "catan_explorer_ship":
 			return cargo.buildShip(&base, &fleet, viewer, sequence, a.Slot, a.Edge) == nil
 		case "catan_explorer_unit":
-			return cargo.buildUnit(&base, &fleet, viewer, sequence, a.Card, catanExplorerCargoLocation{a.Choice, a.Target}, a.Cards) == nil
+			return cargo.buildUnitFreight(&base, &fleet, viewer, sequence, a.Card, catanExplorerCargoLocation{a.Choice, a.Target}, a.Cards, a.Targets, a.SpiceUnload) == nil
 		case "catan_explorer_bank":
 			return economy.bankTrade(&base, &fleet, &cargo, viewer, sequence, a.Color, a.Target) == nil
 		case "catan_explorer_wool":
@@ -96,9 +96,15 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		}
 		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) || (x.Lairs != nil || x.Spice != nil) && catanExplorerCanPay(g, viewer, []int{0, 0, 1, 0, 1}) {
 			for _, loc := range locations {
-				discards := [][]int{nil}
+				discards := []Action{{}}
 				for _, unit := range x.Cargo.contents(loc) {
-					discards = append(discards, []int{unit})
+					discards = append(discards, Action{Cards: []int{unit}})
+				}
+				for _, fish := range x.Cargo.fishContents(loc) {
+					discards = append(discards, Action{Targets: []int{fish}})
+				}
+				for _, spice := range x.Cargo.spiceContents(loc) {
+					discards = append(discards, Action{SpiceUnload: []int{spice}})
 				}
 				limit := 2
 				if x.Lairs != nil || x.Spice != nil {
@@ -106,7 +112,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 				}
 				for unit := viewer * 11; unit < viewer*11+limit; unit++ {
 					for _, discard := range discards {
-						offer(Action{Type: "catan_explorer_unit", Card: unit, Choice: loc.Kind, Target: loc.Index, Cards: discard})
+						offer(Action{Type: "catan_explorer_unit", Card: unit, Choice: loc.Kind, Target: loc.Index, Cards: discard.Cards, Targets: discard.Targets, SpiceUnload: discard.SpiceUnload})
 					}
 				}
 			}
@@ -266,6 +272,12 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 			v["slot"], v["edge"] = a.Slot, a.Edge
 		case "catan_explorer_unit":
 			v["card"], v["choice"], v["target"], v["cards"] = a.Card, a.Choice, a.Target, a.Cards
+			if len(a.Targets) > 0 {
+				v["targets"] = a.Targets
+			}
+			if len(a.SpiceUnload) > 0 {
+				v["spiceUnload"] = a.SpiceUnload
+			}
 		case "catan_explorer_bank":
 			v["color"], v["target"] = a.Color, a.Target
 		case "catan_explorer_wool":
