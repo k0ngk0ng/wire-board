@@ -386,6 +386,7 @@ export type CatanAttackKnight = { player: number; edge: number };
 export type CatanAttackMove = { from: number; to: number; wheat?: boolean };
 export type CatanAttack = {
   landingSupplyRule?: "random-last";
+  treasonRule?: "as-much-as-possible";
   goldRule?: "ledger";
   goldIssued?: number;
   rules: string;
@@ -420,6 +421,8 @@ export type CatanAttack = {
   sources?: number[];
   destinations?: number[];
   fromBoard?: number;
+  treasonCount?: number;
+  treasonPlans?: { sources: number[]; destinations: number[] }[];
   end?: {
     id: number;
     player: number;

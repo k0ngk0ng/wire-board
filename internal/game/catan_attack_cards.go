@@ -48,21 +48,51 @@ func (a catanAttack) recruitEdges(g *Catan, player int, card string) []int {
 	return out
 }
 
-func (a catanAttack) treasonSources() [][2]int {
+type catanAttackTreasonPlan struct {
+	Sources      []int `json:"sources"`
+	Destinations []int `json:"destinations"`
+}
+
+// Use the largest feasible effect, preserving distinct board sources before
+// taking missing pieces from supply. Every advertised source set can finish.
+func (a catanAttack) treasonPlans() []catanAttackTreasonPlan {
 	board := a.captureTargets()
-	if len(board) == 0 {
-		return [][2]int{{-1, -1}}
-	}
-	if len(board) == 1 {
-		return [][2]int{{board[0], -1}}
-	}
-	out := [][2]int{}
-	for i, one := range board {
-		for _, two := range board[i+1:] {
-			out = append(out, [2]int{one, two})
+	for count := 2; count >= 1; count-- {
+		fromBoard := min(count, len(board))
+		if count-fromBoard > a.supply() {
+			continue
+		}
+		sources := [][]int{}
+		switch fromBoard {
+		case 0:
+			sources = append(sources, []int{})
+		case 1:
+			for _, id := range board {
+				sources = append(sources, []int{id})
+			}
+		case 2:
+			for i, one := range board {
+				for _, two := range board[i+1:] {
+					sources = append(sources, []int{one, two})
+				}
+			}
+		}
+		plans := []catanAttackTreasonPlan{}
+		for _, from := range sources {
+			targets := a.treasonDestinations(from)
+			if len(targets) < count {
+				continue
+			}
+			for len(from) < count {
+				from = append(from, -1)
+			}
+			plans = append(plans, catanAttackTreasonPlan{from, targets})
+		}
+		if len(plans) > 0 {
+			return plans
 		}
 	}
-	return out
+	return []catanAttackTreasonPlan{{Sources: []int{}, Destinations: []int{}}}
 }
 
 func (a catanAttack) treasonDestinations(from []int) []int {
@@ -75,21 +105,11 @@ func (a catanAttack) treasonDestinations(from []int) []int {
 	return out
 }
 
-// Only PUBLIC information is used by this temporary boundary gate. Never
-// reject a purchase based on the next hidden card: that would reveal its type.
-// Official insufficient-treason-piece rules remain a release
-// gate for the scenario, rather than inventing a partial effect or a redraw.
+// A real coin shortage is resolved by the site's ledger rule. Only corrupt
+// integer bounds can prevent payment; never inspect the next hidden card.
 func (a catanAttack) cardSupplyReady() bool {
 	_, err := catanGoldShortfall(a.GoldBank, a.GoldIssued, 2)
-	if err != nil || min(2, len(a.captureTargets()))+a.supply() < 2 {
-		return false
-	}
-	for _, from := range a.treasonSources() {
-		if len(a.treasonDestinations(from[:])) >= 2 {
-			return true
-		}
-	}
-	return false
+	return err == nil
 }
 
 func (s *State) catanAttackBuyCard(player int, action Action) error {
@@ -102,7 +122,7 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 		return errors.New("资源不足：发展卡需要羊毛、粮食、矿石各1张")
 	}
 	if !a.cardSupplyReady() {
-		return errors.New("蛮族进攻发展卡的公共供应不足边界尚待核对，暂不能购买")
+		return errors.New("金币记账超出安全范围，不能购买发展卡")
 	}
 	catanMove(g.Players[player].Resources, g.Bank, cost)
 	g.Trade = nil
@@ -124,6 +144,13 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 			a.Pending = nil
 			s.catanLog(player, "沿海没有蛮族，弃置俘获并免费重抽")
 			continue
+		}
+		if card == "treason" && len(a.treasonPlans()[0].Sources) == 0 {
+			if err := s.catanAttackTreason(player, nil, nil); err != nil {
+				return err
+			}
+			s.catanAttackFinishCard()
+			return nil
 		}
 		if (card == "knighthood" || card == "swift_knight") && len(a.recruitEdges(g, player, card)) == 0 {
 			s.catanLog(player, "%s：没有可放置的骑士或空位，不能增加棋子，弃置此牌", catanAttackCardNames[card])
@@ -178,34 +205,44 @@ func (s *State) catanAttackCardChoice(player int, action Action) error {
 
 func (s *State) catanAttackTreason(player int, from, to []int) error {
 	a := s.Catan.Attack
-	if len(from) != 2 || len(to) != 2 || to[0] == to[1] {
-		return errors.New("叛变需要两个来源和两个不同的目的地")
+	plans := a.treasonPlans()
+	count := len(plans[0].Sources)
+	if len(from) != count || len(to) != count {
+		return errors.New("请完成当前可执行的全部叛变移动")
 	}
-	board, supply := 0, 0
-	for i, id := range from {
-		if id == -1 {
-			supply++
-		} else {
-			if !slices.Contains(a.captureTargets(), id) || slices.Contains(from[:i], id) {
-				return errors.New("必须从不同的沿海地块各取1个蛮族")
+	valid := false
+	for _, plan := range plans {
+		// Compare sorted copies: source order only pairs the movement log.
+		left, right := slices.Clone(from), slices.Clone(plan.Sources)
+		slices.Sort(left)
+		slices.Sort(right)
+		if !slices.Equal(left, right) {
+			continue
+		}
+		valid = true
+		for i, id := range to {
+			if !slices.Contains(plan.Destinations, id) || slices.Contains(to[:i], id) {
+				valid = false
+				break
 			}
-			board++
+		}
+		if valid {
+			break
 		}
 	}
-	if board != min(2, len(a.captureTargets())) || supply > a.supply() {
-		return errors.New("优先移动棋盘上不同地块的蛮族，仅不足部分从供应领取；来源或组件数量不足")
+	if !valid {
+		return errors.New("请选择能完成叛变的不同来源和未征服目的地，优先使用棋盘上的蛮族")
 	}
-	for _, id := range to {
-		if !slices.Contains(a.treasonDestinations(from), id) {
-			return errors.New("目的地必须是来源以外的两个未被征服沿海地块")
-		}
-	}
+
 	if err := a.ensureGold(2); err != nil {
 		return err
 	}
 	a.GoldBank -= 2
 	a.Gold[player] += 2
 	s.catanLog(player, "叛变：领取 金币×2")
+	if count < 2 {
+		s.catanLog(player, "本站补充规则：叛变当前最多可移动%d个蛮族，完成可执行部分，不额外抽牌", count)
+	}
 	for _, id := range from {
 		if id >= 0 {
 			a.Barbarians[id]--
@@ -274,23 +311,35 @@ func (s *State) catanAttackCardBot(player int) (Action, error) {
 			}
 		}
 	case "treason":
-		for _, from := range a.treasonSources() {
-			targets := a.treasonDestinations(from[:])
-			for i, one := range targets {
-				for _, two := range targets[i+1:] {
-					value := 0
-					for _, id := range from {
-						if id >= 0 {
-							value += g.attackTileInterest(player, id) * a.Barbarians[id]
-						}
+		for _, plan := range a.treasonPlans() {
+			groups := [][]int{}
+			switch len(plan.Sources) {
+			case 0:
+				groups = append(groups, []int{})
+			case 1:
+				for _, id := range plan.Destinations {
+					groups = append(groups, []int{id})
+				}
+			case 2:
+				for i, one := range plan.Destinations {
+					for _, two := range plan.Destinations[i+1:] {
+						groups = append(groups, []int{one, two})
 					}
-					for _, id := range []int{one, two} {
-						value -= g.attackTileInterest(player, id) * (a.Barbarians[id] + 1)
+				}
+			}
+			for _, to := range groups {
+				value := 0
+				for _, id := range plan.Sources {
+					if id >= 0 {
+						value += g.attackTileInterest(player, id) * a.Barbarians[id]
 					}
-					if !found || value > score {
-						found, score = true, value
-						best.Give, best.Take = slices.Clone(from[:]), []int{one, two}
-					}
+				}
+				for _, id := range to {
+					value -= g.attackTileInterest(player, id) * (a.Barbarians[id] + 1)
+				}
+				if !found || value > score {
+					found, score = true, value
+					best.Give, best.Take = slices.Clone(plan.Sources), slices.Clone(to)
 				}
 			}
 		}

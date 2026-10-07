@@ -17,7 +17,7 @@ type catanAttackLandingRecord struct {
 	Rolls  []catanAttackLandingRoll `json:"rolls"`
 }
 
-// Internal constructor until remaining supply boundaries and combinations pass acceptance.
+// Internal constructor until remaining combinations and full acceptance are complete.
 // No public waiting-room recipe may select the incomplete scenario.
 func newCatanAttackState(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
@@ -212,6 +212,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	public["supply"] = a.supply()
 	public["landingSupplyRule"] = "random-last"
 	public["goldRule"] = "ledger"
+	public["treasonRule"] = "as-much-as-possible"
 	conquered, buildings := []int{}, []int{}
 	for _, t := range g.Tiles {
 		if a.conquered(t.ID) {
@@ -242,9 +243,24 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		case "knighthood", "swift_knight":
 			public["edges"] = a.recruitEdges(g, player, a.Pending.Card)
 		case "treason":
-			public["sources"] = a.captureTargets()
-			public["destinations"] = a.treasonDestinations(nil)
-			public["fromBoard"] = min(2, len(a.captureTargets()))
+			plans := a.treasonPlans()
+			sources, destinations := []int{}, []int{}
+			for _, plan := range plans {
+				for _, id := range plan.Sources {
+					if id >= 0 && !slices.Contains(sources, id) {
+						sources = append(sources, id)
+					}
+				}
+				for _, id := range plan.Destinations {
+					if !slices.Contains(destinations, id) {
+						destinations = append(destinations, id)
+					}
+				}
+			}
+			public["sources"], public["destinations"] = sources, destinations
+			public["treasonPlans"] = plans
+			public["treasonCount"] = len(plans[0].Sources)
+			public["fromBoard"] = min(len(plans[0].Sources), len(a.captureTargets()))
 		}
 	}
 }
