@@ -237,7 +237,7 @@ func TestCatanExplorerCityTradeProgressCorruptPending(t *testing.T) {
 			case "owner":
 				k.TradePowers.Player = 1
 			case "fleets":
-				k.TradePowers.Fleets = []int{5}
+				k.TradePowers.Fleets = []int{-1}
 			case "missing-powers":
 				k.TradePowers = nil
 			case "empty-powers":

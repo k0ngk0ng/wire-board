@@ -73,6 +73,10 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	ng, nx := next.Catan, next.Catan.Explorer
 	keepTrade := false
 	switch a.Type {
+	case "catan_explorer_bank":
+		if err := next.catanExplorerCityBank(player, a); err != nil {
+			return err
+		}
 	case "catan_commercial_offer":
 		if a.Choice != "" {
 			return errors.New("未知商业港交换选项")
@@ -127,7 +131,7 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 		}
 		next.catanLog(player, "将村庄 #%d 升级为%s", a.Vertex+1, map[string]string{"city": "城市", "harbor": "港口"}[kind])
 	case "catan_progress":
-		if !slices.Contains([]int{1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 14, 15}, a.Card) {
+		if !slices.Contains([]int{1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15}, a.Card) {
 			return errors.New("本组合尚未接入这张主动进步牌")
 		}
 		if err := next.catanPlayProgress(player, a); err != nil {
