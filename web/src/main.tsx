@@ -26,7 +26,7 @@ import { CatanRules } from "./catan-rules";
 import { ClothPicture } from "./catan-cloth";
 import { CatanWonderSeat } from "./catan-wonders";
 import { CatanOptionPicker } from "./catan-helpers";
-import { CatanScenarioPicker } from "./catan-scenario-setup";
+import { CatanScenarioPicker, isPublicCatanSea } from "./catan-scenario-setup";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
@@ -2034,23 +2034,28 @@ function Create({
         {k === "catan" && capacity >= 3 && capacity <= 4 && (
           <CatanScenarioPicker
             value={catanScenario}
+            helpers={!!catanOptions.helpers}
             onChange={(scenario) => {
               setCatanScenario(scenario);
-              if (scenario) setCatanOptions({});
+              if (scenario && !isPublicCatanSea(scenario)) setCatanOptions({});
             }}
           />
         )}
-        {k === "catan" && capacity !== 2 && !catanScenario && (
-          <CatanOptionPicker
-            value={catanOptions}
-            onChange={(o) => {
-              setCatanOptions(o);
-              setCapacity(
-                o.fiveSix ? Math.max(5, capacity) : Math.min(4, capacity),
-              );
-            }}
-          />
-        )}
+        {k === "catan" &&
+          capacity !== 2 &&
+          (!catanScenario || isPublicCatanSea(catanScenario)) && (
+            <CatanOptionPicker
+              value={catanOptions}
+              seafarers={isPublicCatanSea(catanScenario)}
+              fiveSixAvailable={!isPublicCatanSea(catanScenario)}
+              onChange={(o) => {
+                setCatanOptions(o);
+                setCapacity(
+                  o.fiveSix ? Math.max(5, capacity) : Math.min(4, capacity),
+                );
+              }}
+            />
+          )}
         {k === "splendor" && (
           <SplendorOptionPicker value={gemOptions} onChange={setGemOptions} />
         )}
@@ -2178,11 +2183,10 @@ function Waiting({
     !room.catanTwoRules &&
     room.capacity >= 3 &&
     room.capacity <= 4 &&
-    !room.catanOptions?.helpers &&
     !room.catanOptions?.fiveSix &&
     !room.catanBaseConfiguration &&
     !room.catanCitiesKnights &&
-    !room.catanSeafarers &&
+    (!room.catanSeafarers || isPublicCatanSea(room.catanScenario)) &&
     !room.catanNewWorldMap &&
     !room.catanHarbors &&
     !room.catanFriendlyRobber;
@@ -2268,6 +2272,7 @@ function Waiting({
         {scenarioSelectable && (
           <CatanScenarioPicker
             value={room.catanScenario || ""}
+            helpers={!!room.catanOptions?.helpers}
             disabled={!host || busy}
             onChange={(catanScenario) =>
               command("catan_scenario", { catanScenario })
@@ -2306,18 +2311,20 @@ function Waiting({
           )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
-          !room.catanScenario && (
+          (!room.catanScenario || isPublicCatanSea(room.catanScenario)) && (
             <CatanSeafarersPicker
               room={room}
+              hideScenario={isPublicCatanSea(room.catanScenario)}
               disabled={!host || busy || mapDirty}
               command={command}
             />
           )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
-          !room.catanScenario && (
+          (!room.catanScenario || isPublicCatanSea(room.catanScenario)) && (
             <CatanOptionPicker
               value={room.catanOptions}
+              fiveSixAvailable={!isPublicCatanSea(room.catanScenario)}
               seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
               citiesKnights={!!room.catanCitiesKnights}
               harbors={!!room.catanHarbors?.enabled}

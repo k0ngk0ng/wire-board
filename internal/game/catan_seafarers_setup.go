@@ -77,7 +77,8 @@ func NormalizeCatanSeafarersSetup(n int, setup CatanSeafarersSetup) (CatanSeafar
 	return setup, fmt.Errorf("未知的航海家剧本")
 }
 
-// Internal unified entry point. Public room creation does not expose setup yet.
+// Unified entry point. The room catalogue controls which accepted recipes are
+// exposed publicly; other combinations use explicitly provisioned test rooms.
 // All maps start with their scenario-specific pregame phases and inventories.
 func NewCatanSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
 	setup, err := NormalizeCatanSeafarersSetup(n, setup)

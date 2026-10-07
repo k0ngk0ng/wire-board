@@ -489,6 +489,11 @@ func summary(r *Room) map[string]any {
 	}
 	if r.CatanSeafarers != nil && r.Status == "waiting" {
 		choices := game.CatanSeafarersScenarios(max(3, r.Capacity))
+		if publicCatanSeaScenario(r.CatanScenario) {
+			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
+				return !publicCatanSeaScenario(info.ID)
+			})
+		}
 		if r.CatanCitiesKnights != nil {
 			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
 				return !game.CatanCitiesKnightsSeafarersSupported(info.ID)
@@ -682,10 +687,11 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	room.CatanScenario = req.CatanScenario
-	if err := room.validateCatanScenario(); err != nil {
-		fail(w, 400, err.Error())
-		return
+	if req.CatanScenario != "" {
+		if err := room.setCatanScenario(req.CatanScenario); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
 	}
 	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
@@ -879,7 +885,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanBaseConfiguration(*req.CatanBaseConfiguration)
 	case "catan_seafarers":
-		// Internally provisioned rooms only until all expansion acceptance passes.
+		// A public scenario or an explicit internal recipe must provision this.
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanSeafarers == nil || req.CatanSeafarers == nil {
 			err = errors.New("只有房主能在航海家开局前选择剧本")
 			break
