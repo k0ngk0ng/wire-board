@@ -138,6 +138,9 @@ func (e catanExplorerEconomy) productionAllowed(g *Catan, f *catanExplorerSailin
 	if err := e.validate(g, f, c); err != nil {
 		return err
 	}
+	if g.CitiesKnights != nil {
+		return errors.New("组合开局已接入，城市事件与探险生产衔接尚未完成")
+	}
 	if e.Turn == nil || e.Turn.Player != player || e.Turn.Sequence != sequence || e.Turn.Phase != phase {
 		return errors.New("不是当前探险生产玩家、阶段或回应序号")
 	}

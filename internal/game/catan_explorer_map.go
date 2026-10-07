@@ -37,21 +37,22 @@ type catanExplorerFarm struct {
 	PirateDie int    `json:"pirateDie,omitempty"`
 }
 type catanExplorerBoard struct {
-	Council      *catanExplorerCouncil  `json:"council,omitempty"`
-	Liberated    map[int]int            `json:"liberated,omitempty"` // Public lair numbers, supplied only by the mission controller.
-	Rules        string                 `json:"rules"`
-	Scenario     string                 `json:"scenario"`
-	Layout       string                 `json:"layout"`
-	Players      int                    `json:"players"`
-	Target       int                    `json:"target"`
-	Starting     []int                  `json:"starting"`
-	FramePasture int                    `json:"framePasture"`
-	FrameSea     int                    `json:"frameSea"`
-	HarborStarts []int                  `json:"harborStarts"`
-	Regions      [2][]int               `json:"regions"`
-	Opening      []catanExplorerOpening `json:"opening,omitempty"` // Four printed colors, not placed players.
-	Hidden       []catanExplorerHidden  `json:"hidden"`
-	Numbers      [2][]int               `json:"numbers"`
+	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
+	Council       *catanExplorerCouncil  `json:"council,omitempty"`
+	Liberated     map[int]int            `json:"liberated,omitempty"` // Public lair numbers, supplied only by the mission controller.
+	Rules         string                 `json:"rules"`
+	Scenario      string                 `json:"scenario"`
+	Layout        string                 `json:"layout"`
+	Players       int                    `json:"players"`
+	Target        int                    `json:"target"`
+	Starting      []int                  `json:"starting"`
+	FramePasture  int                    `json:"framePasture"`
+	FrameSea      int                    `json:"frameSea"`
+	HarborStarts  []int                  `json:"harborStarts"`
+	Regions       [2][]int               `json:"regions"`
+	Opening       []catanExplorerOpening `json:"opening,omitempty"` // Four printed colors, not placed players.
+	Hidden        []catanExplorerHidden  `json:"hidden"`
+	Numbers       [2][]int               `json:"numbers"`
 }
 
 type catanExplorerMapRecipe struct {
@@ -137,6 +138,13 @@ func catanExplorerScenarioResources(region int, scenario string) []int {
 }
 
 func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catanExplorerBoard, error) {
+	return catanExplorerGeometryVariant(players, scenario, layout, false)
+}
+
+func catanExplorerGeometryVariant(players int, scenario, layout string, citiesKnights bool) (*Catan, *catanExplorerBoard, error) {
+	if citiesKnights && (players < 3 || layout != "variable" || scenario == "land-ho") {
+		return nil, nil, errors.New("探险家与城市骑士组合当前仅接入三至六人任务随机地图")
+	}
 	if players < 2 || players > 6 || players > 4 && layout != "variable" || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || catanExplorerFishScenario(scenario) && layout != "variable" {
 		return nil, nil, errors.New("探险地图需要2至6人；初航仅2至4人固定布局，五六人使用任务随机布局")
 	}
@@ -144,7 +152,18 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 	if err != nil {
 		return nil, nil, err
 	}
-	m := &catanExplorerBoard{Rules: catanExplorerRules, Scenario: scenario, Layout: layout, Players: players, Target: r.target, Starting: []int{}, HarborStarts: []int{}, Regions: [2][]int{{}, {}}}
+	if citiesKnights {
+		// Official combination: return one field and one forest instead of two
+		// fields. Apply before shuffling; never alter a revealed terrain later.
+		r.resources = slices.Clone(r.resources)
+		i := slices.Index(r.resources, 0)
+		if i < 0 {
+			return nil, nil, errors.New("组合地图缺少可替换森林")
+		}
+		r.resources[i] = 3
+		r.target += 5
+	}
+	m := &catanExplorerBoard{CitiesKnights: citiesKnights, Rules: catanExplorerRules, Scenario: scenario, Layout: layout, Players: players, Target: r.target, Starting: []int{}, HarborStarts: []int{}, Regions: [2][]int{{}, {}}}
 	specs := []CatanHexSpec{}
 	rows := make([][]int, len(r.starting))
 	middle, last := len(rows)/2, len(rows)-1
@@ -223,7 +242,11 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 // Private board foundation only: does not place initial pieces, give resources,
 // install missions, or expose an unfinished scenario to room creation.
 func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catanExplorerBoard, error) {
-	g, m, err := catanExplorerGeometry(players, scenario, layout)
+	return newCatanExplorerBoardVariant(players, scenario, layout, false)
+}
+
+func newCatanExplorerBoardVariant(players int, scenario, layout string, citiesKnights bool) (*Catan, *catanExplorerBoard, error) {
+	g, m, err := catanExplorerGeometryVariant(players, scenario, layout, citiesKnights)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -285,7 +308,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	if g == nil || len(g.Players) != m.Players || m.Rules != catanExplorerRules {
 		return errors.New("探险地图规则或人数无效")
 	}
-	base, spec, err := catanExplorerGeometry(m.Players, m.Scenario, m.Layout)
+	base, spec, err := catanExplorerGeometryVariant(m.Players, m.Scenario, m.Layout, m.CitiesKnights)
 	if err != nil {
 		return err
 	}
@@ -446,23 +469,24 @@ func (m *catanExplorerBoard) reveal(g *Catan, tile int) (catanExplorerHidden, er
 }
 
 type catanExplorerBoardView struct {
-	Farms        []catanExplorerFarm    `json:"farms,omitempty"`
-	Council      *catanExplorerCouncil  `json:"council,omitempty"`
-	Shoals       []catanExplorerShoal   `json:"shoals,omitempty"`
-	Rules        string                 `json:"rules"`
-	Scenario     string                 `json:"scenario"`
-	Layout       string                 `json:"layout"`
-	Target       int                    `json:"target"`
-	Starting     []int                  `json:"starting"`
-	HarborStarts []int                  `json:"harborStarts"`
-	Regions      [2][]int               `json:"regions"`
-	Opening      []catanExplorerOpening `json:"opening,omitempty"`
-	Unexplored   [2]int                 `json:"unexplored"`
-	NumbersLeft  [2]int                 `json:"numbersLeft"`
+	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
+	Farms         []catanExplorerFarm    `json:"farms,omitempty"`
+	Council       *catanExplorerCouncil  `json:"council,omitempty"`
+	Shoals        []catanExplorerShoal   `json:"shoals,omitempty"`
+	Rules         string                 `json:"rules"`
+	Scenario      string                 `json:"scenario"`
+	Layout        string                 `json:"layout"`
+	Target        int                    `json:"target"`
+	Starting      []int                  `json:"starting"`
+	HarborStarts  []int                  `json:"harborStarts"`
+	Regions       [2][]int               `json:"regions"`
+	Opening       []catanExplorerOpening `json:"opening,omitempty"`
+	Unexplored    [2]int                 `json:"unexplored"`
+	NumbersLeft   [2]int                 `json:"numbersLeft"`
 }
 
 func (m catanExplorerBoard) publicView() catanExplorerBoardView {
-	v := catanExplorerBoardView{Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
+	v := catanExplorerBoardView{CitiesKnights: m.CitiesKnights, Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
 	v.Council = clone(m.Council)
 	for i := range v.Opening {
 		v.Opening[i].Resources = slices.Clone(v.Opening[i].Resources)

@@ -120,8 +120,11 @@ func (c catanExplorerCargo) holder(g *Catan, fleet *catanExplorerSailing, owner 
 	return false
 }
 func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) error {
-	if g == nil || fleet == nil || len(c.Units) != len(g.Players)*11 || c.Scenario != "land-ho" && c.Scenario != "pirate-lairs" && !catanExplorerFishScenario(c.Scenario) || g.Seafarers != nil || g.Two != nil || g.CitiesKnights != nil || g.Transport != nil {
+	if g == nil || fleet == nil || len(c.Units) != len(g.Players)*11 || c.Scenario != "land-ho" && c.Scenario != "pirate-lairs" && !catanExplorerFishScenario(c.Scenario) || g.Seafarers != nil || g.Two != nil || g.Transport != nil {
 		return errors.New("探险货物库存、剧本或组合无效")
+	}
+	if k := g.CitiesKnights; k != nil && (len(g.Players) < 3 || k.Rules != catanCitiesKnightsRules(len(g.Players)) || len(k.Players) != len(g.Players)) {
+		return errors.New("探险城市骑士人数或组件无效")
 	}
 	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.RevealedEvent != nil || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
 		return errors.New("探险货物尚未接入其他扩展组合")
@@ -132,7 +135,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	if err := fleet.validate(g); err != nil {
 		return err
 	}
-	settlements, harbors, roads := map[int]int{}, map[int]int{}, map[int]int{}
+	settlements, harbors, cities, roads := map[int]int{}, map[int]int{}, map[int]int{}, map[int]int{}
 	for _, v := range g.Vertices {
 		if v.Level == 0 && v.Owner == -1 && !v.Harbor {
 			continue
@@ -142,10 +145,12 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		}
 		if v.Level == 1 {
 			settlements[v.Owner]++
-		} else {
+		} else if catanExplorerHarborAt(g, v.ID) {
 			harbors[v.Owner]++
+		} else {
+			cities[v.Owner]++
 		}
-		if settlements[v.Owner] > 5 || harbors[v.Owner] > 4 || v.Owner < 0 && (settlements[v.Owner] > 1 || harbors[v.Owner] > 1) {
+		if settlements[v.Owner] > 5 || harbors[v.Owner] > 4 || cities[v.Owner] > 4 || v.Owner < 0 && (settlements[v.Owner] > 1 || harbors[v.Owner] > 1) {
 			return errors.New("探险村庄或港口组件超额")
 		}
 	}
@@ -287,21 +292,28 @@ func (c *catanExplorerCargo) endMovement(g *Catan, fleet *catanExplorerSailing, 
 }
 
 func catanExplorerCanPay(g *Catan, player int, cost []int) bool {
-	if player < 0 || player >= len(g.Players) || !catanBundle(g.Bank) || !catanBundle(cost) {
+	if g == nil || player < 0 || player >= len(g.Players) || !catanBundle(cost) || len(g.Bank) != 5 && g.CitiesKnights == nil || len(g.Bank) != 8 && g.CitiesKnights != nil || !g.cardBundle(g.Bank) {
 		return false
 	}
 	stock := catanExplorerStock(len(g.Players)).resources
 	for _, p := range g.Players {
-		if !catanBundle(p.Resources) {
+		if !g.cardBundle(p.Resources) {
 			return false
 		}
 	}
-	for resource, amount := range cost {
+	for resource := range g.Bank {
 		total := g.Bank[resource]
 		for _, p := range g.Players {
 			total += p.Resources[resource]
 		}
-		if total != stock || g.Players[player].Resources[resource] < amount {
+		expected := stock
+		if resource >= 5 {
+			expected = 12
+			if len(g.Players) > 4 {
+				expected = 18
+			}
+		}
+		if total != expected || resource < 5 && g.Players[player].Resources[resource] < cost[resource] {
 			return false
 		}
 	}

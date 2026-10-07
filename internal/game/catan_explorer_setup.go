@@ -8,10 +8,11 @@ import (
 // Official E&P 2025 variable setup (mission guide p9). Independent of the
 // printed Land Ho opening. Private until full lair state/recipe acceptance.
 type catanExplorerSetup struct {
-	Start       int   `json:"start"`
-	Step        int   `json:"step"`
-	Harbors     []int `json:"harbors"`
-	Settlements []int `json:"settlements"`
+	CitiesKnights bool  `json:"citiesKnights,omitempty"`
+	Start         int   `json:"start"`
+	Step          int   `json:"step"`
+	Harbors       []int `json:"harbors"`
+	Settlements   []int `json:"settlements"`
 }
 type catanExplorerSetupStep struct {
 	Player int    `json:"player"`
@@ -55,10 +56,14 @@ func newCatanExplorerLairsSetup(players int, layout string, start int) (*Catan, 
 	return newCatanExplorerMissionSetup(players, "pirate-lairs", layout, start)
 }
 func newCatanExplorerMissionSetup(players int, scenario, layout string, start int) (*Catan, *catanExplorerBoard, *catanExplorerSailing, *catanExplorerCargo, *catanExplorerEconomy, *catanExplorerSetup, error) {
+	return newCatanExplorerMissionSetupVariant(players, scenario, layout, start, false)
+}
+
+func newCatanExplorerMissionSetupVariant(players int, scenario, layout string, start int, citiesKnights bool) (*Catan, *catanExplorerBoard, *catanExplorerSailing, *catanExplorerCargo, *catanExplorerEconomy, *catanExplorerSetup, error) {
 	if players < 2 || players > 6 || start < 0 || start >= players {
 		return nil, nil, nil, nil, nil, nil, errors.New("巢穴开局人数或先手无效")
 	}
-	g, b, err := newCatanExplorerBoard(players, scenario, layout)
+	g, b, err := newCatanExplorerBoardVariant(players, scenario, layout, citiesKnights)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
 	}
@@ -77,6 +82,10 @@ func newCatanExplorerMissionSetup(players int, scenario, layout string, start in
 		g.Players[p].Dev = make([]int, 5)
 		g.Players[p].NewDev = make([]int, 5)
 	}
+	if citiesKnights {
+		(&State{Catan: g}).enableCitiesKnights()
+		g.StartPlayer = start // Keep the caller's one randomized setup order.
+	}
 	c, err := newCatanExplorerCargo(g, f, scenario)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
@@ -92,14 +101,29 @@ func newCatanExplorerMissionSetup(players int, scenario, layout string, start in
 	if players == 2 {
 		count += 2
 	}
-	setup := &catanExplorerSetup{Start: start, Harbors: make([]int, count), Settlements: make([]int, count)}
+	setup := &catanExplorerSetup{CitiesKnights: citiesKnights, Start: start, Harbors: make([]int, count), Settlements: make([]int, count)}
 	for i := range setup.Harbors {
 		setup.Harbors[i], setup.Settlements[i] = -1, -1
 	}
 	return g, b, f, c, e, setup, setup.validate(g, b, f, c, e)
 }
-func (s catanExplorerSetup) current(players int) *catanExplorerSetupStep {
+
+func (s catanExplorerSetup) plan(players int) []catanExplorerSetupStep {
 	plan := catanExplorerSetupPlan(players, s.Start)
+	if s.CitiesKnights {
+		for i := range plan {
+			switch plan[i].Kind {
+			case "harbor":
+				plan[i].Kind = "city"
+			case "settlement":
+				plan[i].Kind = "harbor"
+			}
+		}
+	}
+	return plan
+}
+func (s catanExplorerSetup) current(players int) *catanExplorerSetupStep {
+	plan := s.plan(players)
 	if s.Step < 0 || s.Step >= len(plan) {
 		return nil
 	}
@@ -108,6 +132,12 @@ func (s catanExplorerSetup) current(players int) *catanExplorerSetupStep {
 func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
 	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerPirateScenario(b.Scenario) || c.Scenario != b.Scenario || s.Start < 0 || s.Start >= len(g.Players) || g.StartPlayer != s.Start {
 		return errors.New("巢穴开局组件或先手无效")
+	}
+	if s.CitiesKnights != b.CitiesKnights || s.CitiesKnights != (g.CitiesKnights != nil) {
+		return errors.New("组合开局、地图与城市骑士组件不一致")
+	}
+	if err := g.validateExplorerCityOpening(); err != nil {
+		return err
 	}
 	for _, loc := range c.Fish {
 		if loc != (catanExplorerCargoLocation{"supply", -1}) {
@@ -125,7 +155,7 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 	if n == 2 {
 		count += 2
 	}
-	plan := catanExplorerSetupPlan(n, s.Start)
+	plan := s.plan(n)
 	if len(s.Harbors) != count || len(s.Settlements) != count || s.Step < 0 || s.Step > len(plan) {
 		return errors.New("开局记录长度或步骤无效")
 	}
@@ -135,7 +165,7 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 		switch step.Kind {
 		case "harbor":
 			harbors[step.Owner] = true
-		case "settlement":
+		case "settlement", "city":
 			settlements[step.Owner] = true
 		case "road":
 			roads[step.Owner] = true
@@ -160,8 +190,8 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 			vertexCount++
 		}
 		if v >= 0 {
-			if v >= len(g.Vertices) || !catanExplorerSetupStartingVertex(g, b, v) || g.Vertices[v].Owner != owner || g.Vertices[v].Level != 1 {
-				return errors.New("起始村庄必须在起始岛")
+			if v >= len(g.Vertices) || !catanExplorerSetupStartingVertex(g, b, v) || g.Vertices[v].Owner != owner || (!s.CitiesKnights && g.Vertices[v].Level != 1) || (s.CitiesKnights && !g.cityAt(v)) {
+				return errors.New("起始村庄或城市必须在起始岛，类型须与组合规则一致")
 			}
 			vertexCount++
 		}
@@ -228,11 +258,14 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 		}
 		if settlements[p] {
 			score++
+			if s.CitiesKnights {
+				score++
+			}
 		}
 		if player.Eliminated || player.Score != score || !catanBundle(player.Dev) || !catanBundle(player.NewDev) || sum(player.Dev)+sum(player.NewDev) != 0 {
 			return errors.New("起始玩家得分或状态无效")
 		}
-		want := make([]int, 5)
+		want := make([]int, len(g.Bank))
 		if done {
 			for _, tile := range g.Tiles {
 				if tile.Resource < 5 && slices.Contains(tile.Vertices, s.Settlements[p]) {
@@ -241,7 +274,7 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 			}
 		}
 		if !slices.Equal(player.Resources, want) || e.Gold[p] != 2 {
-			return errors.New("起始资源只能来自村庄，每人2金币")
+			return errors.New("起始普通资源只能来自起始村庄或城市，每人2金币")
 		}
 	}
 	return nil
@@ -264,9 +297,9 @@ func (s catanExplorerSetup) choices(g *Catan, b *catanExplorerBoard, f *catanExp
 		return result
 	}
 	switch step.Kind {
-	case "harbor", "settlement":
+	case "harbor", "settlement", "city":
 		for _, v := range g.Vertices {
-			if v.Level != 0 || step.Kind == "harbor" && !slices.Contains(b.HarborStarts, v.ID) || step.Kind == "settlement" && !catanExplorerSetupStartingVertex(g, b, v.ID) {
+			if v.Level != 0 || step.Kind == "harbor" && !slices.Contains(b.HarborStarts, v.ID) || (step.Kind == "settlement" || step.Kind == "city") && !catanExplorerSetupStartingVertex(g, b, v.ID) {
 				continue
 			}
 			spaced := true
@@ -317,11 +350,14 @@ func (s *catanExplorerSetup) place(g *Catan, b *catanExplorerBoard, f *catanExpl
 		if owner >= 0 {
 			ng.Players[owner].Score += 2
 		}
-	case "settlement":
+	case "settlement", "city":
 		ng.Vertices[target].Owner, ng.Vertices[target].Level = owner, 1
+		if kind == "city" {
+			ng.Vertices[target].Level = 2
+		}
 		ns.Settlements[index] = target
 		if owner >= 0 {
-			ng.Players[owner].Score++
+			ng.Players[owner].Score += ng.Vertices[target].Level
 		}
 	case "road":
 		ng.Edges[target].Owner = owner
