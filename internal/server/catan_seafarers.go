@@ -29,7 +29,7 @@ func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
 	}
 	var world *game.CatanNewWorldMap
 	if setup.Scenario == "new_world" {
-		world, err = game.GenerateCatanNewWorldMap(max(3, r.Capacity))
+		world, err = r.generateCatanWorldMap()
 		if err != nil {
 			return err
 		}
@@ -37,6 +37,9 @@ func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
 	r.CatanSeafarers, r.CatanNewWorldMap = &setup, world
 	if publicCatanSeaScenario(r.CatanScenario) {
 		r.CatanScenario = setup.Scenario
+	}
+	if err := r.validateCatanFishing(); err != nil {
+		return err
 	}
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot

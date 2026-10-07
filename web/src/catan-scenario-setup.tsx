@@ -142,6 +142,54 @@ export function CatanCombinationKnightsPicker({
   );
 }
 
+export const supportsPublicCatanFishingSea = (scenario?: string) =>
+  [
+    "islands",
+    "fog",
+    "desert",
+    "tribe",
+    "cloth",
+    "wonders",
+    "new_world",
+  ].includes(scenario || "");
+
+export function CatanFishingSeaPicker({
+  value,
+  onChange,
+  disabled = false,
+  blocked = false,
+  fixedRequired = false,
+}: {
+  value: boolean;
+  onChange: (enabled: boolean) => void;
+  disabled?: boolean;
+  blocked?: boolean;
+  fixedRequired?: boolean;
+}) {
+  return (
+    <fieldset
+      className="catan-helper-options"
+      disabled={disabled || blocked || fixedRequired}
+    >
+      <label>
+        <input
+          type="checkbox"
+          checked={value}
+          onChange={(e) => onChange(e.target.checked)}
+        />
+        渔夫＋航海家
+      </label>
+      <p className="muted small">
+        {fixedRequired
+          ? "先将海图切为固定布局，才能加入渔夫。"
+          : blocked
+            ? "先关闭 Helpers 和城市骑士，才能加入渔夫。"
+            : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
+      </p>
+    </fieldset>
+  );
+}
+
 export const isPublicCatanExplorer = (scenario?: string) =>
   ["land-ho", "spices-for-catan"].includes(scenario || "");
 
@@ -167,6 +215,7 @@ export function CatanScenarioPicker({
   disabled = false,
   helpers = false,
   knights = false,
+  fishing = false,
   players = 3,
 }: {
   value: string;
@@ -174,6 +223,7 @@ export function CatanScenarioPicker({
   disabled?: boolean;
   helpers?: boolean;
   knights?: boolean;
+  fishing?: boolean;
   players?: number;
 }) {
   return (
@@ -203,6 +253,9 @@ export function CatanScenarioPicker({
                   ].includes(s.id)) ||
                 (players > 4 &&
                   !["spices-for-catan", "barbarian-attack"].includes(s.id)) ||
+                (fishing &&
+                  isPublicCatanSea(s.id) &&
+                  !supportsPublicCatanFishingSea(s.id)) ||
                 (knights &&
                   isPublicCatanSea(s.id) &&
                   !supportsPublicCatanKnightsCombination(s.id))

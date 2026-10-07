@@ -220,6 +220,7 @@ export type Room = {
   catanTwoRules?: string;
   catanTwoScenario?: string;
   catanScenario?: string;
+  catanFishing?: boolean;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
   railMap?: string;
