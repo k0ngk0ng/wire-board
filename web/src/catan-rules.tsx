@@ -214,7 +214,11 @@ export function CatanRules({ room }: { room: Room }) {
       <section className="catan-rules">
         <h3>
           探索者与海盗 ·{" "}
-          {room.game?.catan ? explorerScenarioLabel(room.game.catan) : "初航"}
+          {room.game?.catan
+            ? explorerScenarioLabel(room.game.catan)
+            : scenario === "spices-for-catan"
+              ? "卡坦香料"
+              : "初航"}
           {info.citiesKnights ? "＋城市与骑士" : ""} · {info.target}分
         </h3>
         <ul>
@@ -222,8 +226,8 @@ export function CatanRules({ room }: { room: Room }) {
             {scenario === "land-ho" && players <= 4
               ? "按印刷位置开局，随机先手；每人有村庄、港口、道路和装有移民的船，另有2金币。双人局的白色和橙色建筑、道路是静态障碍。"
               : info.citiesKnights
-                ? "依次放置起始城市、道路、港口与装有移民的船，另有2金币；起始城市领取相邻地块的一份普通资源。"
-                : "依次放置起始村庄、道路、港口与装有移民的船，另有2金币；起始资源按实际地图和港口位置领取。"}
+                ? "顺序放城市、逆序放港口，最后各自放道路和装有移民的船，另有2金币；起始城市领取相邻地块的一份普通资源。"
+                : "顺序放港口、逆序放村庄，最后各自放道路和装有移民的船，另有2金币；起始资源按实际地图和港口位置领取。"}
           </li>
           <li>
             村庄1分，港口2分，自己行动中达到{info.target}
@@ -234,7 +238,8 @@ export function CatanRules({ room }: { room: Room }) {
           <li>
             掷出非7点而没有获得资源{info.citiesKnights ? "或商品" : ""}
             时补偿1金币。7点需要超出手牌上限的玩家同时弃半，金币不算手牌。
-            {room.game?.catan?.explorer?.pirate &&
+            {(room.game?.catan?.explorer?.pirate ||
+              (info.waiting && scenario === "spices-for-catan")) &&
               "随后按海盗规则处理海盗移动与偷取。"}
           </li>
           <li>
@@ -245,6 +250,11 @@ export function CatanRules({ room }: { room: Room }) {
             2金币买1普通资源，每个行动阶段最多2次。
             {fiveSix && "五六人采用配对回合，第二位不重复生产，仅向银行交易。"}
           </li>
+          {scenario === "spices-for-catan" && (
+            <li>
+              本剧本包含捕鱼与香料两项任务。派驻船员结交农场，领取香料及农场能力；把鱼群或香料运至议会岛锚点交付，推进各自任务轨道。双人开局还需摆放两家静态中立建筑。
+            </li>
+          )}
           <li>
             每船基础4步，可付1羊毛加2步；切换船只后不能再移动上一艘。触及迷雾必须揭示并停止本船，仍可移民定居。
           </li>

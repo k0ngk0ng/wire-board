@@ -1,36 +1,15 @@
 package server
 
 import (
-	"encoding/json"
 	"github.com/k0ngk0ng/wire-board/internal/game"
 	"net/http/httptest"
-	"os"
 	"testing"
 	"time"
 )
 
 func newExplorerSpiceHTTP(t *testing.T) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
-	s, ts, clients, id := newExplorerHTTP(t, 3, false)
-	// Exact private three-player constructor; no artificial mission numbers,
-	// injected resources or altered scores. Public room options remain closed.
-	raw, err := os.ReadFile("testdata/catan_explorer_spice_setup.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var state game.State
-	if err = json.Unmarshal(raw, &state); err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Lock()
-	r := s.rooms[id]
-	r.Game = &state
-	r.startTurnClock(time.Now())
-	if err = s.save(r); err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Unlock()
-	return s, ts, clients, id
+	return newPublicExplorerScenarioHTTP(t, 3, "spices-for-catan")
 }
 
 func assertExplorerSpiceHTTPPrivacy(t *testing.T, clients []*testClient, state *game.State) {

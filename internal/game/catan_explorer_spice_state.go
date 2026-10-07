@@ -2,7 +2,12 @@ package game
 
 import "errors"
 
-// Private acceptance constructor; public options await bots, UI and HTTP acceptance.
+// NewCatanExplorerSpices starts the 2025 fish-and-spice scenario.
+// Five/six players use its own enlarged map and paired turns.
+func NewCatanExplorerSpices(players int) (*State, error) {
+	return newCatanExplorerSpiceState(players)
+}
+
 func newCatanExplorerSpiceState(players int) (*State, error) {
 	return newCatanExplorerMissionState(players, "spices-for-catan", "variable", nil)
 }

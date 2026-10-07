@@ -650,6 +650,9 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		}
 		req.CatanOptions = options
 		minPlayers = 3
+		if req.CatanScenario == "spices-for-catan" {
+			minPlayers, maxPlayers = 2, 6
+		}
 		if req.Capacity == 2 {
 			if options != (game.CatanOptions{}) {
 				fail(w, 400, "双人卡坦不能组合五至六人或 Helpers 扩展")
@@ -681,7 +684,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		hash = string(h)
 	}
 	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
-	if room.Kind == "catan" && room.Capacity == 2 && req.CatanScenario != "land-ho" {
+	if room.Kind == "catan" && room.Capacity == 2 && !publicCatanExplorerScenario(req.CatanScenario) {
 		if err := room.setCatanTwoScenario(req.CatanTwoScenario); err != nil {
 			fail(w, 400, err.Error())
 			return
@@ -917,7 +920,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanScenario(*req.CatanScenario)
 	case "catan_two_scenario":
-		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || (next.CatanTwoRules != game.CatanTwoRules && !(next.Capacity == 2 && next.CatanScenario == "land-ho")) || req.CatanTwoScenario == nil {
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || (next.CatanTwoRules != game.CatanTwoRules && !(next.Capacity == 2 && publicCatanExplorerScenario(next.CatanScenario))) || req.CatanTwoScenario == nil {
 			err = errors.New("只有房主能在双人卡坦开局前选择剧本")
 			break
 		}
@@ -1093,6 +1096,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
 						}
 					}
+				} else if next.CatanScenario == "spices-for-catan" {
+					next.Game, err = game.NewCatanExplorerSpices(len(next.Seats))
 				} else if next.CatanScenario == "land-ho" {
 					next.Game, err = game.NewCatanExplorerLandHo(len(next.Seats))
 				} else if next.CatanScenario == "rivers" {

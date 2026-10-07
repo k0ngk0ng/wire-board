@@ -355,3 +355,21 @@ test("public Land Ho waiting rules support two players without trade tokens and 
   assert.equal(info.target, 10);
   assert.equal(info.scenario, "");
 });
+
+test("Spices waiting rules choose the task target and paired turns by player count", () => {
+  for (const players of [2, 3, 4, 5, 6]) {
+    const room = {capacity: players, catanScenario: "spices-for-catan", catanOptions: {}};
+    const info = catanRuleContext(room);
+    assert.equal(info.explorer, true);
+    assert.equal(info.two, false);
+    assert.equal(info.target, 15);
+    assert.equal(info.layout, "variable");
+    assert.equal(info.fiveSix, players > 4);
+    room.game = {catan: {players: [{}, {}], explorer: {board: {scenario: "spices-for-catan", target: 15, layout: "variable"}}}};
+    const saved = catanRuleContext(room);
+    assert.equal(saved.players, 2);
+    assert.equal(saved.target, 15);
+    assert.equal(saved.fiveSix, false);
+    assert.equal(saved.layout, "variable");
+  }
+});

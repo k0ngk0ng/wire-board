@@ -4,6 +4,9 @@ import type { Room, CatanState } from "./types";
 // rules shown for a saved game. Waiting rooms use the approved configuration.
 export function catanRuleContext(room: Room) {
   const game = room.game?.catan;
+  const explorerDraft = ["land-ho", "spices-for-catan"].includes(
+    room.catanScenario || "",
+  );
   const sea = game?.seafarers;
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
   const citiesKnights = !!citySetup;
@@ -17,7 +20,7 @@ export function catanRuleContext(room: Room) {
     ? game?.explorer?.board.scenario ||
       sea?.scenario ||
       (sea?.newWorld ? "new_world" : sea?.wonders ? "wonders" : "")
-    : (room.catanScenario === "land-ho" ? "land-ho" : "") ||
+    : (explorerDraft ? room.catanScenario : "") ||
       room.catanSeafarers?.scenario ||
       (room.catanNewWorldMap ? "new_world" : "");
   if (scenario === "islands" && players > 4) scenario = "six_islands";
@@ -25,9 +28,15 @@ export function catanRuleContext(room: Room) {
     citiesKnights && !scenario
       ? citySetup?.layout || "variable"
       : game
-        ? sea?.layout ||
+        ? game.explorer?.board.layout ||
+          sea?.layout ||
           (sea?.newWorld ? "prepared" : sea?.variable ? "variable" : "fixed")
-        : room.catanSeafarers?.layout ||
+        : (explorerDraft
+            ? room.catanScenario === "land-ho"
+              ? "fixed"
+              : "variable"
+            : "") ||
+          room.catanSeafarers?.layout ||
           (room.catanNewWorldMap ? "prepared" : "");
   const fixedBase =
     !scenario &&
@@ -35,7 +44,7 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
-    explorer: game ? !!game.explorer : room.catanScenario === "land-ho",
+    explorer: game ? !!game.explorer : explorerDraft,
     transport: !!game?.transport,
     attack: !!game?.attack,
     caravans,
@@ -56,7 +65,9 @@ export function catanRuleContext(room: Room) {
     neutral: game
       ? game.baseSetup?.neutralColor != null && game.baseSetup.neutralColor >= 0
       : fixedBase,
-    fiveSix: game ? !!game.paired || !!options.fiveSix : !!options.fiveSix,
+    fiveSix: game
+      ? !!game.paired || !!options.fiveSix
+      : !!options.fiveSix || (explorerDraft && players > 4),
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,
     target: game
@@ -73,6 +84,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
   const target = (
     {
       "land-ho": 8,
+      "spices-for-catan": 15,
       shores: 14,
       islands: 13,
       six_islands: 13,

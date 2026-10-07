@@ -14,7 +14,11 @@ func publicCatanSeaScenario(scenario string) bool {
 	return false
 }
 
-// Public recipes (Land Ho: two to four; other scenarios: three to four).
+func publicCatanExplorerScenario(scenario string) bool {
+	return scenario == "land-ho" || scenario == "spices-for-catan"
+}
+
+// Public recipes include two-to-six-player Explorer missions.
 // The other scenarios/combinations retain
 // their separate acceptance gates; public sea rooms carry both the selected
 // scenario and its normalized map configuration.
@@ -22,9 +26,13 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
 		return nil
 	}
-	if r.CatanScenario == "land-ho" {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
-			return errors.New("初航支持两至四人，使用印刷开局，不能混用其他扩展配置")
+	if publicCatanExplorerScenario(r.CatanScenario) {
+		maximum := 4
+		if r.CatanScenario == "spices-for-catan" {
+			maximum = 6
+		}
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+			return errors.New("探险剧本人数或组合无效：初航两至四人，卡坦香料两至六人；不混用其他扩展配置")
 		}
 		return nil
 	}
@@ -66,12 +74,15 @@ func (r *Room) validateCatanScenario() error {
 }
 
 func (r *Room) setCatanScenario(scenario string) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && scenario != "land-ho") {
+	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanExplorerScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
+	}
+	if r.Capacity > 4 && publicCatanExplorerScenario(r.CatanScenario) && scenario != "spices-for-catan" {
+		return errors.New("五六人探险牌桌只能选择支持该人数的任务")
 	}
 	next := *r
 	next.CatanScenario = scenario
-	if scenario == "land-ho" {
+	if publicCatanExplorerScenario(scenario) {
 		next.CatanTwoRules, next.CatanTwoScenario = "", ""
 	} else if r.Capacity == 2 {
 		return errors.New("两人牌桌请通过双人剧本选择器切回双人规则")

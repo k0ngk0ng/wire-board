@@ -1,5 +1,11 @@
 const scenarios = [
   {
+    id: "spices-for-catan",
+    name: "探索者与海盗 · 卡坦香料",
+    description:
+      "捕捞鱼群、结交农场，将鱼群与香料运回议会岛，15 分获胜；两至六人，五六人采用扩大地图与配对回合。",
+  },
+  {
     id: "land-ho",
     name: "探索者与海盗 · 初航",
     description: "印刷开局，装载移民并航行探索新岛，8 分获胜；支持两至四人。",
@@ -63,6 +69,9 @@ const scenarios = [
   },
 ];
 
+export const isPublicCatanExplorer = (scenario?: string) =>
+  ["land-ho", "spices-for-catan"].includes(scenario || "");
+
 export const isPublicCatanSea = (scenario?: string) =>
   [
     "shores",
@@ -81,16 +90,18 @@ export function CatanScenarioPicker({
   onChange,
   disabled = false,
   helpers = false,
+  players = 3,
 }: {
   value: string;
   onChange: (scenario: string) => void;
   disabled?: boolean;
   helpers?: boolean;
+  players?: number;
 }) {
   return (
     <div className="catan-two-picker">
       <label>
-        三至四人卡坦剧本
+        卡坦剧本
         <select
           value={value}
           disabled={disabled}
@@ -101,7 +112,14 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                helpers && ["rivers", "caravans", "land-ho"].includes(s.id)
+                (helpers &&
+                  [
+                    "rivers",
+                    "caravans",
+                    "land-ho",
+                    "spices-for-catan",
+                  ].includes(s.id)) ||
+                (players > 4 && s.id !== "spices-for-catan")
               }
             >
               {s.name}

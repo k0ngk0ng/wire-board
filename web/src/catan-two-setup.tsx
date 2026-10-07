@@ -1,5 +1,11 @@
 const scenarios = [
   {
+    id: "spices-for-catan",
+    name: "探索者与海盗 · 卡坦香料",
+    description:
+      "捕鱼、结交农场，将货物运回议会岛，15 分获胜；两家中立势力仅作静态障碍，不使用贸易筹码。",
+  },
+  {
     id: "land-ho",
     name: "探索者与海盗 · 初航",
     description:
@@ -50,7 +56,7 @@ export function CatanTwoScenarioPicker({
       <p className="muted small">
         {scenarios.find((s) => s.id === value)?.description}
       </p>
-      {value !== "land-ho" && (
+      {!["land-ho", "spices-for-catan"].includes(value) && (
         <p className="muted small">
           采用 2025 双人规则。本站补充：贸易筹码
           {value === "rivers" ? "与金币" : ""}用完继续记账发放。
