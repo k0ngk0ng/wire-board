@@ -75,7 +75,9 @@ func referenceEventDrawHTTP(t *testing.T, s *Server, ts *httptest.Server, client
 		expected[p] = slices.Clone(r.Game.Catan.Players[p].Resources)
 	}
 	for _, tile := range r.Game.Catan.Tiles {
-		if tile.Number == 2 && tile.ID != r.Game.Catan.Robber {
+		// The 3/4-player river map puts the 2 disc on the 12 hex.
+		produces := tile.Number == 2 || r.Game.Catan.Rivers != nil && r.Game.Catan.Rivers.Map.DoubleNumberTile == tile.ID
+		if produces && tile.ID != r.Game.Catan.Robber {
 			for _, v := range tile.Vertices {
 				vertex := r.Game.Catan.Vertices[v]
 				if vertex.Level > 0 && vertex.Owner >= 0 {

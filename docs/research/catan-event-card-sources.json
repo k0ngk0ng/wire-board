@@ -118,5 +118,24 @@
       "No dedicated neutral-road Earthquake clarification was found on this FAQ page. The internal combination keeps event responses with the two actual players; neutral pieces only follow explicit neutral instructions. This is a rule interpretation, not a quoted special FAQ."
     ],
     "catalogue_status": "Still legacy-reference-v1 only; no claim of a verified 2025 physical catalogue."
+  },
+  "river_reference_integration": {
+    "checked_on": "2026-10-07",
+    "source": "../board-expansion-rule-sources.json#catan-traders-2025",
+    "printed_pages": [
+      5,
+      6,
+      11,
+      12
+    ],
+    "quotes": [
+      "Each player damages one of their own roads (if possible) by turning it sideways.",
+      "If there is no desert hex, move the robber off the board.",
+      "Actions that move the robber to the desert move it to a swamp instead."
+    ],
+    "scope": "The swamp replacement sentence occurs under COMBINING WITH OTHER CATAN PRODUCTS / CATAN FOR TWO on printed page 12. Apply it to the two-player river combination. Ordinary river Event Cards follow the explicit no-desert off-board instruction.",
+    "bridge_basis": "River bridges are separate pieces with their own costs and stock; Earthquake names roads. FAQ21 permits constructing a bridge from an intact road or settlement despite road damage. Do not offer bridge pieces as earthquake roads or pay construction gold for repairs.",
+    "faq_reference": "See two_player_reference_integration.faq for the official FAQ page fetched 2026-10-07; question 21 was present. This stage reread cached rules and prior FAQ evidence, without a new web fetch.",
+    "catalogue_status": "Still legacy-reference-v1 only. Current 2025 face catalogue, other combinations and final release acceptance remain incomplete."
   }
 }

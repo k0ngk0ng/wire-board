@@ -48,7 +48,9 @@ export function CatanCardEventChoice({
     q.kind === "earthquake"
       ? "在地图上选择一条自己的完好道路。受损道路需修复后才能继续修建新路。"
       : q.kind === "robber_flees"
-        ? "选择地图上亮起的沙漠。强盗返回沙漠，不偷牌。"
+        ? g.two && g.rivers
+          ? "选择地图上亮起的沼泽。强盗返回沼泽，不偷牌。"
+          : "选择地图上亮起的沙漠。强盗返回沙漠，不偷牌。"
         : q.kind === "good_neighbors"
           ? `选一张牌交给${recipient}，所有人选完后统一转交。`
           : q.kind === "helpful_neighbor"
@@ -111,7 +113,7 @@ export function CatanCardEventChoice({
               {mapChoice && (
                 <p className="catan-event-map-hint">
                   {action && chosen
-                    ? `已选${q.kind === "earthquake" ? "道路" : "沙漠"} #${chosen.id + 1}`
+                    ? `已选${q.kind === "earthquake" ? "道路" : g.two && g.rivers ? "沼泽" : "沙漠"} #${chosen.id + 1}`
                     : "点击地图上亮起的位置，再确认。可以收起本面板查看完整地图。"}
                 </p>
               )}
