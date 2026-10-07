@@ -51,8 +51,11 @@ func (s *State) validateCatanAttack() error {
 	}
 	a := g.Attack
 	n := len(g.Players)
-	if n < 3 || n > 6 || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
+	if n < 3 || n > 6 || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
 		return errors.New("蛮族进攻人数或尚未接入的组合无效")
+	}
+	if err := s.validateCatanAttackEvent(); err != nil {
+		return err
 	}
 	if err := a.validate(g); err != nil {
 		return err
@@ -63,7 +66,7 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_attack_card", "catan_attack_end", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_attack_card", "catan_attack_end", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
