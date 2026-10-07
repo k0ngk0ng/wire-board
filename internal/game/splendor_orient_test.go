@@ -240,7 +240,7 @@ func TestSplendorOrientRequiresCopySourceAndSkipsEmptyCascade(t *testing.T) {
 }
 
 func TestSplendorUnverifiedCatalogOptionsStayUnavailable(t *testing.T) {
-	for _, o := range []SplendorOptions{{Orient: true}, {Cities: true}, {Orient: true, Cities: true}} {
+	for _, o := range []SplendorOptions{{Cities: true}, {Orient: true, Cities: true}} {
 		if _, err := NewSplendor(3, o); err == nil {
 			t.Fatal("incomplete catalog exposed")
 		}

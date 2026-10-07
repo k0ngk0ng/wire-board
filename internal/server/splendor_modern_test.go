@@ -202,119 +202,7 @@ func TestSplendorModernHTTPCombinationGames(t *testing.T) {
 		for n := 2; n <= 4; n++ {
 			t.Run(fmt.Sprintf("mask%d/players%d", mask, n), func(t *testing.T) {
 				s, ts, clients, id := modernSplendorTable(t, n, mask)
-				initial := slices.Clone(s.rooms[id].Game.Splendor.Bank)
-				seen := map[string]bool{}
-				steps := 0
-				for ; !s.rooms[id].Game.Finished && steps < 2500; steps++ {
-					r := s.rooms[id]
-					state := r.Game
-					actor := state.Turn
-					assertModernComponents(t, state, initial)
-					if !seen[state.Phase] {
-						seen[state.Phase] = true
-						assertModernPrivacy(t, clients, state)
-						before, _ := json.Marshal(r)
-						action, err := state.BotAction(actor)
-						if err != nil {
-							t.Fatal(err)
-						}
-						for _, v := range []int{(actor + 1) % n, n} {
-							clients[v].command(current(clients[v]), "action", action, 400)
-						}
-						after, _ := json.Marshal(s.rooms[id])
-						if string(before) != string(after) {
-							t.Fatal("rejected action mutated room")
-						}
-						s, ts = restartRiversHTTP(t, s, ts, clients, id)
-						r = s.rooms[id]
-						state = r.Game
-					}
-					turn, round, deadline, version := state.Turn, state.Round, r.TurnDeadline, r.Version
-					at := time.Now()
-					if steps%2 == 0 {
-						a, err := state.BotAction(actor)
-						if err != nil {
-							t.Fatal(steps, state.Phase, err)
-						}
-						body := map[string]any{"type": "action", "action": a, "version": version, "nonce": randomID(12)}
-						clients[actor].post("/api/rooms/"+id, body, 200)
-						clients[actor].post("/api/rooms/"+id, body, 200)
-						if s.rooms[id].Version != version+1 {
-							t.Fatal("duplicate nonce applied twice")
-						}
-						body["nonce"] = randomID(12)
-						clients[actor].post("/api/rooms/"+id, body, 409)
-					} else {
-						setAutoPlay(clients[actor], current(clients[actor]), true, 200)
-						s.mu.Lock()
-						s.rooms[id].BotAt = 0
-						s.runBots(at)
-						s.mu.Unlock()
-						if s.rooms[id].Version != version+2 {
-							t.Fatal("autoplay did not perform exactly one action", steps, state.Phase)
-						}
-						if !s.rooms[id].Game.Finished {
-							setAutoPlay(clients[actor], current(clients[actor]), false, 200)
-						}
-					}
-					r = s.rooms[id]
-					if r.Game.Finished {
-						if r.TurnDeadline != 0 {
-							t.Fatal("finished clock retained")
-						}
-					} else if r.Game.Turn == turn && r.Game.Round == round {
-						if r.TurnDeadline != deadline {
-							t.Fatal("effect chain reset shared clock", state.Phase, r.Game.Phase)
-						}
-					} else if left := r.TurnDeadline - at.UnixMilli(); left < 120000 || left > 122000 {
-						t.Fatal("new turn clock", left)
-					}
-					if steps%37 == 0 {
-						s, ts = restartRiversHTTP(t, s, ts, clients, id)
-					}
-				}
-				r := s.rooms[id]
-				if !r.Game.Finished || len(r.Game.Winners) == 0 {
-					t.Fatal("game stalled", steps, r.Game.Phase)
-				}
-				assertModernComponents(t, r.Game, initial)
-				assertModernCityWinner(t, r.Game)
-				matchID := r.MatchID
-				var before string
-				if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", matchID).Scan(&before); err != nil {
-					t.Fatal(err)
-				}
-				var record MatchRecord
-				if err := json.Unmarshal([]byte(before), &record); err != nil {
-					t.Fatal(err)
-				}
-				if record.SplendorOptions != r.Game.Splendor.Options || record.Status != "finished" || !record.Rated {
-					t.Fatal("wrong archived rules/status", record)
-				}
-				for i, p := range record.Players {
-					if p.Won != slices.Contains(r.Game.Winners, i) || p.Score == nil || *p.Score != r.Game.Splendor.Players[i].Score {
-						t.Fatal("wrong archived result", i)
-					}
-				}
-				s, ts = restartRiversHTTP(t, s, ts, clients, id)
-				s.mu.Lock()
-				err := s.save(s.rooms[id])
-				s.mu.Unlock()
-				if err != nil {
-					t.Fatal(err)
-				}
-				var after string
-				if err = s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", matchID).Scan(&after); err != nil {
-					t.Fatal(err)
-				}
-				if before != after {
-					t.Fatal("repeated archive changed match")
-				}
-				var ledger int
-				if err = s.db.QueryRow("SELECT count(*) FROM rating_ledger WHERE match_id=?", matchID).Scan(&ledger); err != nil || ledger != n {
-					t.Fatal("rating ledger duplicated/lost", ledger, err)
-				}
-				t.Logf("%d legal actions; phases %v; winners %v", steps, seen, r.Game.Winners)
+				runSplendorHTTPGame(t, s, ts, clients, id)
 			})
 		}
 	}
@@ -420,4 +308,123 @@ func TestSplendorModernPendingTimeoutAndContinuation(t *testing.T) {
 			})
 		}
 	}
+}
+
+// Shared acceptance from an already started table through natural completion.
+func runSplendorHTTPGame(t *testing.T, s *Server, ts *httptest.Server, clients []*testClient, id string) {
+	t.Helper()
+	n := len(clients) - 1
+	initial := slices.Clone(s.rooms[id].Game.Splendor.Bank)
+	seen := map[string]bool{}
+	steps := 0
+	for ; !s.rooms[id].Game.Finished && steps < 2500; steps++ {
+		r := s.rooms[id]
+		state := r.Game
+		actor := state.Turn
+		assertModernComponents(t, state, initial)
+		if !seen[state.Phase] {
+			seen[state.Phase] = true
+			assertModernPrivacy(t, clients, state)
+			before, _ := json.Marshal(r)
+			action, err := state.BotAction(actor)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, v := range []int{(actor + 1) % n, n} {
+				clients[v].command(current(clients[v]), "action", action, 400)
+			}
+			after, _ := json.Marshal(s.rooms[id])
+			if string(before) != string(after) {
+				t.Fatal("rejected action mutated room")
+			}
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			r = s.rooms[id]
+			state = r.Game
+		}
+		turn, round, deadline, version := state.Turn, state.Round, r.TurnDeadline, r.Version
+		at := time.Now()
+		if steps%2 == 0 {
+			a, err := state.BotAction(actor)
+			if err != nil {
+				t.Fatal(steps, state.Phase, err)
+			}
+			body := map[string]any{"type": "action", "action": a, "version": version, "nonce": randomID(12)}
+			clients[actor].post("/api/rooms/"+id, body, 200)
+			clients[actor].post("/api/rooms/"+id, body, 200)
+			if s.rooms[id].Version != version+1 {
+				t.Fatal("duplicate nonce applied twice")
+			}
+			body["nonce"] = randomID(12)
+			clients[actor].post("/api/rooms/"+id, body, 409)
+		} else {
+			setAutoPlay(clients[actor], current(clients[actor]), true, 200)
+			s.mu.Lock()
+			s.rooms[id].BotAt = 0
+			s.runBots(at)
+			s.mu.Unlock()
+			if s.rooms[id].Version != version+2 {
+				t.Fatal("autoplay did not perform exactly one action", steps, state.Phase)
+			}
+			if !s.rooms[id].Game.Finished {
+				setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+			}
+		}
+		r = s.rooms[id]
+		if r.Game.Finished {
+			if r.TurnDeadline != 0 {
+				t.Fatal("finished clock retained")
+			}
+		} else if r.Game.Turn == turn && r.Game.Round == round {
+			if r.TurnDeadline != deadline {
+				t.Fatal("effect chain reset shared clock", state.Phase, r.Game.Phase)
+			}
+		} else if left := r.TurnDeadline - at.UnixMilli(); left < 120000 || left > 122000 {
+			t.Fatal("new turn clock", left)
+		}
+		if steps%37 == 0 {
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+		}
+	}
+	r := s.rooms[id]
+	if !r.Game.Finished || len(r.Game.Winners) == 0 {
+		t.Fatal("game stalled", steps, r.Game.Phase)
+	}
+	assertModernComponents(t, r.Game, initial)
+	assertModernCityWinner(t, r.Game)
+	matchID := r.MatchID
+	var before string
+	if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", matchID).Scan(&before); err != nil {
+		t.Fatal(err)
+	}
+	var record MatchRecord
+	if err := json.Unmarshal([]byte(before), &record); err != nil {
+		t.Fatal(err)
+	}
+	if record.SplendorOptions != r.Game.Splendor.Options || record.Status != "finished" || !record.Rated {
+		t.Fatal("wrong archived rules/status", record)
+	}
+	for i, p := range record.Players {
+		if p.Won != slices.Contains(r.Game.Winners, i) || p.Score == nil || *p.Score != r.Game.Splendor.Players[i].Score {
+			t.Fatal("wrong archived result", i)
+		}
+	}
+	s, ts = restartRiversHTTP(t, s, ts, clients, id)
+	s.mu.Lock()
+	err := s.save(s.rooms[id])
+	s.mu.Unlock()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var after string
+	if err = s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", matchID).Scan(&after); err != nil {
+		t.Fatal(err)
+	}
+	if before != after {
+		t.Fatal("repeated archive changed match")
+	}
+	var ledger int
+	if err = s.db.QueryRow("SELECT count(*) FROM rating_ledger WHERE match_id=?", matchID).Scan(&ledger); err != nil || ledger != n {
+		t.Fatal("rating ledger duplicated/lost", ledger, err)
+	}
+	t.Logf("%d legal actions; phases %v; winners %v", steps, seen, r.Game.Winners)
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Castle, Crown, Store } from "lucide-react";
+import { Castle, Crown, Store, Sunrise } from "lucide-react";
 import type { Act, Card, Room, SplendorOptions } from "./types";
 import { gemOrientChoices } from "./splendor-orient-state";
 import "./splendor-expansions.css";
@@ -40,6 +40,12 @@ export function SplendorOptionPicker({
       <div>
         {(
           [
+            [
+              "orient",
+              "东方",
+              "加入三十张发展卡，获得双奖励与连锁效果",
+              Sunrise,
+            ],
             ["tradingPosts", "贸易站", "达成条件，解锁持续能力", Store],
             ["strongholds", "要塞", "占据发展卡，集结三座发动征服", Castle],
           ] as const

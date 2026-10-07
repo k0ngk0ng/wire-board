@@ -5,7 +5,7 @@
     "url": "https://gemerchant.org/modules/en/expansion-data.mjs?v=dfea0daf39da",
     "sha256": "a1a1f80191715bec1de8c113f4c0ce27c17a777018df955d170f6cea65fa7447",
     "retrieved": "2026-10-06",
-    "note": "Public component data, not publisher data. Its cited physical-photo research is not publicly available (404). See docs/research/splendor-modern-catalog.md; public options remain disabled."
+    "note": "Public component data, not publisher data. Its cited physical-photo research is not publicly available (404). See docs/research/splendor-modern-catalog.md; Orient has since been cross-checked against all 30 BGA component facts (24 also have physical-image evidence) and is available independently. Cities remain disabled pending physical faces and reverse-pairing verification."
   },
   "orient": [
     {
