@@ -218,9 +218,13 @@ func TestCatanAttackEndRejectsDiceGoldAndWrongOrdersAtomically(t *testing.T) {
 	attackEndReject(t, s, nil, attackDice(t, 7))
 	other := (p + 1) % 3
 	attackCoins(s, other, a.GoldBank)
+	a.GoldIssued = catanGoldLedgerLimit
+	a.Gold[other] += a.GoldIssued
 	// At least one of the two occupied edges is removed for this die.
 	die := []int{1, 2, 3}[a.Map.edgeOrientation(s.Catan, a.Knights[0].Edge)]
 	attackEndReject(t, s, nil, attackDice(t, die))
+	a.Gold[other] -= a.GoldIssued
+	a.GoldIssued = 0
 	attackCoins(s, other, 0)
 	a.Knights[0].Player = other
 	attackEndReject(t, s, []catanAttackMove{{a.Knights[0].Edge, a.Knights[1].Edge, false}}, attackDice(t))

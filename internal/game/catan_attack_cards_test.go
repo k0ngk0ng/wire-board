@@ -331,12 +331,14 @@ func TestCatanAttackTreasonSourcesConquestAndSupply(t *testing.T) {
 }
 
 func TestCatanAttackCardPublicBoundaryGatesAndCorruptPending(t *testing.T) {
-	for _, boundary := range []string{"gold", "barbarians", "destinations"} {
+	for _, boundary := range []string{"ledger_overflow", "barbarians", "destinations"} {
 		s := newAttackState(t, 3, false)
 		a := s.Catan.Attack
 		switch boundary {
-		case "gold":
+		case "ledger_overflow":
 			attackCoins(s, (s.Turn+1)%3, a.Map.Gold-1)
+			a.GoldIssued = catanGoldLedgerLimit
+			a.Gold[(s.Turn+1)%3] += a.GoldIssued
 		case "barbarians":
 			clear(a.Barbarians)
 			a.Prisoners[(s.Turn+1)%3] = a.Map.Barbarians - 1

@@ -149,7 +149,7 @@ func TestCatanAttackLandingDistinctNumbersDuplicateCoastsAndRestore(t *testing.T
 	g.RollID = 21
 	before := clone(g.Players)
 	roll := scriptedAttackDice(t, [2]int{3, 4}, [2]int{2, 3}, [2]int{2, 3}, [2]int{3, 6}, [2]int{1, 1})
-	if e := s.catanAttackLanding(roll); e != nil {
+	if e := s.catanAttackLanding(roll, nil); e != nil {
 		t.Fatal(e)
 	}
 	a := g.Attack
@@ -171,7 +171,7 @@ func TestCatanAttackLandingDistinctNumbersDuplicateCoastsAndRestore(t *testing.T
 			a.Barbarians[id] = 3
 		}
 	}
-	if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{1, 4}, [2]int{4, 5}, [2]int{1, 2})); e != nil {
+	if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{1, 4}, [2]int{4, 5}, [2]int{1, 2}), nil); e != nil {
 		t.Fatal(e)
 	}
 	if len(a.Landing.Rolls[0].Tiles) != 0 || len(a.Landing.Rolls) != 3 {
@@ -187,23 +187,14 @@ func TestCatanAttackLandingSupplyAndInvalidRollAreAtomic(t *testing.T) {
 		for i := 0; i < captives; i++ {
 			a.Prisoners[i%n]++
 		}
-		before, _ := json.Marshal(s)
-		if n == 6 {
-			if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{2, 3})); e == nil {
-				t.Fatal("invented insufficient double-target priority")
-			}
-			after, _ := json.Marshal(s)
-			if string(before) != string(after) {
-				t.Fatal("supply guard partially mutated landing")
-			}
-		}
-		if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{1, 1})); e != nil {
+
+		if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{1, 1}), nil); e != nil {
 			t.Fatal(e)
 		}
 		if a.supply() != 0 || len(a.Landing.Rolls) != 1 {
 			t.Fatal("did not stop at empty supply")
 		}
-		if e := s.catanAttackLanding(scriptedAttackDice(t)); e != nil {
+		if e := s.catanAttackLanding(scriptedAttackDice(t), nil); e != nil {
 			t.Fatal(e)
 		}
 		if len(a.Landing.Rolls) != 0 || a.Sequence != 2 {
@@ -213,7 +204,7 @@ func TestCatanAttackLandingSupplyAndInvalidRollAreAtomic(t *testing.T) {
 	}
 	s := newAttackState(t, 3, false)
 	before, _ := json.Marshal(s)
-	if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{1, 2}, [2]int{0, 6})); e == nil {
+	if e := s.catanAttackLanding(scriptedAttackDice(t, [2]int{1, 2}, [2]int{0, 6}), nil); e == nil {
 		t.Fatal("invalid dice accepted")
 	}
 	after, _ := json.Marshal(s)

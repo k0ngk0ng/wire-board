@@ -19,17 +19,10 @@ type catanExplorerEconomy struct {
 
 // Bound persisted integers well below both Go and JavaScript overflow. This is
 // a corruption guard, not a physical coin limit or a normal gameplay limit.
-const catanExplorerGoldLedgerLimit = 1_000_000_000
+const catanExplorerGoldLedgerLimit = catanGoldLedgerLimit
 
 func (e catanExplorerEconomy) goldShortfall(amount int) (int, error) {
-	if amount < 0 || amount > catanExplorerGoldLedgerLimit || e.GoldIssued < 0 || e.GoldIssued > catanExplorerGoldLedgerLimit || e.GoldBank < 0 {
-		return 0, errors.New("金币记账数量无效")
-	}
-	missing := max(0, amount-e.GoldBank)
-	if missing > catanExplorerGoldLedgerLimit-e.GoldIssued {
-		return 0, errors.New("金币记账超出安全范围")
-	}
-	return missing, nil
+	return catanGoldShortfall(e.GoldBank, e.GoldIssued, amount)
 }
 
 func (e *catanExplorerEconomy) ensureGold(amount int) error {
