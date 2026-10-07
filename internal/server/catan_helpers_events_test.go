@@ -11,7 +11,7 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func newHelperEventTable(t *testing.T, n int) (*Server, *httptest.Server, []*testClient, string) {
+func newHelperEventTable(t *testing.T, n int, scenario string) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -25,6 +25,9 @@ func newHelperEventTable(t *testing.T, n int) (*Server, *httptest.Server, []*tes
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
+	}
+	if scenario != "" {
+		provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: scenario})
 	}
 	for p := 0; p < n; p++ {
 		clients[p].command(current(clients[p]), "ready", nil, 200)
@@ -46,11 +49,26 @@ func newHelperEventTable(t *testing.T, n int) (*Server, *httptest.Server, []*tes
 }
 
 func TestCatanHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
+	testHelperEventsHTTP(t, "")
+}
+
+func TestCatanSeafarersHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert"} {
+		t.Run(scenario, func(t *testing.T) { testHelperEventsHTTP(t, scenario) })
+	}
+}
+
+func testHelperEventsHTTP(t *testing.T, scenario string) {
+	t.Helper()
+	kinds := []string{"hilda", "thorolf"}
+	if scenario == "shores" {
+		kinds = append(kinds, "hilda_gold")
+	}
 	for _, n := range []int{3, 6} {
-		for _, kind := range []string{"hilda", "thorolf"} {
+		for _, kind := range kinds {
 			for _, mode := range []string{"manual", "autoplay", "timeout"} {
 				t.Run(fmt.Sprintf("%d/%s/%s", n, kind, mode), func(t *testing.T) {
-					s, ts, clients, id := newHelperEventTable(t, n)
+					s, ts, clients, id := newHelperEventTable(t, n, scenario)
 					r := s.rooms[id]
 					g := r.Game.Catan
 					owner := r.Game.Turn
@@ -73,7 +91,7 @@ func TestCatanHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
 						}
 						g.Players[helper].Helper = &game.CatanHelperSeat{ID: want}
 					}
-					if kind == "hilda" {
+					if kind != "thorolf" {
 						// Isolate zero production for Hilda without changing the deck,
 						// terrain or production numbers. Explicit middle-game fixture.
 						for i := range g.Vertices {
@@ -81,6 +99,28 @@ func TestCatanHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
 								g.Vertices[i].Owner = -1
 								g.Vertices[i].Level = 0
 							}
+						}
+						if kind == "hilda_gold" {
+							// Isolate a gold city owned by the active player. Hilda
+							// must wait for that choice before her own compensation.
+							for i := range g.Vertices {
+								g.Vertices[i].Owner, g.Vertices[i].Level = -1, 0
+							}
+							gold := -1
+							for i, tile := range g.Tiles {
+								if tile.Number == 2 {
+									g.Tiles[i].Number = 3
+								}
+								if tile.Resource == game.CatanGold {
+									gold = i
+								}
+							}
+							if gold < 0 {
+								t.Fatal("no gold in fixture map")
+							}
+							g.Tiles[gold].Number = 2
+							v := g.Tiles[gold].Vertices[0]
+							g.Vertices[v].Owner, g.Vertices[v].Level = owner, 2
 						}
 					} else {
 						// Keep seven cards: the compulsory resource response then
@@ -104,7 +144,7 @@ func TestCatanHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
 						t.Fatal(err)
 					}
 					clients[owner].command(current(clients[owner]), "action", game.Action{Type: "catan_roll"}, 200)
-					seenResource, seenExchange := false, false
+					seenResource, seenExchange, seenGold := false, false, false
 					for step := 0; s.rooms[id].Game.Phase != "catan_turn" && step < 40; step++ {
 						s, ts = restartRiversHTTP(t, s, ts, clients, id)
 						r = s.rooms[id]
@@ -114,6 +154,13 @@ func TestCatanHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
 							t.Fatal(err)
 						}
 						q := r.Game.Catan.HelperPending
+						if r.Game.Catan.GoldPending != nil {
+							if q != nil || r.Game.Catan.CardEvent != nil || kind != "hilda_gold" || seenResource {
+								t.Fatal("gold/helper ordering is incorrect")
+							}
+							seenGold = true
+							clients[helper].command(current(clients[helper]), "action", action, 400)
+						}
 						if q != nil {
 							if actor != helper || r.Game.Turn != owner || r.Game.Catan.CardEvent != nil {
 								t.Fatal("wrong helper continuation")
@@ -168,6 +215,9 @@ func TestCatanHelperEventsHTTPRecoveryClocksAndTimeout(t *testing.T) {
 					r = s.rooms[id]
 					if !seenResource || !seenExchange || r.Game.Phase != "catan_turn" || r.Game.Turn != owner || r.Game.Catan.RollID != 1 || r.Game.Catan.HelperPending != nil {
 						t.Fatal("event/helper response chain stalled")
+					}
+					if kind == "hilda_gold" && (!seenGold || r.Game.Catan.GoldPending != nil) {
+						t.Fatal("gold continuation not completed")
 					}
 					// Timeout uses a future clock; compare remaining budget with the
 					// restored timer fields, not with the wall-clock of this test.

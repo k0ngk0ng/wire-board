@@ -8,7 +8,12 @@ import (
 
 func seaReferenceGame(t *testing.T, n int, scenario string, ready bool) *State {
 	t.Helper()
-	s, err := newCatanSeafarersReferenceEvents(n, CatanSeafarersSetup{Scenario: scenario})
+	return seaReferenceGameHelpers(t, n, scenario, ready, false)
+}
+
+func seaReferenceGameHelpers(t *testing.T, n int, scenario string, ready, helpers bool) *State {
+	t.Helper()
+	s, err := newCatanSeafarersReferenceEventsOptions(n, CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers && n%2 == 0}, CatanSeafarersSetup{Scenario: scenario})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +50,10 @@ func seaEventConserved(t *testing.T, s *State) {
 			t.Fatalf("resource %d stock=%d want=%d", color, total, stock)
 		}
 	}
-	development := len(g.DevDeck) + len(g.DevDiscard)
+	development := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
+	if q := g.HelperPending; q != nil && q.Kind == "development" {
+		development += len(q.Cards)
+	}
 	for seat, p := range g.Players {
 		development += sum(p.Dev)
 		roads, villages, cities := g.pieces(seat)
@@ -69,11 +77,20 @@ func seaEventConserved(t *testing.T, s *State) {
 }
 
 func TestCatanSeafarersEventDeckAllFaces(t *testing.T) {
+	testSeaEventFaces(t, false)
+}
+
+func TestCatanSeafarersHelperEventDeckAllFaces(t *testing.T) {
+	testSeaEventFaces(t, true)
+}
+
+func testSeaEventFaces(t *testing.T, helpers bool) {
+	t.Helper()
 	for _, scenario := range []string{"shores", "islands", "fog", "desert"} {
 		for _, n := range []int{3, 6} {
 			for kind := range catanCardEventNames {
 				t.Run(fmt.Sprintf("%s/%d/%s", scenario, n, kind), func(t *testing.T) {
-					s := seaReferenceGame(t, n, scenario, true)
+					s := seaReferenceGameHelpers(t, n, scenario, true, helpers)
 					pirate := s.Catan.Seafarers.Pirate
 					if kind == "robber_flees" {
 						for _, tile := range s.Catan.Tiles {
@@ -115,10 +132,19 @@ func TestCatanSeafarersEventDeckAllFaces(t *testing.T) {
 }
 
 func TestCatanSeafarersEventDeckNaturalMatches(t *testing.T) {
+	testSeaEventMatches(t, false)
+}
+
+func TestCatanSeafarersHelperEventDeckNaturalMatches(t *testing.T) {
+	testSeaEventMatches(t, true)
+}
+
+func testSeaEventMatches(t *testing.T, helpers bool) {
+	t.Helper()
 	for _, scenario := range []string{"shores", "islands", "fog", "desert"} {
 		for _, n := range []int{3, 4, 5, 6} {
 			t.Run(fmt.Sprintf("%s/%d", scenario, n), func(t *testing.T) {
-				s := seaReferenceGame(t, n, scenario, false)
+				s := seaReferenceGameHelpers(t, n, scenario, false, helpers)
 				for step := 0; !s.Finished && step < 12000; step++ {
 					actor := ckActor(s)
 					a, err := s.BotAction(actor)
