@@ -77,7 +77,7 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		k.Knights = slices.DeleteFunc(k.Knights, func(n CatanKnight) bool { return n.Vertex == a.Vertex })
 		s.catanLog(player, "驱逐交点 #%d 上玩家 %d 的%d级骑士", a.Vertex+1, displaced.Owner+1, displaced.Strength)
 		if len(g.knightDestinations(displaced, true)) > 0 {
-			k.Pending = &CatanCityPending{Kind: "knight_retreat", Players: []int{displaced.Owner}, Knight: &displaced}
+			k.Pending = &CatanCityPending{Kind: "knight_retreat", Source: "intrigue", Players: []int{displaced.Owner}, Knight: &displaced}
 			s.Phase = "catan_knight_retreat"
 		} else {
 			s.catanLog(displaced.Owner, "被驱逐的骑士没有合法退路，返回库存")
@@ -167,6 +167,13 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 		if a.Choice != "skip" {
 			if a.Choice != "" || !slices.Contains(g.diplomacyPlacements(player), a.Edge) {
 				return errors.New("请选择合法位置重建道路，或放弃重建")
+			}
+			if x := g.Explorer; x != nil {
+				if err := x.Cargo.buildRoadCost(g, x.Fleet, player, g.TurnSerial, a.Edge, true); err != nil {
+					return err
+				}
+				s.catanLog(player, "外交：免费重建探险道路 #%d", a.Edge+1)
+				break
 			}
 			ship := q.Ship
 			k.Pending = nil

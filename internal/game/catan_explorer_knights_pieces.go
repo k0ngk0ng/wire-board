@@ -64,7 +64,13 @@ func (s *State) validateExplorerKnights() error {
 			return err
 		}
 		attacker := g.knightAt(q.Knight.Vertex)
-		if attacker == nil || attacker.Owner != s.Turn || attacker.Active || attacker.Strength <= q.Knight.Strength || len(g.knightDestinations(*q.Knight, true)) == 0 {
+		validDisplacement := q.Source == "" && attacker != nil && attacker.Owner == s.Turn && !attacker.Active && attacker.Strength > q.Knight.Strength
+		if q.Source == "intrigue" && attacker == nil {
+			for _, edge := range g.touching(q.Knight.Vertex) {
+				validDisplacement = validDisplacement || g.Edges[edge].Owner == s.Turn && !g.Edges[edge].Ship
+			}
+		}
+		if !validDisplacement || len(g.knightDestinations(*q.Knight, true)) == 0 {
 			return errors.New("组合骑士撤退缺少合法驱逐或退路")
 		}
 	}

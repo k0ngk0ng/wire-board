@@ -37,7 +37,7 @@ func (s *State) catanExplorerCityRespond(player int, a Action) error {
 		return err
 	}
 	q := s.Catan.CitiesKnights.Pending
-	if s.Finished || q == nil || len(q.Players) == 0 || q.Players[0] != player || a.Prompt < 1 || uint64(a.Prompt) != s.Catan.TurnSerial || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat", "guild_dues", "commercial_harbor"}, q.Kind) {
+	if s.Finished || q == nil || len(q.Players) == 0 || q.Players[0] != player || a.Prompt < 1 || uint64(a.Prompt) != s.Catan.TurnSerial || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat", "guild_dues", "commercial_harbor", "diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place"}, q.Kind) {
 		return errors.New("不是当前组合城市回应玩家或序号")
 	}
 	next := clone(*s)
@@ -115,6 +115,9 @@ func (s *State) validateExplorerCityProduction() error {
 	if err := s.validateExplorerTradeProgress(); err != nil {
 		return err
 	}
+	if err := s.validateExplorerPolitics(); err != nil {
+		return err
+	}
 	turn := x.Economy.Turn
 	freeRoads := s.Phase == "catan_roads"
 	if g.FreeRoads < 0 || g.FreeRoads > 2 || freeRoads != (g.FreeRoads > 0) || freeRoads && (s.Finished || turn.Phase != "ready" || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" || g.ResumePhase != "catan_turn" || k.Pending != nil || k.Event != nil) {
@@ -135,7 +138,7 @@ func (s *State) validateExplorerCityProduction() error {
 		}
 	}
 	if q := k.Pending; q != nil {
-		if len(q.Players) == 0 || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat", "guild_dues", "commercial_harbor"}, q.Kind) || s.Phase != "catan_"+q.Kind {
+		if len(q.Players) == 0 || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat", "guild_dues", "commercial_harbor", "diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place"}, q.Kind) || s.Phase != "catan_"+q.Kind {
 			return errors.New("组合城市回应与生产阶段不一致")
 		}
 		for _, p := range q.Players {
@@ -144,9 +147,9 @@ func (s *State) validateExplorerCityProduction() error {
 			}
 		}
 		switch q.Kind {
-		case "guild_dues", "commercial_harbor":
+		case "guild_dues", "commercial_harbor", "diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place":
 			if turn.Phase != "ready" || k.Event != nil || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" {
-				return errors.New("组合贸易进步牌回应不在行动阶段")
+				return errors.New("组合进步牌回应不在行动阶段")
 			}
 		case "knight_retreat":
 			if turn.Phase != "ready" || k.Event != nil || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" {
