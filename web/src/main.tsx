@@ -2429,27 +2429,44 @@ function Players({ room }: { room: Room }) {
               </strong>
               {g.splendor ? (
                 <div
-                  className="permanent-resources"
-                  aria-label={`${p.name}的永久折扣`}
+                  className="player-gem-resources"
+                  aria-label={`${p.name}的宝石：上方永久折扣，下方现有筹码`}
                 >
-                  <span className="permanent-label">
-                    永久
-                    <br />
-                    折扣
-                  </span>
-                  {gemDisplayOrder
-                    .slice(0, 5)
-                    .map((c) => [c, g.splendor!.players[i].bonus[c]])
-                    .map(([c, n]) => (
+                  {gemDisplayOrder.map((c) => {
+                    const { bonus, tokens } = g.splendor!.players[i];
+                    const label =
+                      c === 5
+                        ? `黄金筹码 ${tokens[c]}`
+                        : `${gemNames[c]}：永久折扣 ${bonus[c]}，现有筹码 ${tokens[c]}`;
+                    return (
                       <span
-                        className="bonus-item"
                         key={c}
-                        title={`${gemNames[c]}永久折扣 ${n}`}
+                        className={`player-gem-stack gem-color-${c} ${c === 5 ? "gold-only" : ""}`}
+                        style={{ "--gem": gemColors[c] } as React.CSSProperties}
+                        role="img"
+                        aria-label={label}
+                        title={label}
                       >
-                        <Gemstone color={c} size={18} />
-                        <b>{n}</b>
+                        {c !== 5 && (
+                          <span className="player-gem-card" aria-hidden="true">
+                            <Gemstone color={c} size={13} />
+                            <b>{bonus[c]}</b>
+                          </span>
+                        )}
+                        <span className="player-gem-token" aria-hidden="true">
+                          <b>{tokens[c]}</b>
+                        </span>
+                        {c === 5 && (
+                          <span
+                            className="player-gold-label"
+                            aria-hidden="true"
+                          >
+                            黄金
+                          </span>
+                        )}
                       </span>
-                    ))}
+                    );
+                  })}
                 </div>
               ) : g.carcassonne ? (
                 <small>
@@ -2622,7 +2639,7 @@ function Players({ room }: { room: Room }) {
                 </small>
               )}
               {g.splendor && (
-                <div className="mini-resources tokens-mini">
+                <div className="player-gem-summary">
                   <div className="token-summary">
                     <span
                       className="token-total"
@@ -2642,14 +2659,6 @@ function Players({ room }: { room: Room }) {
                       /3
                     </span>
                   </div>
-                  {gemDisplayOrder
-                    .map((c) => [c, g.splendor!.players[i].tokens[c]])
-                    .map(([c, n]) => (
-                      <span key={c} title={`${gemNames[c]}筹码`}>
-                        <i style={{ background: gemColors[c] }} />
-                        {n}
-                      </span>
-                    ))}
                 </div>
               )}
               {g.splendor?.options?.cities && (
