@@ -2,7 +2,7 @@ package game
 
 // The 2025 Fishing + Cities & Knights combination uses the Fishing board,
 // ordinary C&K setup, and C&K's thirteen-point target (+1 for the old boot).
-// Still internal: no room option exposes an unaccepted expansion combination.
+// Three/four-player public rooms select this recipe; extended entries remain gated.
 func NewCatanFishingCitiesKnights(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatanFishing(n, options)
 	if err != nil {

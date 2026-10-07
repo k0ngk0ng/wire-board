@@ -50,7 +50,7 @@ func TestCatanFishingPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 3, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
+		{"kind": "catan", "capacity": 3, "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "fixed"}},
 		{"kind": "splendor", "capacity": 3},
 	} {
 		body["name"], body["catanScenario"] = "无效渔夫", "fishing"
