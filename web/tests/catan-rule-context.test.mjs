@@ -307,3 +307,23 @@ test("saved Explorer target overrides stale lobby drafts and survives legacy vie
     assert.equal(catanRuleContext(room).target, target + 1, "explicit server target wins");
   }
 });
+
+
+test("public Rivers and Caravans drafts use the chosen recipe, saved games win", () => {
+  for (const [scenario, target] of [["rivers", 10], ["caravans", 12]]) {
+    const room = { capacity: 4, catanScenario: scenario, catanOptions: {} };
+    const waiting = catanRuleContext(room);
+    assert.equal(waiting[scenario], true);
+    assert.equal(waiting.target, target);
+    assert.equal(waiting.two, false);
+    assert.equal(waiting.fiveSix, false);
+    room.game = { catan: { players: [{}, {}, {}], options: {} } };
+    const playing = catanRuleContext(room);
+    assert.equal(playing.rivers, false);
+    assert.equal(playing.caravans, false);
+    assert.equal(playing.target, 10);
+    room.game.catan[scenario] = {};
+    assert.equal(catanRuleContext(room)[scenario], true);
+    assert.equal(catanRuleContext(room).target, target);
+  }
+});

@@ -10,7 +10,7 @@ export function catanRuleContext(room: Room) {
   const harbors = game ? !!game.harbors : !!room.catanHarbors?.enabled;
   const caravans = game
     ? !!game.caravans
-    : room.catanTwoScenario === "caravans";
+    : (room.catanTwoScenario || room.catanScenario) === "caravans";
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
@@ -37,7 +37,9 @@ export function catanRuleContext(room: Room) {
     transport: !!game?.transport,
     attack: !!game?.attack,
     caravans,
-    rivers: game ? !!game.rivers : room.catanTwoScenario === "rivers",
+    rivers: game
+      ? !!game.rivers
+      : (room.catanTwoScenario || room.catanScenario) === "rivers",
     two: game ? !!game.two : !!room.catanTwoRules,
     citiesKnights,
     harbors,

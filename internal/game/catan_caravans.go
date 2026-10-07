@@ -18,7 +18,7 @@ type catanCaravanVote struct {
 	Votes   []*catanCaravanWagon      `json:"votes"`
 }
 
-// Internal acceptance constructor; public scenario selection stays disabled.
+// Three/four-player public recipe; extended boards remain internal pending disc verification.
 func NewCatanCaravans(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatan(n, options)
 	if err != nil {

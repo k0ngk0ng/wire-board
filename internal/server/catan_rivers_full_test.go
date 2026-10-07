@@ -10,9 +10,9 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// The scenario stays gated in public creation. Install only its pristine
-// constructor state; all setup, resource acquisition and scoring below happen
-// through production HTTP, timeout and autoplay paths, never fixture grants.
+// Three/four seats use the public recipe from creation through settlement.
+// Five/six retain an explicit pristine constructor fixture until disc verification;
+// no dice, resources or pieces are granted in either path.
 func newRiversFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
@@ -23,7 +23,11 @@ func newRiversFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*test
 		clients[p].register(fmt.Sprintf("河流玩家%d", p))
 	}
 	opts := game.CatanOptions{FiveSix: n > 4}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "河流完整对局", "kind": "catan", "capacity": n, "catanOptions": opts}, 201)
+	body := map[string]any{"name": "河流完整对局", "kind": "catan", "capacity": n, "catanOptions": opts}
+	if n <= 4 {
+		body["catanScenario"] = "rivers"
+	}
+	raw := clients[0].post("/api/rooms", body, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -33,6 +37,12 @@ func newRiversFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*test
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
+	if n <= 4 {
+		if s.rooms[id].Game.Catan.Rivers == nil {
+			t.Fatal("public recipe did not construct scenario")
+		}
+		return s, ts, clients, id
+	}
 	initial, err := game.NewCatanRivers(n, opts)
 	if err != nil {
 		t.Fatal(err)
