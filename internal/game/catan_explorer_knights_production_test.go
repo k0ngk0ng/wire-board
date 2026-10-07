@@ -14,7 +14,11 @@ import (
 // controllers are deliberately not installed: full combined Apply remains gated.
 func explorerCityProductionFixture(t *testing.T, n int) *State {
 	t.Helper()
-	q := explorerKnightsSetupFixture(t, n, 0, "pirate-lairs")
+	return explorerCityScenarioFixture(t, n, "pirate-lairs")
+}
+func explorerCityScenarioFixture(t *testing.T, n int, scenario string) *State {
+	t.Helper()
+	q := explorerKnightsSetupFixture(t, n, 0, scenario)
 	path := explorerKnightsCompletableOpening(t, q, rand.New(rand.NewSource(307)))
 	for _, target := range path {
 		step := q.S.current(n)

@@ -63,7 +63,7 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 		s.catanLog(player, "放弃此次卡牌收益，卡牌仍放回牌堆底部")
 		return nil
 	}
-	if a.Choice != "" {
+	if a.Choice != "" && !(g.Explorer != nil && a.Card == 5 && a.Choice == "harbor") {
 		return errors.New("未知进步牌选项")
 	}
 	if a.Card >= 16 {
@@ -98,6 +98,13 @@ func (s *State) catanPlayProgress(player int, a Action) error {
 		g.Bank[color] -= gain
 		s.catanLog(player, "按相邻地块领取%s×%d（每个地块最多两张，受银行库存限制）", catanCardName(color), gain)
 	case 5:
+		if g.Explorer != nil {
+			kind := "city"
+			if a.Choice == "harbor" {
+				kind = "harbor"
+			}
+			return g.Explorer.Cargo.upgradeSettlement(g, g.Explorer.Fleet, player, g.TurnSerial, a.Vertex, kind, true)
+		}
 		return s.catanBuild(player, Action{Type: "catan_city", Vertex: a.Vertex}, true)
 	case 7:
 		g.ResumePhase = "catan_turn"

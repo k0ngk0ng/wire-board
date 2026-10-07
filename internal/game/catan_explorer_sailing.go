@@ -236,7 +236,7 @@ func (f *catanExplorerSailing) wool(g *Catan, player int, sequence uint64, ship 
 	if err := f.allowed(g, player, sequence); err != nil {
 		return err
 	}
-	if ship < 0 || ship >= len(f.Positions) || ship/3 != player || f.Positions[ship] < 0 || f.Turn.Ships[ship].Wool || f.Turn.Ships[ship].Closed || !catanBundle(g.Bank) || !catanBundle(g.Players[player].Resources) || g.Players[player].Resources[2] < 1 {
+	if ship < 0 || ship >= len(f.Positions) || ship/3 != player || f.Positions[ship] < 0 || f.Turn.Ships[ship].Wool || f.Turn.Ships[ship].Closed || len(g.Bank) != 5 && g.CitiesKnights == nil || len(g.Bank) != 8 && g.CitiesKnights != nil || !g.cardBundle(g.Bank) || !g.cardBundle(g.Players[player].Resources) || g.Players[player].Resources[2] < 1 {
 		return errors.New("每艘未结束移动的船每回合只能付一次羊毛增加2移动点")
 	}
 	stock := catanExplorerStock(len(g.Players)).resources

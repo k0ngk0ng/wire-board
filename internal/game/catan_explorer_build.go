@@ -65,12 +65,7 @@ func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, 
 	if !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
 		return errors.New("村庄必须建在已探索的空陆地点，不能接触迷雾或未解放金矿")
 	}
-	connected, count := false, 0
-	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 1 {
-			count++
-		}
-	}
+	connected := false
 	for _, edge := range g.Edges {
 		other := -1
 		if edge.A == vertex {
@@ -87,7 +82,7 @@ func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, 
 		connected = connected || edge.Owner == player
 	}
 	cost := []int{1, 1, 1, 1, 0}
-	if !connected || count >= 5 || !catanExplorerCanPay(g, player, cost) {
+	if !connected || g.settlementPiecesLeft(player) <= 0 || !catanExplorerCanPay(g, player, cost) {
 		return errors.New("建村需要连接己方道路、剩余村庄棋子及木砖羊粮各1")
 	}
 	catanExplorerPay(g, player, cost)
