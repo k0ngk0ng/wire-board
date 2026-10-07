@@ -18,7 +18,8 @@ func newCatanTable(t *testing.T) (*Server, *httptest.Server, []*testClient, stri
 		players = append(players, c)
 	}
 	a := players[0]
-	a.post("/api/rooms", map[string]any{"name": "invalid", "kind": "catan", "capacity": 2}, 400)
+	// Two seats now select the supported two-player variant; one seat is still invalid.
+	a.post("/api/rooms", map[string]any{"name": "invalid", "kind": "catan", "capacity": 1}, 400)
 	r := a.post("/api/rooms", map[string]any{"name": "卡坦岛验证", "kind": "catan", "capacity": 3}, 201)
 	for i := 1; i < 3; i++ {
 		players[i].command(current(a), "join", nil, 200)
