@@ -269,6 +269,7 @@ export function explorerScenarioLabel(g: CatanState) {
         : "初航";
 }
 export function explorerLairTotal(g: CatanState) {
+  if (g.players.length > 4) return 8;
   return g.explorer?.board.scenario === "fish-for-catan" ? 5 : 6;
 }
 export function explorerFishPoint(g: CatanState, id: number) {
@@ -691,4 +692,21 @@ export function explorerSpiceFlight(
     retire: !to,
     delivered: !!delivered,
   };
+}
+
+export function explorerSupplyLimits(g: CatanState) {
+  return g.players.length > 4
+    ? { resource: 24, gold: 172 }
+    : { resource: 19, gold: 148 };
+}
+
+export function explorerCanOffer(room: Room) {
+  const game = room.game;
+  return (
+    !!game?.catan?.explorer &&
+    explorerCanRespond(room) &&
+    game.turn === room.you &&
+    game.phase === "catan_turn" &&
+    !game.catan.paired?.second
+  );
 }

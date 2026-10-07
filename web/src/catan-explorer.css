@@ -690,3 +690,93 @@
   border-radius: 5px;
   padding: 1px 5px;
 }
+
+.explorer-heading > div:first-child {
+  min-width: 0;
+}
+.explorer-paired {
+  padding: 8px 12px;
+  background: #f4ecd8;
+  border-bottom: 1px solid #d2c5a7;
+}
+.explorer-paired ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.explorer-paired li {
+  min-width: 0;
+  border: 1px solid #c9bda2;
+  border-left: 5px solid;
+  border-radius: 8px;
+  padding: 7px 8px;
+  background: #fffaf0;
+}
+.explorer-paired li.is-active {
+  background: #ffe7a5;
+  box-shadow: inset 0 0 0 1px #a97925;
+}
+.explorer-paired li > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.explorer-paired b {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #5d4830;
+  color: #fff9eb;
+  font-size: 12px;
+}
+.explorer-paired strong {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.explorer-paired em {
+  font-size: 10px;
+  font-style: normal;
+  white-space: nowrap;
+}
+.explorer-paired li > span {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #67502e;
+}
+.explorer-paired p {
+  margin: 6px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+  color: #67502e;
+}
+@media (max-width: 380px) {
+  .explorer-paired {
+    padding: 7px;
+  }
+  .explorer-paired ol {
+    gap: 5px;
+  }
+  .explorer-paired li {
+    padding: 6px;
+  }
+  .explorer-paired li > span {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 901px) {
+  .explorer-board.has-paired .explorer-map-scroll {
+    height: clamp(320px, calc(100svh - 520px), 770px);
+  }
+}
