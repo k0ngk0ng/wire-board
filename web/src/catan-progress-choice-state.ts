@@ -51,6 +51,15 @@ export function progressChoiceAction(
   room: Room,
   selection: ProgressChoiceSelection,
 ): Record<string, unknown> | null {
+  const action = progressChoicePayload(room, selection);
+  const x = room.game?.catan?.explorer;
+  return action && x ? { ...action, prompt: x.sequence } : action;
+}
+
+function progressChoicePayload(
+  room: Room,
+  selection: ProgressChoiceSelection,
+): Record<string, unknown> | null {
   const g = room.game?.catan,
     q = g?.citiesKnights?.pending,
     p = room.you;

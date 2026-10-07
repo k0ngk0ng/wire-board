@@ -501,6 +501,7 @@ export type CatanTransport = {
   };
 };
 export type CatanState = {
+  medicineHarbors?: number[];
   explorer?: import("./catan-explorer-state").ExplorerView;
   transport?: CatanTransport;
   developmentNames?: string[];

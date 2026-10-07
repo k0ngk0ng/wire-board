@@ -105,6 +105,66 @@ test("confirmation revalidates room, prompt, route and live legal choices", () =
     explorerActionKey({ prompt: 5, edge: 0, type: "catan_road" }),
   );
 });
+test("combined city responses follow the server actor without giving the turn owner their choices", () => {
+  const r = room(),
+    x = r.game.catan.explorer;
+  r.game.turn = 1;
+  r.game.phase = "catan_pillage";
+  x.canRespond = true;
+  x.actor = 0;
+  x.choices = [{ type: "catan_pillage", vertex: 0, prompt: 5 }];
+  assert.deepEqual(explorerChoices(r), x.choices);
+  x.actor = 1;
+  assert.deepEqual(explorerChoices(r), []);
+  x.actor = 0;
+  x.canRespond = false;
+  assert.deepEqual(explorerChoices(r), []);
+  x.canRespond = true;
+  x.sequence++;
+  assert.deepEqual(explorerChoices(r), []);
+});
+test("combined seven discards accept exactly the eight-card hand shape, including commodities", () => {
+  const r = room();
+  r.game.turn = 1;
+  r.game.phase = "catan_discard";
+  r.game.catan.players[0].resources = [0, 0, 0, 0, 0, 0, 0, 8];
+  r.game.catan.discardDue[0] = 4;
+  assert.deepEqual(explorerDiscardAction(r, [0, 0, 0, 0, 0, 0, 0, 4]), {
+    type: "catan_discard",
+    prompt: 5,
+    tokens: [0, 0, 0, 0, 0, 0, 0, 4],
+  });
+  assert.equal(explorerDiscardAction(r, [0, 0, 0, 0, 4]), null);
+  assert.equal(explorerDiscardAction(r, [0, 0, 0, 0, 0, 4, 0, 0]), null);
+});
+test("city placement and knight moves target vertices; skipped replies never highlight vertex or edge zero", () => {
+  const g = room().game.catan;
+  assert.deepEqual(
+    explorerTarget(g, {
+      type: "catan_explorer_setup",
+      choice: "city",
+      target: 0,
+    }),
+    { kind: "vertex", id: 0 },
+  );
+  assert.deepEqual(
+    explorerTarget(g, { type: "catan_knight_move", vertex: 1, target: 2 }),
+    { kind: "vertex", id: 2 },
+  );
+  assert.equal(
+    explorerTarget(g, {
+      type: "catan_treason_place",
+      vertex: 0,
+      color: 0,
+      choice: "skip",
+    }),
+    null,
+  );
+  assert.equal(
+    explorerTarget(g, { type: "catan_diplomacy", edge: 0, choice: "skip" }),
+    null,
+  );
+});
 test("parallel discard works off turn, checks exact five resources, and carries prompt", () => {
   const r = room();
   r.game.turn = 1;

@@ -14,6 +14,7 @@ import {
 import { CatanResource, Bundle } from "./catan-resources";
 import {
   cityActionCosts,
+  cityAt,
   cityActionNames,
   cityDefense,
   cityDiscardLimit,
@@ -215,7 +216,9 @@ export function CatanCityOverview({
   const g = room.game!.catan!,
     k = g.citiesKnights;
   if (!k) return null;
-  const strength = g.vertices.filter((v) => v.level === 2).length;
+  const strength = g.vertices.filter(
+    (v) => cityAt(g, v.id) && !g.players[v.owner]?.eliminated,
+  ).length;
   const attack = k.barbarianPosition >= 7;
   return (
     <section className="catan-city-overview" aria-label="蛮族与进步牌">

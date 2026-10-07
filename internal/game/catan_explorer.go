@@ -330,6 +330,10 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 		public["resourceCount"] = sum(actual.Resources)
 		public["publicScore"] = actual.Score
 		public["rates"] = []int{3, 3, 3, 3, 3}
+		if g.CitiesKnights != nil {
+			public["rates"] = g.explorerCityRates(p)
+			public["citiesLeft"] = g.cityPiecesLeft(p)
+		}
 		delete(public, "dev")
 		delete(public, "newDev")
 		if p != viewer && !s.Finished {
@@ -339,4 +343,7 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	// No generic base-game choices: explorer actions have different costs and
 	// ships. Actor-only choices above provide the Explorer action previews.
 	v["legal"] = map[string][]int{}
+	if g.CitiesKnights != nil {
+		s.catanExplorerCityView(v, viewer)
+	}
 }

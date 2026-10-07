@@ -58,6 +58,64 @@ function room(card) {
 function selection(card, fields = {}) {
   return { ...newProgressSelection(card), ...fields };
 }
+test("Explorer Medicine distinguishes city and harbor costs and stamps the current action serial", () => {
+  const r = room(5),
+    g = r.game.catan;
+  g.explorer = { sequence: 12 };
+  g.medicineHarbors = [1];
+  g.players[0].resources[3] = 1;
+  g.players[0].resources[4] = 1;
+  assert.equal(progressPlayAction(r, selection(5, { picks: [1] })), null);
+  const s = selection(5, { picks: [1], upgrade: "harbor" });
+  assert.deepEqual(progressPlayAction(r, s), {
+    type: "catan_progress",
+    card: 5,
+    choice: "harbor",
+    vertex: 1,
+    prompt: 12,
+  });
+  g.medicineHarbors = [];
+  assert.equal(progressPlayAction(r, s), null);
+  g.players[0].resources[4] = 2;
+  assert.deepEqual(progressPlayAction(r, selection(5, { picks: [1] })), {
+    type: "catan_progress",
+    card: 5,
+    vertex: 1,
+    prompt: 12,
+  });
+});
+test("Explorer Taxation activates its pirate instead of choosing a robber land tile", () => {
+  const r = room(21);
+  r.game.catan.explorer = { sequence: 9 };
+  assert.deepEqual(progressMapTargets(r.game.catan, 0, selection(21)), []);
+  assert.deepEqual(progressPlayAction(r, selection(21)), {
+    type: "catan_progress",
+    card: 21,
+    prompt: 9,
+  });
+  r.game.catan.progressPlayable = [];
+  assert.equal(progressPlayAction(r, selection(21)), null);
+});
+test("Explorer progress and Commercial Harbor offers keep the current serial", () => {
+  const r = room(0);
+  r.game.catan.explorer = { sequence: 4 };
+  assert.deepEqual(progressPlayAction(r, selection(0, { dice: [2, 6] })), {
+    type: "catan_progress",
+    card: 0,
+    tokens: [2, 6],
+    prompt: 4,
+  });
+  r.game.phase = "catan_turn";
+  assert.deepEqual(commercialOfferAction(r, 0, 1, 0), {
+    type: "catan_commercial_offer",
+    card: 0,
+    target: 1,
+    color: 0,
+    prompt: 4,
+  });
+  r.spectating = true;
+  assert.equal(commercialOfferAction(r, 0, 1, 0), null);
+});
 test("all 23 active progress types construct their specific actions; public VP never plays", () => {
   for (const card of Array.from({ length: 25 }, (_, i) => i).filter(
     (i) => ![9, 23].includes(i),
