@@ -239,10 +239,7 @@ func (f *catanExplorerSailing) wool(g *Catan, player int, sequence uint64, ship 
 	if ship < 0 || ship >= len(f.Positions) || ship/3 != player || f.Positions[ship] < 0 || f.Turn.Ships[ship].Wool || f.Turn.Ships[ship].Closed || !catanBundle(g.Bank) || !catanBundle(g.Players[player].Resources) || g.Players[player].Resources[2] < 1 {
 		return errors.New("每艘未结束移动的船每回合只能付一次羊毛增加2移动点")
 	}
-	stock := 19
-	if len(g.Players) > 4 {
-		stock = 24
-	}
+	stock := catanExplorerStock(len(g.Players)).resources
 	if g.Bank[2] >= stock {
 		return errors.New("羊毛银行库存无效")
 	}
