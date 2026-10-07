@@ -26,6 +26,16 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
 		return nil
 	}
+	if r.CatanScenario == "cities-knights" {
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights == nil {
+			return errors.New("城市与骑士当前支持三至四人随机地图；其他组合需使用对应配置")
+		}
+		setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
+		if err != nil || setup != *r.CatanCitiesKnights {
+			return errors.New("城市与骑士布局或规则版本无效")
+		}
+		return nil
+	}
 	if publicCatanExplorerScenario(r.CatanScenario) {
 		maximum := 4
 		if r.CatanScenario == "spices-for-catan" {
@@ -109,6 +119,15 @@ func (r *Room) setCatanScenario(scenario string) error {
 		next.CatanSeafarers = nil
 		next.CatanNewWorldMap = nil
 	}
+	if scenario == "cities-knights" {
+		setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, game.CatanCitiesKnightsSetup{})
+		if err != nil {
+			return err
+		}
+		next.CatanCitiesKnights = &setup
+	} else if r.CatanScenario == "cities-knights" {
+		next.CatanCitiesKnights = nil
+	}
 	if err := next.validateCatanScenario(); err != nil {
 		return err
 	}
@@ -117,6 +136,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	r.CatanScenario = scenario
 	r.CatanTwoRules, r.CatanTwoScenario = next.CatanTwoRules, next.CatanTwoScenario
+	r.CatanCitiesKnights = next.CatanCitiesKnights
 	r.CatanSeafarers = next.CatanSeafarers
 	r.CatanNewWorldMap = next.CatanNewWorldMap
 	for i := range r.Seats {

@@ -373,3 +373,22 @@ test("Spices waiting rules choose the task target and paired turns by player cou
     assert.equal(saved.layout, "variable");
   }
 });
+
+test("public standalone cities-knights selection keeps its thirteen-point rules", () => {
+  const room = {
+    capacity: 4,
+    catanScenario: "cities-knights",
+    catanCitiesKnights: { layout: "variable", rules: "catan-knights-2025" },
+    catanOptions: {},
+  };
+  const info = catanRuleContext(room);
+  assert.equal(info.citiesKnights, true);
+  assert.equal(info.explorer, false);
+  assert.equal(info.scenario, "");
+  assert.equal(info.target, 13);
+  assert.equal(info.layout, "variable");
+  assert.equal(info.fiveSix, false);
+  room.game = { catan: { players: [{}, {}, {}], citiesKnights: { layout: "variable" }, options: {} } };
+  assert.equal(catanRuleContext(room).players, 3);
+  assert.equal(catanRuleContext(room).target, 13);
+});

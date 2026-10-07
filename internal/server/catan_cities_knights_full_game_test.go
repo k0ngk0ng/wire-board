@@ -11,10 +11,10 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// The creation catalog remains closed. Provision the waiting-room setting,
-// then use formal readiness/start and real actions/autoplay/timeouts through victory.
+// Three/four-player standalone games use public creation. Other recipes keep
+// explicit internal provisioning, followed by actual ready/start and actions.
 func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
-	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", false)
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", false, 3, 4, 6)
 }
 
 func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
@@ -27,8 +27,11 @@ func TestCatanHarborsCitiesKnightsFullHTTPGames(t *testing.T) {
 	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", true)
 }
 
-func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string, harbors bool) {
-	for _, n := range []int{3, 6} {
+func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string, harbors bool, players ...int) {
+	if len(players) == 0 {
+		players = []int{3, 6}
+	}
+	for _, n := range players {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
@@ -38,7 +41,12 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[p].register(fmt.Sprintf("骑士玩家%d", p))
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
-			r := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "内部城市骑士验证", "capacity": n, "catanOptions": options}, 201)
+			public := scenario == "" && !harbors && n <= 4
+			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
+			if public {
+				body["catanScenario"] = "cities-knights"
+			}
+			r := clients[0].post("/api/rooms", body, 201)
 			id := r["id"].(string)
 			for p := 1; p < n; p++ {
 				clients[p].command(current(clients[0]), "join", nil, 200)
@@ -46,7 +54,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			if scenario != "" {
 				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: scenario})
 			}
-			provisionCatanCitiesKnights(t, s, id)
+			if !public {
+				provisionCatanCitiesKnights(t, s, id)
+			}
 			if harbors {
 				provisionCatanHarbors(t, s, id)
 			}
@@ -266,6 +276,27 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			}
 			if stats["wins"] != float64(1) || stats["played"] != float64(1) {
 				t.Fatal("missing history result")
+			}
+			if public {
+				matchID := room.MatchID
+				var before, after string
+				if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", matchID).Scan(&before); err != nil {
+					t.Fatal(err)
+				}
+				restart()
+				s.mu.Lock()
+				err := s.save(s.rooms[id])
+				s.mu.Unlock()
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", matchID).Scan(&after); err != nil || before != after {
+					t.Fatal("city archive changed after restart", err)
+				}
+				var count int
+				if err := s.db.QueryRow("SELECT count(*) FROM rating_ledger WHERE match_id=?", matchID).Scan(&count); err != nil || count != n {
+					t.Fatal("duplicate city ratings", count, err)
+				}
 			}
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{"leave": true}, 200)
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 400)

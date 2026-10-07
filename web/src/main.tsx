@@ -2127,7 +2127,8 @@ function Create({
                           : k === "catan"
                             ? catanScenario === "spices-for-catan"
                               ? 5
-                              : catanOptions.fiveSix
+                              : catanOptions.fiveSix ||
+                                  catanScenario === "cities-knights"
                                 ? 2
                                 : 3
                             : k === "rail"
@@ -2143,7 +2144,9 @@ function Create({
                         : k === "catan"
                           ? catanOptions.fiveSix
                             ? 5
-                            : 2
+                            : catanScenario === "cities-knights"
+                              ? 3
+                              : 2
                           : 2),
                   )
               ).map((n) => (
@@ -2211,7 +2214,7 @@ function Waiting({
     (room.capacity <= 4 || room.catanScenario === "spices-for-catan") &&
     !room.catanOptions?.fiveSix &&
     !room.catanBaseConfiguration &&
-    !room.catanCitiesKnights &&
+    (!room.catanCitiesKnights || room.catanScenario === "cities-knights") &&
     (!room.catanSeafarers || isPublicCatanSea(room.catanScenario)) &&
     (!room.catanNewWorldMap || room.catanScenario === "new_world") &&
     !room.catanHarbors &&
@@ -2317,7 +2320,9 @@ function Waiting({
         )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
-          !room.catanScenario && <CatanCitiesKnightsSetup room={room} />}
+          (!room.catanScenario || room.catanScenario === "cities-knights") && (
+            <CatanCitiesKnightsSetup room={room} />
+          )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
           !room.catanScenario && (
