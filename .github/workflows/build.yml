@@ -11,6 +11,29 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  rules:
+    name: Go rules and race checks (${{ matrix.shard }})
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - name: Verify test partition coverage and failure propagation
+        run: python3 scripts/test_go_shard_test.py
+      - name: Test rules, privacy, persistence and concurrent requests
+        run: python3 scripts/test_go_shard.py --index ${{ matrix.shard }} --count 8 --race --timeout 30m
   verify:
     name: Test and Linux amd64 binary
     runs-on: ubuntu-latest
@@ -30,10 +53,14 @@ jobs:
         run: npm --prefix web ci && npm --prefix web run build
       - name: Test frontend event replay guards
         run: npm --prefix web test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist/
+          if-no-files-found: error
+          retention-days: 1
       - name: Check formatting
         run: test -z "$(gofmt -l main.go main_test.go internal)"
-      - name: Test rules, privacy, persistence and concurrent requests
-        run: go test -race -count=1 -timeout=10m ./...
       - name: Vet
         run: go vet ./...
       - name: Validate deployment scripts
@@ -60,7 +87,7 @@ jobs:
           dist/package/wire-board &
           pid=$!
           trap 'kill "$pid"' EXIT
-          for attempt in $(seq 1 20); do
+          for _attempt in $(seq 1 20); do
             if curl --fail --silent http://127.0.0.1:18080/healthz; then break; fi
             sleep 1
           done
@@ -75,7 +102,7 @@ jobs:
           if-no-files-found: error
   image:
     name: Publish Linux amd64 container
-    needs: verify
+    needs: [verify, rules]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -114,7 +141,7 @@ jobs:
         run: |
           docker run -d --name wire-board-smoke -e INVITE_CODE=ci-smoke-only -p 127.0.0.1:18081:8080 "$IMAGE_REF"
           trap 'docker rm -f wire-board-smoke' EXIT
-          for attempt in $(seq 1 30); do
+          for _attempt in $(seq 1 30); do
             if curl --fail --silent http://127.0.0.1:18081/healthz; then break; fi
             sleep 1
           done
@@ -130,14 +157,14 @@ jobs:
               test "$(sqlite3 -readonly /snapshot/wire-board.db "SELECT count(*) FROM users;")" = 1
             '
           docker restart wire-board-smoke
-          for attempt in $(seq 1 20); do
+          for _attempt in $(seq 1 20); do
             if curl --fail --silent http://127.0.0.1:18081/healthz; then break; fi
             sleep 1
           done
           curl --fail -H 'Content-Type: application/json' --data '{"name":"SmokePlayer","password":"smoke-test-only"}' http://127.0.0.1:18081/api/login
   release:
     name: Publish versioned release
-    needs: [verify, image]
+    needs: [verify, rules, image]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
