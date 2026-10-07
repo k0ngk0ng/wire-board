@@ -75,7 +75,12 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 		return errors.New("事件牌与捕鱼组合尚未接入")
 	}
 	if g.Options.Helpers || g.Options.AllHelpers {
-		return errors.New("事件牌与助手的组合尚未核验")
+		if g.EventDeck == nil {
+			return errors.New("助手事件必须通过牌堆抽取并记录生产")
+		}
+		if err := s.validateEventHelpers(); err != nil {
+			return err
+		}
 	}
 	if g.pirateIslands() != nil {
 		return errors.New("事件牌与海盗群岛的舰队骰子规则尚未核验")

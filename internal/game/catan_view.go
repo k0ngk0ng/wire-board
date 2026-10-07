@@ -149,7 +149,13 @@ func (s *State) catanView(view map[string]any, player int) {
 		v["devRemaining"] = len(g.Attack.Deck)
 	}
 	if g.Options.Helpers {
-		v["helperRules"] = CatanHelpers()
+		rules := CatanHelpers()
+		if g.EventDeck != nil {
+			rules[2].Description = "事件效果结束后，非7点生产未获得资源时，可领取一张自选资源；事件奖励不计入生产所得。"
+			rules[4].Description = "事件牌生产点数为7时必须使用：超过七张资源免弃牌，否则领取一张自选资源。"
+			rules[9].Description = "自己抽取事件牌前或完整结算后，把强盗赶回沙漠，并领取原地块出产的一张资源。"
+		}
+		v["helperRules"] = rules
 		if player >= 0 && player < len(g.Players) && g.helperReady(player, 4) && player == s.Turn && s.Phase == "catan_turn" {
 			moves := map[int][]int{}
 			for _, from := range g.Edges {
