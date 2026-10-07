@@ -1,9 +1,6 @@
 package game
 
-import (
-	"errors"
-	"slices"
-)
+import "errors"
 
 func (s *State) catanTradeProgressChoiceBot(player int) (Action, error) {
 	g := s.Catan
@@ -85,13 +82,7 @@ func (g *Catan) tradeProgressBotChoices(player int) []botChoice {
 		}
 	}
 	if powers := k.TradePowers; powers != nil && powers.Player == player && resource >= 0 {
-		ids := make([]int, 0, len(powers.Harbors))
-		for id := range powers.Harbors {
-			ids = append(ids, id)
-		}
-		slices.Sort(ids)
-		for _, id := range ids {
-			remaining := powers.Harbors[id]
+		for id, remaining := range powers.Harbors {
 			for _, target := range remaining {
 				if !g.Players[target].Eliminated && sum(g.Players[target].Resources) > 0 {
 					choices = append(choices, botChoice{Action{Type: "catan_commercial_offer", Card: id, Target: target, Color: resource}, 720})

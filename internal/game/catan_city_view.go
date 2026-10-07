@@ -9,7 +9,7 @@ func (s *State) catanCityView(v map[string]any, player int) {
 		public["progressRemaining"] = []int{len(k.ProgressDecks[0]), len(k.ProgressDecks[1]), len(k.ProgressDecks[2])}
 		v["progressRules"] = CatanProgressRules()
 		playable := []int{}
-		if g.Explorer == nil && !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && k.Pending == nil && !g.setup() {
+		if !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && k.Pending == nil && k.Event == nil && !g.setup() {
 			seen := map[int]bool{}
 			for _, card := range k.Players[player].Progress {
 				if !seen[card] && ((card == 0 && s.Phase == "catan_roll") || (card > 0 && card <= 24 && !catanProgressRules[card].Victory && (card != 21 || k.Invasions > 0) && s.Phase == "catan_turn")) {

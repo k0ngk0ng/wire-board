@@ -9,7 +9,13 @@ import "slices"
 func (s *State) catanExplorerChoices(viewer int) []Action {
 	result := []Action{}
 	g := s.Catan
-	if g == nil || g.Explorer == nil || s.Finished || viewer < 0 || viewer >= len(g.Players) || g.Players[viewer].Eliminated || viewer != s.Turn {
+	if g == nil || g.Explorer == nil || s.Finished || viewer < 0 || viewer >= len(g.Players) || g.Players[viewer].Eliminated {
+		return result
+	}
+	if g.CitiesKnights != nil && g.CitiesKnights.Pending != nil {
+		return s.catanExplorerCityResponseChoices(viewer)
+	}
+	if viewer != s.Turn {
 		return result
 	}
 	if actions, handled := s.catanExplorerSpecialChoices(viewer); handled {
@@ -17,6 +23,15 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	}
 	sequence := g.TurnSerial
 	add := func(a Action) { a.Prompt = int(sequence); result = append(result, a) }
+	if g.CitiesKnights != nil && s.Phase == "catan_roads" {
+		for _, edge := range s.catanExplorerFreeRoadSites(viewer) {
+			add(Action{Type: "catan_road", Edge: edge})
+		}
+		if len(result) == 0 {
+			add(Action{Type: "catan_skip_roads"})
+		}
+		return result
+	}
 	if s.Phase == "catan_roll" {
 		add(Action{Type: "catan_roll"})
 		return result
@@ -38,6 +53,17 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		base.Vertices = slices.Clone(g.Vertices)
 		base.Edges = slices.Clone(g.Edges)
 		cargo, fleet, economy := clone(*x.Cargo), clone(*x.Fleet), clone(*x.Economy)
+		if g.CitiesKnights != nil {
+			// Classification and knight restrictions need the combination flags.
+			// Keep topology/missions read-only; all mutated pieces are owned.
+			world := *x
+			world.Cargo, world.Fleet, world.Economy = &cargo, &fleet, &economy
+			base.Explorer = &world
+			k := clone(*g.CitiesKnights)
+			base.CitiesKnights = &k
+		}
+		next := *s
+		next.Catan, next.Log = &base, slices.Clone(s.Log)
 		switch a.Type {
 		case "catan_road":
 			return cargo.buildRoad(&base, &fleet, viewer, sequence, a.Edge) == nil
@@ -45,11 +71,20 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 			return cargo.buildSettlement(&base, &fleet, viewer, sequence, a.Vertex) == nil
 		case "catan_explorer_harbor":
 			return cargo.buildHarbor(&base, &fleet, viewer, sequence, a.Vertex) == nil
+		case "catan_city":
+			return cargo.upgradeSettlement(&base, &fleet, viewer, sequence, a.Vertex, "city", false) == nil
+		case "catan_wall", "catan_improvement":
+			return next.catanCityBuild(viewer, a, 0) == nil
+		case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move":
+			return next.catanKnightAction(viewer, a) == nil
 		case "catan_explorer_ship":
 			return cargo.buildShip(&base, &fleet, viewer, sequence, a.Slot, a.Edge) == nil
 		case "catan_explorer_unit":
 			return cargo.buildUnitFreight(&base, &fleet, viewer, sequence, a.Card, catanExplorerCargoLocation{a.Choice, a.Target}, a.Cards, a.Targets, a.SpiceUnload) == nil
 		case "catan_explorer_bank":
+			if g.CitiesKnights != nil {
+				return next.catanExplorerCityBank(viewer, a) == nil
+			}
 			return economy.bankTrade(&base, &fleet, &cargo, viewer, sequence, a.Color, a.Target) == nil
 		case "catan_explorer_wool":
 			return fleet.wool(&base, viewer, sequence, a.Slot) == nil
@@ -66,6 +101,11 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		}
 	}
 	if s.Phase == "catan_turn" {
+		if g.CitiesKnights != nil {
+			for _, action := range s.catanExplorerCityBuildCandidates(viewer) {
+				offer(action)
+			}
+		}
 		for _, edge := range g.Edges {
 			if edge.Owner == -1 && x.Cargo.landEdge(g, viewer, edge.ID) && catanExplorerCanPay(g, viewer, []int{1, 1, 0, 0, 0}) {
 				offer(Action{Type: "catan_road", Edge: edge.ID})
@@ -117,8 +157,8 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 				}
 			}
 		}
-		for give := -1; give < 5; give++ {
-			for take := -1; take < 5; take++ {
+		for give := -1; give < len(g.Bank); give++ {
+			for take := -1; take < len(g.Bank); take++ {
 				if give != take {
 					offer(Action{Type: "catan_explorer_bank", Color: give, Target: take})
 				}
@@ -266,8 +306,32 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 			v["target"], v["slot"], v["cards"] = a.Target, a.Slot, a.Cards
 		case "catan_road":
 			v["edge"] = a.Edge
-		case "catan_settlement", "catan_explorer_harbor":
+		case "catan_settlement", "catan_explorer_harbor", "catan_city", "catan_wall", "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_retreat", "catan_metropolis", "catan_pillage", "catan_treason_remove":
 			v["vertex"] = a.Vertex
+		case "catan_knight_move":
+			v["vertex"], v["target"] = a.Vertex, a.Target
+		case "catan_improvement", "catan_defender_reward", "catan_commercial_harbor":
+			v["color"] = a.Color
+		case "catan_aqueduct":
+			v["color"] = a.Color
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_diplomacy":
+			v["edge"] = a.Edge
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_espionage":
+			v["card"] = a.Card
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_treason_place":
+			v["vertex"], v["color"] = a.Vertex, a.Color
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
 		case "catan_explorer_ship":
 			v["slot"], v["edge"] = a.Slot, a.Edge
 		case "catan_explorer_unit":

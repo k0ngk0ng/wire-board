@@ -49,6 +49,20 @@ const choose = (o = {}) => ({
   skip: false,
   ...o,
 });
+test("Explorer off-turn progress replies use the shared sequence without changing their actor", () => {
+  const r = fixture("commercial_harbor");
+  r.game.catan.explorer = { sequence: 8 };
+  assert.deepEqual(progressChoiceAction(r, choose({ color: 5 })), {
+    type: "catan_commercial_harbor",
+    color: 5,
+    prompt: 8,
+  });
+  r.you = 0;
+  assert.equal(progressChoiceAction(r, choose({ color: 5 })), null);
+  r.you = 1;
+  r.game.catan.explorer.sequence = 9;
+  assert.equal(progressChoiceAction(r, choose({ color: 5 })).prompt, 9);
+});
 test("responses belong to the pending actor, including private hand data and queued hand counts", () => {
   const r = fixture("guild_dues"),
     s = choose({ bundle: [1, 0, 0, 0, 0, 1, 0, 0] });

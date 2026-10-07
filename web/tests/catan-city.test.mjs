@@ -7,6 +7,7 @@ import {
 } from "../src/catan-cards.ts";
 import {
   cityDefense,
+  cityAt,
   cityDiscardLimit,
   cityImprovementReason,
   cityMetropolisSites,
@@ -51,6 +52,24 @@ function fixture() {
     },
   };
 }
+test("Explorer harbors cannot substitute for cities or restore a fallen city's powers", () => {
+  const g = fixture();
+  g.explorer = {};
+  g.vertices[1].harbor = true;
+  assert.equal(cityAt(g, 0), true);
+  assert.equal(cityAt(g, 1), false);
+  assert.deepEqual(cityWallSites(g, 0), []);
+  assert.deepEqual(cityMetropolisSites(g, 0), [0]);
+  g.vertices[0].level = 1;
+  assert.equal(cityDiscardLimit(g, 0), 7);
+  assert.match(cityImprovementReason(g, 0, 0), /至少一座城市/);
+  assert.deepEqual(cityMetropolisSites(g, 0), []);
+  g.vertices[0].level = 2;
+  assert.equal(cityDiscardLimit(g, 0), 9);
+  assert.equal(cityImprovementReason(g, 0, 0), "");
+  delete g.citiesKnights;
+  assert.equal(cityAt(g, 0), false); // Legacy standalone harbor without explicit flag.
+});
 test("city building choices respect walls, metropolis occupancy and required city", () => {
   const g = fixture();
   assert.deepEqual(cityWallSites(g, 0), [1]);

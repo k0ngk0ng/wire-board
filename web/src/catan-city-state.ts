@@ -28,13 +28,19 @@ export const cityActionCosts: Record<string, number[]> = {
   knight_activate: [0, 0, 0, 1, 0],
   knight_promote: [0, 0, 1, 0, 1],
 };
+// A two-point Explorer harbor is not a city: it cannot hold walls or a
+// metropolis, unlock improvements, or contribute to the barbarian city count.
+export function cityAt(g: CatanState, vertex: number) {
+  const v = g.vertices[vertex];
+  return !!v && v.level === 2 && !v.harbor && !(g.explorer && !g.citiesKnights);
+}
 export function cityWallSites(g: CatanState, player: number) {
   const k = g.citiesKnights;
   if (!k || k.walls.filter((v) => g.vertices[v].owner === player).length >= 3)
     return [];
   return g.vertices
     .filter(
-      (v) => v.owner === player && v.level === 2 && !k.walls.includes(v.id),
+      (v) => v.owner === player && cityAt(g, v.id) && !k.walls.includes(v.id),
     )
     .map((v) => v.id);
 }
@@ -45,7 +51,7 @@ export function cityMetropolisSites(g: CatanState, player: number) {
         .filter(
           (v) =>
             v.owner === player &&
-            v.level === 2 &&
+            cityAt(g, v.id) &&
             !k.metropolises.includes(v.id),
         )
         .map((v) => v.id)
@@ -60,7 +66,7 @@ export function cityImprovementReason(
   const k = g.citiesKnights,
     level = k?.players[player]?.improvements[track] ?? 5;
   if (!k || level >= 5) return "已达五级";
-  if (!g.vertices.some((v) => v.owner === player && v.level === 2))
+  if (!g.vertices.some((v) => v.owner === player && cityAt(g, v.id)))
     return "需要至少一座城市";
   const metro = k.metropolises[track],
     owner = metro >= 0 ? g.vertices[metro].owner : -1;
@@ -76,7 +82,7 @@ export function cityDiscardLimit(g: CatanState, player: number) {
     7 +
     2 *
       (g.citiesKnights?.walls.filter(
-        (v) => g.vertices[v].owner === player && g.vertices[v].level === 2,
+        (v) => g.vertices[v].owner === player && cityAt(g, v),
       ).length ?? 0)
   );
 }

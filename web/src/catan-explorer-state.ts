@@ -55,6 +55,14 @@ export type ExplorerMotion = {
   cargo?: { unit: number; from: ExplorerLocation; to: ExplorerLocation }[];
 };
 export type ExplorerView = {
+  actor?: number;
+  canRespond?: boolean;
+  response?: {
+    type: string;
+    field: "tokens" | "cards" | "give" | "take";
+    count: number;
+    prompt: number;
+  };
   actionId?: number;
   motion?: ExplorerMotion | null;
   sequence: number;
@@ -189,8 +197,11 @@ export function explorerCanRespond(room: Room) {
   );
 }
 export function explorerChoices(room: Room) {
-  if (!explorerCanRespond(room) || room.game!.turn !== room.you) return [];
+  if (!explorerCanRespond(room)) return [];
   const x = room.game!.catan!.explorer!;
+  if (x.canRespond !== undefined) {
+    if (!x.canRespond || x.actor !== room.you) return [];
+  } else if (room.game!.turn !== room.you) return [];
   return x.choices.filter((a) => a.prompt === x.sequence);
 }
 export function explorerActionKey(a: ExplorerAction) {
@@ -214,7 +225,8 @@ export function explorerDiscardAction(room: Room, tokens: number[]) {
     room.game?.phase !== "catan_discard" ||
     !due ||
     !hand ||
-    tokens.length !== 5 ||
+    ![5, 8].includes(hand.length) ||
+    tokens.length !== hand.length ||
     tokens.some((n, i) => !Number.isInteger(n) || n < 0 || n > hand[i]) ||
     tokens.reduce((n, x) => n + x, 0) !== due
   )
@@ -338,6 +350,8 @@ export function explorerTarget(
   g: CatanState,
   a: ExplorerAction,
 ): { kind: "edge" | "vertex" | "tile"; id: number } | null {
+  if (a.choice === "skip") return null;
+  if (a.type === "catan_knight_move") return { kind: "vertex", id: a.target! };
   if (a.type === "catan_explorer_fish_load") {
     const loc = g.explorer?.cargo.fish?.[a.card ?? -1];
     return loc?.kind === "shoal" ? { kind: "tile", id: loc.index } : null;
@@ -351,8 +365,9 @@ export function explorerTarget(
   }
   if (a.type === "catan_explorer_setup")
     return {
-      kind:
-        a.choice === "harbor" || a.choice === "settlement" ? "vertex" : "edge",
+      kind: ["city", "harbor", "settlement"].includes(a.choice || "")
+        ? "vertex"
+        : "edge",
       id: a.target!,
     };
   if (

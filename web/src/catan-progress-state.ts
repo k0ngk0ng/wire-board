@@ -1,6 +1,7 @@
 import type { Room, CatanState } from "./types";
 import { cityImprovementReason, cityWallSites } from "./catan-city-state.ts";
 export type ProgressSelection = {
+  upgrade?: "city" | "harbor";
   card: number;
   color: number | null;
   target: number | null;
@@ -18,7 +19,8 @@ export const newProgressSelection = (card: number): ProgressSelection => ({
 });
 export const progressTrack = (card: number) =>
   card < 10 ? 0 : card < 16 ? 1 : 2;
-export function progressMapMode(card: number) {
+export function progressMapMode(card: number, explorer = false) {
+  if (card === 21 && explorer) return "";
   return [3, 12, 21].includes(card)
     ? "progress_tile"
     : [2, 5, 8, 19].includes(card)
@@ -48,6 +50,7 @@ export function progressMapTargets(
     case 3:
       return g.inventionTiles || [];
     case 5:
+      if (g.explorer && s.upgrade === "harbor") return g.medicineHarbors || [];
       return (g.players[player]?.resources?.[3] || 0) >= 1 &&
         (g.players[player]?.resources?.[4] || 0) >= 2
         ? g.legal.cities
@@ -68,6 +71,7 @@ export function progressMapTargets(
     case 19:
       return g.intrigueTargets || [];
     case 21:
+      if (g.explorer) return [];
       return g.citiesKnights?.invasions
         ? g.tiles
             .filter(
@@ -140,7 +144,11 @@ export function progressPlayAction(
     return null;
   if (room.game.phase !== (s.card === 0 ? "catan_roll" : "catan_turn"))
     return null;
-  const a: Record<string, unknown> = { type: "catan_progress", card: s.card };
+  const a: Record<string, unknown> = {
+    type: "catan_progress",
+    card: s.card,
+    ...(g.explorer ? { prompt: g.explorer.sequence } : {}),
+  };
   if (s.skip) return s.card !== 0 ? { ...a, choice: "skip" } : null;
   if (s.card === 0)
     return s.dice.length === 2 &&
@@ -173,7 +181,10 @@ export function progressPlayAction(
       )
       ? { ...a, targets: s.picks }
       : null;
-  const mode = progressMapMode(s.card);
+  // E&P Taxation starts a separate pirate placement response; it never asks
+  // for a base-game robber tile in the card-play request.
+  if (s.card === 21 && g.explorer) return a;
+  const mode = progressMapMode(s.card, !!g.explorer);
   if (mode) {
     const targets = progressMapTargets(g, p, s);
     if (
@@ -184,6 +195,9 @@ export function progressPlayAction(
       return null;
     return {
       ...a,
+      ...(s.card === 5 && g.explorer && s.upgrade === "harbor"
+        ? { choice: "harbor" }
+        : {}),
       [mode === "progress_tile"
         ? "tile"
         : mode === "progress_vertex"
@@ -226,5 +240,11 @@ export function commercialOfferAction(
     !(g.players[p].resources?.[color] || 0)
   )
     return null;
-  return { type: "catan_commercial_offer", card: harbor, target, color };
+  return {
+    type: "catan_commercial_offer",
+    card: harbor,
+    target,
+    color,
+    ...(g.explorer ? { prompt: g.explorer.sequence } : {}),
+  };
 }
