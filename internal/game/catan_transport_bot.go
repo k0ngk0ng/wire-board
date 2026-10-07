@@ -5,6 +5,8 @@ import "errors"
 // A path uses only the public graph. Passing through any other commodity
 // center would end movement, so it cannot be used as a shortcut.
 func catanTransportPath(g *Catan, m *catanTransportMap, from, to, player, gold int) []int {
+	// A shortest useful path never repeats a vertex, even with a large ledger.
+	gold = min(gold, len(g.Vertices)-1)
 	type key struct{ vertex, paid int }
 	type step struct {
 		previous key

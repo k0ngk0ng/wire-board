@@ -39,6 +39,7 @@ type catanTransport struct {
 	Stacks            [3][]int                     `json:"stacks"` // quarry, glassworks, castle; top at index 0.
 	Gold              []int                        `json:"gold"`
 	GoldBank          int                          `json:"goldBank"`
+	GoldIssued        int                          `json:"goldIssued,omitempty"`
 	Barbarians        [3]int                       `json:"barbarians"`
 	Active            int                          `json:"active"`
 	TurnSerial        uint64                       `json:"turnSerial"`
@@ -116,7 +117,15 @@ func (t catanTransport) validate(g *Catan) error {
 	if err := t.Map.validate(g); err != nil {
 		return err
 	}
-	if t.GoldBank < 0 || t.GoldBank > t.Map.Gold || t.GoldBank+sum(t.Gold) != t.Map.Gold || t.Bought < 0 || t.Bought > 2 {
+	if t.GoldIssued < 0 || t.GoldIssued > catanGoldLedgerLimit || t.TurnSerial == 0 && t.GoldIssued != 0 {
+		return errors.New("运输金币记账无效")
+	}
+	supply := t.Map.Gold + t.GoldIssued
+	total := int64(t.GoldBank)
+	for _, amount := range t.Gold {
+		total += int64(amount)
+	}
+	if t.GoldBank < 0 || t.GoldBank > supply || total != int64(supply) || t.Bought < 0 || t.Bought > 2 {
 		return errors.New("运输金币银行、总库存或购买次数无效")
 	}
 	all := catanTransportTokens(len(g.Players) > 4)
@@ -136,7 +145,7 @@ func (t catanTransport) validate(g *Catan) error {
 		}
 	}
 	for p, wagon := range t.Wagons {
-		if wagon.Position < -1 || wagon.Position >= len(g.Vertices) || wagon.Level < 0 || wagon.Level > 4 || t.Gold[p] < 0 || t.Gold[p] > t.Map.Gold || wagon.Position == -1 && (wagon.Level != 0 || wagon.Cargo != 0 || len(wagon.Delivered) != 0) {
+		if wagon.Position < -1 || wagon.Position >= len(g.Vertices) || wagon.Level < 0 || wagon.Level > 4 || t.Gold[p] < 0 || t.Gold[p] > supply || wagon.Position == -1 && (wagon.Level != 0 || wagon.Cargo != 0 || len(wagon.Delivered) != 0) {
 			return errors.New("运输马车位置、等级、载货或金币无效")
 		}
 		if t.TurnSerial == 0 && (wagon.Level != 0 || wagon.Cargo != 0 || len(wagon.Delivered) != 0 || t.Gold[p] != 5) {
@@ -256,6 +265,8 @@ type catanTransportPublicView struct {
 	Wagons          []catanTransportWagonView `json:"wagons"`
 	Supply          [3]int                    `json:"supply"`
 	GoldBank        int                       `json:"goldBank"`
+	GoldIssued      int                       `json:"goldIssued,omitempty"`
+	GoldRule        string                    `json:"goldRule"`
 	Barbarians      [3]int                    `json:"barbarians"`
 	Active          int                       `json:"active"`
 	Sequence        uint64                    `json:"sequence"`
@@ -264,7 +275,7 @@ type catanTransportPublicView struct {
 }
 
 func (t catanTransport) publicView() catanTransportPublicView {
-	view := catanTransportPublicView{GoldBank: t.GoldBank, Barbarians: t.Barbarians, Active: t.Active, Sequence: t.Sequence, ArrivalResolved: t.ArrivalResolved}
+	view := catanTransportPublicView{GoldBank: t.GoldBank, GoldIssued: t.GoldIssued, GoldRule: "ledger", Barbarians: t.Barbarians, Active: t.Active, Sequence: t.Sequence, ArrivalResolved: t.ArrivalResolved}
 	if t.Travel != nil {
 		q := *t.Travel
 		view.Travel = &q

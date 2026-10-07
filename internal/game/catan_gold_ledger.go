@@ -37,3 +37,15 @@ func (r *CatanRivers) ensureGold(amount int) error {
 	r.Bank += missing
 	return nil
 }
+
+// Transport follows the site's existing gold supplement: physical coin
+// supply does not cap earned rewards; returned coins are reused first.
+func (t *catanTransport) ensureGold(amount int) error {
+	missing, err := catanGoldShortfall(t.GoldBank, t.GoldIssued, amount)
+	if err != nil {
+		return err
+	}
+	t.GoldIssued += missing
+	t.GoldBank += missing
+	return nil
+}

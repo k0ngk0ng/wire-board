@@ -312,6 +312,8 @@ func (g *Catan) validTradeGold(amount int) bool {
 	limit := 152
 	if g.Explorer != nil && g.Explorer.Economy != nil {
 		limit = catanExplorerStock(len(g.Players)).gold + g.Explorer.Economy.GoldIssued
+	} else if g.Transport != nil {
+		limit = g.Transport.Map.Gold + g.Transport.GoldIssued
 	} else if g.Rivers != nil {
 		limit = 100 + g.Rivers.GoldIssued
 		if len(g.Players) > 4 {

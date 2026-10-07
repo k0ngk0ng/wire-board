@@ -77,8 +77,11 @@ func (t *catanTransport) sellResource(g *Catan, player, resource int) error {
 		return errors.New("请选择一种普通资源")
 	}
 	rate := g.rates(player)[resource]
-	if g.Players[player].Resources[resource] < rate || t.GoldBank < 1 {
-		return errors.New("资源不足或金币银行没有库存")
+	if g.Players[player].Resources[resource] < rate {
+		return errors.New("资源不足")
+	}
+	if err := t.ensureGold(1); err != nil {
+		return err
 	}
 	g.Players[player].Resources[resource] -= rate
 	g.Bank[resource] += rate
@@ -174,10 +177,8 @@ func (t *catanTransport) resolveArrivalWithStop(g *Catan, player int, sequence u
 	payment := 0
 	if deliver {
 		payment = w.Level + 1
-		if t.GoldBank < payment {
-			// Explicit acceptance gate, NOT an invented official shortage rule.
-			// Keep the full arrival pending and do not remove cargo or add VP.
-			return result, errors.New("运输交付金币供应不足的处理尚待核对")
+		if err := t.ensureGold(payment); err != nil {
+			return result, err
 		}
 	}
 	result = catanTransportArrivalResult{Sequence: sequence, Player: player, Site: q.Arrived, Gold: payment}

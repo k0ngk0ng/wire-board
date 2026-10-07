@@ -79,12 +79,17 @@ func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarian
 			return errors.New("待移走蛮族的回应无效")
 		}
 	}
+	// The parent transport state validates the exact bank/issued ledger.
+	// The movement kernel only receives player balances, so enforce safe bounds.
+	limit := m.Gold + catanGoldLedgerLimit
+	total := int64(0)
 	for _, amount := range gold {
-		if amount < 0 || amount > m.Gold {
+		total += int64(amount)
+		if amount < 0 || amount > limit {
 			return errors.New("玩家金币无效")
 		}
 	}
-	if sum(gold) > m.Gold {
+	if total > int64(limit) {
 		return errors.New("玩家金币超出供应")
 	}
 	return nil
