@@ -542,6 +542,7 @@ export type CatanState = {
     actor: number;
     canAct: boolean;
     choices?: CatanWagon[];
+    placementLimit?: number;
     pending?: {
       kind: "bid" | "vote" | "place";
       active: number;

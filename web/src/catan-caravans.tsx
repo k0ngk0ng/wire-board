@@ -308,15 +308,23 @@ export function CatanCaravanPanel({
                 <>
                   <p>
                     {q.kind === "bid"
-                      ? "双方各出价一次，共放两辆马车。票多者决定两辆，分别延伸不同商队；平票时各放一辆，本回合玩家先放。"
-                      : votes(q.bids[0]) === votes(q.bids[1])
-                        ? `双方平票，各放一辆；${room.seats[q.active]?.name}先放。`
-                        : "票多者连续决定两辆马车，第二辆须延伸另一支商队。"}
-                    出价的资源在两辆放置结束后一起归还银行。
+                      ? "双方各出价一次，尽量放满两辆马车。票多者分别延伸不同商队；平票时各放一辆，本回合玩家先放。"
+                      : c.placementLimit === 1
+                        ? "由当前决定者放置本轮唯一能放的马车。"
+                        : votes(q.bids[0]) === votes(q.bids[1])
+                          ? `双方平票，各放一辆；${room.seats[q.active]?.name}先放。`
+                          : "票多者连续决定两辆马车，第二辆须延伸另一支商队。"}
+                    会合后的商队视为同一支。出价在本轮放车结束后一起归还银行。
+                  </p>
+                  <p>
+                    本站补充规则：最多放两辆；只有无法放满时才少放。
+                    {c.placementLimit === 1
+                      ? "本轮只能放一辆，确认后结束放车。"
+                      : "若能放满，第一辆只可选择能继续放第二辆的位置。"}
                   </p>
                   {step && (
                     <ol className="caravan-steps" aria-label="本轮马车进度">
-                      {[1, 2].map((n) => (
+                      {(c.placementLimit === 1 ? [1] : [1, 2]).map((n) => (
                         <li
                           key={n}
                           className={

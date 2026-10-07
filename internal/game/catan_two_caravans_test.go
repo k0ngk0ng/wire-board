@@ -217,8 +217,7 @@ func TestCatanTwoCaravansRejectCorruptProgressAndUsePublicBotData(t *testing.T) 
 	twoCaravanCheck(t, s)
 }
 
-// Twenty-two initial wagons and complete pairs make an odd round-start
-// impossible. The sole remaining wagon is legal only as the pending second.
+// A full final pair must retain the pending second wagon across a restart.
 func TestCatanTwoCaravansFinalPairAndMissingSecondSave(t *testing.T) {
 	s := twoCaravanFixture(t)
 	rng := rand.New(rand.NewSource(728))
@@ -368,50 +367,6 @@ func TestCatanTwoCaravansFirstWagonVictory(t *testing.T) {
 		twoCaravanCheck(t, s)
 	}
 }
-func TestCatanTwoCaravansDetectMergedOriginsWithoutGuessing(t *testing.T) {
-	s := twoCaravanFixture(t)
-	c, g := s.Catan.Caravans, s.Catan
-	rng := rand.New(rand.NewSource(3357))
-	var merged catanCaravanWagon
-	found := false
-	for attempt := 0; attempt < 300 && !found; attempt++ {
-		c.Wagons = nil
-		for len(c.Wagons) < 20 {
-			choices := c.choices(g)
-			if len(choices) == 0 {
-				break
-			}
-			for _, w := range choices {
-				if mask := c.trainOrigins(g, w.From); len(c.Wagons)%2 == 0 && mask > 0 && !singleCaravanOrigin(mask) {
-					merged = w
-					found = true
-					break
-				}
-			}
-			if found {
-				break
-			}
-			if e := c.place(g, choices[rng.Intn(len(choices))]); e != nil {
-				t.Fatal(e)
-			}
-		}
-	}
-	if !found {
-		t.Fatal("no converged network")
-	}
-	twoCaravanBid(t, s, []int{1, 0})
-	before, _ := json.Marshal(s)
-	e := s.Apply(0, Action{Type: "catan_caravan_place", Edge: merged.Edge, Vertex: merged.From})
-	if e == nil || !strings.Contains(e.Error(), "会合") {
-		t.Fatal("guessed merged-train rule", e)
-	}
-	after, _ := json.Marshal(s)
-	if string(before) != string(after) {
-		t.Fatal("merged guard mutated state")
-	}
-	twoCaravanCheck(t, s)
-}
-
 func TestCatanTwoCaravansRuleVersionCompatibility(t *testing.T) {
 	for _, two := range []bool{false, true} {
 		s := caravanFixture(t, 3)

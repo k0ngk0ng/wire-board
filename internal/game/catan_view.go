@@ -51,11 +51,20 @@ func (s *State) catanView(view map[string]any, player int) {
 	}
 	if c := g.Caravans; c != nil {
 		public := v["caravans"].(map[string]any)
+		delete(public, "shortRounds")
 		public["remaining"] = c.Map.Supply - len(c.Wagons)
 		public["actor"] = s.CatanPendingActor()
 		public["canAct"] = !s.Finished && player >= 0 && player == s.CatanPendingActor()
 		if c.Pending != nil && !s.Finished {
 			public["choices"] = c.responseChoices(g)
+			if q := c.Pending; g.Two != nil && q.Two != nil && q.Kind == "place" {
+				limit := 2
+				if q.Two.First == nil {
+					leader, _ := q.leaders()
+					_, limit = c.firstChoices(g, leader >= 0)
+				}
+				public["placementLimit"] = limit
+			}
 		}
 	}
 	s.catanFishingView(v, player)
