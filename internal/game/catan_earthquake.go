@@ -7,12 +7,12 @@ import "errors"
 // clients cannot invoke catanDamageRoad directly.
 func (g *Catan) roadDamageable(player, edge int) bool {
 	return player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated &&
-		edge >= 0 && edge < len(g.Edges) && g.Edges[edge].Owner == player && !g.Edges[edge].Ship && !g.Edges[edge].Damaged
+		edge >= 0 && edge < len(g.Edges) && g.Edges[edge].Owner == player && !g.Edges[edge].Ship && !g.Edges[edge].Bridge && !g.Edges[edge].Damaged
 }
 
 func (g *Catan) roadRepairable(player, edge int) bool {
 	return player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated &&
-		edge >= 0 && edge < len(g.Edges) && g.Edges[edge].Owner == player && !g.Edges[edge].Ship && g.Edges[edge].Damaged
+		edge >= 0 && edge < len(g.Edges) && g.Edges[edge].Owner == player && !g.Edges[edge].Ship && !g.Edges[edge].Bridge && g.Edges[edge].Damaged
 }
 
 func (g *Catan) hasDamagedRoad(player int) bool {
@@ -31,7 +31,7 @@ func (g *Catan) hasFreeRouteAction(player int) bool {
 
 func (s *State) catanDamageRoad(player, edge int) error {
 	if !s.Catan.roadDamageable(player, edge) {
-		return errors.New("地震必须选择自己尚未受损的一条道路，不能选择船只")
+		return errors.New("地震必须选择自己尚未受损的一条道路，不能选择船只或桥梁")
 	}
 	s.Catan.Edges[edge].Damaged = true
 	s.catanLog(player, "地震：道路 #%d 受损，仍计入最长路线；修复前不能新建道路", edge+1)

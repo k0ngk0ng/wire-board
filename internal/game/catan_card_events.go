@@ -51,8 +51,8 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if _, ok := catanCardEventNames[kind]; !ok {
 		return errors.New("该事件牌效果尚未接入")
 	}
-	if g.Two != nil && g.EventDeck == nil {
-		return errors.New("双人事件必须通过牌堆抽取并记录两次生产")
+	if (g.Two != nil || g.Rivers != nil) && g.EventDeck == nil {
+		return errors.New("双人或河流事件必须通过牌堆抽取并记录生产")
 	}
 	if g.Attack != nil {
 		if g.Paired != nil && g.Paired.Second {
@@ -335,6 +335,12 @@ func (s *State) catanCardEventBot(player int) (Action, error) {
 }
 
 func (g *Catan) fleeDeserts() []int {
+	// T&B 2025 p12 changes desert-directed actions to swamps specifically
+	// for CATAN for Two + Rivers. Other river games have no desert and use
+	// Robber Flees' explicit off-board instruction instead.
+	if g.Two != nil && g.Rivers != nil {
+		return slices.Clone(g.Rivers.Map.Swamps)
+	}
 	deserts := []int{}
 	for _, tile := range g.Tiles {
 		if tile.Resource == CatanDesert {
@@ -353,6 +359,8 @@ func (s *State) catanFleeRobber(tile int) {
 	}
 	if tile < 0 {
 		s.catanLog(s.Turn, "强盗逃跑：没有沙漠，强盗移到场外，不偷牌")
+	} else if g.Tiles[tile].Resource == catanSwamp {
+		s.catanLog(s.Turn, "强盗逃往沼泽 #%d，不偷牌", tile+1)
 	} else {
 		s.catanLog(s.Turn, "强盗逃往沙漠 #%d，不偷牌", tile+1)
 	}
