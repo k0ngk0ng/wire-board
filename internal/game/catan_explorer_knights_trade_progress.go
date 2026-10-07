@@ -6,13 +6,24 @@ import (
 )
 
 // Mandatory card effects are not negotiated player trades, including during
-// the second paired action. Bank-related Merchant/Fleet remain gated separately.
+// the second paired action. Fleets expire with that action segment; Merchant
+// ownership persists until a later card transfers it.
 func (s *State) validateExplorerTradeProgress() error {
 	g, k := s.Catan, s.Catan.CitiesKnights
+	if merchant := k.Merchant; merchant != nil {
+		if merchant.Owner < 0 || merchant.Owner >= len(g.Players) || g.Players[merchant.Owner].Eliminated || !slices.Contains(g.merchantTiles(merchant.Owner), merchant.Tile) {
+			return errors.New("组合商人缺少有效玩家或本人建筑相邻地块")
+		}
+	}
 	powers := k.TradePowers
 	if powers != nil {
-		if powers.Player != s.Turn || len(powers.Fleets) != 0 || len(powers.Harbors) < 1 || len(powers.Harbors) > 2 || g.Explorer.Economy.Turn.Phase != "ready" || g.Explorer.Cargo.Turn == nil {
+		if powers.Player != s.Turn || len(powers.Fleets)+len(powers.Harbors) < 1 || len(powers.Fleets) > 2 || len(powers.Harbors) > 2 || g.Explorer.Economy.Turn.Phase != "ready" || g.Explorer.Cargo.Turn == nil {
 			return errors.New("组合贸易进步牌额度或所属行动段无效")
+		}
+		for i, color := range powers.Fleets {
+			if color < 0 || color >= 8 || slices.Contains(powers.Fleets[:i], color) {
+				return errors.New("组合商船队种类无效或重复")
+			}
 		}
 		for _, remaining := range powers.Harbors {
 			seen := map[int]bool{}
