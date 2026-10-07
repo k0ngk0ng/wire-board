@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Check, Landmark } from "lucide-react";
 import type { Room } from "./types";
 import { gemCityProgress } from "./splendor-city-state";
+import { cityAtlasStyle } from "./splendor-city-art";
 import "./splendor-cities.css";
 
 export function SplendorCities({
@@ -36,6 +37,7 @@ export function SplendorCities({
       </header>
       <div className="gem-city-list">
         {s.cities.map((city, index) => {
+          const art = cityAtlasStyle(assets, city.tile);
           const progress = me ? gemCityProgress(me, city) : undefined;
           const eligible = !!progress?.eligible;
           const owners = room.seats.filter((_, seat) =>
@@ -47,13 +49,11 @@ export function SplendorCities({
               className={`gem-city ${eligible ? "is-eligible" : ""}`}
               aria-label={city.name}
             >
-              {assets && (
-                <img
+              {art && (
+                <div
                   className="gem-city-art"
-                  src={`${assets}/splendor/expansions/city-${city.tile}.webp`}
-                  alt=""
-                  width={320}
-                  height={95}
+                  style={art}
+                  aria-hidden="true"
                 />
               )}
               <h4>
