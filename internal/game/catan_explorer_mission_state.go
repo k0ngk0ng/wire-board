@@ -8,8 +8,8 @@ func newCatanExplorerLairsState(players int, layout string, numbers []int) (*Sta
 	return newCatanExplorerMissionState(players, "pirate-lairs", layout, numbers)
 }
 func newCatanExplorerMissionState(players int, scenario, layout string, numbers []int) (*State, error) {
-	if players < 2 || players > 4 {
-		return nil, errors.New("海盗巢穴需要二至四人")
+	if players < 2 || players > 6 {
+		return nil, errors.New("探险任务需要二至六人")
 	}
 	g, b, f, c, e, setup, err := newCatanExplorerMissionSetup(players, scenario, layout, catanRandom(players))
 	if err != nil {
@@ -143,24 +143,13 @@ func (s *State) catanExplorerHasReadyLair() bool {
 }
 func (s *State) catanExplorerNextTurn() error {
 	g := s.Catan
-	x := g.Explorer
 	s.catanExplorerMissionScore()
 	s.catanExplorerVictory()
 	if s.Finished {
 		return nil
 	}
 	g.Trade = nil
-	for {
-		s.Turn = (s.Turn + 1) % len(g.Players)
-		if s.Turn == g.StartPlayer {
-			s.Round++
-		}
-		if !g.Players[s.Turn].Eliminated {
-			break
-		}
-	}
-	g.TurnSerial++
-	if err := x.Economy.beginProduction(g, x.Fleet, x.Cargo, s.Turn, g.TurnSerial); err != nil {
+	if err := s.catanExplorerAdvanceTurn(); err != nil {
 		return err
 	}
 	s.catanExplorerSyncPhase()

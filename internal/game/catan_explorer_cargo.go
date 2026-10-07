@@ -123,8 +123,11 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	if g == nil || fleet == nil || len(c.Units) != len(g.Players)*11 || c.Scenario != "land-ho" && c.Scenario != "pirate-lairs" && !catanExplorerFishScenario(c.Scenario) || g.Seafarers != nil || g.Two != nil || g.CitiesKnights != nil || g.Transport != nil {
 		return errors.New("探险货物库存、剧本或组合无效")
 	}
-	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.RevealedEvent != nil || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Paired != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
+	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.RevealedEvent != nil || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
 		return errors.New("探险货物尚未接入其他扩展组合")
+	}
+	if pair := g.Paired; pair != nil && (len(g.Players) < 5 || len(g.Players) > 6 || pair.Primary < 0 || pair.Primary >= len(g.Players) || pair.Secondary < 0 || pair.Secondary >= len(g.Players)) {
+		return errors.New("探险配对玩家标记无效")
 	}
 	if err := fleet.validate(g); err != nil {
 		return err

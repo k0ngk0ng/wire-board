@@ -46,9 +46,12 @@ func (q explorerSetupFixture) restore(t *testing.T) {
 	}
 }
 func TestCatanExplorerLairsOfficialSetupAllSeatsAndLayouts(t *testing.T) {
-	for n := 2; n <= 4; n++ {
+	for n := 2; n <= 6; n++ {
 		for start := 0; start < n; start++ {
 			for _, layout := range []string{"fixed", "variable"} {
+				if n > 4 && layout == "fixed" {
+					continue
+				}
 				for seed := int64(0); seed < 5; seed++ {
 					t.Run(fmt.Sprintf("%d/start%d/%s/%d", n, start, layout, seed), func(t *testing.T) {
 						q := newExplorerSetupFixture(t, n, layout, start)
@@ -125,7 +128,12 @@ func TestCatanExplorerLairsOfficialSetupAllSeatsAndLayouts(t *testing.T) {
 						if err := q.C.endMovement(q.G, q.F, start, 1); err != nil {
 							t.Fatal(err)
 						}
-						if err := q.E.beginProduction(q.G, q.F, q.C, (start+1)%n, 2); err != nil {
+						if n > 4 {
+							q.G.Paired.Second = true
+							if err := q.E.beginSecondary(q.G, q.F, q.C, (start+3)%n, 2); err != nil {
+								t.Fatal(err)
+							}
+						} else if err := q.E.beginProduction(q.G, q.F, q.C, (start+1)%n, 2); err != nil {
 							t.Fatal(err)
 						}
 					})

@@ -36,6 +36,9 @@ func (s *State) validateCatanExplorer() error {
 	if err := x.validate(g); err != nil {
 		return err
 	}
+	if err := s.validateCatanExplorerPaired(); err != nil {
+		return err
+	}
 	if x.Setup != nil {
 		step := x.Setup.current(len(g.Players))
 		if step == nil || s.Kind != "catan" || s.Phase != "catan_explorer_setup" || s.Turn != step.Player || s.Round != 1 || s.Finished || len(s.Winners) > 0 || g.RollID != 0 {
@@ -53,18 +56,22 @@ func (s *State) validateCatanExplorer() error {
 	if x.SkippedRolls < 0 || uint64(x.SkippedRolls) >= g.TurnSerial {
 		return errors.New("离场跳过的生产回合数量无效")
 	}
-	rolled := int(g.TurnSerial) - x.SkippedRolls
+	productionTurns := g.TurnSerial
+	if g.Paired != nil {
+		productionTurns = (g.TurnSerial + 1) / 2
+	}
+	rolled := int(productionTurns) - x.SkippedRolls
 	if t.Phase == "roll" {
 		rolled--
 	}
-	if g.RollID != rolled {
+	if rolled < 0 || g.RollID != rolled {
 		return errors.New("探险家回合与实际生产次数不一致")
 	}
 	allPresent := true
 	for _, p := range g.Players {
 		allPresent = allPresent && !p.Eliminated
 	}
-	if allPresent && (s.Turn != (g.StartPlayer+int((g.TurnSerial-1)%uint64(len(g.Players))))%len(g.Players) || s.Round != 1+int((g.TurnSerial-1)/uint64(len(g.Players)))) {
+	if allPresent && g.Paired == nil && (s.Turn != (g.StartPlayer+int((g.TurnSerial-1)%uint64(len(g.Players))))%len(g.Players) || s.Round != 1+int((g.TurnSerial-1)/uint64(len(g.Players)))) {
 		return errors.New("探险家随机先手后的顺时针轮转不一致")
 	}
 	phase := s.catanExplorerPhase()
@@ -88,7 +95,7 @@ func (s *State) validateCatanExplorer() error {
 		return errors.New("主状态与生产骰子不一致")
 	}
 	if trade := g.Trade; trade != nil {
-		if s.Phase != "catan_turn" || trade.From != s.Turn || trade.ID != g.TradeID || trade.ID <= 0 || !catanBundle(trade.Give) || !catanBundle(trade.Take) || !g.validTradeGold(trade.GoldGive) || !g.validTradeGold(trade.GoldTake) || len(trade.Responses) != len(g.Players) || sum(trade.Give)+trade.GoldGive == 0 || sum(trade.Take)+trade.GoldTake == 0 {
+		if g.Paired != nil && g.Paired.Second || s.Phase != "catan_turn" || trade.From != s.Turn || trade.ID != g.TradeID || trade.ID <= 0 || !catanBundle(trade.Give) || !catanBundle(trade.Take) || !g.validTradeGold(trade.GoldGive) || !g.validTradeGold(trade.GoldTake) || len(trade.Responses) != len(g.Players) || sum(trade.Give)+trade.GoldGive == 0 || sum(trade.Take)+trade.GoldTake == 0 {
 			return errors.New("探险家交易提议无效")
 		}
 		for _, r := range trade.Responses {

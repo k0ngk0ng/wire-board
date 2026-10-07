@@ -82,17 +82,7 @@ func (s *State) eliminateCatanExplorer(player int) error {
 	if alive == 0 {
 		return errors.New("不能移除最后一名活跃玩家")
 	}
-	for {
-		s.Turn = (s.Turn + 1) % len(g.Players)
-		if s.Turn == g.StartPlayer {
-			s.Round++
-		}
-		if !g.Players[s.Turn].Eliminated {
-			break
-		}
-	}
-	g.TurnSerial++
-	if err := x.Economy.beginProduction(g, x.Fleet, x.Cargo, s.Turn, g.TurnSerial); err != nil {
+	if err := s.catanExplorerAdvanceTurn(); err != nil {
 		return err
 	}
 	s.catanExplorerSyncPhase()

@@ -2,6 +2,8 @@ package game
 
 // Paired records the two markers, independently of the player currently acting.
 // Both action phases belong to one production turn (including Helpers locks).
+// Explorer uses a distinct action serial for each portion; its own controller
+// tracks production counts and does not call catanNextPaired.
 type CatanPairedTurn struct {
 	Primary   int  `json:"primary"`
 	Secondary int  `json:"secondary"`
