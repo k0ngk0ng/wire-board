@@ -1,5 +1,11 @@
 const scenarios = [
   {
+    id: "land-ho",
+    name: "探索者与海盗 · 初航",
+    description:
+      "印刷开局，装载移民并航行探索新岛，8 分获胜；不使用双人贸易筹码。",
+  },
+  {
     id: "",
     name: "双人基础版",
     description: "两位玩家与两家中立势力，双次生产、贸易筹码，10 分获胜。",
@@ -44,11 +50,13 @@ export function CatanTwoScenarioPicker({
       <p className="muted small">
         {scenarios.find((s) => s.id === value)?.description}
       </p>
-      <p className="muted small">
-        采用 2025 双人规则。本站补充：贸易筹码
-        {value === "rivers" ? "与金币" : ""}用完继续记账发放。
-        {value === "caravans" && "商队确实无法放满时，只放能放的数量。"}
-      </p>
+      {value !== "land-ho" && (
+        <p className="muted small">
+          采用 2025 双人规则。本站补充：贸易筹码
+          {value === "rivers" ? "与金币" : ""}用完继续记账发放。
+          {value === "caravans" && "商队确实无法放满时，只放能放的数量。"}
+        </p>
+      )}
     </div>
   );
 }

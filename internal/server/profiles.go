@@ -60,6 +60,12 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	}
 	if g := r.Game.Catan; g != nil {
 		record.CatanOptions = g.Options
+		if g.Explorer != nil {
+			board := g.Explorer.Board
+			record.CatanScenario, record.CatanLayout, record.CatanRules = board.Scenario, board.Layout, board.Rules
+			record.CatanExpansions = append(record.CatanExpansions, "explorers_pirates")
+			record.CatanExpansionRules = map[string]string{"explorers_pirates": board.Rules}
+		}
 		if g.Two != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "two_player")
 			record.CatanExpansionRules = map[string]string{"two_player": g.Two.Rules}

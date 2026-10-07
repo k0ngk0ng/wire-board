@@ -18,6 +18,9 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	next := *r
 	next.Capacity, next.CatanTwoRules = 2, game.CatanTwoRules
 	next.CatanTwoScenario = scenario
+	if r.Capacity == 2 && r.CatanScenario == "land-ho" {
+		next.CatanScenario = ""
+	}
 	if err := next.validateCatanTwoSetup(); err != nil {
 		return err
 	}
@@ -26,6 +29,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	}
 	r.Capacity, r.CatanTwoRules = next.Capacity, next.CatanTwoRules
 	r.CatanTwoScenario = next.CatanTwoScenario
+	r.CatanScenario = next.CatanScenario
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot
 	}

@@ -14,9 +14,11 @@ export function catanRuleContext(room: Room) {
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
-    ? sea?.scenario ||
+    ? game?.explorer?.board.scenario ||
+      sea?.scenario ||
       (sea?.newWorld ? "new_world" : sea?.wonders ? "wonders" : "")
-    : room.catanSeafarers?.scenario ||
+    : (room.catanScenario === "land-ho" ? "land-ho" : "") ||
+      room.catanSeafarers?.scenario ||
       (room.catanNewWorldMap ? "new_world" : "");
   if (scenario === "islands" && players > 4) scenario = "six_islands";
   const layout =
@@ -33,7 +35,7 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
-    explorer: !!game?.explorer,
+    explorer: game ? !!game.explorer : room.catanScenario === "land-ho",
     transport: !!game?.transport,
     attack: !!game?.attack,
     caravans,
@@ -70,6 +72,7 @@ export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
   const target = (
     {
+      "land-ho": 8,
       shores: 14,
       islands: 13,
       six_islands: 13,

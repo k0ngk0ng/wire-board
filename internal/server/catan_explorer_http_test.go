@@ -111,8 +111,9 @@ func assertExplorerHTTPPrivacy(t *testing.T, clients []*testClient) {
 func TestCatanExplorerNaturalHTTPMatches(t *testing.T) {
 	for _, n := range []int{2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, ts, clients, id := newExplorerHTTP(t, n, false)
+			s, ts, clients, id := newPublicExplorerHTTP(t, n)
 			restored, moves, steps := false, 0, 0
+			automatic, timedout := false, false
 			for ; steps < 4000 && !s.rooms[id].Game.Finished; steps++ {
 				r := s.rooms[id]
 				g := r.Game
@@ -164,9 +165,28 @@ func TestCatanExplorerNaturalHTTPMatches(t *testing.T) {
 						restored = true
 					}
 				}
-				clients[actor].command(current(clients[actor]), "action", a, 200)
+				if steps == 0 {
+					s.mu.Lock()
+					s.expireSetups(time.UnixMilli(r.TurnDeadline))
+					s.mu.Unlock()
+					if !s.rooms[id].Seats[actor].AutoPlay {
+						t.Fatal("timeout did not enable persistent autoplay")
+					}
+					timedout = true
+					reclaimTimeoutHumans(t, s, clients, id)
+				} else if steps == 19 {
+					setAutoPlay(clients[actor], current(clients[actor]), true, 200)
+					s.mu.Lock()
+					s.rooms[id].BotAt = 0
+					s.runBots(time.Now())
+					s.mu.Unlock()
+					setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+					automatic = true
+				} else {
+					clients[actor].command(current(clients[actor]), "action", a, 200)
+				}
 				r = s.rooms[id]
-				if !r.Game.Finished && r.Game.Catan.TurnSerial == serial && phase != "catan_discard" && r.Game.Phase != "catan_discard" && r.TurnDeadline != deadline {
+				if steps != 0 && steps != 19 && !r.Game.Finished && r.Game.Catan.TurnSerial == serial && phase != "catan_discard" && r.Game.Phase != "catan_discard" && r.TurnDeadline != deadline {
 					t.Fatal("ordinary action refreshed turn deadline", a.Type)
 				}
 				if !r.Game.Finished && r.Game.Catan.TurnSerial != serial && r.TurnDeadline-time.Now().UnixMilli() < 119000 {
@@ -174,9 +194,11 @@ func TestCatanExplorerNaturalHTTPMatches(t *testing.T) {
 				}
 			}
 			r := s.rooms[id]
-			if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.Game.Catan.Players[r.Game.Winners[0]].Score < 8 || !restored || moves == 0 || r.TurnDeadline != 0 {
+			if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.Game.Catan.Players[r.Game.Winners[0]].Score < 8 || !restored || !automatic || !timedout || moves == 0 || r.TurnDeadline != 0 {
 				t.Fatal("incomplete natural game", steps, moves, r.Status)
 			}
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			assertPublicExplorerHistory(t, s, clients, id)
 			t.Logf("%dp natural HTTP match: %d actions, %d movement actions", n, steps, moves)
 		})
 	}
