@@ -8,7 +8,7 @@ import (
 
 func publicCatanSeaScenario(scenario string) bool {
 	switch scenario {
-	case "shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders":
+	case "shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders", "new_world":
 		return true
 	}
 	return false
@@ -28,7 +28,7 @@ func (r *Room) validateCatanScenario() error {
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err
 		}
-		if r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanNewWorldMap != nil {
+		if r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil {
 			return errors.New("所选航海家剧本与该扩展的组合尚未开放")
 		}
 		if r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario {
@@ -37,6 +37,12 @@ func (r *Room) validateCatanScenario() error {
 		normalized, err := game.NormalizeCatanSeafarersSetup(r.Capacity, *r.CatanSeafarers)
 		if err != nil || normalized != *r.CatanSeafarers {
 			return errors.New("航海家地图布局或规则版本无效")
+		}
+		if r.CatanScenario == "new_world" {
+			return game.ValidateCatanNewWorldMap(r.Capacity, r.CatanNewWorldMap)
+		}
+		if r.CatanNewWorldMap != nil {
+			return errors.New("只有新世界可以使用开局前确认的地图")
 		}
 		return nil
 	}
@@ -68,9 +74,17 @@ func (r *Room) setCatanScenario(scenario string) error {
 				return err
 			}
 			next.CatanSeafarers = &setup
+			next.CatanNewWorldMap = nil
+			if scenario == "new_world" {
+				next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(r.Capacity)
+				if err != nil {
+					return err
+				}
+			}
 		}
 	} else if publicCatanSeaScenario(r.CatanScenario) {
 		next.CatanSeafarers = nil
+		next.CatanNewWorldMap = nil
 	}
 	if err := next.validateCatanScenario(); err != nil {
 		return err
@@ -80,6 +94,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	r.CatanScenario = scenario
 	r.CatanSeafarers = next.CatanSeafarers
+	r.CatanNewWorldMap = next.CatanNewWorldMap
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot
 	}

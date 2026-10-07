@@ -27,15 +27,11 @@ func TestCatanNewWorldMapReadinessRestartFreezeAndHistory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// The standard room API cannot opt into an unfinished expansion.
+	// Map commands cannot activate a different scenario by themselves.
 	change(host, "catan_world_map", layout, 400)
 	change(host, "catan_world_map_shuffle", nil, 400)
-	s.mu.Lock()
-	s.rooms[id].CatanNewWorldMap = layout
-	if err = s.save(s.rooms[id]); err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Unlock()
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "new_world", "version": current(host)["version"], "nonce": randomID(12)}, 200)
+	layout = s.rooms[id].CatanNewWorldMap
 	host.command(current(host), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)
 	before, _ := json.Marshal(s.rooms[id])

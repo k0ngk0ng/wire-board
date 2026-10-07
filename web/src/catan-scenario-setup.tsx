@@ -45,6 +45,11 @@ const scenarios = [
     name: "航海家 · 卡坦奇迹",
     description: "建成四级奇迹，或达到 10 分且已建奇迹等级独自领先，即可获胜。",
   },
+  {
+    id: "new_world",
+    name: "航海家 · 新世界",
+    description: "开局前共同确认地图，轮流放置港口，再探索岛屿，12 分获胜。",
+  },
 ];
 
 export const isPublicCatanSea = (scenario?: string) =>
@@ -56,6 +61,7 @@ export const isPublicCatanSea = (scenario?: string) =>
     "tribe",
     "pirate_islands",
     "wonders",
+    "new_world",
   ].includes(scenario || "");
 
 export function CatanScenarioPicker({

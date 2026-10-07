@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
@@ -19,7 +20,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "cloth"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "new_world"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "unknown"},
 		{"kind": "splendor", "capacity": 3, "catanScenario": "fog"},
 	} {
 		body["name"] = "无效航海配置"
@@ -27,7 +28,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	}
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "公开航海配置", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true, AllHelpers: true}}, 201)
 	id := raw["id"].(string)
-	if len(raw["catanSeafarersChoices"].([]any)) != 7 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
+	if len(raw["catanSeafarersChoices"].([]any)) != 8 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
 		t.Fatal("wrong public catalogue or default layout")
 	}
 	guest.command(current(host), "join", nil, 200)
@@ -89,13 +90,16 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 }
 
 func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
-	for _, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders"} {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders", "new_world"} {
+		layouts := []string{"fixed", "variable"}
+		if scenario == "pirate_islands" {
+			layouts = []string{"fixed"}
+		} else if scenario == "new_world" {
+			layouts = []string{"prepared", "edited"}
+		}
 		for _, n := range []int{3, 4} {
 			for _, helpers := range []bool{false, true} {
-				for _, layout := range []string{"fixed", "variable"} {
-					if scenario == "pirate_islands" && layout == "variable" {
-						continue // The official scenario has only a fixed recipe.
-					}
+				for _, layout := range layouts {
 					t.Run(fmt.Sprintf("%s/%d/helpers=%v/%s", scenario, n, helpers, layout), func(t *testing.T) {
 						s, ts := setupServer(t)
 						stopBotTicker(s)
@@ -109,11 +113,31 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 						for p := 1; p < n; p++ {
 							clients[p].command(current(clients[0]), "join", nil, 200)
 						}
-						selectSeafarers(clients[0], &game.CatanSeafarersSetup{Scenario: scenario, Layout: layout}, 200)
+						selectedLayout := layout
+						if layout == "edited" {
+							selectedLayout = "prepared"
+						}
+						selectSeafarers(clients[0], &game.CatanSeafarersSetup{Scenario: scenario, Layout: selectedLayout}, 200)
+						var world *game.CatanNewWorldMap
+						if scenario == "new_world" {
+							world = &game.CatanNewWorldMap{Hexes: append([]game.CatanNewWorldHex{}, s.rooms[id].CatanNewWorldMap.Hexes...)}
+							if layout == "edited" {
+								for i, h := range world.Hexes {
+									if h.Resource < 5 && h.Number != 6 && h.Number != 8 {
+										world.Hexes[i].Resource = game.CatanGold
+										break
+									}
+								}
+								clients[0].post("/api/rooms/"+id, map[string]any{"type": "catan_world_map", "catanNewWorldMap": world, "version": current(clients[0])["version"], "nonce": randomID(12)}, 200)
+							}
+						}
 						for p := 0; p < n; p++ {
 							clients[p].command(current(clients[p]), "ready", nil, 200)
 						}
 						clients[0].command(current(clients[0]), "start", nil, 200)
+						if world != nil && (!reflect.DeepEqual(world, s.rooms[id].Game.Catan.NewWorldMap()) || s.rooms[id].Game.Phase != "catan_world_ports") {
+							t.Fatal("public start ignored the confirmed world or skipped port placement")
+						}
 						clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 						if s.rooms[id].Game.Catan.EventDeck != nil {
 							t.Fatal("public room gained reference events")
@@ -301,5 +325,80 @@ func TestCatanSeafarersPublicSpecialScenarioSwitches(t *testing.T) {
 				t.Fatal("invalid layout changed setup")
 			}
 		}
+	}
+}
+
+func TestCatanSeafarersPublicWorldMapTransitions(t *testing.T) {
+	s, ts := setupServer(t)
+	stopBotTicker(s)
+	host := newClient(t, ts.URL)
+	host.register("新世界公开地图")
+	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "新世界公开地图", "capacity": 4, "catanScenario": "new_world", "catanOptions": game.CatanOptions{Helpers: true}}, 201)
+	id := raw["id"].(string)
+	for range 2 {
+		host.command(current(host), "add_bot", nil, 200)
+	}
+	host.command(current(host), "ready", nil, 200)
+	setScenario := func(scenario string) {
+		host.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": scenario, "version": current(host)["version"], "nonce": randomID(12)}, 200)
+	}
+	before := append([]game.CatanNewWorldHex{}, s.rooms[id].CatanNewWorldMap.Hexes...)
+	setScenario("new_world")
+	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "new_world"}, 200)
+	if !reflect.DeepEqual(before, s.rooms[id].CatanNewWorldMap.Hexes) || !s.rooms[id].Seats[0].Ready {
+		t.Fatal("same scenario re-rolled map or cleared readiness")
+	}
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true, AllHelpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
+	if !reflect.DeepEqual(before, s.rooms[id].CatanNewWorldMap.Hexes) || s.rooms[id].Seats[0].Ready {
+		t.Fatal("helper change lost confirmed map or failed readiness reset")
+	}
+	for _, scenario := range []string{"shores", ""} {
+		setScenario(scenario)
+		if s.rooms[id].CatanNewWorldMap != nil {
+			t.Fatal("leaving new world retained stale map")
+		}
+		setScenario("new_world")
+		if err := game.ValidateCatanNewWorldMap(4, s.rooms[id].CatanNewWorldMap); err != nil {
+			t.Fatal("reentering new world failed to create a valid map", err)
+		}
+	}
+	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "tribe"}, 200)
+	if s.rooms[id].CatanScenario != "tribe" || s.rooms[id].CatanNewWorldMap != nil {
+		t.Fatal("map picker did not clear world")
+	}
+	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "new_world"}, 200)
+	if s.rooms[id].CatanScenario != "new_world" || s.rooms[id].CatanNewWorldMap == nil {
+		t.Fatal("map picker failed to initialize world")
+	}
+	host.command(current(host), "ready", nil, 200)
+	valid, _ := json.Marshal(s.rooms[id])
+	for _, corrupt := range []func(*Room){
+		func(r *Room) { r.CatanNewWorldMap = nil },
+		func(r *Room) { r.CatanNewWorldMap.Hexes = r.CatanNewWorldMap.Hexes[:41] },
+		func(r *Room) {
+			r.CatanNewWorldMap.Hexes[0] = game.CatanNewWorldHex{Resource: game.CatanGold, Number: 6}
+		},
+	} {
+		var r Room
+		if err := json.Unmarshal(valid, &r); err != nil {
+			t.Fatal(err)
+		}
+		corrupt(&r)
+		s.rooms[id] = &r
+		x, _ := json.Marshal(&r)
+		host.command(current(host), "start", nil, 400)
+		y, _ := json.Marshal(s.rooms[id])
+		if string(x) != string(y) {
+			t.Fatal("invalid confirmed map partially changed room")
+		}
+	}
+	var r Room
+	if err := json.Unmarshal(valid, &r); err != nil {
+		t.Fatal(err)
+	}
+	s.rooms[id] = &r
+	host.command(current(host), "start", nil, 200)
+	if len(s.rooms[id].Game.Catan.Players) != 3 || !reflect.DeepEqual(s.rooms[id].Game.Catan.NewWorldMap(), r.CatanNewWorldMap) {
+		t.Fatal("actual three players did not use confirmed four-seat map")
 	}
 }
