@@ -76,6 +76,17 @@ func (l catanExplorerLairs) scores() []int {
 }
 func (l catanExplorerLairs) playerScore(g *Catan, player int) int {
 	score := l.scores()[player]
+	if k := g.CitiesKnights; k != nil {
+		score += k.Players[player].DefenderPoints + k.Players[player].ProgressPoints
+		if k.Merchant != nil && k.Merchant.Owner == player {
+			score++
+		}
+		for track := range 3 {
+			if g.cityMetropolisOwner(track) == player {
+				score += 2
+			}
+		}
+	}
 	if g.Explorer != nil && g.Explorer.Fish != nil {
 		score += g.Explorer.Fish.publicView(len(g.Players)).Scores[player]
 	}

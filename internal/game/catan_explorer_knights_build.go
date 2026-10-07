@@ -55,6 +55,9 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	if err := s.validateExplorerCityProduction(); err != nil {
 		return err
 	}
+	if s.Phase == "catan_progress_end" || s.Phase == "catan_explorer_move" || s.Phase == "catan_explorer_resolve" || s.Phase == "catan_explorer_battle" {
+		return s.catanExplorerCityFlow(player, a)
+	}
 	if s.Phase == "catan_discard" {
 		return s.catanExplorerCityDiscard(player, a)
 	}
@@ -79,6 +82,8 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	ng, nx := next.Catan, next.Catan.Explorer
 	keepTrade := false
 	switch a.Type {
+	case "catan_explorer_begin_move", "catan_explorer_ship", "catan_explorer_unit", "catan_explorer_transfer":
+		return s.catanExplorerCityFlow(player, a)
 	case "catan_explorer_bank":
 		if err := next.catanExplorerCityBank(player, a); err != nil {
 			return err
