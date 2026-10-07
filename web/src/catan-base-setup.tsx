@@ -11,10 +11,9 @@ export function CatanBasePicker({
   disabled: boolean;
   command: (type: string, extra?: Record<string, unknown>) => void;
 }) {
-  const setup = room.catanBaseConfiguration;
+  const setup = room.catanBaseConfiguration ?? { layout: "variable" };
   const layouts = room.catanBaseLayouts;
   if (
-    !setup ||
     room.catanCitiesKnights ||
     !layouts?.length ||
     room.catanSeafarers ||

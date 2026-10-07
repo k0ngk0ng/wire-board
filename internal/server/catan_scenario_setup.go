@@ -132,6 +132,9 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if scenario != "" {
+		next.CatanBaseConfiguration = nil
+	}
 	if scenario != "" && !publicCatanSeaScenario(scenario) {
 		next.CatanFriendlyRobber = nil
 	}
@@ -184,6 +187,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 		return nil
 	}
 	r.CatanScenario = scenario
+	r.CatanBaseConfiguration = next.CatanBaseConfiguration
 	r.CatanHarbors = next.CatanHarbors
 	r.CatanFriendlyRobber = next.CatanFriendlyRobber
 	r.CatanFishing = next.CatanFishing

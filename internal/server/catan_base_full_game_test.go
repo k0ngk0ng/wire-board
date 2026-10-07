@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
-// Only the waiting selection is provisioned. Start, manual moves, autoplay and
-// timeout handling are production paths; no running game state is substituted.
+// Base fixed games use public creation. Variant combinations below retain
+// internal waiting recipes; no running game state is substituted.
 func TestCatanBaseFixedFullHTTPGames(t *testing.T)   { testCatanBaseFullHTTPGames(t, false, false) }
 func TestCatanHarborsBaseFullHTTPGames(t *testing.T) { testCatanBaseFullHTTPGames(t, true, false) }
 func TestCatanFriendlyRobberBaseFullHTTPGames(t *testing.T) {
@@ -44,12 +44,18 @@ func testCatanBaseFullHTTPGames(t *testing.T, harbors, friendly bool) {
 					clients[i] = newClient(t, ts.URL)
 					clients[i].register(fmt.Sprintf("固定布局%d", i))
 				}
-				raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "固定布局整局", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers}}, 201)
+				body := map[string]any{"kind": "catan", "name": "固定布局整局", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers}}
+				if !harbors && !friendly {
+					body["catanBaseConfiguration"] = game.CatanBaseConfiguration{Layout: layout}
+				}
+				raw := clients[0].post("/api/rooms", body, 201)
 				id := raw["id"].(string)
 				for i := 1; i < n; i++ {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
-				provisionCatanBase(t, s, id, layout)
+				if harbors || friendly {
+					provisionCatanBase(t, s, id, layout)
+				}
 				if friendly {
 					provisionCatanFriendlyRobber(t, s, id)
 				}

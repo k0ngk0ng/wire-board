@@ -1961,6 +1961,7 @@ function Create({
   const [railMap, setRailMap] = useState("usa");
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
   const [catanOptions, setCatanOptions] = useState<CatanOptions>({});
+  const [catanBaseLayout, setCatanBaseLayout] = useState("variable");
   const [catanTwoScenario, setCatanTwoScenario] = useState("");
   const [catanScenario, setCatanScenario] = useState("");
   const [catanFishing, setCatanFishing] = useState(false);
@@ -1989,6 +1990,13 @@ function Create({
             splendorOptions: k === "splendor" ? gemOptions : undefined,
             catanOptions:
               k === "catan" ? (capacity === 2 ? {} : catanOptions) : undefined,
+            catanBaseConfiguration:
+              k === "catan" &&
+              capacity > 4 &&
+              catanOptions.fiveSix &&
+              !catanScenario
+                ? { layout: catanBaseLayout }
+                : undefined,
             catanScenario:
               k === "catan"
                 ? capacity === 2
@@ -2247,6 +2255,29 @@ function Create({
                 );
               }}
             />
+          )}
+        {k === "catan" &&
+          capacity > 4 &&
+          catanOptions.fiveSix &&
+          !catanScenario && (
+            <fieldset className="catan-helper-options catan-scenario-options">
+              <legend>基础地图布局</legend>
+              <label>
+                地图布局
+                <select
+                  value={catanBaseLayout}
+                  onChange={(e) => setCatanBaseLayout(e.target.value)}
+                >
+                  <option value="variable">随机布局</option>
+                  <option value="fixed">固定新手布局</option>
+                </select>
+              </label>
+              <p>
+                {catanBaseLayout === "fixed"
+                  ? "使用规则书固定地图，随机分配颜色，预放两座村庄和两条道路并领取起始资源。五人局保留剩余颜色的两座中立村庄，直接开始掷骰。"
+                  : "随机安排地形，开局后依次选择村庄和道路的位置。"}
+              </p>
+            </fieldset>
           )}
         {k === "splendor" && (
           <SplendorOptionPicker value={gemOptions} onChange={setGemOptions} />

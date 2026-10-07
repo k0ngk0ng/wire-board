@@ -5,9 +5,13 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Public creation cannot provision this setting until expansion acceptance.
+// Public base layouts are independent of the scenario-specific map recipes.
+func (r *Room) publicCatanBaseAvailable() bool {
+	return r.Kind == "catan" && r.Status == "waiting" && r.Capacity >= 3 && r.Capacity <= 6 && r.CatanScenario == "" && r.CatanTwoRules == "" && r.CatanTwoScenario == "" && !r.CatanFishing && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil && r.CatanCitiesKnights == nil && !r.friendlyRobberEnabled() && (r.CatanHarbors == nil || !r.CatanHarbors.Enabled)
+}
+
 func (r *Room) setCatanBaseConfiguration(request game.CatanBaseConfiguration) error {
-	if r.Kind != "catan" || r.Status != "waiting" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
+	if r.Kind != "catan" || r.Status != "waiting" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanScenario != "" || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFishing || r.Capacity < 3 {
 		return fmt.Errorf("基础布局只能用于尚未开局的基础卡坦岛房间")
 	}
 	setup, err := game.NormalizeCatanBaseConfiguration(max(3, r.Capacity), request)

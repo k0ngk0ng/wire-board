@@ -30,19 +30,17 @@ func TestCatanBaseConfigurationHTTPPermissionsReadinessRestartAndHistory(t *test
 	host.register("布局房主")
 	guest.register("布局客人")
 	options := game.CatanOptions{FiveSix: true, Helpers: true}
-	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未开放", "capacity": 6, "catanOptions": options, "catanBaseConfiguration": game.CatanBaseConfiguration{Layout: "fixed"}}, 400)
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "基础地图设置", "capacity": 6, "catanOptions": options}, 201)
 	id := raw["id"].(string)
-	if _, exposed := raw["catanBaseLayouts"]; exposed || raw["catanBaseConfiguration"] != nil {
-		t.Fatal("unfinished choices exposed")
+	if len(raw["catanBaseLayouts"].([]any)) != 2 || raw["catanBaseConfiguration"] != nil {
+		t.Fatal("base choices missing")
 	}
 	guest.command(current(host), "join", nil, 200)
 	for i := 0; i < 3; i++ {
 		host.command(current(host), "add_bot", nil, 200)
 	}
 	fixed := game.CatanBaseConfiguration{Layout: "fixed"}
-	selectCatanBase(host, &fixed, 400)
-	provisionCatanBase(t, s, id, "variable")
+	selectCatanBase(host, &game.CatanBaseConfiguration{Layout: "variable"}, 200)
 	if len(current(host)["catanBaseLayouts"].([]any)) != 2 {
 		t.Fatal("missing choices")
 	}
@@ -121,9 +119,8 @@ func TestCatanBaseConfigurationPlayerChangesAndScenarioExclusion(t *testing.T) {
 	stopBotTicker(s)
 	host := newClient(t, ts.URL)
 	host.register("基础人数切换")
-	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "基础人数", "capacity": 6, "catanOptions": game.CatanOptions{FiveSix: true}}, 201)
+	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "基础人数", "capacity": 6, "catanOptions": game.CatanOptions{FiveSix: true}, "catanBaseConfiguration": game.CatanBaseConfiguration{Layout: "fixed"}}, 201)
 	id := raw["id"].(string)
-	provisionCatanBase(t, s, id, "fixed")
 	change := func(six bool) {
 		r := current(host)
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: six, Helpers: true}, "version": r["version"], "nonce": randomID(12)}, 200)
@@ -155,5 +152,49 @@ func TestCatanBaseConfigurationPlayerChangesAndScenarioExclusion(t *testing.T) {
 	s.rooms[id].CatanBaseConfiguration = nil
 	if e := s.rooms[id].setCatanBaseConfiguration(game.CatanBaseConfiguration{Layout: "fixed"}); e == nil {
 		t.Fatal("base overwrote seafarers")
+	}
+}
+
+func TestCatanBasePublicCreationRejectsMixedRecipes(t *testing.T) {
+	s, ts := setupServer(t)
+	stopBotTicker(s)
+	host := newClient(t, ts.URL)
+	host.register("公开基础布局")
+	for _, body := range []map[string]any{
+		{"kind": "splendor", "capacity": 4},
+		{"kind": "catan", "capacity": 2},
+		{"kind": "catan", "capacity": 4},
+		{"kind": "catan", "capacity": 4, "catanScenario": "rivers"},
+		{"kind": "catan", "capacity": 4, "catanScenario": "fishing"},
+		{"kind": "catan", "capacity": 4, "catanScenario": "fog"},
+		{"kind": "catan", "capacity": 4, "catanScenario": "cities-knights"},
+		{"kind": "catan", "capacity": 4, "catanScenario": "land-ho"},
+	} {
+		body["name"] = "拒绝混用"
+		layout := "variable"
+		if body["kind"] == "catan" && body["capacity"] == 4 && body["catanScenario"] == nil {
+			layout = "fixed"
+		}
+		body["catanBaseConfiguration"] = game.CatanBaseConfiguration{Layout: layout}
+		host.post("/api/rooms", body, 400)
+		if len(s.rooms) != 0 {
+			t.Fatal("rejected create persisted")
+		}
+	}
+	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "capacity": 6, "name": "切换剧本", "catanOptions": game.CatanOptions{FiveSix: true}, "catanBaseConfiguration": game.CatanBaseConfiguration{Layout: "fixed"}}, 201)
+	id := raw["id"].(string)
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "rivers", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
+	if s.rooms[id].CatanBaseConfiguration != nil {
+		t.Fatal("old base recipe retained")
+	}
+	before, _ := json.Marshal(s.rooms[id])
+	selectCatanBase(host, &game.CatanBaseConfiguration{Layout: "variable"}, 400)
+	after, _ := json.Marshal(s.rooms[id])
+	if string(before) != string(after) {
+		t.Fatal("invalid base selection changed scenario")
+	}
+	if _, ok := current(host)["catanBaseLayouts"]; ok {
+		t.Fatal("base picker in scenario")
 	}
 }
