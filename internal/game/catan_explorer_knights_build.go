@@ -72,6 +72,13 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 			return err
 		}
 		keepTrade = true
+	case "catan_wall", "catan_improvement":
+		if a.Choice != "" {
+			return errors.New("普通城市建设不能请求进步牌优惠")
+		}
+		if err := next.catanCityBuild(player, a, 0); err != nil {
+			return err
+		}
 	case "catan_city", "catan_explorer_harbor":
 		kind := "city"
 		if a.Type == "catan_explorer_harbor" {
@@ -85,8 +92,8 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 		}
 		next.catanLog(player, "将村庄 #%d 升级为%s", a.Vertex+1, map[string]string{"city": "城市", "harbor": "港口"}[kind])
 	case "catan_progress":
-		if a.Card != 5 {
-			return errors.New("本组合主动进步牌当前仅接入医学")
+		if !slices.Contains([]int{1, 2, 5}, a.Card) {
+			return errors.New("本组合主动进步牌当前仅接入起重机、工程学和医学")
 		}
 		if err := next.catanPlayProgress(player, a); err != nil {
 			return err
