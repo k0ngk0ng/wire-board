@@ -1,0 +1,56 @@
+{
+  "source": "https://x.boardgamearena.net/data/themereleases/current/games/splendor/250604-1803/img/cities_bg.png",
+  "sha256": "cb53db4ef984b9dbe16adcd838c16909dac6163064f14f50d710ca16cc992480",
+  "bytes": 81534,
+  "output": "splendor/expansions/cities-art-v1.webp",
+  "format": "WEBP",
+  "size": [
+    360,
+    1310
+  ],
+  "transformation": "none; original bytes, source suffix corrected",
+  "display_crop": {
+    "x": 5,
+    "width": 350,
+    "height": 172
+  },
+  "cities": [
+    {
+      "tile": 1,
+      "name": "Madrid",
+      "top": 570
+    },
+    {
+      "tile": 2,
+      "name": "Amboise",
+      "top": 8
+    },
+    {
+      "tile": 3,
+      "name": "Timbuktu",
+      "top": 194
+    },
+    {
+      "tile": 4,
+      "name": "Delhi",
+      "top": 1130
+    },
+    {
+      "tile": 5,
+      "name": "Samarkand",
+      "top": 756
+    },
+    {
+      "tile": 6,
+      "name": "Seoul",
+      "top": 944
+    },
+    {
+      "tile": 7,
+      "name": "Krakow",
+      "top": 381
+    }
+  ],
+  "overlays": "Conditions are rendered separately from game state; absent from atlas",
+  "evidence_limit": "Illustrations only, not physical face pairing or condition evidence"
+}

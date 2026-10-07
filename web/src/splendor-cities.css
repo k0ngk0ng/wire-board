@@ -53,7 +53,7 @@
   display: block;
   width: calc(100% + var(--city-inset) * 2);
   height: auto;
-  aspect-ratio: 320 / 95;
+  aspect-ratio: 350 / 172;
   margin: calc(-1 * var(--city-inset)) calc(-1 * var(--city-inset)) 8px;
   border-radius: 7px 7px 0 0;
 }
