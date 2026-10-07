@@ -3,6 +3,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "transport",
+    name: "商人与蛮族 · 运输",
+    description:
+      "升级马车、运送货物赚金币与分数；二至四人，13分获胜。双人加入中立势力与贸易筹码。",
+  },
+  {
     id: "barbarian-attack",
     name: "蛮族进攻",
     description:
@@ -134,6 +140,9 @@ export function CatanSeaKnightsPicker({
 export const isPublicCatanExplorer = (scenario?: string) =>
   ["land-ho", "spices-for-catan"].includes(scenario || "");
 
+export const isPublicCatanFlexible = (scenario?: string) =>
+  isPublicCatanExplorer(scenario) || scenario === "transport";
+
 export const isPublicCatanSea = (scenario?: string) =>
   [
     "shores",
@@ -179,6 +188,7 @@ export function CatanScenarioPicker({
                 (helpers &&
                   [
                     "barbarian-attack",
+                    "transport",
                     "fishing",
                     "rivers",
                     "caravans",
@@ -203,7 +213,7 @@ export function CatanScenarioPicker({
           ? catanScenarioVictory(value, catanVictoryTarget(value, true))
           : scenarios.find((s) => s.id === value)?.description}
       </p>
-      {value === "rivers" && (
+      {["rivers", "transport"].includes(value) && (
         <p className="muted small">本站补充：金币用完继续记账发放。</p>
       )}
     </div>

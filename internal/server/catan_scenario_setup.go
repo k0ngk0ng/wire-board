@@ -18,12 +18,22 @@ func publicCatanExplorerScenario(scenario string) bool {
 	return scenario == "land-ho" || scenario == "spices-for-catan"
 }
 
+func publicCatanFlexibleScenario(scenario string) bool {
+	return publicCatanExplorerScenario(scenario) || scenario == "transport"
+}
+
 // Public recipes include two-to-six-player Explorer missions.
 // The other scenarios/combinations retain
 // their separate acceptance gates; public sea rooms carry both the selected
 // scenario and its normalized map configuration.
 func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
+		return nil
+	}
+	if r.CatanScenario == "transport" {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
+			return errors.New("运输支持二至四人；双人按实际人数启用中立势力与贸易筹码，不混用其他扩展配置")
+		}
 		return nil
 	}
 	if r.CatanScenario == "barbarian-attack" {
@@ -96,7 +106,7 @@ func (r *Room) validateCatanScenario() error {
 }
 
 func (r *Room) setCatanScenario(scenario string) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanExplorerScenario(scenario)) {
+	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
 	if r.Capacity > 4 && (publicCatanExplorerScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && scenario != "spices-for-catan" && scenario != "barbarian-attack" {
@@ -104,7 +114,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	next := *r
 	next.CatanScenario = scenario
-	if publicCatanExplorerScenario(scenario) {
+	if publicCatanFlexibleScenario(scenario) {
 		next.CatanTwoRules, next.CatanTwoScenario = "", ""
 	} else if r.Capacity == 2 {
 		return errors.New("两人牌桌请通过双人剧本选择器切回双人规则")

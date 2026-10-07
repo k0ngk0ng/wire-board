@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
-	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -28,25 +27,11 @@ func transportHTTPFixture(t *testing.T, n int) *game.State {
 func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 	for _, n := range []int{2, 3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			var s *Server
-			var ts *httptest.Server
-			var clients []*testClient
-			var id string
-			if n == 2 {
-				s, ts, clients, id = newTwoFullTable(t)
-			} else {
-				s, ts, clients, id, _, _ = newFishingActionTable(t, n, "catan_turn", "resource")
-			}
-			state := transportHTTPFixture(t, n)
-			s.mu.Lock()
+			s, ts, clients, id := newPublicScenarioTable(t, n, "transport")
 			r := s.rooms[id]
-			r.Game = state
-			r.TurnDeadline = time.Now().Add(120 * time.Second).UnixMilli()
-			r.CatanTimeLeft = 0
-			if err := s.save(r); err != nil {
-				t.Fatal(err)
+			if r.Game.Catan.Transport == nil || (r.Game.Catan.Two != nil) != (n == 2) {
+				t.Fatal("wrong public transport opening")
 			}
-			s.mu.Unlock()
 			restored := false
 			twoRestored := map[string]bool{}
 			steps := 0
@@ -54,6 +39,7 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 			for ; steps < 4000 && !s.rooms[id].Game.Finished; steps++ {
 				r = s.rooms[id]
 				g := r.Game
+				assertTransportInventory(t, g)
 				actor := g.CatanPendingActor()
 				if actor < 0 {
 					actor = g.Turn
@@ -133,6 +119,8 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 			if n == 2 && (!twoRestored["catan_two_build"] || !twoRestored["catan_two_trade"]) {
 				t.Fatal("natural game did not cover both two-player responses", twoRestored)
 			}
+			assertTransportInventory(t, r.Game)
+			assertTransportHistory(t, s, clients, id)
 			t.Logf("%dp full HTTP match: %d actions, %d movement actions", n, steps, moves)
 		})
 	}

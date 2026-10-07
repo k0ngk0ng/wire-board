@@ -17,6 +17,9 @@ export function catanRuleContext(room: Room) {
   const attack = game
     ? !!game.attack
     : room.catanScenario === "barbarian-attack";
+  const transport = game
+    ? !!game.transport
+    : room.catanScenario === "transport";
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
@@ -49,13 +52,15 @@ export function catanRuleContext(room: Room) {
   return {
     explorer: game ? !!game.explorer : explorerDraft,
     fishing: game ? !!game.fishing : room.catanScenario === "fishing",
-    transport: !!game?.transport,
+    transport,
     attack,
     caravans,
     rivers: game
       ? !!game.rivers
       : (room.catanTwoScenario || room.catanScenario) === "rivers",
-    two: game ? !!game.two : !!room.catanTwoRules,
+    two: game
+      ? !!game.two
+      : !!room.catanTwoRules || (transport && players === 2),
     citiesKnights,
     harbors,
     friendlyRobber: game
@@ -76,9 +81,11 @@ export function catanRuleContext(room: Room) {
     allHelpers: !!options.allHelpers,
     target: game
       ? catanSavedVictoryTarget(game)
-      : caravans || attack
-        ? 12
-        : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
+      : transport
+        ? 13
+        : caravans || attack
+          ? 12
+          : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
   };
 }
 
