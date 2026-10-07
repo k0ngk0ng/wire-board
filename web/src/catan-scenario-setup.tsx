@@ -36,6 +36,12 @@ const scenarios = [
     description: "航行领取部落的胜利点、发展卡与港口，13 分获胜。",
   },
   {
+    id: "cloth",
+    name: "航海家 · 卡坦布匹",
+    description:
+      "连通村落收集布匹，每两枚得 1 分；14 分获胜，或回合末五个村落耗尽时比较分数与布匹。",
+  },
+  {
     id: "pirate_islands",
     name: "航海家 · 海盗群岛",
     description: "组建战舰，夺回自己的要塞并达到 10 分获胜；使用固定地图。",
@@ -59,6 +65,7 @@ export const isPublicCatanSea = (scenario?: string) =>
     "fog",
     "desert",
     "tribe",
+    "cloth",
     "pirate_islands",
     "wonders",
     "new_world",

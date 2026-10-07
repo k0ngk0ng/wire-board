@@ -19,7 +19,6 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
-		{"kind": "catan", "capacity": 3, "catanScenario": "cloth"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "unknown"},
 		{"kind": "splendor", "capacity": 3, "catanScenario": "fog"},
 	} {
@@ -28,7 +27,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	}
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "公开航海配置", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true, AllHelpers: true}}, 201)
 	id := raw["id"].(string)
-	if len(raw["catanSeafarersChoices"].([]any)) != 8 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
+	if len(raw["catanSeafarersChoices"].([]any)) != 9 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
 		t.Fatal("wrong public catalogue or default layout")
 	}
 	guest.command(current(host), "join", nil, 200)
@@ -38,7 +37,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	}
 	before, _ := json.Marshal(s.rooms[id])
 	selectSeafarers(guest, &game.CatanSeafarersSetup{Scenario: "fog"}, 400)
-	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "cloth"}, 400)
+	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "unknown"}, 400)
 	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "shores", Rules: "unknown"}, 400)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
@@ -90,7 +89,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 }
 
 func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
-	for _, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders", "new_world"} {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world"} {
 		layouts := []string{"fixed", "variable"}
 		if scenario == "pirate_islands" {
 			layouts = []string{"fixed"}
@@ -203,9 +202,12 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 							if s.rooms[id].Version <= version {
 								t.Fatal("public match stalled", step, state.Phase)
 							}
+							if scenario == "cloth" {
+								assertPublicClothSupply(t, s.rooms[id].Game.Catan)
+							}
 						}
 						r := s.rooms[id]
-						if r.Status != "finished" || !r.Game.Finished || len(r.Game.Winners) != 1 || automatic == 0 || timeouts == 0 {
+						if r.Status != "finished" || !r.Game.Finished || len(r.Game.Winners) == 0 || (scenario != "cloth" && len(r.Game.Winners) != 1) || automatic == 0 || timeouts == 0 {
 							t.Fatal("natural match failed to finish")
 						}
 						winner := r.Game.Winners[0]
@@ -275,6 +277,37 @@ func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
 	t.Helper()
 	g := s.Catan
 	sea := g.Seafarers
+	if sea.Scenario == "cloth" {
+		if g.Players[s.Turn].Score >= sea.VictoryPoints {
+			if len(s.Winners) != 1 || winner != s.Turn {
+				t.Fatal("point victory should belong to the active player")
+			}
+			return
+		}
+		c := sea.Cloth
+		empty, bestScore, bestCloth := 0, -1, -1
+		expected := []int{}
+		for _, v := range c.Villages {
+			if v.Stock == 0 {
+				empty++
+			}
+		}
+		for p, seat := range g.Players {
+			if seat.Eliminated {
+				continue
+			}
+			if seat.Score > bestScore || (seat.Score == bestScore && c.Held[p] > bestCloth) {
+				bestScore, bestCloth = seat.Score, c.Held[p]
+				expected = []int{p}
+			} else if seat.Score == bestScore && c.Held[p] == bestCloth {
+				expected = append(expected, p)
+			}
+		}
+		if empty < 5 || c.EmptyLimit != 5 || !reflect.DeepEqual(expected, s.Winners) {
+			t.Fatal("invalid cloth exhaustion victory", empty, expected, s.Winners)
+		}
+		return
+	}
 	if sea.Scenario == "wonders" {
 		level, otherMax := -1, 0
 		for _, card := range sea.Wonders.Cards {
@@ -299,7 +332,7 @@ func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
 
 func TestCatanSeafarersPublicSpecialScenarioSwitches(t *testing.T) {
 	r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanOptions: game.CatanOptions{Helpers: true}, Seats: []Seat{{Ready: true}, {Bot: true, Ready: true}}}
-	for _, scenario := range []string{"tribe", "wonders", "pirate_islands"} {
+	for _, scenario := range []string{"tribe", "cloth", "wonders", "pirate_islands"} {
 		if err := r.setCatanScenario(scenario); err != nil {
 			t.Fatal(err)
 		}
@@ -400,5 +433,29 @@ func TestCatanSeafarersPublicWorldMapTransitions(t *testing.T) {
 	host.command(current(host), "start", nil, 200)
 	if len(s.rooms[id].Game.Catan.Players) != 3 || !reflect.DeepEqual(s.rooms[id].Game.Catan.NewWorldMap(), r.CatanNewWorldMap) {
 		t.Fatal("actual three players did not use confirmed four-seat map")
+	}
+}
+
+func assertPublicClothSupply(t *testing.T, g *game.Catan) {
+	t.Helper()
+	c := g.Seafarers.Cloth
+	total := c.Stock
+	if c.Stock < 0 || len(c.Villages) != 8 || len(c.Held) != len(g.Players) {
+		t.Fatal("bad public cloth supply")
+	}
+	for _, count := range c.Held {
+		if count < 0 {
+			t.Fatal("negative cloth hand")
+		}
+		total += count
+	}
+	for _, v := range c.Villages {
+		if v.Stock < 0 || v.Stock > 5 || len(v.Traders) > 3 {
+			t.Fatal("village cloth stock or degree exceeded")
+		}
+		total += v.Stock
+	}
+	if total != 50 {
+		t.Fatal("small-board cloth not conserved", total)
 	}
 }
