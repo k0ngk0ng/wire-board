@@ -2,7 +2,7 @@ package game
 
 // 2025 base components plus the 5–6 extension, p2. Inventory is selected
 // from the original player count, including players who later leave.
-// Public room recipes remain closed until full acceptance.
+// Each scenario uses these counts for both private and public room recipes.
 type catanExplorerInventory struct {
 	resources, gold, fish, spice, lairs int
 }

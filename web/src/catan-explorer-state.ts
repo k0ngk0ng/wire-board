@@ -121,6 +121,7 @@ export type ExplorerView = {
   };
   choices: ExplorerAction[];
   board: {
+    layout?: string;
     scenario: string;
     target: number;
     unexplored: number[];

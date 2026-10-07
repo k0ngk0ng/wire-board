@@ -11,6 +11,11 @@ import (
 
 func newPublicExplorerHTTP(t *testing.T, n int) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
+	return newPublicExplorerScenarioHTTP(t, n, "land-ho")
+}
+
+func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	clients := make([]*testClient, n+1)
@@ -18,7 +23,7 @@ func newPublicExplorerHTTP(t *testing.T, n int) (*Server, *httptest.Server, []*t
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("初航公开玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "初航公开完整局", "kind": "catan", "capacity": n, "catanScenario": "land-ho"}, 201)
+	raw := clients[0].post("/api/rooms", map[string]any{"name": "初航公开完整局", "kind": "catan", "capacity": n, "catanScenario": scenario}, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -28,7 +33,7 @@ func newPublicExplorerHTTP(t *testing.T, n int) (*Server, *httptest.Server, []*t
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	r := s.rooms[id]
-	if r.CatanTwoRules != "" || r.Game.Catan.Two != nil || r.Game.Catan.Explorer == nil || r.Game.Catan.Explorer.Board.Scenario != "land-ho" || r.Game.Catan.Explorer.Board.Players != n || r.Game.Catan.EventDeck != nil {
+	if r.CatanTwoRules != "" || r.Game.Catan.Two != nil || r.Game.Catan.Explorer == nil || r.Game.Catan.Explorer.Board.Scenario != scenario || r.Game.Catan.Explorer.Board.Players != n || r.Game.Catan.EventDeck != nil {
 		t.Fatal("wrong public opening")
 	}
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
@@ -55,7 +60,7 @@ func assertPublicExplorerHistory(t *testing.T, s *Server, clients []*testClient,
 		t.Fatal("duplicate history")
 	}
 	record := history[0].(map[string]any)
-	if record["catanScenario"] != "land-ho" || record["catanLayout"] != "fixed" || record["catanExpansionRules"].(map[string]any)["explorers_pirates"] != r.Game.Catan.Explorer.Board.Rules {
+	if record["catanScenario"] != r.Game.Catan.Explorer.Board.Scenario || record["catanLayout"] != r.Game.Catan.Explorer.Board.Layout || record["catanExpansionRules"].(map[string]any)["explorers_pirates"] != r.Game.Catan.Explorer.Board.Rules {
 		t.Fatal("wrong scenario history", record)
 	}
 	stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
