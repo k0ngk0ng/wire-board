@@ -133,5 +133,5 @@ func (s *State) validateExplorerCityProduction() error {
 	} else if !s.Finished && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
 		return errors.New("组合生产存在未完成或错误接续")
 	}
-	return nil
+	return s.validateExplorerCityTrade()
 }

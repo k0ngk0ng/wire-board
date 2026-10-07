@@ -56,15 +56,22 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 		return err
 	}
 	g, x := s.Catan, s.Catan.Explorer
-	if s.Finished || s.Phase != "catan_turn" || player != s.Turn || a.Prompt < 1 || uint64(a.Prompt) != g.TurnSerial || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || a.Skill != "" {
+	respond := a.Type == "catan_trade_accept" || a.Type == "catan_trade_reject"
+	if s.Finished || s.Phase != "catan_turn" || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || player != s.Turn && !respond || a.Prompt < 1 || uint64(a.Prompt) != g.TurnSerial || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || a.Skill != "" {
 		return errors.New("不是当前组合行动玩家、阶段或序号")
 	}
-	if err := x.Economy.actionAllowed(g, x.Fleet, x.Cargo, player, g.TurnSerial); err != nil {
+	if err := x.Economy.actionAllowed(g, x.Fleet, x.Cargo, s.Turn, g.TurnSerial); err != nil {
 		return err
 	}
 	next := clone(*s)
 	ng, nx := next.Catan, next.Catan.Explorer
+	keepTrade := false
 	switch a.Type {
+	case "catan_trade_offer", "catan_trade_accept", "catan_trade_reject", "catan_trade_complete", "catan_trade_cancel":
+		if err := next.catanExplorerCityPlayerTrade(player, a); err != nil {
+			return err
+		}
+		keepTrade = true
 	case "catan_city", "catan_explorer_harbor":
 		kind := "city"
 		if a.Type == "catan_explorer_harbor" {
@@ -93,7 +100,9 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	}
 	next.catanScores()
 	next.catanVictory()
-	ng.Trade = nil
+	if !keepTrade {
+		ng.Trade = nil
+	}
 	if err := next.validateExplorerCityProduction(); err != nil {
 		return err
 	}
