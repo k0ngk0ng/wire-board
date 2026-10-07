@@ -600,6 +600,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanHarbors       *game.CatanHarborsSetup       `json:"catanHarbors"`
 		CatanFishing       bool                          `json:"catanFishing"`
 		CatanCitiesKnights *game.CatanCitiesKnightsSetup `json:"catanCitiesKnights"`
 		CatanOptions       game.CatanOptions             `json:"catanOptions"`
@@ -720,6 +721,20 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanFishing {
 		if err := room.setCatanFishing(true); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
+	if req.CatanHarbors != nil {
+		if !room.publicCatanHarborsAvailable() {
+			fail(w, 400, "港口霸主公开组合支持三四人的基础、城市骑士与航海家")
+			return
+		}
+		if err := room.setCatanHarbors(*req.CatanHarbors); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+		if err := room.validateCatanScenario(); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -898,8 +913,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanFriendlyRobber(*req.CatanFriendlyRobber)
 	case "catan_harbors":
-		if next.Host != u.ID || next.CatanHarbors == nil || req.CatanHarbors == nil {
-			err = errors.New("只有房主能在已启用港口霸主设置的房间调整变体")
+		if next.Host != u.ID || req.CatanHarbors == nil || ((next.CatanHarbors == nil || req.CatanHarbors.Enabled) && !next.publicCatanHarborsAvailable()) {
+			err = errors.New("只有房主能在支持的卡坦等待房间调整港口霸主")
 			break
 		}
 		err = next.setCatanHarbors(*req.CatanHarbors)
@@ -978,6 +993,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && (options.Helpers || options.AllHelpers) {
 			err = errors.New("港口霸主与助手的组合尚未核验")
+		}
+		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix {
+			err = errors.New("港口霸主公开组合当前支持三四人，请先关闭该变体")
 		}
 		if err == nil && next.CatanCitiesKnights != nil {
 			if options.Helpers || options.AllHelpers {

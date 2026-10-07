@@ -27,7 +27,7 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	host, guest := newClient(t, ts.URL), newClient(t, ts.URL)
 	host.register("港口房主")
 	guest.register("港口客人")
-	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未开放", "capacity": 4, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 400)
+	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "不支持的双人", "capacity": 2, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 400)
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "港口设置", "capacity": 4}, 201)
 	id := raw["id"].(string)
 	if raw["catanHarbors"] != nil {
@@ -35,7 +35,7 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	}
 	guest.command(current(host), "join", nil, 200)
 	host.command(current(host), "add_bot", nil, 200)
-	selectCatanHarbors(host, true, 400)
+	selectCatanHarbors(host, false, 200)
 	host.command(current(host), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)
 	provisionCatanHarbors(t, s, id)
@@ -73,9 +73,14 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
 	selectCatanHarbors(host, true, 400)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
+	selectCatanHarbors(host, true, 400)
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
 	selectCatanHarbors(host, true, 200)
-	for range 2 {
-		host.command(current(host), "add_bot", nil, 200)
+	before, _ = json.Marshal(s.rooms[id])
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(host)["version"], "nonce": randomID(12)}, 400)
+	after, _ = json.Marshal(s.rooms[id])
+	if string(before) != string(after) {
+		t.Fatal("invalid extended transition changed room")
 	}
 	host.command(current(host), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)
@@ -97,7 +102,7 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	host.base, guest.base = ts2.URL, ts2.URL
 	host.command(current(host), "start", nil, 200)
 	r := next.rooms[id]
-	if r.Game.Catan.Harbors == nil || len(r.Game.Catan.Players) != 5 || r.Game.View(0)["catan"].(map[string]any)["victoryTarget"] != 11 {
+	if r.Game.Catan.Harbors == nil || len(r.Game.Catan.Players) != 3 || r.Game.View(0)["catan"].(map[string]any)["victoryTarget"] != 11 {
 		t.Fatal("formal start missing variant")
 	}
 	selectCatanHarbors(host, false, 400)

@@ -2,6 +2,10 @@ import { Anchor, Award } from "lucide-react";
 import type { CatanState, Room } from "./types";
 import { catanRuleContext } from "./catan-rule-context";
 import "./catan-harbors.css";
+import { isPublicCatanSea } from "./catan-scenario-setup";
+
+export const supportsPublicCatanHarbors = (scenario?: string) =>
+  !scenario || scenario === "cities-knights" || isPublicCatanSea(scenario);
 
 export function CatanHarborsPicker({
   room,
@@ -13,7 +17,40 @@ export function CatanHarborsPicker({
   command: (type: string, extra?: Record<string, unknown>) => void;
 }) {
   const setup = room.catanHarbors;
-  if (!setup) return null;
+  const available =
+    room.capacity >= 3 &&
+    room.capacity <= 4 &&
+    !room.catanFishing &&
+    !room.catanTwoRules &&
+    !room.catanOptions?.fiveSix &&
+    supportsPublicCatanHarbors(room.catanScenario);
+  if (room.catanFishing || (!setup && !available)) return null;
+  return (
+    <CatanHarborsChoice
+      value={!!setup?.enabled}
+      disabled={disabled || (!available && !setup?.enabled)}
+      helpers={!!room.catanOptions?.helpers}
+      target={catanRuleContext(room).target}
+      onChange={(enabled) =>
+        command("catan_harbors", { catanHarbors: { enabled } })
+      }
+    />
+  );
+}
+
+export function CatanHarborsChoice({
+  value,
+  onChange,
+  disabled = false,
+  helpers = false,
+  target,
+}: {
+  value: boolean;
+  onChange: (enabled: boolean) => void;
+  disabled?: boolean;
+  helpers?: boolean;
+  target: number;
+}) {
   return (
     <fieldset
       className="catan-helper-options catan-harbors-options"
@@ -23,24 +60,18 @@ export function CatanHarborsPicker({
       <label>
         <input
           type="checkbox"
-          checked={setup.enabled}
-          disabled={disabled || !!room.catanOptions?.helpers}
-          onChange={(e) =>
-            command("catan_harbors", {
-              catanHarbors: { enabled: e.target.checked },
-            })
-          }
+          checked={value}
+          disabled={disabled || helpers}
+          onChange={(e) => onChange(e.target.checked)}
         />{" "}
         启用港口霸主
       </label>
       <p>
         港口村庄计1点、城市计2点。率先达到3点获得2分奖励；只有超过持有者，才能夺取奖励。
       </p>
-      {setup.enabled && (
-        <strong>本局分数门槛：{catanRuleContext(room).target}分</strong>
-      )}
+      {value && <strong>本局分数门槛：{target}分</strong>}
       <small>
-        {room.catanOptions?.helpers
+        {helpers
           ? "请先关闭 Helpers，再启用港口霸主。"
           : "获胜门槛增加1分，剧本的其他结束条件保留。更改后需要重新准备。"}
       </small>
