@@ -54,9 +54,6 @@ func (s *State) validateCatanAttack() error {
 	if n < 3 || n > 6 || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
 		return errors.New("蛮族进攻人数或尚未接入的组合无效")
 	}
-	if err := s.validateCatanAttackEvent(); err != nil {
-		return err
-	}
 	if err := a.validate(g); err != nil {
 		return err
 	}
@@ -100,6 +97,9 @@ func (s *State) validateCatanAttack() error {
 		if count != supply {
 			return errors.New("资源库存不守恒")
 		}
+	}
+	if err := s.validateCatanAttackEvent(); err != nil {
+		return err
 	}
 	if q := a.Landing; q != nil {
 		if q.ID != a.Sequence || q.Player < 0 || q.Player >= n || len(q.Rolls) > 3 {
