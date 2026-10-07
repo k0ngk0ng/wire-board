@@ -105,6 +105,9 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 			s.Phase = "catan_" + kind
 		}
 	case 21:
+		if g.Explorer != nil {
+			return s.catanExplorerCityTaxation(player)
+		}
 		if k.Invasions == 0 || !g.robberAllowed(a.Tile) {
 			return errors.New("首次蛮族进攻后才能使用征税，并须将强盗移至另一块陆地")
 		}

@@ -17,10 +17,11 @@ type catanExplorerPirate struct {
 	LastChase     *catanExplorerChase         `json:"lastChase,omitempty"`
 }
 type catanExplorerPiratePending struct {
+	Source   string `json:"source,omitempty"` // taxation preserves an already-open city action.
 	Player   int    `json:"player"`
 	Sequence uint64 `json:"sequence"`
 	Stage    string `json:"stage"`  // place, steal
-	Resume   string `json:"resume"` // action after seven, movement after successful chase
+	Resume   string `json:"resume"` // action after seven, movement after chase, city_action after Taxation
 }
 type catanExplorerChase struct {
 	Player   int    `json:"player"`
@@ -114,11 +115,18 @@ func (p catanExplorerPirate) validate(g *Catan, b *catanExplorerBoard, f *catanE
 		return errors.New("缺少驱赶骰子记录")
 	}
 	if q := p.Pending; q != nil {
-		if e.Turn == nil || q.Player != e.Turn.Player || q.Sequence != e.Turn.Sequence || q.Stage != "place" && q.Stage != "steal" || q.Resume != "action" && q.Resume != "movement" {
+		if e.Turn == nil || q.Player != e.Turn.Player || q.Sequence != e.Turn.Sequence || q.Stage != "place" && q.Stage != "steal" || q.Resume != "action" && q.Resume != "movement" && q.Resume != "city_action" {
 			return errors.New("海盗回应阶段或序号无效")
 		}
 		if q.Resume == "action" && e.Turn.Phase != "pirate" || q.Resume == "movement" && (e.Turn.Phase != "ready" || c.Turn == nil || c.Turn.Phase != "movement" || p.LastChase == nil || !p.LastChase.Success || p.LastChase.Sequence != q.Sequence || p.LastChase.Player != q.Player) {
 			return errors.New("海盗回应接续阶段无效")
+		}
+		if q.Resume == "city_action" {
+			if q.Source != "taxation" || !b.CitiesKnights || g.CitiesKnights == nil || g.CitiesKnights.Invasions < 1 || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || e.Turn.Phase != "ready" || c.Turn == nil || c.Turn.Phase != "action" {
+				return errors.New("征税海盗回应缺少有效城市行动来源")
+			}
+		} else if q.Source != "" {
+			return errors.New("普通海盗回应不能带有征税来源")
 		}
 		if q.Stage == "place" && q.Resume == "movement" && (p.Owner < 0 || p.Owner == q.Player) {
 			return errors.New("驱赶成功后的待替换海盗所有者无效")
@@ -176,6 +184,14 @@ func (p catanExplorerPirate) battleReady(g *Catan, f *catanExplorerSailing, play
 func (p *catanExplorerPirate) applyUnchecked(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy, player int, sequence uint64, kind string, target int, declineGold bool, randN func(int) int) (catanExplorerTheft, error) {
 	result := catanExplorerTheft{Target: -1, Resource: -1}
 	switch kind {
+	case "taxation":
+		if p.Pending != nil || !b.CitiesKnights || g.CitiesKnights == nil || g.CitiesKnights.Invasions < 1 || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil {
+			return result, errors.New("首次蛮族入侵后才能在城市行动中使用征税")
+		}
+		if err := e.actionAllowed(g, f, c, player, sequence); err != nil {
+			return result, err
+		}
+		p.Pending = &catanExplorerPiratePending{Player: player, Sequence: sequence, Stage: "place", Resume: "city_action", Source: "taxation"}
 	case "seven":
 		if p.Pending != nil || e.Turn.Phase != "pirate" {
 			return result, errors.New("尚未完成七点弃牌或已开始海盗回应")
