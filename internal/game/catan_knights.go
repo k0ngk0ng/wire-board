@@ -53,11 +53,11 @@ func (g *Catan) knightRecruitable(player, vertex int) bool {
 	return g.knightCount(player, 1) < 2 && g.knightPlaceable(player, vertex)
 }
 func (g *Catan) knightPlaceable(player, vertex int) bool {
-	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil || g.clothVillageAt(vertex) {
+	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil || g.clothVillageAt(vertex) || !g.explorerKnightSite(vertex) {
 		return false
 	}
 	for _, edge := range g.touching(vertex) {
-		if g.Edges[edge].Owner == player {
+		if g.Edges[edge].Owner == player && (g.Explorer == nil || !g.Edges[edge].Ship) {
 			return true
 		}
 	}
@@ -88,7 +88,7 @@ func (g *Catan) knightReachable(player, from int) []bool {
 		}
 		for _, id := range g.touching(v) {
 			e := g.Edges[id]
-			if e.Owner != player {
+			if e.Owner != player || g.Explorer != nil && e.Ship {
 				continue
 			}
 			next := e.A
@@ -106,7 +106,7 @@ func (g *Catan) knightReachable(player, from int) []bool {
 func (g *Catan) knightDestinations(n CatanKnight, retreat bool) []int {
 	out := []int{}
 	for v, reachable := range g.knightReachable(n.Owner, n.Vertex) {
-		if !reachable || v == n.Vertex || g.Vertices[v].Level > 0 || g.clothVillageAt(v) {
+		if !reachable || v == n.Vertex || g.Vertices[v].Level > 0 || g.clothVillageAt(v) || !g.explorerKnightSite(v) {
 			continue
 		}
 		other := g.knightAt(v)

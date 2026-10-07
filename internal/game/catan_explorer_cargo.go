@@ -582,7 +582,7 @@ func (c *catanExplorerCargo) settle(g *Catan, fleet *catanExplorerSailing, playe
 		return err
 	}
 	loc := catanExplorerCargoLocation{"ship", ship}
-	if !c.holder(g, fleet, player, loc) || !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 {
+	if !c.holder(g, fleet, player, loc) || !c.landVertex(g, player, vertex) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil {
 		return errors.New("移民只能在己方船端相邻的已探索陆地定居")
 	}
 	e := g.Edges[fleet.Positions[ship]]
