@@ -27,7 +27,7 @@ func TestSplendorOptionsPermissionsFreezeAndArchive(t *testing.T) {
 	options := game.SplendorOptions{Orient: true, TradingPosts: true, Strongholds: true, ExtraNobles: true}
 	change(guest, options, 400)
 	change(host, game.SplendorOptions{Rules: "unknown"}, 400)
-	change(host, game.SplendorOptions{Orient: true, Cities: true}, 400)
+	change(host, game.SplendorOptions{Orient: true, Cities: true}, 200)
 	change(host, options, 200)
 	for _, seat := range current(host)["seats"].([]any) {
 		p := seat.(map[string]any)
@@ -109,7 +109,6 @@ func TestSplendorPublicOrientHTTPCombinationGames(t *testing.T) {
 				}
 				options := game.SplendorOptions{Orient: true, TradingPosts: mask&1 != 0, Strongholds: mask&2 != 0, ExtraNobles: mask&4 != 0}
 				host := clients[0]
-				host.post("/api/rooms", map[string]any{"name": "城市未开放", "kind": "splendor", "capacity": n, "splendorOptions": game.SplendorOptions{Cities: true, Orient: true}}, 400)
 				room := host.post("/api/rooms", map[string]any{"name": "东方组合", "kind": "splendor", "capacity": n, "splendorOptions": options}, 201)
 				id := room["id"].(string)
 				for _, c := range clients[1:n] {

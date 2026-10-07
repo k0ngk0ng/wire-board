@@ -7,13 +7,13 @@ import (
 	"fmt"
 )
 
-// All 30 Orient entries are cross-checked against BGA component facts; 24 also
-// have independent physical-image evidence. Cities remain partially verified,
-// with two physical faces and reverse pairings still unverified. The physical
-// Madrid conditions support the candidate, not BGA's additional blue variant.
-// The public constructor uses only the corroborated Orient table. Cities remain
-// restricted to the private integration constructor.
-// See docs/research/splendor-modern-catalog.md for the exact evidence limits.
+// All 30 Orient cards and 14 city conditions are cross-checked against BGA
+// component facts; 24 cards and 12 city faces also have physical-image evidence.
+// City pairs are inferred from the seven named double-sided tiles in the 2025
+// rules and BGA's same-city names, not from an observed physical flip. Madrid's
+// two physical faces exclude BGA's additional blue variant. Keep these evidence
+// limits explicit; the historical secondary catalog identity remains readable.
+// See docs/research/splendor-modern-catalog.md.
 //
 //go:embed splendor_modern_catalog.json
 var splendorModernCatalogJSON []byte
@@ -124,14 +124,7 @@ func newSplendorModernCatalogState(n int, options SplendorOptions) (*State, erro
 		g.installOrient(catalog.Orient)
 	}
 	if options.Cities {
-		g.Nobles = []Noble{}
-		tiles := []int{0, 1, 2, 3, 4, 5, 6}
-		shuffle(tiles)
-		for _, tile := range tiles[:3] {
-			sides := []int{0, 1}
-			shuffle(sides)
-			g.Cities = append(g.Cities, catalog.Cities[tile*2+sides[0]])
-		}
+		g.installCities(catalog.Cities)
 	}
 	return s, nil
 }
@@ -147,5 +140,19 @@ func (g *Splendor) installOrient(cards []Card) {
 		shuffle(g.Decks[row])
 		g.Market[row] = append([]Card{}, g.Decks[row][:2]...)
 		g.Decks[row] = g.Decks[row][2:]
+	}
+}
+
+// Draw distinct named tiles first, then choose one of each tile's two faces.
+// Cities replace every noble, including the optional split-box bonus pair.
+func (g *Splendor) installCities(cities []GemCity) {
+	g.Nobles = []Noble{}
+	g.Cities = nil
+	tiles := []int{0, 1, 2, 3, 4, 5, 6}
+	shuffle(tiles)
+	for _, tile := range tiles[:3] {
+		sides := []int{0, 1}
+		shuffle(sides)
+		g.Cities = append(g.Cities, cities[tile*2+sides[0]])
 	}
 }

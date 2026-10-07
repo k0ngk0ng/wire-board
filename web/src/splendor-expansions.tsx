@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Castle, Crown, Store, Sunrise } from "lucide-react";
+import { Castle, Crown, Landmark, Store, Sunrise } from "lucide-react";
 import type { Act, Card, Room, SplendorOptions } from "./types";
 import { gemOrientChoices } from "./splendor-orient-state";
 import "./splendor-expansions.css";
@@ -40,6 +40,7 @@ export function SplendorOptionPicker({
       <div>
         {(
           [
+            ["cities", "城市", "以城市目标替代贵族，改变获胜条件", Landmark],
             [
               "orient",
               "东方",
@@ -55,7 +56,15 @@ export function SplendorOptionPicker({
             key={key}
             aria-pressed={!!value?.[key]}
             className={value?.[key] ? "selected" : ""}
-            onClick={() => onChange({ ...value, [key]: !value?.[key] })}
+            onClick={() =>
+              onChange({
+                ...value,
+                [key]: !value?.[key],
+                ...(key === "cities" && !value?.cities
+                  ? { extraNobles: false }
+                  : {}),
+              })
+            }
           >
             <Icon size={22} />
             <span>
