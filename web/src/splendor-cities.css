@@ -49,13 +49,20 @@
   border: 2px solid #f1c347;
   box-shadow: 0 0 0 2px #f1c34738;
 }
-.gem-city-art {
-  display: block;
-  width: calc(100% + var(--city-inset) * 2);
-  height: auto;
-  aspect-ratio: 350 / 172;
+.gem-city-art-frame {
   margin: calc(-1 * var(--city-inset)) calc(-1 * var(--city-inset)) 8px;
   border-radius: 7px 7px 0 0;
+  overflow: hidden;
+}
+.gem-city-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 350 / 172;
+}
+.gem-city-expand,
+.gem-city-owner-count,
+.gem-city-compact-caption {
+  display: none;
 }
 .gem-city h4 {
   display: flex;
@@ -182,5 +189,72 @@
   }
   .gem-city-requirement small {
     display: none;
+  }
+}
+
+/* Keep all three goals visible while reserving phone space for the card market.
+   Expanded progress is local UI state only; desktop always shows full details. */
+@media (max-width: 850px) {
+  .gem-city-expand {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+    padding: 6px 4px;
+    min-height: 32px;
+    border: 0;
+    background: transparent;
+    color: #fff1ce;
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .gem-city-expand[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+  .gem-cities:has(.gem-city-expand) summary {
+    margin-left: 0;
+  }
+  .gem-cities.is-compact > header {
+    margin-bottom: 4px;
+  }
+  .gem-cities.is-compact .gem-city {
+    --city-inset: 4px;
+  }
+  .gem-cities.is-compact .gem-city.is-eligible {
+    --city-inset: 3px;
+  }
+  .gem-cities.is-compact .gem-city-art-frame {
+    max-height: 26px;
+    margin-bottom: 4px;
+  }
+  .gem-cities.is-compact .gem-city h4 {
+    margin-bottom: 3px;
+  }
+  .gem-cities.is-compact .gem-city-score {
+    margin-bottom: 4px;
+  }
+  .gem-cities.is-compact .gem-city-score > b {
+    font-size: 20px;
+  }
+  .gem-cities.is-compact .gem-city-score small,
+  .gem-cities.is-compact .gem-city-held,
+  .gem-cities.is-compact .gem-city-owner-names,
+  .gem-cities.is-compact .gem-city-detailed-caption {
+    display: none;
+  }
+  .gem-cities.is-compact .gem-city-owner-count,
+  .gem-cities.is-compact .gem-city-compact-caption {
+    display: inline;
+  }
+  .gem-cities.is-compact .gem-city-requirement svg {
+    width: 14px;
+    height: 14px;
+  }
+  .gem-cities.is-compact .gem-city-requirement {
+    padding: 1px 2px;
+  }
+  .gem-cities.is-compact .gem-city-any > span {
+    font-size: 10px;
   }
 }
