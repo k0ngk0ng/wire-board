@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { Check, Landmark } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Check, ChevronDown, Landmark } from "lucide-react";
 import type { Room } from "./types";
 import { gemCityProgress } from "./splendor-city-state";
 import { cityAtlasStyle } from "./splendor-city-art";
@@ -14,14 +14,29 @@ export function SplendorCities({
   assets: string;
   renderGem: (color: number) => ReactNode;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const s = room.game!.splendor!;
   const me = room.spectating ? undefined : s.players[room.you];
   if (!s.options?.cities || !s.cities?.length) return null;
   return (
-    <section className="gem-cities" aria-label="城市目标">
+    <section
+      className={`gem-cities ${expanded ? "is-expanded" : "is-compact"}`}
+      aria-label="城市目标"
+    >
       <header>
         <Landmark size={18} />
         <h3>城市目标</h3>
+        {me && (
+          <button
+            type="button"
+            className="gem-city-expand"
+            aria-expanded={expanded}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? "收起进度" : "我的进度"}
+            <ChevronDown size={14} />
+          </button>
+        )}
         <details>
           <summary>规则</summary>
           <p>
@@ -50,11 +65,9 @@ export function SplendorCities({
               aria-label={city.name}
             >
               {art && (
-                <div
-                  className="gem-city-art"
-                  style={art}
-                  aria-hidden="true"
-                />
+                <div className="gem-city-art-frame" aria-hidden="true">
+                  <div className="gem-city-art" style={art} />
+                </div>
               )}
               <h4>
                 {city.name}
@@ -79,7 +92,11 @@ export function SplendorCities({
                       >
                         {renderGem(color)}
                         <b>
-                          {progress ? `${progress.counts[color]}/` : ""}
+                          {progress && (
+                            <span className="gem-city-held">
+                              {progress.counts[color]}/
+                            </span>
+                          )}
                           {need}
                         </b>
                         <small>张</small>
@@ -92,7 +109,9 @@ export function SplendorCities({
                   >
                     <span>{city.cost.some(Boolean) ? "另一色" : "任一色"}</span>
                     <b>
-                      {progress ? `${progress.other}/` : ""}
+                      {progress && (
+                        <span className="gem-city-held">{progress.other}/</span>
+                      )}
                       {city.any}
                     </b>
                     <small>张</small>
@@ -105,7 +124,15 @@ export function SplendorCities({
               {!!owners.length && (
                 <p className="gem-city-owners">
                   <Check size={12} />
-                  {owners.map((p) => p.name).join("、")} 已达成
+                  <span className="gem-city-owner-names">
+                    {owners.map((p) => p.name).join("、")} 已达成
+                  </span>
+                  <span
+                    className="gem-city-owner-count"
+                    title={owners.map((p) => p.name).join("、")}
+                  >
+                    {owners.length} 人已达成
+                  </span>
                 </p>
               )}
             </article>
@@ -113,7 +140,10 @@ export function SplendorCities({
         })}
       </div>
       <small className="gem-city-caption">
-        {me ? "已持有 / 需要的发展卡张数" : "所需分数与发展卡张数"}
+        <span className="gem-city-detailed-caption">
+          {me ? "已持有 / 需要的发展卡张数" : "所需分数与发展卡张数"}
+        </span>
+        <span className="gem-city-compact-caption">所需分数与发展卡张数</span>
         {s.lastRound ? " · 最后一轮" : ""}
       </small>
     </section>
