@@ -27,6 +27,9 @@ func (s *State) catanCityView(v map[string]any, player int) {
 			}
 		}
 		v["progressPlayable"] = playable
+		if q := k.Pending; q != nil && q.Kind == "commercial_harbor" && player != q.Target && s.CatanPendingActor() != player {
+			delete(public["pending"].(map[string]any), "color")
+		}
 		if q := k.Pending; q != nil && q.Kind == "guild_dues" && s.CatanPendingActor() == player {
 			public["pending"].(map[string]any)["resources"] = append([]int{}, g.Players[q.Target].Resources...)
 		}
