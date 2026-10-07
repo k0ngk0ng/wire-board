@@ -2187,7 +2187,7 @@ function Waiting({
     !room.catanBaseConfiguration &&
     !room.catanCitiesKnights &&
     (!room.catanSeafarers || isPublicCatanSea(room.catanScenario)) &&
-    !room.catanNewWorldMap &&
+    (!room.catanNewWorldMap || room.catanScenario === "new_world") &&
     !room.catanHarbors &&
     !room.catanFriendlyRobber;
   const twoLabel =
@@ -2273,7 +2273,7 @@ function Waiting({
           <CatanScenarioPicker
             value={room.catanScenario || ""}
             helpers={!!room.catanOptions?.helpers}
-            disabled={!host || busy}
+            disabled={!host || busy || mapDirty}
             onChange={(catanScenario) =>
               command("catan_scenario", { catanScenario })
             }

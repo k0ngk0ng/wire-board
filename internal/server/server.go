@@ -892,7 +892,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanSeafarers(*req.CatanSeafarers)
 	case "catan_world_map", "catan_world_map_shuffle":
-		// Drafts are provisioned internally until the complete scenario picker ships.
+		// A public New World selection or internal combination provisions the map.
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanNewWorldMap == nil || next.friendlyRobberEnabled() || (next.CatanCitiesKnights != nil && next.validateCatanCitiesKnightsMap() != nil) {
 			err = errors.New("只有房主能在新世界开局前调整地图")
 			break
