@@ -2,9 +2,8 @@ package game
 
 import "fmt"
 
-// Internal combination constructor; public expansion creation remains gated.
-// Recipe support alone does not mean release acceptance is complete (notably
-// cloth common-supply exhaustion; see the expansion checklist).
+// Public three/four-player combinations and internal larger recipes share this
+// constructor. Five/six-player cloth supply retains its separate acceptance gate.
 func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, fmt.Errorf("Helpers与城市骑士组合尚未接入")

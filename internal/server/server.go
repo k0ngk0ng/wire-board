@@ -588,16 +588,17 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		CatanOptions     game.CatanOptions    `json:"catanOptions"`
-		CatanTwoScenario string               `json:"catanTwoScenario"`
-		CatanScenario    string               `json:"catanScenario"`
-		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
-		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
-		Name             string               `json:"name"`
-		Kind             string               `json:"kind"`
-		RailMap          string               `json:"railMap"`
-		Capacity         int                  `json:"capacity"`
-		Password         string               `json:"password"`
+		CatanCitiesKnights *game.CatanCitiesKnightsSetup `json:"catanCitiesKnights"`
+		CatanOptions       game.CatanOptions             `json:"catanOptions"`
+		CatanTwoScenario   string                        `json:"catanTwoScenario"`
+		CatanScenario      string                        `json:"catanScenario"`
+		SplendorOptions    game.SplendorOptions          `json:"splendorOptions"`
+		SanguoshaOptions   game.SGOptions                `json:"sanguoshaOptions"`
+		Name               string                        `json:"name"`
+		Kind               string                        `json:"kind"`
+		RailMap            string                        `json:"railMap"`
+		Capacity           int                           `json:"capacity"`
+		Password           string                        `json:"password"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -692,6 +693,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanScenario != "" {
 		if err := room.setCatanScenario(req.CatanScenario); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
+	if req.CatanCitiesKnights != nil {
+		if err := room.setPublicCatanSeaKnights(req.CatanCitiesKnights); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -876,6 +883,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanHarbors(*req.CatanHarbors)
 	case "catan_cities_knights":
+		if next.Host == u.ID && publicCatanSeaScenario(next.CatanScenario) {
+			err = next.setPublicCatanSeaKnights(req.CatanCitiesKnights)
+			break
+		}
 		if next.Host != u.ID || next.CatanCitiesKnights == nil || req.CatanCitiesKnights == nil {
 			err = errors.New("只有房主能在已启用城市与骑士的房间调整设置")
 			break
