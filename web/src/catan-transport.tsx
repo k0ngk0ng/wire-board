@@ -324,9 +324,20 @@ export function CatanTransportPanel({
                   </span>
                 ))}
               <span>
-                银行金币 <b>{t.state.goldBank}</b>
+                金币供应{" "}
+                <b>
+                  {t.state.goldRule === "ledger" ? "不限" : t.state.goldBank}
+                </b>
               </span>
             </div>
+          )}
+          {t.state.goldRule === "ledger" && !waiting && (
+            <details className="small">
+              <summary>本站补充规则 · 金币供应</summary>
+              <p>
+                交货与资源兑换的金币不足时继续记账发放，归还银行后优先复用；与双人贸易筹码分别计算。
+              </p>
+            </details>
           )}
           {w && !waiting && (
             <CatanTransportSeat game={g} seat={room.you} assets={assets} />

@@ -571,7 +571,7 @@ func TestCatanTransportCargoCompleteInventoryJourneys(t *testing.T) {
 	}
 }
 
-func TestCatanTransportCargoInsufficientGoldIsExplicitReleaseGate(t *testing.T) {
+func TestCatanTransportCargoGoldLedgerOverflowIsAtomic(t *testing.T) {
 	g, c := transportCargoFixture(t, 4)
 	transportVisitFixture(t, g, c, 0, 0)
 	if _, err := c.resolveArrival(g, 0, c.Sequence, false); err != nil {
@@ -586,9 +586,9 @@ func TestCatanTransportCargoInsufficientGoldIsExplicitReleaseGate(t *testing.T) 
 		}
 	}
 	transportVisitFixture(t, g, c, 0, site)
-	// Explicit shortage fixture. This proves no partial settlement, not an
-	// official supply-shortage ruling or a completed scenario acceptance.
-	c.Gold[1] += c.GoldBank
+	// A valid exhausted ledger at the safe integer cap must reject atomically.
+	c.Gold[1] += c.GoldBank + catanGoldLedgerLimit
+	c.GoldIssued = catanGoldLedgerLimit
 	c.GoldBank = 0
 	if err := c.validate(g); err != nil {
 		t.Fatal(err)

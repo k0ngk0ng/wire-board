@@ -462,6 +462,8 @@ export type CatanTransport = {
     }[];
     supply: number[];
     goldBank: number;
+    goldIssued?: number;
+    goldRule?: "ledger";
     barbarians: number[];
     active: number;
     sequence: number;

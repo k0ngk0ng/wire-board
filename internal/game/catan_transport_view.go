@@ -17,11 +17,12 @@ func (s *State) catanTransportChoices(player int) map[string]any {
 		choices["canUpgrade"] = cost != nil && catanHas(g.Players[player].Resources, cost)
 		buy, sell := []int{}, []int{}
 		rates := g.rates(player)
+		_, goldErr := catanGoldShortfall(t.GoldBank, t.GoldIssued, 1)
 		for c := 0; c < 5; c++ {
 			if t.Bought < 2 && t.Gold[player] >= 2 && g.Bank[c] > 0 {
 				buy = append(buy, c)
 			}
-			if t.GoldBank > 0 && g.Players[player].Resources[c] >= rates[c] {
+			if goldErr == nil && g.Players[player].Resources[c] >= rates[c] {
 				sell = append(sell, c)
 			}
 		}
