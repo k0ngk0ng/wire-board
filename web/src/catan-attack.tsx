@@ -90,7 +90,9 @@ export function CatanAttackMap({
     } else {
       const destinations = selected.destinations.includes(id)
         ? selected.destinations.filter((x) => x !== id)
-        : [...selected.destinations.slice(-1), id];
+        : (a.treasonCount ?? 2) === 1
+          ? [id]
+          : [...selected.destinations.slice(-1), id];
       onSelect({ ...selected, destinations });
     }
   };
@@ -499,7 +501,7 @@ export function CatanAttackPanel({
                             "在城堡的空边放置1名骑士；本回合结束时再移动。",
                           swift_knight:
                             "在地图任意空边放置1名骑士；本回合结束时再移动。",
-                          treason: `先从${a.fromBoard || 0}个不同地块各取1个蛮族，再放入两个不同的未征服地块；不足的从供应领取，同时获得2金币。`,
+                          treason: `本次移动${a.treasonCount ?? 2}个蛮族：${a.fromBoard ? `从${a.fromBoard}个不同地块各取1个${a.fromBoard < (a.treasonCount ?? 2) ? "，其余从供应领取" : ""}` : "从供应领取"}；放入不同的未征服地块，同时获得2金币。`,
                         }[q!.card]
                       }
                     </p>
@@ -510,7 +512,8 @@ export function CatanAttackPanel({
                         取走：
                         {selected.sources
                           .map((id) => `#${id + 1}`)
-                          .join("、") || "尚未选择"}{" "}
+                          .join("、") ||
+                          (a.fromBoard ? "尚未选择" : "从供应领取")}{" "}
                         · 放入：
                         {selected.destinations
                           .map((id) => `#${id + 1}`)
@@ -601,6 +604,14 @@ export function CatanAttackPanel({
                 </>
               )}
             </>
+          )}
+          {a.treasonRule === "as-much-as-possible" && (
+            <details>
+              <summary>本站补充规则 · 叛变</summary>
+              <p>
+                棋子或合法目标不足时，必须完成当前能做的最多移动（最多2个）；完全无法移动时只领取2金币，不额外抽牌。
+              </p>
+            </details>
           )}
           {a.goldRule === "ledger" && (
             <details>

@@ -90,6 +90,101 @@ test("knight preview uses authoritative normal/paid legal destinations and origi
     assert.deepEqual(attackChoices(view, pick).edges, []);
   }
 });
+
+test("partial treason requires the full available count and uses only feasible sources", () => {
+  const room = fixture(),
+    a = room.game.catan.attack;
+  a.treasonCount = 1;
+  a.fromBoard = 1;
+  a.sources = [2, 3];
+  a.destinations = [1];
+  a.treasonPlans = [
+    { sources: [2], destinations: [1] },
+    { sources: [3], destinations: [1] },
+  ];
+  assert.deepEqual(attackChoices(room, emptyAttackSelection()).tiles, [2, 3]);
+  const pick = { ...emptyAttackSelection(), sources: [2], destinations: [1] };
+  assert.deepEqual(attackChoices(room, pick).tiles, [1]);
+  assert.deepEqual(attackSelectedAction(room, pick), {
+    type: "catan_attack_card",
+    prompt: 7,
+    choice: "treason",
+    give: [2],
+    take: [1],
+  });
+  for (const changes of [
+    { sources: [1] },
+    { sources: [] },
+    { destinations: [] },
+    { destinations: [1, 3] },
+  ])
+    assert.equal(attackSelectedAction(room, { ...pick, ...changes }), null);
+  a.fromBoard = 0;
+  a.sources = [];
+  a.treasonPlans = [{ sources: [-1], destinations: [1] }];
+  assert.deepEqual(
+    attackSelectedAction(room, { ...pick, sources: [] }).give,
+    [-1],
+  );
+  assert.equal(attackChoices(room, emptyAttackSelection()).sources, false);
+});
+
+test("treason source pairs cannot mix individually legal but incompatible choices", () => {
+  const room = fixture(),
+    a = room.game.catan.attack;
+  a.treasonCount = 2;
+  a.sources = [1, 2, 3, 4];
+  a.destinations = [5, 6, 7];
+  a.treasonPlans = [
+    { sources: [1, 2], destinations: [5, 6] },
+    { sources: [3, 4], destinations: [6, 7] },
+  ];
+  assert.deepEqual(
+    attackChoices(room, { ...emptyAttackSelection(), sources: [1] }).tiles,
+    [2],
+  );
+  assert.deepEqual(
+    attackChoices(room, { ...emptyAttackSelection(), sources: [3] }).tiles,
+    [4],
+  );
+  assert.equal(
+    attackSelectedAction(room, {
+      ...emptyAttackSelection(),
+      sources: [1, 4],
+      destinations: [5, 6],
+    }),
+    null,
+  );
+  assert.equal(
+    attackSelectedAction(room, {
+      ...emptyAttackSelection(),
+      sources: [1, 2],
+      destinations: [6, 7],
+    }),
+    null,
+  );
+  assert.ok(
+    attackSelectedAction(room, {
+      ...emptyAttackSelection(),
+      sources: [2, 1],
+      destinations: [6, 5],
+    }),
+  );
+  for (const view of [
+    { ...room, spectating: true },
+    { ...room, seats: [{ autoPlay: true }] },
+  ]) {
+    assert.deepEqual(attackChoices(view, emptyAttackSelection()).tiles, []);
+    assert.equal(
+      attackSelectedAction(view, {
+        ...emptyAttackSelection(),
+        sources: [1, 2],
+        destinations: [5, 6],
+      }),
+      null,
+    );
+  }
+});
 test("conquest disables production and saved scenario supplies its actual target", () => {
   const g = { tiles: [{ number: 6 }], robber: -1, attack: { conquered: [0] } };
   assert.equal(catanTileProducing(g, 0, 6), false);

@@ -331,27 +331,15 @@ func TestCatanAttackTreasonSourcesConquestAndSupply(t *testing.T) {
 }
 
 func TestCatanAttackCardPublicBoundaryGatesAndCorruptPending(t *testing.T) {
-	for _, boundary := range []string{"ledger_overflow", "barbarians", "destinations"} {
-		s := newAttackState(t, 3, false)
-		a := s.Catan.Attack
-		switch boundary {
-		case "ledger_overflow":
-			attackCoins(s, (s.Turn+1)%3, a.Map.Gold-1)
-			a.GoldIssued = catanGoldLedgerLimit
-			a.Gold[(s.Turn+1)%3] += a.GoldIssued
-		case "barbarians":
-			clear(a.Barbarians)
-			a.Prisoners[(s.Turn+1)%3] = a.Map.Barbarians - 1
-		case "destinations":
-			for _, id := range a.Map.Coast {
-				a.Barbarians[id] = 3
-			}
-		}
-		attackHand(s, s.Turn, []int{0, 0, 1, 1, 1})
-		for _, card := range []string{"capture", "knighthood", "swift_knight", "treason"} {
-			forceAttackCard(t, s, card)
-			attackReject(t, s, s.Turn, Action{Type: "catan_buy_dev"})
-		}
+	overflow := newAttackState(t, 3, false)
+	a := overflow.Catan.Attack
+	attackCoins(overflow, (overflow.Turn+1)%3, a.Map.Gold-1)
+	a.GoldIssued = catanGoldLedgerLimit
+	a.Gold[(overflow.Turn+1)%3] += a.GoldIssued
+	attackHand(overflow, overflow.Turn, []int{0, 0, 1, 1, 1})
+	for _, card := range []string{"capture", "knighthood", "swift_knight", "treason"} {
+		forceAttackCard(t, overflow, card)
+		attackReject(t, overflow, overflow.Turn, Action{Type: "catan_buy_dev"})
 	}
 	s := newAttackState(t, 3, false)
 	buyAttackCard(t, s, "capture")
