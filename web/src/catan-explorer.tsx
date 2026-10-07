@@ -24,6 +24,7 @@ import {
   explorerActionNames,
   explorerActionDescription,
   explorerActionOptionLabel,
+  explorerIsHarbor,
   explorerActionKey,
   explorerChoices,
   explorerCanRespond,
@@ -433,7 +434,7 @@ export function CatanExplorerBoard({
                     transform={`translate(${v.x} ${v.y})`}
                     pointerEvents="none"
                   >
-                    {v.level === 2 ? (
+                    {explorerIsHarbor(g, v.id) ? (
                       <ExplorerPiece
                         g={g}
                         assets={assets}
@@ -476,7 +477,12 @@ export function CatanExplorerBoard({
                     )}
                     <title>
                       {v.owner < 0 ? "中立" : room.seats[v.owner]?.name} ·{" "}
-                      {v.level === 2 ? "港口" : "村庄"} · 位置{v.id + 1}
+                      {explorerIsHarbor(g, v.id)
+                        ? "港口"
+                        : v.level === 2
+                          ? "城市"
+                          : "村庄"}{" "}
+                      · 位置{v.id + 1}
                     </title>
                   </g>
                 ))}

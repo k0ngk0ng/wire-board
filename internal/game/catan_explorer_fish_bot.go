@@ -36,7 +36,7 @@ func catanExplorerBotFishGoal(g *Catan, player, ship, edge int) int {
 		}
 	}
 	for _, v := range []int{e.A, e.B} {
-		if g.Vertices[v].Owner == player && g.Vertices[v].Level == 2 && len(x.Cargo.fishContents(catanExplorerCargoLocation{"harbor", v})) > 0 {
+		if g.Vertices[v].Owner == player && catanExplorerHarborAt(g, v) && len(x.Cargo.fishContents(catanExplorerCargoLocation{"harbor", v})) > 0 {
 			value = max(value, 1650)
 		}
 	}

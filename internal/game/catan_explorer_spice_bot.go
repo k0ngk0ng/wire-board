@@ -65,7 +65,7 @@ func catanExplorerSpiceGoal(g *Catan, player, ship, edge int) int {
 		}
 	}
 	for _, v := range []int{e.A, e.B} {
-		if g.Vertices[v].Owner != player || g.Vertices[v].Level != 2 {
+		if g.Vertices[v].Owner != player || !catanExplorerHarborAt(g, v) {
 			continue
 		}
 		bay := catanExplorerCargoLocation{"harbor", v}

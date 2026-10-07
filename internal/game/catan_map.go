@@ -26,11 +26,12 @@ type CatanTile struct {
 	Vertices []int   `json:"vertices"`
 }
 type CatanVertex struct {
-	ID    int     `json:"id"`
-	X     float64 `json:"x"`
-	Y     float64 `json:"y"`
-	Owner int     `json:"owner"`
-	Level int     `json:"level"`
+	Harbor bool    `json:"harbor,omitempty"`
+	ID     int     `json:"id"`
+	X      float64 `json:"x"`
+	Y      float64 `json:"y"`
+	Owner  int     `json:"owner"`
+	Level  int     `json:"level"`
 }
 type CatanEdge struct {
 	Bridge  bool  `json:"bridge,omitempty"`
@@ -71,7 +72,7 @@ func (g *Catan) makeMap() {
 				if !ok {
 					id = len(g.Vertices)
 					vertices[key] = id
-					g.Vertices = append(g.Vertices, CatanVertex{id, vx, vy, -1, 0})
+					g.Vertices = append(g.Vertices, CatanVertex{ID: id, X: vx, Y: vy, Owner: -1})
 				}
 				t.Vertices = append(t.Vertices, id)
 			}
@@ -224,7 +225,7 @@ func (g *Catan) pieces(p int) (roads, settlements, cities int) {
 		if v.Owner == p {
 			if v.Level == 1 {
 				settlements++
-			} else if v.Level == 2 {
+			} else if g.cityAt(v.ID) {
 				cities++
 			}
 		}

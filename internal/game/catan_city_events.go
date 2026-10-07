@@ -74,7 +74,7 @@ func (s *State) catanStartCityDiceEvent(red, yellow, face, production int, epide
 func (g *Catan) pillageSites(player int) []int {
 	out := []int{}
 	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 2 && !slices.Contains(g.CitiesKnights.Metropolises[:], v.ID) {
+		if v.Owner == player && g.cityAt(v.ID) && !slices.Contains(g.CitiesKnights.Metropolises[:], v.ID) {
 			out = append(out, v.ID)
 		}
 	}
@@ -118,7 +118,7 @@ func (s *State) catanPrepareBarbarians() {
 	k.Event.Attack = true
 	cities := 0
 	for _, v := range g.Vertices {
-		if v.Level == 2 {
+		if g.cityAt(v.ID) {
 			cities++
 		}
 	}

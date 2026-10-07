@@ -154,7 +154,7 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 			return errors.New("开局建筑与放置顺序不一致")
 		}
 		if h >= 0 {
-			if h >= len(g.Vertices) || !slices.Contains(b.HarborStarts, h) || g.Vertices[h].Owner != owner || g.Vertices[h].Level != 2 {
+			if h >= len(g.Vertices) || !slices.Contains(b.HarborStarts, h) || g.Vertices[h].Owner != owner || !catanExplorerHarborAt(g, h) {
 				return errors.New("起始港口必须在印刷绿点")
 			}
 			vertexCount++
@@ -312,7 +312,7 @@ func (s *catanExplorerSetup) place(g *Catan, b *catanExplorerBoard, f *catanExpl
 	index := catanExplorerSetupIndex(len(g.Players), owner)
 	switch kind {
 	case "harbor":
-		ng.Vertices[target].Owner, ng.Vertices[target].Level = owner, 2
+		ng.Vertices[target].Owner, ng.Vertices[target].Level, ng.Vertices[target].Harbor = owner, 2, true
 		ns.Harbors[index] = target
 		if owner >= 0 {
 			ng.Players[owner].Score += 2

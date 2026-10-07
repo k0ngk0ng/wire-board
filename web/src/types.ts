@@ -749,6 +749,7 @@ export type CatanState = {
     vertices: number[];
   }[];
   vertices: {
+    harbor?: boolean;
     id: number;
     x: number;
     y: number;

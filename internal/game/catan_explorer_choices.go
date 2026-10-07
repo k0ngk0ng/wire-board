@@ -70,7 +70,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 			if edge.Owner == -1 && x.Cargo.landEdge(g, viewer, edge.ID) && catanExplorerCanPay(g, viewer, []int{1, 1, 0, 0, 0}) {
 				offer(Action{Type: "catan_road", Edge: edge.ID})
 			}
-			if catanExplorerSeaEdge(g, edge.ID) && (g.Vertices[edge.A].Owner == viewer && g.Vertices[edge.A].Level == 2 || g.Vertices[edge.B].Owner == viewer && g.Vertices[edge.B].Level == 2) {
+			if catanExplorerSeaEdge(g, edge.ID) && (g.Vertices[edge.A].Owner == viewer && catanExplorerHarborAt(g, edge.A) || g.Vertices[edge.B].Owner == viewer && catanExplorerHarborAt(g, edge.B)) {
 				for ship := viewer * 3; ship < (viewer+1)*3; ship++ {
 					offer(Action{Type: "catan_explorer_ship", Slot: ship, Edge: edge.ID})
 				}
@@ -84,7 +84,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 			if v.Owner == viewer && v.Level == 1 {
 				offer(Action{Type: "catan_explorer_harbor", Vertex: v.ID})
 			}
-			if v.Owner == viewer && v.Level == 2 {
+			if v.Owner == viewer && catanExplorerHarborAt(g, v.ID) {
 				locations = append(locations, catanExplorerCargoLocation{"harbor", v.ID})
 			}
 		}
