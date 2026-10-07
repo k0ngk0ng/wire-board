@@ -189,3 +189,114 @@ func referenceEventDrawHTTP(t *testing.T, s *Server, ts *httptest.Server, client
 		t.Fatal("next real turn did not draw exactly once")
 	}
 }
+
+func TestCatanTwoEventDeckHTTPProductionRecoveryAndTimeout(t *testing.T) {
+	for _, mode := range []string{"manual", "autoplay", "timeout"} {
+		t.Run(mode, func(t *testing.T) {
+			s, ts, clients, id := newTwoFullTable(t)
+			r := s.rooms[id]
+			attachReferenceEventDeck(t, r.Game)
+			// Keep this explicit catalogue/ordering fixture behind the private room setup.
+			for r.Game.Catan.SetupStep < r.Game.Catan.SetupLimit() {
+				owner := r.Game.Turn
+				action, err := r.Game.BotAction(owner)
+				if err != nil {
+					t.Fatal(err)
+				}
+				clients[owner].command(current(clients[owner]), "action", action, 200)
+				r = s.rooms[id]
+			}
+			owner := r.Game.Turn
+			draw := map[string]any{"type": "action", "action": game.Action{Type: "catan_roll"}, "version": r.Version, "nonce": "two-event-first"}
+			clients[owner].post("/api/rooms/"+id, draw, 200)
+			for step := 0; step < 2; step++ {
+				s, ts = restartRiversHTTP(t, s, ts, clients, id)
+				r = s.rooms[id]
+				before, _ := json.Marshal(r)
+				clients[owner].post("/api/rooms/"+id, draw, 200)
+				after, _ := json.Marshal(s.rooms[id])
+				if string(before) != string(after) {
+					t.Fatal("replay drew again")
+				}
+				if r.Game.Catan.CardEvent == nil || !slices.Equal(r.Game.Catan.Two.Rolls, []int{2}) {
+					t.Fatal("first response lost draw record")
+				}
+				actor := r.Game.CatanPendingActor()
+				action, err := r.Game.BotAction(actor)
+				if err != nil {
+					t.Fatal(err)
+				}
+				clients[1-actor].command(current(clients[1-actor]), "action", action, 400)
+				clients[owner].command(current(clients[owner]), "action", game.Action{Type: "catan_roll"}, 400)
+				for viewer, c := range clients {
+					v := current(c)["game"].(map[string]any)["catan"].(map[string]any)
+					deck := v["eventDeck"].(map[string]any)
+					if deck["drawPile"] != nil || deck["deck"] != nil || deck["remaining"] != float64(35) {
+						t.Fatal("deck privacy")
+					}
+					for p, raw := range v["players"].([]any) {
+						if (raw.(map[string]any)["resources"] != nil) != (p == viewer) {
+							t.Fatal("hand privacy")
+						}
+					}
+				}
+				switch mode {
+				case "manual":
+					clients[actor].command(current(clients[actor]), "action", action, 200)
+				case "autoplay":
+					setAutoPlay(clients[actor], current(clients[actor]), true, 200)
+					s.mu.Lock()
+					s.rooms[id].BotAt = 0
+					s.runBots(time.Now())
+					s.mu.Unlock()
+					setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+				case "timeout":
+					s.mu.Lock()
+					s.expireSetups(time.UnixMilli(s.rooms[id].TurnDeadline))
+					s.mu.Unlock()
+					if !s.rooms[id].Seats[actor].TimeoutAutoPlay {
+						t.Fatal("response timeout did not persist takeover")
+					}
+				}
+			}
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			r = s.rooms[id]
+			if r.Game.Turn != owner || r.Game.Phase != "catan_roll" || r.Game.Catan.RollID != 1 {
+				t.Fatal("first event did not return to second draw")
+			}
+			for p, seat := range r.Seats {
+				if seat.AutoPlay {
+					setAutoPlay(clients[p], current(clients[p]), false, 200)
+				}
+			}
+			second := map[string]any{"type": "action", "action": game.Action{Type: "catan_roll"}, "version": s.rooms[id].Version, "nonce": "two-event-second"}
+			clients[owner].post("/api/rooms/"+id, second, 200)
+			// The fixture's next face is Calm Seas: complete any optional recipients.
+			for step := 0; s.rooms[id].Game.Phase != "catan_turn" && step < 10; step++ {
+				state := s.rooms[id].Game
+				actor := twoHTTPActor(state)
+				action, err := state.BotAction(actor)
+				if err != nil {
+					t.Fatal(err)
+				}
+				clients[actor].command(current(clients[actor]), "action", action, 200)
+			}
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			r = s.rooms[id]
+			if r.Game.Phase != "catan_turn" || r.Game.Catan.RollID != 2 || len(r.Game.Catan.Two.Rolls) != 2 {
+				t.Fatal("second event did not finish")
+			}
+			before, _ := json.Marshal(r)
+			clients[owner].post("/api/rooms/"+id, second, 200)
+			after, _ := json.Marshal(s.rooms[id])
+			if string(before) != string(after) {
+				t.Fatal("second draw replay duplicated production")
+			}
+			clients[owner].command(current(clients[owner]), "action", game.Action{Type: "catan_roll"}, 400)
+			clients[owner].command(current(clients[owner]), "action", game.Action{Type: "catan_end"}, 200)
+			if s.rooms[id].Game.Turn == owner || len(s.rooms[id].Game.Catan.Two.Rolls) != 0 {
+				t.Fatal("turn did not advance")
+			}
+		})
+	}
+}

@@ -77,6 +77,16 @@ func newCatanAttackReferenceEvents(n int) (*State, error) {
 	return s, s.validateCatanEventSession()
 }
 
+func newCatanTwoReferenceEvents() (*State, error) {
+	s, err := newCatanTwoCore()
+	if err != nil {
+		return nil, err
+	}
+	s.Catan.EventDeck = &catanEventSession{Catalogue: catanEventReferenceCatalogue, Deck: newCatanEventDeck()}
+	s.Log = append(s.Log, "内部测试：双人每回合抽两张事件牌；同点数也使用，不重抽。使用旧版参考牌表，尚非已核验的2025正式牌表")
+	return s, s.validateCatanEventSession()
+}
+
 func (s *State) validateCatanEventSession() error {
 	g := s.Catan
 	if g == nil || g.EventDeck == nil {
@@ -86,10 +96,10 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Transport != nil || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers {
+	if g.Explorer != nil || g.Transport != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
 	}
-	if len(g.Players) < 3 || len(g.Players) > 6 || g.Options.FiveSix != (len(g.Players) > 4) {
+	if len(g.Players) < 2 || len(g.Players) > 6 || (len(g.Players) == 2) != (g.Two != nil) || g.Options.FiveSix != (len(g.Players) > 4) {
 		return errors.New("事件牌玩家数量与规则不一致")
 	}
 	d := session.Deck
@@ -107,6 +117,9 @@ func (s *State) validateCatanEventSession() error {
 	if g.RollID < len(d.Discard) || (g.RollID-len(d.Discard))%drawsPerCycle != 0 || uint64((g.RollID-len(d.Discard))/drawsPerCycle) != d.Cycle-1 || d.Cycle > 1 && len(d.Discard) == 0 {
 		return errors.New("事件牌抽取次数与存档回合不一致")
 	}
+	if q := g.Two; q != nil && (len(q.Rolls) > 2 || g.RollID < len(q.Rolls) || (g.RollID-len(q.Rolls))%2 != 0) {
+		return errors.New("双人事件牌次数与本回合生产记录不一致")
+	}
 	if g.RollID == 0 {
 		if g.CardEvent != nil || g.RevealedEvent != nil {
 			return errors.New("尚未抽牌却有事件结算")
@@ -120,6 +133,9 @@ func (s *State) validateCatanEventSession() error {
 	revealed := g.RevealedEvent
 	if revealed == nil || revealed.RollID != g.RollID || revealed.Kind != face.Kind || revealed.Production != face.Production || revealed.Red != 0 || revealed.Face != 0 {
 		return errors.New("已揭示事件与实际抽牌不一致")
+	}
+	if q := g.Two; q != nil && len(q.Rolls) > 0 && q.Rolls[len(q.Rolls)-1] != face.Production {
+		return errors.New("双人生产点数与实际事件牌不一致")
 	}
 	if q := g.CardEvent; q != nil {
 		if s.Phase != "catan_card_event" || s.Finished || revealed.ProductionStarted || q.Kind != face.Kind || q.Production != face.Production || q.Red != 0 || q.Face != 0 || len(q.Players) == 0 {
@@ -159,6 +175,14 @@ func (s *State) catanDrawEvent() error {
 		next.Log = append(next.Log, "新年：重新混洗全部事件牌，保留底部五张，再揭示下一张")
 	}
 	face := catanEventReferenceFaces[draw.Card]
+	if q := next.Catan.Two; q != nil {
+		if len(q.Rolls) >= 2 {
+			return errors.New("本回合已经完成两次事件牌生产")
+		}
+		// T&B 2025 p8: always use the drawn card, even when its production
+		// number matches the first. This intentionally differs from dice.
+		q.Rolls = append(q.Rolls, face.Production)
+	}
 	if err := next.catanBeginCardEvent(face.Kind, face.Production, 0, 0); err != nil {
 		return err
 	}
