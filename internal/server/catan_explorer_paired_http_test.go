@@ -153,7 +153,7 @@ func TestCatanExplorerPairedHTTPResponseHandoff(t *testing.T) {
 							r.BotAt = 0
 							s.runBots(now)
 						} else {
-							now = time.UnixMilli(deadline)
+							now = time.UnixMilli(max(deadline, s.rooms[id].BotAt))
 							s.expireSetups(now)
 						}
 						s.mu.Unlock()
@@ -250,9 +250,9 @@ func TestCatanExplorerPairedHTTPNaturalMatches(t *testing.T) {
 	}
 }
 
-func TestCatanExplorerPairedHTTPReclaimAndTimeoutRemoval(t *testing.T) {
+func TestCatanExplorerPairedHTTPReclaimAndLegacyDeparture(t *testing.T) {
 	for _, second := range []bool{false, true} {
-		for _, mode := range []string{"takeover", "remove"} {
+		for _, mode := range []string{"takeover", "legacy_departure"} {
 			t.Run(fmt.Sprintf("%t/%s", second, mode), func(t *testing.T) {
 				// Finishing the opposite portion's natural lair gives an ordinary first
 				// or second portion without editing the game's phase, cards or markers.
@@ -292,45 +292,29 @@ func TestCatanExplorerPairedHTTPReclaimAndTimeoutRemoval(t *testing.T) {
 				target := r.Seats[actor].ID
 				other := (actor + 1) % 6
 				kick(clients[other], current(clients[other]), target, 400)
-				expireTurn(t, s, id)
-				before, _ := json.Marshal(s.rooms[id])
-				s.mu.Lock()
-				s.expireSetups(time.Now())
-				s.mu.Unlock()
-				after, _ := json.Marshal(s.rooms[id])
-				if string(before) != string(after) {
-					t.Fatal("ordinary expired portion auto-executed")
-				}
-				s, ts = restartRiversHTTP(t, s, ts, clients, id)
-				deadline := s.rooms[id].TurnDeadline
 				if mode == "takeover" {
-					stale := current(clients[actor])
-					setAutoPlay(clients[actor], stale, true, 200)
-					kick(clients[other], current(clients[other]), target, 400)
-					r = s.rooms[id]
-					a, err := r.Game.BotAction(actor)
-					if err != nil {
-						t.Fatal(err)
-					}
-					clients[actor].command(current(clients[actor]), "action", a, 400)
-					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+					expireTurn(t, s, id)
 					version := s.rooms[id].Version
-					botTick(s, id)
-					if s.rooms[id].Version <= version {
-						t.Fatal("takeover stalled")
+					s.mu.Lock()
+					s.expireSetups(time.Now())
+					s.mu.Unlock()
+					r = s.rooms[id]
+					if r.Version != version+1 || !r.Seats[actor].AutoPlay || !r.Seats[actor].TimeoutAutoPlay || r.Seats[actor].Left {
+						t.Fatal("expired portion did not enable persistent takeover")
 					}
-					setAutoPlay(clients[actor], stale, false, 200)
-					if s.rooms[id].Seats[actor].AutoPlay {
+					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+					kick(clients[other], current(clients[other]), target, 400)
+					clients[actor].command(current(clients[actor]), "action", game.Action{Type: "catan_end", Prompt: int(serial)}, 400)
+					setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+					if s.rooms[id].Seats[actor].AutoPlay || s.rooms[id].Seats[actor].TimeoutAutoPlay {
 						t.Fatal("reclaim failed")
 					}
-					// A first-player roll can enter mandatory seven responses. For a second
-					// action there is no production, so takeover must keep the expired clock.
-					if second && s.rooms[id].TurnDeadline != deadline {
-						t.Fatal("takeover/reclaim renewed secondary time")
+					if second && time.Until(time.UnixMilli(s.rooms[id].TurnDeadline)) < 119*time.Second {
+						t.Fatal("reclaim did not restore an expired secondary response window")
 					}
 				} else {
 					kick(clients[6], current(clients[6]), target, 400)
-					kick(clients[other], current(clients[other]), target, 200)
+					legacyCatanDeparture(t, s, id, actor)
 					r = s.rooms[id]
 					want, phase := secondary, "catan_turn"
 					if second {

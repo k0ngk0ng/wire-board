@@ -28,6 +28,7 @@ func (s *Server) expireIdleRooms(now time.Time) {
 		next.Version++
 		for i := range next.Seats {
 			next.Seats[i].AutoPlay = false
+			next.Seats[i].TimeoutAutoPlay = false
 		}
 		if next.Game != nil {
 			next.Game.Log = append(next.Game.Log, "牌桌连续 24 小时无人操作，已自动关闭，本局不计胜负与积分。")

@@ -39,10 +39,11 @@ type User struct {
 }
 type Seat struct {
 	User
-	Bot      bool `json:"bot,omitempty"`
-	AutoPlay bool `json:"autoPlay,omitempty"`
-	Ready    bool `json:"ready"`
-	Left     bool `json:"left"`
+	Bot             bool `json:"bot,omitempty"`
+	AutoPlay        bool `json:"autoPlay,omitempty"`
+	TimeoutAutoPlay bool `json:"timeoutAutoPlay,omitempty"`
+	Ready           bool `json:"ready"`
+	Left            bool `json:"left"`
 }
 type Room struct {
 	CatanTwoRules          string                         `json:"catanTwoRules,omitempty"`
@@ -234,74 +235,13 @@ func (s *Server) runTimers(ctx context.Context) {
 	}
 }
 
-// Called with s.mu held. No browser needs to be connected for setup to finish.
+// Called with s.mu held. Deadlines and takeovers do not need a connected browser.
 func (s *Server) expireSetups(now time.Time) {
-	for id, room := range s.rooms {
-		if room.Status != "playing" || room.Game == nil || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() {
+	for _, room := range s.rooms {
+		if room.Status != "playing" || room.Game == nil || room.Game.Finished || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() || room.Game.CatanExplorerSetupBlocked() {
 			continue
 		}
-		if room.Game.CatanExplorerSetupBlocked() {
-			continue
-		}
-		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
-		catanPending := room.Game.Catan != nil && (room.Game.Catan.SetupStep < room.Game.Catan.SetupLimit() || room.Game.Phase == "catan_discard" || room.Game.CatanPendingActor() >= 0)
-		sgPending := room.Game.Sanguosha != nil
-		if room.Game.Dota != nil {
-			s.expireDota(room, now)
-			continue
-		}
-		if !railSetup && !catanPending && !sgPending {
-			continue
-		}
-		b, _ := json.Marshal(room)
-		var next Room
-		_ = json.Unmarshal(b, &next)
-		if sgPending {
-			failed := false
-			// A shared nullification deadline expires for all outstanding responders
-			// together, not one additional second per seat.
-			for step := 0; step < len(next.Seats) && next.Status == "playing" && next.TurnDeadline <= now.UnixMilli(); step++ {
-				a, err := next.Game.SanguoshaTimeoutAction()
-				if err != nil {
-					log.Printf("sanguosha timeout: %v", err)
-					failed = true
-					break
-				}
-				if err = next.applyGameAction(next.Game.SanguoshaActor(), a, now); err != nil {
-					log.Printf("sanguosha timeout action: %v", err)
-					failed = true
-					break
-				}
-			}
-			if failed {
-				continue
-			}
-		} else if railSetup {
-			next.Game.AutoChooseRailSetup()
-		} else {
-			next.Game.AutoCatanPending()
-		}
-		if next.Game.Finished {
-			next.Status = "finished"
-		}
-		previousSetupStep := -1
-		if room.Game.Catan != nil {
-			previousSetupStep = room.Game.Catan.SetupStep
-		}
-		if !sgPending && !next.adjustCatanResponseClock(room.Game.Phase, room.Game.CatanPendingActor(), previousSetupStep, now) {
-			next.startTurnClock(now)
-		}
-		if next.Game.Catan != nil && room.Game.Phase != "catan_discard" && next.Game.Phase == "catan_discard" {
-			next.CatanPendingVersion = next.Version + 1
-		}
-		next.Version++
-		next.Updated = now.Unix()
-		if err := s.save(&next); err != nil {
-			log.Printf("save automatic destination selection: %v", err)
-			continue
-		}
-		s.rooms[id] = &next
-		s.broadcast()
+		s.expireToAutoplay(room, now)
 	}
 }
 func (s *Server) Handler() http.Handler {
@@ -1157,6 +1097,30 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("已阵亡的角色无需托管")
 			break
 		}
+		next.Seats[idx].TimeoutAutoPlay = false
+		if !*req.Enabled && next.Seats[idx].AutoPlay && next.TurnDeadline <= now.UnixMilli() && slices.Contains(next.timeoutActors(), idx) {
+			// Let a returning player actually act instead of being taken over
+			// again on the very next timer tick. Live windows are unchanged.
+			pausedSGTime := next.SGTimeLeft
+			next.startTurnClock(now)
+			if next.Game.Sanguosha != nil && next.Game.Sanguosha.Pending != nil {
+				// Reclaiming a response gives that responder a new window,
+				// without replenishing the paused turn owner's action budget.
+				next.SGTimeLeft = pausedSGTime
+			}
+		}
+		if !*req.Enabled && next.Seats[idx].AutoPlay && next.Game.Turn == idx {
+			// A timed-out turn can be paused while another player responds.
+			// Reclaim the exhausted owner's budget too, otherwise completing
+			// that response would immediately take the owner over again.
+			// Never extend the other responder's deadline or a positive budget.
+			if next.Game.Sanguosha != nil && next.Game.Sanguosha.Pending != nil && next.SGTimeLeft == 0 {
+				next.SGTimeLeft = turnLimit.Milliseconds()
+			}
+			if next.Game.Catan != nil && (next.Game.CatanPendingActor() >= 0 || next.Game.Phase == "catan_discard") && next.CatanTimeLeft == 0 {
+				next.CatanTimeLeft = turnLimit.Milliseconds()
+			}
+		}
 		if next.Seats[idx].AutoPlay != *req.Enabled {
 			next.Seats[idx].AutoPlay = *req.Enabled
 			message := "取消了托管，恢复手动操作"
@@ -1179,52 +1143,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.applyGameAction(idx, req.Action, now)
 	case "kick_timeout":
-		if next.Kind == "dota" {
-			err = errors.New("兵线争锋超时由电脑接管，保留席位和队伍")
-			break
-		}
-		if next.Kind == "sanguosha" {
-			err = errors.New("三国杀超时由系统自动结束操作，不能移除身份角色")
-			break
-		}
-		if idx < 0 || next.Status != "playing" || idx == next.Game.Turn || (next.Game.Rail != nil && next.Game.Rail.Setup) {
-			err = errors.New("只有同局的其他玩家可以移出超时玩家")
-			break
-		}
-		target := next.Game.Turn
-		if next.Seats[target].AutoPlay {
-			err = errors.New("该玩家正在由电脑托管，不能因超时移出")
-			break
-		}
-		if req.Target != next.Seats[target].ID || next.TurnDeadline == 0 || now.UnixMilli() < next.TurnDeadline {
-			err = errors.New("该玩家尚未超时，或当前回合已改变")
-			break
-		}
-		if next.Kind == "carcassonne" {
-			err = next.Game.EliminateCarcassonne(target)
-		} else if next.Kind == "catan" {
-			err = next.Game.EliminateCatan(target)
-		} else if next.Kind == "splendor" {
-			err = next.Game.EliminateSplendor(target)
-		} else {
-			err = next.Game.EliminateRail(target)
-		}
-		if err != nil {
-			break
-		}
-		next.Seats[target].Left = true
-		if next.Host == req.Target {
-			for _, seat := range next.Seats {
-				if !seat.Left && !seat.Bot {
-					next.Host = seat.ID
-					break
-				}
-			}
-		}
-		if next.Game.Finished {
-			next.Status = "finished"
-		}
-		next.startTurnClock(now)
+		err = errors.New("超时会自动开启电脑托管，玩家保留席位并可随时取消托管")
 	case "rematch":
 		if next.Host != u.ID || (next.Status != "finished" && next.Status != "closed") {
 			err = errors.New("只有房主能在结束后再开一局")
@@ -1244,6 +1163,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		for i := range next.Seats {
 			next.Seats[i].Ready = next.Seats[i].Bot
 			next.Seats[i].AutoPlay = false
+			next.Seats[i].TimeoutAutoPlay = false
 		}
 	case "close":
 		if next.Host != u.ID || next.Status != "playing" {

@@ -127,7 +127,7 @@ func TestCatanAttackEndHTTPClockPrivacyRestartAutoplayTimeout(t *testing.T) {
 						s.runBots(at)
 						s.mu.Unlock()
 					case "timeout":
-						at = time.UnixMilli(deadline)
+						at = time.UnixMilli(max(deadline, s.rooms[id].BotAt))
 						s.mu.Lock()
 						s.expireSetups(at)
 						s.mu.Unlock()

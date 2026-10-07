@@ -10,7 +10,7 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func TestCatanExplorerLairsHTTPDepartureAndContinuation(t *testing.T) {
+func TestCatanExplorerLairsHTTPLegacyDepartureAndContinuation(t *testing.T) {
 	s, ts, clients, id := newExplorerHTTP(t, 3, false)
 	raw, err := os.ReadFile("testdata/catan_explorer_lairs_departure.json")
 	if err != nil {
@@ -33,11 +33,10 @@ func TestCatanExplorerLairsHTTPDepartureAndContinuation(t *testing.T) {
 	s.mu.Unlock()
 	target := r.Seats[actor].ID
 	kick(clients[other], current(clients[other]), target, 400)
-	expireTurn(t, s, id)
 	kick(clients[3], current(clients[3]), target, 400)
 	kick(clients[actor], current(clients[actor]), target, 400)
 	old := r.Game.Catan.Explorer
-	kick(clients[other], current(clients[other]), target, 200)
+	legacyCatanDeparture(t, s, id, actor)
 	r = s.rooms[id]
 	g := r.Game.Catan
 	x := g.Explorer

@@ -189,6 +189,10 @@ func TestCatanAutomaticPendingAndBotScheduling(t *testing.T) {
 	s.mu.Lock()
 	s.expireSetups(time.UnixMilli(s.rooms[id].TurnDeadline).Add(time.Second))
 	s.mu.Unlock()
+	if s.rooms[id].Game.Catan.SetupStep != 0 || s.rooms[id].Game.Phase != "catan_setup_road" || !s.rooms[id].Seats[0].AutoPlay {
+		t.Fatal("timeout did not start persistent setup control")
+	}
+	botTick(s, id)
 	if s.rooms[id].Game.Catan.SetupStep != 1 {
 		t.Fatal("automatic human setup")
 	}
@@ -198,9 +202,9 @@ func TestCatanAutomaticPendingAndBotScheduling(t *testing.T) {
 	if s.rooms[id].Game.Catan.SetupStep != 5 {
 		t.Fatal("snake bot placement")
 	}
-	s.mu.Lock()
-	s.expireSetups(time.UnixMilli(s.rooms[id].TurnDeadline).Add(time.Second))
-	s.mu.Unlock()
+	// Seat zero remains controlled when the snake setup returns to them.
+	botTick(s, id)
+	botTick(s, id)
 	if s.rooms[id].Game.Phase != "catan_roll" {
 		t.Fatal("auto setup completion")
 	}

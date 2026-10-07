@@ -141,13 +141,20 @@ func TestCatanClothThirdSetupPassTimeout(t *testing.T) {
 	r.Game.Phase = "catan_setup_settlement"
 	now := time.Now()
 	for step := 6; step < 9; step++ {
+		now = time.UnixMilli(max(now.UnixMilli(), r.BotAt))
 		r.TurnDeadline = now.Add(-time.Second).UnixMilli()
+		actor := r.Game.Turn
 		s.expireSetups(now)
+		r = s.rooms[id]
+		if !r.Seats[actor].AutoPlay || r.Game.Catan.SetupStep != step || r.Game.Phase != "catan_setup_road" {
+			t.Fatal("timeout must build a settlement and persist control before choosing its route")
+		}
+		now = time.UnixMilli(r.BotAt)
+		s.runBots(now)
 		r = s.rooms[id]
 		if r.Game.Catan.SetupStep != step+1 || r.TurnDeadline != now.Add(turnLimit).UnixMilli() {
 			t.Fatal("third setup pass not automated", step, r.Game.Catan.SetupStep)
 		}
-		now = now.Add(time.Second)
 	}
 	if r.Game.Phase != "catan_roll" || r.Game.Turn != 0 {
 		t.Fatal("third pass did not start first production")

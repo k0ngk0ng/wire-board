@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
 	"net/http/httptest"
+	"slices"
 	"testing"
 	"time"
 )
@@ -232,11 +233,18 @@ func TestSanguoshaConcurrentHTTPPassAndSharedTimeout(t *testing.T) {
 		t.Fatal("parallel pass reset shared clock")
 	}
 	clients[1].command(snapshot, "action", game.Action{Prompt: q, Choice: "pass"}, 400)
+	remaining := slices.Clone(s.rooms[id].Game.SanguoshaActors())
 	s.mu.Lock()
 	s.expireSetups(time.UnixMilli(deadline + 1))
 	s.mu.Unlock()
-	if s.rooms[id].Game.Sanguosha.Pending != nil {
-		t.Fatal("shared timeout should finish all remaining passes")
+	r = s.rooms[id]
+	if pending := r.Game.Sanguosha.Pending; pending != nil && pending.ID == q {
+		t.Fatal("shared timeout did not resolve the expired prompt")
+	}
+	for p, seat := range r.Seats {
+		if seat.AutoPlay != slices.Contains(remaining, p) || seat.TimeoutAutoPlay != slices.Contains(remaining, p) {
+			t.Fatal("shared timeout took over a player who already responded", p)
+		}
 	}
 	clients[3].command(snapshot, "action", game.Action{Prompt: q, Choice: "pass"}, 409)
 }

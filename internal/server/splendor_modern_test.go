@@ -330,7 +330,7 @@ func TestSplendorModernPendingTimeoutAndContinuation(t *testing.T) {
 		{"gem_post", 13, 4}, {"gem_reserve", 15, 3},
 	}
 	for _, tc := range cases {
-		for _, mode := range []string{"late_manual", "autoplay", "kick"} {
+		for _, mode := range []string{"reclaim", "autoplay", "kick_rejected"} {
 			t.Run(tc.phase+"/"+mode, func(t *testing.T) {
 				s, ts, clients, id := modernSplendorTable(t, tc.n, tc.mask)
 				initial := slices.Clone(s.rooms[id].Game.Splendor.Bank)
@@ -359,75 +359,64 @@ func TestSplendorModernPendingTimeoutAndContinuation(t *testing.T) {
 				assertModernPrivacy(t, clients, r.Game)
 				kick(clients[other], current(clients[other]), target, 400)
 				expireTurn(t, s, id)
-				before, _ := json.Marshal(s.rooms[id])
+				version, host := s.rooms[id].Version, s.rooms[id].Host
+				now := time.Now()
 				s.mu.Lock()
-				s.expireSetups(time.Now())
-				s.runBots(time.Now())
+				s.expireSetups(now)
+				s.runBots(now)
 				s.mu.Unlock()
+				r = s.rooms[id]
+				if r.Version != version+1 || !r.Seats[actor].AutoPlay || !r.Seats[actor].TimeoutAutoPlay || r.Seats[actor].Left || r.Game.Splendor.Players[actor].Eliminated || r.Host != host {
+					t.Fatal("timeout must take over exactly once and retain the seat")
+				}
+				assertModernComponents(t, r.Game, initial)
+				assertModernPrivacy(t, clients, r.Game)
+				before, _ := json.Marshal(r)
+				s, ts = restartRiversHTTP(t, s, ts, clients, id)
 				after, _ := json.Marshal(s.rooms[id])
 				if string(before) != string(after) {
-					t.Fatal("human expiry silently auto-acted")
-				}
-				s, ts = restartRiversHTTP(t, s, ts, clients, id)
-				action, err := s.rooms[id].Game.BotAction(actor)
-				if err != nil {
-					t.Fatal(err)
+					t.Fatal("restart changed pending choice or autoplay")
 				}
 				switch mode {
-				case "late_manual":
-					clients[actor].command(current(clients[actor]), "action", action, 200)
-				case "autoplay":
-					setAutoPlay(clients[actor], current(clients[actor]), true, 200)
-					kick(clients[other], current(clients[other]), target, 400)
-					// Persisted control and the pending choice both survive an expired clock.
-					s, ts = restartRiversHTTP(t, s, ts, clients, id)
-					version := s.rooms[id].Version
-					s.mu.Lock()
-					s.rooms[id].BotAt = 0
-					s.runBots(time.Now())
-					s.mu.Unlock()
-					if s.rooms[id].Version != version+1 {
-						t.Fatal("pending autoplay failed")
+				case "reclaim":
+					setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+					if s.rooms[id].Seats[actor].AutoPlay || s.rooms[id].Seats[actor].TimeoutAutoPlay {
+						t.Fatal("reclaim did not restore manual control")
 					}
-					if !s.rooms[id].Game.Finished {
-						setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+				case "kick_rejected":
+					for _, p := range []int{tc.n, actor, other} {
+						kick(clients[p], current(clients[p]), target, 400)
 					}
-				case "kick":
-					kick(clients[tc.n], current(clients[tc.n]), target, 400)
-					kick(clients[actor], current(clients[actor]), target, 400)
-					kick(clients[other], current(clients[other]), target, 200)
-					r = s.rooms[id]
-					g := r.Game.Splendor
-					if !r.Seats[actor].Left || !g.Players[actor].Eliminated || r.Game.Turn == actor || len(g.Effects) != 0 || len(g.Refills) != 0 || len(g.ReserveChoice) != 0 || len(g.Players[actor].Reserved) != 0 {
-						t.Fatal("pending removal did not clean state")
+					if s.rooms[id].Seats[actor].Left || !s.rooms[id].Seats[actor].AutoPlay {
+						t.Fatal("kick request removed the timeout player")
 					}
-					for _, hold := range g.Strongholds {
-						if hold.Player == actor {
-							t.Fatal("removed player retained stronghold")
-						}
-					}
-					clients[actor].command(current(clients[other]), "action", action, 400)
 				}
 				assertModernComponents(t, s.rooms[id].Game, initial)
 				s, ts = restartRiversHTTP(t, s, ts, clients, id)
-				steps := 0
+				steps, computerSteps := 0, 0
 				for ; !s.rooms[id].Game.Finished && steps < 2500; steps++ {
 					state := s.rooms[id].Game
-					action, err := state.BotAction(state.Turn)
-					if err != nil {
-						t.Fatal(err)
+					if s.rooms[id].Seats[state.Turn].AutoPlay {
+						version := s.rooms[id].Version
+						botTick(s, id)
+						if s.rooms[id].Version != version+1 {
+							t.Fatal("persistent timeout autoplay stalled")
+						}
+						computerSteps++
+					} else {
+						action, err := state.BotAction(state.Turn)
+						if err != nil {
+							t.Fatal(err)
+						}
+						clients[state.Turn].command(current(clients[state.Turn]), "action", action, 200)
 					}
-					clients[state.Turn].command(current(clients[state.Turn]), "action", action, 200)
 					assertModernComponents(t, s.rooms[id].Game, initial)
 				}
 				if !s.rooms[id].Game.Finished {
-					t.Fatal("continuation stalled")
-				}
-				if mode == "kick" && slices.Contains(s.rooms[id].Game.Winners, actor) {
-					t.Fatal("eliminated winner")
+					t.Fatal("continuation or persistent autoplay missing")
 				}
 				assertModernCityWinner(t, s.rooms[id].Game)
-				t.Logf("%s resolved via %s, then %d legal actions to finish", tc.phase, mode, steps)
+				t.Logf("%s resolved via %s, then %d legal actions (%d automatic) to finish", tc.phase, mode, steps, computerSteps)
 			})
 		}
 	}

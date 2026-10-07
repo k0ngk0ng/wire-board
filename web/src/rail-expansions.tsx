@@ -210,7 +210,7 @@ export function RailMapRules({ map }: { map: RailMapSpec }) {
       <p>
         {map.name}地图，{map.minPlayers}–{map.maxPlayers} 人。每人四张列车牌、
         {map.trains} 节车厢；同时从 {map.setupTickets}{" "}
-        张初始目的地中至少保留两张，120 秒后自动保留前两张。
+        张初始目的地中至少保留两张，120 秒后由电脑选牌并开启托管。
       </p>
       <ul>
         {map.rules.map((rule) => (

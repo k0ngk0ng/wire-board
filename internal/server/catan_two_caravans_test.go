@@ -107,6 +107,7 @@ func TestCatanTwoCaravansHTTPPlacementsClocksRestart(t *testing.T) {
 						s.rooms[id].TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
 						s.expireSetups(time.Now())
 						s.mu.Unlock()
+						reclaimTimeoutHumans(t, s, clients, id)
 					}
 				}
 				r = s.rooms[id]

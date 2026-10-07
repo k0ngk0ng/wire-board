@@ -181,13 +181,15 @@ func TestCatanSeafarersConfiguredHTTPSetup(t *testing.T) {
 					}
 					selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "shores"}, 400)
 					// Both bots and absent humans must complete the entire setup via
-					// the production timeout handler, with a fresh clock each step.
+					// timeout takeover and the paced computer loop, one piece per tick.
+					now := time.Now()
 					for step := 0; step < 120 && s.rooms[id].Game.Phase != "catan_roll"; step++ {
 						s.mu.Lock()
 						r := s.rooms[id]
 						version := r.Version
-						r.TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
-						s.expireSetups(time.Now())
+						now = time.UnixMilli(max(now.UnixMilli(), r.BotAt))
+						r.TurnDeadline = now.Add(-time.Second).UnixMilli()
+						s.expireSetups(now)
 						s.mu.Unlock()
 						if s.rooms[id].Version <= version {
 							t.Fatal("timeout stuck", s.rooms[id].Game.Phase)
@@ -197,7 +199,7 @@ func TestCatanSeafarersConfiguredHTTPSetup(t *testing.T) {
 					if r.Game.Phase != "catan_roll" || r.Game.Catan.SetupStep != r.Game.Catan.SetupLimit() {
 						t.Fatal("setup did not finish")
 					}
-					if left := r.TurnDeadline - time.Now().UnixMilli(); left < 118000 || left > 120000 {
+					if left := r.TurnDeadline - now.UnixMilli(); left != 120000 {
 						t.Fatal("first roll did not receive full clock", left)
 					}
 				})

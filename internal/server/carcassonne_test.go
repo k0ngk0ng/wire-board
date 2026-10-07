@@ -113,10 +113,15 @@ func TestCarcassonneTimeoutContinues(t *testing.T) {
 	s.rooms[id].TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
 	_ = s.save(s.rooms[id])
 	s.mu.Unlock()
+	s.mu.Lock()
+	s.expireSetups(time.Now())
+	s.mu.Unlock()
+	r = current(clients[1])
 	target := s.rooms[id].Seats[0].ID
-	clients[1].post("/api/rooms/"+id, map[string]any{"type": "kick_timeout", "target": target, "version": current(clients[1])["version"], "nonce": randomID(12)}, 200)
+	kick(clients[1], r, target, 400)
 	g := s.rooms[id].Game
-	if !g.Carcassonne.Players[0].Eliminated || g.Turn != 1 || g.Finished || len(g.Carcassonne.Tiles) != 2 {
-		t.Fatal("kick continuation")
+	if g.Carcassonne.Players[0].Eliminated || !s.rooms[id].Seats[0].AutoPlay || g.Turn != 1 || g.Finished || len(g.Carcassonne.Tiles) != 2 {
+		t.Fatal("timeout takeover did not finish the follower choice and preserve the player")
 	}
+	setAutoPlay(clients[0], current(clients[0]), false, 200)
 }

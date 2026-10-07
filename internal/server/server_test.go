@@ -69,6 +69,7 @@ func (c *testClient) register(name string) {
 	c.post("/api/register", map[string]string{"name": name, "password": "test-password-123", "invite": "test-invite"}, 200)
 }
 func (c *testClient) command(room map[string]any, kind string, action any, want int) map[string]any {
+	c.t.Helper()
 	return c.post("/api/rooms/"+room["id"].(string), map[string]any{"type": kind, "version": room["version"], "nonce": randomID(12), "action": action}, want)
 }
 func current(c *testClient) map[string]any { return c.state()["room"].(map[string]any) }

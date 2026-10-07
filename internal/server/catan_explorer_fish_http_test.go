@@ -183,7 +183,7 @@ func fishHTTPDeliveryBoundary(t *testing.T, s *Server, id string) game.Action {
 }
 
 func TestCatanExplorerFishHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
-	for _, mode := range []string{"takeover", "remove"} {
+	for _, mode := range []string{"takeover", "legacy_departure"} {
 		t.Run(mode, func(t *testing.T) {
 			s, ts, clients, id := newExplorerFishHTTP(t)
 			a := fishHTTPDeliveryBoundary(t, s, id)
@@ -193,34 +193,24 @@ func TestCatanExplorerFishHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
 			a = fishHTTPPreview(t, current(clients[actor]), a)
 			target := r.Seats[actor].ID
 			kick(clients[other], current(clients[other]), target, 400)
-			expireTurn(t, s, id)
-			before, _ := json.Marshal(s.rooms[id])
-			s.mu.Lock()
-			s.expireSetups(time.Now())
-			s.mu.Unlock()
-			after, _ := json.Marshal(s.rooms[id])
-			if string(before) != string(after) {
-				t.Fatal("optional fishing was auto-executed on timeout")
-			}
-			s, ts = restartRiversHTTP(t, s, ts, clients, id)
-			r = s.rooms[id]
-			deadline := r.TurnDeadline
 			if mode == "takeover" {
+				deliveries := len(r.Game.Catan.Explorer.Fish.Deliveries)
+				expireTurn(t, s, id)
+				deadline := s.rooms[id].TurnDeadline
+				s.mu.Lock()
+				s.expireSetups(time.Now())
+				s.mu.Unlock()
+				r = s.rooms[id]
+				if !r.Seats[actor].AutoPlay || !r.Seats[actor].TimeoutAutoPlay || len(r.Game.Catan.Explorer.Fish.Deliveries) != deliveries+1 || r.Game.Catan.Explorer.Cargo.Fish[a.Card].Kind != "supply" || r.TurnDeadline != deadline {
+					t.Fatal("timeout failed to deliver cargo using the computer strategy")
+				}
+				s, ts = restartRiversHTTP(t, s, ts, clients, id)
 				stale := current(clients[actor])
-				setAutoPlay(clients[actor], stale, true, 200)
 				kick(clients[other], current(clients[other]), target, 400)
 				clients[actor].command(current(clients[actor]), "action", a, 400)
-				s, ts = restartRiversHTTP(t, s, ts, clients, id)
-				r = s.rooms[id]
-				deliveries := len(r.Game.Catan.Explorer.Fish.Deliveries)
-				botTick(s, id)
-				r = s.rooms[id]
-				if len(r.Game.Catan.Explorer.Fish.Deliveries) != deliveries+1 || r.Game.Catan.Explorer.Cargo.Fish[a.Card].Kind != "supply" || r.TurnDeadline != deadline {
-					t.Fatal("takeover lost cargo, failed delivery or renewed time")
-				}
 				setAutoPlay(clients[actor], stale, false, 200)
-				if s.rooms[id].Seats[actor].AutoPlay || s.rooms[id].TurnDeadline != deadline {
-					t.Fatal("reclaim changed deadline")
+				if s.rooms[id].Seats[actor].AutoPlay || time.Until(time.UnixMilli(s.rooms[id].TurnDeadline)) < 119*time.Second {
+					t.Fatal("reclaim did not provide a usable manual window")
 				}
 				s, ts = restartRiversHTTP(t, s, ts, clients, id)
 				if s.rooms[id].Seats[actor].AutoPlay || len(s.rooms[id].Game.Catan.Explorer.Fish.Deliveries) != deliveries+1 {
@@ -229,7 +219,7 @@ func TestCatanExplorerFishHTTPExpiredMovementTakeoverAndRemoval(t *testing.T) {
 			} else {
 				kick(clients[3], current(clients[3]), target, 400)
 				old := s.rooms[id].Game.Catan.Explorer
-				kick(clients[other], current(clients[other]), target, 200)
+				legacyCatanDeparture(t, s, id, actor)
 				r = s.rooms[id]
 				x := r.Game.Catan.Explorer
 				if !r.Seats[actor].Left || !x.Fish.Retired[actor] || r.Game.Turn == actor {
