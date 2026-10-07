@@ -45,6 +45,7 @@ export function catanRuleContext(room: Room) {
       "fixed";
   return {
     explorer: game ? !!game.explorer : explorerDraft,
+    fishing: game ? !!game.fishing : room.catanScenario === "fishing",
     transport: !!game?.transport,
     attack: !!game?.attack,
     caravans,

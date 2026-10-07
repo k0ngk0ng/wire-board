@@ -77,11 +77,11 @@ func (r *Room) validateCatanScenario() error {
 		}
 		return nil
 	}
-	if r.CatanScenario != "rivers" && r.CatanScenario != "caravans" {
+	if r.CatanScenario != "rivers" && r.CatanScenario != "caravans" && r.CatanScenario != "fishing" {
 		return errors.New("未知卡坦剧本")
 	}
 	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity {
-		return errors.New("河流与商队当前支持三至四人牌桌；双人请使用双人变体")
+		return errors.New("该剧本当前支持三至四人牌桌；双人请使用已支持的双人变体")
 	}
 	if r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 		return errors.New("所选剧本与其他扩展的组合尚未开放")

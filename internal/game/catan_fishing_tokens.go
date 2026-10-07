@@ -8,8 +8,7 @@ import (
 
 const catanFishBoot = 29
 
-// Internal token economy for Fishing on Catan (2025 T&B pp.9–10, extension
-// p.5). No room option enables it before full scenario/UI acceptance.
+// Token economy for Fishing on Catan (2025 T&B pp.9–10, extension p.5).
 // Token IDs are server identities, never a public draw order.
 type catanFishingTokens struct {
 	DrawPile  []int            `json:"drawPile"`

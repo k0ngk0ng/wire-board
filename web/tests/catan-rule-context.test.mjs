@@ -392,3 +392,15 @@ test("public standalone cities-knights selection keeps its thirteen-point rules"
   assert.equal(catanRuleContext(room).players, 3);
   assert.equal(catanRuleContext(room).target, 13);
 });
+
+test("fishing waiting rules do not masquerade as Seafarers or override saved games", () => {
+  const room = { capacity: 4, catanScenario: "fishing" };
+  assert.equal(catanRuleContext(room).fishing, true);
+  assert.equal(catanRuleContext(room).scenario, "");
+  assert.equal(catanRuleContext(room).target, 10);
+  room.game = { catan: { players: Array(3).fill({}) } };
+  assert.equal(catanRuleContext(room).fishing, false);
+  room.game.catan.fishing = {};
+  assert.equal(catanRuleContext(room).fishing, true);
+  assert.equal(catanRuleContext(room).players, 3);
+});

@@ -1111,6 +1111,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					next.Game, err = game.NewCatanExplorerSpices(len(next.Seats))
 				} else if next.CatanScenario == "land-ho" {
 					next.Game, err = game.NewCatanExplorerLandHo(len(next.Seats))
+				} else if next.CatanScenario == "fishing" {
+					next.Game, err = game.NewCatanFishing(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "rivers" {
 					next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "caravans" {

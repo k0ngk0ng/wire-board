@@ -12,9 +12,9 @@ were also checked. Pinned references and data are in
 The **internal token economy, map, setup/production pipeline, replacement
 responses, five paid actions, boot passing, bots and persistence** are
 implemented, with original-art desktop/mobile UI verified on local engine fixtures.
-Fishing is not exposed in room configuration; complete scenario/combination
-acceptance remains, and it is not ready for
-public play.
+Standalone Fishing now has a local, unpublished public room entry for three/four
+players (2026-10-08). Five/six-player and combination entries, comprehensive
+interaction and final release acceptance remain; see the latest section below.
 
 ## Token economy (completed 2026-10-05)
 
@@ -797,3 +797,17 @@ batch reached neither full-hand fish nor gold responses; dedicated extended
 Wonders HTTP fish→gold response/clock and desktop/mobile visual acceptance
 remain next. No frontend/art change, upload, public entry, push or deployment.
 Temporary test logs were removed; no browser or persistent QA process started.
+
+
+## 三四人渔夫公开入口（2026-10-08，未发布）
+
+公开创建与等待区新增卡坦渔夫 `catanScenario=fishing`，复用现有随机湖泊、六处海岸渔场、30枚筹码与旧靴规则。仅三四人、不混Helpers或其他扩展；四席可按实际三人开始。设置变化清真人准备、相同设置保持，跨航海／城市骑士切回清旧字段，准备／开局冻结、恢复、重开与切回基础接通。创建人数仅三四，切到其他桌游两席再返回也恢复合法人数。
+
+玩法速查增加产鱼、第二村奖励、满额盲换、五种消费与不找零、旧靴按公开分数传递、额外获胜分、私有鱼面和120秒回应说明。等待规则不会误标为航海家，运行规则以游戏状态为准。战绩保存真实捕鱼扩展及 `catan-fishing-2025` 版本，独立局显示渔夫及可变地图；不是改变旧靴或消费规则。
+
+- 四场三／四人×两样本从实际公开创建到自然胜利的HTTP局及配置通过6.686秒；补战绩版本／重复归档后连同积分账目回归6.457秒。每步核对19张资源、25张发展卡及30枚鱼身份／库存、七枚上限；包含手动消费、主动托管、超时与接回、真实重启、手牌与鱼面隐私、旧靴调整后的胜利目标、唯一胜利战绩。没有中局赠送资源／鱼或改分。
+- 原完整航海捕鱼测试复用同一流程，五六人仍明确注入原始构造器而非声称公开。四场五六人迷雾完整HTTP、捕鱼回应恢复及相关公开配置回归40.413秒通过。该套不是全卡坦验收；定向付费动作的原专项证据保留，不扩大本轮过滤范围。
+- 最终两包go vet、162项前端测试、生产构建、差异检查通过；保留既有包体提示。没有引擎规则变化，不重跑无关全规则包。
+- 静音真实浏览器390px公开创建三席渔夫、查看新增规则、添加两电脑；320px正式开局，交点1预览并确认建村，进入修路。1440／390／320截图与宽度检查正常，27种当前图像解码、无JS错误。截图时没有持鱼，不冒称本次已人工验收所有消费动画或真人完整胜局；此前原画消费夹具证据保留。最后仅增加的战绩保存由HTTP专项验证，不冒称浏览器运行该后端版本。
+
+专属浏览器／服务关闭，所属二进制、数据、profile、截图和日志清理。仅本地实现和验证，未推送、部署、上传或下载新素材，没有播放互联网音频，保留无关monopoly目录。五六人数字组件、其他捕鱼组合正式入口和整体扩展范围继续。

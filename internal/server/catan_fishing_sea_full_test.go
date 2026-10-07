@@ -10,9 +10,9 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Fishing has no public room option yet. Install its initial state in a real
-// table; every layout, build, roll, response and action then uses production
-// HTTP handlers, autoplay or timeout handling, through final history recording.
+// Standalone three/four-player Fishing uses public creation. Extended sea
+// combinations retain an explicit initial-state fixture; all later actions
+// use real HTTP, autoplay and timeout paths through history recording.
 func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 	testFishingSeaExtendedFullHTTP(t, "new_world")
 }
@@ -25,35 +25,55 @@ func TestCatanFishingWondersExtendedFullHTTPGames(t *testing.T) {
 	testFishingSeaExtendedFullHTTP(t, "wonders")
 }
 
+func TestCatanFishingPublicFullHTTPGames(t *testing.T) {
+	testFishingSeaExtendedFullHTTP(t, "")
+}
+
 func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 	totalPaid := 0
-	for _, n := range []int{5, 6} {
+	sizes := []int{5, 6}
+	if scenario == "" {
+		sizes = []int{3, 4}
+	}
+	for _, n := range sizes {
 		for sample := 0; sample < 2; sample++ {
 			t.Run(fmt.Sprintf("%d/sample%d", n, sample), func(t *testing.T) {
-				s, ts, clients, id, _, _ := newFishingActionTable(t, n, "catan_turn", "resource")
-				var initial *game.State
-				var err error
-				if scenario == "new_world" {
-					var layout *game.CatanNewWorldMap
-					layout, err = game.GenerateCatanNewWorldMap(n)
+				var s *Server
+				var ts *httptest.Server
+				var clients []*testClient
+				var id string
+				if scenario == "" {
+					s, ts, clients, id = newPublicFishingTable(t, n)
+				} else {
+					s, ts, clients, id, _, _ = newFishingActionTable(t, n, "catan_turn", "resource")
+					var initial *game.State
+					var err error
+					if scenario == "new_world" {
+						var layout *game.CatanNewWorldMap
+						layout, err = game.GenerateCatanNewWorldMap(n)
+						if err != nil {
+							t.Fatal(err)
+						}
+						initial, err = game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: true}, layout)
+					} else {
+						initial, err = game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: true}, game.CatanSeafarersSetup{Scenario: scenario}, nil)
+					}
 					if err != nil {
 						t.Fatal(err)
 					}
-					initial, err = game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: true}, layout)
-				} else {
-					initial, err = game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: true}, game.CatanSeafarersSetup{Scenario: scenario}, nil)
+					s.mu.Lock()
+					r := s.rooms[id]
+					r.Game = initial
+					r.startTurnClock(time.Now())
+					if err = s.save(r); err != nil {
+						t.Fatal(err)
+					}
+					s.mu.Unlock()
 				}
-				if err != nil {
-					t.Fatal(err)
+				supply, devSupply, tokenSupply, ports, grounds := 19, 25, 30, 9, 6
+				if n > 4 {
+					supply, devSupply, tokenSupply, ports, grounds = 24, 34, 44, 11, 8
 				}
-				s.mu.Lock()
-				r := s.rooms[id]
-				r.Game = initial
-				r.startTurnClock(time.Now())
-				if err = s.save(r); err != nil {
-					t.Fatal(err)
-				}
-				s.mu.Unlock()
 				restored := map[string]bool{}
 				restart := func(label string) {
 					t.Helper()
@@ -81,7 +101,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 				restart("setup")
 				steps, automatic, timeouts, paid := 0, 0, 0, 0
 				for ; steps < 10000 && !s.rooms[id].Game.Finished; steps++ {
-					r = s.rooms[id]
+					r := s.rooms[id]
 					state, g := r.Game, r.Game.Catan
 					label := ""
 					switch {
@@ -93,10 +113,10 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 						label = "fish-response"
 					case state.Phase == "catan_gold":
 						label = "gold-response"
-					case state.Phase == "catan_turn" && g.Paired.Second:
+					case state.Phase == "catan_turn" && g.Paired != nil && g.Paired.Second:
 						label = "secondary"
 					}
-					if label == "" && g.Seafarers.Fog != nil && len(g.Seafarers.Fog.Terrain) < 18 {
+					if label == "" && g.Seafarers != nil && g.Seafarers.Fog != nil && len(g.Seafarers.Fog.Terrain) < 18 {
 						label = "discovery"
 					}
 					if label != "" && !restored[label] {
@@ -108,7 +128,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 						for _, p := range g.Players {
 							total += p.Resources[color]
 						}
-						if total != 24 {
+						if total != supply {
 							t.Fatal("resource supply", steps, color, total)
 						}
 					}
@@ -118,10 +138,10 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 							cards += count
 						}
 					}
-					if cards != 34 {
+					if cards != devSupply {
 						t.Fatal("development supply", steps, cards)
 					}
-					seen := make([]bool, 44)
+					seen := make([]bool, tokenSupply)
 					f := g.Fishing
 					if f.Tokens.BootOwner >= 0 {
 						seen[29] = true
@@ -129,7 +149,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 					checkTokens := func(ids []int) {
 						t.Helper()
 						for _, id := range ids {
-							if id < 0 || id >= 44 || seen[id] {
+							if id < 0 || id >= tokenSupply || seen[id] {
 								t.Fatal("fish identity", steps, id)
 							}
 							seen[id] = true
@@ -162,7 +182,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 									t.Fatal("fish privacy")
 								}
 							}
-							sea := v["seafarers"].(map[string]any)
+							sea, _ := v["seafarers"].(map[string]any)
 							if world, ok := sea["newWorld"].(map[string]any); ok && world["ports"] != nil {
 								t.Fatal("hidden port order")
 							}
@@ -231,14 +251,14 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 					}
 					clients[actor].command(current(clients[actor]), "action", action, 200)
 				}
-				r = s.rooms[id]
-				if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || !restored["setup"] || scenario == "new_world" && (!restored["ports"] || !restored["grounds"]) || !restored["secondary"] || automatic == 0 || timeouts == 0 {
+				r := s.rooms[id]
+				if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || !restored["setup"] || scenario == "new_world" && (!restored["ports"] || !restored["grounds"]) || n > 4 && !restored["secondary"] || automatic == 0 || timeouts == 0 {
 					t.Fatal("incomplete full-game coverage", steps, automatic, timeouts, paid, restored)
 				}
 				totalPaid += paid
 				winner := r.Game.Winners[0]
 				target := 12
-				if scenario == "wonders" {
+				if scenario == "wonders" || scenario == "" {
 					target = 10
 				}
 				if r.Game.Catan.Fishing.Tokens.BootOwner == winner {
@@ -259,13 +279,40 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 						t.Fatal("extended wonder rules changed")
 					}
 				}
-				if !won || len(r.Game.Catan.Ports) != 11 || len(r.Game.Catan.Fishing.Map.Grounds) != 8 {
+				if !won || len(r.Game.Catan.Ports) != ports || len(r.Game.Catan.Fishing.Map.Grounds) != grounds {
 					t.Fatal("wrong finished layout/victory")
 				}
 				restart("finished")
 				code, profile := clients[n].request("GET", "/api/players/"+s.rooms[id].Seats[winner].ID, nil)
 				if code != 200 || profile["stats"].(map[string]any)["catan"].(map[string]any)["wins"] != float64(1) {
 					t.Fatal("win missing from history")
+				}
+				if scenario == "" {
+					check := func(profile map[string]any) {
+						t.Helper()
+						history := profile["history"].([]any)
+						if len(history) != 1 {
+							t.Fatal("duplicate fishing history")
+						}
+						record := history[0].(map[string]any)
+						if record["catanScenario"] != "fishing" || record["catanLayout"] != "variable" || record["catanExpansionRules"].(map[string]any)["fishing"] != game.CatanFishingRules {
+							t.Fatal("wrong fishing archive", record)
+						}
+						stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
+						if stats["wins"] != float64(1) || stats["played"] != float64(1) {
+							t.Fatal("duplicate fishing result")
+						}
+					}
+					check(profile)
+					if err := s.save(s.rooms[id]); err != nil {
+						t.Fatal(err)
+					}
+					restart("replayed-finish")
+					code, profile = clients[n].request("GET", "/api/players/"+s.rooms[id].Seats[winner].ID, nil)
+					if code != 200 {
+						t.Fatal("history unavailable")
+					}
+					check(profile)
 				}
 				t.Logf("steps=%d autoplay=%d timeouts=%d paid=%d winner=%d score=%d restarts=%v", steps, automatic, timeouts, paid, winner, s.rooms[id].Game.Catan.Players[winner].Score, restored)
 			})
