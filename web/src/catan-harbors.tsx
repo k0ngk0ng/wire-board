@@ -1,3 +1,4 @@
+import { supportsExtendedBaseVariants } from "./catan-base-layout";
 import { Anchor, Award } from "lucide-react";
 import type { CatanState, Room } from "./types";
 import { catanRuleContext } from "./catan-rule-context";
@@ -18,12 +19,13 @@ export function CatanHarborsPicker({
 }) {
   const setup = room.catanHarbors;
   const available =
-    room.capacity >= 3 &&
-    room.capacity <= 4 &&
-    !room.catanFishing &&
-    !room.catanTwoRules &&
-    !room.catanOptions?.fiveSix &&
-    supportsPublicCatanHarbors(room.catanScenario);
+    supportsExtendedBaseVariants(room) ||
+    (room.capacity >= 3 &&
+      room.capacity <= 4 &&
+      !room.catanFishing &&
+      !room.catanTwoRules &&
+      !room.catanOptions?.fiveSix &&
+      supportsPublicCatanHarbors(room.catanScenario));
   if (room.catanFishing || (!setup && !available)) return null;
   return (
     <CatanHarborsChoice

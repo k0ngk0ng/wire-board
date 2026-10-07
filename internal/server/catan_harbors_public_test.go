@@ -19,7 +19,7 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "splendor", "capacity": 3},
 		{"kind": "catan", "capacity": 2},
-		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fishing"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "transport"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "islands", "catanFishing": true},

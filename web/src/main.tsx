@@ -2008,7 +2008,7 @@ function Create({
             catanFriendlyRobber:
               k === "catan" &&
               capacity >= 3 &&
-              capacity <= 4 &&
+              (capacity <= 4 || (!catanScenario && catanOptions.fiveSix)) &&
               catanFriendly &&
               !catanFishing &&
               supportsPublicCatanFriendly(catanScenario)
@@ -2017,7 +2017,7 @@ function Create({
             catanHarbors:
               k === "catan" &&
               capacity >= 3 &&
-              capacity <= 4 &&
+              (capacity <= 4 || (!catanScenario && catanOptions.fiveSix)) &&
               catanHarbors &&
               !catanFishing &&
               supportsPublicCatanHarbors(catanScenario)
@@ -2195,7 +2195,7 @@ function Create({
           )}
         {k === "catan" &&
           capacity >= 3 &&
-          capacity <= 4 &&
+          (capacity <= 4 || (!catanScenario && catanOptions.fiveSix)) &&
           !catanFishing &&
           supportsPublicCatanHarbors(catanScenario) && (
             <CatanHarborsChoice
@@ -2212,7 +2212,7 @@ function Create({
           )}
         {k === "catan" &&
           capacity >= 3 &&
-          capacity <= 4 &&
+          (capacity <= 4 || (!catanScenario && catanOptions.fiveSix)) &&
           !catanFishing &&
           supportsPublicCatanFriendly(catanScenario) && (
             <CatanFriendlyRobberChoice
@@ -2245,8 +2245,7 @@ function Create({
                 (!isPublicCatanSea(catanScenario) ||
                   (catanFishing &&
                     supportsPublicCatanFishingSeaExtended(catanScenario))) &&
-                !catanHarbors &&
-                !catanFriendly
+                (!catanScenario || (!catanHarbors && !catanFriendly))
               }
               onChange={(o) => {
                 setCatanOptions(o);
@@ -2649,8 +2648,11 @@ function Waiting({
                     supportsPublicCatanFishingSeaExtended(
                       room.catanScenario,
                     ))) &&
-                (!room.catanHarbors?.enabled || !!room.catanOptions?.fiveSix) &&
-                (!room.catanFriendlyRobber?.enabled ||
+                (!room.catanScenario ||
+                  !room.catanHarbors?.enabled ||
+                  !!room.catanOptions?.fiveSix) &&
+                (!room.catanScenario ||
+                  !room.catanFriendlyRobber?.enabled ||
                   !!room.catanOptions?.fiveSix)
               }
               seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}

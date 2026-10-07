@@ -1,3 +1,4 @@
+import { supportsExtendedBaseVariants } from "./catan-base-layout";
 import { ShieldCheck } from "lucide-react";
 import type { CatanState, Room } from "./types";
 import "./catan-friendly-robber.css";
@@ -14,15 +15,16 @@ export function CatanFriendlyRobberPicker({
 }) {
   const setup = room.catanFriendlyRobber;
   const eligible =
-    room.capacity >= 3 &&
-    room.capacity <= 4 &&
-    !room.catanTwoRules &&
-    !room.catanFishing &&
-    (!room.catanScenario || !!room.catanSeafarers);
+    supportsExtendedBaseVariants(room) ||
+    (room.capacity >= 3 &&
+      room.capacity <= 4 &&
+      !room.catanTwoRules &&
+      !room.catanFishing &&
+      (!room.catanScenario || !!room.catanSeafarers));
   if (room.catanFishing || (!setup && !eligible)) return null;
   const availability = room.catanFriendlyRobberAvailability;
   const reason = !eligible
-    ? "此组合当前开放三至四人，请先关闭五至六人扩充。"
+    ? "五至六人的此变体需要基础地图，请切换地图或关闭扩充。"
     : !availability?.allowed
       ? availability?.reason || "该组合尚未开放。"
       : "";
