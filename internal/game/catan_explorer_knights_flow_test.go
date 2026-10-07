@@ -240,8 +240,8 @@ func TestCatanExplorerCityFlowDiscoveryAtomicAndCommoditySafe(t *testing.T) {
 					before := clone(*s.Catan)
 					if len(quote.Exploring) > 0 {
 						// Empty the corresponding reward bank without breaking conservation.
-						// Resource shortages still reject atomically; empty coins now
-						// use ledger credits without concealing a legal destination.
+						// Ordinary resources stay finite; discovery still completes.
+						// Empty coins use the separately authorized ledger credits.
 						bad := clone(*s)
 						hidden := x.Board.Hidden[slices.IndexFunc(x.Board.Hidden, func(h catanExplorerHidden) bool { return h.Tile == quote.Exploring[0] })]
 						if hidden.Resource < 5 {
@@ -255,7 +255,20 @@ func TestCatanExplorerCityFlowDiscoveryAtomicAndCommoditySafe(t *testing.T) {
 						}
 						explorerCityFlowRestore(t, &bad)
 						if hidden.Resource < 5 {
-							explorerCityActionReject(t, &bad, 0, a)
+							beforeGold := slices.Clone(bad.Catan.Explorer.Economy.Gold)
+							// A single endpoint can reveal another sea/mission
+							// tile too; its independent two-gold reward remains.
+							for _, id := range quote.Exploring {
+								for _, face := range bad.Catan.Explorer.Board.Hidden {
+									if face.Tile == id && face.Resource >= 5 {
+										beforeGold[0] += 2
+									}
+								}
+							}
+							explorerCityFlowAct(t, &bad, a)
+							if bad.Catan.Tiles[hidden.Tile].Resource != hidden.Resource || bad.Catan.Bank[hidden.Resource] != 0 || !bad.Catan.Explorer.Fleet.Turn.Ships[0].Closed || !slices.Equal(beforeGold, bad.Catan.Explorer.Economy.Gold) {
+								t.Fatal("resource shortage blocked discovery or minted substitute coins")
+							}
 						} else {
 							explorerCityFlowAct(t, &bad, a)
 							if bad.Catan.Explorer.Economy.GoldIssued == 0 {

@@ -376,95 +376,207 @@ func TestCatanExplorerWorldDiscoveryCanImmediatelyFoundSettlement(t *testing.T) 
 	}
 }
 
-func TestCatanExplorerWorldResourceDiscoveryFailureRollsBackMove(t *testing.T) {
-	g, x, err := newCatanExplorerLandHoWorld(3)
-	if err != nil {
-		t.Fatal(err)
+func TestCatanExplorerWorldResourceDiscoveryLimitedSupply(t *testing.T) {
+	for n := 2; n <= 4; n++ {
+		for resource := 0; resource < 5; resource++ {
+			for stock := 0; stock <= 1; stock++ {
+				t.Run(fmt.Sprintf("players%d/resource%d/stock%d", n, resource, stock), func(t *testing.T) {
+					g, x, err := newCatanExplorerLandHoWorld(n)
+					if err != nil {
+						t.Fatal(err)
+					}
+					// Find a single legal sea step from no-fog contact to a hidden tile.
+					// Relocating the ship before that step is an explicit midgame fixture.
+					from, to := -1, -1
+					contacts := []int{}
+					for _, a := range g.Edges {
+						if !catanExplorerSeaEdge(g, a.ID) {
+							continue
+						}
+						safe := true
+						for _, h := range x.Board.Hidden {
+							if catanExplorerTouches(g, a.ID, h.Tile) {
+								safe = false
+							}
+						}
+						if !safe {
+							continue
+						}
+						for _, b := range g.Edges {
+							if !catanExplorerSeaEdge(g, b.ID) || !catanExplorerAdjacentEdges(a, b) {
+								continue
+							}
+							ids := []int{}
+							for _, h := range x.Board.Hidden {
+								if catanExplorerTouches(g, b.ID, h.Tile) {
+									ids = append(ids, h.Tile)
+								}
+							}
+							if len(ids) == 1 {
+								from, to, contacts = a.ID, b.ID, ids
+								break
+							}
+						}
+						if from >= 0 {
+							break
+						}
+					}
+					if from < 0 {
+						t.Fatal("missing exploration geometry")
+					}
+					slices.Sort(contacts)
+					// Swap within the same region, preserving physical inventory.
+					for _, tile := range contacts {
+						index := -1
+						for i, h := range x.Board.Hidden {
+							if h.Tile == tile {
+								index = i
+							}
+						}
+						other := -1
+						for i, h := range x.Board.Hidden {
+							if h.Region == x.Board.Hidden[index].Region && h.Resource == resource {
+								other = i
+								break
+							}
+						}
+						if other < 0 {
+							t.Fatal("missing unique regional resource")
+						}
+						x.Board.Hidden[index].Resource, x.Board.Hidden[other].Resource = x.Board.Hidden[other].Resource, x.Board.Hidden[index].Resource
+					}
+					x.Fleet.Positions[0] = from
+					sequence := explorerWorldTurn(t, g, x, 0, true)
+					// Explicit stock boundary: move all but stock cards to the opponent.
+					for p := range g.Players {
+						g.Bank[resource] += g.Players[p].Resources[resource]
+						g.Players[p].Resources[resource] = 0
+					}
+					g.Players[1].Resources[resource], g.Bank[resource] = 19-stock, stock
+					if err = x.validate(g); err != nil {
+						t.Fatal(err)
+					}
+					gold := slices.Clone(x.Economy.Gold)
+					result, err := x.sail(g, 0, sequence, 0, []int{to})
+					if err != nil {
+						t.Fatal(err)
+					}
+					if len(result.Discoveries) != 1 || result.Discoveries[0].Resource != resource || result.Discoveries[0].Resources[resource] != stock || result.Discoveries[0].Gold != 0 {
+						t.Fatal("wrong limited-supply reward", result.Discoveries)
+					}
+					if x.Fleet.Positions[0] != to || g.Tiles[contacts[0]].Resource != resource || !x.Fleet.Turn.Ships[0].Closed || len(x.Fleet.Turn.Exploring) != 0 {
+						t.Fatal("empty reward blocked reveal, number draw or ship stop")
+					}
+					if g.Bank[resource] != 0 || g.Players[0].Resources[resource] != stock || !slices.Equal(gold, x.Economy.Gold) {
+						t.Fatal("shortage minted cards or compensated with coins")
+					}
+					explorerWorldRestore(t, g, x)
+					// Returning a card later must not retroactively award the discovery.
+					g.Players[1].Resources[resource]--
+					g.Bank[resource]++
+					explorerWorldReject(t, g, x, func() error { _, err := x.sail(g, 0, sequence, 0, []int{to}); return err })
+					explorerWorldRestore(t, g, x)
+				})
+			}
+		}
 	}
-	// Find a single legal sea step from no-fog contact to a hidden tile.
-	// Relocating the ship before that step is an explicit midgame fixture.
-	from, to := -1, -1
-	contacts := []int{}
-	for _, a := range g.Edges {
-		if !catanExplorerSeaEdge(g, a.ID) {
+}
+
+func TestCatanExplorerWorldBuildDiscoveryEmptyResource(t *testing.T) {
+	g, x, _, edge := explorerWorldBuildDiscoveryFixture(t)
+	// Preserve the regional inventory while assigning an ordinary reward not
+	// replenished by this ship's wood/wool payment at the contacted fog tip.
+	tile, color := -1, -1
+	for i, h := range x.Board.Hidden {
+		if h.Revealed || !catanExplorerTouches(g, edge, h.Tile) {
 			continue
 		}
-		safe := true
-		for _, h := range x.Board.Hidden {
-			if catanExplorerTouches(g, a.ID, h.Tile) {
-				safe = false
-			}
-		}
-		if !safe {
-			continue
-		}
-		for _, b := range g.Edges {
-			if !catanExplorerSeaEdge(g, b.ID) || !catanExplorerAdjacentEdges(a, b) {
-				continue
-			}
-			ids := []int{}
-			for _, h := range x.Board.Hidden {
-				if catanExplorerTouches(g, b.ID, h.Tile) {
-					ids = append(ids, h.Tile)
-				}
-			}
-			if len(ids) == 1 {
-				from, to, contacts = a.ID, b.ID, ids
+		for j, other := range x.Board.Hidden {
+			if !other.Revealed && other.Region == h.Region && slices.Contains([]int{1, 3, 4}, other.Resource) {
+				x.Board.Hidden[i].Resource, x.Board.Hidden[j].Resource = x.Board.Hidden[j].Resource, x.Board.Hidden[i].Resource
+				tile, color = h.Tile, other.Resource
 				break
 			}
 		}
-		if from >= 0 {
+		if tile >= 0 {
 			break
 		}
 	}
-	if from < 0 {
-		t.Fatal("missing exploration geometry")
+	if tile < 0 {
+		t.Fatal("no ordinary resource in contacted region")
 	}
-	slices.Sort(contacts)
-	// Assign brick by a swap within its region, preserving physical inventory.
-	for _, tile := range contacts {
-		index := -1
-		for i, h := range x.Board.Hidden {
-			if h.Tile == tile {
-				index = i
-			}
-		}
-		other := -1
-		for i, h := range x.Board.Hidden {
-			if h.Region == x.Board.Hidden[index].Region && h.Resource == 1 {
-				other = i
-				break
-			}
-		}
-		if other < 0 {
-			t.Fatal("missing unique regional resource")
-		}
-		x.Board.Hidden[index].Resource, x.Board.Hidden[other].Resource = x.Board.Hidden[other].Resource, x.Board.Hidden[index].Resource
-	}
-	x.Fleet.Positions[0] = from
-	sequence := explorerWorldTurn(t, g, x, 0, true)
-	// Every brick is in one hand: the discovery cannot finish. Its movement,
-	// revealed terrain and regional number draw must all roll back together.
-	for p := range g.Players {
-		g.Bank[1] += g.Players[p].Resources[1]
-		g.Players[p].Resources[1] = 0
-	}
-	g.Players[1].Resources[1], g.Bank[1] = 19, 0
-	if err = x.validate(g); err != nil {
+	g.Players[1].Resources[color] += g.Bank[color]
+	g.Bank[color] = 0
+	if err := x.validate(g); err != nil {
 		t.Fatal(err)
 	}
-	explorerWorldReject(t, g, x, func() error { _, err := x.sail(g, 0, sequence, 0, []int{to}); return err })
-	if x.Fleet.Positions[0] != from || g.Tiles[contacts[0]].Resource != CatanFog {
-		t.Fatal("failed reward leaked reveal or move")
-	}
-	g.Players[1].Resources[1]--
-	g.Bank[1]++
-	result, err := x.sail(g, 0, sequence, 0, []int{to})
+	before := slices.Clone(g.Players[0].Resources)
+	awards, err := x.buildShip(g, 0, 1, 1, edge)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(result.Discoveries) != 1 || result.Discoveries[0].Resource != 1 {
-		t.Fatal("retry should complete the original reward once")
+	found := false
+	before[0]--
+	before[2]--
+	for _, a := range awards {
+		if a.Tile == tile {
+			found = true
+			if sum(a.Resources) != 0 || a.Gold != 0 {
+				t.Fatal("empty ordinary pile paid reward")
+			}
+		}
+		for r, n := range a.Resources {
+			before[r] += n
+		}
+	}
+	if !found || !slices.Equal(before, g.Players[0].Resources) || g.Bank[color] != 0 || !slices.Contains(x.Cargo.Turn.BuildStopped, 1) || x.Fleet.Positions[1] != edge {
+		t.Fatal("construction discovery was not completed")
 	}
 	explorerWorldRestore(t, g, x)
+	if err = x.Cargo.beginMovement(g, x.Fleet, 0, 1, 0); err != nil {
+		t.Fatal(err)
+	}
+	if !x.Fleet.Turn.Ships[1].Closed || x.Fleet.Turn.Ships[1].Remaining != 0 {
+		t.Fatal("new exploring ship regained movement")
+	}
+	explorerWorldReject(t, g, x, func() error { _, e := x.buildShip(g, 0, 1, 1, edge); return e })
+}
+
+func TestCatanExplorerWorldDiscoveryBatchUsesLastCardOnce(t *testing.T) {
+	// Direct discovery-controller boundary: two different ordinary tiles and a
+	// sea are processed together; this does not claim one voyage contacts them.
+	for color := 0; color < 5; color++ {
+		t.Run(fmt.Sprint(color), func(t *testing.T) {
+			g, x, err := newCatanExplorerLandHoWorld(3)
+			if err != nil {
+				t.Fatal(err)
+			}
+			explorerWorldTurn(t, g, x, 0, true)
+			tiles := []int{}
+			sea := -1
+			for _, h := range x.Board.Hidden {
+				if h.Resource == color && len(tiles) < 2 {
+					tiles = append(tiles, h.Tile)
+				}
+				if h.Resource == CatanSea {
+					sea = h.Tile
+				}
+			}
+			if len(tiles) != 2 || sea < 0 {
+				t.Fatal("missing batch components")
+			}
+			tiles = append(tiles, sea)
+			g.Players[1].Resources[color] += g.Bank[color] - 1
+			g.Bank[color] = 1
+			before, gold := g.Players[0].Resources[color], x.Economy.Gold[0]
+			awards, err := x.discover(g, 0, tiles)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(awards) != 3 || awards[0].Resources[color] != 1 || sum(awards[1].Resources) != 0 || awards[1].Gold != 0 || awards[2].Gold != 2 || g.Bank[color] != 0 || g.Players[0].Resources[color] != before+1 || x.Economy.Gold[0] != gold+2 {
+				t.Fatal("batch shortage skipped another reward or paid twice")
+			}
+			explorerWorldRestore(t, g, x)
+		})
+	}
 }

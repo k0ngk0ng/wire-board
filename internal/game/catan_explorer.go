@@ -147,7 +147,11 @@ func (s *State) catanExplorerRoll(dice [2]int) error {
 
 func (s *State) catanExplorerDiscoverLog(player int, awards []catanExplorerDiscovery) {
 	for _, a := range awards {
-		s.catanLog(player, "探索地块 #%d，获得 %s", a.Tile+1, catanTradeText(a.Resources, a.Gold))
+		if a.Resource >= 0 && a.Resource < 5 && sum(a.Resources) == 0 {
+			s.catanLog(player, "探索地块 #%d，%s库存为空，未领取探索资源", a.Tile+1, CatanResources[a.Resource])
+		} else {
+			s.catanLog(player, "探索地块 #%d，获得 %s", a.Tile+1, catanTradeText(a.Resources, a.Gold))
+		}
 	}
 }
 

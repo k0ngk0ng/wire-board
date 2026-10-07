@@ -227,12 +227,15 @@ func (x *catanExplorer) discover(g *Catan, player int, tiles []int) ([]catanExpl
 		}
 		award := catanExplorerDiscovery{Tile: tile, Resource: hidden.Resource, Number: hidden.Number, Resources: make([]int, 5)}
 		if hidden.Resource >= 0 && hidden.Resource < 5 {
-			if g.Bank[hidden.Resource] == 0 {
-				return nil, errors.New("探索资源银行耗尽的官方奖励规则尚未核对，不能部分揭示或领奖")
+			// Inherit finite resource supply: an empty bank cannot pay this
+			// reward, but mandatory discovery still reveals and stops the ship.
+			// The two-gold alternative is for terrain without a resource type,
+			// not a substitute for an exhausted ordinary-resource pile.
+			if g.Bank[hidden.Resource] > 0 {
+				g.Bank[hidden.Resource]--
+				g.Players[player].Resources[hidden.Resource]++
+				award.Resources[hidden.Resource] = 1
 			}
-			g.Bank[hidden.Resource]--
-			g.Players[player].Resources[hidden.Resource]++
-			award.Resources[hidden.Resource] = 1
 		} else if hidden.Resource == CatanSea || hidden.Resource == CatanGold && x.Lairs != nil || hidden.Farm != "" && x.Spice != nil {
 			if hidden.Resource == CatanGold {
 				if err := x.Lairs.discover(g, x.Board, tile); err != nil {
