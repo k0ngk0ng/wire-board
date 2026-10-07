@@ -2021,7 +2021,9 @@ function Create({
                             ? catanOptions.fiveSix
                               ? 5
                               : catanSeaKnights ||
-                                  catanScenario === "cities-knights"
+                                  ["cities-knights", "fishing"].includes(
+                                    catanScenario,
+                                  )
                                 ? 3
                                 : 2
                             : 2,
@@ -2156,7 +2158,9 @@ function Create({
                               ? 5
                               : catanOptions.fiveSix ||
                                   catanSeaKnights ||
-                                  catanScenario === "cities-knights"
+                                  ["cities-knights", "fishing"].includes(
+                                    catanScenario,
+                                  )
                                 ? 2
                                 : 3
                             : k === "rail"
@@ -2173,7 +2177,9 @@ function Create({
                           ? catanOptions.fiveSix
                             ? 5
                             : catanSeaKnights ||
-                                catanScenario === "cities-knights"
+                                ["cities-knights", "fishing"].includes(
+                                  catanScenario,
+                                )
                               ? 3
                               : 2
                           : 2),

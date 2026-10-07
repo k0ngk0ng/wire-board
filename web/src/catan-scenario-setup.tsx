@@ -19,6 +19,12 @@ const scenarios = [
     name: "探索者与海盗 · 初航",
     description: "印刷开局，装载移民并航行探索新岛，8 分获胜；支持两至四人。",
   },
+  {
+    id: "fishing",
+    name: "卡坦渔夫",
+    description:
+      "湖泊与海岸渔场产鱼，花费鱼筹码换取行动；10分获胜，持有旧靴者需多1分。三至四人。",
+  },
   { id: "", name: "基础版", description: "采集资源、贸易和建设，10 分获胜。" },
   {
     id: "rivers",
@@ -166,6 +172,7 @@ export function CatanScenarioPicker({
               disabled={
                 (helpers &&
                   [
+                    "fishing",
                     "rivers",
                     "caravans",
                     "cities-knights",

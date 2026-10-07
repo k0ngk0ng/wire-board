@@ -5,6 +5,8 @@ import (
 	"slices"
 )
 
+const CatanFishingRules = "catan-fishing-2025"
+
 type CatanFishing struct {
 	WorldSetup *CatanFishingWorldSetup `json:"worldSetup,omitempty"`
 	Map        catanFishingMap         `json:"map"`
@@ -22,8 +24,8 @@ type CatanFishingPending struct {
 	Gold []int `json:"gold,omitempty"`
 }
 
-// Internal constructor: no room configuration exposes Fishing until artwork,
-// UI and full scenario/combination acceptance are ready.
+// Standalone Fishing is exposed for three/four players. Extended and combined
+// recipes retain separate configuration and component acceptance gates.
 func NewCatanFishing(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")
