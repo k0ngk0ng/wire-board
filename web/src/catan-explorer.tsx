@@ -108,11 +108,13 @@ export function CatanExplorerBoard({
   act,
   busy,
   assets,
+  resetOpening,
 }: {
   room: Room;
   act: Act;
   busy: boolean;
   assets: string;
+  resetOpening?: () => Promise<void>;
 }) {
   const game = room.game!,
     g = game.catan!,
@@ -133,6 +135,14 @@ export function CatanExplorerBoard({
   const [goldGive, setGoldGive] = useState(0),
     [goldTake, setGoldTake] = useState(0);
   const [error, setError] = useState("");
+  const [confirmReset, setConfirmReset] = useState(false);
+  const canReset =
+    !!resetOpening &&
+    !!x.setupBlocked &&
+    room.status === "playing" &&
+    !room.spectating &&
+    room.seats[you]?.id === room.host;
+  useEffect(() => setConfirmReset(false), [room.id, room.version, canReset]);
   useEffect(() => {
     setPick(null);
     setMode("");
@@ -910,6 +920,54 @@ export function CatanExplorerBoard({
             >
               确认归还 {total(discard)}/{due}
             </button>
+          </section>
+        )}
+        {x.setupBlocked && (
+          <section className="explorer-notice" role="status">
+            <strong>开局暂时无法继续</strong>
+            <p>当前已没有合法放置位置，需要房主重新布置起始棋子。</p>
+            {canReset && (
+              <button disabled={busy} onClick={() => setConfirmReset(true)}>
+                重新布置开局
+              </button>
+            )}
+          </section>
+        )}
+        {canReset && confirmReset && (
+          <section
+            className="explorer-confirm"
+            role="dialog"
+            aria-label="重新布置开局"
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setConfirmReset(false);
+            }}
+          >
+            <strong>重新摆放所有起始棋子？</strong>
+            <p>
+              所有玩家已放置的起始棋子将收回，由原先手重新开始摆放。地图、先手顺序和隐藏牌堆保持不变。
+            </p>
+            <div className="explorer-confirm-actions">
+              <button disabled={busy} onClick={() => setConfirmReset(false)}>
+                取消
+              </button>
+              <button
+                disabled={busy}
+                onClick={async () => {
+                  if (busy || !resetOpening) return;
+                  setError("");
+                  try {
+                    await resetOpening();
+                    setConfirmReset(false);
+                  } catch (e) {
+                    setError(
+                      e instanceof Error ? e.message : "重新布置失败，请重试",
+                    );
+                  }
+                }}
+              >
+                确认重新布置
+              </button>
+            </div>
           </section>
         )}
         {x.setup && (

@@ -86,7 +86,7 @@ type Room struct {
 const turnLimit = 120 * time.Second
 
 func (r *Room) startTurnClock(now time.Time) {
-	if r.Status == "playing" {
+	if r.Status == "playing" && !r.Game.CatanExplorerSetupBlocked() {
 		r.TurnDeadline = now.Add(turnLimit).UnixMilli()
 		if r.Game != nil && r.Game.Sanguosha != nil {
 			r.SGTimeLeft = turnLimit.Milliseconds()
@@ -238,6 +238,9 @@ func (s *Server) runTimers(ctx context.Context) {
 func (s *Server) expireSetups(now time.Time) {
 	for id, room := range s.rooms {
 		if room.Status != "playing" || room.Game == nil || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() {
+			continue
+		}
+		if room.Game.CatanExplorerSetupBlocked() {
 			continue
 		}
 		railSetup := room.Game.Rail != nil && room.Game.Rail.Setup
@@ -869,6 +872,16 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Seats = append(next.Seats[:target], next.Seats[target+1:]...)
+	case "catan_explorer_reset":
+		if next.Host != u.ID || next.Status != "playing" || next.Game == nil || next.Seats[idx].Left {
+			err = errors.New("只有房主能重新布置卡住的开局")
+			break
+		}
+		err = next.Game.ResetCatanExplorerSetup()
+		if err == nil {
+			next.CatanTimeLeft, next.CatanPendingVersion, next.CatanTradeVersion = 0, 0, 0
+			next.startTurnClock(now)
+		}
 	case "catan_friendly_robber":
 		if next.Host != u.ID || next.CatanFriendlyRobber == nil || req.CatanFriendlyRobber == nil {
 			err = errors.New("只有房主能在已启用友善强盗设置的房间调整变体")

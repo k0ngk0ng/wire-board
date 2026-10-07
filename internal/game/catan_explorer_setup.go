@@ -8,12 +8,16 @@ import (
 // Official E&P 2025 variable setup (mission guide p9). Independent of the
 // printed Land Ho opening. Private until full lair state/recipe acceptance.
 type catanExplorerSetup struct {
+	PromptBase    int   `json:"promptBase,omitempty"`
 	CitiesKnights bool  `json:"citiesKnights,omitempty"`
 	Start         int   `json:"start"`
 	Step          int   `json:"step"`
 	Harbors       []int `json:"harbors"`
 	Settlements   []int `json:"settlements"`
 }
+
+func (s catanExplorerSetup) prompt() int { return s.PromptBase + s.Step + 1 }
+
 type catanExplorerSetupStep struct {
 	Player int    `json:"player"`
 	Owner  int    `json:"owner"`
@@ -156,6 +160,9 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 		count += 2
 	}
 	plan := s.plan(n)
+	if s.PromptBase < 0 || s.PromptBase > int(^uint(0)>>1)-2*len(plan)-2 {
+		return errors.New("开局操作序号无效")
+	}
 	if len(s.Harbors) != count || len(s.Settlements) != count || s.Step < 0 || s.Step > len(plan) {
 		return errors.New("开局记录长度或步骤无效")
 	}
@@ -335,7 +342,7 @@ func (s *catanExplorerSetup) place(g *Catan, b *catanExplorerBoard, f *catanExpl
 		return err
 	}
 	step := s.current(len(g.Players))
-	if step == nil || player != step.Player || prompt != s.Step+1 || kind != step.Kind || !slices.Contains(s.choices(g, b, f), target) {
+	if step == nil || player != step.Player || prompt != s.prompt() || kind != step.Kind || !slices.Contains(s.choices(g, b, f), target) {
 		return errors.New("不是当前开局玩家、步骤或合法放置位置")
 	}
 	base := *g

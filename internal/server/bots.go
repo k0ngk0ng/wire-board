@@ -102,6 +102,9 @@ func (s *Server) runBots(now time.Time) {
 		if room.Status != "playing" || room.Game == nil || room.BotAt > now.UnixMilli() {
 			continue
 		}
+		if room.Game.CatanExplorerSetupBlocked() {
+			continue
+		}
 		player := room.Game.Turn
 		if room.Game.Dota != nil {
 			player = -1
