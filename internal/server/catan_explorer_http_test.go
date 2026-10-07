@@ -305,7 +305,7 @@ func TestCatanExplorerHTTPAutoplayMovement(t *testing.T) {
 	}
 }
 
-func TestCatanExplorerHTTPTimeoutDeparture(t *testing.T) {
+func TestCatanExplorerHTTPLegacyDepartureRecovery(t *testing.T) {
 	for _, n := range []int{2, 3} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts, clients, id := newExplorerHTTP(t, n, false)
@@ -322,7 +322,6 @@ func TestCatanExplorerHTTPTimeoutDeparture(t *testing.T) {
 			s.mu.Unlock()
 			target := r.Seats[actor].ID
 			kick(clients[other], current(clients[other]), target, 400)
-			expireTurn(t, s, id)
 			before, _ := json.Marshal(s.rooms[id])
 			kick(clients[n], current(clients[n]), target, 400)
 			kick(clients[actor], current(clients[actor]), target, 400)
@@ -332,7 +331,7 @@ func TestCatanExplorerHTTPTimeoutDeparture(t *testing.T) {
 				t.Fatal("invalid kick mutated room")
 			}
 			old := r.Game.Catan
-			kick(clients[other], current(clients[other]), target, 200)
+			legacyCatanDeparture(t, s, id, actor)
 			r = s.rooms[id]
 			g := r.Game.Catan
 			x := g.Explorer

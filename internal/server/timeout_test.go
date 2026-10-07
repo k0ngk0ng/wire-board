@@ -26,59 +26,27 @@ func kick(c *testClient, r map[string]any, target string, want int) {
 	}, want)
 }
 
-func TestTimeoutAuthorizationHostTransferAndContinuation(t *testing.T) {
-	s, ts := setupServer(t)
-	a, b, c, outsider := newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL)
-	for i, client := range []*testClient{a, b, c, outsider} {
-		client.register([]string{"Alice", "Bobby", "Carol", "David"}[i])
-	}
-	r := a.post("/api/rooms", map[string]any{"name": "Timed game", "kind": "splendor", "capacity": 3}, 201)
-	b.command(r, "join", nil, 200)
-	c.command(current(a), "join", nil, 200)
-	for _, client := range []*testClient{a, b, c} {
-		client.command(current(client), "ready", nil, 200)
-	}
-	a.command(current(a), "start", nil, 200)
-	r = current(a)
-	id := r["id"].(string)
-	aID := a.state()["user"].(map[string]any)["id"].(string)
-	bID := b.state()["user"].(map[string]any)["id"].(string)
-	deadline := int64(r["turnDeadline"].(float64))
-	if remaining := time.Until(time.UnixMilli(deadline)); remaining > 120*time.Second || remaining < 118*time.Second {
-		t.Fatal("incorrect turn limit", remaining)
-	}
-	kick(b, r, aID, 400) // Before timeout.
-	if current(a)["version"] != r["version"] {
-		t.Fatal("rejected kick changed state")
-	}
+func TestTimeoutAutoplayPreservesHostAndSeat(t *testing.T) {
+	s, _, clients, id := autoPlayTable(t, "splendor")
+	a, b := clients[0], clients[1]
+	r := current(a)
+	userID := s.rooms[id].Seats[0].ID
+	kick(b, r, userID, 400)
 	expireTurn(t, s, id)
-	kick(outsider, r, aID, 400)
-	kick(a, r, aID, 400)
-	kick(b, r, bID, 400)
-	kick(b, current(b), aID, 200)
-	if _, ok := a.state()["room"]; ok {
-		t.Fatal("kicked user retained room access")
+	s.mu.Lock()
+	s.expireSetups(time.Now())
+	s.mu.Unlock()
+	r = current(a)
+	if r["host"] != userID || r["status"] != "playing" || s.rooms[id].Seats[0].Left || !s.rooms[id].Seats[0].AutoPlay || s.rooms[id].Game.Turn != 1 {
+		t.Fatal("timeout removed human or failed to continue")
 	}
-	r = current(b)
-	if r["status"] != "playing" || r["host"] != bID || r["you"] != float64(1) {
-		t.Fatal("host or seat changed incorrectly", r)
-	}
-	if r["game"].(map[string]any)["turn"] != float64(1) || int64(r["turnDeadline"].(float64)) <= time.Now().UnixMilli() {
-		t.Fatal("next turn did not start")
-	}
-	a.command(r, "action", map[string]any{"type": "reserve", "tier": 1}, 400)
-	a.command(r, "join", nil, 400)
-	b.command(r, "action", map[string]any{"type": "reserve", "tier": 1}, 200)
-	c.command(current(c), "action", map[string]any{"type": "reserve", "tier": 1}, 200)
-	if current(b)["game"].(map[string]any)["turn"] != float64(1) {
-		t.Fatal("rotation did not skip departed seat")
-	}
-	// A non-host cannot end the game; preserve the existing host-only behavior.
-	c.command(current(c), "close", nil, 400)
-	b.command(current(b), "close", nil, 200)
-	if current(b)["status"] != "closed" || current(b)["turnDeadline"] != float64(0) {
-		t.Fatal("host could not close game")
-	}
+	kick(b, current(b), userID, 400)
+	a.command(current(a), "action", map[string]any{"type": "reserve", "tier": 1}, 400)
+	setAutoPlay(a, current(a), false, 200)
+	b.command(current(b), "action", map[string]any{"type": "reserve", "tier": 1}, 200)
+	a.command(current(a), "action", map[string]any{"type": "reserve", "tier": 1}, 200)
+	b.command(current(b), "close", nil, 400)
+	a.command(current(a), "close", nil, 200)
 }
 
 func TestTimeoutClockDoesNotResetDuringSubstepsOrRestart(t *testing.T) {
@@ -118,22 +86,23 @@ func TestTimeoutClockDoesNotResetDuringSubstepsOrRestart(t *testing.T) {
 	if string(before) != string(after) {
 		t.Fatal("restart changed deadline or game")
 	}
-	aID := a.state()["user"].(map[string]any)["id"].(string)
-	kick(b, current(b), aID, 200)
-	r = current(b)
-	if r["status"] != "finished" || r["turnDeadline"] != float64(0) {
-		t.Fatal("two-player timeout did not finish game")
+	restarted.mu.Lock()
+	restarted.expireSetups(time.Now())
+	restarted.mu.Unlock()
+	r = current(a)
+	if r["status"] != "playing" || !restarted.rooms[id].Seats[0].AutoPlay || restarted.rooms[id].Seats[0].Left || restarted.rooms[id].Game.Turn != 1 {
+		t.Fatal("expired noble selection did not preserve the player")
 	}
-	if winners := r["game"].(map[string]any)["winners"].([]any); len(winners) != 1 || winners[0] != float64(1) {
-		t.Fatal("incorrect survivor winner")
+	setAutoPlay(a, r, false, 200)
+	a.command(current(a), "close", nil, 200)
+	a.command(current(a), "rematch", nil, 200)
+	if restarted.rooms[id].Seats[0].AutoPlay || restarted.rooms[id].Seats[0].TimeoutAutoPlay || len(restarted.rooms[id].Seats) != 2 {
+		t.Fatal("rematch retained control flag or lost a seat")
 	}
-	b.command(r, "rematch", nil, 200)
-	if current(b)["turnDeadline"] != float64(0) || len(current(b)["seats"].([]any)) != 1 {
-		t.Fatal("rematch retained deadline or eliminated seat")
-	}
+
 }
 
-func TestLateActionWinsRaceAgainstStaleKick(t *testing.T) {
+func TestExpiredActionCannotRacePastAutomaticTakeover(t *testing.T) {
 	s, ts := setupServer(t)
 	a, b := newClient(t, ts.URL), newClient(t, ts.URL)
 	a.register("Alice")
@@ -141,10 +110,10 @@ func TestLateActionWinsRaceAgainstStaleKick(t *testing.T) {
 	r := startRoom(t, a, b, "splendor")
 	expireTurn(t, s, r["id"].(string))
 	aID := a.state()["user"].(map[string]any)["id"].(string)
-	a.command(r, "action", map[string]any{"type": "reserve", "tier": 1}, 200)
+	a.command(r, "action", map[string]any{"type": "reserve", "tier": 1}, 409)
 	kick(b, r, aID, 409)
 	if current(a)["game"].(map[string]any)["turn"] != float64(1) {
-		t.Fatal("late action did not safely complete")
+		t.Fatal("takeover did not safely complete")
 	}
 }
 
@@ -204,10 +173,13 @@ func TestRailSharedSetupVersionAndTurnDeadline(t *testing.T) {
 		t.Fatal("first draw reset deadline")
 	}
 	expireTurn(t, s, id)
-	kick(b, current(b), a.state()["user"].(map[string]any)["id"].(string), 200)
-	if current(b)["status"] != "finished" {
-		t.Fatal("timeout did not award survivor")
+	s.mu.Lock()
+	s.expireSetups(time.Now())
+	s.mu.Unlock()
+	if s.rooms[id].Status != "playing" || s.rooms[id].Game.Turn != 1 || !s.rooms[id].Seats[0].AutoPlay || s.rooms[id].Seats[1].AutoPlay {
+		t.Fatal("second draw did not continue under the original player's control")
 	}
+
 }
 
 func TestRailSetupExpiresWithoutConnectedClients(t *testing.T) {

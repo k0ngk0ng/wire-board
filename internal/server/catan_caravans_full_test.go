@@ -261,6 +261,7 @@ func TestCatanCaravansCompleteHTTPGames(t *testing.T) {
 						t.Fatal("timeout stalled", steps, state.Phase)
 					}
 					timeouts++
+					reclaimTimeoutHumans(t, s, clients, id)
 					if pending {
 						modes["timeout"]++
 					}

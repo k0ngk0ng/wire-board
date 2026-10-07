@@ -82,6 +82,7 @@ func TestCatanCaravansHTTPVotingClocksAndRestart(t *testing.T) {
 							s.rooms[id].TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
 							s.expireSetups(time.Now())
 							s.mu.Unlock()
+							reclaimTimeoutHumans(t, s, clients, id)
 						}
 					}
 					steps++
@@ -121,6 +122,7 @@ func TestCatanCaravansHTTPVotingClocksAndRestart(t *testing.T) {
 						s.rooms[id].TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
 						s.expireSetups(time.Now())
 						s.mu.Unlock()
+						reclaimTimeoutHumans(t, s, clients, id)
 					}
 					r = s.rooms[id]
 					if r.Game.CatanPendingActor() >= 0 || r.Game.Catan.Paired.Second || r.Game.Turn != 1 || r.Game.Phase != "catan_roll" || len(r.Game.Catan.Caravans.Wagons) != 2 {

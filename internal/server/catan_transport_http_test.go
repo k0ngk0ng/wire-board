@@ -186,7 +186,7 @@ func TestCatanTransportHTTPAutomaticMovement(t *testing.T) {
 					s.rooms[id].BotAt = 0
 					s.runBots(now)
 				} else {
-					now = time.UnixMilli(deadline)
+					now = time.UnixMilli(max(deadline, s.rooms[id].BotAt))
 					s.expireSetups(now)
 				}
 				s.mu.Unlock()
@@ -291,7 +291,7 @@ func TestCatanTransportTwoHTTPResponseAutomation(t *testing.T) {
 					s.runBots(now)
 					s.mu.Unlock()
 				case "timeout":
-					now = time.UnixMilli(deadline)
+					now = time.UnixMilli(max(deadline, s.rooms[id].BotAt))
 					s.mu.Lock()
 					s.expireSetups(now)
 					s.mu.Unlock()

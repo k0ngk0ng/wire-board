@@ -116,6 +116,7 @@ func testCatanBaseFullHTTPGames(t *testing.T, harbors, friendly bool) {
 								t.Fatal("pending timeout failed", state.Phase)
 							}
 							timeouts++
+							reclaimTimeoutHumans(t, s, clients, id)
 							continue
 						}
 					}

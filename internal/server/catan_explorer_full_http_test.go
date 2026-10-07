@@ -211,7 +211,7 @@ func TestCatanExplorerFullHTTPResponseClocksAndReplay(t *testing.T) {
 						r.BotAt = 0
 						s.runBots(now)
 					} else {
-						now = time.UnixMilli(originalDeadline)
+						now = time.UnixMilli(max(originalDeadline, s.rooms[id].BotAt))
 						s.expireSetups(now)
 					}
 					s.mu.Unlock()

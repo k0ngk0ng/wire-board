@@ -98,6 +98,7 @@ func TestCatanNewWorldFullHTTPGames(t *testing.T) {
 							t.Fatal("timeout did not advance", state.Phase)
 						}
 						timeouts++
+						reclaimTimeoutHumans(t, s, clients, id)
 						continue
 					}
 					if steps%17 == 0 {
@@ -179,7 +180,7 @@ func TestCatanNewWorldPortPermissionAndFreshClock(t *testing.T) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	for index := 1; index < 10; index++ {
-		now := time.Now()
+		now := time.UnixMilli(max(time.Now().UnixMilli(), r.BotAt))
 		r.TurnDeadline = now.Add(-time.Second).UnixMilli()
 		s.expireSetups(now)
 		r = s.rooms[id]

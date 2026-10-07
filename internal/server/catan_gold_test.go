@@ -111,6 +111,19 @@ func TestCatanGoldTimeoutEachClaimantAndHelperChainClock(t *testing.T) {
 	last := later.Add(turnLimit)
 	s.expireSetups(last)
 	r = s.rooms[id]
+	// The computer may accept Hilda and make her exchange as a second action.
+	// That follow-up retains the expired response window and the paused budget.
+	for step := 0; r.Game.Phase == "catan_helper" && step < 3; step++ {
+		if r.TurnDeadline != last.UnixMilli() || r.CatanTimeLeft != 35000 || !r.Seats[2].AutoPlay {
+			t.Fatal("helper follow-up lost its response clock or persistent control")
+		}
+		at := time.UnixMilli(r.BotAt)
+		s.runBots(at)
+		r = s.rooms[id]
+		if r.Game.Phase != "catan_helper" {
+			last = at
+		}
+	}
 	if r.Game.Phase != "catan_turn" || r.Game.CatanPendingActor() != -1 || r.TurnDeadline != last.Add(35*time.Second).UnixMilli() {
 		t.Fatal("timeout chain did not restore original remaining action time")
 	}

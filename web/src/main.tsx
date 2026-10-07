@@ -621,7 +621,7 @@ function App() {
           !previousRoom.current.spectating &&
           !data.room
         ) {
-          setNotice("你已因回合超时被移出本局，可以创建或加入其他房间。");
+          setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
         }
         previousRoom.current = data.room;
         setState({ ...data, receivedAt: performance.now() });
@@ -1236,8 +1236,6 @@ function App() {
                           room={room}
                           serverNow={state.serverNow}
                           receivedAt={state.receivedAt}
-                          busy={busy}
-                          command={roomCommand}
                         />
                       </aside>
                     </div>
@@ -2758,49 +2756,14 @@ function Turn({
   room,
   serverNow,
   receivedAt,
-  busy,
-  command,
 }: {
   room: Room;
   serverNow: number;
   receivedAt: number;
-  busy: boolean;
-  command: (type: string, extra?: Record<string, unknown>) => void;
 }) {
   const g = room.game!;
-  const catanPending =
-    !!g.catan &&
-    (g.catan.setupStep < (g.catan.setupLimit ?? 2 * room.seats.length) ||
-      g.phase === "catan_discard" ||
-      g.phase === "catan_cloth_steal" ||
-      fishResponder(room) !== undefined ||
-      !!g.catan.two?.pending ||
-      !!g.catan.two?.trade ||
-      !!g.catan.caravans?.pending ||
-      !!g.catan.attack?.pending ||
-      !!g.catan.attack?.endPlan ||
-      !!g.catan.cardEvent ||
-      !!g.catan.citiesKnights?.pending ||
-      !!g.catan.helperPending ||
-      !!g.catan.seafarers?.tribe?.pending ||
-      !!g.catan.goldPending ||
-      !!g.catan.seafarers?.pirateIslands?.raid);
   const setup = !!g.rail?.setup;
   const autoPlay = !!room.seats[room.you]?.autoPlay;
-  const turnAutoPlay =
-    !!room.seats[
-      g.sanguosha?.pending?.player ??
-        twoResponder(room) ??
-        caravanResponder(room) ??
-        fishResponder(room) ??
-        g.catan?.cardEvent?.players[0] ??
-        g.catan?.citiesKnights?.pending?.players[0] ??
-        g.catan?.seafarers?.pirateIslands?.raid?.rewards[0] ??
-        g.catan?.seafarers?.tribe?.pending?.player ??
-        g.catan?.helperPending?.player ??
-        g.catan?.goldPending?.claims[0]?.player ??
-        g.turn
-    ]?.autoPlay;
   const sgActor =
     g.sanguosha?.pending?.player ??
     twoResponder(room) ??
@@ -2923,7 +2886,7 @@ function Turn({
             : g.dota
               ? "超时自动托管，回来可随时接管。"
               : setup
-                ? "所有人同时选牌，超时自动保留前两张。"
+                ? "所有人同时选牌，超时由电脑选牌并开启托管。"
                 : mine
                   ? phase[g.phase]
                   : "稍等片刻，想想下一步。"}
@@ -2938,11 +2901,7 @@ function Turn({
             </time>
             <span>
               {expired
-                ? catanPending
-                  ? "正在自动处理"
-                  : setup
-                    ? "正在自动选牌"
-                    : "已超时"
+                ? "电脑正在接管"
                 : g.catan?.attack?.pending || g.catan?.attack?.endPlan
                   ? "蛮族进攻响应 120 秒"
                   : g.phase === "catan_world_fish"
@@ -2974,45 +2933,9 @@ function Turn({
                                             : "每回合 120 秒"}
             </span>
           </div>
-          {expired &&
-            !g.sanguosha &&
-            !g.dota &&
-            !setup &&
-            !catanPending &&
-            !turnAutoPlay && (
-              <p>
-                {room.spectating
-                  ? "该玩家已超时，等待牌桌玩家处理。"
-                  : mine
-                    ? "你已超时，其他玩家可以将你移出。尚未被移出前仍可行动。"
-                    : "该玩家已超时。可以继续等候，或将其移出后继续对局。"}
-              </p>
-            )}
-          {expired &&
-            !g.sanguosha &&
-            !g.dota &&
-            !mine &&
-            !setup &&
-            !catanPending &&
-            !turnAutoPlay &&
-            !room.spectating && (
-              <button
-                className="timeout-kick"
-                disabled={busy}
-                onClick={() => {
-                  const target = room.seats[g.turn];
-                  if (
-                    confirm(
-                      `将超时玩家「${target.name}」移出本局？${g.carcassonne ? "随从收回，已放地块保留；未放地块洗回牌堆。" : g.catan ? "资源归还银行，建筑道路保留但不再生产。" : g.splendor ? "其筹码归还供应区，预留卡洗回牌堆。" : "其列车牌归还弃牌堆，已铺铁路保留。"}剩余玩家继续，若仅剩一人则获胜。`,
-                    )
-                  ) {
-                    command("kick_timeout", { target: target.id });
-                  }
-                }}
-              >
-                移出超时玩家
-              </button>
-            )}
+          {expired && !g.finished && (
+            <p>超时自动开启托管，玩家回来后可随时取消。</p>
+          )}
         </div>
       )}
       {(g.splendor?.lastRound || (g.rail?.lastRemaining ?? -1) >= 0) &&
@@ -4472,7 +4395,7 @@ function RailBoard({
               <p>
                 从这些任务中至少保留 <strong>{r.setup ? 2 : 1}</strong>{" "}
                 张。未完成的任务会在结算时扣分。
-                {r.setup && "所有人同时选择；120 秒后自动保留列表前两张。"}
+                {r.setup && "所有人同时选择；120 秒后由电脑选牌并开启托管。"}
               </p>
               {catalog.map.height > catalog.map.width && (
                 <small className="portrait-ticket-hint">
@@ -4935,7 +4858,7 @@ function Rules({
           </ol>
           <p>
             每回合 120
-            秒，放地块与派随从共用倒计时。超时可由其他玩家移出；随从收回、已放地块保留，未放地块洗回牌堆。剩余一人时获胜。
+            秒，放地块与派随从共用倒计时。超时自动开启电脑托管，可随时取消并继续手动操作。
           </p>
         </>
       ) : kind === "catan" ? (
@@ -4947,7 +4870,7 @@ function Rules({
       )}
       {kind !== "sanguosha" && kind !== "catan" && (
         <p>
-          每回合120秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时后同局其他玩家可移出当前玩家，剩余玩家继续，最后一人获胜。房主可直接结束牌桌。
+          每回合120秒，弃牌、贵族选择和第二次摸牌共用本回合计时。超时自动开启电脑托管，玩家保留席位，可随时取消托管。房主可直接结束牌桌。
         </p>
       )}
       <p className="muted small">

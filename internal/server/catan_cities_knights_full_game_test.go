@@ -154,6 +154,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 						t.Fatal("timeout failed to advance", state.Phase)
 					}
 					timeouts++
+					reclaimTimeoutHumans(t, s, clients, id)
 					continue
 				}
 				if steps%17 == 0 {

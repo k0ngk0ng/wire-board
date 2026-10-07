@@ -148,6 +148,11 @@ func TestCatanAttackCardsHTTPResponsesClockAutoplayTimeoutAndRestart(t *testing.
 							t.Fatal("original action time was not restored", left, remaining)
 						}
 						if mode == "timeout" {
+							if !r.Seats[actor].AutoPlay || !r.Seats[actor].TimeoutAutoPlay {
+								t.Fatal("timeout did not persist computer control")
+							}
+							setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+							r = s.rooms[id]
 							// Return the synthetic future clock to wall time before the next
 							// purchase; do not grant 120 extra seconds to its action phase.
 							s.mu.Lock()

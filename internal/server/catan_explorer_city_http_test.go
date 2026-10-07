@@ -383,7 +383,60 @@ func TestCatanExplorerCityNaturalHTTPMatches(t *testing.T) {
 	}
 }
 
-func TestCatanExplorerCityHTTPTimeoutRemovalAndContinue(t *testing.T) {
+func TestCatanExplorerCityHTTPTimeoutTakeoverAndContinue(t *testing.T) {
+	for _, n := range []int{3, 6} {
+		for _, phase := range []string{"roll", "movement"} {
+			t.Run(fmt.Sprintf("%d/%s", n, phase), func(t *testing.T) {
+				fixture := phase
+				if phase == "movement" {
+					fixture = "action"
+				}
+				s, ts, clients, id := newExplorerCityHTTP(t, n, fixture)
+				actor := s.rooms[id].Game.Turn
+				if phase == "movement" {
+					explorerCityHTTPAction(t, clients, s, id, actor, game.Action{Type: "catan_explorer_begin_move"})
+				}
+				host := s.rooms[id].Host
+				expireTurn(t, s, id)
+				s.mu.Lock()
+				s.expireSetups(time.Now())
+				s.mu.Unlock()
+				r := s.rooms[id]
+				if !r.Seats[actor].AutoPlay || !r.Seats[actor].TimeoutAutoPlay || r.Seats[actor].Left || r.Game.Catan.Players[actor].Eliminated || r.Host != host {
+					t.Fatal("combined game lost the timed out human's seat")
+				}
+				s, ts = restartRiversHTTP(t, s, ts, clients, id)
+				kick(clients[(actor+1)%n], current(clients[(actor+1)%n]), r.Seats[actor].ID, 400)
+				clients[actor].command(current(clients[actor]), "action", game.Action{Type: "catan_end"}, 400)
+				reclaimTimeoutHumans(t, s, clients, id)
+				assertExplorerCityHTTPPrivacy(t, clients, s.rooms[id].Game)
+				serial := s.rooms[id].Game.Catan.TurnSerial
+				for steps := 0; s.rooms[id].Game.Catan.TurnSerial < serial+3; steps++ {
+					if steps > 250 {
+						t.Fatal("reclaimed combined game stalled")
+					}
+					if s.rooms[id].TurnDeadline <= time.Now().UnixMilli() {
+						t.Logf("expired before step=%d phase=%s turn=%d saved=%d actor=%d", steps, s.rooms[id].Game.Phase, s.rooms[id].Game.Turn, s.rooms[id].CatanTimeLeft, actor)
+					}
+					state := s.rooms[id].Game
+					p := state.CatanPendingActor()
+					if p < 0 {
+						p = explorerHTTPActor(state)
+					}
+					a, err := state.BotAction(p)
+					if err != nil {
+						t.Fatal(err)
+					}
+					clients[p].command(current(clients[p]), "action", a, 200)
+				}
+				assertExplorerCityHTTPPrivacy(t, clients, s.rooms[id].Game)
+				_, _ = restartRiversHTTP(t, s, ts, clients, id)
+			})
+		}
+	}
+}
+
+func TestCatanExplorerCityHTTPLegacyDepartureAndContinue(t *testing.T) {
 	for _, n := range []int{3, 6} {
 		for _, phase := range []string{"roll", "movement"} {
 			t.Run(fmt.Sprintf("%d/%s", n, phase), func(t *testing.T) {
@@ -407,29 +460,15 @@ func TestCatanExplorerCityHTTPTimeoutRemovalAndContinue(t *testing.T) {
 				if string(before) != string(after) {
 					t.Fatal("early kick changed room")
 				}
-				s.mu.Lock()
-				r := s.rooms[id]
-				r.TurnDeadline = time.Now().Add(-time.Second).UnixMilli()
-				if err := s.save(r); err != nil {
-					t.Fatal(err)
-				}
-				s.mu.Unlock()
 				s, ts = restartRiversHTTP(t, s, ts, clients, id)
-				before, _ = json.Marshal(s.rooms[id])
 				kick(clients[p], 400)
 				kick(clients[n], 400)
-				after, _ = json.Marshal(s.rooms[id])
-				if string(before) != string(after) {
-					t.Fatal("unauthorized kick changed room")
-				}
-				setAutoPlay(clients[p], current(clients[p]), true, 200)
 				kick(clients[actor], 400)
-				setAutoPlay(clients[p], current(clients[p]), false, 200)
-				kick(clients[actor], 200)
+				legacyCatanDeparture(t, s, id, p)
 				if clients[p].state()["room"] != nil {
 					t.Fatal("kicked player did not return to lobby")
 				}
-				r = s.rooms[id]
+				r := s.rooms[id]
 				g := r.Game.Catan
 				if !r.Seats[p].Left || !g.Players[p].Eliminated || r.Game.Turn == p || r.Status != "playing" || len(g.CitiesKnights.Players[p].Progress) != 0 || g.Explorer.Economy.Gold[p] != 0 || r.CatanTimeLeft != 0 {
 					t.Fatal("timeout removal incomplete")

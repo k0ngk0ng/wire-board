@@ -319,6 +319,7 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 						t.Fatal("timeout stalled", state.Phase)
 					}
 					timeouts++
+					reclaimTimeoutHumans(t, s, clients, id)
 				}
 				wagonAdvanced := state.Catan.Caravans != nil && len(s.rooms[id].Game.Catan.Caravans.Wagons) == len(state.Catan.Caravans.Wagons)+1
 				if pending && !wagonAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {

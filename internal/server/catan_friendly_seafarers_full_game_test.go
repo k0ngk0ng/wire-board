@@ -86,6 +86,7 @@ func TestCatanFriendlySeaConfiguredFullHTTPGames(t *testing.T) {
 							t.Fatal("pending timeout failed", state.Phase)
 						}
 						timeouts++
+						reclaimTimeoutHumans(t, s, clients, id)
 						continue
 					}
 					actor := state.Turn

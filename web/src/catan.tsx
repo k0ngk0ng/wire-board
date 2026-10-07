@@ -2060,7 +2060,7 @@ function CatanBaseBoard({
                 弃牌
               </p>
             )}
-            <small>超时由系统随机弃牌，弃置种类不会公开。</small>
+            <small>超时开启电脑托管并代为弃牌，弃置种类不会公开。</small>
           </section>
         )}
         {mine && phase === "catan_turn" && mode === "trade" && (
