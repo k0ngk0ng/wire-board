@@ -53,6 +53,9 @@ func (x catanExplorer) validate(g *Catan) error {
 	if x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerPirateScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
 		return errors.New("探险地图、航行、货物或经济组件不匹配；其他任务尚未完整接入")
 	}
+	if x.Board.CitiesKnights || g != nil && g.CitiesKnights != nil {
+		return errors.New("探险家与城市骑士组合尚未完成整局控制器验收")
+	}
 	if err := x.Board.validate(g); err != nil {
 		return err
 	}
