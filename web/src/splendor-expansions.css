@@ -151,14 +151,19 @@
   margin: 12px 0;
 }
 .gem-effect-cards > div {
-  width: min(40%, 150px);
+  flex: 0 1 150px;
+  min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
 }
 .gem-effect-cards .dev-card {
-  width: 150px;
-  max-width: 100%;
-  aspect-ratio: 63 / 88;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  aspect-ratio: 5 / 7;
 }
 .gem-effect-tokens {
   display: flex;

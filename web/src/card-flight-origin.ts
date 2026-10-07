@@ -37,6 +37,30 @@ export type CardOrigin = {
   viewportWidth: number;
 };
 
+// A confirmed card in a fixed panel disappears or moves when its effect
+// resolves. Keep its actual screen position, independent of document scroll.
+export type FixedCardOrigin = {
+  fixed: true;
+  bounds: Bounds;
+  viewportWidth: number;
+  viewportHeight: number;
+};
+
+export function captureFixedCardOrigin(element: HTMLElement): FixedCardOrigin {
+  const rect = element.getBoundingClientRect();
+  return {
+    fixed: true,
+    bounds: {
+      left: rect.left,
+      right: rect.right,
+      top: rect.top,
+      bottom: rect.bottom,
+    },
+    viewportWidth: document.documentElement.clientWidth,
+    viewportHeight: document.documentElement.clientHeight,
+  };
+}
+
 export function captureCardOrigin(
   element: HTMLElement,
   reference: HTMLElement,
@@ -52,7 +76,15 @@ export function captureCardOrigin(
   };
 }
 
-export function resolveCardOrigin(origin: CardOrigin) {
+export function resolveCardOrigin(origin: CardOrigin | FixedCardOrigin) {
+  if ("fixed" in origin) {
+    if (
+      origin.viewportWidth !== document.documentElement.clientWidth ||
+      origin.viewportHeight !== document.documentElement.clientHeight
+    )
+      return null;
+    return visibleFlightBounds(origin.bounds, null);
+  }
   const ref = origin.reference;
   // A removed card has no new position after a responsive reflow. Hiding its
   // short remaining flight is safer than borrowing another card's new slot.
