@@ -60,7 +60,7 @@ func (s *State) validateCaravans() error {
 		return nil
 	}
 	n := len(g.Players)
-	if g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Options.Helpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
+	if g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("商队状态或尚未核对的组合无效")
 	}
 	if err := c.validate(g); err != nil {
@@ -75,6 +75,14 @@ func (s *State) validateCaravans() error {
 		}
 	}
 	q := c.Pending
+	// Event responses precede production; bidding is strictly after construction.
+	// Neither queue may conceal the other's responder after restoring a save.
+	if g.CardEvent != nil && (q != nil || c.Built) {
+		return errors.New("事件结算不能与商队建设或投票重叠")
+	}
+	if q != nil && g.EventDeck != nil && (g.RevealedEvent == nil || !g.RevealedEvent.ProductionStarted || g.Two != nil && len(g.Two.Rolls) != 2) {
+		return errors.New("商队投票前必须完成本回合事件生产")
+	}
 	if err := c.validateShortRounds(g); err != nil {
 		return err
 	}

@@ -103,6 +103,22 @@ func newCatanRiversReferenceEvents(n int) (*State, error) {
 	return s, s.validateCatanEventSession()
 }
 
+func newCatanCaravansReferenceEvents(n int) (*State, error) {
+	var s *State
+	var err error
+	if n == 2 {
+		s, err = NewCatanTwoCaravans(n, CatanOptions{})
+	} else {
+		s, err = NewCatanCaravans(n, CatanOptions{FiveSix: n > 4})
+	}
+	if err != nil {
+		return nil, err
+	}
+	s.Catan.EventDeck = &catanEventSession{Catalogue: catanEventReferenceCatalogue, Deck: newCatanEventDeck()}
+	s.Log = append(s.Log, "内部测试：商队先完成事件与生产，建设后在回合末投票；使用旧版参考牌表，尚非已核验的2025正式牌表")
+	return s, s.validateCatanEventSession()
+}
+
 func newCatanHelperReferenceEvents(n int, all bool) (*State, error) {
 	s, err := NewCatan(n, CatanOptions{FiveSix: n > 4, Helpers: true, AllHelpers: all})
 	if err != nil {
@@ -122,7 +138,7 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Transport != nil || g.Caravans != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.AllHelpers && !g.Options.Helpers {
+	if g.Explorer != nil || g.Transport != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Seafarers != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.AllHelpers && !g.Options.Helpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
 	}
 	if err := s.validateEventHelpers(); err != nil {
@@ -141,6 +157,9 @@ func (s *State) validateCatanEventSession() error {
 		return err
 	}
 	if err := g.validateRivers(); err != nil {
+		return err
+	}
+	if err := s.validateCaravans(); err != nil {
 		return err
 	}
 	// Compare using division rather than multiplying a potentially corrupt cycle.
