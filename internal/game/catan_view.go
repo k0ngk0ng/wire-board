@@ -28,6 +28,8 @@ func (s *State) catanView(view map[string]any, player int) {
 	}
 	if q := g.Two; q != nil {
 		public := v["two"].(map[string]any)
+		public["tokenRule"] = "ledger"
+		public["canExchangeKnight"] = s.catanTwoCanExchangeKnight(player)
 		public["canAct"] = !s.Finished && (q.Pending != nil || q.Trade != nil) && player == s.Turn
 		public["actor"] = s.CatanPendingActor()
 		if q.Trade != nil && player != s.Turn {

@@ -267,8 +267,10 @@ func TestCatanTwoTokensSupplyAndCorruptionAtomic(t *testing.T) {
 	s.Catan.Two.Tokens = []int{10, 10}
 	s.Catan.Two.Bank = 0
 	s.Catan.Players[p].Knights = 1
-	helperReject(t, s, p, Action{Type: "catan_two_knight"})
-	// This is only the documented protective guard, not accepted shortage rules.
+	helperApply(t, s, p, Action{Type: "catan_two_knight"})
+	if s.Catan.Two.TokensIssued != 2 || s.Catan.Two.Tokens[p] != 12 || s.Catan.Two.Bank != 0 {
+		t.Fatal("empty token supply blocked the full reward")
+	}
 	for _, bad := range []func(*State){
 		func(s *State) { s.Catan.Two.Bank++ },
 		func(s *State) { s.Catan.Two.Tokens = nil },
@@ -345,7 +347,7 @@ func TestCatanTwoTokensTimingAndInsufficientFunds(t *testing.T) {
 	helperReject(t, ordinary, ordinary.Turn, Action{Type: "catan_two_trade"})
 }
 
-func TestCatanTwoTokensUnverifiedSupplyRollsBackSettlement(t *testing.T) {
+func TestCatanTwoTokensLedgerPaysSetupSettlement(t *testing.T) {
 	s, err := newCatanTwoCore()
 	if err != nil {
 		t.Fatal(err)
@@ -354,9 +356,12 @@ func TestCatanTwoTokensUnverifiedSupplyRollsBackSettlement(t *testing.T) {
 	s.Catan.Two.Tokens = []int{10, 10}
 	for _, v := range s.Catan.Vertices {
 		if s.Catan.canSettlement(s.Turn, v.ID, true) && s.Catan.twoSettlementTokens(s.Turn, v.ID) > 0 {
-			// The protective rejection happens after catanSetup has modified
-			// the clone. Nothing, including building/phase/log, may escape.
-			helperReject(t, s, s.Turn, Action{Type: "catan_settlement", Vertex: v.ID})
+			p, reward := s.Turn, s.Catan.twoSettlementTokens(s.Turn, v.ID)
+			helperApply(t, s, p, Action{Type: "catan_settlement", Vertex: v.ID})
+			if s.Catan.Two.TokensIssued != reward || s.Catan.Two.Tokens[p] != 10+reward || s.Phase != "catan_setup_road" {
+				t.Fatal("setup reward or continuation missing")
+			}
+			twoCoreRestore(t, s)
 			return
 		}
 	}

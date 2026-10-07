@@ -514,6 +514,9 @@ export type CatanState = {
   attack?: CatanAttack;
   two?: {
     rules: string;
+    tokensIssued?: number;
+    tokenRule?: "ledger";
+    canExchangeKnight?: boolean;
     rolls: number[];
     sequence: number;
     tokens: number[];

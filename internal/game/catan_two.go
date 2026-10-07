@@ -15,6 +15,7 @@ type CatanTwo struct {
 	Pending         *CatanTwoPending `json:"pending,omitempty"`
 	Tokens          []int            `json:"tokens"`
 	Bank            int              `json:"bank"`
+	TokensIssued    int              `json:"tokensIssued,omitempty"`
 	Spent           bool             `json:"spent"`
 	KnightExchanged bool             `json:"knightExchanged"`
 	Trade           *CatanTwoTrade   `json:"trade,omitempty"`

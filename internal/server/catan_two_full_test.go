@@ -77,7 +77,7 @@ func twoHTTPActor(s *game.State) int {
 func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 	t.Helper()
 	g, q := s.Catan, s.Catan.Two
-	if len(g.Players) != 2 || q.Rules != game.CatanTwoRules || q.Bank < 0 || len(q.Tokens) != 2 || q.Tokens[0] < 0 || q.Tokens[1] < 0 || q.Bank+q.Tokens[0]+q.Tokens[1] != 20 {
+	if len(g.Players) != 2 || q.Rules != game.CatanTwoRules || q.Bank < 0 || len(q.Tokens) != 2 || q.Tokens[0] < 0 || q.Tokens[1] < 0 || q.Bank+q.Tokens[0]+q.Tokens[1] != 20+q.TokensIssued {
 		t.Fatal("two-player token/player inventory")
 	}
 	for color, total := range g.Bank {
@@ -112,7 +112,7 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			}
 			total += amount
 		}
-		if total != 100 {
+		if total != 100+g.Rivers.GoldIssued {
 			t.Fatal("gold conservation")
 		}
 	}

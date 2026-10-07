@@ -14,7 +14,11 @@ type CatanTwoTrade struct {
 
 func (s *State) validateCatanTwoTokens() error {
 	g, q := s.Catan, s.Catan.Two
-	if len(q.Tokens) != 2 || q.Bank < 0 || q.Bank > 20 || q.Tokens[0] < 0 || q.Tokens[0] > 20 || q.Tokens[1] < 0 || q.Tokens[1] > 20 || q.Bank+q.Tokens[0]+q.Tokens[1] != 20 {
+	if q.TokensIssued < 0 || q.TokensIssued > catanTwoTokenLedgerLimit {
+		return errors.New("双人贸易筹码记账无效")
+	}
+	supply := 20 + q.TokensIssued
+	if len(q.Tokens) != 2 || q.Bank < 0 || q.Bank > supply || q.Tokens[0] < 0 || q.Tokens[0] > supply || q.Tokens[1] < 0 || q.Tokens[1] > supply || int64(q.Bank)+int64(q.Tokens[0])+int64(q.Tokens[1]) != int64(supply) {
 		return errors.New("双人贸易筹码总量无效")
 	}
 	if g.setup() && (q.Spent || q.KnightExchanged || q.Trade != nil) {
@@ -48,20 +52,46 @@ func (g *Catan) twoTokenCost(player int) int {
 	return 1
 }
 
-// Supply exhaustion is not yet sourced. This internal-only protective guard
-// rolls back the entire action instead of minting tokens or silently paying a
-// partial reward. Resolving the official rule remains a release gate.
+// Site supplement: continue recording earned trade tokens after the physical
+// supply is exhausted. Returned tokens are reused before issuing any more.
+const catanTwoTokenLedgerLimit = 1_000_000_000
+
+func (q *CatanTwo) tokenShortfall(count int) (int, error) {
+	if count < 0 || count > catanTwoTokenLedgerLimit || q.TokensIssued < 0 || q.TokensIssued > catanTwoTokenLedgerLimit || q.Bank < 0 {
+		return 0, errors.New("贸易筹码记账数量无效")
+	}
+	missing := max(0, count-q.Bank)
+	if missing > catanTwoTokenLedgerLimit-q.TokensIssued {
+		return 0, errors.New("贸易筹码记账超出安全范围")
+	}
+	return missing, nil
+}
+
 func (s *State) catanTwoEarn(player, count int) error {
 	q := s.Catan.Two
-	if q.Bank < count {
-		return errors.New("贸易筹码供应不足，该边界规则尚待核实")
+	if player < 0 || player >= len(q.Tokens) {
+		return errors.New("贸易筹码领取玩家无效")
 	}
-	q.Bank -= count
+	missing, err := q.tokenShortfall(count)
+	if err != nil {
+		return err
+	}
+	q.TokensIssued += missing
+	q.Bank += missing - count
 	q.Tokens[player] += count
 	if count > 0 {
 		s.catanLog(player, "获得 %d 枚贸易筹码", count)
 	}
 	return nil
+}
+
+func (s *State) catanTwoCanExchangeKnight(player int) bool {
+	if !s.catanTwoTokenWindow(player) {
+		return false
+	}
+	g, q := s.Catan, s.Catan.Two
+	_, err := q.tokenShortfall(2)
+	return !q.KnightExchanged && g.Players[player].Knights > 0 && err == nil
 }
 
 func (g *Catan) twoDesert() int {
@@ -241,7 +271,7 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 		return Action{}, false
 	}
 	g, q := s.Catan, s.Catan.Two
-	if !q.KnightExchanged && q.Tokens[player] < 2 && q.Bank >= 2 && g.Players[player].Knights > 0 && g.ArmyOwner != player {
+	if s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < 2 && g.ArmyOwner != player {
 		return Action{Type: "catan_two_knight"}, true
 	}
 	if q.Spent || q.Tokens[player] < 1 {
