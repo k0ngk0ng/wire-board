@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 // Platform timeout removal, not a printed board-game rule. The caller clones
 // the complete State and verifies it again before publishing the result.
@@ -44,6 +47,22 @@ func (s *State) eliminateCatanExplorer(player int) error {
 	}
 	g.Trade = nil
 	p.Eliminated = true
+	if k := g.CitiesKnights; k != nil {
+		// Keep permanent buildings/improvements, as in ordinary city games.
+		// Mobile pieces and private cards must never await an absent player.
+		k.Knights = slices.DeleteFunc(k.Knights, func(n CatanKnight) bool { return n.Owner == player })
+		if cards := k.Players[player].Progress; len(cards) > 0 {
+			k.returnProgress(cards)
+			k.recordProgress("return", player, -1, -1, len(cards), nil)
+			k.Players[player].Progress = []int{}
+		}
+		if k.Merchant != nil && k.Merchant.Owner == player {
+			k.Merchant = nil
+		}
+		x.Motion = nil
+		x.ActionID++
+		s.catanLog(player, "离场骑士、商人及私有进步牌归还；城市改良与公开得分保留")
+	}
 	if x.Pirate != nil && x.Pirate.Owner == player {
 		x.Pirate.Owner, x.Pirate.Tile = -1, -1
 	}

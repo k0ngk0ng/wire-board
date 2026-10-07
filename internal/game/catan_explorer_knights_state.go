@@ -69,32 +69,33 @@ func (s *State) validateCatanExplorerCities() error {
 	if err := s.validateExplorerCityFlow(); err != nil {
 		return err
 	}
-	// Leave/timeout integration is separate; do not accept a partially removed
-	// city player through the generic Explorer removal controller.
-	for _, p := range g.Players {
-		if p.Eliminated {
-			return errors.New("组合玩家离场清理尚未接入")
+	alive := 0
+	for player, p := range g.Players {
+		if !p.Eliminated {
+			alive++
+		} else if sum(p.Resources) != 0 || x.Economy.Gold[player] != 0 || len(k.Players[player].Progress) != 0 {
+			return errors.New("离场玩家的资源、商品、金币与私有进步牌必须归还")
 		}
 	}
-	if x.SkippedRolls != 0 {
-		return errors.New("未离场组合不能跳过生产")
+	if alive == 0 || g.Players[s.Turn].Eliminated || x.SkippedRolls < 0 || x.SkippedRolls > n-alive {
+		return errors.New("组合活跃玩家或离场跳过的生产次数无效")
 	}
 	productionTurns := g.TurnSerial
 	if g.Paired != nil {
 		productionTurns = (g.TurnSerial + 1) / 2
 	}
-	rolled := int(productionTurns)
+	rolled := int(productionTurns) - x.SkippedRolls
 	if x.Economy.Turn.Phase == "roll" {
 		rolled--
 	}
-	if g.RollID != rolled {
+	if rolled < 0 || g.RollID != rolled {
 		return errors.New("组合生产次数与普通/配对回合不一致")
 	}
-	if g.Paired == nil && (s.Turn != (g.StartPlayer+int((g.TurnSerial-1)%uint64(n)))%n || s.Round != 1+int((g.TurnSerial-1)/uint64(n))) {
+	if alive == n && g.Paired == nil && (s.Turn != (g.StartPlayer+int((g.TurnSerial-1)%uint64(n)))%n || s.Round != 1+int((g.TurnSerial-1)/uint64(n))) {
 		return errors.New("组合顺时针轮序不一致")
 	}
 	if s.Finished {
-		if s.Phase != "finished" || !slices.Equal(s.Winners, []int{s.Turn}) || g.Players[s.Turn].Score < x.Board.Target || g.Trade != nil {
+		if s.Phase != "finished" || !slices.Equal(s.Winners, []int{s.Turn}) || g.Players[s.Turn].Score < x.Board.Target && alive != 1 || g.Trade != nil {
 			return errors.New("组合胜负或结束阶段无效")
 		}
 	} else if len(s.Winners) > 0 || s.Phase == "finished" || x.Lairs != nil && x.Lairs.RewardVictory != nil {
