@@ -13,8 +13,8 @@ type catanTwoCaravanPlacement struct {
 	Train int                `json:"train,omitempty"`
 }
 
-// Identify the printed origins in each connected wagon network. Multiple bits
-// expose a merger; we do not guess how “different trains” works after merging.
+// Identify a train by all printed origins in its connected network. Trains
+// meeting at an intersection merge, so a multi-bit mask is one train.
 func (c catanCaravans) trainOrigins(g *Catan, from int) int {
 	parent := make([]int, len(g.Vertices))
 	for i := range parent {
@@ -39,22 +39,80 @@ func (c catanCaravans) trainOrigins(g *Catan, from int) int {
 	}
 	return origins
 }
-func singleCaravanOrigin(mask int) bool { return mask > 0 && mask&(mask-1) == 0 }
+
+// A receipt distinguishes an authorized one-wagon round from a lost pending
+// second placement. Replaying its prefix must prove that no two-wagon sequence
+// was possible, under the bidding outcome (different trains or a tie).
+type catanTwoCaravanShortRound struct {
+	Start     int  `json:"start"`
+	Different bool `json:"different"`
+}
+
+func (c catanCaravans) secondChoices(g *Catan, train int) []catanCaravanWagon {
+	return slices.DeleteFunc(c.choices(g), func(w catanCaravanWagon) bool {
+		return train != 0 && c.trainOrigins(g, w.From) == train
+	})
+}
+
+// Look ahead one wagon before offering the first placement. If two are
+// possible, do not offer a first move that needlessly prevents the second.
+func (c catanCaravans) firstChoices(g *Catan, different bool) ([]catanCaravanWagon, int) {
+	choices := c.choices(g)
+	pairs := []catanCaravanWagon{}
+	for _, w := range choices {
+		after := c
+		after.Wagons = append(slices.Clone(c.Wagons), w)
+		train := 0
+		if different {
+			train = after.trainOrigins(g, w.From)
+		}
+		if len(after.secondChoices(g, train)) > 0 {
+			pairs = append(pairs, w)
+		}
+	}
+	if len(pairs) > 0 {
+		return pairs, 2
+	}
+	if len(choices) > 0 {
+		return choices, 1
+	}
+	return choices, 0
+}
+
+func (c catanCaravans) validateShortRounds(g *Catan) error {
+	if len(c.ShortRounds) > c.Sequence {
+		return errors.New("双人商队少放记录超出已开始轮数")
+	}
+	previous := -1
+	for i, r := range c.ShortRounds {
+		if g.Two == nil || r.Start <= previous || r.Start < i || r.Start >= len(c.Wagons) || (r.Start-i)%2 != 0 {
+			return errors.New("双人商队少放记录无效")
+		}
+		if c.Pending != nil && c.Pending.Two != nil && r.Start >= c.Pending.Two.Start {
+			return errors.New("双人商队少放记录与当前轮重叠")
+		}
+		before := c
+		before.Wagons = c.Wagons[:r.Start]
+		choices, count := before.firstChoices(g, r.Different)
+		if count != 1 || !slices.Contains(choices, c.Wagons[r.Start]) {
+			return errors.New("双人商队本可放第二辆，少放记录无效")
+		}
+		previous = r.Start
+	}
+	return nil
+}
 
 func (c catanCaravans) responseChoices(g *Catan) []catanCaravanWagon {
-	choices := c.choices(g)
 	q := c.Pending
-	if g.Two == nil || q == nil || q.Two == nil || q.Two.First == nil {
-		return choices
+	if g.Two == nil || q == nil || q.Two == nil || q.Kind != "place" {
+		return c.choices(g)
 	}
 	leader, _ := q.leaders()
-	if leader < 0 {
+	if q.Two.First == nil {
+		choices, _ := c.firstChoices(g, leader >= 0)
 		return choices
-	} // A tie gives each player one placement.
-	return slices.DeleteFunc(choices, func(w catanCaravanWagon) bool {
-		mask := c.trainOrigins(g, w.From)
-		return !singleCaravanOrigin(mask) || mask == q.Two.Train
-	})
+	}
+	return c.secondChoices(g, q.Two.Train)
 }
 
 func (s *State) validateTwoCaravanPlacement() error {
@@ -67,7 +125,7 @@ func (s *State) validateTwoCaravanPlacement() error {
 		return nil
 	}
 	t := q.Two
-	if t == nil || len(q.Order) != 2 || t.Start < 0 || t.Start%2 != 0 || t.Start > len(c.Wagons) || (q.Kind != "bid" && q.Kind != "place") {
+	if t == nil || len(q.Order) != 2 || t.Start < len(c.ShortRounds) || (t.Start-len(c.ShortRounds))%2 != 0 || t.Start > len(c.Wagons) || (q.Kind != "bid" && q.Kind != "place") {
 		return errors.New("双人商队响应状态无效")
 	}
 	for _, v := range q.Votes {
@@ -101,8 +159,8 @@ func (s *State) validateTwoCaravanPlacement() error {
 			return errors.New("平票没有独占商队记录")
 		}
 	} else if t.First != nil {
-		if !singleCaravanOrigin(t.Train) || c.trainOrigins(g, t.First.From) != t.Train {
-			return errors.New("双人首辆商队标识无效或会合规则尚待核实")
+		if t.Train <= 0 || c.trainOrigins(g, t.First.From) != t.Train {
+			return errors.New("双人首辆商队标识无效")
 		}
 	}
 	if q.Chooser != chooser {
@@ -121,12 +179,6 @@ func (s *State) catanTwoPlaceWagon(w catanCaravanWagon) error {
 	placedBy := q.actor()
 	leader, _ := q.leaders()
 	first := t.First == nil
-	if first && leader >= 0 {
-		t.Train = c.trainOrigins(g, w.From)
-		if !singleCaravanOrigin(t.Train) {
-			return errors.New("双人会合商队的不同商队规则尚待核实")
-		}
-	}
 	if err := c.place(g, w); err != nil {
 		return err
 	}
@@ -135,17 +187,18 @@ func (s *State) catanTwoPlaceWagon(w catanCaravanWagon) error {
 	// The rulebook ends the game as soon as the active player reaches 12 VP.
 	if first && !s.Finished {
 		t.First = &w
-		if leader >= 0 && c.trainOrigins(g, w.From) != t.Train {
-			return errors.New("双人会合商队的不同商队规则尚待核实")
+		if leader >= 0 {
+			t.Train = c.trainOrigins(g, w.From)
 		}
-		if len(c.responseChoices(g)) == 0 {
-			return errors.New("双人商队没有第二条合法延伸，该边界规则尚待核实")
+		if len(c.responseChoices(g)) > 0 {
+			if leader < 0 {
+				q.Chooser = 1 - q.Active
+			}
+			s.catanLog(placedBy, "第一辆马车放到路线 #%d，从交点 #%d 出发；待放第二辆", w.Edge+1, w.From+1)
+			return nil
 		}
-		if leader < 0 {
-			q.Chooser = 1 - q.Active
-		}
-		s.catanLog(placedBy, "第一辆马车放到路线 #%d，从交点 #%d 出发；待放第二辆", w.Edge+1, w.From+1)
-		return nil
+		c.ShortRounds = append(c.ShortRounds, catanTwoCaravanShortRound{Start: t.Start, Different: leader >= 0})
+		s.catanLog(placedBy, "本站补充规则：本轮最多只能放1辆马车，放车完成")
 	}
 	for _, bid := range q.Bids {
 		for color, n := range bid {

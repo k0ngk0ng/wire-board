@@ -75,7 +75,10 @@ func (s *State) validateCaravans() error {
 		}
 	}
 	q := c.Pending
-	if g.Two != nil && !s.Finished && q == nil && len(c.Wagons)%2 != 0 {
+	if err := c.validateShortRounds(g); err != nil {
+		return err
+	}
+	if g.Two != nil && !s.Finished && q == nil && (len(c.Wagons)-len(c.ShortRounds))%2 != 0 {
 		return errors.New("双人商队尚缺第二辆马车的待处理记录")
 	}
 	if q == nil {
