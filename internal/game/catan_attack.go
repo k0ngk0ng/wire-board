@@ -17,8 +17,13 @@ type catanAttackLandingRecord struct {
 	Rolls  []catanAttackLandingRoll `json:"rolls"`
 }
 
-// Internal constructor until remaining combinations and full acceptance are complete.
-// No public waiting-room recipe may select the incomplete scenario.
+// NewCatanAttack selects the verified printed map for the actual player count.
+// Helpers, two-player rules and other combinations retain separate entry gates.
+func NewCatanAttack(n int) (*State, error) {
+	return newCatanAttackState(n, CatanOptions{FiveSix: n > 4})
+}
+
+// Internal variants may reuse the constructor with already validated options.
 func newCatanAttackState(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("蛮族进攻助手组合尚未核对")

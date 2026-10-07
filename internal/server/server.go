@@ -653,6 +653,8 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		minPlayers = 3
 		if req.CatanScenario == "spices-for-catan" {
 			minPlayers, maxPlayers = 2, 6
+		} else if req.CatanScenario == "barbarian-attack" {
+			maxPlayers = 6
 		}
 		if req.Capacity == 2 {
 			if options != (game.CatanOptions{}) {
@@ -1111,6 +1113,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					next.Game, err = game.NewCatanExplorerSpices(len(next.Seats))
 				} else if next.CatanScenario == "land-ho" {
 					next.Game, err = game.NewCatanExplorerLandHo(len(next.Seats))
+				} else if next.CatanScenario == "barbarian-attack" {
+					next.Game, err = game.NewCatanAttack(len(next.Seats))
 				} else if next.CatanScenario == "fishing" {
 					next.Game, err = game.NewCatanFishing(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "rivers" {
