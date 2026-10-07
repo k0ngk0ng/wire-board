@@ -50,10 +50,12 @@ export function CatanSeafarersPicker({
   room,
   disabled,
   command,
+  hideScenario = false,
 }: {
   room: Room;
   disabled: boolean;
   command: (type: string, extra?: Record<string, unknown>) => void;
+  hideScenario?: boolean;
 }) {
   const setup = room.catanSeafarers;
   const choices = room.catanSeafarersChoices;
@@ -66,23 +68,25 @@ export function CatanSeafarersPicker({
       disabled={disabled}
     >
       <legend>航海家剧本</legend>
-      <label>
-        剧本
-        <select
-          value={setup.scenario}
-          onChange={(e) =>
-            command("catan_seafarers", {
-              catanSeafarers: { scenario: e.target.value },
-            })
-          }
-        >
-          {choices.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      {!hideScenario && (
+        <label>
+          剧本
+          <select
+            value={setup.scenario}
+            onChange={(e) =>
+              command("catan_seafarers", {
+                catanSeafarers: { scenario: e.target.value },
+              })
+            }
+          >
+            {choices.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       {info.layouts.length > 1 ? (
         <label>
           地图布局

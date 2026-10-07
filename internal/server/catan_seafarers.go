@@ -5,11 +5,14 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Called on command's private room copy. Creation deliberately cannot provision
-// this field yet, so standard rooms cannot activate unfinished expansions.
+// Called on command's private room copy. Public rooms only expose their
+// accepted scenario catalogue; internal combination recipes remain separate.
 func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" || r.CatanBaseConfiguration != nil {
 		return fmt.Errorf("该房间尚不能与航海家剧本组合")
+	}
+	if publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(request.Scenario) {
+		return fmt.Errorf("该航海家剧本尚未开放")
 	}
 	if r.friendlyRobberEnabled() && !game.CatanFriendlySeafarersSupported(max(3, r.Capacity), request.Scenario) {
 		return fmt.Errorf("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")
@@ -32,6 +35,9 @@ func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
 		}
 	}
 	r.CatanSeafarers, r.CatanNewWorldMap = &setup, world
+	if publicCatanSeaScenario(r.CatanScenario) {
+		r.CatanScenario = setup.Scenario
+	}
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot
 	}

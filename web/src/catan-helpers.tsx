@@ -12,6 +12,7 @@ export function CatanOptionPicker({
   citiesKnights = false,
   harbors = false,
   friendlyRobber = false,
+  fiveSixAvailable = true,
 }: {
   value?: CatanOptions;
   onChange: (v: CatanOptions) => void;
@@ -20,18 +21,21 @@ export function CatanOptionPicker({
   citiesKnights?: boolean;
   harbors?: boolean;
   friendlyRobber?: boolean;
+  fiveSixAvailable?: boolean;
 }) {
   return (
     <fieldset className="catan-helper-options" disabled={disabled}>
       <legend>卡坦岛扩展</legend>
-      <label>
-        <input
-          type="checkbox"
-          checked={!!value.fiveSix}
-          onChange={(e) => onChange({ ...value, fiveSix: e.target.checked })}
-        />{" "}
-        五至六人扩充 · 新版配对回合
-      </label>
+      {fiveSixAvailable && (
+        <label>
+          <input
+            type="checkbox"
+            checked={!!value.fiveSix}
+            onChange={(e) => onChange({ ...value, fiveSix: e.target.checked })}
+          />{" "}
+          五至六人扩充 · 新版配对回合
+        </label>
+      )}
       {!citiesKnights && !harbors && !friendlyRobber && (
         <label>
           <input
