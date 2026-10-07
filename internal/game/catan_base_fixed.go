@@ -2,8 +2,7 @@ package game
 
 import "fmt"
 
-// Fixed setup from the 2025 base 5–6 rulebook, page 2. Kept outside public
-// room options until configuration and full expansion acceptance are ready.
+// Fixed setup from the 2025 base 5–6 rulebook, page 2.
 type CatanBaseSetup struct {
 	Layout       string `json:"layout"`
 	Rules        string `json:"rules"`

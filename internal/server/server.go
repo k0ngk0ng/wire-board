@@ -481,7 +481,7 @@ func summary(r *Room) map[string]any {
 			result["catanTwoScenario"] = r.CatanTwoScenario
 		}
 	}
-	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
+	if r.publicCatanBaseAvailable() || (r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil) {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
 	if (r.CatanFriendlyRobber != nil || r.publicCatanFriendlyAvailable()) && r.Status == "waiting" {
@@ -602,20 +602,21 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		CatanFriendlyRobber *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
-		CatanHarbors        *game.CatanHarborsSetup        `json:"catanHarbors"`
-		CatanFishing        bool                           `json:"catanFishing"`
-		CatanCitiesKnights  *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights"`
-		CatanOptions        game.CatanOptions              `json:"catanOptions"`
-		CatanTwoScenario    string                         `json:"catanTwoScenario"`
-		CatanScenario       string                         `json:"catanScenario"`
-		SplendorOptions     game.SplendorOptions           `json:"splendorOptions"`
-		SanguoshaOptions    game.SGOptions                 `json:"sanguoshaOptions"`
-		Name                string                         `json:"name"`
-		Kind                string                         `json:"kind"`
-		RailMap             string                         `json:"railMap"`
-		Capacity            int                            `json:"capacity"`
-		Password            string                         `json:"password"`
+		CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration"`
+		CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
+		CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors"`
+		CatanFishing           bool                           `json:"catanFishing"`
+		CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights"`
+		CatanOptions           game.CatanOptions              `json:"catanOptions"`
+		CatanTwoScenario       string                         `json:"catanTwoScenario"`
+		CatanScenario          string                         `json:"catanScenario"`
+		SplendorOptions        game.SplendorOptions           `json:"splendorOptions"`
+		SanguoshaOptions       game.SGOptions                 `json:"sanguoshaOptions"`
+		Name                   string                         `json:"name"`
+		Kind                   string                         `json:"kind"`
+		RailMap                string                         `json:"railMap"`
+		Capacity               int                            `json:"capacity"`
+		Password               string                         `json:"password"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -752,6 +753,16 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if err := room.validateCatanScenario(); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
+	if req.CatanBaseConfiguration != nil {
+		if !room.publicCatanBaseAvailable() {
+			fail(w, 400, "基础布局选择仅支持基础卡坦岛及其五六人、Helpers扩充")
+			return
+		}
+		if err := room.setCatanBaseConfiguration(*req.CatanBaseConfiguration); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -946,8 +957,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanCitiesKnights(*req.CatanCitiesKnights)
 	case "catan_base_configuration":
-		if next.Host != u.ID || next.CatanBaseConfiguration == nil || req.CatanBaseConfiguration == nil {
-			err = errors.New("只有房主能在已启用布局选择的房间调整基础地图")
+		if next.Host != u.ID || (next.CatanBaseConfiguration == nil && !next.publicCatanBaseAvailable()) || req.CatanBaseConfiguration == nil {
+			err = errors.New("只有房主能在支持布局选择的等待房间调整基础地图")
 			break
 		}
 		err = next.setCatanBaseConfiguration(*req.CatanBaseConfiguration)
