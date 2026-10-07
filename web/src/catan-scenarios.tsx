@@ -3,6 +3,7 @@ import "./catan-scenarios.css";
 
 const names: Record<string, string> = {
   "cities-knights": "城市与骑士",
+  "barbarian-attack": "蛮族进攻",
   fishing: "卡坦渔夫",
   rivers: "河流",
   caravans: "商队",

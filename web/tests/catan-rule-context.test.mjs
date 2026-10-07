@@ -404,3 +404,19 @@ test("fishing waiting rules do not masquerade as Seafarers or override saved gam
   assert.equal(catanRuleContext(room).fishing, true);
   assert.equal(catanRuleContext(room).players, 3);
 });
+
+
+test("public Barbarian Attack uses twelve points and actual player pairing", () => {
+ const room = {capacity:6,catanScenario:"barbarian-attack"};
+ assert.equal(catanRuleContext(room).attack,true);
+ assert.equal(catanRuleContext(room).target,12);
+ assert.equal(catanRuleContext(room).fiveSix,true);
+ assert.equal(catanRuleContext(room).scenario,"");
+ room.game={catan:{players:Array(3).fill({}),attack:{}}};
+ assert.equal(catanRuleContext(room).players,3);
+ assert.equal(catanRuleContext(room).fiveSix,false);
+ assert.equal(catanRuleContext(room).target,12);
+ delete room.game.catan.attack;
+ assert.equal(catanRuleContext(room).attack,false);
+ assert.equal(catanRuleContext(room).target,10);
+});

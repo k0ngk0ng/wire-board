@@ -11,14 +11,23 @@ import (
 
 func newPublicFishingTable(t *testing.T, n int) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
+	s, ts, clients, id := newPublicScenarioTable(t, n, "fishing")
+	if s.rooms[id].Game.Catan.Fishing == nil {
+		t.Fatal("missing public fishing state")
+	}
+	return s, ts, clients, id
+}
+
+func newPublicScenarioTable(t *testing.T, n int, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	clients := make([]*testClient, n+1)
 	for p := range clients {
 		clients[p] = newClient(t, ts.URL)
-		clients[p].register(fmt.Sprintf("公开渔夫%d", p))
+		clients[p].register(fmt.Sprintf("公开剧本玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "公开渔夫完整对局", "kind": "catan", "capacity": n, "catanScenario": "fishing"}, 201)
+	raw := clients[0].post("/api/rooms", map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario}, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -28,9 +37,6 @@ func newPublicFishingTable(t *testing.T, n int) (*Server, *httptest.Server, []*t
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
-	if s.rooms[id].Game.Catan.Fishing == nil {
-		t.Fatal("missing public fishing state")
-	}
 	return s, ts, clients, id
 }
 

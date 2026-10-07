@@ -26,6 +26,12 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
 		return nil
 	}
+	if r.CatanScenario == "barbarian-attack" {
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
+			return errors.New("蛮族进攻支持三至六人，开局按实际人数选择地图；不混用其他扩展配置")
+		}
+		return nil
+	}
 	if r.CatanScenario == "cities-knights" {
 		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights == nil {
 			return errors.New("城市与骑士当前支持三至四人随机地图；其他组合需使用对应配置")
@@ -93,8 +99,8 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanExplorerScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && publicCatanExplorerScenario(r.CatanScenario) && scenario != "spices-for-catan" {
-		return errors.New("五六人探险牌桌只能选择支持该人数的任务")
+	if r.Capacity > 4 && (publicCatanExplorerScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && scenario != "spices-for-catan" && scenario != "barbarian-attack" {
+		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r
 	next.CatanScenario = scenario

@@ -3,6 +3,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "barbarian-attack",
+    name: "蛮族进攻",
+    description:
+      "招募骑士、解放沿海村镇，俘虏蛮族得分；12分获胜。三至六人，五六人采用扩大地图与配对回合。",
+  },
+  {
     id: "cities-knights",
     name: "城市与骑士",
     description:
@@ -172,6 +178,7 @@ export function CatanScenarioPicker({
               disabled={
                 (helpers &&
                   [
+                    "barbarian-attack",
                     "fishing",
                     "rivers",
                     "caravans",
@@ -179,7 +186,8 @@ export function CatanScenarioPicker({
                     "land-ho",
                     "spices-for-catan",
                   ].includes(s.id)) ||
-                (players > 4 && s.id !== "spices-for-catan") ||
+                (players > 4 &&
+                  !["spices-for-catan", "barbarian-attack"].includes(s.id)) ||
                 (knights &&
                   isPublicCatanSea(s.id) &&
                   !supportsPublicCatanSeaKnights(s.id))
