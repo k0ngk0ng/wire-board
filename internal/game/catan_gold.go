@@ -102,6 +102,9 @@ func (s *State) CatanPendingActor() int {
 		return -1
 	}
 	if g.Explorer != nil {
+		if k := g.CitiesKnights; k != nil && k.Pending != nil && len(k.Pending.Players) > 0 {
+			return k.Pending.Players[0]
+		}
 		switch s.Phase {
 		case "catan_explorer_setup", "catan_explorer_pirate_place", "catan_explorer_pirate_steal", "catan_explorer_resolve", "catan_explorer_battle":
 			return s.Turn

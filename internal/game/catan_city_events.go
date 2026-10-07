@@ -177,7 +177,7 @@ func (s *State) catanFinishBarbarians() {
 		k.Knights[i].Active = false
 	}
 	k.Invasions++
-	if k.Invasions == 1 {
+	if k.Invasions == 1 && g.Explorer == nil {
 		g.Robber = k.RobberStart
 		if g.Seafarers != nil && g.wonders() == nil {
 			g.Seafarers.Pirate = k.PirateStart
@@ -228,6 +228,9 @@ func (s *State) catanContinueCityEvent() error {
 	total := e.Production
 	if total == 0 {
 		total = e.Red + e.Yellow
+	}
+	if g.Explorer != nil {
+		return s.catanExplorerCityProduction([2]int{e.Red, e.Yellow})
 	}
 	return s.catanRollProductionEffect(total, e.Epidemic)
 }

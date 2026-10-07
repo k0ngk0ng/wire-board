@@ -21,6 +21,12 @@ func (e *catanExplorerEconomy) beginSecondary(g *Catan, f *catanExplorerSailing,
 
 func (s *State) catanExplorerAdvanceTurn() error {
 	g, x := s.Catan, s.Catan.Explorer
+	resetCityAction := func() {
+		if k := g.CitiesKnights; k != nil {
+			k.ActionSerial = g.TurnSerial
+			k.TradePowers = nil
+		}
+	}
 	if pair := g.Paired; pair != nil {
 		if !pair.Second && pair.Secondary != pair.Primary && !g.Players[pair.Secondary].Eliminated {
 			pair.Second = true
@@ -31,6 +37,7 @@ func (s *State) catanExplorerAdvanceTurn() error {
 			}
 			g.Dice = []int{0, 0}
 			s.catanLog(s.Turn, "开始配对行动：不掷生产骰，可交易银行、建设和航行，不能与其他玩家交易")
+			resetCityAction()
 			return nil
 		}
 		// Rotate from the first marker, never from the secondary actor's seat.
@@ -53,6 +60,7 @@ func (s *State) catanExplorerAdvanceTurn() error {
 	if pair := g.Paired; pair != nil {
 		pair.Primary, pair.Secondary, pair.Second = s.Turn, g.pairedPartner(s.Turn), false
 	}
+	resetCityAction()
 	return nil
 }
 

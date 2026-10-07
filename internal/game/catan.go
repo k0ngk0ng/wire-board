@@ -188,6 +188,10 @@ func (g *Catan) awardHolder(old, minValue int, values []int) int {
 }
 func (s *State) catanScores() {
 	g := s.Catan
+	if g.Explorer != nil {
+		s.catanExplorerMissionScore()
+		return
+	}
 	s.catanHarborsScore()
 	roads, knights := []int{}, []int{}
 	for i := range g.Players {
@@ -283,6 +287,12 @@ func (g *Catan) hiddenVictoryPoints(player int) int {
 }
 func (s *State) catanVictory() {
 	g := s.Catan
+	if g.Explorer != nil {
+		if g.Explorer.Setup == nil {
+			s.catanExplorerVictory()
+		}
+		return
+	}
 	if g.wonders() != nil {
 		if !g.setup() && !g.Players[s.Turn].Eliminated && g.wonderVictory(s.Turn) {
 			s.Finished, s.Phase, s.Winners = true, "finished", []int{s.Turn}
