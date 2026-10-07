@@ -57,7 +57,8 @@ func (x catanExplorer) validate(g *Catan) error {
 }
 
 // Component transactions may be exercised by the private city controller.
-// Public aggregate validation above still rejects the unfinished combination.
+// The standalone world validator above rejects combinations; combined State
+// validation additionally checks cities, cards, events and turn metadata.
 func (x catanExplorer) validateComponents(g *Catan) error {
 	if g == nil || x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerPirateScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
 		return errors.New("探险地图、航行、货物或经济组件不匹配；其他任务尚未完整接入")

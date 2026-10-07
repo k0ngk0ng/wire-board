@@ -5,8 +5,8 @@ import (
 	"slices"
 )
 
-// Private production integration. The full Explorer aggregate/configuration
-// stays gated while action/progress-card/knight combinations are incomplete.
+// Production-controller checks; the unified State.Apply boundary additionally
+// validates complete world components, progress inventory and turn metadata.
 // Use a complete copy because the last city response can fail a later payout.
 func (s *State) catanExplorerCityRoll(red, yellow, face int) error {
 	if err := s.validateExplorerCityProduction(); err != nil {

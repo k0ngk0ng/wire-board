@@ -48,7 +48,7 @@ func (s *State) applyCatanExplorerSetup(player int, a Action) error {
 	if err := x.Setup.place(g, x.Board, x.Fleet, x.Cargo, x.Economy, player, a.Prompt, a.Choice, a.Target); err != nil {
 		return err
 	}
-	s.catanLog(player, "放置起始%s #%d", map[string]string{"harbor": "港口", "settlement": "村庄", "road": "道路", "ship": "移民船"}[a.Choice], a.Target+1)
+	s.catanLog(player, "放置起始%s #%d", map[string]string{"city": "城市", "harbor": "港口", "settlement": "村庄", "road": "道路", "ship": "移民船"}[a.Choice], a.Target+1)
 	if step := x.Setup.current(len(g.Players)); step != nil {
 		s.Turn = step.Player
 	} else {

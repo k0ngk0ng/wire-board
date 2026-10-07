@@ -33,6 +33,9 @@ func (s *State) validateCatanExplorer() error {
 		return errors.New("探险家主状态缺失")
 	}
 	x := g.Explorer
+	if g.CitiesKnights != nil || x.Board != nil && x.Board.CitiesKnights {
+		return s.validateCatanExplorerCities()
+	}
 	if err := x.validate(g); err != nil {
 		return err
 	}

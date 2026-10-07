@@ -49,8 +49,8 @@ func (c *catanExplorerCargo) upgradeSettlement(g *Catan, f *catanExplorerSailing
 	return nil
 }
 
-// Private integration of the supported build/economy actions. The full
-// combination dispatcher remains gated until all progress/knight rules work.
+// Build/economy controller used by the unified combination dispatcher.
+// Room configuration remains gated on rule, bot and UI acceptance.
 func (s *State) catanExplorerCityAction(player int, a Action) error {
 	if err := s.validateExplorerCityProduction(); err != nil {
 		return err

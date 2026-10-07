@@ -366,7 +366,13 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		next := clone(*s)
-		if err := next.applyCatanExplorer(player, a); err != nil {
+		var err error
+		if next.Catan.CitiesKnights != nil {
+			err = next.applyCatanExplorerCity(player, a)
+		} else {
+			err = next.applyCatanExplorer(player, a)
+		}
+		if err != nil {
 			return err
 		}
 		next.recordCatanExplorerMotion(s, player, a)
