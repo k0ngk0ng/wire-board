@@ -20,6 +20,14 @@ export function CatanHarborsPicker({
   const setup = room.catanHarbors;
   const available =
     supportsExtendedBaseVariants(room) ||
+    (room.capacity >= 5 &&
+      room.capacity <= 6 &&
+      !!room.catanOptions?.fiveSix &&
+      room.catanScenario === "cities-knights" &&
+      !!room.catanCitiesKnights &&
+      !room.catanSeafarers &&
+      !room.catanNewWorldMap &&
+      !room.catanFishing) ||
     (room.capacity >= 3 &&
       room.capacity <= 4 &&
       !room.catanFishing &&

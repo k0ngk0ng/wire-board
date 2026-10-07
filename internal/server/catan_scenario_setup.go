@@ -51,8 +51,9 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "cities-knights" {
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.friendlyRobberEnabled() || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights == nil {
-			return errors.New("城市与骑士当前支持三至四人随机地图；其他组合需使用对应配置")
+		options, optionErr := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4})
+		if optionErr != nil || r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.friendlyRobberEnabled() || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights == nil {
+			return errors.New("城市与骑士支持三至六人随机地图，五六人需启用配对回合扩充；其他组合需使用对应配置")
 		}
 		setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
 		if err != nil || setup != *r.CatanCitiesKnights {

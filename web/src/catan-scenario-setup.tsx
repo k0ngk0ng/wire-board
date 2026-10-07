@@ -18,7 +18,7 @@ const scenarios = [
     id: "cities-knights",
     name: "城市与骑士",
     description:
-      "发展科学、贸易和政治，派骑士抵御蛮族；三至四人随机地图，13 分获胜。",
+      "发展科学、贸易和政治，派骑士抵御蛮族；三至六人随机地图，13 分获胜；五六人使用配对回合。",
   },
   {
     id: "spices-for-catan",
@@ -226,6 +226,7 @@ export function CatanScenarioPicker({
   friendly = false,
   harbors = false,
   players = 3,
+  fiveSix = false,
 }: {
   value: string;
   onChange: (scenario: string) => void;
@@ -236,6 +237,7 @@ export function CatanScenarioPicker({
   friendly?: boolean;
   harbors?: boolean;
   players?: number;
+  fiveSix?: boolean;
 }) {
   return (
     <div className="catan-two-picker">
@@ -265,9 +267,11 @@ export function CatanScenarioPicker({
                 (players > 4 &&
                   (fishing
                     ? !supportsPublicCatanFishingSeaExtended(s.id)
-                    : !["spices-for-catan", "barbarian-attack"].includes(
-                        s.id,
-                      ))) ||
+                    : fiveSix
+                      ? !["", "cities-knights"].includes(s.id)
+                      : !["spices-for-catan", "barbarian-attack"].includes(
+                          s.id,
+                        ))) ||
                 (friendly && s.id === "shores" && players < 4) ||
                 (friendly &&
                   isPublicCatanSea(s.id) &&
