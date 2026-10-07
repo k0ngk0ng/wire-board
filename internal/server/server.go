@@ -499,7 +499,9 @@ func summary(r *Room) map[string]any {
 			})
 		}
 		if r.CatanFishing {
-			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool { return !publicCatanFishingSea(info.ID) })
+			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
+				return !publicCatanFishingSea(info.ID) || (r.Capacity > 4 && !publicCatanFishingSeaExtended(info.ID))
+			})
 			for i := range choices {
 				if choices[i].ID == "desert" || choices[i].ID == "tribe" {
 					choices[i].Layouts = []string{"fixed"}

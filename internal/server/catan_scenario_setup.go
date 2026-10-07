@@ -71,8 +71,12 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if publicCatanSeaScenario(r.CatanScenario) {
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions.FiveSix {
-			return errors.New("这些航海家剧本当前支持三至四人牌桌")
+		maximum := 4
+		if r.CatanFishing && publicCatanFishingSeaExtended(r.CatanScenario) {
+			maximum = 6
+		}
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity || (r.Capacity > 4) != r.CatanOptions.FiveSix {
+			return errors.New("航海家人数或扩充配置无效；五六人入口支持渔夫与迷雾、奇迹、新世界的组合")
 		}
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err

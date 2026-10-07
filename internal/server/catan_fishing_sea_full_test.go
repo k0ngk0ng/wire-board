@@ -10,19 +10,18 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Standalone three/four-player Fishing uses public creation. Extended sea
-// combinations retain an explicit initial-state fixture; all later actions
-// use real HTTP, autoplay and timeout paths through history recording.
+// All supported sizes start through public creation and use real HTTP,
+// autoplay, timeout and restart paths through history recording.
 func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
-	testFishingSeaExtendedFullHTTP(t, "new_world")
+	testFishingSeaExtendedFullHTTP(t, "new_world", 5, 6)
 }
 
 func TestCatanFishingFogExtendedFullHTTPGames(t *testing.T) {
-	testFishingSeaExtendedFullHTTP(t, "fog")
+	testFishingSeaExtendedFullHTTP(t, "fog", 5, 6)
 }
 
 func TestCatanFishingWondersExtendedFullHTTPGames(t *testing.T) {
-	testFishingSeaExtendedFullHTTP(t, "wonders")
+	testFishingSeaExtendedFullHTTP(t, "wonders", 5, 6)
 }
 
 func TestCatanFishingPublicFullHTTPGames(t *testing.T) {
@@ -53,7 +52,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 				var id string
 				if len(publicSizes) > 0 {
 					layout := "fixed"
-					if sample == 1 && scenario != "desert" && scenario != "tribe" {
+					if n <= 4 && sample == 1 && scenario != "desert" && scenario != "tribe" {
 						layout = "variable"
 					}
 					if scenario == "new_world" {
@@ -62,31 +61,6 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 					s, ts, clients, id = newPublicFishingSeaTable(t, n, scenario, layout)
 				} else if scenario == "" {
 					s, ts, clients, id = newPublicFishingTable(t, n)
-				} else {
-					s, ts, clients, id, _, _ = newFishingActionTable(t, n, "catan_turn", "resource")
-					var initial *game.State
-					var err error
-					if scenario == "new_world" {
-						var layout *game.CatanNewWorldMap
-						layout, err = game.GenerateCatanNewWorldMap(n)
-						if err != nil {
-							t.Fatal(err)
-						}
-						initial, err = game.NewCatanFishingNewWorld(n, game.CatanOptions{FiveSix: true}, layout)
-					} else {
-						initial, err = game.NewCatanFishingSeafarers(n, game.CatanOptions{FiveSix: true}, game.CatanSeafarersSetup{Scenario: scenario}, nil)
-					}
-					if err != nil {
-						t.Fatal(err)
-					}
-					s.mu.Lock()
-					r := s.rooms[id]
-					r.Game = initial
-					r.startTurnClock(time.Now())
-					if err = s.save(r); err != nil {
-						t.Fatal(err)
-					}
-					s.mu.Unlock()
 				}
 				supply, devSupply, tokenSupply, ports, grounds := 19, 25, 30, 9, 6
 				if n > 4 {
@@ -96,6 +70,9 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 					ports = len(s.rooms[id].Game.Catan.Ports)
 					if scenario == "new_world" {
 						ports = 10
+						if n > 4 {
+							ports = 11
+						}
 					}
 				}
 				restored := map[string]bool{}
@@ -326,7 +303,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 					assertPublicFishSeaSpecialInventory(t, r.Game.Catan)
 				}
 				if !won || (scenario != "tribe" && len(r.Game.Catan.Ports) != ports) || len(r.Game.Catan.Fishing.Map.Grounds) != grounds {
-					t.Fatal("wrong finished layout/victory")
+					t.Fatal("wrong finished layout/victory", "won", won, "ports", len(r.Game.Catan.Ports), ports, "grounds", len(r.Game.Catan.Fishing.Map.Grounds), grounds)
 				}
 				restart("finished")
 				code, profile := clients[n].request("GET", "/api/players/"+s.rooms[id].Seats[winner].ID, nil)

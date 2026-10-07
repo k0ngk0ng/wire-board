@@ -2,9 +2,9 @@ package game
 
 import "errors"
 
-// Public three/four-player combinations use these verified map recipes.
-// Additional scenarios need their own board recipes and
-// production continuations; never apply three/four-player recipes to five/six.
+// Public combinations use verified recipes: all listed scenarios for three/four,
+// and the dedicated Fog/Wonders recipes for five/six. New World has its own
+// constructor. Never apply a three/four-player recipe to five/six.
 func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, placements []CatanFishingGroundPlacement) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")

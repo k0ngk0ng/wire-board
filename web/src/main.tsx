@@ -37,6 +37,7 @@ import {
   CatanScenarioPicker,
   CatanFishingSeaPicker,
   supportsPublicCatanFishingSea,
+  supportsPublicCatanFishingSeaExtended,
   CatanCombinationKnightsPicker,
   supportsPublicCatanKnightsCombination,
   isPublicCatanSea,
@@ -2113,6 +2114,8 @@ function Create({
         {k === "catan" &&
           capacity >= 3 &&
           (capacity <= 4 ||
+            (catanFishing &&
+              supportsPublicCatanFishingSeaExtended(catanScenario)) ||
             ["spices-for-catan", "barbarian-attack"].includes(
               catanScenario,
             )) && (
@@ -2138,7 +2141,13 @@ function Create({
                 if (isPublicCatanFlexible(scenario))
                   setCatanTwoScenario(scenario);
                 if (
-                  !["spices-for-catan", "barbarian-attack"].includes(scenario)
+                  !["spices-for-catan", "barbarian-attack"].includes(
+                    scenario,
+                  ) &&
+                  !(
+                    catanFishing &&
+                    supportsPublicCatanFishingSeaExtended(scenario)
+                  )
                 )
                   setCapacity(
                     scenario === "shores" && catanFriendly
@@ -2155,6 +2164,7 @@ function Create({
           supportsPublicCatanFishingSea(catanScenario) && (
             <CatanFishingSeaPicker
               value={catanFishing}
+              extended={!!catanOptions.fiveSix}
               onChange={setCatanFishing}
               blocked={
                 !!catanOptions.helpers ||
@@ -2213,16 +2223,20 @@ function Create({
         {k === "catan" &&
           capacity !== 2 &&
           !catanSeaKnights &&
-          !catanFishing &&
+          (!catanFishing ||
+            supportsPublicCatanFishingSeaExtended(catanScenario)) &&
           (!catanScenario || isPublicCatanSea(catanScenario)) && (
             <CatanOptionPicker
               value={catanOptions}
+              fishing={catanFishing}
               seafarers={isPublicCatanSea(catanScenario)}
               citiesKnights={catanSeaKnights}
               harbors={catanHarbors}
               friendlyRobber={catanFriendly}
               fiveSixAvailable={
-                !isPublicCatanSea(catanScenario) &&
+                (!isPublicCatanSea(catanScenario) ||
+                  (catanFishing &&
+                    supportsPublicCatanFishingSeaExtended(catanScenario))) &&
                 !catanHarbors &&
                 !catanFriendly
               }
@@ -2388,10 +2402,12 @@ function Waiting({
     !room.catanTwoRules &&
     room.capacity >= 3 &&
     (room.capacity <= 4 ||
+      (room.catanFishing &&
+        supportsPublicCatanFishingSeaExtended(room.catanScenario)) ||
       ["spices-for-catan", "barbarian-attack"].includes(
         room.catanScenario || "",
       )) &&
-    !room.catanOptions?.fiveSix &&
+    (!room.catanOptions?.fiveSix || room.catanFishing) &&
     !room.catanBaseConfiguration &&
     (!room.catanCitiesKnights ||
       room.catanScenario === "cities-knights" ||
@@ -2513,6 +2529,7 @@ function Waiting({
                 ["desert", "tribe"].includes(room.catanScenario || "") &&
                 room.catanSeafarers?.layout !== "fixed"
               }
+              extended={!!room.catanOptions?.fiveSix}
               disabled={!host || busy || mapDirty}
               blocked={
                 !!room.catanOptions?.helpers ||
@@ -2586,15 +2603,21 @@ function Waiting({
           )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
-          !room.catanFishing &&
+          (!room.catanFishing ||
+            supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
           (!room.catanScenario || isPublicCatanSea(room.catanScenario)) &&
           !(
             room.catanCitiesKnights && isPublicCatanSea(room.catanScenario)
           ) && (
             <CatanOptionPicker
               value={room.catanOptions}
+              fishing={!!room.catanFishing}
               fiveSixAvailable={
-                !isPublicCatanSea(room.catanScenario) &&
+                (!isPublicCatanSea(room.catanScenario) ||
+                  (room.catanFishing &&
+                    supportsPublicCatanFishingSeaExtended(
+                      room.catanScenario,
+                    ))) &&
                 (!room.catanHarbors?.enabled || !!room.catanOptions?.fiveSix) &&
                 (!room.catanFriendlyRobber?.enabled ||
                   !!room.catanOptions?.fiveSix)
