@@ -46,11 +46,11 @@ export function CatanCityEffects({
     )
       return;
     const motion = catanCityMotion(before, room);
-    const board = anchor.current?.closest(".catan-board");
+    const board = anchor.current?.closest(".catan-board, .explorer-board");
     if (!motion || !board) return;
     const g = room.game!.catan!,
       old = before.game!.catan!;
-    const scale = Math.max(0.64, (g.hexSize || 62) / 62);
+    const scale = g.explorer ? 1 : Math.max(0.64, (g.hexSize || 62) / 62);
     const animate = (
       node: Element | null,
       frames: Keyframe[],

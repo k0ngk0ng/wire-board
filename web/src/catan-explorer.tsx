@@ -5,6 +5,26 @@ import { useEffect, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { Anchor, Dices, Minus, Plus, RotateCcw, Ship } from "lucide-react";
 import type { Act, Room } from "./types";
+import {
+  CatanCityActions,
+  CatanCityChoice,
+  CatanCityOverview,
+  CatanCityPiece,
+  CatanCityWall,
+} from "./catan-city";
+import { CatanCityEffects } from "./catan-city-effects";
+import {
+  CatanMerchant,
+  CatanProgressHand,
+  CatanTradePowers,
+} from "./catan-progress";
+import {
+  pickProgressTarget,
+  progressMapMode,
+  progressMapTargets,
+} from "./catan-progress-state";
+import type { ProgressSelection } from "./catan-progress-state";
+import { catanProgressNames } from "./catan-progress-names";
 import { Bundle, ResourcePicker } from "./catan-resources";
 import {
   ExplorerPiece,
@@ -50,7 +70,7 @@ import {
 import type { ExplorerAction, ExplorerPick } from "./catan-explorer-state";
 import "./catan-explorer.css";
 
-const empty = () => [0, 0, 0, 0, 0];
+const empty = (count = 5) => Array<number>(count).fill(0);
 const total = (n: number[]) => n.reduce((sum, x) => sum + x, 0);
 const terrainColors = [
   "#436c39",
@@ -98,16 +118,18 @@ export function CatanExplorerBoard({
     g = game.catan!,
     x = g.explorer!,
     you = room.you;
+  const city = g.citiesKnights;
   const motion = useExplorerMotion(room);
   const arriving = motion?.event.cargo?.map((c) => c.unit) || [];
-  const hand = g.players[you]?.resources || empty();
+  const hand = g.players[you]?.resources || empty(g.bank.length);
+  const [progress, setProgress] = useState<ProgressSelection | null>(null);
   const [pick, setPick] = useState<ExplorerPick | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState("");
   const [ship, setShip] = useState(-1);
-  const [discard, setDiscard] = useState(empty);
-  const [give, setGive] = useState(empty),
-    [take, setTake] = useState(empty);
+  const [discard, setDiscard] = useState(() => empty(g.bank.length));
+  const [give, setGive] = useState(() => empty(g.bank.length)),
+    [take, setTake] = useState(() => empty(g.bank.length));
   const [goldGive, setGoldGive] = useState(0),
     [goldTake, setGoldTake] = useState(0);
   const [error, setError] = useState("");
@@ -115,24 +137,66 @@ export function CatanExplorerBoard({
     setPick(null);
     setMode("");
     setShip(-1);
-    setDiscard(empty());
-    setGive(empty());
-    setTake(empty());
+    setProgress(null);
+    setDiscard(empty(g.bank.length));
+    setGive(empty(g.bank.length));
+    setTake(empty(g.bank.length));
     setGoldGive(0);
     setGoldTake(0);
     setError("");
-  }, [room.id, x.sequence, game.phase, you]);
+  }, [
+    room.id,
+    x.sequence,
+    game.phase,
+    you,
+    g.bank.length,
+    city?.pending?.players[0],
+  ]);
   const can = explorerCanRespond(room),
-    choices = explorerChoices(room);
+    allChoices = explorerChoices(room);
+  const mapResponses = [
+    "metropolis",
+    "pillage",
+    "knight_retreat",
+    "diplomacy",
+    "treason_remove",
+    "treason_place",
+  ];
+  const choices =
+    city?.pending && !mapResponses.includes(city.pending.kind)
+      ? []
+      : allChoices;
+  const cityManaged = (type: string) =>
+    [
+      "catan_improvement",
+      "catan_wall",
+      "catan_knight_recruit",
+      "catan_knight_activate",
+      "catan_knight_promote",
+      "catan_knight_move",
+    ].includes(type);
+  const activeProgress =
+    can &&
+    !busy &&
+    progress &&
+    !progress.skip &&
+    game.turn === you &&
+    g.progressPlayable?.includes(progress.card)
+      ? progress
+      : null;
+  const progressMode = activeProgress
+    ? progressMapMode(activeProgress.card, true)
+    : "";
   const kinds = [...new Set(choices.map((a) => a.type))].filter(
-    (type) => !primaryTypes.includes(type),
+    (type) =>
+      !primaryTypes.includes(type) && (!city || type !== "catan_improvement"),
   );
   const effective = kinds.includes(mode)
     ? mode
     : kinds.includes("catan_explorer_sail")
       ? "catan_explorer_sail"
       : kinds[0] || "";
-  const options = choices.filter(
+  const options = (progress ? [] : choices).filter(
     (a) =>
       a.type === effective &&
       (ship < 0 ||
@@ -151,6 +215,7 @@ export function CatanExplorerBoard({
       : description;
   };
   const select = (a: ExplorerAction) => {
+    setProgress(null);
     setPick({ room: room.id, action: a });
     setCollapsed(false);
     setError("");
@@ -161,9 +226,13 @@ export function CatanExplorerBoard({
     try {
       await act(a);
       setPick(null);
+      setProgress(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "操作未成功，请重试");
     }
+  };
+  const cityAct: Act = async (a) => {
+    if (can) await send({ ...a, prompt: x.sequence });
   };
   const size = g.hexSize || 62;
   const minX = Math.min(...g.vertices.map((v) => v.x)) - 30,
@@ -179,13 +248,24 @@ export function CatanExplorerBoard({
     string,
     { kind: "edge" | "vertex" | "tile"; id: number; actions: ExplorerAction[] }
   >();
-  for (const a of options) {
+  for (const a of progressMode ? [] : options) {
     const target = explorerTarget(g, a);
     if (!target) continue;
     const key = `${target.kind}-${target.id}`;
     const item = targets.get(key) || { ...target, actions: [] };
     item.actions.push(a);
     targets.set(key, item);
+  }
+  if (activeProgress && progressMode) {
+    const kind =
+      progressMode === "progress_tile"
+        ? "tile"
+        : progressMode === "progress_edge"
+          ? "edge"
+          : "vertex";
+    for (const id of progressMapTargets(g, you, activeProgress)) {
+      targets.set(`${kind}-${id}`, { kind, id, actions: [] });
+    }
   }
   const selectedTarget = selected ? explorerTarget(g, selected) : null;
   const alternatives = selectedTarget
@@ -227,13 +307,16 @@ export function CatanExplorerBoard({
       : "";
   return (
     <section
-      className={`explorer-board${g.paired ? " has-paired" : ""}`}
+      className={`explorer-board${g.paired ? " has-paired" : ""}${city ? " has-cities-knights" : ""}`}
       aria-label={`探索者与海盗${scenario}`}
     >
       <div className="explorer-map-column">
         <header className="explorer-heading">
           <div>
-            <strong>探索者与海盗 · {scenario}</strong>
+            <strong>
+              探索者与海盗 · {scenario}
+              {city ? " ＋ 城市与骑士" : ""}
+            </strong>
             <span>
               {phase} · 目标{x.board.target}分
             </span>
@@ -260,8 +343,8 @@ export function CatanExplorerBoard({
         <ExplorerPairedTurn room={room} />
         <div className="explorer-map-tools">
           <span>
-            {options.length && targets.size
-              ? `选择高亮位置：${explorerActionNames[effective]}`
+            {targets.size
+              ? `选择高亮位置：${activeProgress ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}`
               : "滚轮缩放 · 拖动地图"}
           </span>
           <button
@@ -434,34 +517,46 @@ export function CatanExplorerBoard({
                     transform={`translate(${v.x} ${v.y})`}
                     pointerEvents="none"
                   >
-                    {explorerIsHarbor(g, v.id) ? (
-                      <ExplorerPiece
-                        g={g}
-                        assets={assets}
-                        player={v.owner}
-                        kind="harbor"
-                        width={34}
-                      />
-                    ) : assets ? (
-                      <image
-                        href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${catanPieceColors[catanColorIndex(g, v.owner)]}-v1.webp`}
-                        x="-17"
-                        y="-24"
-                        width="34"
-                        height="32"
-                      />
-                    ) : (
-                      <path
-                        d={
-                          v.level === 2
-                            ? "M-15 8V-8H-5V-18H6V-8H15V8Z"
-                            : "M-12 8V-6L0-17L12-6V8Z"
-                        }
-                        fill={catanSeatColor(g, v.owner)}
-                        stroke="#433624"
-                        strokeWidth="2"
-                      />
-                    )}
+                    <g data-city-piece={city ? v.id : undefined}>
+                      {city && (
+                        <CatanCityWall game={g} vertex={v.id} assets={assets} />
+                      )}
+                      {explorerIsHarbor(g, v.id) ? (
+                        <ExplorerPiece
+                          g={g}
+                          assets={assets}
+                          player={v.owner}
+                          kind="harbor"
+                          width={34}
+                        />
+                      ) : assets ? (
+                        <image
+                          href={`${assets}/catan/${v.level === 2 ? "city" : "settlement"}-${catanPieceColors[catanColorIndex(g, v.owner)]}-v1.webp`}
+                          x="-17"
+                          y="-24"
+                          width="34"
+                          height="32"
+                        />
+                      ) : (
+                        <path
+                          d={
+                            v.level === 2
+                              ? "M-15 8V-8H-5V-18H6V-8H15V8Z"
+                              : "M-12 8V-6L0-17L12-6V8Z"
+                          }
+                          fill={catanSeatColor(g, v.owner)}
+                          stroke="#433624"
+                          strokeWidth="2"
+                        />
+                      )}
+                      {city && (
+                        <CatanCityPiece
+                          game={g}
+                          vertex={v.id}
+                          assets={assets}
+                        />
+                      )}
+                    </g>
                     {explorerContents(g, "harbor", v.id).length > 0 && (
                       <g transform="translate(0,20)">
                         <ExplorerCargoPieces
@@ -678,6 +773,25 @@ export function CatanExplorerBoard({
                 );
               })}
               <ExplorerEffects active={motion} assets={assets} />
+              {city && (
+                <>
+                  <CatanMerchant game={g} assets={assets} />
+                  {city.knights.map((n) => (
+                    <g
+                      key={`${n.owner}-${n.vertex}`}
+                      transform={`translate(${g.vertices[n.vertex].x} ${g.vertices[n.vertex].y})`}
+                    >
+                      <g data-city-piece={n.vertex}>
+                        <CatanCityPiece
+                          game={g}
+                          vertex={n.vertex}
+                          assets={assets}
+                        />
+                      </g>
+                    </g>
+                  ))}
+                </>
+              )}
               {!busy &&
                 [...targets.entries()]
                   // A docked ship's edge ends at the harbor. Render its hit
@@ -687,14 +801,20 @@ export function CatanExplorerBoard({
                     return layer[a.kind] - layer[b.kind];
                   })
                   .map(([key, item]) => {
-                    const chosen =
-                      selectedTarget?.kind === item.kind &&
-                      selectedTarget.id === item.id;
-                    const click = () => select(item.actions[0]);
+                    const chosen = progressMode
+                      ? activeProgress?.picks.includes(item.id)
+                      : selectedTarget?.kind === item.kind &&
+                        selectedTarget.id === item.id;
+                    const click = () =>
+                      activeProgress && progressMode
+                        ? setProgress(
+                            pickProgressTarget(g, you, activeProgress, item.id),
+                          )
+                        : select(item.actions[0]);
                     const props = {
                       role: "button",
                       tabIndex: 0,
-                      "aria-label": `${explorerActionNames[effective]}${item.kind === "edge" ? (effective === "catan_road" ? "道路" : "海边") : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
+                      "aria-label": `${activeProgress && progressMode ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}${item.kind === "edge" ? "道路" : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
                       onClick: click,
                       onKeyDown: (e: KeyboardEvent) => buttonKeys(e, click),
                     };
@@ -749,7 +869,12 @@ export function CatanExplorerBoard({
         </div>
         <div className="explorer-map-caption">
           未探索：鹦鹉区{x.board.unexplored[0]}块 · 鹅区{x.board.unexplored[1]}
-          块 <span>港口2分，村庄1分 · 港口每格仍产1资源</span>
+          块{" "}
+          <span>
+            {city
+              ? "城市与港口2分，村庄1分 · 港口每格仍产1资源"
+              : "港口2分，村庄1分 · 港口每格仍产1资源"}
+          </span>
         </div>
       </div>
       <aside className="explorer-panel">
@@ -760,7 +885,7 @@ export function CatanExplorerBoard({
         ) : (
           <>
             <div className="explorer-hand">
-              <strong>你的资源</strong>
+              <strong>{city ? "你的资源与商品" : "你的资源"}</strong>
               <b className="explorer-gold">金币 {gold}</b>
               <Bundle values={hand} assets={assets} showZero />
             </div>
@@ -772,7 +897,7 @@ export function CatanExplorerBoard({
         {game.phase === "catan_discard" && can && due > 0 && (
           <section className="explorer-discard">
             <ResourcePicker
-              label={`归还资源（共${due}张）`}
+              label={`归还${city ? "资源与商品" : "资源"}（共${due}张）`}
               values={discard}
               onChange={setDiscard}
               limits={hand}
@@ -793,8 +918,63 @@ export function CatanExplorerBoard({
             {x.setupPlacement && x.setupPlacement.owner < 0
               ? "（为中立方放置）"
               : ""}
-            ：按顺序放港口、逆序放村庄，再放道路和载移民的船。所有人完成后领取起始资源。
+            ：
+            {city
+              ? "按顺序放城市、逆序放港口，再放道路和载移民的船。全部完成后领取港口旁的普通起始资源，不领取商品。"
+              : "按顺序放港口、逆序放村庄，再放道路和载移民的船。所有人完成后领取起始资源。"}
           </p>
+        )}
+        {city && (
+          <>
+            <CatanCityOverview room={room} assets={assets} />
+            {city.pending &&
+              !["diplomacy", "treason_remove", "treason_place"].includes(
+                city.pending.kind,
+              ) && (
+                <CatanCityChoice
+                  room={room}
+                  act={cityAct}
+                  busy={busy || !can}
+                  assets={assets}
+                  chosen={null}
+                />
+              )}
+            {!x.setup && !city.pending && (
+              <>
+                <CatanProgressHand
+                  room={room}
+                  act={cityAct}
+                  busy={busy || !can}
+                  assets={assets}
+                  selection={progress}
+                  onChange={(s) => {
+                    setProgress(s);
+                    setPick(null);
+                    setMode("");
+                  }}
+                />
+                <CatanTradePowers
+                  room={room}
+                  act={cityAct}
+                  busy={busy || !can}
+                  assets={assets}
+                />
+                <CatanCityActions
+                  room={room}
+                  act={cityAct}
+                  busy={busy || !can}
+                  assets={assets}
+                  mode={progress ? "" : effective.replace(/^catan_/, "")}
+                  selectMode={(key) => {
+                    setMode(key ? `catan_${key}` : "");
+                    setPick(null);
+                    setProgress(null);
+                    setShip(-1);
+                  }}
+                />
+              </>
+            )}
+          </>
         )}
         {choices.length > 0 && (
           <>
@@ -814,20 +994,23 @@ export function CatanExplorerBoard({
                 ))}
             </div>
             <div className="explorer-modes" role="group" aria-label="探险操作">
-              {kinds.map((type) => (
-                <button
-                  key={type}
-                  disabled={busy}
-                  aria-pressed={effective === type}
-                  onClick={() => {
-                    setMode(type);
-                    setPick(null);
-                    setShip(-1);
-                  }}
-                >
-                  {explorerActionNames[type]}
-                </button>
-              ))}
+              {kinds
+                .filter((type) => !city || !cityManaged(type))
+                .map((type) => (
+                  <button
+                    key={type}
+                    disabled={busy}
+                    aria-pressed={effective === type}
+                    onClick={() => {
+                      setMode(type);
+                      setPick(null);
+                      setShip(-1);
+                      setProgress(null);
+                    }}
+                  >
+                    {explorerActionNames[type]}
+                  </button>
+                ))}
             </div>
             {game.phase === "catan_explorer_move" && (
               <div
@@ -913,7 +1096,11 @@ export function CatanExplorerBoard({
                 <label>
                   {selected.type === "catan_explorer_unit"
                     ? "选择招募单位与归还货物"
-                    : "选择船只或舱位"}
+                    : selected.type.startsWith("catan_knight_")
+                      ? "选择骑士与目标"
+                      : selected.type === "catan_treason_place"
+                        ? "选择骑士等级"
+                        : "选择船只或舱位"}
                   <select
                     value={explorerActionKey(selected)}
                     onChange={(e) => {
@@ -1155,7 +1342,9 @@ export function CatanExplorerBoard({
               label="我需要"
               values={take}
               onChange={setTake}
-              limits={Array(5).fill(supply.resource)}
+              limits={g.bank.map((_, i) =>
+                i < 5 ? supply.resource : g.players.length > 4 ? 18 : 12,
+              )}
               assets={assets}
               disabled={busy}
             />
@@ -1187,11 +1376,16 @@ export function CatanExplorerBoard({
             </button>
           </details>
         )}
-        {!choices.length && !due && !trade && room.status === "playing" && (
-          <p className="explorer-notice">
-            等待{room.seats[game.turn]?.name}完成{phase}。
-          </p>
-        )}
+        {!choices.length &&
+          !due &&
+          !trade &&
+          !city?.pending &&
+          room.status === "playing" &&
+          game.turn !== you && (
+            <p className="explorer-notice">
+              等待{room.seats[game.turn]?.name}完成{phase}。
+            </p>
+          )}
         <details className="explorer-rules">
           <summary>
             <Anchor size={16} /> {scenario}规则与银行
@@ -1205,7 +1399,9 @@ export function CatanExplorerBoard({
             。只能通过实际停靠的己方港口装卸。
           </p>
           <p>
-            非7点未获资源的玩家获1金币补偿。3同类资源可换1其他资源或金币；2金币可买1资源，每回合最多2次。无发展卡、强盗、最长道路或最大军队。
+            {city
+              ? "城市在森林、牧场、矿山生产资源与商品，港口仅生产一份资源。普通资源默认3:1，商品默认4:1，城市与商人优惠以银行选项为准；2金币只能购买普通资源，每行动阶段最多两次。建设结束时进步牌须减至4张，再开始航行。"
+              : "非7点未获资源的玩家获1金币补偿。3同类资源可换1其他资源或金币；2金币可买1资源，每回合最多2次。无发展卡、强盗、最长道路或最大军队。"}
           </p>
           {g.paired && (
             <p>
@@ -1229,6 +1425,7 @@ export function CatanExplorerBoard({
           </p>
         </details>
       </aside>
+      {city && <CatanCityEffects room={room} assets={assets} />}
     </section>
   );
 }

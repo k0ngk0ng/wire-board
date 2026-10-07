@@ -11,6 +11,7 @@ import {
 import { CatanHarborsPicker, CatanHarborsSeat } from "./catan-harbors";
 import { catanRuleContext } from "./catan-rule-context";
 import { CatanCitySeat } from "./catan-city";
+import { explorerIsHarbor } from "./catan-explorer-state";
 import { CatanCitiesKnightsSetup } from "./catan-cities-knights-setup";
 import { CatanBasePicker } from "./catan-base-setup";
 import { catanBaseLayoutName } from "./catan-base-layout";
@@ -2475,9 +2476,13 @@ function Players({ room }: { room: Room }) {
                       / 3 · 港口{" "}
                       {
                         g.catan.vertices.filter(
-                          (v) => v.owner === i && v.level === 2,
+                          (v) =>
+                            v.owner === i && explorerIsHarbor(g.catan!, v.id),
                         ).length
                       }
+                      {g.catan.citiesKnights && (
+                        <CatanCitySeat game={g.catan} seat={i} />
+                      )}
                     </>
                   ) : g.catan.citiesKnights ? (
                     <CatanCitySeat game={g.catan} seat={i} />
