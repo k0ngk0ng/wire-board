@@ -3,7 +3,8 @@ package game
 import "fmt"
 
 // NewCatanPirateIslands builds the fixed official scenario with the normal
-// setup, Helpers and paired-turn machinery. It is not a public room option yet.
+// setup, Helpers and paired-turn machinery. Public availability is controlled
+// by the room catalogue, separately from the full rules catalogue.
 func NewCatanPirateIslands(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatan(n, options)
 	if err != nil {
@@ -22,8 +23,7 @@ func NewCatanPirateIslands(n int, options CatanOptions) (*State, error) {
 
 // Public board state for The Pirate Islands (Seafarers scenario 7). The
 // fortresses are separate from buildings until recaptured: they neither
-// produce resources nor score as settlements. Room options remain closed
-// until the scenario interface and full acceptance checks are complete.
+// produce resources nor score as settlements.
 type CatanPirateFortress struct {
 	Root        int   `json:"root"`
 	Route       []int `json:"route"`

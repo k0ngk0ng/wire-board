@@ -8,7 +8,7 @@ import (
 
 func publicCatanSeaScenario(scenario string) bool {
 	switch scenario {
-	case "shores", "islands", "fog", "desert":
+	case "shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders":
 		return true
 	}
 	return false
