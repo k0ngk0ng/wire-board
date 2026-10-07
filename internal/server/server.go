@@ -46,6 +46,7 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
+	CatanFishing           bool                           `json:"catanFishing,omitempty"`
 	CatanTwoRules          string                         `json:"catanTwoRules,omitempty"`
 	CatanTwoScenario       string                         `json:"catanTwoScenario,omitempty"`
 	CatanScenario          string                         `json:"catanScenario,omitempty"`
@@ -468,6 +469,9 @@ func (s *Server) current(id string) *Room {
 }
 func summary(r *Room) map[string]any {
 	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	if r.CatanFishing {
+		result["catanFishing"] = true
+	}
 	if r.CatanScenario != "" {
 		result["catanScenario"] = r.CatanScenario
 	}
@@ -493,6 +497,14 @@ func summary(r *Room) map[string]any {
 			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
 				return !publicCatanSeaScenario(info.ID)
 			})
+		}
+		if r.CatanFishing {
+			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool { return !publicCatanFishingSea(info.ID) })
+			for i := range choices {
+				if choices[i].ID == "desert" || choices[i].ID == "tribe" {
+					choices[i].Layouts = []string{"fixed"}
+				}
+			}
 		}
 		if r.CatanCitiesKnights != nil {
 			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
@@ -588,6 +600,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanFishing       bool                          `json:"catanFishing"`
 		CatanCitiesKnights *game.CatanCitiesKnightsSetup `json:"catanCitiesKnights"`
 		CatanOptions       game.CatanOptions             `json:"catanOptions"`
 		CatanTwoScenario   string                        `json:"catanTwoScenario"`
@@ -686,7 +699,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		h, _ := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		hash = string(h)
 	}
-	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
+	room := &Room{CatanFishing: req.CatanFishing, ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
 	if room.Kind == "catan" && room.Capacity == 2 && !publicCatanFlexibleScenario(req.CatanScenario) {
 		if err := room.setCatanTwoScenario(req.CatanTwoScenario); err != nil {
 			fail(w, 400, err.Error())
@@ -701,6 +714,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanCitiesKnights != nil {
 		if err := room.setPublicCatanCombinationKnights(req.CatanCitiesKnights); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
+	if req.CatanFishing {
+		if err := room.setCatanFishing(true); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -915,10 +934,13 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		layout := req.CatanNewWorldMap
 		if req.Type == "catan_world_map_shuffle" {
-			layout, err = game.GenerateCatanNewWorldMap(max(3, next.Capacity))
+			layout, err = next.generateCatanWorldMap()
 		}
 		if err == nil {
 			err = game.ValidateCatanNewWorldMap(max(3, next.Capacity), layout)
+		}
+		if err == nil && next.CatanFishing {
+			_, err = game.NewCatanFishingNewWorld(max(3, next.Capacity), next.CatanOptions, layout)
 		}
 		if err == nil && !slices.Equal(next.CatanNewWorldMap.Hexes, layout.Hexes) {
 			next.CatanNewWorldMap = layout
@@ -926,6 +948,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Seats[i].Ready = next.Seats[i].Bot
 			}
 		}
+	case "catan_fishing":
+		if next.Host != u.ID || req.Enabled == nil {
+			err = errors.New("只有房主能在开局前选择渔夫组合")
+			break
+		}
+		err = next.setCatanFishing(*req.Enabled)
 	case "catan_scenario":
 		if next.Host != u.ID || req.CatanScenario == nil {
 			err = errors.New("只有房主能在开局前选择卡坦剧本")
@@ -1010,7 +1038,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Capacity = min(4, next.Capacity)
 			}
 			if next.CatanNewWorldMap != nil && options.FiveSix != next.CatanOptions.FiveSix {
-				next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(max(3, next.Capacity))
+				next.CatanNewWorldMap, err = next.generateCatanWorldMap()
 			}
 			next.CatanOptions = options
 			if err == nil && next.friendlyRobberEnabled() {
@@ -1127,6 +1155,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "caravans" {
 					next.Game, err = game.NewCatanCaravans(len(next.Seats), next.CatanOptions)
+				} else if next.CatanFishing {
+					if next.CatanScenario == "new_world" {
+						next.Game, err = game.NewCatanFishingNewWorld(len(next.Seats), next.CatanOptions, next.CatanNewWorldMap)
+					} else {
+						next.Game, err = game.NewCatanFishingSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, nil)
+					}
 				} else if next.CatanCitiesKnights != nil {
 					err = next.validateCatanCitiesKnightsMap()
 					if err == nil {

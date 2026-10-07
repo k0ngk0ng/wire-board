@@ -448,3 +448,13 @@ test("Fishing with Cities and Knights uses actual combination and thirteen point
  delete room.game.catan.citiesKnights;
  info=catanRuleContext(room);assert.equal(info.citiesKnights,false);assert.equal(info.target,10);
 });
+
+
+test("public sea Fishing keeps the sea target and saved recipe authoritative", () => {
+ for (const [scenario,target] of [["islands",13],["fog",12],["desert",14],["tribe",13],["cloth",14],["wonders",10],["new_world",12]]) {
+  const room={capacity:4,catanScenario:scenario,catanFishing:true,catanSeafarers:{scenario,layout:"fixed"}};
+  const info=catanRuleContext(room);assert.equal(info.fishing,true);assert.equal(info.scenario,scenario);assert.equal(info.target,target);assert.equal(info.citiesKnights,false);
+  room.game={catan:{players:[{},{},{}],seafarers:{scenario,layout:"fixed"}}};assert.equal(catanRuleContext(room).fishing,false);
+  room.game.catan.fishing={};assert.equal(catanRuleContext(room).fishing,true);
+ }
+});

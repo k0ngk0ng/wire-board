@@ -2,8 +2,8 @@ package game
 
 import "errors"
 
-// Internal entry point: the public room catalogue stays gated until complete
-// expansion acceptance. Additional scenarios need their own board recipes and
+// Public three/four-player combinations use these verified map recipes.
+// Additional scenarios need their own board recipes and
 // production continuations; never apply three/four-player recipes to five/six.
 func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, placements []CatanFishingGroundPlacement) (*State, error) {
 	if options.Helpers || options.AllHelpers {

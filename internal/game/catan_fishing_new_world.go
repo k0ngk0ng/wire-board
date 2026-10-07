@@ -13,12 +13,12 @@ type CatanFishingWorldSetup struct {
 
 // July 2025 Fishing + Seafarers p.2: no lake; after all ports, place the
 // randomly drawn grounds in turn. Always retain the pre-game approved map.
-// Public room creation stays gated until complete combination acceptance.
+// Public three/four-player rooms validate space when selecting the combination.
 func NewCatanFishingNewWorld(n int, options CatanOptions, layout *CatanNewWorldMap) (*State, error) {
 	if n < 3 || n > 6 || options.Helpers || options.AllHelpers {
 		return nil, errors.New("新世界捕鱼需要三至六人，目前不使用助手")
 	}
-	s, err := NewCatanNewWorldWithMap(n, options, layout)
+	s, err := NewCatanSeafarers(n, options, CatanSeafarersSetup{Scenario: "new_world", Layout: "prepared"}, layout)
 	if err != nil {
 		return nil, err
 	}
@@ -39,6 +39,24 @@ func NewCatanFishingNewWorld(n int, options CatanOptions, layout *CatanNewWorldM
 	}
 	s.Log = append(s.Log, "新世界捕鱼：先轮流放港口，再轮流安放随机渔场；不放湖泊，12分获胜，持旧靴子需13分")
 	return s, nil
+}
+
+// GenerateCatanFishingNewWorldMap is for an explicitly requested fresh map.
+// Enabling Fishing on an existing approved map must validate it, never reroll it.
+func GenerateCatanFishingNewWorldMap(n int) (*CatanNewWorldMap, error) {
+	if n < 3 || n > 6 {
+		return nil, errors.New("新世界捕鱼需要三至六人")
+	}
+	for range 64 {
+		layout, err := GenerateCatanNewWorldMap(n)
+		if err != nil {
+			return nil, err
+		}
+		if _, err = NewCatanFishingNewWorld(n, CatanOptions{FiveSix: n > 4}, layout); err == nil {
+			return layout, nil
+		}
+	}
+	return nil, errors.New("暂未生成可放满港口与渔场的地图，请重新生成")
 }
 
 func (g *Catan) fishingWorldSetup() *CatanFishingWorldSetup {

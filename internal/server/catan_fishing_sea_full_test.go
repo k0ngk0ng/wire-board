@@ -29,11 +29,20 @@ func TestCatanFishingPublicFullHTTPGames(t *testing.T) {
 	testFishingSeaExtendedFullHTTP(t, "")
 }
 
-func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
+func TestCatanFishingSeaPublicFullHTTPGames(t *testing.T) {
+	for _, scenario := range []string{"islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"} {
+		t.Run(scenario, func(t *testing.T) { testFishingSeaExtendedFullHTTP(t, scenario, 3, 4) })
+	}
+}
+
+func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes ...int) {
 	totalPaid := 0
 	sizes := []int{5, 6}
 	if scenario == "" {
 		sizes = []int{3, 4}
+	}
+	if len(publicSizes) > 0 {
+		sizes = publicSizes
 	}
 	for _, n := range sizes {
 		for sample := 0; sample < 2; sample++ {
@@ -42,7 +51,16 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 				var ts *httptest.Server
 				var clients []*testClient
 				var id string
-				if scenario == "" {
+				if len(publicSizes) > 0 {
+					layout := "fixed"
+					if sample == 1 && scenario != "desert" && scenario != "tribe" {
+						layout = "variable"
+					}
+					if scenario == "new_world" {
+						layout = "prepared"
+					}
+					s, ts, clients, id = newPublicFishingSeaTable(t, n, scenario, layout)
+				} else if scenario == "" {
 					s, ts, clients, id = newPublicFishingTable(t, n)
 				} else {
 					s, ts, clients, id, _, _ = newFishingActionTable(t, n, "catan_turn", "resource")
@@ -73,6 +91,12 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 				supply, devSupply, tokenSupply, ports, grounds := 19, 25, 30, 9, 6
 				if n > 4 {
 					supply, devSupply, tokenSupply, ports, grounds = 24, 34, 44, 11, 8
+				}
+				if len(publicSizes) > 0 {
+					ports = len(s.rooms[id].Game.Catan.Ports)
+					if scenario == "new_world" {
+						ports = 10
+					}
 				}
 				restored := map[string]bool{}
 				restart := func(label string) {
@@ -132,7 +156,13 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 							t.Fatal("resource supply", steps, color, total)
 						}
 					}
+					if scenario == "cloth" || scenario == "tribe" {
+						assertPublicFishSeaSpecialInventory(t, g)
+					}
 					cards := len(g.DevDeck) + len(g.DevDiscard)
+					if scenario == "tribe" {
+						cards += len(g.Seafarers.Tribe.Development)
+					}
 					for _, p := range g.Players {
 						for _, count := range p.Dev {
 							cards += count
@@ -252,7 +282,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 					clients[actor].command(current(clients[actor]), "action", action, 200)
 				}
 				r := s.rooms[id]
-				if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || !restored["setup"] || scenario == "new_world" && (!restored["ports"] || !restored["grounds"]) || n > 4 && !restored["secondary"] || automatic == 0 || timeouts == 0 {
+				if !r.Game.Finished || r.Status != "finished" || (len(r.Game.Winners) == 0 || scenario != "cloth" && len(r.Game.Winners) != 1) || !restored["setup"] || scenario == "new_world" && (!restored["ports"] || !restored["grounds"]) || n > 4 && !restored["secondary"] || automatic == 0 || timeouts == 0 {
 					t.Fatal("incomplete full-game coverage", steps, automatic, timeouts, paid, restored)
 				}
 				totalPaid += paid
@@ -260,6 +290,12 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 				target := 12
 				if scenario == "wonders" || scenario == "" {
 					target = 10
+				}
+				if scenario == "islands" || scenario == "tribe" {
+					target = 13
+				}
+				if scenario == "desert" || scenario == "cloth" {
+					target = 14
 				}
 				if r.Game.Catan.Fishing.Tokens.BootOwner == winner {
 					target++
@@ -275,11 +311,21 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 						}
 					}
 					won = level == 4 || level > 0 && level > other && won
-					if len(r.Game.Catan.Seafarers.Wonders.Cards) != 7 || r.Game.Catan.Seafarers.Pirate != -1 {
+					wantCards := 5
+					if n > 4 {
+						wantCards = 7
+					}
+					if len(r.Game.Catan.Seafarers.Wonders.Cards) != wantCards || r.Game.Catan.Seafarers.Pirate != -1 {
 						t.Fatal("extended wonder rules changed")
 					}
 				}
-				if !won || len(r.Game.Catan.Ports) != ports || len(r.Game.Catan.Fishing.Map.Grounds) != grounds {
+				if scenario == "cloth" {
+					won = publicFishingClothWon(t, r.Game)
+				}
+				if scenario == "tribe" {
+					assertPublicFishSeaSpecialInventory(t, r.Game.Catan)
+				}
+				if !won || (scenario != "tribe" && len(r.Game.Catan.Ports) != ports) || len(r.Game.Catan.Fishing.Map.Grounds) != grounds {
 					t.Fatal("wrong finished layout/victory")
 				}
 				restart("finished")
@@ -287,7 +333,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 				if code != 200 || profile["stats"].(map[string]any)["catan"].(map[string]any)["wins"] != float64(1) {
 					t.Fatal("win missing from history")
 				}
-				if scenario == "" {
+				if scenario == "" || len(publicSizes) > 0 {
 					check := func(profile map[string]any) {
 						t.Helper()
 						history := profile["history"].([]any)
@@ -295,7 +341,11 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string) {
 							t.Fatal("duplicate fishing history")
 						}
 						record := history[0].(map[string]any)
-						if record["catanScenario"] != "fishing" || record["catanLayout"] != "variable" || record["catanExpansionRules"].(map[string]any)["fishing"] != game.CatanFishingRules {
+						wantScenario, wantLayout := "fishing", "variable"
+						if scenario != "" {
+							wantScenario, wantLayout = scenario, r.Game.Catan.Seafarers.Layout
+						}
+						if record["catanScenario"] != wantScenario || record["catanLayout"] != wantLayout || record["catanExpansionRules"].(map[string]any)["fishing"] != game.CatanFishingRules {
 							t.Fatal("wrong fishing archive", record)
 						}
 						stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
