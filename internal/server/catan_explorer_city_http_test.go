@@ -105,7 +105,11 @@ func assertExplorerCityHTTPPrivacy(t *testing.T, clients []*testClient, state *g
 			t.Fatal("response/choices leaked to nonactor", viewer)
 		}
 		for _, raw := range x["choices"].([]any) {
-			if raw.(map[string]any)["prompt"] != float64(state.Catan.TurnSerial) {
+			sequence := float64(state.Catan.TurnSerial)
+			if setup := state.Catan.Explorer.Setup; setup != nil {
+				sequence = float64(setup.PromptBase + setup.Step + 1)
+			}
+			if raw.(map[string]any)["prompt"] != sequence {
 				t.Fatal("choice lost turn serial")
 			}
 		}

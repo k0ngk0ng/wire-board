@@ -400,6 +400,7 @@ function CatanFleetChoice({
 export function CatanBoard(props: {
   room: Room;
   act: Act;
+  resetOpening?: () => Promise<void>;
   busy: boolean;
   assets: string;
 }) {

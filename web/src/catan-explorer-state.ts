@@ -68,6 +68,7 @@ export type ExplorerView = {
   motion?: ExplorerMotion | null;
   sequence: number;
   setupPlacement?: { player: number; owner: number; kind: string };
+  setupBlocked?: boolean;
   setup?: {
     start: number;
     step: number;

@@ -1215,6 +1215,9 @@ function App() {
                           <CatanBoard
                             room={room}
                             act={act}
+                            resetOpening={() =>
+                              run(() => command(room, "catan_explorer_reset"))
+                            }
                             busy={boardBusy}
                             assets={state.assetsBaseURL || ""}
                           />

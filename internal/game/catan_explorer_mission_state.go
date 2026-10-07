@@ -246,7 +246,7 @@ func (s *State) catanExplorerSpecialChoices(player int) ([]Action, bool) {
 		step := x.Setup.current(len(g.Players))
 		if step != nil && step.Player == player {
 			for _, target := range x.Setup.choices(g, x.Board, x.Fleet) {
-				out = append(out, Action{Type: "catan_explorer_setup", Prompt: x.Setup.Step + 1, Choice: step.Kind, Target: target})
+				out = append(out, Action{Type: "catan_explorer_setup", Prompt: x.Setup.prompt(), Choice: step.Kind, Target: target})
 			}
 		}
 		return out, true
