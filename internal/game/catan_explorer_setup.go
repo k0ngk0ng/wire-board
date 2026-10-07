@@ -55,7 +55,7 @@ func newCatanExplorerLairsSetup(players int, layout string, start int) (*Catan, 
 	return newCatanExplorerMissionSetup(players, "pirate-lairs", layout, start)
 }
 func newCatanExplorerMissionSetup(players int, scenario, layout string, start int) (*Catan, *catanExplorerBoard, *catanExplorerSailing, *catanExplorerCargo, *catanExplorerEconomy, *catanExplorerSetup, error) {
-	if players < 2 || players > 4 || start < 0 || start >= players {
+	if players < 2 || players > 6 || start < 0 || start >= players {
 		return nil, nil, nil, nil, nil, nil, errors.New("巢穴开局人数或先手无效")
 	}
 	g, b, err := newCatanExplorerBoard(players, scenario, layout)
@@ -63,7 +63,8 @@ func newCatanExplorerMissionSetup(players int, scenario, layout string, start in
 		return nil, nil, nil, nil, nil, nil, err
 	}
 	f, _ := newCatanExplorerSailing(players)
-	g.Bank = []int{19, 19, 19, 19, 19}
+	stock := catanExplorerStock(players).resources
+	g.Bank = []int{stock, stock, stock, stock, stock}
 	g.StartPlayer = start
 	g.SetupVertex = -1
 	g.Dice = []int{0, 0}
@@ -83,6 +84,9 @@ func newCatanExplorerMissionSetup(players int, scenario, layout string, start in
 	e, err := newCatanExplorerEconomy(g, f, c)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil, err
+	}
+	if players > 4 {
+		g.Paired = &CatanPairedTurn{Primary: start, Secondary: (start + 3) % players}
 	}
 	count := players
 	if players == 2 {

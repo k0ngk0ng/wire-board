@@ -17,12 +17,13 @@ type catanExplorerEconomy struct {
 }
 
 type catanExplorerEconomyTurn struct {
-	Player   int    `json:"player"`
-	Sequence uint64 `json:"sequence"`
-	Phase    string `json:"phase"` // roll, discard, pirate, ready, abandoned (trusted platform removal only).
-	Dice     [2]int `json:"dice"`
-	Bought   int    `json:"bought"`
-	Discard  []int  `json:"discard"`
+	NoProduction bool   `json:"noProduction,omitempty"` // Secondary paired player: action/movement only.
+	Player       int    `json:"player"`
+	Sequence     uint64 `json:"sequence"`
+	Phase        string `json:"phase"` // roll, discard, pirate, ready, abandoned (trusted platform removal only).
+	Dice         [2]int `json:"dice"`
+	Bought       int    `json:"bought"`
+	Discard      []int  `json:"discard"`
 }
 
 type catanExplorerProduction struct {
@@ -77,7 +78,10 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated != (t.Phase == "abandoned") || t.Sequence == 0 || !slices.Contains([]string{"roll", "discard", "pirate", "ready", "abandoned"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Phase != "abandoned" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
 		return errors.New("探险生产阶段、玩家或购买次数无效")
 	}
-	if t.Phase == "roll" || t.Phase == "abandoned" && t.Dice == [2]int{} {
+	if t.NoProduction && (g.Paired == nil || !g.Paired.Second || t.Player != g.Paired.Secondary || t.Phase != "ready" && t.Phase != "abandoned") {
+		return errors.New("只有配对第二位玩家可以跳过生产")
+	}
+	if t.NoProduction || t.Phase == "roll" || t.Phase == "abandoned" && t.Dice == [2]int{} {
 		if t.Dice != [2]int{} {
 			return errors.New("尚未掷骰不能已有生产点数")
 		}
