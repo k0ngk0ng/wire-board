@@ -10,8 +10,9 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Public scenario selection remains gated. Only the pristine constructor is
-// installed after the formal lobby flow; no dice, resources or pieces are granted.
+// Three/four seats use the public recipe from creation through settlement.
+// Five/six retain an explicit pristine constructor fixture until disc verification;
+// no dice, resources or pieces are granted in either path.
 func newCaravansFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
@@ -22,7 +23,11 @@ func newCaravansFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*te
 		clients[p].register(fmt.Sprintf("商队玩家%d", p))
 	}
 	opts := game.CatanOptions{FiveSix: n > 4}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "商队完整对局", "kind": "catan", "capacity": n, "catanOptions": opts}, 201)
+	body := map[string]any{"name": "商队完整对局", "kind": "catan", "capacity": n, "catanOptions": opts}
+	if n <= 4 {
+		body["catanScenario"] = "caravans"
+	}
+	raw := clients[0].post("/api/rooms", body, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -32,6 +37,12 @@ func newCaravansFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*te
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
+	if n <= 4 {
+		if s.rooms[id].Game.Catan.Caravans == nil {
+			t.Fatal("public recipe did not construct scenario")
+		}
+		return s, ts, clients, id
+	}
 	initial, err := game.NewCatanCaravans(n, opts)
 	if err != nil {
 		t.Fatal(err)

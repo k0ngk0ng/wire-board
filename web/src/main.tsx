@@ -26,6 +26,7 @@ import { CatanRules } from "./catan-rules";
 import { ClothPicture } from "./catan-cloth";
 import { CatanWonderSeat } from "./catan-wonders";
 import { CatanOptionPicker } from "./catan-helpers";
+import { CatanScenarioPicker } from "./catan-scenario-setup";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
 import { SanguoshaOptions } from "./sanguosha-options";
@@ -1945,6 +1946,7 @@ function Create({
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
   const [catanOptions, setCatanOptions] = useState<CatanOptions>({});
   const [catanTwoScenario, setCatanTwoScenario] = useState("");
+  const [catanScenario, setCatanScenario] = useState("");
   const [gemOptions, setGemOptions] = useState<SplendorOptions>({});
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
@@ -1967,6 +1969,8 @@ function Create({
             splendorOptions: k === "splendor" ? gemOptions : undefined,
             catanOptions:
               k === "catan" ? (capacity === 2 ? {} : catanOptions) : undefined,
+            catanScenario:
+              k === "catan" && capacity !== 2 ? catanScenario : undefined,
             catanTwoScenario:
               k === "catan" && capacity === 2 ? catanTwoScenario : undefined,
             capacity,
@@ -2027,7 +2031,16 @@ function Create({
             onChange={setCatanTwoScenario}
           />
         )}
-        {k === "catan" && capacity !== 2 && (
+        {k === "catan" && capacity >= 3 && capacity <= 4 && (
+          <CatanScenarioPicker
+            value={catanScenario}
+            onChange={(scenario) => {
+              setCatanScenario(scenario);
+              if (scenario) setCatanOptions({});
+            }}
+          />
+        )}
+        {k === "catan" && capacity !== 2 && !catanScenario && (
           <CatanOptionPicker
             value={catanOptions}
             onChange={(o) => {
@@ -2160,6 +2173,19 @@ function Waiting({
   const seaInfo = room.catanSeafarersChoices?.find(
     (s) => s.id === room.catanSeafarers?.scenario,
   );
+  const scenarioSelectable =
+    room.kind === "catan" &&
+    !room.catanTwoRules &&
+    room.capacity >= 3 &&
+    room.capacity <= 4 &&
+    !room.catanOptions?.helpers &&
+    !room.catanOptions?.fiveSix &&
+    !room.catanBaseConfiguration &&
+    !room.catanCitiesKnights &&
+    !room.catanSeafarers &&
+    !room.catanNewWorldMap &&
+    !room.catanHarbors &&
+    !room.catanFriendlyRobber;
   const twoLabel =
     room.kind === "catan" && room.catanTwoRules
       ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`
@@ -2221,7 +2247,7 @@ function Waiting({
                 : room.kind === "catan"
                   ? room.catanTwoRules
                     ? twoLabel
-                    : `${room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
+                    : `${room.catanScenario ? catanScenarioName(room.catanScenario) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2239,50 +2265,69 @@ function Waiting({
             }
           />
         )}
-        {room.kind === "catan" && !room.catanTwoRules && (
-          <CatanCitiesKnightsSetup room={room} />
-        )}
-        {room.kind === "catan" && !room.catanTwoRules && (
-          <CatanFriendlyRobberPicker
-            room={room}
-            disabled={!host || busy || mapDirty}
-            command={command}
-          />
-        )}
-        {room.kind === "catan" && !room.catanTwoRules && (
-          <CatanHarborsPicker
-            room={room}
-            disabled={!host || busy || mapDirty}
-            command={command}
-          />
-        )}
-        {room.kind === "catan" && !room.catanTwoRules && (
-          <CatanBasePicker
-            room={room}
-            disabled={!host || busy || mapDirty}
-            command={command}
-          />
-        )}
-        {room.kind === "catan" && !room.catanTwoRules && (
-          <CatanSeafarersPicker
-            room={room}
-            disabled={!host || busy || mapDirty}
-            command={command}
-          />
-        )}
-        {room.kind === "catan" && !room.catanTwoRules && (
-          <CatanOptionPicker
-            value={room.catanOptions}
-            seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
-            citiesKnights={!!room.catanCitiesKnights}
-            harbors={!!room.catanHarbors?.enabled}
-            friendlyRobber={!!room.catanFriendlyRobber?.enabled}
-            disabled={!host || busy || mapDirty}
-            onChange={(catanOptions) =>
-              command("catan_options", { catanOptions })
+        {scenarioSelectable && (
+          <CatanScenarioPicker
+            value={room.catanScenario || ""}
+            disabled={!host || busy}
+            onChange={(catanScenario) =>
+              command("catan_scenario", { catanScenario })
             }
           />
         )}
+        {room.kind === "catan" &&
+          !room.catanTwoRules &&
+          !room.catanScenario && <CatanCitiesKnightsSetup room={room} />}
+        {room.kind === "catan" &&
+          !room.catanTwoRules &&
+          !room.catanScenario && (
+            <CatanFriendlyRobberPicker
+              room={room}
+              disabled={!host || busy || mapDirty}
+              command={command}
+            />
+          )}
+        {room.kind === "catan" &&
+          !room.catanTwoRules &&
+          !room.catanScenario && (
+            <CatanHarborsPicker
+              room={room}
+              disabled={!host || busy || mapDirty}
+              command={command}
+            />
+          )}
+        {room.kind === "catan" &&
+          !room.catanTwoRules &&
+          !room.catanScenario && (
+            <CatanBasePicker
+              room={room}
+              disabled={!host || busy || mapDirty}
+              command={command}
+            />
+          )}
+        {room.kind === "catan" &&
+          !room.catanTwoRules &&
+          !room.catanScenario && (
+            <CatanSeafarersPicker
+              room={room}
+              disabled={!host || busy || mapDirty}
+              command={command}
+            />
+          )}
+        {room.kind === "catan" &&
+          !room.catanTwoRules &&
+          !room.catanScenario && (
+            <CatanOptionPicker
+              value={room.catanOptions}
+              seafarers={!!room.catanSeafarers || !!room.catanNewWorldMap}
+              citiesKnights={!!room.catanCitiesKnights}
+              harbors={!!room.catanHarbors?.enabled}
+              friendlyRobber={!!room.catanFriendlyRobber?.enabled}
+              disabled={!host || busy || mapDirty}
+              onChange={(catanOptions) =>
+                command("catan_options", { catanOptions })
+              }
+            />
+          )}
         {room.kind === "splendor" && (
           <SplendorOptionPicker
             value={room.splendorOptions}

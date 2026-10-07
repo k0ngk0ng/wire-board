@@ -17,8 +17,7 @@ type CatanRivers struct {
 	Bought     int             `json:"bought"` // Current action phase; reset once at catanNext.
 }
 
-// Internal scenario constructor. Public room selection remains unavailable
-// pending complete rules, original artwork, UI and full-game acceptance.
+// Three/four-player public recipe; extended boards remain internal pending disc verification.
 func NewCatanRivers(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatan(n, options)
 	if err != nil {
