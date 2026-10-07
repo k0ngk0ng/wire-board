@@ -605,6 +605,15 @@ export type CatanState = {
     };
   };
   revealedEvent?: CatanRevealedEvent;
+  eventDeck?: {
+    cycle: number;
+    revealed: number[];
+    current?: number;
+    remaining: number;
+    untilNewYear: number;
+    catalogue: string;
+    referenceOnly: boolean;
+  };
   cardEvent?: {
     kind: string;
     production: number;

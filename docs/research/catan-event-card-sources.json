@@ -102,5 +102,21 @@
       "bytes": 32227,
       "finding": "Official shop product page exposes only the sixth-edition box image, not the numbered event catalogue."
     }
-  ]
+  ],
+  "two_player_reference_integration": {
+    "checked_on": "2026-10-07",
+    "rules": "2025 Traders & Barbarians, printed pages 7–8",
+    "quote": "During the Production phase, draw event cards instead of rolling the dice. Always use the card that was drawn, even if it has the same production number as the previous card.",
+    "faq": {
+      "url": "https://www.catan.com/faq/traders-barbarians",
+      "sha256": "3ae534641b9cdb426d842736a6cfbc682f39a450a8ef576c67ca6b58a49c2367",
+      "bytes": 102213
+    },
+    "findings": [
+      "FAQ23 permits repairing a damaged road with Road Building; FAQ24 resolves the event before production.",
+      "The two-player printed rules require neutral construction when a road or settlement is built. Repair does not place a new road.",
+      "No dedicated neutral-road Earthquake clarification was found on this FAQ page. The internal combination keeps event responses with the two actual players; neutral pieces only follow explicit neutral instructions. This is a rule interpretation, not a quoted special FAQ."
+    ],
+    "catalogue_status": "Still legacy-reference-v1 only; no claim of a verified 2025 physical catalogue."
+  }
 }

@@ -257,13 +257,20 @@ export function CatanTwoPanel({
             <div className="two-production" aria-label="本回合两次生产">
               {[0, 1].map((i) => (
                 <span key={i} className={q.rolls[i] ? "done" : ""}>
-                  {i + 1} 次生产<b>{q.rolls[i] ?? "待掷"}</b>
+                  {i + 1} 次生产
+                  <b>{q.rolls[i] ?? (g.eventDeck ? "待抽" : "待掷")}</b>
                 </span>
               ))}
             </div>
             <small>
-              两次生产总点数不同 · 每次先处理完弃牌与
-              {g.transport ? "蛮族" : "强盗"}
+              {g.eventDeck ? (
+                "依次抽两张事件牌 · 同点数也结算 · 先完成回应再抽下一张"
+              ) : (
+                <>
+                  两次生产总点数不同 · 每次先处理完弃牌与
+                  {g.transport ? "蛮族" : "强盗"}
+                </>
+              )}
             </small>
             <div className="two-neutral-status">
               {[-2, -3].map((owner, i) => (

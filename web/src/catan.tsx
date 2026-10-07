@@ -89,6 +89,7 @@ import {
   Route,
   ScrollText,
   Dices,
+  Layers,
   ZoomIn,
   ZoomOut,
   RotateCcw,
@@ -1613,7 +1614,13 @@ function CatanBaseBoard({
             )}
 
             <div>
-              <b>{g.rollId ? `点数 ${liveNumber}` : "等待掷骰"}</b>
+              <b>
+                {g.rollId
+                  ? `点数 ${liveNumber}`
+                  : g.eventDeck
+                    ? "等待抽牌"
+                    : "等待掷骰"}
+              </b>
               <small>
                 {g.two && phase === "catan_roll"
                   ? `第 ${g.two.rolls.length + 1} 次生产 · 共两次`
@@ -1719,7 +1726,8 @@ function CatanBaseBoard({
             disabled={busy}
             onClick={() => void submit({ type: "catan_roll" })}
           >
-            <Dices size={18} /> 掷骰
+            {g.eventDeck ? <Layers size={18} /> : <Dices size={18} />}
+            {g.eventDeck ? "翻开事件牌" : "掷骰"}
           </button>
         )}
         {mine &&

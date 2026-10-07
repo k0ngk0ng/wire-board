@@ -51,6 +51,9 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if _, ok := catanCardEventNames[kind]; !ok {
 		return errors.New("该事件牌效果尚未接入")
 	}
+	if g.Two != nil && g.EventDeck == nil {
+		return errors.New("双人事件必须通过牌堆抽取并记录两次生产")
+	}
 	if g.Attack != nil {
 		if g.Paired != nil && g.Paired.Second {
 			return errors.New("配对第二行动不抽取事件牌")
