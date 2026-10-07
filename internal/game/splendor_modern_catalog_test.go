@@ -120,10 +120,12 @@ func TestSplendorModernCatalogSetupPairsIndependentDecksAndPublicGate(t *testing
 			} else if len(g.Nobles) != n+1 || len(g.Cities) != 0 {
 				t.Fatal("ordinary noble setup changed")
 			}
-			if o.Cities || o.Orient {
+			if o.Cities {
 				if _, e := NewSplendor(n, o); e == nil {
 					t.Fatal("unverified catalog leaked into public constructor")
 				}
+			}
+			if o.Cities || o.Orient {
 				if g.Catalog != "2025-secondary-v1" {
 					t.Fatal("missing provenance")
 				}

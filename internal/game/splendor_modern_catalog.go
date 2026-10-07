@@ -11,8 +11,8 @@ import (
 // have independent physical-image evidence. Cities remain partially verified,
 // with two physical faces and reverse pairings still unverified. The physical
 // Madrid conditions support the candidate, not BGA's additional blue variant.
-// Only the private constructor may use this catalog until the remaining release
-// gates pass.
+// The public constructor uses only the corroborated Orient table. Cities remain
+// restricted to the private integration constructor.
 // See docs/research/splendor-modern-catalog.md for the exact evidence limits.
 //
 //go:embed splendor_modern_catalog.json
@@ -121,16 +121,7 @@ func newSplendorModernCatalogState(n int, options SplendorOptions) (*State, erro
 		g.Catalog = "2025-secondary-v1"
 	}
 	if options.Orient {
-		g.Decks = append(g.Decks, make([][]Card, 3)...)
-		g.Market = append(g.Market, make([][]Card, 3)...)
-		for _, card := range catalog.Orient {
-			g.Decks[card.gemDeck()] = append(g.Decks[card.gemDeck()], card)
-		}
-		for row := 3; row < 6; row++ {
-			shuffle(g.Decks[row])
-			g.Market[row] = append([]Card{}, g.Decks[row][:2]...)
-			g.Decks[row] = g.Decks[row][2:]
-		}
+		g.installOrient(catalog.Orient)
 	}
 	if options.Cities {
 		g.Nobles = []Noble{}
@@ -143,4 +134,18 @@ func newSplendorModernCatalogState(n int, options SplendorOptions) (*State, erro
 		}
 	}
 	return s, nil
+}
+
+// installOrient adds three independent ten-card tiers to a fresh base setup.
+func (g *Splendor) installOrient(cards []Card) {
+	g.Decks = append(g.Decks, make([][]Card, 3)...)
+	g.Market = append(g.Market, make([][]Card, 3)...)
+	for _, card := range cards {
+		g.Decks[card.gemDeck()] = append(g.Decks[card.gemDeck()], card)
+	}
+	for row := 3; row < 6; row++ {
+		shuffle(g.Decks[row])
+		g.Market[row] = append([]Card{}, g.Decks[row][:2]...)
+		g.Decks[row] = g.Decks[row][2:]
+	}
 }

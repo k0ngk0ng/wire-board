@@ -24,9 +24,9 @@ func (o SplendorOptions) expanded() bool {
 }
 
 func (o SplendorOptions) Validate() error {
-	// Enable only after the complete 2025 catalogs and presentation are verified.
-	if o.Orient || o.Cities {
-		return errors.New("东方与城市扩展仍在核对完整卡牌数据，暂未开放")
+	// Cities still lack physical face/pairing verification; Orient is independent.
+	if o.Cities {
+		return errors.New("城市扩展仍在核对完整城市板块数据，暂未开放")
 	}
 	if o.Rules != "" && o.Rules != SplendorExpansionRules {
 		return errors.New("不支持的璀璨宝石扩展规则版本")
@@ -62,6 +62,14 @@ func NewSplendor(n int, options SplendorOptions) (*State, error) {
 		nobles := append(Nobles(), SplendorExtraNobles()...)
 		shuffle(nobles)
 		s.Splendor.Nobles = nobles[:n+1]
+	}
+	if options.Orient {
+		catalog, err := readSplendorModernCatalog()
+		if err != nil {
+			return nil, err
+		}
+		s.Splendor.installOrient(catalog.Orient)
+		s.Splendor.Catalog = "2025-orient-bga-v1"
 	}
 	if options.Strongholds {
 		s.Splendor.Strongholds = map[int]GemStronghold{}
