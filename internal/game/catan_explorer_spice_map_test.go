@@ -190,7 +190,7 @@ func TestCatanExplorerSpiceMapHiddenPrivacyAndCorruption(t *testing.T) {
 			t.Fatal("invalid spice components accepted")
 		}
 	}
-	for _, n := range []int{1, 5, 6} {
+	for _, n := range []int{1, 7} {
 		if _, _, err := newCatanExplorerBoard(n, "spices-for-catan", "variable"); err == nil {
 			t.Fatal("unsupported map size accepted")
 		}

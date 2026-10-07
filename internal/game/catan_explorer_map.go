@@ -56,35 +56,40 @@ type catanExplorerBoard struct {
 
 type catanExplorerMapRecipe struct {
 	width     int
-	parrot    [3][]int // Columns in rows 0/1/2; goose is the reflected shape.
-	resources []int    // All 15 starting slots, including the fixed frame pasture.
+	parrot    [][]int // Northern rows; goose is the reflected shape.
+	starting  []int   // Number of starting-island hexes in each row.
+	resources []int   // Starting slots, including the fixed frame pasture.
 	numbers   []int
 	target    int
 }
 
-// Mission Guide 2025 pp4/8/16 and full Rulebook pp6–7. Tables count loose hexes:
+// Mission Guide 2025 pp4/8/16, Rulebook pp6–7 and 5–6 Rulebook pp4–7.
+// Tables count loose hexes:
 // include the printed frame's 6-pasture and opposite sea in playable geometry.
-func catanExplorerRecipe(scenario string) (catanExplorerMapRecipe, error) {
-	r := catanExplorerMapRecipe{numbers: []int{11, 9, 3, 8, 4, 10, 6, 12, 8, 10, 4, 11, 6, 3, 5}}
+func catanExplorerRecipe(scenario string, players int) (catanExplorerMapRecipe, error) {
+	if players > 4 {
+		return catanExplorerSixRecipe(scenario)
+	}
+	r := catanExplorerMapRecipe{starting: []int{2, 2, 2, 3, 2, 2, 2}, numbers: []int{11, 9, 3, 8, 4, 10, 6, 12, 8, 10, 4, 11, 6, 3, 5}}
 	switch scenario {
 	case "land-ho":
 		r.width, r.target = 6, 8
-		r.parrot = [3][]int{{4, 5}, {4, 5, 6}, {4, 6, 7}}
+		r.parrot = [][]int{{4, 5}, {4, 5, 6}, {4, 6, 7}}
 		r.resources = []int{4, 0, 3, 2, 1, 2, 2, 4, 0, 3, 2, 0, 1, 4, 0}
 	case "pirate-lairs", "fish-for-catan":
 		r.width, r.target = 7, 12
-		r.parrot = [3][]int{{4, 5, 6}, {4, 5, 6, 7}, {4, 5, 7, 8}}
+		r.parrot = [][]int{{4, 5, 6}, {4, 5, 6, 7}, {4, 5, 7, 8}}
 		r.resources = []int{2, 0, 3, 2, 1, 4, 2, 4, 0, 3, 2, 0, 4, 1, 0}
 		if scenario == "fish-for-catan" {
 			r.target = 15
 		}
 	case "spices-for-catan":
 		r.width, r.target = 8, 15
-		r.parrot = [3][]int{{4, 5, 6, 7}, {4, 5, 6, 7, 8}, {4, 5, 7, 9}}
+		r.parrot = [][]int{{4, 5, 6, 7}, {4, 5, 6, 7, 8}, {4, 5, 7, 9}}
 		r.resources = []int{2, 0, 3, 2, 1, 4, 2, 4, 0, 3, 2, 0, 4, 1, 0}
 	case "explorers-and-pirates":
 		r.width, r.target = 9, 17
-		r.parrot = [3][]int{{4, 5, 6, 7, 8}, {4, 5, 6, 7, 8, 9}, {4, 5, 7, 9, 10}}
+		r.parrot = [][]int{{4, 5, 6, 7, 8}, {4, 5, 6, 7, 8, 9}, {4, 5, 7, 9, 10}}
 		r.resources = []int{2, 0, 3, 2, 1, 4, 2, 4, 0, 3, 2, 0, 4, 1, 0}
 	default:
 		return r, errors.New("此探险家与海盗剧本地图尚未接入")
@@ -132,39 +137,40 @@ func catanExplorerScenarioResources(region int, scenario string) []int {
 }
 
 func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catanExplorerBoard, error) {
-	if players < 2 || players > 4 || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || catanExplorerFishScenario(scenario) && layout != "variable" {
-		return nil, nil, errors.New("此探险地图需要2至4人；初航使用固定布局")
+	if players < 2 || players > 6 || players > 4 && layout != "variable" || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || catanExplorerFishScenario(scenario) && layout != "variable" {
+		return nil, nil, errors.New("探险地图需要2至6人；初航仅2至4人固定布局，五六人使用任务随机布局")
 	}
-	r, err := catanExplorerRecipe(scenario)
+	r, err := catanExplorerRecipe(scenario, players)
 	if err != nil {
 		return nil, nil, err
 	}
 	m := &catanExplorerBoard{Rules: catanExplorerRules, Scenario: scenario, Layout: layout, Players: players, Target: r.target, Starting: []int{}, HarborStarts: []int{}, Regions: [2][]int{{}, {}}}
 	specs := []CatanHexSpec{}
-	rows := [7][]int{}
-	for row := 0; row < 7; row++ {
-		count, start := r.width+min(row, 6-row), -min(row, 3)
+	rows := make([][]int, len(r.starting))
+	middle, last := len(rows)/2, len(rows)-1
+	for row := range rows {
+		count, start := r.width+min(row, last-row), -min(row, middle)
 		for col := 0; col < count; col++ {
 			id := len(specs)
 			rows[row] = append(rows[row], id)
 			resource, number := CatanSea, 0
-			if col < 2 || row == 3 && col == 2 {
+			if col < r.starting[row] {
 				i := len(m.Starting)
 				resource, number = r.resources[i], r.numbers[i]
 				m.Starting = append(m.Starting, id)
 			}
-			if row == 3 && col == 0 {
+			if row == middle && col == 0 {
 				m.FramePasture = id
 			}
-			if row == 3 && col == count-1 {
+			if row == middle && col == count-1 {
 				m.FrameSea = id
 			}
 			for region := 0; region < 2; region++ {
 				sourceRow := row
 				if region == 1 {
-					sourceRow = 6 - row
+					sourceRow = last - row
 				}
-				if sourceRow >= 0 && sourceRow < 3 && slices.Contains(r.parrot[sourceRow], col) {
+				if sourceRow >= 0 && sourceRow < len(r.parrot) && slices.Contains(r.parrot[sourceRow], col) {
 					resource = CatanFog
 					m.Regions[region] = append(m.Regions[region], id)
 				}
@@ -179,7 +185,7 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 	if catanExplorerFishScenario(scenario) {
 		// The English mission overview p14 omits the island artwork. Its
 		// position is explicit in the English setup p6 and German scenario p18.
-		tile := rows[3][3]
+		tile := rows[middle][r.starting[middle]]
 		m.Council = &catanExplorerCouncil{Tile: tile, Anchors: []int{g.Tiles[tile].Vertices[4], g.Tiles[tile].Vertices[1]}}
 	}
 	// Green harbor symbols on p8 trace the eastern coast facing explicit sea.
@@ -236,7 +242,7 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 		}
 	}
 	for region, tiles := range m.Regions {
-		resources := catanExplorerScenarioResources(region, scenario)
+		resources := m.regionResources(region)
 		shuffle(resources)
 		faces := []int{1 + 3*region, 2 + 3*region, 3 + 3*region}
 		if catanExplorerSpiceScenario(scenario) {
@@ -269,7 +275,7 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 			}
 			m.Hidden = append(m.Hidden, h)
 		}
-		m.Numbers[region] = catanExplorerRegionNumbers(region)
+		m.Numbers[region] = m.regionNumbers(region)
 		shuffle(m.Numbers[region])
 	}
 	return g, m, m.validate(g)
@@ -385,7 +391,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 		}
 	}
 	for region := range m.Regions {
-		if !catanExplorerSameInventory(resources[region], catanExplorerScenarioResources(region, m.Scenario)) || !catanExplorerSameInventory(numbers[region], catanExplorerRegionNumbers(region)) {
+		if !catanExplorerSameInventory(resources[region], m.regionResources(region)) || !catanExplorerSameInventory(numbers[region], m.regionNumbers(region)) {
 			return errors.New("探险地区地块或数字库存不守恒")
 		}
 		if catanExplorerSpiceScenario(m.Scenario) {
