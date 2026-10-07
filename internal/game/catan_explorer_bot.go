@@ -245,7 +245,7 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		plans := s.catanExplorerMissionPlans(player)
 		harbors := 0
 		for _, v := range g.Vertices {
-			if v.Owner == player && v.Level == 2 {
+			if v.Owner == player && catanExplorerHarborAt(g, v.ID) {
 				harbors++
 			}
 		}

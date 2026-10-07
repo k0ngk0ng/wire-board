@@ -381,6 +381,11 @@ export function explorerTarget(
   }
   return null;
 }
+export function explorerIsHarbor(g: CatanState, vertex: number) {
+  const v = g.vertices[vertex];
+  return !!v && v.level === 2 && (!!v.harbor || !g.citiesKnights);
+}
+
 // Compact select text puts the actual choice before fees and explanation.
 // The full confirmation below continues to show destination, cost and effects.
 export function explorerActionOptionLabel(g: CatanState, a: ExplorerAction) {

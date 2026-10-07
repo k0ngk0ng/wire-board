@@ -83,7 +83,7 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 			harbor := false
 			fog := false
 			for _, v := range []int{edge.A, edge.B} {
-				harbor = harbor || g.Vertices[v].Owner == player && g.Vertices[v].Level == 2
+				harbor = harbor || g.Vertices[v].Owner == player && catanExplorerHarborAt(g, v)
 			}
 			for _, tile := range edge.Tiles {
 				fog = fog || g.Tiles[tile].Resource == CatanFog
@@ -242,7 +242,7 @@ func catanExplorerLairGoal(g *Catan, player, ship, edge int) int {
 	if crew == 0 || !unfinished {
 		e := g.Edges[edge]
 		for _, v := range []int{e.A, e.B} {
-			if g.Vertices[v].Owner == player && g.Vertices[v].Level == 2 {
+			if g.Vertices[v].Owner == player && catanExplorerHarborAt(g, v) {
 				if crew == 0 {
 					value = max(value, 700+50*x.Cargo.used(catanExplorerCargoLocation{"harbor", v}))
 				} else if _, _, ok := catanExplorerBotRetireCargo(g, ship, v); ok {

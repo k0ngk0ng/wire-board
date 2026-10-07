@@ -115,7 +115,7 @@ func (c catanExplorerCargo) holder(g *Catan, fleet *catanExplorerSailing, owner 
 	case "ship":
 		return location.Index >= 0 && location.Index < len(fleet.Positions) && location.Index/3 == owner && fleet.Positions[location.Index] >= 0
 	case "harbor":
-		return location.Index >= 0 && location.Index < len(g.Vertices) && g.Vertices[location.Index].Owner == owner && g.Vertices[location.Index].Level == 2
+		return location.Index >= 0 && location.Index < len(g.Vertices) && g.Vertices[location.Index].Owner == owner && catanExplorerHarborAt(g, location.Index)
 	}
 	return false
 }
@@ -134,10 +134,10 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	}
 	settlements, harbors, roads := map[int]int{}, map[int]int{}, map[int]int{}
 	for _, v := range g.Vertices {
-		if v.Level == 0 && v.Owner == -1 {
+		if v.Level == 0 && v.Owner == -1 && !v.Harbor {
 			continue
 		}
-		if v.Level < 1 || v.Level > 2 || v.Owner == -1 || v.Owner >= len(g.Players) || v.Owner < 0 && (len(g.Players) != 2 || v.Owner < -3) || !c.landVertex(g, v.Owner, v.ID) || v.Level == 2 && !catanExplorerCoast(g, v.ID) {
+		if v.Harbor && v.Level != 2 || v.Level < 1 || v.Level > 2 || v.Owner == -1 || v.Owner >= len(g.Players) || v.Owner < 0 && (len(g.Players) != 2 || v.Owner < -3) || !c.landVertex(g, v.Owner, v.ID) || catanExplorerHarborAt(g, v.ID) && !catanExplorerCoast(g, v.ID) {
 			return errors.New("探险村庄或港口位置无效")
 		}
 		if v.Level == 1 {
@@ -344,7 +344,7 @@ func (c *catanExplorerCargo) buildHarbor(g *Catan, fleet *catanExplorerSailing, 
 	}
 	count := 0
 	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 2 {
+		if v.Owner == player && catanExplorerHarborAt(g, v.ID) {
 			count++
 		}
 	}
@@ -353,7 +353,7 @@ func (c *catanExplorerCargo) buildHarbor(g *Catan, fleet *catanExplorerSailing, 
 		return errors.New("港口组件不足或无法支付2粮食2矿石")
 	}
 	catanExplorerPay(g, player, cost)
-	g.Vertices[vertex].Level = 2
+	g.Vertices[vertex].Level, g.Vertices[vertex].Harbor = 2, true
 	g.Players[player].Score++
 	return nil
 }
@@ -646,7 +646,7 @@ func newCatanExplorerLandHo(players int) (*Catan, *catanExplorerBoard, *catanExp
 			owner = -color // White=-2, orange=-3; static obstacles, not traders.
 		}
 		g.Vertices[setup.Settlement].Owner, g.Vertices[setup.Settlement].Level = owner, 1
-		g.Vertices[setup.Harbor].Owner, g.Vertices[setup.Harbor].Level = owner, 2
+		g.Vertices[setup.Harbor].Owner, g.Vertices[setup.Harbor].Level, g.Vertices[setup.Harbor].Harbor = owner, 2, true
 		g.Edges[setup.Road].Owner = owner
 		if owner >= 0 {
 			fleet.Positions[owner*3] = setup.Ship

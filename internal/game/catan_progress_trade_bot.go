@@ -59,7 +59,7 @@ func (g *Catan) monopolyEstimate(player, color int) int {
 			if v.Owner < 0 || v.Owner == player || v.Level == 0 || g.Players[v.Owner].Eliminated || sum(g.Players[v.Owner].Resources) == 0 {
 				continue
 			}
-			if color >= 5 && v.Level != 2 {
+			if color >= 5 && !g.cityAt(v.ID) {
 				continue
 			}
 			value += 6 - absCatan(7-t.Number)

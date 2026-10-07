@@ -874,7 +874,7 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 			v := g.Vertices[id]
 			if v.Level > 0 && v.Owner >= 0 && !g.Players[v.Owner].Eliminated {
 				level := v.Level
-				if epidemic && level == 2 {
+				if (epidemic || g.harborAt(id)) && level == 2 {
 					level = 1
 				}
 				if t.Resource == CatanGold {

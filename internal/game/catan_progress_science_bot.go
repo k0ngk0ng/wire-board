@@ -106,7 +106,7 @@ func (g *Catan) scienceBotChoices(player int) []botChoice {
 		case 2:
 			if g.catanDiscardLimit(player) < 13 {
 				for _, v := range g.Vertices {
-					if v.Owner == player && v.Level == 2 && !slices.Contains(k.Walls, v.ID) {
+					if v.Owner == player && g.cityAt(v.ID) && !slices.Contains(k.Walls, v.ID) {
 						a.Vertex = v.ID
 						choices = append(choices, botChoice{a, 710})
 					}

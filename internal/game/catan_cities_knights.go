@@ -125,7 +125,7 @@ func (g *Catan) catanDiscardLimit(player int) int {
 	limit := 7
 	if k := g.CitiesKnights; k != nil {
 		for _, v := range k.Walls {
-			if g.Vertices[v].Owner == player && g.Vertices[v].Level == 2 {
+			if g.cityAt(v) && g.Vertices[v].Owner == player {
 				limit += 2
 			}
 		}
@@ -181,7 +181,7 @@ func (g *Catan) cityMetropolisOwner(track int) int {
 func (g *Catan) cityMetropolisSites(player int) []int {
 	out := []int{}
 	for _, v := range g.Vertices {
-		if v.Owner == player && v.Level == 2 && !slices.Contains(g.CitiesKnights.Metropolises[:], v.ID) {
+		if v.Owner == player && g.cityAt(v.ID) && !slices.Contains(g.CitiesKnights.Metropolises[:], v.ID) {
 			out = append(out, v.ID)
 		}
 	}
@@ -200,7 +200,7 @@ func (s *State) catanCityBuild(player int, a Action, discount int) error {
 	}
 	if a.Type == "catan_wall" {
 		v := a.Vertex
-		if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Owner != player || g.Vertices[v].Level != 2 || slices.Contains(k.Walls, v) {
+		if v < 0 || v >= len(g.Vertices) || g.Vertices[v].Owner != player || !g.cityAt(v) || slices.Contains(k.Walls, v) {
 			return errors.New("只能给自己的无城墙城市建造城墙")
 		}
 		if g.catanDiscardLimit(player) >= 13 {
@@ -422,7 +422,7 @@ func (g *Catan) cityEconomyBotChoices(player int) []botChoice {
 	}
 	if g.catanDiscardLimit(player) < 13 {
 		for _, v := range g.Vertices {
-			if v.Owner == player && v.Level == 2 && !slices.Contains(k.Walls, v.ID) {
+			if v.Owner == player && g.cityAt(v.ID) && !slices.Contains(k.Walls, v.ID) {
 				score := 140
 				if sum(g.Players[player].Resources) > g.catanDiscardLimit(player) {
 					score = 550
