@@ -21,8 +21,7 @@ type CatanTwo struct {
 	Trade           *CatanTwoTrade   `json:"trade,omitempty"`
 }
 
-// Internal acceptance constructor. The public lobby still rejects two-player
-// creation until the rules boundaries, UI and combinations are accepted.
+// Construct the 2025 two-player variant with two neutral building colors.
 func NewCatanTwo(n int, options CatanOptions) (*State, error) {
 	o, err := NormalizeCatanOptions(options)
 	if err != nil {
@@ -45,7 +44,7 @@ func newCatanTwoCore() (*State, error) {
 	return newCatanTwoBoard("")
 }
 
-// Internal combination entrypoint; no public room recipe accepts it yet.
+// Two-player Rivers includes separate gold and trade-token ledgers.
 func NewCatanTwoRivers(n int, options CatanOptions) (*State, error) {
 	o, err := NormalizeCatanOptions(options)
 	if err != nil || n != 2 || o != (CatanOptions{}) {
@@ -54,7 +53,7 @@ func NewCatanTwoRivers(n int, options CatanOptions) (*State, error) {
 	return newCatanTwoBoard("rivers")
 }
 
-// Internal-only: boundary rules, UI and public configuration still gate release.
+// Two-player Caravans uses the verified two-wagon bidding controller.
 func NewCatanTwoCaravans(n int, options CatanOptions) (*State, error) {
 	o, err := NormalizeCatanOptions(options)
 	if err != nil || n != 2 || o != (CatanOptions{}) {

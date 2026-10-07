@@ -580,6 +580,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	var req struct {
 		CatanOptions     game.CatanOptions    `json:"catanOptions"`
+		CatanTwoScenario string               `json:"catanTwoScenario"`
 		SplendorOptions  game.SplendorOptions `json:"splendorOptions"`
 		SanguoshaOptions game.SGOptions       `json:"sanguoshaOptions"`
 		Name             string               `json:"name"`
@@ -593,6 +594,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if s.hiddenGames[req.Kind] {
 		fail(w, 403, "该桌游已下架，暂时不能创建牌桌")
+		return
+	}
+	if req.CatanTwoScenario != "" && (req.Kind != "catan" || req.Capacity != 2) {
+		fail(w, 400, "双人剧本需要两人卡坦牌桌")
 		return
 	}
 	req.Name = strings.TrimSpace(req.Name)
@@ -635,6 +640,13 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		}
 		req.CatanOptions = options
 		minPlayers = 3
+		if req.Capacity == 2 {
+			if options != (game.CatanOptions{}) {
+				fail(w, 400, "双人卡坦不能组合五至六人或 Helpers 扩展")
+				return
+			}
+			minPlayers, maxPlayers = 2, 2
+		}
 		if options.FiveSix {
 			minPlayers, maxPlayers = 5, 6
 		}
@@ -659,6 +671,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		hash = string(h)
 	}
 	room := &Room{ID: randomID(4), Name: req.Name, Kind: req.Kind, RailMap: req.RailMap, SanguoshaOptions: req.SanguoshaOptions, SplendorOptions: req.SplendorOptions, CatanOptions: req.CatanOptions, Host: u.ID, Capacity: req.Capacity, Seats: []Seat{{User: u}}, Version: 1, Status: "waiting", Password: hash, Updated: time.Now().Unix()}
+	if room.Kind == "catan" && room.Capacity == 2 {
+		if err := room.setCatanTwoScenario(req.CatanTwoScenario); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
 	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
 		fail(w, 500, "无法保存房间")
@@ -690,6 +708,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		CatanSeafarers         *game.CatanSeafarersSetup      `json:"catanSeafarers"`
 		CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration"`
 		CatanOptions           game.CatanOptions              `json:"catanOptions"`
+		CatanTwoScenario       *string                        `json:"catanTwoScenario"`
 		SplendorOptions        game.SplendorOptions           `json:"splendorOptions"`
 		SanguoshaOptions       game.SGOptions                 `json:"sanguoshaOptions"`
 		Type                   string                         `json:"type"`
@@ -874,6 +893,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Seats[i].Ready = next.Seats[i].Bot
 			}
 		}
+	case "catan_two_scenario":
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanTwoRules != game.CatanTwoRules || req.CatanTwoScenario == nil {
+			err = errors.New("只有房主能在双人卡坦开局前选择剧本")
+			break
+		}
+		err = next.setCatanTwoScenario(*req.CatanTwoScenario)
 	case "catan_options":
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" {
 			err = errors.New("只有房主能在开局前选择卡坦岛扩展")

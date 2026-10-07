@@ -1,3 +1,4 @@
+import { CatanTwoScenarioPicker } from "./catan-two-setup";
 import { CatanTransportSeat } from "./catan-transport";
 import { CatanAttackSeat } from "./catan-attack";
 import { twoResponder } from "./catan-two-state";
@@ -1727,7 +1728,7 @@ function Lobby({
                       : kind === "sanguosha"
                         ? "4–8"
                         : kind === "catan"
-                          ? "3–4"
+                          ? "2–6"
                           : kind === "splendor"
                             ? "2–4"
                             : "2–5"}{" "}
@@ -1943,6 +1944,7 @@ function Create({
   const [railMap, setRailMap] = useState("usa");
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
   const [catanOptions, setCatanOptions] = useState<CatanOptions>({});
+  const [catanTwoScenario, setCatanTwoScenario] = useState("");
   const [gemOptions, setGemOptions] = useState<SplendorOptions>({});
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
@@ -1963,7 +1965,10 @@ function Create({
             railMap: k === "rail" ? railMap : undefined,
             sanguoshaOptions: k === "sanguosha" ? sgOptions : undefined,
             splendorOptions: k === "splendor" ? gemOptions : undefined,
-            catanOptions: k === "catan" ? catanOptions : undefined,
+            catanOptions:
+              k === "catan" ? (capacity === 2 ? {} : catanOptions) : undefined,
+            catanTwoScenario:
+              k === "catan" && capacity === 2 ? catanTwoScenario : undefined,
             capacity,
           });
         }}
@@ -1976,6 +1981,8 @@ function Create({
               key={x}
               onClick={() => {
                 setK(x);
+                if (x === "catan" && capacity === 2 && !catanOptions.fiveSix)
+                  setCatanOptions({});
                 setCapacity(
                   x === "dota"
                     ? Math.min(6, Math.max(2, capacity - (capacity % 2)))
@@ -1985,7 +1992,7 @@ function Create({
                           : x === "catan"
                             ? catanOptions.fiveSix
                               ? 5
-                              : 3
+                              : 2
                             : 2,
                         Math.min(
                           capacity,
@@ -2014,7 +2021,13 @@ function Create({
         {k === "sanguosha" && (
           <SanguoshaOptions value={sgOptions} onChange={setSGOptions} />
         )}
-        {k === "catan" && (
+        {k === "catan" && capacity === 2 && (
+          <CatanTwoScenarioPicker
+            value={catanTwoScenario}
+            onChange={setCatanTwoScenario}
+          />
+        )}
+        {k === "catan" && capacity !== 2 && (
           <CatanOptionPicker
             value={catanOptions}
             onChange={(o) => {
@@ -2056,7 +2069,11 @@ function Create({
             座位上限
             <select
               value={capacity}
-              onChange={(e) => setCapacity(Number(e.target.value))}
+              onChange={(e) => {
+                const next = Number(e.target.value);
+                setCapacity(next);
+                if (k === "catan" && next === 2) setCatanOptions({});
+              }}
             >
               {(k === "dota"
                 ? [2, 4, 6]
@@ -2066,7 +2083,9 @@ function Create({
                         k === "sanguosha"
                           ? 5
                           : k === "catan"
-                            ? 2
+                            ? catanOptions.fiveSix
+                              ? 2
+                              : 3
                             : k === "rail"
                               ? (map?.maxPlayers || 5) - 1
                               : k === "carcassonne"
@@ -2080,12 +2099,12 @@ function Create({
                         : k === "catan"
                           ? catanOptions.fiveSix
                             ? 5
-                            : 3
+                            : 2
                           : 2),
                   )
               ).map((n) => (
                 <option key={n} value={n}>
-                  {n} 人
+                  {n} 人{k === "catan" && n === 2 ? "（双人变体）" : ""}
                 </option>
               ))}
             </select>
@@ -2106,9 +2125,11 @@ function Create({
           {k === "sanguosha"
             ? 4
             : k === "catan"
-              ? catanOptions.fiveSix
-                ? 5
-                : 3
+              ? capacity === 2
+                ? 2
+                : catanOptions.fiveSix
+                  ? 5
+                  : 3
               : 2}
           个座位即可开始，不必坐满。一个人也可以在房间里添加电脑玩家体验。
           {k === "dota" && " 兵线争锋需 2、4 或 6 人，开始后再分队。"}
@@ -2209,7 +2230,15 @@ function Waiting({
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
         <h2>朋友或电脑，到齐就开局。</h2>
-        {twoLabel && <p className="waiting-two-summary">{twoLabel}</p>}
+        {twoLabel && (
+          <CatanTwoScenarioPicker
+            value={room.catanTwoScenario || ""}
+            disabled={!host || busy}
+            onChange={(catanTwoScenario) =>
+              command("catan_two_scenario", { catanTwoScenario })
+            }
+          />
+        )}
         {room.kind === "catan" && !room.catanTwoRules && (
           <CatanCitiesKnightsSetup room={room} />
         )}

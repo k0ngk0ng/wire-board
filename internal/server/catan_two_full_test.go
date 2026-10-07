@@ -10,8 +10,8 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Provision only the waiting draft; the real ready/start commands construct
-// the game. No running state, cards, resources, dice or winners are installed.
+// Create the public two-player recipe and use real ready/start commands.
+// No internal draft, running state, cards, resources, dice or winners are installed.
 func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, string) {
 	return newTwoScenarioFullTable(t, "")
 }
@@ -24,18 +24,10 @@ func newTwoScenarioFullTable(t *testing.T, scenario string) (*Server, *httptest.
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("双人验收%d", p))
 	}
-	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未开放双人", "capacity": 2}, 400)
-	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止公开注入", "capacity": 3, "catanTwoRules": game.CatanTwoRules}, 400)
-	raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 3}, 201)
+	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未知双人剧本", "capacity": 2, "catanTwoScenario": "unknown"}, 400)
+	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止版本注入", "capacity": 2, "catanTwoRules": game.CatanTwoRules}, 400)
+	raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}, 201)
 	id := raw["id"].(string)
-	s.mu.Lock()
-	if err := s.rooms[id].setCatanTwoScenario(scenario); err != nil {
-		t.Fatal(err)
-	}
-	if err := s.save(s.rooms[id]); err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Unlock()
 	clients[1].command(current(clients[0]), "join", nil, 200)
 	for p := range 2 {
 		clients[p].command(current(clients[p]), "ready", nil, 200)
