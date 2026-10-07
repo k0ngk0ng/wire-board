@@ -11,10 +11,10 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Three/four-player standalone games use public creation. Other recipes keep
+// Three-to-six-player standalone games use public creation. Other recipes keep
 // explicit internal provisioning, followed by actual ready/start and actions.
 func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
-	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", false, 3, 4, 6)
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", false, 3, 4, 5, 6)
 }
 
 func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
@@ -28,7 +28,7 @@ func TestCatanFishingCitiesKnightsPublicFullHTTPGames(t *testing.T) {
 }
 
 func TestCatanHarborsCitiesKnightsFullHTTPGames(t *testing.T) {
-	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", true, 3, 4, 6)
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", true, 3, 4, 5, 6)
 }
 
 func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string, harbors bool, players ...int) {
@@ -74,7 +74,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[p].register(fmt.Sprintf("骑士玩家%d", p))
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
-			public := n <= 4
+			public := n <= 4 || scenario == ""
 			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
 			if public {
 				body["catanScenario"] = "cities-knights"

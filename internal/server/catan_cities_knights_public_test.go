@@ -15,7 +15,7 @@ func TestCatanCitiesKnightsPublicSelectionAndRematch(t *testing.T) {
 	guest.register("城市骑士公开朋友")
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
-		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5},
 		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "splendor", "capacity": 3},
 	} {
@@ -64,7 +64,7 @@ func TestCatanCitiesKnightsPublicSelectionAndRematch(t *testing.T) {
 	if c := s.rooms[id].CatanCitiesKnights; c == nil || c.Layout != "variable" || c.Rules != game.CatanCitiesKnightsRules {
 		t.Fatal("wrong persisted city recipe", c)
 	}
-	for _, options := range []game.CatanOptions{{Helpers: true}, {FiveSix: true}} {
+	for _, options := range []game.CatanOptions{{Helpers: true}, {FiveSix: true, Helpers: true}} {
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": options, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	}
 	host.command(current(host), "start", nil, 200)

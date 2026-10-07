@@ -5,7 +5,11 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Shared by public standalone three/four-player rooms and internal combinations.
+func (r *Room) isCatanStandaloneKnightsRecipe() bool {
+	return r.Kind == "catan" && r.CatanScenario == "cities-knights" && r.CatanCitiesKnights != nil && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil && r.CatanBaseConfiguration == nil && r.CatanTwoRules == "" && !r.CatanFishing
+}
+
+// Shared by public standalone three-to-six-player rooms and internal combinations.
 func (r *Room) setCatanCitiesKnights(setup game.CatanCitiesKnightsSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" {
 		return fmt.Errorf("只能在城市与骑士开局前调整设置")

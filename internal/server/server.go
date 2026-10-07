@@ -741,7 +741,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanHarbors != nil {
 		if !room.publicCatanHarborsAvailable() {
-			fail(w, 400, "港口霸主支持基础三至六人，以及三四人城市骑士与航海家")
+			fail(w, 400, "港口霸主支持基础及城市骑士三至六人，以及三四人航海家")
 			return
 		}
 		if err := room.setCatanHarbors(*req.CatanHarbors); err != nil {
@@ -1025,8 +1025,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && (options.Helpers || options.AllHelpers) {
 			err = errors.New("港口霸主与助手的组合尚未核验")
 		}
-		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() {
-			err = errors.New("港口霸主的五六人公开组合需要基础地图")
+		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() {
+			err = errors.New("港口霸主的五六人公开组合需要基础或城市骑士地图")
 		}
 		if err == nil && next.CatanCitiesKnights != nil {
 			if options.Helpers || options.AllHelpers {
