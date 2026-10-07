@@ -49,7 +49,7 @@ func TestCatanTwoCaravansPrivateRecipeReadinessAndActualHistory(t *testing.T) {
 	}
 	clients[0].command(current(clients[0]), "start", nil, 400)
 	clients[0].post("/api/rooms/"+id, map[string]any{"type": "catan_options", "version": r.Version, "nonce": randomID(12), "catanOptions": game.CatanOptions{Helpers: true}}, 400)
-	clients[0].post("/api/rooms/"+id, map[string]any{"type": "catan_two_scenario", "version": r.Version, "nonce": randomID(12), "catanTwoScenario": "caravans"}, 400)
+	clients[1].post("/api/rooms/"+id, map[string]any{"type": "catan_two_scenario", "version": r.Version, "nonce": randomID(12), "catanTwoScenario": "caravans"}, 400)
 	for _, bad := range []func(*Room){func(r *Room) { r.CatanTwoRules = "" }, func(r *Room) { r.Capacity = 3 }, func(r *Room) { r.CatanTwoScenario = "unknown" }, func(r *Room) { r.CatanSeafarers = &game.CatanSeafarersSetup{} }} {
 		trial := *r
 		bad(&trial)

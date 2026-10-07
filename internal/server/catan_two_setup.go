@@ -5,8 +5,8 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Only internal provisioning can enable this draft. It is intentionally absent
-// from public creation/selection requests until complete expansion acceptance.
+// Two-seat creation pins the rules; waiting hosts can choose among verified
+// base, Rivers and Caravans recipes before all players ready up again.
 func (r *Room) setCatanTwo() error {
 	return r.setCatanTwoScenario("")
 }
@@ -20,6 +20,9 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	next.CatanTwoScenario = scenario
 	if err := next.validateCatanTwoSetup(); err != nil {
 		return err
+	}
+	if r.Capacity == next.Capacity && r.CatanTwoRules == next.CatanTwoRules && r.CatanTwoScenario == next.CatanTwoScenario {
+		return nil
 	}
 	r.Capacity, r.CatanTwoRules = next.Capacity, next.CatanTwoRules
 	r.CatanTwoScenario = next.CatanTwoScenario
