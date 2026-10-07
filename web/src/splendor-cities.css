@@ -139,6 +139,7 @@
   font-size: 11px;
 }
 .player-gem-cities {
+  grid-column: 1 / -1;
   display: flex;
   gap: 4px;
   align-items: center;
@@ -146,6 +147,11 @@
   font-size: 11px;
   color: #355a36;
   margin-top: 6px;
+}
+@media (min-width: 851px) {
+  .gem-city-art-frame {
+    max-height: 48px;
+  }
 }
 @media (max-width: 850px) {
   .gem-city-list {
@@ -256,5 +262,60 @@
   }
   .gem-cities.is-compact .gem-city-any > span {
     font-size: 10px;
+  }
+}
+
+/* A phone overview keeps every city's complete target in a single row.
+   Expanding progress restores the full illustrated cards and owned counts. */
+@media (max-width: 850px) {
+  .gem-cities.is-compact .gem-city-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+  .gem-cities.is-compact .gem-city {
+    display: grid;
+    grid-template-columns: 30px 58px 30px minmax(0, 1fr);
+    grid-template-areas: "art name score needs" "owners owners owners owners";
+    align-items: center;
+    column-gap: 5px;
+    --city-inset: 2px;
+  }
+  .gem-cities.is-compact .gem-city.is-eligible {
+    --city-inset: 1px;
+  }
+  .gem-cities.is-compact .gem-city-art-frame {
+    grid-area: art;
+    margin: 0;
+    border-radius: 3px;
+  }
+  .gem-cities.is-compact .gem-city h4 {
+    grid-area: name;
+    font-size: 11px;
+    margin: 0;
+  }
+  .gem-cities.is-compact .gem-city-score {
+    grid-area: score;
+    margin: 0;
+    flex-wrap: nowrap;
+    font-size: 10px;
+  }
+  .gem-cities.is-compact .gem-city-score > b {
+    font-size: 18px;
+  }
+  .gem-cities.is-compact .gem-city-requirements {
+    grid-area: needs;
+    gap: 3px;
+  }
+  .gem-cities.is-compact .gem-city-owners {
+    grid-area: owners;
+    margin: 2px 0 0;
+  }
+  .gem-cities.is-compact .gem-city-caption {
+    margin-top: 3px;
+    font-size: 9px;
+  }
+  .gem-cities.is-compact .gem-city-expand {
+    min-height: 28px;
+    padding: 4px;
   }
 }
