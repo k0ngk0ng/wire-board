@@ -74,7 +74,7 @@ func TestSplendorModernCatalogPublisherExamplesAndValidation(t *testing.T) {
 	}
 }
 
-func TestSplendorModernCatalogSetupPairsIndependentDecksAndPublicGate(t *testing.T) {
+func TestSplendorModernCatalogSetupPairsIndependentDecks(t *testing.T) {
 	faces := map[[2]int]bool{}
 	for n := 2; n <= 4; n++ {
 		for mask := 0; mask < 16; mask++ {
@@ -119,11 +119,6 @@ func TestSplendorModernCatalogSetupPairsIndependentDecksAndPublicGate(t *testing
 				}
 			} else if len(g.Nobles) != n+1 || len(g.Cities) != 0 {
 				t.Fatal("ordinary noble setup changed")
-			}
-			if o.Cities {
-				if _, e := NewSplendor(n, o); e == nil {
-					t.Fatal("unverified catalog leaked into public constructor")
-				}
 			}
 			if o.Cities || o.Orient {
 				if g.Catalog != "2025-secondary-v1" {
