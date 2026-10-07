@@ -113,7 +113,7 @@ func (s *State) Apply(player int, a Action) error {
 	}
 	if s.Catan != nil {
 		err := s.applyCatan(player, a)
-		if len(s.Log) > 80 {
+		if err == nil && len(s.Log) > 80 {
 			s.Log = s.Log[len(s.Log)-80:]
 		}
 		return err

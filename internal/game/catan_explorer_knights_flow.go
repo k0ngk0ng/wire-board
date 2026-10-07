@@ -6,7 +6,7 @@ import (
 )
 
 // Full map/mission components are required for ships and discoveries, unlike
-// earlier isolated production fixtures. Public Apply/configuration stay gated.
+// earlier isolated production fixtures. Room configuration remains gated.
 func (s *State) validateExplorerCityFlow() error {
 	if err := s.validateExplorerCityProduction(); err != nil {
 		return err
