@@ -1,0 +1,179 @@
+{
+  "source": {
+    "url": "https://www.catan.com/sites/default/files/2025-04/CN3086%20CATAN%20%E2%80%93%20E%26P%205-6%20Expansion%20Rules.pdf",
+    "sha256": "d16279b92383160946efe1b3e2045790bbf814a017c886f35504d3e0f7a16e13",
+    "bytes": 13966868
+  },
+  "artwork": {
+    "crew-purple": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3650,
+      "soft_mask": 3649,
+      "mask_size": [
+        44,
+        89
+      ],
+      "size": [
+        28,
+        56
+      ],
+      "bytes": 2710,
+      "sha256": "eaf25db17e216778225c0e9090e4c15e74338c991c9750d390b2d2a59e6cf946"
+    },
+    "crew-green": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3652,
+      "soft_mask": 3651,
+      "mask_size": [
+        44,
+        88
+      ],
+      "size": [
+        28,
+        56
+      ],
+      "bytes": 3188,
+      "sha256": "3b2242a996abcffc65c82a939c0c1a0728a12b8dcf31eeaac3374b204830c78d"
+    },
+    "settler-purple": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3654,
+      "soft_mask": 3653,
+      "mask_size": [
+        73,
+        89
+      ],
+      "size": [
+        47,
+        56
+      ],
+      "bytes": 3488,
+      "sha256": "501b1b2eb75c41345ec7f4de026cb4226d8e2af8aa12933e3a5514df17f7dd6c"
+    },
+    "settler-green": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3656,
+      "soft_mask": 3655,
+      "mask_size": [
+        73,
+        89
+      ],
+      "size": [
+        47,
+        56
+      ],
+      "bytes": 3634,
+      "sha256": "b61dd9a87f32992173fe77fc835d0c07edf6e2a222a6360694894c6508adb0f1"
+    },
+    "harbor-purple": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3658,
+      "soft_mask": 3657,
+      "mask_size": [
+        111,
+        104
+      ],
+      "size": [
+        71,
+        66
+      ],
+      "bytes": 4524,
+      "sha256": "c834e4d24423e63b17372a3d3e9aeeba6b5dfac0606675d3eb8ef532684ee213"
+    },
+    "harbor-green": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3660,
+      "soft_mask": 3659,
+      "mask_size": [
+        111,
+        104
+      ],
+      "size": [
+        71,
+        66
+      ],
+      "bytes": 4764,
+      "sha256": "0cd2961a6fb56ebd1be79df82494b5e0923b1a284db066e584b264cd94e0dc2a"
+    },
+    "ship-purple": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3664,
+      "soft_mask": 3663,
+      "mask_size": [
+        138,
+        81
+      ],
+      "size": [
+        87,
+        52
+      ],
+      "bytes": 5402,
+      "sha256": "3717077075253d1a65d08a53bf14630ba373a5f59d4faef1fdcfbd7ee34d422c"
+    },
+    "ship-green": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3666,
+      "soft_mask": 3665,
+      "mask_size": [
+        138,
+        81
+      ],
+      "size": [
+        87,
+        52
+      ],
+      "bytes": 5588,
+      "sha256": "5f74d476e9f1801754903de94435ff0dfbbe99a83d25addd3d2f618819a71a63"
+    },
+    "pirate-purple": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3672,
+      "soft_mask": 3671,
+      "mask_size": [
+        141,
+        94
+      ],
+      "size": [
+        90,
+        60
+      ],
+      "bytes": 5900,
+      "sha256": "281373544be8b87fbd6a0fd8c468f4eacbcdb0018ece27f5db681a8942c0013a"
+    },
+    "pirate-green": {
+      "source": "catan-pirates-5-6-2025",
+      "page": 2,
+      "method": "native-image",
+      "object": 3674,
+      "soft_mask": 3673,
+      "mask_size": [
+        141,
+        94
+      ],
+      "size": [
+        90,
+        60
+      ],
+      "bytes": 6168,
+      "sha256": "0e1c16303339d976e1267582838cf12892e5e473ed6d5f0c8214d24e59ec248a"
+    }
+  }
+}

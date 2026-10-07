@@ -639,3 +639,36 @@ test("mixed spice and crew use separate map slots, including sailing and permane
   );
   assert.equal(explorerSpicePoint(after, 0), null);
 });
+
+test("expanded mission counts and trade limits retain the opening player count", async () => {
+  const { explorerSupplyLimits } =
+    await import("../src/catan-explorer-state.ts");
+  for (const n of [2, 3, 4, 5, 6]) {
+    const g = room().game.catan;
+    g.players = Array.from({ length: n }, () => ({ eliminated: true }));
+    g.players[0].eliminated = false;
+    g.explorer.board = { scenario: "fish-for-catan" };
+    assert.equal(explorerLairTotal(g), n > 4 ? 8 : 5);
+    g.explorer.board.scenario = "explorers-and-pirates";
+    assert.equal(explorerLairTotal(g), n > 4 ? 8 : 6);
+    assert.deepEqual(
+      explorerSupplyLimits(g),
+      n > 4 ? { resource: 24, gold: 172 } : { resource: 19, gold: 148 },
+    );
+  }
+});
+test("second paired player cannot open domestic trades while first player can", async () => {
+  const { explorerCanOffer } = await import("../src/catan-explorer-state.ts");
+  const r = room();
+  r.game.phase = "catan_turn";
+  assert.equal(explorerCanOffer(r), true);
+  r.game.catan.paired = { primary: 0, secondary: 1, second: false };
+  assert.equal(explorerCanOffer(r), true);
+  r.game.catan.paired.second = true;
+  r.game.turn = r.you = 1;
+  assert.equal(explorerCanOffer(r), false);
+  r.game.catan.paired.second = false;
+  assert.equal(explorerCanOffer({ ...r, spectating: true }), false);
+  r.seats[1].autoPlay = true;
+  assert.equal(explorerCanOffer(r), false);
+});

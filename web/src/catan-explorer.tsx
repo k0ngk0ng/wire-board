@@ -1,3 +1,4 @@
+import { ExplorerPairedTurn } from "./catan-explorer-paired";
 import { ExplorerSpiceMission } from "./catan-explorer-spice";
 import { ExplorerFullMissions } from "./catan-explorer-full-missions";
 import { useEffect, useState } from "react";
@@ -41,6 +42,8 @@ import {
   explorerScenarioLabel,
   explorerLairTotal,
   explorerPhaseLabel,
+  explorerSupplyLimits,
+  explorerCanOffer,
 } from "./catan-explorer-state";
 import type { ExplorerAction, ExplorerPick } from "./catan-explorer-state";
 import "./catan-explorer.css";
@@ -192,7 +195,9 @@ export function CatanExplorerBoard({
   const discardAction = explorerDiscardAction(room, discard);
   const due = g.discardDue[you] || 0;
   const trade = g.trade;
-  const mayOffer = can && game.turn === you && game.phase === "catan_turn";
+  const mayOffer = explorerCanOffer(room);
+  const supply = explorerSupplyLimits(g);
+  const noProduction = !!g.paired?.second && !x.setup;
   const gold = x.economy.gold[you] || 0;
   const offerValid =
     mayOffer &&
@@ -200,7 +205,7 @@ export function CatanExplorerBoard({
     total(take) + goldTake > 0 &&
     goldGive <= gold &&
     [goldGive, goldTake].every(
-      (n) => Number.isInteger(n) && n >= 0 && n <= 148,
+      (n) => Number.isInteger(n) && n >= 0 && n <= supply.gold,
     ) &&
     give.every((n, i) => n <= hand[i]);
   const phase = explorerPhaseLabel(game.finished ? "finished" : game.phase);
@@ -219,7 +224,10 @@ export function CatanExplorerBoard({
           .join(" ")
       : "";
   return (
-    <section className="explorer-board" aria-label={`探索者与海盗${scenario}`}>
+    <section
+      className={`explorer-board${g.paired ? " has-paired" : ""}`}
+      aria-label={`探索者与海盗${scenario}`}
+    >
       <div className="explorer-map-column">
         <header className="explorer-heading">
           <div>
@@ -231,12 +239,23 @@ export function CatanExplorerBoard({
           <div
             className="explorer-dice"
             role="img"
-            aria-label={`骰子${g.dice.join("、")}`}
+            aria-label={
+              noProduction
+                ? "第二位玩家不掷生产骰"
+                : g.dice.some(Boolean)
+                  ? `骰子${g.dice.join("、")}`
+                  : "等待掷骰"
+            }
           >
             <Dices size={20} />
-            {g.dice.join(" + ")}
+            {noProduction
+              ? "不掷骰"
+              : g.dice.some(Boolean)
+                ? g.dice.join(" + ")
+                : "待掷骰"}
           </div>
         </header>
+        <ExplorerPairedTurn room={room} />
         <div className="explorer-map-tools">
           <span>
             {options.length && targets.size
@@ -1120,7 +1139,7 @@ export function CatanExplorerBoard({
               label="我需要"
               values={take}
               onChange={setTake}
-              limits={[19, 19, 19, 19, 19]}
+              limits={Array(5).fill(supply.resource)}
               assets={assets}
               disabled={busy}
             />
@@ -1129,7 +1148,7 @@ export function CatanExplorerBoard({
               <input
                 type="number"
                 min="0"
-                max="148"
+                max={supply.gold}
                 value={goldTake}
                 disabled={busy}
                 onChange={(e) => setGoldTake(Number(e.target.value))}
@@ -1172,6 +1191,11 @@ export function CatanExplorerBoard({
           <p>
             非7点未获资源的玩家获1金币补偿。3同类资源可换1其他资源或金币；2金币可买1资源，每回合最多2次。无发展卡、强盗、最长道路或最大军队。
           </p>
+          {g.paired && (
+            <p>
+              五六人每轮只生产一次。第一位先完成生产、建设和航行，第二位不掷生产骰，直接建设与航行且只能向银行交易。任一位在自己的阶段达到目标分即获胜。
+            </p>
+          )}
           {x.spice && (
             <p>
               每座农场只可派驻一次，取得香料后才能在该农场建造；船员永久留驻。航速农场各加1步，海盗农场增加成功骰面，金币农场各提供每回合1次资源换金币。香料轨道六格为1、1、2、2、3、3分，领先额外1分，同进度先到者保留领先。

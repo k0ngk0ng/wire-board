@@ -28,21 +28,33 @@ MISSION_ART = {'fish': (3, 11814), 'council': (3, 11816), 'fish-shoal': (2, 5201
     'spice': (3, 11822), 'farm-swift': (2, 5191), 'farm-gold': (2, 5186),
     'farm-pirate-5': (2, 5179), 'farm-pirate-4': (2, 5226)}
 
-def prepare(output, rules):
+EXTENSION_PIECES = {
+    'crew-purple': 3650, 'crew-green': 3652,
+    'settler-purple': 3654, 'settler-green': 3656,
+    'harbor-purple': 3658, 'harbor-green': 3660,
+    'ship-purple': 3664, 'ship-green': 3666,
+    'pirate-purple': 3672, 'pirate-green': 3674,
+}
+
+def prepare(output, rules, six_player=False):
     root = Path(__file__).resolve().parent.parent
-    source = json.loads((root / 'docs/board-expansion-rule-sources.json').read_text())[SOURCE]
-    data = (rules / f'{SOURCE}.pdf').read_bytes()
+    source_key = 'catan-pirates-5-6-2025' if six_player else SOURCE
+    source = json.loads((root / 'docs/board-expansion-rule-sources.json').read_text())[source_key]
+    data = (rules / f'{source_key}.pdf').read_bytes()
     if hashlib.sha256(data).hexdigest() != source['sha256']:
         raise ValueError('Rulebook changed; review component references before extraction')
     target = output / 'catan/explorer'
     target.mkdir(parents=True, exist_ok=True)
     provenance = {}
     with pymupdf.open(stream=data, filetype='pdf') as doc:
-        page = doc[3]
-        for label in ('12 ships', '8 settlers', '16 harbor settlements'):
-            if label not in page.get_text():
-                raise ValueError(f'Wrong component page: {label}')
-        artwork = {name: (3, xref) for name, xref in PIECES.items()} | MISSION_ART
+        if six_player:
+            artwork = {name: (1, xref) for name, xref in EXTENSION_PIECES.items()}
+        else:
+            page = doc[3]
+            for label in ('12 ships', '8 settlers', '16 harbor settlements'):
+                if label not in page.get_text():
+                    raise ValueError(f'Wrong component page: {label}')
+            artwork = {name: (3, xref) for name, xref in PIECES.items()} | MISSION_ART
         for name, (page_index, xref) in artwork.items():
             rows = {row[0]: row for row in doc[page_index].get_images(full=True)}
             row = rows[xref]
@@ -64,7 +76,7 @@ def prepare(output, rules):
             art.putalpha(alpha.resize(art.size, Image.Resampling.LANCZOS))
             path = target / f'{name}-v1.webp'
             art.save(path, lossless=True, method=6)
-            provenance[name] = {'source': SOURCE, 'page': page_index + 1, 'method': 'native-image',
+            provenance[name] = {'source': source_key, 'page': page_index + 1, 'method': 'native-image',
                                 'object': xref, 'soft_mask': row[1], 'mask_size': list(alpha.size), 'size': list(art.size),
                                 'bytes': path.stat().st_size, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
     (target / 'sources.json').write_text(json.dumps({'source': source, 'artwork': provenance}, ensure_ascii=False, indent=2) + '\n')
@@ -74,5 +86,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
     parser.add_argument('--rules-directory', type=Path, required=True)
+    parser.add_argument('--six-player', action='store_true', help='Extract the original green and purple extension pieces')
     args = parser.parse_args()
-    prepare(args.output, args.rules_directory)
+    prepare(args.output, args.rules_directory, args.six_player)
