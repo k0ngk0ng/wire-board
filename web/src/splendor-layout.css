@@ -810,3 +810,144 @@
     font-size: clamp(8px, 2.3vw, 11px);
   }
 }
+
+/* Keep the phone's main actions close to the market without reducing cards. */
+@media (max-width: 850px) {
+  .room-page.playing.game-splendor {
+    padding-top: 6px;
+  }
+  .game-splendor.playing .room-heading {
+    display: block;
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+  .game-splendor.playing .room-heading .eyebrow {
+    display: none;
+  }
+  .game-splendor.playing .room-heading h1 {
+    margin: 0 0 3px;
+    font-size: 15px;
+  }
+  .game-splendor.playing .room-tools {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: none;
+    gap: 2px;
+  }
+  .game-splendor.playing .room-tools .subtle {
+    padding: 5px 3px;
+    min-height: 32px;
+    font-size: 10px;
+    gap: 2px;
+    white-space: nowrap;
+  }
+  .game-splendor.playing .room-tools svg {
+    width: 13px;
+    height: 13px;
+  }
+  .game-splendor.playing .players-strip {
+    margin-bottom: 6px;
+  }
+  .game-splendor.playing .splendor-player {
+    padding: 6px;
+    gap: 3px 6px;
+    align-content: start;
+  }
+  .game-splendor .splendor-player .player-info > strong {
+    min-height: 24px;
+    line-height: 1.1;
+  }
+  .game-splendor .player-gem-stack {
+    height: 44px;
+  }
+  .game-splendor .player-gem-card {
+    height: 30px;
+    padding-bottom: 5px;
+  }
+  .game-splendor .player-gem-token {
+    top: 21px;
+    width: 23px;
+    height: 23px;
+  }
+  .game-splendor .player-gem-stack.gold-only .player-gem-token {
+    top: 3px;
+  }
+  .game-splendor .player-gold-label {
+    top: 30px;
+  }
+  .game-splendor .player-gem-cities {
+    margin-top: 0;
+    font-size: 10px;
+  }
+  .game-splendor.playing .turn-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "round who clock" "phase phase clock";
+    gap: 2px 7px;
+    align-items: center;
+    padding: 6px 9px;
+  }
+  .game-splendor .turn-card > .eyebrow {
+    grid-area: round;
+    font-size: 8px;
+  }
+  .game-splendor .turn-card > h3 {
+    grid-area: who;
+    font-size: 13px;
+    margin: 0;
+    min-width: 0;
+  }
+  .game-splendor.playing .turn-card > p {
+    grid-area: phase;
+    margin: 0;
+    font-size: 10px;
+  }
+  .game-splendor.playing .turn-clock {
+    grid-area: clock;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .game-splendor .clock-reading {
+    display: grid;
+    grid-template-columns: 15px auto;
+    gap: 2px 4px;
+    align-items: center;
+  }
+  .game-splendor .clock-reading > svg {
+    width: 15px;
+    height: 15px;
+  }
+  .game-splendor .clock-reading > time {
+    font-size: 22px;
+    line-height: 1;
+  }
+  .game-splendor .clock-reading > span {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 9px;
+  }
+  .game-splendor.playing .game-layout {
+    gap: 6px;
+  }
+  .game-splendor .splendor-board {
+    gap: 8px;
+    padding-top: 8px;
+  }
+  .splendor-board .gem-bank {
+    margin-top: 0;
+  }
+  .splendor-board .gem-bank .bank-actions {
+    margin-top: 4px;
+  }
+  .splendor-board .gem-bank .bank-actions .primary {
+    padding: 4px 9px;
+  }
+  .splendor-board .gem-market-switch button {
+    min-height: 30px;
+    padding: 4px 8px;
+  }
+}
