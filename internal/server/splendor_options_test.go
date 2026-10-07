@@ -89,7 +89,7 @@ func TestSplendorOldRoomDefaultsToBase(t *testing.T) {
 		t.Fatal(err)
 	}
 	s, err := game.NewSplendor(2, r.SplendorOptions)
-	if err != nil || s.Splendor.Options.TradingPosts || s.Splendor.Options.Strongholds || s.Splendor.Options.ExtraNobles {
+	if err != nil || s.Splendor.Options != (game.SplendorOptions{}) || s.Splendor.Catalog != "" || len(s.Splendor.Cities) != 0 || len(s.Splendor.Decks) != 3 {
 		t.Fatal("old room gained expansion rules", err)
 	}
 }

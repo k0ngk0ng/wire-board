@@ -481,7 +481,7 @@ func summary(r *Room) map[string]any {
 			result["catanTwoScenario"] = r.CatanTwoScenario
 		}
 	}
-	if r.publicCatanBaseAvailable() || (r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil) {
+	if r.Capacity > 4 && (r.publicCatanBaseAvailable() || (r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil)) {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
 	if (r.CatanFriendlyRobber != nil || r.publicCatanFriendlyAvailable()) && r.Status == "waiting" {
@@ -729,9 +729,19 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	if req.CatanBaseConfiguration != nil {
+		if !room.publicCatanBaseAvailable() {
+			fail(w, 400, "基础布局选择需要基础卡坦岛地图")
+			return
+		}
+		if err := room.setCatanBaseConfiguration(*req.CatanBaseConfiguration); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
 	if req.CatanHarbors != nil {
 		if !room.publicCatanHarborsAvailable() {
-			fail(w, 400, "港口霸主公开组合支持三四人的基础、城市骑士与航海家")
+			fail(w, 400, "港口霸主支持基础三至六人，以及三四人城市骑士与航海家")
 			return
 		}
 		if err := room.setCatanHarbors(*req.CatanHarbors); err != nil {
@@ -745,7 +755,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanFriendlyRobber != nil {
 		if !room.publicCatanFriendlyAvailable() {
-			fail(w, 400, "友善强盗公开组合支持三四人的基础和已核验航海图")
+			fail(w, 400, "友善强盗支持基础三至六人及已核验的三四人航海图")
 			return
 		}
 		if err := room.setCatanFriendlyRobber(*req.CatanFriendlyRobber); err != nil {
@@ -753,16 +763,6 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if err := room.validateCatanScenario(); err != nil {
-			fail(w, 400, err.Error())
-			return
-		}
-	}
-	if req.CatanBaseConfiguration != nil {
-		if !room.publicCatanBaseAvailable() {
-			fail(w, 400, "基础布局选择仅支持基础卡坦岛及其五六人、Helpers扩充")
-			return
-		}
-		if err := room.setCatanBaseConfiguration(*req.CatanBaseConfiguration); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -1016,8 +1016,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		options, optionErr := game.NormalizeCatanOptions(req.CatanOptions)
 		err = optionErr
-		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix {
-			err = errors.New("友善强盗公开组合当前支持三四人，请先关闭该变体")
+		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() {
+			err = errors.New("友善强盗的五六人公开组合需要基础地图")
 		}
 		if err == nil && next.friendlyRobberEnabled() && (options.Helpers || options.AllHelpers) {
 			err = errors.New("友善强盗与助手的组合尚未核验")
@@ -1025,8 +1025,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && (options.Helpers || options.AllHelpers) {
 			err = errors.New("港口霸主与助手的组合尚未核验")
 		}
-		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix {
-			err = errors.New("港口霸主公开组合当前支持三四人，请先关闭该变体")
+		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() {
+			err = errors.New("港口霸主的五六人公开组合需要基础地图")
 		}
 		if err == nil && next.CatanCitiesKnights != nil {
 			if options.Helpers || options.AllHelpers {
