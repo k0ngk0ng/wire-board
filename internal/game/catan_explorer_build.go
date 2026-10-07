@@ -23,11 +23,26 @@ func catanExplorerLandEdge(g *Catan, edge int) bool {
 }
 
 func (c *catanExplorerCargo) buildRoad(g *Catan, f *catanExplorerSailing, player int, sequence uint64, edge int) error {
-	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
+	return c.buildRoadCost(g, f, player, sequence, edge, false)
+}
+
+// Free construction can only be selected by the owned progress-card controller.
+func (c *catanExplorerCargo) buildRoadCost(g *Catan, f *catanExplorerSailing, player int, sequence uint64, edge int, free bool) error {
+	cost, err := c.roadPrice(g, f, player, sequence, edge, free)
+	if err != nil {
 		return err
 	}
+	catanExplorerPay(g, player, cost)
+	g.Edges[edge].Owner = player
+	return nil
+}
+
+func (c catanExplorerCargo) roadPrice(g *Catan, f *catanExplorerSailing, player int, sequence uint64, edge int, free bool) ([]int, error) {
+	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
+		return nil, err
+	}
 	if !c.landEdge(g, player, edge) || g.Edges[edge].Owner != -1 {
-		return errors.New("道路必须建在已探索、未占用的可建设陆地边")
+		return nil, errors.New("道路必须建在已探索、未占用的可建设陆地边")
 	}
 	count := 0
 	for _, road := range g.Edges {
@@ -53,12 +68,13 @@ func (c *catanExplorerCargo) buildRoad(g *Catan, f *catanExplorerSailing, player
 		}
 	}
 	cost := []int{1, 1, 0, 0, 0}
-	if !connected || count >= 15 || !catanExplorerCanPay(g, player, cost) {
-		return errors.New("修路需要连接己方道路或建筑、剩余道路棋子及1木1砖；不能穿过对手建筑、骑士或中立建筑")
+	if free {
+		cost = []int{0, 0, 0, 0, 0}
 	}
-	catanExplorerPay(g, player, cost)
-	g.Edges[edge].Owner = player
-	return nil
+	if !connected || count >= 15 || !catanExplorerCanPay(g, player, cost) {
+		return nil, errors.New("修路需要连接己方道路或建筑、剩余道路棋子及1木1砖；不能穿过对手建筑、骑士或中立建筑")
+	}
+	return cost, nil
 }
 
 func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, player int, sequence uint64, vertex int) error {

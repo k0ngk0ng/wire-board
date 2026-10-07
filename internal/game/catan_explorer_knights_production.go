@@ -113,6 +113,10 @@ func (s *State) validateExplorerCityProduction() error {
 		return err
 	}
 	turn := x.Economy.Turn
+	freeRoads := s.Phase == "catan_roads"
+	if g.FreeRoads < 0 || g.FreeRoads > 2 || freeRoads != (g.FreeRoads > 0) || freeRoads && (s.Finished || turn.Phase != "ready" || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" || g.ResumePhase != "catan_turn" || k.Pending != nil || k.Event != nil) {
+		return errors.New("组合免费道路阶段或剩余次数无效")
+	}
 	if len(g.Dice) != 2 || turn.Phase != "roll" && turn.Dice != [2]int{g.Dice[0], g.Dice[1]} {
 		return errors.New("组合事件与生产骰子不一致")
 	}
@@ -158,7 +162,7 @@ func (s *State) validateExplorerCityProduction() error {
 				return errors.New("组合城市事件回应缺少事件")
 			}
 		}
-	} else if !s.Finished && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
+	} else if !s.Finished && !freeRoads && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
 		return errors.New("组合生产存在未完成或错误接续")
 	}
 	return s.validateExplorerCityTrade()
