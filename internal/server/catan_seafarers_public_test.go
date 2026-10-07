@@ -18,7 +18,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
-		{"kind": "catan", "capacity": 3, "catanScenario": "tribe"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "cloth"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "new_world"},
 		{"kind": "splendor", "capacity": 3, "catanScenario": "fog"},
 	} {
@@ -27,7 +27,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	}
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "公开航海配置", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true, AllHelpers: true}}, 201)
 	id := raw["id"].(string)
-	if len(raw["catanSeafarersChoices"].([]any)) != 4 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
+	if len(raw["catanSeafarersChoices"].([]any)) != 7 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
 		t.Fatal("wrong public catalogue or default layout")
 	}
 	guest.command(current(host), "join", nil, 200)
@@ -89,10 +89,13 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 }
 
 func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
-	for _, scenario := range []string{"shores", "islands", "fog", "desert"} {
+	for _, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "pirate_islands", "wonders"} {
 		for _, n := range []int{3, 4} {
 			for _, helpers := range []bool{false, true} {
 				for _, layout := range []string{"fixed", "variable"} {
+					if scenario == "pirate_islands" && layout == "variable" {
+						continue // The official scenario has only a fixed recipe.
+					}
 					t.Run(fmt.Sprintf("%s/%d/helpers=%v/%s", scenario, n, helpers, layout), func(t *testing.T) {
 						s, ts := setupServer(t)
 						stopBotTicker(s)
@@ -129,6 +132,14 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 									v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
 									if v["seafarers"].(map[string]any)["scenario"] != scenario || v["eventDeck"] != nil {
 										t.Fatal("wrong public rules")
+									}
+									if scenario == "tribe" {
+										tribe := v["seafarers"].(map[string]any)["tribe"].(map[string]any)
+										for _, reward := range tribe["development"].([]any) {
+											if _, exposed := reward.(map[string]any)["card"]; exposed {
+												t.Fatal("unclaimed tribe card identity exposed")
+											}
+										}
 									}
 									for p, raw := range v["players"].([]any) {
 										for _, field := range []string{"resources", "dev"} {
@@ -174,9 +185,7 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 							t.Fatal("natural match failed to finish")
 						}
 						winner := r.Game.Winners[0]
-						if r.Game.Catan.Players[winner].Score < r.Game.Catan.Seafarers.VictoryPoints {
-							t.Fatal("wrong scenario victory threshold")
-						}
+						assertPublicSeaVictory(t, r.Game, winner)
 						s, ts = restartRiversHTTP(t, s, ts, clients, id)
 						code, profile := clients[n].request("GET", "/api/players/"+r.Seats[winner].ID, nil)
 						if code != 200 {
@@ -234,6 +243,63 @@ func TestCatanSeafarersPublicRejectsCorruptSavedSetup(t *testing.T) {
 		after, _ := json.Marshal(s.rooms[id])
 		if string(before) != string(after) || s.rooms[id].Game != nil {
 			t.Fatal("invalid save started or partially changed")
+		}
+	}
+}
+
+func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
+	t.Helper()
+	g := s.Catan
+	sea := g.Seafarers
+	if sea.Scenario == "wonders" {
+		level, otherMax := -1, 0
+		for _, card := range sea.Wonders.Cards {
+			if card.Owner == winner {
+				level = card.Level
+			} else if card.Owner >= 0 {
+				otherMax = max(otherMax, card.Level)
+			}
+		}
+		if level != 4 && !(level > otherMax && g.Players[winner].Score >= sea.VictoryPoints) {
+			t.Fatal("invalid wonder victory", level, otherMax, g.Players[winner].Score)
+		}
+		return
+	}
+	if g.Players[winner].Score < sea.VictoryPoints {
+		t.Fatal("wrong scenario victory threshold")
+	}
+	if sea.Scenario == "pirate_islands" && sea.PirateIslands.Fortresses[winner].Strength != 0 {
+		t.Fatal("pirate winner has not recovered their fortress")
+	}
+}
+
+func TestCatanSeafarersPublicSpecialScenarioSwitches(t *testing.T) {
+	r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanOptions: game.CatanOptions{Helpers: true}, Seats: []Seat{{Ready: true}, {Bot: true, Ready: true}}}
+	for _, scenario := range []string{"tribe", "wonders", "pirate_islands"} {
+		if err := r.setCatanScenario(scenario); err != nil {
+			t.Fatal(err)
+		}
+		if r.CatanSeafarers.Scenario != scenario || r.CatanSeafarers.Layout != "fixed" || !r.CatanOptions.Helpers || r.Seats[0].Ready || !r.Seats[1].Ready {
+			t.Fatal("scenario change did not retain helpers and reset readiness correctly")
+		}
+		r.Seats[0].Ready = true
+		if scenario != "pirate_islands" {
+			if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: scenario, Layout: "variable"}); err != nil {
+				t.Fatal(err)
+			}
+			r.Seats[0].Ready = true
+			if err := r.setCatanScenario(scenario); err != nil || r.CatanSeafarers.Layout != "variable" || !r.Seats[0].Ready {
+				t.Fatal("same scenario lost layout or readiness", err)
+			}
+		} else {
+			before, _ := json.Marshal(r)
+			if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: scenario, Layout: "variable"}); err == nil {
+				t.Fatal("pirate islands accepted an unprinted variable recipe")
+			}
+			after, _ := json.Marshal(r)
+			if string(before) != string(after) {
+				t.Fatal("invalid layout changed setup")
+			}
 		}
 	}
 }

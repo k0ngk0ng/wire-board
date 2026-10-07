@@ -30,10 +30,33 @@ const scenarios = [
     name: "航海家 · 穿越沙漠",
     description: "穿过沙漠或出海定居，争取新区域奖励，14 分获胜。",
   },
+  {
+    id: "tribe",
+    name: "航海家 · 遗忘的部落",
+    description: "航行领取部落的胜利点、发展卡与港口，13 分获胜。",
+  },
+  {
+    id: "pirate_islands",
+    name: "航海家 · 海盗群岛",
+    description: "组建战舰，夺回自己的要塞并达到 10 分获胜；使用固定地图。",
+  },
+  {
+    id: "wonders",
+    name: "航海家 · 卡坦奇迹",
+    description: "建成四级奇迹，或达到 10 分且已建奇迹等级独自领先，即可获胜。",
+  },
 ];
 
 export const isPublicCatanSea = (scenario?: string) =>
-  ["shores", "islands", "fog", "desert"].includes(scenario || "");
+  [
+    "shores",
+    "islands",
+    "fog",
+    "desert",
+    "tribe",
+    "pirate_islands",
+    "wonders",
+  ].includes(scenario || "");
 
 export function CatanScenarioPicker({
   value,
