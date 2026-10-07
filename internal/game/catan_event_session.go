@@ -192,7 +192,7 @@ func (s *State) validateCatanEventSession() error {
 		return errors.New("双人生产点数与实际事件牌不一致")
 	}
 	if q := g.CardEvent; q != nil {
-		if s.Phase != "catan_card_event" || s.Finished || revealed.ProductionStarted || q.Kind != face.Kind || q.Production != face.Production || q.Red != 0 || q.Face != 0 || len(q.Players) == 0 {
+		if s.Phase != "catan_card_event" || s.Finished || g.GoldPending != nil || revealed.ProductionStarted || q.Kind != face.Kind || q.Production != face.Production || q.Red != 0 || q.Face != 0 || len(q.Players) == 0 {
 			return errors.New("事件牌回应与抽牌记录不一致")
 		}
 		seen := map[int]bool{}

@@ -5,7 +5,11 @@ import "errors"
 // Private integration entry. The legacy reference deck is deliberately not
 // exposed as a verified 2025 component set or a public room option.
 func newCatanSeafarersReferenceEvents(n int, setup CatanSeafarersSetup) (*State, error) {
-	s, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, setup, nil)
+	return newCatanSeafarersReferenceEventsOptions(n, CatanOptions{FiveSix: n > 4}, setup)
+}
+
+func newCatanSeafarersReferenceEventsOptions(n int, options CatanOptions, setup CatanSeafarersSetup) (*State, error) {
+	s, err := NewCatanSeafarers(n, options, setup, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +28,7 @@ func (g *Catan) validateSeafarersEventDeck() error {
 	default:
 		return errors.New("该航海家剧本尚未接入完整事件牌抽取")
 	}
-	if g.Options.Helpers || g.Options.AllHelpers || g.Two != nil || g.BaseSetup != nil || sea.NewWorld != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.Cloth != nil || sea.Tribe != nil {
+	if g.Two != nil || g.BaseSetup != nil || sea.NewWorld != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.Cloth != nil || sea.Tribe != nil {
 		return errors.New("该航海家事件牌多重组合尚未接入")
 	}
 	setup := CatanSeafarersSetup{Scenario: sea.Scenario, Layout: sea.Layout, Rules: sea.Rules}

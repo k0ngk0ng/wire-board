@@ -490,6 +490,9 @@ export function CatanHelpers({
                   {g.eventDeck
                     ? "事件效果结束并按牌面点数生产后，符合条件时自动提示你响应。"
                     : "掷骰结算符合条件时自动提示你响应。"}
+                  {rule.id === 3 &&
+                    g.seafarers &&
+                    "所有玩家选完金矿资源后才判断补偿；金矿收入算生产，事件奖励不算。"}
                 </small>
               )}
             </fieldset>

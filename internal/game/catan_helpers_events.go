@@ -72,7 +72,7 @@ func (s *State) validateEventHelpers() error {
 		}
 		return nil
 	}
-	if g.setup() || s.Finished || s.Phase != "catan_helper" || g.CardEvent != nil || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated {
+	if g.setup() || s.Finished || s.Phase != "catan_helper" || g.CardEvent != nil || g.GoldPending != nil || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated {
 		return errors.New("事件牌助手回应冲突或归属无效")
 	}
 	h := g.Players[q.Player].Helper
