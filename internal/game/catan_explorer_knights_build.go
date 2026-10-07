@@ -55,6 +55,9 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	if err := s.validateExplorerCityProduction(); err != nil {
 		return err
 	}
+	if s.Phase == "catan_roads" {
+		return s.catanExplorerCityRoadAction(player, a)
+	}
 	g, x := s.Catan, s.Catan.Explorer
 	respond := a.Type == "catan_trade_accept" || a.Type == "catan_trade_reject"
 	if s.Finished || s.Phase != "catan_turn" || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || player != s.Turn && !respond || a.Prompt < 1 || uint64(a.Prompt) != g.TurnSerial || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || a.Skill != "" {
@@ -72,6 +75,21 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 			return err
 		}
 		keepTrade = true
+	case "catan_road", "catan_settlement":
+		if a.Choice != "" {
+			return errors.New("普通建设不能请求免费放置")
+		}
+		if a.Type == "catan_road" {
+			if err := nx.Cargo.buildRoad(ng, nx.Fleet, player, ng.TurnSerial, a.Edge); err != nil {
+				return err
+			}
+			next.catanLog(player, "支付木材×1、砖块×1，修建道路 #%d", a.Edge+1)
+		} else {
+			if err := nx.Cargo.buildSettlement(ng, nx.Fleet, player, ng.TurnSerial, a.Vertex); err != nil {
+				return err
+			}
+			next.catanLog(player, "支付木材、砖块、羊毛、粮食各1，建造村庄 #%d", a.Vertex+1)
+		}
 	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move":
 		if a.Choice != "" {
 			return errors.New("骑士不能请求船运或任务动作")
@@ -99,8 +117,8 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 		}
 		next.catanLog(player, "将村庄 #%d 升级为%s", a.Vertex+1, map[string]string{"city": "城市", "harbor": "港口"}[kind])
 	case "catan_progress":
-		if !slices.Contains([]int{1, 2, 5, 8}, a.Card) {
-			return errors.New("本组合主动进步牌当前仅接入起重机、工程学、医学和锻造")
+		if !slices.Contains([]int{1, 2, 4, 5, 6, 7, 8}, a.Card) {
+			return errors.New("本组合尚未接入这张主动进步牌")
 		}
 		if err := next.catanPlayProgress(player, a); err != nil {
 			return err
