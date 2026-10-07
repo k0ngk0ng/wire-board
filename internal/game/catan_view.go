@@ -70,6 +70,7 @@ func (s *State) catanView(view map[string]any, player int) {
 	s.catanFishingView(v, player)
 	if g.Rivers != nil {
 		richest, poor := g.riverWealth()
+		v["rivers"].(map[string]any)["goldRule"] = "ledger"
 		v["rivers"].(map[string]any)["richest"] = richest
 		v["rivers"].(map[string]any)["poor"] = poor
 	}

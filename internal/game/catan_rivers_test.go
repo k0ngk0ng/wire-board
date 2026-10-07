@@ -113,6 +113,7 @@ func TestCatanRiversBridgesAndRoadRewards(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s := riversFixture(t, n)
 			g := s.Catan
+			riverGold(g, 1, g.Rivers.Bank)
 			id := g.Rivers.Map.Bridges[0]
 			e := g.Edges[id]
 			g.Vertices[e.A].Owner, g.Vertices[e.A].Level = 0, 1
@@ -179,7 +180,7 @@ func TestCatanRiversBridgesAndRoadRewards(t *testing.T) {
 			if err := s.Apply(0, Action{Type: "catan_city", Vertex: e.A}); err != nil {
 				t.Fatal(err)
 			}
-			if s.Catan.Rivers.Gold[0] != 5 {
+			if s.Catan.Rivers.Gold[0] != 5 || s.Catan.Rivers.GoldIssued != 5 {
 				t.Fatal("city minted gold")
 			}
 			riverConserved(t, s)
@@ -187,7 +188,7 @@ func TestCatanRiversBridgesAndRoadRewards(t *testing.T) {
 	}
 }
 
-func TestCatanRiversBridgeConnectionsLimitAndSupplyGuard(t *testing.T) {
+func TestCatanRiversBridgeConnectionsLimitAndLedger(t *testing.T) {
 	s := riversFixture(t, 3)
 	g := s.Catan
 	id := g.Rivers.Map.Bridges[0]
@@ -229,8 +230,12 @@ func TestCatanRiversBridgeConnectionsLimitAndSupplyGuard(t *testing.T) {
 	catanGive(g, 0, 0, 1)
 	catanGive(g, 0, 1, 2)
 	riverGold(g, 1, 99)
-	riverReject(t, s, 0, Action{Type: "catan_bridge", Edge: id})
-	// The guard is not asserted as an official shortage rule; release stays gated.
+	if err := s.Apply(0, Action{Type: "catan_bridge", Edge: id}); err != nil {
+		t.Fatal(err)
+	}
+	if s.Catan.Rivers.GoldIssued != 2 || s.Catan.Rivers.Gold[0] != 3 || s.Catan.Rivers.Bank != 0 {
+		t.Fatal("partial physical supply must pay the full bridge reward")
+	}
 	riverConserved(t, s)
 }
 
@@ -380,7 +385,7 @@ func TestCatanRiversCoinSalesPortsAndImmediateVictory(t *testing.T) {
 	if built != 5 {
 		t.Fatal("nine-point legal buildings fixture")
 	}
-	for p, n := range []int{2, 2, 1} {
+	for p, n := range []int{34, 34, 32} {
 		riverGold(g, p, n)
 	}
 	s.catanScores()
@@ -391,7 +396,7 @@ func TestCatanRiversCoinSalesPortsAndImmediateVictory(t *testing.T) {
 	if err := s.Apply(0, Action{Type: "catan_coin_sell", Color: 0}); err != nil {
 		t.Fatal(err)
 	}
-	if !s.Finished || !slices.Equal(s.Winners, []int{0}) || s.Catan.Players[0].Score != 10 {
+	if !s.Finished || !slices.Equal(s.Winners, []int{0}) || s.Catan.Players[0].Score != 10 || s.Catan.Rivers.GoldIssued != 1 {
 		t.Fatal("wealth victory delayed")
 	}
 }
