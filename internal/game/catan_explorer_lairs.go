@@ -147,7 +147,7 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 			if b.Liberated[s.Tile] != 0 || g.Tiles[s.Tile].Number != 0 || (len(ids) == 3) != (s.Ready > 0) || s.Hero != -1 {
 				return errors.New("未结算巢穴不能产金或提前获胜")
 			}
-		} else if s.Ready != s.Resolved || s.Hero < 0 || s.Hero >= len(g.Players) || len(ids) > 2 || b.Liberated[s.Tile] != s.Number || g.Tiles[s.Tile].Number != s.Number {
+		} else if s.Ready != s.Resolved || s.Hero < 0 || s.Hero >= len(g.Players) || len(ids) > 2 || b.Liberated[s.Tile] != s.Number || g.Tiles[s.Tile].Number != b.numberAt(s.Tile, s.Number) {
 			return errors.New("已解放巢穴或英雄记录无效")
 		}
 		if s.Ready > 0 && (e.Turn == nil || s.Ready > e.Turn.Sequence) || s.Resolved > 0 && (len(s.Contributions) != len(g.Players) || sum(s.Contributions) != 3 || s.Contributions[s.Hero] == 0) {
@@ -368,12 +368,12 @@ type catanExplorerLairsView struct {
 	Battle   *catanExplorerLairBattle `json:"battle,omitempty"`
 }
 
-func (l catanExplorerLairs) publicView() catanExplorerLairsView {
+func (l catanExplorerLairs) publicView(b *catanExplorerBoard) catanExplorerLairsView {
 	sites := make([]catanExplorerLairView, 0, len(l.Sites))
 	for _, s := range l.Sites {
 		number := 0
 		if s.Resolved > 0 {
-			number = s.Number
+			number = b.numberAt(s.Tile, s.Number)
 		}
 		sites = append(sites, catanExplorerLairView{s.Tile, number, s.Ready, s.Resolved, s.Hero, slices.Clone(s.Contributions), clone(s.Rounds)})
 	}

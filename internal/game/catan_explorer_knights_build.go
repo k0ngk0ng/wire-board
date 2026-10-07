@@ -120,7 +120,7 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 		}
 		next.catanLog(player, "将村庄 #%d 升级为%s", a.Vertex+1, map[string]string{"city": "城市", "harbor": "港口"}[kind])
 	case "catan_progress":
-		if !slices.Contains([]int{1, 2, 4, 5, 6, 7, 8}, a.Card) {
+		if !slices.Contains([]int{1, 2, 3, 4, 5, 6, 7, 8}, a.Card) {
 			return errors.New("本组合尚未接入这张主动进步牌")
 		}
 		if err := next.catanPlayProgress(player, a); err != nil {

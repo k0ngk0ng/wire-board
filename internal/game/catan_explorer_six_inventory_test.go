@@ -414,7 +414,7 @@ func TestCatanExplorerSixLairLastSeatRewardsAndPrivacy(t *testing.T) {
 			if err := other.validate(w.G, w.B, w.F, w.C, w.E); err != nil {
 				t.Fatal(err)
 			}
-			if !reflect.DeepEqual(w.L.publicView(), other.publicView()) {
+			if !reflect.DeepEqual(w.L.publicView(w.B), other.publicView(w.B)) {
 				t.Fatal("eighth number leaked")
 			}
 			for _, id := range []int{ship, ship + 1} {

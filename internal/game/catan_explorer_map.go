@@ -39,7 +39,8 @@ type catanExplorerFarm struct {
 type catanExplorerBoard struct {
 	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
 	Council       *catanExplorerCouncil  `json:"council,omitempty"`
-	Liberated     map[int]int            `json:"liberated,omitempty"` // Public lair numbers, supplied only by the mission controller.
+	Liberated     map[int]int            `json:"liberated,omitempty"`   // Original revealed lair numbers, supplied only by the mission controller.
+	NumberSwaps   map[int]int            `json:"numberSwaps,omitempty"` // Current numbers after Invention; original regional/token provenance stays intact.
 	Rules         string                 `json:"rules"`
 	Scenario      string                 `json:"scenario"`
 	Layout        string                 `json:"layout"`
@@ -350,7 +351,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 		if b.Resource == CatanFog {
 			continue
 		}
-		if tile.Number != b.Number || tile.Resource != b.Resource && (m.Layout == "fixed" || !slices.Contains(m.Starting, i) || i == m.FramePasture) {
+		if tile.Number != m.numberAt(i, b.Number) || tile.Resource != b.Resource && (m.Layout == "fixed" || !slices.Contains(m.Starting, i) || i == m.FramePasture) {
 			return errors.New("探险起始数字或固定边框地块改变")
 		}
 		if slices.Contains(m.Starting, i) {
@@ -405,7 +406,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 			if h.Resource == CatanGold {
 				wantNumber = m.Liberated[h.Tile]
 			}
-			if tile.Resource != h.Resource || tile.Number != wantNumber || h.Resource >= CatanDesert && h.Number != 0 || h.Resource < CatanDesert && h.Number == 0 {
+			if tile.Resource != h.Resource || tile.Number != m.numberAt(h.Tile, wantNumber) || h.Resource >= CatanDesert && h.Number != 0 || h.Resource < CatanDesert && h.Number == 0 {
 				return errors.New("探索地块与已取数字不一致")
 			}
 			if h.Resource < CatanDesert {
@@ -427,7 +428,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	if catanExplorerSpiceScenario(m.Scenario) && !catanExplorerSameInventory(pirateDice, []int{4, 5}) {
 		return errors.New("海盗奖励农场组件不守恒")
 	}
-	return nil
+	return m.validateNumberSwaps(g, base)
 }
 func catanExplorerCoordinate(a, b float64) bool {
 	return !math.IsNaN(a) && !math.IsInf(a, 0) && math.Abs(a-b) < 1e-9
