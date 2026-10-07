@@ -94,6 +94,14 @@ func (g *Catan) diplomacyRoads() []int {
 }
 func (g *Catan) diplomacyPlacements(player int) []int {
 	out := []int{}
+	if x := g.Explorer; x != nil {
+		for _, edge := range g.Edges {
+			if _, err := x.Cargo.roadPrice(g, x.Fleet, player, g.TurnSerial, edge.ID, true); err == nil {
+				out = append(out, edge.ID)
+			}
+		}
+		return out
+	}
 	for _, e := range g.Edges {
 		ship := g.CitiesKnights != nil && g.CitiesKnights.Pending != nil && g.CitiesKnights.Pending.Kind == "diplomacy" && g.CitiesKnights.Pending.Ship
 		if (ship && g.canDiplomacyShip(player, e.ID)) || (!ship && g.canRoad(player, e.ID)) {
