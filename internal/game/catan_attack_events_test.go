@@ -197,11 +197,8 @@ func TestCatanAttackEventCorruptStateAndUnsupportedEffects(t *testing.T) {
 	target := (s.Turn + 2) % 6
 	attackBattleKnights(s, 0, leader)
 	attackHand(s, target, []int{0, 2, 0, 0, 0})
-	for kind := range catanCardEventNames {
-		if !catanAttackEventSupported(kind) {
-			rejectCardEvent(t, s, kind, 6, 0, 0)
-		}
-	}
+	rejectCardEvent(t, s, "new_year", 6, 0, 0) // Handled by the future draw pipeline, not a face effect.
+	rejectCardEvent(t, s, "unknown", 6, 0, 0)
 	rejectCardEvent(t, s, "robber_attacks", 6, 0, 0)
 	beginCardEvent(t, s, "conflict", 6, 0, 0)
 	for _, mutate := range []func(*State){
