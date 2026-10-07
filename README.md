@@ -96,13 +96,18 @@ docker compose logs -f
 npm --prefix web ci
 npm --prefix web run build
 
-go test -race -count=1 -timeout=10m ./...
+python3 -B scripts/test_go_shard_test.py
+for shard in 0 1 2 3 4 5 6 7; do
+  python3 -B scripts/test_go_shard.py --index "$shard" --count 8 --race --timeout 30m || exit 1
+done
 go vet ./...
 go build -o .local/wire-board .
 INVITE_CODE=local-friends ADDR=127.0.0.1:18080 DATA_DIR="$PWD/.local/data" .local/wire-board
 ```
 
 前端开发：将后端监听 `127.0.0.1:8080`，运行 `npm --prefix web run dev`，通过 Vite 开发地址访问。第一次运行 Go 前需要先构建前端以满足 embed。
+
+完整 Go 验证按顶层测试名称稳定分为八片，子测试随父测试一起运行；示例和模糊测试的种子用例也包含在内。上述循环运行全部分片，不能只用一片代表全量通过。用 `--list` 可查看分片包含的用例。GitHub Actions 并行运行相同八片并保留 `-race`；前端、静态检查、构建与全部分片通过后才发布镜像。
 
 测试覆盖规则边界、资源守恒、完整 2/4 人璀璨宝石、六张铁路地图各最低/最高人数与 3/4 人卡坦岛对局、最长路线中的循环、隐藏信息、身份认证、CSRF、房间密码、并发和幂等、WebSocket 通知、重启恢复与结算后离桌。
 
