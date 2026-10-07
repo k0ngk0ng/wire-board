@@ -27,7 +27,7 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	host, guest := newClient(t, ts.URL), newClient(t, ts.URL)
 	host.register("友善房主")
 	guest.register("友善客人")
-	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未开放", "capacity": 4, "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}}, 400)
+	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "不支持双人", "capacity": 2, "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}}, 400)
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "友善设置", "capacity": 4}, 201)
 	id := raw["id"].(string)
 	if raw["catanFriendlyRobber"] != nil {
@@ -35,7 +35,7 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	}
 	guest.command(current(host), "join", nil, 200)
 	host.command(current(host), "add_bot", nil, 200)
-	selectCatanFriendlyRobber(host, true, 400)
+	selectCatanFriendlyRobber(host, false, 200)
 	host.command(current(host), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)
 	provisionCatanFriendlyRobber(t, s, id)
@@ -73,10 +73,10 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
 	selectCatanFriendlyRobber(host, true, 400)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
+	selectCatanFriendlyRobber(host, true, 400)
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
 	selectCatanFriendlyRobber(host, true, 200)
-	for range 2 {
-		host.command(current(host), "add_bot", nil, 200)
-	}
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(host)["version"], "nonce": randomID(12)}, 400)
 	host.command(current(host), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)
 	before, _ = json.Marshal(s.rooms[id])
@@ -97,7 +97,7 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	host.base, guest.base = ts2.URL, ts2.URL
 	host.command(current(host), "start", nil, 200)
 	r := next.rooms[id]
-	if r.Game.Catan.FriendlyRobber == nil || len(r.Game.Catan.Players) != 5 || r.Game.View(0)["catan"].(map[string]any)["victoryTarget"] != 10 {
+	if r.Game.Catan.FriendlyRobber == nil || len(r.Game.Catan.Players) != 3 || r.Game.View(0)["catan"].(map[string]any)["victoryTarget"] != 10 {
 		t.Fatal("formal start missing variant")
 	}
 	selectCatanFriendlyRobber(host, false, 400)

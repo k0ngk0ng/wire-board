@@ -17,7 +17,7 @@ func (r *Room) validateCatanFishing() error {
 	if !r.CatanFishing {
 		return nil
 	}
-	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || !publicCatanFishingSea(r.CatanScenario) || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario || r.CatanCitiesKnights != nil || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || (r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.CatanBaseConfiguration != nil {
+	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || !publicCatanFishingSea(r.CatanScenario) || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario || r.CatanCitiesKnights != nil || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.friendlyRobberEnabled() || (r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.CatanBaseConfiguration != nil {
 		return fmt.Errorf("此渔夫与航海家组合支持三四人，不能混用其他扩展配置")
 	}
 	if (r.CatanScenario == "desert" || r.CatanScenario == "tribe") && r.CatanSeafarers.Layout != "fixed" {

@@ -484,7 +484,7 @@ func summary(r *Room) map[string]any {
 	if r.CatanBaseConfiguration != nil && r.Status == "waiting" && r.CatanSeafarers == nil && r.CatanNewWorldMap == nil {
 		result["catanBaseLayouts"] = game.CatanBaseLayouts(max(3, r.Capacity))
 	}
-	if r.CatanFriendlyRobber != nil && r.Status == "waiting" {
+	if (r.CatanFriendlyRobber != nil || r.publicCatanFriendlyAvailable()) && r.Status == "waiting" {
 		reason := ""
 		if err := r.validateCatanFriendlyRobber(max(3, r.Capacity)); err != nil {
 			reason = err.Error()
@@ -600,19 +600,20 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		CatanHarbors       *game.CatanHarborsSetup       `json:"catanHarbors"`
-		CatanFishing       bool                          `json:"catanFishing"`
-		CatanCitiesKnights *game.CatanCitiesKnightsSetup `json:"catanCitiesKnights"`
-		CatanOptions       game.CatanOptions             `json:"catanOptions"`
-		CatanTwoScenario   string                        `json:"catanTwoScenario"`
-		CatanScenario      string                        `json:"catanScenario"`
-		SplendorOptions    game.SplendorOptions          `json:"splendorOptions"`
-		SanguoshaOptions   game.SGOptions                `json:"sanguoshaOptions"`
-		Name               string                        `json:"name"`
-		Kind               string                        `json:"kind"`
-		RailMap            string                        `json:"railMap"`
-		Capacity           int                           `json:"capacity"`
-		Password           string                        `json:"password"`
+		CatanFriendlyRobber *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
+		CatanHarbors        *game.CatanHarborsSetup        `json:"catanHarbors"`
+		CatanFishing        bool                           `json:"catanFishing"`
+		CatanCitiesKnights  *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights"`
+		CatanOptions        game.CatanOptions              `json:"catanOptions"`
+		CatanTwoScenario    string                         `json:"catanTwoScenario"`
+		CatanScenario       string                         `json:"catanScenario"`
+		SplendorOptions     game.SplendorOptions           `json:"splendorOptions"`
+		SanguoshaOptions    game.SGOptions                 `json:"sanguoshaOptions"`
+		Name                string                         `json:"name"`
+		Kind                string                         `json:"kind"`
+		RailMap             string                         `json:"railMap"`
+		Capacity            int                            `json:"capacity"`
+		Password            string                         `json:"password"`
 	}
 	if !decode(w, r, &req) {
 		return
@@ -731,6 +732,20 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if err := room.setCatanHarbors(*req.CatanHarbors); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+		if err := room.validateCatanScenario(); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
+	if req.CatanFriendlyRobber != nil {
+		if !room.publicCatanFriendlyAvailable() {
+			fail(w, 400, "友善强盗公开组合支持三四人的基础和已核验航海图")
+			return
+		}
+		if err := room.setCatanFriendlyRobber(*req.CatanFriendlyRobber); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -907,8 +922,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			next.startTurnClock(now)
 		}
 	case "catan_friendly_robber":
-		if next.Host != u.ID || next.CatanFriendlyRobber == nil || req.CatanFriendlyRobber == nil {
-			err = errors.New("只有房主能在已启用友善强盗设置的房间调整变体")
+		if next.Host != u.ID || req.CatanFriendlyRobber == nil || ((next.CatanFriendlyRobber == nil || req.CatanFriendlyRobber.Enabled) && !next.publicCatanFriendlyAvailable()) {
+			err = errors.New("只有房主能在支持的卡坦等待房间调整友善强盗")
 			break
 		}
 		err = next.setCatanFriendlyRobber(*req.CatanFriendlyRobber)
@@ -988,6 +1003,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		options, optionErr := game.NormalizeCatanOptions(req.CatanOptions)
 		err = optionErr
+		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix {
+			err = errors.New("友善强盗公开组合当前支持三四人，请先关闭该变体")
+		}
 		if err == nil && next.friendlyRobberEnabled() && (options.Helpers || options.AllHelpers) {
 			err = errors.New("友善强盗与助手的组合尚未核验")
 		}

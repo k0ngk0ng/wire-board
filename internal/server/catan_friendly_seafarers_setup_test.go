@@ -60,6 +60,7 @@ func TestCatanFriendlySeaConfigurationCountsReadinessRestartHistory(t *testing.T
 	selectCatanFriendlyRobber(h, true, 400)
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "shores"}, 200)
 	selectCatanFriendlyRobber(h, true, 200)
+	selectCatanFriendlyRobber(h, false, 200)
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(h)["version"], "nonce": randomID(12)}, 200)
 	if s.rooms[id].Capacity != 5 || s.rooms[id].CatanSeafarers.Layout != "variable" || current(h)["catanFriendlyRobberAvailability"].(map[string]any)["minPlayers"] != float64(5) {
 		t.Fatal("5/6 recipe switch")
@@ -68,6 +69,7 @@ func TestCatanFriendlySeaConfigurationCountsReadinessRestartHistory(t *testing.T
 	if s.rooms[id].Capacity != 4 || s.rooms[id].CatanSeafarers.Layout != "fixed" {
 		t.Fatal("return to four-player recipe")
 	}
+	selectCatanFriendlyRobber(h, true, 200)
 	h.command(current(h), "add_bot", nil, 200)
 	provisionCatanHarbors(t, s, id)
 	h.command(current(h), "ready", nil, 200)
