@@ -121,6 +121,17 @@ func (s *State) catanExplorerMissionScore() {
 	}
 	for p := range g.Players {
 		score := scores[p]
+		if k := g.CitiesKnights; k != nil {
+			score += k.Players[p].DefenderPoints + k.Players[p].ProgressPoints
+			if k.Merchant != nil && k.Merchant.Owner == p {
+				score++
+			}
+			for track := range 3 {
+				if g.cityMetropolisOwner(track) == p {
+					score += 2
+				}
+			}
+		}
 		for _, v := range g.Vertices {
 			if v.Owner == p {
 				score += v.Level

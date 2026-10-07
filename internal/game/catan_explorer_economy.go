@@ -20,7 +20,7 @@ type catanExplorerEconomyTurn struct {
 	NoProduction bool   `json:"noProduction,omitempty"` // Secondary paired player: action/movement only.
 	Player       int    `json:"player"`
 	Sequence     uint64 `json:"sequence"`
-	Phase        string `json:"phase"` // roll, discard, pirate, ready, abandoned (trusted platform removal only).
+	Phase        string `json:"phase"` // roll, city, aqueduct, discard, pirate, ready, abandoned.
 	Dice         [2]int `json:"dice"`
 	Bought       int    `json:"bought"`
 	Discard      []int  `json:"discard"`
@@ -75,8 +75,11 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 		}
 		return nil
 	}
-	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated != (t.Phase == "abandoned") || t.Sequence == 0 || !slices.Contains([]string{"roll", "discard", "pirate", "ready", "abandoned"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Phase != "abandoned" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
+	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated != (t.Phase == "abandoned") || t.Sequence == 0 || !slices.Contains([]string{"roll", "city", "aqueduct", "discard", "pirate", "ready", "abandoned"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Phase != "abandoned" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
 		return errors.New("探险生产阶段、玩家或购买次数无效")
+	}
+	if (t.Phase == "city" || t.Phase == "aqueduct") && g.CitiesKnights == nil {
+		return errors.New("普通探险不能进入城市生产响应")
 	}
 	if t.NoProduction && (g.Paired == nil || !g.Paired.Second || t.Player != g.Paired.Secondary || t.Phase != "ready" && t.Phase != "abandoned") {
 		return errors.New("只有配对第二位玩家可以跳过生产")
@@ -91,7 +94,7 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 	seven := t.Dice[0]+t.Dice[1] == 7
 	pending := false
 	for p, amount := range t.Discard {
-		if amount < 0 || amount > 0 && (g.Players[p].Eliminated || sum(g.Players[p].Resources) <= 7 || amount != sum(g.Players[p].Resources)/2) {
+		if amount < 0 || amount > 0 && (g.Players[p].Eliminated || sum(g.Players[p].Resources) <= g.catanDiscardLimit(p) || amount != sum(g.Players[p].Resources)/2) {
 			return errors.New("七点待弃牌数无效")
 		}
 		pending = pending || amount > 0
@@ -138,9 +141,6 @@ func (e catanExplorerEconomy) productionAllowed(g *Catan, f *catanExplorerSailin
 	if err := e.validate(g, f, c); err != nil {
 		return err
 	}
-	if g.CitiesKnights != nil {
-		return errors.New("组合开局已接入，城市事件与探险生产衔接尚未完成")
-	}
 	if e.Turn == nil || e.Turn.Player != player || e.Turn.Sequence != sequence || e.Turn.Phase != phase {
 		return errors.New("不是当前探险生产玩家、阶段或回应序号")
 	}
@@ -149,7 +149,14 @@ func (e catanExplorerEconomy) productionAllowed(g *Catan, f *catanExplorerSailin
 
 func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSailing, c *catanExplorerCargo, player int, sequence uint64, dice [2]int) (catanExplorerProduction, error) {
 	result := catanExplorerProduction{}
-	if err := e.productionAllowed(g, f, c, player, sequence, "roll"); err != nil {
+	phaseBefore := "roll"
+	if k := g.CitiesKnights; k != nil {
+		phaseBefore = "city"
+		if e.Turn == nil || e.Turn.Dice != dice || k.Event != nil || k.Pending != nil {
+			return result, errors.New("必须先完成本次城市事件，才能结算探险生产")
+		}
+	}
+	if err := e.productionAllowed(g, f, c, player, sequence, phaseBefore); err != nil {
 		return result, err
 	}
 	if dice[0] < 1 || dice[0] > 6 || dice[1] < 1 || dice[1] > 6 {
@@ -158,7 +165,7 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 	number, n := dice[0]+dice[1], len(g.Players)
 	result = catanExplorerProduction{Resources: make([][]int, n), Gold: make([]int, n), Discard: make([]int, n)}
 	for p := range result.Resources {
-		result.Resources[p] = make([]int, 5)
+		result.Resources[p] = make([]int, len(g.Bank))
 	}
 	phase := "ready"
 	if number == 7 {
@@ -166,7 +173,7 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 			phase = "pirate" // Activation/stealing controller still to be installed.
 		}
 		for p, hand := range g.Players {
-			if !hand.Eliminated && sum(hand.Resources) > 7 {
+			if !hand.Eliminated && sum(hand.Resources) > g.catanDiscardLimit(p) {
 				result.Discard[p] = sum(hand.Resources) / 2
 				phase = "discard"
 			}
@@ -185,9 +192,16 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 					continue
 				}
 				if tile.Resource == CatanGold {
+					if g.CitiesKnights != nil && g.cityAt(vertex) {
+						return catanExplorerProduction{}, errors.New("组合城市在金矿的金币产量尚待官方核对")
+					}
 					result.Gold[v.Owner] += 2
 				} else {
-					result.Resources[v.Owner][tile.Resource]++ // Harbor is not a resource-doubling city.
+					level := 1
+					if g.CitiesKnights != nil && g.cityAt(vertex) {
+						level = 2
+					}
+					g.cityProduction(result.Resources[v.Owner], tile.Resource, level)
 				}
 			}
 		}
@@ -223,6 +237,9 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 	}
 	// All costs/inventory have been checked. Entering action is the only
 	// remaining fallible operation, so perform it before modifying payouts.
+	if phase == "ready" && g.CitiesKnights != nil {
+		phase = "aqueduct" // State controller queues compensation before action.
+	}
 	if phase == "ready" {
 		if err := c.beginAction(g, f, player, sequence); err != nil {
 			return catanExplorerProduction{}, err
@@ -245,7 +262,7 @@ func (e *catanExplorerEconomy) discard(g *Catan, f *catanExplorerSailing, c *cat
 	if err := e.validate(g, f, c); err != nil {
 		return err
 	}
-	if player < 0 || player >= len(g.Players) || e.Turn == nil || e.Turn.Phase != "discard" || e.Turn.Sequence != sequence || e.Turn.Discard[player] == 0 || !catanBundle(cards) || sum(cards) != e.Turn.Discard[player] || !catanHas(g.Players[player].Resources, cards) {
+	if player < 0 || player >= len(g.Players) || e.Turn == nil || e.Turn.Phase != "discard" || e.Turn.Sequence != sequence || e.Turn.Discard[player] == 0 || !g.cardBundle(cards) || sum(cards) != e.Turn.Discard[player] || !catanHas(g.Players[player].Resources, cards) {
 		return errors.New("请选择本次七点应归还的资源，金币不计入弃牌")
 	}
 	phase := "discard"
