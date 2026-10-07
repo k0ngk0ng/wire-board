@@ -31,7 +31,11 @@ func assertExplorerFishHTTPPrivacy(t *testing.T, clients []*testClient, state *g
 			}
 			seen[tile] = true
 		}
-		if len(x["cargo"].(map[string]any)["fish"].([]any)) != 6 {
+		wantFish := 6
+		if len(state.Catan.Players) > 4 {
+			wantFish = 8
+		}
+		if len(x["cargo"].(map[string]any)["fish"].([]any)) != wantFish {
 			t.Fatal("shared fish inventory missing")
 		}
 	}

@@ -62,7 +62,11 @@ func assertExplorerSpiceHTTPPrivacy(t *testing.T, clients []*testClient, state *
 			seen[tile] = true
 		}
 		sacks := x["cargo"].(map[string]any)["spice"].([]any)
-		if len(sacks) != 24 {
+		wantSacks := 24
+		if len(state.Catan.Players) > 4 {
+			wantSacks = 36
+		}
+		if len(sacks) != wantSacks {
 			t.Fatal("shared spice inventory missing")
 		}
 		for _, raw := range sacks {
