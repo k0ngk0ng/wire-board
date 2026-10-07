@@ -5,8 +5,8 @@ import (
 	"slices"
 )
 
-// Effects only: this does not enable a room option or attach the unverified
-// event catalogue/deck. New Year belongs to the separate deck lifecycle.
+// Effect support shared by isolated resolution and the internal reference
+// deck. New Year belongs to the deck lifecycle, never a selectable face effect.
 func catanAttackEventSupported(kind string) bool {
 	switch kind {
 	case "beautiful_day", "conflict", "robber_attacks", "robber_flees",
