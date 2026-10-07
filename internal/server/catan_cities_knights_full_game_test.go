@@ -28,7 +28,7 @@ func TestCatanFishingCitiesKnightsPublicFullHTTPGames(t *testing.T) {
 }
 
 func TestCatanHarborsCitiesKnightsFullHTTPGames(t *testing.T) {
-	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", true)
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", true, 3, 4, 6)
 }
 
 func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string, harbors bool, players ...int) {
@@ -42,8 +42,15 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 	recipes := []recipe{}
 	for _, n := range players {
 		layouts := []string{""}
-		if scenario != "" && scenario != "fishing" && n <= 4 && !harbors {
+		if scenario != "" && scenario != "fishing" && n <= 4 {
 			layouts = []string{"fixed", "variable"}
+			if harbors {
+				if n == 3 {
+					layouts = []string{"fixed"}
+				} else {
+					layouts = []string{"variable"}
+				}
+			}
 			if scenario == "new_world" {
 				layouts = []string{"prepared"}
 			}
@@ -67,7 +74,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[p].register(fmt.Sprintf("骑士玩家%d", p))
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
-			public := !harbors && n <= 4
+			public := n <= 4
 			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
 			if public {
 				body["catanScenario"] = "cities-knights"
@@ -75,6 +82,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 					body["catanScenario"] = scenario
 					body["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{}
 				}
+			}
+			if public && harbors {
+				body["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
 			}
 			r := clients[0].post("/api/rooms", body, 201)
 			id := r["id"].(string)
@@ -91,7 +101,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			if !public {
 				provisionCatanCitiesKnights(t, s, id)
 			}
-			if harbors {
+			if harbors && !public {
 				provisionCatanHarbors(t, s, id)
 			}
 			for p := 0; p < n; p++ {
@@ -135,6 +145,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				g := state.Catan
 				if scenario == "fishing" {
 					assertFishingCityInventory(t, g)
+				}
+				if harbors {
+					assertPublicHarborPoints(t, state)
 				}
 				if scenario == "cloth" {
 					c := g.Seafarers.Cloth
@@ -277,17 +290,25 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 						rival = max(rival, card.Level)
 					}
 				}
-				if target != 12 || (level != 4 && (level <= rival || room.Game.Catan.Players[winner].Score < target)) {
+				want := 12
+				if harbors {
+					want++
+				}
+				if target != want || (level != 4 && (level <= rival || room.Game.Catan.Players[winner].Score < target)) {
 					t.Fatal("wrong combined wonder victory")
 				}
 			}
 			if scenario == "cloth" {
 				g := room.Game.Catan
 				c := g.Seafarers.Cloth
-				if target != 16 {
+				want := 16
+				if harbors {
+					want++
+				}
+				if target != want {
 					t.Fatal("wrong cloth target")
 				}
-				if g.Players[room.Game.Turn].Score >= 16 {
+				if g.Players[room.Game.Turn].Score >= want {
 					if !slices.Equal(room.Game.Winners, []int{room.Game.Turn}) {
 						t.Fatal("cloth points priority")
 					}

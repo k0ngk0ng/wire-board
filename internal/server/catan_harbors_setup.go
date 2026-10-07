@@ -5,7 +5,15 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Public creation remains closed; commands can only edit a provisioned field.
+func publicCatanHarborsScenario(scenario string) bool {
+	return scenario == "" || scenario == "cities-knights" || publicCatanSeaScenario(scenario)
+}
+
+func (r *Room) publicCatanHarborsAvailable() bool {
+	return r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 4 && !r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && publicCatanHarborsScenario(r.CatanScenario)
+}
+
+// Existing internally configured extended rooms retain their setup path.
 func (r *Room) setCatanHarbors(request game.CatanHarborsSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" {
 		return errors.New("只能在卡坦岛开局前调整港口霸主")

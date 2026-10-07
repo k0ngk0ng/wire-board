@@ -183,7 +183,7 @@ export function CatanFishingSeaPicker({
         {fixedRequired
           ? "先将海图切为固定布局，才能加入渔夫。"
           : blocked
-            ? "先关闭 Helpers 和城市骑士，才能加入渔夫。"
+            ? "先关闭 Helpers、城市骑士和港口霸主，才能加入渔夫。"
             : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
     </fieldset>
