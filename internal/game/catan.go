@@ -38,6 +38,7 @@ type Catan struct {
 	Fishing        *CatanFishing        `json:"fishing,omitempty"`
 	RevealedEvent  *CatanRevealedEvent  `json:"revealedEvent,omitempty"`
 	CardEvent      *CatanCardEvent      `json:"cardEvent,omitempty"`
+	EventDeck      *catanEventSession   `json:"eventDeck,omitempty"`
 	FriendlyRobber *CatanFriendlyRobber `json:"friendlyRobber,omitempty"`
 	Harbors        *CatanHarbors        `json:"harbors,omitempty"`
 	CitiesKnights  *CatanCitiesKnights  `json:"citiesKnights,omitempty"`
@@ -361,6 +362,11 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	// Validate before JSON cloning: invalid hidden-deck JSON must not turn
+	// into a partially decoded game through the generic clone helper.
+	if err := s.validateCatanEventSession(); err != nil {
+		return err
+	}
 	if s.Catan.Explorer != nil {
 		if err := s.validateCatanExplorer(); err != nil {
 			return err
@@ -414,7 +420,7 @@ func (s *State) applyCatan(player int, a Action) error {
 	if err := s.Catan.validateFishing(); err != nil {
 		return err
 	}
-	if s.Catan.Attack != nil || s.Catan.Two != nil || s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
+	if s.Catan.EventDeck != nil || s.Catan.Attack != nil || s.Catan.Two != nil || s.Catan.Caravans != nil || s.Catan.Rivers != nil || s.Catan.Fishing != nil || s.Catan.CardEvent != nil || s.Catan.Options.Helpers || s.Catan.Options.FiveSix || s.Catan.Seafarers != nil || s.Catan.CitiesKnights != nil || s.Catan.Harbors != nil || s.Catan.FriendlyRobber != nil {
 		next := clone(*s)
 		if err := next.applyCatanStep(player, a); err != nil {
 			return err
@@ -435,6 +441,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		if err := next.validateCatanAttack(); err != nil {
+			return err
+		}
+		if err := next.validateCatanEventSession(); err != nil {
 			return err
 		}
 		*s = next
@@ -534,6 +543,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	case "catan_wonder_claim", "catan_wonder_build":
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
+		if g.EventDeck != nil {
+			return s.catanDrawEvent()
+		}
 		if g.Two != nil {
 			a, b := catanRandom(6)+1, catanRandom(6)+1
 			for len(g.Two.Rolls) == 1 && a+b == g.Two.Rolls[0] {

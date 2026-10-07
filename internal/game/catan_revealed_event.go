@@ -1,7 +1,7 @@
 package game
 
 // CatanRevealedEvent keeps only the public face of the latest event. It is
-// independent of the private response queue and the future hidden deck.
+// independent of the private response queue and the hidden deck.
 type CatanRevealedEvent struct {
 	Kind              string `json:"kind"`
 	Production        int    `json:"production"`
