@@ -33,6 +33,9 @@ func (s *State) catanExplorerCityRoll(red, yellow, face int) error {
 }
 
 func (s *State) catanExplorerCityRespond(player int, a Action) error {
+	if s.Phase == "catan_progress_end" {
+		return s.catanExplorerCityFlow(player, a)
+	}
 	if err := s.validateExplorerCityProduction(); err != nil {
 		return err
 	}
@@ -147,7 +150,8 @@ func (s *State) validateExplorerCityProduction() error {
 		}
 	}
 	if q := k.Pending; q != nil {
-		if len(q.Players) == 0 || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat", "guild_dues", "commercial_harbor", "diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place"}, q.Kind) || s.Phase != "catan_"+q.Kind {
+		ending := s.Phase == "catan_progress_end" && q.Kind == "progress_discard" && q.Source == "explorer_movement"
+		if len(q.Players) == 0 || !slices.Contains([]string{"pillage", "defender_reward", "progress_discard", "aqueduct", "metropolis", "knight_retreat", "guild_dues", "commercial_harbor", "diplomacy", "espionage", "sabotage", "wedding", "treason_remove", "treason_place"}, q.Kind) || !ending && s.Phase != "catan_"+q.Kind {
 			return errors.New("组合城市回应与生产阶段不一致")
 		}
 		for _, p := range q.Players {
@@ -175,6 +179,14 @@ func (s *State) validateExplorerCityProduction() error {
 		case "aqueduct":
 			if turn.Phase != "aqueduct" || k.Event != nil {
 				return errors.New("组合引水渠与生产阶段不一致")
+			}
+		case "progress_discard":
+			if ending {
+				if len(q.Players) != 1 || q.Players[0] != s.Turn || len(k.Players[s.Turn].Progress) <= 4 || turn.Phase != "ready" || x.Cargo.Turn == nil || x.Cargo.Turn.Phase != "action" || k.Event != nil || g.Trade != nil {
+					return errors.New("组合航行前弃进步牌缺少有效行动来源")
+				}
+			} else if q.Source != "" || turn.Phase != "city" || k.Event == nil {
+				return errors.New("组合生产弃进步牌缺少有效事件来源")
 			}
 		default:
 			if turn.Phase != "city" || k.Event == nil {

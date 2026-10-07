@@ -50,11 +50,17 @@ func newCatanExplorerLandHoWorld(players int) (*Catan, *catanExplorer, error) {
 }
 
 func (x catanExplorer) validate(g *Catan) error {
-	if x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerPirateScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
-		return errors.New("探险地图、航行、货物或经济组件不匹配；其他任务尚未完整接入")
-	}
-	if x.Board.CitiesKnights || g != nil && g.CitiesKnights != nil {
+	if x.Board != nil && x.Board.CitiesKnights || g != nil && g.CitiesKnights != nil {
 		return errors.New("探险家与城市骑士组合尚未完成整局控制器验收")
+	}
+	return x.validateComponents(g)
+}
+
+// Component transactions may be exercised by the private city controller.
+// Public aggregate validation above still rejects the unfinished combination.
+func (x catanExplorer) validateComponents(g *Catan) error {
+	if g == nil || x.Board == nil || x.Fleet == nil || x.Cargo == nil || x.Economy == nil || x.Board.Scenario != "land-ho" && !catanExplorerPirateScenario(x.Board.Scenario) || x.Cargo.Scenario != x.Board.Scenario {
+		return errors.New("探险地图、航行、货物或经济组件不匹配；其他任务尚未完整接入")
 	}
 	if err := x.Board.validate(g); err != nil {
 		return err
@@ -152,6 +158,17 @@ func (x catanExplorer) validate(g *Catan) error {
 		if x.Spice != nil {
 			score += x.Spice.publicView(g).Scores[p]
 		}
+		if k := g.CitiesKnights; k != nil {
+			score += k.Players[p].DefenderPoints + k.Players[p].ProgressPoints
+			if k.Merchant != nil && k.Merchant.Owner == p {
+				score++
+			}
+			for track := range 3 {
+				if g.cityMetropolisOwner(track) == p {
+					score += 2
+				}
+			}
+		}
 		if player.Score != score || !catanBundle(player.Dev) || !catanBundle(player.NewDev) || sum(player.Dev)+sum(player.NewDev) != 0 {
 			return errors.New("初航建筑分数或发展卡库存不符")
 		}
@@ -175,7 +192,7 @@ func (x catanExplorer) validate(g *Catan) error {
 // Mutating integration actions run on a complete snapshot. A later failed
 // reward must not leave an earlier reveal, number draw, payment or move behind.
 func (x catanExplorer) copy(g *Catan) (*Catan, *catanExplorer, error) {
-	if err := x.validate(g); err != nil {
+	if err := x.validateComponents(g); err != nil {
 		return nil, nil, err
 	}
 	type snapshot struct {
@@ -269,7 +286,7 @@ func (x *catanExplorer) sail(g *Catan, player int, sequence uint64, ship int, pa
 			return catanExplorerVoyage{}, err
 		}
 	}
-	if err = next.validate(q); err != nil {
+	if err = next.validateComponents(q); err != nil {
 		return catanExplorerVoyage{}, err
 	}
 	*g, *x = *q, *next
@@ -303,7 +320,7 @@ func (x *catanExplorer) buildShip(g *Catan, player int, sequence uint64, ship, e
 	if len(tiles) > 0 && !slices.Contains(next.Cargo.Turn.BuildStopped, ship) {
 		next.Cargo.Turn.BuildStopped = append(next.Cargo.Turn.BuildStopped, ship)
 	}
-	if err = next.validate(q); err != nil {
+	if err = next.validateComponents(q); err != nil {
 		return nil, err
 	}
 	*g, *x = *q, *next
