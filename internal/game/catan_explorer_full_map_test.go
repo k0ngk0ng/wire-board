@@ -165,7 +165,7 @@ func TestCatanExplorerFullMapPrivacyAndInvalidComponents(t *testing.T) {
 			t.Fatal("corrupt full scenario accepted")
 		}
 	}
-	for _, n := range []int{1, 5, 6} {
+	for _, n := range []int{1, 7} {
 		if _, _, err := newCatanExplorerBoard(n, "explorers-and-pirates", "variable"); err == nil {
 			t.Fatal("unsupported player map")
 		}
