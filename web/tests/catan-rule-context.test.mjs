@@ -291,3 +291,19 @@ test("friendly robber follows the actual game rather than a stale waiting draft 
   assert.equal(catanRuleContext(room).friendlyRobber, true);
   assert.equal(catanRuleContext(room).target, 10);
 });
+
+test("saved Explorer target overrides stale lobby drafts and survives legacy views", () => {
+  for (const target of [8, 12, 15, 17]) {
+    const room = {
+      capacity: 6,
+      catanSeafarers: {scenario: "shores"},
+      catanCitiesKnights: {layout: "variable"},
+      game: {catan: {players: [{}, {}, {}], explorer: {board: {target}}}},
+    };
+    assert.equal(catanRuleContext(room).target, target);
+    room.game.catan.citiesKnights = {};
+    assert.equal(catanRuleContext(room).target, target, "saved target already includes combination points");
+    room.game.catan.victoryTarget = target + 1;
+    assert.equal(catanRuleContext(room).target, target + 1, "explicit server target wins");
+  }
+});
