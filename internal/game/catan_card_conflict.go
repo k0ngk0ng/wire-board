@@ -7,6 +7,12 @@ import (
 
 func (g *Catan) beginCardConflict(start int) {
 	q := g.CardEvent
+	if g.Attack != nil {
+		if leader := g.attackConflictLeader(); leader >= 0 {
+			q.Players = []int{leader}
+		}
+		return // On-board pieces, mandatory theft; no Largest Army or face-up cards.
+	}
 	if g.CitiesKnights == nil && g.ArmyOwner >= 0 && g.ArmyOwner < len(g.Players) && !g.Players[g.ArmyOwner].Eliminated {
 		// The holder acts even if this is somebody else's production turn or
 		// the holder's face-up count is tied with another player's.
