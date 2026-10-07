@@ -96,8 +96,9 @@ const scenarios = [
   },
 ];
 
-export const supportsPublicCatanSeaKnights = (scenario?: string) =>
+export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
   [
+    "fishing",
     "shores",
     "islands",
     "fog",
@@ -107,12 +108,14 @@ export const supportsPublicCatanSeaKnights = (scenario?: string) =>
     "cloth",
   ].includes(scenario || "");
 
-export function CatanSeaKnightsPicker({
+export function CatanCombinationKnightsPicker({
   value,
   onChange,
   disabled = false,
   helpers = false,
+  fishing = false,
 }: {
+  fishing?: boolean;
   value: boolean;
   onChange: (enabled: boolean) => void;
   disabled?: boolean;
@@ -126,12 +129,14 @@ export function CatanSeaKnightsPicker({
           checked={value}
           onChange={(e) => onChange(e.target.checked)}
         />
-        城市与骑士＋航海家
+        城市与骑士＋{fishing ? "渔夫" : "航海家"}
       </label>
       <p className="muted small">
         {helpers
           ? "先关闭 Helpers，才能加入城市与骑士。"
-          : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
+          : fishing
+            ? "加入商品、进步牌和骑士；7鱼可选牌堆抽进步牌，13分获胜，持旧靴者需14分。"
+            : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
     </fieldset>
   );
@@ -200,7 +205,7 @@ export function CatanScenarioPicker({
                   !["spices-for-catan", "barbarian-attack"].includes(s.id)) ||
                 (knights &&
                   isPublicCatanSea(s.id) &&
-                  !supportsPublicCatanSeaKnights(s.id))
+                  !supportsPublicCatanKnightsCombination(s.id))
               }
             >
               {s.name}
@@ -209,7 +214,7 @@ export function CatanScenarioPicker({
         </select>
       </label>
       <p className="muted small">
-        {knights && supportsPublicCatanSeaKnights(value)
+        {knights && supportsPublicCatanKnightsCombination(value)
           ? catanScenarioVictory(value, catanVictoryTarget(value, true))
           : scenarios.find((s) => s.id === value)?.description}
       </p>

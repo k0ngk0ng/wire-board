@@ -23,6 +23,10 @@ func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
 	}
 }
 
+func TestCatanFishingCitiesKnightsPublicFullHTTPGames(t *testing.T) {
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "fishing", false, 3, 4)
+}
+
 func TestCatanHarborsCitiesKnightsFullHTTPGames(t *testing.T) {
 	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "", true)
 }
@@ -38,7 +42,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 	recipes := []recipe{}
 	for _, n := range players {
 		layouts := []string{""}
-		if scenario != "" && n <= 4 && !harbors {
+		if scenario != "" && scenario != "fishing" && n <= 4 && !harbors {
 			layouts = []string{"fixed", "variable"}
 			if scenario == "new_world" {
 				layouts = []string{"prepared"}
@@ -77,7 +81,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			for p := 1; p < n; p++ {
 				clients[p].command(current(clients[0]), "join", nil, 200)
 			}
-			if scenario != "" {
+			if scenario != "" && scenario != "fishing" {
 				if public {
 					selectSeafarers(clients[0], &game.CatanSeafarersSetup{Scenario: scenario, Layout: layout}, 200)
 				} else {
@@ -95,8 +99,11 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			}
 			clients[0].command(current(clients[0]), "start", nil, 200)
 			state := s.rooms[id].Game
-			if public && scenario != "" && (state.Catan.Seafarers == nil || state.Catan.CitiesKnights == nil || state.Catan.Seafarers.Layout != layout) {
+			if public && scenario != "" && scenario != "fishing" && (state.Catan.Seafarers == nil || state.Catan.CitiesKnights == nil || state.Catan.Seafarers.Layout != layout) {
 				t.Fatal("public combination ignored selected layout")
+			}
+			if scenario == "fishing" && (state.Catan.Fishing == nil || state.Catan.CitiesKnights == nil || state.Catan.Seafarers != nil) {
+				t.Fatal("missing combined fishing opening")
 			}
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 			restart := func() {
@@ -126,6 +133,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				room := s.rooms[id]
 				state = room.Game
 				g := state.Catan
+				if scenario == "fishing" {
+					assertFishingCityInventory(t, g)
+				}
 				if scenario == "cloth" {
 					c := g.Seafarers.Cloth
 					total := c.Stock
@@ -169,6 +179,18 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				if steps%53 == 0 {
 					for _, viewer := range []int{actor, n} {
 						v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
+						if scenario == "fishing" {
+							fish := v["fishing"].(map[string]any)["tokens"].(map[string]any)
+							if fish["drawPile"] != nil {
+								t.Fatal("hidden fish supply")
+							}
+							for p, raw := range fish["players"].([]any) {
+								_, visible := raw.(map[string]any)["tokens"]
+								if visible != (viewer == p && len(g.Fishing.Tokens.Hands[p]) > 0) {
+									t.Fatal("fish faces leaked")
+								}
+							}
+						}
 						k := v["citiesKnights"].(map[string]any)
 						if _, ok := k["progressDecks"]; ok {
 							t.Fatal("hidden deck leaked")
@@ -228,6 +250,12 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			}
 			winner := room.Game.Winners[0]
 			target := 13
+			if scenario == "fishing" {
+				assertFishingCityInventory(t, room.Game.Catan)
+				if room.Game.Catan.Fishing.Tokens.BootOwner == winner {
+					target++
+				}
+			}
 			if harbors {
 				target++
 			}
@@ -303,6 +331,12 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				}
 			} else if history["catanLayout"] != "variable" || history["catanRules"] != room.Game.Catan.CitiesKnightsSetup().Rules || !slices.ContainsFunc(history["catanExpansions"].([]any), func(v any) bool { return v == "cities_knights" }) {
 				t.Fatal("missing frozen expansion identity")
+			}
+			if scenario == "fishing" {
+				rules := history["catanExpansionRules"].(map[string]any)
+				if history["catanScenario"] != "fishing" || rules["fishing"] != game.CatanFishingRules || rules["cities_knights"] != game.CatanCitiesKnightsRules {
+					t.Fatal("wrong combined fishing history", history)
+				}
 			}
 			if harbors && (room.Game.Catan.Harbors == nil || history["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules) {
 				t.Fatal("harbor rules missing from game/history")

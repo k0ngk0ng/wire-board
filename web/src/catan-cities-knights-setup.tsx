@@ -19,7 +19,9 @@ export function CatanCitiesKnightsSetup({ room }: { room: Room }) {
       <p>
         {info.scenario
           ? `航海家 · ${catanScenarioName(info.scenario)} · ${catanLayoutName(info.layout)}`
-          : "随机地图"}{" "}
+          : info.fishing
+            ? "渔夫 · 随机湖泊与海岸渔场"
+            : "随机地图"}{" "}
         · {catanScenarioVictory(info.scenario, info.target)}
       </p>
       <p>

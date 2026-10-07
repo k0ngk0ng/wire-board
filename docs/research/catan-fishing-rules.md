@@ -12,8 +12,9 @@ were also checked. Pinned references and data are in
 The **internal token economy, map, setup/production pipeline, replacement
 responses, five paid actions, boot passing, bots and persistence** are
 implemented, with original-art desktop/mobile UI verified on local engine fixtures.
-Standalone Fishing now has a local, unpublished public room entry for three/four
-players (2026-10-08). Five/six-player and combination entries, comprehensive
+Standalone Fishing and Fishing + Cities & Knights now have local, unpublished
+public room entries for three/four players (2026-10-08). Five/six-player and
+other combination entries, comprehensive
 interaction and final release acceptance remain; see the latest section below.
 
 ## Token economy (completed 2026-10-05)
@@ -811,3 +812,16 @@ Temporary test logs were removed; no browser or persistent QA process started.
 - 静音真实浏览器390px公开创建三席渔夫、查看新增规则、添加两电脑；320px正式开局，交点1预览并确认建村，进入修路。1440／390／320截图与宽度检查正常，27种当前图像解码、无JS错误。截图时没有持鱼，不冒称本次已人工验收所有消费动画或真人完整胜局；此前原画消费夹具证据保留。最后仅增加的战绩保存由HTTP专项验证，不冒称浏览器运行该后端版本。
 
 专属浏览器／服务关闭，所属二进制、数据、profile、截图和日志清理。仅本地实现和验证，未推送、部署、上传或下载新素材，没有播放互联网音频，保留无关monopoly目录。五六人数字组件、其他捕鱼组合正式入口和整体扩展范围继续。
+
+
+## 渔夫＋城市骑士三四人公开组合（2026-10-08，未发布）
+
+已固定的2025年8月官方组合规则及底层玩法继续沿用，本阶段补齐公开入口：创建渔夫时可选择城市骑士，等待页可开关；三四人、按实际人数开局，拒绝不兼容Helpers、错误布局／版本及五六人。设置变化清真人准备，保持电脑准备；相同设置不清准备。更换独立剧本移除旧组合，持久化／冻结／重开／取消组合后重开保持一致。战绩明确标为fishing，记录Fishing和Cities & Knights两个版本，不再丢失渔夫身份。
+
+建房、等待页和玩法速查明确13分／持旧靴14分、起始城市只领一鱼、资源与商品差异、7鱼选牌堆抽进步牌、先换鱼后水渠。浏览器检查发现等待页剧本摘要还显示普通渔夫10分，已修正并重建；最新页面摘要为13分。没有加入未核对的三扩展组合。
+
+新增三四人公开HTTP自然完整局，分别353／510步达到相应旧靴门槛，包含主动托管20／29次、各3次超时、接回、初始／回合／回应真实重启和唯一战绩。逐步核对每色19资源／12商品、30枚唯一鱼筹码／7枚上限、54张进步牌、骑士位置及每级每人两枚；检查手牌与鱼面值隐私。公开完整局和配置／已有航海组合选择5.347秒通过；相关规则7.668秒、服务7.621秒，两个包vet、165项前端和生产构建通过（保留既有大包提示）。最后仅等待摘要传参修正，重建并实页验证，不重复无关后端测试。
+
+真实生产页面390px公开创建、组合开关及清准备，320px四席按实际三人开始，点击交点1并确认建村，服务端进入修路阶段且Fishing／CitiesKnights同时存在、目标13。1440／390／320无横向溢出，35种当前图片解码成功，无JS错误；规则弹窗可滚动查看组合条款。一次按同名按钮查找误匹配了蒙板后的大厅按钮，重新读取快照后点击实际表单提交，未把该失败计为成功。这里只验收建房／规则／开局，不声称完整真人浏览器局、所有消费动画或全扩展完成。
+
+专属静音浏览器／服务结束，临时测试入口、数据库、profile、截图和日志清理。没有播放互联网音频、上传素材、推送或部署。剩余其他渔夫人数／海图组合入口、未完成的正式配置，以及整体扩展的界面／真人局和发布验收。

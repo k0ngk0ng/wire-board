@@ -28,8 +28,8 @@ import { CatanWonderSeat } from "./catan-wonders";
 import { CatanOptionPicker } from "./catan-helpers";
 import {
   CatanScenarioPicker,
-  CatanSeaKnightsPicker,
-  supportsPublicCatanSeaKnights,
+  CatanCombinationKnightsPicker,
+  supportsPublicCatanKnightsCombination,
   isPublicCatanSea,
   isPublicCatanFlexible,
 } from "./catan-scenario-setup";
@@ -1988,7 +1988,7 @@ function Create({
               k === "catan" &&
               capacity >= 3 &&
               catanSeaKnights &&
-              supportsPublicCatanSeaKnights(catanScenario)
+              supportsPublicCatanKnightsCombination(catanScenario)
                 ? { layout: "variable" }
                 : undefined,
             catanTwoScenario:
@@ -2082,7 +2082,7 @@ function Create({
               knights={catanSeaKnights}
               onChange={(scenario) => {
                 setCatanScenario(scenario);
-                if (!supportsPublicCatanSeaKnights(scenario))
+                if (!supportsPublicCatanKnightsCombination(scenario))
                   setCatanSeaKnights(false);
                 if (isPublicCatanFlexible(scenario))
                   setCatanTwoScenario(scenario);
@@ -2097,8 +2097,9 @@ function Create({
           )}
         {k === "catan" &&
           capacity >= 3 &&
-          supportsPublicCatanSeaKnights(catanScenario) && (
-            <CatanSeaKnightsPicker
+          supportsPublicCatanKnightsCombination(catanScenario) && (
+            <CatanCombinationKnightsPicker
+              fishing={catanScenario === "fishing"}
               value={catanSeaKnights}
               helpers={!!catanOptions.helpers}
               onChange={setCatanSeaKnights}
@@ -2272,6 +2273,7 @@ function Waiting({
     !room.catanBaseConfiguration &&
     (!room.catanCitiesKnights ||
       room.catanScenario === "cities-knights" ||
+      room.catanScenario === "fishing" ||
       isPublicCatanSea(room.catanScenario)) &&
     (!room.catanSeafarers || isPublicCatanSea(room.catanScenario)) &&
     (!room.catanNewWorldMap || room.catanScenario === "new_world") &&
@@ -2338,7 +2340,7 @@ function Waiting({
                 : room.kind === "catan"
                   ? room.catanTwoRules
                     ? twoLabel
-                    : `${room.catanScenario ? catanScenarioName(room.catanScenario) + (isPublicCatanSea(room.catanScenario) && room.catanCitiesKnights ? "＋城市与骑士" : "") : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : room.catanScenario === "barbarian-attack" ? "3–6 人 · 五六人配对回合" : room.catanScenario === "spices-for-catan" ? "2–6 人 · 五六人配对回合" : isPublicCatanFlexible(room.catanScenario) ? "2–4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
+                    : `${room.catanScenario ? catanScenarioName(room.catanScenario) + (supportsPublicCatanKnightsCombination(room.catanScenario) && room.catanCitiesKnights ? "＋城市与骑士" : "") : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : room.catanScenario === "barbarian-attack" ? "3–6 人 · 五六人配对回合" : room.catanScenario === "spices-for-catan" ? "2–6 人 · 五六人配对回合" : isPublicCatanFlexible(room.catanScenario) ? "2–4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}
@@ -2371,7 +2373,8 @@ function Waiting({
             players={room.capacity}
             helpers={!!room.catanOptions?.helpers}
             knights={
-              !!room.catanCitiesKnights && isPublicCatanSea(room.catanScenario)
+              !!room.catanCitiesKnights &&
+              supportsPublicCatanKnightsCombination(room.catanScenario)
             }
             disabled={!host || busy || mapDirty}
             onChange={(catanScenario) =>
@@ -2380,8 +2383,9 @@ function Waiting({
           />
         )}
         {room.kind === "catan" &&
-          supportsPublicCatanSeaKnights(room.catanScenario) && (
-            <CatanSeaKnightsPicker
+          supportsPublicCatanKnightsCombination(room.catanScenario) && (
+            <CatanCombinationKnightsPicker
+              fishing={room.catanScenario === "fishing"}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}
               disabled={!host || busy || mapDirty}

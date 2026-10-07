@@ -436,3 +436,15 @@ test("transport waiting rules and actual players retain thirteen points and neut
  info=catanRuleContext(room);
  assert.equal(info.transport,false); assert.equal(info.two,false); assert.equal(info.target,10);
 });
+
+
+test("Fishing with Cities and Knights uses actual combination and thirteen points", () => {
+ const room={capacity:4,catanScenario:"fishing",catanCitiesKnights:{layout:"variable"}};
+ let info=catanRuleContext(room);
+ assert.equal(info.fishing,true);assert.equal(info.citiesKnights,true);assert.equal(info.target,13);
+ assert.equal(info.scenario,"");assert.equal(info.layout,"variable");
+ room.game={catan:{players:[{},{},{}],fishing:{},citiesKnights:{layout:"variable"}}};
+ info=catanRuleContext(room);assert.equal(info.players,3);assert.equal(info.target,13);
+ delete room.game.catan.citiesKnights;
+ info=catanRuleContext(room);assert.equal(info.citiesKnights,false);assert.equal(info.target,10);
+});

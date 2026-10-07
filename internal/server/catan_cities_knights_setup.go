@@ -59,11 +59,11 @@ func (r *Room) validateCatanCitiesKnightsMap() error {
 	return nil
 }
 
-// Public sea rooms may enable or remove the combination while waiting. Every
+// Public sea and Fishing rooms may toggle the combination while waiting. Every
 // other recipe keeps its own configuration path; nil means remove only here.
-func (r *Room) setPublicCatanSeaKnights(setup *game.CatanCitiesKnightsSetup) error {
-	if r.Kind != "catan" || r.Status != "waiting" || !publicCatanSeaScenario(r.CatanScenario) {
-		return fmt.Errorf("只能在航海家等待房间切换城市与骑士组合")
+func (r *Room) setPublicCatanCombinationKnights(setup *game.CatanCitiesKnightsSetup) error {
+	if r.Kind != "catan" || r.Status != "waiting" || (!publicCatanSeaScenario(r.CatanScenario) && r.CatanScenario != "fishing") {
+		return fmt.Errorf("只能在航海家或渔夫等待房间切换城市与骑士组合")
 	}
 	next := *r
 	next.CatanCitiesKnights = nil

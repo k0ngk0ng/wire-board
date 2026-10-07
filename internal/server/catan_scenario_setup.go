@@ -99,8 +99,14 @@ func (r *Room) validateCatanScenario() error {
 	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity {
 		return errors.New("该剧本当前支持三至四人牌桌；双人请使用已支持的双人变体")
 	}
-	if r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || (r.CatanCitiesKnights != nil && r.CatanScenario != "fishing") || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 		return errors.New("所选剧本与其他扩展的组合尚未开放")
+	}
+	if r.CatanCitiesKnights != nil {
+		setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
+		if err != nil || setup != *r.CatanCitiesKnights {
+			return errors.New("渔夫与城市骑士布局或规则版本无效")
+		}
 	}
 	return nil
 }
@@ -147,7 +153,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
+	} else if (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if err := next.validateCatanScenario(); err != nil {
