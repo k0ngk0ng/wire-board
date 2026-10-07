@@ -54,3 +54,38 @@ test("a removed noble departs from its previous slot, not the remaining noble's 
     null,
   );
 });
+
+test("a confirmed fixed-panel card keeps its screen origin after the panel disappears", async (t) => {
+  const { captureFixedCardOrigin, resolveCardOrigin } =
+    await import("../src/card-flight-origin.ts");
+  const oldWindow = globalThis.window,
+    oldDocument = globalThis.document;
+  t.after(() => {
+    if (oldWindow === undefined) delete globalThis.window;
+    else globalThis.window = oldWindow;
+    if (oldDocument === undefined) delete globalThis.document;
+    else globalThis.document = oldDocument;
+  });
+  const viewport = { clientWidth: 390, clientHeight: 844, scrollTop: 0 };
+  globalThis.document = { documentElement: viewport };
+  globalThis.window = {};
+  const element = { getBoundingClientRect: () => rect(145, 540, 100, 140) };
+  const source = captureFixedCardOrigin(element);
+  element.getBoundingClientRect = () => rect(0, 0, 0, 0);
+  viewport.scrollTop = 400;
+  assert.deepEqual(resolveCardOrigin(source), { x: 195, y: 610 });
+  viewport.clientWidth = 430;
+  assert.equal(resolveCardOrigin(source), null);
+  viewport.clientWidth = 390;
+  viewport.clientHeight = 500;
+  assert.equal(resolveCardOrigin(source), null);
+  viewport.clientHeight = 844;
+  // Browser zoom/keyboard clipping must not invent a departure at the edge.
+  globalThis.window.visualViewport = {
+    offsetLeft: 0,
+    offsetTop: 0,
+    width: 390,
+    height: 500,
+  };
+  assert.equal(resolveCardOrigin(source), null);
+});

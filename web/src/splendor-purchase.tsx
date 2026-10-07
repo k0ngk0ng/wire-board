@@ -231,6 +231,7 @@ export function SplendorPurchase({
               <div className="form-grid gem-purchase-actions">
                 <button
                   className="primary"
+                  data-card-acquire={card.id}
                   disabled={!acting || busy || blocked || !!error}
                   onClick={() =>
                     void act({

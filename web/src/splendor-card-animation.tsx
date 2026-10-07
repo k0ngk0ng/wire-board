@@ -6,14 +6,16 @@ import { visibleFlightAnchor } from "./flight-anchor";
 import { orientBackStyle } from "./splendor-orient-art";
 import {
   captureCardOrigin,
+  captureFixedCardOrigin,
   resolveCardOrigin,
   type CardOrigin,
+  type FixedCardOrigin,
 } from "./card-flight-origin";
 import "./splendor-card-animation.css";
 
 type Flight = {
   event: SplendorCardEvent;
-  source: string | CardOrigin;
+  source: string | CardOrigin | FixedCardOrigin;
   target: string;
   width: number;
   height: number;
@@ -37,8 +39,34 @@ export function SplendorCardAnimation({
   const seen = useRef({ room: room.id, id: splendor.cardEventId ?? 0 });
   const reservedRects = useRef(new Map<number, CardOrigin>());
   const nobleRects = useRef(new Map<number, CardOrigin>());
+  const confirmed = useRef<{ card: number; origin: FixedCardOrigin } | null>(
+    null,
+  );
   const layer = useRef<HTMLDivElement>(null);
   const [flights, setFlights] = useState<Flight[]>([]);
+
+  useEffect(() => {
+    confirmed.current = null;
+    const capture = (event: MouseEvent) => {
+      const button =
+        event.target instanceof Element
+          ? event.target.closest<HTMLButtonElement>("button[data-card-acquire]")
+          : null;
+      if (!button || button.disabled || !button.closest(".splendor-board"))
+        return;
+      const card = Number(button.dataset.cardAcquire);
+      const panel = button.closest(".gem-effect-panel, .gem-purchase-panel");
+      const element = panel?.querySelector<HTMLElement>(
+        `[data-card-id="${card}"]`,
+      );
+      confirmed.current =
+        element && visibleFlightAnchor(element)
+          ? { card, origin: captureFixedCardOrigin(element) }
+          : null;
+    };
+    document.addEventListener("click", capture, true);
+    return () => document.removeEventListener("click", capture, true);
+  }, [room.id, room.you]);
 
   // Capture hand/noble slots after server updates, before the next card is
   // removed. Relative origins track scrolling without extra layout reads.
@@ -74,6 +102,7 @@ export function SplendorCardAnimation({
     };
     if (seen.current.room !== room.id || id < seen.current.id) {
       seen.current = { room: room.id, id };
+      confirmed.current = null;
       setFlights([]);
     } else {
       const events = (splendor.cardEvents ?? []).filter(
@@ -85,7 +114,7 @@ export function SplendorCardAnimation({
         : events.flatMap((event, index): Flight[] => {
             const target = `[data-player-seat="${event.player}"] .avatar`;
             const row = `.market-row[data-splendor-tier="${event.tier}"][data-splendor-orient="${event.orient ? "true" : "false"}"]`;
-            const source =
+            let source: Flight["source"] | undefined =
               event.source === "nobles" && event.noble
                 ? nobleRects.current.get(event.noble.id)
                 : event.source === "market"
@@ -95,6 +124,23 @@ export function SplendorCardAnimation({
                     : event.player === room.you && event.card
                       ? reservedRects.current.get(event.card.id)
                       : `[data-player-seat="${event.player}"] .reserved-count`;
+            const selection = confirmed.current;
+            if (
+              selection &&
+              event.player === room.you &&
+              event.card?.id === selection.card
+            ) {
+              const element =
+                typeof source === "string"
+                  ? document.querySelector(source)
+                  : null;
+              const visible =
+                typeof source === "string"
+                  ? element && visibleFlightAnchor(element)
+                  : source && resolveCardOrigin(source);
+              if (!visible) source = selection.origin;
+              confirmed.current = null;
+            }
             if (!source) return [];
             const rect =
               typeof source === "string"
@@ -119,6 +165,7 @@ export function SplendorCardAnimation({
       if (fresh.length)
         setFlights((previous) => [...previous, ...fresh].slice(-12));
     }
+    confirmed.current = null;
     rememberSources();
     window.addEventListener("resize", rememberSources);
     return () => {
@@ -196,7 +243,9 @@ export function SplendorCardAnimation({
       const source =
         typeof flight.source === "string"
           ? document.querySelector(flight.source)
-          : flight.source.reference;
+          : "reference" in flight.source
+            ? flight.source.reference
+            : null;
       for (const start of [source, document.querySelector(flight.target)]) {
         for (let element = start; element; element = element.parentElement) {
           if (!observed.has(element)) {

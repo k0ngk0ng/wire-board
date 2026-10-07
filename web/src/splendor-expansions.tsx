@@ -233,6 +233,9 @@ export function SplendorExpansionBoard({
                   </div>
                   <button
                     className="primary wide"
+                    data-card-acquire={
+                      g.phase === "gem_free_card" ? target : undefined
+                    }
                     disabled={
                       busy || !orientChoices.some((c) => c.id === target)
                     }
