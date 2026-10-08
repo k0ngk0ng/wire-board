@@ -6,15 +6,25 @@ import (
 	"strings"
 )
 
-// NewCatanTransport starts the verified two-to-four-player transport recipe.
-// Five/six-player development cards and combinations remain separate gates.
+// The extended deck uses a labelled site recipe; the base deck is unchanged.
+const CatanTransportExtendedDeck = "wire-board-transport-deck-v1"
+const catanTransportDeckNotice = "本站牌组配置：五六人在原25张运输发展牌中加入8张骑士、2张道路建设、2张快速旅程，共37张"
+
+func catanTransportDeckCounts(n int) []int {
+	if n > 4 {
+		return []int{24, 5, 5, 0, 3}
+	}
+	return []int{16, 3, 3, 0, 3}
+}
+
+// NewCatanTransport chooses the board and paired turns for actual players.
 func NewCatanTransport(n int) (*State, error) {
-	return newCatanTransportState(n, CatanOptions{})
+	return newCatanTransportState(n, CatanOptions{FiveSix: n > 4})
 }
 
 func newCatanTransportState(n int, options CatanOptions) (*State, error) {
-	if n < 2 || n > 4 || options.Helpers || options.AllHelpers || options.FiveSix {
-		return nil, errors.New("运输整局目前仅接入2至4人；扩充牌表及组合仍待核实")
+	if n < 2 || n > 6 || options.Helpers || options.AllHelpers || options.FiveSix != (n > 4) {
+		return nil, errors.New("运输支持2至6人，五六人使用配对回合；不混用其他扩展")
 	}
 	var s *State
 	var err error
@@ -43,13 +53,17 @@ func newCatanTransportState(n int, options CatanOptions) (*State, error) {
 		}
 	}
 	g.DevDeck = []int{}
-	for kind, count := range []int{16, 3, 3, 0, 3} {
+	for kind, count := range catanTransportDeckCounts(n) {
 		for range count {
 			g.DevDeck = append(g.DevDeck, kind)
 		}
 	}
 	shuffle(g.DevDeck)
 	s.Log = []string{"运输任务：先建村庄，再逆序建城市；起始城市只领每邻格1资源，马车随城市放置", "运输任务：不使用强盗与最长道路；自己回合达到13分获胜"}
+	if n > 4 {
+		g.Transport.DeckRecipe = CatanTransportExtendedDeck
+		s.Log = append(s.Log, catanTransportDeckNotice, "五六人运输：2与12正常生产；配对玩家分别完成建设交易和马车移动")
+	}
 	s.catanScores()
 	return s, s.validateCatanTransport()
 }
@@ -59,8 +73,25 @@ func (s *State) validateCatanTransport() error {
 		return nil
 	}
 	t := g.Transport
-	if len(g.Players) < 2 || len(g.Players) > 4 || g.Paired != nil || g.Options.FiveSix || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Robber != -1 || g.LongestOwner != -1 {
+	n := len(g.Players)
+	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
+	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
+	}
+	if n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || n <= 4 && t.DeckRecipe != "" {
+		return errors.New("运输发展牌配置版本无效")
+	}
+	if pair := g.Paired; pair != nil {
+		if pair.Primary < 0 || pair.Primary >= n || pair.Secondary < 0 || pair.Secondary >= n {
+			return errors.New("运输配对玩家无效")
+		}
+		actor := pair.Primary
+		if pair.Second {
+			actor = pair.Secondary
+		}
+		if !g.setup() && !s.Finished && (s.Turn != actor || pair.Second && s.Phase == "catan_roll") {
+			return errors.New("运输配对行动阶段无效")
+		}
 	}
 	if err := t.validate(g); err != nil {
 		return err
@@ -109,7 +140,7 @@ func (s *State) validateCatanTransport() error {
 			counts[card] += n
 		}
 	}
-	if !slices.Equal(counts, []int{16, 3, 3, 0, 3}) {
+	if !slices.Equal(counts, catanTransportDeckCounts(n)) {
 		return errors.New("运输发展牌库存不守恒")
 	}
 	return s.validateCatanTwo()
@@ -227,7 +258,7 @@ func (s *State) catanTransportRoll(roll func() [2]int) error {
 			return errors.New("骰子无效")
 		}
 		total := dice[0] + dice[1]
-		if total == 2 || total == 12 {
+		if len(g.Players) <= 4 && (total == 2 || total == 12) {
 			s.catanLog(s.Turn, "运输掷出%d，重新掷骰", total)
 			continue
 		}
@@ -388,4 +419,7 @@ func (s *State) catanTransportView(v map[string]any, player int) {
 	public := t.publicView()
 	v["transport"] = map[string]any{"rules": catanTransportRules, "map": t.Map, "state": public, "canAct": player == s.Turn && !s.Finished, "canDeliver": t.canDeliver(), "swift": t.Swift, "moves": t.Moves, "barbarianPending": t.BarbarianPending, "barbarianSequence": t.BarbarianSequence, "bought": t.Bought, "choices": s.catanTransportChoices(player)}
 	v["developmentNames"] = []string{"骑士", "道路建设", "快速旅程", "", "胜利点"}
+	if t.DeckRecipe != "" {
+		v["transport"].(map[string]any)["deckRecipe"] = t.DeckRecipe
+	}
 }

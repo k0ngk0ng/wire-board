@@ -25,7 +25,7 @@ func transportHTTPFixture(t *testing.T, n int) *game.State {
 	return &s
 }
 func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
-	for _, n := range []int{2, 3, 4} {
+	for _, n := range []int{2, 3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts, clients, id := newPublicScenarioTable(t, n, "transport")
 			r := s.rooms[id]
@@ -36,6 +36,7 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 			twoRestored := map[string]bool{}
 			steps := 0
 			moves := 0
+			pairedMoves := map[bool]bool{}
 			for ; steps < 4000 && !s.rooms[id].Game.Finished; steps++ {
 				r = s.rooms[id]
 				g := r.Game
@@ -59,6 +60,9 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 				phase, deadline := g.Phase, r.TurnDeadline
 				if phase == "catan_transport_move" {
 					moves++
+					if g.Catan.Paired != nil {
+						pairedMoves[g.Catan.Paired.Second] = true
+					}
 					// Probe the actual network view at the first move, then resume the same
 					// persisted response and deadline through a real server restart.
 					if !restored {
@@ -120,6 +124,9 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 				t.Fatal("natural game did not cover both two-player responses", twoRestored)
 			}
 			assertTransportInventory(t, r.Game)
+			if n > 4 && (!pairedMoves[false] || !pairedMoves[true]) {
+				t.Fatal("both paired players must move their wagons", pairedMoves)
+			}
 			assertTransportHistory(t, s, clients, id)
 			t.Logf("%dp full HTTP match: %d actions, %d movement actions", n, steps, moves)
 		})
@@ -293,6 +300,90 @@ func TestCatanTransportTwoHTTPResponseAutomation(t *testing.T) {
 					t.Fatal("response lost action time", mode, remaining, saved)
 				}
 			})
+		}
+	}
+}
+
+// Reach each marker's movement via real public HTTP actions, then verify that
+// timeout and explicit autoplay hand off to the correct player with a new clock.
+func TestCatanTransportPairedHTTPAutomaticMovement(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		for _, second := range []bool{false, true} {
+			for _, mode := range []string{"autoplay", "timeout"} {
+				t.Run(fmt.Sprintf("%d/second-%t/%s", n, second, mode), func(t *testing.T) {
+					s, ts, clients, id := newPublicScenarioTable(t, n, "transport")
+					reached := false
+					for step := 0; step < 600; step++ {
+						g := s.rooms[id].Game
+						if g.Phase == "catan_transport_move" && g.Catan.Paired.Second == second {
+							reached = true
+							break
+						}
+						actor := g.CatanPendingActor()
+						if actor < 0 {
+							actor = g.Turn
+						}
+						if g.Phase == "catan_discard" {
+							for p, due := range g.Catan.DiscardDue {
+								if due > 0 {
+									actor = p
+									break
+								}
+							}
+						}
+						a, err := g.BotAction(actor)
+						if err != nil {
+							t.Fatal(err)
+						}
+						clients[actor].command(current(clients[actor]), "action", a, 200)
+					}
+					if !reached {
+						t.Fatal("paired movement unreachable")
+					}
+					r := s.rooms[id]
+					actor := r.Game.Turn
+					pair := *r.Game.Catan.Paired
+					deadline := r.TurnDeadline
+					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+					if s.rooms[id].TurnDeadline != deadline {
+						t.Fatal("restart refreshed clock")
+					}
+					if mode == "autoplay" {
+						setAutoPlay(clients[actor], current(clients[actor]), true, 200)
+					}
+					now := time.Now()
+					for step := 0; s.rooms[id].Game.Turn == actor; step++ {
+						if step > 30 {
+							t.Fatal("paired movement stuck")
+						}
+						s.mu.Lock()
+						if mode == "autoplay" {
+							now = time.Now()
+							s.rooms[id].BotAt = 0
+							s.runBots(now)
+						} else {
+							now = time.UnixMilli(max(deadline, s.rooms[id].BotAt))
+							s.expireSetups(now)
+						}
+						s.mu.Unlock()
+						if s.rooms[id].Game.Turn == actor && s.rooms[id].TurnDeadline != deadline {
+							t.Fatal("movement refreshed clock")
+						}
+					}
+					r = s.rooms[id]
+					next, phase := pair.Secondary, "catan_turn"
+					if second {
+						next, phase = (pair.Primary+1)%n, "catan_roll"
+					}
+					if r.Game.Turn != next || r.Game.Phase != phase || r.TurnDeadline-now.UnixMilli() < 119000 {
+						t.Fatal("wrong paired handoff", r.Game.Turn, r.Game.Phase)
+					}
+					if mode == "timeout" && !r.Seats[actor].AutoPlay {
+						t.Fatal("timeout did not persist autoplay")
+					}
+					assertTransportInventory(t, r.Game)
+				})
+			}
 		}
 	}
 }

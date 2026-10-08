@@ -39,8 +39,8 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "transport" {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
-			return errors.New("运输支持二至四人；双人按实际人数启用中立势力与贸易筹码，不混用其他扩展配置")
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
+			return errors.New("运输支持二至六人；按实际人数启用双人规则或五六人配对回合，不混用其他扩展配置")
 		}
 		return nil
 	}
@@ -136,7 +136,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanExplorerScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && scenario != "spices-for-catan" && scenario != "barbarian-attack" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && scenario != "spices-for-catan" && scenario != "barbarian-attack" && scenario != "transport" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r

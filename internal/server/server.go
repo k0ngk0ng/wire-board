@@ -669,7 +669,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		}
 		req.CatanOptions = options
 		minPlayers = 3
-		if req.CatanScenario == "spices-for-catan" {
+		if req.CatanScenario == "spices-for-catan" || req.CatanScenario == "transport" {
 			minPlayers, maxPlayers = 2, 6
 		} else if req.CatanScenario == "barbarian-attack" {
 			maxPlayers = 6
