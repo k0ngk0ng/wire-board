@@ -1,3 +1,7 @@
+import {
+  ExplorerHelpers,
+  isExplorerHelperAction,
+} from "./catan-explorer-helpers";
 import { CatanCardEventSummary } from "./catan-card-event";
 import { ExplorerPairedTurn } from "./catan-explorer-paired";
 import { ExplorerSpiceMission } from "./catan-explorer-spice";
@@ -137,6 +141,8 @@ export function CatanExplorerBoard({
   const [pick, setPick] = useState<ExplorerPick | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState("");
+  const [helperMap, setHelperMap] = useState(false);
+  const [helperFrom, setHelperFrom] = useState(-1);
   const [fishMode, setFishMode] = useState("");
   const [fishChosen, setFishChosen] = useState<{
     type: string;
@@ -160,6 +166,8 @@ export function CatanExplorerBoard({
   useEffect(() => {
     setPick(null);
     setMode("");
+    setHelperMap(false);
+    setHelperFrom(-1);
     setFishMode("");
     setFishChosen(null);
     setShip(-1);
@@ -191,7 +199,16 @@ export function CatanExplorerBoard({
   const choices =
     city?.pending && !mapResponses.includes(city.pending.kind)
       ? []
-      : allChoices.filter((a) => !a.type.startsWith("catan_fish_"));
+      : allChoices.filter(
+          (a) =>
+            !a.type.startsWith("catan_fish_") &&
+            (helperMap
+              ? isExplorerHelperAction(a) &&
+                a.type !== "catan_helper_choice" &&
+                (a.skill === "helper" || a.edge !== undefined) &&
+                (helperFrom < 0 || a.edge === helperFrom)
+              : !isExplorerHelperAction(a)),
+        );
   const cityManaged = (type: string) =>
     [
       "catan_improvement",
@@ -241,6 +258,16 @@ export function CatanExplorerBoard({
       : description;
   };
   const select = (a: ExplorerAction) => {
+    if (
+      helperMap &&
+      a.type === "catan_helper" &&
+      a.edge !== undefined &&
+      helperFrom < 0
+    ) {
+      setHelperFrom(a.edge);
+      setPick(null);
+      return;
+    }
     setFishMode("");
     setFishChosen(null);
     setProgress(null);
@@ -279,7 +306,13 @@ export function CatanExplorerBoard({
   >();
   const fishingMap = fishTurn(room) && !progress && fishMode ? fishMode : "";
   for (const a of progressMode || fishingMap ? [] : options) {
-    const target = explorerTarget(g, a);
+    const target =
+      helperMap &&
+      a.type === "catan_helper" &&
+      a.edge !== undefined &&
+      helperFrom < 0
+        ? { kind: "edge" as const, id: a.edge }
+        : explorerTarget(g, a);
     if (!target) continue;
     const key = `${target.kind}-${target.id}`;
     const item = targets.get(key) || { ...target, actions: [] };
@@ -951,6 +984,52 @@ export function CatanExplorerBoard({
         </div>
       </div>
       <aside className="explorer-panel">
+        <ExplorerHelpers
+          room={room}
+          act={cityAct}
+          busy={busy}
+          assets={assets}
+          onMap={() => {
+            setHelperMap(true);
+            setHelperFrom(-1);
+            setPick(null);
+            setMode("");
+            setFishMode("");
+            setFishChosen(null);
+            setProgress(null);
+            setShip(-1);
+          }}
+        />
+        {helperMap && (
+          <div className="explorer-notice">
+            <b>
+              {g.players[you]?.helper?.id === 4
+                ? helperFrom < 0
+                  ? "先选择要迁移的末端道路"
+                  : `已选道路${helperFrom + 1}，再选择新位置`
+                : "助手建设：选择高亮位置，再确认费用和棋子"}
+            </b>
+            {helperFrom >= 0 && (
+              <button
+                onClick={() => {
+                  setHelperFrom(-1);
+                  setPick(null);
+                }}
+              >
+                重选原道路
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setHelperMap(false);
+                setPick(null);
+                setMode("");
+              }}
+            >
+              退出助手建设
+            </button>
+          </div>
+        )}
         {room.spectating ? (
           <p className="explorer-notice">
             正在观战 · 船只与货物公开，手牌仅本人可见
@@ -976,6 +1055,7 @@ export function CatanExplorerBoard({
             assets={assets}
             chosen={fishChosen}
             onMode={(next) => {
+              setHelperMap(false);
               setFishMode(next);
               setFishChosen(null);
               setPick(null);
@@ -1091,6 +1171,7 @@ export function CatanExplorerBoard({
                   assets={assets}
                   selection={progress}
                   onChange={(s) => {
+                    setHelperMap(false);
                     setFishMode("");
                     setFishChosen(null);
                     setProgress(s);
@@ -1111,6 +1192,7 @@ export function CatanExplorerBoard({
                   assets={assets}
                   mode={progress ? "" : effective.replace(/^catan_/, "")}
                   selectMode={(key) => {
+                    setHelperMap(false);
                     setFishMode("");
                     setFishChosen(null);
                     setMode(key ? `catan_${key}` : "");
@@ -1144,7 +1226,7 @@ export function CatanExplorerBoard({
             </div>
             <div className="explorer-modes" role="group" aria-label="探险操作">
               {kinds
-                .filter((type) => !city || !cityManaged(type))
+                .filter((type) => helperMap || !city || !cityManaged(type))
                 .map((type) => (
                   <button
                     key={type}
@@ -1159,6 +1241,7 @@ export function CatanExplorerBoard({
                       setProgress(null);
                     }}
                   >
+                    {helperMap ? "助手 · " : ""}
                     {explorerActionNames[type]}
                   </button>
                 ))}
@@ -1251,7 +1334,11 @@ export function CatanExplorerBoard({
                       ? "选择骑士与目标"
                       : selected.type === "catan_treason_place"
                         ? "选择骑士等级"
-                        : "选择船只或舱位"}
+                        : selected.skill === "helper"
+                          ? "选择助手支付与归还人员"
+                          : selected.type === "catan_helper"
+                            ? "选择原道路"
+                            : "选择船只或舱位"}
                   <select
                     value={explorerActionKey(selected)}
                     onChange={(e) => {

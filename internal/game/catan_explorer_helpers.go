@@ -36,7 +36,11 @@ func catanExplorerHelperRules() []CatanHelper {
 	return rules
 }
 
-// Private until public configuration and UI acceptance are complete.
+// EnableCatanExplorerHelpers configures the versioned adaptation before any play.
+func (s *State) EnableCatanExplorerHelpers(all bool) error {
+	return s.enableCatanExplorerHelpers(all)
+}
+
 func (s *State) enableCatanExplorerHelpers(all bool) error {
 	if s == nil || s.Catan == nil || s.Catan.Explorer == nil || s.Finished {
 		return errors.New("探险助手需要尚未开始行动的探索者牌桌")

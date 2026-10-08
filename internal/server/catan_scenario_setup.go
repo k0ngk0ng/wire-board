@@ -18,6 +18,12 @@ func publicCatanExplorerScenario(scenario string) bool {
 	return scenario == "land-ho" || publicCatanExplorerExtended(scenario)
 }
 
+// Explorer has its own player-count rules; only Helpers belong in this field.
+func validCatanExplorerOptions(options game.CatanOptions) bool {
+	normalized, err := game.NormalizeCatanOptions(options)
+	return err == nil && normalized == options && !options.FiveSix
+}
+
 func publicCatanExplorerExtended(scenario string) bool {
 	return scenario == "spices-for-catan" || scenario == "pirate-lairs" || scenario == "fish-for-catan" || scenario == "explorers-and-pirates"
 }
@@ -70,7 +76,7 @@ func (r *Room) validateCatanScenario() error {
 	}
 	if publicCatanExplorerScenario(r.CatanScenario) {
 		maximum := 6
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || !validCatanExplorerOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 			return errors.New("探索者支持二至六人，城市骑士组合需三至六人；初航五六人或骑士使用本站自由开局规则")
 		}
 		if r.CatanCitiesKnights != nil {
@@ -145,6 +151,9 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if publicCatanExplorerScenario(scenario) && !publicCatanExplorerScenario(r.CatanScenario) {
+		next.CatanOptions, _ = game.NormalizeCatanOptions(game.CatanOptions{Helpers: r.CatanOptions.Helpers, AllHelpers: r.CatanOptions.AllHelpers})
+	}
 	if scenario != "" {
 		next.CatanBaseConfiguration = nil
 	}
@@ -206,6 +215,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 		return nil
 	}
 	r.CatanScenario = scenario
+	r.CatanOptions = next.CatanOptions
 	r.CatanEvents = next.CatanEvents
 	r.CatanBaseConfiguration = next.CatanBaseConfiguration
 	r.CatanHarbors = next.CatanHarbors

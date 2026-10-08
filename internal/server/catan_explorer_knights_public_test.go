@@ -105,7 +105,7 @@ func TestCatanExplorerKnightsPublicCreationRejectsMixes(t *testing.T) {
 	host.register("组合限制")
 	for _, change := range []map[string]any{
 		{"capacity": 2}, {"capacity": 7}, {"catanScenario": "land-ho", "capacity": 2},
-		{"catanOptions": game.CatanOptions{Helpers: true}}, {"catanOptions": game.CatanOptions{FiveSix: true}},
+		{"catanOptions": game.CatanOptions{AllHelpers: true}}, {"catanOptions": game.CatanOptions{FiveSix: true}},
 		{"catanFishingLakes": true},
 	} {
 		request := map[string]any{"kind": "catan", "capacity": 6, "name": "组合限制", "catanScenario": "explorers-and-pirates", "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "variable"}}

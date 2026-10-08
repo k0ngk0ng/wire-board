@@ -478,6 +478,7 @@
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
+  .explorer-helpers,
   .explorer-hand,
   .explorer-full-missions,
   .explorer-confirm,

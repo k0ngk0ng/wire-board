@@ -305,10 +305,19 @@ export function CatanRules({ room }: { room: Room }) {
             ? `探索者与海盗 · ${explorerScenarioLabel(room.game.catan)}`
             : catanScenarioName(scenario)}
           {info.citiesKnights ? "＋城市与骑士" : ""}
-          {info.fishing ? "＋渔夫" : ""} · {info.target}分
+          {info.fishing ? "＋渔夫" : ""}
+          {info.explorerHelpers ? "＋Helpers" : ""} · {info.target}分
         </h3>
         <CatanEventRules info={info} />
         <ul>
+          {info.explorerHelpers && (
+            <li>
+              本站 Helpers
+              适配：迪亚拉可替换一张造船资源；格雷戈尔归还己方港口内或停靠该港口船上的人员以优惠建设（初航用移民，其余用船员）；迪古尔驱逐海盗并领
+              1
+              金币，卡娅领普通资源，卡拉交换普通资源。希尔达只看本次资源与商品生产，鱼、金币和引水渠不取消资格；托罗夫按资源与商品合计判断七点免弃。开局完成后可用，使用后翻面或交换，新助手下一回合可用。
+            </li>
+          )}
           {info.fishing && (
             <>
               <li>

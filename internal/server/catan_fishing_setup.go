@@ -25,7 +25,7 @@ func (r *Room) validateCatanFishing() error {
 		return nil
 	}
 	if publicCatanExplorerScenario(r.CatanScenario) {
-		if r.Kind != "catan" || r.CatanOptions != (game.CatanOptions{}) || r.CatanSeafarers != nil || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil {
+		if r.Kind != "catan" || !validCatanExplorerOptions(r.CatanOptions) || r.CatanSeafarers != nil || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil {
 			return fmt.Errorf("探索者渔夫不能混用航海家、普通双人或基础配置")
 		}
 		return nil // Scenario validation checks player counts and city compatibility.

@@ -3,6 +3,7 @@ import { catanCardNames } from "./catan-cards.ts";
 
 export type ExplorerAction = {
   type: string;
+  skill?: string;
   prompt: number;
   slot?: number;
   edge?: number;
@@ -57,6 +58,7 @@ export type ExplorerMotion = {
   cargo?: { unit: number; from: ExplorerLocation; to: ExplorerLocation }[];
 };
 export type ExplorerView = {
+  helperRules?: string;
   actor?: number;
   canRespond?: boolean;
   response?: {
@@ -172,6 +174,8 @@ export type ExplorerView = {
 };
 export const explorerResources = ["木材", "砖块", "羊毛", "粮食", "矿石"];
 export const explorerActionNames: Record<string, string> = {
+  catan_helper: "使用助手",
+  catan_helper_choice: "助手回应",
   catan_city: "升级城市",
   catan_wall: "建造城墙",
   catan_improvement: "城市改良",
@@ -381,6 +385,8 @@ export function explorerTarget(
   a: ExplorerAction,
 ): { kind: "edge" | "vertex" | "tile"; id: number } | null {
   if (a.choice === "skip") return null;
+  if (a.type === "catan_helper" && a.edge !== undefined)
+    return { kind: "edge", id: a.target! };
   if (a.type === "catan_knight_move") return { kind: "vertex", id: a.target! };
   if (a.type === "catan_explorer_fish_load") {
     const loc = g.explorer?.cargo.fish?.[a.card ?? -1];
@@ -434,6 +440,24 @@ export function explorerIsHarbor(g: CatanState, vertex: number) {
 // Compact select text puts the actual choice before fees and explanation.
 // The full confirmation below continues to show destination, cost and effects.
 export function explorerActionOptionLabel(g: CatanState, a: ExplorerAction) {
+  if (a.skill === "helper") {
+    const cost =
+      a.tokens ||
+      (a.type === "catan_settlement" ? [1, 1, 0, 0, 0] : [0, 0, 0, 1, 2]);
+    const payment = cost
+      .flatMap((n, i) => (n ? [`${explorerResources[i]}${n}`] : []))
+      .join("＋");
+    const detail =
+      a.type === "catan_explorer_ship"
+        ? `船${(a.slot! % 3) + 1}`
+        : ["catan_settlement", "catan_explorer_harbor", "catan_city"].includes(
+              a.type,
+            )
+          ? `归还${explorerUnitLabel(a.card!)}`
+          : "修路";
+    return `${detail} · ${payment}`;
+  }
+
   if (a.type !== "catan_explorer_unit") return explorerActionDescription(g, a);
   const returned = explorerFreightLabel(
     a.cards || [],
@@ -448,6 +472,28 @@ export function explorerActionOptionLabel(g: CatanState, a: ExplorerAction) {
   return `${explorerUnitLabel(a.card ?? 0)}${hasReturn ? ` · 归还${returned}` : ""}`;
 }
 export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
+  if (a.skill === "helper") {
+    const cost =
+      a.tokens ||
+      (a.type === "catan_settlement" ? [1, 1, 0, 0, 0] : [0, 0, 0, 1, 2]);
+    const payment = cost
+      .flatMap((n, i) => (n ? [`${explorerResources[i]}×${n}`] : []))
+      .join("、");
+    const unit =
+      a.card !== undefined &&
+      ["catan_settlement", "catan_explorer_harbor", "catan_city"].includes(
+        a.type,
+      )
+        ? `归还${explorerUnitLabel(a.card)}（${g.explorer?.cargo.units[a.card]?.kind === "ship" ? `船${(g.explorer.cargo.units[a.card].index % 3) + 1}` : `港口${(g.explorer?.cargo.units[a.card]?.index ?? 0) + 1}`}），`
+        : "";
+    const recycled =
+      a.type === "catan_explorer_ship" &&
+      (g.explorer?.fleet.positions[a.slot!] ?? -1) >= 0;
+    return `助手${explorerActionNames[a.type]}：${unit}支付${payment}。${a.slot !== undefined ? `建造船${(a.slot % 3) + 1}。` : ""}${recycled ? "将拆回原船及全部货物，再建造新船。" : ""}完成后翻面或交换助手。`;
+  }
+  if (a.type === "catan_helper" && a.edge !== undefined)
+    return `免费将末端道路${a.edge + 1}迁移到道路${a.target! + 1}，随后翻面或交换助手。`;
+
   const ship = `船${((a.slot ?? 0) % 3) + 1}`,
     vertex = `位置${(a.vertex ?? 0) + 1}`;
   switch (a.type) {
@@ -654,6 +700,7 @@ export function explorerCargoLabel(ids: number[]) {
   );
 }
 export function explorerPhaseLabel(phase: string) {
+  if (phase === "catan_helper") return "助手回应";
   return (
     (
       {

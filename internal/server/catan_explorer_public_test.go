@@ -22,6 +22,11 @@ func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string, knights
 
 func newPublicExplorerRecipeHTTP(t *testing.T, n int, scenario string, knights, events bool, fishing ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
+	return newPublicExplorerOptionsHTTP(t, n, scenario, knights, events, game.CatanOptions{}, fishing...)
+}
+
+func newPublicExplorerOptionsHTTP(t *testing.T, n int, scenario string, knights, events bool, options game.CatanOptions, fishing ...bool) (*Server, *httptest.Server, []*testClient, string) {
+	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	clients := make([]*testClient, n+1)
@@ -29,7 +34,7 @@ func newPublicExplorerRecipeHTTP(t *testing.T, n int, scenario string, knights, 
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("初航公开玩家%d", p))
 	}
-	recipe := map[string]any{"name": "探险公开完整局", "kind": "catan", "capacity": n, "catanScenario": scenario}
+	recipe := map[string]any{"name": "探险公开完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanOptions": options}
 	if knights {
 		recipe["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{Layout: "variable"}
 	}
@@ -120,7 +125,7 @@ func TestCatanExplorerPublicSelectionAndRematch(t *testing.T) {
 			before, _ := json.Marshal(s.rooms[id])
 			change(guest, "catan_scenario", "catanScenario", "land-ho", 400)
 			change(host, "catan_scenario", "catanScenario", "unknown-mission", 400)
-			host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+			host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{AllHelpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			after, _ := json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("invalid command changed room")
@@ -173,7 +178,7 @@ func TestCatanExplorerPublicRejectsUnsupportedRecipes(t *testing.T) {
 	c.register("初航组合检查")
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
-		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "splendor", "capacity": 2},
 	} {
