@@ -166,10 +166,7 @@ export function CatanCombinationKnightsPicker({
   helpers?: boolean;
 }) {
   return (
-    <fieldset
-      className="catan-helper-options"
-      disabled={disabled || (helpers && !explorer && two)}
-    >
+    <fieldset className="catan-helper-options" disabled={disabled}>
       <label>
         <input
           type="checkbox"
@@ -179,17 +176,15 @@ export function CatanCombinationKnightsPicker({
         城市与骑士＋{explorer ? "探索者与海盗" : fishing ? "渔夫" : "航海家"}
       </label>
       <p className="muted small">
-        {helpers && !explorer && two
-          ? "先关闭 Helpers，才能加入城市与骑士。"
-          : explorer
-            ? intro
-              ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
-              : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
-            : fishing
-              ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌，${harbors ? 14 : 13} 分获胜，持旧靴者需 ${harbors ? 15 : 14} 分。`
-              : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
+        {explorer
+          ? intro
+            ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
+            : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
+          : fishing
+            ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌。获胜条件按所选剧本，持旧靴者额外需要 1 分。${harbors ? "港口霸主再提高 1 分门槛。" : ""}`
+            : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
-      {helpers && !explorer && !two && (
+      {helpers && !explorer && (
         <p className="muted small">
           本站骑士助手：发展卡能力适配进步牌；格雷戈尔归还实体骑士建造，资源助手不处理商品。
         </p>

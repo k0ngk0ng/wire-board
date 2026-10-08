@@ -72,7 +72,7 @@ func runTwoSeafarersPublicConfiguration(t *testing.T, fishing bool, knightOption
 				t.Fatal("toggle did not clear")
 			}
 			toggle(h, true, 200)
-			h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+			h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true, FiveSix: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 		}
 		h.command(current(h), "ready", nil, 200)
 		g.command(current(g), "ready", nil, 200)

@@ -2364,7 +2364,6 @@ function Create({
                 onChange={setCatanOptions}
                 fiveSixAvailable={false}
                 citiesKnights={variantKnights}
-                helpersAvailable={!variantKnights}
                 fishing={catanFishing || catanTwoScenario === "fishing"}
                 harbors={catanHarbors}
                 friendlyRobber={catanFriendly}
@@ -2917,8 +2916,10 @@ function Waiting({
               <CatanOptionPicker
                 value={room.catanOptions}
                 fiveSixAvailable={false}
-                citiesKnights={!!room.catanCitiesKnights}
-                helpersAvailable={!room.catanCitiesKnights}
+                citiesKnights={
+                  !!room.catanCitiesKnights ||
+                  room.catanTwoScenario === "cities-knights"
+                }
                 fishing={
                   !!room.catanFishing || room.catanTwoScenario === "fishing"
                 }

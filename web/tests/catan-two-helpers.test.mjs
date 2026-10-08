@@ -21,12 +21,7 @@ test("two-player helpers retain compatible variants and authoritative saved rule
     assert.equal(!!info.fishingHelpers, catanTwoScenario === "fishing");
     assert.equal(info.target, 11);
   }
-  for (const scenario of [
-    "rivers",
-    "caravans",
-    "cities-knights",
-    "transport",
-  ])
+  for (const scenario of ["rivers", "caravans", "transport"])
     assert.equal(supportsTwoCatanHelpers(scenario), false);
   const game = {
     catan: { players: [{}, {}], vertices: [], two: {}, options: {} },
@@ -39,4 +34,36 @@ test("two-player helpers retain compatible variants and authoritative saved rule
     catanRuleContext({ ...draft, catanOptions: {}, game }).twoHelpers,
     "wire-board-two-helpers-v1",
   );
+});
+
+test("two knight helpers compose with fishing and sea rules", () => {
+  for (const sea of [false, true])
+    for (const fish of [false, true]) {
+      const room = {
+        kind: "catan",
+        capacity: 2,
+        catanTwoRules: "catan-for-two-2025",
+        catanTwoScenario: sea ? "shores" : "cities-knights",
+        catanOptions: { helpers: true },
+        catanFishing: fish,
+        ...(sea
+          ? { catanSeafarers: { scenario: "shores" }, catanCitiesKnights: {} }
+          : {}),
+      };
+      assert.equal(supportsTwoCatanHelpers(room.catanTwoScenario), true);
+      const info = catanRuleContext(room);
+      assert.equal(info.twoHelpers, "wire-board-two-helpers-v1");
+      assert.equal(info.helpersKnights, "wire-board-helpers-knights-v1");
+      assert.equal(!!info.fishingHelpers, fish);
+      const game = {
+        catan: {
+          players: [{}, {}],
+          vertices: [],
+          two: {},
+          options: {},
+          citiesKnights: {},
+        },
+      };
+      assert.equal(catanRuleContext({ ...room, game }).helpersKnights, "");
+    }
 });

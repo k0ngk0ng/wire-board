@@ -10,15 +10,16 @@ func (g *Catan) twoSeafarersKnights() bool {
 }
 
 func NewCatanTwoSeafarersCitiesKnights(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap, fishing bool) (*State, error) {
-	if n != 2 || options != (CatanOptions{}) {
-		return nil, errors.New("双人海图骑士需要两位玩家；助手组合尚未接通")
+	o, optionErr := NormalizeCatanOptions(options)
+	if optionErr != nil || n != 2 || !CatanTwoHelpersOptions("cities-knights", o) {
+		return nil, errors.New("双人海图骑士需要两位玩家；不使用五六人扩充")
 	}
 	var s *State
 	var err error
 	if fishing {
-		s, err = NewCatanTwoFishingSeafarers(n, options, setup, world)
+		s, err = NewCatanTwoFishingSeafarers(n, CatanOptions{}, setup, world)
 	} else {
-		s, err = NewCatanTwoSeafarers(n, options, setup, world)
+		s, err = NewCatanTwoSeafarers(n, CatanOptions{}, setup, world)
 	}
 	if err != nil {
 		return nil, err
@@ -38,5 +39,5 @@ func NewCatanTwoSeafarersCitiesKnights(n int, options CatanOptions, setup CatanS
 	if err = g.validateFishing(); err != nil {
 		return nil, err
 	}
-	return s, s.validateCatanTwo()
+	return s, s.enableTwoHelpers(o)
 }

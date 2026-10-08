@@ -11,7 +11,7 @@ test("knight helpers use the saved adaptation, independent of draft options", ()
     catanOptions: { helpers: true },
   };
   assert.equal(catanRuleContext(draft).helpersKnights, marker);
-  for (const fields of [{ capacity: 2 }, { catanScenario: "land-ho" }])
+  for (const fields of [{ capacity: 1 }, { catanScenario: "land-ho" }])
     assert.equal(catanRuleContext({ ...draft, ...fields }).helpersKnights, "");
   const game = {
     catan: {

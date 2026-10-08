@@ -191,7 +191,7 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		assertCaravansFullInventory(t, s)
 	}
 	dev := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
-	if g.HelperPending != nil {
+	if g.HelperPending != nil && g.HelperPending.Kind == "development" {
 		dev += len(g.HelperPending.Cards)
 	}
 	for p, seat := range g.Players {

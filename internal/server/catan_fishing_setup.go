@@ -107,7 +107,7 @@ func (r *Room) twoCatanFishingKnights() bool {
 }
 func (r *Room) validateCatanTwoFishing() error {
 	if r.twoCatanFishingKnights() {
-		if r.CatanOptions != (game.CatanOptions{}) || r.CatanScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanFishingLakes || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil {
+		if !game.CatanTwoHelpersOptions("cities-knights", r.CatanOptions) || r.CatanScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanFishingLakes || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil {
 			return fmt.Errorf("双人渔夫骑士配置无效")
 		}
 		return nil

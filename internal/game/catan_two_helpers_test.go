@@ -262,7 +262,7 @@ func TestCatanTwoHelpersRejectCorruptAndUnmarked(t *testing.T) {
 			}
 		})
 	}
-	for _, build := range []func(int, CatanOptions) (*State, error){NewCatanTwoRivers, NewCatanTwoCaravans, NewCatanTwoCitiesKnights} {
+	for _, build := range []func(int, CatanOptions) (*State, error){NewCatanTwoRivers, NewCatanTwoCaravans} {
 		if _, err := build(2, CatanOptions{Helpers: true}); err == nil {
 			t.Fatal("unverified combination opened")
 		}

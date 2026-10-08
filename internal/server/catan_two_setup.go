@@ -75,9 +75,6 @@ func (r *Room) validateCatanTwoSetup() error {
 		return errors.New("双人卡坦人数、版本或尚未核对的组合无效")
 	}
 	if r.CatanCitiesKnights != nil {
-		if r.CatanOptions != (game.CatanOptions{}) {
-			return errors.New("双人海图骑士的助手组合尚未接通")
-		}
 		setup, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
 		if err != nil || setup != *r.CatanCitiesKnights {
 			return errors.New("双人海图骑士配置无效")
