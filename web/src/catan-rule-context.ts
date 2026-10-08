@@ -215,7 +215,9 @@ export function catanRuleContext(room: Room) {
     target: game
       ? catanSavedVictoryTarget(game)
       : transport
-        ? 13
+        ? citiesKnights
+          ? 15
+          : 13
         : caravans && citiesKnights
           ? 15
           : caravans || attack
@@ -227,6 +229,7 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (scenario === "transport") return citiesKnights ? 15 : 13;
   if (scenario === "caravans") return citiesKnights ? 15 : 12;
   const target = (
     {
@@ -270,7 +273,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
   if (g.explorer) return g.explorer.board.target;
-  if (g.transport) return 13;
+  if (g.transport) return g.citiesKnights ? 15 : 13;
   if (g.caravans) return g.citiesKnights ? 15 : 12;
   if (g.attack) return 12;
   const sea = g.seafarers;

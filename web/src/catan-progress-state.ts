@@ -176,7 +176,12 @@ export function progressPlayAction(
   if (s.skip) return s.card !== 0 ? { ...a, choice: "skip" } : null;
   if (s.card === 0)
     return s.dice.length === 2 &&
-      s.dice.every((n) => Number.isInteger(n) && n >= 1 && n <= 6)
+      s.dice.every((n) => Number.isInteger(n) && n >= 1 && n <= 6) &&
+      !(
+        g.transport?.knights &&
+        g.players.length <= 4 &&
+        [2, 12].includes(s.dice[0] + s.dice[1])
+      )
       ? { ...a, tokens: s.dice }
       : null;
   if (s.card === 1)

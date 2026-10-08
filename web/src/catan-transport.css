@@ -247,3 +247,13 @@
     display: none;
   }
 }
+.transport-panel > header > button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.transport-knight-chase {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid #b9924e;
+  border-radius: 10px;
+}

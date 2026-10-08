@@ -74,6 +74,9 @@ func (s *State) catanInvention(a Action) error {
 		if g.Fishing != nil && len(g.Fishing.Map.ExtraNumbers) > 0 {
 			g.Fishing.Map.NumberSwaps = append(g.Fishing.Map.NumberSwaps, CatanNumberSwap{left, right, before})
 		}
+		if g.transportKnights() {
+			g.Transport.Map.NumberSwaps = append(g.Transport.Map.NumberSwaps, CatanNumberSwap{left, right, before})
+		}
 		if g.riverKnights() {
 			g.Rivers.Map.NumberSwaps = append(g.Rivers.Map.NumberSwaps, CatanNumberSwap{left, right, before})
 		}

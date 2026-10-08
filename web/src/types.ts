@@ -451,6 +451,7 @@ export type CatanAttack = {
 };
 export type CatanTransport = {
   rules: string;
+  knights?: string;
   deckRecipe?: string;
   map: {
     sites: {
@@ -508,6 +509,8 @@ export type CatanTransport = {
       bank?: number;
       neutral?: boolean;
     }[];
+    knightChases?: { vertex: number; barbarians: number[] }[];
+    knightTargets?: number[];
     drive?: number[];
     relocate?: number[];
     canWheat?: boolean;

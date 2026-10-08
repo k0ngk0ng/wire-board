@@ -52,8 +52,14 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "transport" {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 			return errors.New("运输支持二至六人；按实际人数启用双人规则或五六人配对回合，不混用其他扩展配置")
+		}
+		if r.CatanCitiesKnights != nil {
+			setup, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+			if err != nil || setup != *r.CatanCitiesKnights {
+				return errors.New("运输城市骑士布局或规则版本无效")
+			}
 		}
 		return nil
 	}
@@ -206,7 +212,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || ((r.CatanScenario == "fishing" || r.CatanScenario == "caravans" || r.CatanScenario == "rivers") && scenario != r.CatanScenario) || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
+	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || ((r.CatanScenario == "fishing" || r.CatanScenario == "caravans" || r.CatanScenario == "rivers" || r.CatanScenario == "transport") && scenario != r.CatanScenario) || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if !next.publicCatanEventsAvailable() {

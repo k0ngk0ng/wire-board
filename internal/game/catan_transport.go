@@ -78,7 +78,7 @@ func (s *State) validateCatanTransport() error {
 	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
 	}
-	if n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || n <= 4 && t.DeckRecipe != "" {
+	if !g.transportKnights() && n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || (n <= 4 || g.transportKnights()) && t.DeckRecipe != "" {
 		return errors.New("运输发展牌配置版本无效")
 	}
 	if pair := g.Paired; pair != nil {
@@ -93,12 +93,21 @@ func (s *State) validateCatanTransport() error {
 			return errors.New("运输配对行动阶段无效")
 		}
 	}
+	if err := s.validateTransportKnights(); err != nil {
+		return err
+	}
 	if err := t.validate(g); err != nil {
 		return err
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "finished"}, s.Phase) || s.Phase == "catan_card_event" && (g.EventDeck == nil || g.CardEvent == nil) {
+
+	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "finished"}
+	if g.transportKnights() {
+		phases = append(phases, catanTransportCityPhases...)
+	}
+	if !slices.Contains(phases, s.Phase) || s.Phase == "catan_card_event" && (g.EventDeck == nil || g.CardEvent == nil) {
 		return errors.New("运输游戏阶段无效")
 	}
+
 	if strings.HasPrefix(s.Phase, "catan_two_") && g.Two == nil {
 		return errors.New("双人响应缺少双人控制器")
 	}
@@ -140,7 +149,11 @@ func (s *State) validateCatanTransport() error {
 			counts[card] += n
 		}
 	}
-	if !slices.Equal(counts, catanTransportDeckCounts(n)) {
+	want := catanTransportDeckCounts(n)
+	if g.transportKnights() {
+		want = make([]int, 5)
+	}
+	if !slices.Equal(counts, want) {
 		return errors.New("运输发展牌库存不守恒")
 	}
 	return s.validateCatanTwo()
@@ -178,7 +191,7 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 	if s.Phase == "catan_transport_move" {
 		return s.catanTransportMoveAction(player, a)
 	}
-	if strings.HasPrefix(a.Type, "catan_transport_") && a.Type != "catan_transport_upgrade" {
+	if strings.HasPrefix(a.Type, "catan_transport_") && a.Type != "catan_transport_upgrade" && a.Type != "catan_transport_knight_chase" {
 		return errors.New("当前没有对应的运输选择")
 	}
 	var err error
@@ -191,7 +204,9 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 			err = t.placeWagon(g, player, a.Vertex)
 		}
 	case player == s.Turn && a.Type == "catan_roll":
-		if g.EventDeck != nil {
+		if g.transportKnights() {
+			err = s.applyCatanStep(player, a)
+		} else if g.EventDeck != nil {
 			err = s.catanDrawEvent()
 		} else {
 			err = s.catanTransportRoll(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} })
@@ -204,12 +219,10 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 		if s.Finished {
 			return nil
 		}
-		err = t.beginTravel(g, player)
-		if err == nil {
-			t.Moves = 1
-			g.Trade = nil
-			s.Phase = "catan_transport_move"
-			s.catanLog(player, "结束建设与交易，开始移动马车（%d点）", t.Travel.Points)
+		if g.transportKnights() {
+			err = s.applyCatanStep(player, a)
+		} else {
+			err = s.catanTransportBeginTravel(player)
 		}
 	case a.Type == "catan_transport_upgrade" || a.Type == "catan_coin_buy" || a.Type == "catan_coin_sell":
 		if player != s.Turn || s.Phase != "catan_turn" {
@@ -228,7 +241,7 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 			}
 		case "catan_coin_sell":
 			rate := 0
-			if a.Color >= 0 && a.Color < 5 {
+			if a.Color >= 0 && a.Color < len(g.Bank) {
 				rate = g.rates(player)[a.Color]
 			}
 			err = t.sellResource(g, player, a.Color)
@@ -422,6 +435,10 @@ func (s *State) catanTransportView(v map[string]any, player int) {
 	t := s.Catan.Transport
 	public := t.publicView()
 	v["transport"] = map[string]any{"rules": catanTransportRules, "map": t.Map, "state": public, "canAct": player == s.Turn && !s.Finished, "canDeliver": t.canDeliver(), "swift": t.Swift, "moves": t.Moves, "barbarianPending": t.BarbarianPending, "barbarianSequence": t.BarbarianSequence, "bought": t.Bought, "choices": s.catanTransportChoices(player)}
+	if s.Catan.transportKnights() {
+		v["transport"].(map[string]any)["knights"] = CatanTransportKnightsRules
+		return
+	}
 	v["developmentNames"] = []string{"骑士", "道路建设", "快速旅程", "", "胜利点"}
 	if t.DeckRecipe != "" {
 		v["transport"].(map[string]any)["deckRecipe"] = t.DeckRecipe

@@ -17,10 +17,11 @@ type catanTransportSite struct {
 	Blocked []int  `json:"blocked"`
 }
 type catanTransportMap struct {
-	Rules      string               `json:"rules"`
-	Sites      []catanTransportSite `json:"sites"`
-	Barbarians [3]int               `json:"barbarians"`
-	Gold       int                  `json:"gold"`
+	NumberSwaps []CatanNumberSwap    `json:"numberSwaps,omitempty"`
+	Rules       string               `json:"rules"`
+	Sites       []catanTransportSite `json:"sites"`
+	Barbarians  [3]int               `json:"barbarians"`
+	Gold        int                  `json:"gold"`
 }
 
 type catanTransportSiteSpec struct {
@@ -224,10 +225,25 @@ func (m catanTransportMap) validate(g *Catan) error {
 			}
 		}
 	}
+	original := map[CatanNumberToken]int{}
+	for _, tile := range g.Tiles {
+		original[CatanNumberToken{tile.ID, 0}] = tile.Number
+	}
+	if len(m.NumberSwaps) > 0 && !g.transportKnights() {
+		return errors.New("普通运输不能交换数字")
+	}
+	original, err = rewindCatanInvention(g, original, m.NumberSwaps)
+	if err != nil {
+		return err
+	}
+	if g.transportKnights() {
+		r.resources[0]--
+		r.resources[3]++
+	}
 	counts := [5]int{}
 	for id, tile := range g.Tiles {
 		want := base.Tiles[id]
-		if tile.ID != id || !near(tile.X, want.X) || !near(tile.Y, want.Y) || !slices.Equal(tile.Vertices, want.Vertices) || tile.Number != numbers[id] {
+		if tile.ID != id || !near(tile.X, want.X) || !near(tile.Y, want.Y) || !slices.Equal(tile.Vertices, want.Vertices) || original[CatanNumberToken{id, 0}] != numbers[id] {
 			return errors.New("运输地块坐标、拓扑或生产数字不符")
 		}
 		switch {

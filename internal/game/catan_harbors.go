@@ -138,7 +138,7 @@ func (g *Catan) victoryTarget() int {
 	if g.CitiesKnights != nil && g.wonders() == nil {
 		goal = 13
 	}
-	if g.caravanKnights() {
+	if g.caravanKnights() || g.transportKnights() {
 		goal = 15
 	}
 	if g.Seafarers != nil && g.Seafarers.VictoryPoints > 0 {

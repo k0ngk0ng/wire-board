@@ -91,7 +91,7 @@ func TestCatanTransportPublicRejectsUnsupportedRecipes(t *testing.T) {
 		{"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
 		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
-		{"kind": "catan", "capacity": 4, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
+		{"kind": "catan", "capacity": 4, "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "unknown"}},
 		{"kind": "splendor", "capacity": 2},
 	} {
 		body["name"], body["catanScenario"] = "不支持组合", "transport"

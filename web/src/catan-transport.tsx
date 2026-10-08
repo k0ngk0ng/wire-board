@@ -70,7 +70,7 @@ export function CatanTransportMap({
   if (!t) return null;
   const scale = (g.hexSize || 62) / 62,
     can = transportCanAct(room) && !busy,
-    edges = transportEdges(room);
+    edges = transportEdges(room, selected);
   const button = (label: string, fn: () => void) => ({
     role: "button",
     tabIndex: 0,
@@ -294,7 +294,9 @@ export function CatanTransportPanel({
             ? can
               ? "你的运输行动"
               : `${room.seats[active]?.name} 正在${t.barbarianPending ? "移动蛮族" : "运输"}`
-            : "运输任务 · 13分获胜"}
+            : t.knights
+              ? "运输＋城市与骑士 · 15分获胜"
+              : "运输任务 · 13分获胜"}
         </strong>
         <button
           aria-expanded={!collapsed}
@@ -479,7 +481,7 @@ export function CatanTransportPanel({
               )}
             </>
           )}
-          {can && waiting && !arrival && (
+          {can && (waiting || selected.knight !== undefined) && !arrival && (
             <div className="transport-confirm">
               <p>
                 {selected.edge === null
@@ -493,12 +495,53 @@ export function CatanTransportPanel({
               >
                 {t.barbarianPending || (q?.pending ?? -1) >= 0
                   ? "确认放置蛮族"
-                  : "确认移动马车"}
+                  : selected.knight !== undefined
+                    ? "确认骑士驱赶"
+                    : "确认移动马车"}
               </button>
             </div>
           )}
           {can && phase === "catan_turn" && w && (
             <>
+              {!!choices.knightChases?.length && (
+                <fieldset className="transport-knight-chase">
+                  <legend>骑士驱赶道路蛮族</legend>
+                  <p>
+                    选择骑士与相邻蛮族，再点击地图上的落点道路。确认后骑士转为未激活；若落在对手道路，随机偷取一张资源或商品。
+                  </p>
+                  <div className="transport-buttons">
+                    {choices.knightChases.flatMap((choice) =>
+                      choice.barbarians.map((piece) => (
+                        <button
+                          key={`${choice.vertex}-${piece}`}
+                          disabled={busy}
+                          aria-pressed={
+                            selected.knight === choice.vertex &&
+                            selected.piece === piece
+                          }
+                          onClick={() =>
+                            onSelect({
+                              knight: choice.vertex,
+                              piece,
+                              edge: null,
+                            })
+                          }
+                        >
+                          骑士 #{choice.vertex + 1} · 蛮族 {piece + 1}
+                        </button>
+                      )),
+                    )}
+                    {selected.knight !== undefined && (
+                      <button
+                        disabled={busy}
+                        onClick={() => onSelect({ edge: null, piece: null })}
+                      >
+                        取消驱赶
+                      </button>
+                    )}
+                  </div>
+                </fieldset>
+              )}
               {choices.upgradeCost ? (
                 <>
                   <p>
@@ -543,17 +586,19 @@ export function CatanTransportPanel({
               <details>
                 <summary>金币与银行交易 · 本回合已买 {t.bought}/2</summary>
                 <div className="transport-coin-grid">
-                  {g.bank.slice(0, 5).map((_, c) => (
+                  {g.bank.map((_, c) => (
                     <div key={c}>
                       <CatanResource color={c} assets={assets} small />
-                      <button
-                        disabled={busy || !choices.buy?.includes(c)}
-                        onClick={() =>
-                          void run({ type: "catan_coin_buy", color: c })
-                        }
-                      >
-                        2金币买
-                      </button>
+                      {c < 5 && (
+                        <button
+                          disabled={busy || !choices.buy?.includes(c)}
+                          onClick={() =>
+                            void run({ type: "catan_coin_buy", color: c })
+                          }
+                        >
+                          2金币买
+                        </button>
+                      )}
                       <button
                         disabled={busy || !choices.sell?.includes(c)}
                         onClick={() =>
