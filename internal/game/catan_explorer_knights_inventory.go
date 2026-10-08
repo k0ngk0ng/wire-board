@@ -49,6 +49,14 @@ func (s *State) validateCityProgressInventory() error {
 			return errors.New("非行动玩家进步牌超限必须立即回应")
 		}
 	}
+	if g.twoSeafarersKnights() && g.tribe() != nil {
+		if err := g.validateTribeProgress(); err != nil {
+			return err
+		}
+		for _, reward := range g.tribe().Development {
+			counts[reward.Card]++
+		}
+	}
 	for id, rule := range catanProgressRules {
 		if counts[id] != rule.Count {
 			return errors.New("组合进步牌总库存不守恒")

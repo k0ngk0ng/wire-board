@@ -523,6 +523,7 @@ export type CatanState = {
   attack?: CatanAttack;
   two?: {
     seafarers?: string;
+    seaKnights?: string;
     seaStarts?: number[];
     afterRoute?: "road" | "ship";
     buildingShip?: boolean;

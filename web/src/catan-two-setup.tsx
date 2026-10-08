@@ -6,6 +6,7 @@ import {
   twoCatanSeaScenarios,
   supportsTwoCatanSeafarers,
   catanTwoSeafarersNote,
+  catanTwoSeafarersKnightsNote,
   catanTwoFishingSeafarersNote,
 } from "./catan-two-seafarers";
 const scenarios = [
@@ -79,6 +80,7 @@ export function CatanTwoScenarioPicker({
   variantsEnabled = false,
   helpersEnabled = false,
   fishingEnabled = false,
+  knightsEnabled = false,
   target,
 }: {
   value: string;
@@ -87,6 +89,7 @@ export function CatanTwoScenarioPicker({
   variantsEnabled?: boolean;
   helpersEnabled?: boolean;
   fishingEnabled?: boolean;
+  knightsEnabled?: boolean;
   target?: number;
 }) {
   return (
@@ -122,9 +125,11 @@ export function CatanTwoScenarioPicker({
       </label>
       {supportsTwoCatanSeafarers(value) && (
         <p className="muted small">
-          {fishingEnabled
-            ? catanTwoFishingSeafarersNote
-            : catanTwoSeafarersNote}
+          {knightsEnabled
+            ? catanTwoSeafarersKnightsNote
+            : fishingEnabled
+              ? catanTwoFishingSeafarersNote
+              : catanTwoSeafarersNote}
         </p>
       )}
       {value === "wonders" && (
@@ -172,6 +177,7 @@ export function CatanTwoScenarioPicker({
         </p>
       )}
       {!fishingEnabled &&
+        !knightsEnabled &&
         ![
           "cities-knights",
           "fishing",

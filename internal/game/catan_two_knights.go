@@ -153,14 +153,17 @@ func (s *State) catanTwoKnightAfterAction(before *State, a Action) bool {
 
 func (s *State) validateTwoKnights() error {
 	g, q := s.Catan, s.Catan.Two
+	if q.SeaKnights != "" && !g.twoSeafarersKnights() {
+		return errors.New("双人海图骑士标记无效")
+	}
 	if q.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.twoKnights() || g.Seafarers != nil || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil || g.Caravans != nil || g.Transport != nil || g.Attack != nil {
+	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil || g.Caravans != nil || g.Transport != nil || g.Attack != nil {
 		return errors.New("双人城市骑士规则或组合无效")
 	}
 	k := g.CitiesKnights
-	if k.Rules != CatanCitiesKnightsRules || len(k.Players) != 2 || s.Turn < 0 || s.Turn >= 2 || len(g.Vertices) != 54 || len(g.Bank) != 8 || k.ActionSerial == 0 || k.Invasions < 0 || k.BarbarianPosition < 0 || k.BarbarianPosition > 7 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 || q.TokensIssued != 0 {
+	if k.Rules != CatanCitiesKnightsRules || len(k.Players) != 2 || s.Turn < 0 || s.Turn >= 2 || !g.twoSeafarersKnights() && len(g.Vertices) != 54 || len(g.Bank) != 8 || k.ActionSerial == 0 || k.Invasions < 0 || k.BarbarianPosition < 0 || k.BarbarianPosition > 7 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 || q.TokensIssued != 0 {
 		return errors.New("双人城市骑士组件状态无效")
 	}
 	counts := map[int][3]int{}

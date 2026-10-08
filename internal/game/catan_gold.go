@@ -74,7 +74,15 @@ func (s *State) catanAfterProduction(received []int) {
 	g := s.Catan
 	s.Phase = "catan_turn"
 	if g.CitiesKnights != nil {
+		// Cloth is awarded during production, including rolls without an
+		// aqueduct response. Publish its points before returning to the turn.
+		if g.cloth() != nil {
+			s.catanScores()
+		}
 		s.catanStartAqueduct(received)
+		if g.cloth() != nil && g.CitiesKnights.Pending == nil {
+			s.catanVictory()
+		}
 		return
 	}
 	if g.cloth() != nil {

@@ -1,5 +1,6 @@
 import {
   catanTwoSeafarersNote,
+  catanTwoSeafarersKnightsNote,
   catanTwoFishingSeafarersNote,
 } from "./catan-two-seafarers";
 import { catanExplorerTwoKnightsNote } from "./catan-explorer-two-knights";
@@ -564,7 +565,11 @@ export function CatanRules({ room }: { room: Room }) {
               <p>
                 本站海图组合：保留所选捕鱼地图，胜利条件沿用海图与城市骑士的组合规则；2
                 鱼可驱离已入场且允许移动的海盗，5
-                鱼可建一艘合法船。船本身不产鱼，海盗会阻挡所在渔场；先处理换鱼、金矿，再处理引水渠。布匹仍由第三座起始村庄领鱼，奇迹仍保留四级直接获胜条件。
+                鱼可建一艘合法船。船本身不产鱼，海盗会阻挡所在渔场；先处理换鱼、金矿，再处理引水渠。
+                {info.two
+                  ? "起始建筑不额外领鱼。"
+                  : "布匹仍由第三座起始村庄领鱼。"}
+                奇迹仍保留四级直接获胜条件。
               </p>
             )}
             <ol>
@@ -595,9 +600,11 @@ export function CatanRules({ room }: { room: Room }) {
         )}
         {info.twoSeafarers && (
           <p>
-            {info.twoFishingSeafarers
-              ? catanTwoFishingSeafarersNote
-              : catanTwoSeafarersNote}
+            {info.twoSeafarersKnights
+              ? catanTwoSeafarersKnightsNote
+              : info.twoFishingSeafarers
+                ? catanTwoFishingSeafarersNote
+                : catanTwoSeafarersNote}
           </p>
         )}
         {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
@@ -656,9 +663,11 @@ export function CatanRules({ room }: { room: Room }) {
       )}
       {info.twoSeafarers && (
         <p>
-          {info.twoFishingSeafarers
-            ? catanTwoFishingSeafarersNote
-            : catanTwoSeafarersNote}
+          {info.twoSeafarersKnights
+            ? catanTwoSeafarersKnightsNote
+            : info.twoFishingSeafarers
+              ? catanTwoFishingSeafarersNote
+              : catanTwoSeafarersNote}
         </p>
       )}
       {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}

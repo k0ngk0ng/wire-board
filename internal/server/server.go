@@ -981,7 +981,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanEvents(*req.Enabled)
 	case "catan_cities_knights":
-		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario)) {
+		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers()) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
 			break
 		}
@@ -1251,7 +1251,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					err = next.validateCatanTwoSetup()
 					if err == nil {
 						if next.twoCatanSeafarers() {
-							if next.CatanFishing {
+							if next.CatanCitiesKnights != nil {
+								next.Game, err = game.NewCatanTwoSeafarersCitiesKnights(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap, next.CatanFishing)
+							} else if next.CatanFishing {
 								next.Game, err = game.NewCatanTwoFishingSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 							} else {
 								next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
