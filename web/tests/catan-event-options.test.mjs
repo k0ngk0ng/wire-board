@@ -85,6 +85,7 @@ test("events are optional and support only accepted public recipes", () => {
       [
         "caravans",
         "rivers",
+        "barbarian-attack",
         "shores",
         "islands",
         "fog",

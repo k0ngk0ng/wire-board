@@ -1003,7 +1003,7 @@ function CatanBaseBoard({
                                 : t.resource < 6
                                   ? `${assets}/catan/terrain-${[...terrainResourceKeys, "desert"][t.resource]}-v1.webp`
                                   : t.resource === 9
-                                    ? `${assets}/catan/fishing/lake${g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}-v1.webp`
+                                    ? `${assets}/catan/fishing/lake${g.fishing?.map.lakes?.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}-v1.webp`
                                     : `${assets}/catan/seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}-v1.webp`
                         }
                         x={t.x - (hexSize * Math.sqrt(3)) / 2}

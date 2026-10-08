@@ -35,6 +35,7 @@ export function fishActionsFor(g: CatanState) {
       ["catan_fish_boot", "传递旧靴子"],
     ] as const;
   return fishActions.filter(([kind]) => {
+    if (kind === "catan_fish_robber" && g.attack) return false;
     if (kind === "catan_fish_bridge") return !!g.fishing?.rivers;
     if (kind === "catan_fish_ship") return !!g.seafarers;
     if (kind === "catan_fish_pirate")

@@ -10,6 +10,7 @@ type catanAttackCityMoveChoice struct {
 	Required bool  `json:"required"`
 	Move     []int `json:"move"`
 	Displace []int `json:"displace"`
+	Fish     []int `json:"fish,omitempty"`
 }
 
 func (s *State) catanAttackCityMoveChoices(player int) []catanAttackCityMoveChoice {
@@ -21,6 +22,10 @@ func (s *State) catanAttackCityMoveChoices(player int) []catanAttackCityMoveChoi
 	c := g.Attack.City
 	q := c.Plan
 	if q == nil || q.Player != player || q.Pending != nil || s.validateAttackCityPlan() != nil {
+		return out
+	}
+	preview, err := g.attackCityFishPreview()
+	if err != nil {
 		return out
 	}
 	used := map[int]bool{}
@@ -43,7 +48,10 @@ func (s *State) catanAttackCityMoveChoices(player int) []catanAttackCityMoveChoi
 		if !displaced {
 			choice.Displace = c.displacementTargets(g, k.Edge)
 		}
-		choice.Required = g.Attack.castleEdge(g, k.Edge) && (len(choice.Move) > 0 || len(choice.Displace) > 0)
+		if preview.fishingAttack() && preview.fishPayment(player, preview.fishActionCost(player, "catan_fish_knight")) != nil {
+			choice.Fish = c.fishDestinations(g, player, k.Edge)
+		}
+		choice.Required = g.Attack.castleEdge(g, k.Edge) && (len(choice.Move) > 0 || len(choice.Displace) > 0 || len(choice.Fish) > 0)
 		out = append(out, choice)
 	}
 	return out
@@ -53,6 +61,9 @@ func (s *State) catanAttackCityPlanView(player int) map[string]any {
 	c := g.Attack.City
 	q := c.Plan
 	result := map[string]any{"rules": c.Rules, "knights": slices.Clone(c.Knights), "issued": c.Issued, "end": clone(c.End)}
+	if end, ok := result["end"].(*catanAttackCityEnd); ok && end != nil {
+		end.Orders = publicAttackCityOrders(end.Orders)
+	}
 	if player >= 0 && player < len(g.Players) && player == s.Turn && !s.Finished && !g.Players[player].Eliminated && s.Phase == "catan_turn" && q == nil && c.Treason == nil && g.CardEvent == nil && g.CitiesKnights.Pending == nil && g.CitiesKnights.Event == nil {
 		recruit, activate, promote := []int{}, []int{}, []int{}
 		if catanHas(g.Players[player].Resources, []int{0, 0, 1, 0, 1}) {
@@ -101,7 +112,7 @@ func (s *State) catanAttackCityPlanView(player int) map[string]any {
 	if q.Pending != nil {
 		actor = q.Pending.Player
 	}
-	result["plan"] = map[string]any{"id": q.ID, "player": q.Player, "actor": actor, "orders": slices.Clone(q.Orders), "awaitingRetreat": q.Pending != nil}
+	result["plan"] = map[string]any{"id": q.ID, "player": q.Player, "actor": actor, "orders": publicAttackCityOrders(q.Orders), "awaitingRetreat": q.Pending != nil}
 	if player != actor {
 		return result
 	}
@@ -113,6 +124,13 @@ func (s *State) catanAttackCityPlanView(player int) map[string]any {
 		ready := true
 		for _, m := range moves {
 			ready = ready && !m.Required
+		}
+		if g.fishingAttack() {
+			if preview, err := g.attackCityFishPreview(); err == nil {
+				v, _ := preview.Fishing.Tokens.view(player)
+				choices["fishTokens"] = v.Players[player].Tokens
+				choices["fishCost"] = g.fishActionCost(player, "catan_fish_knight")
+			}
 		}
 		choices["moves"], choices["canConfirm"], choices["canUndo"] = moves, ready, len(q.Orders) > q.Locked
 	}
@@ -169,8 +187,22 @@ func (s *State) catanAttackCityPlanBot(player int) (Action, error) {
 				best = value
 			}
 		}
+		mode := "move"
+		for _, edge := range choice.Fish {
+			value := g.attackCityEdgeValue(player, edge) - 8
+			if target < 0 && choice.Required || value > best {
+				target, best, mode = edge, value, "fish"
+			}
+		}
 		if target >= 0 {
-			a.Choice = "move"
+			a.Choice = mode
+			if mode == "fish" {
+				preview, err := g.attackCityFishPreview()
+				if err != nil {
+					return Action{}, err
+				}
+				a.Tokens = preview.fishPayment(player, g.fishActionCost(player, "catan_fish_knight"))
+			}
 			a.Edge = choice.From
 			a.Target = target
 			return a, nil

@@ -1256,7 +1256,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 								next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 							}
 						} else if next.CatanTwoScenario == "barbarian-attack" {
-							if next.CatanCitiesKnights != nil {
+							if next.CatanFishing {
+								next.Game, err = game.NewCatanFishingAttack(len(next.Seats), next.CatanCitiesKnights != nil)
+							} else if next.CatanCitiesKnights != nil {
 								next.Game, err = game.NewCatanTwoAttackCitiesKnights(len(next.Seats), next.CatanOptions)
 							} else {
 								next.Game, err = game.NewCatanTwoAttack(len(next.Seats), next.CatanOptions)
@@ -1300,7 +1302,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				} else if next.CatanScenario == "land-ho" {
 					next.Game, err = game.NewCatanExplorerLandHo(len(next.Seats))
 				} else if next.CatanScenario == "barbarian-attack" {
-					if next.CatanCitiesKnights != nil {
+					if next.CatanFishing {
+						next.Game, err = game.NewCatanFishingAttack(len(next.Seats), next.CatanCitiesKnights != nil)
+					} else if next.CatanCitiesKnights != nil {
 						next.Game, err = game.NewCatanAttackCitiesKnights(len(next.Seats))
 					} else {
 						next.Game, err = game.NewCatanAttack(len(next.Seats))

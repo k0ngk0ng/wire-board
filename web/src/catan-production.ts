@@ -5,7 +5,7 @@ import type { CatanState } from "./types";
 export function catanProductionNumbers(g: CatanState, tile: number): number[] {
   const t = g.tiles[tile];
   if (!t) return [];
-  const lake = g.fishing?.map.lakes.find((l) => l.tile === tile);
+  const lake = g.fishing?.map.lakes?.find((l) => l.tile === tile);
   if (lake) return [...lake.numbers];
   return [
     ...new Set([

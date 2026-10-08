@@ -88,7 +88,7 @@ export function CatanFishLakeNumbers({
   assets: string;
   total: number;
 }) {
-  const lake = g.fishing?.map.lakes.find((l) => l.tile === tile),
+  const lake = g.fishing?.map.lakes?.find((l) => l.tile === tile),
     t = g.tiles[tile];
   if (!lake || !t) return null;
   const scale = (g.hexSize || 62) / 62;
@@ -430,7 +430,7 @@ export function CatanFishingPanel({
               </div>
               {!hand.length && (
                 <small>
-                  {f.rivers
+                  {f.rivers || f.attack
                     ? "在海岸渔场旁建设，点数掷中时领取筹码。"
                     : "在湖泊或渔场旁建设，点数掷中时领取筹码。"}
                 </small>

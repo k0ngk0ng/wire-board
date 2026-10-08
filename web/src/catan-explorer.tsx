@@ -483,7 +483,7 @@ export function CatanExplorerBoard({
                   />
                   {assets && t.resource !== 8 && (
                     <image
-                      href={`${assets}/catan/${t.resource === 9 ? `fishing/lake${g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}` : x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : farms.has(t.id) ? `explorer/farm-${farms.get(t.id)!.ability}${farms.get(t.id)!.ability === "pirate" ? `-${farms.get(t.id)!.pirateDie}` : ""}` : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
+                      href={`${assets}/catan/${t.resource === 9 ? `fishing/lake${g.fishing?.map.lakes?.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}` : x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : farms.has(t.id) ? `explorer/farm-${farms.get(t.id)!.ability}${farms.get(t.id)!.ability === "pirate" ? `-${farms.get(t.id)!.pirateDie}` : ""}` : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
                       x={t.x - (size * Math.sqrt(3)) / 2}
                       y={t.y - size}
                       width={size * Math.sqrt(3)}

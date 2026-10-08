@@ -260,6 +260,15 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	if g.attackKnights() {
 		public["city"] = s.catanAttackCityPlanView(player)
 	}
+	if end, ok := public["end"].(map[string]any); ok {
+		if moves, ok := end["moves"].([]any); ok {
+			for _, raw := range moves {
+				if m, ok := raw.(map[string]any); ok {
+					delete(m, "tokens")
+				}
+			}
+		}
+	}
 	delete(public, "deck")
 	public["devRemaining"] = len(a.Deck)
 	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && a.cardSupplyReady()

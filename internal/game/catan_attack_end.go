@@ -66,7 +66,7 @@ func (s *State) catanAttackEndChoice(player int, action Action) error {
 	}
 	switch action.Choice {
 	case "normal", "wheat", "fish":
-		q.Moves = append(q.Moves, catanAttackMove{From: action.Edge, To: action.Target, Wheat: action.Choice == "wheat", Fish: action.Choice == "fish"})
+		q.Moves = append(q.Moves, catanAttackMove{From: action.Edge, To: action.Target, Wheat: action.Choice == "wheat", Fish: action.Choice == "fish", Tokens: slices.Clone(action.Tokens)})
 		_, err := s.catanAttackPlanPreview()
 		return err
 	case "undo":
@@ -175,6 +175,9 @@ func (s *State) catanAttackPlanView(public map[string]any, player int) {
 	public["canConfirm"] = ready
 	if preview.Catan.fishingAttack() {
 		public["previewFish"] = preview.Catan.Fishing.Tokens.Hands[player]
+		v, _ := preview.Catan.Fishing.Tokens.view(player)
+		public["fishTokens"] = v.Players[player].Tokens
+		public["fishCost"] = preview.Catan.fishActionCost(player, "catan_fish_knight")
 	}
 }
 

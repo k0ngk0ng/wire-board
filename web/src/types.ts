@@ -390,7 +390,12 @@ export type CatanRevealedEvent = {
 export type CatanWagon = { edge: number; from: number };
 export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
 export type CatanAttackKnight = { player: number; edge: number };
-export type CatanAttackMove = { from: number; to: number; wheat?: boolean };
+export type CatanAttackMove = {
+  from: number;
+  to: number;
+  wheat?: boolean;
+  fish?: boolean;
+};
 export type CatanAttackCityKnight = {
   owner: number;
   edge: number;
@@ -419,7 +424,10 @@ export type CatanAttackCity = {
     retreat?: number[];
     canConfirm?: boolean;
     canUndo?: boolean;
+    fishTokens?: { id: number; fish: number }[];
+    fishCost?: number;
     moves?: {
+      fish?: number[];
       from: number;
       required: boolean;
       move: number[];
@@ -471,9 +479,12 @@ export type CatanAttack = {
     required: boolean;
     normal: number[];
     wheat: number[];
+    fish?: number[];
   }[];
   previewKnights?: CatanAttackKnight[];
   previewWheat?: number;
+  fishTokens?: { id: number; fish: number }[];
+  fishCost?: number;
   canConfirm?: boolean;
   targets?: number[];
   edges?: number[];
@@ -665,6 +676,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    attack?: string;
     caravans?: string;
     rivers?: string;
     twoSea?: string;

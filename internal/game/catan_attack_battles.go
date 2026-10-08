@@ -8,10 +8,11 @@ import (
 // Orders refer to the knight's edge at the start of the end phase. This keeps
 // identity stable when another knight subsequently occupies a vacated edge.
 type catanAttackMove struct {
-	Fish  bool `json:"fish,omitempty"`
-	From  int  `json:"from"`
-	To    int  `json:"to"`
-	Wheat bool `json:"wheat,omitempty"`
+	Fish   bool  `json:"fish,omitempty"`
+	Tokens []int `json:"tokens,omitempty"`
+	From   int   `json:"from"`
+	To     int   `json:"to"`
+	Wheat  bool  `json:"wheat,omitempty"`
 }
 type catanAttackContestRoll struct {
 	Players []int `json:"players"`
@@ -283,7 +284,7 @@ func (s *State) validateCatanAttackEnd() error {
 	}
 	used := map[int]bool{}
 	for _, m := range q.Moves {
-		if m.Fish && (!g.fishingAttack() || m.Wheat) {
+		if len(m.Tokens) > 0 && !m.Fish || m.Fish && (!g.fishingAttack() || m.Wheat) {
 			return errors.New("鱼骑士移动记录无效")
 		}
 		if m.From < 0 || m.From >= len(g.Edges) || m.To < 0 || m.To >= len(g.Edges) || m.From == m.To || used[m.From] || a.castleEdge(g, m.To) {
@@ -365,6 +366,9 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 		if !ok || moved[i] || !g.attackCanMoveKnight(a.Knights[i].Player, s.Turn) || move.From == move.To {
 			return errors.New("每名己方骑士只能移动一次，请使用其阶段开始时的位置")
 		}
+		if len(move.Tokens) > 0 && !move.Fish {
+			return errors.New("普通骑士移动不能附加鱼支付")
+		}
 		neutral := g.twoAttack() && a.Knights[i].Player == catanAttackNeutral
 		if neutralMoved && !neutral {
 			return errors.New("必须先移动己方骑士，再移动中立骑士")
@@ -384,7 +388,10 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 			}
 			steps = 5
 			cost := g.fishActionCost(s.Turn, "catan_fish_knight")
-			payment := g.fishPayment(s.Turn, cost)
+			payment := move.Tokens
+			if len(payment) == 0 {
+				payment = g.fishPayment(s.Turn, cost)
+			}
 			if err := g.Fishing.Tokens.spend(s.Turn, payment, cost); err != nil {
 				return err
 			}
