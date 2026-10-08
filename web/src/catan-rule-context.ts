@@ -118,7 +118,8 @@ export function catanRuleContext(room: Room) {
       : !!room.catanFishingLakes,
     fishing: game
       ? !!game.fishing
-      : room.catanScenario === "fishing" || !!room.catanFishing,
+      : (room.catanTwoScenario || room.catanScenario) === "fishing" ||
+        !!room.catanFishing,
     transport,
     attack,
     caravans,

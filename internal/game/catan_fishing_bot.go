@@ -47,7 +47,7 @@ func (s *State) catanFishBotChoices(player int, builds []botChoice, road int) []
 		choices = append(choices, botChoice{Action{Type: "catan_fish_boot", Target: target}, 1500 + points})
 	}
 	add := func(a Action, score int) {
-		if ids := g.fishPayment(player, catanFishCosts[a.Type]); ids != nil {
+		if ids := g.fishPayment(player, g.fishActionCost(player, a.Type)); ids != nil {
 			a.Tokens = ids
 			choices = append(choices, botChoice{a, score})
 		}

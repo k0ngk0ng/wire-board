@@ -208,9 +208,12 @@ export function CatanTwoPanel({
   const pending = playing && (q.pending || q.trade);
   return (
     <>
-      <section className="catan-two-stock" aria-label="双人卡坦贸易筹码">
+      <section
+        className="catan-two-stock"
+        aria-label={g.fishing ? "双人卡坦生产与中立势力" : "双人卡坦贸易筹码"}
+      >
         <header>
-          {assets && (
+          {assets && !g.fishing && (
             <img
               src={`${assets}/catan/two/trade-token-v1.webp`}
               alt="贸易筹码"
@@ -219,20 +222,28 @@ export function CatanTwoPanel({
           <div>
             <strong>
               双人卡坦
-              {g.transport
-                ? "＋运输"
-                : g.rivers
-                  ? "＋河流"
-                  : g.caravans
-                    ? "＋商队"
-                    : ""}
+              {g.fishing
+                ? "＋渔夫"
+                : g.transport
+                  ? "＋运输"
+                  : g.rivers
+                    ? "＋河流"
+                    : g.caravans
+                      ? "＋商队"
+                      : ""}
             </strong>
             <small>
-              {room.you >= 0 && !room.spectating
-                ? `你的筹码 ${q.tokens[room.you]} · `
-                : ""}
-              筹码供应 {q.bank}
-              {q.tokenRule !== "ledger" && " / 20"}
+              {g.fishing ? (
+                "不使用贸易筹码 · 鱼行动见捕鱼面板"
+              ) : (
+                <>
+                  {room.you >= 0 && !room.spectating
+                    ? `你的筹码 ${q.tokens[room.you]} · `
+                    : ""}
+                  筹码供应 {q.bank}
+                  {q.tokenRule !== "ledger" && " / 20"}
+                </>
+              )}
             </small>
           </div>
           {g.transport && (
@@ -248,15 +259,17 @@ export function CatanTwoPanel({
         </header>
         {!stockCollapsed && (
           <>
-            <div className="two-stocks">
-              {q.tokens.map((n, i) => (
-                <span key={i}>
-                  <i style={{ background: catanSeatColor(g, i) }} />
-                  {room.seats[i]?.name}
-                  <b>{n}</b>
-                </span>
-              ))}
-            </div>
+            {!g.fishing && (
+              <div className="two-stocks">
+                {q.tokens.map((n, i) => (
+                  <span key={i}>
+                    <i style={{ background: catanSeatColor(g, i) }} />
+                    {room.seats[i]?.name}
+                    <b>{n}</b>
+                  </span>
+                ))}
+              </div>
+            )}
             <div className="two-production" aria-label="本回合两次生产">
               {[0, 1].map((i) => (
                 <span key={i} className={q.rolls[i] ? "done" : ""}>
@@ -328,14 +341,20 @@ export function CatanTwoPanel({
                 {!g.transport && "中立势力可以取得最长路线。"}
               </p>
               <p>
-                {g.transport
-                  ? "货物地块旁建村得 1 枚筹码，沿海另得 1 枚，可叠加；起始城市不领村庄筹码。"
-                  : g.caravans
-                    ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
-                    : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
-                每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
-                {q.tokenRule === "ledger" &&
-                  "本站补充规则：筹码用完继续记账发放，归还供应的筹码优先复用；与金币分别计算。"}
+                {g.fishing ? (
+                  "每人起始五枚鱼筹码：1、1、2、2、3；建村不另领鱼。公开分数落后者每次鱼行动少付一鱼，隐藏胜利点不参与比较。用鱼修路也要为中立势力修路。"
+                ) : (
+                  <>
+                    {g.transport
+                      ? "货物地块旁建村得 1 枚筹码，沿海另得 1 枚，可叠加；起始城市不领村庄筹码。"
+                      : g.caravans
+                        ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
+                        : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
+                    每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
+                    {q.tokenRule === "ledger" &&
+                      "本站补充规则：筹码用完继续记账发放，归还供应的筹码优先复用；与金币分别计算。"}
+                  </>
+                )}
               </p>
               {g.transport && (
                 <p>

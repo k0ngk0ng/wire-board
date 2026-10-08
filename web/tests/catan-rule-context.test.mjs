@@ -836,3 +836,21 @@ test("fishing sea knights rule is separate from standalone and saved state wins"
   room.catanScenario = "land-ho";
   assert.equal(catanRuleContext(room).fishingSeaKnights, "");
 });
+
+test("two-player fishing uses the selected recipe and running games ignore stale drafts", () => {
+  const room = {
+    kind: "catan",
+    capacity: 2,
+    catanTwoRules: "catan-for-two-2025",
+    catanTwoScenario: "fishing",
+  };
+  assert.equal(catanRuleContext(room).fishing, true);
+  assert.equal(catanRuleContext(room).two, true);
+  assert.equal(catanRuleContext(room).target, 10);
+  room.game = { catan: { players: [{}, {}], two: {} } };
+  assert.equal(catanRuleContext(room).fishing, false);
+  room.game.catan.fishing = { two: "catan-for-two-fishing-2025" };
+  room.catanTwoScenario = "rivers";
+  assert.equal(catanRuleContext(room).fishing, true);
+  assert.equal(catanRuleContext(room).rivers, false);
+});

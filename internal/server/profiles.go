@@ -149,6 +149,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["fishing"] = game.CatanFishingRules
+			if g.Fishing.Two != "" {
+				record.CatanExpansionRules["two_fishing"] = g.Fishing.Two
+			}
 			if g.Fishing.SeaKnights != "" {
 				record.CatanExpansionRules["fishing_sea_knights"] = g.Fishing.SeaKnights
 			}
@@ -170,7 +173,10 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules["number_recipe"] = g.Fishing.Map.NumberRecipe
 			}
 			if g.Seafarers == nil && g.Explorer == nil {
-				record.CatanScenario, record.CatanLayout, record.CatanRules = "fishing", "variable", game.CatanFishingRules
+				record.CatanScenario, record.CatanLayout = "fishing", "variable"
+				if g.Two == nil {
+					record.CatanRules = game.CatanFishingRules
+				}
 			}
 		}
 		if g.FriendlyRobber != nil {

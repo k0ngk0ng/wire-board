@@ -3121,7 +3121,7 @@ function Players({ room }: { room: Room }) {
                       )}
                     </>
                   )}
-                  {g.catan.two && (
+                  {g.catan.two && g.catan.two.tokenRule !== "none" && (
                     <>
                       {" "}
                       · 筹码 <b>{g.catan.two.tokens[i]}</b>

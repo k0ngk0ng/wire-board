@@ -64,7 +64,7 @@ func catanFishingSide(g *Catan, tile, side int) int {
 // Only the board fields are replaced, after all validation succeeds.
 func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 	n := len(g.Players)
-	if n < 3 || n > 6 || g.SetupStep != 0 || g.Seafarers != nil || g.BaseSetup != nil || g.CitiesKnights != nil {
+	if n < 2 || n == 2 && g.Two == nil || n > 6 || g.SetupStep != 0 || g.Seafarers != nil || g.BaseSetup != nil || g.CitiesKnights != nil {
 		return nil, errors.New("捕鱼地图只能用于尚未建设的基础地图")
 	}
 	for _, v := range g.Vertices {
@@ -83,7 +83,7 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 	// extended spiral. Swapping terrain after numbering would break those.
 	var board *Catan
 	for range 1024 {
-		next := &Catan{Players: g.Players}
+		next := &Catan{Players: g.Players, Two: g.Two}
 		next.makeMap()
 		valid := true
 		for _, tile := range next.Tiles {
@@ -198,7 +198,7 @@ func (f catanFishingMap) validate(g *Catan) error {
 	if n > 4 {
 		wantTiles, wantLakes = 30, 2
 	}
-	if n < 3 || n > 6 || len(g.Tiles) != wantTiles || len(f.Lakes) != wantLakes || len(f.Grounds) != len(groundPositions) || len(g.Ports) != len(portPositions) {
+	if n < 2 || n == 2 && g.Two == nil || n > 6 || len(g.Tiles) != wantTiles || len(f.Lakes) != wantLakes || len(f.Grounds) != len(groundPositions) || len(g.Ports) != len(portPositions) {
 		return errors.New("invalid fishing map inventory")
 	}
 	lakes := map[int]bool{}

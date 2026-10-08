@@ -14,6 +14,12 @@ type CatanTwoTrade struct {
 
 func (s *State) validateCatanTwoTokens() error {
 	g, q := s.Catan, s.Catan.Two
+	if g.twoFishing() {
+		if len(q.Tokens) != 2 || q.Tokens[0] != 0 || q.Tokens[1] != 0 || q.Bank != 0 || q.TokensIssued != 0 || q.Spent || q.KnightExchanged || q.Trade != nil || s.Phase == "catan_two_trade" {
+			return errors.New("双人渔夫不使用贸易筹码")
+		}
+		return nil
+	}
 	if q.TokensIssued < 0 || q.TokensIssued > catanTwoTokenLedgerLimit {
 		return errors.New("双人贸易筹码记账无效")
 	}
@@ -42,7 +48,7 @@ func (s *State) catanTwoTokenWindow(player int) bool {
 	// 2025 T&B p8 permits spending before rolling dice, including the second
 	// production roll. A complete first production (discard/robber/theft) must
 	// finish before the state returns to catan_roll; never interrupt a choice.
-	return g.Two != nil && !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !g.setup() && g.Two.Pending == nil && g.Two.Trade == nil && ((s.Phase == "catan_roll" && len(g.Two.Rolls) < 2) || (s.Phase == "catan_turn" && len(g.Two.Rolls) == 2))
+	return g.Two != nil && !g.twoFishing() && !s.Finished && player == s.Turn && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated && !g.setup() && g.Two.Pending == nil && g.Two.Trade == nil && ((s.Phase == "catan_roll" && len(g.Two.Rolls) < 2) || (s.Phase == "catan_turn" && len(g.Two.Rolls) == 2))
 }
 
 func (g *Catan) twoTokenCost(player int) int {

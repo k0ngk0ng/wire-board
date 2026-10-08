@@ -109,7 +109,7 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err
 	}
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {
@@ -203,7 +203,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	}
 	// Includes initial settlements. Use the previous actor because completing
 	// setup can advance Turn; upgrades and neutral villages earn no tokens.
-	if a.Type == "catan_settlement" {
+	if a.Type == "catan_settlement" && !g.twoFishing() {
 		if err := s.catanTwoEarn(before.Turn, g.twoSettlementTokens(before.Turn, a.Vertex)); err != nil {
 			return err
 		}
@@ -216,7 +216,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if len(q.Rolls) == 1 && s.Phase == "catan_turn" {
 		s.Phase = "catan_roll"
 	}
-	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge") {
+	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_road") {
 		return nil
 	}
 	kind := "road"

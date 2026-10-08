@@ -85,7 +85,8 @@ func (s *State) catanFishAction(player int, a Action) error {
 		s.catanVictory() // Passing the boot can immediately lower our winning target.
 		return nil
 	}
-	cost, ok := catanFishCosts[a.Type]
+	cost := g.fishActionCost(player, a.Type)
+	_, ok := catanFishCosts[a.Type]
 	if !ok {
 		return errors.New("未知捕鱼行动")
 	}
@@ -190,7 +191,11 @@ func (s *State) catanFishAction(player int, a Action) error {
 }
 
 func (s *State) catanFishLegal(player int) map[string]any {
-	legal := map[string]any{"costs": clone(catanFishCosts), "actions": []string{}, "resources": []int{}, "targets": []int{}, "roads": []int{}, "ships": []int{}, "bootTargets": []int{}, "progressTracks": []int{}}
+	costs := clone(catanFishCosts)
+	for kind := range costs {
+		costs[kind] = s.Catan.fishActionCost(player, kind)
+	}
+	legal := map[string]any{"costs": costs, "actions": []string{}, "resources": []int{}, "targets": []int{}, "roads": []int{}, "ships": []int{}, "bootTargets": []int{}, "progressTracks": []int{}}
 	if s.Catan.Explorer != nil {
 		return s.catanExplorerFishingLegal(player)
 	}
@@ -201,7 +206,7 @@ func (s *State) catanFishLegal(player int) map[string]any {
 	legal["bootTargets"] = g.fishBootTargets(player)
 	actions := []string{}
 	for _, kind := range []string{"catan_fish_robber", "catan_fish_pirate", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_ship", "catan_fish_dev", "catan_fish_progress"} {
-		if g.fishPayment(player, catanFishCosts[kind]) == nil {
+		if g.fishPayment(player, costs[kind]) == nil {
 			continue
 		}
 		available := false
