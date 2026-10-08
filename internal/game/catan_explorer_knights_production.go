@@ -75,21 +75,12 @@ func (s *State) catanExplorerCityProduction(dice [2]int) error {
 	if g.RevealedEvent != nil && x.Economy.Turn.Production != 0 {
 		g.RevealedEvent.ProductionStarted = true
 	}
-	received := make([]int, len(g.Players))
 	for p, hand := range result.Resources {
-		received[p] = sum(hand)
-		if received[p] > 0 || result.Gold[p] > 0 {
+		if sum(hand) > 0 || result.Gold[p] > 0 {
 			s.catanLog(p, "生产获得 %s", catanTradeText(hand, result.Gold[p]))
 		}
 	}
-	if x.Economy.Turn.Phase == "aqueduct" {
-		s.catanStartAqueduct(received)
-		if g.CitiesKnights.Pending != nil {
-			return nil
-		}
-		return s.catanExplorerCityFinishProduction()
-	}
-	return s.catanExplorerAfterProduction()
+	return s.catanExplorerFishingProduction(result.Resources)
 }
 func (s *State) catanExplorerCityFinishProduction() error {
 	g, x := s.Catan, s.Catan.Explorer
@@ -202,7 +193,7 @@ func (s *State) validateExplorerCityProduction() error {
 				return errors.New("组合城市事件回应缺少事件")
 			}
 		}
-	} else if !s.Finished && !freeRoads && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
+	} else if !s.Finished && !freeRoads && !(g.Fishing != nil && g.Fishing.Pending != nil) && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
 		return errors.New("组合生产存在未完成或错误接续")
 	}
 	return s.validateExplorerCityTrade()

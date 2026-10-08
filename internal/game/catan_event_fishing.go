@@ -10,6 +10,9 @@ func (s *State) validateEventFishing() error {
 	if f == nil {
 		return nil
 	}
+	if g.Explorer != nil {
+		return s.validateExplorerFishingState()
+	}
 	if err := g.validateFishing(); err != nil {
 		return err
 	}

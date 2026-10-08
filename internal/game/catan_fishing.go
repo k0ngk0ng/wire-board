@@ -8,6 +8,7 @@ import (
 const CatanFishingRules = "catan-fishing-2025"
 
 type CatanFishing struct {
+	Explorer   string                  `json:"explorer,omitempty"`
 	WorldSetup *CatanFishingWorldSetup `json:"worldSetup,omitempty"`
 	Map        catanFishingMap         `json:"map"`
 	Tokens     catanFishingTokens      `json:"tokens"`
@@ -54,6 +55,12 @@ func (g *Catan) validateFishing() error {
 	f := g.Fishing
 	if f == nil {
 		return nil
+	}
+	if g.Explorer != nil {
+		return g.Explorer.validateFishing(g)
+	}
+	if f.Explorer != "" {
+		return errors.New("非探险存档不能含探险鱼筹码")
 	}
 	if g.Seafarers != nil && !g.fishingSeaSupported() || g.Options.Helpers {
 		return errors.New("此捕鱼扩展组合尚未接入")

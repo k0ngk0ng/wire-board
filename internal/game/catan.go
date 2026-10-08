@@ -385,7 +385,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		}
 		next := clone(*s)
 		var err error
-		if next.Catan.CitiesKnights != nil {
+		if strings.HasPrefix(a.Type, "catan_fish_") {
+			err = next.applyCatanExplorerFishingAction(player, a)
+		} else if next.Catan.CitiesKnights != nil {
 			err = next.applyCatanExplorerCity(player, a)
 		} else {
 			err = next.applyCatanExplorer(player, a)

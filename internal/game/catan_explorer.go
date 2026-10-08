@@ -37,6 +37,9 @@ func (s *State) validateCatanExplorer() error {
 		return errors.New("探险家主状态缺失")
 	}
 	x := g.Explorer
+	if err := s.validateExplorerFishingState(); err != nil {
+		return err
+	}
 	if g.CitiesKnights != nil || x.Board != nil && x.Board.CitiesKnights {
 		return s.validateCatanExplorerCities()
 	}
@@ -92,7 +95,7 @@ func (s *State) validateCatanExplorer() error {
 				alive++
 			}
 		}
-		if s.Phase != "finished" || len(s.Winners) != 1 || s.Winners[0] != s.Turn || g.Players[s.Turn].Eliminated || g.Players[s.Turn].Score < x.Board.Target && alive != 1 || g.Trade != nil {
+		if s.Phase != "finished" || len(s.Winners) != 1 || s.Winners[0] != s.Turn || g.Players[s.Turn].Eliminated || g.Players[s.Turn].Score < g.victoryTargetFor(s.Turn) && alive != 1 || g.Trade != nil {
 			return errors.New("初航胜负或结束阶段无效")
 		}
 	} else if phase == "" || s.Phase != phase || len(s.Winners) != 0 {
@@ -124,7 +127,7 @@ func (s *State) catanExplorerSyncPhase() {
 
 func (s *State) catanExplorerVictory() {
 	g := s.Catan
-	if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= g.Explorer.Board.Target {
+	if !g.Players[s.Turn].Eliminated && g.Players[s.Turn].Score >= g.victoryTargetFor(s.Turn) {
 		s.Finished, s.Phase, s.Winners = true, "finished", []int{s.Turn}
 		g.Trade = nil
 		s.catanLog(s.Turn, "达到 %d 分，赢得探险任务", g.Players[s.Turn].Score)
@@ -146,7 +149,7 @@ func (s *State) catanExplorerRoll(dice [2]int) error {
 			s.catanLog(p, "生产获得 %s", catanTradeText(resources, result.Gold[p]))
 		}
 	}
-	return s.catanExplorerAfterProduction()
+	return s.catanExplorerFishingProduction(result.Resources)
 }
 
 func (s *State) catanExplorerDiscoverLog(player int, awards []catanExplorerDiscovery) {
@@ -166,6 +169,9 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 		return s.applyCatanExplorerSetup(player, a)
 	}
 	sequence := g.TurnSerial
+	if g.Fishing != nil && g.Fishing.Pending != nil {
+		return s.catanExplorerReplaceFish(player, a)
+	}
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || a.Prompt < 1 || uint64(a.Prompt) != sequence {
 		return errors.New("探险行动玩家或回合序号无效")
 	}

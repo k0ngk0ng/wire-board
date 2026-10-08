@@ -26,6 +26,7 @@ func (s *State) catanView(view map[string]any, player int) {
 	s.catanCityView(v, player)
 	if g.Explorer != nil {
 		s.catanExplorerView(v, player)
+		s.catanFishingView(v, player)
 		return
 	}
 	s.catanAttackView(v, player)

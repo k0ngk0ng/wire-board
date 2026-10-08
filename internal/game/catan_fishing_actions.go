@@ -191,6 +191,9 @@ func (s *State) catanFishAction(player int, a Action) error {
 
 func (s *State) catanFishLegal(player int) map[string]any {
 	legal := map[string]any{"costs": clone(catanFishCosts), "actions": []string{}, "resources": []int{}, "targets": []int{}, "roads": []int{}, "ships": []int{}, "bootTargets": []int{}, "progressTracks": []int{}}
+	if s.Catan.Explorer != nil {
+		return s.catanExplorerFishingLegal(player)
+	}
 	if !s.catanFishActionReady(player) {
 		return legal
 	}

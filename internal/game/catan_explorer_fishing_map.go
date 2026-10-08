@@ -59,6 +59,17 @@ func catanExplorerGeometryFishing(players int, scenario, layout string, cities b
 		g.Tiles[ore].Resource, g.Tiles[tile].Resource = g.Tiles[tile].Resource, catanLake
 		g.Tiles[tile].Number = 0
 	}
+	if scenario == "land-ho" {
+		for i := range b.Opening {
+			opening := &b.Opening[i]
+			opening.Resources = make([]int, 5)
+			for _, tile := range g.Tiles {
+				if tile.Resource < 5 && slices.Contains(tile.Vertices, opening.Settlement) {
+					opening.Resources[tile.Resource]++
+				}
+			}
+		}
+	}
 	return g, b, nil
 }
 

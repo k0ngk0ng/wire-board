@@ -16,21 +16,32 @@ type catanExplorerSailing struct {
 	Turn      *catanExplorerMovementTurn `json:"turn,omitempty"`
 }
 type catanExplorerMovementTurn struct {
-	Player    int                     `json:"player"`
-	Sequence  uint64                  `json:"sequence"`
-	Open      bool                    `json:"open"`
-	Current   int                     `json:"current"` // -1 until the first ship actually moves.
-	Speed     int                     `json:"speed"`   // Zero, one or two Swift Voyage farms.
-	Ships     []catanExplorerShipMove `json:"ships"`
-	Exploring []int                   `json:"exploring"` // Mandatory discoveries; board controller reveals them.
+	FishPirate bool                    `json:"fishPirate,omitempty"`
+	Player     int                     `json:"player"`
+	Sequence   uint64                  `json:"sequence"`
+	Open       bool                    `json:"open"`
+	Current    int                     `json:"current"` // -1 until the first ship actually moves.
+	Speed      int                     `json:"speed"`   // Zero, one or two Swift Voyage farms.
+	Ships      []catanExplorerShipMove `json:"ships"`
+	Exploring  []int                   `json:"exploring"` // Mandatory discoveries; board controller reveals them.
 }
 type catanExplorerShipMove struct {
-	Remaining int  `json:"remaining"`
-	Spent     int  `json:"spent"`
-	Wool      bool `json:"wool"`
-	Tribute   bool `json:"tribute"`
-	Closed    bool `json:"closed"`
+	Second    *catanExplorerSecondVoyage `json:"second,omitempty"`
+	Remaining int                        `json:"remaining"`
+	Spent     int                        `json:"spent"`
+	Wool      bool                       `json:"wool"`
+	Tribute   bool                       `json:"tribute"`
+	Closed    bool                       `json:"closed"`
 }
+
+// A second voyage records spent points and wool of the first voyage. Unused
+// first-voyage points are forfeited; wool remains once per ship per turn.
+type catanExplorerSecondVoyage struct {
+	Stopped bool `json:"stopped,omitempty"`
+	Spent   int  `json:"spent"`
+	Wool    bool `json:"wool"`
+}
+
 type catanExplorerSailQuote struct {
 	To        int   `json:"to"`
 	Points    int   `json:"points"`
@@ -96,6 +107,9 @@ func (f catanExplorerSailing) validate(g *Catan) error {
 	if t.Player < 0 || t.Player >= len(g.Players) || t.Sequence == 0 || t.Speed < 0 || t.Speed > 2 || len(t.Ships) != len(f.Positions) || t.Current < -1 || t.Current >= len(f.Positions) || t.Current >= 0 && t.Current/3 != t.Player {
 		return errors.New("探险航行回合无效")
 	}
+	if t.FishPirate && (g.Fishing == nil || g.Fishing.Explorer != catanExplorerFishingRule(len(g.Players))) {
+		return errors.New("海盗鱼通行缺少探险渔夫规则")
+	}
 	for id, ship := range t.Ships {
 		if id/3 != t.Player || f.Positions[id] < 0 {
 			if ship != (catanExplorerShipMove{Closed: true}) {
@@ -106,6 +120,19 @@ func (f catanExplorerSailing) validate(g *Catan) error {
 		budget := 4 + t.Speed
 		if ship.Wool {
 			budget += 2
+		}
+		if second := ship.Second; second != nil {
+			firstBudget := 4 + t.Speed
+			if second.Wool {
+				firstBudget += 2
+			}
+			if g.Fishing == nil || g.Fishing.Explorer != catanExplorerFishingRule(len(g.Players)) || second.Spent < 0 || second.Spent > firstBudget || second.Stopped != (second.Spent == 0) || second.Stopped && second.Wool || second.Wool && !ship.Wool || ship.Spent < second.Spent {
+				return errors.New("额外航行的首次移动或羊毛记录无效")
+			}
+			budget += second.Spent
+			if second.Wool {
+				budget -= 2
+			}
 		}
 		if ship.Remaining < 0 || ship.Spent < 0 || ship.Spent > budget || ship.Closed && ship.Remaining != 0 || !ship.Closed && ship.Remaining+ship.Spent != budget || !t.Open && !ship.Closed || ship.Tribute && ship.Spent == 0 {
 			return errors.New("探险船只移动点或贡金记录无效")
@@ -181,7 +208,7 @@ func (f catanExplorerSailing) quote(g *Catan, player int, sequence uint64, ship 
 		if edge == previous || !catanExplorerSeaEdge(g, edge) || !catanExplorerAdjacentEdges(g.Edges[previous], g.Edges[edge]) {
 			return result, errors.New("船只只能沿连续海边航行")
 		}
-		if pirateOwner >= 0 && pirateOwner != player && !f.Turn.Ships[ship].Tribute && (slices.Contains(g.Edges[previous].Tiles, pirateTile) || slices.Contains(g.Edges[edge].Tiles, pirateTile)) {
+		if pirateOwner >= 0 && pirateOwner != player && !f.Turn.FishPirate && !f.Turn.Ships[ship].Tribute && (slices.Contains(g.Edges[previous].Tiles, pirateTile) || slices.Contains(g.Edges[edge].Tiles, pirateTile)) {
 			result.Gold = 1
 		}
 		for _, tile := range g.Tiles {

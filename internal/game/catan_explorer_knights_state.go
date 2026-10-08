@@ -95,7 +95,7 @@ func (s *State) validateCatanExplorerCities() error {
 		return errors.New("组合顺时针轮序不一致")
 	}
 	if s.Finished {
-		if s.Phase != "finished" || !slices.Equal(s.Winners, []int{s.Turn}) || g.Players[s.Turn].Score < x.Board.Target && alive != 1 || g.Trade != nil {
+		if s.Phase != "finished" || !slices.Equal(s.Winners, []int{s.Turn}) || g.Players[s.Turn].Score < g.victoryTargetFor(s.Turn) && alive != 1 || g.Trade != nil {
 			return errors.New("组合胜负或结束阶段无效")
 		}
 	} else if len(s.Winners) > 0 || s.Phase == "finished" || x.Lairs != nil && x.Lairs.RewardVictory != nil {
@@ -111,6 +111,9 @@ func (s *State) applyCatanExplorerCity(player int, a Action) error {
 	}
 	if s.Catan.Explorer.Setup != nil {
 		return s.applyCatanExplorerSetup(player, a)
+	}
+	if s.Catan.Fishing != nil && s.Catan.Fishing.Pending != nil {
+		return s.catanExplorerReplaceFish(player, a)
 	}
 	if s.Catan.CitiesKnights.Pending != nil {
 		return s.catanExplorerCityRespond(player, a)

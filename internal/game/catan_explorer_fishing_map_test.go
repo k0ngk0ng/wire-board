@@ -79,8 +79,25 @@ func TestCatanExplorerFishingMapRecipesAndRestore(t *testing.T) {
 				if !slices.Equal(terrain, originalTerrain) || !slices.Equal(numbers, originalNumbers) || len(f.Lakes) != wantLakes || len(f.Grounds) != wantGrounds {
 					t.Fatal("terrain, disc or component inventory", terrain, originalTerrain, numbers, originalNumbers)
 				}
-				if b.Target != spec.Target || !reflect.DeepEqual(b.Opening, spec.Opening) || !slices.Equal(b.HarborStarts, spec.HarborStarts) || g.Tiles[b.FramePasture].Resource != 2 || g.Tiles[b.FramePasture].Number != 6 || len(g.Ports) != 0 {
+				if b.Target != spec.Target || !slices.Equal(b.HarborStarts, spec.HarborStarts) || g.Tiles[b.FramePasture].Resource != 2 || g.Tiles[b.FramePasture].Number != 6 || len(g.Ports) != 0 {
 					t.Fatal("base Explorer victory, printed pieces or frame changed")
+				}
+				for i, opening := range b.Opening {
+					original := spec.Opening[i]
+					if opening.Settlement != original.Settlement || opening.Harbor != original.Harbor || opening.Road != original.Road || opening.Ship != original.Ship {
+						t.Fatal("printed opening locations changed")
+					}
+					want := slices.Clone(original.Resources)
+					if cfg.lakes {
+						for _, lake := range f.Lakes {
+							if slices.Contains(g.Tiles[lake.Tile].Vertices, opening.Settlement) {
+								want[4]--
+							}
+						}
+					}
+					if !slices.Equal(opening.Resources, want) {
+						t.Fatal("lake did not replace the printed opening ore income", i, opening.Resources, want)
+					}
 				}
 				for _, lake := range f.Lakes {
 					for _, id := range g.Tiles[lake.Tile].Vertices {

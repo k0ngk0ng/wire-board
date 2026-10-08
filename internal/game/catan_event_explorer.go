@@ -52,7 +52,7 @@ func (s *State) catanExplorerEventProduction(kind string, number, red, face int)
 			s.catanLog(p, "生产获得 %s", catanTradeText(hand, result.Gold[p]))
 		}
 	}
-	return s.catanExplorerAfterProduction()
+	return s.catanExplorerFishingProduction(result.Resources)
 }
 
 func (t catanExplorerEconomyTurn) productionNumber() int {

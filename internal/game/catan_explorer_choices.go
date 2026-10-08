@@ -12,6 +12,15 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	if g == nil || g.Explorer == nil || s.Finished || viewer < 0 || viewer >= len(g.Players) || g.Players[viewer].Eliminated {
 		return result
 	}
+	if g.Fishing != nil && g.Fishing.Pending != nil {
+		if s.CatanPendingActor() == viewer {
+			result = append(result, Action{Type: "catan_fish_keep", Prompt: int(g.TurnSerial)})
+			for _, id := range g.Fishing.Tokens.Hands[viewer] {
+				result = append(result, Action{Type: "catan_fish_replace", Card: id, Prompt: int(g.TurnSerial)})
+			}
+		}
+		return result
+	}
 	if g.CitiesKnights != nil && g.CitiesKnights.Pending != nil {
 		return s.catanExplorerCityResponseChoices(viewer)
 	}
@@ -21,6 +30,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	if actions, handled := s.catanExplorerSpecialChoices(viewer); handled {
 		return actions
 	}
+	result = append(result, s.catanExplorerFishingChoices(viewer)...)
 	sequence := g.TurnSerial
 	add := func(a Action) { a.Prompt = int(sequence); result = append(result, a) }
 	if g.CitiesKnights != nil && s.Phase == "catan_roads" {
@@ -53,7 +63,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		base.Vertices = slices.Clone(g.Vertices)
 		base.Edges = slices.Clone(g.Edges)
 		cargo, fleet, economy := clone(*x.Cargo), clone(*x.Fleet), clone(*x.Economy)
-		if g.CitiesKnights != nil || g.EventDeck != nil {
+		if g.CitiesKnights != nil || g.EventDeck != nil || g.Fishing != nil {
 			// Classification and knight restrictions need the combination flags.
 			// Keep topology/missions read-only; all mutated pieces are owned.
 			world := *x
@@ -253,7 +263,7 @@ func (f catanExplorerSailing) destinations(g *Catan, player int, sequence uint64
 			if edge.ID == item.edge || !catanExplorerAdjacentEdges(g.Edges[item.edge], edge) || !catanExplorerSeaEdge(g, edge.ID) {
 				continue
 			}
-			toll := item.toll || pirateOwner >= 0 && pirateOwner != player && !f.Turn.Ships[ship].Tribute && (slices.Contains(g.Edges[item.edge].Tiles, pirateTile) || slices.Contains(edge.Tiles, pirateTile))
+			toll := item.toll || pirateOwner >= 0 && pirateOwner != player && !f.Turn.FishPirate && !f.Turn.Ships[ship].Tribute && (slices.Contains(g.Edges[item.edge].Tiles, pirateTile) || slices.Contains(edge.Tiles, pirateTile))
 			cost := 0
 			if toll {
 				cost = 1
@@ -288,6 +298,23 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 	for _, a := range actions {
 		v := map[string]any{"type": a.Type, "prompt": a.Prompt}
 		switch a.Type {
+		case "catan_fish_replace":
+			v["card"] = a.Card
+		case "catan_fish_boot", "catan_fish_steal":
+			v["target"] = a.Target
+			if len(a.Tokens) > 0 {
+				v["tokens"] = slices.Clone(a.Tokens)
+			}
+		case "catan_fish_resource":
+			v["color"], v["tokens"] = a.Color, slices.Clone(a.Tokens)
+		case "catan_fish_road":
+			v["edge"], v["tokens"] = a.Edge, slices.Clone(a.Tokens)
+		case "catan_fish_ship":
+			v["slot"], v["edge"], v["tokens"] = a.Slot, a.Edge, slices.Clone(a.Tokens)
+		case "catan_fish_voyage":
+			v["slot"], v["tokens"] = a.Slot, slices.Clone(a.Tokens)
+		case "catan_fish_pirate":
+			v["tokens"] = slices.Clone(a.Tokens)
 		case "catan_explorer_setup":
 			v["choice"], v["target"] = a.Choice, a.Target
 		case "catan_explorer_pirate_place", "catan_explorer_pirate_steal", "catan_explorer_chase", "catan_explorer_resolve", "catan_explorer_battle":

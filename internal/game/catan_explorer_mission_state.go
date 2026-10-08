@@ -53,6 +53,9 @@ func (s *State) applyCatanExplorerSetup(player int, a Action) error {
 		s.Turn = step.Player
 	} else {
 		s.Turn = x.Setup.Start
+		if err := s.catanExplorerStartingFish(x.Setup.Settlements); err != nil {
+			return err
+		}
 		x.Setup = nil
 	}
 	s.catanExplorerSyncPhase()
@@ -60,6 +63,9 @@ func (s *State) applyCatanExplorerSetup(player int, a Action) error {
 }
 func (s *State) catanExplorerPhase() string {
 	x := s.Catan.Explorer
+	if s.Catan.Fishing != nil && s.Catan.Fishing.Pending != nil {
+		return "catan_fish_replace"
+	}
 	if x.Setup != nil {
 		return "catan_explorer_setup"
 	}
