@@ -136,7 +136,7 @@ func TestCatanAttackPlanBotTimeoutAndHiddenInformation(t *testing.T) {
 func TestCatanAttackPlanCorruptionAtomicity(t *testing.T) {
 	s, _, _, _ := attackPlanFixture(t, 3)
 	for _, change := range []func(*State){
-		func(s *State) { s.Catan.Attack.EndPlan.ID++ }, func(s *State) { s.Catan.Attack.EndPlan.Player++ }, func(s *State) { s.Phase = "catan_turn" }, func(s *State) { s.Catan.Attack.EndPlan = nil }, func(s *State) { s.Catan.Attack.EndPlan.Moves = []catanAttackMove{{-1, 2, false}} },
+		func(s *State) { s.Catan.Attack.EndPlan.ID++ }, func(s *State) { s.Catan.Attack.EndPlan.Player++ }, func(s *State) { s.Phase = "catan_turn" }, func(s *State) { s.Catan.Attack.EndPlan = nil }, func(s *State) { s.Catan.Attack.EndPlan.Moves = []catanAttackMove{{From: -1, To: 2, Wheat: false}} },
 	} {
 		bad := clone(*s)
 		change(&bad)

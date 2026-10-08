@@ -8,6 +8,7 @@ import (
 // The drawn card is public and is held here only while resolving its mandatory
 // effect. It never enters a player's development hand or ordinary discard.
 type catanAttackCardPending struct {
+	Resume  string `json:"resume,omitempty"`
 	Neutral bool   `json:"neutral,omitempty"`
 	ID      int    `json:"id"`
 	Player  int    `json:"player"`
@@ -127,8 +128,18 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 	}
 	catanMove(g.Players[player].Resources, g.Bank, cost)
 	g.Trade = nil
-	a.CardSequence++
 	s.catanLog(player, "支付 羊毛×1、粮食×1、矿石×1，购买并立即使用发展卡")
+	return s.catanAttackDrawCard(player)
+}
+
+// Both resource and fish payments resolve the scenario deck immediately.
+func (s *State) catanAttackDrawCard(player int) error {
+	g, a := s.Catan, s.Catan.Attack
+	resume := ""
+	if s.Phase == "catan_roll" {
+		resume = s.Phase
+	}
+	a.CardSequence++
 	for {
 		if len(a.Deck) == 0 {
 			a.Deck, a.Discard = a.Discard, []string{}
@@ -137,7 +148,7 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 		}
 		card := a.Deck[len(a.Deck)-1]
 		a.Deck = a.Deck[:len(a.Deck)-1]
-		a.Pending = &catanAttackCardPending{ID: a.CardSequence, Player: player, Card: card}
+		a.Pending = &catanAttackCardPending{ID: a.CardSequence, Player: player, Card: card, Resume: resume}
 		s.Phase = "catan_attack_card"
 		s.catanLog(player, "翻开发展卡：%s", catanAttackCardNames[card])
 		if card == "capture" && len(a.captureTargets()) == 0 {
@@ -164,8 +175,12 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 func (s *State) catanAttackFinishCard() {
 	a := s.Catan.Attack
 	a.Discard = append(a.Discard, a.Pending.Card)
+	resume := a.Pending.Resume
 	a.Pending = nil
 	s.Phase = "catan_turn"
+	if resume != "" {
+		s.Phase = resume
+	}
 	s.catanScores()
 	s.catanVictory()
 }

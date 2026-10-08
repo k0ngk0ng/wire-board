@@ -93,6 +93,8 @@ func (s *State) catanFishAction(player int, a Action) error {
 	// Validate the concrete effect before touching payment. applyCatan also
 	// clones the entire state, including route completion and victory effects.
 	switch a.Type {
+	case "catan_fish_knight":
+		return errors.New("请在回合末骑士移动阶段用鱼延长移动")
 	case "catan_fish_robber":
 		if g.Robber < 0 {
 			return errors.New("强盗已经在场外")
@@ -123,7 +125,7 @@ func (s *State) catanFishAction(player int, a Action) error {
 			return errors.New("请选择合法连接位置，且需有剩余道路棋子")
 		}
 	case "catan_fish_dev":
-		if g.CitiesKnights != nil || len(g.DevDeck) == 0 {
+		if !g.fishDevelopmentReady() {
 			return errors.New("发展卡牌堆已空")
 		}
 	case "catan_fish_progress":
@@ -190,6 +192,9 @@ func (s *State) catanFishAction(player int, a Action) error {
 		s.catanLog(player, "用鱼领取一张%s进步牌（从牌堆顶抽取）", catanCityTracks[a.Color])
 		s.catanDrawProgress(player, a.Color)
 	case "catan_fish_dev":
+		if g.fishingAttack() {
+			return s.catanAttackDrawCard(player)
+		}
 		card := g.DevDeck[len(g.DevDeck)-1]
 		g.DevDeck = g.DevDeck[:len(g.DevDeck)-1]
 		g.Players[player].Dev[card]++
@@ -269,7 +274,7 @@ func (s *State) catanFishLegal(player int) map[string]any {
 			}
 			legal["roads"], available = roads, len(roads) > 0
 		case "catan_fish_dev":
-			available = g.CitiesKnights == nil && len(g.DevDeck) > 0
+			available = g.fishDevelopmentReady()
 		case "catan_fish_progress":
 			tracks := []int{}
 			if k := g.CitiesKnights; k != nil {
@@ -287,4 +292,14 @@ func (s *State) catanFishLegal(player int) map[string]any {
 	}
 	legal["actions"] = actions
 	return legal
+}
+
+func (g *Catan) fishDevelopmentReady() bool {
+	if g.CitiesKnights != nil {
+		return false
+	}
+	if g.fishingAttack() {
+		return g.Attack.cardSupplyReady() && len(g.Attack.Deck)+len(g.Attack.Discard) > 0
+	}
+	return len(g.DevDeck) > 0
 }

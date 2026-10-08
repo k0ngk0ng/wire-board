@@ -62,6 +62,9 @@ func (g *Catan) twoFishing() bool {
 
 func (g *Catan) fishActionCost(player int, kind string) int {
 	cost := catanFishCosts[kind]
+	if kind == "catan_fish_knight" && g.fishingAttack() {
+		cost = 2
+	}
 	// Hidden VP cards must never change a public price and disclose a hand.
 	if cost > 0 && g.twoFishing() && player >= 0 && player < 2 &&
 		g.Players[player].Score-g.hiddenVictoryPoints(player) < g.Players[1-player].Score-g.hiddenVictoryPoints(1-player) {
