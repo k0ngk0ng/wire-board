@@ -195,7 +195,7 @@ func TestCatanTwoFishingDiscountPaymentAndVersionIsolation(t *testing.T) {
 	if _, err = NewCatanFishing(2, CatanOptions{}); err == nil {
 		t.Fatal("ordinary constructor bypassed two-player rules")
 	}
-	for _, options := range []CatanOptions{{Helpers: true}, {FiveSix: true}, {AllHelpers: true}} {
+	for _, options := range []CatanOptions{{Helpers: true, FiveSix: true}, {FiveSix: true}, {AllHelpers: true}} {
 		if _, err = NewCatanTwoFishing(2, options); err == nil {
 			t.Fatal("unverified combination accepted")
 		}

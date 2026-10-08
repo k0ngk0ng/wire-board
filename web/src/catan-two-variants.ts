@@ -1,3 +1,4 @@
+import { supportsTwoCatanHelpers } from "./catan-two-helpers.ts";
 import type { Room } from "./types";
 
 export const supportsTwoCatanVariants = (scenario = "") =>
@@ -9,8 +10,9 @@ export const twoCatanVariantsAvailable = (room: Room) =>
   room.catanTwoRules === "catan-for-two-2025" &&
   !room.catanScenario &&
   supportsTwoCatanVariants(room.catanTwoScenario) &&
-  !room.catanOptions?.helpers &&
-  !room.catanOptions?.allHelpers &&
+  (!room.catanOptions?.helpers ||
+    supportsTwoCatanHelpers(room.catanTwoScenario)) &&
+  (!room.catanOptions?.allHelpers || !!room.catanOptions?.helpers) &&
   !room.catanOptions?.fiveSix;
 
 export const catanTwoVariantsNote =

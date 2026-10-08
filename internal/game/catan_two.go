@@ -9,6 +9,8 @@ import (
 const CatanTwoRules = "catan-for-two-2025"
 
 type CatanTwo struct {
+	Helpers         string           `json:"helpers,omitempty"`
+	AfterHelper     string           `json:"afterHelper,omitempty"`
 	Variants        string           `json:"variants,omitempty"`
 	Knights         string           `json:"knights,omitempty"`
 	Rules           string           `json:"rules"`
@@ -29,10 +31,14 @@ func NewCatanTwo(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
-	if n != 2 || o != (CatanOptions{}) {
+	if n != 2 || !CatanTwoHelpersOptions("", o) {
 		return nil, errors.New("双人卡坦需要两位玩家；组合规则尚未开放")
 	}
-	return newCatanTwoCore()
+	s, err := newCatanTwoCore()
+	if err != nil {
+		return nil, err
+	}
+	return s, s.enableTwoHelpers(o)
 }
 
 type CatanTwoPending struct {
@@ -109,6 +115,9 @@ func (s *State) validateCatanTwo() error {
 	if q.Rules != CatanTwoRules {
 		return errors.New("双人规则版本无效")
 	}
+	if err := s.validateTwoHelpers(); err != nil {
+		return err
+	}
 	if err := s.validateTwoKnights(); err != nil {
 		return err
 	}
@@ -118,7 +127,7 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err
 	}
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {
@@ -229,7 +238,13 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 		}
 	}
 	if s.Finished {
+		q.AfterHelper = ""
 		return nil
+	}
+	if q.AfterHelper != "" && g.HelperPending == nil {
+		kind := q.AfterHelper
+		q.AfterHelper = ""
+		return s.catanTwoStartBuild(kind)
 	}
 	// The first seven must finish discards, robber movement and theft before
 	// returning here. Saving at any intervening phase keeps the first total.
@@ -249,6 +264,15 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if a.Type == "catan_bridge" {
 		kind = "bridge"
 	}
+	if g.HelperPending != nil {
+		q.AfterHelper = kind
+		return nil
+	}
+	return s.catanTwoStartBuild(kind)
+}
+
+func (s *State) catanTwoStartBuild(kind string) error {
+	g, q := s.Catan, s.Catan.Two
 	if len(g.twoNeutralChoices(kind)) == 0 {
 		s.Log = append(s.Log, "两家中立势力均无合法建设位置，本次无需额外建设")
 		return nil

@@ -522,6 +522,8 @@ export type CatanState = {
   developmentNames?: string[];
   attack?: CatanAttack;
   two?: {
+    helpers?: string;
+    afterHelper?: "road" | "settlement";
     variants?: string;
     rules: string;
     tokensIssued?: number;

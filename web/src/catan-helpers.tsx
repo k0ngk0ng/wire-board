@@ -272,6 +272,12 @@ export function CatanHelpers({
           {open ? "收起" : "查看 / 使用"}
         </button>
       </header>
+      {g.two?.afterHelper && (
+        <p>
+          完成助手翻面或交换后，还需为中立势力建造
+          {g.two.afterHelper === "road" ? "道路" : "村庄"}。
+        </p>
+      )}
       {rule ? (
         <p className="helper-owned">
           {assets && (
@@ -308,7 +314,8 @@ export function CatanHelpers({
                     value={offer}
                     onChange={setOffer}
                   />
-                  {targetPicker(target2, setTarget2, true)}
+                  {opponents.length > 1 &&
+                    targetPicker(target2, setTarget2, true)}
                   <ResourceSelect
                     label="给第二位"
                     value={offer2}

@@ -123,7 +123,7 @@ func TestCatanTwoConstructorAndVersionGate(t *testing.T) {
 			t.Fatal("unsupported count", n)
 		}
 	}
-	for _, o := range []CatanOptions{{Helpers: true}, {FiveSix: true}, {AllHelpers: true}, {Rules: "unknown"}} {
+	for _, o := range []CatanOptions{{Helpers: true, FiveSix: true}, {FiveSix: true}, {AllHelpers: true}, {Rules: "unknown"}} {
 		if _, err := NewCatanTwo(2, o); err == nil {
 			t.Fatal("unsupported combination", o)
 		}

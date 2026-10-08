@@ -40,17 +40,21 @@ func NewCatan(n int, options CatanOptions) (*State, error) {
 	s := &State{Kind: "catan", Phase: "turn", Round: 1, Log: []string{}}
 	s.initCatan(n)
 	s.Catan.Options = o
-	if o.Helpers {
+	s.initCatanHelpers()
+	return s, nil
+}
+
+func (s *State) initCatanHelpers() {
+	if s.Catan.Options.Helpers {
 		pool := []int{}
-		for id := n + 1; id <= 12; id++ {
+		for id := len(s.Catan.Players) + 1; id <= 12; id++ {
 			pool = append(pool, id)
 		}
 		shuffle(pool)
-		if !o.AllHelpers {
-			pool = pool[:n]
+		if !s.Catan.Options.AllHelpers {
+			pool = pool[:len(s.Catan.Players)]
 		}
 		s.Catan.HelperDisplay = pool
 		s.Log = append(s.Log, "加入 Helpers：每人完成第二组起始建设后领取助手，使用后翻面或交换")
 	}
-	return s, nil
 }
