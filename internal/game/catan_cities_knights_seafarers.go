@@ -2,8 +2,8 @@ package game
 
 import "fmt"
 
-// Public three/four-player combinations and internal larger recipes share this
-// constructor. Five/six-player cloth supply retains its separate acceptance gate.
+// Public three/four-player combinations, extended cloth and internal larger
+// recipes share this constructor.
 func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, fmt.Errorf("Helpers与城市骑士组合尚未接入")
@@ -37,6 +37,9 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 		win += "；回合结束时5座村落耗尽也会结算；不使用最长路线或最大骑士军队"
 	}
 	s.Log = []string{logs[0], "加入城市与骑士：" + opening + "；" + win, bandits}
+	if g.cloth() != nil {
+		s.Log = append(s.Log, catanClothSupplyRule)
+	}
 	if phase == "catan_world_ports" {
 		s.Log = append(s.Log, "先按确认地图轮流放置随机港口，再开始起始建设")
 	}

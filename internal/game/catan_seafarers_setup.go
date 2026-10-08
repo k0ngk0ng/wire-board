@@ -146,6 +146,7 @@ func NewCatanSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, w
 	}
 	switch setup.Scenario {
 	case "cloth":
+		s.Log = append(s.Log, catanClothSupplyRule)
 		s.Log = append(s.Log, "按顺序、逆序、顺序放置三组村庄与路线，只从第三座村庄领取资源")
 	case "new_world":
 		s.Log = append(s.Log, "按确认地图轮流放置随机港口，再开始两轮起始建设；地形与数字保持不变")

@@ -417,6 +417,9 @@ func (s *State) applyCatan(player int, a Action) error {
 	if err := s.Catan.validateRivers(); err != nil {
 		return err
 	}
+	if err := s.Catan.validateClothSupply(); err != nil {
+		return err
+	}
 	if err := s.Catan.validateFishing(); err != nil {
 		return err
 	}
@@ -432,6 +435,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		if err := next.catanPirateSeven(); err != nil {
+			return err
+		}
+		if err := next.Catan.validateClothSupply(); err != nil {
 			return err
 		}
 		if err := next.Catan.validateRivers(); err != nil {

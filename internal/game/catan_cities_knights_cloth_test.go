@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// Public creation remains closed; this exercises the internal constructor.
+// Exercise the shared constructor independently of public room configuration.
 func ckClothFixture(t *testing.T, n int, layout string) *State {
 	t.Helper()
 	s, err := NewCatanCitiesKnightsSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "cloth", Layout: layout}, nil)
@@ -168,7 +168,7 @@ func TestCatanCitiesKnightsClothAutomaticOriginStaysDormant(t *testing.T) {
 // Deliberately corrupted accounting state: four traders cannot all retain a
 // closed route into a degree-three village. This verifies the error guard,
 // NOT the reachability of a shortage in real play. See the small-map bound and
-// the still-unresolved duplicated production numbers on the 5/6-player board.
+// the legal duplicated-number shortage and its supplement in the replay test.
 func TestCatanClothCorruptCommonSupplyProtection(t *testing.T) {
 	for _, n := range []int{4, 6} {
 		s := ckClothFixture(t, n, "fixed")
@@ -185,12 +185,12 @@ func TestCatanClothCorruptCommonSupplyProtection(t *testing.T) {
 			c.Villages[i].Traders = []int{0, 1, 2, 3}
 		}
 		c.Villages[3].Stock = 1
-		if clothTotal(g) != total || s.catanClothEnd() {
+		if clothTotal(g) != total+g.cloth().Issued || s.catanClothEnd() {
 			t.Fatal("corrupt fixture must conserve cloth and precede ending")
 		}
 		before := clone(*s)
 		if err := s.catanProduceCloth(c.Villages[3].Number); err == nil {
-			t.Fatal("unverified supply shortage was silently accepted")
+			t.Fatal("impossible four-trader village was silently accepted")
 		}
 		if !reflect.DeepEqual(*s, before) {
 			t.Fatal("failed first production should not consume cloth")
@@ -221,7 +221,7 @@ func TestCatanCitiesKnightsClothBotsComplete(t *testing.T) {
 					g := s.Catan
 					ckProgressStock(t, g)
 					ckKnightStock(t, g)
-					if clothTotal(g) != total || g.cloth().Stock < 0 || g.LongestOwner != -1 || g.ArmyOwner != -1 || len(g.DevDeck) != 0 {
+					if clothTotal(g) != total+g.cloth().Issued || g.cloth().Stock < 0 || g.LongestOwner != -1 || g.ArmyOwner != -1 || len(g.DevDeck) != 0 {
 						t.Fatal("incorrect cloth/award/development components")
 					}
 					for p := range g.Players {

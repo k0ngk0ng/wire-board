@@ -704,6 +704,7 @@ export type CatanState = {
     fog?: { remaining: number; startTiles: number[] };
     cloth?: {
       stock: number;
+      issued?: number;
       held: number[];
       homeTiles: number[];
       emptyLimit: number;

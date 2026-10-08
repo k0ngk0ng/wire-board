@@ -495,7 +495,7 @@ func summary(r *Room) map[string]any {
 		choices := game.CatanSeafarersScenarios(max(3, r.Capacity))
 		if publicCatanSeaScenario(r.CatanScenario) {
 			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
-				return !publicCatanSeaScenario(info.ID)
+				return !publicCatanSeaScenario(info.ID) || (r.Capacity > 4 && !r.CatanFishing && info.ID != "cloth")
 			})
 		}
 		if r.CatanFishing {

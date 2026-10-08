@@ -77,7 +77,7 @@ const scenarios = [
     id: "cloth",
     name: "航海家 · 卡坦布匹",
     description:
-      "连通村落收集布匹，每两枚得 1 分；14 分获胜，或回合末五个村落耗尽时比较分数与布匹。",
+      "三至六人连通村落收集布匹，每两枚得 1 分；14 分获胜，或回合末五村耗尽结算。本站补充规则：公共库存不足时仅记账补足当次缺额，空村仍不生产。",
   },
   {
     id: "pirate_islands",
@@ -268,10 +268,11 @@ export function CatanScenarioPicker({
                   (fishing
                     ? !supportsPublicCatanFishingSeaExtended(s.id)
                     : fiveSix
-                      ? !["", "cities-knights"].includes(s.id)
+                      ? !["", "cities-knights", "cloth"].includes(s.id)
                       : !["spices-for-catan", "barbarian-attack"].includes(
                           s.id,
                         ))) ||
+                (players > 4 && (friendly || harbors) && s.id === "cloth") ||
                 (friendly && s.id === "shores" && players < 4) ||
                 (friendly &&
                   isPublicCatanSea(s.id) &&

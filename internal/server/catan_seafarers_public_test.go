@@ -96,9 +96,16 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 		} else if scenario == "new_world" {
 			layouts = []string{"prepared", "edited"}
 		}
-		for _, n := range []int{3, 4} {
+		players := []int{3, 4}
+		if scenario == "cloth" {
+			players = append(players, 5, 6)
+		}
+		for _, n := range players {
 			for _, helpers := range []bool{false, true} {
 				for _, layout := range layouts {
+					if n > 4 && layout != "fixed" {
+						continue
+					}
 					t.Run(fmt.Sprintf("%s/%d/helpers=%v/%s", scenario, n, helpers, layout), func(t *testing.T) {
 						s, ts := setupServer(t)
 						stopBotTicker(s)
@@ -107,7 +114,7 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 							clients[p] = newClient(t, ts.URL)
 							clients[p].register(fmt.Sprintf("公开航海%d", p))
 						}
-						raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "公开航海完整局", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{Helpers: helpers, AllHelpers: helpers && n == 4}}, 201)
+						raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "公开航海完整局", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers && n%2 == 0}}, 201)
 						id := raw["id"].(string)
 						for p := 1; p < n; p++ {
 							clients[p].command(current(clients[0]), "join", nil, 200)
@@ -465,7 +472,11 @@ func assertPublicClothSupply(t *testing.T, g *game.Catan) {
 	t.Helper()
 	c := g.Seafarers.Cloth
 	total := c.Stock
-	if c.Stock < 0 || len(c.Villages) != 8 || len(c.Held) != len(g.Players) {
+	villages, physical := 8, 50
+	if len(g.Players) > 4 {
+		villages, physical = 12, 70
+	}
+	if c.Stock < 0 || c.Issued < 0 || (len(g.Players) <= 4 && c.Issued != 0) || len(c.Villages) != villages || len(c.Held) != len(g.Players) {
 		t.Fatal("bad public cloth supply")
 	}
 	for _, count := range c.Held {
@@ -480,7 +491,7 @@ func assertPublicClothSupply(t *testing.T, g *game.Catan) {
 		}
 		total += v.Stock
 	}
-	if total != 50 {
-		t.Fatal("small-board cloth not conserved", total)
+	if total != physical+c.Issued {
+		t.Fatal("cloth plus issued supply not conserved", total)
 	}
 }

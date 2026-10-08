@@ -2125,7 +2125,9 @@ function Create({
           capacity >= 3 &&
           (capacity <= 4 ||
             (catanOptions.fiveSix &&
-              (!catanScenario || catanScenario === "cities-knights")) ||
+              (!catanScenario ||
+                catanScenario === "cities-knights" ||
+                catanScenario === "cloth")) ||
             (catanFishing &&
               supportsPublicCatanFishingSeaExtended(catanScenario)) ||
             ["spices-for-catan", "barbarian-attack"].includes(
@@ -2159,7 +2161,9 @@ function Create({
                   ) &&
                   !(
                     catanOptions.fiveSix &&
-                    (!scenario || scenario === "cities-knights")
+                    (!scenario ||
+                      scenario === "cities-knights" ||
+                      scenario === "cloth")
                   ) &&
                   !(
                     catanFishing &&
@@ -2182,6 +2186,8 @@ function Create({
           )}
         {k === "catan" &&
           capacity >= 3 &&
+          (capacity <= 4 ||
+            supportsPublicCatanFishingSeaExtended(catanScenario)) &&
           supportsPublicCatanFishingSea(catanScenario) && (
             <CatanFishingSeaPicker
               value={catanFishing}
@@ -2245,7 +2251,7 @@ function Create({
           )}
         {k === "catan" &&
           capacity !== 2 &&
-          !catanSeaKnights &&
+          (!catanSeaKnights || catanScenario === "cloth") &&
           (!catanFishing ||
             supportsPublicCatanFishingSeaExtended(catanScenario)) &&
           (!catanScenario ||
@@ -2262,6 +2268,7 @@ function Create({
               friendlyRobber={catanFriendly}
               fiveSixAvailable={
                 (!isPublicCatanSea(catanScenario) ||
+                  catanScenario === "cloth" ||
                   (catanFishing &&
                     supportsPublicCatanFishingSeaExtended(catanScenario))) &&
                 (!catanScenario ||
@@ -2454,7 +2461,9 @@ function Waiting({
     room.capacity >= 3 &&
     (room.capacity <= 4 ||
       (room.catanOptions?.fiveSix &&
-        (!room.catanScenario || room.catanScenario === "cities-knights")) ||
+        (!room.catanScenario ||
+          room.catanScenario === "cities-knights" ||
+          room.catanScenario === "cloth")) ||
       (room.catanFishing &&
         supportsPublicCatanFishingSeaExtended(room.catanScenario)) ||
       ["spices-for-catan", "barbarian-attack"].includes(
@@ -2463,7 +2472,8 @@ function Waiting({
     (!room.catanOptions?.fiveSix ||
       room.catanFishing ||
       !room.catanScenario ||
-      room.catanScenario === "cities-knights") &&
+      room.catanScenario === "cities-knights" ||
+      room.catanScenario === "cloth") &&
     (!room.catanBaseConfiguration || !room.catanScenario) &&
     (!room.catanCitiesKnights ||
       room.catanScenario === "cities-knights" ||
@@ -2579,6 +2589,8 @@ function Waiting({
           />
         )}
         {room.kind === "catan" &&
+          (room.capacity <= 4 ||
+            supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
           supportsPublicCatanFishingSea(room.catanScenario) && (
             <CatanFishingSeaPicker
               value={!!room.catanFishing}
@@ -2666,13 +2678,16 @@ function Waiting({
             room.catanScenario === "cities-knights" ||
             isPublicCatanSea(room.catanScenario)) &&
           !(
-            room.catanCitiesKnights && isPublicCatanSea(room.catanScenario)
+            room.catanCitiesKnights &&
+            isPublicCatanSea(room.catanScenario) &&
+            room.catanScenario !== "cloth"
           ) && (
             <CatanOptionPicker
               value={room.catanOptions}
               fishing={!!room.catanFishing}
               fiveSixAvailable={
                 (!isPublicCatanSea(room.catanScenario) ||
+                  room.catanScenario === "cloth" ||
                   (room.catanFishing &&
                     supportsPublicCatanFishingSeaExtended(
                       room.catanScenario,

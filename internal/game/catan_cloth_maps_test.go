@@ -28,7 +28,7 @@ func assertClothInventory(t *testing.T, g *Catan) {
 	if len(g.Players) > 4 {
 		want = 70
 	}
-	if clothTotal(g) != want || g.cloth().Stock < 0 {
+	if clothTotal(g) != want+g.cloth().Issued || g.cloth().Issued < 0 || g.cloth().Stock < 0 {
 		t.Fatal("cloth conservation", clothTotal(g), want)
 	}
 	for _, v := range g.cloth().Villages {
