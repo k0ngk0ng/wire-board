@@ -17,14 +17,15 @@ export function CatanFriendlyRobberPicker({
   const eligible =
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 3 &&
-      room.capacity <= 4 &&
+      room.capacity <= 6 &&
+      room.capacity > 4 === !!room.catanOptions?.fiveSix &&
       !room.catanTwoRules &&
       !room.catanFishing &&
       (!room.catanScenario || !!room.catanSeafarers));
   if (room.catanFishing || (!setup && !eligible)) return null;
   const availability = room.catanFriendlyRobberAvailability;
   const reason = !eligible
-    ? "五至六人的此变体需要基础地图，请切换地图或关闭扩充。"
+    ? "此变体需要基础或已核验的航海地图，请检查地图与人数配置。"
     : !availability?.allowed
       ? availability?.reason || "该组合尚未开放。"
       : "";

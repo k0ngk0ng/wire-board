@@ -29,10 +29,10 @@ export function CatanHarborsPicker({
       !room.catanNewWorldMap &&
       !room.catanFishing) ||
     (room.capacity >= 3 &&
-      room.capacity <= 4 &&
+      room.capacity <= 6 &&
       !room.catanFishing &&
       !room.catanTwoRules &&
-      !room.catanOptions?.fiveSix &&
+      room.capacity > 4 === !!room.catanOptions?.fiveSix &&
       supportsPublicCatanHarbors(room.catanScenario));
   if (room.catanFishing || (!setup && !available)) return null;
   return (

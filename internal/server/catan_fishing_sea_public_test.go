@@ -120,24 +120,19 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 
 func assertPublicFishSeaSpecialInventory(t *testing.T, g *game.Catan) {
 	t.Helper()
-	if c := g.Seafarers.Cloth; c != nil {
-		total := c.Stock
-		for _, v := range c.Villages {
-			total += v.Stock
-		}
-		for _, n := range c.Held {
-			total += n
-		}
-		if total != 50 || c.Stock < 0 {
-			t.Fatal("cloth supply", total)
-		}
+	if g.Seafarers.Cloth != nil {
+		assertPublicClothSupply(t, g)
 	}
 	if tr := g.Seafarers.Tribe; tr != nil {
 		total := len(tr.Tokens)
 		for _, n := range tr.Points {
 			total += n
 		}
-		if total != 8 {
+		tokens := 8
+		if len(g.Players) > 4 {
+			tokens = 10
+		}
+		if total != tokens {
 			t.Fatal("tribe points")
 		}
 		ports := map[int]int{}
@@ -150,7 +145,11 @@ func assertPublicFishSeaSpecialInventory(t *testing.T, g *game.Catan) {
 			}
 		}
 		for color := -1; color < 5; color++ {
-			if ports[color] != 1 {
+			expected := 1
+			if color == -1 && len(g.Players) > 4 {
+				expected = 3
+			}
+			if ports[color] != expected {
 				t.Fatal("tribe ports", ports)
 			}
 		}

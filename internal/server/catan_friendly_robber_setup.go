@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanFriendlyAvailable() bool {
-	return (r.isCatanBaseRecipe() && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 4 && !r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && (r.CatanScenario == "" || publicCatanSeaScenario(r.CatanScenario))
+	return (r.isCatanBaseRecipe() && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && (r.CatanScenario == "" || publicCatanSeaScenario(r.CatanScenario))
 }
 
 // Existing internal recipes continue to use the same normalized setup.
