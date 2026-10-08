@@ -78,6 +78,11 @@ func (c catanExplorerCargo) roadPrice(g *Catan, f *catanExplorerSailing, player 
 }
 
 func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, player int, sequence uint64, vertex int) error {
+	return c.buildSettlementPrice(g, f, player, sequence, vertex, []int{1, 1, 1, 1, 0})
+}
+
+// Price is supplied only by the owned helper controller or ordinary wrapper.
+func (c *catanExplorerCargo) buildSettlementPrice(g *Catan, f *catanExplorerSailing, player int, sequence uint64, vertex int, cost []int) error {
 	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
 		return err
 	}
@@ -100,7 +105,6 @@ func (c *catanExplorerCargo) buildSettlement(g *Catan, f *catanExplorerSailing, 
 		}
 		connected = connected || edge.Owner == player
 	}
-	cost := []int{1, 1, 1, 1, 0}
 	if !connected || g.settlementPiecesLeft(player) <= 0 || !catanExplorerCanPay(g, player, cost) {
 		return errors.New("建村需要连接己方道路、剩余村庄棋子及木砖羊粮各1")
 	}

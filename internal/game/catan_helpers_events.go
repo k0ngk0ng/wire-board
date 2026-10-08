@@ -9,6 +9,9 @@ import (
 // the two queues exclusive, including when a helper is used before the draw.
 func (s *State) validateEventHelpers() error {
 	g := s.Catan
+	if g.Explorer != nil {
+		return s.validateExplorerHelpers()
+	}
 	if !g.Options.Helpers {
 		if g.HelperPending != nil || len(g.HelperDisplay) != 0 || len(g.HelperExile) != 0 {
 			return errors.New("事件牌存档中存在未启用的助手回应")

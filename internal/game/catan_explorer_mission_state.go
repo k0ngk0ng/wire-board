@@ -62,6 +62,12 @@ func (s *State) applyCatanExplorerSetup(player int, a Action) error {
 	return nil
 }
 func (s *State) catanExplorerPhase() string {
+	if s.Catan.HelperPending != nil {
+		return "catan_helper"
+	}
+	return s.catanExplorerPhaseWithoutHelper()
+}
+func (s *State) catanExplorerPhaseWithoutHelper() string {
 	x := s.Catan.Explorer
 	if s.Catan.Fishing != nil && s.Catan.Fishing.Pending != nil {
 		return "catan_fish_replace"

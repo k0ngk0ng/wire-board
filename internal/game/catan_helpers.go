@@ -65,7 +65,11 @@ func (s *State) catanHelperComplete(player int, resume string) {
 	g := s.Catan
 	h := g.Players[player].Helper
 	h.UsedTurn = g.TurnSerial
-	s.catanLog(player, "使用助手「%s」的%s能力", CatanHelpers()[h.ID-1].Name, CatanHelpers()[h.ID-1].Title)
+	rules := CatanHelpers()
+	if g.Explorer != nil {
+		rules = catanExplorerHelperRules()
+	}
+	s.catanLog(player, "使用助手「%s」的%s能力", rules[h.ID-1].Name, rules[h.ID-1].Title)
 	g.Trade = nil
 	if s.Finished {
 		g.HelperPending = nil

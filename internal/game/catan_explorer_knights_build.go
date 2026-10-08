@@ -8,17 +8,31 @@ import (
 // Medicine is enabled only by the shared owned-card dispatcher, never a
 // client price field. Ordinary Explorer harbor upgrades use the same primitive.
 func (c *catanExplorerCargo) upgradeSettlement(g *Catan, f *catanExplorerSailing, player int, sequence uint64, vertex int, kind string, medicine bool) error {
+	if medicine && g.CitiesKnights == nil {
+		return errors.New("药剂需要城市骑士")
+	}
+	cost := []int{0, 0, 0, 2, 3}
+	if kind == "harbor" {
+		cost[4] = 2
+	}
+	if medicine {
+		cost[3]--
+		cost[4]--
+	}
+	return c.upgradeSettlementPrice(g, f, player, sequence, vertex, kind, cost)
+}
+
+func (c *catanExplorerCargo) upgradeSettlementPrice(g *Catan, f *catanExplorerSailing, player int, sequence uint64, vertex int, kind string, cost []int) error {
 	if err := c.allowed(g, f, player, sequence, "action"); err != nil {
 		return err
 	}
 	k := g.CitiesKnights
-	if kind != "city" && kind != "harbor" || (kind == "city" || medicine) && k == nil || k != nil && (k.Pending != nil || k.Event != nil) {
+	if kind != "city" && kind != "harbor" || kind == "city" && k == nil || k != nil && (k.Pending != nil || k.Event != nil) {
 		return errors.New("当前不能进行该城市或港口升级")
 	}
 	if vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Owner != player || g.Vertices[vertex].Level != 1 || !c.landVertex(g, player, vertex) {
 		return errors.New("只能升级自己的已探索村庄，城市与港口不能互换")
 	}
-	cost := []int{0, 0, 0, 2, 3}
 	if kind == "harbor" {
 		count := 0
 		for _, v := range g.Vertices {
@@ -29,13 +43,8 @@ func (c *catanExplorerCargo) upgradeSettlement(g *Catan, f *catanExplorerSailing
 		if !catanExplorerCoast(g, vertex) || count >= 4 || k != nil && slices.Contains(k.FallenCities, vertex) {
 			return errors.New("港口须由沿海村庄升级，横置城市不能变港口，且最多四座")
 		}
-		cost[4] = 2
 	} else if !g.canCityUpgrade(player, vertex) {
 		return errors.New("城市组件不足，或须优先修复横置城市")
-	}
-	if medicine {
-		cost[3]--
-		cost[4]--
 	}
 	if !catanExplorerCanPay(g, player, cost) {
 		return errors.New("升级所需粮食或矿石不足")

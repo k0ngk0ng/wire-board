@@ -195,7 +195,7 @@ func (s *State) validateExplorerCityProduction() error {
 				return errors.New("组合城市事件回应缺少事件")
 			}
 		}
-	} else if !s.Finished && !freeRoads && !(g.Fishing != nil && g.Fishing.Pending != nil) && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
+	} else if !s.Finished && !freeRoads && !(g.Fishing != nil && g.Fishing.Pending != nil) && g.HelperPending == nil && (turn.Phase == "city" || turn.Phase == "aqueduct" || s.Phase != s.catanExplorerPhase()) {
 		return errors.New("组合生产存在未完成或错误接续")
 	}
 	return s.validateExplorerCityTrade()

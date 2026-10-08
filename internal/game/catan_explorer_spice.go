@@ -120,6 +120,7 @@ func (m *catanExplorerSpice) apply(g *Catan, b *catanExplorerBoard, f *catanExpl
 	base := *g
 	base.Explorer = nil
 	ng, nf, nc, ne, nm := clone(base), clone(*f), clone(*c), clone(*e), clone(*m)
+	ng.Explorer = g.Explorer // Read-only combination metadata, as in lair transactions.
 	if err := nm.applyUnchecked(&ng, b, &nf, &nc, &ne, player, sequence, kind, tile, ship, piece); err != nil {
 		return err
 	}

@@ -142,7 +142,7 @@ func (s *State) catanExplorerSpiceBotCargo(player int) (Action, bool) {
 					for _, load := range [][]int{sacks, sacks[:1]} {
 						c, f := clone(*x.Cargo), clone(*x.Fleet)
 						base := *g
-						base.Explorer = nil
+						// Retain read-only combination metadata for cargo validation.
 						if c.transferAllFreight(&base, &f, player, g.TurnSerial, ship, v, nil, unload, nil, nil, load, nil) == nil {
 							return Action{Type: "catan_explorer_transfer", Prompt: prompt, Slot: ship, Vertex: v, Take: unload, SpiceLoad: slices.Clone(load)}, true
 						}

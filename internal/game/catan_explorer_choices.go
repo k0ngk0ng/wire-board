@@ -12,6 +12,9 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	if g == nil || g.Explorer == nil || s.Finished || viewer < 0 || viewer >= len(g.Players) || g.Players[viewer].Eliminated {
 		return result
 	}
+	if g.HelperPending != nil {
+		return s.catanExplorerHelperResponseChoices(viewer)
+	}
 	if g.Fishing != nil && g.Fishing.Pending != nil {
 		if s.CatanPendingActor() == viewer {
 			result = append(result, Action{Type: "catan_fish_keep", Prompt: int(g.TurnSerial)})
@@ -30,6 +33,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 	if actions, handled := s.catanExplorerSpecialChoices(viewer); handled {
 		return actions
 	}
+	result = append(result, s.catanExplorerHelperChoices(viewer)...)
 	result = append(result, s.catanExplorerFishingChoices(viewer)...)
 	sequence := g.TurnSerial
 	add := func(a Action) { a.Prompt = int(sequence); result = append(result, a) }
@@ -63,7 +67,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		base.Vertices = slices.Clone(g.Vertices)
 		base.Edges = slices.Clone(g.Edges)
 		cargo, fleet, economy := clone(*x.Cargo), clone(*x.Fleet), clone(*x.Economy)
-		if g.CitiesKnights != nil || g.EventDeck != nil || g.Fishing != nil {
+		if g.CitiesKnights != nil || g.EventDeck != nil || g.Fishing != nil || g.Options.Helpers {
 			// Classification and knight restrictions need the combination flags.
 			// Keep topology/missions read-only; all mutated pieces are owned.
 			world := *x
@@ -297,7 +301,29 @@ func catanExplorerChoiceView(actions []Action) []map[string]any {
 	out := make([]map[string]any, 0, len(actions))
 	for _, a := range actions {
 		v := map[string]any{"type": a.Type, "prompt": a.Prompt}
+		if a.Skill == "helper" {
+			v["skill"], v["card"] = a.Skill, a.Card
+			if len(a.Tokens) > 0 {
+				v["tokens"] = slices.Clone(a.Tokens)
+			}
+		}
 		switch a.Type {
+		case "catan_helper_choice":
+			v["choice"], v["card"], v["color"] = a.Choice, a.Card, a.Color
+		case "catan_helper":
+			v["color"], v["target"], v["edge"] = a.Color, a.Target, a.Edge
+			if len(a.Targets) > 0 {
+				v["targets"] = slices.Clone(a.Targets)
+			}
+			if len(a.Cards) > 0 {
+				v["cards"] = slices.Clone(a.Cards)
+			}
+			if len(a.Give) > 0 {
+				v["give"] = slices.Clone(a.Give)
+			}
+			if len(a.Take) > 0 {
+				v["take"] = slices.Clone(a.Take)
+			}
 		case "catan_fish_replace":
 			v["card"] = a.Card
 		case "catan_fish_boot", "catan_fish_steal":
