@@ -1038,12 +1038,6 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !publicCatanSeaScenario(next.CatanScenario) {
 			err = errors.New("友善强盗的五六人公开组合需要基础或已核验的航海地图")
 		}
-		if err == nil && next.friendlyRobberEnabled() && (options.Helpers || options.AllHelpers) {
-			err = errors.New("友善强盗与助手的组合尚未核验")
-		}
-		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && (options.Helpers || options.AllHelpers) {
-			err = errors.New("港口霸主与助手的组合尚未核验")
-		}
 		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && !publicCatanSeaScenario(next.CatanScenario) {
 			err = errors.New("港口霸主的五六人公开组合需要基础、城市骑士或航海地图")
 		}

@@ -24,9 +24,6 @@ func NewCatanFriendlySeafarers(n int, options CatanOptions, setup CatanSeafarers
 	if !CatanFriendlySeafarersSupported(n, setup.Scenario) {
 		return nil, errors.New("该航海家剧本的友善强盗组合尚未核验")
 	}
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("友善强盗与助手的组合尚未核验")
-	}
 	var world *CatanNewWorldMap
 	var err error
 	if setup.Scenario == "new_world" {

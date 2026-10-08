@@ -43,13 +43,11 @@ func TestCatanFriendlyRobberConfiguration(t *testing.T) {
 			}
 		}
 	}
-	for _, kind := range []string{"helpers", "sea", "ck", "version", "setup", "playing", "finished", "wrong-kind", "nil"} {
+	for _, kind := range []string{"sea", "ck", "version", "setup", "playing", "finished", "wrong-kind", "nil"} {
 		t.Run(kind, func(t *testing.T) {
 			s := catanGame(t, 3)
 			request := CatanFriendlyRobberSetup{Enabled: true}
 			switch kind {
-			case "helpers":
-				s.Catan.Options.Helpers = true
 			case "sea":
 				s.Catan.Seafarers = &CatanSeafarers{}
 			case "ck":

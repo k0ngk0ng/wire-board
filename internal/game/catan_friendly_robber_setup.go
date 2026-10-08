@@ -32,8 +32,8 @@ func (s *State) ConfigureCatanFriendlyRobber(request CatanFriendlyRobberSetup) e
 		return errors.New("友善强盗只能在创建游戏时配置")
 	}
 	if setup.Enabled {
-		if g.CitiesKnights != nil || g.Options.Helpers || g.Options.AllHelpers {
-			return errors.New("友善强盗与城市骑士或助手的组合尚未核验")
+		if g.CitiesKnights != nil {
+			return errors.New("友善强盗与城市骑士的组合尚未核验")
 		}
 		if g.Seafarers != nil && !CatanFriendlySeafarersSupported(len(g.Players), g.Seafarers.Scenario) {
 			return errors.New("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")

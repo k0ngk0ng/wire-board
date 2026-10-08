@@ -48,7 +48,6 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "rivers"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "cities-knights"},
-		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "desert", "catanFishing": true},
 	} {
 		body["name"], body["catanFriendlyRobber"] = "非法组合", game.CatanFriendlyRobberSetup{Enabled: true}

@@ -71,7 +71,7 @@ export function CatanHarborsChoice({
         <input
           type="checkbox"
           checked={value}
-          disabled={disabled || helpers}
+          disabled={disabled}
           onChange={(e) => onChange(e.target.checked)}
         />{" "}
         启用港口霸主
@@ -82,7 +82,7 @@ export function CatanHarborsChoice({
       {value && <strong>本局分数门槛：{target}分</strong>}
       <small>
         {helpers
-          ? "请先关闭 Helpers，再启用港口霸主。"
+          ? "助手建造的港口建筑同样计入港口点；获胜门槛增加1分。"
           : "获胜门槛增加1分，剧本的其他结束条件保留。更改后需要重新准备。"}
       </small>
     </fieldset>

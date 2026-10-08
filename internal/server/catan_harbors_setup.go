@@ -22,9 +22,6 @@ func (r *Room) setCatanHarbors(request game.CatanHarborsSetup) error {
 	if err != nil {
 		return err
 	}
-	if setup.Enabled && (r.CatanOptions.Helpers || r.CatanOptions.AllHelpers) {
-		return errors.New("港口霸主与助手的组合尚未核验")
-	}
 	if r.CatanHarbors != nil && *r.CatanHarbors == setup {
 		return nil
 	}

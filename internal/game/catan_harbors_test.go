@@ -316,8 +316,8 @@ func TestCatanHarborsPrivacyPersistenceAndBotValuation(t *testing.T) {
 	if g.harborVertexValue(0, site) != before {
 		t.Fatal("bot used opponent hand")
 	}
-	if _, err := NewCatanHarbors(3, CatanOptions{Helpers: true}, CatanBaseConfiguration{}); err == nil {
-		t.Fatal("unverified Helpers combination")
+	if _, err := NewCatanHarbors(3, CatanOptions{Helpers: true}, CatanBaseConfiguration{}); err != nil {
+		t.Fatal(err)
 	}
 }
 

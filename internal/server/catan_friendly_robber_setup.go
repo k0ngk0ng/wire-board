@@ -38,8 +38,8 @@ func (r *Room) friendlyRobberEnabled() bool {
 }
 
 func (r *Room) validateCatanFriendlyRobber(n int) error {
-	if r.CatanFishing || r.CatanCitiesKnights != nil || r.CatanOptions.Helpers || r.CatanOptions.AllHelpers {
-		return errors.New("友善强盗与渔夫、城市骑士或助手的组合尚未核验")
+	if r.CatanFishing || r.CatanCitiesKnights != nil {
+		return errors.New("友善强盗与渔夫或城市骑士的组合尚未核验")
 	}
 	if r.CatanNewWorldMap != nil && (r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != "new_world") {
 		return errors.New("新世界需要对应的航海家地图配置")

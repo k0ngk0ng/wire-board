@@ -160,9 +160,9 @@ func TestCatanFriendlySeafarersConstructorGates(t *testing.T) {
 			t.Fatal("unverified scenario accepted", scenario)
 		}
 	}
-	for _, options := range []CatanOptions{{Helpers: true}, {AllHelpers: true}} {
-		if _, err := NewCatanFriendlySeafarers(3, options, CatanSeafarersSetup{Scenario: "desert"}); err == nil {
-			t.Fatal("unverified Helpers combination")
+	for _, options := range []CatanOptions{{Helpers: true}, {Helpers: true, AllHelpers: true}} {
+		if _, err := NewCatanFriendlySeafarers(3, options, CatanSeafarersSetup{Scenario: "desert"}); err != nil {
+			t.Fatal(err)
 		}
 	}
 	if _, err := NewCatanFriendlySeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Rules: "future"}); err == nil {
