@@ -229,6 +229,9 @@ func (s *State) catanCityBuild(player int, a Action, discount int) error {
 	if cities == 0 {
 		return errors.New("至少拥有一座城市才能继续城市建设")
 	}
+	if g.attackCityImprovementBlocked(player, track) {
+		return errors.New("被包围的大都会暂时不能提升对应城市建设")
+	}
 	next := k.Players[player].Improvements[track] + 1
 	if next > 5 {
 		return errors.New("该城市建设已达最高等级")
@@ -245,6 +248,11 @@ func (s *State) catanCityBuild(player int, a Action, discount int) error {
 	g.Players[player].Resources[card] -= cost
 	g.Bank[card] += cost
 	k.Players[player].Improvements[track] = next
+	if g.attackKnights() {
+		if _, err := s.catanAttackCityLanding([2]int{catanRandom(6) + 1, catanRandom(6) + 1}); err != nil {
+			return err
+		}
+	}
 	g.Trade = nil
 	s.catanLog(player, "支付%s×%d，将%s建设提升至%d级", catanCardName(card), cost, catanCityTracks[track], next)
 	if next >= 4 && owner != player && (owner < 0 || k.Players[owner].Improvements[track] < next) {

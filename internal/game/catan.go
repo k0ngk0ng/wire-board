@@ -243,7 +243,11 @@ func (s *State) catanScores() {
 			p.Score += g.Transport.extraPoints(i)
 		}
 		if g.Attack != nil {
-			p.Score += g.Attack.Prisoners[i] / 2
+			divisor := 2
+			if g.attackKnights() {
+				divisor = 3
+			}
+			p.Score += g.Attack.Prisoners[i] / divisor
 		}
 		if g.Harbors != nil && g.Harbors.Owner == i {
 			p.Score += 2
@@ -269,7 +273,7 @@ func (s *State) catanScores() {
 			p.Score += g.Seafarers.Seats[i].IslandPoints
 		}
 		for _, v := range g.Vertices {
-			if v.Owner == i && (g.Attack == nil || !g.Attack.conqueredBuilding(g, v.ID)) {
+			if v.Owner == i && (g.Attack == nil || !g.Attack.conqueredBuilding(g, v.ID) || g.attackCityMetropolis(v.ID)) {
 				p.Score += v.Level
 				if g.Caravans != nil && v.Level > 0 {
 					p.Score += g.Caravans.buildingBonus(g, v.ID)

@@ -13,6 +13,7 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
+	City             *catanAttackCity          `json:"city,omitempty"`
 	TwoRules         string                    `json:"twoRules,omitempty"`
 	TwoLanding       bool                      `json:"twoLanding,omitempty"`
 	NeutralPrisoners int                       `json:"neutralPrisoners,omitempty"`
@@ -64,7 +65,7 @@ func newCatanAttackPieces(g *Catan, m *catanAttackMap) (*catanAttack, error) {
 }
 
 func (a catanAttack) validate(g *Catan) error {
-	if a.Rules != catanAttackRules || a.Map == nil {
+	if a.Rules != catanAttackRules || a.Map == nil || a.City != nil {
 		return errors.New("蛮族进攻规则版本或地图缺失")
 	}
 	if err := a.Map.validate(g); err != nil {
