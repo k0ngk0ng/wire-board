@@ -178,6 +178,13 @@ func (g *Catan) wonderVertexValue(player, vertex int) int {
 }
 
 func catanBotBuildCost(a Action) []int {
+	if a.Type == "catan_attack_knight_recruit" || a.Type == "catan_attack_knight_promote" {
+		return []int{0, 0, 1, 0, 1}
+	}
+	if a.Type == "catan_attack_knight_activate" {
+		return []int{0, 0, 0, 1, 0}
+	}
+
 	if a.Type == "catan_wonder_build" && a.Card >= 0 && a.Card < len(catanWonderRules) {
 		return catanWonderRules[a.Card].Cost[:]
 	}

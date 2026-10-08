@@ -27,6 +27,12 @@ func (g *Catan) intrigueTargets(player int) []int {
 // Shared authoritative targets for the card, UI and restored games.
 func (g *Catan) taxationTiles() []int {
 	out := []int{}
+	if g.attackKnights() {
+		for _, t := range g.Tiles {
+			out = append(out, t.ID)
+		}
+		return out
+	}
 	if g.CitiesKnights == nil || g.CitiesKnights.Invasions == 0 || g.Explorer != nil {
 		return out
 	}

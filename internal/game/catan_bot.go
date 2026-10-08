@@ -87,6 +87,14 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 	}
 	p := g.Players[player]
+	if g.attackKnights() {
+		if g.Attack.City.Plan != nil {
+			return s.catanAttackCityPlanBot(player)
+		}
+		if g.Attack.City.Treason != nil {
+			return s.catanAttackCityTreasonBot(player)
+		}
+	}
 	if g.Attack != nil && g.Attack.EndPlan != nil {
 		return s.catanAttackEndBot(player)
 	}
@@ -348,6 +356,9 @@ func (s *State) catanBot(player int) (Action, error) {
 	choices = append(choices, g.repairRoadBotChoices(player)...)
 	choices = append(choices, g.scienceBotChoices(player)...)
 	choices = append(choices, g.tradeProgressBotChoices(player)...)
+	if g.attackKnights() {
+		choices = append(choices, s.catanAttackCityBotChoices(player)...)
+	}
 	choices = append(choices, g.politicsBotChoices(player)...)
 	choices = append(choices, g.knightBotChoices(player)...)
 	choices = append(choices, g.cityEconomyBotChoices(player)...)

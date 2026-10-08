@@ -73,6 +73,9 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if g.attackKnights() {
+		return s.validateAttackCityState()
+	}
 	if !g.twoAttack() && (a.NeutralPrisoners != 0 || a.TwoLanding || a.Pending != nil && a.Pending.Neutral || s.Phase == "catan_two_build" || s.Phase == "catan_two_trade") {
 		return errors.New("多人蛮族混入双人组件")
 	}
@@ -165,6 +168,9 @@ func (s *State) validateCatanAttack() error {
 func (s *State) catanAttackLanding(roll func() [2]int, choose func(int) int) error {
 	g := s.Catan
 	a := g.Attack
+	if g.attackKnights() {
+		return s.catanAttackCityBuildLanding(roll)
+	}
 	if a == nil || g.setup() || s.Phase != "catan_turn" || s.Finished {
 		return errors.New("当前不能进行蛮族登陆")
 	}
@@ -240,6 +246,9 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		return
 	}
 	public := v["attack"].(map[string]any)
+	if g.attackKnights() {
+		public["city"] = s.catanAttackCityPlanView(player)
+	}
 	delete(public, "deck")
 	public["devRemaining"] = len(a.Deck)
 	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && a.cardSupplyReady()

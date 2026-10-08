@@ -57,7 +57,7 @@ func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) in
 	if a.Card == 0 && g.transportKnights() && len(g.Players) <= 4 && (sum(a.Tokens) == 2 || sum(a.Tokens) == 12) {
 		return errors.New("运输小地图不使用2与12，请选择其他生产点数")
 	}
-	if a.Card == 21 && k.Invasions == 0 {
+	if a.Card == 21 && k.Invasions == 0 && !g.attackKnights() {
 		return errors.New("首次蛮族进攻前不能使用征税")
 	}
 	// State.Apply clones C&K before dispatch. Any invalid target/cost below rolls
@@ -74,6 +74,9 @@ func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) in
 	}
 	if a.Choice != "" && !(g.Explorer != nil && a.Card == 5 && a.Choice == "harbor") {
 		return errors.New("未知进步牌选项")
+	}
+	if g.attackKnights() && slices.Contains([]int{3, 8, 17, 19, 21, 22}, a.Card) {
+		return s.catanAttackCityProgress(player, a)
 	}
 	if a.Card >= 16 {
 		return s.catanPoliticsProgress(player, a)

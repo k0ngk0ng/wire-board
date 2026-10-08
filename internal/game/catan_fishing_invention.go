@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 type CatanNumberToken struct {
 	Tile int `json:"tile"`
@@ -22,7 +25,7 @@ func inventionNumber(number int) bool {
 func (g *Catan) inventionNumbers() []CatanNumberChoice {
 	result := []CatanNumberChoice{}
 	for _, tile := range g.Tiles {
-		if inventionNumber(tile.Number) {
+		if inventionNumber(tile.Number) && (!g.attackKnights() || !slices.Contains(g.Attack.Map.Coast, tile.ID)) {
 			result = append(result, CatanNumberChoice{CatanNumberToken{tile.ID, 0}, tile.Number})
 		}
 	}

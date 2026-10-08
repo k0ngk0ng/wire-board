@@ -24,6 +24,13 @@ func (g *Catan) attackConflictLeader() int {
 			counts[k.Player]++
 		}
 	}
+	if g.attackKnights() {
+		for _, k := range g.Attack.City.Knights {
+			if k.Active && !g.Players[k.Owner].Eliminated {
+				counts[k.Owner] += k.Strength
+			}
+		}
+	}
 	leader, most := -1, 0
 	for p, count := range counts {
 		if g.Players[p].Eliminated {

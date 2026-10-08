@@ -19,10 +19,14 @@ type catanAttackCityKnight struct {
 	PromotedAt  uint64 `json:"promotedAt"`
 }
 type catanAttackCity struct {
-	NumberSwaps []CatanNumberSwap       `json:"numberSwaps,omitempty"`
-	Rules       string                  `json:"rules"`
-	Knights     []catanAttackCityKnight `json:"knights"`
-	Issued      int                     `json:"issued"`
+	Treason     *catanAttackCityTreasonPending `json:"treason,omitempty"`
+	Sequence    int                            `json:"sequence"`
+	Plan        *catanAttackCityPlan           `json:"plan,omitempty"`
+	End         *catanAttackCityEnd            `json:"end,omitempty"`
+	NumberSwaps []CatanNumberSwap              `json:"numberSwaps,omitempty"`
+	Rules       string                         `json:"rules"`
+	Knights     []catanAttackCityKnight        `json:"knights"`
+	Issued      int                            `json:"issued"`
 }
 
 func newCatanAttackCityCore(n int) (*State, error) {
@@ -148,12 +152,15 @@ func (s *State) catanAttackCityKnightAction(player int, action Action) error {
 	switch action.Type {
 	case "catan_attack_knight_recruit":
 		c.Knights = append(c.Knights, catanAttackCityKnight{Owner: player, Edge: action.Edge, Strength: 1})
+		s.catanLog(player, "支付 羊毛×1、矿石×1，在城堡路线 #%d 招募一级骑士", action.Edge+1)
 	case "catan_attack_knight_activate":
 		c.Knights[i].Active = true
 		c.Knights[i].ActivatedAt = g.CitiesKnights.ActionSerial
+		s.catanLog(player, "支付 粮食×1，激活路线 #%d 的骑士", action.Edge+1)
 	case "catan_attack_knight_promote":
 		c.Knights[i].Strength++
 		c.Knights[i].PromotedAt = g.CitiesKnights.ActionSerial
+		s.catanLog(player, "支付 羊毛×1、矿石×1，将路线 #%d 的骑士升至 %d 级", action.Edge+1, c.Knights[i].Strength)
 	}
 	return nil
 }
@@ -212,4 +219,28 @@ func (g *Catan) attackCityInventionTiles() []int {
 		}
 	}
 	return out
+}
+
+func (s *State) catanAttackCityBuildLanding(roll func() [2]int) error {
+	if roll == nil || s.Finished || s.Catan.setup() || s.Phase != "catan_turn" {
+		return errors.New("当前不能进行建设登陆")
+	}
+	used := map[int]bool{}
+	for len(used) < 3 {
+		dice := roll()
+		total := dice[0] + dice[1]
+		if dice[0] < 1 || dice[0] > 6 || dice[1] < 1 || dice[1] > 6 {
+			return errors.New("建设登陆骰子无效")
+		}
+		if total == 7 || used[total] {
+			continue
+		}
+		used[total] = true
+		if _, err := s.catanAttackCityLanding(dice); err != nil {
+			return err
+		}
+	}
+	s.catanScores()
+	s.catanVictory()
+	return nil
 }
