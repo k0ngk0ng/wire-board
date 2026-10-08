@@ -17,6 +17,9 @@ func newCatanSeafarersReferenceEventsOptions(n int, options CatanOptions, setup 
 	if s.Catan.cloth() != nil {
 		s.Catan.EventDeck.ClothFallback = CatanEventClothFallbackRules
 	}
+	if s.Catan.pirateIslands() != nil {
+		s.Catan.EventDeck.FleetRules = CatanEventFleetRules
+	}
 	s.Log = append(s.Log, "内部测试：航海家先完成事件再生产；使用旧版参考事件牌表，尚非已核验的2025正式牌表")
 	return s, s.validateCatanEventSession()
 }
@@ -27,11 +30,11 @@ func (g *Catan) validateSeafarersEventDeck() error {
 		return nil
 	}
 	switch sea.Scenario {
-	case "shores", "islands", "six_islands", "fog", "desert", "cloth", "wonders", "new_world":
+	case "shores", "islands", "six_islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world":
 	default:
 		return errors.New("该航海家剧本尚未接入完整事件牌抽取")
 	}
-	if g.Two != nil || g.BaseSetup != nil || sea.PirateIslands != nil || sea.Tribe != nil {
+	if g.Two != nil || g.BaseSetup != nil {
 		return errors.New("该航海家事件牌多重组合尚未接入")
 	}
 	setup := CatanSeafarersSetup{Scenario: sea.Scenario, Layout: sea.Layout, Rules: sea.Rules}
@@ -44,7 +47,7 @@ func (g *Catan) validateSeafarersEventDeck() error {
 		return errors.New("五六人不能使用四岛地图")
 	}
 	normalized, err := NormalizeCatanSeafarersSetup(len(g.Players), setup)
-	if err != nil || normalized != setup || (sea.Scenario == "fog") != (sea.Fog != nil) || (sea.Scenario == "cloth") != (sea.Cloth != nil) || (sea.Scenario == "wonders") != (sea.Wonders != nil) || (sea.Scenario == "new_world") != (sea.NewWorld != nil) {
+	if err != nil || normalized != setup || (sea.Scenario == "fog") != (sea.Fog != nil) || (sea.Scenario == "tribe") != (sea.Tribe != nil) || (sea.Scenario == "pirate_islands") != (sea.PirateIslands != nil) || (sea.Scenario == "cloth") != (sea.Cloth != nil) || (sea.Scenario == "wonders") != (sea.Wonders != nil) || (sea.Scenario == "new_world") != (sea.NewWorld != nil) {
 		return errors.New("航海家事件牌剧本或布局记录不一致")
 	}
 	return g.validateClothSupply()

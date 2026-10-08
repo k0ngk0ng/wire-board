@@ -27,6 +27,10 @@ func TestCatanEventFishingKnightsNaturalHTTP(t *testing.T) {
 	testCatanCitiesKnightsEventsFullHTTPGames(t, "fishing", true, true, true, 3, 4, 5, 6)
 }
 
+func TestCatanEventFishingTribeNaturalHTTP(t *testing.T) {
+	testFishingEventsFullHTTP(t, "tribe", true, true, true, 3, 4)
+}
+
 func TestCatanEventFishingToggleRestoreBase(t *testing.T) {
 	for _, n := range []int{3, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {

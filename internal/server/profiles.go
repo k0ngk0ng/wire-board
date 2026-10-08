@@ -196,6 +196,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			if g.EventDeck.Knights != "" {
 				record.CatanExpansionRules["event_knights"] = g.EventDeck.Knights
 			}
+			if g.EventDeck.FleetRules != "" {
+				record.CatanExpansionRules["event_fleet"] = g.EventDeck.FleetRules
+			}
 		}
 		if g.CitiesKnights != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "cities_knights")

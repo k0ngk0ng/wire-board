@@ -81,8 +81,12 @@ func (f catanFishingMap) validateTribe(g *Catan) error {
 	}
 	// The printed robber starts on the outer desert (47); later ordinary
 	// robber moves are confined to the mainland, including the new lake.
+	// Robber Flees explicitly returns to a desert; its event-specific exception
+	// must survive later event draws. Ordinary seven/knight destinations still
+	// use tribeLand and cannot choose these unnumbered outer islands.
+	eventDesert := g.EventDeck != nil && g.Robber >= 0 && g.Robber < len(g.Tiles) && g.Tiles[g.Robber].Resource == CatanDesert
 	if g.Robber < -1 || g.Robber >= len(g.Tiles) || g.Robber >= 0 && g.Robber != 47 &&
-		g.Seafarers.Islands[g.Robber] != g.Seafarers.StartIslands[0] {
+		g.Seafarers.Islands[g.Robber] != g.Seafarers.StartIslands[0] && !eventDesert {
 		return errors.New("遗忘部落捕鱼强盗位置不符")
 	}
 	return f.validateCoastalGrounds(coasts, len(g.Players))

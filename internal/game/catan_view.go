@@ -12,12 +12,14 @@ func (s *State) catanView(view map[string]any, player int) {
 		if err == nil {
 			v["eventDeck"] = struct {
 				catanEventDeckView
-				Catalogue     string `json:"catalogue"`
-				ReferenceOnly bool   `json:"referenceOnly"`
-				ClothFallback string `json:"clothFallback,omitempty"`
-				Knights       string `json:"knights,omitempty"`
-				Alchemy       bool   `json:"alchemy,omitempty"`
-			}{public, g.EventDeck.Catalogue, g.EventDeck.Catalogue == catanEventReferenceCatalogue, g.EventDeck.ClothFallback, g.EventDeck.Knights, g.EventDeck.alchemyLatest(g.RollID)}
+				Catalogue     string           `json:"catalogue"`
+				ReferenceOnly bool             `json:"referenceOnly"`
+				ClothFallback string           `json:"clothFallback,omitempty"`
+				Knights       string           `json:"knights,omitempty"`
+				Alchemy       bool             `json:"alchemy,omitempty"`
+				FleetRules    string           `json:"fleetRules,omitempty"`
+				Fleet         *CatanEventFleet `json:"fleet,omitempty"`
+			}{public, g.EventDeck.Catalogue, g.EventDeck.Catalogue == catanEventReferenceCatalogue, g.EventDeck.ClothFallback, g.EventDeck.Knights, g.EventDeck.alchemyLatest(g.RollID), g.EventDeck.FleetRules, clone(g.EventDeck.Fleet)}
 		}
 	}
 	s.catanCityView(v, player)

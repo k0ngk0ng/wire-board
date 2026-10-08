@@ -185,7 +185,7 @@ func TestCatanPublicEventsNaturalHTTPMatches(t *testing.T) {
 		}
 	}
 
-	for _, scenario := range []string{"cloth", "wonders", "new_world"} {
+	for _, scenario := range []string{"cloth", "wonders", "new_world", "tribe"} {
 		for n := 3; n <= 6; n++ {
 			for _, helpers := range []bool{false, true} {
 				cases = append(cases, recipe{scenario: scenario, n: n, helpers: helpers})
@@ -194,7 +194,12 @@ func TestCatanPublicEventsNaturalHTTPMatches(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(fmt.Sprintf("%s/%d/helpers=%t/fixed=%t", tc.scenario, tc.n, tc.helpers, tc.fixed), func(t *testing.T) {
-			s, ts, clients, id := newPublicEventsHTTP(t, tc.n, tc.scenario, tc.helpers, tc.fixed)
+			extra := map[string]any{}
+			if tc.scenario == "tribe" {
+				extra["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+				extra["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
+			}
+			s, ts, clients, id := newPublicEventsHTTP(t, tc.n, tc.scenario, tc.helpers, tc.fixed, extra)
 			seen := map[string]int{}
 			steps := 0
 			restored := false
