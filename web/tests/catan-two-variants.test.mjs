@@ -36,7 +36,6 @@ test("two-player variant entrypoints follow the verified recipes", () => {
     { capacity: 3 },
     { catanTwoRules: "unknown" },
     { catanScenario: "transport" },
-    { catanTwoScenario: "cities-knights", catanOptions: { helpers: true } },
     { catanOptions: { fiveSix: true } },
   ]) {
     assert.equal(twoCatanVariantsAvailable({ ...room, ...extra }), false);

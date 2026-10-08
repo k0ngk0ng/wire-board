@@ -207,7 +207,7 @@ export function catanRuleContext(room: Room) {
       : !!options.fiveSix || ((explorerDraft || attack) && players > 4),
     helpersKnights: game
       ? game.citiesKnights?.helpers?.rules || ""
-      : !explorerDraft && citiesKnights && options.helpers && players >= 3
+      : !explorerDraft && citiesKnights && options.helpers && players >= 2
         ? "wire-board-helpers-knights-v1"
         : "",
     helpers: !!options.helpers,

@@ -17,9 +17,6 @@ func (r *Room) setCatanCitiesKnights(setup game.CatanCitiesKnightsSetup) error {
 	if err := r.validateCatanCitiesKnightsMap(); err != nil {
 		return err
 	}
-	if (r.CatanOptions.Helpers || r.CatanOptions.AllHelpers) && r.CatanTwoRules != "" {
-		return fmt.Errorf("该双人骑士助手组合尚未接入")
-	}
 	if (r.Capacity > 4) != r.CatanOptions.FiveSix {
 		return fmt.Errorf("城市与骑士人数与扩充不一致")
 	}

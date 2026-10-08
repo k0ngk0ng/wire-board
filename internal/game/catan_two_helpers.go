@@ -7,20 +7,24 @@ const CatanTwoHelpersRules = "wire-board-two-helpers-v1"
 
 const catanTwoHelpersNotice = "本站双人助手规则：两位真人各领一名助手，中立势力不持有助手或手牌；每回合两次生产共用一次助手机会。助手建造先翻面或交换，再完成中立建设；移动旧路不增加中立道路；强制交易只对唯一真人对手进行一次，与贸易筹码分别结算"
 
-// Only the verified base and Fishing recipes currently share ordinary Helpers.
+// Base, Fishing and Knights share the marked two-player Helpers flow.
 func CatanTwoHelpersOptions(scenario string, o CatanOptions) bool {
 	normal, err := NormalizeCatanOptions(o)
-	return err == nil && !normal.FiveSix && (normal == (CatanOptions{}) || (scenario == "" || scenario == "fishing" || CatanTwoSeafarersScenario(scenario)) && normal.Helpers)
+	return err == nil && !normal.FiveSix && (normal == (CatanOptions{}) || (scenario == "" || scenario == "fishing" || scenario == "cities-knights" || CatanTwoSeafarersScenario(scenario)) && normal.Helpers)
 }
 
 func (g *Catan) twoHelpers() bool {
-	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && g.CitiesKnights == nil && g.Rivers == nil && g.Caravans == nil && g.Attack == nil && g.Transport == nil && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
+	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && (g.CitiesKnights == nil || g.twoKnights() && g.cityHelpers()) && g.Rivers == nil && g.Caravans == nil && g.Attack == nil && g.Transport == nil && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
 }
 
 func (s *State) enableTwoHelpers(o CatanOptions) error {
 	if o.Helpers {
 		s.Catan.Options = o
 		s.Catan.Two.Helpers = CatanTwoHelpersRules
+		if s.Catan.CitiesKnights != nil {
+			s.Catan.CitiesKnights.Helpers = &catanHelpersKnights{Rules: CatanHelpersKnightsRules}
+			s.Log = append(s.Log, catanHelpersKnightsNotice)
+		}
 		s.initCatanHelpers()
 		if s.Catan.Fishing != nil {
 			s.enableFishingHelpers()

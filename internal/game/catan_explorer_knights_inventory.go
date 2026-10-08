@@ -57,6 +57,14 @@ func (s *State) validateCityProgressInventory() error {
 			counts[reward.Card]++
 		}
 	}
+	if q := g.HelperPending; g.cityHelpers() && q != nil && q.Kind == "progress" {
+		for _, card := range q.Cards {
+			if card < 0 || card >= len(counts) || catanProgressRules[card].Track != q.Target {
+				return errors.New("助手私选进步牌无效")
+			}
+			counts[card]++
+		}
+	}
 	for id, rule := range catanProgressRules {
 		if counts[id] != rule.Count {
 			return errors.New("组合进步牌总库存不守恒")

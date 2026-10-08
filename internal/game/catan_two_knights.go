@@ -37,10 +37,15 @@ const CatanTwoKnightsRules = "catan-for-two-knights-2025"
 // NewCatanTwoCitiesKnights is a separate, versioned two-player recipe.
 // Ordinary city rooms and their options retain their original player limits.
 func NewCatanTwoCitiesKnights(n int, options CatanOptions) (*State, error) {
-	if n != 2 || options != (CatanOptions{}) {
-		return nil, errors.New("双人城市骑士只支持两位玩家及独立配方")
+	o, err := NormalizeCatanOptions(options)
+	if err != nil || n != 2 || !CatanTwoHelpersOptions("cities-knights", o) {
+		return nil, errors.New("双人城市骑士需要两位玩家，不使用五六人扩充")
 	}
-	return newCatanTwoCitiesKnights()
+	s, err := newCatanTwoCitiesKnights()
+	if err != nil {
+		return nil, err
+	}
+	return s, s.enableTwoHelpers(o)
 }
 
 func newCatanTwoCitiesKnights() (*State, error) {

@@ -25,7 +25,7 @@ func runTwoSeafarersCompleteHTTPGames(t *testing.T, fishing bool, knightOption .
 	knights := len(knightOption) > 0 && knightOption[0]
 	for i, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"} {
 		t.Run(scenario, func(t *testing.T) {
-			helpers, events := !knights && i%2 == 0, i%2 == 1
+			helpers, events := (!knights && i%2 == 0) || len(knightOption) > 1 && knightOption[1], i%2 == 1
 			s, ts, clients, id := newTwoCombinationFullTable(t, scenario, events, true, true, fishing, knights, game.CatanOptions{Helpers: helpers, AllHelpers: helpers})
 			restored := map[string]bool{}
 			steps, automatic, timeouts := 0, 0, 0
@@ -119,6 +119,9 @@ func runTwoSeafarersCompleteHTTPGames(t *testing.T, fishing bool, knightOption .
 				}
 				if knights && (rules["two_seafarers_knights"] != game.CatanTwoSeafarersKnightsRules || rules["two_knights"] != game.CatanTwoKnightsRules) {
 					t.Fatal("missing sea knights history", rules)
+				}
+				if helpers && knights && (rules["helpers_knights"] != game.CatanHelpersKnightsRules || rules["two_helpers"] != game.CatanTwoHelpersRules) {
+					t.Fatal("missing knight helper history", rules)
 				}
 				if rules["two_seafarers"] != game.CatanTwoSeafarersRules || rules["two_player"] != game.CatanTwoRules || len(record["players"].([]any)) != 2 {
 					t.Fatal("incorrect sea history", record)

@@ -113,6 +113,11 @@ func TestCatanHelpersKnightsHTTPConfiguration(t *testing.T) {
 
 func TestCatanHelpersKnightsHTTPProgressPrivacyRecoveryAndClock(t *testing.T) {
 	s, ts, clients, id := newHelpersKnightsHTTP(t, 3, "cities-knights", false)
+	testHelpersKnightsHTTPProgressClock(t, s, ts, clients, id)
+}
+
+func testHelpersKnightsHTTPProgressClock(t *testing.T, s *Server, ts *httptest.Server, clients []*testClient, id string) {
+	t.Helper()
 	for s.rooms[id].Game.Phase == "catan_setup_settlement" || s.rooms[id].Game.Phase == "catan_setup_road" || s.rooms[id].Game.Phase == "catan_setup_city" {
 		r := s.rooms[id]
 		a, e := r.Game.BotAction(r.Game.Turn)
@@ -142,6 +147,12 @@ func TestCatanHelpersKnightsHTTPProgressPrivacyRecoveryAndClock(t *testing.T) {
 		g.Bank[c]--
 	}
 	r.Game.Phase = "catan_turn"
+	if g.Two != nil {
+		g.Two.Rolls = []int{2, 3}
+		g.RollID = 2
+		g.Dice = []int{1, 2}
+		g.CitiesKnights.EventDie = 0
+	}
 	r.TurnDeadline = time.Now().Add(41 * time.Second).UnixMilli()
 	if e := s.save(r); e != nil {
 		t.Fatal(e)
@@ -154,7 +165,7 @@ func TestCatanHelpersKnightsHTTPProgressPrivacyRecoveryAndClock(t *testing.T) {
 		t.Fatal("helper did not pause active clock", budget)
 	}
 	before, _ := json.Marshal(r)
-	clients[(p+1)%3].command(current(clients[(p+1)%3]), "action", game.Action{Type: "catan_helper_choice", Card: 0}, 400)
+	clients[(p+1)%len(g.Players)].command(current(clients[(p+1)%len(g.Players)]), "action", game.Action{Type: "catan_helper_choice", Card: 0}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("wrong actor mutated progress")
