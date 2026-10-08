@@ -67,7 +67,9 @@ func TestCatanPublicEventsEnableRestoreAndIsolation(t *testing.T) {
 
 func TestCatanPublicEventsRejectUnsupportedAtomically(t *testing.T) {
 	constructors := map[string]func() (*State, error){
-		"fishing":   func() (*State, error) { return NewCatanFishing(3, CatanOptions{}) },
+		"fishing-tribe": func() (*State, error) {
+			return NewCatanFishingSeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: "tribe"}, nil)
+		},
 		"explorer":  func() (*State, error) { return NewCatanExplorerLandHo(3) },
 		"transport": func() (*State, error) { return NewCatanTransport(3) },
 		"already-rolled": func() (*State, error) {

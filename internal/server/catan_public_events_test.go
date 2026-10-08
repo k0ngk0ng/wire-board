@@ -76,7 +76,7 @@ func TestCatanPublicEventsConfigurationAndRematch(t *testing.T) {
 	guest.register("事件客人")
 	for _, bad := range []map[string]any{
 		{"kind": "catan", "capacity": 3, "catanEvents": "legacy-reference-v1"},
-		{"kind": "catan", "capacity": 3, "catanEvents": game.CatanEventCatalogue, "catanScenario": "fishing"},
+		{"kind": "catan", "capacity": 3, "catanEvents": game.CatanEventCatalogue, "catanScenario": "transport"},
 		{"kind": "splendor", "capacity": 3, "catanEvents": game.CatanEventCatalogue},
 	} {
 		bad["name"] = "无效事件"
@@ -114,7 +114,7 @@ func TestCatanPublicEventsConfigurationAndRematch(t *testing.T) {
 	if s.rooms[id].CatanEvents != game.CatanEventCatalogue {
 		t.Fatal("compatible scenario lost deck")
 	}
-	change(host, "catan_scenario", "catanScenario", "fishing", 200)
+	change(host, "catan_scenario", "catanScenario", "transport", 200)
 	if s.rooms[id].CatanEvents != "" {
 		t.Fatal("unsupported scenario kept deck")
 	}

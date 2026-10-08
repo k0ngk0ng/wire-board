@@ -39,6 +39,10 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 }
 
 func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbors bool, publicSizes ...int) {
+	testFishingEventsFullHTTP(t, scenario, friendly, harbors, false, publicSizes...)
+}
+
+func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors, events bool, publicSizes ...int) {
 	totalPaid := 0
 	sizes := []int{5, 6}
 	if scenario == "" {
@@ -66,9 +70,9 @@ func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbor
 					if scenario == "new_world" {
 						layout = "prepared"
 					}
-					s, ts, clients, id = newPublicFishingSeaVariants(t, n, scenario, layout, friendly, harbors)
+					s, ts, clients, id = newPublicFishingSeaVariants(t, n, scenario, layout, friendly, harbors, events)
 				} else if scenario == "" {
-					s, ts, clients, id = newPublicFishingScenarioVariants(t, n, "fishing", friendly, harbors)
+					s, ts, clients, id = newPublicFishingScenarioVariants(t, n, "fishing", friendly, harbors, events)
 				}
 				supply, devSupply, tokenSupply, ports, grounds := 19, 25, 30, 9, 6
 				if n > 4 {
@@ -122,6 +126,8 @@ func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbor
 						label = "fish-response"
 					case state.Phase == "catan_gold":
 						label = "gold-response"
+					case state.Phase == "catan_card_event":
+						label = "card-response"
 					case state.Phase == "catan_turn" && g.Paired != nil && g.Paired.Second:
 						label = "secondary"
 					}
@@ -184,6 +190,9 @@ func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbor
 						}
 					}
 					if steps%31 == 0 {
+						if events {
+							assertPublicEventsPrivacy(t, clients)
+						}
 						for _, viewer := range []int{state.Turn, n} {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
 							fish := v["fishing"].(map[string]any)
@@ -330,6 +339,12 @@ func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbor
 						}
 						record := history[0].(map[string]any)
 						versions := record["catanExpansionRules"].(map[string]any)
+						if events && versions["event_cards"] != game.CatanEventCatalogue {
+							t.Fatal("missing fishing event history", versions)
+						}
+						if events && scenario == "cloth" && versions["event_cloth_fallback"] != game.CatanEventClothFallbackRules {
+							t.Fatal("missing cloth event retreat rule", versions)
+						}
 						if friendly && versions["friendly_fishing_fallback"] != game.CatanFriendlyFishingFallbackRules {
 							t.Fatal("missing friendly fishing history", versions)
 						}

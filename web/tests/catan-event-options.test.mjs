@@ -10,6 +10,7 @@ test("events are optional and support only accepted public recipes", () => {
   for (const catanScenario of [
     "",
     "cities-knights",
+    "fishing",
     "rivers",
     "caravans",
     "barbarian-attack",
@@ -24,11 +25,15 @@ test("events are optional and support only accepted public recipes", () => {
     const room = { kind: "catan", capacity: 3, catanScenario };
     assert.equal(catanEventsSupported(room), true);
     assert.equal(catanRuleContext(room).events, "");
-    assert.equal(catanEventsSupported({ ...room, catanFishing: true }), false);
+    assert.equal(
+      catanEventsSupported({ ...room, catanFishing: true }),
+      ["islands", "fog", "desert", "cloth", "wonders", "new_world"].includes(
+        catanScenario,
+      ),
+    );
   }
   for (const catanScenario of [
     "transport",
-    "fishing",
     "tribe",
     "pirate_islands",
     "land-ho",
