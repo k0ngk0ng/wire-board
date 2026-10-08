@@ -126,7 +126,9 @@ export function CatanSeafarersPicker({
         {catanScenarioVictory(info.id, info.victoryPoints)}
       </strong>
       {room.catanOptions?.fiveSix && info.id === "shores" && (
-        <small>随机主岛地形，数字按官方螺旋排列；外围岛屿保持固定。</small>
+        <small>
+          随机主岛地形，沿逆时针螺旋使用本站28枚数字数列，跳过沙漠；外围岛屿保持固定。此数列不宣称对应2025实体字母背面。
+        </small>
       )}
       <small>
         更换剧本、布局或人数扩充后，所有人需要重新准备。人数变化时会切换为对应的官方默认布局。

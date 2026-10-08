@@ -18,7 +18,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	guest.register("航海公开朋友")
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
-		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "unknown"},
 		{"kind": "splendor", "capacity": 3, "catanScenario": "fog"},
 	} {
@@ -39,7 +39,7 @@ func TestCatanSeafarersPublicConfiguration(t *testing.T) {
 	selectSeafarers(guest, &game.CatanSeafarersSetup{Scenario: "fog"}, 400)
 	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "unknown"}, 400)
 	selectSeafarers(host, &game.CatanSeafarersSetup{Scenario: "shores", Rules: "unknown"}, 400)
-	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true, Rules: "unknown"}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid public configuration changed room")
@@ -96,17 +96,18 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 		} else if scenario == "new_world" {
 			layouts = []string{"prepared", "edited"}
 		}
-		players := []int{3, 4}
-		if scenario == "cloth" {
-			players = append(players, 5, 6)
-		}
+		players := []int{3, 4, 5, 6}
 		for _, n := range players {
 			for _, helpers := range []bool{false, true} {
 				for _, layout := range layouts {
-					if n > 4 && layout != "fixed" {
+					if n > 4 && ((scenario == "shores" && layout != "variable") || (scenario != "shores" && scenario != "new_world" && layout != "fixed")) {
 						continue
 					}
 					t.Run(fmt.Sprintf("%s/%d/helpers=%v/%s", scenario, n, helpers, layout), func(t *testing.T) {
+						actualScenario := scenario
+						if scenario == "islands" && n > 4 {
+							actualScenario = "six_islands"
+						}
 						s, ts := setupServer(t)
 						stopBotTicker(s)
 						clients := make([]*testClient, n+1)
@@ -128,12 +129,20 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 						if scenario == "new_world" {
 							world = &game.CatanNewWorldMap{Hexes: append([]game.CatanNewWorldHex{}, s.rooms[id].CatanNewWorldMap.Hexes...)}
 							if layout == "edited" {
+								ordinary, gold := -1, -1
 								for i, h := range world.Hexes {
 									if h.Resource < 5 && h.Number != 6 && h.Number != 8 {
-										world.Hexes[i].Resource = game.CatanGold
-										break
+										ordinary = i
+									}
+									if h.Resource == game.CatanGold {
+										gold = i
 									}
 								}
+								if ordinary < 0 || gold < 0 {
+									t.Fatal("no legal map edit")
+								}
+								// Exchange terrain instead of inventing a fifth gold tile.
+								world.Hexes[ordinary].Resource, world.Hexes[gold].Resource = world.Hexes[gold].Resource, world.Hexes[ordinary].Resource
 								clients[0].post("/api/rooms/"+id, map[string]any{"type": "catan_world_map", "catanNewWorldMap": world, "version": current(clients[0])["version"], "nonce": randomID(12)}, 200)
 							}
 						}
@@ -160,7 +169,7 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 							if step%97 == 0 {
 								for _, viewer := range []int{actor, n} {
 									v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
-									if v["seafarers"].(map[string]any)["scenario"] != scenario || v["eventDeck"] != nil {
+									if v["seafarers"].(map[string]any)["scenario"] != actualScenario || v["eventDeck"] != nil {
 										t.Fatal("wrong public rules")
 									}
 									if scenario == "tribe" {
@@ -225,8 +234,11 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 							t.Fatal(code)
 						}
 						record := profile["history"].([]any)[0].(map[string]any)
-						if record["catanScenario"] != scenario || record["catanExpansionRules"].(map[string]any)["seafarers"] != game.CatanSeafarersRules {
+						if record["catanScenario"] != r.Game.Catan.Seafarers.Scenario || record["catanExpansionRules"].(map[string]any)["seafarers"] != game.CatanSeafarersRules {
 							t.Fatal("scenario missing from history")
+						}
+						if scenario == "shores" && n > 4 && record["catanExpansionRules"].(map[string]any)["number_recipe"] != game.CatanExtendedNumberRecipe {
+							t.Fatal("missing site number recipe")
 						}
 						stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 						if stats["played"] != float64(1) || stats["wins"] != float64(1) {

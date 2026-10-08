@@ -205,7 +205,7 @@ export function CatanFishingSeaPicker({
   return (
     <fieldset
       className="catan-helper-options"
-      disabled={disabled || blocked || fixedRequired || extended}
+      disabled={disabled || blocked || fixedRequired}
     >
       <label>
         <input
@@ -217,7 +217,7 @@ export function CatanFishingSeaPicker({
       </label>
       <p className="muted small">
         {extended
-          ? "五六人使用扩大地图、8处渔场和配对回合。要关闭渔夫，请先取消下方五至六人扩充。"
+          ? "此组合使用五六人扩大地图、8处渔场和配对回合；关闭渔夫后保留所选海图和人数。"
           : fixedRequired
             ? "先将海图切为固定布局，才能加入渔夫。"
             : blocked
@@ -308,13 +308,12 @@ export function CatanScenarioPicker({
                   (fishing
                     ? !supportsPublicCatanFishingSeaExtended(s.id)
                     : fiveSix
-                      ? ![
-                          "",
-                          "cities-knights",
-                          "cloth",
-                          "rivers",
-                          "caravans",
-                        ].includes(s.id)
+                      ? !(
+                          isPublicCatanSea(s.id) ||
+                          ["", "cities-knights", "rivers", "caravans"].includes(
+                            s.id,
+                          )
+                        )
                       : ![
                           "spices-for-catan",
                           "pirate-lairs",
@@ -323,7 +322,9 @@ export function CatanScenarioPicker({
                           "barbarian-attack",
                           "transport",
                         ].includes(s.id))) ||
-                (players > 4 && (friendly || harbors) && s.id === "cloth") ||
+                (players > 4 &&
+                  (friendly || harbors) &&
+                  isPublicCatanSea(s.id)) ||
                 (friendly && s.id === "shores" && players < 4) ||
                 (friendly &&
                   isPublicCatanSea(s.id) &&
@@ -342,7 +343,7 @@ export function CatanScenarioPicker({
                   !supportsPublicCatanKnightsCombination(s.id))
               }
             >
-              {s.name}
+              {players > 4 && s.id === "islands" ? "航海家 · 六岛" : s.name}
             </option>
           ))}
         </select>
@@ -356,7 +357,7 @@ export function CatanScenarioPicker({
             )
           : scenarios.find((s) => s.id === value)?.description}
       </p>
-      {players > 4 && ["rivers", "caravans"].includes(value) && (
+      {players > 4 && ["rivers", "caravans", "shores"].includes(value) && (
         <p className="muted small">
           本站数字配置：采用固定数列沿逆时针螺旋摆放，数字数量保持原扩充配置；不宣称与2025实体字母背面一致。
         </p>

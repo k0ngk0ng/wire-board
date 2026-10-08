@@ -144,6 +144,9 @@ func NewCatanSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, w
 			s.Log = append(s.Log, fmt.Sprintf("航海家 · %s · %d人开局", info.Name, n))
 		}
 	}
+	if s.Catan.Seafarers.NumberRecipe != "" {
+		s.Log = append(s.Log, catanSeaNumberNotice)
+	}
 	switch setup.Scenario {
 	case "cloth":
 		s.Log = append(s.Log, catanClothSupplyRule)

@@ -362,6 +362,9 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.validateCatanSeaNumberRecipe(); err != nil {
+		return err
+	}
 	// Validate before JSON cloning: invalid hidden-deck JSON must not turn
 	// into a partially decoded game through the generic clone helper.
 	if err := s.validateCatanEventSession(); err != nil {

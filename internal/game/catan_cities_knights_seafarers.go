@@ -2,8 +2,7 @@ package game
 
 import "fmt"
 
-// Public three/four-player combinations, extended cloth and internal larger
-// recipes share this constructor.
+// Public three-to-six-player combinations share the accepted sea maps.
 func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, fmt.Errorf("Helpers与城市骑士组合尚未接入")
@@ -37,6 +36,9 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 		win += "；回合结束时5座村落耗尽也会结算；不使用最长路线或最大骑士军队"
 	}
 	s.Log = []string{logs[0], "加入城市与骑士：" + opening + "；" + win, bandits}
+	if g.Seafarers.NumberRecipe != "" {
+		s.Log = append(s.Log, catanSeaNumberNotice)
+	}
 	if g.cloth() != nil {
 		s.Log = append(s.Log, catanClothSupplyRule)
 	}
