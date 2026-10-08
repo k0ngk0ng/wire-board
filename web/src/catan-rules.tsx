@@ -598,6 +598,11 @@ export function CatanRules({ room }: { room: Room }) {
           <>
             <CatanFishingNumberRules info={info} />
             <h4>渔夫与城市骑士</h4>
+            {info.caravans && (
+              <p>
+                渔夫＋商队：湖泊替换水源旁的森林，2和12共用地块。本站骑士组合15分获胜，持旧靴需16分；商队仍用木材和砖块出价。双人每人起始五枚鱼筹码，不使用贸易筹码；五六人各水源旁一湖，第二湖在4或10产鱼，两组2/12数字合并。
+              </p>
+            )}
             {info.rivers && (
               <p>
                 渔夫＋河流：保留河流、沼泽与港口，不放湖泊。6鱼免费建桥并领取3金币；每人最多3座桥。本站骑士组合沿用13分目标，持旧靴需14分。双人起始五枚鱼筹码，公开分数落后者鱼行动少付1鱼；用鱼建桥后为中立方建桥，无法建桥则修路。
@@ -677,11 +682,13 @@ export function CatanRules({ room }: { room: Room }) {
           {info.two
             ? `双人卡坦${info.twoSeafarers ? "＋航海家 · " + catanScenarioName(scenario) : info.rivers ? "＋河流" : info.caravans ? "＋商队" : ""}`
             : info.fishing
-              ? info.rivers
-                ? "渔夫＋河流"
-                : seafarers
-                  ? `渔夫＋航海家 · ${catanScenarioName(scenario)}`
-                  : "卡坦渔夫"
+              ? info.caravans
+                ? "渔夫＋商队"
+                : info.rivers
+                  ? "渔夫＋河流"
+                  : seafarers
+                    ? `渔夫＋航海家 · ${catanScenarioName(scenario)}`
+                    : "卡坦渔夫"
               : info.rivers
                 ? "卡坦河流"
                 : seafarers
@@ -775,6 +782,11 @@ export function CatanRules({ room }: { room: Room }) {
         <>
           <CatanFishingNumberRules info={info} />
           <h4>捕鱼与旧靴</h4>
+          {info.caravans && (
+            <p>
+              湖泊替换水源旁的森林，2和12共用地块；12分获胜，持旧靴需13分。本站地图配置：湖泊固定在水源旁的内陆格，数字沿商队顺序跳过水源与湖泊；五六人各水源旁一湖，第二湖在4或10产鱼，两组2/12数字合并。鱼只能用于鱼行动，不能出价；用鱼修路不会触发商队投票。
+            </p>
+          )}
           <ol>
             <li>
               {info.rivers

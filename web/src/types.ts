@@ -665,6 +665,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    caravans?: string;
     rivers?: string;
     twoSea?: string;
     twoKnights?: string;

@@ -64,7 +64,7 @@ func (s *State) validateCaravans() error {
 		return nil
 	}
 	n := len(g.Players)
-	if g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil && !g.caravanKnights() || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
+	if g.Rivers != nil || g.Fishing != nil && !g.fishingCaravans() || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil && !g.caravanKnights() || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("商队状态或尚未核对的组合无效")
 	}
 	if err := g.validateCaravanKnights(); err != nil {

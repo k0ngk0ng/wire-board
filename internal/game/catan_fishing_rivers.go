@@ -42,26 +42,8 @@ func newCatanFishingRivers(n int, knights bool) (*State, error) {
 		}
 	}
 	f.Map.Lakes = []catanFishingLake{}
-	_, _, grounds := catanFishingFrame(n > 4)
-	numbers := []int{4, 5, 6, 8, 9, 10}
-	if n > 4 {
-		numbers = append(numbers, 5, 9)
-	}
-	shuffle(numbers)
-	for i, at := range grounds {
-		a, b := catanFishingSide(g, at[0], at[1]), catanFishingSide(g, at[2], at[3])
-		if a < 0 || b < 0 {
-			return nil, errors.New("河流海岸缺少渔场边")
-		}
-		ea, eb := g.Edges[a], g.Edges[b]
-		joint, first, last := ea.A, ea.B, eb.A
-		if joint != eb.A && joint != eb.B {
-			joint, first = ea.B, ea.A
-		}
-		if last == joint {
-			last = eb.B
-		}
-		f.Map.Grounds = append(f.Map.Grounds, catanFishingGround{Number: numbers[i], Edges: [2]int{a, b}, Vertices: [3]int{first, joint, last}})
+	if err = f.Map.addFishingGrounds(g); err != nil {
+		return nil, err
 	}
 	g.Fishing = f
 	s.Log = append(s.Log, "渔夫＋河流：不放湖泊，海岸产鱼；6鱼免费建桥并领取3金币，旧靴额外需要1分")
@@ -97,4 +79,29 @@ func NewCatanFishingRivers(n int, options CatanOptions, knights bool) (*State, e
 		return nil, errors.New("渔夫河流需要二至六人，五六人启用人数扩充")
 	}
 	return newCatanFishingRivers(n, knights)
+}
+
+func (f *catanFishingMap) addFishingGrounds(g *Catan) error {
+	_, _, grounds := catanFishingFrame(len(g.Players) > 4)
+	numbers := []int{4, 5, 6, 8, 9, 10}
+	if len(g.Players) > 4 {
+		numbers = append(numbers, 5, 9)
+	}
+	shuffle(numbers)
+	for i, at := range grounds {
+		a, b := catanFishingSide(g, at[0], at[1]), catanFishingSide(g, at[2], at[3])
+		if a < 0 || b < 0 {
+			return errors.New("河流海岸缺少渔场边")
+		}
+		ea, eb := g.Edges[a], g.Edges[b]
+		joint, first, last := ea.A, ea.B, eb.A
+		if joint != eb.A && joint != eb.B {
+			joint, first = ea.B, ea.A
+		}
+		if last == joint {
+			last = eb.B
+		}
+		f.Grounds = append(f.Grounds, catanFishingGround{Number: numbers[i], Edges: [2]int{a, b}, Vertices: [3]int{first, joint, last}})
+	}
+	return nil
 }

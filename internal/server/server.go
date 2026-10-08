@@ -1262,7 +1262,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 								next.Game, err = game.NewCatanTwoAttack(len(next.Seats), next.CatanOptions)
 							}
 						} else if next.CatanTwoScenario == "caravans" {
-							if next.CatanCitiesKnights != nil {
+							if next.CatanFishing {
+								next.Game, err = game.NewCatanFishingCaravans(len(next.Seats), next.CatanOptions, next.CatanCitiesKnights != nil)
+							} else if next.CatanCitiesKnights != nil {
 								next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)
 							} else {
 								next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
@@ -1324,7 +1326,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
 					}
 				} else if next.CatanScenario == "caravans" {
-					if next.CatanCitiesKnights != nil {
+					if next.CatanFishing {
+						next.Game, err = game.NewCatanFishingCaravans(len(next.Seats), next.CatanOptions, next.CatanCitiesKnights != nil)
+					} else if next.CatanCitiesKnights != nil {
 						next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)
 					} else {
 						next.Game, err = game.NewCatanCaravans(len(next.Seats), next.CatanOptions)

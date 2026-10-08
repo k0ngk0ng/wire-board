@@ -154,15 +154,17 @@ export function CatanTwoScenarioPicker({
         </p>
       )}
       <p className="muted small">
-        {fishingEnabled && value === "rivers"
-          ? `渔夫＋河流${knightsEnabled ? "＋城市骑士" : ""}：不放湖泊，每人起始五枚鱼筹码，不使用贸易筹码；6鱼建桥得3金币，公开分数落后者少付1鱼，随后安排中立建设。${knightsEnabled ? "13" : "10"}分获胜。`
-          : knightsEnabled && value === "rivers"
-            ? "河流＋城市骑士：13分获胜；每回合两次事件与生产，沿用中立建筑、桥梁和骑士；金币与贸易筹码分别计算。"
-            : knightsEnabled && value === "caravans"
-              ? "商队＋城市骑士：木材和砖块出价，15分获胜；每回合两次事件与生产，中立骑士不激活，每轮最多放两辆马车。"
-              : fishingEnabled && value === "cities-knights"
-                ? catanTwoFishingKnightsNote
-                : scenarios.find((s) => s.id === value)?.description}
+        {fishingEnabled && value === "caravans"
+          ? `渔夫＋商队${knightsEnabled ? "＋城市骑士" : ""}：每人起始五枚鱼筹码，停用贸易筹码，公开分数落后者鱼行动少付1鱼；保留中立建设和每轮最多两辆马车。${knightsEnabled ? "15" : "12"}分获胜，旧靴多需1分。`
+          : fishingEnabled && value === "rivers"
+            ? `渔夫＋河流${knightsEnabled ? "＋城市骑士" : ""}：不放湖泊，每人起始五枚鱼筹码，不使用贸易筹码；6鱼建桥得3金币，公开分数落后者少付1鱼，随后安排中立建设。${knightsEnabled ? "13" : "10"}分获胜。`
+            : knightsEnabled && value === "rivers"
+              ? "河流＋城市骑士：13分获胜；每回合两次事件与生产，沿用中立建筑、桥梁和骑士；金币与贸易筹码分别计算。"
+              : knightsEnabled && value === "caravans"
+                ? "商队＋城市骑士：木材和砖块出价，15分获胜；每回合两次事件与生产，中立骑士不激活，每轮最多放两辆马车。"
+                : fishingEnabled && value === "cities-knights"
+                  ? catanTwoFishingKnightsNote
+                  : scenarios.find((s) => s.id === value)?.description}
         {[
           "land-ho",
           "pirate-lairs",

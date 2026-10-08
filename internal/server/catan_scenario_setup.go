@@ -182,7 +182,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if !publicCatanExplorerScenario(scenario) {
 		next.CatanFishingLakes = false
 	}
-	if scenario != "rivers" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
+	if scenario != "rivers" && scenario != "caravans" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
 		next.CatanFishing = false
 	}
 	if publicCatanFlexibleScenario(scenario) {

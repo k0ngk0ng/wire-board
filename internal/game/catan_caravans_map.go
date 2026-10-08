@@ -137,6 +137,9 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 }
 
 func (f catanCaravanMap) validate(g *Catan) error {
+	if g.Fishing != nil {
+		return f.validateFishing(g)
+	}
 	if !validCatanExtendedNumberRecipe(f.NumberRecipe, len(g.Players)) {
 		return errors.New("商队数字配置版本无效")
 	}

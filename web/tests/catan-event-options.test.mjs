@@ -83,6 +83,7 @@ test("events are optional and support only accepted public recipes", () => {
     assert.equal(
       catanEventsSupported({ ...room, catanFishing: true }),
       [
+        "caravans",
         "rivers",
         "shores",
         "islands",
