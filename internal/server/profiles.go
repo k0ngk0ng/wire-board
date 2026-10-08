@@ -84,6 +84,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				rules = game.CatanRiversRules
 			}
 			record.CatanExpansionRules["rivers"] = rules
+			if len(g.Players) > 4 {
+				record.CatanExpansionRules["number_recipe"] = game.CatanExtendedNumberRecipe
+			}
 			if g.Two == nil {
 				record.CatanRules = rules
 			}
@@ -100,6 +103,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				rules = game.CatanCaravansRules
 			}
 			record.CatanExpansionRules["caravans"] = rules
+			if len(g.Players) > 4 {
+				record.CatanExpansionRules["number_recipe"] = game.CatanExtendedNumberRecipe
+			}
 			if g.Two == nil {
 				record.CatanRules = rules
 			}

@@ -14,6 +14,7 @@ export function CatanOptionPicker({
   friendlyRobber = false,
   fiveSixAvailable = true,
   fishing = false,
+  helpersAvailable = true,
 }: {
   value?: CatanOptions;
   onChange: (v: CatanOptions) => void;
@@ -24,6 +25,7 @@ export function CatanOptionPicker({
   friendlyRobber?: boolean;
   fiveSixAvailable?: boolean;
   fishing?: boolean;
+  helpersAvailable?: boolean;
 }) {
   return (
     <fieldset className="catan-helper-options" disabled={disabled}>
@@ -38,23 +40,28 @@ export function CatanOptionPicker({
           五至六人扩充 · 新版配对回合
         </label>
       )}
-      {!fishing && !citiesKnights && !harbors && !friendlyRobber && (
-        <label>
-          <input
-            type="checkbox"
-            checked={!!value.helpers}
-            onChange={(e) =>
-              onChange({
-                ...value,
-                helpers: e.target.checked,
-                allHelpers: false,
-              })
-            }
-          />{" "}
-          Helpers · 十二位助手
-        </label>
-      )}
-      {!fishing &&
+      {helpersAvailable &&
+        !fishing &&
+        !citiesKnights &&
+        !harbors &&
+        !friendlyRobber && (
+          <label>
+            <input
+              type="checkbox"
+              checked={!!value.helpers}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  helpers: e.target.checked,
+                  allHelpers: false,
+                })
+              }
+            />{" "}
+            Helpers · 十二位助手
+          </label>
+        )}
+      {helpersAvailable &&
+        !fishing &&
         !citiesKnights &&
         !harbors &&
         !friendlyRobber &&
@@ -78,7 +85,8 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {!fishing &&
+      {helpersAvailable &&
+        !fishing &&
         !citiesKnights &&
         !harbors &&
         !friendlyRobber &&

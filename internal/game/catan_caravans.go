@@ -18,7 +18,7 @@ type catanCaravanVote struct {
 	Votes   []*catanCaravanWagon      `json:"votes"`
 }
 
-// Three/four-player public recipe; extended boards remain internal pending disc verification.
+// Public three-to-six-player recipe; extended numbers use the labelled site recipe.
 func NewCatanCaravans(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatan(n, options)
 	if err != nil {
@@ -30,6 +30,9 @@ func NewCatanCaravans(n int, options CatanOptions) (*State, error) {
 	}
 	s.Catan.Caravans = &catanCaravans{Rules: CatanCaravansRules, Map: m, Wagons: []catanCaravanWagon{}}
 	s.Log = append(s.Log, "商队：建设建筑后，行动结束时投票放置一辆马车；自己回合达到12分获胜")
+	if n > 4 {
+		s.Log = append(s.Log, catanExtendedNumberNotice)
+	}
 	s.catanScores()
 	return s, s.validateCaravans()
 }

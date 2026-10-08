@@ -15,18 +15,18 @@ type catanCaravanWagon struct {
 	From int `json:"from"`
 }
 type catanCaravanMap struct {
+	NumberRecipe  string              `json:"numberRecipe,omitempty"`
 	WateringHoles []int               `json:"wateringHoles"`
 	Starts        []catanCaravanWagon `json:"starts"`
 	Supply        int                 `json:"supply"`
 }
 
-// Pinned T&B 2025 pp13–14 / T&B 5–6 p7. These internal board and directed
-// route primitives are not a public scenario until voting/turn flow is ready.
+// Pinned T&B 2025 pp13–14 / T&B 5–6 p7. Extended production numbers
+// use the explicitly labelled site recipe.
 func catanCaravanRecipe(extended bool) (holes, order, numbers []int) {
 	if extended {
-		return []int{8, 21},
-			[]int{2, 1, 0, 3, 7, 12, 18, 23, 27, 28, 29, 26, 22, 17, 11, 6, 5, 4, 8, 13, 19, 24, 25, 21, 16, 10, 9, 14, 20, 15},
-			[]int{2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 2, 6}
+		order, numbers := catanExtendedNumberRecipe()
+		return []int{8, 21}, order, numbers
 	}
 	return []int{9}, []int{2, 1, 0, 3, 7, 12, 16, 17, 18, 15, 11, 6, 5, 4, 8, 13, 14, 10, 9},
 		[]int{5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11}
@@ -86,6 +86,7 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 	f := &catanCaravanMap{WateringHoles: holes, Supply: 22}
 	if n > 4 {
 		f.Supply = 33
+		f.NumberRecipe = CatanExtendedNumberRecipe
 	}
 	terrain := []int{}
 	counts := []int{4, 3, 4, 4, 3}
@@ -135,6 +136,9 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 }
 
 func (f catanCaravanMap) validate(g *Catan) error {
+	if !validCatanExtendedNumberRecipe(f.NumberRecipe, len(g.Players)) {
+		return errors.New("商队数字配置版本无效")
+	}
 	n := len(g.Players)
 	tiles, vertices, edges, supply := 19, 54, 72, 22
 	if n > 4 {

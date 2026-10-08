@@ -541,7 +541,12 @@ export type CatanState = {
   };
   caravans?: {
     rules?: string;
-    map: { wateringHoles: number[]; starts: CatanWagon[]; supply: number };
+    map: {
+      numberRecipe?: string;
+      wateringHoles: number[];
+      starts: CatanWagon[];
+      supply: number;
+    };
     wagons: CatanWagon[];
     built: boolean;
     sequence: number;
@@ -570,6 +575,7 @@ export type CatanState = {
       bridges: number[];
       swamps: number[];
       doubleNumberTile: number;
+      numberRecipe?: string;
     };
     gold: number[];
     bank: number;

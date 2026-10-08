@@ -23,6 +23,14 @@
   font-size: 11px;
   line-height: 1.5;
 }
+.caravan-number-recipe {
+  grid-column: 1 / -1;
+  min-width: 0;
+  line-height: 1.6;
+}
+.caravan-number-recipe summary {
+  cursor: pointer;
+}
 .caravan-start {
   fill: none;
   stroke: #795827;
