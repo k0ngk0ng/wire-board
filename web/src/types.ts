@@ -592,6 +592,7 @@ export type CatanState = {
     };
   };
   rivers?: {
+    canProtectCity?: boolean;
     rules?: string;
     goldRule?: "ledger";
     goldIssued?: number;

@@ -9,6 +9,7 @@ import (
 const CatanRiversRules = "catan-rivers-2025"
 
 type CatanRivers struct {
+	Knights    string          `json:"knights,omitempty"`
 	Rules      string          `json:"rules,omitempty"`
 	Map        *catanRiversMap `json:"map"`
 	Gold       []int           `json:"gold"`
@@ -50,8 +51,11 @@ func (g *Catan) validateRivers() error {
 	if r.Rules != "" && r.Rules != CatanRiversRules {
 		return errors.New("河流规则版本无效")
 	}
-	if r.Map == nil || len(r.Gold) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
+	if r.Map == nil || len(r.Gold) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil || g.CitiesKnights != nil && !g.riverKnights() || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
 		return errors.New("河流状态或尚未核对的组合无效")
+	}
+	if err := g.validateRiverKnights(); err != nil {
+		return err
 	}
 	board := *g
 	board.Robber = -1
@@ -108,7 +112,11 @@ func (s *State) catanRiversStart(a Action) error {
 	if g.Rivers == nil || a.Type != "catan_rivers_start" || g.SetupStep != 0 || !slices.Contains(g.Rivers.Map.Swamps, a.Tile) {
 		return errors.New("请选择一处沼泽作为强盗起点")
 	}
-	g.Robber = a.Tile
+	if g.riverKnights() {
+		g.CitiesKnights.RobberStart = a.Tile
+	} else {
+		g.Robber = a.Tile
+	}
 	s.Phase = "catan_setup_settlement"
 	s.catanLog(s.Turn, "选择沼泽 #%d 为强盗起点", a.Tile+1)
 	return nil
@@ -254,7 +262,7 @@ func (s *State) catanCoins(p int, a Action) error {
 	} else if g.Attack != nil {
 		bank, bought = &g.Attack.GoldBank, &g.Attack.Bought
 	}
-	if gold == nil || s.Phase != "catan_turn" || a.Color < 0 || a.Color >= 5 {
+	if gold == nil || s.Phase != "catan_turn" || a.Color < 0 || a.Color >= len(g.Bank) || a.Color >= 5 && !(g.riverKnights() && a.Type == "catan_coin_sell") {
 		return errors.New("金币交易仅可在自己掷骰后的行动阶段进行")
 	}
 	c := a.Color
@@ -268,7 +276,7 @@ func (s *State) catanCoins(p int, a Action) error {
 		*bought++
 		g.Bank[c]--
 		g.Players[p].Resources[c]++
-		s.catanLog(p, "支付 金币×2，购买 %s×1（本次行动 %d/2）", CatanResources[c], *bought)
+		s.catanLog(p, "支付 金币×2，购买 %s×1（本次行动 %d/2）", catanCardName(c), *bought)
 	case "catan_coin_sell":
 		rate := g.rates(p)[c]
 		if g.Players[p].Resources[c] < rate {
@@ -287,7 +295,7 @@ func (s *State) catanCoins(p int, a Action) error {
 		g.Bank[c] += rate
 		*bank--
 		gold[p]++
-		s.catanLog(p, "支付 %s×%d，兑换 金币×1", CatanResources[c], rate)
+		s.catanLog(p, "支付 %s×%d，兑换 金币×1", catanCardName(c), rate)
 	default:
 		return errors.New("未知金币交易")
 	}

@@ -131,7 +131,7 @@ func (g *Catan) politicsBotChoices(player int) []botChoice {
 		a := Action{Type: "catan_progress", Card: card}
 		switch card {
 		case 16:
-			for _, id := range g.diplomacyRoads() {
+			for _, id := range g.diplomacyRoadsFor(player) {
 				owner := g.Edges[id].Owner
 				if owner == player {
 					continue

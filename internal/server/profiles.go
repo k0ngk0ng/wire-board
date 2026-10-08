@@ -115,6 +115,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				rules = game.CatanRiversRules
 			}
 			record.CatanExpansionRules["rivers"] = rules
+			if g.Rivers.Knights != "" {
+				record.CatanExpansionRules["riversKnights"] = g.Rivers.Knights
+			}
 			if len(g.Players) > 4 {
 				record.CatanExpansionRules["number_recipe"] = game.CatanExtendedNumberRecipe
 			}

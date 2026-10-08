@@ -164,7 +164,7 @@ func (s *State) validateTwoKnights() error {
 	if q.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil || g.Caravans != nil && !g.caravanKnights() || g.Transport != nil || g.Attack != nil {
+	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil && !g.riverKnights() || g.Caravans != nil && !g.caravanKnights() || g.Transport != nil || g.Attack != nil {
 		return errors.New("双人城市骑士规则或组合无效")
 	}
 	k := g.CitiesKnights

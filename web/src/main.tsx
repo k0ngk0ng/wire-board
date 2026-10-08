@@ -2085,7 +2085,7 @@ function Create({
               (capacity >= 3 ||
                 isPublicCatanExplorer(variantScenario) ||
                 supportsTwoCatanSeafarers(variantScenario) ||
-                variantScenario === "caravans") &&
+                ["caravans", "rivers"].includes(variantScenario)) &&
               catanSeaKnights &&
               supportsPublicCatanKnightsCombination(variantScenario)
                 ? { layout: "variable" }
@@ -2316,9 +2316,10 @@ function Create({
           (capacity >= 3 ||
             isPublicCatanExplorer(variantScenario) ||
             supportsTwoCatanSeafarers(variantScenario) ||
-            variantScenario === "caravans") &&
+            ["caravans", "rivers"].includes(variantScenario)) &&
           supportsPublicCatanKnightsCombination(variantScenario) && (
             <CatanCombinationKnightsPicker
+              rivers={variantScenario === "rivers"}
               caravans={variantScenario === "caravans"}
               tribe={variantScenario === "tribe"}
               pirateIslands={catanScenario === "pirate_islands"}
@@ -2821,11 +2822,14 @@ function Waiting({
           (room.capacity >= 3 ||
             isPublicCatanExplorer(room.catanScenario) ||
             supportsTwoCatanSeafarers(room.catanTwoScenario) ||
-            room.catanTwoScenario === "caravans") &&
+            ["caravans", "rivers"].includes(room.catanTwoScenario || "")) &&
           supportsPublicCatanKnightsCombination(
             room.catanTwoScenario || room.catanScenario,
           ) && (
             <CatanCombinationKnightsPicker
+              rivers={
+                (room.catanTwoScenario || room.catanScenario) === "rivers"
+              }
               caravans={
                 (room.catanTwoScenario || room.catanScenario) === "caravans"
               }

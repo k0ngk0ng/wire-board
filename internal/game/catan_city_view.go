@@ -28,7 +28,7 @@ func (s *State) catanCityView(v map[string]any, player int) {
 				v["merchantTiles"] = g.merchantTiles(player)
 				v["guildDuesTargets"] = g.guildDuesTargets(player)
 				v["intrigueTargets"] = g.intrigueTargets(player)
-				v["diplomacyRoads"] = g.diplomacyRoads()
+				v["diplomacyRoads"] = g.diplomacyRoadsFor(player)
 			}
 		}
 		v["progressPlayable"] = playable

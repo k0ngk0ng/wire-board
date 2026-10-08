@@ -129,3 +129,20 @@ test("coin controls respect private holdings, public stock, purchase cap and act
   delete g.players[0].resources;
   assert.notEqual(catanCoinReason(g, 0, 0, true), "");
 });
+
+test("river knight economy sells commodities but cannot buy them with gold", () => {
+  const g = {
+    rivers: { gold: [10], bank: 80, bought: 0 },
+    citiesKnights: {},
+    players: [
+      { resources: [0, 0, 0, 0, 0, 4, 2, 3], rates: [4, 4, 4, 4, 4, 4, 2, 3] },
+    ],
+    bank: [19, 19, 19, 19, 19, 8, 10, 9],
+  };
+  for (const c of [5, 6, 7]) {
+    assert.equal(catanCoinReason(g, 0, c, false), "");
+    assert.notEqual(catanCoinReason(g, 0, c, true), "");
+  }
+  delete g.citiesKnights;
+  assert.notEqual(catanCoinReason(g, 0, 5, false), "");
+});

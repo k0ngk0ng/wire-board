@@ -1796,7 +1796,9 @@ function CatanBaseBoard({
         {mine && phase === "catan_turn" && (
           <div className="catan-build-menu">
             {(city
-              ? (["road", "settlement", "city"] as const)
+              ? g.rivers
+                ? (["road", "bridge", "settlement", "city"] as const)
+                : (["road", "settlement", "city"] as const)
               : sea
                 ? (["road", "ship", "settlement", "city", "buy_dev"] as const)
                 : g.rivers

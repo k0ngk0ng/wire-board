@@ -14,6 +14,7 @@ type catanRiverChannel struct {
 	Outlet int   `json:"outlet"`
 }
 type catanRiversMap struct {
+	NumberSwaps      []CatanNumberSwap   `json:"numberSwaps,omitempty"`
 	NumberRecipe     string              `json:"numberRecipe,omitempty"`
 	Channels         []catanRiverChannel `json:"channels"`
 	Bridges          []int               `json:"bridges"`
@@ -185,6 +186,17 @@ func (f catanRiversMap) validate(g *Catan) error {
 	}
 	counts := make([]int, catanSwamp+1)
 	order, numbers := catanRiverNumberRecipe(n > 4)
+	original := map[CatanNumberToken]int{}
+	for _, t := range g.Tiles {
+		original[CatanNumberToken{t.ID, 0}] = t.Number
+	}
+	if len(f.NumberSwaps) > 0 && !g.riverKnights() {
+		return errors.New("普通河流不能交换数字")
+	}
+	original, err := rewindCatanInvention(g, original, f.NumberSwaps)
+	if err != nil {
+		return err
+	}
 	at, double := 0, -1
 	for _, id := range order {
 		t := g.Tiles[id]
@@ -197,7 +209,7 @@ func (f catanRiversMap) validate(g *Catan) error {
 				return errors.New("沼泽不放数字")
 			}
 		} else {
-			if t.Number != numbers[at] {
+			if original[CatanNumberToken{id, 0}] != numbers[at] {
 				return errors.New("河流数字螺旋不符")
 			}
 			if n <= 4 && t.Number == 12 {

@@ -277,7 +277,18 @@ func (s *State) catanEventChoice(player int, a Action) error {
 			return err
 		}
 	case "pillage":
-		if a.Type != "catan_pillage" || s.Phase != "catan_pillage" || !slices.Contains(g.pillageSites(player), a.Vertex) {
+		if a.Type == "catan_pillage" && s.Phase == "catan_pillage" && a.Choice == "gold" {
+			if !g.canRiverPillageGold(player) {
+				return errors.New("保住城市需要5金币")
+			}
+			g.Rivers.Gold[player] -= 5
+			g.Rivers.Bank += 5
+			k.Event.Tasks = k.Event.Tasks[1:]
+			s.catanLog(player, "支付金币×5，免除本次城市劫掠")
+			s.catanScores()
+			break
+		}
+		if a.Choice != "" || a.Type != "catan_pillage" || s.Phase != "catan_pillage" || !slices.Contains(g.pillageSites(player), a.Vertex) {
 			return errors.New("请选择自己没有大都会的城市降级")
 		}
 		if g.settlementPiecesLeft(player) == 0 {
@@ -307,6 +318,9 @@ func (s *State) catanEventChoice(player int, a Action) error {
 		return errors.New("未知事件选择")
 	}
 	k.Pending = nil
+	if g.riverKnights() && q.Kind == "pillage" {
+		s.catanVictory()
+	}
 	if ending {
 		s.Phase = "catan_turn"
 		return s.applyCatanStep(player, Action{Type: "catan_end"})

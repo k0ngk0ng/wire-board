@@ -143,7 +143,10 @@ export function CatanRiverStart({
       {!collapsed && (
         <div className="catan-gold-body">
           <p>
-            先手在两处沼泽中选择一处，再开始放置村庄与道路。限时120秒，超时自动选择；可收起面板查看地图。
+            先手在两处沼泽中选择一处，再开始放置建筑与道路。
+            {g.citiesKnights &&
+              "首次蛮族进攻前强盗不会入场；起始河岸城市也领1金币。"}
+            限时120秒，超时自动选择；可收起面板查看地图。
           </p>
           {mine && (
             <>
@@ -225,7 +228,8 @@ export function CatanRiverBank({
         <Coins size={18} /> 金币兑换 <span>银行 {r.bank}</span>
       </summary>
       <p>
-        2金币买1张资源，每次行动最多买2张。出售资源按自己的银行或港口比例，每组获得1金币。
+        2金币买1张普通资源，每次行动最多买2张。出售按自己的兑换比例，每组获得1金币。
+        {g.citiesKnights && "商品也可出售，但不能用金币购买。"}
         {r.goldRule === "ledger" &&
           "本站补充规则：金币用完仍照常记账发放，归还银行的金币优先复用。"}
       </p>
@@ -241,11 +245,11 @@ export function CatanRiverBank({
             本次还可购买 {Math.max(0, 2 - r.bought)} 张
           </p>
           <div className="catan-coin-options">
-            {g.bank.slice(0, 5).map((count, color) => (
+            {g.bank.slice(0, g.citiesKnights ? 8 : 5).map((count, color) => (
               <div key={color}>
                 <CatanResource color={color} assets={assets} small />
                 <span>库存 {count}</span>
-                {[true, false].map((buy) => (
+                {(color < 5 ? [true, false] : [false]).map((buy) => (
                   <button
                     key={String(buy)}
                     className={
