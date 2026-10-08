@@ -890,3 +890,24 @@ test("native Explorer two-player Knights keeps one production controller and sav
   assert.equal(catanRuleContext(room).two, true);
   assert.equal(catanRuleContext(room).target, 10);
 });
+
+test("merchant trains plus knights has fifteen-point target in draft and saved game", () => {
+  for (const capacity of [2, 3, 6]) {
+    const room = {
+      kind: "catan",
+      capacity,
+      seats: [],
+      catanCitiesKnights: { layout: "variable" },
+      ...(capacity === 2
+        ? { catanTwoRules: "catan-for-two-2025", catanTwoScenario: "caravans" }
+        : { catanScenario: "caravans" }),
+    };
+    assert.equal(catanRuleContext(room).target, 15);
+    room.game = {
+      catan: { players: [], caravans: {}, citiesKnights: {}, options: {} },
+    };
+    assert.equal(catanRuleContext(room).target, 15);
+    delete room.game.catan.citiesKnights;
+    assert.equal(catanRuleContext(room).target, 12);
+  }
+});

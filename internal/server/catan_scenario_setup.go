@@ -134,7 +134,7 @@ func (r *Room) validateCatanScenario() error {
 		requested.Helpers, requested.AllHelpers = r.CatanOptions.Helpers, r.CatanOptions.AllHelpers
 	}
 	options, optionErr := game.NormalizeCatanOptions(requested)
-	if optionErr != nil || r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || (r.CatanScenario != "fishing" && (r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil)) || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if optionErr != nil || r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || (r.CatanScenario != "fishing" && (r.CatanFriendlyRobber != nil || r.CatanHarbors != nil)) || (r.CatanCitiesKnights != nil && r.CatanScenario != "fishing" && r.CatanScenario != "caravans") || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 		return errors.New("所选剧本与其他扩展的组合尚未开放")
 	}
 	if r.CatanCitiesKnights != nil {
@@ -206,7 +206,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
+	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || ((r.CatanScenario == "fishing" || r.CatanScenario == "caravans") && scenario != r.CatanScenario) || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if !next.publicCatanEventsAvailable() {

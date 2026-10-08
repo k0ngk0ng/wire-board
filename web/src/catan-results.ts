@@ -14,7 +14,7 @@ export function catanResultDescription(g: CatanState) {
   if (g.transport)
     return `${g.two ? "双人卡坦＋" : ""}运输任务：在自己的回合达到${target}分立即获胜。总分包含建筑、胜利点卡、最大骑士军队、已交付货物（每件1分）与马车满级奖励（1分）。本剧本不授予最长道路。`;
   if (g.two && g.citiesKnights)
-    return `双人城市与骑士：在自己的回合达到${target}分获胜。计入建筑、大都会、最长路线、防御者、公开进步牌与商人。中立势力可取得最长路线，中立骑士不参与防御。`;
+    return `双人城市与骑士${g.caravans ? "＋商队" : ""}：在自己的回合达到${target}分获胜。计入建筑、大都会、最长路线、防御者、公开进步牌与商人${g.caravans ? "，以及相邻至少两辆马车的建筑奖励（每座＋1）" : ""}。中立势力可取得最长路线，中立骑士不参与防御。`;
   if (g.two)
     return `双人卡坦${g.rivers ? "＋河流" : g.caravans ? "＋商队" : ""}：在自己的回合达到${target}分获胜。两家中立势力也可取得最长路线；总分包含建筑、当前持有的路线与军队奖励，以及胜利点卡${g.rivers ? "和当前最富（＋1）／最贫（−2）的财富分数，中立势力不参与财富比较" : g.caravans ? "和相邻至少两辆马车的建筑奖励（每座＋1）" : ""}。`;
   if (sea?.wonders || sea?.scenario === "wonders")
@@ -22,7 +22,7 @@ export function catanResultDescription(g: CatanState) {
   if (sea?.cloth || sea?.scenario === "cloth")
     return `${harbors}${g.citiesKnights ? "城市与骑士＋" : ""}卡坦布匹：在自己的行动阶段达到${target}分获胜；回合结束时至少五座村落的布匹耗尽也会结算，比较总分，同分比较布匹数量。`;
   if (g.citiesKnights)
-    return `${harbors}${g.seafarers ? "航海家＋" : ""}城市与骑士：在自己的行动阶段达到${target}分获胜。总分包含建筑、大都会、最长路线、防御者、公开进步牌和商人${g.seafarers ? "，以及本剧本的额外得分" : ""}。`;
+    return `${harbors}${g.caravans ? "商队＋" : ""}${g.seafarers ? "航海家＋" : ""}城市与骑士：在自己的行动阶段达到${target}分获胜。总分包含建筑、大都会、最长路线、防御者、公开进步牌和商人${g.caravans ? "，以及相邻至少两辆马车的建筑奖励（每座＋1）" : g.seafarers ? "，以及本剧本的额外得分" : ""}。`;
   if (sea?.pirateIslands || sea?.scenario === "pirate_islands")
     return `${harbors}海盗群岛：达到${target}分且夺回自己的要塞，才能在自己的行动阶段获胜。`;
   if (sea)

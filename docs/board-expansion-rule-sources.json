@@ -148,5 +148,95 @@
     "sha256": "f3bc5567b552a3f1f4bb5bd8532b3b1dca7825b9076983973304c4bb1116d24d",
     "bytes": 446952,
     "note": "Read and visually reviewed both pages on 2026-10-08 for F10. Specifies neutral knights, two full event/production phases, split forced trade, and progress-card changes. Page 2 explicitly limits trade-token supply; existing user-approved base two-player ledger remains unchanged. Implementation pending."
+  },
+  "catan-attack-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Barbarian%20Attack%20w%20CnK.pdf",
+    "sha256": "01d8aed8f94b6dbfdeae70405d6082c6949fb69e71adeadcee3a59d3db29277d",
+    "bytes": 447177
+  },
+  "catan-caravans-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Merchant%20Trains%20w%20C%26K.pdf",
+    "sha256": "390ae0af63a280ea4c8f9a9260458bc2b45427558ad3c956f6a88149d3e57629",
+    "bytes": 437131
+  },
+  "catan-rivers-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Rivers%20of%20Catan%20w%20CnK.pdf",
+    "sha256": "144d71b6e894dc70cc5d38f84a0b8a538308da5b30dbeb22d891c5d03afecc00",
+    "bytes": 456805
+  },
+  "catan-transport-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/TradersnBarbarians%20w%20CnK.pdf",
+    "sha256": "4e92d21d2257731fb52c61d061abef24d2cb53ade3fcd274636277a6e425d7ad",
+    "bytes": 440211
+  },
+  "catan-attack-seafarers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Barbarian%20Attack%20w%20SEA.pdf",
+    "sha256": "2d45cf5b1d51f6b1bc8b386593ed8a290861c825aec66d3cce54b1dd4f164801",
+    "bytes": 17649167
+  },
+  "catan-caravans-seafarers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-08/Merchant%20Trains%20w%20SEA_21.07.25.pdf",
+    "sha256": "ed679c91c5f2eb2ed4fd610f73425d8e71ed072493295cdf8ff6d984b705b9a3",
+    "bytes": 5615808
+  },
+  "catan-rivers-seafarers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Rivers%20of%20Catan%20w%20SEA.pdf",
+    "sha256": "1cca1424f1c1f2ffdc5d29e4505a04e239f7ef0b3eeb33c5d869a13fef31300d",
+    "bytes": 11601028
+  },
+  "catan-transport-seafarers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/TradersBarbarians%20w%20SEA.pdf",
+    "sha256": "8f9a010026fd833f909764a148fb497820257b1102162700e1c0f2587fbc7bdc",
+    "bytes": 6992457
+  },
+  "catan-attack-transport-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Barbarian%20Attack%20w%20TradersnBarbarians.pdf",
+    "sha256": "3cba3024ba55a1620adc0cf86fab5a70e04c23c3dec661467c22be299a5af194",
+    "bytes": 3215824
+  },
+  "catan-caravans-attack-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Merchant%20Trains%20w%20Barbarian%20Attack.pdf",
+    "sha256": "54f70422da3a3b163d2486ad7d927f7d0d8e868279019a4d1cc2c2b3427aa8cc",
+    "bytes": 66357
+  },
+  "catan-caravans-transport-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Merchant%20Trains%20w%20Traders%26Barbarians.pdf",
+    "sha256": "72d5a2db7bded5c42c83efa223bde13adf262cd5888e2a71b4f8b3273a8b54a7",
+    "bytes": 68643
+  },
+  "catan-fishing-caravans-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Fishing%20on%20Catan%20w%20Merchant%20Trains.pdf",
+    "sha256": "b635b03691b6a7d38850f247e22d05fb1f497960720e46ef6692a641129accb0",
+    "bytes": 65820
+  },
+  "catan-fishing-rivers-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Fishing%20on%20Catan%20w%20Rivers%20of%20Catan.pdf",
+    "sha256": "829ee23a358350e72fe1bcd702ec8977046758cee3e4cb609f71bca4ee7a1bb0",
+    "bytes": 66036
+  },
+  "catan-fishing-attack-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Fishing%20on%20Catan%20w%20Barbarian%20Attack.pdf",
+    "sha256": "ef5686ca49ab51ccea5769a7031385e88fb671065bb4724a6766eda9974fcbc6",
+    "bytes": 66524
+  },
+  "catan-fishing-transport-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-09/Fishing%20on%20Catan%20wTradersnBarbarians.pdf",
+    "sha256": "319a907ac260a4c39bec1fa7c9b20d6e8f8fdf58fb5b3ffe04f0502e5931c735",
+    "bytes": 67576
+  },
+  "catan-rivers-attack-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/RiversOfCatan%20w%20BarbarianAttack.pdf",
+    "sha256": "c0143234291cf42987009973aca06fca515355bac2e2a9e7dd2b2e1724197c94",
+    "bytes": 2847357
+  },
+  "catan-rivers-caravans-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Rivers%20of%20Catan%20w%20Merchant%20Trains.pdf",
+    "sha256": "dae66c3040d8d7075aca3bb5cb5b8e0f91eb34fdb6861b668983dd9892ec1536",
+    "bytes": 66483
+  },
+  "catan-rivers-transport-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/Rivers%20of%20Catan%20w%20TradersnBarbarians.pdf",
+    "sha256": "f75c9f1809d2111564bb25a4ddcf9054ea05146f88974d85f4e551c85eaa005c",
+    "bytes": 72478
   }
 }

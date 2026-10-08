@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"slices"
 )
 
@@ -63,17 +64,24 @@ func (s *State) validateCaravans() error {
 		return nil
 	}
 	n := len(g.Players)
-	if g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
+	if g.Rivers != nil || g.Fishing != nil || g.BaseSetup != nil || g.Seafarers != nil || g.CitiesKnights != nil && !g.caravanKnights() || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("商队状态或尚未核对的组合无效")
+	}
+	if err := g.validateCaravanKnights(); err != nil {
+		return err
 	}
 	if err := c.validate(g); err != nil {
 		return err
 	}
-	if len(g.Bank) != 5 || (g.setup() && (c.Built || c.Sequence != 0 || len(c.Wagons) != 0)) {
+	cards := 5
+	if g.caravanKnights() {
+		cards = 8
+	}
+	if len(g.Bank) != cards || (g.setup() && (c.Built || c.Sequence != 0 || len(c.Wagons) != 0)) {
 		return errors.New("商队起始状态或银行无效")
 	}
 	for _, seat := range g.Players {
-		if !catanBundle(seat.Resources) {
+		if !g.cardBundle(seat.Resources) {
 			return errors.New("商队玩家资源无效")
 		}
 	}
@@ -83,7 +91,10 @@ func (s *State) validateCaravans() error {
 	if g.CardEvent != nil && (q != nil || c.Built) {
 		return errors.New("事件结算不能与商队建设或投票重叠")
 	}
-	if q != nil && g.EventDeck != nil && (g.RevealedEvent == nil || !g.RevealedEvent.ProductionStarted || g.Two != nil && len(g.Two.Rolls) != 2) {
+	if q != nil && g.CitiesKnights != nil && (g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil) {
+		return errors.New("城市事件必须先于商队投票完成")
+	}
+	if q != nil && g.EventDeck != nil && ((g.RevealedEvent == nil && !(g.caravanKnights() && g.EventDeck.alchemyLatest(g.RollID))) || g.RevealedEvent != nil && !g.RevealedEvent.ProductionStarted || g.Two != nil && len(g.Two.Rolls) != 2) {
 		return errors.New("商队投票前必须完成本回合事件生产")
 	}
 	if err := c.validateShortRounds(g); err != nil {
@@ -122,8 +133,8 @@ func (s *State) validateCaravans() error {
 		}
 		submitted := q.Kind != "bid" || index < q.Cursor
 		if submitted {
-			if !catanBundle(bid) || bid[0] != 0 || bid[1] != 0 || bid[4] != 0 {
-				return errors.New("商队出价只能使用羊毛和粮食")
+			if !g.validCaravanBid(bid) {
+				return fmt.Errorf("商队出价只能使用%s", g.caravanBidNames())
 			}
 		} else if bid != nil {
 			return errors.New("商队尚未轮到此人出价")
@@ -175,13 +186,19 @@ func (s *State) validateCaravans() error {
 		stock = 24
 	}
 	for color, bank := range g.Bank {
+		if color >= 5 {
+			stock = 12
+			if n > 4 {
+				stock = 18
+			}
+		}
 		if bank < 0 || bank > stock {
 			return errors.New("商队银行库存无效")
 		}
 		total := bank
 		for p := range g.Players {
 			total += g.Players[p].Resources[color]
-			if q.Bids[p] != nil {
+			if color < len(q.Bids[p]) {
 				total += q.Bids[p][color]
 			}
 		}
@@ -210,7 +227,7 @@ func (s *State) catanBeginCaravanVote() bool {
 	}
 	g.Trade = nil
 	s.Phase = "catan_caravan_bid"
-	s.catanLog(s.Turn, "结束建设，开始商队投票：每张羊毛或粮食算一票")
+	s.catanLog(s.Turn, "结束建设，开始商队投票：每张%s算一票", g.caravanBidNames())
 	return true
 }
 
@@ -277,8 +294,8 @@ func (s *State) catanCaravanAction(player int, a Action) error {
 	}
 	switch q.Kind {
 	case "bid":
-		if !catanBundle(a.Tokens) || a.Tokens[0] != 0 || a.Tokens[1] != 0 || a.Tokens[4] != 0 || !catanHas(g.Players[player].Resources, a.Tokens) {
-			return errors.New("请选择持有的羊毛和粮食，也可不出价")
+		if !g.validCaravanBid(a.Tokens) || !catanHas(g.Players[player].Resources, a.Tokens) {
+			return fmt.Errorf("请选择持有的%s，也可不出价", g.caravanBidNames())
 		}
 		q.Bids[player] = append([]int{}, a.Tokens...)
 		for color, n := range a.Tokens {
@@ -423,7 +440,7 @@ func (s *State) catanCaravanBot(player int) (Action, error) {
 			if bestValue >= 40 {
 				limit = 3
 			}
-			for _, color := range []int{2, 3} {
+			for _, color := range g.caravanBidColors() {
 				a.Tokens[color] = min(limit, max(0, g.Players[player].Resources[color]-2))
 				limit -= a.Tokens[color]
 			}

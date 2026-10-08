@@ -207,7 +207,7 @@ func (s *State) validateCatanTwo() error {
 		}
 		if g.Caravans != nil && g.Caravans.Pending != nil {
 			for _, bid := range g.Caravans.Pending.Bids {
-				if len(bid) == 5 {
+				if len(bid) == 5 && color < 5 {
 					total += bid[color]
 				}
 			}

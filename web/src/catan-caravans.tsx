@@ -248,6 +248,9 @@ export function CatanCaravanPanel({
     if (selected) setCollapsed(false);
   }, [selected]);
   if (!c) return null;
+  const bidColors = g.citiesKnights ? [0, 1] : [2, 3];
+  const bidNames = g.citiesKnights ? "木材或砖块" : "羊毛或粮食";
+  const target = g.victoryTarget || (g.citiesKnights ? 15 : 12);
   const mine = caravanCanRespond(room);
   const choice = caravanSelected(g, selected);
   const alternatives = (c.choices || []).filter(
@@ -264,7 +267,7 @@ export function CatanCaravanPanel({
           <small>
             {c.built
               ? "本次已建建筑，结束行动后投票放车"
-              : "建造建筑后投票放车 · 12分获胜"}
+              : `建造建筑后投票放车 · ${target}分获胜`}
           </small>
         </div>
       </section>
@@ -304,7 +307,7 @@ export function CatanCaravanPanel({
             <div className="catan-gold-body">
               <p>
                 {q.kind === "bid"
-                  ? "每张羊毛或粮食算1票，可不出价。确认后无法更改，放车结束后归还银行。"
+                  ? `每张${bidNames}算1票，可不出价。确认后无法更改，放车结束后归还银行。`
                   : q.kind === "vote"
                     ? "可在聊天中协商，再把全部选票投给一个位置；确认后无法更改。"
                     : mine
@@ -373,7 +376,7 @@ export function CatanCaravanPanel({
                     </span>
                     {q.bids[p] && votes(q.bids[p]) > 0 && (
                       <div className="caravan-bid-cards">
-                        {[2, 3]
+                        {bidColors
                           .filter((color) => q.bids[p]![color] > 0)
                           .map((color) => (
                             <CatanResource
@@ -398,13 +401,13 @@ export function CatanCaravanPanel({
               {mine && q.kind === "bid" && (
                 <>
                   <div className="caravan-bid-picker">
-                    {[2, 3].map((color) => (
+                    {bidColors.map((color) => (
                       <div key={color}>
                         <CatanResource color={color} assets={assets} small />
                         <small>持有 {hand[color]}</small>
                         <div className="catan-stepper">
                           <button
-                            aria-label={`出价减少${color === 2 ? "羊毛" : "粮食"}`}
+                            aria-label={`出价减少${["木材", "砖块", "羊毛", "粮食"][color]}`}
                             disabled={busy || bid[color] === 0}
                             onClick={() =>
                               setBid(
@@ -416,7 +419,7 @@ export function CatanCaravanPanel({
                           </button>
                           <output>{bid[color]}</output>
                           <button
-                            aria-label={`出价增加${color === 2 ? "羊毛" : "粮食"}`}
+                            aria-label={`出价增加${["木材", "砖块", "羊毛", "粮食"][color]}`}
                             disabled={busy || bid[color] >= hand[color]}
                             onClick={() =>
                               setBid(
