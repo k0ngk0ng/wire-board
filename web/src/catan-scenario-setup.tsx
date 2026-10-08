@@ -322,9 +322,6 @@ export function CatanScenarioPicker({
                           "barbarian-attack",
                           "transport",
                         ].includes(s.id))) ||
-                (players > 4 &&
-                  (friendly || harbors) &&
-                  isPublicCatanSea(s.id)) ||
                 (friendly && s.id === "shores" && players < 4) ||
                 (friendly &&
                   isPublicCatanSea(s.id) &&

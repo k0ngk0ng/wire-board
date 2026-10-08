@@ -746,7 +746,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanHarbors != nil {
 		if !room.publicCatanHarborsAvailable() {
-			fail(w, 400, "港口霸主支持基础及城市骑士三至六人，以及三四人航海家")
+			fail(w, 400, "港口霸主支持基础、城市骑士及航海家三至六人")
 			return
 		}
 		if err := room.setCatanHarbors(*req.CatanHarbors); err != nil {
@@ -760,7 +760,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanFriendlyRobber != nil {
 		if !room.publicCatanFriendlyAvailable() {
-			fail(w, 400, "友善强盗支持基础三至六人及已核验的三四人航海图")
+			fail(w, 400, "友善强盗支持基础及已核验的航海图三至六人")
 			return
 		}
 		if err := room.setCatanFriendlyRobber(*req.CatanFriendlyRobber); err != nil {
@@ -1035,8 +1035,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil && options == next.CatanOptions {
 			break
 		}
-		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() {
-			err = errors.New("友善强盗的五六人公开组合需要基础地图")
+		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !publicCatanSeaScenario(next.CatanScenario) {
+			err = errors.New("友善强盗的五六人公开组合需要基础或已核验的航海地图")
 		}
 		if err == nil && next.friendlyRobberEnabled() && (options.Helpers || options.AllHelpers) {
 			err = errors.New("友善强盗与助手的组合尚未核验")
@@ -1044,8 +1044,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && (options.Helpers || options.AllHelpers) {
 			err = errors.New("港口霸主与助手的组合尚未核验")
 		}
-		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() {
-			err = errors.New("港口霸主的五六人公开组合需要基础或城市骑士地图")
+		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && !publicCatanSeaScenario(next.CatanScenario) {
+			err = errors.New("港口霸主的五六人公开组合需要基础、城市骑士或航海地图")
 		}
 		if err == nil && next.CatanCitiesKnights != nil {
 			if options.Helpers || options.AllHelpers {

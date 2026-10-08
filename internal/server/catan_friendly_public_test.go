@@ -45,7 +45,7 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	c.register("公开友善朋友")
 	for _, body := range []map[string]any{
 		{"kind": "splendor", "capacity": 3}, {"kind": "catan", "capacity": 2},
-		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fog"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "rivers"},

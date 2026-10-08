@@ -92,9 +92,6 @@ func (r *Room) validateCatanScenario() error {
 		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity || (r.Capacity > 4) != r.CatanOptions.FiveSix {
 			return errors.New("航海家支持三至六人；五六人必须启用人数扩充，渔夫组合目前仅迷雾、奇迹、新世界支持五六人")
 		}
-		if r.Capacity > 4 && ((r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.friendlyRobberEnabled()) {
-			return errors.New("五六人航海家与港口霸主或友善强盗的公开组合尚未接通")
-		}
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err
 		}

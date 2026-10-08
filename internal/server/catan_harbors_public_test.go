@@ -19,7 +19,7 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "splendor", "capacity": 3},
 		{"kind": "catan", "capacity": 2},
-		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fishing"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "transport"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "islands", "catanFishing": true},
@@ -119,7 +119,7 @@ func TestCatanFriendlyPublicFullHTTPGames(t *testing.T) {
 }
 func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 	for _, scene := range []string{"", "shores", "islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world"} {
-		for _, n := range []int{3, 4} {
+		for _, n := range []int{3, 4, 5, 6} {
 			if friendly && scene != "" && !game.CatanFriendlySeafarersSupported(n, scene) {
 				continue
 			}
@@ -131,7 +131,7 @@ func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 					clients[p] = newClient(t, ts.URL)
 					clients[p].register(fmt.Sprintf("港口整局%d", p))
 				}
-				body := map[string]any{"kind": "catan", "name": "公开变体整局", "capacity": n, "catanScenario": scene}
+				body := map[string]any{"kind": "catan", "name": "公开变体整局", "capacity": n, "catanScenario": scene, "catanOptions": game.CatanOptions{FiveSix: n > 4}}
 				if harbors {
 					body["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
 				}
@@ -145,7 +145,7 @@ func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 				}
 				if scene != "" {
 					layout := "fixed"
-					if n == 4 && scene != "pirate_islands" {
+					if (n == 4 && scene != "pirate_islands") || (n > 4 && scene == "shores") {
 						layout = "variable"
 					}
 					if scene == "new_world" {
@@ -181,7 +181,11 @@ func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 						for _, p := range g.Players {
 							total += p.Resources[color]
 						}
-						if total != 19 {
+						supply := 19
+						if n > 4 {
+							supply = 24
+						}
+						if total != supply {
 							t.Fatal("resource supply", color, total)
 						}
 					}
@@ -281,7 +285,11 @@ func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 				if friendly && record["catanExpansionRules"].(map[string]any)["friendly_robber"] != game.CatanFriendlyRobberRules {
 					t.Fatal("missing friendly history")
 				}
-				if scene != "" && record["catanScenario"] != scene {
+				expectedScene := scene
+				if n > 4 && scene == "islands" {
+					expectedScene = "six_islands"
+				}
+				if scene != "" && record["catanScenario"] != expectedScene {
 					t.Fatal("wrong map history")
 				}
 				var count int
@@ -321,6 +329,7 @@ func assertPublicHarborsClothVictory(t *testing.T, s *game.State, target int) {
 			winners = append(winners, p)
 		}
 	}
+	// The extension retains the five-empty-village ending.
 	if empty < 5 || !slices.Equal(s.Winners, winners) {
 		t.Fatal("wrong cloth depletion result")
 	}
@@ -328,6 +337,6 @@ func assertPublicHarborsClothVictory(t *testing.T, s *game.State, target int) {
 
 func TestCatanHarborsSeaKnightsPublicFullHTTPGames(t *testing.T) {
 	for _, scene := range []string{"shores", "islands", "fog", "desert", "new_world", "wonders", "cloth"} {
-		t.Run(scene, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scene, true, 3, 4) })
+		t.Run(scene, func(t *testing.T) { testCatanCitiesKnightsConfiguredFullHTTPGames(t, scene, true, 3, 4, 5, 6) })
 	}
 }
