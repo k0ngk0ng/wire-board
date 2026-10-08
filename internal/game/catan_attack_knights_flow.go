@@ -69,7 +69,13 @@ func (s *State) catanAttackCityReplayPlan() (*catanAttackCity, *catanAttackCityR
 		if !originals[order.From] || moved[order.From] || arrivals[order.From] || order.From == order.To {
 			return nil, nil, 0, errors.New("移动计划包含重复骑士或无效起点")
 		}
+		if len(order.Tokens) > 0 && !order.Fish {
+			return nil, nil, 0, errors.New("普通移动不能附加鱼支付")
+		}
 		if tc.at(order.To) >= 0 {
+			if order.Fish {
+				return nil, nil, 0, errors.New("鱼不能用于驱逐骑士")
+			}
 			if usedDisplacement {
 				return nil, nil, 0, errors.New("一轮最多驱逐一名道路骑士")
 			}
@@ -97,7 +103,7 @@ func (s *State) catanAttackCityReplayPlan() (*catanAttackCity, *catanAttackCityR
 			if order.Retreat != -1 {
 				return nil, nil, 0, errors.New("普通移动夹带他人退让")
 			}
-			if err := tc.move(&trial, q.Player, order.From, order.To); err != nil {
+			if err := tc.moveOrder(&trial, q.Player, order); err != nil {
 				return nil, nil, 0, err
 			}
 		}
@@ -172,7 +178,7 @@ func (s *State) catanAttackCityPlanStep(player int, a Action) error {
 	g := s.Catan
 	c := g.Attack.City
 	q := c.Plan
-	if q == nil || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || a.Prompt != q.ID || a.Type != "catan_attack_city_move" || a.Skill != "" || len(a.Tokens) != 0 || len(a.Targets) != 0 || len(a.Cards) != 0 {
+	if q == nil || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || a.Prompt != q.ID || a.Type != "catan_attack_city_move" || a.Skill != "" || len(a.Tokens) != 0 && a.Choice != "fish" || len(a.Targets) != 0 || len(a.Cards) != 0 {
 		return errors.New("道路骑士回应已过期或请求无效")
 	}
 	if q.Pending != nil {
@@ -189,12 +195,12 @@ func (s *State) catanAttackCityPlanStep(player int, a Action) error {
 		return errors.New("请等待当前玩家完成道路骑士移动")
 	}
 	switch a.Choice {
-	case "move", "displace":
+	case "move", "displace", "fish":
 		occupied := c.at(a.Target) >= 0
 		if occupied != (a.Choice == "displace") {
 			return errors.New("移动或驱逐类型与目标不符")
 		}
-		q.Orders = append(q.Orders, catanAttackCityOrder{From: a.Edge, To: a.Target, Retreat: -1})
+		q.Orders = append(q.Orders, catanAttackCityOrder{From: a.Edge, To: a.Target, Retreat: -1, Fish: a.Choice == "fish", Tokens: slices.Clone(a.Tokens)})
 		return s.catanAttackCitySyncPlan()
 	case "undo":
 		if len(q.Orders) <= q.Locked {
@@ -214,6 +220,17 @@ func (s *State) catanAttackCityPlanStep(player int, a Action) error {
 			}
 		}
 		for _, order := range q.Orders {
+			if order.Fish {
+				cost := g.fishActionCost(q.Player, "catan_fish_knight")
+				if err := g.Fishing.Tokens.spend(q.Player, order.Tokens, cost); err != nil {
+					return err
+				}
+				paid := 0
+				for _, id := range order.Tokens {
+					paid += catanFishValue(id)
+				}
+				s.catanLog(q.Player, "支付 %d 鱼（费用 %d，多付不找零），延长骑士移动", paid, cost)
+			}
 			s.catanLog(q.Player, "道路骑士从路线 #%d 移至 #%d，移动后失活", order.From+1, order.To+1)
 			if order.Retreat >= 0 {
 				s.catanLog(q.Player, "被驱逐的骑士由其主人退至路线 #%d", order.Retreat+1)

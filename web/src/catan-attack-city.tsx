@@ -1,3 +1,4 @@
+import { AttackFishPayment } from "./catan-attack-fish";
 import { useEffect, useState } from "react";
 import { twoNeutralName } from "./catan-two-state";
 import type { Room } from "./types";
@@ -36,8 +37,9 @@ export function CatanAttackCityMap({
     can = canAct(room) && !busy && !!choices;
   const move = choices?.moves?.find((m) => m.from === selected.from);
   const targets = [
-    ...(move?.move || []),
-    ...(move?.displace || []),
+    ...(selected.fish
+      ? move?.fish || []
+      : [...(move?.move || []), ...(move?.displace || [])]),
     ...(choices?.retreat || []),
     ...(choices?.recruit || []),
     ...(choices?.activate || []),
@@ -197,7 +199,12 @@ export function CatanAttackCityPanel({
   const target = selected.target;
   const selectedMove =
     target != null &&
-    (move?.move.includes(target) || move?.displace.includes(target));
+    (selected.fish
+      ? move?.fish?.includes(target) &&
+        (q?.fishTokens || [])
+          .filter((t) => selected.tokens?.includes(t.id))
+          .reduce((sum, t) => sum + t.fish, 0) >= (q?.fishCost || 2)
+      : move?.move.includes(target) || move?.displace.includes(target));
   return (
     <div className="attack-city-panel">
       <p>
@@ -238,6 +245,16 @@ export function CatanAttackCityPanel({
               ))}
             </div>
           )}
+          {!plan.awaitingRetreat && q.fishTokens && selected.from !== null && (
+            <AttackFishPayment
+              pick={selected}
+              onSelect={onSelect}
+              tokens={q.fishTokens}
+              cost={q.fishCost || 2}
+              available={!!move?.fish?.length}
+              disabled={!can}
+            />
+          )}
           {plan.awaitingRetreat && (
             <div className="attack-picks">
               {q.retreat?.map((edge) => (
@@ -271,11 +288,16 @@ export function CatanAttackCityPanel({
                   prompt: plan.id,
                   choice: plan.awaitingRetreat
                     ? "retreat"
-                    : move?.displace.includes(target!)
-                      ? "displace"
-                      : "move",
+                    : selected.fish
+                      ? "fish"
+                      : move?.displace.includes(target!)
+                        ? "displace"
+                        : "move",
                   edge: plan.awaitingRetreat ? target : selected.from,
                   target,
+                  ...(selected.fish && !plan.awaitingRetreat
+                    ? { tokens: selected.tokens || [] }
+                    : {}),
                 })
               }
             >

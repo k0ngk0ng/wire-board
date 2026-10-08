@@ -15,8 +15,16 @@ func (s *State) validateAttackCityState() error {
 	a, c, k := g.Attack, g.Attack.City, g.CitiesKnights
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
-	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
+	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
 		return errors.New("蛮族城市骑士人数、组件或组合配置无效")
+	}
+	if g.fishingAttack() {
+		if err := g.validateFishing(); err != nil {
+			return err
+		}
+		if (g.Fishing.Pending != nil) != (s.Phase == "catan_fish_replace") {
+			return errors.New("道路骑士捕鱼回应阶段冲突")
+		}
 	}
 	if err := s.validateCatanTwo(); err != nil {
 		return err
@@ -77,7 +85,7 @@ func (s *State) validateAttackCityState() error {
 			return errors.New("组合资源商品库存不守恒")
 		}
 	}
-	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_roads", "catan_card_event", catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place", "finished"}
+	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_roads", "catan_card_event", "catan_fish_replace", catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place", "finished"}
 	phases = append(phases, catanTransportCityPhases...)
 	if g.twoAttackKnights() {
 		phases = append(phases, "catan_two_build", "catan_two_trade")

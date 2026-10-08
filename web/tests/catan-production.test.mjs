@@ -49,3 +49,9 @@ test("ordinary, sea and old fishing maps need no extra number metadata", () => {
   assert.equal(catanTileProducing(g, 1, 0), false);
   assert.deepEqual(catanProductionNumbers(g, 99), []);
 });
+
+test("no-lake combinations tolerate old null lake arrays",()=>{
+ const g={robber:-1,tiles:[{number:6}],fishing:{map:{lakes:null}}};
+ assert.deepEqual(catanProductionNumbers(g,0),[6]);
+ assert.equal(catanTileProducing(g,0,6),true);
+});

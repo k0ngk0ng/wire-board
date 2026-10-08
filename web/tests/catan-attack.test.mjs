@@ -213,3 +213,16 @@ test("Attack city target is thirteen and ordinary attack stays twelve", () => {
   delete g.citiesKnights;
   assert.equal(catanSavedVictoryTarget(g), 12);
 });
+
+test("fish movement requires selected payment and authoritative five-step choices", () => {
+  const room=fixture(),a=room.game.catan.attack;
+  delete a.pending;
+  a.endPlan={id:12,player:0};
+  a.moveChoices=[{from:8,normal:[2],wheat:[2,5],fish:[2,5]}];
+  a.fishCost=2;a.fishTokens=[{id:3,fish:1},{id:13,fish:2}];
+  const pick={...emptyAttackSelection(),from:8,target:5,fish:true,tokens:[3]};
+  assert.equal(attackSelectedAction(room,pick),null);
+  assert.deepEqual(attackSelectedAction(room,{...pick,tokens:[13]}),{type:"catan_attack_move",prompt:12,choice:"fish",edge:8,target:5,tokens:[13]});
+  assert.equal(attackSelectedAction(room,{...pick,tokens:[99]}),null);
+  assert.equal(attackSelectedAction(room,{...pick,target:9,tokens:[13]}),null);
+});

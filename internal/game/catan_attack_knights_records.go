@@ -18,8 +18,29 @@ func (s *State) validateAttackCityEnd() error {
 	if g.setup() || c.Sequence < 1 || q.Player < 0 || q.Player >= n || len(q.Orders) > g.attackCityMoveLimit() || len(q.Battles) > len(g.Attack.Map.Coast) {
 		return errors.New("道路骑士历史结算无效")
 	}
+	paidFish := map[int]bool{}
 	used := map[int]bool{}
 	for _, m := range q.Orders {
+		if !m.Fish && len(m.Tokens) > 0 || m.Fish && (!g.fishingAttack() || m.Retreat != -1 || len(m.Tokens) == 0 || len(m.Tokens) > 7) {
+			return errors.New("道路骑士历史鱼支付无效")
+		}
+		if m.Fish {
+			paid := 0
+			for _, id := range m.Tokens {
+				if id < 0 || id >= g.Fishing.Tokens.size() || catanFishValue(id) == 0 || paidFish[id] {
+					return errors.New("道路骑士鱼支付重复或无效")
+				}
+				paidFish[id] = true
+				paid += catanFishValue(id)
+			}
+			minimum := 2
+			if g.twoFishing() {
+				minimum = 1
+			}
+			if paid < minimum {
+				return errors.New("道路骑士历史鱼支付不足")
+			}
+		}
 		if m.From < 0 || m.From >= len(g.Edges) || m.To < 0 || m.To >= len(g.Edges) || m.From == m.To || used[m.From] || g.Attack.castleEdge(g, m.To) || m.Retreat < -1 || m.Retreat >= len(g.Edges) || m.Retreat >= 0 && (m.Retreat == m.To || g.Attack.castleEdge(g, m.Retreat)) {
 			return errors.New("道路骑士历史移动无效")
 		}

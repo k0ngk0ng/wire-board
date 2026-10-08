@@ -1,3 +1,4 @@
+import { AttackFishPayment } from "./catan-attack-fish";
 import { useEffect, useState } from "react";
 import type { Room, CatanState } from "./types";
 import { CatanCoins } from "./catan-rivers";
@@ -477,6 +478,8 @@ export function CatanAttackPanel({
                           onSelect({
                             ...selected,
                             wheat: e.target.checked,
+                            fish: false,
+                            tokens: [],
                             target: null,
                           })
                         }
@@ -484,6 +487,19 @@ export function CatanAttackPanel({
                       <CatanResource color={3} assets={assets} />
                       支付1粮，最多5步（可用 {a.previewWheat}）
                     </label>
+                  )}
+                  {g.fishing?.attack && selected.from !== null && (
+                    <AttackFishPayment
+                      pick={selected}
+                      onSelect={onSelect}
+                      tokens={a.fishTokens || []}
+                      cost={a.fishCost || 2}
+                      available={
+                        !!a.moveChoices?.find((c) => c.from === selected.from)
+                          ?.fish?.length
+                      }
+                      disabled={busy}
+                    />
                   )}
                   <p>
                     {selected.target !== null
@@ -505,7 +521,11 @@ export function CatanAttackPanel({
                       {plan.moves.map((m) => (
                         <li key={m.from}>
                           #{m.from + 1} → #{m.to + 1}
-                          {m.wheat ? " · 支付1粮" : " · 3步内"}
+                          {m.fish
+                            ? " · 鱼支付，5步内"
+                            : m.wheat
+                              ? " · 支付1粮"
+                              : " · 3步内"}
                         </li>
                       ))}
                     </ol>

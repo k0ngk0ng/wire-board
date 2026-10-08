@@ -224,6 +224,9 @@ func TestCatanFishingAttackConquestAndMapIsolation(t *testing.T) {
 			t.Fatal(e)
 		}
 		g := s.Catan
+		if g.Fishing.Map.Lakes == nil {
+			t.Fatal("no-lake map must serialize an empty array")
+		}
 		found := false
 		for _, ground := range g.Fishing.Map.Grounds {
 			for _, v := range ground.Vertices {

@@ -6,9 +6,11 @@ import (
 )
 
 type catanAttackCityOrder struct {
-	From    int `json:"from"`
-	To      int `json:"to"`
-	Retreat int `json:"retreat"` // -1 for a normal move; owner-selected edge otherwise.
+	Fish    bool  `json:"fish,omitempty"`
+	Tokens  []int `json:"tokens,omitempty"`
+	From    int   `json:"from"`
+	To      int   `json:"to"`
+	Retreat int   `json:"retreat"` // -1 for a normal move; owner-selected edge otherwise.
 }
 type catanAttackCityEnd struct {
 	Player  int                     `json:"player"`
@@ -49,7 +51,13 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 				return nil, errors.New("同一骑士不能借空出的位置重复移动")
 			}
 		}
+		if len(order.Tokens) > 0 && !order.Fish {
+			return nil, errors.New("普通移动不能附加鱼支付")
+		}
 		if c.at(order.To) >= 0 {
+			if order.Fish {
+				return nil, errors.New("鱼不能用于驱逐骑士")
+			}
 			if displacements > 0 {
 				return nil, errors.New("每回合末最多用一名骑士驱逐对手")
 			}
@@ -67,7 +75,7 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 			if order.Retreat != -1 {
 				return nil, errors.New("普通移动不能夹带退让选择")
 			}
-			if err := c.move(g, s.Turn, order.From, order.To); err != nil {
+			if err := c.moveOrder(g, s.Turn, order); err != nil {
 				return nil, err
 			}
 		}

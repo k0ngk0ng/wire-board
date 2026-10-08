@@ -4,6 +4,8 @@ export type AttackSelection = {
   from: number | null;
   target: number | null;
   wheat: boolean;
+  fish?: boolean;
+  tokens?: number[];
   sources: number[];
   destinations: number[];
 };
@@ -41,7 +43,9 @@ export function attackChoices(room: Room, pick: AttackSelection) {
     const move = a.moveChoices?.find((c) => c.from === pick.from);
     return {
       tiles: [],
-      edges: (pick.wheat ? move?.wheat : move?.normal) || [],
+      edges:
+        (pick.fish ? move?.fish : pick.wheat ? move?.wheat : move?.normal) ||
+        [],
       sources: false,
     };
   }
@@ -89,11 +93,16 @@ export function attackSelectedAction(
   if (a.endPlan) {
     return pick.from !== null &&
       pick.target !== null &&
-      legal.edges.includes(pick.target)
+      legal.edges.includes(pick.target) &&
+      (!pick.fish ||
+        (a.fishTokens || [])
+          .filter((t) => (pick.tokens || []).includes(t.id))
+          .reduce((sum, t) => sum + t.fish, 0) >= (a.fishCost || 2))
       ? {
           type: "catan_attack_move",
           prompt: a.endPlan.id,
-          choice: pick.wheat ? "wheat" : "normal",
+          choice: pick.fish ? "fish" : pick.wheat ? "wheat" : "normal",
+          ...(pick.fish ? { tokens: pick.tokens || [] } : {}),
           edge: pick.from,
           target: pick.target,
         }
