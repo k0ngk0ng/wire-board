@@ -5,6 +5,7 @@ export function CatanEventPicker({
   cloth = false,
   friendly = false,
   fishing = false,
+  pirateIslands = false,
   onChange,
 }: {
   value: boolean;
@@ -13,6 +14,7 @@ export function CatanEventPicker({
   cloth?: boolean;
   friendly?: boolean;
   fishing?: boolean;
+  pirateIslands?: boolean;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -36,6 +38,11 @@ export function CatanEventPicker({
       {fishing && (
         <p className="muted small">
           湖泊和渔场按牌面点数产鱼；瘟疫不减少鱼筹码。事件先完成，满额换鱼后再选择金矿资源或引水渠补偿；鱼不参与资源赠送、偷取或7点弃牌。
+        </p>
+      )}
+      {pirateIslands && (
+        <p className="muted small">
+          本站补充规则：事件牌只决定生产，另掷两颗舰队骰并取较小值决定巡航和攻击；事件完成后先结算舰队奖励，再生产。强盗逃跑没有效果。
         </p>
       )}
       {friendly && (

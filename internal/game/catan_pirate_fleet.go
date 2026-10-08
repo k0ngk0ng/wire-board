@@ -8,8 +8,9 @@ import (
 // A victorious defense is resolved before production / seven discards. The
 // stored continuation prevents reloads and timeouts from moving the fleet twice.
 type CatanPirateRaid struct {
-	Rewards []int `json:"rewards"`
-	Total   int   `json:"total"`
+	Rewards  []int `json:"rewards"`
+	Total    int   `json:"total"`
+	Epidemic bool  `json:"epidemic,omitempty"`
 }
 
 func (g *Catan) pirateIslands() *CatanPirateIslands {
@@ -31,6 +32,17 @@ func (g *Catan) warships(player int) int {
 // catanRaidFleet returns true when it started an asynchronous reward choice.
 func (s *State) catanRaidFleet(total int) (bool, error) {
 	g := s.Catan
+	if g.pirateIslands() == nil || g.Seafarers.Pirate < 0 {
+		return false, nil
+	}
+	if len(g.Dice) != 2 || total != sum(g.Dice) {
+		return false, errors.New("海盗巡航骰子无效")
+	}
+	return s.catanRaidFleetDice(total, false, [2]int{g.Dice[0], g.Dice[1]})
+}
+
+func (s *State) catanRaidFleetDice(total int, epidemic bool, dice [2]int) (bool, error) {
+	g := s.Catan
 	p := g.pirateIslands()
 	if p == nil || g.Seafarers.Pirate < 0 {
 		return false, nil
@@ -39,10 +51,10 @@ func (s *State) catanRaidFleet(total int) (bool, error) {
 		return false, errors.New("海盗进攻尚未结算")
 	}
 	at := slices.Index(p.FleetPath, g.Seafarers.Pirate)
-	if at < 0 || len(g.Dice) != 2 || g.Dice[0] < 1 || g.Dice[0] > 6 || g.Dice[1] < 1 || g.Dice[1] > 6 || total != sum(g.Dice) {
+	if at < 0 || dice[0] < 1 || dice[0] > 6 || dice[1] < 1 || dice[1] > 6 || total < 2 || total > 12 {
 		return false, errors.New("海盗巡航状态无效")
 	}
-	strength := min(g.Dice[0], g.Dice[1])
+	strength := min(dice[0], dice[1])
 	tile := p.FleetPath[(at+strength)%len(p.FleetPath)]
 	if tile < 0 || tile >= len(g.Tiles) || g.Tiles[tile].Resource != CatanSea {
 		return false, errors.New("海盗巡航必须停在海域")
@@ -60,7 +72,7 @@ func (s *State) catanRaidFleet(total int) (bool, error) {
 			attacked[v.Owner] = true
 		}
 	}
-	q := &CatanPirateRaid{Total: total}
+	q := &CatanPirateRaid{Total: total, Epidemic: epidemic}
 	for step := 0; step < len(g.Players); step++ {
 		player := (s.Turn + step) % len(g.Players)
 		if !attacked[player] {
@@ -124,7 +136,7 @@ func (s *State) catanFleetReward(player int, a Action) error {
 		s.Log = append(s.Log, "银行无剩余资源，其余防守奖励无法领取")
 	}
 	p.Raid = nil
-	return s.catanRollProduction(q.Total)
+	return s.catanRollProductionEffect(q.Total, q.Epidemic)
 }
 func (s *State) catanFleetRewardBot(player int) (Action, error) {
 	g := s.Catan

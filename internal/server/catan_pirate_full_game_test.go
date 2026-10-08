@@ -10,10 +10,17 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// The room selector intentionally remains closed. Provision the waiting-room
-// configuration; start and all moves use real authenticated HTTP requests,
-// the production autoplay dispatcher or the production timeout handler.
+// Creation, start and all moves use authenticated public HTTP, plus the
+// production autoplay dispatcher and timeout handler.
 func TestCatanPirateFullHTTPGames(t *testing.T) {
+	testCatanPirateEventsFullHTTP(t, false)
+}
+
+func TestCatanPirateEventsFullHTTPGames(t *testing.T) {
+	testCatanPirateEventsFullHTTP(t, true)
+}
+
+func testCatanPirateEventsFullHTTP(t *testing.T, events bool) {
 	for _, n := range []int{3, 4, 5, 6} {
 		for _, helpers := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/helpers=%v", n, helpers), func(t *testing.T) {
@@ -25,12 +32,17 @@ func TestCatanPirateFullHTTPGames(t *testing.T) {
 					clients[i].register(fmt.Sprintf("远征玩家%d", i))
 				}
 				options := game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers}
-				r := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "海盗群岛联机验证", "capacity": n, "catanOptions": options}, 201)
+				body := map[string]any{"kind": "catan", "name": "海盗群岛联机验证", "capacity": n, "catanOptions": options, "catanScenario": "pirate_islands"}
+				if events {
+					body["catanEvents"] = game.CatanEventCatalogue
+					body["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+					body["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
+				}
+				r := clients[0].post("/api/rooms", body, 201)
 				id := r["id"].(string)
 				for i := 1; i < n; i++ {
 					clients[i].command(current(clients[0]), "join", nil, 200)
 				}
-				provisionSeafarers(t, s, id, game.CatanSeafarersSetup{Scenario: "pirate_islands"})
 				for i := 0; i < n; i++ {
 					clients[i].command(current(clients[0]), "ready", nil, 200)
 				}
@@ -92,6 +104,9 @@ func TestCatanPirateFullHTTPGames(t *testing.T) {
 						}
 					}
 					if steps%61 == 0 {
+						if events {
+							assertPublicEventsPrivacy(t, clients)
+						}
 						for _, viewer := range []int{actor, n} {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
 							if _, leak := v["devDeck"]; leak {
@@ -165,6 +180,13 @@ func TestCatanPirateFullHTTPGames(t *testing.T) {
 				stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 				if stats["wins"] != float64(1) || stats["played"] != float64(1) {
 					t.Fatal("history result missing", stats)
+				}
+				if events {
+					record := profile["history"].([]any)[0].(map[string]any)
+					rules := record["catanExpansionRules"].(map[string]any)
+					if rules["event_cards"] != game.CatanEventCatalogue || rules["event_fleet"] != game.CatanEventFleetRules || g.Players[winner].Score < 11 {
+						t.Fatal("event fleet archive/victory", rules)
+					}
 				}
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{"leave": true}, 200)
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 400)

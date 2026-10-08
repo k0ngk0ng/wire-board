@@ -2330,6 +2330,7 @@ function Create({
         {eventsAvailable && (
           <CatanEventPicker
             value={catanEvents}
+            pirateIslands={catanScenario === "pirate_islands"}
             fishing={catanFishing || catanScenario === "fishing"}
             friendly={catanFriendly}
             cloth={catanScenario === "cloth"}
@@ -2677,6 +2678,10 @@ function Waiting({
         {catanEventsSupported(room) && (
           <CatanEventPicker
             value={!!room.catanEvents}
+            pirateIslands={
+              (room.catanSeafarers?.scenario || room.catanScenario) ===
+              "pirate_islands"
+            }
             fishing={room.catanFishing || room.catanScenario === "fishing"}
             friendly={!!room.catanFriendlyRobber?.enabled}
             cloth={

@@ -54,6 +54,11 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
+    eventFleet: game
+      ? game.eventDeck?.fleetRules || ""
+      : room.catanEvents && scenario === "pirate_islands"
+        ? "wire-board-events-fleet-v1"
+        : "",
     fishingNumberRecipe: game
       ? game.fishing?.map?.numberRecipe || ""
       : players > 4 && room.catanScenario === "fishing"

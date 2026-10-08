@@ -5,9 +5,15 @@ export function catanEventsSupported(room: Partial<Room>) {
   return (
     room.kind === "catan" &&
     (!room.catanFishing ||
-      ["islands", "fog", "desert", "cloth", "wonders", "new_world"].includes(
-        room.catanSeafarers?.scenario || room.catanScenario || "",
-      )) &&
+      [
+        "islands",
+        "fog",
+        "desert",
+        "tribe",
+        "cloth",
+        "wonders",
+        "new_world",
+      ].includes(room.catanSeafarers?.scenario || room.catanScenario || "")) &&
     (!room.catanNewWorldMap ||
       (room.catanSeafarers?.scenario || room.catanScenario) === "new_world") &&
     [
@@ -21,6 +27,8 @@ export function catanEventsSupported(room: Partial<Room>) {
       "islands",
       "fog",
       "desert",
+      "tribe",
+      "pirate_islands",
       "cloth",
       "wonders",
       "new_world",

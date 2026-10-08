@@ -51,12 +51,14 @@ var catanEventReferenceFaces = [...]struct {
 }
 
 type catanEventSession struct {
-	Catalogue       string         `json:"catalogue"`
-	Deck            catanEventDeck `json:"deck"`
-	ClothFallback   string         `json:"clothFallback,omitempty"`
-	Knights         string         `json:"knights,omitempty"`
-	AlchemyRolls    int            `json:"alchemyRolls,omitempty"`
-	LastAlchemyRoll int            `json:"lastAlchemyRoll,omitempty"`
+	Catalogue       string           `json:"catalogue"`
+	Deck            catanEventDeck   `json:"deck"`
+	ClothFallback   string           `json:"clothFallback,omitempty"`
+	FleetRules      string           `json:"fleetRules,omitempty"`
+	Fleet           *CatanEventFleet `json:"fleet,omitempty"`
+	Knights         string           `json:"knights,omitempty"`
+	AlchemyRolls    int              `json:"alchemyRolls,omitempty"`
+	LastAlchemyRoll int              `json:"lastAlchemyRoll,omitempty"`
 }
 
 // Private research entry. Additional module combinations need their own
@@ -148,6 +150,9 @@ func (s *State) validateCatanEventSession() error {
 	if err := s.validateEventFishing(); err != nil {
 		return err
 	}
+	if err := s.validateEventFleet(); err != nil {
+		return err
+	}
 	if err := s.validateEventVariants(); err != nil {
 		return err
 	}
@@ -222,6 +227,11 @@ func (s *State) validateCatanEventSession() error {
 			}
 			seen[player] = true
 		}
+	} else if p := g.pirateIslands(); p != nil && p.Raid != nil {
+		// The fleet has moved once; its saved rewards precede card production.
+		if revealed.ProductionStarted || s.Phase != "catan_fleet_reward" {
+			return errors.New("海盗奖励必须在事件牌生产前完成")
+		}
 	} else if k := g.CitiesKnights; k != nil && k.Event != nil {
 		e := k.Event
 		if revealed.ProductionStarted || e.Production != revealed.Production || e.Red != revealed.Red || e.Face != revealed.Face || e.Yellow != 0 || e.Epidemic != (revealed.Kind == "epidemic") {
@@ -270,6 +280,9 @@ func (s *State) catanDrawEventRandom(randN func(int) int) error {
 	red, event := 0, 0
 	if next.Catan.CitiesKnights != nil {
 		red, event = randN(6)+1, randN(6)
+	}
+	if next.Catan.pirateIslands() != nil {
+		next.Catan.EventDeck.Fleet = &CatanEventFleet{RollID: g.RollID + 1, Dice: [2]int{randN(6) + 1, randN(6) + 1}}
 	}
 	if err := next.catanBeginCardEvent(face.Kind, face.Production, red, event); err != nil {
 		return err

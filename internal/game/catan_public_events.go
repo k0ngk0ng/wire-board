@@ -28,6 +28,9 @@ func (s *State) EnableCatanEvents(catalogue string) error {
 	if next.Catan.cloth() != nil {
 		next.Catan.EventDeck.ClothFallback = CatanEventClothFallbackRules
 	}
+	if next.Catan.pirateIslands() != nil {
+		next.Catan.EventDeck.FleetRules = CatanEventFleetRules
+	}
 	if err := next.validateCatanEventSession(); err != nil {
 		return err
 	}
@@ -37,6 +40,9 @@ func (s *State) EnableCatanEvents(catalogue string) error {
 	}
 	if next.Catan.cloth() != nil {
 		next.Log = append(next.Log, "本站补充规则：布匹地图的强盗逃跑只能进入大岛沙漠；没有合法沙漠则移到场外，不偷牌、不移动海盗。")
+	}
+	if next.Catan.pirateIslands() != nil {
+		next.Log = append(next.Log, "本站补充规则：事件牌只决定生产；额外独立掷两颗舰队骰，取较小值移动和攻击。先事件、再舰队奖励、最后生产；强盗逃跑没有效果。")
 	}
 	*s = next
 	return nil

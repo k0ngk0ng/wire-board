@@ -635,6 +635,8 @@ export type CatanState = {
     referenceOnly: boolean;
     knights?: string;
     clothFallback?: string;
+    fleetRules?: string;
+    fleet?: { rollId: number; dice: [number, number]; resolved: boolean };
     alchemy?: boolean;
   };
   cardEvent?: {

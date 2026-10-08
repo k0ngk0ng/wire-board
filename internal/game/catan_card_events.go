@@ -82,10 +82,10 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 			return err
 		}
 	}
-	if g.pirateIslands() != nil {
-		return errors.New("事件牌与海盗群岛的舰队骰子规则尚未核验")
+	if g.pirateIslands() != nil && (g.EventDeck == nil || g.EventDeck.FleetRules != CatanEventFleetRules || g.EventDeck.Fleet == nil) {
+		return errors.New("海盗群岛事件牌需要独立舰队骰子")
 	}
-	if kind == "robber_flees" && g.Attack == nil {
+	if kind == "robber_flees" && g.Attack == nil && g.pirateIslands() == nil {
 		// Forgotten Tribe restricts moves caused by a seven or Knight to
 		// numbered hexes. Robber Flees is a separate card instruction and
 		// returns the robber to a revealed desert; it does not use robberAllowed.
@@ -132,7 +132,7 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "trade_advantage" && g.LongestOwner >= 0 && g.LongestOwner < len(g.Players) && !g.Players[g.LongestOwner].Eliminated {
 		g.CardEvent.Players = []int{g.LongestOwner}
 	}
-	if kind == "robber_flees" && g.Attack == nil {
+	if kind == "robber_flees" && g.Attack == nil && g.pirateIslands() == nil {
 		if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
 			next.catanLog(next.Turn, "强盗尚未入场，保持休眠")
 		} else {
@@ -210,9 +210,7 @@ func (s *State) catanContinueCardEvent() error {
 		return s.catanStartCityDiceEvent(q.Red, 0, q.Face, q.Production, q.Kind == "epidemic")
 	}
 	g.CardEvent = nil
-	// Pirate Islands is gated at entry: its fleet needs a separately verified
-	// dice rule. All accepted recipes can proceed directly to this production.
-	return s.catanRollProductionEffect(q.Production, q.Kind == "epidemic")
+	return s.catanEventProduction(q.Production, q.Kind == "epidemic")
 }
 
 func (s *State) catanCardEventChoice(player int, a Action) error {

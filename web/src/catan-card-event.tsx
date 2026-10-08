@@ -236,21 +236,23 @@ export function CatanCardEventSummary({
     ? "本局已结束"
     : g.cardEvent
       ? "先完成事件选择，再生产"
-      : !card.productionStarted
-        ? "等待城市与骑士结算，再生产"
-        : g.paired?.second
-          ? "② 配对行动 · 不重复生产"
-          : room.game?.phase === "catan_gold"
-            ? "正在选择金矿资源"
-            : room.game?.phase === "catan_discard"
-              ? "点数7 · 等待玩家弃牌"
-              : room.game?.phase === "catan_robber"
-                ? "点数7 · 移动强盗或海盗"
-                : room.game?.phase === "catan_steal"
-                  ? "点数7 · 选择偷牌对手"
-                  : room.game?.phase === "catan_roll"
-                    ? "上一回合的事件牌"
-                    : "本次生产点数";
+      : room.game?.phase === "catan_fleet_reward"
+        ? "先领取舰队防守奖励，再生产"
+        : !card.productionStarted
+          ? "等待城市与骑士结算，再生产"
+          : g.paired?.second
+            ? "② 配对行动 · 不重复生产"
+            : room.game?.phase === "catan_gold"
+              ? "正在选择金矿资源"
+              : room.game?.phase === "catan_discard"
+                ? "点数7 · 等待玩家弃牌"
+                : room.game?.phase === "catan_robber"
+                  ? "点数7 · 移动强盗或海盗"
+                  : room.game?.phase === "catan_steal"
+                    ? "点数7 · 选择偷牌对手"
+                    : room.game?.phase === "catan_roll"
+                      ? "上一回合的事件牌"
+                      : "本次生产点数";
   return (
     <section className="catan-revealed-event" aria-label="本次事件牌">
       {assets && catanEventNames[card.kind] && (
@@ -272,6 +274,13 @@ export function CatanCardEventSummary({
           <small className="catan-revealed-dice">
             独立红骰 {card.red} ·{" "}
             {card.face >= 3 ? "蛮族船" : ["科学", "贸易", "政治"][card.face]}
+          </small>
+        )}
+        {g.eventDeck?.fleet && (
+          <small className="catan-revealed-dice">
+            独立舰队骰 {g.eventDeck.fleet.dice.join("、")} · 力量{" "}
+            {Math.min(...g.eventDeck.fleet.dice)} ·{" "}
+            {g.eventDeck.fleet.resolved ? "已结算" : "待事件完成后巡航"}
           </small>
         )}
       </div>

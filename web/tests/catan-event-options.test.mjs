@@ -6,6 +6,30 @@ import {
 } from "../src/catan-event-options.ts";
 import { catanRuleContext } from "../src/catan-rule-context.ts";
 
+test("fleet event site rules follow the actual saved catalogue", () => {
+  const room = {
+    kind: "catan",
+    capacity: 4,
+    catanScenario: "pirate_islands",
+    catanSeafarers: { scenario: "pirate_islands" },
+    catanEvents: CATAN_EVENT_CATALOGUE,
+  };
+  assert.equal(catanRuleContext(room).eventFleet, "wire-board-events-fleet-v1");
+  room.game = {
+    catan: {
+      players: Array(4).fill({}),
+      seafarers: { scenario: "pirate_islands" },
+    },
+  };
+  assert.equal(catanRuleContext(room).eventFleet, "");
+  room.game.catan.eventDeck = {
+    catalogue: CATAN_EVENT_CATALOGUE,
+    fleetRules: "wire-board-events-fleet-v1",
+  };
+  room.catanEvents = "";
+  assert.equal(catanRuleContext(room).eventFleet, "wire-board-events-fleet-v1");
+});
+
 test("events are optional and support only accepted public recipes", () => {
   for (const catanScenario of [
     "",
@@ -18,6 +42,8 @@ test("events are optional and support only accepted public recipes", () => {
     "islands",
     "fog",
     "desert",
+    "tribe",
+    "pirate_islands",
     "cloth",
     "wonders",
     "new_world",
@@ -27,18 +53,18 @@ test("events are optional and support only accepted public recipes", () => {
     assert.equal(catanRuleContext(room).events, "");
     assert.equal(
       catanEventsSupported({ ...room, catanFishing: true }),
-      ["islands", "fog", "desert", "cloth", "wonders", "new_world"].includes(
-        catanScenario,
-      ),
+      [
+        "islands",
+        "fog",
+        "desert",
+        "tribe",
+        "cloth",
+        "wonders",
+        "new_world",
+      ].includes(catanScenario),
     );
   }
-  for (const catanScenario of [
-    "transport",
-    "tribe",
-    "pirate_islands",
-    "land-ho",
-    "explorers-and-pirates",
-  ])
+  for (const catanScenario of ["transport", "land-ho", "explorers-and-pirates"])
     assert.equal(catanEventsSupported({ kind: "catan", catanScenario }), false);
   assert.equal(catanEventsSupported({ kind: "splendor" }), false);
   assert.equal(
