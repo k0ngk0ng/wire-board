@@ -117,7 +117,7 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 			r := &Room{Kind: "catan", Status: "waiting", Capacity: 3}
 			switch kind {
 			case "sea":
-				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "shores"}
+				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "unknown"}
 			case "world":
 				r.CatanNewWorldMap = &game.CatanNewWorldMap{}
 			case "ck":
@@ -145,7 +145,7 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 		t.Fatal(err)
 	}
 	before, _ := json.Marshal(r)
-	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "shores"}); err == nil {
+	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "unknown"}); err == nil {
 		t.Fatal("sea added after friendly")
 	}
 	if err := r.setCatanCitiesKnights(game.CatanCitiesKnightsSetup{}); err == nil {
@@ -175,7 +175,7 @@ func TestCatanFriendlyRobberRejectsUnverifiedSavedDraftAtStart(t *testing.T) {
 			// Simulate an old or internally provisioned draft bypassing today's setter.
 			switch kind {
 			case "sea":
-				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "shores"}
+				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "unknown"}
 			case "ck":
 				r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{Layout: "variable"}
 			case "helpers":

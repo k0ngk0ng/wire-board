@@ -316,6 +316,25 @@ test("friendly robber follows the actual game rather than a stale waiting draft 
   assert.equal(catanRuleContext(room).target, 10);
 });
 
+test("friendly sea fallback is disclosed for new sea drafts but never retrofitted to old saves or base games", () => {
+  const room = { capacity: 3, catanFriendlyRobber: { enabled: true } };
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "");
+  room.catanSeafarers = { scenario: "shores", layout: "fixed" };
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "wire-board-friendly-sea-fallback-v1");
+  room.catanFriendlyRobber.enabled = false;
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "");
+  room.catanFriendlyRobber.enabled = true;
+  room.game = { catan: { players: [{}, {}, {}] } };
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "");
+  room.game.catan.seafarers = { scenario: "shores", layout: "fixed" };
+  room.game.catan.friendlyRobber = { rules: "catan-friendly-robber-2025" };
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "");
+  room.game.catan.friendlyRobber.fallback = "wire-board-friendly-sea-fallback-v1";
+  room.catanFriendlyRobber.enabled = false;
+  delete room.catanSeafarers;
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "wire-board-friendly-sea-fallback-v1");
+});
+
 test("saved Explorer target overrides stale lobby drafts and survives legacy views", () => {
   for (const target of [8, 12, 15, 17]) {
     const room = {

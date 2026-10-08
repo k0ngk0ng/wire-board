@@ -362,6 +362,9 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.validateCatanFriendlyFallback(); err != nil {
+		return err
+	}
 	if err := s.validateCatanSeaNumberRecipe(); err != nil {
 		return err
 	}
@@ -994,6 +997,11 @@ func (s *State) catanMoveRobber(p, tile int) error {
 		g.CitiesKnights.Chase = ""
 	}
 	g.Victims = []int{}
+	if tile == -1 {
+		s.catanLog(p, "无合法陆地或沙漠，友善强盗退到场外，不偷取资源")
+		s.Phase = g.ResumePhase
+		return nil
+	}
 	seen := map[int]bool{}
 	for _, id := range g.Tiles[tile].Vertices {
 		v := g.Vertices[id]

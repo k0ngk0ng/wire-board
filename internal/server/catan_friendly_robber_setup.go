@@ -38,11 +38,11 @@ func (r *Room) friendlyRobberEnabled() bool {
 }
 
 func (r *Room) validateCatanFriendlyRobber(n int) error {
-	if r.CatanFishing || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanOptions.Helpers || r.CatanOptions.AllHelpers {
-		return errors.New("友善强盗与渔夫、新世界、城市骑士或助手的组合尚未核验")
+	if r.CatanFishing || r.CatanCitiesKnights != nil || r.CatanOptions.Helpers || r.CatanOptions.AllHelpers {
+		return errors.New("友善强盗与渔夫、城市骑士或助手的组合尚未核验")
 	}
-	if r.CatanSeafarers != nil && r.CatanSeafarers.Scenario == "shores" && n == 3 {
-		return errors.New("新海岸的三人地图没有沙漠，请凑齐4人或更换剧本")
+	if r.CatanNewWorldMap != nil && (r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != "new_world") {
+		return errors.New("新世界需要对应的航海家地图配置")
 	}
 	if r.CatanSeafarers != nil && !game.CatanFriendlySeafarersSupported(n, r.CatanSeafarers.Scenario) {
 		return errors.New("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")
@@ -52,9 +52,6 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 func (r *Room) catanFriendlyMinimumPlayers() int {
 	if r.CatanOptions.FiveSix {
 		return 5
-	}
-	if r.CatanSeafarers != nil && r.CatanSeafarers.Scenario == "shores" {
-		return 4
 	}
 	return 3
 }

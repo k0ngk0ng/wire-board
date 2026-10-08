@@ -2087,23 +2087,19 @@ function Create({
                         x === "sanguosha"
                           ? 4
                           : x === "catan"
-                            ? catanFriendly &&
-                              catanScenario === "shores" &&
-                              !catanOptions.fiveSix
-                              ? 4
-                              : catanOptions.fiveSix
-                                ? 5
-                                : catanSeaKnights ||
-                                    catanFishing ||
-                                    catanHarbors ||
-                                    catanFriendly ||
-                                    [
-                                      "cities-knights",
-                                      "fishing",
-                                      "barbarian-attack",
-                                    ].includes(catanScenario)
-                                  ? 3
-                                  : 2
+                            ? catanOptions.fiveSix
+                              ? 5
+                              : catanSeaKnights ||
+                                  catanFishing ||
+                                  catanHarbors ||
+                                  catanFriendly ||
+                                  [
+                                    "cities-knights",
+                                    "fishing",
+                                    "barbarian-attack",
+                                  ].includes(catanScenario)
+                                ? 3
+                                : 2
                             : 2,
                         Math.min(
                           capacity,
@@ -2181,8 +2177,6 @@ function Create({
                 setCatanScenario(scenario);
                 if (!supportsPublicCatanFriendly(scenario))
                   setCatanFriendly(false);
-                if (scenario === "shores" && catanFriendly)
-                  setCapacity(Math.max(4, capacity));
                 if (!supportsPublicCatanHarbors(scenario))
                   setCatanHarbors(false);
                 if (!supportsPublicCatanFishingSea(scenario))
@@ -2212,11 +2206,7 @@ function Create({
                     supportsPublicCatanFishingSeaExtended(scenario)
                   )
                 )
-                  setCapacity(
-                    scenario === "shores" && catanFriendly
-                      ? 4
-                      : Math.min(4, capacity),
-                  );
+                  setCapacity(Math.min(4, capacity));
                 if (["cities-knights", "rivers", "caravans"].includes(scenario))
                   setCatanOptions(
                     catanOptions.fiveSix ? { fiveSix: true } : {},
@@ -2284,9 +2274,7 @@ function Create({
               reason={
                 catanOptions.helpers || catanSeaKnights
                   ? "请先关闭 Helpers 和城市骑士。"
-                  : catanScenario === "shores" && capacity < 4
-                    ? "新海岸的友善强盗需要四人，请先选择四个座位。"
-                    : ""
+                  : ""
               }
             />
           )}
@@ -2394,34 +2382,30 @@ function Create({
                         k === "sanguosha"
                           ? 5
                           : k === "catan"
-                            ? catanFriendly &&
-                              catanScenario === "shores" &&
-                              !catanOptions.fiveSix
-                              ? 1
-                              : [
-                                    "spices-for-catan",
-                                    "pirate-lairs",
-                                    "fish-for-catan",
-                                    "explorers-and-pirates",
-                                    "transport",
-                                  ].includes(catanScenario)
-                                ? catanSeaKnights
-                                  ? 4
-                                  : 5
-                                : catanScenario === "barbarian-attack"
-                                  ? 4
-                                  : catanOptions.fiveSix ||
-                                      catanSeaKnights ||
-                                      catanFishing ||
-                                      catanHarbors ||
-                                      catanFriendly ||
-                                      [
-                                        "cities-knights",
-                                        "fishing",
-                                        "barbarian-attack",
-                                      ].includes(catanScenario)
-                                    ? 2
-                                    : 3
+                            ? [
+                                "spices-for-catan",
+                                "pirate-lairs",
+                                "fish-for-catan",
+                                "explorers-and-pirates",
+                                "transport",
+                              ].includes(catanScenario)
+                              ? catanSeaKnights
+                                ? 4
+                                : 5
+                              : catanScenario === "barbarian-attack"
+                                ? 4
+                                : catanOptions.fiveSix ||
+                                    catanSeaKnights ||
+                                    catanFishing ||
+                                    catanHarbors ||
+                                    catanFriendly ||
+                                    [
+                                      "cities-knights",
+                                      "fishing",
+                                      "barbarian-attack",
+                                    ].includes(catanScenario)
+                                  ? 2
+                                  : 3
                             : k === "rail"
                               ? (map?.maxPlayers || 5) - 1
                               : k === "carcassonne"
@@ -2433,23 +2417,19 @@ function Create({
                       (k === "sanguosha"
                         ? 4
                         : k === "catan"
-                          ? catanFriendly &&
-                            catanScenario === "shores" &&
-                            !catanOptions.fiveSix
-                            ? 4
-                            : catanOptions.fiveSix
-                              ? 5
-                              : catanSeaKnights ||
-                                  catanFishing ||
-                                  catanHarbors ||
-                                  catanFriendly ||
-                                  [
-                                    "cities-knights",
-                                    "fishing",
-                                    "barbarian-attack",
-                                  ].includes(catanScenario)
-                                ? 3
-                                : 2
+                          ? catanOptions.fiveSix
+                            ? 5
+                            : catanSeaKnights ||
+                                catanFishing ||
+                                catanHarbors ||
+                                catanFriendly ||
+                                [
+                                  "cities-knights",
+                                  "fishing",
+                                  "barbarian-attack",
+                                ].includes(catanScenario)
+                              ? 3
+                              : 2
                           : 2),
                   )
               ).map((n) => (

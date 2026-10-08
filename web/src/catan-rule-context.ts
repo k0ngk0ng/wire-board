@@ -75,6 +75,11 @@ export function catanRuleContext(room: Room) {
       : !!room.catanTwoRules || (transport && players === 2),
     citiesKnights,
     harbors,
+    friendlySeaFallback: game
+      ? game.friendlyRobber?.fallback || ""
+      : room.catanFriendlyRobber?.enabled && room.catanSeafarers
+        ? "wire-board-friendly-sea-fallback-v1"
+        : "",
     friendlyRobber: game
       ? !!game.friendlyRobber
       : !!room.catanFriendlyRobber?.enabled,

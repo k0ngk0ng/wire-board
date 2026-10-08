@@ -47,7 +47,7 @@ func testCatanFriendlySeaGame(t *testing.T, n int, info CatanSeafarersScenario, 
 	if harbors {
 		target++
 	}
-	if info.ID == "shores" || info.ID == "desert" || info.ID == "wonders" {
+	if (info.ID == "shores" && n > 3) || info.ID == "desert" || info.ID == "wonders" {
 		deserts := 0
 		for _, tile := range g.Tiles {
 			if tile.Resource == CatanDesert && g.robberLandAllowed(tile.ID) {
@@ -71,7 +71,7 @@ func testCatanFriendlySeaGame(t *testing.T, n int, info CatanSeafarersScenario, 
 			t.Fatal(steps, s.Phase, err)
 		}
 		g = s.Catan
-		if action.Type == "catan_robber" && g.Tiles[action.Tile].Resource != CatanDesert && g.friendlyRobberBlocks(action.Tile) {
+		if action.Type == "catan_robber" && action.Tile >= 0 && g.Tiles[action.Tile].Resource != CatanDesert && g.friendlyRobberBlocks(action.Tile) {
 			t.Fatal("bot targeted protected land")
 		}
 		if action.Type == "catan_pirate" && action.Tile >= 0 && g.friendlyPirateBlocks(action.Tile) {
@@ -155,7 +155,7 @@ func testCatanFriendlySeaGame(t *testing.T, n int, info CatanSeafarersScenario, 
 }
 
 func TestCatanFriendlySeafarersConstructorGates(t *testing.T) {
-	for _, scenario := range []string{"shores", "islands", "fog", "tribe", "new_world", "unknown"} {
+	for _, scenario := range []string{"unknown"} {
 		if _, err := NewCatanFriendlySeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: scenario}); err == nil {
 			t.Fatal("unverified scenario accepted", scenario)
 		}
@@ -173,7 +173,7 @@ func TestCatanFriendlySeafarersConstructorGates(t *testing.T) {
 func TestCatanFriendlySeafarersDesertRetreatAndKnight(t *testing.T) {
 	for _, n := range []int{3, 6} {
 		for _, scenario := range []string{"shores", "desert", "wonders"} {
-			if !CatanFriendlySeafarersSupported(n, scenario) {
+			if scenario == "shores" && n == 3 {
 				continue
 			}
 			t.Run(fmt.Sprintf("%d/%s", n, scenario), func(t *testing.T) {
