@@ -112,7 +112,7 @@ func (t catanTransport) validate(g *Catan) error {
 	if !catanTransportPlayersValid(g) || t.Map == nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
 		return errors.New("运输组件或人数无效")
 	}
-	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
+	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("运输与其他扩展的组合尚未接入")
 	}
 	if err := t.Map.validate(g); err != nil {

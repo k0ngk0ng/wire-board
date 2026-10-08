@@ -77,6 +77,13 @@ func (s *State) catanTransportChoices(player int) map[string]any {
 	}
 	choices["steps"], choices["drive"] = steps, drive
 	choices["canWheat"] = !q.WheatUsed && g.Players[player].Resources[3] > 0
+	if g.fishingTransport() {
+		cost := g.fishActionCost(player, "catan_transport_fish")
+		choices["fishCost"] = cost
+		choices["canFish"] = !q.WheatUsed && g.fishPayment(player, cost) != nil
+		v, _ := g.Fishing.Tokens.view(player)
+		choices["fishTokens"] = v.Players[player].Tokens
+	}
 	choices["canStop"] = true
 	return choices
 }

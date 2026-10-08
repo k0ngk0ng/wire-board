@@ -269,6 +269,7 @@ export function CatanFishingSeaPicker({
   rivers = false,
   caravans = false,
   attack = false,
+  transport = false,
   knights = false,
   two = false,
   extended = false,
@@ -285,6 +286,7 @@ export function CatanFishingSeaPicker({
   rivers?: boolean;
   caravans?: boolean;
   attack?: boolean;
+  transport?: boolean;
   knights?: boolean;
   two?: boolean;
   extended?: boolean;
@@ -304,36 +306,40 @@ export function CatanFishingSeaPicker({
           onChange={(e) => onChange(e.target.checked)}
         />
         渔夫＋
-        {attack
-          ? "蛮族进攻"
-          : caravans
-            ? "商队"
-            : rivers
-              ? "河流"
-              : explorer
-                ? "探索者与海盗"
-                : knights
-                  ? "城市与骑士"
-                  : "航海家"}
+        {transport
+          ? "运输任务"
+          : attack
+            ? "蛮族进攻"
+            : caravans
+              ? "商队"
+              : rivers
+                ? "河流"
+                : explorer
+                  ? "探索者与海盗"
+                  : knights
+                    ? "城市与骑士"
+                    : "航海家"}
       </label>
       <p className="muted small">
-        {attack
-          ? "不放湖泊；2鱼在回合末延长己方骑士移动到5步，7鱼购买并立即使用专用发展卡。被征服建筑不产鱼；可叠加城市骑士与事件牌。"
-          : caravans
-            ? "湖泊替换水源旁的森林，2和12共用地块。12分获胜，旧靴多需1分；可叠加城市骑士与事件牌，骑士组合15分。本站双人以鱼替代贸易筹码，五六人采用双湖及两组2/12。"
-            : rivers
-              ? "保留河流地图，不放湖泊；6鱼免费建桥并领取3金币。可叠加城市骑士与事件牌；双人以鱼筹码替代贸易筹码，建桥后照常安排中立建设。"
-              : knights
-                ? "双人使用鱼筹码替代贸易筹码，起始建筑不另领鱼；中立骑士和两次城市事件照常保留，可叠加事件牌、友善强盗和港口霸主。"
-                : explorer
-                  ? "渔夫鱼筹码与船运鱼群分开计算。2鱼免海盗通行费，5鱼修路或造船，7鱼让一艘船再次航行；可叠加城市骑士与事件生产牌。"
-                  : fixedRequired
-                    ? "先将海图切为固定布局，才能加入渔夫。"
-                    : blocked
-                      ? "先关闭城市骑士，才能加入渔夫海图；可叠加 Helpers、港口霸主与友善强盗。"
-                      : extended
-                        ? "五六人扩大地图、8处渔场、44枚鱼筹码和配对回合；六岛、沙漠、部落、布匹采用标明的本站配方。关闭渔夫后保留海图和人数。"
-                        : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
+        {transport
+          ? "不放湖泊；2 鱼或 1 粮食让马车增加 2 移动点，每回合共用一次。12 分获胜，城市骑士组合 15 分，旧靴多需 1 分；双人以鱼替代贸易筹码。可叠加事件牌。"
+          : attack
+            ? "不放湖泊；2鱼在回合末延长己方骑士移动到5步，7鱼购买并立即使用专用发展卡。被征服建筑不产鱼；可叠加城市骑士与事件牌。"
+            : caravans
+              ? "湖泊替换水源旁的森林，2和12共用地块。12分获胜，旧靴多需1分；可叠加城市骑士与事件牌，骑士组合15分。本站双人以鱼替代贸易筹码，五六人采用双湖及两组2/12。"
+              : rivers
+                ? "保留河流地图，不放湖泊；6鱼免费建桥并领取3金币。可叠加城市骑士与事件牌；双人以鱼筹码替代贸易筹码，建桥后照常安排中立建设。"
+                : knights
+                  ? "双人使用鱼筹码替代贸易筹码，起始建筑不另领鱼；中立骑士和两次城市事件照常保留，可叠加事件牌、友善强盗和港口霸主。"
+                  : explorer
+                    ? "渔夫鱼筹码与船运鱼群分开计算。2鱼免海盗通行费，5鱼修路或造船，7鱼让一艘船再次航行；可叠加城市骑士与事件生产牌。"
+                    : fixedRequired
+                      ? "先将海图切为固定布局，才能加入渔夫。"
+                      : blocked
+                        ? "先关闭城市骑士，才能加入渔夫海图；可叠加 Helpers、港口霸主与友善强盗。"
+                        : extended
+                          ? "五六人扩大地图、8处渔场、44枚鱼筹码和配对回合；六岛、沙漠、部落、布匹采用标明的本站配方。关闭渔夫后保留海图和人数。"
+                          : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
       {shores && value && (
         <p className="muted small">
@@ -429,9 +435,12 @@ export function CatanScenarioPicker({
                 (players > 4 &&
                   (fishing
                     ? !(
-                        ["rivers", "caravans", "barbarian-attack"].includes(
-                          s.id,
-                        ) ||
+                        [
+                          "rivers",
+                          "caravans",
+                          "barbarian-attack",
+                          "transport",
+                        ].includes(s.id) ||
                         supportsPublicCatanFishingSeaExtended(s.id) ||
                         supportsPublicExplorerKnights(s.id)
                       )
@@ -470,13 +479,17 @@ export function CatanScenarioPicker({
         </select>
       </label>
       <p className="muted small">
-        {harbors || (knights && supportsPublicCatanKnightsCombination(value))
-          ? catanScenarioVictory(
-              value,
-              catanVictoryTarget(value, knights || value === "cities-knights") +
-                (harbors ? 1 : 0),
-            )
-          : scenarios.find((s) => s.id === value)?.description}
+        {fishing && value === "transport"
+          ? `渔夫＋运输：${knights ? 15 : 12} 分获胜，持旧靴多需 1 分；双人以鱼筹码替代贸易筹码。`
+          : harbors || (knights && supportsPublicCatanKnightsCombination(value))
+            ? catanScenarioVictory(
+                value,
+                catanVictoryTarget(
+                  value,
+                  knights || value === "cities-knights",
+                ) + (harbors ? 1 : 0),
+              )
+            : scenarios.find((s) => s.id === value)?.description}
       </p>
       {players > 4 &&
         ["rivers", "caravans", "shores", "fishing"].includes(value) && (

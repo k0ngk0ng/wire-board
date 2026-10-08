@@ -239,7 +239,8 @@ export function CatanTransportPanel({
     t = g.transport,
     phase = room.game!.phase;
   const [collapsed, setCollapsed] = useState(false),
-    [confirm, setConfirm] = useState("");
+    [confirm, setConfirm] = useState(""),
+    [fishIDs, setFishIDs] = useState<number[]>([]);
   const q = t?.state.travel,
     waiting =
       phase === "catan_transport_move" || phase === "catan_transport_barbarian";
@@ -258,7 +259,16 @@ export function CatanTransportPanel({
   useEffect(() => {
     if (selected.edge !== null) setCollapsed(false);
   }, [selected.edge]);
+  const fishHandKey = JSON.stringify(t?.choices.fishTokens || []);
+  useEffect(() => {
+    setFishIDs([]);
+  }, [room.id, room.you, phase, t?.state.sequence, q?.wheatUsed, fishHandKey]);
   if (!t) return null;
+  const fishTokens = t.choices.fishTokens || [],
+    fishCost = t.choices.fishCost || 2,
+    fishPaid = fishTokens
+      .filter((token) => fishIDs.includes(token.id))
+      .reduce((sum, token) => sum + token.fish, 0);
   const can = transportCanAct(room),
     active = room.game!.turn,
     w = t.state.wagons[room.you],
@@ -379,7 +389,11 @@ export function CatanTransportPanel({
                 <span>
                   第 {t.moves}/{t.swift ? 2 : 1} 次移动
                 </span>
-                {q.wheatUsed && <span>本回合已加粮</span>}
+                {q.wheatUsed && (
+                  <span>
+                    {q.fishUsed ? "本回合已用鱼加步" : "本回合已加粮"}
+                  </span>
+                )}
               </div>
               {q.pending >= 0 ? (
                 <p>
@@ -427,6 +441,47 @@ export function CatanTransportPanel({
                       {Math.ceil((q.neutralTolls || 0) / 2)} 金币 / 对手{" "}
                       {Math.floor((q.neutralTolls || 0) / 2)} 金币
                     </small>
+                  )}
+                  {choices.canFish && (
+                    <div className="attack-fish-payment">
+                      <span>支付 {fishCost} 鱼 · +2 移动点</span>
+                      <div
+                        className="attack-picks"
+                        aria-label="选择马车加步的鱼筹码"
+                      >
+                        {fishTokens.map((token) => (
+                          <button
+                            key={token.id}
+                            disabled={busy}
+                            aria-pressed={fishIDs.includes(token.id)}
+                            className={
+                              fishIDs.includes(token.id) ? "selected" : ""
+                            }
+                            onClick={() =>
+                              setFishIDs((ids) =>
+                                ids.includes(token.id)
+                                  ? ids.filter((id) => id !== token.id)
+                                  : [...ids, token.id],
+                              )
+                            }
+                          >
+                            {token.fish} 鱼
+                          </button>
+                        ))}
+                      </div>
+                      <small>
+                        已选 {fishPaid} 鱼／费用 {fishCost}{" "}
+                        鱼，多付不找零；与加粮共用每回合一次。
+                      </small>
+                      <button
+                        disabled={busy || fishPaid < fishCost}
+                        onClick={() =>
+                          void move("catan_transport_fish", { tokens: fishIDs })
+                        }
+                      >
+                        确认用鱼加步
+                      </button>
+                    </div>
                   )}
                   <div className="transport-buttons">
                     {choices.canWheat && (

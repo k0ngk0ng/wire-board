@@ -7,6 +7,9 @@
   gap: 10px;
   min-width: 0;
 }
+.transport-panel .catan-gold-body > * {
+  flex-shrink: 0;
+}
 .transport-panel p {
   margin: 0;
   line-height: 1.5;
@@ -153,8 +156,7 @@
     min-height: 36px;
   }
   .transport-confirm {
-    position: sticky;
-    bottom: 0;
+    position: static;
     background: #fff2cf;
     padding-bottom: 6px;
   }

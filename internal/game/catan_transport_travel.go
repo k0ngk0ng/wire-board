@@ -8,6 +8,7 @@ import (
 // Private movement kernel owned by the end-turn/commodity controller.
 // It is not an alternative public action path.
 type catanTransportTravel struct {
+	FishUsed     bool    `json:"fishUsed,omitempty"`
 	NeutralTolls int     `json:"neutralTolls,omitempty"` // Aggregate for this Move Wagon action; bank gets ceil(total/2).
 	Player       int     `json:"player"`
 	Level        int     `json:"level"` // 0–4, four paid upgrades.
@@ -60,6 +61,9 @@ func newCatanTransportTravel(g *Catan, m *catanTransportMap, player, position, l
 func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarians [3]int, gold []int) error {
 	if !catanTransportPlayersValid(g) || m == nil || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated || q.Position < 0 || q.Position >= len(g.Vertices) || catanTransportMovement(q.Level) == 0 || len(gold) != len(g.Players) {
 		return errors.New("马车移动记录无效")
+	}
+	if q.FishUsed && (!g.fishingTransport() || !q.WheatUsed) {
+		return errors.New("马车鱼加步记录无效")
 	}
 	maxMP := catanTransportMovement(q.Level)
 	if q.WheatUsed {

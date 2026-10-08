@@ -154,6 +154,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if g.Transport != nil || g.Fishing != nil && g.Fishing.Transport != "" {
+		return f.validateTransport(g)
+	}
 	if g.Attack != nil || g.Fishing != nil && g.Fishing.Attack != "" {
 		return f.validateAttack(g)
 	}

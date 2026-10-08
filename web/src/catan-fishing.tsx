@@ -430,7 +430,7 @@ export function CatanFishingPanel({
               </div>
               {!hand.length && (
                 <small>
-                  {f.rivers || f.attack
+                  {f.rivers || f.attack || f.transport
                     ? "在海岸渔场旁建设，点数掷中时领取筹码。"
                     : "在湖泊或渔场旁建设，点数掷中时领取筹码。"}
                 </small>
