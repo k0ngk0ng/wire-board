@@ -2085,7 +2085,9 @@ function Create({
               (capacity >= 3 ||
                 isPublicCatanExplorer(variantScenario) ||
                 supportsTwoCatanSeafarers(variantScenario) ||
-                ["caravans", "rivers"].includes(variantScenario)) &&
+                ["caravans", "rivers", "barbarian-attack"].includes(
+                  variantScenario,
+                )) &&
               catanSeaKnights &&
               supportsPublicCatanKnightsCombination(variantScenario)
                 ? { layout: "variable" }
@@ -2316,7 +2318,9 @@ function Create({
           (capacity >= 3 ||
             isPublicCatanExplorer(variantScenario) ||
             supportsTwoCatanSeafarers(variantScenario) ||
-            ["caravans", "rivers"].includes(variantScenario)) &&
+            ["caravans", "rivers", "barbarian-attack"].includes(
+              variantScenario,
+            )) &&
           supportsPublicCatanKnightsCombination(variantScenario) && (
             <CatanCombinationKnightsPicker
               attack={variantScenario === "barbarian-attack"}
@@ -2824,12 +2828,17 @@ function Waiting({
           (room.capacity >= 3 ||
             isPublicCatanExplorer(room.catanScenario) ||
             supportsTwoCatanSeafarers(room.catanTwoScenario) ||
-            ["caravans", "rivers"].includes(room.catanTwoScenario || "")) &&
+            ["caravans", "rivers", "barbarian-attack"].includes(
+              room.catanTwoScenario || "",
+            )) &&
           supportsPublicCatanKnightsCombination(
             room.catanTwoScenario || room.catanScenario,
           ) && (
             <CatanCombinationKnightsPicker
-              attack={room.catanScenario === "barbarian-attack"}
+              attack={
+                (room.catanTwoScenario || room.catanScenario) ===
+                "barbarian-attack"
+              }
               transport={room.catanScenario === "transport"}
               rivers={
                 (room.catanTwoScenario || room.catanScenario) === "rivers"

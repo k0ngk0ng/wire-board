@@ -223,7 +223,10 @@ export function CatanTwoPanel({
         : canKnight &&
           (!g.citiesKnights ||
             (exchangeVertex !== null &&
-              q.exchangeKnights?.includes(exchangeVertex)));
+              (g.attack?.city
+                ? q.exchangeKnightEdges
+                : q.exchangeKnights
+              )?.includes(exchangeVertex)));
   const choice = twoSelected(g, selected),
     choices = twoChoices(g, selected);
   const pending = playing && (q.pending || q.trade);
@@ -358,7 +361,7 @@ export function CatanTwoPanel({
                           ? "移出强盗"
                           : "移回强盗"}
                   </button>
-                  {!g.attack && (
+                  {(!g.attack || g.attack.city) && (
                     <button
                       disabled={busy || !canKnight}
                       onClick={() => openConfirm("knight")}
@@ -404,9 +407,14 @@ export function CatanTwoPanel({
                   招募骑士后为中立势力招募一级骑士，无位置则修路；自己的一级升二级后，中立一级也升级。中立骑士不激活、不防御。两次生产各结算城市事件；炼金术仅第一次掷骰前可用。本站补充：中立骑士退让及叛变同级选择由行动玩家决定。
                 </p>
               )}
-              {g.attack && (
+              {g.attack && !g.attack.city && (
                 <p>
                   真人与中立村庄分别触发登陆；共享中立骑士由双方移动，先移动自己的骑士。玩家失去骑士或未分得俘虏时获得2金币和1枚贸易筹码补偿。
+                </p>
+              )}
+              {g.attack?.city && (
+                <p>
+                  本站双人组合：两家中立道路骑士由当前玩家移动和代办退让，不能激活或参战。真人与中立村庄分别触发登陆；真人骑士损失或降级领取3金币，不另领贸易筹码。
                 </p>
               )}
               {g.transport && (
@@ -587,19 +595,25 @@ export function CatanTwoPanel({
                         className="two-owner-choice"
                         aria-label="选择兑换的骑士"
                       >
-                        {(q.exchangeKnights || []).map((vertex) => (
+                        {(
+                          (g.attack?.city
+                            ? q.exchangeKnightEdges
+                            : q.exchangeKnights) || []
+                        ).map((vertex) => (
                           <button
                             key={vertex}
                             disabled={busy}
                             aria-pressed={exchangeVertex === vertex}
                             onClick={() => setExchangeVertex(vertex)}
                           >
-                            交点 #{vertex + 1} ·{" "}
-                            {
-                              g.citiesKnights!.knights.find(
-                                (n) => n.vertex === vertex,
-                              )?.strength
-                            }{" "}
+                            {g.attack?.city ? "路线" : "交点"} #{vertex + 1} ·{" "}
+                            {g.attack?.city
+                              ? g.attack.city.knights.find(
+                                  (n) => n.edge === vertex,
+                                )?.strength
+                              : g.citiesKnights!.knights.find(
+                                  (n) => n.vertex === vertex,
+                                )?.strength}{" "}
                             级骑士
                           </button>
                         ))}
@@ -761,7 +775,9 @@ export function CatanTwoPanel({
                                       }
                                     : {}),
                                   ...(g.citiesKnights && confirm === "knight"
-                                    ? { vertex: exchangeVertex }
+                                    ? g.attack?.city
+                                      ? { edge: exchangeVertex }
+                                      : { vertex: exchangeVertex }
                                     : {}),
                                 };
                           if (!action) return;

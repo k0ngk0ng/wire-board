@@ -195,6 +195,10 @@ export function twoChoiceName(
   g: CatanState,
   c: { edge: number; vertex: number },
 ) {
+  if (g.two?.buildingRoadKnight)
+    return g.two.pending?.kind === "knight_promote"
+      ? "道路骑士升级"
+      : "一级道路骑士";
   return c.vertex >= 0
     ? g.two?.pending?.kind === "knight"
       ? "一级骑士"

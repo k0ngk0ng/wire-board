@@ -52,3 +52,18 @@ test("city scenario keeps thirteen-point rules while saved base games stay base"
   g.two.pending.kind = "knight_promote";
   assert.equal(twoChoiceName(g, {vertex: 2, edge: -1}), "骑士升级");
 });
+
+test("two-player Attack uses road knights for neutral choices and Treason", () => {
+  const g = {players: [{}, {}], two: {knights: "catan-for-two-knights-2025", buildingRoadKnight: true, pending: {kind: "knight"}}, attack: {city: {knights: [{owner: -2, edge: 4, strength: 1}, {owner: 1, edge: 5, strength: 2}]}}, citiesKnights: {knights: []}};
+  assert.deepEqual(progressOpponents(g, 0, 22), [1, -2]);
+  assert.equal(twoChoiceName(g, {edge: 4, vertex: -1}), "一级道路骑士");
+  g.two.pending.kind = "knight_promote";
+  assert.equal(twoChoiceName(g, {edge: 4, vertex: -1}), "道路骑士升级");
+  g.two.pending.kind = "knight";
+  g.two.buildingRoadKnight = false;
+  assert.equal(twoChoiceName(g, {edge: 4, vertex: -1}), "道路");
+  const room = {kind: "catan", capacity: 2, catanTwoRules: "catan-for-two-2025", catanTwoScenario: "barbarian-attack", catanCitiesKnights: {layout: "variable"}};
+  assert.equal(catanRuleContext(room).target, 13);
+  assert.equal(catanRuleContext(room).two, true);
+  assert.equal(catanRuleContext(room).citiesKnights, true);
+});

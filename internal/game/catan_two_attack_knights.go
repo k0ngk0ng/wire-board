@@ -113,3 +113,15 @@ func (s *State) catanTwoAttackKnightForTokens(player int, a Action) error {
 	s.catanVictory()
 	return nil
 }
+
+// NewCatanTwoAttackCitiesKnights keeps the two-player rule version explicit.
+func NewCatanTwoAttackCitiesKnights(n int, options CatanOptions) (*State, error) {
+	if n != 2 || options != (CatanOptions{}) {
+		return nil, errors.New("双人蛮族城市骑士需要两位玩家，不叠加其他剧本")
+	}
+	s, err := newCatanAttackCityCore(n)
+	if err != nil {
+		return nil, err
+	}
+	return s, s.validateAttackCityState()
+}
