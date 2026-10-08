@@ -633,6 +633,8 @@ export type CatanState = {
     untilNewYear: number;
     catalogue: string;
     referenceOnly: boolean;
+    knights?: string;
+    alchemy?: boolean;
   };
   cardEvent?: {
     kind: string;

@@ -32,6 +32,17 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 	if k == nil || !g.citySeaSupported() || s.Phase != "catan_roll" || k.Event != nil || k.Pending != nil || red < 1 || red > 6 || yellow < 1 || yellow > 6 || face < 0 || face > 5 {
 		return errors.New("无效城市与骑士掷骰状态")
 	}
+	if g.EventDeck != nil {
+		if err := s.validateCatanEventSession(); err != nil {
+			return err
+		}
+		if g.RollID == int(^uint(0)>>1) {
+			return errors.New("生产次数溢出")
+		}
+		g.EventDeck.AlchemyRolls++
+		g.EventDeck.LastAlchemyRoll = g.RollID + 1
+		s.catanLog(s.Turn, "炼金术替代本次事件牌抽取，牌堆保持原状")
+	}
 	g.RevealedEvent = nil
 	g.Dice = []int{red, yellow}
 	g.RollID++

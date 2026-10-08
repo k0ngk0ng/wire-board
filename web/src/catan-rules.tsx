@@ -235,6 +235,12 @@ function CatanEventRules({ info }: { info: CatanRuleContext }) {
     <p>
       <b>事件牌 · 本站牌组：</b>
       抽牌代替生产骰，先完成事件，再按牌面点数生产；36张普通牌，新年牌置于底部5张之上，抽到新年后重洗并继续抽牌。双人每回合抽两张（点数相同也照常执行），五六人仅①号抽牌。本站采用交叉核对的旧版点数／事件配比及2025事件效果，不宣称等同2025实体牌表。
+      {info.eventKnights && (
+        <>
+          {" "}
+          城市骑士：先结算事件文字，再结算独立红骰与事件骰，最后按牌面点数生产。炼金术替代整次抽牌，牌堆不变。本站补充规则：贸易优势可随机偷取资源或商品。
+        </>
+      )}
     </p>
   );
 }
@@ -408,6 +414,7 @@ export function CatanRules({ room }: { room: Room }) {
       <>
         <CatanSeaNumberRules info={info} />
         <CatanCitiesKnightsRules info={info} />
+        <CatanEventRules info={info} />
         {info.fishing && (
           <>
             <CatanFishingNumberRules info={info} />

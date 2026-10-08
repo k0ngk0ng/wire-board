@@ -51,6 +51,10 @@ func TestCatanFriendlyKnightsPublicFullHTTPGames(t *testing.T) {
 	}
 }
 func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, harbors, friendly bool, players ...int) {
+	testCatanCitiesKnightsEventsFullHTTPGames(t, scenario, harbors, friendly, false, players...)
+}
+
+func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, harbors, friendly, events bool, players ...int) {
 	if len(players) == 0 {
 		players = []int{3, 6}
 	}
@@ -102,6 +106,9 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 			options := game.CatanOptions{FiveSix: n > 4}
 			public := n <= 4 || scenario == "" || scenario == "fishing" || game.CatanCitiesKnightsSeafarersSupported(scenario)
 			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
+			if events {
+				body["catanEvents"] = game.CatanEventCatalogue
+			}
 			if public {
 				body["catanScenario"] = "cities-knights"
 				if scenario != "" {
@@ -223,6 +230,9 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 							break
 						}
 					}
+				}
+				if events && steps%53 == 0 {
+					assertPublicEventsPrivacy(t, clients)
 				}
 				if steps%53 == 0 {
 					for _, viewer := range []int{actor, n} {
@@ -379,6 +389,9 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 			if sea := room.Game.Catan.Seafarers; sea != nil {
 				versions := history["catanExpansionRules"].(map[string]any)
 				count := 2
+				if events {
+					count++
+				}
 				if friendly {
 					count++
 				}
@@ -393,6 +406,12 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 				}
 			} else if history["catanLayout"] != "variable" || history["catanRules"] != room.Game.Catan.CitiesKnightsSetup().Rules || !slices.ContainsFunc(history["catanExpansions"].([]any), func(v any) bool { return v == "cities_knights" }) {
 				t.Fatal("missing frozen expansion identity")
+			}
+			if events {
+				rules := history["catanExpansionRules"].(map[string]any)
+				if rules["event_knights"] != game.CatanEventKnightsRules || rules["event_cards"] != game.CatanEventCatalogue {
+					t.Fatal("missing actual event combination history", history)
+				}
 			}
 			if scenario == "fishing" {
 				rules := history["catanExpansionRules"].(map[string]any)
