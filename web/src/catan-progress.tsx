@@ -74,7 +74,9 @@ export function CatanProgressHand({
   const update = (change: Partial<ProgressSelection>) => {
     if (s) onChange({ ...s, ...change });
   };
-  const selectedMode = s ? progressMapMode(s.card, !!g.explorer) : "";
+  const selectedMode = s
+    ? progressMapMode(s.card, !!g.explorer, !!g.attack?.city)
+    : "";
   return (
     <section className="catan-progress-panel" aria-label="你的进步牌">
       <details open={!s}>
@@ -141,13 +143,24 @@ export function CatanProgressHand({
             </button>
           </header>
           <p>
-            {catanProgressDescription(
-              s.card,
-              !!g.seafarers,
-              !!g.explorer,
-              !!g.seafarers?.pirateIslands,
-              !!g.explorer?.board.introRules,
-            )}
+            {(g.attack?.city &&
+              (
+                {
+                  3: "交换内陆两枚符合条件的数字圆片。",
+                  8: "免费升级最多两名道路骑士，按选择顺序检查库存。",
+                  17: "激活全部己方道路骑士。",
+                  19: "移除沿海地块的一个蛮族，计入你的俘虏。",
+                  21: "选择地块，从每位相邻未征服建筑对手处随机取得一张资源或商品；不放强盗。",
+                  22: "目标玩家选择移除一名道路骑士，再由你在原路线放置同级或低级骑士。",
+                } as Record<number, string>
+              )[s.card]) ||
+              catanProgressDescription(
+                s.card,
+                !!g.seafarers,
+                !!g.explorer,
+                !!g.seafarers?.pirateIslands,
+                !!g.explorer?.board.introRules,
+              )}
           </p>
           {!g.progressPlayable?.includes(s.card) ? (
             <p>

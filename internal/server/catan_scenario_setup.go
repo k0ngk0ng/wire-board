@@ -64,8 +64,14 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "barbarian-attack" {
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil {
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 			return errors.New("蛮族进攻支持三至六人，开局按实际人数选择地图；不混用其他扩展配置")
+		}
+		if r.CatanCitiesKnights != nil {
+			setup, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+			if err != nil || setup != *r.CatanCitiesKnights {
+				return errors.New("蛮族城市骑士布局或规则版本无效")
+			}
 		}
 		return nil
 	}

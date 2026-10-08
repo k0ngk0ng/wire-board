@@ -220,15 +220,18 @@ export function catanRuleContext(room: Room) {
           : 13
         : caravans && citiesKnights
           ? 15
-          : caravans || attack
-            ? 12
-            : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
+          : attack && citiesKnights
+            ? 13
+            : caravans || attack
+              ? 12
+              : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
   };
 }
 
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (scenario === "barbarian-attack") return citiesKnights ? 13 : 12;
   if (scenario === "transport") return citiesKnights ? 15 : 13;
   if (scenario === "caravans") return citiesKnights ? 15 : 12;
   const target = (
@@ -275,7 +278,7 @@ export function catanSavedVictoryTarget(g: CatanState) {
   if (g.explorer) return g.explorer.board.target;
   if (g.transport) return g.citiesKnights ? 15 : 13;
   if (g.caravans) return g.citiesKnights ? 15 : 12;
-  if (g.attack) return 12;
+  if (g.attack) return g.attack.city ? 13 : 12;
   const sea = g.seafarers;
   const scenario =
     sea?.scenario ||

@@ -195,3 +195,21 @@ test("conquest disables production and saved scenario supplies its actual target
   assert.equal(catanRuleContext(room).attack, true);
   assert.equal(catanRuleContext(room).target, 12);
 });
+
+test("Attack city target is thirteen and ordinary attack stays twelve", () => {
+  const waiting = {
+    capacity: 6,
+    catanScenario: "barbarian-attack",
+    catanCitiesKnights: { layout: "variable" },
+  };
+  assert.equal(catanRuleContext(waiting).target, 13);
+  const g = {
+    attack: { city: { rules: "catan-attack-knights-2025" } },
+    citiesKnights: {},
+    players: [{}, {}, {}],
+  };
+  assert.equal(catanSavedVictoryTarget(g), 13);
+  delete g.attack.city;
+  delete g.citiesKnights;
+  assert.equal(catanSavedVictoryTarget(g), 12);
+});

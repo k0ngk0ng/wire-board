@@ -17,11 +17,15 @@ export function CatanCitiesKnightsSetup({ room }: { room: Room }) {
     >
       <h3>城市与骑士</h3>
       <p>
-        {info.scenario
-          ? `${info.explorer ? "" : "航海家 · "}${catanScenarioName(info.scenario)} · ${catanLayoutName(info.layout)}`
-          : info.fishing
-            ? "渔夫 · 随机湖泊与海岸渔场"
-            : "随机地图"}{" "}
+        {info.attack
+          ? "蛮族进攻 · 道路骑士"
+          : info.transport
+            ? "运输 · 城市与骑士"
+            : info.scenario
+              ? `${info.explorer ? "" : "航海家 · "}${catanScenarioName(info.scenario)} · ${catanLayoutName(info.layout)}`
+              : info.fishing
+                ? "渔夫 · 随机湖泊与海岸渔场"
+                : "随机地图"}{" "}
         · {catanScenarioVictory(info.scenario, info.target)}
       </p>
       <p>

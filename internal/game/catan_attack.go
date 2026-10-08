@@ -253,7 +253,13 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	public["devRemaining"] = len(a.Deck)
 	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && a.cardSupplyReady()
 	public["supply"] = a.supply()
-	public["landingSupplyRule"] = "random-last"
+	if g.attackKnights() {
+		public["supply"] = a.supply() + a.City.Issued
+		public["landingSupplyRule"] = "ledger"
+	}
+	if !g.attackKnights() {
+		public["landingSupplyRule"] = "random-last"
+	}
 	public["goldRule"] = "ledger"
 	public["treasonRule"] = "as-much-as-possible"
 	conquered, buildings := []int{}, []int{}
@@ -263,7 +269,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		}
 	}
 	for _, point := range g.Vertices {
-		if point.Level > 0 && a.conqueredBuilding(g, point.ID) {
+		if point.Level > 0 && a.conqueredBuilding(g, point.ID) && !g.attackCityMetropolis(point.ID) {
 			buildings = append(buildings, point.ID)
 		}
 	}
@@ -276,6 +282,11 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	for _, k := range a.Knights {
 		if k.Player >= 0 {
 			left[k.Player]--
+		}
+	}
+	if g.attackKnights() {
+		for _, k := range a.City.Knights {
+			left[k.Owner]--
 		}
 	}
 	public["knightsLeft"] = left

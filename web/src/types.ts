@@ -391,10 +391,60 @@ export type CatanWagon = { edge: number; from: number };
 export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
 export type CatanAttackKnight = { player: number; edge: number };
 export type CatanAttackMove = { from: number; to: number; wheat?: boolean };
+export type CatanAttackCityKnight = {
+  owner: number;
+  edge: number;
+  strength: number;
+  active: boolean;
+};
+export type CatanAttackCity = {
+  rules: string;
+  knights: CatanAttackCityKnight[];
+  plan?: {
+    id: number;
+    player: number;
+    actor: number;
+    awaitingRetreat: boolean;
+    orders: { from: number; to: number; retreat: number }[];
+  };
+  treason?: { id: number; actor: number; caster: number; owner: number };
+  choices?: {
+    recruit?: number[];
+    activate?: number[];
+    promote?: number[];
+    capture?: number[];
+    remove?: number[];
+    edge?: number;
+    ranks?: number[];
+    retreat?: number[];
+    canConfirm?: boolean;
+    canUndo?: boolean;
+    moves?: {
+      from: number;
+      required: boolean;
+      move: number[];
+      displace: number[];
+    }[];
+  };
+  end?: {
+    player: number;
+    battles: {
+      tile: number;
+      barbarians: number;
+      strength: number[];
+      prisoners: number[];
+      gold: number[];
+      lossDie: number;
+      lost: CatanAttackCityKnight[];
+      downgraded: CatanAttackCityKnight[];
+    }[];
+  };
+};
 export type CatanAttack = {
+  city?: CatanAttackCity;
   twoRules?: string;
   neutralPrisoners?: number;
-  landingSupplyRule?: "random-last";
+  landingSupplyRule?: "random-last" | "ledger";
   treasonRule?: "as-much-as-possible";
   goldRule?: "ledger";
   goldIssued?: number;

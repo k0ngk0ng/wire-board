@@ -29,6 +29,15 @@ type catanAttackCity struct {
 	Issued      int                            `json:"issued"`
 }
 
+// NewCatanAttackCitiesKnights uses the combined road-knight rules for 3–6 seats.
+func NewCatanAttackCitiesKnights(n int) (*State, error) {
+	s, err := newCatanAttackCityCore(n)
+	if err != nil {
+		return nil, err
+	}
+	return s, s.validateAttackCityState()
+}
+
 func newCatanAttackCityCore(n int) (*State, error) {
 	if n < 3 || n > 6 {
 		return nil, errors.New("此内部组合核心暂用于三至六人；双人接续另行接入")

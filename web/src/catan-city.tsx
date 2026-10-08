@@ -217,6 +217,23 @@ export function CatanCityOverview({
   const g = room.game!.catan!,
     k = g.citiesKnights;
   if (!k) return null;
+  if (g.attack?.city)
+    return (
+      <section className="catan-city-overview">
+        <strong>城市与骑士 · 蛮族进攻</strong>
+        <p>
+          船面在沿海登陆；道路骑士在回合末移动与战斗。每 3 个俘虏计 1 分，13
+          分获胜。
+        </p>
+        <div className="catan-progress-stocks">
+          {cityTracks.map((name, i) => (
+            <span key={name}>
+              {name}牌堆 {k.progressRemaining?.[i] ?? 0}
+            </span>
+          ))}
+        </div>
+      </section>
+    );
   const strength = g.vertices.filter(
     (v) => cityAt(g, v.id) && !g.players[v.owner]?.eliminated,
   ).length;
@@ -439,7 +456,11 @@ export function CatanCityActions({
       {mine && (
         <div className="catan-build-menu catan-city-build">
           {actions
-            .filter(([key]) => !g.transport?.knights || key !== "knight_chase")
+            .filter(
+              ([key]) =>
+                (!g.transport?.knights || key !== "knight_chase") &&
+                (!g.attack?.city || key === "wall"),
+            )
             .map(([key, count]) => (
               <button
                 key={key}

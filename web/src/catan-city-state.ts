@@ -67,6 +67,16 @@ export function cityImprovementReason(
   const k = g.citiesKnights,
     level = k?.players[player]?.improvements[track] ?? 5;
   if (!k || level >= 5) return "已达五级";
+  const metropolis = k.metropolises[track];
+  if (
+    g.attack?.city &&
+    metropolis >= 0 &&
+    g.vertices[metropolis]?.owner === player &&
+    g.tiles
+      .filter((t) => t.vertices.includes(metropolis))
+      .every((t) => g.attack!.conquered.includes(t.id))
+  )
+    return "被包围的大都会暂不能提升对应建设";
   if (!g.vertices.some((v) => v.owner === player && cityAt(g, v.id)))
     return "需要至少一座城市";
   const metro = k.metropolises[track],

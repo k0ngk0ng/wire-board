@@ -189,6 +189,10 @@ export const catanPhases: Record<string, string> = {
   catan_explorer_move: "船只航行、装卸或移民定居",
   catan_transport_move: "移动马车并完成装卸",
   catan_transport_barbarian: "选择蛮族与新位置",
+  catan_attack_city_move: "安排道路骑士移动并确认战斗",
+  catan_attack_city_retreat: "被驱逐者选择骑士退让路线",
+  catan_attack_city_treason_remove: "选择叛变移除的道路骑士",
+  catan_attack_city_treason_place: "在原道路放置替代骑士",
   catan_attack_end: "安排骑士移动并确认战斗",
   catan_caravan_bid: "为商队出价：在投票面板选择资源",
   catan_caravan_vote: "将全部选票投给一个商队位置",
@@ -594,7 +598,7 @@ function CatanBaseBoard({
   useEffect(() => setProgress(null), [progressHandKey]);
   const progressMode =
     mine && progress && g.progressPlayable?.includes(progress.card)
-      ? progressMapMode(progress.card)
+      ? progressMapMode(progress.card, !!g.explorer, !!g.attack?.city)
       : "";
   const progressTargets =
     progress && progressMode ? progressMapTargets(g, you, progress) : [];
@@ -1492,7 +1496,7 @@ function CatanBaseBoard({
               <CatanAttackMap
                 room={room}
                 assets={assets}
-                busy={busy}
+                busy={busy || !!progress}
                 selected={attackSelection}
                 onSelect={setAttackSelection}
               />

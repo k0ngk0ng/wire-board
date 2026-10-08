@@ -2319,6 +2319,8 @@ function Create({
             ["caravans", "rivers"].includes(variantScenario)) &&
           supportsPublicCatanKnightsCombination(variantScenario) && (
             <CatanCombinationKnightsPicker
+              attack={variantScenario === "barbarian-attack"}
+              transport={variantScenario === "transport"}
               rivers={variantScenario === "rivers"}
               caravans={variantScenario === "caravans"}
               tribe={variantScenario === "tribe"}
@@ -2827,6 +2829,8 @@ function Waiting({
             room.catanTwoScenario || room.catanScenario,
           ) && (
             <CatanCombinationKnightsPicker
+              attack={room.catanScenario === "barbarian-attack"}
+              transport={room.catanScenario === "transport"}
               rivers={
                 (room.catanTwoScenario || room.catanScenario) === "rivers"
               }

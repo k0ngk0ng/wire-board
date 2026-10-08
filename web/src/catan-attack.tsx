@@ -16,6 +16,7 @@ import {
 } from "./catan-attack-state";
 import type { AttackSelection } from "./catan-attack-state";
 import "./catan-attack.css";
+import { CatanAttackCityMap, CatanAttackCityPanel } from "./catan-attack-city";
 
 type Props = {
   room: Room;
@@ -39,7 +40,8 @@ export function CatanAttackSeat({
     <span className="attack-seat">
       <CatanCoins count={a.gold[seat]} assets={assets} />{" "}
       <span>
-        俘虏 <b>{a.prisoners[seat]}</b>（{Math.floor(a.prisoners[seat] / 2)}分）
+        俘虏 <b>{a.prisoners[seat]}</b>（
+        {Math.floor(a.prisoners[seat] / (a.city ? 3 : 2))}分）
       </span>{" "}
       <span>
         骑士 <b>{6 - a.knightsLeft[seat]}/6</b>
@@ -231,55 +233,68 @@ export function CatanAttackMap({
             </g>
           );
         })}
-      {knights.map((k, i) => {
-        const e = g.edges[k.edge],
-          v = g.vertices[e.a],
-          w = g.vertices[e.b],
-          original = a.knights[i]?.edge,
-          available =
-            can && a.endPlan && a.moveChoices?.some((c) => c.from === original),
-          picked = available && selected.from === original;
-        return (
-          <g
-            key={`${k.player}-${original}`}
-            className={`attack-knight ${available ? "selectable" : ""} ${picked ? "picked" : ""}`}
-            transform={`translate(${(v.x + w.x) / 2},${(v.y + w.y) / 2}) scale(${scale})`}
-            {...(available
-              ? clickProps(
-                  `选择${k.player < 0 ? "中立" : room.seats[k.player].name}的骑士 ${original + 1}`,
-                  () => onSelect({ ...selected, from: original, target: null }),
-                )
-              : { pointerEvents: "none" as const })}
-          >
-            <ellipse
-              rx="16"
-              ry="13"
-              fill={picked ? "#ffe273" : "#fff2d5"}
-              stroke={catanSeatColor(g, k.player)}
-              strokeWidth="3"
-            />
-            {assets ? (
-              <image
-                href={`${assets}/catan/attack/knight-${catanPieceColors[catanColorIndex(g, k.player)]}-v1.webp`}
-                x="-13"
-                y="-22"
-                width="26"
-                height="32"
-                pointerEvents="none"
+      {!a.city &&
+        knights.map((k, i) => {
+          const e = g.edges[k.edge],
+            v = g.vertices[e.a],
+            w = g.vertices[e.b],
+            original = a.knights[i]?.edge,
+            available =
+              can &&
+              a.endPlan &&
+              a.moveChoices?.some((c) => c.from === original),
+            picked = available && selected.from === original;
+          return (
+            <g
+              key={`${k.player}-${original}`}
+              className={`attack-knight ${available ? "selectable" : ""} ${picked ? "picked" : ""}`}
+              transform={`translate(${(v.x + w.x) / 2},${(v.y + w.y) / 2}) scale(${scale})`}
+              {...(available
+                ? clickProps(
+                    `选择${k.player < 0 ? "中立" : room.seats[k.player].name}的骑士 ${original + 1}`,
+                    () =>
+                      onSelect({ ...selected, from: original, target: null }),
+                  )
+                : { pointerEvents: "none" as const })}
+            >
+              <ellipse
+                rx="16"
+                ry="13"
+                fill={picked ? "#ffe273" : "#fff2d5"}
+                stroke={catanSeatColor(g, k.player)}
+                strokeWidth="3"
               />
-            ) : (
-              <text textAnchor="middle" y="4">
-                ♞
-              </text>
-            )}
-            <title>
-              {k.player < 0 ? "中立" : room.seats[k.player].name}的骑士 · 路线{" "}
-              {k.edge + 1}
-              {a.endPlan && can && k.edge !== original ? "（未确认）" : ""}
-            </title>
-          </g>
-        );
-      })}
+              {assets ? (
+                <image
+                  href={`${assets}/catan/attack/knight-${catanPieceColors[catanColorIndex(g, k.player)]}-v1.webp`}
+                  x="-13"
+                  y="-22"
+                  width="26"
+                  height="32"
+                  pointerEvents="none"
+                />
+              ) : (
+                <text textAnchor="middle" y="4">
+                  ♞
+                </text>
+              )}
+              <title>
+                {k.player < 0 ? "中立" : room.seats[k.player].name}的骑士 · 路线{" "}
+                {k.edge + 1}
+                {a.endPlan && can && k.edge !== original ? "（未确认）" : ""}
+              </title>
+            </g>
+          );
+        })}
+      {a.city && (
+        <CatanAttackCityMap
+          assets={assets}
+          room={room}
+          busy={busy}
+          selected={selected}
+          onSelect={onSelect}
+        />
+      )}
       {a.conqueredBuildings.map((id) => {
         const v = g.vertices[id];
         return (
@@ -349,7 +364,7 @@ export function CatanAttackPanel({
   const coinOK = (color: number, buy: boolean) =>
     canTrade &&
     (buy
-      ? a.bought < 2 && a.gold[room.you] >= 2 && g.bank[color] > 0
+      ? color < 5 && a.bought < 2 && a.gold[room.you] >= 2 && g.bank[color] > 0
       : (g.players[room.you].resources?.[color] || 0) >=
           (g.players[room.you]?.rates?.[color] || 4) &&
         (a.goldRule === "ledger" || a.goldBank > 0));
@@ -377,22 +392,33 @@ export function CatanAttackPanel({
       </header>
       {!collapsed && (
         <div className="catan-gold-body">
+          {a.city && (
+            <CatanAttackCityPanel
+              room={room}
+              busy={busy}
+              selected={selected}
+              onSelect={onSelect}
+              act={act}
+            />
+          )}
           <div className="attack-stock">
             <span>
-              蛮族供应 <b>{a.supply}</b>
+              蛮族供应 <b>{a.city ? "不限" : a.supply}</b>
             </span>
             <span>
               金币供应 <b>{a.goldRule === "ledger" ? "不限" : a.goldBank}</b>
             </span>
-            <span className="attack-deck">
-              {assets && (
-                <img
-                  src={`${assets}/catan/attack/card-back-v1.webp`}
-                  alt="发展卡背面"
-                />
-              )}
-              发展卡 <b>{a.devRemaining}</b>
-            </span>
+            {!a.city && (
+              <span className="attack-deck">
+                {assets && (
+                  <img
+                    src={`${assets}/catan/attack/card-back-v1.webp`}
+                    alt="发展卡背面"
+                  />
+                )}
+                发展卡 <b>{a.devRemaining}</b>
+              </span>
+            )}
           </div>
           {a.twoRules && (
             <p>中立骑士俘虏：{a.neutralPrisoners || 0}（不计入玩家分数）</p>
@@ -578,7 +604,9 @@ export function CatanAttackPanel({
           {!pending && (
             <>
               <p>
-                自己回合达到12分获胜 · 每2个俘虏1分 · 不使用强盗和最大骑士军队。
+                {a.city
+                  ? "自己回合达到13分获胜 · 每3个俘虏1分 · 道路骑士按等级战斗。"
+                  : "自己回合达到12分获胜 · 每2个俘虏1分 · 不使用强盗和最大骑士军队。"}
               </p>
               {own && (
                 <CatanAttackSeat game={g} seat={room.you} assets={assets} />
@@ -636,7 +664,7 @@ export function CatanAttackPanel({
               )}
             </>
           )}
-          {a.treasonRule === "as-much-as-possible" && (
+          {!a.city && a.treasonRule === "as-much-as-possible" && (
             <details>
               <summary>本站补充规则 · 叛变</summary>
               <p>

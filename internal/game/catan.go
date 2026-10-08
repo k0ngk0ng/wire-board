@@ -1468,6 +1468,9 @@ func (s *State) EliminateCatan(p int) error {
 		a.GoldBank += a.Gold[p]
 		a.Gold[p] = 0
 		a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return k.Player == p })
+		if g.attackKnights() {
+			a.City.Knights = slices.DeleteFunc(a.City.Knights, func(k catanAttackCityKnight) bool { return k.Owner == p })
+		}
 	}
 	if t := g.Transport; t != nil {
 		t.GoldBank += t.Gold[p]
