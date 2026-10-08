@@ -644,7 +644,11 @@ export type CatanState = {
     ownGift?: { from: number; to: number; color: number };
   };
   victoryTarget?: number;
-  friendlyRobber?: { rules: string; protectedPlayers: number[] };
+  friendlyRobber?: {
+    rules: string;
+    fallback?: string;
+    protectedPlayers: number[];
+  };
   harbors?: { rules: string; owner: number; points: number[] };
   citiesKnights?: CatanCitiesKnights;
   progressRules?: {

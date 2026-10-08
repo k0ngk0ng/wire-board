@@ -1,3 +1,4 @@
+import { isPublicCatanSea } from "./catan-scenario-setup";
 import { supportsExtendedBaseVariants } from "./catan-base-layout";
 import { ShieldCheck } from "lucide-react";
 import type { CatanState, Room } from "./types";
@@ -47,9 +48,11 @@ export function CatanFriendlyRobberPicker({
   );
 }
 
+export const catanFriendlySeaFallbackNote =
+  "本站补充规则：没有合法陆地且没有符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海。";
+
 export const supportsPublicCatanFriendly = (scenario?: string) =>
-  !scenario ||
-  ["shores", "desert", "cloth", "pirate_islands", "wonders"].includes(scenario);
+  !scenario || isPublicCatanSea(scenario);
 
 export function CatanFriendlyRobberChoice({
   value,
@@ -89,9 +92,7 @@ export function CatanFriendlyRobberChoice({
       <small>
         {reason || "不改变获胜门槛、弃牌规则或回合时间。更改后需要重新准备。"}
       </small>
-      {value && scenario === "shores" && (
-        <small>友善强盗的新海岸组合至少需要4位玩家；三人地图没有沙漠。</small>
-      )}
+      {value && scenario && <small>{catanFriendlySeaFallbackNote}</small>}
       {needed > 0 && (
         <strong>还需 {needed} 位玩家才能开局，可添加电脑。</strong>
       )}
@@ -121,6 +122,8 @@ export function CatanFriendlyRobberSeat({
 export function CatanFriendlyRobberStatus({ room }: { room: Room }) {
   const g = room.game?.catan;
   if (!g?.friendlyRobber) return null;
+  const outside =
+    room.game?.phase === "catan_robber" && g.legal.robber?.includes(-1);
   const fallback =
     room.game?.phase === "catan_robber" && g.legal.robber?.includes(g.robber);
   return (
@@ -128,13 +131,15 @@ export function CatanFriendlyRobberStatus({ room }: { room: Room }) {
       <ShieldCheck size={16} aria-hidden="true" />
       <strong>友善强盗</strong>
       <span>
-        {fallback
-          ? "没有其他合法地块，点击当前沙漠完成强盗处理。"
-          : ["cloth", "pirate_islands"].includes(g.seafarers?.scenario || "")
-            ? "三座村庄起步，正常行动不触发友善保护。"
-            : g.seafarers && !g.seafarers.wonders
-              ? "强盗与海盗均保护公开不足3分的玩家；隐藏胜利点不计。"
-              : "公开不足3分受保护；隐藏胜利点不计。"}
+        {outside
+          ? "无合法陆地或沙漠，可点击“强盗退到场外”继续，不偷牌。"
+          : fallback
+            ? "没有其他合法地块，点击当前沙漠完成强盗处理。"
+            : ["cloth", "pirate_islands"].includes(g.seafarers?.scenario || "")
+              ? "三座村庄起步，正常行动不触发友善保护。"
+              : g.seafarers && !g.seafarers.wonders
+                ? "强盗与海盗均保护公开不足3分的玩家；隐藏胜利点不计。"
+                : "公开不足3分受保护；隐藏胜利点不计。"}
       </span>
     </div>
   );
@@ -170,6 +175,7 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
           海盗同样受保护规则约束：不能放到公开不足3分玩家的船只旁。岸边只有村庄或城市、没有船只，不会阻止海盗进入该海洋。
         </p>
       )}
+      {info.friendlySeaFallback && <p>{catanFriendlySeaFallbackNote}</p>}
       <p>保护不会免除掷出7后的弃牌，也不改变获胜门槛和回合时间。</p>
     </section>
   );

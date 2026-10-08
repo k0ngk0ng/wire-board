@@ -282,6 +282,9 @@ func testCatanPublicVariantsFullHTTP(t *testing.T, friendly, harbors bool) {
 				if harbors && record["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules {
 					t.Fatal("missing award history")
 				}
+				if friendly && scene != "" && record["catanExpansionRules"].(map[string]any)["friendly_sea_fallback"] != game.CatanFriendlySeaFallbackRules {
+					t.Fatal("missing fallback recipe history")
+				}
 				if friendly && record["catanExpansionRules"].(map[string]any)["friendly_robber"] != game.CatanFriendlyRobberRules {
 					t.Fatal("missing friendly history")
 				}

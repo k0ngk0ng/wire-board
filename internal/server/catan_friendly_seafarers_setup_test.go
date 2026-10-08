@@ -21,7 +21,7 @@ func TestCatanFriendlySeaConfigurationCountsReadinessRestartHistory(t *testing.T
 	provisionCatanFriendlyRobber(t, s, id)
 	v := current(h)
 	availability := v["catanFriendlyRobberAvailability"].(map[string]any)
-	if availability["allowed"] != true || availability["minPlayers"] != float64(4) {
+	if availability["allowed"] != true || availability["minPlayers"] != float64(3) {
 		t.Fatal("count guidance", availability)
 	}
 	for _, raw := range v["catanSeafarersChoices"].([]any) {
@@ -33,8 +33,7 @@ func TestCatanFriendlySeaConfigurationCountsReadinessRestartHistory(t *testing.T
 	h.command(current(h), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)
 	before, _ := json.Marshal(s.rooms[id])
-	h.command(current(h), "start", nil, 400) // Capacity 4 cannot disguise actual 3-player recipe.
-	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "fog"}, 400)
+	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "unknown"}, 400)
 	selectCatanFriendlyRobber(guest, false, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
@@ -54,10 +53,10 @@ func TestCatanFriendlySeaConfigurationCountsReadinessRestartHistory(t *testing.T
 	}
 	selectCatanFriendlyRobber(h, false, 200)
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "fog"}, 200)
-	if current(h)["catanFriendlyRobberAvailability"].(map[string]any)["allowed"] != false {
-		t.Fatal("unsupported map not explained")
+	if current(h)["catanFriendlyRobberAvailability"].(map[string]any)["allowed"] != true {
+		t.Fatal("new sea combination unavailable")
 	}
-	selectCatanFriendlyRobber(h, true, 400)
+	selectCatanFriendlyRobber(h, true, 200)
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "shores"}, 200)
 	selectCatanFriendlyRobber(h, true, 200)
 	selectCatanFriendlyRobber(h, false, 200)
@@ -108,20 +107,18 @@ func TestCatanFriendlySeaConfigurationCountsReadinessRestartHistory(t *testing.T
 	}
 }
 
-func TestCatanFriendlySeaThreePlayerCapacityCannotSelectShores(t *testing.T) {
+func TestCatanFriendlySeaThreePlayerCapacityCanSelectShores(t *testing.T) {
 	r := &Room{Kind: "catan", Status: "waiting", Capacity: 3}
 	if err := r.setCatanFriendlyRobber(game.CatanFriendlyRobberSetup{Enabled: true}); err != nil {
 		t.Fatal(err)
 	}
-	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "shores"}); err == nil {
-		t.Fatal("3-player shores accepted")
-	}
-	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "desert"}); err != nil {
+	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "shores"}); err != nil {
 		t.Fatal(err)
 	}
-	for _, info := range summary(r)["catanSeafarersChoices"].([]game.CatanSeafarersScenario) {
-		if info.ID == "shores" {
-			t.Fatal("3-player shores in choices")
-		}
+	if r.catanFriendlyMinimumPlayers() != 3 {
+		t.Fatal("wrong minimum")
+	}
+	if len(summary(r)["catanSeafarersChoices"].([]game.CatanSeafarersScenario)) != 9 {
+		t.Fatal("missing sea choices")
 	}
 }

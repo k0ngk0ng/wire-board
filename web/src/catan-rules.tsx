@@ -453,9 +453,7 @@ export function CatanRules({ room }: { room: Room }) {
             ? "2人"
             : fiveSix
               ? "5–6人"
-              : info.friendlyRobber && scenario === "shores"
-                ? "4人"
-                : "3–4人"
+              : "3–4人"
           : `${players}人`}
         {seafarers && info.layout ? ` · ${catanLayoutName(info.layout)}` : ""}。
         {catanScenarioVictory(scenario, info.target)}。

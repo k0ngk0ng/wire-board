@@ -5,11 +5,17 @@ import "testing"
 func TestCatanFriendlySeaConfigurationRecipes(t *testing.T) {
 	for _, n := range []int{3, 4, 5, 6} {
 		for _, info := range CatanSeafarersScenarios(n) {
-			if info.ID == "new_world" {
-				continue
-			} // Existing New World rejection uses its separate map draft.
+
 			for _, layout := range info.Layouts {
-				s, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: info.ID, Layout: layout}, nil)
+				var world *CatanNewWorldMap
+				if info.ID == "new_world" {
+					var err error
+					world, err = GenerateCatanNewWorldMap(n)
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+				s, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: info.ID, Layout: layout}, world)
 				if err != nil {
 					t.Fatal(err)
 				}

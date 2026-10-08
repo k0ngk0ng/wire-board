@@ -830,6 +830,20 @@ function CatanBaseBoard({
               )}
             {mine &&
               phase === "catan_robber" &&
+              g.legal.robber?.includes(-1) && (
+                <button
+                  disabled={busy}
+                  onClick={() => {
+                    setMode("robber");
+                    setProgress(null);
+                    select("robber", -1);
+                  }}
+                >
+                  强盗退到场外
+                </button>
+              )}
+            {mine &&
+              phase === "catan_robber" &&
               g.legal.pirate?.includes(-1) && (
                 <button
                   disabled={busy}
@@ -1137,25 +1151,26 @@ function CatanBaseBoard({
                   <title>海盗在外海</title>
                 </g>
               )}
-              {(sea?.newWorld || g.caravans) && g.robber === -1 && (
-                <g
-                  transform={`translate(${mapMinX + mapWidth - 24},320)`}
-                  role="img"
-                  aria-label="强盗在外框"
-                >
-                  {assets ? (
-                    <image
-                      href={`${assets}/catan/robber-v1.webp`}
-                      x="-12"
-                      y="-18"
-                      width="24"
-                      height="40"
-                    />
-                  ) : (
-                    <text textAnchor="middle">强盗</text>
-                  )}
-                </g>
-              )}
+              {(sea?.newWorld || g.caravans || g.friendlyRobber?.fallback) &&
+                g.robber === -1 && (
+                  <g
+                    transform={`translate(${mapMinX + mapWidth - 24},320)`}
+                    role="img"
+                    aria-label="强盗在外框"
+                  >
+                    {assets ? (
+                      <image
+                        href={`${assets}/catan/robber-v1.webp`}
+                        x="-12"
+                        y="-18"
+                        width="24"
+                        height="40"
+                      />
+                    ) : (
+                      <text textAnchor="middle">强盗</text>
+                    )}
+                  </g>
+                )}
               <CatanMerchant game={g} assets={assets} />
               {g.edges.map((e) => {
                 const a = g.vertices[e.a],
@@ -1905,7 +1920,10 @@ function CatanBaseBoard({
                         phase === "catan_setup_city"
                           ? "放置起始城市"
                           : "升级城市",
-                      robber: "移动强盗",
+                      robber:
+                        chosen.id === -1
+                          ? "将强盗退到场外（不偷牌）"
+                          : "移动强盗",
                       buy_dev: "购买发展卡",
                     } as Record<string, string>
                   )[chosen.type]

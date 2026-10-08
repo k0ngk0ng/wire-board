@@ -46,8 +46,6 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "splendor", "capacity": 3}, {"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
-		{"kind": "catan", "capacity": 3, "catanScenario": "shores"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "fog"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "rivers"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "cities-knights"},
 		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
@@ -63,10 +61,9 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	ready := func() { h.command(current(h), "ready", nil, 200); c.command(current(c), "ready", nil, 200) }
 	ready()
 	before, _ := json.Marshal(s.rooms[id])
-	h.command(current(h), "start", nil, 400)
 	selectCatanFriendlyRobber(c, false, 400)
 	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
-	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "fog", "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "unknown", "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid selection changed room")

@@ -2,18 +2,17 @@ package game
 
 import "errors"
 
-// The remaining sea combinations stay in the acceptance backlog: maps with
-// no desert and the Forgotten Tribe's numbered-land restriction need a
-// separately verified interpretation of the friendly robber fallback.
+// New sea games disclose a versioned site fallback for maps without a legal
+// desert. Scenario restrictions still take precedence over retreat to desert.
 func CatanFriendlySeafarersSupported(n int, scenario string) bool {
 	if n < 3 || n > 6 {
 		return false
 	}
 	switch scenario {
-	case "shores":
-		return n >= 4
-	case "desert", "wonders", "cloth", "pirate_islands":
+	case "shores", "islands", "fog", "tribe", "new_world", "desert", "wonders", "cloth", "pirate_islands":
 		return true
+	case "six_islands":
+		return n > 4
 	}
 	return false
 }
@@ -28,7 +27,15 @@ func NewCatanFriendlySeafarers(n int, options CatanOptions, setup CatanSeafarers
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("友善强盗与助手的组合尚未核验")
 	}
-	s, err := NewCatanSeafarers(n, options, setup, nil)
+	var world *CatanNewWorldMap
+	var err error
+	if setup.Scenario == "new_world" {
+		world, err = GenerateCatanNewWorldMap(n)
+		if err != nil {
+			return nil, err
+		}
+	}
+	s, err := NewCatanSeafarers(n, options, setup, world)
 	if err != nil {
 		return nil, err
 	}

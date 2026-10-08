@@ -323,6 +323,9 @@ func (s *State) catanView(view map[string]any, player int) {
 			legal["robber"] = g.clothStartTiles()
 		}
 		if s.Phase == "catan_robber" {
+			if g.robberAllowed(-1) {
+				legal["robber"] = append(legal["robber"], -1)
+			}
 			for _, tile := range g.Tiles {
 				if g.robberAllowed(tile.ID) {
 					legal["robber"] = append(legal["robber"], tile.ID)

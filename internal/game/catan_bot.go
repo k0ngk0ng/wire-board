@@ -257,6 +257,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		if best >= 0 {
 			choices = append(choices, botChoice{Action{Type: "catan_robber", Tile: best}, score})
 		}
+		if g.robberAllowed(-1) {
+			choices = append(choices, botChoice{Action{Type: "catan_robber", Tile: -1}, 0})
+		}
 		return s.botLegal(player, choices)
 	case "catan_cloth_steal":
 		return s.catanClothStealBot(player)

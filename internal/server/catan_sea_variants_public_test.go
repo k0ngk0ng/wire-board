@@ -59,7 +59,7 @@ func TestCatanSeaVariantsPublicResizeRestoreAndDisable(t *testing.T) {
 			change(h, "catan_options", "catanOptions", game.CatanOptions{FiveSix: true, Helpers: true}, 400)
 			change(h, "catan_events", "enabled", true, 400)
 			if friendly {
-				change(h, "catan_scenario", "catanScenario", "fog", 400)
+				change(h, "catan_scenario", "catanScenario", "unknown", 400)
 				selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
 			}
 			after, _ = json.Marshal(s.rooms[id])
