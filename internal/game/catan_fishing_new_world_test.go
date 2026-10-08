@@ -132,7 +132,7 @@ func TestCatanFishingNewWorldRejectsCorruptStateAndUnsupportedOptions(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, options := range []CatanOptions{{Helpers: true}, {AllHelpers: true}, {FiveSix: true}} {
+	for _, options := range []CatanOptions{{AllHelpers: true}, {FiveSix: true}} {
 		if _, err := NewCatanFishingNewWorld(3, options, layout); err == nil {
 			t.Fatal("unsupported combination accepted", options)
 		}

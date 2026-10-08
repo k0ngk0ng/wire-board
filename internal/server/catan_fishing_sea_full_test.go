@@ -51,6 +51,10 @@ func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbor
 }
 
 func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors, events bool, publicSizes ...int) {
+	testFishingConfiguredFullHTTP(t, scenario, friendly, harbors, events, false, publicSizes...)
+}
+
+func testFishingConfiguredFullHTTP(t *testing.T, scenario string, friendly, harbors, events, helpers bool, publicSizes ...int) {
 	totalPaid := 0
 	sizes := []int{5, 6}
 	if scenario == "" {
@@ -81,9 +85,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 					if scenario == "new_world" {
 						layout = "prepared"
 					}
-					s, ts, clients, id = newPublicFishingSeaVariants(t, n, scenario, layout, friendly, harbors, events)
+					s, ts, clients, id = newPublicFishingSeaConfigured(t, n, scenario, layout, friendly, harbors, events, helpers)
 				} else if scenario == "" {
-					s, ts, clients, id = newPublicFishingScenarioVariants(t, n, "fishing", friendly, harbors, events)
+					s, ts, clients, id = newPublicFishingScenarioConfigured(t, n, "fishing", friendly, harbors, events, helpers)
 				}
 				supply, devSupply, tokenSupply, ports, grounds := 19, 25, 30, 9, 6
 				if n > 4 {
@@ -135,6 +139,8 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						label = "grounds"
 					case state.Phase == "catan_fish_replace":
 						label = "fish-response"
+					case state.Phase == "catan_helper":
+						label = "helper-" + g.HelperPending.Kind
 					case state.Phase == "catan_gold":
 						label = "gold-response"
 					case state.Phase == "catan_card_event":
@@ -161,7 +167,7 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 					if scenario == "cloth" || scenario == "tribe" {
 						assertPublicFishSeaSpecialInventory(t, g)
 					}
-					cards := len(g.DevDeck) + len(g.DevDiscard)
+					cards := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
 					if scenario == "tribe" {
 						cards += len(g.Seafarers.Tribe.Development)
 					}
@@ -169,6 +175,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						for _, count := range p.Dev {
 							cards += count
 						}
+					}
+					if g.HelperPending != nil && g.HelperPending.Kind == "development" {
+						cards += len(g.HelperPending.Cards)
 					}
 					if cards != devSupply {
 						t.Fatal("development supply", steps, cards)
@@ -206,6 +215,11 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						}
 						for _, viewer := range []int{state.Turn, n} {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
+							if q, ok := v["helperPending"].(map[string]any); ok && int(q["player"].(float64)) != viewer {
+								if q["cards"] != nil || q["resources"] != nil {
+									t.Fatal("private helper choice exposed")
+								}
+							}
 							fish := v["fishing"].(map[string]any)
 							tokens := fish["tokens"].(map[string]any)
 							if tokens["drawPile"] != nil || fish["pending"] != nil {
@@ -290,6 +304,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 				if !r.Game.Finished || r.Status != "finished" || (len(r.Game.Winners) == 0 || scenario != "cloth" && len(r.Game.Winners) != 1) || !restored["setup"] || scenario == "new_world" && (!restored["ports"] || !restored["grounds"]) || n > 4 && !restored["secondary"] || automatic == 0 || timeouts == 0 {
 					t.Fatal("incomplete full-game coverage", steps, automatic, timeouts, paid, restored)
 				}
+				if helpers && !restored["helper-resource"] {
+					t.Fatal("no natural helper response")
+				}
 				totalPaid += paid
 				winner := r.Game.Winners[0]
 				target := 12
@@ -350,6 +367,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						}
 						record := history[0].(map[string]any)
 						versions := record["catanExpansionRules"].(map[string]any)
+						if helpers && versions["fishing_helpers"] != game.CatanFishingHelpersRules {
+							t.Fatal("missing helper recipe history")
+						}
 						if n > 4 && (scenario == "islands" || scenario == "desert" || scenario == "tribe" || scenario == "cloth") && versions["fishing_sea_recipe"] != game.CatanFishingSeaExtendedRecipe {
 							t.Fatal("missing extended fishing recipe history", versions)
 						}

@@ -65,7 +65,7 @@ func TestCatanFishingExtendedPublicConfiguration(t *testing.T) {
 			command(h, "catan_fishing", map[string]any{"enabled": true}, 200)
 			before, _ = json.Marshal(s.rooms[id])
 			selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "pirate_islands"}, 400)
-			command(h, "catan_options", map[string]any{"catanOptions": game.CatanOptions{FiveSix: true, Helpers: true}}, 400)
+			command(h, "catan_options", map[string]any{"catanOptions": game.CatanOptions{FiveSix: true, AllHelpers: true}}, 400)
 			after, _ = json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("invalid configuration mutated room")

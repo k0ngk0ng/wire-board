@@ -71,7 +71,7 @@ func TestCatanFishingNewWorldExtendedComponentsAndGates(t *testing.T) {
 		}
 		fleetSupply(t, g)
 		layout := g.NewWorldMap()
-		for _, options := range []CatanOptions{{}, {FiveSix: true, Helpers: true}, {FiveSix: true, Helpers: true, AllHelpers: true}} {
+		for _, options := range []CatanOptions{{}, {FiveSix: true, AllHelpers: true}} {
 			if _, err := NewCatanFishingNewWorld(n, options, layout); err == nil {
 				t.Fatal("incompatible options accepted", options)
 			}

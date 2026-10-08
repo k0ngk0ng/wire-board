@@ -137,6 +137,9 @@ func newCatanHelperReferenceEvents(n int, all bool) (*State, error) {
 }
 
 func (s *State) validateCatanEventSession() error {
+	if err := s.validateFishingHelpers(); err != nil {
+		return err
+	}
 	g := s.Catan
 	if g == nil || g.EventDeck == nil {
 		return nil

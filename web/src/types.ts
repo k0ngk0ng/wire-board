@@ -588,6 +588,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    helpers?: string;
     worldSetup?: {
       index: number;
       total: number;

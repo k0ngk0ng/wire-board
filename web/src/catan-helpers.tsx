@@ -42,7 +42,7 @@ export function CatanOptionPicker({
           五至六人扩充 · 新版配对回合
         </label>
       )}
-      {helpersAvailable && (explorer || (!fishing && !citiesKnights)) && (
+      {helpersAvailable && (explorer || !citiesKnights) && (
         <label>
           <input
             type="checkbox"
@@ -58,20 +58,18 @@ export function CatanOptionPicker({
           Helpers · 十二位助手
         </label>
       )}
-      {helpersAvailable &&
-        (explorer || (!fishing && !citiesKnights)) &&
-        value.helpers && (
-          <label>
-            <input
-              type="checkbox"
-              checked={!!value.allHelpers}
-              onChange={(e) =>
-                onChange({ ...value, allHelpers: e.target.checked })
-              }
-            />{" "}
-            展示全部备用助手
-          </label>
-        )}
+      {helpersAvailable && (explorer || !citiesKnights) && value.helpers && (
+        <label>
+          <input
+            type="checkbox"
+            checked={!!value.allHelpers}
+            onChange={(e) =>
+              onChange({ ...value, allHelpers: e.target.checked })
+            }
+          />{" "}
+          展示全部备用助手
+        </label>
+      )}
       {value.fiveSix && (
         <small>
           {seafarers
@@ -80,13 +78,11 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {helpersAvailable &&
-        (explorer || (!fishing && !citiesKnights)) &&
-        value.helpers && (
-          <small>
-            使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
-          </small>
-        )}
+      {helpersAvailable && (explorer || !citiesKnights) && value.helpers && (
+        <small>
+          使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+        </small>
+      )}
       {explorer && value.helpers && (
         <small>
           本站探索者适配：造船、人员建设与补给替代发展卡和强盗能力；支持渔夫、城市与骑士，人数按探索者规则处理。
@@ -97,7 +93,10 @@ export function CatanOptionPicker({
       )}
       {value.helpers && friendlyRobber && (
         <small>
-          友善保护只限制强盗与海盗，不限制助手交易或取牌。迪古尔仍按助手效果返回沙漠；无沙漠时不可使用，不自动改为场外驱逐。
+          友善保护只限制强盗与海盗，不限制助手交易或取牌。
+          {fishing
+            ? "本站渔夫规则：迪古尔返回沙漠；无沙漠时移到场外。"
+            : "迪古尔仍按助手效果返回沙漠；无沙漠时不可使用，不自动改为场外驱逐。"}
         </small>
       )}
     </fieldset>
@@ -206,6 +205,7 @@ export function CatanHelpers({
     setOpen(false);
   }, [room.id, helper?.id, pending?.kind, pending?.player]);
   if (!g.options?.helpers) return null;
+  const fishingHelpers = g.fishing?.helpers === "wire-board-fishing-helpers-v1";
   const hand = p?.resources || [0, 0, 0, 0, 0],
     active =
       room.status === "playing" &&
@@ -439,9 +439,10 @@ export function CatanHelpers({
               )}
               {rule.id === 10 && (
                 <>
-                  {g.tiles[g.robber]?.resource === 7 && (
+                  {(g.tiles[g.robber]?.resource === 7 ||
+                    (fishingHelpers && g.tiles[g.robber]?.resource === 9)) && (
                     <ResourceSelect
-                      label="金矿领取资源"
+                      label="领取资源"
                       value={color}
                       onChange={setColor}
                     />
@@ -450,12 +451,13 @@ export function CatanHelpers({
                     disabled={
                       g.robber < 0 ||
                       g.tiles[g.robber]?.resource === 5 ||
-                      !g.tiles.some(
-                        (t) =>
-                          t.resource === 5 &&
-                          (!g.seafarers?.cloth ||
-                            g.seafarers.cloth.homeTiles.includes(t.id)),
-                      )
+                      (!fishingHelpers &&
+                        !g.tiles.some(
+                          (t) =>
+                            t.resource === 5 &&
+                            (!g.seafarers?.cloth ||
+                              g.seafarers.cloth.homeTiles.includes(t.id)),
+                        ))
                     }
                     onClick={() => {
                       if (
@@ -471,20 +473,33 @@ export function CatanHelpers({
                       } else action({ color });
                     }}
                   >
-                    选择沙漠并驱逐强盗
+                    {fishingHelpers &&
+                    !g.tiles.some(
+                      (t) =>
+                        t.resource === 5 &&
+                        (!g.seafarers?.cloth ||
+                          g.seafarers.cloth.homeTiles.includes(t.id)),
+                    )
+                      ? "将强盗驱逐到场外"
+                      : "选择沙漠并驱逐强盗"}
                   </button>
                 </>
               )}
               {rule.id === 11 && (
                 <>
-                  {[5, 7].includes(g.tiles[g.robber]?.resource) && (
+                  {(fishingHelpers ? [5, 7, 9] : [5, 7]).includes(
+                    g.tiles[g.robber]?.resource,
+                  ) && (
                     <ResourceSelect
                       label="领取资源"
                       value={color}
                       onChange={setColor}
                     />
                   )}
-                  <button onClick={() => action({ color })}>
+                  <button
+                    disabled={g.robber < 0}
+                    onClick={() => action({ color })}
+                  >
                     领取强盗所在地资源
                   </button>
                 </>

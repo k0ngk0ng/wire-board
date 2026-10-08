@@ -15,8 +15,8 @@ type CatanFishingWorldSetup struct {
 // randomly drawn grounds in turn. Always retain the pre-game approved map.
 // Public three/four-player rooms validate space when selecting the combination.
 func NewCatanFishingNewWorld(n int, options CatanOptions, layout *CatanNewWorldMap) (*State, error) {
-	if n < 3 || n > 6 || options.Helpers || options.AllHelpers {
-		return nil, errors.New("新世界捕鱼需要三至六人，目前不使用助手")
+	if n < 3 || n > 6 {
+		return nil, errors.New("新世界捕鱼需要三至六人")
 	}
 	s, err := NewCatanSeafarers(n, options, CatanSeafarersSetup{Scenario: "new_world", Layout: "prepared"}, layout)
 	if err != nil {
@@ -37,6 +37,7 @@ func NewCatanFishingNewWorld(n int, options CatanOptions, layout *CatanNewWorldM
 		Tokens: *tokens, LastRollID: -1, Started: make([]bool, n),
 		WorldSetup: &CatanFishingWorldSetup{Numbers: numbers},
 	}
+	s.enableFishingHelpers()
 	s.Log = append(s.Log, "新世界捕鱼：先轮流放港口，再轮流安放随机渔场；不放湖泊，12分获胜，持旧靴子需13分")
 	return s, nil
 }

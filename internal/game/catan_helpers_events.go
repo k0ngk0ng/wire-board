@@ -102,8 +102,11 @@ func (s *State) validateEventHelpers() error {
 		if (h.ID != 3 && h.ID != 5) || q.Optional != (h.ID == 3) || sum(g.Bank[:5]) == 0 {
 			return errors.New("事件牌助手资源回应无效")
 		}
-		if g.RevealedEvent == nil || !g.RevealedEvent.ProductionStarted || (g.RevealedEvent.Production == 7) != (h.ID == 5) {
+		if g.EventDeck != nil && (g.RevealedEvent == nil || !g.RevealedEvent.ProductionStarted || (g.RevealedEvent.Production == 7) != (h.ID == 5)) {
 			return errors.New("助手补偿与生产点数不符")
+		}
+		if g.EventDeck == nil && (len(g.Dice) != 2 || (sum(g.Dice) == 7) != (h.ID == 5)) {
+			return errors.New("助手补偿与骰子点数不符")
 		}
 	case "development":
 		if h.ID != 6 || q.Player != s.Turn || len(q.Cards) < 1 || len(q.Cards) > 3 {

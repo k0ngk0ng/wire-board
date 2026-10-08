@@ -165,6 +165,7 @@ func (s *State) catanView(view map[string]any, player int) {
 			rules[4].Description = "事件牌生产点数为7时必须使用：超过七张资源免弃牌，否则领取一张自选资源。"
 			rules[9].Description = "自己抽取事件牌前或完整结算后，把强盗赶回沙漠，并领取原地块出产的一张资源。"
 		}
+		g.fishingHelperDescriptions(rules)
 		v["helperRules"] = rules
 		if player >= 0 && player < len(g.Players) && g.helperReady(player, 4) && player == s.Turn && s.Phase == "catan_turn" {
 			moves := map[int][]int{}

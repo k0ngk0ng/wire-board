@@ -90,7 +90,7 @@ func TestCatanFishingSeafarersSetupAndBoot(t *testing.T) {
 			t.Fatal("unsupported recipe accepted")
 		}
 	}
-	if _, err := NewCatanFishingSeafarers(3, CatanOptions{Helpers: true}, CatanSeafarersSetup{Scenario: "islands"}, nil); err == nil {
+	if _, err := NewCatanFishingSeafarers(3, CatanOptions{AllHelpers: true}, CatanSeafarersSetup{Scenario: "islands"}, nil); err == nil {
 		t.Fatal("unverified Helpers accepted")
 	}
 }
