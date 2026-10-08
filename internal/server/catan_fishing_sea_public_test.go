@@ -10,6 +10,10 @@ import (
 )
 
 func newPublicFishingSeaTable(t *testing.T, n int, scenario, layout string) (*Server, *httptest.Server, []*testClient, string) {
+	return newPublicFishingSeaVariants(t, n, scenario, layout, false, false)
+}
+
+func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, friendly, harbors bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -20,6 +24,12 @@ func newPublicFishingSeaTable(t *testing.T, n int, scenario, layout string) (*Se
 	}
 	raw := clients[0].post("/api/rooms", map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true, "catanOptions": game.CatanOptions{FiveSix: n > 4}}, 201)
 	id := raw["id"].(string)
+	if friendly {
+		selectCatanFriendlyRobber(clients[0], true, 200)
+	}
+	if harbors {
+		selectCatanHarbors(clients[0], true, 200)
+	}
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
 	}

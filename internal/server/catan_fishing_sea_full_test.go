@@ -35,6 +35,10 @@ func TestCatanFishingSeaPublicFullHTTPGames(t *testing.T) {
 }
 
 func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes ...int) {
+	testFishingVariantsFullHTTP(t, scenario, false, false, publicSizes...)
+}
+
+func testFishingVariantsFullHTTP(t *testing.T, scenario string, friendly, harbors bool, publicSizes ...int) {
 	totalPaid := 0
 	sizes := []int{5, 6}
 	if scenario == "" {
@@ -44,7 +48,11 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 		sizes = publicSizes
 	}
 	for _, n := range sizes {
-		for sample := 0; sample < 2; sample++ {
+		samples := 2
+		if friendly || harbors {
+			samples = 1
+		}
+		for sample := 0; sample < samples; sample++ {
 			t.Run(fmt.Sprintf("%d/sample%d", n, sample), func(t *testing.T) {
 				var s *Server
 				var ts *httptest.Server
@@ -58,9 +66,9 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 					if scenario == "new_world" {
 						layout = "prepared"
 					}
-					s, ts, clients, id = newPublicFishingSeaTable(t, n, scenario, layout)
+					s, ts, clients, id = newPublicFishingSeaVariants(t, n, scenario, layout, friendly, harbors)
 				} else if scenario == "" {
-					s, ts, clients, id = newPublicFishingTable(t, n)
+					s, ts, clients, id = newPublicFishingScenarioVariants(t, n, "fishing", friendly, harbors)
 				}
 				supply, devSupply, tokenSupply, ports, grounds := 19, 25, 30, 9, 6
 				if n > 4 {
@@ -274,6 +282,9 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 				if scenario == "desert" || scenario == "cloth" {
 					target = 14
 				}
+				if harbors {
+					target++
+				}
 				if r.Game.Catan.Fishing.Tokens.BootOwner == winner {
 					target++
 				}
@@ -318,6 +329,13 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 							t.Fatal("duplicate fishing history")
 						}
 						record := history[0].(map[string]any)
+						versions := record["catanExpansionRules"].(map[string]any)
+						if friendly && versions["friendly_fishing_fallback"] != game.CatanFriendlyFishingFallbackRules {
+							t.Fatal("missing friendly fishing history", versions)
+						}
+						if harbors && versions["harbors"] != game.CatanHarborsRules {
+							t.Fatal("missing harbors history")
+						}
 						wantScenario, wantLayout := "fishing", "variable"
 						if scenario != "" {
 							wantScenario, wantLayout = scenario, r.Game.Catan.Seafarers.Layout
@@ -350,7 +368,22 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 	}
 	// A legal game can finish without a manual fish payment. Require this
 	// coverage across the batch; directed action tests verify each paid action.
-	if totalPaid == 0 {
+	// Variant subtests intentionally run a single natural match. Such a match
+	// can finish without a manual fish purchase; paid variant effects have
+	// separate directed tests. Retain the multi-sample baseline coverage gate.
+	if totalPaid == 0 && !friendly && !harbors {
 		t.Fatal("full-game batch never spent fish manually")
+	}
+}
+
+func TestCatanFishingVariantsPublicFullHTTPGames(t *testing.T) {
+	for i, scene := range []string{"", "islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"} {
+		for mode := 1; mode <= 3; mode++ {
+			n := 3 + (i+mode)%4
+			if scene != "" && !publicCatanFishingSeaExtended(scene) {
+				n = 3 + (i+mode)%2
+			}
+			t.Run(fmt.Sprintf("%s/%d", scene, mode), func(t *testing.T) { testFishingVariantsFullHTTP(t, scene, mode&1 != 0, mode&2 != 0, n) })
+		}
 	}
 }

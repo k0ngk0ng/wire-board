@@ -127,7 +127,7 @@ func (r *Room) validateCatanScenario() error {
 		return errors.New("该剧本人数无效；河流、商队和渔夫支持三至六人；河流和商队另有双人变体")
 	}
 	options, _ := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4})
-	if r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || (r.CatanCitiesKnights != nil && r.CatanScenario != "fishing") || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || (r.CatanScenario != "fishing" && (r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil)) || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 		return errors.New("所选剧本与其他扩展的组合尚未开放")
 	}
 	if r.CatanCitiesKnights != nil {
@@ -151,7 +151,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if scenario != "" {
 		next.CatanBaseConfiguration = nil
 	}
-	if scenario != "" && scenario != "cities-knights" && !publicCatanSeaScenario(scenario) {
+	if scenario != "" && scenario != "cities-knights" && scenario != "fishing" && !publicCatanSeaScenario(scenario) {
 		next.CatanFriendlyRobber = nil
 	}
 	if !publicCatanHarborsScenario(scenario) {

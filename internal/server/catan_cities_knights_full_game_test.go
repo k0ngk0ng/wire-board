@@ -403,6 +403,9 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 					t.Fatal("missing combined fishing number recipe")
 				}
 			}
+			if friendly && scenario == "fishing" && history["catanExpansionRules"].(map[string]any)["friendly_fishing_fallback"] != game.CatanFriendlyFishingFallbackRules {
+				t.Fatal("missing friendly fishing version")
+			}
 			if friendly && history["catanExpansionRules"].(map[string]any)["friendly_knights"] != game.CatanFriendlyKnightsRules {
 				t.Fatal("missing friendly knights history")
 			}
@@ -436,6 +439,14 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{"leave": true}, 200)
 			clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 400)
 			t.Logf("steps=%d autoplay=%d timeout=%d responseRestart=%v", steps, automatic, timeouts, restartedResponse)
+		})
+	}
+}
+
+func TestCatanFishingKnightsVariantsPublicFullHTTPGames(t *testing.T) {
+	for mode := 1; mode <= 3; mode++ {
+		t.Run(fmt.Sprint(mode), func(t *testing.T) {
+			testCatanCitiesKnightsVariantsFullHTTPGames(t, "fishing", mode&2 != 0, mode&1 != 0, 3+mode%4, 3+(mode+2)%4)
 		})
 	}
 }

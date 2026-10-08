@@ -35,9 +35,9 @@ func TestCatanLandExtendedPublicConfiguration(t *testing.T) {
 			command(guest, "catan_scenario", map[string]any{"catanScenario": ""}, 400)
 			options(game.CatanOptions{FiveSix: true, Helpers: true}, 400)
 			selectCatanBase(h, &game.CatanBaseConfiguration{Layout: "fixed"}, 400)
-			selectCatanHarbors(h, true, 400)
-			selectCatanFriendlyRobber(h, true, 400)
 			if scene != "fishing" {
+				selectCatanHarbors(h, true, 400)
+				selectCatanFriendlyRobber(h, true, 400)
 				selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
 			}
 			after, _ := json.Marshal(s.rooms[id])

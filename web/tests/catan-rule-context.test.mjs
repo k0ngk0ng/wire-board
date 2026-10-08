@@ -699,3 +699,37 @@ test("standalone extended fishing discloses only its actual number recipe", () =
   delete room.game.catan.fishing;
   assert.equal(catanRuleContext(room).fishingNumberRecipe, "");
 });
+
+test("friendly fishing fallback follows actual recipe and preserves harbor boot targets", () => {
+  const room = {
+    capacity: 6,
+    catanScenario: "fishing",
+    catanOptions: { fiveSix: true },
+    catanFriendlyRobber: { enabled: true },
+    catanHarbors: { enabled: true },
+  };
+  let rules = catanRuleContext(room);
+  assert.equal(rules.friendlyFishingFallback, true);
+  assert.equal(rules.friendlySeaFallback, "");
+  assert.equal(rules.target, 11);
+  room.catanCitiesKnights = {};
+  assert.equal(catanRuleContext(room).target, 14);
+  room.catanScenario = "fog";
+  room.catanSeafarers = { scenario: "fog" };
+  room.catanFishing = true;
+  rules = catanRuleContext(room);
+  assert.equal(rules.friendlyFishingFallback, true);
+  assert.equal(rules.friendlySeaFallback, "");
+  room.game = {
+    catan: { players: Array(3).fill({}), friendlyRobber: { fallback: "" } },
+  };
+  rules = catanRuleContext(room);
+  assert.equal(rules.friendlyFishingFallback, false);
+  assert.equal(rules.friendlySeaFallback, "");
+  assert.equal(rules.harbors, false);
+  assert.equal(rules.target, 10);
+  room.game.catan.friendlyRobber.fallback =
+    "wire-board-friendly-fishing-fallback-v1";
+  assert.equal(catanRuleContext(room).friendlyFishingFallback, true);
+  assert.equal(catanRuleContext(room).friendlySeaFallback, "");
+});

@@ -6,7 +6,10 @@ import "./catan-harbors.css";
 import { isPublicCatanSea } from "./catan-scenario-setup";
 
 export const supportsPublicCatanHarbors = (scenario?: string) =>
-  !scenario || scenario === "cities-knights" || isPublicCatanSea(scenario);
+  !scenario ||
+  scenario === "cities-knights" ||
+  scenario === "fishing" ||
+  isPublicCatanSea(scenario);
 
 export function CatanHarborsPicker({
   room,
@@ -30,11 +33,10 @@ export function CatanHarborsPicker({
       !room.catanFishing) ||
     (room.capacity >= 3 &&
       room.capacity <= 6 &&
-      !room.catanFishing &&
       !room.catanTwoRules &&
       room.capacity > 4 === !!room.catanOptions?.fiveSix &&
       supportsPublicCatanHarbors(room.catanScenario));
-  if (room.catanFishing || (!setup && !available)) return null;
+  if (!setup && !available) return null;
   return (
     <CatanHarborsChoice
       value={!!setup?.enabled}

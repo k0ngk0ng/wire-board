@@ -22,8 +22,8 @@ func (r *Room) validateCatanFishing() error {
 		return nil
 	}
 	expected, _ := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4})
-	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || !publicCatanFishingSea(r.CatanScenario) || (r.Capacity > 4 && !publicCatanFishingSeaExtended(r.CatanScenario)) || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario || r.CatanCitiesKnights != nil || r.CatanOptions != expected || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.friendlyRobberEnabled() || (r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.CatanBaseConfiguration != nil {
-		return fmt.Errorf("渔夫海图支持三四人；迷雾、奇迹和新世界还支持五六人扩充，不能混用其他扩展配置")
+	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || !publicCatanFishingSea(r.CatanScenario) || (r.Capacity > 4 && !publicCatanFishingSeaExtended(r.CatanScenario)) || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario || r.CatanCitiesKnights != nil || r.CatanOptions != expected || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil {
+		return fmt.Errorf("渔夫海图支持三四人；迷雾、奇迹和新世界还支持五六人扩充，可叠加友善强盗与港口霸主，暂不支持助手或海图骑士组合")
 	}
 	if (r.CatanScenario == "desert" || r.CatanScenario == "tribe") && r.CatanSeafarers.Layout != "fixed" {
 		return fmt.Errorf("穿越沙漠和遗忘部落的捕鱼组合使用固定地图")

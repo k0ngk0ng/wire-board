@@ -85,9 +85,18 @@ export function catanRuleContext(room: Room) {
       : room.catanFriendlyRobber?.enabled && citiesKnights
         ? "wire-board-friendly-knights-v1"
         : "",
+    friendlyFishingFallback: game
+      ? game.friendlyRobber?.fallback ===
+        "wire-board-friendly-fishing-fallback-v1"
+      : !!room.catanFriendlyRobber?.enabled &&
+        (room.catanScenario === "fishing" || !!room.catanFishing),
     friendlySeaFallback: game
-      ? game.friendlyRobber?.fallback || ""
-      : room.catanFriendlyRobber?.enabled && room.catanSeafarers
+      ? game.friendlyRobber?.fallback === "wire-board-friendly-sea-fallback-v1"
+        ? game.friendlyRobber.fallback
+        : ""
+      : room.catanFriendlyRobber?.enabled &&
+          room.catanSeafarers &&
+          !room.catanFishing
         ? "wire-board-friendly-sea-fallback-v1"
         : "",
     friendlyRobber: game

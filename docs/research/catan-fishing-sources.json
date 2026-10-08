@@ -1,6 +1,6 @@
 {
   "checked_on": "2026-10-05",
-  "status": "As of 2026-10-08: local unpublished public entries include standalone Fishing, Fishing + Cities & Knights, and Fishing + seven Seafarers maps for three/four players. Desert/Tribe use fixed layouts; New World preserves the approved prepared map. Other counts/combinations and final release acceptance remain. Source checks retain original dates.",
+  "status": "As of 2026-10-08: local unpublished public entries include standalone Fishing and Fishing + Cities & Knights for three to six players, plus seven Seafarers maps for three/four and Fog/Wonders/New World for five/six. These recipes permit Friendly Robber and Harbors, separately or together. No-desert fallback is explicitly versioned as a site combination rule; see catan-fishing-variants.md. Remaining counts/combinations and final release acceptance are incomplete. Source checks retain original dates.",
   "sources": [
     {
       "source": "../board-expansion-rule-sources.json#catan-traders-2025",
