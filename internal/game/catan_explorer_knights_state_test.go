@@ -340,7 +340,7 @@ func TestCatanExplorerCityAggregateEventQueueAtomic(t *testing.T) {
 }
 
 func TestCatanExplorerCityAggregateVictoryAndConstructorGates(t *testing.T) {
-	for _, n := range []int{2, 7} {
+	for _, n := range []int{1, 7} {
 		if _, err := newCatanExplorerCityState(n, "pirate-lairs", []int{3, 4, 5, 9, 10, 11}); err == nil {
 			t.Fatal("unsupported player count accepted")
 		}

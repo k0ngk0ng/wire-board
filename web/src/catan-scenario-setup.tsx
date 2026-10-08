@@ -1,3 +1,4 @@
+import { catanExplorerTwoKnightsNote } from "./catan-explorer-two-knights";
 import { catanVictoryTarget } from "./catan-rule-context";
 import { catanScenarioVictory } from "./catan-scenarios";
 
@@ -46,7 +47,7 @@ const scenarios = [
     id: "land-ho",
     name: "探索者与海盗 · 初航",
     description:
-      "二至四人保留印刷开局；本站五六人采用扩大地图和自由开局。8 分获胜，可叠加三至六人骑士组合（13 分）。",
+      "二至四人保留印刷开局；本站五六人采用扩大地图和自由开局。8 分获胜，可叠加二至六人骑士组合（13 分）。",
   },
   {
     id: "fishing",
@@ -149,12 +150,14 @@ export function CatanCombinationKnightsPicker({
   fishing = false,
   explorer = false,
   intro = false,
+  two = false,
   harbors = false,
 }: {
   tribe?: boolean;
   pirateIslands?: boolean;
   explorer?: boolean;
   intro?: boolean;
+  two?: boolean;
   fishing?: boolean;
   harbors?: boolean;
   value: boolean;
@@ -180,12 +183,15 @@ export function CatanCombinationKnightsPicker({
           ? "先关闭 Helpers，才能加入城市与骑士。"
           : explorer
             ? intro
-              ? "本站初航骑士：三至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
-              : "三至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
+              ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
+              : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
             : fishing
               ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌，${harbors ? 14 : 13} 分获胜，持旧靴者需 ${harbors ? 15 : 14} 分。`
               : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
+      {explorer && two && value && (
+        <p className="muted small">{catanExplorerTwoKnightsNote}</p>
+      )}
       {pirateIslands && !helpers && (
         <p className="muted small">
           本站补充规则：此前已激活的骑士可转为未激活，升级远征线最近的普通船为战舰。首次蛮族进攻后舰队入场；先城市事件、再舰队、最后生产。征税选择陆地但不移动棋子。

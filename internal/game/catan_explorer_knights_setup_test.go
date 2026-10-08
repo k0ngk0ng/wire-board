@@ -195,7 +195,7 @@ func TestCatanExplorerKnightsMapInventoryAndRestore(t *testing.T) {
 			}
 		}
 	}
-	for _, n := range []int{2, 7} {
+	for _, n := range []int{1, 7} {
 		if _, _, err := newCatanExplorerBoardVariant(n, "pirate-lairs", "variable", true); err == nil {
 			t.Fatal("unsupported player count accepted")
 		}

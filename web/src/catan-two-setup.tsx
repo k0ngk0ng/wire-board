@@ -1,20 +1,21 @@
+import { catanVictoryTarget } from "./catan-rule-context";
 import { supportsTwoCatanHelpers } from "./catan-two-helpers";
 import { supportsTwoCatanVariants } from "./catan-two-variants";
 const scenarios = [
   {
     id: "pirate-lairs",
     name: "探索者与海盗 · 海盗巢穴",
-    description: "派船员合力攻陷巢穴、解放金矿，12 分获胜；二至六人。",
+    description: "派船员合力攻陷巢穴、解放金矿；二至六人。",
   },
   {
     id: "fish-for-catan",
     name: "探索者与海盗 · 卡坦鱼群",
-    description: "攻陷海盗巢穴、捕鱼并运回议会岛，15 分获胜；二至六人。",
+    description: "攻陷海盗巢穴、捕鱼并运回议会岛；二至六人。",
   },
   {
     id: "explorers-and-pirates",
     name: "探索者与海盗 · 完整三任务",
-    description: "同时探索巢穴、鱼群与香料任务，17 分获胜；二至六人。",
+    description: "同时探索巢穴、鱼群与香料任务；二至六人。",
   },
 
   {
@@ -27,13 +28,12 @@ const scenarios = [
     id: "spices-for-catan",
     name: "探索者与海盗 · 卡坦香料",
     description:
-      "捕鱼、结交农场，将货物运回议会岛，15 分获胜；两家中立势力仅作静态障碍，不使用贸易筹码。",
+      "捕鱼、结交农场，将货物运回议会岛；两家中立势力仅作静态障碍，不使用贸易筹码。",
   },
   {
     id: "land-ho",
     name: "探索者与海盗 · 初航",
-    description:
-      "印刷开局，装载移民并航行探索新岛，8 分获胜；不使用双人贸易筹码。",
+    description: "装载移民并航行探索新岛；不使用双人贸易筹码。",
   },
   {
     id: "",
@@ -122,6 +122,18 @@ export function CatanTwoScenarioPicker({
       )}
       <p className="muted small">
         {scenarios.find((s) => s.id === value)?.description}
+        {[
+          "land-ho",
+          "pirate-lairs",
+          "fish-for-catan",
+          "spices-for-catan",
+          "explorers-and-pirates",
+        ].includes(value) &&
+          ` ${target ?? catanVictoryTarget(value, false)} 分获胜。`}
+        {value === "land-ho" &&
+          ((target ?? 8) > 8
+            ? "自由开局，先放城市再放港口。"
+            : "沿用印刷开局。")}
         {supportsTwoCatanVariants(value) &&
           ` ${target ?? (value === "cities-knights" ? 13 : 10)} 分获胜。`}
         {value === "fishing" && `旧靴持有者需 ${(target ?? 10) + 1} 分。`}
