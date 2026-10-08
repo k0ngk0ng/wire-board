@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanFriendlyAvailable() bool {
-	return ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || r.CatanScenario == "fishing" || publicCatanSeaScenario(r.CatanScenario))
+	return r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || r.CatanScenario == "fishing" || publicCatanSeaScenario(r.CatanScenario))
 }
 
 // Existing internal recipes continue to use the same normalized setup.
@@ -38,6 +38,9 @@ func (r *Room) friendlyRobberEnabled() bool {
 }
 
 func (r *Room) validateCatanFriendlyRobber(n int) error {
+	if r.CatanTwoRules != "" && !r.publicCatanTwoVariantsAvailable() {
+		return errors.New("此双人剧本的友善强盗组合尚未接通")
+	}
 	if r.CatanFishing {
 		if err := r.validateCatanFishing(); err != nil {
 			return err
@@ -52,6 +55,9 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 	return nil
 }
 func (r *Room) catanFriendlyMinimumPlayers() int {
+	if r.publicCatanTwoVariantsAvailable() {
+		return 2
+	}
 	if r.CatanOptions.FiveSix {
 		return 5
 	}

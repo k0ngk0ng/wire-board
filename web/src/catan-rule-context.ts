@@ -131,6 +131,11 @@ export function catanRuleContext(room: Room) {
       ? !!game.two
       : !!room.catanTwoRules || (transport && players === 2),
     citiesKnights,
+    twoVariants: game
+      ? game.two?.variants || ""
+      : room.catanTwoRules && (harbors || room.catanFriendlyRobber?.enabled)
+        ? "wire-board-two-variants-v1"
+        : "",
     harbors,
     friendlyKnights: game
       ? game.friendlyRobber?.knights || ""
@@ -141,7 +146,8 @@ export function catanRuleContext(room: Room) {
       ? game.friendlyRobber?.fallback ===
         "wire-board-friendly-fishing-fallback-v1"
       : !!room.catanFriendlyRobber?.enabled &&
-        (room.catanScenario === "fishing" || !!room.catanFishing),
+        ((room.catanTwoScenario || room.catanScenario) === "fishing" ||
+          !!room.catanFishing),
     friendlySeaFallback: game
       ? game.friendlyRobber?.fallback === "wire-board-friendly-sea-fallback-v1"
         ? game.friendlyRobber.fallback

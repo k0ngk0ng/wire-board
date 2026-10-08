@@ -59,6 +59,9 @@ func testCatanFriendlySeaGame(t *testing.T, n int, info CatanSeafarersScenario, 
 		}
 	}
 	initialDev := len(g.DevDeck)
+	if tribe := g.tribe(); tribe != nil {
+		initialDev += len(tribe.Development)
+	}
 	if g.victoryTarget() != target {
 		t.Fatal("variant changed victory threshold")
 	}
@@ -82,6 +85,9 @@ func testCatanFriendlySeaGame(t *testing.T, n int, info CatanSeafarersScenario, 
 		g = s.Catan
 		fleetSupply(t, g)
 		dev := len(g.DevDeck) + len(g.DevDiscard)
+		if tribe := g.tribe(); tribe != nil {
+			dev += len(tribe.Development)
+		}
 		for i, p := range g.Players {
 			dev += sum(p.Dev)
 			roads, villages, cities := g.pieces(i)

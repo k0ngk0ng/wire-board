@@ -1,3 +1,4 @@
+import { catanTwoVariantsNote } from "./catan-two-variants";
 import { explorerScenarioLabel } from "./catan-explorer-state";
 import { CatanFriendlyRobberRules } from "./catan-friendly-robber";
 import { CatanHarborsRules } from "./catan-harbors";
@@ -581,6 +582,7 @@ export function CatanRules({ room }: { room: Room }) {
             本站渔夫＋助手规则：鱼不计入七点弃牌手牌，也不取消希尔达的无资源补偿；先完成换鱼和金矿选择，再回应助手。迪古尔在没有沙漠时将强盗移到场外；迪古尔或卡娅从湖泊领取奖励时，任选一张银行现有的普通资源。鱼行动单独支付，不使用助手折扣。
           </p>
         )}
+        {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
         {info.harbors && <CatanHarborsRules />}
         {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
         {scenario && (
@@ -633,6 +635,7 @@ export function CatanRules({ room }: { room: Room }) {
           本站渔夫＋助手规则：鱼不计入七点弃牌手牌，也不取消希尔达的无资源补偿；先完成换鱼和金矿选择，再回应助手。迪古尔在没有沙漠时将强盗移到场外；迪古尔或卡娅从湖泊领取奖励时，任选一张银行现有的普通资源。鱼行动单独支付，不使用助手折扣。
         </p>
       )}
+      {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
       {info.harbors && <CatanHarborsRules />}
       {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
       {!cloth && <p>达标获胜在自己的行动阶段判定。</p>}

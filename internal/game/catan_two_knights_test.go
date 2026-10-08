@@ -46,15 +46,49 @@ func TestCatanTwoKnightsRecruitPromoteAndSmithing(t *testing.T) {
 	p := s.Turn
 	twoKnightsHand(s, p, []int{4, 4, 6, 4, 6, 0, 0, 0})
 	for step := range 2 {
+		canRecruit := func(g *Catan, id int) bool {
+			if !g.knightRecruitable(p, id) {
+				return false
+			}
+			if step == 0 {
+				return true
+			}
+			candidate := clone(*g)
+			candidate.CitiesKnights.Knights = append(candidate.CitiesKnights.Knights, CatanKnight{Owner: p, Vertex: id, Strength: 1})
+			return len(candidate.twoKnightChoices("knight")) > 0
+		}
 		vertex := -1
 		for _, v := range s.Catan.Vertices {
-			if s.Catan.knightRecruitable(p, v.ID) {
+			if canRecruit(s.Catan, v.ID) {
 				vertex = v.ID
 				break
 			}
 		}
 		if vertex < 0 {
-			t.Fatal("no own recruit site")
+			// The random opening can share a free road endpoint. Extend the
+			// directed fixture with a legal own road before the second recruit;
+			// do not assume two opening roads guarantee two distinct sites.
+			for _, edge := range s.Catan.Edges {
+				if !s.Catan.canRoad(p, edge.ID) {
+					continue
+				}
+				candidate := clone(*s)
+				candidate.Catan.Edges[edge.ID].Owner = p
+				for _, id := range []int{edge.A, edge.B} {
+					if canRecruit(candidate.Catan, id) {
+						s.Catan.Edges[edge.ID].Owner = p
+						vertex = id
+						break
+					}
+				}
+				if vertex >= 0 {
+					break
+				}
+			}
+			s.catanScores()
+			if vertex < 0 {
+				t.Fatal("no fixture extension for own recruit")
+			}
 		}
 		helperApply(t, s, p, Action{Type: "catan_knight_recruit", Vertex: vertex})
 		if s.Phase != "catan_two_build" || s.Catan.Two.Pending.Kind != "knight" {

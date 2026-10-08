@@ -9,6 +9,7 @@ import (
 const CatanTwoRules = "catan-for-two-2025"
 
 type CatanTwo struct {
+	Variants        string           `json:"variants,omitempty"`
 	Knights         string           `json:"knights,omitempty"`
 	Rules           string           `json:"rules"`
 	Rolls           []int            `json:"rolls"`
@@ -111,10 +112,13 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateTwoKnights(); err != nil {
 		return err
 	}
+	if err := s.validateCatanTwoVariants(); err != nil {
+		return err
+	}
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err
 	}
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.FriendlyRobber != nil || g.Harbors != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
+	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.Options != (CatanOptions{}) || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.HelperPending != nil || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {

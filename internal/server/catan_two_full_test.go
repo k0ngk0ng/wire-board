@@ -16,6 +16,9 @@ func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, st
 	return newTwoScenarioFullTable(t, "")
 }
 func newTwoScenarioFullTable(t *testing.T, scenario string, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
+	return newTwoVariantsFullTable(t, scenario, len(events) > 0 && events[0], false, false)
+}
+func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, harbors bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -27,8 +30,14 @@ func newTwoScenarioFullTable(t *testing.T, scenario string, events ...bool) (*Se
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未知双人剧本", "capacity": 2, "catanTwoScenario": "unknown"}, 400)
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止版本注入", "capacity": 2, "catanTwoRules": game.CatanTwoRules}, 400)
 	recipe := map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}
-	if len(events) > 0 && events[0] {
+	if events {
 		recipe["catanEvents"] = game.CatanEventCatalogue
+	}
+	if friendly {
+		recipe["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+	}
+	if harbors {
+		recipe["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
 	}
 	raw := clients[0].post("/api/rooms", recipe, 201)
 	id := raw["id"].(string)
@@ -185,6 +194,9 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		if g.ArmyOwner == p {
 			score += 2
 		}
+		if g.Harbors != nil && g.Harbors.Owner == p {
+			score += 2
+		}
 		if g.Rivers != nil {
 			if g.Rivers.Gold[p] > g.Rivers.Gold[1-p] {
 				score++
@@ -319,10 +331,13 @@ func TestCatanTwoFishingEventsCompleteHTTPGames(t *testing.T) {
 	runTwoCompleteHTTPGames(t, "fishing", true)
 }
 func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
+	runTwoVariantsHTTPGames(t, scenario, len(events) > 0 && events[0], false, false)
+}
+func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, harbors bool) {
 	coverage := map[string]int{}
 	for sample := range 3 {
 		t.Run(fmt.Sprint(sample), func(t *testing.T) {
-			s, ts, clients, id := newTwoScenarioFullTable(t, scenario, events...)
+			s, ts, clients, id := newTwoVariantsFullTable(t, scenario, events, friendly, harbors)
 			restored, modes := map[string]bool{}, map[string]int{}
 			restart := func(label string) { s, ts = restartRiversHTTP(t, s, ts, clients, id); restored[label] = true }
 			restart("initial")
@@ -331,6 +346,7 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 				r := s.rooms[id]
 				state := r.Game
 				assertTwoHTTPInventory(t, state)
+				assertTwoVariantsHTTP(t, state, friendly, harbors)
 				label := fmt.Sprintf("%s/rolls=%d", state.Phase, len(state.Catan.Two.Rolls))
 				if state.Catan.Two.Pending != nil {
 					label += "/" + state.Catan.Two.Pending.Kind
@@ -432,6 +448,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 			if r.Game.Catan.Fishing != nil && r.Game.Catan.Fishing.Tokens.BootOwner == winner {
 				target++
 			}
+			if harbors {
+				target++
+			}
 			if winner != r.Game.Turn || r.Game.Catan.Players[winner].Score < target {
 				t.Fatal("wrong victory")
 			}
@@ -447,6 +466,12 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 						t.Fatal("duplicate or absent history")
 					}
 					record := history[0].(map[string]any)
+					if friendly || harbors {
+						rules := record["catanExpansionRules"].(map[string]any)
+						if rules["two_variants"] != game.CatanTwoVariantsRules || (rules["friendly_robber"] != nil) != friendly || (rules["harbors"] != nil) != harbors {
+							t.Fatal("two variant history missing", record)
+						}
+					}
 					if scenario == "cities-knights" && (record["catanScenario"] != "cities-knights" || record["catanExpansionRules"].(map[string]any)["two_knights"] != game.CatanTwoKnightsRules) {
 						t.Fatal("two city history missing", record)
 					}
