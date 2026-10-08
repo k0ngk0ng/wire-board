@@ -4,6 +4,10 @@ import "errors"
 
 const CatanFriendlyRobberRules = "catan-friendly-robber-2025"
 const CatanFriendlyKnightsRules = "wire-board-friendly-knights-v1"
+const CatanFriendlyFishingFallbackRules = "wire-board-friendly-fishing-fallback-v1"
+
+const catanFriendlyFishingNotice = "本站组合规则：无合法陆地及符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且无合法海洋时可留在外海；友善保护不限制花鱼偷牌，花鱼驱逐仍按原规则"
+
 const CatanFriendlySeaFallbackRules = "wire-board-friendly-sea-fallback-v1"
 
 const catanFriendlySeaNotice = "本站补充规则：没有合法陆地且没有符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海"
@@ -34,7 +38,10 @@ func (s *State) enableCatanFriendlyRobber() {
 		s.Catan.FriendlyRobber.Knights = CatanFriendlyKnightsRules
 		s.Log = append(s.Log, "本站组合规则：首次蛮族入侵前强盗与海盗仍休眠；征税和骑士驱逐遵守友善保护，城市失守后按最新公开分数重新判断保护")
 	}
-	if s.Catan.Seafarers != nil {
+	if s.Catan.Fishing != nil {
+		s.Catan.FriendlyRobber.Fallback = CatanFriendlyFishingFallbackRules
+		s.Log = append(s.Log, catanFriendlyFishingNotice)
+	} else if s.Catan.Seafarers != nil {
 		s.Catan.FriendlyRobber.Fallback = CatanFriendlySeaFallbackRules
 		s.Log = append(s.Log, catanFriendlySeaNotice)
 	}
@@ -48,18 +55,19 @@ func (s *State) validateCatanFriendlyFallback() error {
 	if g == nil || g.FriendlyRobber == nil || g.FriendlyRobber.Fallback == "" {
 		return nil // Preserve older saves and the base variant.
 	}
-	if g.FriendlyRobber.Fallback != CatanFriendlySeaFallbackRules || g.FriendlyRobber.Rules != CatanFriendlyRobberRules || g.Seafarers == nil {
-		return errors.New("友善强盗的航海退路配置无效")
+	valid := g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules && g.Seafarers != nil || g.FriendlyRobber.Fallback == CatanFriendlyFishingFallbackRules && g.Fishing != nil
+	if !valid || g.FriendlyRobber.Rules != CatanFriendlyRobberRules {
+		return errors.New("友善强盗的退路配置无效")
 	}
 	return nil
 }
 
-func (g *Catan) friendlySeaFallback() bool {
-	return g.Seafarers != nil && g.FriendlyRobber != nil && g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules
+func (g *Catan) friendlyOutsideFallback() bool {
+	return g.FriendlyRobber != nil && (g.Seafarers != nil && g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules || g.Fishing != nil && g.FriendlyRobber.Fallback == CatanFriendlyFishingFallbackRules)
 }
 
 func (g *Catan) friendlyRobberOutsideAllowed() bool {
-	if !g.friendlySeaFallback() || g.Attack != nil || g.pirateIslands() != nil || (g.CitiesKnights != nil && (g.CitiesKnights.Invasions == 0 || g.CitiesKnights.Chase == "pirate")) {
+	if !g.friendlyOutsideFallback() || g.Attack != nil || g.pirateIslands() != nil || (g.CitiesKnights != nil && (g.CitiesKnights.Invasions == 0 || g.CitiesKnights.Chase == "pirate")) {
 		return false
 	}
 	for _, t := range g.Tiles {
@@ -110,7 +118,7 @@ func (g *Catan) pirateDestinationAllowed(player, tile int) bool {
 		return false
 	}
 	if tile == g.Seafarers.Pirate {
-		if tile != -1 || !g.friendlySeaFallback() {
+		if tile != -1 || !g.friendlyOutsideFallback() {
 			return false
 		}
 		for _, t := range g.Tiles {

@@ -21,14 +21,14 @@ export function CatanFriendlyRobberPicker({
       room.capacity <= 6 &&
       room.capacity > 4 === !!room.catanOptions?.fiveSix &&
       !room.catanTwoRules &&
-      !room.catanFishing &&
       (!room.catanScenario ||
         room.catanScenario === "cities-knights" ||
+        room.catanScenario === "fishing" ||
         !!room.catanSeafarers));
-  if (room.catanFishing || (!setup && !eligible)) return null;
+  if (!setup && !eligible) return null;
   const availability = room.catanFriendlyRobberAvailability;
   const reason = !eligible
-    ? "此变体需要基础或已核验的航海地图，请检查地图与人数配置。"
+    ? "此变体需要基础、城市骑士、渔夫或已核验的航海地图，请检查地图与人数配置。"
     : !availability?.allowed
       ? availability?.reason || "该组合尚未开放。"
       : "";
@@ -42,6 +42,7 @@ export function CatanFriendlyRobberPicker({
       reason={reason}
       scenario={catanRuleContext(room).scenario}
       knights={catanRuleContext(room).citiesKnights}
+      fishing={catanRuleContext(room).fishing}
       needed={
         setup?.enabled
           ? Math.max(0, (availability?.minPlayers || 3) - room.seats.length)
@@ -57,8 +58,14 @@ export const catanFriendlyKnightsNote =
 export const catanFriendlySeaFallbackNote =
   "本站补充规则：没有合法陆地且没有符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海。";
 
+export const catanFriendlyFishingNote =
+  "本站组合规则：没有合法陆地及符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海。花鱼偷牌不受友善保护限制，花鱼驱逐仍按原规则。";
+
 export const supportsPublicCatanFriendly = (scenario?: string) =>
-  !scenario || scenario === "cities-knights" || isPublicCatanSea(scenario);
+  !scenario ||
+  scenario === "cities-knights" ||
+  scenario === "fishing" ||
+  isPublicCatanSea(scenario);
 
 export function CatanFriendlyRobberChoice({
   value,
@@ -68,6 +75,7 @@ export function CatanFriendlyRobberChoice({
   scenario = "",
   needed = 0,
   knights = false,
+  fishing = false,
 }: {
   value: boolean;
   onChange: (enabled: boolean) => void;
@@ -76,6 +84,7 @@ export function CatanFriendlyRobberChoice({
   scenario?: string;
   needed?: number;
   knights?: boolean;
+  fishing?: boolean;
 }) {
   return (
     <fieldset
@@ -100,7 +109,10 @@ export function CatanFriendlyRobberChoice({
       <small>
         {reason || "不改变获胜门槛、弃牌规则或回合时间。更改后需要重新准备。"}
       </small>
-      {value && isPublicCatanSea(scenario) && (
+      {value && (fishing || scenario === "fishing") && (
+        <small>{catanFriendlyFishingNote}</small>
+      )}
+      {value && !fishing && isPublicCatanSea(scenario) && (
         <small>{catanFriendlySeaFallbackNote}</small>
       )}
       {value && (knights || scenario === "cities-knights") && (
@@ -124,7 +136,7 @@ export function CatanFriendlyRobberSeat({
   return (
     <span
       className="catan-friendly-seat"
-      title="公开分数不足3分：强盗不能放到你的建筑旁，海盗不能放到你的船只旁，也不能偷取你的资源。隐藏胜利点不影响保护；强盗无合法地块时允许退回沙漠。"
+      title="公开分数不足3分：强盗不能放到你的建筑旁，海盗不能放到你的船只旁，也不能通过强盗或海盗偷取你的资源。隐藏胜利点不影响保护；强盗无合法地块时允许退回沙漠。"
     >
       <ShieldCheck size={14} aria-hidden="true" />{" "}
       {game.seafarers && !game.seafarers.wonders ? "强盗/海盗保护" : "强盗保护"}
@@ -164,6 +176,7 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
       <section>
         <h4>友善强盗</h4>
         {info.friendlyKnights && <p>{catanFriendlyKnightsNote}</p>}
+        {info.friendlyFishingFallback && <p>{catanFriendlyFishingNote}</p>}
         <p>
           本剧本从三座村庄起步，每人至少有3点建筑分，正常行动中不会触发“不足3分”的友善保护。即使失去布匹或港口奖励，建筑分仍至少为3。
         </p>
@@ -179,6 +192,7 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
     <section>
       <h4>友善强盗</h4>
       {info.friendlyKnights && <p>{catanFriendlyKnightsNote}</p>}
+      {info.friendlyFishingFallback && <p>{catanFriendlyFishingNote}</p>}
       {info.helpers && (
         <p>
           友善保护只限制强盗与海盗，不限制助手交易或取牌。迪古尔按助手效果返回沙漠，即使旁边有受保护玩家；不偷牌。无沙漠时不可使用，不能改为场外驱逐。卡娅在强盗位于场外时不可使用。
@@ -188,7 +202,9 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
         公开分数不足3分的玩家受到保护，包括行动玩家自己。强盗不能放到受保护玩家的村庄或城市旁，也不能向其偷取资源；隐藏胜利点不影响保护。公开分数达到3分后，保护立即消失。
       </p>
       <p>
-        没有其他合法陆地时，强盗退回沙漠，即使沙漠旁有受保护者；只能向邻接且公开至少3分的对手偷牌。如果唯一退路就是当前沙漠，点击该沙漠即可完成处理。骑士牌仍可以用于移动强盗，即使没有可偷取的对手。
+        {info.fishing && !info.scenario
+          ? "湖泊不是沙漠，同样受友善保护约束。有合法的其他地块时必须选择地块；没有合法地块时按上述本站规则退到场外，不偷牌。"
+          : "没有其他合法陆地时，强盗退回沙漠，即使沙漠旁有受保护者；只能向邻接且公开至少3分的对手偷牌。如果唯一退路就是当前沙漠，点击该沙漠即可完成处理。骑士牌仍可以用于移动强盗，即使没有可偷取的对手。"}
       </p>
       {info.scenario && info.scenario !== "wonders" && (
         <p>

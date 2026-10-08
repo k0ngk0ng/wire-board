@@ -160,7 +160,11 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules["friendly_knights"] = g.FriendlyRobber.Knights
 			}
 			if g.FriendlyRobber.Fallback != "" {
-				record.CatanExpansionRules["friendly_sea_fallback"] = g.FriendlyRobber.Fallback
+				key := "friendly_sea_fallback"
+				if g.FriendlyRobber.Fallback == game.CatanFriendlyFishingFallbackRules {
+					key = "friendly_fishing_fallback"
+				}
+				record.CatanExpansionRules[key] = g.FriendlyRobber.Fallback
 			}
 		}
 		if g.Harbors != nil {

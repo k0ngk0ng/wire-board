@@ -142,9 +142,11 @@ export function CatanCombinationKnightsPicker({
   helpers = false,
   fishing = false,
   explorer = false,
+  harbors = false,
 }: {
   explorer?: boolean;
   fishing?: boolean;
+  harbors?: boolean;
   value: boolean;
   onChange: (enabled: boolean) => void;
   disabled?: boolean;
@@ -166,7 +168,7 @@ export function CatanCombinationKnightsPicker({
           : explorer
             ? "三至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
             : fishing
-              ? "加入商品、进步牌和骑士；7鱼可选牌堆抽进步牌，13分获胜，持旧靴者需14分。"
+              ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌，${harbors ? 14 : 13} 分获胜，持旧靴者需 ${harbors ? 15 : 14} 分。`
               : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
     </fieldset>
@@ -221,7 +223,7 @@ export function CatanFishingSeaPicker({
           : fixedRequired
             ? "先将海图切为固定布局，才能加入渔夫。"
             : blocked
-              ? "先关闭 Helpers、城市骑士、港口霸主和友善强盗，才能加入渔夫。"
+              ? "先关闭 Helpers 和城市骑士，才能加入渔夫；可叠加港口霸主与友善强盗。"
               : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
     </fieldset>

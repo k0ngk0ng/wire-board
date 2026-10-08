@@ -6,11 +6,11 @@ import (
 )
 
 func publicCatanHarborsScenario(scenario string) bool {
-	return scenario == "" || scenario == "cities-knights" || publicCatanSeaScenario(scenario)
+	return scenario == "" || scenario == "cities-knights" || scenario == "fishing" || publicCatanSeaScenario(scenario)
 }
 
 func (r *Room) publicCatanHarborsAvailable() bool {
-	return ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && publicCatanHarborsScenario(r.CatanScenario)
+	return ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && publicCatanHarborsScenario(r.CatanScenario)
 }
 
 // Existing internally configured extended rooms retain their setup path.

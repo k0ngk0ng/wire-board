@@ -2031,7 +2031,6 @@ function Create({
               capacity >= 3 &&
               (capacity <= 4 || catanOptions.fiveSix) &&
               catanFriendly &&
-              !catanFishing &&
               supportsPublicCatanFriendly(catanScenario)
                 ? { enabled: true }
                 : undefined,
@@ -2040,7 +2039,6 @@ function Create({
               capacity >= 3 &&
               (capacity <= 4 || catanOptions.fiveSix) &&
               catanHarbors &&
-              !catanFishing &&
               supportsPublicCatanHarbors(catanScenario)
                 ? { enabled: true }
                 : undefined,
@@ -2229,12 +2227,7 @@ function Create({
               value={catanFishing}
               extended={!!catanOptions.fiveSix}
               onChange={setCatanFishing}
-              blocked={
-                !!catanOptions.helpers ||
-                catanSeaKnights ||
-                catanHarbors ||
-                catanFriendly
-              }
+              blocked={!!catanOptions.helpers || catanSeaKnights}
             />
           )}
         {k === "catan" &&
@@ -2244,6 +2237,7 @@ function Create({
               disabled={catanFishing}
               explorer={supportsPublicExplorerKnights(catanScenario)}
               fishing={catanScenario === "fishing"}
+              harbors={catanHarbors}
               value={catanSeaKnights}
               helpers={!!catanOptions.helpers}
               onChange={setCatanSeaKnights}
@@ -2252,7 +2246,6 @@ function Create({
         {k === "catan" &&
           capacity >= 3 &&
           (capacity <= 4 || catanOptions.fiveSix) &&
-          !catanFishing &&
           supportsPublicCatanHarbors(catanScenario) && (
             <CatanHarborsChoice
               value={catanHarbors}
@@ -2269,13 +2262,13 @@ function Create({
         {k === "catan" &&
           capacity >= 3 &&
           (capacity <= 4 || catanOptions.fiveSix) &&
-          !catanFishing &&
           supportsPublicCatanFriendly(catanScenario) && (
             <CatanFriendlyRobberChoice
               value={catanFriendly}
               onChange={setCatanFriendly}
               knights={catanSeaKnights || catanScenario === "cities-knights"}
               scenario={catanScenario}
+              fishing={catanFishing || catanScenario === "fishing"}
             />
           )}
         {k === "catan" &&
@@ -2653,10 +2646,7 @@ function Waiting({
               extended={!!room.catanOptions?.fiveSix}
               disabled={!host || busy || mapDirty}
               blocked={
-                !!room.catanOptions?.helpers ||
-                !!room.catanCitiesKnights ||
-                !!room.catanHarbors?.enabled ||
-                !!room.catanFriendlyRobber?.enabled
+                !!room.catanOptions?.helpers || !!room.catanCitiesKnights
               }
               onChange={(enabled) => command("catan_fishing", { enabled })}
             />
@@ -2667,6 +2657,7 @@ function Waiting({
             <CatanCombinationKnightsPicker
               explorer={supportsPublicExplorerKnights(room.catanScenario)}
               fishing={room.catanScenario === "fishing"}
+              harbors={!!room.catanHarbors?.enabled}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}
               disabled={!host || busy || mapDirty || !!room.catanFishing}
