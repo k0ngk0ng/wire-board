@@ -14,9 +14,6 @@ func (r *Room) setCatanCitiesKnights(setup game.CatanCitiesKnightsSetup) error {
 	if r.Kind != "catan" || r.Status != "waiting" {
 		return fmt.Errorf("只能在城市与骑士开局前调整设置")
 	}
-	if r.friendlyRobberEnabled() {
-		return fmt.Errorf("友善强盗目前仅核验基础版及港口霸主组合")
-	}
 	if err := r.validateCatanCitiesKnightsMap(); err != nil {
 		return err
 	}

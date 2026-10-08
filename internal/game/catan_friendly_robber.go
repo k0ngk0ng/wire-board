@@ -3,6 +3,7 @@ package game
 import "errors"
 
 const CatanFriendlyRobberRules = "catan-friendly-robber-2025"
+const CatanFriendlyKnightsRules = "wire-board-friendly-knights-v1"
 const CatanFriendlySeaFallbackRules = "wire-board-friendly-sea-fallback-v1"
 
 const catanFriendlySeaNotice = "本站补充规则：没有合法陆地且没有符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海"
@@ -10,6 +11,7 @@ const catanFriendlySeaNotice = "本站补充规则：没有合法陆地且没有
 type CatanFriendlyRobber struct {
 	Rules    string `json:"rules"`
 	Fallback string `json:"fallback,omitempty"`
+	Knights  string `json:"knights,omitempty"`
 }
 
 // Internal base variant constructor. Special sea fallback/fleet interactions
@@ -28,6 +30,10 @@ func (s *State) enableCatanFriendlyRobber() {
 	}
 	s.Catan.FriendlyRobber = &CatanFriendlyRobber{Rules: CatanFriendlyRobberRules}
 	s.Log = append(s.Log, "加入友善强盗：公开分数不足3分的玩家受到保护，隐藏胜利点不计；无合法陆地时强盗返回沙漠")
+	if s.Catan.CitiesKnights != nil {
+		s.Catan.FriendlyRobber.Knights = CatanFriendlyKnightsRules
+		s.Log = append(s.Log, "本站组合规则：首次蛮族入侵前强盗与海盗仍休眠；征税和骑士驱逐遵守友善保护，城市失守后按最新公开分数重新判断保护")
+	}
 	if s.Catan.Seafarers != nil {
 		s.Catan.FriendlyRobber.Fallback = CatanFriendlySeaFallbackRules
 		s.Log = append(s.Log, catanFriendlySeaNotice)
@@ -36,6 +42,9 @@ func (s *State) enableCatanFriendlyRobber() {
 
 func (s *State) validateCatanFriendlyFallback() error {
 	g := s.Catan
+	if g != nil && g.FriendlyRobber != nil && g.FriendlyRobber.Knights != "" && (g.FriendlyRobber.Knights != CatanFriendlyKnightsRules || g.CitiesKnights == nil || g.FriendlyRobber.Rules != CatanFriendlyRobberRules) {
+		return errors.New("友善强盗的城市骑士组合配置无效")
+	}
 	if g == nil || g.FriendlyRobber == nil || g.FriendlyRobber.Fallback == "" {
 		return nil // Preserve older saves and the base variant.
 	}

@@ -22,7 +22,9 @@ export function CatanFriendlyRobberPicker({
       room.capacity > 4 === !!room.catanOptions?.fiveSix &&
       !room.catanTwoRules &&
       !room.catanFishing &&
-      (!room.catanScenario || !!room.catanSeafarers));
+      (!room.catanScenario ||
+        room.catanScenario === "cities-knights" ||
+        !!room.catanSeafarers));
   if (room.catanFishing || (!setup && !eligible)) return null;
   const availability = room.catanFriendlyRobberAvailability;
   const reason = !eligible
@@ -39,6 +41,7 @@ export function CatanFriendlyRobberPicker({
       disabled={disabled}
       reason={reason}
       scenario={catanRuleContext(room).scenario}
+      knights={catanRuleContext(room).citiesKnights}
       needed={
         setup?.enabled
           ? Math.max(0, (availability?.minPlayers || 3) - room.seats.length)
@@ -48,11 +51,14 @@ export function CatanFriendlyRobberPicker({
   );
 }
 
+export const catanFriendlyKnightsNote =
+  "本站组合规则：首次蛮族入侵前强盗与海盗仍休眠；征税和骑士驱逐遵守友善保护。城市失守后按最新公开分数判断保护，保护不免除弃牌或城市劫掠。";
+
 export const catanFriendlySeaFallbackNote =
   "本站补充规则：没有合法陆地且没有符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海。";
 
 export const supportsPublicCatanFriendly = (scenario?: string) =>
-  !scenario || isPublicCatanSea(scenario);
+  !scenario || scenario === "cities-knights" || isPublicCatanSea(scenario);
 
 export function CatanFriendlyRobberChoice({
   value,
@@ -61,6 +67,7 @@ export function CatanFriendlyRobberChoice({
   reason = "",
   scenario = "",
   needed = 0,
+  knights = false,
 }: {
   value: boolean;
   onChange: (enabled: boolean) => void;
@@ -68,6 +75,7 @@ export function CatanFriendlyRobberChoice({
   reason?: string;
   scenario?: string;
   needed?: number;
+  knights?: boolean;
 }) {
   return (
     <fieldset
@@ -92,7 +100,12 @@ export function CatanFriendlyRobberChoice({
       <small>
         {reason || "不改变获胜门槛、弃牌规则或回合时间。更改后需要重新准备。"}
       </small>
-      {value && scenario && <small>{catanFriendlySeaFallbackNote}</small>}
+      {value && isPublicCatanSea(scenario) && (
+        <small>{catanFriendlySeaFallbackNote}</small>
+      )}
+      {value && (knights || scenario === "cities-knights") && (
+        <small>{catanFriendlyKnightsNote}</small>
+      )}
       {needed > 0 && (
         <strong>还需 {needed} 位玩家才能开局，可添加电脑。</strong>
       )}
@@ -150,6 +163,7 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
     return (
       <section>
         <h4>友善强盗</h4>
+        {info.friendlyKnights && <p>{catanFriendlyKnightsNote}</p>}
         <p>
           本剧本从三座村庄起步，每人至少有3点建筑分，正常行动中不会触发“不足3分”的友善保护。即使失去布匹或港口奖励，建筑分仍至少为3。
         </p>
@@ -164,6 +178,7 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
   return (
     <section>
       <h4>友善强盗</h4>
+      {info.friendlyKnights && <p>{catanFriendlyKnightsNote}</p>}
       {info.helpers && (
         <p>
           友善保护只限制强盗与海盗，不限制助手交易或取牌。迪古尔按助手效果返回沙漠，即使旁边有受保护玩家；不偷牌。无沙漠时不可使用，不能改为场外驱逐。卡娅在强盗位于场外时不可使用。

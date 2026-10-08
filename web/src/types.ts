@@ -647,6 +647,7 @@ export type CatanState = {
   friendlyRobber?: {
     rules: string;
     fallback?: string;
+    knights?: string;
     protectedPlayers: number[];
   };
   harbors?: { rules: string; owner: number; points: number[] };
@@ -659,6 +660,7 @@ export type CatanState = {
     victory: boolean;
   }[];
   progressPlayable?: number[];
+  taxationTiles?: number[];
   inventionTiles?: number[];
   smithingOptions?: number[][];
   merchantTiles?: number[];

@@ -23,6 +23,24 @@ func (g *Catan) intrigueTargets(player int) []int {
 	}
 	return out
 }
+
+// Shared authoritative targets for the card, UI and restored games.
+func (g *Catan) taxationTiles() []int {
+	out := []int{}
+	if g.CitiesKnights == nil || g.CitiesKnights.Invasions == 0 || g.Explorer != nil {
+		return out
+	}
+	for _, t := range g.Tiles {
+		if g.robberAllowed(t.ID) {
+			out = append(out, t.ID)
+		}
+	}
+	if g.robberAllowed(-1) {
+		out = append(out, -1)
+	}
+	return out
+}
+
 func (s *State) catanPoliticsProgress(player int, a Action) error {
 	g := s.Catan
 	k := g.CitiesKnights
@@ -109,14 +127,18 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 			return s.catanExplorerCityTaxation(player)
 		}
 		if k.Invasions == 0 || !g.robberAllowed(a.Tile) {
-			return errors.New("首次蛮族进攻后才能使用征税，并须将强盗移至另一块陆地")
+			return errors.New("首次蛮族进攻后才能使用征税，请选择符合强盗规则的目标")
 		}
 		g.Robber = a.Tile
+		if a.Tile == -1 {
+			s.catanLog(player, "征税：无合法陆地或沙漠，友善强盗退到场外，不偷牌")
+			break
+		}
 		s.catanLog(player, "征税：将强盗移至地块 #%d", a.Tile+1)
 		seen := map[int]bool{}
 		for _, id := range g.Tiles[a.Tile].Vertices {
 			v := g.Vertices[id]
-			if v.Level > 0 && g.politicsOpponent(player, v.Owner) && !seen[v.Owner] && sum(g.Players[v.Owner].Resources) > 0 {
+			if v.Level > 0 && g.politicsOpponent(player, v.Owner) && !g.friendlyProtected(v.Owner) && !seen[v.Owner] && sum(g.Players[v.Owner].Resources) > 0 {
 				seen[v.Owner] = true
 				hand := g.Players[v.Owner].Resources
 				pick := catanRandom(sum(hand))

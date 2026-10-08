@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanFriendlyAvailable() bool {
-	return (r.isCatanBaseRecipe() && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && (r.CatanScenario == "" || publicCatanSeaScenario(r.CatanScenario))
+	return ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && !r.CatanFishing && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || publicCatanSeaScenario(r.CatanScenario))
 }
 
 // Existing internal recipes continue to use the same normalized setup.
@@ -38,8 +38,8 @@ func (r *Room) friendlyRobberEnabled() bool {
 }
 
 func (r *Room) validateCatanFriendlyRobber(n int) error {
-	if r.CatanFishing || r.CatanCitiesKnights != nil {
-		return errors.New("友善强盗与渔夫或城市骑士的组合尚未核验")
+	if r.CatanFishing {
+		return errors.New("友善强盗与渔夫的组合尚未核验")
 	}
 	if r.CatanNewWorldMap != nil && (r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != "new_world") {
 		return errors.New("新世界需要对应的航海家地图配置")

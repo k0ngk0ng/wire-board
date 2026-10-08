@@ -255,3 +255,22 @@ test("each harbor offer uses its own remaining opponents and an owned ordinary r
   r.game.catan.citiesKnights.pending = { kind: "commercial_harbor" };
   assert.equal(commercialOfferAction(r, 0, 1, 0), null);
 });
+
+test("taxation uses server friendly targets, including current desert and outside, and rejects stale picks", () => {
+  const r = room(21),
+    g = r.game.catan;
+  g.taxationTiles = [g.robber, -1];
+  assert.deepEqual(progressMapTargets(g, 0, selection(21)), [g.robber, -1]);
+  assert.equal(progressPlayAction(r, selection(21, { picks: [0] })), null);
+  assert.deepEqual(progressPlayAction(r, selection(21, { picks: [-1] })), {
+    type: "catan_progress",
+    card: 21,
+    tile: -1,
+  });
+  assert.deepEqual(
+    progressPlayAction(r, selection(21, { picks: [g.robber] })),
+    { type: "catan_progress", card: 21, tile: g.robber },
+  );
+  g.taxationTiles = [];
+  assert.equal(progressPlayAction(r, selection(21, { picks: [-1] })), null);
+});

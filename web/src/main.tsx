@@ -2237,7 +2237,7 @@ function Create({
           capacity >= 3 &&
           supportsPublicCatanKnightsCombination(catanScenario) && (
             <CatanCombinationKnightsPicker
-              disabled={catanFishing || catanFriendly}
+              disabled={catanFishing}
               explorer={supportsPublicExplorerKnights(catanScenario)}
               fishing={catanScenario === "fishing"}
               value={catanSeaKnights}
@@ -2270,8 +2270,8 @@ function Create({
             <CatanFriendlyRobberChoice
               value={catanFriendly}
               onChange={setCatanFriendly}
+              knights={catanSeaKnights || catanScenario === "cities-knights"}
               scenario={catanScenario}
-              reason={catanSeaKnights ? "请先关闭城市骑士。" : ""}
             />
           )}
         {k === "catan" &&
@@ -2659,13 +2659,7 @@ function Waiting({
               fishing={room.catanScenario === "fishing"}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}
-              disabled={
-                !host ||
-                busy ||
-                mapDirty ||
-                !!room.catanFishing ||
-                !!room.catanFriendlyRobber?.enabled
-              }
+              disabled={!host || busy || mapDirty || !!room.catanFishing}
               onChange={(enabled) =>
                 command("catan_cities_knights", {
                   catanCitiesKnights: enabled ? { layout: "variable" } : null,
@@ -2685,7 +2679,7 @@ function Waiting({
         )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
-          (!room.catanScenario || isPublicCatanSea(room.catanScenario)) && (
+          supportsPublicCatanFriendly(room.catanScenario) && (
             <CatanFriendlyRobberPicker
               room={room}
               disabled={!host || busy || mapDirty}

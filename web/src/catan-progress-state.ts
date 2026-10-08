@@ -72,6 +72,7 @@ export function progressMapTargets(
       return g.intrigueTargets || [];
     case 21:
       if (g.explorer) return [];
+      if (g.taxationTiles !== undefined) return g.taxationTiles;
       return g.citiesKnights?.invasions
         ? g.tiles
             .filter(

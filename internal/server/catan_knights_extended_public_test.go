@@ -29,9 +29,8 @@ func TestCatanKnightsExtendedPublicConfiguration(t *testing.T) {
 	}
 	before, _ := json.Marshal(s.rooms[id])
 	change(guest, "", 400)
-	change(h, "fog", 400)
+	change(h, "unknown", 400)
 	options(game.CatanOptions{FiveSix: true, Helpers: true}, 400)
-	selectCatanFriendlyRobber(h, true, 400)
 	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{Rules: game.CatanCitiesKnightsRules}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
