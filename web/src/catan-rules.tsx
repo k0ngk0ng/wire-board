@@ -229,6 +229,19 @@ function CatanFishingNumberRules({
 }: {
   info: ReturnType<typeof catanRuleContext>;
 }) {
+  if (info.fishingSeaRecipe === "wire-board-fishing-shores-v1")
+    return (
+      <p>
+        <b>本站新海岸捕鱼配方：</b>
+        {info.players === 3
+          ? "主岛内陆位置替换为湖泊并移除该地原数字，固定图为5点山地；可变图使用同一内陆位置。"
+          : "主岛沙漠全部换为湖泊；可变图保证湖泊被陆地包围，不改变外围岛屿。"}
+        {info.players > 4
+          ? "双湖分别在2／3／11／12和4／10产鱼，八处渔场、44枚鱼筹码。"
+          : "湖泊在2／3／11／12产鱼，六处渔场、30枚鱼筹码。"}
+        强盗从场外开始，保留探索奖励和原胜利条件，旧靴增加1分门槛。
+      </p>
+    );
   if (info.fishingSeaRecipe)
     return (
       <p>
@@ -259,7 +272,9 @@ function CatanSeaNumberRules({ info }: { info: CatanRuleContext }) {
   return info.seaNumberRecipe ? (
     <p>
       <b>本站数字配置：</b>
-      五六人新海岸的主岛沿逆时针螺旋使用本站28枚数字数列，跳过沙漠；外围岛屿地形与数字保持固定。不宣称已核实2025实体字母背面。
+      五六人新海岸的主岛沿逆时针螺旋使用本站28枚数字数列，跳过
+      {info.fishing ? "湖泊" : "沙漠"}
+      ；外围岛屿地形与数字保持固定。不宣称已核实2025实体字母背面。
     </p>
   ) : null;
 }
@@ -597,7 +612,7 @@ export function CatanRules({ room }: { room: Room }) {
               : "3–4人"
           : `${players}人`}
         {seafarers && info.layout
-          ? ` · ${info.fishingSeaRecipe ? "固定布局＋本站捕鱼配方" : catanLayoutName(info.layout)}`
+          ? ` · ${info.fishingSeaRecipe ? `${info.layout === "variable" ? "可变" : "固定"}布局＋本站捕鱼配方` : catanLayoutName(info.layout)}`
           : ""}
         。{catanScenarioVictory(scenario, info.target)}。
       </p>
@@ -643,7 +658,9 @@ export function CatanRules({ room }: { room: Room }) {
           <ol>
             <li>
               {seafarers
-                ? "沿用海图的强盗与海盗开局位置。只有穿越沙漠与遗忘部落使用湖泊，其余海图只放海岸渔场。村庄产1枚、城市产2枚；最后一座起始村庄邻近鱼区时领1枚。"
+                ? scenario === "shores"
+                  ? "新海岸强盗从场外开始，海盗沿用剧本位置。湖泊和海岸渔场按点数产鱼，村庄产1枚、城市产2枚；第二座起始村庄邻近鱼区时领1枚。"
+                  : "沿用海图的强盗与海盗开局位置。穿越沙漠与遗忘部落使用湖泊，其余海图只放海岸渔场。村庄产1枚、城市产2枚；最后一座起始村庄邻近鱼区时领1枚。"
                 : "湖泊与海岸渔场按标注点数产鱼，村庄领1枚、城市领2枚；第二座起始村庄邻近渔场或湖泊时领1枚。强盗从场外开始，可以进入湖泊并阻止该湖生产。"}
             </li>
             <li>

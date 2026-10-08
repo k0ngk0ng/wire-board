@@ -7,7 +7,7 @@ import (
 
 func publicCatanFishingSea(scenario string) bool {
 	switch scenario {
-	case "islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world":
+	case "shores", "islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world":
 		return true
 	}
 	return false
@@ -32,7 +32,7 @@ func (r *Room) validateCatanFishing() error {
 	}
 	expected, _ := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4})
 	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || !publicCatanFishingSea(r.CatanScenario) || (r.Capacity > 4 && !publicCatanFishingSeaExtended(r.CatanScenario)) || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanScenario || r.CatanCitiesKnights != nil || r.CatanOptions != expected || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil {
-		return fmt.Errorf("七种渔夫海图支持三至六人，可叠加友善强盗与港口霸主，暂不支持助手或海图骑士组合")
+		return fmt.Errorf("八种渔夫海图支持三至六人，可叠加友善强盗与港口霸主，暂不支持助手或海图骑士组合")
 	}
 	if (r.CatanScenario == "desert" || r.CatanScenario == "tribe" || r.Capacity > 4 && (r.CatanScenario == "islands" || r.CatanScenario == "cloth")) && r.CatanSeafarers.Layout != "fixed" {
 		return fmt.Errorf("穿越沙漠、遗忘部落及五六人六岛、布匹的捕鱼组合使用固定地图")

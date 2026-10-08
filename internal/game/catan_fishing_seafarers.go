@@ -9,8 +9,11 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")
 	}
-	if setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" && setup.Scenario != "wonders" || n < 3 || n > 6 {
+	if setup.Scenario != "shores" && setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" && setup.Scenario != "wonders" || n < 3 || n > 6 {
 		return nil, errors.New("此捕鱼航海家剧本或人数尚未接入")
+	}
+	if setup.Scenario == "shores" {
+		return newCatanFishingShores(n, options, setup, placements)
 	}
 	s, err := NewCatanSeafarers(n, options, setup, nil)
 	if err != nil {
@@ -65,7 +68,7 @@ func (g *Catan) fishingSeaSupported() bool {
 	if g.Seafarers != nil && len(g.Players) > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
 		return len(g.Players) <= 6 && !g.Seafarers.Variable && g.CitiesKnights == nil
 	}
-	if g.Seafarers != nil && (g.Seafarers.Scenario == "new_world" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "wonders") {
+	if g.Seafarers != nil && (g.Seafarers.Scenario == "shores" || g.Seafarers.Scenario == "new_world" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "wonders") {
 		return len(g.Players) >= 3 && len(g.Players) <= 6 && g.CitiesKnights == nil
 	}
 	return g.Seafarers != nil && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "cloth" || (g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe") && !g.Seafarers.Variable) &&

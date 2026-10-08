@@ -764,3 +764,20 @@ test("extended fishing recipes follow saved maps, never a stale room draft", () 
     assert.equal(catanRuleContext(room).fishingSeaRecipe, "");
   }
 });
+
+test("shores fishing recipe covers three through six players and clears when disabled", () => {
+  for (const capacity of [3, 4, 5, 6]) {
+    const room = {
+      capacity,
+      catanScenario: "shores",
+      catanSeafarers: { scenario: "shores" },
+      catanFishing: true,
+    };
+    assert.equal(
+      catanRuleContext(room).fishingSeaRecipe,
+      "wire-board-fishing-shores-v1",
+    );
+    room.catanFishing = false;
+    assert.equal(catanRuleContext(room).fishingSeaRecipe, "");
+  }
+});

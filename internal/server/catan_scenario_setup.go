@@ -93,7 +93,7 @@ func (r *Room) validateCatanScenario() error {
 			maximum = 4
 		}
 		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity || (r.Capacity > 4) != r.CatanOptions.FiveSix {
-			return errors.New("航海家支持三至六人；五六人必须启用人数扩充，渔夫组合支持六岛、迷雾、沙漠、部落、布匹、奇迹和新世界")
+			return errors.New("航海家支持三至六人；五六人必须启用人数扩充，渔夫组合支持新海岸、六岛、迷雾、沙漠、部落、布匹、奇迹和新世界")
 		}
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err

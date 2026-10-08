@@ -85,7 +85,7 @@ func TestCatanFishingSeafarersSetupAndBoot(t *testing.T) {
 			t.Fatal("unverified player count accepted")
 		}
 	}
-	for _, scenario := range []string{"shores", "pirate_islands"} {
+	for _, scenario := range []string{"pirate_islands"} {
 		if _, err := NewCatanFishingSeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: scenario}, nil); err == nil {
 			t.Fatal("unsupported recipe accepted")
 		}
