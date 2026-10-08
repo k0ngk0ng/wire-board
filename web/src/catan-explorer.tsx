@@ -70,6 +70,12 @@ import {
 } from "./catan-explorer-state";
 import type { ExplorerAction, ExplorerPick } from "./catan-explorer-state";
 import "./catan-explorer.css";
+import {
+  CatanFishingPanel,
+  CatanFishingGrounds,
+  CatanFishLakeNumbers,
+} from "./catan-fishing";
+import { fishTurn } from "./catan-fishing-state";
 
 const empty = (count = 5) => Array<number>(count).fill(0);
 const total = (n: number[]) => n.reduce((sum, x) => sum + x, 0);
@@ -83,6 +89,7 @@ const terrainColors = [
   "#4f9eb8",
   "#d5b047",
   "#dbe8e9",
+  "#168caf",
 ];
 const terrainNames = [
   ...explorerResources,
@@ -90,6 +97,7 @@ const terrainNames = [
   "海洋",
   "金矿",
   "未探索区域",
+  "湖泊",
 ];
 const primaryTypes = [
   "catan_roll",
@@ -129,6 +137,11 @@ export function CatanExplorerBoard({
   const [pick, setPick] = useState<ExplorerPick | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState("");
+  const [fishMode, setFishMode] = useState("");
+  const [fishChosen, setFishChosen] = useState<{
+    type: string;
+    id: number;
+  } | null>(null);
   const [ship, setShip] = useState(-1);
   const [discard, setDiscard] = useState(() => empty(g.bank.length));
   const [give, setGive] = useState(() => empty(g.bank.length)),
@@ -147,6 +160,8 @@ export function CatanExplorerBoard({
   useEffect(() => {
     setPick(null);
     setMode("");
+    setFishMode("");
+    setFishChosen(null);
     setShip(-1);
     setProgress(null);
     setDiscard(empty(g.bank.length));
@@ -176,7 +191,7 @@ export function CatanExplorerBoard({
   const choices =
     city?.pending && !mapResponses.includes(city.pending.kind)
       ? []
-      : allChoices;
+      : allChoices.filter((a) => !a.type.startsWith("catan_fish_"));
   const cityManaged = (type: string) =>
     [
       "catan_improvement",
@@ -226,6 +241,8 @@ export function CatanExplorerBoard({
       : description;
   };
   const select = (a: ExplorerAction) => {
+    setFishMode("");
+    setFishChosen(null);
     setProgress(null);
     setPick({ room: room.id, action: a });
     setCollapsed(false);
@@ -246,10 +263,11 @@ export function CatanExplorerBoard({
     if (can) await send({ ...a, prompt: x.sequence });
   };
   const size = g.hexSize || 62;
-  const minX = Math.min(...g.vertices.map((v) => v.x)) - 30,
-    minY = Math.min(...g.vertices.map((v) => v.y)) - 30;
-  const width = Math.max(...g.vertices.map((v) => v.x)) - minX + 30,
-    height = Math.max(...g.vertices.map((v) => v.y)) - minY + 30;
+  const margin = g.fishing ? size * 1.2 : 30;
+  const minX = Math.min(...g.vertices.map((v) => v.x)) - margin,
+    minY = Math.min(...g.vertices.map((v) => v.y)) - margin;
+  const width = Math.max(...g.vertices.map((v) => v.x)) - minX + margin,
+    height = Math.max(...g.vertices.map((v) => v.y)) - minY + margin;
   const controls = useRailMapControls({
     aspect: width / height,
     minMobileWidth: 0,
@@ -259,13 +277,22 @@ export function CatanExplorerBoard({
     string,
     { kind: "edge" | "vertex" | "tile"; id: number; actions: ExplorerAction[] }
   >();
-  for (const a of progressMode ? [] : options) {
+  const fishingMap = fishTurn(room) && !progress && fishMode ? fishMode : "";
+  for (const a of progressMode || fishingMap ? [] : options) {
     const target = explorerTarget(g, a);
     if (!target) continue;
     const key = `${target.kind}-${target.id}`;
     const item = targets.get(key) || { ...target, actions: [] };
     item.actions.push(a);
     targets.set(key, item);
+  }
+  if (fishingMap && g.fishing) {
+    const edges =
+      fishingMap === "fish_road"
+        ? g.fishing.legal.roads
+        : (g.fishing.legal.shipBuilds || []).map((b) => b.edge);
+    for (const id of edges)
+      targets.set(`edge-${id}`, { kind: "edge", id, actions: [] });
   }
   if (activeProgress && progressMode) {
     const kind =
@@ -333,6 +360,7 @@ export function CatanExplorerBoard({
             <strong>
               探索者与海盗 · {scenario}
               {city ? " ＋ 城市与骑士" : ""}
+              {g.fishing ? " ＋ 渔夫" : ""}
             </strong>
             <span>
               {phase} · 目标{x.board.target}分
@@ -364,7 +392,7 @@ export function CatanExplorerBoard({
         <div className="explorer-map-tools">
           <span>
             {targets.size
-              ? `选择高亮位置：${activeProgress ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}`
+              ? `选择高亮位置：${fishingMap ? (fishingMap === "fish_ship" ? "用鱼造船" : "用鱼修路") : activeProgress ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}`
               : "滚轮缩放 · 拖动地图"}
           </span>
           <button
@@ -422,7 +450,7 @@ export function CatanExplorerBoard({
                   />
                   {assets && t.resource !== 8 && (
                     <image
-                      href={`${assets}/catan/${x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : farms.has(t.id) ? `explorer/farm-${farms.get(t.id)!.ability}${farms.get(t.id)!.ability === "pirate" ? `-${farms.get(t.id)!.pirateDie}` : ""}` : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
+                      href={`${assets}/catan/${t.resource === 9 ? `fishing/lake${g.fishing?.map.lakes.find((l) => l.tile === t.id)?.numbers.length === 2 ? "-extended" : ""}` : x.board.council?.tile === t.id ? "explorer/council" : shoals.has(t.id) ? "explorer/fish-shoal" : farms.has(t.id) ? `explorer/farm-${farms.get(t.id)!.ability}${farms.get(t.id)!.ability === "pirate" ? `-${farms.get(t.id)!.pirateDie}` : ""}` : t.resource < 6 ? `terrain-${["wood", "brick", "wool", "grain", "ore", "desert"][t.resource]}` : `seafarers/terrain-${t.resource === 6 ? "sea" : "gold"}`}-v1.webp`}
                       x={t.x - (size * Math.sqrt(3)) / 2}
                       y={t.y - size}
                       width={size * Math.sqrt(3)}
@@ -474,6 +502,14 @@ export function CatanExplorerBoard({
                       </text>
                     </g>
                   )}
+                  {t.resource === 9 && (
+                    <CatanFishLakeNumbers
+                      g={g}
+                      tile={t.id}
+                      assets={assets}
+                      total={g.revealedEvent?.production || total(g.dice)}
+                    />
+                  )}
                   {t.number > 0 && (
                     <g
                       className={`explorer-number ${[6, 8].includes(t.number) ? "hot" : ""}`}
@@ -496,6 +532,13 @@ export function CatanExplorerBoard({
                   </title>
                 </g>
               ))}
+              {g.fishing && (
+                <CatanFishingGrounds
+                  g={g}
+                  assets={assets}
+                  total={g.revealedEvent?.production || total(g.dice)}
+                />
+              )}
               {x.board.council?.anchors.map((id) => {
                 const v = g.vertices[id];
                 return (
@@ -821,20 +864,30 @@ export function CatanExplorerBoard({
                     return layer[a.kind] - layer[b.kind];
                   })
                   .map(([key, item]) => {
-                    const chosen = progressMode
-                      ? activeProgress?.picks.includes(item.id)
-                      : selectedTarget?.kind === item.kind &&
-                        selectedTarget.id === item.id;
+                    const chosen = fishingMap
+                      ? fishChosen?.type === fishingMap &&
+                        fishChosen.id === item.id
+                      : progressMode
+                        ? activeProgress?.picks.includes(item.id)
+                        : selectedTarget?.kind === item.kind &&
+                          selectedTarget.id === item.id;
                     const click = () =>
-                      activeProgress && progressMode
-                        ? setProgress(
-                            pickProgressTarget(g, you, activeProgress, item.id),
-                          )
-                        : select(item.actions[0]);
+                      fishingMap
+                        ? setFishChosen({ type: fishingMap, id: item.id })
+                        : activeProgress && progressMode
+                          ? setProgress(
+                              pickProgressTarget(
+                                g,
+                                you,
+                                activeProgress,
+                                item.id,
+                              ),
+                            )
+                          : select(item.actions[0]);
                     const props = {
                       role: "button",
                       tabIndex: 0,
-                      "aria-label": `${activeProgress && progressMode ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}${item.kind === "edge" ? "道路" : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
+                      "aria-label": `${fishingMap ? (fishingMap === "fish_ship" ? "用鱼造船" : "用鱼修路") : activeProgress && progressMode ? catanProgressNames[activeProgress.card] : explorerActionNames[effective]}${item.kind === "edge" ? (fishingMap === "fish_ship" ? "海边" : "道路") : item.kind === "tile" ? "地块" : "位置"}${item.id + 1}`,
                       onClick: click,
                       onKeyDown: (e: KeyboardEvent) => buttonKeys(e, click),
                     };
@@ -913,6 +966,28 @@ export function CatanExplorerBoard({
               <p className="explorer-notice">电脑正在托管，请先收回操作权。</p>
             )}
           </>
+        )}
+        {g.fishing && (
+          <CatanFishingPanel
+            key={`${room.id}-${x.sequence}-${game.phase}`}
+            room={room}
+            act={send}
+            busy={busy || !can}
+            assets={assets}
+            chosen={fishChosen}
+            onMode={(next) => {
+              setFishMode(next);
+              setFishChosen(null);
+              setPick(null);
+              setProgress(null);
+            }}
+            showMap={() =>
+              controls.viewport.current?.scrollIntoView({
+                block: "center",
+                behavior: "smooth",
+              })
+            }
+          />
         )}
         {game.phase === "catan_discard" && can && due > 0 && (
           <section className="explorer-discard">
@@ -1016,6 +1091,8 @@ export function CatanExplorerBoard({
                   assets={assets}
                   selection={progress}
                   onChange={(s) => {
+                    setFishMode("");
+                    setFishChosen(null);
                     setProgress(s);
                     setPick(null);
                     setMode("");
@@ -1034,6 +1111,8 @@ export function CatanExplorerBoard({
                   assets={assets}
                   mode={progress ? "" : effective.replace(/^catan_/, "")}
                   selectMode={(key) => {
+                    setFishMode("");
+                    setFishChosen(null);
                     setMode(key ? `catan_${key}` : "");
                     setPick(null);
                     setProgress(null);
@@ -1072,6 +1151,8 @@ export function CatanExplorerBoard({
                     disabled={busy}
                     aria-pressed={effective === type}
                     onClick={() => {
+                      setFishMode("");
+                      setFishChosen(null);
                       setMode(type);
                       setPick(null);
                       setShip(-1);

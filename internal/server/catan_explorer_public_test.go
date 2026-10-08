@@ -20,7 +20,7 @@ func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string, knights
 	return newPublicExplorerRecipeHTTP(t, n, scenario, city, false)
 }
 
-func newPublicExplorerRecipeHTTP(t *testing.T, n int, scenario string, knights, events bool) (*Server, *httptest.Server, []*testClient, string) {
+func newPublicExplorerRecipeHTTP(t *testing.T, n int, scenario string, knights, events bool, fishing ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -35,6 +35,10 @@ func newPublicExplorerRecipeHTTP(t *testing.T, n int, scenario string, knights, 
 	}
 	if events {
 		recipe["catanEvents"] = game.CatanEventCatalogue
+	}
+	if len(fishing) > 0 && fishing[0] {
+		recipe["catanFishing"] = true
+		recipe["catanFishingLakes"] = len(fishing) > 1 && fishing[1]
 	}
 	raw := clients[0].post("/api/rooms", recipe, 201)
 	id := raw["id"].(string)

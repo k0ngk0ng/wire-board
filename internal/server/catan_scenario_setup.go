@@ -157,7 +157,10 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if !publicCatanHarborsScenario(scenario) {
 		next.CatanHarbors = nil
 	}
-	if !publicCatanSeaScenario(scenario) {
+	if !publicCatanExplorerScenario(scenario) {
+		next.CatanFishingLakes = false
+	}
+	if !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
 		next.CatanFishing = false
 	}
 	if publicCatanFlexibleScenario(scenario) {
@@ -211,6 +214,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	r.CatanHarbors = next.CatanHarbors
 	r.CatanFriendlyRobber = next.CatanFriendlyRobber
 	r.CatanFishing = next.CatanFishing
+	r.CatanFishingLakes = next.CatanFishingLakes
 	r.CatanTwoRules, r.CatanTwoScenario = next.CatanTwoRules, next.CatanTwoScenario
 	r.CatanCitiesKnights = next.CatanCitiesKnights
 	r.CatanSeafarers = next.CatanSeafarers

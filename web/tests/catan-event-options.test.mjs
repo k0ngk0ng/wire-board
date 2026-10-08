@@ -105,6 +105,39 @@ test("saved event catalogue overrides waiting draft and disabling removes it", (
   assert.equal(catanRuleContext(room).events, CATAN_EVENT_CATALOGUE);
 });
 
+test("explorer fishing accepts production events and saved lakes override the room draft", () => {
+  for (const catanScenario of [
+    "land-ho",
+    "pirate-lairs",
+    "fish-for-catan",
+    "spices-for-catan",
+    "explorers-and-pirates",
+  ]) {
+    const room = {
+      kind: "catan",
+      capacity: 3,
+      catanScenario,
+      catanFishing: true,
+      catanFishingLakes: true,
+    };
+    assert.equal(catanEventsSupported(room), true);
+    assert.equal(catanRuleContext(room).explorerFishingLakes, true);
+    room.game = {
+      catan: {
+        players: Array(3).fill({}),
+        explorer: { board: { scenario: catanScenario } },
+      },
+    };
+    assert.equal(catanRuleContext(room).fishing, false);
+    assert.equal(catanRuleContext(room).explorerFishingLakes, false);
+    room.catanFishingLakes = false;
+    room.game.catan.explorer.board.fishingLakes = true;
+    room.game.catan.fishing = {};
+    assert.equal(catanRuleContext(room).fishing, true);
+    assert.equal(catanRuleContext(room).explorerFishingLakes, true);
+  }
+});
+
 test("event knights rules use the actual save and never inherit stale waiting options", () => {
   const room = {
     kind: "catan",

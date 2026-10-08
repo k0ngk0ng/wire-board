@@ -48,6 +48,7 @@ type Seat struct {
 type Room struct {
 	CatanEvents            string                         `json:"catanEvents,omitempty"`
 	CatanFishing           bool                           `json:"catanFishing,omitempty"`
+	CatanFishingLakes      bool                           `json:"catanFishingLakes,omitempty"`
 	CatanTwoRules          string                         `json:"catanTwoRules,omitempty"`
 	CatanTwoScenario       string                         `json:"catanTwoScenario,omitempty"`
 	CatanScenario          string                         `json:"catanScenario,omitempty"`
@@ -472,6 +473,9 @@ func summary(r *Room) map[string]any {
 	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanFishing {
 		result["catanFishing"] = true
+		if publicCatanExplorerScenario(r.CatanScenario) {
+			result["catanFishingLakes"] = r.CatanFishingLakes
+		}
 	}
 	if r.CatanEvents != "" {
 		result["catanEvents"] = r.CatanEvents
@@ -611,6 +615,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
 		CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors"`
 		CatanFishing           bool                           `json:"catanFishing"`
+		CatanFishingLakes      bool                           `json:"catanFishingLakes"`
 		CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights"`
 		CatanOptions           game.CatanOptions              `json:"catanOptions"`
 		CatanTwoScenario       string                         `json:"catanTwoScenario"`
@@ -730,6 +735,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanFishing {
 		if err := room.setCatanFishing(true); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
+	if req.CatanFishingLakes {
+		if err := room.setCatanFishingLakes(true); err != nil {
 			fail(w, 400, err.Error())
 			return
 		}
@@ -1013,6 +1024,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		err = next.setCatanFishing(*req.Enabled)
+	case "catan_fishing_lakes":
+		if next.Host != u.ID || req.Enabled == nil {
+			err = errors.New("只有房主能在开局前选择捕鱼湖泊")
+			break
+		}
+		err = next.setCatanFishingLakes(*req.Enabled)
 	case "catan_scenario":
 		if next.Host != u.ID || req.CatanScenario == nil {
 			err = errors.New("只有房主能在开局前选择卡坦剧本")
@@ -1199,6 +1216,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
 						}
 					}
+				} else if publicCatanExplorerScenario(next.CatanScenario) && next.CatanFishing {
+					next.Game, err = game.NewCatanExplorerFishing(len(next.Seats), next.CatanScenario, next.CatanCitiesKnights != nil, next.CatanFishingLakes)
 				} else if publicCatanExplorerExtended(next.CatanScenario) && next.CatanCitiesKnights != nil {
 					next.Game, err = game.NewCatanExplorerCitiesKnights(len(next.Seats), next.CatanScenario)
 				} else if next.CatanScenario == "spices-for-catan" {

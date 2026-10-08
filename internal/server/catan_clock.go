@@ -37,7 +37,7 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		}
 		response := func(phase string) bool {
 			switch phase {
-			case "catan_discard", "catan_explorer_pirate_place", "catan_explorer_pirate_steal",
+			case "catan_discard", "catan_fish_replace", "catan_explorer_pirate_place", "catan_explorer_pirate_steal",
 				"catan_diplomacy", "catan_espionage", "catan_sabotage", "catan_wedding",
 				"catan_treason_remove", "catan_treason_place", "catan_guild_dues", "catan_commercial_harbor",
 				"catan_aqueduct", "catan_metropolis", "catan_knight_retreat", "catan_pillage",

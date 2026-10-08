@@ -13,6 +13,7 @@ export type ExplorerAction = {
   target?: number;
   color?: number;
   targets?: number[];
+  tokens?: number[];
   give?: number[];
   take?: number[];
   spiceLoad?: number[];
@@ -122,6 +123,8 @@ export type ExplorerView = {
   };
   choices: ExplorerAction[];
   board: {
+    fishing?: string;
+    fishingLakes?: boolean;
     layout?: string;
     scenario: string;
     target: number;
@@ -149,7 +152,9 @@ export type ExplorerView = {
       sequence: number;
       current: number;
       open: boolean;
+      fishPirate?: boolean;
       ships: {
+        second?: { spent: number; wool: boolean; stopped?: boolean };
         remaining: number;
         spent: number;
         wool: boolean;
@@ -654,6 +659,7 @@ export function explorerPhaseLabel(phase: string) {
         catan_explorer_setup: "开局放置",
         catan_roll: "掷骰生产",
         catan_discard: "所有人同时弃牌",
+        catan_fish_replace: "选择鱼筹码",
         catan_turn: "交易与建设",
         catan_roads: "免费修建道路",
         catan_aqueduct: "引水渠补偿",

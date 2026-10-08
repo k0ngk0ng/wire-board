@@ -6,6 +6,7 @@ export type FishSelection = {
   color: number | null;
   target: number | null;
   edge: number | null;
+  slot?: number | null;
 };
 export const fishActions = [
   ["catan_fish_robber", "驱离强盗"],
@@ -20,6 +21,18 @@ export const fishActions = [
 ] as const;
 
 export function fishActionsFor(g: CatanState) {
+  if (g.explorer)
+    return [
+      ...(g.explorer.pirate
+        ? [["catan_fish_pirate", "免海盗通行费"] as const]
+        : []),
+      ["catan_fish_steal", "随机偷牌"],
+      ["catan_fish_resource", "领取资源"],
+      ["catan_fish_road", "修建道路"],
+      ["catan_fish_ship", "建造船只"],
+      ["catan_fish_voyage", "额外航行"],
+      ["catan_fish_boot", "传递旧靴子"],
+    ] as const;
   return fishActions.filter(([kind]) => {
     if (kind === "catan_fish_ship") return !!g.seafarers;
     if (kind === "catan_fish_pirate")
@@ -53,6 +66,7 @@ function activeViewer(room: Room) {
     room.status === "playing" &&
     !room.game.finished &&
     !room.spectating &&
+    !room.seats?.[room.you]?.autoPlay &&
     room.you >= 0 &&
     room.game.catan.players[room.you] &&
     !room.game.catan.players[room.you].eliminated
@@ -67,7 +81,9 @@ export function fishTurn(room: Room) {
   return (
     activeViewer(room) &&
     room.game!.turn === room.you &&
-    ["catan_roll", "catan_turn"].includes(room.game!.phase)
+    (["catan_roll", "catan_turn"].includes(room.game!.phase) ||
+      (!!room.game!.catan?.explorer &&
+        room.game!.phase === "catan_explorer_move"))
   );
 }
 export function fishValue(room: Room, ids: number[]) {
@@ -85,15 +101,23 @@ export function fishAction(
   selection: FishSelection,
 ): Record<string, unknown> | null {
   if (!activeViewer(room)) return null;
-  const { kind, ids, color, target, edge } = selection,
+  const { kind, ids, color, target, edge, slot } = selection,
     g = room.game!.catan!,
     f = g.fishing!;
+  const wrap = (a: Record<string, unknown>) =>
+    g.explorer ? { ...a, prompt: g.explorer.sequence } : a;
+  if (
+    g.explorer &&
+    (!Number.isInteger(g.explorer.sequence) || g.explorer.sequence < 1)
+  )
+    return null;
   const paid = fishValue(room, ids);
   if (paid === null) return null;
   if (fishResponder(room) === room.you && f.canReplace) {
-    if (kind === "catan_fish_keep" && ids.length === 0) return { type: kind };
+    if (kind === "catan_fish_keep" && ids.length === 0)
+      return wrap({ type: kind });
     return kind === "catan_fish_replace" && ids.length === 1
-      ? { type: kind, card: ids[0] }
+      ? wrap({ type: kind, card: ids[0] })
       : null;
   }
   if (!fishTurn(room)) return null;
@@ -101,7 +125,7 @@ export function fishAction(
     return !ids.length &&
       target !== null &&
       f.legal.bootTargets.includes(target)
-      ? { type: kind, target }
+      ? wrap({ type: kind, target })
       : null;
   const cost = f.legal.costs[kind];
   if (
@@ -142,20 +166,46 @@ export function fishAction(
     if (edge === null || !f.legal.roads.includes(edge)) return null;
     action.edge = edge;
   } else if (kind === "catan_fish_ship") {
-    if (!g.seafarers || edge === null || !(f.legal.ships || []).includes(edge))
+    if (g.explorer) {
+      if (
+        slot == null ||
+        edge === null ||
+        !(f.legal.shipBuilds || []).some(
+          (b) => b.slot === slot && b.edge === edge,
+        )
+      )
+        return null;
+      action.slot = slot;
+    } else if (
+      !g.seafarers ||
+      edge === null ||
+      !(f.legal.ships || []).includes(edge)
+    )
       return null;
     action.edge = edge;
   } else if (kind === "catan_fish_pirate") {
-    if (
+    if (g.explorer) {
+      if (
+        !g.explorer.pirate ||
+        g.explorer.pirate.owner < 0 ||
+        g.explorer.pirate.owner === room.you ||
+        g.explorer.fleet.turn?.fishPirate
+      )
+        return null;
+    } else if (
       !g.seafarers ||
       g.seafarers.pirate < 0 ||
       g.seafarers.wonders ||
       g.seafarers.pirateIslands
     )
       return null;
+  } else if (kind === "catan_fish_voyage") {
+    if (!g.explorer || slot == null || !(f.legal.voyages || []).includes(slot))
+      return null;
+    action.slot = slot;
   } else if (!["catan_fish_robber", "catan_fish_dev"].includes(kind))
     return null;
-  return action;
+  return wrap(action);
 }
 
 // Orient the original right-facing ground toward its land-facing middle vertex.

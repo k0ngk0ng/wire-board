@@ -48,6 +48,7 @@ import {
   supportsPublicExplorerKnights,
   isPublicCatanSea,
   isPublicCatanFlexible,
+  isPublicCatanExplorer,
 } from "./catan-scenario-setup";
 import { AdminDashboard } from "./admin";
 import { ShieldCheck } from "lucide-react";
@@ -1971,6 +1972,7 @@ function Create({
   const [catanTwoScenario, setCatanTwoScenario] = useState("");
   const [catanScenario, setCatanScenario] = useState("");
   const [catanFishing, setCatanFishing] = useState(false);
+  const [catanFishingLakes, setCatanFishingLakes] = useState(true);
   const [catanHarbors, setCatanHarbors] = useState(false);
   const [catanFriendly, setCatanFriendly] = useState(false);
   const [catanSeaKnights, setCatanSeaKnights] = useState(false);
@@ -2044,9 +2046,14 @@ function Create({
                 : undefined,
             catanFishing:
               k === "catan" &&
-              capacity >= 3 &&
-              supportsPublicCatanFishingSea(catanScenario) &&
+              (supportsPublicCatanFishingSea(catanScenario) ||
+                isPublicCatanExplorer(catanScenario)) &&
               catanFishing,
+            catanFishingLakes:
+              k === "catan" &&
+              isPublicCatanExplorer(catanScenario) &&
+              catanFishing &&
+              catanFishingLakes,
             catanEvents:
               eventsAvailable && catanEvents
                 ? CATAN_EVENT_CATALOGUE
@@ -2177,7 +2184,10 @@ function Create({
                   setCatanFriendly(false);
                 if (!supportsPublicCatanHarbors(scenario))
                   setCatanHarbors(false);
-                if (!supportsPublicCatanFishingSea(scenario))
+                if (
+                  !supportsPublicCatanFishingSea(scenario) &&
+                  !isPublicCatanExplorer(scenario)
+                )
                   setCatanFishing(false);
                 if (!supportsPublicCatanKnightsCombination(scenario))
                   setCatanSeaKnights(false);
@@ -2219,15 +2229,22 @@ function Create({
             />
           )}
         {k === "catan" &&
-          capacity >= 3 &&
-          (capacity <= 4 ||
-            supportsPublicCatanFishingSeaExtended(catanScenario)) &&
-          supportsPublicCatanFishingSea(catanScenario) && (
+          (isPublicCatanExplorer(catanScenario) ||
+            (capacity >= 3 &&
+              (capacity <= 4 ||
+                supportsPublicCatanFishingSeaExtended(catanScenario)) &&
+              supportsPublicCatanFishingSea(catanScenario))) && (
             <CatanFishingSeaPicker
               value={catanFishing}
-              extended={!!catanOptions.fiveSix}
+              explorer={isPublicCatanExplorer(catanScenario)}
+              extended={capacity > 4}
               onChange={setCatanFishing}
-              blocked={!!catanOptions.helpers || catanSeaKnights}
+              lakes={catanFishingLakes}
+              onLakes={setCatanFishingLakes}
+              blocked={
+                !!catanOptions.helpers ||
+                (catanSeaKnights && !isPublicCatanExplorer(catanScenario))
+              }
             />
           )}
         {k === "catan" &&
@@ -2236,7 +2253,7 @@ function Create({
             <CatanCombinationKnightsPicker
               tribe={catanScenario === "tribe"}
               pirateIslands={catanScenario === "pirate_islands"}
-              disabled={catanFishing}
+              disabled={catanFishing && !isPublicCatanExplorer(catanScenario)}
               explorer={supportsPublicExplorerKnights(catanScenario)}
               fishing={catanScenario === "fishing"}
               harbors={catanHarbors}
@@ -2651,19 +2668,25 @@ function Waiting({
           />
         )}
         {room.kind === "catan" &&
-          (room.capacity <= 4 ||
-            supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
-          supportsPublicCatanFishingSea(room.catanScenario) && (
+          (isPublicCatanExplorer(room.catanScenario) ||
+            ((room.capacity <= 4 ||
+              supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
+              supportsPublicCatanFishingSea(room.catanScenario))) && (
             <CatanFishingSeaPicker
               value={!!room.catanFishing}
+              explorer={isPublicCatanExplorer(room.catanScenario)}
+              lakes={!!room.catanFishingLakes}
+              onLakes={(enabled) => command("catan_fishing_lakes", { enabled })}
               fixedRequired={
                 ["desert", "tribe"].includes(room.catanScenario || "") &&
                 room.catanSeafarers?.layout !== "fixed"
               }
-              extended={!!room.catanOptions?.fiveSix}
+              extended={room.capacity > 4}
               disabled={!host || busy || mapDirty}
               blocked={
-                !!room.catanOptions?.helpers || !!room.catanCitiesKnights
+                !!room.catanOptions?.helpers ||
+                (!!room.catanCitiesKnights &&
+                  !isPublicCatanExplorer(room.catanScenario))
               }
               onChange={(enabled) => command("catan_fishing", { enabled })}
             />
@@ -2679,7 +2702,13 @@ function Waiting({
               harbors={!!room.catanHarbors?.enabled}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}
-              disabled={!host || busy || mapDirty || !!room.catanFishing}
+              disabled={
+                !host ||
+                busy ||
+                mapDirty ||
+                (!!room.catanFishing &&
+                  !isPublicCatanExplorer(room.catanScenario))
+              }
               onChange={(enabled) =>
                 command("catan_cities_knights", {
                   catanCitiesKnights: enabled ? { layout: "variable" } : null,
