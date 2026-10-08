@@ -10,7 +10,7 @@ import (
 )
 
 func TestCatanFishingExtendedPublicConfiguration(t *testing.T) {
-	for _, scene := range []string{"fog", "wonders", "new_world"} {
+	for _, scene := range []string{"islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"} {
 		t.Run(scene, func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
@@ -46,12 +46,12 @@ func TestCatanFishingExtendedPublicConfiguration(t *testing.T) {
 				}
 			}
 			choices := current(h)["catanSeafarersChoices"].([]any)
-			if len(choices) != 3 {
+			if len(choices) != 7 {
 				t.Fatal("wrong extended catalogue", choices)
 			}
 			for _, raw := range choices {
 				choice := raw.(map[string]any)
-				if !slices.Contains([]string{"fog", "wonders", "new_world"}, choice["id"].(string)) {
+				if !slices.Contains([]string{"islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"}, choice["id"].(string)) {
 					t.Fatal("unsupported expanded map")
 				}
 			}
@@ -64,7 +64,7 @@ func TestCatanFishingExtendedPublicConfiguration(t *testing.T) {
 			}
 			command(h, "catan_fishing", map[string]any{"enabled": true}, 200)
 			before, _ = json.Marshal(s.rooms[id])
-			selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "cloth"}, 400)
+			selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "shores"}, 400)
 			command(h, "catan_options", map[string]any{"catanOptions": game.CatanOptions{FiveSix: true, Helpers: true}}, 400)
 			after, _ = json.Marshal(s.rooms[id])
 			if string(before) != string(after) {

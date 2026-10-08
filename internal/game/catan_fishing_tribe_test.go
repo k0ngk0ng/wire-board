@@ -92,9 +92,6 @@ func TestCatanFishingTribePrintedMapAndRejection(t *testing.T) {
 	}
 	for _, n := range []int{3, 4, 5, 6} {
 		layout := "variable"
-		if n > 4 {
-			layout = "fixed"
-		}
 		if _, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "tribe", Layout: layout}, nil); err == nil {
 			t.Fatal("unverified recipe accepted")
 		}

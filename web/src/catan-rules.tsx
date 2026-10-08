@@ -229,6 +229,23 @@ function CatanFishingNumberRules({
 }: {
   info: ReturnType<typeof catanRuleContext>;
 }) {
+  if (info.fishingSeaRecipe)
+    return (
+      <p>
+        <b>本站五六人捕鱼海图配方：</b>
+        八处渔场、44枚鱼筹码（含旧靴），使用配对回合。
+        {info.scenario === "six_islands" &&
+          "不放湖泊；4／8和6／10各放在一座不同小岛，其余四岛各放一处5或9点渔场。"}
+        {info.scenario === "cloth" && "不放湖泊，两座主岛各放四处渔场。"}
+        {info.scenario === "desert" &&
+          "内陆3点麦田、4点森林替换为两块湖泊；原3、4分别移到2点麦田、10点森林，形成双点数生产。"}
+        {info.scenario === "tribe" &&
+          "主岛内陆12点牧场、2点麦田替换为两块湖泊，移除这两枚数字；八处渔场均在主岛。"}
+        {["desert", "tribe"].includes(info.scenario) &&
+          "第一块湖在2／3／11／12产鱼，第二块在4／10产鱼。"}
+        剧本原有胜利条件保留，旧靴使持有者的分数门槛增加1分。
+      </p>
+    );
   return info.fishingNumberRecipe ? (
     <p>
       本站数字配置：五六人沿逆时针螺旋使用固定数列，跳过两块湖泊；数字数量保持扩充配置，不宣称对应
@@ -579,8 +596,10 @@ export function CatanRules({ room }: { room: Room }) {
               ? "5–6人"
               : "3–4人"
           : `${players}人`}
-        {seafarers && info.layout ? ` · ${catanLayoutName(info.layout)}` : ""}。
-        {catanScenarioVictory(scenario, info.target)}。
+        {seafarers && info.layout
+          ? ` · ${info.fishingSeaRecipe ? "固定布局＋本站捕鱼配方" : catanLayoutName(info.layout)}`
+          : ""}
+        。{catanScenarioVictory(scenario, info.target)}。
       </p>
       {info.harbors && <CatanHarborsRules />}
       {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
@@ -659,7 +678,8 @@ export function CatanRules({ room }: { room: Room }) {
           )}
           {seafarers && scenario === "tribe" && (
             <p>
-              主岛的12点麦田替换为湖泊；领取的奖励港口不能覆盖渔场，强盗后续只在主岛移动。
+              {!info.fishingSeaRecipe && "主岛的12点麦田替换为湖泊；"}
+              领取的奖励港口不能覆盖渔场，强盗后续只在主岛移动。
             </p>
           )}
         </>

@@ -126,7 +126,10 @@ export function CatanClothStock({
       )}
       <p>每两枚布匹得1分。点击村落查看贸易关系。没有最长路线奖励。</p>
       {room.game?.catan?.fishing && (
-        <p>两座大岛各有三处渔场，不使用湖泊。仅第三座起始村庄领取资源和鱼。</p>
+        <p>
+          两座大岛各有{room.game.catan.players.length > 4 ? "四" : "三"}
+          处渔场，不使用湖泊。仅第三座起始村庄领取资源和鱼。
+        </p>
       )}
       {room.game?.catan?.citiesKnights && (
         <p>布匹是计分筹码，与城市建设使用的布料商品牌不同。</p>

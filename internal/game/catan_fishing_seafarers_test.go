@@ -80,7 +80,7 @@ func TestCatanFishingSeafarersSetupAndBoot(t *testing.T) {
 			})
 		}
 	}
-	for _, n := range []int{2, 5, 6} {
+	for _, n := range []int{2, 7} {
 		if _, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "islands"}, nil); err == nil {
 			t.Fatal("unverified player count accepted")
 		}

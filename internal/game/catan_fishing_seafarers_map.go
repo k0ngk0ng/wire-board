@@ -95,6 +95,10 @@ func (g *Catan) fishingCoasts(islands []int) []CatanFishingCoast {
 // This is map research/configuration, not a public room choice or a promise
 // that the associated scenario's complete action/combination rules are ready.
 func (g *Catan) FishingCoasts() []CatanFishingCoast {
+	if g.Seafarers != nil && len(g.Players) > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
+		coasts, _, _ := g.fishingExtendedSeaCoasts()
+		return coasts
+	}
 	if g.Seafarers == nil {
 		return []CatanFishingCoast{}
 	}

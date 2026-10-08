@@ -2717,7 +2717,9 @@ function Waiting({
               lakes={!!room.catanFishingLakes}
               onLakes={(enabled) => command("catan_fishing_lakes", { enabled })}
               fixedRequired={
-                ["desert", "tribe"].includes(room.catanScenario || "") &&
+                (["desert", "tribe"].includes(room.catanScenario || "") ||
+                  (room.capacity > 4 &&
+                    ["islands", "cloth"].includes(room.catanScenario || ""))) &&
                 room.catanSeafarers?.layout !== "fixed"
               }
               extended={room.capacity > 4}
