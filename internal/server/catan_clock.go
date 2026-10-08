@@ -9,6 +9,33 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 	if r.Game.Catan == nil || r.Game.Finished {
 		return false
 	}
+	// Road-knight movement has one end-phase budget. An opponent's retreat
+	// temporarily pauses it; returning to movement restores the remaining time.
+	cityMove := "catan_attack_city_move"
+	cityRetreat := "catan_attack_city_retreat"
+	currentCity := r.Game.Phase
+	if currentCity == cityRetreat {
+		if previousPhase != cityRetreat {
+			r.CatanTimeLeft = max(0, r.TurnDeadline-now.UnixMilli())
+			r.startTurnClock(now)
+		}
+		return true
+	}
+	if currentCity == cityMove {
+		if previousPhase == cityRetreat {
+			r.TurnDeadline = now.UnixMilli() + r.CatanTimeLeft
+			r.CatanTimeLeft = 0
+		} else if previousPhase != cityMove {
+			r.CatanTimeLeft = 0
+			r.startTurnClock(now)
+		}
+		return true
+	}
+	if previousPhase == cityMove || previousPhase == cityRetreat {
+		r.CatanTimeLeft = 0
+		r.startTurnClock(now)
+		return true
+	}
 	if r.Game.Catan.Explorer != nil {
 		current := r.Game.Phase
 		if previousPhase == "catan_explorer_setup" {
@@ -96,7 +123,7 @@ func (r *Room) adjustCatanResponseClock(previousPhase string, previousActor, pre
 		// All seven discarders share one response window. Include discarding
 		// in the same chain as helpers/events so their saved action budget is
 		// not replaced by a fresh turn when the last player finishes.
-		if phase == "catan_discard" || phase == "catan_attack_card" || phase == "catan_transport_barbarian" {
+		if phase == "catan_attack_city_treason_remove" || phase == "catan_attack_city_treason_place" || phase == "catan_discard" || phase == "catan_attack_card" || phase == "catan_transport_barbarian" {
 			return true
 		}
 		return phase == "catan_two_build" || phase == "catan_two_trade" || phase == "catan_fish_replace" || phase == "catan_card_event" || phase == "catan_diplomacy" || phase == "catan_espionage" || phase == "catan_sabotage" || phase == "catan_wedding" || phase == "catan_treason_remove" || phase == "catan_treason_place" || phase == "catan_guild_dues" || phase == "catan_commercial_harbor" || phase == "catan_helper" || phase == "catan_gold" || phase == "catan_port" || phase == "catan_cloth_steal" || phase == "catan_fleet_reward" || phase == "catan_aqueduct" || phase == "catan_metropolis" || phase == "catan_knight_retreat" || phase == "catan_pillage" || phase == "catan_defender_reward" || phase == "catan_progress_discard" || phase == "catan_progress_end"

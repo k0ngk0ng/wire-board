@@ -7,6 +7,32 @@ import {
 import type { CatanRuleContext } from "./catan-rule-context";
 
 export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
+  if (info.attack)
+    return (
+      <>
+        <p>
+          <b>蛮族进攻＋城市与骑士 · 13 分获胜</b>
+        </p>
+        <ol className="catan-rules-list">
+          <li>先顺序放村庄，再逆序放城市与道路；城市领取普通起始资源。</li>
+          <li>
+            羊毛＋矿石在城堡招募或升级骑士，粮食激活；每人每级最多两枚，三级需要政治建设三级。
+          </li>
+          <li>
+            回合末激活骑士最多走五步，未激活最多三步，移动后失活。每轮最多驱逐一名较弱对手；对手选择最近空边退让。
+          </li>
+          <li>
+            激活骑士的等级总力量大于蛮族数量时获胜；每三个俘虏计一分。损失按等级降级或移除，每枚补偿三金币。
+          </li>
+          <li>
+            船面使对应沿海地登陆，不推进普通蛮族船。大都会不失分，但被包围时停产并暂停对应建设。
+          </li>
+          <li>
+            本站补充规则：城堡没有任何合法出口时可暂留，下回合重新检查。金币和蛮族供应继续记账。
+          </li>
+        </ol>
+      </>
+    );
   const wonders = info.scenario === "wonders";
   const cloth = info.scenario === "cloth";
   const pirate = info.scenario === "pirate_islands";

@@ -128,6 +128,7 @@ export const supportsPublicExplorerKnights = (scenario?: string) =>
 export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
   supportsPublicExplorerKnights(scenario) ||
   scenario === "transport" ||
+  scenario === "barbarian-attack" ||
   [
     "rivers",
     "caravans",
@@ -144,6 +145,8 @@ export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
   ].includes(scenario || "");
 
 export function CatanCombinationKnightsPicker({
+  attack = false,
+  transport = false,
   rivers = false,
   caravans = false,
   tribe = false,
@@ -158,6 +161,8 @@ export function CatanCombinationKnightsPicker({
   two = false,
   harbors = false,
 }: {
+  attack?: boolean;
+  transport?: boolean;
   rivers?: boolean;
   caravans?: boolean;
   tribe?: boolean;
@@ -181,28 +186,36 @@ export function CatanCombinationKnightsPicker({
           onChange={(e) => onChange(e.target.checked)}
         />
         城市与骑士＋
-        {rivers
-          ? "河流"
-          : caravans
-            ? "商队"
-            : explorer
-              ? "探索者与海盗"
-              : fishing
-                ? "渔夫"
-                : "航海家"}
+        {attack
+          ? "蛮族进攻"
+          : transport
+            ? "运输"
+            : rivers
+              ? "河流"
+              : caravans
+                ? "商队"
+                : explorer
+                  ? "探索者与海盗"
+                  : fishing
+                    ? "渔夫"
+                    : "航海家"}
       </label>
       <p className="muted small">
-        {rivers
-          ? "13分获胜；起始河岸村庄和城市均领1金币。商品可换金币，金币只买普通资源；骑士可过桥，5金币可保住被劫掠城市，外交拆河岸道路须付1金币。"
-          : caravans
-            ? "商队出价改用木材和砖块；15分获胜。先放村庄、逆序放城市，首次蛮族进攻前强盗不入场。双人沿用两次事件与生产、中立骑士及最多两辆马车规则。"
-            : explorer
-              ? intro
-                ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
-                : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
-              : fishing
-                ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌。获胜条件按所选剧本，持旧靴者额外需要 1 分。${harbors ? "港口霸主再提高 1 分门槛。" : ""}`
-                : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
+        {attack
+          ? "三至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
+          : transport
+            ? "二至六人，15分获胜。运输马车与城市骑士并用，蛮族船和道路蛮族分别结算。"
+            : rivers
+              ? "13分获胜；起始河岸村庄和城市均领1金币。商品可换金币，金币只买普通资源；骑士可过桥，5金币可保住被劫掠城市，外交拆河岸道路须付1金币。"
+              : caravans
+                ? "商队出价改用木材和砖块；15分获胜。先放村庄、逆序放城市，首次蛮族进攻前强盗不入场。双人沿用两次事件与生产、中立骑士及最多两辆马车规则。"
+                : explorer
+                  ? intro
+                    ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
+                    : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
+                  : fishing
+                    ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌。获胜条件按所选剧本，持旧靴者额外需要 1 分。${harbors ? "港口霸主再提高 1 分门槛。" : ""}`
+                    : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
       {helpers && !explorer && (
         <p className="muted small">

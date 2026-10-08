@@ -20,7 +20,13 @@ export const newProgressSelection = (card: number): ProgressSelection => ({
 });
 export const progressTrack = (card: number) =>
   card < 10 ? 0 : card < 16 ? 1 : 2;
-export function progressMapMode(card: number, explorer = false) {
+export function progressMapMode(
+  card: number,
+  explorer = false,
+  attackCity = false,
+) {
+  if (attackCity && card === 8) return "progress_edge";
+  if (attackCity && card === 19) return "progress_tile";
   if (card === 21 && explorer) return "";
   return [3, 12, 21].includes(card)
     ? "progress_tile"
@@ -35,7 +41,10 @@ export function progressOpponents(g: CatanState, player: number, card: number) {
     i === player ||
     p.eliminated ||
     (card === 11 && !g.guildDuesTargets?.includes(i)) ||
-    (card === 22 && !g.citiesKnights?.knights.some((n) => n.owner === i))
+    (card === 22 &&
+      !(g.attack?.city?.knights || g.citiesKnights?.knights)?.some(
+        (n) => n.owner === i,
+      ))
       ? []
       : [i],
   );
@@ -77,7 +86,9 @@ export function progressMapTargets(
     case 16:
       return g.diplomacyRoads || [];
     case 19:
-      return g.intrigueTargets || [];
+      return g.attack?.city
+        ? g.attack.city.choices?.capture || []
+        : g.intrigueTargets || [];
     case 21:
       if (g.explorer) return [];
       if (g.taxationTiles !== undefined) return g.taxationTiles;
@@ -213,7 +224,7 @@ export function progressPlayAction(
   // E&P Taxation starts a separate pirate placement response; it never asks
   // for a base-game robber tile in the card-play request.
   if (s.card === 21 && g.explorer) return a;
-  const mode = progressMapMode(s.card, !!g.explorer);
+  const mode = progressMapMode(s.card, !!g.explorer, !!g.attack?.city);
   if (mode) {
     const targets = progressMapTargets(g, p, s);
     if (

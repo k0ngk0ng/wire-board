@@ -276,19 +276,61 @@ test("taxation uses server friendly targets, including current desert and outsid
 });
 
 test("Invention selects the extra fishing disc and preserves its slot when targets change", () => {
- const r=room(3),g=r.game.catan;
- g.tiles[0].number=2;
- g.inventionTiles=[0,1,2];
- g.inventionNumbers=[{tile:0,slot:1,number:11},{tile:1,slot:0,number:9},{tile:1,slot:1,number:4},{tile:2,slot:0,number:5}];
- let s=pickProgressTarget(g,0,newProgressSelection(3),0);
- s=pickProgressTarget(g,0,s,1);
- assert.deepEqual(s.numbers,[1,0]);
- assert.deepEqual(progressPlayAction(r,s),{type:"catan_progress",card:3,tile:0,target:1,tokens:[1,0]});
- s={...s,numbers:[1,1]};
- assert.deepEqual(progressPlayAction(r,s).tokens,[1,1]);
- s=pickProgressTarget(g,0,s,2);
- assert.deepEqual(s.picks,[1,2]);
- assert.deepEqual(s.numbers,[1,0]);
- assert.deepEqual(progressPlayAction(r,s).tokens,[1,0]);
- assert.equal(progressPlayAction(r,{...s,numbers:[1,1]}),null);
+  const r = room(3),
+    g = r.game.catan;
+  g.tiles[0].number = 2;
+  g.inventionTiles = [0, 1, 2];
+  g.inventionNumbers = [
+    { tile: 0, slot: 1, number: 11 },
+    { tile: 1, slot: 0, number: 9 },
+    { tile: 1, slot: 1, number: 4 },
+    { tile: 2, slot: 0, number: 5 },
+  ];
+  let s = pickProgressTarget(g, 0, newProgressSelection(3), 0);
+  s = pickProgressTarget(g, 0, s, 1);
+  assert.deepEqual(s.numbers, [1, 0]);
+  assert.deepEqual(progressPlayAction(r, s), {
+    type: "catan_progress",
+    card: 3,
+    tile: 0,
+    target: 1,
+    tokens: [1, 0],
+  });
+  s = { ...s, numbers: [1, 1] };
+  assert.deepEqual(progressPlayAction(r, s).tokens, [1, 1]);
+  s = pickProgressTarget(g, 0, s, 2);
+  assert.deepEqual(s.picks, [1, 2]);
+  assert.deepEqual(s.numbers, [1, 0]);
+  assert.deepEqual(progressPlayAction(r, s).tokens, [1, 0]);
+  assert.equal(progressPlayAction(r, { ...s, numbers: [1, 1] }), null);
+});
+
+test("Attack city progress uses edge smithing, coastal capture and road-knight opponents", async () => {
+  const { progressMapMode, progressOpponents } =
+    await import("../src/catan-progress-state.ts");
+  const r = room(19),
+    g = r.game.catan;
+  g.attack = {
+    city: {
+      knights: [{ owner: 1, edge: 6, strength: 2, active: true }],
+      choices: { capture: [0] },
+    },
+  };
+  g.citiesKnights.knights = [];
+  assert.equal(progressMapMode(8, false, true), "progress_edge");
+  assert.equal(progressMapMode(19, false, true), "progress_tile");
+  assert.deepEqual(progressMapTargets(g, 0, selection(19)), [0]);
+  assert.deepEqual(progressPlayAction(r, selection(19, { picks: [0] })), {
+    type: "catan_progress",
+    card: 19,
+    tile: 0,
+  });
+  assert.deepEqual(progressOpponents(g, 0, 22), [1]);
+  g.progressPlayable = [8];
+  g.citiesKnights.players[0].progress = [8];
+  assert.deepEqual(progressPlayAction(r, selection(8, { picks: [6, 7] })), {
+    type: "catan_progress",
+    card: 8,
+    targets: [6, 7],
+  });
 });

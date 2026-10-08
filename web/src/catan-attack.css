@@ -224,3 +224,28 @@
     width: 88px;
   }
 }
+.attack-city-target {
+  cursor: pointer;
+}
+.attack-city-target:focus {
+  outline: none;
+  filter: drop-shadow(0 0 4px #fff1a5);
+}
+.attack-city-panel {
+  color: #402d1c;
+  background: #fff5dc;
+  border: 1px solid #bd9254;
+  border-radius: 10px;
+  padding: 10px;
+}
+.attack-city-panel p {
+  margin: 6px 0;
+}
+.attack-city-panel small {
+  display: block;
+  line-height: 1.5;
+}
+.attack-city-panel .attack-picks {
+  flex-wrap: wrap;
+  gap: 6px;
+}

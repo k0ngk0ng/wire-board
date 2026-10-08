@@ -361,3 +361,28 @@ func TestCatanAttackCityEventKnightStrength(t *testing.T) {
 		t.Fatal("tied knight events")
 	}
 }
+
+func TestCatanAttackCityLeavingReturnsRoadKnights(t *testing.T) {
+	s := attackCityCore(t, 3)
+	s.Catan.SetupStep = 6
+	s.Catan.TurnSerial = 1
+	s.Turn = 0
+	s.Phase = "catan_turn"
+	s.Catan.Attack.City.Knights = []catanAttackCityKnight{{Owner: 0, Edge: 0, Strength: 1}, {Owner: 1, Edge: 1, Strength: 1}}
+	if err := s.EliminateCatan(0); err != nil {
+		t.Fatal(err)
+	}
+	if len(s.Catan.Attack.City.Knights) != 1 || s.Catan.Attack.City.Knights[0].Owner != 1 {
+		t.Fatal("departed road knights remain")
+	}
+	if err := s.validateAttackCityState(); err != nil {
+		t.Fatal(err)
+	}
+	a, err := s.BotAction(s.Turn)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = s.Apply(s.Turn, a); err != nil {
+		t.Fatal(err)
+	}
+}
