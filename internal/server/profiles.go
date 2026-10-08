@@ -207,6 +207,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["cities_knights"] = setup.Rules
+			if g.Seafarers != nil && g.Seafarers.Tribe != nil {
+				record.CatanExpansionRules["tribe_progress"] = g.Seafarers.Tribe.ProgressRules
+			}
 			if g.Seafarers == nil {
 				record.CatanRules = setup.Rules
 				record.CatanLayout = setup.Layout

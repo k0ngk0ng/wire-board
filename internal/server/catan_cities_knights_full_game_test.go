@@ -185,6 +185,9 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 						t.Fatal("lost combination recipe")
 					}
 				}
+				if scenario == "tribe" {
+					assertTribeProgressInventory(t, g)
+				}
 				if scenario == "fishing" {
 					assertFishingCityInventory(t, g)
 				}
@@ -246,6 +249,14 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 								_, visible := raw.(map[string]any)["tokens"]
 								if visible != (viewer == p && len(g.Fishing.Tokens.Hands[p]) > 0) {
 									t.Fatal("fish faces leaked")
+								}
+							}
+						}
+						if scenario == "tribe" {
+							tr := v["seafarers"].(map[string]any)["tribe"].(map[string]any)
+							for _, reward := range tr["development"].([]any) {
+								if _, leak := reward.(map[string]any)["card"]; leak {
+									t.Fatal("tribe reward leaked")
 								}
 							}
 						}
@@ -388,6 +399,9 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 			history := profile["history"].([]any)[0].(map[string]any)
 			if sea := room.Game.Catan.Seafarers; sea != nil {
 				versions := history["catanExpansionRules"].(map[string]any)
+				if scenario == "tribe" && versions["tribe_progress"] != game.CatanTribeProgressRules {
+					t.Fatal("missing tribe progress version")
+				}
 				count := 2
 				if events {
 					count++

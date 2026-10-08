@@ -14,7 +14,6 @@ func TestCatanSeaKnightsPublicConfiguration(t *testing.T) {
 	host.register("公开航海骑士房主")
 	guest.register("公开航海骑士朋友")
 	for _, body := range []map[string]any{
-		{"kind": "catan", "capacity": 3, "catanScenario": "tribe"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores"},
@@ -42,7 +41,6 @@ func TestCatanSeaKnightsPublicConfiguration(t *testing.T) {
 	scenario := func(value string, status int) {
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": value, "version": s.rooms[id].Version, "nonce": randomID(12)}, status)
 	}
-	scenario("tribe", 400)
 	scenario("pirate_islands", 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
@@ -64,7 +62,7 @@ func TestCatanSeaKnightsPublicConfiguration(t *testing.T) {
 		}
 	}
 	selectCatanCitiesKnights(host, &city, 200)
-	for _, choice := range []string{"islands", "fog", "desert", "cloth", "wonders", "new_world"} {
+	for _, choice := range []string{"islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"} {
 		ready()
 		scenario(choice, 200)
 		r := s.rooms[id]

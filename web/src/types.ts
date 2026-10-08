@@ -738,6 +738,7 @@ export type CatanState = {
       }[];
     };
     tribe?: {
+      progressRules?: string;
       tokens: number[] | null;
       development: { edge: number }[];
       ports: { edge: number; resource: number }[] | null;

@@ -38,7 +38,7 @@ func ckActor(s *State) int {
 }
 func TestCatanCitiesKnightsSeafarersSetupAndVictory(t *testing.T) {
 	for _, n := range []int{3, 4, 5, 6} {
-		for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world"} {
+		for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world", "tribe"} {
 			t.Run(fmt.Sprintf("%d/%s", n, scenario), func(t *testing.T) {
 				s := ckSea(t, n, scenario)
 				g := s.Catan
@@ -93,7 +93,7 @@ func TestCatanCitiesKnightsSeafarersSetupAndVictory(t *testing.T) {
 			})
 		}
 	}
-	for _, scenario := range []string{"tribe", "pirate_islands", "bad"} {
+	for _, scenario := range []string{"pirate_islands", "bad"} {
 		if _, err := NewCatanCitiesKnightsSeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: scenario}, nil); err == nil {
 			t.Fatal("unverified special combination enabled", scenario)
 		}

@@ -32,6 +32,14 @@ func ckProgressStock(t *testing.T, g *Catan) {
 			counts[c]++
 		}
 	}
+	if tribe := g.tribe(); tribe != nil && tribe.ProgressRules == CatanTribeProgressRules {
+		for _, reward := range tribe.Development {
+			if reward.Card < 0 || reward.Card >= len(counts) {
+				t.Fatal("invalid tribe progress")
+			}
+			counts[reward.Card]++
+		}
+	}
 	for c, n := range counts {
 		if n != catanProgressRules[c].Count {
 			t.Fatal("progress conservation", c, n)

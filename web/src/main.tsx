@@ -2234,6 +2234,7 @@ function Create({
           capacity >= 3 &&
           supportsPublicCatanKnightsCombination(catanScenario) && (
             <CatanCombinationKnightsPicker
+              tribe={catanScenario === "tribe"}
               disabled={catanFishing}
               explorer={supportsPublicExplorerKnights(catanScenario)}
               fishing={catanScenario === "fishing"}
@@ -2662,6 +2663,7 @@ function Waiting({
           room.capacity >= 3 &&
           supportsPublicCatanKnightsCombination(room.catanScenario) && (
             <CatanCombinationKnightsPicker
+              tribe={room.catanScenario === "tribe"}
               explorer={supportsPublicExplorerKnights(room.catanScenario)}
               fishing={room.catanScenario === "fishing"}
               harbors={!!room.catanHarbors?.enabled}
