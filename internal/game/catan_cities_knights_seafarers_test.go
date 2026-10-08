@@ -98,8 +98,8 @@ func TestCatanCitiesKnightsSeafarersSetupAndVictory(t *testing.T) {
 			t.Fatal("unverified special combination enabled", scenario)
 		}
 	}
-	if _, err := NewCatanCitiesKnightsSeafarers(3, CatanOptions{Helpers: true}, CatanSeafarersSetup{Scenario: "shores"}, nil); err == nil {
-		t.Fatal("unsupported helper combination")
+	if helper, err := NewCatanCitiesKnightsSeafarers(3, CatanOptions{Helpers: true}, CatanSeafarersSetup{Scenario: "shores"}, nil); err != nil || !helper.Catan.cityHelpers() {
+		t.Fatal("missing versioned Helpers adaptation", err)
 	}
 }
 func TestCatanCitiesKnightsSeafarersGoldAndAqueduct(t *testing.T) {

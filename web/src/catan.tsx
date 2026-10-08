@@ -543,6 +543,7 @@ function CatanBaseBoard({
     null,
   );
   const [helperPayment, setHelperPayment] = useState<number[] | null>(null);
+  const [helperKnight, setHelperKnight] = useState<number | null>(null);
   const [helperResource, setHelperResource] = useState(0);
   const [moveFrom, setMoveFrom] = useState<number | null>(null);
   const [dev, setDev] = useState<number | null>(null);
@@ -560,6 +561,7 @@ function CatanBaseBoard({
     setMode("");
     setProgress(null);
     setHelperPayment(null);
+    setHelperKnight(null);
     setMoveFrom(null);
     setChosen(null);
     setDev(null);
@@ -643,6 +645,7 @@ function CatanBaseBoard({
   const submit = async (a: Record<string, unknown>) => {
     await act(a);
     setHelperPayment(null);
+    setHelperKnight(null);
     setMoveFrom(null);
     setMode("");
     setProgress(null);
@@ -713,12 +716,18 @@ function CatanBaseBoard({
             .map(([key]) => Number(key))
         : g.knightMoves?.[moveFrom] || [],
   };
+  const helperBuildSites =
+    helperPayment && helperKnight !== null
+      ? g.helperKnightBuilds?.[helperKnight]
+      : undefined;
   const selectableVertex = (id: number) =>
     (mine || cityChoiceMine) &&
     ((effective === "progress_vertex" && progressTargets.includes(id)) ||
       (effective === "fish_ground" && !!g.legal.fishGrounds?.includes(id)) ||
-      (effective === "settlement" && g.legal.settlements.includes(id)) ||
-      (effective === "city" && g.legal.cities.includes(id)) ||
+      (effective === "settlement" &&
+        (helperBuildSites?.settlements || g.legal.settlements).includes(id)) ||
+      (effective === "city" &&
+        (helperBuildSites?.cities || g.legal.cities).includes(id)) ||
       (!!city && (cityVertices[effective] || []).includes(id)));
   return (
     <div
@@ -1675,6 +1684,7 @@ function CatanBaseBoard({
             setChosen(null);
             setProgress(null);
             setHelperPayment(null);
+            setHelperKnight(null);
             setDev(null);
             setMoveFrom(null);
           }}
@@ -1698,6 +1708,7 @@ function CatanBaseBoard({
               setChosen(null);
               setDev(null);
               setHelperPayment(null);
+              setHelperKnight(null);
             }
             setProgress(next);
           }}
@@ -1733,6 +1744,7 @@ function CatanBaseBoard({
             setChosen(null);
             setDev(null);
             setHelperPayment(null);
+            setHelperKnight(null);
           }}
         />
         <CatanWondersPanel
@@ -1770,6 +1782,7 @@ function CatanBaseBoard({
                 setProgress(null);
                 setDev(null);
                 setHelperPayment(null);
+                setHelperKnight(null);
               }}
             >
               修复受损道路{" "}
@@ -1833,6 +1846,7 @@ function CatanBaseBoard({
                   disabled={busy || !affordable(key) || !available}
                   onClick={() => {
                     setHelperPayment(null);
+                    setHelperKnight(null);
                     setMoveFrom(null);
                     setMode(key);
                     setProgress(null);
@@ -1858,6 +1872,7 @@ function CatanBaseBoard({
                   setMoveFrom(null);
                   setChosen(null);
                   setHelperPayment(null);
+                  setHelperKnight(null);
                   setDev(null);
                 }}
               >
@@ -1875,6 +1890,7 @@ function CatanBaseBoard({
               disabled={busy}
               onClick={() => {
                 setHelperPayment(null);
+                setHelperKnight(null);
                 setMoveFrom(null);
                 setMode(mode === "trade" ? "" : "trade");
                 setProgress(null);
@@ -1940,6 +1956,9 @@ function CatanBaseBoard({
                   chosen.id >= 0 &&
                   ` #${chosen.id + 1}`}
               </strong>
+              {helperPayment && helperKnight !== null && (
+                <small>归还交点 #{helperKnight + 1} 的骑士参与建设</small>
+              )}
               {(costs[chosen.type] || cityActionCosts[chosen.type]) &&
                 !setup &&
                 phase !== "catan_roads" && (
@@ -1959,6 +1978,7 @@ function CatanBaseBoard({
                   onClick={() => {
                     setChosen(null);
                     setHelperPayment(null);
+                    setHelperKnight(null);
                     setMoveFrom(null);
                     setMode("");
                     setProgress(null);
@@ -2000,7 +2020,9 @@ function CatanBaseBoard({
                         chosen.type === "helper_move" ||
                         chosen.type === "move_ship"
                           ? chosen.id
-                          : undefined,
+                          : helperPayment
+                            ? (helperKnight ?? undefined)
+                            : undefined,
                       edge:
                         chosen.type === "helper_move" ||
                         chosen.type === "move_ship"
@@ -2389,7 +2411,8 @@ function CatanBaseBoard({
           act={act}
           busy={busy}
           assets={assets}
-          onBuild={(kind, payment) => {
+          onBuild={(kind, payment, knight) => {
+            setHelperKnight(knight ?? null);
             setMode(kind);
             setProgress(null);
             setHelperPayment(payment);
@@ -2403,6 +2426,7 @@ function CatanBaseBoard({
             setProgress(null);
             setMoveFrom(null);
             setHelperPayment(null);
+            setHelperKnight(null);
             setChosen(null);
             setDev(null);
           }}
@@ -2411,6 +2435,7 @@ function CatanBaseBoard({
             setProgress(null);
             setMoveFrom(null);
             setHelperPayment(null);
+            setHelperKnight(null);
             setChosen(null);
             setDev(null);
           }}

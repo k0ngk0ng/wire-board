@@ -87,6 +87,14 @@ func (g *Catan) validateTribeProgress() error {
 			counts[card]++
 		}
 	}
+	if g.cityHelpers() && g.HelperPending != nil && g.HelperPending.Kind == "progress" {
+		for _, card := range g.HelperPending.Cards {
+			if card < 0 || card >= len(counts) {
+				return errors.New("部落助手进步牌无效")
+			}
+			counts[card]++
+		}
+	}
 	for card, rule := range catanProgressRules {
 		if counts[card] != rule.Count {
 			return errors.New("部落预留牌与进步牌总库存不守恒")

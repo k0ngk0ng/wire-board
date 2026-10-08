@@ -79,10 +79,12 @@ func (s *State) catanAfterProduction(received []int) {
 		if g.cloth() != nil {
 			s.catanScores()
 		}
+		s.catanQueueCityHelperProduction(received)
 		s.catanStartAqueduct(received)
 		if g.cloth() != nil && g.CitiesKnights.Pending == nil {
 			s.catanVictory()
 		}
+		s.catanFinishCityHelperProduction()
 		return
 	}
 	if g.cloth() != nil {

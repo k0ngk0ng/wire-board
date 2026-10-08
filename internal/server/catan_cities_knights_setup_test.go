@@ -55,7 +55,7 @@ func TestCatanCitiesKnightsConfigurationHTTPPermissionsRestartAndHistory(t *test
 	selectCatanCitiesKnights(host, nil, 400)
 	selectCatanCitiesKnights(host, &game.CatanCitiesKnightsSetup{Layout: "fixed"}, 400)
 	selectCatanCitiesKnights(host, &game.CatanCitiesKnightsSetup{Rules: game.CatanCitiesKnightsFiveSixRules}, 400)
-	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 400)
+	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Rules: "unknown", Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("rejected configuration mutated room")
@@ -179,8 +179,8 @@ func TestCatanCitiesKnightsConfigurationRecipeChangesAndMixedRejection(t *testin
 	other := *r
 	other.CatanCitiesKnights = nil
 	other.CatanOptions.Helpers = true
-	if err := other.setCatanCitiesKnights(game.CatanCitiesKnightsSetup{}); err == nil {
-		t.Fatal("Helpers provision accepted")
+	if err := other.setCatanCitiesKnights(game.CatanCitiesKnightsSetup{}); err != nil {
+		t.Fatal("Helpers provision rejected", err)
 	}
 	other.CatanOptions.Helpers = false
 	other.Status = "playing"

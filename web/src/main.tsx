@@ -2270,7 +2270,7 @@ function Create({
                   )
                 )
                   setCapacity(Math.min(4, capacity));
-                if (["cities-knights", "rivers", "caravans"].includes(scenario))
+                if (["rivers", "caravans"].includes(scenario))
                   setCatanOptions(
                     catanOptions.fiveSix ? { fiveSix: true } : {},
                   );
@@ -2298,6 +2298,11 @@ function Create({
                 supportsPublicCatanFishingSeaExtended(catanScenario)) &&
               supportsPublicCatanFishingSea(catanScenario))) && (
             <CatanFishingSeaPicker
+              blocked={
+                !isPublicCatanExplorer(catanScenario) &&
+                catanSeaKnights &&
+                !!catanOptions.helpers
+              }
               knights={capacity === 2 && catanTwoScenario === "cities-knights"}
               value={catanFishing}
               two={
@@ -2322,7 +2327,7 @@ function Create({
               explorer={supportsPublicExplorerKnights(catanScenario)}
               two={capacity === 2}
               intro={catanScenario === "land-ho"}
-              fishing={catanScenario === "fishing"}
+              fishing={catanFishing || catanScenario === "fishing"}
               harbors={catanHarbors}
               value={catanSeaKnights}
               helpers={!!catanOptions.helpers}
@@ -2789,6 +2794,11 @@ function Waiting({
               supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
               supportsPublicCatanFishingSea(room.catanScenario))) && (
             <CatanFishingSeaPicker
+              blocked={
+                !isPublicCatanExplorer(room.catanScenario) &&
+                !!room.catanCitiesKnights &&
+                !!room.catanOptions?.helpers
+              }
               knights={
                 !!room.catanTwoRules &&
                 room.catanTwoScenario === "cities-knights"
@@ -2827,7 +2837,7 @@ function Waiting({
               explorer={supportsPublicExplorerKnights(room.catanScenario)}
               two={room.capacity === 2}
               intro={room.catanScenario === "land-ho"}
-              fishing={room.catanScenario === "fishing"}
+              fishing={!!room.catanFishing || room.catanScenario === "fishing"}
               harbors={!!room.catanHarbors?.enabled}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}

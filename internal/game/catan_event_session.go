@@ -137,6 +137,9 @@ func newCatanHelperReferenceEvents(n int, all bool) (*State, error) {
 }
 
 func (s *State) validateCatanEventSession() error {
+	if err := s.validateCityHelpers(); err != nil {
+		return err
+	}
 	if err := s.validateFishingHelpers(); err != nil {
 		return err
 	}

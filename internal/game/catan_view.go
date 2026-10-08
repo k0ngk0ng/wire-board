@@ -179,6 +179,7 @@ func (s *State) catanView(view map[string]any, player int) {
 			rules[9].Description = "自己抽取事件牌前或完整结算后，把强盗赶回沙漠，并领取原地块出产的一张资源。"
 		}
 		g.fishingHelperDescriptions(rules)
+		g.cityHelperDescriptions(rules)
 		v["helperRules"] = rules
 		if player >= 0 && player < len(g.Players) && g.helperReady(player, 4) && player == s.Turn && s.Phase == "catan_turn" {
 			moves := map[int][]int{}
@@ -197,13 +198,16 @@ func (s *State) catanView(view map[string]any, player int) {
 			}
 			v["helperRoadMoves"] = moves
 		}
+		if g.cityHelpers() && player >= 0 && player < len(g.Players) && g.helperReady(player, 8) && player == s.Turn && s.Phase == "catan_turn" && !s.Finished {
+			v["helperKnightBuilds"] = g.helperKnightBuilds(player)
+		}
 		if q := g.HelperPending; q != nil {
 			pending := v["helperPending"].(map[string]any)
 			if q.Player != player {
 				delete(pending, "cards")
 			}
 			if q.Kind == "leader" && q.Player == player {
-				pending["resources"] = append([]int{}, g.Players[q.Target].Resources...)
+				pending["resources"] = append([]int{}, g.Players[q.Target].Resources[:5]...)
 			}
 		}
 	}

@@ -29,8 +29,8 @@ func TestCatanCitiesKnightsConfigurationIdentityAndValidation(t *testing.T) {
 		if _, err := NewCatanCitiesKnightsConfigured(n, CatanOptions{FiveSix: n <= 4}, setup); err == nil {
 			t.Fatal("wrong player extension accepted")
 		}
-		if _, err := NewCatanCitiesKnightsConfigured(n, CatanOptions{FiveSix: n > 4, Helpers: true}, setup); err == nil {
-			t.Fatal("unverified Helpers combination")
+		if helper, err := NewCatanCitiesKnightsConfigured(n, CatanOptions{FiveSix: n > 4, Helpers: true}, setup); err != nil || !helper.Catan.cityHelpers() {
+			t.Fatal("missing versioned Helpers adaptation", err)
 		}
 	}
 	for _, n := range []int{2, 7} {

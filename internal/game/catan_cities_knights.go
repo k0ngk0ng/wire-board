@@ -40,6 +40,7 @@ type CatanCityPending struct {
 	Track   int          `json:"track"`
 }
 type CatanCitiesKnights struct {
+	Helpers           *catanHelpersKnights `json:"helpers,omitempty"`
 	PirateStart       int                  `json:"pirateStart"`
 	Chase             string               `json:"chase,omitempty"`
 	ProgressEventID   uint64               `json:"progressEventId,omitempty"`
@@ -66,9 +67,7 @@ type CatanCitiesKnights struct {
 // Public three/four-player rooms use this through the configured constructor.
 // Larger games and combinations retain their separate setup validation.
 func NewCatanCitiesKnights(n int, options CatanOptions) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("Helpers尚无与城市与骑士组合的官方兼容规则")
-	}
+
 	s, err := NewCatan(n, options)
 	if err != nil {
 		return nil, err
@@ -102,6 +101,10 @@ func (s *State) enableCitiesKnights() {
 		g.Paired.Secondary = (g.StartPlayer + 3) % n
 	}
 	s.Log = []string{"城市与骑士开局：顺序放村庄，逆序放城市；第二座建筑只领取普通起始资源，13分获胜"}
+	if g.Options.Helpers {
+		g.CitiesKnights.Helpers = &catanHelpersKnights{Rules: CatanHelpersKnightsRules}
+		s.Log = append(s.Log, catanHelpersKnightsNotice)
+	}
 }
 func catanCardName(card int) string {
 	if card >= 5 && card < 8 {
@@ -326,6 +329,9 @@ func (s *State) catanCityChoice(player int, a Action) error {
 	}
 	s.catanScores()
 	s.catanVictory()
+	if q.Kind == "aqueduct" && k.Pending == nil {
+		s.catanFinishCityHelperProduction()
+	}
 	return nil
 }
 func (s *State) catanCityChoiceBot(player int) (Action, error) {

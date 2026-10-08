@@ -29,7 +29,7 @@ func (s *State) validateEventHelpers() error {
 	if _, err := NormalizeCatanOptions(g.Options); err != nil {
 		return err
 	}
-	if len(g.Bank) != 5 {
+	if len(g.Bank) != 5 && !(g.cityHelpers() && len(g.Bank) == 8) {
 		return errors.New("事件牌助手资源银行无效")
 	}
 	seen := map[int]bool{}
@@ -85,7 +85,7 @@ func (s *State) validateEventHelpers() error {
 	if q.Resume != "catan_turn" && !(h.ID == 10 && q.Resume == "catan_roll") && !(h.ID == 5 && (q.Resume == "catan_discard" || q.Resume == "catan_robber")) {
 		return errors.New("事件牌助手后续阶段与能力不符")
 	}
-	if q.Kind != "development" && len(q.Cards) != 0 || q.Kind != "resource" && q.Optional {
+	if q.Kind != "development" && q.Kind != "progress" && len(q.Cards) != 0 || q.Kind != "resource" && q.Optional {
 		return errors.New("事件牌助手回应数据无效")
 	}
 	if q.Kind == "exchange" {
@@ -102,14 +102,24 @@ func (s *State) validateEventHelpers() error {
 		if (h.ID != 3 && h.ID != 5) || q.Optional != (h.ID == 3) || sum(g.Bank[:5]) == 0 {
 			return errors.New("事件牌助手资源回应无效")
 		}
-		if g.EventDeck != nil && (g.RevealedEvent == nil || !g.RevealedEvent.ProductionStarted || (g.RevealedEvent.Production == 7) != (h.ID == 5)) {
+		eventProduction := g.EventDeck != nil && !(g.cityHelpers() && g.EventDeck.alchemyLatest(g.RollID))
+		if eventProduction && (g.RevealedEvent == nil || !g.RevealedEvent.ProductionStarted || (g.RevealedEvent.Production == 7) != (h.ID == 5)) {
 			return errors.New("助手补偿与生产点数不符")
 		}
-		if g.EventDeck == nil && (len(g.Dice) != 2 || (sum(g.Dice) == 7) != (h.ID == 5)) {
+		if !eventProduction && (len(g.Dice) != 2 || (sum(g.Dice) == 7) != (h.ID == 5)) {
 			return errors.New("助手补偿与骰子点数不符")
 		}
+	case "progress":
+		if !g.cityHelpers() || h.ID != 6 || q.Player != s.Turn || q.Target < 0 || q.Target > 2 || len(q.Cards) < 1 || len(q.Cards) > 3 {
+			return errors.New("助手进步牌候选无效")
+		}
+		for _, card := range q.Cards {
+			if card < 0 || card >= len(catanProgressRules) || catanProgressRules[card].Track != q.Target {
+				return errors.New("助手进步牌颜色无效")
+			}
+		}
 	case "development":
-		if h.ID != 6 || q.Player != s.Turn || len(q.Cards) < 1 || len(q.Cards) > 3 {
+		if g.cityHelpers() || h.ID != 6 || q.Player != s.Turn || len(q.Cards) < 1 || len(q.Cards) > 3 {
 			return errors.New("助手发展卡候选无效")
 		}
 		for _, card := range q.Cards {
@@ -118,7 +128,7 @@ func (s *State) validateEventHelpers() error {
 			}
 		}
 	case "leader":
-		if h.ID != 7 || q.Player != s.Turn || q.Target < 0 || q.Target >= len(g.Players) || q.Target == q.Player || g.Players[q.Target].Eliminated || sum(g.Players[q.Target].Resources) == 0 {
+		if h.ID != 7 || q.Player != s.Turn || q.Target < 0 || q.Target >= len(g.Players) || q.Target == q.Player || g.Players[q.Target].Eliminated || sum(g.Players[q.Target].Resources[:5]) == 0 {
 			return errors.New("助手查看手牌目标无效")
 		}
 	default:

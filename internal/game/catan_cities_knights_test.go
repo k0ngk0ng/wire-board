@@ -86,8 +86,8 @@ func TestCatanCitiesKnightsInitialCitiesAndInventory(t *testing.T) {
 			t.Fatal("normal roll bypassed event die or trusted client dice")
 		}
 	}
-	if _, e := NewCatanCitiesKnights(3, CatanOptions{Helpers: true}); e == nil {
-		t.Fatal("unverified Helpers combination accepted")
+	if helper, e := NewCatanCitiesKnights(3, CatanOptions{Helpers: true}); e != nil || !helper.Catan.cityHelpers() {
+		t.Fatal("missing versioned Helpers adaptation", e)
 	}
 	if _, e := NewCatanCitiesKnights(5, CatanOptions{}); e == nil {
 		t.Fatal("missing extension")
