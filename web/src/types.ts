@@ -594,6 +594,7 @@ export type CatanState = {
       current?: number;
     };
     map: {
+      numberRecipe?: string;
       lakes: { tile: number; numbers: number[] }[];
       extraNumbers?: { tile: number; number: number }[];
       grounds: {

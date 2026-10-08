@@ -27,7 +27,7 @@ func newPublicScenarioTable(t *testing.T, n int, scenario string) (*Server, *htt
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("公开剧本玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario}, 201)
+	raw := clients[0].post("/api/rooms", map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4 && scenario == "fishing"}}, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -48,7 +48,7 @@ func TestCatanFishingPublicConfiguration(t *testing.T) {
 	guest.register("渔夫朋友")
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
-		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5},
 		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "catan", "capacity": 3, "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "fixed"}},
 		{"kind": "splendor", "capacity": 3},

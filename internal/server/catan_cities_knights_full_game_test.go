@@ -27,7 +27,7 @@ func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
 }
 
 func TestCatanFishingCitiesKnightsPublicFullHTTPGames(t *testing.T) {
-	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "fishing", false, 3, 4)
+	testCatanCitiesKnightsConfiguredFullHTTPGames(t, "fishing", false, 3, 4, 5, 6)
 }
 
 func TestCatanHarborsCitiesKnightsFullHTTPGames(t *testing.T) {
@@ -100,7 +100,7 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 				clients[p].register(fmt.Sprintf("骑士玩家%d", p))
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
-			public := n <= 4 || scenario == "" || game.CatanCitiesKnightsSeafarersSupported(scenario)
+			public := n <= 4 || scenario == "" || scenario == "fishing" || game.CatanCitiesKnightsSeafarersSupported(scenario)
 			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
 			if public {
 				body["catanScenario"] = "cities-knights"
@@ -396,8 +396,11 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 			}
 			if scenario == "fishing" {
 				rules := history["catanExpansionRules"].(map[string]any)
-				if history["catanScenario"] != "fishing" || rules["fishing"] != game.CatanFishingRules || rules["cities_knights"] != game.CatanCitiesKnightsRules {
+				if history["catanScenario"] != "fishing" || rules["fishing"] != game.CatanFishingRules || rules["cities_knights"] != room.Game.Catan.CitiesKnightsSetup().Rules {
 					t.Fatal("wrong combined fishing history", history)
+				}
+				if n > 4 && rules["number_recipe"] != game.CatanExtendedNumberRecipe {
+					t.Fatal("missing combined fishing number recipe")
 				}
 			}
 			if friendly && history["catanExpansionRules"].(map[string]any)["friendly_knights"] != game.CatanFriendlyKnightsRules {

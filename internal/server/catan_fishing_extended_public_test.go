@@ -58,8 +58,12 @@ func TestCatanFishingExtendedPublicConfiguration(t *testing.T) {
 			if scene == "new_world" && len(r.CatanNewWorldMap.Hexes) != 63 {
 				t.Fatal("world was not enlarged")
 			}
-			before, _ = json.Marshal(r)
-			command(h, "catan_fishing", map[string]any{"enabled": false}, 400)
+			command(h, "catan_fishing", map[string]any{"enabled": false}, 200)
+			if s.rooms[id].CatanFishing {
+				t.Fatal("fishing was not disabled")
+			}
+			command(h, "catan_fishing", map[string]any{"enabled": true}, 200)
+			before, _ = json.Marshal(s.rooms[id])
 			selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "cloth"}, 400)
 			command(h, "catan_options", map[string]any{"catanOptions": game.CatanOptions{FiveSix: true, Helpers: true}}, 400)
 			after, _ = json.Marshal(s.rooms[id])

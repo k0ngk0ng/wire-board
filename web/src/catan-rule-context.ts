@@ -54,6 +54,11 @@ export function catanRuleContext(room: Room) {
     (game ? game.baseSetup?.layout : room.catanBaseConfiguration?.layout) ===
       "fixed";
   return {
+    fishingNumberRecipe: game
+      ? game.fishing?.map?.numberRecipe || ""
+      : players > 4 && room.catanScenario === "fishing"
+        ? "wire-board-extended-numbers-v1"
+        : "",
     seaNumberRecipe: game
       ? sea?.numberRecipe || ""
       : players > 4 && scenario === "shores"

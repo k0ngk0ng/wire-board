@@ -25,7 +25,7 @@ func TestCatanFishingWondersExtendedFullHTTPGames(t *testing.T) {
 }
 
 func TestCatanFishingPublicFullHTTPGames(t *testing.T) {
-	testFishingSeaExtendedFullHTTP(t, "")
+	testFishingSeaExtendedFullHTTP(t, "", 3, 4, 5, 6)
 }
 
 func TestCatanFishingSeaPublicFullHTTPGames(t *testing.T) {
@@ -50,7 +50,7 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 				var ts *httptest.Server
 				var clients []*testClient
 				var id string
-				if len(publicSizes) > 0 {
+				if scenario != "" && len(publicSizes) > 0 {
 					layout := "fixed"
 					if n <= 4 && sample == 1 && scenario != "desert" && scenario != "tribe" {
 						layout = "variable"
@@ -324,6 +324,9 @@ func testFishingSeaExtendedFullHTTP(t *testing.T, scenario string, publicSizes .
 						}
 						if record["catanScenario"] != wantScenario || record["catanLayout"] != wantLayout || record["catanExpansionRules"].(map[string]any)["fishing"] != game.CatanFishingRules {
 							t.Fatal("wrong fishing archive", record)
+						}
+						if scenario == "" && n > 4 && record["catanExpansionRules"].(map[string]any)["number_recipe"] != game.CatanExtendedNumberRecipe {
+							t.Fatal("missing fishing number recipe")
 						}
 						stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 						if stats["wins"] != float64(1) || stats["played"] != float64(1) {

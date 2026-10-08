@@ -13,9 +13,10 @@ The **internal token economy, map, setup/production pipeline, replacement
 responses, five paid actions, boot passing, bots and persistence** are
 implemented, with original-art desktop/mobile UI verified on local engine fixtures.
 Standalone Fishing and Fishing + Cities & Knights now have local, unpublished
-public room entries for three/four players (2026-10-08). Five/six-player and
-other combination entries, comprehensive
-interaction and final release acceptance remain; see the latest section below.
+public room entries for three to six players (2026-10-08). Sea Fishing retains
+its separately accepted counts: seven maps for three/four, and fog/wonders/new
+world for five/six. Other combinations/counts, comprehensive interaction and
+final release acceptance remain; see the latest section below.
 
 ## Token economy (completed 2026-10-05)
 
@@ -839,3 +840,22 @@ Temporary test logs were removed; no browser or persistent QA process started.
 - 1440／390／320截图和页面宽度正常，32种当前图像解码成功，无JS错误。首次点击港口被展开面板遮挡，按界面收起后正常操作。最后人数修正用重建实页确认仅三四席、切宝石两席后切回恢复三席且保留组合。无互联网音频播放。
 
 专属QA浏览器与服务结束，临时入口、数据库、profile、截图与日志清理；没有推送／部署／上传，保留无关monopoly目录。双人贸易筹码沿用用户明确批准的独立记账，不把此授权扩展到待确认的五六人布匹。
+
+
+## 独立渔夫及渔夫＋城市骑士五六人公开入口（2026-10-08，未发布）
+
+### 规则与范围
+
+- 重新核对固定版本五六人规则第 5 页：两块内陆湖泊、八处海岸渔场、增加 14 枚鱼筹码；②号可在行动阶段花鱼及传递旧靴。沿用已实现的 44 枚筹码供应（含旧靴）、7 枚手持上限及配对回合。
+- 独立渔夫、渔夫＋城市骑士均开放三至六人。骑士组合仍使用已核对的 2025 组合规则、商品与进步牌、13 分目标及旧靴额外 1 分；不改三四人或基础版玩法。
+- 实体 2025 字母背面与数字的逐一对应尚未独立核实。按用户授权明确采用 `wire-board-extended-numbers-v1` 本站数字配置：沿用引擎既有的固定数列及逆时针螺旋，跳过两块湖泊。新五六人独立渔夫存档记录 `fishing.map.numberRecipe`，创建说明、实际对局规则、日志和战绩记录同一来源；不宣称是官方字母顺序。旧存档缺字段时保留原身份，不补标；三四人及海图不使用这个字段。
+- 建房、等待时扩充开关、城市骑士双向切换、准备重置、人数校验、恢复、实际人数开局及重开接通。关闭组合并回基础后无渔夫或骑士残留。海图人数门槛未扩大，友善／港口／助手组合仍待后续实现。
+
+### 验证
+
+- 地图原有 96 张随机图库存／几何检查、数字来源与旧存档边界、筹码库存、骑士开局及失败原子性定向 race 通过（2.773 秒）；相邻产鱼、隐私、支付、旧靴、水渠、进步牌定向 race 通过（2.093 秒）。
+- 12 场自然公开 HTTP 完整局通过（27.727 秒）：普通渔夫每个人数两场，共 8 场；骑士组合每个人数一场，共 4 场。检查资源／筹码库存、托管与超时、玩家／观战隐私、恢复及战绩版本。不是完整真人对局。
+- 公开配置／海图人数边界／所有基础游戏隔离 race 通过（32.550 秒）；五六人骑士开关、恢复与回基础专项 race 通过（2.289 秒）。首轮配置测试有三条旧断言误把关闭海图渔夫当作非法；普通五六人海图此前已开放，修正为验证关开成功，并保留对不兼容组合的拒绝检查。
+- 176 项前端测试、前端生产构建、Go 构建及两包 vet 通过，保留既有大包提示。首轮三个规则上下文夹具缺少地图字段，补上可选访问后通过。不是全仓最终 CI。
+- 独立静音浏览器在 390 px 创建六席渔夫骑士牌桌，等待时关闭／开启五六人扩充，五人实际开局；320 px 手动选择交点 7 并确认建村，检查规则浮层；1440 px 检查扩大地图。无整页横向溢出或 JS 错误，50 种实际引用图片解码通过。本地验证最初遗漏素材版本目录导致 404，读取部署约定后修正本地启动参数；未修改线上配置。检查期间超过 120 秒后正常自动托管，不将推进后的棋盘称为保存字节不变。没有新增素材或上传。
+- 专属服务、浏览器关闭，清理本阶段数据库、二进制、profile、截图、下载目录及验证日志；保留共享研究和无关目录。仅本地提交，未推送或发布。
