@@ -208,7 +208,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		return Action{Type: "catan_road", Edge: best}, nil
 	case "catan_roll":
-		if k := g.CitiesKnights; k != nil && slices.Contains(k.Players[player].Progress, 0) {
+		if k := g.CitiesKnights; k != nil && (!g.twoKnights() || len(g.Two.Rolls) == 0) && slices.Contains(k.Players[player].Progress, 0) {
 			return Action{Type: "catan_progress", Card: 0, Tokens: g.alchemyBotDice(player)}, nil
 		}
 		if g.pirateIslands() != nil && !g.PlayedDev && g.pirateNextWarship(player) >= 0 {

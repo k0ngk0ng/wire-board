@@ -81,6 +81,10 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		if g.Two != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "two_player")
 			record.CatanExpansionRules = map[string]string{"two_player": g.Two.Rules}
+			if g.Two.Knights != "" {
+				record.CatanScenario = "cities-knights"
+				record.CatanExpansionRules["two_knights"] = g.Two.Knights
+			}
 			record.CatanRules, record.CatanLayout = g.Two.Rules, "variable"
 		}
 		if g.Rivers != nil {
@@ -245,7 +249,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			if g.Seafarers != nil && g.Seafarers.Tribe != nil {
 				record.CatanExpansionRules["tribe_progress"] = g.Seafarers.Tribe.ProgressRules
 			}
-			if g.Seafarers == nil {
+			if g.Seafarers == nil && g.Two == nil {
 				record.CatanRules = setup.Rules
 				record.CatanLayout = setup.Layout
 			}

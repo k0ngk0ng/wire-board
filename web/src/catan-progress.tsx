@@ -234,11 +234,13 @@ export function CatanProgressHand({
                       aria-pressed={!s.skip && s.target === i}
                       onClick={() => update({ target: i, skip: false })}
                     >
-                      {room.seats[i].name}
+                      {i < -1 ? `中立势力 ${-i - 1}` : room.seats[i].name}
                       <small>
-                        {s.card === 18
-                          ? `${k.players[i].progressCount}张进步牌`
-                          : `${g.players[i].publicScore}分`}
+                        {i < -1
+                          ? "移除该颜色最弱骑士"
+                          : s.card === 18
+                            ? `${k.players[i].progressCount}张进步牌`
+                            : `${g.players[i].publicScore}分`}
                       </small>
                     </button>
                   ))}

@@ -13,10 +13,18 @@ import (
 // Targeted response fixtures complement the untouched full-game tests. Only
 // these fixtures set production phase and resource inventories explicitly.
 func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
-	for _, scenario := range []string{"trade_roll", "trade_between", "trade_turn", "build_turn", "fish_build_roll", "fish_build_between", "fish_build_turn"} {
+	for _, scenario := range []string{"trade_roll", "trade_between", "trade_turn", "build_turn", "fish_build_roll", "fish_build_between", "fish_build_turn", "city_trade_roll", "city_trade_between", "city_trade_turn", "city_mixed_roll", "city_mixed_between", "city_mixed_turn", "city_knight_turn"} {
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(scenario+"/"+mode, func(t *testing.T) {
+				scenario := scenario
 				recipe := ""
+				city := strings.HasPrefix(scenario, "city_")
+				mixed := strings.HasPrefix(scenario, "city_mixed_")
+				if city {
+					recipe = "cities-knights"
+					scenario = strings.TrimPrefix(scenario, "city_")
+					scenario = strings.Replace(scenario, "mixed_", "trade_", 1)
+				}
 				if strings.HasPrefix(scenario, "fish_") {
 					recipe = "fishing"
 				}
@@ -37,7 +45,7 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 					state.Catan.Two.Rolls = []int{2}
 					state.Catan.RollID = 1
 				}
-				if scenario == "trade_turn" || scenario == "build_turn" || scenario == "fish_build_turn" {
+				if scenario == "trade_turn" || scenario == "build_turn" || scenario == "fish_build_turn" || scenario == "knight_turn" {
 					resume = "catan_turn"
 					state.Phase = resume
 					state.Catan.Two.Rolls = []int{2, 12}
@@ -53,7 +61,31 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 						state.Catan.Players[seat].Resources[c] = n
 					}
 				}
+				if city {
+					state.Catan.RollID = len(state.Catan.Two.Rolls)
+					if state.Catan.RollID > 0 {
+						state.Catan.CitiesKnights.EventDie = 0
+						state.Catan.Dice = []int{1, 1}
+					}
+					if state.Catan.RollID == 2 {
+						state.Catan.Dice = []int{6, 6}
+					}
+				}
 				trigger := game.Action{Type: "catan_two_trade"}
+				if mixed {
+					trigger.Choice = "mixed"
+				}
+				if scenario == "knight_turn" {
+					for _, color := range []int{2, 4} {
+						state.Catan.Bank[color]--
+						state.Catan.Players[p].Resources[color]++
+					}
+					legal := state.View(p)["catan"].(map[string]any)["legal"].(map[string][]int)["knightRecruit"]
+					if len(legal) == 0 {
+						t.Fatal("no recruitable site")
+					}
+					trigger = game.Action{Type: "catan_knight_recruit", Vertex: legal[0]}
+				}
 				if scenario == "build_turn" || strings.HasPrefix(scenario, "fish_") {
 					v := state.View(p)["catan"].(map[string]any)
 					roads := v["legal"].(map[string][]int)["roads"]

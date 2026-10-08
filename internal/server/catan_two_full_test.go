@@ -124,7 +124,11 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 				}
 			}
 		}
-		if total != 19 {
+		want := 19
+		if color >= 5 && g.CitiesKnights != nil {
+			want = 12
+		}
+		if total != want {
 			t.Fatal("resource conservation", color, total)
 		}
 	}
@@ -189,11 +193,26 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 				score -= 2
 			}
 		}
+		if k := g.CitiesKnights; k != nil {
+			score += k.Players[p].DefenderPoints + k.Players[p].ProgressPoints
+			for _, vertex := range k.Metropolises {
+				if vertex >= 0 && g.Vertices[vertex].Owner == p {
+					score += 2
+				}
+			}
+			if k.Merchant != nil && k.Merchant.Owner == p {
+				score++
+			}
+		}
 		if score != seat.Score {
 			t.Fatal("incorrect real score", p, score, seat.Score)
 		}
 	}
-	if dev != 25 {
+	wantDev := 25
+	if g.CitiesKnights != nil {
+		wantDev = 0
+	}
+	if dev != wantDev {
 		t.Fatal("development inventory", dev)
 	}
 	for _, owner := range []int{0, 1, -2, -3} {
@@ -215,6 +234,14 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 				if v.Level == 1 {
 					villages++
 				} else if v.Level == 2 {
+					cities++
+				}
+			}
+		}
+		if k := g.CitiesKnights; k != nil {
+			for _, vertex := range k.FallenCities {
+				if g.Vertices[vertex].Owner == owner {
+					villages--
 					cities++
 				}
 			}
@@ -251,6 +278,24 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 				h := raw.(map[string]any)
 				if p != viewer && h["tokens"] != nil {
 					t.Fatal("opponent fish exposed")
+				}
+			}
+		}
+		if k := s.Catan.CitiesKnights; k != nil {
+			public := v["citiesKnights"].(map[string]any)
+			if public["progressDecks"] != nil || public["event"] != nil {
+				t.Fatal("city deck/queue exposed")
+			}
+			for p, raw := range public["players"].([]any) {
+				seat := raw.(map[string]any)
+				if (seat["progress"] != nil) != (viewer == p) {
+					t.Fatal("private progress hand exposed", viewer, p)
+				}
+			}
+			if q := k.Pending; q != nil && (q.Kind == "espionage" || q.Kind == "guild_dues") {
+				pending := public["pending"].(map[string]any)
+				if viewer != q.Players[0] && (pending["progress"] != nil || pending["resources"] != nil) {
+					t.Fatal("private response exposed")
 				}
 			}
 		}
@@ -366,7 +411,8 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 					reclaimTimeoutHumans(t, s, clients, id)
 				}
 				wagonAdvanced := state.Catan.Caravans != nil && len(s.rooms[id].Game.Catan.Caravans.Wagons) == len(state.Catan.Caravans.Wagons)+1
-				if pending && !wagonAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
+				neutralAdvanced := state.Catan.Two.Sequence != s.rooms[id].Game.Catan.Two.Sequence
+				if pending && !wagonAdvanced && !neutralAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
 					t.Fatal("response did not advance", state.Phase, mode)
 				}
 			}
@@ -377,6 +423,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 			}
 			winner := r.Game.Winners[0]
 			target := 10
+			if scenario == "cities-knights" {
+				target = 13
+			}
 			if scenario == "caravans" {
 				target = 12
 			}
@@ -398,6 +447,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 						t.Fatal("duplicate or absent history")
 					}
 					record := history[0].(map[string]any)
+					if scenario == "cities-knights" && (record["catanScenario"] != "cities-knights" || record["catanExpansionRules"].(map[string]any)["two_knights"] != game.CatanTwoKnightsRules) {
+						t.Fatal("two city history missing", record)
+					}
 					if scenario == "fishing" && (record["catanScenario"] != "fishing" || record["catanExpansionRules"].(map[string]any)["two_fishing"] != game.CatanTwoFishingRules) {
 						t.Fatal("fishing history missing", record)
 					}

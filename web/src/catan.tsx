@@ -1,3 +1,4 @@
+import { treasonRemoveSites } from "./catan-progress-choice-state";
 import { CatanExplorerBoard } from "./catan-explorer";
 import { CatanTransportMap, CatanTransportPanel } from "./catan-transport";
 import { emptyTransportPick } from "./catan-transport-state";
@@ -702,8 +703,7 @@ function CatanBaseBoard({
     knight_chase: g.legal.knightChase || [],
     knight_chase_pirate: g.legal.knightChasePirate || [],
     knight_retreat: g.legal.knightRetreat || [],
-    treason_remove:
-      city?.knights.filter((n) => n.owner === you).map((n) => n.vertex) || [],
+    treason_remove: treasonRemoveSites(g, you),
     treason_place: g.treasonPlacements || [],
     knight_move:
       moveFrom === null

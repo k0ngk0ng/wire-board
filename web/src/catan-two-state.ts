@@ -57,9 +57,11 @@ export function twoSelected(
 ): CatanTwoChoice | undefined {
   return twoChoices(g, selected).find((c) => c.owner === selected?.owner);
 }
-export function twoReturnValid(hand: number[], give: number[]) {
+export function twoReturnValid(hand: number[], give: number[], mixed = true) {
   return (
-    give.length === 5 &&
+    [5, 8].includes(hand.length) &&
+    give.length === hand.length &&
+    (mixed || give.slice(5).every((n) => n === 0)) &&
     give.every(
       (n, i) => Number.isInteger(n) && n >= 0 && n <= (hand[i] || 0),
     ) &&
@@ -184,7 +186,11 @@ export function twoChoiceName(
   c: { edge: number; vertex: number },
 ) {
   return c.vertex >= 0
-    ? "村庄"
+    ? g.two?.pending?.kind === "knight"
+      ? "一级骑士"
+      : g.two?.pending?.kind === "knight_promote"
+        ? "骑士升级"
+        : "村庄"
     : g.rivers?.map.bridges.includes(c.edge)
       ? "桥梁"
       : "道路";

@@ -30,7 +30,7 @@ export function progressMapMode(card: number, explorer = false) {
         : "";
 }
 export function progressOpponents(g: CatanState, player: number, card: number) {
-  return g.players.flatMap((p, i) =>
+  const targets = g.players.flatMap((p, i) =>
     i === player ||
     p.eliminated ||
     (card === 11 && !g.guildDuesTargets?.includes(i)) ||
@@ -38,6 +38,13 @@ export function progressOpponents(g: CatanState, player: number, card: number) {
       ? []
       : [i],
   );
+  if (card === 22 && g.two?.knights)
+    targets.push(
+      ...[-2, -3].filter((owner) =>
+        g.citiesKnights?.knights.some((n) => n.owner === owner),
+      ),
+    );
+  return targets;
 }
 export function progressMapTargets(
   g: CatanState,

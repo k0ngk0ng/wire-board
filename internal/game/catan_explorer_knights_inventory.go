@@ -10,6 +10,12 @@ func (s *State) validateExplorerCityInventory() error {
 	if k.Layout != "variable" || k.Rules != catanCitiesKnightsRules(len(g.Players)) || k.Invasions < 0 || k.BarbarianPosition < 0 || k.BarbarianPosition > catanBarbarianDistance || k.RobberStart != -1 || k.Chase != "" || k.EventDie < -1 || k.EventDie > 5 || g.RollID == 0 && k.EventDie != -1 || g.RollID > 0 && k.EventDie < 0 {
 		return errors.New("组合城市规则、事件骰或蛮族记录无效")
 	}
+	return s.validateCityProgressInventory()
+}
+
+// Shared stock and privacy invariants; map/turn rules remain recipe-specific.
+func (s *State) validateCityProgressInventory() error {
+	g, k := s.Catan, s.Catan.CitiesKnights
 	counts := make([]int, len(catanProgressRules))
 	totalCards := 0
 	for _, rule := range catanProgressRules {

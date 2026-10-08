@@ -13,6 +13,8 @@ export function catanResultDescription(g: CatanState) {
     return `探索者与海盗·${explorerScenarioLabel(g)}：在自己的回合达到${target}分获胜。村庄1分、港口2分${g.explorer.lairs ? "，另计巢穴任务进度和领先奖励" : ""}${g.explorer.spice ? "、香料任务进度和领先奖励" : ""}${g.explorer.fish ? "、鱼群任务进度和领先奖励" : ""}，不授予最长道路或最大军队奖励。`;
   if (g.transport)
     return `${g.two ? "双人卡坦＋" : ""}运输任务：在自己的回合达到${target}分立即获胜。总分包含建筑、胜利点卡、最大骑士军队、已交付货物（每件1分）与马车满级奖励（1分）。本剧本不授予最长道路。`;
+  if (g.two && g.citiesKnights)
+    return `双人城市与骑士：在自己的回合达到${target}分获胜。计入建筑、大都会、最长路线、防御者、公开进步牌与商人。中立势力可取得最长路线，中立骑士不参与防御。`;
   if (g.two)
     return `双人卡坦${g.rivers ? "＋河流" : g.caravans ? "＋商队" : ""}：在自己的回合达到${target}分获胜。两家中立势力也可取得最长路线；总分包含建筑、当前持有的路线与军队奖励，以及胜利点卡${g.rivers ? "和当前最富（＋1）／最贫（−2）的财富分数，中立势力不参与财富比较" : g.caravans ? "和相邻至少两辆马车的建筑奖励（每座＋1）" : ""}。`;
   if (sea?.wonders || sea?.scenario === "wonders")

@@ -585,6 +585,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			for len(g.Two.Rolls) == 1 && a+b == g.Two.Rolls[0] {
 				a, b = catanRandom(6)+1, catanRandom(6)+1
 			}
+			if g.twoKnights() {
+				return s.catanCityRoll(a, b, catanRandom(6))
+			}
 			return s.catanTwoRoll(a, b)
 		}
 		if g.CitiesKnights != nil {

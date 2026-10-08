@@ -119,14 +119,18 @@ export function CatanTwoPanel({
     q = g.two,
     p = g.players[room.you];
   const [collapsed, setCollapsed] = useState(false),
-    [give, setGive] = useState([0, 0, 0, 0, 0]);
+    [give, setGive] = useState<number[]>(Array(g.bank.length).fill(0));
   const [stockCollapsed, setStockCollapsed] = useState(
     () => !!g.transport && window.matchMedia("(max-width: 600px)").matches,
   );
+  const [mixedTrade, setMixedTrade] = useState(false);
+  const [exchangeVertex, setExchangeVertex] = useState<number | null>(null);
   const [confirm, setConfirm] = useState<TokenAction | null>(null);
   useEffect(() => {
     setCollapsed(false);
-    setGive([0, 0, 0, 0, 0]);
+    setGive(Array(g.bank.length).fill(0));
+    setMixedTrade(false);
+    setExchangeVertex(null);
     setConfirm(null);
   }, [
     room.id,
@@ -137,6 +141,7 @@ export function CatanTwoPanel({
     room.game!.round,
     room.game!.phase,
     q?.sequence,
+    g.bank.length,
   ]);
   useEffect(() => {
     if (selected) setCollapsed(false);
@@ -158,10 +163,17 @@ export function CatanTwoPanel({
     cost = q.cost || 1;
   const available = !!canUse && !q.spent && q.tokens[room.you] >= cost;
   const opponent = g.players[1 - room.you]?.resourceCount || 0;
-  const canTrade =
+  const tradeCost = cost * (g.citiesKnights && mixedTrade ? 2 : 1);
+  const tradeHand = g.citiesKnights && !mixedTrade ? hand.slice(0, 5) : hand;
+  const canOpenTrade =
     available &&
     opponent > 0 &&
     hand.reduce((a, b) => a + b, 0) + Math.min(2, opponent) >= 2;
+  const canTrade =
+    available &&
+    q.tokens[room.you] >= tradeCost &&
+    opponent > 0 &&
+    tradeHand.reduce((a, b) => a + b, 0) + Math.min(2, opponent) >= 2;
   const retreatTargets = twoRetreatTargets(room);
   const retreatEdges = twoRetreatEdges(room),
     retreatCost = twoRetreatCost(room);
@@ -202,7 +214,10 @@ export function CatanTwoPanel({
       ? canTrade
       : confirm === "robber"
         ? canRobber && retreatValid
-        : canKnight;
+        : canKnight &&
+          (!g.citiesKnights ||
+            (exchangeVertex !== null &&
+              q.exchangeKnights?.includes(exchangeVertex)));
   const choice = twoSelected(g, selected),
     choices = twoChoices(g, selected);
   const pending = playing && (q.pending || q.trade);
@@ -224,13 +239,15 @@ export function CatanTwoPanel({
               双人卡坦
               {g.fishing
                 ? "＋渔夫"
-                : g.transport
-                  ? "＋运输"
-                  : g.rivers
-                    ? "＋河流"
-                    : g.caravans
-                      ? "＋商队"
-                      : ""}
+                : g.citiesKnights
+                  ? "＋城市与骑士"
+                  : g.transport
+                    ? "＋运输"
+                    : g.rivers
+                      ? "＋河流"
+                      : g.caravans
+                        ? "＋商队"
+                        : ""}
             </strong>
             <small>
               {g.fishing ? (
@@ -308,7 +325,7 @@ export function CatanTwoPanel({
                 </p>
                 <div className="two-token-actions">
                   <button
-                    disabled={busy || !canTrade}
+                    disabled={busy || !canOpenTrade}
                     onClick={() => openConfirm("trade")}
                   >
                     强制交易
@@ -327,7 +344,7 @@ export function CatanTwoPanel({
                     disabled={busy || !canKnight}
                     onClick={() => openConfirm("knight")}
                   >
-                    弃骑士换 2 枚
+                    {g.citiesKnights ? "移除骑士换筹码" : "弃骑士换 2 枚"}
                   </button>
                 </div>
               </>
@@ -350,12 +367,19 @@ export function CatanTwoPanel({
                       : g.caravans
                         ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
                         : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
-                    每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。
+                    {g.citiesKnights
+                      ? "每回合可消费筹码一次，另可移除一名自己的骑士，按等级换 1／2／3 枚筹码；供应须足够。总量 20 枚，用完须等筹码归还。初始城市不领取建村筹码。本站补充：建村奖励不足时只领剩余数量。"
+                      : "每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。"}
                     {q.tokenRule === "ledger" &&
                       "本站补充规则：筹码用完继续记账发放，归还供应的筹码优先复用；与金币分别计算。"}
                   </>
                 )}
               </p>
+              {g.citiesKnights && (
+                <p>
+                  招募骑士后为中立势力招募一级骑士，无位置则修路；自己的一级升二级后，中立一级也升级。中立骑士不激活、不防御。两次生产各结算城市事件；炼金术仅第一次掷骰前可用。本站补充：中立骑士退让及叛变同级选择由行动玩家决定。
+                </p>
+              )}
               {g.transport && (
                 <p>
                   中立路每段付1金币，每次马车移动合计：银行取一半（向上取整），对手取另一半。快速旅程第二次移动重新累计。本剧本不授予最长道路。
@@ -375,7 +399,7 @@ export function CatanTwoPanel({
               {pending
                 ? mine
                   ? q.trade
-                    ? "选择交还 2 张资源"
+                    ? `选择交还 2 张${q.trade.mixed ? "资源或商品" : "资源"}`
                     : "为中立势力建设"
                   : `${room.seats[q.actor]?.name} 正在${q.trade ? "归还资源" : "建设中立棋子"}`
                 : confirm === "robber"
@@ -399,14 +423,21 @@ export function CatanTwoPanel({
                       <p>从现有手牌中选两张，也可以交还刚抽到的牌。</p>
                       {q.trade.drawn && (
                         <>
-                          <small>刚抽到的资源 · 仅你可见</small>
+                          <small>刚抽到的牌 · 仅你可见</small>
                           <Bundle values={q.trade.drawn} assets={assets} />
                         </>
                       )}
                       <ResourcePicker
-                        label="交还资源"
-                        values={give}
-                        onChange={setGive}
+                        label={q.trade.mixed ? "交还资源或商品" : "交还资源"}
+                        values={q.trade.mixed ? give : give.slice(0, 5)}
+                        onChange={(n) =>
+                          setGive([
+                            ...n,
+                            ...Array(Math.max(0, hand.length - n.length)).fill(
+                              0,
+                            ),
+                          ])
+                        }
                         limits={hand.map((n, i) =>
                           Math.min(
                             n,
@@ -493,11 +524,54 @@ export function CatanTwoPanel({
                   <>
                     <p>
                       {confirm === "trade"
-                        ? `消费 ${cost} 枚筹码，随机取对手最多 2 张资源，再选择交还 2 张。确认后不能取消。`
+                        ? `消费 ${tradeCost} 枚筹码，随机取对手最多 2 张${mixedTrade ? "资源或商品" : "资源"}，再交还同类范围内的 2 张。确认后不能取消。`
                         : confirm === "robber"
                           ? `消费 ${retreatCost} 枚贸易筹码，${retreatAction}，不偷牌。`
-                          : "弃掉一张已打出的骑士，获得 2 枚筹码。可能失去最大骑士军队的 2 分。"}
+                          : g.citiesKnights
+                            ? "选择自己的一名骑士移除，按等级获得筹码。可能改变最长路线；供应不足时不能兑换。"
+                            : "弃掉一张已打出的骑士，获得 2 枚筹码。可能失去最大骑士军队的 2 分。"}
                     </p>
+                    {confirm === "trade" && g.citiesKnights && (
+                      <div
+                        className="two-owner-choice"
+                        aria-label="强制交易类型"
+                      >
+                        {[false, true].map((mixed) => (
+                          <button
+                            key={String(mixed)}
+                            disabled={busy}
+                            aria-pressed={mixedTrade === mixed}
+                            onClick={() => setMixedTrade(mixed)}
+                          >
+                            {mixed ? "资源与商品" : "仅普通资源"} ·{" "}
+                            {cost * (mixed ? 2 : 1)} 枚
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {confirm === "knight" && g.citiesKnights && (
+                      <div
+                        className="two-owner-choice"
+                        aria-label="选择兑换的骑士"
+                      >
+                        {(q.exchangeKnights || []).map((vertex) => (
+                          <button
+                            key={vertex}
+                            disabled={busy}
+                            aria-pressed={exchangeVertex === vertex}
+                            onClick={() => setExchangeVertex(vertex)}
+                          >
+                            交点 #{vertex + 1} ·{" "}
+                            {
+                              g.citiesKnights!.knights.find(
+                                (n) => n.vertex === vertex,
+                              )?.strength
+                            }{" "}
+                            级骑士
+                          </button>
+                        ))}
+                      </div>
+                    )}
                     {confirm === "robber" && g.transport && (
                       <>
                         <p>
@@ -584,7 +658,19 @@ export function CatanTwoPanel({
                           const action =
                             confirm === "robber"
                               ? retreatRequest
-                              : { type: `catan_two_${confirm}` };
+                              : {
+                                  type: `catan_two_${confirm}`,
+                                  ...(g.citiesKnights && confirm === "trade"
+                                    ? {
+                                        choice: mixedTrade
+                                          ? "mixed"
+                                          : "resources",
+                                      }
+                                    : {}),
+                                  ...(g.citiesKnights && confirm === "knight"
+                                    ? { vertex: exchangeVertex }
+                                    : {}),
+                                };
                           if (!action) return;
                           await act(action);
                           closeConfirm();
@@ -593,7 +679,7 @@ export function CatanTwoPanel({
                         确认
                         {confirm === "knight"
                           ? "兑换"
-                          : `消费 ${confirm === "robber" ? retreatCost : cost} 枚`}
+                          : `消费 ${confirm === "robber" ? retreatCost : tradeCost} 枚`}
                       </button>
                     </div>
                   </>
@@ -604,7 +690,7 @@ export function CatanTwoPanel({
           {!collapsed && pending && q.trade && mine && (
             <button
               className="primary wide two-return-submit"
-              disabled={busy || !twoReturnValid(hand, give)}
+              disabled={busy || !twoReturnValid(hand, give, !!q.trade.mixed)}
               onClick={() => act({ type: "catan_two_return", give })}
             >
               确认交还 2 张

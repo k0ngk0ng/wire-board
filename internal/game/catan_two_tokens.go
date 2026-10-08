@@ -8,6 +8,7 @@ import (
 // Drawn is persisted to prevent refresh from rerolling the random draw. Only
 // the active player sees it; all participants see their own resulting hands.
 type CatanTwoTrade struct {
+	Mixed  bool   `json:"mixed,omitempty"`
 	Resume string `json:"resume"`
 	Drawn  []int  `json:"drawn"`
 }
@@ -31,7 +32,7 @@ func (s *State) validateCatanTwoTokens() error {
 		return errors.New("起始建设不能使用贸易筹码")
 	}
 	if trade := q.Trade; trade != nil {
-		if s.Finished || s.Turn < 0 || s.Turn >= len(g.Players) || q.Pending != nil || !q.Spent || q.Sequence == 0 || s.Phase != "catan_two_trade" || g.Trade != nil || !catanBundle(trade.Drawn) || sum(trade.Drawn) < 1 || sum(trade.Drawn) > 2 || !catanHas(g.Players[s.Turn].Resources, trade.Drawn) || sum(g.Players[s.Turn].Resources) < 2 {
+		if s.Finished || s.Turn < 0 || s.Turn >= len(g.Players) || q.Pending != nil || !q.Spent || q.Sequence == 0 || s.Phase != "catan_two_trade" || g.Trade != nil || !g.cardBundle(trade.Drawn) || trade.Mixed && !g.twoKnights() || g.twoKnights() && !trade.Mixed && sum(trade.Drawn[5:]) != 0 || sum(trade.Drawn) < 1 || sum(trade.Drawn) > 2 || !catanHas(g.Players[s.Turn].Resources, trade.Drawn) || sum(g.Players[s.Turn].Resources) < 2 {
 			return errors.New("双人强制交易响应无效")
 		}
 		if (trade.Resume != "catan_roll" || len(q.Rolls) >= 2) && (trade.Resume != "catan_turn" || len(q.Rolls) != 2) {
@@ -78,6 +79,18 @@ func (s *State) catanTwoEarn(player, count int) error {
 	if player < 0 || player >= len(q.Tokens) {
 		return errors.New("贸易筹码领取玩家无效")
 	}
+	if s.Catan.twoKnights() {
+		if count < 0 {
+			return errors.New("贸易筹码领取数量无效")
+		}
+		got := min(count, q.Bank)
+		q.Bank -= got
+		q.Tokens[player] += got
+		if count > 0 {
+			s.catanLog(player, "有限供应：领取 %d 枚贸易筹码（应领 %d 枚，缺额不记账）", got, count)
+		}
+		return nil
+	}
 	missing, err := q.tokenShortfall(count)
 	if err != nil {
 		return err
@@ -96,6 +109,9 @@ func (s *State) catanTwoCanExchangeKnight(player int) bool {
 		return false
 	}
 	g, q := s.Catan, s.Catan.Two
+	if g.twoKnights() {
+		return !q.KnightExchanged && len(g.twoKnightTokenVertices(player)) > 0
+	}
 	_, err := q.tokenShortfall(2)
 	return !q.KnightExchanged && g.Players[player].Knights > 0 && err == nil
 }
@@ -110,7 +126,7 @@ func (g *Catan) twoDesert() int {
 }
 
 func (g *Catan) twoRetreatTiles() []int {
-	if g.Transport != nil {
+	if g.Transport != nil || g.twoKnights() && (g.CitiesKnights.Invasions == 0 || g.Robber < 0) {
 		return []int{}
 	}
 	if g.Caravans != nil {
@@ -148,6 +164,12 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 	if len(a.Give)+len(a.Take)+len(a.Cards)+len(a.Tokens) != 0 {
 		return errors.New("此行动不能预选资源牌")
 	}
+	if a.Type == "catan_two_knight" && g.twoKnights() {
+		return s.catanTwoKnightForTokens(player, a)
+	}
+	if a.Choice != "" && !(g.twoKnights() && a.Type == "catan_two_trade" && (a.Choice == "resources" || a.Choice == "mixed")) {
+		return errors.New("未知双人贸易选项")
+	}
 	if a.Type == "catan_two_knight" {
 		if q.KnightExchanged || g.Players[player].Knights <= 0 {
 			return errors.New("每回合只能弃一张已打出的骑士换取筹码")
@@ -165,6 +187,9 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		return nil
 	}
 	cost := g.twoTokenCost(player)
+	if g.twoKnights() && a.Type == "catan_two_trade" && a.Choice == "mixed" {
+		cost *= 2
+	}
 	// 2025 transport p24 specifies one trade token for this replacement
 	// action. The ordinary score-dependent cost still applies to forced trade.
 	if a.Type == "catan_two_robber" && g.Transport != nil {
@@ -176,11 +201,17 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 	switch a.Type {
 	case "catan_two_trade":
 		hand := g.Players[1-player].Resources
+		mixed := g.twoKnights() && a.Choice == "mixed"
+		own := g.Players[player].Resources
+		if g.twoKnights() && !mixed {
+			hand = hand[:5]
+			own = own[:5]
+		}
 		count := min(2, sum(hand))
-		if count == 0 || sum(g.Players[player].Resources)+count < 2 {
+		if count == 0 || sum(own)+count < 2 {
 			return errors.New("对手必须有资源，且取牌后应能交还两张")
 		}
-		trade := &CatanTwoTrade{Resume: s.Phase, Drawn: make([]int, 5)}
+		trade := &CatanTwoTrade{Resume: s.Phase, Drawn: make([]int, len(g.Bank)), Mixed: mixed}
 		for range count {
 			n := catanRandom(sum(hand))
 			for color, amount := range hand {
@@ -197,7 +228,11 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		q.Sequence++
 		g.Trade = nil
 		s.Phase = "catan_two_trade"
-		s.catanLog(player, "花费 %d 枚贸易筹码，从玩家 %d 随机取 %d 张资源，待选择交还 2 张", cost, 2-player, count)
+		what := "资源"
+		if mixed {
+			what = "资源或商品"
+		}
+		s.catanLog(player, "花费 %d 枚贸易筹码，从玩家 %d 随机取 %d 张%s，待选择交还 2 张", cost, 2-player, count, what)
 	case "catan_two_robber":
 		if t := g.Transport; t != nil {
 			if a.Card < 0 || a.Card >= len(t.Barbarians) || !slices.Contains(g.twoTransportRetreatEdges(), a.Edge) {
@@ -234,16 +269,20 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 
 func (s *State) catanTwoReturn(player int, a Action) error {
 	g, q := s.Catan, s.Catan.Two
-	if q == nil || q.Trade == nil || s.Phase != "catan_two_trade" || player != s.Turn || a.Type != "catan_two_return" || !catanBundle(a.Give) || sum(a.Give) != 2 || !catanHas(g.Players[player].Resources, a.Give) {
+	if q == nil || q.Trade == nil || s.Phase != "catan_two_trade" || player != s.Turn || a.Type != "catan_two_return" || !g.cardBundle(a.Give) || g.twoKnights() && !q.Trade.Mixed && sum(a.Give[5:]) != 0 || sum(a.Give) != 2 || !catanHas(g.Players[player].Resources, a.Give) {
 		return errors.New("请由取牌者选择两张资源交还对手")
 	}
 	for color, count := range a.Give {
 		g.Players[player].Resources[color] -= count
 		g.Players[1-player].Resources[color] += count
 	}
+	what := "资源"
+	if q.Trade.Mixed {
+		what = "资源或商品"
+	}
 	s.Phase = q.Trade.Resume
 	q.Trade = nil
-	s.catanLog(player, "向玩家 %d 交还 2 张资源，完成强制交易", 2-player)
+	s.catanLog(player, "向玩家 %d 交还 2 张%s，完成强制交易", 2-player, what)
 	return nil
 }
 
@@ -253,7 +292,10 @@ func (s *State) catanTwoReturnBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive forced trade")
 	}
 	hand := append([]int{}, g.Players[player].Resources...)
-	give := make([]int, 5)
+	give := make([]int, len(g.Bank))
+	if g.twoKnights() && !g.Two.Trade.Mixed {
+		hand = hand[:5]
+	}
 	for range 2 {
 		best := 0
 		for color := range hand {
@@ -277,8 +319,23 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 		return Action{}, false
 	}
 	g, q := s.Catan, s.Catan.Two
-	if s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < 2 && g.ArmyOwner != player {
+	if !g.twoKnights() && s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < 2 && g.ArmyOwner != player {
 		return Action{Type: "catan_two_knight"}, true
+	}
+	if g.twoKnights() && s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < g.twoTokenCost(player) {
+		_, _, cities := g.pieces(player)
+		strength := 0
+		for _, n := range g.CitiesKnights.Knights {
+			if n.Owner == player {
+				strength += n.Strength
+			}
+		}
+		for _, vertex := range g.twoKnightTokenVertices(player) {
+			n := g.knightAt(vertex)
+			if !n.Active && strength-n.Strength >= cities {
+				return Action{Type: "catan_two_knight", Vertex: vertex}, true
+			}
+		}
 	}
 	if q.Spent || q.Tokens[player] < 1 {
 		return Action{}, false
@@ -313,6 +370,12 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	if sum(g.Players[1-player].Resources) >= 2 {
 		for _, count := range g.Players[player].Resources {
 			if count >= 3 {
+				if g.twoKnights() {
+					if q.Tokens[player] >= 2*g.twoTokenCost(player) {
+						return Action{Type: "catan_two_trade", Choice: "mixed"}, true
+					}
+					continue
+				}
 				return Action{Type: "catan_two_trade"}, true
 			}
 		}

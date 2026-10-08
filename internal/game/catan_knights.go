@@ -67,7 +67,7 @@ func (g *Catan) knightCanAct(n *CatanKnight) bool {
 	return n != nil && n.Active && n.ActivatedAt != g.CitiesKnights.ActionSerial
 }
 func (g *Catan) knightCanPromote(n *CatanKnight) bool {
-	return n != nil && n.Strength < 3 && n.PromotedAt != g.CitiesKnights.ActionSerial && g.knightCount(n.Owner, n.Strength+1) < 2 && (n.Strength < 2 || g.CitiesKnights.Players[n.Owner].Improvements[CatanPolitics] >= 3)
+	return n != nil && n.Strength < 3 && n.PromotedAt != g.CitiesKnights.ActionSerial && g.knightCount(n.Owner, n.Strength+1) < 2 && (n.Strength < 2 || n.Owner >= 0 && g.CitiesKnights.Players[n.Owner].Improvements[CatanPolitics] >= 3)
 }
 
 // Return every reachable endpoint, including blockers. Expansion stops at an
@@ -214,12 +214,12 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 			k.Knights = slices.DeleteFunc(k.Knights, func(piece CatanKnight) bool {
 				return piece.Owner == displaced.Owner && piece.Vertex == displaced.Vertex
 			})
-			s.catanLog(player, "将骑士从 #%d 移至 #%d，驱逐玩家 %d 的%d级骑士", a.Vertex+1, a.Target+1, displaced.Owner+1, displaced.Strength)
+			s.catanLog(player, "将骑士从 #%d 移至 #%d，驱逐%s的%d级骑士", a.Vertex+1, a.Target+1, catanKnightOwnerName(displaced.Owner), displaced.Strength)
 			if len(g.knightDestinations(*displaced, true)) > 0 {
-				k.Pending = &CatanCityPending{Kind: "knight_retreat", Players: []int{displaced.Owner}, Knight: displaced}
+				k.Pending = &CatanCityPending{Kind: "knight_retreat", Players: []int{g.knightResponseActor(displaced.Owner, s.Turn)}, Knight: displaced}
 				s.Phase = "catan_knight_retreat"
 			} else {
-				s.catanLog(displaced.Owner, "被驱逐的骑士没有合法退路，返回库存")
+				s.catanLog(player, "%s被驱逐的骑士没有合法退路，返回库存", catanKnightOwnerName(displaced.Owner))
 			}
 		} else {
 			s.catanLog(player, "将骑士从 #%d 移至 #%d，骑士转为未激活", a.Vertex+1, a.Target+1)
