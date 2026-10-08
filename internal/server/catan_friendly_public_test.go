@@ -44,10 +44,10 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	h.register("公开友善房主")
 	c.register("公开友善朋友")
 	for _, body := range []map[string]any{
-		{"kind": "splendor", "capacity": 3}, {"kind": "catan", "capacity": 2},
+		{"kind": "splendor", "capacity": 3}, {"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "rivers"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "desert", "catanFishing": true},
+		{"kind": "catan", "capacity": 3, "catanScenario": "land-ho", "catanFishing": true},
 	} {
 		body["name"], body["catanFriendlyRobber"] = "非法组合", game.CatanFriendlyRobberSetup{Enabled: true}
 		h.post("/api/rooms", body, 400)
@@ -85,7 +85,7 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	selectCatanHarbors(h, false, 200)
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "desert"}, 200)
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_fishing", "enabled": true, "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
-	selectCatanFriendlyRobber(h, true, 400)
+	selectCatanFriendlyRobber(h, true, 200)
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_fishing", "enabled": false, "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
 	selectCatanFriendlyRobber(h, true, 200)
 	selectCatanHarbors(h, true, 200)

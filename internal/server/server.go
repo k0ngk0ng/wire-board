@@ -761,7 +761,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanHarbors != nil {
 		if !room.publicCatanHarborsAvailable() {
-			fail(w, 400, "港口霸主支持基础、城市骑士及航海家三至六人")
+			fail(w, 400, "此地图或人数尚未接通港口霸主")
 			return
 		}
 		if err := room.setCatanHarbors(*req.CatanHarbors); err != nil {
@@ -775,7 +775,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	}
 	if req.CatanFriendlyRobber != nil {
 		if !room.publicCatanFriendlyAvailable() {
-			fail(w, 400, "友善强盗支持基础及已核验的航海图三至六人")
+			fail(w, 400, "此地图或人数尚未接通友善强盗")
 			return
 		}
 		if err := room.setCatanFriendlyRobber(*req.CatanFriendlyRobber); err != nil {

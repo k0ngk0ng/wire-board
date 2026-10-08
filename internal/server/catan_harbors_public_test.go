@@ -18,11 +18,11 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 	c.register("公开港口朋友")
 	for _, body := range []map[string]any{
 		{"kind": "splendor", "capacity": 3},
-		{"kind": "catan", "capacity": 2},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
-		{"kind": "catan", "capacity": 3, "catanScenario": "fishing"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "barbarian-attack"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "transport"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "islands", "catanFishing": true},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "caravans"},
 	} {
 		body["name"], body["catanHarbors"] = "非法组合", game.CatanHarborsSetup{Enabled: true}
 		h.post("/api/rooms", body, 400)
@@ -35,7 +35,7 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 	ready()
 	before, _ := json.Marshal(s.rooms[id])
 	selectCatanHarbors(c, false, 400)
-	h.post("/api/rooms/"+id, map[string]any{"type": "catan_fishing", "enabled": true, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+	c.post("/api/rooms/"+id, map[string]any{"type": "catan_fishing", "enabled": true, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid setting changed room")
@@ -54,7 +54,7 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 	}
 	// A disabled award must not block switching to Fishing, nor change its target.
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_fishing", "enabled": true, "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
-	selectCatanHarbors(h, true, 400)
+	selectCatanHarbors(h, true, 200)
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_fishing", "enabled": false, "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
 	selectCatanHarbors(h, true, 200)
 	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 200)

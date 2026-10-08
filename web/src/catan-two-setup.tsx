@@ -1,3 +1,4 @@
+import { supportsTwoCatanVariants } from "./catan-two-variants";
 const scenarios = [
   {
     id: "pirate-lairs",
@@ -36,19 +37,19 @@ const scenarios = [
   {
     id: "",
     name: "双人基础版",
-    description: "两位玩家与两家中立势力，双次生产、贸易筹码，10 分获胜。",
+    description: "两位玩家与两家中立势力，双次生产、贸易筹码。",
   },
   {
     id: "cities-knights",
     name: "双人＋城市与骑士",
     description:
-      "两次城市事件与生产，中立骑士、商品与进步牌；贸易筹码限量 20 枚，13 分获胜。",
+      "两次城市事件与生产，中立骑士、商品与进步牌；贸易筹码限量 20 枚。",
   },
   {
     id: "fishing",
     name: "双人＋渔夫",
     description:
-      "每人起始五枚鱼筹码，不使用贸易筹码；公开分数落后者每次鱼行动少付一鱼，10 分获胜（旧靴持有者 11 分）。",
+      "每人起始五枚鱼筹码，不使用贸易筹码；公开分数落后者每次鱼行动少付一鱼。",
   },
   {
     id: "rivers",
@@ -66,10 +67,14 @@ export function CatanTwoScenarioPicker({
   value,
   onChange,
   disabled = false,
+  variantsEnabled = false,
+  target,
 }: {
   value: string;
   onChange: (scenario: string) => void;
   disabled?: boolean;
+  variantsEnabled?: boolean;
+  target?: number;
 }) {
   return (
     <div className="catan-two-picker">
@@ -81,14 +86,26 @@ export function CatanTwoScenarioPicker({
           onChange={(e) => onChange(e.target.value)}
         >
           {scenarios.map((s) => (
-            <option key={s.id} value={s.id}>
+            <option
+              key={s.id}
+              value={s.id}
+              disabled={variantsEnabled && !supportsTwoCatanVariants(s.id)}
+            >
               {s.name}
             </option>
           ))}
         </select>
       </label>
+      {variantsEnabled && (
+        <p className="muted small">
+          切换到其他双人剧本前，请先关闭友善强盗和港口霸主。
+        </p>
+      )}
       <p className="muted small">
         {scenarios.find((s) => s.id === value)?.description}
+        {supportsTwoCatanVariants(value) &&
+          ` ${target ?? (value === "cities-knights" ? 13 : 10)} 分获胜。`}
+        {value === "fishing" && `旧靴持有者需 ${(target ?? 10) + 1} 分。`}
       </p>
       {["pirate-lairs", "fish-for-catan", "explorers-and-pirates"].includes(
         value,

@@ -1,3 +1,7 @@
+import {
+  twoCatanVariantsAvailable,
+  catanTwoVariantsNote,
+} from "./catan-two-variants";
 import { isPublicCatanSea } from "./catan-scenario-setup";
 import { supportsExtendedBaseVariants } from "./catan-base-layout";
 import { ShieldCheck } from "lucide-react";
@@ -16,6 +20,7 @@ export function CatanFriendlyRobberPicker({
 }) {
   const setup = room.catanFriendlyRobber;
   const eligible =
+    twoCatanVariantsAvailable(room) ||
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 3 &&
       room.capacity <= 6 &&
@@ -34,6 +39,7 @@ export function CatanFriendlyRobberPicker({
       : "";
   return (
     <CatanFriendlyRobberChoice
+      two={!!room.catanTwoRules}
       value={!!setup?.enabled}
       onChange={(enabled) =>
         command("catan_friendly_robber", { catanFriendlyRobber: { enabled } })
@@ -70,6 +76,7 @@ export const supportsPublicCatanFriendly = (scenario?: string) =>
 export function CatanFriendlyRobberChoice({
   value,
   onChange,
+  two = false,
   disabled = false,
   reason = "",
   scenario = "",
@@ -78,6 +85,7 @@ export function CatanFriendlyRobberChoice({
   fishing = false,
 }: {
   value: boolean;
+  two?: boolean;
   onChange: (enabled: boolean) => void;
   disabled?: boolean;
   reason?: string;
@@ -118,6 +126,7 @@ export function CatanFriendlyRobberChoice({
       {value && (knights || scenario === "cities-knights") && (
         <small>{catanFriendlyKnightsNote}</small>
       )}
+      {value && two && <small>{catanTwoVariantsNote}</small>}
       {needed > 0 && (
         <strong>还需 {needed} 位玩家才能开局，可添加电脑。</strong>
       )}
@@ -204,7 +213,10 @@ export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
       <p>
         {info.fishing && !info.scenario
           ? "湖泊不是沙漠，同样受友善保护约束。有合法的其他地块时必须选择地块；没有合法地块时按上述本站规则退到场外，不偷牌。"
-          : "没有其他合法陆地时，强盗退回沙漠，即使沙漠旁有受保护者；只能向邻接且公开至少3分的对手偷牌。如果唯一退路就是当前沙漠，点击该沙漠即可完成处理。骑士牌仍可以用于移动强盗，即使没有可偷取的对手。"}
+          : "没有其他合法陆地时，强盗退回沙漠，即使沙漠旁有受保护者；只能向邻接且公开至少3分的对手偷牌。如果唯一退路就是当前沙漠，点击该沙漠即可完成处理。"}
+        {info.citiesKnights
+          ? "骑士驱逐仍须满足城市骑士的激活和行动条件；没有可偷取的对手也能完成驱逐。"
+          : "骑士牌仍可以用于移动强盗，即使没有可偷取的对手。"}
       </p>
       {info.scenario && info.scenario !== "wonders" && (
         <p>

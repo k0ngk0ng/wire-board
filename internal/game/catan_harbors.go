@@ -34,7 +34,7 @@ func (g *Catan) harborVertex(id int) bool {
 // Public-board heuristic shared by construction and relocated port choices.
 // Rewards building toward the tile without looking at hidden hands or decks.
 func (g *Catan) harborGainValue(player, gain int) int {
-	if g.Harbors == nil || gain <= 0 {
+	if g.Harbors == nil || gain <= 0 || player < 0 || player >= len(g.Players) {
 		return 0
 	}
 	points := g.harborPoints()

@@ -1,3 +1,7 @@
+import {
+  twoCatanVariantsAvailable,
+  catanTwoVariantsNote,
+} from "./catan-two-variants";
 import { supportsExtendedBaseVariants } from "./catan-base-layout";
 import { Anchor, Award } from "lucide-react";
 import type { CatanState, Room } from "./types";
@@ -22,6 +26,7 @@ export function CatanHarborsPicker({
 }) {
   const setup = room.catanHarbors;
   const available =
+    twoCatanVariantsAvailable(room) ||
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 5 &&
       room.capacity <= 6 &&
@@ -39,6 +44,7 @@ export function CatanHarborsPicker({
   if (!setup && !available) return null;
   return (
     <CatanHarborsChoice
+      two={!!room.catanTwoRules}
       value={!!setup?.enabled}
       disabled={disabled || (!available && !setup?.enabled)}
       helpers={!!room.catanOptions?.helpers}
@@ -53,11 +59,13 @@ export function CatanHarborsPicker({
 export function CatanHarborsChoice({
   value,
   onChange,
+  two = false,
   disabled = false,
   helpers = false,
   target,
 }: {
   value: boolean;
+  two?: boolean;
   onChange: (enabled: boolean) => void;
   disabled?: boolean;
   helpers?: boolean;
@@ -81,6 +89,7 @@ export function CatanHarborsChoice({
       <p>
         港口村庄计1点、城市计2点。率先达到3点获得2分奖励；只有超过持有者，才能夺取奖励。
       </p>
+      {value && two && <small>{catanTwoVariantsNote}</small>}
       {value && <strong>本局分数门槛：{target}分</strong>}
       <small>
         {helpers

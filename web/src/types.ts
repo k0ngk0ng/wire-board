@@ -522,6 +522,7 @@ export type CatanState = {
   developmentNames?: string[];
   attack?: CatanAttack;
   two?: {
+    variants?: string;
     rules: string;
     tokensIssued?: number;
     knights?: string;
