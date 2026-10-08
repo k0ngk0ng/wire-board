@@ -25,7 +25,7 @@ func (r *Room) validateCatanFishing() error {
 		return nil
 	}
 	if r.CatanTwoRules != "" {
-		return r.validateCatanTwoFishingSeafarers()
+		return r.validateCatanTwoFishing()
 	}
 	if publicCatanExplorerScenario(r.CatanScenario) {
 		if r.Kind != "catan" || !validCatanExplorerOptions(r.CatanOptions) || r.CatanSeafarers != nil || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil {
@@ -48,7 +48,7 @@ func (r *Room) validateCatanFishing() error {
 }
 
 func (r *Room) setCatanFishing(enabled bool) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (!r.twoCatanSeafarers() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario)) {
+	if r.Kind != "catan" || r.Status != "waiting" || (!r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario)) {
 		return fmt.Errorf("只能在航海家或探索者等待房间选择渔夫组合")
 	}
 	next := *r
@@ -100,4 +100,17 @@ func (r *Room) setCatanFishingLakes(enabled bool) error {
 		r.Seats[i].Ready = r.Seats[i].Bot
 	}
 	return nil
+}
+
+func (r *Room) twoCatanFishingKnights() bool {
+	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanTwoScenario == "cities-knights"
+}
+func (r *Room) validateCatanTwoFishing() error {
+	if r.twoCatanFishingKnights() {
+		if r.CatanOptions != (game.CatanOptions{}) || r.CatanScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanFishingLakes || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil {
+			return fmt.Errorf("双人渔夫骑士配置无效")
+		}
+		return nil
+	}
+	return r.validateCatanTwoFishingSeafarers()
 }

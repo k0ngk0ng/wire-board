@@ -1,3 +1,4 @@
+import { catanTwoFishingKnightsNote } from "./catan-two-fishing-knights";
 import { catanVictoryTarget } from "./catan-rule-context";
 import { supportsTwoCatanHelpers } from "./catan-two-helpers";
 import { supportsTwoCatanVariants } from "./catan-two-variants";
@@ -142,7 +143,9 @@ export function CatanTwoScenarioPicker({
         </p>
       )}
       <p className="muted small">
-        {scenarios.find((s) => s.id === value)?.description}
+        {fishingEnabled && value === "cities-knights"
+          ? catanTwoFishingKnightsNote
+          : scenarios.find((s) => s.id === value)?.description}
         {[
           "land-ho",
           "pirate-lairs",

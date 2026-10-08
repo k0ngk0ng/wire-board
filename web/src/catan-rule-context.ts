@@ -62,7 +62,10 @@ export function catanRuleContext(room: Room) {
         : "",
     fishingSeaKnights: game
       ? game.fishing?.seaKnights || ""
-      : room.catanFishing && !explorerDraft && citiesKnights
+      : room.catanFishing &&
+          !explorerDraft &&
+          citiesKnights &&
+          !!room.catanSeafarers
         ? "wire-board-fishing-sea-knights-v1"
         : "",
     fishingHelpers: game
@@ -137,6 +140,13 @@ export function catanRuleContext(room: Room) {
       ? !!game.two
       : !!room.catanTwoRules || (transport && players === 2),
     citiesKnights,
+    twoFishingKnights: game
+      ? game.fishing?.twoKnights || ""
+      : room.catanTwoRules &&
+          room.catanTwoScenario === "cities-knights" &&
+          room.catanFishing
+        ? "wire-board-two-fishing-knights-v1"
+        : "",
     twoFishingSeafarers: game
       ? game.fishing?.twoSea || ""
       : room.catanTwoRules && room.catanSeafarers && room.catanFishing

@@ -228,6 +228,7 @@ export function CatanFishingSeaPicker({
   blocked = false,
   fixedRequired = false,
   shores = false,
+  knights = false,
   two = false,
   extended = false,
   explorer = false,
@@ -240,6 +241,7 @@ export function CatanFishingSeaPicker({
   blocked?: boolean;
   fixedRequired?: boolean;
   shores?: boolean;
+  knights?: boolean;
   two?: boolean;
   extended?: boolean;
   explorer?: boolean;
@@ -257,18 +259,20 @@ export function CatanFishingSeaPicker({
           checked={value}
           onChange={(e) => onChange(e.target.checked)}
         />
-        渔夫＋{explorer ? "探索者与海盗" : "航海家"}
+        渔夫＋{explorer ? "探索者与海盗" : knights ? "城市与骑士" : "航海家"}
       </label>
       <p className="muted small">
-        {explorer
-          ? "渔夫鱼筹码与船运鱼群分开计算。2鱼免海盗通行费，5鱼修路或造船，7鱼让一艘船再次航行；可叠加城市骑士与事件生产牌。"
-          : fixedRequired
-            ? "先将海图切为固定布局，才能加入渔夫。"
-            : blocked
-              ? "先关闭城市骑士，才能加入渔夫海图；可叠加 Helpers、港口霸主与友善强盗。"
-              : extended
-                ? "五六人扩大地图、8处渔场、44枚鱼筹码和配对回合；六岛、沙漠、部落、布匹采用标明的本站配方。关闭渔夫后保留海图和人数。"
-                : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
+        {knights
+          ? "双人使用鱼筹码替代贸易筹码，起始建筑不另领鱼；中立骑士和两次城市事件照常保留，可叠加事件牌、友善强盗和港口霸主。"
+          : explorer
+            ? "渔夫鱼筹码与船运鱼群分开计算。2鱼免海盗通行费，5鱼修路或造船，7鱼让一艘船再次航行；可叠加城市骑士与事件生产牌。"
+            : fixedRequired
+              ? "先将海图切为固定布局，才能加入渔夫。"
+              : blocked
+                ? "先关闭城市骑士，才能加入渔夫海图；可叠加 Helpers、港口霸主与友善强盗。"
+                : extended
+                  ? "五六人扩大地图、8处渔场、44枚鱼筹码和配对回合；六岛、沙漠、部落、布匹采用标明的本站配方。关闭渔夫后保留海图和人数。"
+                  : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
       {shores && value && (
         <p className="muted small">

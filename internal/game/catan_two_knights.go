@@ -65,7 +65,7 @@ func (g *Catan) twoNeutralKnightOwner(owner int) bool {
 
 func (g *Catan) twoKnightTokenVertices(player int) []int {
 	out := []int{}
-	if g.twoKnights() {
+	if g.twoKnights() && !g.twoFishing() {
 		for _, n := range g.CitiesKnights.Knights {
 			if n.Owner == player && g.Two.Bank >= n.Strength {
 				out = append(out, n.Vertex)
@@ -156,7 +156,7 @@ func (s *State) validateTwoKnights() error {
 	if q.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.twoKnights() || g.Seafarers != nil || g.Fishing != nil || g.Rivers != nil || g.Caravans != nil || g.Transport != nil || g.Attack != nil {
+	if !g.twoKnights() || g.Seafarers != nil || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil || g.Caravans != nil || g.Transport != nil || g.Attack != nil {
 		return errors.New("双人城市骑士规则或组合无效")
 	}
 	k := g.CitiesKnights

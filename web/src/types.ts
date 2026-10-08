@@ -604,6 +604,7 @@ export type CatanState = {
   };
   fishing?: {
     twoSea?: string;
+    twoKnights?: string;
     two?: string;
     seaKnights?: string;
     helpers?: string;
