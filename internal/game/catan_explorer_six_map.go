@@ -4,8 +4,8 @@ import "errors"
 
 // Official 2025 E&P 5–6 rulebook pp4–7. Twenty-one loose land plus the
 // printed 6-pasture form the starting island; loose sea counts exclude the
-// printed opposite sea and, when used, the council island. Land Ho has no
-// five/six-player recipe in this edition.
+// printed opposite sea and, when used, the council island. Land Ho's shape
+// below is a site adaptation; this edition has no official 5–6 Land Ho recipe.
 func catanExplorerSixRecipe(scenario string) (catanExplorerMapRecipe, error) {
 	r := catanExplorerMapRecipe{
 		starting: []int{2, 2, 2, 3, 4, 3, 2, 2, 2},
@@ -15,9 +15,12 @@ func catanExplorerSixRecipe(scenario string) (catanExplorerMapRecipe, error) {
 		resources: []int{0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4},
 	}
 	switch scenario {
-	case "pirate-lairs":
+	case "land-ho", "pirate-lairs":
 		r.width, r.target = 7, 12
 		r.parrot = [][]int{{4, 6}, {4, 5, 6, 7}, {4, 5, 6, 7, 8}, {5, 7, 9}}
+		if scenario == "land-ho" {
+			r.target = 8
+		}
 	case "fish-for-catan", "spices-for-catan":
 		r.width, r.target = 8, 15
 		r.parrot = [][]int{{4, 6, 7}, {4, 5, 6, 7, 8}, {4, 5, 6, 9}, {5, 7, 8, 10}}
@@ -49,6 +52,10 @@ func (m catanExplorerBoard) regionResources(region int) []int {
 		resources = []int{0, 1, 1, 2, 2, 3, 3, 4, 4}
 	}
 	switch m.Scenario {
+	case "land-ho":
+		// Site recipe: retain the enlarged regional shape, replacing all
+		// four lair hexes with sea. Nine producing hexes plus five sea.
+		resources = append(resources, CatanSea, CatanSea, CatanSea, CatanSea, CatanSea)
 	case "pirate-lairs":
 		resources = append(resources, CatanSea, CatanGold, CatanGold, CatanGold, CatanGold)
 	case "fish-for-catan":

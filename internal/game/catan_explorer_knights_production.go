@@ -109,14 +109,16 @@ func (s *State) validateExplorerCityProduction() error {
 	if err := x.Economy.validate(g, x.Fleet, x.Cargo); err != nil {
 		return err
 	}
-	if x.Pirate == nil {
+	if x.Pirate == nil && x.Board.Scenario != "land-ho" {
 		return errors.New("组合海盗组件缺失")
 	}
-	if err := x.Pirate.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
-		return err
-	}
-	if x.Pirate.Pending != nil && (k.Pending != nil || k.Event != nil || g.FreeRoads != 0 || g.Trade != nil) {
-		return errors.New("海盗与其他城市回应不能同时进行")
+	if x.Pirate != nil {
+		if err := x.Pirate.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
+			return err
+		}
+		if x.Pirate.Pending != nil && (k.Pending != nil || k.Event != nil || g.FreeRoads != 0 || g.Trade != nil) {
+			return errors.New("海盗与其他城市回应不能同时进行")
+		}
 	}
 	if err := s.validateExplorerCityDevelopment(); err != nil {
 		return err

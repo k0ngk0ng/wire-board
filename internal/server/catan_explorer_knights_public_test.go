@@ -57,10 +57,10 @@ func TestCatanExplorerKnightsPublicConfiguration(t *testing.T) {
 			}
 			if capacity <= 4 {
 				scenario("land-ho", 200)
-				if s.rooms[id].CatanCitiesKnights != nil {
-					t.Fatal("initial scenario retained knights")
+				if s.rooms[id].CatanCitiesKnights == nil {
+					t.Fatal("initial scenario lost knights")
 				}
-				selectKnights(host, setup, 400)
+				selectKnights(host, setup, 200)
 				scenario("", 200)
 				if s.rooms[id].CatanCitiesKnights != nil || s.rooms[id].CatanOptions != (game.CatanOptions{}) {
 					t.Fatal("basic recipe polluted")
@@ -104,9 +104,9 @@ func TestCatanExplorerKnightsPublicCreationRejectsMixes(t *testing.T) {
 	host := newClient(t, ts.URL)
 	host.register("组合限制")
 	for _, change := range []map[string]any{
-		{"capacity": 2}, {"capacity": 7}, {"catanScenario": "land-ho"},
+		{"capacity": 2}, {"capacity": 7}, {"catanScenario": "land-ho", "capacity": 2},
 		{"catanOptions": game.CatanOptions{Helpers: true}}, {"catanOptions": game.CatanOptions{FiveSix: true}},
-		{"catanFishing": true},
+		{"catanFishingLakes": true},
 	} {
 		request := map[string]any{"kind": "catan", "capacity": 6, "name": "组合限制", "catanScenario": "explorers-and-pirates", "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "variable"}}
 		for k, v := range change {

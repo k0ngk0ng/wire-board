@@ -15,7 +15,9 @@ func NewCatanExplorerFishing(players int, scenario string, cities, lakes bool) (
 	case cities:
 		s, err = NewCatanExplorerCitiesKnights(players, scenario)
 	case scenario == "land-ho":
-		layout = "fixed"
+		if players <= 4 {
+			layout = "fixed"
+		}
 		s, err = NewCatanExplorerLandHo(players)
 	case scenario == "spices-for-catan":
 		s, err = NewCatanExplorerSpices(players)

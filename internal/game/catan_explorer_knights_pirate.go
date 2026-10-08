@@ -6,6 +6,13 @@ import "errors"
 // invasion restriction. The outer action copy includes card consumption.
 func (s *State) catanExplorerCityTaxation(player int) error {
 	g, x := s.Catan, s.Catan.Explorer
+	if x.Pirate == nil && x.Board.Scenario == "land-ho" && x.Board.IntroRules == CatanExplorerIntroRules {
+		if g.CitiesKnights.Invasions < 1 {
+			return errors.New("首次蛮族进攻后才能使用征税")
+		}
+		s.catanLog(player, "本站初航规则：征税已打出；初航没有海盗，不产生海盗效果")
+		return nil
+	}
 	if _, err := x.Pirate.apply(g, x.Board, x.Fleet, x.Cargo, x.Economy, player, g.TurnSerial, "taxation", 0, false, nil); err != nil {
 		return err
 	}

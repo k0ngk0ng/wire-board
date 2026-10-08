@@ -37,6 +37,7 @@ type catanExplorerFarm struct {
 	PirateDie int    `json:"pirateDie,omitempty"`
 }
 type catanExplorerBoard struct {
+	IntroRules    string                 `json:"introRules,omitempty"`
 	Fishing       string                 `json:"fishing,omitempty"`
 	FishingLakes  bool                   `json:"fishingLakes,omitempty"`
 	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
@@ -145,11 +146,12 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 }
 
 func catanExplorerGeometryVariant(players int, scenario, layout string, citiesKnights bool) (*Catan, *catanExplorerBoard, error) {
-	if citiesKnights && (players < 3 || layout != "variable" || scenario == "land-ho") {
+	intro := catanExplorerIntroVariant(players, scenario, citiesKnights)
+	if citiesKnights && (players < 3 || layout != "variable") {
 		return nil, nil, errors.New("探险家与城市骑士组合当前仅接入三至六人任务随机地图")
 	}
-	if players < 2 || players > 6 || players > 4 && layout != "variable" || layout != "fixed" && layout != "variable" || scenario == "land-ho" && layout != "fixed" || catanExplorerFishScenario(scenario) && layout != "variable" {
-		return nil, nil, errors.New("探险地图需要2至6人；初航仅2至4人固定布局，五六人使用任务随机布局")
+	if players < 2 || players > 6 || players > 4 && layout != "variable" || layout != "fixed" && layout != "variable" || scenario == "land-ho" && ((layout == "variable") != intro) || catanExplorerFishScenario(scenario) && layout != "variable" {
+		return nil, nil, errors.New("探索者地图人数或布局无效；普通初航二至四人采用印刷布局，五六人或骑士初航采用本站随机布局")
 	}
 	r, err := catanExplorerRecipe(scenario, players)
 	if err != nil {
@@ -167,6 +169,9 @@ func catanExplorerGeometryVariant(players int, scenario, layout string, citiesKn
 		r.target += 5
 	}
 	m := &catanExplorerBoard{CitiesKnights: citiesKnights, Rules: catanExplorerRules, Scenario: scenario, Layout: layout, Players: players, Target: r.target, Starting: []int{}, HarborStarts: []int{}, Regions: [2][]int{{}, {}}}
+	if intro {
+		m.IntroRules = CatanExplorerIntroRules
+	}
 	specs := []CatanHexSpec{}
 	rows := make([][]int, len(r.starting))
 	middle, last := len(rows)/2, len(rows)-1
@@ -225,7 +230,7 @@ func catanExplorerGeometryVariant(players int, scenario, layout string, citiesKn
 			m.HarborStarts = append(m.HarborStarts, v.ID)
 		}
 	}
-	if scenario == "land-ho" {
+	if scenario == "land-ho" && !intro {
 		// Printed order matches the shared blue/red/white/orange seat palette.
 		type spot struct{ row, col, corner int }
 		settlements := []spot{{0, 0, 1}, {6, 0, 4}, {3, 0, 0}, {2, 0, 2}}
@@ -318,6 +323,9 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	base, spec, err := catanExplorerGeometryFishing(m.Players, m.Scenario, m.Layout, m.CitiesKnights, m.Fishing, m.FishingLakes)
 	if err != nil {
 		return err
+	}
+	if m.IntroRules != spec.IntroRules {
+		return errors.New("初航适配规则版本与地图不匹配")
 	}
 	if m.Target != spec.Target || m.FramePasture != spec.FramePasture || m.FrameSea != spec.FrameSea || !slices.Equal(m.Starting, spec.Starting) || !slices.Equal(m.HarborStarts, spec.HarborStarts) || len(m.Opening) != len(spec.Opening) || len(m.Hidden) != len(spec.Regions[0])+len(spec.Regions[1]) || len(g.Tiles) != len(base.Tiles) || len(g.Vertices) != len(base.Vertices) || len(g.Edges) != len(base.Edges) || len(g.Ports) != 0 || !catanExplorerCoordinate(g.HexSize, base.HexSize) {
 		return errors.New("探险地图形状、标记或开局位置不符")
@@ -476,6 +484,7 @@ func (m *catanExplorerBoard) reveal(g *Catan, tile int) (catanExplorerHidden, er
 }
 
 type catanExplorerBoardView struct {
+	IntroRules    string                 `json:"introRules,omitempty"`
 	Fishing       string                 `json:"fishing,omitempty"`
 	FishingLakes  bool                   `json:"fishingLakes,omitempty"`
 	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
@@ -496,6 +505,7 @@ type catanExplorerBoardView struct {
 
 func (m catanExplorerBoard) publicView() catanExplorerBoardView {
 	v := catanExplorerBoardView{Fishing: m.Fishing, FishingLakes: m.FishingLakes, CitiesKnights: m.CitiesKnights, Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
+	v.IntroRules = m.IntroRules
 	v.Council = clone(m.Council)
 	for i := range v.Opening {
 		v.Opening[i].Resources = slices.Clone(v.Opening[i].Resources)

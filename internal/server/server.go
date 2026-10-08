@@ -679,7 +679,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		}
 		req.CatanOptions = options
 		minPlayers = 3
-		if publicCatanExplorerExtended(req.CatanScenario) || req.CatanScenario == "transport" {
+		if publicCatanExplorerScenario(req.CatanScenario) || req.CatanScenario == "transport" {
 			minPlayers, maxPlayers = 2, 6
 		} else if req.CatanScenario == "barbarian-attack" {
 			maxPlayers = 6
@@ -974,7 +974,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanEvents(*req.Enabled)
 	case "catan_cities_knights":
-		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerExtended(next.CatanScenario)) {
+		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario)) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
 			break
 		}
@@ -1218,7 +1218,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					}
 				} else if publicCatanExplorerScenario(next.CatanScenario) && next.CatanFishing {
 					next.Game, err = game.NewCatanExplorerFishing(len(next.Seats), next.CatanScenario, next.CatanCitiesKnights != nil, next.CatanFishingLakes)
-				} else if publicCatanExplorerExtended(next.CatanScenario) && next.CatanCitiesKnights != nil {
+				} else if publicCatanExplorerScenario(next.CatanScenario) && next.CatanCitiesKnights != nil {
 					next.Game, err = game.NewCatanExplorerCitiesKnights(len(next.Seats), next.CatanScenario)
 				} else if next.CatanScenario == "spices-for-catan" {
 					next.Game, err = game.NewCatanExplorerSpices(len(next.Seats))

@@ -42,7 +42,7 @@ export function catanRuleContext(room: Room) {
           sea?.layout ||
           (sea?.newWorld ? "prepared" : sea?.variable ? "variable" : "fixed")
         : (explorerDraft
-            ? room.catanScenario === "land-ho"
+            ? room.catanScenario === "land-ho" && players <= 4 && !citiesKnights
               ? "fixed"
               : "variable"
             : "") ||
@@ -81,6 +81,11 @@ export function catanRuleContext(room: Room) {
         : "",
     events: game ? game.eventDeck?.catalogue || "" : room.catanEvents || "",
     explorer: game ? !!game.explorer : explorerDraft,
+    explorerIntroRules: game
+      ? game.explorer?.board.introRules || ""
+      : scenario === "land-ho" && (players > 4 || citiesKnights)
+        ? "wire-board-land-ho-variants-v1"
+        : "",
     explorerFishingLakes: game
       ? !!game.explorer?.board.fishingLakes
       : !!room.catanFishingLakes,
@@ -169,6 +174,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
     ? target +
         (citiesKnights
           ? [
+              "land-ho",
               "pirate-lairs",
               "fish-for-catan",
               "spices-for-catan",

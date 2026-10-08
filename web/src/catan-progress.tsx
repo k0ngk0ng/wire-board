@@ -145,6 +145,7 @@ export function CatanProgressHand({
               !!g.seafarers,
               !!g.explorer,
               !!g.seafarers?.pirateIslands,
+              !!g.explorer?.board.introRules,
             )}
           </p>
           {!g.progressPlayable?.includes(s.card) ? (

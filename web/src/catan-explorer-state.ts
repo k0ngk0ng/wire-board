@@ -125,6 +125,7 @@ export type ExplorerView = {
   board: {
     fishing?: string;
     fishingLakes?: boolean;
+    introRules?: string;
     layout?: string;
     scenario: string;
     target: number;

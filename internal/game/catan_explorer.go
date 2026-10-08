@@ -5,9 +5,12 @@ import (
 	"slices"
 )
 
-// NewCatanExplorerLandHo starts the 2025 printed opening for two to four players.
-// Mission scenarios and expansion combinations use separate constructors.
+// NewCatanExplorerLandHo preserves the 2025 printed opening for 2–4;
+// 5–6 uses the labelled site recipe and a free paired opening.
 func NewCatanExplorerLandHo(players int) (*State, error) {
+	if players > 4 && players <= 6 {
+		return newCatanExplorerIntro(players, false)
+	}
 	return newCatanExplorerState(players)
 }
 

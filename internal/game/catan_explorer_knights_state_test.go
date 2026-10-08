@@ -348,7 +348,7 @@ func TestCatanExplorerCityAggregateVictoryAndConstructorGates(t *testing.T) {
 	for _, config := range []struct {
 		scenario string
 		numbers  []int
-	}{{"land-ho", nil}, {"pirate-lairs", nil}, {"spices-for-catan", []int{3, 4, 5, 9, 10, 11}}} {
+	}{{"land-ho", []int{3}}, {"pirate-lairs", nil}, {"spices-for-catan", []int{3, 4, 5, 9, 10, 11}}} {
 		if _, err := newCatanExplorerCityState(3, config.scenario, config.numbers); err == nil {
 			t.Fatal("invalid combination recipe accepted", config)
 		}
