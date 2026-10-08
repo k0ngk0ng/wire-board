@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 func catanProgressValue(card int) int {
 	switch card {
@@ -186,7 +189,7 @@ func (g *Catan) politicsBotChoices(player int) []botChoice {
 				continue
 			}
 			for _, t := range g.Tiles {
-				if !g.robberAllowed(t.ID) {
+				if !slices.Contains(g.taxationTiles(), t.ID) {
 					continue
 				}
 				value := 0

@@ -270,7 +270,9 @@ export function CatanCityOverview({
         <small>
           {g.explorer
             ? "掷出7仍需弃牌并移动探险海盗；首次蛮族进攻后可使用征税。"
-            : "首次进攻前强盗休眠，掷出7仍需弃牌。"}
+            : g.seafarers?.pirateIslands
+              ? "首次进攻前舰队休眠，掷出7仍需弃牌；本剧本不使用强盗。"
+              : "首次进攻前强盗休眠，掷出7仍需弃牌。"}
         </small>
       )}
       <div className="catan-progress-stocks">
@@ -342,10 +344,18 @@ export function CatanCityActions({
       "knight_move",
       Object.values(g.knightMoves || {}).filter((a) => a.length).length,
     ],
-    ...(!g.explorer
+    ...(g.seafarers?.pirateIslands
+      ? [
+          ["knight_warship", g.legal.knightWarship?.length || 0] as [
+            string,
+            number,
+          ],
+        ]
+      : []),
+    ...(!g.explorer && !g.seafarers?.pirateIslands
       ? [["knight_chase", g.legal.knightChase?.length || 0] as [string, number]]
       : []),
-    ...(g.seafarers && !g.seafarers.wonders
+    ...(g.seafarers && !g.seafarers.wonders && !g.seafarers.pirateIslands
       ? [
           ["knight_chase_pirate", g.legal.knightChasePirate?.length || 0] as [
             string,

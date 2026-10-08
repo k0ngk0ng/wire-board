@@ -31,7 +31,7 @@ func (g *Catan) taxationTiles() []int {
 		return out
 	}
 	for _, t := range g.Tiles {
-		if g.robberAllowed(t.ID) {
+		if g.robberAllowed(t.ID) || g.pirateIslands() != nil && t.Number > 0 && t.Resource != CatanSea {
 			out = append(out, t.ID)
 		}
 	}
@@ -49,7 +49,11 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		if !slices.Contains(g.diplomacyRoads(), a.Edge) {
 			return errors.New("外交只能移除开放道路或船只，不能拆断骑士与己方建筑的连接")
 		}
-		owner, ship := g.Edges[a.Edge].Owner, g.Edges[a.Edge].Ship
+		owner, ship, warship := g.Edges[a.Edge].Owner, g.Edges[a.Edge].Ship, g.Edges[a.Edge].Warship
+		if ship && !g.pirateRemoveRouteTail(owner, a.Edge) {
+			return errors.New("外交不能截断远征航线")
+		}
+		g.Edges[a.Edge].Warship = false
 		g.Edges[a.Edge].Owner = -1
 		g.Edges[a.Edge].Ship = false
 		if g.Seafarers != nil {
@@ -61,7 +65,7 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		}
 		s.catanLog(player, "外交：移除玩家 %d 的%s #%d", owner+1, piece, a.Edge+1)
 		if owner == player {
-			k.Pending = &CatanCityPending{Kind: "diplomacy", Players: []int{player}, Ship: ship}
+			k.Pending = &CatanCityPending{Kind: "diplomacy", Players: []int{player}, Ship: ship, Warship: warship}
 			if len(g.diplomacyPlacements(player)) > 0 {
 				s.Phase = "catan_diplomacy"
 			} else {
@@ -126,15 +130,21 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		if g.Explorer != nil {
 			return s.catanExplorerCityTaxation(player)
 		}
-		if k.Invasions == 0 || !g.robberAllowed(a.Tile) {
+		if k.Invasions == 0 || !slices.Contains(g.taxationTiles(), a.Tile) {
 			return errors.New("首次蛮族进攻后才能使用征税，请选择符合强盗规则的目标")
 		}
-		g.Robber = a.Tile
+		if g.pirateIslands() == nil {
+			g.Robber = a.Tile
+		}
 		if a.Tile == -1 {
 			s.catanLog(player, "征税：无合法陆地或沙漠，友善强盗退到场外，不偷牌")
 			break
 		}
-		s.catanLog(player, "征税：将强盗移至地块 #%d", a.Tile+1)
+		if g.pirateIslands() != nil {
+			s.catanLog(player, "本站组合征税：选择地块 #%d，不移动强盗或舰队", a.Tile+1)
+		} else {
+			s.catanLog(player, "征税：将强盗移至地块 #%d", a.Tile+1)
+		}
 		seen := map[int]bool{}
 		for _, id := range g.Tiles[a.Tile].Vertices {
 			v := g.Vertices[id]
@@ -200,7 +210,7 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 				s.catanLog(player, "外交：免费重建探险道路 #%d", a.Edge+1)
 				break
 			}
-			ship := q.Ship
+			ship, warship := q.Ship, q.Warship
 			k.Pending = nil
 			g.FreeRoads = 1
 			g.ResumePhase = "catan_turn"
@@ -209,7 +219,11 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 			if ship {
 				kind = "catan_ship"
 			}
-			return s.catanBuildOptions(player, Action{Type: kind, Edge: a.Edge}, false, ship)
+			err := s.catanBuildOptions(player, Action{Type: kind, Edge: a.Edge}, false, ship)
+			if err == nil {
+				g.Edges[a.Edge].Warship = warship
+			}
+			return err
 		}
 		s.catanLog(player, "放弃外交的免费重建路线")
 	case "espionage":

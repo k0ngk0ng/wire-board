@@ -2235,6 +2235,7 @@ function Create({
           supportsPublicCatanKnightsCombination(catanScenario) && (
             <CatanCombinationKnightsPicker
               tribe={catanScenario === "tribe"}
+              pirateIslands={catanScenario === "pirate_islands"}
               disabled={catanFishing}
               explorer={supportsPublicExplorerKnights(catanScenario)}
               fishing={catanScenario === "fishing"}
@@ -2664,6 +2665,7 @@ function Waiting({
           supportsPublicCatanKnightsCombination(room.catanScenario) && (
             <CatanCombinationKnightsPicker
               tribe={room.catanScenario === "tribe"}
+              pirateIslands={room.catanScenario === "pirate_islands"}
               explorer={supportsPublicExplorerKnights(room.catanScenario)}
               fishing={room.catanScenario === "fishing"}
               harbors={!!room.catanHarbors?.enabled}

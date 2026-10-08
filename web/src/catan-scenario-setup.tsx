@@ -134,10 +134,12 @@ export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
     "wonders",
     "cloth",
     "tribe",
+    "pirate_islands",
   ].includes(scenario || "");
 
 export function CatanCombinationKnightsPicker({
   tribe = false,
+  pirateIslands = false,
   value,
   onChange,
   disabled = false,
@@ -147,6 +149,7 @@ export function CatanCombinationKnightsPicker({
   harbors = false,
 }: {
   tribe?: boolean;
+  pirateIslands?: boolean;
   explorer?: boolean;
   fishing?: boolean;
   harbors?: boolean;
@@ -174,6 +177,11 @@ export function CatanCombinationKnightsPicker({
               ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌，${harbors ? 14 : 13} 分获胜，持旧靴者需 ${harbors ? 15 : 14} 分。`
               : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
+      {pirateIslands && !helpers && (
+        <p className="muted small">
+          本站补充规则：此前已激活的骑士可转为未激活，升级远征线最近的普通船为战舰。首次蛮族进攻后舰队入场；先城市事件、再舰队、最后生产。征税选择陆地但不移动棋子。
+        </p>
+      )}
       {tribe && !helpers && (
         <p className="muted small">
           本站补充规则：部落奖励改为从54张进步牌中随机预留，领取前隐藏牌面和类别；领取后按进步牌正常时机使用，胜利点牌立即公开，其余牌遵守回合末四张上限。

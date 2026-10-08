@@ -93,7 +93,7 @@ func TestCatanCitiesKnightsSeafarersSetupAndVictory(t *testing.T) {
 			})
 		}
 	}
-	for _, scenario := range []string{"pirate_islands", "bad"} {
+	for _, scenario := range []string{"bad"} {
 		if _, err := NewCatanCitiesKnightsSeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: scenario}, nil); err == nil {
 			t.Fatal("unverified special combination enabled", scenario)
 		}

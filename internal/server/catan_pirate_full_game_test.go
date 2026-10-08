@@ -21,8 +21,21 @@ func TestCatanPirateEventsFullHTTPGames(t *testing.T) {
 }
 
 func testCatanPirateEventsFullHTTP(t *testing.T, events bool) {
+	testCatanPirateRecipeFullHTTP(t, events, false)
+}
+
+func TestCatanPirateKnightsNaturalHTTP(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		t.Run(fmt.Sprintf("events=%v", events), func(t *testing.T) { testCatanPirateRecipeFullHTTP(t, events, true) })
+	}
+}
+
+func testCatanPirateRecipeFullHTTP(t *testing.T, events, knights bool) {
 	for _, n := range []int{3, 4, 5, 6} {
 		for _, helpers := range []bool{false, true} {
+			if knights && helpers {
+				continue
+			}
 			t.Run(fmt.Sprintf("%d/helpers=%v", n, helpers), func(t *testing.T) {
 				s, ts := setupServer(t)
 				stopBotTicker(s)
@@ -33,6 +46,9 @@ func testCatanPirateEventsFullHTTP(t *testing.T, events bool) {
 				}
 				options := game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers}
 				body := map[string]any{"kind": "catan", "name": "海盗群岛联机验证", "capacity": n, "catanOptions": options, "catanScenario": "pirate_islands"}
+				if knights {
+					body["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{}
+				}
 				if events {
 					body["catanEvents"] = game.CatanEventCatalogue
 					body["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
@@ -75,6 +91,9 @@ func testCatanPirateEventsFullHTTP(t *testing.T, events bool) {
 					room := s.rooms[id]
 					state := room.Game
 					g := state.Catan
+					if knights {
+						assertPirateKnightInventory(t, g)
+					}
 					if g.Seafarers.PirateIslands.Battle != nil && !restartedBattle {
 						restart()
 						restartedBattle = true
@@ -111,6 +130,18 @@ func testCatanPirateEventsFullHTTP(t *testing.T, events bool) {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
 							if _, leak := v["devDeck"]; leak {
 								t.Fatal("deck order leaked")
+							}
+							if knights {
+								k := v["citiesKnights"].(map[string]any)
+								if _, leak := k["progressDecks"]; leak {
+									t.Fatal("progress deck leaked")
+								}
+								for i, raw := range k["players"].([]any) {
+									_, hand := raw.(map[string]any)["progress"]
+									if hand != (viewer == i) {
+										t.Fatal("private progress leaked")
+									}
+								}
 							}
 							for i, raw := range v["players"].([]any) {
 								p := raw.(map[string]any)
@@ -180,6 +211,17 @@ func testCatanPirateEventsFullHTTP(t *testing.T, events bool) {
 				stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
 				if stats["wins"] != float64(1) || stats["played"] != float64(1) {
 					t.Fatal("history result missing", stats)
+				}
+				if knights {
+					record := profile["history"].([]any)[0].(map[string]any)
+					rules := record["catanExpansionRules"].(map[string]any)
+					want := 12
+					if events {
+						want++
+					}
+					if rules["pirate_knights"] != game.CatanPirateKnightsRules || g.Players[winner].Score < want {
+						t.Fatal("pirate knights archive/victory")
+					}
 				}
 				if events {
 					record := profile["history"].([]any)[0].(map[string]any)

@@ -18,6 +18,7 @@ export const cityActionNames: Record<string, string> = {
   knight_activate: "激活骑士",
   knight_promote: "升级骑士",
   knight_move: "移动骑士",
+  knight_warship: "升级战舰",
   knight_chase: "驱逐强盗",
   knight_chase_pirate: "驱逐海盗",
   knight_retreat: "骑士退让",

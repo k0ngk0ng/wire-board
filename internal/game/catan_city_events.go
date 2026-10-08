@@ -46,6 +46,14 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 	g.RevealedEvent = nil
 	g.Dice = []int{red, yellow}
 	g.RollID++
+	if p := g.pirateIslands(); p != nil {
+		f := &CatanEventFleet{RollID: g.RollID, Dice: [2]int{red, yellow}}
+		if g.EventDeck != nil {
+			g.EventDeck.Fleet = f
+		} else {
+			p.CityFleet = f
+		}
+	}
 	return s.catanStartCityDiceEvent(red, yellow, face, 0, false)
 }
 
@@ -190,11 +198,15 @@ func (s *State) catanFinishBarbarians() {
 	k.Invasions++
 	if k.Invasions == 1 && g.Explorer == nil {
 		g.Robber = k.RobberStart
-		if g.Seafarers != nil && g.wonders() == nil {
+		if g.Seafarers != nil && g.wonders() == nil && (g.pirateIslands() == nil || g.pirateFortressesRemain()) {
 			g.Seafarers.Pirate = k.PirateStart
 			s.Log = append(s.Log, "首次蛮族进攻结束，海盗进入本剧本规定的起始位置")
 		}
-		s.Log = append(s.Log, "首次蛮族进攻结束，强盗进入本局规定的起始位置；此后掷出7会移动强盗")
+		if g.pirateIslands() == nil {
+			s.Log = append(s.Log, "首次蛮族进攻结束，强盗进入本局规定的起始位置；此后掷出7会移动强盗")
+		} else {
+			s.Log = append(s.Log, "本剧本不使用强盗；此后掷7弃牌后可选择偷牌对手")
+		}
 	}
 	s.Log = append(s.Log, "蛮族船返回起点，所有骑士转为未激活")
 }
@@ -242,6 +254,9 @@ func (s *State) catanContinueCityEvent() error {
 	}
 	if g.Explorer != nil {
 		return s.catanExplorerCityProduction([2]int{e.Red, e.Yellow})
+	}
+	if g.pirateIslands() != nil {
+		return s.catanCityFleetProduction(total, e.Epidemic)
 	}
 	return s.catanRollProductionEffect(total, e.Epidemic)
 }

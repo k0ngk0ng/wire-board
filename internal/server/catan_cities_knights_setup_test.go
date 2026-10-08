@@ -146,7 +146,7 @@ func TestCatanCitiesKnightsConfigurationRecipeChangesAndMixedRejection(t *testin
 		}
 	}
 	r := s.rooms[id]
-	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "pirate_islands"}); err == nil {
+	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "unknown-sea"}); err == nil {
 		t.Fatal("unverified seafarers combination")
 	}
 	if err := r.setCatanBaseConfiguration(game.CatanBaseConfiguration{}); err == nil {
@@ -162,7 +162,7 @@ func TestCatanCitiesKnightsConfigurationRecipeChangesAndMixedRejection(t *testin
 		case "base":
 			r.CatanBaseConfiguration = &game.CatanBaseConfiguration{Layout: "variable"}
 		case "sea":
-			r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "pirate_islands"}
+			r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "unknown-sea"}
 		case "world":
 			r.CatanNewWorldMap = &game.CatanNewWorldMap{}
 		}

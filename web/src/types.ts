@@ -693,6 +693,8 @@ export type CatanState = {
       setupBlocked: number[];
     };
     pirateIslands?: {
+      knightsRules?: string;
+      cityFleet?: { rollId: number; dice: [number, number]; resolved: boolean };
       colors: number[];
       homeTiles: number[];
       fleetPath: number[];
@@ -842,6 +844,7 @@ export type CatanState = {
     eventTargets?: number[];
     knightRecruit?: number[];
     knightActivate?: number[];
+    knightWarship?: number[];
     knightPromote?: number[];
     knightChase?: number[];
     knightChasePirate?: number[];

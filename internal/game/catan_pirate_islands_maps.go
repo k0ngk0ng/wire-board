@@ -34,6 +34,8 @@ type CatanPirateFortress struct {
 	Strength    int   `json:"strength"`
 }
 type CatanPirateIslands struct {
+	KnightsRules string                `json:"knightsRules,omitempty"`
+	CityFleet    *CatanEventFleet      `json:"cityFleet,omitempty"`
 	Battle       *CatanPirateBattle    `json:"battle,omitempty"`
 	SevenPending bool                  `json:"sevenPending,omitempty"`
 	Raid         *CatanPirateRaid      `json:"raid,omitempty"`

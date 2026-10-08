@@ -1,5 +1,7 @@
 package game
 
+import "slices"
+
 // Openness differs from longest-route connectivity: an enemy piece interrupts
 // scoring but never opens a closed line. Official FAQ also allows an unanchored
 // cycle, or either edge beside the sole anchor in a cycle, to be opened.
@@ -86,6 +88,12 @@ func (g *Catan) openRoute(player, edge int) bool {
 func (g *Catan) diplomacyRoads() []int {
 	out := []int{}
 	for _, e := range g.Edges {
+		if p := g.pirateIslands(); p != nil && e.Owner >= 0 && e.Ship {
+			route := p.Fortresses[e.Owner].Route
+			if at := slices.Index(route, e.ID); at >= 0 && at != len(route)-1 {
+				continue
+			}
+		}
 		if e.Owner >= 0 && !e.Damaged && !g.Players[e.Owner].Eliminated && g.openRoute(e.Owner, e.ID) && g.preservesKnightConnections(e.Owner, e.ID) {
 			out = append(out, e.ID)
 		}

@@ -362,6 +362,9 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.validatePirateKnights(); err != nil {
+		return err
+	}
 	if err := s.Catan.validateTribeProgress(); err != nil {
 		return err
 	}
@@ -456,6 +459,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		if err := next.validateCatanAttack(); err != nil {
+			return err
+		}
+		if err := next.validatePirateKnights(); err != nil {
 			return err
 		}
 		if err := next.Catan.validateTribeProgress(); err != nil {
@@ -554,7 +560,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanCommercialOffer(player, a)
 	case "catan_progress":
 		return s.catanPlayProgress(player, a)
-	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase":
+	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase", "catan_knight_warship":
 		return s.catanKnightAction(player, a)
 	case "catan_wall", "catan_improvement":
 		return s.catanCityAction(player, a)
@@ -861,7 +867,7 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 	}
 	if total == 7 {
 		if p := g.pirateIslands(); p != nil {
-			p.SevenPending = true
+			p.SevenPending = g.CitiesKnights == nil || g.CitiesKnights.Invasions > 0
 		}
 		g.ResumePhase = "catan_turn"
 		pending := false

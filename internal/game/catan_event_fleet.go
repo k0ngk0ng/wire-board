@@ -41,7 +41,11 @@ func (s *State) validateEventFleet() error {
 	}
 	if q := p.Raid; q != nil {
 		r := g.RevealedEvent
-		if s.Phase != "catan_fleet_reward" || r == nil || r.ProductionStarted || q.Total != r.Production || q.Epidemic != (r.Kind == "epidemic") || len(q.Rewards) == 0 {
+		validProduction := r != nil && !r.ProductionStarted && q.Total == r.Production && q.Epidemic == (r.Kind == "epidemic")
+		if d.alchemyLatest(g.RollID) {
+			validProduction = r == nil && len(g.Dice) == 2 && q.Total == sum(g.Dice) && !q.Epidemic
+		}
+		if s.Phase != "catan_fleet_reward" || !validProduction || len(q.Rewards) == 0 {
 			return errors.New("舰队奖励与事件生产后续不一致")
 		}
 		seen := map[int]bool{}
