@@ -13,7 +13,7 @@ func newPublicFishingSeaTable(t *testing.T, n int, scenario, layout string) (*Se
 	return newPublicFishingSeaVariants(t, n, scenario, layout, false, false)
 }
 
-func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, friendly, harbors bool) (*Server, *httptest.Server, []*testClient, string) {
+func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, friendly, harbors bool, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -22,7 +22,11 @@ func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, f
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("海图捕鱼玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true, "catanOptions": game.CatanOptions{FiveSix: n > 4}}, 201)
+	body := map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true, "catanOptions": game.CatanOptions{FiveSix: n > 4}}
+	if len(events) > 0 && events[0] {
+		body["catanEvents"] = game.CatanEventCatalogue
+	}
+	raw := clients[0].post("/api/rooms", body, 201)
 	id := raw["id"].(string)
 	if friendly {
 		selectCatanFriendlyRobber(clients[0], true, 200)

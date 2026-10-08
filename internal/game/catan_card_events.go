@@ -71,8 +71,8 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "trade_advantage" && g.CitiesKnights != nil && (g.EventDeck == nil || g.EventDeck.Knights != CatanEventKnightsRules) {
 		return errors.New("贸易优势与城市骑士需要明确的组合规则版本")
 	}
-	if g.Fishing != nil {
-		return errors.New("事件牌与捕鱼组合尚未接入")
+	if g.Fishing != nil && g.EventDeck == nil {
+		return errors.New("捕鱼事件必须通过牌堆抽取并记录生产")
 	}
 	if g.Options.Helpers || g.Options.AllHelpers {
 		if g.EventDeck == nil {

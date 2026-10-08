@@ -840,7 +840,7 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 		if err := g.validateFishing(); err != nil {
 			return err
 		}
-		if epidemic || f.Pending != nil || f.LastRollID == g.RollID {
+		if epidemic && g.EventDeck == nil || f.Pending != nil || f.LastRollID == g.RollID {
 			return errors.New("捕鱼生产已结算或组合尚未接入")
 		}
 		var err error

@@ -22,7 +22,7 @@ func newPublicScenarioTable(t *testing.T, n int, scenario string) (*Server, *htt
 	return newPublicFishingScenarioVariants(t, n, scenario, false, false)
 }
 
-func newPublicFishingScenarioVariants(t *testing.T, n int, scenario string, friendly, harbors bool) (*Server, *httptest.Server, []*testClient, string) {
+func newPublicFishingScenarioVariants(t *testing.T, n int, scenario string, friendly, harbors bool, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -31,7 +31,11 @@ func newPublicFishingScenarioVariants(t *testing.T, n int, scenario string, frie
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("公开剧本玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4 && scenario == "fishing"}}, 201)
+	body := map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4 && scenario == "fishing"}}
+	if len(events) > 0 && events[0] {
+		body["catanEvents"] = game.CatanEventCatalogue
+	}
+	raw := clients[0].post("/api/rooms", body, 201)
 	if friendly {
 		selectCatanFriendlyRobber(clients[0], true, 200)
 	}

@@ -4,6 +4,7 @@ export function CatanEventPicker({
   citiesKnights = false,
   cloth = false,
   friendly = false,
+  fishing = false,
   onChange,
 }: {
   value: boolean;
@@ -11,6 +12,7 @@ export function CatanEventPicker({
   citiesKnights?: boolean;
   cloth?: boolean;
   friendly?: boolean;
+  fishing?: boolean;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -29,6 +31,11 @@ export function CatanEventPicker({
       {citiesKnights && (
         <p className="muted small">
           城市骑士先执行事件文字，再结算独立红骰／事件骰，最后生产。炼金术替代抽牌；本站补充规则：贸易优势可随机偷资源或商品。
+        </p>
+      )}
+      {fishing && (
+        <p className="muted small">
+          湖泊和渔场按牌面点数产鱼；瘟疫不减少鱼筹码。事件先完成，满额换鱼后再选择金矿资源或引水渠补偿；鱼不参与资源赠送、偷取或7点弃牌。
         </p>
       )}
       {friendly && (
