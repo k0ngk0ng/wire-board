@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Act, CatanOptions, Room } from "./types";
 import "./catan-helpers.css";
+import { CatanProgressArt } from "./catan-progress";
+import { catanProgressNames } from "./catan-progress-names";
+import { cityTracks } from "./catan-city-state";
 const names = ["木材", "砖块", "羊毛", "粮食", "矿石"];
 const devs = ["骑士", "道路建设", "丰收", "垄断", "胜利点"];
 const sum = (a: number[]) => a.reduce((n, v) => n + v, 0);
@@ -42,7 +45,7 @@ export function CatanOptionPicker({
           五至六人扩充 · 新版配对回合
         </label>
       )}
-      {helpersAvailable && (explorer || !citiesKnights) && (
+      {helpersAvailable && (explorer || !citiesKnights || !fishing) && (
         <label>
           <input
             type="checkbox"
@@ -58,18 +61,20 @@ export function CatanOptionPicker({
           Helpers · 十二位助手
         </label>
       )}
-      {helpersAvailable && (explorer || !citiesKnights) && value.helpers && (
-        <label>
-          <input
-            type="checkbox"
-            checked={!!value.allHelpers}
-            onChange={(e) =>
-              onChange({ ...value, allHelpers: e.target.checked })
-            }
-          />{" "}
-          展示全部备用助手
-        </label>
-      )}
+      {helpersAvailable &&
+        (explorer || !citiesKnights || !fishing) &&
+        value.helpers && (
+          <label>
+            <input
+              type="checkbox"
+              checked={!!value.allHelpers}
+              onChange={(e) =>
+                onChange({ ...value, allHelpers: e.target.checked })
+              }
+            />{" "}
+            展示全部备用助手
+          </label>
+        )}
       {value.fiveSix && (
         <small>
           {seafarers
@@ -78,14 +83,21 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {helpersAvailable && (explorer || !citiesKnights) && value.helpers && (
-        <small>
-          使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
-        </small>
-      )}
+      {helpersAvailable &&
+        (explorer || !citiesKnights || !fishing) &&
+        value.helpers && (
+          <small>
+            使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+          </small>
+        )}
       {explorer && value.helpers && (
         <small>
           本站探索者适配：造船、人员建设与补给替代发展卡和强盗能力；支持渔夫、城市与骑士，人数按探索者规则处理。
+        </small>
+      )}
+      {!explorer && citiesKnights && value.helpers && (
+        <small>
+          本站骑士助手：资源能力不处理商品；迪亚拉择选进步牌，卡拉更换进步牌，格雷戈尔归还实体骑士建造。
         </small>
       )}
       {value.helpers && harbors && (
@@ -180,7 +192,7 @@ export function CatanHelpers({
   act: Act;
   busy: boolean;
   assets: string;
-  onBuild: (kind: string, payment: number[]) => void;
+  onBuild: (kind: string, payment: number[], knight?: number) => void;
   onMove: () => void;
   onDesert: (color: number) => void;
 }) {
@@ -197,7 +209,9 @@ export function CatanHelpers({
     [target2, setTarget2] = useState(-1),
     [offer, setOffer] = useState(0),
     [offer2, setOffer2] = useState(0),
-    [card, setCard] = useState(0),
+    [card, setCard] = useState(-1),
+    [progressTrack, setProgressTrack] = useState(0),
+    [knight, setKnight] = useState(-1),
     [payment, setPayment] = useState([0, 0, 0, 0, 0]),
     [take, setTake] = useState([0, 0, 0, 0, 0]);
   useEffect(() => {
@@ -205,12 +219,16 @@ export function CatanHelpers({
     setOpen(false);
   }, [room.id, helper?.id, pending?.kind, pending?.player]);
   if (!g.options?.helpers) return null;
+  const city = g.citiesKnights;
+  const cityHelpers = city?.helpers?.rules === "wire-board-helpers-knights-v1";
+  const progressCards = city?.players[room.you]?.progress || [];
   const fishingHelpers = g.fishing?.helpers === "wire-board-fishing-helpers-v1";
   const hand = p?.resources || [0, 0, 0, 0, 0],
     active =
       room.status === "playing" &&
       !room.game!.finished &&
       !room.spectating &&
+      !room.seats[room.you]?.autoPlay &&
       !p?.eliminated;
   const response = active && pending?.player === room.you;
   const canUse =
@@ -343,20 +361,53 @@ export function CatanHelpers({
                     limits={hand}
                     onChange={setPayment}
                   />
+                  {rule.id === 6 && cityHelpers && (
+                    <label>
+                      进步牌堆
+                      <select
+                        value={progressTrack}
+                        onChange={(e) =>
+                          setProgressTrack(Number(e.target.value))
+                        }
+                      >
+                        {cityTracks.map((name, i) => (
+                          <option
+                            key={name}
+                            value={i}
+                            disabled={!city?.progressRemaining[i]}
+                          >
+                            {name} · {city?.progressRemaining[i] || 0} 张
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
                   <button
                     disabled={
                       sum(payment) !== (rule.id === 2 ? 2 : 3) ||
                       (rule.id === 2
                         ? g.legal.roads.length === 0
-                        : g.devRemaining === 0)
+                        : cityHelpers
+                          ? !city?.progressRemaining[progressTrack]
+                          : g.devRemaining === 0)
                     }
                     onClick={() => {
-                      onBuild(rule.id === 2 ? "road" : "buy_dev", payment);
+                      if (rule.id === 6 && cityHelpers)
+                        action({
+                          choice: "progress_buy",
+                          color: progressTrack,
+                          tokens: payment,
+                        });
+                      else onBuild(rule.id === 2 ? "road" : "buy_dev", payment);
                       setOpen(false);
                     }}
                   >
                     确认支付，
-                    {rule.id === 2 ? "在地图选修路位置" : "购买发展卡"}
+                    {rule.id === 2
+                      ? "在地图选修路位置"
+                      : cityHelpers
+                        ? "查看进步牌"
+                        : "购买发展卡"}
                   </button>
                 </>
               )}
@@ -388,18 +439,45 @@ export function CatanHelpers({
               )}
               {rule.id === 8 && (
                 <>
+                  {cityHelpers && (
+                    <label>
+                      归还的己方骑士
+                      <select
+                        value={knight}
+                        onChange={(e) => setKnight(Number(e.target.value))}
+                      >
+                        <option value={-1}>请选择骑士</option>
+                        {city?.knights
+                          .filter((n) => n.owner === room.you)
+                          .map((n) => (
+                            <option key={n.vertex} value={n.vertex}>
+                              交点 #{n.vertex + 1} · {n.strength} 级 ·{" "}
+                              {n.active ? "已激活" : "未激活"}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                  )}
                   {(["settlement", "city"] as const).map((kind, i) => {
                     const cost = i ? [0, 0, 0, 1, 2] : [1, 1, 0, 0, 0];
                     return (
                       <button
                         key={kind}
                         disabled={
-                          !p.knights ||
+                          (cityHelpers ? knight < 0 : !p.knights) ||
                           cost.some((n, c) => n > hand[c]) ||
-                          !(i ? g.legal.cities : g.legal.settlements).length
+                          !(
+                            cityHelpers
+                              ? g.helperKnightBuilds?.[knight]?.[
+                                  i ? "cities" : "settlements"
+                                ] || []
+                              : i
+                                ? g.legal.cities
+                                : g.legal.settlements
+                          ).length
                         }
                         onClick={() => {
-                          onBuild(kind, cost);
+                          onBuild(kind, cost, cityHelpers ? knight : undefined);
                           setOpen(false);
                         }}
                       >
@@ -433,9 +511,9 @@ export function CatanHelpers({
                     }
                     onClick={() =>
                       action({
-                        give: hand.map((_, i) =>
-                          i === color ? sum(take) * 2 : 0,
-                        ),
+                        give: hand
+                          .slice(0, 5)
+                          .map((_, i) => (i === color ? sum(take) * 2 : 0)),
                         take,
                       })
                     }
@@ -514,23 +592,34 @@ export function CatanHelpers({
               {rule.id === 12 && (
                 <>
                   <label>
-                    换回牌堆底的发展卡
+                    换回牌堆底的{cityHelpers ? "进步牌" : "发展卡"}
                     <select
                       value={card}
                       onChange={(e) => setCard(Number(e.target.value))}
                     >
-                      {devs.map((n, i) => (
-                        <option key={n} value={i} disabled={!p.dev?.[i]}>
-                          {n} · {p.dev?.[i] || 0} 张
-                        </option>
-                      ))}
+                      <option value={-1}>请选择卡牌</option>
+                      {cityHelpers
+                        ? [...new Set(progressCards)].map((id) => (
+                            <option key={id} value={id}>
+                              {catanProgressNames[id]}
+                            </option>
+                          ))
+                        : devs.map((n, i) => (
+                            <option key={n} value={i} disabled={!p.dev?.[i]}>
+                              {n} · {p.dev?.[i] || 0} 张
+                            </option>
+                          ))}
                     </select>
                   </label>
                   <button
-                    disabled={!p.dev?.[card]}
+                    disabled={
+                      cityHelpers
+                        ? !progressCards.includes(card)
+                        : !p.dev?.[card]
+                    }
                     onClick={() => action({ card })}
                   >
-                    确认交换一张发展卡
+                    确认交换一张{cityHelpers ? "进步牌" : "发展卡"}
                   </button>
                 </>
               )}
@@ -625,7 +714,7 @@ export function CatanHelpers({
                       : "选择领取一张资源。"}
                   </p>
                   <div className="helper-resources">
-                    {(pending.resources || g.bank).map((n, i) => (
+                    {(pending.resources || g.bank).slice(0, 5).map((n, i) => (
                       <button
                         key={i}
                         disabled={busy || n === 0}
@@ -643,6 +732,23 @@ export function CatanHelpers({
                       本次不使用
                     </button>
                   )}
+                </>
+              )}
+              {pending.kind === "progress" && (
+                <>
+                  <p>只有你能看到这些进步牌。选择一张，其余洗回同色牌堆。</p>
+                  <div className="helper-dev-options">
+                    {pending.cards?.map((id, i) => (
+                      <button
+                        key={i}
+                        disabled={busy}
+                        onClick={() => choice({ card: id })}
+                      >
+                        <CatanProgressArt card={id} assets={assets} />
+                        <b>{catanProgressNames[id]}</b>
+                      </button>
+                    ))}
+                  </div>
                 </>
               )}
               {pending.kind === "development" && (

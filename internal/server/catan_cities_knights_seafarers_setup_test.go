@@ -52,7 +52,7 @@ func TestCatanCitiesKnightsSeafarersConfigurationHTTP(t *testing.T) {
 	options := func(o game.CatanOptions, status int) {
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": o, "version": current(host)["version"], "nonce": randomID(12)}, status)
 	}
-	options(game.CatanOptions{Helpers: true}, 400)
+	options(game.CatanOptions{Rules: "unknown", Helpers: true}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid combination mutated room")

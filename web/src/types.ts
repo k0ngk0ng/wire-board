@@ -340,6 +340,7 @@ export type CatanProgressEvent = {
   card?: number;
 };
 export type CatanCitiesKnights = {
+  helpers?: { rules: string; production?: { rollId: number; player: number } };
   progressEventId?: number;
   progressEvents?: CatanProgressEvent[];
   rules: string;
@@ -822,6 +823,10 @@ export type CatanState = {
     optional?: boolean;
   };
   helperRoadMoves?: Record<string, number[]>;
+  helperKnightBuilds?: Record<
+    string,
+    { settlements: number[]; cities: number[] }
+  >;
   tiles: {
     id: number;
     x: number;

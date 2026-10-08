@@ -968,6 +968,11 @@ export function CatanRules({ room }: { room: Room }) {
       {helpers && (
         <>
           <h4>Helpers 助手</h4>
+          {info.helpersKnights && (
+            <p>
+              本站骑士助手规则：迪亚拉支付羊毛、粮食、矿石各1（可替换一张普通资源），从同色牌堆顶至多3张进步牌中私选1张；卡拉将私有进步牌换回原色牌堆底并抽1张；格雷戈尔归还任意己方实体骑士，以木砖各1建村或粮1矿2升城，不领贸易筹码。资源类能力不处理商品；希尔达与引水渠分别补偿，托罗夫按个人城墙上限保护资源与商品。
+            </p>
+          )}
           <p>
             {info.fixedBase
               ? info.waiting

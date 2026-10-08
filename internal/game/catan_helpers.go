@@ -66,6 +66,7 @@ func (s *State) catanHelperComplete(player int, resume string) {
 	h := g.Players[player].Helper
 	h.UsedTurn = g.TurnSerial
 	rules := CatanHelpers()
+	g.cityHelperDescriptions(rules)
 	if g.Explorer != nil {
 		rules = catanExplorerHelperRules()
 	}
@@ -119,6 +120,8 @@ func (s *State) catanHelperRespond(player int, a Action) error {
 		g.Players[player].Resources[a.Color]++
 		s.catanLog(player, "通过助手领取%s×1", CatanResources[a.Color])
 		s.catanHelperComplete(player, q.Resume)
+	case "progress":
+		return s.catanCityHelperProgress(player, a)
 	case "development":
 		index := slices.Index(q.Cards, a.Card)
 		if index < 0 {
@@ -208,7 +211,7 @@ func (s *State) catanHelperDevelopment(player int) error {
 }
 
 func (g *Catan) helperEndRoad(player, edge int) bool {
-	if edge < 0 || edge >= len(g.Edges) || g.Edges[edge].Owner != player || g.Edges[edge].Ship || g.Edges[edge].Damaged {
+	if edge < 0 || edge >= len(g.Edges) || g.Edges[edge].Owner != player || g.Edges[edge].Ship || g.Edges[edge].Damaged || !g.preservesKnightConnections(player, edge) {
 		return false
 	}
 	e := g.Edges[edge]
@@ -238,6 +241,9 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		return errors.New("这位助手当前不能使用；新获得或本回合使用过的助手需等下一回合")
 	}
 	resume := s.Phase
+	if handled, err := s.catanCityHelperAction(player, a); handled {
+		return err
+	}
 	switch h.ID {
 	case 1:
 		if a.Color < 0 || a.Color >= 5 || len(a.Targets) < 1 || len(a.Targets) > 2 || len(a.Cards) != len(a.Targets) {
@@ -279,7 +285,7 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			return errors.New("请选择一位领先的对手")
 		}
 		target := g.Players[a.Target]
-		if target.Score-g.hiddenVictoryPoints(a.Target) <= p.Score-g.hiddenVictoryPoints(player) || sum(target.Resources) == 0 {
+		if target.Score-g.hiddenVictoryPoints(a.Target) <= p.Score-g.hiddenVictoryPoints(player) || sum(target.Resources[:5]) == 0 {
 			return errors.New("该对手公开分数未领先或没有资源")
 		}
 		s.catanHelperAsk(CatanHelperPending{Player: player, Kind: "leader", Resume: resume, Target: a.Target})

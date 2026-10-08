@@ -916,10 +916,10 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 		}
 		if protected >= 0 {
 			resume := s.Phase
-			if sum(g.Players[protected].Resources) > 7 {
+			if sum(g.Players[protected].Resources) > g.catanDiscardLimit(protected) {
 				s.catanLog(protected, "助手托罗夫保护手牌，无需因掷出 7 弃牌")
 				s.catanHelperComplete(protected, resume)
-			} else if sum(g.Bank) > 0 {
+			} else if sum(g.Bank[:5]) > 0 {
 				s.catanHelperAsk(CatanHelperPending{Player: protected, Kind: "resource", Resume: resume})
 			} else {
 				s.catanHelperComplete(protected, resume)

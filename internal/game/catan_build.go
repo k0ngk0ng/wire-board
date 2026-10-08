@@ -17,6 +17,22 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 	if s.Phase != "catan_turn" && !(s.Phase == "catan_roads" && (a.Type == "catan_road" || a.Type == "catan_ship")) {
 		return errors.New("当前不能建造")
 	}
+	var cityHelperPrice []int
+	if g.cityHelpers() && a.Skill == "helper" && p.Helper != nil && p.Helper.ID == 8 {
+		if !g.helperReady(player, 8) || s.Phase != "catan_turn" || a.Type != "catan_settlement" && a.Type != "catan_city" {
+			return errors.New("格雷戈尔只能在行动阶段参与村庄或城市建设")
+		}
+		n := g.knightAt(a.Target)
+		if n == nil || n.Owner != player {
+			return errors.New("请选择要归还的己方实体骑士")
+		}
+		cityHelperPrice = []int{1, 1, 0, 0, 0}
+		if a.Type == "catan_city" {
+			cityHelperPrice = []int{0, 0, 0, 1, 2}
+		}
+		g.CitiesKnights.Knights = slices.DeleteFunc(g.CitiesKnights.Knights, func(n CatanKnight) bool { return n.Vertex == a.Target })
+		s.catanLog(player, "通过本站骑士助手归还交点 #%d 的骑士参与建设，不领取贸易筹码", a.Target+1)
+	}
 	roads, _, _ := g.pieces(player)
 	switch a.Type {
 	case "catan_ship":
@@ -51,7 +67,11 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 		}
 		if a.Skill == "helper" {
 			var err error
-			cost, err = s.catanHelperBuildCost(player, a)
+			if cityHelperPrice != nil {
+				cost = cityHelperPrice
+			} else {
+				cost, err = s.catanHelperBuildCost(player, a)
+			}
 			if err != nil {
 				return err
 			}
@@ -60,7 +80,7 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 			return errors.New("资源不足")
 		}
 		catanMove(p.Resources, g.Bank, cost)
-		if a.Skill == "helper" && p.Helper.ID == 8 {
+		if a.Skill == "helper" && p.Helper.ID == 8 && !g.cityHelpers() {
 			s.catanHelperSpendKnight(player)
 		}
 	} else if a.Skill == "helper" {
@@ -101,6 +121,9 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 	}
 	g.Trade = nil
 	s.catanClothTrade(player)
+	if cityHelperPrice != nil {
+		s.catanClothKnightRoutes()
+	}
 	s.catanScores()
 	s.catanVictory()
 	if g.Attack != nil && !s.Finished {

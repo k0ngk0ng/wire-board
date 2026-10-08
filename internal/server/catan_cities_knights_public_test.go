@@ -16,7 +16,7 @@ func TestCatanCitiesKnightsPublicSelectionAndRematch(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 5},
-		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Rules: "unknown", Helpers: true}},
 		{"kind": "splendor", "capacity": 3},
 	} {
 		body["name"], body["catanScenario"] = "无效骑士", "cities-knights"
@@ -64,7 +64,7 @@ func TestCatanCitiesKnightsPublicSelectionAndRematch(t *testing.T) {
 	if c := s.rooms[id].CatanCitiesKnights; c == nil || c.Layout != "variable" || c.Rules != game.CatanCitiesKnightsRules {
 		t.Fatal("wrong persisted city recipe", c)
 	}
-	for _, options := range []game.CatanOptions{{Helpers: true}, {FiveSix: true, Helpers: true}} {
+	for _, options := range []game.CatanOptions{{Rules: "unknown", Helpers: true}, {Rules: "unknown", FiveSix: true, Helpers: true}} {
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": options, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	}
 	host.command(current(host), "start", nil, 200)
@@ -107,7 +107,7 @@ func TestCatanCitiesKnightsPublicRejectsMalformedWaitingState(t *testing.T) {
 		func(r *Room) { r.CatanCitiesKnights.Rules = game.CatanCitiesKnightsFiveSixRules },
 		func(r *Room) { r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "shores"} },
 		func(r *Room) { r.CatanTwoRules = game.CatanTwoRules },
-		func(r *Room) { r.CatanOptions.Helpers = true },
+		func(r *Room) { r.CatanOptions.Rules = "unknown" },
 	} {
 		var corrupted Room
 		if err := json.Unmarshal(original, &corrupted); err != nil {

@@ -4,9 +4,6 @@ import "fmt"
 
 // Public three-to-six-player combinations share the accepted sea maps.
 func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, fmt.Errorf("Helpers与城市骑士组合尚未接入")
-	}
 	if !CatanCitiesKnightsSeafarersSupported(setup.Scenario) {
 		return nil, fmt.Errorf("该航海家剧本的城市骑士组合规则尚未接入")
 	}
@@ -70,6 +67,9 @@ func (s *State) enableCitiesKnightsSeafarers() error {
 		if err := s.validatePirateKnights(); err != nil {
 			return err
 		}
+	}
+	if g.cityHelpers() {
+		s.Log = append(s.Log, catanHelpersKnightsNotice)
 	}
 	return g.validateTribeProgress()
 }

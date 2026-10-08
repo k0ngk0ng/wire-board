@@ -53,6 +53,15 @@ func (s *State) catanHelperPendingBot(player int) (Action, error) {
 		} else {
 			a.Color = best
 		}
+	case "progress":
+		best := -1
+		for _, card := range q.Cards {
+			score := g.cityHelperProgressValue(player, card)
+			if score > best {
+				best = score
+				a.Card = card
+			}
+		}
 	case "development":
 		best := -1
 		for _, card := range q.Cards {
@@ -120,7 +129,7 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 				if n <= p.Resources[want] || g.Bank[want] == 0 {
 					continue
 				}
-				for give := range p.Resources {
+				for give := range p.Resources[:min(5, len(cost))] {
 					if give == want || p.Resources[give]-cost[give] < 2 {
 						continue
 					}
@@ -132,10 +141,41 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 			}
 		}
 	}
+	if g.cityHelpers() {
+		if h.ID == 6 {
+			for track, deck := range g.CitiesKnights.ProgressDecks {
+				if len(deck) > 0 {
+					for _, cost := range helperCostChoices(catanPrices["catan_buy_dev"], p.Resources) {
+						add(Action{Type: "catan_helper", Choice: "progress_buy", Color: track, Tokens: cost}, 280)
+					}
+				}
+			}
+		}
+		if h.ID == 8 {
+			for _, build := range builds {
+				if build.action.Type != "catan_city" && build.action.Type != "catan_settlement" {
+					continue
+				}
+				for _, n := range g.CitiesKnights.Knights {
+					if n.Owner == player {
+						a := build.action
+						a.Skill = "helper"
+						a.Target = n.Vertex
+						add(a, build.score+10-n.Strength*3)
+					}
+				}
+			}
+		}
+		if h.ID == 12 {
+			for _, card := range g.CitiesKnights.Players[player].Progress {
+				add(Action{Type: "catan_helper", Card: card}, 50-g.cityHelperProgressValue(player, card))
+			}
+		}
+	}
 	switch h.ID {
 	case 1:
 		give, want := 0, 0
-		for i := range p.Resources {
+		for i := range p.Resources[:5] {
 			if p.Resources[i] > p.Resources[give] {
 				give = i
 			}
@@ -197,7 +237,7 @@ func (g *Catan) digurBotAction(player int) (Action, bool) {
 	}
 	if g.Tiles[g.Robber].Resource == CatanGold || g.fishingHelpers() && g.Tiles[g.Robber].Resource == catanLake {
 		best := -1
-		for color, n := range g.Bank {
+		for color, n := range g.Bank[:5] {
 			if n > 0 && (best < 0 || g.Players[player].Resources[color] < g.Players[player].Resources[best]) {
 				best = color
 			}
@@ -207,4 +247,19 @@ func (g *Catan) digurBotAction(player int) (Action, bool) {
 		}
 	}
 	return a, true
+}
+
+func (g *Catan) cityHelperProgressValue(player, card int) int {
+	if catanProgressRules[card].Victory {
+		return 100
+	}
+	switch card {
+	case 3, 7, 8, 16:
+		return 50
+	case 5:
+		if g.cityPiecesLeft(player) > 0 {
+			return 45
+		}
+	}
+	return 20
 }

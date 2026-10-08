@@ -14,9 +14,9 @@ func TestCatanSeaKnightsPublicConfiguration(t *testing.T) {
 	host.register("公开航海骑士房主")
 	guest.register("公开航海骑士朋友")
 	for _, body := range []map[string]any{
-		{"kind": "catan", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Rules: "unknown", Helpers: true}},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores"},
-		{"kind": "catan", "capacity": 2, "catanScenario": "land-ho"},
+		{"kind": "catan", "capacity": 1, "catanScenario": "land-ho"},
 		{"kind": "splendor", "capacity": 3},
 	} {
 		body["name"], body["catanCitiesKnights"] = "无效组合", game.CatanCitiesKnightsSetup{}
