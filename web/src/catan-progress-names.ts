@@ -60,7 +60,10 @@ export function catanProgressDescription(
   seafarers: boolean,
   explorer = false,
   pirateIslands = false,
+  intro = false,
 ) {
+  if (intro && explorer && card === 21)
+    return "本站初航规则：首次蛮族进攻后可打出并归还征税；本剧本没有海盗，不产生移动或偷牌效果。";
   if (pirateIslands && card === 21)
     return "本站补充规则：首次蛮族进攻后选择一块有数字的陆地，从每位相邻建筑对手处随机偷一张资源或商品，仍遵守友善保护；不放置强盗，不移动舰队。";
   if (explorer && card === 5)

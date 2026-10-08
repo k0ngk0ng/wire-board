@@ -72,7 +72,7 @@ func (x catanExplorer) validateComponents(g *Catan) error {
 		return err
 	}
 	if x.Board.Scenario == "land-ho" {
-		if x.Setup != nil || x.Pirate != nil || x.Lairs != nil {
+		if x.Setup != nil && x.Board.IntroRules != CatanExplorerIntroRules || x.Pirate != nil || x.Lairs != nil {
 			return errors.New("初航不能包含海盗任务")
 		}
 	} else {
@@ -100,10 +100,10 @@ func (x catanExplorer) validateComponents(g *Catan) error {
 		if x.Setup == nil && x.Economy.Turn != nil && x.Economy.Turn.Phase == "pirate" && (x.Pirate.Pending == nil || x.Pirate.Pending.Resume != "action") {
 			return errors.New("七点海盗回应记录缺失")
 		}
-		if x.Setup != nil {
-			if err := x.Setup.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
-				return err
-			}
+	}
+	if x.Setup != nil {
+		if err := x.Setup.validate(g, x.Board, x.Fleet, x.Cargo, x.Economy); err != nil {
+			return err
 		}
 	}
 	if catanExplorerFishScenario(x.Board.Scenario) != (x.Fish != nil) {

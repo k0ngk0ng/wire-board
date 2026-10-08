@@ -273,7 +273,7 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 	}
 	// All costs/inventory have been checked. Entering action is the only
 	// remaining fallible operation, so perform it before modifying payouts.
-	if phase == "ready" && g.CitiesKnights != nil {
+	if phase == "ready" && g.CitiesKnights != nil && number != 7 {
 		phase = "aqueduct" // State controller queues compensation before action.
 	}
 	if phase == "ready" {

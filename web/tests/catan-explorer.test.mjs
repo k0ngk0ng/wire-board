@@ -902,6 +902,10 @@ test("combined progress instructions distinguish harbor medicine and pirate taxa
     /每位相邻建筑/,
   );
   assert.match(catanProgressDescription(21, false), /每位相邻建筑/);
+  assert.match(
+    catanProgressDescription(21, false, true, false, true),
+    /本站初航.*不产生移动或偷牌效果/,
+  );
   assert.match(catanProgressDescription(7, false, true), /两条道路/);
   assert.doesNotMatch(catanProgressDescription(7, false, true), /船只/);
   assert.match(catanProgressDescription(7, true), /船只/);
@@ -909,20 +913,28 @@ test("combined progress instructions distinguish harbor medicine and pirate taxa
   assert.match(explorerPhaseLabel("catan_commercial_harbor"), /商业港/);
 });
 
-
 test("two-piece recruitment confirms exact cargo and keeps discard choices distinct", async () => {
- const {explorerActionOptionLabel}=await import("../src/catan-explorer-state.ts");
- const g=room().game.catan;
- const base={type:"catan_explorer_unit",prompt:5,card:1,choice:"harbor",target:0};
- const crew={...base,cards:[2,3]},mixed={...base,cards:[2],spiceUnload:[0]},spice={...base,spiceUnload:[0,1]};
- assert.match(explorerActionDescription(g,crew),/归还2名船员/);
- assert.match(explorerActionDescription(g,mixed),/归还1袋香料/);
- assert.match(explorerActionDescription(g,spice),/归还2袋香料/);
- for(const a of [crew,mixed,spice]) {
-  assert.match(explorerActionDescription(g,a),/本站补充规则/);
-  assert.match(explorerActionDescription(g,a),/木、砖、羊、粮各1/);
-  assert.match(explorerActionOptionLabel(g,a),/归还/);
- }
- assert.notEqual(explorerActionKey(crew),explorerActionKey(mixed));
- assert.notEqual(explorerActionKey(mixed),explorerActionKey(spice));
+  const { explorerActionOptionLabel } =
+    await import("../src/catan-explorer-state.ts");
+  const g = room().game.catan;
+  const base = {
+    type: "catan_explorer_unit",
+    prompt: 5,
+    card: 1,
+    choice: "harbor",
+    target: 0,
+  };
+  const crew = { ...base, cards: [2, 3] },
+    mixed = { ...base, cards: [2], spiceUnload: [0] },
+    spice = { ...base, spiceUnload: [0, 1] };
+  assert.match(explorerActionDescription(g, crew), /归还2名船员/);
+  assert.match(explorerActionDescription(g, mixed), /归还1袋香料/);
+  assert.match(explorerActionDescription(g, spice), /归还2袋香料/);
+  for (const a of [crew, mixed, spice]) {
+    assert.match(explorerActionDescription(g, a), /本站补充规则/);
+    assert.match(explorerActionDescription(g, a), /木、砖、羊、粮各1/);
+    assert.match(explorerActionOptionLabel(g, a), /归还/);
+  }
+  assert.notEqual(explorerActionKey(crew), explorerActionKey(mixed));
+  assert.notEqual(explorerActionKey(mixed), explorerActionKey(spice));
 });

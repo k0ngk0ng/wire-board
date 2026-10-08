@@ -6,6 +6,34 @@ import {
 } from "../src/catan-event-options.ts";
 import { catanRuleContext } from "../src/catan-rule-context.ts";
 
+test("Land Ho site variants preserve the printed original and read the saved recipe", () => {
+  const room = { kind: "catan", capacity: 4, catanScenario: "land-ho" };
+  assert.equal(catanRuleContext(room).layout, "fixed");
+  assert.equal(catanRuleContext(room).target, 8);
+  assert.equal(catanRuleContext(room).explorerIntroRules, "");
+  room.catanCitiesKnights = {};
+  assert.equal(catanRuleContext(room).layout, "variable");
+  assert.equal(catanRuleContext(room).target, 13);
+  assert.equal(
+    catanRuleContext(room).explorerIntroRules,
+    "wire-board-land-ho-variants-v1",
+  );
+  room.game = {
+    catan: {
+      players: Array(3).fill({}),
+      explorer: { board: { scenario: "land-ho", layout: "fixed", target: 8 } },
+    },
+  };
+  assert.equal(catanRuleContext(room).explorerIntroRules, "");
+  assert.equal(catanRuleContext(room).target, 8);
+  delete room.game;
+  delete room.catanCitiesKnights;
+  room.capacity = 6;
+  assert.equal(catanRuleContext(room).layout, "variable");
+  assert.equal(catanRuleContext(room).target, 8);
+  assert.equal(catanRuleContext(room).fiveSix, true);
+});
+
 test("fleet event site rules follow the actual saved catalogue", () => {
   const room = {
     kind: "catan",

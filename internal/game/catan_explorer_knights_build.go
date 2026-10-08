@@ -61,7 +61,7 @@ func (s *State) catanExplorerCityAction(player int, a Action) error {
 	if s.Phase == "catan_discard" {
 		return s.catanExplorerCityDiscard(player, a)
 	}
-	if s.Catan.Explorer.Pirate.Pending != nil {
+	if s.Catan.Explorer.Pirate != nil && s.Catan.Explorer.Pirate.Pending != nil {
 		return s.catanExplorerCityPirateAction(player, a, catanRandom)
 	}
 	if s.Phase == "catan_roads" {

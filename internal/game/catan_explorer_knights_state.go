@@ -16,6 +16,9 @@ func newCatanExplorerCityState(players int, scenario string, numbers []int) (*St
 		return nil, err
 	}
 	x := &catanExplorer{Board: b, Fleet: f, Cargo: c, Economy: e, Setup: setup, Pirate: newCatanExplorerPirate()}
+	if scenario == "land-ho" {
+		x.Pirate = nil
+	}
 	g.Explorer = x
 	if catanExplorerMissionScenario(scenario) {
 		x.Lairs, err = newCatanExplorerLairs(players, numbers)

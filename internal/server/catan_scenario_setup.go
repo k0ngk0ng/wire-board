@@ -69,17 +69,14 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if publicCatanExplorerScenario(r.CatanScenario) {
-		maximum := 4
-		if publicCatanExplorerExtended(r.CatanScenario) {
-			maximum = 6
-		}
+		maximum := 6
 		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
-			return errors.New("探险剧本人数或组合无效：初航两至四人，其余任务两至六人；城市骑士组合需三至六人且不适用于初航")
+			return errors.New("探索者支持二至六人，城市骑士组合需三至六人；初航五六人或骑士使用本站自由开局规则")
 		}
 		if r.CatanCitiesKnights != nil {
 			setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
-			if !publicCatanExplorerExtended(r.CatanScenario) || err != nil || setup != *r.CatanCitiesKnights {
-				return errors.New("探索任务与城市骑士组合需三至六人随机地图；初航不支持该组合")
+			if err != nil || setup != *r.CatanCitiesKnights {
+				return errors.New("探索者与城市骑士组合需三至六人随机地图")
 			}
 		}
 		return nil
@@ -143,7 +140,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerExtended(scenario) && scenario != "barbarian-attack" && scenario != "transport" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r
@@ -196,7 +193,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if (publicCatanExplorerExtended(r.CatanScenario) && !publicCatanExplorerExtended(scenario)) || (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
+	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if !next.publicCatanEventsAvailable() {

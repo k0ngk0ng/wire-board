@@ -178,7 +178,7 @@ func testPublicExplorerMissionConfiguration(t *testing.T, scenario string) {
 				host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": o, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			}
 			if n > 4 {
-				for _, scene := range []string{"land-ho", "shores", ""} {
+				for _, scene := range []string{"shores", ""} {
 					change(host, "catan_scenario", "catanScenario", scene, 400)
 				}
 			}
