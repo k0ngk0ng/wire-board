@@ -8,9 +8,10 @@ import (
 // The drawn card is public and is held here only while resolving its mandatory
 // effect. It never enters a player's development hand or ordinary discard.
 type catanAttackCardPending struct {
-	ID     int    `json:"id"`
-	Player int    `json:"player"`
-	Card   string `json:"card"`
+	Neutral bool   `json:"neutral,omitempty"`
+	ID      int    `json:"id"`
+	Player  int    `json:"player"`
+	Card    string `json:"card"`
 }
 
 var catanAttackCardNames = map[string]string{
@@ -187,11 +188,20 @@ func (s *State) catanAttackCardChoice(player int, action Action) error {
 			s.catanLog(player, "解放地块 #%d，恢复生产及相邻被征服建筑", action.Tile+1)
 		}
 	case "knighthood", "swift_knight":
-		if !slices.Contains(a.recruitEdges(g, player, a.Pending.Card), action.Edge) {
+		if !slices.Contains(a.recruitEdges(g, g.attackRecruitOwner(player), a.Pending.Card), action.Edge) {
 			return errors.New("请选择可放置骑士的空边，授勋只能放在城堡边")
 		}
-		a.Knights = append(a.Knights, catanAttackKnight{Player: player, Edge: action.Edge})
-		s.catanLog(player, "%s：在路线 #%d 放置骑士，行动阶段结束后才能移动", catanAttackCardNames[a.Pending.Card], action.Edge+1)
+		a.Knights = append(a.Knights, catanAttackKnight{Player: g.attackRecruitOwner(player), Edge: action.Edge})
+		if a.Pending.Neutral {
+			s.catanLog(player, "在路线 #%d 免费放置中立骑士，双方回合末均可移动", action.Edge+1)
+		} else {
+			s.catanLog(player, "%s：在路线 #%d 放置骑士，行动阶段结束后才能移动", catanAttackCardNames[a.Pending.Card], action.Edge+1)
+		}
+		if g.twoAttack() && !a.Pending.Neutral && len(a.Knights) == 1 {
+			a.Pending.Neutral = true
+			s.catanLog(player, "首名骑士已放置，请按同一张牌的放置规则免费放置中立骑士")
+			return nil
+		}
 	case "treason":
 		if err := s.catanAttackTreason(player, action.Give, action.Take); err != nil {
 			return err
@@ -301,7 +311,7 @@ func (s *State) catanAttackCardBot(player int) (Action, error) {
 			}
 		}
 	case "knighthood", "swift_knight":
-		for _, edge := range a.recruitEdges(g, player, q.Card) {
+		for _, edge := range a.recruitEdges(g, g.attackRecruitOwner(player), q.Card) {
 			value := 0
 			for _, id := range g.Edges[edge].Tiles {
 				value += 10*a.Barbarians[id] + g.attackTileInterest(player, id)

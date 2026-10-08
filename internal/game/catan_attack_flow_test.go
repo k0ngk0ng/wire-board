@@ -121,7 +121,7 @@ func TestCatanAttackActualSetupAndEditionGuards(t *testing.T) {
 	for _, c := range []struct {
 		n int
 		o CatanOptions
-	}{{2, CatanOptions{}}, {7, CatanOptions{FiveSix: true}}, {4, CatanOptions{FiveSix: true}}, {5, CatanOptions{}}, {3, CatanOptions{Helpers: true}}, {3, CatanOptions{Rules: "wrong"}}} {
+	}{{2, CatanOptions{FiveSix: true}}, {7, CatanOptions{FiveSix: true}}, {4, CatanOptions{FiveSix: true}}, {5, CatanOptions{}}, {3, CatanOptions{Helpers: true}}, {3, CatanOptions{Rules: "wrong"}}} {
 		if _, e := newCatanAttackState(c.n, c.o); e == nil {
 			t.Fatal("accepted unsupported recipe")
 		}

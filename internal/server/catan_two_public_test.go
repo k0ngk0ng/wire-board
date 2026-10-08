@@ -20,6 +20,9 @@ func TestCatanTwoPublicCreationSelectionAndRematch(t *testing.T) {
 		{"kind": "catan", "capacity": 3, "catanTwoScenario": "rivers"},
 		{"kind": "splendor", "capacity": 2, "catanTwoScenario": "rivers"},
 		{"kind": "catan", "capacity": 2, "catanTwoScenario": "unknown"},
+		{"kind": "catan", "capacity": 3, "catanTwoScenario": "barbarian-attack"},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "barbarian-attack", "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "barbarian-attack", "catanFishing": true},
 	} {
 		body["name"] = "错误配置"
 		host.post("/api/rooms", body, 400)
@@ -40,7 +43,7 @@ func TestCatanTwoPublicCreationSelectionAndRematch(t *testing.T) {
 		c.post("/api/rooms/"+id, body, status)
 		return body
 	}
-	for _, scenario := range []string{"rivers", "caravans", "fishing", ""} {
+	for _, scenario := range []string{"rivers", "caravans", "fishing", "barbarian-attack", ""} {
 		before, _ := json.Marshal(s.rooms[id])
 		change(guest, scenario, 400)
 		change(host, "unknown", 400)

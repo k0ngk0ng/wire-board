@@ -163,7 +163,17 @@ export function twoRetreatAction(
   selected: TwoRetreatSelection,
 ): Record<string, unknown> | null {
   if (!selected) return null;
-  const t = room.game?.catan?.transport;
+  const g = room.game?.catan;
+  if (g?.attack) {
+    const { piece, tile } = selected;
+    return twoMayRetreat(room) &&
+      piece != null &&
+      tile != null &&
+      !!g.two?.attackMoves?.[piece]?.includes(tile)
+      ? { type: "catan_two_robber", card: piece, tile }
+      : null;
+  }
+  const t = g?.transport;
   if (t) {
     const { edge, piece } = selected;
     return edge != null &&
@@ -201,7 +211,7 @@ export function twoChoiceName(
 export function twoRetreatTargets(room: Room): number[] {
   const g = room.game?.catan,
     q = g?.two;
-  if (!g || !q || g.transport || !twoMayRetreat(room)) return [];
+  if (!g || !q || g.transport || g.attack || !twoMayRetreat(room)) return [];
   if (
     g.caravans ||
     (q.seafarers === "wire-board-two-seafarers-v1" &&

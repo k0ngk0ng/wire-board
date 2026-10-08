@@ -391,6 +391,8 @@ export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
 export type CatanAttackKnight = { player: number; edge: number };
 export type CatanAttackMove = { from: number; to: number; wheat?: boolean };
 export type CatanAttack = {
+  twoRules?: string;
+  neutralPrisoners?: number;
   landingSupplyRule?: "random-last";
   treasonRule?: "as-much-as-possible";
   goldRule?: "ledger";
@@ -411,7 +413,7 @@ export type CatanAttack = {
   discard: string[];
   canAct: boolean;
   canBuyCard: boolean;
-  pending?: { id: number; player: number; card: string };
+  pending?: { id: number; player: number; card: string; neutral?: boolean };
   endPlan?: { id: number; player: number; moves?: CatanAttackMove[] };
   moveChoices?: {
     from: number;
@@ -439,6 +441,7 @@ export type CatanAttack = {
       knights: CatanAttackKnight[];
       prisoners: number[];
       gold: number[];
+      tokens?: number[];
       contests?: { players: number[]; dice: number[] }[];
       lossDie?: number;
       lost?: CatanAttackKnight[];
@@ -556,6 +559,7 @@ export type CatanState = {
     choices?: CatanTwoChoice[];
     retreatTiles?: number[];
     retreatEdges?: number[];
+    attackMoves?: Record<string, number[]>;
     retreatCost?: number;
     neutralRoadLengths: number[];
   };

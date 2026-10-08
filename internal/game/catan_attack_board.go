@@ -13,24 +13,27 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
-	GoldIssued   int                       `json:"goldIssued,omitempty"`
-	EndPlan      *catanAttackEndPlan       `json:"endPlan,omitempty"`
-	EndSequence  int                       `json:"endSequence,omitempty"`
-	End          *catanAttackEndRecord     `json:"end,omitempty"`
-	CardSequence int                       `json:"cardSequence"`
-	Pending      *catanAttackCardPending   `json:"pending,omitempty"`
-	Bought       int                       `json:"bought"`
-	Sequence     int                       `json:"sequence"`
-	Landing      *catanAttackLandingRecord `json:"landing,omitempty"`
-	Rules        string                    `json:"rules"`
-	Map          *catanAttackMap           `json:"map"`
-	Barbarians   []int                     `json:"barbarians"`
-	Knights      []catanAttackKnight       `json:"knights"`
-	Prisoners    []int                     `json:"prisoners"`
-	Gold         []int                     `json:"gold"`
-	GoldBank     int                       `json:"goldBank"`
-	Deck         []string                  `json:"deck"`
-	Discard      []string                  `json:"discard"`
+	TwoRules         string                    `json:"twoRules,omitempty"`
+	TwoLanding       bool                      `json:"twoLanding,omitempty"`
+	NeutralPrisoners int                       `json:"neutralPrisoners,omitempty"`
+	GoldIssued       int                       `json:"goldIssued,omitempty"`
+	EndPlan          *catanAttackEndPlan       `json:"endPlan,omitempty"`
+	EndSequence      int                       `json:"endSequence,omitempty"`
+	End              *catanAttackEndRecord     `json:"end,omitempty"`
+	CardSequence     int                       `json:"cardSequence"`
+	Pending          *catanAttackCardPending   `json:"pending,omitempty"`
+	Bought           int                       `json:"bought"`
+	Sequence         int                       `json:"sequence"`
+	Landing          *catanAttackLandingRecord `json:"landing,omitempty"`
+	Rules            string                    `json:"rules"`
+	Map              *catanAttackMap           `json:"map"`
+	Barbarians       []int                     `json:"barbarians"`
+	Knights          []catanAttackKnight       `json:"knights"`
+	Prisoners        []int                     `json:"prisoners"`
+	Gold             []int                     `json:"gold"`
+	GoldBank         int                       `json:"goldBank"`
+	Deck             []string                  `json:"deck"`
+	Discard          []string                  `json:"discard"`
 }
 
 func catanAttackCardCounts() map[string]int {
@@ -71,7 +74,7 @@ func (a catanAttack) validate(g *Catan) error {
 	if len(a.Barbarians) != len(g.Tiles) || len(a.Gold) != n || len(a.Prisoners) != n || a.GoldIssued < 0 || a.GoldIssued > catanGoldLedgerLimit || a.GoldBank < 0 || a.GoldBank > a.Map.Gold+a.GoldIssued || g.setup() && a.GoldIssued != 0 {
 		return errors.New("蛮族进攻组件状态无效")
 	}
-	total, gold := 0, int64(a.GoldBank)
+	total, gold := a.NeutralPrisoners, int64(a.GoldBank)
 	for id, count := range a.Barbarians {
 		if count < 0 || count > 3 || count > 0 && !slices.Contains(a.Map.Coast, id) {
 			return errors.New("蛮族只能在可生产的沿海地块，每格至多3个")
@@ -89,9 +92,9 @@ func (a catanAttack) validate(g *Catan) error {
 		return errors.New("蛮族或金币库存不守恒")
 	}
 	used := map[int]bool{}
-	knights := make([]int, n)
+	knights := map[int]int{}
 	for _, k := range a.Knights {
-		if k.Player < 0 || k.Player >= n || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] {
+		if (k.Player < 0 || k.Player >= n) && !(g.twoAttack() && k.Player == catanAttackNeutral) || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] {
 			return errors.New("骑士玩家或位置无效")
 		}
 		used[k.Edge] = true
@@ -122,7 +125,7 @@ func (a catanAttack) validate(g *Catan) error {
 }
 
 func (a catanAttack) supply() int {
-	return a.Map.Barbarians - sum(a.Barbarians) - sum(a.Prisoners)
+	return a.Map.Barbarians - sum(a.Barbarians) - sum(a.Prisoners) - a.NeutralPrisoners
 }
 func (a catanAttack) conquered(tile int) bool {
 	return tile >= 0 && tile < len(a.Barbarians) && a.Barbarians[tile] == 3

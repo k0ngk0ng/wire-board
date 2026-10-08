@@ -21,7 +21,7 @@ export function catanRuleContext(room: Room) {
     : (room.catanTwoScenario || room.catanScenario) === "caravans";
   const attack = game
     ? !!game.attack
-    : room.catanScenario === "barbarian-attack";
+    : (room.catanTwoScenario || room.catanScenario) === "barbarian-attack";
   const transport = game
     ? !!game.transport
     : room.catanScenario === "transport";
@@ -132,6 +132,7 @@ export function catanRuleContext(room: Room) {
         !!room.catanFishing,
     transport,
     attack,
+    twoAttack: game ? !!game.attack?.twoRules : attack && !!room.catanTwoRules,
     caravans,
     rivers: game
       ? !!game.rivers
@@ -222,6 +223,7 @@ export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
   const target = (
     {
+      "barbarian-attack": 12,
       "land-ho": 8,
       "spices-for-catan": 15,
       "pirate-lairs": 12,

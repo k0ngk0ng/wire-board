@@ -35,6 +35,13 @@ func (g *Catan) attackConflictLeader() int {
 			leader = -1
 		}
 	}
+	if g.twoAttack() && most == 1 {
+		for _, k := range g.Attack.Knights {
+			if k.Player == catanAttackNeutral {
+				return -1
+			}
+		}
+	}
 	return leader
 }
 

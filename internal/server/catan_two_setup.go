@@ -68,7 +68,7 @@ func (r *Room) validateCatanTwoSetup() error {
 	if r.CatanTwoRules == "" && r.CatanTwoScenario == "" {
 		return nil
 	}
-	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" && !game.CatanTwoSeafarersScenario(r.CatanTwoScenario) {
+	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" && r.CatanTwoScenario != "barbarian-attack" && !game.CatanTwoSeafarersScenario(r.CatanTwoScenario) {
 		return errors.New("双人剧本尚未接入")
 	}
 	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing && !r.twoCatanSeafarers() && r.CatanTwoScenario != "cities-knights" || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil && !r.twoCatanSeafarers() || r.CatanBaseConfiguration != nil || !r.twoCatanSeafarers() && (r.CatanSeafarers != nil || r.CatanNewWorldMap != nil) {

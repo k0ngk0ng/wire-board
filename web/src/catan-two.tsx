@@ -177,18 +177,23 @@ export function CatanTwoPanel({
   const retreatTargets = twoRetreatTargets(room);
   const retreatEdges = twoRetreatEdges(room),
     retreatCost = twoRetreatCost(room);
-  const canRobber = g.transport
-    ? retreatEdges.length > 0
-    : retreatTargets.length > 0;
+  const attackMoves = q.attackMoves || {};
+  const canRobber = g.attack
+    ? available && Object.keys(attackMoves).length > 0
+    : g.transport
+      ? retreatEdges.length > 0
+      : retreatTargets.length > 0;
   const retreatRequest = twoRetreatAction(room, retreat);
   const retreatValid = !!retreatRequest;
   const retreatOutside = !!g.caravans || retreatTargets.includes(-1);
   const retreatName = g.rivers ? "沼泽" : "沙漠";
-  const retreatAction = g.transport
-    ? "移开一名蛮族"
-    : retreatOutside
-      ? "将强盗移出棋盘"
-      : `将强盗移回${retreatName}`;
+  const retreatAction = g.attack
+    ? "将一个蛮族移到另一未征服沿海地块"
+    : g.transport
+      ? "移开一名蛮族"
+      : retreatOutside
+        ? "将强盗移出棋盘"
+        : `将强盗移回${retreatName}`;
   const openConfirm = (action: TokenAction) => {
     setConfirm(action);
     setCollapsed(false);
@@ -248,15 +253,17 @@ export function CatanTwoPanel({
                       : "＋渔夫"
                   : g.citiesKnights
                     ? "＋城市与骑士"
-                    : g.transport
-                      ? "＋运输"
-                      : g.rivers
-                        ? "＋河流"
-                        : g.caravans
-                          ? "＋商队"
-                          : q.seafarers
-                            ? "＋航海家"
-                            : ""}
+                    : g.attack
+                      ? "＋蛮族进攻"
+                      : g.transport
+                        ? "＋运输"
+                        : g.rivers
+                          ? "＋河流"
+                          : g.caravans
+                            ? "＋商队"
+                            : q.seafarers
+                              ? "＋航海家"
+                              : ""}
             </strong>
             <small>
               {g.fishing ? (
@@ -343,18 +350,22 @@ export function CatanTwoPanel({
                     disabled={busy || !canRobber}
                     onClick={() => openConfirm("robber")}
                   >
-                    {g.transport
-                      ? "移开蛮族"
-                      : retreatOutside
-                        ? "移出强盗"
-                        : "移回强盗"}
+                    {g.attack
+                      ? "移动蛮族"
+                      : g.transport
+                        ? "移开蛮族"
+                        : retreatOutside
+                          ? "移出强盗"
+                          : "移回强盗"}
                   </button>
-                  <button
-                    disabled={busy || !canKnight}
-                    onClick={() => openConfirm("knight")}
-                  >
-                    {g.citiesKnights ? "移除骑士换筹码" : "弃骑士换 2 枚"}
-                  </button>
+                  {!g.attack && (
+                    <button
+                      disabled={busy || !canKnight}
+                      onClick={() => openConfirm("knight")}
+                    >
+                      {g.citiesKnights ? "移除骑士换筹码" : "弃骑士换 2 枚"}
+                    </button>
+                  )}
                 </div>
               </>
             )}
@@ -380,7 +391,9 @@ export function CatanTwoPanel({
                         : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
                     {g.citiesKnights
                       ? "每回合可消费筹码一次，另可移除一名自己的骑士，按等级换 1／2／3 枚筹码；供应须足够。总量 20 枚，用完须等筹码归还。初始城市不领取建村筹码。本站补充：建村奖励不足时只领剩余数量。"
-                      : "每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。"}
+                      : g.attack
+                        ? "每回合可消费筹码一次，不使用弃骑士换筹码。起始城市不领取建村筹码。"
+                        : "每回合可消费筹码一次，也可另弃一张已打出的骑士换 2 枚筹码。"}
                     {q.tokenRule === "ledger" &&
                       "本站补充规则：筹码用完继续记账发放，归还供应的筹码优先复用；与金币分别计算。"}
                   </>
@@ -389,6 +402,11 @@ export function CatanTwoPanel({
               {g.citiesKnights && (
                 <p>
                   招募骑士后为中立势力招募一级骑士，无位置则修路；自己的一级升二级后，中立一级也升级。中立骑士不激活、不防御。两次生产各结算城市事件；炼金术仅第一次掷骰前可用。本站补充：中立骑士退让及叛变同级选择由行动玩家决定。
+                </p>
+              )}
+              {g.attack && (
+                <p>
+                  真人与中立村庄分别触发登陆；共享中立骑士由双方移动，先移动自己的骑士。玩家失去骑士或未分得俘虏时获得2金币和1枚贸易筹码补偿。
                 </p>
               )}
               {g.transport && (
@@ -414,7 +432,9 @@ export function CatanTwoPanel({
                     : "为中立势力建设"
                   : `${room.seats[q.actor]?.name} 正在${q.trade ? "归还资源" : "建设中立棋子"}`
                 : confirm === "robber"
-                  ? retreatAction
+                  ? g.attack
+                    ? "移动蛮族"
+                    : retreatAction
                   : titles[confirm!]}
             </strong>
             <button
@@ -585,6 +605,63 @@ export function CatanTwoPanel({
                         ))}
                       </div>
                     )}
+                    {confirm === "robber" && g.attack && (
+                      <div className="two-owner-choice">
+                        <label>
+                          蛮族来源
+                          <select
+                            aria-label="蛮族来源"
+                            disabled={busy}
+                            value={retreat?.piece ?? ""}
+                            onChange={(e) =>
+                              onRetreat({
+                                piece:
+                                  e.target.value === ""
+                                    ? null
+                                    : Number(e.target.value),
+                                tile: null,
+                              })
+                            }
+                          >
+                            <option value="">选择来源</option>
+                            {Object.keys(attackMoves).map((id) => (
+                              <option key={id} value={id}>
+                                地块 #{Number(id) + 1} ·{" "}
+                                {g.attack!.barbarians[Number(id)]} 个蛮族
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          移动目的地
+                          <select
+                            aria-label="蛮族目的地"
+                            disabled={busy || retreat?.piece == null}
+                            value={retreat?.tile ?? ""}
+                            onChange={(e) =>
+                              onRetreat({
+                                ...retreat,
+                                tile:
+                                  e.target.value === ""
+                                    ? null
+                                    : Number(e.target.value),
+                              })
+                            }
+                          >
+                            <option value="">选择目的地</option>
+                            {(retreat?.piece == null
+                              ? []
+                              : attackMoves[retreat.piece] || []
+                            ).map((id) => (
+                              <option key={id} value={id}>
+                                地块 #{id + 1} · {g.attack!.barbarians[id]}{" "}
+                                个蛮族
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      </div>
+                    )}
                     {confirm === "robber" && g.transport && (
                       <>
                         <p>
@@ -633,7 +710,8 @@ export function CatanTwoPanel({
                     )}
                     {confirm === "robber" &&
                       !retreatOutside &&
-                      !g.transport && (
+                      !g.transport &&
+                      !g.attack && (
                         <>
                           <p>
                             选择{retreatName}

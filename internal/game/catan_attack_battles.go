@@ -17,6 +17,7 @@ type catanAttackContestRoll struct {
 	Dice    []int `json:"dice"`
 }
 type catanAttackBattle struct {
+	Tokens     []int                    `json:"tokens,omitempty"`
 	Tile       int                      `json:"tile"`
 	Barbarians int                      `json:"barbarians"`
 	Knights    []catanAttackKnight      `json:"knights"`
@@ -65,23 +66,39 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 		if count == 0 {
 			continue
 		}
-		battle := catanAttackBattle{Tile: tile, Barbarians: count, Prisoners: make([]int, len(g.Players)), Gold: make([]int, len(g.Players))}
-		strength := make([]int, len(g.Players))
+		battle := catanAttackBattle{Tile: tile, Barbarians: count, Prisoners: make([]int, g.attackBattleSeats()), Gold: make([]int, g.attackBattleSeats())}
+		strength := make([]int, g.attackBattleSeats())
 		for _, k := range a.Knights {
-			if !g.Players[k.Player].Eliminated && slices.Contains(g.Edges[k.Edge].Tiles, tile) {
+			if (g.twoAttack() && k.Player == catanAttackNeutral || k.Player >= 0 && !g.Players[k.Player].Eliminated) && slices.Contains(g.Edges[k.Edge].Tiles, tile) {
 				battle.Knights = append(battle.Knights, k)
-				strength[k.Player]++
+				strength[g.attackBattleSeat(k.Player)]++
 			}
 		}
 		if len(battle.Knights) <= count {
 			continue
 		}
-		if err := battle.distribute(strength, die); err != nil {
+		neutral := -1
+		if g.twoAttack() {
+			neutral = 2
+		}
+		if err := battle.distribute(strength, die, neutral); err != nil {
 			return err
 		}
 		a.Barbarians[tile] = 0
 		for p, n := range battle.Prisoners {
-			a.Prisoners[p] += n
+			if g.twoAttack() && p == 2 {
+				a.NeutralPrisoners += n
+			} else {
+				a.Prisoners[p] += n
+			}
+		}
+		if g.twoAttack() {
+			battle.Tokens = make([]int, 2)
+			for p := range 2 {
+				battle.Tokens[p] = battle.Gold[p] / 3
+				battle.Gold[p] = battle.Tokens[p] * 2
+			}
+			battle.Gold[2] = 0
 		}
 		s.catanScores()
 		s.catanVictory()
@@ -94,9 +111,14 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 				return errors.New("骑士损失骰子无效")
 			}
 			for _, k := range battle.Knights {
-				if a.Map.edgeOrientation(g, k.Edge) == orientation {
+				if !(g.twoAttack() && k.Player == catanAttackNeutral) && a.Map.edgeOrientation(g, k.Edge) == orientation {
 					battle.Lost = append(battle.Lost, k)
-					battle.Gold[k.Player] += 3
+					if g.twoAttack() {
+						battle.Gold[k.Player] += 2
+						battle.Tokens[k.Player]++
+					} else {
+						battle.Gold[k.Player] += 3
+					}
 				}
 			}
 			a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return slices.Contains(battle.Lost, k) })
@@ -105,19 +127,34 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 			return err
 		}
 		for p, n := range battle.Gold {
-			a.Gold[p] += n
-			a.GoldBank -= n
+			if p < len(g.Players) {
+				a.Gold[p] += n
+				a.GoldBank -= n
+				if g.twoAttack() {
+					if err := s.catanTwoEarn(p, battle.Tokens[p]); err != nil {
+						return err
+					}
+				}
+			}
 		}
 		a.End.Battles = append(a.End.Battles, battle)
 		s.catanLog(a.End.Player, "地块 #%d 战斗胜利：%d名骑士击退%d个蛮族，恢复生产及被征服建筑", tile+1, len(battle.Knights), count)
 		for p, n := range battle.Prisoners {
+			if n > 0 && g.twoAttack() && p == 2 {
+				s.Log = append(s.Log, "中立骑士取得俘虏，留在中立供应，不计真人分数")
+				continue
+			}
 			if n > 0 {
 				s.catanLog(p, "获得%d个俘虏，现有%d个（%d分）", n, a.Prisoners[p], a.Prisoners[p]/2)
 			}
 		}
 		for p, n := range battle.Gold {
 			if n > 0 {
-				s.catanLog(p, "战斗补偿：金币×%d", n)
+				if g.twoAttack() {
+					s.catanLog(p, "战斗补偿：金币×%d、贸易筹码×%d", n, battle.Tokens[p])
+				} else {
+					s.catanLog(p, "战斗补偿：金币×%d", n)
+				}
 			}
 		}
 		if battle.LossDie > 0 {
@@ -132,7 +169,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 	return nil
 }
 
-func (b *catanAttackBattle) distribute(strength []int, die func() int) error {
+func (b *catanAttackBattle) distribute(strength []int, die func() int, neutral ...int) error {
 	players := []int{}
 	for p, n := range strength {
 		if n > 0 {
@@ -164,7 +201,7 @@ func (b *catanAttackBattle) distribute(strength []int, die func() int) error {
 			b.Prisoners[leaders[0]]++
 			return nil
 		}
-		winners, err := b.contest(leaders, 1, die)
+		winners, err := b.contest(leaders, 1, die, neutral...)
 		if err != nil {
 			return err
 		}
@@ -177,7 +214,7 @@ func (b *catanAttackBattle) distribute(strength []int, die func() int) error {
 		}
 		return nil
 	}
-	winners, err := b.contest(players, b.Barbarians, die)
+	winners, err := b.contest(players, b.Barbarians, die, neutral...)
 	if err != nil {
 		return err
 	}
@@ -194,7 +231,7 @@ func (b *catanAttackBattle) distribute(strength []int, die func() int) error {
 // Only ties crossing the last available prisoner need another roll. Winners
 // and losers already separated by earlier rolls never lose their ranking.
 // The two-player rule calls this a tie-breaking die (neutral result 3).
-func (b *catanAttackBattle) contest(players []int, places int, die func() int) ([]int, error) {
+func (b *catanAttackBattle) contest(players []int, places int, die func() int, neutral ...int) ([]int, error) {
 	winners := []int{}
 	for len(winners) < places {
 		if len(b.Contests) >= 256 {
@@ -203,7 +240,10 @@ func (b *catanAttackBattle) contest(players []int, places int, die func() int) (
 		roll := catanAttackContestRoll{Players: slices.Clone(players), Dice: make([]int, len(players))}
 		groups := [7][]int{}
 		for i, p := range players {
-			v := die()
+			v := 3
+			if len(neutral) == 0 || p != neutral[0] {
+				v = die()
+			}
 			if v < 1 || v > 6 {
 				return nil, errors.New("俘虏分配骰子无效")
 			}
@@ -235,7 +275,7 @@ func (s *State) validateCatanAttackEnd() error {
 	if q == nil {
 		return nil
 	}
-	if g.setup() || q.ID != a.EndSequence || q.Player < 0 || q.Player >= len(g.Players) || len(q.Moves) > 6 || len(q.Battles) > len(a.Map.Coast) {
+	if g.setup() || q.ID != a.EndSequence || q.Player < 0 || q.Player >= len(g.Players) || len(q.Moves) > g.attackMoveLimit() || len(q.Battles) > len(a.Map.Coast) {
 		return errors.New("回合末战斗记录无效")
 	}
 	used := map[int]bool{}
@@ -248,30 +288,42 @@ func (s *State) validateCatanAttackEnd() error {
 	previous := -1
 	for i, b := range q.Battles {
 		coast := slices.Index(a.Map.Coast, b.Tile)
-		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) <= b.Barbarians || len(b.Knights) > 6 || len(b.Prisoners) != len(g.Players) || len(b.Gold) != len(g.Players) || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || i != len(q.Battles)-1) {
+		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) <= b.Barbarians || len(b.Knights) > 6 || len(b.Prisoners) != g.attackBattleSeats() || len(b.Gold) != g.attackBattleSeats() || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || i != len(q.Battles)-1) {
 			return errors.New("战斗顺序、力量或俘虏记录无效")
 		}
 		previous = coast
 		used = map[int]bool{}
 		involved := map[int]bool{}
 		for _, k := range b.Knights {
-			if k.Player < 0 || k.Player >= len(g.Players) || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] || !slices.Contains(g.Edges[k.Edge].Tiles, b.Tile) {
+			if (k.Player < 0 || k.Player >= len(g.Players)) && !(g.twoAttack() && k.Player == catanAttackNeutral) || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] || !slices.Contains(g.Edges[k.Edge].Tiles, b.Tile) {
 				return errors.New("参战骑士记录无效")
 			}
 			used[k.Edge] = true
-			involved[k.Player] = true
+			involved[g.attackBattleSeat(k.Player)] = true
 		}
 		used = map[int]bool{}
 		for _, k := range b.Lost {
-			if used[k.Edge] || !slices.Contains(b.Knights, k) || b.LossDie == 0 || a.Map.edgeOrientation(g, k.Edge) != catanAttackLossOrientation(b.LossDie) {
+			if g.twoAttack() && k.Player == catanAttackNeutral || used[k.Edge] || !slices.Contains(b.Knights, k) || b.LossDie == 0 || a.Map.edgeOrientation(g, k.Edge) != catanAttackLossOrientation(b.LossDie) {
 				return errors.New("骑士损失记录无效")
 			}
 			used[k.Edge] = true
 		}
 		for p, n := range b.Prisoners {
-			if n < 0 || b.Gold[p] < 0 || b.Gold[p]%3 != 0 || (n > 0 || b.Gold[p] > 0) && !involved[p] {
+			if n < 0 || b.Gold[p] < 0 || (!g.twoAttack() && b.Gold[p]%3 != 0 || g.twoAttack() && b.Gold[p]%2 != 0) || (n > 0 || b.Gold[p] > 0) && !involved[p] {
 				return errors.New("俘虏或金币奖励记录无效")
 			}
+		}
+		if g.twoAttack() {
+			if len(b.Tokens) != 2 || b.Gold[2] != 0 {
+				return errors.New("双人战斗补偿记录无效")
+			}
+			for p := range 2 {
+				if b.Tokens[p] < 0 || b.Gold[p] != 2*b.Tokens[p] {
+					return errors.New("双人金币筹码比例无效")
+				}
+			}
+		} else if len(b.Tokens) != 0 {
+			return errors.New("多人战斗不能发贸易筹码")
 		}
 		if len(b.Contests) > 256 {
 			return errors.New("俘虏掷骰记录过长")
@@ -281,7 +333,7 @@ func (s *State) validateCatanAttackEnd() error {
 				return errors.New("俘虏掷骰记录无效")
 			}
 			for j, p := range r.Players {
-				if !involved[p] || slices.Contains(r.Players[:j], p) || r.Dice[j] < 1 || r.Dice[j] > 6 {
+				if !involved[p] || slices.Contains(r.Players[:j], p) || r.Dice[j] < 1 || r.Dice[j] > 6 || g.twoAttack() && p == 2 && r.Dice[j] != 3 {
 					return errors.New("俘虏掷骰参与者或点数无效")
 				}
 			}
@@ -298,10 +350,23 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 		originals[k.Edge] = i
 	}
 	moved := map[int]bool{}
+	neutralMoved := false
 	for _, move := range moves {
 		i, ok := originals[move.From]
-		if !ok || moved[i] || a.Knights[i].Player != s.Turn || move.From == move.To {
+		if !ok || moved[i] || !g.attackCanMoveKnight(a.Knights[i].Player, s.Turn) || move.From == move.To {
 			return errors.New("每名己方骑士只能移动一次，请使用其阶段开始时的位置")
+		}
+		neutral := g.twoAttack() && a.Knights[i].Player == catanAttackNeutral
+		if neutralMoved && !neutral {
+			return errors.New("必须先移动己方骑士，再移动中立骑士")
+		}
+		if neutral {
+			for j, k := range a.Knights {
+				if k.Player == s.Turn && !moved[j] && a.castleEdge(g, k.Edge) {
+					return errors.New("请先将己方城堡骑士移出")
+				}
+			}
+			neutralMoved = true
 		}
 		steps := 3
 		if move.Wheat {
@@ -322,7 +387,7 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 		s.catanLog(s.Turn, "骑士从路线 #%d 移至 #%d（最多%d步）", move.From+1, move.To+1, steps)
 	}
 	for _, k := range a.Knights {
-		if requireDeparture && k.Player == s.Turn && a.castleEdge(g, k.Edge) {
+		if requireDeparture && g.attackCanMoveKnight(k.Player, s.Turn) && a.castleEdge(g, k.Edge) {
 			return errors.New("必须先将自己的所有城堡骑士移出")
 		}
 	}
