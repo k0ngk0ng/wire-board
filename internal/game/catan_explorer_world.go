@@ -65,8 +65,8 @@ func (x catanExplorer) validateComponents(g *Catan) error {
 	if err := x.Board.validate(g); err != nil {
 		return err
 	}
-	if x.Board.Fishing != "" {
-		return errors.New("探险渔夫尚未接通完整行动控制器")
+	if err := x.validateFishing(g); err != nil {
+		return err
 	}
 	if err := x.Economy.validate(g, x.Fleet, x.Cargo); err != nil {
 		return err
@@ -303,6 +303,10 @@ func (x *catanExplorer) sail(g *Catan, player int, sequence uint64, ship int, pa
 }
 
 func (x *catanExplorer) buildShip(g *Catan, player int, sequence uint64, ship, edge int) ([]catanExplorerDiscovery, error) {
+	return x.buildShipCost(g, player, sequence, ship, edge, false)
+}
+
+func (x *catanExplorer) buildShipCost(g *Catan, player int, sequence uint64, ship, edge int, free bool) ([]catanExplorerDiscovery, error) {
 	q, next, err := x.copy(g)
 	if err != nil {
 		return nil, err
@@ -310,7 +314,7 @@ func (x *catanExplorer) buildShip(g *Catan, player int, sequence uint64, ship, e
 	if err = next.Economy.actionAllowed(q, next.Fleet, next.Cargo, player, sequence); err != nil {
 		return nil, err
 	}
-	if err = next.Cargo.buildShip(q, next.Fleet, player, sequence, ship, edge); err != nil {
+	if err = next.Cargo.buildShipCost(q, next.Fleet, player, sequence, ship, edge, free); err != nil {
 		return nil, err
 	}
 	tiles := []int{}

@@ -195,7 +195,7 @@ func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 	}
 	if win := l.RewardVictory; win != nil {
 		i := l.site(win.Tile)
-		if i < 0 || win.Player < 0 || win.Player >= len(g.Players) || g.Players[win.Player].Eliminated || l.Battle != nil || e.Turn == nil || c.Turn == nil || c.Turn.Phase != "ended" || e.Turn.Player != win.Player || l.Sites[i].Captor != win.Player || l.Sites[i].Ready != e.Turn.Sequence || l.Sites[i].Resolved != 0 || len(l.Sites[i].Rounds) != 0 || l.playerScore(g, win.Player) < b.Target {
+		if i < 0 || win.Player < 0 || win.Player >= len(g.Players) || g.Players[win.Player].Eliminated || l.Battle != nil || e.Turn == nil || c.Turn == nil || c.Turn.Phase != "ended" || e.Turn.Player != win.Player || l.Sites[i].Captor != win.Player || l.Sites[i].Ready != e.Turn.Sequence || l.Sites[i].Resolved != 0 || len(l.Sites[i].Rounds) != 0 || l.playerScore(g, win.Player) < catanExplorerFishVictoryTarget(g, b, win.Player) {
 			return errors.New("巢穴奖励即时获胜记录无效")
 		}
 	}
@@ -308,7 +308,7 @@ func (l *catanExplorerLairs) applyUnchecked(g *Catan, b *catanExplorerBoard, f *
 			e.GoldBank -= 2
 			e.Gold[p] += 2
 			l.advance(p)
-			if p == player && l.playerScore(g, player) >= b.Target {
+			if p == player && l.playerScore(g, player) >= catanExplorerFishVictoryTarget(g, b, player) {
 				l.RewardVictory = &catanExplorerLairVictory{Tile: tile, Player: player}
 				return nil
 			}

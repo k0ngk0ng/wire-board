@@ -46,6 +46,7 @@ func (s *State) eliminateCatanExplorer(player int) error {
 		x.Fish.Retired[player] = true
 	}
 	g.Trade = nil
+	s.catanReturnFishing(player)
 	p.Eliminated = true
 	if k := g.CitiesKnights; k != nil {
 		// Keep permanent buildings/improvements, as in ordinary city games.

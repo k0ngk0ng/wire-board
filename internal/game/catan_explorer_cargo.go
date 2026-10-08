@@ -126,7 +126,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	if k := g.CitiesKnights; k != nil && (len(g.Players) < 3 || k.Rules != catanCitiesKnightsRules(len(g.Players)) || len(k.Players) != len(g.Players)) {
 		return errors.New("探险城市骑士人数或组件无效")
 	}
-	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.RevealedEvent != nil && (g.EventDeck == nil || g.EventDeck.Explorer != CatanEventExplorerRules) || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
+	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && g.Fishing.Explorer != catanExplorerFishingRule(len(g.Players)) || g.RevealedEvent != nil && (g.EventDeck == nil || g.EventDeck.Explorer != CatanEventExplorerRules) || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
 		return errors.New("探险货物尚未接入其他扩展组合")
 	}
 	if pair := g.Paired; pair != nil && (len(g.Players) < 5 || len(g.Players) > 6 || pair.Primary < 0 || pair.Primary >= len(g.Players) || pair.Secondary < 0 || pair.Secondary >= len(g.Players)) {
@@ -248,7 +248,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		return errors.New("货物与航行阶段不一致")
 	}
 	for i, ship := range t.BuildStopped {
-		if ship < 0 || ship >= len(fleet.Positions) || ship/3 != t.Player || slices.Contains(t.BuildStopped[:i], ship) || t.Phase == "action" && fleet.Positions[ship] < 0 || t.Phase != "action" && !q.Ships[ship].Closed {
+		if ship < 0 || ship >= len(fleet.Positions) || ship/3 != t.Player || slices.Contains(t.BuildStopped[:i], ship) || t.Phase == "action" && fleet.Positions[ship] < 0 || t.Phase != "action" && !q.Ships[ship].Closed && q.Ships[ship].Second == nil {
 			return errors.New("造船探索后的停船记录无效")
 		}
 	}
@@ -360,6 +360,10 @@ func (c *catanExplorerCargo) buildHarbor(g *Catan, fleet *catanExplorerSailing, 
 	return c.upgradeSettlement(g, fleet, player, sequence, vertex, "harbor", false)
 }
 func (c *catanExplorerCargo) buildShip(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, ship, edge int) error {
+	return c.buildShipCost(g, fleet, player, sequence, ship, edge, false)
+}
+
+func (c *catanExplorerCargo) buildShipCost(g *Catan, fleet *catanExplorerSailing, player int, sequence uint64, ship, edge int, free bool) error {
 	if err := c.allowed(g, fleet, player, sequence, "action"); err != nil {
 		return err
 	}
@@ -384,6 +388,9 @@ func (c *catanExplorerCargo) buildShip(g *Catan, fleet *catanExplorerSailing, pl
 		}
 	}
 	cost := []int{1, 0, 1, 0, 0}
+	if free {
+		cost = []int{0, 0, 0, 0, 0}
+	}
 	if !catanExplorerCanPay(g, player, cost) {
 		return errors.New("无法支付造船的木材与羊毛")
 	}

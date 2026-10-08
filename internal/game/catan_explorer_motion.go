@@ -58,7 +58,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 	x.ActionID = old.ActionID + 1
 	x.Motion = nil
 	switch a.Type {
-	case "catan_explorer_spice_land", "catan_explorer_spice_deliver", "catan_explorer_fish_roll", "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_explorer_harbor":
+	case "catan_explorer_spice_land", "catan_explorer_spice_deliver", "catan_explorer_fish_roll", "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_land", "catan_explorer_pickup", "catan_explorer_resolve", "catan_explorer_battle", "catan_explorer_pirate_place", "catan_explorer_chase", "catan_explorer_sail", "catan_explorer_transfer", "catan_explorer_settle", "catan_explorer_unit", "catan_explorer_ship", "catan_fish_ship", "catan_explorer_harbor":
 	default:
 		return
 	}
@@ -67,7 +67,7 @@ func (s *State) recordCatanExplorerMotion(before *State, player int, a Action) {
 	case "catan_explorer_sail":
 		m.Ship = a.Slot
 		m.Path = append([]int{old.Fleet.Positions[a.Slot]}, slices.Clone(a.Targets)...)
-	case "catan_explorer_ship":
+	case "catan_explorer_ship", "catan_fish_ship":
 		m.Ship = a.Slot
 	case "catan_explorer_settle", "catan_explorer_transfer":
 		m.Ship, m.Vertex = a.Slot, a.Vertex
