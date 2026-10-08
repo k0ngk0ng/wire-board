@@ -9,8 +9,11 @@ import (
 // multiplayer city games keep their existing restoration contract.
 func (s *State) validateTwoCityFlow() error {
 	g, k := s.Catan, s.Catan.CitiesKnights
-	if k.Layout != "variable" || k.RobberStart != g.twoDesert() || k.EventDie < -1 || k.EventDie > 5 || g.RollID == 0 && k.EventDie != -1 || g.RollID > 0 && k.EventDie < 0 && g.CardEvent == nil || k.Chase != "" && k.Chase != "robber" {
+	if k.Layout != "variable" || (!g.twoSeafarersKnights() && k.RobberStart != g.twoDesert()) || k.EventDie < -1 || k.EventDie > 5 || g.RollID == 0 && k.EventDie != -1 || g.RollID > 0 && k.EventDie < 0 && g.CardEvent == nil || k.Chase != "" && k.Chase != "robber" && !(g.twoSeafarersKnights() && k.Chase == "pirate") {
 		return errors.New("双人城市事件或强盗状态无效")
+	}
+	if g.twoSeafarersKnights() && (k.RobberStart < -1 || k.RobberStart >= len(g.Tiles) || k.PirateStart < -1 || k.PirateStart >= len(g.Tiles) || g.wonders() != nil && k.PirateStart != -1) {
+		return errors.New("双人骑士强盗海盗起点无效")
 	}
 	for _, p := range g.Players {
 		if len(p.Resources) != 8 || sum(p.Dev) != 0 || sum(p.NewDev) != 0 || p.Knights != 0 {
@@ -69,7 +72,7 @@ func (s *State) validateTwoCityFlow() error {
 		return nil
 	}
 	ending := q.Kind == "progress_discard" && s.Phase == "catan_progress_end"
-	if !ending && s.Phase != "catan_"+q.Kind || len(q.Players) > 2 || len(q.Players) == 2 && q.Players[0] == q.Players[1] || g.Trade != nil || q.Ship || q.Warship {
+	if !ending && s.Phase != "catan_"+q.Kind || len(q.Players) > 2 || len(q.Players) == 2 && q.Players[0] == q.Players[1] || g.Trade != nil || (q.Ship && !(g.twoSeafarersKnights() && q.Kind == "diplomacy")) || q.Warship {
 		return errors.New("双人城市回应阶段无效")
 	}
 	actor := q.Players[0]
@@ -110,6 +113,10 @@ func (s *State) validateTwoCityActionResponse() error {
 	q := k.Pending
 	actor := q.Players[0]
 	switch q.Kind {
+	case "diplomacy":
+		if actor != s.Turn || len(g.diplomacyPlacements(actor)) == 0 {
+			return errors.New("外交缺少合法路线重放位置")
+		}
 	case "knight_retreat":
 		n := q.Knight
 		if n == nil || n.Owner == s.Turn || actor != g.knightResponseActor(n.Owner, s.Turn) || len(g.knightDestinations(*n, true)) == 0 {

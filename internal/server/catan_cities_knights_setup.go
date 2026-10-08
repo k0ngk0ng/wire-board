@@ -63,7 +63,7 @@ func (r *Room) validateCatanCitiesKnightsMap() error {
 // Public sea, Fishing and Explorer rooms may toggle the combination while waiting. Every
 // other recipe keeps its own configuration path; nil means remove only here.
 func (r *Room) setPublicCatanCombinationKnights(setup *game.CatanCitiesKnightsSetup) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (!publicCatanSeaScenario(r.CatanScenario) && r.CatanScenario != "fishing" && !publicCatanExplorerScenario(r.CatanScenario)) {
+	if r.Kind != "catan" || r.Status != "waiting" || (!publicCatanSeaScenario(r.CatanScenario) && r.CatanScenario != "fishing" && !publicCatanExplorerScenario(r.CatanScenario) && !r.twoCatanSeafarers()) {
 		return fmt.Errorf("只能在航海家、渔夫或探索任务等待房间切换城市与骑士组合")
 	}
 	next := *r
@@ -78,6 +78,9 @@ func (r *Room) setPublicCatanCombinationKnights(setup *game.CatanCitiesKnightsSe
 	if err := next.validateCatanScenario(); err != nil {
 		return err
 	}
+	if err := next.validateCatanTwoSetup(); err != nil {
+		return err
+	}
 	if (r.CatanCitiesKnights == nil && next.CatanCitiesKnights == nil) || (r.CatanCitiesKnights != nil && next.CatanCitiesKnights != nil && *r.CatanCitiesKnights == *next.CatanCitiesKnights) {
 		return nil
 	}
@@ -88,11 +91,10 @@ func (r *Room) setPublicCatanCombinationKnights(setup *game.CatanCitiesKnightsSe
 	return nil
 }
 
-// Only the Explorer recipe uses its native two-player setup. Other city games
-// retain their existing three-to-six-player normalizer and dedicated variants.
+// Native Explorer and marked two-player sea recipes share the standard city deck.
 func (r *Room) normalizeCatanCombinationKnights(setup game.CatanCitiesKnightsSetup) (game.CatanCitiesKnightsSetup, error) {
 	n := r.Capacity
-	if n == 2 && publicCatanExplorerScenario(r.CatanScenario) {
+	if n == 2 && (publicCatanExplorerScenario(r.CatanScenario) || r.twoCatanSeafarers()) {
 		n = 3
 	}
 	return game.NormalizeCatanCitiesKnightsSetup(n, setup)

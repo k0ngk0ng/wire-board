@@ -35,6 +35,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 		}
 	} else {
 		next.CatanSeafarers, next.CatanNewWorldMap = nil, nil
+		next.CatanCitiesKnights = nil
 		if scenario != "cities-knights" && (r.twoCatanSeafarers() || r.CatanTwoScenario == "cities-knights") {
 			next.CatanFishing = false
 		}
@@ -55,6 +56,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	r.CatanScenario = next.CatanScenario
 	r.CatanSeafarers, r.CatanNewWorldMap = next.CatanSeafarers, next.CatanNewWorldMap
 	r.CatanOptions = next.CatanOptions
+	r.CatanCitiesKnights = next.CatanCitiesKnights
 	r.CatanFishing, r.CatanFishingLakes = next.CatanFishing, next.CatanFishingLakes
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot
@@ -69,8 +71,17 @@ func (r *Room) validateCatanTwoSetup() error {
 	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" && !game.CatanTwoSeafarersScenario(r.CatanTwoScenario) {
 		return errors.New("双人剧本尚未接入")
 	}
-	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing && !r.twoCatanSeafarers() && r.CatanTwoScenario != "cities-knights" || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || !r.twoCatanSeafarers() && (r.CatanSeafarers != nil || r.CatanNewWorldMap != nil) {
+	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing && !r.twoCatanSeafarers() && r.CatanTwoScenario != "cities-knights" || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil && !r.twoCatanSeafarers() || r.CatanBaseConfiguration != nil || !r.twoCatanSeafarers() && (r.CatanSeafarers != nil || r.CatanNewWorldMap != nil) {
 		return errors.New("双人卡坦人数、版本或尚未核对的组合无效")
+	}
+	if r.CatanCitiesKnights != nil {
+		if r.CatanOptions != (game.CatanOptions{}) {
+			return errors.New("双人海图骑士的助手组合尚未接通")
+		}
+		setup, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+		if err != nil || setup != *r.CatanCitiesKnights {
+			return errors.New("双人海图骑士配置无效")
+		}
 	}
 	if r.twoCatanSeafarers() {
 		if r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanTwoScenario {

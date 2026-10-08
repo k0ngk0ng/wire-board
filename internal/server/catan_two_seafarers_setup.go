@@ -40,8 +40,8 @@ func (r *Room) setCatanTwoSeafarers(request game.CatanSeafarersSetup) error {
 }
 
 func (r *Room) validateCatanTwoFishingSeafarers() error {
-	if !r.twoCatanSeafarers() || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanTwoScenario || r.CatanScenario != "" || r.CatanFishingLakes || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) {
-		return errors.New("双人捕鱼需要适用的航海家剧本，骑士组合尚未接通")
+	if !r.twoCatanSeafarers() || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanTwoScenario || r.CatanScenario != "" || r.CatanFishingLakes || r.CatanCitiesKnights != nil && r.CatanOptions != (game.CatanOptions{}) || r.CatanBaseConfiguration != nil || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) {
+		return errors.New("双人捕鱼需要适用的航海家剧本与有效组合")
 	}
 	setup, err := game.NormalizeCatanTwoFishingSeafarersSetup(*r.CatanSeafarers)
 	if err != nil {

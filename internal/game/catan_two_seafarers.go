@@ -150,7 +150,7 @@ func (s *State) validateTwoSeafarers() error {
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil {
+	if !g.twoSeafarers() || g.Rivers != nil || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers
@@ -166,7 +166,11 @@ func (s *State) validateTwoSeafarers() error {
 	}
 	targets := map[string]int{"shores": 14, "islands": 13, "fog": 12, "desert": 14, "tribe": 13, "cloth": 14, "wonders": 10, "new_world": 12}
 	bonuses := map[string]int{"shores": 2, "islands": 2, "desert": 2, "wonders": 1, "new_world": 1}
-	if sea.VictoryPoints != targets[sea.Scenario] || sea.IslandBonus != bonuses[sea.Scenario] || sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || g.Robber < -1 || g.Robber >= len(g.Tiles) {
+	target := targets[sea.Scenario]
+	if g.twoSeafarersKnights() {
+		target += 2
+	}
+	if sea.VictoryPoints != target || sea.IslandBonus != bonuses[sea.Scenario] || sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("双人海图胜利条件或强盗海盗位置无效")
 	}
 	for i, v := range g.Vertices {
@@ -223,7 +227,7 @@ func (s *State) validateTwoSeafarers() error {
 	return nil
 }
 func (g *Catan) twoSeaRouteWaiting() bool {
-	return g.GoldPending != nil || g.HelperPending != nil || g.tribe() != nil && g.tribe().Pending != nil
+	return g.GoldPending != nil || g.HelperPending != nil || (g.twoSeafarersKnights() && g.CitiesKnights.Pending != nil) || g.tribe() != nil && g.tribe().Pending != nil
 }
 func (g *Catan) twoNeutralShipChoices() []catanTwoNeutralChoice {
 	choices := []catanTwoNeutralChoice{}

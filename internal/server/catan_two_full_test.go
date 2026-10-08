@@ -22,6 +22,9 @@ func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, ha
 	return newTwoVariantsFishingFullTable(t, scenario, events, friendly, harbors, false, helperOptions...)
 }
 func newTwoVariantsFishingFullTable(t *testing.T, scenario string, events, friendly, harbors, fishing bool, helperOptions ...game.CatanOptions) (*Server, *httptest.Server, []*testClient, string) {
+	return newTwoCombinationFullTable(t, scenario, events, friendly, harbors, fishing, false, helperOptions...)
+}
+func newTwoCombinationFullTable(t *testing.T, scenario string, events, friendly, harbors, fishing, knights bool, helperOptions ...game.CatanOptions) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -33,6 +36,9 @@ func newTwoVariantsFishingFullTable(t *testing.T, scenario string, events, frien
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未知双人剧本", "capacity": 2, "catanTwoScenario": "unknown"}, 400)
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止版本注入", "capacity": 2, "catanTwoRules": game.CatanTwoRules}, 400)
 	recipe := map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}
+	if knights {
+		recipe["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{}
+	}
 	if fishing {
 		recipe["catanFishing"] = true
 	}
@@ -247,7 +253,7 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			t.Fatal("incorrect real score", p, score, seat.Score)
 		}
 	}
-	if g.Seafarers != nil && g.Seafarers.Tribe != nil {
+	if g.CitiesKnights == nil && g.Seafarers != nil && g.Seafarers.Tribe != nil {
 		dev += len(g.Seafarers.Tribe.Development)
 	}
 	wantDev := 25
