@@ -9,6 +9,7 @@ import { catanRuleContext } from "../src/catan-rule-context.ts";
 test("events are optional and support only accepted public recipes", () => {
   for (const catanScenario of [
     "",
+    "cities-knights",
     "rivers",
     "caravans",
     "barbarian-attack",
@@ -22,7 +23,6 @@ test("events are optional and support only accepted public recipes", () => {
     assert.equal(catanRuleContext(room).events, "");
     for (const extra of [
       { catanFishing: true },
-      { catanCitiesKnights: {} },
       { catanHarbors: { enabled: true } },
       { catanFriendlyRobber: { enabled: true } },
       { catanNewWorldMap: {} },
@@ -32,7 +32,6 @@ test("events are optional and support only accepted public recipes", () => {
   for (const catanScenario of [
     "transport",
     "fishing",
-    "cities-knights",
     "cloth",
     "tribe",
     "wonders",
@@ -72,4 +71,36 @@ test("saved event catalogue overrides waiting draft and disabling removes it", (
   room.game.catan.eventDeck = { catalogue: CATAN_EVENT_CATALOGUE };
   room.catanEvents = "";
   assert.equal(catanRuleContext(room).events, CATAN_EVENT_CATALOGUE);
+});
+
+test("event knights rules use the actual save and never inherit stale waiting options", () => {
+  const room = {
+    kind: "catan",
+    capacity: 6,
+    catanScenario: "cities-knights",
+    catanCitiesKnights: {},
+    catanEvents: CATAN_EVENT_CATALOGUE,
+  };
+  assert.equal(catanEventsSupported(room), true);
+  assert.equal(
+    catanRuleContext(room).eventKnights,
+    "wire-board-events-knights-v1",
+  );
+  for (const scenario of ["shores", "islands", "fog", "desert"]) {
+    assert.equal(
+      catanEventsSupported({ ...room, catanSeafarers: { scenario } }),
+      true,
+    );
+  }
+  room.game = { catan: { players: Array(6).fill({}), citiesKnights: {} } };
+  assert.equal(catanRuleContext(room).eventKnights, "");
+  room.game.catan.eventDeck = {
+    catalogue: CATAN_EVENT_CATALOGUE,
+    knights: "wire-board-events-knights-v1",
+  };
+  room.catanEvents = "";
+  assert.equal(
+    catanRuleContext(room).eventKnights,
+    "wire-board-events-knights-v1",
+  );
 });

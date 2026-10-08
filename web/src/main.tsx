@@ -2330,6 +2330,9 @@ function Create({
         {eventsAvailable && (
           <CatanEventPicker
             value={catanEvents}
+            citiesKnights={
+              catanScenario === "cities-knights" || catanSeaKnights
+            }
             disabled={busy}
             onChange={setCatanEvents}
           />
@@ -2671,6 +2674,7 @@ function Waiting({
         {catanEventsSupported(room) && (
           <CatanEventPicker
             value={!!room.catanEvents}
+            citiesKnights={!!room.catanCitiesKnights}
             disabled={!host || busy || mapDirty}
             onChange={(enabled) => command("catan_events", { enabled })}
           />

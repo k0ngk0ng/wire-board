@@ -64,6 +64,11 @@ export function catanRuleContext(room: Room) {
       : players > 4 && scenario === "shores"
         ? "wire-board-extended-numbers-v1"
         : "",
+    eventKnights: game
+      ? game.eventDeck?.knights || ""
+      : room.catanEvents && citiesKnights
+        ? "wire-board-events-knights-v1"
+        : "",
     events: game ? game.eventDeck?.catalogue || "" : room.catanEvents || "",
     explorer: game ? !!game.explorer : explorerDraft,
     fishing: game

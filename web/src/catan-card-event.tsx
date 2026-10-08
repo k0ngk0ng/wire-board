@@ -221,7 +221,12 @@ export function CatanCardEventSummary({
           <strong>
             {g.eventDeck.referenceOnly ? "旧版参考事件牌" : "本站事件牌组"}
           </strong>
-          <small>尚未抽牌 · {g.eventDeck.remaining}张普通牌</small>
+          <small>
+            {g.eventDeck.alchemy
+              ? "最近一次生产使用炼金术，未抽事件牌"
+              : "尚未抽牌"}{" "}
+            · 剩余 {g.eventDeck.remaining} 张普通牌
+          </small>
           <small>按2025事件效果执行；采用旧版点数与事件配比。</small>
         </div>
       </section>

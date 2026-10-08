@@ -4,13 +4,13 @@ export const CATAN_EVENT_CATALOGUE = "wire-board-events-v1";
 export function catanEventsSupported(room: Partial<Room>) {
   return (
     room.kind === "catan" &&
-    !room.catanCitiesKnights &&
     !room.catanFishing &&
     !room.catanHarbors?.enabled &&
     !room.catanFriendlyRobber?.enabled &&
     !room.catanNewWorldMap &&
     [
       "",
+      "cities-knights",
       "rivers",
       "caravans",
       "barbarian-attack",

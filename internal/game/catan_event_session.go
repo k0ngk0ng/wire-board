@@ -51,8 +51,11 @@ var catanEventReferenceFaces = [...]struct {
 }
 
 type catanEventSession struct {
-	Catalogue string         `json:"catalogue"`
-	Deck      catanEventDeck `json:"deck"`
+	Catalogue       string         `json:"catalogue"`
+	Deck            catanEventDeck `json:"deck"`
+	Knights         string         `json:"knights,omitempty"`
+	AlchemyRolls    int            `json:"alchemyRolls,omitempty"`
+	LastAlchemyRoll int            `json:"lastAlchemyRoll,omitempty"`
 }
 
 // Private research entry. Additional module combinations need their own
@@ -138,8 +141,11 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue && session.Catalogue != CatanEventCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Transport != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.AllHelpers && !g.Options.Helpers {
+	if g.Explorer != nil || g.Transport != nil || g.Fishing != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.AllHelpers && !g.Options.Helpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
+	}
+	if err := g.validateEventKnights(); err != nil {
+		return err
 	}
 	if err := g.validateSeafarersEventDeck(); err != nil {
 		return err
@@ -168,7 +174,8 @@ func (s *State) validateCatanEventSession() error {
 	// Compare using division rather than multiplying a potentially corrupt cycle.
 	// Every cycle reveals 31 normal cards; five remain hidden below New Year.
 	const drawsPerCycle = catanEventNormalCards - catanEventBottom
-	if g.RollID < len(d.Discard) || (g.RollID-len(d.Discard))%drawsPerCycle != 0 || uint64((g.RollID-len(d.Discard))/drawsPerCycle) != d.Cycle-1 || d.Cycle > 1 && len(d.Discard) == 0 {
+	draws := g.RollID - session.AlchemyRolls
+	if draws < len(d.Discard) || (draws-len(d.Discard))%drawsPerCycle != 0 || uint64((draws-len(d.Discard))/drawsPerCycle) != d.Cycle-1 || d.Cycle > 1 && len(d.Discard) == 0 {
 		return errors.New("事件牌抽取次数与存档回合不一致")
 	}
 	if q := g.Two; q != nil && (len(q.Rolls) > 2 || g.RollID < len(q.Rolls) || (g.RollID-len(q.Rolls))%2 != 0) {
@@ -180,19 +187,22 @@ func (s *State) validateCatanEventSession() error {
 		}
 		return nil
 	}
+	if session.alchemyLatest(g.RollID) {
+		return g.validateEventAlchemy(s.Phase)
+	}
 	if g.setup() || len(d.Discard) == 0 {
 		return errors.New("无效事件牌开局状态")
 	}
 	face := catanEventReferenceFaces[d.Discard[len(d.Discard)-1]]
 	revealed := g.RevealedEvent
-	if revealed == nil || revealed.RollID != g.RollID || revealed.Kind != face.Kind || revealed.Production != face.Production || revealed.Red != 0 || revealed.Face != 0 {
+	if revealed == nil || revealed.RollID != g.RollID || revealed.Kind != face.Kind || revealed.Production != face.Production || !g.validCardEventDice(revealed.Red, revealed.Face) {
 		return errors.New("已揭示事件与实际抽牌不一致")
 	}
 	if q := g.Two; q != nil && len(q.Rolls) > 0 && q.Rolls[len(q.Rolls)-1] != face.Production {
 		return errors.New("双人生产点数与实际事件牌不一致")
 	}
 	if q := g.CardEvent; q != nil {
-		if s.Phase != "catan_card_event" || s.Finished || g.GoldPending != nil || revealed.ProductionStarted || q.Kind != face.Kind || q.Production != face.Production || q.Red != 0 || q.Face != 0 || len(q.Players) == 0 {
+		if s.Phase != "catan_card_event" || s.Finished || g.GoldPending != nil || revealed.ProductionStarted || q.Kind != face.Kind || q.Production != face.Production || q.Red != revealed.Red || q.Face != revealed.Face || len(q.Players) == 0 {
 			return errors.New("事件牌回应与抽牌记录不一致")
 		}
 		seen := map[int]bool{}
@@ -202,7 +212,12 @@ func (s *State) validateCatanEventSession() error {
 			}
 			seen[player] = true
 		}
-	} else if !revealed.ProductionStarted || s.Phase == "catan_card_event" {
+	} else if k := g.CitiesKnights; k != nil && k.Event != nil {
+		e := k.Event
+		if revealed.ProductionStarted || e.Production != revealed.Production || e.Red != revealed.Red || e.Face != revealed.Face || e.Yellow != 0 || e.Epidemic != (revealed.Kind == "epidemic") {
+			return errors.New("城市事件与已揭示事件牌不一致")
+		}
+	} else if (!revealed.ProductionStarted && !s.Finished) || s.Phase == "catan_card_event" {
 		return errors.New("事件牌生产后续缺失")
 	}
 	return nil
@@ -210,6 +225,11 @@ func (s *State) validateCatanEventSession() error {
 
 // Called inside applyCatan's atomic clone, after seat/phase authorization.
 func (s *State) catanDrawEvent() error {
+	return s.catanDrawEventRandom(catanRandom)
+}
+
+// Random dice are supplied by the server, never by the action payload.
+func (s *State) catanDrawEventRandom(randN func(int) int) error {
 	if err := s.validateCatanEventSession(); err != nil {
 		return err
 	}
@@ -237,7 +257,11 @@ func (s *State) catanDrawEvent() error {
 		// number matches the first. This intentionally differs from dice.
 		q.Rolls = append(q.Rolls, face.Production)
 	}
-	if err := next.catanBeginCardEvent(face.Kind, face.Production, 0, 0); err != nil {
+	red, event := 0, 0
+	if next.Catan.CitiesKnights != nil {
+		red, event = randN(6)+1, randN(6)
+	}
+	if err := next.catanBeginCardEvent(face.Kind, face.Production, red, event); err != nil {
 		return err
 	}
 	if err := next.validateCatanEventSession(); err != nil {

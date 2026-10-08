@@ -68,8 +68,8 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "robber_attacks" && production != 7 {
 		return errors.New("强盗袭击必须按点数7处理")
 	}
-	if kind == "trade_advantage" && g.CitiesKnights != nil {
-		return errors.New("贸易优势与城市骑士的商品规则尚未核验")
+	if kind == "trade_advantage" && g.CitiesKnights != nil && (g.EventDeck == nil || g.EventDeck.Knights != CatanEventKnightsRules) {
+		return errors.New("贸易优势与城市骑士需要明确的组合规则版本")
 	}
 	if g.Fishing != nil {
 		return errors.New("事件牌与捕鱼组合尚未接入")

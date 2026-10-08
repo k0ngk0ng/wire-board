@@ -14,7 +14,9 @@ func (s *State) catanView(view map[string]any, player int) {
 				catanEventDeckView
 				Catalogue     string `json:"catalogue"`
 				ReferenceOnly bool   `json:"referenceOnly"`
-			}{public, g.EventDeck.Catalogue, g.EventDeck.Catalogue == catanEventReferenceCatalogue}
+				Knights       string `json:"knights,omitempty"`
+				Alchemy       bool   `json:"alchemy,omitempty"`
+			}{public, g.EventDeck.Catalogue, g.EventDeck.Catalogue == catanEventReferenceCatalogue, g.EventDeck.Knights, g.EventDeck.alchemyLatest(g.RollID)}
 		}
 	}
 	s.catanCityView(v, player)

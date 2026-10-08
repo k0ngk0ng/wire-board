@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanEventsAvailable() bool {
-	if r.Kind != "catan" || r.CatanCitiesKnights != nil || r.CatanFishing || (r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.friendlyRobberEnabled() || r.CatanNewWorldMap != nil {
+	if r.Kind != "catan" || r.CatanFishing || (r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.friendlyRobberEnabled() || r.CatanNewWorldMap != nil {
 		return false
 	}
 	scenario := r.CatanScenario
@@ -14,7 +14,7 @@ func (r *Room) publicCatanEventsAvailable() bool {
 		scenario = r.CatanSeafarers.Scenario
 	}
 	switch scenario {
-	case "", "rivers", "caravans", "barbarian-attack", "shores", "islands", "fog", "desert":
+	case "", "cities-knights", "rivers", "caravans", "barbarian-attack", "shores", "islands", "fog", "desert":
 		return true
 	}
 	return false
