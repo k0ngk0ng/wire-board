@@ -342,6 +342,12 @@ export function CatanTransportPanel({
           {w && !waiting && (
             <CatanTransportSeat game={g} seat={room.you} assets={assets} />
           )}
+          {t.deckRecipe && !waiting && (
+            <details className="small">
+              <summary>本站牌组配置 · 五六人</summary>
+              <p>原25张牌加8张骑士、2张道路建设、2张快速旅程，共37张。</p>
+            </details>
+          )}
           {waiting && <p>120秒内完成，可收起查看地图。</p>}
           {can && t.barbarianPending && (
             <>

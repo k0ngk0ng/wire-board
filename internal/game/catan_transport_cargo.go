@@ -26,9 +26,9 @@ type catanTransportArrivalResult struct {
 	Gold      int    `json:"gold"`
 }
 
-// Persisted internal scenario state. Two-to-four-player Apply is connected;
-// public recipes remain closed pending extended rules, UI and final acceptance.
+// Persisted scenario state, including the extended online deck version.
 type catanTransport struct {
+	DeckRecipe        string                       `json:"deckRecipe,omitempty"`
 	GameTurn          uint64                       `json:"gameTurn"`
 	Swift             bool                         `json:"swift"`
 	Moves             int                          `json:"moves"`

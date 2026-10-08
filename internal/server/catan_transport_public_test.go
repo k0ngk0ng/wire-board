@@ -8,7 +8,7 @@ import (
 )
 
 func TestCatanTransportPublicSelectionAndRematch(t *testing.T) {
-	for _, n := range []int{2, 3, 4} {
+	for _, n := range []int{2, 3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
@@ -38,6 +38,8 @@ func TestCatanTransportPublicSelectionAndRematch(t *testing.T) {
 			}
 			if n == 2 {
 				change(host, "catan_two_scenario", "catanTwoScenario", "rivers", 200)
+			} else if n > 4 {
+				change(host, "catan_scenario", "catanScenario", "spices-for-catan", 200)
 			} else {
 				change(host, "catan_scenario", "catanScenario", "shores", 200)
 			}
@@ -59,6 +61,9 @@ func TestCatanTransportPublicSelectionAndRematch(t *testing.T) {
 			host.command(current(host), "rematch", nil, 200)
 			if s.rooms[id].CatanScenario != "transport" {
 				t.Fatal("rematch lost scenario")
+			}
+			if n > 4 {
+				return
 			}
 			if n == 2 {
 				change(host, "catan_two_scenario", "catanTwoScenario", "", 200)
@@ -102,7 +107,16 @@ func assertTransportInventory(t *testing.T, s *game.State) {
 	for _, n := range tr.Gold {
 		total += n
 	}
-	if total != 100+tr.GoldIssued {
+	gold, resources, tokens := 100, 19, 36
+	wantCards := [5]int{16, 3, 3, 0, 3}
+	if len(g.Players) > 4 {
+		gold, resources, tokens = 152, 24, 54
+		wantCards = [5]int{24, 5, 5, 0, 3}
+		if tr.DeckRecipe != game.CatanTransportExtendedDeck {
+			t.Fatal("missing deck version")
+		}
+	}
+	if total != gold+tr.GoldIssued {
 		t.Fatal("transport gold imbalance")
 	}
 	cards := [5]int{}
@@ -115,7 +129,7 @@ func assertTransportInventory(t *testing.T, s *game.State) {
 		for _, p := range g.Players {
 			bank += p.Resources[color]
 		}
-		if bank != 19 {
+		if bank != resources {
 			t.Fatal("resource imbalance", color, bank)
 		}
 	}
@@ -124,7 +138,7 @@ func assertTransportInventory(t *testing.T, s *game.State) {
 			cards[card] += count
 		}
 	}
-	if cards != [5]int{16, 3, 3, 0, 3} {
+	if cards != wantCards {
 		t.Fatal("transport development deck", cards)
 	}
 	cargo := map[int]bool{}
@@ -148,7 +162,7 @@ func assertTransportInventory(t *testing.T, s *game.State) {
 			add(id)
 		}
 	}
-	if len(cargo) != 36 {
+	if len(cargo) != tokens {
 		t.Fatal("lost cargo", len(cargo))
 	}
 }
@@ -175,6 +189,9 @@ func assertTransportHistory(t *testing.T, s *Server, clients []*testClient, id s
 	rules := record["catanExpansionRules"].(map[string]any)
 	if record["catanScenario"] != "transport" || rules["transport"] != r.Game.Catan.Transport.Map.Rules {
 		t.Fatal("wrong transport history", record)
+	}
+	if len(r.Seats) > 4 && rules["transport_deck"] != game.CatanTransportExtendedDeck {
+		t.Fatal("lost transport deck recipe")
 	}
 	if len(r.Seats) == 2 && rules["two_player"] != game.CatanTwoRules {
 		t.Fatal("lost two player history")

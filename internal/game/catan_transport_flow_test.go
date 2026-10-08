@@ -47,9 +47,9 @@ func transportRestoreState(t *testing.T, s *State) *State {
 	return &next
 }
 func TestCatanTransportNaturalMatches(t *testing.T) {
-	for _, n := range []int{2, 3, 4} {
+	for _, n := range []int{2, 3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, e := newCatanTransportState(n, CatanOptions{})
+			s, e := NewCatanTransport(n)
 			if e != nil {
 				t.Fatal(e)
 			}
@@ -421,8 +421,8 @@ func TestCatanTransportGoldPlayerTradeAndRoadRestrictions(t *testing.T) {
 		t.Fatal(e)
 	}
 	for _, n := range []int{5, 6} {
-		if _, e := newCatanTransportState(n, CatanOptions{FiveSix: n > 4}); e == nil {
-			t.Fatal("unverified whole-game recipe opened", n)
+		if _, e := newCatanTransportState(n, CatanOptions{FiveSix: true, Helpers: true}); e == nil {
+			t.Fatal("unsupported helper combination opened", n)
 		}
 	}
 }

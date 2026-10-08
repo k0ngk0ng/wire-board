@@ -443,6 +443,7 @@ export type CatanAttack = {
 };
 export type CatanTransport = {
   rules: string;
+  deckRecipe?: string;
   map: {
     sites: {
       tile: number;

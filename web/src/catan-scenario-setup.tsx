@@ -6,7 +6,7 @@ const scenarios = [
     id: "transport",
     name: "商人与蛮族 · 运输",
     description:
-      "升级马车、运送货物赚金币与分数；二至四人，13分获胜。双人加入中立势力与贸易筹码。",
+      "升级马车、运送货物赚金币与分数；二至六人，13分获胜。双人加入中立势力与贸易筹码，五六人使用扩大地图与配对回合。",
   },
   {
     id: "barbarian-attack",
@@ -277,9 +277,11 @@ export function CatanScenarioPicker({
                           "rivers",
                           "caravans",
                         ].includes(s.id)
-                      : !["spices-for-catan", "barbarian-attack"].includes(
-                          s.id,
-                        ))) ||
+                      : ![
+                          "spices-for-catan",
+                          "barbarian-attack",
+                          "transport",
+                        ].includes(s.id))) ||
                 (players > 4 && (friendly || harbors) && s.id === "cloth") ||
                 (friendly && s.id === "shores" && players < 4) ||
                 (friendly &&
@@ -316,6 +318,11 @@ export function CatanScenarioPicker({
       {players > 4 && ["rivers", "caravans"].includes(value) && (
         <p className="muted small">
           本站数字配置：采用固定数列沿逆时针螺旋摆放，数字数量保持原扩充配置；不宣称与2025实体字母背面一致。
+        </p>
+      )}
+      {players > 4 && value === "transport" && (
+        <p className="muted small">
+          本站牌组配置：五六人增加8张骑士、2张道路建设、2张快速旅程，共37张；按实际开局人数使用。
         </p>
       )}
       {["rivers", "transport"].includes(value) && (
