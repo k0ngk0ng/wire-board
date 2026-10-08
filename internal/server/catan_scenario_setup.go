@@ -31,6 +31,9 @@ func publicCatanFlexibleScenario(scenario string) bool {
 // their separate acceptance gates; public sea rooms carry both the selected
 // scenario and its normalized map configuration.
 func (r *Room) validateCatanScenario() error {
+	if err := r.validateCatanEvents(); err != nil {
+		return err
+	}
 	if err := r.validateCatanFishing(); err != nil {
 		return err
 	}
@@ -199,6 +202,9 @@ func (r *Room) setCatanScenario(scenario string) error {
 	} else if (publicCatanExplorerExtended(r.CatanScenario) && !publicCatanExplorerExtended(scenario)) || (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
+	if !next.publicCatanEventsAvailable() {
+		next.CatanEvents = ""
+	}
 	if err := next.validateCatanScenario(); err != nil {
 		return err
 	}
@@ -206,6 +212,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 		return nil
 	}
 	r.CatanScenario = scenario
+	r.CatanEvents = next.CatanEvents
 	r.CatanBaseConfiguration = next.CatanBaseConfiguration
 	r.CatanHarbors = next.CatanHarbors
 	r.CatanFriendlyRobber = next.CatanFriendlyRobber

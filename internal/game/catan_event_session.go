@@ -3,7 +3,7 @@ package game
 import "errors"
 
 // This is a LEGACY REFERENCE catalogue for internal integration, not a verified
-// 2025 physical deck. No public option or client action can enable it.
+// 2025 physical deck. Public creation labels the same face multiset as a site catalogue.
 // Facts transcribed from docs/research/catan-event-cards-legacy-reference.csv;
 // deliberately omit the old printed red die (2025 C&K needs independent dice).
 const catanEventReferenceCatalogue = "legacy-reference-v1"
@@ -135,7 +135,7 @@ func (s *State) validateCatanEventSession() error {
 		return nil
 	}
 	session := g.EventDeck
-	if session.Catalogue != catanEventReferenceCatalogue {
+	if session.Catalogue != catanEventReferenceCatalogue && session.Catalogue != CatanEventCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
 	if g.Explorer != nil || g.Transport != nil || g.Fishing != nil || g.CitiesKnights != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.AllHelpers && !g.Options.Helpers {

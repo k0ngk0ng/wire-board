@@ -1628,7 +1628,10 @@ function CatanBaseBoard({
                     ? "② 配对行动 · 不掷骰、不自由交易"
                     : phase === "catan_discard"
                       ? "所有人同时弃牌"
-                      : (sea &&
+                      : (g.eventDeck &&
+                          phase === "catan_roll" &&
+                          "翻开事件牌，再生产资源") ||
+                        (sea &&
                           !(sea.wonders && phase === "catan_robber") &&
                           catanSeafarerPhases[phase]) ||
                         catanPhases[phase] ||

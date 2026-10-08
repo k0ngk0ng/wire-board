@@ -206,6 +206,16 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
   }
 }
 
+function CatanEventRules({ info }: { info: CatanRuleContext }) {
+  if (!info.events) return null;
+  return (
+    <p>
+      <b>事件牌 · 本站牌组：</b>
+      抽牌代替生产骰，先完成事件，再按牌面点数生产；36张普通牌，新年牌置于底部5张之上，抽到新年后重洗并继续抽牌。双人每回合抽两张（点数相同也照常执行），五六人仅①号抽牌。本站采用交叉核对的旧版点数／事件配比及2025事件效果，不宣称等同2025实体牌表。
+    </p>
+  );
+}
+
 export function CatanRules({ room }: { room: Room }) {
   const info = catanRuleContext(room);
   const { scenario, players, fiveSix, helpers } = info;
@@ -323,13 +333,15 @@ export function CatanRules({ room }: { room: Room }) {
         <p>
           <b>蛮族进攻 · {players}人</b> · 自己回合达到12分立即获胜。
         </p>
+        <CatanEventRules info={info} />
         <h4>建设、生产与蛮族登陆</h4>
         <ol>
           <li>
             顺序放村庄、逆序放城市，每座建筑配道路；只从起始城市相邻资源地块各领1张资源。城堡和沙漠不生产。
           </li>
           <li>
-            正常掷骰生产；7点时超过7张资源的玩家弃掉一半，然后当前玩家选择一位有资源的对手随机偷1张，不移动强盗。
+            {info.events ? "按事件牌点数生产" : "正常掷骰生产"}
+            ；7点时超过7张资源的玩家弃掉一半，然后当前玩家选择一位有资源的对手随机偷1张，不移动强盗。
           </li>
           <li>
             起始建设之后，每次建村或升城触发三组不同的登陆点数；7点与重复点数重掷，对应沿海地块加入蛮族。供应耗尽则停止登陆。
@@ -408,6 +420,7 @@ export function CatanRules({ room }: { room: Room }) {
   const wonders = scenario === "wonders";
   return (
     <>
+      <CatanEventRules info={info} />
       <p>
         <b>
           {info.two

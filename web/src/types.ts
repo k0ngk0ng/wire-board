@@ -221,6 +221,7 @@ export type Room = {
   catanTwoScenario?: string;
   catanScenario?: string;
   catanFishing?: boolean;
+  catanEvents?: string;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
   railMap?: string;

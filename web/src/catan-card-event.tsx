@@ -214,7 +214,18 @@ export function CatanCardEventSummary({
   const g = room.game?.catan;
   if (!g) return null;
   const card = catanRevealedEvent(g);
-  if (!card) return null;
+  if (!card)
+    return g.eventDeck ? (
+      <section className="catan-revealed-event" aria-label="事件牌组">
+        <div className="catan-revealed-description">
+          <strong>
+            {g.eventDeck.referenceOnly ? "旧版参考事件牌" : "本站事件牌组"}
+          </strong>
+          <small>尚未抽牌 · {g.eventDeck.remaining}张普通牌</small>
+          <small>按2025事件效果执行；采用旧版点数与事件配比。</small>
+        </div>
+      </section>
+    ) : null;
   const name = catanEventNames[card.kind] || "事件牌";
   const status = room.game?.finished
     ? "本局已结束"
@@ -246,6 +257,12 @@ export function CatanCardEventSummary({
       <div className="catan-revealed-description">
         <strong>{name}</strong>
         <small>{status}</small>
+        {g.eventDeck && (
+          <small>
+            {g.eventDeck.referenceOnly ? "旧版参考牌组" : "本站牌组"} · 距新年
+            {g.eventDeck.untilNewYear}张 · 剩余{g.eventDeck.remaining}张
+          </small>
+        )}
         {g.citiesKnights && !g.cardEvent && (
           <small className="catan-revealed-dice">
             独立红骰 {card.red} ·{" "}

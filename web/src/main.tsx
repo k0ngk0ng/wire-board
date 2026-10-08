@@ -1,3 +1,8 @@
+import { CatanEventPicker } from "./catan-event-picker";
+import {
+  CATAN_EVENT_CATALOGUE,
+  catanEventsSupported,
+} from "./catan-event-options";
 import { CatanTwoScenarioPicker } from "./catan-two-setup";
 import { CatanTransportSeat } from "./catan-transport";
 import { CatanAttackSeat } from "./catan-attack";
@@ -1969,6 +1974,7 @@ function Create({
   const [catanHarbors, setCatanHarbors] = useState(false);
   const [catanFriendly, setCatanFriendly] = useState(false);
   const [catanSeaKnights, setCatanSeaKnights] = useState(false);
+  const [catanEvents, setCatanEvents] = useState(false);
   const [gemOptions, setGemOptions] = useState<SplendorOptions>({});
   const map = maps.find((m) => m.id === railMap);
   const [k, setK] = useState(kind);
@@ -1976,6 +1982,20 @@ function Create({
     if (!availableGames.includes(k)) setK(availableGames[0] || "");
   }, [availableGames, k]);
   const [capacity, setCapacity] = useState(4);
+  const eventsAvailable = catanEventsSupported({
+    kind: k,
+    catanScenario: capacity === 2 ? catanTwoScenario : catanScenario,
+    catanFishing,
+    catanCitiesKnights:
+      catanSeaKnights || catanScenario === "cities-knights"
+        ? { layout: "variable", rules: "" }
+        : undefined,
+    catanHarbors: { enabled: catanHarbors, rules: "" },
+    catanFriendlyRobber: { enabled: catanFriendly, rules: "" },
+  });
+  useEffect(() => {
+    if (!eventsAvailable) setCatanEvents(false);
+  }, [eventsAvailable]);
   return (
     <Modal title="摆好一张新牌桌" onClose={onClose}>
       <form
@@ -2031,6 +2051,10 @@ function Create({
               capacity >= 3 &&
               supportsPublicCatanFishingSea(catanScenario) &&
               catanFishing,
+            catanEvents:
+              eventsAvailable && catanEvents
+                ? CATAN_EVENT_CATALOGUE
+                : undefined,
             catanCitiesKnights:
               k === "catan" &&
               capacity >= 3 &&
@@ -2323,6 +2347,13 @@ function Create({
               </p>
             </fieldset>
           )}
+        {eventsAvailable && (
+          <CatanEventPicker
+            value={catanEvents}
+            disabled={busy}
+            onChange={setCatanEvents}
+          />
+        )}
         {k === "splendor" && (
           <SplendorOptionPicker value={gemOptions} onChange={setGemOptions} />
         )}
@@ -2667,6 +2698,13 @@ function Waiting({
               }
             />
           )}
+        {catanEventsSupported(room) && (
+          <CatanEventPicker
+            value={!!room.catanEvents}
+            disabled={!host || busy || mapDirty}
+            onChange={(enabled) => command("catan_events", { enabled })}
+          />
+        )}
         {room.kind === "catan" && !room.catanTwoRules && (
           <CatanCitiesKnightsSetup room={room} />
         )}
@@ -3330,6 +3368,7 @@ function Turn({
     ...catanPhases,
     ...(g.catan?.explorer ? { catan_turn: "交易建设，然后开始航行" } : {}),
     ...(g.catan?.seafarers ? catanSeafarerPhases : {}),
+    ...(g.catan?.eventDeck ? { catan_roll: "翻开事件牌，再生产资源" } : {}),
     ...(g.catan?.seafarers?.wonders
       ? { catan_robber: catanPhases.catan_robber }
       : {}),
