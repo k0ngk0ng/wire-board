@@ -1,7 +1,7 @@
 package game
 
-// Private full-scenario acceptance constructor. Six/eight lair numbers remain explicit
-// pending physical component verification; public recipes are still closed.
+// Explicit-inventory full-scenario constructor for acceptance fixtures.
+// Public creation uses the separately versioned site number recipe.
 func newCatanExplorerFullState(players int, numbers []int) (*State, error) {
 	return newCatanExplorerMissionState(players, "explorers-and-pirates", "variable", numbers)
 }

@@ -1,5 +1,21 @@
 const scenarios = [
   {
+    id: "pirate-lairs",
+    name: "探索者与海盗 · 海盗巢穴",
+    description: "派船员合力攻陷巢穴、解放金矿，12 分获胜；二至六人。",
+  },
+  {
+    id: "fish-for-catan",
+    name: "探索者与海盗 · 卡坦鱼群",
+    description: "攻陷海盗巢穴、捕鱼并运回议会岛，15 分获胜；二至六人。",
+  },
+  {
+    id: "explorers-and-pirates",
+    name: "探索者与海盗 · 完整三任务",
+    description: "同时探索巢穴、鱼群与香料任务，17 分获胜；二至六人。",
+  },
+
+  {
     id: "transport",
     name: "双人＋运输",
     description:
@@ -62,7 +78,20 @@ export function CatanTwoScenarioPicker({
       <p className="muted small">
         {scenarios.find((s) => s.id === value)?.description}
       </p>
-      {!["land-ho", "spices-for-catan"].includes(value) && (
+      {["pirate-lairs", "fish-for-catan", "explorers-and-pirates"].includes(
+        value,
+      ) && (
+        <p className="muted small">
+          本站巢穴数字配置：3、4、5、9、10、11，随机分配，攻陷前隐藏；不使用双人贸易筹码。
+        </p>
+      )}
+      {![
+        "land-ho",
+        "spices-for-catan",
+        "pirate-lairs",
+        "fish-for-catan",
+        "explorers-and-pirates",
+      ].includes(value) && (
         <p className="muted small">
           采用 2025 双人规则。本站补充：贸易筹码
           {["rivers", "transport"].includes(value) ? "与金币" : ""}

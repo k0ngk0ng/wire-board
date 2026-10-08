@@ -1206,6 +1206,15 @@ export function CatanExplorerBoard({
             {error}
           </p>
         )}
+        {x.lairs?.numberRecipe && (
+          <details className="small explorer-number-recipe">
+            <summary>本站巢穴数字配置</summary>
+            <p>
+              3、4、5、9、10、11{g.players.length > 4 ? "，另加6、8" : ""}
+              ；随机分配，攻陷前隐藏。未采用未经核实的实体数字配比。
+            </p>
+          </details>
+        )}
         {x.lairs && x.spice && x.fish ? (
           <ExplorerFullMissions
             room={room}

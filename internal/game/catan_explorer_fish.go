@@ -5,8 +5,7 @@ import (
 	"slices"
 )
 
-// Private fish-mission kernel. Its board is official; room creation stays
-// closed until full State/Apply, pirate/lair integration and UI acceptance.
+// Fish-mission controller shared by the fish, spice and full scenarios.
 type catanExplorerFish struct {
 	Retired    []bool                      `json:"retired,omitempty"`
 	LastRoll   *catanExplorerFishRoll      `json:"lastRoll,omitempty"`

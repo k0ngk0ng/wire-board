@@ -272,6 +272,10 @@
   min-width: 0;
   align-self: start;
 }
+.explorer-number-recipe {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
 .explorer-panel > section,
 .explorer-panel > details,
 .explorer-hand {

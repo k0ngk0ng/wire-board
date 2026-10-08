@@ -3,6 +3,22 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "pirate-lairs",
+    name: "探索者与海盗 · 海盗巢穴",
+    description: "派船员合力攻陷巢穴、解放金矿，12 分获胜；二至六人。",
+  },
+  {
+    id: "fish-for-catan",
+    name: "探索者与海盗 · 卡坦鱼群",
+    description: "攻陷海盗巢穴、捕鱼并运回议会岛，15 分获胜；二至六人。",
+  },
+  {
+    id: "explorers-and-pirates",
+    name: "探索者与海盗 · 完整三任务",
+    description: "同时探索巢穴、鱼群与香料任务，17 分获胜；二至六人。",
+  },
+
+  {
     id: "transport",
     name: "商人与蛮族 · 运输",
     description:
@@ -200,7 +216,13 @@ export function CatanFishingSeaPicker({
 }
 
 export const isPublicCatanExplorer = (scenario?: string) =>
-  ["land-ho", "spices-for-catan"].includes(scenario || "");
+  [
+    "land-ho",
+    "spices-for-catan",
+    "pirate-lairs",
+    "fish-for-catan",
+    "explorers-and-pirates",
+  ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
   isPublicCatanExplorer(scenario) || scenario === "transport";
@@ -265,6 +287,9 @@ export function CatanScenarioPicker({
                     "cities-knights",
                     "land-ho",
                     "spices-for-catan",
+                    "pirate-lairs",
+                    "fish-for-catan",
+                    "explorers-and-pirates",
                   ].includes(s.id)) ||
                 (players > 4 &&
                   (fishing
@@ -279,6 +304,9 @@ export function CatanScenarioPicker({
                         ].includes(s.id)
                       : ![
                           "spices-for-catan",
+                          "pirate-lairs",
+                          "fish-for-catan",
+                          "explorers-and-pirates",
                           "barbarian-attack",
                           "transport",
                         ].includes(s.id))) ||
@@ -323,6 +351,13 @@ export function CatanScenarioPicker({
       {players > 4 && value === "transport" && (
         <p className="muted small">
           本站牌组配置：五六人增加8张骑士、2张道路建设、2张快速旅程，共37张；按实际开局人数使用。
+        </p>
+      )}
+      {["pirate-lairs", "fish-for-catan", "explorers-and-pirates"].includes(
+        value,
+      ) && (
+        <p className="muted small">
+          本站巢穴数字配置：3、4、5、9、10、11，五六人再加入6、8；随机分配，攻陷前隐藏。
         </p>
       )}
       {["rivers", "transport"].includes(value) && (

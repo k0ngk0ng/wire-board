@@ -2,8 +2,8 @@ package game
 
 import "errors"
 
-// Private full-state constructor. The token list is deliberately explicit:
-// release still needs verified physical inventory, complete bot/UI acceptance.
+// Explicit-inventory constructor for legacy saves and isolated rule fixtures.
+// Public missions select the labelled site recipe in NewCatanExplorerMission.
 func newCatanExplorerLairsState(players int, layout string, numbers []int) (*State, error) {
 	return newCatanExplorerMissionState(players, "pirate-lairs", layout, numbers)
 }

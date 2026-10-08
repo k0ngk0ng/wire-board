@@ -7,8 +7,8 @@ func catanExplorerMissionScenario(scenario string) bool {
 	return scenario == "pirate-lairs" || scenario == "fish-for-catan" || scenario == "explorers-and-pirates"
 }
 
-// Private: the six lair numbers are still explicit acceptance components,
-// never an invented production default. Public options remain closed.
+// Explicit-inventory constructor retained for isolated acceptance fixtures.
+// Public creation uses NewCatanExplorerMission and its labelled site recipe.
 func newCatanExplorerFishState(players int, numbers []int) (*State, error) {
 	return newCatanExplorerMissionState(players, "fish-for-catan", "variable", numbers)
 }
