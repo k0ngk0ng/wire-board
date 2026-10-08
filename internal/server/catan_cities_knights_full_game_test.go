@@ -35,6 +35,22 @@ func TestCatanHarborsCitiesKnightsFullHTTPGames(t *testing.T) {
 }
 
 func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string, harbors bool, players ...int) {
+	testCatanCitiesKnightsVariantsFullHTTPGames(t, scenario, harbors, false, players...)
+}
+func TestCatanFriendlyKnightsPublicFullHTTPGames(t *testing.T) {
+	for i, scene := range []string{"", "shores", "islands", "fog", "desert", "new_world", "wonders", "cloth"} {
+		for _, harbors := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/harbors=%v", scene, harbors), func(t *testing.T) {
+				offset := 0
+				if harbors {
+					offset = 2
+				}
+				testCatanCitiesKnightsVariantsFullHTTPGames(t, scene, harbors, true, 3+(i+offset)%4)
+			})
+		}
+	}
+}
+func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, harbors, friendly bool, players ...int) {
 	if len(players) == 0 {
 		players = []int{3, 6}
 	}
@@ -96,6 +112,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			if public && harbors {
 				body["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
 			}
+			if friendly {
+				body["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+			}
 			r := clients[0].post("/api/rooms", body, 201)
 			id := r["id"].(string)
 			for p := 1; p < n; p++ {
@@ -153,6 +172,12 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				room := s.rooms[id]
 				state = room.Game
 				g := state.Catan
+				if friendly {
+					assertPublicFriendlyProtection(t, state)
+					if g.FriendlyRobber.Knights != game.CatanFriendlyKnightsRules {
+						t.Fatal("lost combination recipe")
+					}
+				}
 				if scenario == "fishing" {
 					assertFishingCityInventory(t, g)
 				}
@@ -354,6 +379,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 			if sea := room.Game.Catan.Seafarers; sea != nil {
 				versions := history["catanExpansionRules"].(map[string]any)
 				count := 2
+				if friendly {
+					count++
+				}
 				if harbors {
 					count++
 				}
@@ -371,6 +399,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				if history["catanScenario"] != "fishing" || rules["fishing"] != game.CatanFishingRules || rules["cities_knights"] != game.CatanCitiesKnightsRules {
 					t.Fatal("wrong combined fishing history", history)
 				}
+			}
+			if friendly && history["catanExpansionRules"].(map[string]any)["friendly_knights"] != game.CatanFriendlyKnightsRules {
+				t.Fatal("missing friendly knights history")
 			}
 			if harbors && (room.Game.Catan.Harbors == nil || history["catanExpansionRules"].(map[string]any)["harbors"] != game.CatanHarborsRules) {
 				t.Fatal("harbor rules missing from game/history")

@@ -111,7 +111,7 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 }
 
 func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
-	for _, kind := range []string{"sea", "world", "ck"} {
+	for _, kind := range []string{"sea", "world", "fishing"} {
 		t.Run(kind, func(t *testing.T) {
 			r := &Room{Kind: "catan", Status: "waiting", Capacity: 3}
 			switch kind {
@@ -119,8 +119,8 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "unknown"}
 			case "world":
 				r.CatanNewWorldMap = &game.CatanNewWorldMap{}
-			case "ck":
-				r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{}
+			case "fishing":
+				r.CatanFishing = true
 			}
 			before, _ := json.Marshal(r)
 			if err := r.setCatanFriendlyRobber(game.CatanFriendlyRobberSetup{Enabled: true}); err == nil {
@@ -143,9 +143,6 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 	if err := r.setCatanSeafarers(game.CatanSeafarersSetup{Scenario: "unknown"}); err == nil {
 		t.Fatal("sea added after friendly")
 	}
-	if err := r.setCatanCitiesKnights(game.CatanCitiesKnightsSetup{}); err == nil {
-		t.Fatal("CK added after friendly")
-	}
 	after, _ := json.Marshal(r)
 	if string(before) != string(after) {
 		t.Fatal("reverse combination rejection changed room")
@@ -153,7 +150,7 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 }
 
 func TestCatanFriendlyRobberRejectsUnverifiedSavedDraftAtStart(t *testing.T) {
-	for _, kind := range []string{"sea", "ck", "version"} {
+	for _, kind := range []string{"sea", "fishing", "version"} {
 		t.Run(kind, func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
@@ -171,8 +168,8 @@ func TestCatanFriendlyRobberRejectsUnverifiedSavedDraftAtStart(t *testing.T) {
 			switch kind {
 			case "sea":
 				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "unknown"}
-			case "ck":
-				r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{Layout: "variable"}
+			case "fishing":
+				r.CatanFishing = true
 			case "version":
 				r.CatanFriendlyRobber.Rules = "future"
 			}

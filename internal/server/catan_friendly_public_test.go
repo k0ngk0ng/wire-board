@@ -47,7 +47,6 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 		{"kind": "splendor", "capacity": 3}, {"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "rivers"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "cities-knights"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "desert", "catanFishing": true},
 	} {
 		body["name"], body["catanFriendlyRobber"] = "非法组合", game.CatanFriendlyRobberSetup{Enabled: true}
@@ -61,7 +60,6 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	ready()
 	before, _ := json.Marshal(s.rooms[id])
 	selectCatanFriendlyRobber(c, false, 400)
-	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "unknown", "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
@@ -81,7 +79,8 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	}
 	// Disabled draft does not lock players out of other supported combinations.
 	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 200)
-	selectCatanFriendlyRobber(h, true, 400)
+	selectCatanFriendlyRobber(h, true, 200)
+	selectCatanFriendlyRobber(h, false, 200)
 	selectCatanCitiesKnights(h, nil, 200)
 	selectCatanHarbors(h, false, 200)
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "desert"}, 200)

@@ -320,7 +320,10 @@ test("friendly sea fallback is disclosed for new sea drafts but never retrofitte
   const room = { capacity: 3, catanFriendlyRobber: { enabled: true } };
   assert.equal(catanRuleContext(room).friendlySeaFallback, "");
   room.catanSeafarers = { scenario: "shores", layout: "fixed" };
-  assert.equal(catanRuleContext(room).friendlySeaFallback, "wire-board-friendly-sea-fallback-v1");
+  assert.equal(
+    catanRuleContext(room).friendlySeaFallback,
+    "wire-board-friendly-sea-fallback-v1",
+  );
   room.catanFriendlyRobber.enabled = false;
   assert.equal(catanRuleContext(room).friendlySeaFallback, "");
   room.catanFriendlyRobber.enabled = true;
@@ -329,10 +332,14 @@ test("friendly sea fallback is disclosed for new sea drafts but never retrofitte
   room.game.catan.seafarers = { scenario: "shores", layout: "fixed" };
   room.game.catan.friendlyRobber = { rules: "catan-friendly-robber-2025" };
   assert.equal(catanRuleContext(room).friendlySeaFallback, "");
-  room.game.catan.friendlyRobber.fallback = "wire-board-friendly-sea-fallback-v1";
+  room.game.catan.friendlyRobber.fallback =
+    "wire-board-friendly-sea-fallback-v1";
   room.catanFriendlyRobber.enabled = false;
   delete room.catanSeafarers;
-  assert.equal(catanRuleContext(room).friendlySeaFallback, "wire-board-friendly-sea-fallback-v1");
+  assert.equal(
+    catanRuleContext(room).friendlySeaFallback,
+    "wire-board-friendly-sea-fallback-v1",
+  );
 });
 
 test("saved Explorer target overrides stale lobby drafts and survives legacy views", () => {
@@ -639,4 +646,28 @@ test("new shores extended number recipe uses actual saved map and does not conta
   );
   delete room.game.catan.seafarers.numberRecipe;
   assert.equal(catanRuleContext(room).seaNumberRecipe, "");
+});
+
+test("friendly knights combination explanation follows saved metadata, not stale drafts", () => {
+  const r = {
+    capacity: 3,
+    catanFriendlyRobber: { enabled: true },
+    catanCitiesKnights: {},
+  };
+  assert.equal(
+    catanRuleContext(r).friendlyKnights,
+    "wire-board-friendly-knights-v1",
+  );
+  r.game = {
+    catan: { players: [{}, {}, {}], citiesKnights: {}, friendlyRobber: {} },
+  };
+  assert.equal(catanRuleContext(r).friendlyKnights, "");
+  r.game.catan.friendlyRobber.knights = "wire-board-friendly-knights-v1";
+  r.catanFriendlyRobber.enabled = false;
+  assert.equal(
+    catanRuleContext(r).friendlyKnights,
+    "wire-board-friendly-knights-v1",
+  );
+  delete r.game.catan.friendlyRobber;
+  assert.equal(catanRuleContext(r).friendlyKnights, "");
 });

@@ -193,7 +193,7 @@ func (g *Catan) politicsBotChoices(player int) []botChoice {
 				victims := map[int]bool{}
 				for _, id := range t.Vertices {
 					v := g.Vertices[id]
-					if v.Level == 0 || v.Owner < 0 || g.Players[v.Owner].Eliminated {
+					if v.Level == 0 || v.Owner < 0 || g.Players[v.Owner].Eliminated || g.friendlyProtected(v.Owner) {
 						continue
 					}
 					if v.Owner == player {

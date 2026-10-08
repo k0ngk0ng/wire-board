@@ -266,9 +266,18 @@ export function CatanProgressHand({
                         ? "按顺序选择一至两名亮起的骑士。再次点击已选骑士可撤回该步及后续选择。"
                         : `在地图上选择亮起的${selectedMode === "progress_tile" ? "地块" : selectedMode === "progress_edge" ? (g.seafarers ? "道路或船只" : "道路") : "交点"}。`}
                   </p>
+                  {s.card === 21 && g.taxationTiles?.includes(-1) && (
+                    <button
+                      disabled={busy}
+                      aria-pressed={s.picks.includes(-1)}
+                      onClick={() => update({ picks: [-1] })}
+                    >
+                      选择场外退路（不偷牌）
+                    </button>
+                  )}
                   <p aria-live="polite">
                     {s.picks.length
-                      ? `已选 ${s.picks.map((id) => `#${id + 1}`).join(" → ")}`
+                      ? `已选 ${s.picks.map((id) => (id === -1 ? "场外（不偷牌）" : `#${id + 1}`)).join(" → ")}`
                       : "尚未选择目标"}
                   </p>
                   {!!s.picks.length && (
