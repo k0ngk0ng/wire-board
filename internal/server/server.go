@@ -46,6 +46,7 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
+	CatanEvents            string                         `json:"catanEvents,omitempty"`
 	CatanFishing           bool                           `json:"catanFishing,omitempty"`
 	CatanTwoRules          string                         `json:"catanTwoRules,omitempty"`
 	CatanTwoScenario       string                         `json:"catanTwoScenario,omitempty"`
@@ -472,6 +473,9 @@ func summary(r *Room) map[string]any {
 	if r.CatanFishing {
 		result["catanFishing"] = true
 	}
+	if r.CatanEvents != "" {
+		result["catanEvents"] = r.CatanEvents
+	}
 	if r.CatanScenario != "" {
 		result["catanScenario"] = r.CatanScenario
 	}
@@ -602,6 +606,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanEvents            string                         `json:"catanEvents"`
 		CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration"`
 		CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
 		CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors"`
@@ -766,6 +771,11 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			fail(w, 400, err.Error())
 			return
 		}
+	}
+	room.CatanEvents = req.CatanEvents
+	if err := room.validateCatanEvents(); err != nil {
+		fail(w, 400, err.Error())
+		return
 	}
 	room.LastActive = room.Updated
 	if e := s.save(room); e != nil {
@@ -946,6 +956,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		err = next.setCatanHarbors(*req.CatanHarbors)
+	case "catan_events":
+		if next.Host != u.ID || req.Enabled == nil {
+			err = errors.New("只有房主能在开局前切换事件牌")
+			break
+		}
+		err = next.setCatanEvents(*req.Enabled)
 	case "catan_cities_knights":
 		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerExtended(next.CatanScenario)) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
@@ -1245,6 +1261,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
 			} else {
 				next.Game, err = s.newGame(next.Kind, len(next.Seats))
+			}
+			if err == nil && next.CatanEvents != "" {
+				err = next.Game.EnableCatanEvents(next.CatanEvents)
 			}
 			if err == nil {
 				next.Status = "playing"

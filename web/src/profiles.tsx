@@ -303,6 +303,9 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                   match.catanExpansions?.includes("harbors") &&
                   " · 港口霸主"}
                 {match.kind === "catan" &&
+                  match.catanExpansions?.includes("event_cards") &&
+                  " · 事件牌（本站牌组）"}
+                {match.kind === "catan" &&
                   match.catanExpansions?.includes("cities_knights") &&
                   " · 城市与骑士"}
                 {match.kind === "catan" &&

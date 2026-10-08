@@ -14,7 +14,7 @@ func (s *State) catanView(view map[string]any, player int) {
 				catanEventDeckView
 				Catalogue     string `json:"catalogue"`
 				ReferenceOnly bool   `json:"referenceOnly"`
-			}{public, g.EventDeck.Catalogue, true}
+			}{public, g.EventDeck.Catalogue, g.EventDeck.Catalogue == catanEventReferenceCatalogue}
 		}
 	}
 	s.catanCityView(v, player)
