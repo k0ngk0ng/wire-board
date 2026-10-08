@@ -107,6 +107,13 @@ func twoHTTPActor(s *game.State) int {
 func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 	t.Helper()
 	g, q := s.Catan, s.Catan.Two
+	if g.Attack != nil {
+		assertPublicAttackInventory(t, s)
+		if g.Attack.TwoRules != game.CatanTwoAttackRules || len(g.Players) != 2 || len(q.Tokens) != 2 || q.Tokens[0] < 0 || q.Tokens[1] < 0 || q.Bank < 0 || q.Tokens[0]+q.Tokens[1]+q.Bank != 20+q.TokensIssued {
+			t.Fatal("two attack economy")
+		}
+		return
+	}
 	wantTokens := 20 + q.TokensIssued
 	if g.Fishing != nil {
 		wantTokens = 0
@@ -318,6 +325,17 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 				t.Fatal("private hand exposed", viewer, p)
 			}
 		}
+		if s.Catan.Attack != nil {
+			a := v["attack"].(map[string]any)
+			if a["deck"] != nil {
+				t.Fatal("attack deck exposed")
+			}
+			if q := s.Catan.Attack.EndPlan; q != nil && viewer != q.Player {
+				if a["endPlan"].(map[string]any)["moves"] != nil || a["moveChoices"] != nil || a["previewKnights"] != nil {
+					t.Fatal("private knight plan exposed")
+				}
+			}
+		}
 		if s.Catan.Fishing != nil {
 			f := v["fishing"].(map[string]any)
 			tokens := f["tokens"].(map[string]any)
@@ -367,6 +385,11 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 	}
 }
 
+func TestCatanTwoAttackCompleteHTTPGames(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		t.Run(fmt.Sprint(events), func(t *testing.T) { runTwoCompleteHTTPGames(t, "barbarian-attack", events) })
+	}
+}
 func TestCatanTwoCompleteHTTPGames(t *testing.T)         { runTwoCompleteHTTPGames(t, "") }
 func TestCatanTwoRiversCompleteHTTPGames(t *testing.T)   { runTwoCompleteHTTPGames(t, "rivers") }
 func TestCatanTwoCaravansCompleteHTTPGames(t *testing.T) { runTwoCompleteHTTPGames(t, "caravans") }
@@ -395,6 +418,9 @@ func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, frien
 				assertTwoHTTPInventory(t, state)
 				assertTwoVariantsHTTP(t, state, friendly, harbors)
 				label := fmt.Sprintf("%s/rolls=%d", state.Phase, len(state.Catan.Two.Rolls))
+				if a := state.Catan.Attack; a != nil && a.Pending != nil {
+					label += fmt.Sprintf("/%s/neutral%t", a.Pending.Card, a.Pending.Neutral)
+				}
 				if state.Catan.HelperPending != nil {
 					label += "/" + state.Catan.HelperPending.Kind + "/next=" + state.Catan.Two.AfterHelper
 				}
@@ -417,6 +443,17 @@ func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, frien
 				action, err := state.BotAction(actor)
 				if err != nil {
 					t.Fatal(steps, state.Phase, err)
+				}
+				// Deliberately choose legal forced trades in the attack games
+				// so its newly admitted response phase runs in all three modes.
+				if scenario == "barbarian-attack" && modes["catan_two_trade"] < 3 && (state.Phase == "catan_roll" || state.Phase == "catan_turn") && !state.Catan.Two.Spent && state.Catan.Two.Tokens[actor] >= 2 {
+					count := 0
+					for _, v := range state.Catan.Players[1-actor].Resources {
+						count += v
+					}
+					if count >= 2 {
+						action = game.Action{Type: "catan_two_trade"}
+					}
 				}
 				coverage["action/"+action.Type]++
 				if state.Catan.Two.Pending != nil {
@@ -479,7 +516,13 @@ func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, frien
 				wagonAdvanced := state.Catan.Caravans != nil && len(s.rooms[id].Game.Catan.Caravans.Wagons) == len(state.Catan.Caravans.Wagons)+1
 				neutralAdvanced := state.Catan.Two.Sequence != s.rooms[id].Game.Catan.Two.Sequence
 				helperAdvanced := state.Catan.HelperPending != nil && s.rooms[id].Game.Catan.HelperPending != nil && state.Catan.HelperPending.Kind != s.rooms[id].Game.Catan.HelperPending.Kind
-				if pending && !helperAdvanced && !wagonAdvanced && !neutralAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
+				attackAdvanced := false
+				if state.Catan.Attack != nil {
+					old, _ := json.Marshal(state.Catan.Attack)
+					next, _ := json.Marshal(s.rooms[id].Game.Catan.Attack)
+					attackAdvanced = string(old) != string(next)
+				}
+				if pending && !attackAdvanced && !helperAdvanced && !wagonAdvanced && !neutralAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
 					t.Fatal("response did not advance", state.Phase, mode)
 				}
 			}
@@ -493,7 +536,7 @@ func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, frien
 			if scenario == "cities-knights" {
 				target = 13
 			}
-			if scenario == "caravans" {
+			if scenario == "caravans" || scenario == "barbarian-attack" {
 				target = 12
 			}
 			if r.Game.Catan.Fishing != nil && r.Game.Catan.Fishing.Tokens.BootOwner == winner {
@@ -528,6 +571,9 @@ func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, frien
 					}
 					if fishing && record["catanExpansionRules"].(map[string]any)["two_fishing_knights"] != game.CatanTwoFishingKnightsRules {
 						t.Fatal("missing combined fishing knight history", record)
+					}
+					if scenario == "barbarian-attack" && (record["catanScenario"] != scenario || record["catanExpansionRules"].(map[string]any)["two_attack"] != game.CatanTwoAttackRules) {
+						t.Fatal("missing two attack history")
 					}
 					cityScenario := "cities-knights"
 					if fishing {
@@ -567,6 +613,9 @@ func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, frien
 	}
 	if len(helperOptions) > 0 && helperOptions[0].Helpers {
 		phases = append(phases, "catan_helper")
+	}
+	if scenario == "barbarian-attack" {
+		phases = append(phases, "catan_attack_card", "catan_attack_end")
 	}
 	if scenario == "caravans" {
 		phases = append(phases, "catan_caravan_bid", "catan_caravan_place")

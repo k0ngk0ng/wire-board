@@ -162,6 +162,10 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["barbarian_attack"] = g.Attack.Rules
+			if g.Attack.TwoRules != "" {
+				record.CatanExpansionRules["two_attack"] = g.Attack.TwoRules
+				record.CatanRules = g.Two.Rules
+			}
 		}
 		if g.Fishing != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "fishing")

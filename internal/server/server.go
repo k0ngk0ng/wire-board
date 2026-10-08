@@ -1258,6 +1258,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 							} else {
 								next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 							}
+						} else if next.CatanTwoScenario == "barbarian-attack" {
+							next.Game, err = game.NewCatanTwoAttack(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "caravans" {
 							next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "cities-knights" {

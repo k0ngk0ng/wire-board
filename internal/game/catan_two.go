@@ -125,6 +125,9 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateTwoHelpers(); err != nil {
 		return err
 	}
+	if err := s.validateTwoAttack(); err != nil {
+		return err
+	}
 	if err := s.validateTwoKnights(); err != nil {
 		return err
 	}
@@ -247,6 +250,9 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if s.Finished {
 		q.AfterHelper = ""
 		q.AfterRoute = ""
+		if g.twoAttack() {
+			g.Attack.TwoLanding = false
+		}
 		return nil
 	}
 	if q.AfterRoute != "" && !g.twoSeaRouteWaiting() {
@@ -295,6 +301,9 @@ func (s *State) catanTwoStartBuild(kind string) error {
 	g, q := s.Catan, s.Catan.Two
 	if len(g.twoNeutralChoices(kind)) == 0 {
 		s.Log = append(s.Log, "两家中立势力均无合法建设位置，本次无需额外建设")
+		if g.twoAttack() && g.Attack.TwoLanding {
+			return s.catanTwoAttackLandings(false)
+		}
 		return nil
 	}
 	q.Sequence++
@@ -338,6 +347,11 @@ func (s *State) catanTwoBuild(player int, a Action) error {
 		}
 	}
 	s.catanLog(player, "为中立势力 %d 建造%s #%d", a.Target+1, what, at+1)
+	if g.twoAttack() && g.Attack.TwoLanding {
+		if err := s.catanTwoAttackLandings(choice.Vertex >= 0); err != nil {
+			return err
+		}
+	}
 	s.catanTwoQueueBuild(remaining, resume)
 	s.catanScores()
 	if q.Pending == nil {

@@ -18,17 +18,26 @@ type catanAttackLandingRecord struct {
 }
 
 // NewCatanAttack selects the verified printed map for the actual player count.
-// Helpers, two-player rules and other combinations retain separate entry gates.
+// Two-player rules and other combinations retain separate entry gates.
 func NewCatanAttack(n int) (*State, error) {
+	if n < 3 {
+		return nil, errors.New("双人蛮族进攻请使用双人规则入口")
+	}
 	return newCatanAttackState(n, CatanOptions{FiveSix: n > 4})
 }
 
 // Internal variants may reuse the constructor with already validated options.
 func newCatanAttackState(n int, options CatanOptions) (*State, error) {
-	if options.Helpers || options.AllHelpers {
+	if options.Helpers || options.AllHelpers || n == 2 && options != (CatanOptions{}) {
 		return nil, errors.New("蛮族进攻助手组合尚未核对")
 	}
-	s, err := NewCatan(n, options)
+	var s *State
+	var err error
+	if n == 2 {
+		s, err = newCatanTwoCore()
+	} else {
+		s, err = NewCatan(n, options)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +53,16 @@ func newCatanAttackState(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
+	if n == 2 {
+		g.Attack.TwoRules = CatanTwoAttackRules
+		if err = g.prepareTwoNeutrals(); err != nil {
+			return nil, err
+		}
+	}
 	s.Log = []string{"蛮族进攻：起始先建村庄，再逆序建城市；城市只领每相邻地块1张起始资源", "蛮族进攻：不使用强盗或最大骑士军队；自己回合达到12分获胜"}
+	if n == 2 {
+		s.Log = append(s.Log, "双人蛮族：两次生产，共享中立骑士；真人与中立村庄分别触发登陆；筹码可移动蛮族")
+	}
 	s.catanScores()
 	return s, s.validateCatanAttack()
 }
@@ -55,9 +73,17 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if !g.twoAttack() && (a.NeutralPrisoners != 0 || a.TwoLanding || a.Pending != nil && a.Pending.Neutral || s.Phase == "catan_two_build" || s.Phase == "catan_two_trade") {
+		return errors.New("多人蛮族混入双人组件")
+	}
 	n := len(g.Players)
-	if n < 3 || n > 6 || g.Two != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
+	if n < 2 || n > 6 || (n == 2 || g.Two != nil || a.TwoRules != "") && !g.twoAttack() || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
 		return errors.New("蛮族进攻人数或尚未接入的组合无效")
+	}
+	if g.twoAttack() {
+		if err := s.validateTwoAttack(); err != nil {
+			return err
+		}
 	}
 	if err := a.validate(g); err != nil {
 		return err
@@ -68,7 +94,7 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_attack_card", "catan_attack_end", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
@@ -78,7 +104,7 @@ func (s *State) validateCatanAttack() error {
 		if q.ID != a.CardSequence || q.ID < 1 || q.Player != s.Turn || q.Player < 0 || q.Player >= n || g.Players[q.Player].Eliminated || g.Trade != nil || s.Finished {
 			return errors.New("蛮族进攻发展卡回应者或序号无效")
 		}
-		if q.Card == "capture" && len(a.captureTargets()) == 0 || (q.Card == "knighthood" || q.Card == "swift_knight") && len(a.recruitEdges(g, q.Player, q.Card)) == 0 || q.Card == "treason" && !a.cardSupplyReady() {
+		if q.Card == "capture" && len(a.captureTargets()) == 0 || (q.Card == "knighthood" || q.Card == "swift_knight") && len(a.recruitEdges(g, g.attackRecruitOwner(q.Player), q.Card)) == 0 || q.Card == "treason" && !a.cardSupplyReady() {
 			return errors.New("蛮族进攻发展卡没有可完成的效果")
 		}
 	}
@@ -239,7 +265,9 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		left[p] = 6
 	}
 	for _, k := range a.Knights {
-		left[k.Player]--
+		if k.Player >= 0 {
+			left[k.Player]--
+		}
 	}
 	public["knightsLeft"] = left
 	public["canAct"] = !s.Finished && (a.Pending != nil && a.Pending.Player == player || a.EndPlan != nil && a.EndPlan.Player == player)
@@ -249,7 +277,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		case "capture":
 			public["targets"] = a.captureTargets()
 		case "knighthood", "swift_knight":
-			public["edges"] = a.recruitEdges(g, player, a.Pending.Card)
+			public["edges"] = a.recruitEdges(g, g.attackRecruitOwner(player), a.Pending.Card)
 		case "treason":
 			plans := a.treasonPlans()
 			sources, destinations := []int{}, []int{}

@@ -10,6 +10,12 @@ import {
   catanTwoFishingSeafarersNote,
 } from "./catan-two-seafarers";
 const scenarios = [
+  {
+    id: "barbarian-attack",
+    name: "双人＋蛮族进攻",
+    description:
+      "12 分获胜；共享中立骑士，真人与中立村庄分别触发登陆，可消费贸易筹码移动蛮族。",
+  },
   ...twoCatanSeaScenarios,
   {
     id: "pirate-lairs",
@@ -189,7 +195,9 @@ export function CatanTwoScenarioPicker({
         ].includes(value) && (
           <p className="muted small">
             采用 2025 双人规则。本站补充：贸易筹码
-            {["rivers", "transport"].includes(value) ? "与金币" : ""}
+            {["rivers", "transport", "barbarian-attack"].includes(value)
+              ? "与金币"
+              : ""}
             用完继续记账发放。
             {value === "caravans" && "商队确实无法放满时，只放能放的数量。"}
           </p>

@@ -530,6 +530,7 @@ function CatanBaseBoard({
       room.spectating,
       room.seats[you]?.autoPlay,
       g.attack?.pending?.id,
+      g.attack?.pending?.neutral,
       g.attack?.endPlan?.id,
       JSON.stringify(g.attack?.endPlan?.moves),
     ],

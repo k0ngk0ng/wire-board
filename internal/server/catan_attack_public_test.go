@@ -124,7 +124,7 @@ func assertPublicAttackInventory(t *testing.T, state *game.State) {
 			t.Fatal("resource supply", color, total)
 		}
 	}
-	gold, used := a.GoldBank, 0
+	gold, used := a.GoldBank, a.NeutralPrisoners
 	for _, count := range a.Barbarians {
 		if count < 0 || count > 3 {
 			t.Fatal("invalid occupation")
@@ -170,7 +170,7 @@ func assertPublicAttackInventory(t *testing.T, state *game.State) {
 	if len(counts) != 4 || counts["capture"] != 4 || counts["knighthood"] != 14 || counts["swift_knight"] != 4 || counts["treason"] != 4 {
 		t.Fatal("special card supply", counts)
 	}
-	knights := make([]int, len(g.Players))
+	knights := map[int]int{}
 	edges := map[int]bool{}
 	for _, k := range a.Knights {
 		knights[k.Player]++

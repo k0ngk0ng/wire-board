@@ -53,6 +53,9 @@ func (s *State) catanView(view map[string]any, player int) {
 			public["tokenWindow"] = s.catanTwoTokenWindow(player)
 			if s.catanTwoTokenWindow(player) {
 				public["retreatTiles"] = g.twoRetreatTiles()
+				if g.twoAttack() {
+					public["attackMoves"] = g.twoAttackMoves()
+				}
 				if g.twoKnights() {
 					public["exchangeKnights"] = g.twoKnightTokenVertices(player)
 				}

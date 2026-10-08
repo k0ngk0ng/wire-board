@@ -24,7 +24,7 @@ func (s *State) catanAttackBeginEnd() error {
 	}
 	a := s.Catan.Attack
 	for _, k := range a.Knights {
-		if k.Player == s.Turn {
+		if s.Catan.attackCanMoveKnight(k.Player, s.Turn) {
 			a.EndPlan = &catanAttackEndPlan{ID: a.EndSequence + 1, Player: s.Turn, Moves: []catanAttackMove{}}
 			s.Catan.Trade = nil
 			s.Phase = "catan_attack_end"
@@ -51,7 +51,7 @@ func (s *State) validateCatanAttackPlan() error {
 	if q == nil {
 		return nil
 	}
-	if q.ID != a.EndSequence+1 || q.ID < 1 || q.Player != s.Turn || q.Player < 0 || q.Player >= len(s.Catan.Players) || s.Catan.Players[q.Player].Eliminated || s.Finished || a.Pending != nil || s.Catan.Trade != nil || len(q.Moves) > 6 {
+	if q.ID != a.EndSequence+1 || q.ID < 1 || q.Player != s.Turn || q.Player < 0 || q.Player >= len(s.Catan.Players) || s.Catan.Players[q.Player].Eliminated || s.Finished || a.Pending != nil || s.Catan.Trade != nil || len(q.Moves) > s.Catan.attackMoveLimit() {
 		return errors.New("骑士移动计划回应者或序号无效")
 	}
 	_, err := s.catanAttackPlanPreview()
@@ -95,7 +95,7 @@ func (s *State) catanAttackPlanChoices(preview *State) ([]catanAttackMoveChoice,
 	ready := true
 	for i, k := range a.Knights {
 		original := s.Catan.Attack.Knights[i].Edge
-		if k.Player != s.Turn {
+		if !g.attackCanMoveKnight(k.Player, s.Turn) {
 			continue
 		}
 		required := a.castleEdge(g, k.Edge)
@@ -104,6 +104,26 @@ func (s *State) catanAttackPlanChoices(preview *State) ([]catanAttackMoveChoice,
 		}
 		if moved[original] {
 			continue
+		}
+		neutralMoved := false
+		for _, m := range a.EndPlan.Moves {
+			for _, old := range s.Catan.Attack.Knights {
+				if old.Edge == m.From && old.Player == catanAttackNeutral {
+					neutralMoved = true
+				}
+			}
+		}
+		if g.twoAttack() && neutralMoved && k.Player != catanAttackNeutral {
+			continue
+		}
+		if g.twoAttack() && k.Player == catanAttackNeutral {
+			waiting := false
+			for _, own := range a.Knights {
+				waiting = waiting || own.Player == s.Turn && a.castleEdge(g, own.Edge)
+			}
+			if waiting {
+				continue
+			}
 		}
 		choice := catanAttackMoveChoice{From: original, Required: required, Normal: []int{}, Wheat: []int{}}
 		for edge := range a.knightDestinations(g, i, 3) {

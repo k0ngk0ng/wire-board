@@ -86,7 +86,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 5px;
 }
-.two-token-actions button:last-child {
+.two-token-actions button:nth-child(3):last-child {
   grid-column: 1/-1;
 }
 .catan-two-stock button {
@@ -151,6 +151,10 @@
 }
 .catan-two-choice {
   max-height: 70dvh;
+}
+.catan-two-choice header > button {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .catan-two-choice .catan-picker {
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -126,7 +126,7 @@ func (g *Catan) twoDesert() int {
 }
 
 func (g *Catan) twoRetreatTiles() []int {
-	if g.Transport != nil || g.twoKnights() && (g.CitiesKnights.Invasions == 0 || g.Robber < 0) {
+	if g.Transport != nil || g.twoAttack() || g.twoKnights() && (g.CitiesKnights.Invasions == 0 || g.Robber < 0) {
 		return []int{}
 	}
 	if g.Caravans != nil || g.twoSeafarers() && g.twoDesert() < 0 {
@@ -234,6 +234,12 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		}
 		s.catanLog(player, "花费 %d 枚贸易筹码，从玩家 %d 随机取 %d 张%s，待选择交还 2 张", cost, 2-player, count, what)
 	case "catan_two_robber":
+		if g.twoAttack() {
+			if err := s.catanTwoMoveBarbarian(player, a, cost); err != nil {
+				return err
+			}
+			break
+		}
 		if t := g.Transport; t != nil {
 			if a.Card < 0 || a.Card >= len(t.Barbarians) || !slices.Contains(g.twoTransportRetreatEdges(), a.Edge) {
 				return errors.New("请选择一名蛮族及没有道路、没有其他蛮族的边")
@@ -359,6 +365,23 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	}
 	if q.Tokens[player] < g.twoTokenCost(player) {
 		return Action{}, false
+	}
+	if g.twoAttack() {
+		best := Action{}
+		score := 0
+		moves := g.twoAttackMoves()
+		for _, from := range g.Attack.Map.Coast {
+			for _, to := range moves[from] {
+				value := g.attackTileInterest(player, from)*g.Attack.Barbarians[from] - g.attackTileInterest(player, to)*(g.Attack.Barbarians[to]+1)
+				if value > score {
+					score = value
+					best = Action{Type: "catan_two_robber", Card: from, Tile: to}
+				}
+			}
+		}
+		if score > 0 {
+			return best, true
+		}
 	}
 	if targets := g.twoRetreatTiles(); g.Robber >= 0 && len(targets) > 0 && g.Tiles[g.Robber].Resource < 5 {
 		for _, vertex := range g.Tiles[g.Robber].Vertices {

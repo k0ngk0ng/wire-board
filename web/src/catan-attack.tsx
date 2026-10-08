@@ -246,7 +246,7 @@ export function CatanAttackMap({
             transform={`translate(${(v.x + w.x) / 2},${(v.y + w.y) / 2}) scale(${scale})`}
             {...(available
               ? clickProps(
-                  `选择${room.seats[k.player].name}的骑士 ${original + 1}`,
+                  `选择${k.player < 0 ? "中立" : room.seats[k.player].name}的骑士 ${original + 1}`,
                   () => onSelect({ ...selected, from: original, target: null }),
                 )
               : { pointerEvents: "none" as const })}
@@ -273,7 +273,8 @@ export function CatanAttackMap({
               </text>
             )}
             <title>
-              {room.seats[k.player].name}的骑士 · 路线 {k.edge + 1}
+              {k.player < 0 ? "中立" : room.seats[k.player].name}的骑士 · 路线{" "}
+              {k.edge + 1}
               {a.endPlan && can && k.edge !== original ? "（未确认）" : ""}
             </title>
           </g>
@@ -314,7 +315,14 @@ export function CatanAttackPanel({
   useEffect(() => {
     setCollapsed(false);
     setCoin(null);
-  }, [room.id, room.you, room.game?.phase, a?.pending?.id, a?.endPlan?.id]);
+  }, [
+    room.id,
+    room.you,
+    room.game?.phase,
+    a?.pending?.id,
+    a?.pending?.neutral,
+    a?.endPlan?.id,
+  ]);
   if (!a) return null;
   const mine = attackCanRespond(room),
     q = a.pending,
@@ -352,7 +360,13 @@ export function CatanAttackPanel({
     >
       <header>
         <strong>
-          {plan ? "骑士移动与战斗" : q ? attackCardNames[q.card] : "蛮族进攻"}
+          {plan
+            ? "骑士移动与战斗"
+            : q
+              ? q.neutral
+                ? "放置中立骑士"
+                : attackCardNames[q.card]
+              : "蛮族进攻"}
         </strong>
         <button
           aria-expanded={!collapsed}
@@ -380,19 +394,31 @@ export function CatanAttackPanel({
               发展卡 <b>{a.devRemaining}</b>
             </span>
           </div>
+          {a.twoRules && (
+            <p>中立骑士俘虏：{a.neutralPrisoners || 0}（不计入玩家分数）</p>
+          )}
           {pending && !mine && (
             <p>
               {room.seats[actor].name} 正在
-              {plan ? "安排骑士移动" : `处理${attackCardNames[q!.card]}`}
+              {plan
+                ? "安排骑士移动"
+                : `处理${q!.neutral ? "中立骑士放置" : attackCardNames[q!.card]}`}
               。可收起面板查看地图。
             </p>
           )}
           {pending && mine && (
             <>
               <p>限时120秒，超时自动完成；可收起面板查看地图。</p>
+              {q?.neutral && (
+                <p>
+                  这是全局首名骑士：免费放置一名双方共用的中立骑士，沿用本张牌的放置范围与剩余倒计时。
+                </p>
+              )}
               {plan ? (
                 <>
                   <p>
+                    {a.twoRules &&
+                      "先安排自己的骑士，再移动中立骑士；开始移动中立骑士后不能追加自己的移动。"}
                     每名骑士最多移动一次：通常3步，独立支付1粮可走5步。城堡里的骑士必须离开，随后统一结算沿海战斗。
                   </p>
                   <div className="attack-picks" aria-label="选择待移动骑士">
@@ -405,7 +431,10 @@ export function CatanAttackPanel({
                         }
                         disabled={busy}
                       >
-                        骑士 #{c.from + 1}
+                        {a.knights.find((k) => k.edge === c.from)?.player === -2
+                          ? "中立骑士"
+                          : "骑士"}{" "}
+                        #{c.from + 1}
                         {c.required ? " · 必须离开" : ""}
                       </button>
                     ))}
@@ -435,7 +464,9 @@ export function CatanAttackPanel({
                       ? `选中路线 #${selected.target + 1}`
                       : selected.from !== null
                         ? "请点击地图上亮起的目的地"
-                        : "先点击自己的骑士，或从上方选择"}
+                        : a.twoRules
+                          ? "点击可移动的己方或中立骑士，也可从上方选择"
+                          : "先点击自己的骑士，或从上方选择"}
                   </p>
                   <button
                     disabled={busy || !action}
@@ -538,7 +569,7 @@ export function CatanAttackPanel({
                     disabled={busy || !action}
                     onClick={() => action && submit(action)}
                   >
-                    确认{attackCardNames[q!.card]}
+                    确认{q!.neutral ? "放置中立骑士" : attackCardNames[q!.card]}
                   </button>
                 </>
               )}
@@ -651,9 +682,10 @@ export function CatanAttackPanel({
                               padding: "2px 4px",
                             }}
                           >
-                            {room.seats[p].name}
+                            {room.seats[p]?.name || "中立骑士"}
                           </span>{" "}
                           俘虏 +{n} · 金币 +{b.gold[p]}
+                          {!!b.tokens?.[p] && ` · 贸易筹码 +${b.tokens[p]}`}
                         </p>
                       ),
                   )}
@@ -661,7 +693,10 @@ export function CatanAttackPanel({
                     <p key={i}>
                       俘虏分配掷骰：
                       {c.players
-                        .map((p, j) => `${room.seats[p].name} ${c.dice[j]}`)
+                        .map(
+                          (p, j) =>
+                            `${room.seats[p]?.name || "中立骑士"} ${c.dice[j]}`,
+                        )
                         .join("、")}
                     </p>
                   ))}
