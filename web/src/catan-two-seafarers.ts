@@ -47,3 +47,6 @@ export const supportsTwoCatanSeafarers = (scenario = "") =>
   twoCatanSeaScenarios.some((s) => s.id === scenario);
 export const catanTwoSeafarersNote =
   "本站双人航海家规则：使用四人地图，中立势力各从相隔较远的合法海岸村庄开始。造船后补造中立船，无合法船位才改造中立道路；中立船不移动。中立探索翻开迷雾但不领奖，不占部落奖励边、不与布匹村落贸易。无沙漠时贸易筹码可将强盗退至场外，不影响海盗。每回合完整生产两次。";
+
+export const catanTwoFishingSeafarersNote =
+  "本站双人捕鱼航海家规则：采用四人捕鱼海图和两家中立海岸村庄。每人起始五枚鱼筹码（1、1、2、2、3），不用贸易筹码，起始建筑不再领鱼；每回合两次生产，公开分数落后者鱼行动少付1鱼。用鱼造船也须补造中立船，无合法船位才改修路。中立不持鱼、不领探索或部落奖励、不与布匹村落贸易。保留原剧本胜利条件及旧靴规则。";

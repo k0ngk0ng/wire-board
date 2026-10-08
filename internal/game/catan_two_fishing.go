@@ -23,16 +23,9 @@ func NewCatanTwoFishing(n int, options CatanOptions) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
-	tokens, err := newCatanFishingTokens(2)
+	tokens, err := newTwoCatanFishTokens()
 	if err != nil {
 		return nil, err
-	}
-	for p := range 2 {
-		for _, value := range []int{1, 1, 2, 2, 3} {
-			i := slices.IndexFunc(tokens.DrawPile, func(id int) bool { return catanFishValue(id) == value })
-			tokens.Hands[p] = append(tokens.Hands[p], tokens.DrawPile[i])
-			tokens.DrawPile = slices.Delete(tokens.DrawPile, i, i+1)
-		}
 	}
 	g.Fishing = &CatanFishing{Two: CatanTwoFishingRules, Map: *m, Tokens: *tokens, LastRollID: -1, Started: make([]bool, 2)}
 	if err := g.prepareTwoNeutrals(); err != nil {
@@ -46,6 +39,21 @@ func NewCatanTwoFishing(n int, options CatanOptions) (*State, error) {
 		return nil, err
 	}
 	return s, s.enableTwoHelpers(o)
+}
+
+func newTwoCatanFishTokens() (*catanFishingTokens, error) {
+	tokens, err := newCatanFishingTokens(2)
+	if err != nil {
+		return nil, err
+	}
+	for p := range 2 {
+		for _, value := range []int{1, 1, 2, 2, 3} {
+			i := slices.IndexFunc(tokens.DrawPile, func(id int) bool { return catanFishValue(id) == value })
+			tokens.Hands[p] = append(tokens.Hands[p], tokens.DrawPile[i])
+			tokens.DrawPile = slices.Delete(tokens.DrawPile, i, i+1)
+		}
+	}
+	return tokens, nil
 }
 
 func (g *Catan) twoFishing() bool {

@@ -113,3 +113,24 @@ test("no-desert sea retreat requires explicit server target and current authorit
   room.game.catan.two.retreatTiles = [1];
   assert.deepEqual(twoRetreatTargets(room), [1]);
 });
+
+test("two-player fishing sea rules follow saved state rather than stale waiting flags", () => {
+  const room = {
+    capacity: 2,
+    catanTwoRules: "catan-for-two-2025",
+    catanTwoScenario: "cloth",
+    catanSeafarers: { scenario: "cloth" },
+    catanFishing: true,
+  };
+  const marker = "wire-board-two-fishing-seafarers-v1";
+  assert.equal(catanRuleContext(room).twoFishingSeafarers, marker);
+  assert.equal(catanRuleContext(room).fishing, true);
+  room.game = { catan: { players: [{}, {}], two: {}, vertices: [] } };
+  assert.equal(catanRuleContext(room).twoFishingSeafarers, "");
+  assert.equal(catanRuleContext(room).fishing, false);
+  room.game.catan.fishing = { twoSea: marker };
+  room.game.catan.two.seafarers = "wire-board-two-seafarers-v1";
+  room.game.catan.seafarers = { scenario: "cloth", victoryPoints: 14 };
+  assert.equal(catanRuleContext(room).twoFishingSeafarers, marker);
+  assert.equal(catanRuleContext(room).target, 14);
+});

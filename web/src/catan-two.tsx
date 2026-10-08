@@ -239,7 +239,9 @@ export function CatanTwoPanel({
             <strong>
               双人卡坦
               {g.fishing
-                ? "＋渔夫"
+                ? g.seafarers
+                  ? "＋航海家＋渔夫"
+                  : "＋渔夫"
                 : g.citiesKnights
                   ? "＋城市与骑士"
                   : g.transport

@@ -27,7 +27,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 			next.CatanSeafarers = &setup
 			next.CatanNewWorldMap = nil
 			if scenario == "new_world" {
-				next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(4)
+				next.CatanNewWorldMap, err = next.generateCatanWorldMap()
 				if err != nil {
 					return err
 				}
@@ -35,6 +35,9 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 		}
 	} else {
 		next.CatanSeafarers, next.CatanNewWorldMap = nil, nil
+		if r.twoCatanSeafarers() {
+			next.CatanFishing = false
+		}
 	}
 	if r.Capacity == 2 && publicCatanFlexibleScenario(r.CatanScenario) {
 		next.CatanScenario = ""
@@ -66,7 +69,7 @@ func (r *Room) validateCatanTwoSetup() error {
 	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" && !game.CatanTwoSeafarersScenario(r.CatanTwoScenario) {
 		return errors.New("双人剧本尚未接入")
 	}
-	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || !r.twoCatanSeafarers() && (r.CatanSeafarers != nil || r.CatanNewWorldMap != nil) {
+	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing && !r.twoCatanSeafarers() || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || !r.twoCatanSeafarers() && (r.CatanSeafarers != nil || r.CatanNewWorldMap != nil) {
 		return errors.New("双人卡坦人数、版本或尚未核对的组合无效")
 	}
 	if r.twoCatanSeafarers() {
@@ -83,6 +86,11 @@ func (r *Room) validateCatanTwoSetup() error {
 			}
 		} else if r.CatanNewWorldMap != nil {
 			return errors.New("此双人海图不能包含新世界地形")
+		}
+	}
+	if r.CatanFishing {
+		if err := r.validateCatanTwoFishingSeafarers(); err != nil {
+			return err
 		}
 	}
 	if (r.friendlyRobberEnabled() || r.CatanHarbors != nil && r.CatanHarbors.Enabled) && !r.publicCatanTwoVariantsAvailable() {

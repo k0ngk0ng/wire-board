@@ -10,7 +10,12 @@ import (
 func twoSeaFogFixture(t *testing.T, helpers bool, owner int) (*State, int) {
 	t.Helper()
 	s := twoSeaGame(t, "fog", "fixed", helpers, false)
+	return prepareTwoSeaFogFixture(t, s, helpers, owner)
+}
+func prepareTwoSeaFogFixture(t *testing.T, s *State, helpers bool, owner int) (*State, int) {
+	t.Helper()
 	g := s.Catan
+	g.SetupStep = 4 // Post-setup exploration fixture; do not alter the printed starting islands.
 	// A previously explored lumber hex creates a coastal road approach.
 	for _, tile := range g.Tiles {
 		if tile.Resource == CatanFog {
@@ -19,7 +24,9 @@ func twoSeaFogFixture(t *testing.T, helpers bool, owner int) (*State, int) {
 			f.Terrain = slices.Delete(f.Terrain, i, i+1)
 			g.Tiles[tile.ID].Resource, g.Tiles[tile.ID].Number = 0, f.Numbers[len(f.Numbers)-1]
 			f.Numbers = f.Numbers[:len(f.Numbers)-1]
-			f.StartTiles = append(f.StartTiles, tile.ID)
+			if g.Fishing == nil {
+				f.StartTiles = append(f.StartTiles, tile.ID)
+			}
 			g.Seafarers.Islands = g.findIslands()
 			break
 		}

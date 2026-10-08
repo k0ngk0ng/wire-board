@@ -8,6 +8,7 @@ import (
 const CatanFishingRules = "catan-fishing-2025"
 
 type CatanFishing struct {
+	TwoSea     string                  `json:"twoSea,omitempty"`
 	Two        string                  `json:"two,omitempty"`
 	SeaKnights string                  `json:"seaKnights,omitempty"`
 	Helpers    string                  `json:"helpers,omitempty"`
@@ -62,6 +63,9 @@ func (g *Catan) validateFishing() error {
 	}
 	if (f.Two != "" && !g.twoFishing()) || (g.Two != nil && !g.twoFishing()) || (len(g.Players) == 2 && !g.twoFishing()) {
 		return errors.New("双人渔夫规则标记无效")
+	}
+	if (f.TwoSea != "" || g.Two != nil && g.Seafarers != nil) && !g.twoFishingSeafarers() {
+		return errors.New("双人捕鱼海图规则标记无效")
 	}
 	if f.Explorer != "" {
 		return errors.New("非探险存档不能含探险鱼筹码")
@@ -272,6 +276,9 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
 	if f.Two != "" {
 		v["fishing"].(map[string]any)["two"] = f.Two
+	}
+	if f.TwoSea != "" {
+		v["fishing"].(map[string]any)["twoSea"] = f.TwoSea
 	}
 	if f.SeaKnights != "" {
 		v["fishing"].(map[string]any)["seaKnights"] = f.SeaKnights

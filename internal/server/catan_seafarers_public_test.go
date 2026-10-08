@@ -321,8 +321,15 @@ func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
 	t.Helper()
 	g := s.Catan
 	sea := g.Seafarers
+	target := sea.VictoryPoints
+	if g.Harbors != nil {
+		target++
+	}
+	if g.Fishing != nil && g.Fishing.Tokens.BootOwner == winner {
+		target++
+	}
 	if sea.Scenario == "cloth" {
-		if g.Players[s.Turn].Score >= sea.VictoryPoints {
+		if g.Players[s.Turn].Score >= target {
 			if len(s.Winners) != 1 || winner != s.Turn {
 				t.Fatal("point victory should belong to the active player")
 			}
@@ -361,12 +368,12 @@ func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
 				otherMax = max(otherMax, card.Level)
 			}
 		}
-		if level != 4 && !(level > otherMax && g.Players[winner].Score >= sea.VictoryPoints) {
+		if level != 4 && !(level > otherMax && g.Players[winner].Score >= target) {
 			t.Fatal("invalid wonder victory", level, otherMax, g.Players[winner].Score)
 		}
 		return
 	}
-	if g.Players[winner].Score < sea.VictoryPoints {
+	if g.Players[winner].Score < target {
 		t.Fatal("wrong scenario victory threshold")
 	}
 	if sea.Scenario == "pirate_islands" && sea.PirateIslands.Fortresses[winner].Strength != 0 {
