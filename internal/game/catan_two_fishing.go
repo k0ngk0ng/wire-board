@@ -62,6 +62,9 @@ func (g *Catan) twoFishing() bool {
 
 func (g *Catan) fishActionCost(player int, kind string) int {
 	cost := catanFishCosts[kind]
+	if kind == "catan_transport_fish" && g.fishingTransport() {
+		cost = 2
+	}
 	if kind == "catan_fish_knight" && g.fishingAttack() {
 		cost = 2
 	}

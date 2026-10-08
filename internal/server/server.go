@@ -1310,7 +1310,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						next.Game, err = game.NewCatanAttack(len(next.Seats))
 					}
 				} else if next.CatanScenario == "transport" {
-					if next.CatanCitiesKnights != nil {
+					if next.CatanFishing {
+						next.Game, err = game.NewCatanFishingTransport(len(next.Seats), next.CatanCitiesKnights != nil)
+					} else if next.CatanCitiesKnights != nil {
 						next.Game, err = game.NewCatanTransportCitiesKnights(len(next.Seats))
 					} else {
 						next.Game, err = game.NewCatanTransport(len(next.Seats))

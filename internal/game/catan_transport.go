@@ -93,6 +93,14 @@ func (s *State) validateCatanTransport() error {
 			return errors.New("运输配对行动阶段无效")
 		}
 	}
+	if g.fishingTransport() {
+		if err := g.validateFishing(); err != nil {
+			return err
+		}
+		if (g.Fishing.Pending != nil) != (s.Phase == "catan_fish_replace") {
+			return errors.New("运输捕鱼回应阶段冲突")
+		}
+	}
 	if err := s.validateTransportKnights(); err != nil {
 		return err
 	}
@@ -100,7 +108,7 @@ func (s *State) validateCatanTransport() error {
 		return err
 	}
 
-	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "finished"}
+	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "catan_fish_replace", "finished"}
 	if g.transportKnights() {
 		phases = append(phases, catanTransportCityPhases...)
 	}
@@ -363,6 +371,8 @@ func (s *State) catanTransportMoveAction(player int, a Action) error {
 			}
 			s.catanLog(player, "马车沿道路 #%d 移动，花费%d移动点、%d金币", a.Edge+1, step.MP, step.Toll)
 		}
+	case "catan_transport_fish":
+		err = s.catanTransportFish(player, a)
 	case "catan_transport_wheat":
 		err = t.wheat(g, player, t.Sequence)
 		if err == nil {
@@ -414,6 +424,7 @@ func (s *State) catanTransportMoveAction(player int, a Action) error {
 				return e
 			}
 			next.WheatUsed = q.WheatUsed
+			next.FishUsed = q.FishUsed
 			next.Attempted = q.Attempted
 			t.Travel = next
 			t.Sequence++

@@ -24,13 +24,13 @@ func (r *Room) validateCatanFishing() error {
 	if !r.CatanFishing {
 		return nil
 	}
-	if r.catanRiverRecipe() || r.catanCaravanRecipe() || r.catanAttackRecipe() {
+	if r.catanRiverRecipe() || r.catanCaravanRecipe() || r.catanAttackRecipe() || r.CatanScenario == "transport" {
 		expected, _ := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4})
-		if r.catanAttackRecipe() {
+		if r.catanAttackRecipe() || r.CatanScenario == "transport" {
 			expected = game.CatanOptions{}
 		}
 		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || r.CatanOptions != expected || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
-			return fmt.Errorf("渔夫河流、商队或蛮族进攻组合配置无效")
+			return fmt.Errorf("渔夫河流、商队、蛮族进攻或运输组合配置无效")
 		}
 		return nil
 	}
@@ -58,8 +58,8 @@ func (r *Room) validateCatanFishing() error {
 }
 
 func (r *Room) setCatanFishing(enabled bool) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (!r.catanRiverRecipe() && !r.catanCaravanRecipe() && !r.catanAttackRecipe() && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario)) {
-		return fmt.Errorf("只能在河流、商队、蛮族进攻、航海家或探索者等待房间选择渔夫组合")
+	if r.Kind != "catan" || r.Status != "waiting" || (!r.catanRiverRecipe() && !r.catanCaravanRecipe() && !r.catanAttackRecipe() && r.CatanScenario != "transport" && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario)) {
+		return fmt.Errorf("只能在河流、商队、蛮族进攻、运输、航海家或探索者等待房间选择渔夫组合")
 	}
 	next := *r
 	next.CatanFishing = enabled
@@ -116,7 +116,7 @@ func (r *Room) twoCatanFishingKnights() bool {
 	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanTwoScenario == "cities-knights"
 }
 func (r *Room) validateCatanTwoFishing() error {
-	if r.catanRiverRecipe() || r.catanCaravanRecipe() || r.catanAttackRecipe() {
+	if r.catanRiverRecipe() || r.catanCaravanRecipe() || r.catanAttackRecipe() || r.CatanScenario == "transport" {
 		return r.validateCatanFishing()
 	}
 	if r.twoCatanFishingKnights() {

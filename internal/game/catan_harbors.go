@@ -131,6 +131,9 @@ func (g *Catan) victoryTarget() int {
 	goal := 10
 	if g.Transport != nil {
 		goal = 13
+		if g.fishingTransport() {
+			goal = 12
+		}
 	}
 	if g.Caravans != nil || g.Attack != nil {
 		goal = 12

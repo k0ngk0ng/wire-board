@@ -159,6 +159,19 @@ func (s *State) catanTransportBot(player int) (Action, bool, error) {
 				base.Edge = edge
 				return base, true, nil
 			}
+			if !q.WheatUsed && g.fishingTransport() {
+				if ids := g.fishPayment(player, g.fishActionCost(player, "catan_transport_fish")); ids != nil {
+					copy := *q
+					copy.WheatUsed = true
+					copy.FishUsed = true
+					copy.Points += 2
+					if _, err := copy.quote(g, t.Map, t.Barbarians, t.Gold, edge); err == nil {
+						base.Type = "catan_transport_fish"
+						base.Tokens = ids
+						return base, true, nil
+					}
+				}
+			}
 			if !q.WheatUsed && g.Players[player].Resources[3] > 0 {
 				copy := *q
 				copy.WheatUsed = true

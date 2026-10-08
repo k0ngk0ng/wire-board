@@ -16,7 +16,7 @@ func (s *State) validateEventFishing() error {
 	if err := g.validateFishing(); err != nil {
 		return err
 	}
-	if g.Two != nil && !g.twoFishing() || g.Rivers != nil && !g.fishingRivers() || g.Caravans != nil && !g.fishingCaravans() || g.Attack != nil && !g.fishingAttack() || g.Transport != nil || g.Explorer != nil || g.BaseSetup != nil {
+	if g.Two != nil && !g.twoFishing() || g.Rivers != nil && !g.fishingRivers() || g.Caravans != nil && !g.fishingCaravans() || g.Attack != nil && !g.fishingAttack() || g.Transport != nil && !g.fishingTransport() || g.Explorer != nil || g.BaseSetup != nil {
 		return errors.New("该捕鱼事件牌剧本组合尚未接通")
 	}
 	if (f.Pending != nil) != (s.Phase == "catan_fish_replace") || f.Pending != nil && (g.CardEvent != nil || g.CitiesKnights != nil && (g.CitiesKnights.Event != nil || g.CitiesKnights.Pending != nil)) {

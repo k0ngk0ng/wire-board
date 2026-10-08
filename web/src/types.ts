@@ -546,6 +546,7 @@ export type CatanTransport = {
       position: number;
       points: number;
       wheatUsed: boolean;
+      fishUsed?: boolean;
       neutralTolls?: number;
       attempted: boolean[];
       pending: number;
@@ -575,6 +576,9 @@ export type CatanTransport = {
     drive?: number[];
     relocate?: number[];
     canWheat?: boolean;
+    canFish?: boolean;
+    fishCost?: number;
+    fishTokens?: { id: number; fish: number }[];
     canStop?: boolean;
     upgradeCost?: number[];
     canUpgrade?: boolean;
@@ -676,6 +680,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    transport?: string;
     attack?: string;
     caravans?: string;
     rivers?: string;

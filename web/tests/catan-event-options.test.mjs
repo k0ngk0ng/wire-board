@@ -86,6 +86,7 @@ test("events are optional and support only accepted public recipes", () => {
         "caravans",
         "rivers",
         "barbarian-attack",
+        "transport",
         "shores",
         "islands",
         "fog",
@@ -315,5 +316,29 @@ test("all eight fishing sea maps keep events selectable with knights or Helpers"
         true,
       );
     }
+  }
+});
+
+test("fishing transport changes only its own victory target", () => {
+  for (const knights of [false, true]) {
+    const room = {
+      kind: "catan",
+      capacity: 3,
+      catanScenario: "transport",
+      catanFishing: true,
+      ...(knights ? { catanCitiesKnights: {} } : {}),
+    };
+    assert.equal(catanRuleContext(room).target, knights ? 15 : 12);
+    room.catanFishing = false;
+    assert.equal(catanRuleContext(room).target, knights ? 15 : 13);
+    room.game = {
+      catan: {
+        players: Array(3).fill({}),
+        transport: {},
+        fishing: { transport: "catan-fishing-transport-2025" },
+        ...(knights ? { citiesKnights: {} } : {}),
+      },
+    };
+    assert.equal(catanRuleContext(room).target, knights ? 15 : 12);
   }
 });
