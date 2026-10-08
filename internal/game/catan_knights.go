@@ -53,7 +53,7 @@ func (g *Catan) knightRecruitable(player, vertex int) bool {
 	return g.knightCount(player, 1) < 2 && g.knightPlaceable(player, vertex)
 }
 func (g *Catan) knightPlaceable(player, vertex int) bool {
-	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil || g.clothVillageAt(vertex) || !g.explorerKnightSite(vertex) {
+	if g.CitiesKnights == nil || vertex < 0 || vertex >= len(g.Vertices) || g.Vertices[vertex].Level != 0 || g.knightAt(vertex) != nil || g.clothVillageAt(vertex) || !g.explorerKnightSite(vertex) || !g.pirateKnightSite(vertex) {
 		return false
 	}
 	for _, edge := range g.touching(vertex) {
@@ -106,7 +106,7 @@ func (g *Catan) knightReachable(player, from int) []bool {
 func (g *Catan) knightDestinations(n CatanKnight, retreat bool) []int {
 	out := []int{}
 	for v, reachable := range g.knightReachable(n.Owner, n.Vertex) {
-		if !reachable || v == n.Vertex || g.Vertices[v].Level > 0 || g.clothVillageAt(v) || !g.explorerKnightSite(v) {
+		if !reachable || v == n.Vertex || g.Vertices[v].Level > 0 || g.clothVillageAt(v) || !g.explorerKnightSite(v) || !g.pirateKnightSite(v) {
 			continue
 		}
 		other := g.knightAt(v)
@@ -146,7 +146,7 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 			return errors.New("一级骑士库存不足，或该空交点未连接自己的路线")
 		}
 		cost = []int{0, 0, 1, 0, 1}
-	case "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase":
+	case "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase", "catan_knight_warship":
 		if n == nil || n.Owner != player {
 			return errors.New("请选择自己的骑士")
 		}
@@ -163,6 +163,10 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 			cost = []int{0, 0, 1, 0, 1}
 			if freePromotion {
 				cost = []int{0, 0, 0, 0, 0}
+			}
+		case "catan_knight_warship":
+			if !g.knightCanWarship(n) {
+				return errors.New("需要此前已激活的骑士，且远征线上仍有普通船")
 			}
 		case "catan_knight_move":
 			if !g.knightCanAct(n) || !slices.Contains(g.knightDestinations(*n, false), a.Target) {
@@ -193,6 +197,11 @@ func (s *State) catanKnightActionCost(player int, a Action, freePromotion bool) 
 		n.Strength++
 		n.PromotedAt = k.ActionSerial
 		s.catanLog(player, "支付羊毛×%d、矿石×%d，将交点 #%d 的骑士升至%d级", cost[2], cost[4], a.Vertex+1, n.Strength)
+	case "catan_knight_warship":
+		id := g.pirateNextWarship(player)
+		n.Active = false
+		g.Edges[id].Warship = true
+		s.catanLog(player, "交点 #%d 的骑士转为未激活，将远征线船只 #%d 升级为战舰", a.Vertex+1, id+1)
 	case "catan_knight_move":
 		var displaced *CatanKnight
 		if other := g.knightAt(a.Target); other != nil {
@@ -260,9 +269,10 @@ func (g *Catan) knightBotChoices(player int) []botChoice {
 			strength += n.Strength
 		}
 	}
+	navy := g.pirateIslands() != nil && g.pirateNextWarship(player) >= 0
 	choices := []botChoice{}
 	for _, v := range g.Vertices {
-		if strength < cities && g.knightRecruitable(player, v.ID) {
+		if (strength < cities || navy && strength == 0) && g.knightRecruitable(player, v.ID) {
 			choices = append(choices, botChoice{Action{Type: "catan_knight_recruit", Vertex: v.ID}, 560})
 		}
 	}
@@ -271,8 +281,11 @@ func (g *Catan) knightBotChoices(player int) []botChoice {
 		if n.Owner != player {
 			continue
 		}
-		if !n.Active && cities > 0 {
+		if !n.Active && (cities > 0 || navy) {
 			choices = append(choices, botChoice{Action{Type: "catan_knight_activate", Vertex: n.Vertex}, 760})
+		}
+		if g.knightCanWarship(n) {
+			choices = append(choices, botChoice{Action{Type: "catan_knight_warship", Vertex: n.Vertex}, 800})
 		}
 		if strength < cities && g.knightCanPromote(n) {
 			choices = append(choices, botChoice{Action{Type: "catan_knight_promote", Vertex: n.Vertex}, 580})

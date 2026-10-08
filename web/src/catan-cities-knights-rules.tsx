@@ -8,6 +8,7 @@ import type { CatanRuleContext } from "./catan-rule-context";
 export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
   const wonders = info.scenario === "wonders";
   const cloth = info.scenario === "cloth";
+  const pirate = info.scenario === "pirate_islands";
   return (
     <>
       <p>
@@ -25,6 +26,7 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
       <ol className="catan-rules-list">
         <li>
           <b>开局：</b>
+          {pirate && "每人先预设一座主岛村庄和一艘船。"}
           随机先手，顺序放一座村庄和{info.scenario ? "道路或船只" : "道路"}
           ，再逆序放一座城市和{info.scenario ? "道路或船只" : "道路"}
           {cloth
@@ -36,6 +38,7 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           {info.eventKnights
             ? "先执行事件牌文字，再结算独立红骰与事件骰，最后按牌面点数生产；炼金术替代抽牌。"
             : "先结算事件骰，再按两颗数字骰生产。"}
+          {pirate && "城市事件回应全部结束后，先结算舰队和防守奖励，再生产。"}
           城市在森林、牧场和山脉各获得一张普通资源和一张纸张、布料或钱币；田地、山丘仍产两张普通资源。
           {info.eventKnights && "瘟疫回合城市只产一张普通资源，不产商品。"}
         </li>
@@ -44,13 +47,17 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           船前进七次发起进攻，以城市数量对比所有活跃骑士的等级总和。胜利时贡献最高者独得一分，并列者改选进步牌；失败时有可劫掠城市且贡献最少的玩家，各降级一座非大都会城市。进攻结束后所有骑士失活。
         </li>
         <li>
-          <b>强盗和城墙：</b>首次蛮族进攻前，掷出 7 仍弃牌，但不移动强盗
-          {info.scenario && !wonders ? "、海盗" : ""}
-          或偷牌。每堵城墙花费两砖块，让弃牌上限增加两张，最多三堵；城市被劫掠时失去城墙。
+          <b>{pirate ? "舰队和城墙：" : "强盗和城墙："}</b>
+          {pirate
+            ? "本剧本没有强盗。首次蛮族进攻前舰队休眠，7点仍弃牌但不偷牌；此后7点弃牌后可选择对手偷牌。"
+            : `首次蛮族进攻前，掷出7仍弃牌，但不移动强盗${info.scenario && !wonders ? "、海盗" : ""}或偷牌。`}
+          每堵城墙花费两砖块，让弃牌上限增加两张，最多三堵；城市被劫掠时失去城墙。
         </li>
         <li>
           <b>骑士：</b>
-          羊毛＋矿石招募一级骑士或升级一级，粮食激活；每级最多两枚，三级需要政治三级。新激活的骑士本行动阶段不能行动；移动、驱逐较弱骑士或赶走相邻强盗后失活。骑士会阻断对手路线。
+          羊毛＋矿石招募一级骑士或升级一级，粮食激活；每级最多两枚，三级需要政治三级。新激活的骑士本行动阶段不能行动；移动、驱逐较弱骑士
+          {pirate ? "或升级战舰" : "或赶走相邻强盗"}
+          后失活。骑士会阻断对手路线。
         </li>
         <li>
           <b>城市建设：</b>
@@ -67,7 +74,7 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
         <li>
           <b>获胜：</b>在自己的行动中
           {catanScenarioVictory(info.scenario, info.target)}。
-          {cloth
+          {cloth || pirate
             ? "不使用最长路线和最大骑士军队"
             : "保留最长路线两分，取消最大骑士军队"}
           ；商人控制权值一分，发展牌中的隐藏胜利点不适用。
@@ -77,7 +84,7 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
             <li>
               <b>海上建设：</b>
               木材＋羊毛造船。道路与船只只在己方建筑处接续成贸易路线。
-              {!cloth && "最长路线可包含两者。"}
+              {!cloth && !pirate && "最长路线可包含两者。"}
               每次行动可移动一艘开放航线末端的旧船，新船本阶段不能移动；不能切断骑士与己方建筑的连接。
             </li>
             <li>
@@ -86,7 +93,9 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
             </li>
             <li>
               <b>骑士与海上路线：</b>
-              {wonders
+              {pirate
+                ? "骑士可沿己方道路和船只移动，不能放到未收复的要塞。舰队只按骰子巡航，骑士不驱逐舰队。此前已激活的骑士可消耗激活状态，将远征线上最近的普通船升级为战舰。"
+                : wonders
                 ? "本剧本不使用海盗。骑士可沿己方道路和船只移动。先手选择强盗的沙漠起点，但首次蛮族进攻后强盗才入场。"
                 : "骑士可沿己方道路和船只移动，并驱逐相邻强盗或海盗；选择后必须移动指定的棋子。首次进攻前两者都休眠。海盗封锁相邻造船和普通移船，移动后可偷取相邻船只主人一张手牌。"}
               {cloth &&
@@ -95,8 +104,11 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
             <li>
               <b>进步牌组合：</b>
               道路建设可免费造两条道路或船只；外交可移除开放道路或船只，己方重放必须保持类型，
-              {!wonders && "可搬移海盗旁的船，"}
-              但不能切断骑士连接。征税只移动强盗。
+              {!wonders && !pirate && "可搬移海盗旁的船，"}
+              但不能切断骑士连接。
+              {pirate
+                ? "外交只能移除远征线末端船，重放自己的战舰时保留战舰身份。征税选择有数字陆地并偷牌，不放强盗、不移动舰队。"
+                : "征税只移动强盗。"}
             </li>
           </>
         )}

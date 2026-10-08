@@ -76,6 +76,7 @@ func (s *State) catanAttackFortress(player, die int) bool {
 		}
 		s.catanLog(player, "以 %d 艘战舰攻打要塞，海盗掷出 %d，战败并退回最靠近要塞的 %d 艘船", warships, die, remove)
 	}
+	s.catanPirateStrandedKnights()
 	event.Remaining = f.Strength
 	p.Battle = event
 	s.catanScores()

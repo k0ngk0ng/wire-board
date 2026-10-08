@@ -29,6 +29,7 @@ type CatanCityPlayer struct {
 	ProgressPoints int    `json:"progressPoints"`
 }
 type CatanCityPending struct {
+	Warship bool         `json:"warship,omitempty"`
 	Source  string       `json:"source,omitempty"` // Distinguishes card displacement from a knight attack.
 	Ship    bool         `json:"ship,omitempty"`
 	Target  int          `json:"target"`

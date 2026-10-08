@@ -7,6 +7,7 @@ import {
   catanSeatColor,
 } from "./catan-player-colors";
 import "./catan-pirate-islands.css";
+import { catanRuleContext } from "./catan-rule-context";
 
 export function catanFortressReady(game: CatanState, player: number) {
   const f = game.seafarers?.pirateIslands?.fortresses[player];
@@ -248,10 +249,19 @@ export function CatanPirateProgress({ room }: { room: Room }) {
   const battle = pirates.battle;
   return (
     <section className="catan-pirate-progress" aria-label="海盗群岛进度">
+      {g.citiesKnights && (
+        <small>
+          {g.citiesKnights.invasions === 0
+            ? "舰队休眠 · 首次蛮族进攻后入场"
+            : g.seafarers!.pirate < 0
+              ? "全部要塞收复 · 舰队已退场"
+              : "先完成城市事件，再结算舰队与生产"}
+        </small>
+      )}
       <details>
         <summary>远征与要塞 · 查看进度与规则</summary>
         <p>
-          收复自己的要塞，并在自己的行动阶段达到 10
+          收复自己的要塞，并在自己的行动阶段达到 {catanRuleContext(room).target}
           分获胜。本剧本没有最长路线和最大骑士军队奖励。
         </p>
         {pirates.fortresses.map((fort, i) => {

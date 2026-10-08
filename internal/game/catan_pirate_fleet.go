@@ -99,10 +99,10 @@ func (s *State) catanRaidFleetDice(total int, epidemic bool, dice [2]int) (bool,
 					pick -= n
 				}
 			}
-			s.catanLog(player, "未挡住力量 %d 的海盗，随机失去 %d 张资源", strength, count)
+			s.catanLog(player, "未挡住力量 %d 的海盗，随机失去 %d 张资源或商品", strength, count)
 		}
 	}
-	if len(q.Rewards) > 0 && sum(g.Bank) > 0 {
+	if len(q.Rewards) > 0 && sum(g.Bank[:5]) > 0 {
 		p.Raid = q
 		s.Phase = "catan_fleet_reward"
 		return true, nil
@@ -129,7 +129,7 @@ func (s *State) catanFleetReward(player int, a Action) error {
 	for len(q.Rewards) > 0 && g.Players[q.Rewards[0]].Eliminated {
 		q.Rewards = q.Rewards[1:]
 	}
-	if len(q.Rewards) > 0 && sum(g.Bank) > 0 {
+	if len(q.Rewards) > 0 && sum(g.Bank[:5]) > 0 {
 		return nil
 	}
 	if len(q.Rewards) > 0 {
@@ -145,7 +145,7 @@ func (s *State) catanFleetRewardBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive fleet reward seat")
 	}
 	best := -1
-	for color, count := range g.Bank {
+	for color, count := range g.Bank[:5] {
 		if count > 0 && (best < 0 || g.Players[player].Resources[color] < g.Players[player].Resources[best]) {
 			best = color
 		}

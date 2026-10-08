@@ -139,7 +139,14 @@ export function CatanProgressHand({
               取消
             </button>
           </header>
-          <p>{catanProgressDescription(s.card, !!g.seafarers, !!g.explorer)}</p>
+          <p>
+            {catanProgressDescription(
+              s.card,
+              !!g.seafarers,
+              !!g.explorer,
+              !!g.seafarers?.pirateIslands,
+            )}
+          </p>
           {!g.progressPlayable?.includes(s.card) ? (
             <p>
               {s.card === 0

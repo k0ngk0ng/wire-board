@@ -9,24 +9,34 @@ export function catanFleetSteps(
   const old = before.seafarers,
     next = after.seafarers;
   const path = next?.pirateIslands?.fleetPath;
+  const fleet = after.eventDeck?.fleet || next?.pirateIslands?.cityFleet;
+  const oldFleet = before.eventDeck?.fleet || old?.pirateIslands?.cityFleet;
+  const continued =
+    after.rollId === before.rollId &&
+    fleet?.rollId === after.rollId &&
+    fleet.resolved &&
+    oldFleet?.rollId === before.rollId &&
+    !oldFleet.resolved;
+  const dice = fleet?.dice || after.dice;
   if (
     !old?.pirateIslands ||
     !next ||
     !path?.length ||
-    after.rollId !== before.rollId + 1 ||
+    (after.rollId !== before.rollId + 1 && !continued) ||
+    (fleet && (fleet.rollId !== after.rollId || !fleet.resolved)) ||
     old.pirate < 0 ||
     next.pirate < 0 ||
     path.join(",") !== old.pirateIslands.fleetPath.join(",")
   )
     return [];
   const from = path.indexOf(old.pirate),
-    count = Math.min(...after.dice);
+    count = Math.min(...dice);
   if (
     from < 0 ||
-    after.dice.length !== 2 ||
+    dice.length !== 2 ||
     count < 1 ||
     count > 6 ||
-    after.dice.some((n) => !Number.isInteger(n) || n < 1 || n > 6) ||
+    dice.some((n) => !Number.isInteger(n) || n < 1 || n > 6) ||
     path[(from + count) % path.length] !== next.pirate
   )
     return [];

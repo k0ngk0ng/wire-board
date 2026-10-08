@@ -252,7 +252,7 @@ func (s *State) catanView(view map[string]any, player int) {
 			legal["pillage"] = g.pillageSites(player)
 		}
 		moves := map[int][]int{}
-		for _, key := range []string{"knightRecruit", "knightActivate", "knightPromote", "knightChase", "knightChasePirate", "knightRetreat"} {
+		for _, key := range []string{"knightRecruit", "knightActivate", "knightPromote", "knightChase", "knightChasePirate", "knightWarship", "knightRetreat"} {
 			legal[key] = []int{}
 		}
 		if !s.Finished && player >= 0 && player < len(g.Players) && !g.Players[player].Eliminated {
@@ -278,6 +278,9 @@ func (s *State) catanView(view map[string]any, player int) {
 					}
 					if g.knightCanAct(n) {
 						moves[n.Vertex] = g.knightDestinations(*n, false)
+					}
+					if g.knightCanWarship(n) {
+						legal["knightWarship"] = append(legal["knightWarship"], n.Vertex)
 					}
 					if g.knightCanChasePirate(n) {
 						legal["knightChasePirate"] = append(legal["knightChasePirate"], n.Vertex)

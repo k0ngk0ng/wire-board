@@ -697,6 +697,7 @@ function CatanBaseBoard({
     pillage: g.legal.pillage || [],
     knight_recruit: g.legal.knightRecruit || [],
     knight_activate: g.legal.knightActivate || [],
+    knight_warship: g.legal.knightWarship || [],
     knight_promote: g.legal.knightPromote || [],
     knight_chase: g.legal.knightChase || [],
     knight_chase_pirate: g.legal.knightChasePirate || [],

@@ -59,7 +59,10 @@ export function catanProgressDescription(
   card: number,
   seafarers: boolean,
   explorer = false,
+  pirateIslands = false,
 ) {
+  if (pirateIslands && card === 21)
+    return "本站补充规则：首次蛮族进攻后选择一块有数字的陆地，从每位相邻建筑对手处随机偷一张资源或商品，仍遵守友善保护；不放置强盗，不移动舰队。";
   if (explorer && card === 5)
     return "将村庄升级为城市（1粮食＋2矿石）或港口（1粮食＋1矿石），先选择建筑类型，再选择地图位置。";
   if (explorer && card === 21)

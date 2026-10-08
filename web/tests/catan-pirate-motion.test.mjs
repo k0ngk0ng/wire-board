@@ -67,3 +67,24 @@ test("only one newly observed battle in the same production turn can animate", (
     1,
   );
 });
+
+test("event and city fleet animations use saved dice after a response, once", () => {
+  for (const domain of ["event", "city"]) {
+    const before = view(8, 42, [5]);
+    const after = view(8, 40, [5]);
+    const oldFleet = { rollId: 8, dice: [2, 6], resolved: false };
+    const fleet = { ...oldFleet, resolved: true };
+    if (domain === "event") {
+      before.eventDeck = { fleet: oldFleet };
+      after.eventDeck = { fleet };
+    } else {
+      before.seafarers.pirateIslands.cityFleet = oldFleet;
+      after.seafarers.pirateIslands.cityFleet = fleet;
+    }
+    assert.deepEqual(catanFleetSteps(before, after), [42, 41, 40]);
+    assert.deepEqual(catanFleetSteps(after, structuredClone(after)), []);
+    const repeat = structuredClone(after);
+    repeat.seafarers.pirate = 22;
+    assert.deepEqual(catanFleetSteps(after, repeat), []);
+  }
+});
