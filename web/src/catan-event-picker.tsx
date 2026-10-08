@@ -3,12 +3,14 @@ export function CatanEventPicker({
   disabled = false,
   citiesKnights = false,
   cloth = false,
+  friendly = false,
   onChange,
 }: {
   value: boolean;
   disabled?: boolean;
   citiesKnights?: boolean;
   cloth?: boolean;
+  friendly?: boolean;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -27,6 +29,11 @@ export function CatanEventPicker({
       {citiesKnights && (
         <p className="muted small">
           城市骑士先执行事件文字，再结算独立红骰／事件骰，最后生产。炼金术替代抽牌；本站补充规则：贸易优势可随机偷资源或商品。
+        </p>
+      )}
+      {friendly && (
+        <p className="muted small">
+          友善保护仍适用于7点的强盗和海盗；强盗逃跑回沙漠且不偷牌。冲突、贸易优势属于卡牌偷牌效果，不受友善保护。
         </p>
       )}
       {cloth && (

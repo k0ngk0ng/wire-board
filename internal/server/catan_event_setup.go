@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanEventsAvailable() bool {
-	if r.Kind != "catan" || r.CatanFishing || (r.CatanHarbors != nil && r.CatanHarbors.Enabled) || r.friendlyRobberEnabled() {
+	if r.Kind != "catan" || r.CatanFishing {
 		return false
 	}
 	scenario := r.CatanScenario

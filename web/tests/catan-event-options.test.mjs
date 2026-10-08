@@ -24,12 +24,7 @@ test("events are optional and support only accepted public recipes", () => {
     const room = { kind: "catan", capacity: 3, catanScenario };
     assert.equal(catanEventsSupported(room), true);
     assert.equal(catanRuleContext(room).events, "");
-    for (const extra of [
-      { catanFishing: true },
-      { catanHarbors: { enabled: true } },
-      { catanFriendlyRobber: { enabled: true } },
-    ])
-      assert.equal(catanEventsSupported({ ...room, ...extra }), false);
+    assert.equal(catanEventsSupported({ ...room, catanFishing: true }), false);
   }
   for (const catanScenario of [
     "transport",
@@ -148,4 +143,44 @@ test("cloth event fallback follows the saved rule, never a stale room draft", ()
     catanRuleContext(room).eventClothFallback,
     "wire-board-events-cloth-fallback-v1",
   );
+});
+
+test("events remain selectable with friendly and harbor variants; running rules ignore drafts", () => {
+  for (const scenario of [
+    "",
+    "cities-knights",
+    "shores",
+    "islands",
+    "fog",
+    "desert",
+    "cloth",
+    "wonders",
+    "new_world",
+  ]) {
+    const room = {
+      kind: "catan",
+      capacity: 6,
+      catanScenario: scenario,
+      catanEvents: CATAN_EVENT_CATALOGUE,
+      catanFriendlyRobber: { enabled: true },
+      catanHarbors: { enabled: true },
+    };
+    assert.equal(catanEventsSupported(room), true);
+    assert.equal(catanRuleContext(room).friendlyRobber, true);
+    assert.equal(catanRuleContext(room).harbors, true);
+    room.game = {
+      catan: {
+        players: Array(6).fill({}),
+        eventDeck: { catalogue: CATAN_EVENT_CATALOGUE },
+      },
+    };
+    assert.equal(catanRuleContext(room).friendlyRobber, false);
+    assert.equal(catanRuleContext(room).harbors, false);
+    room.game.catan.friendlyRobber = { rules: "catan-friendly-robber-2025" };
+    room.game.catan.harbors = { rules: "catan-harbors-2025", owner: -1 };
+    room.catanFriendlyRobber.enabled = false;
+    room.catanHarbors.enabled = false;
+    assert.equal(catanRuleContext(room).friendlyRobber, true);
+    assert.equal(catanRuleContext(room).harbors, true);
+  }
 });

@@ -2330,6 +2330,7 @@ function Create({
         {eventsAvailable && (
           <CatanEventPicker
             value={catanEvents}
+            friendly={catanFriendly}
             cloth={catanScenario === "cloth"}
             citiesKnights={
               catanScenario === "cities-knights" || catanSeaKnights
@@ -2675,6 +2676,7 @@ function Waiting({
         {catanEventsSupported(room) && (
           <CatanEventPicker
             value={!!room.catanEvents}
+            friendly={!!room.catanFriendlyRobber?.enabled}
             cloth={
               (room.catanSeafarers?.scenario || room.catanScenario) === "cloth"
             }

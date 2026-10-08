@@ -9,7 +9,7 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func newPublicEventsHTTP(t *testing.T, n int, scenario string, helpers, fixed bool) (*Server, *httptest.Server, []*testClient, string) {
+func newPublicEventsHTTP(t *testing.T, n int, scenario string, helpers, fixed bool, extras ...map[string]any) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -29,6 +29,11 @@ func newPublicEventsHTTP(t *testing.T, n int, scenario string, helpers, fixed bo
 	}
 	if fixed {
 		recipe["catanBaseConfiguration"] = game.CatanBaseConfiguration{Layout: "fixed"}
+	}
+	for _, extra := range extras {
+		for key, value := range extra {
+			recipe[key] = value
+		}
 	}
 	raw := clients[0].post("/api/rooms", recipe, 201)
 	id := raw["id"].(string)
@@ -120,13 +125,12 @@ func TestCatanPublicEventsConfigurationAndRematch(t *testing.T) {
 		t.Fatal("invalid enable changed room")
 	}
 	change(host, "catan_scenario", "catanScenario", "", 200)
-	// Disabled variant records are retained for waiting-room preferences; they
-	// must not count as active incompatible rules or block the events option.
+	// Both enabled variants and disabled waiting-room preferences coexist with events.
 	for _, variant := range []struct{ command, key string }{
 		{"catan_harbors", "catanHarbors"}, {"catan_friendly_robber", "catanFriendlyRobber"},
 	} {
 		change(host, variant.command, variant.key, map[string]any{"enabled": true}, 200)
-		change(host, "catan_events", "enabled", true, 400)
+		change(host, "catan_events", "enabled", true, 200)
 		change(host, variant.command, variant.key, map[string]any{"enabled": false}, 200)
 	}
 	change(host, "catan_events", "enabled", true, 200)
