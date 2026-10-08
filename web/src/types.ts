@@ -132,6 +132,7 @@ export type Game = {
   winners: number[];
   log: string[];
   splendor?: {
+    catalog?: string;
     cities?: GemCity[];
     cityEligibility?: number[][];
     options?: SplendorOptions;

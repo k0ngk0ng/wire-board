@@ -20,6 +20,7 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	SplendorCatalog     string               `json:"splendorCatalog,omitempty"`
 	CatanExpansionRules map[string]string    `json:"catanExpansionRules,omitempty"`
 	CatanExpansions     []string             `json:"catanExpansions,omitempty"`
 	CatanLayout         string               `json:"catanLayout,omitempty"`
@@ -49,6 +50,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	record := MatchRecord{ID: id, Room: r.Name, Kind: r.Kind, RailMap: r.RailMap, SanguoshaOptions: r.SanguoshaOptions, SplendorOptions: r.SplendorOptions, CatanOptions: r.CatanOptions, Status: r.Status, Ended: r.Updated, Players: []MatchPlayer{}}
 	if r.Game.Splendor != nil {
 		record.SplendorOptions = r.Game.Splendor.Options
+		record.SplendorCatalog = r.Game.Splendor.Catalog
 	}
 	if r.Game.Catan != nil && r.Game.Catan.Seafarers != nil {
 		record.CatanScenario = r.Game.Catan.Seafarers.Scenario

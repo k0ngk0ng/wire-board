@@ -1,4 +1,5 @@
 import type { Room } from "./types";
+import { splendorCitySource } from "./splendor-city-state";
 import { splendorRulesLabel } from "./splendor-expansions";
 
 export function SplendorRules({ room }: { room: Room }) {
@@ -39,6 +40,15 @@ export function SplendorRules({ room }: { room: Room }) {
         <p>
           <b>附赠贵族：</b>
           两盒扩展各附赠的一位贵族加入基础十位的抽选池，开局仍随机公开玩家人数加一位。每位提供三分，沿用普通贵族的领取规则。
+        </p>
+      )}
+      {options?.cities && (
+        <p>
+          {splendorCitySource(
+            options,
+            room.game?.splendor?.catalog,
+            !room.game,
+          )}
         </p>
       )}
       {options?.cities && (

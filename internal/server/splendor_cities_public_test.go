@@ -36,7 +36,7 @@ func TestSplendorPublicCitiesHTTPCombinationGames(t *testing.T) {
 				clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 				options.Rules, options.ExtraNobles = game.SplendorExpansionRules, false
 				g := s.rooms[id].Game.Splendor
-				if g.Options != options || s.rooms[id].SplendorOptions != options || g.Catalog != "2025-cities-bga-v1" || len(g.Cities) != 3 || len(g.Nobles) != 0 {
+				if g.Options != options || s.rooms[id].SplendorOptions != options || g.Catalog != game.SplendorCityCatalogue || len(g.Cities) != 3 || len(g.Nobles) != 0 {
 					t.Fatal("public city setup lost rules", g)
 				}
 				cities := g.Cities

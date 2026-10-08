@@ -5,7 +5,18 @@ import {
   gemNobleEligible,
   gemCityProgress,
   splendorResultDescription,
+  splendorCitySource,
 } from "../src/splendor-city-state.ts";
+
+test("city source distinguishes new rooms from legacy saved games and non-city play", () => {
+  assert.match(splendorCitySource({ cities: true }, undefined, true), /本站城市分组/);
+  assert.match(splendorCitySource({ cities: true }, "wire-board-cities-v1"), /本站城市分组/);
+  for (const catalogue of [undefined, "2025-secondary-v1", "2025-cities-bga-v1"]) {
+    assert.match(splendorCitySource({ cities: true }, catalogue), /沿用开局时保存/);
+    assert.doesNotMatch(splendorCitySource({ cities: true }, catalogue), /本站城市分组/);
+  }
+  assert.equal(splendorCitySource({}, "wire-board-cities-v1"), "");
+});
 
 test("noble highlights match Orient physical counts while preserving base-save discounts", () => {
   const noble = { cost: [3, 0, 0, 0, 0] };

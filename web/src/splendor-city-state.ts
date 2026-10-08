@@ -49,3 +49,18 @@ export function splendorResultDescription(s: NonNullable<Game["splendor"]>) {
     "同分时，发展卡更少者获胜；仍相同则共同获胜。超时离场的玩家不参与排名。"
   );
 }
+
+export const splendorCityCatalogue = "wire-board-cities-v1";
+export const splendorCityGroupingNote =
+  "本站城市分组：同名城市的两种条件为一组，七组随机选三组，每组随机一面。14种条件参考BGA，实体正反面配对未逐一核实。";
+
+export function splendorCitySource(
+  options: { cities?: boolean } | undefined,
+  catalog: string | undefined,
+  waiting = false,
+) {
+  if (!options?.cities) return "";
+  if (waiting || catalog === splendorCityCatalogue)
+    return splendorCityGroupingNote;
+  return "本局沿用开局时保存的城市配置；实体正反面配对未逐一核实。";
+}
