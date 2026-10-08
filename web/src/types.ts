@@ -523,7 +523,7 @@ export type CatanState = {
   two?: {
     rules: string;
     tokensIssued?: number;
-    tokenRule?: "ledger";
+    tokenRule?: "ledger" | "none";
     canExchangeKnight?: boolean;
     rolls: number[];
     sequence: number;
@@ -588,6 +588,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    two?: string;
     seaKnights?: string;
     helpers?: string;
     worldSetup?: {

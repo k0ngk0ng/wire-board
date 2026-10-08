@@ -39,6 +39,12 @@ const scenarios = [
     description: "两位玩家与两家中立势力，双次生产、贸易筹码，10 分获胜。",
   },
   {
+    id: "fishing",
+    name: "双人＋渔夫",
+    description:
+      "每人起始五枚鱼筹码，不使用贸易筹码；公开分数落后者每次鱼行动少付一鱼，10 分获胜（旧靴持有者 11 分）。",
+  },
+  {
     id: "rivers",
     name: "双人＋河流",
     description: "沿河建设赚金币，修桥并争夺财富奖励，10 分获胜。",
@@ -86,6 +92,7 @@ export function CatanTwoScenarioPicker({
         </p>
       )}
       {![
+        "fishing",
         "land-ho",
         "spices-for-catan",
         "pirate-lairs",

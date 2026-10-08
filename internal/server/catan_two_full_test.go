@@ -15,7 +15,7 @@ import (
 func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, string) {
 	return newTwoScenarioFullTable(t, "")
 }
-func newTwoScenarioFullTable(t *testing.T, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+func newTwoScenarioFullTable(t *testing.T, scenario string, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -26,7 +26,11 @@ func newTwoScenarioFullTable(t *testing.T, scenario string) (*Server, *httptest.
 	}
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未知双人剧本", "capacity": 2, "catanTwoScenario": "unknown"}, 400)
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止版本注入", "capacity": 2, "catanTwoRules": game.CatanTwoRules}, 400)
-	raw := clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}, 201)
+	recipe := map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}
+	if len(events) > 0 && events[0] {
+		recipe["catanEvents"] = game.CatanEventCatalogue
+	}
+	raw := clients[0].post("/api/rooms", recipe, 201)
 	id := raw["id"].(string)
 	clients[1].command(current(clients[0]), "join", nil, 200)
 	for p := range 2 {
@@ -46,7 +50,11 @@ func newTwoScenarioFullTable(t *testing.T, scenario string) (*Server, *httptest.
 	if scenario == "caravans" && (r.Game.Catan.Caravans == nil || r.Game.Catan.Caravans.Rules != game.CatanCaravansRules) {
 		t.Fatal("formal start omitted merchant train rules")
 	}
-	if len(r.Seats) != 2 || len(r.Game.Catan.Players) != 2 || r.Game.Phase != phase || r.Game.Catan.Two == nil || r.Game.Catan.Two.Bank != 10 {
+	wantBank := 10
+	if scenario == "fishing" {
+		wantBank = 0
+	}
+	if len(r.Seats) != 2 || len(r.Game.Catan.Players) != 2 || r.Game.Phase != phase || r.Game.Catan.Two == nil || r.Game.Catan.Two.Bank != wantBank {
 		t.Fatal("formal start did not construct two-player setup")
 	}
 	return s, ts, clients, id
@@ -69,7 +77,34 @@ func twoHTTPActor(s *game.State) int {
 func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 	t.Helper()
 	g, q := s.Catan, s.Catan.Two
-	if len(g.Players) != 2 || q.Rules != game.CatanTwoRules || q.Bank < 0 || len(q.Tokens) != 2 || q.Tokens[0] < 0 || q.Tokens[1] < 0 || q.Bank+q.Tokens[0]+q.Tokens[1] != 20+q.TokensIssued {
+	wantTokens := 20 + q.TokensIssued
+	if g.Fishing != nil {
+		wantTokens = 0
+		if g.Fishing.Two != game.CatanTwoFishingRules || q.TokensIssued != 0 || q.Spent || q.KnightExchanged || q.Trade != nil {
+			t.Fatal("fishing token rules")
+		}
+		seen := map[int]bool{}
+		all := append(append([]int{}, g.Fishing.Tokens.DrawPile...), g.Fishing.Tokens.Discard...)
+		for _, h := range g.Fishing.Tokens.Hands {
+			if len(h) > 7 {
+				t.Fatal("fish hand limit")
+			}
+			all = append(all, h...)
+		}
+		if g.Fishing.Tokens.BootOwner >= 0 {
+			all = append(all, 29)
+		}
+		for _, id := range all {
+			if id < 0 || id >= 30 || seen[id] {
+				t.Fatal("fish inventory", id)
+			}
+			seen[id] = true
+		}
+		if len(seen) != 30 {
+			t.Fatal("fish total")
+		}
+	}
+	if len(g.Players) != 2 || q.Rules != game.CatanTwoRules || q.Bank < 0 || len(q.Tokens) != 2 || q.Tokens[0] < 0 || q.Tokens[1] < 0 || q.Bank+q.Tokens[0]+q.Tokens[1] != wantTokens {
 		t.Fatal("two-player token/player inventory")
 	}
 	for color, total := range g.Bank {
@@ -206,6 +241,19 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 				t.Fatal("private hand exposed", viewer, p)
 			}
 		}
+		if s.Catan.Fishing != nil {
+			f := v["fishing"].(map[string]any)
+			tokens := f["tokens"].(map[string]any)
+			if tokens["drawPile"] != nil || tokens["hands"] != nil {
+				t.Fatal("fish deck leaked")
+			}
+			for p, raw := range tokens["players"].([]any) {
+				h := raw.(map[string]any)
+				if p != viewer && h["tokens"] != nil {
+					t.Fatal("opponent fish exposed")
+				}
+			}
+		}
 		q := v["two"].(map[string]any)
 		if s.Catan.Two.Trade != nil {
 			if (q["trade"].(map[string]any)["drawn"] != nil) != (viewer == s.Turn) {
@@ -221,11 +269,15 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 func TestCatanTwoCompleteHTTPGames(t *testing.T)         { runTwoCompleteHTTPGames(t, "") }
 func TestCatanTwoRiversCompleteHTTPGames(t *testing.T)   { runTwoCompleteHTTPGames(t, "rivers") }
 func TestCatanTwoCaravansCompleteHTTPGames(t *testing.T) { runTwoCompleteHTTPGames(t, "caravans") }
-func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
+func TestCatanTwoFishingCompleteHTTPGames(t *testing.T)  { runTwoCompleteHTTPGames(t, "fishing") }
+func TestCatanTwoFishingEventsCompleteHTTPGames(t *testing.T) {
+	runTwoCompleteHTTPGames(t, "fishing", true)
+}
+func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 	coverage := map[string]int{}
 	for sample := range 3 {
 		t.Run(fmt.Sprint(sample), func(t *testing.T) {
-			s, ts, clients, id := newTwoScenarioFullTable(t, scenario)
+			s, ts, clients, id := newTwoScenarioFullTable(t, scenario, events...)
 			restored, modes := map[string]bool{}, map[string]int{}
 			restart := func(label string) { s, ts = restartRiversHTTP(t, s, ts, clients, id); restored[label] = true }
 			restart("initial")
@@ -328,6 +380,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 			if scenario == "caravans" {
 				target = 12
 			}
+			if r.Game.Catan.Fishing != nil && r.Game.Catan.Fishing.Tokens.BootOwner == winner {
+				target++
+			}
 			if winner != r.Game.Turn || r.Game.Catan.Players[winner].Score < target {
 				t.Fatal("wrong victory")
 			}
@@ -343,6 +398,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 						t.Fatal("duplicate or absent history")
 					}
 					record := history[0].(map[string]any)
+					if scenario == "fishing" && (record["catanScenario"] != "fishing" || record["catanExpansionRules"].(map[string]any)["two_fishing"] != game.CatanTwoFishingRules) {
+						t.Fatal("fishing history missing", record)
+					}
 					if scenario == "rivers" && (record["catanScenario"] != "rivers" || record["catanExpansionRules"].(map[string]any)["rivers"] != game.CatanRiversRules) {
 						t.Fatal("river combination history missing", record)
 					}
@@ -366,6 +424,9 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string) {
 		})
 	}
 	phases := []string{"catan_two_build", "catan_two_trade"}
+	if scenario == "fishing" {
+		phases = []string{"catan_two_build"}
+	}
 	if scenario == "caravans" {
 		phases = append(phases, "catan_caravan_bid", "catan_caravan_place")
 	}

@@ -8,6 +8,7 @@ import (
 const CatanFishingRules = "catan-fishing-2025"
 
 type CatanFishing struct {
+	Two        string                  `json:"two,omitempty"`
 	SeaKnights string                  `json:"seaKnights,omitempty"`
 	Helpers    string                  `json:"helpers,omitempty"`
 	Explorer   string                  `json:"explorer,omitempty"`
@@ -58,6 +59,9 @@ func (g *Catan) validateFishing() error {
 	}
 	if g.Explorer != nil {
 		return g.Explorer.validateFishing(g)
+	}
+	if (f.Two != "" && !g.twoFishing()) || (g.Two != nil && !g.twoFishing()) || (len(g.Players) == 2 && !g.twoFishing()) {
+		return errors.New("双人渔夫规则标记无效")
 	}
 	if f.Explorer != "" {
 		return errors.New("非探险存档不能含探险鱼筹码")
@@ -142,6 +146,11 @@ func (s *State) catanStartingFish(player, vertex int, gold []int) error {
 	}
 	if f.Started[player] {
 		return errors.New("起始捕鱼已经结算")
+	}
+	if g.twoFishing() {
+		f.Started[player] = true
+		s.catanFinishFishing(nil, gold, "catan_setup_road")
+		return nil
 	}
 	due := make([]int, len(g.Players))
 	// The printed setup instruction awards "a random fish token" if the
@@ -261,6 +270,9 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 	}
 	v["fishing"] = map[string]any{"map": clone(f.Map), "tokens": public, "victoryTargets": targets,
 		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
+	if f.Two != "" {
+		v["fishing"].(map[string]any)["two"] = f.Two
+	}
 	if f.SeaKnights != "" {
 		v["fishing"].(map[string]any)["seaKnights"] = f.SeaKnights
 	}

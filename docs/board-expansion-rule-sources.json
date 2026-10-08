@@ -142,5 +142,11 @@
     "url": "https://www.catan.com/sites/default/files/2025-08/ExplorersPirates%20w%20TnB.pdf",
     "sha256": "1e08ad363cb0533f77693460683b703d15103c60395ee6a043b320340f063c68",
     "bytes": 3376266
+  },
+  "catan-two-knights-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-07/CATAN%20for%202%20w%20CnK.pdf",
+    "sha256": "f3bc5567b552a3f1f4bb5bd8532b3b1dca7825b9076983973304c4bb1116d24d",
+    "bytes": 446952,
+    "note": "Read and visually reviewed both pages on 2026-10-08 for F10. Specifies neutral knights, two full event/production phases, split forced trade, and progress-card changes. Page 2 explicitly limits trade-token supply; existing user-approved base two-player ledger remains unchanged. Implementation pending."
   }
 }

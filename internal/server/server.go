@@ -1229,6 +1229,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					if err == nil {
 						if next.CatanTwoScenario == "caravans" {
 							next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
+						} else if next.CatanTwoScenario == "fishing" {
+							next.Game, err = game.NewCatanTwoFishing(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "rivers" {
 							next.Game, err = game.NewCatanTwoRivers(len(next.Seats), next.CatanOptions)
 						} else {

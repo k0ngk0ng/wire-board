@@ -306,6 +306,11 @@ export function CatanFishingPanel({
       </header>
       {!collapsed && (
         <div className="fish-panel-body">
+          {f.two && (
+            <p className="fish-notice">
+              公开分数落后者，每次行动少付 1 鱼；以下费用已包含当前折扣。
+            </p>
+          )}
           <div className="fish-player-counts" aria-label="公开鱼筹码数量">
             {f.tokens.players.map((seat, p) => (
               <div key={p} className={p === room.you ? "self" : ""}>

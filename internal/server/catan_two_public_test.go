@@ -40,7 +40,7 @@ func TestCatanTwoPublicCreationSelectionAndRematch(t *testing.T) {
 		c.post("/api/rooms/"+id, body, status)
 		return body
 	}
-	for _, scenario := range []string{"rivers", "caravans", ""} {
+	for _, scenario := range []string{"rivers", "caravans", "fishing", ""} {
 		before, _ := json.Marshal(s.rooms[id])
 		change(guest, scenario, 400)
 		change(host, "unknown", 400)

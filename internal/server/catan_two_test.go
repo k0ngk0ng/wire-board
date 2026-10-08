@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -12,10 +13,14 @@ import (
 // Targeted response fixtures complement the untouched full-game tests. Only
 // these fixtures set production phase and resource inventories explicitly.
 func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
-	for _, scenario := range []string{"trade_roll", "trade_between", "trade_turn", "build_turn"} {
+	for _, scenario := range []string{"trade_roll", "trade_between", "trade_turn", "build_turn", "fish_build_roll", "fish_build_between", "fish_build_turn"} {
 		for _, mode := range []string{"manual", "autoplay", "timeout"} {
 			t.Run(scenario+"/"+mode, func(t *testing.T) {
-				s, ts, clients, id := newTwoFullTable(t)
+				recipe := ""
+				if strings.HasPrefix(scenario, "fish_") {
+					recipe = "fishing"
+				}
+				s, ts, clients, id := newTwoScenarioFullTable(t, recipe)
 				state := s.rooms[id].Game
 				for state.Catan.SetupStep < state.Catan.SetupLimit() {
 					a, err := state.BotAction(state.Turn)
@@ -28,11 +33,11 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 				}
 				p := state.Turn
 				resume := "catan_roll"
-				if scenario == "trade_between" {
+				if scenario == "trade_between" || scenario == "fish_build_between" {
 					state.Catan.Two.Rolls = []int{2}
 					state.Catan.RollID = 1
 				}
-				if scenario == "trade_turn" || scenario == "build_turn" {
+				if scenario == "trade_turn" || scenario == "build_turn" || scenario == "fish_build_turn" {
 					resume = "catan_turn"
 					state.Phase = resume
 					state.Catan.Two.Rolls = []int{2, 12}
@@ -49,13 +54,20 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 					}
 				}
 				trigger := game.Action{Type: "catan_two_trade"}
-				if scenario == "build_turn" {
+				if scenario == "build_turn" || strings.HasPrefix(scenario, "fish_") {
 					v := state.View(p)["catan"].(map[string]any)
 					roads := v["legal"].(map[string][]int)["roads"]
+					if recipe == "fishing" {
+						roads = v["fishing"].(map[string]any)["legal"].(map[string]any)["roads"].([]int)
+					}
 					if len(roads) == 0 {
 						t.Fatal("no legal fixture road")
 					}
 					trigger = game.Action{Type: "catan_road", Edge: roads[0]}
+					if recipe == "fishing" {
+						trigger.Type = "catan_fish_road"
+						trigger.Tokens = append([]int{}, state.Catan.Fishing.Tokens.Hands[p]...)
+					}
 				}
 				s.mu.Lock()
 				r := s.rooms[id]
@@ -121,7 +133,7 @@ func TestCatanTwoHTTPResponseClocksPrivacyReplayAndRestart(t *testing.T) {
 				if r.Game.Phase != resume || r.Game.CatanPendingActor() != -1 || r.TurnDeadline < at.UnixMilli()+remaining-100 || r.TurnDeadline > at.UnixMilli()+remaining+1000 {
 					t.Fatal("response did not restore original time", phase, mode, r.Game.Phase, r.TurnDeadline-at.UnixMilli(), remaining)
 				}
-				if scenario == "trade_between" && (len(r.Game.Catan.Two.Rolls) != 1 || r.Game.Catan.Two.Rolls[0] != 2 || r.Game.Catan.RollID != 1) {
+				if (scenario == "trade_between" || scenario == "fish_build_between") && (len(r.Game.Catan.Two.Rolls) != 1 || r.Game.Catan.Two.Rolls[0] != 2 || r.Game.Catan.RollID != 1) {
 					t.Fatal("between-roll response repeated or lost production")
 				}
 				assertTwoHTTPInventory(t, r.Game)

@@ -81,7 +81,7 @@ func (x catanExplorer) validateFishing(g *Catan) error {
 		return nil
 	}
 	n := len(g.Players)
-	if f.Helpers != "" || f.SeaKnights != "" || f.Explorer != x.Board.Fishing || f.Explorer != catanExplorerFishingRule(n) || f.WorldSetup != nil || len(f.Started) != n || len(f.Tokens.Hands) != n || f.LastRollID < -1 || f.LastRollID > g.RollID || g.GoldPending != nil {
+	if f.Two != "" || f.Helpers != "" || f.SeaKnights != "" || f.Explorer != x.Board.Fishing || f.Explorer != catanExplorerFishingRule(n) || f.WorldSetup != nil || len(f.Started) != n || len(f.Tokens.Hands) != n || f.LastRollID < -1 || f.LastRollID > g.RollID || g.GoldPending != nil {
 		return errors.New("探险捕鱼版本、人数或生产记录无效")
 	}
 	if err := f.Map.validateExplorer(g, x.Board); err != nil {
