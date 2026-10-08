@@ -202,7 +202,7 @@ export function CatanCombinationKnightsPicker({
       </label>
       <p className="muted small">
         {attack
-          ? "三至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
+          ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
           : transport
             ? "二至六人，15分获胜。运输马车与城市骑士并用，蛮族船和道路蛮族分别结算。"
             : rivers
@@ -220,6 +220,11 @@ export function CatanCombinationKnightsPicker({
       {helpers && !explorer && (
         <p className="muted small">
           本站骑士助手：发展卡能力适配进步牌；格雷戈尔归还实体骑士建造，资源助手不处理商品。
+        </p>
+      )}
+      {attack && two && (
+        <p className="muted small">
+          本站双人组合：每回合两次生产；两家中立道路骑士由当前玩家代办移动与退让，不激活、不参战。贸易筹码有限，损失补偿3金币。
         </p>
       )}
       {explorer && two && value && (

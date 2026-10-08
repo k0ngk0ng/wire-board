@@ -9,7 +9,7 @@ import (
 )
 
 func TestCatanAttackKnightsNaturalHTTP(t *testing.T) {
-	for n := 3; n <= 6; n++ {
+	for n := 2; n <= 6; n++ {
 		for _, events := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/events%t", n, events), func(t *testing.T) {
 				s, ts, clients, id := newTradersKnightsHTTP(t, n, events, "barbarian-attack")
@@ -79,6 +79,9 @@ func TestCatanAttackKnightsNaturalHTTP(t *testing.T) {
 				if record["catanExpansionRules"].(map[string]any)["attackKnights"] != game.CatanAttackKnightsRules {
 					t.Fatal("history marker")
 				}
+				if n == 2 && record["catanExpansionRules"].(map[string]any)["two_attack"] != game.CatanTwoAttackKnightsRules {
+					t.Fatal("two-player history marker")
+				}
 				t.Log("rounds", r.Game.Round)
 			})
 		}
@@ -86,7 +89,7 @@ func TestCatanAttackKnightsNaturalHTTP(t *testing.T) {
 }
 
 func TestCatanAttackKnightsPlanHTTPClockAndBase(t *testing.T) {
-	for _, n := range []int{3, 6} {
+	for _, n := range []int{2, 3, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts, clients, id := newTradersKnightsHTTP(t, n, true, "barbarian-attack")
 			for step := 0; ; step++ {

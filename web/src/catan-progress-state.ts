@@ -51,7 +51,9 @@ export function progressOpponents(g: CatanState, player: number, card: number) {
   if (card === 22 && g.two?.knights)
     targets.push(
       ...[-2, -3].filter((owner) =>
-        g.citiesKnights?.knights.some((n) => n.owner === owner),
+        (g.attack?.city?.knights || g.citiesKnights?.knights)?.some(
+          (n) => n.owner === owner,
+        ),
       ),
     );
   return targets;

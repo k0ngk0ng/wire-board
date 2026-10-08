@@ -310,7 +310,7 @@ func TestCatanTwoAttackCityEventProductionAndPublicGate(t *testing.T) {
 		}
 	}
 	if _, err := NewCatanAttackCitiesKnights(2); err == nil {
-		t.Fatal("unverified public entry opened")
+		t.Fatal("multiplayer constructor accepted two-player recipe")
 	}
 }
 
@@ -336,6 +336,26 @@ func TestCatanTwoAttackCitySmithingTwoNeutralPromotions(t *testing.T) {
 	for _, k := range s.Catan.Attack.City.Knights {
 		if k.Strength != 2 {
 			t.Fatal("missing rank", k)
+		}
+	}
+}
+
+func TestCatanTwoAttackCityPublicConstructor(t *testing.T) {
+	s, err := NewCatanTwoAttackCitiesKnights(2, CatanOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !s.Catan.twoAttackKnights() || s.Catan.twoAttack() || s.Catan.Two.Knights != CatanTwoKnightsRules {
+		t.Fatal("wrong public recipe")
+	}
+	for _, n := range []int{0, 1, 3, 4, 5, 6} {
+		if _, err = NewCatanTwoAttackCitiesKnights(n, CatanOptions{}); err == nil {
+			t.Fatal("accepted wrong seats", n)
+		}
+	}
+	for _, o := range []CatanOptions{{Helpers: true}, {FiveSix: true}, {AllHelpers: true}} {
+		if _, err = NewCatanTwoAttackCitiesKnights(2, o); err == nil {
+			t.Fatal("accepted unverified option", o)
 		}
 	}
 }

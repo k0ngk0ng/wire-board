@@ -32,7 +32,7 @@ type catanAttackCity struct {
 // NewCatanAttackCitiesKnights uses the combined road-knight rules for 3–6 seats.
 func NewCatanAttackCitiesKnights(n int) (*State, error) {
 	if n < 3 {
-		return nil, errors.New("双人道路骑士组合尚未开放建房")
+		return nil, errors.New("双人道路骑士组合请使用双人规则入口")
 	}
 	s, err := newCatanAttackCityCore(n)
 	if err != nil {

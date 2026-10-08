@@ -584,6 +584,7 @@ export type CatanState = {
     seaStarts?: number[];
     afterRoute?: "road" | "ship";
     buildingShip?: boolean;
+    buildingRoadKnight?: boolean;
     helpers?: string;
     afterHelper?: "road" | "settlement";
     variants?: string;
@@ -592,6 +593,7 @@ export type CatanState = {
     knights?: string;
     tokenRule?: "ledger" | "none" | "finite";
     exchangeKnights?: number[];
+    exchangeKnightEdges?: number[];
     canExchangeKnight?: boolean;
     rolls: number[];
     sequence: number;

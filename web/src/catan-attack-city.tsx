@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { twoNeutralName } from "./catan-two-state";
 import type { Room } from "./types";
 import type { AttackSelection } from "./catan-attack-state";
 import { emptyAttackSelection } from "./catan-attack-state";
@@ -102,7 +103,7 @@ export function CatanAttackCityMap({
             {...(selectable
               ? button(
                   k.edge,
-                  `${room.seats[k.owner]?.name}的 ${k.strength} 级${k.active ? "已激活" : "未激活"}骑士，路线 ${k.edge + 1}`,
+                  `${k.owner < -1 ? twoNeutralName(k.owner) : room.seats[k.owner]?.name}的 ${k.strength} 级${k.active ? "已激活" : "未激活"}骑士，路线 ${k.edge + 1}`,
                 )
               : { pointerEvents: "none" as const })}
             className={selectable ? "attack-city-target" : ""}
@@ -146,8 +147,11 @@ export function CatanAttackCityMap({
               {k.strength}
             </text>
             <title>
-              {room.seats[k.owner]?.name} · {k.strength} 级 ·{" "}
-              {k.active ? "已激活" : "未激活"} · 路线 #{k.edge + 1}
+              {k.owner < -1
+                ? twoNeutralName(k.owner)
+                : room.seats[k.owner]?.name}{" "}
+              · {k.strength} 级 · {k.active ? "已激活" : "未激活"} · 路线 #
+              {k.edge + 1}
             </title>
           </g>
         );

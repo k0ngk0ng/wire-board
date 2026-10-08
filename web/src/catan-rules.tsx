@@ -517,7 +517,7 @@ export function CatanRules({ room }: { room: Room }) {
         </ul>
       </section>
     );
-  if (info.attack)
+  if (info.attack && !info.citiesKnights)
     return (
       <>
         <p>

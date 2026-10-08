@@ -6,7 +6,7 @@ import (
 )
 
 // Complete-session guards shared by the public 3–6 player recipe and the
-// separately marked two-player engine; the latter awaits HTTP/UI acceptance.
+// separately marked public two-player recipe.
 func (s *State) validateAttackCityState() error {
 	g := s.Catan
 	if g == nil || !g.attackKnights() {

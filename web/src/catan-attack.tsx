@@ -420,7 +420,7 @@ export function CatanAttackPanel({
               </span>
             )}
           </div>
-          {a.twoRules && (
+          {a.twoRules && !a.city && (
             <p>中立骑士俘虏：{a.neutralPrisoners || 0}（不计入玩家分数）</p>
           )}
           {pending && !mine && (
