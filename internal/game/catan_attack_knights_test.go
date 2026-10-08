@@ -44,7 +44,7 @@ func TestCatanAttackCityCoreIsolationAndRestore(t *testing.T) {
 			if err = q.Catan.Attack.City.validate(q.Catan); err != nil {
 				t.Fatal(err)
 			}
-			// Public Apply deliberately rejects this incomplete internal recipe.
+			// Invalid phase action must not expose ordinary end semantics.
 			if err = q.Apply(q.Turn, Action{Type: "catan_end"}); err == nil {
 				t.Fatal("unfinished combination exposed")
 			}

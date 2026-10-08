@@ -4,6 +4,25 @@ import "slices"
 
 func (g *Catan) smithingOptions(player int) [][]int {
 	out := [][]int{}
+	if g.attackKnights() {
+		c := g.Attack.City
+		for _, knight := range c.Knights {
+			if !g.attackCityCanPromote(player, knight) {
+				continue
+			}
+			out = append(out, []int{knight.Edge})
+			next := clone(*g)
+			i := next.Attack.City.at(knight.Edge)
+			next.Attack.City.Knights[i].Strength++
+			next.Attack.City.Knights[i].PromotedAt = next.CitiesKnights.ActionSerial
+			for _, second := range next.Attack.City.Knights {
+				if next.attackCityCanPromote(player, second) {
+					out = append(out, []int{knight.Edge, second.Edge})
+				}
+			}
+		}
+		return out
+	}
 	if g.CitiesKnights == nil {
 		return out
 	}

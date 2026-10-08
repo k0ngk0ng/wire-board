@@ -30,7 +30,7 @@ func (k *CatanCitiesKnights) tradePowers(player int) *CatanTradePowers {
 func (g *Catan) merchantTiles(player int) []int {
 	out := []int{}
 	for _, t := range g.Tiles {
-		if t.Resource < 0 || t.Resource > CatanDesert {
+		if t.Resource < 0 || t.Resource > CatanDesert || g.attackKnights() && g.Attack.conquered(t.ID) {
 			continue
 		}
 		for _, v := range t.Vertices {

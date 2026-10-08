@@ -175,7 +175,7 @@ func (c *catanAttackCity) displacementTargets(g *Catan, from int) []int {
 	}
 	for to, d := range c.distances(g, from, 3) {
 		other := c.at(to)
-		if d > 0 && other >= 0 && c.Knights[other].Owner != c.Knights[i].Owner && c.Knights[other].Strength < c.Knights[i].Strength {
+		if d > 0 && !g.Attack.castleEdge(g, to) && other >= 0 && c.Knights[other].Owner != c.Knights[i].Owner && c.Knights[other].Strength < c.Knights[i].Strength {
 			out = append(out, to)
 		}
 	}

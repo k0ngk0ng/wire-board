@@ -130,6 +130,19 @@ func (s *State) CatanPendingActor() int {
 	if g.Transport != nil && (s.Phase == "catan_transport_move" || s.Phase == "catan_transport_barbarian") {
 		return s.Turn
 	}
+	if g.attackKnights() && g.Attack.City.Treason != nil {
+		q := g.Attack.City.Treason
+		if q.Placement != nil {
+			return q.Actor
+		}
+		return q.Owner
+	}
+	if g.attackKnights() && g.Attack.City.Plan != nil {
+		if q := g.Attack.City.Plan.Pending; q != nil {
+			return q.Player
+		}
+		return g.Attack.City.Plan.Player
+	}
 	if g.Attack != nil && g.Attack.EndPlan != nil {
 		return g.Attack.EndPlan.Player
 	}

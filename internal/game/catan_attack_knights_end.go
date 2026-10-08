@@ -74,22 +74,14 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 		moved[order.From] = true
 	}
 	for _, k := range c.Knights {
-		if k.Owner == s.Turn && g.Attack.castleEdge(g, k.Edge) {
+		if k.Owner == s.Turn && g.Attack.castleEdge(g, k.Edge) && (len(c.destinations(g, k.Edge)) > 0 || displacements == 0 && len(c.displacementTargets(g, k.Edge)) > 0) {
 			return nil, errors.New("请将所有己方城堡骑士移出")
 		}
 	}
-	for _, tile := range g.Attack.Map.Coast {
-		battle, err := next.catanAttackCityBattle(tile, die)
-		if err != nil {
-			return nil, err
-		}
-		if battle != nil {
-			result.Battles = append(result.Battles, *battle)
-		}
-		if next.Finished {
-			break
-		}
+	if err := next.catanAttackCityFinishBattles(result, die); err != nil {
+		return nil, err
 	}
+
 	if !next.Finished {
 		next.catanNext()
 		next.catanVictory()
@@ -99,4 +91,32 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 	}
 	*s = next
 	return result, nil
+}
+
+func (s *State) catanAttackCityFinishBattles(result *catanAttackCityEnd, die func() int) error {
+	for _, tile := range s.Catan.Attack.Map.Coast {
+		battle, err := s.catanAttackCityBattle(tile, die)
+		if err != nil {
+			return err
+		}
+		if battle != nil {
+			result.Battles = append(result.Battles, *battle)
+			s.catanLog(result.Player, "地块 #%d 战斗胜利：骑士总力量 %d 击退 %d 个蛮族，恢复生产及被征服建筑", tile+1, sum(battle.Strength), battle.Barbarians)
+			for player, count := range battle.Prisoners {
+				if count > 0 {
+					s.catanLog(player, "获得 %d 个俘虏，现有 %d 个（%d 分）", count, s.Catan.Attack.Prisoners[player], s.Catan.Attack.Prisoners[player]/3)
+				}
+				if battle.Gold[player] > 0 {
+					s.catanLog(player, "战斗补偿：金币×%d", battle.Gold[player])
+				}
+			}
+			if battle.LossDie > 0 {
+				s.catanLog(result.Player, "损失骰掷出 %d，%d 名骑士返回供应、%d 名骑士降级", battle.LossDie, len(battle.Lost), len(battle.Downgraded))
+			}
+		}
+		if s.Finished {
+			break
+		}
+	}
+	return nil
 }

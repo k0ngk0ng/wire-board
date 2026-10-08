@@ -415,6 +415,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		*s = next
 		return nil
 	}
+	if s.Catan.attackKnights() {
+		return s.applyAttackCity(player, a)
+	}
 	if s.Catan.Transport != nil {
 		if err := s.validateCatanTransport(); err != nil {
 			return err
@@ -617,7 +620,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if s.Phase != "catan_turn" {
 			return errors.New("请先完成当前行动")
 		}
-		if g.Attack != nil {
+		if g.Attack != nil && !g.attackKnights() {
 			return s.catanAttackBeginEnd()
 		}
 		s.catanVictory()
@@ -626,6 +629,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			s.Phase = "catan_progress_end"
 			g.Trade = nil
 			return nil
+		}
+		if !s.Finished && g.attackKnights() {
+			return s.catanAttackCityBeginPlan()
 		}
 		if !s.Finished && g.transportKnights() {
 			return s.catanTransportBeginTravel(player)
@@ -1261,6 +1267,13 @@ func (s *State) AutoCatanPending() {
 		return
 	}
 	if g == nil || s.Finished {
+		return
+	}
+	if g.attackKnights() && (g.Attack.City.Plan != nil || g.Attack.City.Treason != nil) {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
 		return
 	}
 	if g.Attack != nil && g.Attack.EndPlan != nil {

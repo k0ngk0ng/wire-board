@@ -15,7 +15,13 @@ func (g *Catan) cardEventLeaders(kind string, start int) []int {
 			}
 		}
 	case "tournament":
-		if k := g.CitiesKnights; k != nil {
+		if g.attackKnights() {
+			for _, knight := range g.Attack.City.Knights {
+				if knight.Active && !g.Players[knight.Owner].Eliminated {
+					counts[knight.Owner] += knight.Strength
+				}
+			}
+		} else if k := g.CitiesKnights; k != nil {
 			for _, knight := range k.Knights {
 				if knight.Active && knight.Owner >= 0 && knight.Owner < len(counts) {
 					counts[knight.Owner] += knight.Strength
