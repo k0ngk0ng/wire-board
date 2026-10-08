@@ -157,7 +157,7 @@ func (c *catanAttackCity) destinations(g *Catan, edge int) []int {
 }
 func (c *catanAttackCity) move(g *Catan, player, from, to int) error {
 	i := c.at(from)
-	if i < 0 || c.Knights[i].Owner != player || !slices.Contains(c.destinations(g, from), to) {
+	if i < 0 || !g.attackCityCanMove(c.Knights[i].Owner, player) || !slices.Contains(c.destinations(g, from), to) {
 		return errors.New("道路骑士目的地无效")
 	}
 	c.Knights[i].Edge = to
@@ -224,14 +224,14 @@ func (c *catanAttackCity) beginDisplacement(g *Catan, player, from, to int) (*ca
 		// fallback for a future smaller board: return the displaced piece.
 		return nil, nil
 	}
-	return &catanAttackCityRetreat{Player: displaced.Owner, Knight: displaced, Attacker: player, Targets: targets}, nil
+	return &catanAttackCityRetreat{Player: g.knightResponseActor(displaced.Owner, player), Knight: displaced, Attacker: player, Targets: targets}, nil
 }
 func (c *catanAttackCity) completeDisplacement(g *Catan, q *catanAttackCityRetreat, player, to int) error {
-	if q == nil || player != q.Player || q.Knight.Owner != player || q.Knight.Active || !slices.Contains(q.Targets, to) || !slices.Contains(c.retreatEdges(g, q.Knight.Edge), to) {
+	if q == nil || player != q.Player || g.knightResponseActor(q.Knight.Owner, q.Attacker) != player || q.Knight.Active || !slices.Contains(q.Targets, to) || !slices.Contains(c.retreatEdges(g, q.Knight.Edge), to) {
 		return errors.New("请由被驱逐骑士的主人选择最近空边")
 	}
 	attacker := c.at(q.Knight.Edge)
-	if attacker < 0 || c.Knights[attacker].Owner != q.Attacker || c.Knights[attacker].Active || c.Knights[attacker].Strength <= q.Knight.Strength || c.count(player, q.Knight.Strength) >= 2 {
+	if attacker < 0 || c.Knights[attacker].Owner != q.Attacker || c.Knights[attacker].Active || c.Knights[attacker].Strength <= q.Knight.Strength || c.count(q.Knight.Owner, q.Knight.Strength) >= 2 {
 		return errors.New("道路骑士驱逐记录与棋盘不符")
 	}
 	knight := q.Knight

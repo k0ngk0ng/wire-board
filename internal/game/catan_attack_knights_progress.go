@@ -60,8 +60,11 @@ type catanAttackCityTreason struct {
 
 func (c *catanAttackCity) treasonRemove(g *Catan, actor, owner, edge int) (*catanAttackCityTreason, error) {
 	i := c.at(edge)
-	if actor < 0 || actor >= len(g.Players) || owner < 0 || owner >= len(g.Players) || actor == owner || g.Players[actor].Eliminated || g.Players[owner].Eliminated || i < 0 || c.Knights[i].Owner != owner {
+	if actor < 0 || actor >= len(g.Players) || !g.attackCityKnightOwner(owner) || actor == owner || g.Players[actor].Eliminated || i < 0 || c.Knights[i].Owner != owner {
 		return nil, errors.New("叛变须由目标玩家移除己方骑士")
+	}
+	if !g.attackCityTreasonRemovable(owner, edge) {
+		return nil, errors.New("中立势力须移除最低等级骑士")
 	}
 	old := c.Knights[i]
 	c.Knights = slices.Delete(c.Knights, i, i+1)
@@ -164,7 +167,7 @@ func (s *State) catanAttackCityProgress(player int, a Action) error {
 			return err
 		}
 	case 22:
-		if !g.politicsOpponent(player, a.Target) {
+		if !g.politicsOpponent(player, a.Target) && !(g.twoAttackKnights() && g.twoNeutralKnightOwner(a.Target)) {
 			return errors.New("请选择拥有道路骑士的其他玩家")
 		}
 		found := false
@@ -211,7 +214,7 @@ func (s *State) validateAttackCityTreason() error {
 	if q == nil {
 		return nil
 	}
-	if q.ID < 1 || q.ID != c.Sequence || q.Actor != s.Turn || q.Actor < 0 || q.Actor >= len(g.Players) || q.Owner < 0 || q.Owner >= len(g.Players) || q.Owner == q.Actor || g.Players[q.Actor].Eliminated || g.Players[q.Owner].Eliminated || s.Finished || g.setup() || c.Plan != nil || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || g.Trade != nil {
+	if q.ID < 1 || q.ID != c.Sequence || q.Actor != s.Turn || q.Actor < 0 || q.Actor >= len(g.Players) || !g.attackCityKnightOwner(q.Owner) || q.Owner == q.Actor || g.Players[q.Actor].Eliminated || s.Finished || g.setup() || c.Plan != nil || g.CitiesKnights.Pending != nil || g.CitiesKnights.Event != nil || g.Trade != nil {
 		return errors.New("叛变玩家、序号或并行回应无效")
 	}
 	if q.Placement == nil {
@@ -255,7 +258,7 @@ func (s *State) catanAttackCityTreasonAction(player int, a Action) error {
 		return errors.New("叛变回应已过期")
 	}
 	if q.Placement == nil {
-		if player != q.Owner || a.Choice != "remove" {
+		if player != g.knightResponseActor(q.Owner, q.Actor) || a.Choice != "remove" {
 			return errors.New("由目标玩家选择移除的道路骑士")
 		}
 		p, err := c.treasonRemove(g, q.Actor, q.Owner, a.Edge)

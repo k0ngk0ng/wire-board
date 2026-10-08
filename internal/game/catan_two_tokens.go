@@ -110,7 +110,7 @@ func (s *State) catanTwoCanExchangeKnight(player int) bool {
 	}
 	g, q := s.Catan, s.Catan.Two
 	if g.twoKnights() {
-		return !q.KnightExchanged && len(g.twoKnightTokenVertices(player)) > 0
+		return !q.KnightExchanged && (len(g.twoKnightTokenVertices(player)) > 0 || len(g.twoAttackKnightTokenEdges(player)) > 0)
 	}
 	_, err := q.tokenShortfall(2)
 	return !q.KnightExchanged && g.Players[player].Knights > 0 && err == nil
@@ -126,7 +126,7 @@ func (g *Catan) twoDesert() int {
 }
 
 func (g *Catan) twoRetreatTiles() []int {
-	if g.Transport != nil || g.twoAttack() || g.twoKnights() && (g.CitiesKnights.Invasions == 0 || g.Robber < 0) {
+	if g.Transport != nil || g.twoAttack() || g.twoAttackKnights() || g.twoKnights() && (g.CitiesKnights.Invasions == 0 || g.Robber < 0) {
 		return []int{}
 	}
 	if g.Caravans != nil || g.twoSeafarers() && g.twoDesert() < 0 {
@@ -234,7 +234,7 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		}
 		s.catanLog(player, "花费 %d 枚贸易筹码，从玩家 %d 随机取 %d 张%s，待选择交还 2 张", cost, 2-player, count, what)
 	case "catan_two_robber":
-		if g.twoAttack() {
+		if g.twoAttack() || g.twoAttackKnights() {
 			if err := s.catanTwoMoveBarbarian(player, a, cost); err != nil {
 				return err
 			}
@@ -328,7 +328,15 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	if !g.twoKnights() && s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < 2 && g.ArmyOwner != player {
 		return Action{Type: "catan_two_knight"}, true
 	}
-	if g.twoKnights() && s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < g.twoTokenCost(player) {
+	if g.twoAttackKnights() && s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < g.twoTokenCost(player) {
+		for _, edge := range g.twoAttackKnightTokenEdges(player) {
+			k := g.Attack.City.Knights[g.Attack.City.at(edge)]
+			if !k.Active && g.Attack.castleEdge(g, edge) {
+				return Action{Type: "catan_two_knight", Edge: edge}, true
+			}
+		}
+	}
+	if g.twoKnights() && !g.twoAttackKnights() && s.catanTwoCanExchangeKnight(player) && q.Tokens[player] < g.twoTokenCost(player) {
 		_, _, cities := g.pieces(player)
 		strength := 0
 		for _, n := range g.CitiesKnights.Knights {
@@ -366,7 +374,7 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	if q.Tokens[player] < g.twoTokenCost(player) {
 		return Action{}, false
 	}
-	if g.twoAttack() {
+	if g.twoAttack() || g.twoAttackKnights() {
 		best := Action{}
 		score := 0
 		moves := g.twoAttackMoves()

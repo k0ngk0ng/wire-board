@@ -31,6 +31,9 @@ type catanAttackCity struct {
 
 // NewCatanAttackCitiesKnights uses the combined road-knight rules for 3–6 seats.
 func NewCatanAttackCitiesKnights(n int) (*State, error) {
+	if n < 3 {
+		return nil, errors.New("双人道路骑士组合尚未开放建房")
+	}
 	s, err := newCatanAttackCityCore(n)
 	if err != nil {
 		return nil, err
@@ -39,14 +42,19 @@ func NewCatanAttackCitiesKnights(n int) (*State, error) {
 }
 
 func newCatanAttackCityCore(n int) (*State, error) {
-	if n < 3 || n > 6 {
-		return nil, errors.New("此内部组合核心暂用于三至六人；双人接续另行接入")
+	if n < 2 || n > 6 {
+		return nil, errors.New("蛮族城市骑士需要二至六位玩家")
 	}
-	s, err := NewCatanAttack(n)
+	s, err := newCatanAttackState(n, CatanOptions{FiveSix: n > 4})
 	if err != nil {
 		return nil, err
 	}
 	s.enableCitiesKnights()
+	if n == 2 {
+		s.Catan.Two.Knights = CatanTwoKnightsRules
+		s.Catan.Attack.TwoRules = CatanTwoAttackKnightsRules
+		s.Log = []string{"双人蛮族城市骑士：每回合两次完整生产，13分获胜；贸易筹码有限", "本站补充规则：采用两家中立道路骑士，不使用共享骑士；当前玩家代办中立移动和回应，骑士不激活、不参战"}
+	}
 	a := s.Catan.Attack
 	a.City = &catanAttackCity{Rules: CatanAttackKnightsRules, Knights: []catanAttackCityKnight{}}
 	a.Deck, a.Discard = []string{}, []string{}
@@ -82,14 +90,19 @@ func (c *catanAttackCity) validate(g *Catan) error {
 		return err
 	}
 	used := map[int]bool{}
-	counts := make([][3]int, len(g.Players))
+	counts := map[int][3]int{}
 	for _, k := range c.Knights {
-		if k.Owner < 0 || k.Owner >= len(g.Players) || g.Players[k.Owner].Eliminated || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] || k.Strength < 1 || k.Strength > 3 || k.ActivatedAt > g.CitiesKnights.ActionSerial || k.PromotedAt > g.CitiesKnights.ActionSerial {
+		if !g.attackCityKnightOwner(k.Owner) || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] || k.Strength < 1 || k.Strength > 3 || k.ActivatedAt > g.CitiesKnights.ActionSerial || k.PromotedAt > g.CitiesKnights.ActionSerial {
 			return errors.New("道路骑士位置、等级或锁定记录无效")
 		}
 		used[k.Edge] = true
-		counts[k.Owner][k.Strength-1]++
-		if counts[k.Owner][k.Strength-1] > 2 {
+		if k.Owner < 0 && (k.Active || k.ActivatedAt != 0 || k.Strength > 2) {
+			return errors.New("中立道路骑士不能激活或升级三级")
+		}
+		stock := counts[k.Owner]
+		stock[k.Strength-1]++
+		counts[k.Owner] = stock
+		if stock[k.Strength-1] > 2 {
 			return errors.New("每位玩家每级骑士最多两枚")
 		}
 	}
@@ -114,7 +127,7 @@ func (c *catanAttackCity) count(player, strength int) int {
 }
 func (c *catanAttackCity) recruitEdges(g *Catan, player int) []int {
 	out := []int{}
-	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || c.count(player, 1) >= 2 {
+	if !g.attackCityKnightOwner(player) || c.count(player, 1) >= 2 {
 		return out
 	}
 	for _, e := range g.Edges {

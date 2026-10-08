@@ -64,7 +64,15 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 		if !catanAttackEventSupported(kind) {
 			return errors.New("蛮族进攻与该事件的组合尚未接入")
 		}
-		if err := s.validateCatanAttack(); err != nil {
+		// The deck has recorded the new total, but its production has not
+		// started. Validate the preceding stable state, not that intermediate.
+		check := s
+		if g.twoAttackKnights() && len(g.Two.Rolls) > 0 {
+			previous := clone(*s)
+			previous.Catan.Two.Rolls = previous.Catan.Two.Rolls[:len(previous.Catan.Two.Rolls)-1]
+			check = &previous
+		}
+		if err := check.validateCatanAttack(); err != nil {
 			return err
 		}
 	}
@@ -152,6 +160,11 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	}
 	if err := next.catanContinueCardEvent(); err != nil {
 		return err
+	}
+	// The combined Attack validator checks complete two-player phases here,
+	// before the outer action hook resumes the second production.
+	if next.Catan.twoAttackKnights() && len(next.Catan.Two.Rolls) == 1 && next.Phase == "catan_turn" {
+		next.Phase = "catan_roll"
 	}
 	if err := next.validateCatanAttack(); err != nil {
 		return err

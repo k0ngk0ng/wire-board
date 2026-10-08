@@ -32,7 +32,7 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 	result := &catanAttackCityEnd{Player: s.Turn, Orders: slices.Clone(orders), Battles: []catanAttackCityBattle{}}
 	originals := map[int]bool{}
 	for _, k := range c.Knights {
-		if k.Owner == s.Turn {
+		if g.attackCityCanMove(k.Owner, s.Turn) {
 			originals[k.Edge] = true
 		}
 	}
@@ -74,7 +74,7 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 		moved[order.From] = true
 	}
 	for _, k := range c.Knights {
-		if k.Owner == s.Turn && g.Attack.castleEdge(g, k.Edge) && (len(c.destinations(g, k.Edge)) > 0 || displacements == 0 && len(c.displacementTargets(g, k.Edge)) > 0) {
+		if g.attackCityCanMove(k.Owner, s.Turn) && g.Attack.castleEdge(g, k.Edge) && (len(c.destinations(g, k.Edge)) > 0 || displacements == 0 && len(c.displacementTargets(g, k.Edge)) > 0) {
 			return nil, errors.New("请将所有己方城堡骑士移出")
 		}
 	}

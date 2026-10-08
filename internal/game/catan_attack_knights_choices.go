@@ -32,11 +32,11 @@ func (s *State) catanAttackCityMoveChoices(player int) []catanAttackCityMoveChoi
 		displaced = displaced || o.Retreat >= 0
 	}
 	for _, k := range q.Before {
-		if k.Owner != player || used[k.Edge] || arrivals[k.Edge] {
+		if !g.attackCityCanMove(k.Owner, player) || used[k.Edge] || arrivals[k.Edge] {
 			continue
 		}
 		i := c.at(k.Edge)
-		if i < 0 || c.Knights[i].Owner != player {
+		if i < 0 || !g.attackCityCanMove(c.Knights[i].Owner, player) {
 			continue
 		}
 		choice := catanAttackCityMoveChoice{From: k.Edge, Move: c.destinations(g, k.Edge), Displace: []int{}}
@@ -72,7 +72,7 @@ func (s *State) catanAttackCityPlanView(player int) map[string]any {
 		result["choices"] = map[string]any{"recruit": recruit, "activate": activate, "promote": promote, "capture": g.Attack.captureTargets()}
 	}
 	if tq := c.Treason; tq != nil && !s.Finished {
-		actor := tq.Owner
+		actor := g.knightResponseActor(tq.Owner, tq.Actor)
 		if tq.Placement != nil {
 			actor = tq.Actor
 		}
@@ -85,7 +85,7 @@ func (s *State) catanAttackCityPlanView(player int) map[string]any {
 			} else {
 				edges := []int{}
 				for _, n := range c.Knights {
-					if n.Owner == actor {
+					if n.Owner == tq.Owner && g.attackCityTreasonRemovable(tq.Owner, n.Edge) {
 						edges = append(edges, n.Edge)
 					}
 				}
@@ -207,14 +207,14 @@ func (s *State) catanAttackCityTreasonBot(player int) (Action, error) {
 	q := c.Treason
 	a := Action{Type: "catan_attack_city_treason", Prompt: q.ID}
 	if q.Placement == nil {
-		if player != q.Owner {
+		if player != g.knightResponseActor(q.Owner, q.Actor) {
 			return a, errors.New("不是移除玩家")
 		}
 		a.Choice = "remove"
 		best := 1000
 		found := false
 		for _, n := range c.Knights {
-			if n.Owner == player && n.Strength < best {
+			if n.Owner == q.Owner && n.Strength < best {
 				best = n.Strength
 				a.Edge = n.Edge
 				found = true
@@ -312,12 +312,12 @@ func (s *State) catanAttackCityBotChoices(player int) []botChoice {
 		case 22:
 			a.Target = -1
 			for _, n := range c.Knights {
-				if n.Owner != player && !g.Players[n.Owner].Eliminated {
+				if n.Owner != player && g.attackCityKnightOwner(n.Owner) {
 					a.Target = n.Owner
 					break
 				}
 			}
-			if a.Target < 0 {
+			if a.Target == -1 {
 				continue
 			}
 		default:

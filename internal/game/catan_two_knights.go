@@ -70,7 +70,7 @@ func (g *Catan) twoNeutralKnightOwner(owner int) bool {
 
 func (g *Catan) twoKnightTokenVertices(player int) []int {
 	out := []int{}
-	if g.twoKnights() && !g.twoFishing() {
+	if g.twoKnights() && !g.twoFishing() && !g.twoAttackKnights() {
 		for _, n := range g.CitiesKnights.Knights {
 			if n.Owner == player && g.Two.Bank >= n.Strength {
 				out = append(out, n.Vertex)
@@ -82,6 +82,9 @@ func (g *Catan) twoKnightTokenVertices(player int) []int {
 
 func (s *State) catanTwoKnightForTokens(player int, a Action) error {
 	g := s.Catan
+	if g.twoAttackKnights() {
+		return s.catanTwoAttackKnightForTokens(player, a)
+	}
 	if a.Choice != "" || g.Two.KnightExchanged || !slices.Contains(g.twoKnightTokenVertices(player), a.Vertex) {
 		return errors.New("请选择自己的骑士，且供应需足够支付；每回合一次")
 	}
@@ -99,6 +102,9 @@ func (s *State) catanTwoKnightForTokens(player int, a Action) error {
 
 func (g *Catan) twoKnightChoices(kind string) []catanTwoNeutralChoice {
 	out := []catanTwoNeutralChoice{}
+	if g.twoAttackKnights() {
+		return g.twoAttackKnightChoices(kind)
+	}
 	if !g.twoKnights() {
 		return out
 	}
@@ -137,6 +143,9 @@ func (s *State) catanTwoKnightAfterAction(before *State, a Action) bool {
 	if !g.twoKnights() {
 		return false
 	}
+	if g.twoAttackKnights() {
+		return s.catanTwoAttackKnightAfterAction(before, a)
+	}
 	kinds := []string{}
 	if a.Type == "catan_knight_recruit" {
 		kinds = append(kinds, "knight")
@@ -164,7 +173,7 @@ func (s *State) validateTwoKnights() error {
 	if q.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil && !g.riverKnights() || g.Caravans != nil && !g.caravanKnights() || g.Transport != nil && !g.transportKnights() || g.Attack != nil {
+	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil && !g.riverKnights() || g.Caravans != nil && !g.caravanKnights() || g.Transport != nil && !g.transportKnights() || g.Attack != nil && !g.twoAttackKnights() {
 		return errors.New("双人城市骑士规则或组合无效")
 	}
 	k := g.CitiesKnights

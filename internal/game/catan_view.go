@@ -53,11 +53,12 @@ func (s *State) catanView(view map[string]any, player int) {
 			public["tokenWindow"] = s.catanTwoTokenWindow(player)
 			if s.catanTwoTokenWindow(player) {
 				public["retreatTiles"] = g.twoRetreatTiles()
-				if g.twoAttack() {
+				if g.twoAttack() || g.twoAttackKnights() {
 					public["attackMoves"] = g.twoAttackMoves()
 				}
 				if g.twoKnights() {
 					public["exchangeKnights"] = g.twoKnightTokenVertices(player)
+					public["exchangeKnightEdges"] = g.twoAttackKnightTokenEdges(player)
 				}
 				if g.Transport != nil {
 					public["retreatCost"] = 1

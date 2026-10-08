@@ -23,6 +23,12 @@ func (s *State) validateTwoAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if g.twoAttackKnights() {
+		if a.NeutralPrisoners != 0 || a.TwoLanding && (g.Two.Pending == nil || g.Two.Pending.Kind != "settlement" || s.Phase != "catan_two_build") {
+			return errors.New("双人道路骑士登陆回应无效")
+		}
+		return nil
+	}
 	if !g.twoAttack() || g.Two.KnightExchanged || a.NeutralPrisoners < 0 || a.NeutralPrisoners > a.Map.Barbarians {
 		return errors.New("双人蛮族规则或中立俘虏无效")
 	}
@@ -77,7 +83,7 @@ func (g *Catan) attackBattleSeat(owner int) int {
 }
 func (g *Catan) twoAttackMoves() map[int][]int {
 	out := map[int][]int{}
-	if !g.twoAttack() {
+	if !g.twoAttack() && !g.twoAttackKnights() {
 		return out
 	}
 	for _, from := range g.Attack.captureTargets() {
@@ -96,6 +102,11 @@ func (s *State) catanTwoMoveBarbarian(player int, a Action, cost int) error {
 	}
 	g.Attack.Barbarians[a.Card]--
 	g.Attack.Barbarians[a.Tile]++
+	if g.twoAttackKnights() {
+		if m := g.CitiesKnights.Merchant; m != nil && g.Attack.conquered(m.Tile) {
+			g.CitiesKnights.Merchant = nil
+		}
+	}
 	s.catanLog(player, "花费%d枚贸易筹码，将1个蛮族从地块 #%d 移至 #%d，不偷牌", cost, a.Card+1, a.Tile+1)
 	s.catanScores()
 	s.catanVictory()

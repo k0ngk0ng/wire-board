@@ -110,6 +110,17 @@ func (g *Catan) placeTwoNeutral(kind string, choice catanTwoNeutralChoice) error
 	if !slices.Contains(g.twoNeutralChoices(kind), choice) {
 		return errors.New("请选择中立势力的合法建设位置")
 	}
+	if g.twoAttackKnights() && (kind == "knight" || kind == "knight_promote") && slices.Contains(g.twoAttackKnightChoices(kind), choice) {
+		c := g.Attack.City
+		if kind == "knight" {
+			c.Knights = append(c.Knights, catanAttackCityKnight{Owner: choice.Owner, Edge: choice.Edge, Strength: 1})
+		} else {
+			i := c.at(choice.Edge)
+			c.Knights[i].Strength = 2
+			c.Knights[i].PromotedAt = g.CitiesKnights.ActionSerial
+		}
+		return nil
+	}
 	if choice.Vertex >= 0 {
 		if kind == "knight" {
 			g.CitiesKnights.Knights = append(g.CitiesKnights.Knights, CatanKnight{Owner: choice.Owner, Vertex: choice.Vertex, Strength: 1})
