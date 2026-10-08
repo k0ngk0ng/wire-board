@@ -9,10 +9,18 @@ import (
 )
 
 func TestCatanTwoSeafarersCompleteHTTPGames(t *testing.T) {
+	runTwoSeafarersCompleteHTTPGames(t, false)
+}
+
+func TestCatanTwoFishingSeafarersCompleteHTTPGames(t *testing.T) {
+	runTwoSeafarersCompleteHTTPGames(t, true)
+}
+
+func runTwoSeafarersCompleteHTTPGames(t *testing.T, fishing bool) {
 	for i, scenario := range []string{"shores", "islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world"} {
 		t.Run(scenario, func(t *testing.T) {
 			helpers, events := i%2 == 0, i%2 == 1
-			s, ts, clients, id := newTwoVariantsFullTable(t, scenario, events, true, true, game.CatanOptions{Helpers: helpers, AllHelpers: helpers})
+			s, ts, clients, id := newTwoVariantsFishingFullTable(t, scenario, events, true, true, fishing, game.CatanOptions{Helpers: helpers, AllHelpers: helpers})
 			restored := map[string]bool{}
 			steps, automatic, timeouts := 0, 0, 0
 			for ; steps < 7500 && !s.rooms[id].Game.Finished; steps++ {
@@ -100,6 +108,9 @@ func TestCatanTwoSeafarersCompleteHTTPGames(t *testing.T) {
 				}
 				record := history[0].(map[string]any)
 				rules := record["catanExpansionRules"].(map[string]any)
+				if fishing && rules["two_fishing_seafarers"] != game.CatanTwoFishingSeafarersRules {
+					t.Fatal("missing fishing sea history", rules)
+				}
 				if rules["two_seafarers"] != game.CatanTwoSeafarersRules || rules["two_player"] != game.CatanTwoRules || len(record["players"].([]any)) != 2 {
 					t.Fatal("incorrect sea history", record)
 				}

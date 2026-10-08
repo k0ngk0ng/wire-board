@@ -266,11 +266,11 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if s.catanTwoKnightAfterAction(before, a) {
 		return nil
 	}
-	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_road" && a.Type != "catan_ship") {
+	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_road" && a.Type != "catan_ship" && a.Type != "catan_fish_ship") {
 		return nil
 	}
 	kind := "road"
-	if a.Type == "catan_ship" {
+	if a.Type == "catan_ship" || a.Type == "catan_fish_ship" {
 		kind = "ship"
 	}
 	if a.Type == "catan_settlement" {

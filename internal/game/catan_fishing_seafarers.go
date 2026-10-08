@@ -67,6 +67,10 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 }
 
 func (g *Catan) fishingSeaSupported() bool {
+	if g.twoFishingSeafarers() {
+		_, err := NormalizeCatanTwoFishingSeafarersSetup(CatanSeafarersSetup{Scenario: g.Seafarers.Scenario, Layout: g.Seafarers.Layout, Rules: g.Seafarers.Rules})
+		return err == nil
+	}
 	if g.Seafarers != nil && len(g.Players) > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
 		return len(g.Players) <= 6 && !g.Seafarers.Variable
 	}

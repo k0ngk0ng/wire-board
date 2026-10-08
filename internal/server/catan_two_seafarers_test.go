@@ -7,12 +7,20 @@ import (
 )
 
 func TestCatanTwoSeafarersPublicConfiguration(t *testing.T) {
+	runTwoSeafarersPublicConfiguration(t, false)
+}
+
+func TestCatanTwoFishingSeafarersPublicConfiguration(t *testing.T) {
+	runTwoSeafarersPublicConfiguration(t, true)
+}
+
+func runTwoSeafarersPublicConfiguration(t *testing.T, fishing bool) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	h, g := newClient(t, ts.URL), newClient(t, ts.URL)
 	h.register("双人航海房主")
 	g.register("双人航海朋友")
-	raw := h.post("/api/rooms", map[string]any{"kind": "catan", "capacity": 2, "name": "双人航海", "catanTwoScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true}, "catanEvents": game.CatanEventCatalogue, "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 201)
+	raw := h.post("/api/rooms", map[string]any{"kind": "catan", "capacity": 2, "name": "双人航海", "catanFishing": fishing, "catanTwoScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true}, "catanEvents": game.CatanEventCatalogue, "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 201)
 	id := raw["id"].(string)
 	g.command(current(h), "join", nil, 200)
 	change := func(c *testClient, scenario string, status int) {
@@ -32,7 +40,12 @@ func TestCatanTwoSeafarersPublicConfiguration(t *testing.T) {
 			t.Fatal("missing map choices")
 		}
 		if scenario != "new_world" {
-			h.post("/api/rooms/"+id, map[string]any{"type": "catan_seafarers", "catanSeafarers": game.CatanSeafarersSetup{Scenario: scenario, Layout: "variable"}, "version": r.Version, "nonce": randomID(12)}, 200)
+			h.post("/api/rooms/"+id, map[string]any{"type": "catan_seafarers", "catanSeafarers": game.CatanSeafarersSetup{Scenario: scenario, Layout: "variable"}, "version": r.Version, "nonce": randomID(12)}, func() int {
+				if fishing && (scenario == "desert" || scenario == "tribe") {
+					return 400
+				}
+				return 200
+			}())
 		}
 		h.command(current(h), "ready", nil, 200)
 		g.command(current(g), "ready", nil, 200)
@@ -42,6 +55,12 @@ func TestCatanTwoSeafarersPublicConfiguration(t *testing.T) {
 		}
 		s, ts = restartRiversHTTP(t, s, ts, []*testClient{h, g}, id)
 		h.command(current(h), "start", nil, 200)
+		if fishing {
+			view := s.rooms[id].Game.View(0)["catan"].(map[string]any)["fishing"].(map[string]any)
+			if view["twoSea"] != game.CatanTwoFishingSeafarersRules {
+				t.Fatal("missing public rule marker", view)
+			}
+		}
 		if s.rooms[id].Game.Catan.Two.Seafarers != game.CatanTwoSeafarersRules {
 			t.Fatal("wrong constructor")
 		}
@@ -50,13 +69,13 @@ func TestCatanTwoSeafarersPublicConfiguration(t *testing.T) {
 		id = current(h)["id"].(string)
 	}
 	change(h, "", 200)
-	if s.rooms[id].CatanSeafarers != nil || s.rooms[id].CatanNewWorldMap != nil {
+	if s.rooms[id].CatanFishing || s.rooms[id].CatanSeafarers != nil || s.rooms[id].CatanNewWorldMap != nil {
 		t.Fatal("base contaminated")
 	}
 	h.command(current(h), "ready", nil, 200)
 	g.command(current(g), "ready", nil, 200)
 	h.command(current(h), "start", nil, 200)
-	if s.rooms[id].Game.Catan.Seafarers != nil || s.rooms[id].Game.Catan.Two.Seafarers != "" {
+	if s.rooms[id].Game.Catan.Fishing != nil || s.rooms[id].Game.Catan.Seafarers != nil || s.rooms[id].Game.Catan.Two.Seafarers != "" {
 		t.Fatal("base constructor contaminated")
 	}
 }

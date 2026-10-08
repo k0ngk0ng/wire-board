@@ -5,6 +5,7 @@ import {
   twoCatanSeaScenarios,
   supportsTwoCatanSeafarers,
   catanTwoSeafarersNote,
+  catanTwoFishingSeafarersNote,
 } from "./catan-two-seafarers";
 const scenarios = [
   ...twoCatanSeaScenarios,
@@ -76,6 +77,7 @@ export function CatanTwoScenarioPicker({
   disabled = false,
   variantsEnabled = false,
   helpersEnabled = false,
+  fishingEnabled = false,
   target,
 }: {
   value: string;
@@ -83,6 +85,7 @@ export function CatanTwoScenarioPicker({
   disabled?: boolean;
   variantsEnabled?: boolean;
   helpersEnabled?: boolean;
+  fishingEnabled?: boolean;
   target?: number;
 }) {
   return (
@@ -117,7 +120,11 @@ export function CatanTwoScenarioPicker({
         </select>
       </label>
       {supportsTwoCatanSeafarers(value) && (
-        <p className="muted small">{catanTwoSeafarersNote}</p>
+        <p className="muted small">
+          {fishingEnabled
+            ? catanTwoFishingSeafarersNote
+            : catanTwoSeafarersNote}
+        </p>
       )}
       {value === "wonders" && (
         <p className="muted small">
@@ -151,7 +158,8 @@ export function CatanTwoScenarioPicker({
         {supportsTwoCatanVariants(value) &&
           value !== "wonders" &&
           ` ${target ?? catanVictoryTarget(value, value === "cities-knights")} 分获胜。`}
-        {value === "fishing" && `旧靴持有者需 ${(target ?? 10) + 1} 分。`}
+        {(value === "fishing" || fishingEnabled) &&
+          `旧靴持有者需 ${(target ?? 10) + 1} 分。`}
       </p>
       {["pirate-lairs", "fish-for-catan", "explorers-and-pirates"].includes(
         value,
@@ -160,22 +168,23 @@ export function CatanTwoScenarioPicker({
           本站巢穴数字配置：3、4、5、9、10、11，随机分配，攻陷前隐藏；不使用双人贸易筹码。
         </p>
       )}
-      {![
-        "cities-knights",
-        "fishing",
-        "land-ho",
-        "spices-for-catan",
-        "pirate-lairs",
-        "fish-for-catan",
-        "explorers-and-pirates",
-      ].includes(value) && (
-        <p className="muted small">
-          采用 2025 双人规则。本站补充：贸易筹码
-          {["rivers", "transport"].includes(value) ? "与金币" : ""}
-          用完继续记账发放。
-          {value === "caravans" && "商队确实无法放满时，只放能放的数量。"}
-        </p>
-      )}
+      {!fishingEnabled &&
+        ![
+          "cities-knights",
+          "fishing",
+          "land-ho",
+          "spices-for-catan",
+          "pirate-lairs",
+          "fish-for-catan",
+          "explorers-and-pirates",
+        ].includes(value) && (
+          <p className="muted small">
+            采用 2025 双人规则。本站补充：贸易筹码
+            {["rivers", "transport"].includes(value) ? "与金币" : ""}
+            用完继续记账发放。
+            {value === "caravans" && "商队确实无法放满时，只放能放的数量。"}
+          </p>
+        )}
     </div>
   );
 }

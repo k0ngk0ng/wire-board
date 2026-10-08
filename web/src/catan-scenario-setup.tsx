@@ -228,6 +228,7 @@ export function CatanFishingSeaPicker({
   blocked = false,
   fixedRequired = false,
   shores = false,
+  two = false,
   extended = false,
   explorer = false,
   lakes = false,
@@ -239,6 +240,7 @@ export function CatanFishingSeaPicker({
   blocked?: boolean;
   fixedRequired?: boolean;
   shores?: boolean;
+  two?: boolean;
   extended?: boolean;
   explorer?: boolean;
   lakes?: boolean;
@@ -270,7 +272,9 @@ export function CatanFishingSeaPicker({
       </p>
       {shores && value && (
         <p className="muted small">
-          本站新海岸配方：三人以内陆地块换湖并移除原数字；四至六人以内陆沙漠换湖，五六人使用双湖。强盗从场外开始。
+          {two
+            ? "本站双人新海岸：采用四人地图，以主岛内陆沙漠换湖，强盗从场外开始。"
+            : "本站新海岸配方：三人以内陆地块换湖并移除原数字；四至六人以内陆沙漠换湖，五六人使用双湖。强盗从场外开始。"}
         </p>
       )}
       {explorer && value && onLakes && (

@@ -137,6 +137,11 @@ export function catanRuleContext(room: Room) {
       ? !!game.two
       : !!room.catanTwoRules || (transport && players === 2),
     citiesKnights,
+    twoFishingSeafarers: game
+      ? game.fishing?.twoSea || ""
+      : room.catanTwoRules && room.catanSeafarers && room.catanFishing
+        ? "wire-board-two-fishing-seafarers-v1"
+        : "",
     twoSeafarers: game
       ? game.two?.seafarers || ""
       : room.catanTwoRules && room.catanSeafarers

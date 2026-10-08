@@ -150,7 +150,7 @@ func (s *State) validateTwoSeafarers() error {
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil || g.CitiesKnights != nil {
+	if !g.twoSeafarers() || g.Rivers != nil || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers

@@ -24,7 +24,7 @@ func (r *Room) setCatanTwoSeafarers(request game.CatanSeafarersSetup) error {
 	next.CatanSeafarers = &setup
 	next.CatanNewWorldMap = nil
 	if setup.Scenario == "new_world" {
-		next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(4)
+		next.CatanNewWorldMap, err = next.generateCatanWorldMap()
 		if err != nil {
 			return err
 		}
@@ -37,4 +37,21 @@ func (r *Room) setCatanTwoSeafarers(request game.CatanSeafarersSetup) error {
 		r.Seats[i].Ready = r.Seats[i].Bot
 	}
 	return nil
+}
+
+func (r *Room) validateCatanTwoFishingSeafarers() error {
+	if !r.twoCatanSeafarers() || r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanTwoScenario || r.CatanScenario != "" || r.CatanFishingLakes || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) {
+		return errors.New("双人捕鱼需要适用的航海家剧本，骑士组合尚未接通")
+	}
+	setup, err := game.NormalizeCatanTwoFishingSeafarersSetup(*r.CatanSeafarers)
+	if err != nil {
+		return err
+	}
+	if setup != *r.CatanSeafarers {
+		return errors.New("双人捕鱼海图配置无效")
+	}
+	if setup.Scenario == "new_world" {
+		_, err = game.NewCatanTwoFishingSeafarers(2, r.CatanOptions, setup, r.CatanNewWorldMap)
+	}
+	return err
 }

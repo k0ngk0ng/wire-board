@@ -603,6 +603,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    twoSea?: string;
     two?: string;
     seaKnights?: string;
     helpers?: string;

@@ -1021,7 +1021,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = game.ValidateCatanNewWorldMap(mapPlayers, layout)
 		}
 		if err == nil && next.CatanFishing {
-			_, err = game.NewCatanFishingNewWorld(max(3, next.Capacity), next.CatanOptions, layout)
+			if next.twoCatanSeafarers() {
+				_, err = game.NewCatanTwoFishingSeafarers(2, next.CatanOptions, *next.CatanSeafarers, layout)
+			} else {
+				_, err = game.NewCatanFishingNewWorld(max(3, next.Capacity), next.CatanOptions, layout)
+			}
 		}
 		if err == nil && !slices.Equal(next.CatanNewWorldMap.Hexes, layout.Hexes) {
 			next.CatanNewWorldMap = layout
@@ -1247,7 +1251,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					err = next.validateCatanTwoSetup()
 					if err == nil {
 						if next.twoCatanSeafarers() {
-							next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+							if next.CatanFishing {
+								next.Game, err = game.NewCatanTwoFishingSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+							} else {
+								next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+							}
 						} else if next.CatanTwoScenario == "caravans" {
 							next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "cities-knights" {

@@ -1,4 +1,7 @@
-import { catanTwoSeafarersNote } from "./catan-two-seafarers";
+import {
+  catanTwoSeafarersNote,
+  catanTwoFishingSeafarersNote,
+} from "./catan-two-seafarers";
 import { catanExplorerTwoKnightsNote } from "./catan-explorer-two-knights";
 import { catanTwoHelpersNote } from "./catan-two-helpers";
 import { catanTwoVariantsNote } from "./catan-two-variants";
@@ -586,7 +589,13 @@ export function CatanRules({ room }: { room: Room }) {
             本站渔夫＋助手规则：鱼不计入七点弃牌手牌，也不取消希尔达的无资源补偿；先完成换鱼和金矿选择，再回应助手。迪古尔在没有沙漠时将强盗移到场外；迪古尔或卡娅从湖泊领取奖励时，任选一张银行现有的普通资源。鱼行动单独支付，不使用助手折扣。
           </p>
         )}
-        {info.twoSeafarers && <p>{catanTwoSeafarersNote}</p>}
+        {info.twoSeafarers && (
+          <p>
+            {info.twoFishingSeafarers
+              ? catanTwoFishingSeafarersNote
+              : catanTwoSeafarersNote}
+          </p>
+        )}
         {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
         {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
         {info.harbors && <CatanHarborsRules />}
@@ -641,7 +650,13 @@ export function CatanRules({ room }: { room: Room }) {
           本站渔夫＋助手规则：鱼不计入七点弃牌手牌，也不取消希尔达的无资源补偿；先完成换鱼和金矿选择，再回应助手。迪古尔在没有沙漠时将强盗移到场外；迪古尔或卡娅从湖泊领取奖励时，任选一张银行现有的普通资源。鱼行动单独支付，不使用助手折扣。
         </p>
       )}
-      {info.twoSeafarers && <p>{catanTwoSeafarersNote}</p>}
+      {info.twoSeafarers && (
+        <p>
+          {info.twoFishingSeafarers
+            ? catanTwoFishingSeafarersNote
+            : catanTwoSeafarersNote}
+        </p>
+      )}
       {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
       {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
       {info.harbors && <CatanHarborsRules />}
@@ -664,7 +679,9 @@ export function CatanRules({ room }: { room: Room }) {
             </li>
             {info.fishing ? (
               <li>
-                每人起始五枚鱼筹码：1、1、2、2、3。不使用贸易筹码，建村不另领鱼；公开分数落后者每次鱼行动少付一鱼，隐藏胜利点不参与比较。用鱼修路同样触发中立修路。中立势力也能取得最长路线。
+                每人起始五枚鱼筹码：1、1、2、2、3。不使用贸易筹码，建村不另领鱼；公开分数落后者每次鱼行动少付一鱼，隐藏胜利点不参与比较。用鱼修路同样触发中立修路。
+                {info.twoFishingSeafarers && "用鱼造船同样触发中立造船。"}
+                {scenario !== "cloth" && "中立势力也能取得最长路线。"}
               </li>
             ) : (
               <>
@@ -703,7 +720,7 @@ export function CatanRules({ room }: { room: Room }) {
           <ol>
             <li>
               {info.two
-                ? "湖泊与海岸渔场按标注点数产鱼，村庄领1枚、城市领2枚；起始建村不额外领鱼。强盗从场外开始，可以进入湖泊并阻止该湖生产。"
+                ? `湖泊与海岸渔场按标注点数产鱼，村庄领1枚、城市领2枚；起始建村不额外领鱼。${info.twoFishingSeafarers ? "强盗、海盗沿用捕鱼海图的开局位置。" : "强盗从场外开始，可以进入湖泊并阻止该湖生产。"}`
                 : seafarers
                   ? scenario === "shores"
                     ? "新海岸强盗从场外开始，海盗沿用剧本位置。湖泊和海岸渔场按点数产鱼，村庄产1枚、城市产2枚；第二座起始村庄邻近鱼区时领1枚。"

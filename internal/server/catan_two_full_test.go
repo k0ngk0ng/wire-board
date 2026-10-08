@@ -19,6 +19,9 @@ func newTwoScenarioFullTable(t *testing.T, scenario string, events ...bool) (*Se
 	return newTwoVariantsFullTable(t, scenario, len(events) > 0 && events[0], false, false)
 }
 func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, harbors bool, helperOptions ...game.CatanOptions) (*Server, *httptest.Server, []*testClient, string) {
+	return newTwoVariantsFishingFullTable(t, scenario, events, friendly, harbors, false, helperOptions...)
+}
+func newTwoVariantsFishingFullTable(t *testing.T, scenario string, events, friendly, harbors, fishing bool, helperOptions ...game.CatanOptions) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -30,6 +33,9 @@ func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, ha
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未知双人剧本", "capacity": 2, "catanTwoScenario": "unknown"}, 400)
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止版本注入", "capacity": 2, "catanTwoRules": game.CatanTwoRules}, 400)
 	recipe := map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}
+	if fishing {
+		recipe["catanFishing"] = true
+	}
 	if len(helperOptions) > 0 {
 		recipe["catanOptions"] = helperOptions[0]
 	}
@@ -69,7 +75,7 @@ func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, ha
 		t.Fatal("formal start omitted merchant train rules")
 	}
 	wantBank := 10
-	if scenario == "fishing" {
+	if scenario == "fishing" || fishing {
 		wantBank = 0
 	}
 	if len(r.Seats) != 2 || len(r.Game.Catan.Players) != 2 || r.Game.Phase != phase || r.Game.Catan.Two == nil || r.Game.Catan.Two.Bank != wantBank {
