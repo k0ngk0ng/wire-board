@@ -265,6 +265,7 @@ func TestCatanExplorerFishingMapCorruptionAndBaseIsolation(t *testing.T) {
 				f.Grounds[0].SeaTile = &id
 			},
 			func(g *Catan, b *catanExplorerBoard, f *catanFishingMap) { f.NumberRecipe = CatanExtendedNumberRecipe },
+			func(g *Catan, b *catanExplorerBoard, f *catanFishingMap) { f.SeaRecipe = CatanFishingSeaExtendedRecipe },
 			func(g *Catan, b *catanExplorerBoard, f *catanFishingMap) {
 				f.ExtraNumbers = []catanFishingExtraNumber{{b.FramePasture, 2}}
 			},

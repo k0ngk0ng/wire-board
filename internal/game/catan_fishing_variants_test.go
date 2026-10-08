@@ -45,9 +45,6 @@ func fishingVariantGame(t *testing.T, n int, scene string, knights, friendly, ha
 func TestCatanFishingVariantsConfigurationMatrix(t *testing.T) {
 	for n := 3; n <= 6; n++ {
 		for _, scene := range []string{"", "islands", "fog", "desert", "tribe", "cloth", "wonders", "new_world", "knights"} {
-			if n > 4 && slices.Contains([]string{"islands", "desert", "tribe", "cloth"}, scene) {
-				continue
-			}
 			for mode := 1; mode <= 3; mode++ {
 				t.Run(fmt.Sprintf("%d/%s/%d", n, scene, mode), func(t *testing.T) {
 					s := fishingVariantGame(t, n, scene, scene == "knights", mode&1 != 0, mode&2 != 0)

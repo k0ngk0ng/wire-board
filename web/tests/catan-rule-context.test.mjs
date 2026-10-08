@@ -733,3 +733,34 @@ test("friendly fishing fallback follows actual recipe and preserves harbor boot 
   assert.equal(catanRuleContext(room).friendlyFishingFallback, true);
   assert.equal(catanRuleContext(room).friendlySeaFallback, "");
 });
+
+test("extended fishing recipes follow saved maps, never a stale room draft", () => {
+  for (const scenario of ["islands", "desert", "tribe", "cloth"]) {
+    const room = {
+      capacity: 6,
+      catanScenario: scenario,
+      catanSeafarers: { scenario },
+      catanFishing: true,
+    };
+    assert.equal(
+      catanRuleContext(room).fishingSeaRecipe,
+      "wire-board-fishing-sea-5-6-v1",
+    );
+    room.capacity = 4;
+    assert.equal(catanRuleContext(room).fishingSeaRecipe, "");
+    room.game = {
+      catan: {
+        players: Array(5).fill({}),
+        seafarers: { scenario },
+        fishing: { map: { seaRecipe: "wire-board-fishing-sea-5-6-v1" } },
+      },
+    };
+    assert.equal(
+      catanRuleContext(room).fishingSeaRecipe,
+      "wire-board-fishing-sea-5-6-v1",
+    );
+    delete room.game.catan.fishing;
+    room.capacity = 6;
+    assert.equal(catanRuleContext(room).fishingSeaRecipe, "");
+  }
+});

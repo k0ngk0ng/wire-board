@@ -106,10 +106,7 @@ func TestCatanFishingDesertRejectsCorruptAndUnsupported(t *testing.T) {
 		}
 	}
 	for _, n := range []int{3, 4, 5, 6} {
-		layout := "fixed"
-		if n < 5 {
-			layout = "variable"
-		}
+		layout := "variable"
 		if _, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "desert", Layout: layout}, nil); err == nil {
 			t.Fatal("unverified recipe accepted", n, layout)
 		}

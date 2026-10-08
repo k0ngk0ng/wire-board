@@ -43,7 +43,11 @@ func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, f
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	g := s.rooms[id].Game.Catan
-	if g.Fishing == nil || g.Seafarers == nil || g.Seafarers.Scenario != scenario || g.Seafarers.Layout != layout || g.CitiesKnights != nil || !s.rooms[id].CatanFishing {
+	wantScenario := scenario
+	if n > 4 && scenario == "islands" {
+		wantScenario = "six_islands"
+	}
+	if g.Fishing == nil || g.Seafarers == nil || g.Seafarers.Scenario != wantScenario || g.Seafarers.Layout != layout || g.CitiesKnights != nil || !s.rooms[id].CatanFishing {
 		t.Fatal("wrong public fish sea opening")
 	}
 	if (g.Paired != nil) != (n > 4) || g.Options.FiveSix != (n > 4) {
@@ -65,7 +69,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 7, "catanScenario": "land-ho"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
 		{"kind": "catan", "capacity": 4, "catanScenario": "islands", "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{}},
 		{"kind": "splendor", "capacity": 3},
 	} {
 		body["name"], body["catanFishing"] = "错误捕鱼组合", true

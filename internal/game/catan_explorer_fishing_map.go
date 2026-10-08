@@ -163,7 +163,7 @@ func (f catanFishingMap) validateExplorer(g *Catan, b *catanExplorerBoard) error
 			want = 2
 		}
 	}
-	if f.NumberRecipe != "" || len(f.ExtraNumbers) != 0 || len(f.Lakes) != want || g.Robber != -1 || g.Seafarers != nil {
+	if f.SeaRecipe != "" || f.NumberRecipe != "" || len(f.ExtraNumbers) != 0 || len(f.Lakes) != want || g.Robber != -1 || g.Seafarers != nil {
 		return errors.New("探险捕鱼湖泊数量、数字或强盗不符")
 	}
 	seen := map[int]bool{}

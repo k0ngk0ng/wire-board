@@ -83,7 +83,7 @@ func TestCatanFishingClothMapGroupsAndVariants(t *testing.T) {
 		}
 	}
 	for _, n := range []int{5, 6} {
-		if _, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: true}, CatanSeafarersSetup{Scenario: "cloth"}, nil); err == nil {
+		if _, err := NewCatanFishingSeafarers(n, CatanOptions{FiveSix: true}, CatanSeafarersSetup{Scenario: "cloth", Layout: "variable"}, nil); err == nil {
 			t.Fatal("unverified 5/6 recipe accepted")
 		}
 	}

@@ -12,6 +12,14 @@ import (
 
 // All supported sizes start through public creation and use real HTTP,
 // autoplay, timeout and restart paths through history recording.
+func TestCatanFishingFourMapsExtendedFullHTTPGames(t *testing.T) {
+	for _, scenario := range []string{"islands", "desert", "tribe", "cloth"} {
+		t.Run(scenario, func(t *testing.T) {
+			testFishingEventsFullHTTP(t, scenario, true, true, true, 5, 6)
+		})
+	}
+}
+
 func TestCatanFishingNewWorldExtendedFullHTTPGames(t *testing.T) {
 	testFishingSeaExtendedFullHTTP(t, "new_world", 5, 6)
 }
@@ -339,6 +347,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						}
 						record := history[0].(map[string]any)
 						versions := record["catanExpansionRules"].(map[string]any)
+						if n > 4 && (scenario == "islands" || scenario == "desert" || scenario == "tribe" || scenario == "cloth") && versions["fishing_sea_recipe"] != game.CatanFishingSeaExtendedRecipe {
+							t.Fatal("missing extended fishing recipe history", versions)
+						}
 						if events && versions["event_cards"] != game.CatanEventCatalogue {
 							t.Fatal("missing fishing event history", versions)
 						}
@@ -354,6 +365,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						wantScenario, wantLayout := "fishing", "variable"
 						if scenario != "" {
 							wantScenario, wantLayout = scenario, r.Game.Catan.Seafarers.Layout
+							if scenario == "islands" && n > 4 {
+								wantScenario = "six_islands"
+							}
 						}
 						if record["catanScenario"] != wantScenario || record["catanLayout"] != wantLayout || record["catanExpansionRules"].(map[string]any)["fishing"] != game.CatanFishingRules {
 							t.Fatal("wrong fishing archive", record)

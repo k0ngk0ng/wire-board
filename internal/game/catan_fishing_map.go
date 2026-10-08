@@ -20,6 +20,7 @@ type catanFishingGround struct {
 }
 
 type catanFishingMap struct {
+	SeaRecipe    string                    `json:"seaRecipe,omitempty"`
 	NumberRecipe string                    `json:"numberRecipe,omitempty"`
 	Lakes        []catanFishingLake        `json:"lakes"`
 	Grounds      []catanFishingGround      `json:"grounds"`
@@ -152,6 +153,12 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if g.Seafarers != nil && len(g.Players) > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
+		return f.validateSeaExtended(g)
+	}
+	if f.SeaRecipe != "" {
+		return errors.New("此地图不能使用五六人捕鱼海图配方")
+	}
 	if g != nil && g.Explorer != nil {
 		return f.validateExplorer(g, g.Explorer.Board)
 	}

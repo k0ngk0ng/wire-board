@@ -3,13 +3,13 @@ package game
 import "errors"
 
 // Public combinations use verified recipes: all listed scenarios for three/four,
-// and the dedicated Fog/Wonders recipes for five/six. New World has its own
+// and dedicated, versioned recipes for five/six. New World has its own
 // constructor. Never apply a three/four-player recipe to five/six.
 func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, placements []CatanFishingGroundPlacement) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")
 	}
-	if setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" && setup.Scenario != "wonders" || n < 3 || n > 6 || n > 4 && setup.Scenario != "fog" && setup.Scenario != "wonders" {
+	if setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" && setup.Scenario != "wonders" || n < 3 || n > 6 {
 		return nil, errors.New("此捕鱼航海家剧本或人数尚未接入")
 	}
 	s, err := NewCatanSeafarers(n, options, setup, nil)
@@ -18,7 +18,9 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 	}
 	g := s.Catan
 	var m *catanFishingMap
-	if setup.Scenario == "fog" {
+	if n > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
+		m, err = g.makeFishingSeaExtended(placements)
+	} else if setup.Scenario == "fog" {
 		m, err = g.makeFishingFog(placements)
 	} else if setup.Scenario == "desert" {
 		m, err = g.makeFishingDesert(placements)
@@ -41,7 +43,9 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 	g.Fishing = &CatanFishing{Map: *m, Tokens: *tokens, LastRollID: -1, Started: make([]bool, n)}
 	// The 2025 combination explicitly uses scenario setup except for the
 	// listed lake/grounds changes: retain the scenario's robber and pirate.
-	if setup.Scenario == "fog" {
+	if n > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
+		s.Log = append(s.Log, "本站五六人捕鱼海图：八处渔场；六岛每岛至少一处、两座小岛各两处，布匹两主岛各四处；沙漠与部落采用固定双湖配方，保留剧本胜利及旧靴规则")
+	} else if setup.Scenario == "fog" {
 		s.Log = append(s.Log, "迷雾捕鱼：不放湖泊，渔场沿起始岛屿海岸放置；2鱼可驱离海盗，5鱼可造船；12分获胜，持旧靴子需13分")
 	} else if setup.Scenario == "desert" {
 		s.Log = append(s.Log, "沙漠捕鱼：按剧本替换湖泊并迁移数字，双点数地块在任一点数掷中时产出；14分获胜，持旧靴子需15分")
@@ -58,6 +62,9 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 }
 
 func (g *Catan) fishingSeaSupported() bool {
+	if g.Seafarers != nil && len(g.Players) > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
+		return len(g.Players) <= 6 && !g.Seafarers.Variable && g.CitiesKnights == nil
+	}
 	if g.Seafarers != nil && (g.Seafarers.Scenario == "new_world" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "wonders") {
 		return len(g.Players) >= 3 && len(g.Players) <= 6 && g.CitiesKnights == nil
 	}
