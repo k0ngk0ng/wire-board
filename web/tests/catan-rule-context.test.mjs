@@ -810,3 +810,29 @@ test("fishing helper recipe follows the saved game and stays separate from Explo
     "wire-board-explorer-helpers-v1",
   );
 });
+
+test("fishing sea knights rule is separate from standalone and saved state wins", () => {
+  const room = {
+    capacity: 6,
+    catanScenario: "shores",
+    catanSeafarers: { scenario: "shores" },
+    catanFishing: true,
+    catanCitiesKnights: {},
+  };
+  assert.equal(
+    catanRuleContext(room).fishingSeaKnights,
+    "wire-board-fishing-sea-knights-v1",
+  );
+  room.game = {
+    catan: { players: Array(6).fill({}), citiesKnights: {}, fishing: {} },
+  };
+  assert.equal(catanRuleContext(room).fishingSeaKnights, "");
+  room.game.catan.fishing.seaKnights = "wire-board-fishing-sea-knights-v1";
+  assert.equal(
+    catanRuleContext(room).fishingSeaKnights,
+    "wire-board-fishing-sea-knights-v1",
+  );
+  delete room.game;
+  room.catanScenario = "land-ho";
+  assert.equal(catanRuleContext(room).fishingSeaKnights, "");
+});

@@ -8,6 +8,7 @@ import (
 const CatanFishingRules = "catan-fishing-2025"
 
 type CatanFishing struct {
+	SeaKnights string                  `json:"seaKnights,omitempty"`
 	Helpers    string                  `json:"helpers,omitempty"`
 	Explorer   string                  `json:"explorer,omitempty"`
 	WorldSetup *CatanFishingWorldSetup `json:"worldSetup,omitempty"`
@@ -60,6 +61,9 @@ func (g *Catan) validateFishing() error {
 	}
 	if f.Explorer != "" {
 		return errors.New("非探险存档不能含探险鱼筹码")
+	}
+	if err := g.validateFishingSeaKnights(); err != nil {
+		return err
 	}
 	if g.Seafarers != nil && !g.fishingSeaSupported() {
 		return errors.New("此捕鱼扩展组合尚未接入")
@@ -257,6 +261,9 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 	}
 	v["fishing"] = map[string]any{"map": clone(f.Map), "tokens": public, "victoryTargets": targets,
 		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
+	if f.SeaKnights != "" {
+		v["fishing"].(map[string]any)["seaKnights"] = f.SeaKnights
+	}
 	if f.Helpers != "" {
 		v["fishing"].(map[string]any)["helpers"] = f.Helpers
 	}

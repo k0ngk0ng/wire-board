@@ -144,6 +144,9 @@ func assertFishingCityInventory(t *testing.T, g *game.Catan) {
 	for _, p := range g.CitiesKnights.Players {
 		cards += len(p.Progress) + len(p.PublicProgress)
 	}
+	if g.Seafarers != nil && g.Seafarers.Tribe != nil {
+		cards += len(g.Seafarers.Tribe.Development)
+	}
 	if cards != 54 || len(g.DevDeck) != 0 {
 		t.Fatal("progress inventory", cards)
 	}

@@ -59,6 +59,11 @@ export function catanRuleContext(room: Room) {
       : room.catanEvents && scenario === "pirate_islands"
         ? "wire-board-events-fleet-v1"
         : "",
+    fishingSeaKnights: game
+      ? game.fishing?.seaKnights || ""
+      : room.catanFishing && !explorerDraft && citiesKnights
+        ? "wire-board-fishing-sea-knights-v1"
+        : "",
     fishingHelpers: game
       ? game.fishing?.helpers || ""
       : !explorerDraft &&

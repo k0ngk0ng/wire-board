@@ -2260,7 +2260,6 @@ function Create({
               onChange={setCatanFishing}
               lakes={catanFishingLakes}
               onLakes={setCatanFishingLakes}
-              blocked={catanSeaKnights && !isPublicCatanExplorer(catanScenario)}
             />
           )}
         {k === "catan" &&
@@ -2269,7 +2268,6 @@ function Create({
             <CatanCombinationKnightsPicker
               tribe={catanScenario === "tribe"}
               pirateIslands={catanScenario === "pirate_islands"}
-              disabled={catanFishing && !isPublicCatanExplorer(catanScenario)}
               explorer={supportsPublicExplorerKnights(catanScenario)}
               intro={catanScenario === "land-ho"}
               fishing={catanScenario === "fishing"}
@@ -2721,10 +2719,6 @@ function Waiting({
               }
               extended={room.capacity > 4}
               disabled={!host || busy || mapDirty}
-              blocked={
-                !!room.catanCitiesKnights &&
-                !isPublicCatanExplorer(room.catanScenario)
-              }
               onChange={(enabled) => command("catan_fishing", { enabled })}
             />
           )}
@@ -2740,13 +2734,7 @@ function Waiting({
               harbors={!!room.catanHarbors?.enabled}
               value={!!room.catanCitiesKnights}
               helpers={!!room.catanOptions?.helpers}
-              disabled={
-                !host ||
-                busy ||
-                mapDirty ||
-                (!!room.catanFishing &&
-                  !isPublicCatanExplorer(room.catanScenario))
-              }
+              disabled={!host || busy || mapDirty}
               onChange={(enabled) =>
                 command("catan_cities_knights", {
                   catanCitiesKnights: enabled ? { layout: "variable" } : null,

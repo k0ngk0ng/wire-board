@@ -83,6 +83,7 @@ test("events are optional and support only accepted public recipes", () => {
     assert.equal(
       catanEventsSupported({ ...room, catanFishing: true }),
       [
+        "shores",
         "islands",
         "fog",
         "desert",
@@ -281,5 +282,35 @@ test("events remain selectable with friendly and harbor variants; running rules 
     room.catanHarbors.enabled = false;
     assert.equal(catanRuleContext(room).friendlyRobber, true);
     assert.equal(catanRuleContext(room).harbors, true);
+  }
+});
+
+test("all eight fishing sea maps keep events selectable with knights or Helpers", () => {
+  for (const scenario of [
+    "shores",
+    "islands",
+    "fog",
+    "desert",
+    "tribe",
+    "cloth",
+    "wonders",
+    "new_world",
+  ]) {
+    for (const capacity of [3, 6]) {
+      const room = {
+        kind: "catan",
+        capacity,
+        catanScenario: scenario,
+        catanFishing: true,
+      };
+      assert.equal(
+        catanEventsSupported({ ...room, catanCitiesKnights: {} }),
+        true,
+      );
+      assert.equal(
+        catanEventsSupported({ ...room, catanOptions: { helpers: true } }),
+        true,
+      );
+    }
   }
 });

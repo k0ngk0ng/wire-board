@@ -68,13 +68,13 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 
 func (g *Catan) fishingSeaSupported() bool {
 	if g.Seafarers != nil && len(g.Players) > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {
-		return len(g.Players) <= 6 && !g.Seafarers.Variable && g.CitiesKnights == nil
+		return len(g.Players) <= 6 && !g.Seafarers.Variable
 	}
 	if g.Seafarers != nil && (g.Seafarers.Scenario == "shores" || g.Seafarers.Scenario == "new_world" || g.Seafarers.Scenario == "fog" || g.Seafarers.Scenario == "wonders") {
-		return len(g.Players) >= 3 && len(g.Players) <= 6 && g.CitiesKnights == nil
+		return len(g.Players) >= 3 && len(g.Players) <= 6
 	}
 	return g.Seafarers != nil && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "cloth" || (g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe") && !g.Seafarers.Variable) &&
-		len(g.Players) >= 3 && len(g.Players) <= 4 && g.CitiesKnights == nil
+		len(g.Players) >= 3 && len(g.Players) <= 4
 }
 
 func (g *Catan) fishCanRemovePirate(player int) bool {

@@ -71,7 +71,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
 		{"kind": "catan", "capacity": 7, "catanScenario": "land-ho"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
+		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanOptions": game.CatanOptions{Helpers: true}, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
 		{"kind": "catan", "capacity": 4, "catanScenario": "islands", "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{}},
 		{"kind": "splendor", "capacity": 3},
@@ -90,7 +90,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 	ready()
 	before, _ := json.Marshal(s.rooms[id])
 	toggle(c, false, 400)
-	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
+	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{Layout: "fixed"}, 400)
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "desert", Layout: "variable"}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {

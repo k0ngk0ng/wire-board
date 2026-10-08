@@ -11,6 +11,7 @@ export function catanEventsSupported(room: Partial<Room>) {
         "fish-for-catan",
         "spices-for-catan",
         "explorers-and-pirates",
+        "shores",
         "islands",
         "fog",
         "desert",

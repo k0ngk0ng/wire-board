@@ -55,6 +55,10 @@ func testCatanCitiesKnightsVariantsFullHTTPGames(t *testing.T, scenario string, 
 }
 
 func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, harbors, friendly, events bool, players ...int) {
+	testCatanCitiesKnightsFishingFullHTTPGames(t, scenario, harbors, friendly, events, false, players...)
+}
+
+func testCatanCitiesKnightsFishingFullHTTPGames(t *testing.T, scenario string, harbors, friendly, events, fishing bool, players ...int) {
 	if len(players) == 0 {
 		players = []int{3, 6}
 	}
@@ -85,6 +89,14 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 				layouts = []string{"prepared"}
 			}
 		}
+		if fishing {
+			layouts = []string{"fixed"}
+			if scenario == "new_world" {
+				layouts = []string{"prepared"}
+			} else if n > 4 && scenario == "shores" {
+				layouts = []string{"variable"}
+			}
+		}
 		for _, layout := range layouts {
 			recipes = append(recipes, recipe{n, layout})
 		}
@@ -105,7 +117,7 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
 			public := n <= 4 || scenario == "" || scenario == "fishing" || game.CatanCitiesKnightsSeafarersSupported(scenario)
-			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
+			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options, "catanFishing": fishing}
 			if events {
 				body["catanEvents"] = game.CatanEventCatalogue
 			}
@@ -188,7 +200,7 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 				if scenario == "tribe" {
 					assertTribeProgressInventory(t, g)
 				}
-				if scenario == "fishing" {
+				if scenario == "fishing" || fishing {
 					assertFishingCityInventory(t, g)
 				}
 				if harbors {
@@ -240,7 +252,7 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 				if steps%53 == 0 {
 					for _, viewer := range []int{actor, n} {
 						v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
-						if scenario == "fishing" {
+						if scenario == "fishing" || fishing {
 							fish := v["fishing"].(map[string]any)["tokens"].(map[string]any)
 							if fish["drawPile"] != nil {
 								t.Fatal("hidden fish supply")
@@ -334,6 +346,9 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 					target++
 				}
 			}
+			if fishing && room.Game.Catan.Fishing.Tokens.BootOwner == winner {
+				target++
+			}
 			if (scenario != "wonders" && scenario != "cloth" && room.Game.Catan.Players[winner].Score < target) || room.Game.Catan.CitiesKnights.Invasions == 0 {
 				t.Fatal("wrong expansion victory")
 			}
@@ -350,6 +365,9 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 				if harbors {
 					want++
 				}
+				if fishing && room.Game.Catan.Fishing.Tokens.BootOwner == winner {
+					want++
+				}
 				if target != want || (level != 4 && (level <= rival || room.Game.Catan.Players[winner].Score < target)) {
 					t.Fatal("wrong combined wonder victory")
 				}
@@ -361,10 +379,20 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 				if harbors {
 					want++
 				}
+				if fishing && g.Fishing.Tokens.BootOwner == winner {
+					want++
+				}
 				if target != want {
 					t.Fatal("wrong cloth target")
 				}
-				if g.Players[room.Game.Turn].Score >= want {
+				turnTarget := 16
+				if harbors {
+					turnTarget++
+				}
+				if fishing && g.Fishing.Tokens.BootOwner == room.Game.Turn {
+					turnTarget++
+				}
+				if g.Players[room.Game.Turn].Score >= turnTarget {
 					if !slices.Equal(room.Game.Winners, []int{room.Game.Turn}) {
 						t.Fatal("cloth points priority")
 					}
@@ -403,6 +431,12 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 					t.Fatal("missing tribe progress version")
 				}
 				count := 2
+				if fishing {
+					count++
+					if versions["fishing_sea_knights"] != game.CatanFishingSeaKnightsRules || versions["fishing"] != game.CatanFishingRules {
+						t.Fatal("missing fishing sea knights history")
+					}
+				}
 				if events {
 					count++
 				}
