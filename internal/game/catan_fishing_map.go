@@ -154,6 +154,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if g.Rivers != nil || g.Fishing != nil && g.Fishing.Rivers != "" {
+		return f.validateRivers(g)
+	}
 	if len(f.NumberSwaps) > 0 && (len(f.ExtraNumbers) == 0 || g.CitiesKnights == nil || g.Seafarers == nil || g.Seafarers.Scenario != "desert") {
 		return errors.New("此地图没有捕鱼数字交换记录")
 	}
@@ -224,6 +227,15 @@ func (f catanFishingMap) validate(g *Catan) error {
 		if !lakes[i] && (t.Resource < 0 || t.Resource >= 5) {
 			return errors.New("unexpected fishing terrain")
 		}
+	}
+	return f.validateFrame(g)
+}
+
+func (f catanFishingMap) validateFrame(g *Catan) error {
+	n := len(g.Players)
+	_, portPositions, groundPositions := catanFishingFrame(n > 4)
+	if len(g.Ports) != len(portPositions) || len(f.Grounds) != len(groundPositions) {
+		return errors.New("捕鱼海岸组件数量无效")
 	}
 	used := map[int]bool{}
 	for i, port := range g.Ports {

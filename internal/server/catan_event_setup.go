@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanEventsAvailable() bool {
-	if r.Kind != "catan" || r.CatanFishing && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanFishingSea(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario) {
+	if r.Kind != "catan" || r.CatanFishing && !r.catanRiverRecipe() && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanFishingSea(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario) {
 		return false
 	}
 	scenario := r.CatanScenario

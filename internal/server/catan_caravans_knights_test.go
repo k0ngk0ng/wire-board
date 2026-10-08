@@ -12,7 +12,7 @@ func newCaravanKnightsHTTP(t *testing.T, n int, events bool) (*Server, *httptest
 	t.Helper()
 	return newTradersKnightsHTTP(t, n, events, "caravans")
 }
-func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string, fishing ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -29,6 +29,12 @@ func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string) (*
 		recipe["catanTwoScenario"] = scenario
 	} else {
 		recipe["catanScenario"] = scenario
+	}
+	if len(fishing) > 0 {
+		recipe["catanFishing"] = true
+		if !fishing[0] {
+			delete(recipe, "catanCitiesKnights")
+		}
 	}
 	if events {
 		recipe["catanEvents"] = game.CatanEventCatalogue

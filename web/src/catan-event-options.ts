@@ -5,6 +5,7 @@ export function catanEventsSupported(room: Partial<Room>) {
   return (
     room.kind === "catan" &&
     (!room.catanFishing ||
+      (room.catanTwoScenario || room.catanScenario) === "rivers" ||
       (room.capacity === 2 && room.catanTwoScenario === "cities-knights") ||
       [
         "land-ho",

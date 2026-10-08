@@ -161,7 +161,7 @@ func (s *State) validateCatanTwo() error {
 		if q.Pending.Kind == "ship" && !g.twoSeafarers() || len(q.Pending.Remaining) > 1 || len(q.Pending.Remaining) > 0 && (!g.twoKnights() || q.Pending.Kind != "knight_promote" || q.Pending.Remaining[0] != "knight_promote") || (q.Pending.Kind == "knight" || q.Pending.Kind == "knight_promote") && (!g.twoKnights() || q.Pending.Resume != "catan_turn") {
 			return errors.New("中立骑士回应无效")
 		}
-		if (q.Pending.Kind == "settlement" || q.Pending.Kind == "bridge") && q.Pending.Resume != "catan_turn" || q.Pending.Kind == "bridge" && g.Rivers == nil || q.Pending.Resume == "catan_roll" && len(q.Rolls) >= 2 {
+		if (q.Pending.Kind == "settlement" || q.Pending.Kind == "bridge" && !g.fishingRivers()) && q.Pending.Resume != "catan_turn" || q.Pending.Kind == "bridge" && g.Rivers == nil || q.Pending.Resume == "catan_roll" && len(q.Rolls) >= 2 {
 			return errors.New("中立建设返回阶段无效")
 		}
 		if s.Finished || g.setup() || s.Phase != "catan_two_build" || q.Sequence == 0 || !slices.Contains([]string{"road", "ship", "settlement", "bridge", "knight", "knight_promote"}, q.Pending.Kind) || !slices.Contains([]string{"catan_roll", "catan_turn", "catan_roads"}, q.Pending.Resume) || len(g.twoNeutralChoices(q.Pending.Kind)) == 0 || g.Trade != nil || q.Pending.Resume == "catan_turn" && len(q.Rolls) != 2 || q.Pending.Resume == "catan_roads" && g.FreeRoads <= 0 {
@@ -273,7 +273,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if s.catanTwoKnightAfterAction(before, a) {
 		return nil
 	}
-	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_road" && a.Type != "catan_ship" && a.Type != "catan_fish_ship") {
+	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_bridge" && a.Type != "catan_fish_road" && a.Type != "catan_ship" && a.Type != "catan_fish_ship") {
 		return nil
 	}
 	kind := "road"
@@ -283,7 +283,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if a.Type == "catan_settlement" {
 		kind = "settlement"
 	}
-	if a.Type == "catan_bridge" {
+	if a.Type == "catan_bridge" || a.Type == "catan_fish_bridge" {
 		kind = "bridge"
 	}
 	if g.twoSeafarers() && g.twoSeaRouteWaiting() && (kind == "road" || kind == "ship") {

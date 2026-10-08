@@ -220,12 +220,17 @@ export function CatanFishingPanel({
     room.game?.catan?.explorer?.sequence,
   ]);
   useEffect(() => {
-    if (chosen?.type === "fish_road" || chosen?.type === "fish_ship") {
+    if (
+      ["fish_road", "fish_ship", "fish_bridge"].includes(chosen?.type || "")
+    ) {
       setCollapsed(false);
     }
   }, [chosen?.type, chosen?.id]);
   useEffect(() => {
-    if (collapsed || !["fish_road", "fish_ship"].includes(chosen?.type || ""))
+    if (
+      collapsed ||
+      !["fish_road", "fish_ship", "fish_bridge"].includes(chosen?.type || "")
+    )
       return;
     // Wait for the reopened panel, then reveal confirmation within either
     // the desktop action scroller or the mobile page, keeping the map choice.
@@ -247,11 +252,13 @@ export function CatanFishingPanel({
   const activeKind = replace ? "catan_fish_replace" : kind;
   const mapMode = fishMapMode(activeKind),
     routeName =
-      activeKind === "catan_fish_ship"
-        ? g.explorer
-          ? "造船位置"
-          : "船只"
-        : "道路",
+      activeKind === "catan_fish_bridge"
+        ? "桥梁"
+        : activeKind === "catan_fish_ship"
+          ? g.explorer
+            ? "造船位置"
+            : "船只"
+          : "道路",
     blockedGrounds = f.map.grounds.filter((ground) =>
       fishGroundBlocked(g, ground),
     );
@@ -422,7 +429,11 @@ export function CatanFishingPanel({
                 ))}
               </div>
               {!hand.length && (
-                <small>在湖泊或渔场旁建设，点数掷中时领取筹码。</small>
+                <small>
+                  {f.rivers
+                    ? "在海岸渔场旁建设，点数掷中时领取筹码。"
+                    : "在湖泊或渔场旁建设，点数掷中时领取筹码。"}
+                </small>
               )}
             </div>
           )}

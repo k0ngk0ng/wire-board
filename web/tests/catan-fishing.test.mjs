@@ -475,3 +475,21 @@ test("Explorer fish response works out of turn without exposing another hand", (
     null,
   );
 });
+
+test("river fish bridge requires its recipe, enough fish and a current legal crossing", () => {
+  const r = fixture(); const f = r.game.catan.fishing;
+  f.rivers = "catan-fishing-rivers-2025";
+  f.legal.actions.push("catan_fish_bridge");
+  f.legal.costs.catan_fish_bridge = 6;
+  f.legal.bridges = [42];
+  assert.equal(fishMapMode("catan_fish_bridge"), "fish_bridge");
+  const choice = selection({kind:"catan_fish_bridge",ids:[21,22],edge:42});
+  assert.deepEqual(fishAction(r, choice), {type:"catan_fish_bridge",tokens:[21,22],edge:42});
+  assert.equal(fishAction(r, {...choice,ids:[21]}), null);
+  assert.equal(fishAction(r, {...choice,edge:41}), null);
+  assert.equal(fishAction(r, {...choice,edge:null}), null);
+  f.legal.costs.catan_fish_bridge=5;
+  assert.deepEqual(fishAction(r,{...choice,ids:[11,21]}),{type:"catan_fish_bridge",tokens:[11,21],edge:42});
+  delete f.rivers;
+  assert.ok(!fishActionsFor(r.game.catan).some(([kind])=>kind==="catan_fish_bridge"));
+});

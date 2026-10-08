@@ -85,8 +85,8 @@ func TestCatanFishingNewWorldExtendedComponentsAndGates(t *testing.T) {
 		}
 		copy := clone(*s)
 		copy.Catan.CitiesKnights = &CatanCitiesKnights{}
-		if copy.Catan.fishingSeaSupported() {
-			t.Fatal("unverified three-expansion combination enabled")
+		if copy.Catan.validateFishingSeaKnights() == nil {
+			t.Fatal("unmarked three-expansion combination enabled")
 		}
 		for _, change := range []func(*Catan){
 			func(g *Catan) { g.Options.FiveSix = false },

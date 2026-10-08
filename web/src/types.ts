@@ -665,6 +665,7 @@ export type CatanState = {
     poor: number[] | null;
   };
   fishing?: {
+    rivers?: string;
     twoSea?: string;
     twoKnights?: string;
     two?: string;
@@ -703,6 +704,7 @@ export type CatanState = {
       resources: number[];
       targets: number[];
       roads: number[];
+      bridges?: number[];
       bootTargets: number[];
       progressTracks?: number[];
       ships?: number[];
