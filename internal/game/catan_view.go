@@ -36,6 +36,9 @@ func (s *State) catanView(view map[string]any, player int) {
 	if q := g.Two; q != nil {
 		public := v["two"].(map[string]any)
 		public["tokenRule"] = "ledger"
+		if g.twoKnights() {
+			public["tokenRule"] = "finite"
+		}
 		if g.twoFishing() {
 			public["tokenRule"] = "none"
 		}
@@ -50,6 +53,9 @@ func (s *State) catanView(view map[string]any, player int) {
 			public["tokenWindow"] = s.catanTwoTokenWindow(player)
 			if s.catanTwoTokenWindow(player) {
 				public["retreatTiles"] = g.twoRetreatTiles()
+				if g.twoKnights() {
+					public["exchangeKnights"] = g.twoKnightTokenVertices(player)
+				}
 				if g.Transport != nil {
 					public["retreatCost"] = 1
 					public["retreatEdges"] = g.twoTransportRetreatEdges()

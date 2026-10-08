@@ -39,6 +39,12 @@ const scenarios = [
     description: "两位玩家与两家中立势力，双次生产、贸易筹码，10 分获胜。",
   },
   {
+    id: "cities-knights",
+    name: "双人＋城市与骑士",
+    description:
+      "两次城市事件与生产，中立骑士、商品与进步牌；贸易筹码限量 20 枚，13 分获胜。",
+  },
+  {
     id: "fishing",
     name: "双人＋渔夫",
     description:
@@ -92,6 +98,7 @@ export function CatanTwoScenarioPicker({
         </p>
       )}
       {![
+        "cities-knights",
         "fishing",
         "land-ho",
         "spices-for-catan",

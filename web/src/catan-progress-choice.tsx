@@ -144,7 +144,9 @@ export function CatanProgressChoice({
       )}
       {q.kind === "treason_remove" && (
         <p>
-          在地图上选择自己的一名骑士移除。对方随后可以放置同级或更低级骑士，并继承激活状态。
+          {q.source === "two_neutral"
+            ? "在地图上选择该中立势力最弱的骑士移除，随后可放置自己同级或更低级的骑士。"
+            : "在地图上选择自己的一名骑士移除。对方随后可以放置同级或更低级骑士，并继承激活状态。"}
         </p>
       )}
       {q.kind === "treason_place" && (

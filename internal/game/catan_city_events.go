@@ -32,6 +32,9 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 	if k == nil || !g.citySeaSupported() || s.Phase != "catan_roll" || k.Event != nil || k.Pending != nil || red < 1 || red > 6 || yellow < 1 || yellow > 6 || face < 0 || face > 5 {
 		return errors.New("无效城市与骑士掷骰状态")
 	}
+	if g.twoKnights() && (len(g.Two.Rolls) >= 2 || len(g.Two.Rolls) == 1 && g.Two.Rolls[0] == red+yellow) {
+		return errors.New("双人第二次生产必须使用不同总点数")
+	}
 	if g.EventDeck != nil {
 		if err := s.validateCatanEventSession(); err != nil {
 			return err
@@ -42,6 +45,9 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 		g.EventDeck.AlchemyRolls++
 		g.EventDeck.LastAlchemyRoll = g.RollID + 1
 		s.catanLog(s.Turn, "炼金术替代本次事件牌抽取，牌堆保持原状")
+	}
+	if g.twoKnights() {
+		g.Two.Rolls = append(g.Two.Rolls, red+yellow)
 	}
 	g.RevealedEvent = nil
 	g.Dice = []int{red, yellow}
@@ -143,7 +149,7 @@ func (s *State) catanPrepareBarbarians() {
 	}
 	strength := make([]int, len(g.Players))
 	for _, n := range k.Knights {
-		if n.Active && !g.Players[n.Owner].Eliminated {
+		if n.Owner >= 0 && n.Active && !g.Players[n.Owner].Eliminated {
 			strength[n.Owner] += n.Strength
 		}
 	}

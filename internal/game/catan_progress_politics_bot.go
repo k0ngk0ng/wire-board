@@ -71,9 +71,13 @@ func (s *State) catanPoliticsChoiceBot(player int) (Action, error) {
 		}
 		return a, nil
 	case "treason_remove":
+		owner := player
+		if q.Source == "two_neutral" {
+			owner = q.Color
+		}
 		best, value := -1, 1<<30
 		for _, n := range k.Knights {
-			if n.Owner != player {
+			if n.Owner != owner {
 				continue
 			}
 			score := n.Strength * 100
@@ -215,8 +219,15 @@ func (g *Catan) politicsBotChoices(player int) []botChoice {
 				}
 			}
 		case 22:
+			targets := []int{}
 			for p := range g.Players {
-				if !g.politicsOpponent(player, p) {
+				targets = append(targets, p)
+			}
+			if g.twoKnights() {
+				targets = append(targets, catanTwoNeutralOwners[:]...)
+			}
+			for _, p := range targets {
+				if !g.politicsOpponent(player, p) && !g.twoNeutralKnightOwner(p) {
 					continue
 				}
 				weakest := 4

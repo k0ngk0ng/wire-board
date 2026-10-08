@@ -13,7 +13,8 @@ export function catanRuleContext(room: Room) {
   ].includes(room.catanScenario || "");
   const sea = game?.seafarers;
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
-  const citiesKnights = !!citySetup;
+  const citiesKnights =
+    !!citySetup || (!game && room.catanTwoScenario === "cities-knights");
   const harbors = game ? !!game.harbors : !!room.catanHarbors?.enabled;
   const caravans = game
     ? !!game.caravans

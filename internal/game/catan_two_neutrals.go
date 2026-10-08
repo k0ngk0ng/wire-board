@@ -49,6 +49,13 @@ type catanTwoNeutralChoice struct {
 // requested settlement, including its five-piece limit. No city is built.
 func (g *Catan) twoNeutralChoices(kind string) []catanTwoNeutralChoice {
 	choices := []catanTwoNeutralChoice{}
+	if kind == "knight" || kind == "knight_promote" {
+		choices = g.twoKnightChoices(kind)
+		if len(choices) > 0 || kind == "knight_promote" {
+			return choices
+		}
+		kind = "road"
+	}
 	if kind == "settlement" {
 		for _, owner := range catanTwoNeutralOwners {
 			_, villages, _ := g.pieces(owner)
@@ -97,7 +104,15 @@ func (g *Catan) placeTwoNeutral(kind string, choice catanTwoNeutralChoice) error
 		return errors.New("请选择中立势力的合法建设位置")
 	}
 	if choice.Vertex >= 0 {
-		g.Vertices[choice.Vertex].Owner, g.Vertices[choice.Vertex].Level = choice.Owner, 1
+		if kind == "knight" {
+			g.CitiesKnights.Knights = append(g.CitiesKnights.Knights, CatanKnight{Owner: choice.Owner, Vertex: choice.Vertex, Strength: 1})
+		} else if kind == "knight_promote" {
+			n := g.knightAt(choice.Vertex)
+			n.Strength = 2
+			n.PromotedAt = g.CitiesKnights.ActionSerial
+		} else {
+			g.Vertices[choice.Vertex].Owner, g.Vertices[choice.Vertex].Level = choice.Owner, 1
+		}
 	} else {
 		g.Edges[choice.Edge].Owner = choice.Owner
 		g.Edges[choice.Edge].Bridge = kind == "bridge" && g.Rivers != nil && slices.Contains(g.Rivers.Map.Bridges, choice.Edge)

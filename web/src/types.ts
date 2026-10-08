@@ -372,6 +372,7 @@ export type CatanCitiesKnights = {
     target: number;
     color: number;
     ship?: boolean;
+    source?: string;
     knight?: CatanKnight;
     resources?: number[];
     progress?: number[];
@@ -523,7 +524,9 @@ export type CatanState = {
   two?: {
     rules: string;
     tokensIssued?: number;
-    tokenRule?: "ledger" | "none";
+    knights?: string;
+    tokenRule?: "ledger" | "none" | "finite";
+    exchangeKnights?: number[];
     canExchangeKnight?: boolean;
     rolls: number[];
     sequence: number;
@@ -531,8 +534,12 @@ export type CatanState = {
     bank: number;
     spent: boolean;
     knightExchanged: boolean;
-    pending?: { kind: "road" | "settlement" | "bridge"; resume: string };
-    trade?: { resume: string; drawn?: number[] };
+    pending?: {
+      kind: "road" | "settlement" | "bridge" | "knight" | "knight_promote";
+      resume: string;
+      remaining?: string[];
+    };
+    trade?: { resume: string; drawn?: number[]; mixed?: boolean };
     actor: number;
     canAct: boolean;
     cost?: number;

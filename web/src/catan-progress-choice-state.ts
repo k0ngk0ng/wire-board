@@ -46,6 +46,19 @@ export type ProgressChoiceSelection = {
   skip: boolean;
 };
 
+export function treasonRemoveSites(g: CatanState, player: number): number[] {
+  const q = g.citiesKnights?.pending;
+  if (!q || q.kind !== "treason_remove" || q.players[0] !== player) return [];
+  const neutral = !!g.two?.knights && q.source === "two_neutral";
+  const knights = (g.citiesKnights?.knights || []).filter(
+    (n) => n.owner === (neutral ? q.color : player),
+  );
+  const weakest = Math.min(...knights.map((n) => n.strength));
+  return knights
+    .filter((n) => !neutral || n.strength === weakest)
+    .map((n) => n.vertex);
+}
+
 // Never construct a response from another player's view or a stale map selection.
 export function progressChoiceAction(
   room: Room,
@@ -115,9 +128,7 @@ function progressChoicePayload(
       ? { type, edge: map.id }
       : null;
   if (q.kind === "treason_remove")
-    return g.citiesKnights?.knights.some(
-      (n) => n.owner === p && n.vertex === map.id,
-    )
+    return treasonRemoveSites(g, p).includes(map.id)
       ? { type, vertex: map.id }
       : null;
   if (

@@ -48,7 +48,7 @@ func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) in
 		return errors.New("没有这张可使用的进步牌")
 	}
 
-	if (a.Card == 0 && s.Phase != "catan_roll") || (a.Card != 0 && s.Phase != "catan_turn") {
+	if (a.Card == 0 && (s.Phase != "catan_roll" || g.twoKnights() && len(g.Two.Rolls) > 0)) || (a.Card != 0 && s.Phase != "catan_turn") {
 		return errors.New("炼金术只能在掷骰前使用，其他进步牌只能在行动阶段使用")
 	}
 	if a.Card == 0 && (len(a.Tokens) != 2 || a.Tokens[0] < 1 || a.Tokens[0] > 6 || a.Tokens[1] < 1 || a.Tokens[1] > 6 || a.Choice != "") {

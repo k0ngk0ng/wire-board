@@ -11,7 +11,7 @@ func (g *Catan) politicsOpponent(player, target int) bool {
 func (g *Catan) intrigueTargets(player int) []int {
 	out := []int{}
 	for _, n := range g.CitiesKnights.Knights {
-		if !g.politicsOpponent(player, n.Owner) {
+		if !g.politicsOpponent(player, n.Owner) && !g.twoNeutralKnightOwner(n.Owner) {
 			continue
 		}
 		for _, e := range g.touching(n.Vertex) {
@@ -63,7 +63,7 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		if ship {
 			piece = "船只"
 		}
-		s.catanLog(player, "外交：移除玩家 %d 的%s #%d", owner+1, piece, a.Edge+1)
+		s.catanLog(player, "外交：移除%s的%s #%d", catanKnightOwnerName(owner), piece, a.Edge+1)
 		if owner == player {
 			k.Pending = &CatanCityPending{Kind: "diplomacy", Players: []int{player}, Ship: ship, Warship: warship}
 			if len(g.diplomacyPlacements(player)) > 0 {
@@ -97,12 +97,12 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		}
 		displaced := *g.knightAt(a.Vertex)
 		k.Knights = slices.DeleteFunc(k.Knights, func(n CatanKnight) bool { return n.Vertex == a.Vertex })
-		s.catanLog(player, "驱逐交点 #%d 上玩家 %d 的%d级骑士", a.Vertex+1, displaced.Owner+1, displaced.Strength)
+		s.catanLog(player, "驱逐交点 #%d 上%s的%d级骑士", a.Vertex+1, catanKnightOwnerName(displaced.Owner), displaced.Strength)
 		if len(g.knightDestinations(displaced, true)) > 0 {
-			k.Pending = &CatanCityPending{Kind: "knight_retreat", Source: "intrigue", Players: []int{displaced.Owner}, Knight: &displaced}
+			k.Pending = &CatanCityPending{Kind: "knight_retreat", Source: "intrigue", Players: []int{g.knightResponseActor(displaced.Owner, s.Turn)}, Knight: &displaced}
 			s.Phase = "catan_knight_retreat"
 		} else {
-			s.catanLog(displaced.Owner, "被驱逐的骑士没有合法退路，返回库存")
+			s.catanLog(player, "%s被驱逐的骑士没有合法退路，返回库存", catanKnightOwnerName(displaced.Owner))
 		}
 	case 20, 24:
 		kind := "wedding"
@@ -164,7 +164,7 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 			}
 		}
 	case 22:
-		if !g.politicsOpponent(player, a.Target) {
+		if !g.politicsOpponent(player, a.Target) && !g.twoNeutralKnightOwner(a.Target) {
 			return errors.New("请选择另一位拥有骑士的在场玩家")
 		}
 		found := false
@@ -176,7 +176,11 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		if !found {
 			return errors.New("该玩家没有可移除的骑士")
 		}
-		k.Pending = &CatanCityPending{Kind: "treason_remove", Players: []int{a.Target}, Target: player}
+		k.Pending = &CatanCityPending{Kind: "treason_remove", Players: []int{g.knightResponseActor(a.Target, player)}, Target: player}
+		if g.twoNeutralKnightOwner(a.Target) {
+			k.Pending.Source = "two_neutral"
+			k.Pending.Color = a.Target
+		}
 		s.Phase = "catan_treason_remove"
 	default:
 		return errors.New("该政治进步牌效果尚未接入")
@@ -261,7 +265,11 @@ func (s *State) catanPoliticsChoice(player int, a Action) error {
 		}
 	case "treason_remove":
 		n := g.knightAt(a.Vertex)
-		if a.Choice != "" || n == nil || n.Owner != player {
+		owner := player
+		if q.Source == "two_neutral" {
+			owner = q.Color
+		}
+		if a.Choice != "" || n == nil || n.Owner != owner || q.Source == "two_neutral" && n.Strength != g.twoWeakestKnight(owner) {
 			return errors.New("必须选择自己的一名骑士移除")
 		}
 		removed := *n
