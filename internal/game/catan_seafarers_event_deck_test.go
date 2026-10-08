@@ -182,7 +182,7 @@ func testSeaEventMatches(t *testing.T, helpers bool) {
 }
 
 func TestCatanSeafarersEventDeckRejectsUnimplementedAndCorrupt(t *testing.T) {
-	for _, scenario := range []string{"tribe", "cloth", "pirate_islands", "wonders", "new_world"} {
+	for _, scenario := range []string{"tribe", "pirate_islands"} {
 		if _, err := newCatanSeafarersReferenceEvents(3, CatanSeafarersSetup{Scenario: scenario}); err == nil {
 			t.Fatal("unimplemented sea combination", scenario)
 		}

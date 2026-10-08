@@ -2,11 +2,13 @@ export function CatanEventPicker({
   value,
   disabled = false,
   citiesKnights = false,
+  cloth = false,
   onChange,
 }: {
   value: boolean;
   disabled?: boolean;
   citiesKnights?: boolean;
+  cloth?: boolean;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -25,6 +27,11 @@ export function CatanEventPicker({
       {citiesKnights && (
         <p className="muted small">
           城市骑士先执行事件文字，再结算独立红骰／事件骰，最后生产。炼金术替代抽牌；本站补充规则：贸易优势可随机偷资源或商品。
+        </p>
+      )}
+      {cloth && (
+        <p className="muted small">
+          本站补充规则：强盗逃跑只进入布匹地图的大岛沙漠，没有合法沙漠则移到场外，不偷牌、不移动海盗。
         </p>
       )}
       <details>

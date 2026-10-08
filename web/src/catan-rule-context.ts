@@ -64,6 +64,11 @@ export function catanRuleContext(room: Room) {
       : players > 4 && scenario === "shores"
         ? "wire-board-extended-numbers-v1"
         : "",
+    eventClothFallback: game
+      ? game.eventDeck?.clothFallback || ""
+      : room.catanEvents && scenario === "cloth"
+        ? "wire-board-events-cloth-fallback-v1"
+        : "",
     eventKnights: game
       ? game.eventDeck?.knights || ""
       : room.catanEvents && citiesKnights

@@ -53,6 +53,7 @@ var catanEventReferenceFaces = [...]struct {
 type catanEventSession struct {
 	Catalogue       string         `json:"catalogue"`
 	Deck            catanEventDeck `json:"deck"`
+	ClothFallback   string         `json:"clothFallback,omitempty"`
 	Knights         string         `json:"knights,omitempty"`
 	AlchemyRolls    int            `json:"alchemyRolls,omitempty"`
 	LastAlchemyRoll int            `json:"lastAlchemyRoll,omitempty"`
@@ -146,6 +147,9 @@ func (s *State) validateCatanEventSession() error {
 	}
 	if err := g.validateEventKnights(); err != nil {
 		return err
+	}
+	if g.cloth() != nil && session.ClothFallback != CatanEventClothFallbackRules || g.cloth() == nil && session.ClothFallback != "" {
+		return errors.New("布匹事件牌的强盗退路规则版本无效")
 	}
 	if err := g.validateSeafarersEventDeck(); err != nil {
 		return err

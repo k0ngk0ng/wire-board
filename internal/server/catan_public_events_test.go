@@ -180,6 +180,14 @@ func TestCatanPublicEventsNaturalHTTPMatches(t *testing.T) {
 			}
 		}
 	}
+
+	for _, scenario := range []string{"cloth", "wonders", "new_world"} {
+		for n := 3; n <= 6; n++ {
+			for _, helpers := range []bool{false, true} {
+				cases = append(cases, recipe{scenario: scenario, n: n, helpers: helpers})
+			}
+		}
+	}
 	for _, tc := range cases {
 		t.Run(fmt.Sprintf("%s/%d/helpers=%t/fixed=%t", tc.scenario, tc.n, tc.helpers, tc.fixed), func(t *testing.T) {
 			s, ts, clients, id := newPublicEventsHTTP(t, tc.n, tc.scenario, tc.helpers, tc.fixed)
@@ -206,7 +214,7 @@ func TestCatanPublicEventsNaturalHTTPMatches(t *testing.T) {
 				}
 			}
 			r := s.rooms[id]
-			if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.TurnDeadline != 0 || !restored || seen["catan_roll"] == 0 {
+			if !r.Game.Finished || r.Status != "finished" || (len(r.Game.Winners) == 0 || tc.scenario != "cloth" && len(r.Game.Winners) != 1) || r.TurnDeadline != 0 || !restored || seen["catan_roll"] == 0 {
 				t.Fatal("unfinished natural event game", steps, r.Game.Round, seen)
 			}
 			s, ts = restartRiversHTTP(t, s, ts, clients, id)
@@ -219,6 +227,9 @@ func TestCatanPublicEventsNaturalHTTPMatches(t *testing.T) {
 			record := history[0].(map[string]any)
 			if record["catanExpansionRules"].(map[string]any)["event_cards"] != game.CatanEventCatalogue {
 				t.Fatal("history lost deck", record)
+			}
+			if tc.scenario == "cloth" && record["catanExpansionRules"].(map[string]any)["event_cloth_fallback"] != game.CatanEventClothFallbackRules {
+				t.Fatal("missing cloth fallback history")
 			}
 			t.Log("natural actions", steps, "round", r.Game.Round, "seen", seen)
 		})

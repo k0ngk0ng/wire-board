@@ -17,6 +17,9 @@ test("events are optional and support only accepted public recipes", () => {
     "islands",
     "fog",
     "desert",
+    "cloth",
+    "wonders",
+    "new_world",
   ]) {
     const room = { kind: "catan", capacity: 3, catanScenario };
     assert.equal(catanEventsSupported(room), true);
@@ -25,17 +28,13 @@ test("events are optional and support only accepted public recipes", () => {
       { catanFishing: true },
       { catanHarbors: { enabled: true } },
       { catanFriendlyRobber: { enabled: true } },
-      { catanNewWorldMap: {} },
     ])
       assert.equal(catanEventsSupported({ ...room, ...extra }), false);
   }
   for (const catanScenario of [
     "transport",
     "fishing",
-    "cloth",
     "tribe",
-    "wonders",
-    "new_world",
     "pirate_islands",
     "land-ho",
     "explorers-and-pirates",
@@ -55,7 +54,7 @@ test("events are optional and support only accepted public recipes", () => {
       kind: "catan",
       catanSeafarers: { scenario: "cloth" },
     }),
-    false,
+    true,
   );
 });
 
@@ -102,5 +101,51 @@ test("event knights rules use the actual save and never inherit stale waiting op
   assert.equal(
     catanRuleContext(room).eventKnights,
     "wire-board-events-knights-v1",
+  );
+});
+
+test("event new-world selection accepts its own map only", () => {
+  assert.equal(
+    catanEventsSupported({
+      kind: "catan",
+      catanScenario: "new_world",
+      catanNewWorldMap: {},
+    }),
+    true,
+  );
+  assert.equal(
+    catanEventsSupported({
+      kind: "catan",
+      catanScenario: "cloth",
+      catanNewWorldMap: {},
+    }),
+    false,
+  );
+});
+
+test("cloth event fallback follows the saved rule, never a stale room draft", () => {
+  const room = {
+    kind: "catan",
+    capacity: 3,
+    catanScenario: "cloth",
+    catanSeafarers: { scenario: "cloth", layout: "fixed" },
+    catanEvents: CATAN_EVENT_CATALOGUE,
+  };
+  assert.equal(
+    catanRuleContext(room).eventClothFallback,
+    "wire-board-events-cloth-fallback-v1",
+  );
+  room.game = {
+    catan: { players: Array(3).fill({}), seafarers: { scenario: "cloth" } },
+  };
+  assert.equal(catanRuleContext(room).eventClothFallback, "");
+  room.game.catan.eventDeck = {
+    catalogue: CATAN_EVENT_CATALOGUE,
+    clothFallback: "wire-board-events-cloth-fallback-v1",
+  };
+  room.catanEvents = "";
+  assert.equal(
+    catanRuleContext(room).eventClothFallback,
+    "wire-board-events-cloth-fallback-v1",
   );
 });
