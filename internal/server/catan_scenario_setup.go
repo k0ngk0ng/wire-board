@@ -70,8 +70,14 @@ func (r *Room) validateCatanScenario() error {
 		if publicCatanExplorerExtended(r.CatanScenario) {
 			maximum = 6
 		}
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
-			return errors.New("探险剧本人数或组合无效：初航两至四人，其余任务两至六人；不混用其他扩展配置")
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+			return errors.New("探险剧本人数或组合无效：初航两至四人，其余任务两至六人；城市骑士组合需三至六人且不适用于初航")
+		}
+		if r.CatanCitiesKnights != nil {
+			setup, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *r.CatanCitiesKnights)
+			if !publicCatanExplorerExtended(r.CatanScenario) || err != nil || setup != *r.CatanCitiesKnights {
+				return errors.New("探索任务与城市骑士组合需三至六人随机地图；初航不支持该组合")
+			}
 		}
 		return nil
 	}
@@ -190,7 +196,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
+	} else if (publicCatanExplorerExtended(r.CatanScenario) && !publicCatanExplorerExtended(scenario)) || (r.CatanScenario == "fishing" && scenario != "fishing") || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if err := next.validateCatanScenario(); err != nil {

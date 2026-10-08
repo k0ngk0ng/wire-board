@@ -29,3 +29,25 @@ func NewCatanExplorerMission(players int, scenario string) (*State, error) {
 	s.Log = append(s.Log, catanExplorerLairRecipeNotice)
 	return s, s.validateCatanExplorer()
 }
+
+// NewCatanExplorerCitiesKnights uses the selected mission's target plus five.
+// Lair tokens use the same explicitly versioned site recipe as standalone missions.
+func NewCatanExplorerCitiesKnights(players int, scenario string) (*State, error) {
+	if scenario != "spices-for-catan" && !catanExplorerMissionScenario(scenario) {
+		return nil, errors.New("城市与骑士支持巢穴、鱼群、香料和完整三任务")
+	}
+	var numbers []int
+	if catanExplorerMissionScenario(scenario) {
+		numbers = catanExplorerLairNumbers(players)
+	}
+	s, err := newCatanExplorerCityState(players, scenario, numbers)
+	if err != nil {
+		return nil, err
+	}
+	if s.Catan.Explorer.Lairs != nil {
+		s.Catan.Explorer.Lairs.NumberRecipe = CatanExplorerLairRecipe
+		s.Log = append(s.Log, catanExplorerLairRecipeNotice)
+	}
+	s.Log = append(s.Log, "探索者与城市骑士：采用所选任务基础目标加5分；香料按正文公式为20分")
+	return s, s.validateCatanExplorerCities()
+}

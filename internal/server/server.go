@@ -947,7 +947,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanHarbors(*req.CatanHarbors)
 	case "catan_cities_knights":
-		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing") {
+		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerExtended(next.CatanScenario)) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
 			break
 		}
@@ -1186,6 +1186,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
 						}
 					}
+				} else if publicCatanExplorerExtended(next.CatanScenario) && next.CatanCitiesKnights != nil {
+					next.Game, err = game.NewCatanExplorerCitiesKnights(len(next.Seats), next.CatanScenario)
 				} else if next.CatanScenario == "spices-for-catan" {
 					next.Game, err = game.NewCatanExplorerSpices(len(next.Seats))
 				} else if publicCatanExplorerExtended(next.CatanScenario) {

@@ -213,15 +213,17 @@ export function CatanRules({ room }: { room: Room }) {
     return (
       <section className="catan-rules">
         <h3>
-          探索者与海盗 ·{" "}
           {room.game?.catan
-            ? explorerScenarioLabel(room.game.catan)
-            : scenario === "spices-for-catan"
-              ? "卡坦香料"
-              : "初航"}
+            ? `探索者与海盗 · ${explorerScenarioLabel(room.game.catan)}`
+            : catanScenarioName(scenario)}
           {info.citiesKnights ? "＋城市与骑士" : ""} · {info.target}分
         </h3>
         <ul>
+          {info.citiesKnights && (
+            <li>
+              组合目标按任务基础分加5；香料采用正文公式20分（组合规则示例的19分与2025任务目标不一致）。
+            </li>
+          )}
           <li>
             {scenario === "land-ho" && players <= 4
               ? "按印刷位置开局，随机先手；每人有村庄、港口、道路和装有移民的船，另有2金币。双人局的白色和橙色建筑、道路是静态障碍。"

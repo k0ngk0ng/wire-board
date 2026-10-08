@@ -5,8 +5,8 @@ import (
 	"slices"
 )
 
-// Explicit private acceptance constructor. Room recipes still reject this
-// combination; unresolved retail lair faces are never synthesized here.
+// Internal constructor takes an explicit token inventory; the public wrapper
+// supplies and labels the site recipe. Untagged historical fixtures stay valid.
 func newCatanExplorerCityState(players int, scenario string, numbers []int) (*State, error) {
 	if players < 3 || players > 6 {
 		return nil, errors.New("探险城市骑士组合需要三至六人")

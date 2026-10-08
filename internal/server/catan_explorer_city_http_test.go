@@ -15,8 +15,8 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Public room recipes remain gated. Start normal authenticated rooms, then
-// install a validated private combination snapshot, keeping real HTTP/storage.
+// Controlled midgame tests install validated snapshots in authenticated rooms.
+// Natural matches below use the public creation and manual setup paths.
 func newExplorerCityHTTP(t *testing.T, n int, phase string) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
@@ -72,8 +72,11 @@ func assertExplorerCityHTTPPrivacy(t *testing.T, clients []*testClient, state *g
 		v := room["game"].(map[string]any)["catan"].(map[string]any)
 		x := v["explorer"].(map[string]any)
 		k := v["citiesKnights"].(map[string]any)
-		if k["progressDecks"] != nil || k["event"] != nil || x["board"].(map[string]any)["hidden"] != nil || x["board"].(map[string]any)["numbers"] != nil || x["lairs"].(map[string]any)["deck"] != nil {
+		if k["progressDecks"] != nil || k["event"] != nil || x["board"].(map[string]any)["hidden"] != nil || x["board"].(map[string]any)["numbers"] != nil {
 			t.Fatal("hidden deck/event/world leaked", viewer)
+		}
+		if lairs, ok := x["lairs"].(map[string]any); ok && (lairs["deck"] != nil || lairs["inventory"] != nil) {
+			t.Fatal("hidden lair inventory leaked", viewer)
 		}
 		for p, raw := range v["players"].([]any) {
 			hand, ok := raw.(map[string]any)["resources"]
@@ -333,53 +336,64 @@ func TestCatanExplorerCityHTTPFreeRoadsReplayAndWebsocket(t *testing.T) {
 // No resource, score or progress injection: play the committed post-opening
 // snapshots through real production HTTP until the combined victory target.
 func TestCatanExplorerCityNaturalHTTPMatches(t *testing.T) {
-	for _, n := range []int{3, 6} {
-		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, ts, clients, id := newExplorerCityHTTP(t, n, "roll")
-			seen := map[string]int{}
-			steps := 0
-			restored := false
-			for ; steps < 14000 && !s.rooms[id].Game.Finished; steps++ {
+	for _, scenario := range []string{"pirate-lairs", "fish-for-catan", "spices-for-catan", "explorers-and-pirates"} {
+		for _, n := range []int{3, 4, 5, 6} {
+			t.Run(fmt.Sprintf("%s/%d", scenario, n), func(t *testing.T) {
+				s, ts, clients, id := newPublicExplorerScenarioHTTP(t, n, scenario, true)
+				wantTarget := map[string]int{"pirate-lairs": 17, "fish-for-catan": 20, "spices-for-catan": 20, "explorers-and-pirates": 22}[scenario]
+				if s.rooms[id].Game.Catan.Explorer.Board.Target != wantTarget {
+					t.Fatal("wrong combined target")
+				}
+				seen := map[string]int{}
+				steps := 0
+				restored := false
+				for ; steps < 14000 && !s.rooms[id].Game.Finished; steps++ {
+					r := s.rooms[id]
+					state := r.Game
+					actor := state.CatanPendingActor()
+					if actor < 0 {
+						actor = explorerHTTPActor(state)
+					}
+					a, err := state.BotAction(actor)
+					if err != nil {
+						t.Fatal("bot", steps, state.Phase, err)
+					}
+					prompt := int(state.Catan.TurnSerial)
+					if setup := state.Catan.Explorer.Setup; setup != nil {
+						prompt = setup.PromptBase + setup.Step + 1
+					}
+					if a.Prompt != prompt {
+						t.Fatal("bot omitted serial", a)
+					}
+					code, result := clients[actor].request("POST", "/api/rooms/"+id, map[string]any{"type": "action", "version": r.Version, "nonce": randomID(12), "action": a})
+					if code != 200 {
+						raw, _ := json.Marshal(state)
+						t.Log("failed natural state", string(raw))
+						t.Fatal("natural HTTP action", steps, state.Phase, a, code, result)
+					}
+					seen[a.Type]++
+					if !s.rooms[id].Game.Finished && steps%151 == 0 {
+						assertExplorerCityHTTPPrivacy(t, clients, s.rooms[id].Game)
+						s, ts = restartRiversHTTP(t, s, ts, clients, id)
+						restored = true
+					}
+				}
 				r := s.rooms[id]
-				state := r.Game
-				actor := state.CatanPendingActor()
-				if actor < 0 {
-					actor = explorerHTTPActor(state)
+				if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.TurnDeadline != 0 || !restored {
+					t.Fatal("natural combined match did not finish", steps, r.Game.Round, seen)
 				}
-				a, err := state.BotAction(actor)
-				if err != nil {
-					t.Fatal("bot", steps, state.Phase, err)
+				winner := r.Game.Winners[0]
+				if r.Game.Catan.Players[winner].Score < r.Game.Catan.Explorer.Board.Target {
+					t.Fatal("won below combined target")
 				}
-				if a.Prompt != int(state.Catan.TurnSerial) {
-					t.Fatal("bot omitted serial", a)
+				if seen["catan_explorer_setup"] != n*4 || seen["catan_roll"] == 0 || seen["catan_explorer_sail"] == 0 || seen["catan_explorer_begin_move"] == 0 {
+					t.Fatal("match omitted production/movement", seen)
 				}
-				code, result := clients[actor].request("POST", "/api/rooms/"+id, map[string]any{"type": "action", "version": r.Version, "nonce": randomID(12), "action": a})
-				if code != 200 {
-					raw, _ := json.Marshal(state)
-					t.Log("failed natural state", string(raw))
-					t.Fatal("natural HTTP action", steps, state.Phase, a, code, result)
-				}
-				seen[a.Type]++
-				if !s.rooms[id].Game.Finished && steps%151 == 0 {
-					assertExplorerCityHTTPPrivacy(t, clients, s.rooms[id].Game)
-					s, ts = restartRiversHTTP(t, s, ts, clients, id)
-					restored = true
-				}
-			}
-			r := s.rooms[id]
-			if !r.Game.Finished || r.Status != "finished" || len(r.Game.Winners) != 1 || r.TurnDeadline != 0 || !restored {
-				t.Fatal("natural combined match did not finish", steps, r.Game.Round, seen)
-			}
-			winner := r.Game.Winners[0]
-			if r.Game.Catan.Players[winner].Score < r.Game.Catan.Explorer.Board.Target {
-				t.Fatal("won below combined target")
-			}
-			if seen["catan_roll"] == 0 || seen["catan_explorer_sail"] == 0 || seen["catan_explorer_begin_move"] == 0 {
-				t.Fatal("match omitted production/movement", seen)
-			}
-			s, ts = restartRiversHTTP(t, s, ts, clients, id)
-			t.Log("natural combined actions", steps, "round", r.Game.Round, "seen", seen)
-		})
+				s, ts = restartRiversHTTP(t, s, ts, clients, id)
+				assertPublicExplorerHistory(t, s, clients, id)
+				t.Log("natural combined actions", steps, "round", r.Game.Round, "seen", seen)
+			})
+		}
 	}
 }
 

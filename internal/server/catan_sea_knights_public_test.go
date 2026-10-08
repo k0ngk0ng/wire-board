@@ -17,7 +17,7 @@ func TestCatanSeaKnightsPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 3, "catanScenario": "tribe"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "shores", "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "catan", "capacity": 3, "catanScenario": "land-ho"},
 		{"kind": "splendor", "capacity": 3},
 	} {

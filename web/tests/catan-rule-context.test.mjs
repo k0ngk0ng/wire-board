@@ -458,3 +458,23 @@ test("public sea Fishing keeps the sea target and saved recipe authoritative", (
   room.game.catan.fishing={};assert.equal(catanRuleContext(room).fishing,true);
  }
 });
+
+
+test("Explorer Knights adds five, and removing the draft leaves saved rules authoritative", () => {
+ for (const [scenario, target] of [["pirate-lairs",17],["fish-for-catan",20],["spices-for-catan",20],["explorers-and-pirates",22]]) {
+  for (const capacity of [3,4,5,6]) {
+   const room={capacity,catanScenario:scenario,catanCitiesKnights:{layout:"variable"}};
+   assert.equal(catanRuleContext(room).target,target);
+   assert.equal(catanRuleContext(room).explorer,true);
+   assert.equal(catanRuleContext(room).fiveSix,capacity>4);
+   delete room.catanCitiesKnights;
+   assert.equal(catanRuleContext(room).target,target-5);
+   room.game={catan:{players:Array(3).fill({}),citiesKnights:{},explorer:{board:{scenario,target,layout:"variable"}}}};
+   assert.equal(catanRuleContext(room).target,target);
+   assert.equal(catanRuleContext(room).fiveSix,false);
+   room.game={catan:{players:Array(3).fill({})}};
+   assert.equal(catanRuleContext(room).target,10);
+   assert.equal(catanRuleContext(room).explorer,false);
+  }
+ }
+});
