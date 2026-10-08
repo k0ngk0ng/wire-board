@@ -18,6 +18,12 @@ func (s *State) catanExplorerCityRoll(red, yellow, face int) error {
 	}
 	next := clone(*s)
 	ng := next.Catan
+	if ng.EventDeck != nil {
+		ng.EventDeck.AlchemyRolls++
+		ng.EventDeck.LastAlchemyRoll = ng.RollID + 1
+		ng.RevealedEvent = nil
+		next.catanLog(next.Turn, "炼金术替代本次事件牌抽取，牌堆保持原状")
+	}
 	ng.Explorer.Economy.Turn.Dice = [2]int{red, yellow}
 	ng.Explorer.Economy.Turn.Phase = "city"
 	ng.Dice = []int{red, yellow}
@@ -65,6 +71,9 @@ func (s *State) catanExplorerCityProduction(dice [2]int) error {
 	result, err := x.Economy.resolveProduction(g, x.Fleet, x.Cargo, s.Turn, g.TurnSerial, dice)
 	if err != nil {
 		return err
+	}
+	if g.RevealedEvent != nil && x.Economy.Turn.Production != 0 {
+		g.RevealedEvent.ProductionStarted = true
 	}
 	received := make([]int, len(g.Players))
 	for p, hand := range result.Resources {
@@ -140,7 +149,7 @@ func (s *State) validateExplorerCityProduction() error {
 	}
 	if k.Event != nil {
 		event := k.Event
-		if turn.Phase != "city" || turn.Dice != [2]int{event.Red, event.Yellow} || event.Face != k.EventDie || event.Face < 0 || event.Face > 5 || event.Production != 0 || event.Epidemic {
+		if turn.Phase != "city" || turn.Dice != [2]int{event.Red, event.Yellow} || event.Face != k.EventDie || event.Face < 0 || event.Face > 5 || event.Production != turn.Production || event.Epidemic {
 			return errors.New("组合城市事件骰子或后续生产无效")
 		}
 		for _, task := range event.Tasks {

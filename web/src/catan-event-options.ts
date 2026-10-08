@@ -19,6 +19,11 @@ export function catanEventsSupported(room: Partial<Room>) {
     [
       "",
       "cities-knights",
+      "land-ho",
+      "pirate-lairs",
+      "fish-for-catan",
+      "spices-for-catan",
+      "explorers-and-pirates",
       "fishing",
       "rivers",
       "caravans",
