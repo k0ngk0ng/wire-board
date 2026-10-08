@@ -11,18 +11,40 @@ import (
 // Controlled valid midgames: use real spice maps and cargo inventories, then
 // relocate public pieces and resources to exercise full recruitment berths.
 // No artificial lair numbers are needed by this scenario.
-func explorerRecruitFreightFixture(t *testing.T, n int, kind, destination string) (*State, Action) {
+func explorerRecruitFreightFixture(t *testing.T, n int, kind, destination string, knights ...bool) (*State, Action) {
 	t.Helper()
-	s := explorerSpiceStarted(t, n)
-	if err := s.catanExplorerRoll([2]int{1, 2}); err != nil {
-		t.Fatal(err)
+	var s *State
+	if len(knights) > 0 && knights[0] {
+		var err error
+		s, err = NewCatanExplorerCitiesKnights(n, "spices-for-catan")
+		if err != nil {
+			t.Fatal(err)
+		}
+		for s.Catan.Explorer.Setup != nil {
+			a, err := s.BotAction(s.Turn)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err = s.Apply(s.Turn, a); err != nil {
+				t.Fatal(err)
+			}
+		}
+		if err = s.catanExplorerCityRoll(1, 2, 0); err != nil {
+			t.Fatal(err)
+		}
+	} else {
+		s = explorerSpiceStarted(t, n)
+		if err := s.catanExplorerRoll([2]int{1, 2}); err != nil {
+			t.Fatal(err)
+		}
 	}
 	explorerFishRevealExcept(t, s, -1)
 	g, x, p := s.Catan, s.Catan.Explorer, s.Turn
-	stock := catanExplorerStock(n).resources
-	g.Bank = []int{stock, stock, stock, stock, stock}
 	for i := range g.Players {
-		g.Players[i].Resources = make([]int, 5)
+		for r, v := range g.Players[i].Resources {
+			g.Bank[r] += v
+		}
+		g.Players[i].Resources = make([]int, len(g.Bank))
 	}
 	for r := range g.Bank {
 		g.Players[p].Resources[r] = 5
@@ -30,7 +52,7 @@ func explorerRecruitFreightFixture(t *testing.T, n int, kind, destination string
 	}
 	harbor := -1
 	for _, v := range g.Vertices {
-		if v.Owner == p && v.Level == 2 {
+		if v.Owner == p && catanExplorerHarborAt(g, v.ID) {
 			harbor = v.ID
 		}
 	}

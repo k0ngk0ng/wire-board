@@ -241,11 +241,28 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 	case "catan_explorer_unit":
 		err = x.Cargo.buildUnitFreight(g, x.Fleet, player, sequence, a.Card, catanExplorerCargoLocation{a.Choice, a.Target}, a.Cards, a.Targets, a.SpiceUnload)
 		if err == nil {
+			crew, settlers := 0, 0
+			for _, unit := range a.Cards {
+				if unit%11 < 2 {
+					settlers++
+				} else {
+					crew++
+				}
+			}
+			if crew > 0 {
+				s.catanLog(player, "归还 船员×%d 腾出招募舱位", crew)
+			}
+			if settlers > 0 {
+				s.catanLog(player, "归还 移民×%d 腾出招募舱位", settlers)
+			}
+			if len(a.Cards)+len(a.Targets)+len(a.SpiceUnload) > 1 {
+				s.catanLog(player, "本站补充规则：归还同一舱内必要的两件小货物，再付费建造移民")
+			}
 			if len(a.Targets) > 0 {
 				s.catanLog(player, "归还 鱼群×1 腾出招募舱位，未交付任务")
 			}
 			if len(a.SpiceUnload) > 0 {
-				s.catanLog(player, "归还 香料×1 腾出招募舱位，未交付任务；农场能力保留")
+				s.catanLog(player, "归还 香料×%d 腾出招募舱位，未交付任务；农场能力保留", len(a.SpiceUnload))
 			}
 			if a.Card%11 < 2 {
 				s.catanLog(player, "支付 木砖羊粮各1，建造移民")

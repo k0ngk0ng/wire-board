@@ -85,6 +85,41 @@ func explorerRecruitHTTPFixture(t *testing.T, kind string) (*game.State, game.Ac
 		x.Cargo.Fish[0].Kind = "harbor"
 		x.Cargo.Fish[0].Index = harbor
 		a.Targets = []int{0}
+	} else if kind == "two-spice" || kind == "two-crew" || kind == "mixed" {
+		a.Card = actor*11 + 1
+		for i, c := range x.Cargo.Spice {
+			if c.At.Kind == "harbor" && c.At.Index == harbor {
+				a.SpiceUnload = append(a.SpiceUnload, i)
+			}
+		}
+		if len(a.SpiceUnload) != 2 {
+			t.Fatal("need two sacks in fixture")
+		}
+		count := 0
+		if kind == "mixed" {
+			count = 1
+		} else if kind == "two-crew" {
+			count = 2
+		}
+		for i := 0; i < count; i++ {
+			sack := a.SpiceUnload[len(a.SpiceUnload)-1]
+			a.SpiceUnload = a.SpiceUnload[:len(a.SpiceUnload)-1]
+			loc := x.Cargo.Spice[sack].At
+			x.Cargo.Spice[sack].At.Kind = "supply"
+			x.Cargo.Spice[sack].At.Index = -1
+			crew := -1
+			for id := actor*11 + 2; id < (actor+1)*11; id++ {
+				if x.Cargo.Units[id].Kind == "supply" {
+					crew = id
+					break
+				}
+			}
+			if crew < 0 {
+				t.Fatal("no unused crew")
+			}
+			x.Cargo.Units[crew] = loc
+			a.Cards = append(a.Cards, crew)
+		}
 	} else {
 		a.SpiceUnload = []int{sack}
 	}
@@ -92,7 +127,7 @@ func explorerRecruitHTTPFixture(t *testing.T, kind string) (*game.State, game.Ac
 }
 
 func TestCatanExplorerRecruitFreightHTTP(t *testing.T) {
-	for _, kind := range []string{"fish", "spice"} {
+	for _, kind := range []string{"fish", "spice", "two-spice", "two-crew", "mixed"} {
 		t.Run(kind, func(t *testing.T) {
 			s, ts, clients, id := newExplorerSpiceHTTP(t)
 			state, a := explorerRecruitHTTPFixture(t, kind)
@@ -133,7 +168,11 @@ func TestCatanExplorerRecruitFreightHTTP(t *testing.T) {
 			}
 			room = s.rooms[id]
 			g, x := room.Game.Catan, room.Game.Catan.Explorer
-			if room.TurnDeadline != deadline || g.Players[actor].Resources[2] != 2 || g.Players[actor].Resources[4] != 2 {
+			ore := 2
+			if a.Card%11 < 2 {
+				ore = 3
+			}
+			if room.TurnDeadline != deadline || g.Players[actor].Resources[2] != 2 || g.Players[actor].Resources[4] != ore {
 				t.Fatal("clock or payment changed incorrectly")
 			}
 			if x.Cargo.Units[a.Card].Kind != "harbor" || x.Cargo.Units[a.Card].Index != a.Target {
@@ -142,10 +181,27 @@ func TestCatanExplorerRecruitFreightHTTP(t *testing.T) {
 			if kind == "fish" && x.Cargo.Fish[0].Kind != "supply" || kind == "spice" && x.Cargo.Spice[a.SpiceUnload[0]].At.Kind != "supply" {
 				t.Fatal("freight not returned")
 			}
+			for _, id := range a.Cards {
+				if x.Cargo.Units[id].Kind != "supply" {
+					t.Fatal("crew not returned")
+				}
+			}
+			for _, id := range a.SpiceUnload {
+				if x.Cargo.Spice[id].At.Kind != "supply" {
+					t.Fatal("sack not returned")
+				}
+			}
 			for _, client := range clients {
 				view := current(client)["game"].(map[string]any)["catan"].(map[string]any)["explorer"].(map[string]any)
 				motion := view["motion"].(map[string]any)
-				if motion["kind"] != a.Type || len(motion["cargo"].([]any)) != 1 || len(motion[kind].([]any)) != 1 {
+				fishMoves, spiceMoves := 0, 0
+				if v, ok := motion["fish"].([]any); ok {
+					fishMoves = len(v)
+				}
+				if v, ok := motion["spice"].([]any); ok {
+					spiceMoves = len(v)
+				}
+				if motion["kind"] != a.Type || len(motion["cargo"].([]any)) != len(a.Cards)+1 || fishMoves != len(a.Targets) || spiceMoves != len(a.SpiceUnload) {
 					t.Fatal("viewer lost return/recruit motion")
 				}
 			}

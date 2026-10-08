@@ -150,7 +150,9 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 			}
 			plans = append(plans, catanExplorerBotPlan{Action{Type: "catan_explorer_unit", Prompt: prompt, Card: freeCrew, Choice: loc.Kind, Target: loc.Index}, []int{0, 0, 1, 0, 1}, value})
 		}
-		if settlers == 0 && settlements < 5 && freeSettler >= 0 && used == 0 {
+		retiredCrew := x.Cargo.contents(loc)
+		replaceCrew := !unresolved && len(retiredCrew) == 2 && retiredCrew[0]%11 >= 2 && retiredCrew[1]%11 >= 2 && x.Cargo.buildBerthsFull(g, x.Fleet, player)
+		if settlers == 0 && settlements < 5 && freeSettler >= 0 && (used == 0 || replaceCrew) {
 			value := 100
 			if !unresolved {
 				value = 145
@@ -158,7 +160,11 @@ func (s *State) catanExplorerMissionPlans(player int) []catanExplorerBotPlan {
 			if loc.Kind == "ship" {
 				value += 15
 			}
-			plans = append(plans, catanExplorerBotPlan{Action{Type: "catan_explorer_unit", Prompt: prompt, Card: freeSettler, Choice: loc.Kind, Target: loc.Index}, []int{1, 1, 1, 1, 0}, value})
+			action := Action{Type: "catan_explorer_unit", Prompt: prompt, Card: freeSettler, Choice: loc.Kind, Target: loc.Index}
+			if replaceCrew {
+				action.Cards = retiredCrew
+			}
+			plans = append(plans, catanExplorerBotPlan{action, []int{1, 1, 1, 1, 0}, value})
 		}
 	}
 	return plans
