@@ -65,6 +65,9 @@ func (x catanExplorer) validateComponents(g *Catan) error {
 	if err := x.Board.validate(g); err != nil {
 		return err
 	}
+	if x.Board.Fishing != "" {
+		return errors.New("探险渔夫尚未接通完整行动控制器")
+	}
 	if err := x.Economy.validate(g, x.Fleet, x.Cargo); err != nil {
 		return err
 	}

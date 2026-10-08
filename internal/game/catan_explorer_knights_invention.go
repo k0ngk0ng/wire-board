@@ -56,7 +56,7 @@ func (m *catanExplorerBoard) swapNumbers(g *Catan, left, right int) error {
 	if !m.CitiesKnights || g.CitiesKnights == nil || left < 0 || right < 0 || left >= len(g.Tiles) || right >= len(g.Tiles) || left == right || !catanInventionNumber(g.Tiles[left].Number) || !catanInventionNumber(g.Tiles[right].Number) {
 		return errors.New("请选择两个已公开且可交换数字的地块")
 	}
-	base, _, err := catanExplorerGeometryVariant(m.Players, m.Scenario, m.Layout, m.CitiesKnights)
+	base, _, err := catanExplorerGeometryFishing(m.Players, m.Scenario, m.Layout, m.CitiesKnights, m.Fishing, m.FishingLakes)
 	if err != nil {
 		return err
 	}

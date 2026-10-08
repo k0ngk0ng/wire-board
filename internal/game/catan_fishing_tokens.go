@@ -59,9 +59,11 @@ func catanFishValue(id int) int {
 	return 0 // Boot is not a fish token and cannot be used as payment.
 }
 
+// The economy also serves native two-player Explorer games. Standalone
+// two-player Fishing has its own setup/cost rules and separate public gate.
 func newCatanFishingTokens(players int) (*catanFishingTokens, error) {
-	if players < 3 || players > 6 {
-		return nil, errors.New("捕鱼筹码需要3至6位玩家")
+	if players < 2 || players > 6 {
+		return nil, errors.New("捕鱼筹码需要2至6位玩家")
 	}
 	f := &catanFishingTokens{Hands: make([][]int, players), BootOwner: -1, Discard: []int{}, Pending: []catanFishClaim{}}
 	for i := range f.Hands {
@@ -82,7 +84,7 @@ func (f catanFishingTokens) size() int {
 }
 func (f catanFishingTokens) validate() error {
 	n := len(f.Hands)
-	if n < 3 || n > 6 || f.BootOwner < -1 || f.BootOwner >= n {
+	if n < 2 || n > 6 || f.BootOwner < -1 || f.BootOwner >= n {
 		return errors.New("invalid fishing player count or boot owner")
 	}
 	seen := make([]bool, f.size())

@@ -23,7 +23,7 @@ func (g *Catan) explorerKnightSite(vertex int) bool {
 		if tile.Resource == CatanFog {
 			return false
 		}
-		land = land || tile.Resource >= 0 && tile.Resource <= CatanDesert || tile.Resource == CatanGold
+		land = land || tile.Resource >= 0 && tile.Resource <= CatanDesert || tile.Resource == CatanGold || tile.Resource == catanLake
 	}
 	return land
 }

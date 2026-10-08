@@ -152,6 +152,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if g != nil && g.Explorer != nil {
+		return f.validateExplorer(g, g.Explorer.Board)
+	}
 	if !validCatanExtendedNumberRecipe(f.NumberRecipe, len(g.Players)) || (f.NumberRecipe != "" && g.Seafarers != nil) {
 		return errors.New("渔夫数字配置版本无效")
 	}
@@ -266,7 +269,11 @@ func (f catanFishingMap) production(g *Catan, total int) ([]int, error) {
 		for _, id := range vertices {
 			v := g.Vertices[id]
 			if v.Level > 0 && v.Owner >= 0 && v.Owner < len(due) && !g.Players[v.Owner].Eliminated {
-				due[v.Owner] += v.Level
+				level := v.Level
+				if g.Explorer != nil && catanExplorerHarborAt(g, id) {
+					level = 1 // A harbor settlement is not a two-producing city.
+				}
+				due[v.Owner] += level
 			}
 		}
 	}

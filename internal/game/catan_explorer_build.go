@@ -14,10 +14,10 @@ func catanExplorerLandEdge(g *Catan, edge int) bool {
 			return false
 		}
 		h := g.Tiles[tile]
-		if h.Resource < 0 || h.Resource > CatanGold || h.Resource == CatanFog || h.Resource == CatanGold && h.Number == 0 {
+		if h.Resource < 0 || h.Resource > CatanGold && h.Resource != catanLake || h.Resource == CatanFog || h.Resource == CatanGold && h.Number == 0 {
 			return false
 		}
-		land = land || h.Resource < CatanSea || h.Resource == CatanGold
+		land = land || h.Resource < CatanSea || h.Resource == CatanGold || h.Resource == catanLake
 	}
 	return land
 }
