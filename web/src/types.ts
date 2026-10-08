@@ -522,6 +522,10 @@ export type CatanState = {
   developmentNames?: string[];
   attack?: CatanAttack;
   two?: {
+    seafarers?: string;
+    seaStarts?: number[];
+    afterRoute?: "road" | "ship";
+    buildingShip?: boolean;
     helpers?: string;
     afterHelper?: "road" | "settlement";
     variants?: string;
@@ -538,7 +542,8 @@ export type CatanState = {
     spent: boolean;
     knightExchanged: boolean;
     pending?: {
-      kind: "road" | "settlement" | "bridge" | "knight" | "knight_promote";
+      kind:
+        "road" | "ship" | "settlement" | "bridge" | "knight" | "knight_promote";
       resume: string;
       remaining?: string[];
     };

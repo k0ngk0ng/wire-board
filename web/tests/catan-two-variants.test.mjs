@@ -24,7 +24,6 @@ test("two-player variant entrypoints follow the verified recipes", () => {
     "caravans",
     "transport",
     "land-ho",
-    "shores",
     "unknown",
   ]) {
     assert.equal(supportsTwoCatanVariants(scenario), false);

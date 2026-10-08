@@ -1,7 +1,13 @@
 import { catanVictoryTarget } from "./catan-rule-context";
 import { supportsTwoCatanHelpers } from "./catan-two-helpers";
 import { supportsTwoCatanVariants } from "./catan-two-variants";
+import {
+  twoCatanSeaScenarios,
+  supportsTwoCatanSeafarers,
+  catanTwoSeafarersNote,
+} from "./catan-two-seafarers";
 const scenarios = [
+  ...twoCatanSeaScenarios,
   {
     id: "pirate-lairs",
     name: "探索者与海盗 · 海盗巢穴",
@@ -110,6 +116,14 @@ export function CatanTwoScenarioPicker({
           ))}
         </select>
       </label>
+      {supportsTwoCatanSeafarers(value) && (
+        <p className="muted small">{catanTwoSeafarersNote}</p>
+      )}
+      {value === "wonders" && (
+        <p className="muted small">
+          目标 {target ?? 10} 分，并满足奇迹胜利条件。
+        </p>
+      )}
       {helpersEnabled && (
         <p className="muted small">
           切换到尚未接通助手的剧本前，请先关闭 Helpers。
@@ -135,7 +149,8 @@ export function CatanTwoScenarioPicker({
             ? "自由开局，先放城市再放港口。"
             : "沿用印刷开局。")}
         {supportsTwoCatanVariants(value) &&
-          ` ${target ?? (value === "cities-knights" ? 13 : 10)} 分获胜。`}
+          value !== "wonders" &&
+          ` ${target ?? catanVictoryTarget(value, value === "cities-knights")} 分获胜。`}
         {value === "fishing" && `旧靴持有者需 ${(target ?? 10) + 1} 分。`}
       </p>
       {["pirate-lairs", "fish-for-catan", "explorers-and-pirates"].includes(

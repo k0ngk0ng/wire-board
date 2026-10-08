@@ -182,10 +182,11 @@ export function CatanTwoPanel({
     : retreatTargets.length > 0;
   const retreatRequest = twoRetreatAction(room, retreat);
   const retreatValid = !!retreatRequest;
+  const retreatOutside = !!g.caravans || retreatTargets.includes(-1);
   const retreatName = g.rivers ? "沼泽" : "沙漠";
   const retreatAction = g.transport
     ? "移开一名蛮族"
-    : g.caravans
+    : retreatOutside
       ? "将强盗移出棋盘"
       : `将强盗移回${retreatName}`;
   const openConfirm = (action: TokenAction) => {
@@ -247,7 +248,9 @@ export function CatanTwoPanel({
                       ? "＋河流"
                       : g.caravans
                         ? "＋商队"
-                        : ""}
+                        : q.seafarers
+                          ? "＋航海家"
+                          : ""}
             </strong>
             <small>
               {g.fishing ? (
@@ -336,7 +339,7 @@ export function CatanTwoPanel({
                   >
                     {g.transport
                       ? "移开蛮族"
-                      : g.caravans
+                      : retreatOutside
                         ? "移出强盗"
                         : "移回强盗"}
                   </button>
@@ -355,7 +358,9 @@ export function CatanTwoPanel({
                 建道路{g.rivers ? "、桥梁" : ""}
                 或村庄后，还需免费为中立势力建设一次。中立势力不领资源
                 {g.rivers || g.transport ? "、金币或筹码" : ""}，不行动。
-                {!g.transport && "中立势力可以取得最长路线。"}
+                {!g.transport &&
+                  !g.seafarers?.cloth &&
+                  "中立势力可以取得最长路线。"}
               </p>
               <p>
                 {g.fishing ? (
@@ -461,7 +466,9 @@ export function CatanTwoPanel({
                                 (c) => twoChoiceName(g, c) === "道路",
                               )
                             ? "两家均无法建桥，请改为中立势力修一条道路。"
-                            : `点击地图上亮起的${q.pending.kind === "bridge" ? "桥梁" : ""}位置，再确认建设。`}
+                            : q.pending.kind === "ship" && !q.buildingShip
+                              ? "两家均无法造船，请改为中立势力修一条道路。"
+                              : `点击地图上亮起的${q.buildingShip ? "船只" : q.pending.kind === "bridge" ? "桥梁" : ""}位置，再确认建设。`}
                       </p>
                       {selected && choices.length > 0 && (
                         <>
@@ -618,34 +625,36 @@ export function CatanTwoPanel({
                         </p>
                       </>
                     )}
-                    {confirm === "robber" && !g.caravans && !g.transport && (
-                      <>
-                        <p>
-                          选择{retreatName}
-                          后确认。可收起面板，在地图上选择亮起的地块。
-                        </p>
-                        <div
-                          className="two-owner-choice"
-                          aria-label="强盗退回位置"
-                        >
-                          {retreatTargets.map((tile) => (
-                            <button
-                              key={tile}
-                              disabled={busy}
-                              aria-pressed={retreat?.tile === tile}
-                              onClick={() => onRetreat({ tile })}
-                            >
-                              {retreatName} #{tile + 1}
-                            </button>
-                          ))}
-                        </div>
-                        <p>
-                          {retreatValid
-                            ? `已选${retreatName} #${retreat!.tile! + 1}`
-                            : "请先选择位置"}
-                        </p>
-                      </>
-                    )}
+                    {confirm === "robber" &&
+                      !retreatOutside &&
+                      !g.transport && (
+                        <>
+                          <p>
+                            选择{retreatName}
+                            后确认。可收起面板，在地图上选择亮起的地块。
+                          </p>
+                          <div
+                            className="two-owner-choice"
+                            aria-label="强盗退回位置"
+                          >
+                            {retreatTargets.map((tile) => (
+                              <button
+                                key={tile}
+                                disabled={busy}
+                                aria-pressed={retreat?.tile === tile}
+                                onClick={() => onRetreat({ tile })}
+                              >
+                                {retreatName} #{tile + 1}
+                              </button>
+                            ))}
+                          </div>
+                          <p>
+                            {retreatValid
+                              ? `已选${retreatName} #${retreat!.tile! + 1}`
+                              : "请先选择位置"}
+                          </p>
+                        </>
+                      )}
                     <div className="cloth-confirm-actions">
                       <button disabled={busy} onClick={closeConfirm}>
                         取消

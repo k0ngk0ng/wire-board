@@ -18,6 +18,24 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	next := *r
 	next.Capacity, next.CatanTwoRules = 2, game.CatanTwoRules
 	next.CatanTwoScenario = scenario
+	if game.CatanTwoSeafarersScenario(scenario) {
+		if r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != scenario {
+			setup, err := game.NormalizeCatanTwoSeafarersSetup(game.CatanSeafarersSetup{Scenario: scenario})
+			if err != nil {
+				return err
+			}
+			next.CatanSeafarers = &setup
+			next.CatanNewWorldMap = nil
+			if scenario == "new_world" {
+				next.CatanNewWorldMap, err = game.GenerateCatanNewWorldMap(4)
+				if err != nil {
+					return err
+				}
+			}
+		}
+	} else {
+		next.CatanSeafarers, next.CatanNewWorldMap = nil, nil
+	}
 	if r.Capacity == 2 && publicCatanFlexibleScenario(r.CatanScenario) {
 		next.CatanScenario = ""
 		next.CatanOptions = game.CatanOptions{}
@@ -32,6 +50,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	r.Capacity, r.CatanTwoRules = next.Capacity, next.CatanTwoRules
 	r.CatanTwoScenario = next.CatanTwoScenario
 	r.CatanScenario = next.CatanScenario
+	r.CatanSeafarers, r.CatanNewWorldMap = next.CatanSeafarers, next.CatanNewWorldMap
 	r.CatanOptions = next.CatanOptions
 	r.CatanFishing, r.CatanFishingLakes = next.CatanFishing, next.CatanFishingLakes
 	for i := range r.Seats {
@@ -44,11 +63,27 @@ func (r *Room) validateCatanTwoSetup() error {
 	if r.CatanTwoRules == "" && r.CatanTwoScenario == "" {
 		return nil
 	}
-	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" {
+	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" && !game.CatanTwoSeafarersScenario(r.CatanTwoScenario) {
 		return errors.New("双人剧本尚未接入")
 	}
-	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || !r.twoCatanSeafarers() && (r.CatanSeafarers != nil || r.CatanNewWorldMap != nil) {
 		return errors.New("双人卡坦人数、版本或尚未核对的组合无效")
+	}
+	if r.twoCatanSeafarers() {
+		if r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != r.CatanTwoScenario {
+			return errors.New("双人海图配置缺失")
+		}
+		setup, err := game.NormalizeCatanTwoSeafarersSetup(*r.CatanSeafarers)
+		if err != nil || setup != *r.CatanSeafarers {
+			return errors.New("双人海图配置无效")
+		}
+		if setup.Scenario == "new_world" {
+			if err = game.ValidateCatanNewWorldMap(4, r.CatanNewWorldMap); err != nil {
+				return err
+			}
+		} else if r.CatanNewWorldMap != nil {
+			return errors.New("此双人海图不能包含新世界地形")
+		}
 	}
 	if (r.friendlyRobberEnabled() || r.CatanHarbors != nil && r.CatanHarbors.Enabled) && !r.publicCatanTwoVariantsAvailable() {
 		return errors.New("此双人剧本的友善／港口组合尚未接通，请先关闭变体")
@@ -57,5 +92,5 @@ func (r *Room) validateCatanTwoSetup() error {
 }
 
 func (r *Room) publicCatanTwoVariantsAvailable() bool {
-	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanScenario == "" && (r.CatanTwoScenario == "" || r.CatanTwoScenario == "fishing" || r.CatanTwoScenario == "cities-knights") && game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions)
+	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanScenario == "" && (r.CatanTwoScenario == "" || r.CatanTwoScenario == "fishing" || r.CatanTwoScenario == "cities-knights" || game.CatanTwoSeafarersScenario(r.CatanTwoScenario)) && game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions)
 }

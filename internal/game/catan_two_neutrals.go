@@ -56,6 +56,13 @@ func (g *Catan) twoNeutralChoices(kind string) []catanTwoNeutralChoice {
 		}
 		kind = "road"
 	}
+	if kind == "ship" && g.twoSeafarers() {
+		choices = g.twoNeutralShipChoices()
+		if len(choices) > 0 {
+			return choices
+		}
+		kind = "road"
+	}
 	if kind == "settlement" {
 		for _, owner := range catanTwoNeutralOwners {
 			_, villages, _ := g.pieces(owner)
@@ -114,7 +121,9 @@ func (g *Catan) placeTwoNeutral(kind string, choice catanTwoNeutralChoice) error
 			g.Vertices[choice.Vertex].Owner, g.Vertices[choice.Vertex].Level = choice.Owner, 1
 		}
 	} else {
+		ship := kind == "ship" && len(g.twoNeutralShipChoices()) > 0
 		g.Edges[choice.Edge].Owner = choice.Owner
+		g.Edges[choice.Edge].Ship = ship
 		g.Edges[choice.Edge].Bridge = kind == "bridge" && g.Rivers != nil && slices.Contains(g.Rivers.Map.Bridges, choice.Edge)
 	}
 	return nil
@@ -175,7 +184,7 @@ func (g *Catan) twoSettlementTokens(owner, vertex int) int {
 				interior = interior || slices.Contains(site.Paths, edge)
 			}
 		}
-		if !interior && len(g.edgeTiles(edge)) == 1 {
+		if !interior && ((g.twoSeafarers() && g.edgeTerrain(edge, true) && g.edgeTerrain(edge, false)) || len(g.edgeTiles(edge)) == 1) {
 			return reward + 1
 		}
 	}

@@ -26,7 +26,6 @@ test("two-player helpers retain compatible variants and authoritative saved rule
     "caravans",
     "cities-knights",
     "transport",
-    "shores",
   ])
     assert.equal(supportsTwoCatanHelpers(scenario), false);
   const game = {

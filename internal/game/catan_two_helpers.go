@@ -10,11 +10,11 @@ const catanTwoHelpersNotice = "本站双人助手规则：两位真人各领一�
 // Only the verified base and Fishing recipes currently share ordinary Helpers.
 func CatanTwoHelpersOptions(scenario string, o CatanOptions) bool {
 	normal, err := NormalizeCatanOptions(o)
-	return err == nil && !normal.FiveSix && (normal == (CatanOptions{}) || (scenario == "" || scenario == "fishing") && normal.Helpers)
+	return err == nil && !normal.FiveSix && (normal == (CatanOptions{}) || (scenario == "" || scenario == "fishing" || CatanTwoSeafarersScenario(scenario)) && normal.Helpers)
 }
 
 func (g *Catan) twoHelpers() bool {
-	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && g.CitiesKnights == nil && g.Rivers == nil && g.Caravans == nil && g.Attack == nil && g.Transport == nil && g.Seafarers == nil && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
+	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && g.CitiesKnights == nil && g.Rivers == nil && g.Caravans == nil && g.Attack == nil && g.Transport == nil && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
 }
 
 func (s *State) enableTwoHelpers(o CatanOptions) error {

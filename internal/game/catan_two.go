@@ -9,6 +9,9 @@ import (
 const CatanTwoRules = "catan-for-two-2025"
 
 type CatanTwo struct {
+	Seafarers       string           `json:"seafarers,omitempty"`
+	SeaStarts       []int            `json:"seaStarts,omitempty"`
+	AfterRoute      string           `json:"afterRoute,omitempty"`
 	Helpers         string           `json:"helpers,omitempty"`
 	AfterHelper     string           `json:"afterHelper,omitempty"`
 	Variants        string           `json:"variants,omitempty"`
@@ -115,6 +118,9 @@ func (s *State) validateCatanTwo() error {
 	if q.Rules != CatanTwoRules {
 		return errors.New("双人规则版本无效")
 	}
+	if err := s.validateTwoSeafarers(); err != nil {
+		return err
+	}
 	if err := s.validateTwoHelpers(); err != nil {
 		return err
 	}
@@ -127,7 +133,7 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err
 	}
-	if len(g.Players) != 2 || len(g.Tiles) != 19 || !g.twoBoardDimensions() || g.Seafarers != nil || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.GoldPending != nil || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
+	if len(g.Players) != 2 || (!g.twoSeafarers() && (len(g.Tiles) != 19 || !g.twoBoardDimensions())) || g.Seafarers != nil && !g.twoSeafarers() || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.GoldPending != nil && !g.twoSeafarers() || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {
@@ -148,13 +154,13 @@ func (s *State) validateCatanTwo() error {
 		return errors.New("本回合已经完成两次生产")
 	}
 	if q.Pending != nil {
-		if len(q.Pending.Remaining) > 1 || len(q.Pending.Remaining) > 0 && (!g.twoKnights() || q.Pending.Kind != "knight_promote" || q.Pending.Remaining[0] != "knight_promote") || (q.Pending.Kind == "knight" || q.Pending.Kind == "knight_promote") && (!g.twoKnights() || q.Pending.Resume != "catan_turn") {
+		if q.Pending.Kind == "ship" && !g.twoSeafarers() || len(q.Pending.Remaining) > 1 || len(q.Pending.Remaining) > 0 && (!g.twoKnights() || q.Pending.Kind != "knight_promote" || q.Pending.Remaining[0] != "knight_promote") || (q.Pending.Kind == "knight" || q.Pending.Kind == "knight_promote") && (!g.twoKnights() || q.Pending.Resume != "catan_turn") {
 			return errors.New("中立骑士回应无效")
 		}
 		if (q.Pending.Kind == "settlement" || q.Pending.Kind == "bridge") && q.Pending.Resume != "catan_turn" || q.Pending.Kind == "bridge" && g.Rivers == nil || q.Pending.Resume == "catan_roll" && len(q.Rolls) >= 2 {
 			return errors.New("中立建设返回阶段无效")
 		}
-		if s.Finished || g.setup() || s.Phase != "catan_two_build" || q.Sequence == 0 || !slices.Contains([]string{"road", "settlement", "bridge", "knight", "knight_promote"}, q.Pending.Kind) || !slices.Contains([]string{"catan_roll", "catan_turn", "catan_roads"}, q.Pending.Resume) || len(g.twoNeutralChoices(q.Pending.Kind)) == 0 || g.Trade != nil || q.Pending.Resume == "catan_turn" && len(q.Rolls) != 2 || q.Pending.Resume == "catan_roads" && g.FreeRoads <= 0 {
+		if s.Finished || g.setup() || s.Phase != "catan_two_build" || q.Sequence == 0 || !slices.Contains([]string{"road", "ship", "settlement", "bridge", "knight", "knight_promote"}, q.Pending.Kind) || !slices.Contains([]string{"catan_roll", "catan_turn", "catan_roads"}, q.Pending.Resume) || len(g.twoNeutralChoices(q.Pending.Kind)) == 0 || g.Trade != nil || q.Pending.Resume == "catan_turn" && len(q.Rolls) != 2 || q.Pending.Resume == "catan_roads" && g.FreeRoads <= 0 {
 			return errors.New("双人中立建设响应无效")
 		}
 	} else if s.Phase == "catan_two_build" {
@@ -166,13 +172,13 @@ func (s *State) validateCatanTwo() error {
 		}
 	}
 	for _, e := range g.Edges {
-		if e.Owner < -3 || e.Owner > 1 || e.Ship || e.Bridge && g.Rivers == nil || e.Damaged && (g.EventDeck == nil || e.Owner < 0) {
+		if e.Owner < -3 || e.Owner > 1 || e.Ship && !g.twoSeafarers() || e.Bridge && g.Rivers == nil || e.Damaged && (g.EventDeck == nil || e.Owner < 0) {
 			return errors.New("双人道路状态无效")
 		}
 	}
 	for _, owner := range []int{0, 1, -2, -3} {
 		r, v, c := g.pieces(owner)
-		if r > 15 || v-len(g.fallenCities(owner)) > 5 || c+len(g.fallenCities(owner)) > 4 || owner < 0 && (v < 1 || c != 0) {
+		if r > 15 || g.shipCount(owner) > 15 || v-len(g.fallenCities(owner)) > 5 || c+len(g.fallenCities(owner)) > 4 || owner < 0 && (v < 1 || c != 0) {
 			return errors.New("双人棋子库存无效")
 		}
 	}
@@ -239,7 +245,13 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	}
 	if s.Finished {
 		q.AfterHelper = ""
+		q.AfterRoute = ""
 		return nil
+	}
+	if q.AfterRoute != "" && !g.twoSeaRouteWaiting() {
+		kind := q.AfterRoute
+		q.AfterRoute = ""
+		return s.catanTwoStartBuild(kind)
 	}
 	if q.AfterHelper != "" && g.HelperPending == nil {
 		kind := q.AfterHelper
@@ -254,15 +266,22 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if s.catanTwoKnightAfterAction(before, a) {
 		return nil
 	}
-	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_road") {
+	if before.Catan.setup() || (a.Type != "catan_road" && a.Type != "catan_settlement" && a.Type != "catan_bridge" && a.Type != "catan_fish_road" && a.Type != "catan_ship") {
 		return nil
 	}
 	kind := "road"
+	if a.Type == "catan_ship" {
+		kind = "ship"
+	}
 	if a.Type == "catan_settlement" {
 		kind = "settlement"
 	}
 	if a.Type == "catan_bridge" {
 		kind = "bridge"
+	}
+	if g.twoSeafarers() && g.twoSeaRouteWaiting() && (kind == "road" || kind == "ship") {
+		q.AfterRoute = kind
+		return nil
 	}
 	if g.HelperPending != nil {
 		q.AfterHelper = kind
@@ -307,8 +326,15 @@ func (s *State) catanTwoBuild(player int, a Action) error {
 		if kind == "knight_promote" {
 			what = "二级骑士"
 		}
+	} else if g.Edges[choice.Edge].Ship {
+		what = "船只"
 	} else if g.Edges[choice.Edge].Bridge {
 		what = "桥梁"
+	}
+	if choice.Edge >= 0 && g.twoSeafarers() {
+		if _, err := s.catanDiscover(choice.Owner, choice.Edge); err != nil {
+			return err
+		}
 	}
 	s.catanLog(player, "为中立势力 %d 建造%s #%d", a.Target+1, what, at+1)
 	s.catanTwoQueueBuild(remaining, resume)

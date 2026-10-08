@@ -8,6 +8,7 @@ import {
   CATAN_EVENT_CATALOGUE,
   catanEventsSupported,
 } from "./catan-event-options";
+import { supportsTwoCatanSeafarers } from "./catan-two-seafarers";
 import { CatanTwoScenarioPicker } from "./catan-two-setup";
 import { CatanTransportSeat } from "./catan-transport";
 import { CatanAttackSeat } from "./catan-attack";
@@ -2838,11 +2839,14 @@ function Waiting({
             />
           )}
         {room.kind === "catan" &&
-          !room.catanTwoRules &&
+          (!room.catanTwoRules ||
+            supportsTwoCatanSeafarers(room.catanTwoScenario)) &&
           (!room.catanScenario || isPublicCatanSea(room.catanScenario)) && (
             <CatanSeafarersPicker
               room={room}
-              hideScenario={isPublicCatanSea(room.catanScenario)}
+              hideScenario={
+                !!room.catanTwoRules || isPublicCatanSea(room.catanScenario)
+              }
               disabled={!host || busy || mapDirty}
               command={command}
             />

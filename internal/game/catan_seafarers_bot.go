@@ -21,7 +21,7 @@ func (g *Catan) seaRouteValue(player, edge int, ship bool) int {
 	for pass := 0; pass < len(g.Vertices)*2; pass++ {
 		changed := false
 		for _, route := range g.Edges {
-			if route.Owner >= 0 && route.Owner != player {
+			if route.Owner != -1 && route.Owner != player {
 				continue
 			}
 			for m := 0; m < 2; m++ {
@@ -35,7 +35,7 @@ func (g *Catan) seaRouteValue(player, edge int, ship bool) int {
 				}
 				for _, ends := range [][2]int{{route.A, route.B}, {route.B, route.A}} {
 					a, b := ends[0], ends[1]
-					if g.Vertices[a].Owner >= 0 && g.Vertices[a].Owner != player {
+					if g.Vertices[a].Level > 0 && g.Vertices[a].Owner != player {
 						continue
 					}
 					from := dist[a][m]
@@ -99,7 +99,7 @@ func (g *Catan) seaRouteValue(player, edge int, ship bool) int {
 		}
 		for id, value := range rewards {
 			target := g.Edges[id]
-			if target.Owner >= 0 || g.pirateBlocks(id) {
+			if target.Owner != -1 || g.pirateBlocks(id) {
 				continue
 			}
 			distance := min(dist[target.A][1], dist[target.B][1])

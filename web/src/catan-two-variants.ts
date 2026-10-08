@@ -1,8 +1,10 @@
+import { supportsTwoCatanSeafarers } from "./catan-two-seafarers.ts";
 import { supportsTwoCatanHelpers } from "./catan-two-helpers.ts";
 import type { Room } from "./types";
 
 export const supportsTwoCatanVariants = (scenario = "") =>
-  ["", "fishing", "cities-knights"].includes(scenario);
+  ["", "fishing", "cities-knights"].includes(scenario) ||
+  supportsTwoCatanSeafarers(scenario);
 
 export const twoCatanVariantsAvailable = (room: Room) =>
   room.kind === "catan" &&

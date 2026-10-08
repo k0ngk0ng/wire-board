@@ -1277,11 +1277,17 @@ function CatanBaseBoard({
                               />
                             </g>
                           ) : e.ship ? (
-                            <CatanShip
-                              assets={assets}
-                              player={catanColorIndex(g, e.owner)}
-                              warship={e.warship}
-                            />
+                            <g
+                              data-two-road={
+                                e.owner < -1 && g.two ? e.id : undefined
+                              }
+                            >
+                              <CatanShip
+                                assets={assets}
+                                player={catanColorIndex(g, e.owner)}
+                                warship={e.warship}
+                              />
+                            </g>
                           ) : (
                             <g
                               data-two-road={

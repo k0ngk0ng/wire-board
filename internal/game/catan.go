@@ -158,7 +158,11 @@ func catanText(a []int) string {
 	return strings.Join(out, "、")
 }
 func (s *State) catanLog(p int, format string, args ...any) {
-	s.Log = append(s.Log, fmt.Sprintf("玩家 %d ", p+1)+fmt.Sprintf(format, args...))
+	name := fmt.Sprintf("玩家 %d", p+1)
+	if p < -1 && s.Catan.Two != nil {
+		name = catanTwoOwnerName(p)
+	}
+	s.Log = append(s.Log, name+" "+fmt.Sprintf(format, args...))
 }
 func (g *Catan) awardHolder(old, minValue int, values []int) int {
 	maximum := minValue - 1

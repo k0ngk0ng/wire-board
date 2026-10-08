@@ -35,7 +35,7 @@ func (s *State) ConfigureCatanFriendlyRobber(request CatanFriendlyRobberSetup) e
 		if g.Two != nil && !g.twoVariantsAvailable() {
 			return errors.New("此双人剧本的友善强盗组合尚未接通")
 		}
-		if g.Seafarers != nil && !CatanFriendlySeafarersSupported(len(g.Players), g.Seafarers.Scenario) {
+		if g.Seafarers != nil && !g.twoSeafarers() && !CatanFriendlySeafarersSupported(len(g.Players), g.Seafarers.Scenario) {
 			return errors.New("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")
 		}
 		s.enableCatanFriendlyRobber()

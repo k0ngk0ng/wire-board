@@ -73,9 +73,17 @@ func (s *State) catanDiscover(player, edge int) (int, error) {
 		case CatanDesert:
 			s.catanLog(player, "探索地块 #%d，发现沙漠", id+1)
 		case CatanGold:
+			if player < 0 {
+				s.Log = append(s.Log, "中立势力发现金矿，不领取资源")
+				break
+			}
 			gold++
 			s.catanLog(player, "探索地块 #%d，发现金矿（%d），获得一次资源选择", id+1, number)
 		default:
+			if player < 0 {
+				s.Log = append(s.Log, "中立势力发现资源地块，不领取资源")
+				break
+			}
 			if g.Bank[resource] > 0 {
 				g.Bank[resource]--
 				g.Players[player].Resources[resource]++

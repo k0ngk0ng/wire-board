@@ -189,7 +189,7 @@ func (g *Catan) randomizeSeafarersMap() error {
 		if desert {
 			break
 		}
-		if (shores && len(g.Players) == 4 && t.Resource == CatanDesert) || ((!shores || len(g.Players) == 3) && t.Number == 12) {
+		if (shores && (len(g.Players) == 4 || g.twoSeaRecipe()) && t.Resource == CatanDesert) || ((!shores || len(g.Players) == 3) && t.Number == 12) {
 			robber = t.ID
 			break
 		}
