@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"strings"
 	"testing"
 )
 
@@ -15,13 +14,10 @@ type clothSupplyPlan struct {
 	Seats           []struct{ Homes, Ships, Trades []int }
 }
 
-// Replay legal actions from all three setup rounds to the unresolved simultaneous
-// production shortage. The fixtures are route plans, not injected game states;
-// no resources, ships or trade relations are granted after construction. Dice
-// are sampled through Apply until a desired possible result occurs. This is an
-// existence proof, not a claim that the sequence is likely or the current error
-// is an official allocation rule. Replace the final rejection assertion when
-// an authoritative shortage rule is established.
+// Replay legal actions from all three setup rounds to simultaneous production
+// with insufficient common cloth. Only possible dice results are sampled; no
+// resources, ships or relations are injected. Verify the site's exact-deficit
+// supplement, persistence, and the original five-empty-village ending.
 func TestCatanClothExtendedSupplyShortageIsReachable(t *testing.T) {
 	for _, n := range []int{5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
@@ -392,24 +388,45 @@ func TestCatanClothExtendedSupplyShortageIsReachable(t *testing.T) {
 			}
 			*s = restored
 			check()
-			failed := false
+			paid := false
 			for attempt := 0; attempt < 1000; attempt++ {
 				trial := clone(*s)
-				err := trial.Apply(trial.Turn, Action{Type: "catan_roll"})
-				if err != nil {
-					if !strings.Contains(err.Error(), "布匹公共库存不足") {
-						t.Fatal(err)
-					}
-					after, _ := json.Marshal(&trial)
-					if string(saved) != string(after) {
-						t.Fatal("shortage action partially committed")
-					}
-					failed = true
-					break
+				if err := trial.Apply(trial.Turn, Action{Type: "catan_roll"}); err != nil {
+					t.Fatal(err)
 				}
+				if trial.Catan.Dice[0]+trial.Catan.Dice[1] != plan.Number {
+					continue
+				}
+				after := trial.Catan.cloth()
+				if after.Issued != 2 || after.Stock != 0 || clothTotal(trial.Catan) != 72 {
+					t.Fatal("incorrect exact deficit", after)
+				}
+				for p, held := range c.Held {
+					want := held
+					for _, village := range c.Villages {
+						if village.Number == plan.Number && slices.Contains(village.Traders, p) {
+							want++
+						}
+					}
+					if after.Held[p] != want {
+						t.Fatal("trader was not paid exactly once per producing village", p, after.Held[p], want)
+					}
+				}
+				*s = clone(trial)
+				if s.Catan.cloth().Issued != 2 || s.Catan.validateClothSupply() != nil {
+					t.Fatal("issued cloth lost on restore")
+				}
+				if s.Finished || s.Phase != "catan_turn" {
+					t.Fatal("depletion must wait for the end of this action turn", s.Phase)
+				}
+				if err := s.Apply(s.Turn, Action{Type: "catan_end"}); err != nil || !s.Finished || len(s.Winners) == 0 {
+					t.Fatal("six empty villages did not end the game", err)
+				}
+				paid = true
+				break
 			}
-			if !failed {
-				t.Fatal("expected unresolved shortage")
+			if !paid {
+				t.Fatal("did not sample simultaneous production")
 			}
 			t.Logf("legal moves=%d sampled production turns=%d stocks=%d held=%v ships=%v", moves, rolls, c.Stock, c.Held, func() []int {
 				r := []int{}

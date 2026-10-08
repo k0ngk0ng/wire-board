@@ -73,11 +73,14 @@ func (r *Room) validateCatanScenario() error {
 	}
 	if publicCatanSeaScenario(r.CatanScenario) {
 		maximum := 4
-		if r.CatanFishing && publicCatanFishingSeaExtended(r.CatanScenario) {
+		if (r.CatanFishing && publicCatanFishingSeaExtended(r.CatanScenario)) || (!r.CatanFishing && r.CatanScenario == "cloth") {
 			maximum = 6
 		}
 		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity || (r.Capacity > 4) != r.CatanOptions.FiveSix {
-			return errors.New("航海家人数或扩充配置无效；五六人入口支持渔夫与迷雾、奇迹、新世界的组合")
+			return errors.New("航海家人数或扩充配置无效；五六人支持布匹，以及渔夫与迷雾、奇迹、新世界的组合")
+		}
+		if r.Capacity > 4 && r.CatanScenario == "cloth" && r.CatanHarbors != nil && r.CatanHarbors.Enabled {
+			return errors.New("五六人布匹与港口霸主的组合尚未开放")
 		}
 		if _, err := game.NormalizeCatanOptions(r.CatanOptions); err != nil {
 			return err

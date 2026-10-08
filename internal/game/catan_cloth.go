@@ -2,8 +2,11 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"slices"
 )
+
+const catanClothSupplyRule = "本站补充规则：公共布匹不足时仅记账补足本次产出；空村落仍停止生产，五村耗尽照常结算"
 
 // Village number discs sit on intersections, not in hex centers. Relations
 // are recorded once per player, independently of the village's remaining stock.
@@ -16,9 +19,58 @@ type CatanClothVillage struct {
 type CatanClothState struct {
 	Villages   []CatanClothVillage `json:"villages"`
 	Stock      int                 `json:"stock"`
+	Issued     int                 `json:"issued,omitempty"`
 	Held       []int               `json:"held"`
 	HomeTiles  []int               `json:"homeTiles"`
 	EmptyLimit int                 `json:"emptyLimit"`
+}
+
+// A village can require common cloth only once, when its local stock runs
+// out. This bound covers even six traders at every village without allowing
+// an unbounded or overflowing counter in a restored save.
+func (g *Catan) validateClothSupply() error {
+	c := g.cloth()
+	if c == nil {
+		return nil
+	}
+	limit := len(c.Villages) * max(0, len(g.Players)-1)
+	physical := 10 + 5*len(c.Villages)
+	capacity := physical
+	if g.Seafarers.Rules == "" {
+		capacity = max(70, capacity)
+	}
+	if c.Issued < 0 || c.Issued > limit || c.Stock < 0 || c.Stock > capacity+c.Issued || len(c.Held) != len(g.Players) {
+		return errors.New("布匹库存或补发记账无效")
+	}
+	total := int64(c.Stock)
+	for _, held := range c.Held {
+		if held < 0 || held > capacity+c.Issued {
+			return errors.New("玩家布匹记账无效")
+		}
+		total += int64(held)
+	}
+	for _, v := range c.Villages {
+		if v.Stock < 0 || v.Stock > 5 {
+			return errors.New("布匹村落库存无效")
+		}
+		total += int64(v.Stock)
+		seen := map[int]bool{}
+		for _, p := range v.Traders {
+			if p < 0 || p >= len(g.Players) {
+				return errors.New("布匹村落的贸易座位数据不完整")
+			}
+			seen[p] = true
+		}
+		if g.Seafarers.Rules != "" && len(seen) > 3 {
+			return errors.New("布匹村落的贸易人数超过三条入边")
+		}
+	}
+	// Versioned public maps use the printed component supply. Unversioned
+	// engine scenarios can define their own initial village/cloth inventories.
+	if g.Seafarers.Rules != "" && total != int64(physical+c.Issued) {
+		return errors.New("布匹总量与补发记账不一致")
+	}
+	return nil
 }
 
 // Variable cloth setups let the starting seat choose either large-island 12.
@@ -170,6 +222,9 @@ func (s *State) catanClothTrade(player int) {
 // village produces, everyone with a relation is entitled to one token.
 func (s *State) catanProduceCloth(number int) error {
 	g := s.Catan
+	if err := g.validateClothSupply(); err != nil {
+		return err
+	}
 	c := g.cloth()
 	if c == nil {
 		return nil
@@ -190,10 +245,12 @@ func (s *State) catanProduceCloth(number int) error {
 		}
 		needed := max(0, len(traders)-v.Stock)
 		if needed > c.Stock {
-			// Corrupt saves and the unresolved 5/6 simultaneous-village boundary
-			// fail closed; this is not an invented shortage allocation rule. The
-			// 3/4 unique-number board fits the proven two-token-per-village bound.
-			return errors.New("布匹公共库存不足以补足本次产出")
+			// Site supplement: pay this producing village's exact shortfall.
+			// Empty villages above stay empty and never become productive again.
+			missing := needed - c.Stock
+			c.Issued += missing
+			c.Stock += missing
+			s.Log = append(s.Log, fmt.Sprintf("本站补充规则：公共布匹不足，记账补发%d枚", missing))
 		}
 		v.Stock -= min(v.Stock, len(traders))
 		c.Stock -= needed
