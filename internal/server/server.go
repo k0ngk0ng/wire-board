@@ -689,8 +689,8 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			maxPlayers = 6
 		}
 		if req.Capacity == 2 {
-			if options != (game.CatanOptions{}) && !(publicCatanExplorerScenario(req.CatanScenario) && validCatanExplorerOptions(options)) {
-				fail(w, 400, "双人卡坦不能组合五至六人或 Helpers 扩展")
+			if !game.CatanTwoHelpersOptions(req.CatanTwoScenario, options) && !(publicCatanExplorerScenario(req.CatanScenario) && validCatanExplorerOptions(options)) {
+				fail(w, 400, "此双人剧本不支持所选扩展，助手目前可与基础版或渔夫同开")
 				return
 			}
 			minPlayers, maxPlayers = 2, 2
@@ -1054,6 +1054,18 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		options, optionErr := game.NormalizeCatanOptions(req.CatanOptions)
 		err = optionErr
 		if err == nil && options == next.CatanOptions {
+			break
+		}
+		if next.CatanTwoRules != "" {
+			if err == nil {
+				next.CatanOptions = options
+				err = next.validateCatanTwoSetup()
+			}
+			if err == nil {
+				for i := range next.Seats {
+					next.Seats[i].Ready = next.Seats[i].Bot
+				}
+			}
 			break
 		}
 		if publicCatanExplorerScenario(next.CatanScenario) {

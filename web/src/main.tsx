@@ -1,3 +1,7 @@
+import {
+  supportsTwoCatanHelpers,
+  catanTwoHelpersNote,
+} from "./catan-two-helpers";
 import { supportsTwoCatanVariants } from "./catan-two-variants";
 import { CatanEventPicker } from "./catan-event-picker";
 import {
@@ -2021,7 +2025,9 @@ function Create({
             splendorOptions: k === "splendor" ? gemOptions : undefined,
             catanOptions:
               k === "catan"
-                ? capacity === 2 && !isPublicCatanExplorer(catanTwoScenario)
+                ? capacity === 2 &&
+                  !isPublicCatanExplorer(catanTwoScenario) &&
+                  !supportsTwoCatanHelpers(catanTwoScenario)
                   ? {}
                   : catanOptions
                 : undefined,
@@ -2168,7 +2174,7 @@ function Create({
               }
               setCatanScenario(isPublicCatanFlexible(scenario) ? scenario : "");
               if (!isPublicCatanExplorer(scenario)) {
-                setCatanOptions({});
+                if (!supportsTwoCatanHelpers(scenario)) setCatanOptions({});
                 setCatanFishing(false);
                 setCatanFishingLakes(false);
               }
@@ -2319,6 +2325,23 @@ function Create({
                 variantScenario === "fishing"
               }
             />
+          )}
+        {k === "catan" &&
+          capacity === 2 &&
+          supportsTwoCatanHelpers(catanTwoScenario) && (
+            <>
+              <CatanOptionPicker
+                value={catanOptions}
+                onChange={setCatanOptions}
+                fiveSixAvailable={false}
+                fishing={catanTwoScenario === "fishing"}
+                harbors={catanHarbors}
+                friendlyRobber={catanFriendly}
+              />
+              {catanOptions.helpers && (
+                <p className="muted small">{catanTwoHelpersNote}</p>
+              )}
+            </>
           )}
         {k === "catan" &&
           isPublicCatanExplorer(
@@ -2604,7 +2627,7 @@ function Waiting({
     (!room.catanNewWorldMap || room.catanScenario === "new_world");
   const twoLabel =
     room.kind === "catan" && room.catanTwoRules
-      ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`
+      ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`
       : "";
   const ready =
     room.seats.every((p) => p.ready) &&
@@ -2686,6 +2709,7 @@ function Waiting({
             }
             disabled={!host || busy}
             target={catanRuleContext(room).target}
+            helpersEnabled={!!room.catanOptions?.helpers}
             variantsEnabled={
               !!room.catanFriendlyRobber?.enabled ||
               !!room.catanHarbors?.enabled
@@ -2824,6 +2848,26 @@ function Waiting({
               disabled={!host || busy || mapDirty}
               command={command}
             />
+          )}
+        {room.kind === "catan" &&
+          room.catanTwoRules &&
+          supportsTwoCatanHelpers(room.catanTwoScenario) && (
+            <>
+              <CatanOptionPicker
+                value={room.catanOptions}
+                fiveSixAvailable={false}
+                fishing={room.catanTwoScenario === "fishing"}
+                harbors={!!room.catanHarbors?.enabled}
+                friendlyRobber={!!room.catanFriendlyRobber?.enabled}
+                disabled={!host || busy || mapDirty}
+                onChange={(catanOptions) =>
+                  command("catan_options", { catanOptions })
+                }
+              />
+              {room.catanOptions?.helpers && (
+                <p className="muted small">{catanTwoHelpersNote}</p>
+              )}
+            </>
           )}
         {room.kind === "catan" && isPublicCatanExplorer(room.catanScenario) && (
           <CatanOptionPicker

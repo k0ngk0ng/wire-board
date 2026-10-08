@@ -47,7 +47,7 @@ func (r *Room) validateCatanTwoSetup() error {
 	if r.CatanTwoScenario != "" && r.CatanTwoScenario != "rivers" && r.CatanTwoScenario != "caravans" && r.CatanTwoScenario != "fishing" && r.CatanTwoScenario != "cities-knights" {
 		return errors.New("双人剧本尚未接入")
 	}
-	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || r.CatanOptions != (game.CatanOptions{}) || r.CatanFishing || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if r.Kind != "catan" || r.CatanTwoRules != game.CatanTwoRules || r.Capacity != 2 || len(r.Seats) > 2 || !game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions) || r.CatanFishing || r.CatanFishingLakes || r.CatanScenario != "" || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 		return errors.New("双人卡坦人数、版本或尚未核对的组合无效")
 	}
 	if (r.friendlyRobberEnabled() || r.CatanHarbors != nil && r.CatanHarbors.Enabled) && !r.publicCatanTwoVariantsAvailable() {
@@ -57,5 +57,5 @@ func (r *Room) validateCatanTwoSetup() error {
 }
 
 func (r *Room) publicCatanTwoVariantsAvailable() bool {
-	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanScenario == "" && (r.CatanTwoScenario == "" || r.CatanTwoScenario == "fishing" || r.CatanTwoScenario == "cities-knights") && r.CatanOptions == (game.CatanOptions{})
+	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanScenario == "" && (r.CatanTwoScenario == "" || r.CatanTwoScenario == "fishing" || r.CatanTwoScenario == "cities-knights") && game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions)
 }

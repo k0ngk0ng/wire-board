@@ -23,7 +23,7 @@ func (s *State) validateEventHelpers() error {
 		}
 		return nil
 	}
-	if g.Two != nil || g.Rivers != nil || g.Attack != nil || g.BaseSetup != nil {
+	if g.Two != nil && !g.twoHelpers() || g.Rivers != nil || g.Attack != nil || g.BaseSetup != nil {
 		return errors.New("该剧本的助手与事件牌三重组合尚未接入")
 	}
 	if _, err := NormalizeCatanOptions(g.Options); err != nil {

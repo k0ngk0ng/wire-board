@@ -12,7 +12,7 @@ const CatanTwoFishingRules = "catan-for-two-fishing-2025"
 // still follow CATAN for Two; FAQ25 includes fish-funded neutral roads.
 func NewCatanTwoFishing(n int, options CatanOptions) (*State, error) {
 	o, err := NormalizeCatanOptions(options)
-	if err != nil || n != 2 || o != (CatanOptions{}) {
+	if err != nil || n != 2 || !CatanTwoHelpersOptions("fishing", o) {
 		return nil, errors.New("双人渔夫需要两位玩家，其他组合尚未开放")
 	}
 	s := &State{Kind: "catan", Round: 1}
@@ -45,7 +45,7 @@ func NewCatanTwoFishing(n int, options CatanOptions) (*State, error) {
 	if err := g.validateFishing(); err != nil {
 		return nil, err
 	}
-	return s, s.validateCatanTwo()
+	return s, s.enableTwoHelpers(o)
 }
 
 func (g *Catan) twoFishing() bool {

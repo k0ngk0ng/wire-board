@@ -211,7 +211,7 @@ func TestCatanTwoPrivateConfigurationAndReadiness(t *testing.T) {
 		}
 	}
 	host.command(current(host), "start", nil, 400)
-	for _, o := range []game.CatanOptions{{Helpers: true}, {FiveSix: true}} {
+	for _, o := range []game.CatanOptions{{AllHelpers: true}, {FiveSix: true}} {
 		r := s.rooms[id]
 		before, _ := json.Marshal(r)
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "version": r.Version, "nonce": randomID(12), "catanOptions": o}, 400)
@@ -223,7 +223,7 @@ func TestCatanTwoPrivateConfigurationAndReadiness(t *testing.T) {
 	for _, bad := range []func(*Room){
 		func(r *Room) { r.CatanTwoRules = "unknown" },
 		func(r *Room) { r.Capacity = 3 },
-		func(r *Room) { r.CatanOptions.Helpers = true },
+		func(r *Room) { r.CatanOptions.FiveSix = true },
 		func(r *Room) { r.CatanSeafarers = &game.CatanSeafarersSetup{} },
 		func(r *Room) { r.CatanBaseConfiguration = &game.CatanBaseConfiguration{} },
 	} {

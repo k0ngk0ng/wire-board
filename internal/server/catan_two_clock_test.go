@@ -71,3 +71,33 @@ func TestCatanTwoTradeClockPauseAndRestore(t *testing.T) {
 		})
 	}
 }
+
+func TestCatanTwoHelpersDeferredBuildClock(t *testing.T) {
+	now := time.Unix(2000000000, 0)
+	r := Room{Status: "playing", TurnDeadline: now.Add(45 * time.Second).UnixMilli(), Game: &game.State{Kind: "catan", Turn: 0, Phase: "catan_helper", Catan: &game.Catan{SetupStep: 4, Two: &game.CatanTwo{AfterHelper: "road"}, HelperPending: &game.CatanHelperPending{Player: 0, Kind: "exchange", Resume: "catan_turn"}}}}
+	if !r.adjustCatanResponseClock("catan_turn", -1, 4, now) || r.CatanTimeLeft != 45000 || r.TurnDeadline != now.Add(120*time.Second).UnixMilli() {
+		t.Fatal("helper did not pause")
+	}
+	raw, _ := json.Marshal(r)
+	if err := json.Unmarshal(raw, &r); err != nil {
+		t.Fatal(err)
+	}
+	at := now.Add(30 * time.Second)
+	r.Game.Catan.HelperPending = nil
+	r.Game.Catan.Two.AfterHelper = ""
+	r.Game.Catan.Two.Pending = &game.CatanTwoPending{Kind: "road", Resume: "catan_turn"}
+	r.Game.Phase = "catan_two_build"
+	if !r.adjustCatanResponseClock("catan_helper", 0, 4, at) || r.CatanTimeLeft != 45000 || r.TurnDeadline != at.Add(120*time.Second).UnixMilli() {
+		t.Fatal("neutral response lost action budget")
+	}
+	raw, _ = json.Marshal(r)
+	if err := json.Unmarshal(raw, &r); err != nil {
+		t.Fatal(err)
+	}
+	at = at.Add(10 * time.Second)
+	r.Game.Catan.Two.Pending = nil
+	r.Game.Phase = "catan_turn"
+	if !r.adjustCatanResponseClock("catan_two_build", 0, 4, at) || r.TurnDeadline != at.Add(45*time.Second).UnixMilli() {
+		t.Fatal("chain did not restore original budget")
+	}
+}

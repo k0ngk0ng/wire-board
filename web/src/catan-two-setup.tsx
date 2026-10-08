@@ -1,3 +1,4 @@
+import { supportsTwoCatanHelpers } from "./catan-two-helpers";
 import { supportsTwoCatanVariants } from "./catan-two-variants";
 const scenarios = [
   {
@@ -68,12 +69,14 @@ export function CatanTwoScenarioPicker({
   onChange,
   disabled = false,
   variantsEnabled = false,
+  helpersEnabled = false,
   target,
 }: {
   value: string;
   onChange: (scenario: string) => void;
   disabled?: boolean;
   variantsEnabled?: boolean;
+  helpersEnabled?: boolean;
   target?: number;
 }) {
   return (
@@ -89,13 +92,29 @@ export function CatanTwoScenarioPicker({
             <option
               key={s.id}
               value={s.id}
-              disabled={variantsEnabled && !supportsTwoCatanVariants(s.id)}
+              disabled={
+                (variantsEnabled && !supportsTwoCatanVariants(s.id)) ||
+                (helpersEnabled &&
+                  !supportsTwoCatanHelpers(s.id) &&
+                  ![
+                    "land-ho",
+                    "spices-for-catan",
+                    "pirate-lairs",
+                    "fish-for-catan",
+                    "explorers-and-pirates",
+                  ].includes(s.id))
+              }
             >
               {s.name}
             </option>
           ))}
         </select>
       </label>
+      {helpersEnabled && (
+        <p className="muted small">
+          切换到尚未接通助手的剧本前，请先关闭 Helpers。
+        </p>
+      )}
       {variantsEnabled && (
         <p className="muted small">
           切换到其他双人剧本前，请先关闭友善强盗和港口霸主。

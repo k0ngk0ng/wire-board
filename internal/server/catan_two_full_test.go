@@ -18,7 +18,7 @@ func newTwoFullTable(t *testing.T) (*Server, *httptest.Server, []*testClient, st
 func newTwoScenarioFullTable(t *testing.T, scenario string, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	return newTwoVariantsFullTable(t, scenario, len(events) > 0 && events[0], false, false)
 }
-func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, harbors bool) (*Server, *httptest.Server, []*testClient, string) {
+func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, harbors bool, helperOptions ...game.CatanOptions) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -30,6 +30,9 @@ func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, ha
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "未知双人剧本", "capacity": 2, "catanTwoScenario": "unknown"}, 400)
 	clients[0].post("/api/rooms", map[string]any{"kind": "catan", "name": "禁止版本注入", "capacity": 2, "catanTwoRules": game.CatanTwoRules}, 400)
 	recipe := map[string]any{"kind": "catan", "name": "双人完整对局", "capacity": 2, "catanTwoScenario": scenario}
+	if len(helperOptions) > 0 {
+		recipe["catanOptions"] = helperOptions[0]
+	}
 	if events {
 		recipe["catanEvents"] = game.CatanEventCatalogue
 	}
@@ -162,7 +165,10 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		}
 		assertCaravansFullInventory(t, s)
 	}
-	dev := len(g.DevDeck) + len(g.DevDiscard)
+	dev := len(g.DevDeck) + len(g.DevDiscard) + len(g.HelperExile)
+	if g.HelperPending != nil {
+		dev += len(g.HelperPending.Cards)
+	}
 	for p, seat := range g.Players {
 		if seat.Eliminated {
 			t.Fatal("natural game eliminated player")
@@ -311,6 +317,12 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 				}
 			}
 		}
+		if pending := s.Catan.HelperPending; pending != nil {
+			public := v["helperPending"].(map[string]any)
+			if viewer != pending.Player && (public["cards"] != nil || public["resources"] != nil) {
+				t.Fatal("private helper choice leaked")
+			}
+		}
 		q := v["two"].(map[string]any)
 		if s.Catan.Two.Trade != nil {
 			if (q["trade"].(map[string]any)["drawn"] != nil) != (viewer == s.Turn) {
@@ -333,11 +345,11 @@ func TestCatanTwoFishingEventsCompleteHTTPGames(t *testing.T) {
 func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 	runTwoVariantsHTTPGames(t, scenario, len(events) > 0 && events[0], false, false)
 }
-func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, harbors bool) {
+func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, harbors bool, helperOptions ...game.CatanOptions) {
 	coverage := map[string]int{}
 	for sample := range 3 {
 		t.Run(fmt.Sprint(sample), func(t *testing.T) {
-			s, ts, clients, id := newTwoVariantsFullTable(t, scenario, events, friendly, harbors)
+			s, ts, clients, id := newTwoVariantsFullTable(t, scenario, events, friendly, harbors, helperOptions...)
 			restored, modes := map[string]bool{}, map[string]int{}
 			restart := func(label string) { s, ts = restartRiversHTTP(t, s, ts, clients, id); restored[label] = true }
 			restart("initial")
@@ -348,6 +360,9 @@ func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, ha
 				assertTwoHTTPInventory(t, state)
 				assertTwoVariantsHTTP(t, state, friendly, harbors)
 				label := fmt.Sprintf("%s/rolls=%d", state.Phase, len(state.Catan.Two.Rolls))
+				if state.Catan.HelperPending != nil {
+					label += "/" + state.Catan.HelperPending.Kind + "/next=" + state.Catan.Two.AfterHelper
+				}
 				if state.Catan.Two.Pending != nil {
 					label += "/" + state.Catan.Two.Pending.Kind
 				}
@@ -428,7 +443,8 @@ func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, ha
 				}
 				wagonAdvanced := state.Catan.Caravans != nil && len(s.rooms[id].Game.Catan.Caravans.Wagons) == len(state.Catan.Caravans.Wagons)+1
 				neutralAdvanced := state.Catan.Two.Sequence != s.rooms[id].Game.Catan.Two.Sequence
-				if pending && !wagonAdvanced && !neutralAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
+				helperAdvanced := state.Catan.HelperPending != nil && s.rooms[id].Game.Catan.HelperPending != nil && state.Catan.HelperPending.Kind != s.rooms[id].Game.Catan.HelperPending.Kind
+				if pending && !helperAdvanced && !wagonAdvanced && !neutralAdvanced && s.rooms[id].Game.Phase == state.Phase && s.rooms[id].Game.CatanPendingActor() == actor {
 					t.Fatal("response did not advance", state.Phase, mode)
 				}
 			}
@@ -472,6 +488,9 @@ func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, ha
 							t.Fatal("two variant history missing", record)
 						}
 					}
+					if len(helperOptions) > 0 && helperOptions[0].Helpers && record["catanExpansionRules"].(map[string]any)["two_helpers"] != game.CatanTwoHelpersRules {
+						t.Fatal("two helpers history missing")
+					}
 					if scenario == "cities-knights" && (record["catanScenario"] != "cities-knights" || record["catanExpansionRules"].(map[string]any)["two_knights"] != game.CatanTwoKnightsRules) {
 						t.Fatal("two city history missing", record)
 					}
@@ -503,6 +522,9 @@ func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, ha
 	phases := []string{"catan_two_build", "catan_two_trade"}
 	if scenario == "fishing" {
 		phases = []string{"catan_two_build"}
+	}
+	if len(helperOptions) > 0 && helperOptions[0].Helpers {
+		phases = append(phases, "catan_helper")
 	}
 	if scenario == "caravans" {
 		phases = append(phases, "catan_caravan_bid", "catan_caravan_place")

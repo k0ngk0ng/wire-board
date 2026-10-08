@@ -15,7 +15,7 @@ func TestCatanTwoPublicCreationSelectionAndRematch(t *testing.T) {
 	guest.register("公开双人朋友")
 	third.register("公开双人旁观")
 	for _, body := range []map[string]any{
-		{"kind": "catan", "capacity": 2, "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "cities-knights", "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "catan", "capacity": 2, "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "catan", "capacity": 3, "catanTwoScenario": "rivers"},
 		{"kind": "splendor", "capacity": 2, "catanTwoScenario": "rivers"},
