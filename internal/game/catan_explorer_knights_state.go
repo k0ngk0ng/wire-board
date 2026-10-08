@@ -8,8 +8,8 @@ import (
 // Internal constructor takes an explicit token inventory; the public wrapper
 // supplies and labels the site recipe. Untagged historical fixtures stay valid.
 func newCatanExplorerCityState(players int, scenario string, numbers []int) (*State, error) {
-	if players < 3 || players > 6 {
-		return nil, errors.New("探险城市骑士组合需要三至六人")
+	if players < 2 || players > 6 {
+		return nil, errors.New("探险城市骑士组合需要二至六人")
 	}
 	g, b, f, c, e, setup, err := newCatanExplorerMissionSetupVariant(players, scenario, "variable", catanRandom(players), true)
 	if err != nil {
@@ -36,6 +36,9 @@ func newCatanExplorerCityState(players int, scenario string, numbers []int) (*St
 		x.Spice = &catanExplorerSpice{Deliveries: []catanExplorerSpiceDelivery{}}
 	}
 	s := &State{Kind: "catan", Catan: g, Turn: setup.Start, Round: 1, Phase: "catan_explorer_setup", Log: []string{"探险家与城市骑士：随机先手，顺序城市、逆序港口，再放道路与移民船"}}
+	if players == 2 {
+		s.Log = append(s.Log, catanExplorerTwoKnightsNotice)
+	}
 	return s, s.validateCatanExplorerCities()
 }
 
@@ -47,7 +50,7 @@ func (s *State) validateCatanExplorerCities() error {
 		return errors.New("组合地图与城市骑士组件不匹配")
 	}
 	x, k, n := g.Explorer, g.CitiesKnights, len(g.Players)
-	if n < 3 || n > 6 || len(k.Players) != n || s.Kind != "catan" || s.Turn < 0 || s.Turn >= n || g.StartPlayer < 0 || g.StartPlayer >= n || s.Round < 1 || g.RollID < 0 || len(g.Dice) != 2 || len(g.DiscardDue) != n || g.TurnSerial > uint64(^uint(0)>>1) {
+	if n < 2 || n > 6 || len(k.Players) != n || s.Kind != "catan" || s.Turn < 0 || s.Turn >= n || g.StartPlayer < 0 || g.StartPlayer >= n || s.Round < 1 || g.RollID < 0 || len(g.Dice) != 2 || len(g.DiscardDue) != n || g.TurnSerial > uint64(^uint(0)>>1) {
 		return errors.New("组合人数、主回合或骰子记录无效")
 	}
 	if err := s.validateExplorerCityInventory(); err != nil {

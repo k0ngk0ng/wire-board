@@ -110,6 +110,11 @@ export function catanRuleContext(room: Room) {
       : explorerDraft && options.helpers
         ? "wire-board-explorer-helpers-v1"
         : "",
+    explorerTwoKnights: game
+      ? game.explorer?.board.twoKnights || ""
+      : explorerDraft && citiesKnights && players === 2
+        ? "wire-board-explorer-two-knights-v1"
+        : "",
     explorerIntroRules: game
       ? game.explorer?.board.introRules || ""
       : scenario === "land-ho" && (players > 4 || citiesKnights)

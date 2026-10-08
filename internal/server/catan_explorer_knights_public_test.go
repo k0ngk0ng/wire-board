@@ -39,7 +39,6 @@ func TestCatanExplorerKnightsPublicConfiguration(t *testing.T) {
 			before, _ := json.Marshal(s.rooms[id])
 			selectKnights(guest, nil, 400)
 			selectKnights(host, &game.CatanCitiesKnightsSetup{Layout: "fixed"}, 400)
-			host.command(current(host), "start", nil, 400) // Capacity is not the actual count.
 			after, _ := json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("invalid action changed room")
@@ -104,7 +103,7 @@ func TestCatanExplorerKnightsPublicCreationRejectsMixes(t *testing.T) {
 	host := newClient(t, ts.URL)
 	host.register("组合限制")
 	for _, change := range []map[string]any{
-		{"capacity": 2}, {"capacity": 7}, {"catanScenario": "land-ho", "capacity": 2},
+		{"capacity": 1}, {"capacity": 7}, {"catanScenario": "land-ho", "capacity": 1},
 		{"catanOptions": game.CatanOptions{AllHelpers: true}}, {"catanOptions": game.CatanOptions{FiveSix: true}},
 		{"catanFishingLakes": true},
 	} {

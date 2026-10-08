@@ -71,6 +71,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			if g.Explorer.Helpers != nil {
 				record.CatanExpansionRules["explorer_helpers"] = g.Explorer.Helpers.Rules
 			}
+			if board.TwoKnights != "" {
+				record.CatanExpansionRules["explorer_two_knights"] = board.TwoKnights
+			}
 			if board.IntroRules != "" {
 				record.CatanExpansionRules["land_ho"] = board.IntroRules
 			}

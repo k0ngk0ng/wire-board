@@ -69,7 +69,7 @@ func (r *Room) setPublicCatanCombinationKnights(setup *game.CatanCitiesKnightsSe
 	next := *r
 	next.CatanCitiesKnights = nil
 	if setup != nil {
-		normalized, err := game.NormalizeCatanCitiesKnightsSetup(r.Capacity, *setup)
+		normalized, err := r.normalizeCatanCombinationKnights(*setup)
 		if err != nil {
 			return err
 		}
@@ -86,4 +86,14 @@ func (r *Room) setPublicCatanCombinationKnights(setup *game.CatanCitiesKnightsSe
 		r.Seats[i].Ready = r.Seats[i].Bot
 	}
 	return nil
+}
+
+// Only the Explorer recipe uses its native two-player setup. Other city games
+// retain their existing three-to-six-player normalizer and dedicated variants.
+func (r *Room) normalizeCatanCombinationKnights(setup game.CatanCitiesKnightsSetup) (game.CatanCitiesKnightsSetup, error) {
+	n := r.Capacity
+	if n == 2 && publicCatanExplorerScenario(r.CatanScenario) {
+		n = 3
+	}
+	return game.NormalizeCatanCitiesKnightsSetup(n, setup)
 }

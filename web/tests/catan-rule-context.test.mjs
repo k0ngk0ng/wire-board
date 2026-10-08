@@ -588,12 +588,13 @@ test("public sea Fishing keeps the sea target and saved recipe authoritative", (
 
 test("Explorer Knights adds five, and removing the draft leaves saved rules authoritative", () => {
   for (const [scenario, target] of [
+    ["land-ho", 13],
     ["pirate-lairs", 17],
     ["fish-for-catan", 20],
     ["spices-for-catan", 20],
     ["explorers-and-pirates", 22],
   ]) {
-    for (const capacity of [3, 4, 5, 6]) {
+    for (const capacity of [2, 3, 4, 5, 6]) {
       const room = {
         capacity,
         catanScenario: scenario,
@@ -853,4 +854,39 @@ test("two-player fishing uses the selected recipe and running games ignore stale
   room.catanTwoScenario = "rivers";
   assert.equal(catanRuleContext(room).fishing, true);
   assert.equal(catanRuleContext(room).rivers, false);
+});
+
+test("native Explorer two-player Knights keeps one production controller and saved markers authoritative", () => {
+  const marker = "wire-board-explorer-two-knights-v1";
+  const room = {
+    capacity: 2,
+    catanScenario: "land-ho",
+    catanCitiesKnights: { layout: "variable" },
+  };
+  assert.equal(catanRuleContext(room).explorerTwoKnights, marker);
+  assert.equal(catanRuleContext(room).two, false);
+  assert.equal(catanRuleContext(room).layout, "variable");
+  room.capacity = 6;
+  room.game = {
+    catan: {
+      players: [{}, {}],
+      citiesKnights: {},
+      explorer: {
+        board: {
+          scenario: "land-ho",
+          target: 13,
+          layout: "variable",
+          twoKnights: marker,
+        },
+      },
+    },
+  };
+  assert.equal(catanRuleContext(room).explorerTwoKnights, marker);
+  assert.equal(catanRuleContext(room).fiveSix, false);
+  delete room.game.catan.explorer.board.twoKnights;
+  assert.equal(catanRuleContext(room).explorerTwoKnights, "");
+  room.game = { catan: { players: [{}, {}], two: {} } };
+  assert.equal(catanRuleContext(room).explorerTwoKnights, "");
+  assert.equal(catanRuleContext(room).two, true);
+  assert.equal(catanRuleContext(room).target, 10);
 });

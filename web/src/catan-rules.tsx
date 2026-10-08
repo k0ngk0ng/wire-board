@@ -1,3 +1,4 @@
+import { catanExplorerTwoKnightsNote } from "./catan-explorer-two-knights";
 import { catanTwoHelpersNote } from "./catan-two-helpers";
 import { catanTwoVariantsNote } from "./catan-two-variants";
 import { explorerScenarioLabel } from "./catan-explorer-state";
@@ -344,6 +345,7 @@ export function CatanRules({ room }: { room: Room }) {
         </h3>
         <CatanEventRules info={info} />
         <ul>
+          {info.explorerTwoKnights && <li>{catanExplorerTwoKnightsNote}</li>}
           {info.explorerHelpers && (
             <li>
               本站 Helpers

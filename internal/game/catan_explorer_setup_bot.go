@@ -78,17 +78,21 @@ func (s catanExplorerSetup) botOpening(g *Catan, b *catanExplorerBoard, f *catan
 			}
 			var undo func()
 			switch step.Kind {
-			case "city", "harbor":
+			case "city", "harbor", "settlement":
 				old := board.Vertices[target]
 				locations := s.Settlements
 				if step.Kind == "harbor" {
 					locations = s.Harbors
 				}
-				oldLocation := locations[step.Owner]
+				index := catanExplorerSetupIndex(len(g.Players), step.Owner)
+				oldLocation := locations[index]
 				board.Vertices[target].Owner, board.Vertices[target].Level = step.Owner, 2
+				if step.Kind == "settlement" {
+					board.Vertices[target].Level = 1
+				}
 				board.Vertices[target].Harbor = step.Kind == "harbor"
-				locations[step.Owner] = target
-				undo = func() { board.Vertices[target] = old; locations[step.Owner] = oldLocation }
+				locations[index] = target
+				undo = func() { board.Vertices[target] = old; locations[index] = oldLocation }
 			case "road":
 				old := board.Edges[target].Owner
 				board.Edges[target].Owner = step.Owner

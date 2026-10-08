@@ -37,6 +37,7 @@ type catanExplorerFarm struct {
 	PirateDie int    `json:"pirateDie,omitempty"`
 }
 type catanExplorerBoard struct {
+	TwoKnights    string                 `json:"twoKnights,omitempty"`
 	IntroRules    string                 `json:"introRules,omitempty"`
 	Fishing       string                 `json:"fishing,omitempty"`
 	FishingLakes  bool                   `json:"fishingLakes,omitempty"`
@@ -147,8 +148,8 @@ func catanExplorerGeometry(players int, scenario, layout string) (*Catan, *catan
 
 func catanExplorerGeometryVariant(players int, scenario, layout string, citiesKnights bool) (*Catan, *catanExplorerBoard, error) {
 	intro := catanExplorerIntroVariant(players, scenario, citiesKnights)
-	if citiesKnights && (players < 3 || layout != "variable") {
-		return nil, nil, errors.New("探险家与城市骑士组合当前仅接入三至六人任务随机地图")
+	if citiesKnights && layout != "variable" {
+		return nil, nil, errors.New("探险家与城市骑士组合采用二至六人随机地图")
 	}
 	if players < 2 || players > 6 || players > 4 && layout != "variable" || layout != "fixed" && layout != "variable" || scenario == "land-ho" && ((layout == "variable") != intro) || catanExplorerFishScenario(scenario) && layout != "variable" {
 		return nil, nil, errors.New("探索者地图人数或布局无效；普通初航二至四人采用印刷布局，五六人或骑士初航采用本站随机布局")
@@ -169,6 +170,9 @@ func catanExplorerGeometryVariant(players int, scenario, layout string, citiesKn
 		r.target += 5
 	}
 	m := &catanExplorerBoard{CitiesKnights: citiesKnights, Rules: catanExplorerRules, Scenario: scenario, Layout: layout, Players: players, Target: r.target, Starting: []int{}, HarborStarts: []int{}, Regions: [2][]int{{}, {}}}
+	if players == 2 && citiesKnights {
+		m.TwoKnights = CatanExplorerTwoKnightsRules
+	}
 	if intro {
 		m.IntroRules = CatanExplorerIntroRules
 	}
@@ -323,6 +327,9 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	base, spec, err := catanExplorerGeometryFishing(m.Players, m.Scenario, m.Layout, m.CitiesKnights, m.Fishing, m.FishingLakes)
 	if err != nil {
 		return err
+	}
+	if m.TwoKnights != spec.TwoKnights {
+		return errors.New("双人探索骑士规则版本与地图不匹配")
 	}
 	if m.IntroRules != spec.IntroRules {
 		return errors.New("初航适配规则版本与地图不匹配")
@@ -484,6 +491,7 @@ func (m *catanExplorerBoard) reveal(g *Catan, tile int) (catanExplorerHidden, er
 }
 
 type catanExplorerBoardView struct {
+	TwoKnights    string                 `json:"twoKnights,omitempty"`
 	IntroRules    string                 `json:"introRules,omitempty"`
 	Fishing       string                 `json:"fishing,omitempty"`
 	FishingLakes  bool                   `json:"fishingLakes,omitempty"`
@@ -505,6 +513,7 @@ type catanExplorerBoardView struct {
 
 func (m catanExplorerBoard) publicView() catanExplorerBoardView {
 	v := catanExplorerBoardView{Fishing: m.Fishing, FishingLakes: m.FishingLakes, CitiesKnights: m.CitiesKnights, Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
+	v.TwoKnights = m.TwoKnights
 	v.IntroRules = m.IntroRules
 	v.Council = clone(m.Council)
 	for i := range v.Opening {

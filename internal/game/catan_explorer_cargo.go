@@ -123,7 +123,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	if g == nil || fleet == nil || len(c.Units) != len(g.Players)*11 || c.Scenario != "land-ho" && c.Scenario != "pirate-lairs" && !catanExplorerFishScenario(c.Scenario) || g.Seafarers != nil || g.Two != nil || g.Transport != nil {
 		return errors.New("探险货物库存、剧本或组合无效")
 	}
-	if k := g.CitiesKnights; k != nil && (len(g.Players) < 3 || k.Rules != catanCitiesKnightsRules(len(g.Players)) || len(k.Players) != len(g.Players)) {
+	if k := g.CitiesKnights; k != nil && (len(g.Players) < 2 || k.Rules != catanCitiesKnightsRules(len(g.Players)) || len(k.Players) != len(g.Players)) {
 		return errors.New("探险城市骑士人数或组件无效")
 	}
 	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && g.Fishing.Explorer != catanExplorerFishingRule(len(g.Players)) || g.RevealedEvent != nil && (g.EventDeck == nil || g.EventDeck.Explorer != CatanEventExplorerRules) || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil {
@@ -162,7 +162,7 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 		} else {
 			cities[v.Owner]++
 		}
-		if settlements[v.Owner] > 5 || harbors[v.Owner] > 4 || cities[v.Owner] > 4 || v.Owner < 0 && (settlements[v.Owner] > 1 || harbors[v.Owner] > 1) {
+		if settlements[v.Owner] > 5 || harbors[v.Owner] > 4 || cities[v.Owner] > 4 || v.Owner < 0 && (settlements[v.Owner] > 1 || harbors[v.Owner] > 1 || cities[v.Owner] > 0) {
 			return errors.New("探险村庄或港口组件超额")
 		}
 	}

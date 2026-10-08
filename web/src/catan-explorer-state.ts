@@ -128,6 +128,7 @@ export type ExplorerView = {
     fishing?: string;
     fishingLakes?: boolean;
     introRules?: string;
+    twoKnights?: string;
     layout?: string;
     scenario: string;
     target: number;

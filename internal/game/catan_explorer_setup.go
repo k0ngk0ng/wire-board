@@ -116,6 +116,9 @@ func (s catanExplorerSetup) plan(players int) []catanExplorerSetupStep {
 	plan := catanExplorerSetupPlan(players, s.Start)
 	if s.CitiesKnights {
 		for i := range plan {
+			if plan[i].Owner < 0 {
+				continue
+			} // Neutrals keep static E&P buildings.
 			switch plan[i].Kind {
 			case "harbor":
 				plan[i].Kind = "city"
@@ -197,7 +200,7 @@ func (s catanExplorerSetup) validate(g *Catan, b *catanExplorerBoard, f *catanEx
 			vertexCount++
 		}
 		if v >= 0 {
-			if v >= len(g.Vertices) || !catanExplorerSetupStartingVertex(g, b, v) || g.Vertices[v].Owner != owner || (!s.CitiesKnights && g.Vertices[v].Level != 1) || (s.CitiesKnights && !g.cityAt(v)) {
+			if v >= len(g.Vertices) || !catanExplorerSetupStartingVertex(g, b, v) || g.Vertices[v].Owner != owner || (!(s.CitiesKnights && owner >= 0) && g.Vertices[v].Level != 1) || (s.CitiesKnights && owner >= 0 && !g.cityAt(v)) {
 				return errors.New("起始村庄或城市必须在起始岛，类型须与组合规则一致")
 			}
 			vertexCount++
