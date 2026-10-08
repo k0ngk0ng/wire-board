@@ -56,7 +56,7 @@ func (s *State) catanAttackCityReplayPlan() (*catanAttackCity, *catanAttackCityR
 	}
 	originals := map[int]bool{}
 	for _, k := range q.Before {
-		if k.Owner == q.Player {
+		if g.attackCityCanMove(k.Owner, q.Player) {
 			originals[k.Edge] = true
 		}
 	}
@@ -121,7 +121,7 @@ func (s *State) validateAttackCityPlan() error {
 	if q == nil {
 		return nil
 	}
-	if s.Finished || g.setup() || q.ID < 1 || q.ID != c.Sequence || q.Player != s.Turn || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated || q.Turn != g.CitiesKnights.ActionSerial || c.Treason != nil || g.Trade != nil || g.CitiesKnights.Event != nil || g.CitiesKnights.Pending != nil || g.CardEvent != nil || len(q.Orders) > 6 || len(q.Before) > 6*len(g.Players) {
+	if s.Finished || g.setup() || q.ID < 1 || q.ID != c.Sequence || q.Player != s.Turn || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated || q.Turn != g.CitiesKnights.ActionSerial || c.Treason != nil || g.Trade != nil || g.CitiesKnights.Event != nil || g.CitiesKnights.Pending != nil || g.CardEvent != nil || len(q.Orders) > g.attackCityMoveLimit() || len(q.Before) > 6*len(g.Players)+g.attackCityNeutralLimit() {
 		return errors.New("道路骑士计划序号、玩家或并行回应无效")
 	}
 	expected, pending, locked, err := s.catanAttackCityReplayPlan()
@@ -209,7 +209,7 @@ func (s *State) catanAttackCityPlanStep(player int, a Action) error {
 			}
 		}
 		for _, k := range c.Knights {
-			if k.Owner == q.Player && g.Attack.castleEdge(g, k.Edge) {
+			if g.attackCityCanMove(k.Owner, q.Player) && g.Attack.castleEdge(g, k.Edge) {
 				s.catanLog(q.Player, "本站补充规则：路线 #%d 的城堡骑士没有合法出口，暂留原位，下回合重新检查", k.Edge+1)
 			}
 		}

@@ -15,7 +15,7 @@ func (s *State) validateAttackCityEnd() error {
 		return nil
 	}
 	n := len(g.Players)
-	if g.setup() || c.Sequence < 1 || q.Player < 0 || q.Player >= n || len(q.Orders) > 6 || len(q.Battles) > len(g.Attack.Map.Coast) {
+	if g.setup() || c.Sequence < 1 || q.Player < 0 || q.Player >= n || len(q.Orders) > g.attackCityMoveLimit() || len(q.Battles) > len(g.Attack.Map.Coast) {
 		return errors.New("道路骑士历史结算无效")
 	}
 	used := map[int]bool{}

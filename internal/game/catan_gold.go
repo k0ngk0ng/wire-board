@@ -135,7 +135,7 @@ func (s *State) CatanPendingActor() int {
 		if q.Placement != nil {
 			return q.Actor
 		}
-		return q.Owner
+		return g.knightResponseActor(q.Owner, q.Actor)
 	}
 	if g.attackKnights() && g.Attack.City.Plan != nil {
 		if q := g.Attack.City.Plan.Pending; q != nil {

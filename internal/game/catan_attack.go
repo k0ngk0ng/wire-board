@@ -286,6 +286,9 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	}
 	if g.attackKnights() {
 		for _, k := range a.City.Knights {
+			if k.Owner < 0 {
+				continue
+			}
 			left[k.Owner]--
 		}
 	}

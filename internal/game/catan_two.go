@@ -250,7 +250,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 	if s.Finished {
 		q.AfterHelper = ""
 		q.AfterRoute = ""
-		if g.twoAttack() {
+		if g.twoAttack() || g.twoAttackKnights() {
 			g.Attack.TwoLanding = false
 		}
 		return nil
@@ -301,7 +301,7 @@ func (s *State) catanTwoStartBuild(kind string) error {
 	g, q := s.Catan, s.Catan.Two
 	if len(g.twoNeutralChoices(kind)) == 0 {
 		s.Log = append(s.Log, "两家中立势力均无合法建设位置，本次无需额外建设")
-		if g.twoAttack() && g.Attack.TwoLanding {
+		if (g.twoAttack() || g.twoAttackKnights()) && g.Attack.TwoLanding {
 			return s.catanTwoAttackLandings(false)
 		}
 		return nil
@@ -336,6 +336,8 @@ func (s *State) catanTwoBuild(player int, a Action) error {
 		if kind == "knight_promote" {
 			what = "二级骑士"
 		}
+	} else if g.twoAttackKnights() && (kind == "knight" || kind == "knight_promote") && g.Attack.City.at(choice.Edge) >= 0 && g.Attack.City.Knights[g.Attack.City.at(choice.Edge)].Owner == choice.Owner {
+		what = "道路骑士"
 	} else if g.Edges[choice.Edge].Ship {
 		what = "船只"
 	} else if g.Edges[choice.Edge].Bridge {
@@ -347,7 +349,7 @@ func (s *State) catanTwoBuild(player int, a Action) error {
 		}
 	}
 	s.catanLog(player, "为中立势力 %d 建造%s #%d", a.Target+1, what, at+1)
-	if g.twoAttack() && g.Attack.TwoLanding {
+	if (g.twoAttack() || g.twoAttackKnights()) && g.Attack.TwoLanding {
 		if err := s.catanTwoAttackLandings(choice.Vertex >= 0); err != nil {
 			return err
 		}

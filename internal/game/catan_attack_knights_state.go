@@ -5,8 +5,8 @@ import (
 	"slices"
 )
 
-// Complete-session guards for the internal three-to-six-player recipe. The
-// HTTP creation gate remains closed until public UI and acceptance are ready.
+// Complete-session guards shared by the public 3–6 player recipe and the
+// separately marked two-player engine; the latter awaits HTTP/UI acceptance.
 func (s *State) validateAttackCityState() error {
 	g := s.Catan
 	if g == nil || !g.attackKnights() {
@@ -15,8 +15,11 @@ func (s *State) validateAttackCityState() error {
 	a, c, k := g.Attack, g.Attack.City, g.CitiesKnights
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
-	if n < 3 || n > 6 || s.Turn < 0 || s.Turn >= n || g.Two != nil || a.TwoRules != "" || a.TwoLanding || a.NeutralPrisoners != 0 || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
+	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
 		return errors.New("蛮族城市骑士人数、组件或组合配置无效")
+	}
+	if err := s.validateCatanTwo(); err != nil {
+		return err
 	}
 	if err := c.validate(g); err != nil {
 		return err
@@ -76,6 +79,9 @@ func (s *State) validateAttackCityState() error {
 	}
 	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_roads", "catan_card_event", catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place", "finished"}
 	phases = append(phases, catanTransportCityPhases...)
+	if g.twoAttackKnights() {
+		phases = append(phases, "catan_two_build", "catan_two_trade")
+	}
 	if !slices.Contains(phases, s.Phase) || s.Finished != (s.Phase == "finished") {
 		return errors.New("组合行动阶段无效")
 	}
@@ -163,6 +169,9 @@ func (s *State) applyAttackCity(player int, a Action) error {
 		err = next.applyCatanStep(player, a)
 	}
 	if err != nil {
+		return err
+	}
+	if err = next.catanTwoAfterAction(s, a); err != nil {
 		return err
 	}
 	next.catanScores()

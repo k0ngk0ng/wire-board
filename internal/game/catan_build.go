@@ -127,7 +127,7 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 	s.catanScores()
 	s.catanVictory()
 	if g.Attack != nil && !s.Finished {
-		if g.twoAttack() && a.Type == "catan_settlement" {
+		if (g.twoAttack() || g.twoAttackKnights()) && a.Type == "catan_settlement" {
 			g.Attack.TwoLanding = true
 			return nil
 		}
