@@ -133,9 +133,11 @@ export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
     "new_world",
     "wonders",
     "cloth",
+    "tribe",
   ].includes(scenario || "");
 
 export function CatanCombinationKnightsPicker({
+  tribe = false,
   value,
   onChange,
   disabled = false,
@@ -144,6 +146,7 @@ export function CatanCombinationKnightsPicker({
   explorer = false,
   harbors = false,
 }: {
+  tribe?: boolean;
   explorer?: boolean;
   fishing?: boolean;
   harbors?: boolean;
@@ -171,6 +174,11 @@ export function CatanCombinationKnightsPicker({
               ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌，${harbors ? 14 : 13} 分获胜，持旧靴者需 ${harbors ? 15 : 14} 分。`
               : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
+      {tribe && !helpers && (
+        <p className="muted small">
+          本站补充规则：部落奖励改为从54张进步牌中随机预留，领取前隐藏牌面和类别；领取后按进步牌正常时机使用，胜利点牌立即公开，其余牌遵守回合末四张上限。
+        </p>
+      )}
     </fieldset>
   );
 }

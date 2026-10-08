@@ -140,6 +140,9 @@ func (s *State) validateCatanEventSession() error {
 	if g == nil || g.EventDeck == nil {
 		return nil
 	}
+	if err := g.validateTribeProgress(); err != nil {
+		return err
+	}
 	session := g.EventDeck
 	if session.Catalogue != catanEventReferenceCatalogue && session.Catalogue != CatanEventCatalogue {
 		return errors.New("不支持的事件牌参考表版本")

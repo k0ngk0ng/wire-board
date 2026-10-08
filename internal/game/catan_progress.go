@@ -47,7 +47,13 @@ func (s *State) catanDrawProgress(player, track int) {
 	}
 	card := deck[len(deck)-1]
 	k.ProgressDecks[track] = deck[:len(deck)-1]
+	s.catanGrantProgress(player, card)
+}
+
+func (s *State) catanGrantProgress(player, card int) {
+	k := s.Catan.CitiesKnights
 	rule := catanProgressRules[card]
+	track := rule.Track
 	p := &k.Players[player]
 	if rule.Victory {
 		k.recordProgress("draw", player, -1, track, 1, &card)

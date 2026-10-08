@@ -18,12 +18,13 @@ type CatanTribePortPending struct {
 	Helper     bool                  `json:"helper,omitempty"`
 }
 type CatanTribeState struct {
-	Tokens      []int                   `json:"tokens"`
-	Development []CatanTribeDevelopment `json:"development"`
-	Ports       []CatanPort             `json:"ports"`
-	Points      []int                   `json:"points"`
-	HeldPorts   [][]int                 `json:"heldPorts"`
-	Pending     *CatanTribePortPending  `json:"pending,omitempty"`
+	ProgressRules string                  `json:"progressRules,omitempty"`
+	Tokens        []int                   `json:"tokens"`
+	Development   []CatanTribeDevelopment `json:"development"`
+	Ports         []CatanPort             `json:"ports"`
+	Points        []int                   `json:"points"`
+	HeldPorts     [][]int                 `json:"heldPorts"`
+	Pending       *CatanTribePortPending  `json:"pending,omitempty"`
 }
 
 func (g *Catan) tribe() *CatanTribeState {
@@ -122,13 +123,22 @@ func (s *State) catanCollectTribe(player, edge int) error {
 	for i := len(t.Development) - 1; i >= 0; i-- {
 		reward := t.Development[i]
 		if reward.Edge == edge {
-			if reward.Card < 0 || reward.Card >= len(g.Players[player].Dev) {
-				return errors.New("部族发展卡数据不合法")
+			if g.CitiesKnights != nil {
+				if t.ProgressRules != CatanTribeProgressRules || player != s.Turn || reward.Card < 0 || reward.Card >= len(catanProgressRules) {
+					return errors.New("部族进步牌奖励数据或领取者不合法")
+				}
+				t.Development = append(t.Development[:i], t.Development[i+1:]...)
+				s.catanLog(player, "从遗忘部族领取一张进步牌")
+				s.catanGrantProgress(player, reward.Card)
+			} else {
+				if reward.Card < 0 || reward.Card >= len(g.Players[player].Dev) {
+					return errors.New("部族发展卡数据不合法")
+				}
+				g.Players[player].Dev[reward.Card]++
+				g.Players[player].NewDev[reward.Card]++
+				t.Development = append(t.Development[:i], t.Development[i+1:]...)
+				s.catanLog(player, "从遗忘部族领取一张发展卡")
 			}
-			g.Players[player].Dev[reward.Card]++
-			g.Players[player].NewDev[reward.Card]++
-			t.Development = append(t.Development[:i], t.Development[i+1:]...)
-			s.catanLog(player, "从遗忘部族领取一张发展卡")
 		}
 	}
 	for i := len(t.Ports) - 1; i >= 0; i-- {

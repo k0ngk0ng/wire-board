@@ -59,7 +59,9 @@ export function CatanTribeRewards({
           a = game.vertices[route.a],
           b = game.vertices[route.b];
         const label = card
-          ? "发展卡奖励：造船或移船到此领取，按本次新购卡处理"
+          ? tribe.progressRules
+            ? "进步牌奖励：造船或移船到此领取，领取后按进步牌规则使用"
+            : "发展卡奖励：造船或移船到此领取，按本次新购卡处理"
           : "胜利点奖励：造船或移船到此领取1分";
         return (
           <g
@@ -68,7 +70,20 @@ export function CatanTribeRewards({
             role="img"
             aria-label={label}
           >
-            {assets ? (
+            {assets && card && tribe.progressRules ? (
+              <g>
+                {["science", "trade", "politics"].map((track, i) => (
+                  <image
+                    key={track}
+                    href={`${assets}/catan/cities-knights/progress-back-${track}-v1.webp`}
+                    x={-21 + i * 13}
+                    y={-14 + (i === 1 ? -2 : 0)}
+                    width="18"
+                    height="28"
+                  />
+                ))}
+              </g>
+            ) : assets ? (
               <image
                 href={`${assets}/catan/seafarers/${card ? "development-back" : "vp-token"}-v1.webp`}
                 x={card ? -22 : -15}
@@ -128,7 +143,8 @@ export function CatanTribeStock({
           胜利点剩余 <b>{tribe.tokens?.length || 0}</b>
         </span>
         <span>
-          发展卡剩余 <b>{tribe.development.length}</b>
+          {tribe.progressRules ? "进步牌" : "发展卡"}剩余{" "}
+          <b>{tribe.development.length}</b>
         </span>
         <span>
           港口剩余 <b>{tribe.ports?.length || 0}</b>

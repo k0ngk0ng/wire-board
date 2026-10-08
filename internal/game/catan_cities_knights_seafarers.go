@@ -18,6 +18,7 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	phase := s.Phase
 	s.enableCitiesKnights()
 	g := s.Catan
+	g.initTribeProgress()
 	k := g.CitiesKnights
 	k.PirateStart = g.Seafarers.Pirate
 	g.Seafarers.Pirate = -1
@@ -48,13 +49,16 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	if n > 4 {
 		s.Log = append(s.Log, "采用配对回合，第二位玩家不掷骰、不能自由交易")
 	}
-	return s, nil
+	if g.tribe() != nil {
+		s.Log = append(s.Log, catanTribeProgressNotice)
+	}
+	return s, g.validateTribeProgress()
 }
 
 // Recipe IDs only; persisted five/six-player islands use a separate alias.
 func CatanCitiesKnightsSeafarersSupported(scenario string) bool {
 	switch scenario {
-	case "shores", "islands", "fog", "desert", "new_world", "wonders", "cloth":
+	case "shores", "islands", "fog", "desert", "new_world", "wonders", "cloth", "tribe":
 		return true
 	}
 	return false
@@ -65,7 +69,7 @@ func (g *Catan) citySeaSupported() bool {
 		return true
 	}
 	switch g.Seafarers.Scenario {
-	case "shores", "islands", "six_islands", "fog", "desert", "new_world", "wonders", "cloth":
+	case "shores", "islands", "six_islands", "fog", "desert", "new_world", "wonders", "cloth", "tribe":
 		return true
 	}
 	return false

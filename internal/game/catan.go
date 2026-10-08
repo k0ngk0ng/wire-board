@@ -362,6 +362,9 @@ func (s *State) catanNext() {
 	s.Phase = "catan_roll"
 }
 func (s *State) applyCatan(player int, a Action) error {
+	if err := s.Catan.validateTribeProgress(); err != nil {
+		return err
+	}
 	if err := s.validateCatanFriendlyFallback(); err != nil {
 		return err
 	}
@@ -453,6 +456,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		if err := next.validateCatanAttack(); err != nil {
+			return err
+		}
+		if err := next.Catan.validateTribeProgress(); err != nil {
 			return err
 		}
 		if err := next.validateCatanEventSession(); err != nil {
