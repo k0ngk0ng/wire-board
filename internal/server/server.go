@@ -981,7 +981,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanEvents(*req.Enabled)
 	case "catan_cities_knights":
-		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers()) {
+		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers() || next.catanCaravanRecipe()) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
 			break
 		}
@@ -1258,7 +1258,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						} else if next.CatanTwoScenario == "barbarian-attack" {
 							next.Game, err = game.NewCatanTwoAttack(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "caravans" {
-							next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
+							if next.CatanCitiesKnights != nil {
+								next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)
+							} else {
+								next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
+							}
 						} else if next.CatanTwoScenario == "cities-knights" {
 							if next.CatanFishing {
 								next.Game, err = game.NewCatanTwoFishingCitiesKnights(len(next.Seats), next.CatanOptions)
@@ -1296,7 +1300,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				} else if next.CatanScenario == "rivers" {
 					next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
 				} else if next.CatanScenario == "caravans" {
-					next.Game, err = game.NewCatanCaravans(len(next.Seats), next.CatanOptions)
+					if next.CatanCitiesKnights != nil {
+						next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)
+					} else {
+						next.Game, err = game.NewCatanCaravans(len(next.Seats), next.CatanOptions)
+					}
 				} else if next.CatanFishing {
 					if next.CatanCitiesKnights != nil {
 						next.Game, err = game.NewCatanFishingCitiesKnightsSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)

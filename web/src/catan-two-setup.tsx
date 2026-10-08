@@ -154,9 +154,11 @@ export function CatanTwoScenarioPicker({
         </p>
       )}
       <p className="muted small">
-        {fishingEnabled && value === "cities-knights"
-          ? catanTwoFishingKnightsNote
-          : scenarios.find((s) => s.id === value)?.description}
+        {knightsEnabled && value === "caravans"
+          ? "商队＋城市骑士：木材和砖块出价，15分获胜；每回合两次事件与生产，中立骑士不激活，每轮最多放两辆马车。"
+          : fishingEnabled && value === "cities-knights"
+            ? catanTwoFishingKnightsNote
+            : scenarios.find((s) => s.id === value)?.description}
         {[
           "land-ho",
           "pirate-lairs",

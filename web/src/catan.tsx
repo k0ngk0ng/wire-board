@@ -190,7 +190,7 @@ export const catanPhases: Record<string, string> = {
   catan_transport_move: "移动马车并完成装卸",
   catan_transport_barbarian: "选择蛮族与新位置",
   catan_attack_end: "安排骑士移动并确认战斗",
-  catan_caravan_bid: "为商队出价：选择羊毛或粮食",
+  catan_caravan_bid: "为商队出价：在投票面板选择资源",
   catan_caravan_vote: "将全部选票投给一个商队位置",
   catan_caravan_place: "决定马车位置与前进方向",
   catan_world_ports: "轮流放置随机港口",

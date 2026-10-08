@@ -15,6 +15,7 @@ type catanCaravanWagon struct {
 	From int `json:"from"`
 }
 type catanCaravanMap struct {
+	NumberSwaps   []CatanNumberSwap   `json:"numberSwaps,omitempty"`
 	NumberRecipe  string              `json:"numberRecipe,omitempty"`
 	WateringHoles []int               `json:"wateringHoles"`
 	Starts        []catanCaravanWagon `json:"starts"`
@@ -196,9 +197,20 @@ func (f catanCaravanMap) validate(g *Catan) error {
 	if !slices.Equal(counts, want) {
 		return errors.New("商队地形库存不符")
 	}
+	original := map[CatanNumberToken]int{}
+	for _, tile := range g.Tiles {
+		original[CatanNumberToken{tile.ID, 0}] = tile.Number
+	}
+	if len(f.NumberSwaps) > 0 && !g.caravanKnights() {
+		return errors.New("普通商队不能交换数字")
+	}
+	original, err := rewindCatanInvention(g, original, f.NumberSwaps)
+	if err != nil {
+		return err
+	}
 	for _, id := range order {
 		if !slices.Contains(holes, id) {
-			if g.Tiles[id].Number != numbers[at] {
+			if original[CatanNumberToken{id, 0}] != numbers[at] {
 				return errors.New("商队生产数字顺序不符")
 			}
 			at++
