@@ -981,7 +981,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanEvents(*req.Enabled)
 	case "catan_cities_knights":
-		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers() || next.catanCaravanRecipe()) {
+		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers() || next.catanCaravanRecipe() || next.catanRiverRecipe()) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
 			break
 		}
@@ -1272,7 +1272,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						} else if next.CatanTwoScenario == "fishing" {
 							next.Game, err = game.NewCatanTwoFishing(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "rivers" {
-							next.Game, err = game.NewCatanTwoRivers(len(next.Seats), next.CatanOptions)
+							if next.CatanCitiesKnights != nil {
+								next.Game, err = game.NewCatanRiversCitiesKnights(len(next.Seats), next.CatanOptions)
+							} else {
+								next.Game, err = game.NewCatanTwoRivers(len(next.Seats), next.CatanOptions)
+							}
 						} else {
 							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
 						}
@@ -1298,7 +1302,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						next.Game, err = game.NewCatanFishing(len(next.Seats), next.CatanOptions)
 					}
 				} else if next.CatanScenario == "rivers" {
-					next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
+					if next.CatanCitiesKnights != nil {
+						next.Game, err = game.NewCatanRiversCitiesKnights(len(next.Seats), next.CatanOptions)
+					} else {
+						next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
+					}
 				} else if next.CatanScenario == "caravans" {
 					if next.CatanCitiesKnights != nil {
 						next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)

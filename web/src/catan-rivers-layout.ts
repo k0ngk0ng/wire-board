@@ -57,7 +57,15 @@ export function catanCoinReason(
 ) {
   const r = g.rivers,
     p = g.players[seat];
-  if (!r || !p || p.eliminated || !p.resources || color < 0 || color >= 5)
+  if (
+    !r ||
+    !p ||
+    p.eliminated ||
+    !p.resources ||
+    color < 0 ||
+    color >= g.bank.length ||
+    (color >= 5 && (buy || !g.citiesKnights))
+  )
     return "当前不能兑换金币";
   if (buy) {
     if (r.bought >= 2) return "本次行动已购买两张资源";

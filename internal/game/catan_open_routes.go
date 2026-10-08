@@ -94,7 +94,7 @@ func (g *Catan) diplomacyRoads() []int {
 				continue
 			}
 		}
-		if (g.twoNeutralKnightOwner(e.Owner) || e.Owner >= 0 && !g.Players[e.Owner].Eliminated) && !e.Damaged && g.openRoute(e.Owner, e.ID) && g.preservesKnightConnections(e.Owner, e.ID) {
+		if (g.twoNeutralKnightOwner(e.Owner) || e.Owner >= 0 && !g.Players[e.Owner].Eliminated) && !e.Damaged && !e.Bridge && g.openRoute(e.Owner, e.ID) && g.preservesKnightConnections(e.Owner, e.ID) {
 			out = append(out, e.ID)
 		}
 	}

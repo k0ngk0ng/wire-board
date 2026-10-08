@@ -93,6 +93,7 @@ func (s *State) catanView(view map[string]any, player int) {
 	if g.Rivers != nil {
 		richest, poor := g.riverWealth()
 		v["rivers"].(map[string]any)["goldRule"] = "ledger"
+		v["rivers"].(map[string]any)["canProtectCity"] = !s.Finished && s.Phase == "catan_pillage" && s.CatanPendingActor() == player && g.canRiverPillageGold(player)
 		v["rivers"].(map[string]any)["richest"] = richest
 		v["rivers"].(map[string]any)["poor"] = poor
 	}

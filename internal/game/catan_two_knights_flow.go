@@ -9,7 +9,7 @@ import (
 // multiplayer city games keep their existing restoration contract.
 func (s *State) validateTwoCityFlow() error {
 	g, k := s.Catan, s.Catan.CitiesKnights
-	if k.Layout != "variable" || (!g.twoSeafarersKnights() && k.RobberStart != g.twoDesert()) || k.EventDie < -1 || k.EventDie > 5 || g.RollID == 0 && k.EventDie != -1 || g.RollID > 0 && k.EventDie < 0 && g.CardEvent == nil || k.Chase != "" && k.Chase != "robber" && !(g.twoSeafarersKnights() && k.Chase == "pirate") {
+	if k.Layout != "variable" || (!g.twoSeafarersKnights() && !g.riverKnights() && k.RobberStart != g.twoDesert()) || k.EventDie < -1 || k.EventDie > 5 || g.RollID == 0 && k.EventDie != -1 || g.RollID > 0 && k.EventDie < 0 && g.CardEvent == nil || k.Chase != "" && k.Chase != "robber" && !(g.twoSeafarersKnights() && k.Chase == "pirate") {
 		return errors.New("双人城市事件或强盗状态无效")
 	}
 	if g.twoSeafarersKnights() && (k.RobberStart < -1 || k.RobberStart >= len(g.Tiles) || k.PirateStart < -1 || k.PirateStart >= len(g.Tiles) || g.wonders() != nil && k.PirateStart != -1) {

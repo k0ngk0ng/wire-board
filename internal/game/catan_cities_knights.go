@@ -359,6 +359,9 @@ func (s *State) catanCityChoiceBot(player int) (Action, error) {
 		}
 	}
 	if k.Pending.Kind == "pillage" {
+		if g.canRiverPillageGold(player) {
+			return Action{Type: "catan_pillage", Choice: "gold"}, nil
+		}
 		sites := g.pillageSites(player)
 		if len(sites) > 0 {
 			best := sites[0]

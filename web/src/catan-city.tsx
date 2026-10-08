@@ -563,7 +563,23 @@ export function CatanCityChoice({
             </p>
           )}
           {q.kind === "pillage" && (
-            <p>选择地图上亮起的一座城市降级为村庄；该处城墙也会归还。</p>
+            <>
+              <p>选择地图上亮起的一座城市降级为村庄；该处城墙也会归还。</p>
+              {g.rivers && (
+                <>
+                  <p>也可支付5金币免除本次劫掠，保留城市和城墙。</p>
+                  <button
+                    className="primary wide"
+                    disabled={busy || !g.rivers.canProtectCity}
+                    onClick={() =>
+                      void act({ type: "catan_pillage", choice: "gold" })
+                    }
+                  >
+                    支付5金币，保住城市
+                  </button>
+                </>
+              )}
+            </>
           )}
           {q.kind === "knight_retreat" && (
             <p>

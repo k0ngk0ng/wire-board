@@ -10,6 +10,10 @@ import (
 
 func newCaravanKnightsHTTP(t *testing.T, n int, events bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
+	return newTradersKnightsHTTP(t, n, events, "caravans")
+}
+func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	clients := make([]*testClient, n+1)
@@ -19,9 +23,9 @@ func newCaravanKnightsHTTP(t *testing.T, n int, events bool) (*Server, *httptest
 	}
 	recipe := map[string]any{"kind": "catan", "name": "商队骑士验收", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: n > 4}, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}}
 	if n == 2 {
-		recipe["catanTwoScenario"] = "caravans"
+		recipe["catanTwoScenario"] = scenario
 	} else {
-		recipe["catanScenario"] = "caravans"
+		recipe["catanScenario"] = scenario
 	}
 	if events {
 		recipe["catanEvents"] = game.CatanEventCatalogue

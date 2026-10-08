@@ -757,7 +757,7 @@ func (s *State) catanSetup(a Action) error {
 		if want == "catan_city" {
 			g.Vertices[a.Vertex].Level = 2
 		}
-		if want == "catan_settlement" && g.riverVertex(a.Vertex) {
+		if (want == "catan_settlement" || g.riverKnights()) && g.riverVertex(a.Vertex) {
 			if err := s.catanRiverReward(p, 1); err != nil {
 				return err
 			}
