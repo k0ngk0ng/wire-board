@@ -8,6 +8,7 @@ import (
 const CatanFishingRules = "catan-fishing-2025"
 
 type CatanFishing struct {
+	Caravans   string                  `json:"caravans,omitempty"`
 	Rivers     string                  `json:"rivers,omitempty"`
 	TwoKnights string                  `json:"twoKnights,omitempty"`
 	TwoSea     string                  `json:"twoSea,omitempty"`
@@ -279,6 +280,9 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 	}
 	v["fishing"] = map[string]any{"map": clone(f.Map), "tokens": public, "victoryTargets": targets,
 		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
+	if f.Caravans != "" {
+		v["fishing"].(map[string]any)["caravans"] = f.Caravans
+	}
 	if f.Rivers != "" {
 		v["fishing"].(map[string]any)["rivers"] = f.Rivers
 	}
