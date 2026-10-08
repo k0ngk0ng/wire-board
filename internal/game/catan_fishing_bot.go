@@ -95,6 +95,13 @@ func (s *State) catanFishBotChoices(player int, builds []botChoice, road int) []
 			}
 		}
 	}
+	if g.fishingRivers() {
+		for _, edge := range g.Rivers.Map.Bridges {
+			if g.canBridge(player, edge) {
+				add(Action{Type: "catan_fish_bridge", Edge: edge}, 240)
+			}
+		}
+	}
 	if road >= 0 {
 		add(Action{Type: "catan_fish_road", Edge: road}, 210)
 	}

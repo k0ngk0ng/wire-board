@@ -7,7 +7,7 @@ import (
 
 var catanFishCosts = map[string]int{
 	"catan_fish_robber": 2, "catan_fish_steal": 3, "catan_fish_resource": 4,
-	"catan_fish_road": 5, "catan_fish_dev": 7, "catan_fish_progress": 7,
+	"catan_fish_bridge": 6, "catan_fish_road": 5, "catan_fish_dev": 7, "catan_fish_progress": 7,
 	// The 2025 English combination says "fish tokens"; the official German
 	// combination says 2/5 Fische. Use face values, as in base fish payments.
 	"catan_fish_pirate": 2, "catan_fish_ship": 5,
@@ -113,6 +113,10 @@ func (s *State) catanFishAction(player int, a Action) error {
 		if a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] <= 0 {
 			return errors.New("请选择银行仍有库存的一种普通资源")
 		}
+	case "catan_fish_bridge":
+		if !g.fishingRivers() || !g.canBridge(player, a.Edge) {
+			return errors.New("请选择合法桥位，且需有剩余桥梁棋子")
+		}
 	case "catan_fish_road":
 		roads, _, _ := g.pieces(player)
 		if roads >= 15 || !g.canRoad(player, a.Edge) {
@@ -169,6 +173,13 @@ func (s *State) catanFishAction(player int, a Action) error {
 		g.Bank[a.Color]--
 		g.Players[player].Resources[a.Color]++
 		s.catanLog(player, "用鱼从银行领取 %s×1", CatanResources[a.Color])
+	case "catan_fish_bridge":
+		g.Edges[a.Edge].Owner, g.Edges[a.Edge].Bridge = player, true
+		if err := s.catanRiverReward(player, 3); err != nil {
+			return err
+		}
+		s.catanLog(player, "用鱼修建桥梁 #%d，领取3金币", a.Edge+1)
+		return s.catanAfterRoute(CatanRouteCompletion{Player: player, Edge: a.Edge})
 	case "catan_fish_road":
 		g.Edges[a.Edge].Owner = player
 		s.catanLog(player, "用鱼修建道路 #%d", a.Edge+1)
@@ -195,7 +206,7 @@ func (s *State) catanFishLegal(player int) map[string]any {
 	for kind := range costs {
 		costs[kind] = s.Catan.fishActionCost(player, kind)
 	}
-	legal := map[string]any{"costs": costs, "actions": []string{}, "resources": []int{}, "targets": []int{}, "roads": []int{}, "ships": []int{}, "bootTargets": []int{}, "progressTracks": []int{}}
+	legal := map[string]any{"costs": costs, "actions": []string{}, "resources": []int{}, "targets": []int{}, "bridges": []int{}, "roads": []int{}, "ships": []int{}, "bootTargets": []int{}, "progressTracks": []int{}}
 	if s.Catan.Explorer != nil {
 		return s.catanExplorerFishingLegal(player)
 	}
@@ -205,7 +216,7 @@ func (s *State) catanFishLegal(player int) map[string]any {
 	g := s.Catan
 	legal["bootTargets"] = g.fishBootTargets(player)
 	actions := []string{}
-	for _, kind := range []string{"catan_fish_robber", "catan_fish_pirate", "catan_fish_steal", "catan_fish_resource", "catan_fish_road", "catan_fish_ship", "catan_fish_dev", "catan_fish_progress"} {
+	for _, kind := range []string{"catan_fish_robber", "catan_fish_pirate", "catan_fish_steal", "catan_fish_resource", "catan_fish_bridge", "catan_fish_road", "catan_fish_ship", "catan_fish_dev", "catan_fish_progress"} {
 		if g.fishPayment(player, costs[kind]) == nil {
 			continue
 		}
@@ -236,6 +247,16 @@ func (s *State) catanFishLegal(player int) map[string]any {
 				}
 			}
 			legal["resources"], available = resources, len(resources) > 0
+		case "catan_fish_bridge":
+			bridges := []int{}
+			if g.fishingRivers() {
+				for _, edge := range g.Rivers.Map.Bridges {
+					if g.canBridge(player, edge) {
+						bridges = append(bridges, edge)
+					}
+				}
+			}
+			legal["bridges"], available = bridges, len(bridges) > 0
 		case "catan_fish_road":
 			roads := []int{}
 			count, _, _ := g.pieces(player)

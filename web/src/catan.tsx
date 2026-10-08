@@ -1199,8 +1199,10 @@ function CatanBaseBoard({
                           ? cityChoiceMine &&
                             !!g.diplomacyPlacements?.includes(e.id)
                           : mine &&
-                            ((effective === "fish_road" &&
-                              !!g.fishing?.legal.roads.includes(e.id)) ||
+                            ((effective === "fish_bridge" &&
+                              !!g.fishing?.legal.bridges?.includes(e.id)) ||
+                              (effective === "fish_road" &&
+                                !!g.fishing?.legal.roads.includes(e.id)) ||
                               (effective === "fish_ship" &&
                                 !!g.fishing?.legal.ships?.includes(e.id)) ||
                               (effective === "progress_edge" &&
@@ -1530,8 +1532,10 @@ function CatanBaseBoard({
                     ? canPlay && fishResponder(room) === you
                       ? "请在捕鱼面板换筹码或保留 · 可收起面板查看地图"
                       : "等待鱼筹码选择 · 滚轮缩放 · 按住拖动"
-                    : ["fish_road", "fish_ship"].includes(effective) && mine
-                      ? `点击亮起的${effective === "fish_ship" ? "船只位置" : "道路"}，再到捕鱼面板确认支付`
+                    : ["fish_road", "fish_ship", "fish_bridge"].includes(
+                          effective,
+                        ) && mine
+                      ? `点击亮起的${effective === "fish_bridge" ? "桥位" : effective === "fish_ship" ? "船只位置" : "道路"}，再到捕鱼面板确认支付`
                       : progressMode
                         ? "点击地图上亮起的目标，再在进步牌面板确认 · 滚轮缩放 · 按住拖动"
                         : cityChoiceMine && cityChoiceMode
@@ -1924,9 +1928,13 @@ function CatanBaseBoard({
         )}
         {chosen &&
           !progressMapChoices.includes(chosen.type) &&
-          !["earthquake", "robber_flees", "fish_road", "fish_ship"].includes(
-            chosen.type,
-          ) &&
+          ![
+            "earthquake",
+            "robber_flees",
+            "fish_road",
+            "fish_ship",
+            "fish_bridge",
+          ].includes(chosen.type) &&
           chosen.type !== "port" &&
           chosen.type !== "fish_ground" &&
           chosen.type !== "robber_start" &&

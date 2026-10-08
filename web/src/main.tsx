@@ -2067,9 +2067,10 @@ function Create({
               k === "catan" &&
               ((capacity === 2 &&
                 (supportsTwoCatanSeafarers(catanTwoScenario) ||
-                  catanTwoScenario === "cities-knights")) ||
+                  ["cities-knights", "rivers"].includes(catanTwoScenario))) ||
                 supportsPublicCatanFishingSea(catanScenario) ||
-                isPublicCatanExplorer(catanScenario)) &&
+                isPublicCatanExplorer(catanScenario) ||
+                catanScenario === "rivers") &&
               catanFishing,
             catanFishingLakes:
               k === "catan" &&
@@ -2175,7 +2176,7 @@ function Create({
             fishingEnabled={
               catanFishing &&
               (supportsTwoCatanSeafarers(catanTwoScenario) ||
-                catanTwoScenario === "cities-knights")
+                ["cities-knights", "rivers"].includes(catanTwoScenario))
             }
             target={
               catanVictoryTarget(
@@ -2194,7 +2195,8 @@ function Create({
                 if (!supportsTwoCatanHelpers(scenario)) setCatanOptions({});
                 if (
                   !supportsTwoCatanSeafarers(scenario) &&
-                  scenario !== "cities-knights"
+                  scenario !== "cities-knights" &&
+                  scenario !== "rivers"
                 )
                   setCatanFishing(false);
                 setCatanFishingLakes(false);
@@ -2243,7 +2245,8 @@ function Create({
                   setCatanHarbors(false);
                 if (
                   !supportsPublicCatanFishingSea(scenario) &&
-                  !isPublicCatanExplorer(scenario)
+                  !isPublicCatanExplorer(scenario) &&
+                  scenario !== "rivers"
                 )
                   setCatanFishing(false);
                 if (!supportsPublicCatanKnightsCombination(scenario))
@@ -2294,13 +2297,15 @@ function Create({
         {k === "catan" &&
           ((capacity === 2 &&
             (supportsTwoCatanSeafarers(catanTwoScenario) ||
-              catanTwoScenario === "cities-knights")) ||
+              ["cities-knights", "rivers"].includes(catanTwoScenario))) ||
             isPublicCatanExplorer(catanScenario) ||
+            variantScenario === "rivers" ||
             (capacity >= 3 &&
               (capacity <= 4 ||
                 supportsPublicCatanFishingSeaExtended(catanScenario)) &&
               supportsPublicCatanFishingSea(catanScenario))) && (
             <CatanFishingSeaPicker
+              rivers={variantScenario === "rivers"}
               knights={capacity === 2 && catanTwoScenario === "cities-knights"}
               value={catanFishing}
               two={
@@ -2795,10 +2800,14 @@ function Waiting({
             room.catanTwoScenario === "cities-knights") ||
             supportsTwoCatanSeafarers(room.catanTwoScenario) ||
             isPublicCatanExplorer(room.catanScenario) ||
+            (room.catanTwoScenario || room.catanScenario) === "rivers" ||
             ((room.capacity <= 4 ||
               supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
               supportsPublicCatanFishingSea(room.catanScenario))) && (
             <CatanFishingSeaPicker
+              rivers={
+                (room.catanTwoScenario || room.catanScenario) === "rivers"
+              }
               knights={
                 !!room.catanTwoRules &&
                 room.catanTwoScenario === "cities-knights"
