@@ -1259,7 +1259,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						} else if next.CatanTwoScenario == "caravans" {
 							next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "cities-knights" {
-							next.Game, err = game.NewCatanTwoCitiesKnights(len(next.Seats), next.CatanOptions)
+							if next.CatanFishing {
+								next.Game, err = game.NewCatanTwoFishingCitiesKnights(len(next.Seats), next.CatanOptions)
+							} else {
+								next.Game, err = game.NewCatanTwoCitiesKnights(len(next.Seats), next.CatanOptions)
+							}
 						} else if next.CatanTwoScenario == "fishing" {
 							next.Game, err = game.NewCatanTwoFishing(len(next.Seats), next.CatanOptions)
 						} else if next.CatanTwoScenario == "rivers" {

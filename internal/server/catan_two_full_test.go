@@ -372,10 +372,13 @@ func runTwoCompleteHTTPGames(t *testing.T, scenario string, events ...bool) {
 	runTwoVariantsHTTPGames(t, scenario, len(events) > 0 && events[0], false, false)
 }
 func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, harbors bool, helperOptions ...game.CatanOptions) {
+	runTwoVariantsFishingHTTPGames(t, scenario, events, friendly, harbors, false, helperOptions...)
+}
+func runTwoVariantsFishingHTTPGames(t *testing.T, scenario string, events, friendly, harbors, fishing bool, helperOptions ...game.CatanOptions) {
 	coverage := map[string]int{}
 	for sample := range 3 {
 		t.Run(fmt.Sprint(sample), func(t *testing.T) {
-			s, ts, clients, id := newTwoVariantsFullTable(t, scenario, events, friendly, harbors, helperOptions...)
+			s, ts, clients, id := newTwoVariantsFishingFullTable(t, scenario, events, friendly, harbors, fishing, helperOptions...)
 			restored, modes := map[string]bool{}, map[string]int{}
 			restart := func(label string) { s, ts = restartRiversHTTP(t, s, ts, clients, id); restored[label] = true }
 			restart("initial")
@@ -517,7 +520,14 @@ func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, ha
 					if len(helperOptions) > 0 && helperOptions[0].Helpers && record["catanExpansionRules"].(map[string]any)["two_helpers"] != game.CatanTwoHelpersRules {
 						t.Fatal("two helpers history missing")
 					}
-					if scenario == "cities-knights" && (record["catanScenario"] != "cities-knights" || record["catanExpansionRules"].(map[string]any)["two_knights"] != game.CatanTwoKnightsRules) {
+					if fishing && record["catanExpansionRules"].(map[string]any)["two_fishing_knights"] != game.CatanTwoFishingKnightsRules {
+						t.Fatal("missing combined fishing knight history", record)
+					}
+					cityScenario := "cities-knights"
+					if fishing {
+						cityScenario = "fishing"
+					}
+					if scenario == "cities-knights" && (record["catanScenario"] != cityScenario || record["catanExpansionRules"].(map[string]any)["two_knights"] != game.CatanTwoKnightsRules) {
 						t.Fatal("two city history missing", record)
 					}
 					if scenario == "fishing" && (record["catanScenario"] != "fishing" || record["catanExpansionRules"].(map[string]any)["two_fishing"] != game.CatanTwoFishingRules) {
@@ -546,7 +556,7 @@ func runTwoVariantsHTTPGames(t *testing.T, scenario string, events, friendly, ha
 		})
 	}
 	phases := []string{"catan_two_build", "catan_two_trade"}
-	if scenario == "fishing" {
+	if scenario == "fishing" || fishing {
 		phases = []string{"catan_two_build"}
 	}
 	if len(helperOptions) > 0 && helperOptions[0].Helpers {
