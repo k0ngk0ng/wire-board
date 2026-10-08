@@ -136,16 +136,7 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		}
 		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) || (x.Lairs != nil || x.Spice != nil) && catanExplorerCanPay(g, viewer, []int{0, 0, 1, 0, 1}) {
 			for _, loc := range locations {
-				discards := []Action{{}}
-				for _, unit := range x.Cargo.contents(loc) {
-					discards = append(discards, Action{Cards: []int{unit}})
-				}
-				for _, fish := range x.Cargo.fishContents(loc) {
-					discards = append(discards, Action{Targets: []int{fish}})
-				}
-				for _, spice := range x.Cargo.spiceContents(loc) {
-					discards = append(discards, Action{SpiceUnload: []int{spice}})
-				}
+				discards := x.Cargo.recruitReturns(loc)
 				limit := 2
 				if x.Lairs != nil || x.Spice != nil {
 					limit = 11
