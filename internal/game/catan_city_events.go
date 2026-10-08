@@ -70,7 +70,17 @@ func (s *State) catanStartCityDiceEvent(red, yellow, face, production int, epide
 	k := g.CitiesKnights
 	k.EventDie = face
 	k.Event = &CatanCityEvent{Red: red, Yellow: yellow, Face: face, Production: production, Epidemic: epidemic, Tasks: []CatanCityEventTask{}}
-	if face >= 3 {
+	if face >= 3 && g.attackKnights() {
+		dice := [2]int{red, yellow}
+		if production > 0 {
+			dice = [2]int{max(1, production-6), production - max(1, production-6)}
+		}
+		targets, err := s.catanAttackCityLanding(dice)
+		if err != nil {
+			return err
+		}
+		s.catanLog(s.Turn, "蛮族船面：沿海登陆%d块地，不移动蛮族船", len(targets))
+	} else if face >= 3 {
 		k.BarbarianPosition++
 		if production > 0 {
 			s.catanLog(s.Turn, "事件牌点数%d；红骰%d、蛮族船：船前进至%d/%d", production, red, k.BarbarianPosition, catanBarbarianDistance)

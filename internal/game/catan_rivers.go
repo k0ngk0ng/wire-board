@@ -262,7 +262,7 @@ func (s *State) catanCoins(p int, a Action) error {
 	} else if g.Attack != nil {
 		bank, bought = &g.Attack.GoldBank, &g.Attack.Bought
 	}
-	if gold == nil || s.Phase != "catan_turn" || a.Color < 0 || a.Color >= len(g.Bank) || a.Color >= 5 && !(g.riverKnights() && a.Type == "catan_coin_sell") {
+	if gold == nil || s.Phase != "catan_turn" || a.Color < 0 || a.Color >= len(g.Bank) || a.Color >= 5 && !((g.riverKnights() || g.attackKnights()) && a.Type == "catan_coin_sell") {
 		return errors.New("金币交易仅可在自己掷骰后的行动阶段进行")
 	}
 	c := a.Color
