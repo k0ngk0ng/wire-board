@@ -6,14 +6,15 @@ import "errors"
 // and dedicated, versioned recipes for five/six. New World has its own
 // constructor. Never apply a three/four-player recipe to five/six.
 func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, placements []CatanFishingGroundPlacement) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("捕鱼与助手组合尚未接入")
-	}
 	if setup.Scenario != "shores" && setup.Scenario != "islands" && setup.Scenario != "fog" && setup.Scenario != "desert" && setup.Scenario != "tribe" && setup.Scenario != "cloth" && setup.Scenario != "wonders" || n < 3 || n > 6 {
 		return nil, errors.New("此捕鱼航海家剧本或人数尚未接入")
 	}
 	if setup.Scenario == "shores" {
-		return newCatanFishingShores(n, options, setup, placements)
+		s, err := newCatanFishingShores(n, options, setup, placements)
+		if err == nil {
+			s.enableFishingHelpers()
+		}
+		return s, err
 	}
 	s, err := NewCatanSeafarers(n, options, setup, nil)
 	if err != nil {
@@ -44,6 +45,7 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 		return nil, err
 	}
 	g.Fishing = &CatanFishing{Map: *m, Tokens: *tokens, LastRollID: -1, Started: make([]bool, n)}
+	s.enableFishingHelpers()
 	// The 2025 combination explicitly uses scenario setup except for the
 	// listed lake/grounds changes: retain the scenario's robber and pirate.
 	if n > 4 && fishingExtendedSeaScenario(g.Seafarers.Scenario) {

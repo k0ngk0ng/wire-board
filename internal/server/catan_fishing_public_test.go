@@ -23,6 +23,10 @@ func newPublicScenarioTable(t *testing.T, n int, scenario string) (*Server, *htt
 }
 
 func newPublicFishingScenarioVariants(t *testing.T, n int, scenario string, friendly, harbors bool, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
+	return newPublicFishingScenarioConfigured(t, n, scenario, friendly, harbors, len(events) > 0 && events[0], false)
+}
+
+func newPublicFishingScenarioConfigured(t *testing.T, n int, scenario string, friendly, harbors bool, events, helpers bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -31,8 +35,8 @@ func newPublicFishingScenarioVariants(t *testing.T, n int, scenario string, frie
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("公开剧本玩家%d", p))
 	}
-	body := map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4 && scenario == "fishing"}}
-	if len(events) > 0 && events[0] {
+	body := map[string]any{"name": "公开剧本完整对局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4 && scenario == "fishing", Helpers: helpers, AllHelpers: helpers}}
+	if events {
 		body["catanEvents"] = game.CatanEventCatalogue
 	}
 	raw := clients[0].post("/api/rooms", body, 201)
@@ -63,7 +67,7 @@ func TestCatanFishingPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 5},
-		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "catan", "capacity": 3, "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "fixed"}},
 		{"kind": "splendor", "capacity": 3},
 	} {

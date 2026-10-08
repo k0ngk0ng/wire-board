@@ -14,6 +14,10 @@ func newPublicFishingSeaTable(t *testing.T, n int, scenario, layout string) (*Se
 }
 
 func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, friendly, harbors bool, events ...bool) (*Server, *httptest.Server, []*testClient, string) {
+	return newPublicFishingSeaConfigured(t, n, scenario, layout, friendly, harbors, len(events) > 0 && events[0], false)
+}
+
+func newPublicFishingSeaConfigured(t *testing.T, n int, scenario, layout string, friendly, harbors bool, events, helpers bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -22,8 +26,8 @@ func newPublicFishingSeaVariants(t *testing.T, n int, scenario, layout string, f
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("海图捕鱼玩家%d", p))
 	}
-	body := map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true, "catanOptions": game.CatanOptions{FiveSix: n > 4}}
-	if len(events) > 0 && events[0] {
+	body := map[string]any{"name": "捕鱼海图完整局", "kind": "catan", "capacity": n, "catanScenario": scenario, "catanFishing": true, "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: helpers, AllHelpers: helpers}}
+	if events {
 		body["catanEvents"] = game.CatanEventCatalogue
 	}
 	raw := clients[0].post("/api/rooms", body, 201)
@@ -68,7 +72,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
 		{"kind": "catan", "capacity": 7, "catanScenario": "land-ho"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
-		{"kind": "catan", "capacity": 4, "catanScenario": "islands", "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 4, "catanScenario": "islands", "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{}},
 		{"kind": "splendor", "capacity": 3},
 	} {

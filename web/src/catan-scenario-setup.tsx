@@ -257,7 +257,7 @@ export function CatanFishingSeaPicker({
           : fixedRequired
             ? "先将海图切为固定布局，才能加入渔夫。"
             : blocked
-              ? "先关闭 Helpers 和城市骑士，才能加入渔夫；可叠加港口霸主与友善强盗。"
+              ? "先关闭城市骑士，才能加入渔夫海图；可叠加 Helpers、港口霸主与友善强盗。"
               : extended
                 ? "五六人扩大地图、8处渔场、44枚鱼筹码和配对回合；六岛、沙漠、部落、布匹采用标明的本站配方。关闭渔夫后保留海图和人数。"
                 : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
@@ -348,7 +348,6 @@ export function CatanScenarioPicker({
                   [
                     "barbarian-attack",
                     "transport",
-                    "fishing",
                     "rivers",
                     "caravans",
                     "cities-knights",

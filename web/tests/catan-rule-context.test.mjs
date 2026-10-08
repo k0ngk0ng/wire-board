@@ -781,3 +781,32 @@ test("shores fishing recipe covers three through six players and clears when dis
     assert.equal(catanRuleContext(room).fishingSeaRecipe, "");
   }
 });
+
+test("fishing helper recipe follows the saved game and stays separate from Explorer", () => {
+  const room = {
+    capacity: 3,
+    catanScenario: "fishing",
+    catanOptions: { helpers: true },
+  };
+  assert.equal(
+    catanRuleContext(room).fishingHelpers,
+    "wire-board-fishing-helpers-v1",
+  );
+  room.game = {
+    catan: { players: Array(3).fill({}), options: {}, fishing: {} },
+  };
+  assert.equal(catanRuleContext(room).fishingHelpers, "");
+  room.game.catan.fishing.helpers = "wire-board-fishing-helpers-v1";
+  assert.equal(
+    catanRuleContext(room).fishingHelpers,
+    "wire-board-fishing-helpers-v1",
+  );
+  delete room.game;
+  room.catanScenario = "land-ho";
+  room.catanFishing = true;
+  assert.equal(catanRuleContext(room).fishingHelpers, "");
+  assert.equal(
+    catanRuleContext(room).explorerHelpers,
+    "wire-board-explorer-helpers-v1",
+  );
+});

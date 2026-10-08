@@ -55,7 +55,7 @@ func TestCatanFishingWondersExtendedComponentsAndGates(t *testing.T) {
 				t.Fatal("invalid extended combination accepted")
 			}
 		}
-		for _, options := range []CatanOptions{{}, {FiveSix: true, Helpers: true}} {
+		for _, options := range []CatanOptions{{}, {FiveSix: true, AllHelpers: true}} {
 			if _, err := NewCatanFishingSeafarers(n, options, CatanSeafarersSetup{Scenario: "wonders"}, nil); err == nil {
 				t.Fatal("unsupported options accepted")
 			}

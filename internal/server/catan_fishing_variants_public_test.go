@@ -41,7 +41,7 @@ func TestCatanFishingVariantsPublicConfigurationRestoreAndBaseReset(t *testing.T
 				before, _ := json.Marshal(s.rooms[id])
 				selectCatanFriendlyRobber(c, false, 400)
 				selectCatanHarbors(c, false, 400)
-				h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+				h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: n > 4, AllHelpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 				after, _ := json.Marshal(s.rooms[id])
 				if string(before) != string(after) {
 					t.Fatal("rejection changed configuration")

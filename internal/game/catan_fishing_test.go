@@ -271,7 +271,7 @@ func TestCatanFishingFullSetupAndAtomicInvalidState(t *testing.T) {
 		s.Catan.Fishing.Map.Grounds[0].Number = 7
 		fishGameReject(t, s, s.Turn, Action{Type: "catan_roll"})
 	}
-	if _, err := NewCatanFishing(3, CatanOptions{Helpers: true}); err == nil {
+	if _, err := NewCatanFishing(3, CatanOptions{AllHelpers: true}); err == nil {
 		t.Fatal("unverified helper combination opened")
 	}
 	s := fishingGame(t, 3)

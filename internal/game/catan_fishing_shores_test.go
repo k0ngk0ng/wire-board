@@ -113,7 +113,7 @@ func TestCatanFishingShoresCorruptionAndBaseIsolation(t *testing.T) {
 			}
 		}
 	}
-	for _, opts := range []CatanOptions{{Helpers: true}, {AllHelpers: true}} {
+	for _, opts := range []CatanOptions{{AllHelpers: true}} {
 		if _, err := NewCatanFishingSeafarers(3, opts, CatanSeafarersSetup{Scenario: "shores"}, nil); err == nil {
 			t.Fatal("helpers bypassed")
 		}

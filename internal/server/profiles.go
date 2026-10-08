@@ -149,6 +149,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["fishing"] = game.CatanFishingRules
+			if g.Fishing.Helpers != "" {
+				record.CatanExpansionRules["fishing_helpers"] = g.Fishing.Helpers
+			}
 			if g.Fishing.Explorer != "" {
 				record.CatanExpansionRules["explorer_fishing"] = g.Fishing.Explorer
 				lakes := "without-lakes"

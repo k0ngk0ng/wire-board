@@ -192,10 +192,10 @@ func (g *Catan) digurBotAction(player int) (Action, bool) {
 	for _, t := range g.Tiles {
 		desert = desert || (t.Resource == CatanDesert && g.clothLand(t.ID))
 	}
-	if !desert {
+	if !desert && !g.fishingHelpers() {
 		return a, false
 	}
-	if g.Tiles[g.Robber].Resource == CatanGold {
+	if g.Tiles[g.Robber].Resource == CatanGold || g.fishingHelpers() && g.Tiles[g.Robber].Resource == catanLake {
 		best := -1
 		for color, n := range g.Bank {
 			if n > 0 && (best < 0 || g.Players[player].Resources[color] < g.Players[player].Resources[best]) {

@@ -8,6 +8,7 @@ import (
 const CatanFishingRules = "catan-fishing-2025"
 
 type CatanFishing struct {
+	Helpers    string                  `json:"helpers,omitempty"`
 	Explorer   string                  `json:"explorer,omitempty"`
 	WorldSetup *CatanFishingWorldSetup `json:"worldSetup,omitempty"`
 	Map        catanFishingMap         `json:"map"`
@@ -28,9 +29,6 @@ type CatanFishingPending struct {
 // Standalone Fishing supports three to six players. Sea and combined recipes
 // retain their own configuration and component acceptance gates.
 func NewCatanFishing(n int, options CatanOptions) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("捕鱼与助手组合尚未接入")
-	}
 	s, err := NewCatan(n, options)
 	if err != nil {
 		return nil, err
@@ -44,6 +42,7 @@ func NewCatanFishing(n int, options CatanOptions) (*State, error) {
 		return nil, err
 	}
 	s.Catan.Fishing = &CatanFishing{Map: *m, Tokens: *tokens, LastRollID: -1, Started: make([]bool, n)}
+	s.enableFishingHelpers()
 	if m.NumberRecipe != "" {
 		s.Log = append(s.Log, "本站数字配置：五六人沿逆时针螺旋使用固定数列，跳过湖泊；数字数量不变，不宣称对应 2025 实体字母背面")
 	}
@@ -62,8 +61,11 @@ func (g *Catan) validateFishing() error {
 	if f.Explorer != "" {
 		return errors.New("非探险存档不能含探险鱼筹码")
 	}
-	if g.Seafarers != nil && !g.fishingSeaSupported() || g.Options.Helpers {
+	if g.Seafarers != nil && !g.fishingSeaSupported() {
 		return errors.New("此捕鱼扩展组合尚未接入")
+	}
+	if (g.Options.Helpers && (!g.fishingHelpers() || g.CitiesKnights != nil)) || (!g.Options.Helpers && f.Helpers != "") {
+		return errors.New("渔夫助手规则与配置不符")
 	}
 	if len(f.Started) != len(g.Players) || len(f.Tokens.Hands) != len(g.Players) || f.LastRollID < -1 || f.LastRollID > g.RollID {
 		return errors.New("invalid fishing turn state")
@@ -255,6 +257,9 @@ func (s *State) catanFishingView(v map[string]any, player int) {
 	}
 	v["fishing"] = map[string]any{"map": clone(f.Map), "tokens": public, "victoryTargets": targets,
 		"legal": s.catanFishLegal(player), "canReplace": !s.Finished && s.Phase == "catan_fish_replace" && s.CatanPendingActor() == player}
+	if f.Helpers != "" {
+		v["fishing"].(map[string]any)["helpers"] = f.Helpers
+	}
 	if q := f.WorldSetup; q != nil {
 		setup := map[string]any{"index": q.Index, "total": len(q.Numbers), "remaining": len(q.Numbers) - q.Index}
 		if s.Phase == "catan_world_fish" && q.Index >= 0 && q.Index < len(q.Numbers) {
