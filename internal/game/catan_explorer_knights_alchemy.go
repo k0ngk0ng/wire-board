@@ -19,6 +19,12 @@ func (s *State) catanExplorerCityRollAction(player int, a Action, randN func(int
 		if len(a.Tokens) != 0 || a.Choice != "" {
 			return errors.New("普通掷骰不能指定点数")
 		}
+		if g.EventDeck != nil {
+			if err := next.catanDrawEventRandom(randN); err != nil {
+				return err
+			}
+			break
+		}
 		red, yellow, face := randN(6)+1, randN(6)+1, randN(6)
 		if err := next.catanExplorerCityRoll(red, yellow, face); err != nil {
 			return err

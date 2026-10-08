@@ -16,6 +16,12 @@ func newPublicExplorerHTTP(t *testing.T, n int) (*Server, *httptest.Server, []*t
 
 func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string, knights ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
+	city := len(knights) > 0 && knights[0]
+	return newPublicExplorerRecipeHTTP(t, n, scenario, city, false)
+}
+
+func newPublicExplorerRecipeHTTP(t *testing.T, n int, scenario string, knights, events bool) (*Server, *httptest.Server, []*testClient, string) {
+	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	clients := make([]*testClient, n+1)
@@ -24,8 +30,11 @@ func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string, knights
 		clients[p].register(fmt.Sprintf("初航公开玩家%d", p))
 	}
 	recipe := map[string]any{"name": "探险公开完整局", "kind": "catan", "capacity": n, "catanScenario": scenario}
-	if len(knights) > 0 && knights[0] {
+	if knights {
 		recipe["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{Layout: "variable"}
+	}
+	if events {
+		recipe["catanEvents"] = game.CatanEventCatalogue
 	}
 	raw := clients[0].post("/api/rooms", recipe, 201)
 	id := raw["id"].(string)
@@ -37,7 +46,7 @@ func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string, knights
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	r := s.rooms[id]
-	if r.CatanTwoRules != "" || r.Game.Catan.Two != nil || r.Game.Catan.Explorer == nil || r.Game.Catan.Explorer.Board.Scenario != scenario || r.Game.Catan.Explorer.Board.Players != n || r.Game.Catan.EventDeck != nil {
+	if r.CatanTwoRules != "" || r.Game.Catan.Two != nil || r.Game.Catan.Explorer == nil || r.Game.Catan.Explorer.Board.Scenario != scenario || r.Game.Catan.Explorer.Board.Players != n || (r.Game.Catan.EventDeck != nil) != events {
 		t.Fatal("wrong public opening")
 	}
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)

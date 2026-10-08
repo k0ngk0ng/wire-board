@@ -22,6 +22,9 @@ func (s *State) EnableCatanEvents(catalogue string) error {
 	}
 	next := clone(*s)
 	next.Catan.EventDeck = &catanEventSession{Catalogue: catalogue, Deck: newCatanEventDeck()}
+	if next.Catan.Explorer != nil {
+		next.Catan.EventDeck.Explorer = CatanEventExplorerRules
+	}
 	if next.Catan.CitiesKnights != nil {
 		next.Catan.EventDeck.Knights = CatanEventKnightsRules
 	}
@@ -34,11 +37,15 @@ func (s *State) EnableCatanEvents(catalogue string) error {
 	if err := next.validateCatanEventSession(); err != nil {
 		return err
 	}
-	next.Log = append(next.Log, catanEventCatalogueNotice)
+	if next.Catan.Explorer != nil {
+		next.Log = append(next.Log, "探险事件牌：使用本站36张牌组的生产点数，按2025官方组合说明忽略所有事件文字；双人同样每回合一张，五六人仅第一位抽牌。金币补偿、7点海盗与独立鱼群骰照常；城市骑士使用独立红骰／事件骰，炼金术替代抽牌。")
+	} else {
+		next.Log = append(next.Log, catanEventCatalogueNotice)
+	}
 	if next.Catan.Transport != nil {
 		next.Log = append(next.Log, "运输事件：地震损坏道路花2移动点，7点移动蛮族，强盗逃跑无效果；抽到2或12仍执行事件，不重抽。金币与货物不参与资源事件。")
 	}
-	if next.Catan.CitiesKnights != nil {
+	if next.Catan.CitiesKnights != nil && next.Catan.Explorer == nil {
 		next.Log = append(next.Log, "事件牌与城市骑士：先事件文字，再独立红骰／事件骰，最后生产；炼金术替代抽牌。本站补充规则：贸易优势随机偷取资源或商品。")
 	}
 	if next.Catan.cloth() != nil {

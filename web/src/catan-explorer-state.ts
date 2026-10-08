@@ -566,7 +566,9 @@ export function explorerActionDescription(g: CatanState, a: ExplorerAction) {
         ? "结束所有船只的移动；本回合攻陷的巢穴会先结算，再交给下一位玩家。"
         : "结束所有船只的移动，交给下一位玩家。";
     default:
-      return "掷骰并按点数生产资源。";
+      return g.eventDeck
+        ? "翻开一张事件牌，只取生产点数，忽略事件文字；保留金币补偿和7点规则。"
+        : "掷骰并按点数生产资源。";
   }
 }
 

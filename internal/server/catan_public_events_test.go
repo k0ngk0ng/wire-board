@@ -76,7 +76,7 @@ func TestCatanPublicEventsConfigurationAndRematch(t *testing.T) {
 	guest.register("事件客人")
 	for _, bad := range []map[string]any{
 		{"kind": "catan", "capacity": 3, "catanEvents": "legacy-reference-v1"},
-		{"kind": "catan", "capacity": 3, "catanEvents": game.CatanEventCatalogue, "catanScenario": "land-ho"},
+		{"kind": "catan", "capacity": 5, "catanEvents": game.CatanEventCatalogue, "catanScenario": "land-ho"},
 		{"kind": "splendor", "capacity": 3, "catanEvents": game.CatanEventCatalogue},
 	} {
 		bad["name"] = "无效事件"
@@ -119,14 +119,12 @@ func TestCatanPublicEventsConfigurationAndRematch(t *testing.T) {
 		t.Fatal("transport lost supported events")
 	}
 	change(host, "catan_scenario", "catanScenario", "land-ho", 200)
-	if s.rooms[id].CatanEvents != "" {
-		t.Fatal("unsupported scenario kept deck")
+	if s.rooms[id].CatanEvents != game.CatanEventCatalogue {
+		t.Fatal("explorer lost supported events")
 	}
-	before, _ = json.Marshal(s.rooms[id])
-	change(host, "catan_events", "enabled", true, 400)
-	after, _ = json.Marshal(s.rooms[id])
-	if string(before) != string(after) {
-		t.Fatal("invalid enable changed room")
+	change(host, "catan_events", "enabled", true, 200)
+	if s.rooms[id].CatanEvents != game.CatanEventCatalogue {
+		t.Fatal("no-op enable removed supported events")
 	}
 	change(host, "catan_scenario", "catanScenario", "", 200)
 	// Both enabled variants and disabled waiting-room preferences coexist with events.

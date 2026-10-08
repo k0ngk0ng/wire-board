@@ -31,6 +31,12 @@ func (g *Catan) validCardEventDice(red, face int) bool {
 }
 
 func (g *Catan) validateEventAlchemy(phase string) error {
+	if x := g.Explorer; x != nil && x.Economy.Turn != nil && (x.Economy.Turn.NoProduction || x.Economy.Turn.Phase == "roll" && g.Paired != nil && len(g.Dice) == 2 && g.Dice[0] == 0 && g.Dice[1] == 0) {
+		if g.CitiesKnights != nil && g.CitiesKnights.Event == nil && g.RevealedEvent == nil && g.CardEvent == nil && len(g.Dice) == 2 && g.Dice[0] == 0 && g.Dice[1] == 0 {
+			return nil
+		}
+		return errors.New("配对第二位炼金术记录无效")
+	}
 	if g.setup() || g.CitiesKnights == nil || g.CardEvent != nil || g.RevealedEvent != nil || phase == "catan_card_event" || len(g.Dice) != 2 || g.Dice[0] < 1 || g.Dice[0] > 6 || g.Dice[1] < 1 || g.Dice[1] > 6 {
 		return errors.New("炼金术替代抽牌状态无效")
 	}

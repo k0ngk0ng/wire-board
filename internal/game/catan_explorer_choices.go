@@ -53,14 +53,16 @@ func (s *State) catanExplorerChoices(viewer int) []Action {
 		base.Vertices = slices.Clone(g.Vertices)
 		base.Edges = slices.Clone(g.Edges)
 		cargo, fleet, economy := clone(*x.Cargo), clone(*x.Fleet), clone(*x.Economy)
-		if g.CitiesKnights != nil {
+		if g.CitiesKnights != nil || g.EventDeck != nil {
 			// Classification and knight restrictions need the combination flags.
 			// Keep topology/missions read-only; all mutated pieces are owned.
 			world := *x
 			world.Cargo, world.Fleet, world.Economy = &cargo, &fleet, &economy
 			base.Explorer = &world
-			k := clone(*g.CitiesKnights)
-			base.CitiesKnights = &k
+			if g.CitiesKnights != nil {
+				k := clone(*g.CitiesKnights)
+				base.CitiesKnights = &k
+			}
 		}
 		next := *s
 		next.Catan, next.Log = &base, slices.Clone(s.Log)

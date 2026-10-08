@@ -51,6 +51,7 @@ var catanEventReferenceFaces = [...]struct {
 }
 
 type catanEventSession struct {
+	Explorer        string           `json:"explorer,omitempty"`
 	Catalogue       string           `json:"catalogue"`
 	Deck            catanEventDeck   `json:"deck"`
 	ClothFallback   string           `json:"clothFallback,omitempty"`
@@ -150,8 +151,11 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue && session.Catalogue != CatanEventCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Options.AllHelpers && !g.Options.Helpers {
+	if g.Options.AllHelpers && !g.Options.Helpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
+	}
+	if err := g.validateEventExplorer(); err != nil {
+		return err
 	}
 	if err := s.validateEventFishing(); err != nil {
 		return err
@@ -174,7 +178,7 @@ func (s *State) validateCatanEventSession() error {
 	if err := s.validateEventHelpers(); err != nil {
 		return err
 	}
-	if len(g.Players) < 2 || len(g.Players) > 6 || (len(g.Players) == 2) != (g.Two != nil) || g.Options.FiveSix != (len(g.Players) > 4) {
+	if len(g.Players) < 2 || len(g.Players) > 6 || g.Explorer == nil && ((len(g.Players) == 2) != (g.Two != nil) || g.Options.FiveSix != (len(g.Players) > 4)) {
 		return errors.New("事件牌玩家数量与规则不一致")
 	}
 	d := session.Deck
@@ -240,7 +244,7 @@ func (s *State) validateCatanEventSession() error {
 		}
 	} else if k := g.CitiesKnights; k != nil && k.Event != nil {
 		e := k.Event
-		if revealed.ProductionStarted || e.Production != revealed.Production || e.Red != revealed.Red || e.Face != revealed.Face || e.Yellow != 0 || e.Epidemic != (revealed.Kind == "epidemic") {
+		if revealed.ProductionStarted || e.Production != revealed.Production || e.Red != revealed.Red || e.Face != revealed.Face || e.Yellow != 0 || e.Epidemic != (revealed.Kind == "epidemic" && g.Explorer == nil) {
 			return errors.New("城市事件与已揭示事件牌不一致")
 		}
 	} else if (!revealed.ProductionStarted && !s.Finished) || s.Phase == "catan_card_event" {
@@ -290,7 +294,12 @@ func (s *State) catanDrawEventRandom(randN func(int) int) error {
 	if next.Catan.pirateIslands() != nil {
 		next.Catan.EventDeck.Fleet = &CatanEventFleet{RollID: g.RollID + 1, Dice: [2]int{randN(6) + 1, randN(6) + 1}}
 	}
-	if err := next.catanBeginCardEvent(face.Kind, face.Production, red, event); err != nil {
+	if next.Catan.Explorer != nil {
+		err = next.catanExplorerEventProduction(face.Kind, face.Production, red, event)
+	} else {
+		err = next.catanBeginCardEvent(face.Kind, face.Production, red, event)
+	}
+	if err != nil {
 		return err
 	}
 	if err := next.validateCatanEventSession(); err != nil {

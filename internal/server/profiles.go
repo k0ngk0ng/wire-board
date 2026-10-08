@@ -193,6 +193,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			if g.EventDeck.ClothFallback != "" {
 				record.CatanExpansionRules["event_cloth_fallback"] = g.EventDeck.ClothFallback
 			}
+			if g.EventDeck.Explorer != "" {
+				record.CatanExpansionRules["event_explorer"] = g.EventDeck.Explorer
+			}
 			if g.EventDeck.Knights != "" {
 				record.CatanExpansionRules["event_knights"] = g.EventDeck.Knights
 			}

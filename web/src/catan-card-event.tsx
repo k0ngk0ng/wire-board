@@ -227,7 +227,11 @@ export function CatanCardEventSummary({
               : "尚未抽牌"}{" "}
             · 剩余 {g.eventDeck.remaining} 张普通牌
           </small>
-          <small>按2025事件效果执行；采用旧版点数与事件配比。</small>
+          <small>
+            {g.eventDeck.explorer
+              ? "探索者：只取生产点数，忽略全部事件文字。"
+              : "按2025事件效果执行；采用旧版点数与事件配比。"}
+          </small>
         </div>
       </section>
     ) : null;
@@ -246,17 +250,21 @@ export function CatanCardEventSummary({
               ? "正在选择金矿资源"
               : room.game?.phase === "catan_discard"
                 ? "点数7 · 等待玩家弃牌"
-                : room.game?.phase === "catan_robber"
-                  ? "点数7 · 移动强盗或海盗"
-                  : room.game?.phase === "catan_transport_barbarian"
-                    ? "移动一名蛮族，再继续回合"
-                    : room.game?.phase === "catan_steal"
-                      ? "点数7 · 选择偷牌对手"
-                      : room.game?.phase === "catan_roll"
-                        ? g.two?.rolls.length === 1
-                          ? "第一张已结算 · 等待抽第二张"
-                          : "上一回合的事件牌"
-                        : "本次生产点数";
+                : room.game?.phase === "catan_explorer_pirate_place"
+                  ? "点数7 · 放置自己的海盗"
+                  : room.game?.phase === "catan_explorer_pirate_steal"
+                    ? "点数7 · 选择海盗偷取目标"
+                    : room.game?.phase === "catan_robber"
+                      ? "点数7 · 移动强盗或海盗"
+                      : room.game?.phase === "catan_transport_barbarian"
+                        ? "移动一名蛮族，再继续回合"
+                        : room.game?.phase === "catan_steal"
+                          ? "点数7 · 选择偷牌对手"
+                          : room.game?.phase === "catan_roll"
+                            ? g.two?.rolls.length === 1
+                              ? "第一张已结算 · 等待抽第二张"
+                              : "上一回合的事件牌"
+                            : "本次生产点数";
   return (
     <section className="catan-revealed-event" aria-label="本次事件牌">
       {assets && catanEventNames[card.kind] && (
@@ -266,7 +274,8 @@ export function CatanCardEventSummary({
         />
       )}
       <div className="catan-revealed-description">
-        <strong>{name}</strong>
+        <strong>{g.eventDeck?.explorer ? "生产事件牌" : name}</strong>
+        {g.eventDeck?.explorer && <small>{name} · 本剧本忽略事件文字</small>}
         <small>{status}</small>
         {g.eventDeck && (
           <small>

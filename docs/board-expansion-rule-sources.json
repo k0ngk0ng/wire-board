@@ -137,5 +137,10 @@
     "sha256": "c64290ddc992a51f2da3115c5191e4df358f58e6935183f055e8022566273f0a",
     "bytes": 12237888,
     "note": "Page 7 explicitly excludes seven from no-resource gold compensation and permits returning cargo from ships at any time; the latter differs from English 2025 p10 full-storage replacement wording. Do not silently mix cargo rules. Gold shortage handling remains unverified. Pages 3 and 20 independently show the six regional number discs and spice-farm backs: parrot pirate bonus 5, goose bonus 4. The English 2025 mission guide p16 incorrectly lists two parrot 9 discs while retaining a total of six; German p3 shows a single 9."
+  },
+  "catan-pirates-traders-2025": {
+    "url": "https://www.catan.com/sites/default/files/2025-08/ExplorersPirates%20w%20TnB.pdf",
+    "sha256": "1e08ad363cb0533f77693460683b703d15103c60395ee6a043b320340f063c68",
+    "bytes": 3376266
   }
 }

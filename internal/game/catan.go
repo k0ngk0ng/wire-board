@@ -394,6 +394,9 @@ func (s *State) applyCatan(player int, a Action) error {
 			return err
 		}
 		next.recordCatanExplorerMotion(s, player, a)
+		if err := next.validateCatanEventSession(); err != nil {
+			return err
+		}
 		if err := next.validateCatanExplorer(); err != nil {
 			return err
 		}
@@ -1387,11 +1390,17 @@ func (s *State) AutoCatanPending() {
 }
 func (s *State) EliminateCatan(p int) error {
 	if s.Catan != nil && s.Catan.Explorer != nil {
+		if err := s.validateCatanEventSession(); err != nil {
+			return err
+		}
 		if err := s.validateCatanExplorer(); err != nil {
 			return err
 		}
 		next := clone(*s)
 		if err := next.eliminateCatanExplorer(p); err != nil {
+			return err
+		}
+		if err := next.validateCatanEventSession(); err != nil {
 			return err
 		}
 		if err := next.validateCatanExplorer(); err != nil {

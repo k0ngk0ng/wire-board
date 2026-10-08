@@ -7,6 +7,7 @@ export function CatanEventPicker({
   fishing = false,
   pirateIslands = false,
   transport = false,
+  explorer = false,
   onChange,
 }: {
   value: boolean;
@@ -17,6 +18,7 @@ export function CatanEventPicker({
   fishing?: boolean;
   pirateIslands?: boolean;
   transport?: boolean;
+  explorer?: boolean;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -30,11 +32,15 @@ export function CatanEventPicker({
         事件牌 · 本站牌组
       </label>
       <p className="muted small">
-        用抽牌代替生产骰，先完成事件，再按牌面生产。36张普通牌与新年重洗；双人每回合抽两张，五六人仅①号抽牌。
+        {explorer
+          ? "探索者按2025官方组合说明只取生产点数，忽略全部事件文字；双人同样每回合一张，五六人仅①号抽牌。36张普通牌与新年重洗；金币补偿、7点海盗和独立鱼群骰保持原规则。"
+          : "用抽牌代替生产骰，先完成事件，再按牌面生产。36张普通牌与新年重洗；双人每回合抽两张，五六人仅①号抽牌。"}
       </p>
       {citiesKnights && (
         <p className="muted small">
-          城市骑士先执行事件文字，再结算独立红骰／事件骰，最后生产。炼金术替代抽牌；本站补充规则：贸易优势可随机偷资源或商品。
+          {explorer
+            ? "城市骑士保留独立红骰／事件骰，结算后按牌面点数生产。炼金术替代抽牌，牌堆不变。"
+            : "城市骑士先执行事件文字，再结算独立红骰／事件骰，最后生产。炼金术替代抽牌；本站补充规则：贸易优势可随机偷资源或商品。"}
         </p>
       )}
       {fishing && (
@@ -65,7 +71,9 @@ export function CatanEventPicker({
       <details>
         <summary>牌组说明</summary>
         <p className="muted small">
-          本站采用已交叉核对的旧版点数与事件配比，按2025事件效果执行；尚未核实与2025实体牌表完全相同。关闭后仍用原来的骰子。
+          本站采用已交叉核对的旧版点数与事件配比；尚未核实与2025实体牌表完全相同。
+          {explorer ? "探索者忽略事件文字。" : "按2025事件效果执行。"}
+          关闭后仍用原来的骰子。
         </p>
       </details>
     </fieldset>

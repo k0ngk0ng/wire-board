@@ -44,6 +44,9 @@ func (g *Catan) earthquakeRoads(player int) []int {
 // later production or sea-scenario continuation rejects the action.
 func (s *State) catanBeginCardEvent(kind string, production, red, face int) error {
 	g := s.Catan
+	if g != nil && g.Explorer != nil {
+		return errors.New("探险事件只取牌面生产点数，不执行事件效果")
+	}
 	if g == nil || s.Finished || g.setup() || s.Phase != "catan_roll" || g.CardEvent != nil || s.CatanPendingActor() >= 0 ||
 		s.Turn < 0 || s.Turn >= len(g.Players) || g.Players[s.Turn].Eliminated || production < 2 || production > 12 {
 		return errors.New("当前不能开始事件牌结算")

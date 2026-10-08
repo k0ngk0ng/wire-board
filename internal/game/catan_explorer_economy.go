@@ -36,10 +36,11 @@ func (e *catanExplorerEconomy) ensureGold(amount int) error {
 }
 
 type catanExplorerEconomyTurn struct {
+	Production   int    `json:"production,omitempty"`   // Event-card number; zero retains the original dice rules.
 	NoProduction bool   `json:"noProduction,omitempty"` // Secondary paired player: action/movement only.
 	Player       int    `json:"player"`
 	Sequence     uint64 `json:"sequence"`
-	Phase        string `json:"phase"` // roll, city, aqueduct, discard, pirate, ready, abandoned.
+	Phase        string `json:"phase"` // roll, event, city, aqueduct, discard, pirate, ready, abandoned.
 	Dice         [2]int `json:"dice"`
 	Bought       int    `json:"bought"`
 	Discard      []int  `json:"discard"`
@@ -97,7 +98,7 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 		}
 		return nil
 	}
-	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated != (t.Phase == "abandoned") || t.Sequence == 0 || !slices.Contains([]string{"roll", "city", "aqueduct", "discard", "pirate", "ready", "abandoned"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Phase != "abandoned" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
+	if t.Player < 0 || t.Player >= len(g.Players) || g.Players[t.Player].Eliminated != (t.Phase == "abandoned") || t.Sequence == 0 || !slices.Contains([]string{"roll", "event", "city", "aqueduct", "discard", "pirate", "ready", "abandoned"}, t.Phase) || t.Bought < 0 || t.Bought > 2 || t.Phase != "ready" && t.Phase != "abandoned" && t.Bought != 0 || len(t.Discard) != len(g.Players) {
 		return errors.New("探险生产阶段、玩家或购买次数无效")
 	}
 	if (t.Phase == "city" || t.Phase == "aqueduct") && g.CitiesKnights == nil {
@@ -106,14 +107,21 @@ func (e catanExplorerEconomy) validate(g *Catan, f *catanExplorerSailing, c *cat
 	if t.NoProduction && (g.Paired == nil || !g.Paired.Second || t.Player != g.Paired.Secondary || t.Phase != "ready" && t.Phase != "abandoned") {
 		return errors.New("只有配对第二位玩家可以跳过生产")
 	}
-	if t.NoProduction || t.Phase == "roll" || t.Phase == "abandoned" && t.Dice == [2]int{} {
+	if t.Production != 0 {
+		r := g.RevealedEvent
+		if g.EventDeck == nil || g.EventDeck.Explorer != CatanEventExplorerRules || t.Production < 2 || t.Production > 12 || t.NoProduction || t.Phase == "roll" || t.Dice[1] != 0 || !g.validCardEventDice(t.Dice[0], 0) || r == nil || r.RollID != g.RollID || r.Production != t.Production || r.Red != t.Dice[0] {
+			return errors.New("探险事件生产点数与实际抽牌不一致")
+		}
+	} else if t.Phase == "event" {
+		return errors.New("探险事件生产缺少牌面点数")
+	} else if t.NoProduction || t.Phase == "roll" || t.Phase == "abandoned" && t.Dice == [2]int{} {
 		if t.Dice != [2]int{} {
 			return errors.New("尚未掷骰不能已有生产点数")
 		}
 	} else if t.Dice[0] < 1 || t.Dice[0] > 6 || t.Dice[1] < 1 || t.Dice[1] > 6 {
 		return errors.New("生产骰子点数无效")
 	}
-	seven := t.Dice[0]+t.Dice[1] == 7
+	seven := t.productionNumber() == 7
 	pending := false
 	for p, amount := range t.Discard {
 		if amount < 0 || amount > 0 && (g.Players[p].Eliminated || sum(g.Players[p].Resources) <= g.catanDiscardLimit(p) || amount != sum(g.Players[p].Resources)/2) {
@@ -172,6 +180,9 @@ func (e catanExplorerEconomy) productionAllowed(g *Catan, f *catanExplorerSailin
 func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSailing, c *catanExplorerCargo, player int, sequence uint64, dice [2]int) (catanExplorerProduction, error) {
 	result := catanExplorerProduction{}
 	phaseBefore := "roll"
+	if e.Turn != nil && e.Turn.Production != 0 {
+		phaseBefore = "event"
+	}
 	if k := g.CitiesKnights; k != nil {
 		phaseBefore = "city"
 		if e.Turn == nil || e.Turn.Dice != dice || k.Event != nil || k.Pending != nil {
@@ -181,10 +192,13 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 	if err := e.productionAllowed(g, f, c, player, sequence, phaseBefore); err != nil {
 		return result, err
 	}
-	if dice[0] < 1 || dice[0] > 6 || dice[1] < 1 || dice[1] > 6 {
+	if e.Turn.Production == 0 && (dice[0] < 1 || dice[0] > 6 || dice[1] < 1 || dice[1] > 6) || e.Turn.Production != 0 && dice != e.Turn.Dice {
 		return result, errors.New("请选择有效的生产骰子")
 	}
 	number, n := dice[0]+dice[1], len(g.Players)
+	if e.Turn.Production != 0 {
+		number = e.Turn.Production
+	}
 	result = catanExplorerProduction{Resources: make([][]int, n), Gold: make([]int, n), Discard: make([]int, n)}
 	for p := range result.Resources {
 		result.Resources[p] = make([]int, len(g.Bank))

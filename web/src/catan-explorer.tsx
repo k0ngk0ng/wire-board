@@ -1,3 +1,4 @@
+import { CatanCardEventSummary } from "./catan-card-event";
 import { ExplorerPairedTurn } from "./catan-explorer-paired";
 import { ExplorerSpiceMission } from "./catan-explorer-spice";
 import { ExplorerFullMissions } from "./catan-explorer-full-missions";
@@ -303,7 +304,10 @@ export function CatanExplorerBoard({
         n <= supply.gold + (x.economy.goldIssued || 0),
     ) &&
     give.every((n, i) => n <= hand[i]);
-  const phase = explorerPhaseLabel(game.finished ? "finished" : game.phase);
+  const phase =
+    !game.finished && game.phase === "catan_roll" && g.eventDeck
+      ? "翻牌生产"
+      : explorerPhaseLabel(game.finished ? "finished" : game.phase);
   const scenario = explorerScenarioLabel(g);
   const farms = new Map(x.board.farms?.map((f) => [f.tile, f]));
   const shoals = new Map(x.board.shoals?.map((s) => [s.tile, s.number]));
@@ -334,26 +338,29 @@ export function CatanExplorerBoard({
               {phase} · 目标{x.board.target}分
             </span>
           </div>
-          <div
-            className="explorer-dice"
-            role="img"
-            aria-label={
-              noProduction
-                ? "第二位玩家不掷生产骰"
+          {!g.eventDeck && (
+            <div
+              className="explorer-dice"
+              role="img"
+              aria-label={
+                noProduction
+                  ? "第二位玩家不掷生产骰"
+                  : g.dice.some(Boolean)
+                    ? `骰子${g.dice.join("、")}`
+                    : "等待掷骰"
+              }
+            >
+              <Dices size={20} />
+              {noProduction
+                ? "不掷骰"
                 : g.dice.some(Boolean)
-                  ? `骰子${g.dice.join("、")}`
-                  : "等待掷骰"
-            }
-          >
-            <Dices size={20} />
-            {noProduction
-              ? "不掷骰"
-              : g.dice.some(Boolean)
-                ? g.dice.join(" + ")
-                : "待掷骰"}
-          </div>
+                  ? g.dice.join(" + ")
+                  : "待掷骰"}
+            </div>
+          )}
         </header>
         <ExplorerPairedTurn room={room} />
+        {g.eventDeck && <CatanCardEventSummary room={room} assets={assets} />}
         <div className="explorer-map-tools">
           <span>
             {targets.size
@@ -1050,7 +1057,9 @@ export function CatanExplorerBoard({
                       a.type === "catan_roll" ? void send(a) : select(a)
                     }
                   >
-                    {explorerActionNames[a.type]}
+                    {a.type === "catan_roll" && g.eventDeck
+                      ? "翻开事件牌"
+                      : explorerActionNames[a.type]}
                   </button>
                 ))}
             </div>

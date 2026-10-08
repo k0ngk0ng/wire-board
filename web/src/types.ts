@@ -633,6 +633,7 @@ export type CatanState = {
     untilNewYear: number;
     catalogue: string;
     referenceOnly: boolean;
+    explorer?: string;
     knights?: string;
     clothFallback?: string;
     fleetRules?: string;

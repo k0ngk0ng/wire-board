@@ -188,6 +188,9 @@ func (s *State) applyCatanExplorer(player int, a Action) error {
 	var err error
 	switch a.Type {
 	case "catan_roll":
+		if g.EventDeck != nil {
+			return s.catanDrawEvent()
+		}
 		return s.catanExplorerRoll([2]int{catanRandom(6) + 1, catanRandom(6) + 1})
 	case "catan_trade_offer":
 		return s.catanOffer(player, a)
