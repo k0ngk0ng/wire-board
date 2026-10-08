@@ -69,10 +69,10 @@ func catanExplorerLandVertex(g *Catan, vertex int) bool {
 		if !slices.Contains(tile.Vertices, vertex) {
 			continue
 		}
-		if tile.Resource == CatanFog || tile.Resource == CatanGold && tile.Number == 0 || tile.Resource < 0 || tile.Resource > CatanGold {
+		if tile.Resource == CatanFog || tile.Resource == CatanGold && tile.Number == 0 || tile.Resource < 0 || tile.Resource > CatanGold && tile.Resource != catanLake {
 			return false
 		}
-		land = land || tile.Resource < CatanSea || tile.Resource == CatanGold
+		land = land || tile.Resource < CatanSea || tile.Resource == CatanGold || tile.Resource == catanLake
 	}
 	return land
 }

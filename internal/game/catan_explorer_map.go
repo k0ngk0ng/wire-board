@@ -37,6 +37,8 @@ type catanExplorerFarm struct {
 	PirateDie int    `json:"pirateDie,omitempty"`
 }
 type catanExplorerBoard struct {
+	Fishing       string                 `json:"fishing,omitempty"`
+	FishingLakes  bool                   `json:"fishingLakes,omitempty"`
 	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
 	Council       *catanExplorerCouncil  `json:"council,omitempty"`
 	Liberated     map[int]int            `json:"liberated,omitempty"`   // Original revealed lair numbers, supplied only by the mission controller.
@@ -247,20 +249,24 @@ func newCatanExplorerBoard(players int, scenario, layout string) (*Catan, *catan
 }
 
 func newCatanExplorerBoardVariant(players int, scenario, layout string, citiesKnights bool) (*Catan, *catanExplorerBoard, error) {
-	g, m, err := catanExplorerGeometryVariant(players, scenario, layout, citiesKnights)
+	return newCatanExplorerBoardFishing(players, scenario, layout, citiesKnights, "", false)
+}
+
+func newCatanExplorerBoardFishing(players int, scenario, layout string, citiesKnights bool, fishing string, lakes bool) (*Catan, *catanExplorerBoard, error) {
+	g, m, err := catanExplorerGeometryFishing(players, scenario, layout, citiesKnights, fishing, lakes)
 	if err != nil {
 		return nil, nil, err
 	}
 	if layout == "variable" {
 		resources := []int{}
 		for _, tile := range m.Starting {
-			if tile != m.FramePasture {
+			if tile != m.FramePasture && g.Tiles[tile].Resource != catanLake {
 				resources = append(resources, g.Tiles[tile].Resource)
 			}
 		}
 		shuffle(resources)
 		for _, tile := range m.Starting {
-			if tile != m.FramePasture {
+			if tile != m.FramePasture && g.Tiles[tile].Resource != catanLake {
 				g.Tiles[tile].Resource, resources = resources[0], resources[1:]
 			}
 		}
@@ -309,7 +315,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 	if g == nil || len(g.Players) != m.Players || m.Rules != catanExplorerRules {
 		return errors.New("探险地图规则或人数无效")
 	}
-	base, spec, err := catanExplorerGeometryVariant(m.Players, m.Scenario, m.Layout, m.CitiesKnights)
+	base, spec, err := catanExplorerGeometryFishing(m.Players, m.Scenario, m.Layout, m.CitiesKnights, m.Fishing, m.FishingLakes)
 	if err != nil {
 		return err
 	}
@@ -351,7 +357,7 @@ func (m catanExplorerBoard) validate(g *Catan) error {
 		if b.Resource == CatanFog {
 			continue
 		}
-		if tile.Number != m.numberAt(i, b.Number) || tile.Resource != b.Resource && (m.Layout == "fixed" || !slices.Contains(m.Starting, i) || i == m.FramePasture) {
+		if tile.Number != m.numberAt(i, b.Number) || tile.Resource != b.Resource && (m.Layout == "fixed" || !slices.Contains(m.Starting, i) || i == m.FramePasture || b.Resource == catanLake) {
 			return errors.New("探险起始数字或固定边框地块改变")
 		}
 		if slices.Contains(m.Starting, i) {
@@ -470,6 +476,8 @@ func (m *catanExplorerBoard) reveal(g *Catan, tile int) (catanExplorerHidden, er
 }
 
 type catanExplorerBoardView struct {
+	Fishing       string                 `json:"fishing,omitempty"`
+	FishingLakes  bool                   `json:"fishingLakes,omitempty"`
 	CitiesKnights bool                   `json:"citiesKnights,omitempty"`
 	Farms         []catanExplorerFarm    `json:"farms,omitempty"`
 	Council       *catanExplorerCouncil  `json:"council,omitempty"`
@@ -487,7 +495,7 @@ type catanExplorerBoardView struct {
 }
 
 func (m catanExplorerBoard) publicView() catanExplorerBoardView {
-	v := catanExplorerBoardView{CitiesKnights: m.CitiesKnights, Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
+	v := catanExplorerBoardView{Fishing: m.Fishing, FishingLakes: m.FishingLakes, CitiesKnights: m.CitiesKnights, Rules: m.Rules, Scenario: m.Scenario, Layout: m.Layout, Target: m.Target, Starting: slices.Clone(m.Starting), HarborStarts: slices.Clone(m.HarborStarts), Regions: [2][]int{slices.Clone(m.Regions[0]), slices.Clone(m.Regions[1])}, Opening: slices.Clone(m.Opening)}
 	v.Council = clone(m.Council)
 	for i := range v.Opening {
 		v.Opening[i].Resources = slices.Clone(v.Opening[i].Resources)

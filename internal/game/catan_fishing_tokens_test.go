@@ -42,7 +42,7 @@ func fishReject(t *testing.T, f *catanFishingTokens, action func() error) {
 }
 
 func TestCatanFishingTokensOfficialInventoryAndRestore(t *testing.T) {
-	for n := 3; n <= 6; n++ {
+	for n := 2; n <= 6; n++ {
 		f := fishingTokens(t, n)
 		counts := make([]int, 4)
 		for _, id := range f.DrawPile {
@@ -91,7 +91,7 @@ func TestCatanFishingTokensOfficialInventoryAndRestore(t *testing.T) {
 			f = &restored
 		}
 	}
-	for _, n := range []int{0, 2, 7} {
+	for _, n := range []int{0, 1, 7} {
 		if _, err := newCatanFishingTokens(n); err == nil {
 			t.Fatal("unsupported player count")
 		}
@@ -194,53 +194,57 @@ func TestCatanFishingTokensPaymentsAndBootPublicRanking(t *testing.T) {
 }
 
 func TestCatanFishingTokensViewPrivacyAndAliasing(t *testing.T) {
-	f := fishingTokens(t, 3)
-	fishOwn(f, 0, 0, 11)
-	fishOwn(f, 1, 21)
-	fishTop(f, catanFishBoot)
-	if err := f.beginDraw(2, []int{0, 0, 1}); err != nil {
-		t.Fatal(err)
-	}
-	if err := f.spend(0, []int{11}, 2); err != nil {
-		t.Fatal(err)
-	}
-	for viewer := -1; viewer < 3; viewer++ {
-		v, err := f.view(viewer)
-		if err != nil {
+	for _, n := range []int{2, 3, 6} {
+		f := fishingTokens(t, n)
+		fishOwn(f, 0, 0, 11)
+		fishOwn(f, 1, 21)
+		fishTop(f, catanFishBoot)
+		claims := make([]int, n)
+		claims[n-1] = 1
+		if err := f.beginDraw(n-1, claims); err != nil {
 			t.Fatal(err)
 		}
-		if v.BootOwner != 2 || v.Discard[0].Fish != 2 {
-			t.Fatal("public boot/discards missing")
+		if err := f.spend(0, []int{11}, 2); err != nil {
+			t.Fatal(err)
 		}
-		for p, hand := range v.Players {
-			if hand.Count != len(f.Hands[p]) || len(hand.Tokens) > 0 && p != viewer {
-				t.Fatal("other player's secret tokens exposed")
+		for viewer := -1; viewer < n; viewer++ {
+			v, err := f.view(viewer)
+			if err != nil {
+				t.Fatal(err)
 			}
-
-			if p == viewer {
-				if len(hand.Tokens) != len(f.Hands[p]) {
-					t.Fatal("own fish faces absent")
+			if v.BootOwner != n-1 || v.Discard[0].Fish != 2 {
+				t.Fatal("public boot/discards missing")
+			}
+			for p, hand := range v.Players {
+				if hand.Count != len(f.Hands[p]) || len(hand.Tokens) > 0 && p != viewer {
+					t.Fatal("other player's secret tokens exposed")
 				}
-				for i, token := range hand.Tokens {
-					if token.ID != f.Hands[p][i] || token.Fish != catanFishValue(token.ID) {
-						t.Fatal("wrong own token face")
+
+				if p == viewer {
+					if len(hand.Tokens) != len(f.Hands[p]) {
+						t.Fatal("own fish faces absent")
+					}
+					for i, token := range hand.Tokens {
+						if token.ID != f.Hands[p][i] || token.Fish != catanFishValue(token.ID) {
+							t.Fatal("wrong own token face")
+						}
 					}
 				}
 			}
-		}
-		g := f.copy()
-		slices.Reverse(g.DrawPile)
-		other, _ := g.view(viewer)
-		if !reflect.DeepEqual(v, other) {
-			t.Fatal("view depends on hidden draw order")
-		}
-		v.Discard[0].Fish = 99
-		if len(v.Players[0].Tokens) > 0 {
-			v.Players[0].Tokens[0].Fish = 99
-		}
-		again, _ := f.view(viewer)
-		if again.Discard[0].Fish != 2 {
-			t.Fatal("view aliases state")
+			g := f.copy()
+			slices.Reverse(g.DrawPile)
+			other, _ := g.view(viewer)
+			if !reflect.DeepEqual(v, other) {
+				t.Fatal("view depends on hidden draw order")
+			}
+			v.Discard[0].Fish = 99
+			if len(v.Players[0].Tokens) > 0 {
+				v.Players[0].Tokens[0].Fish = 99
+			}
+			again, _ := f.view(viewer)
+			if again.Discard[0].Fish != 2 {
+				t.Fatal("view aliases state")
+			}
 		}
 	}
 }
