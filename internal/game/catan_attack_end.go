@@ -15,6 +15,7 @@ type catanAttackMoveChoice struct {
 	Required bool  `json:"required"`
 	Normal   []int `json:"normal"`
 	Wheat    []int `json:"wheat"`
+	Fish     []int `json:"fish,omitempty"`
 }
 
 func (s *State) catanAttackBeginEnd() error {
@@ -64,8 +65,8 @@ func (s *State) catanAttackEndChoice(player int, action Action) error {
 		return errors.New("当前不能提交这项骑士移动计划")
 	}
 	switch action.Choice {
-	case "normal", "wheat":
-		q.Moves = append(q.Moves, catanAttackMove{From: action.Edge, To: action.Target, Wheat: action.Choice == "wheat"})
+	case "normal", "wheat", "fish":
+		q.Moves = append(q.Moves, catanAttackMove{From: action.Edge, To: action.Target, Wheat: action.Choice == "wheat", Fish: action.Choice == "fish"})
 		_, err := s.catanAttackPlanPreview()
 		return err
 	case "undo":
@@ -138,6 +139,14 @@ func (s *State) catanAttackPlanChoices(preview *State) ([]catanAttackMoveChoice,
 				}
 			}
 		}
+		if g.fishingAttack() && k.Player == s.Turn && g.fishPayment(s.Turn, g.fishActionCost(s.Turn, "catan_fish_knight")) != nil {
+			for edge := range a.knightDestinations(g, i, 5) {
+				if edge != k.Edge {
+					choice.Fish = append(choice.Fish, edge)
+				}
+			}
+		}
+		slices.Sort(choice.Fish)
 		slices.Sort(choice.Normal)
 		slices.Sort(choice.Wheat)
 		choices = append(choices, choice)
@@ -164,6 +173,9 @@ func (s *State) catanAttackPlanView(public map[string]any, player int) {
 	public["previewKnights"] = preview.Catan.Attack.Knights
 	public["previewWheat"] = preview.Catan.Players[player].Resources[3]
 	public["canConfirm"] = ready
+	if preview.Catan.fishingAttack() {
+		public["previewFish"] = preview.Catan.Fishing.Tokens.Hands[player]
+	}
 }
 
 func (s *State) catanAttackEndBot(player int) (Action, error) {
@@ -189,6 +201,9 @@ func (s *State) catanAttackEndBot(player int) (Action, error) {
 			best.Choice = "normal"
 			if m.Wheat {
 				best.Choice = "wheat"
+			}
+			if m.Fish {
+				best.Choice = "fish"
 			}
 			return best, nil
 		}
@@ -218,10 +233,11 @@ func (s *State) catanAttackEndBot(player int) (Action, error) {
 		for _, mode := range []struct {
 			edges []int
 			wheat bool
-		}{{c.Normal, false}, {c.Wheat, true}} {
+			fish  bool
+		}{{c.Normal, false, false}, {c.Wheat, true, false}, {c.Fish, false, true}} {
 			for _, edge := range mode.edges {
 				improvement := score(edge) - score(c.From)
-				if mode.wheat {
+				if mode.wheat || mode.fish {
 					improvement -= 8
 				}
 				if improvement > gain {
@@ -230,6 +246,9 @@ func (s *State) catanAttackEndBot(player int) (Action, error) {
 					best.Choice = "normal"
 					if mode.wheat {
 						best.Choice = "wheat"
+					}
+					if mode.fish {
+						best.Choice = "fish"
 					}
 				}
 			}
@@ -249,12 +268,13 @@ func (s *State) catanAttackDeparturePlan(choices []catanAttackMoveChoice) ([]cat
 			for _, mode := range []struct {
 				edges []int
 				wheat bool
-			}{{c.Normal, false}, {c.Wheat, true}} {
+				fish  bool
+			}{{c.Normal, false, false}, {c.Wheat, true, false}, {c.Fish, false, true}} {
 				for _, edge := range mode.edges {
-					if mode.wheat && slices.Contains(c.Normal, edge) {
+					if (mode.wheat || mode.fish) && slices.Contains(c.Normal, edge) {
 						continue
 					}
-					move := catanAttackMove{c.From, edge, mode.wheat}
+					move := catanAttackMove{From: c.From, To: edge, Wheat: mode.wheat, Fish: mode.fish}
 					next := clone(*s)
 					next.Catan.Attack.EndPlan.Moves = append(next.Catan.Attack.EndPlan.Moves, move)
 					p, err := next.catanAttackPlanPreview()

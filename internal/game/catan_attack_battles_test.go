@@ -88,12 +88,12 @@ func TestCatanAttackEndMovementOrders(t *testing.T) {
 			t.Fatal("fixture unreachable")
 		}
 		attackEndReject(t, s, nil, attackDice(t))
-		attackEndReject(t, s, []catanAttackMove{{from, target5, false}}, attackDice(t))
-		attackEndReject(t, s, []catanAttackMove{{from, target5, true}}, attackDice(t))
+		attackEndReject(t, s, []catanAttackMove{{From: from, To: target5, Wheat: false}}, attackDice(t))
+		attackEndReject(t, s, []catanAttackMove{{From: from, To: target5, Wheat: true}}, attackDice(t))
 		attackHand(s, p, []int{0, 0, 0, 2, 0})
-		attackEndReject(t, s, []catanAttackMove{{from, target3, false}, {from, target5, true}}, attackDice(t))
+		attackEndReject(t, s, []catanAttackMove{{From: from, To: target3, Wheat: false}, {From: from, To: target5, Wheat: true}}, attackDice(t))
 		saved := clone(*s)
-		if err := s.catanAttackResolveEnd([]catanAttackMove{{from, target5, true}}, attackDice(t)); err != nil {
+		if err := s.catanAttackResolveEnd([]catanAttackMove{{From: from, To: target5, Wheat: true}}, attackDice(t)); err != nil {
 			t.Fatal(err)
 		}
 		if s.Catan.Players[p].Resources[3] != 1 || s.Catan.Attack.Knights[0].Edge != target5 || s.Catan.Attack.End.Player != p || s.Catan.Attack.EndSequence != 1 {
@@ -104,7 +104,7 @@ func TestCatanAttackEndMovementOrders(t *testing.T) {
 		}
 		assertAttackRestored(t, s)
 		s = &saved
-		if err := s.catanAttackResolveEnd([]catanAttackMove{{from, target3, false}}, attackDice(t)); err != nil {
+		if err := s.catanAttackResolveEnd([]catanAttackMove{{From: from, To: target3, Wheat: false}}, attackDice(t)); err != nil {
 			t.Fatal(err)
 		}
 		if s.Catan.Players[p].Resources[3] != 2 {
@@ -227,7 +227,7 @@ func TestCatanAttackEndRejectsDiceGoldAndWrongOrdersAtomically(t *testing.T) {
 	a.GoldIssued = 0
 	attackCoins(s, other, 0)
 	a.Knights[0].Player = other
-	attackEndReject(t, s, []catanAttackMove{{a.Knights[0].Edge, a.Knights[1].Edge, false}}, attackDice(t))
+	attackEndReject(t, s, []catanAttackMove{{From: a.Knights[0].Edge, To: a.Knights[1].Edge, Wheat: false}}, attackDice(t))
 	attackEndReject(t, s, nil, func() int { return 2 }) // Equal distribution rolls never fabricate a winner.
 }
 func TestCatanAttackEndVictoryAndNonCurrentScores(t *testing.T) {
@@ -280,11 +280,11 @@ func TestCatanAttackEndVacatedOriginsAndIndependentWheat(t *testing.T) {
 		t.Fatal("fixture")
 	}
 	attackHand(s, p, []int{0, 0, 0, 1, 0})
-	attackEndReject(t, s, []catanAttackMove{{first, destination, true}, {second, first, true}}, attackDice(t))
+	attackEndReject(t, s, []catanAttackMove{{From: first, To: destination, Wheat: true}, {From: second, To: first, Wheat: true}}, attackDice(t))
 	attackHand(s, p, []int{0, 0, 0, 2, 0})
 	// A vacated origin cannot be used to move the first knight a second time.
-	attackEndReject(t, s, []catanAttackMove{{first, destination, false}, {second, first, false}, {first, second, false}}, attackDice(t))
-	if err := s.catanAttackResolveEnd([]catanAttackMove{{first, destination, true}, {second, first, true}}, attackDice(t)); err != nil {
+	attackEndReject(t, s, []catanAttackMove{{From: first, To: destination, Wheat: false}, {From: second, To: first, Wheat: false}, {From: first, To: second, Wheat: false}}, attackDice(t))
+	if err := s.catanAttackResolveEnd([]catanAttackMove{{From: first, To: destination, Wheat: true}, {From: second, To: first, Wheat: true}}, attackDice(t)); err != nil {
 		t.Fatal(err)
 	}
 	if s.Catan.Players[p].Resources[3] != 0 || s.Catan.Attack.Knights[0].Edge != destination || s.Catan.Attack.Knights[1].Edge != first {

@@ -80,8 +80,16 @@ func (s *State) validateCatanAttack() error {
 		return errors.New("多人蛮族混入双人组件")
 	}
 	n := len(g.Players)
-	if n < 2 || n > 6 || (n == 2 || g.Two != nil || a.TwoRules != "") && !g.twoAttack() || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
+	if n < 2 || n > 6 || (n == 2 || g.Two != nil || a.TwoRules != "") && !g.twoAttack() || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
 		return errors.New("蛮族进攻人数或尚未接入的组合无效")
+	}
+	if g.fishingAttack() {
+		if err := g.validateFishing(); err != nil {
+			return err
+		}
+		if (g.Fishing.Pending != nil) != (s.Phase == "catan_fish_replace") {
+			return errors.New("蛮族捕鱼回应阶段冲突")
+		}
 	}
 	if g.twoAttack() {
 		if err := s.validateTwoAttack(); err != nil {
@@ -97,13 +105,16 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
 		return errors.New("蛮族进攻发展卡响应状态无效")
 	}
 	if q := a.Pending; q != nil {
+		if q.Resume != "" && (q.Resume != "catan_roll" || !g.fishingAttack()) {
+			return errors.New("蛮族发展卡返回阶段无效")
+		}
 		if q.ID != a.CardSequence || q.ID < 1 || q.Player != s.Turn || q.Player < 0 || q.Player >= n || g.Players[q.Player].Eliminated || g.Trade != nil || s.Finished {
 			return errors.New("蛮族进攻发展卡回应者或序号无效")
 		}

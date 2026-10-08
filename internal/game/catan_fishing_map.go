@@ -154,6 +154,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if g.Attack != nil || g.Fishing != nil && g.Fishing.Attack != "" {
+		return f.validateAttack(g)
+	}
 	if g.Caravans != nil || g.Fishing != nil && g.Fishing.Caravans != "" {
 		return f.validateCaravans(g)
 	}
@@ -301,6 +304,9 @@ func (f catanFishingMap) production(g *Catan, total int) ([]int, error) {
 	add := func(vertices []int) {
 		for _, id := range vertices {
 			v := g.Vertices[id]
+			if g.fishingAttack() && g.Attack.conqueredBuilding(g, id) {
+				continue
+			}
 			if v.Level > 0 && v.Owner >= 0 && v.Owner < len(due) && !g.Players[v.Owner].Eliminated {
 				level := v.Level
 				if g.Explorer != nil && catanExplorerHarborAt(g, id) {

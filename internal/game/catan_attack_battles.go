@@ -8,6 +8,7 @@ import (
 // Orders refer to the knight's edge at the start of the end phase. This keeps
 // identity stable when another knight subsequently occupies a vacated edge.
 type catanAttackMove struct {
+	Fish  bool `json:"fish,omitempty"`
 	From  int  `json:"from"`
 	To    int  `json:"to"`
 	Wheat bool `json:"wheat,omitempty"`
@@ -92,12 +93,14 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 				a.Prisoners[p] += n
 			}
 		}
-		if g.twoAttack() {
+		if g.twoAttack() && !g.fishingAttack() {
 			battle.Tokens = make([]int, 2)
 			for p := range 2 {
 				battle.Tokens[p] = battle.Gold[p] / 3
 				battle.Gold[p] = battle.Tokens[p] * 2
 			}
+		}
+		if g.twoAttack() {
 			battle.Gold[2] = 0
 		}
 		s.catanScores()
@@ -113,7 +116,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 			for _, k := range battle.Knights {
 				if !(g.twoAttack() && k.Player == catanAttackNeutral) && a.Map.edgeOrientation(g, k.Edge) == orientation {
 					battle.Lost = append(battle.Lost, k)
-					if g.twoAttack() {
+					if g.twoAttack() && !g.fishingAttack() {
 						battle.Gold[k.Player] += 2
 						battle.Tokens[k.Player]++
 					} else {
@@ -130,7 +133,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 			if p < len(g.Players) {
 				a.Gold[p] += n
 				a.GoldBank -= n
-				if g.twoAttack() {
+				if g.twoAttack() && !g.fishingAttack() {
 					if err := s.catanTwoEarn(p, battle.Tokens[p]); err != nil {
 						return err
 					}
@@ -150,7 +153,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 		}
 		for p, n := range battle.Gold {
 			if n > 0 {
-				if g.twoAttack() {
+				if g.twoAttack() && !g.fishingAttack() {
 					s.catanLog(p, "战斗补偿：金币×%d、贸易筹码×%d", n, battle.Tokens[p])
 				} else {
 					s.catanLog(p, "战斗补偿：金币×%d", n)
@@ -280,6 +283,9 @@ func (s *State) validateCatanAttackEnd() error {
 	}
 	used := map[int]bool{}
 	for _, m := range q.Moves {
+		if m.Fish && (!g.fishingAttack() || m.Wheat) {
+			return errors.New("鱼骑士移动记录无效")
+		}
 		if m.From < 0 || m.From >= len(g.Edges) || m.To < 0 || m.To >= len(g.Edges) || m.From == m.To || used[m.From] || a.castleEdge(g, m.To) {
 			return errors.New("骑士移动记录无效")
 		}
@@ -309,11 +315,14 @@ func (s *State) validateCatanAttackEnd() error {
 			used[k.Edge] = true
 		}
 		for p, n := range b.Prisoners {
-			if n < 0 || b.Gold[p] < 0 || (!g.twoAttack() && b.Gold[p]%3 != 0 || g.twoAttack() && b.Gold[p]%2 != 0) || (n > 0 || b.Gold[p] > 0) && !involved[p] {
+			if n < 0 || b.Gold[p] < 0 || ((!g.twoAttack() || g.fishingAttack()) && b.Gold[p]%3 != 0 || g.twoAttack() && !g.fishingAttack() && b.Gold[p]%2 != 0) || (n > 0 || b.Gold[p] > 0) && !involved[p] {
 				return errors.New("俘虏或金币奖励记录无效")
 			}
 		}
-		if g.twoAttack() {
+		if g.twoAttack() && g.fishingAttack() && b.Gold[2] != 0 {
+			return errors.New("中立骑士不能领取鱼局金币补偿")
+		}
+		if g.twoAttack() && !g.fishingAttack() {
 			if len(b.Tokens) != 2 || b.Gold[2] != 0 {
 				return errors.New("双人战斗补偿记录无效")
 			}
@@ -369,6 +378,22 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 			neutralMoved = true
 		}
 		steps := 3
+		if move.Fish {
+			if !g.fishingAttack() || neutral || move.Wheat {
+				return errors.New("只有己方骑士可用鱼延长移动，不能同时支付粮食")
+			}
+			steps = 5
+			cost := g.fishActionCost(s.Turn, "catan_fish_knight")
+			payment := g.fishPayment(s.Turn, cost)
+			if err := g.Fishing.Tokens.spend(s.Turn, payment, cost); err != nil {
+				return err
+			}
+			paid := 0
+			for _, id := range payment {
+				paid += catanFishValue(id)
+			}
+			s.catanLog(s.Turn, "支付 %d 鱼（费用 %d，多付不找零），延长骑士移动", paid, cost)
+		}
 		if move.Wheat {
 			steps = 5
 			if g.Players[s.Turn].Resources[3] < 1 {
