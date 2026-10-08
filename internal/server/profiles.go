@@ -165,6 +165,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["seafarers"] = g.Seafarers.Rules
+			if g.Seafarers.NumberRecipe != "" {
+				record.CatanExpansionRules["number_recipe"] = g.Seafarers.NumberRecipe
+			}
 		}
 		if g.EventDeck != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "event_cards")

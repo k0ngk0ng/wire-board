@@ -173,8 +173,11 @@ func TestCatanPublicEventsNaturalHTTPMatches(t *testing.T) {
 		cases = append(cases, recipe{n: n, fixed: true})
 	}
 	for _, scenario := range []string{"shores", "islands", "fog", "desert"} {
-		for _, n := range []int{3, 4} {
+		for _, n := range []int{3, 4, 5, 6} {
 			cases = append(cases, recipe{scenario: scenario, n: n, helpers: n == 4})
+			if n > 4 {
+				cases = append(cases, recipe{scenario: scenario, n: n, helpers: true})
+			}
 		}
 	}
 	for _, tc := range cases {

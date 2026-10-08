@@ -8,8 +8,8 @@ func (g *Catan) makeSeafarersShoresSix() error {
 	if len(g.Players) < 5 || len(g.Players) > 6 {
 		return fmt.Errorf("此航海家地图需要5至6位玩家")
 	}
-	// Use the base extension's numbered spiral for the 30-hex main island.
-	// Do not replace its A–Zc sequence with unrestricted number shuffling.
+	// Preserve the site's existing 28-number sequence on the 30-hex mainland.
+	// The physical 2025 letter backs have not been independently verified.
 	main := &Catan{Players: g.Players}
 	main.makeMap()
 	rows := [][]seaTerrain{
@@ -56,6 +56,7 @@ func (g *Catan) makeSeafarersShoresSix() error {
 			}
 		}
 	}
+	g.Seafarers.NumberRecipe = CatanExtendedNumberRecipe
 	g.Seafarers.Variable = true
 	g.shuffleSeafarersPorts()
 	return nil

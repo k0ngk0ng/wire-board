@@ -499,7 +499,7 @@ func summary(r *Room) map[string]any {
 		choices := game.CatanSeafarersScenarios(max(3, r.Capacity))
 		if publicCatanSeaScenario(r.CatanScenario) {
 			choices = slices.DeleteFunc(choices, func(info game.CatanSeafarersScenario) bool {
-				return !publicCatanSeaScenario(info.ID) || (r.Capacity > 4 && !r.CatanFishing && info.ID != "cloth")
+				return !publicCatanSeaScenario(info.ID)
 			})
 		}
 		if r.CatanFishing {
@@ -1032,6 +1032,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		options, optionErr := game.NormalizeCatanOptions(req.CatanOptions)
 		err = optionErr
+		if err == nil && options == next.CatanOptions {
+			break
+		}
 		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() {
 			err = errors.New("友善强盗的五六人公开组合需要基础地图")
 		}

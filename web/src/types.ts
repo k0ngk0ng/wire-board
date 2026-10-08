@@ -664,6 +664,7 @@ export type CatanState = {
   treasonPlacements?: number[];
   knightMoves?: Record<string, number[]>;
   seafarers?: {
+    numberRecipe?: string;
     variable?: boolean;
     rules?: string;
     layout?: string;

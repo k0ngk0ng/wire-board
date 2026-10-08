@@ -20,10 +20,7 @@ func TestCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T) {
 func TestCatanCitiesKnightsSeafarersConfiguredFullHTTPGames(t *testing.T) {
 	for _, scenario := range []string{"shores", "islands", "fog", "desert", "new_world", "wonders", "cloth"} {
 		t.Run(scenario, func(t *testing.T) {
-			players := []int{3, 4, 6}
-			if scenario == "cloth" {
-				players = []int{3, 4, 5, 6}
-			}
+			players := []int{3, 4, 5, 6}
 			testCatanCitiesKnightsConfiguredFullHTTPGames(t, scenario, false, players...)
 		})
 	}
@@ -48,8 +45,12 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 	recipes := []recipe{}
 	for _, n := range players {
 		layouts := []string{""}
-		if scenario == "cloth" && n > 4 {
-			layouts = []string{"fixed"}
+		if scenario != "" && scenario != "fishing" && n > 4 {
+			for _, info := range game.CatanSeafarersScenarios(n) {
+				if info.ID == scenario {
+					layouts = info.Layouts
+				}
+			}
 		}
 		if scenario != "" && scenario != "fishing" && n <= 4 {
 			layouts = []string{"fixed", "variable"}
@@ -83,7 +84,7 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				clients[p].register(fmt.Sprintf("骑士玩家%d", p))
 			}
 			options := game.CatanOptions{FiveSix: n > 4}
-			public := n <= 4 || scenario == "" || scenario == "cloth"
+			public := n <= 4 || scenario == "" || game.CatanCitiesKnightsSeafarersSupported(scenario)
 			body := map[string]any{"kind": "catan", "name": "城市骑士验证", "capacity": n, "catanOptions": options}
 			if public {
 				body["catanScenario"] = "cities-knights"
@@ -355,6 +356,9 @@ func testCatanCitiesKnightsConfiguredFullHTTPGames(t *testing.T, scenario string
 				count := 2
 				if harbors {
 					count++
+				}
+				if sea.NumberRecipe != "" && versions["number_recipe"] != sea.NumberRecipe {
+					t.Fatal("missing sea number version")
 				}
 				if history["catanScenario"] != sea.Scenario || history["catanLayout"] != sea.Layout || history["catanRules"] != sea.Rules || versions["seafarers"] != sea.Rules || versions["cities_knights"] != room.Game.Catan.CitiesKnightsSetup().Rules || len(history["catanExpansions"].([]any)) != count {
 					t.Fatal("missing combined frozen identity", history)

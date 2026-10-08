@@ -206,6 +206,15 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
   }
 }
 
+function CatanSeaNumberRules({ info }: { info: CatanRuleContext }) {
+  return info.seaNumberRecipe ? (
+    <p>
+      <b>本站数字配置：</b>
+      五六人新海岸的主岛沿逆时针螺旋使用本站28枚数字数列，跳过沙漠；外围岛屿地形与数字保持固定。不宣称已核实2025实体字母背面。
+    </p>
+  ) : null;
+}
+
 function CatanEventRules({ info }: { info: CatanRuleContext }) {
   if (!info.events) return null;
   return (
@@ -333,6 +342,7 @@ export function CatanRules({ room }: { room: Room }) {
         <p>
           <b>蛮族进攻 · {players}人</b> · 自己回合达到12分立即获胜。
         </p>
+        <CatanSeaNumberRules info={info} />
         <CatanEventRules info={info} />
         <h4>建设、生产与蛮族登陆</h4>
         <ol>
@@ -382,6 +392,7 @@ export function CatanRules({ room }: { room: Room }) {
   if (info.citiesKnights)
     return (
       <>
+        <CatanSeaNumberRules info={info} />
         <CatanCitiesKnightsRules info={info} />
         {info.fishing && (
           <>
@@ -420,6 +431,7 @@ export function CatanRules({ room }: { room: Room }) {
   const wonders = scenario === "wonders";
   return (
     <>
+      <CatanSeaNumberRules info={info} />
       <CatanEventRules info={info} />
       <p>
         <b>

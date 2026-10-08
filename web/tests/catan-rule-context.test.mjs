@@ -260,21 +260,42 @@ test("combined wonders use twelve-point threshold and preserve variable sea layo
 });
 
 test("harbors target is added once and comes from the running game instead of its room draft", () => {
- for (const [scenario, ck, expected] of [["",false,11],["",true,14],["wonders",true,13],["cloth",false,15],["pirate_islands",false,11],["shores",true,17]]) {
-  const room = { capacity: 3, catanHarbors: {enabled:true}, ...(ck ? {catanCitiesKnights:{}} : {}), ...(scenario ? {catanSeafarers:{scenario}} : {}) };
-  assert.equal(catanRuleContext(room).target,expected);
-  room.game = {catan:{players:[{},{},{}], harbors:{owner:-1,points:[0,0,0]}, ...(ck ? {citiesKnights:{}} : {}), ...(scenario ? {seafarers:{scenario,victoryPoints:expected-1}} : {})}};
-  room.catanHarbors.enabled=false;
-  assert.equal(catanRuleContext(room).harbors,true);
-  assert.equal(catanRuleContext(room).target,expected);
-  room.game.catan.victoryTarget=expected;
-  assert.equal(catanRuleContext(room).target,expected);
-  delete room.game.catan.harbors;
-  room.catanHarbors.enabled=true;
-  room.game.catan.victoryTarget=expected-1;
-  assert.equal(catanRuleContext(room).harbors,false);
-  assert.equal(catanRuleContext(room).target,expected-1);
- }
+  for (const [scenario, ck, expected] of [
+    ["", false, 11],
+    ["", true, 14],
+    ["wonders", true, 13],
+    ["cloth", false, 15],
+    ["pirate_islands", false, 11],
+    ["shores", true, 17],
+  ]) {
+    const room = {
+      capacity: 3,
+      catanHarbors: { enabled: true },
+      ...(ck ? { catanCitiesKnights: {} } : {}),
+      ...(scenario ? { catanSeafarers: { scenario } } : {}),
+    };
+    assert.equal(catanRuleContext(room).target, expected);
+    room.game = {
+      catan: {
+        players: [{}, {}, {}],
+        harbors: { owner: -1, points: [0, 0, 0] },
+        ...(ck ? { citiesKnights: {} } : {}),
+        ...(scenario
+          ? { seafarers: { scenario, victoryPoints: expected - 1 } }
+          : {}),
+      },
+    };
+    room.catanHarbors.enabled = false;
+    assert.equal(catanRuleContext(room).harbors, true);
+    assert.equal(catanRuleContext(room).target, expected);
+    room.game.catan.victoryTarget = expected;
+    assert.equal(catanRuleContext(room).target, expected);
+    delete room.game.catan.harbors;
+    room.catanHarbors.enabled = true;
+    room.game.catan.victoryTarget = expected - 1;
+    assert.equal(catanRuleContext(room).harbors, false);
+    assert.equal(catanRuleContext(room).target, expected - 1);
+  }
 });
 
 test("friendly robber follows the actual game rather than a stale waiting draft and does not change target", () => {
@@ -286,7 +307,10 @@ test("friendly robber follows the actual game rather than a stale waiting draft 
   room.game = { catan: { players: [{}, {}, {}] } };
   assert.equal(catanRuleContext(room).friendlyRobber, false);
   assert.equal(catanRuleContext(room).target, 10);
-  room.game.catan.friendlyRobber = { rules: "catan-friendly-robber-2025", protectedPlayers: [0, 1] };
+  room.game.catan.friendlyRobber = {
+    rules: "catan-friendly-robber-2025",
+    protectedPlayers: [0, 1],
+  };
   room.catanFriendlyRobber.enabled = false;
   assert.equal(catanRuleContext(room).friendlyRobber, true);
   assert.equal(catanRuleContext(room).target, 10);
@@ -296,21 +320,33 @@ test("saved Explorer target overrides stale lobby drafts and survives legacy vie
   for (const target of [8, 12, 15, 17]) {
     const room = {
       capacity: 6,
-      catanSeafarers: {scenario: "shores"},
-      catanCitiesKnights: {layout: "variable"},
-      game: {catan: {players: [{}, {}, {}], explorer: {board: {target}}}},
+      catanSeafarers: { scenario: "shores" },
+      catanCitiesKnights: { layout: "variable" },
+      game: {
+        catan: { players: [{}, {}, {}], explorer: { board: { target } } },
+      },
     };
     assert.equal(catanRuleContext(room).target, target);
     room.game.catan.citiesKnights = {};
-    assert.equal(catanRuleContext(room).target, target, "saved target already includes combination points");
+    assert.equal(
+      catanRuleContext(room).target,
+      target,
+      "saved target already includes combination points",
+    );
     room.game.catan.victoryTarget = target + 1;
-    assert.equal(catanRuleContext(room).target, target + 1, "explicit server target wins");
+    assert.equal(
+      catanRuleContext(room).target,
+      target + 1,
+      "explicit server target wins",
+    );
   }
 });
 
-
 test("public Rivers and Caravans drafts use the chosen recipe, saved games win", () => {
-  for (const [scenario, target] of [["rivers", 10], ["caravans", 12]]) {
+  for (const [scenario, target] of [
+    ["rivers", 10],
+    ["caravans", 12],
+  ]) {
     const room = { capacity: 4, catanScenario: scenario, catanOptions: {} };
     const waiting = catanRuleContext(room);
     assert.equal(waiting[scenario], true);
@@ -358,14 +394,29 @@ test("public Land Ho waiting rules support two players without trade tokens and 
 
 test("Spices waiting rules choose the task target and paired turns by player count", () => {
   for (const players of [2, 3, 4, 5, 6]) {
-    const room = {capacity: players, catanScenario: "spices-for-catan", catanOptions: {}};
+    const room = {
+      capacity: players,
+      catanScenario: "spices-for-catan",
+      catanOptions: {},
+    };
     const info = catanRuleContext(room);
     assert.equal(info.explorer, true);
     assert.equal(info.two, false);
     assert.equal(info.target, 15);
     assert.equal(info.layout, "variable");
     assert.equal(info.fiveSix, players > 4);
-    room.game = {catan: {players: [{}, {}], explorer: {board: {scenario: "spices-for-catan", target: 15, layout: "variable"}}}};
+    room.game = {
+      catan: {
+        players: [{}, {}],
+        explorer: {
+          board: {
+            scenario: "spices-for-catan",
+            target: 15,
+            layout: "variable",
+          },
+        },
+      },
+    };
     const saved = catanRuleContext(room);
     assert.equal(saved.players, 2);
     assert.equal(saved.target, 15);
@@ -388,7 +439,13 @@ test("public standalone cities-knights selection keeps its thirteen-point rules"
   assert.equal(info.target, 13);
   assert.equal(info.layout, "variable");
   assert.equal(info.fiveSix, false);
-  room.game = { catan: { players: [{}, {}, {}], citiesKnights: { layout: "variable" }, options: {} } };
+  room.game = {
+    catan: {
+      players: [{}, {}, {}],
+      citiesKnights: { layout: "variable" },
+      options: {},
+    },
+  };
   assert.equal(catanRuleContext(room).players, 3);
   assert.equal(catanRuleContext(room).target, 13);
 });
@@ -405,76 +462,162 @@ test("fishing waiting rules do not masquerade as Seafarers or override saved gam
   assert.equal(catanRuleContext(room).players, 3);
 });
 
-
 test("public Barbarian Attack uses twelve points and actual player pairing", () => {
- const room = {capacity:6,catanScenario:"barbarian-attack"};
- assert.equal(catanRuleContext(room).attack,true);
- assert.equal(catanRuleContext(room).target,12);
- assert.equal(catanRuleContext(room).fiveSix,true);
- assert.equal(catanRuleContext(room).scenario,"");
- room.game={catan:{players:Array(3).fill({}),attack:{}}};
- assert.equal(catanRuleContext(room).players,3);
- assert.equal(catanRuleContext(room).fiveSix,false);
- assert.equal(catanRuleContext(room).target,12);
- delete room.game.catan.attack;
- assert.equal(catanRuleContext(room).attack,false);
- assert.equal(catanRuleContext(room).target,10);
+  const room = { capacity: 6, catanScenario: "barbarian-attack" };
+  assert.equal(catanRuleContext(room).attack, true);
+  assert.equal(catanRuleContext(room).target, 12);
+  assert.equal(catanRuleContext(room).fiveSix, true);
+  assert.equal(catanRuleContext(room).scenario, "");
+  room.game = { catan: { players: Array(3).fill({}), attack: {} } };
+  assert.equal(catanRuleContext(room).players, 3);
+  assert.equal(catanRuleContext(room).fiveSix, false);
+  assert.equal(catanRuleContext(room).target, 12);
+  delete room.game.catan.attack;
+  assert.equal(catanRuleContext(room).attack, false);
+  assert.equal(catanRuleContext(room).target, 10);
 });
-
 
 test("transport waiting rules and actual players retain thirteen points and neutral rules", () => {
- const room = {capacity:2,catanScenario:"transport"};
- let info=catanRuleContext(room);
- assert.equal(info.transport,true); assert.equal(info.two,true);
- assert.equal(info.explorer,false); assert.equal(info.target,13);
- room.capacity=4;
- assert.equal(catanRuleContext(room).two,false);
- room.game={catan:{players:[{},{}],transport:{},two:{}}};
- info=catanRuleContext(room);
- assert.equal(info.players,2); assert.equal(info.two,true); assert.equal(info.target,13);
- delete room.game.catan.transport; delete room.game.catan.two;
- info=catanRuleContext(room);
- assert.equal(info.transport,false); assert.equal(info.two,false); assert.equal(info.target,10);
+  const room = { capacity: 2, catanScenario: "transport" };
+  let info = catanRuleContext(room);
+  assert.equal(info.transport, true);
+  assert.equal(info.two, true);
+  assert.equal(info.explorer, false);
+  assert.equal(info.target, 13);
+  room.capacity = 4;
+  assert.equal(catanRuleContext(room).two, false);
+  room.game = { catan: { players: [{}, {}], transport: {}, two: {} } };
+  info = catanRuleContext(room);
+  assert.equal(info.players, 2);
+  assert.equal(info.two, true);
+  assert.equal(info.target, 13);
+  delete room.game.catan.transport;
+  delete room.game.catan.two;
+  info = catanRuleContext(room);
+  assert.equal(info.transport, false);
+  assert.equal(info.two, false);
+  assert.equal(info.target, 10);
 });
-
 
 test("Fishing with Cities and Knights uses actual combination and thirteen points", () => {
- const room={capacity:4,catanScenario:"fishing",catanCitiesKnights:{layout:"variable"}};
- let info=catanRuleContext(room);
- assert.equal(info.fishing,true);assert.equal(info.citiesKnights,true);assert.equal(info.target,13);
- assert.equal(info.scenario,"");assert.equal(info.layout,"variable");
- room.game={catan:{players:[{},{},{}],fishing:{},citiesKnights:{layout:"variable"}}};
- info=catanRuleContext(room);assert.equal(info.players,3);assert.equal(info.target,13);
- delete room.game.catan.citiesKnights;
- info=catanRuleContext(room);assert.equal(info.citiesKnights,false);assert.equal(info.target,10);
+  const room = {
+    capacity: 4,
+    catanScenario: "fishing",
+    catanCitiesKnights: { layout: "variable" },
+  };
+  let info = catanRuleContext(room);
+  assert.equal(info.fishing, true);
+  assert.equal(info.citiesKnights, true);
+  assert.equal(info.target, 13);
+  assert.equal(info.scenario, "");
+  assert.equal(info.layout, "variable");
+  room.game = {
+    catan: {
+      players: [{}, {}, {}],
+      fishing: {},
+      citiesKnights: { layout: "variable" },
+    },
+  };
+  info = catanRuleContext(room);
+  assert.equal(info.players, 3);
+  assert.equal(info.target, 13);
+  delete room.game.catan.citiesKnights;
+  info = catanRuleContext(room);
+  assert.equal(info.citiesKnights, false);
+  assert.equal(info.target, 10);
 });
-
 
 test("public sea Fishing keeps the sea target and saved recipe authoritative", () => {
- for (const [scenario,target] of [["islands",13],["fog",12],["desert",14],["tribe",13],["cloth",14],["wonders",10],["new_world",12]]) {
-  const room={capacity:4,catanScenario:scenario,catanFishing:true,catanSeafarers:{scenario,layout:"fixed"}};
-  const info=catanRuleContext(room);assert.equal(info.fishing,true);assert.equal(info.scenario,scenario);assert.equal(info.target,target);assert.equal(info.citiesKnights,false);
-  room.game={catan:{players:[{},{},{}],seafarers:{scenario,layout:"fixed"}}};assert.equal(catanRuleContext(room).fishing,false);
-  room.game.catan.fishing={};assert.equal(catanRuleContext(room).fishing,true);
- }
+  for (const [scenario, target] of [
+    ["islands", 13],
+    ["fog", 12],
+    ["desert", 14],
+    ["tribe", 13],
+    ["cloth", 14],
+    ["wonders", 10],
+    ["new_world", 12],
+  ]) {
+    const room = {
+      capacity: 4,
+      catanScenario: scenario,
+      catanFishing: true,
+      catanSeafarers: { scenario, layout: "fixed" },
+    };
+    const info = catanRuleContext(room);
+    assert.equal(info.fishing, true);
+    assert.equal(info.scenario, scenario);
+    assert.equal(info.target, target);
+    assert.equal(info.citiesKnights, false);
+    room.game = {
+      catan: {
+        players: [{}, {}, {}],
+        seafarers: { scenario, layout: "fixed" },
+      },
+    };
+    assert.equal(catanRuleContext(room).fishing, false);
+    room.game.catan.fishing = {};
+    assert.equal(catanRuleContext(room).fishing, true);
+  }
 });
 
-
 test("Explorer Knights adds five, and removing the draft leaves saved rules authoritative", () => {
- for (const [scenario, target] of [["pirate-lairs",17],["fish-for-catan",20],["spices-for-catan",20],["explorers-and-pirates",22]]) {
-  for (const capacity of [3,4,5,6]) {
-   const room={capacity,catanScenario:scenario,catanCitiesKnights:{layout:"variable"}};
-   assert.equal(catanRuleContext(room).target,target);
-   assert.equal(catanRuleContext(room).explorer,true);
-   assert.equal(catanRuleContext(room).fiveSix,capacity>4);
-   delete room.catanCitiesKnights;
-   assert.equal(catanRuleContext(room).target,target-5);
-   room.game={catan:{players:Array(3).fill({}),citiesKnights:{},explorer:{board:{scenario,target,layout:"variable"}}}};
-   assert.equal(catanRuleContext(room).target,target);
-   assert.equal(catanRuleContext(room).fiveSix,false);
-   room.game={catan:{players:Array(3).fill({})}};
-   assert.equal(catanRuleContext(room).target,10);
-   assert.equal(catanRuleContext(room).explorer,false);
+  for (const [scenario, target] of [
+    ["pirate-lairs", 17],
+    ["fish-for-catan", 20],
+    ["spices-for-catan", 20],
+    ["explorers-and-pirates", 22],
+  ]) {
+    for (const capacity of [3, 4, 5, 6]) {
+      const room = {
+        capacity,
+        catanScenario: scenario,
+        catanCitiesKnights: { layout: "variable" },
+      };
+      assert.equal(catanRuleContext(room).target, target);
+      assert.equal(catanRuleContext(room).explorer, true);
+      assert.equal(catanRuleContext(room).fiveSix, capacity > 4);
+      delete room.catanCitiesKnights;
+      assert.equal(catanRuleContext(room).target, target - 5);
+      room.game = {
+        catan: {
+          players: Array(3).fill({}),
+          citiesKnights: {},
+          explorer: { board: { scenario, target, layout: "variable" } },
+        },
+      };
+      assert.equal(catanRuleContext(room).target, target);
+      assert.equal(catanRuleContext(room).fiveSix, false);
+      room.game = { catan: { players: Array(3).fill({}) } };
+      assert.equal(catanRuleContext(room).target, 10);
+      assert.equal(catanRuleContext(room).explorer, false);
+    }
   }
- }
+});
+
+test("new shores extended number recipe uses actual saved map and does not contaminate base", () => {
+  const room = {
+    kind: "catan",
+    capacity: 6,
+    catanScenario: "shores",
+    catanSeafarers: { scenario: "shores", layout: "variable" },
+    catanOptions: { fiveSix: true },
+  };
+  assert.equal(
+    catanRuleContext(room).seaNumberRecipe,
+    "wire-board-extended-numbers-v1",
+  );
+  room.game = { catan: { players: Array(3).fill({}) } };
+  assert.equal(catanRuleContext(room).seaNumberRecipe, "");
+  room.game.catan.seafarers = {
+    scenario: "shores",
+    numberRecipe: "wire-board-extended-numbers-v1",
+  };
+  room.capacity = 3;
+  room.catanScenario = "";
+  assert.equal(
+    catanRuleContext(room).seaNumberRecipe,
+    "wire-board-extended-numbers-v1",
+  );
+  delete room.game.catan.seafarers.numberRecipe;
+  assert.equal(catanRuleContext(room).seaNumberRecipe, "");
 });
