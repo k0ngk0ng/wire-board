@@ -105,7 +105,7 @@ func TestCatanExplorerFishingPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 3, "catanScenario": "land-ho", "catanFishingLakes": true},
 		{"kind": "catan", "capacity": 3, "catanScenario": "islands", "catanFishing": true, "catanFishingLakes": true},
-		{"kind": "catan", "capacity": 3, "catanScenario": "pirate-lairs", "catanFishing": true, "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 3, "catanScenario": "pirate-lairs", "catanFishing": true, "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "catan", "capacity": 2, "catanScenario": "pirate-lairs", "catanFishing": true, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
 	} {
 		body["name"] = "错误捕鱼配置"

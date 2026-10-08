@@ -938,3 +938,70 @@ test("two-piece recruitment confirms exact cargo and keeps discard choices disti
   assert.notEqual(explorerActionKey(crew), explorerActionKey(mixed));
   assert.notEqual(explorerActionKey(mixed), explorerActionKey(spice));
 });
+
+test("helper construction keeps its payment and personnel identity through map confirmation", () => {
+  const r = room(),
+    g = r.game.catan;
+  const ordinary = { type: "catan_road", edge: 1, prompt: 5 };
+  const helper = { ...ordinary, skill: "helper", tokens: [0, 1, 1, 0, 0] };
+  const otherPayment = { ...helper, tokens: [1, 0, 0, 1, 0] };
+  g.explorer.choices = [ordinary, helper, otherPayment];
+  assert.notEqual(explorerActionKey(ordinary), explorerActionKey(helper));
+  assert.notEqual(explorerActionKey(helper), explorerActionKey(otherPayment));
+  assert.deepEqual(
+    explorerSelectedAction(r, { room: r.id, action: helper }),
+    helper,
+  );
+  g.explorer.choices = [ordinary, otherPayment];
+  assert.equal(explorerSelectedAction(r, { room: r.id, action: helper }), null);
+  assert.match(explorerActionDescription(g, helper), /砖块×1、羊毛×1/);
+  const ship = {
+    type: "catan_explorer_ship",
+    skill: "helper",
+    tokens: [0, 0, 1, 1, 0],
+    card: 0,
+    slot: 0,
+    edge: 1,
+    prompt: 5,
+  };
+  assert.match(explorerActionDescription(g, ship), /拆回原船及全部货物/);
+  assert.doesNotMatch(explorerActionDescription(g, ship), /归还移民/);
+  const build = {
+    type: "catan_settlement",
+    skill: "helper",
+    card: 1,
+    vertex: 2,
+    prompt: 5,
+  };
+  assert.match(
+    explorerActionDescription(g, build),
+    /归还.*港口1.*木材×1、砖块×1/,
+  );
+  assert.deepEqual(explorerTarget(g, build), { kind: "vertex", id: 2 });
+  assert.deepEqual(
+    explorerTarget(g, { type: "catan_helper", edge: 0, target: 1, prompt: 5 }),
+    { kind: "edge", id: 1 },
+  );
+});
+
+test("helper response belongs to the responder and cannot retain a stale private choice", () => {
+  const r = room(),
+    x = r.game.catan.explorer;
+  r.game.phase = "catan_helper";
+  r.game.turn = 1;
+  x.actor = 0;
+  x.canRespond = true;
+  const choice = { type: "catan_helper_choice", prompt: 5, color: 3 };
+  x.choices = [choice];
+  assert.deepEqual(explorerChoices(r), [choice]);
+  const pick = { room: r.id, action: choice };
+  x.choices = [
+    { type: "catan_helper_choice", prompt: 5, choice: "exchange", card: 7 },
+  ];
+  assert.equal(explorerSelectedAction(r, pick), null);
+  x.actor = 1;
+  assert.deepEqual(explorerChoices(r), []);
+  x.actor = 0;
+  r.seats[0].autoPlay = true;
+  assert.deepEqual(explorerChoices(r), []);
+});

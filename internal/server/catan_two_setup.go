@@ -20,6 +20,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	next.CatanTwoScenario = scenario
 	if r.Capacity == 2 && publicCatanFlexibleScenario(r.CatanScenario) {
 		next.CatanScenario = ""
+		next.CatanOptions = game.CatanOptions{}
 		next.CatanFishing, next.CatanFishingLakes = false, false
 	}
 	if err := next.validateCatanTwoSetup(); err != nil {
@@ -31,6 +32,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	r.Capacity, r.CatanTwoRules = next.Capacity, next.CatanTwoRules
 	r.CatanTwoScenario = next.CatanTwoScenario
 	r.CatanScenario = next.CatanScenario
+	r.CatanOptions = next.CatanOptions
 	r.CatanFishing, r.CatanFishingLakes = next.CatanFishing, next.CatanFishingLakes
 	for i := range r.Seats {
 		r.Seats[i].Ready = r.Seats[i].Bot

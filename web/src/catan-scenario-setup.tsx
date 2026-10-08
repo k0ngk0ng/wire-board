@@ -163,7 +163,10 @@ export function CatanCombinationKnightsPicker({
   helpers?: boolean;
 }) {
   return (
-    <fieldset className="catan-helper-options" disabled={disabled || helpers}>
+    <fieldset
+      className="catan-helper-options"
+      disabled={disabled || (helpers && !explorer)}
+    >
       <label>
         <input
           type="checkbox"
@@ -173,7 +176,7 @@ export function CatanCombinationKnightsPicker({
         城市与骑士＋{explorer ? "探索者与海盗" : fishing ? "渔夫" : "航海家"}
       </label>
       <p className="muted small">
-        {helpers
+        {helpers && !explorer
           ? "先关闭 Helpers，才能加入城市与骑士。"
           : explorer
             ? intro
@@ -341,11 +344,6 @@ export function CatanScenarioPicker({
                     "rivers",
                     "caravans",
                     "cities-knights",
-                    "land-ho",
-                    "spices-for-catan",
-                    "pirate-lairs",
-                    "fish-for-catan",
-                    "explorers-and-pirates",
                   ].includes(s.id)) ||
                 (players > 4 &&
                   (fishing
@@ -356,6 +354,7 @@ export function CatanScenarioPicker({
                     : fiveSix
                       ? !(
                           isPublicCatanSea(s.id) ||
+                          isPublicCatanExplorer(s.id) ||
                           [
                             "",
                             "cities-knights",

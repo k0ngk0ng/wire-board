@@ -174,7 +174,7 @@ func testPublicExplorerMissionConfiguration(t *testing.T, scenario string) {
 			}
 			before, _ := json.Marshal(s.rooms[id])
 			change(guest, "catan_scenario", "catanScenario", "land-ho", 400)
-			for _, o := range []game.CatanOptions{{Helpers: true}, {FiveSix: true}} {
+			for _, o := range []game.CatanOptions{{AllHelpers: true}, {FiveSix: true}} {
 				host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": o, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			}
 			if n > 4 {

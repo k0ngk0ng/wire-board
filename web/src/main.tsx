@@ -2012,7 +2012,11 @@ function Create({
             sanguoshaOptions: k === "sanguosha" ? sgOptions : undefined,
             splendorOptions: k === "splendor" ? gemOptions : undefined,
             catanOptions:
-              k === "catan" ? (capacity === 2 ? {} : catanOptions) : undefined,
+              k === "catan"
+                ? capacity === 2 && !isPublicCatanExplorer(catanTwoScenario)
+                  ? {}
+                  : catanOptions
+                : undefined,
             catanBaseConfiguration:
               k === "catan" &&
               capacity > 4 &&
@@ -2149,6 +2153,12 @@ function Create({
             onChange={(scenario) => {
               setCatanTwoScenario(scenario);
               setCatanScenario(isPublicCatanFlexible(scenario) ? scenario : "");
+              if (!isPublicCatanExplorer(scenario)) {
+                setCatanOptions({});
+                setCatanFishing(false);
+                setCatanFishingLakes(false);
+              }
+              setCatanSeaKnights(false);
             }}
           />
         )}
@@ -2226,6 +2236,11 @@ function Create({
                   setCatanOptions(
                     catanOptions.fiveSix ? { fiveSix: true } : {},
                   );
+                else if (isPublicCatanExplorer(scenario))
+                  setCatanOptions({
+                    helpers: catanOptions.helpers,
+                    allHelpers: catanOptions.allHelpers,
+                  });
                 else if (scenario && !isPublicCatanSea(scenario))
                   setCatanOptions({});
               }}
@@ -2245,8 +2260,8 @@ function Create({
               lakes={catanFishingLakes}
               onLakes={setCatanFishingLakes}
               blocked={
-                !!catanOptions.helpers ||
-                (catanSeaKnights && !isPublicCatanExplorer(catanScenario))
+                (!!catanOptions.helpers || catanSeaKnights) &&
+                !isPublicCatanExplorer(catanScenario)
               }
             />
           )}
@@ -2292,6 +2307,17 @@ function Create({
               knights={catanSeaKnights || catanScenario === "cities-knights"}
               scenario={catanScenario}
               fishing={catanFishing || catanScenario === "fishing"}
+            />
+          )}
+        {k === "catan" &&
+          isPublicCatanExplorer(
+            capacity === 2 ? catanTwoScenario : catanScenario,
+          ) && (
+            <CatanOptionPicker
+              explorer
+              fiveSixAvailable={false}
+              value={catanOptions}
+              onChange={setCatanOptions}
             />
           )}
         {k === "catan" &&
@@ -2406,7 +2432,12 @@ function Create({
               onChange={(e) => {
                 const next = Number(e.target.value);
                 setCapacity(next);
-                if (k === "catan" && next === 2) setCatanOptions({});
+                if (
+                  k === "catan" &&
+                  next === 2 &&
+                  !isPublicCatanExplorer(catanScenario)
+                )
+                  setCatanOptions({});
               }}
             >
               {(k === "dota"
@@ -2692,9 +2723,8 @@ function Waiting({
               extended={room.capacity > 4}
               disabled={!host || busy || mapDirty}
               blocked={
-                !!room.catanOptions?.helpers ||
-                (!!room.catanCitiesKnights &&
-                  !isPublicCatanExplorer(room.catanScenario))
+                (!!room.catanOptions?.helpers || !!room.catanCitiesKnights) &&
+                !isPublicCatanExplorer(room.catanScenario)
               }
               onChange={(enabled) => command("catan_fishing", { enabled })}
             />
@@ -2791,6 +2821,17 @@ function Waiting({
               command={command}
             />
           )}
+        {room.kind === "catan" && isPublicCatanExplorer(room.catanScenario) && (
+          <CatanOptionPicker
+            explorer
+            fiveSixAvailable={false}
+            value={room.catanOptions}
+            disabled={!host || busy || mapDirty}
+            onChange={(catanOptions) =>
+              command("catan_options", { catanOptions })
+            }
+          />
+        )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
           (!room.catanFishing ||

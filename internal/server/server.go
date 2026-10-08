@@ -678,6 +678,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		req.CatanOptions = options
+		if publicCatanExplorerScenario(req.CatanScenario) && !validCatanExplorerOptions(options) {
+			fail(w, 400, "探索者按实际人数启用扩充，请勿混用基础五六人选项")
+			return
+		}
 		minPlayers = 3
 		if publicCatanExplorerScenario(req.CatanScenario) || req.CatanScenario == "transport" {
 			minPlayers, maxPlayers = 2, 6
@@ -685,7 +689,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			maxPlayers = 6
 		}
 		if req.Capacity == 2 {
-			if options != (game.CatanOptions{}) {
+			if options != (game.CatanOptions{}) && !(publicCatanExplorerScenario(req.CatanScenario) && validCatanExplorerOptions(options)) {
 				fail(w, 400, "双人卡坦不能组合五至六人或 Helpers 扩展")
 				return
 			}
@@ -1052,6 +1056,21 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		if err == nil && options == next.CatanOptions {
 			break
 		}
+		if publicCatanExplorerScenario(next.CatanScenario) {
+			if err == nil && !validCatanExplorerOptions(options) {
+				err = errors.New("探索者按实际人数启用扩充，只能在此选择助手")
+			}
+			if err == nil {
+				next.CatanOptions = options
+				err = next.validateCatanScenario()
+			}
+			if err == nil {
+				for i := range next.Seats {
+					next.Seats[i].Ready = next.Seats[i].Bot
+				}
+			}
+			break
+		}
 		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && next.CatanScenario != "fishing" && !publicCatanSeaScenario(next.CatanScenario) {
 			err = errors.New("友善强盗的五六人公开组合需要基础、城市骑士、渔夫或已核验的航海地图")
 		}
@@ -1277,6 +1296,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
 			} else {
 				next.Game, err = s.newGame(next.Kind, len(next.Seats))
+			}
+			if err == nil && next.Kind == "catan" && publicCatanExplorerScenario(next.CatanScenario) && next.CatanOptions.Helpers {
+				err = next.Game.EnableCatanExplorerHelpers(next.CatanOptions.AllHelpers)
 			}
 			if err == nil && next.CatanEvents != "" {
 				err = next.Game.EnableCatanEvents(next.CatanEvents)

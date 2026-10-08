@@ -15,6 +15,7 @@ export function CatanOptionPicker({
   fiveSixAvailable = true,
   fishing = false,
   helpersAvailable = true,
+  explorer = false,
 }: {
   value?: CatanOptions;
   onChange: (v: CatanOptions) => void;
@@ -26,6 +27,7 @@ export function CatanOptionPicker({
   fiveSixAvailable?: boolean;
   fishing?: boolean;
   helpersAvailable?: boolean;
+  explorer?: boolean;
 }) {
   return (
     <fieldset className="catan-helper-options" disabled={disabled}>
@@ -40,7 +42,7 @@ export function CatanOptionPicker({
           五至六人扩充 · 新版配对回合
         </label>
       )}
-      {helpersAvailable && !fishing && !citiesKnights && (
+      {helpersAvailable && (explorer || (!fishing && !citiesKnights)) && (
         <label>
           <input
             type="checkbox"
@@ -56,18 +58,20 @@ export function CatanOptionPicker({
           Helpers · 十二位助手
         </label>
       )}
-      {helpersAvailable && !fishing && !citiesKnights && value.helpers && (
-        <label>
-          <input
-            type="checkbox"
-            checked={!!value.allHelpers}
-            onChange={(e) =>
-              onChange({ ...value, allHelpers: e.target.checked })
-            }
-          />{" "}
-          展示全部备用助手
-        </label>
-      )}
+      {helpersAvailable &&
+        (explorer || (!fishing && !citiesKnights)) &&
+        value.helpers && (
+          <label>
+            <input
+              type="checkbox"
+              checked={!!value.allHelpers}
+              onChange={(e) =>
+                onChange({ ...value, allHelpers: e.target.checked })
+              }
+            />{" "}
+            展示全部备用助手
+          </label>
+        )}
       {value.fiveSix && (
         <small>
           {seafarers
@@ -76,9 +80,16 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {helpersAvailable && !fishing && !citiesKnights && value.helpers && (
+      {helpersAvailable &&
+        (explorer || (!fishing && !citiesKnights)) &&
+        value.helpers && (
+          <small>
+            使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+          </small>
+        )}
+      {explorer && value.helpers && (
         <small>
-          使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+          本站探索者适配：造船、人员建设与补给替代发展卡和强盗能力；支持渔夫、城市与骑士，人数按探索者规则处理。
         </small>
       )}
       {value.helpers && harbors && (
