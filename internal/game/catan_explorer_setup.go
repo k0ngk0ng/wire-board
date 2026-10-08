@@ -6,7 +6,7 @@ import (
 )
 
 // Official E&P 2025 variable setup (mission guide p9). Independent of the
-// printed Land Ho opening. Private until full lair state/recipe acceptance.
+// printed Land Ho opening. Shared by the public mission constructors.
 type catanExplorerSetup struct {
 	PromptBase    int   `json:"promptBase,omitempty"`
 	CitiesKnights bool  `json:"citiesKnights,omitempty"`

@@ -30,7 +30,7 @@ func TestCatanTransportPublicSelectionAndRematch(t *testing.T) {
 			}
 			before, _ := json.Marshal(s.rooms[id])
 			change(guest, "catan_scenario", "catanScenario", "transport", 400)
-			change(host, "catan_scenario", "catanScenario", "pirate-lairs", 400)
+			change(host, "catan_scenario", "catanScenario", "unknown-mission", 400)
 			host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			after, _ := json.Marshal(s.rooms[id])
 			if string(before) != string(after) {

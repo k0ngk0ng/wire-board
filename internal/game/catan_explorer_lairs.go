@@ -5,10 +5,10 @@ import (
 	"slices"
 )
 
-// Private mission controller. The six/eight printed token numbers are an explicit
-// verified-component input, not guessed constants; no public recipe uses this
-// constructor until the full 2025 token inventory has been checked.
+// Mission state supports legacy explicit inventories and the labelled public
+// site recipe. Hidden assignment/order is never included in its public view.
 type catanExplorerLairs struct {
+	NumberRecipe  string                    `json:"numberRecipe,omitempty"`
 	Inventory     []int                     `json:"inventory"`
 	Deck          []int                     `json:"deck"`
 	Sites         []catanExplorerLair       `json:"sites"`
@@ -47,7 +47,7 @@ var catanExplorerLairPoints = [...]int{0, 1, 1, 2, 2, 2, 3, 3} // 2025 rulebook 
 
 func newCatanExplorerLairs(players int, numbers []int) (*catanExplorerLairs, error) {
 	if players < 2 || players > 6 || len(numbers) != catanExplorerStock(players).lairs || slices.ContainsFunc(numbers, func(n int) bool { return n < 2 || n > 12 || n == 7 }) {
-		return nil, errors.New("巢穴需要二至六人及对应人数的已核验数字库存")
+		return nil, errors.New("巢穴需要二至六人及对应人数的数字库存")
 	}
 	return &catanExplorerLairs{Inventory: slices.Clone(numbers), Deck: slices.Clone(numbers), Sites: []catanExplorerLair{}, Progress: make([]int, players), Arrival: make([]uint64, players)}, nil
 }
@@ -113,6 +113,9 @@ func (l *catanExplorerLairs) advance(player int) {
 func (l catanExplorerLairs) validate(g *Catan, b *catanExplorerBoard, f *catanExplorerSailing, c *catanExplorerCargo, e *catanExplorerEconomy) error {
 	if g == nil || b == nil || f == nil || c == nil || e == nil || !catanExplorerMissionScenario(b.Scenario) || c.Scenario != b.Scenario || len(l.Inventory) != catanExplorerStock(len(g.Players)).lairs || len(l.Deck)+len(l.Sites) != len(l.Inventory) || len(l.Progress) != len(g.Players) || len(l.Arrival) != len(l.Progress) {
 		return errors.New("巢穴地图、组件或人数无效")
+	}
+	if l.NumberRecipe != "" && (l.NumberRecipe != CatanExplorerLairRecipe || !catanExplorerSameInventory(l.Inventory, catanExplorerLairNumbers(len(g.Players)))) {
+		return errors.New("巢穴数字配置版本或库存无效")
 	}
 	if err := b.validate(g); err != nil {
 		return err
@@ -371,12 +374,13 @@ type catanExplorerLairView struct {
 }
 
 type catanExplorerLairsView struct {
-	Sites    []catanExplorerLairView  `json:"sites"`
-	Progress []int                    `json:"progress"`
-	Scores   []int                    `json:"scores"`
-	Leader   int                      `json:"leader"`
-	Left     int                      `json:"left"`
-	Battle   *catanExplorerLairBattle `json:"battle,omitempty"`
+	NumberRecipe string                   `json:"numberRecipe,omitempty"`
+	Sites        []catanExplorerLairView  `json:"sites"`
+	Progress     []int                    `json:"progress"`
+	Scores       []int                    `json:"scores"`
+	Leader       int                      `json:"leader"`
+	Left         int                      `json:"left"`
+	Battle       *catanExplorerLairBattle `json:"battle,omitempty"`
 }
 
 func (l catanExplorerLairs) publicView(b *catanExplorerBoard) catanExplorerLairsView {
@@ -388,7 +392,7 @@ func (l catanExplorerLairs) publicView(b *catanExplorerBoard) catanExplorerLairs
 		}
 		sites = append(sites, catanExplorerLairView{s.Tile, number, s.Ready, s.Resolved, s.Hero, slices.Clone(s.Contributions), clone(s.Rounds)})
 	}
-	return catanExplorerLairsView{sites, slices.Clone(l.Progress), l.scores(), l.leader(), len(l.Deck), clone(l.Battle)}
+	return catanExplorerLairsView{l.NumberRecipe, sites, slices.Clone(l.Progress), l.scores(), l.leader(), len(l.Deck), clone(l.Battle)}
 }
 
 func catanExplorerLairWinners(counts, candidates, dice []int) ([]int, error) {

@@ -4,9 +4,13 @@ import type { Room, CatanState } from "./types";
 // rules shown for a saved game. Waiting rooms use the approved configuration.
 export function catanRuleContext(room: Room) {
   const game = room.game?.catan;
-  const explorerDraft = ["land-ho", "spices-for-catan"].includes(
-    room.catanScenario || "",
-  );
+  const explorerDraft = [
+    "land-ho",
+    "spices-for-catan",
+    "pirate-lairs",
+    "fish-for-catan",
+    "explorers-and-pirates",
+  ].includes(room.catanScenario || "");
   const sea = game?.seafarers;
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
   const citiesKnights = !!citySetup;
@@ -98,6 +102,9 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
     {
       "land-ho": 8,
       "spices-for-catan": 15,
+      "pirate-lairs": 12,
+      "fish-for-catan": 15,
+      "explorers-and-pirates": 17,
       shores: 14,
       islands: 13,
       six_islands: 13,

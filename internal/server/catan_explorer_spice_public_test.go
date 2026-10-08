@@ -9,16 +9,42 @@ import (
 )
 
 func TestCatanExplorerSpicePublicCompleteHTTPGames(t *testing.T) {
+	testPublicExplorerMissionGames(t, "spices-for-catan")
+}
+
+func TestCatanExplorerMissionsPublicCompleteHTTPGames(t *testing.T) {
+	for _, scene := range []string{"pirate-lairs", "fish-for-catan", "explorers-and-pirates"} {
+		t.Run(scene, func(t *testing.T) { testPublicExplorerMissionGames(t, scene) })
+	}
+}
+
+func testPublicExplorerMissionGames(t *testing.T, scenario string) {
+	t.Helper()
 	for _, n := range []int{2, 3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, ts, clients, id := newPublicExplorerScenarioHTTP(t, n, "spices-for-catan")
+			s, ts, clients, id := newPublicExplorerScenarioHTTP(t, n, scenario)
 			initial := s.rooms[id].Game.Catan
-			wantTiles := 65
+			baseTiles := map[string]int{"pirate-lairs": 58, "fish-for-catan": 58, "spices-for-catan": 65, "explorers-and-pirates": 72}
+			extendedTiles := map[string]int{"pirate-lairs": 79, "fish-for-catan": 88, "spices-for-catan": 88, "explorers-and-pirates": 97}
+			targets := map[string]int{"pirate-lairs": 12, "fish-for-catan": 15, "spices-for-catan": 15, "explorers-and-pirates": 17}
+			wantTiles := baseTiles[scenario]
 			if n > 4 {
-				wantTiles = 88
+				wantTiles = extendedTiles[scenario]
 			}
-			if len(initial.Tiles) != wantTiles || initial.Explorer.Lairs != nil || initial.Explorer.Spice == nil || initial.Explorer.Fish == nil || initial.Explorer.Board.Target != 15 || (initial.Paired != nil) != (n > 4) {
-				t.Fatal("wrong scenario map or missions", len(initial.Tiles))
+			wantLairs := scenario != "spices-for-catan"
+			wantFish := scenario != "pirate-lairs"
+			wantSpice := scenario == "spices-for-catan" || scenario == "explorers-and-pirates"
+			if len(initial.Tiles) != wantTiles || (initial.Explorer.Lairs != nil) != wantLairs || (initial.Explorer.Spice != nil) != wantSpice || (initial.Explorer.Fish != nil) != wantFish || initial.Explorer.Board.Target != targets[scenario] || (initial.Paired != nil) != (n > 4) {
+				t.Fatal("wrong mission opening")
+			}
+			privacy := func(state *game.State) {
+				if wantSpice {
+					assertExplorerSpiceHTTPPrivacy(t, clients, state)
+				} else if wantFish {
+					assertExplorerFishHTTPPrivacy(t, clients, state)
+				} else {
+					assertExplorerHTTPPrivacy(t, clients)
+				}
 			}
 			stock := append([]int(nil), initial.Bank...)
 			goldStock := initial.Explorer.Economy.GoldBank
@@ -93,26 +119,39 @@ func TestCatanExplorerSpicePublicCompleteHTTPGames(t *testing.T) {
 					t.Fatal("gold ledger changed")
 				}
 				if step%103 == 0 {
-					assertExplorerSpiceHTTPPrivacy(t, clients, r.Game)
+					privacy(r.Game)
 					s, ts = restartRiversHTTP(t, s, ts, clients, id)
 				}
 			}
 			r := s.rooms[id]
-			x := r.Game.Catan.Explorer
 			expectedSetup := 4 * n
 			if n == 2 {
 				expectedSetup += 4
 			}
-			if r.Status != "finished" || len(r.Game.Winners) != 1 || r.Game.Catan.Players[r.Game.Winners[0]].Score < 15 || len(x.Spice.Deliveries) == 0 || len(x.Fish.Deliveries) == 0 || !automatic || !timedout || (n > 4 && !second) || setupSteps != expectedSetup {
-				t.Fatal("incomplete public spice game", r.Status, setupSteps, len(x.Spice.Deliveries), len(x.Fish.Deliveries))
+			if r.Status != "finished" || len(r.Game.Winners) != 1 || r.Game.Catan.Players[r.Game.Winners[0]].Score < targets[scenario] || !automatic || !timedout || (n > 4 && !second) || setupSteps != expectedSetup {
+				t.Fatal("incomplete public spice game", r.Status, setupSteps, scenario)
+			}
+			if scenario == "spices-for-catan" && (len(r.Game.Catan.Explorer.Spice.Deliveries) == 0 || len(r.Game.Catan.Explorer.Fish.Deliveries) == 0) {
+				t.Fatal("spice game lacked delivery coverage")
 			}
 			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			privacy(s.rooms[id].Game)
 			assertPublicExplorerHistory(t, s, clients, id)
 		})
 	}
 }
 
 func TestCatanExplorerSpicePublicConfiguration(t *testing.T) {
+	testPublicExplorerMissionConfiguration(t, "spices-for-catan")
+}
+func TestCatanExplorerMissionsPublicConfiguration(t *testing.T) {
+	for _, scene := range []string{"pirate-lairs", "fish-for-catan", "explorers-and-pirates"} {
+		t.Run(scene, func(t *testing.T) { testPublicExplorerMissionConfiguration(t, scene) })
+	}
+}
+
+func testPublicExplorerMissionConfiguration(t *testing.T, scenario string) {
+	t.Helper()
 	for _, n := range []int{2, 4, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
@@ -120,7 +159,7 @@ func TestCatanExplorerSpicePublicConfiguration(t *testing.T) {
 			host, guest := newClient(t, ts.URL), newClient(t, ts.URL)
 			host.register("香料房主")
 			guest.register("香料朋友")
-			raw := host.post("/api/rooms", map[string]any{"kind": "catan", "capacity": n, "name": "香料公开设置", "catanScenario": "spices-for-catan"}, 201)
+			raw := host.post("/api/rooms", map[string]any{"kind": "catan", "capacity": n, "name": "香料公开设置", "catanScenario": scenario}, 201)
 			id := raw["id"].(string)
 			guest.command(current(host), "join", nil, 200)
 			change := func(c *testClient, kind, key, value string, status int) {
@@ -129,7 +168,7 @@ func TestCatanExplorerSpicePublicConfiguration(t *testing.T) {
 			for _, c := range []*testClient{host, guest} {
 				c.command(current(c), "ready", nil, 200)
 			}
-			change(host, "catan_scenario", "catanScenario", "spices-for-catan", 200)
+			change(host, "catan_scenario", "catanScenario", scenario, 200)
 			if !s.rooms[id].Seats[0].Ready || !s.rooms[id].Seats[1].Ready {
 				t.Fatal("unchanged selection cleared readiness")
 			}
@@ -154,7 +193,7 @@ func TestCatanExplorerSpicePublicConfiguration(t *testing.T) {
 				} else {
 					change(host, "catan_scenario", "catanScenario", "shores", 200)
 				}
-				change(host, "catan_scenario", "catanScenario", "spices-for-catan", 200)
+				change(host, "catan_scenario", "catanScenario", scenario, 200)
 				if s.rooms[id].CatanTwoRules != "" || s.rooms[id].CatanSeafarers != nil || s.rooms[id].Seats[0].Ready {
 					t.Fatal("old recipe or readiness survived")
 				}
@@ -170,7 +209,7 @@ func TestCatanExplorerSpicePublicConfiguration(t *testing.T) {
 			change(host, "catan_scenario", "catanScenario", "land-ho", 400)
 			host.command(current(host), "close", nil, 200)
 			host.command(current(host), "rematch", nil, 200)
-			if s.rooms[id].CatanScenario != "spices-for-catan" {
+			if s.rooms[id].CatanScenario != scenario {
 				t.Fatal("rematch lost scenario")
 			}
 		})

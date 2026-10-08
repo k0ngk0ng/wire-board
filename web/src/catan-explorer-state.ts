@@ -82,6 +82,7 @@ export type ExplorerView = {
     lastChase?: { player: number; ship: number; die: number; success: boolean };
   };
   lairs?: {
+    numberRecipe?: string;
     sites: {
       tile: number;
       number?: number;
