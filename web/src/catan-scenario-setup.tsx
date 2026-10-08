@@ -212,6 +212,9 @@ export function CatanFishingSeaPicker({
   blocked = false,
   fixedRequired = false,
   extended = false,
+  explorer = false,
+  lakes = false,
+  onLakes,
 }: {
   value: boolean;
   onChange: (enabled: boolean) => void;
@@ -219,6 +222,9 @@ export function CatanFishingSeaPicker({
   blocked?: boolean;
   fixedRequired?: boolean;
   extended?: boolean;
+  explorer?: boolean;
+  lakes?: boolean;
+  onLakes?: (enabled: boolean) => void;
 }) {
   return (
     <fieldset
@@ -231,17 +237,30 @@ export function CatanFishingSeaPicker({
           checked={value}
           onChange={(e) => onChange(e.target.checked)}
         />
-        渔夫＋航海家
+        渔夫＋{explorer ? "探索者与海盗" : "航海家"}
       </label>
       <p className="muted small">
-        {extended
-          ? "此组合使用五六人扩大地图、8处渔场和配对回合；关闭渔夫后保留所选海图和人数。"
-          : fixedRequired
-            ? "先将海图切为固定布局，才能加入渔夫。"
-            : blocked
-              ? "先关闭 Helpers 和城市骑士，才能加入渔夫；可叠加港口霸主与友善强盗。"
-              : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
+        {explorer
+          ? "渔夫鱼筹码与船运鱼群分开计算。2鱼免海盗通行费，5鱼修路或造船，7鱼让一艘船再次航行；可叠加城市骑士与事件生产牌。"
+          : extended
+            ? "此组合使用五六人扩大地图、8处渔场和配对回合；关闭渔夫后保留所选海图和人数。"
+            : fixedRequired
+              ? "先将海图切为固定布局，才能加入渔夫。"
+              : blocked
+                ? "先关闭 Helpers 和城市骑士，才能加入渔夫；可叠加港口霸主与友善强盗。"
+                : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
+      {explorer && value && onLakes && (
+        <label>
+          <input
+            type="checkbox"
+            checked={lakes}
+            onChange={(e) => onLakes(e.target.checked)}
+          />
+          加入湖泊
+          {extended ? "（本站五六人双湖配方）" : "（替换起始岛12点山地）"}
+        </label>
+      )}
     </fieldset>
   );
 }
@@ -324,7 +343,10 @@ export function CatanScenarioPicker({
                   ].includes(s.id)) ||
                 (players > 4 &&
                   (fishing
-                    ? !supportsPublicCatanFishingSeaExtended(s.id)
+                    ? !(
+                        supportsPublicCatanFishingSeaExtended(s.id) ||
+                        supportsPublicExplorerKnights(s.id)
+                      )
                     : fiveSix
                       ? !(
                           isPublicCatanSea(s.id) ||

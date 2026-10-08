@@ -372,3 +372,106 @@ test("pirate stops only its own sea-hex ground, including hex zero; frame and ba
   assert.equal(fishGroundBlocked(g, {}), false);
   assert.equal(fishGroundBlocked({}, { seaTile: 0 }), false);
 });
+
+test("Explorer fish payments retain prompt and explicit ship choice", () => {
+  const r = fixture(),
+    g = r.game.catan,
+    f = g.fishing;
+  r.seats = [{}, {}, {}];
+  g.explorer = {
+    sequence: 7,
+    board: {},
+    pirate: { owner: 1, tile: 3 },
+    fleet: { positions: [0, -1, -1], turn: {} },
+  };
+  Object.assign(f.legal, {
+    costs: { catan_fish_ship: 5, catan_fish_voyage: 7, catan_fish_pirate: 2 },
+    actions: ["catan_fish_ship", "catan_fish_voyage", "catan_fish_pirate"],
+    shipBuilds: [{ slot: 1, edge: 2 }],
+    voyages: [0],
+  });
+  assert.deepEqual(
+    fishAction(
+      r,
+      selection({ kind: "catan_fish_ship", ids: [11, 21], edge: 2, slot: 1 }),
+    ),
+    { type: "catan_fish_ship", tokens: [11, 21], edge: 2, slot: 1, prompt: 7 },
+  );
+  assert.equal(
+    fishAction(
+      r,
+      selection({ kind: "catan_fish_ship", ids: [11, 21], edge: 2 }),
+    ),
+    null,
+  );
+  assert.equal(
+    fishAction(
+      r,
+      selection({ kind: "catan_fish_ship", ids: [11, 21], edge: 2, slot: 4 }),
+    ),
+    null,
+  );
+  r.game.phase = "catan_explorer_move";
+  assert.equal(fishTurn(r), true);
+  assert.deepEqual(
+    fishAction(
+      r,
+      selection({ kind: "catan_fish_voyage", ids: [11, 21, 22], slot: 0 }),
+    ),
+    { type: "catan_fish_voyage", tokens: [11, 21, 22], slot: 0, prompt: 7 },
+  );
+  assert.deepEqual(
+    fishAction(r, selection({ kind: "catan_fish_pirate", ids: [11] })),
+    { type: "catan_fish_pirate", tokens: [11], prompt: 7 },
+  );
+  g.explorer.fleet.turn.fishPirate = true;
+  assert.equal(
+    fishAction(r, selection({ kind: "catan_fish_pirate", ids: [11] })),
+    null,
+  );
+  const names = fishActionsFor(g);
+  assert(
+    names.some(
+      ([kind, label]) =>
+        kind === "catan_fish_pirate" && label === "免海盗通行费",
+    ),
+  );
+  assert(
+    !names.some(([kind]) =>
+      ["catan_fish_robber", "catan_fish_dev", "catan_fish_progress"].includes(
+        kind,
+      ),
+    ),
+  );
+  r.seats[0].autoPlay = true;
+  assert.equal(
+    fishAction(
+      r,
+      selection({ kind: "catan_fish_voyage", ids: [11, 21, 22], slot: 0 }),
+    ),
+    null,
+  );
+});
+
+test("Explorer fish response works out of turn without exposing another hand", () => {
+  const r = fixture(),
+    f = r.game.catan.fishing;
+  r.game.catan.explorer = { sequence: 9 };
+  r.game.turn = 1;
+  r.game.phase = "catan_fish_replace";
+  f.tokens.responder = 0;
+  f.canReplace = true;
+  assert.deepEqual(
+    fishAction(r, selection({ kind: "catan_fish_keep", ids: [] })),
+    { type: "catan_fish_keep", prompt: 9 },
+  );
+  assert.deepEqual(
+    fishAction(r, selection({ kind: "catan_fish_replace", ids: [11] })),
+    { type: "catan_fish_replace", card: 11, prompt: 9 },
+  );
+  r.you = 1;
+  assert.equal(
+    fishAction(r, selection({ kind: "catan_fish_keep", ids: [] })),
+    null,
+  );
+});

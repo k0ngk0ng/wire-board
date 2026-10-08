@@ -5,9 +5,9 @@ import (
 	"slices"
 )
 
-// Private integration constructor. Public configuration remains closed until
-// the fish actions, choices, bots and UI are accepted as a complete combination.
-func newCatanExplorerFishing(players int, scenario string, cities, lakes bool) (*State, error) {
+// NewCatanExplorerFishing creates an Explorer game with separate fish tokens.
+// Lakes are optional; original Explorer constructors retain their original maps.
+func NewCatanExplorerFishing(players int, scenario string, cities, lakes bool) (*State, error) {
 	var s *State
 	var err error
 	layout := "variable"

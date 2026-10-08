@@ -143,10 +143,18 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["fishing"] = game.CatanFishingRules
+			if g.Fishing.Explorer != "" {
+				record.CatanExpansionRules["explorer_fishing"] = g.Fishing.Explorer
+				lakes := "without-lakes"
+				if len(g.Fishing.Map.Lakes) > 0 {
+					lakes = "with-lakes"
+				}
+				record.CatanExpansionRules["explorer_fishing_lakes"] = lakes
+			}
 			if g.Fishing.Map.NumberRecipe != "" {
 				record.CatanExpansionRules["number_recipe"] = g.Fishing.Map.NumberRecipe
 			}
-			if g.Seafarers == nil {
+			if g.Seafarers == nil && g.Explorer == nil {
 				record.CatanScenario, record.CatanLayout, record.CatanRules = "fishing", "variable", game.CatanFishingRules
 			}
 		}

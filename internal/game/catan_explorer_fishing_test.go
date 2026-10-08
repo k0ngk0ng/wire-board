@@ -10,7 +10,7 @@ import (
 
 func explorerFishingGame(t *testing.T, n int, scenario string, cities, lakes, events bool) *State {
 	t.Helper()
-	s, err := newCatanExplorerFishing(n, scenario, cities, lakes)
+	s, err := NewCatanExplorerFishing(n, scenario, cities, lakes)
 	if err != nil {
 		t.Fatal(err)
 	}

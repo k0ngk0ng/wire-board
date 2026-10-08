@@ -62,7 +62,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 3, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
-		{"kind": "catan", "capacity": 2, "catanScenario": "land-ho"},
+		{"kind": "catan", "capacity": 5, "catanScenario": "land-ho"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
 		{"kind": "catan", "capacity": 4, "catanScenario": "islands", "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{FiveSix: true}},

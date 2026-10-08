@@ -222,6 +222,7 @@ export type Room = {
   catanTwoScenario?: string;
   catanScenario?: string;
   catanFishing?: boolean;
+  catanFishingLakes?: boolean;
   catanEvents?: string;
   splendorOptions?: SplendorOptions;
   sanguoshaOptions?: SGOptions;
@@ -622,6 +623,8 @@ export type CatanState = {
       bootTargets: number[];
       progressTracks?: number[];
       ships?: number[];
+      voyages?: number[];
+      shipBuilds?: { slot: number; edge: number }[];
     };
   };
   revealedEvent?: CatanRevealedEvent;

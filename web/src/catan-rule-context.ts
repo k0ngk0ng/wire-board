@@ -81,6 +81,9 @@ export function catanRuleContext(room: Room) {
         : "",
     events: game ? game.eventDeck?.catalogue || "" : room.catanEvents || "",
     explorer: game ? !!game.explorer : explorerDraft,
+    explorerFishingLakes: game
+      ? !!game.explorer?.board.fishingLakes
+      : !!room.catanFishingLakes,
     fishing: game
       ? !!game.fishing
       : room.catanScenario === "fishing" || !!room.catanFishing,

@@ -6,6 +6,11 @@ export function catanEventsSupported(room: Partial<Room>) {
     room.kind === "catan" &&
     (!room.catanFishing ||
       [
+        "land-ho",
+        "pirate-lairs",
+        "fish-for-catan",
+        "spices-for-catan",
+        "explorers-and-pirates",
         "islands",
         "fog",
         "desert",

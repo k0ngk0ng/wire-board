@@ -205,7 +205,20 @@ export function CatanFishingPanel({
   const [ids, setIds] = useState<number[]>([]),
     [color, setColor] = useState<number | null>(null),
     [target, setTarget] = useState<number | null>(null);
+  const [slot, setSlot] = useState<number | null>(null);
   const panel = useRef<HTMLElement>(null);
+  useEffect(() => {
+    setKind("");
+    setIds([]);
+    setColor(null);
+    setTarget(null);
+    setSlot(null);
+  }, [
+    room.id,
+    room.game?.phase,
+    room.game?.turn,
+    room.game?.catan?.explorer?.sequence,
+  ]);
   useEffect(() => {
     if (chosen?.type === "fish_road" || chosen?.type === "fish_ship") {
       setCollapsed(false);
@@ -233,7 +246,12 @@ export function CatanFishingPanel({
     hand = f.tokens.players[room.you]?.tokens || [];
   const activeKind = replace ? "catan_fish_replace" : kind;
   const mapMode = fishMapMode(activeKind),
-    routeName = activeKind === "catan_fish_ship" ? "船只" : "道路",
+    routeName =
+      activeKind === "catan_fish_ship"
+        ? g.explorer
+          ? "造船位置"
+          : "船只"
+        : "道路",
     blockedGrounds = f.map.grounds.filter((ground) =>
       fishGroundBlocked(g, ground),
     );
@@ -242,6 +260,7 @@ export function CatanFishingPanel({
     ids,
     color,
     target,
+    slot,
     edge: mapMode && chosen?.type === mapMode ? chosen.id : null,
   };
   const action = fishAction(room, selection),
@@ -252,6 +271,7 @@ export function CatanFishingPanel({
     setIds([]);
     setColor(null);
     setTarget(null);
+    setSlot(null);
     setKind("");
     onMode("");
   };
@@ -260,6 +280,7 @@ export function CatanFishingPanel({
     setIds([]);
     setColor(null);
     setTarget(null);
+    setSlot(null);
     onMode(fishMapMode(next));
   };
   const tokenSelectable =
@@ -480,6 +501,55 @@ export function CatanFishingPanel({
               ))}
             </div>
           )}
+          {mine &&
+            g.explorer &&
+            ["catan_fish_ship", "catan_fish_voyage"].includes(kind) && (
+              <div
+                className="fish-target-picker"
+                role="group"
+                aria-label="选择探索船"
+              >
+                {[
+                  ...new Set(
+                    kind === "catan_fish_voyage"
+                      ? f.legal.voyages || []
+                      : (f.legal.shipBuilds || [])
+                          .filter((b) => b.edge === selection.edge)
+                          .map((b) => b.slot),
+                  ),
+                ].map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    disabled={busy}
+                    aria-pressed={slot === id}
+                    onClick={() => setSlot(id)}
+                  >
+                    船 {(id % 3) + 1}
+                    {kind === "catan_fish_ship"
+                      ? g.explorer!.fleet.positions[id] < 0
+                        ? " · 待建"
+                        : " · 拆除重造"
+                      : " · 再次航行"}
+                  </button>
+                ))}
+                {kind === "catan_fish_ship" && selection.edge === null && (
+                  <small>先在地图选择造船位置，再选择船只。</small>
+                )}
+                {kind === "catan_fish_ship" &&
+                  slot !== null &&
+                  g.explorer.fleet.positions[slot] >= 0 && (
+                    <p className="fish-notice">
+                      拆除重造会归还原船及其货物；请选择你要重造的船。
+                    </p>
+                  )}
+                {kind === "catan_fish_voyage" && (
+                  <p className="fish-notice">
+                    本站规则：每船最多再航行一次，获得4点及快速航行奖励；剩余点数不累加，羊毛仍每船每回合限一次。
+                  </p>
+                )}
+              </div>
+            )}
           {mine && !!mapMode && (
             <p className="fish-map-hint">
               {selection.edge !== null
@@ -499,7 +569,9 @@ export function CatanFishingPanel({
           )}
           {mine && kind === "catan_fish_pirate" && (
             <p className="fish-notice">
-              支付后将海盗移到场外，解除封锁；不会偷牌，也不会移动强盗。
+              {g.explorer
+                ? "本站规则：支付后本航行阶段所有己方船只免海盗通行费，海盗保留原位。"
+                : "支付后将海盗移到场外，解除封锁；不会偷牌，也不会移动强盗。"}
             </p>
           )}
           {(replace || (mine && !!kind)) && (
