@@ -14,6 +14,16 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	if err != nil {
 		return nil, err
 	}
+	if err := s.enableCitiesKnightsSeafarers(); err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+// Apply the shared sea setup after the map (including optional fishing lakes)
+// is prepared, before any building or production has taken place.
+func (s *State) enableCitiesKnightsSeafarers() error {
+	n := len(s.Catan.Players)
 	logs := append([]string{}, s.Log...)
 	phase := s.Phase
 	s.enableCitiesKnights()
@@ -58,10 +68,10 @@ func NewCatanCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeaf
 	if g.pirateIslands() != nil {
 		s.Log = append(s.Log, catanPirateKnightsNotice)
 		if err := s.validatePirateKnights(); err != nil {
-			return nil, err
+			return err
 		}
 	}
-	return s, g.validateTribeProgress()
+	return g.validateTribeProgress()
 }
 
 // Recipe IDs only; persisted five/six-player islands use a separate alias.
