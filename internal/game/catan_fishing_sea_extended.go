@@ -199,6 +199,10 @@ func (f catanFishingMap) validateSeaExtended(g *Catan) error {
 	if err = f.validateCoastalGrounds(coasts, len(g.Players)); err != nil {
 		return err
 	}
+	original, err := f.numbersBeforeInvention(g)
+	if err != nil {
+		return err
+	}
 	swaps := fishingExtendedLakeSwaps(g.Seafarers.Scenario)
 	extras := 0
 	lakeIDs := map[int]bool{}
@@ -235,7 +239,7 @@ func (f catanFishingMap) validateSeaExtended(g *Catan) error {
 			return errors.New("湖泊周围必须有六格陆地")
 		}
 		if swap.recipient >= 0 {
-			if extras >= len(f.ExtraNumbers) || f.ExtraNumbers[extras] != (catanFishingExtraNumber{Tile: swap.recipient, Number: swap.number}) || g.Tiles[swap.recipient].Resource != swap.recipientResource || g.Tiles[swap.recipient].Number != swap.recipientNumber {
+			if extras >= len(f.ExtraNumbers) || (f.ExtraNumbers[extras].Tile != swap.recipient || original[CatanNumberToken{swap.recipient, 1}] != swap.number) || g.Tiles[swap.recipient].Resource != swap.recipientResource || original[CatanNumberToken{swap.recipient, 0}] != swap.recipientNumber {
 				return errors.New("扩大沙漠捕鱼迁移数字不符")
 			}
 			extras++

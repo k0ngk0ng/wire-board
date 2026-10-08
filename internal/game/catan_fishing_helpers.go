@@ -26,7 +26,7 @@ func (s *State) validateFishingHelpers() error {
 		}
 		return nil
 	}
-	if !g.fishingHelpers() || g.CitiesKnights != nil {
+	if !g.fishingHelpers() || g.CitiesKnights != nil && !g.cityHelpers() {
 		return errors.New("渔夫助手版本或组合无效")
 	}
 	if f.Pending != nil && (g.HelperPending != nil || g.GoldPending != nil) {

@@ -274,3 +274,21 @@ test("taxation uses server friendly targets, including current desert and outsid
   g.taxationTiles = [];
   assert.equal(progressPlayAction(r, selection(21, { picks: [-1] })), null);
 });
+
+test("Invention selects the extra fishing disc and preserves its slot when targets change", () => {
+ const r=room(3),g=r.game.catan;
+ g.tiles[0].number=2;
+ g.inventionTiles=[0,1,2];
+ g.inventionNumbers=[{tile:0,slot:1,number:11},{tile:1,slot:0,number:9},{tile:1,slot:1,number:4},{tile:2,slot:0,number:5}];
+ let s=pickProgressTarget(g,0,newProgressSelection(3),0);
+ s=pickProgressTarget(g,0,s,1);
+ assert.deepEqual(s.numbers,[1,0]);
+ assert.deepEqual(progressPlayAction(r,s),{type:"catan_progress",card:3,tile:0,target:1,tokens:[1,0]});
+ s={...s,numbers:[1,1]};
+ assert.deepEqual(progressPlayAction(r,s).tokens,[1,1]);
+ s=pickProgressTarget(g,0,s,2);
+ assert.deepEqual(s.picks,[1,2]);
+ assert.deepEqual(s.numbers,[1,0]);
+ assert.deepEqual(progressPlayAction(r,s).tokens,[1,0]);
+ assert.equal(progressPlayAction(r,{...s,numbers:[1,1]}),null);
+});

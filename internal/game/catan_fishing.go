@@ -80,7 +80,7 @@ func (g *Catan) validateFishing() error {
 	if g.Seafarers != nil && !g.fishingSeaSupported() {
 		return errors.New("此捕鱼扩展组合尚未接入")
 	}
-	if (g.Options.Helpers && (!g.fishingHelpers() || g.CitiesKnights != nil)) || (!g.Options.Helpers && f.Helpers != "") {
+	if (g.Options.Helpers && (!g.fishingHelpers() || g.CitiesKnights != nil && !g.cityHelpers())) || (!g.Options.Helpers && f.Helpers != "") {
 		return errors.New("渔夫助手规则与配置不符")
 	}
 	if len(f.Started) != len(g.Players) || len(f.Tokens.Hands) != len(g.Players) || f.LastRollID < -1 || f.LastRollID > g.RollID {

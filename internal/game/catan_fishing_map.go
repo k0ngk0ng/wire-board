@@ -20,6 +20,7 @@ type catanFishingGround struct {
 }
 
 type catanFishingMap struct {
+	NumberSwaps  []CatanNumberSwap         `json:"numberSwaps,omitempty"`
 	SeaRecipe    string                    `json:"seaRecipe,omitempty"`
 	NumberRecipe string                    `json:"numberRecipe,omitempty"`
 	Lakes        []catanFishingLake        `json:"lakes"`
@@ -153,6 +154,10 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if len(f.NumberSwaps) > 0 && (len(f.ExtraNumbers) == 0 || g.CitiesKnights == nil || g.Seafarers == nil || g.Seafarers.Scenario != "desert") {
+		return errors.New("此地图没有捕鱼数字交换记录")
+	}
+
 	if g.twoFishingSeafarers() {
 		return f.validate(g.twoFishingRecipeBoard())
 	}

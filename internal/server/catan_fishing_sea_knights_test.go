@@ -34,7 +34,7 @@ func TestCatanFishingSeaKnightsPublicSelection(t *testing.T) {
 					t.Fatal("toggle lost combination")
 				}
 			}
-			h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+			h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Rules: "unknown", Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			for i := 0; i < 2; i++ {
 				h.command(current(h), "add_bot", nil, 200)
 			}

@@ -1101,8 +1101,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("港口霸主的五六人公开组合需要基础、城市骑士、渔夫或航海地图")
 		}
 		if err == nil && next.CatanCitiesKnights != nil {
-			if (options.Helpers || options.AllHelpers) && (next.CatanFishing || next.CatanScenario == "fishing" || next.CatanTwoRules != "") {
-				err = errors.New("该双人或渔夫骑士助手组合尚未接入")
+			if (options.Helpers || options.AllHelpers) && next.CatanTwoRules != "" {
+				err = errors.New("该双人骑士助手组合尚未接入")
 			}
 			if mapErr := next.validateCatanCitiesKnightsMap(); mapErr != nil {
 				err = mapErr

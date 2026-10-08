@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
+	"net/http/httptest"
 	"slices"
 	"testing"
 	"time"
@@ -49,10 +50,24 @@ func TestCatanFishingHelpersPublicSelection(t *testing.T) {
 }
 
 func TestCatanFishingHelpersResponseClock(t *testing.T) {
+	testCatanFishingHelpersResponseClock(t, false)
+}
+func TestCatanFishingHelpersKnightsResponseClock(t *testing.T) {
+	testCatanFishingHelpersResponseClock(t, true)
+}
+func testCatanFishingHelpersResponseClock(t *testing.T, knights bool) {
 	for _, n := range []int{3, 6} {
 		for _, timeout := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/timeout%t", n, timeout), func(t *testing.T) {
-				s, ts, clients, id := newPublicFishingScenarioConfigured(t, n, "fishing", false, false, true, true)
+				var s *Server
+				var ts *httptest.Server
+				var clients []*testClient
+				var id string
+				if knights {
+					s, ts, clients, id = newHelpersKnightsHTTP(t, n, "fishing", true, true)
+				} else {
+					s, ts, clients, id = newPublicFishingScenarioConfigured(t, n, "fishing", false, false, true, true)
+				}
 				for s.rooms[id].Game.Catan.SetupStep < s.rooms[id].Game.Catan.SetupLimit() {
 					state := s.rooms[id].Game
 					a, err := state.BotAction(state.Turn)
@@ -65,6 +80,15 @@ func TestCatanFishingHelpersResponseClock(t *testing.T) {
 				g := r.Game.Catan
 				owner := r.Game.Turn
 				p := (owner + 1) % n
+				g.TurnSerial = 10
+				if knights {
+					g.CitiesKnights.Players[p].Improvements[0] = 3
+				}
+				for i := range g.Tiles {
+					if g.Tiles[i].Resource < 5 {
+						g.Tiles[i].Number = 6
+					}
+				}
 				old := g.Players[p].Helper.ID
 				if old != 3 {
 					if at := slices.Index(g.HelperDisplay, 3); at >= 0 {
@@ -110,7 +134,7 @@ func TestCatanFishingHelpersResponseClock(t *testing.T) {
 					r = s.rooms[id]
 					actor := twoHTTPActor(r.Game)
 					phase := r.Game.Phase
-					if phase == "catan_fish_replace" || phase == "catan_helper" {
+					if phase == "catan_fish_replace" || phase == "catan_aqueduct" || phase == "catan_helper" {
 						if actor != p || r.Game.Turn != owner {
 							t.Fatal("response changed turn")
 						}
@@ -141,7 +165,7 @@ func TestCatanFishingHelpersResponseClock(t *testing.T) {
 					}
 				}
 				r = s.rooms[id]
-				if !seen["catan_fish_replace"] || !seen["catan_helper/resource"] || !seen["catan_helper/exchange"] || r.Game.Phase != "catan_turn" || r.Game.Turn != owner {
+				if !seen["catan_fish_replace"] || knights && !seen["catan_aqueduct"] || !seen["catan_helper/resource"] || !seen["catan_helper/exchange"] || r.Game.Phase != "catan_turn" || r.Game.Turn != owner {
 					t.Fatal("incomplete response chain", seen)
 				}
 				if !timeout {

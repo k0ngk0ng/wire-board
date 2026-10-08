@@ -7,9 +7,6 @@ const CatanFishingSeaKnightsRules = "wire-board-fishing-sea-knights-v1"
 // Use the accepted fishing map first, then the normal sea knights setup.
 // No extra terrain or starting production is inserted by this combination.
 func NewCatanFishingCitiesKnightsSeafarers(n int, options CatanOptions, setup CatanSeafarersSetup, world *CatanNewWorldMap) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("渔夫海图与骑士暂不能叠加助手")
-	}
 	var s *State
 	var err error
 	if setup.Scenario == "new_world" {
@@ -49,7 +46,7 @@ func (g *Catan) validateFishingSeaKnights() error {
 	f := g.Fishing
 	combined := g.Seafarers != nil && g.CitiesKnights != nil
 	if combined {
-		if f.SeaKnights != CatanFishingSeaKnightsRules || !g.citySeaSupported() || g.Options.Helpers || g.Options.AllHelpers {
+		if f.SeaKnights != CatanFishingSeaKnightsRules || !g.citySeaSupported() || g.Options.Helpers && !g.cityHelpers() {
 			return errors.New("渔夫海图骑士规则版本或组合无效")
 		}
 	} else if f.SeaKnights != "" {

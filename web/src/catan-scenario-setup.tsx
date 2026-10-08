@@ -168,7 +168,7 @@ export function CatanCombinationKnightsPicker({
   return (
     <fieldset
       className="catan-helper-options"
-      disabled={disabled || (helpers && !explorer && (two || fishing))}
+      disabled={disabled || (helpers && !explorer && two)}
     >
       <label>
         <input
@@ -179,7 +179,7 @@ export function CatanCombinationKnightsPicker({
         城市与骑士＋{explorer ? "探索者与海盗" : fishing ? "渔夫" : "航海家"}
       </label>
       <p className="muted small">
-        {helpers && !explorer && (two || fishing)
+        {helpers && !explorer && two
           ? "先关闭 Helpers，才能加入城市与骑士。"
           : explorer
             ? intro
@@ -189,7 +189,7 @@ export function CatanCombinationKnightsPicker({
               ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌，${harbors ? 14 : 13} 分获胜，持旧靴者需 ${harbors ? 15 : 14} 分。`
               : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
-      {helpers && !explorer && !two && !fishing && (
+      {helpers && !explorer && !two && (
         <p className="muted small">
           本站骑士助手：发展卡能力适配进步牌；格雷戈尔归还实体骑士建造，资源助手不处理商品。
         </p>

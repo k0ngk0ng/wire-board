@@ -22,6 +22,7 @@ func (s *State) catanCityView(v map[string]any, player int) {
 			}
 			if s.Phase == "catan_turn" {
 				v["inventionTiles"] = g.inventionTiles()
+				v["inventionNumbers"] = g.inventionNumbers()
 				v["taxationTiles"] = g.taxationTiles()
 				v["smithingOptions"] = g.smithingOptions(player)
 				v["merchantTiles"] = g.merchantTiles(player)

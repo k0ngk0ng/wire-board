@@ -22,9 +22,9 @@ func (g *Catan) progressResourceGain(player, color int) int {
 }
 func (g *Catan) inventionTiles() []int {
 	out := []int{}
-	for _, t := range g.Tiles {
-		if t.Number > 0 && !slices.Contains([]int{2, 6, 8, 12}, t.Number) {
-			out = append(out, t.ID)
+	for _, token := range g.inventionNumbers() {
+		if !slices.Contains(out, token.Tile) {
+			out = append(out, token.Tile)
 		}
 	}
 	return out
@@ -91,19 +91,9 @@ func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) in
 	case 2:
 		return s.catanCityBuild(player, Action{Type: "catan_wall", Vertex: a.Vertex}, 2)
 	case 3:
-		legal := g.inventionTiles()
-		if a.Tile == a.Target || !slices.Contains(legal, a.Tile) || !slices.Contains(legal, a.Target) {
-			return errors.New("请选择两个不同地块上的数字，不能交换2、6、8、12")
+		if err := s.catanInvention(a); err != nil {
+			return err
 		}
-		left, right := g.Tiles[a.Tile].Number, g.Tiles[a.Target].Number
-		if g.Explorer != nil {
-			if err := g.Explorer.Board.swapNumbers(g, a.Tile, a.Target); err != nil {
-				return err
-			}
-		} else {
-			g.Tiles[a.Tile].Number, g.Tiles[a.Target].Number = right, left
-		}
-		s.catanLog(player, "交换地块 #%d 的%d和地块 #%d 的%d，强盗位置不变", a.Tile+1, left, a.Target+1, right)
 	case 4, 6:
 		color := 3
 		if a.Card == 6 {
