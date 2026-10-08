@@ -247,8 +247,8 @@ func TestCatanFriendlyRobberStaleVictimRejectedAndBotPrivateIndependence(t *test
 	if !reflect.DeepEqual(a, b) {
 		t.Fatal("private opponent cards changed friendly target")
 	}
-	if _, err := NewCatanFriendlyRobber(3, CatanOptions{Helpers: true}, CatanBaseConfiguration{}); err == nil {
-		t.Fatal("unverified Helpers combination")
+	if _, err := NewCatanFriendlyRobber(3, CatanOptions{Helpers: true}, CatanBaseConfiguration{}); err != nil {
+		t.Fatal(err)
 	}
 }
 

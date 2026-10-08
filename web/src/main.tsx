@@ -2271,11 +2271,7 @@ function Create({
               value={catanFriendly}
               onChange={setCatanFriendly}
               scenario={catanScenario}
-              reason={
-                catanOptions.helpers || catanSeaKnights
-                  ? "请先关闭 Helpers 和城市骑士。"
-                  : ""
-              }
+              reason={catanSeaKnights ? "请先关闭城市骑士。" : ""}
             />
           )}
         {k === "catan" &&

@@ -1,7 +1,5 @@
 package game
 
-import "errors"
-
 // Harbors of Catan, 2025 Traders & Barbarians p.4 (formerly Harbormaster).
 // Keep ownership in saves: a tie retains the existing holder.
 const CatanHarborsRules = "catan-harbors-2025"
@@ -13,9 +11,6 @@ type CatanHarbors struct {
 
 // Internal variant constructor. Waiting-room/public configuration is separate.
 func NewCatanHarbors(n int, options CatanOptions, setup CatanBaseConfiguration) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("港口霸主与助手的组合尚未核验")
-	}
 	s, err := NewCatanConfigured(n, options, setup)
 	if err != nil {
 		return nil, err

@@ -62,14 +62,14 @@ func TestCatanHarborsConfigurationMapsAndValidation(t *testing.T) {
 			t.Fatal("fixed board variant")
 		}
 	}
-	for _, setup := range []CatanHarborsSetup{{Enabled: true}, {Enabled: true, Rules: "wrong"}} {
+	for _, setup := range []CatanHarborsSetup{{Enabled: true, Rules: "wrong"}} {
 		s, err := NewCatan(3, CatanOptions{Helpers: true})
 		if err != nil {
 			t.Fatal(err)
 		}
 		before, _ := json.Marshal(s)
 		if err = s.ConfigureCatanHarbors(setup); err == nil {
-			t.Fatal("invalid Helpers/version combination")
+			t.Fatal("invalid version")
 		}
 		after, _ := json.Marshal(s)
 		if string(before) != string(after) {

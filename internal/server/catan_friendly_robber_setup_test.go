@@ -51,7 +51,6 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	for _, setup := range []any{nil, game.CatanFriendlyRobberSetup{Enabled: true, Rules: "wrong"}} {
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_friendly_robber", "catanFriendlyRobber": setup, "version": current(host)["version"], "nonce": randomID(12)}, 400)
 	}
-	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid configuration changed room")
@@ -71,7 +70,7 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	}
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_friendly_robber", "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}, "version": stale["version"], "nonce": randomID(12)}, 409)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
-	selectCatanFriendlyRobber(host, true, 400)
+	selectCatanFriendlyRobber(host, true, 200)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
 	selectCatanFriendlyRobber(host, true, 200)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
@@ -112,7 +111,7 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 }
 
 func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
-	for _, kind := range []string{"sea", "world", "ck", "helpers", "allHelpers"} {
+	for _, kind := range []string{"sea", "world", "ck"} {
 		t.Run(kind, func(t *testing.T) {
 			r := &Room{Kind: "catan", Status: "waiting", Capacity: 3}
 			switch kind {
@@ -122,10 +121,6 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 				r.CatanNewWorldMap = &game.CatanNewWorldMap{}
 			case "ck":
 				r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{}
-			case "helpers":
-				r.CatanOptions.Helpers = true
-			case "allHelpers":
-				r.CatanOptions.AllHelpers = true
 			}
 			before, _ := json.Marshal(r)
 			if err := r.setCatanFriendlyRobber(game.CatanFriendlyRobberSetup{Enabled: true}); err == nil {
@@ -158,7 +153,7 @@ func TestCatanFriendlyRobberConfigurationCombinationGates(t *testing.T) {
 }
 
 func TestCatanFriendlyRobberRejectsUnverifiedSavedDraftAtStart(t *testing.T) {
-	for _, kind := range []string{"sea", "ck", "helpers", "version"} {
+	for _, kind := range []string{"sea", "ck", "version"} {
 		t.Run(kind, func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
@@ -178,8 +173,6 @@ func TestCatanFriendlyRobberRejectsUnverifiedSavedDraftAtStart(t *testing.T) {
 				r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "unknown"}
 			case "ck":
 				r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{Layout: "variable"}
-			case "helpers":
-				r.CatanOptions.Helpers = true
 			case "version":
 				r.CatanFriendlyRobber.Rules = "future"
 			}

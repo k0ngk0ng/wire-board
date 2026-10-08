@@ -33,9 +33,6 @@ func (s *State) ConfigureCatanHarbors(request CatanHarborsSetup) error {
 		return errors.New("港口霸主只能在创建游戏时配置")
 	}
 	if setup.Enabled {
-		if g.Options.Helpers || g.Options.AllHelpers {
-			return errors.New("港口霸主与助手的组合尚未核验")
-		}
 		s.enableCatanHarbors()
 	}
 	return nil

@@ -15,9 +15,6 @@ type CatanFriendlyRobber struct {
 // Internal base variant constructor. Special sea fallback/fleet interactions
 // and other expansion configuration remain subject to combination acceptance.
 func NewCatanFriendlyRobber(n int, options CatanOptions, setup CatanBaseConfiguration) (*State, error) {
-	if options.Helpers || options.AllHelpers {
-		return nil, errors.New("友善强盗与助手的组合尚未核验")
-	}
 	s, err := NewCatanConfigured(n, options, setup)
 	if err != nil {
 		return nil, err

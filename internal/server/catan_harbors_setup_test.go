@@ -51,7 +51,6 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	for _, setup := range []any{nil, game.CatanHarborsSetup{Enabled: true, Rules: "wrong"}} {
 		host.post("/api/rooms/"+id, map[string]any{"type": "catan_harbors", "catanHarbors": setup, "version": current(host)["version"], "nonce": randomID(12)}, 400)
 	}
-	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid configuration changed room")
@@ -71,7 +70,7 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	}
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_harbors", "catanHarbors": game.CatanHarborsSetup{Enabled: true}, "version": stale["version"], "nonce": randomID(12)}, 409)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
-	selectCatanHarbors(host, true, 400)
+	selectCatanHarbors(host, true, 200)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true}, "version": current(host)["version"], "nonce": randomID(12)}, 200)
 	selectCatanHarbors(host, true, 200)
 	host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{}, "version": current(host)["version"], "nonce": randomID(12)}, 200)

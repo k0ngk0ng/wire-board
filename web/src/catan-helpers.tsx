@@ -40,43 +40,34 @@ export function CatanOptionPicker({
           五至六人扩充 · 新版配对回合
         </label>
       )}
-      {helpersAvailable &&
-        !fishing &&
-        !citiesKnights &&
-        !harbors &&
-        !friendlyRobber && (
-          <label>
-            <input
-              type="checkbox"
-              checked={!!value.helpers}
-              onChange={(e) =>
-                onChange({
-                  ...value,
-                  helpers: e.target.checked,
-                  allHelpers: false,
-                })
-              }
-            />{" "}
-            Helpers · 十二位助手
-          </label>
-        )}
-      {helpersAvailable &&
-        !fishing &&
-        !citiesKnights &&
-        !harbors &&
-        !friendlyRobber &&
-        value.helpers && (
-          <label>
-            <input
-              type="checkbox"
-              checked={!!value.allHelpers}
-              onChange={(e) =>
-                onChange({ ...value, allHelpers: e.target.checked })
-              }
-            />{" "}
-            展示全部备用助手
-          </label>
-        )}
+      {helpersAvailable && !fishing && !citiesKnights && (
+        <label>
+          <input
+            type="checkbox"
+            checked={!!value.helpers}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                helpers: e.target.checked,
+                allHelpers: false,
+              })
+            }
+          />{" "}
+          Helpers · 十二位助手
+        </label>
+      )}
+      {helpersAvailable && !fishing && !citiesKnights && value.helpers && (
+        <label>
+          <input
+            type="checkbox"
+            checked={!!value.allHelpers}
+            onChange={(e) =>
+              onChange({ ...value, allHelpers: e.target.checked })
+            }
+          />{" "}
+          展示全部备用助手
+        </label>
+      )}
       {value.fiveSix && (
         <small>
           {seafarers
@@ -85,16 +76,19 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {helpersAvailable &&
-        !fishing &&
-        !citiesKnights &&
-        !harbors &&
-        !friendlyRobber &&
-        value.helpers && (
-          <small>
-            使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
-          </small>
-        )}
+      {helpersAvailable && !fishing && !citiesKnights && value.helpers && (
+        <small>
+          使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+        </small>
+      )}
+      {value.helpers && harbors && (
+        <small>助手建造的港口建筑同样计入港口点，奖励和获胜门槛不变。</small>
+      )}
+      {value.helpers && friendlyRobber && (
+        <small>
+          友善保护只限制强盗与海盗，不限制助手交易或取牌。迪古尔仍按助手效果返回沙漠；无沙漠时不可使用，不自动改为场外驱逐。
+        </small>
+      )}
     </fieldset>
   );
 }
