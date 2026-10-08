@@ -75,6 +75,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 					if n <= 4 && sample == 1 && scenario != "desert" && scenario != "tribe" {
 						layout = "variable"
 					}
+					if scenario == "shores" && n > 4 {
+						layout = "variable"
+					}
 					if scenario == "new_world" {
 						layout = "prepared"
 					}
@@ -296,7 +299,7 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 				if scenario == "islands" || scenario == "tribe" {
 					target = 13
 				}
-				if scenario == "desert" || scenario == "cloth" {
+				if scenario == "shores" || scenario == "desert" || scenario == "cloth" {
 					target = 14
 				}
 				if harbors {
@@ -349,6 +352,9 @@ func testFishingEventsFullHTTP(t *testing.T, scenario string, friendly, harbors,
 						versions := record["catanExpansionRules"].(map[string]any)
 						if n > 4 && (scenario == "islands" || scenario == "desert" || scenario == "tribe" || scenario == "cloth") && versions["fishing_sea_recipe"] != game.CatanFishingSeaExtendedRecipe {
 							t.Fatal("missing extended fishing recipe history", versions)
+						}
+						if scenario == "shores" && versions["fishing_sea_recipe"] != game.CatanFishingShoresRecipe {
+							t.Fatal("missing shores fishing recipe")
 						}
 						if events && versions["event_cards"] != game.CatanEventCatalogue {
 							t.Fatal("missing fishing event history", versions)
@@ -415,4 +421,11 @@ func TestCatanFishingVariantsPublicFullHTTPGames(t *testing.T) {
 			t.Run(fmt.Sprintf("%s/%d", scene, mode), func(t *testing.T) { testFishingVariantsFullHTTP(t, scene, mode&1 != 0, mode&2 != 0, n) })
 		}
 	}
+}
+
+func TestCatanFishingShoresFullHTTPGames(t *testing.T) {
+	testFishingSeaExtendedFullHTTP(t, "shores", 3, 4, 5, 6)
+}
+func TestCatanFishingShoresEventsFullHTTPGames(t *testing.T) {
+	testFishingEventsFullHTTP(t, "shores", true, true, true, 3, 6)
 }

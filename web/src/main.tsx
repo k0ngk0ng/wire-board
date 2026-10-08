@@ -2254,6 +2254,7 @@ function Create({
               supportsPublicCatanFishingSea(catanScenario))) && (
             <CatanFishingSeaPicker
               value={catanFishing}
+              shores={catanScenario === "shores"}
               explorer={isPublicCatanExplorer(catanScenario)}
               extended={capacity > 4}
               onChange={setCatanFishing}
@@ -2713,6 +2714,7 @@ function Waiting({
               supportsPublicCatanFishingSea(room.catanScenario))) && (
             <CatanFishingSeaPicker
               value={!!room.catanFishing}
+              shores={room.catanScenario === "shores"}
               explorer={isPublicCatanExplorer(room.catanScenario)}
               lakes={!!room.catanFishingLakes}
               onLakes={(enabled) => command("catan_fishing_lakes", { enabled })}

@@ -64,7 +64,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 	h.register("海图捕鱼房主")
 	c.register("海图捕鱼朋友")
 	for _, body := range []map[string]any{
-		{"kind": "catan", "capacity": 3, "catanScenario": "shores"},
+		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
 		{"kind": "catan", "capacity": 7, "catanScenario": "land-ho"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},

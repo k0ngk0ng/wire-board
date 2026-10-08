@@ -202,6 +202,7 @@ export function CatanCombinationKnightsPicker({
 
 export const supportsPublicCatanFishingSea = (scenario?: string) =>
   [
+    "shores",
     "islands",
     "fog",
     "desert",
@@ -220,6 +221,7 @@ export function CatanFishingSeaPicker({
   disabled = false,
   blocked = false,
   fixedRequired = false,
+  shores = false,
   extended = false,
   explorer = false,
   lakes = false,
@@ -230,6 +232,7 @@ export function CatanFishingSeaPicker({
   disabled?: boolean;
   blocked?: boolean;
   fixedRequired?: boolean;
+  shores?: boolean;
   extended?: boolean;
   explorer?: boolean;
   lakes?: boolean;
@@ -259,6 +262,11 @@ export function CatanFishingSeaPicker({
                 ? "五六人扩大地图、8处渔场、44枚鱼筹码和配对回合；六岛、沙漠、部落、布匹采用标明的本站配方。关闭渔夫后保留海图和人数。"
                 : "海岸渔场产鱼，可花5鱼修路或造船；旧靴提高1分门槛，保留所选海图的特殊终局条件。"}
       </p>
+      {shores && value && (
+        <p className="muted small">
+          本站新海岸配方：三人以内陆地块换湖并移除原数字；四至六人以内陆沙漠换湖，五六人使用双湖。强盗从场外开始。
+        </p>
+      )}
       {explorer && value && onLakes && (
         <label>
           <input
