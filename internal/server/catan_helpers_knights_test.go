@@ -11,7 +11,7 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func newHelpersKnightsHTTP(t *testing.T, n int, scenario string, events bool) (*Server, *httptest.Server, []*testClient, string) {
+func newHelpersKnightsHTTP(t *testing.T, n int, scenario string, events bool, fishing ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -23,6 +23,9 @@ func newHelpersKnightsHTTP(t *testing.T, n int, scenario string, events bool) (*
 	recipe := map[string]any{"kind": "catan", "name": "骑士助手", "capacity": n, "catanScenario": scenario, "catanOptions": game.CatanOptions{FiveSix: n > 4, Helpers: true, AllHelpers: true}}
 	if scenario != "cities-knights" {
 		recipe["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{}
+	}
+	if len(fishing) > 0 && fishing[0] && scenario != "fishing" {
+		recipe["catanFishing"] = true
 	}
 	if events {
 		recipe["catanEvents"] = game.CatanEventCatalogue
@@ -68,7 +71,7 @@ func TestCatanHelpersKnightsHTTPConfiguration(t *testing.T) {
 				guest.command(current(guest), "ready", nil, 200)
 				before, _ := json.Marshal(s.rooms[id])
 				change(guest, "catan_options", "catanOptions", game.CatanOptions{FiveSix: n > 4}, 400)
-				if publicCatanFishingSea(scene) {
+				if scene == "pirate_islands" {
 					change(h, "catan_fishing", "enabled", true, 400)
 				}
 				after, _ := json.Marshal(s.rooms[id])

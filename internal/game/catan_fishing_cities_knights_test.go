@@ -76,8 +76,8 @@ func TestCatanFishingCitiesKnightsSetupAndGoal(t *testing.T) {
 			}
 		})
 	}
-	if _, err := NewCatanFishingCitiesKnights(3, CatanOptions{Helpers: true}); err == nil {
-		t.Fatal("unsupported helper combination")
+	if s, err := NewCatanFishingCitiesKnights(3, CatanOptions{Helpers: true}); err != nil || !s.Catan.cityHelpers() || !s.Catan.fishingHelpers() {
+		t.Fatal("missing helper combination", err)
 	}
 }
 func TestCatanFishingCitiesKnightsReplacementThenAqueduct(t *testing.T) {

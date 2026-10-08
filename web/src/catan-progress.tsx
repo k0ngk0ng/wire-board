@@ -16,6 +16,7 @@ import {
   commercialOfferAction,
   newProgressSelection,
   progressGain,
+  progressNumberOptions,
   progressMapMode,
   progressOpponents,
   progressPlayAction,
@@ -277,6 +278,34 @@ export function CatanProgressHand({
                         ? "按顺序选择一至两名亮起的骑士。再次点击已选骑士可撤回该步及后续选择。"
                         : `在地图上选择亮起的${selectedMode === "progress_tile" ? "地块" : selectedMode === "progress_edge" ? (g.seafarers ? "道路或船只" : "道路") : "交点"}。`}
                   </p>
+                  {s.card === 3 &&
+                    s.picks.map((tile, i) => {
+                      const options = progressNumberOptions(g, tile);
+                      return options.length > 1 ||
+                        options.some((n) => n.slot !== 0) ? (
+                        <label key={tile}>
+                          地块 #{tile + 1} 交换的数字
+                          <select
+                            value={s.numbers?.[i] ?? options[0]?.slot ?? 0}
+                            onChange={(e) =>
+                              update({
+                                numbers: s.picks.map((_, j) =>
+                                  i === j
+                                    ? Number(e.target.value)
+                                    : (s.numbers?.[j] ?? 0),
+                                ),
+                              })
+                            }
+                          >
+                            {options.map((n) => (
+                              <option key={n.slot} value={n.slot}>
+                                {n.number}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      ) : null;
+                    })}
                   {s.card === 21 && g.taxationTiles?.includes(-1) && (
                     <button
                       disabled={busy}

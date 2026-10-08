@@ -2,6 +2,7 @@ import type { Room, CatanState } from "./types";
 import { cityImprovementReason, cityWallSites } from "./catan-city-state.ts";
 export type ProgressSelection = {
   upgrade?: "city" | "harbor";
+  numbers?: number[];
   card: number;
   color: number | null;
   target: number | null;
@@ -106,15 +107,30 @@ export function pickProgressTarget(
       picks: i >= 0 ? s.picks.slice(0, i) : [...s.picks, id],
     };
   }
-  if (s.card === 3)
+  if (s.card === 3) {
+    const picks = s.picks.includes(id)
+      ? s.picks.filter((n) => n !== id)
+      : [...s.picks.slice(-1), id];
     return {
       ...s,
       skip: false,
-      picks: s.picks.includes(id)
-        ? s.picks.filter((n) => n !== id)
-        : [...s.picks.slice(-1), id],
+      picks,
+      numbers: picks.map((tile) => {
+        const previous = s.picks.indexOf(tile);
+        return previous >= 0 && s.numbers?.[previous] !== undefined
+          ? s.numbers[previous]
+          : (progressNumberOptions(g, tile)[0]?.slot ?? 0);
+      }),
     };
+  }
   return { ...s, skip: false, picks: [id] };
+}
+export function progressNumberOptions(g: CatanState, tile: number) {
+  return (
+    g.inventionNumbers?.filter((n) => n.tile === tile) || [
+      { tile, slot: 0, number: g.tiles[tile]?.number || 0 },
+    ]
+  );
 }
 export function progressGain(g: CatanState, player: number, card: number) {
   const color = card === 4 ? 3 : 4;
@@ -201,8 +217,21 @@ export function progressPlayAction(
       new Set(s.picks).size !== s.picks.length
     )
       return null;
+    if (
+      s.card === 3 &&
+      s.picks.some(
+        (tile, i) =>
+          !progressNumberOptions(g, tile).some(
+            (n) => n.slot === (s.numbers?.[i] ?? 0),
+          ),
+      )
+    )
+      return null;
     return {
       ...a,
+      ...(s.card === 3 && s.numbers?.some((slot) => slot !== 0)
+        ? { tokens: s.numbers }
+        : {}),
       ...(s.card === 5 && g.explorer && s.upgrade === "harbor"
         ? { choice: "harbor" }
         : {}),

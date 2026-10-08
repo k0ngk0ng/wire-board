@@ -130,7 +130,7 @@ func (r *Room) validateCatanScenario() error {
 		return errors.New("该剧本人数无效；河流、商队和渔夫支持三至六人；河流和商队另有双人变体")
 	}
 	requested := game.CatanOptions{FiveSix: r.Capacity > 4}
-	if r.CatanScenario == "fishing" && r.CatanCitiesKnights == nil {
+	if r.CatanScenario == "fishing" {
 		requested.Helpers, requested.AllHelpers = r.CatanOptions.Helpers, r.CatanOptions.AllHelpers
 	}
 	options, optionErr := game.NormalizeCatanOptions(requested)

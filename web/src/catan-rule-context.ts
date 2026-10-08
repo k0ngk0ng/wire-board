@@ -71,7 +71,6 @@ export function catanRuleContext(room: Room) {
     fishingHelpers: game
       ? game.fishing?.helpers || ""
       : !explorerDraft &&
-          !citiesKnights &&
           options.helpers &&
           ((room.catanTwoScenario || room.catanScenario) === "fishing" ||
             room.catanFishing)
@@ -208,12 +207,7 @@ export function catanRuleContext(room: Room) {
       : !!options.fiveSix || ((explorerDraft || attack) && players > 4),
     helpersKnights: game
       ? game.citiesKnights?.helpers?.rules || ""
-      : !explorerDraft &&
-          citiesKnights &&
-          options.helpers &&
-          players >= 3 &&
-          !room.catanFishing &&
-          room.catanScenario !== "fishing"
+      : !explorerDraft && citiesKnights && options.helpers && players >= 3
         ? "wire-board-helpers-knights-v1"
         : "",
     helpers: !!options.helpers,

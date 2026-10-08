@@ -113,17 +113,18 @@ func (g *Catan) scienceBotChoices(player int) []botChoice {
 				}
 			}
 		case 3:
-			sites := g.inventionTiles()
+			sites := g.inventionNumbers()
 			best := 0
 			for i, left := range sites {
 				for _, right := range sites[i+1:] {
-					leftOdds := 6 - absCatan(7-g.Tiles[left].Number)
-					rightOdds := 6 - absCatan(7-g.Tiles[right].Number)
-					gain := (rightOdds - leftOdds) * (g.scienceTileValue(player, left) - g.scienceTileValue(player, right))
+					leftOdds := 6 - absCatan(7-left.Number)
+					rightOdds := 6 - absCatan(7-right.Number)
+					gain := (rightOdds - leftOdds) * (g.scienceTileValue(player, left.Tile) - g.scienceTileValue(player, right.Tile))
 					if gain > best {
 						best = gain
-						a.Tile = left
-						a.Target = right
+						a.Tile = left.Tile
+						a.Target = right.Tile
+						a.Tokens = []int{left.Slot, right.Slot}
 					}
 				}
 			}

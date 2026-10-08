@@ -45,7 +45,7 @@ export function CatanOptionPicker({
           五至六人扩充 · 新版配对回合
         </label>
       )}
-      {helpersAvailable && (explorer || !citiesKnights || !fishing) && (
+      {helpersAvailable && (
         <label>
           <input
             type="checkbox"
@@ -61,20 +61,18 @@ export function CatanOptionPicker({
           Helpers · 十二位助手
         </label>
       )}
-      {helpersAvailable &&
-        (explorer || !citiesKnights || !fishing) &&
-        value.helpers && (
-          <label>
-            <input
-              type="checkbox"
-              checked={!!value.allHelpers}
-              onChange={(e) =>
-                onChange({ ...value, allHelpers: e.target.checked })
-              }
-            />{" "}
-            展示全部备用助手
-          </label>
-        )}
+      {helpersAvailable && value.helpers && (
+        <label>
+          <input
+            type="checkbox"
+            checked={!!value.allHelpers}
+            onChange={(e) =>
+              onChange({ ...value, allHelpers: e.target.checked })
+            }
+          />{" "}
+          展示全部备用助手
+        </label>
+      )}
       {value.fiveSix && (
         <small>
           {seafarers
@@ -83,13 +81,11 @@ export function CatanOptionPicker({
           ①号正常行动后，左侧第三位②号玩家进行一次不掷骰、不自由交易的行动。
         </small>
       )}
-      {helpersAvailable &&
-        (explorer || !citiesKnights || !fishing) &&
-        value.helpers && (
-          <small>
-            使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
-          </small>
-        )}
+      {helpersAvailable && value.helpers && (
+        <small>
+          使用后可翻面保留一次，或与展示区交换；新获得的助手需等下一回合。
+        </small>
+      )}
       {explorer && value.helpers && (
         <small>
           本站探索者适配：造船、人员建设与补给替代发展卡和强盗能力；支持渔夫、城市与骑士，人数按探索者规则处理。
@@ -98,6 +94,7 @@ export function CatanOptionPicker({
       {!explorer && citiesKnights && value.helpers && (
         <small>
           本站骑士助手：资源能力不处理商品；迪亚拉择选进步牌，卡拉更换进步牌，格雷戈尔归还实体骑士建造。
+          {fishing && "鱼不取消希尔达与引水渠补偿；7鱼抽牌不能叠加助手择牌。"}
         </small>
       )}
       {value.helpers && harbors && (

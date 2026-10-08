@@ -75,11 +75,15 @@ func (f catanFishingMap) validateDesert(g *Catan) error {
 	if len(g.Tiles) != wantTiles || len(f.Lakes) != 1 || len(f.Grounds) != 6 || len(f.ExtraNumbers) != 1 {
 		return errors.New("穿越沙漠捕鱼组件数量不符")
 	}
+	original, err := f.numbersBeforeInvention(g)
+	if err != nil {
+		return err
+	}
 	lake, extra := f.Lakes[0], f.ExtraNumbers[0]
 	if lake.Tile != r.lake || !slices.Equal(lake.Numbers, []int{2, 3, 11, 12}) ||
 		g.Tiles[r.lake].Resource != catanLake || g.Tiles[r.lake].Number != 0 ||
-		extra.Tile != r.recipient || extra.Number != r.moved ||
-		g.Tiles[r.recipient].Resource != r.recipientResource || g.Tiles[r.recipient].Number != r.original {
+		extra.Tile != r.recipient || original[CatanNumberToken{extra.Tile, 1}] != r.moved ||
+		g.Tiles[r.recipient].Resource != r.recipientResource || original[CatanNumberToken{r.recipient, 0}] != r.original {
 		return errors.New("穿越沙漠湖泊或双生产点数不符")
 	}
 	for _, tile := range g.Tiles {

@@ -699,6 +699,7 @@ export type CatanState = {
   progressPlayable?: number[];
   taxationTiles?: number[];
   inventionTiles?: number[];
+  inventionNumbers?: { tile: number; slot: number; number: number }[];
   smithingOptions?: number[][];
   merchantTiles?: number[];
   guildDuesTargets?: number[];

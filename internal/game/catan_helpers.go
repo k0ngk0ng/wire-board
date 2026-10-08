@@ -334,7 +334,7 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			return errors.New("地图上没有沙漠")
 		}
 		if resource == CatanGold || g.fishingHelpers() && resource == catanLake {
-			if sum(g.Bank) > 0 && (a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] == 0) {
+			if sum(g.Bank[:5]) > 0 && (a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] == 0) {
 				return errors.New("请选择银行有库存的一种普通资源")
 			}
 			resource = a.Color
