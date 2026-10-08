@@ -1,6 +1,9 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 // A path uses only the public graph. Passing through any other commodity
 // center would end movement, so it cannot be used as a shortcut.
@@ -170,6 +173,22 @@ func (s *State) catanTransportBot(player int) (Action, bool, error) {
 		return base, true, nil
 	}
 	if s.Phase == "catan_turn" {
+		if g.transportKnights() && g.CitiesKnights.BarbarianPosition < catanBarbarianDistance-2 {
+			for _, knight := range g.CitiesKnights.Knights {
+				if knight.Owner != player {
+					continue
+				}
+				pieces := g.transportKnightBarbarians(&knight)
+				if len(pieces) == 0 {
+					continue
+				}
+				for _, e := range g.Edges {
+					if e.Owner >= 0 && e.Owner != player && !g.Players[e.Owner].Eliminated && sum(g.Players[e.Owner].Resources) > 0 && !slices.Contains(t.Barbarians[:], e.ID) {
+						return Action{Type: "catan_transport_knight_chase", Vertex: knight.Vertex, Card: pieces[0], Edge: e.ID}, true, nil
+					}
+				}
+			}
+		}
 		level := t.Wagons[player].Level
 		if cost := catanTransportUpgradeCost(level); cost != nil && catanHas(g.Players[player].Resources, cost) {
 			return Action{Type: "catan_transport_upgrade"}, true, nil

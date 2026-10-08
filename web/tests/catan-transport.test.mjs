@@ -261,3 +261,28 @@ test("movement quote names bank or opponent without inferring neutral rounding i
     "2移动点 · 无过路费",
   );
 });
+
+test("transport city knight chase uses server targets and clears stale choices", () => {
+  const r = room();
+  r.game.phase = "catan_turn";
+  const t = r.game.catan.transport;
+  t.choices.knightChases = [{ vertex: 7, barbarians: [1] }];
+  t.choices.knightTargets = [5, 6];
+  const pick = { knight: 7, piece: 1, edge: 6 };
+  assert.deepEqual(transportEdges(r, pick), [5, 6]);
+  assert.deepEqual(transportSelectedAction(r, pick), {
+    type: "catan_transport_knight_chase", vertex: 7, card: 1, edge: 6,
+  });
+  assert.equal(transportSelectedAction(r, { ...pick, piece: 0 }), null);
+  assert.equal(transportSelectedAction(r, { ...pick, edge: 9 }), null);
+  t.choices.knightChases = [];
+  assert.equal(transportSelectedAction(r, pick), null);
+  r.spectating = true;
+  assert.deepEqual(transportEdges(r, pick), []);
+});
+
+test("transport city draft and restored target stay fifteen, base stays thirteen", () => {
+  assert.equal(catanRuleContext({kind: "catan", capacity: 3, catanScenario: "transport", catanCitiesKnights: {}}).target, 15);
+  assert.equal(catanSavedVictoryTarget({transport: {}, citiesKnights: {}}), 15);
+  assert.equal(catanSavedVictoryTarget({transport: {}}), 13);
+});

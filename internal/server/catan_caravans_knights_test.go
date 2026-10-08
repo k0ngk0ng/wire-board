@@ -22,7 +22,10 @@ func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string) (*
 		clients[p].register(fmt.Sprintf("商队骑士%d", p))
 	}
 	recipe := map[string]any{"kind": "catan", "name": "商队骑士验收", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: n > 4}, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}}
-	if n == 2 {
+	if scenario == "transport" {
+		recipe["catanScenario"] = scenario
+		recipe["catanOptions"] = game.CatanOptions{}
+	} else if n == 2 {
 		recipe["catanTwoScenario"] = scenario
 	} else {
 		recipe["catanScenario"] = scenario

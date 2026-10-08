@@ -127,6 +127,7 @@ export const supportsPublicExplorerKnights = (scenario?: string) =>
 
 export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
   supportsPublicExplorerKnights(scenario) ||
+  scenario === "transport" ||
   [
     "rivers",
     "caravans",
@@ -439,7 +440,7 @@ export function CatanScenarioPicker({
             本站数字配置：采用固定数列沿逆时针螺旋摆放，数字数量保持原扩充配置；不宣称与2025实体字母背面一致。
           </p>
         )}
-      {players > 4 && value === "transport" && (
+      {players > 4 && value === "transport" && !knights && (
         <p className="muted small">
           本站牌组配置：五六人增加8张骑士、2张道路建设、2张快速旅程，共37张；按实际开局人数使用。
         </p>
@@ -449,6 +450,11 @@ export function CatanScenarioPicker({
       ) && (
         <p className="muted small">
           本站巢穴数字配置：3、4、5、9、10、11，五六人再加入6、8；随机分配，攻陷前隐藏。
+        </p>
+      )}
+      {value === "transport" && knights && (
+        <p className="muted small">
+          运输＋城市骑士：不使用运输发展牌，15分获胜；保留蛮族船与道路蛮族。二至四人2或12只重掷生产骰。本站组合说明：五六人地图同样用一块粮田替换森林；小地图炼金术仅选3至11点。
         </p>
       )}
       {["rivers", "transport"].includes(value) && (

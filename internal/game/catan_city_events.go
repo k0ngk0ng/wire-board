@@ -202,7 +202,7 @@ func (s *State) catanFinishBarbarians() {
 		k.Knights[i].Active = false
 	}
 	k.Invasions++
-	if k.Invasions == 1 && g.Explorer == nil {
+	if k.Invasions == 1 && g.Explorer == nil && g.Transport == nil {
 		g.Robber = k.RobberStart
 		if g.Seafarers != nil && g.wonders() == nil && (g.pirateIslands() == nil || g.pirateFortressesRemain()) {
 			g.Seafarers.Pirate = k.PirateStart

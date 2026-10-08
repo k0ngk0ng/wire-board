@@ -28,6 +28,7 @@ type catanTransportArrivalResult struct {
 
 // Persisted scenario state, including the extended online deck version.
 type catanTransport struct {
+	Knights           string                       `json:"knights,omitempty"`
 	DeckRecipe        string                       `json:"deckRecipe,omitempty"`
 	GameTurn          uint64                       `json:"gameTurn"`
 	Swift             bool                         `json:"swift"`
@@ -111,7 +112,7 @@ func (t catanTransport) validate(g *Catan) error {
 	if !catanTransportPlayersValid(g) || t.Map == nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
 		return errors.New("运输组件或人数无效")
 	}
-	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil || g.Options.Helpers || g.Options.AllHelpers {
+	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("运输与其他扩展的组合尚未接入")
 	}
 	if err := t.Map.validate(g); err != nil {
@@ -219,20 +220,31 @@ func (t catanTransport) validate(g *Catan) error {
 	if len(g.Players) > 4 {
 		stock = 24
 	}
-	if !catanBundle(g.Bank) {
+	cards := 5
+	if g.transportKnights() {
+		cards = 8
+	}
+	if len(g.Bank) != cards || !g.cardBundle(g.Bank) {
 		return errors.New("运输资源银行无效")
 	}
 	totals := slices.Clone(g.Bank)
 	for _, p := range g.Players {
-		if !catanBundle(p.Resources) {
+		if len(p.Resources) != cards || !g.cardBundle(p.Resources) {
 			return errors.New("运输玩家资源无效")
 		}
 		for c, count := range p.Resources {
 			totals[c] += count
 		}
 	}
-	for _, count := range totals {
-		if count != stock {
+	for c, count := range totals {
+		want := stock
+		if c >= 5 {
+			want = 12
+			if len(g.Players) > 4 {
+				want = 18
+			}
+		}
+		if count != want {
 			return errors.New("运输资源库存不守恒")
 		}
 	}

@@ -166,7 +166,7 @@ func (q *catanTransportTravel) wheat(g *Catan, m *catanTransportMap, barbarians 
 	if err := q.validate(g, m, barbarians, gold); err != nil {
 		return err
 	}
-	if q.Ended || q.Pending != -1 || q.WheatUsed || !catanBundle(g.Bank) || !catanBundle(g.Players[q.Player].Resources) || g.Players[q.Player].Resources[3] < 1 {
+	if q.Ended || q.Pending != -1 || q.WheatUsed || !g.cardBundle(g.Bank) || !g.cardBundle(g.Players[q.Player].Resources) || g.Players[q.Player].Resources[3] < 1 {
 		return errors.New("本回合只能支付一次粮食增加2移动点")
 	}
 	stock := 19

@@ -180,6 +180,9 @@ export function CatanProgressHand({
                   <small>
                     生产点数合计 {s.dice[0] + s.dice[1]} · 事件骰仍随机
                     {g.eventDeck && "；本次不翻事件牌，牌堆保持原状"}
+                    {g.transport?.knights &&
+                      g.players.length <= 4 &&
+                      "；运输小地图请选择3至11点"}
                   </small>
                 </div>
               )}

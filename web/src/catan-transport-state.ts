@@ -1,5 +1,9 @@
 import type { Room, CatanTransport, CatanState } from "./types";
-export type TransportPick = { edge: number | null; piece: number | null };
+export type TransportPick = {
+  edge: number | null;
+  piece: number | null;
+  knight?: number;
+};
 export const emptyTransportPick = (): TransportPick => ({
   edge: null,
   piece: null,
@@ -44,11 +48,13 @@ export function transportCanAct(room: Room) {
     !room.seats[room.you]?.autoPlay
   );
 }
-export function transportEdges(room: Room): number[] {
+export function transportEdges(room: Room, pick?: TransportPick): number[] {
   const t = room.game?.catan?.transport;
   if (!t || !transportCanAct(room)) return [];
   if (t.barbarianPending || (t.state.travel?.pending ?? -1) >= 0)
     return t.choices.relocate || [];
+  if (room.game?.phase === "catan_turn" && pick?.knight !== undefined)
+    return t.choices.knightTargets || [];
   return (t.choices.steps || []).map((s) => s.edge);
 }
 export function transportSelectedAction(
@@ -56,8 +62,25 @@ export function transportSelectedAction(
   pick: TransportPick,
 ): Record<string, unknown> | null {
   const t = room.game?.catan?.transport;
-  if (!t || pick.edge === null || !transportEdges(room).includes(pick.edge))
+  if (
+    !t ||
+    pick.edge === null ||
+    !transportEdges(room, pick).includes(pick.edge)
+  )
     return null;
+  if (room.game?.phase === "catan_turn" && pick.knight !== undefined) {
+    const choice = t.choices.knightChases?.find(
+      (c) => c.vertex === pick.knight,
+    );
+    return pick.piece !== null && choice?.barbarians.includes(pick.piece)
+      ? {
+          type: "catan_transport_knight_chase",
+          vertex: pick.knight,
+          card: pick.piece,
+          edge: pick.edge,
+        }
+      : null;
+  }
   if (t.barbarianPending)
     return pick.piece !== null && pick.piece >= 0 && pick.piece < 3
       ? {

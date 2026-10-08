@@ -268,11 +268,13 @@ export function CatanCityOverview({
       </p>
       {k.invasions === 0 && (
         <small>
-          {g.explorer
-            ? "掷出7仍需弃牌并移动探险海盗；首次蛮族进攻后可使用征税。"
-            : g.seafarers?.pirateIslands
-              ? "首次进攻前舰队休眠，掷出7仍需弃牌；本剧本不使用强盗。"
-              : "首次进攻前强盗休眠，掷出7仍需弃牌。"}
+          {g.transport?.knights
+            ? "掷出7仍需弃牌并移动道路蛮族；蛮族船与道路蛮族分别运作。"
+            : g.explorer
+              ? "掷出7仍需弃牌并移动探险海盗；首次蛮族进攻后可使用征税。"
+              : g.seafarers?.pirateIslands
+                ? "首次进攻前舰队休眠，掷出7仍需弃牌；本剧本不使用强盗。"
+                : "首次进攻前强盗休眠，掷出7仍需弃牌。"}
         </small>
       )}
       <div className="catan-progress-stocks">
@@ -436,32 +438,34 @@ export function CatanCityActions({
       )}
       {mine && (
         <div className="catan-build-menu catan-city-build">
-          {actions.map(([key, count]) => (
-            <button
-              key={key}
-              className={mode === key ? "selected" : ""}
-              disabled={
-                busy ||
-                !count ||
-                (cityActionCosts[key] || []).some((n, c) => n > hand[c])
-              }
-              onClick={() => {
-                setTrack(null);
-                selectMode(key);
-              }}
-            >
-              <span>{cityActionNames[key]}</span>
-              {cityActionCosts[key] ? (
-                <Bundle values={cityActionCosts[key]} assets={assets} />
-              ) : (
-                <small>
-                  {key === "knight_move"
-                    ? "选择骑士，再选目的地"
-                    : "消耗激活状态"}
-                </small>
-              )}
-            </button>
-          ))}
+          {actions
+            .filter(([key]) => !g.transport?.knights || key !== "knight_chase")
+            .map(([key, count]) => (
+              <button
+                key={key}
+                className={mode === key ? "selected" : ""}
+                disabled={
+                  busy ||
+                  !count ||
+                  (cityActionCosts[key] || []).some((n, c) => n > hand[c])
+                }
+                onClick={() => {
+                  setTrack(null);
+                  selectMode(key);
+                }}
+              >
+                <span>{cityActionNames[key]}</span>
+                {cityActionCosts[key] ? (
+                  <Bundle values={cityActionCosts[key]} assets={assets} />
+                ) : (
+                  <small>
+                    {key === "knight_move"
+                      ? "选择骑士，再选目的地"
+                      : "消耗激活状态"}
+                  </small>
+                )}
+              </button>
+            ))}
         </div>
       )}
     </section>

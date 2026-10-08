@@ -574,6 +574,8 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		return s.catanCommercialOffer(player, a)
 	case "catan_progress":
 		return s.catanPlayProgress(player, a)
+	case "catan_transport_knight_chase":
+		return s.catanTransportKnightChase(player, a)
 	case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move", "catan_knight_chase", "catan_knight_warship":
 		return s.catanKnightAction(player, a)
 	case "catan_wall", "catan_improvement":
@@ -581,6 +583,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	case "catan_wonder_claim", "catan_wonder_build":
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
+		if g.transportKnights() && g.EventDeck == nil {
+			return s.catanTransportCityRoll(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} }, catanRandom(6))
+		}
 		if g.EventDeck != nil {
 			return s.catanDrawEvent()
 		}
@@ -617,6 +622,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 			s.Phase = "catan_progress_end"
 			g.Trade = nil
 			return nil
+		}
+		if !s.Finished && g.transportKnights() {
+			return s.catanTransportBeginTravel(player)
 		}
 		if !s.Finished && g.pirateFortressReady(player) {
 			s.catanAttackFortress(player, catanRandom(6)+1)

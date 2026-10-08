@@ -19,7 +19,7 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
           {catanScenarioVictory(info.scenario, info.target)}
         </b>
       </p>
-      {info.scenario && (
+      {info.scenario && !info.transport && (
         <p>
           航海家 · {catanScenarioName(info.scenario)} ·{" "}
           {catanLayoutName(info.layout)}
@@ -29,8 +29,10 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
         <li>
           <b>开局：</b>
           {pirate && "每人先预设一座主岛村庄和一艘船。"}
-          随机先手，顺序放一座村庄和{info.scenario ? "道路或船只" : "道路"}
-          ，再逆序放一座城市和{info.scenario ? "道路或船只" : "道路"}
+          随机先手，顺序放一座村庄和
+          {info.scenario && !info.transport ? "道路或船只" : "道路"}
+          ，再逆序放一座城市和
+          {info.scenario && !info.transport ? "道路或船只" : "道路"}
           {cloth
             ? "，最后再顺序放一座村庄和道路或船只；仅第三座村庄领取普通起始资源。"
             : "；起始城市只领取相邻地块各一张普通资源。"}
@@ -52,15 +54,21 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
         </li>
         <li>
           <b>{pirate ? "舰队和城墙：" : "强盗和城墙："}</b>
-          {pirate
-            ? "本剧本没有强盗。首次蛮族进攻前舰队休眠，7点仍弃牌但不偷牌；此后7点弃牌后可选择对手偷牌。"
-            : `首次蛮族进攻前，掷出7仍弃牌，但不移动强盗${info.scenario && !wonders ? "、海盗" : ""}或偷牌。`}
+          {info.transport
+            ? "不使用强盗。7点弃牌后移动一名道路蛮族，落在对手道路可偷一张资源或商品。"
+            : pirate
+              ? "本剧本没有强盗。首次蛮族进攻前舰队休眠，7点仍弃牌但不偷牌；此后7点弃牌后可选择对手偷牌。"
+              : `首次蛮族进攻前，掷出7仍弃牌，但不移动强盗${info.scenario && !wonders ? "、海盗" : ""}或偷牌。`}
           每堵城墙花费两砖块，让弃牌上限增加两张，最多三堵；城市被劫掠时失去城墙。
         </li>
         <li>
           <b>骑士：</b>
           羊毛＋矿石招募一级骑士或升级一级，粮食激活；每级最多两枚，三级需要政治三级。新激活的骑士本行动阶段不能行动；移动、驱逐较弱骑士
-          {pirate ? "或升级战舰" : "或赶走相邻强盗"}
+          {info.transport
+            ? "或驱赶相邻道路蛮族"
+            : pirate
+              ? "或升级战舰"
+              : "或赶走相邻强盗"}
           后失活。骑士会阻断对手路线。
         </li>
         <li>
@@ -78,12 +86,12 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
         <li>
           <b>获胜：</b>在自己的行动中
           {catanScenarioVictory(info.scenario, info.target)}。
-          {cloth || pirate
+          {cloth || pirate || info.transport
             ? "不使用最长路线和最大骑士军队"
             : "保留最长路线两分，取消最大骑士军队"}
           ；商人控制权值一分，发展牌中的隐藏胜利点不适用。
         </li>
-        {info.scenario && (
+        {info.scenario && !info.transport && (
           <>
             <li>
               <b>海上建设：</b>

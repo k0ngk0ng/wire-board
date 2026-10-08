@@ -18,8 +18,8 @@ func (s *State) catanTransportChoices(player int) map[string]any {
 		buy, sell := []int{}, []int{}
 		rates := g.rates(player)
 		_, goldErr := catanGoldShortfall(t.GoldBank, t.GoldIssued, 1)
-		for c := 0; c < 5; c++ {
-			if t.Bought < 2 && t.Gold[player] >= 2 && g.Bank[c] > 0 {
+		for c := 0; c < len(g.Bank); c++ {
+			if c < 5 && t.Bought < 2 && t.Gold[player] >= 2 && g.Bank[c] > 0 {
 				buy = append(buy, c)
 			}
 			if goldErr == nil && g.Players[player].Resources[c] >= rates[c] {
@@ -27,6 +27,26 @@ func (s *State) catanTransportChoices(player int) map[string]any {
 			}
 		}
 		choices["buy"], choices["sell"], choices["rates"] = buy, sell, rates
+		if g.transportKnights() {
+			chases := []map[string]any{}
+			for _, knight := range g.CitiesKnights.Knights {
+				if knight.Owner == player {
+					if pieces := g.transportKnightBarbarians(&knight); len(pieces) > 0 {
+						chases = append(chases, map[string]any{"vertex": knight.Vertex, "barbarians": pieces})
+					}
+				}
+			}
+			choices["knightChases"] = chases
+			targets := []int{}
+			if len(chases) > 0 {
+				for _, e := range g.Edges {
+					if !slices.Contains(t.Barbarians[:], e.ID) {
+						targets = append(targets, e.ID)
+					}
+				}
+			}
+			choices["knightTargets"] = targets
+		}
 	}
 	q := t.Travel
 	if s.Phase == "catan_transport_barbarian" || s.Phase == "catan_transport_move" && q != nil && q.Pending >= 0 {
