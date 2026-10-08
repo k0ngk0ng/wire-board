@@ -40,6 +40,9 @@ func (s *State) validateCatanExplorer() error {
 		return errors.New("探险家主状态缺失")
 	}
 	x := g.Explorer
+	if err := s.validateExplorerHelpers(); err != nil {
+		return err
+	}
 	if err := s.validateExplorerFishingState(); err != nil {
 		return err
 	}
@@ -381,6 +384,7 @@ func (s *State) catanExplorerView(v map[string]any, viewer int) {
 	// No generic base-game choices: explorer actions have different costs and
 	// ships. Actor-only choices above provide the Explorer action previews.
 	v["legal"] = map[string][]int{}
+	s.catanExplorerHelperView(v, viewer)
 	if g.CitiesKnights != nil {
 		s.catanExplorerCityView(v, viewer)
 	}

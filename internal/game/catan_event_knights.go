@@ -14,7 +14,7 @@ func (g *Catan) validateEventKnights() error {
 		}
 		return nil
 	}
-	if d.Knights != CatanEventKnightsRules || !g.citySeaSupported() || g.Two != nil || g.Options.Helpers {
+	if d.Knights != CatanEventKnightsRules || !g.citySeaSupported() || g.Two != nil || g.Options.Helpers && g.Explorer == nil {
 		return errors.New("事件牌与城市骑士组合配置无效")
 	}
 	if d.AlchemyRolls < 0 || d.AlchemyRolls > g.RollID || d.LastAlchemyRoll < d.AlchemyRolls || d.LastAlchemyRoll > g.RollID || (d.AlchemyRolls == 0) != (d.LastAlchemyRoll == 0) {

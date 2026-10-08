@@ -14,7 +14,7 @@ func (g *Catan) validateEventExplorer() error {
 		}
 		return nil
 	}
-	if g.Explorer.Economy == nil || d.Explorer != CatanEventExplorerRules || g.CardEvent != nil || g.Two != nil || g.Options != (CatanOptions{}) {
+	if g.Explorer.Economy == nil || d.Explorer != CatanEventExplorerRules || g.CardEvent != nil || g.Two != nil {
 		return errors.New("探险事件只使用生产点数，不执行事件文字")
 	}
 	if t := g.Explorer.Economy.Turn; t != nil && t.Phase != "roll" && !t.NoProduction && !(t.Phase == "abandoned" && t.Dice == [2]int{}) {

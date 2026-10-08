@@ -35,7 +35,7 @@ func (s *State) catanHelperPendingBot(player int) (Action, error) {
 			hand = g.Players[q.Target].Resources
 		}
 		best, score := -1, -999
-		for i, n := range hand {
+		for i, n := range hand[:5] {
 			if n == 0 {
 				continue
 			}

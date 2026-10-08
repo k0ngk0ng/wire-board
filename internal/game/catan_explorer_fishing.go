@@ -241,6 +241,12 @@ func (s *State) catanExplorerFishingProduction(resources [][]int) error {
 }
 
 func (s *State) catanExplorerFinishFishing(received []int) error {
+	if s.catanExplorerProductionHelper(received) {
+		return nil
+	}
+	return s.catanExplorerFinishProductionBonuses(received)
+}
+func (s *State) catanExplorerFinishProductionBonuses(received []int) error {
 	g, x := s.Catan, s.Catan.Explorer
 	if x.Economy.Turn.Phase == "aqueduct" {
 		s.catanStartAqueduct(received)

@@ -348,6 +348,12 @@ func (s *catanExplorerSetup) place(g *Catan, b *catanExplorerBoard, f *catanExpl
 	base := *g
 	base.Explorer = nil
 	ng, nf, nc, ne, ns := clone(base), clone(*f), clone(*c), clone(*e), clone(*s)
+	if g.Explorer != nil {
+		world := *g.Explorer
+		world.Fleet, world.Cargo, world.Economy, world.Setup = &nf, &nc, &ne, &ns
+		world.Helpers = clone(g.Explorer.Helpers)
+		ng.Explorer = &world
+	}
 	owner := step.Owner
 	index := catanExplorerSetupIndex(len(g.Players), owner)
 	switch kind {

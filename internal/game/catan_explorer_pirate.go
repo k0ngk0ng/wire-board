@@ -155,6 +155,7 @@ func (p *catanExplorerPirate) apply(g *Catan, b *catanExplorerBoard, f *catanExp
 	base := *g
 	base.Explorer = nil
 	nextG, nextF, nextC, nextE, nextP := clone(base), clone(*f), clone(*c), clone(*e), clone(*p)
+	nextG.Explorer = g.Explorer // Read-only combination metadata.
 	result, err := nextP.applyUnchecked(&nextG, b, &nextF, &nextC, &nextE, player, sequence, kind, target, declineGold, randN)
 	if err != nil {
 		return none, err

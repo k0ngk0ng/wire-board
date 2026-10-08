@@ -8,6 +8,7 @@ import (
 
 // Saved Explorer aggregate; each public room recipe has its own acceptance gate.
 type catanExplorer struct {
+	Helpers      *catanExplorerHelpers `json:"helpers,omitempty"`
 	Spice        *catanExplorerSpice   `json:"spice,omitempty"`
 	Fish         *catanExplorerFish    `json:"fish,omitempty"`
 	Setup        *catanExplorerSetup   `json:"setup,omitempty"`
@@ -97,7 +98,7 @@ func (x catanExplorer) validateComponents(g *Catan) error {
 				}
 			}
 		}
-		if x.Setup == nil && x.Economy.Turn != nil && x.Economy.Turn.Phase == "pirate" && (x.Pirate.Pending == nil || x.Pirate.Pending.Resume != "action") {
+		if x.Setup == nil && x.Economy.Turn != nil && x.Economy.Turn.Phase == "pirate" && !(x.Helpers != nil && x.Helpers.Production != nil) && (x.Pirate.Pending == nil || x.Pirate.Pending.Resume != "action") {
 			return errors.New("七点海盗回应记录缺失")
 		}
 	}

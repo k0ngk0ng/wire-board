@@ -197,6 +197,14 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 		return Action{}, errors.New("inactive explorer seat")
 	}
 	a := Action{Prompt: int(g.TurnSerial)}
+	if g.HelperPending != nil {
+		if q := g.HelperPending; q.Player == player && q.Kind == "leader" && sum(g.Players[q.Target].Resources[:5]) == 0 {
+			return Action{Type: "catan_helper_choice", Choice: "skip", Prompt: a.Prompt}, nil
+		}
+		choice, err := s.catanHelperPendingBot(player)
+		choice.Prompt = a.Prompt
+		return choice, err
+	}
 	if g.Fishing != nil && g.Fishing.Pending != nil {
 		choice, err := s.catanFishBot(player)
 		choice.Prompt = a.Prompt
@@ -249,6 +257,9 @@ func (s *State) catanExplorerBot(player int) (Action, error) {
 			}
 		}
 		return actions[0], nil
+	}
+	if choice, ok := s.catanExplorerHelperBot(player); ok {
+		return choice, nil
 	}
 	if choice, ok := s.catanExplorerFishingBot(player); ok {
 		return choice, nil

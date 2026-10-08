@@ -209,7 +209,7 @@ func (e *catanExplorerEconomy) resolveProduction(g *Catan, f *catanExplorerSaili
 			phase = "pirate" // Activation/stealing controller still to be installed.
 		}
 		for p, hand := range g.Players {
-			if !hand.Eliminated && sum(hand.Resources) > g.catanDiscardLimit(p) {
+			if !hand.Eliminated && !g.helperReady(p, 5) && sum(hand.Resources) > g.catanDiscardLimit(p) {
 				result.Discard[p] = sum(hand.Resources) / 2
 				phase = "discard"
 			}

@@ -126,8 +126,11 @@ func (c catanExplorerCargo) validate(g *Catan, fleet *catanExplorerSailing) erro
 	if k := g.CitiesKnights; k != nil && (len(g.Players) < 3 || k.Rules != catanCitiesKnightsRules(len(g.Players)) || len(k.Players) != len(g.Players)) {
 		return errors.New("探险城市骑士人数或组件无效")
 	}
-	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && g.Fishing.Explorer != catanExplorerFishingRule(len(g.Players)) || g.RevealedEvent != nil && (g.EventDeck == nil || g.EventDeck.Explorer != CatanEventExplorerRules) || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil || g.Options != (CatanOptions{}) || len(g.HelperDisplay)+len(g.HelperExile) != 0 || g.HelperPending != nil {
+	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && g.Fishing.Explorer != catanExplorerFishingRule(len(g.Players)) || g.RevealedEvent != nil && (g.EventDeck == nil || g.EventDeck.Explorer != CatanEventExplorerRules) || g.CardEvent != nil || g.FriendlyRobber != nil || g.Harbors != nil || g.BaseSetup != nil || g.GoldPending != nil {
 		return errors.New("探险货物尚未接入其他扩展组合")
+	}
+	if err := g.validateExplorerHelperInventory(); err != nil {
+		return err
 	}
 	if pair := g.Paired; pair != nil && (len(g.Players) < 5 || len(g.Players) > 6 || pair.Primary < 0 || pair.Primary >= len(g.Players) || pair.Secondary < 0 || pair.Secondary >= len(g.Players)) {
 		return errors.New("探险配对玩家标记无效")
