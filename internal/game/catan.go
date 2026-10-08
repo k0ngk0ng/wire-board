@@ -414,6 +414,9 @@ func (s *State) applyCatan(player int, a Action) error {
 		if err := next.validateCatanTransport(); err != nil {
 			return err
 		}
+		if err := next.validateCatanEventSession(); err != nil {
+			return err
+		}
 		*s = next
 		return nil
 	}

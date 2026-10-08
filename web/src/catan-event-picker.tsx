@@ -6,6 +6,7 @@ export function CatanEventPicker({
   friendly = false,
   fishing = false,
   pirateIslands = false,
+  transport = false,
   onChange,
 }: {
   value: boolean;
@@ -15,6 +16,7 @@ export function CatanEventPicker({
   friendly?: boolean;
   fishing?: boolean;
   pirateIslands?: boolean;
+  transport?: boolean;
   onChange: (enabled: boolean) => void;
 }) {
   return (
@@ -43,6 +45,11 @@ export function CatanEventPicker({
       {pirateIslands && (
         <p className="muted small">
           本站补充规则：事件牌只决定生产，另掷两颗舰队骰并取较小值决定巡航和攻击；事件完成后先结算舰队奖励，再生产。强盗逃跑没有效果。
+        </p>
+      )}
+      {transport && (
+        <p className="muted small">
+          运输：地震损坏的道路花2移动点，经过对手道路仍付路费；7点弃牌后移动蛮族，强盗逃跑无效果。抽到2或12仍执行事件，不重抽；金币和货物不参与资源赠送、偷取或弃牌。
         </p>
       )}
       {friendly && (

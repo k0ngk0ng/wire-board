@@ -2332,6 +2332,7 @@ function Create({
         {eventsAvailable && (
           <CatanEventPicker
             value={catanEvents}
+            transport={catanScenario === "transport"}
             pirateIslands={catanScenario === "pirate_islands"}
             fishing={catanFishing || catanScenario === "fishing"}
             friendly={catanFriendly}
@@ -2682,6 +2683,7 @@ function Waiting({
         {catanEventsSupported(room) && (
           <CatanEventPicker
             value={!!room.catanEvents}
+            transport={room.catanScenario === "transport"}
             pirateIslands={
               (room.catanSeafarers?.scenario || room.catanScenario) ===
               "pirate_islands"

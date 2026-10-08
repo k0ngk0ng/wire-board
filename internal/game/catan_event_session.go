@@ -150,7 +150,7 @@ func (s *State) validateCatanEventSession() error {
 	if session.Catalogue != catanEventReferenceCatalogue && session.Catalogue != CatanEventCatalogue {
 		return errors.New("不支持的事件牌参考表版本")
 	}
-	if g.Explorer != nil || g.Transport != nil || g.Options.AllHelpers && !g.Options.Helpers {
+	if g.Explorer != nil || g.Options.AllHelpers && !g.Options.Helpers {
 		return errors.New("该组合尚未接入完整事件牌抽取")
 	}
 	if err := s.validateEventFishing(); err != nil {

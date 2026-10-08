@@ -51,8 +51,8 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if _, ok := catanCardEventNames[kind]; !ok {
 		return errors.New("该事件牌效果尚未接入")
 	}
-	if (g.Two != nil || g.Rivers != nil || g.Caravans != nil) && g.EventDeck == nil {
-		return errors.New("双人、河流或商队事件必须通过牌堆抽取并记录生产")
+	if (g.Two != nil || g.Rivers != nil || g.Caravans != nil || g.Transport != nil) && g.EventDeck == nil {
+		return errors.New("双人、河流、商队或运输事件必须通过牌堆抽取并记录生产")
 	}
 	if g.Attack != nil {
 		if g.Paired != nil && g.Paired.Second {
@@ -85,7 +85,7 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if g.pirateIslands() != nil && (g.EventDeck == nil || g.EventDeck.FleetRules != CatanEventFleetRules || g.EventDeck.Fleet == nil) {
 		return errors.New("海盗群岛事件牌需要独立舰队骰子")
 	}
-	if kind == "robber_flees" && g.Attack == nil && g.pirateIslands() == nil {
+	if kind == "robber_flees" && g.Attack == nil && g.Transport == nil && g.pirateIslands() == nil {
 		// Forgotten Tribe restricts moves caused by a seven or Knight to
 		// numbered hexes. Robber Flees is a separate card instruction and
 		// returns the robber to a revealed desert; it does not use robberAllowed.
@@ -132,7 +132,7 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 	if kind == "trade_advantage" && g.LongestOwner >= 0 && g.LongestOwner < len(g.Players) && !g.Players[g.LongestOwner].Eliminated {
 		g.CardEvent.Players = []int{g.LongestOwner}
 	}
-	if kind == "robber_flees" && g.Attack == nil && g.pirateIslands() == nil {
+	if kind == "robber_flees" && g.Attack == nil && g.Transport == nil && g.pirateIslands() == nil {
 		if k := g.CitiesKnights; k != nil && k.Invasions == 0 {
 			next.catanLog(next.Turn, "强盗尚未入场，保持休眠")
 		} else {

@@ -38,6 +38,7 @@ test("events are optional and support only accepted public recipes", () => {
     "rivers",
     "caravans",
     "barbarian-attack",
+    "transport",
     "shores",
     "islands",
     "fog",
@@ -64,7 +65,7 @@ test("events are optional and support only accepted public recipes", () => {
       ].includes(catanScenario),
     );
   }
-  for (const catanScenario of ["transport", "land-ho", "explorers-and-pirates"])
+  for (const catanScenario of ["land-ho", "explorers-and-pirates"])
     assert.equal(catanEventsSupported({ kind: "catan", catanScenario }), false);
   assert.equal(catanEventsSupported({ kind: "splendor" }), false);
   assert.equal(

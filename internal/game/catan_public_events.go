@@ -35,6 +35,9 @@ func (s *State) EnableCatanEvents(catalogue string) error {
 		return err
 	}
 	next.Log = append(next.Log, catanEventCatalogueNotice)
+	if next.Catan.Transport != nil {
+		next.Log = append(next.Log, "运输事件：地震损坏道路花2移动点，7点移动蛮族，强盗逃跑无效果；抽到2或12仍执行事件，不重抽。金币与货物不参与资源事件。")
+	}
 	if next.Catan.CitiesKnights != nil {
 		next.Log = append(next.Log, "事件牌与城市骑士：先事件文字，再独立红骰／事件骰，最后生产；炼金术替代抽牌。本站补充规则：贸易优势随机偷取资源或商品。")
 	}

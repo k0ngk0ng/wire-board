@@ -75,7 +75,7 @@ func (s *State) validateCatanTransport() error {
 	t := g.Transport
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
-	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.CardEvent != nil || g.RevealedEvent != nil || g.Robber != -1 || g.LongestOwner != -1 {
+	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
 	}
 	if n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || n <= 4 && t.DeckRecipe != "" {
@@ -96,7 +96,7 @@ func (s *State) validateCatanTransport() error {
 	if err := t.validate(g); err != nil {
 		return err
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "finished"}, s.Phase) || s.Phase == "catan_card_event" && (g.EventDeck == nil || g.CardEvent == nil) {
 		return errors.New("运输游戏阶段无效")
 	}
 	if strings.HasPrefix(s.Phase, "catan_two_") && g.Two == nil {
@@ -191,7 +191,11 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 			err = t.placeWagon(g, player, a.Vertex)
 		}
 	case player == s.Turn && a.Type == "catan_roll":
-		err = s.catanTransportRoll(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} })
+		if g.EventDeck != nil {
+			err = s.catanDrawEvent()
+		} else {
+			err = s.catanTransportRoll(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} })
+		}
 	case player == s.Turn && a.Type == "catan_dev":
 		err = s.catanTransportDev(player, a)
 	case player == s.Turn && a.Type == "catan_end" && s.Phase == "catan_turn":
@@ -249,7 +253,7 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 }
 func (s *State) catanTransportRoll(roll func() [2]int) error {
 	g := s.Catan
-	if s.Phase != "catan_roll" {
+	if s.Phase != "catan_roll" || g.EventDeck != nil {
 		return errors.New("当前不能掷骰")
 	}
 	for {

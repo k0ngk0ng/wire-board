@@ -17,7 +17,7 @@ func (r *Room) publicCatanEventsAvailable() bool {
 		return false
 	}
 	switch scenario {
-	case "", "fishing", "cities-knights", "rivers", "caravans", "barbarian-attack", "shores", "islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world":
+	case "", "fishing", "cities-knights", "rivers", "caravans", "barbarian-attack", "transport", "shores", "islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world":
 		return true
 	}
 	return false

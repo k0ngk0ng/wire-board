@@ -25,9 +25,17 @@ func transportHTTPFixture(t *testing.T, n int) *game.State {
 	return &s
 }
 func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
+	testCatanTransportFullHTTP(t, false)
+}
+
+func TestCatanTransportEventsNaturalHTTP(t *testing.T) {
+	testCatanTransportFullHTTP(t, true)
+}
+
+func testCatanTransportFullHTTP(t *testing.T, events bool) {
 	for _, n := range []int{2, 3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, ts, clients, id := newPublicScenarioTable(t, n, "transport")
+			s, ts, clients, id := newPublicFishingScenarioVariants(t, n, "transport", false, false, events)
 			r := s.rooms[id]
 			if r.Game.Catan.Transport == nil || (r.Game.Catan.Two != nil) != (n == 2) {
 				t.Fatal("wrong public transport opening")
@@ -37,6 +45,7 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 			steps := 0
 			moves := 0
 			pairedMoves := map[bool]bool{}
+			eventRestored := false
 			for ; steps < 4000 && !s.rooms[id].Game.Finished; steps++ {
 				r = s.rooms[id]
 				g := r.Game
@@ -58,6 +67,18 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 					t.Fatal(err)
 				}
 				phase, deadline := g.Phase, r.TurnDeadline
+				if events && phase == "catan_card_event" && !eventRestored {
+					assertPublicEventsPrivacy(t, clients)
+					before, _ := json.Marshal(r)
+					clients[(actor+1)%n].command(current(clients[(actor+1)%n]), "action", action, 400)
+					clients[n].command(current(clients[n]), "action", action, 400)
+					after, _ := json.Marshal(s.rooms[id])
+					if string(before) != string(after) {
+						t.Fatal("event rejection mutated room")
+					}
+					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+					eventRestored = true
+				}
 				if phase == "catan_transport_move" {
 					moves++
 					if g.Catan.Paired != nil {
@@ -128,6 +149,16 @@ func TestCatanTransportNaturalHTTPMatches(t *testing.T) {
 				t.Fatal("both paired players must move their wagons", pairedMoves)
 			}
 			assertTransportHistory(t, s, clients, id)
+			if events {
+				if !eventRestored || r.Game.Catan.EventDeck == nil {
+					t.Fatal("missing event response coverage", r.Game.Catan.RollID)
+				}
+				_, profile := clients[n].request("GET", "/api/players/"+r.Seats[r.Game.Winners[0]].ID, nil)
+				record := profile["history"].([]any)[0].(map[string]any)
+				if record["catanExpansionRules"].(map[string]any)["event_cards"] != game.CatanEventCatalogue {
+					t.Fatal("history lost transport events")
+				}
+			}
 			t.Logf("%dp full HTTP match: %d actions, %d movement actions", n, steps, moves)
 		})
 	}

@@ -248,11 +248,15 @@ export function CatanCardEventSummary({
                 ? "点数7 · 等待玩家弃牌"
                 : room.game?.phase === "catan_robber"
                   ? "点数7 · 移动强盗或海盗"
-                  : room.game?.phase === "catan_steal"
-                    ? "点数7 · 选择偷牌对手"
-                    : room.game?.phase === "catan_roll"
-                      ? "上一回合的事件牌"
-                      : "本次生产点数";
+                  : room.game?.phase === "catan_transport_barbarian"
+                    ? "移动一名蛮族，再继续回合"
+                    : room.game?.phase === "catan_steal"
+                      ? "点数7 · 选择偷牌对手"
+                      : room.game?.phase === "catan_roll"
+                        ? g.two?.rolls.length === 1
+                          ? "第一张已结算 · 等待抽第二张"
+                          : "上一回合的事件牌"
+                        : "本次生产点数";
   return (
     <section className="catan-revealed-event" aria-label="本次事件牌">
       {assets && catanEventNames[card.kind] && (
