@@ -5,7 +5,7 @@ import "fmt"
 // Cloth for CATAN, 2025 Seafarers pages 14–15. Three/four players share
 // this map; the numbers on the four islets belong to vertex villages.
 func (g *Catan) makeSeafarersClothFour() error {
-	if len(g.Players) < 3 || len(g.Players) > 4 {
+	if (len(g.Players) < 3 && !g.twoSeaRecipe()) || len(g.Players) > 4 {
 		return fmt.Errorf("此布匹地图需要3至4位玩家")
 	}
 	rows := [][]seaTerrain{

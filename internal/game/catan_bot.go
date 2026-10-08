@@ -156,6 +156,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		for _, v := range g.Vertices {
 			if g.canSettlement(player, v.ID, setup) {
 				n := g.vertexValue(player, v.ID)
+				if setup && g.twoSeafarers() && g.twoSeaNeedsCoast(player) && g.twoSeaCoast(v.ID) {
+					n += 10000
+				}
 				if n > score {
 					best, score = v.ID, n
 				}

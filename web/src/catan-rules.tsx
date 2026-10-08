@@ -1,3 +1,4 @@
+import { catanTwoSeafarersNote } from "./catan-two-seafarers";
 import { catanExplorerTwoKnightsNote } from "./catan-explorer-two-knights";
 import { catanTwoHelpersNote } from "./catan-two-helpers";
 import { catanTwoVariantsNote } from "./catan-two-variants";
@@ -585,6 +586,7 @@ export function CatanRules({ room }: { room: Room }) {
             本站渔夫＋助手规则：鱼不计入七点弃牌手牌，也不取消希尔达的无资源补偿；先完成换鱼和金矿选择，再回应助手。迪古尔在没有沙漠时将强盗移到场外；迪古尔或卡娅从湖泊领取奖励时，任选一张银行现有的普通资源。鱼行动单独支付，不使用助手折扣。
           </p>
         )}
+        {info.twoSeafarers && <p>{catanTwoSeafarersNote}</p>}
         {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
         {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
         {info.harbors && <CatanHarborsRules />}
@@ -610,7 +612,7 @@ export function CatanRules({ room }: { room: Room }) {
       <p>
         <b>
           {info.two
-            ? `双人卡坦${info.rivers ? "＋河流" : info.caravans ? "＋商队" : ""}`
+            ? `双人卡坦${info.twoSeafarers ? "＋航海家 · " + catanScenarioName(scenario) : info.rivers ? "＋河流" : info.caravans ? "＋商队" : ""}`
             : info.fishing
               ? seafarers
                 ? `渔夫＋航海家 · ${catanScenarioName(scenario)}`
@@ -639,6 +641,7 @@ export function CatanRules({ room }: { room: Room }) {
           本站渔夫＋助手规则：鱼不计入七点弃牌手牌，也不取消希尔达的无资源补偿；先完成换鱼和金矿选择，再回应助手。迪古尔在没有沙漠时将强盗移到场外；迪古尔或卡娅从湖泊领取奖励时，任选一张银行现有的普通资源。鱼行动单独支付，不使用助手折扣。
         </p>
       )}
+      {info.twoSeafarers && <p>{catanTwoSeafarersNote}</p>}
       {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
       {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
       {info.harbors && <CatanHarborsRules />}
@@ -677,11 +680,16 @@ export function CatanRules({ room }: { room: Room }) {
                   掷骰前或行动阶段，每回合可消费筹码一次：随机取对手最多2张资源，再交还自选2张；或
                   {info.caravans
                     ? "把强盗移出棋盘"
-                    : `把强盗移回${info.rivers ? "自己选定的另一处沼泽" : "沙漠"}`}
+                    : info.twoSeafarers
+                      ? "把强盗移回沙漠；地图没有沙漠时移到场外，不影响海盗"
+                      : `把强盗移回${info.rivers ? "自己选定的另一处沼泽" : "沙漠"}`}
                   ，不偷牌。对手仅1张时仍需交还2张，可以交还刚抽到的牌。
                 </li>
                 <li>
-                  公开分数不高于对手时消费1枚，否则2枚；隐藏胜利点不影响费用。中立势力也能取得最长路线，使真人失去该奖励。
+                  公开分数不高于对手时消费1枚，否则2枚；隐藏胜利点不影响费用。
+                  {scenario === "cloth"
+                    ? "布匹剧本不授予最长路线。"
+                    : "中立势力也能取得最长路线，使真人失去该奖励。"}
                 </li>
               </>
             )}

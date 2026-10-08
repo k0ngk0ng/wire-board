@@ -24,7 +24,7 @@ func NewCatanWonders(n int, options CatanOptions) (*State, error) {
 // Seafarers (2025), pages 18–19. The two small islands are fixed, as are
 // the three deserts on the eastern side of the main island.
 func (g *Catan) makeSeafarersWondersFour() error {
-	if len(g.Players) < 3 || len(g.Players) > 4 {
+	if (len(g.Players) < 3 && !g.twoSeaRecipe()) || len(g.Players) > 4 {
 		return fmt.Errorf("此卡坦奇迹地图需要3至4位玩家")
 	}
 	rows := [][]seaTerrain{

@@ -53,6 +53,12 @@ func newTwoVariantsFullTable(t *testing.T, scenario string, events, friendly, ha
 	clients[2].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
 	r := s.rooms[id]
 	phase := "catan_setup_settlement"
+	if scenario == "wonders" {
+		phase = "catan_wonders_start"
+	}
+	if scenario == "new_world" {
+		phase = "catan_world_ports"
+	}
 	if scenario == "rivers" {
 		phase = "catan_rivers_start"
 		if r.Game.Catan.Rivers == nil || r.Game.Catan.Rivers.Rules != game.CatanRiversRules {
@@ -174,6 +180,15 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			t.Fatal("natural game eliminated player")
 		}
 		score := seat.Dev[4]
+		if sea := g.Seafarers; sea != nil {
+			score += sea.Seats[p].IslandPoints
+			if sea.Tribe != nil {
+				score += sea.Tribe.Points[p]
+			}
+			if sea.Cloth != nil {
+				score += sea.Cloth.Held[p] / 2
+			}
+		}
 		for _, n := range seat.Dev {
 			dev += n
 		}
@@ -226,6 +241,9 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 			t.Fatal("incorrect real score", p, score, seat.Score)
 		}
 	}
+	if g.Seafarers != nil && g.Seafarers.Tribe != nil {
+		dev += len(g.Seafarers.Tribe.Development)
+	}
 	wantDev := 25
 	if g.CitiesKnights != nil {
 		wantDev = 0
@@ -234,10 +252,12 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 		t.Fatal("development inventory", dev)
 	}
 	for _, owner := range []int{0, 1, -2, -3} {
-		roads, villages, cities, bridges := 0, 0, 0, 0
+		roads, villages, cities, bridges, ships := 0, 0, 0, 0, 0
 		for _, e := range g.Edges {
 			if e.Owner == owner {
-				if e.Bridge {
+				if e.Ship {
+					ships++
+				} else if e.Bridge {
 					bridges++
 				} else {
 					roads++
@@ -264,7 +284,7 @@ func assertTwoHTTPInventory(t *testing.T, s *game.State) {
 				}
 			}
 		}
-		if bridges > 3 || roads > 15 || villages > 5 || cities > 4 || owner < 0 && (villages < 1 || cities != 0) {
+		if ships > 15 || bridges > 3 || roads > 15 || villages > 5 || cities > 4 || owner < 0 && (villages < 1 || cities != 0) {
 			t.Fatal("piece inventory", owner, roads, villages, cities)
 		}
 	}

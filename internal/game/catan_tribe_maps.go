@@ -5,7 +5,7 @@ import "fmt"
 // The Forgotten Tribe, 2025 Seafarers pages 12–13. Three and four players
 // share this map. Outer islands intentionally have no number discs.
 func (g *Catan) makeSeafarersTribeFour() error {
-	if len(g.Players) < 3 || len(g.Players) > 4 {
+	if (len(g.Players) < 3 && !g.twoSeaRecipe()) || len(g.Players) > 4 {
 		return fmt.Errorf("此部族地图需要3至4位玩家")
 	}
 	rows := [][]seaTerrain{

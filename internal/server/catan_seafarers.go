@@ -8,6 +8,9 @@ import (
 // Called on command's private room copy. Public rooms only expose their
 // accepted scenario catalogue; internal combination recipes remain separate.
 func (r *Room) setCatanSeafarers(request game.CatanSeafarersSetup) error {
+	if r.CatanTwoRules != "" {
+		return r.setCatanTwoSeafarers(request)
+	}
 	if r.Kind != "catan" || r.Status != "waiting" || r.CatanBaseConfiguration != nil {
 		return fmt.Errorf("该房间尚不能与航海家剧本组合")
 	}

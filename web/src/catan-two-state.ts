@@ -193,14 +193,20 @@ export function twoChoiceName(
         : "村庄"
     : g.rivers?.map.bridges.includes(c.edge)
       ? "桥梁"
-      : "道路";
+      : g.two?.buildingShip
+        ? "船只"
+        : "道路";
 }
 
 export function twoRetreatTargets(room: Room): number[] {
   const g = room.game?.catan,
     q = g?.two;
   if (!g || !q || g.transport || !twoMayRetreat(room)) return [];
-  if (g.caravans)
+  if (
+    g.caravans ||
+    (q.seafarers === "wire-board-two-seafarers-v1" &&
+      !g.tiles.some((t) => t.resource === 5))
+  )
     return g.robber >= 0 && q.retreatTiles?.includes(-1) ? [-1] : [];
   // Respect server choices; only old base saves may fall back to the desert.
   const targets =

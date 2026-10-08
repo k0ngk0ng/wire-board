@@ -49,7 +49,7 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 	if r.CatanNewWorldMap != nil && (r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != "new_world") {
 		return errors.New("新世界需要对应的航海家地图配置")
 	}
-	if r.CatanSeafarers != nil && !game.CatanFriendlySeafarersSupported(n, r.CatanSeafarers.Scenario) {
+	if r.CatanSeafarers != nil && !r.twoCatanSeafarers() && !game.CatanFriendlySeafarersSupported(n, r.CatanSeafarers.Scenario) {
 		return errors.New("此人数或剧本暂不支持友善强盗，请更换剧本或关闭此变体")
 	}
 	return nil

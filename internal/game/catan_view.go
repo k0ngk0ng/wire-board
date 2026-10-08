@@ -64,6 +64,7 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 		if q.Pending != nil && !s.Finished {
 			public["choices"] = g.twoNeutralChoices(q.Pending.Kind)
+			public["buildingShip"] = q.Pending.Kind == "ship" && len(g.twoNeutralShipChoices()) > 0
 		}
 		public["neutralRoadLengths"] = []int{g.roadLength(-2), g.roadLength(-3)}
 	}

@@ -36,7 +36,7 @@ func (g *Catan) newWorld() *CatanNewWorld {
 }
 
 func (g *Catan) makeNewWorldMap() error {
-	if len(g.Players) < 3 || len(g.Players) > 6 {
+	if (len(g.Players) < 3 && !g.twoSeaRecipe()) || len(g.Players) > 6 {
 		return errors.New("新世界需要3至6位玩家")
 	}
 	terrainCounts := []int{5, 4, 5, 5, 4, 0, 19, 0}
