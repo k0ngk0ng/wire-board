@@ -10,6 +10,9 @@ import (
 // several powers from Cities of Splendor (2017).
 const SplendorExpansionRules = "split-box-2025"
 
+// Same-city face grouping is a disclosed site recipe, not verified physical pairing.
+const SplendorCityCatalogue = "wire-board-cities-v1"
+
 type SplendorOptions struct {
 	ExtraNobles  bool   `json:"extraNobles,omitempty"`
 	Orient       bool   `json:"orient,omitempty"`
@@ -74,7 +77,8 @@ func NewSplendor(n int, options SplendorOptions) (*State, error) {
 		}
 		if options.Cities {
 			s.Splendor.installCities(catalog.Cities)
-			s.Splendor.Catalog = "2025-cities-bga-v1"
+			s.Splendor.Catalog = SplendorCityCatalogue
+			s.Log = append(s.Log, "本站城市分组：同名城市的两种条件为一组，七组随机选三组，每组随机一面；实体正反面配对未逐一核实")
 		}
 	}
 	if options.Strongholds {

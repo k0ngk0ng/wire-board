@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Check, ChevronDown, Landmark } from "lucide-react";
 import type { Room } from "./types";
-import { gemCityProgress } from "./splendor-city-state";
+import { gemCityProgress, splendorCitySource } from "./splendor-city-state";
 import { cityAtlasStyle } from "./splendor-city-art";
 import "./splendor-cities.css";
 
@@ -39,6 +39,7 @@ export function SplendorCities({
         )}
         <details>
           <summary>规则</summary>
+          <p>{splendorCitySource(s.options, s.catalog)}</p>
           <p>
             城市替代贵族。回合结束时满足任意一座城市的分数与发展卡条件，触发最后一轮。城市不会被拿走，多人可以达成同一座城市。
           </p>

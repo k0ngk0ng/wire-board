@@ -400,7 +400,7 @@ func runSplendorHTTPGame(t *testing.T, s *Server, ts *httptest.Server, clients [
 	if err := json.Unmarshal([]byte(before), &record); err != nil {
 		t.Fatal(err)
 	}
-	if record.SplendorOptions != r.Game.Splendor.Options || record.Status != "finished" || !record.Rated {
+	if record.SplendorOptions != r.Game.Splendor.Options || record.SplendorCatalog != r.Game.Splendor.Catalog || record.Status != "finished" || !record.Rated {
 		t.Fatal("wrong archived rules/status", record)
 	}
 	for i, p := range record.Players {

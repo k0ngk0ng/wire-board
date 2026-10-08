@@ -3,6 +3,7 @@ import { Castle, Crown, Landmark, Store, Sunrise } from "lucide-react";
 import type { Act, Card, Room, SplendorOptions } from "./types";
 import { gemOrientChoices } from "./splendor-orient-state";
 import "./splendor-expansions.css";
+import { splendorCityGroupingNote } from "./splendor-city-state";
 
 export const gemPostNames = [
   "",
@@ -93,6 +94,7 @@ export function SplendorOptionPicker({
           </span>
         </button>
       </div>
+      {value?.cities && <p>{splendorCityGroupingNote}</p>}
     </fieldset>
   );
 }

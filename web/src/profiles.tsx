@@ -3,6 +3,7 @@ import { catanScenarioName, catanLayoutName } from "./catan-scenarios";
 import { railMapNames } from "./rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User, SGOptions, SplendorOptions } from "./types";
+import { splendorCityCatalogue } from "./splendor-city-state";
 import { splendorRulesLabel } from "./splendor-expansions";
 
 export const ProfileContext = createContext<(id: string) => void>(() => {});
@@ -27,6 +28,7 @@ export function PlayerName({
   );
 }
 type History = {
+  splendorCatalog?: string;
   splendorOptions?: SplendorOptions;
   catanExpansions?: string[];
   catanLayout?: string;
@@ -293,6 +295,10 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                 {name(match.kind)}
                 {match.kind === "splendor" &&
                   ` · ${splendorRulesLabel(match.splendorOptions)}`}
+                {match.kind === "splendor" &&
+                  match.splendorOptions?.cities &&
+                  match.splendorCatalog === splendorCityCatalogue &&
+                  " · 本站城市分组"}
                 {match.kind === "catan" &&
                   match.catanExpansions?.includes("two_player") &&
                   " · 双人卡坦"}
