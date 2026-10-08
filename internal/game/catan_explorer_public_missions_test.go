@@ -84,3 +84,41 @@ func TestCatanExplorerPublicMissionRecipeAndIsolation(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanExplorerPublicKnightsRecipe(t *testing.T) {
+	for scenario, target := range map[string]int{"pirate-lairs": 17, "fish-for-catan": 20, "spices-for-catan": 20, "explorers-and-pirates": 22} {
+		for _, n := range []int{3, 4, 5, 6} {
+			t.Run(fmt.Sprintf("%s/%d", scenario, n), func(t *testing.T) {
+				s, err := NewCatanExplorerCitiesKnights(n, scenario)
+				if err != nil {
+					t.Fatal(err)
+				}
+				g := s.Catan
+				if g.CitiesKnights == nil || !g.Explorer.Board.CitiesKnights || g.Explorer.Board.Target != target || (g.Paired != nil) != (n > 4) || g.Options != (CatanOptions{}) {
+					t.Fatal("wrong combination recipe")
+				}
+				if l := g.Explorer.Lairs; l != nil {
+					if l.NumberRecipe != CatanExplorerLairRecipe || !catanExplorerSameInventory(l.Inventory, catanExplorerLairNumbers(n)) {
+						t.Fatal("wrong labelled inventory")
+					}
+				} else if scenario != "spices-for-catan" {
+					t.Fatal("missing lairs")
+				}
+				restored := clone(*s)
+				if !reflect.DeepEqual(*s, restored) || restored.validateCatanExplorerCities() != nil {
+					t.Fatal("restore mismatch")
+				}
+			})
+		}
+	}
+	for _, n := range []int{0, 2, 7} {
+		if _, err := NewCatanExplorerCitiesKnights(n, "spices-for-catan"); err == nil {
+			t.Fatal("bad count accepted")
+		}
+	}
+	for _, scenario := range []string{"", "land-ho", "shores"} {
+		if _, err := NewCatanExplorerCitiesKnights(3, scenario); err == nil {
+			t.Fatal("bad scenario accepted")
+		}
+	}
+}

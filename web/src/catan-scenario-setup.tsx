@@ -114,7 +114,16 @@ const scenarios = [
   },
 ];
 
+export const supportsPublicExplorerKnights = (scenario?: string) =>
+  [
+    "pirate-lairs",
+    "fish-for-catan",
+    "spices-for-catan",
+    "explorers-and-pirates",
+  ].includes(scenario || "");
+
 export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
+  supportsPublicExplorerKnights(scenario) ||
   [
     "fishing",
     "shores",
@@ -132,7 +141,9 @@ export function CatanCombinationKnightsPicker({
   disabled = false,
   helpers = false,
   fishing = false,
+  explorer = false,
 }: {
+  explorer?: boolean;
   fishing?: boolean;
   value: boolean;
   onChange: (enabled: boolean) => void;
@@ -147,14 +158,16 @@ export function CatanCombinationKnightsPicker({
           checked={value}
           onChange={(e) => onChange(e.target.checked)}
         />
-        城市与骑士＋{fishing ? "渔夫" : "航海家"}
+        城市与骑士＋{explorer ? "探索者与海盗" : fishing ? "渔夫" : "航海家"}
       </label>
       <p className="muted small">
         {helpers
           ? "先关闭 Helpers，才能加入城市与骑士。"
-          : fishing
-            ? "加入商品、进步牌和骑士；7鱼可选牌堆抽进步牌，13分获胜，持旧靴者需14分。"
-            : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
+          : explorer
+            ? "三至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
+            : fishing
+              ? "加入商品、进步牌和骑士；7鱼可选牌堆抽进步牌，13分获胜，持旧靴者需14分。"
+              : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
     </fieldset>
   );

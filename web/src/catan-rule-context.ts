@@ -118,7 +118,17 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
     } as Record<string, number>
   )[scenario];
   return target !== undefined
-    ? target + (citiesKnights ? 2 : 0)
+    ? target +
+        (citiesKnights
+          ? [
+              "pirate-lairs",
+              "fish-for-catan",
+              "spices-for-catan",
+              "explorers-and-pirates",
+            ].includes(scenario)
+            ? 5
+            : 2
+          : 0)
     : citiesKnights
       ? 13
       : 10;

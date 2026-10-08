@@ -14,7 +14,7 @@ func newPublicExplorerHTTP(t *testing.T, n int) (*Server, *httptest.Server, []*t
 	return newPublicExplorerScenarioHTTP(t, n, "land-ho")
 }
 
-func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string, knights ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -23,7 +23,11 @@ func newPublicExplorerScenarioHTTP(t *testing.T, n int, scenario string) (*Serve
 		clients[p] = newClient(t, ts.URL)
 		clients[p].register(fmt.Sprintf("初航公开玩家%d", p))
 	}
-	raw := clients[0].post("/api/rooms", map[string]any{"name": "初航公开完整局", "kind": "catan", "capacity": n, "catanScenario": scenario}, 201)
+	recipe := map[string]any{"name": "探险公开完整局", "kind": "catan", "capacity": n, "catanScenario": scenario}
+	if len(knights) > 0 && knights[0] {
+		recipe["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{Layout: "variable"}
+	}
+	raw := clients[0].post("/api/rooms", recipe, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
 		clients[p].command(current(clients[0]), "join", nil, 200)
@@ -66,6 +70,11 @@ func assertPublicExplorerHistory(t *testing.T, s *Server, clients []*testClient,
 	if lairs := r.Game.Catan.Explorer.Lairs; lairs != nil && lairs.NumberRecipe != "" {
 		if record["catanExpansionRules"].(map[string]any)["lair_numbers"] != game.CatanExplorerLairRecipe {
 			t.Fatal("lost lair recipe history")
+		}
+	}
+	if r.Game.Catan.CitiesKnights != nil {
+		if record["catanExpansionRules"].(map[string]any)["cities_knights"] != r.Game.Catan.CitiesKnightsSetup().Rules {
+			t.Fatal("lost knights history")
 		}
 	}
 	stats := profile["stats"].(map[string]any)["catan"].(map[string]any)
