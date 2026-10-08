@@ -634,6 +634,7 @@ export type CatanState = {
     catalogue: string;
     referenceOnly: boolean;
     knights?: string;
+    clothFallback?: string;
     alchemy?: boolean;
   };
   cardEvent?: {

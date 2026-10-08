@@ -409,6 +409,9 @@ func testCatanCitiesKnightsEventsFullHTTPGames(t *testing.T, scenario string, ha
 			}
 			if events {
 				rules := history["catanExpansionRules"].(map[string]any)
+				if scenario == "cloth" && rules["event_cloth_fallback"] != game.CatanEventClothFallbackRules {
+					t.Fatal("missing cloth event fallback history")
+				}
 				if rules["event_knights"] != game.CatanEventKnightsRules || rules["event_cards"] != game.CatanEventCatalogue {
 					t.Fatal("missing actual event combination history", history)
 				}

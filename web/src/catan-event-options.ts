@@ -7,7 +7,8 @@ export function catanEventsSupported(room: Partial<Room>) {
     !room.catanFishing &&
     !room.catanHarbors?.enabled &&
     !room.catanFriendlyRobber?.enabled &&
-    !room.catanNewWorldMap &&
+    (!room.catanNewWorldMap ||
+      (room.catanSeafarers?.scenario || room.catanScenario) === "new_world") &&
     [
       "",
       "cities-knights",
@@ -18,6 +19,9 @@ export function catanEventsSupported(room: Partial<Room>) {
       "islands",
       "fog",
       "desert",
+      "cloth",
+      "wonders",
+      "new_world",
     ].includes(room.catanSeafarers?.scenario || room.catanScenario || "")
   );
 }

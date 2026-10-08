@@ -51,9 +51,22 @@ func TestCatanEventKnightsPublicToggleRestartAndBase(t *testing.T) {
 	if s.rooms[id].CatanEvents != game.CatanEventCatalogue {
 		t.Fatal("compatible toggle lost events")
 	}
+
+	for _, scene := range []string{"cloth", "wonders", "new_world"} {
+		change(host, "catan_scenario", "catanScenario", scene, 200)
+		change(host, "catan_cities_knights", "catanCitiesKnights", game.CatanCitiesKnightsSetup{}, 200)
+		if s.rooms[id].CatanEvents != game.CatanEventCatalogue {
+			t.Fatal("newly supported map lost events", scene)
+		}
+	}
+	change(host, "catan_world_map_shuffle", "catanNewWorldMap", nil, 200)
+	expectedMap := *s.rooms[id].CatanNewWorldMap
 	s, ts = restartRiversHTTP(t, s, ts, []*testClient{host, guest}, id)
 	ready()
 	host.command(current(host), "start", nil, 200)
+	if !slices.Equal(s.rooms[id].Game.Catan.NewWorldMap().Hexes, expectedMap.Hexes) {
+		t.Fatal("event game changed approved map")
+	}
 	if d := s.rooms[id].Game.Catan.EventDeck; d == nil || d.Knights != game.CatanEventKnightsRules {
 		t.Fatal("missing live combo")
 	}
@@ -139,4 +152,12 @@ func TestCatanEventKnightsAlchemyHTTPRecovery(t *testing.T) {
 	}
 	s, ts = restartRiversHTTP(t, s, ts, clients, id)
 	assertPublicEventsPrivacy(t, clients)
+}
+
+func TestCatanEventKnightsEndgameMapsFullHTTPGames(t *testing.T) {
+	for _, scene := range []string{"cloth", "wonders", "new_world"} {
+		t.Run(scene, func(t *testing.T) {
+			testCatanCitiesKnightsEventsFullHTTPGames(t, scene, false, false, true, 3, 6)
+		})
+	}
 }

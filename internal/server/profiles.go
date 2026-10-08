@@ -190,6 +190,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["event_cards"] = g.EventDeck.Catalogue
+			if g.EventDeck.ClothFallback != "" {
+				record.CatanExpansionRules["event_cloth_fallback"] = g.EventDeck.ClothFallback
+			}
 			if g.EventDeck.Knights != "" {
 				record.CatanExpansionRules["event_knights"] = g.EventDeck.Knights
 			}

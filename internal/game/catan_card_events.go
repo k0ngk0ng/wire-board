@@ -349,6 +349,10 @@ func (g *Catan) fleeDeserts() []int {
 	deserts := []int{}
 	for _, tile := range g.Tiles {
 		if tile.Resource == CatanDesert {
+			// Site combination: respect Cloth's unconditional small-island ban.
+			if g.EventDeck != nil && g.EventDeck.ClothFallback == CatanEventClothFallbackRules && !g.clothLand(tile.ID) {
+				continue
+			}
 			deserts = append(deserts, tile.ID)
 		}
 	}
@@ -363,7 +367,7 @@ func (s *State) catanFleeRobber(tile int) {
 		g.CitiesKnights.Chase = ""
 	}
 	if tile < 0 {
-		s.catanLog(s.Turn, "强盗逃跑：没有沙漠，强盗移到场外，不偷牌")
+		s.catanLog(s.Turn, "强盗逃跑：没有可进入的沙漠，强盗移到场外，不偷牌")
 	} else if g.Tiles[tile].Resource == catanSwamp {
 		s.catanLog(s.Turn, "强盗逃往沼泽 #%d，不偷牌", tile+1)
 	} else {
