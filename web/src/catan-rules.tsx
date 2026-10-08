@@ -206,6 +206,20 @@ function ScenarioRules({ info }: { info: CatanRuleContext }) {
   }
 }
 
+function CatanFishingNumberRules({
+  info,
+}: {
+  info: ReturnType<typeof catanRuleContext>;
+}) {
+  return info.fishingNumberRecipe ? (
+    <p>
+      本站数字配置：五六人沿逆时针螺旋使用固定数列，跳过两块湖泊；数字数量保持扩充配置，不宣称对应
+      2025 实体字母背面。增加 14 枚鱼筹码，合计 44
+      枚（含旧靴）；②号可在行动阶段花鱼和传递旧靴。
+    </p>
+  ) : null;
+}
+
 function CatanSeaNumberRules({ info }: { info: CatanRuleContext }) {
   return info.seaNumberRecipe ? (
     <p>
@@ -396,6 +410,7 @@ export function CatanRules({ room }: { room: Room }) {
         <CatanCitiesKnightsRules info={info} />
         {info.fishing && (
           <>
+            <CatanFishingNumberRules info={info} />
             <h4>渔夫与城市骑士</h4>
             <ol>
               <li>
@@ -495,6 +510,7 @@ export function CatanRules({ room }: { room: Room }) {
       )}
       {info.fishing && (
         <>
+          <CatanFishingNumberRules info={info} />
           <h4>捕鱼与旧靴</h4>
           <ol>
             <li>

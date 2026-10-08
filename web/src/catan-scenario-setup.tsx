@@ -51,7 +51,7 @@ const scenarios = [
     id: "fishing",
     name: "卡坦渔夫",
     description:
-      "湖泊与海岸渔场产鱼，花费鱼筹码换取行动；10分获胜，持有旧靴者需多1分。三至四人。",
+      "湖泊与海岸渔场产鱼，花费鱼筹码换取行动；10 分获胜，持有旧靴者需多 1 分。支持三至六人，五六人使用配对回合。",
   },
   { id: "", name: "基础版", description: "采集资源、贸易和建设，10 分获胜。" },
   {
@@ -310,9 +310,13 @@ export function CatanScenarioPicker({
                     : fiveSix
                       ? !(
                           isPublicCatanSea(s.id) ||
-                          ["", "cities-knights", "rivers", "caravans"].includes(
-                            s.id,
-                          )
+                          [
+                            "",
+                            "cities-knights",
+                            "rivers",
+                            "caravans",
+                            "fishing",
+                          ].includes(s.id)
                         )
                       : ![
                           "spices-for-catan",
@@ -344,11 +348,12 @@ export function CatanScenarioPicker({
             )
           : scenarios.find((s) => s.id === value)?.description}
       </p>
-      {players > 4 && ["rivers", "caravans", "shores"].includes(value) && (
-        <p className="muted small">
-          本站数字配置：采用固定数列沿逆时针螺旋摆放，数字数量保持原扩充配置；不宣称与2025实体字母背面一致。
-        </p>
-      )}
+      {players > 4 &&
+        ["rivers", "caravans", "shores", "fishing"].includes(value) && (
+          <p className="muted small">
+            本站数字配置：采用固定数列沿逆时针螺旋摆放，数字数量保持原扩充配置；不宣称与2025实体字母背面一致。
+          </p>
+        )}
       {players > 4 && value === "transport" && (
         <p className="muted small">
           本站牌组配置：五六人增加8张骑士、2张道路建设、2张快速旅程，共37张；按实际开局人数使用。

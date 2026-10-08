@@ -7,14 +7,14 @@ import (
 )
 
 func TestCatanLandExtendedPublicConfiguration(t *testing.T) {
-	for _, scene := range []string{"rivers", "caravans"} {
+	for _, scene := range []string{"rivers", "caravans", "fishing"} {
 		t.Run(scene, func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
 			h, guest := newClient(t, ts.URL), newClient(t, ts.URL)
 			h.register("扩大剧本房主")
 			guest.register("扩大剧本朋友")
-			raw := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "河流商队五六人", "capacity": 6, "catanScenario": scene, "catanOptions": game.CatanOptions{FiveSix: true}}, 201)
+			raw := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "扩大剧本五六人", "capacity": 6, "catanScenario": scene, "catanOptions": game.CatanOptions{FiveSix: true}}, 201)
 			id := raw["id"].(string)
 			guest.command(raw, "join", nil, 200)
 			command := func(c *testClient, kind string, fields map[string]any, status int) {
@@ -37,7 +37,9 @@ func TestCatanLandExtendedPublicConfiguration(t *testing.T) {
 			selectCatanBase(h, &game.CatanBaseConfiguration{Layout: "fixed"}, 400)
 			selectCatanHarbors(h, true, 400)
 			selectCatanFriendlyRobber(h, true, 400)
-			selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
+			if scene != "fishing" {
+				selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
+			}
 			after, _ := json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("rejected change mutated room")
@@ -83,6 +85,10 @@ func TestCatanLandExtendedPublicConfiguration(t *testing.T) {
 			if scene == "rivers" {
 				if g.Rivers == nil || g.Rivers.Map.NumberRecipe != game.CatanExtendedNumberRecipe || g.Rivers.Bank != 152 || len(g.Rivers.Map.Channels) != 3 || g.Rivers.Map.DoubleNumberTile != -1 {
 					t.Fatal("wrong river inventory")
+				}
+			} else if scene == "fishing" {
+				if g.Fishing == nil || g.Fishing.Map.NumberRecipe != game.CatanExtendedNumberRecipe || len(g.Fishing.Map.Lakes) != 2 || len(g.Fishing.Map.Grounds) != 8 || len(g.Fishing.Tokens.DrawPile) != 44 {
+					t.Fatal("wrong fishing inventory")
 				}
 			} else {
 				if g.Caravans == nil || g.Caravans.Map.NumberRecipe != game.CatanExtendedNumberRecipe || g.Caravans.Map.Supply != 33 || len(g.Caravans.Map.WateringHoles) != 2 {

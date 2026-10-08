@@ -15,7 +15,7 @@ func TestCatanFishingKnightsPublicConfiguration(t *testing.T) {
 	city := game.CatanCitiesKnightsSetup{}
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
-		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 5},
 		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
 		{"kind": "splendor", "capacity": 3},
 	} {
@@ -94,15 +94,25 @@ func assertFishingCityInventory(t *testing.T, g *game.Catan) {
 			total += p.Resources[color]
 		}
 		want := 19
+		if len(g.Players) > 4 {
+			want = 24
+		}
 		if color >= 5 {
 			want = 12
+			if len(g.Players) > 4 {
+				want = 18
+			}
 		}
 		if total != want {
 			t.Fatal("combined resource inventory", color, total)
 		}
 	}
 	f := g.Fishing.Tokens
-	seen := [30]bool{}
+	count := 30
+	if len(g.Players) > 4 {
+		count = 44
+	}
+	seen := make([]bool, count)
 	if f.BootOwner >= 0 {
 		seen[29] = true
 	}
@@ -149,5 +159,58 @@ func assertFishingCityInventory(t *testing.T, g *game.Catan) {
 		if stock[key] > 2 {
 			t.Fatal("knight inventory")
 		}
+	}
+}
+
+func TestCatanFishingKnightsExtendedToggleAndBaseReset(t *testing.T) {
+	s, ts := setupServer(t)
+	stopBotTicker(s)
+	h := newClient(t, ts.URL)
+	h.register("扩大捕鱼骑士")
+	raw := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "捕鱼骑士人数切换", "capacity": 4, "catanScenario": "fishing", "catanCitiesKnights": game.CatanCitiesKnightsSetup{}}, 201)
+	id := raw["id"].(string)
+	options := func(extended bool, status int) {
+		h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: extended}, "version": s.rooms[id].Version, "nonce": randomID(12)}, status)
+	}
+	for _, extended := range []bool{true, false, true} {
+		h.command(current(h), "ready", nil, 200)
+		options(extended, 200)
+		want := game.CatanCitiesKnightsRules
+		if extended {
+			want = game.CatanCitiesKnightsFiveSixRules
+		}
+		r := s.rooms[id]
+		if r.CatanCitiesKnights == nil || r.CatanCitiesKnights.Rules != want || r.Seats[0].Ready {
+			t.Fatal("stale rules or readiness")
+		}
+	}
+	selectCatanCitiesKnights(h, nil, 200)
+	if s.rooms[id].CatanScenario != "fishing" || !s.rooms[id].CatanOptions.FiveSix {
+		t.Fatal("knights toggle lost fishing extension")
+	}
+	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 200)
+	for range 4 {
+		h.command(current(h), "add_bot", nil, 200)
+	}
+	options(false, 400)
+	h.command(current(h), "ready", nil, 200)
+	s, ts = restartRiversHTTP(t, s, ts, []*testClient{h}, id)
+	h.command(current(h), "start", nil, 200)
+	g := s.rooms[id].Game.Catan
+	if len(g.Players) != 5 || g.CitiesKnights.Rules != game.CatanCitiesKnightsFiveSixRules || g.Fishing.Map.NumberRecipe != game.CatanExtendedNumberRecipe || g.Paired == nil {
+		t.Fatal("wrong actual combination")
+	}
+	assertFishingCityInventory(t, g)
+	h.command(current(h), "close", nil, 200)
+	h.command(current(h), "rematch", nil, 200)
+	if s.rooms[id].CatanCitiesKnights == nil || s.rooms[id].CatanScenario != "fishing" {
+		t.Fatal("lost rematch recipe")
+	}
+	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
+	h.command(current(h), "ready", nil, 200)
+	h.command(current(h), "start", nil, 200)
+	g = s.rooms[id].Game.Catan
+	if g.Fishing != nil || g.CitiesKnights != nil || g.Paired == nil || len(g.DevDeck) != 34 || len(g.Bank) != 5 {
+		t.Fatal("base retained combination")
 	}
 }

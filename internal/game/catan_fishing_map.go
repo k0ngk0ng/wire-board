@@ -5,7 +5,6 @@ import (
 	"slices"
 )
 
-// Internal until production continuation, player actions and UI are integrated.
 const catanLake = 9
 
 type catanFishingLake struct {
@@ -21,6 +20,7 @@ type catanFishingGround struct {
 }
 
 type catanFishingMap struct {
+	NumberRecipe string                    `json:"numberRecipe,omitempty"`
 	Lakes        []catanFishingLake        `json:"lakes"`
 	Grounds      []catanFishingGround      `json:"grounds"`
 	ExtraNumbers []catanFishingExtraNumber `json:"extraNumbers,omitempty"`
@@ -60,8 +60,7 @@ func catanFishingSide(g *Catan, tile, side int) int {
 	return -1
 }
 
-// Only the board fields are replaced, after all validation succeeds. There is
-// deliberately no public constructor/room option for this unfinished scenario.
+// Only the board fields are replaced, after all validation succeeds.
 func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 	n := len(g.Players)
 	if n < 3 || n > 6 || g.SetupStep != 0 || g.Seafarers != nil || g.BaseSetup != nil || g.CitiesKnights != nil {
@@ -100,6 +99,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 		return nil, errors.New("无法生成内陆湖泊地图，请重新创建")
 	}
 	f := &catanFishingMap{}
+	if n > 4 {
+		f.NumberRecipe = CatanExtendedNumberRecipe
+	}
 	lakes := []int{}
 	for i, tile := range board.Tiles {
 		if tile.Resource == CatanDesert {
@@ -150,6 +152,9 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	if !validCatanExtendedNumberRecipe(f.NumberRecipe, len(g.Players)) || (f.NumberRecipe != "" && g.Seafarers != nil) {
+		return errors.New("渔夫数字配置版本无效")
+	}
 	if len(f.ExtraNumbers) > 0 && (g.Seafarers == nil || g.Seafarers.Scenario != "desert") {
 		return errors.New("此捕鱼地图不能迁移生产点数")
 	}

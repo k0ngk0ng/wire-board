@@ -671,3 +671,31 @@ test("friendly knights combination explanation follows saved metadata, not stale
   delete r.game.catan.friendlyRobber;
   assert.equal(catanRuleContext(r).friendlyKnights, "");
 });
+
+test("standalone extended fishing discloses only its actual number recipe", () => {
+  const room = {
+    capacity: 6,
+    catanScenario: "fishing",
+    catanOptions: { fiveSix: true },
+  };
+  assert.equal(
+    catanRuleContext(room).fishingNumberRecipe,
+    "wire-board-extended-numbers-v1",
+  );
+  room.capacity = 4;
+  assert.equal(catanRuleContext(room).fishingNumberRecipe, "");
+  room.capacity = 6;
+  room.catanScenario = "fog";
+  room.catanFishing = true;
+  assert.equal(catanRuleContext(room).fishingNumberRecipe, "");
+  room.catanScenario = "fishing";
+  room.game = { catan: { players: Array(6).fill({}), fishing: { map: {} } } };
+  assert.equal(catanRuleContext(room).fishingNumberRecipe, "");
+  room.game.catan.fishing.map.numberRecipe = "wire-board-extended-numbers-v1";
+  assert.equal(
+    catanRuleContext(room).fishingNumberRecipe,
+    "wire-board-extended-numbers-v1",
+  );
+  delete room.game.catan.fishing;
+  assert.equal(catanRuleContext(room).fishingNumberRecipe, "");
+});

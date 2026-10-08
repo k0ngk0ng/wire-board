@@ -122,12 +122,9 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario != "rivers" && r.CatanScenario != "caravans" && r.CatanScenario != "fishing" {
 		return errors.New("未知卡坦剧本")
 	}
-	maximum := 4
-	if r.CatanScenario == "rivers" || r.CatanScenario == "caravans" {
-		maximum = 6
-	}
+	maximum := 6
 	if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity {
-		return errors.New("该剧本人数无效；河流和商队支持三至六人，双人请使用对应双人变体")
+		return errors.New("该剧本人数无效；河流、商队和渔夫支持三至六人；河流和商队另有双人变体")
 	}
 	options, _ := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4})
 	if r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || (r.CatanCitiesKnights != nil && r.CatanScenario != "fishing") || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {

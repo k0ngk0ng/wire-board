@@ -24,8 +24,8 @@ type CatanFishingPending struct {
 	Gold []int `json:"gold,omitempty"`
 }
 
-// Standalone Fishing is exposed for three/four players. Extended and combined
-// recipes retain separate configuration and component acceptance gates.
+// Standalone Fishing supports three to six players. Sea and combined recipes
+// retain their own configuration and component acceptance gates.
 func NewCatanFishing(n int, options CatanOptions) (*State, error) {
 	if options.Helpers || options.AllHelpers {
 		return nil, errors.New("捕鱼与助手组合尚未接入")
@@ -43,6 +43,9 @@ func NewCatanFishing(n int, options CatanOptions) (*State, error) {
 		return nil, err
 	}
 	s.Catan.Fishing = &CatanFishing{Map: *m, Tokens: *tokens, LastRollID: -1, Started: make([]bool, n)}
+	if m.NumberRecipe != "" {
+		s.Log = append(s.Log, "本站数字配置：五六人沿逆时针螺旋使用固定数列，跳过湖泊；数字数量不变，不宣称对应 2025 实体字母背面")
+	}
 	s.Log = append(s.Log, "捕鱼：海岸渔场和湖泊产鱼，强盗从场外开始；鱼筹码面值仅本人可见")
 	return s, nil
 }

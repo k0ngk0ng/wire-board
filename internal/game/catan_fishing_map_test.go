@@ -233,3 +233,43 @@ func TestCatanFishingMapRejectsChangedBoardAndCorruptLocations(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanFishingNumberRecipeAndLegacy(t *testing.T) {
+	for _, n := range []int{3, 4, 5, 6} {
+		s, f := fishingMap(t, n)
+		if n > 4 {
+			if f.NumberRecipe != CatanExtendedNumberRecipe {
+				t.Fatal("missing number source")
+			}
+			order, numbers := catanExtendedNumberRecipe()
+			at := 0
+			for _, id := range order {
+				if s.Catan.Tiles[id].Resource != catanLake {
+					if s.Catan.Tiles[id].Number != numbers[at] {
+						t.Fatal("number source differs from actual layout")
+					}
+					at++
+				}
+			}
+		} else if f.NumberRecipe != "" {
+			t.Fatal("base counts relabelled")
+		}
+		f.NumberRecipe = "unknown"
+		if f.validate(s.Catan) == nil {
+			t.Fatal("accepted unknown source")
+		}
+		f.NumberRecipe = CatanExtendedNumberRecipe
+		if (f.validate(s.Catan) == nil) != (n > 4) {
+			t.Fatal("number source/count mismatch")
+		}
+		f.NumberRecipe = ""
+		if err := f.validate(s.Catan); err != nil {
+			t.Fatal("legacy map rejected", err)
+		}
+	}
+	s := fishFogGame(t, 6, "fixed")
+	s.Catan.Fishing.Map.NumberRecipe = CatanExtendedNumberRecipe
+	if s.Catan.validateFishing() == nil {
+		t.Fatal("standalone number source accepted on sea")
+	}
+}
