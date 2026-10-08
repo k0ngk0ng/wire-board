@@ -17,7 +17,7 @@ type CatanRivers struct {
 	Bought     int             `json:"bought"` // Current action phase; reset once at catanNext.
 }
 
-// Three/four-player public recipe; extended boards remain internal pending disc verification.
+// Public three-to-six-player recipe; extended numbers use the labelled site recipe.
 func NewCatanRivers(n int, options CatanOptions) (*State, error) {
 	s, err := NewCatan(n, options)
 	if err != nil {
@@ -33,6 +33,9 @@ func NewCatanRivers(n int, options CatanOptions) (*State, error) {
 	}
 	s.Catan.Rivers = &CatanRivers{Rules: CatanRiversRules, Map: m, Gold: make([]int, n), Bank: supply}
 	s.Phase = "catan_rivers_start"
+	if n > 4 {
+		s.Log = append(s.Log, catanExtendedNumberNotice)
+	}
 	s.catanScores()
 	return s, nil
 }

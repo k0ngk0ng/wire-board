@@ -226,8 +226,14 @@ export function CatanRiverBank({
       </summary>
       <p>
         2金币买1张资源，每次行动最多买2张。出售资源按自己的银行或港口比例，每组获得1金币。
-        {r.goldRule === "ledger" && "本站补充规则：金币用完仍照常记账发放，归还银行的金币优先复用。"}
+        {r.goldRule === "ledger" &&
+          "本站补充规则：金币用完仍照常记账发放，归还银行的金币优先复用。"}
       </p>
+      {r.map.numberRecipe && (
+        <p className="small">
+          本站数字配置：固定数列沿逆时针螺旋摆放，跳过沼泽；数字数量不变，未采用2025实体字母背面的对应表。
+        </p>
+      )}
       {mine ? (
         <>
           <p>

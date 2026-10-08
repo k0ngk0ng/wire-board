@@ -41,12 +41,14 @@ const scenarios = [
   {
     id: "rivers",
     name: "河流",
-    description: "沿河建设赚金币，修桥并争夺财富奖励，10 分获胜。",
+    description:
+      "沿河建设赚金币，修桥并争夺财富奖励，10 分获胜；支持三至六人。",
   },
   {
     id: "caravans",
     name: "商队",
-    description: "建设后共同出价，让商队经过自己的道路与城镇，12 分获胜。",
+    description:
+      "建设后共同出价，让商队经过自己的道路与城镇，12 分获胜；支持三至六人。",
   },
   {
     id: "shores",
@@ -268,7 +270,13 @@ export function CatanScenarioPicker({
                   (fishing
                     ? !supportsPublicCatanFishingSeaExtended(s.id)
                     : fiveSix
-                      ? !["", "cities-knights", "cloth"].includes(s.id)
+                      ? ![
+                          "",
+                          "cities-knights",
+                          "cloth",
+                          "rivers",
+                          "caravans",
+                        ].includes(s.id)
                       : !["spices-for-catan", "barbarian-attack"].includes(
                           s.id,
                         ))) ||
@@ -305,6 +313,11 @@ export function CatanScenarioPicker({
             )
           : scenarios.find((s) => s.id === value)?.description}
       </p>
+      {players > 4 && ["rivers", "caravans"].includes(value) && (
+        <p className="muted small">
+          本站数字配置：采用固定数列沿逆时针螺旋摆放，数字数量保持原扩充配置；不宣称与2025实体字母背面一致。
+        </p>
+      )}
       {["rivers", "transport"].includes(value) && (
         <p className="muted small">本站补充：金币用完继续记账发放。</p>
       )}

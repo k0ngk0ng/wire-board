@@ -2127,7 +2127,7 @@ function Create({
             (catanOptions.fiveSix &&
               (!catanScenario ||
                 catanScenario === "cities-knights" ||
-                catanScenario === "cloth")) ||
+                ["cloth", "rivers", "caravans"].includes(catanScenario))) ||
             (catanFishing &&
               supportsPublicCatanFishingSeaExtended(catanScenario)) ||
             ["spices-for-catan", "barbarian-attack"].includes(
@@ -2163,7 +2163,7 @@ function Create({
                     catanOptions.fiveSix &&
                     (!scenario ||
                       scenario === "cities-knights" ||
-                      scenario === "cloth")
+                      ["cloth", "rivers", "caravans"].includes(scenario))
                   ) &&
                   !(
                     catanFishing &&
@@ -2175,7 +2175,7 @@ function Create({
                       ? 4
                       : Math.min(4, capacity),
                   );
-                if (scenario === "cities-knights")
+                if (["cities-knights", "rivers", "caravans"].includes(scenario))
                   setCatanOptions(
                     catanOptions.fiveSix ? { fiveSix: true } : {},
                   );
@@ -2255,10 +2255,11 @@ function Create({
           (!catanFishing ||
             supportsPublicCatanFishingSeaExtended(catanScenario)) &&
           (!catanScenario ||
-            catanScenario === "cities-knights" ||
+            ["cities-knights", "rivers", "caravans"].includes(catanScenario) ||
             isPublicCatanSea(catanScenario)) && (
             <CatanOptionPicker
               value={catanOptions}
+              helpersAvailable={!["rivers", "caravans"].includes(catanScenario)}
               fishing={catanFishing}
               seafarers={isPublicCatanSea(catanScenario)}
               citiesKnights={
@@ -2463,7 +2464,9 @@ function Waiting({
       (room.catanOptions?.fiveSix &&
         (!room.catanScenario ||
           room.catanScenario === "cities-knights" ||
-          room.catanScenario === "cloth")) ||
+          ["cloth", "rivers", "caravans"].includes(
+            room.catanScenario || "",
+          ))) ||
       (room.catanFishing &&
         supportsPublicCatanFishingSeaExtended(room.catanScenario)) ||
       ["spices-for-catan", "barbarian-attack"].includes(
@@ -2473,7 +2476,7 @@ function Waiting({
       room.catanFishing ||
       !room.catanScenario ||
       room.catanScenario === "cities-knights" ||
-      room.catanScenario === "cloth") &&
+      ["cloth", "rivers", "caravans"].includes(room.catanScenario || "")) &&
     (!room.catanBaseConfiguration || !room.catanScenario) &&
     (!room.catanCitiesKnights ||
       room.catanScenario === "cities-knights" ||
@@ -2675,7 +2678,9 @@ function Waiting({
           (!room.catanFishing ||
             supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
           (!room.catanScenario ||
-            room.catanScenario === "cities-knights" ||
+            ["cities-knights", "rivers", "caravans"].includes(
+              room.catanScenario || "",
+            ) ||
             isPublicCatanSea(room.catanScenario)) &&
           !(
             room.catanCitiesKnights &&
@@ -2684,6 +2689,9 @@ function Waiting({
           ) && (
             <CatanOptionPicker
               value={room.catanOptions}
+              helpersAvailable={
+                !["rivers", "caravans"].includes(room.catanScenario || "")
+              }
               fishing={!!room.catanFishing}
               fiveSixAvailable={
                 (!isPublicCatanSea(room.catanScenario) ||

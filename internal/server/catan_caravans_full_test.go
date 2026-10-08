@@ -10,9 +10,7 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-// Three/four seats use the public recipe from creation through settlement.
-// Five/six retain an explicit pristine constructor fixture until disc verification;
-// no dice, resources or pieces are granted in either path.
+// All supported counts use public creation through settlement; no state injection.
 func newCaravansFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
@@ -24,9 +22,7 @@ func newCaravansFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*te
 	}
 	opts := game.CatanOptions{FiveSix: n > 4}
 	body := map[string]any{"name": "商队完整对局", "kind": "catan", "capacity": n, "catanOptions": opts}
-	if n <= 4 {
-		body["catanScenario"] = "caravans"
-	}
+	body["catanScenario"] = "caravans"
 	raw := clients[0].post("/api/rooms", body, 201)
 	id := raw["id"].(string)
 	for p := 1; p < n; p++ {
@@ -37,23 +33,8 @@ func newCaravansFullTable(t *testing.T, n int) (*Server, *httptest.Server, []*te
 	}
 	clients[0].command(current(clients[0]), "start", nil, 200)
 	clients[n].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
-	if n <= 4 {
-		if s.rooms[id].Game.Catan.Caravans == nil {
-			t.Fatal("public recipe did not construct scenario")
-		}
-		return s, ts, clients, id
-	}
-	initial, err := game.NewCatanCaravans(n, opts)
-	if err != nil {
-		t.Fatal(err)
-	}
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	r := s.rooms[id]
-	r.Game = initial
-	r.startTurnClock(time.Now())
-	if err = s.save(r); err != nil {
-		t.Fatal(err)
+	if s.rooms[id].Game.Catan.Caravans == nil {
+		t.Fatal("public recipe did not construct scenario")
 	}
 	return s, ts, clients, id
 }
@@ -333,6 +314,11 @@ func TestCatanCaravansCompleteHTTPGames(t *testing.T) {
 					code, profile := clients[n].request("GET", "/api/players/"+s.rooms[id].Seats[p].ID, nil)
 					if code != 200 {
 						t.Fatal("history unavailable")
+					}
+					record := profile["history"].([]any)[0].(map[string]any)
+					versions := record["catanExpansionRules"].(map[string]any)
+					if record["catanScenario"] != "caravans" || (n > 4 && versions["number_recipe"] != game.CatanExtendedNumberRecipe) || (n <= 4 && versions["number_recipe"] != nil) {
+						t.Fatal("wrong actual recipe in history", record)
 					}
 					wins := profile["stats"].(map[string]any)["catan"].(map[string]any)["wins"]
 					want := float64(0)

@@ -7,13 +7,14 @@ import (
 
 const catanSwamp = 10
 
-// Internal map data, not yet a playable scenario or a room option. Every
+// Public map data. Every
 // channel includes its mountain source and its coastal outlet bridge site.
 type catanRiverChannel struct {
 	Tiles  []int `json:"tiles"`
 	Outlet int   `json:"outlet"`
 }
 type catanRiversMap struct {
+	NumberRecipe     string              `json:"numberRecipe,omitempty"`
 	Channels         []catanRiverChannel `json:"channels"`
 	Bridges          []int               `json:"bridges"`
 	Swamps           []int               `json:"swamps"`
@@ -33,10 +34,7 @@ func catanRiverRecipe(extended bool) (channels [][]int, terrain [][]int, outlets
 
 func catanRiverNumberRecipe(extended bool) (order, numbers []int) {
 	if extended {
-		// Uses the shared extension A–Zc sequence. Independent confirmation of
-		// the 2025 printed letter faces remains a release gate for all scenarios.
-		return []int{2, 1, 0, 3, 7, 12, 18, 23, 27, 28, 29, 26, 22, 17, 11, 6, 5, 4, 8, 13, 19, 24, 25, 21, 16, 10, 9, 14, 20, 15},
-			[]int{2, 5, 4, 6, 3, 9, 8, 11, 11, 10, 6, 3, 8, 4, 8, 10, 11, 12, 10, 5, 4, 9, 5, 9, 12, 3, 2, 6}
+		return catanExtendedNumberRecipe()
 	}
 	// Normal counterclockwise spiral from the upper-right corner, omitting
 	// the B/2 disc and skipping both swamps. Its 2 is placed with the 12.
@@ -63,6 +61,9 @@ func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 	board.makeMap()
 	paths, terrain, outlets := catanRiverRecipe(n > 4)
 	f := &catanRiversMap{DoubleNumberTile: -1}
+	if n > 4 {
+		f.NumberRecipe = CatanExtendedNumberRecipe
+	}
 	reserved := map[int]bool{}
 	for i, path := range paths {
 		f.Channels = append(f.Channels, catanRiverChannel{Tiles: slices.Clone(path), Outlet: catanFishingSide(board, path[len(path)-1], outlets[i])})
@@ -135,6 +136,9 @@ func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 }
 
 func (f catanRiversMap) validate(g *Catan) error {
+	if !validCatanExtendedNumberRecipe(f.NumberRecipe, len(g.Players)) {
+		return errors.New("河流数字配置版本无效")
+	}
 	n := len(g.Players)
 	expectedTiles, expectedVertices, expectedEdges := 19, 54, 72
 	if n > 4 {

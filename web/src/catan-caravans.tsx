@@ -268,6 +268,14 @@ export function CatanCaravanPanel({
           </small>
         </div>
       </section>
+      {c.map.numberRecipe && (
+        <details className="small caravan-number-recipe">
+          <summary>本站数字配置</summary>
+          <p>
+            固定数列沿逆时针螺旋摆放，跳过水源；数字数量不变，未采用2025实体字母背面的对应表。
+          </p>
+        </details>
+      )}
       {q && room.status === "playing" && !room.game!.finished && (
         <section
           className="catan-gold-choice caravan-choice"
