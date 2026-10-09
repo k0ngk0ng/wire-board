@@ -23,3 +23,7 @@ test('two-player caravan sea waiting context uses neutral and scenario target',(
   assert.equal(c.two,true);assert.equal(c.target,target);
  }
 });
+test('extended merchant New Shores reports sixteen points and paired turns',()=>{
+ const room={kind:'catan',capacity:6,catanScenario:'caravans-shores'};
+ const context=catanRuleContext(room);assert.equal(context.target,16);assert.equal(context.caravans,true);assert.equal(context.fiveSix,true);assert.equal(catanEventsSupported(room),true);
+});

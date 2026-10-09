@@ -22,6 +22,7 @@ export function catanRuleContext(room: Room) {
     ? !!game.caravans
     : [
         "caravans",
+        "caravans-shores",
         "caravans-desert",
         "caravans-tribe",
         "rivers-caravans",
@@ -52,7 +53,9 @@ export function catanRuleContext(room: Room) {
       (sea?.newWorld ? "new_world" : sea?.wonders ? "wonders" : "")
     : (explorerDraft ||
       riverSeaDraft ||
-      ["caravans-desert", "caravans-tribe"].includes(room.catanScenario || "")
+      ["caravans-shores", "caravans-desert", "caravans-tribe"].includes(
+        room.catanScenario || "",
+      )
         ? room.catanScenario
         : "") ||
       room.catanSeafarers?.scenario ||
@@ -170,7 +173,7 @@ export function catanRuleContext(room: Room) {
     two: game
       ? !!game.two
       : !!room.catanTwoRules ||
-        ((["caravans-desert", "caravans-tribe"].includes(
+        ((["caravans-shores", "caravans-desert", "caravans-tribe"].includes(
           room.catanScenario || "",
         ) ||
           riverSeaDraft ||
@@ -268,9 +271,11 @@ export function catanRuleContext(room: Room) {
             : attack && citiesKnights
               ? 13
               : (caravans &&
-                    !["caravans-desert", "caravans-tribe"].includes(
-                      scenario,
-                    )) ||
+                    ![
+                      "caravans-shores",
+                      "caravans-desert",
+                      "caravans-tribe",
+                    ].includes(scenario)) ||
                   attack
                 ? 12
                 : catanVictoryTarget(scenario, citiesKnights) +
@@ -281,7 +286,8 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
-  if (scenario === "caravans-desert") return 16;
+  if (scenario === "caravans-desert" || scenario === "caravans-shores")
+    return 16;
   if (scenario === "caravans-tribe") return 15;
   if (
     ["rivers-shores", "rivers-desert", "rivers-desert-belt"].includes(scenario)
