@@ -18,7 +18,7 @@ test('caravan tribe target and events are explicit',()=>{
  assert.equal(catanRuleContext(room).target,15);assert.equal(catanRuleContext(room).caravans,true);assert.equal(catanEventsSupported(room),true);
 });
 test('two-player caravan sea waiting context uses neutral and scenario target',()=>{
- for(const [scenario,target] of [['caravans-desert',16],['caravans-tribe',15]]){
+ for(const [scenario,target] of [['caravans-desert',16],['caravans-tribe',15],['caravans-islands',15]]){
   const c=catanRuleContext({kind:'catan',capacity:2,catanScenario:scenario});
   assert.equal(c.two,true);assert.equal(c.target,target);
  }
