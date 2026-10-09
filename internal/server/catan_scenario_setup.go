@@ -37,7 +37,7 @@ func publicCatanTradersCombination(scenario string) bool {
 }
 
 func publicCatanFlexibleScenario(scenario string) bool {
-	return scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
+	return scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
 }
 
 // Public recipes include two-to-six-player Explorer missions.
@@ -62,9 +62,13 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
 		return nil
 	}
-	if r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe" {
+	if r.CatanScenario == "caravans-shores" || r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe" {
 		maximum := 6
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		minimum := 2
+		if r.CatanScenario == "caravans-shores" {
+			minimum = 5
+		}
+		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
 			return errors.New("商队沙漠与部落支持二至六人独立组合")
 		}
 		return nil
@@ -195,7 +199,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r
@@ -203,7 +207,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if scenario != "rivers-new-world" {
 		next.CatanRiversWorldMap = nil
 	}
-	if (scenario == "caravans-desert" || scenario == "caravans-tribe") || (r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe") || publicCatanTradersCombination(scenario) || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
+	if (scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe") || (r.CatanScenario == "caravans-shores" || r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe") || publicCatanTradersCombination(scenario) || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
 		next.CatanOptions = game.CatanOptions{}
 	}
 	if publicCatanExplorerScenario(scenario) && !publicCatanExplorerScenario(r.CatanScenario) {
@@ -251,7 +255,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 		next.CatanSeafarers = nil
 		next.CatanNewWorldMap = nil
 	}
-	if (scenario == "caravans-desert" || scenario == "caravans-tribe") || (r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe") || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
+	if (scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe") || (r.CatanScenario == "caravans-shores" || r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe") || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
 		next.CatanCitiesKnights = nil
 	}
 	if scenario == "cities-knights" {
