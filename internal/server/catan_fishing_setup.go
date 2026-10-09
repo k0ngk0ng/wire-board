@@ -81,6 +81,9 @@ func (r *Room) setCatanFishing(enabled bool) error {
 }
 
 func (r *Room) generateCatanWorldMap() (*game.CatanNewWorldMap, error) {
+	if r.CatanScenario == "caravans-new-world" {
+		return game.GenerateCatanCaravansWorldMap(r.Capacity)
+	}
 	if r.twoCatanSeafarers() {
 		if r.CatanFishing {
 			return game.GenerateCatanFishingNewWorldMap(4)

@@ -2869,7 +2869,8 @@ function Waiting({
       supportsPublicCatanKnightsCombination(room.catanScenario) ||
       isPublicCatanSea(room.catanScenario)) &&
     (!room.catanSeafarers || isPublicCatanSea(room.catanScenario)) &&
-    (!room.catanNewWorldMap || room.catanScenario === "new_world");
+    (!room.catanNewWorldMap ||
+      ["new_world", "caravans-new-world"].includes(room.catanScenario || ""));
   const twoLabel =
     room.kind === "catan" && room.catanTwoRules
       ? `双人卡坦${room.catanTwoScenario ? "＋" + catanScenarioName(room.catanTwoScenario) : ""}${room.catanCitiesKnights ? "＋城市与骑士" : ""}${room.catanFishing ? "＋渔夫" : ""}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · 2 人 · ${catanRuleContext(room).target} 分获胜`

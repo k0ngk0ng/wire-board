@@ -69,8 +69,11 @@ func (r *Room) validateCatanScenario() error {
 			minimum, maximum = 2, 6
 		}
 
-		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
 			return errors.New("商队海图人数或组合无效；支持二至六人")
+		}
+		if r.CatanScenario == "caravans-new-world" && r.CatanNewWorldMap != nil {
+			return game.ValidateCatanCaravansWorldMap(r.Capacity, r.CatanNewWorldMap)
 		}
 		return nil
 	}
@@ -267,6 +270,15 @@ func (r *Room) setCatanScenario(scenario string) error {
 		next.CatanCitiesKnights = &setup
 	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || ((r.CatanScenario == "fishing" || r.CatanScenario == "caravans" || r.CatanScenario == "rivers" || r.CatanScenario == "transport" || (publicCatanTradersCombination(r.CatanScenario))) && scenario != r.CatanScenario) || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
+	}
+	if scenario == "caravans-new-world" && next.CatanNewWorldMap == nil {
+		var err error
+		next.CatanNewWorldMap, err = game.GenerateCatanCaravansWorldMap(next.Capacity)
+		if err != nil {
+			return err
+		}
+	} else if r.CatanScenario == "caravans-new-world" && scenario != "caravans-new-world" && scenario != "new_world" {
+		next.CatanNewWorldMap = nil
 	}
 	if !next.publicCatanEventsAvailable() {
 		next.CatanEvents = ""

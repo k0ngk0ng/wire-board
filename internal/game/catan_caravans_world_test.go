@@ -68,3 +68,55 @@ func TestCatanCaravansWorldRecipe(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanCaravansWorldPrepared(t *testing.T) {
+	for _, n := range []int{2, 3, 4, 5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) {
+			layout, err := GenerateCatanCaravansWorldMap(n)
+			if err != nil {
+				t.Fatal(err)
+			}
+			s, err := NewCatanCaravansWorldWithMap(n, layout)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for id, h := range layout.Hexes {
+				tile := s.Catan.Tiles[id]
+				if tile.Resource == catanWateringHole {
+					if h.Resource != CatanSea {
+						t.Fatal("source")
+					}
+				} else if tile.Resource != h.Resource || tile.Number != h.Number {
+					t.Fatal("draft changed")
+				}
+			}
+			layout.Hexes[0].Resource = 99
+			if s.Catan.Caravans.WorldBase.Hexes[0].Resource == 99 {
+				t.Fatal("draft alias")
+			}
+			if ValidateCatanCaravansWorldMap(n, layout) == nil {
+				t.Fatal("bad draft accepted")
+			}
+			for step := 0; step < 18000 && !s.Finished; step++ {
+				p := twoFullActor(s)
+				a, e := s.BotAction(p)
+				if e != nil {
+					t.Fatal(e)
+				}
+				if e = s.Apply(p, a); e != nil {
+					t.Fatal(step, e)
+				}
+				if step == 83 {
+					b := clone(*s)
+					s = &b
+					if e = s.validateCaravans(); e != nil {
+						t.Fatal(e)
+					}
+				}
+			}
+			if !s.Finished {
+				t.Fatal("unfinished")
+			}
+		})
+	}
+}

@@ -1045,7 +1045,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			if next.twoCatanSeafarers() {
 				mapPlayers = 4
 			}
-			err = game.ValidateCatanNewWorldMap(mapPlayers, layout)
+			if next.CatanScenario == "caravans-new-world" {
+				err = game.ValidateCatanCaravansWorldMap(next.Capacity, layout)
+			} else {
+				err = game.ValidateCatanNewWorldMap(mapPlayers, layout)
+			}
 		}
 		if err == nil && next.CatanFishing {
 			if next.twoCatanSeafarers() {
@@ -1272,7 +1276,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
 				if next.CatanScenario == "caravans-new-world" {
-					next.Game, err = game.NewCatanCaravansWorld(len(next.Seats))
+					if next.CatanNewWorldMap != nil {
+						next.Game, err = game.NewCatanCaravansWorldWithMap(len(next.Seats), next.CatanNewWorldMap)
+					} else {
+						next.Game, err = game.NewCatanCaravansWorld(len(next.Seats))
+					}
 				} else if next.CatanScenario == "caravans-islands" {
 					next.Game, err = game.NewCatanCaravansIslandsSeafarers(len(next.Seats))
 				} else if next.CatanScenario == "caravans-shores" {
