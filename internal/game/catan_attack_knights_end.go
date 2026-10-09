@@ -91,7 +91,13 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 	}
 
 	if !next.Finished {
-		next.catanAfterAttackBattles()
+		if next.Catan.attackTransport() {
+			if err := next.catanTransportBeginTravel(next.Turn); err != nil {
+				return nil, err
+			}
+		} else {
+			next.catanAfterAttackBattles()
+		}
 	}
 	if err := next.Catan.Attack.City.validate(next.Catan); err != nil {
 		return nil, err
@@ -101,7 +107,7 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 }
 
 func (s *State) catanAttackCityFinishBattles(result *catanAttackCityEnd, die func() int) error {
-	for _, tile := range s.Catan.Attack.Map.Coast {
+	for _, tile := range s.Catan.attackBattleTiles() {
 		battle, err := s.catanAttackCityBattle(tile, die)
 		if err != nil {
 			return err

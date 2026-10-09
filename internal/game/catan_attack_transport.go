@@ -234,6 +234,9 @@ func (s *State) attackTransportLanding(roll func() [2]int, choose func(int) int)
 }
 func (s *State) attackTransportProductionLanding(total int) error {
 	g := s.Catan
+	if g.attackKnights() {
+		return nil
+	} // City production already resolves one invasion per roll.
 	if total != 2 && total != 12 {
 		return nil
 	}

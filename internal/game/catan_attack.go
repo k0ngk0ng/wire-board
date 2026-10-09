@@ -197,7 +197,7 @@ func (s *State) validateCatanAttack() error {
 func (s *State) catanAttackLanding(roll func() [2]int, choose func(int) int) error {
 	g := s.Catan
 	a := g.Attack
-	if g.attackTransport() {
+	if g.attackTransport() && !g.attackKnights() {
 		return s.attackTransportLanding(roll, choose)
 	}
 	if g.attackKnights() {

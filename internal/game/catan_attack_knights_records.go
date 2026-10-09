@@ -15,7 +15,7 @@ func (s *State) validateAttackCityEnd() error {
 		return nil
 	}
 	n := len(g.Players)
-	if g.setup() || c.Sequence < 1 || q.Player < 0 || q.Player >= n || len(q.Orders) > g.attackCityMoveLimit() || len(q.Battles) > len(g.Attack.Map.Coast) {
+	if g.setup() || c.Sequence < 1 || q.Player < 0 || q.Player >= n || len(q.Orders) > g.attackCityMoveLimit() || len(q.Battles) > len(g.attackBattleTiles()) {
 		return errors.New("道路骑士历史结算无效")
 	}
 	paidFish := map[int]bool{}
@@ -48,8 +48,8 @@ func (s *State) validateAttackCityEnd() error {
 	}
 	previous := -1
 	for index, b := range q.Battles {
-		coast := slices.Index(g.Attack.Map.Coast, b.Tile)
-		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) > 6 || len(b.Knights) == 0 || len(b.Strength) != n || len(b.Prisoners) != n || len(b.Gold) != n || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || index != len(q.Battles)-1) {
+		coast := slices.Index(g.attackBattleTiles(), b.Tile)
+		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) > g.attackBattleKnightLimit(b.Tile) || len(b.Knights) == 0 || len(b.Strength) != n || len(b.Prisoners) != n || len(b.Gold) != n || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || index != len(q.Battles)-1) {
 			return errors.New("道路骑士历史战斗顺序或库存无效")
 		}
 		previous = coast

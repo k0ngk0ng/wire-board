@@ -22,7 +22,7 @@ func newCatanAttackTransportTravel(g *Catan, b *catanAttackTransportBoard, p *ca
 	if b == nil || p == nil {
 		return nil, errors.New("蛮族运输棋盘或棋子缺失")
 	}
-	if err := b.validate(g); err != nil {
+	if err := g.validateAttackTransportMap(b); err != nil {
 		return nil, err
 	}
 	if err := p.validate(g, b); err != nil {

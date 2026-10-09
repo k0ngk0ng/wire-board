@@ -80,7 +80,7 @@ func (s *State) catanAttackCityPlanView(player int) map[string]any {
 				promote = append(promote, knight.Edge)
 			}
 		}
-		result["choices"] = map[string]any{"recruit": recruit, "activate": activate, "promote": promote, "capture": g.Attack.captureTargets()}
+		result["choices"] = map[string]any{"recruit": recruit, "activate": activate, "promote": promote, "capture": g.attackCaptureTargets()}
 	}
 	if tq := c.Treason; tq != nil && !s.Finished {
 		actor := g.knightResponseActor(tq.Owner, tq.Actor)
@@ -220,7 +220,7 @@ func (s *State) catanAttackCityPlanBot(player int) (Action, error) {
 func (g *Catan) attackCityEdgeValue(player, edge int) int {
 	value := 0
 	for _, tile := range g.Edges[edge].Tiles {
-		if slices.Contains(g.Attack.Map.Coast, tile) {
+		if slices.Contains(g.attackBattleTiles(), tile) {
 			value += 10 + g.Attack.Barbarians[tile]*5 + g.attackTileInterest(player, tile)
 		}
 	}
@@ -313,7 +313,7 @@ func (s *State) catanAttackCityBotChoices(player int) []botChoice {
 				continue
 			}
 		case 19:
-			targets := g.Attack.captureTargets()
+			targets := g.attackCaptureTargets()
 			if len(targets) == 0 {
 				continue
 			}

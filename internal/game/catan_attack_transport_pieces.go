@@ -70,12 +70,16 @@ func (p catanAttackTransportPieces) edges(g *Catan, tile, except int) []int {
 	return out
 }
 func (p catanAttackTransportPieces) validate(g *Catan, b *catanAttackTransportBoard) error {
-	if g == nil || b == nil || len(p.Barbarians) != b.Attack.Barbarians {
+	issued := 0
+	if g != nil && g.attackTransportKnights() {
+		issued = g.Attack.City.Issued
+	}
+	if g == nil || b == nil || issued < 0 || issued > catanGoldLedgerLimit || len(p.Barbarians) != b.Attack.Barbarians+issued {
 		return errors.New("蛮族运输棋子数量无效")
 	}
 	edges := map[int]bool{}
 	for _, piece := range p.Barbarians {
-		if piece.Tile < -1 || piece.Tile >= len(g.Tiles) || piece.Captor < -2 || piece.Captor >= len(g.Players) || piece.Captor == -2 && len(g.Players) != 2 {
+		if piece.Tile < -1 || piece.Tile >= len(g.Tiles) || piece.Captor < -2 || piece.Captor >= len(g.Players) || piece.Captor == -2 && (len(g.Players) != 2 || g.attackKnights()) {
 			return errors.New("蛮族运输棋子归属无效")
 		}
 		if piece.Tile < 0 {
@@ -172,7 +176,7 @@ func (p *catanAttackTransportPieces) captureBattle(g *Catan, b *catanAttackTrans
 		return err
 	}
 	seats := len(g.Players)
-	if seats == 2 {
+	if seats == 2 && !g.attackKnights() {
 		seats++ // Combined neutral faction, as in ordinary two-player Attack.
 	}
 	if tile < 0 || tile >= len(g.Tiles) || len(prisoners) != seats {

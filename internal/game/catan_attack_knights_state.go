@@ -26,7 +26,7 @@ func (s *State) validateAttackCityState() error {
 	}
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
-	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil && !g.caravansAttack() || g.Rivers != nil && !g.riversAttack() || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
+	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil && !g.caravansAttack() || g.Rivers != nil && !g.riversAttack() || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.Transport != nil && !g.attackTransportKnights() || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
 		return errors.New("蛮族城市骑士人数、组件或组合配置无效")
 	}
 	if g.riversAttack() {
@@ -55,24 +55,33 @@ func (s *State) validateAttackCityState() error {
 	for id := range board.Tiles {
 		board.Tiles[id].Number = numbers[id]
 	}
+	if g.attackTransport() {
+		board.Attack.City.NumberSwaps = nil
+	}
 	if err := a.Map.validate(&board); err != nil {
 		return err
 	}
 	if k.Rules != catanCitiesKnightsRules(n) || k.Layout != "variable" || k.RobberStart != -1 || k.Chase != "" || k.ActionSerial == 0 || k.ActionSerial < g.TurnSerial || k.EventDie < -1 || k.EventDie > 5 || len(k.FallenCities) != 0 {
 		return errors.New("蛮族城市骑士城市规则或事件记录无效")
 	}
-	if a.GoldIssued < 0 || a.GoldIssued > catanGoldLedgerLimit || len(a.Gold) != n || a.GoldBank < 0 || a.GoldBank > a.Map.Gold+a.GoldIssued {
-		return errors.New("组合金币银行无效")
-	}
-	gold := a.GoldBank
-	for _, amount := range a.Gold {
-		if amount < 0 || amount > a.Map.Gold+a.GoldIssued {
-			return errors.New("组合金币持有量无效")
+	if g.attackTransport() {
+		if err := g.validateAttackTransportPieces(); err != nil {
+			return err
 		}
-		gold += amount
-	}
-	if gold != a.Map.Gold+a.GoldIssued {
-		return errors.New("组合金币库存不守恒")
+	} else {
+		if a.GoldIssued < 0 || a.GoldIssued > catanGoldLedgerLimit || len(a.Gold) != n || a.GoldBank < 0 || a.GoldBank > a.Map.Gold+a.GoldIssued {
+			return errors.New("组合金币银行无效")
+		}
+		gold := a.GoldBank
+		for _, amount := range a.Gold {
+			if amount < 0 || amount > a.Map.Gold+a.GoldIssued {
+				return errors.New("组合金币持有量无效")
+			}
+			gold += amount
+		}
+		if gold != a.Map.Gold+a.GoldIssued {
+			return errors.New("组合金币库存不守恒")
+		}
 	}
 	if len(g.Bank) != 8 || !g.cardBundle(g.Bank) {
 		return errors.New("组合资源银行无效")
@@ -104,6 +113,9 @@ func (s *State) validateAttackCityState() error {
 	}
 	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_roads", "catan_card_event", "catan_fish_replace", catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}
 	phases = append(phases, catanTransportCityPhases...)
+	if g.attackTransport() {
+		phases = append(phases, "catan_transport_move")
+	}
 	if g.twoAttackKnights() {
 		phases = append(phases, "catan_two_build", "catan_two_trade")
 	}
@@ -177,6 +189,11 @@ func (s *State) applyAttackCity(player int, a Action) error {
 	if err := s.validateAttackCityState(); err != nil {
 		return err
 	}
+	if s.Catan.attackTransport() {
+		if err := s.validateCatanTransport(); err != nil {
+			return err
+		}
+	}
 	next := clone(*s)
 	g := next.Catan
 	c := g.Attack.City
@@ -191,7 +208,11 @@ func (s *State) applyAttackCity(player int, a Action) error {
 	case a.Type == "catan_buy_dev" || a.Type == "catan_dev" || a.Type == "catan_knight_recruit" || a.Type == "catan_knight_activate" || a.Type == "catan_knight_promote" || a.Type == "catan_knight_move" || a.Type == "catan_knight_chase":
 		err = errors.New("本组合使用道路骑士和进步牌")
 	default:
-		err = next.applyCatanStep(player, a)
+		if g.attackTransport() {
+			err = next.applyCatanTransport(player, a)
+		} else {
+			err = next.applyCatanStep(player, a)
+		}
 	}
 	if err != nil {
 		return err
@@ -205,6 +226,14 @@ func (s *State) applyAttackCity(player int, a Action) error {
 	}
 	if err = next.validateAttackCityState(); err != nil {
 		return err
+	}
+	if g.attackTransport() {
+		if err = next.catanTransportSyncTurn(); err != nil {
+			return err
+		}
+		if err = next.validateCatanTransport(); err != nil {
+			return err
+		}
 	}
 	if err = next.validateCatanEventSession(); err != nil {
 		return err
