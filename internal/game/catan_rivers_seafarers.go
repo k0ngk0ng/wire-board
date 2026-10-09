@@ -136,6 +136,9 @@ func (g *Catan) makeRiversPrintedSeaMap(layout string) (*catanRiversMap, error) 
 	return m, nil
 }
 func (g *Catan) validateRiversSeaMap() error {
+	if g.riversSea() && g.Seafarers.Scenario == "new_world" {
+		return g.validateRiversWorldMap()
+	}
 	if g.riversSea() && g.Seafarers.Scenario == "tribe" {
 		return g.validateRiversTribeMap()
 	}
