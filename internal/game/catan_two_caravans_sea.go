@@ -28,6 +28,11 @@ func newCatanTwoCaravansSea(scenario string) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
+	return newCatanTwoCaravansSeaRecipe(recipe)
+}
+
+func newCatanTwoCaravansSeaRecipe(recipe *State) (*State, error) {
+	var err error
 	s := &State{Kind: "catan", Round: 1}
 	s.initCatan(2)
 	g, b := s.Catan, recipe.Catan

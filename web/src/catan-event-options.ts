@@ -25,6 +25,7 @@ export function catanEventsSupported(room: Partial<Room>) {
         "new_world",
       ].includes(room.catanSeafarers?.scenario || room.catanScenario || "")) &&
     (!room.catanNewWorldMap ||
+      room.catanScenario === "caravans-new-world" ||
       (room.catanSeafarers?.scenario || room.catanScenario) === "new_world") &&
     [
       "",

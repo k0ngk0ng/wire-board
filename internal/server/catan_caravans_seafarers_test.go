@@ -45,7 +45,30 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 			for _, c := range clients {
 				c.command(current(c), "ready", nil, 200)
 			}
+			if scenario == "caravans-new-world" {
+				clients[1].command(current(clients[1]), "catan_world_map_shuffle", nil, 400)
+				h.command(current(h), "catan_world_map_shuffle", nil, 200)
+				for _, seat := range s.rooms[id].Seats {
+					if seat.Ready {
+						t.Fatal("map edit retained ready")
+					}
+				}
+				for _, c := range clients {
+					c.command(current(c), "ready", nil, 200)
+				}
+			}
 			h.command(current(h), "start", nil, 200)
+			if scenario == "caravans-new-world" {
+				expected, e := game.NewCatanCaravansWorldWithMap(n, s.rooms[id].CatanNewWorldMap)
+				if e != nil {
+					t.Fatal(e)
+				}
+				a, _ := json.Marshal(expected.Catan.Tiles)
+				b, _ := json.Marshal(s.rooms[id].Game.Catan.Tiles)
+				if string(a) != string(b) {
+					t.Fatal("approved board rerolled")
+				}
+			}
 			ordered := make([]*testClient, n)
 			for _, c := range clients {
 				ordered[int(current(c)["you"].(float64))] = c

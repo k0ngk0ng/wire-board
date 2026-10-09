@@ -51,35 +51,10 @@ func newCatanCaravansWorld(n int) (*State, error) {
 		if err != nil {
 			return nil, err
 		}
-		g := s.Catan
-		g.Seafarers.Rules, g.Seafarers.Layout = CatanSeafarersRules, "prepared"
-		g.Caravans = &catanCaravans{Sea: CatanCaravansSeafarersRules, Rules: CatanCaravansRules, Wagons: []catanCaravanWagon{}}
-		base := g.NewWorldMap()
-		holes := g.caravanWorldHoles()
-		if len(holes) == 0 {
+		if err = installCaravansWorld(s); err != nil {
 			continue
 		}
-		for _, id := range holes {
-			g.Tiles[id].Resource = catanWateringHole
-		}
-		starts, err := caravanStarts(g, holes)
-		if err != nil {
-			continue
-		}
-		supply := 22
-		if n > 4 {
-			supply = 33
-		}
-		g.Caravans.Map = &catanCaravanMap{WateringHoles: holes, Starts: starts, Supply: supply}
-		g.Caravans.WorldBase = base
-		g.Seafarers.Islands = g.findIslands()
-		g.Seafarers.VictoryPoints = 14
-		if len(g.worldPortEdges()) < 3*len(g.newWorld().Ports)-2 {
-			continue
-		}
-		s.Log = append(s.Log, "商队新世界：14分获胜。本站随机配方以最靠近地图中心的内海替换水源，保留全部生产地形与数字；五六人两处水源、33辆马车。先放港口，再起始建设。")
-		s.catanScores()
-		return s, s.validateCaravans()
+		return s, nil
 	}
 	return nil, errors.New("无法生成具有足够港口位置的商队新世界")
 }
@@ -155,4 +130,71 @@ func (g *Catan) validateCaravansWorld() error {
 		occupied[e.A], occupied[e.B] = true, true
 	}
 	return nil
+}
+
+func installCaravansWorld(s *State) error {
+	n := len(s.Catan.Players)
+	g := s.Catan
+	g.Seafarers.Rules, g.Seafarers.Layout = CatanSeafarersRules, "prepared"
+	g.Caravans = &catanCaravans{Sea: CatanCaravansSeafarersRules, Rules: CatanCaravansRules, Wagons: []catanCaravanWagon{}}
+	base := g.NewWorldMap()
+	holes := g.caravanWorldHoles()
+	if len(holes) == 0 {
+		return errors.New("商队新世界水源或海岸容量不足")
+	}
+	for _, id := range holes {
+		g.Tiles[id].Resource = catanWateringHole
+	}
+	starts, err := caravanStarts(g, holes)
+	if err != nil {
+		return errors.New("商队新世界水源或海岸容量不足")
+	}
+	supply := 22
+	if n > 4 {
+		supply = 33
+	}
+	g.Caravans.Map = &catanCaravanMap{WateringHoles: holes, Starts: starts, Supply: supply}
+	g.Caravans.WorldBase = base
+	g.Seafarers.Islands = g.findIslands()
+	g.Seafarers.VictoryPoints = 14
+	if len(g.worldPortEdges()) < 3*len(g.newWorld().Ports)-2 {
+		return errors.New("商队新世界水源或海岸容量不足")
+	}
+	s.Log = append(s.Log, "商队新世界：14分获胜。本站随机配方以最靠近地图中心的内海替换水源，保留全部生产地形与数字；五六人两处水源、33辆马车。先放港口，再起始建设。")
+	s.catanScores()
+	return s.validateCaravans()
+}
+
+// Layout describes the original sea and terrain, before automatic water sources.
+// Copy it into fresh geometry so edits to the caller's draft cannot alter play.
+func NewCatanCaravansWorldWithMap(n int, layout *CatanNewWorldMap) (*State, error) {
+	recipeSeats := n
+	if n == 2 {
+		recipeSeats = 4
+	}
+	if n < 2 || n > 6 {
+		return nil, errors.New("商队新世界需要二至六人")
+	}
+	s, err := NewCatanNewWorldWithMap(recipeSeats, CatanOptions{FiveSix: n > 4}, layout)
+	if err != nil {
+		return nil, err
+	}
+	if err = installCaravansWorld(s); err != nil {
+		return nil, err
+	}
+	if n == 2 {
+		return newCatanTwoCaravansSeaRecipe(s)
+	}
+	return s, nil
+}
+func GenerateCatanCaravansWorldMap(n int) (*CatanNewWorldMap, error) {
+	s, err := NewCatanCaravansWorld(n)
+	if err != nil {
+		return nil, err
+	}
+	return s.Catan.Caravans.WorldBase, nil
+}
+func ValidateCatanCaravansWorldMap(n int, layout *CatanNewWorldMap) error {
+	_, err := NewCatanCaravansWorldWithMap(n, layout)
+	return err
 }

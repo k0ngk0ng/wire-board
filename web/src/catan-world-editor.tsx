@@ -96,6 +96,7 @@ export function CatanWorldEditor({
       <header>
         <div>
           <h3>新世界 · 开局地图</h3>
+ {room.catanScenario === "caravans-new-world" && <p>商队采用本站水源规则：开局时将最靠近中心的可用内海改为水源，五六人两处，其余一处；生产地形和数字保持不变。</p>}
           <p>
             {host
               ? "调整完成后应用地图，所有人重新准备。开局后地图不再重抽。"
