@@ -22,6 +22,7 @@ export function catanRuleContext(room: Room) {
     ? !!game.caravans
     : [
         "caravans",
+        "caravans-desert",
         "rivers-caravans",
         "caravans-attack",
         "caravans-transport",
@@ -48,7 +49,11 @@ export function catanRuleContext(room: Room) {
     ? game?.explorer?.board.scenario ||
       sea?.scenario ||
       (sea?.newWorld ? "new_world" : sea?.wonders ? "wonders" : "")
-    : (explorerDraft || riverSeaDraft ? room.catanScenario : "") ||
+    : (explorerDraft ||
+      riverSeaDraft ||
+      room.catanScenario === "caravans-desert"
+        ? room.catanScenario
+        : "") ||
       room.catanSeafarers?.scenario ||
       (room.catanNewWorldMap ? "new_world" : "");
   if (scenario === "islands" && players > 4) scenario = "six_islands";
@@ -235,7 +240,8 @@ export function catanRuleContext(room: Room) {
     fiveSix: game
       ? !!game.paired || !!options.fiveSix
       : !!options.fiveSix ||
-        ((riverSeaDraft || explorerDraft || attack || transport || caravans) && players > 4),
+        ((riverSeaDraft || explorerDraft || attack || transport || caravans) &&
+          players > 4),
     helpersKnights: game
       ? game.citiesKnights?.helpers?.rules || ""
       : !explorerDraft && citiesKnights && options.helpers && players >= 2
@@ -257,7 +263,7 @@ export function catanRuleContext(room: Room) {
             ? 15
             : attack && citiesKnights
               ? 13
-              : caravans || attack
+              : (caravans && scenario !== "caravans-desert") || attack
                 ? 12
                 : catanVictoryTarget(scenario, citiesKnights) +
                   (harbors ? 1 : 0),
@@ -267,6 +273,7 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (scenario === "caravans-desert") return 16;
   if (
     ["rivers-shores", "rivers-desert", "rivers-desert-belt"].includes(scenario)
   )
@@ -331,7 +338,7 @@ export function catanSavedVictoryTarget(g: CatanState) {
       : g.fishing?.transport
         ? 12
         : 13;
-  if (g.caravans) return g.citiesKnights ? 15 : 12;
+  if (g.caravans && !g.seafarers) return g.citiesKnights ? 15 : 12;
   if (g.attack) return g.attack.city ? 13 : 12;
   const sea = g.seafarers;
   const scenario =

@@ -2632,34 +2632,68 @@ function Create({
                 : Array.from(
                     {
                       length:
-                        k === "sanguosha"
-                          ? 5
+                        k === "catan" && catanScenario === "caravans-desert"
+                          ? 2
+                          : k === "sanguosha"
+                            ? 5
+                            : k === "catan"
+                              ? [
+                                  "land-ho",
+                                  "spices-for-catan",
+                                  "pirate-lairs",
+                                  "fish-for-catan",
+                                  "explorers-and-pirates",
+                                  "transport",
+                                  "rivers-caravans",
+                                  "rivers-attack",
+                                  "rivers-transport",
+                                  "caravans-attack",
+                                  "caravans-transport",
+                                  "attack-transport",
+                                  "rivers-shores",
+                                  "rivers-fog",
+                                  "rivers-desert",
+                                  "rivers-desert-belt",
+                                  "rivers-tribe",
+                                  "rivers-new-world",
+                                ].includes(catanScenario)
+                                ? 5
+                                : catanScenario === "barbarian-attack"
+                                  ? 4
+                                  : catanOptions.fiveSix ||
+                                      (capacity !== 2 && catanSeaKnights) ||
+                                      (capacity !== 2 &&
+                                        catanFishing &&
+                                        !isPublicCatanExplorer(
+                                          catanScenario,
+                                        )) ||
+                                      [
+                                        "cities-knights",
+                                        "fishing",
+                                        "barbarian-attack",
+                                      ].includes(catanScenario)
+                                    ? 2
+                                    : 3
+                              : k === "rail"
+                                ? (map?.maxPlayers || 5) - 1
+                                : k === "carcassonne"
+                                  ? 4
+                                  : 3,
+                    },
+                    (_, i) =>
+                      i +
+                      (k === "catan" && catanScenario === "caravans-desert"
+                        ? 3
+                        : k === "sanguosha"
+                          ? 4
                           : k === "catan"
-                            ? [
-                                "land-ho",
-                                "spices-for-catan",
-                                "pirate-lairs",
-                                "fish-for-catan",
-                                "explorers-and-pirates",
-                                "transport",
-                                "rivers-caravans",
-                                "rivers-attack",
-                                "rivers-transport",
-                                "caravans-attack",
-                                "caravans-transport",
-                                "attack-transport",
-                                "rivers-shores",
-                                "rivers-fog",
-                                "rivers-desert",
-                                "rivers-desert-belt",
-                                "rivers-tribe",
-                                "rivers-new-world",
-                              ].includes(catanScenario)
-                              ? 5
-                              : catanScenario === "barbarian-attack"
-                                ? 4
-                                : catanOptions.fiveSix ||
-                                    (capacity !== 2 && catanSeaKnights) ||
+                            ? isPublicCatanFlexible(catanScenario)
+                              ? 2
+                              : catanOptions.fiveSix
+                                ? 5
+                                : (capacity !== 2 &&
+                                      catanSeaKnights &&
+                                      !isPublicCatanExplorer(catanScenario)) ||
                                     (capacity !== 2 &&
                                       catanFishing &&
                                       !isPublicCatanExplorer(catanScenario)) ||
@@ -2668,37 +2702,9 @@ function Create({
                                       "fishing",
                                       "barbarian-attack",
                                     ].includes(catanScenario)
-                                  ? 2
-                                  : 3
-                            : k === "rail"
-                              ? (map?.maxPlayers || 5) - 1
-                              : k === "carcassonne"
-                                ? 4
-                                : 3,
-                    },
-                    (_, i) =>
-                      i +
-                      (k === "sanguosha"
-                        ? 4
-                        : k === "catan"
-                          ? isPublicCatanFlexible(catanScenario)
-                            ? 2
-                            : catanOptions.fiveSix
-                              ? 5
-                              : (capacity !== 2 &&
-                                    catanSeaKnights &&
-                                    !isPublicCatanExplorer(catanScenario)) ||
-                                  (capacity !== 2 &&
-                                    catanFishing &&
-                                    !isPublicCatanExplorer(catanScenario)) ||
-                                  [
-                                    "cities-knights",
-                                    "fishing",
-                                    "barbarian-attack",
-                                  ].includes(catanScenario)
-                                ? 3
-                                : 2
-                          : 2),
+                                  ? 3
+                                  : 2
+                            : 2),
                   )
               ).map((n) => (
                 <option key={n} value={n}>

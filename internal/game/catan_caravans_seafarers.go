@@ -96,3 +96,6 @@ func (g *Catan) validateCaravansDesertSea() error {
 	}
 	return nil
 }
+
+// NewCatanCaravansDesertSeafarers exposes the verified printed recipe.
+func NewCatanCaravansDesertSeafarers(n int) (*State, error) { return newCatanCaravansDesertSea(n) }

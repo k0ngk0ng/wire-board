@@ -3,6 +3,7 @@ import type { Room } from "./types";
 import "./catan-scenarios.css";
 
 const names: Record<string, string> = {
+  "caravans-desert": "商队＋穿越沙漠",
   "cities-knights": "城市与骑士",
   "barbarian-attack": "蛮族进攻",
   transport: "商人与蛮族 · 运输",
@@ -41,7 +42,7 @@ export const catanLayoutName = (id: string) =>
     variable: "官方可变布局",
     prepared: "共同确认地图",
     "river-default": "默认河流地图",
-    "extended": "本站五六人河流地图",
+    extended: "本站五六人河流地图",
     "extended-prepared": "五六人共同确认地图",
     "extended-mainland": "本站五六人河流主岛",
     "wire-board-fog-three-rivers-v1": "本站五六人三河迷雾",

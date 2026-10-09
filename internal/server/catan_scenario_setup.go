@@ -62,6 +62,12 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "" {
 		return nil
 	}
+	if r.CatanScenario == "caravans-desert" {
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("商队沙漠目前支持三四人独立组合")
+		}
+		return nil
+	}
 	if publicCatanRiversSea(r.CatanScenario) {
 		return r.validateCatanRiversSea()
 	}
@@ -196,7 +202,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if scenario != "rivers-new-world" {
 		next.CatanRiversWorldMap = nil
 	}
-	if publicCatanTradersCombination(scenario) || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
+	if scenario == "caravans-desert" || r.CatanScenario == "caravans-desert" || publicCatanTradersCombination(scenario) || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
 		next.CatanOptions = game.CatanOptions{}
 	}
 	if publicCatanExplorerScenario(scenario) && !publicCatanExplorerScenario(r.CatanScenario) {
@@ -244,7 +250,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 		next.CatanSeafarers = nil
 		next.CatanNewWorldMap = nil
 	}
-	if publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
+	if scenario == "caravans-desert" || r.CatanScenario == "caravans-desert" || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
 		next.CatanCitiesKnights = nil
 	}
 	if scenario == "cities-knights" {
