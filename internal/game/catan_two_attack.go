@@ -53,7 +53,7 @@ func (s *State) catanTwoAttackLandings(neutralVillage bool) error {
 	if neutralVillage {
 		count++
 	}
-	if s.Catan.attackWonders() {
+	if s.Catan.attackBalancedLanding() {
 		return s.startWonderLandings(count, func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} })
 	}
 	for i := 0; i < count && !s.Finished; i++ {

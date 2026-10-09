@@ -15,6 +15,23 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "transport-shores",
+    name: "运输＋新海岸",
+    description:
+      "本站双人运输海图、中立海岸村庄、两次生产和船路过路费，17分获胜。",
+  },
+  {
+    id: "transport-desert",
+    name: "运输＋穿越沙漠",
+    description: "本站双人运输海图，先村庄再城市和马车，17分获胜。",
+  },
+  {
+    id: "attack-pirates",
+    name: "蛮族进攻＋海盗群岛",
+    description:
+      "本站双人配方保留蓝红两条远征线、中立海岸与共享骑士。授勋可升级战舰；夺回自己的要塞且12分获胜，可加事件牌。",
+  },
+  {
     id: "attack-wonders",
     name: "蛮族进攻＋卡坦奇迹",
     description:

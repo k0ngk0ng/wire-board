@@ -65,7 +65,7 @@ func (s *State) validateCatanAttackEvent() error {
 		return errors.New("蛮族进攻已揭示事件无效")
 	}
 	if q == nil {
-		if !face.ProductionStarted {
+		if !face.ProductionStarted && !(g.attackPirates() && g.pirateIslands().Raid != nil) {
 			return errors.New("蛮族进攻事件缺少生产接续")
 		}
 		return nil

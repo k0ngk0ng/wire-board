@@ -97,6 +97,12 @@ func (g *Catan) pirateShipPlan(player, edge int) (int, []int, bool) {
 	if p == nil {
 		return -1, nil, true
 	}
+	if g.attackPirates() && player >= 0 && player < len(p.Fortresses) && p.Fortresses[player].Strength == 0 {
+		return -1, nil, false
+	}
+	if g.twoAttackSea() && player < 0 {
+		return -1, nil, g.pirateHomeCoast(edge)
+	}
 	if player < 0 || player >= len(p.Fortresses) || edge < 0 || edge >= len(g.Edges) {
 		return -1, nil, false
 	}
@@ -174,7 +180,7 @@ func (g *Catan) pirateShipPlan(player, edge int) (int, []int, bool) {
 	return -1, nil, false
 }
 func (g *Catan) pirateCommitShip(player, edge int) bool {
-	if g.pirateIslands() == nil {
+	if g.pirateIslands() == nil || g.twoAttackSea() && player < 0 {
 		return true
 	}
 	root, route, ok := g.pirateShipPlan(player, edge)
@@ -220,7 +226,7 @@ func (g *Catan) pirateSettlementAllowed(player, vertex int, hypothetical bool) b
 }
 func (g *Catan) pirateNextWarship(player int) int {
 	p := g.pirateIslands()
-	if p == nil || player < 0 || player >= len(p.Fortresses) {
+	if p == nil || player < 0 || player >= len(p.Fortresses) || g.attackPirates() && p.Fortresses[player].Strength == 0 {
 		return -1
 	}
 	if _, valid := g.pirateRouteVertices(player); !valid {

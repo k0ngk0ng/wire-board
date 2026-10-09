@@ -8,11 +8,25 @@ import (
 // The drawn card is public and is held here only while resolving its mandatory
 // effect. It never enters a player's development hand or ordinary discard.
 type catanAttackCardPending struct {
-	Resume  string `json:"resume,omitempty"`
-	Neutral bool   `json:"neutral,omitempty"`
-	ID      int    `json:"id"`
-	Player  int    `json:"player"`
-	Card    string `json:"card"`
+	Resume      string `json:"resume,omitempty"`
+	Neutral     bool   `json:"neutral,omitempty"`
+	WarshipUsed bool   `json:"warshipUsed,omitempty"`
+	ID          int    `json:"id"`
+	Player      int    `json:"player"`
+	Card        string `json:"card"`
+}
+
+// The combination adds an optional warship upgrade. The site's explicit
+// resolution order keeps mandatory recruitment after that single upgrade.
+func (g *Catan) attackCardWarship() int {
+	if g.Attack == nil || g.Attack.Pending == nil {
+		return -1
+	}
+	q := g.Attack.Pending
+	if !g.attackPirates() || q.Card != "knighthood" || q.Neutral || q.WarshipUsed {
+		return -1
+	}
+	return g.pirateNextWarship(q.Player)
 }
 
 var catanAttackCardNames = map[string]string{
@@ -164,7 +178,7 @@ func (s *State) catanAttackDrawCard(player int) error {
 			s.catanAttackFinishCard()
 			return nil
 		}
-		if (card == "knighthood" || card == "swift_knight") && len(a.recruitEdges(g, player, card)) == 0 {
+		if (card == "knighthood" || card == "swift_knight") && len(a.recruitEdges(g, player, card)) == 0 && !(card == "knighthood" && g.attackPirates() && g.pirateNextWarship(player) >= 0) {
 			s.catanLog(player, "%s：没有可放置的骑士或空位，不能增加棋子，弃置此牌", catanAttackCardNames[card])
 			s.catanAttackFinishCard()
 		}
@@ -195,7 +209,7 @@ func (s *State) catanAttackFinishCard() {
 
 func (s *State) catanAttackCardChoice(player int, action Action) error {
 	g, a := s.Catan, s.Catan.Attack
-	if a == nil || a.Pending == nil || s.Phase != "catan_attack_card" || player != s.Turn || player != a.Pending.Player || action.Type != "catan_attack_card" || action.Prompt != a.Pending.ID || action.Choice != a.Pending.Card || action.Skill != "" {
+	if a == nil || a.Pending == nil || s.Phase != "catan_attack_card" || player != s.Turn || player != a.Pending.Player || action.Type != "catan_attack_card" || action.Prompt != a.Pending.ID || action.Choice != a.Pending.Card && !(g.attackCardWarship() >= 0 && (action.Choice == "warship" || action.Choice == "skip")) || action.Skill != "" {
 		return errors.New("请由当前玩家完成这张蛮族进攻发展卡")
 	}
 	switch a.Pending.Card {
@@ -212,6 +226,28 @@ func (s *State) catanAttackCardChoice(player int, action Action) error {
 			s.catanLog(player, "解放地块 #%d，恢复生产及相邻被征服建筑", action.Tile+1)
 		}
 	case "knighthood", "swift_knight":
+		if action.Choice == "skip" {
+			if len(a.recruitEdges(g, player, a.Pending.Card)) != 0 {
+				return errors.New("还有可招募的骑士，请完成授勋效果")
+			}
+			s.catanLog(player, "授勋：没有可招募骑士，放弃额外升级战舰")
+			s.catanAttackFinishCard()
+			return nil
+		}
+		if a.Pending.Card == "knighthood" && !a.Pending.Neutral && g.attackPirates() && action.Choice == "warship" {
+			id := g.attackCardWarship()
+			if id < 0 || action.Edge != id {
+				return errors.New("只能升级远征线最近的普通船")
+			}
+			g.Edges[id].Warship = true
+			a.Pending.WarshipUsed = true
+			s.catanLog(player, "通过授勋将远征船 #%d 升级战舰", id+1)
+			if len(a.recruitEdges(g, player, a.Pending.Card)) == 0 {
+				s.catanLog(player, "授勋：没有可招募的骑士，战舰升级已完成")
+				s.catanAttackFinishCard()
+			}
+			return nil
+		}
 		if !slices.Contains(a.recruitEdges(g, g.attackRecruitOwner(player), a.Pending.Card), action.Edge) {
 			return errors.New("请选择可放置骑士的空边，授勋只能放在城堡边")
 		}
@@ -352,6 +388,9 @@ func (s *State) catanAttackCardBot(player int) (Action, error) {
 			}
 		}
 	case "knighthood", "swift_knight":
+		if id := g.attackCardWarship(); id >= 0 {
+			return Action{Type: "catan_attack_card", Prompt: q.ID, Choice: "warship", Edge: id}, nil
+		}
 		for _, edge := range a.recruitEdges(g, g.attackRecruitOwner(player), q.Card) {
 			value := 0
 			for _, id := range g.Edges[edge].Tiles {

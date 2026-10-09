@@ -125,6 +125,9 @@ func newCatanAttackShores(n int) (*State, error) {
 	return s, s.validateCatanAttack()
 }
 func (m catanAttackMap) validateSea(g *Catan) error {
+	if g.Seafarers != nil && g.Seafarers.Scenario == "pirate_islands" {
+		return m.validatePirateSea(g)
+	}
 	if g.Seafarers != nil && g.Seafarers.Scenario == "wonders" {
 		return m.validateWondersSea(g)
 	}

@@ -17,6 +17,9 @@ export function catanProductionNumbers(g: CatanState, tile: number): number[] {
       ...(g.attack?.map?.extraNumbers || [])
         .filter((n) => n.tile === tile)
         .map((n) => n.number),
+      ...(g.transport?.map.extraNumbers || [])
+        .filter((n) => n.tile === tile)
+        .map((n) => n.number),
       ...(g.caravans?.extraNumbers || [])
         .filter((n) => n.tile === tile)
         .map((n) => n.number),

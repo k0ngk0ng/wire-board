@@ -461,6 +461,14 @@ export function CatanRules({ room }: { room: Room }) {
                 : "运输"}
           {info.citiesKnights ? "＋城市与骑士" : "任务"} · {info.target}分
         </h3>
+        {room.game?.catan?.transport?.map.sea ||
+        ["transport-shores", "transport-desert"].includes(
+          room.catanScenario || "",
+        ) ? (
+          <p>
+            运输＋航海家：海边没有船花2移动点；经过自己的船花1点，经过对手的船花1点并付1金币。海边蛮族仍增加2移动点，可被驱赶到空海边。货物地点不能建村庄或城市，内部路径不能造船。无强盗、海盗或最长路线，2／12正常生产，17分获胜；保留外岛探索奖励。双人及五六人配方标为本站规则。
+          </p>
+        ) : null}
         {info.citiesKnights && <CatanCitiesKnightsRules info={info} />}
         <CatanRiversAttackRules info={info} />
         <CatanCaravansAttackRules info={info} />
@@ -526,7 +534,13 @@ export function CatanRules({ room }: { room: Room }) {
           <li>
             {info.events
               ? "先完成事件，再按牌面点数生产；抽到2或12仍执行事件，不重抽。强盗逃跑无效果。"
-              : info.rivers || info.caravans || info.attack
+              : info.rivers ||
+                  info.caravans ||
+                  info.attack ||
+                  !!room.game?.catan?.transport?.map.sea ||
+                  ["transport-shores", "transport-desert"].includes(
+                    room.catanScenario || "",
+                  )
                 ? "2／12 正常生产，不重掷；"
                 : "二至四人掷出2或12重掷，五六人则正常生产；"}
             {info.attack ? (
@@ -642,10 +656,20 @@ export function CatanRules({ room }: { room: Room }) {
             蛮族奇迹：沙漠各放12名蛮族并视为被征服，登陆从数量最多的沙漠调出，放到对应点数中数量最少的主岛地块；平局自己选择。外岛建设也触发登陆。每级奇迹都需满足条件，被征服建筑不计入条件。完成四级或12分且奇迹等级独占领先获胜。
           </p>
         )}
+        {(room.game?.catan?.seafarers?.scenario === "pirate_islands" ||
+          room.catanScenario === "attack-pirates") && (
+          <p>
+            海盗群岛组合：开局建筑全为村庄，外岛建造也触发主岛均衡登陆，同点数平局自己选择。授勋在城堡招募骑士，还可额外将远征线最近的1艘普通船升级战舰。本站顺序补充：先可选升级，再招募骑士；每张授勋牌最多升级1艘。夺回自己的要塞后不能造船或升级战舰；夺回要塞且12分获胜。舰队仍按海盗群岛巡航，不使用强盗。
+          </p>
+        )}
         <h4>建设、生产与蛮族登陆</h4>
         <ol>
           <li>
-            顺序放村庄、逆序放城市，每座建筑配道路；只从起始城市相邻资源地块各领1张资源。城堡和沙漠不生产。
+            {room.game?.catan?.seafarers?.scenario === "pirate_islands" ||
+            room.catanScenario === "attack-pirates"
+              ? "海盗群岛开局全放村庄，保留预设村庄和船，再顺序／逆序放两组村庄及道路或船；从最后一组相邻资源地领起始资源。"
+              : "顺序放村庄、逆序放城市，每座建筑配道路；只从起始城市相邻资源地块各领1张资源。"}
+            城堡和沙漠不生产。
           </li>
           <li>
             {info.events ? "按事件牌点数生产" : "正常掷骰生产"}

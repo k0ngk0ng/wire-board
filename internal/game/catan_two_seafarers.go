@@ -23,6 +23,9 @@ func (g *Catan) twoSeaRecipe() bool {
 	return g.Two != nil && g.Two.Seafarers == CatanTwoSeafarersRules && len(g.Players) == 2
 }
 func (g *Catan) twoSeafarers() bool {
+	if g.twoSeaRecipe() && g.Seafarers != nil && g.Seafarers.Scenario == "pirate_islands" && g.attackSea() && g.Two.AttackSea == CatanTwoAttackSeaRules {
+		return true
+	}
 	return g.twoSeaRecipe() && g.Seafarers != nil && CatanTwoSeafarersScenario(g.Seafarers.Scenario)
 }
 
@@ -144,6 +147,9 @@ func (g *Catan) prepareTwoSeaNeutrals() error {
 
 func (s *State) validateTwoSeafarers() error {
 	g, q := s.Catan, s.Catan.Two
+	if q.TransportSea != "" && !g.twoTransportSea() {
+		return errors.New("双人运输海图标记无效")
+	}
 	if q.AttackSea != "" && !g.twoAttackSea() {
 		return errors.New("双人蛮族海图标记无效")
 	}
@@ -159,12 +165,15 @@ func (s *State) validateTwoSeafarers() error {
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil && !g.twoCaravansSea() || g.Attack != nil && !g.twoAttackSea() || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
+	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil && !g.twoCaravansSea() || g.Attack != nil && !g.twoAttackSea() || g.Transport != nil && !g.twoTransportSea() || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers
 	setup := CatanSeafarersSetup{Scenario: sea.Scenario, Layout: sea.Layout, Rules: sea.Rules}
 	normal, err := NormalizeCatanTwoSeafarersSetup(setup)
+	if g.twoAttackSea() && sea.Scenario == "pirate_islands" {
+		normal, err = NormalizeCatanSeafarersSetup(4, setup)
+	}
 	if err != nil || normal != setup || len(sea.Seats) != 2 || len(sea.Islands) != len(g.Tiles) || len(q.SeaStarts) != 2 || q.SeaStarts[0] == q.SeaStarts[1] {
 		return errors.New("双人海图配置或开局记录无效")
 	}
@@ -179,8 +188,11 @@ func (s *State) validateTwoSeafarers() error {
 	if g.twoSeafarersKnights() || g.twoCaravansSea() {
 		target += 2
 	}
-	if g.twoAttackSea() && sea.Scenario == "wonders" {
+	if g.twoAttackSea() && (sea.Scenario == "wonders" || sea.Scenario == "pirate_islands") {
 		target = 12
+	}
+	if g.twoTransportSea() {
+		target += 3
 	}
 	if sea.VictoryPoints != target || sea.IslandBonus != bonuses[sea.Scenario] || sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("双人海图胜利条件或强盗海盗位置无效")
@@ -205,6 +217,9 @@ func (s *State) validateTwoSeafarers() error {
 			return errors.New("双人海图航路无效")
 		}
 		for _, id := range e.Tiles {
+			if g.transportInterior(e.ID) {
+				continue
+			}
 			if id < 0 || id >= len(g.Tiles) || !slices.Contains(g.Tiles[id].Vertices, e.A) || !slices.Contains(g.Tiles[id].Vertices, e.B) {
 				return errors.New("双人海图航路地块无效")
 			}
@@ -215,7 +230,7 @@ func (s *State) validateTwoSeafarers() error {
 			return errors.New("双人海图中立起点被移除")
 		}
 	}
-	if (sea.Scenario == "fog") != (sea.Fog != nil) || (sea.Scenario == "tribe") != (sea.Tribe != nil) || (sea.Scenario == "cloth") != (sea.Cloth != nil) || (sea.Scenario == "wonders") != (sea.Wonders != nil) || (sea.Scenario == "new_world") != (sea.NewWorld != nil) || sea.PirateIslands != nil {
+	if (sea.Scenario == "fog") != (sea.Fog != nil) || (sea.Scenario == "tribe") != (sea.Tribe != nil) || (sea.Scenario == "cloth") != (sea.Cloth != nil) || (sea.Scenario == "wonders") != (sea.Wonders != nil) || (sea.Scenario == "new_world") != (sea.NewWorld != nil) || sea.PirateIslands != nil && !g.twoAttackSea() {
 		return errors.New("双人海图组件不匹配")
 	}
 	if q.AfterRoute != "" {

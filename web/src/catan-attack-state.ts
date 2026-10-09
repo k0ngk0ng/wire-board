@@ -41,7 +41,10 @@ export function attackChoices(room: Room, pick: AttackSelection) {
     return { tiles: [] as number[], edges: [] as number[], sources: false };
   if (a.wonderLanding)
     return {
-      tiles: [...(a.landingSources || []), ...(a.landingTargets || [])],
+      tiles: [
+        ...(a.landingSources || []).filter((id) => id >= 0),
+        ...(a.landingTargets || []),
+      ],
       edges: [],
       sources: false,
     };

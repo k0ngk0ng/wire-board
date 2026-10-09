@@ -44,8 +44,12 @@ func publicCatanCaravanSea(s string) bool {
 	return false
 }
 
+func publicCatanTransportSea(s string) bool {
+	return s == "transport-shores" || s == "transport-desert"
+}
+
 func publicCatanFlexibleScenario(scenario string) bool {
-	return scenario == "attack-wonders" || scenario == "attack-tribe" || scenario == "attack-desert" || scenario == "attack-shores" || scenario == "caravans-new-world" || scenario == "caravans-islands" || scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
+	return publicCatanTransportSea(scenario) || scenario == "attack-pirates" || scenario == "attack-wonders" || scenario == "attack-tribe" || scenario == "attack-desert" || scenario == "attack-shores" || scenario == "caravans-new-world" || scenario == "caravans-islands" || scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
 }
 
 // Public recipes include two-to-six-player Explorer missions.
@@ -67,7 +71,13 @@ func (r *Room) validateCatanScenario() error {
 			return err
 		}
 	}
-	if r.CatanScenario == "attack-wonders" || r.CatanScenario == "attack-tribe" || r.CatanScenario == "attack-desert" || r.CatanScenario == "attack-shores" {
+	if publicCatanTransportSea(r.CatanScenario) {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("运输海图支持二至六人，可叠加事件牌")
+		}
+		return nil
+	}
+	if r.CatanScenario == "attack-pirates" || r.CatanScenario == "attack-wonders" || r.CatanScenario == "attack-tribe" || r.CatanScenario == "attack-desert" || r.CatanScenario == "attack-shores" {
 		if r.CatanScenario == "attack-desert" && (r.Capacity < 2 || r.Capacity > 6) {
 			return errors.New("蛮族沙漠支持二至六人")
 		}
@@ -220,11 +230,15 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack" || r.CatanScenario == "attack-shores") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "attack-desert" && scenario != "attack-tribe" && scenario != "attack-wonders" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" && scenario != "caravans-islands" && scenario != "caravans-new-world" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack" || r.CatanScenario == "attack-shores") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "attack-desert" && scenario != "attack-tribe" && scenario != "attack-wonders" && scenario != "attack-pirates" && scenario != "transport" && !publicCatanTransportSea(scenario) && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" && scenario != "caravans-islands" && scenario != "caravans-new-world" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if publicCatanTransportSea(scenario) {
+		next.CatanOptions = game.CatanOptions{}
+		next.CatanCitiesKnights = nil
+	}
 	if scenario != "rivers-new-world" {
 		next.CatanRiversWorldMap = nil
 	}
@@ -249,7 +263,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if !publicCatanExplorerScenario(scenario) {
 		next.CatanFishingLakes = false
 	}
-	if scenario != "rivers" && scenario != "caravans" && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "attack-desert" && scenario != "attack-tribe" && scenario != "attack-wonders" && scenario != "transport" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
+	if scenario != "rivers" && scenario != "caravans" && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "attack-desert" && scenario != "attack-tribe" && scenario != "attack-wonders" && scenario != "attack-pirates" && scenario != "transport" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
 		next.CatanFishing = false
 	}
 	if publicCatanFlexibleScenario(scenario) {

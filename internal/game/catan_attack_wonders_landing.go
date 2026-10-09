@@ -30,6 +30,9 @@ func (g *Catan) wonderLandingChoices() ([]int, []int) {
 			sources = append(sources, id)
 		}
 	}
+	if g.attackPirates() && a.supply() > 0 {
+		sources = []int{-1}
+	}
 	total := q.Dice[q.Cursor][0] + q.Dice[q.Cursor][1]
 	for _, id := range a.Map.Coast {
 		if !a.Map.landingNumber(g, id, total) || a.Barbarians[id] >= 3 {
@@ -50,7 +53,7 @@ func (g *Catan) wonderLandingChoices() ([]int, []int) {
 func (s *State) startWonderLandings(groups int, roll func() [2]int) error {
 	g := s.Catan
 	a := g.Attack
-	if !g.attackWonders() || g.setup() || s.Phase != "catan_turn" || a.WonderLanding != nil || groups < 1 || groups > 2 {
+	if !g.attackBalancedLanding() || g.setup() || s.Phase != "catan_turn" || a.WonderLanding != nil || groups < 1 || groups > 2 {
 		return errors.New("当前不能开始蛮族奇迹登陆")
 	}
 	dice := [][2]int{}
@@ -86,7 +89,7 @@ func (s *State) continueWonderLandings() error {
 		}
 		sources, targets := g.wonderLandingChoices()
 		if len(sources) == 0 {
-			s.Log = append(s.Log, "沙漠蛮族已全部调出，本次不再登陆")
+			s.Log = append(s.Log, "蛮族供给已全部调出，本次不再登陆")
 			a.WonderLanding = nil
 			s.Phase = "catan_turn"
 			s.catanScores()
@@ -116,10 +119,16 @@ func (s *State) recordWonderLanding(source, target int) {
 	d := q.Dice[q.Cursor]
 	tiles := []int{}
 	if target >= 0 {
-		a.Barbarians[source]--
+		if source >= 0 {
+			a.Barbarians[source]--
+		}
 		a.Barbarians[target]++
 		tiles = append(tiles, target)
-		s.catanLog(q.Player, "蛮族登陆 %d+%d：从沙漠 #%d 调出至地块 #%d（%d/3）", d[0], d[1], source+1, target+1, a.Barbarians[target])
+		if source < 0 {
+			s.catanLog(q.Player, "蛮族登陆 %d+%d：供应调入地块 #%d（%d/3）", d[0], d[1], target+1, a.Barbarians[target])
+		} else {
+			s.catanLog(q.Player, "蛮族登陆 %d+%d：从沙漠 #%d 调出至地块 #%d（%d/3）", d[0], d[1], source+1, target+1, a.Barbarians[target])
+		}
 	} else {
 		s.catanLog(q.Player, "蛮族登陆 %d+%d：没有未被征服的对应地块，不调出蛮族", d[0], d[1])
 	}
@@ -162,7 +171,7 @@ func (s *State) validateWonderLanding() error {
 		}
 		return nil
 	}
-	if !g.attackWonders() || s.Finished || g.setup() || s.Phase != "catan_attack_landing" || q.Player != s.Turn || q.Player < 0 || q.Player >= len(g.Players) || q.ID < 1 || len(q.Dice) != 3 && !(g.twoAttackSea() && len(q.Dice) == 6) || q.Cursor < 0 || q.Cursor >= len(q.Dice) || a.Pending != nil || a.EndPlan != nil || g.Trade != nil || g.Two != nil && (g.Two.Pending != nil || g.Two.Trade != nil) {
+	if !g.attackBalancedLanding() || s.Finished || g.setup() || s.Phase != "catan_attack_landing" || q.Player != s.Turn || q.Player < 0 || q.Player >= len(g.Players) || q.ID < 1 || len(q.Dice) != 3 && !(g.twoAttackSea() && len(q.Dice) == 6) || q.Cursor < 0 || q.Cursor >= len(q.Dice) || a.Pending != nil || a.EndPlan != nil || g.Trade != nil || g.CardEvent != nil || g.HelperPending != nil || g.GoldPending != nil || g.Two != nil && (g.Two.Pending != nil || g.Two.Trade != nil) {
 		return errors.New("蛮族奇迹登陆回应无效")
 	}
 	for group := 0; group < len(q.Dice); group += 3 {

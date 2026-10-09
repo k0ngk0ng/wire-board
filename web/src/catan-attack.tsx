@@ -492,10 +492,19 @@ export function CatanAttackPanel({
               {a.wonderLanding ? (
                 <>
                   <p>
-                    登陆点数 {a.landingNumber}
-                    。从最多蛮族的沙漠调出，填入同点数中蛮族最少的一格；平局由你选择。
+                    登陆点数 {a.landingNumber}。
+                    {g.seafarers?.pirateIslands
+                      ? "从公共供给调入同点数中蛮族最少的一格，平局由你选择。"
+                      : "从最多蛮族的沙漠调出，填入同点数中蛮族最少的一格；平局由你选择。"}
                   </p>
-                  <div className="attack-picks" aria-label="选择蛮族来源沙漠">
+                  <div
+                    className="attack-picks"
+                    aria-label={
+                      g.seafarers?.pirateIslands
+                        ? "选择蛮族供给"
+                        : "选择蛮族来源沙漠"
+                    }
+                  >
                     {a.landingSources?.map((id) => (
                       <button
                         key={id}
@@ -503,7 +512,9 @@ export function CatanAttackPanel({
                         className={selected.sources[0] === id ? "selected" : ""}
                         onClick={() => onSelect({ ...selected, sources: [id] })}
                       >
-                        沙漠 #{id + 1} · {a.barbarians[id]}个
+                        {id < 0
+                          ? `公共供给 · ${a.supply}个`
+                          : `沙漠 #${id + 1} · ${a.barbarians[id]}个`}
                       </button>
                     ))}
                   </div>
@@ -659,8 +670,11 @@ export function CatanAttackPanel({
                         {
                           capture:
                             "选择沿海地块，俘获1个蛮族。每2个俘虏计1分。",
-                          knighthood:
-                            "在城堡的空边放置1名骑士；本回合结束时再移动。",
+                          knighthood: q?.warshipUsed
+                            ? "战舰已升级，现在在城堡空边放置1名骑士；本回合结束时再移动。"
+                            : a.warshipEdge !== undefined && a.warshipEdge >= 0
+                              ? "可先额外升级1艘战舰，再在城堡空边放置1名骑士；直接放骑士则放弃本次升级。"
+                              : "在城堡的空边放置1名骑士；本回合结束时再移动。",
                           swift_knight:
                             "在地图任意空边放置1名骑士；本回合结束时再移动。",
                           treason: `本次移动${a.treasonCount ?? 2}个蛮族：${a.fromBoard ? `从${a.fromBoard}个不同地块各取1个${a.fromBoard < (a.treasonCount ?? 2) ? "，其余从供应领取" : ""}` : "从供应领取"}；放入不同的未征服地块，同时获得2金币。`,
@@ -668,6 +682,39 @@ export function CatanAttackPanel({
                       }
                     </p>
                   </div>
+                  {q?.card === "knighthood" &&
+                    !q.neutral &&
+                    a.warshipEdge !== undefined &&
+                    a.warshipEdge >= 0 && (
+                      <button
+                        className="primary"
+                        disabled={busy}
+                        onClick={() =>
+                          submit({
+                            type: "catan_attack_card",
+                            prompt: q.id,
+                            choice: "warship",
+                            edge: a.warshipEdge,
+                          })
+                        }
+                      >
+                        额外升级战舰 · 船 #{a.warshipEdge + 1}
+                      </button>
+                    )}
+                  {a.canSkipWarship && (
+                    <button
+                      disabled={busy}
+                      onClick={() =>
+                        submit({
+                          type: "catan_attack_card",
+                          prompt: q!.id,
+                          choice: "skip",
+                        })
+                      }
+                    >
+                      没有可招募骑士，放弃升级并继续
+                    </button>
+                  )}
                   {q?.card === "treason" ? (
                     <>
                       <p>

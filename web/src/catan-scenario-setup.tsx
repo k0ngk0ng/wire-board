@@ -9,6 +9,24 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "transport-shores",
+    name: "运输＋新海岸",
+    description:
+      "运输货物，马车可沿海路移动，经过对方船支付金币；无强盗海盗和最长路线，17分获胜。二至六人，可加事件牌；双人及五六人采用本站配方。",
+  },
+  {
+    id: "transport-desert",
+    name: "运输＋穿越沙漠",
+    description:
+      "在沙漠与外岛之间运输货物，己方船减少移动点，对方船收过路费；无强盗海盗和最长路线，17分获胜。二至六人，可加事件牌；双人及五六人采用本站配方。",
+  },
+  {
+    id: "attack-pirates",
+    name: "蛮族进攻＋海盗群岛",
+    description:
+      "蛮族专用牌、主岛均衡登陆、授勋升级战舰。夺回自己的要塞且12分获胜，之后不能继续造船或升级战舰。二至六人，可加事件牌；双人及五六人采用本站配方。",
+  },
+  {
     id: "attack-wonders",
     name: "蛮族进攻＋卡坦奇迹",
     description:
@@ -513,6 +531,8 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  ["transport-shores", "transport-desert"].includes(scenario || "") ||
+  scenario === "attack-pirates" ||
   scenario === "attack-wonders" ||
   scenario === "attack-tribe" ||
   scenario === "attack-desert" ||
@@ -583,9 +603,14 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                ["attack-wonders", "attack-tribe", "attack-desert"].includes(
-                  s.id,
-                )
+                [
+                  "transport-shores",
+                  "transport-desert",
+                  "attack-pirates",
+                  "attack-wonders",
+                  "attack-tribe",
+                  "attack-desert",
+                ].includes(s.id)
                   ? players < 2 ||
                     players > 6 ||
                     helpers ||

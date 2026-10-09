@@ -5,6 +5,16 @@ import {
   catanTileProducing,
 } from "../src/catan-production.ts";
 
+test("transport shores retains the public two-and-twelve production disc", () => {
+  const g = {
+    tiles: [{ number: 2 }],
+    robber: -1,
+    transport: { map: { extraNumbers: [{ tile: 0, number: 12 }] } },
+  };
+  assert.deepEqual(catanProductionNumbers(g, 0), [2, 12]);
+  assert.equal(catanTileProducing(g, 0, 12), true);
+});
+
 test("relocated desert disc produces on either number with robber blocking both", () => {
   for (const [original, moved] of [
     [12, 2],
