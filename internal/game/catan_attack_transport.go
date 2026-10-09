@@ -147,7 +147,7 @@ func (t *catanTransport) saveSharedTravel(g *Catan, q *catanAttackTransportTrave
 
 func (g *Catan) attackBattleTiles() []int {
 	if !g.attackTransport() {
-		return g.Attack.Map.Coast
+		return append(slices.Clone(g.Attack.Map.Coast), g.Attack.Map.Reserves...)
 	}
 	// Preserve official coastal order, then resolve inland in board order.
 	out := slices.Clone(g.Attack.Map.Coast)

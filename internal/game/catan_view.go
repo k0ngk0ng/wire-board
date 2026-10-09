@@ -150,7 +150,7 @@ func (s *State) catanView(view map[string]any, player int) {
 				if g.wonderClaimable(player, card.ID) {
 					claims = append(claims, card.ID)
 				}
-				if card.Owner == player && card.Level < 4 && catanHas(g.Players[player].Resources, catanWonderRules[card.ID].Cost[:]) {
+				if card.Owner == player && card.Level < 4 && catanHas(g.Players[player].Resources, catanWonderRules[card.ID].Cost[:]) && (!g.attackWonders() || g.wonderRequirements(player, card.ID)) {
 					builds = append(builds, card.ID)
 				}
 			}

@@ -5,6 +5,7 @@ import "./catan-scenarios.css";
 const names: Record<string, string> = {
   "caravans-new-world": "商队＋新世界",
   "caravans-islands": "商队＋四岛／六岛",
+  "attack-wonders": "蛮族进攻＋卡坦奇迹",
   "attack-tribe": "蛮族进攻＋遗忘部落",
   "attack-desert": "蛮族进攻＋穿越沙漠",
   "attack-shores": "蛮族进攻＋新海岸",

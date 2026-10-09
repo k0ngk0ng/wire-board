@@ -179,6 +179,9 @@ func (s *State) validateTwoSeafarers() error {
 	if g.twoSeafarersKnights() || g.twoCaravansSea() {
 		target += 2
 	}
+	if g.twoAttackSea() && sea.Scenario == "wonders" {
+		target = 12
+	}
 	if sea.VictoryPoints != target || sea.IslandBonus != bonuses[sea.Scenario] || sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("双人海图胜利条件或强盗海盗位置无效")
 	}

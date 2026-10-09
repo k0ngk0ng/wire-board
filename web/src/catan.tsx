@@ -185,6 +185,7 @@ export const catanPhases: Record<string, string> = {
   catan_cloth_start: "选择初始强盗位置",
   catan_wonders_start: "选择初始强盗位置",
   catan_rivers_start: "选择沼泽中的强盗起点",
+  catan_attack_landing: "选择蛮族来源与登陆位置",
   catan_attack_card: "完成蛮族进攻发展卡选择",
   catan_explorer_move: "船只航行、装卸或移民定居",
   catan_transport_move: "移动马车并完成装卸",

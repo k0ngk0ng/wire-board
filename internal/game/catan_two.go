@@ -268,6 +268,9 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 		q.AfterHelper = ""
 		return s.catanTwoStartBuild(kind)
 	}
+	if g.attackWonders() && g.Attack.WonderLanding != nil {
+		return nil
+	}
 	// The first seven must finish discards, robber movement and theft before
 	// returning here. Saving at any intervening phase keeps the first total.
 	if len(q.Rolls) == 1 && s.Phase == "catan_turn" {

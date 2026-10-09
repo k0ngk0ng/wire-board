@@ -73,6 +73,9 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if err := s.validateWonderLanding(); err != nil {
+		return err
+	}
 	if err := s.validateAttackTribeRoute(); err != nil {
 		return err
 	}
@@ -130,7 +133,7 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !(g.attackSea() && (s.Phase == "catan_gold" || g.tribe() != nil && s.Phase == "catan_port")) && !(g.attackTransport() && s.Phase == "catan_transport_move") && !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}, s.Phase) {
+	if !(g.attackSea() && (s.Phase == "catan_attack_landing" || s.Phase == "catan_gold" || g.tribe() != nil && s.Phase == "catan_port")) && !(g.attackTransport() && s.Phase == "catan_transport_move") && !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
@@ -205,6 +208,9 @@ func (s *State) validateCatanAttack() error {
 func (s *State) catanAttackLanding(roll func() [2]int, choose func(int) int) error {
 	g := s.Catan
 	a := g.Attack
+	if g.attackWonders() {
+		return s.startWonderLandings(1, roll)
+	}
 	if g.attackTransport() && !g.attackKnights() {
 		return s.attackTransportLanding(roll, choose)
 	}
@@ -310,6 +316,14 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	if !g.attackKnights() {
 		public["landingSupplyRule"] = "random-last"
 	}
+	if g.attackWonders() {
+		public["landingSupplyRule"] = "desert-reserve"
+		reserve := 0
+		for _, id := range a.Map.Reserves {
+			reserve += a.Barbarians[id]
+		}
+		public["reserveRemaining"] = reserve
+	}
 	public["goldRule"] = "ledger"
 	if g.attackTransport() {
 		public["gold"] = slices.Clone(g.Transport.Gold)
@@ -349,7 +363,13 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		}
 	}
 	public["knightsLeft"] = left
-	public["canAct"] = !s.Finished && (a.Pending != nil && a.Pending.Player == player || a.EndPlan != nil && a.EndPlan.Player == player)
+	if q := a.WonderLanding; q != nil {
+		sources, targets := g.wonderLandingChoices()
+		public["landingSources"], public["landingTargets"] = sources, targets
+		public["wonderLanding"] = map[string]any{"id": q.ID, "player": q.Player, "cursor": q.Cursor, "remaining": len(q.Dice) - q.Cursor}
+		public["landingNumber"] = q.Dice[q.Cursor][0] + q.Dice[q.Cursor][1]
+	}
+	public["canAct"] = !s.Finished && (a.WonderLanding != nil && a.WonderLanding.Player == player || a.Pending != nil && a.Pending.Player == player || a.EndPlan != nil && a.EndPlan.Player == player)
 	s.catanAttackPlanView(public, player)
 	if a.Pending != nil && a.Pending.Player == player && !s.Finished {
 		switch a.Pending.Card {

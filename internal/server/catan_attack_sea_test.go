@@ -27,6 +27,11 @@ func TestCatanAttackTribeHTTP(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackSeaHTTP(t, n, "attack-tribe") })
 	}
 }
+func TestCatanAttackWondersHTTP(t *testing.T) {
+	for _, n := range []int{2, 3, 4, 5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackSeaHTTP(t, n, "attack-wonders") })
+	}
+}
 func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -56,10 +61,11 @@ func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 	}
 	clients = ordered
 	timedOut := false
+	landingTimedOut := false
 	for step := 0; step < 14000 && !s.rooms[id].Game.Finished; step++ {
 		g := s.rooms[id].Game
 		p := twoHTTPActor(g)
-		if !timedOut && g.Phase == "catan_attack_end" {
+		if (!timedOut && g.Phase == "catan_attack_end") || (scenario == "attack-wonders" && !landingTimedOut && g.Phase == "catan_attack_landing") {
 			deadline := s.rooms[id].TurnDeadline
 			if left := deadline - time.Now().UnixMilli(); left < 118000 || left > 120000 {
 				t.Fatal("battle clock", left)
@@ -75,7 +81,11 @@ func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 				t.Fatal("timeout did not take over")
 			}
 			setAutoPlay(clients[p], current(clients[p]), false, 200)
-			timedOut = true
+			if g.Phase == "catan_attack_landing" {
+				landingTimedOut = true
+			} else {
+				timedOut = true
+			}
 			continue
 		}
 		a, e := g.BotAction(p)
@@ -86,6 +96,9 @@ func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 		if step == 83 {
 			s, ts = restartRiversHTTP(t, s, ts, clients, id)
 		}
+	}
+	if scenario == "attack-wonders" && !landingTimedOut {
+		t.Fatal("landing deadline not exercised")
 	}
 	if !timedOut {
 		t.Fatal("battle deadline not exercised")

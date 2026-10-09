@@ -298,13 +298,10 @@ export function CatanWondersPanel({
           </button>
         </header>
         <p>
-          建至 <b>4级</b> 即获胜，或{" "}
-          <b>{victoryTarget}分且等级领先</b>。
+          建至 <b>4级</b> 即获胜，或 <b>{victoryTarget}分且等级领先</b>。
         </p>
         {game.fishing && (
-          <p>
-            旧靴子只使持有者的分数门槛增加1分；建成4级仍直接获胜。
-          </p>
+          <p>旧靴子只使持有者的分数门槛增加1分；建成4级仍直接获胜。</p>
         )}
         {own && ownRule ? (
           <button
@@ -431,7 +428,9 @@ export function CatanWondersPanel({
                       card.owner === room.you &&
                       !room.spectating && (
                         <p>
-                          满足费用即可继续建造，本回合可建多级。已领取的奇迹不再检查领取条件。
+                          {game.attack && game.seafarers?.scenario === "wonders"
+                            ? "每级都需重新满足条件，被征服建筑不计；恢复条件后可继续建造。"
+                            : "满足费用即可继续建造，本回合可建多级。已领取的奇迹不再检查领取条件。"}
                         </p>
                       )}
                     {canClaim ? (

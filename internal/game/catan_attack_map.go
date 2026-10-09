@@ -10,6 +10,7 @@ const catanCastle = 12
 const catanAttackRules = "catan-barbarian-attack-2025"
 
 type catanAttackMap struct {
+	Reserves     []int                     `json:"reserves,omitempty"`
 	ExtraNumbers []catanFishingExtraNumber `json:"extraNumbers,omitempty"`
 	Sea          string                    `json:"sea,omitempty"`
 	Transport    string                    `json:"transport,omitempty"`

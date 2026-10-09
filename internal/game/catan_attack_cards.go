@@ -21,7 +21,7 @@ var catanAttackCardNames = map[string]string{
 
 func (a catanAttack) captureTargets() []int {
 	out := []int{}
-	for _, id := range a.Map.Coast {
+	for _, id := range append(slices.Clone(a.Map.Coast), a.Map.Reserves...) {
 		if a.Barbarians[id] > 0 {
 			out = append(out, id)
 		}
@@ -99,7 +99,7 @@ func (a catanAttack) treasonPlans() []catanAttackTreasonPlan {
 
 func (a catanAttack) treasonDestinations(from []int) []int {
 	out := []int{}
-	for _, id := range a.Map.Coast {
+	for _, id := range append(slices.Clone(a.Map.Coast), a.Map.Reserves...) {
 		if !a.conquered(id) && !slices.Contains(from, id) {
 			out = append(out, id)
 		}
