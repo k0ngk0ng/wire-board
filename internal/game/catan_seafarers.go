@@ -104,6 +104,9 @@ func (g *Catan) canRoute(p, id int, ship bool) bool {
 		return false
 	}
 	e := g.Edges[id]
+	if !g.attackSeaRouteAnchored(p, id, ship) {
+		return false
+	}
 	if ship && g.pirateIslands() != nil {
 		if _, _, ok := g.pirateShipPlan(p, id); !ok {
 			return false
