@@ -1,0 +1,288 @@
+{
+  "researchedOn": "2026-10-04",
+  "scope": "Classic Monopoly feasibility; no production implementation or asset upload",
+  "assets": [
+    {
+      "repo": "intrepidcoder/monopoly",
+      "commit": "3537fc393930f1712e8b4d6fbe2e80b25419ceed",
+      "path": "images/chance_icon.png",
+      "url": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/images/chance_icon.png",
+      "bytes": 1761,
+      "sha256": "a7194bedd25b05c4864bb03437c25a707fbf54910114900363cb4b7a1203eb43",
+      "dimensions": [
+        26,
+        50
+      ],
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认"
+    },
+    {
+      "repo": "intrepidcoder/monopoly",
+      "commit": "3537fc393930f1712e8b4d6fbe2e80b25419ceed",
+      "path": "images/community_chest_icon.png",
+      "url": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/images/community_chest_icon.png",
+      "bytes": 3813,
+      "sha256": "a5d13c075244fdb1d8ec4291c92ba4dac98c088e5021402eec661d0bbd66c470",
+      "dimensions": [
+        53,
+        50
+      ],
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认"
+    },
+    {
+      "repo": "intrepidcoder/monopoly",
+      "commit": "3537fc393930f1712e8b4d6fbe2e80b25419ceed",
+      "path": "images/house.png",
+      "url": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/images/house.png",
+      "bytes": 927,
+      "sha256": "cb9005a618f9a18dbb31e5311f52053ec01259a9826ff08f3e14504c26f73e5a",
+      "dimensions": [
+        25,
+        19
+      ],
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认"
+    },
+    {
+      "repo": "intrepidcoder/monopoly",
+      "commit": "3537fc393930f1712e8b4d6fbe2e80b25419ceed",
+      "path": "images/hotel.png",
+      "url": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/images/hotel.png",
+      "bytes": 1071,
+      "sha256": "540dfcd87e34e11fb50b7c948c69e5045553f73c27ebcade19d71bba8ce87735",
+      "dimensions": [
+        26,
+        19
+      ],
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认"
+    },
+    {
+      "repo": "intrepidcoder/monopoly",
+      "commit": "3537fc393930f1712e8b4d6fbe2e80b25419ceed",
+      "path": "images/Die_6.png",
+      "url": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/images/Die_6.png",
+      "bytes": 1063,
+      "sha256": "214a83bbb6a978b6b4110320648e439bf87ca9b99a1927daa4e5bcbd60f98d9d",
+      "dimensions": [
+        30,
+        30
+      ],
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认"
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/board.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/board.png",
+      "bytes": 523054,
+      "sha256": "ee7d37e2de9942da2decaa71e7dc8cb1140a4796b52bff44dc32f713dcaed510",
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认",
+      "actualFormat": "JPEG",
+      "dimensions": [
+        2000,
+        2000
+      ]
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/board2.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/board2.png",
+      "bytes": 2246203,
+      "sha256": "9b48446f8a1bf1ebf0526f2f0e88ef76200303795eef4840c11f0143971d90c8",
+      "dimensions": [
+        2000,
+        2000
+      ],
+      "verification": "已目视确认经典美版棋盘；英文小字及辅助线需处理"
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/p0.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/p0.png",
+      "bytes": 67533,
+      "sha256": "fb879b60a6540d863d57b95170259e2b555d4a2f6109be82dff0093997be02b1",
+      "dimensions": [
+        320,
+        320
+      ],
+      "verification": "已目视确认是红底白叉，并非棋子"
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/p1.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/p1.png",
+      "bytes": 23066,
+      "sha256": "6a171babf8fcb175bbfdf9c6a262281ab2bd01a357a860c49698c5a03014cf0d",
+      "dimensions": [
+        312,
+        312
+      ],
+      "verification": "已下载；图像尺寸已检查，未逐张目视确认"
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/chance.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/chance.png",
+      "bytes": 2651,
+      "sha256": "29a76f51e73641e43c664ab6dc837d1831fba1707253db58b528ba57e90dcc1d",
+      "dimensions": [
+        172,
+        362
+      ],
+      "verification": "已目视确认仅问号图标"
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/chest.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/chest.png",
+      "bytes": 126344,
+      "sha256": "dea621397c894623c4bc506896160413dae5c4ebed62c9718c3f16c5c2094ad9",
+      "dimensions": [
+        1500,
+        1000
+      ],
+      "verification": "已目视确认蓝色宝箱图标，不是完整卡面"
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/all.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+      "bytes": 104862,
+      "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+      "verification": "已目视确认扁平化棋子主题图集，并非金属实物图",
+      "actualFormat": "JPEG",
+      "dimensions": [
+        1920,
+        1920
+      ]
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/rolling.mp3",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/rolling.mp3",
+      "bytes": 115078,
+      "sha256": "1a34e2fd6bf5a0ec1d8dce038728ae1c442842b9c5032b3276b0ea7f923b2434",
+      "verification": "已下载，afinfo 可解析；未试听验收内容与响度",
+      "durationSeconds": 2.8735
+    },
+    {
+      "repo": "itaylayzer/Monopoly",
+      "commit": "be46b3c7c7ae1d1262d440a99029460fd535a85b",
+      "path": "public/card.mp3",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/card.mp3",
+      "bytes": 24312,
+      "sha256": "d5a4f163c133a155ec3000db421896a8fac723a8bab59d77baeeab9034682d4e",
+      "verification": "已下载，afinfo 可解析；未试听验收内容与响度",
+      "durationSeconds": 0.4437
+    }
+  ],
+  "rulesAndSupportingSources": [
+    {
+      "name": "hasbro-modern.pdf",
+      "url": "https://www.hasbro.com/common/documents/dad288661c4311ddbd0b0800200c9a66/97DF546B6BF64A70A2A759D3FA5BD804.pdf",
+      "bytes": 15457359,
+      "sha256": "739664d585baa9bea465178419a7a8679f7cd72c78094267a33f1d4f51ebbf2d",
+      "verification": "完整 PDF，共 2 页；提取文字，并渲染目视核对内容表及税费、监狱、公用事业规则",
+      "edition": "C1009, copyright 2016, layout 2017"
+    },
+    {
+      "name": "hasbro-classic-product.html",
+      "url": "https://instructions.hasbro.com/en-us/instruction/monopoly-board-game-for-ages-8-for-2-6-players-includes-8-tokens-tokens-may-vary",
+      "bytes": 1381133,
+      "sha256": "6f25c43ea777788fa8645de7b43f4522d6bc0e590f8ef0017df4a8d08ffa2365",
+      "verification": "已读取或检查，详见报告"
+    },
+    {
+      "name": "itaylayzer-README.md",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/README.md",
+      "bytes": 5659,
+      "sha256": "f5cc1bdfe0870a94668c83a53bbe4716e56d99807dbba9cca583ca6e863d8525",
+      "verification": "已读取或检查，详见报告"
+    },
+    {
+      "name": "itaylayzer-src-assets-monopoly.json",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/src/assets/monopoly.json",
+      "bytes": 29025,
+      "sha256": "9f3b8e3669876e4e5626dc692d364c7d87ca6c9ce9e236587cd7bb7899834362",
+      "verification": "已读取或检查，详见报告"
+    },
+    {
+      "name": "itaylayzer-src-components-ingame-streetCard.tsx",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/src/components/ingame/streetCard.tsx",
+      "bytes": 6188,
+      "sha256": "ab8af4c4406de85a9972384747c98f942530cc8b468ccb258b7de4a17e0cf362",
+      "verification": "已读取或检查，详见报告"
+    },
+    {
+      "name": "itaylayzer-src-components-ingame-specialCards.tsx",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/src/components/ingame/specialCards.tsx",
+      "bytes": 957,
+      "sha256": "6003b39219bc4492302771328899c13bf6d8872afda7227e72c7b6df83ad1d6b",
+      "verification": "已读取或检查，详见报告"
+    },
+    {
+      "name": "itaylayzer-public-c1.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/c1.png",
+      "bytes": 2194,
+      "sha256": "fd5054623e8852f6b31db025eb6a86a538eba5a34a93610d6643d938a9765047",
+      "verification": "已目视核对：骰子或绿房／红房图标",
+      "dimensions": [
+        250,
+        250
+      ]
+    },
+    {
+      "name": "itaylayzer-public-h.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/h.png",
+      "bytes": 1444,
+      "sha256": "09019599c39a9e4e31d29e423539d58960143bb817a13416087c52b9d5d14412",
+      "verification": "已目视核对：骰子或绿房／红房图标",
+      "dimensions": [
+        234,
+        216
+      ]
+    },
+    {
+      "name": "itaylayzer-public-ho.png",
+      "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/ho.png",
+      "bytes": 773,
+      "sha256": "c9b8b893ef8c07c9f25e2b8df5c8092ef240ee498896bd6e9ceee9eb3d9ca660",
+      "verification": "已目视核对：骰子或绿房／红房图标",
+      "dimensions": [
+        234,
+        216
+      ]
+    },
+    {
+      "name": "classicedition.js",
+      "url": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/classicedition.js",
+      "bytes": 10918,
+      "sha256": "f76b4cad878a63d43d10c61252939a2abaac1524f845eca4f1c835afec44503a",
+      "verification": "已读取或检查，详见报告"
+    },
+    {
+      "name": "hasbro-legacy-00009.pdf",
+      "url": "https://www.hasbro.com/common/instruct/00009.pdf",
+      "bytes": 625715,
+      "sha256": "56a6c4be5a31220a9e1981e2c920153a09c9d0548dcb388bfd894236c5046077",
+      "edition": "copyright 2004/2007; includes optional Speed Die",
+      "verification": "阅读文本，目视核对第 5 页旧所得税数值；仅用于版本比较"
+    }
+  ],
+  "unresolved": [
+    "Same-edition complete 16 Chance and 16 Community Chest card faces and text",
+    "Complete high-resolution Chinese card set",
+    "Original metal token image set",
+    "BGA source availability"
+  ],
+  "dataAudit": {
+    "itaylayzerMonopolyChanceCount": 15,
+    "itaylayzerMonopolyCommunityChestCount": 16,
+    "note": "Third-party data is not an authoritative C1009 deck; 16 Chance cards required by official component list."
+  }
+}
