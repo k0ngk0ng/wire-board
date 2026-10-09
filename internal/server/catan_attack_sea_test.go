@@ -18,7 +18,7 @@ func TestCatanAttackShoresExtendedHTTP(t *testing.T) {
 }
 func runAttackShoresHTTP(t *testing.T, n int) { runAttackSeaHTTP(t, n, "attack-shores") }
 func TestCatanAttackDesertHTTP(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{2, 3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackSeaHTTP(t, n, "attack-desert") })
 	}
 }
@@ -128,7 +128,7 @@ func TestCatanAttackDesertRoomBounds(t *testing.T) {
 	for _, n := range []int{2, 3, 4, 5, 6} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 		e := r.setCatanScenario("attack-desert")
-		if (e == nil) != (n == 3 || n == 4) {
+		if (e == nil) != (n >= 2 && n <= 6) {
 			t.Fatal(n, e)
 		}
 	}

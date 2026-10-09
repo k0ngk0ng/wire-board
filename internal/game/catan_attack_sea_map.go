@@ -135,13 +135,16 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 	ref, want, err := newCatanAttackShoresBoard(recipeSeats)
 	desert := g.Seafarers.Scenario == "desert"
 	if desert {
-		if len(g.Players) != 3 && len(g.Players) != 4 {
+		if len(g.Players) < 2 || len(g.Players) > 6 {
 			return errors.New("蛮族沙漠人数未接通")
 		}
 		if len(g.Players) == 3 {
 			ref, want, err = newCatanAttackDesertThreeBoard()
 		} else {
 			ref, want, err = newCatanAttackDesertFourBoard()
+			if len(g.Players) > 4 {
+				ref, want, err = newCatanAttackDesertExtendedBoard(len(g.Players))
+			}
 		}
 	}
 	if err != nil {

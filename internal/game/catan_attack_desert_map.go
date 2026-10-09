@@ -74,7 +74,10 @@ func newCatanAttackDesertFourBoard() (*Catan, *catanAttackMap, error) {
 	return g, &catanAttackMap{Sea: CatanAttackSeafarersRules, Castles: []int{19}, Coast: []int{7, 8, 15, 21, 27, 33, 38, 32, 31, 24}, Barbarians: 36, Gold: 100}, nil
 }
 func NewCatanAttackDesert(n int) (*State, error) {
-	if n != 3 && n != 4 {
+	if n == 2 {
+		return newCatanTwoAttackDesert()
+	}
+	if n < 3 || n > 6 {
 		return nil, errors.New("蛮族沙漠当前支持三四人")
 	}
 	return newCatanAttackDesert(n)
@@ -84,10 +87,13 @@ func newCatanAttackDesert(n int) (*State, error) {
 		return newCatanAttackDesertThree()
 	}
 	board, m, e := newCatanAttackDesertFourBoard()
+	if n > 4 {
+		board, m, e = newCatanAttackDesertExtendedBoard(n)
+	}
 	if e != nil {
 		return nil, e
 	}
-	s, e := NewCatan(n, CatanOptions{})
+	s, e := NewCatan(n, CatanOptions{FiveSix: n > 4})
 	if e != nil {
 		return nil, e
 	}
@@ -98,6 +104,9 @@ func newCatanAttackDesert(n int) (*State, error) {
 	g.Attack, e = newCatanAttackPieces(g, m)
 	if e != nil {
 		return nil, e
+	}
+	if n > 4 {
+		s.Log = append(s.Log, "本站五六人蛮族沙漠：主岛北侧和西南两处城堡、十三格登陆区，保留沙漠带与外部探索区；48蛮族、152金币、配对回合，14分获胜。")
 	}
 	s.catanScores()
 	return s, s.validateCatanAttack()
