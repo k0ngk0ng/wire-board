@@ -461,7 +461,13 @@ export type CatanAttack = {
   goldRule?: "ledger";
   goldIssued?: number;
   rules: string;
-  map: { castles: number[]; coast: number[]; barbarians: number; gold: number };
+  map: {
+    castles: number[];
+    coast: number[];
+    barbarians: number;
+    gold: number;
+    extraNumbers?: { tile: number; number: number }[];
+  };
   barbarians: number[];
   knights: CatanAttackKnight[];
   prisoners: number[];

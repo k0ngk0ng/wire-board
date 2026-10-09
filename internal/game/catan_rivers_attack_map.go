@@ -137,5 +137,10 @@ func (m catanAttackMap) landingNumber(g *Catan, tile, number int) bool {
 	if tile < 0 || tile >= len(g.Tiles) {
 		return false
 	}
+	for _, extra := range m.ExtraNumbers {
+		if extra.Tile == tile && extra.Number == number {
+			return true
+		}
+	}
 	return g.Tiles[tile].Number == number || m.Rivers == CatanRiversAttackRules && len(g.Players) <= 4 && tile == 7 && number == 2
 }

@@ -10,11 +10,12 @@ const catanCastle = 12
 const catanAttackRules = "catan-barbarian-attack-2025"
 
 type catanAttackMap struct {
-	Sea       string `json:"sea,omitempty"`
-	Transport string `json:"transport,omitempty"`
-	Caravans  string `json:"caravans,omitempty"`
-	Rivers    string `json:"rivers,omitempty"`
-	Castles   []int  `json:"castles"`
+	ExtraNumbers []catanFishingExtraNumber `json:"extraNumbers,omitempty"`
+	Sea          string                    `json:"sea,omitempty"`
+	Transport    string                    `json:"transport,omitempty"`
+	Caravans     string                    `json:"caravans,omitempty"`
+	Rivers       string                    `json:"rivers,omitempty"`
+	Castles      []int                     `json:"castles"`
 	// Productive coastal hexes in the official clockwise battle order.
 	Coast      []int `json:"coast"`
 	Barbarians int   `json:"barbarians"`
