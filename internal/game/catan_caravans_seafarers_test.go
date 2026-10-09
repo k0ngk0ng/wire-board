@@ -6,7 +6,7 @@ import (
 )
 
 func TestCatanCaravansDesertSeaNatural(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, err := newCatanCaravansDesertSea(n)
 			if err != nil {
@@ -144,6 +144,43 @@ func TestCatanCaravansSeaRejectsRobberAndForeignRecipe(t *testing.T) {
 		b.Catan.Seafarers.NumberRecipe = "foreign"
 		if b.validateCaravans() == nil {
 			t.Fatal("foreign number rules")
+		}
+	}
+}
+
+func TestCatanCaravansDesertExtendedInventory(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		s, err := newCatanCaravansDesertSea(n)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := s.Catan
+		if g.Caravans.Map.Supply != 33 || len(g.Caravans.Map.Starts) != 6 || len(g.Caravans.ExtraNumbers) != 2 || g.Paired == nil || g.victoryTarget() != 16 || len(g.Ports) != 11 {
+			t.Fatal("components")
+		}
+		g.SetupStep = g.SetupLimit()
+		s.Phase = "catan_turn"
+		s.Turn = 0
+		for _, extra := range g.Caravans.ExtraNumbers {
+			tile := g.Tiles[extra.Tile]
+			v := tile.Vertices[0]
+			g.Vertices[v].Owner, g.Vertices[v].Level = 0, 1
+			g.Robber = -1
+			before := g.Players[0].Resources[tile.Resource]
+			if err = s.catanRollProduction(extra.Number); err != nil {
+				t.Fatal(err)
+			}
+			if g.Players[0].Resources[tile.Resource] <= before {
+				t.Fatal("extra disc did not produce")
+			}
+			g.Vertices[v].Owner, g.Vertices[v].Level = -1, 0
+		}
+		for _, mutate := range []func(*Catan){func(g *Catan) { g.Caravans.Map.Supply = 22 }, func(g *Catan) { g.Caravans.ExtraNumbers[0].Number = 7 }, func(g *Catan) { g.Ports[0].Resource = 9 }, func(g *Catan) { g.Paired = nil }} {
+			b := clone(*s)
+			mutate(b.Catan)
+			if b.validateCaravans() == nil {
+				t.Fatal("invalid save")
+			}
 		}
 	}
 }
