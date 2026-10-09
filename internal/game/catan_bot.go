@@ -388,7 +388,7 @@ func (s *State) catanBot(player int) (Action, error) {
 	if road >= 0 && roads < 15 && (settlements < 5 || g.LongestOwner != player) {
 		choices = append(choices, botChoice{Action{Type: "catan_road", Edge: road}, 200})
 	}
-	if len(g.DevDeck) > 0 || g.Attack != nil && g.Attack.cardSupplyReady() {
+	if len(g.DevDeck) > 0 || g.Attack != nil && g.attackGoldReady(2) {
 		priority := 100
 		if g.pirateIslands() != nil && g.pirateNextWarship(player) >= 0 && sum(p.Dev) < 2 {
 			priority = 540

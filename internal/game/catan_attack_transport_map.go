@@ -71,6 +71,8 @@ func attackTransportGeometry(n int) (*Catan, *catanAttackTransportBoard, error) 
 	if n > 4 {
 		b.Attack.Barbarians = 48
 	}
+	b.Attack.Transport = CatanAttackTransportRules
+	b.Transport.Attack = CatanAttackTransportRules
 	for _, id := range r.castles {
 		g.Tiles[id].Resource = catanCastle
 	}
@@ -136,7 +138,7 @@ func (b catanAttackTransportBoard) validate(g *Catan) error {
 	if err != nil {
 		return err
 	}
-	if b.Rules != CatanAttackTransportRules || b.Attack.Rivers != "" || b.Attack.Caravans != "" || b.Transport.Rivers != "" || b.Transport.Caravans != "" || len(b.Transport.NumberSwaps) != 0 || b.Transport.Rules != want.Transport.Rules || b.Transport.Gold != want.Transport.Gold || b.Transport.Barbarians != want.Transport.Barbarians || b.Attack.Barbarians != want.Attack.Barbarians || b.Attack.Gold != want.Attack.Gold || !slices.Equal(b.Attack.Castles, want.Attack.Castles) || !slices.Equal(b.Attack.Coast, want.Attack.Coast) {
+	if b.Attack.Transport != CatanAttackTransportRules || b.Transport.Attack != CatanAttackTransportRules || b.Rules != CatanAttackTransportRules || b.Attack.Rivers != "" || b.Attack.Caravans != "" || b.Transport.Rivers != "" || b.Transport.Caravans != "" || len(b.Transport.NumberSwaps) != 0 || b.Transport.Rules != want.Transport.Rules || b.Transport.Gold != want.Transport.Gold || b.Transport.Barbarians != want.Transport.Barbarians || b.Attack.Barbarians != want.Attack.Barbarians || b.Attack.Gold != want.Attack.Gold || !slices.Equal(b.Attack.Castles, want.Attack.Castles) || !slices.Equal(b.Attack.Coast, want.Attack.Coast) {
 		return errors.New("蛮族运输地图版本或组件不符")
 	}
 	if len(g.Tiles) != len(base.Tiles) || len(g.Vertices) != len(base.Vertices) || len(g.Edges) != len(base.Edges) || len(g.Ports) != len(base.Ports) || len(b.Transport.Sites) != len(want.Transport.Sites) || g.HexSize != base.HexSize {

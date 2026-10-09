@@ -103,6 +103,20 @@ func (s *State) catanTransportBot(player int) (Action, bool, error) {
 		q := t.Travel
 		base := Action{Offer: int(t.Sequence)}
 		if q.Pending >= 0 {
+			if g.attackTransport() {
+				for _, tile := range g.attackBattleTiles() {
+					for _, edge := range g.AttackTransport.Pieces.edges(g, tile, q.Pending) {
+						p := clone(g.AttackTransport.Pieces)
+						if p.relocate(g, g.attackTransportBoard(), q.Pending, tile, edge) == nil {
+							base.Type = "catan_transport_relocate"
+							base.Tile = tile
+							base.Edge = edge
+							return base, true, nil
+						}
+					}
+				}
+				return base, true, errors.New("无法重新放置共享蛮族")
+			}
 			for _, e := range g.Edges {
 				ok := true
 				for _, id := range t.Barbarians {
@@ -147,14 +161,20 @@ func (s *State) catanTransportBot(player int) (Action, bool, error) {
 		}
 		if len(path) > 0 {
 			edge := path[0]
-			for piece, id := range t.Barbarians {
-				if id == edge && q.Level > 0 && !q.Attempted[piece] {
+			edges := t.Barbarians[:]
+			attempted := q.Attempted[:]
+			if g.attackTransport() {
+				edges = g.AttackTransport.Pieces.blockingEdges()
+				attempted = g.AttackTransport.Attempted
+			}
+			for piece, id := range edges {
+				if id == edge && q.Level > 0 && !attempted[piece] {
 					base.Type = "catan_transport_drive"
 					base.Card = piece
 					return base, true, nil
 				}
 			}
-			if _, err := q.quote(g, t.Map, t.Barbarians, t.Gold, edge); err == nil {
+			if _, err := t.quoteTravel(g, *q, edge); err == nil {
 				base.Type = "catan_transport_step"
 				base.Edge = edge
 				return base, true, nil
@@ -165,7 +185,7 @@ func (s *State) catanTransportBot(player int) (Action, bool, error) {
 					copy.WheatUsed = true
 					copy.FishUsed = true
 					copy.Points += 2
-					if _, err := copy.quote(g, t.Map, t.Barbarians, t.Gold, edge); err == nil {
+					if _, err := t.quoteTravel(g, copy, edge); err == nil {
 						base.Type = "catan_transport_fish"
 						base.Tokens = ids
 						return base, true, nil
@@ -176,7 +196,7 @@ func (s *State) catanTransportBot(player int) (Action, bool, error) {
 				copy := *q
 				copy.WheatUsed = true
 				copy.Points += 2
-				if _, err := copy.quote(g, t.Map, t.Barbarians, t.Gold, edge); err == nil {
+				if _, err := t.quoteTravel(g, copy, edge); err == nil {
 					base.Type = "catan_transport_wheat"
 					return base, true, nil
 				}

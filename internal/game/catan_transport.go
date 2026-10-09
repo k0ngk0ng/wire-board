@@ -73,6 +73,12 @@ func (s *State) validateCatanTransport() error {
 		return nil
 	}
 	t := g.Transport
+	if (g.AttackTransport != nil || t.Map != nil && t.Map.Attack != "") && !g.attackTransport() {
+		return errors.New("蛮族运输组合标记无效")
+	}
+	if g.attackTransport() && (t.Swift || t.BarbarianPending || t.BarbarianSequence != 0 || t.Knights != "" || t.DeckRecipe != "") {
+		return errors.New("蛮族运输混入独立运输发展牌状态")
+	}
 	if err := g.validateRivers(); err != nil {
 		return err
 	}
@@ -84,7 +90,7 @@ func (s *State) validateCatanTransport() error {
 	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
 	}
-	if !g.transportKnights() && n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || (n <= 4 || g.transportKnights()) && t.DeckRecipe != "" {
+	if !g.attackTransport() && !g.transportKnights() && n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || (n <= 4 || g.transportKnights() || g.attackTransport()) && t.DeckRecipe != "" {
 		return errors.New("运输发展牌配置版本无效")
 	}
 	if pair := g.Paired; pair != nil {
@@ -115,6 +121,9 @@ func (s *State) validateCatanTransport() error {
 	}
 
 	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "catan_fish_replace", "finished"}
+	if g.attackTransport() {
+		phases = append(phases, "catan_attack_card", "catan_attack_end", "catan_steal")
+	}
 	if g.caravansTransport() {
 		phases = append(phases, "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place")
 	}
@@ -167,11 +176,16 @@ func (s *State) validateCatanTransport() error {
 		}
 	}
 	want := catanTransportDeckCounts(n)
-	if g.transportKnights() {
+	if g.transportKnights() || g.attackTransport() {
 		want = make([]int, 5)
 	}
 	if !slices.Equal(counts, want) {
 		return errors.New("运输发展牌库存不守恒")
+	}
+	if g.attackTransport() {
+		if err := s.validateCatanAttack(); err != nil {
+			return err
+		}
 	}
 	return s.validateCatanTwo()
 }
@@ -193,6 +207,9 @@ func (s *State) catanTransportSyncTurn() error {
 	t.Moves = 0
 	t.Swift = false
 	t.Travel = nil
+	if g.attackTransport() {
+		g.AttackTransport.Attempted = nil
+	}
 	t.ArrivalResolved = false
 	return nil
 }
@@ -229,6 +246,9 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 			err = s.catanTransportRoll(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} })
 		}
 	case player == s.Turn && a.Type == "catan_dev":
+		if g.attackTransport() {
+			return errors.New("本组合使用蛮族进攻发展牌")
+		}
 		err = s.catanTransportDev(player, a)
 	case player == s.Turn && a.Type == "catan_end" && s.Phase == "catan_turn":
 		s.catanScores()
@@ -236,7 +256,9 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 		if s.Finished {
 			return nil
 		}
-		if g.transportKnights() {
+		if g.attackTransport() {
+			err = s.catanAttackBeginEnd()
+		} else if g.transportKnights() {
 			err = s.applyCatanStep(player, a)
 		} else {
 			err = s.catanTransportBeginTravel(player)
@@ -292,7 +314,7 @@ func (s *State) catanTransportRoll(roll func() [2]int) error {
 			return errors.New("骰子无效")
 		}
 		total := dice[0] + dice[1]
-		if len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && (total == 2 || total == 12) {
+		if len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && !g.attackTransport() && (total == 2 || total == 12) {
 			s.catanLog(s.Turn, "运输掷出%d，重新掷骰", total)
 			continue
 		}
@@ -397,7 +419,16 @@ func (s *State) catanTransportMoveAction(player int, a Action) error {
 			s.catanLog(player, "马车驱赶蛮族掷出%d，成功：%t", die, success)
 		}
 	case "catan_transport_relocate":
-		err = t.relocate(g, player, t.Sequence, a.Edge)
+		if g.attackTransport() {
+			q := t.sharedTravel(g)
+			err = q.relocate(g, g.attackTransportBoard(), &g.AttackTransport.Pieces, t.Gold, a.Tile, a.Edge)
+			if err == nil {
+				t.saveSharedTravel(g, q)
+				g.syncAttackTransportCounts()
+			}
+		} else {
+			err = t.relocate(g, player, t.Sequence, a.Edge)
+		}
 	case "catan_transport_arrival":
 		if a.Choice != "deliver" && a.Choice != "keep" {
 			return errors.New("请选择交货或保留当前货物")
@@ -461,6 +492,10 @@ func (s *State) catanTransportView(v map[string]any, player int) {
 	v["transport"] = map[string]any{"rules": catanTransportRules, "map": t.Map, "state": public, "canAct": player == s.Turn && !s.Finished, "canDeliver": t.canDeliver(), "swift": t.Swift, "moves": t.Moves, "barbarianPending": t.BarbarianPending, "barbarianSequence": t.BarbarianSequence, "bought": t.Bought, "choices": s.catanTransportChoices(player)}
 	if s.Catan.transportKnights() {
 		v["transport"].(map[string]any)["knights"] = CatanTransportKnightsRules
+		return
+	}
+	if s.Catan.attackTransport() {
+		v["transport"].(map[string]any)["attack"] = CatanAttackTransportRules
 		return
 	}
 	v["developmentNames"] = []string{"骑士", "道路建设", "快速旅程", "", "胜利点"}

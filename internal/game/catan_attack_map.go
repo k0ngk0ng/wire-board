@@ -10,9 +10,10 @@ const catanCastle = 12
 const catanAttackRules = "catan-barbarian-attack-2025"
 
 type catanAttackMap struct {
-	Caravans string `json:"caravans,omitempty"`
-	Rivers   string `json:"rivers,omitempty"`
-	Castles  []int  `json:"castles"`
+	Transport string `json:"transport,omitempty"`
+	Caravans  string `json:"caravans,omitempty"`
+	Rivers    string `json:"rivers,omitempty"`
+	Castles   []int  `json:"castles"`
 	// Productive coastal hexes in the official clockwise battle order.
 	Coast      []int `json:"coast"`
 	Barbarians int   `json:"barbarians"`
@@ -93,6 +94,14 @@ func newCatanAttackBoard(n int) (*Catan, *catanAttackMap, error) {
 }
 
 func (m catanAttackMap) validate(g *Catan) error {
+	if m.Transport != "" {
+		if !g.attackTransport() {
+			return errors.New("蛮族运输缺少组合组件")
+		}
+		b := g.attackTransportBoard()
+		b.Attack = m
+		return b.validate(g)
+	}
 	n := len(g.Players)
 	tileCount, vertexCount, edgeCount, size, supply, gold := 19, 54, 72, 62.0, 36, 100
 	if n > 4 {

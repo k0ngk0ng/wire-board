@@ -117,7 +117,7 @@ func (t catanTransport) validate(g *Catan) error {
 	if !catanTransportPlayersValid(g) || t.Map == nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
 		return errors.New("运输组件或人数无效")
 	}
-	if t.Map.Rivers != "" && !g.riversTransport() || g.Attack != nil || g.Caravans != nil && !g.caravansTransport() || t.Map.Caravans != "" && !g.caravansTransport() || g.Rivers != nil && !g.riversTransport() || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
+	if t.Map.Rivers != "" && !g.riversTransport() || g.Attack != nil && !g.attackTransport() || g.Caravans != nil && !g.caravansTransport() || t.Map.Caravans != "" && !g.caravansTransport() || g.Rivers != nil && !g.riversTransport() || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("运输与其他扩展的组合尚未接入")
 	}
 	if err := t.Map.validate(g); err != nil {
@@ -174,9 +174,15 @@ func (t catanTransport) validate(g *Catan) error {
 	if slices.Contains(seen, false) {
 		return errors.New("运输货物丢失")
 	}
-	for i, edge := range t.Barbarians {
-		if edge < 0 || edge >= len(g.Edges) || slices.Contains(t.Barbarians[:i], edge) {
-			return errors.New("运输蛮族位置无效")
+	if g.attackTransport() {
+		if err := g.validateAttackTransportPieces(); err != nil {
+			return err
+		}
+	} else {
+		for i, edge := range t.Barbarians {
+			if edge < 0 || edge >= len(g.Edges) || slices.Contains(t.Barbarians[:i], edge) {
+				return errors.New("运输蛮族位置无效")
+			}
 		}
 	}
 	if t.Active < -1 || t.Active >= len(g.Players) || (t.Active == -1) != (t.TurnSerial == 0) || t.TurnSerial == 0 && (t.Bought != 0 || t.Sequence != 0 || t.Travel != nil) {
@@ -194,7 +200,7 @@ func (t catanTransport) validate(g *Catan) error {
 		if q.Player != t.Active || t.Sequence == 0 || t.Wagons[q.Player].Position != q.Position || t.Wagons[q.Player].Level != q.Level {
 			return errors.New("马车移动记录与所属玩家不一致")
 		}
-		if err := q.validate(g, t.Map, t.Barbarians, t.Gold); err != nil {
+		if err := t.validateTravel(g); err != nil {
 			return err
 		}
 		currentRecord := t.LastArrival != nil && t.LastArrival.Sequence == t.Sequence

@@ -135,7 +135,7 @@ func (p *catanAttackTransportPieces) relocate(g *Catan, b *catanAttackTransportB
 	if err := p.validate(g, b); err != nil {
 		return err
 	}
-	if id < 0 || id >= len(p.Barbarians) || p.Barbarians[id].Tile < 0 || tile < 0 || tile >= len(g.Tiles) || g.Tiles[tile].Resource == catanCastle || p.counts(g)[tile] >= 3 || edge == p.Barbarians[id].Edge || !slices.Contains(p.edges(g, tile, id), edge) {
+	if id < 0 || id >= len(p.Barbarians) || p.Barbarians[id].Tile < 0 || tile < 0 || tile >= len(g.Tiles) || g.Tiles[tile].Resource == catanCastle || p.counts(g)[tile] >= 3 || tile == p.Barbarians[id].Tile && edge == p.Barbarians[id].Edge || !slices.Contains(p.edges(g, tile, id), edge) {
 		return errors.New("请选择未征服地块及另一空边或内部路径")
 	}
 	p.Barbarians[id] = catanAttackTransportBarbarian{tile, edge, -1}

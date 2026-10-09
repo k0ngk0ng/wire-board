@@ -17,6 +17,7 @@ type catanTransportSite struct {
 	Blocked []int  `json:"blocked"`
 }
 type catanTransportMap struct {
+	Attack      string               `json:"attack,omitempty"`
 	Caravans    string               `json:"caravans,omitempty"`
 	Rivers      string               `json:"rivers,omitempty"`
 	NumberSwaps []CatanNumberSwap    `json:"numberSwaps,omitempty"`
@@ -198,6 +199,14 @@ func (m catanTransportMap) accepts(site int, cargo string) bool {
 }
 
 func (m catanTransportMap) validate(g *Catan) error {
+	if m.Attack != "" {
+		if !g.attackTransport() {
+			return errors.New("运输缺少蛮族组合组件")
+		}
+		b := g.attackTransportBoard()
+		b.Transport = m
+		return b.validate(g)
+	}
 	if g == nil || m.Rivers != "" && m.Rivers != CatanRiversTransportRules || m.Caravans != "" && (m.Caravans != CatanCaravansTransportRules || m.Rivers != "") {
 		return errors.New("运输地图缺失")
 	}

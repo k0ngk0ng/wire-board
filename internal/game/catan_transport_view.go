@@ -56,21 +56,47 @@ func (s *State) catanTransportChoices(player int) map[string]any {
 				edges = append(edges, e.ID)
 			}
 		}
-		choices["relocate"] = edges
+		if g.attackTransport() && q != nil {
+			options := []map[string]any{}
+			for _, tile := range g.attackBattleTiles() {
+				allowed := []int{}
+				for _, edge := range g.AttackTransport.Pieces.edges(g, tile, q.Pending) {
+					p := clone(g.AttackTransport.Pieces)
+					if p.relocate(g, g.attackTransportBoard(), q.Pending, tile, edge) == nil {
+						allowed = append(allowed, edge)
+					}
+				}
+				if len(allowed) > 0 {
+					options = append(options, map[string]any{"tile": tile, "edges": allowed})
+				}
+			}
+			choices["relocateHexes"] = options
+		} else {
+			choices["relocate"] = edges
+		}
 	}
 	if s.Phase != "catan_transport_move" || q == nil || q.Ended || q.Pending >= 0 {
 		return choices
 	}
 	steps, drive := []catanTransportStep{}, []int{}
 	for _, e := range g.Edges {
-		if quote, err := q.quote(g, t.Map, t.Barbarians, t.Gold, e.ID); err == nil {
+		if quote, err := t.quoteTravel(g, *q, e.ID); err == nil {
 			steps = append(steps, quote)
 		}
 	}
 	if q.Level > 0 {
-		for piece, edge := range t.Barbarians {
+		edges := t.Barbarians[:]
+		attempted := q.Attempted[:]
+		if g.attackTransport() {
+			edges = g.AttackTransport.Pieces.blockingEdges()
+			attempted = g.AttackTransport.Attempted
+		}
+		for piece, edge := range edges {
+			if edge < 0 {
+				continue
+			}
 			e := g.Edges[edge]
-			if !q.Attempted[piece] && (e.A == q.Position || e.B == q.Position) {
+			if !attempted[piece] && (e.A == q.Position || e.B == q.Position) {
 				drive = append(drive, piece)
 			}
 		}
