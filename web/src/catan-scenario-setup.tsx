@@ -18,7 +18,7 @@ const scenarios = [
     id: "caravans-desert",
     name: "商队＋穿越沙漠",
     description:
-      "商队可沿海格边延伸，与己方船同边计两段最长路线；水源数字移到指定地块，16分获胜。当前支持二至四人，可加事件牌。",
+      "商队可沿海格边延伸，与己方船同边计两段最长路线；水源数字移到指定地块，16分获胜。支持二至六人，可加事件牌；五六人采用本站双水源配方。",
   },
   ...catanRiversSeaScenarios,
   {
@@ -536,7 +536,7 @@ export function CatanScenarioPicker({
               disabled={
                 ["caravans-desert", "caravans-tribe"].includes(s.id)
                   ? players < 2 ||
-                    players > (s.id === "caravans-tribe" ? 6 : 4) ||
+                    players > 6 ||
                     helpers ||
                     knights ||
                     fishing ||

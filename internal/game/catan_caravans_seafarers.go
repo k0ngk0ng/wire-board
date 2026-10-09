@@ -15,6 +15,9 @@ func (g *Catan) makeCaravansDesertSea() (*catanCaravanMap, []catanFishingExtraNu
 	if g.Seafarers.Scenario == "tribe" && len(g.Players) > 4 {
 		return g.makeCaravansTribeExtended()
 	}
+	if g.Seafarers.Scenario == "desert" && len(g.Players) > 4 {
+		return g.makeCaravansDesertExtended()
+	}
 	number := 2
 	if len(g.Players) == 4 || g.twoCaravansSea() {
 		number = 11
@@ -47,10 +50,10 @@ func (g *Catan) makeCaravansDesertSea() (*catanCaravanMap, []catanFishingExtraNu
 	return &catanCaravanMap{WateringHoles: []int{hole}, Starts: starts, Supply: 22}, []catanFishingExtraNumber{{Tile: recipient, Number: number}}, nil
 }
 func newCatanCaravansDesertSea(n int) (*State, error) {
-	if n != 3 && n != 4 {
-		return nil, errors.New("商队沙漠内部配方暂支持三四人")
+	if n < 3 || n > 6 {
+		return nil, errors.New("商队沙漠支持三至六人")
 	}
-	s, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
+	s, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -62,6 +65,9 @@ func newCatanCaravansDesertSea(n int) (*State, error) {
 	g.Caravans = &catanCaravans{Sea: CatanCaravansSeafarersRules, Rules: CatanCaravansRules, Map: m, ExtraNumbers: extra, Wagons: []catanCaravanWagon{}}
 	g.Seafarers.VictoryPoints += 2
 	s.Log = append(s.Log, "商队＋穿越沙漠：按官方说明替换水源并叠放数字；马车可沿海格边延伸，不受海盗阻挡，与己方船同边时该船计两段最长路线；16分获胜")
+	if n > 4 {
+		s.Log = append(s.Log, "本站五六人商队沙漠：主岛2点麦田和11点山丘替换为两水源；原数字分别叠到12点牧场和12点山丘，33辆马车、配对回合；外岛及沙漠带不变")
+	}
 	s.catanScores()
 	return s, s.validateCaravans()
 }
@@ -71,14 +77,14 @@ func (g *Catan) validateCaravansDesertSea() error {
 	}
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n != 3 && n != 4 && !g.twoCaravansSea()) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队沙漠海图配置无效")
 	}
 	recipeSeats := n
 	if g.twoCaravansSea() {
 		recipeSeats = 4
 	}
-	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
+	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{FiveSix: recipeSeats > 4}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}
@@ -87,8 +93,24 @@ func (g *Catan) validateCaravansDesertSea() error {
 	if err != nil {
 		return err
 	}
-	if !reflect.DeepEqual(c.Map, m) || !reflect.DeepEqual(c.ExtraNumbers, extra) || !reflect.DeepEqual(g.Tiles, b.Tiles) || !reflect.DeepEqual(g.Ports, b.Ports) || !slices.Equal(sea.Islands, b.Seafarers.Islands) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || len(g.Vertices) != len(b.Vertices) || len(g.Edges) != len(b.Edges) {
+	if !reflect.DeepEqual(c.Map, m) || !reflect.DeepEqual(c.ExtraNumbers, extra) || !reflect.DeepEqual(g.Tiles, b.Tiles) || !slices.Equal(sea.Islands, b.Seafarers.Islands) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || len(g.Vertices) != len(b.Vertices) || len(g.Edges) != len(b.Edges) {
 		return errors.New("商队沙漠地图无效")
+	}
+	if len(g.Ports) != len(b.Ports) {
+		return errors.New("商队海图港口数量无效")
+	}
+	got, want := []int{}, []int{}
+	for i, p := range g.Ports {
+		if p.Edge != b.Ports[i].Edge {
+			return errors.New("商队海图港口位置无效")
+		}
+		got = append(got, p.Resource)
+		want = append(want, b.Ports[i].Resource)
+	}
+	slices.Sort(got)
+	slices.Sort(want)
+	if !slices.Equal(got, want) {
+		return errors.New("商队海图港口库存无效")
 	}
 	for i, v := range g.Vertices {
 		w := b.Vertices[i]
@@ -234,4 +256,28 @@ func (g *Catan) makeCaravansTribeExtended() (*catanCaravanMap, []catanFishingExt
 		return nil, nil, err
 	}
 	return &catanCaravanMap{WateringHoles: holes, Starts: starts, Supply: 33}, extra, nil
+}
+
+func (g *Catan) makeCaravansDesertExtended() (*catanCaravanMap, []catanFishingExtraNumber, error) {
+	holes := []int{20, 40}
+	targets := []int{36, 38}
+	numbers := []int{2, 11}
+	for i, id := range holes {
+		resource := 3
+		if i == 1 {
+			resource = 1
+		}
+		if g.Tiles[id].Resource != resource || g.Tiles[id].Number != numbers[i] {
+			return nil, nil, errors.New("扩大商队沙漠水源不符")
+		}
+		g.Tiles[id].Resource, g.Tiles[id].Number = catanWateringHole, 0
+	}
+	if g.Tiles[targets[0]].Resource != 2 || g.Tiles[targets[1]].Resource != 1 || g.Tiles[targets[0]].Number != 12 || g.Tiles[targets[1]].Number != 12 {
+		return nil, nil, errors.New("扩大商队沙漠数字目标不符")
+	}
+	starts, err := caravanStarts(g, holes)
+	if err != nil {
+		return nil, nil, err
+	}
+	return &catanCaravanMap{WateringHoles: holes, Starts: starts, Supply: 33}, []catanFishingExtraNumber{{Tile: targets[0], Number: 2}, {Tile: targets[1], Number: 11}}, nil
 }

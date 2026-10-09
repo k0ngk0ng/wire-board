@@ -2644,9 +2644,7 @@ function Create({
                         ["caravans-desert", "caravans-tribe"].includes(
                           catanScenario,
                         )
-                          ? catanScenario === "caravans-tribe"
-                            ? 5
-                            : 3
+                          ? 5
                           : k === "sanguosha"
                             ? 5
                             : k === "catan"
@@ -2910,7 +2908,7 @@ function Waiting({
                               room.catanFriendlyRobberAvailability
                                 ?.minPlayers === 4
                             ? "4 人"
-                            : ["barbarian-attack", "caravans-tribe"].includes(
+                            : ["barbarian-attack"].includes(
                                   room.catanScenario || "",
                                 )
                               ? "3–6 人 · 五六人配对回合"
