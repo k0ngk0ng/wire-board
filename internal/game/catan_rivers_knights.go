@@ -48,6 +48,12 @@ func (g *Catan) validateRiverKnights() error {
 	if !g.riverKnights() || g.CitiesKnights.Rules != catanCitiesKnightsRules(len(g.Players)) || r.Map == nil {
 		return errors.New("河流城市骑士组合标记无效")
 	}
+	if g.riversTransport() {
+		if !g.transportKnights() || g.CitiesKnights.RobberStart != -1 || g.Robber != -1 {
+			return errors.New("河流运输城市骑士不使用强盗")
+		}
+		return nil
+	}
 	if g.riversAttack() {
 		if !g.attackKnights() || g.CitiesKnights.RobberStart != -1 || g.Robber != -1 {
 			return errors.New("河流蛮族城市骑士不使用强盗")
@@ -64,7 +70,7 @@ func (g *Catan) validateRiverKnights() error {
 	return nil
 }
 func (g *Catan) canRiverPillageGold(player int) bool {
-	return g.riverKnights() && !g.riversAttack() && player >= 0 && player < len(g.Players) && g.Rivers.Gold[player] >= 5 && len(g.pillageSites(player)) > 0
+	return g.riverKnights() && !g.riversAttack() && player >= 0 && player < len(g.Players) && g.riverGold()[player] >= 5 && len(g.pillageSites(player)) > 0
 }
 func (g *Catan) diplomacyRoadsFor(player int) []int {
 	roads := g.diplomacyRoads()

@@ -73,6 +73,9 @@ func (s *State) validateCatanTransport() error {
 		return nil
 	}
 	t := g.Transport
+	if err := g.validateRivers(); err != nil {
+		return err
+	}
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
 	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
@@ -283,7 +286,7 @@ func (s *State) catanTransportRoll(roll func() [2]int) error {
 			return errors.New("骰子无效")
 		}
 		total := dice[0] + dice[1]
-		if len(g.Players) <= 4 && (total == 2 || total == 12) {
+		if len(g.Players) <= 4 && !g.riversTransport() && (total == 2 || total == 12) {
 			s.catanLog(s.Turn, "运输掷出%d，重新掷骰", total)
 			continue
 		}
@@ -412,6 +415,11 @@ func (s *State) catanTransportMoveAction(player int, a Action) error {
 	}
 	if err != nil {
 		return err
+	}
+	// A toll can transfer the richest-Catanian point during movement.
+	if g.riversTransport() {
+		s.catanScores()
+		s.catanVictory()
 	}
 	if s.Finished {
 		return nil

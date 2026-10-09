@@ -57,7 +57,9 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 		}
 		if g.riverKnights() && g.riverEdge(a.Edge) {
 			g.riverGold()[player]--
-			if g.riversAttack() {
+			if g.riversTransport() {
+				g.Transport.GoldBank++
+			} else if g.riversAttack() {
 				g.Attack.GoldBank++
 			} else {
 				g.Rivers.Bank++

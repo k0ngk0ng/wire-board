@@ -775,7 +775,7 @@ func (s *State) catanSetup(a Action) error {
 		if want == "catan_city" {
 			g.Vertices[a.Vertex].Level = 2
 		}
-		if (want == "catan_settlement" || g.riverKnights() || g.riversAttack()) && g.riverVertex(a.Vertex) {
+		if (want == "catan_settlement" || g.riverKnights() || g.riversAttack() || g.riversTransport()) && g.riverVertex(a.Vertex) {
 			if err := s.catanRiverReward(p, 1); err != nil {
 				return err
 			}
@@ -792,6 +792,7 @@ func (s *State) catanSetup(a Action) error {
 			gain := make([]int, 5)
 			gold := make([]int, len(g.Players))
 			for _, t := range g.Tiles {
+				t.Resource = g.productionResource(t)
 				if t.Resource >= 5 && t.Resource != CatanGold {
 					continue
 				}
@@ -954,6 +955,7 @@ func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 		claims[i] = make([]int, len(g.Bank))
 	}
 	for _, t := range g.Tiles {
+		t.Resource = g.productionResource(t)
 		if !g.tileProduces(t, total) || t.ID == g.Robber || (t.Resource >= 5 && t.Resource != CatanGold) {
 			continue
 		}
@@ -1483,7 +1485,7 @@ func (s *State) EliminateCatan(p int) error {
 	s.catanReturnFishing(p)
 	pl := &g.Players[p]
 	pl.Eliminated = true
-	if r := g.Rivers; r != nil && !g.riversAttack() {
+	if r := g.Rivers; r != nil && !g.riversAttack() && !g.riversTransport() {
 		r.Bank += r.Gold[p]
 		r.Gold[p] = 0
 	}
