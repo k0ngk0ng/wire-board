@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
 	"testing"
+	"time"
 )
 
-func TestCatanCaravansSeaPublicHTTP(t *testing.T) {
+func TestCatanCaravansSeaPublicHTTP(t *testing.T) { runCaravansSeaHTTP(t, false) }
+func TestCatanCaravansSeaEventsHTTP(t *testing.T) { runCaravansSeaHTTP(t, true) }
+func runCaravansSeaHTTP(t *testing.T, events bool) {
 	for _, n := range []int{3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
@@ -17,7 +20,11 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) {
 				clients[p].register(fmt.Sprintf("航海商队%d", p))
 			}
 			h := clients[0]
-			raw := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "商队沙漠", "capacity": n, "catanScenario": "caravans-desert"}, 201)
+			recipe := map[string]any{"kind": "catan", "name": "商队沙漠", "capacity": n, "catanScenario": "caravans-desert"}
+			if events {
+				recipe["catanEvents"] = game.CatanEventCatalogue
+			}
+			raw := h.post("/api/rooms", recipe, 201)
 			id := raw["id"].(string)
 			for p := 1; p < n; p++ {
 				clients[p].command(current(h), "join", nil, 200)
@@ -31,8 +38,29 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) {
 				ordered[int(current(c)["you"].(float64))] = c
 			}
 			clients = ordered
+			bidTimedOut := false
 			for step := 0; step < 18000 && !s.rooms[id].Game.Finished; step++ {
 				g := s.rooms[id].Game
+				if events && !bidTimedOut && g.Phase == "catan_caravan_bid" {
+					actor := twoHTTPActor(g)
+					deadline := s.rooms[id].TurnDeadline
+					if left := deadline - time.Now().UnixMilli(); left < 118000 || left > 120000 {
+						t.Fatal("bid clock", left)
+					}
+					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+					if s.rooms[id].TurnDeadline != deadline {
+						t.Fatal("restart reset bid clock")
+					}
+					s.mu.Lock()
+					s.expireSetups(time.UnixMilli(deadline + 1))
+					s.mu.Unlock()
+					if !s.rooms[id].Seats[actor].AutoPlay || !s.rooms[id].Seats[actor].TimeoutAutoPlay {
+						t.Fatal("bid timeout did not take over")
+					}
+					setAutoPlay(clients[actor], current(clients[actor]), false, 200)
+					bidTimedOut = true
+					continue
+				}
 				p := twoHTTPActor(g)
 				a, err := g.BotAction(p)
 				if err != nil {
@@ -43,6 +71,9 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) {
 					s, ts = restartRiversHTTP(t, s, ts, clients, id)
 				}
 			}
+			if events && !bidTimedOut {
+				t.Fatal("no bid timeout exercised")
+			}
 			if !s.rooms[id].Game.Finished {
 				t.Fatal("unfinished")
 			}
@@ -50,6 +81,12 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) {
 			record := profile["history"].([]any)[0].(map[string]any)
 			if record["catanScenario"] != "caravans-desert" || record["catanRules"] != game.CatanCaravansSeafarersRules {
 				t.Fatal("history")
+			}
+			if events {
+				rules := record["catanExpansionRules"].(map[string]any)
+				if rules["event_cards"] != game.CatanEventCatalogue {
+					t.Fatal("missing events history")
+				}
 			}
 			h.command(current(h), "rematch", nil, 200)
 			h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
@@ -67,7 +104,7 @@ func TestCatanCaravansSeaRejectsUnsupported(t *testing.T) {
 			t.Fatal("unsupported count", n)
 		}
 	}
-	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanOptions.Helpers = true }, func(r *Room) { r.CatanEvents = game.CatanEventCatalogue }} {
+	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanOptions.Helpers = true }} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "caravans-desert"}
 		mutate(r)
 		if r.validateCatanScenario() == nil {

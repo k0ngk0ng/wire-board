@@ -12,7 +12,7 @@ const scenarios = [
     id: "caravans-desert",
     name: "商队＋穿越沙漠",
     description:
-      "商队可沿海格边延伸，与己方船同边计两段最长路线；水源数字移到指定地块，16分获胜。当前支持三、四人。",
+      "商队可沿海格边延伸，与己方船同边计两段最长路线；水源数字移到指定地块，16分获胜。当前支持三、四人，可加事件牌。",
   },
   ...catanRiversSeaScenarios,
   {
