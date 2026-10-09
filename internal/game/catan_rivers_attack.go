@@ -30,7 +30,7 @@ func (g *Catan) riverBank() (bank, issued, bought int) {
 	return
 }
 
-func NewCatanRiversAttack(n int) (*State, error) {
+func NewCatanRiversAttack(n int, knights ...bool) (*State, error) {
 	var s *State
 	var err error
 	if n == 2 {
@@ -64,6 +64,18 @@ func NewCatanRiversAttack(n int) (*State, error) {
 	if n > 4 {
 		s.Log = append(s.Log, "本站五六人河流蛮族配方：三条河流、两座城堡、独立固定数字，使用配对回合")
 	}
+	if len(knights) > 0 && knights[0] {
+		log := s.Log
+		s.enableCitiesKnights()
+		g.Rivers.Knights = CatanRiversKnightsRules
+		g.Attack.City = &catanAttackCity{Rules: CatanAttackKnightsRules, Knights: []catanAttackCityKnight{}}
+		g.Attack.Deck, g.Attack.Discard = []string{}, []string{}
+		if n == 2 {
+			g.Two.Knights = CatanTwoKnightsRules
+			g.Attack.TwoRules = CatanTwoAttackKnightsRules
+		}
+		s.Log = append(log[1:], "本站河流蛮族城市骑士组合：13分获胜；起始河岸村庄和城市均领1金币，共用金币且贫穷不扣分；使用道路骑士和进步牌，不使用强盗和海上蛮族")
+	}
 	s.catanScores()
 	if err = g.validateRivers(); err != nil {
 		return nil, err
@@ -79,10 +91,21 @@ func (g *Catan) validateRiversAttackMap() error {
 		return errors.New("河流蛮族组合标记无效")
 	}
 	r := g.Rivers
-	if r.Map == nil || len(r.Gold) != 0 || r.Bank != 0 || r.GoldIssued != 0 || r.Bought != 0 || r.Knights != "" {
+	if r.Map == nil || len(r.Gold) != 0 || r.Bank != 0 || r.GoldIssued != 0 || r.Bought != 0 || (r.Knights != "") != g.attackKnights() {
 		return errors.New("河流蛮族须共用单一金币账本")
 	}
-	if err := g.Attack.Map.validate(g); err != nil {
+	board := g
+	if g.attackKnights() {
+		if err := g.Attack.City.validateNumbers(g); err != nil {
+			return err
+		}
+		restored := clone(*g)
+		for id, number := range g.attackPrintedNumbers() {
+			restored.Tiles[id].Number = number
+		}
+		board = &restored
+	}
+	if err := g.Attack.Map.validate(board); err != nil {
 		return err
 	}
 	want, err := riversAttackChannels(g)
@@ -109,4 +132,13 @@ func (g *Catan) riverAttackCastleBlocked(index, player int) bool {
 	}
 	a := g.Attack
 	return a.castleEdge(g, a.Knights[index].Edge) && len(a.knightDestinations(g, index, 3)) == 0 && (g.Players[player].Resources[3] == 0 || len(a.knightDestinations(g, index, 5)) == 0)
+}
+
+// Select the immutable printed recipe; invention history is validated separately.
+func (g *Catan) attackPrintedNumbers() []int {
+	if g.riversAttack() {
+		r, _, _, _ := catanRiversAttackRecipe(len(g.Players) > 4)
+		return r.numbers
+	}
+	return catanAttackBoardRecipe(len(g.Players) > 4).numbers
 }

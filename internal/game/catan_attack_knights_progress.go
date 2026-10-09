@@ -111,7 +111,7 @@ func (c *catanAttackCity) validateNumbers(g *Catan) error {
 	if err != nil {
 		return err
 	}
-	want := catanAttackBoardRecipe(len(g.Players) > 4).numbers
+	want := g.attackPrintedNumbers()
 	if len(g.Tiles) != len(want) {
 		return errors.New("组合地图数字数量错误")
 	}

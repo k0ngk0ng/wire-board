@@ -15,8 +15,13 @@ func (s *State) validateAttackCityState() error {
 	a, c, k := g.Attack, g.Attack.City, g.CitiesKnights
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
-	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
+	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil || g.Rivers != nil && !g.riversAttack() || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.Transport != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
 		return errors.New("蛮族城市骑士人数、组件或组合配置无效")
+	}
+	if g.riversAttack() {
+		if err := g.validateRivers(); err != nil {
+			return err
+		}
 	}
 	if g.fishingAttack() {
 		if err := g.validateFishing(); err != nil {
@@ -35,9 +40,9 @@ func (s *State) validateAttackCityState() error {
 	// Validate original geometry with the recorded swaps reversed. Ordinary
 	// Attack restoration retains its exact printed-number check.
 	board := clone(*g)
-	recipe := catanAttackBoardRecipe(n > 4)
+	numbers := g.attackPrintedNumbers()
 	for id := range board.Tiles {
-		board.Tiles[id].Number = recipe.numbers[id]
+		board.Tiles[id].Number = numbers[id]
 	}
 	if err := a.Map.validate(&board); err != nil {
 		return err
