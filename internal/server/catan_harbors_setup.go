@@ -6,11 +6,11 @@ import (
 )
 
 func publicCatanHarborsScenario(scenario string) bool {
-	return publicCatanCaravanSea(scenario) || scenario == "" || scenario == "cities-knights" || scenario == "fishing" || publicCatanSeaScenario(scenario)
+	return publicCatanTradersVariants(scenario) || publicCatanCaravanSea(scenario) || scenario == "" || scenario == "cities-knights" || scenario == "fishing" || publicCatanSeaScenario(scenario)
 }
 
 func (r *Room) publicCatanHarborsAvailable() bool {
-	return (r.Kind == "catan" && publicCatanCaravanSea(r.CatanScenario) && r.Capacity >= 2 && r.Capacity <= 6) || r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && publicCatanHarborsScenario(r.CatanScenario)
+	return r.catanTradersVariantsAvailable() || (r.Kind == "catan" && publicCatanCaravanSea(r.CatanScenario) && r.Capacity >= 2 && r.Capacity <= 6) || r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && publicCatanHarborsScenario(r.CatanScenario)
 }
 
 // Existing internally configured extended rooms retain their setup path.

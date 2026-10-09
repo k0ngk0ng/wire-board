@@ -612,19 +612,9 @@ export function CatanScenarioPicker({
                   "attack-tribe",
                   "attack-desert",
                 ].includes(s.id)
-                  ? players < 2 ||
-                    players > 6 ||
-                    knights ||
-                    fishing ||
-                    friendly ||
-                    harbors
+                  ? players < 2 || players > 6 || knights || fishing
                   : s.id === "attack-shores"
-                    ? players < 2 ||
-                      players > 6 ||
-                      knights ||
-                      fishing ||
-                      friendly ||
-                      harbors
+                    ? players < 2 || players > 6 || knights || fishing
                     : ["caravans-new-world", "caravans-islands"].includes(s.id)
                       ? players < 2 || players > 6 || knights || fishing
                       : s.id === "caravans-shores"
@@ -634,9 +624,7 @@ export function CatanScenarioPicker({
                           : isPublicCatanRiversSea(s.id)
                             ? !catanRiversSeaAvailable(s.id, players) ||
                               knights ||
-                              fishing ||
-                              friendly ||
-                              harbors
+                              fishing
                             : (helpers &&
                                 !supportsCatanTradersHelpers(s.id) &&
                                 [

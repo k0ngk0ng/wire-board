@@ -1,3 +1,4 @@
+import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import { supportsCaravanSeaHelpers } from "./catan-two-helpers";
 import {
   twoCatanVariantsAvailable,
@@ -11,7 +12,7 @@ import "./catan-harbors.css";
 import { isPublicCatanSea } from "./catan-scenario-setup";
 
 export const supportsPublicCatanHarbors = (scenario?: string) =>
-  supportsCaravanSeaHelpers(scenario) ||
+  supportsCatanTradersHelpers(scenario) ||
   !scenario ||
   scenario === "cities-knights" ||
   scenario === "fishing" ||
@@ -30,7 +31,7 @@ export function CatanHarborsPicker({
   const available =
     (room.capacity >= 2 &&
       room.capacity <= 6 &&
-      supportsCaravanSeaHelpers(room.catanScenario)) ||
+      supportsCatanTradersHelpers(room.catanScenario)) ||
     twoCatanVariantsAvailable(room) ||
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 5 &&
@@ -49,10 +50,11 @@ export function CatanHarborsPicker({
   if (!setup && !available) return null;
   return (
     <CatanHarborsChoice
-      two={!!room.catanTwoRules}
+      two={room.capacity === 2}
       value={!!setup?.enabled}
       disabled={disabled || (!available && !setup?.enabled)}
       helpers={!!room.catanOptions?.helpers}
+      conquered={catanRuleContext(room).attack}
       target={catanRuleContext(room).target}
       onChange={(enabled) =>
         command("catan_harbors", { catanHarbors: { enabled } })
@@ -67,6 +69,7 @@ export function CatanHarborsChoice({
   two = false,
   disabled = false,
   helpers = false,
+  conquered = false,
   target,
 }: {
   value: boolean;
@@ -74,6 +77,7 @@ export function CatanHarborsChoice({
   onChange: (enabled: boolean) => void;
   disabled?: boolean;
   helpers?: boolean;
+  conquered?: boolean;
   target: number;
 }) {
   return (
@@ -94,6 +98,11 @@ export function CatanHarborsChoice({
       <p>
         港口村庄计1点、城市计2点。率先达到3点获得2分奖励；只有超过持有者，才能夺取奖励。
       </p>
+      {value && conquered && (
+        <small>
+          本站蛮族组合：被征服建筑不计港口点，解放后恢复；奇迹和要塞等特殊结束条件保留。
+        </small>
+      )}
       {value && two && <small>{catanTwoVariantsNote}</small>}
       {value && <strong>本局分数门槛：{target}分</strong>}
       <small>
@@ -118,7 +127,11 @@ export function CatanHarborsSeat({
   return (
     <span
       className={`catan-harbors-seat ${owner ? "holder" : ""}`}
-      title="港口村庄1点，城市和大都会2点；奖励牌值2胜利分。"
+      title={
+        game.tradersVariants && game.attack
+          ? "港口村庄1点，城市和大都会2点；被征服建筑不计点，解放后恢复。奖励牌值2胜利分。"
+          : "港口村庄1点，城市和大都会2点；奖励牌值2胜利分。"
+      }
     >
       <Anchor size={13} aria-hidden="true" /> 港口 {h.points[seat] || 0}点
       {owner && (
@@ -147,10 +160,17 @@ export function CatanHarborsStatus({ room }: { room: Room }) {
   );
 }
 
-export function CatanHarborsRules() {
+export function CatanHarborsRules({
+  attack = false,
+}: { attack?: boolean } = {}) {
   return (
     <section className="catan-harbors-rules">
       <h4>港口霸主</h4>
+      {attack && (
+        <p>
+          本站蛮族组合：被征服建筑不计港口点；解放后恢复，并重新计算奖励归属。
+        </p>
+      )}
       <p>
         已安放港口旁的村庄计1港口点，城市和大都会计2港口点。率先达到3点，获得价值2胜利分的奖励牌；超过持有者即可夺取，同分保留原持有者。港口点本身不直接计入胜利分。
       </p>

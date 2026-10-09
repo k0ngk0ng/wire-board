@@ -36,7 +36,7 @@ func (r *Room) validateCatanRiversSea() error {
 	if !ok {
 		return errors.New("河流海图剧本无效")
 	}
-	if r.Kind != "catan" || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil || r.CatanFishing || r.CatanFishingLakes {
+	if r.Kind != "catan" || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes {
 		return errors.New("河流海图暂支持独立组合与事件牌，其他叠加尚未接通")
 	}
 	if r.CatanRiversWorldMap != nil {

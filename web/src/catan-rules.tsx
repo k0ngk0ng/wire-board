@@ -511,6 +511,8 @@ export function CatanRules({ room }: { room: Room }) {
               使用城市改良、城墙、大都会与进步牌，取消运输发展牌和最大骑士军队；蛮族船与三名道路蛮族分别运作。二至四人掷出2或12只重掷生产骰，事件骰只结算一次；炼金术请选择3至11点。激活骑士可驱赶相邻道路蛮族至空边，然后转为未激活；落点为对手道路时随机偷1张资源或商品。金币可购买普通资源，不能购买商品；商品可按交易比例换金币。本站组合说明：五六人地图同样用一块粮田替换森林，小地图炼金术仅选3至11点。
             </p>
           )}
+        {info.harbors && <CatanHarborsRules attack={info.attack} />}
+        {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
         <CatanEventRules info={info} />
         {info.fishing && (
           <p>
@@ -803,7 +805,7 @@ export function CatanRules({ room }: { room: Room }) {
         )}
         {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
         {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
-        {info.harbors && <CatanHarborsRules />}
+        {info.harbors && <CatanHarborsRules attack={info.attack} />}
         {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
         {scenario && (
           <>
@@ -872,7 +874,7 @@ export function CatanRules({ room }: { room: Room }) {
       )}
       {info.twoHelpers && <p>{catanTwoHelpersNote}</p>}
       {info.twoVariants && <p>{catanTwoVariantsNote}</p>}
-      {info.harbors && <CatanHarborsRules />}
+      {info.harbors && <CatanHarborsRules attack={info.attack} />}
       {info.friendlyRobber && <CatanFriendlyRobberRules info={info} />}
       {!cloth && <p>达标获胜在自己的行动阶段判定。</p>}
       {info.two && (

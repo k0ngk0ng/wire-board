@@ -11,7 +11,7 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func newTradersHelpersHTTP(t *testing.T, n int, scene string, city, fish bool) (*Server, *httptest.Server, []*testClient, string) {
+func newTradersHelpersHTTP(t *testing.T, n int, scene string, city, fish bool, variants ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -24,6 +24,10 @@ func newTradersHelpersHTTP(t *testing.T, n int, scene string, city, fish bool) (
 	if n == 2 && (scene == "rivers" || scene == "caravans" || scene == "barbarian-attack") {
 		body["catanScenario"] = ""
 		body["catanTwoScenario"] = scene
+	}
+	if len(variants) > 0 && variants[0] {
+		body["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+		body["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
 	}
 	if city {
 		body["catanCitiesKnights"] = game.CatanCitiesKnightsSetup{}

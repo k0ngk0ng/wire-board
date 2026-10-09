@@ -87,7 +87,7 @@ func (s *State) validateCatanTransport() error {
 	}
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4, Helpers: g.tradersHelpers(), AllHelpers: g.Options.AllHelpers})
-	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
+	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || (g.Harbors != nil || g.FriendlyRobber != nil) && !g.tradersVariants() || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
 	}
 	if !g.attackTransport() && !g.transportKnights() && n > 4 && t.DeckRecipe != CatanTransportExtendedDeck || (n <= 4 || g.transportKnights() || g.attackTransport()) && t.DeckRecipe != "" {
@@ -399,8 +399,9 @@ func (s *State) catanTransportBarbarian(player int, a Action) error {
 	t.BarbarianPending = false
 	s.Phase = g.ResumePhase
 	s.catanLog(player, "移动蛮族%d到道路 #%d", a.Card+1, a.Edge+1)
+	g.Victims = []int{}
 	owner := g.Edges[a.Edge].Owner
-	if owner >= 0 && owner != player && !g.Players[owner].Eliminated && sum(g.Players[owner].Resources) > 0 {
+	if owner >= 0 && owner != player && !g.Players[owner].Eliminated && !g.friendlyProtected(owner) && sum(g.Players[owner].Resources) > 0 {
 		g.Victims = []int{owner}
 		s.Phase = "catan_steal"
 		return s.catanSteal(player, owner)

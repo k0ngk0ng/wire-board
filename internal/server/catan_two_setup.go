@@ -110,5 +110,5 @@ func (r *Room) validateCatanTwoSetup() error {
 }
 
 func (r *Room) publicCatanTwoVariantsAvailable() bool {
-	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanScenario == "" && (r.CatanTwoScenario == "" || r.CatanTwoScenario == "fishing" || r.CatanTwoScenario == "cities-knights" || game.CatanTwoSeafarersScenario(r.CatanTwoScenario)) && game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions)
+	return r.Kind == "catan" && r.Capacity == 2 && r.CatanTwoRules == game.CatanTwoRules && r.CatanScenario == "" && (r.CatanTwoScenario == "" || r.CatanTwoScenario == "fishing" || r.CatanTwoScenario == "cities-knights" || publicCatanTradersVariants(r.CatanTwoScenario) || game.CatanTwoSeafarersScenario(r.CatanTwoScenario)) && game.CatanTwoHelpersOptions(r.CatanTwoScenario, r.CatanOptions)
 }

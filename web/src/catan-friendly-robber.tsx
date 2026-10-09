@@ -1,3 +1,4 @@
+import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import { supportsCaravanSeaHelpers } from "./catan-two-helpers";
 import {
   twoCatanVariantsAvailable,
@@ -23,7 +24,7 @@ export function CatanFriendlyRobberPicker({
   const eligible =
     (room.capacity >= 2 &&
       room.capacity <= 6 &&
-      supportsCaravanSeaHelpers(room.catanScenario)) ||
+      supportsCatanTradersHelpers(room.catanScenario)) ||
     twoCatanVariantsAvailable(room) ||
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 3 &&
@@ -43,7 +44,7 @@ export function CatanFriendlyRobberPicker({
       : "";
   return (
     <CatanFriendlyRobberChoice
-      two={!!room.catanTwoRules}
+      two={room.capacity === 2}
       value={!!setup?.enabled}
       onChange={(enabled) =>
         command("catan_friendly_robber", { catanFriendlyRobber: { enabled } })
@@ -52,6 +53,12 @@ export function CatanFriendlyRobberPicker({
       reason={reason}
       scenario={catanRuleContext(room).scenario}
       knights={catanRuleContext(room).citiesKnights}
+      traders={supportsCatanTradersHelpers(
+        room.catanScenario || room.catanTwoScenario,
+      )}
+      noRobber={
+        catanRuleContext(room).attack || catanRuleContext(room).transport
+      }
       fishing={catanRuleContext(room).fishing}
       needed={
         setup?.enabled
@@ -72,7 +79,7 @@ export const catanFriendlyFishingNote =
   "本站组合规则：没有合法陆地及符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海。花鱼偷牌不受友善保护限制，花鱼驱逐仍按原规则。";
 
 export const supportsPublicCatanFriendly = (scenario?: string) =>
-  supportsCaravanSeaHelpers(scenario) ||
+  supportsCatanTradersHelpers(scenario) ||
   !scenario ||
   scenario === "cities-knights" ||
   scenario === "fishing" ||
@@ -88,6 +95,8 @@ export function CatanFriendlyRobberChoice({
   needed = 0,
   knights = false,
   fishing = false,
+  traders = false,
+  noRobber = false,
 }: {
   value: boolean;
   two?: boolean;
@@ -98,6 +107,8 @@ export function CatanFriendlyRobberChoice({
   needed?: number;
   knights?: boolean;
   fishing?: boolean;
+  traders?: boolean;
+  noRobber?: boolean;
 }) {
   return (
     <fieldset
@@ -115,9 +126,11 @@ export function CatanFriendlyRobberChoice({
         启用友善强盗
       </label>
       <p>
-        {["cloth", "pirate_islands"].includes(scenario)
-          ? "本剧本完成起始建设后，每人至少有3点建筑分，正常行动中不会触发友善保护。"
-          : "公开分数不足3分的玩家受到保护，强盗不能放到其建筑旁。隐藏胜利点不计入判断。"}
+        {traders && noRobber
+          ? "本站无强盗适配：公开分数不足3分时，不被七点或运输蛮族搬移偷牌；仍正常弃牌，蛮族登陆、战斗和固定舰队袭击照常，花鱼偷牌不受此保护。"
+          : ["cloth", "pirate_islands"].includes(scenario)
+            ? "本剧本完成起始建设后，每人至少有3点建筑分，正常行动中不会触发友善保护。"
+            : "公开分数不足3分的玩家受到保护，强盗不能放到其建筑旁。隐藏胜利点不计入判断。"}
       </p>
       <small>
         {reason || "不改变获胜门槛、弃牌规则或回合时间。更改后需要重新准备。"}
@@ -150,10 +163,18 @@ export function CatanFriendlyRobberSeat({
   return (
     <span
       className="catan-friendly-seat"
-      title="公开分数不足3分：强盗不能放到你的建筑旁，海盗不能放到你的船只旁，也不能通过强盗或海盗偷取你的资源。隐藏胜利点不影响保护；强盗无合法地块时允许退回沙漠。"
+      title={
+        game.tradersVariants && (game.attack || game.transport)
+          ? "本站无强盗友善适配：公开不足3分时不被七点或运输蛮族移动偷牌；仍需弃牌，登陆、战斗和固定舰队袭击照常。"
+          : "公开分数不足3分：强盗不能放到你的建筑旁，海盗不能放到你的船只旁，也不能通过强盗或海盗偷取你的资源。隐藏胜利点不影响保护；强盗无合法地块时允许退回沙漠。"
+      }
     >
       <ShieldCheck size={14} aria-hidden="true" />{" "}
-      {game.seafarers && !game.seafarers.wonders ? "强盗/海盗保护" : "强盗保护"}
+      {game.tradersVariants && (game.attack || game.transport)
+        ? "友善偷牌保护"
+        : game.seafarers && !game.seafarers.wonders
+          ? "强盗/海盗保护"
+          : "强盗保护"}
     </span>
   );
 }
@@ -170,21 +191,37 @@ export function CatanFriendlyRobberStatus({ room }: { room: Room }) {
       <ShieldCheck size={16} aria-hidden="true" />
       <strong>友善强盗</strong>
       <span>
-        {outside
-          ? "无合法陆地或沙漠，可点击“强盗退到场外”继续，不偷牌。"
-          : fallback
-            ? "没有其他合法地块，点击当前沙漠完成强盗处理。"
-            : ["cloth", "pirate_islands"].includes(g.seafarers?.scenario || "")
-              ? "三座村庄起步，正常行动不触发友善保护。"
-              : g.seafarers && !g.seafarers.wonders
-                ? "强盗与海盗均保护公开不足3分的玩家；隐藏胜利点不计。"
-                : "公开不足3分受保护；隐藏胜利点不计。"}
+        {g.tradersVariants && (g.attack || g.transport)
+          ? "公开不足3分不被七点或运输蛮族搬移偷牌；弃牌、登陆、战斗和固定舰队袭击照常。"
+          : outside
+            ? "无合法陆地或沙漠，可点击“强盗退到场外”继续，不偷牌。"
+            : fallback
+              ? "没有其他合法地块，点击当前沙漠完成强盗处理。"
+              : ["cloth", "pirate_islands"].includes(
+                    g.seafarers?.scenario || "",
+                  )
+                ? "三座村庄起步，正常行动不触发友善保护。"
+                : g.seafarers && !g.seafarers.wonders
+                  ? "强盗与海盗均保护公开不足3分的玩家；隐藏胜利点不计。"
+                  : "公开不足3分受保护；隐藏胜利点不计。"}
       </span>
     </div>
   );
 }
 
 export function CatanFriendlyRobberRules({ info }: { info: CatanRuleContext }) {
+  if (info.tradersVariants && (info.attack || info.transport))
+    return (
+      <section>
+        <h4>友善强盗 · 本站无强盗组合</h4>
+        <p>
+          公开分数不足3分的玩家不被七点或运输蛮族搬移偷牌；保护不免除七点弃牌，不阻止蛮族登陆、战斗或固定舰队袭击。
+        </p>
+        <p>
+          事件牌、进步牌、助手和花鱼取牌仍按各自规则执行。分数因建筑征服、解放或城市失守改变后，保护按当前公开分数判断。
+        </p>
+      </section>
+    );
   if (["cloth", "pirate_islands"].includes(info.scenario))
     return (
       <section>

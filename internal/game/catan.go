@@ -29,6 +29,7 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
+	TradersVariants string                `json:"tradersVariants,omitempty"`
 	TradersHelpers  *CatanTradersHelpers  `json:"tradersHelpers,omitempty"`
 	Explorer        *catanExplorer        `json:"explorer,omitempty"`
 	AttackTransport *catanAttackTransport `json:"attackTransport,omitempty"`

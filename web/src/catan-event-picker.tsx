@@ -4,6 +4,7 @@ export function CatanEventPicker({
   citiesKnights = false,
   cloth = false,
   friendly = false,
+  tradersNoRobber = false,
   fishing = false,
   pirateIslands = false,
   transport = false,
@@ -15,6 +16,7 @@ export function CatanEventPicker({
   citiesKnights?: boolean;
   cloth?: boolean;
   friendly?: boolean;
+  tradersNoRobber?: boolean;
   fishing?: boolean;
   pirateIslands?: boolean;
   transport?: boolean;
@@ -62,7 +64,9 @@ export function CatanEventPicker({
       )}
       {friendly && (
         <p className="muted small">
-          友善保护仍适用于7点的强盗和海盗；强盗逃跑回沙漠且不偷牌。冲突、贸易优势属于卡牌偷牌效果，不受友善保护。
+          {tradersNoRobber
+            ? "本站无强盗友善适配：限制七点或运输蛮族搬移的偷牌，正常弃牌、登陆和战斗照常；强盗逃跑无效果。冲突、贸易优势仍是卡牌效果，不受友善保护。"
+            : "友善保护仍适用于7点的强盗和海盗；强盗逃跑回沙漠且不偷牌。冲突、贸易优势属于卡牌偷牌效果，不受友善保护。"}
         </p>
       )}
       {cloth && (
