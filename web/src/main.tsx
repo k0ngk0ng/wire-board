@@ -2176,6 +2176,7 @@ function Create({
                                         "rivers-desert",
                                         "rivers-desert-belt",
                                         "rivers-tribe",
+                                        "attack-shores",
                                         "caravans-shores",
                                         "caravans-new-world",
                                         "caravans-islands",
@@ -2280,6 +2281,7 @@ function Create({
               "rivers-desert",
               "rivers-desert-belt",
               "rivers-tribe",
+              "attack-shores",
               "caravans-shores",
               "caravans-new-world",
               "caravans-islands",
@@ -2299,7 +2301,7 @@ function Create({
               onChange={(scenario) => {
                 setCatanScenario(scenario);
                 if (scenario === "attack-shores") {
-                  setCapacity(Math.min(4, Math.max(3, capacity)));
+                  setCapacity(Math.min(6, Math.max(3, capacity)));
                   setCatanOptions({});
                 }
                 if (scenario === "caravans-islands")
@@ -2338,6 +2340,7 @@ function Create({
                     "rivers-desert",
                     "rivers-desert-belt",
                     "rivers-tribe",
+                    "attack-shores",
                     "caravans-shores",
                     "caravans-new-world",
                     "caravans-islands",
@@ -2367,6 +2370,7 @@ function Create({
                     "rivers-desert",
                     "rivers-desert-belt",
                     "rivers-tribe",
+                    "attack-shores",
                     "caravans-shores",
                     "caravans-new-world",
                     "caravans-islands",
@@ -2666,7 +2670,7 @@ function Create({
               {(k === "dota"
                 ? [2, 4, 6]
                 : k === "catan" && catanScenario === "attack-shores"
-                  ? [3, 4]
+                  ? [3, 4, 5, 6]
                   : k === "catan" &&
                       ["caravans-new-world", "caravans-islands"].includes(
                         catanScenario,
@@ -2704,6 +2708,7 @@ function Create({
                                         "rivers-desert",
                                         "rivers-desert-belt",
                                         "rivers-tribe",
+                                        "attack-shores",
                                         "caravans-shores",
                                         "caravans-new-world",
                                         "caravans-islands",
@@ -2865,6 +2870,7 @@ function Waiting({
         "rivers-desert",
         "rivers-desert-belt",
         "rivers-tribe",
+        "attack-shores",
         "caravans-shores",
         "caravans-new-world",
         "caravans-islands",
@@ -2988,6 +2994,7 @@ function Waiting({
                                     "rivers-desert",
                                     "rivers-desert-belt",
                                     "rivers-tribe",
+                                    "attack-shores",
                                     "caravans-shores",
                                     "caravans-new-world",
                                     "caravans-islands",
