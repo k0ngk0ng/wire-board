@@ -144,13 +144,16 @@ func (g *Catan) prepareTwoSeaNeutrals() error {
 
 func (s *State) validateTwoSeafarers() error {
 	g, q := s.Catan, s.Catan.Two
+	if q.RiversSea != "" && !g.twoRiversWorld() {
+		return errors.New("双人河流海图版本或组合无效")
+	}
 	if q.Seafarers == "" && g.Seafarers == nil {
 		if len(q.SeaStarts) != 0 || q.AfterRoute != "" {
 			return errors.New("基础双人局不能包含航海家记录")
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
+	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversWorld() || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers
