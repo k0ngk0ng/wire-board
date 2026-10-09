@@ -20,7 +20,7 @@ func TestCatanCaravansIslandsOrdinaryHTTP(t *testing.T) {
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 	counts := []int{2, 3, 4, 5, 6}
 	if scenario == "caravans-islands" {
-		counts = []int{2, 3, 4}
+		counts = []int{2, 3, 4, 5, 6}
 	}
 	for _, n := range counts {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
@@ -176,10 +176,10 @@ func TestCatanCaravansSeaRejectsUnsupported(t *testing.T) {
 }
 
 func TestCatanCaravansIslandsPublicBounds(t *testing.T) {
-	for _, n := range []int{2, 3, 4, 5, 6} {
+	for _, n := range []int{1, 2, 3, 4, 5, 6, 7} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 		err := r.setCatanScenario("caravans-islands")
-		if (err == nil) != (n >= 2 && n <= 4) {
+		if (err == nil) != (n >= 2 && n <= 6) {
 			t.Fatalf("count %d: %v", n, err)
 		}
 		if err != nil && r.CatanScenario != "" {

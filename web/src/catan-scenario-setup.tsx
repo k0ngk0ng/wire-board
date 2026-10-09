@@ -10,9 +10,9 @@ import { catanScenarioVictory } from "./catan-scenarios";
 const scenarios = [
   {
     id: "caravans-islands",
-    name: "商队＋四岛",
+    name: "商队＋四岛／六岛",
     description:
-      "中央水源向海面延伸马车，船与己方马车同边计两段路线，15分获胜。二至四人固定图，可加事件牌；双人采用本站中立玩家规则，三人海格上的孤立4点圆片按本站补充规则不使用。",
+      "中央水源向海面延伸马车，船与己方马车同边计两段路线，15分获胜。二至六人固定图，可加事件牌；五六人采用本站双水源六岛配方，双人采用本站中立玩家规则，三人海格上的孤立4点圆片按本站补充规则不使用。",
   },
   {
     id: "caravans-shores",
@@ -550,7 +550,7 @@ export function CatanScenarioPicker({
               disabled={
                 s.id === "caravans-islands"
                   ? players < 2 ||
-                    players > 4 ||
+                    players > 6 ||
                     helpers ||
                     knights ||
                     fishing ||

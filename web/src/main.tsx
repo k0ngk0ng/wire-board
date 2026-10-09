@@ -2293,7 +2293,7 @@ function Create({
               onChange={(scenario) => {
                 setCatanScenario(scenario);
                 if (scenario === "caravans-islands")
-                  setCapacity(Math.min(4, Math.max(2, capacity)));
+                  setCapacity(Math.min(6, Math.max(2, capacity)));
                 if (scenario === "caravans-shores")
                   setCapacity(Math.max(2, capacity));
                 if (!supportsPublicCatanFriendly(scenario))
@@ -2650,7 +2650,7 @@ function Create({
               {(k === "dota"
                 ? [2, 4, 6]
                 : k === "catan" && catanScenario === "caravans-islands"
-                  ? [2, 3, 4]
+                  ? [2, 3, 4, 5, 6]
                   : Array.from(
                       {
                         length:

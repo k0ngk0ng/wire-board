@@ -72,7 +72,7 @@ func newCatanCaravansDesertSea(n int) (*State, error) {
 	return s, s.validateCaravans()
 }
 func (g *Catan) validateCaravansDesertSea() error {
-	if g.Seafarers != nil && g.Seafarers.Scenario == "islands" {
+	if g.Seafarers != nil && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "six_islands") {
 		return g.validateCaravansIslands()
 	}
 	if g.Seafarers != nil && g.Seafarers.Scenario == "shores" {

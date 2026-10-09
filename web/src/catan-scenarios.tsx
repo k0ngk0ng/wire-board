@@ -3,7 +3,7 @@ import type { Room } from "./types";
 import "./catan-scenarios.css";
 
 const names: Record<string, string> = {
-  "caravans-islands": "商队＋四岛",
+  "caravans-islands": "商队＋四岛／六岛",
   "caravans-shores": "商队＋新海岸",
   "caravans-desert": "商队＋穿越沙漠",
   "caravans-tribe": "商队＋遗忘部落",
