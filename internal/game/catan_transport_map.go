@@ -17,6 +17,8 @@ type catanTransportSite struct {
 	Blocked []int  `json:"blocked"`
 }
 type catanTransportMap struct {
+	SeaLayout    string                    `json:"seaLayout,omitempty"`
+	SeaForest    *int                      `json:"seaForest,omitempty"`
 	Sea          string                    `json:"sea,omitempty"`
 	ExtraNumbers []catanFishingExtraNumber `json:"extraNumbers,omitempty"`
 	Attack       string                    `json:"attack,omitempty"`

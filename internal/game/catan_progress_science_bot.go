@@ -66,7 +66,7 @@ func (g *Catan) alchemyBotDice(player int) []int {
 	for red := 1; red <= 6; red++ {
 		for yellow := 1; yellow <= 6; yellow++ {
 			total := red + yellow
-			if g.transportKnights() && len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && (total == 2 || total == 12) {
+			if g.transportKnights() && len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && !g.transportSea() && (total == 2 || total == 12) {
 				continue
 			}
 			value := 0

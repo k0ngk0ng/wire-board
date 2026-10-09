@@ -58,6 +58,7 @@ type Room struct {
 	CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights,omitempty"`
 	CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration,omitempty"`
 	CatanSeafarers         *game.CatanSeafarersSetup      `json:"catanSeafarers,omitempty"`
+	CatanTransportSea      *game.CatanTransportSeaSetup   `json:"catanTransportSea,omitempty"`
 	CatanNewWorldMap       *game.CatanNewWorldMap         `json:"catanNewWorldMap,omitempty"`
 	CatanTimeLeft          int64                          `json:"catanTimeLeft,omitempty"`
 	CatanDiscardPaused     bool                           `json:"catanDiscardPaused,omitempty"`
@@ -471,7 +472,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	result := map[string]any{"catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	result := map[string]any{"catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanFishing {
 		result["catanFishing"] = true
 		if publicCatanExplorerScenario(r.CatanScenario) {
@@ -614,6 +615,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanTransportSea      *game.CatanTransportSeaSetup   `json:"catanTransportSea"`
 		CatanEvents            string                         `json:"catanEvents"`
 		CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration"`
 		CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
@@ -735,6 +737,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	if req.CatanTransportSea != nil {
+		if err := room.setCatanTransportSea(*req.CatanTransportSea); err != nil {
+			fail(w, 400, err.Error())
+			return
+		}
+	}
 	if req.CatanCitiesKnights != nil {
 		if err := room.setPublicCatanCombinationKnights(req.CatanCitiesKnights); err != nil {
 			fail(w, 400, err.Error())
@@ -826,6 +834,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights"`
 		CatanNewWorldMap       *game.CatanNewWorldMap         `json:"catanNewWorldMap"`
 		CatanSeafarers         *game.CatanSeafarersSetup      `json:"catanSeafarers"`
+		CatanTransportSea      *game.CatanTransportSeaSetup   `json:"catanTransportSea"`
 		CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration"`
 		CatanOptions           game.CatanOptions              `json:"catanOptions"`
 		CatanTwoScenario       *string                        `json:"catanTwoScenario"`
@@ -983,7 +992,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		err = next.setCatanEvents(*req.Enabled)
 	case "catan_cities_knights":
-		if next.Host == u.ID && (publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers() || next.catanCaravanRecipe() || next.catanRiverRecipe() || next.CatanScenario == "transport" || (publicCatanTradersCombination(next.CatanScenario)) || next.catanAttackRecipe()) {
+		if next.Host == u.ID && (publicCatanTransportSea(next.CatanScenario) || publicCatanSeaScenario(next.CatanScenario) || next.CatanScenario == "fishing" || publicCatanExplorerScenario(next.CatanScenario) || next.twoCatanSeafarers() || next.catanCaravanRecipe() || next.catanRiverRecipe() || next.CatanScenario == "transport" || (publicCatanTradersCombination(next.CatanScenario)) || next.catanAttackRecipe()) {
 			err = next.setPublicCatanCombinationKnights(req.CatanCitiesKnights)
 			break
 		}
@@ -1088,6 +1097,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		err = next.setCatanTwoScenario(*req.CatanTwoScenario)
+	case "catan_transport_sea":
+		if next.Host != u.ID || req.CatanTransportSea == nil {
+			err = errors.New("只有房主能选择运输海图布局")
+			break
+		}
+		err = next.setCatanTransportSea(*req.CatanTransportSea)
 	case "catan_options":
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" {
 			err = errors.New("只有房主能在开局前选择卡坦岛扩展")
@@ -1285,7 +1300,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					if next.CatanScenario == "transport-desert" {
 						scenario = "desert"
 					}
-					next.Game, err = game.NewCatanTransportSeafarers(len(next.Seats), scenario)
+					setup := transportSeaRoomSetup(&next)
+					setup.Scenario = scenario
+					next.Game, err = game.NewCatanTransportSea(len(next.Seats), setup, next.CatanCitiesKnights != nil, next.CatanFishing)
 				} else if next.CatanScenario == "attack-pirates" {
 					next.Game, err = game.NewCatanAttackPirates(len(next.Seats))
 				} else if next.CatanScenario == "attack-wonders" {

@@ -18,6 +18,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	next := *r
 	next.Capacity, next.CatanTwoRules = 2, game.CatanTwoRules
 	next.CatanTwoScenario = scenario
+	next.CatanTransportSea = nil
 	if game.CatanTwoSeafarersScenario(scenario) {
 		if r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != scenario {
 			setup, err := game.NormalizeCatanTwoSeafarersSetup(game.CatanSeafarersSetup{Scenario: scenario})
@@ -56,6 +57,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	r.CatanTwoScenario = next.CatanTwoScenario
 	r.CatanRiversWorldMap = next.CatanRiversWorldMap
 	r.CatanScenario = next.CatanScenario
+	r.CatanTransportSea = next.CatanTransportSea
 	r.CatanSeafarers, r.CatanNewWorldMap = next.CatanSeafarers, next.CatanNewWorldMap
 	r.CatanOptions = next.CatanOptions
 	r.CatanCitiesKnights = next.CatanCitiesKnights

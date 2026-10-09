@@ -291,7 +291,11 @@ export function catanRuleContext(room: Room) {
       ["transport-shores", "transport-desert"].includes(
         room.catanScenario || "",
       )
-        ? 17
+        ? citiesKnights
+          ? 19
+          : room.catanFishing
+            ? 16
+            : 17
         : !game &&
             ["attack-pirates", "attack-wonders"].includes(
               room.catanScenario || "",
@@ -335,8 +339,13 @@ export function catanRuleContext(room: Room) {
 
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
-export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
-  if (["transport-shores", "transport-desert"].includes(scenario)) return 17;
+export function catanVictoryTarget(
+  scenario: string,
+  citiesKnights: boolean,
+  fishing = false,
+) {
+  if (["transport-shores", "transport-desert"].includes(scenario))
+    return citiesKnights ? 19 : fishing ? 16 : 17;
   if (["attack-pirates", "attack-wonders"].includes(scenario)) return 12;
   if (scenario === "attack-tribe") return 13;
   if (scenario === "caravans-desert" || scenario === "caravans-shores")
@@ -412,7 +421,10 @@ export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
   const harborBonus = g.harbors ? 1 : 0;
   if (g.transport?.map?.sea)
-    return (g.seafarers?.victoryPoints || 17) + harborBonus;
+    return (
+      (g.seafarers?.victoryPoints ||
+        (g.citiesKnights ? 19 : g.fishing ? 16 : 17)) + harborBonus
+    );
   if (g.explorer) return g.explorer.board.target;
   if (g.transport?.attack) return 14 + harborBonus;
   if (g.transport)

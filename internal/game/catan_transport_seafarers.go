@@ -257,8 +257,12 @@ func newCatanTransportSeaBoard(n int, scenario string) (*Catan, *catanTransportM
 }
 
 func (m catanTransportMap) validateSea(g *Catan) error {
-	if !g.transportSea() || m.Rules != catanTransportRules || m.Attack != "" || m.Caravans != "" || m.Rivers != "" || len(m.NumberSwaps) != 0 {
+	knights := g.transportSeaKnights()
+	if !g.transportSea() || m.Rules != catanTransportRules || m.Attack != "" || m.Caravans != "" || m.Rivers != "" || m.SeaLayout != "" && m.SeaLayout != "variable" || len(m.NumberSwaps) > 0 && !knights || (g.CitiesKnights != nil) != knights || (m.SeaForest != nil) != knights {
 		return errors.New("运输海图组合标记无效")
+	}
+	if len(g.Seafarers.Islands) != len(g.Tiles) || len(g.Seafarers.StartIslands) != 1 {
+		return errors.New("运输海图区域记录无效")
 	}
 	n := len(g.Players)
 	if n == 2 {
@@ -268,37 +272,109 @@ func (m catanTransportMap) validateSea(g *Catan) error {
 	if err != nil {
 		return err
 	}
-	if !reflect.DeepEqual(m, *w) || g.HexSize != b.HexSize || len(g.Tiles) != len(b.Tiles) || len(g.Edges) != len(b.Edges) || len(g.Vertices) != len(b.Vertices) || len(g.Ports) != len(b.Ports) {
+	clean := m
+	clean.SeaLayout = ""
+	clean.SeaForest = nil
+	clean.NumberSwaps = nil
+	if !reflect.DeepEqual(clean, *w) || g.HexSize != b.HexSize || len(g.Tiles) != len(b.Tiles) || len(g.Edges) != len(b.Edges) || len(g.Vertices) != len(b.Vertices) || len(g.Ports) != len(b.Ports) {
 		return errors.New("运输海图地图或组件无效")
 	}
+	numbers := map[CatanNumberToken]int{}
+	for _, t := range g.Tiles {
+		numbers[CatanNumberToken{t.ID, 0}] = t.Number
+	}
+	for _, extra := range m.ExtraNumbers {
+		numbers[CatanNumberToken{extra.Tile, 1}] = extra.Number
+	}
+	if m.SeaLayout == "variable" {
+		for _, edge := range g.Edges {
+			if len(edge.Tiles) == 2 {
+				a, b := numbers[CatanNumberToken{edge.Tiles[0], 0}], numbers[CatanNumberToken{edge.Tiles[1], 0}]
+				if (a == 6 || a == 8) && (b == 6 || b == 8) {
+					return errors.New("运输可变布局红色数字相邻")
+				}
+			}
+		}
+	}
+	numbers, err = rewindCatanInvention(g, numbers, m.NumberSwaps)
+	if err != nil {
+		return err
+	}
+	forest := -1
+	if m.SeaForest != nil {
+		forest = *m.SeaForest
+		if forest < 0 || forest >= len(g.Tiles) || g.Tiles[forest].Resource != 3 || g.Seafarers.Islands[forest] != g.Seafarers.StartIslands[0] {
+			return errors.New("运输骑士森林替换无效")
+		}
+	}
+	variable := m.SeaLayout == "variable"
 	random := g.Seafarers.Scenario == "shores" && n == 4
-	counts, want := map[seaTerrain]int{}, map[seaTerrain]int{}
+	type stock struct {
+		colors  [5]int
+		numbers map[int]int
+	}
+	actual, expected := map[int]*stock{}, map[int]*stock{}
+	extraTile := func(id int) bool {
+		for _, x := range w.ExtraNumbers {
+			if x.Tile == id {
+				return true
+			}
+		}
+		return false
+	}
+	flexible := func(id int) bool {
+		t := b.Tiles[id]
+		return t.Resource >= 0 && t.Resource < 5 && !extraTile(id) && (variable || random && b.Seafarers.Islands[id] == b.Seafarers.StartIslands[0])
+	}
 	for i, t := range g.Tiles {
 		ref := b.Tiles[i]
-		if random && g.Seafarers.Islands[i] == g.Seafarers.StartIslands[0] && t.Resource != catanTransportTerrain {
-			counts[seaTerrain{t.Resource, t.Number}]++
-			want[seaTerrain{ref.Resource, ref.Number}]++
-			// Terrain is shuffled independently of the fixed numbers.
+		original := numbers[CatanNumberToken{i, 0}]
+		if flexible(i) {
+			region := b.Seafarers.Islands[i]
+			if actual[region] == nil {
+				actual[region] = &stock{numbers: map[int]int{}}
+				expected[region] = &stock{numbers: map[int]int{}}
+			}
+			if t.Resource < 0 || t.Resource >= 5 {
+				return errors.New("运输可变地形超出普通资源")
+			}
+			actual[region].colors[t.Resource]++
+			expected[region].colors[ref.Resource]++
+			actual[region].numbers[original]++
+			expected[region].numbers[ref.Number]++
 			t.Resource = ref.Resource
+			if variable {
+				t.Number = ref.Number
+			} else {
+				t.Number = original
+			}
+		} else {
+			if i == forest {
+				if ref.Resource != 0 {
+					return errors.New("运输骑士替换的原格不是森林")
+				}
+				ref.Resource = 3
+			}
+			t.Number = original
 		}
 		if !reflect.DeepEqual(t, ref) {
 			return errors.New("运输海图地块不匹配")
 		}
 	}
-	if random {
-		actual, expected := [5]int{}, [5]int{}
-		for x, c := range counts {
-			if x.resource >= 0 && x.resource < 5 {
-				actual[x.resource] += c
-			}
+	if forest >= 0 && flexible(forest) {
+		region := b.Seafarers.Islands[forest]
+		expected[region].colors[0]--
+		expected[region].colors[3]++
+	}
+	for region, x := range actual {
+		z := expected[region]
+		if x.colors != z.colors || variable && !reflect.DeepEqual(x.numbers, z.numbers) {
+			return errors.New("运输可变资源或数字库存不符")
 		}
-		for x, c := range want {
-			if x.resource >= 0 && x.resource < 5 {
-				expected[x.resource] += c
-			}
-		}
-		if actual != expected {
-			return errors.New("运输海图地形库存不符")
+	}
+	for _, extra := range m.ExtraNumbers {
+		if numbers[CatanNumberToken{extra.Tile, 1}] != extra.Number {
+			return errors.New("运输海图额外数字不符")
 		}
 	}
 	for i, v := range g.Vertices {
@@ -329,7 +405,17 @@ func (m catanTransportMap) validateSea(g *Catan) error {
 		return errors.New("运输海图港口库存无效")
 	}
 	sea := g.Seafarers
-	if sea.Rules != CatanSeafarersRules || sea.Layout != b.Seafarers.Layout || sea.Variable != b.Seafarers.Variable || sea.VictoryPoints != 17 || sea.Pirate != -1 || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.PirateIslands != nil || sea.Wonders != nil || sea.NewWorld != nil || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || !slices.Equal(sea.Islands, b.Seafarers.Islands) {
+	layout := b.Seafarers.Layout
+	if variable {
+		layout = CatanTransportSeaVariableLayout
+	}
+	target := 17
+	if knights {
+		target += 2
+	} else if g.fishingTransport() {
+		target--
+	}
+	if sea.Rules != CatanSeafarersRules || sea.Layout != layout || sea.Variable != variable || sea.VictoryPoints != target || sea.Pirate != -1 || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.PirateIslands != nil || sea.Wonders != nil || sea.NewWorld != nil || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || !slices.Equal(sea.Islands, b.Seafarers.Islands) {
 		return errors.New("运输航海家状态无效")
 	}
 	return nil

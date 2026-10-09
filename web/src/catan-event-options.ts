@@ -17,6 +17,8 @@ export function catanEventsSupported(room: Partial<Room>) {
         "attack-shores",
         "barbarian-attack",
         "transport",
+        "transport-shores",
+        "transport-desert",
       ].includes(room.catanTwoScenario || room.catanScenario || "") ||
       (room.capacity === 2 && room.catanTwoScenario === "cities-knights") ||
       [

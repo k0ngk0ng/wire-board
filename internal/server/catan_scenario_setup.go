@@ -57,6 +57,9 @@ func publicCatanFlexibleScenario(scenario string) bool {
 // their separate acceptance gates; public sea rooms carry both the selected
 // scenario and its normalized map configuration.
 func (r *Room) validateCatanScenario() error {
+	if err := r.validateCatanTransportSeaSetup(); err != nil {
+		return err
+	}
 	if r.CatanRiversWorldMap != nil && (r.Kind != "catan" || r.CatanScenario != "rivers-new-world") {
 		return errors.New("河流预备地图与剧本不匹配")
 	}
@@ -72,8 +75,14 @@ func (r *Room) validateCatanScenario() error {
 		}
 	}
 	if publicCatanTransportSea(r.CatanScenario) {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil {
 			return errors.New("运输海图支持二至六人，可叠加事件牌")
+		}
+		if r.CatanCitiesKnights != nil {
+			normal, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+			if err != nil || normal != *r.CatanCitiesKnights {
+				return errors.New("运输海图骑士配置无效")
+			}
 		}
 		return nil
 	}
@@ -236,8 +245,24 @@ func (r *Room) setCatanScenario(scenario string) error {
 	next := *r
 	next.CatanScenario = scenario
 	if publicCatanTransportSea(scenario) {
+		scene := "shores"
+		if scenario == "transport-desert" {
+			scene = "desert"
+		}
+		layout := "fixed"
+		if r.CatanTransportSea != nil {
+			layout = r.CatanTransportSea.Layout
+		}
+		setup, _ := game.NormalizeCatanTransportSeaSetup(game.CatanTransportSeaSetup{Scenario: scene, Layout: layout})
+		next.CatanTransportSea = &setup
+	} else {
+		next.CatanTransportSea = nil
+	}
+	if publicCatanTransportSea(scenario) {
 		next.CatanOptions = game.CatanOptions{}
-		next.CatanCitiesKnights = nil
+		if !publicCatanTransportSea(r.CatanScenario) {
+			next.CatanCitiesKnights = nil
+		}
 	}
 	if scenario != "rivers-new-world" {
 		next.CatanRiversWorldMap = nil
@@ -263,7 +288,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if !publicCatanExplorerScenario(scenario) {
 		next.CatanFishingLakes = false
 	}
-	if scenario != "rivers" && scenario != "caravans" && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "attack-desert" && scenario != "attack-tribe" && scenario != "attack-wonders" && scenario != "attack-pirates" && scenario != "transport" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
+	if scenario != "rivers" && scenario != "caravans" && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "attack-desert" && scenario != "attack-tribe" && scenario != "attack-wonders" && scenario != "attack-pirates" && scenario != "transport" && !publicCatanTransportSea(scenario) && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
 		next.CatanFishing = false
 	}
 	if publicCatanFlexibleScenario(scenario) {
@@ -332,6 +357,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	r.CatanRiversWorldMap = next.CatanRiversWorldMap
 	r.CatanScenario = scenario
+	r.CatanTransportSea = next.CatanTransportSea
 	r.CatanOptions = next.CatanOptions
 	r.CatanEvents = next.CatanEvents
 	r.CatanBaseConfiguration = next.CatanBaseConfiguration

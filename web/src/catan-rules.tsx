@@ -506,7 +506,11 @@ export function CatanRules({ room }: { room: Room }) {
         {info.citiesKnights &&
           !info.attack &&
           !info.rivers &&
-          !info.caravans && (
+          !info.caravans &&
+          !room.game?.catan?.transport?.map.sea &&
+          !["transport-shores", "transport-desert"].includes(
+            room.catanScenario || "",
+          ) && (
             <p>
               使用城市改良、城墙、大都会与进步牌，取消运输发展牌和最大骑士军队；蛮族船与三名道路蛮族分别运作。二至四人掷出2或12只重掷生产骰，事件骰只结算一次；炼金术请选择3至11点。激活骑士可驱赶相邻道路蛮族至空边，然后转为未激活；落点为对手道路时随机偷1张资源或商品。金币可购买普通资源，不能购买商品；商品可按交易比例换金币。本站组合说明：五六人地图同样用一块粮田替换森林，小地图炼金术仅选3至11点。
             </p>
@@ -525,7 +529,12 @@ export function CatanRules({ room }: { room: Room }) {
             移动点；鱼与粮食共用一次，快速旅程也不能重复加步。旧靴提高 1
             分获胜门槛。
             本站组合配方：渔场均匀分布在运输地图的合法海岸，避开港口及禁止通行的场址边；城市骑士组合保留
-            15 分门槛。
+            {room.game?.catan?.transport?.map.sea ||
+            ["transport-shores", "transport-desert"].includes(
+              room.catanScenario || "",
+            )
+              ? "19 分门槛；普通捕鱼海图为16分。"
+              : "15 分门槛。"}
           </p>
         )}
         <ul>

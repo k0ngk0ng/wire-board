@@ -174,6 +174,9 @@ func (s *State) validateTwoSeafarers() error {
 	if g.twoAttackSea() && sea.Scenario == "pirate_islands" {
 		normal, err = NormalizeCatanSeafarersSetup(4, setup)
 	}
+	if g.twoTransportSea() {
+		normal, err = setup, nil
+	}
 	if err != nil || normal != setup || len(sea.Seats) != 2 || len(sea.Islands) != len(g.Tiles) || len(q.SeaStarts) != 2 || q.SeaStarts[0] == q.SeaStarts[1] {
 		return errors.New("双人海图配置或开局记录无效")
 	}
@@ -193,6 +196,9 @@ func (s *State) validateTwoSeafarers() error {
 	}
 	if g.twoTransportSea() {
 		target += 3
+		if g.fishingTransport() && !g.transportKnights() {
+			target--
+		}
 	}
 	if sea.VictoryPoints != target || sea.IslandBonus != bonuses[sea.Scenario] || sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("双人海图胜利条件或强盗海盗位置无效")
