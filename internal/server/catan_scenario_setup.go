@@ -66,7 +66,7 @@ func (r *Room) validateCatanScenario() error {
 		maximum := 6
 		minimum := 2
 		if r.CatanScenario == "caravans-shores" {
-			minimum = 5
+			minimum = 4
 		}
 		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
 			return errors.New("商队沙漠与部落支持二至六人独立组合")
