@@ -238,5 +238,10 @@
     "url": "https://www.catan.com/sites/default/files/2025-07/Rivers%20of%20Catan%20w%20TradersnBarbarians.pdf",
     "sha256": "f75c9f1809d2111564bb25a4ddcf9054ea05146f88974d85f4e551c85eaa005c",
     "bytes": 72478
+  },
+  "catan-attack-transport-2021": {
+    "url": "https://www.catan.com/sites/default/files/2021-07/Barbarian%20Attack%20-%20Traders%20and%20Barbarians.pdf",
+    "sha256": "a9c153538a151314bf71e3672e1d86bfbc5f6e57a77d85ffd9cde0f5c1bb6541",
+    "bytes": 244392
   }
 }
