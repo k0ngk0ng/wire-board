@@ -1,6 +1,7 @@
 import { CatanRiversWorldPreview } from "./catan-rivers-world-preview";
 import {
   supportsTwoCatanHelpers,
+  supportsCaravanSeaHelpers,
   catanTwoHelpersNote,
 } from "./catan-two-helpers";
 import { supportsTwoCatanVariants } from "./catan-two-variants";
@@ -2514,11 +2515,15 @@ function Create({
             </>
           )}
         {k === "catan" &&
-          isPublicCatanExplorer(
+          (isPublicCatanExplorer(
             capacity === 2 ? catanTwoScenario : catanScenario,
-          ) && (
+          ) ||
+            (capacity !== 2 && supportsCaravanSeaHelpers(catanScenario))) && (
             <CatanOptionPicker
-              explorer
+              explorer={isPublicCatanExplorer(
+                capacity === 2 ? catanTwoScenario : catanScenario,
+              )}
+              seafarers={supportsCaravanSeaHelpers(catanScenario)}
               fiveSixAvailable={false}
               value={catanOptions}
               onChange={setCatanOptions}
@@ -3222,17 +3227,19 @@ function Waiting({
               )}
             </>
           )}
-        {room.kind === "catan" && isPublicCatanExplorer(room.catanScenario) && (
-          <CatanOptionPicker
-            explorer
-            fiveSixAvailable={false}
-            value={room.catanOptions}
-            disabled={!host || busy || mapDirty}
-            onChange={(catanOptions) =>
-              command("catan_options", { catanOptions })
-            }
-          />
-        )}
+        {room.kind === "catan" &&
+          (isPublicCatanExplorer(room.catanScenario) ||
+            supportsCaravanSeaHelpers(room.catanScenario)) && (
+            <CatanOptionPicker
+              explorer
+              fiveSixAvailable={false}
+              value={room.catanOptions}
+              disabled={!host || busy || mapDirty}
+              onChange={(catanOptions) =>
+                command("catan_options", { catanOptions })
+              }
+            />
+          )}
         {room.kind === "catan" &&
           !room.catanTwoRules &&
           (!room.catanFishing ||

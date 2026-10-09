@@ -36,6 +36,14 @@ func publicCatanTradersCombination(scenario string) bool {
 	return false
 }
 
+func publicCatanCaravanSea(s string) bool {
+	switch s {
+	case "caravans-shores", "caravans-islands", "caravans-desert", "caravans-tribe", "caravans-new-world":
+		return true
+	}
+	return false
+}
+
 func publicCatanFlexibleScenario(scenario string) bool {
 	return scenario == "caravans-new-world" || scenario == "caravans-islands" || scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
 }
@@ -69,7 +77,7 @@ func (r *Room) validateCatanScenario() error {
 			minimum, maximum = 2, 6
 		}
 
-		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || !validCatanExplorerOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
 			return errors.New("商队海图人数或组合无效；支持二至六人")
 		}
 		if r.CatanScenario == "caravans-new-world" && r.CatanNewWorldMap != nil {
@@ -213,6 +221,9 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	if (scenario == "caravans-new-world" || scenario == "caravans-islands" || scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe") || (r.CatanScenario == "caravans-new-world" || r.CatanScenario == "caravans-islands" || r.CatanScenario == "caravans-shores" || r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe") || publicCatanTradersCombination(scenario) || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
 		next.CatanOptions = game.CatanOptions{}
+	}
+	if publicCatanCaravanSea(scenario) {
+		next.CatanOptions, _ = game.NormalizeCatanOptions(game.CatanOptions{Helpers: r.CatanOptions.Helpers, AllHelpers: r.CatanOptions.AllHelpers})
 	}
 	if publicCatanExplorerScenario(scenario) && !publicCatanExplorerScenario(r.CatanScenario) {
 		next.CatanOptions, _ = game.NormalizeCatanOptions(game.CatanOptions{Helpers: r.CatanOptions.Helpers, AllHelpers: r.CatanOptions.AllHelpers})
