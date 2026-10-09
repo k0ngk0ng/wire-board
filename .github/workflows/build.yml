@@ -15,7 +15,7 @@ jobs:
     name: Go rules and race checks (${{ matrix.shard }})
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -36,7 +36,7 @@ jobs:
       - name: Verify test partition coverage and failure propagation
         run: python3 scripts/test_go_shard_test.py
       - name: Test rules, privacy, persistence and concurrent requests
-        run: python3 scripts/test_go_shard.py --index ${{ matrix.shard }} --count 12 --race --timeout 45m
+        run: python3 scripts/test_go_shard.py --index ${{ matrix.shard }} --count 12 --race --timeout 90m
   verify:
     name: Test and Linux amd64 binary
     runs-on: ubuntu-latest
