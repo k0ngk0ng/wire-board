@@ -144,7 +144,7 @@ func (g *Catan) prepareTwoSeaNeutrals() error {
 
 func (s *State) validateTwoSeafarers() error {
 	g, q := s.Catan, s.Catan.Two
-	if q.RiversSea != "" && !g.twoRiversWorld() {
+	if q.RiversSea != "" && !g.twoRiversSea() {
 		return errors.New("双人河流海图版本或组合无效")
 	}
 	if q.Seafarers == "" && g.Seafarers == nil {
@@ -153,7 +153,7 @@ func (s *State) validateTwoSeafarers() error {
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversWorld() || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
+	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers

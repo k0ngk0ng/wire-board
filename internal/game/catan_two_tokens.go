@@ -129,7 +129,7 @@ func (g *Catan) twoRetreatTiles() []int {
 	if g.Transport != nil || g.twoAttack() || g.twoAttackKnights() || g.twoKnights() && (g.CitiesKnights.Invasions == 0 || g.Robber < 0) {
 		return []int{}
 	}
-	if g.Caravans != nil && !g.riversCaravans() || g.twoSeafarers() && g.twoDesert() < 0 {
+	if g.Caravans != nil && !g.riversCaravans() || g.twoSeafarers() && g.Rivers == nil && g.twoDesert() < 0 {
 		if g.Robber >= 0 {
 			return []int{-1}
 		}
@@ -252,7 +252,7 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 		if g.Rivers != nil {
 			target, terrain = a.Tile, "沼泽"
 		}
-		if g.Caravans != nil && !g.riversCaravans() || g.twoSeafarers() && g.twoDesert() < 0 {
+		if g.Caravans != nil && !g.riversCaravans() || g.twoSeafarers() && g.Rivers == nil && g.twoDesert() < 0 {
 			target, terrain = -1, "棋盘外"
 		}
 		if !slices.Contains(g.twoRetreatTiles(), target) {
