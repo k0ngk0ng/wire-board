@@ -18,25 +18,7 @@ func newCatanTwoRiversWorld(world *CatanRiversWorldMap) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
-	s := &State{Kind: "catan", Round: 1}
-	s.initCatan(2)
-	g, b := s.Catan, recipe.Catan
-	g.Tiles, g.Vertices, g.Edges, g.HexSize, g.Ports, g.Robber = b.Tiles, b.Vertices, b.Edges, b.HexSize, b.Ports, b.Robber
-	g.Seafarers, g.Rivers = b.Seafarers, b.Rivers
-	g.Seafarers.Seats = make([]CatanSeafarerSeat, 2)
-	g.Rivers.Gold = make([]int, 2)
-	g.Two = &CatanTwo{Rules: CatanTwoRules, Seafarers: CatanTwoSeafarersRules, RiversSea: CatanTwoRiversWorldRules, Rolls: []int{}, Tokens: []int{5, 5}, Bank: 10}
-	if err = g.prepareTwoSeaNeutrals(); err != nil {
-		return nil, err
-	}
-	g.StartPlayer = catanRandom(2)
-	s.Turn, s.Phase = g.StartPlayer, recipe.Phase
-	s.Log = append(recipe.Log, catanTwoSeafarersNotice, catanTwoRiversWorldNotice)
-	s.catanScores()
-	if err = g.validateRivers(); err != nil {
-		return nil, err
-	}
-	return s, s.validateCatanTwo()
+	return newCatanTwoRiversRecipe(recipe, CatanTwoRiversWorldRules, catanTwoRiversWorldNotice)
 }
 
 func (g *Catan) twoRiversWorld() bool {

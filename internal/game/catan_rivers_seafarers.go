@@ -142,7 +142,7 @@ func (g *Catan) validateRiversSeaMap() error {
 	if g.riversSea() && g.Seafarers.Scenario == "tribe" {
 		return g.validateRiversTribeMap()
 	}
-	if !g.riversSea() || g.Rivers.Map == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "fog" && g.Seafarers.Scenario != "desert") || g.Seafarers.Layout != "fixed" || len(g.Players) < 3 || len(g.Players) > 4 {
+	if !g.riversSea() || g.Rivers.Map == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "fog" && g.Seafarers.Scenario != "desert") || g.Seafarers.Layout != "fixed" || len(g.Players) < 2 || len(g.Players) == 2 && !g.twoRiversSea() || len(g.Players) > 4 {
 		return errors.New("河流海图配方尚未接入或标记无效")
 	}
 	sea := g.Seafarers
@@ -155,7 +155,11 @@ func (g *Catan) validateRiversSeaMap() error {
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
 		return errors.New("河流海图海盗位置无效")
 	}
-	expected, err := NewCatanSeafarers(len(g.Players), CatanOptions{}, CatanSeafarersSetup{Scenario: sea.Scenario, Layout: "fixed"}, nil)
+	recipeSeats := len(g.Players)
+	if g.twoRiversSea() {
+		recipeSeats = 4
+	}
+	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{}, CatanSeafarersSetup{Scenario: sea.Scenario, Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}
