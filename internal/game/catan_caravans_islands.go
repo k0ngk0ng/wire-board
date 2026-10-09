@@ -20,7 +20,7 @@ func (g *Catan) makeCaravansIslandsMap() (*catanCaravanMap, error) {
 	}
 	// Ports facing relocated land must follow that land. The printed diagram
 	// specifies their types; positions are resolved from tile sides.
-	ports := []seaPort{{1, 4, 4, -1}, {1, 1, 0, 4}, {2, 0, 3, -1}, {2, 4, 1, 1}, {4, 0, 4, 0}, {4, 0, 1, -1}, {6, 1, 1, 2}, {5, 3, 3, -1}, {4, 5, 0, 3}}
+	ports := []seaPort{{1, 4, 4, -1}, {1, 1, 0, 4}, {2, 0, 3, -1}, {2, 4, 1, 1}, {4, 0, 4, 0}, {4, 0, 1, -1}, {6, 0, 0, 2}, {4, 4, 3, -1}, {4, 5, 0, 3}}
 	if len(g.Players) == 4 {
 		ports = []seaPort{{1, 0, 2, 3}, {2, 0, 0, -1}, {4, 4, 3, -1}, {2, 5, 1, 0}, {4, 5, 3, 4}, {4, 5, 0, -1}, {5, 1, 4, -1}, {5, 2, 0, 1}, {6, 0, 2, 2}}
 	}
@@ -44,6 +44,10 @@ func (g *Catan) makeCaravansIslandsMap() (*catanCaravanMap, error) {
 	}
 	return &catanCaravanMap{WateringHoles: []int{17}, Starts: starts, Supply: 22}, nil
 }
+func NewCatanCaravansIslandsSeafarers(n int) (*State, error) {
+	return newCatanCaravansIslands(n)
+}
+
 func newCatanCaravansIslands(n int) (*State, error) {
 	if n != 3 && n != 4 {
 		return nil, errors.New("商队四岛暂支持三四人")
@@ -60,6 +64,9 @@ func newCatanCaravansIslands(n int) (*State, error) {
 	g.Caravans = &catanCaravans{Sea: CatanCaravansSeafarersRules, Rules: CatanCaravansRules, Map: m, Wagons: []catanCaravanWagon{}}
 	g.Seafarers.VictoryPoints = 15
 	s.Log = append(s.Log, "商队四岛：中央水源向海格延伸马车，海盗不阻挡商队；己方船与马车同边计两段路线，15分获胜")
+	if n == 3 {
+		s.Log = append(s.Log, "本站三人四岛补充：官方图海格上的孤立4点数字不入库存，海洋不生产资源；该位置保持海洋")
+	}
 	s.catanScores()
 	return s, s.validateCaravans()
 }

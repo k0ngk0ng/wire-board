@@ -105,3 +105,39 @@ func TestCatanCaravansIslandsCorruption(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanCaravansIslandsPrintedPortsAndSeaDisc(t *testing.T) {
+	s, err := newCatanCaravansIslands(3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := s.Catan
+	if g.Tiles[19].Resource != CatanSea || g.Tiles[19].Number != 0 {
+		t.Fatal("stray sea disc became productive land")
+	}
+	for _, want := range []struct{ tile, side, resource int }{{31, 0, 2}, {24, 3, -1}, {13, 1, 1}} {
+		edge := catanFishingSide(g, want.tile, want.side)
+		if !slices.ContainsFunc(g.Ports, func(p CatanPort) bool { return p.Edge == edge && p.Resource == want.resource }) {
+			t.Fatal("printed port", want)
+		}
+	}
+	g.SetupStep = g.SetupLimit()
+	s.Phase = "catan_turn"
+	for _, v := range g.Tiles[19].Vertices {
+		g.Vertices[v].Owner, g.Vertices[v].Level = 0, 1
+	}
+	before := append([]int{}, g.Players[0].Resources...)
+	// Compare the same state without adjacent ordinary producing tiles: only
+	// the former sea-disc location could otherwise cause a spurious reward.
+	for i := range g.Tiles {
+		if i != 19 {
+			g.Tiles[i].Number = 0
+		}
+	}
+	if err = s.catanRollProduction(4); err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(before, g.Players[0].Resources) {
+		t.Fatal("sea generated resources")
+	}
+}

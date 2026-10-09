@@ -27,3 +27,12 @@ test('extended merchant New Shores reports sixteen points and paired turns',()=>
  const room={kind:'catan',capacity:6,catanScenario:'caravans-shores'};
  const context=catanRuleContext(room);assert.equal(context.target,16);assert.equal(context.caravans,true);assert.equal(context.fiveSix,true);assert.equal(catanEventsSupported(room),true);
 });
+
+test('merchant Four Islands waiting rules show fifteen points and events',()=>{
+ for(const capacity of [3,4]) {
+  const room={kind:'catan',capacity,catanScenario:'caravans-islands'};
+  const c=catanRuleContext(room);
+  assert.equal(c.target,15);assert.equal(c.caravans,true);assert.equal(c.two,false);
+  assert.equal(catanEventsSupported(room),true);
+ }
+});
