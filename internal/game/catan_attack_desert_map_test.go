@@ -91,3 +91,63 @@ func TestCatanAttackDesertThreeLandingBoundary(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanAttackDesertFourNatural(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		s, e := newCatanAttackDesert(4)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if events {
+			if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+				t.Fatal(e)
+			}
+		}
+		for step := 0; step < 16000 && !s.Finished; step++ {
+			p := twoFullActor(s)
+			a, e := s.BotAction(p)
+			if e != nil {
+				t.Fatal(step, e)
+			}
+			if e = s.Apply(p, a); e != nil {
+				t.Fatal(step, e)
+			}
+			if step%137 == 0 {
+				b := clone(*s)
+				s = &b
+				if e = s.validateCatanAttack(); e != nil {
+					t.Fatal(e)
+				}
+			}
+		}
+		if !s.Finished {
+			t.Fatal("unfinished")
+		}
+	}
+}
+
+func TestCatanAttackDesertFourPrintedRecipe(t *testing.T) {
+	g, m, e := newCatanAttackDesertFourBoard()
+	if e != nil {
+		t.Fatal(e)
+	}
+	if g.Tiles[19].Resource != catanCastle || g.Tiles[15].Number != 12 || g.Tiles[24].Number != 2 || g.Tiles[38].Number != 10 || len(m.Coast) != 10 {
+		t.Fatal("printed recipe")
+	}
+	seen := map[int]bool{}
+	for _, id := range m.Coast {
+		n := g.Tiles[id].Number
+		if seen[n] || n < 2 || n == 7 || g.Seafarers.Islands[id] != g.Seafarers.StartIslands[0] {
+			t.Fatal("landing number or region", id, n)
+		}
+		seen[n] = true
+	}
+	for _, p := range g.Ports {
+		if !g.edgeTerrain(p.Edge, true) || !g.edgeTerrain(p.Edge, false) {
+			t.Fatal("port")
+		}
+	}
+	if g.Tiles[0].Resource != CatanGold || g.Tiles[40].Number != 6 || g.Tiles[41].Number != 12 {
+		t.Fatal("outer exploration")
+	}
+}

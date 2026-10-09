@@ -55,3 +55,42 @@ func newCatanAttackDesertThree() (*State, error) {
 	s.catanScores()
 	return s, s.validateCatanAttack()
 }
+
+func newCatanAttackDesertFourBoard() (*Catan, *catanAttackMap, error) {
+	s, e := NewCatanSeafarers(4, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
+	if e != nil {
+		return nil, nil, e
+	}
+	g := s.Catan
+	for id, t := range map[int]seaTerrain{2: {0, 9}, 7: {1, 6}, 8: {2, 4}, 13: {4, 11}, 15: {0, 12}, 19: {catanCastle, 0}, 20: {1, 5}, 24: {1, 2}, 26: {3, 4}, 27: {0, 3}, 31: {2, 5}, 33: {4, 8}, 38: {0, 10}} {
+		g.Tiles[id].Resource, g.Tiles[id].Number = t.resource, t.number
+	}
+	g.Robber, g.Seafarers.Pirate = -1, -1
+	g.Seafarers.Islands = g.findLandRegions(true)
+	g.Seafarers.StartIslands = []int{g.Seafarers.Islands[26]}
+	g.Seafarers.VictoryPoints = 14
+	return g, &catanAttackMap{Sea: CatanAttackSeafarersRules, Castles: []int{19}, Coast: []int{7, 8, 15, 21, 27, 33, 38, 32, 31, 24}, Barbarians: 36, Gold: 100}, nil
+}
+func newCatanAttackDesert(n int) (*State, error) {
+	if n == 3 {
+		return newCatanAttackDesertThree()
+	}
+	board, m, e := newCatanAttackDesertFourBoard()
+	if e != nil {
+		return nil, e
+	}
+	s, e := NewCatan(n, CatanOptions{})
+	if e != nil {
+		return nil, e
+	}
+	g := s.Catan
+	g.Tiles, g.Vertices, g.Edges, g.Ports, g.HexSize, g.Seafarers = board.Tiles, board.Vertices, board.Edges, board.Ports, board.HexSize, board.Seafarers
+	g.Robber = -1
+	g.DevDeck, g.DevDiscard = []int{}, []int{}
+	g.Attack, e = newCatanAttackPieces(g, m)
+	if e != nil {
+		return nil, e
+	}
+	s.catanScores()
+	return s, s.validateCatanAttack()
+}
