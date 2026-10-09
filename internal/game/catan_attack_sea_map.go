@@ -11,6 +11,9 @@ const CatanAttackSeafarersRules = "catan-attack-seafarers-2025"
 // Official combination p2: install the ordinary Barbarian Attack island
 // into the four-player New Shores frame, preserving the printed outer islands.
 func newCatanAttackShoresBoard(n int) (*Catan, *catanAttackMap, error) {
+	if n == 3 {
+		return newCatanAttackShoresThreeBoard()
+	}
 	if n != 4 {
 		return nil, nil, errors.New("此蛮族新海岸配方需要四人")
 	}
@@ -107,10 +110,10 @@ func newCatanAttackShores(n int) (*State, error) {
 	return s, s.validateCatanAttack()
 }
 func (m catanAttackMap) validateSea(g *Catan) error {
-	if m.Sea != CatanAttackSeafarersRules || m.Caravans != "" || m.Rivers != "" || m.Transport != "" || len(g.Players) != 4 || g.Seafarers == nil {
+	if m.Sea != CatanAttackSeafarersRules || m.Caravans != "" || m.Rivers != "" || m.Transport != "" || (len(g.Players) != 3 && len(g.Players) != 4) || g.Seafarers == nil {
 		return errors.New("蛮族海图配置无效")
 	}
-	ref, want, err := newCatanAttackShoresBoard(4)
+	ref, want, err := newCatanAttackShoresBoard(len(g.Players))
 	if err != nil {
 		return err
 	}
@@ -131,6 +134,9 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 		return errors.New("蛮族海图港口库存无效")
 	}
 	ids := []int{12, 13, 14, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31, 32, 33, 34, 37, 38, 39}
+	if len(g.Players) == 3 {
+		ids = []int{10, 11, 15, 16, 17, 20, 21, 22, 23, 26, 27, 28, 31, 32}
+	}
 	counts := [2][5]int{}
 	for i, tile := range g.Tiles {
 		w := ref.Tiles[i]
@@ -147,6 +153,10 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 		}
 	}
 	recipe := catanAttackBoardRecipe(false)
+	if len(g.Players) == 3 {
+		recipe.coastalResources = [5]int{2, 2, 2, 2, 1}
+		recipe.innerResources = [5]int{1, 0, 1, 1, 1}
+	}
 	if counts[0] != recipe.coastalResources || counts[1] != recipe.innerResources {
 		return errors.New("蛮族海图地形库存无效")
 	}
@@ -165,7 +175,7 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 		}
 	}
 	sea, w := g.Seafarers, ref.Seafarers
-	if sea.Scenario != w.Scenario || sea.Rules != w.Rules || sea.Layout != w.Layout || sea.Variable || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.NewWorld != nil || sea.NumberRecipe != "" || sea.Pirate != -1 || sea.VictoryPoints != 14 || sea.IslandBonus != 2 || len(sea.Seats) != 4 || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
+	if sea.Scenario != w.Scenario || sea.Rules != w.Rules || sea.Layout != w.Layout || sea.Variable || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.NewWorld != nil || sea.NumberRecipe != "" || sea.Pirate != -1 || sea.VictoryPoints != 14 || sea.IslandBonus != 2 || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
 		return errors.New("蛮族海图分区无效")
 	}
 	return nil
