@@ -13,3 +13,7 @@ test('public caravan sea room offers event cards without admitting fishing',()=>
  assert.equal(catanEventsSupported({kind:'catan',capacity:3,catanScenario:'caravans-desert'}),true);
  assert.equal(catanEventsSupported({kind:'catan',capacity:3,catanScenario:'caravans-desert',catanFishing:true}),false);
 });
+test('caravan tribe target and events are explicit',()=>{
+ const room={kind:'catan',capacity:4,catanScenario:'caravans-tribe'};
+ assert.equal(catanRuleContext(room).target,15);assert.equal(catanRuleContext(room).caravans,true);assert.equal(catanEventsSupported(room),true);
+});

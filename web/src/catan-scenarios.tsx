@@ -4,6 +4,7 @@ import "./catan-scenarios.css";
 
 const names: Record<string, string> = {
   "caravans-desert": "商队＋穿越沙漠",
+  "caravans-tribe": "商队＋遗忘部落",
   "cities-knights": "城市与骑士",
   "barbarian-attack": "蛮族进攻",
   transport: "商人与蛮族 · 运输",

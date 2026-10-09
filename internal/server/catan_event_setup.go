@@ -16,7 +16,7 @@ func (r *Room) publicCatanEventsAvailable() bool {
 	if r.CatanNewWorldMap != nil && scenario != "new_world" {
 		return false
 	}
-	if scenario == "caravans-desert" || publicCatanRiversSea(scenario) {
+	if scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) {
 		return true
 	}
 	switch scenario {
