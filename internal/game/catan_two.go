@@ -9,6 +9,7 @@ import (
 const CatanTwoRules = "catan-for-two-2025"
 
 type CatanTwo struct {
+	AttackSea       string           `json:"attackSea,omitempty"`
 	CaravansSea     string           `json:"caravansSea,omitempty"`
 	RiversSea       string           `json:"riversSea,omitempty"`
 	SeaKnights      string           `json:"seaKnights,omitempty"`
