@@ -133,6 +133,13 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 		recipeSeats = 4
 	}
 	ref, want, err := newCatanAttackShoresBoard(recipeSeats)
+	desert := g.Seafarers.Scenario == "desert"
+	if desert {
+		if len(g.Players) != 3 {
+			return errors.New("蛮族沙漠人数未接通")
+		}
+		ref, want, err = newCatanAttackDesertThreeBoard()
+	}
 	if err != nil {
 		return err
 	}
@@ -159,6 +166,9 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 	if len(g.Players) > 4 {
 		ids = riverShoresMainlandIDs()
 	}
+	if desert {
+		ids = nil
+	}
 	counts := [2][5]int{}
 	for i, tile := range g.Tiles {
 		w := ref.Tiles[i]
@@ -179,7 +189,7 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 		recipe.coastalResources = [5]int{2, 2, 2, 2, 1}
 		recipe.innerResources = [5]int{1, 0, 1, 1, 1}
 	}
-	if counts[0] != recipe.coastalResources || counts[1] != recipe.innerResources {
+	if !desert && (counts[0] != recipe.coastalResources || counts[1] != recipe.innerResources) {
 		return errors.New("蛮族海图地形库存无效")
 	}
 	for i, v := range g.Vertices {
