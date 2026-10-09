@@ -625,8 +625,8 @@ export function CatanAttackPanel({
             <>
               <p>
                 {a.city
-                  ? "自己回合达到13分获胜 · 每3个俘虏1分 · 道路骑士按等级战斗。"
-                  : "自己回合达到12分获胜 · 每2个俘虏1分 · 不使用强盗和最大骑士军队。"}
+                  ? `自己回合达到${g.victoryTarget ?? 13}分获胜 · 每3个俘虏1分 · 道路骑士按等级战斗。`
+                  : `自己回合达到${g.victoryTarget ?? 12}分获胜 · 每2个俘虏1分 · 不使用强盗和最大骑士军队。`}
               </p>
               {own && (
                 <CatanAttackSeat game={g} seat={room.you} assets={assets} />

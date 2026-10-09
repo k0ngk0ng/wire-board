@@ -42,6 +42,7 @@ export function catanEventsSupported(room: Partial<Room>) {
       "rivers-caravans",
       "rivers-attack",
       "rivers-transport",
+      "caravans-attack",
       "shores",
       "islands",
       "fog",

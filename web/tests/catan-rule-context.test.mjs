@@ -948,3 +948,34 @@ test("rivers transport resolves shared river rules, player counts and target wit
       assert.equal(rules.target, knights ? 15 : 13);
     }
 });
+
+test("caravans attack combines votes and battles with 12 or 15 VP in waiting and saved rooms", () => {
+  for (const capacity of [2, 3, 6])
+    for (const knights of [false, true]) {
+      const room = {
+        capacity,
+        catanScenario: "caravans-attack",
+        catanCitiesKnights: knights ? { layout: "variable" } : undefined,
+      };
+      const rules = catanRuleContext(room);
+      assert.equal(rules.caravans, true);
+      assert.equal(rules.attack, true);
+      assert.equal(rules.rivers, false);
+      assert.equal(rules.two, capacity === 2);
+      assert.equal(rules.fiveSix, capacity > 4);
+      assert.equal(rules.target, knights ? 15 : 12);
+      room.game = {
+        catan: {
+          players: Array.from({ length: capacity }, () => ({})),
+          caravans: { attack: "catan-caravans-attack-2025" },
+          attack: {},
+          citiesKnights: knights ? { layout: "variable" } : undefined,
+          two: capacity === 2 ? {} : undefined,
+          paired: capacity > 4 ? {} : undefined,
+        },
+      };
+      room.catanScenario = "rivers-attack";
+      assert.equal(catanRuleContext(room).target, knights ? 15 : 12);
+      assert.equal(catanRuleContext(room).rivers, false);
+    }
+});

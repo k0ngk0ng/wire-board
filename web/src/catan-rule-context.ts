@@ -18,12 +18,12 @@ export function catanRuleContext(room: Room) {
   const harbors = game ? !!game.harbors : !!room.catanHarbors?.enabled;
   const caravans = game
     ? !!game.caravans
-    : ["caravans", "rivers-caravans"].includes(
+    : ["caravans", "rivers-caravans", "caravans-attack"].includes(
         room.catanTwoScenario || room.catanScenario || "",
       );
   const attack = game
     ? !!game.attack
-    : ["barbarian-attack", "rivers-attack"].includes(
+    : ["barbarian-attack", "rivers-attack", "caravans-attack"].includes(
         room.catanTwoScenario || room.catanScenario || "",
       );
   const transport = game
@@ -247,6 +247,7 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;
   if (["barbarian-attack", "rivers-attack"].includes(scenario))
     return citiesKnights ? 13 : 12;
   if (["transport", "rivers-transport"].includes(scenario))

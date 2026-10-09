@@ -245,8 +245,7 @@ func (s *State) catanAttackCityPlanStep(player int, a Action) error {
 		// Battles clone the State; obtain fresh pointers before persisting results.
 		s.Catan.Attack.City.End = result
 		if !s.Finished {
-			s.catanNext()
-			s.catanVictory()
+			s.catanAfterAttackBattles()
 		}
 		return nil
 	default:

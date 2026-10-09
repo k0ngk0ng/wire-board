@@ -168,8 +168,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 			return nil
 		}
 	}
-	s.catanNext()
-	s.catanVictory()
+	s.catanAfterAttackBattles()
 	return nil
 }
 

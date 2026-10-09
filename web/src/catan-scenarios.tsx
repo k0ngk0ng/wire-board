@@ -9,6 +9,7 @@ const names: Record<string, string> = {
   rivers: "河流",
   caravans: "商队",
   "rivers-caravans": "河流＋商队",
+  "caravans-attack": "商队＋蛮族进攻",
   "rivers-transport": "河流＋运输",
   "rivers-attack": "河流＋蛮族进攻",
   "spices-for-catan": "探索者与海盗 · 卡坦香料",

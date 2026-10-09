@@ -11,6 +11,7 @@ const CatanCaravansRules = "catan-caravans-2025"
 // Chronological directed wagons can be replayed to validate a saved network.
 // Pending holds public bids while the action owner remains State.Turn.
 type catanCaravans struct {
+	Attack       string                      `json:"attack,omitempty"`
 	Rivers       string                      `json:"rivers,omitempty"`
 	ExtraNumbers []catanFishingExtraNumber   `json:"extraNumbers,omitempty"`
 	Knights      string                      `json:"knights,omitempty"`

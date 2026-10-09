@@ -1,3 +1,4 @@
+import { CatanCaravansAttackRules } from "./catan-caravans-attack-rules";
 import { CatanRiversTransportRules } from "./catan-rivers-transport-rules";
 import { CatanRiversAttackRules } from "./catan-rivers-attack-rules";
 import {
@@ -455,6 +456,7 @@ export function CatanRules({ room }: { room: Room }) {
         </h3>
         {info.citiesKnights && <CatanCitiesKnightsRules info={info} />}
         <CatanRiversAttackRules info={info} />
+        <CatanCaravansAttackRules info={info} />
         <CatanRiversTransportRules info={info} />
         {info.citiesKnights && !info.rivers && (
           <p>
@@ -552,13 +554,19 @@ export function CatanRules({ room }: { room: Room }) {
       <>
         <p>
           <b>
-            {info.rivers ? "河流＋蛮族进攻" : "蛮族进攻"} · {players}人
+            {info.caravans
+              ? "商队＋蛮族进攻"
+              : info.rivers
+                ? "河流＋蛮族进攻"
+                : "蛮族进攻"}{" "}
+            · {players}人
           </b>{" "}
           · 自己回合达到12分立即获胜。
         </p>
         <CatanSeaNumberRules info={info} />
         <CatanEventRules info={info} />
         <CatanRiversAttackRules info={info} />
+        <CatanCaravansAttackRules info={info} />
         {info.twoAttack && (
           <p>
             双人规则：每回合生产两次；真人建村后进行中立建设，两座村庄分别触发一次登陆。如果只能代建中立道路，则只触发真人村庄的一次登陆。
@@ -631,7 +639,11 @@ export function CatanRules({ room }: { room: Room }) {
         )}
         <h4>计时与隐私</h4>
         <p>
-          正常行动120秒；必要选择超时自动处理。特殊牌响应结束后恢复原行动剩余时间；骑士移动阶段独立120秒，连续选择或撤销不刷新期限，确认后下一位获得完整120秒。未确认骑士计划仅本人可见，可收起面板查看地图。
+          正常行动120秒；必要选择超时自动处理。特殊牌响应结束后恢复原行动剩余时间；骑士移动阶段独立120秒，连续选择或撤销不刷新期限，确认后
+          {info.caravans
+            ? "继续本回合商队投票，全部结算后下一位获得完整120秒。"
+            : "下一位获得完整120秒。"}
+          未确认骑士计划仅本人可见，可收起面板查看地图。
         </p>
       </>
     );
@@ -641,6 +653,7 @@ export function CatanRules({ room }: { room: Room }) {
         <CatanSeaNumberRules info={info} />
         <CatanCitiesKnightsRules info={info} />
         <CatanRiversAttackRules info={info} />
+        <CatanCaravansAttackRules info={info} />
         <CatanEventRules info={info} />
         {info.fishing && (
           <>

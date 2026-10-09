@@ -635,6 +635,7 @@ export type CatanState = {
     neutralRoadLengths: number[];
   };
   caravans?: {
+    attack?: string;
     rivers?: string;
     extraNumbers?: { tile: number; number: number }[];
     rules?: string;
