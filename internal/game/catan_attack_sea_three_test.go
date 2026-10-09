@@ -47,3 +47,64 @@ func TestCatanAttackShoresThreeDoubleNumber(t *testing.T) {
 		t.Fatal("conquest produced")
 	}
 }
+
+func TestCatanAttackShoresThreeNatural(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		s, e := newCatanAttackShores(3)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if events {
+			if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+				t.Fatal(e)
+			}
+		}
+		for step := 0; step < 16000 && !s.Finished; step++ {
+			p := twoFullActor(s)
+			a, e := s.BotAction(p)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if e = s.Apply(p, a); e != nil {
+				t.Fatal(step, e)
+			}
+			if step%137 == 0 {
+				b := clone(*s)
+				s = &b
+				if e = s.validateCatanAttack(); e != nil {
+					t.Fatal(e)
+				}
+			}
+		}
+		if !s.Finished {
+			t.Fatal("unfinished", events)
+		}
+	}
+}
+
+func TestCatanAttackShoresThreeLandingFaces(t *testing.T) {
+	s, e := newCatanAttackShores(3)
+	if e != nil {
+		t.Fatal(e)
+	}
+	finishAttackSetup(t, s)
+	g := s.Catan
+	clear(g.Attack.Barbarians)
+	s.Phase = "catan_turn"
+	rolls := [][2]int{{1, 1}, {6, 6}, {1, 2}}
+	index := 0
+	if e = s.catanAttackLanding(func() [2]int { r := rolls[index]; index++; return r }, func(int) int { return 0 }); e != nil {
+		t.Fatal(e)
+	}
+	if g.Attack.Barbarians[28] != 2 || len(g.Attack.Landing.Rolls) != 3 {
+		t.Fatal("distinct dice faces should each land on shared tile")
+	}
+	if e = s.validateCatanAttack(); e != nil {
+		t.Fatal("landing restore", e)
+	}
+	b := clone(*s)
+	b.Catan.Attack.Map.ExtraNumbers[0].Number = 11
+	if b.validateCatanAttack() == nil {
+		t.Fatal("corrupt double number")
+	}
+}
