@@ -217,7 +217,7 @@ export function twoRetreatTargets(room: Room): number[] {
     q = g?.two;
   if (!g || !q || g.transport || g.attack || !twoMayRetreat(room)) return [];
   if (
-    g.caravans ||
+    (g.caravans && !g.rivers) ||
     (q.seafarers === "wire-board-two-seafarers-v1" &&
       !g.tiles.some((t) => t.resource === 5))
   )

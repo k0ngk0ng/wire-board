@@ -71,7 +71,7 @@ func (g *Catan) validateCaravanKnights() error {
 	if c.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.caravanKnights() || g.CitiesKnights.Rules != catanCitiesKnightsRules(len(g.Players)) || g.CitiesKnights.RobberStart != -1 {
+	if !g.caravanKnights() || g.CitiesKnights.Rules != catanCitiesKnightsRules(len(g.Players)) || g.CitiesKnights.RobberStart != -1 && !g.riversCaravans() {
 		return errors.New("商队城市骑士组合标记无效")
 	}
 	return nil

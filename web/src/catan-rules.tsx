@@ -716,7 +716,7 @@ export function CatanRules({ room }: { room: Room }) {
       <p>
         <b>
           {info.two
-            ? `双人卡坦${info.twoSeafarers ? "＋航海家 · " + catanScenarioName(scenario) : info.rivers ? "＋河流" : info.caravans ? "＋商队" : ""}`
+            ? `双人卡坦${info.twoSeafarers ? "＋航海家 · " + catanScenarioName(scenario) : info.rivers && info.caravans ? "＋河流＋商队" : info.rivers ? "＋河流" : info.caravans ? "＋商队" : ""}`
             : info.fishing
               ? info.caravans
                 ? "渔夫＋商队"
@@ -726,7 +726,9 @@ export function CatanRules({ room }: { room: Room }) {
                     ? `渔夫＋航海家 · ${catanScenarioName(scenario)}`
                     : "卡坦渔夫"
               : info.rivers
-                ? "卡坦河流"
+                ? info.caravans
+                  ? "河流＋商队"
+                  : "卡坦河流"
                 : seafarers
                   ? `航海家 · ${catanScenarioName(scenario)}`
                   : "卡坦岛基础版"}
@@ -788,7 +790,7 @@ export function CatanRules({ room }: { room: Room }) {
               <>
                 <li>
                   每人起始5枚贸易筹码。
-                  {info.caravans
+                  {info.caravans && !info.rivers
                     ? "沿海建村得1枚；水源不算沙漠，没有相邻建村的2枚奖励。"
                     : `起始和后续村庄相邻${info.rivers ? "沼泽" : "沙漠"}得2枚、沿海得1枚，可叠加。`}
                   每回合另可弃一张已打出的骑士换2枚，可能失去最大骑士军队。
@@ -796,7 +798,7 @@ export function CatanRules({ room }: { room: Room }) {
                 </li>
                 <li>
                   掷骰前或行动阶段，每回合可消费筹码一次：随机取对手最多2张资源，再交还自选2张；或
-                  {info.caravans
+                  {info.caravans && !info.rivers
                     ? "把强盗移出棋盘"
                     : info.twoSeafarers
                       ? "把强盗移回沙漠；地图没有沙漠时移到场外，不影响海盗"
@@ -884,13 +886,20 @@ export function CatanRules({ room }: { room: Room }) {
       )}
       {info.rivers && (
         <>
+          {info.caravans && (
+            <p>
+              河流＋商队：中央水源不生产，2 与 12 分别叠放在两块 3
+              点地上，两种点数均可产出。本站五六人采用两处非河流水源，保留三条河流；骑士组合保留商队的
+              15 分目标。
+            </p>
+          )}
           <h4>{info.two ? "河流与双人组合" : "河流规则"}</h4>
           <ol>
             <li>
               先手先选择一处沼泽作为强盗起点，再进行起始建设。沼泽不产资源。
               {info.citiesKnights &&
                 "首次蛮族进攻前强盗不入场；起始河岸城市也领1金币。"}
-              {!fiveSix && "同一地块上的2与12均可触发生产。"}
+              {!fiveSix && !info.caravans && "同一地块上的2与12均可触发生产。"}
             </li>
             <li>
               桥梁费用为1木材＋2砖块，每家最多3座，不占15条道路库存，计入最长路线。道路不能跨越桥位，道路建设卡不能免费建桥。
@@ -916,6 +925,7 @@ export function CatanRules({ room }: { room: Room }) {
               唯一最富者加1分，并列最富无人加分；所有最贫者各扣2分。按真人玩家的金币即时比较。
               {info.two && "同金时双方都是最贫。"}
               {info.citiesKnights &&
+                !info.caravans &&
                 "本站校注：官方组合页胜利段混入旧靴文字；纯河流组合不使用旧靴，按主句13分执行。"}
               达到{info.target}
               分仍需在自己的行动阶段获胜。
@@ -928,7 +938,11 @@ export function CatanRules({ room }: { room: Room }) {
           <h4>{info.two ? "商队与双人组合" : "商队规则"}</h4>
           <ol>
             <li>
-              水源不生产资源，强盗起始在棋盘外。商队从水源旁的三个箭头出发，沿前进方向延伸，不分叉。
+              水源不生产资源，
+              {info.rivers
+                ? "强盗起始位置沿用河流规则。"
+                : "强盗起始在棋盘外。"}
+              商队从水源旁的三个箭头出发，沿前进方向延伸，不分叉。
             </li>
             <li>
               本次行动建造过村庄或城市，结束行动后进行一次投票；建造多个建筑也只触发一次。每张
@@ -946,7 +960,10 @@ export function CatanRules({ room }: { room: Room }) {
               </li>
             )}
             <li>
-              马车覆盖的道路计作两段最长路线；村庄或城市相邻至少两辆马车时，额外得1分，三辆也只加1分。
+              马车覆盖的道路计作两段最长路线；
+              {info.rivers &&
+                "桥位无论有没有桥都可放马车，已建桥梁按道路计加成。"}
+              村庄或城市相邻至少两辆马车时，额外得1分，三辆也只加1分。
             </li>
             <li>
               在自己的回合达到{info.target}分立即获胜。

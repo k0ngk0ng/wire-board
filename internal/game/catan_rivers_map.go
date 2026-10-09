@@ -137,6 +137,9 @@ func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 }
 
 func (f catanRiversMap) validate(g *Catan) error {
+	if g.Caravans != nil {
+		return g.validateRiversCaravanMap()
+	}
 	if !validCatanExtendedNumberRecipe(f.NumberRecipe, len(g.Players)) {
 		return errors.New("河流数字配置版本无效")
 	}

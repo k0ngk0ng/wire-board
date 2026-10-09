@@ -50,8 +50,33 @@ test("ordinary, sea and old fishing maps need no extra number metadata", () => {
   assert.deepEqual(catanProductionNumbers(g, 99), []);
 });
 
-test("no-lake combinations tolerate old null lake arrays",()=>{
- const g={robber:-1,tiles:[{number:6}],fishing:{map:{lakes:null}}};
- assert.deepEqual(catanProductionNumbers(g,0),[6]);
- assert.equal(catanTileProducing(g,0,6),true);
+test("no-lake combinations tolerate old null lake arrays", () => {
+  const g = {
+    robber: -1,
+    tiles: [{ number: 6 }],
+    fishing: { map: { lakes: null } },
+  };
+  assert.deepEqual(catanProductionNumbers(g, 0), [6]);
+  assert.equal(catanTileProducing(g, 0, 6), true);
+});
+
+test("rivers caravans keeps each additional disc with its tile after invention", () => {
+  const g = {
+    robber: -1,
+    tiles: [{ number: 3 }, { number: 3 }],
+    rivers: { map: { doubleNumberTile: -1 } },
+    caravans: {
+      extraNumbers: [
+        { tile: 0, number: 2 },
+        { tile: 1, number: 12 },
+      ],
+    },
+  };
+  assert.deepEqual(catanProductionNumbers(g, 0), [3, 2]);
+  assert.deepEqual(catanProductionNumbers(g, 1), [3, 12]);
+  g.tiles[0].number = 5;
+  assert.deepEqual(catanProductionNumbers(g, 0), [5, 2]);
+  g.robber = 0;
+  assert.equal(catanTileProducing(g, 0, 2), false);
+  assert.equal(catanTileProducing(g, 1, 12), true);
 });

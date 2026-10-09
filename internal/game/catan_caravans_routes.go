@@ -11,14 +11,16 @@ const CatanCaravansRules = "catan-caravans-2025"
 // Chronological directed wagons can be replayed to validate a saved network.
 // Pending holds public bids while the action owner remains State.Turn.
 type catanCaravans struct {
-	Knights     string                      `json:"knights,omitempty"`
-	Rules       string                      `json:"rules,omitempty"`
-	Map         *catanCaravanMap            `json:"map"`
-	Wagons      []catanCaravanWagon         `json:"wagons"`
-	Built       bool                        `json:"built"`
-	Sequence    int                         `json:"sequence"`
-	Pending     *catanCaravanVote           `json:"pending,omitempty"`
-	ShortRounds []catanTwoCaravanShortRound `json:"shortRounds,omitempty"`
+	Rivers       string                      `json:"rivers,omitempty"`
+	ExtraNumbers []catanFishingExtraNumber   `json:"extraNumbers,omitempty"`
+	Knights      string                      `json:"knights,omitempty"`
+	Rules        string                      `json:"rules,omitempty"`
+	Map          *catanCaravanMap            `json:"map"`
+	Wagons       []catanCaravanWagon         `json:"wagons"`
+	Built        bool                        `json:"built"`
+	Sequence     int                         `json:"sequence"`
+	Pending      *catanCaravanVote           `json:"pending,omitempty"`
+	ShortRounds  []catanTwoCaravanShortRound `json:"shortRounds,omitempty"`
 }
 
 func (c catanCaravans) choices(g *Catan) []catanCaravanWagon {
@@ -65,6 +67,9 @@ func (c catanCaravans) choices(g *Catan) []catanCaravanWagon {
 }
 
 func (c catanCaravans) validate(g *Catan) error {
+	if c.Rivers != "" && !g.riversCaravans() || len(c.ExtraNumbers) > 0 && !g.riversCaravans() {
+		return errors.New("河流商队标记或双数字缺少对应地图")
+	}
 	if c.Rules != "" && c.Rules != CatanCaravansRules {
 		return errors.New("商队规则版本无效")
 	}

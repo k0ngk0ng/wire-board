@@ -185,7 +185,8 @@ export function CatanTwoPanel({
       : retreatTargets.length > 0;
   const retreatRequest = twoRetreatAction(room, retreat);
   const retreatValid = !!retreatRequest;
-  const retreatOutside = !!g.caravans || retreatTargets.includes(-1);
+  const retreatOutside =
+    (!!g.caravans && !g.rivers) || retreatTargets.includes(-1);
   const retreatName = g.rivers ? "沼泽" : "沙漠";
   const retreatAction = g.attack
     ? "将一个蛮族移到另一未征服沿海地块"
@@ -389,7 +390,7 @@ export function CatanTwoPanel({
                   <>
                     {g.transport
                       ? "货物地块旁建村得 1 枚筹码，沿海另得 1 枚，可叠加；起始城市不领村庄筹码。"
-                      : g.caravans
+                      : g.caravans && !g.rivers
                         ? "沿海建村得 1 枚筹码。水源不算沙漠，不提供相邻建村的 2 枚奖励。"
                         : `在${retreatName}旁建村得 2 枚筹码，沿海得 1 枚，两者可叠加。`}
                     {g.citiesKnights
@@ -824,7 +825,12 @@ export function CatanTwoRetreatMap({
   onSelect: (s: TwoRetreatSelection) => void;
   poly: (id: number) => string;
 }) {
-  if (!selected || busy || room.game?.catan?.caravans) return null;
+  if (
+    !selected ||
+    busy ||
+    (room.game?.catan?.caravans && !room.game?.catan?.rivers)
+  )
+    return null;
   const g = room.game!.catan!;
   if (g.transport) {
     const edges = twoRetreatEdges(room);

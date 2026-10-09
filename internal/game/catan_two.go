@@ -137,7 +137,7 @@ func (s *State) validateCatanTwo() error {
 	if err := s.validateCatanTwoTokens(); err != nil {
 		return err
 	}
-	if len(g.Players) != 2 || (!g.twoSeafarers() && (len(g.Tiles) != 19 || !g.twoBoardDimensions())) || g.Seafarers != nil && !g.twoSeafarers() || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.GoldPending != nil && !g.twoSeafarers() || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
+	if len(g.Players) != 2 || (!g.twoSeafarers() && (len(g.Tiles) != 19 || !g.twoBoardDimensions())) || g.Seafarers != nil && !g.twoSeafarers() || g.CitiesKnights != nil && !g.twoKnights() || g.Caravans != nil && g.Rivers != nil && !g.riversCaravans() || g.Fishing != nil && !g.twoFishing() || g.BaseSetup != nil || g.Paired != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.GoldPending != nil && !g.twoSeafarers() || s.Turn < 0 || s.Turn >= 2 || g.StartPlayer < 0 || g.StartPlayer >= 2 || len(q.Rolls) > 2 || q.Sequence < 0 {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {

@@ -137,6 +137,10 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				rules = game.CatanCaravansRules
 			}
 			record.CatanExpansionRules["caravans"] = rules
+			if g.Caravans.Rivers != "" {
+				record.CatanScenario = "rivers-caravans"
+				record.CatanExpansionRules["rivers_caravans"] = g.Caravans.Rivers
+			}
 			if g.Caravans.Knights != "" {
 				record.CatanExpansionRules["caravansKnights"] = g.Caravans.Knights
 			}
