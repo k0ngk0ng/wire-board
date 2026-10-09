@@ -14,7 +14,7 @@ func CatanTwoHelpersOptions(scenario string, o CatanOptions) bool {
 }
 
 func (g *Catan) twoHelpers() bool {
-	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && (g.CitiesKnights == nil || g.twoKnights() && g.cityHelpers()) && g.Rivers == nil && g.Caravans == nil && g.Attack == nil && g.Transport == nil && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
+	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && (g.CitiesKnights == nil || g.twoKnights() && g.cityHelpers()) && g.Rivers == nil && (g.Caravans == nil || g.caravanSeaHelpers()) && g.Attack == nil && g.Transport == nil && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
 }
 
 func (s *State) enableTwoHelpers(o CatanOptions) error {

@@ -330,10 +330,10 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			}
 			desert = a.Tile
 		}
-		if desert < 0 && !g.fishingHelpers() {
+		if desert < 0 && !g.fishingHelpers() && !g.caravanSeaHelpers() {
 			return errors.New("地图上没有沙漠")
 		}
-		if resource == CatanGold || g.fishingHelpers() && resource == catanLake {
+		if resource == CatanGold || g.fishingHelpers() && resource == catanLake || g.caravanSeaHelpers() && resource == catanWateringHole {
 			if sum(g.Bank[:5]) > 0 && (a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] == 0) {
 				return errors.New("请选择银行有库存的一种普通资源")
 			}
@@ -354,7 +354,7 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			return errors.New("强盗当前不在陆地上")
 		}
 		resource := g.Tiles[g.Robber].Resource
-		if resource == CatanDesert || resource == CatanGold || g.fishingHelpers() && resource == catanLake {
+		if resource == CatanDesert || resource == CatanGold || g.fishingHelpers() && resource == catanLake || g.caravanSeaHelpers() && resource == catanWateringHole {
 			resource = a.Color
 		}
 		if resource < 0 || resource >= 5 || g.Bank[resource] == 0 {
