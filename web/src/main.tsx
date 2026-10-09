@@ -2825,6 +2825,7 @@ function Waiting({
     <div className="waiting-layout">
       {room.kind === "catan" && room.catanScenario === "rivers-new-world" && (
         <CatanRiversWorldPreview
+          onDirty={setMapDirty}
           room={room}
           host={host}
           busy={busy}
