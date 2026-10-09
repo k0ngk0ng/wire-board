@@ -27,7 +27,7 @@ export const catanRiversSeaScenarios = [
     id: "rivers-tribe",
     name: "河流＋遗忘部落",
     description:
-      "沿河建设并航行领取部落奖励，13 分获胜。二至四人，可加事件牌。",
+      "沿河建设并航行领取部落奖励，13 分获胜。二至六人，可加事件牌；五六人使用本站固定三河配方。",
   },
   {
     id: "rivers-new-world",
@@ -49,4 +49,5 @@ export const catanRiversSeaAvailable = (id: string, players: number) =>
       "rivers-desert",
       "rivers-desert-belt",
       "rivers-new-world",
+      "rivers-tribe",
     ].includes(id));

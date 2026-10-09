@@ -240,6 +240,9 @@ func (g *Catan) makeRiversTribeMap() (*catanRiversMap, error) {
 }
 
 func (g *Catan) validateRiversTribeMap() error {
+	if len(g.Players) > 4 {
+		return g.validateRiversTribeExtended()
+	}
 	sea, r := g.Seafarers, g.Rivers
 	if sea == nil || r == nil || r.Map == nil || len(g.Players) < 2 || len(g.Players) == 2 && !g.twoRiversSea() || len(g.Players) > 4 || sea.Scenario != "tribe" || sea.Layout != "variable" || !sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || r.SeaLayout != "" || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.Tribe == nil || len(sea.Seats) != len(g.Players) {
 		return errors.New("河流部落配置无效")
@@ -411,7 +414,11 @@ func (g *Catan) validateRiverTribeRewards(board *Catan) error {
 			cards[i] += c
 		}
 	}
-	if !slices.Equal(cards, []int{14, 2, 2, 2, 5}) {
+	wantCards := []int{14, 2, 2, 2, 5}
+	if len(g.Players) > 4 {
+		wantCards = []int{20, 3, 3, 3, 5}
+	}
+	if !slices.Equal(cards, wantCards) {
 		return errors.New("部落发展卡不守恒")
 	}
 	portCounts := make([]int, 6)
@@ -452,7 +459,11 @@ func (g *Catan) validateRiverTribeRewards(board *Catan) error {
 			portCounts[r+1]++
 		}
 	}
-	if !slices.Equal(portCounts, []int{1, 1, 1, 1, 1, 1}) {
+	wantPorts := make([]int, 6)
+	for _, p := range initial.Ports {
+		wantPorts[p.Resource+1]++
+	}
+	if !slices.Equal(portCounts, wantPorts) {
 		return errors.New("部落港口不守恒")
 	}
 	return nil

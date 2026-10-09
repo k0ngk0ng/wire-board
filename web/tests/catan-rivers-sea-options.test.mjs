@@ -6,7 +6,7 @@ test('river sea choices only admit implemented player counts',()=>{
  for(const {id} of catanRiversSeaScenarios){
   assert.equal(catanRiversSeaAvailable(id,2),true);
   assert.equal(catanRiversSeaAvailable(id,4),true);
-  assert.equal(catanRiversSeaAvailable(id,6),['rivers-shores','rivers-fog','rivers-desert','rivers-desert-belt','rivers-new-world'].includes(id));
+  assert.equal(catanRiversSeaAvailable(id,6),['rivers-shores','rivers-fog','rivers-desert','rivers-desert-belt','rivers-new-world','rivers-tribe'].includes(id));
   assert.equal(catanRiversSeaAvailable(id,7),false);
  }
  assert.equal(catanRiversSeaAvailable('shores',3),false);
