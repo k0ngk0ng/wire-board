@@ -131,7 +131,11 @@ func (s *State) catanCollectTribe(player, edge int) error {
 	for i := len(t.Development) - 1; i >= 0; i-- {
 		reward := t.Development[i]
 		if reward.Edge == edge {
-			if g.CitiesKnights != nil {
+			if t.AttackRules != "" {
+				if err := s.claimAttackTribeReward(player, i); err != nil {
+					return err
+				}
+			} else if g.CitiesKnights != nil {
 				if t.ProgressRules != CatanTribeProgressRules || player != s.Turn || reward.Card < 0 || reward.Card >= len(catanProgressRules) {
 					return errors.New("部族进步牌奖励数据或领取者不合法")
 				}

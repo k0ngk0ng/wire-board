@@ -73,6 +73,9 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if err := s.validateAttackTribeRoute(); err != nil {
+		return err
+	}
 	if (g.AttackTransport != nil || a.Map != nil && a.Map.Transport != "") && !g.attackTransport() {
 		return errors.New("蛮族运输缺少匹配组件")
 	}

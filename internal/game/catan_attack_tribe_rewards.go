@@ -79,3 +79,16 @@ func (s *State) claimAttackTribeReward(player, index int) error {
 	s.catanLog(player, "从遗忘部落领取一张蛮族发展卡并立即结算")
 	return s.catanAttackDrawCard(player)
 }
+
+func (s *State) validateAttackTribeRoute() error {
+	g := s.Catan
+	if g == nil || g.Attack == nil || g.Attack.TribeRoute == nil {
+		return nil
+	}
+	q := g.Attack.TribeRoute
+	t := g.tribe()
+	if t == nil || t.AttackRules != CatanAttackTribeRewardRules || g.Attack.Pending == nil || s.Phase != "catan_attack_card" || q.Player != s.Turn || q.Edge < 0 || q.Edge >= len(g.Edges) || !g.Edges[q.Edge].Ship || g.Edges[q.Edge].Owner != q.Player || q.Setup || q.Helper {
+		return errors.New("蛮族部落奖励航路接续无效")
+	}
+	return nil
+}
