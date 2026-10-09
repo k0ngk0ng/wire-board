@@ -163,3 +163,71 @@ func TestCatanAttackShoresAllEventFaces(t *testing.T) {
 		})
 	}
 }
+
+func TestCatanAttackShoresExtendedNatural(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		for _, events := range []bool{false, true} {
+			s, e := newCatanAttackShores(n)
+			if e != nil {
+				t.Fatal(n, e)
+			}
+			if events {
+				if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+					t.Fatal(e)
+				}
+			}
+			for step := 0; step < 18000 && !s.Finished; step++ {
+				p := twoFullActor(s)
+				a, e := s.BotAction(p)
+				if e != nil {
+					t.Fatal(n, step, e)
+				}
+				if e = s.Apply(p, a); e != nil {
+					t.Fatal(n, step, s.Phase, e)
+				}
+				if step%137 == 0 {
+					b := clone(*s)
+					s = &b
+					if e = s.validateCatanAttack(); e != nil {
+						t.Fatal(e)
+					}
+				}
+			}
+			if !s.Finished {
+				t.Fatal("unfinished", n, events)
+			}
+		}
+	}
+}
+
+func TestCatanAttackShoresExtendedComponents(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		s, e := newCatanAttackShores(n)
+		if e != nil {
+			t.Fatal(e)
+		}
+		g := s.Catan
+		m := g.Attack.Map
+		if len(m.Castles) != 2 || len(m.Coast) != 12 || m.Barbarians != 48 || m.Gold != 152 || g.Paired == nil || len(g.Ports) != 11 {
+			t.Fatal("extended components")
+		}
+		for _, id := range m.Coast {
+			if g.Seafarers.Islands[id] != g.Seafarers.StartIslands[0] {
+				t.Fatal("outside landing")
+			}
+		}
+		used := map[int]bool{}
+		for _, p := range g.Ports {
+			edge := g.Edges[p.Edge]
+			if !g.edgeTerrain(p.Edge, true) || !g.edgeTerrain(p.Edge, false) || used[edge.A] || used[edge.B] {
+				t.Fatal("port geometry")
+			}
+			used[edge.A], used[edge.B] = true, true
+		}
+		b := clone(*s)
+		b.Catan.Attack.Map.Barbarians = 36
+		if b.validateCatanAttack() == nil {
+			t.Fatal("base supply accepted")
+		}
+	}
+}
