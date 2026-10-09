@@ -45,7 +45,10 @@ test('merchant New World shows fourteen points for all public counts',()=>{
 });
 
 import {supportsCaravanSeaHelpers,supportsTwoCatanHelpers} from '../src/catan-two-helpers.ts';
-test('merchant sea helpers admitted without enabling standalone merchant helpers',()=>{
+test('merchant sea helpers stay separate from the standalone merchant option',()=>{
  for(const scenario of ['caravans-shores','caravans-islands','caravans-desert','caravans-tribe','caravans-new-world']) {assert.equal(supportsCaravanSeaHelpers(scenario),true);assert.equal(supportsTwoCatanHelpers(scenario),true)}
- assert.equal(supportsCaravanSeaHelpers('caravans'),false);assert.equal(supportsTwoCatanHelpers('caravans'),false);
+ assert.equal(supportsCaravanSeaHelpers('caravans'),false);
+ // The standalone 商队, 河流 and 蛮族进攻 rooms support Helpers for two players,
+ // which the server accepts and plays through a complete HTTP game.
+ for(const scenario of ['caravans','rivers','barbarian-attack']) assert.equal(supportsTwoCatanHelpers(scenario),true);
 });
