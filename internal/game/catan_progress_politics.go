@@ -56,8 +56,12 @@ func (s *State) catanPoliticsProgress(player int, a Action) error {
 			return errors.New("外交只能移除开放道路或船只，不能拆断骑士与己方建筑的连接")
 		}
 		if g.riverKnights() && g.riverEdge(a.Edge) {
-			g.Rivers.Gold[player]--
-			g.Rivers.Bank++
+			g.riverGold()[player]--
+			if g.riversAttack() {
+				g.Attack.GoldBank++
+			} else {
+				g.Rivers.Bank++
+			}
 			s.catanLog(player, "外交移除河岸道路，归还金币×1")
 		}
 		owner, ship, warship := g.Edges[a.Edge].Owner, g.Edges[a.Edge].Ship, g.Edges[a.Edge].Warship

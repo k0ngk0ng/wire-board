@@ -48,6 +48,12 @@ func (g *Catan) validateRiverKnights() error {
 	if !g.riverKnights() || g.CitiesKnights.Rules != catanCitiesKnightsRules(len(g.Players)) || r.Map == nil {
 		return errors.New("河流城市骑士组合标记无效")
 	}
+	if g.riversAttack() {
+		if !g.attackKnights() || g.CitiesKnights.RobberStart != -1 || g.Robber != -1 {
+			return errors.New("河流蛮族城市骑士不使用强盗")
+		}
+		return nil
+	}
 	start := g.CitiesKnights.RobberStart
 	if !slices.Contains(r.Map.Swamps, start) && !(g.SetupStep == 0 && start == -1) {
 		return errors.New("河流骑士强盗起点必须为沼泽")
@@ -58,12 +64,12 @@ func (g *Catan) validateRiverKnights() error {
 	return nil
 }
 func (g *Catan) canRiverPillageGold(player int) bool {
-	return g.riverKnights() && player >= 0 && player < len(g.Players) && g.Rivers.Gold[player] >= 5 && len(g.pillageSites(player)) > 0
+	return g.riverKnights() && !g.riversAttack() && player >= 0 && player < len(g.Players) && g.Rivers.Gold[player] >= 5 && len(g.pillageSites(player)) > 0
 }
 func (g *Catan) diplomacyRoadsFor(player int) []int {
 	roads := g.diplomacyRoads()
 	if g.riverKnights() {
-		roads = slices.DeleteFunc(roads, func(id int) bool { return g.riverEdge(id) && g.Rivers.Gold[player] < 1 })
+		roads = slices.DeleteFunc(roads, func(id int) bool { return g.riverEdge(id) && g.riverGold()[player] < 1 })
 	}
 	return roads
 }
