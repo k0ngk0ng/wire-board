@@ -59,6 +59,15 @@ func newCatanTransportTravel(g *Catan, m *catanTransportMap, player, position, l
 	return &catanTransportTravel{Player: player, Level: level, Position: position, Points: catanTransportMovement(level), Pending: -1, Arrived: -1}, nil
 }
 func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarians [3]int, gold []int) error {
+	return q.validateRoutes(g, m, barbarians[:], gold, q.Attempted[:], false)
+}
+
+// Shared invasions use stable piece IDs, including supply, center and captive
+// pieces with no blocking edge. Ordinary transport retains its three-edge rule.
+func (q catanTransportTravel) validateRoutes(g *Catan, m *catanTransportMap, barbarians []int, gold []int, attempted []bool, shared bool) error {
+	if len(attempted) != len(barbarians) || len(barbarians) == 0 {
+		return errors.New("运输蛮族尝试记录无效")
+	}
 	if !catanTransportPlayersValid(g) || m == nil || q.Player < 0 || q.Player >= len(g.Players) || g.Players[q.Player].Eliminated || q.Position < 0 || q.Position >= len(g.Vertices) || catanTransportMovement(q.Level) == 0 || len(gold) != len(g.Players) {
 		return errors.New("马车移动记录无效")
 	}
@@ -77,13 +86,19 @@ func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarian
 		return errors.New("马车步数、到达或结束状态无效")
 	}
 	for id, edge := range barbarians {
+		if shared && edge == -1 {
+			continue
+		}
 		if edge < 0 || edge >= len(g.Edges) || slices.Contains(barbarians[:id], edge) {
 			return errors.New("蛮族必须位于三个不同的可通行边")
 		}
 	}
 	if q.Pending >= 0 {
+		if barbarians[q.Pending] < 0 {
+			return errors.New("待驱赶蛮族未阻挡道路")
+		}
 		e := g.Edges[barbarians[q.Pending]]
-		if q.Ended || q.Level == 0 || !q.Attempted[q.Pending] || e.A != q.Position && e.B != q.Position {
+		if q.Ended || q.Level == 0 || !attempted[q.Pending] || e.A != q.Position && e.B != q.Position {
 			return errors.New("待移走蛮族的回应无效")
 		}
 	}
@@ -107,8 +122,11 @@ func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarian
 // block traversal. A damaged road counts as roadless for MPs (event variant),
 // but remains another player's road for the one-gold toll.
 func (q catanTransportTravel) quote(g *Catan, m *catanTransportMap, barbarians [3]int, gold []int, edge int) (catanTransportStep, error) {
+	return q.quoteRoutes(g, m, barbarians[:], gold, edge, q.Attempted[:], false)
+}
+func (q catanTransportTravel) quoteRoutes(g *Catan, m *catanTransportMap, barbarians []int, gold []int, edge int, attempted []bool, shared bool) (catanTransportStep, error) {
 	step := catanTransportStep{Edge: edge, To: -1, Pay: -1}
-	if err := q.validate(g, m, barbarians, gold); err != nil {
+	if err := q.validateRoutes(g, m, barbarians, gold, attempted, shared); err != nil {
 		return step, err
 	}
 	if q.Ended || q.Pending != -1 || edge < 0 || edge >= len(g.Edges) {
@@ -180,6 +198,10 @@ func (q *catanTransportTravel) move(g *Catan, m *catanTransportMap, barbarians [
 	if err != nil {
 		return step, err
 	}
+	q.applyStep(m, gold, step)
+	return step, nil
+}
+func (q *catanTransportTravel) applyStep(m *catanTransportMap, gold []int, step catanTransportStep) {
 	q.Points -= step.MP
 	q.Position = step.To
 	gold[q.Player] -= step.Toll
@@ -192,12 +214,14 @@ func (q *catanTransportTravel) move(g *Catan, m *catanTransportMap, barbarians [
 	if site := m.siteAt(q.Position); site >= 0 {
 		q.Arrived, q.Ended, q.Points = site, true, 0
 	}
-	return step, nil
 }
 func (q *catanTransportTravel) wheat(g *Catan, m *catanTransportMap, barbarians [3]int, gold []int) error {
 	if err := q.validate(g, m, barbarians, gold); err != nil {
 		return err
 	}
+	return q.payWheat(g)
+}
+func (q *catanTransportTravel) payWheat(g *Catan) error {
 	if q.Ended || q.Pending != -1 || q.WheatUsed || !g.cardBundle(g.Bank) || !g.cardBundle(g.Players[q.Player].Resources) || g.Players[q.Player].Resources[3] < 1 {
 		return errors.New("本回合只能支付一次粮食增加2移动点")
 	}
