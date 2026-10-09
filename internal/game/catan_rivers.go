@@ -9,6 +9,7 @@ import (
 const CatanRiversRules = "catan-rivers-2025"
 
 type CatanRivers struct {
+	SeaLayout  string          `json:"seaLayout,omitempty"`
 	Sea        string          `json:"sea,omitempty"`
 	Transport  string          `json:"transport,omitempty"`
 	Attack     string          `json:"attack,omitempty"`
@@ -55,7 +56,7 @@ func (g *Catan) validateRivers() error {
 	if r.Transport != "" && !g.riversTransport() || g.Transport != nil && !g.riversTransport() {
 		return errors.New("河流运输组合标记无效")
 	}
-	if r.Sea != "" && !g.riversSea() {
+	if (r.Sea != "" || r.SeaLayout != "") && !g.riversSea() {
 		return errors.New("河流海图标记无效")
 	}
 	// Existing internal saves predate this field; their pinned 2025 map and
