@@ -2291,7 +2291,7 @@ function Create({
               onChange={(scenario) => {
                 setCatanScenario(scenario);
                 if (scenario === "caravans-shores")
-                  setCapacity(capacity === 2 ? 2 : Math.max(4, capacity));
+                  setCapacity(Math.max(2, capacity));
                 if (!supportsPublicCatanFriendly(scenario))
                   setCatanFriendly(false);
                 if (!supportsPublicCatanHarbors(scenario))
@@ -2647,7 +2647,7 @@ function Create({
                     {
                       length:
                         k === "catan" && catanScenario === "caravans-shores"
-                          ? 4
+                          ? 5
                           : k === "catan" &&
                               ["caravans-desert", "caravans-tribe"].includes(
                                 catanScenario,
@@ -2704,7 +2704,7 @@ function Create({
                     },
                     (_, i) =>
                       k === "catan" && catanScenario === "caravans-shores"
-                        ? [2, 4, 5, 6][i]
+                        ? [2, 3, 4, 5, 6][i]
                         : i +
                           (k === "catan" && catanScenario === "caravans-shores"
                             ? 4
