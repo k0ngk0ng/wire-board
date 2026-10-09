@@ -75,16 +75,17 @@ func (g *Catan) validateCaravansShoresExtended() error {
 	if !g.caravansSea() || (n < 4 && !g.twoCaravansSea()) || n > 6 || sea.Scenario != "shores" || sea.Layout != "variable" || !sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != caravanShoresRecipeNumber(n) || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || c.Map == nil || len(c.ExtraNumbers) != 0 {
 		return errors.New("扩大商队新海岸配置无效")
 	}
-	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "shores", Layout: "variable"}, nil)
+	// Validation needs the printed geometry and inventories, not a freshly
+	// shuffled candidate that is immediately discarded below.
+	referenceLayout := "fixed"
+	if recipeSeats > 4 {
+		referenceLayout = "variable"
+	}
+	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "shores", Layout: referenceLayout}, nil)
 	if err != nil {
 		return err
 	}
 	b := expected.Catan
-	if recipeSeats == 4 {
-		if err = b.makeSeafarersShoresFour(); err != nil {
-			return err
-		}
-	}
 	if len(g.Tiles) != len(b.Tiles) || len(g.Edges) != len(b.Edges) || len(g.Vertices) != len(b.Vertices) || !slices.Equal(sea.Islands, b.Seafarers.Islands) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) {
 		return errors.New("商队新海岸尺寸或分区无效")
 	}

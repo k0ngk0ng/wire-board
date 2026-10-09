@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"reflect"
 	"slices"
 	"testing"
 )
@@ -167,6 +168,24 @@ func TestCatanCaravansShoresFourMapIntegrity(t *testing.T) {
 			if b.validateCaravans() == nil {
 				t.Fatal("accepted", name)
 			}
+		}
+	}
+}
+
+func TestCatanCaravansShoresValidationDoesNotMutate(t *testing.T) {
+	for _, n := range []int{2, 4, 6} {
+		s, err := NewCatanCaravansShoresSeafarers(n)
+		if err != nil {
+			t.Fatal(err)
+		}
+		before := clone(*s)
+		for i := 0; i < 8; i++ {
+			if err = s.validateCaravans(); err != nil {
+				t.Fatal(n, err)
+			}
+		}
+		if !reflect.DeepEqual(before, *s) {
+			t.Fatal("validation changed live state", n)
 		}
 	}
 }
