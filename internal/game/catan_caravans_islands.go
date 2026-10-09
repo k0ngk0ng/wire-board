@@ -45,6 +45,9 @@ func (g *Catan) makeCaravansIslandsMap() (*catanCaravanMap, error) {
 	return &catanCaravanMap{WateringHoles: []int{17}, Starts: starts, Supply: 22}, nil
 }
 func NewCatanCaravansIslandsSeafarers(n int) (*State, error) {
+	if n == 2 {
+		return newCatanTwoCaravansSea("islands")
+	}
 	return newCatanCaravansIslands(n)
 }
 
@@ -72,11 +75,15 @@ func newCatanCaravansIslands(n int) (*State, error) {
 }
 func (g *Catan) validateCaravansIslands() error {
 	n := len(g.Players)
+	recipeSeats := n
+	if g.twoCaravansSea() {
+		recipeSeats = 4
+	}
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n != 3 && n != 4) || sea.Scenario != "islands" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || len(c.ExtraNumbers) != 0 {
+	if !g.caravansSea() || (n != 3 && n != 4 && !g.twoCaravansSea()) || sea.Scenario != "islands" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || len(c.ExtraNumbers) != 0 {
 		return errors.New("商队四岛配置无效")
 	}
-	ref, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "islands", Layout: "fixed"}, nil)
+	ref, err := NewCatanSeafarers(recipeSeats, CatanOptions{}, CatanSeafarersSetup{Scenario: "islands", Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}

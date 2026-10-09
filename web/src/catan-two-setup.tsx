@@ -15,6 +15,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "caravans-islands",
+    name: "商队＋四岛",
+    description:
+      "采用四人组合固定图及本站双人中立玩家规则，15分获胜，可加事件牌。",
+  },
+  {
     id: "caravans-shores",
     name: "双人商队＋新海岸",
     description:
@@ -172,6 +178,7 @@ export function CatanTwoScenarioPicker({
               disabled={
                 ((isPublicCatanRiversSea(s.id) ||
                   [
+                    "caravans-islands",
                     "caravans-shores",
                     "caravans-desert",
                     "caravans-tribe",
