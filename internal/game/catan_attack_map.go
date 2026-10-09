@@ -95,6 +95,9 @@ func newCatanAttackBoard(n int) (*Catan, *catanAttackMap, error) {
 }
 
 func (m catanAttackMap) validate(g *Catan) error {
+	if m.Sea != "" {
+		return m.validateSea(g)
+	}
 	if m.Transport != "" {
 		if !g.attackTransport() {
 			return errors.New("蛮族运输缺少组合组件")

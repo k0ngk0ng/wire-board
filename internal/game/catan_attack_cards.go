@@ -43,7 +43,7 @@ func (a catanAttack) recruitEdges(g *Catan, player int, card string) []int {
 		return out
 	}
 	for _, edge := range g.Edges {
-		if !used[edge.ID] && (card == "swift_knight" || card == "knighthood" && a.castleEdge(g, edge.ID)) {
+		if g.attackSeaKnightEdge(edge.ID) && !used[edge.ID] && (card == "swift_knight" || card == "knighthood" && a.castleEdge(g, edge.ID)) {
 			out = append(out, edge.ID)
 		}
 	}
