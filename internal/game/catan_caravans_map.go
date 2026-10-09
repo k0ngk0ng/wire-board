@@ -137,6 +137,9 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 }
 
 func (f catanCaravanMap) validate(g *Catan) error {
+	if g.caravansSea() {
+		return g.validateCaravansDesertSea()
+	}
 	if g.Transport != nil {
 		return g.validateCaravansTransportMap()
 	}

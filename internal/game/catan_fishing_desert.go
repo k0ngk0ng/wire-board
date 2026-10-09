@@ -116,7 +116,7 @@ func (g *Catan) tileProduces(t CatanTile, number int) bool {
 			}
 		}
 	}
-	if g.riversCaravans() {
+	if g.riversCaravans() || g.caravansSea() {
 		for _, extra := range g.Caravans.ExtraNumbers {
 			if extra.Tile == t.ID && extra.Number == number {
 				return true
@@ -145,7 +145,7 @@ func (g *Catan) tileNumberWeight(t CatanTile) int {
 			}
 		}
 	}
-	if g.riversCaravans() {
+	if g.riversCaravans() || g.caravansSea() {
 		for _, extra := range g.Caravans.ExtraNumbers {
 			if extra.Tile == t.ID {
 				weight += 6 - absCatan(7-extra.Number)
