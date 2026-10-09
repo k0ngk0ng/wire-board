@@ -170,7 +170,7 @@ func (g *Catan) movableShip(p, id int) bool {
 	if g.Seafarers == nil || g.Seafarers.MovedShip || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != p || !g.Edges[id].Ship || g.pirateBlocks(id) || slices.Contains(g.Seafarers.BuiltShips, id) {
 		return false
 	}
-	return g.openRoute(p, id) && g.preservesKnightConnections(p, id)
+	return g.openRoute(p, id) && g.preservesKnightConnections(p, id) && g.attackSeaRouteAnchored(p, id, true)
 }
 func (g *Catan) shipDestinations(p, from int) []int {
 	result := []int{}
