@@ -1,3 +1,4 @@
+import { caravanWorldPreview } from "./catan-caravan-world-preview";
 import { useRailMapControls } from "./rail-map-controls";
 import { useEffect, useId, useState } from "react";
 import type { CatanNewWorldMap, Room } from "./types";
@@ -66,6 +67,10 @@ export function CatanWorldEditor({
     return () => onDirty(false);
   }, [dirty, onDirty]);
   const { size, points } = centers(draft.hexes.length);
+  const wateringHoles =
+    room.catanScenario === "caravans-new-world"
+      ? caravanWorldPreview(draft)
+      : [];
   const poly = (id: number) =>
     Array.from({ length: 6 }, (_, k) => {
       const a = ((30 + k * 60) * Math.PI) / 180;
@@ -96,7 +101,11 @@ export function CatanWorldEditor({
       <header>
         <div>
           <h3>新世界 · 开局地图</h3>
- {room.catanScenario === "caravans-new-world" && <p>商队采用本站水源规则：开局时将最靠近中心的可用内海改为水源，五六人两处，其余一处；生产地形和数字保持不变。</p>}
+          {room.catanScenario === "caravans-new-world" && (
+            <p>
+              商队采用本站水源规则：开局时将最靠近中心的可用内海改为水源，五六人两处，其余一处；生产地形和数字保持不变。
+            </p>
+          )}
           <p>
             {host
               ? "调整完成后应用地图，所有人重新准备。开局后地图不再重抽。"
@@ -160,7 +169,7 @@ export function CatanWorldEditor({
                     key={i}
                     role={host ? "button" : "img"}
                     tabIndex={host ? 0 : undefined}
-                    aria-label={`地块 ${i + 1} ${names[h.resource]}${h.number ? ` ${h.number}` : ""}`}
+                    aria-label={`地块 ${i + 1} ${wateringHoles.includes(i) ? "水源（原海洋）" : names[h.resource]}${h.number ? ` ${h.number}` : ""}`}
                     aria-pressed={host ? selected === i : undefined}
                     onClick={() => choose(i)}
                     onKeyDown={(e) => {
@@ -188,6 +197,36 @@ export function CatanWorldEditor({
                       stroke={selected === i ? "#ffdb4f" : "#efe3b8"}
                       strokeWidth={selected === i ? 5 : 1}
                     />
+                    {wateringHoles.includes(i) && (
+                      <g pointerEvents="none">
+                        <circle
+                          cx={points[i].x}
+                          cy={points[i].y}
+                          r={size * 0.6}
+                          fill="#f6de9b"
+                          stroke="#654929"
+                          strokeWidth={2}
+                        />
+                        <ellipse
+                          cx={points[i].x}
+                          cy={points[i].y - size * 0.14}
+                          rx={size * 0.3}
+                          ry={size * 0.16}
+                          fill="#31b6c0"
+                          stroke="#267576"
+                        />
+                        <text
+                          x={points[i].x}
+                          y={points[i].y + size * 0.25}
+                          textAnchor="middle"
+                          fontSize={size * 0.27}
+                          fontWeight="700"
+                          fill="#493519"
+                        >
+                          水源
+                        </text>
+                      </g>
+                    )}
                     {h.number > 0 && (
                       <g pointerEvents="none">
                         <circle

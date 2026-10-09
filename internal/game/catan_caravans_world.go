@@ -18,8 +18,9 @@ func (g *Catan) caravanWorldHoles() []int {
 			}
 		}
 	}
-	centre := g.Tiles[len(g.Tiles)/2]
-	distance := func(id int) float64 { t := g.Tiles[id]; x, y := t.X-centre.X, t.Y-centre.Y; return x*x + y*y }
+	frame := newWorldFrame(len(g.Players))
+	centre := frame[len(frame)/2]
+	distance := func(id int) int { q, r := frame[id].Q-centre.Q, frame[id].R-centre.R; return q*q + q*r + r*r }
 	sort.Slice(ids, func(i, j int) bool {
 		a, b := distance(ids[i]), distance(ids[j])
 		if a == b {
