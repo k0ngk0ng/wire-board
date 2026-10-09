@@ -59,6 +59,9 @@ func (g *Catan) edgeTiles(edge int) []int {
 	return result
 }
 func (g *Catan) edgeTerrain(edge int, ship bool) bool {
+	if g.riversSea() && slices.Contains(g.Rivers.Map.Bridges, edge) {
+		return false
+	}
 	if g.Seafarers == nil {
 		return !ship
 	}
@@ -158,6 +161,9 @@ func (g *Catan) setupRoute(p, id int, ship bool) bool {
 	return (e.A == g.SetupVertex || e.B == g.SetupVertex) && ((!ship && g.canRoad(p, id)) || (ship && g.canShip(p, id)))
 }
 func (g *Catan) movableShip(p, id int) bool {
+	if g.riversSea() && g.riverEdge(id) && (p < 0 || p >= len(g.Players) || g.Rivers.Gold[p] < 1) {
+		return false
+	}
 	if g.Seafarers == nil || g.Seafarers.MovedShip || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != p || !g.Edges[id].Ship || g.pirateBlocks(id) || slices.Contains(g.Seafarers.BuiltShips, id) {
 		return false
 	}
@@ -194,6 +200,11 @@ func (s *State) catanMoveShip(player int, a Action) error {
 	g := s.Catan
 	if s.Phase != "catan_turn" || !slices.Contains(g.shipDestinations(player, a.Edge), a.Target) {
 		return errors.New("只能移动本阶段尚未移动过、非本阶段新造且处于开放末端的船；海盗附近不能移入或移出")
+	}
+	if g.riversSea() && g.riverEdge(a.Edge) {
+		g.Rivers.Gold[player]--
+		g.Rivers.Bank++
+		s.catanLog(player, "移走河岸船只，退还金币×1")
 	}
 	warship := g.Edges[a.Edge].Warship
 	if !g.pirateRemoveRouteTail(player, a.Edge) {

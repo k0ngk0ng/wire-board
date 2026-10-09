@@ -9,6 +9,7 @@ import (
 const CatanRiversRules = "catan-rivers-2025"
 
 type CatanRivers struct {
+	Sea        string          `json:"sea,omitempty"`
 	Transport  string          `json:"transport,omitempty"`
 	Attack     string          `json:"attack,omitempty"`
 	Knights    string          `json:"knights,omitempty"`
@@ -54,12 +55,15 @@ func (g *Catan) validateRivers() error {
 	if r.Transport != "" && !g.riversTransport() || g.Transport != nil && !g.riversTransport() {
 		return errors.New("河流运输组合标记无效")
 	}
+	if r.Sea != "" && !g.riversSea() {
+		return errors.New("河流海图标记无效")
+	}
 	// Existing internal saves predate this field; their pinned 2025 map and
 	// inventory are still validated below. Unknown explicit versions fail.
 	if r.Rules != "" && r.Rules != CatanRiversRules {
 		return errors.New("河流规则版本无效")
 	}
-	if r.Map == nil || len(g.riverGold()) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil && !g.fishingRivers() || g.CitiesKnights != nil && !g.riverKnights() || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
+	if r.Map == nil || len(g.riverGold()) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil && !g.riversSea() || g.Fishing != nil && !g.fishingRivers() || g.CitiesKnights != nil && !g.riverKnights() || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
 		return errors.New("河流状态或尚未核对的组合无效")
 	}
 	if err := g.validateRiverKnights(); err != nil {

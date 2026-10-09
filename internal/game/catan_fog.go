@@ -100,7 +100,7 @@ func (s *State) catanDiscover(player, edge int) (int, error) {
 }
 
 func (s *State) catanAfterRoute(q CatanRouteCompletion) error {
-	if e := s.Catan.Edges[q.Edge]; !e.Ship && !e.Bridge && s.Catan.riverEdge(q.Edge) {
+	if e := s.Catan.Edges[q.Edge]; (!e.Ship || s.Catan.riversSea()) && !e.Bridge && s.Catan.riverEdge(q.Edge) {
 		if err := s.catanRiverReward(q.Player, 1); err != nil {
 			return err
 		}
