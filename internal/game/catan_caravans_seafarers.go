@@ -12,6 +12,9 @@ func (g *Catan) caravansSea() bool {
 	return g.Caravans != nil && g.Caravans.Sea == CatanCaravansSeafarersRules && g.Seafarers != nil
 }
 func (g *Catan) makeCaravansDesertSea() (*catanCaravanMap, []catanFishingExtraNumber, error) {
+	if g.Seafarers.Scenario == "tribe" && len(g.Players) > 4 {
+		return g.makeCaravansTribeExtended()
+	}
 	number := 2
 	if len(g.Players) == 4 {
 		number = 11
@@ -110,10 +113,10 @@ func (g *Catan) validateCaravansDesertSea() error {
 func NewCatanCaravansDesertSeafarers(n int) (*State, error) { return newCatanCaravansDesertSea(n) }
 
 func newCatanCaravansTribeSea(n int) (*State, error) {
-	if n != 3 && n != 4 {
-		return nil, errors.New("商队部落暂支持三四人")
+	if n < 3 || n > 6 {
+		return nil, errors.New("商队部落支持三至六人")
 	}
-	s, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)
+	s, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -125,17 +128,22 @@ func newCatanCaravansTribeSea(n int) (*State, error) {
 	g.Caravans = &catanCaravans{Sea: CatanCaravansSeafarersRules, Rules: CatanCaravansRules, Map: m, ExtraNumbers: extra, Wagons: []catanCaravanWagon{}}
 	g.Robber = m.WateringHoles[0]
 	g.Seafarers.VictoryPoints = 15
-	s.Log = append(s.Log, "商队＋遗忘部落：12点麦田替换为水源，12叠放到2点牧场；强盗从水源开始且可返回。马车可沿海边延伸，己方船与马车同边计两段最长路线，15分获胜")
+	if n <= 4 {
+		s.Log = append(s.Log, "商队＋遗忘部落：12点麦田替换为水源，12叠放到2点牧场；强盗从水源开始且可返回。马车可沿海边延伸，己方船与马车同边计两段最长路线，15分获胜")
+	}
+	if n > 4 {
+		s.Log = append(s.Log, "本站五六人商队部落：主岛10点与2点麦田替换为两处水源，原数字依次移到最弱牧场，概率相同取编号较小者；33辆马车、34张发展卡、配对回合，15分获胜。三四人印刷配方不适用本图")
+	}
 	s.catanScores()
 	return s, s.validateCaravans()
 }
 func (g *Catan) validateCaravansTribeSea() error {
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n != 3 && n != 4) || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Tribe == nil || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n < 3 || n > 6) || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Tribe == nil || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队部落配置无效")
 	}
-	expected, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)
+	expected, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}
@@ -161,7 +169,7 @@ func (g *Catan) validateCaravansTribeSea() error {
 			return errors.New("商队部落路线无效")
 		}
 	}
-	if g.Robber >= 0 && !g.robberLandAllowed(g.Robber) {
+	if g.Robber >= 0 && !g.robberLandAllowed(g.Robber) && !(g.EventDeck != nil && g.Tiles[g.Robber].Resource == CatanDesert) {
 		return errors.New("商队海图强盗位置无效")
 	}
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
@@ -171,3 +179,41 @@ func (g *Catan) validateCaravansTribeSea() error {
 }
 
 func NewCatanCaravansTribeSeafarers(n int) (*State, error) { return newCatanCaravansTribeSea(n) }
+
+func (g *Catan) makeCaravansTribeExtended() (*catanCaravanMap, []catanFishingExtraNumber, error) {
+	holes := []int{30, 33}
+	numbers := []int{10, 2}
+	for i, id := range holes {
+		if g.Tiles[id].Resource != 3 || g.Tiles[id].Number != numbers[i] {
+			return nil, nil, errors.New("商队部落扩大水源配方不符")
+		}
+		g.Tiles[id].Resource, g.Tiles[id].Number = catanWateringHole, 0
+	}
+	extra := []catanFishingExtraNumber{}
+	for _, number := range numbers {
+		best, weight := -1, 100
+		for _, tile := range g.Tiles {
+			if tile.Resource != 2 || tile.Number == 0 {
+				continue
+			}
+			w := 6 - absCatan(7-tile.Number)
+			for _, e := range extra {
+				if e.Tile == tile.ID {
+					w += 6 - absCatan(7-e.Number)
+				}
+			}
+			if w < weight {
+				best, weight = tile.ID, w
+			}
+		}
+		if best < 0 {
+			return nil, nil, errors.New("商队部落缺少牧场")
+		}
+		extra = append(extra, catanFishingExtraNumber{Tile: best, Number: number})
+	}
+	starts, err := caravanStarts(g, holes)
+	if err != nil {
+		return nil, nil, err
+	}
+	return &catanCaravanMap{WateringHoles: holes, Starts: starts, Supply: 33}, extra, nil
+}

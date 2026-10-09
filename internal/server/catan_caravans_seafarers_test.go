@@ -11,7 +11,11 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) { runCaravansSeaHTTP(t, false,
 func TestCatanCaravansSeaEventsHTTP(t *testing.T) { runCaravansSeaHTTP(t, true, "caravans-desert") }
 func TestCatanCaravansTribeHTTP(t *testing.T)     { runCaravansSeaHTTP(t, true, "caravans-tribe") }
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
-	for _, n := range []int{3, 4} {
+	counts := []int{3, 4}
+	if scenario == "caravans-tribe" {
+		counts = []int{3, 4, 5, 6}
+	}
+	for _, n := range counts {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)

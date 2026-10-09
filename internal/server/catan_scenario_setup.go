@@ -63,8 +63,12 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe" {
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 4 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
-			return errors.New("商队海图目前支持三四人独立组合")
+		maximum := 4
+		if r.CatanScenario == "caravans-tribe" {
+			maximum = 6
+		}
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("商队沙漠支持三四人，部落支持三至六人独立组合")
 		}
 		return nil
 	}
@@ -194,7 +198,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r

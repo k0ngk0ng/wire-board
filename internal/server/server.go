@@ -689,7 +689,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		minPlayers = 3
 		if publicCatanFlexibleScenario(req.CatanScenario) {
 			minPlayers, maxPlayers = 2, 6
-		} else if req.CatanScenario == "barbarian-attack" {
+		} else if req.CatanScenario == "barbarian-attack" || req.CatanScenario == "caravans-tribe" {
 			maxPlayers = 6
 		}
 		if req.Capacity == 2 {
