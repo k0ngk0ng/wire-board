@@ -37,7 +37,7 @@ func publicCatanTradersCombination(scenario string) bool {
 }
 
 func publicCatanFlexibleScenario(scenario string) bool {
-	return publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
+	return scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
 }
 
 // Public recipes include two-to-six-player Explorer missions.
@@ -67,8 +67,8 @@ func (r *Room) validateCatanScenario() error {
 		if r.CatanScenario == "caravans-tribe" {
 			maximum = 6
 		}
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
-			return errors.New("商队沙漠支持三四人，部落支持三至六人独立组合")
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("商队沙漠支持二至四人，部落支持二至六人独立组合")
 		}
 		return nil
 	}

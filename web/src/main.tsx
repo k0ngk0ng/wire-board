@@ -2173,6 +2173,7 @@ function Create({
                                         "rivers-desert-belt",
                                         "rivers-tribe",
                                         "caravans-tribe",
+                                        "caravans-desert",
                                         "rivers-new-world",
                                       ].includes(catanScenario))
                                   ? 6
@@ -2273,6 +2274,7 @@ function Create({
               "rivers-desert-belt",
               "rivers-tribe",
               "caravans-tribe",
+              "caravans-desert",
               "rivers-new-world",
             ].includes(catanScenario)) && (
             <CatanScenarioPicker
@@ -2319,6 +2321,7 @@ function Create({
                     "rivers-desert-belt",
                     "rivers-tribe",
                     "caravans-tribe",
+                    "caravans-desert",
                     "rivers-new-world",
                   ].includes(scenario || "")
                 )
@@ -2344,6 +2347,7 @@ function Create({
                     "rivers-desert-belt",
                     "rivers-tribe",
                     "caravans-tribe",
+                    "caravans-desert",
                     "rivers-new-world",
                   ].includes(scenario) &&
                   !(
@@ -2641,8 +2645,8 @@ function Create({
                           catanScenario,
                         )
                           ? catanScenario === "caravans-tribe"
-                            ? 4
-                            : 2
+                            ? 5
+                            : 3
                           : k === "sanguosha"
                             ? 5
                             : k === "catan"
@@ -2665,6 +2669,7 @@ function Create({
                                   "rivers-desert-belt",
                                   "rivers-tribe",
                                   "caravans-tribe",
+                                  "caravans-desert",
                                   "rivers-new-world",
                                 ].includes(catanScenario)
                                 ? 5
@@ -2696,7 +2701,7 @@ function Create({
                       ["caravans-desert", "caravans-tribe"].includes(
                         catanScenario,
                       )
-                        ? 3
+                        ? 2
                         : k === "sanguosha"
                           ? 4
                           : k === "catan"
@@ -2811,6 +2816,7 @@ function Waiting({
         "rivers-desert-belt",
         "rivers-tribe",
         "caravans-tribe",
+        "caravans-desert",
         "rivers-new-world",
       ].includes(room.catanScenario || "")) &&
     (!room.catanOptions?.fiveSix ||
@@ -2927,6 +2933,7 @@ function Waiting({
                                     "rivers-desert-belt",
                                     "rivers-tribe",
                                     "caravans-tribe",
+                                    "caravans-desert",
                                     "rivers-new-world",
                                   ].includes(room.catanScenario || "")
                                 ? "2–6 人 · 五六人配对回合"

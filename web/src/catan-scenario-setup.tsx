@@ -12,13 +12,13 @@ const scenarios = [
     id: "caravans-tribe",
     name: "商队＋遗忘部落",
     description:
-      "水源替换12点麦田，12叠到2点牧场；商队可走海边，保留部落奖励，15分获胜。三至六人，可加事件牌；五六人采用本站双水源配方。",
+      "水源替换12点麦田，12叠到2点牧场；商队可走海边，保留部落奖励，15分获胜。二至六人，可加事件牌；五六人采用本站双水源配方。",
   },
   {
     id: "caravans-desert",
     name: "商队＋穿越沙漠",
     description:
-      "商队可沿海格边延伸，与己方船同边计两段最长路线；水源数字移到指定地块，16分获胜。当前支持三、四人，可加事件牌。",
+      "商队可沿海格边延伸，与己方船同边计两段最长路线；水源数字移到指定地块，16分获胜。当前支持二至四人，可加事件牌。",
   },
   ...catanRiversSeaScenarios,
   {
@@ -471,6 +471,7 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  ["caravans-desert", "caravans-tribe"].includes(scenario || "") ||
   isPublicCatanRiversSea(scenario) ||
   isPublicCatanExplorer(scenario) ||
   scenario === "transport" ||
@@ -534,7 +535,7 @@ export function CatanScenarioPicker({
               value={s.id}
               disabled={
                 ["caravans-desert", "caravans-tribe"].includes(s.id)
-                  ? players < 3 ||
+                  ? players < 2 ||
                     players > (s.id === "caravans-tribe" ? 6 : 4) ||
                     helpers ||
                     knights ||

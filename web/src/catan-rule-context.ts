@@ -170,7 +170,10 @@ export function catanRuleContext(room: Room) {
     two: game
       ? !!game.two
       : !!room.catanTwoRules ||
-        ((riverSeaDraft ||
+        ((["caravans-desert", "caravans-tribe"].includes(
+          room.catanScenario || "",
+        ) ||
+          riverSeaDraft ||
           transport ||
           attack ||
           room.catanScenario === "rivers-caravans") &&

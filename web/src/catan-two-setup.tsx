@@ -14,6 +14,17 @@ import {
   catanTwoFishingSeafarersNote,
 } from "./catan-two-seafarers";
 const scenarios = [
+  {
+    id: "caravans-desert",
+    name: "双人商队＋穿越沙漠",
+    description:
+      "四人组合图、中立海岸开局、双次生产，每轮尽量放两辆马车，16分获胜。",
+  },
+  {
+    id: "caravans-tribe",
+    name: "双人商队＋遗忘部落",
+    description: "中立不领部落奖励；双次生产与双马车投票，15分获胜。",
+  },
   ...catanRiversSeaScenarios,
   {
     id: "attack-transport",
@@ -153,7 +164,8 @@ export function CatanTwoScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                (isPublicCatanRiversSea(s.id) &&
+                ((isPublicCatanRiversSea(s.id) ||
+                  ["caravans-desert", "caravans-tribe"].includes(s.id)) &&
                   (knightsEnabled || fishingEnabled)) ||
                 (variantsEnabled && !supportsTwoCatanVariants(s.id)) ||
                 (helpersEnabled &&
