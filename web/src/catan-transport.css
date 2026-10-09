@@ -263,3 +263,8 @@
 .transport-seat-stat {
   white-space: nowrap;
 }
+/* Shared invasion panels can coexist; static information must not cover a response. */
+.catan-board .attack-panel:not(.pending),
+.catan-board .transport-panel:not(.pending) {
+  z-index: auto;
+}

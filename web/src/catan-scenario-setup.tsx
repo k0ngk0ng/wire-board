@@ -4,6 +4,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "attack-transport",
+    name: "蛮族进攻＋运输",
+    description:
+      "骑士战斗与货物运输，共用蛮族和金币；14 分获胜。二至六人，可叠加城市骑士与事件牌；五六人使用本站地图。",
+  },
+  {
     id: "caravans-transport",
     name: "商队＋运输",
     description:
@@ -164,6 +170,7 @@ export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
     "rivers-transport",
     "caravans-attack",
     "caravans-transport",
+    "attack-transport",
   ].includes(scenario || "") ||
   scenario === "barbarian-attack" ||
   [
@@ -190,6 +197,7 @@ export function CatanCombinationKnightsPicker({
   riversTransport = false,
   caravansAttack = false,
   caravansTransport = false,
+  attackTransport = false,
   caravans = false,
   tribe = false,
   pirateIslands = false,
@@ -211,6 +219,7 @@ export function CatanCombinationKnightsPicker({
   riversTransport?: boolean;
   caravansAttack?: boolean;
   caravansTransport?: boolean;
+  attackTransport?: boolean;
   caravans?: boolean;
   tribe?: boolean;
   pirateIslands?: boolean;
@@ -233,56 +242,60 @@ export function CatanCombinationKnightsPicker({
           onChange={(e) => onChange(e.target.checked)}
         />
         城市与骑士＋
-        {caravansTransport
-          ? "商队＋运输"
-          : caravansAttack
-            ? "商队＋蛮族进攻"
-            : riversTransport
-              ? "河流＋运输"
-              : riversAttack
-                ? "河流＋蛮族进攻"
-                : riversCaravans
-                  ? "河流＋商队"
-                  : attack
-                    ? "蛮族进攻"
-                    : transport
-                      ? "运输"
-                      : rivers
-                        ? "河流"
-                        : caravans
-                          ? "商队"
-                          : explorer
-                            ? "探索者与海盗"
-                            : fishing
-                              ? "渔夫"
-                              : "航海家"}
+        {attackTransport
+          ? "蛮族进攻＋运输"
+          : caravansTransport
+            ? "商队＋运输"
+            : caravansAttack
+              ? "商队＋蛮族进攻"
+              : riversTransport
+                ? "河流＋运输"
+                : riversAttack
+                  ? "河流＋蛮族进攻"
+                  : riversCaravans
+                    ? "河流＋商队"
+                    : attack
+                      ? "蛮族进攻"
+                      : transport
+                        ? "运输"
+                        : rivers
+                          ? "河流"
+                          : caravans
+                            ? "商队"
+                            : explorer
+                              ? "探索者与海盗"
+                              : fishing
+                                ? "渔夫"
+                                : "航海家"}
       </label>
       <p className="muted small">
-        {caravansTransport
-          ? "本站三模块适配：15 分获胜；木材或砖块出价，运输完成后投票。使用进步牌，无强盗与最长道路；商品地块正常生产，2／12 不重掷。"
-          : caravansAttack
-            ? "本站三模块适配：15 分获胜，商队用木材或砖块出价；先完成道路骑士移动和战斗，再投票放马车。不使用海上蛮族或强盗。"
-            : riversTransport
-              ? "本站三模块适配：15 分获胜；商品地块正常生产，2／12 不重掷，建桥领 2 金币，贫穷不扣分。可付 5 金币保城。"
-              : riversAttack
-                ? "本站三模块适配：13 分获胜；保留河流与桥梁，共用金币，贫穷不扣分。使用道路骑士和进步牌，不使用强盗或海上蛮族。"
-                : riversCaravans
-                  ? "本站三模块适配：15 分获胜；木材／砖块出价，保留河流金币、桥梁骑士和 5 金币保城规则。"
-                  : attack
-                    ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
-                    : transport
-                      ? "二至六人，15分获胜。运输马车与城市骑士并用，蛮族船和道路蛮族分别结算。"
-                      : rivers
-                        ? "13分获胜；起始河岸村庄和城市均领1金币。商品可换金币，金币只买普通资源；骑士可过桥，5金币可保住被劫掠城市，外交拆河岸道路须付1金币。"
-                        : caravans
-                          ? "商队出价改用木材和砖块；15分获胜。先放村庄、逆序放城市，首次蛮族进攻前强盗不入场。双人沿用两次事件与生产、中立骑士及最多两辆马车规则。"
-                          : explorer
-                            ? intro
-                              ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
-                              : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
-                            : fishing
-                              ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌。获胜条件按所选剧本，持旧靴者额外需要 1 分。${harbors ? "港口霸主再提高 1 分门槛。" : ""}`
-                              : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
+        {attackTransport
+          ? "本站三模块适配：14 分获胜；使用道路骑士与进步牌，无海上蛮族，共用蛮族和金币；回合末先战斗、后运输。2／12 正常生产并登陆。"
+          : caravansTransport
+            ? "本站三模块适配：15 分获胜；木材或砖块出价，运输完成后投票。使用进步牌，无强盗与最长道路；商品地块正常生产，2／12 不重掷。"
+            : caravansAttack
+              ? "本站三模块适配：15 分获胜，商队用木材或砖块出价；先完成道路骑士移动和战斗，再投票放马车。不使用海上蛮族或强盗。"
+              : riversTransport
+                ? "本站三模块适配：15 分获胜；商品地块正常生产，2／12 不重掷，建桥领 2 金币，贫穷不扣分。可付 5 金币保城。"
+                : riversAttack
+                  ? "本站三模块适配：13 分获胜；保留河流与桥梁，共用金币，贫穷不扣分。使用道路骑士和进步牌，不使用强盗或海上蛮族。"
+                  : riversCaravans
+                    ? "本站三模块适配：15 分获胜；木材／砖块出价，保留河流金币、桥梁骑士和 5 金币保城规则。"
+                    : attack
+                      ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
+                      : transport
+                        ? "二至六人，15分获胜。运输马车与城市骑士并用，蛮族船和道路蛮族分别结算。"
+                        : rivers
+                          ? "13分获胜；起始河岸村庄和城市均领1金币。商品可换金币，金币只买普通资源；骑士可过桥，5金币可保住被劫掠城市，外交拆河岸道路须付1金币。"
+                          : caravans
+                            ? "商队出价改用木材和砖块；15分获胜。先放村庄、逆序放城市，首次蛮族进攻前强盗不入场。双人沿用两次事件与生产、中立骑士及最多两辆马车规则。"
+                            : explorer
+                              ? intro
+                                ? "本站初航骑士：二至六人自由开局，先放城市、逆序放港口，13分获胜。无海盗和任务组件；征税没有海盗效果。"
+                                : "二至六人；先放城市，再逆序放港口。所选任务目标加5分：巢穴17、鱼群与香料20、三任务22分。"
+                              : fishing
+                                ? `加入商品、进步牌和骑士；7 鱼可选牌堆抽进步牌。获胜条件按所选剧本，持旧靴者额外需要 1 分。${harbors ? "港口霸主再提高 1 分门槛。" : ""}`
+                                : "加入商品、进步牌和骑士，共同抵御蛮族；沿用所选海图的组合胜利条件。"}
       </p>
       {helpers && !explorer && (
         <p className="muted small">
@@ -448,6 +461,7 @@ export const isPublicCatanFlexible = (scenario?: string) =>
     "rivers-transport",
     "caravans-attack",
     "caravans-transport",
+    "attack-transport",
   ].includes(scenario || "");
 
 export const isPublicCatanSea = (scenario?: string) =>
@@ -509,6 +523,7 @@ export function CatanScenarioPicker({
                     "rivers-transport",
                     "caravans-attack",
                     "caravans-transport",
+                    "attack-transport",
                     "rivers",
                     "caravans",
                   ].includes(s.id)) ||
@@ -549,6 +564,7 @@ export function CatanScenarioPicker({
                           "rivers-transport",
                           "caravans-attack",
                           "caravans-transport",
+                          "attack-transport",
                         ].includes(s.id))) ||
                 (fishing &&
                   isPublicCatanSea(s.id) &&

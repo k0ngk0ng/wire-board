@@ -332,3 +332,23 @@ test("river transport depot wagons leave production numbers visible without movi
   delete g.rivers;
   assert.deepEqual(transportWagonPosition(g, 0), { x: 100, y: 200 });
 });
+
+test("shared barbarian relocation requires a legal hex and its matching edge", () => {
+ const r = room(); const t = r.game.catan.transport;
+ t.attack = "catan-attack-transport-2025";
+ t.state.travel.pending = 41;
+ t.choices.relocateHexes = [{tile:7,edges:[5,6]},{tile:8,edges:[6,9]}];
+ assert.deepEqual(transportEdges(r,{edge:null,piece:null}),[]);
+ assert.equal(transportSelectedAction(r,{edge:5,piece:null,tile:8}),null);
+ assert.deepEqual(transportSelectedAction(r,{edge:6,piece:null,tile:8}),{type:"catan_transport_relocate",offer:14,edge:6,tile:8});
+ r.spectating = true;
+ assert.equal(transportSelectedAction(r,{edge:6,piece:null,tile:8}),null);
+});
+test("attack transport keeps 14 points in waiting and saved games with either knight recipe", () => {
+ for(const knights of [false,true]) {
+  const draft={capacity:6,catanScenario:"attack-transport",catanCitiesKnights:knights?{}:undefined};
+  const context=catanRuleContext(draft);
+  assert.equal(context.attack,true); assert.equal(context.transport,true); assert.equal(context.target,14);
+  assert.equal(catanSavedVictoryTarget({transport:{attack:"recipe"},citiesKnights:knights?{}:undefined}),14);
+ }
+});

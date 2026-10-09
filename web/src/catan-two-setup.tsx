@@ -11,6 +11,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "attack-transport",
+    name: "蛮族进攻＋运输",
+    description:
+      "骑士战斗与货物运输，共用蛮族和金币；14 分获胜。二至六人，可叠加城市骑士与事件牌；五六人使用本站地图。",
+  },
+  {
     id: "caravans-transport",
     name: "商队＋运输",
     description:

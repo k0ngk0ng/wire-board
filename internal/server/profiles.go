@@ -195,6 +195,11 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules["rivers_attack"] = g.Rivers.Attack
 				delete(record.CatanExpansionRules, "number_recipe")
 			}
+			if g.AttackTransport != nil {
+				record.CatanScenario = "attack-transport"
+				record.CatanExpansionRules["attack_transport"] = g.AttackTransport.Rules
+				delete(record.CatanExpansionRules, "number_recipe")
+			}
 			if g.Attack.City != nil {
 				record.CatanExpansionRules["attackKnights"] = g.Attack.City.Rules
 			}

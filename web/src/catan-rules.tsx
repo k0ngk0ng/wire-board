@@ -452,7 +452,13 @@ export function CatanRules({ room }: { room: Room }) {
     return (
       <section className="catan-rules">
         <h3>
-          {info.caravans ? "商队＋运输" : info.rivers ? "河流＋运输" : "运输"}
+          {info.attack
+            ? "蛮族进攻＋运输"
+            : info.caravans
+              ? "商队＋运输"
+              : info.rivers
+                ? "河流＋运输"
+                : "运输"}
           {info.citiesKnights ? "＋城市与骑士" : "任务"} · {info.target}分
         </h3>
         {info.citiesKnights && <CatanCitiesKnightsRules info={info} />}
@@ -460,11 +466,43 @@ export function CatanRules({ room }: { room: Room }) {
         <CatanCaravansAttackRules info={info} />
         <CatanRiversTransportRules info={info} />
         <CatanCaravansTransportRules info={info} />
-        {info.citiesKnights && !info.rivers && !info.caravans && (
-          <p>
-            使用城市改良、城墙、大都会与进步牌，取消运输发展牌和最大骑士军队；蛮族船与三名道路蛮族分别运作。二至四人掷出2或12只重掷生产骰，事件骰只结算一次；炼金术请选择3至11点。激活骑士可驱赶相邻道路蛮族至空边，然后转为未激活；落点为对手道路时随机偷1张资源或商品。金币可购买普通资源，不能购买商品；商品可按交易比例换金币。本站组合说明：五六人地图同样用一块粮田替换森林，小地图炼金术仅选3至11点。
-          </p>
+        {info.attack && (
+          <section aria-label="蛮族运输组合规则">
+            <p>
+              共用蛮族和金币。每个蛮族属于一个地块，并可阻挡一条相邻路径；地块最多三个、每条路径最多一个。先结算骑士移动和战斗，再移动马车，14
+              分获胜。
+            </p>
+            <p>
+              玻璃工坊产木材，货物城堡产羊毛，采石场不生产；地块被征服时停止生产，但仍可装货和交货。2／12
+              正常生产并登陆。先按沿海顺序战斗，再按地块编号处理内陆战斗；登陆自动关联空边，这是本站补充顺序。
+            </p>
+            {!info.citiesKnights && (
+              <p>
+                使用蛮族进攻发展牌，不使用运输发展牌；每两个俘虏计一分。招募、移动骑士并击败地块上的蛮族，俘获后同时解除道路阻挡。
+              </p>
+            )}
+            {info.citiesKnights && (
+              <p>
+                本站三模块规则：保留组合地图与数字，使用道路骑士和进步牌；不推进海上蛮族船。2／12
+                在非船面也登陆，船面不重复；供应不足继续补发。商人不能放在商品站。
+              </p>
+            )}
+            {info.fiveSix && (
+              <p>
+                本站五六人地图：37 格、七个货物站与两座骑士城堡。玻璃工坊为
+                12／12／2，内陆货物城堡为 6；采用配对回合。
+              </p>
+            )}
+          </section>
         )}
+        {info.citiesKnights &&
+          !info.attack &&
+          !info.rivers &&
+          !info.caravans && (
+            <p>
+              使用城市改良、城墙、大都会与进步牌，取消运输发展牌和最大骑士军队；蛮族船与三名道路蛮族分别运作。二至四人掷出2或12只重掷生产骰，事件骰只结算一次；炼金术请选择3至11点。激活骑士可驱赶相邻道路蛮族至空边，然后转为未激活；落点为对手道路时随机偷1张资源或商品。金币可购买普通资源，不能购买商品；商品可按交易比例换金币。本站组合说明：五六人地图同样用一块粮田替换森林，小地图炼金术仅选3至11点。
+            </p>
+          )}
         <CatanEventRules info={info} />
         {info.fishing && (
           <p>
@@ -483,16 +521,22 @@ export function CatanRules({ room }: { room: Room }) {
         <ul>
           <li>
             先建村庄，再逆序建城市；城市开局每邻格只领1张资源，马车放在自己的城市。无强盗和最长道路奖励
-            {info.citiesKnights ? "。" : "，保留最大骑士军队。"}
+            {info.citiesKnights || info.attack ? "。" : "，保留最大骑士军队。"}
           </li>
           <li>
             {info.events
               ? "先完成事件，再按牌面点数生产；抽到2或12仍执行事件，不重抽。强盗逃跑无效果。"
-              : info.rivers || info.caravans
+              : info.rivers || info.caravans || info.attack
                 ? "2／12 正常生产，不重掷；"
                 : "二至四人掷出2或12重掷，五六人则正常生产；"}
-            7仍弃牌，再移动一名道路蛮族；落到对手道路时随机偷1张
-            {info.citiesKnights ? "资源或商品" : "资源"}。
+            {info.attack ? (
+              "7 点弃牌并偷取一张对手手牌，不移动蛮族。"
+            ) : (
+              <>
+                7仍弃牌，再移动一名道路蛮族；落到对手道路时随机偷1张
+                {info.citiesKnights ? "资源或商品" : "资源"}。
+              </>
+            )}
           </li>
           <li>
             建设与交易结束后移动马车：无路2点、有路1点，对手道路另付1金币，有蛮族再加2点。每回合可付1粮增加2点。
@@ -505,6 +549,7 @@ export function CatanRules({ room }: { room: Room }) {
           <li>
             四次升级后额外1分。升级马车可驱赶相邻蛮族，每名蛮族每回合只尝试一次；成功后移往空边，不偷资源。
             {!info.citiesKnights &&
+              !info.attack &&
               "快速旅程提供第二次完整移动，两次移动仍共用一次加粮及逐枚驱赶次数。"}
           </li>
           <li>
@@ -532,7 +577,9 @@ export function CatanRules({ room }: { room: Room }) {
                 </li>
               ) : (
                 <li>
-                  货物地块旁建村得1枚贸易筹码，沿海另得1枚，可叠加；起始城市不领村庄奖励。每回合最多消费筹码一次：1枚可把一名蛮族移到无道路、无蛮族的边，不偷牌；强制交易则按公开分数支付1或2枚，随机取对手最多2张资源，再交还2张。
+                  {info.attack
+                    ? "货物地块旁建村得1枚贸易筹码，沿海另得1枚；每回合最多消费筹码一次，可将一个沿海蛮族移到另一未征服沿海地块，或按公开分数支付1／2枚进行强制交易。"
+                    : "货物地块旁建村得1枚贸易筹码，沿海另得1枚，可叠加；起始城市不领村庄奖励。每回合最多消费筹码一次：1枚可把一名蛮族移到无道路、无蛮族的边，不偷牌；强制交易则按公开分数支付1或2枚，随机取对手最多2张资源，再交还2张。"}
                   {info.citiesKnights
                     ? "可移除己方骑士换取等同强度的筹码；每回合一次，筹码银行须足够。招募或升级骑士后另为中立势力完成对应建设。"
                     : "也可另弃一张已打出的骑士换2枚筹码。"}

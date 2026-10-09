@@ -511,6 +511,8 @@ export type CatanAttack = {
   };
 };
 export type CatanTransport = {
+  attack?: string;
+  sharedBarbarians?: { tile: number; edge: number; captor: number }[];
   rules: string;
   knights?: string;
   deckRecipe?: string;
@@ -575,6 +577,7 @@ export type CatanTransport = {
     knightTargets?: number[];
     drive?: number[];
     relocate?: number[];
+    relocateHexes?: { tile: number; edges: number[] }[];
     canWheat?: boolean;
     canFish?: boolean;
     fishCost?: number;
