@@ -87,7 +87,7 @@ func (s *State) validateAttackTribeRoute() error {
 	}
 	q := g.Attack.TribeRoute
 	t := g.tribe()
-	if t == nil || t.AttackRules != CatanAttackTribeRewardRules || g.Attack.Pending == nil || s.Phase != "catan_attack_card" || q.Player != s.Turn || q.Edge < 0 || q.Edge >= len(g.Edges) || !g.Edges[q.Edge].Ship || g.Edges[q.Edge].Owner != q.Player || q.Setup || q.Helper {
+	if t == nil || t.AttackRules != CatanAttackTribeRewardRules || g.Attack.Pending == nil || s.Phase != "catan_attack_card" || q.Player != s.Turn || q.Edge < 0 || q.Edge >= len(g.Edges) || !g.Edges[q.Edge].Ship || g.Edges[q.Edge].Owner != q.Player || q.Setup || q.Helper || q.Free || t.Pending != nil {
 		return errors.New("蛮族部落奖励航路接续无效")
 	}
 	return nil

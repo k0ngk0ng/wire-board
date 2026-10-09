@@ -116,6 +116,11 @@ func (s *State) validateCatanAttack() error {
 			return err
 		}
 	}
+	if tr := g.tribe(); g.attackSea() && tr != nil {
+		if (tr.Pending != nil) != (s.Phase == "catan_port") || tr.Pending != nil && (tr.Pending.Player != s.Turn || s.Finished) {
+			return errors.New("蛮族部落港口回应阶段无效")
+		}
+	}
 	if err := a.validate(g); err != nil {
 		return err
 	}
@@ -125,7 +130,7 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !(g.attackSea() && s.Phase == "catan_gold") && !(g.attackTransport() && s.Phase == "catan_transport_move") && !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}, s.Phase) {
+	if !(g.attackSea() && (s.Phase == "catan_gold" || g.tribe() != nil && s.Phase == "catan_port")) && !(g.attackTransport() && s.Phase == "catan_transport_move") && !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
@@ -178,7 +183,7 @@ func (s *State) validateCatanAttack() error {
 				return errors.New("登陆点数记录无效")
 			}
 			seen[total] = true
-			if roll.Shortage && !g.attackTransport() && (n < 5 || total != 5 && total != 9 && !(g.attackSea() && g.Seafarers.Scenario == "desert" && total == 3) || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
+			if roll.Shortage && !g.attackTransport() && (!g.attackLandingCanShortage(total) || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
 				return errors.New("最后一枚蛮族的随机登陆记录无效")
 			}
 			for i, id := range roll.Tiles {
@@ -294,6 +299,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		}
 	}
 	delete(public, "deck")
+	delete(public, "tribeRoute")
 	public["devRemaining"] = len(a.Deck)
 	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && g.attackGoldReady(2)
 	public["supply"] = a.supply()
@@ -372,4 +378,11 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 			public["fromBoard"] = min(len(plans[0].Sources), len(g.attackCaptureTargets()))
 		}
 	}
+}
+
+func (g *Catan) attackLandingCanShortage(total int) bool {
+	if g.attackSea() && g.tribe() != nil {
+		return len(g.Players) > 4 || total == 2 || total == 12
+	}
+	return len(g.Players) > 4 && (total == 5 || total == 9 || g.attackSea() && g.Seafarers.Scenario == "desert" && total == 3)
 }

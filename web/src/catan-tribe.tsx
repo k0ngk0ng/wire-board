@@ -41,6 +41,7 @@ export function CatanTribeRewards({
   return (
     <g className="catan-tribe-rewards" pointerEvents="none">
       {game.tiles.length === 49 &&
+        !tribe.attackRules &&
         [18, 26, 33].map((id) => (
           <polygon
             key={id}
@@ -59,9 +60,11 @@ export function CatanTribeRewards({
           a = game.vertices[route.a],
           b = game.vertices[route.b];
         const label = card
-          ? tribe.progressRules
-            ? "进步牌奖励：造船或移船到此领取，领取后按进步牌规则使用"
-            : "发展卡奖励：造船或移船到此领取，按本次新购卡处理"
+          ? tribe.attackRules
+            ? "蛮族发展卡奖励：造船或移船到此领取，立即执行专用牌效果"
+            : tribe.progressRules
+              ? "进步牌奖励：造船或移船到此领取，领取后按进步牌规则使用"
+              : "发展卡奖励：造船或移船到此领取，按本次新购卡处理"
           : "胜利点奖励：造船或移船到此领取1分";
         return (
           <g
@@ -85,7 +88,11 @@ export function CatanTribeRewards({
               </g>
             ) : assets ? (
               <image
-                href={`${assets}/catan/seafarers/${card ? "development-back" : "vp-token"}-v1.webp`}
+                href={
+                  card && tribe.attackRules
+                    ? `${assets}/catan/attack/card-back-v1.webp`
+                    : `${assets}/catan/seafarers/${card ? "development-back" : "vp-token"}-v1.webp`
+                }
                 x={card ? -22 : -15}
                 y="-15"
                 width={card ? 44 : 30}
@@ -134,17 +141,23 @@ export function CatanTribeStock({
       <h3>遗忘的部落</h3>
       <p>
         船只到达奖励边即可领取。
-        {room.game?.catan?.fishing
-          ? "村庄可建在主岛（含湖泊）旁；移动强盗时也限于主岛。"
-          : "只能在有数字的陆地旁定居。"}
+        {tribe.attackRules
+          ? "村庄可建在主岛（含城堡）旁，城堡不产资源；奖励牌领取后立即执行。"
+          : room.game?.catan?.fishing
+            ? "村庄可建在主岛（含湖泊）旁；移动强盗时也限于主岛。"
+            : "只能在有数字的陆地旁定居。"}
       </p>
       <div className="catan-tribe-counts">
         <span>
           胜利点剩余 <b>{tribe.tokens?.length || 0}</b>
         </span>
         <span>
-          {tribe.progressRules ? "进步牌" : "发展卡"}剩余{" "}
-          <b>{tribe.development.length}</b>
+          {tribe.attackRules
+            ? "蛮族牌"
+            : tribe.progressRules
+              ? "进步牌"
+              : "发展卡"}
+          剩余 <b>{tribe.development.length}</b>
         </span>
         <span>
           港口剩余 <b>{tribe.ports?.length || 0}</b>

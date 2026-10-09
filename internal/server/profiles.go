@@ -294,8 +294,12 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			record.CatanExpansionRules["seafarers"] = g.Seafarers.Rules
 			if g.Attack != nil && g.Attack.Map.Sea != "" {
 				record.CatanScenario = "attack-" + g.Seafarers.Scenario
+				record.CatanLayout = g.Seafarers.Layout
 				record.CatanRules = g.Attack.Map.Sea
 				record.CatanExpansionRules["attack_seafarers"] = g.Attack.Map.Sea
+				if tr := g.Seafarers.Tribe; tr != nil {
+					record.CatanExpansionRules["attack_tribe_rewards"] = tr.AttackRules
+				}
 				if g.Two != nil {
 					record.CatanExpansionRules["two_attack_seafarers"] = g.Two.AttackSea
 				}

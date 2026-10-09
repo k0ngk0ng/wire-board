@@ -870,6 +870,7 @@ export type CatanState = {
       }[];
     };
     tribe?: {
+      attackRules?: string;
       progressRules?: string;
       tokens: number[] | null;
       development: { edge: number }[];
