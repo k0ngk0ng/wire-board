@@ -8,21 +8,23 @@ import (
 	"time"
 )
 
-func TestCatanAttackShoresHTTP(t *testing.T) {
+func TestCatanAttackShoresHTTP(t *testing.T)      { runAttackShoresHTTP(t, 4) }
+func TestCatanAttackShoresThreeHTTP(t *testing.T) { runAttackShoresHTTP(t, 3) }
+func runAttackShoresHTTP(t *testing.T, n int) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
-	clients := make([]*testClient, 4)
+	clients := make([]*testClient, n)
 	for i := range clients {
 		clients[i] = newClient(t, ts.URL)
 		clients[i].register(fmt.Sprintf("蛮族航海%d", i))
 	}
 	h := clients[0]
-	r := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "蛮族新海岸", "capacity": 4, "catanScenario": "attack-shores", "catanEvents": game.CatanEventCatalogue}, 201)
+	r := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "蛮族新海岸", "capacity": n, "catanScenario": "attack-shores", "catanEvents": game.CatanEventCatalogue}, 201)
 	id := r["id"].(string)
-	for _, c := range clients[1:3] {
+	for _, c := range clients[1:2] {
 		c.command(current(h), "join", nil, 200)
 	}
-	for _, c := range clients[:3] {
+	for _, c := range clients[:2] {
 		c.command(current(c), "ready", nil, 200)
 	}
 	before, _ := json.Marshal(s.rooms[id])
@@ -31,10 +33,12 @@ func TestCatanAttackShoresHTTP(t *testing.T) {
 	if string(before) != string(after) {
 		t.Fatal("rejected start mutated room")
 	}
-	clients[3].command(current(h), "join", nil, 200)
-	clients[3].command(current(clients[3]), "ready", nil, 200)
+	for _, c := range clients[2:] {
+		c.command(current(h), "join", nil, 200)
+		c.command(current(c), "ready", nil, 200)
+	}
 	h.command(current(h), "start", nil, 200)
-	ordered := make([]*testClient, 4)
+	ordered := make([]*testClient, n)
 	for _, c := range clients {
 		ordered[int(current(c)["you"].(float64))] = c
 	}
@@ -88,7 +92,7 @@ func TestCatanAttackShoresRoomBounds(t *testing.T) {
 	for _, n := range []int{2, 3, 4, 5, 6} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 		err := r.setCatanScenario("attack-shores")
-		if (err == nil) != (n == 4) {
+		if (err == nil) != (n == 3 || n == 4) {
 			t.Fatal(n, err)
 		}
 	}

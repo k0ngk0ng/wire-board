@@ -108,3 +108,19 @@ func TestCatanAttackShoresThreeLandingFaces(t *testing.T) {
 		t.Fatal("corrupt double number")
 	}
 }
+
+func TestCatanAttackShoresThreePrintedPorts(t *testing.T) {
+	g, _, e := newCatanAttackShoresThreeBoard()
+	if e != nil {
+		t.Fatal(e)
+	}
+	expected := []struct{ tile, side, resource int }{{10, 2, 3}, {11, 5, -1}, {20, 3, 4}, {20, 1, -1}, {23, 4, 2}, {31, 2, 1}, {32, 5, -1}, {32, 1, 0}}
+	if len(g.Ports) != len(expected) {
+		t.Fatal("port count")
+	}
+	for i, p := range expected {
+		if g.Ports[i].Edge != catanFishingSide(g, p.tile, p.side) || g.Ports[i].Resource != p.resource {
+			t.Fatal("printed port", i)
+		}
+	}
+}
