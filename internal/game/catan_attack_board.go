@@ -143,6 +143,9 @@ func (a catanAttack) conqueredBuilding(g *Catan, vertex int) bool {
 	}
 	touches := false
 	for _, tile := range g.Tiles {
+		if g.Seafarers != nil && (tile.Resource == CatanSea || tile.Resource == CatanFog) {
+			continue
+		}
 		if !slices.Contains(tile.Vertices, vertex) {
 			continue
 		}
