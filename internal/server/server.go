@@ -1244,7 +1244,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && next.SplendorOptions != (game.SplendorOptions{}) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
-				if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {
+				if setup, ok := publicCatanRiversSeaSetup(next.CatanScenario); ok {
+					next.Game, err = game.NewCatanRiversSeafarers(len(next.Seats), setup, nil)
+				} else if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {
 					err = next.validateCatanTwoSetup()
 					if err == nil {
 						if next.twoCatanSeafarers() {

@@ -1,3 +1,4 @@
+import { catanRiversSeaScenarios } from "./catan-rivers-sea-options";
 import type { Room } from "./types";
 import "./catan-scenarios.css";
 
@@ -30,7 +31,10 @@ const names: Record<string, string> = {
   wonders: "卡坦奇迹",
   new_world: "新世界",
 };
-export const catanScenarioName = (id: string) => names[id] || "航海家";
+export const catanScenarioName = (id: string) =>
+  names[id] ||
+  catanRiversSeaScenarios.find((s) => s.id === id)?.name ||
+  "航海家";
 export const catanLayoutName = (id: string) =>
   ({
     fixed: "官方固定布局",
