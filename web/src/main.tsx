@@ -1,3 +1,8 @@
+import {
+  isCatanTransportSea,
+  CatanTransportSeaLayout,
+  CatanTransportSeaWaitingLayout,
+} from "./catan-transport-sea-options";
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import { CatanRiversWorldPreview } from "./catan-rivers-world-preview";
 import {
@@ -1978,6 +1983,7 @@ function Create({
   const [sgOptions, setSGOptions] = useState<SGOptions>({ deck: "standard" });
   const [catanOptions, setCatanOptions] = useState<CatanOptions>({});
   const [catanBaseLayout, setCatanBaseLayout] = useState("variable");
+  const [transportSeaLayout, setTransportSeaLayout] = useState("fixed");
   const [catanTwoScenario, setCatanTwoScenario] = useState("");
   const [catanScenario, setCatanScenario] = useState("");
   const [catanFishing, setCatanFishing] = useState(false);
@@ -2078,6 +2084,8 @@ function Create({
                     "rivers",
                     "caravans",
                     "barbarian-attack",
+                    "transport-shores",
+                    "transport-desert",
                   ].includes(catanTwoScenario))) ||
                 supportsPublicCatanFishingSea(catanScenario) ||
                 isPublicCatanExplorer(catanScenario) ||
@@ -2086,6 +2094,8 @@ function Create({
                   "caravans",
                   "barbarian-attack",
                   "transport",
+                  "transport-shores",
+                  "transport-desert",
                 ].includes(catanScenario)) &&
               catanFishing,
             catanFishingLakes:
@@ -2108,6 +2118,16 @@ function Create({
               catanSeaKnights &&
               supportsPublicCatanKnightsCombination(variantScenario)
                 ? { layout: "variable" }
+                : undefined,
+            catanTransportSea:
+              k === "catan" && isCatanTransportSea(variantScenario)
+                ? {
+                    scenario:
+                      variantScenario === "transport-desert"
+                        ? "desert"
+                        : "shores",
+                    layout: transportSeaLayout,
+                  }
                 : undefined,
             catanTwoScenario:
               k === "catan" &&
@@ -2227,6 +2247,7 @@ function Create({
               catanVictoryTarget(
                 catanTwoScenario,
                 catanTwoScenario === "cities-knights" || catanSeaKnights,
+                catanFishing,
               ) + (variantsAvailable && catanHarbors ? 1 : 0)
             }
             onChange={(scenario) => {
@@ -2246,6 +2267,8 @@ function Create({
                     "caravans",
                     "barbarian-attack",
                     "transport",
+                    "transport-shores",
+                    "transport-desert",
                   ].includes(scenario)
                 )
                   setCatanFishing(false);
@@ -2253,7 +2276,8 @@ function Create({
               }
               if (
                 !supportsTwoCatanSeafarers(scenario) &&
-                !isPublicCatanExplorer(scenario)
+                !isPublicCatanExplorer(scenario) &&
+                !isCatanTransportSea(scenario)
               )
                 setCatanSeaKnights(false);
             }}
@@ -2352,6 +2376,8 @@ function Create({
                     "caravans",
                     "barbarian-attack",
                     "transport",
+                    "transport-shores",
+                    "transport-desert",
                   ].includes(scenario)
                 )
                   setCatanFishing(false);
@@ -2456,6 +2482,12 @@ function Create({
               }}
             />
           )}
+        {k === "catan" && isCatanTransportSea(variantScenario) && (
+          <CatanTransportSeaLayout
+            value={transportSeaLayout}
+            onChange={setTransportSeaLayout}
+          />
+        )}
         {k === "catan" &&
           ((capacity === 2 &&
             (supportsTwoCatanSeafarers(catanTwoScenario) ||
@@ -2466,21 +2498,33 @@ function Create({
                 "barbarian-attack",
               ].includes(catanTwoScenario))) ||
             isPublicCatanExplorer(catanScenario) ||
-            ["rivers", "caravans", "barbarian-attack", "transport"].includes(
-              variantScenario,
-            ) ||
+            [
+              "rivers",
+              "caravans",
+              "barbarian-attack",
+              "transport",
+              "transport-shores",
+              "transport-desert",
+            ].includes(variantScenario) ||
             (capacity >= 3 &&
               (capacity <= 4 ||
                 supportsPublicCatanFishingSeaExtended(catanScenario)) &&
               supportsPublicCatanFishingSea(catanScenario))) && (
             <CatanFishingSeaPicker
-              transport={variantScenario === "transport"}
+              transport={
+                variantScenario === "transport" ||
+                isCatanTransportSea(variantScenario)
+              }
+              transportSea={isCatanTransportSea(variantScenario)}
               attack={["barbarian-attack", "rivers-attack"].includes(
                 variantScenario,
               )}
               caravans={variantScenario === "caravans"}
               rivers={variantScenario === "rivers"}
-              knights={capacity === 2 && catanTwoScenario === "cities-knights"}
+              knights={
+                catanSeaKnights ||
+                (capacity === 2 && catanTwoScenario === "cities-knights")
+              }
               value={catanFishing}
               two={
                 capacity === 2 && supportsTwoCatanSeafarers(catanTwoScenario)
@@ -2510,7 +2554,11 @@ function Create({
               caravansAttack={variantScenario === "caravans-attack"}
               attackTransport={variantScenario === "attack-transport"}
               caravansTransport={variantScenario === "caravans-transport"}
-              transport={variantScenario === "transport"}
+              transport={
+                variantScenario === "transport" ||
+                isCatanTransportSea(variantScenario)
+              }
+              transportSea={isCatanTransportSea(variantScenario)}
               rivers={variantScenario === "rivers"}
               riversCaravans={variantScenario === "rivers-caravans"}
               caravans={["caravans", "rivers-caravans"].includes(
@@ -2548,8 +2596,11 @@ function Create({
                 "attack-pirates",
               ].includes(variantScenario)}
               target={
-                catanVictoryTarget(variantScenario, variantKnights) +
-                (catanHarbors ? 1 : 0)
+                catanVictoryTarget(
+                  variantScenario,
+                  variantKnights,
+                  catanFishing,
+                ) + (catanHarbors ? 1 : 0)
               }
             />
           )}
@@ -3178,19 +3229,33 @@ function Waiting({
             }
           />
         )}
+        <CatanTransportSeaWaitingLayout
+          room={room}
+          disabled={!host || busy || mapDirty}
+          command={command}
+        />
         {room.kind === "catan" &&
           ((!!room.catanTwoRules &&
             room.catanTwoScenario === "cities-knights") ||
             supportsTwoCatanSeafarers(room.catanTwoScenario) ||
             isPublicCatanExplorer(room.catanScenario) ||
-            ["rivers", "caravans", "barbarian-attack", "transport"].includes(
-              room.catanTwoScenario || room.catanScenario || "",
-            ) ||
+            [
+              "rivers",
+              "caravans",
+              "barbarian-attack",
+              "transport",
+              "transport-shores",
+              "transport-desert",
+            ].includes(room.catanTwoScenario || room.catanScenario || "") ||
             ((room.capacity <= 4 ||
               supportsPublicCatanFishingSeaExtended(room.catanScenario)) &&
               supportsPublicCatanFishingSea(room.catanScenario))) && (
             <CatanFishingSeaPicker
-              transport={room.catanScenario === "transport"}
+              transport={
+                room.catanScenario === "transport" ||
+                isCatanTransportSea(room.catanScenario)
+              }
+              transportSea={isCatanTransportSea(room.catanScenario)}
               attack={["barbarian-attack", "rivers-attack"].includes(
                 room.catanTwoScenario || room.catanScenario || "",
               )}
@@ -3239,7 +3304,11 @@ function Waiting({
               attack={["barbarian-attack", "rivers-attack"].includes(
                 room.catanTwoScenario || room.catanScenario || "",
               )}
-              transport={room.catanScenario === "transport"}
+              transport={
+                room.catanScenario === "transport" ||
+                isCatanTransportSea(room.catanScenario)
+              }
+              transportSea={isCatanTransportSea(room.catanScenario)}
               riversCaravans={room.catanScenario === "rivers-caravans"}
               riversAttack={room.catanScenario === "rivers-attack"}
               riversTransport={room.catanScenario === "rivers-transport"}
@@ -3279,7 +3348,10 @@ function Waiting({
               "spices-for-catan",
               "explorers-and-pirates",
             ].includes(room.catanScenario || "")}
-            transport={room.catanScenario === "transport"}
+            transport={
+              room.catanScenario === "transport" ||
+              isCatanTransportSea(room.catanScenario)
+            }
             pirateIslands={
               (room.catanSeafarers?.scenario || room.catanScenario) ===
               "pirate_islands"

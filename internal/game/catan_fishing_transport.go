@@ -179,13 +179,19 @@ func NewCatanFishingTransport(n int, knights bool) (*State, error) {
 	return s, s.validateCatanTransport()
 }
 func (f catanFishingMap) validateTransport(g *Catan) error {
-	if !g.fishingTransport() || g.Explorer != nil || g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Seafarers != nil || g.Fishing.Attack != "" || g.Fishing.Rivers != "" || g.Fishing.Caravans != "" || len(f.Lakes) != 0 || len(f.ExtraNumbers) != 0 || len(f.NumberSwaps) != 0 || f.SeaRecipe != "" || f.NumberRecipe != "" {
+	if !g.fishingTransport() || g.Explorer != nil || g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Seafarers != nil && !g.transportSea() || g.Fishing.Attack != "" || g.Fishing.Rivers != "" || g.Fishing.Caravans != "" || len(f.Lakes) != 0 || len(f.ExtraNumbers) != 0 || len(f.NumberSwaps) != 0 || (f.SeaRecipe != "" && !(g.transportSea() && f.SeaRecipe == CatanTransportSeaFishingRules)) || f.NumberRecipe != "" {
 		return errors.New("渔夫运输组合或无湖配置无效")
 	}
 	if err := g.Transport.Map.validate(g); err != nil {
 		return err
 	}
-	want, err := transportFishingGrounds(g)
+	var want []catanFishingGround
+	var err error
+	if g.transportSea() {
+		want, err = transportSeaFishingGrounds(g)
+	} else {
+		want, err = transportFishingGrounds(g)
+	}
 	if err != nil {
 		return err
 	}

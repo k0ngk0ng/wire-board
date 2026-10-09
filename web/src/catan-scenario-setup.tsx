@@ -1,3 +1,4 @@
+import { isCatanTransportSea } from "./catan-transport-sea-options";
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import {
   catanRiversSeaScenarios,
@@ -243,6 +244,7 @@ export const supportsPublicExplorerKnights = (scenario?: string) =>
 export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
   supportsPublicExplorerKnights(scenario) ||
   scenario === "transport" ||
+  isCatanTransportSea(scenario) ||
   [
     "rivers-caravans",
     "rivers-attack",
@@ -270,6 +272,7 @@ export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
 export function CatanCombinationKnightsPicker({
   attack = false,
   transport = false,
+  transportSea = false,
   rivers = false,
   riversCaravans = false,
   riversAttack = false,
@@ -292,6 +295,7 @@ export function CatanCombinationKnightsPicker({
 }: {
   attack?: boolean;
   transport?: boolean;
+  transportSea?: boolean;
   rivers?: boolean;
   riversCaravans?: boolean;
   riversAttack?: boolean;
@@ -363,7 +367,9 @@ export function CatanCombinationKnightsPicker({
                     : attack
                       ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
                       : transport
-                        ? "二至六人，15分获胜。运输马车与城市骑士并用，蛮族船和道路蛮族分别结算。"
+                        ? transportSea
+                          ? "本站运输海图骑士：二至六人，19分获胜；使用商品和进步牌，2／12正常生产，骑士沿己方船路连接，无强盗海盗。港口变体另加1分。"
+                          : "二至六人，15分获胜。运输马车与城市骑士并用，蛮族船和道路蛮族分别结算。"
                         : rivers
                           ? "13分获胜；起始河岸村庄和城市均领1金币。商品可换金币，金币只买普通资源；骑士可过桥，5金币可保住被劫掠城市，外交拆河岸道路须付1金币。"
                           : caravans
@@ -429,6 +435,7 @@ export function CatanFishingSeaPicker({
   caravans = false,
   attack = false,
   transport = false,
+  transportSea = false,
   knights = false,
   two = false,
   extended = false,
@@ -446,6 +453,7 @@ export function CatanFishingSeaPicker({
   caravans?: boolean;
   attack?: boolean;
   transport?: boolean;
+  transportSea?: boolean;
   knights?: boolean;
   two?: boolean;
   extended?: boolean;
@@ -604,88 +612,92 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                [
-                  "transport-shores",
-                  "transport-desert",
-                  "attack-pirates",
-                  "attack-wonders",
-                  "attack-tribe",
-                  "attack-desert",
-                ].includes(s.id)
-                  ? players < 2 || players > 6 || knights || fishing
-                  : s.id === "attack-shores"
+                isCatanTransportSea(s.id)
+                  ? players < 2 || players > 6
+                  : [
+                        "transport-shores",
+                        "transport-desert",
+                        "attack-pirates",
+                        "attack-wonders",
+                        "attack-tribe",
+                        "attack-desert",
+                      ].includes(s.id)
                     ? players < 2 || players > 6 || knights || fishing
-                    : ["caravans-new-world", "caravans-islands"].includes(s.id)
+                    : s.id === "attack-shores"
                       ? players < 2 || players > 6 || knights || fishing
-                      : s.id === "caravans-shores"
-                        ? players > 6 || knights || fishing
-                        : ["caravans-desert", "caravans-tribe"].includes(s.id)
-                          ? players < 2 || players > 6 || knights || fishing
-                          : isPublicCatanRiversSea(s.id)
-                            ? !catanRiversSeaAvailable(s.id, players) ||
-                              knights ||
-                              fishing
-                            : (helpers &&
-                                !supportsCatanTradersHelpers(s.id) &&
-                                [
-                                  "barbarian-attack",
-                                  "transport",
-                                  "rivers-caravans",
-                                  "rivers-attack",
-                                  "rivers-transport",
-                                  "caravans-attack",
-                                  "caravans-transport",
-                                  "attack-transport",
-                                  "rivers",
-                                  "caravans",
-                                ].includes(s.id)) ||
-                              (players > 4 &&
-                                (fishing
-                                  ? !(
-                                      [
-                                        "rivers",
-                                        "caravans",
-                                        "barbarian-attack",
-                                        "transport",
-                                      ].includes(s.id) ||
-                                      supportsPublicCatanFishingSeaExtended(
-                                        s.id,
-                                      ) ||
-                                      supportsPublicExplorerKnights(s.id)
-                                    )
-                                  : fiveSix
+                      : ["caravans-new-world", "caravans-islands"].includes(
+                            s.id,
+                          )
+                        ? players < 2 || players > 6 || knights || fishing
+                        : s.id === "caravans-shores"
+                          ? players > 6 || knights || fishing
+                          : ["caravans-desert", "caravans-tribe"].includes(s.id)
+                            ? players < 2 || players > 6 || knights || fishing
+                            : isPublicCatanRiversSea(s.id)
+                              ? !catanRiversSeaAvailable(s.id, players) ||
+                                knights ||
+                                fishing
+                              : (helpers &&
+                                  !supportsCatanTradersHelpers(s.id) &&
+                                  [
+                                    "barbarian-attack",
+                                    "transport",
+                                    "rivers-caravans",
+                                    "rivers-attack",
+                                    "rivers-transport",
+                                    "caravans-attack",
+                                    "caravans-transport",
+                                    "attack-transport",
+                                    "rivers",
+                                    "caravans",
+                                  ].includes(s.id)) ||
+                                (players > 4 &&
+                                  (fishing
                                     ? !(
-                                        isPublicCatanSea(s.id) ||
-                                        isPublicCatanExplorer(s.id) ||
                                         [
-                                          "",
-                                          "cities-knights",
                                           "rivers",
                                           "caravans",
-                                          "fishing",
-                                        ].includes(s.id)
+                                          "barbarian-attack",
+                                          "transport",
+                                        ].includes(s.id) ||
+                                        supportsPublicCatanFishingSeaExtended(
+                                          s.id,
+                                        ) ||
+                                        supportsPublicExplorerKnights(s.id)
                                       )
-                                    : ![
-                                        "land-ho",
-                                        "spices-for-catan",
-                                        "pirate-lairs",
-                                        "fish-for-catan",
-                                        "explorers-and-pirates",
-                                        "barbarian-attack",
-                                        "transport",
-                                        "rivers-caravans",
-                                        "rivers-attack",
-                                        "rivers-transport",
-                                        "caravans-attack",
-                                        "caravans-transport",
-                                        "attack-transport",
-                                      ].includes(s.id))) ||
-                              (fishing &&
-                                isPublicCatanSea(s.id) &&
-                                !supportsPublicCatanFishingSea(s.id)) ||
-                              (knights &&
-                                isPublicCatanSea(s.id) &&
-                                !supportsPublicCatanKnightsCombination(s.id))
+                                    : fiveSix
+                                      ? !(
+                                          isPublicCatanSea(s.id) ||
+                                          isPublicCatanExplorer(s.id) ||
+                                          [
+                                            "",
+                                            "cities-knights",
+                                            "rivers",
+                                            "caravans",
+                                            "fishing",
+                                          ].includes(s.id)
+                                        )
+                                      : ![
+                                          "land-ho",
+                                          "spices-for-catan",
+                                          "pirate-lairs",
+                                          "fish-for-catan",
+                                          "explorers-and-pirates",
+                                          "barbarian-attack",
+                                          "transport",
+                                          "rivers-caravans",
+                                          "rivers-attack",
+                                          "rivers-transport",
+                                          "caravans-attack",
+                                          "caravans-transport",
+                                          "attack-transport",
+                                        ].includes(s.id))) ||
+                                (fishing &&
+                                  isPublicCatanSea(s.id) &&
+                                  !supportsPublicCatanFishingSea(s.id)) ||
+                                (knights &&
+                                  isPublicCatanSea(s.id) &&
+                                  !supportsPublicCatanKnightsCombination(s.id))
               }
             >
               {players > 4 && s.id === "islands" ? "航海家 · 六岛" : s.name}
@@ -702,6 +714,7 @@ export function CatanScenarioPicker({
                 catanVictoryTarget(
                   value,
                   knights || value === "cities-knights",
+                  fishing,
                 ) + (harbors ? 1 : 0),
               )
             : scenarios.find((s) => s.id === value)?.description}

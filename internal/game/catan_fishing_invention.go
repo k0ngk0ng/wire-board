@@ -29,6 +29,13 @@ func (g *Catan) inventionNumbers() []CatanNumberChoice {
 			result = append(result, CatanNumberChoice{CatanNumberToken{tile.ID, 0}, tile.Number})
 		}
 	}
+	if g.transportSeaKnights() {
+		for _, extra := range g.Transport.Map.ExtraNumbers {
+			if inventionNumber(extra.Number) {
+				result = append(result, CatanNumberChoice{CatanNumberToken{extra.Tile, 1}, extra.Number})
+			}
+		}
+	}
 	if g.Fishing != nil {
 		for _, extra := range g.Fishing.Map.ExtraNumbers {
 			if inventionNumber(extra.Number) {
@@ -44,6 +51,13 @@ func (g *Catan) numberToken(ref CatanNumberToken) *int {
 	}
 	if ref.Slot == 0 {
 		return &g.Tiles[ref.Tile].Number
+	}
+	if ref.Slot == 1 && g.transportSeaKnights() {
+		for i := range g.Transport.Map.ExtraNumbers {
+			if g.Transport.Map.ExtraNumbers[i].Tile == ref.Tile {
+				return &g.Transport.Map.ExtraNumbers[i].Number
+			}
+		}
 	}
 	if ref.Slot == 1 && g.Fishing != nil {
 		for i := range g.Fishing.Map.ExtraNumbers {

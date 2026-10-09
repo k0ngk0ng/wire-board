@@ -50,6 +50,7 @@ export const catanScenarioName = (id: string) =>
 export const catanLayoutName = (id: string) =>
   ({
     fixed: "官方固定布局",
+    "wire-board-transport-sea-variable-v1": "本站运输可变地图",
     "wire-board-transport-sea-5-6-v1": "本站五六人运输海图",
     variable: "官方可变布局",
     prepared: "共同确认地图",

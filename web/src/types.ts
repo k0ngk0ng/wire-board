@@ -210,6 +210,7 @@ export type Room = {
   catanBaseConfiguration?: { layout: "fixed" | "variable"; rules: string };
   catanBaseLayouts?: string[];
   catanSeafarers?: { scenario: string; layout: string; rules: string };
+  catanTransportSea?: { scenario: string; layout: string; rules?: string };
   catanSeafarersChoices?: {
     id: string;
     name: string;

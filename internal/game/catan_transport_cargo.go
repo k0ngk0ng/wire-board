@@ -28,6 +28,7 @@ type catanTransportArrivalResult struct {
 
 // Persisted scenario state, including the extended online deck version.
 type catanTransport struct {
+	SeaKnights        string                       `json:"seaKnights,omitempty"`
 	Knights           string                       `json:"knights,omitempty"`
 	DeckRecipe        string                       `json:"deckRecipe,omitempty"`
 	GameTurn          uint64                       `json:"gameTurn"`
