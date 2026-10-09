@@ -97,6 +97,9 @@ func (s *State) catanBot(player int) (Action, error) {
 			return s.catanAttackCityTreasonBot(player)
 		}
 	}
+	if g.Attack != nil && g.Attack.WonderLanding != nil {
+		return s.catanWonderLandingBot(player)
+	}
 	if g.Attack != nil && g.Attack.EndPlan != nil {
 		return s.catanAttackEndBot(player)
 	}

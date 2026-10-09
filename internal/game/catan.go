@@ -502,6 +502,9 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	if player < 0 || player >= len(g.Players) || g.Players[player].Eliminated {
 		return errors.New("无法操作此座位")
 	}
+	if g.Attack != nil && g.Attack.WonderLanding != nil {
+		return s.catanWonderLandingChoice(player, a)
+	}
 	if g.Attack != nil && g.Attack.Pending != nil {
 		return s.catanAttackCardChoice(player, a)
 	}
@@ -1280,6 +1283,13 @@ func (s *State) AutoCatanPending() {
 	if g.attackKnights() && (g.Attack.City.Plan != nil || g.Attack.City.Treason != nil) {
 		actor := s.CatanPendingActor()
 		if a, err := s.catanBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
+		}
+		return
+	}
+	if g.Attack != nil && g.Attack.WonderLanding != nil {
+		actor := s.CatanPendingActor()
+		if a, err := s.catanWonderLandingBot(actor); err == nil {
 			_ = s.applyCatan(actor, a)
 		}
 		return

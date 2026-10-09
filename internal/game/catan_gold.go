@@ -143,6 +143,9 @@ func (s *State) CatanPendingActor() int {
 		}
 		return g.Attack.City.Plan.Player
 	}
+	if g.Attack != nil && g.Attack.WonderLanding != nil {
+		return g.Attack.WonderLanding.Player
+	}
 	if g.Attack != nil && g.Attack.EndPlan != nil {
 		return g.Attack.EndPlan.Player
 	}

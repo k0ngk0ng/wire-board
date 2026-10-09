@@ -39,6 +39,12 @@ export function attackChoices(room: Room, pick: AttackSelection) {
   const a = room.game?.catan?.attack;
   if (!a || !attackCanRespond(room))
     return { tiles: [] as number[], edges: [] as number[], sources: false };
+  if (a.wonderLanding)
+    return {
+      tiles: [...(a.landingSources || []), ...(a.landingTargets || [])],
+      edges: [],
+      sources: false,
+    };
   if (a.endPlan) {
     const move = a.moveChoices?.find((c) => c.from === pick.from);
     return {
@@ -90,6 +96,20 @@ export function attackSelectedAction(
   const a = room.game?.catan?.attack;
   if (!a || !attackCanRespond(room)) return null;
   const legal = attackChoices(room, pick);
+  if (a.wonderLanding) {
+    const q = a.wonderLanding;
+    return (a.landingSources || []).includes(pick.sources[0]) &&
+      pick.target !== null &&
+      (a.landingTargets || []).includes(pick.target)
+      ? {
+          type: "catan_attack_landing",
+          prompt: q.id,
+          slot: q.cursor,
+          tile: pick.sources[0],
+          target: pick.target,
+        }
+      : null;
+  }
   if (a.endPlan) {
     return pick.from !== null &&
       pick.target !== null &&

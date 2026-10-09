@@ -302,7 +302,7 @@ func (s *State) validateCatanAttackEnd() error {
 	previous := -1
 	for i, b := range q.Battles {
 		coast := slices.Index(g.attackBattleTiles(), b.Tile)
-		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) <= b.Barbarians || len(b.Knights) > g.attackBattleKnightLimit(b.Tile) || len(b.Prisoners) != g.attackBattleSeats() || len(b.Gold) != g.attackBattleSeats() || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || i != len(q.Battles)-1) {
+		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 && !slices.Contains(a.Map.Reserves, b.Tile) || len(b.Knights) <= b.Barbarians || len(b.Knights) > g.attackBattleKnightLimit(b.Tile) || len(b.Prisoners) != g.attackBattleSeats() || len(b.Gold) != g.attackBattleSeats() || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || i != len(q.Battles)-1) {
 			return errors.New("战斗顺序、力量或俘虏记录无效")
 		}
 		previous = coast

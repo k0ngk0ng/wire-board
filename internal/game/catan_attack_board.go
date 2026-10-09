@@ -13,6 +13,7 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
+	WonderLanding    *catanAttackWonderLanding `json:"wonderLanding,omitempty"`
 	TribeRoute       *CatanRouteCompletion     `json:"tribeRoute,omitempty"`
 	City             *catanAttackCity          `json:"city,omitempty"`
 	TwoRules         string                    `json:"twoRules,omitempty"`
@@ -51,8 +52,11 @@ func newCatanAttackPieces(g *Catan, m *catanAttackMap) (*catanAttack, error) {
 	}
 	n := len(g.Players)
 	a := &catanAttack{Rules: catanAttackRules, Map: m, Barbarians: make([]int, len(g.Tiles)), Knights: []catanAttackKnight{}, Prisoners: make([]int, n), Gold: make([]int, n), GoldBank: m.Gold, Discard: []string{}}
+	for _, id := range m.Reserves {
+		a.Barbarians[id] = 12
+	}
 	for _, id := range m.Coast {
-		if g.Tiles[id].Number == 2 || g.Tiles[id].Number == 12 || m.Rivers == CatanRiversAttackRules && n <= 4 && id == 11 {
+		if len(m.Reserves) == 0 && (g.Tiles[id].Number == 2 || g.Tiles[id].Number == 12 || m.Rivers == CatanRiversAttackRules && n <= 4 && id == 11) {
 			a.Barbarians[id] = 1
 		}
 	}
@@ -83,7 +87,7 @@ func (a catanAttack) validate(g *Catan) error {
 		}
 		total, gold := a.NeutralPrisoners, int64(a.GoldBank)
 		for id, count := range a.Barbarians {
-			if count < 0 || count > 3 || count > 0 && !slices.Contains(a.Map.Coast, id) {
+			if count < 0 || slices.Contains(a.Map.Reserves, id) && count > 12 || !slices.Contains(a.Map.Reserves, id) && (count > 3 || count > 0 && !slices.Contains(a.Map.Coast, id)) {
 				return errors.New("蛮族只能在可生产的沿海地块，每格至多3个")
 			}
 			total += count
@@ -95,7 +99,7 @@ func (a catanAttack) validate(g *Catan) error {
 			gold += int64(a.Gold[p])
 			total += a.Prisoners[p]
 		}
-		if total > a.Map.Barbarians || gold != int64(a.Map.Gold)+int64(a.GoldIssued) {
+		if total > a.Map.Barbarians || len(a.Map.Reserves) > 0 && total != a.Map.Barbarians || gold != int64(a.Map.Gold)+int64(a.GoldIssued) {
 			return errors.New("蛮族或金币库存不守恒")
 		}
 	}
@@ -139,7 +143,7 @@ func (a catanAttack) supply() int {
 	return a.Map.Barbarians - sum(a.Barbarians) - sum(a.Prisoners) - a.NeutralPrisoners
 }
 func (a catanAttack) conquered(tile int) bool {
-	return tile >= 0 && tile < len(a.Barbarians) && a.Barbarians[tile] == 3
+	return tile >= 0 && tile < len(a.Barbarians) && a.Barbarians[tile] >= 3
 }
 func (a catanAttack) conqueredBuilding(g *Catan, vertex int) bool {
 	if vertex < 0 || vertex >= len(g.Vertices) {

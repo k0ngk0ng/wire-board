@@ -456,12 +456,14 @@ export type CatanAttack = {
   city?: CatanAttackCity;
   twoRules?: string;
   neutralPrisoners?: number;
-  landingSupplyRule?: "random-last" | "ledger";
+  landingSupplyRule?: "random-last" | "ledger" | "desert-reserve";
+  reserveRemaining?: number;
   treasonRule?: "as-much-as-possible";
   goldRule?: "ledger";
   goldIssued?: number;
   rules: string;
   map: {
+    reserves?: number[];
     castles: number[];
     coast: number[];
     barbarians: number;
@@ -482,6 +484,15 @@ export type CatanAttack = {
   discard: string[];
   canAct: boolean;
   canBuyCard: boolean;
+  wonderLanding?: {
+    id: number;
+    player: number;
+    remaining: number;
+    cursor: number;
+  };
+  landingSources?: number[];
+  landingTargets?: number[];
+  landingNumber?: number;
   pending?: { id: number; player: number; card: string; neutral?: boolean };
   endPlan?: { id: number; player: number; moves?: CatanAttackMove[] };
   moveChoices?: {

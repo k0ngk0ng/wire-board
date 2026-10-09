@@ -15,6 +15,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "attack-wonders",
+    name: "蛮族进攻＋卡坦奇迹",
+    description:
+      "本站双人中立海岸与共享骑士，沙漠蛮族均衡登陆。完成四级奇迹或12分且等级独占领先，可加事件牌。",
+  },
+  {
     id: "attack-tribe",
     name: "蛮族进攻＋遗忘部落",
     description:

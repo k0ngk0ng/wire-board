@@ -233,3 +233,16 @@ test('barbarian tribe waiting target matches thirteen for every supported count'
  assert.equal(c.attack,true);assert.equal(c.target,13);assert.equal(c.two,capacity===2);
  }
 });
+
+test('barbarian wonders landing uses server sources and destination with stale cursor guard',()=>{
+ const room=fixture(),a=room.game.catan.attack;
+ delete a.pending;a.canAct=true;a.wonderLanding={id:17,player:0,dice:[[2,2],[2,3],[3,3]],cursor:1};a.landingSources=[24,25];a.landingTargets=[12,13];
+ const selected={...emptyAttackSelection(),sources:[25],target:13};
+ assert.deepEqual(attackSelectedAction(room,selected),{type:'catan_attack_landing',prompt:17,slot:1,tile:25,target:13});
+ assert.equal(attackSelectedAction(room,{...selected,target:99}),null);
+ assert.equal(attackSelectedAction(room,{...selected,sources:[9]}),null);
+ room.spectating=true;assert.equal(attackSelectedAction(room,selected),null);
+});
+test('barbarian wonders waiting condition reports twelve points at every count',()=>{
+ for(const capacity of [2,3,4,5,6]){const c=catanRuleContext({kind:'catan',capacity,catanScenario:'attack-wonders'});assert.equal(c.target,12);assert.equal(c.attack,true)}
+});

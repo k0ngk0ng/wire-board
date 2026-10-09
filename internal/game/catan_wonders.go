@@ -64,7 +64,23 @@ func (g *Catan) wonderClaimable(player, id int) bool {
 	if w == nil || id < 0 || id >= len(w.Cards) || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || w.Cards[id].Owner >= 0 || g.wonderOwned(player) >= 0 {
 		return false
 	}
+	return g.wonderRequirements(player, id)
+}
+
+func (g *Catan) wonderRequirements(player, id int) bool {
+	w := g.wonders()
+	if w == nil || id < 0 || id >= len(w.Cards) || player < 0 || player >= len(g.Players) {
+		return false
+	}
 	_, _, cities := g.pieces(player)
+	if g.attackWonders() {
+		cities = 0
+		for _, v := range g.Vertices {
+			if v.Owner == player && v.Level == 2 && !g.Attack.conqueredBuilding(g, v.ID) {
+				cities++
+			}
+		}
+	}
 	switch id {
 	case 0:
 		return cities >= 1 && g.Players[player].Score >= 6
@@ -77,7 +93,7 @@ func (g *Catan) wonderClaimable(player, id int) bool {
 		for _, port := range g.Ports {
 			e := g.Edges[port.Edge]
 			for _, v := range []int{e.A, e.B} {
-				if g.Vertices[v].Owner == player && g.Vertices[v].Level == 2 {
+				if g.Vertices[v].Owner == player && g.Vertices[v].Level == 2 && (!g.attackWonders() || !g.Attack.conqueredBuilding(g, v)) {
 					return true
 				}
 			}
@@ -87,7 +103,7 @@ func (g *Catan) wonderClaimable(player, id int) bool {
 	default:
 		for _, marker := range w.Markers {
 			v := g.Vertices[marker.Vertex]
-			if marker.Card == id && v.Owner == player && v.Level > 0 {
+			if marker.Card == id && v.Owner == player && v.Level > 0 && (!g.attackWonders() || !g.Attack.conqueredBuilding(g, v.ID)) {
 				return true
 			}
 		}
@@ -117,7 +133,10 @@ func (s *State) catanWonderAction(player int, a Action) error {
 	if !catanHas(g.Players[player].Resources, rule.Cost[:]) {
 		return errors.New("建造奇迹的资源不足")
 	}
-	// Requirements are checked when claiming, not again on every level.
+	if g.attackWonders() && !g.wonderRequirements(player, a.Card) {
+		return errors.New("每级蛮族奇迹都需满足条件，被征服建筑不计入条件")
+	}
+	// Ordinary wonders check requirements only when claiming.
 	catanMove(g.Players[player].Resources, g.Bank, rule.Cost[:])
 	card.Level++
 	s.catanLog(player, "支付%s，将奇迹「%s」建至第 %d 级", catanText(rule.Cost[:]), rule.Name, card.Level)
@@ -158,7 +177,7 @@ func (g *Catan) wonderBotChoices(player int) []botChoice {
 				}
 				choices = append(choices, botChoice{Action{Type: "catan_wonder_claim", Card: card.ID}, score})
 			}
-			if card.Owner == player && card.Level < 4 {
+			if card.Owner == player && card.Level < 4 && (!g.attackWonders() || g.wonderRequirements(player, card.ID)) {
 				choices = append(choices, botChoice{Action{Type: "catan_wonder_build", Card: card.ID}, 800 + card.Level*50})
 			}
 		}

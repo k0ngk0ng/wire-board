@@ -9,6 +9,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "attack-wonders",
+    name: "蛮族进攻＋卡坦奇迹",
+    description:
+      "沙漠蛮族均衡调出，平局由当前玩家选择；每级奇迹需重新满足条件。完成四级或12分且奇迹等级独占领先获胜。二至六人，可加事件牌；双人、五六人本站配方。",
+  },
+  {
     id: "attack-tribe",
     name: "蛮族进攻＋遗忘部落",
     description:
@@ -507,6 +513,7 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  scenario === "attack-wonders" ||
   scenario === "attack-tribe" ||
   scenario === "attack-desert" ||
   scenario === "attack-shores" ||
@@ -576,7 +583,9 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                ["attack-tribe", "attack-desert"].includes(s.id)
+                ["attack-wonders", "attack-tribe", "attack-desert"].includes(
+                  s.id,
+                )
                   ? players < 2 ||
                     players > 6 ||
                     helpers ||

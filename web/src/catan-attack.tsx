@@ -83,6 +83,12 @@ export function CatanAttackMap({
     },
   });
   const pickTile = (id: number) => {
+    if (a.wonderLanding) {
+      if ((a.landingSources || []).includes(id))
+        onSelect({ ...selected, sources: [id] });
+      else onSelect({ ...selected, target: id });
+      return;
+    }
     if (a.pending?.card !== "treason") {
       onSelect({ ...selected, target: id });
       return;
@@ -136,7 +142,7 @@ export function CatanAttackMap({
                   !a.map.coast.includes(id) && !a.map.castles.includes(id),
               ),
           ]
-        : a.map.coast
+        : [...a.map.coast, ...(a.map.reserves || [])]
       ).map((id, order) => {
         const t = g.tiles[id],
           n = a.barbarians[id],
@@ -169,7 +175,7 @@ export function CatanAttackMap({
                     ? g.transport.sharedBarbarians.filter(
                         (p) => p.tile === id && p.edge < 0,
                       ).length
-                    : n,
+                    : Math.min(n, 3),
                 },
                 (_, i) => (
                   <image
@@ -204,7 +210,11 @@ export function CatanAttackMap({
                 fontSize="12"
                 fontWeight="800"
               >
-                {conquered ? "已征服" : `蛮族 ${n}/3`}
+                {a.map.reserves?.includes(id)
+                  ? `沙漠蛮族 ${n}`
+                  : conquered
+                    ? "已征服"
+                    : `蛮族 ${n}/3`}
               </text>
               <title>
                 战斗顺序 {order + 1} · 地块 {id + 1} · {n}个蛮族
@@ -360,13 +370,15 @@ export function CatanAttackPanel({
     a?.pending?.id,
     a?.pending?.neutral,
     a?.endPlan?.id,
+    a?.wonderLanding?.cursor,
   ]);
   if (!a) return null;
   const mine = attackCanRespond(room),
     q = a.pending,
     plan = a.endPlan,
-    pending = !!q || !!plan;
-  const actor = q?.player ?? plan?.player ?? room.game!.turn;
+    pending = !!q || !!plan || !!a.wonderLanding;
+  const actor =
+    a.wonderLanding?.player ?? q?.player ?? plan?.player ?? room.game!.turn;
   const action = attackSelectedAction(room, selected);
   const submit = async (value: Record<string, unknown>) => {
     const result = await act(value);
@@ -429,7 +441,16 @@ export function CatanAttackPanel({
           )}
           <div className="attack-stock">
             <span>
-              蛮族供应 <b>{a.city ? "不限" : a.supply}</b>
+              {a.landingSupplyRule === "desert-reserve"
+                ? "沙漠供给"
+                : "蛮族供应"}{" "}
+              <b>
+                {a.landingSupplyRule === "desert-reserve"
+                  ? a.reserveRemaining
+                  : a.city
+                    ? "不限"
+                    : a.supply}
+              </b>
             </span>
             <span>
               金币供应 <b>{a.goldRule === "ledger" ? "不限" : a.goldBank}</b>
@@ -454,7 +475,9 @@ export function CatanAttackPanel({
               {room.seats[actor].name} 正在
               {plan
                 ? "安排骑士移动"
-                : `处理${q!.neutral ? "中立骑士放置" : attackCardNames[q!.card]}`}
+                : a.wonderLanding
+                  ? "选择蛮族登陆"
+                  : `处理${q!.neutral ? "中立骑士放置" : attackCardNames[q!.card]}`}
               。可收起面板查看地图。
             </p>
           )}
@@ -466,7 +489,44 @@ export function CatanAttackPanel({
                   这是全局首名骑士：免费放置一名双方共用的中立骑士，沿用本张牌的放置范围与剩余倒计时。
                 </p>
               )}
-              {plan ? (
+              {a.wonderLanding ? (
+                <>
+                  <p>
+                    登陆点数 {a.landingNumber}
+                    。从最多蛮族的沙漠调出，填入同点数中蛮族最少的一格；平局由你选择。
+                  </p>
+                  <div className="attack-picks" aria-label="选择蛮族来源沙漠">
+                    {a.landingSources?.map((id) => (
+                      <button
+                        key={id}
+                        disabled={busy}
+                        className={selected.sources[0] === id ? "selected" : ""}
+                        onClick={() => onSelect({ ...selected, sources: [id] })}
+                      >
+                        沙漠 #{id + 1} · {a.barbarians[id]}个
+                      </button>
+                    ))}
+                  </div>
+                  <div className="attack-picks" aria-label="选择登陆地块">
+                    {a.landingTargets?.map((id) => (
+                      <button
+                        key={id}
+                        disabled={busy}
+                        className={selected.target === id ? "selected" : ""}
+                        onClick={() => onSelect({ ...selected, target: id })}
+                      >
+                        地块 #{id + 1} · {a.barbarians[id]}/3
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    disabled={busy || !action}
+                    onClick={() => action && submit(action)}
+                  >
+                    确认登陆
+                  </button>
+                </>
+              ) : plan ? (
                 <>
                   <p>
                     {a.twoRules &&
