@@ -137,6 +137,9 @@ func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 }
 
 func (f catanRiversMap) validate(g *Catan) error {
+	if g.riversSea() {
+		return g.validateRiversSeaMap()
+	}
 	if g.Transport != nil {
 		return g.validateRiversTransportMap()
 	}
