@@ -1,7 +1,10 @@
 package game
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -46,7 +49,21 @@ func TestCatanCaravansVariantsNatural(t *testing.T) {
 						}
 					}
 					if !s.Finished {
-						t.Fatal("unfinished")
+						raw, _ := json.Marshal(s)
+						dir := filepath.Join("..", "..", ".local", "catan-long-games")
+						if e := os.MkdirAll(dir, 0700); e != nil {
+							t.Fatal(e)
+						}
+						f, e := os.CreateTemp(dir, "merchant-variants-*.json")
+						if e != nil {
+							t.Fatal(e)
+						}
+						_, e = f.Write(raw)
+						f.Close()
+						if e != nil {
+							t.Fatal(e)
+						}
+						t.Fatal("unfinished; state saved", f.Name(), "round", s.Round)
 					}
 					t.Log("round", s.Round)
 				})

@@ -30,7 +30,9 @@ func runCaravansSeaHTTPOptions(t *testing.T, events bool, scenario string, helpe
 	runCaravansSeaHTTPVariants(t, events, scenario, helpers, false)
 }
 func TestCatanCaravansVariantsHTTP(t *testing.T) {
-	runCaravansSeaHTTPVariants(t, true, "caravans-tribe", true, true)
+	for _, scene := range []string{"caravans-islands", "caravans-desert", "caravans-new-world", "caravans-shores"} {
+		t.Run(scene, func(t *testing.T) { runCaravansSeaHTTPVariants(t, true, scene, true, true) })
+	}
 }
 func runCaravansSeaHTTPVariants(t *testing.T, events bool, scenario string, helpers, variants bool) {
 	counts := []int{2, 3, 4, 5, 6}
@@ -174,6 +176,7 @@ func runCaravansSeaHTTPVariants(t *testing.T, events bool, scenario string, help
 				t.Fatal("no bid timeout exercised")
 			}
 			if !s.rooms[id].Game.Finished {
+				saveCatanLongGame(t, &initial, s.rooms[id].Game, trace)
 				t.Fatal("unfinished")
 			}
 			_, profile := h.request("GET", "/api/players/"+s.rooms[id].Host, nil)
@@ -242,6 +245,34 @@ func TestCatanCaravansIslandsPublicBounds(t *testing.T) {
 		mutate(r)
 		if r.validateCatanScenario() == nil {
 			t.Fatal("unsupported nesting accepted")
+		}
+	}
+}
+
+func TestCatanCaravanVariantScenarioSwitch(t *testing.T) {
+	for _, n := range []int{2, 3, 6} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
+		if e := r.setCatanScenario("caravans-islands"); e != nil {
+			t.Fatal(e)
+		}
+		r.CatanOptions, _ = game.NormalizeCatanOptions(game.CatanOptions{Helpers: true, AllHelpers: true})
+		if e := r.setCatanFriendlyRobber(game.CatanFriendlyRobberSetup{Enabled: true}); e != nil {
+			t.Fatal(e)
+		}
+		if e := r.setCatanHarbors(game.CatanHarborsSetup{Enabled: true}); e != nil {
+			t.Fatal(e)
+		}
+		if e := r.setCatanScenario("caravans-new-world"); e != nil {
+			t.Fatal(e)
+		}
+		if !r.CatanOptions.Helpers || !r.friendlyRobberEnabled() || r.CatanHarbors == nil || r.CatanNewWorldMap == nil {
+			t.Fatal("sea switch lost configuration")
+		}
+		if e := r.setCatanScenario("transport"); e != nil {
+			t.Fatal(e)
+		}
+		if r.CatanOptions.Helpers || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil || r.CatanNewWorldMap != nil {
+			t.Fatal("unsupported options leaked into transport")
 		}
 	}
 }
