@@ -2169,6 +2169,8 @@ function Create({
                                         "attack-transport",
                                         "rivers-shores",
                                         "rivers-fog",
+                                        "rivers-desert",
+                                        "rivers-desert-belt",
                                         "rivers-new-world",
                                       ].includes(catanScenario))
                                   ? 6
@@ -2647,6 +2649,8 @@ function Create({
                                 "attack-transport",
                                 "rivers-shores",
                                 "rivers-fog",
+                                "rivers-desert",
+                                "rivers-desert-belt",
                                 "rivers-new-world",
                               ].includes(catanScenario)
                               ? 5
@@ -2871,7 +2875,7 @@ function Waiting({
                 : room.kind === "catan"
                   ? room.catanTwoRules
                     ? twoLabel
-                    : `${room.catanScenario ? (seaInfo ? `航海家 · ${seaInfo.name}` : catanScenarioName(room.catanScenario)) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanCitiesKnights ? "＋城市与骑士" : ""}${room.catanFishing ? "＋渔夫" : ""}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : room.catanScenario === "barbarian-attack" ? "3–6 人 · 五六人配对回合" : ["land-ho", "spices-for-catan", "pirate-lairs", "fish-for-catan", "explorers-and-pirates", "transport", "rivers-caravans", "rivers-attack", "rivers-transport", "caravans-attack", "caravans-transport", "attack-transport", "rivers-shores", "rivers-fog", "rivers-new-world"].includes(room.catanScenario || "") ? "2–6 人 · 五六人配对回合" : isPublicCatanFlexible(room.catanScenario) ? "2–4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
+                    : `${room.catanScenario ? (seaInfo ? `航海家 · ${seaInfo.name}` : catanScenarioName(room.catanScenario)) : room.catanCitiesKnights ? `城市与骑士 · ${seaInfo ? `航海家 · ${seaInfo.name}` : "随机地图"}` : seaInfo ? `航海家 · ${seaInfo.name}` : room.catanNewWorldMap ? "航海家 · 新世界" : `基础版${room.catanBaseConfiguration ? ` · ${catanBaseLayoutName(room.catanBaseConfiguration.layout)}` : ""}`}${room.catanCitiesKnights ? "＋城市与骑士" : ""}${room.catanFishing ? "＋渔夫" : ""}${room.catanOptions?.helpers ? "＋Helpers" : ""}${room.catanHarbors?.enabled ? "＋港口霸主" : ""}${room.catanFriendlyRobber?.enabled ? "＋友善强盗" : ""} · ${room.catanOptions?.fiveSix ? "5–6 人 · 配对回合" : room.catanFriendlyRobber?.enabled && room.catanFriendlyRobberAvailability?.minPlayers === 4 ? "4 人" : room.catanScenario === "barbarian-attack" ? "3–6 人 · 五六人配对回合" : ["land-ho", "spices-for-catan", "pirate-lairs", "fish-for-catan", "explorers-and-pirates", "transport", "rivers-caravans", "rivers-attack", "rivers-transport", "caravans-attack", "caravans-transport", "attack-transport", "rivers-shores", "rivers-fog", "rivers-desert", "rivers-desert-belt", "rivers-new-world"].includes(room.catanScenario || "") ? "2–6 人 · 五六人配对回合" : isPublicCatanFlexible(room.catanScenario) ? "2–4 人" : "3–4 人"} · ${catanScenarioVictory(catanRuleContext(room).scenario, catanRuleContext(room).target)}`
                   : room.kind === "splendor"
                     ? `${splendorRulesLabel(room.splendorOptions)} · 2–4 人`
                     : `${map?.name || "美国"}地图 · 2–${map?.maxPlayers || 5} 人`}

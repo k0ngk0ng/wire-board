@@ -9,7 +9,7 @@ func TestCatanRiversSeafarersSetupAdmission(t *testing.T) {
 	for n := 2; n <= 6; n++ {
 		for _, scenario := range []string{"shores", "fog", "desert", "tribe", "new_world"} {
 			setup, err := NormalizeCatanRiversSeafarersSetup(n, CatanRiversSeafarersSetup{Scenario: scenario})
-			unsupported := n > 4 && (scenario == "desert" || scenario == "tribe")
+			unsupported := n > 4 && scenario == "tribe"
 			if unsupported {
 				if err == nil {
 					t.Fatal("admitted unfinished recipe", n, scenario)

@@ -13,7 +13,7 @@ func TestCatanRiversSeaAdmission(t *testing.T) {
 		for _, scenario := range []string{"rivers-shores", "rivers-fog", "rivers-desert", "rivers-desert-belt", "rivers-tribe", "rivers-new-world"} {
 			r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 			err := r.setCatanScenario(scenario)
-			if n > 4 && (scenario == "rivers-desert" || scenario == "rivers-desert-belt" || scenario == "rivers-tribe") {
+			if n > 4 && scenario == "rivers-tribe" {
 				if err == nil {
 					t.Fatal("unfinished admitted")
 				}
@@ -136,6 +136,7 @@ func TestCatanRiversSeaNaturalHTTP(t *testing.T) {
 		n        int
 		events   bool
 	}{
+		{"rivers-desert", 5, true}, {"rivers-desert-belt", 6, false},
 		{"rivers-shores", 2, false}, {"rivers-fog", 3, true}, {"rivers-desert", 4, false},
 		{"rivers-desert-belt", 2, true}, {"rivers-tribe", 3, false}, {"rivers-new-world", 4, true},
 		{"rivers-shores", 5, true}, {"rivers-fog", 6, false}, {"rivers-new-world", 6, true},

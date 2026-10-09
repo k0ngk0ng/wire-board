@@ -15,13 +15,13 @@ export const catanRiversSeaScenarios = [
     id: "rivers-desert",
     name: "河流＋穿越沙漠 · 河流穿越",
     description:
-      "河流穿过原沙漠带，探索外岛得分，14 分获胜。二至四人，可加事件牌。",
+      "河流穿过原沙漠带，探索外岛得分，14 分获胜。二至六人，可加事件牌；五六人使用本站配方。",
   },
   {
     id: "rivers-desert-belt",
     name: "河流＋穿越沙漠 · 保留沙漠",
     description:
-      "保留沙漠带，跨越沙漠或探索外岛得分，14 分获胜。二至四人，可加事件牌。",
+      "保留沙漠带，跨越沙漠或探索外岛得分，14 分获胜。二至六人，可加事件牌；五六人使用本站配方。",
   },
   {
     id: "rivers-tribe",
@@ -43,4 +43,10 @@ export const catanRiversSeaAvailable = (id: string, players: number) =>
   players >= 2 &&
   players <= 6 &&
   (players <= 4 ||
-    ["rivers-shores", "rivers-fog", "rivers-new-world"].includes(id));
+    [
+      "rivers-shores",
+      "rivers-fog",
+      "rivers-desert",
+      "rivers-desert-belt",
+      "rivers-new-world",
+    ].includes(id));
