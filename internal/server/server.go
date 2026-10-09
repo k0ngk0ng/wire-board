@@ -1309,6 +1309,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					} else {
 						next.Game, err = game.NewCatanAttack(len(next.Seats))
 					}
+				} else if next.CatanScenario == "caravans-transport" {
+					next.Game, err = game.NewCatanCaravansTransport(len(next.Seats), next.CatanCitiesKnights != nil)
 				} else if next.CatanScenario == "caravans-attack" {
 					next.Game, err = game.NewCatanCaravansAttack(len(next.Seats), next.CatanCitiesKnights != nil)
 				} else if next.CatanScenario == "rivers-transport" {

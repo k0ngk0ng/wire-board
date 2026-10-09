@@ -45,7 +45,7 @@ func caravanStarts(g *Catan, holes []int) ([]catanCaravanWagon, error) {
 			from := g.Tiles[id].Vertices[corner]
 			found := -1
 			for _, e := range g.Edges {
-				if (e.A == from || e.B == from) && !slices.Contains(e.Tiles, id) {
+				if (e.A == from || e.B == from) && !slices.Contains(e.Tiles, id) && g.caravanEdgeAllowed(e.ID) {
 					if found >= 0 {
 						return nil, errors.New("水源出口不唯一")
 					}
@@ -137,6 +137,9 @@ func (g *Catan) makeCaravansMap() (*catanCaravanMap, error) {
 }
 
 func (f catanCaravanMap) validate(g *Catan) error {
+	if g.Transport != nil {
+		return g.validateCaravansTransportMap()
+	}
 	if g.Attack != nil {
 		return g.validateCaravansAttackMap()
 	}

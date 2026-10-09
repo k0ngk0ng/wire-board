@@ -247,35 +247,37 @@ export function CatanTwoPanel({
           <div>
             <strong>
               双人卡坦
-              {g.caravans?.attack
-                ? `＋商队＋蛮族进攻${g.citiesKnights ? "＋城市与骑士" : ""}`
-                : g.rivers?.transport
-                  ? `＋河流＋运输${g.citiesKnights ? "＋城市与骑士" : ""}`
-                  : q.seaKnights
-                    ? `＋航海家＋城市与骑士${g.fishing ? "＋渔夫" : ""}`
-                    : g.fishing
-                      ? g.seafarers
-                        ? "＋航海家＋渔夫"
+              {g.caravans?.transport
+                ? `＋商队＋运输${g.citiesKnights ? "＋城市与骑士" : ""}`
+                : g.caravans?.attack
+                  ? `＋商队＋蛮族进攻${g.citiesKnights ? "＋城市与骑士" : ""}`
+                  : g.rivers?.transport
+                    ? `＋河流＋运输${g.citiesKnights ? "＋城市与骑士" : ""}`
+                    : q.seaKnights
+                      ? `＋航海家＋城市与骑士${g.fishing ? "＋渔夫" : ""}`
+                      : g.fishing
+                        ? g.seafarers
+                          ? "＋航海家＋渔夫"
+                          : g.citiesKnights
+                            ? "＋城市与骑士＋渔夫"
+                            : "＋渔夫"
                         : g.citiesKnights
-                          ? "＋城市与骑士＋渔夫"
-                          : "＋渔夫"
-                      : g.citiesKnights
-                        ? "＋城市与骑士"
-                        : g.attack
-                          ? g.caravans
-                            ? "＋商队＋蛮族进攻"
-                            : g.rivers
-                              ? "＋河流＋蛮族进攻"
-                              : "＋蛮族进攻"
-                          : g.transport
-                            ? "＋运输"
-                            : g.rivers
-                              ? "＋河流"
-                              : g.caravans
-                                ? "＋商队"
-                                : q.seafarers
-                                  ? "＋航海家"
-                                  : ""}
+                          ? "＋城市与骑士"
+                          : g.attack
+                            ? g.caravans
+                              ? "＋商队＋蛮族进攻"
+                              : g.rivers
+                                ? "＋河流＋蛮族进攻"
+                                : "＋蛮族进攻"
+                            : g.transport
+                              ? "＋运输"
+                              : g.rivers
+                                ? "＋河流"
+                                : g.caravans
+                                  ? "＋商队"
+                                  : q.seafarers
+                                    ? "＋航海家"
+                                    : ""}
             </strong>
             <small>
               {g.fishing ? (

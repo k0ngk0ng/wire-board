@@ -18,9 +18,12 @@ export function catanRuleContext(room: Room) {
   const harbors = game ? !!game.harbors : !!room.catanHarbors?.enabled;
   const caravans = game
     ? !!game.caravans
-    : ["caravans", "rivers-caravans", "caravans-attack"].includes(
-        room.catanTwoScenario || room.catanScenario || "",
-      );
+    : [
+        "caravans",
+        "rivers-caravans",
+        "caravans-attack",
+        "caravans-transport",
+      ].includes(room.catanTwoScenario || room.catanScenario || "");
   const attack = game
     ? !!game.attack
     : ["barbarian-attack", "rivers-attack", "caravans-attack"].includes(
@@ -28,7 +31,9 @@ export function catanRuleContext(room: Room) {
       );
   const transport = game
     ? !!game.transport
-    : ["transport", "rivers-transport"].includes(room.catanScenario || "");
+    : ["transport", "rivers-transport", "caravans-transport"].includes(
+        room.catanTwoScenario || room.catanScenario || "",
+      );
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
@@ -229,7 +234,7 @@ export function catanRuleContext(room: Room) {
     target: game
       ? catanSavedVictoryTarget(game)
       : transport
-        ? citiesKnights
+        ? citiesKnights || caravans
           ? 15
           : room.catanFishing
             ? 12
@@ -247,6 +252,7 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (scenario === "caravans-transport") return 15;
   if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;
   if (["barbarian-attack", "rivers-attack"].includes(scenario))
     return citiesKnights ? 13 : 12;
@@ -296,7 +302,12 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
   if (g.explorer) return g.explorer.board.target;
-  if (g.transport) return g.citiesKnights ? 15 : g.fishing?.transport ? 12 : 13;
+  if (g.transport)
+    return g.citiesKnights || g.caravans?.transport
+      ? 15
+      : g.fishing?.transport
+        ? 12
+        : 13;
   if (g.caravans) return g.citiesKnights ? 15 : 12;
   if (g.attack) return g.attack.city ? 13 : 12;
   const sea = g.seafarers;

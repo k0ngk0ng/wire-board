@@ -54,7 +54,7 @@ func (s *State) catanPlayProgressRandom(player int, a Action, randN func(int) in
 	if a.Card == 0 && (len(a.Tokens) != 2 || a.Tokens[0] < 1 || a.Tokens[0] > 6 || a.Tokens[1] < 1 || a.Tokens[1] > 6 || a.Choice != "") {
 		return errors.New("请选择红骰和普通骰各1至6的点数")
 	}
-	if a.Card == 0 && g.transportKnights() && len(g.Players) <= 4 && !g.riversTransport() && (sum(a.Tokens) == 2 || sum(a.Tokens) == 12) {
+	if a.Card == 0 && g.transportKnights() && len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && (sum(a.Tokens) == 2 || sum(a.Tokens) == 12) {
 		return errors.New("运输小地图不使用2与12，请选择其他生产点数")
 	}
 	if a.Card == 21 && k.Invasions == 0 && !g.attackKnights() {

@@ -195,6 +195,7 @@ export function CatanProgressHand({
                     {g.eventDeck && "；本次不翻事件牌，牌堆保持原状"}
                     {g.transport?.knights &&
                       !g.rivers?.transport &&
+                      !g.caravans?.transport &&
                       g.players.length <= 4 &&
                       "；运输小地图请选择3至11点"}
                   </small>

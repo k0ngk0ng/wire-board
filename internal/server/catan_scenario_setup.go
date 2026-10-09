@@ -30,7 +30,7 @@ func publicCatanExplorerExtended(scenario string) bool {
 
 func publicCatanTradersCombination(scenario string) bool {
 	switch scenario {
-	case "rivers-caravans", "rivers-attack", "rivers-transport", "caravans-attack":
+	case "rivers-caravans", "rivers-attack", "rivers-transport", "caravans-attack", "caravans-transport":
 		return true
 	}
 	return false

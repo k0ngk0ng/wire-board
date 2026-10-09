@@ -966,7 +966,7 @@ function CatanBaseBoard({
                         (!sea?.cloth || sea.cloth.homeTiles.includes(t.id)))));
                 const numbers = catanProductionNumbers(g, t.id);
                 const transportSite =
-                  g.rivers?.transport &&
+                  (g.rivers?.transport || g.caravans?.transport) &&
                   g.transport?.map.sites.find((s) => s.tile === t.id);
                 const terrainLabel = transportSite
                   ? (

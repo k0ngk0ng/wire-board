@@ -11,6 +11,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "caravans-transport",
+    name: "商队＋运输",
+    description:
+      "运输货物并投票放商队马车；商品地块正常生产，无强盗与最长道路，15 分获胜。二至六人，可叠加城市骑士与事件牌；五六人使用本站地图。",
+  },
+  {
     id: "caravans-attack",
     name: "商队＋蛮族进攻",
     description:

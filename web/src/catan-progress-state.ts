@@ -193,6 +193,7 @@ export function progressPlayAction(
       !(
         g.transport?.knights &&
         !g.rivers?.transport &&
+        !g.caravans?.transport &&
         g.players.length <= 4 &&
         [2, 12].includes(s.dice[0] + s.dice[1])
       )

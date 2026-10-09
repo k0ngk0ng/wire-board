@@ -34,7 +34,7 @@ export function transportWagonPosition(game: CatanState, seat: number) {
         (game.hexSize || 62)) /
       62;
   const site =
-    game.rivers?.transport &&
+    (game.rivers?.transport || game.caravans?.transport) &&
     game.transport?.map.sites.some((s) => s.center === wagon.position);
   return {
     x: vertex.x + offset,

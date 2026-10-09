@@ -76,6 +76,9 @@ func (s *State) validateCatanTransport() error {
 	if err := g.validateRivers(); err != nil {
 		return err
 	}
+	if err := s.validateCaravans(); err != nil {
+		return err
+	}
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
 	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
@@ -112,6 +115,9 @@ func (s *State) validateCatanTransport() error {
 	}
 
 	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "catan_fish_replace", "finished"}
+	if g.caravansTransport() {
+		phases = append(phases, "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place")
+	}
 	if g.transportKnights() {
 		phases = append(phases, catanTransportCityPhases...)
 	}
@@ -286,7 +292,7 @@ func (s *State) catanTransportRoll(roll func() [2]int) error {
 			return errors.New("骰子无效")
 		}
 		total := dice[0] + dice[1]
-		if len(g.Players) <= 4 && !g.riversTransport() && (total == 2 || total == 12) {
+		if len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && (total == 2 || total == 12) {
 			s.catanLog(s.Turn, "运输掷出%d，重新掷骰", total)
 			continue
 		}
@@ -441,8 +447,7 @@ func (s *State) catanTransportMoveAction(player int, a Action) error {
 			s.catanLog(player, "快速旅程：开始第二次马车移动")
 			return nil
 		}
-		s.catanNext()
-		return s.catanTransportSyncTurn()
+		return s.catanAfterTransportTravel()
 	}
 	return nil
 }
