@@ -126,6 +126,9 @@ func (g *Catan) validateCaravansAttackMap() error {
 
 // Both end-of-turn controllers finish battles before exposing any bid choices.
 func (s *State) catanAfterAttackBattles() {
+	if s.Catan.attackPirates() && !s.Finished && s.Catan.pirateFortressReady(s.Turn) {
+		s.catanAttackFortress(s.Turn, catanRandom(6)+1)
+	}
 	if s.Finished {
 		return
 	}

@@ -2176,6 +2176,9 @@ function Create({
                                         "rivers-desert",
                                         "rivers-desert-belt",
                                         "rivers-tribe",
+                                        "transport-shores",
+                                        "transport-desert",
+                                        "attack-pirates",
                                         "attack-wonders",
                                         "attack-tribe",
                                         "attack-desert",
@@ -2284,6 +2287,9 @@ function Create({
               "rivers-desert",
               "rivers-desert-belt",
               "rivers-tribe",
+              "transport-shores",
+              "transport-desert",
+              "attack-pirates",
               "attack-wonders",
               "attack-tribe",
               "attack-desert",
@@ -2307,9 +2313,14 @@ function Create({
               onChange={(scenario) => {
                 setCatanScenario(scenario);
                 if (
-                  ["attack-wonders", "attack-tribe", "attack-desert"].includes(
-                    scenario,
-                  )
+                  [
+                    "transport-shores",
+                    "transport-desert",
+                    "attack-pirates",
+                    "attack-wonders",
+                    "attack-tribe",
+                    "attack-desert",
+                  ].includes(scenario)
                 ) {
                   setCapacity(Math.min(6, Math.max(2, capacity)));
                   setCatanOptions({});
@@ -2354,6 +2365,9 @@ function Create({
                     "rivers-desert",
                     "rivers-desert-belt",
                     "rivers-tribe",
+                    "transport-shores",
+                    "transport-desert",
+                    "attack-pirates",
                     "attack-wonders",
                     "attack-tribe",
                     "attack-desert",
@@ -2387,6 +2401,9 @@ function Create({
                     "rivers-desert",
                     "rivers-desert-belt",
                     "rivers-tribe",
+                    "transport-shores",
+                    "transport-desert",
+                    "attack-pirates",
                     "attack-wonders",
                     "attack-tribe",
                     "attack-desert",
@@ -2691,6 +2708,9 @@ function Create({
                 ? [2, 4, 6]
                 : k === "catan" &&
                     [
+                      "transport-shores",
+                      "transport-desert",
+                      "attack-pirates",
                       "attack-wonders",
                       "attack-tribe",
                       "attack-desert",
@@ -2736,6 +2756,9 @@ function Create({
                                           "rivers-desert",
                                           "rivers-desert-belt",
                                           "rivers-tribe",
+                                          "transport-shores",
+                                          "transport-desert",
+                                          "attack-pirates",
                                           "attack-wonders",
                                           "attack-tribe",
                                           "attack-desert",
@@ -2901,6 +2924,9 @@ function Waiting({
         "rivers-desert",
         "rivers-desert-belt",
         "rivers-tribe",
+        "transport-shores",
+        "transport-desert",
+        "attack-pirates",
         "attack-wonders",
         "attack-tribe",
         "attack-desert",
@@ -3028,6 +3054,9 @@ function Waiting({
                                     "rivers-desert",
                                     "rivers-desert-belt",
                                     "rivers-tribe",
+                                    "transport-shores",
+                                    "transport-desert",
+                                    "attack-pirates",
                                     "attack-wonders",
                                     "attack-tribe",
                                     "attack-desert",

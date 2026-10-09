@@ -56,7 +56,7 @@ func newCatanAttackPieces(g *Catan, m *catanAttackMap) (*catanAttack, error) {
 		a.Barbarians[id] = 12
 	}
 	for _, id := range m.Coast {
-		if len(m.Reserves) == 0 && (g.Tiles[id].Number == 2 || g.Tiles[id].Number == 12 || m.Rivers == CatanRiversAttackRules && n <= 4 && id == 11) {
+		if g.pirateIslands() == nil && len(m.Reserves) == 0 && (g.Tiles[id].Number == 2 || g.Tiles[id].Number == 12 || m.Rivers == CatanRiversAttackRules && n <= 4 && id == 11) {
 			a.Barbarians[id] = 1
 		}
 	}

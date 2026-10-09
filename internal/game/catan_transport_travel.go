@@ -140,7 +140,7 @@ func (q catanTransportTravel) quoteRoutes(g *Catan, m *catanTransportMap, barbar
 	} else {
 		return step, errors.New("马车只能移动到相邻交点")
 	}
-	if e.Owner < -1 && (g.Two == nil || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge && m.Rivers != CatanRiversTransportRules || e.Warship {
+	if e.Owner < -1 && (g.Two == nil || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship && !g.transportSea() || e.Bridge && m.Rivers != CatanRiversTransportRules || e.Warship {
 		return step, errors.New("运输道路所有者或种类无效")
 	}
 	step.MP = 2

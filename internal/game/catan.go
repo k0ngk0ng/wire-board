@@ -863,7 +863,7 @@ func (s *State) catanFinishSetupRoute(p, edge int) {
 			s.Turn = (g.StartPlayer + 2*n - 1 - g.SetupStep) % n
 		}
 		s.Phase = "catan_setup_settlement"
-		if (g.CitiesKnights != nil || g.Attack != nil || g.Transport != nil) && g.SetupStep >= n && g.SetupStep < 2*n {
+		if (g.CitiesKnights != nil || g.Attack != nil && !g.attackPirates() || g.Transport != nil) && g.SetupStep >= n && g.SetupStep < 2*n {
 			s.Phase = "catan_setup_city"
 		}
 	}
@@ -1272,8 +1272,9 @@ func (s *State) AutoCatanPending() {
 		return
 	}
 	if g != nil && g.Transport != nil && s.CatanPendingActor() >= 0 {
-		if a, err := s.catanBot(s.Turn); err == nil {
-			_ = s.applyCatan(s.Turn, a)
+		actor := s.CatanPendingActor()
+		if a, err := s.catanBot(actor); err == nil {
+			_ = s.applyCatan(actor, a)
 		}
 		return
 	}

@@ -59,6 +59,9 @@ func (g *Catan) edgeTiles(edge int) []int {
 	return result
 }
 func (g *Catan) edgeTerrain(edge int, ship bool) bool {
+	if g.transportInterior(edge) {
+		return !ship
+	}
 	if g.riversSea() && slices.Contains(g.Rivers.Map.Bridges, edge) {
 		return false
 	}
@@ -97,6 +100,9 @@ func (g *Catan) pirateBlocks(edge int) bool {
 	return g.Seafarers != nil && g.Seafarers.Pirate >= 0 && slices.Contains(g.edgeTiles(edge), g.Seafarers.Pirate)
 }
 func (g *Catan) canRoute(p, id int, ship bool) bool {
+	if g.transportSea() && !g.Transport.Map.canBuildRoad(g, id) {
+		return false
+	}
 	if !ship && g.hasDamagedRoad(p) {
 		return false
 	}

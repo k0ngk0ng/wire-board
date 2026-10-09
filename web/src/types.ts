@@ -484,6 +484,8 @@ export type CatanAttack = {
   discard: string[];
   canAct: boolean;
   canBuyCard: boolean;
+  warshipEdge?: number;
+  canSkipWarship?: boolean;
   wonderLanding?: {
     id: number;
     player: number;
@@ -493,7 +495,13 @@ export type CatanAttack = {
   landingSources?: number[];
   landingTargets?: number[];
   landingNumber?: number;
-  pending?: { id: number; player: number; card: string; neutral?: boolean };
+  pending?: {
+    id: number;
+    player: number;
+    card: string;
+    neutral?: boolean;
+    warshipUsed?: boolean;
+  };
   endPlan?: { id: number; player: number; moves?: CatanAttackMove[] };
   moveChoices?: {
     from: number;
@@ -538,6 +546,8 @@ export type CatanTransport = {
   knights?: string;
   deckRecipe?: string;
   map: {
+    sea?: string;
+    extraNumbers?: { tile: number; number: number }[];
     sites: {
       tile: number;
       kind: string;

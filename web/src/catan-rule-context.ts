@@ -22,6 +22,8 @@ export function catanRuleContext(room: Room) {
     ? !!game.caravans
     : [
         "caravans",
+        "transport-shores",
+        "transport-desert",
         "caravans-shores",
         "caravans-desert",
         "caravans-new-world",
@@ -34,6 +36,7 @@ export function catanRuleContext(room: Room) {
   const attack = game
     ? !!game.attack
     : [
+        "attack-pirates",
         "attack-wonders",
         "attack-tribe",
         "attack-desert",
@@ -47,6 +50,8 @@ export function catanRuleContext(room: Room) {
     ? !!game.transport
     : [
         "transport",
+        "transport-shores",
+        "transport-desert",
         "rivers-transport",
         "caravans-transport",
         "attack-transport",
@@ -271,48 +276,57 @@ export function catanRuleContext(room: Room) {
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,
     target:
-      !game && room.catanScenario === "attack-wonders"
-        ? 12
-        : !game && room.catanScenario === "attack-tribe"
-          ? 13
-          : !game &&
-              ["attack-desert", "attack-shores"].includes(
-                room.catanScenario || "",
-              )
-            ? 14
-            : game
-              ? catanSavedVictoryTarget(game)
-              : transport && attack
-                ? 14
-                : transport
-                  ? citiesKnights || caravans
-                    ? 15
-                    : room.catanFishing
-                      ? 12
-                      : 13
-                  : caravans && citiesKnights
-                    ? 15
-                    : attack && citiesKnights
-                      ? 13
-                      : (caravans &&
-                            ![
-                              "caravans-shores",
-                              "caravans-desert",
-                              "caravans-new-world",
-                              "caravans-islands",
-                              "caravans-tribe",
-                            ].includes(scenario)) ||
-                          attack
+      !game &&
+      ["transport-shores", "transport-desert"].includes(
+        room.catanScenario || "",
+      )
+        ? 17
+        : !game &&
+            ["attack-pirates", "attack-wonders"].includes(
+              room.catanScenario || "",
+            )
+          ? 12
+          : !game && room.catanScenario === "attack-tribe"
+            ? 13
+            : !game &&
+                ["attack-desert", "attack-shores"].includes(
+                  room.catanScenario || "",
+                )
+              ? 14
+              : game
+                ? catanSavedVictoryTarget(game)
+                : transport && attack
+                  ? 14
+                  : transport
+                    ? citiesKnights || caravans
+                      ? 15
+                      : room.catanFishing
                         ? 12
-                        : catanVictoryTarget(scenario, citiesKnights) +
-                          (harbors ? 1 : 0),
+                        : 13
+                    : caravans && citiesKnights
+                      ? 15
+                      : attack && citiesKnights
+                        ? 13
+                        : (caravans &&
+                              ![
+                                "caravans-shores",
+                                "caravans-desert",
+                                "caravans-new-world",
+                                "caravans-islands",
+                                "caravans-tribe",
+                              ].includes(scenario)) ||
+                            attack
+                          ? 12
+                          : catanVictoryTarget(scenario, citiesKnights) +
+                            (harbors ? 1 : 0),
   };
 }
 
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
-  if (scenario === "attack-wonders") return 12;
+  if (["transport-shores", "transport-desert"].includes(scenario)) return 17;
+  if (["attack-pirates", "attack-wonders"].includes(scenario)) return 12;
   if (scenario === "attack-tribe") return 13;
   if (scenario === "caravans-desert" || scenario === "caravans-shores")
     return 16;
@@ -330,6 +344,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
   if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;
   if (
     [
+      "attack-pirates",
       "attack-wonders",
       "attack-tribe",
       "attack-desert",
@@ -384,6 +399,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 // New views provide the server-derived target; old saves retain the fallback.
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
+  if (g.transport?.map?.sea) return g.seafarers?.victoryPoints || 17;
   if (g.explorer) return g.explorer.board.target;
   if (g.transport?.attack) return 14;
   if (g.transport)

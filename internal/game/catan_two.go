@@ -9,6 +9,7 @@ import (
 const CatanTwoRules = "catan-for-two-2025"
 
 type CatanTwo struct {
+	TransportSea    string           `json:"transportSea,omitempty"`
 	AttackSea       string           `json:"attackSea,omitempty"`
 	CaravansSea     string           `json:"caravansSea,omitempty"`
 	RiversSea       string           `json:"riversSea,omitempty"`
@@ -144,7 +145,7 @@ func (s *State) validateCatanTwo() error {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {
-		if n < 2 || n > 12 || g.Transport != nil && !g.riversTransport() && !g.caravansTransport() && !g.attackTransport() && g.EventDeck == nil && (n == 2 || n == 12) {
+		if n < 2 || n > 12 || g.Transport != nil && !g.riversTransport() && !g.caravansTransport() && !g.attackTransport() && !g.transportSea() && g.EventDeck == nil && (n == 2 || n == 12) {
 			return errors.New("双人生产点数无效")
 		}
 	}
@@ -268,7 +269,7 @@ func (s *State) catanTwoAfterAction(before *State, a Action) error {
 		q.AfterHelper = ""
 		return s.catanTwoStartBuild(kind)
 	}
-	if g.attackWonders() && g.Attack.WonderLanding != nil {
+	if g.attackBalancedLanding() && g.Attack.WonderLanding != nil {
 		return nil
 	}
 	// The first seven must finish discards, robber movement and theft before

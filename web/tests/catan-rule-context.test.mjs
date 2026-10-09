@@ -2,6 +2,27 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { catanRuleContext } from "../src/catan-rule-context.ts";
 
+test("transport sea rules retain the saved seventeen-point goal", () => {
+  for (const scenario of ["transport-shores", "transport-desert"]) {
+    const waiting = catanRuleContext({ capacity: 6, catanScenario: scenario });
+    assert.equal(waiting.transport, true);
+    assert.equal(waiting.target, 17);
+    const saved = catanRuleContext({
+      capacity: 4,
+      catanScenario: "transport",
+      game: {
+        catan: {
+          players: [{}, {}],
+          transport: { map: { sea: "catan-transport-seafarers-2025" } },
+          seafarers: { scenario: "desert", victoryPoints: 17 },
+        },
+      },
+    });
+    assert.equal(saved.target, 17);
+    assert.equal(saved.scenario, "desert");
+  }
+});
+
 test("cities and knights waiting rules use thirteen points and hide stale base layout", () => {
   const room = {
     capacity: 6,

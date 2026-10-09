@@ -3,8 +3,11 @@ import type { Room } from "./types";
 import "./catan-scenarios.css";
 
 const names: Record<string, string> = {
+  "transport-shores": "运输＋新海岸",
+  "transport-desert": "运输＋穿越沙漠",
   "caravans-new-world": "商队＋新世界",
   "caravans-islands": "商队＋四岛／六岛",
+  "attack-pirates": "蛮族进攻＋海盗群岛",
   "attack-wonders": "蛮族进攻＋卡坦奇迹",
   "attack-tribe": "蛮族进攻＋遗忘部落",
   "attack-desert": "蛮族进攻＋穿越沙漠",
@@ -47,6 +50,7 @@ export const catanScenarioName = (id: string) =>
 export const catanLayoutName = (id: string) =>
   ({
     fixed: "官方固定布局",
+    "wire-board-transport-sea-5-6-v1": "本站五六人运输海图",
     variable: "官方可变布局",
     prepared: "共同确认地图",
     "river-default": "默认河流地图",

@@ -127,6 +127,9 @@ func (s *State) validateCatanTransport() error {
 	if g.caravansTransport() {
 		phases = append(phases, "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place")
 	}
+	if g.transportSea() {
+		phases = append(phases, "catan_gold")
+	}
 	if g.attackTransportKnights() {
 		phases = append(phases, catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place")
 	}
@@ -319,7 +322,7 @@ func (s *State) catanTransportRoll(roll func() [2]int) error {
 			return errors.New("骰子无效")
 		}
 		total := dice[0] + dice[1]
-		if len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && !g.attackTransport() && (total == 2 || total == 12) {
+		if len(g.Players) <= 4 && !g.riversTransport() && !g.caravansTransport() && !g.attackTransport() && !g.transportSea() && (total == 2 || total == 12) {
 			s.catanLog(s.Turn, "运输掷出%d，重新掷骰", total)
 			continue
 		}

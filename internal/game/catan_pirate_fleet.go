@@ -68,7 +68,7 @@ func (s *State) catanRaidFleetDice(total int, epidemic bool, dice [2]int) (bool,
 	attacked := map[int]bool{}
 	for _, id := range g.Tiles[tile].Vertices {
 		v := g.Vertices[id]
-		if v.Level > 0 && !g.Players[v.Owner].Eliminated {
+		if v.Level > 0 && v.Owner >= 0 && !g.Players[v.Owner].Eliminated {
 			attacked[v.Owner] = true
 		}
 	}

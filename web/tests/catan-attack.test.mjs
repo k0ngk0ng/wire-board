@@ -246,3 +246,12 @@ test('barbarian wonders landing uses server sources and destination with stale c
 test('barbarian wonders waiting condition reports twelve points at every count',()=>{
  for(const capacity of [2,3,4,5,6]){const c=catanRuleContext({kind:'catan',capacity,catanScenario:'attack-wonders'});assert.equal(c.target,12);assert.equal(c.attack,true)}
 });
+
+test('barbarian pirates use public supply and twelve-point fortress gate',()=>{
+ for(const capacity of [2,3,4,5,6]){const c=catanRuleContext({kind:'catan',capacity,catanScenario:'attack-pirates'});assert.equal(c.target,12);assert.equal(c.attack,true)}
+ const room=fixture(),a=room.game.catan.attack;delete a.pending;a.canAct=true;
+ a.wonderLanding={id:12,player:0,cursor:0,remaining:3};a.landingSources=[-1];a.landingTargets=[13,18];
+ const selection={...emptyAttackSelection(),sources:[-1],target:18};
+ assert.deepEqual(attackSelectedAction(room,selection),{type:'catan_attack_landing',prompt:12,slot:0,tile:-1,target:18});
+ assert.equal(attackSelectedAction(room,{...selection,sources:[0]}),null);
+});

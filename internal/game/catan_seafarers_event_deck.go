@@ -29,6 +29,9 @@ func (g *Catan) validateSeafarersEventDeck() error {
 	if sea == nil {
 		return nil
 	}
+	if g.transportSea() {
+		return g.Transport.Map.validateSea(g)
+	}
 	switch sea.Scenario {
 	case "shores", "islands", "six_islands", "fog", "desert", "tribe", "cloth", "pirate_islands", "wonders", "new_world":
 	default:
