@@ -19,6 +19,14 @@ func TestCatanCaravansIslandsOrdinaryHTTP(t *testing.T) {
 }
 func TestCatanCaravansWorldHTTP(t *testing.T) { runCaravansSeaHTTP(t, true, "caravans-new-world") }
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
+	runCaravansSeaHTTPOptions(t, events, scenario, false)
+}
+func TestCatanCaravansHelpersHTTP(t *testing.T) {
+	for _, scene := range []string{"caravans-shores", "caravans-islands", "caravans-desert", "caravans-tribe", "caravans-new-world"} {
+		t.Run(scene, func(t *testing.T) { runCaravansSeaHTTPOptions(t, true, scene, true) })
+	}
+}
+func runCaravansSeaHTTPOptions(t *testing.T, events bool, scenario string, helpers bool) {
 	counts := []int{2, 3, 4, 5, 6}
 	if scenario == "caravans-islands" {
 		counts = []int{2, 3, 4, 5, 6}
@@ -36,6 +44,9 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 			recipe := map[string]any{"kind": "catan", "name": "商队沙漠", "capacity": n, "catanScenario": scenario}
 			if events {
 				recipe["catanEvents"] = game.CatanEventCatalogue
+			}
+			if helpers {
+				recipe["catanOptions"] = game.CatanOptions{Helpers: true, AllHelpers: true}
 			}
 			raw := h.post("/api/rooms", recipe, 201)
 			id := raw["id"].(string)
@@ -157,6 +168,12 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 			}
 			_, profile := h.request("GET", "/api/players/"+s.rooms[id].Host, nil)
 			record := profile["history"].([]any)[0].(map[string]any)
+			if helpers {
+				rules := record["catanExpansionRules"].(map[string]any)
+				if rules["caravans_helpers"] != game.CatanCaravansHelpersRules {
+					t.Fatal("missing helper history")
+				}
+			}
 			if record["catanScenario"] != scenario || record["catanRules"] != game.CatanCaravansSeafarersRules {
 				t.Fatal("history")
 			}
@@ -190,7 +207,7 @@ func TestCatanCaravansSeaRejectsUnsupported(t *testing.T) {
 			t.Fatal("unsupported count", n)
 		}
 	}
-	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanOptions.Helpers = true }} {
+	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanOptions.AllHelpers = true }} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "caravans-desert"}
 		mutate(r)
 		if r.validateCatanScenario() == nil {
@@ -210,7 +227,7 @@ func TestCatanCaravansIslandsPublicBounds(t *testing.T) {
 			t.Fatal("rejected selection changed room")
 		}
 	}
-	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanOptions.Helpers = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }} {
+	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanOptions.AllHelpers = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "caravans-islands"}
 		mutate(r)
 		if r.validateCatanScenario() == nil {

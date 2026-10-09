@@ -693,7 +693,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 			maxPlayers = 6
 		}
 		if req.Capacity == 2 {
-			if !game.CatanTwoHelpersOptions(req.CatanTwoScenario, options) && !(publicCatanExplorerScenario(req.CatanScenario) && validCatanExplorerOptions(options)) {
+			if !game.CatanTwoHelpersOptions(req.CatanTwoScenario, options) && !((publicCatanExplorerScenario(req.CatanScenario) || publicCatanCaravanSea(req.CatanScenario)) && validCatanExplorerOptions(options)) {
 				fail(w, 400, "此双人剧本不支持所选扩展，助手目前可与基础版或渔夫同开")
 				return
 			}
@@ -1110,7 +1110,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 			break
 		}
-		if publicCatanExplorerScenario(next.CatanScenario) {
+		if publicCatanExplorerScenario(next.CatanScenario) || publicCatanCaravanSea(next.CatanScenario) {
 			if err == nil && !validCatanExplorerOptions(options) {
 				err = errors.New("探索者按实际人数启用扩充，只能在此选择助手")
 			}
@@ -1440,6 +1440,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewSanguosha(len(next.Seats), next.SanguoshaOptions)
 			} else {
 				next.Game, err = s.newGame(next.Kind, len(next.Seats))
+			}
+			if err == nil && next.Kind == "catan" && publicCatanCaravanSea(next.CatanScenario) && next.CatanOptions.Helpers {
+				err = next.Game.EnableCatanCaravansSeaHelpers(next.CatanOptions.AllHelpers)
 			}
 			if err == nil && next.Kind == "catan" && publicCatanExplorerScenario(next.CatanScenario) && next.CatanOptions.Helpers {
 				err = next.Game.EnableCatanExplorerHelpers(next.CatanOptions.AllHelpers)

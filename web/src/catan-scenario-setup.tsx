@@ -558,22 +558,15 @@ export function CatanScenarioPicker({
                 ["caravans-new-world", "caravans-islands"].includes(s.id)
                   ? players < 2 ||
                     players > 6 ||
-                    helpers ||
                     knights ||
                     fishing ||
                     friendly ||
                     harbors
                   : s.id === "caravans-shores"
-                    ? players > 6 ||
-                      helpers ||
-                      knights ||
-                      fishing ||
-                      friendly ||
-                      harbors
+                    ? players > 6 || knights || fishing || friendly || harbors
                     : ["caravans-desert", "caravans-tribe"].includes(s.id)
                       ? players < 2 ||
                         players > 6 ||
-                        helpers ||
                         knights ||
                         fishing ||
                         friendly ||

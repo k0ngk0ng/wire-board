@@ -43,3 +43,9 @@ test('merchant New World shows fourteen points for all public counts',()=>{
  const c=catanRuleContext(room);assert.equal(c.target,14);assert.equal(c.caravans,true);assert.equal(c.two,capacity===2);assert.equal(catanEventsSupported(room),true);
  }
 });
+
+import {supportsCaravanSeaHelpers,supportsTwoCatanHelpers} from '../src/catan-two-helpers.ts';
+test('merchant sea helpers admitted without enabling standalone merchant helpers',()=>{
+ for(const scenario of ['caravans-shores','caravans-islands','caravans-desert','caravans-tribe','caravans-new-world']) {assert.equal(supportsCaravanSeaHelpers(scenario),true);assert.equal(supportsTwoCatanHelpers(scenario),true)}
+ assert.equal(supportsCaravanSeaHelpers('caravans'),false);assert.equal(supportsTwoCatanHelpers('caravans'),false);
+});
