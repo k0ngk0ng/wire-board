@@ -9,7 +9,7 @@ func (s *State) validateEventVariants() error {
 	if g.Harbors == nil && g.FriendlyRobber == nil {
 		return nil
 	}
-	if (len(g.Players) < 3 || g.Two != nil) && (!g.twoVariantsAvailable() || g.Two.Variants != CatanTwoVariantsRules) || g.Rivers != nil || g.Caravans != nil || g.Attack != nil || g.Transport != nil || g.Explorer != nil {
+	if (len(g.Players) < 3 || g.Two != nil) && (!g.twoVariantsAvailable() || g.Two.Variants != CatanTwoVariantsRules) || g.Rivers != nil || g.Caravans != nil && !g.caravansSea() || g.Attack != nil || g.Transport != nil || g.Explorer != nil {
 		return errors.New("该剧本的事件牌与友善／港口组合尚未接通")
 	}
 	if h := g.Harbors; h != nil && (h.Rules != CatanHarborsRules || h.Owner < -1 || h.Owner >= len(g.Players) || h.Owner >= 0 && g.Players[h.Owner].Eliminated) {

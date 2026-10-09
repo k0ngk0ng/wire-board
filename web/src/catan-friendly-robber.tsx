@@ -1,3 +1,4 @@
+import { supportsCaravanSeaHelpers } from "./catan-two-helpers";
 import {
   twoCatanVariantsAvailable,
   catanTwoVariantsNote,
@@ -20,6 +21,9 @@ export function CatanFriendlyRobberPicker({
 }) {
   const setup = room.catanFriendlyRobber;
   const eligible =
+    (room.capacity >= 2 &&
+      room.capacity <= 6 &&
+      supportsCaravanSeaHelpers(room.catanScenario)) ||
     twoCatanVariantsAvailable(room) ||
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 3 &&
@@ -68,6 +72,7 @@ export const catanFriendlyFishingNote =
   "本站组合规则：没有合法陆地及符合剧本限制的沙漠时，强盗退到场外且不偷牌；海盗已在外海且没有合法海洋时可留在外海。花鱼偷牌不受友善保护限制，花鱼驱逐仍按原规则。";
 
 export const supportsPublicCatanFriendly = (scenario?: string) =>
+  supportsCaravanSeaHelpers(scenario) ||
   !scenario ||
   scenario === "cities-knights" ||
   scenario === "fishing" ||

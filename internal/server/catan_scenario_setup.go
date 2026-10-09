@@ -77,7 +77,7 @@ func (r *Room) validateCatanScenario() error {
 			minimum, maximum = 2, 6
 		}
 
-		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || !validCatanExplorerOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || !validCatanExplorerOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes {
 			return errors.New("商队海图人数或组合无效；支持二至六人")
 		}
 		if r.CatanScenario == "caravans-new-world" && r.CatanNewWorldMap != nil {
@@ -231,7 +231,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if scenario != "" {
 		next.CatanBaseConfiguration = nil
 	}
-	if scenario != "" && scenario != "cities-knights" && scenario != "fishing" && !publicCatanSeaScenario(scenario) {
+	if scenario != "" && scenario != "cities-knights" && scenario != "fishing" && !publicCatanSeaScenario(scenario) && !publicCatanCaravanSea(scenario) {
 		next.CatanFriendlyRobber = nil
 	}
 	if !publicCatanHarborsScenario(scenario) {

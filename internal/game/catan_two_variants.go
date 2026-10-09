@@ -9,7 +9,7 @@ const CatanTwoVariantsRules = "wire-board-two-variants-v1"
 const catanTwoVariantsNotice = "本站双人组合规则：中立势力不受友善强盗保护，不参与港口霸主奖励；中立建筑仍占据交点并阻断路线，最长路线规则不变"
 
 func (g *Catan) twoVariantsAvailable() bool {
-	return g.Two != nil && len(g.Players) == 2 && g.Rivers == nil && g.Caravans == nil && g.Attack == nil && g.Transport == nil && g.Explorer == nil && (g.Seafarers == nil || g.twoSeafarers()) && (g.Fishing == nil || g.twoFishing()) && (g.CitiesKnights == nil || g.twoKnights())
+	return g.Two != nil && len(g.Players) == 2 && g.Rivers == nil && (g.Caravans == nil || g.caravansSea()) && g.Attack == nil && g.Transport == nil && g.Explorer == nil && (g.Seafarers == nil || g.twoSeafarers()) && (g.Fishing == nil || g.twoFishing()) && (g.CitiesKnights == nil || g.twoKnights())
 }
 
 func (s *State) markCatanTwoVariants() {

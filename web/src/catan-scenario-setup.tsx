@@ -556,21 +556,11 @@ export function CatanScenarioPicker({
               value={s.id}
               disabled={
                 ["caravans-new-world", "caravans-islands"].includes(s.id)
-                  ? players < 2 ||
-                    players > 6 ||
-                    knights ||
-                    fishing ||
-                    friendly ||
-                    harbors
+                  ? players < 2 || players > 6 || knights || fishing
                   : s.id === "caravans-shores"
-                    ? players > 6 || knights || fishing || friendly || harbors
+                    ? players > 6 || knights || fishing
                     : ["caravans-desert", "caravans-tribe"].includes(s.id)
-                      ? players < 2 ||
-                        players > 6 ||
-                        knights ||
-                        fishing ||
-                        friendly ||
-                        harbors
+                      ? players < 2 || players > 6 || knights || fishing
                       : isPublicCatanRiversSea(s.id)
                         ? !catanRiversSeaAvailable(s.id, players) ||
                           helpers ||
