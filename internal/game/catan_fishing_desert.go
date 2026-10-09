@@ -109,6 +109,13 @@ func (g *Catan) tileProduces(t CatanTile, number int) bool {
 	if g.Rivers != nil && g.Rivers.Map.DoubleNumberTile == t.ID && number == 2 {
 		return true
 	}
+	if g.Rivers != nil {
+		for _, extra := range g.Rivers.Map.ExtraNumbers {
+			if extra.Tile == t.ID && extra.Number == number {
+				return true
+			}
+		}
+	}
 	if g.riversCaravans() {
 		for _, extra := range g.Caravans.ExtraNumbers {
 			if extra.Tile == t.ID && extra.Number == number {
@@ -131,6 +138,13 @@ func (g *Catan) tileProduces(t CatanTile, number int) bool {
 
 func (g *Catan) tileNumberWeight(t CatanTile) int {
 	weight := 0
+	if g.Rivers != nil {
+		for _, extra := range g.Rivers.Map.ExtraNumbers {
+			if extra.Tile == t.ID {
+				weight += 6 - absCatan(7-extra.Number)
+			}
+		}
+	}
 	if g.riversCaravans() {
 		for _, extra := range g.Caravans.ExtraNumbers {
 			if extra.Tile == t.ID {

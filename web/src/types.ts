@@ -681,6 +681,7 @@ export type CatanState = {
       bridges: number[];
       swamps: number[];
       doubleNumberTile: number;
+      extraNumbers?: { tile: number; number: number }[];
       numberRecipe?: string;
     };
     gold: number[];

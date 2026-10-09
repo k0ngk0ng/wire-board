@@ -12,18 +12,22 @@ func (g *Catan) riversSea() bool {
 	return g != nil && g.Rivers != nil && g.Rivers.Sea == CatanRiversSeafarersRules && g.Seafarers != nil
 }
 
-// Internal admission starts with the two printed Shores diagrams. Remaining
-// sea recipes and public admission are tracked separately, never silently mapped.
+// Internal admission uses printed combination diagrams. Remaining recipes
+// and public admission are tracked separately, never silently mapped.
 func newCatanRiversShores(n int) (*State, error) {
-	if n != 3 && n != 4 {
-		return nil, errors.New("河流新海岸固定图需要三或四人")
+	return newCatanRiversPrintedSea(n, "shores")
+}
+
+func newCatanRiversPrintedSea(n int, scenario string) (*State, error) {
+	if (n != 3 && n != 4) || (scenario != "shores" && scenario != "fog") {
+		return nil, errors.New("河流固定组合图暂支持三或四人新海岸及迷雾")
 	}
-	s, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "shores", Layout: "fixed"}, nil)
+	s, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: scenario, Layout: "fixed"}, nil)
 	if err != nil {
 		return nil, err
 	}
 	g := s.Catan
-	m, err := g.makeRiversShoresMap()
+	m, err := g.makeRiversPrintedSeaMap()
 	if err != nil {
 		return nil, err
 	}
@@ -31,6 +35,9 @@ func newCatanRiversShores(n int) (*State, error) {
 	g.Robber = -1
 	s.Phase = "catan_rivers_start"
 	s.Log = []string{"河流＋新海岸：使用官方固定组合图，14分获胜；河岸建船领1金币，移走河岸船先退1金币，桥位禁止造船", "本站移船补充：移入河岸按新位置领1金币；从河岸移出须先有金币可退，即使目标也在河岸；金矿仍领取任选资源而非金币"}
+	if scenario == "fog" {
+		s.Log[0] = "河流＋迷雾群岛：使用官方固定组合图，12分获胜；河岸建船领1金币，移走河岸船先退1金币，桥位禁止造船"
+	}
 	s.catanScores()
 	return s, g.validateRivers()
 }
@@ -45,13 +52,18 @@ func riverShoresRecipe(n int) (map[int]seaTerrain, [][]int, []int, int, []seaPor
 		[][]int{{21, 20, 19, 18}, {33, 32, 31}}, []int{2, 2}, 28,
 		[]seaPort{{2, 1, 2, -1}, {2, 3, 3, 4}, {3, 3, 4, -1}, {3, 0, 2, 2}, {4, 0, 1, 1}, {4, 4, 0, 3}, {6, 0, 2, -1}, {6, 1, 1, 0}, {6, 2, 5, -1}}
 }
-func (g *Catan) makeRiversShoresMap() (*catanRiversMap, error) {
+func (g *Catan) makeRiversPrintedSeaMap() (*catanRiversMap, error) {
 	recipe, paths, outlets, double, ports := riverShoresRecipe(len(g.Players))
+	var extra []catanFishingExtraNumber
+	if g.Seafarers.Scenario == "fog" {
+		recipe, paths, outlets, double, extra = riverFogRecipe(len(g.Players))
+		ports = nil // Printed combination keeps the ordinary fog ports.
+	}
 	for id, t := range recipe {
 		g.Tiles[id].Resource = t.resource
 		g.Tiles[id].Number = t.number
 	}
-	m := &catanRiversMap{DoubleNumberTile: double}
+	m := &catanRiversMap{DoubleNumberTile: double, ExtraNumbers: extra}
 	for i, path := range paths {
 		outlet := catanFishingSide(g, path[len(path)-1], outlets[i])
 		m.Channels = append(m.Channels, catanRiverChannel{Tiles: slices.Clone(path), Outlet: outlet})
@@ -76,7 +88,7 @@ func (g *Catan) makeRiversShoresMap() (*catanRiversMap, error) {
 		m.Bridges = append(m.Bridges, outlet)
 	}
 	sizes := []int{5, 6, 7, 6, 7, 6, 5}
-	if len(g.Players) == 3 {
+	if len(g.Players) == 3 && g.Seafarers.Scenario == "shores" {
 		sizes = []int{4, 5, 6, 5, 6, 5, 4}
 	}
 	for i, p := range ports {
@@ -90,26 +102,31 @@ func (g *Catan) makeRiversShoresMap() (*catanRiversMap, error) {
 	return m, nil
 }
 func (g *Catan) validateRiversSeaMap() error {
-	if !g.riversSea() || g.Rivers.Map == nil || g.Seafarers.Scenario != "shores" || g.Seafarers.Layout != "fixed" || len(g.Players) < 3 || len(g.Players) > 4 {
+	if !g.riversSea() || g.Rivers.Map == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "fog") || g.Seafarers.Layout != "fixed" || len(g.Players) < 3 || len(g.Players) > 4 {
 		return errors.New("河流海图配方尚未接入或标记无效")
 	}
 	sea := g.Seafarers
-	if sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.NewWorld != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.Cloth != nil || sea.Tribe != nil || sea.Fog != nil || len(sea.Seats) != len(g.Players) {
-		return errors.New("河流新海岸包含不适用的海图状态")
+	if sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.NewWorld != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.Cloth != nil || sea.Tribe != nil || (sea.Fog != nil) != (sea.Scenario == "fog") || len(sea.Seats) != len(g.Players) {
+		return errors.New("河流固定组合图包含不适用的海图状态")
 	}
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
 		return errors.New("河流海图海盗位置无效")
 	}
-	expected, err := NewCatanSeafarers(len(g.Players), CatanOptions{}, CatanSeafarersSetup{Scenario: "shores", Layout: "fixed"}, nil)
+	expected, err := NewCatanSeafarers(len(g.Players), CatanOptions{}, CatanSeafarersSetup{Scenario: sea.Scenario, Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}
 	board := expected.Catan
-	m, err := board.makeRiversShoresMap()
+	m, err := board.makeRiversPrintedSeaMap()
 	if err != nil {
 		return err
 	}
-	if !reflect.DeepEqual(m, g.Rivers.Map) || len(g.Tiles) != len(board.Tiles) || !reflect.DeepEqual(g.Ports, board.Ports) || !reflect.DeepEqual(g.Seafarers.Islands, board.Seafarers.Islands) || !slices.Equal(g.Seafarers.StartIslands, board.Seafarers.StartIslands) || g.Seafarers.VictoryPoints != 14 || g.Seafarers.IslandBonus != 2 {
+	if sea.Scenario == "fog" {
+		if err := g.validateRiverFog(board); err != nil {
+			return err
+		}
+	}
+	if !reflect.DeepEqual(m, g.Rivers.Map) || len(g.Tiles) != len(board.Tiles) || !reflect.DeepEqual(g.Ports, board.Ports) || !reflect.DeepEqual(g.Seafarers.Islands, g.findIslands()) || !slices.Equal(g.Seafarers.StartIslands, board.Seafarers.StartIslands) || g.Seafarers.VictoryPoints != board.Seafarers.VictoryPoints || g.Seafarers.IslandBonus != board.Seafarers.IslandBonus {
 		return errors.New("河流海图河道、港口或岛屿配置不符")
 	}
 	if !reflect.DeepEqual(g.Tiles, board.Tiles) || len(g.Vertices) != len(board.Vertices) || len(g.Edges) != len(board.Edges) {

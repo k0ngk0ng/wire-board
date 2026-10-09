@@ -14,12 +14,13 @@ type catanRiverChannel struct {
 	Outlet int   `json:"outlet"`
 }
 type catanRiversMap struct {
-	NumberSwaps      []CatanNumberSwap   `json:"numberSwaps,omitempty"`
-	NumberRecipe     string              `json:"numberRecipe,omitempty"`
-	Channels         []catanRiverChannel `json:"channels"`
-	Bridges          []int               `json:"bridges"`
-	Swamps           []int               `json:"swamps"`
-	DoubleNumberTile int                 `json:"doubleNumberTile"` // Base: 2 and 12. Extension: -1.
+	ExtraNumbers     []catanFishingExtraNumber `json:"extraNumbers,omitempty"`
+	NumberSwaps      []CatanNumberSwap         `json:"numberSwaps,omitempty"`
+	NumberRecipe     string                    `json:"numberRecipe,omitempty"`
+	Channels         []catanRiverChannel       `json:"channels"`
+	Bridges          []int                     `json:"bridges"`
+	Swamps           []int                     `json:"swamps"`
+	DoubleNumberTile int                       `json:"doubleNumberTile"` // Base: 2 and 12. Extension: -1.
 }
 
 // 2025 T&B p.11 and T&B 5–6 p.6. Row-major tiles, source to mouth.
@@ -139,6 +140,9 @@ func (g *Catan) makeRiversMap() (*catanRiversMap, error) {
 func (f catanRiversMap) validate(g *Catan) error {
 	if g.riversSea() {
 		return g.validateRiversSeaMap()
+	}
+	if len(f.ExtraNumbers) != 0 {
+		return errors.New("此河流地图不使用额外圆片")
 	}
 	if g.Transport != nil {
 		return g.validateRiversTransportMap()

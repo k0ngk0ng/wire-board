@@ -77,6 +77,9 @@ func (g *Catan) validateRivers() error {
 	if g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("河流强盗位置无效")
 	}
+	if g.riversSea() && g.Robber >= 0 && (g.Tiles[g.Robber].Resource == CatanSea || g.Tiles[g.Robber].Resource == CatanFog) {
+		return errors.New("河流海图强盗不能位于海洋或迷雾")
+	}
 	supply := 100
 	if len(g.Players) > 4 {
 		supply = 152

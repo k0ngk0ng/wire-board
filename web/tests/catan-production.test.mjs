@@ -80,3 +80,27 @@ test("rivers caravans keeps each additional disc with its tile after invention",
   assert.equal(catanTileProducing(g, 0, 2), false);
   assert.equal(catanTileProducing(g, 1, 12), true);
 });
+
+test("rivers fog exposes 2/11 and 3/12 separately and robber blocks both discs", () => {
+  const g = {
+    robber: -1,
+    tiles: [{ number: 11 }, { number: 3 }],
+    rivers: {
+      map: { doubleNumberTile: 0, extraNumbers: [{ tile: 1, number: 12 }] },
+    },
+  };
+  assert.deepEqual(catanProductionNumbers(g, 0), [11, 2]);
+  assert.deepEqual(catanProductionNumbers(g, 1), [3, 12]);
+  assert.equal(catanTileProducing(g, 0, 12), false);
+  assert.equal(catanTileProducing(g, 1, 2), false);
+  for (const [tile, numbers] of [
+    [0, [2, 11]],
+    [1, [3, 12]],
+  ]) {
+    for (const n of numbers) assert.equal(catanTileProducing(g, tile, n), true);
+    g.robber = tile;
+    for (const n of numbers)
+      assert.equal(catanTileProducing(g, tile, n), false);
+    g.robber = -1;
+  }
+});
