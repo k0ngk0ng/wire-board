@@ -69,7 +69,11 @@ func (q catanTransportTravel) validate(g *Catan, m *catanTransportMap, barbarian
 	if q.WheatUsed {
 		maxMP += 2
 	}
-	if q.NeutralTolls < 0 || q.NeutralTolls+q.Points > maxMP || g.Two == nil && q.NeutralTolls != 0 || q.Points < 0 || q.Points > maxMP || q.Pending < -1 || q.Pending >= len(barbarians) || q.Arrived < -1 || q.Arrived >= len(m.Sites) || q.Ended && q.Points != 0 || q.Arrived >= 0 && (!q.Ended || m.Sites[q.Arrived].Center != q.Position) {
+	neutralLimit := maxMP - q.Points
+	if m.Rivers == CatanRiversTransportRules {
+		neutralLimit *= 2
+	}
+	if q.NeutralTolls < 0 || q.NeutralTolls > neutralLimit || g.Two == nil && q.NeutralTolls != 0 || q.Points < 0 || q.Points > maxMP || q.Pending < -1 || q.Pending >= len(barbarians) || q.Arrived < -1 || q.Arrived >= len(m.Sites) || q.Ended && q.Points != 0 || q.Arrived >= 0 && (!q.Ended || m.Sites[q.Arrived].Center != q.Position) {
 		return errors.New("马车步数、到达或结束状态无效")
 	}
 	for id, edge := range barbarians {
@@ -118,7 +122,7 @@ func (q catanTransportTravel) quote(g *Catan, m *catanTransportMap, barbarians [
 	} else {
 		return step, errors.New("马车只能移动到相邻交点")
 	}
-	if e.Owner < -1 && (g.Two == nil || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge || e.Warship {
+	if e.Owner < -1 && (g.Two == nil || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge && m.Rivers != CatanRiversTransportRules || e.Warship {
 		return step, errors.New("运输道路所有者或种类无效")
 	}
 	step.MP = 2
@@ -135,6 +139,30 @@ func (q catanTransportTravel) quote(g *Catan, m *catanTransportMap, barbarians [
 					step.Bank = 1
 				} else {
 					step.Pay = 1 - q.Player
+				}
+			}
+		}
+	}
+	if m.Rivers == CatanRiversTransportRules {
+		r, err := riversTransportChannels(g)
+		if err != nil {
+			return step, err
+		}
+		crossing := slices.Contains(r.Bridges, edge)
+		if e.Bridge && (!crossing || e.Owner == -1 || e.Damaged) || crossing && e.Owner != -1 && !e.Bridge {
+			return step, errors.New("河流桥梁位置或棋子无效")
+		}
+		if crossing {
+			step.MP, step.Toll, step.Pay, step.Bank, step.Neutral = 3, 0, -1, 0, false
+			if e.Bridge && e.Owner != -1 {
+				step.MP = 1
+				if e.Owner != q.Player {
+					step.Toll, step.Pay = 2, e.Owner
+					if e.Owner < -1 {
+						// Site two-player supplement: neutral bridge tolls use
+						// the same cumulative half-bank / half-opponent split.
+						step.Neutral, step.Pay, step.Bank = true, 1-q.Player, 1
+					}
 				}
 			}
 		}
@@ -159,7 +187,7 @@ func (q *catanTransportTravel) move(g *Catan, m *catanTransportMap, barbarians [
 		gold[step.Pay] += step.Toll - step.Bank
 	}
 	if step.Neutral {
-		q.NeutralTolls++
+		q.NeutralTolls += step.Toll
 	}
 	if site := m.siteAt(q.Position); site >= 0 {
 		q.Arrived, q.Ended, q.Points = site, true, 0

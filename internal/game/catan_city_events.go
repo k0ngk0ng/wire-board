@@ -291,8 +291,12 @@ func (s *State) catanEventChoice(player int, a Action) error {
 			if !g.canRiverPillageGold(player) {
 				return errors.New("保住城市需要5金币")
 			}
-			g.Rivers.Gold[player] -= 5
-			g.Rivers.Bank += 5
+			g.riverGold()[player] -= 5
+			if g.riversTransport() {
+				g.Transport.GoldBank += 5
+			} else {
+				g.Rivers.Bank += 5
+			}
 			k.Event.Tasks = k.Event.Tasks[1:]
 			s.catanLog(player, "支付金币×5，免除本次城市劫掠")
 			s.catanScores()

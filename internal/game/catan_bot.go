@@ -11,6 +11,7 @@ func (g *Catan) vertexValue(p, v int) int {
 	values := []int{0, 0, 0, 0, 0}
 	goldValue := 0
 	for _, t := range g.Tiles {
+		t.Resource = g.productionResource(t)
 		if t.Number <= 0 {
 			continue
 		}
@@ -36,6 +37,7 @@ func (g *Catan) vertexValue(p, v int) int {
 			continue
 		}
 		for _, t := range g.Tiles {
+			t.Resource = g.productionResource(t)
 			if t.Number <= 0 {
 				continue
 			}
@@ -241,6 +243,7 @@ func (s *State) catanBot(player int) (Action, error) {
 		choices := g.pirateBotChoices(player)
 		best, score := -1, -999
 		for _, t := range g.Tiles {
+			t.Resource = g.productionResource(t)
 			if !g.robberAllowed(t.ID) {
 				continue
 			}
@@ -465,6 +468,7 @@ func (s *State) catanBot(player int) (Action, error) {
 				a.Color = 3
 				production := make([]int, 5)
 				for _, t := range g.Tiles {
+					t.Resource = g.productionResource(t)
 					if t.Resource >= 5 {
 						continue
 					}

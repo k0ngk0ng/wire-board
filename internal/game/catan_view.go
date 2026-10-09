@@ -94,10 +94,10 @@ func (s *State) catanView(view map[string]any, player int) {
 	s.catanFishingView(v, player)
 	if g.Rivers != nil {
 		richest, poor := g.riverWealth()
-		if g.riversAttack() {
+		if g.riversAttack() || g.riversTransport() {
 			public := v["rivers"].(map[string]any)
-			public["gold"] = slices.Clone(g.Attack.Gold)
-			public["bank"], public["goldIssued"], public["bought"] = g.Attack.GoldBank, g.Attack.GoldIssued, g.Attack.Bought
+			public["gold"] = slices.Clone(g.riverGold())
+			public["bank"], public["goldIssued"], public["bought"] = g.riverBank()
 			public["poorPenalty"] = 0
 		}
 		v["rivers"].(map[string]any)["goldRule"] = "ledger"

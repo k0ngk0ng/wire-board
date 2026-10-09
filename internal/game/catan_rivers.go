@@ -9,6 +9,7 @@ import (
 const CatanRiversRules = "catan-rivers-2025"
 
 type CatanRivers struct {
+	Transport  string          `json:"transport,omitempty"`
 	Attack     string          `json:"attack,omitempty"`
 	Knights    string          `json:"knights,omitempty"`
 	Rules      string          `json:"rules,omitempty"`
@@ -50,6 +51,9 @@ func (g *Catan) validateRivers() error {
 	if r.Attack != "" && !g.riversAttack() || g.Attack != nil && !g.riversAttack() {
 		return errors.New("河流蛮族组合标记无效")
 	}
+	if r.Transport != "" && !g.riversTransport() || g.Transport != nil && !g.riversTransport() {
+		return errors.New("河流运输组合标记无效")
+	}
 	// Existing internal saves predate this field; their pinned 2025 map and
 	// inventory are still validated below. Unknown explicit versions fail.
 	if r.Rules != "" && r.Rules != CatanRiversRules {
@@ -75,6 +79,9 @@ func (g *Catan) validateRivers() error {
 	}
 	if r.GoldIssued < 0 || r.GoldIssued > catanGoldLedgerLimit || g.setup() && r.GoldIssued != 0 {
 		return errors.New("河流金币记账无效")
+	}
+	if g.riversTransport() {
+		supply = g.Transport.Map.Gold
 	}
 	bank, issued, _ := g.riverBank()
 	supply += issued
@@ -195,6 +202,19 @@ func (s *State) catanRiverReward(p, amount int) error {
 	if s.Catan.Rivers == nil || amount == 0 || p < 0 {
 		return nil
 	}
+	if s.Catan.riversTransport() {
+		t := s.Catan.Transport
+		if p >= len(t.Gold) {
+			return errors.New("金币领取玩家无效")
+		}
+		if err := t.ensureGold(amount); err != nil {
+			return err
+		}
+		t.GoldBank -= amount
+		t.Gold[p] += amount
+		s.catanLog(p, "河流建设获得 金币×%d", amount)
+		return nil
+	}
 	if s.Catan.riversAttack() {
 		a := s.Catan.Attack
 		if p >= len(a.Gold) {
@@ -227,7 +247,7 @@ func (s *State) catanBuildBridge(p int, a Action) error {
 	}
 	catanMove(g.Players[p].Resources, g.Bank, catanPrices["catan_bridge"])
 	g.Edges[a.Edge].Owner, g.Edges[a.Edge].Bridge = p, true
-	if err := s.catanRiverReward(p, 3); err != nil {
+	if err := s.catanRiverReward(p, g.riverBridgeReward()); err != nil {
 		return err
 	}
 	s.catanLog(p, "修建桥梁 #%d，支付 木材×1、砖块×2", a.Edge+1)
@@ -269,7 +289,7 @@ func (g *Catan) riverPoints(p int) int {
 	if richest == p {
 		points++
 	}
-	if !g.riversAttack() && slices.Contains(poor, p) {
+	if !g.riversAttack() && !g.riversTransport() && slices.Contains(poor, p) {
 		points -= 2
 	}
 	return points
@@ -386,7 +406,12 @@ func (g *Catan) riverBotChoices(p int) []botChoice {
 	copy := *g
 	river := *g.Rivers
 	copy.Rivers = &river
-	if g.riversAttack() {
+	if g.riversTransport() {
+		transport := *g.Transport
+		copy.Transport = &transport
+		transport.Gold = slices.Clone(transport.Gold)
+		transport.Gold[p]++
+	} else if g.riversAttack() {
 		attack := *g.Attack
 		copy.Attack = &attack
 		attack.Gold = slices.Clone(attack.Gold)

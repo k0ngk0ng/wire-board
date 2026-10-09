@@ -17,6 +17,7 @@ type catanTransportSite struct {
 	Blocked []int  `json:"blocked"`
 }
 type catanTransportMap struct {
+	Rivers      string               `json:"rivers,omitempty"`
 	NumberSwaps []CatanNumberSwap    `json:"numberSwaps,omitempty"`
 	Rules       string               `json:"rules"`
 	Sites       []catanTransportSite `json:"sites"`
@@ -196,7 +197,7 @@ func (m catanTransportMap) accepts(site int, cargo string) bool {
 }
 
 func (m catanTransportMap) validate(g *Catan) error {
-	if g == nil {
+	if g == nil || m.Rivers != "" && m.Rivers != CatanRiversTransportRules {
 		return errors.New("运输地图缺失")
 	}
 	base, expected, err := catanTransportGeometry(len(g.Players))
@@ -225,6 +226,13 @@ func (m catanTransportMap) validate(g *Catan) error {
 			}
 		}
 	}
+	fixed := map[int]int{}
+	if m.Rivers == CatanRiversTransportRules {
+		fixed = riversTransportFixed(len(g.Players) > 4)
+		_, _, _, r.resources = riversTransportRecipe(len(g.Players) > 4)
+		r.deserts = nil
+		numbers, _ = riversTransportNumbers(g)
+	}
 	original := map[CatanNumberToken]int{}
 	for _, tile := range g.Tiles {
 		original[CatanNumberToken{tile.ID, 0}] = tile.Number
@@ -246,7 +254,12 @@ func (m catanTransportMap) validate(g *Catan) error {
 		if tile.ID != id || !near(tile.X, want.X) || !near(tile.Y, want.Y) || !slices.Equal(tile.Vertices, want.Vertices) || original[CatanNumberToken{id, 0}] != numbers[id] {
 			return errors.New("运输地块坐标、拓扑或生产数字不符")
 		}
+		fixedColor, river := fixed[id]
 		switch {
+		case river:
+			if tile.Resource != fixedColor {
+				return errors.New("河流运输固定河道地形无效")
+			}
 		case want.Resource == catanTransportTerrain:
 			if tile.Resource != catanTransportTerrain {
 				return errors.New("货物地块不可生产普通资源")
@@ -271,9 +284,17 @@ func (m catanTransportMap) validate(g *Catan) error {
 			return errors.New("运输交点无效，货物地块中心不可建设建筑")
 		}
 	}
+	bridges := []int{}
+	if m.Rivers != "" {
+		rivers, err := riversTransportChannels(g)
+		if err != nil {
+			return err
+		}
+		bridges = rivers.Bridges
+	}
 	for i, e := range g.Edges {
 		want := base.Edges[i]
-		if e.ID != i || e.A != want.A || e.B != want.B || !slices.Equal(e.Tiles, want.Tiles) || e.Owner < -1 && (g.Two == nil || len(g.Players) != 2 || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge || e.Warship || !m.canBuildRoad(g, i) && e.Owner != -1 {
+		if e.ID != i || e.A != want.A || e.B != want.B || !slices.Equal(e.Tiles, want.Tiles) || e.Owner < -1 && (g.Two == nil || len(g.Players) != 2 || e.Owner < -3) || e.Owner >= len(g.Players) || e.Ship || e.Bridge && (!slices.Contains(bridges, i) || e.Owner == -1 || e.Damaged) || !e.Bridge && e.Owner != -1 && slices.Contains(bridges, i) || e.Warship || !m.canBuildRoad(g, i) && e.Owner != -1 {
 			return errors.New("运输路线拓扑、种类或禁行边无效")
 		}
 	}

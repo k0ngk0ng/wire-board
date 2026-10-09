@@ -12,6 +12,9 @@ func (g *Catan) riversAttack() bool {
 // The attack ledger is authoritative in the combined scenario. Rivers keeps
 // no duplicate balance; this survives JSON cloning without pointer aliases.
 func (g *Catan) riverGold() []int {
+	if g.riversTransport() {
+		return g.Transport.Gold
+	}
 	if g.riversAttack() {
 		return g.Attack.Gold
 	}
@@ -21,6 +24,9 @@ func (g *Catan) riverGold() []int {
 	return nil
 }
 func (g *Catan) riverBank() (bank, issued, bought int) {
+	if g.riversTransport() {
+		return g.Transport.GoldBank, g.Transport.GoldIssued, g.Transport.Bought
+	}
 	if g.riversAttack() {
 		return g.Attack.GoldBank, g.Attack.GoldIssued, g.Attack.Bought
 	}

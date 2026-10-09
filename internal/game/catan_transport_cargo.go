@@ -93,6 +93,11 @@ func newCatanTransportPieces(g *Catan, m *catanTransportMap) (*catanTransport, e
 	if err := m.validate(g); err != nil {
 		return nil, err
 	}
+	t := makeCatanTransportPieces(g, m)
+	return t, t.validate(g)
+}
+
+func makeCatanTransportPieces(g *Catan, m *catanTransportMap) *catanTransport {
 	t := &catanTransport{Map: m, Active: -1, Gold: make([]int, len(g.Players)), GoldBank: m.Gold - 5*len(g.Players), Barbarians: m.Barbarians}
 	for p := range g.Players {
 		t.Gold[p] = 5
@@ -105,14 +110,14 @@ func newCatanTransportPieces(g *Catan, m *catanTransportMap) (*catanTransport, e
 	for i := range t.Stacks {
 		shuffle(t.Stacks[i])
 	}
-	return t, t.validate(g)
+	return t
 }
 
 func (t catanTransport) validate(g *Catan) error {
 	if !catanTransportPlayersValid(g) || t.Map == nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
 		return errors.New("运输组件或人数无效")
 	}
-	if g.Attack != nil || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
+	if t.Map.Rivers != "" && !g.riversTransport() || g.Attack != nil || g.Caravans != nil || g.Rivers != nil && !g.riversTransport() || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("运输与其他扩展的组合尚未接入")
 	}
 	if err := t.Map.validate(g); err != nil {
@@ -149,7 +154,7 @@ func (t catanTransport) validate(g *Catan) error {
 		if wagon.Position < -1 || wagon.Position >= len(g.Vertices) || wagon.Level < 0 || wagon.Level > 4 || t.Gold[p] < 0 || t.Gold[p] > supply || wagon.Position == -1 && (wagon.Level != 0 || wagon.Cargo != 0 || len(wagon.Delivered) != 0) {
 			return errors.New("运输马车位置、等级、载货或金币无效")
 		}
-		if t.TurnSerial == 0 && (wagon.Level != 0 || wagon.Cargo != 0 || len(wagon.Delivered) != 0 || t.Gold[p] != 5) {
+		if t.TurnSerial == 0 && (wagon.Level != 0 || wagon.Cargo != 0 || len(wagon.Delivered) != 0 || t.Gold[p] != g.transportSetupGold(p)) {
 			return errors.New("运输开局等级、载货或金币无效")
 		}
 		if t.TurnSerial == 0 && wagon.Position >= 0 && (g.Vertices[wagon.Position].Owner != p || g.Vertices[wagon.Position].Level != 2) {

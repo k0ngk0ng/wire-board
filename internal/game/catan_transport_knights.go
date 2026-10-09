@@ -95,7 +95,7 @@ func (s *State) catanTransportBeginTravel(player int) error {
 func (s *State) catanTransportCityRoll(dice func() [2]int, face int) error {
 	g := s.Catan
 	pair := dice()
-	for (len(g.Players) <= 4 && (pair[0]+pair[1] == 2 || pair[0]+pair[1] == 12)) || (g.twoKnights() && len(g.Two.Rolls) == 1 && pair[0]+pair[1] == g.Two.Rolls[0]) {
+	for (len(g.Players) <= 4 && !g.riversTransport() && (pair[0]+pair[1] == 2 || pair[0]+pair[1] == 12)) || (g.twoKnights() && len(g.Two.Rolls) == 1 && pair[0]+pair[1] == g.Two.Rolls[0]) {
 		pair = dice()
 	}
 	return s.catanCityRoll(pair[0], pair[1], face)
