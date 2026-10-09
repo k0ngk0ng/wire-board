@@ -9,6 +9,7 @@ import (
 const CatanRiversRules = "catan-rivers-2025"
 
 type CatanRivers struct {
+	Attack     string          `json:"attack,omitempty"`
 	Knights    string          `json:"knights,omitempty"`
 	Rules      string          `json:"rules,omitempty"`
 	Map        *catanRiversMap `json:"map"`
@@ -46,12 +47,15 @@ func (g *Catan) validateRivers() error {
 	if r == nil {
 		return nil
 	}
+	if r.Attack != "" && !g.riversAttack() || g.Attack != nil && !g.riversAttack() {
+		return errors.New("河流蛮族组合标记无效")
+	}
 	// Existing internal saves predate this field; their pinned 2025 map and
 	// inventory are still validated below. Unknown explicit versions fail.
 	if r.Rules != "" && r.Rules != CatanRiversRules {
 		return errors.New("河流规则版本无效")
 	}
-	if r.Map == nil || len(r.Gold) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil && !g.fishingRivers() || g.CitiesKnights != nil && !g.riverKnights() || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
+	if r.Map == nil || len(g.riverGold()) != len(g.Players) || len(g.Players) == 2 && g.Two == nil || r.Bought < 0 || r.Bought > 2 || g.BaseSetup != nil || g.Seafarers != nil || g.Fishing != nil && !g.fishingRivers() || g.CitiesKnights != nil && !g.riverKnights() || g.Options.Helpers || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || (len(g.Players) > 4) != g.Options.FiveSix || (len(g.Players) > 4) != (g.Paired != nil) {
 		return errors.New("河流状态或尚未核对的组合无效")
 	}
 	if err := g.validateRiverKnights(); err != nil {
@@ -72,12 +76,13 @@ func (g *Catan) validateRivers() error {
 	if r.GoldIssued < 0 || r.GoldIssued > catanGoldLedgerLimit || g.setup() && r.GoldIssued != 0 {
 		return errors.New("河流金币记账无效")
 	}
-	supply += r.GoldIssued
-	total := int64(r.Bank)
-	if r.Bank < 0 || r.Bank > supply {
+	bank, issued, _ := g.riverBank()
+	supply += issued
+	total := int64(bank)
+	if bank < 0 || bank > supply {
 		return errors.New("金币库存无效")
 	}
-	for _, held := range r.Gold {
+	for _, held := range g.riverGold() {
 		if held < 0 || held > supply {
 			return errors.New("玩家金币无效")
 		}
@@ -162,6 +167,9 @@ func (g *Catan) canBridge(p, id int) bool {
 	if g.Rivers == nil || !neutral && (p < 0 || p >= len(g.Players) || g.Players[p].Eliminated) || id < 0 || id >= len(g.Edges) || g.Edges[id].Owner != -1 || !slices.Contains(g.Rivers.Map.Bridges, id) || g.bridgeCount(p) >= 3 {
 		return false
 	}
+	if g.Attack != nil && g.Attack.buildBlocked(g, id, -1) {
+		return false
+	}
 	e := g.Edges[id]
 	for _, v := range []int{e.A, e.B} {
 		if g.opponentPiece(p, v) {
@@ -185,6 +193,19 @@ func (g *Catan) canBridge(p, id int) bool {
 
 func (s *State) catanRiverReward(p, amount int) error {
 	if s.Catan.Rivers == nil || amount == 0 || p < 0 {
+		return nil
+	}
+	if s.Catan.riversAttack() {
+		a := s.Catan.Attack
+		if p >= len(a.Gold) {
+			return errors.New("金币领取玩家无效")
+		}
+		if err := a.ensureGold(amount); err != nil {
+			return err
+		}
+		a.GoldBank -= amount
+		a.Gold[p] += amount
+		s.catanLog(p, "河流建设获得 金币×%d", amount)
 		return nil
 	}
 	r := s.Catan.Rivers
@@ -221,7 +242,7 @@ func (g *Catan) riverWealth() (richest int, poor []int) {
 		return
 	}
 	high, low, ties := -1, int(^uint(0)>>1), 0
-	for p, amount := range g.Rivers.Gold {
+	for p, amount := range g.riverGold() {
 		if g.Players[p].Eliminated {
 			continue
 		}
@@ -248,7 +269,7 @@ func (g *Catan) riverPoints(p int) int {
 	if richest == p {
 		points++
 	}
-	if slices.Contains(poor, p) {
+	if !g.riversAttack() && slices.Contains(poor, p) {
 		points -= 2
 	}
 	return points
@@ -257,7 +278,7 @@ func (s *State) catanCoins(p int, a Action) error {
 	g := s.Catan
 	gold := g.tradeGold()
 	var bank, bought *int
-	if g.Rivers != nil {
+	if g.Rivers != nil && !g.riversAttack() {
 		bank, bought = &g.Rivers.Bank, &g.Rivers.Bought
 	} else if g.Attack != nil {
 		bank, bought = &g.Attack.GoldBank, &g.Attack.Bought
@@ -282,7 +303,7 @@ func (s *State) catanCoins(p int, a Action) error {
 		if g.Players[p].Resources[c] < rate {
 			return errors.New("资源库存不足")
 		}
-		if g.Rivers != nil {
+		if g.Rivers != nil && !g.riversAttack() {
 			if err := g.Rivers.ensureGold(1); err != nil {
 				return err
 			}
@@ -312,7 +333,7 @@ func (g *Catan) tradeGold() []int {
 		return g.Transport.Gold
 	}
 	if g.Rivers != nil {
-		return g.Rivers.Gold
+		return g.riverGold()
 	}
 	if g.Attack != nil {
 		return g.Attack.Gold
@@ -325,7 +346,7 @@ func (g *Catan) validTradeGold(amount int) bool {
 		limit = catanExplorerStock(len(g.Players)).gold + g.Explorer.Economy.GoldIssued
 	} else if g.Transport != nil {
 		limit = g.Transport.Map.Gold + g.Transport.GoldIssued
-	} else if g.Rivers != nil {
+	} else if g.Rivers != nil && !g.riversAttack() {
 		limit = 100 + g.Rivers.GoldIssued
 		if len(g.Players) > 4 {
 			limit += 52
@@ -365,9 +386,17 @@ func (g *Catan) riverBotChoices(p int) []botChoice {
 	copy := *g
 	river := *g.Rivers
 	copy.Rivers = &river
-	river.Gold = slices.Clone(river.Gold)
-	river.Gold[p]++
-	_, goldErr := catanGoldShortfall(g.Rivers.Bank, g.Rivers.GoldIssued, 1)
+	if g.riversAttack() {
+		attack := *g.Attack
+		copy.Attack = &attack
+		attack.Gold = slices.Clone(attack.Gold)
+		attack.Gold[p]++
+	} else {
+		river.Gold = slices.Clone(river.Gold)
+		river.Gold[p]++
+	}
+	bank, issued, _ := g.riverBank()
+	_, goldErr := catanGoldShortfall(bank, issued, 1)
 	if goldErr == nil && copy.riverPoints(p) > before {
 		for color, rate := range g.rates(p) {
 			if g.Players[p].Resources[color] >= rate {

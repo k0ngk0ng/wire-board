@@ -375,7 +375,7 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 		}
 		if neutral {
 			for j, k := range a.Knights {
-				if k.Player == s.Turn && !moved[j] && a.castleEdge(g, k.Edge) {
+				if k.Player == s.Turn && !moved[j] && a.castleEdge(g, k.Edge) && !g.riverAttackCastleBlocked(j, s.Turn) {
 					return errors.New("请先将己方城堡骑士移出")
 				}
 			}
@@ -418,8 +418,12 @@ func (s *State) catanAttackMoveKnights(moves []catanAttackMove, requireDeparture
 		moved[i] = true
 		s.catanLog(s.Turn, "骑士从路线 #%d 移至 #%d（最多%d步）", move.From+1, move.To+1, steps)
 	}
-	for _, k := range a.Knights {
+	for i, k := range a.Knights {
 		if requireDeparture && g.attackCanMoveKnight(k.Player, s.Turn) && a.castleEdge(g, k.Edge) {
+			if g.riverAttackCastleBlocked(i, s.Turn) {
+				s.catanLog(s.Turn, "本站补充规则：城堡骑士 #%d 没有可用落点，本回合暂留城堡", k.Edge+1)
+				continue
+			}
 			return errors.New("必须先将自己的所有城堡骑士移出")
 		}
 	}

@@ -94,6 +94,12 @@ func (s *State) catanView(view map[string]any, player int) {
 	s.catanFishingView(v, player)
 	if g.Rivers != nil {
 		richest, poor := g.riverWealth()
+		if g.riversAttack() {
+			public := v["rivers"].(map[string]any)
+			public["gold"] = slices.Clone(g.Attack.Gold)
+			public["bank"], public["goldIssued"], public["bought"] = g.Attack.GoldBank, g.Attack.GoldIssued, g.Attack.Bought
+			public["poorPenalty"] = 0
+		}
 		v["rivers"].(map[string]any)["goldRule"] = "ledger"
 		v["rivers"].(map[string]any)["canProtectCity"] = !s.Finished && s.Phase == "catan_pillage" && s.CatanPendingActor() == player && g.canRiverPillageGold(player)
 		v["rivers"].(map[string]any)["richest"] = richest

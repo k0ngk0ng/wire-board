@@ -416,7 +416,7 @@ func (s *State) catanBot(player int) (Action, error) {
 			if n <= p.Resources[want] || g.Bank[want] == 0 {
 				continue
 			}
-			if r := g.Rivers; r != nil && r.Bought < 2 && r.Gold[player] >= 2 {
+			if _, _, bought := g.riverBank(); g.Rivers != nil && bought < 2 && g.riverGold()[player] >= 2 {
 				choices = append(choices, botChoice{Action{Type: "catan_coin_buy", Color: want}, 65 + target.score/20})
 			}
 			for give, rate := range g.rates(player) {

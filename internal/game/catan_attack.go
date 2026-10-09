@@ -73,8 +73,8 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
-	if a.Map != nil && a.Map.Rivers != "" {
-		return errors.New("河流蛮族完整对局尚未接通")
+	if a.Map != nil && a.Map.Rivers != "" && !g.riversAttack() {
+		return errors.New("河流蛮族缺少配套河流组件")
 	}
 	if g.attackKnights() {
 		return s.validateAttackCityState()
@@ -83,7 +83,7 @@ func (s *State) validateCatanAttack() error {
 		return errors.New("多人蛮族混入双人组件")
 	}
 	n := len(g.Players)
-	if n < 2 || n > 6 || (n == 2 || g.Two != nil || a.TwoRules != "") && !g.twoAttack() || g.Caravans != nil || g.Rivers != nil || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
+	if n < 2 || n > 6 || (n == 2 || g.Two != nil || a.TwoRules != "") && !g.twoAttack() || g.Caravans != nil || g.Rivers != nil && !g.riversAttack() || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.CitiesKnights != nil || g.BaseSetup != nil || g.Harbors != nil || g.FriendlyRobber != nil || g.Options.Helpers || g.Options.AllHelpers || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) {
 		return errors.New("蛮族进攻人数或尚未接入的组合无效")
 	}
 	if g.fishingAttack() {
