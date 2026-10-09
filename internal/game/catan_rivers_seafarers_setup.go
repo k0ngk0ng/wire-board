@@ -28,9 +28,6 @@ func NormalizeCatanRiversSeafarersSetup(n int, setup CatanRiversSeafarersSetup) 
 			defaultLayout = catanRiversFogExtendedLayout
 		}
 	case "desert":
-		if n > 4 {
-			return setup, errors.New("五六人河流沙漠尚未接通")
-		}
 		defaultLayout = "rivers-across"
 	case "tribe":
 		if n > 4 {
@@ -80,6 +77,10 @@ func NewCatanRiversSeafarers(n int, setup CatanRiversSeafarersSetup, world *Cata
 		return newCatanTwoRiversSeafarers(setup.Scenario, layout)
 	}
 	switch setup.Scenario {
+	case "desert":
+		if n > 4 {
+			return newCatanRiversDesertExtended(n, layout)
+		}
 	case "shores":
 		return newCatanRiversShores(n)
 	case "fog":
