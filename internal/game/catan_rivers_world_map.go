@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"slices"
 )
 
@@ -43,11 +44,11 @@ func ValidateCatanRiversWorldMap(n int, layout *CatanRiversWorldMap) error {
 
 // Internal until public room setup and frontend approval have been accepted.
 func newCatanRiversWorldWithMap(n int, layout *CatanRiversWorldMap) (*State, error) {
-	if n != 3 && n != 4 {
-		return nil, errors.New("河流新世界预备地图暂支持三或四人")
+	if n < 3 || n > 6 {
+		return nil, errors.New("河流新世界预备地图暂支持三至六人")
 	}
 	specs := newWorldFrame(n)
-	if layout == nil || len(layout.Hexes) != len(specs) || len(layout.Channels) != 2 {
+	if layout == nil || len(layout.Hexes) != len(specs) || len(layout.Channels) != len(riverWorldChannels(n)) {
 		return nil, errors.New("河流新世界预备地图尺寸或河流数量无效")
 	}
 	for i, h := range layout.Hexes {
@@ -59,7 +60,7 @@ func newCatanRiversWorldWithMap(n int, layout *CatanRiversWorldMap) (*State, err
 			specs[i].Resource = CatanDesert
 		}
 	}
-	s, err := NewCatanNewWorld(n, CatanOptions{})
+	s, err := NewCatanNewWorld(n, CatanOptions{FiveSix: n > 4})
 	if err != nil {
 		return nil, err
 	}
@@ -70,13 +71,13 @@ func newCatanRiversWorldWithMap(n int, layout *CatanRiversWorldMap) (*State, err
 	for i, h := range layout.Hexes {
 		g.Tiles[i].Resource = h.Resource
 	}
-	candidates := make([]riverSeaCandidate, 2)
+	candidates := make([]riverSeaCandidate, len(layout.Channels))
 	for i, c := range layout.Channels {
-		if len(c.Tiles) != 4-i {
+		if len(c.Tiles) != len(riverWorldChannels(n)[i]) {
 			return nil, errors.New("河流长度无效")
 		}
 		found := false
-		for _, candidate := range g.riverWorldCandidates(4 - i) {
+		for _, candidate := range g.riverWorldCandidates(len(c.Tiles)) {
 			if c.Outlet == candidate.outlet && slices.Equal(c.Tiles, candidate.tiles) {
 				candidates[i] = candidate
 				found = true
@@ -87,14 +88,17 @@ func newCatanRiversWorldWithMap(n int, layout *CatanRiversWorldMap) (*State, err
 			return nil, errors.New("河流必须连贯且河口朝海")
 		}
 	}
-	g.Rivers = &CatanRivers{Rules: CatanRiversRules, Sea: CatanRiversSeafarersRules, SeaLayout: "prepared", Map: g.riverTribeMapFor(candidates[0], candidates[1]), Gold: make([]int, n), Bank: 100}
+	g.Rivers = &CatanRivers{Rules: CatanRiversRules, Sea: CatanRiversSeafarersRules, SeaLayout: riverWorldLayout(n, true), Map: g.riverWorldMapFor(candidates), Gold: make([]int, n), Bank: riverWorldBank(n)}
 	g.Seafarers.Rules, g.Seafarers.Layout = CatanSeafarersRules, "prepared"
 	g.Seafarers.Islands = g.findIslands()
 	g.Robber = -1 // New World starts on the frame even if the approved map has deserts.
 	if err = g.validateRivers(); err != nil {
 		return nil, err
 	}
-	s.Log = []string{"河流＋新世界：使用开局前确认的地形、数字和河道；12分获胜", "先轮流放置10个港口，再开始建设；强盗和海盗从海框外出发", "本站移船补充：移入河岸领1金币，移出河岸须先退1金币；桥位不能造船"}
+	s.Log = []string{"河流＋新世界：使用开局前确认的地形、数字和河道；12分获胜", fmt.Sprintf("先轮流放置%d个港口，再开始建设；强盗和海盗从海框外出发", riverWorldPorts(n)), "本站移船补充：移入河岸领1金币，移出河岸须先退1金币；桥位不能造船"}
+	if n > 4 {
+		s.Log = append(s.Log, catanRiversWorldExtendedNotice)
+	}
 	s.catanScores()
 	return s, nil
 }
@@ -104,7 +108,7 @@ func (g *Catan) riverWorldCandidates(length int) []riverSeaCandidate {
 	return append(result, g.riverSeaCandidates(length, func(int) bool { return true }, false)...)
 }
 
-func validateRiverWorldInventory(tiles []CatanTile, prepared bool) error {
+func validateRiverWorldInventory(tiles []CatanTile, n int, prepared bool) error {
 	terrain, numbers := make([]int, 11), make([]int, 13)
 	for _, t := range tiles {
 		if t.Resource < 0 || t.Resource >= len(terrain) || t.Number < 0 || t.Number >= len(numbers) || t.Number == 1 || t.Number == 7 {
@@ -120,14 +124,18 @@ func validateRiverWorldInventory(tiles []CatanTile, prepared bool) error {
 		}
 	}
 	if !prepared {
-		if !slices.Equal(terrain, []int{5, 4, 5, 5, 4, 0, 17, 0, 0, 0, 2}) || !slices.Equal(numbers, []int{19, 0, 1, 3, 3, 3, 2, 0, 2, 3, 3, 2, 1}) {
+		if !slices.Equal(terrain, riverWorldTerrain(n)) || !slices.Equal(numbers, riverWorldNumbers(n)) {
 			return errors.New("河流新世界组件不守恒")
 		}
 		return nil
 	}
 	// Base+Seafarers inventory after replacing hills2/pasture1/mountains2/sea2
 	// with the river tiles. The productive river hexes replace like resources.
-	for resource, count := range []int{5, 5, 5, 5, 5, 3, 17, 2, 0, 0, 2} {
+	caps := []int{5, 5, 5, 5, 5, 3, 17, 2, 0, 0, 2}
+	if n > 4 {
+		caps = []int{7, 7, 7, 7, 7, 5, 24, 4, 0, 0, 2}
+	}
+	for resource, count := range caps {
 		if terrain[resource] > count {
 			return errors.New("河流新世界地形超出组件库存")
 		}
@@ -135,7 +143,11 @@ func validateRiverWorldInventory(tiles []CatanTile, prepared bool) error {
 	if terrain[catanSwamp] != 2 {
 		return errors.New("河流新世界必须有两个沼泽")
 	}
-	for number, count := range []int{0, 0, 2, 3, 3, 3, 3, 0, 3, 3, 3, 3, 2} {
+	numberCaps := []int{0, 0, 2, 3, 3, 3, 3, 0, 3, 3, 3, 3, 2}
+	if n > 4 {
+		numberCaps = []int{0, 0, 3, 5, 5, 5, 5, 0, 5, 5, 5, 5, 3}
+	}
+	for number, count := range numberCaps {
 		if number > 0 && numbers[number] > count {
 			return errors.New("河流新世界数字超出组件库存")
 		}

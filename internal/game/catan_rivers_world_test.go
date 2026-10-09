@@ -9,7 +9,7 @@ import (
 
 func TestCatanRiversWorldSetupAndMaps(t *testing.T) {
 	layouts := map[string]bool{}
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		for repeat := 0; repeat < 25; repeat++ {
 			s, err := newCatanRiversWorld(n)
 			if err != nil {
@@ -27,7 +27,7 @@ func TestCatanRiversWorldSetupAndMaps(t *testing.T) {
 					t.Fatal("mouth port/route")
 				}
 			}
-			for i := 0; i < 10; i++ {
+			for i := 0; i < riverWorldPorts(n); i++ {
 				if s.Turn != (first+i)%n {
 					t.Fatal("port actor")
 				}
@@ -42,12 +42,13 @@ func TestCatanRiversWorldSetupAndMaps(t *testing.T) {
 			if s.Phase != "catan_setup_settlement" || s.Turn != first || g.Robber != -1 {
 				t.Fatal("setup continuation")
 			}
-			for i := 0; i < 4*n; i++ {
-				a, err := s.BotAction(s.Turn)
+			for i := 0; i < 12*n && s.Phase != "catan_roll"; i++ {
+				p := twoFullActor(s)
+				a, err := s.BotAction(p)
 				if err != nil {
 					t.Fatal(err)
 				}
-				helperApply(t, s, s.Turn, a)
+				helperApply(t, s, p, a)
 				riversSeaRestore(t, s)
 			}
 			if s.Phase != "catan_roll" {

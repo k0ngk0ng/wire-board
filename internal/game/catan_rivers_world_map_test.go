@@ -199,7 +199,7 @@ func TestCatanRiversWorldPreparedInvalid(t *testing.T) {
 	}
 	for _, n := range []int{0, 2, 5, 6, 7} {
 		if ValidateCatanRiversWorldMap(n, m) == nil {
-			t.Fatal("unimplemented count accepted", n)
+			t.Fatal("mismatched map count accepted", n)
 		}
 	}
 	if ValidateCatanRiversWorldMap(3, nil) == nil {
@@ -304,7 +304,7 @@ func TestCatanRiversWorldPreparedTouchingRivers(t *testing.T) {
 }
 
 func TestCatanRiversWorldGeneratedMapApproval(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		m, err := GenerateCatanRiversWorldMap(n)
 		if err != nil {
 			t.Fatal(err)
