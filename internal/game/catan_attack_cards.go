@@ -183,6 +183,14 @@ func (s *State) catanAttackFinishCard() {
 	}
 	s.catanScores()
 	s.catanVictory()
+	if q := a.TribeRoute; q != nil {
+		a.TribeRoute = nil
+		if !s.Finished {
+			if !s.catanAskTribePort(q.Player, s.Phase, q, false) {
+				s.catanFinishRoute(*q)
+			}
+		}
+	}
 }
 
 func (s *State) catanAttackCardChoice(player int, action Action) error {

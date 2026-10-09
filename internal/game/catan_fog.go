@@ -113,6 +113,13 @@ func (s *State) catanAfterRoute(q CatanRouteCompletion) error {
 	if err := s.catanCollectTribe(q.Player, q.Edge); err != nil {
 		return err
 	}
+	if s.Catan.Attack != nil && s.Catan.Attack.Pending != nil && s.Catan.tribe() != nil && s.Catan.tribe().AttackRules == CatanAttackTribeRewardRules {
+		s.Catan.Attack.TribeRoute = &q
+		return nil
+	}
+	return s.catanContinueRouteRewards(q)
+}
+func (s *State) catanContinueRouteRewards(q CatanRouteCompletion) error {
 	if s.Catan.tribe() != nil {
 		s.catanScores()
 		s.catanVictory()

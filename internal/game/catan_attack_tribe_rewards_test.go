@@ -91,3 +91,45 @@ func TestCatanAttackTribeRewardUsesScenarioEffect(t *testing.T) {
 		t.Fatal("claimed card duplicated")
 	}
 }
+
+func TestCatanAttackTribeRouteWaitsForCard(t *testing.T) {
+	s, e := newCatanAttackShores(4)
+	if e != nil {
+		t.Fatal(e)
+	}
+	g := s.Catan
+	edge := 0
+	g.Edges[edge].Owner, g.Edges[edge].Ship = s.Turn, true
+	g.Seafarers.Tribe = &CatanTribeState{Development: []CatanTribeDevelopment{{Edge: edge}}, Points: make([]int, 4), HeldPorts: make([][]int, 4)}
+	for i, c := range g.Attack.Deck {
+		if c == "knighthood" {
+			last := len(g.Attack.Deck) - 1
+			g.Attack.Deck[i], g.Attack.Deck[last] = g.Attack.Deck[last], g.Attack.Deck[i]
+			break
+		}
+	}
+	if e = s.reserveAttackTribeRewards(); e != nil {
+		t.Fatal(e)
+	}
+	g.SetupStep = g.SetupLimit()
+	s.Phase = "catan_turn"
+	if e = s.catanAfterRoute(CatanRouteCompletion{Player: s.Turn, Edge: edge}); e != nil {
+		t.Fatal(e)
+	}
+	if g.Attack.TribeRoute == nil || s.Phase != "catan_attack_card" {
+		t.Fatal("route did not wait")
+	}
+	b := clone(*s)
+	s = &b
+	g = s.Catan
+	a, e := s.catanAttackCardBot(s.Turn)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.catanAttackCardChoice(s.Turn, a); e != nil {
+		t.Fatal(e)
+	}
+	if g.Attack.TribeRoute != nil || g.Attack.Pending != nil || s.Phase != "catan_turn" {
+		t.Fatal("route did not resume")
+	}
+}

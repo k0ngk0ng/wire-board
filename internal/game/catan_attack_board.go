@@ -13,6 +13,7 @@ type catanAttackKnight struct {
 // Scenario state uses its own development deck; ordinary development/robber
 // actions cannot drive these pieces. Public configuration remains disabled.
 type catanAttack struct {
+	TribeRoute       *CatanRouteCompletion     `json:"tribeRoute,omitempty"`
 	City             *catanAttackCity          `json:"city,omitempty"`
 	TwoRules         string                    `json:"twoRules,omitempty"`
 	TwoLanding       bool                      `json:"twoLanding,omitempty"`
