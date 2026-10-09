@@ -303,6 +303,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanLayout = g.Seafarers.Layout
 				record.CatanRules = g.Caravans.Sea
 				record.CatanExpansionRules["caravans_seafarers"] = g.Caravans.Sea
+				if g.Caravans.Helpers != "" {
+					record.CatanExpansionRules["caravans_helpers"] = g.Caravans.Helpers
+				}
 				if g.Two != nil {
 					record.CatanExpansionRules["two_caravans_seafarers"] = g.Two.CaravansSea
 				}
