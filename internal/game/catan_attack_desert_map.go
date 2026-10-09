@@ -1,5 +1,7 @@
 package game
 
+import "errors"
+
 // Printed Barbarian Attack + Seafarers 2025, p2, three-player Desert.
 // This is map geometry only; landing order and complete play are separate.
 func newCatanAttackDesertThreeGeometry() (*Catan, error) {
@@ -70,6 +72,12 @@ func newCatanAttackDesertFourBoard() (*Catan, *catanAttackMap, error) {
 	g.Seafarers.StartIslands = []int{g.Seafarers.Islands[26]}
 	g.Seafarers.VictoryPoints = 14
 	return g, &catanAttackMap{Sea: CatanAttackSeafarersRules, Castles: []int{19}, Coast: []int{7, 8, 15, 21, 27, 33, 38, 32, 31, 24}, Barbarians: 36, Gold: 100}, nil
+}
+func NewCatanAttackDesert(n int) (*State, error) {
+	if n != 3 && n != 4 {
+		return nil, errors.New("蛮族沙漠当前支持三四人")
+	}
+	return newCatanAttackDesert(n)
 }
 func newCatanAttackDesert(n int) (*State, error) {
 	if n == 3 {

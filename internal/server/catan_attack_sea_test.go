@@ -16,7 +16,13 @@ func TestCatanAttackShoresExtendedHTTP(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackShoresHTTP(t, n) })
 	}
 }
-func runAttackShoresHTTP(t *testing.T, n int) {
+func runAttackShoresHTTP(t *testing.T, n int) { runAttackSeaHTTP(t, n, "attack-shores") }
+func TestCatanAttackDesertHTTP(t *testing.T) {
+	for _, n := range []int{3, 4} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackSeaHTTP(t, n, "attack-desert") })
+	}
+}
+func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
 	clients := make([]*testClient, n)
@@ -25,7 +31,7 @@ func runAttackShoresHTTP(t *testing.T, n int) {
 		clients[i].register(fmt.Sprintf("蛮族航海%d", i))
 	}
 	h := clients[0]
-	r := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "蛮族新海岸", "capacity": n, "catanScenario": "attack-shores", "catanEvents": game.CatanEventCatalogue}, 201)
+	r := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "蛮族新海岸", "capacity": n, "catanScenario": scenario, "catanEvents": game.CatanEventCatalogue}, 201)
 	id := r["id"].(string)
 	h.command(current(h), "ready", nil, 200)
 	before, _ := json.Marshal(s.rooms[id])
@@ -84,7 +90,7 @@ func runAttackShoresHTTP(t *testing.T, n int) {
 	}
 	_, profile := h.request("GET", "/api/players/"+s.rooms[id].Host, nil)
 	record := profile["history"].([]any)[0].(map[string]any)
-	if record["catanScenario"] != "attack-shores" || record["catanRules"] != game.CatanAttackSeafarersRules {
+	if record["catanScenario"] != scenario || record["catanRules"] != game.CatanAttackSeafarersRules {
 		t.Fatal("history")
 	}
 }
@@ -115,5 +121,15 @@ func TestCatanAttackShoresExtendedSwitch(t *testing.T) {
 	}
 	if e := r.setCatanScenario("attack-shores"); e != nil {
 		t.Fatal(e)
+	}
+}
+
+func TestCatanAttackDesertRoomBounds(t *testing.T) {
+	for _, n := range []int{2, 3, 4, 5, 6} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
+		e := r.setCatanScenario("attack-desert")
+		if (e == nil) != (n == 3 || n == 4) {
+			t.Fatal(n, e)
+		}
 	}
 }
