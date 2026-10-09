@@ -13,10 +13,14 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) { runCaravansSeaHTTP(t, false,
 func TestCatanCaravansSeaEventsHTTP(t *testing.T) { runCaravansSeaHTTP(t, true, "caravans-desert") }
 func TestCatanCaravansTribeHTTP(t *testing.T)     { runCaravansSeaHTTP(t, true, "caravans-tribe") }
 func TestCatanCaravansShoresHTTP(t *testing.T)    { runCaravansSeaHTTP(t, true, "caravans-shores") }
+func TestCatanCaravansIslandsHTTP(t *testing.T)   { runCaravansSeaHTTP(t, true, "caravans-islands") }
+func TestCatanCaravansIslandsOrdinaryHTTP(t *testing.T) {
+	runCaravansSeaHTTP(t, false, "caravans-islands")
+}
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 	counts := []int{2, 3, 4, 5, 6}
-	if scenario == "caravans-shores" {
-		counts = []int{2, 3, 4, 5, 6}
+	if scenario == "caravans-islands" {
+		counts = []int{3, 4}
 	}
 	for _, n := range counts {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
@@ -167,6 +171,26 @@ func TestCatanCaravansSeaRejectsUnsupported(t *testing.T) {
 		mutate(r)
 		if r.validateCatanScenario() == nil {
 			t.Fatal("unsupported mix")
+		}
+	}
+}
+
+func TestCatanCaravansIslandsPublicBounds(t *testing.T) {
+	for _, n := range []int{2, 3, 4, 5, 6} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
+		err := r.setCatanScenario("caravans-islands")
+		if (err == nil) != (n == 3 || n == 4) {
+			t.Fatalf("count %d: %v", n, err)
+		}
+		if err != nil && r.CatanScenario != "" {
+			t.Fatal("rejected selection changed room")
+		}
+	}
+	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanOptions.Helpers = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "caravans-islands"}
+		mutate(r)
+		if r.validateCatanScenario() == nil {
+			t.Fatal("unsupported nesting accepted")
 		}
 	}
 }
