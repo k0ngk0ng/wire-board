@@ -1110,7 +1110,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 			break
 		}
-		if publicCatanExplorerScenario(next.CatanScenario) || publicCatanCaravanSea(next.CatanScenario) {
+		if publicCatanExplorerScenario(next.CatanScenario) || publicCatanCaravanSea(next.CatanScenario) || publicCatanFlexibleScenario(next.CatanScenario) && next.catanTradersHelpersAvailable() {
 			if err == nil && !validCatanExplorerOptions(options) {
 				err = errors.New("探索者按实际人数启用扩充，只能在此选择助手")
 			}
@@ -1275,6 +1275,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && next.SplendorOptions != (game.SplendorOptions{}) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
+				constructionOptions := next.CatanOptions
+				if next.catanTradersHelpersAvailable() {
+					constructionOptions.Helpers, constructionOptions.AllHelpers = false, false
+					constructionOptions, _ = game.NormalizeCatanOptions(constructionOptions)
+				}
 				if publicCatanTransportSea(next.CatanScenario) {
 					scenario := "shores"
 					if next.CatanScenario == "transport-desert" {
@@ -1315,46 +1320,46 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					if err == nil {
 						if next.twoCatanSeafarers() {
 							if next.CatanCitiesKnights != nil {
-								next.Game, err = game.NewCatanTwoSeafarersCitiesKnights(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap, next.CatanFishing)
+								next.Game, err = game.NewCatanTwoSeafarersCitiesKnights(len(next.Seats), constructionOptions, *next.CatanSeafarers, next.CatanNewWorldMap, next.CatanFishing)
 							} else if next.CatanFishing {
-								next.Game, err = game.NewCatanTwoFishingSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+								next.Game, err = game.NewCatanTwoFishingSeafarers(len(next.Seats), constructionOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 							} else {
-								next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+								next.Game, err = game.NewCatanTwoSeafarers(len(next.Seats), constructionOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 							}
 						} else if next.CatanTwoScenario == "barbarian-attack" {
 							if next.CatanFishing {
 								next.Game, err = game.NewCatanFishingAttack(len(next.Seats), next.CatanCitiesKnights != nil)
 							} else if next.CatanCitiesKnights != nil {
-								next.Game, err = game.NewCatanTwoAttackCitiesKnights(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanTwoAttackCitiesKnights(len(next.Seats), constructionOptions)
 							} else {
-								next.Game, err = game.NewCatanTwoAttack(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanTwoAttack(len(next.Seats), constructionOptions)
 							}
 						} else if next.CatanTwoScenario == "caravans" {
 							if next.CatanFishing {
-								next.Game, err = game.NewCatanFishingCaravans(len(next.Seats), next.CatanOptions, next.CatanCitiesKnights != nil)
+								next.Game, err = game.NewCatanFishingCaravans(len(next.Seats), constructionOptions, next.CatanCitiesKnights != nil)
 							} else if next.CatanCitiesKnights != nil {
-								next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), constructionOptions)
 							} else {
-								next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanTwoCaravans(len(next.Seats), constructionOptions)
 							}
 						} else if next.CatanTwoScenario == "cities-knights" {
 							if next.CatanFishing {
-								next.Game, err = game.NewCatanTwoFishingCitiesKnights(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanTwoFishingCitiesKnights(len(next.Seats), constructionOptions)
 							} else {
-								next.Game, err = game.NewCatanTwoCitiesKnights(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanTwoCitiesKnights(len(next.Seats), constructionOptions)
 							}
 						} else if next.CatanTwoScenario == "fishing" {
-							next.Game, err = game.NewCatanTwoFishing(len(next.Seats), next.CatanOptions)
+							next.Game, err = game.NewCatanTwoFishing(len(next.Seats), constructionOptions)
 						} else if next.CatanTwoScenario == "rivers" {
 							if next.CatanFishing {
-								next.Game, err = game.NewCatanFishingRivers(len(next.Seats), next.CatanOptions, next.CatanCitiesKnights != nil)
+								next.Game, err = game.NewCatanFishingRivers(len(next.Seats), constructionOptions, next.CatanCitiesKnights != nil)
 							} else if next.CatanCitiesKnights != nil {
-								next.Game, err = game.NewCatanRiversCitiesKnights(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanRiversCitiesKnights(len(next.Seats), constructionOptions)
 							} else {
-								next.Game, err = game.NewCatanTwoRivers(len(next.Seats), next.CatanOptions)
+								next.Game, err = game.NewCatanTwoRivers(len(next.Seats), constructionOptions)
 							}
 						} else {
-							next.Game, err = game.NewCatanTwo(len(next.Seats), next.CatanOptions)
+							next.Game, err = game.NewCatanTwo(len(next.Seats), constructionOptions)
 						}
 					}
 				} else if publicCatanExplorerScenario(next.CatanScenario) && next.CatanFishing {
@@ -1397,33 +1402,33 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					}
 				} else if next.CatanScenario == "fishing" {
 					if next.CatanCitiesKnights != nil {
-						next.Game, err = game.NewCatanFishingCitiesKnights(len(next.Seats), next.CatanOptions)
+						next.Game, err = game.NewCatanFishingCitiesKnights(len(next.Seats), constructionOptions)
 					} else {
-						next.Game, err = game.NewCatanFishing(len(next.Seats), next.CatanOptions)
+						next.Game, err = game.NewCatanFishing(len(next.Seats), constructionOptions)
 					}
 				} else if next.CatanScenario == "rivers" {
 					if next.CatanFishing {
-						next.Game, err = game.NewCatanFishingRivers(len(next.Seats), next.CatanOptions, next.CatanCitiesKnights != nil)
+						next.Game, err = game.NewCatanFishingRivers(len(next.Seats), constructionOptions, next.CatanCitiesKnights != nil)
 					} else if next.CatanCitiesKnights != nil {
-						next.Game, err = game.NewCatanRiversCitiesKnights(len(next.Seats), next.CatanOptions)
+						next.Game, err = game.NewCatanRiversCitiesKnights(len(next.Seats), constructionOptions)
 					} else {
-						next.Game, err = game.NewCatanRivers(len(next.Seats), next.CatanOptions)
+						next.Game, err = game.NewCatanRivers(len(next.Seats), constructionOptions)
 					}
 				} else if next.CatanScenario == "caravans" {
 					if next.CatanFishing {
-						next.Game, err = game.NewCatanFishingCaravans(len(next.Seats), next.CatanOptions, next.CatanCitiesKnights != nil)
+						next.Game, err = game.NewCatanFishingCaravans(len(next.Seats), constructionOptions, next.CatanCitiesKnights != nil)
 					} else if next.CatanCitiesKnights != nil {
-						next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), next.CatanOptions)
+						next.Game, err = game.NewCatanCaravansCitiesKnights(len(next.Seats), constructionOptions)
 					} else {
-						next.Game, err = game.NewCatanCaravans(len(next.Seats), next.CatanOptions)
+						next.Game, err = game.NewCatanCaravans(len(next.Seats), constructionOptions)
 					}
 				} else if next.CatanFishing {
 					if next.CatanCitiesKnights != nil {
-						next.Game, err = game.NewCatanFishingCitiesKnightsSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+						next.Game, err = game.NewCatanFishingCitiesKnightsSeafarers(len(next.Seats), constructionOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 					} else if next.CatanScenario == "new_world" {
-						next.Game, err = game.NewCatanFishingNewWorld(len(next.Seats), next.CatanOptions, next.CatanNewWorldMap)
+						next.Game, err = game.NewCatanFishingNewWorld(len(next.Seats), constructionOptions, next.CatanNewWorldMap)
 					} else {
-						next.Game, err = game.NewCatanFishingSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, nil)
+						next.Game, err = game.NewCatanFishingSeafarers(len(next.Seats), constructionOptions, *next.CatanSeafarers, nil)
 					}
 				} else if next.CatanCitiesKnights != nil {
 					err = next.validateCatanCitiesKnightsMap()
@@ -1431,20 +1436,20 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 						_, err = game.NormalizeCatanCitiesKnightsSetup(len(next.Seats), *next.CatanCitiesKnights)
 					}
 					if err == nil && next.CatanSeafarers != nil {
-						next.Game, err = game.NewCatanCitiesKnightsSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+						next.Game, err = game.NewCatanCitiesKnightsSeafarers(len(next.Seats), constructionOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 					} else if err == nil {
-						next.Game, err = game.NewCatanCitiesKnightsConfigured(len(next.Seats), next.CatanOptions, *next.CatanCitiesKnights)
+						next.Game, err = game.NewCatanCitiesKnightsConfigured(len(next.Seats), constructionOptions, *next.CatanCitiesKnights)
 					}
 				} else if next.CatanBaseConfiguration != nil && (next.CatanSeafarers != nil || next.CatanNewWorldMap != nil) {
 					err = errors.New("基础布局不能与航海家剧本混用")
 				} else if next.CatanBaseConfiguration != nil {
-					next.Game, err = game.NewCatanConfigured(len(next.Seats), next.CatanOptions, *next.CatanBaseConfiguration)
+					next.Game, err = game.NewCatanConfigured(len(next.Seats), constructionOptions, *next.CatanBaseConfiguration)
 				} else if next.CatanSeafarers != nil {
-					next.Game, err = game.NewCatanSeafarers(len(next.Seats), next.CatanOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
+					next.Game, err = game.NewCatanSeafarers(len(next.Seats), constructionOptions, *next.CatanSeafarers, next.CatanNewWorldMap)
 				} else if next.CatanNewWorldMap != nil {
-					next.Game, err = game.NewCatanNewWorldWithMap(len(next.Seats), next.CatanOptions, next.CatanNewWorldMap)
+					next.Game, err = game.NewCatanNewWorldWithMap(len(next.Seats), constructionOptions, next.CatanNewWorldMap)
 				} else {
-					next.Game, err = game.NewCatan(len(next.Seats), next.CatanOptions)
+					next.Game, err = game.NewCatan(len(next.Seats), constructionOptions)
 				}
 				if err == nil && next.CatanFriendlyRobber != nil {
 					err = next.Game.ConfigureCatanFriendlyRobber(*next.CatanFriendlyRobber)
@@ -1457,8 +1462,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else {
 				next.Game, err = s.newGame(next.Kind, len(next.Seats))
 			}
-			if err == nil && next.Kind == "catan" && publicCatanCaravanSea(next.CatanScenario) && next.CatanOptions.Helpers {
-				err = next.Game.EnableCatanCaravansSeaHelpers(next.CatanOptions.AllHelpers)
+			if err == nil && next.catanTradersHelpersAvailable() && next.CatanOptions.Helpers {
+				err = next.Game.EnableCatanTradersHelpers(next.CatanOptions.AllHelpers)
 			}
 			if err == nil && next.Kind == "catan" && publicCatanExplorerScenario(next.CatanScenario) && next.CatanOptions.Helpers {
 				err = next.Game.EnableCatanExplorerHelpers(next.CatanOptions.AllHelpers)

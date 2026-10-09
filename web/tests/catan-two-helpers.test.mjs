@@ -22,7 +22,8 @@ test("two-player helpers retain compatible variants and authoritative saved rule
     assert.equal(info.target, 11);
   }
   for (const scenario of ["rivers", "caravans", "transport"])
-    assert.equal(supportsTwoCatanHelpers(scenario), false);
+    assert.equal(supportsTwoCatanHelpers(scenario), true);
+  assert.equal(supportsTwoCatanHelpers("unknown"), false);
   const game = {
     catan: { players: [{}, {}], vertices: [], two: {}, options: {} },
   };

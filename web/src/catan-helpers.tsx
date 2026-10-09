@@ -1,3 +1,4 @@
+import { catanTradersHelpersNote } from "./catan-traders-helpers";
 import { useEffect, useState } from "react";
 import type { Act, CatanOptions, Room } from "./types";
 import "./catan-helpers.css";
@@ -12,6 +13,7 @@ export function CatanOptionPicker({
   onChange,
   disabled = false,
   seafarers = false,
+  traders = false,
   citiesKnights = false,
   harbors = false,
   friendlyRobber = false,
@@ -24,6 +26,7 @@ export function CatanOptionPicker({
   onChange: (v: CatanOptions) => void;
   disabled?: boolean;
   seafarers?: boolean;
+  traders?: boolean;
   citiesKnights?: boolean;
   harbors?: boolean;
   friendlyRobber?: boolean;
@@ -73,6 +76,7 @@ export function CatanOptionPicker({
           展示全部备用助手
         </label>
       )}
+      {traders && value.helpers && <small>{catanTradersHelpersNote}</small>}
       {value.fiveSix && (
         <small>
           {seafarers
@@ -222,6 +226,13 @@ export function CatanHelpers({
   const caravanHelpers =
     g.caravans?.helpers === "wire-board-caravans-helpers-v1";
   const fishingHelpers = g.fishing?.helpers === "wire-board-fishing-helpers-v1";
+  const traders = !!g.tradersHelpers;
+  const attackHelpers = traders && !!g.attack;
+  const noRobberHelpers = traders && (!!g.attack || !!g.transport);
+  const physicalKnightHelpers = cityHelpers || attackHelpers;
+  const privateAttackCards = attackHelpers && !g.citiesKnights;
+  const attackCards = ["capture", "knighthood", "swift_knight", "treason"];
+  const attackNames = ["俘获", "授勋", "迅捷骑士", "叛变"];
   const hand = p?.resources || [0, 0, 0, 0, 0],
     active =
       room.status === "playing" &&
@@ -388,7 +399,9 @@ export function CatanHelpers({
                         ? g.legal.roads.length === 0
                         : cityHelpers
                           ? !city?.progressRemaining[progressTrack]
-                          : g.devRemaining === 0)
+                          : privateAttackCards
+                            ? !g.attack?.canBuyCard
+                            : g.devRemaining === 0)
                     }
                     onClick={() => {
                       if (rule.id === 6 && cityHelpers)
@@ -438,7 +451,7 @@ export function CatanHelpers({
               )}
               {rule.id === 8 && (
                 <>
-                  {cityHelpers && (
+                  {physicalKnightHelpers && (
                     <label>
                       归还的己方骑士
                       <select
@@ -446,14 +459,20 @@ export function CatanHelpers({
                         onChange={(e) => setKnight(Number(e.target.value))}
                       >
                         <option value={-1}>请选择骑士</option>
-                        {city?.knights
-                          .filter((n) => n.owner === room.you)
-                          .map((n) => (
-                            <option key={n.vertex} value={n.vertex}>
-                              交点 #{n.vertex + 1} · {n.strength} 级 ·{" "}
-                              {n.active ? "已激活" : "未激活"}
-                            </option>
-                          ))}
+                        {attackHelpers
+                          ? g.helperAttackKnights?.map((edge) => (
+                              <option key={edge} value={edge}>
+                                路线 #{edge + 1} 的骑士
+                              </option>
+                            ))
+                          : city?.knights
+                              .filter((n) => n.owner === room.you)
+                              .map((n) => (
+                                <option key={n.vertex} value={n.vertex}>
+                                  交点 #{n.vertex + 1} · {n.strength} 级 ·{" "}
+                                  {n.active ? "已激活" : "未激活"}
+                                </option>
+                              ))}
                       </select>
                     </label>
                   )}
@@ -463,10 +482,10 @@ export function CatanHelpers({
                       <button
                         key={kind}
                         disabled={
-                          (cityHelpers ? knight < 0 : !p.knights) ||
+                          (physicalKnightHelpers ? knight < 0 : !p.knights) ||
                           cost.some((n, c) => n > hand[c]) ||
                           !(
-                            cityHelpers
+                            physicalKnightHelpers
                               ? g.helperKnightBuilds?.[knight]?.[
                                   i ? "cities" : "settlements"
                                 ] || []
@@ -476,7 +495,11 @@ export function CatanHelpers({
                           ).length
                         }
                         onClick={() => {
-                          onBuild(kind, cost, cityHelpers ? knight : undefined);
+                          onBuild(
+                            kind,
+                            cost,
+                            physicalKnightHelpers ? knight : undefined,
+                          );
                           setOpen(false);
                         }}
                       >
@@ -521,11 +544,15 @@ export function CatanHelpers({
                   </button>
                 </>
               )}
-              {rule.id === 10 && (
+              {rule.id === 10 && noRobberHelpers && (
+                <button onClick={() => action()}>领取金币×1</button>
+              )}
+              {rule.id === 10 && !noRobberHelpers && (
                 <>
                   {(g.tiles[g.robber]?.resource === 7 ||
                     (fishingHelpers && g.tiles[g.robber]?.resource === 9) ||
-                    (caravanHelpers && g.tiles[g.robber]?.resource === 11)) && (
+                    ((caravanHelpers || traders) &&
+                      [10, 11].includes(g.tiles[g.robber]?.resource))) && (
                     <ResourceSelect
                       label="领取资源"
                       value={color}
@@ -538,6 +565,7 @@ export function CatanHelpers({
                       g.tiles[g.robber]?.resource === 5 ||
                       (!fishingHelpers &&
                         !caravanHelpers &&
+                        !traders &&
                         !g.tiles.some(
                           (t) =>
                             t.resource === 5 &&
@@ -559,7 +587,7 @@ export function CatanHelpers({
                       } else action({ color });
                     }}
                   >
-                    {(fishingHelpers || caravanHelpers) &&
+                    {(fishingHelpers || caravanHelpers || traders) &&
                     !g.tiles.some(
                       (t) =>
                         t.resource === 5 &&
@@ -573,12 +601,15 @@ export function CatanHelpers({
               )}
               {rule.id === 11 && (
                 <>
-                  {(caravanHelpers
-                    ? [5, 7, 11]
-                    : fishingHelpers
-                      ? [5, 7, 9]
-                      : [5, 7]
-                  ).includes(g.tiles[g.robber]?.resource) && (
+                  {(noRobberHelpers ||
+                    (traders
+                      ? [5, 7, 10, 11]
+                      : caravanHelpers
+                        ? [5, 7, 11]
+                        : fishingHelpers
+                          ? [5, 7, 9]
+                          : [5, 7]
+                    ).includes(g.tiles[g.robber]?.resource)) && (
                     <ResourceSelect
                       label="领取资源"
                       value={color}
@@ -586,14 +617,34 @@ export function CatanHelpers({
                     />
                   )}
                   <button
-                    disabled={g.robber < 0}
+                    disabled={!noRobberHelpers && g.robber < 0}
                     onClick={() => action({ color })}
                   >
-                    领取强盗所在地资源
+                    {noRobberHelpers ? "领取普通资源×1" : "领取强盗所在地资源"}
                   </button>
                 </>
               )}
-              {rule.id === 12 && (
+              {rule.id === 12 && privateAttackCards && (
+                <>
+                  <ResourceSelect
+                    label="归还资源"
+                    value={offer}
+                    onChange={setOffer}
+                  />
+                  <ResourceSelect
+                    label="领取资源"
+                    value={color}
+                    onChange={setColor}
+                  />
+                  <button
+                    disabled={offer === color || !hand[offer] || !g.bank[color]}
+                    onClick={() => action({ card: offer, color })}
+                  >
+                    归还并领取另一种资源
+                  </button>
+                </>
+              )}
+              {rule.id === 12 && !privateAttackCards && (
                 <>
                   <label>
                     换回牌堆底的{cityHelpers ? "进步牌" : "发展卡"}
@@ -755,7 +806,7 @@ export function CatanHelpers({
                   </div>
                 </>
               )}
-              {pending.kind === "development" && (
+              {["development", "attack_development"].includes(pending.kind) && (
                 <>
                   <p>只有你能看到这些牌。选择一张，其余洗回牌堆。</p>
                   <div className="helper-dev-options">
@@ -767,11 +818,19 @@ export function CatanHelpers({
                       >
                         {assets && (
                           <img
-                            src={`${assets}/catan/dev-${id}-v1.webp`}
+                            src={
+                              pending.kind === "attack_development"
+                                ? `${assets}/catan/attack/card-${attackCards[id]}-v1.webp`
+                                : `${assets}/catan/dev-${id}-v1.webp`
+                            }
                             alt=""
                           />
                         )}
-                        <b>{devs[id]}</b>
+                        <b>
+                          {pending.kind === "attack_development"
+                            ? attackNames[id]
+                            : devs[id]}
+                        </b>
                       </button>
                     ))}
                   </div>

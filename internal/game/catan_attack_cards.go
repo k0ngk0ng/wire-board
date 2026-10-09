@@ -130,10 +130,17 @@ func (a catanAttack) cardSupplyReady() bool {
 
 func (s *State) catanAttackBuyCard(player int, action Action) error {
 	g, a := s.Catan, s.Catan.Attack
-	if a == nil || s.Phase != "catan_turn" || player != s.Turn || a.Pending != nil || action.Skill != "" || action.Choice != "" {
+	if a == nil || s.Phase != "catan_turn" || player != s.Turn || a.Pending != nil || (action.Skill != "" && !(g.tradersHelpers() && action.Skill == "helper")) || action.Choice != "" {
 		return errors.New("只能在自己的行动阶段购买蛮族进攻发展卡")
 	}
 	cost := catanPrices["catan_buy_dev"]
+	if action.Skill == "helper" {
+		var err error
+		cost, err = s.catanHelperBuildCost(player, action)
+		if err != nil {
+			return err
+		}
+	}
 	if !catanHas(g.Players[player].Resources, cost) {
 		return errors.New("资源不足：发展卡需要羊毛、粮食、矿石各1张")
 	}
@@ -142,7 +149,10 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 	}
 	catanMove(g.Players[player].Resources, g.Bank, cost)
 	g.Trade = nil
-	s.catanLog(player, "支付 羊毛×1、粮食×1、矿石×1，购买并立即使用发展卡")
+	s.catanLog(player, "支付 %s，购买蛮族专用发展卡", catanText(cost))
+	if action.Skill == "helper" {
+		return s.catanTradersHelperDevelopment(player)
+	}
 	return s.catanAttackDrawCard(player)
 }
 

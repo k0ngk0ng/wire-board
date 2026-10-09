@@ -119,6 +119,17 @@ func (a catanAttack) validate(g *Catan) error {
 	if err != nil {
 		return err
 	}
+	if q := g.HelperPending; q != nil && q.Kind == "attack_development" {
+		for _, card := range q.Cards {
+			if card < 0 || card >= 4 {
+				return errors.New("助手蛮族牌无效")
+			}
+			counts[catanTradersAttackCards()[card]]++
+		}
+	}
+	if g.tradersHelpers() && g.TradersHelpers.AttackCard != "" {
+		counts[g.TradersHelpers.AttackCard]++
+	}
 	if a.Pending != nil {
 		counts[a.Pending.Card]++
 	}

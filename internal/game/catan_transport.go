@@ -86,7 +86,7 @@ func (s *State) validateCatanTransport() error {
 		return err
 	}
 	n := len(g.Players)
-	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4})
+	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4, Helpers: g.tradersHelpers(), AllHelpers: g.Options.AllHelpers})
 	if n < 2 || n > 6 || (g.Paired != nil) != (n > 4) || g.Options != options || g.Harbors != nil || g.FriendlyRobber != nil || g.BaseSetup != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Robber != -1 || g.LongestOwner != -1 {
 		return errors.New("运输整局人数、组合或基础棋子状态无效")
 	}
@@ -120,7 +120,7 @@ func (s *State) validateCatanTransport() error {
 		return err
 	}
 
-	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "catan_fish_replace", "finished"}
+	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_roads", "catan_transport_barbarian", "catan_transport_move", "catan_two_build", "catan_two_trade", "catan_card_event", "catan_fish_replace", "catan_helper", "finished"}
 	if g.attackTransport() {
 		phases = append(phases, "catan_attack_card", "catan_attack_end", "catan_steal")
 	}
@@ -155,13 +155,28 @@ func (s *State) validateCatanTransport() error {
 	if !s.Finished && !g.setup() && (t.Active != s.Turn || t.GameTurn != g.TurnSerial) {
 		return errors.New("运输回合与主游戏不一致")
 	}
-	if t.BarbarianPending != (s.Phase == "catan_transport_barbarian") || t.BarbarianPending && t.BarbarianSequence == 0 || t.Moves < 0 || t.Moves > 2 || t.Moves == 2 && !t.Swift {
+	barbarianPhase := s.Phase == "catan_transport_barbarian" || g.tradersHelpers() && s.Phase == "catan_helper" && g.HelperPending != nil && g.HelperPending.Resume == "catan_transport_barbarian"
+	if t.BarbarianPending != barbarianPhase || t.BarbarianPending && t.BarbarianSequence == 0 || t.Moves < 0 || t.Moves > 2 || t.Moves == 2 && !t.Swift {
 		return errors.New("运输蛮族或额外移动状态无效")
 	}
 	if s.Phase == "catan_transport_move" && (t.Travel == nil || t.Moves == 0) {
 		return errors.New("运输移动记录缺失")
 	}
 	counts := make([]int, 5)
+	if q := g.HelperPending; q != nil && q.Kind == "development" {
+		for _, card := range q.Cards {
+			if card < 0 || card >= 5 {
+				return errors.New("助手发展牌无效")
+			}
+			counts[card]++
+		}
+	}
+	for _, card := range g.HelperExile {
+		if card < 0 || card >= 5 {
+			return errors.New("助手移除发展牌无效")
+		}
+		counts[card]++
+	}
 	for _, deck := range [][]int{g.DevDeck, g.DevDiscard} {
 		for _, card := range deck {
 			if card < 0 || card >= 5 {

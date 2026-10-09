@@ -1984,7 +1984,10 @@ function CatanBaseBoard({
                   ` #${chosen.id + 1}`}
               </strong>
               {helperPayment && helperKnight !== null && (
-                <small>归还交点 #{helperKnight + 1} 的骑士参与建设</small>
+                <small>
+                  归还{g.helperAttackKnights ? "路线" : "交点"} #
+                  {helperKnight + 1} 的骑士参与建设
+                </small>
               )}
               {(costs[chosen.type] || cityActionCosts[chosen.type]) &&
                 !setup &&

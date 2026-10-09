@@ -1,3 +1,4 @@
+import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import { CatanRiversWorldPreview } from "./catan-rivers-world-preview";
 import {
   supportsTwoCatanHelpers,
@@ -2323,11 +2324,17 @@ function Create({
                   ].includes(scenario)
                 ) {
                   setCapacity(Math.min(6, Math.max(2, capacity)));
-                  setCatanOptions({});
+                  setCatanOptions((o) => ({
+                    helpers: o.helpers,
+                    allHelpers: o.allHelpers,
+                  }));
                 }
                 if (scenario === "attack-shores") {
                   setCapacity(Math.min(6, Math.max(2, capacity)));
-                  setCatanOptions({});
+                  setCatanOptions((o) => ({
+                    helpers: o.helpers,
+                    allHelpers: o.allHelpers,
+                  }));
                 }
                 if (scenario === "caravans-islands")
                   setCapacity(Math.min(6, Math.max(2, capacity)));
@@ -2380,7 +2387,10 @@ function Create({
                     "rivers-new-world",
                   ].includes(scenario || "")
                 )
-                  setCatanOptions({});
+                  setCatanOptions((o) => ({
+                    helpers: o.helpers,
+                    allHelpers: o.allHelpers,
+                  }));
                 if (
                   ![
                     "land-ho",
@@ -2550,6 +2560,7 @@ function Create({
             <>
               <CatanOptionPicker
                 value={catanOptions}
+                traders={supportsCatanTradersHelpers(variantScenario)}
                 onChange={setCatanOptions}
                 fiveSixAvailable={false}
                 citiesKnights={variantKnights}
@@ -2566,7 +2577,9 @@ function Create({
           (isPublicCatanExplorer(
             capacity === 2 ? catanTwoScenario : catanScenario,
           ) ||
-            (capacity !== 2 && supportsCaravanSeaHelpers(catanScenario))) && (
+            (capacity !== 2 &&
+              supportsCatanTradersHelpers(catanScenario) &&
+              !["rivers", "caravans"].includes(catanScenario))) && (
             <CatanOptionPicker
               explorer={isPublicCatanExplorer(
                 capacity === 2 ? catanTwoScenario : catanScenario,
@@ -2574,6 +2587,7 @@ function Create({
               seafarers={supportsCaravanSeaHelpers(catanScenario)}
               fiveSixAvailable={false}
               value={catanOptions}
+              traders={supportsCatanTradersHelpers(variantScenario)}
               onChange={setCatanOptions}
             />
           )}
@@ -2588,7 +2602,8 @@ function Create({
             isPublicCatanSea(catanScenario)) && (
             <CatanOptionPicker
               value={catanOptions}
-              helpersAvailable={!["rivers", "caravans"].includes(catanScenario)}
+              traders={supportsCatanTradersHelpers(variantScenario)}
+              helpersAvailable
               fishing={catanFishing || catanScenario === "fishing"}
               seafarers={isPublicCatanSea(catanScenario)}
               citiesKnights={
@@ -3293,6 +3308,9 @@ function Waiting({
             <>
               <CatanOptionPicker
                 value={room.catanOptions}
+                traders={supportsCatanTradersHelpers(
+                  room.catanScenario || room.catanTwoScenario,
+                )}
                 fiveSixAvailable={false}
                 citiesKnights={
                   !!room.catanCitiesKnights ||
@@ -3315,11 +3333,15 @@ function Waiting({
           )}
         {room.kind === "catan" &&
           (isPublicCatanExplorer(room.catanScenario) ||
-            supportsCaravanSeaHelpers(room.catanScenario)) && (
+            (supportsCatanTradersHelpers(room.catanScenario) &&
+              !["rivers", "caravans"].includes(room.catanScenario || ""))) && (
             <CatanOptionPicker
-              explorer
+              explorer={isPublicCatanExplorer(room.catanScenario)}
               fiveSixAvailable={false}
               value={room.catanOptions}
+              traders={supportsCatanTradersHelpers(
+                room.catanScenario || room.catanTwoScenario,
+              )}
               disabled={!host || busy || mapDirty}
               onChange={(catanOptions) =>
                 command("catan_options", { catanOptions })
@@ -3337,9 +3359,10 @@ function Waiting({
             isPublicCatanSea(room.catanScenario)) && (
             <CatanOptionPicker
               value={room.catanOptions}
-              helpersAvailable={
-                !["rivers", "caravans"].includes(room.catanScenario || "")
-              }
+              traders={supportsCatanTradersHelpers(
+                room.catanScenario || room.catanTwoScenario,
+              )}
+              helpersAvailable
               fishing={!!room.catanFishing || room.catanScenario === "fishing"}
               fiveSixAvailable={
                 !room.catanFishing ||

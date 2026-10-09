@@ -10,11 +10,11 @@ const catanTwoHelpersNotice = "本站双人助手规则：两位真人各领一�
 // Base, Fishing and Knights share the marked two-player Helpers flow.
 func CatanTwoHelpersOptions(scenario string, o CatanOptions) bool {
 	normal, err := NormalizeCatanOptions(o)
-	return err == nil && !normal.FiveSix && (normal == (CatanOptions{}) || (scenario == "" || scenario == "fishing" || scenario == "cities-knights" || CatanTwoSeafarersScenario(scenario)) && normal.Helpers)
+	return err == nil && !normal.FiveSix && (normal == (CatanOptions{}) || (scenario == "" || scenario == "fishing" || scenario == "cities-knights" || scenario == "rivers" || scenario == "caravans" || scenario == "barbarian-attack" || CatanTwoSeafarersScenario(scenario)) && normal.Helpers)
 }
 
 func (g *Catan) twoHelpers() bool {
-	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && (g.CitiesKnights == nil || g.twoKnights() && g.cityHelpers()) && g.Rivers == nil && (g.Caravans == nil || g.caravanSeaHelpers()) && g.Attack == nil && g.Transport == nil && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
+	return g.Two != nil && g.Two.Helpers == CatanTwoHelpersRules && g.Options.Helpers && !g.Options.FiveSix && len(g.Players) == 2 && (g.CitiesKnights == nil || g.twoKnights() && g.cityHelpers()) && (g.Rivers == nil || g.tradersHelpers()) && (g.Caravans == nil || g.caravanSeaHelpers() || g.tradersHelpers()) && (g.Attack == nil || g.tradersHelpers()) && (g.Transport == nil || g.tradersHelpers()) && (g.Seafarers == nil || g.twoSeafarers()) && g.Explorer == nil && (g.Fishing == nil || g.twoFishing())
 }
 
 func (s *State) enableTwoHelpers(o CatanOptions) error {

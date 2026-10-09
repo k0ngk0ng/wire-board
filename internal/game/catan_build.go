@@ -18,7 +18,18 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 		return errors.New("当前不能建造")
 	}
 	var cityHelperPrice []int
-	if g.cityHelpers() && a.Skill == "helper" && p.Helper != nil && p.Helper.ID == 8 {
+	if g.tradersHelpers() && g.Attack != nil && a.Skill == "helper" && p.Helper != nil && p.Helper.ID == 8 {
+		if a.Type != "catan_settlement" && a.Type != "catan_city" {
+			return errors.New("格雷戈尔只能参与村庄或城市建设")
+		}
+		if err := s.catanTradersSpendKnight(player, a); err != nil {
+			return err
+		}
+		cityHelperPrice = []int{1, 1, 0, 0, 0}
+		if a.Type == "catan_city" {
+			cityHelperPrice = []int{0, 0, 0, 1, 2}
+		}
+	} else if g.cityHelpers() && a.Skill == "helper" && p.Helper != nil && p.Helper.ID == 8 {
 		if !g.helperReady(player, 8) || s.Phase != "catan_turn" || a.Type != "catan_settlement" && a.Type != "catan_city" {
 			return errors.New("格雷戈尔只能在行动阶段参与村庄或城市建设")
 		}
@@ -80,7 +91,7 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 			return errors.New("资源不足")
 		}
 		catanMove(p.Resources, g.Bank, cost)
-		if a.Skill == "helper" && p.Helper.ID == 8 && !g.cityHelpers() {
+		if a.Skill == "helper" && p.Helper.ID == 8 && cityHelperPrice == nil {
 			s.catanHelperSpendKnight(player)
 		}
 	} else if a.Skill == "helper" {
@@ -129,6 +140,14 @@ func (s *State) catanBuildOptions(player int, a Action, medicine, diplomacyShip 
 	if g.Attack != nil && !s.Finished {
 		if (g.twoAttack() || g.twoAttackKnights()) && a.Type == "catan_settlement" {
 			g.Attack.TwoLanding = true
+			if a.Skill == "helper" {
+				s.catanHelperComplete(player, "catan_turn")
+			}
+			return nil
+		}
+		if a.Skill == "helper" {
+			g.TradersHelpers.BuildLanding = true
+			s.catanHelperComplete(player, "catan_turn")
 			return nil
 		}
 		return s.catanAttackLanding(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} }, catanRandom)

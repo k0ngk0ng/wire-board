@@ -927,6 +927,8 @@ export type CatanState = {
   };
   options?: CatanOptions;
   helperDisplay?: number[];
+  tradersHelpers?: { rules: string };
+  helperAttackKnights?: number[];
   helperRules?: {
     id: number;
     name: string;

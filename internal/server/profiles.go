@@ -262,6 +262,12 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				}
 			}
 		}
+		if g.TradersHelpers != nil {
+			if record.CatanExpansionRules == nil {
+				record.CatanExpansionRules = map[string]string{}
+			}
+			record.CatanExpansionRules["traders_helpers"] = g.TradersHelpers.Rules
+		}
 		if g.FriendlyRobber != nil {
 			record.CatanExpansions = append(record.CatanExpansions, "friendly_robber")
 			if record.CatanExpansionRules == nil {
