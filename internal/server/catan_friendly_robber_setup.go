@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanFriendlyAvailable() bool {
-	return r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || r.CatanScenario == "fishing" || publicCatanSeaScenario(r.CatanScenario))
+	return (r.Kind == "catan" && publicCatanCaravanSea(r.CatanScenario) && r.Capacity >= 2 && r.Capacity <= 6) || r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || r.CatanScenario == "fishing" || publicCatanSeaScenario(r.CatanScenario))
 }
 
 // Existing internal recipes continue to use the same normalized setup.
@@ -46,7 +46,7 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 			return err
 		}
 	}
-	if r.CatanNewWorldMap != nil && (r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != "new_world") {
+	if r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world" && (r.CatanSeafarers == nil || r.CatanSeafarers.Scenario != "new_world") {
 		return errors.New("新世界需要对应的航海家地图配置")
 	}
 	if r.CatanSeafarers != nil && !r.twoCatanSeafarers() && !game.CatanFriendlySeafarersSupported(n, r.CatanSeafarers.Scenario) {
@@ -55,7 +55,7 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 	return nil
 }
 func (r *Room) catanFriendlyMinimumPlayers() int {
-	if r.publicCatanTwoVariantsAvailable() {
+	if r.publicCatanTwoVariantsAvailable() || publicCatanCaravanSea(r.CatanScenario) && r.Capacity == 2 {
 		return 2
 	}
 	if r.CatanOptions.FiveSix {

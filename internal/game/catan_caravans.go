@@ -73,8 +73,13 @@ func (s *State) validateCaravans() error {
 	if (c.Attack != "" || g.Attack != nil) && !g.caravansAttack() {
 		return errors.New("商队蛮族组合标记无效")
 	}
-	if g.Rivers != nil && !g.riversCaravans() || g.Fishing != nil && !g.fishingCaravans() || g.BaseSetup != nil || g.Seafarers != nil && !g.caravansSea() || c.Sea != "" && !g.caravansSea() || g.CitiesKnights != nil && !g.caravanKnights() || g.Harbors != nil || g.FriendlyRobber != nil || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers && !g.caravanSeaHelpers() || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
+	if g.Rivers != nil && !g.riversCaravans() || g.Fishing != nil && !g.fishingCaravans() || g.BaseSetup != nil || g.Seafarers != nil && !g.caravansSea() || c.Sea != "" && !g.caravansSea() || g.CitiesKnights != nil && !g.caravanKnights() || (g.Harbors != nil || g.FriendlyRobber != nil) && !g.caravansSea() || g.EventDeck == nil && (g.CardEvent != nil || g.RevealedEvent != nil) || g.Options.Helpers && !g.caravanSeaHelpers() || (n > 4) != g.Options.FiveSix || (n > 4) != (g.Paired != nil) || c.Sequence < 0 || g.Robber < -1 || g.Robber >= len(g.Tiles) {
 		return errors.New("商队状态或尚未核对的组合无效")
+	}
+	if g.caravansSea() {
+		if err := s.validateEventVariants(); err != nil {
+			return err
+		}
 	}
 	if g.caravanSeaHelpers() {
 		if err := s.validateEventHelpers(); err != nil {

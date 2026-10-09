@@ -27,6 +27,12 @@ func TestCatanCaravansHelpersHTTP(t *testing.T) {
 	}
 }
 func runCaravansSeaHTTPOptions(t *testing.T, events bool, scenario string, helpers bool) {
+	runCaravansSeaHTTPVariants(t, events, scenario, helpers, false)
+}
+func TestCatanCaravansVariantsHTTP(t *testing.T) {
+	runCaravansSeaHTTPVariants(t, true, "caravans-tribe", true, true)
+}
+func runCaravansSeaHTTPVariants(t *testing.T, events bool, scenario string, helpers, variants bool) {
 	counts := []int{2, 3, 4, 5, 6}
 	if scenario == "caravans-islands" {
 		counts = []int{2, 3, 4, 5, 6}
@@ -44,6 +50,10 @@ func runCaravansSeaHTTPOptions(t *testing.T, events bool, scenario string, helpe
 			recipe := map[string]any{"kind": "catan", "name": "商队沙漠", "capacity": n, "catanScenario": scenario}
 			if events {
 				recipe["catanEvents"] = game.CatanEventCatalogue
+			}
+			if variants {
+				recipe["catanFriendlyRobber"] = game.CatanFriendlyRobberSetup{Enabled: true}
+				recipe["catanHarbors"] = game.CatanHarborsSetup{Enabled: true}
 			}
 			if helpers {
 				recipe["catanOptions"] = game.CatanOptions{Helpers: true, AllHelpers: true}

@@ -1,3 +1,4 @@
+import { supportsCaravanSeaHelpers } from "./catan-two-helpers";
 import {
   twoCatanVariantsAvailable,
   catanTwoVariantsNote,
@@ -10,6 +11,7 @@ import "./catan-harbors.css";
 import { isPublicCatanSea } from "./catan-scenario-setup";
 
 export const supportsPublicCatanHarbors = (scenario?: string) =>
+  supportsCaravanSeaHelpers(scenario) ||
   !scenario ||
   scenario === "cities-knights" ||
   scenario === "fishing" ||
@@ -26,6 +28,9 @@ export function CatanHarborsPicker({
 }) {
   const setup = room.catanHarbors;
   const available =
+    (room.capacity >= 2 &&
+      room.capacity <= 6 &&
+      supportsCaravanSeaHelpers(room.catanScenario)) ||
     twoCatanVariantsAvailable(room) ||
     supportsExtendedBaseVariants(room) ||
     (room.capacity >= 5 &&

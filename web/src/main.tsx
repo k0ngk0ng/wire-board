@@ -1996,7 +1996,10 @@ function Create({
   const variantsAvailable =
     capacity === 2
       ? supportsTwoCatanVariants(catanTwoScenario)
-      : capacity >= 3 && (capacity <= 4 || catanOptions.fiveSix);
+      : capacity >= 3 &&
+        (capacity <= 4 ||
+          catanOptions.fiveSix ||
+          supportsCaravanSeaHelpers(catanScenario));
   const variantKnights =
     variantScenario === "cities-knights" || catanSeaKnights;
   const eventsAvailable = catanEventsSupported({
