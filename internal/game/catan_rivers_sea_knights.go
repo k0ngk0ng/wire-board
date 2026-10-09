@@ -58,8 +58,8 @@ func (g *Catan) validateRiversSeaKnights() error {
 	if r.Attack != "" || r.Transport != "" {
 		return errors.New("河流海图骑士不与商队、蛮族进攻或运输组合叠加")
 	}
-	if g.Fishing != nil {
-		return errors.New("河流海图骑士暂不叠加渔夫")
+	if g.Fishing != nil && !g.fishingRiversSea() {
+		return errors.New("河流海图骑士的渔夫组合标记无效")
 	}
 	// The barbarian ship replaces the pirate; it only sails from PirateStart
 	// once the first invasion happens.

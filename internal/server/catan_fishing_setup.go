@@ -30,6 +30,12 @@ func (r *Room) validateCatanFishing() error {
 		}
 		return nil
 	}
+	if publicCatanRiversSea(r.CatanScenario) {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil {
+			return fmt.Errorf("河流海图渔夫配置无效；支持二至六人，可叠加城市骑士与事件牌")
+		}
+		return nil
+	}
 	if r.catanRiverRecipe() || r.catanCaravanRecipe() || r.catanAttackRecipe() || r.CatanScenario == "transport" {
 		expected, _ := game.NormalizeCatanOptions(game.CatanOptions{FiveSix: r.Capacity > 4, Helpers: r.CatanOptions.Helpers, AllHelpers: r.CatanOptions.AllHelpers})
 		if r.catanAttackRecipe() || r.CatanScenario == "transport" {
@@ -64,7 +70,7 @@ func (r *Room) validateCatanFishing() error {
 }
 
 func (r *Room) setCatanFishing(enabled bool) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (!r.catanRiverRecipe() && !r.catanCaravanRecipe() && !r.catanAttackRecipe() && r.CatanScenario != "transport" && !publicCatanTransportSea(r.CatanScenario) && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario)) {
+	if r.Kind != "catan" || r.Status != "waiting" || (!r.catanRiverRecipe() && !r.catanCaravanRecipe() && !r.catanAttackRecipe() && r.CatanScenario != "transport" && !publicCatanTransportSea(r.CatanScenario) && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario) && !publicCatanRiversSea(r.CatanScenario)) {
 		return fmt.Errorf("只能在河流、商队、蛮族进攻、运输、航海家或探索者等待房间选择渔夫组合")
 	}
 	next := *r

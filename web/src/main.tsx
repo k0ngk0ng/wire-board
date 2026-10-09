@@ -2530,6 +2530,7 @@ function Create({
               two={
                 capacity === 2 && supportsTwoCatanSeafarers(catanTwoScenario)
               }
+              riversSea={isPublicCatanRiversSea(variantScenario)}
               shores={variantScenario === "shores"}
               explorer={isPublicCatanExplorer(catanScenario)}
               extended={capacity > 4}
@@ -3273,6 +3274,7 @@ function Waiting({
               }
               value={!!room.catanFishing}
               two={!!room.catanTwoRules}
+              riversSea={isPublicCatanRiversSea(room.catanScenario)}
               shores={
                 (room.catanTwoScenario || room.catanScenario) === "shores"
               }

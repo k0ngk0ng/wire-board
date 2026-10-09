@@ -67,6 +67,9 @@ func NewCatanFishingSeafarers(n int, options CatanOptions, setup CatanSeafarersS
 }
 
 func (g *Catan) fishingSeaSupported() bool {
+	if g.riversSea() && g.fishingRiversSea() {
+		return true
+	}
 	if g.transportSea() && g.fishingTransport() && g.Fishing.Map.SeaRecipe == CatanTransportSeaFishingRules {
 		return true
 	}

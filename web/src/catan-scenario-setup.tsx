@@ -388,6 +388,7 @@ export function CatanCombinationKnightsPicker({
 }
 
 export const supportsPublicCatanFishingSea = (scenario?: string) =>
+  isPublicCatanRiversSea(scenario) ||
   [
     "shores",
     "islands",
@@ -410,6 +411,7 @@ export function CatanFishingSeaPicker({
   fixedRequired = false,
   shores = false,
   rivers = false,
+  riversSea = false,
   caravans = false,
   attack = false,
   transport = false,
@@ -428,6 +430,7 @@ export function CatanFishingSeaPicker({
   fixedRequired?: boolean;
   shores?: boolean;
   rivers?: boolean;
+  riversSea?: boolean;
   caravans?: boolean;
   attack?: boolean;
   transport?: boolean;
@@ -472,7 +475,11 @@ export function CatanFishingSeaPicker({
             ? "不放湖泊；2鱼在回合末延长己方骑士移动到5步，7鱼购买并立即使用专用发展卡。被征服建筑不产鱼；可叠加城市骑士与事件牌。"
             : caravans
               ? "湖泊替换水源旁的森林，2和12共用地块。12分获胜，旧靴多需1分；可叠加城市骑士与事件牌，骑士组合15分。本站双人以鱼替代贸易筹码，五六人采用双湖及两组2/12。"
-              : rivers
+              : riversSea
+                ? knights
+                  ? "本站渔夫＋河流海图＋城市与骑士：不放湖泊，渔场沿真实海岸避开港口；沿用海图骑士起始建设与目标分，鱼不算资源或商品，7鱼抽进步牌，旧靴额外需要1分。"
+                  : "本站渔夫＋河流海图：不放湖泊，渔场沿实际海岸布置并避开港口；保留河流金币账本与河岸付款，6鱼免费建桥并领取金币，旧靴额外需要1分。"
+                : rivers
                 ? "保留河流地图，不放湖泊；6鱼免费建桥并领取3金币。可叠加城市骑士与事件牌；双人以鱼筹码替代贸易筹码，建桥后照常安排中立建设。"
                 : knights
                   ? "双人使用鱼筹码替代贸易筹码，起始建筑不另领鱼；中立骑士和两次城市事件照常保留，可叠加事件牌、友善强盗和港口霸主。"

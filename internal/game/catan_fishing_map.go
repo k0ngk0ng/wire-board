@@ -163,6 +163,9 @@ func (f catanFishingMap) validate(g *Catan) error {
 	if g.Caravans != nil || g.Fishing != nil && g.Fishing.Caravans != "" {
 		return f.validateCaravans(g)
 	}
+	if f.SeaRecipe == CatanFishingRiversSeaRules {
+		return f.validateRiversSea(g)
+	}
 	if g.Rivers != nil || g.Fishing != nil && g.Fishing.Rivers != "" {
 		return f.validateRivers(g)
 	}

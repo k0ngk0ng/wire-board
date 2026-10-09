@@ -290,14 +290,43 @@ func TestCatanFishingHelpersHildaAfterFish(t *testing.T) {
 			g.Vertices[i].Owner = -1
 			g.Vertices[i].Level = 0
 		}
-		v := g.Tiles[g.Fishing.Map.Lakes[0].Tile].Vertices[0]
+		// Hilda only pays out when this roll grants the player no ordinary
+		// resource, so pin a lake number that no other tile at this corner
+		// shares. The random map otherwise makes this assertion flaky.
+		number, v := 0, -1
+		for _, l := range g.Fishing.Map.Lakes {
+			for _, candidate := range l.Numbers {
+				for _, corner := range g.Tiles[l.Tile].Vertices {
+					shared := false
+					for i := range g.Tiles {
+						if i != l.Tile && slices.Contains(g.Tiles[i].Vertices, corner) && g.Tiles[i].Number == candidate {
+							shared = true
+							break
+						}
+					}
+					if !shared {
+						number, v = candidate, corner
+						break
+					}
+				}
+				if v >= 0 {
+					break
+				}
+			}
+			if v >= 0 {
+				break
+			}
+		}
+		if v < 0 {
+			t.Fatal("no isolated lake number on this map")
+		}
 		g.Vertices[v].Owner, g.Vertices[v].Level = p, 1
 		g.Fishing.Tokens = *fishingTokens(t, 3)
 		fishOwn(&g.Fishing.Tokens, p, 0, 1, 2, 3, 4, 5, 6)
 		fishTop(&g.Fishing.Tokens, 21)
-		g.Dice = []int{1, 1}
+		g.Dice = []int{number / 2, number - number/2}
 		g.RollID++
-		if err := s.catanRollProduction(2); err != nil {
+		if err := s.catanRollProduction(number); err != nil {
 			t.Fatal(err)
 		}
 		if s.Phase != "catan_fish_replace" || g.HelperPending != nil {
