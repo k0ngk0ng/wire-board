@@ -36,3 +36,10 @@ test('merchant Four Islands waiting rules show fifteen points and events',()=>{
   assert.equal(catanEventsSupported(room),true);
  }
 });
+
+test('merchant New World shows fourteen points for all public counts',()=>{
+ for(const capacity of [2,3,4,5,6]) {
+ const room={kind:'catan',capacity,catanScenario:'caravans-new-world'};
+ const c=catanRuleContext(room);assert.equal(c.target,14);assert.equal(c.caravans,true);assert.equal(c.two,capacity===2);assert.equal(catanEventsSupported(room),true);
+ }
+});

@@ -294,6 +294,9 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			record.CatanExpansionRules["seafarers"] = g.Seafarers.Rules
 			if g.Caravans != nil && g.Caravans.Sea != "" {
 				record.CatanScenario = "caravans-" + g.Seafarers.Scenario
+				if g.Seafarers.Scenario == "new_world" {
+					record.CatanScenario = "caravans-new-world"
+				}
 				if g.Seafarers.Scenario == "six_islands" {
 					record.CatanScenario = "caravans-islands"
 				}

@@ -17,6 +17,7 @@ func TestCatanCaravansIslandsHTTP(t *testing.T)   { runCaravansSeaHTTP(t, true, 
 func TestCatanCaravansIslandsOrdinaryHTTP(t *testing.T) {
 	runCaravansSeaHTTP(t, false, "caravans-islands")
 }
+func TestCatanCaravansWorldHTTP(t *testing.T) { runCaravansSeaHTTP(t, true, "caravans-new-world") }
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 	counts := []int{2, 3, 4, 5, 6}
 	if scenario == "caravans-islands" {
