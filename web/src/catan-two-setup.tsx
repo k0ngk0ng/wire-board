@@ -15,6 +15,11 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "attack-shores",
+    name: "蛮族进攻＋新海岸",
+    description: "本站双人中立海岸与共享骑士规则，14分获胜，可加事件牌。",
+  },
+  {
     id: "caravans-new-world",
     name: "商队＋新世界",
     description: "本站双人中立玩家与随机居中水源配方，14分获胜，可加事件牌。",
