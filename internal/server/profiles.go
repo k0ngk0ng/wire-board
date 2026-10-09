@@ -292,6 +292,28 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				record.CatanExpansionRules = map[string]string{}
 			}
 			record.CatanExpansionRules["seafarers"] = g.Seafarers.Rules
+			if g.Rivers != nil && g.Rivers.Sea != "" {
+				record.CatanScenario = "rivers-" + strings.ReplaceAll(g.Seafarers.Scenario, "_", "-")
+				if g.Seafarers.Scenario == "desert" && g.Rivers.SeaLayout == "desert-belt" {
+					record.CatanScenario = "rivers-desert-belt"
+				}
+				record.CatanLayout = g.Rivers.SeaLayout
+				if record.CatanLayout == "" {
+					record.CatanLayout = g.Seafarers.Layout
+				}
+				if g.Seafarers.Scenario == "new_world" && g.Rivers.SeaLayout == "" {
+					record.CatanLayout = "river-default"
+				}
+				record.CatanRules = g.Rivers.Sea
+				record.CatanExpansionRules["rivers_seafarers"] = g.Rivers.Sea
+				delete(record.CatanExpansionRules, "number_recipe")
+				if g.Rivers.Map != nil && g.Rivers.Map.NumberRecipe != "" {
+					record.CatanExpansionRules["number_recipe"] = g.Rivers.Map.NumberRecipe
+				}
+				if g.Two != nil {
+					record.CatanExpansionRules["two_rivers_seafarers"] = g.Two.RiversSea
+				}
+			}
 			if g.Seafarers.NumberRecipe != "" {
 				record.CatanExpansionRules["number_recipe"] = g.Seafarers.NumberRecipe
 			}
