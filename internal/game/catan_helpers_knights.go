@@ -145,7 +145,7 @@ func (s *State) validateCityHelpers() error {
 		}
 		return nil
 	}
-	if !g.cityHelpers() || g.Attack != nil || g.Transport != nil || g.Rivers != nil || g.Caravans != nil || len(g.HelperExile) != 0 || len(g.Bank) != 8 {
+	if !g.cityHelpers() || g.Attack != nil && !g.tradersHelpers() || g.Transport != nil && !g.tradersHelpers() || g.Rivers != nil && !g.tradersHelpers() || g.Caravans != nil && !g.tradersHelpers() || len(g.HelperExile) != 0 || len(g.Bank) != 8 {
 		return errors.New("骑士助手标记或组合无效")
 	}
 	if q := k.Helpers.Production; q != nil {

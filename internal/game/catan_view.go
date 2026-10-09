@@ -190,6 +190,10 @@ func (s *State) catanView(view map[string]any, player int) {
 		g.fishingHelperDescriptions(rules)
 		g.caravanHelperDescriptions(rules)
 		g.cityHelperDescriptions(rules)
+		g.traderHelperDescriptions(rules)
+		if g.tradersHelpers() {
+			v["tradersHelpers"] = map[string]any{"rules": g.TradersHelpers.Rules}
+		}
 		v["helperRules"] = rules
 		if player >= 0 && player < len(g.Players) && g.helperReady(player, 4) && player == s.Turn && s.Phase == "catan_turn" {
 			moves := map[int][]int{}
@@ -210,6 +214,10 @@ func (s *State) catanView(view map[string]any, player int) {
 		}
 		if g.cityHelpers() && player >= 0 && player < len(g.Players) && g.helperReady(player, 8) && player == s.Turn && s.Phase == "catan_turn" && !s.Finished {
 			v["helperKnightBuilds"] = g.helperKnightBuilds(player)
+		}
+		if g.tradersHelpers() && g.Attack != nil && player >= 0 && player < len(g.Players) && g.helperReady(player, 8) && player == s.Turn && s.Phase == "catan_turn" && !s.Finished {
+			v["helperKnightBuilds"] = g.traderHelperKnightBuilds(player)
+			v["helperAttackKnights"] = g.traderHelperKnights(player)
 		}
 		if q := g.HelperPending; q != nil {
 			pending := v["helperPending"].(map[string]any)

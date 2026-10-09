@@ -1,3 +1,4 @@
+import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import {
   catanRiversSeaScenarios,
   isPublicCatanRiversSea,
@@ -613,7 +614,6 @@ export function CatanScenarioPicker({
                 ].includes(s.id)
                   ? players < 2 ||
                     players > 6 ||
-                    helpers ||
                     knights ||
                     fishing ||
                     friendly ||
@@ -621,7 +621,6 @@ export function CatanScenarioPicker({
                   : s.id === "attack-shores"
                     ? players < 2 ||
                       players > 6 ||
-                      helpers ||
                       knights ||
                       fishing ||
                       friendly ||
@@ -634,12 +633,12 @@ export function CatanScenarioPicker({
                           ? players < 2 || players > 6 || knights || fishing
                           : isPublicCatanRiversSea(s.id)
                             ? !catanRiversSeaAvailable(s.id, players) ||
-                              helpers ||
                               knights ||
                               fishing ||
                               friendly ||
                               harbors
                             : (helpers &&
+                                !supportsCatanTradersHelpers(s.id) &&
                                 [
                                   "barbarian-attack",
                                   "transport",

@@ -67,6 +67,7 @@ func (s *State) catanHelperComplete(player int, resume string) {
 	h.UsedTurn = g.TurnSerial
 	rules := CatanHelpers()
 	g.cityHelperDescriptions(rules)
+	g.traderHelperDescriptions(rules)
 	if g.Explorer != nil {
 		rules = catanExplorerHelperRules()
 	}
@@ -112,6 +113,9 @@ func (s *State) catanHelperRespond(player int, a Action) error {
 		}
 		s.Phase = q.Resume
 		g.HelperPending = nil
+		return s.catanTradersAfterHelper()
+	case "attack_development":
+		return s.catanTradersHelperCardChoice(player, a)
 	case "resource":
 		if a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] == 0 {
 			return errors.New("请选择银行仍有库存的资源")
@@ -211,7 +215,10 @@ func (s *State) catanHelperDevelopment(player int) error {
 }
 
 func (g *Catan) helperEndRoad(player, edge int) bool {
-	if edge < 0 || edge >= len(g.Edges) || g.Edges[edge].Owner != player || g.Edges[edge].Ship || g.Edges[edge].Damaged || !g.preservesKnightConnections(player, edge) {
+	if edge < 0 || edge >= len(g.Edges) || g.Edges[edge].Owner != player || g.Edges[edge].Ship || g.Edges[edge].Bridge || g.Edges[edge].Damaged || !g.preservesKnightConnections(player, edge) || !g.attackSeaRouteAnchored(player, edge, false) {
+		return false
+	}
+	if g.tradersHelpers() && g.Rivers != nil && g.riverEdge(edge) && g.riverGold()[player] < 1 {
 		return false
 	}
 	e := g.Edges[edge]
@@ -241,6 +248,9 @@ func (s *State) catanHelperAction(player int, a Action) error {
 		return errors.New("这位助手当前不能使用；新获得或本回合使用过的助手需等下一回合")
 	}
 	resume := s.Phase
+	if handled, err := s.catanTradersHelperAction(player, a); handled {
+		return err
+	}
 	if handled, err := s.catanCityHelperAction(player, a); handled {
 		return err
 	}
@@ -272,6 +282,17 @@ func (s *State) catanHelperAction(player int, a Action) error {
 	case 4:
 		if !g.helperEndRoad(player, a.Edge) || a.Edge == a.Target {
 			return errors.New("只能移动己方末端道路到另一个位置")
+		}
+		if g.tradersHelpers() && g.Rivers != nil && g.riverEdge(a.Edge) {
+			g.riverGold()[player]--
+			if g.riversTransport() {
+				g.Transport.GoldBank++
+			} else if g.riversAttack() {
+				g.Attack.GoldBank++
+			} else {
+				g.Rivers.Bank++
+			}
+			s.catanLog(player, "通过助手移走河岸道路，退还金币×1")
 		}
 		g.Edges[a.Edge].Owner = -1
 		if !g.canRoad(player, a.Target) {
@@ -330,10 +351,10 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			}
 			desert = a.Tile
 		}
-		if desert < 0 && !g.fishingHelpers() && !g.caravanSeaHelpers() {
+		if desert < 0 && !g.fishingHelpers() && !g.caravanSeaHelpers() && !g.tradersHelpers() {
 			return errors.New("地图上没有沙漠")
 		}
-		if resource == CatanGold || g.fishingHelpers() && resource == catanLake || g.caravanSeaHelpers() && resource == catanWateringHole {
+		if resource == CatanGold || g.fishingHelpers() && resource == catanLake || (g.caravanSeaHelpers() || g.tradersHelpers()) && resource == catanWateringHole || g.tradersHelpers() && resource == catanSwamp {
 			if sum(g.Bank[:5]) > 0 && (a.Color < 0 || a.Color >= 5 || g.Bank[a.Color] == 0) {
 				return errors.New("请选择银行有库存的一种普通资源")
 			}
@@ -354,7 +375,7 @@ func (s *State) catanHelperAction(player int, a Action) error {
 			return errors.New("强盗当前不在陆地上")
 		}
 		resource := g.Tiles[g.Robber].Resource
-		if resource == CatanDesert || resource == CatanGold || g.fishingHelpers() && resource == catanLake || g.caravanSeaHelpers() && resource == catanWateringHole {
+		if resource == CatanDesert || resource == CatanGold || g.fishingHelpers() && resource == catanLake || (g.caravanSeaHelpers() || g.tradersHelpers()) && resource == catanWateringHole || g.tradersHelpers() && resource == catanSwamp {
 			resource = a.Color
 		}
 		if resource < 0 || resource >= 5 || g.Bank[resource] == 0 {

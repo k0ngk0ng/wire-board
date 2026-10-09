@@ -13,7 +13,7 @@ func (s *State) validateEventHelpers() error {
 		return s.validateExplorerHelpers()
 	}
 	if !g.Options.Helpers {
-		if g.HelperPending != nil || len(g.HelperDisplay) != 0 || len(g.HelperExile) != 0 {
+		if g.HelperPending != nil || len(g.HelperDisplay) != 0 || len(g.HelperExile) != 0 || s.Phase == "catan_helper" {
 			return errors.New("事件牌存档中存在未启用的助手回应")
 		}
 		for _, p := range g.Players {
@@ -23,7 +23,7 @@ func (s *State) validateEventHelpers() error {
 		}
 		return nil
 	}
-	if g.Two != nil && !g.twoHelpers() || g.Rivers != nil || g.Attack != nil || g.BaseSetup != nil {
+	if g.Two != nil && !g.twoHelpers() || g.Rivers != nil && !g.tradersHelpers() || g.Attack != nil && !g.tradersHelpers() || g.BaseSetup != nil {
 		return errors.New("该剧本的助手与事件牌三重组合尚未接入")
 	}
 	if _, err := NormalizeCatanOptions(g.Options); err != nil {
@@ -79,13 +79,13 @@ func (s *State) validateEventHelpers() error {
 		return errors.New("事件牌助手回应冲突或归属无效")
 	}
 	h := g.Players[q.Player].Helper
-	if !slices.Contains([]string{"catan_turn", "catan_roll", "catan_discard", "catan_robber"}, q.Resume) {
+	if !slices.Contains([]string{"catan_turn", "catan_roll", "catan_discard", "catan_robber", "catan_steal", "catan_transport_barbarian"}, q.Resume) {
 		return errors.New("事件牌助手后续阶段无效")
 	}
-	if q.Resume != "catan_turn" && !(h.ID == 10 && q.Resume == "catan_roll") && !(h.ID == 5 && (q.Resume == "catan_discard" || q.Resume == "catan_robber")) {
+	if q.Resume != "catan_turn" && !(h.ID == 10 && q.Resume == "catan_roll") && !(h.ID == 5 && (q.Resume == "catan_discard" || q.Resume == "catan_robber" || g.tradersHelpers() && (q.Resume == "catan_steal" || q.Resume == "catan_transport_barbarian"))) {
 		return errors.New("事件牌助手后续阶段与能力不符")
 	}
-	if q.Kind != "development" && q.Kind != "progress" && len(q.Cards) != 0 || q.Kind != "resource" && q.Optional {
+	if q.Kind != "attack_development" && q.Kind != "development" && q.Kind != "progress" && len(q.Cards) != 0 || q.Kind != "resource" && q.Optional {
 		return errors.New("事件牌助手回应数据无效")
 	}
 	if q.Kind == "exchange" {
@@ -116,6 +116,15 @@ func (s *State) validateEventHelpers() error {
 		for _, card := range q.Cards {
 			if card < 0 || card >= len(catanProgressRules) || catanProgressRules[card].Track != q.Target {
 				return errors.New("助手进步牌颜色无效")
+			}
+		}
+	case "attack_development":
+		if !g.tradersHelpers() || g.Attack == nil || g.attackKnights() || h.ID != 6 || q.Player != s.Turn || len(q.Cards) < 1 || len(q.Cards) > 3 {
+			return errors.New("助手蛮族牌候选无效")
+		}
+		for _, card := range q.Cards {
+			if card < 0 || card >= 4 {
+				return errors.New("助手蛮族牌种类无效")
 			}
 		}
 	case "development":

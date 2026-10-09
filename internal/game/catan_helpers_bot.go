@@ -62,6 +62,15 @@ func (s *State) catanHelperPendingBot(player int) (Action, error) {
 				a.Card = card
 			}
 		}
+	case "attack_development":
+		best := -1
+		for _, card := range q.Cards {
+			score := []int{3, 8, 5, 4}[card]
+			if score > best {
+				best = score
+				a.Card = card
+			}
+		}
 	case "development":
 		best := -1
 		for _, card := range q.Cards {
@@ -172,6 +181,19 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 			}
 		}
 	}
+	if g.tradersHelpers() && g.Attack != nil && h.ID == 8 {
+		for _, build := range builds {
+			if build.action.Type != "catan_city" && build.action.Type != "catan_settlement" {
+				continue
+			}
+			for _, edge := range g.traderHelperKnights(player) {
+				a := build.action
+				a.Skill = "helper"
+				a.Target = edge
+				add(a, build.score+10)
+			}
+		}
+	}
 	switch h.ID {
 	case 1:
 		give, want := 0, 0
@@ -206,6 +228,10 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 			}
 		}
 	case 10:
+		if g.tradersHelpers() && (g.Attack != nil || g.Transport != nil) {
+			add(Action{Type: "catan_helper"}, 700)
+			break
+		}
 		if a, ok := g.digurBotAction(player); ok {
 			add(a, 700)
 		}
@@ -214,6 +240,16 @@ func (s *State) catanHelperBotChoices(player int, builds []botChoice, road int) 
 			add(Action{Type: "catan_helper", Color: color}, 700-p.Resources[color]*3)
 		}
 	case 12:
+		if g.tradersHelpers() && g.Attack != nil && !g.attackKnights() {
+			for give, count := range p.Resources[:5] {
+				for want, n := range g.Bank[:5] {
+					if give != want && count > 1 && n > 0 && p.Resources[want] < count {
+						add(Action{Type: "catan_helper", Card: give, Color: want}, 150)
+					}
+				}
+			}
+			break
+		}
 		for kind, n := range p.Dev {
 			if n > 0 && kind != 4 && (kind == 3 || kind == 0 && g.ArmyOwner == player) {
 				add(Action{Type: "catan_helper", Card: kind}, 20)
@@ -232,10 +268,10 @@ func (g *Catan) digurBotAction(player int) (Action, bool) {
 	for _, t := range g.Tiles {
 		desert = desert || (t.Resource == CatanDesert && g.clothLand(t.ID))
 	}
-	if !desert && !g.fishingHelpers() && !g.caravanSeaHelpers() {
+	if !desert && !g.fishingHelpers() && !g.caravanSeaHelpers() && !g.tradersHelpers() {
 		return a, false
 	}
-	if g.Tiles[g.Robber].Resource == CatanGold || g.fishingHelpers() && g.Tiles[g.Robber].Resource == catanLake || g.caravanSeaHelpers() && g.Tiles[g.Robber].Resource == catanWateringHole {
+	if g.Tiles[g.Robber].Resource == CatanGold || g.fishingHelpers() && g.Tiles[g.Robber].Resource == catanLake || (g.caravanSeaHelpers() || g.tradersHelpers()) && g.Tiles[g.Robber].Resource == catanWateringHole || g.tradersHelpers() && g.Tiles[g.Robber].Resource == catanSwamp {
 		best := -1
 		for color, n := range g.Bank[:5] {
 			if n > 0 && (best < 0 || g.Players[player].Resources[color] < g.Players[player].Resources[best]) {
