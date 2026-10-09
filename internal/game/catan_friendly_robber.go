@@ -33,10 +33,17 @@ func (s *State) enableCatanFriendlyRobber() {
 		return
 	}
 	s.Catan.FriendlyRobber = &CatanFriendlyRobber{Rules: CatanFriendlyRobberRules}
-	s.Log = append(s.Log, "加入友善强盗：公开分数不足3分的玩家受到保护，隐藏胜利点不计；无合法陆地时强盗返回沙漠")
+	noRobber := s.Catan.tradersVariants() && (s.Catan.Attack != nil || s.Catan.Transport != nil)
+	if noRobber {
+		s.Log = append(s.Log, "本站无强盗友善适配：公开不足3分时，不被七点或运输蛮族搬移偷牌；弃牌、登陆、战斗和固定舰队袭击照常，事件、助手和花鱼取牌按各自规则执行")
+	} else {
+		s.Log = append(s.Log, "加入友善强盗：公开分数不足3分的玩家受到保护，隐藏胜利点不计；无合法陆地时强盗返回沙漠")
+	}
 	if s.Catan.CitiesKnights != nil {
 		s.Catan.FriendlyRobber.Knights = CatanFriendlyKnightsRules
-		s.Log = append(s.Log, "本站组合规则：首次蛮族入侵前强盗与海盗仍休眠；征税和骑士驱逐遵守友善保护，城市失守后按最新公开分数重新判断保护")
+		if !noRobber {
+			s.Log = append(s.Log, "本站组合规则：首次蛮族入侵前强盗与海盗仍休眠；征税和骑士驱逐遵守友善保护，城市失守后按最新公开分数重新判断保护")
+		}
 	}
 	if s.Catan.Fishing != nil {
 		s.Catan.FriendlyRobber.Fallback = CatanFriendlyFishingFallbackRules
@@ -55,7 +62,7 @@ func (s *State) validateCatanFriendlyFallback() error {
 	if g == nil || g.FriendlyRobber == nil || g.FriendlyRobber.Fallback == "" {
 		return nil // Preserve older saves and the base variant.
 	}
-	valid := g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules && g.Seafarers != nil || g.FriendlyRobber.Fallback == CatanFriendlyFishingFallbackRules && g.Fishing != nil
+	valid := g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules && g.Seafarers != nil || g.FriendlyRobber.Fallback == CatanFriendlyFishingFallbackRules && g.Fishing != nil || g.FriendlyRobber.Fallback == CatanFriendlyTradersFallbackRules && g.tradersVariants() && g.Rivers != nil && g.Seafarers == nil
 	if !valid || g.FriendlyRobber.Rules != CatanFriendlyRobberRules {
 		return errors.New("友善强盗的退路配置无效")
 	}
@@ -63,7 +70,7 @@ func (s *State) validateCatanFriendlyFallback() error {
 }
 
 func (g *Catan) friendlyOutsideFallback() bool {
-	return g.FriendlyRobber != nil && (g.Seafarers != nil && g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules || g.Fishing != nil && g.FriendlyRobber.Fallback == CatanFriendlyFishingFallbackRules)
+	return g.FriendlyRobber != nil && (g.Seafarers != nil && g.FriendlyRobber.Fallback == CatanFriendlySeaFallbackRules || g.Fishing != nil && g.FriendlyRobber.Fallback == CatanFriendlyFishingFallbackRules || g.tradersVariants() && g.FriendlyRobber.Fallback == CatanFriendlyTradersFallbackRules)
 }
 
 func (g *Catan) friendlyRobberOutsideAllowed() bool {

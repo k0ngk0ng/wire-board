@@ -33,6 +33,9 @@ func (s *State) ConfigureCatanHarbors(request CatanHarborsSetup) error {
 		return errors.New("港口霸主只能在创建游戏时配置")
 	}
 	if setup.Enabled {
+		if g.tradersGame() {
+			return s.configureCatanTradersVariant(false)
+		}
 		if g.Two != nil && !g.twoVariantsAvailable() {
 			return errors.New("此双人剧本的港口霸主组合尚未接通")
 		}

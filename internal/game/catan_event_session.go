@@ -138,6 +138,11 @@ func newCatanHelperReferenceEvents(n int, all bool) (*State, error) {
 
 func (s *State) validateCatanEventSession() error {
 	if s.Catan != nil {
+		if err := s.validateTradersVariants(); err != nil {
+			return err
+		}
+	}
+	if s.Catan != nil {
 		if err := s.validateTradersHelpers(); err != nil {
 			return err
 		}

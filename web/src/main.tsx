@@ -2000,7 +2000,7 @@ function Create({
       : capacity >= 3 &&
         (capacity <= 4 ||
           catanOptions.fiveSix ||
-          supportsCaravanSeaHelpers(catanScenario));
+          supportsCatanTradersHelpers(catanScenario));
   const variantKnights =
     variantScenario === "cities-knights" || catanSeaKnights;
   const eventsAvailable = catanEventsSupported({
@@ -2536,6 +2536,17 @@ function Create({
               value={catanHarbors}
               onChange={setCatanHarbors}
               helpers={!!catanOptions.helpers}
+              conquered={[
+                "barbarian-attack",
+                "attack-transport",
+                "caravans-attack",
+                "rivers-attack",
+                "attack-shores",
+                "attack-desert",
+                "attack-tribe",
+                "attack-wonders",
+                "attack-pirates",
+              ].includes(variantScenario)}
               target={
                 catanVictoryTarget(variantScenario, variantKnights) +
                 (catanHarbors ? 1 : 0)
@@ -2550,7 +2561,24 @@ function Create({
               value={catanFriendly}
               onChange={setCatanFriendly}
               knights={variantKnights}
-              scenario={capacity === 2 ? "" : catanScenario}
+              scenario={variantScenario}
+              traders={supportsCatanTradersHelpers(variantScenario)}
+              noRobber={[
+                "barbarian-attack",
+                "transport",
+                "attack-transport",
+                "caravans-transport",
+                "caravans-attack",
+                "rivers-transport",
+                "rivers-attack",
+                "attack-shores",
+                "attack-desert",
+                "attack-tribe",
+                "attack-wonders",
+                "attack-pirates",
+                "transport-shores",
+                "transport-desert",
+              ].includes(variantScenario)}
               fishing={catanFishing || variantScenario === "fishing"}
             />
           )}
@@ -2660,6 +2688,11 @@ function Create({
             pirateIslands={catanScenario === "pirate_islands"}
             fishing={catanFishing || catanScenario === "fishing"}
             friendly={catanFriendly}
+            tradersNoRobber={
+              supportsCatanTradersHelpers(variantScenario) &&
+              (variantScenario.includes("attack") ||
+                variantScenario.includes("transport"))
+            }
             cloth={
               (capacity === 2 ? catanTwoScenario : catanScenario) === "cloth"
             }
@@ -2716,7 +2749,11 @@ function Create({
                   next === 2 &&
                   !isPublicCatanExplorer(catanScenario)
                 )
-                  setCatanOptions({});
+                  setCatanOptions((o) =>
+                    supportsTwoCatanHelpers(catanTwoScenario || catanScenario)
+                      ? { helpers: o.helpers, allHelpers: o.allHelpers }
+                      : {},
+                  );
               }}
             >
               {(k === "dota"
@@ -3249,6 +3286,9 @@ function Waiting({
             }
             fishing={room.catanFishing || room.catanScenario === "fishing"}
             friendly={!!room.catanFriendlyRobber?.enabled}
+            tradersNoRobber={
+              catanRuleContext(room).attack || catanRuleContext(room).transport
+            }
             cloth={
               (room.catanSeafarers?.scenario || room.catanScenario) === "cloth"
             }

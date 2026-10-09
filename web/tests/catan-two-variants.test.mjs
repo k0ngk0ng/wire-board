@@ -12,20 +12,21 @@ test("two-player variant entrypoints follow the verified recipes", () => {
     capacity: 2,
     catanTwoRules: "catan-for-two-2025",
   };
-  for (const catanTwoScenario of ["", "fishing", "cities-knights"]) {
+  for (const catanTwoScenario of [
+    "",
+    "fishing",
+    "cities-knights",
+    "rivers",
+    "caravans",
+    "transport",
+  ]) {
     assert.equal(supportsTwoCatanVariants(catanTwoScenario), true);
     assert.equal(
       twoCatanVariantsAvailable({ ...room, catanTwoScenario }),
       true,
     );
   }
-  for (const scenario of [
-    "rivers",
-    "caravans",
-    "transport",
-    "land-ho",
-    "unknown",
-  ]) {
+  for (const scenario of ["land-ho", "unknown"]) {
     assert.equal(supportsTwoCatanVariants(scenario), false);
     assert.equal(
       twoCatanVariantsAvailable({ ...room, catanTwoScenario: scenario }),

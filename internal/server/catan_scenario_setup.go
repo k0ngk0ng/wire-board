@@ -72,7 +72,7 @@ func (r *Room) validateCatanScenario() error {
 		}
 	}
 	if publicCatanTransportSea(r.CatanScenario) {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing {
 			return errors.New("运输海图支持二至六人，可叠加事件牌")
 		}
 		return nil
@@ -81,7 +81,7 @@ func (r *Room) validateCatanScenario() error {
 		if r.CatanScenario == "attack-desert" && (r.Capacity < 2 || r.Capacity > 6) {
 			return errors.New("蛮族沙漠支持二至六人")
 		}
-		if r.Kind != "catan" || (r.Capacity < 2 || r.Capacity > 6) || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		if r.Kind != "catan" || (r.Capacity < 2 || r.Capacity > 6) || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing {
 			return errors.New("蛮族海图支持二至六人，可叠加事件牌")
 		}
 		return nil
@@ -108,7 +108,7 @@ func (r *Room) validateCatanScenario() error {
 		return r.validateCatanRiversSea()
 	}
 	if publicCatanTradersCombination(r.CatanScenario) {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanFishing || r.CatanFishingLakes {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanFishing || r.CatanFishingLakes {
 			return errors.New("商人与蛮族组合支持二至六人；开局按人数启用双人规则或扩大地图，可叠加城市骑士和事件牌")
 		}
 		if r.CatanCitiesKnights != nil {
@@ -120,7 +120,7 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "transport" {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 			return errors.New("运输支持二至六人；按实际人数启用双人规则或五六人配对回合，不混用其他扩展配置")
 		}
 		if r.CatanCitiesKnights != nil {
@@ -132,7 +132,7 @@ func (r *Room) validateCatanScenario() error {
 		return nil
 	}
 	if r.CatanScenario == "barbarian-attack" {
-		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+		if r.Kind != "catan" || r.Capacity < 3 || r.Capacity > 6 || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 			return errors.New("蛮族进攻支持三至六人，开局按实际人数选择地图；不混用其他扩展配置")
 		}
 		if r.CatanCitiesKnights != nil {
@@ -214,7 +214,7 @@ func (r *Room) validateCatanScenario() error {
 		requested.Helpers, requested.AllHelpers = r.CatanOptions.Helpers, r.CatanOptions.AllHelpers
 	}
 	options, optionErr := game.NormalizeCatanOptions(requested)
-	if optionErr != nil || r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || (r.CatanScenario != "fishing" && (r.CatanFriendlyRobber != nil || r.CatanHarbors != nil)) || (r.CatanCitiesKnights != nil && r.CatanScenario != "fishing" && r.CatanScenario != "caravans" && r.CatanScenario != "rivers") || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
+	if optionErr != nil || r.CatanOptions != options || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || (r.CatanScenario != "fishing" && !publicCatanTradersVariants(r.CatanScenario) && (r.CatanFriendlyRobber != nil || r.CatanHarbors != nil)) || (r.CatanCitiesKnights != nil && r.CatanScenario != "fishing" && r.CatanScenario != "caravans" && r.CatanScenario != "rivers") || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil {
 		return errors.New("所选剧本与其他扩展的组合尚未开放")
 	}
 	if r.CatanCitiesKnights != nil {
@@ -254,7 +254,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if scenario != "" {
 		next.CatanBaseConfiguration = nil
 	}
-	if scenario != "" && scenario != "cities-knights" && scenario != "fishing" && !publicCatanSeaScenario(scenario) && !publicCatanCaravanSea(scenario) {
+	if scenario != "" && scenario != "cities-knights" && scenario != "fishing" && !publicCatanSeaScenario(scenario) && !publicCatanCaravanSea(scenario) && !publicCatanTradersVariants(scenario) {
 		next.CatanFriendlyRobber = nil
 	}
 	if !publicCatanHarborsScenario(scenario) {

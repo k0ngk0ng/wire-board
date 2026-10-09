@@ -32,6 +32,9 @@ func (s *State) ConfigureCatanFriendlyRobber(request CatanFriendlyRobberSetup) e
 		return errors.New("友善强盗只能在创建游戏时配置")
 	}
 	if setup.Enabled {
+		if g.tradersGame() {
+			return s.configureCatanTradersVariant(true)
+		}
 		if g.Two != nil && !g.twoVariantsAvailable() {
 			return errors.New("此双人剧本的友善强盗组合尚未接通")
 		}

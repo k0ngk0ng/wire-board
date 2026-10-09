@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Room) publicCatanFriendlyAvailable() bool {
-	return (r.Kind == "catan" && publicCatanCaravanSea(r.CatanScenario) && r.Capacity >= 2 && r.Capacity <= 6) || r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || r.CatanScenario == "fishing" || publicCatanSeaScenario(r.CatanScenario))
+	return r.catanTradersVariantsAvailable() || (r.Kind == "catan" && publicCatanCaravanSea(r.CatanScenario) && r.Capacity >= 2 && r.Capacity <= 6) || r.publicCatanTwoVariantsAvailable() || ((r.isCatanBaseRecipe() || r.isCatanStandaloneKnightsRecipe()) && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix) || r.Kind == "catan" && r.Capacity >= 3 && r.Capacity <= 6 && (r.Capacity > 4) == r.CatanOptions.FiveSix && r.CatanTwoRules == "" && (r.CatanScenario == "" || r.CatanScenario == "cities-knights" || r.CatanScenario == "fishing" || publicCatanSeaScenario(r.CatanScenario))
 }
 
 // Existing internal recipes continue to use the same normalized setup.
@@ -55,7 +55,7 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 	return nil
 }
 func (r *Room) catanFriendlyMinimumPlayers() int {
-	if r.publicCatanTwoVariantsAvailable() || publicCatanCaravanSea(r.CatanScenario) {
+	if r.publicCatanTwoVariantsAvailable() || publicCatanCaravanSea(r.CatanScenario) || publicCatanFlexibleScenario(r.CatanScenario) && r.catanTradersVariantsAvailable() {
 		return 2
 	}
 	if r.CatanOptions.FiveSix {

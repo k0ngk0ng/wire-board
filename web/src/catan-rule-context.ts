@@ -1,3 +1,4 @@
+import { supportsCatanTradersHelpers } from "./catan-traders-helpers.ts";
 import { isPublicCatanRiversSea } from "./catan-rivers-sea-options.ts";
 import type { Room, CatanState } from "./types";
 
@@ -13,6 +14,9 @@ export function catanRuleContext(room: Room) {
     "explorers-and-pirates",
   ].includes(room.catanScenario || "");
   const sea = game?.seafarers;
+  const tradersDraft = supportsCatanTradersHelpers(
+    room.catanScenario || room.catanTwoScenario,
+  );
   const riverSeaDraft = isPublicCatanRiversSea(room.catanScenario);
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
   const citiesKnights =
@@ -226,9 +230,16 @@ export function catanRuleContext(room: Room) {
       : room.catanTwoRules && options.helpers
         ? "wire-board-two-helpers-v1"
         : "",
+    tradersVariants: game
+      ? game.tradersVariants || ""
+      : tradersDraft && (harbors || room.catanFriendlyRobber?.enabled)
+        ? "wire-board-traders-variants-v1"
+        : "",
     twoVariants: game
       ? game.two?.variants || ""
-      : room.catanTwoRules && (harbors || room.catanFriendlyRobber?.enabled)
+      : room.capacity === 2 &&
+          (room.catanTwoRules || tradersDraft) &&
+          (harbors || room.catanFriendlyRobber?.enabled)
         ? "wire-board-two-variants-v1"
         : "",
     harbors,
@@ -276,7 +287,7 @@ export function catanRuleContext(room: Room) {
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,
     target:
-      !game &&
+      (!game &&
       ["transport-shores", "transport-desert"].includes(
         room.catanScenario || "",
       )
@@ -317,8 +328,8 @@ export function catanRuleContext(room: Room) {
                               ].includes(scenario)) ||
                             attack
                           ? 12
-                          : catanVictoryTarget(scenario, citiesKnights) +
-                            (harbors ? 1 : 0),
+                          : catanVictoryTarget(scenario, citiesKnights)) +
+      (!game && harbors ? 1 : 0),
   };
 }
 
@@ -399,17 +410,36 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 // New views provide the server-derived target; old saves retain the fallback.
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
-  if (g.transport?.map?.sea) return g.seafarers?.victoryPoints || 17;
+  const harborBonus = g.harbors ? 1 : 0;
+  if (g.transport?.map?.sea)
+    return (g.seafarers?.victoryPoints || 17) + harborBonus;
   if (g.explorer) return g.explorer.board.target;
-  if (g.transport?.attack) return 14;
+  if (g.transport?.attack) return 14 + harborBonus;
   if (g.transport)
-    return g.citiesKnights || g.caravans?.transport
-      ? 15
-      : g.fishing?.transport
-        ? 12
-        : 13;
-  if (g.caravans && !g.seafarers) return g.citiesKnights ? 15 : 12;
-  if (g.attack) return g.attack.city ? 13 : 12;
+    return (
+      (g.citiesKnights || g.caravans?.transport
+        ? 15
+        : g.fishing?.transport
+          ? 12
+          : 13) + harborBonus
+    );
+  if (g.caravans && !g.seafarers)
+    return (g.citiesKnights ? 15 : 12) + harborBonus;
+  if (g.attack && g.seafarers)
+    return (
+      (g.seafarers.victoryPoints ||
+        (
+          {
+            shores: 14,
+            desert: 14,
+            tribe: 13,
+            wonders: 12,
+            pirate_islands: 12,
+          } as Record<string, number>
+        )[g.seafarers.scenario || ""] ||
+        12) + harborBonus
+    );
+  if (g.attack) return (g.attack.city ? 13 : 12) + harborBonus;
   const sea = g.seafarers;
   const scenario =
     sea?.scenario ||

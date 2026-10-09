@@ -78,6 +78,9 @@ func (s *State) enableCatanHarbors() {
 	}
 	s.Catan.Harbors = &CatanHarbors{Rules: CatanHarborsRules, Owner: -1}
 	s.Log = append(s.Log, "加入港口霸主：港口村庄计1点、城市计2点；率先达到3点获得2分奖励，超过持有者可夺取；获胜门槛增加1分")
+	if s.Catan.tradersVariants() && s.Catan.Attack != nil {
+		s.Log = append(s.Log, "本站蛮族港口组合：被征服建筑暂停港口计点，解放后恢复；原剧本特殊胜利条件保留")
+	}
 	s.catanScores()
 }
 
@@ -97,7 +100,7 @@ func (g *Catan) harborPoints() []int {
 			}
 			seen[id] = true
 			v := g.Vertices[id]
-			if v.Owner >= 0 && v.Owner < len(points) && !g.Players[v.Owner].Eliminated {
+			if v.Owner >= 0 && v.Owner < len(points) && !g.Players[v.Owner].Eliminated && !(g.tradersVariants() && g.Attack != nil && g.Attack.conqueredBuilding(g, id)) {
 				// Official T&B FAQ #37: a metropolis yields two harbor points.
 				points[v.Owner] += v.Level
 			}
@@ -129,6 +132,9 @@ func (g *Catan) victoryTarget() int {
 		return g.Explorer.Board.Target
 	}
 	if g.attackTransport() {
+		if g.Harbors != nil {
+			return 15
+		}
 		return 14
 	}
 	goal := 10

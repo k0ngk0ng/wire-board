@@ -29,7 +29,7 @@ func (r *Room) validateCatanFishing() error {
 		if r.catanAttackRecipe() || r.CatanScenario == "transport" {
 			expected, _ = game.NormalizeCatanOptions(game.CatanOptions{Helpers: r.CatanOptions.Helpers, AllHelpers: r.CatanOptions.AllHelpers})
 		}
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || r.CatanOptions != expected || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || r.CatanOptions != expected || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil {
 			return fmt.Errorf("渔夫河流、商队、蛮族进攻或运输组合配置无效")
 		}
 		return nil

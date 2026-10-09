@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { catanSavedVictoryTarget } from "./catan-rule-context";
 import type { Room, CatanState } from "./types";
 import { CatanCoins } from "./catan-rivers";
 import { CatanResource } from "./catan-resources";
@@ -319,12 +320,14 @@ export function CatanTransportPanel({
               ? "你的运输行动"
               : `${room.seats[active]?.name} 正在${t.barbarianPending ? "移动蛮族" : "运输"}`
             : t.attack
-              ? `蛮族进攻＋运输${t.knights ? "＋城市与骑士" : ""} · 14分获胜`
-              : g.rivers?.transport || g.caravans?.transport
-                ? `${g.caravans?.transport ? "商队" : "河流"}＋运输${t.knights ? "＋城市与骑士" : ""} · ${g.victoryTarget ?? 13}分获胜`
-                : t.knights
-                  ? "运输＋城市与骑士 · 15分获胜"
-                  : "运输任务 · 13分获胜"}
+              ? `蛮族进攻＋运输${t.knights ? "＋城市与骑士" : ""} · ${catanSavedVictoryTarget(g)}分获胜`
+              : t.map.sea
+                ? `运输＋${g.seafarers?.scenario === "desert" ? "穿越沙漠" : "新海岸"} · ${catanSavedVictoryTarget(g)}分获胜`
+                : g.rivers?.transport || g.caravans?.transport
+                  ? `${g.caravans?.transport ? "商队" : "河流"}＋运输${t.knights ? "＋城市与骑士" : ""} · ${g.victoryTarget ?? 13}分获胜`
+                  : t.knights
+                    ? `运输＋城市与骑士 · ${catanSavedVictoryTarget(g)}分获胜`
+                    : `运输任务 · ${catanSavedVictoryTarget(g)}分获胜`}
         </strong>
         <button
           aria-expanded={!collapsed}

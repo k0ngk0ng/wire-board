@@ -1125,10 +1125,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 			break
 		}
-		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && next.CatanScenario != "fishing" && !publicCatanSeaScenario(next.CatanScenario) {
+		if err == nil && next.friendlyRobberEnabled() && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && next.CatanScenario != "fishing" && !publicCatanSeaScenario(next.CatanScenario) && !next.catanTradersVariantsAvailable() {
 			err = errors.New("友善强盗的五六人公开组合需要基础、城市骑士、渔夫或已核验的航海地图")
 		}
-		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && next.CatanScenario != "fishing" && !publicCatanSeaScenario(next.CatanScenario) {
+		if err == nil && next.CatanHarbors != nil && next.CatanHarbors.Enabled && options.FiveSix && !next.CatanOptions.FiveSix && !next.isCatanBaseRecipe() && !next.isCatanStandaloneKnightsRecipe() && next.CatanScenario != "fishing" && !publicCatanSeaScenario(next.CatanScenario) && !next.catanTradersVariantsAvailable() {
 			err = errors.New("港口霸主的五六人公开组合需要基础、城市骑士、渔夫或航海地图")
 		}
 		if err == nil && next.CatanCitiesKnights != nil {

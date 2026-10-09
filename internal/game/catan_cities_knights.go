@@ -162,7 +162,7 @@ func (s *State) catanAfterSevenDiscards() {
 		return
 	}
 	if g := s.Catan; g.Attack != nil {
-		g.Victims = g.cardTheftTargets(s.Turn)
+		g.Victims = slices.DeleteFunc(g.cardTheftTargets(s.Turn), g.friendlyProtected)
 		s.Phase = "catan_steal"
 		if len(g.Victims) == 0 {
 			s.Phase = g.ResumePhase
