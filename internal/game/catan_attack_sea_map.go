@@ -120,10 +120,14 @@ func newCatanAttackShores(n int) (*State, error) {
 	return s, s.validateCatanAttack()
 }
 func (m catanAttackMap) validateSea(g *Catan) error {
-	if m.Sea != CatanAttackSeafarersRules || m.Caravans != "" || m.Rivers != "" || m.Transport != "" || (len(g.Players) < 3 || len(g.Players) > 6) || g.Seafarers == nil {
+	if m.Sea != CatanAttackSeafarersRules || m.Caravans != "" || m.Rivers != "" || m.Transport != "" || (len(g.Players) < 2 || len(g.Players) > 6) || g.Seafarers == nil {
 		return errors.New("蛮族海图配置无效")
 	}
-	ref, want, err := newCatanAttackShoresBoard(len(g.Players))
+	recipeSeats := len(g.Players)
+	if recipeSeats == 2 {
+		recipeSeats = 4
+	}
+	ref, want, err := newCatanAttackShoresBoard(recipeSeats)
 	if err != nil {
 		return err
 	}

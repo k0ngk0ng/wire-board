@@ -144,6 +144,9 @@ func (g *Catan) prepareTwoSeaNeutrals() error {
 
 func (s *State) validateTwoSeafarers() error {
 	g, q := s.Catan, s.Catan.Two
+	if q.AttackSea != "" && !g.twoAttackSea() {
+		return errors.New("双人蛮族海图标记无效")
+	}
 	if q.CaravansSea != "" && !g.twoCaravansSea() {
 		return errors.New("双人商队海图标记无效")
 	}
@@ -156,7 +159,7 @@ func (s *State) validateTwoSeafarers() error {
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil && !g.twoCaravansSea() || g.Attack != nil || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
+	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil && !g.twoCaravansSea() || g.Attack != nil && !g.twoAttackSea() || g.Transport != nil || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers
