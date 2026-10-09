@@ -192,6 +192,7 @@ export function progressPlayAction(
       s.dice.every((n) => Number.isInteger(n) && n >= 1 && n <= 6) &&
       !(
         g.transport?.knights &&
+        !g.rivers?.transport &&
         g.players.length <= 4 &&
         [2, 12].includes(s.dice[0] + s.dice[1])
       )

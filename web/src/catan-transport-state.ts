@@ -33,7 +33,13 @@ export function transportWagonPosition(game: CatanState, seat: number) {
         21 *
         (game.hexSize || 62)) /
       62;
-  return { x: vertex.x + offset, y: vertex.y };
+  const site =
+    game.rivers?.transport &&
+    game.transport?.map.sites.some((s) => s.center === wagon.position);
+  return {
+    x: vertex.x + offset,
+    y: vertex.y + (site ? (52 * (game.hexSize || 62)) / 62 : 0),
+  };
 }
 export function transportCanAct(room: Room) {
   const g = room.game?.catan;
@@ -106,6 +112,9 @@ export function transportStepDescription(
 ): string {
   const cost = `${step.mp}移动点`;
   if (!step.toll) return `${cost} · 无过路费`;
+  if (step.neutral && step.toll === 2 && step.bank === 1) {
+    return `${cost} · 1金币给银行、1金币给${room.seats[step.pay]?.name || "对手"}（中立桥梁）`;
+  }
   const toBank =
     (step.bank || 0) > 0 ||
     (step.pay >= 0 && room.game?.catan?.players[step.pay]?.eliminated);

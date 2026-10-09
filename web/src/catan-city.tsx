@@ -41,7 +41,9 @@ export function CatanCitySeat({
     <span className="catan-city-seat">
       {game.explorer && <span>进步牌 {p.progressCount} 张</span>}
       <span>
-        {!game.explorer && <>最长道路 {game.players[seat].roadLength} · </>}
+        {!game.explorer && !game.transport && (
+          <>最长道路 {game.players[seat].roadLength} · </>
+        )}
         骑士防御 {cityDefense(game, seat)} · 城墙{" "}
         {(cityDiscardLimit(game, seat) - 7) / 2}
       </span>

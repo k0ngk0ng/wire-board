@@ -47,11 +47,14 @@ export function CatanRiverSeat({
     richest = r.richest === seat;
   return (
     <span className="catan-river-seat">
-      <CatanCoins count={r.gold[seat]} assets={assets} />
+      {!game.transport && <CatanCoins count={r.gold[seat]} assets={assets} />}
       {(["richest", "poor"] as const)
         .filter((status) => (status === "poor" ? poor : richest))
         .map((status) => (
-          <span key={status} className={`catan-wealth ${status}${r.poorPenalty === 0 && status === "poor" ? " no-penalty" : ""}`}>
+          <span
+            key={status}
+            className={`catan-wealth ${status}${r.poorPenalty === 0 && status === "poor" ? " no-penalty" : ""}`}
+          >
             {assets && (
               <img
                 src={`${assets}/catan/rivers/${status === "poor" ? "poor" : "wealthiest"}-v1.webp`}
@@ -218,7 +221,7 @@ export function CatanRiverBank({
       room.game!.phase,
     ],
   );
-  if (!r) return null;
+  if (!r || g.transport) return null;
   const mine =
     room.status === "playing" &&
     !room.game!.finished &&

@@ -271,7 +271,10 @@ test("transport city knight chase uses server targets and clears stale choices",
   const pick = { knight: 7, piece: 1, edge: 6 };
   assert.deepEqual(transportEdges(r, pick), [5, 6]);
   assert.deepEqual(transportSelectedAction(r, pick), {
-    type: "catan_transport_knight_chase", vertex: 7, card: 1, edge: 6,
+    type: "catan_transport_knight_chase",
+    vertex: 7,
+    card: 1,
+    edge: 6,
   });
   assert.equal(transportSelectedAction(r, { ...pick, piece: 0 }), null);
   assert.equal(transportSelectedAction(r, { ...pick, edge: 9 }), null);
@@ -282,7 +285,50 @@ test("transport city knight chase uses server targets and clears stale choices",
 });
 
 test("transport city draft and restored target stay fifteen, base stays thirteen", () => {
-  assert.equal(catanRuleContext({kind: "catan", capacity: 3, catanScenario: "transport", catanCitiesKnights: {}}).target, 15);
-  assert.equal(catanSavedVictoryTarget({transport: {}, citiesKnights: {}}), 15);
-  assert.equal(catanSavedVictoryTarget({transport: {}}), 13);
+  assert.equal(
+    catanRuleContext({
+      kind: "catan",
+      capacity: 3,
+      catanScenario: "transport",
+      catanCitiesKnights: {},
+    }).target,
+    15,
+  );
+  assert.equal(
+    catanSavedVictoryTarget({ transport: {}, citiesKnights: {} }),
+    15,
+  );
+  assert.equal(catanSavedVictoryTarget({ transport: {} }), 13);
+});
+
+test("neutral bridge toll shows both bank and opponent shares", async () => {
+  const { transportStepDescription } =
+    await import("../src/catan-transport-state.ts");
+  const r = room();
+  r.seats.push({ name: "对手甲" });
+  assert.equal(
+    transportStepDescription(r, {
+      mp: 1,
+      toll: 2,
+      pay: 1,
+      bank: 1,
+      neutral: true,
+    }),
+    "1移动点 · 1金币给银行、1金币给对手甲（中立桥梁）",
+  );
+});
+
+test("river transport depot wagons leave production numbers visible without moving ordinary wagons", () => {
+  const g = {
+    hexSize: 62,
+    vertices: [{ x: 100, y: 200 }],
+    rivers: { transport: "catan-rivers-transport-2025" },
+    transport: {
+      map: { sites: [{ center: 0 }] },
+      state: { wagons: [{ position: 0 }] },
+    },
+  };
+  assert.deepEqual(transportWagonPosition(g, 0), { x: 100, y: 252 });
+  delete g.rivers;
+  assert.deepEqual(transportWagonPosition(g, 0), { x: 100, y: 200 });
 });
