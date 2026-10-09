@@ -15,6 +15,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "caravans-shores",
+    name: "双人商队＋新海岸",
+    description:
+      "采用四人商队主岛与可变外岛，中立海岸开局、两次生产、双马车投票，16分获胜。",
+  },
+  {
     id: "caravans-desert",
     name: "双人商队＋穿越沙漠",
     description:
@@ -165,7 +171,11 @@ export function CatanTwoScenarioPicker({
               value={s.id}
               disabled={
                 ((isPublicCatanRiversSea(s.id) ||
-                  ["caravans-desert", "caravans-tribe"].includes(s.id)) &&
+                  [
+                    "caravans-shores",
+                    "caravans-desert",
+                    "caravans-tribe",
+                  ].includes(s.id)) &&
                   (knightsEnabled || fishingEnabled)) ||
                 (variantsEnabled && !supportsTwoCatanVariants(s.id)) ||
                 (helpersEnabled &&

@@ -14,7 +14,7 @@ func TestCatanCaravansShoresHTTP(t *testing.T)    { runCaravansSeaHTTP(t, true, 
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 	counts := []int{2, 3, 4, 5, 6}
 	if scenario == "caravans-shores" {
-		counts = []int{4, 5, 6}
+		counts = []int{2, 4, 5, 6}
 	}
 	for _, n := range counts {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
@@ -47,6 +47,9 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 			bidTimedOut := false
 			for step := 0; step < 18000 && !s.rooms[id].Game.Finished; step++ {
 				g := s.rooms[id].Game
+				if scenario == "caravans-shores" && n == 2 && step%500 == 0 {
+					t.Log("step", step, "round", g.Round, "phase", g.Phase, "scores", g.Catan.Players[0].Score, g.Catan.Players[1].Score)
+				}
 				if events && !bidTimedOut && g.Phase == "catan_caravan_bid" {
 					actor := twoHTTPActor(g)
 					deadline := s.rooms[id].TurnDeadline

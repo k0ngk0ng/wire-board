@@ -182,4 +182,9 @@ func (g *Catan) validateCaravansShoresExtended() error {
 	return nil
 }
 
-func NewCatanCaravansShoresSeafarers(n int) (*State, error) { return newCatanCaravansShoresExtended(n) }
+func NewCatanCaravansShoresSeafarers(n int) (*State, error) {
+	if n == 2 {
+		return newCatanTwoCaravansSea("shores")
+	}
+	return newCatanCaravansShoresExtended(n)
+}
