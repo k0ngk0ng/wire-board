@@ -76,7 +76,7 @@ func (s *State) validateCatanTransport() error {
 	if (g.AttackTransport != nil || t.Map != nil && t.Map.Attack != "") && !g.attackTransport() {
 		return errors.New("蛮族运输组合标记无效")
 	}
-	if g.attackTransport() && (t.Swift || t.BarbarianPending || t.BarbarianSequence != 0 || t.Knights != "" || t.DeckRecipe != "") {
+	if g.attackTransport() && (t.Swift || t.BarbarianPending || t.BarbarianSequence != 0 || (t.Knights != "" && !g.attackTransportKnights()) || t.DeckRecipe != "") {
 		return errors.New("蛮族运输混入独立运输发展牌状态")
 	}
 	if err := g.validateRivers(); err != nil {
@@ -127,7 +127,10 @@ func (s *State) validateCatanTransport() error {
 	if g.caravansTransport() {
 		phases = append(phases, "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place")
 	}
-	if g.transportKnights() {
+	if g.attackTransportKnights() {
+		phases = append(phases, catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place")
+	}
+	if g.transportKnights() || g.attackTransportKnights() {
 		phases = append(phases, catanTransportCityPhases...)
 	}
 	if !slices.Contains(phases, s.Phase) || s.Phase == "catan_card_event" && (g.EventDeck == nil || g.CardEvent == nil) {
@@ -238,7 +241,7 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 			err = t.placeWagon(g, player, a.Vertex)
 		}
 	case player == s.Turn && a.Type == "catan_roll":
-		if g.transportKnights() {
+		if g.transportKnights() || g.attackTransportKnights() {
 			err = s.applyCatanStep(player, a)
 		} else if g.EventDeck != nil {
 			err = s.catanDrawEvent()
@@ -256,7 +259,9 @@ func (s *State) applyCatanTransport(player int, a Action) error {
 		if s.Finished {
 			return nil
 		}
-		if g.attackTransport() {
+		if g.attackTransportKnights() {
+			err = s.applyCatanStep(player, a)
+		} else if g.attackTransport() {
 			err = s.catanAttackBeginEnd()
 		} else if g.transportKnights() {
 			err = s.applyCatanStep(player, a)

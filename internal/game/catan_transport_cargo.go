@@ -117,7 +117,7 @@ func (t catanTransport) validate(g *Catan) error {
 	if !catanTransportPlayersValid(g) || t.Map == nil || len(t.Wagons) != len(g.Players) || len(t.Gold) != len(g.Players) {
 		return errors.New("运输组件或人数无效")
 	}
-	if t.Map.Rivers != "" && !g.riversTransport() || g.Attack != nil && !g.attackTransport() || g.Caravans != nil && !g.caravansTransport() || t.Map.Caravans != "" && !g.caravansTransport() || g.Rivers != nil && !g.riversTransport() || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() || g.Options.Helpers || g.Options.AllHelpers {
+	if t.Map.Rivers != "" && !g.riversTransport() || g.Attack != nil && !g.attackTransport() || g.Caravans != nil && !g.caravansTransport() || t.Map.Caravans != "" && !g.caravansTransport() || g.Rivers != nil && !g.riversTransport() || g.Fishing != nil && !g.fishingTransport() || g.Seafarers != nil || g.CitiesKnights != nil && !g.transportKnights() && !g.attackTransportKnights() || g.Options.Helpers || g.Options.AllHelpers {
 		return errors.New("运输与其他扩展的组合尚未接入")
 	}
 	if err := t.Map.validate(g); err != nil {
@@ -232,7 +232,7 @@ func (t catanTransport) validate(g *Catan) error {
 		stock = 24
 	}
 	cards := 5
-	if g.transportKnights() {
+	if g.transportKnights() || g.attackTransportKnights() {
 		cards = 8
 	}
 	if len(g.Bank) != cards || !g.cardBundle(g.Bank) {

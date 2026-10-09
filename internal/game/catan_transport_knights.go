@@ -35,6 +35,9 @@ func (g *Catan) transportKnights() bool {
 }
 func (s *State) validateTransportKnights() error {
 	g := s.Catan
+	if g.attackTransportKnights() {
+		return nil
+	} // Road-knight validation is owned by Attack.
 	if g.Transport.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}

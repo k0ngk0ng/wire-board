@@ -70,6 +70,15 @@ func (s *State) catanStartCityDiceEvent(red, yellow, face, production int, epide
 	k := g.CitiesKnights
 	k.EventDie = face
 	k.Event = &CatanCityEvent{Red: red, Yellow: yellow, Face: face, Production: production, Epidemic: epidemic, Tasks: []CatanCityEventTask{}}
+	if g.attackTransportKnights() && face < 3 && (production == 2 || production == 12 || production == 0 && (red+yellow == 2 || red+yellow == 12)) {
+		number := production
+		if number == 0 {
+			number = red + yellow
+		}
+		if _, err := s.attackTransportCityLanding([2]int{max(1, number-6), number - max(1, number-6)}); err != nil {
+			return err
+		}
+	}
 	if face >= 3 && g.attackKnights() {
 		dice := [2]int{red, yellow}
 		if production > 0 {

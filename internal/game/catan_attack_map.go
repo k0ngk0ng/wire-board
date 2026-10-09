@@ -100,7 +100,7 @@ func (m catanAttackMap) validate(g *Catan) error {
 		}
 		b := g.attackTransportBoard()
 		b.Attack = m
-		return b.validate(g)
+		return g.validateAttackTransportMap(b)
 	}
 	n := len(g.Players)
 	tileCount, vertexCount, edgeCount, size, supply, gold := 19, 54, 72, 62.0, 36, 100

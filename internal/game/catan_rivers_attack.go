@@ -142,6 +142,9 @@ func (g *Catan) riverAttackCastleBlocked(index, player int) bool {
 
 // Select the immutable printed recipe; invention history is validated separately.
 func (g *Catan) attackPrintedNumbers() []int {
+	if g.attackTransport() {
+		return attackTransportRecipe(len(g.Players) > 4).numbers
+	}
 	if g.riversAttack() {
 		r, _, _, _ := catanRiversAttackRecipe(len(g.Players) > 4)
 		return r.numbers

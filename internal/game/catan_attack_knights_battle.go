@@ -21,7 +21,7 @@ type catanAttackCityBattle struct {
 // No board mutation until every die and payout is validated. The end-phase
 // controller will sequence these battles and run victory between coasts.
 func (s *State) catanAttackCityBattle(tile int, die func() int) (*catanAttackCityBattle, error) {
-	if s.Catan == nil || !s.Catan.attackKnights() || die == nil || !slices.Contains(s.Catan.Attack.Map.Coast, tile) {
+	if s.Catan == nil || !s.Catan.attackKnights() || die == nil || !slices.Contains(s.Catan.attackBattleTiles(), tile) {
 		return nil, errors.New("无效蛮族城市骑士战场")
 	}
 	if err := s.Catan.Attack.City.validate(s.Catan); err != nil {
@@ -51,19 +51,14 @@ func (s *State) catanAttackCityBattle(tile int, die func() int) (*catanAttackCit
 		return nil, err
 	}
 	b.Contests = allocation.Contests
-	a.Barbarians[tile] = 0
-	for p := range n {
-		a.Prisoners[p] += b.Prisoners[p]
+	if err := g.captureAttackBattle(tile, b.Prisoners); err != nil {
+		return nil, err
 	}
 	next.catanScores()
 	next.catanVictory()
 	if next.Finished {
-		if err := a.ensureGold(sum(b.Gold)); err != nil {
+		if err := g.attackReward(b.Gold); err != nil {
 			return nil, err
-		}
-		for p := range n {
-			a.Gold[p] += b.Gold[p]
-			a.GoldBank -= b.Gold[p]
 		}
 		*s = next
 		return b, nil
@@ -95,12 +90,8 @@ func (s *State) catanAttackCityBattle(tile int, die func() int) (*catanAttackCit
 		}
 		b.Gold[k.Owner] += 3
 	}
-	if err := a.ensureGold(sum(b.Gold)); err != nil {
+	if err := g.attackReward(b.Gold); err != nil {
 		return nil, err
-	}
-	for p := range n {
-		a.Gold[p] += b.Gold[p]
-		a.GoldBank -= b.Gold[p]
 	}
 	if err := c.validate(g); err != nil {
 		return nil, err

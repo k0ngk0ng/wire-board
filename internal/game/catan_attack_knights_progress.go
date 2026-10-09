@@ -8,12 +8,10 @@ import (
 // These kernels run after shared progress-card ownership and phase validation.
 func (s *State) catanAttackCityIntrigue(player, tile int) error {
 	g := s.Catan
-	if !g.attackKnights() || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || !slices.Contains(g.Attack.captureTargets(), tile) {
+	if !g.attackKnights() || player < 0 || player >= len(g.Players) || g.Players[player].Eliminated || !slices.Contains(g.attackCaptureTargets(), tile) {
 		return errors.New("请选择一个有蛮族的沿海地块")
 	}
-	g.Attack.Barbarians[tile]--
-	g.Attack.Prisoners[player]++
-	return nil
+	return g.attackCapture(tile, player)
 }
 func (s *State) catanAttackCityTaxation(player, tile int, random func(int) int) error {
 	g := s.Catan

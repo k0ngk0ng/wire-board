@@ -205,7 +205,7 @@ func (m catanTransportMap) validate(g *Catan) error {
 		}
 		b := g.attackTransportBoard()
 		b.Transport = m
-		return b.validate(g)
+		return g.validateAttackTransportMap(b)
 	}
 	if g == nil || m.Rivers != "" && m.Rivers != CatanRiversTransportRules || m.Caravans != "" && (m.Caravans != CatanCaravansTransportRules || m.Rivers != "") {
 		return errors.New("运输地图缺失")

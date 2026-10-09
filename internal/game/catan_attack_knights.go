@@ -72,7 +72,7 @@ func (c *catanAttackCity) validate(g *Catan) error {
 	}
 	total := 0
 	for tile, n := range g.Attack.Barbarians {
-		if n < 0 || n > 3 || n > 0 && !slices.Contains(g.Attack.Map.Coast, tile) {
+		if n < 0 || n > 3 || n > 0 && !slices.Contains(g.attackBattleTiles(), tile) {
 			return errors.New("组合蛮族位置或数量无效")
 		}
 		total += n
@@ -85,6 +85,11 @@ func (c *catanAttackCity) validate(g *Catan) error {
 	}
 	if total > g.Attack.Map.Barbarians+c.Issued {
 		return errors.New("组合蛮族总库存超过已发放数量")
+	}
+	if g.attackTransport() {
+		if err := g.validateAttackTransportPieces(); err != nil {
+			return err
+		}
 	}
 	if err := c.validateNumbers(g); err != nil {
 		return err
@@ -194,6 +199,9 @@ func (s *State) catanAttackCityLanding(dice [2]int) ([]int, error) {
 	g := s.Catan
 	if !g.attackKnights() || dice[0] < 1 || dice[0] > 6 || dice[1] < 1 || dice[1] > 6 {
 		return nil, errors.New("道路蛮族登陆骰无效")
+	}
+	if g.attackTransport() {
+		return s.attackTransportCityLanding(dice)
 	}
 	a := g.Attack
 	c := a.City

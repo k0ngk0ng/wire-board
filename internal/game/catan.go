@@ -591,7 +591,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	case "catan_wonder_claim", "catan_wonder_build":
 		return s.catanWonderAction(player, a)
 	case "catan_roll":
-		if g.transportKnights() && g.EventDeck == nil {
+		if g.transportKnights() && !g.attackTransport() && g.EventDeck == nil {
 			return s.catanTransportCityRoll(func() [2]int { return [2]int{catanRandom(6) + 1, catanRandom(6) + 1} }, catanRandom(6))
 		}
 		if g.EventDeck != nil {

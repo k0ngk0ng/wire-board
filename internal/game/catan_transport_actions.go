@@ -73,7 +73,7 @@ func (t *catanTransport) sellResource(g *Catan, player, resource int) error {
 	if err := t.actionAllowed(g, player); err != nil {
 		return err
 	}
-	if resource < 0 || resource >= len(g.Bank) || resource >= 5 && !g.transportKnights() {
+	if resource < 0 || resource >= len(g.Bank) || resource >= 5 && !g.transportKnights() && !g.attackTransportKnights() {
 		return errors.New("请选择一种普通资源")
 	}
 	rate := g.rates(player)[resource]
