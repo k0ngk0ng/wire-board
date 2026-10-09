@@ -16,12 +16,12 @@ func (g *Catan) makeCaravansDesertSea() (*catanCaravanMap, []catanFishingExtraNu
 		return g.makeCaravansTribeExtended()
 	}
 	number := 2
-	if len(g.Players) == 4 {
+	if len(g.Players) == 4 || g.twoCaravansSea() {
 		number = 11
 	}
 	// Locate the printed terrain/number pair, independent of display coordinates.
 	sourceResource, targetResource, targetNumber := 3, 2, 12
-	if len(g.Players) == 4 {
+	if len(g.Players) == 4 || g.twoCaravansSea() {
 		sourceResource, targetResource, targetNumber = 1, 1, 2
 	}
 	if g.Seafarers.Scenario == "tribe" {
@@ -71,10 +71,14 @@ func (g *Catan) validateCaravansDesertSea() error {
 	}
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n != 3 && n != 4) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n != 3 && n != 4 && !g.twoCaravansSea()) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队沙漠海图配置无效")
 	}
-	expected, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
+	recipeSeats := n
+	if g.twoCaravansSea() {
+		recipeSeats = 4
+	}
+	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}
@@ -110,7 +114,12 @@ func (g *Catan) validateCaravansDesertSea() error {
 }
 
 // NewCatanCaravansDesertSeafarers exposes the verified printed recipe.
-func NewCatanCaravansDesertSeafarers(n int) (*State, error) { return newCatanCaravansDesertSea(n) }
+func NewCatanCaravansDesertSeafarers(n int) (*State, error) {
+	if n == 2 {
+		return newCatanTwoCaravansSea("desert")
+	}
+	return newCatanCaravansDesertSea(n)
+}
 
 func newCatanCaravansTribeSea(n int) (*State, error) {
 	if n < 3 || n > 6 {
@@ -140,10 +149,14 @@ func newCatanCaravansTribeSea(n int) (*State, error) {
 func (g *Catan) validateCaravansTribeSea() error {
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n < 3 || n > 6) || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Tribe == nil || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Tribe == nil || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队部落配置无效")
 	}
-	expected, err := NewCatanSeafarers(n, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)
+	recipeSeats := n
+	if g.twoCaravansSea() {
+		recipeSeats = 4
+	}
+	expected, err := NewCatanSeafarers(recipeSeats, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)
 	if err != nil {
 		return err
 	}
@@ -178,7 +191,12 @@ func (g *Catan) validateCaravansTribeSea() error {
 	return g.validateRiverTribeRewards(b)
 }
 
-func NewCatanCaravansTribeSeafarers(n int) (*State, error) { return newCatanCaravansTribeSea(n) }
+func NewCatanCaravansTribeSeafarers(n int) (*State, error) {
+	if n == 2 {
+		return newCatanTwoCaravansSea("tribe")
+	}
+	return newCatanCaravansTribeSea(n)
+}
 
 func (g *Catan) makeCaravansTribeExtended() (*catanCaravanMap, []catanFishingExtraNumber, error) {
 	holes := []int{30, 33}

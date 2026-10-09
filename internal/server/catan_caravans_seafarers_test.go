@@ -11,9 +11,9 @@ func TestCatanCaravansSeaPublicHTTP(t *testing.T) { runCaravansSeaHTTP(t, false,
 func TestCatanCaravansSeaEventsHTTP(t *testing.T) { runCaravansSeaHTTP(t, true, "caravans-desert") }
 func TestCatanCaravansTribeHTTP(t *testing.T)     { runCaravansSeaHTTP(t, true, "caravans-tribe") }
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
-	counts := []int{3, 4}
+	counts := []int{2, 3, 4}
 	if scenario == "caravans-tribe" {
-		counts = []int{3, 4, 5, 6}
+		counts = []int{2, 3, 4, 5, 6}
 	}
 	for _, n := range counts {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
@@ -94,7 +94,11 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 				}
 			}
 			h.command(current(h), "rematch", nil, 200)
-			h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
+			cmd, field := "catan_scenario", "catanScenario"
+			if n == 2 {
+				cmd, field = "catan_two_scenario", "catanTwoScenario"
+			}
+			h.post("/api/rooms/"+id, map[string]any{"type": cmd, field: "", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
 			if s.rooms[id].CatanScenario != "" {
 				t.Fatal("base switch")
 			}
@@ -103,7 +107,7 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 }
 
 func TestCatanCaravansSeaRejectsUnsupported(t *testing.T) {
-	for _, n := range []int{2, 5, 6} {
+	for _, n := range []int{1, 5, 6} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 		if r.setCatanScenario("caravans-desert") == nil {
 			t.Fatal("unsupported count", n)
