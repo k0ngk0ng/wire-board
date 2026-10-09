@@ -334,3 +334,20 @@ test("Attack city progress uses edge smithing, coastal capture and road-knight o
     targets: [6, 7],
   });
 });
+
+test("river transport Alchemist permits 2 and 12 while ordinary small transport rejects them", () => {
+  for (const dice of [
+    [1, 1],
+    [6, 6],
+  ]) {
+    const r = room(0);
+    r.game.catan.transport = { knights: "catan-transport-knights-2025" };
+    assert.equal(progressPlayAction(r, selection(0, { dice })), null);
+    r.game.catan.rivers = { transport: "catan-rivers-transport-2025" };
+    assert.deepEqual(progressPlayAction(r, selection(0, { dice })), {
+      type: "catan_progress",
+      card: 0,
+      tokens: dice,
+    });
+  }
+});

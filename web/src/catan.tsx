@@ -965,6 +965,18 @@ function CatanBaseBoard({
                         t.resource === 5 &&
                         (!sea?.cloth || sea.cloth.homeTiles.includes(t.id)))));
                 const numbers = catanProductionNumbers(g, t.id);
+                const transportSite =
+                  g.rivers?.transport &&
+                  g.transport?.map.sites.find((s) => s.tile === t.id);
+                const terrainLabel = transportSite
+                  ? (
+                      {
+                        quarry: "采石场，产砖块",
+                        glassworks: "玻璃工坊，产木材",
+                        castle: "城堡，产羊毛",
+                      } as Record<string, string>
+                    )[transportSite.kind]
+                  : terrainNames[t.resource];
                 const riverImage = riverImages.find((r) =>
                   r.tiles.includes(t.id),
                 );
@@ -973,7 +985,7 @@ function CatanBaseBoard({
                     key={`${t.id}-${t.resource}`}
                     role={available ? "button" : undefined}
                     tabIndex={available ? 0 : undefined}
-                    aria-label={`地块 ${t.id + 1} ${terrainNames[t.resource]} ${numbers.join("、")}${g.robber === t.id ? "，强盗所在" : ""}`}
+                    aria-label={`地块 ${t.id + 1} ${terrainLabel} ${numbers.join("、")}${g.robber === t.id ? "，强盗所在" : ""}`}
                     className={`catan-hex terrain-${t.resource} ${available ? "selectable" : ""} ${(!revealedEvent || revealedEvent.productionStarted) && catanTileProducing(g, t.id, liveNumber) ? "producing" : ""}`}
                     onClick={() => available && select(effective, t.id)}
                     onKeyDown={(e) => {

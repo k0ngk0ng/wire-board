@@ -11,6 +11,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "rivers-transport",
+    name: "河流＋运输",
+    description:
+      "沿河建设、修桥并运送货物；共用金币，贫穷不扣分。二至六人，13 分获胜，可叠加城市骑士和事件牌；五六人使用本站地图。",
+  },
+  {
     id: "rivers-attack",
     name: "河流＋蛮族进攻",
     description:

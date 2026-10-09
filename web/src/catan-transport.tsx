@@ -39,8 +39,9 @@ export function CatanTransportSeat({
   if (!w) return null;
   return (
     <span className="transport-seat">
-      <CatanCoins count={w.gold} assets={assets} /> · 马车 {w.level + 1}级 ·
-      已交货 {w.delivered}件
+      <CatanCoins count={w.gold} assets={assets} /> ·{" "}
+      <span className="transport-seat-stat">马车 {w.level + 1}级</span> ·
+      <span className="transport-seat-stat">已交货 {w.delivered}件</span>
       {w.cargo && (
         <>
           {" "}
@@ -107,21 +108,25 @@ export function CatanTransportMap({
                 </text>
               );
             })}
-            <circle
-              cx={v.x}
-              cy={v.y}
-              r={8 * scale}
-              fill="#fce8b5"
-              stroke="#795026"
-              strokeWidth={2}
-            />
+            {!g.rivers?.transport && (
+              <circle
+                cx={v.x}
+                cy={v.y}
+                r={8 * scale}
+                fill="#fce8b5"
+                stroke="#795026"
+                strokeWidth={2}
+              />
+            )}
             <text
               x={tile.x}
-              y={tile.y + 39 * scale}
+              y={tile.y + (g.rivers?.transport ? -35 : 39) * scale}
               textAnchor="middle"
               className="transport-site-label"
             >
               {transportSites[site.kind]} · {t.state.supply[origin]}
+              {g.rivers?.transport &&
+                ` · 产${({ quarry: "砖", glassworks: "木", castle: "羊" } as Record<string, string>)[site.kind]}`}
             </text>
           </g>
         );
@@ -304,9 +309,11 @@ export function CatanTransportPanel({
             ? can
               ? "你的运输行动"
               : `${room.seats[active]?.name} 正在${t.barbarianPending ? "移动蛮族" : "运输"}`
-            : t.knights
-              ? "运输＋城市与骑士 · 15分获胜"
-              : "运输任务 · 13分获胜"}
+            : g.rivers?.transport
+              ? `河流＋运输${t.knights ? "＋城市与骑士" : ""} · ${t.knights ? 15 : 13}分获胜`
+              : t.knights
+                ? "运输＋城市与骑士 · 15分获胜"
+                : "运输任务 · 13分获胜"}
         </strong>
         <button
           aria-expanded={!collapsed}

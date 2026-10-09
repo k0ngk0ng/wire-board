@@ -664,6 +664,7 @@ export type CatanState = {
     };
   };
   rivers?: {
+    transport?: string;
     attack?: string;
     poorPenalty?: number;
     canProtectCity?: boolean;

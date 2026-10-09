@@ -259,3 +259,7 @@
   border: 1px solid #b9924e;
   border-radius: 10px;
 }
+
+.transport-seat-stat {
+  white-space: nowrap;
+}

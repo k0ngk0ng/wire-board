@@ -930,3 +930,21 @@ test("rivers attack waiting room uses combined wealth, army, count and victory r
     }
   }
 });
+
+test("rivers transport resolves shared river rules, player counts and target without attack", () => {
+  for (const capacity of [2, 3, 6])
+    for (const knights of [false, true]) {
+      const rules = catanRuleContext({
+        capacity,
+        catanScenario: "rivers-transport",
+        catanCitiesKnights: knights ? { layout: "variable" } : undefined,
+      });
+      assert.equal(rules.rivers, true);
+      assert.equal(rules.transport, true);
+      assert.equal(rules.attack, false);
+      assert.equal(rules.twoAttack, false);
+      assert.equal(rules.two, capacity === 2);
+      assert.equal(rules.fiveSix, capacity > 4);
+      assert.equal(rules.target, knights ? 15 : 13);
+    }
+});
