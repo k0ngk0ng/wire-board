@@ -175,7 +175,7 @@ func (s *State) validateCatanAttack() error {
 				return errors.New("登陆点数记录无效")
 			}
 			seen[total] = true
-			if roll.Shortage && !g.attackTransport() && (n < 5 || total != 5 && total != 9 || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
+			if roll.Shortage && !g.attackTransport() && (n < 5 || total != 5 && total != 9 && !(g.attackSea() && g.Seafarers.Scenario == "desert" && total == 3) || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
 				return errors.New("最后一枚蛮族的随机登陆记录无效")
 			}
 			for i, id := range roll.Tiles {

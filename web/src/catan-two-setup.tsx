@@ -15,6 +15,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "attack-desert",
+    name: "蛮族进攻＋穿越沙漠",
+    description:
+      "本站双人四人沙漠地图、中立海岸建设与共享骑士，14分获胜，可加事件牌。",
+  },
+  {
     id: "attack-shores",
     name: "蛮族进攻＋新海岸",
     description: "本站双人中立海岸与共享骑士规则，14分获胜，可加事件牌。",

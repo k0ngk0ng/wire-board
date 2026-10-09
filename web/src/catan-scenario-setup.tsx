@@ -12,7 +12,7 @@ const scenarios = [
     id: "attack-desert",
     name: "蛮族进攻＋穿越沙漠",
     description:
-      "三四人官方固定图，主岛骑士与蛮族登陆，外区建设同样触发登陆；无强盗海盗，14分获胜，可加事件牌。",
+      "二至六人，双人及五六人采用本站配方，三四人官方固定图；主岛骑士与蛮族登陆，外区建设同样触发登陆；无强盗海盗，14分获胜，可加事件牌。",
   },
   {
     id: "attack-shores",
@@ -501,6 +501,7 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  scenario === "attack-desert" ||
   scenario === "attack-shores" ||
   scenario === "caravans-new-world" ||
   scenario === "caravans-islands" ||
@@ -569,8 +570,8 @@ export function CatanScenarioPicker({
               value={s.id}
               disabled={
                 s.id === "attack-desert"
-                  ? players < 3 ||
-                    players > 4 ||
+                  ? players < 2 ||
+                    players > 6 ||
                     helpers ||
                     knights ||
                     fishing ||

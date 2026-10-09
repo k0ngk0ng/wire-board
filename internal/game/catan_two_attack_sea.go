@@ -10,6 +10,17 @@ func newCatanTwoAttackShores() (*State, error) {
 	if err != nil {
 		return nil, err
 	}
+	return newCatanTwoAttackSeaBoard(board, m)
+}
+func newCatanTwoAttackDesert() (*State, error) {
+	board, m, err := newCatanAttackDesertFourBoard()
+	if err != nil {
+		return nil, err
+	}
+	return newCatanTwoAttackSeaBoard(board, m)
+}
+func newCatanTwoAttackSeaBoard(board *Catan, m *catanAttackMap) (*State, error) {
+	var err error
 	s := &State{Kind: "catan", Round: 1}
 	s.initCatan(2)
 	g := s.Catan
@@ -28,7 +39,7 @@ func newCatanTwoAttackShores() (*State, error) {
 	}
 	g.StartPlayer = catanRandom(2)
 	s.Turn = g.StartPlayer
-	s.Log = []string{"本站双人蛮族新海岸：四人组合地图，两家中立海岸村庄；真人两次生产，建船接中立船，中立村庄另触发登陆；共享中立骑士只在主岛活动，14分获胜。"}
+	s.Log = []string{"本站双人蛮族航海：四人组合地图，两家中立海岸村庄；真人两次生产，建船接中立船，中立村庄另触发登陆；共享中立骑士只在主岛活动，14分获胜。"}
 	s.catanScores()
 	if err = s.validateCatanAttack(); err != nil {
 		return nil, err

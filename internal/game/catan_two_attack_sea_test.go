@@ -58,3 +58,37 @@ func TestCatanTwoAttackSeaIsolation(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanTwoAttackDesertNatural(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		s, e := newCatanTwoAttackDesert()
+		if e != nil {
+			t.Fatal(e)
+		}
+		if events {
+			if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+				t.Fatal(e)
+			}
+		}
+		for step := 0; step < 18000 && !s.Finished; step++ {
+			p := twoFullActor(s)
+			a, e := s.BotAction(p)
+			if e != nil {
+				t.Fatal(step, e)
+			}
+			if e = s.Apply(p, a); e != nil {
+				t.Fatal(step, s.Phase, e)
+			}
+			if step%137 == 0 {
+				b := clone(*s)
+				s = &b
+				if e = s.validateCatanTwo(); e != nil {
+					t.Fatal(e)
+				}
+			}
+		}
+		if !s.Finished {
+			t.Fatal("unfinished", events)
+		}
+	}
+}
