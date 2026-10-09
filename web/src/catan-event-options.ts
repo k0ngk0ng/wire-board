@@ -5,9 +5,13 @@ export function catanEventsSupported(room: Partial<Room>) {
   return (
     room.kind === "catan" &&
     (!room.catanFishing ||
-      ["rivers", "caravans", "barbarian-attack", "transport"].includes(
-        room.catanTwoScenario || room.catanScenario || "",
-      ) ||
+      [
+        "rivers",
+        "caravans",
+        "attack-shores",
+        "barbarian-attack",
+        "transport",
+      ].includes(room.catanTwoScenario || room.catanScenario || "") ||
       (room.capacity === 2 && room.catanTwoScenario === "cities-knights") ||
       [
         "land-ho",
@@ -43,6 +47,7 @@ export function catanEventsSupported(room: Partial<Room>) {
       "caravans-new-world",
       "caravans-islands",
       "caravans-tribe",
+      "attack-shores",
       "barbarian-attack",
       "transport",
       "rivers-caravans",

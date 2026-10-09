@@ -95,3 +95,71 @@ func TestCatanAttackShoresKnightBoundaryAndCorruption(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanAttackShoresEventsNatural(t *testing.T) {
+	s, e := newCatanAttackShores(4)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+		t.Fatal(e)
+	}
+	for step := 0; step < 14000 && !s.Finished; step++ {
+		p := twoFullActor(s)
+		a, e := s.BotAction(p)
+		if e != nil {
+			t.Fatal(step, e)
+		}
+		if e = s.Apply(p, a); e != nil {
+			t.Fatal(step, s.Phase, e)
+		}
+		if step%137 == 0 {
+			b := clone(*s)
+			s = &b
+			if e = s.validateCatanAttack(); e != nil {
+				t.Fatal(step, e)
+			}
+		}
+	}
+	if !s.Finished {
+		t.Fatal("unfinished")
+	}
+}
+
+func TestCatanAttackShoresAllEventFaces(t *testing.T) {
+	for kind := range catanCardEventNames {
+		t.Run(kind, func(t *testing.T) {
+			s, e := newCatanAttackShores(4)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+				t.Fatal(e)
+			}
+			finishAttackSetup(t, s)
+			referenceEventTop(t, s, kind)
+			turn := s.Turn
+			if e = s.Apply(turn, Action{Type: "catan_roll"}); e != nil {
+				t.Fatal(e)
+			}
+			for step := 0; s.Phase != "catan_turn" && step < 40; step++ {
+				b := clone(*s)
+				s = &b
+				if e = s.validateCatanEventSession(); e != nil {
+					t.Fatal(e)
+				}
+				actor := twoFullActor(s)
+				a, e := s.BotAction(actor)
+				if e != nil {
+					t.Fatal(e)
+				}
+				if e = s.Apply(actor, a); e != nil {
+					t.Fatal(e)
+				}
+			}
+			if s.Phase != "catan_turn" || s.Catan.Robber != -1 || s.Catan.Seafarers.Pirate != -1 || s.Catan.Attack.Sequence != 0 {
+				t.Fatal("event changed pieces or failed continuation", s.Phase)
+			}
+		})
+	}
+}

@@ -1275,7 +1275,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			} else if next.Kind == "splendor" && next.SplendorOptions != (game.SplendorOptions{}) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
-				if next.CatanScenario == "caravans-new-world" {
+				if next.CatanScenario == "attack-shores" {
+					next.Game, err = game.NewCatanAttackShores(len(next.Seats))
+				} else if next.CatanScenario == "caravans-new-world" {
 					if next.CatanNewWorldMap != nil {
 						next.Game, err = game.NewCatanCaravansWorldWithMap(len(next.Seats), next.CatanNewWorldMap)
 					} else {
