@@ -55,7 +55,7 @@ func (r *Room) validateCatanFriendlyRobber(n int) error {
 	return nil
 }
 func (r *Room) catanFriendlyMinimumPlayers() int {
-	if r.publicCatanTwoVariantsAvailable() || publicCatanCaravanSea(r.CatanScenario) && r.Capacity == 2 {
+	if r.publicCatanTwoVariantsAvailable() || publicCatanCaravanSea(r.CatanScenario) {
 		return 2
 	}
 	if r.CatanOptions.FiveSix {
