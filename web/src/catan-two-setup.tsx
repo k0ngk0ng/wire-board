@@ -11,6 +11,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "rivers-caravans",
+    name: "双人＋河流＋商队",
+    description:
+      "沿河建设赚金币，桥位可放马车；两次生产、中立建设及每轮最多两辆商队马车，12 分获胜。",
+  },
+  {
     id: "barbarian-attack",
     name: "双人＋蛮族进攻",
     description:

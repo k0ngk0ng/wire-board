@@ -29,7 +29,7 @@ func publicCatanExplorerExtended(scenario string) bool {
 }
 
 func publicCatanFlexibleScenario(scenario string) bool {
-	return publicCatanExplorerScenario(scenario) || scenario == "transport"
+	return publicCatanExplorerScenario(scenario) || scenario == "transport" || scenario == "rivers-caravans"
 }
 
 // Public recipes include two-to-six-player Explorer missions.
@@ -49,6 +49,18 @@ func (r *Room) validateCatanScenario() error {
 		}
 	}
 	if r.CatanScenario == "" {
+		return nil
+	}
+	if r.CatanScenario == "rivers-caravans" {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanFriendlyRobber != nil || r.CatanHarbors != nil || r.CatanBaseConfiguration != nil || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanFishing || r.CatanFishingLakes {
+			return errors.New("河流商队支持二至六人；开局按人数启用双人规则或扩大地图，可叠加城市骑士和事件牌")
+		}
+		if r.CatanCitiesKnights != nil {
+			setup, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+			if err != nil || setup != *r.CatanCitiesKnights {
+				return errors.New("河流商队城市骑士布局或规则版本无效")
+			}
+		}
 		return nil
 	}
 	if r.CatanScenario == "transport" {
@@ -162,11 +174,14 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && scenario != "rivers-caravans" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if scenario == "rivers-caravans" {
+		next.CatanOptions = game.CatanOptions{}
+	}
 	if publicCatanExplorerScenario(scenario) && !publicCatanExplorerScenario(r.CatanScenario) {
 		next.CatanOptions, _ = game.NormalizeCatanOptions(game.CatanOptions{Helpers: r.CatanOptions.Helpers, AllHelpers: r.CatanOptions.AllHelpers})
 	}
@@ -218,7 +233,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 			return err
 		}
 		next.CatanCitiesKnights = &setup
-	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || ((r.CatanScenario == "fishing" || r.CatanScenario == "caravans" || r.CatanScenario == "rivers" || r.CatanScenario == "transport") && scenario != r.CatanScenario) || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
+	} else if (publicCatanExplorerScenario(r.CatanScenario) && !publicCatanExplorerScenario(scenario)) || ((r.CatanScenario == "fishing" || r.CatanScenario == "caravans" || r.CatanScenario == "rivers" || r.CatanScenario == "transport" || r.CatanScenario == "rivers-caravans") && scenario != r.CatanScenario) || r.CatanScenario == "cities-knights" || (publicCatanSeaScenario(r.CatanScenario) && !publicCatanSeaScenario(scenario)) {
 		next.CatanCitiesKnights = nil
 	}
 	if !next.publicCatanEventsAvailable() {

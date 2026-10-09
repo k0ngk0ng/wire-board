@@ -8,6 +8,7 @@ const names: Record<string, string> = {
   fishing: "卡坦渔夫",
   rivers: "河流",
   caravans: "商队",
+  "rivers-caravans": "河流＋商队",
   "spices-for-catan": "探索者与海盗 · 卡坦香料",
   "pirate-lairs": "探索者与海盗 · 海盗巢穴",
   "fish-for-catan": "探索者与海盗 · 卡坦鱼群",
