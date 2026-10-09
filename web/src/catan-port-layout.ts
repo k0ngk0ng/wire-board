@@ -16,7 +16,7 @@ const overlaps = (a: Box, b: Box) =>
 export function catanPortLayout(g: CatanState) {
   const sea = g.seafarers,
     h = g.hexSize || 62;
-  const ports = [...g.ports, ...(sea?.tribe?.ports || [])].map((port) => {
+  const ports = [...(g.ports || []), ...(sea?.tribe?.ports || [])].map((port) => {
     const e = g.edges[port.edge],
       a = g.vertices[e.a],
       b = g.vertices[e.b];
