@@ -68,8 +68,8 @@ func (r *Room) validateCatanScenario() error {
 		}
 	}
 	if r.CatanScenario == "attack-shores" {
-		if r.Kind != "catan" || (r.Capacity < 3 || r.Capacity > 4) || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
-			return errors.New("蛮族新海岸当前支持三四人，可叠加事件牌")
+		if r.Kind != "catan" || (r.Capacity < 3 || r.Capacity > 6) || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("蛮族新海岸支持三至六人，可叠加事件牌")
 		}
 		return nil
 	}
@@ -217,7 +217,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" && scenario != "caravans-islands" && scenario != "caravans-new-world" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack" || r.CatanScenario == "attack-shores") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" && scenario != "caravans-islands" && scenario != "caravans-new-world" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r
@@ -246,7 +246,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if !publicCatanExplorerScenario(scenario) {
 		next.CatanFishingLakes = false
 	}
-	if scenario != "rivers" && scenario != "caravans" && scenario != "barbarian-attack" && scenario != "transport" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
+	if scenario != "rivers" && scenario != "caravans" && scenario != "barbarian-attack" && scenario != "attack-shores" && scenario != "transport" && !publicCatanSeaScenario(scenario) && !publicCatanExplorerScenario(scenario) {
 		next.CatanFishing = false
 	}
 	if publicCatanFlexibleScenario(scenario) {

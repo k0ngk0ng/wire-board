@@ -10,6 +10,11 @@ import (
 
 func TestCatanAttackShoresHTTP(t *testing.T)      { runAttackShoresHTTP(t, 4) }
 func TestCatanAttackShoresThreeHTTP(t *testing.T) { runAttackShoresHTTP(t, 3) }
+func TestCatanAttackShoresExtendedHTTP(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackShoresHTTP(t, n) })
+	}
+}
 func runAttackShoresHTTP(t *testing.T, n int) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -92,8 +97,27 @@ func TestCatanAttackShoresRoomBounds(t *testing.T) {
 	for _, n := range []int{2, 3, 4, 5, 6} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 		err := r.setCatanScenario("attack-shores")
-		if (err == nil) != (n == 3 || n == 4) {
+		if (err == nil) != (n >= 3 && n <= 6) {
 			t.Fatal(n, err)
 		}
+	}
+}
+
+func TestCatanAttackShoresExtendedSwitch(t *testing.T) {
+	r := &Room{Kind: "catan", Status: "waiting", Capacity: 6}
+	if e := r.setCatanScenario("attack-shores"); e != nil {
+		t.Fatal(e)
+	}
+	if e := r.setCatanScenario(""); e == nil {
+		t.Fatal("six seats accepted base")
+	}
+	if r.CatanScenario != "attack-shores" {
+		t.Fatal("rejected switch mutated room")
+	}
+	if e := r.setCatanScenario("transport"); e != nil {
+		t.Fatal(e)
+	}
+	if e := r.setCatanScenario("attack-shores"); e != nil {
+		t.Fatal(e)
 	}
 }

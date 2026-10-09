@@ -12,7 +12,7 @@ const scenarios = [
     id: "attack-shores",
     name: "蛮族进攻＋新海岸",
     description:
-      "三四人官方地图，蛮族与骑士仅在主岛活动，无强盗海盗，14分获胜，可加事件牌。",
+      "三四人官方地图、五六人本站扩大配方，蛮族与骑士仅在主岛活动，无强盗海盗，14分获胜，可加事件牌。",
   },
   {
     id: "caravans-new-world",
