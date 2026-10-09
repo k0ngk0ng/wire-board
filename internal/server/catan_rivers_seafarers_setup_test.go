@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
 	"testing"
+	"time"
 )
 
 func TestCatanRiversSeaAdmission(t *testing.T) {
@@ -77,7 +78,53 @@ func TestCatanRiversSeaPublicStart(t *testing.T) {
 			if g.Rivers == nil || g.Seafarers == nil || g.Two == nil {
 				t.Fatal("wrong game")
 			}
-			_, _ = restartRiversHTTP(t, s, ts, clients, id)
+
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			r := s.rooms[id]
+			actor := twoHTTPActor(r.Game)
+			deadline := r.TurnDeadline
+			if deadline <= 0 {
+				t.Fatal("missing deadline")
+			}
+			s.mu.Lock()
+			s.expireSetups(time.UnixMilli(deadline + 1))
+			s.mu.Unlock()
+			if !s.rooms[id].Seats[actor].AutoPlay || !s.rooms[id].Seats[actor].TimeoutAutoPlay {
+				t.Fatal("timeout did not take over")
+			}
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			if !s.rooms[id].Seats[actor].AutoPlay {
+				t.Fatal("autoplay not restored")
+			}
+			host.command(current(host), "close", nil, 200)
+			_, profile := host.request("GET", "/api/players/"+s.rooms[id].Host, nil)
+			record := profile["history"].([]any)[0].(map[string]any)
+			if record["catanScenario"] != scenario || record["catanRules"] != game.CatanRiversSeafarersRules {
+				t.Fatal("lost river sea history", record)
+			}
+			if scenario == "rivers-new-world" && record["catanLayout"] != "river-default" {
+				t.Fatal("default map mislabeled as approved")
+			}
+			rules := record["catanExpansionRules"].(map[string]any)
+			if rules["rivers_seafarers"] != game.CatanRiversSeafarersRules || rules["two_rivers_seafarers"] == nil {
+				t.Fatal("missing combination version")
+			}
+			host.command(current(host), "rematch", nil, 200)
+			if s.rooms[id].CatanScenario != scenario || s.rooms[id].Game != nil {
+				t.Fatal("rematch configuration")
+			}
+			for _, seat := range s.rooms[id].Seats {
+				if seat.AutoPlay || seat.TimeoutAutoPlay {
+					t.Fatal("rematch kept takeover")
+				}
+			}
+			host.command(current(host), "ready", nil, 200)
+			guest.command(current(guest), "ready", nil, 200)
+			host.command(current(host), "start", nil, 200)
+			if s.rooms[id].Game.Catan.Rivers == nil || s.rooms[id].Game.Catan.Seafarers == nil {
+				t.Fatal("rematch dropped combination")
+			}
+
 		})
 	}
 }

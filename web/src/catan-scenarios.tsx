@@ -40,6 +40,13 @@ export const catanLayoutName = (id: string) =>
     fixed: "官方固定布局",
     variable: "官方可变布局",
     prepared: "共同确认地图",
+    "river-default": "默认河流地图",
+    "extended": "本站五六人河流地图",
+    "extended-prepared": "五六人共同确认地图",
+    "extended-mainland": "本站五六人河流主岛",
+    "wire-board-fog-three-rivers-v1": "本站五六人三河迷雾",
+    "rivers-across": "河流穿越沙漠带",
+    "desert-belt": "保留沙漠带",
   })[id] || "";
 
 export function catanScenarioVictory(id: string, target: number) {
