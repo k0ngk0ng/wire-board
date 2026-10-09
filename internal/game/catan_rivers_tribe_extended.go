@@ -73,7 +73,7 @@ func newCatanRiversTribeExtended(n int) (*State, error) {
 func (g *Catan) validateRiversTribeExtended() error {
 	n := len(g.Players)
 	sea, r := g.Seafarers, g.Rivers
-	if n < 5 || n > 6 || sea == nil || r == nil || sea.Tribe == nil || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || r.SeaLayout != catanRiverTribeExtended || sea.VictoryPoints != 13 || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if n < 5 || n > 6 || sea == nil || r == nil || sea.Tribe == nil || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || r.SeaLayout != catanRiverTribeExtended || sea.VictoryPoints != g.riversSeaVictoryPoints(13) || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("扩大河流部落配置无效")
 	}
 	expected, err := NewCatanSeafarers(n, CatanOptions{FiveSix: true}, CatanSeafarersSetup{Scenario: "tribe", Layout: "fixed"}, nil)

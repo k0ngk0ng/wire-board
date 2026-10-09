@@ -356,9 +356,10 @@ export function catanVictoryTarget(
   if (
     ["rivers-shores", "rivers-desert", "rivers-desert-belt"].includes(scenario)
   )
-    return 14;
-  if (["rivers-fog", "rivers-new-world"].includes(scenario)) return 12;
-  if (scenario === "rivers-tribe") return 13;
+    return citiesKnights ? 16 : 14;
+  if (["rivers-fog", "rivers-new-world"].includes(scenario))
+    return citiesKnights ? 14 : 12;
+  if (scenario === "rivers-tribe") return citiesKnights ? 15 : 13;
   if (scenario === "attack-transport") return 14;
   if (scenario === "caravans-transport") return 15;
   if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;

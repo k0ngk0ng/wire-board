@@ -23,3 +23,18 @@ test('river sea waiting room describes actual victory and two-player rules',()=>
 });
 
 test("extended river sea waiting rooms announce paired turns",()=>{assert.equal(catanRuleContext({kind:"catan",capacity:6,catanScenario:"rivers-fog"}).fiveSix,true);});
+
+import { supportsPublicCatanKnightsCombination } from '../src/catan-knights-combination.ts';
+test('river sea rooms offer the knight nesting and raise the target by two',()=>{
+ for(const id of ['rivers-shores','rivers-fog','rivers-desert','rivers-desert-belt','rivers-tribe','rivers-new-world'])
+  assert.equal(supportsPublicCatanKnightsCombination(id),true,id);
+ for(const [id,target] of [['rivers-shores',16],['rivers-fog',14],['rivers-desert',16],['rivers-desert-belt',16],['rivers-tribe',15],['rivers-new-world',14]]){
+  const room={kind:'catan',capacity:3,catanScenario:id,catanCitiesKnights:{layout:'variable'}};
+  const context=catanRuleContext(room);
+  assert.equal(context.citiesKnights,true,id);
+  assert.equal(context.target,target,id);
+ }
+ // The printed targets stay unchanged without the knight option.
+ assert.equal(catanRuleContext({kind:'catan',capacity:3,catanScenario:'rivers-shores'}).target,14);
+ assert.equal(supportsPublicCatanKnightsCombination('fishing'),true);
+});

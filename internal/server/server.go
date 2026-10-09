@@ -1331,7 +1331,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					if next.CatanRiversWorldMap != nil {
 						setup.Layout = "prepared"
 					}
-					next.Game, err = game.NewCatanRiversSeafarers(len(next.Seats), setup, next.CatanRiversWorldMap)
+					if next.CatanCitiesKnights != nil {
+						next.Game, err = game.NewCatanRiversSeaCitiesKnights(len(next.Seats), setup, next.CatanRiversWorldMap)
+					} else {
+						next.Game, err = game.NewCatanRiversSeafarers(len(next.Seats), setup, next.CatanRiversWorldMap)
+					}
 				} else if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {
 					err = next.validateCatanTwoSetup()
 					if err == nil {

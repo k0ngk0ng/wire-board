@@ -256,7 +256,7 @@ func (g *Catan) validateRiversTribeMap() error {
 		return err
 	}
 	board := expected.Catan
-	if len(g.Tiles) != len(board.Tiles) || len(g.Edges) != len(board.Edges) || len(g.Vertices) != len(board.Vertices) || !slices.Equal(sea.StartIslands, board.Seafarers.StartIslands) || !slices.Equal(sea.Islands, board.Seafarers.Islands) || sea.VictoryPoints != 13 || sea.IslandBonus != 0 {
+	if len(g.Tiles) != len(board.Tiles) || len(g.Edges) != len(board.Edges) || len(g.Vertices) != len(board.Vertices) || !slices.Equal(sea.StartIslands, board.Seafarers.StartIslands) || !slices.Equal(sea.Islands, board.Seafarers.Islands) || sea.VictoryPoints != g.riversSeaVictoryPoints(13) || sea.IslandBonus != 0 {
 		return errors.New("河流部落地图尺寸或岛屿无效")
 	}
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
@@ -366,8 +366,13 @@ func (g *Catan) validateRiversTribeMap() error {
 
 func (g *Catan) validateRiverTribeRewards(board *Catan) error {
 	t, initial := g.tribe(), board.tribe()
-	if len(t.Points) != len(g.Players) || len(t.HeldPorts) != len(g.Players) || t.ProgressRules != "" {
+	if len(t.Points) != len(g.Players) || len(t.HeldPorts) != len(g.Players) {
 		return errors.New("河流部落奖励座位无效")
+	}
+	if t.ProgressRules != "" {
+		// The knight nesting replaces the printed rewards with the shared
+		// progress deck, which validateTribeProgress owns.
+		return g.validateTribeProgress()
 	}
 	seen := map[int]bool{}
 	points := len(t.Tokens)

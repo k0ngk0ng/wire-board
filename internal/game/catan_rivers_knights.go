@@ -60,6 +60,11 @@ func (g *Catan) validateRiverKnights() error {
 		}
 		return nil
 	}
+	// Sea rivers keep their printed robber start (off-board or the desert
+	// tile) and the barbarian ship replaces the pirate instead.
+	if g.riversSea() {
+		return g.validateRiversSeaKnights()
+	}
 	start := g.CitiesKnights.RobberStart
 	if !slices.Contains(r.Map.Swamps, start) && !(g.SetupStep == 0 && start == -1) {
 		return errors.New("河流骑士强盗起点必须为沼泽")
