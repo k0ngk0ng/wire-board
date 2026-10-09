@@ -98,3 +98,75 @@ func TestCatanCaravansShoresExtendedMapIntegrity(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanCaravansShoresFourNatural(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		t.Run(fmt.Sprint(events), func(t *testing.T) {
+			s, err := newCatanCaravansShoresExtended(4)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(s.Catan.Caravans.Map.Starts) != 3 || s.Catan.Caravans.Map.Supply != 22 {
+				t.Fatal("mainland inventory")
+			}
+			if events {
+				if err = s.EnableCatanEvents(CatanEventCatalogue); err != nil {
+					t.Fatal(err)
+				}
+			}
+			for step := 0; step < 16000 && !s.Finished; step++ {
+				p := twoFullActor(s)
+				a, e := s.BotAction(p)
+				if e != nil {
+					t.Fatal(e)
+				}
+				if e = s.Apply(p, a); e != nil {
+					t.Fatal(step, s.Phase, e)
+				}
+				if step%113 == 0 {
+					b := clone(*s)
+					s = &b
+					if e = s.validateCaravans(); e != nil {
+						t.Fatal(e)
+					}
+				}
+			}
+			if !s.Finished {
+				t.Fatal("unfinished")
+			}
+			t.Log("round", s.Round)
+		})
+	}
+}
+
+func TestCatanCaravansShoresFourMapIntegrity(t *testing.T) {
+	for sample := 0; sample < 12; sample++ {
+		s, err := newCatanCaravansShoresExtended(4)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := s.Catan
+		if len(g.Tiles) != 42 || len(g.Caravans.Map.WateringHoles) != 1 || len(g.Caravans.Map.Starts) != 3 || len(g.Ports) != 9 || g.Paired != nil {
+			t.Fatal("four player recipe")
+		}
+		for _, id := range caravanShoresMainlandIDs(4) {
+			if g.Seafarers.Islands[id] != g.Seafarers.StartIslands[0] {
+				t.Fatal("mainland embedded outside home")
+			}
+		}
+		for name, mutate := range map[string]func(*Catan){
+			"outer terrain": func(g *Catan) { g.Tiles[0].Resource = 11 },
+			"outer number":  func(g *Catan) { g.Tiles[0].Number = 7 },
+			"sea":           func(g *Catan) { g.Tiles[2].Resource = 0 },
+			"water":         func(g *Catan) { g.Tiles[g.Caravans.Map.WateringHoles[0]].Resource = 0 },
+			"number recipe": func(g *Catan) { g.Caravans.Map.NumberRecipe = CatanExtendedNumberRecipe },
+			"supply":        func(g *Catan) { g.Caravans.Map.Supply = 33 },
+		} {
+			b := clone(*s)
+			mutate(b.Catan)
+			if b.validateCaravans() == nil {
+				t.Fatal("accepted", name)
+			}
+		}
+	}
+}

@@ -14,7 +14,7 @@ func TestCatanCaravansShoresHTTP(t *testing.T)    { runCaravansSeaHTTP(t, true, 
 func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 	counts := []int{2, 3, 4, 5, 6}
 	if scenario == "caravans-shores" {
-		counts = []int{5, 6}
+		counts = []int{4, 5, 6}
 	}
 	for _, n := range counts {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
