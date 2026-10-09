@@ -1331,7 +1331,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					if next.CatanRiversWorldMap != nil {
 						setup.Layout = "prepared"
 					}
-					if next.CatanCitiesKnights != nil {
+					if next.CatanFishing {
+						next.Game, err = game.NewCatanFishingRiversSea(len(next.Seats), setup, next.CatanRiversWorldMap, next.CatanCitiesKnights != nil)
+					} else if next.CatanCitiesKnights != nil {
 						next.Game, err = game.NewCatanRiversSeaCitiesKnights(len(next.Seats), setup, next.CatanRiversWorldMap)
 					} else {
 						next.Game, err = game.NewCatanRiversSeafarers(len(next.Seats), setup, next.CatanRiversWorldMap)
