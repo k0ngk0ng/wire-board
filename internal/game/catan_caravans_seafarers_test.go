@@ -119,3 +119,31 @@ func TestCatanCaravansSeaRoutesAndProduction(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanCaravansSeaRejectsRobberAndForeignRecipe(t *testing.T) {
+	for _, tribe := range []bool{false, true} {
+		s, err := newCatanCaravansDesertSea(3)
+		if tribe {
+			s, err = newCatanCaravansTribeSea(3)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, tile := range s.Catan.Tiles {
+			illegal := tile.Resource == CatanSea || tribe && !s.Catan.tribeLand(tile.ID)
+			if !illegal {
+				continue
+			}
+			b := clone(*s)
+			b.Catan.Robber = tile.ID
+			if b.validateCaravans() == nil {
+				t.Fatal("accepted robber", tribe, tile.ID)
+			}
+		}
+		b := clone(*s)
+		b.Catan.Seafarers.NumberRecipe = "foreign"
+		if b.validateCaravans() == nil {
+			t.Fatal("foreign number rules")
+		}
+	}
+}
