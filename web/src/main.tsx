@@ -2299,7 +2299,7 @@ function Create({
               onChange={(scenario) => {
                 setCatanScenario(scenario);
                 if (scenario === "attack-shores") {
-                  setCapacity(4);
+                  setCapacity(Math.min(4, Math.max(3, capacity)));
                   setCatanOptions({});
                 }
                 if (scenario === "caravans-islands")
@@ -2666,7 +2666,7 @@ function Create({
               {(k === "dota"
                 ? [2, 4, 6]
                 : k === "catan" && catanScenario === "attack-shores"
-                  ? [4]
+                  ? [3, 4]
                   : k === "catan" &&
                       ["caravans-new-world", "caravans-islands"].includes(
                         catanScenario,
@@ -2902,7 +2902,7 @@ function Waiting({
         ? 4
         : room.kind === "catan"
           ? room.catanScenario === "attack-shores"
-            ? 4
+            ? 3
             : room.catanTwoRules || isPublicCatanFlexible(room.catanScenario)
               ? 2
               : room.catanOptions?.fiveSix

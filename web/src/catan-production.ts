@@ -14,7 +14,7 @@ export function catanProductionNumbers(g: CatanState, tile: number): number[] {
       ...(g.rivers?.map.extraNumbers || [])
         .filter((n) => n.tile === tile)
         .map((n) => n.number),
-      ...(g.attack?.map.extraNumbers || [])
+      ...(g.attack?.map?.extraNumbers || [])
         .filter((n) => n.tile === tile)
         .map((n) => n.number),
       ...(g.caravans?.extraNumbers || [])
