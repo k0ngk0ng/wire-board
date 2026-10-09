@@ -6,7 +6,7 @@ import (
 )
 
 func TestCatanTwoCaravansSeaNatural(t *testing.T) {
-	for _, scenario := range []string{"desert", "tribe"} {
+	for _, scenario := range []string{"shores", "desert", "tribe"} {
 		for _, events := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%s/events%t", scenario, events), func(t *testing.T) {
 				s, err := newCatanTwoCaravansSea(scenario)
@@ -48,7 +48,7 @@ func TestCatanTwoCaravansSeaNatural(t *testing.T) {
 }
 
 func TestCatanTwoCaravansSeaIsolation(t *testing.T) {
-	for _, scenario := range []string{"desert", "tribe"} {
+	for _, scenario := range []string{"shores", "desert", "tribe"} {
 		s, err := newCatanTwoCaravansSea(scenario)
 		if err != nil {
 			t.Fatal(err)

@@ -65,7 +65,7 @@ func (r *Room) validateCatanScenario() error {
 	if r.CatanScenario == "caravans-shores" || r.CatanScenario == "caravans-desert" || r.CatanScenario == "caravans-tribe" {
 		maximum := 6
 		minimum := 2
-		if r.CatanScenario == "caravans-shores" {
+		if r.CatanScenario == "caravans-shores" && r.Capacity != 2 {
 			minimum = 4
 		}
 		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
