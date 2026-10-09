@@ -64,6 +64,9 @@ func (s *State) validateCaravans() error {
 		return nil
 	}
 	n := len(g.Players)
+	if (c.Transport != "" || g.Transport != nil) && !g.caravansTransport() {
+		return errors.New("商队运输组合标记无效")
+	}
 	if (c.Attack != "" || g.Attack != nil) && !g.caravansAttack() {
 		return errors.New("商队蛮族组合标记无效")
 	}

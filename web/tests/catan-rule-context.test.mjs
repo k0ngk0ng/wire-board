@@ -979,3 +979,37 @@ test("caravans attack combines votes and battles with 12 or 15 VP in waiting and
       assert.equal(catanRuleContext(room).rivers, false);
     }
 });
+
+test("caravans transport keeps both modules and 15 VP after room drafts change", () => {
+  for (const capacity of [2, 3, 6])
+    for (const knights of [false, true]) {
+      const room = {
+        capacity,
+        catanScenario: "caravans-transport",
+        catanCitiesKnights: knights ? {} : undefined,
+      };
+      let rules = catanRuleContext(room);
+      assert.equal(rules.caravans, true);
+      assert.equal(rules.transport, true);
+      assert.equal(rules.attack, false);
+      assert.equal(rules.rivers, false);
+      assert.equal(rules.target, 15);
+      assert.equal(rules.two, capacity === 2);
+      assert.equal(rules.fiveSix, capacity > 4);
+      room.game = {
+        catan: {
+          players: Array.from({ length: capacity }, () => ({})),
+          caravans: { transport: "catan-caravans-transport-2025" },
+          transport: {},
+          citiesKnights: knights ? {} : undefined,
+          two: capacity === 2 ? {} : undefined,
+          paired: capacity > 4 ? {} : undefined,
+        },
+      };
+      room.catanScenario = "rivers-attack";
+      rules = catanRuleContext(room);
+      assert.equal(rules.target, 15);
+      assert.equal(rules.attack, false);
+      assert.equal(rules.rivers, false);
+    }
+});

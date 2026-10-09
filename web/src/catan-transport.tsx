@@ -108,7 +108,7 @@ export function CatanTransportMap({
                 </text>
               );
             })}
-            {!g.rivers?.transport && (
+            {!(g.rivers?.transport || g.caravans?.transport) && (
               <circle
                 cx={v.x}
                 cy={v.y}
@@ -120,12 +120,16 @@ export function CatanTransportMap({
             )}
             <text
               x={tile.x}
-              y={tile.y + (g.rivers?.transport ? -35 : 39) * scale}
+              y={
+                tile.y +
+                (g.rivers?.transport || g.caravans?.transport ? -35 : 39) *
+                  scale
+              }
               textAnchor="middle"
               className="transport-site-label"
             >
               {transportSites[site.kind]} · {t.state.supply[origin]}
-              {g.rivers?.transport &&
+              {(g.rivers?.transport || g.caravans?.transport) &&
                 ` · 产${({ quarry: "砖", glassworks: "木", castle: "羊" } as Record<string, string>)[site.kind]}`}
             </text>
           </g>
@@ -309,8 +313,8 @@ export function CatanTransportPanel({
             ? can
               ? "你的运输行动"
               : `${room.seats[active]?.name} 正在${t.barbarianPending ? "移动蛮族" : "运输"}`
-            : g.rivers?.transport
-              ? `河流＋运输${t.knights ? "＋城市与骑士" : ""} · ${t.knights ? 15 : 13}分获胜`
+            : g.rivers?.transport || g.caravans?.transport
+              ? `${g.caravans?.transport ? "商队" : "河流"}＋运输${t.knights ? "＋城市与骑士" : ""} · ${g.victoryTarget ?? 13}分获胜`
               : t.knights
                 ? "运输＋城市与骑士 · 15分获胜"
                 : "运输任务 · 13分获胜"}

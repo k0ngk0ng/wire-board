@@ -11,6 +11,7 @@ const CatanCaravansRules = "catan-caravans-2025"
 // Chronological directed wagons can be replayed to validate a saved network.
 // Pending holds public bids while the action owner remains State.Turn.
 type catanCaravans struct {
+	Transport    string                      `json:"transport,omitempty"`
 	Attack       string                      `json:"attack,omitempty"`
 	Rivers       string                      `json:"rivers,omitempty"`
 	ExtraNumbers []catanFishingExtraNumber   `json:"extraNumbers,omitempty"`
@@ -44,7 +45,7 @@ func (c catanCaravans) choices(g *Catan) []catanCaravanWagon {
 	}
 	appendChoice := func(edge, from int) {
 		choice := catanCaravanWagon{edge, from}
-		if !occupied[edge] && !outgoing[from] && !slices.Contains(choices, choice) {
+		if g.caravanEdgeAllowed(edge) && !occupied[edge] && !outgoing[from] && !slices.Contains(choices, choice) {
 			choices = append(choices, choice)
 		}
 	}

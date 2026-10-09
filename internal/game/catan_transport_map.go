@@ -17,6 +17,7 @@ type catanTransportSite struct {
 	Blocked []int  `json:"blocked"`
 }
 type catanTransportMap struct {
+	Caravans    string               `json:"caravans,omitempty"`
 	Rivers      string               `json:"rivers,omitempty"`
 	NumberSwaps []CatanNumberSwap    `json:"numberSwaps,omitempty"`
 	Rules       string               `json:"rules"`
@@ -197,7 +198,7 @@ func (m catanTransportMap) accepts(site int, cargo string) bool {
 }
 
 func (m catanTransportMap) validate(g *Catan) error {
-	if g == nil || m.Rivers != "" && m.Rivers != CatanRiversTransportRules {
+	if g == nil || m.Rivers != "" && m.Rivers != CatanRiversTransportRules || m.Caravans != "" && (m.Caravans != CatanCaravansTransportRules || m.Rivers != "") {
 		return errors.New("运输地图缺失")
 	}
 	base, expected, err := catanTransportGeometry(len(g.Players))
@@ -232,6 +233,15 @@ func (m catanTransportMap) validate(g *Catan) error {
 		_, _, _, r.resources = riversTransportRecipe(len(g.Players) > 4)
 		r.deserts = nil
 		numbers, _ = riversTransportNumbers(g)
+	}
+	if m.Caravans == CatanCaravansTransportRules {
+		holes, resources := caravansTransportRecipe(len(g.Players))
+		r.resources = resources
+		r.deserts = nil
+		for _, id := range holes {
+			fixed[id] = catanWateringHole
+		}
+		numbers = caravansTransportNumbers(g)
 	}
 	original := map[CatanNumberToken]int{}
 	for _, tile := range g.Tiles {

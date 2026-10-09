@@ -1,3 +1,4 @@
+import { CatanCaravansTransportRules } from "./catan-caravans-transport-rules";
 import { CatanCaravansAttackRules } from "./catan-caravans-attack-rules";
 import { CatanRiversTransportRules } from "./catan-rivers-transport-rules";
 import { CatanRiversAttackRules } from "./catan-rivers-attack-rules";
@@ -451,14 +452,15 @@ export function CatanRules({ room }: { room: Room }) {
     return (
       <section className="catan-rules">
         <h3>
-          {info.rivers ? "河流＋运输" : "运输"}
+          {info.caravans ? "商队＋运输" : info.rivers ? "河流＋运输" : "运输"}
           {info.citiesKnights ? "＋城市与骑士" : "任务"} · {info.target}分
         </h3>
         {info.citiesKnights && <CatanCitiesKnightsRules info={info} />}
         <CatanRiversAttackRules info={info} />
         <CatanCaravansAttackRules info={info} />
         <CatanRiversTransportRules info={info} />
-        {info.citiesKnights && !info.rivers && (
+        <CatanCaravansTransportRules info={info} />
+        {info.citiesKnights && !info.rivers && !info.caravans && (
           <p>
             使用城市改良、城墙、大都会与进步牌，取消运输发展牌和最大骑士军队；蛮族船与三名道路蛮族分别运作。二至四人掷出2或12只重掷生产骰，事件骰只结算一次；炼金术请选择3至11点。激活骑士可驱赶相邻道路蛮族至空边，然后转为未激活；落点为对手道路时随机偷1张资源或商品。金币可购买普通资源，不能购买商品；商品可按交易比例换金币。本站组合说明：五六人地图同样用一块粮田替换森林，小地图炼金术仅选3至11点。
           </p>
@@ -486,7 +488,7 @@ export function CatanRules({ room }: { room: Room }) {
           <li>
             {info.events
               ? "先完成事件，再按牌面点数生产；抽到2或12仍执行事件，不重抽。强盗逃跑无效果。"
-              : info.rivers
+              : info.rivers || info.caravans
                 ? "2／12 正常生产，不重掷；"
                 : "二至四人掷出2或12重掷，五六人则正常生产；"}
             7仍弃牌，再移动一名道路蛮族；落到对手道路时随机偷1张
