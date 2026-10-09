@@ -25,3 +25,33 @@ func newCatanAttackDesertThreeGeometry() (*Catan, error) {
 	g.Seafarers.VictoryPoints = 14
 	return g, nil
 }
+
+func newCatanAttackDesertThreeBoard() (*Catan, *catanAttackMap, error) {
+	g, e := newCatanAttackDesertThreeGeometry()
+	if e != nil {
+		return nil, nil, e
+	}
+	// Clockwise coast of the starting region; the desert boundary is not sea.
+	return g, &catanAttackMap{Sea: CatanAttackSeafarersRules, Castles: []int{20}, Coast: []int{6, 12, 17, 23, 28, 32, 31, 26, 16}, Barbarians: 36, Gold: 100}, nil
+}
+func newCatanAttackDesertThree() (*State, error) {
+	board, m, e := newCatanAttackDesertThreeBoard()
+	if e != nil {
+		return nil, e
+	}
+	s, e := NewCatan(3, CatanOptions{})
+	if e != nil {
+		return nil, e
+	}
+	g := s.Catan
+	g.Tiles, g.Vertices, g.Edges, g.Ports, g.HexSize, g.Seafarers = board.Tiles, board.Vertices, board.Edges, board.Ports, board.HexSize, board.Seafarers
+	g.Robber = -1
+	g.DevDeck, g.DevDiscard = []int{}, []int{}
+	g.Attack, e = newCatanAttackPieces(g, m)
+	if e != nil {
+		return nil, e
+	}
+	s.Log = []string{"蛮族穿越沙漠：骑士和蛮族仅在起始主岛活动，外区建设同样触发登陆；无强盗海盗，14分获胜。"}
+	s.catanScores()
+	return s, s.validateCatanAttack()
+}

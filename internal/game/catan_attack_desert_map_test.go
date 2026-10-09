@@ -30,3 +30,64 @@ func TestCatanAttackDesertThreeGeometry(t *testing.T) {
 		seen[e.A], seen[e.B] = true, true
 	}
 }
+
+func TestCatanAttackDesertThreeNatural(t *testing.T) {
+	for _, events := range []bool{false, true} {
+		s, e := newCatanAttackDesertThree()
+		if e != nil {
+			t.Fatal(e)
+		}
+		if events {
+			if e = s.EnableCatanEvents(CatanEventCatalogue); e != nil {
+				t.Fatal(e)
+			}
+		}
+		for step := 0; step < 16000 && !s.Finished; step++ {
+			p := twoFullActor(s)
+			a, e := s.BotAction(p)
+			if e != nil {
+				t.Fatal(step, e)
+			}
+			if e = s.Apply(p, a); e != nil {
+				t.Fatal(step, e)
+			}
+			if step%137 == 0 {
+				b := clone(*s)
+				s = &b
+				if e = s.validateCatanAttack(); e != nil {
+					t.Fatal(e)
+				}
+			}
+		}
+		if !s.Finished {
+			t.Fatal("unfinished")
+		}
+	}
+}
+
+func TestCatanAttackDesertThreeLandingBoundary(t *testing.T) {
+	s, e := newCatanAttackDesertThree()
+	if e != nil {
+		t.Fatal(e)
+	}
+	g := s.Catan
+	seen := map[int]bool{}
+	for _, id := range g.Attack.Map.Coast {
+		if seen[g.Tiles[id].Number] || g.Seafarers.Islands[id] != g.Seafarers.StartIslands[0] {
+			t.Fatal("landing partition")
+		}
+		seen[g.Tiles[id].Number] = true
+	}
+	for _, edge := range g.Attack.recruitEdges(g, 0, "swift_knight") {
+		if !g.attackSeaKnightEdge(edge) {
+			t.Fatal("recruit outside mainland")
+		}
+	}
+	for _, mutate := range []func(*Catan){func(g *Catan) { g.Tiles[6].Number = 4 }, func(g *Catan) { g.Attack.Map.Coast[0] = 0 }, func(g *Catan) { g.Seafarers.StartIslands[0] = g.Seafarers.Islands[0] }} {
+		b := clone(*s)
+		mutate(b.Catan)
+		if b.validateCatanAttack() == nil {
+			t.Fatal("invalid desert map accepted")
+		}
+	}
+}
