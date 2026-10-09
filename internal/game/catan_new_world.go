@@ -152,8 +152,12 @@ func (g *Catan) worldPortEdges() []int {
 		e := g.Edges[p.Edge]
 		blocked[e.A], blocked[e.B] = true, true
 	}
+	coast := *g
+	if g.riversSea() {
+		coast.Rivers = nil // Ports can share a river mouth bridge edge.
+	}
 	for _, e := range g.Edges {
-		if !blocked[e.A] && !blocked[e.B] && g.edgeTerrain(e.ID, true) && g.edgeTerrain(e.ID, false) && g.fishingWorldPortFits(e.ID) {
+		if !blocked[e.A] && !blocked[e.B] && coast.edgeTerrain(e.ID, true) && coast.edgeTerrain(e.ID, false) && g.fishingWorldPortFits(e.ID) {
 			result = append(result, e.ID)
 		}
 	}

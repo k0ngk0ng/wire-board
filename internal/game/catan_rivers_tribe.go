@@ -36,10 +36,14 @@ type riverSeaCandidate struct {
 }
 
 func (g *Catan) riverTribeCandidates(length int) []riverSeaCandidate {
-	result := []riverSeaCandidate{}
 	home := g.Seafarers.StartIslands[0]
+	return g.riverSeaCandidates(length, func(id int) bool { return g.Seafarers.Islands[id] == home }, false)
+}
+
+func (g *Catan) riverSeaCandidates(length int, allowed func(int) bool, frame bool) []riverSeaCandidate {
+	result := []riverSeaCandidate{}
 	for _, start := range g.Tiles {
-		if g.Seafarers.Islands[start.ID] != home {
+		if !allowed(start.ID) {
 			continue
 		}
 		for side := 0; side < 6; side++ {
@@ -49,7 +53,7 @@ func (g *Catan) riverTribeCandidates(length int) []riverSeaCandidate {
 			for step := 1; step < length; step++ {
 				found := -1
 				for _, t := range g.Tiles {
-					if g.Seafarers.Islands[t.ID] == home && math.Abs(t.X-start.X-float64(step)*dx) < 0.01 && math.Abs(t.Y-start.Y-float64(step)*dy) < 0.01 {
+					if allowed(t.ID) && math.Abs(t.X-start.X-float64(step)*dx) < 0.01 && math.Abs(t.Y-start.Y-float64(step)*dy) < 0.01 {
 						found = t.ID
 						break
 					}
@@ -67,7 +71,7 @@ func (g *Catan) riverTribeCandidates(length int) []riverSeaCandidate {
 			for _, tile := range g.Edges[outlet].Tiles {
 				sea = sea || g.Tiles[tile].Resource == CatanSea
 			}
-			if sea {
+			if sea && !frame || frame && len(g.Edges[outlet].Tiles) == 1 {
 				result = append(result, riverSeaCandidate{ids, outlet})
 			}
 		}
