@@ -94,3 +94,40 @@ func TestCatanCaravansHelperRestoreWithoutEvents(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanCaravanTribeHelperDesertRestore(t *testing.T) {
+	s, err := NewCatanCaravansTribeSeafarers(6)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = s.EnableCatanCaravansSeaHelpers(true); err != nil {
+		t.Fatal(err)
+	}
+	g := s.Catan
+	desert := -1
+	for _, tile := range g.Tiles {
+		if tile.Resource == CatanDesert {
+			desert = tile.ID
+			break
+		}
+	}
+	if desert < 0 {
+		t.Fatal("missing desert")
+	}
+	g.Robber = desert
+	if err = s.validateCaravans(); err != nil {
+		t.Fatal("helper refuge rejected", err)
+	}
+	// Ordinary robber moves still cannot land in the tribe's unnumbered desert.
+	if g.robberLandAllowed(desert) {
+		t.Fatal("ordinary robber admission changed")
+	}
+	b := clone(*s)
+	b.Catan.Caravans.Helpers = ""
+	b.Catan.Options.Helpers = false
+	b.Catan.Options.AllHelpers = false
+	b.Catan.HelperDisplay = nil
+	if b.validateCaravans() == nil {
+		t.Fatal("unmarked refuge accepted")
+	}
+}

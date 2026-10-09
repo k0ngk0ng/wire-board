@@ -213,7 +213,7 @@ func (g *Catan) validateCaravansTribeSea() error {
 			return errors.New("商队部落路线无效")
 		}
 	}
-	if g.Robber >= 0 && !g.robberLandAllowed(g.Robber) && !(g.EventDeck != nil && g.Tiles[g.Robber].Resource == CatanDesert) {
+	if g.Robber >= 0 && !g.robberLandAllowed(g.Robber) && !((g.EventDeck != nil || g.caravanSeaHelpers()) && g.Tiles[g.Robber].Resource == CatanDesert) {
 		return errors.New("商队海图强盗位置无效")
 	}
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
