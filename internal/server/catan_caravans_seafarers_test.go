@@ -276,3 +276,12 @@ func TestCatanCaravanVariantScenarioSwitch(t *testing.T) {
 		}
 	}
 }
+
+func TestCatanCaravanFriendlyMinimumUsesActualSeats(t *testing.T) {
+	for _, capacity := range []int{2, 4, 6} {
+		r := &Room{Kind: "catan", Capacity: capacity, CatanScenario: "caravans-new-world"}
+		if r.catanFriendlyMinimumPlayers() != 2 {
+			t.Fatal("capacity incorrectly raised minimum", capacity)
+		}
+	}
+}
