@@ -91,8 +91,7 @@ func (s *State) catanAttackCityResolveEnd(orders []catanAttackCityOrder, die fun
 	}
 
 	if !next.Finished {
-		next.catanNext()
-		next.catanVictory()
+		next.catanAfterAttackBattles()
 	}
 	if err := next.Catan.Attack.City.validate(next.Catan); err != nil {
 		return nil, err

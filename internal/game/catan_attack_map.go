@@ -10,8 +10,9 @@ const catanCastle = 12
 const catanAttackRules = "catan-barbarian-attack-2025"
 
 type catanAttackMap struct {
-	Rivers  string `json:"rivers,omitempty"`
-	Castles []int  `json:"castles"`
+	Caravans string `json:"caravans,omitempty"`
+	Rivers   string `json:"rivers,omitempty"`
+	Castles  []int  `json:"castles"`
 	// Productive coastal hexes in the official clockwise battle order.
 	Coast      []int `json:"coast"`
 	Barbarians int   `json:"barbarians"`
@@ -100,6 +101,9 @@ func (m catanAttackMap) validate(g *Catan) error {
 	if n < 2 || n > 6 || len(g.Tiles) != tileCount || len(g.Vertices) != vertexCount || len(g.Edges) != edgeCount || g.HexSize != size || m.Barbarians != supply || m.Gold != gold {
 		return errors.New("蛮族进攻地图或组件数量不符")
 	}
+	if m.Caravans != "" && (m.Caravans != CatanCaravansAttackRules || m.Rivers != "") {
+		return errors.New("商队蛮族地图版本无效")
+	}
 	recipe := catanAttackBoardRecipe(n > 4)
 	fixed := map[int]int{}
 	if m.Rivers != "" {
@@ -132,7 +136,11 @@ func (m catanAttackMap) validate(g *Catan) error {
 				return errors.New("城堡不能替换成普通地形")
 			}
 		case slices.Contains(recipe.deserts, id):
-			if tile.Resource != CatanDesert {
+			want := CatanDesert
+			if m.Caravans == CatanCaravansAttackRules {
+				want = catanWateringHole
+			}
+			if tile.Resource != want {
 				return errors.New("沙漠位置不符")
 			}
 		default:

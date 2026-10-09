@@ -11,6 +11,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "caravans-attack",
+    name: "商队＋蛮族进攻",
+    description:
+      "沿海水源出发的商队与蛮族战斗并用，蛮族不阻挡马车；二至六人，12 分获胜，可叠加城市骑士和事件牌。",
+  },
+  {
     id: "rivers-transport",
     name: "河流＋运输",
     description:

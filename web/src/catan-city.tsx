@@ -224,8 +224,8 @@ export function CatanCityOverview({
       <section className="catan-city-overview">
         <strong>城市与骑士 · 蛮族进攻</strong>
         <p>
-          船面在沿海登陆；道路骑士在回合末移动与战斗。每 3 个俘虏计 1 分，13
-          分获胜。
+          船面在沿海登陆；道路骑士在回合末移动与战斗。每 3 个俘虏计 1 分，
+          {g.victoryTarget ?? 13} 分获胜。
         </p>
         <div className="catan-progress-stocks">
           {cityTracks.map((name, i) => (

@@ -11,7 +11,10 @@ export function CatanCitiesKnightsRules({ info }: { info: CatanRuleContext }) {
     return (
       <>
         <p>
-          <b>蛮族进攻＋城市与骑士{info.two ? " · 双人" : ""} · 13 分获胜</b>
+          <b>
+            {info.caravans ? "商队＋" : ""}蛮族进攻＋城市与骑士
+            {info.two ? " · 双人" : ""} · {info.target} 分获胜
+          </b>
         </p>
         {info.fishing && (
           <p>

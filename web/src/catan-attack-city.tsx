@@ -208,7 +208,8 @@ export function CatanAttackCityPanel({
   return (
     <div className="attack-city-panel">
       <p>
-        <strong>道路骑士</strong> · 每 3 个俘虏计 1 分 · 13 分获胜
+        <strong>道路骑士</strong> · 每 3 个俘虏计 1 分 ·{" "}
+        {room.game!.catan!.victoryTarget ?? 13} 分获胜
       </p>
       {!q && (plan || treason) && (
         <p>
