@@ -5,13 +5,15 @@ import "errors"
 const CatanTwoCaravansSeaRules = "wire-board-two-caravans-sea-v1"
 
 func (g *Catan) twoCaravansSea() bool {
-	return g.twoSeafarers() && g.caravansSea() && g.Two.CaravansSea == CatanTwoCaravansSeaRules && (g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "shores" || g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe")
+	return g.twoSeafarers() && g.caravansSea() && g.Two.CaravansSea == CatanTwoCaravansSeaRules && (g.Seafarers.Scenario == "new_world" || g.Seafarers.Scenario == "islands" || g.Seafarers.Scenario == "shores" || g.Seafarers.Scenario == "desert" || g.Seafarers.Scenario == "tribe")
 }
 
 func newCatanTwoCaravansSea(scenario string) (*State, error) {
 	var recipe *State
 	var err error
 	switch scenario {
+	case "new_world":
+		recipe, err = newCatanCaravansWorld(4)
 	case "islands":
 		recipe, err = newCatanCaravansIslands(4)
 	case "shores":

@@ -2173,6 +2173,7 @@ function Create({
                                         "rivers-desert-belt",
                                         "rivers-tribe",
                                         "caravans-shores",
+                                        "caravans-new-world",
                                         "caravans-islands",
                                         "caravans-tribe",
                                         "caravans-desert",
@@ -2276,6 +2277,7 @@ function Create({
               "rivers-desert-belt",
               "rivers-tribe",
               "caravans-shores",
+              "caravans-new-world",
               "caravans-islands",
               "caravans-tribe",
               "caravans-desert",
@@ -2329,6 +2331,7 @@ function Create({
                     "rivers-desert-belt",
                     "rivers-tribe",
                     "caravans-shores",
+                    "caravans-new-world",
                     "caravans-islands",
                     "caravans-tribe",
                     "caravans-desert",
@@ -2357,6 +2360,7 @@ function Create({
                     "rivers-desert-belt",
                     "rivers-tribe",
                     "caravans-shores",
+                    "caravans-new-world",
                     "caravans-islands",
                     "caravans-tribe",
                     "caravans-desert",
@@ -2649,7 +2653,10 @@ function Create({
             >
               {(k === "dota"
                 ? [2, 4, 6]
-                : k === "catan" && catanScenario === "caravans-islands"
+                : k === "catan" &&
+                    ["caravans-new-world", "caravans-islands"].includes(
+                      catanScenario,
+                    )
                   ? [2, 3, 4, 5, 6]
                   : Array.from(
                       {
@@ -2683,6 +2690,7 @@ function Create({
                                       "rivers-desert-belt",
                                       "rivers-tribe",
                                       "caravans-shores",
+                                      "caravans-new-world",
                                       "caravans-islands",
                                       "caravans-tribe",
                                       "caravans-desert",
@@ -2842,6 +2850,7 @@ function Waiting({
         "rivers-desert-belt",
         "rivers-tribe",
         "caravans-shores",
+        "caravans-new-world",
         "caravans-islands",
         "caravans-tribe",
         "caravans-desert",
@@ -2961,6 +2970,7 @@ function Waiting({
                                     "rivers-desert-belt",
                                     "rivers-tribe",
                                     "caravans-shores",
+                                    "caravans-new-world",
                                     "caravans-islands",
                                     "caravans-tribe",
                                     "caravans-desert",

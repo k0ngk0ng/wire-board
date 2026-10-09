@@ -15,6 +15,11 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "caravans-new-world",
+    name: "商队＋新世界",
+    description: "本站双人中立玩家与随机居中水源配方，14分获胜，可加事件牌。",
+  },
+  {
     id: "caravans-islands",
     name: "商队＋四岛",
     description:
@@ -178,6 +183,7 @@ export function CatanTwoScenarioPicker({
               disabled={
                 ((isPublicCatanRiversSea(s.id) ||
                   [
+                    "caravans-new-world",
                     "caravans-islands",
                     "caravans-shores",
                     "caravans-desert",

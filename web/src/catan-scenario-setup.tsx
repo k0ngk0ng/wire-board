@@ -9,6 +9,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "caravans-new-world",
+    name: "商队＋新世界",
+    description:
+      "随机地图居中放水源，先放港口再建设，14分获胜。二至六人，可加事件牌；双人及五六人使用本站适配。",
+  },
+  {
     id: "caravans-islands",
     name: "商队＋四岛／六岛",
     description:
@@ -483,6 +489,7 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  scenario === "caravans-new-world" ||
   scenario === "caravans-islands" ||
   scenario === "caravans-shores" ||
   ["caravans-desert", "caravans-tribe"].includes(scenario || "") ||
@@ -548,7 +555,7 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                s.id === "caravans-islands"
+                ["caravans-new-world", "caravans-islands"].includes(s.id)
                   ? players < 2 ||
                     players > 6 ||
                     helpers ||
