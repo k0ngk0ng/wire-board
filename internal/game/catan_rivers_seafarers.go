@@ -136,6 +136,9 @@ func (g *Catan) makeRiversPrintedSeaMap(layout string) (*catanRiversMap, error) 
 	return m, nil
 }
 func (g *Catan) validateRiversSeaMap() error {
+	if g.riversSea() && g.Seafarers.Scenario == "tribe" {
+		return g.validateRiversTribeMap()
+	}
 	if !g.riversSea() || g.Rivers.Map == nil || (g.Seafarers.Scenario != "shores" && g.Seafarers.Scenario != "fog" && g.Seafarers.Scenario != "desert") || g.Seafarers.Layout != "fixed" || len(g.Players) < 3 || len(g.Players) > 4 {
 		return errors.New("河流海图配方尚未接入或标记无效")
 	}

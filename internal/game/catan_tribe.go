@@ -74,7 +74,7 @@ func (g *Catan) robberLandAllowed(tile int) bool {
 }
 
 func (g *Catan) tribeLand(tile int) bool {
-	if g.tribe() == nil || g.Tiles[tile].Number > 0 {
+	if g.tribe() == nil || g.Tiles[tile].Number > 0 || g.riversSea() && slices.Contains(g.Rivers.Map.Swamps, tile) {
 		return true
 	}
 	// The replacement lake has four printed production numbers rather than
@@ -94,7 +94,11 @@ func (g *Catan) tribePortEdges(player int) []int {
 		blocked[e.B] = true
 	}
 	for _, e := range g.Edges {
-		if blocked[e.A] || blocked[e.B] || g.fishingGroundEdge(e.ID) || !g.edgeTerrain(e.ID, true) || !g.edgeTerrain(e.ID, false) {
+		coast := *g
+		if g.riversSea() {
+			coast.Rivers = nil
+		}
+		if blocked[e.A] || blocked[e.B] || g.fishingGroundEdge(e.ID) || !coast.edgeTerrain(e.ID, true) || !coast.edgeTerrain(e.ID, false) {
 			continue
 		}
 		a, b := g.Vertices[e.A], g.Vertices[e.B]
