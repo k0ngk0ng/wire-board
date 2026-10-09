@@ -1,6 +1,10 @@
 package game
 
-import "errors"
+import (
+	"errors"
+	"reflect"
+	"slices"
+)
 
 const CatanAttackSeafarersRules = "catan-attack-seafarers-2025"
 
@@ -60,4 +64,107 @@ func newCatanAttackShoresBoard(n int) (*Catan, *catanAttackMap, error) {
 	g.Seafarers.StartIslands = []int{g.Seafarers.Islands[26]}
 	g.Seafarers.VictoryPoints = 14
 	return g, mapped, nil
+}
+
+func (g *Catan) attackSea() bool {
+	return g.Seafarers != nil && g.Attack != nil && g.Attack.Map != nil && g.Attack.Map.Sea == CatanAttackSeafarersRules
+}
+func (g *Catan) attackSeaKnightEdge(edge int) bool {
+	if g.Seafarers == nil {
+		return true
+	}
+	if edge < 0 || edge >= len(g.Edges) {
+		return false
+	}
+	for _, id := range g.Edges[edge].Tiles {
+		if g.Tiles[id].Resource != CatanSea && g.Seafarers.Islands[id] == g.Seafarers.StartIslands[0] {
+			return true
+		}
+	}
+	return false
+}
+func newCatanAttackShores(n int) (*State, error) {
+	board, m, err := newCatanAttackShoresBoard(n)
+	if err != nil {
+		return nil, err
+	}
+	s, err := NewCatan(n, CatanOptions{})
+	if err != nil {
+		return nil, err
+	}
+	g := s.Catan
+	g.Tiles, g.Vertices, g.Edges, g.Ports, g.HexSize, g.Seafarers = board.Tiles, board.Vertices, board.Edges, board.Ports, board.HexSize, board.Seafarers
+	g.Robber = -1
+	g.DevDeck, g.DevDiscard = []int{}, []int{}
+	g.Attack, err = newCatanAttackPieces(g, m)
+	if err != nil {
+		return nil, err
+	}
+	s.Log = []string{"蛮族新海岸：先建村庄再逆序建城市；蛮族与骑士仅在主岛活动，不使用强盗和海盗，14分获胜"}
+	s.catanScores()
+	return s, s.validateCatanAttack()
+}
+func (m catanAttackMap) validateSea(g *Catan) error {
+	if m.Sea != CatanAttackSeafarersRules || m.Caravans != "" || m.Rivers != "" || m.Transport != "" || len(g.Players) != 4 || g.Seafarers == nil {
+		return errors.New("蛮族海图配置无效")
+	}
+	ref, want, err := newCatanAttackShoresBoard(4)
+	if err != nil {
+		return err
+	}
+	if !reflect.DeepEqual(m, *want) || len(g.Tiles) != len(ref.Tiles) || len(g.Edges) != len(ref.Edges) || len(g.Vertices) != len(ref.Vertices) || len(g.Ports) != len(ref.Ports) {
+		return errors.New("蛮族海图组件无效")
+	}
+	gotPorts, wantPorts := []int{}, []int{}
+	for i, p := range g.Ports {
+		if p.Edge != ref.Ports[i].Edge {
+			return errors.New("蛮族海图港口位置无效")
+		}
+		gotPorts = append(gotPorts, p.Resource)
+		wantPorts = append(wantPorts, ref.Ports[i].Resource)
+	}
+	slices.Sort(gotPorts)
+	slices.Sort(wantPorts)
+	if !slices.Equal(gotPorts, wantPorts) {
+		return errors.New("蛮族海图港口库存无效")
+	}
+	ids := []int{12, 13, 14, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31, 32, 33, 34, 37, 38, 39}
+	counts := [2][5]int{}
+	for i, tile := range g.Tiles {
+		w := ref.Tiles[i]
+		if slices.Contains(ids, i) && tile.Resource >= 0 && tile.Resource < 5 {
+			region := 1
+			if slices.Contains(m.Coast, i) {
+				region = 0
+			}
+			counts[region][tile.Resource]++
+			tile.Resource = w.Resource
+		}
+		if !reflect.DeepEqual(tile, w) {
+			return errors.New("蛮族海图地形数字无效")
+		}
+	}
+	recipe := catanAttackBoardRecipe(false)
+	if counts[0] != recipe.coastalResources || counts[1] != recipe.innerResources {
+		return errors.New("蛮族海图地形库存无效")
+	}
+	for i, v := range g.Vertices {
+		w := ref.Vertices[i]
+		v.Owner, v.Level = w.Owner, w.Level
+		if !reflect.DeepEqual(v, w) {
+			return errors.New("蛮族海图交点无效")
+		}
+	}
+	for i, e := range g.Edges {
+		w := ref.Edges[i]
+		e.Owner, e.Ship, e.Bridge, e.Damaged, e.Warship = w.Owner, w.Ship, w.Bridge, w.Damaged, w.Warship
+		if !reflect.DeepEqual(e, w) {
+			return errors.New("蛮族海图边无效")
+		}
+	}
+	sea, w := g.Seafarers, ref.Seafarers
+	if sea.Scenario != w.Scenario || sea.Rules != w.Rules || sea.Layout != w.Layout || sea.Variable || sea.Pirate != -1 || sea.VictoryPoints != 14 || sea.IslandBonus != 2 || len(sea.Seats) != 4 || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
+		return errors.New("蛮族海图分区无效")
+	}
+	return nil
 }

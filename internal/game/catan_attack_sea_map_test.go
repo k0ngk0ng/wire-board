@@ -39,3 +39,59 @@ func TestCatanAttackShoresPrintedBoard(t *testing.T) {
 		occupied[e.A], occupied[e.B] = true, true
 	}
 }
+
+func TestCatanAttackShoresNatural(t *testing.T) {
+	s, e := newCatanAttackShores(4)
+	if e != nil {
+		t.Fatal(e)
+	}
+	for step := 0; step < 14000 && !s.Finished; step++ {
+		p := twoFullActor(s)
+		a, e := s.BotAction(p)
+		if e != nil {
+			t.Fatal(step, e)
+		}
+		if e = s.Apply(p, a); e != nil {
+			t.Fatal(step, s.Phase, e)
+		}
+		if step%137 == 0 {
+			b := clone(*s)
+			s = &b
+			if e = s.validateCatanAttack(); e != nil {
+				t.Fatal(step, e)
+			}
+		}
+	}
+	if !s.Finished {
+		t.Fatal("unfinished")
+	}
+}
+
+func TestCatanAttackShoresKnightBoundaryAndCorruption(t *testing.T) {
+	s, e := newCatanAttackShores(4)
+	if e != nil {
+		t.Fatal(e)
+	}
+	g := s.Catan
+	for _, edge := range g.Attack.recruitEdges(g, 0, "swift_knight") {
+		if !g.attackSeaKnightEdge(edge) {
+			t.Fatal("outer recruitment")
+		}
+	}
+	for _, edge := range g.Attack.recruitEdges(g, 0, "knighthood") {
+		g.Attack.Knights = []catanAttackKnight{{Player: 0, Edge: edge}}
+		for dest := range g.Attack.knightDestinations(g, 0, 5) {
+			if !g.attackSeaKnightEdge(dest) {
+				t.Fatal("outer travel")
+			}
+		}
+	}
+	g.Attack.Knights = nil
+	for _, mutate := range []func(*Catan){func(g *Catan) { g.Tiles[0].Number = 9 }, func(g *Catan) { g.Attack.Map.Coast[0] = 0 }, func(g *Catan) { g.Seafarers.Pirate = 2 }, func(g *Catan) { g.Ports[0].Resource = 99 }} {
+		b := clone(*s)
+		mutate(b.Catan)
+		if b.validateCatanAttack() == nil {
+			t.Fatal("corrupt sea state")
+		}
+	}
+}

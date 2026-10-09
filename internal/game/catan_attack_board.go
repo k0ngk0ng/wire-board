@@ -101,7 +101,7 @@ func (a catanAttack) validate(g *Catan) error {
 	used := map[int]bool{}
 	knights := map[int]int{}
 	for _, k := range a.Knights {
-		if (k.Player < 0 || k.Player >= n) && !(g.twoAttack() && k.Player == catanAttackNeutral) || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] {
+		if (k.Player < 0 || k.Player >= n) && !(g.twoAttack() && k.Player == catanAttackNeutral) || k.Edge < 0 || k.Edge >= len(g.Edges) || used[k.Edge] || !g.attackSeaKnightEdge(k.Edge) {
 			return errors.New("骑士玩家或位置无效")
 		}
 		used[k.Edge] = true
@@ -210,6 +210,9 @@ func (a catanAttack) knightDestinations(g *Catan, index, steps int) map[int]int 
 		e := g.Edges[edge]
 		for _, next := range g.Edges {
 			if next.A != e.A && next.A != e.B && next.B != e.A && next.B != e.B {
+				continue
+			}
+			if !g.attackSeaKnightEdge(next.ID) {
 				continue
 			}
 			if _, seen := distances[next.ID]; seen {
