@@ -139,6 +139,9 @@ func (g *Catan) makeRiversPrintedSeaMap(layout string) (*catanRiversMap, error) 
 	return m, nil
 }
 func (g *Catan) validateRiversSeaMap() error {
+	if g.riversSea() && g.Seafarers.Scenario == "fog" && len(g.Players) > 4 {
+		return g.validateRiversFogExtended()
+	}
 	if g.riversSea() && g.Seafarers.Scenario == "shores" && len(g.Players) > 4 {
 		return g.validateRiversShoresExtended()
 	}

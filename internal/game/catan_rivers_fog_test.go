@@ -10,7 +10,13 @@ import (
 
 func riverFogFixture(t *testing.T, n int) *State {
 	t.Helper()
-	s, err := newCatanRiversPrintedSea(n, "fog")
+	var s *State
+	var err error
+	if n > 4 {
+		s, err = newCatanRiversFogExtended(n)
+	} else {
+		s, err = newCatanRiversPrintedSea(n, "fog")
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -148,7 +154,7 @@ func TestCatanRiversFogDoubleProduction(t *testing.T) {
 }
 
 func TestCatanRiversFogDiscoveryContinuation(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		for _, phase := range []string{"catan_turn", "catan_roads", "catan_setup_road"} {
 			for _, ship := range []bool{false, true} {
 				if !ship && phase == "catan_setup_road" {
@@ -174,9 +180,13 @@ func TestCatanRiversFogDiscoveryContinuation(t *testing.T) {
 						// Consume its components so the saved inventory remains valid.
 						fog := g.Seafarers.Fog
 						at := slices.Index(fog.Terrain, 0)
-						g.Tiles[0].Resource = fog.Terrain[at]
+						id := 0
+						for g.Tiles[id].Resource != CatanFog {
+							id++
+						}
+						g.Tiles[id].Resource = fog.Terrain[at]
 						fog.Terrain = slices.Delete(fog.Terrain, at, at+1)
-						g.Tiles[0].Number = fog.Numbers[len(fog.Numbers)-1]
+						g.Tiles[id].Number = fog.Numbers[len(fog.Numbers)-1]
 						fog.Numbers = fog.Numbers[:len(fog.Numbers)-1]
 						g.Seafarers.Islands = g.findIslands()
 					}
@@ -307,12 +317,13 @@ func TestCatanRiversFogHiddenOrderPrivacyAndAtomicCorruption(t *testing.T) {
 }
 
 func TestCatanRiversFogFullDiscoveryAndDamagedSave(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		s := riverFogFixture(t, n)
 		g := s.Catan
 		g.SetupStep = g.SetupLimit()
 		g.Robber = g.Rivers.Map.Swamps[0]
 		s.Phase = "catan_turn"
+		expectedRevealed := len(g.Seafarers.Fog.Terrain)
 		revealed := 0
 		for _, e := range g.Edges {
 			before := len(g.Seafarers.Fog.Terrain)
@@ -324,7 +335,7 @@ func TestCatanRiversFogFullDiscoveryAndDamagedSave(t *testing.T) {
 				t.Fatal("revealed", revealed, err)
 			}
 		}
-		if revealed != 12 || len(g.Seafarers.Fog.Terrain) != 0 || len(g.Seafarers.Fog.Numbers) != 0 {
+		if revealed != expectedRevealed || len(g.Seafarers.Fog.Terrain) != 0 || len(g.Seafarers.Fog.Numbers) != 0 {
 			t.Fatal("full discovery inventory")
 		}
 		riversSeaRestore(t, s)
@@ -344,7 +355,7 @@ func TestCatanRiversFogFullDiscoveryAndDamagedSave(t *testing.T) {
 }
 
 func TestCatanRiversFogMoveShipDiscovery(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		s := riverFogFixture(t, n)
 		g := s.Catan
 		g.SetupStep = g.SetupLimit()

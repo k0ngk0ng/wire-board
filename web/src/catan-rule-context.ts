@@ -1,3 +1,4 @@
+import { isPublicCatanRiversSea } from "./catan-rivers-sea-options.ts";
 import type { Room, CatanState } from "./types";
 
 // Running games are authoritative: a stale room draft must never change the
@@ -12,6 +13,7 @@ export function catanRuleContext(room: Room) {
     "explorers-and-pirates",
   ].includes(room.catanScenario || "");
   const sea = game?.seafarers;
+  const riverSeaDraft = isPublicCatanRiversSea(room.catanScenario);
   const citySetup = game ? game.citiesKnights : room.catanCitiesKnights;
   const citiesKnights =
     !!citySetup || (!game && room.catanTwoScenario === "cities-knights");
@@ -46,7 +48,7 @@ export function catanRuleContext(room: Room) {
     ? game?.explorer?.board.scenario ||
       sea?.scenario ||
       (sea?.newWorld ? "new_world" : sea?.wonders ? "wonders" : "")
-    : (explorerDraft ? room.catanScenario : "") ||
+    : (explorerDraft || riverSeaDraft ? room.catanScenario : "") ||
       room.catanSeafarers?.scenario ||
       (room.catanNewWorldMap ? "new_world" : "");
   if (scenario === "islands" && players > 4) scenario = "six_islands";
@@ -152,7 +154,8 @@ export function catanRuleContext(room: Room) {
     caravans,
     rivers: game
       ? !!game.rivers
-      : [
+      : riverSeaDraft ||
+        [
           "rivers",
           "rivers-caravans",
           "rivers-attack",
@@ -161,7 +164,10 @@ export function catanRuleContext(room: Room) {
     two: game
       ? !!game.two
       : !!room.catanTwoRules ||
-        ((transport || attack || room.catanScenario === "rivers-caravans") &&
+        ((riverSeaDraft ||
+          transport ||
+          attack ||
+          room.catanScenario === "rivers-caravans") &&
           players === 2),
     citiesKnights,
     twoFishingKnights: game
@@ -229,7 +235,7 @@ export function catanRuleContext(room: Room) {
     fiveSix: game
       ? !!game.paired || !!options.fiveSix
       : !!options.fiveSix ||
-        ((explorerDraft || attack || transport || caravans) && players > 4),
+        ((riverSeaDraft || explorerDraft || attack || transport || caravans) && players > 4),
     helpersKnights: game
       ? game.citiesKnights?.helpers?.rules || ""
       : !explorerDraft && citiesKnights && options.helpers && players >= 2
@@ -261,6 +267,12 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (
+    ["rivers-shores", "rivers-desert", "rivers-desert-belt"].includes(scenario)
+  )
+    return 14;
+  if (["rivers-fog", "rivers-new-world"].includes(scenario)) return 12;
+  if (scenario === "rivers-tribe") return 13;
   if (scenario === "attack-transport") return 14;
   if (scenario === "caravans-transport") return 15;
   if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;

@@ -1,3 +1,7 @@
+import {
+  catanRiversSeaScenarios,
+  isPublicCatanRiversSea,
+} from "./catan-rivers-sea-options";
 import { catanTwoFishingKnightsNote } from "./catan-two-fishing-knights";
 import { catanVictoryTarget } from "./catan-rule-context";
 import { supportsTwoCatanHelpers } from "./catan-two-helpers";
@@ -10,6 +14,7 @@ import {
   catanTwoFishingSeafarersNote,
 } from "./catan-two-seafarers";
 const scenarios = [
+  ...catanRiversSeaScenarios,
   {
     id: "attack-transport",
     name: "蛮族进攻＋运输",
@@ -148,6 +153,8 @@ export function CatanTwoScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
+                (isPublicCatanRiversSea(s.id) &&
+                  (knightsEnabled || fishingEnabled)) ||
                 (variantsEnabled && !supportsTwoCatanVariants(s.id)) ||
                 (helpersEnabled &&
                   !supportsTwoCatanHelpers(s.id) &&
