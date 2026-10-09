@@ -185,7 +185,7 @@ func (g *Catan) validateRiversSeaMap() error {
 			return err
 		}
 	}
-	if !reflect.DeepEqual(m, g.Rivers.Map) || len(g.Tiles) != len(board.Tiles) || !reflect.DeepEqual(g.Ports, board.Ports) || !reflect.DeepEqual(g.Seafarers.Islands, g.findLandRegions(sea.Scenario == "desert")) || !slices.Equal(g.Seafarers.StartIslands, board.Seafarers.StartIslands) || g.Seafarers.VictoryPoints != board.Seafarers.VictoryPoints || g.Seafarers.IslandBonus != board.Seafarers.IslandBonus {
+	if !reflect.DeepEqual(m, g.Rivers.Map) || len(g.Tiles) != len(board.Tiles) || !reflect.DeepEqual(g.Ports, board.Ports) || !reflect.DeepEqual(g.Seafarers.Islands, g.findLandRegions(sea.Scenario == "desert")) || !slices.Equal(g.Seafarers.StartIslands, board.Seafarers.StartIslands) || g.Seafarers.VictoryPoints != g.riversSeaVictoryPoints(board.Seafarers.VictoryPoints) || g.Seafarers.IslandBonus != board.Seafarers.IslandBonus {
 		return errors.New("河流海图河道、港口或岛屿配置不符")
 	}
 	if !reflect.DeepEqual(g.Tiles, board.Tiles) || len(g.Vertices) != len(board.Vertices) || len(g.Edges) != len(board.Edges) {

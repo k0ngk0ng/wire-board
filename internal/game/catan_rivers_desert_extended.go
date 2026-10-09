@@ -80,7 +80,7 @@ func newCatanRiversDesertExtended(n int, layout string) (*State, error) {
 func (g *Catan) validateRiversDesertExtended() error {
 	n := len(g.Players)
 	sea, r := g.Seafarers, g.Rivers
-	if n < 5 || n > 6 || sea == nil || r == nil || sea.Scenario != "desert" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 14 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if n < 5 || n > 6 || sea == nil || r == nil || sea.Scenario != "desert" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != g.riversSeaVictoryPoints(14) || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("扩大河流沙漠配置无效")
 	}
 	expected, err := NewCatanSeafarers(n, CatanOptions{FiveSix: true}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)

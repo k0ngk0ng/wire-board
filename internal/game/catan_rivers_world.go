@@ -115,7 +115,7 @@ func newCatanRiversWorld(n int) (*State, error) {
 func (g *Catan) validateRiversWorldMap() error {
 	sea, r := g.Seafarers, g.Rivers
 	n := len(g.Players)
-	if n < 2 || n == 2 && !g.twoRiversWorld() || n > 6 || sea == nil || r == nil || r.Map == nil || sea.Rules != CatanSeafarersRules || sea.Scenario != "new_world" || sea.Layout != "prepared" || !sea.Variable || sea.NumberRecipe != "" || (r.SeaLayout != riverWorldLayout(n, false) && r.SeaLayout != riverWorldLayout(n, true)) || sea.NewWorld == nil || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.VictoryPoints != 12 || sea.IslandBonus != 1 || len(sea.Seats) != n || len(sea.StartIslands) != 0 {
+	if n < 2 || n == 2 && !g.twoRiversWorld() || n > 6 || sea == nil || r == nil || r.Map == nil || sea.Rules != CatanSeafarersRules || sea.Scenario != "new_world" || sea.Layout != "prepared" || !sea.Variable || sea.NumberRecipe != "" || (r.SeaLayout != riverWorldLayout(n, false) && r.SeaLayout != riverWorldLayout(n, true)) || sea.NewWorld == nil || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.VictoryPoints != g.riversSeaVictoryPoints(12) || sea.IslandBonus != 1 || len(sea.Seats) != n || len(sea.StartIslands) != 0 {
 		return errors.New("河流新世界配置无效")
 	}
 	specs := newWorldFrame(n)

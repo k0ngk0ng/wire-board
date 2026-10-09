@@ -11,6 +11,7 @@ const CatanRiversRules = "catan-rivers-2025"
 type CatanRivers struct {
 	SeaLayout  string          `json:"seaLayout,omitempty"`
 	Sea        string          `json:"sea,omitempty"`
+	SeaKnights string          `json:"seaKnights,omitempty"`
 	Transport  string          `json:"transport,omitempty"`
 	Attack     string          `json:"attack,omitempty"`
 	Knights    string          `json:"knights,omitempty"`
@@ -68,6 +69,9 @@ func (g *Catan) validateRivers() error {
 		return errors.New("河流状态或尚未核对的组合无效")
 	}
 	if err := g.validateRiverKnights(); err != nil {
+		return err
+	}
+	if err := g.validateRiversSeaKnights(); err != nil {
 		return err
 	}
 	board := *g

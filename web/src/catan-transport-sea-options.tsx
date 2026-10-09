@@ -1,7 +1,7 @@
 import type { Room } from "./types";
+import { isCatanTransportSea } from "./catan-knights-combination";
 
-export const isCatanTransportSea = (scenario = "") =>
-  ["transport-shores", "transport-desert"].includes(scenario);
+export { isCatanTransportSea };
 
 export function CatanTransportSeaLayout({
   value,

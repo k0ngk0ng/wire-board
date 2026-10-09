@@ -1,4 +1,8 @@
 import { isCatanTransportSea } from "./catan-transport-sea-options";
+import {
+  supportsPublicCatanKnightsCombination,
+  supportsPublicExplorerKnights,
+} from "./catan-knights-combination";
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import {
   catanRiversSeaScenarios,
@@ -232,42 +236,10 @@ const scenarios = [
   },
 ];
 
-export const supportsPublicExplorerKnights = (scenario?: string) =>
-  [
-    "land-ho",
-    "pirate-lairs",
-    "fish-for-catan",
-    "spices-for-catan",
-    "explorers-and-pirates",
-  ].includes(scenario || "");
-
-export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
-  supportsPublicExplorerKnights(scenario) ||
-  scenario === "transport" ||
-  isCatanTransportSea(scenario) ||
-  [
-    "rivers-caravans",
-    "rivers-attack",
-    "rivers-transport",
-    "caravans-attack",
-    "caravans-transport",
-    "attack-transport",
-  ].includes(scenario || "") ||
-  scenario === "barbarian-attack" ||
-  [
-    "rivers",
-    "caravans",
-    "fishing",
-    "shores",
-    "islands",
-    "fog",
-    "desert",
-    "new_world",
-    "wonders",
-    "cloth",
-    "tribe",
-    "pirate_islands",
-  ].includes(scenario || "");
+export {
+  supportsPublicExplorerKnights,
+  supportsPublicCatanKnightsCombination,
+} from "./catan-knights-combination";
 
 export function CatanCombinationKnightsPicker({
   attack = false,
@@ -281,6 +253,7 @@ export function CatanCombinationKnightsPicker({
   caravansTransport = false,
   attackTransport = false,
   caravans = false,
+  riversSea = false,
   tribe = false,
   pirateIslands = false,
   value,
@@ -304,6 +277,7 @@ export function CatanCombinationKnightsPicker({
   caravansTransport?: boolean;
   attackTransport?: boolean;
   caravans?: boolean;
+  riversSea?: boolean;
   tribe?: boolean;
   pirateIslands?: boolean;
   explorer?: boolean;
@@ -337,7 +311,9 @@ export function CatanCombinationKnightsPicker({
                   ? "河流＋蛮族进攻"
                   : riversCaravans
                     ? "河流＋商队"
-                    : attack
+                    : riversSea
+                      ? "河流＋航海家"
+                      : attack
                       ? "蛮族进攻"
                       : transport
                         ? "运输"
@@ -364,6 +340,8 @@ export function CatanCombinationKnightsPicker({
                   ? "本站三模块适配：13 分获胜；保留河流与桥梁，共用金币，贫穷不扣分。使用道路骑士和进步牌，不使用强盗或海上蛮族。"
                   : riversCaravans
                     ? "本站三模块适配：15 分获胜；木材／砖块出价，保留河流金币、桥梁骑士和 5 金币保城规则。"
+                      : riversSea
+                        ? "本站河流海图骑士适配：目标分在印刷目标上增加 2 分；沿用河流金币与河岸付款，加入进步牌、商品与城市改良，蛮族船取代海盗。"
                     : attack
                       ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
                       : transport

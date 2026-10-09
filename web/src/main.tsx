@@ -4,6 +4,7 @@ import {
   CatanTransportSeaWaitingLayout,
 } from "./catan-transport-sea-options";
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
+import { isPublicCatanRiversSea } from "./catan-rivers-sea-options";
 import { CatanRiversWorldPreview } from "./catan-rivers-world-preview";
 import {
   supportsTwoCatanHelpers,
@@ -2560,6 +2561,7 @@ function Create({
               }
               transportSea={isCatanTransportSea(variantScenario)}
               rivers={variantScenario === "rivers"}
+              riversSea={isPublicCatanRiversSea(variantScenario)}
               riversCaravans={variantScenario === "rivers-caravans"}
               caravans={["caravans", "rivers-caravans"].includes(
                 variantScenario,
@@ -3318,6 +3320,7 @@ function Waiting({
               rivers={
                 (room.catanTwoScenario || room.catanScenario) === "rivers"
               }
+              riversSea={isPublicCatanRiversSea(room.catanScenario)}
               caravans={["caravans", "rivers-caravans"].includes(
                 room.catanTwoScenario || room.catanScenario || "",
               )}

@@ -36,8 +36,14 @@ func (r *Room) validateCatanRiversSea() error {
 	if !ok {
 		return errors.New("河流海图剧本无效")
 	}
-	if r.Kind != "catan" || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes {
-		return errors.New("河流海图暂支持独立组合与事件牌，其他叠加尚未接通")
+	if r.Kind != "catan" || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanFishingLakes {
+		return errors.New("河流海图支持独立组合、事件牌与城市骑士，其他叠加尚未接通")
+	}
+	if r.CatanCitiesKnights != nil {
+		normal, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+		if err != nil || normal != *r.CatanCitiesKnights {
+			return errors.New("河流海图骑士配置无效")
+		}
 	}
 	if r.CatanRiversWorldMap != nil {
 		n := r.Capacity
