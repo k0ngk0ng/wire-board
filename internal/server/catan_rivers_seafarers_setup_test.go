@@ -224,6 +224,15 @@ func TestCatanRiversPreparedPublic(t *testing.T) {
 			if confirmed == nil {
 				t.Fatal("missing saved map")
 			}
+			broken := *confirmed
+			broken.Hexes = append([]game.CatanNewWorldHex{}, confirmed.Hexes...)
+			broken.Hexes[0].Number = 7
+			h.post("/api/rooms/"+id, map[string]any{"type": "catan_rivers_world_map", "version": s.rooms[id].Version, "nonce": randomID(12), "catanRiversWorldMap": broken}, 400)
+			if !reflect.DeepEqual(confirmed, s.rooms[id].CatanRiversWorldMap) {
+				t.Fatal("invalid edit changed map")
+			}
+			h.post("/api/rooms/"+id, map[string]any{"type": "catan_rivers_world_map", "version": s.rooms[id].Version, "nonce": randomID(12), "catanRiversWorldMap": confirmed}, 200)
+
 			for _, c := range clients {
 				c.command(current(c), "ready", nil, 200)
 			}
