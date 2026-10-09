@@ -50,7 +50,7 @@ func TestCatanTradersHelpersPublicHTTP(t *testing.T) {
 		scene      string
 		n          int
 		city, fish bool
-	}{{"barbarian-attack", 3, false, false}, {"transport-desert", 2, false, false}, {"rivers-caravans", 2, true, false}, {"caravans-transport", 6, true, false}, {"rivers", 3, false, true}} {
+	}{{"barbarian-attack", 3, false, false}, {"transport-desert", 2, false, false}, {"rivers-caravans", 2, true, false}, {"caravans-transport", 6, true, false}, {"rivers", 3, false, true}, {"caravans", 2, false, false}, {"rivers", 2, false, false}, {"barbarian-attack", 2, false, false}} {
 		t.Run(fmt.Sprintf("%s/%d/%t/%t", c.scene, c.n, c.city, c.fish), func(t *testing.T) {
 			s, _, clients, id := newTradersHelpersHTTP(t, c.n, c.scene, c.city, c.fish)
 			timeout, used := false, 0
