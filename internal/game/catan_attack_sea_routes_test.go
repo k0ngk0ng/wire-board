@@ -59,3 +59,76 @@ func TestCatanAttackSeaCoastalAnchor(t *testing.T) {
 		t.Fatal("liberation does not restore route")
 	}
 }
+
+func TestCatanAttackSeaCannotMoveFromConqueredAnchor(t *testing.T) {
+	s, err := NewCatanSeafarers(4, CatanOptions{}, CatanSeafarersSetup{Scenario: "islands", Layout: "fixed"}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := s.Catan
+	g.Attack = &catanAttack{Barbarians: make([]int, len(g.Tiles))}
+	edge := -1
+	for _, r := range g.Edges {
+		if g.edgeTerrain(r.ID, true) && g.landVertex(r.A) {
+			edge = r.ID
+			break
+		}
+	}
+	if edge < 0 {
+		t.Fatal("no coast")
+	}
+	e := g.Edges[edge]
+	g.Vertices[e.A].Owner, g.Vertices[e.A].Level = 0, 1
+	g.Edges[edge].Owner, g.Edges[edge].Ship = 0, true
+	if !g.movableShip(0, edge) {
+		t.Fatal("unconquered source should move")
+	}
+	for i, tile := range g.Tiles {
+		if tile.Resource != CatanSea {
+			g.Attack.Barbarians[i] = 3
+		}
+	}
+	if !g.openRoute(0, edge) {
+		t.Fatal("fixture is not open")
+	}
+	if g.movableShip(0, edge) || len(g.shipDestinations(0, edge)) != 0 {
+		t.Fatal("conquered route can be modified")
+	}
+	// Existing sea games without Barbarian Attack retain their former behavior.
+	g.Attack = nil
+	if !g.movableShip(0, edge) {
+		t.Fatal("ordinary sea movement changed")
+	}
+}
+
+func TestCatanAttackSeaShipAllowedAlongConqueredLand(t *testing.T) {
+	s, err := NewCatanSeafarers(4, CatanOptions{}, CatanSeafarersSetup{Scenario: "islands", Layout: "fixed"}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := s.Catan
+	g.Attack = &catanAttack{Barbarians: make([]int, len(g.Tiles))}
+	for _, e := range g.Edges {
+		if !g.edgeTerrain(e.ID, true) || !g.edgeTerrain(e.ID, false) {
+			continue
+		}
+		for _, v := range []int{e.A, e.B} {
+			for _, land := range e.Tiles {
+				if g.Tiles[land].Resource == CatanSea {
+					continue
+				}
+				g.Attack.Barbarians[land] = 3
+				g.Vertices[v].Owner, g.Vertices[v].Level = 0, 1
+				if !g.Attack.conqueredBuilding(g, v) {
+					if !g.canShip(0, e.ID) || g.canRoad(0, e.ID) {
+						t.Fatal("conquered coast must allow ships but forbid roads")
+					}
+					return
+				}
+				g.Vertices[v].Owner, g.Vertices[v].Level = -1, 0
+				g.Attack.Barbarians[land] = 0
+			}
+		}
+	}
+	t.Fatal("no coast with surviving building")
+}
