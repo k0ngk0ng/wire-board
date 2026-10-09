@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -197,6 +198,63 @@ func TestCatanRiversSeaNaturalHTTP(t *testing.T) {
 				t.Fatal("incomplete", s.rooms[id].Game.Round)
 			}
 			t.Log("round", s.rooms[id].Game.Round, "winners", s.rooms[id].Game.Winners)
+		})
+	}
+}
+
+func TestCatanRiversPreparedPublic(t *testing.T) {
+	for _, n := range []int{2, 3, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) {
+			s, ts := setupServer(t)
+			stopBotTicker(s)
+			clients := make([]*testClient, n)
+			for p := range clients {
+				clients[p] = newClient(t, ts.URL)
+				clients[p].register(fmt.Sprintf("预备河流%d", p))
+			}
+			h := clients[0]
+			raw := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "预备河流", "capacity": n, "catanScenario": "rivers-new-world"}, 201)
+			id := raw["id"].(string)
+			for p := 1; p < n; p++ {
+				clients[p].command(current(h), "join", nil, 200)
+			}
+			clients[1].command(current(clients[1]), "catan_rivers_world_shuffle", nil, 400)
+			h.command(current(h), "catan_rivers_world_shuffle", nil, 200)
+			confirmed := s.rooms[id].CatanRiversWorldMap
+			if confirmed == nil {
+				t.Fatal("missing saved map")
+			}
+			for _, c := range clients {
+				c.command(current(c), "ready", nil, 200)
+			}
+			h.command(current(h), "catan_rivers_world_shuffle", nil, 200)
+			for _, seat := range s.rooms[id].Seats {
+				if seat.Ready {
+					t.Fatal("map change kept ready")
+				}
+			}
+			confirmed = s.rooms[id].CatanRiversWorldMap
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			if !reflect.DeepEqual(confirmed, s.rooms[id].CatanRiversWorldMap) {
+				t.Fatal("map lost on restart")
+			}
+			for _, c := range clients {
+				c.command(current(c), "ready", nil, 200)
+			}
+			h.command(current(h), "start", nil, 200)
+			if !reflect.DeepEqual(confirmed, s.rooms[id].Game.Catan.RiversWorldMap()) {
+				t.Fatal("approved map rerolled")
+			}
+			h.command(current(h), "catan_rivers_world_shuffle", nil, 400)
+			h.command(current(h), "close", nil, 200)
+			h.command(current(h), "rematch", nil, 200)
+			if !reflect.DeepEqual(confirmed, s.rooms[id].CatanRiversWorldMap) {
+				t.Fatal("rematch lost map")
+			}
+			h.command(current(h), "catan_rivers_world_default", nil, 200)
+			if s.rooms[id].CatanRiversWorldMap != nil {
+				t.Fatal("default kept map")
+			}
 		})
 	}
 }

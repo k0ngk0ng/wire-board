@@ -45,6 +45,9 @@ func publicCatanFlexibleScenario(scenario string) bool {
 // their separate acceptance gates; public sea rooms carry both the selected
 // scenario and its normalized map configuration.
 func (r *Room) validateCatanScenario() error {
+	if r.CatanRiversWorldMap != nil && (r.Kind != "catan" || r.CatanScenario != "rivers-new-world") {
+		return errors.New("河流预备地图与剧本不匹配")
+	}
 	if err := r.validateCatanEvents(); err != nil {
 		return err
 	}
@@ -190,6 +193,9 @@ func (r *Room) setCatanScenario(scenario string) error {
 	}
 	next := *r
 	next.CatanScenario = scenario
+	if scenario != "rivers-new-world" {
+		next.CatanRiversWorldMap = nil
+	}
 	if publicCatanTradersCombination(scenario) || publicCatanRiversSea(scenario) || publicCatanRiversSea(r.CatanScenario) {
 		next.CatanOptions = game.CatanOptions{}
 	}
@@ -259,6 +265,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.CatanScenario == scenario {
 		return nil
 	}
+	r.CatanRiversWorldMap = next.CatanRiversWorldMap
 	r.CatanScenario = scenario
 	r.CatanOptions = next.CatanOptions
 	r.CatanEvents = next.CatanEvents
