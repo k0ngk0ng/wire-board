@@ -1,9 +1,11 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
 	"testing"
+	"time"
 )
 
 func TestCatanAttackShoresHTTP(t *testing.T) {
@@ -17,21 +19,49 @@ func TestCatanAttackShoresHTTP(t *testing.T) {
 	h := clients[0]
 	r := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "蛮族新海岸", "capacity": 4, "catanScenario": "attack-shores", "catanEvents": game.CatanEventCatalogue}, 201)
 	id := r["id"].(string)
-	for _, c := range clients[1:] {
+	for _, c := range clients[1:3] {
 		c.command(current(h), "join", nil, 200)
 	}
-	for _, c := range clients {
+	for _, c := range clients[:3] {
 		c.command(current(c), "ready", nil, 200)
 	}
+	before, _ := json.Marshal(s.rooms[id])
+	h.command(current(h), "start", nil, 400)
+	after, _ := json.Marshal(s.rooms[id])
+	if string(before) != string(after) {
+		t.Fatal("rejected start mutated room")
+	}
+	clients[3].command(current(h), "join", nil, 200)
+	clients[3].command(current(clients[3]), "ready", nil, 200)
 	h.command(current(h), "start", nil, 200)
 	ordered := make([]*testClient, 4)
 	for _, c := range clients {
 		ordered[int(current(c)["you"].(float64))] = c
 	}
 	clients = ordered
+	timedOut := false
 	for step := 0; step < 14000 && !s.rooms[id].Game.Finished; step++ {
 		g := s.rooms[id].Game
 		p := twoHTTPActor(g)
+		if !timedOut && g.Phase == "catan_attack_end" {
+			deadline := s.rooms[id].TurnDeadline
+			if left := deadline - time.Now().UnixMilli(); left < 118000 || left > 120000 {
+				t.Fatal("battle clock", left)
+			}
+			s, ts = restartRiversHTTP(t, s, ts, clients, id)
+			if s.rooms[id].TurnDeadline != deadline {
+				t.Fatal("restart changed clock")
+			}
+			s.mu.Lock()
+			s.expireSetups(time.UnixMilli(deadline + 1))
+			s.mu.Unlock()
+			if !s.rooms[id].Seats[p].AutoPlay || !s.rooms[id].Seats[p].TimeoutAutoPlay {
+				t.Fatal("timeout did not take over")
+			}
+			setAutoPlay(clients[p], current(clients[p]), false, 200)
+			timedOut = true
+			continue
+		}
 		a, e := g.BotAction(p)
 		if e != nil {
 			t.Fatal(e)
@@ -41,6 +71,9 @@ func TestCatanAttackShoresHTTP(t *testing.T) {
 			s, ts = restartRiversHTTP(t, s, ts, clients, id)
 		}
 	}
+	if !timedOut {
+		t.Fatal("battle deadline not exercised")
+	}
 	if !s.rooms[id].Game.Finished {
 		t.Fatal("unfinished")
 	}
@@ -48,5 +81,15 @@ func TestCatanAttackShoresHTTP(t *testing.T) {
 	record := profile["history"].([]any)[0].(map[string]any)
 	if record["catanScenario"] != "attack-shores" || record["catanRules"] != game.CatanAttackSeafarersRules {
 		t.Fatal("history")
+	}
+}
+
+func TestCatanAttackShoresRoomBounds(t *testing.T) {
+	for _, n := range []int{2, 3, 4, 5, 6} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
+		err := r.setCatanScenario("attack-shores")
+		if (err == nil) != (n == 4) {
+			t.Fatal(n, err)
+		}
 	}
 }

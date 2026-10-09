@@ -87,7 +87,7 @@ func TestCatanAttackShoresKnightBoundaryAndCorruption(t *testing.T) {
 		}
 	}
 	g.Attack.Knights = nil
-	for _, mutate := range []func(*Catan){func(g *Catan) { g.Tiles[0].Number = 9 }, func(g *Catan) { g.Attack.Map.Coast[0] = 0 }, func(g *Catan) { g.Seafarers.Pirate = 2 }, func(g *Catan) { g.Ports[0].Resource = 99 }} {
+	for _, mutate := range []func(*Catan){func(g *Catan) { g.Tiles[0].Number = 9 }, func(g *Catan) { g.Attack.Map.Coast[0] = 0 }, func(g *Catan) { g.Seafarers.Pirate = 2 }, func(g *Catan) { g.Ports[0].Resource = 99 }, func(g *Catan) { g.Seafarers.NewWorld = &CatanNewWorld{} }} {
 		b := clone(*s)
 		mutate(b.Catan)
 		if b.validateCatanAttack() == nil {
