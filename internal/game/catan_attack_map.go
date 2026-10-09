@@ -10,7 +10,8 @@ const catanCastle = 12
 const catanAttackRules = "catan-barbarian-attack-2025"
 
 type catanAttackMap struct {
-	Castles []int `json:"castles"`
+	Rivers  string `json:"rivers,omitempty"`
+	Castles []int  `json:"castles"`
 	// Productive coastal hexes in the official clockwise battle order.
 	Coast      []int `json:"coast"`
 	Barbarians int   `json:"barbarians"`
@@ -100,6 +101,14 @@ func (m catanAttackMap) validate(g *Catan) error {
 		return errors.New("蛮族进攻地图或组件数量不符")
 	}
 	recipe := catanAttackBoardRecipe(n > 4)
+	fixed := map[int]int{}
+	if m.Rivers != "" {
+		if m.Rivers != CatanRiversAttackRules {
+			return errors.New("河流蛮族地图版本无效")
+		}
+		recipe, _, _, _ = catanRiversAttackRecipe(n > 4)
+		fixed = riversAttackFixedTerrain(n > 4)
+	}
 	if !slices.Equal(m.Castles, recipe.castles) || !slices.Equal(m.Coast, recipe.coast) {
 		return errors.New("城堡位置或战斗顺序不符")
 	}
@@ -112,7 +121,12 @@ func (m catanAttackMap) validate(g *Catan) error {
 		if tile.ID != id || tile.Number != recipe.numbers[id] || len(tile.Vertices) != 6 || !finite(tile.X) || !finite(tile.Y) {
 			return errors.New("蛮族进攻地块或固定数字无效")
 		}
+		_, printed := fixed[id]
 		switch {
+		case printed:
+			if tile.Resource != fixed[id] {
+				return errors.New("河流蛮族印刷河道地形无效")
+			}
 		case slices.Contains(recipe.castles, id):
 			if tile.Resource != catanCastle {
 				return errors.New("城堡不能替换成普通地形")
@@ -195,6 +209,17 @@ func (m catanAttackMap) validate(g *Catan) error {
 	}
 	if portCounts != want {
 		return errors.New("蛮族进攻港口库存不符")
+	}
+	if m.Rivers != "" {
+		f, err := riversAttackChannels(g)
+		if err != nil {
+			return err
+		}
+		for _, p := range g.Ports {
+			if slices.Contains(f.Bridges, p.Edge) {
+				return errors.New("河流蛮族港口不能占用桥位")
+			}
+		}
 	}
 	return nil
 }

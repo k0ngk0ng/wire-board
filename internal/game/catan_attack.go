@@ -73,6 +73,9 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if a.Map != nil && a.Map.Rivers != "" {
+		return errors.New("河流蛮族完整对局尚未接通")
+	}
 	if g.attackKnights() {
 		return s.validateAttackCityState()
 	}
@@ -161,7 +164,7 @@ func (s *State) validateCatanAttack() error {
 				return errors.New("最后一枚蛮族的随机登陆记录无效")
 			}
 			for i, id := range roll.Tiles {
-				if !slices.Contains(a.Map.Coast, id) || g.Tiles[id].Number != total || slices.Contains(roll.Tiles[:i], id) {
+				if !slices.Contains(a.Map.Coast, id) || !a.Map.landingNumber(g, id, total) || slices.Contains(roll.Tiles[:i], id) {
 					return errors.New("登陆地块记录无效")
 				}
 			}
@@ -201,7 +204,7 @@ func (s *State) catanAttackLanding(roll func() [2]int, choose func(int) int) err
 		used[total] = true
 		targets := []int{}
 		for _, id := range a.Map.Coast {
-			if g.Tiles[id].Number == total && counts[id] < 3 {
+			if a.Map.landingNumber(g, id, total) && counts[id] < 3 {
 				targets = append(targets, id)
 			}
 		}
