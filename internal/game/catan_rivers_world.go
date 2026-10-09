@@ -99,30 +99,21 @@ func newCatanRiversWorld(n int) (*State, error) {
 func (g *Catan) validateRiversWorldMap() error {
 	sea, r := g.Seafarers, g.Rivers
 	n := len(g.Players)
-	if n < 3 || n > 4 || sea == nil || r == nil || r.Map == nil || sea.Rules != CatanSeafarersRules || sea.Scenario != "new_world" || sea.Layout != "prepared" || !sea.Variable || sea.NumberRecipe != "" || r.SeaLayout != "" || sea.NewWorld == nil || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.VictoryPoints != 12 || sea.IslandBonus != 1 || len(sea.Seats) != n || len(sea.StartIslands) != 0 {
+	if n < 3 || n > 4 || sea == nil || r == nil || r.Map == nil || sea.Rules != CatanSeafarersRules || sea.Scenario != "new_world" || sea.Layout != "prepared" || !sea.Variable || sea.NumberRecipe != "" || (r.SeaLayout != "" && r.SeaLayout != "prepared") || sea.NewWorld == nil || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.VictoryPoints != 12 || sea.IslandBonus != 1 || len(sea.Seats) != n || len(sea.StartIslands) != 0 {
 		return errors.New("河流新世界配置无效")
 	}
 	specs := newWorldFrame(n)
 	if len(g.Tiles) != len(specs) {
 		return errors.New("河流新世界尺寸无效")
 	}
-	terrain, numbers := make([]int, 11), make([]int, 13)
+	if err := validateRiverWorldInventory(g.Tiles, r.SeaLayout == "prepared"); err != nil {
+		return err
+	}
 	for i, t := range g.Tiles {
-		if t.Resource < 0 || t.Resource >= len(terrain) || t.Number < 0 || t.Number >= len(numbers) {
-			return errors.New("新世界地块无效")
-		}
-		terrain[t.Resource]++
-		numbers[t.Number]++
-		if (t.Resource == CatanSea || t.Resource == catanSwamp) != (t.Number == 0) {
-			return errors.New("新世界数字位置无效")
-		}
 		specs[i].Resource, specs[i].Number = t.Resource, t.Number
 		if t.Resource == catanSwamp {
 			specs[i].Resource = CatanDesert
 		}
-	}
-	if !slices.Equal(terrain, []int{5, 4, 5, 5, 4, 0, 17, 0, 0, 0, 2}) || !slices.Equal(numbers, []int{19, 0, 1, 3, 3, 3, 2, 0, 2, 3, 3, 2, 1}) {
-		return errors.New("河流新世界组件不守恒")
 	}
 	board := &Catan{}
 	if err := board.makeScenarioMap(specs); err != nil {
@@ -164,7 +155,11 @@ func (g *Catan) validateRiversWorldMap() error {
 	candidates := make([]riverSeaCandidate, 2)
 	for i, c := range m.Channels {
 		found := false
-		for _, candidate := range g.riverSeaCandidates(4-i, func(int) bool { return true }, true) {
+		possible := g.riverSeaCandidates(4-i, func(int) bool { return true }, true)
+		if r.SeaLayout == "prepared" {
+			possible = g.riverWorldCandidates(4 - i)
+		}
+		for _, candidate := range possible {
 			if candidate.outlet == c.Outlet && slices.Equal(candidate.tiles, c.Tiles) {
 				candidates[i] = candidate
 				found = true
@@ -184,8 +179,22 @@ func (g *Catan) validateRiversWorldMap() error {
 			}
 		}
 	}
-	if !g.riversSeparate(candidates[0].tiles, candidates[1].tiles) || !reflect.DeepEqual(m, g.riverTribeMapFor(candidates[0], candidates[1])) {
+	if r.SeaLayout == "" && !g.riversSeparate(candidates[0].tiles, candidates[1].tiles) || !reflect.DeepEqual(m, g.riverTribeMapFor(candidates[0], candidates[1])) {
 		return errors.New("新世界河流或桥位无效")
+	}
+	for _, id := range candidates[0].tiles {
+		if slices.Contains(candidates[1].tiles, id) {
+			return errors.New("两条河不能重叠")
+		}
+	}
+	land := 0
+	for _, v := range g.Vertices {
+		if g.landVertex(v.ID) {
+			land++
+		}
+	}
+	if land < 8*n-3 {
+		return errors.New("陆地交点不足以保证起始建村")
 	}
 	w := sea.NewWorld
 	if len(w.Ports) != 10 || w.Index < 0 || w.Index > 10 || len(g.Ports) != w.Index {
