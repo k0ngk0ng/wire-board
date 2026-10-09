@@ -12,9 +12,12 @@ func (g *Catan) riversSea() bool {
 	return g != nil && g.Rivers != nil && g.Rivers.Sea == CatanRiversSeafarersRules && g.Seafarers != nil
 }
 
-// Internal admission uses printed combination diagrams. Remaining recipes
-// and public admission are tracked separately, never silently mapped.
+// Internal admission uses printed three/four-player diagrams and a labelled
+// five/six-player recipe. Public admission remains a separate acceptance gate.
 func newCatanRiversShores(n int) (*State, error) {
+	if n > 4 {
+		return newCatanRiversShoresExtended(n)
+	}
 	return newCatanRiversPrintedSea(n, "shores")
 }
 
@@ -136,6 +139,9 @@ func (g *Catan) makeRiversPrintedSeaMap(layout string) (*catanRiversMap, error) 
 	return m, nil
 }
 func (g *Catan) validateRiversSeaMap() error {
+	if g.riversSea() && g.Seafarers.Scenario == "shores" && len(g.Players) > 4 {
+		return g.validateRiversShoresExtended()
+	}
 	if g.riversSea() && g.Seafarers.Scenario == "new_world" {
 		return g.validateRiversWorldMap()
 	}
