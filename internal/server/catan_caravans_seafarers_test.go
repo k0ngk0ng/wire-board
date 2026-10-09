@@ -7,9 +7,10 @@ import (
 	"time"
 )
 
-func TestCatanCaravansSeaPublicHTTP(t *testing.T) { runCaravansSeaHTTP(t, false) }
-func TestCatanCaravansSeaEventsHTTP(t *testing.T) { runCaravansSeaHTTP(t, true) }
-func runCaravansSeaHTTP(t *testing.T, events bool) {
+func TestCatanCaravansSeaPublicHTTP(t *testing.T) { runCaravansSeaHTTP(t, false, "caravans-desert") }
+func TestCatanCaravansSeaEventsHTTP(t *testing.T) { runCaravansSeaHTTP(t, true, "caravans-desert") }
+func TestCatanCaravansTribeHTTP(t *testing.T)     { runCaravansSeaHTTP(t, true, "caravans-tribe") }
+func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 	for _, n := range []int{3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			s, ts := setupServer(t)
@@ -20,7 +21,7 @@ func runCaravansSeaHTTP(t *testing.T, events bool) {
 				clients[p].register(fmt.Sprintf("航海商队%d", p))
 			}
 			h := clients[0]
-			recipe := map[string]any{"kind": "catan", "name": "商队沙漠", "capacity": n, "catanScenario": "caravans-desert"}
+			recipe := map[string]any{"kind": "catan", "name": "商队沙漠", "capacity": n, "catanScenario": scenario}
 			if events {
 				recipe["catanEvents"] = game.CatanEventCatalogue
 			}
@@ -79,7 +80,7 @@ func runCaravansSeaHTTP(t *testing.T, events bool) {
 			}
 			_, profile := h.request("GET", "/api/players/"+s.rooms[id].Host, nil)
 			record := profile["history"].([]any)[0].(map[string]any)
-			if record["catanScenario"] != "caravans-desert" || record["catanRules"] != game.CatanCaravansSeafarersRules {
+			if record["catanScenario"] != scenario || record["catanRules"] != game.CatanCaravansSeafarersRules {
 				t.Fatal("history")
 			}
 			if events {

@@ -2632,7 +2632,10 @@ function Create({
                 : Array.from(
                     {
                       length:
-                        k === "catan" && catanScenario === "caravans-desert"
+                        k === "catan" &&
+                        ["caravans-desert", "caravans-tribe"].includes(
+                          catanScenario,
+                        )
                           ? 2
                           : k === "sanguosha"
                             ? 5
@@ -2682,7 +2685,10 @@ function Create({
                     },
                     (_, i) =>
                       i +
-                      (k === "catan" && catanScenario === "caravans-desert"
+                      (k === "catan" &&
+                      ["caravans-desert", "caravans-tribe"].includes(
+                        catanScenario,
+                      )
                         ? 3
                         : k === "sanguosha"
                           ? 4

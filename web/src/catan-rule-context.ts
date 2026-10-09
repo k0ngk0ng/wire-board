@@ -23,6 +23,7 @@ export function catanRuleContext(room: Room) {
     : [
         "caravans",
         "caravans-desert",
+        "caravans-tribe",
         "rivers-caravans",
         "caravans-attack",
         "caravans-transport",
@@ -51,7 +52,7 @@ export function catanRuleContext(room: Room) {
       (sea?.newWorld ? "new_world" : sea?.wonders ? "wonders" : "")
     : (explorerDraft ||
       riverSeaDraft ||
-      room.catanScenario === "caravans-desert"
+      ["caravans-desert", "caravans-tribe"].includes(room.catanScenario || "")
         ? room.catanScenario
         : "") ||
       room.catanSeafarers?.scenario ||
@@ -263,7 +264,11 @@ export function catanRuleContext(room: Room) {
             ? 15
             : attack && citiesKnights
               ? 13
-              : (caravans && scenario !== "caravans-desert") || attack
+              : (caravans &&
+                    !["caravans-desert", "caravans-tribe"].includes(
+                      scenario,
+                    )) ||
+                  attack
                 ? 12
                 : catanVictoryTarget(scenario, citiesKnights) +
                   (harbors ? 1 : 0),
@@ -274,6 +279,7 @@ export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
   if (scenario === "caravans-desert") return 16;
+  if (scenario === "caravans-tribe") return 15;
   if (
     ["rivers-shores", "rivers-desert", "rivers-desert-belt"].includes(scenario)
   )

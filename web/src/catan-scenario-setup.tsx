@@ -9,6 +9,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "caravans-tribe",
+    name: "商队＋遗忘部落",
+    description:
+      "水源替换12点麦田，12叠到2点牧场；商队可走海边，保留部落奖励，15分获胜。三四人，可加事件牌。",
+  },
+  {
     id: "caravans-desert",
     name: "商队＋穿越沙漠",
     description:
@@ -527,7 +533,7 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                s.id === "caravans-desert"
+                ["caravans-desert", "caravans-tribe"].includes(s.id)
                   ? players < 3 ||
                     players > 4 ||
                     helpers ||
