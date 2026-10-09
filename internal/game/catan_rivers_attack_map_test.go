@@ -165,7 +165,7 @@ func TestCatanRiversAttackLandingNumbers(t *testing.T) {
 	}
 }
 
-func TestCatanRiversAttackBoardIsNotPublicSession(t *testing.T) {
+func TestCatanRiversAttackBoardRequiresRiverComponent(t *testing.T) {
 	s, err := NewCatanAttack(3)
 	if err != nil {
 		t.Fatal(err)

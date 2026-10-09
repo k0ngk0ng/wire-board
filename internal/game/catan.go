@@ -775,7 +775,7 @@ func (s *State) catanSetup(a Action) error {
 		if want == "catan_city" {
 			g.Vertices[a.Vertex].Level = 2
 		}
-		if (want == "catan_settlement" || g.riverKnights()) && g.riverVertex(a.Vertex) {
+		if (want == "catan_settlement" || g.riverKnights() || g.riversAttack()) && g.riverVertex(a.Vertex) {
 			if err := s.catanRiverReward(p, 1); err != nil {
 				return err
 			}
@@ -1483,7 +1483,7 @@ func (s *State) EliminateCatan(p int) error {
 	s.catanReturnFishing(p)
 	pl := &g.Players[p]
 	pl.Eliminated = true
-	if r := g.Rivers; r != nil {
+	if r := g.Rivers; r != nil && !g.riversAttack() {
 		r.Bank += r.Gold[p]
 		r.Gold[p] = 0
 	}

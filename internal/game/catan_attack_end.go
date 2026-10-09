@@ -99,7 +99,7 @@ func (s *State) catanAttackPlanChoices(preview *State) ([]catanAttackMoveChoice,
 		if !g.attackCanMoveKnight(k.Player, s.Turn) {
 			continue
 		}
-		required := a.castleEdge(g, k.Edge)
+		required := a.castleEdge(g, k.Edge) && !g.riverAttackCastleBlocked(i, s.Turn)
 		if required {
 			ready = false
 		}
@@ -119,8 +119,8 @@ func (s *State) catanAttackPlanChoices(preview *State) ([]catanAttackMoveChoice,
 		}
 		if g.twoAttack() && k.Player == catanAttackNeutral {
 			waiting := false
-			for _, own := range a.Knights {
-				waiting = waiting || own.Player == s.Turn && a.castleEdge(g, own.Edge)
+			for j, own := range a.Knights {
+				waiting = waiting || own.Player == s.Turn && a.castleEdge(g, own.Edge) && !g.riverAttackCastleBlocked(j, s.Turn)
 			}
 			if waiting {
 				continue
