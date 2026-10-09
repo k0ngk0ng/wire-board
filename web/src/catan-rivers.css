@@ -128,3 +128,6 @@
   filter: drop-shadow(0 1px 1px #4d361e);
   pointer-events: none;
 }
+
+.catan-wealth.no-penalty { white-space: nowrap; }
+.catan-wealth.no-penalty img { display: none; }

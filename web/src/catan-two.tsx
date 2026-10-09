@@ -258,7 +258,9 @@ export function CatanTwoPanel({
                   : g.citiesKnights
                     ? "＋城市与骑士"
                     : g.attack
-                      ? "＋蛮族进攻"
+                      ? g.rivers
+                        ? "＋河流＋蛮族进攻"
+                        : "＋蛮族进攻"
                       : g.transport
                         ? "＋运输"
                         : g.rivers
@@ -321,7 +323,7 @@ export function CatanTwoPanel({
               ) : (
                 <>
                   两次生产总点数不同 · 每次先处理完弃牌与
-                  {g.transport ? "蛮族" : "强盗"}
+                  {g.transport || g.attack ? "蛮族" : "强盗"}
                 </>
               )}
             </small>

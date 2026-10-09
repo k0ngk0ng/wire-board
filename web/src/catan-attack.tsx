@@ -39,7 +39,7 @@ export function CatanAttackSeat({
   if (!a) return null;
   return (
     <span className="attack-seat">
-      <CatanCoins count={a.gold[seat]} assets={assets} />{" "}
+      {!game.rivers && <CatanCoins count={a.gold[seat]} assets={assets} />}{" "}
       <span>
         俘虏 <b>{a.prisoners[seat]}</b>（
         {Math.floor(a.prisoners[seat] / (a.city ? 3 : 2))}分）

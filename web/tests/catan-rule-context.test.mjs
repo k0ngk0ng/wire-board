@@ -911,3 +911,22 @@ test("merchant trains plus knights has fifteen-point target in draft and saved g
     assert.equal(catanRuleContext(room).target, 12);
   }
 });
+
+test("rivers attack waiting room uses combined wealth, army, count and victory rules", () => {
+  for (const capacity of [2, 3, 6]) {
+    for (const knights of [false, true]) {
+      const rules = catanRuleContext({
+        capacity,
+        catanScenario: "rivers-attack",
+        catanCitiesKnights: knights ? { layout: "variable" } : undefined,
+      });
+      assert.equal(rules.attack, true);
+      assert.equal(rules.rivers, true);
+      assert.equal(rules.caravans, false);
+      assert.equal(rules.two, capacity === 2);
+      assert.equal(rules.twoAttack, capacity === 2);
+      assert.equal(rules.fiveSix, capacity > 4);
+      assert.equal(rules.target, knights ? 13 : 12);
+    }
+  }
+});

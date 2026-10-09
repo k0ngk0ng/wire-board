@@ -22,7 +22,7 @@ func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string, fi
 		clients[p].register(fmt.Sprintf("商队骑士%d", p))
 	}
 	recipe := map[string]any{"kind": "catan", "name": "商队骑士验收", "capacity": n, "catanOptions": game.CatanOptions{FiveSix: n > 4}, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}}
-	if scenario == "rivers-caravans" || scenario == "transport" || scenario == "barbarian-attack" && n > 2 {
+	if scenario == "rivers-caravans" || scenario == "rivers-attack" || scenario == "transport" || scenario == "barbarian-attack" && n > 2 {
 		recipe["catanScenario"] = scenario
 		recipe["catanOptions"] = game.CatanOptions{}
 	} else if n == 2 {
@@ -31,7 +31,7 @@ func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string, fi
 		recipe["catanScenario"] = scenario
 	}
 	if len(fishing) > 0 {
-		if scenario != "rivers-caravans" {
+		if scenario != "rivers-caravans" && scenario != "rivers-attack" {
 			recipe["catanFishing"] = true
 		}
 		if !fishing[0] {

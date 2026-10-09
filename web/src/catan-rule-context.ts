@@ -23,7 +23,9 @@ export function catanRuleContext(room: Room) {
       );
   const attack = game
     ? !!game.attack
-    : (room.catanTwoScenario || room.catanScenario) === "barbarian-attack";
+    : ["barbarian-attack", "rivers-attack"].includes(
+        room.catanTwoScenario || room.catanScenario || "",
+      );
   const transport = game
     ? !!game.transport
     : room.catanScenario === "transport";
@@ -133,16 +135,20 @@ export function catanRuleContext(room: Room) {
         !!room.catanFishing,
     transport,
     attack,
-    twoAttack: game ? !!game.attack?.twoRules : attack && !!room.catanTwoRules,
+    twoAttack: game
+      ? !!game.attack?.twoRules
+      : attack && (!!room.catanTwoRules || players === 2),
     caravans,
     rivers: game
       ? !!game.rivers
-      : ["rivers", "rivers-caravans"].includes(
+      : ["rivers", "rivers-caravans", "rivers-attack"].includes(
           room.catanTwoScenario || room.catanScenario || "",
         ),
     two: game
       ? !!game.two
-      : !!room.catanTwoRules || (transport && players === 2),
+      : !!room.catanTwoRules ||
+        ((transport || attack || room.catanScenario === "rivers-caravans") &&
+          players === 2),
     citiesKnights,
     twoFishingKnights: game
       ? game.fishing?.twoKnights || ""
@@ -237,7 +243,8 @@ export function catanRuleContext(room: Room) {
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
-  if (scenario === "barbarian-attack") return citiesKnights ? 13 : 12;
+  if (["barbarian-attack", "rivers-attack"].includes(scenario))
+    return citiesKnights ? 13 : 12;
   if (scenario === "transport") return citiesKnights ? 15 : 13;
   if (scenario === "caravans" || scenario === "rivers-caravans")
     return citiesKnights ? 15 : 12;
