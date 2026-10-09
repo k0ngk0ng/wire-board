@@ -66,11 +66,11 @@ func (r *Room) validateCatanScenario() error {
 		maximum := 6
 		minimum := 2
 		if r.CatanScenario == "caravans-islands" {
-			minimum, maximum = 2, 4
+			minimum, maximum = 2, 6
 		}
 
 		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
-			return errors.New("商队海图人数或组合无效；四岛支持二至四人，其余支持二至六人")
+			return errors.New("商队海图人数或组合无效；支持二至六人")
 		}
 		return nil
 	}
@@ -200,7 +200,7 @@ func (r *Room) setCatanScenario(scenario string) error {
 	if r.Kind != "catan" || r.Status != "waiting" || (r.CatanTwoRules != "" && !publicCatanFlexibleScenario(scenario)) {
 		return errors.New("只能在对应人数的卡坦开局前选择剧本")
 	}
-	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" {
+	if r.Capacity > 4 && (publicCatanFlexibleScenario(r.CatanScenario) || r.CatanScenario == "barbarian-attack") && !publicCatanExplorerScenario(scenario) && scenario != "barbarian-attack" && scenario != "transport" && (!publicCatanTradersCombination(scenario)) && !publicCatanRiversSea(scenario) && scenario != "caravans-tribe" && scenario != "caravans-desert" && scenario != "caravans-shores" && scenario != "caravans-islands" {
 		return errors.New("五六席牌桌只能选择支持该人数的剧本")
 	}
 	next := *r

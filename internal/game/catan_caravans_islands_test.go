@@ -52,7 +52,7 @@ func TestCatanCaravansIslandsMap(t *testing.T) {
 	}
 }
 func TestCatanCaravansIslandsNatural(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		for _, events := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/events%t", n, events), func(t *testing.T) {
 				s, err := newCatanCaravansIslands(n)
@@ -139,5 +139,34 @@ func TestCatanCaravansIslandsPrintedPortsAndSeaDisc(t *testing.T) {
 	}
 	if !slices.Equal(before, g.Players[0].Resources) {
 		t.Fatal("sea generated resources")
+	}
+}
+
+func TestCatanCaravansSixIslandsRecipe(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		s, err := NewCatanCaravansIslandsSeafarers(n)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := s.Catan
+		if g.Tiles[42].Resource != 3 || g.Tiles[52].Resource != 2 {
+			t.Fatal("transfer resources", g.Tiles[42], g.Tiles[52])
+		}
+		for _, mutate := range []func(*Catan){func(g *Catan) { g.Caravans.ExtraNumbers[0].Number = 6 }, func(g *Catan) { g.Caravans.Map.Supply = 22 }, func(g *Catan) { g.Tiles[16].Resource = 3 }, func(g *Catan) { g.Ports[0].Resource = 99 }} {
+			b := clone(*s)
+			mutate(b.Catan)
+			if b.validateCaravans() == nil {
+				t.Fatal("invalid expanded recipe accepted")
+			}
+		}
+		regions := map[int]bool{}
+		for _, r := range g.Seafarers.Islands {
+			if r >= 0 {
+				regions[r] = true
+			}
+		}
+		if len(regions) != 6 || len(g.Caravans.Map.Starts) != 6 || g.Caravans.Map.Supply != 33 {
+			t.Fatal("six island recipe", len(regions))
+		}
 	}
 }
