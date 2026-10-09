@@ -6,7 +6,7 @@ import (
 )
 
 func TestCatanCaravansTribeNatural(t *testing.T) {
-	for _, n := range []int{3, 4} {
+	for _, n := range []int{3, 4, 5, 6} {
 		for _, events := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/events%t", n, events), func(t *testing.T) {
 				s, err := newCatanCaravansTribeSea(n)
@@ -116,6 +116,44 @@ func TestCatanCaravansTribeWateringHole(t *testing.T) {
 	for _, v := range g.Tiles[hole].Vertices {
 		if !g.landVertex(v) {
 			t.Fatal("water hole not buildable")
+		}
+	}
+}
+
+func TestCatanCaravansTribeExtendedInventoryAndFlee(t *testing.T) {
+	for _, n := range []int{5, 6} {
+		s, err := newCatanCaravansTribeSea(n)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g := s.Catan
+		if g.Caravans.Map.Supply != 33 || len(g.Caravans.Map.WateringHoles) != 2 || len(g.Caravans.Map.Starts) != 6 || len(g.Caravans.ExtraNumbers) != 2 || g.Paired == nil {
+			t.Fatal("extended components")
+		}
+		if len(g.tribe().Tokens) != 10 || len(g.tribe().Development) != 6 || len(g.tribe().Ports) != 8 {
+			t.Fatal("tribe rewards")
+		}
+		if err = s.EnableCatanEvents(CatanEventCatalogue); err != nil {
+			t.Fatal(err)
+		}
+		for _, id := range g.fleeDeserts() {
+			if g.robberLandAllowed(id) {
+				t.Fatal("ordinary move admitted outer desert")
+			}
+			b := clone(*s)
+			b.Catan.Robber = id
+			if err = b.validateCaravans(); err != nil {
+				t.Fatal("event refuge rejected", err)
+			}
+			b.Catan.EventDeck = nil
+			if b.validateCaravans() == nil {
+				t.Fatal("refuge allowed without events")
+			}
+		}
+		b := clone(*s)
+		b.Catan.Caravans.Map.Supply = 22
+		if b.validateCaravans() == nil {
+			t.Fatal("wrong wagon supply")
 		}
 	}
 }
