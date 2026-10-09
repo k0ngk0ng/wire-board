@@ -86,9 +86,28 @@ func (g *Catan) twoAttackMoves() map[int][]int {
 	if !g.twoAttack() && !g.twoAttackKnights() {
 		return out
 	}
-	for _, from := range g.Attack.captureTargets() {
-		for _, to := range g.Attack.Map.Coast {
+	for _, from := range g.attackCaptureTargets() {
+		for _, to := range g.attackBattleTiles() {
 			if from != to && !g.Attack.conquered(to) {
+				if g.attackTransport() {
+					legal := false
+					for id, piece := range g.AttackTransport.Pieces.Barbarians {
+						if piece.Tile != from {
+							continue
+						}
+						for _, edge := range g.AttackTransport.Pieces.edges(g, to, id) {
+							next := catanAttackTransportPieces{Barbarians: slices.Clone(g.AttackTransport.Pieces.Barbarians)}
+							if next.relocate(g, g.attackTransportBoard(), id, to, edge) == nil {
+								legal = true
+								break
+							}
+						}
+						break
+					}
+					if !legal {
+						continue
+					}
+				}
 				out[from] = append(out[from], to)
 			}
 		}
@@ -100,8 +119,29 @@ func (s *State) catanTwoMoveBarbarian(player int, a Action, cost int) error {
 	if !slices.Contains(g.twoAttackMoves()[a.Card], a.Tile) {
 		return errors.New("请选择有蛮族的沿海来源和另一未征服沿海目的地")
 	}
-	g.Attack.Barbarians[a.Card]--
-	g.Attack.Barbarians[a.Tile]++
+	if g.attackTransport() {
+		id := -1
+		for i, p := range g.AttackTransport.Pieces.Barbarians {
+			if p.Tile == a.Card {
+				id = i
+				break
+			}
+		}
+		if id < 0 {
+			return errors.New("来源没有蛮族")
+		}
+		edges := g.AttackTransport.Pieces.edges(g, a.Tile, id)
+		if len(edges) == 0 {
+			return errors.New("目的地没有空边")
+		}
+		if err := g.AttackTransport.Pieces.relocate(g, g.attackTransportBoard(), id, a.Tile, edges[0]); err != nil {
+			return err
+		}
+		g.syncAttackTransportCounts()
+	} else {
+		g.Attack.Barbarians[a.Card]--
+		g.Attack.Barbarians[a.Tile]++
+	}
 	if g.twoAttackKnights() {
 		if m := g.CitiesKnights.Merchant; m != nil && g.Attack.conquered(m.Tile) {
 			g.CitiesKnights.Merchant = nil

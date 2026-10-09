@@ -29,53 +29,54 @@ type CatanTrade struct {
 	Responses []int `json:"responses"` // 0 waiting, 1 accepted, -1 declined.
 }
 type Catan struct {
-	Explorer       *catanExplorer       `json:"explorer,omitempty"`
-	Transport      *catanTransport      `json:"transport,omitempty"`
-	Attack         *catanAttack         `json:"attack,omitempty"`
-	Two            *CatanTwo            `json:"two,omitempty"`
-	Caravans       *catanCaravans       `json:"caravans,omitempty"`
-	Rivers         *CatanRivers         `json:"rivers,omitempty"`
-	Fishing        *CatanFishing        `json:"fishing,omitempty"`
-	RevealedEvent  *CatanRevealedEvent  `json:"revealedEvent,omitempty"`
-	CardEvent      *CatanCardEvent      `json:"cardEvent,omitempty"`
-	EventDeck      *catanEventSession   `json:"eventDeck,omitempty"`
-	FriendlyRobber *CatanFriendlyRobber `json:"friendlyRobber,omitempty"`
-	Harbors        *CatanHarbors        `json:"harbors,omitempty"`
-	CitiesKnights  *CatanCitiesKnights  `json:"citiesKnights,omitempty"`
-	BaseSetup      *CatanBaseSetup      `json:"baseSetup,omitempty"`
-	GoldPending    *CatanGoldPending    `json:"goldPending,omitempty"`
-	Seafarers      *CatanSeafarers      `json:"seafarers,omitempty"`
-	StartPlayer    int                  `json:"startPlayer,omitempty"`
-	Paired         *CatanPairedTurn     `json:"paired,omitempty"`
-	HexSize        float64              `json:"hexSize,omitempty"`
-	Options        CatanOptions         `json:"options"`
-	TurnSerial     uint64               `json:"turnSerial,omitempty"`
-	HelperDisplay  []int                `json:"helperDisplay,omitempty"`
-	HelperPending  *CatanHelperPending  `json:"helperPending,omitempty"`
-	HelperSequence uint64               `json:"helperSequence,omitempty"`
-	HelperExile    []int                `json:"helperExile,omitempty"`
-	Tiles          []CatanTile          `json:"tiles"`
-	Vertices       []CatanVertex        `json:"vertices"`
-	Edges          []CatanEdge          `json:"edges"`
-	Ports          []CatanPort          `json:"ports"`
-	Players        []CatanPlayer        `json:"players"`
-	Bank           []int                `json:"bank"`
-	DevDeck        []int                `json:"devDeck"`
-	DevDiscard     []int                `json:"devDiscard"`
-	Robber         int                  `json:"robber"`
-	Dice           []int                `json:"dice"`
-	RollID         int                  `json:"rollId"`
-	SetupStep      int                  `json:"setupStep"`
-	SetupVertex    int                  `json:"setupVertex"`
-	DiscardDue     []int                `json:"discardDue"`
-	Victims        []int                `json:"victims"`
-	ResumePhase    string               `json:"resumePhase"`
-	FreeRoads      int                  `json:"freeRoads"`
-	PlayedDev      bool                 `json:"playedDev"`
-	LongestOwner   int                  `json:"longestOwner"`
-	ArmyOwner      int                  `json:"armyOwner"`
-	TradeID        int                  `json:"tradeId"`
-	Trade          *CatanTrade          `json:"trade,omitempty"`
+	Explorer        *catanExplorer        `json:"explorer,omitempty"`
+	AttackTransport *catanAttackTransport `json:"attackTransport,omitempty"`
+	Transport       *catanTransport       `json:"transport,omitempty"`
+	Attack          *catanAttack          `json:"attack,omitempty"`
+	Two             *CatanTwo             `json:"two,omitempty"`
+	Caravans        *catanCaravans        `json:"caravans,omitempty"`
+	Rivers          *CatanRivers          `json:"rivers,omitempty"`
+	Fishing         *CatanFishing         `json:"fishing,omitempty"`
+	RevealedEvent   *CatanRevealedEvent   `json:"revealedEvent,omitempty"`
+	CardEvent       *CatanCardEvent       `json:"cardEvent,omitempty"`
+	EventDeck       *catanEventSession    `json:"eventDeck,omitempty"`
+	FriendlyRobber  *CatanFriendlyRobber  `json:"friendlyRobber,omitempty"`
+	Harbors         *CatanHarbors         `json:"harbors,omitempty"`
+	CitiesKnights   *CatanCitiesKnights   `json:"citiesKnights,omitempty"`
+	BaseSetup       *CatanBaseSetup       `json:"baseSetup,omitempty"`
+	GoldPending     *CatanGoldPending     `json:"goldPending,omitempty"`
+	Seafarers       *CatanSeafarers       `json:"seafarers,omitempty"`
+	StartPlayer     int                   `json:"startPlayer,omitempty"`
+	Paired          *CatanPairedTurn      `json:"paired,omitempty"`
+	HexSize         float64               `json:"hexSize,omitempty"`
+	Options         CatanOptions          `json:"options"`
+	TurnSerial      uint64                `json:"turnSerial,omitempty"`
+	HelperDisplay   []int                 `json:"helperDisplay,omitempty"`
+	HelperPending   *CatanHelperPending   `json:"helperPending,omitempty"`
+	HelperSequence  uint64                `json:"helperSequence,omitempty"`
+	HelperExile     []int                 `json:"helperExile,omitempty"`
+	Tiles           []CatanTile           `json:"tiles"`
+	Vertices        []CatanVertex         `json:"vertices"`
+	Edges           []CatanEdge           `json:"edges"`
+	Ports           []CatanPort           `json:"ports"`
+	Players         []CatanPlayer         `json:"players"`
+	Bank            []int                 `json:"bank"`
+	DevDeck         []int                 `json:"devDeck"`
+	DevDiscard      []int                 `json:"devDiscard"`
+	Robber          int                   `json:"robber"`
+	Dice            []int                 `json:"dice"`
+	RollID          int                   `json:"rollId"`
+	SetupStep       int                   `json:"setupStep"`
+	SetupVertex     int                   `json:"setupVertex"`
+	DiscardDue      []int                 `json:"discardDue"`
+	Victims         []int                 `json:"victims"`
+	ResumePhase     string                `json:"resumePhase"`
+	FreeRoads       int                   `json:"freeRoads"`
+	PlayedDev       bool                  `json:"playedDev"`
+	LongestOwner    int                   `json:"longestOwner"`
+	ArmyOwner       int                   `json:"armyOwner"`
+	TradeID         int                   `json:"tradeId"`
+	Trade           *CatanTrade           `json:"trade,omitempty"`
 }
 
 func catanRandom(n int) int {
@@ -883,6 +884,11 @@ func (s *State) catanRollProduction(total int) error {
 // their already computed counts, so no turn-wide flag can leak into a later roll.
 func (s *State) catanRollProductionEffect(total int, epidemic bool) error {
 	g := s.Catan
+	if g.attackTransport() {
+		if err := s.attackTransportProductionLanding(total); err != nil {
+			return err
+		}
+	}
 	var fish []int
 	if f := g.Fishing; f != nil {
 		if err := g.validateFishing(); err != nil {
@@ -1467,8 +1473,10 @@ func (s *State) EliminateCatan(p int) error {
 		return err
 	}
 	if a := g.Attack; a != nil {
-		a.GoldBank += a.Gold[p]
-		a.Gold[p] = 0
+		if !g.attackTransport() {
+			a.GoldBank += a.Gold[p]
+			a.Gold[p] = 0
+		}
 		a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return k.Player == p })
 		if g.attackKnights() {
 			a.City.Knights = slices.DeleteFunc(a.City.Knights, func(k catanAttackCityKnight) bool { return k.Owner == p })
@@ -1478,6 +1486,9 @@ func (s *State) EliminateCatan(p int) error {
 		t.GoldBank += t.Gold[p]
 		t.Gold[p] = 0
 		t.Travel = nil
+		if g.attackTransport() {
+			g.AttackTransport.Attempted = nil
+		}
 		t.ArrivalResolved = false
 		t.Swift = false
 		t.Moves = 0

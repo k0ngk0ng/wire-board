@@ -146,7 +146,7 @@ func (g *Catan) twoRetreatTiles() []int {
 
 func (g *Catan) twoTransportRetreatEdges() []int {
 	out := []int{}
-	if g.Two != nil && g.Transport != nil {
+	if g.Two != nil && g.Transport != nil && !g.attackTransport() {
 		for _, e := range g.Edges {
 			if e.Owner == -1 && !slices.Contains(g.Transport.Barbarians[:], e.ID) {
 				out = append(out, e.ID)
@@ -192,7 +192,7 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 	}
 	// 2025 transport p24 specifies one trade token for this replacement
 	// action. The ordinary score-dependent cost still applies to forced trade.
-	if a.Type == "catan_two_robber" && g.Transport != nil {
+	if a.Type == "catan_two_robber" && g.Transport != nil && !g.attackTransport() {
 		cost = 1
 	}
 	if q.Spent || q.Tokens[player] < cost {
@@ -240,7 +240,7 @@ func (s *State) catanTwoTokenAction(player int, a Action) error {
 			}
 			break
 		}
-		if t := g.Transport; t != nil {
+		if t := g.Transport; t != nil && !g.attackTransport() {
 			if a.Card < 0 || a.Card >= len(t.Barbarians) || !slices.Contains(g.twoTransportRetreatEdges(), a.Edge) {
 				return errors.New("请选择一名蛮族及没有道路、没有其他蛮族的边")
 			}
@@ -354,7 +354,7 @@ func (s *State) catanTwoOptionalBot(player int) (Action, bool) {
 	if q.Spent || q.Tokens[player] < 1 {
 		return Action{}, false
 	}
-	if t := g.Transport; t != nil {
+	if t := g.Transport; t != nil && !g.attackTransport() {
 		// Remove an immediate wagon obstruction before moving. Use only
 		// public piece positions; do not inspect cargo/development stacks.
 		position := t.Wagons[player].Position

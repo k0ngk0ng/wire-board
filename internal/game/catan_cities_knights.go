@@ -157,7 +157,7 @@ func (g *Catan) cityProduction(claim []int, terrain, level int) {
 	}
 }
 func (s *State) catanAfterSevenDiscards() {
-	if s.Catan.Transport != nil {
+	if s.Catan.Transport != nil && !s.Catan.attackTransport() {
 		s.catanTransportBeginBarbarian()
 		return
 	}

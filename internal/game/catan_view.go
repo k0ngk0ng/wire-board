@@ -60,7 +60,7 @@ func (s *State) catanView(view map[string]any, player int) {
 					public["exchangeKnights"] = g.twoKnightTokenVertices(player)
 					public["exchangeKnightEdges"] = g.twoAttackKnightTokenEdges(player)
 				}
-				if g.Transport != nil {
+				if g.Transport != nil && !g.attackTransport() {
 					public["retreatCost"] = 1
 					public["retreatEdges"] = g.twoTransportRetreatEdges()
 				}

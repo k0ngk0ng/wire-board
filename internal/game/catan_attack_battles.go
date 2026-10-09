@@ -63,7 +63,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 	if err := s.catanAttackMoveKnights(moves, true); err != nil {
 		return err
 	}
-	for _, tile := range a.Map.Coast {
+	for _, tile := range g.attackBattleTiles() {
 		count := a.Barbarians[tile]
 		if count == 0 {
 			continue
@@ -86,12 +86,19 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 		if err := battle.distribute(strength, die, neutral); err != nil {
 			return err
 		}
-		a.Barbarians[tile] = 0
-		for p, n := range battle.Prisoners {
-			if g.twoAttack() && p == 2 {
-				a.NeutralPrisoners += n
-			} else {
-				a.Prisoners[p] += n
+		if g.attackTransport() {
+			if err := g.AttackTransport.Pieces.captureBattle(g, g.attackTransportBoard(), tile, battle.Prisoners); err != nil {
+				return err
+			}
+			g.syncAttackTransportCounts()
+		} else {
+			a.Barbarians[tile] = 0
+			for p, n := range battle.Prisoners {
+				if g.twoAttack() && p == 2 {
+					a.NeutralPrisoners += n
+				} else {
+					a.Prisoners[p] += n
+				}
 			}
 		}
 		if g.twoAttack() && !g.fishingAttack() {
@@ -127,13 +134,11 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 			}
 			a.Knights = slices.DeleteFunc(a.Knights, func(k catanAttackKnight) bool { return slices.Contains(battle.Lost, k) })
 		}
-		if err := a.ensureGold(sum(battle.Gold)); err != nil {
+		if err := g.attackReward(battle.Gold[:len(g.Players)]); err != nil {
 			return err
 		}
-		for p, n := range battle.Gold {
+		for p := range battle.Gold {
 			if p < len(g.Players) {
-				a.Gold[p] += n
-				a.GoldBank -= n
 				if g.twoAttack() && !g.fishingAttack() {
 					if err := s.catanTwoEarn(p, battle.Tokens[p]); err != nil {
 						return err
@@ -167,6 +172,9 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 		if s.Finished {
 			return nil
 		}
+	}
+	if g.attackTransport() {
+		return s.catanTransportBeginTravel(s.Turn)
 	}
 	s.catanAfterAttackBattles()
 	return nil
@@ -278,7 +286,7 @@ func (s *State) validateCatanAttackEnd() error {
 	if q == nil {
 		return nil
 	}
-	if g.setup() || q.ID != a.EndSequence || q.Player < 0 || q.Player >= len(g.Players) || len(q.Moves) > g.attackMoveLimit() || len(q.Battles) > len(a.Map.Coast) {
+	if g.setup() || q.ID != a.EndSequence || q.Player < 0 || q.Player >= len(g.Players) || len(q.Moves) > g.attackMoveLimit() || len(q.Battles) > len(g.attackBattleTiles()) {
 		return errors.New("回合末战斗记录无效")
 	}
 	used := map[int]bool{}
@@ -293,8 +301,8 @@ func (s *State) validateCatanAttackEnd() error {
 	}
 	previous := -1
 	for i, b := range q.Battles {
-		coast := slices.Index(a.Map.Coast, b.Tile)
-		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) <= b.Barbarians || len(b.Knights) > 6 || len(b.Prisoners) != g.attackBattleSeats() || len(b.Gold) != g.attackBattleSeats() || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || i != len(q.Battles)-1) {
+		coast := slices.Index(g.attackBattleTiles(), b.Tile)
+		if coast <= previous || b.Barbarians < 1 || b.Barbarians > 3 || len(b.Knights) <= b.Barbarians || len(b.Knights) > g.attackBattleKnightLimit(b.Tile) || len(b.Prisoners) != g.attackBattleSeats() || len(b.Gold) != g.attackBattleSeats() || sum(b.Prisoners) != b.Barbarians || b.LossDie < 0 || b.LossDie > 6 || b.LossDie == 0 && (!s.Finished || i != len(q.Battles)-1) {
 			return errors.New("战斗顺序、力量或俘虏记录无效")
 		}
 		previous = coast

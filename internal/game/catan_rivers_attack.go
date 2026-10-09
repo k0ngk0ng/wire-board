@@ -133,7 +133,7 @@ func (g *Catan) validateRiversAttackMap() error {
 // Site supplement for the combined board: a castle knight with no currently
 // legal destination may wait. Other knights still move and combat still runs.
 func (g *Catan) riverAttackCastleBlocked(index, player int) bool {
-	if !g.riversAttack() || index < 0 || index >= len(g.Attack.Knights) || player < 0 || player >= len(g.Players) {
+	if (!g.riversAttack() && !g.attackTransport()) || index < 0 || index >= len(g.Attack.Knights) || player < 0 || player >= len(g.Players) {
 		return false
 	}
 	a := g.Attack

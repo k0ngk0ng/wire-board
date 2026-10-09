@@ -123,7 +123,7 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 	if !catanHas(g.Players[player].Resources, cost) {
 		return errors.New("资源不足：发展卡需要羊毛、粮食、矿石各1张")
 	}
-	if !a.cardSupplyReady() {
+	if !g.attackGoldReady(2) {
 		return errors.New("金币记账超出安全范围，不能购买发展卡")
 	}
 	catanMove(g.Players[player].Resources, g.Bank, cost)
@@ -151,13 +151,13 @@ func (s *State) catanAttackDrawCard(player int) error {
 		a.Pending = &catanAttackCardPending{ID: a.CardSequence, Player: player, Card: card, Resume: resume}
 		s.Phase = "catan_attack_card"
 		s.catanLog(player, "翻开发展卡：%s", catanAttackCardNames[card])
-		if card == "capture" && len(a.captureTargets()) == 0 {
+		if card == "capture" && len(g.attackCaptureTargets()) == 0 {
 			a.Discard = append(a.Discard, card)
 			a.Pending = nil
 			s.catanLog(player, "沿海没有蛮族，弃置俘获并免费重抽")
 			continue
 		}
-		if card == "treason" && len(a.treasonPlans()[0].Sources) == 0 {
+		if card == "treason" && len(g.attackTreasonPlans()[0].Sources) == 0 {
 			if err := s.catanAttackTreason(player, nil, nil); err != nil {
 				return err
 			}
@@ -192,12 +192,13 @@ func (s *State) catanAttackCardChoice(player int, action Action) error {
 	}
 	switch a.Pending.Card {
 	case "capture":
-		if !slices.Contains(a.captureTargets(), action.Tile) {
+		if !slices.Contains(g.attackCaptureTargets(), action.Tile) {
 			return errors.New("请选择有蛮族的沿海地块")
 		}
 		liberates := a.conquered(action.Tile)
-		a.Barbarians[action.Tile]--
-		a.Prisoners[player]++
+		if err := g.attackCapture(action.Tile, player); err != nil {
+			return err
+		}
 		s.catanLog(player, "俘获地块 #%d 的1个蛮族，现有俘虏%d个（%d分）", action.Tile+1, a.Prisoners[player], a.Prisoners[player]/2)
 		if liberates {
 			s.catanLog(player, "解放地块 #%d，恢复生产及相邻被征服建筑", action.Tile+1)
@@ -229,8 +230,9 @@ func (s *State) catanAttackCardChoice(player int, action Action) error {
 }
 
 func (s *State) catanAttackTreason(player int, from, to []int) error {
-	a := s.Catan.Attack
-	plans := a.treasonPlans()
+	g := s.Catan
+	a := g.Attack
+	plans := g.attackTreasonPlans()
 	count := len(plans[0].Sources)
 	if len(from) != count || len(to) != count {
 		return errors.New("请完成当前可执行的全部叛变移动")
@@ -259,14 +261,30 @@ func (s *State) catanAttackTreason(player int, from, to []int) error {
 		return errors.New("请选择能完成叛变的不同来源和未征服目的地，优先使用棋盘上的蛮族")
 	}
 
-	if err := a.ensureGold(2); err != nil {
+	var shared *catanAttackTransportPieces
+	if g.attackTransport() {
+		var err error
+		shared, err = g.attackTreasonPieces(from, to)
+		if err != nil {
+			return err
+		}
+	}
+	rewards := make([]int, len(s.Catan.Players))
+	rewards[player] = 2
+	if err := s.Catan.attackReward(rewards); err != nil {
 		return err
 	}
-	a.GoldBank -= 2
-	a.Gold[player] += 2
 	s.catanLog(player, "叛变：领取 金币×2")
 	if count < 2 {
 		s.catanLog(player, "本站补充规则：叛变当前最多可移动%d个蛮族，完成可执行部分，不额外抽牌", count)
+	}
+	if shared != nil {
+		g.AttackTransport.Pieces = *shared
+		g.syncAttackTransportCounts()
+		for i, tile := range to {
+			s.catanLog(player, "叛变：从地块 #%d 向地块 #%d 移动蛮族并关联空边", from[i]+1, tile+1)
+		}
+		return nil
 	}
 	for _, id := range from {
 		if id >= 0 {
@@ -319,7 +337,7 @@ func (s *State) catanAttackCardBot(player int) (Action, error) {
 	found, score := false, -1000000
 	switch q.Card {
 	case "capture":
-		for _, id := range a.captureTargets() {
+		for _, id := range g.attackCaptureTargets() {
 			value := g.attackTileInterest(player, id) * a.Barbarians[id]
 			if !found || value > score {
 				found, score, best.Tile = true, value, id
@@ -336,7 +354,7 @@ func (s *State) catanAttackCardBot(player int) (Action, error) {
 			}
 		}
 	case "treason":
-		for _, plan := range a.treasonPlans() {
+		for _, plan := range g.attackTreasonPlans() {
 			groups := [][]int{}
 			switch len(plan.Sources) {
 			case 0:

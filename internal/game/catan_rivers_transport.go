@@ -18,6 +18,9 @@ func (g *Catan) riverBridgeReward() int {
 // Commodity terrain retains its artwork and cargo behavior while producing
 // the resource specified by the official Rivers/Traders combination sheet.
 func (g *Catan) productionResource(tile CatanTile) int {
+	if g.attackTransport() {
+		return g.attackTransportBoard().productionResource(tile)
+	}
 	if g.riversTransport() || g.caravansTransport() {
 		for _, site := range g.Transport.Map.Sites {
 			if site.Tile == tile.ID {

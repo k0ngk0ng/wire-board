@@ -141,7 +141,7 @@ func (s *State) validateCatanTwo() error {
 		return errors.New("双人状态或尚未接入的组合无效")
 	}
 	for _, n := range q.Rolls {
-		if n < 2 || n > 12 || g.Transport != nil && !g.riversTransport() && !g.caravansTransport() && g.EventDeck == nil && (n == 2 || n == 12) {
+		if n < 2 || n > 12 || g.Transport != nil && !g.riversTransport() && !g.caravansTransport() && !g.attackTransport() && g.EventDeck == nil && (n == 2 || n == 12) {
 			return errors.New("双人生产点数无效")
 		}
 	}

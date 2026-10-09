@@ -128,6 +128,9 @@ func (g *Catan) victoryTarget() int {
 	if g.Explorer != nil {
 		return g.Explorer.Board.Target
 	}
+	if g.attackTransport() {
+		return 14
+	}
 	goal := 10
 	if g.Transport != nil {
 		goal = 13

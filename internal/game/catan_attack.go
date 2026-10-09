@@ -73,6 +73,9 @@ func (s *State) validateCatanAttack() error {
 		return nil
 	}
 	a := g.Attack
+	if (g.AttackTransport != nil || a.Map != nil && a.Map.Transport != "") && !g.attackTransport() {
+		return errors.New("蛮族运输缺少匹配组件")
+	}
 	if a.Map != nil && a.Map.Caravans != "" && !g.caravansAttack() {
 		return errors.New("商队蛮族缺少商队组件")
 	}
@@ -119,7 +122,7 @@ func (s *State) validateCatanAttack() error {
 	if g.setup() && (a.Bought != 0 || a.Sequence != 0 || len(a.Knights) > 0) {
 		return errors.New("起始建设不能触发登陆或骑士行动")
 	}
-	if !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}, s.Phase) {
+	if !(g.attackTransport() && s.Phase == "catan_transport_move") && !slices.Contains([]string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_card_event", "catan_fish_replace", "catan_attack_card", "catan_attack_end", "catan_two_build", "catan_two_trade", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}, s.Phase) {
 		return errors.New("蛮族进攻阶段无效")
 	}
 	if a.CardSequence < 0 || (a.Pending != nil) != (s.Phase == "catan_attack_card") || g.setup() && a.CardSequence != 0 {
@@ -132,7 +135,7 @@ func (s *State) validateCatanAttack() error {
 		if q.ID != a.CardSequence || q.ID < 1 || q.Player != s.Turn || q.Player < 0 || q.Player >= n || g.Players[q.Player].Eliminated || g.Trade != nil || s.Finished {
 			return errors.New("蛮族进攻发展卡回应者或序号无效")
 		}
-		if q.Card == "capture" && len(a.captureTargets()) == 0 || (q.Card == "knighthood" || q.Card == "swift_knight") && len(a.recruitEdges(g, g.attackRecruitOwner(q.Player), q.Card)) == 0 || q.Card == "treason" && !a.cardSupplyReady() {
+		if q.Card == "capture" && len(g.attackCaptureTargets()) == 0 || (q.Card == "knighthood" || q.Card == "swift_knight") && len(a.recruitEdges(g, g.attackRecruitOwner(q.Player), q.Card)) == 0 || q.Card == "treason" && !g.attackGoldReady(2) {
 			return errors.New("蛮族进攻发展卡没有可完成的效果")
 		}
 	}
@@ -168,11 +171,11 @@ func (s *State) validateCatanAttack() error {
 		seen := map[int]bool{}
 		for index, roll := range q.Rolls {
 			total := roll.Dice[0] + roll.Dice[1]
-			if roll.Dice[0] < 1 || roll.Dice[0] > 6 || roll.Dice[1] < 1 || roll.Dice[1] > 6 || total == 7 || seen[total] || len(roll.Tiles) > 2 {
+			if roll.Dice[0] < 1 || roll.Dice[0] > 6 || roll.Dice[1] < 1 || roll.Dice[1] > 6 || total == 7 || seen[total] || (len(roll.Tiles) > 2 && !g.attackTransport() || len(roll.Tiles) > len(a.Map.Coast)) {
 				return errors.New("登陆点数记录无效")
 			}
 			seen[total] = true
-			if roll.Shortage && (n < 5 || total != 5 && total != 9 || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
+			if roll.Shortage && !g.attackTransport() && (n < 5 || total != 5 && total != 9 || len(roll.Tiles) != 1 || index != len(q.Rolls)-1) {
 				return errors.New("最后一枚蛮族的随机登陆记录无效")
 			}
 			for i, id := range roll.Tiles {
@@ -194,6 +197,9 @@ func (s *State) validateCatanAttack() error {
 func (s *State) catanAttackLanding(roll func() [2]int, choose func(int) int) error {
 	g := s.Catan
 	a := g.Attack
+	if g.attackTransport() {
+		return s.attackTransportLanding(roll, choose)
+	}
 	if g.attackKnights() {
 		return s.catanAttackCityBuildLanding(roll)
 	}
@@ -286,7 +292,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	}
 	delete(public, "deck")
 	public["devRemaining"] = len(a.Deck)
-	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && a.cardSupplyReady()
+	public["canBuyCard"] = len(a.Deck)+len(a.Discard) > 0 && g.attackGoldReady(2)
 	public["supply"] = a.supply()
 	if g.attackKnights() {
 		public["supply"] = a.supply() + a.City.Issued
@@ -333,11 +339,11 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 	if a.Pending != nil && a.Pending.Player == player && !s.Finished {
 		switch a.Pending.Card {
 		case "capture":
-			public["targets"] = a.captureTargets()
+			public["targets"] = g.attackCaptureTargets()
 		case "knighthood", "swift_knight":
 			public["edges"] = a.recruitEdges(g, g.attackRecruitOwner(player), a.Pending.Card)
 		case "treason":
-			plans := a.treasonPlans()
+			plans := g.attackTreasonPlans()
 			sources, destinations := []int{}, []int{}
 			for _, plan := range plans {
 				for _, id := range plan.Sources {
@@ -354,7 +360,7 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 			public["sources"], public["destinations"] = sources, destinations
 			public["treasonPlans"] = plans
 			public["treasonCount"] = len(plans[0].Sources)
-			public["fromBoard"] = min(len(plans[0].Sources), len(a.captureTargets()))
+			public["fromBoard"] = min(len(plans[0].Sources), len(g.attackCaptureTargets()))
 		}
 	}
 }

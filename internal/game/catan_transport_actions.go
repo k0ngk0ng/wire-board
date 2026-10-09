@@ -99,6 +99,9 @@ func (t *catanTransport) beginTravel(g *Catan, player int) error {
 		return err
 	}
 	t.Travel, t.ArrivalResolved = q, false
+	if g.attackTransport() {
+		g.AttackTransport.Attempted = make([]bool, len(g.AttackTransport.Pieces.Barbarians))
+	}
 	t.Sequence++
 	return nil
 }
@@ -115,7 +118,17 @@ func (t *catanTransport) move(g *Catan, player int, sequence uint64, edge int) (
 	if err := t.travelAllowed(g, player, sequence); err != nil {
 		return catanTransportStep{}, err
 	}
-	step, err := t.Travel.move(g, t.Map, t.Barbarians, t.Gold, edge)
+	var step catanTransportStep
+	var err error
+	if g.attackTransport() {
+		q := t.sharedTravel(g)
+		step, err = q.move(g, g.attackTransportBoard(), &g.AttackTransport.Pieces, t.Gold, edge)
+		if err == nil {
+			t.saveSharedTravel(g, q)
+		}
+	} else {
+		step, err = t.Travel.move(g, t.Map, t.Barbarians, t.Gold, edge)
+	}
 	if err == nil {
 		t.Wagons[player].Position = t.Travel.Position
 		t.GoldBank += step.Bank
@@ -126,10 +139,26 @@ func (t *catanTransport) wheat(g *Catan, player int, sequence uint64) error {
 	if err := t.travelAllowed(g, player, sequence); err != nil {
 		return err
 	}
+	if g.attackTransport() {
+		q := t.sharedTravel(g)
+		err := q.wheat(g, g.attackTransportBoard(), &g.AttackTransport.Pieces, t.Gold)
+		if err == nil {
+			t.saveSharedTravel(g, q)
+		}
+		return err
+	}
 	return t.Travel.wheat(g, t.Map, t.Barbarians, t.Gold)
 }
 func (t *catanTransport) stop(g *Catan, player int, sequence uint64) error {
 	if err := t.travelAllowed(g, player, sequence); err != nil {
+		return err
+	}
+	if g.attackTransport() {
+		q := t.sharedTravel(g)
+		err := q.stop(g, g.attackTransportBoard(), &g.AttackTransport.Pieces, t.Gold)
+		if err == nil {
+			t.saveSharedTravel(g, q)
+		}
 		return err
 	}
 	return t.Travel.stop(g, t.Map, t.Barbarians, t.Gold)
@@ -137,6 +166,14 @@ func (t *catanTransport) stop(g *Catan, player int, sequence uint64) error {
 func (t *catanTransport) driveOff(g *Catan, player int, sequence uint64, piece, die int) (bool, error) {
 	if err := t.travelAllowed(g, player, sequence); err != nil {
 		return false, err
+	}
+	if g.attackTransport() {
+		q := t.sharedTravel(g)
+		ok, err := q.driveOff(g, g.attackTransportBoard(), &g.AttackTransport.Pieces, t.Gold, piece, die)
+		if err == nil {
+			t.saveSharedTravel(g, q)
+		}
+		return ok, err
 	}
 	return t.Travel.driveOff(g, t.Map, t.Barbarians, t.Gold, piece, die)
 }

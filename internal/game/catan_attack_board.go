@@ -72,25 +72,31 @@ func (a catanAttack) validate(g *Catan) error {
 		return err
 	}
 	n := len(g.Players)
-	if len(a.Barbarians) != len(g.Tiles) || len(a.Gold) != n || len(a.Prisoners) != n || a.GoldIssued < 0 || a.GoldIssued > catanGoldLedgerLimit || a.GoldBank < 0 || a.GoldBank > a.Map.Gold+a.GoldIssued || g.setup() && a.GoldIssued != 0 {
-		return errors.New("蛮族进攻组件状态无效")
-	}
-	total, gold := a.NeutralPrisoners, int64(a.GoldBank)
-	for id, count := range a.Barbarians {
-		if count < 0 || count > 3 || count > 0 && !slices.Contains(a.Map.Coast, id) {
-			return errors.New("蛮族只能在可生产的沿海地块，每格至多3个")
+	if g.attackTransport() {
+		if err := g.validateAttackTransportPieces(); err != nil {
+			return err
 		}
-		total += count
-	}
-	for p := range n {
-		if a.Gold[p] < 0 || a.Gold[p] > a.Map.Gold+a.GoldIssued || a.Prisoners[p] < 0 {
-			return errors.New("金币或俘虏数量无效")
+	} else {
+		if len(a.Barbarians) != len(g.Tiles) || len(a.Gold) != n || len(a.Prisoners) != n || a.GoldIssued < 0 || a.GoldIssued > catanGoldLedgerLimit || a.GoldBank < 0 || a.GoldBank > a.Map.Gold+a.GoldIssued || g.setup() && a.GoldIssued != 0 {
+			return errors.New("蛮族进攻组件状态无效")
 		}
-		gold += int64(a.Gold[p])
-		total += a.Prisoners[p]
-	}
-	if total > a.Map.Barbarians || gold != int64(a.Map.Gold)+int64(a.GoldIssued) {
-		return errors.New("蛮族或金币库存不守恒")
+		total, gold := a.NeutralPrisoners, int64(a.GoldBank)
+		for id, count := range a.Barbarians {
+			if count < 0 || count > 3 || count > 0 && !slices.Contains(a.Map.Coast, id) {
+				return errors.New("蛮族只能在可生产的沿海地块，每格至多3个")
+			}
+			total += count
+		}
+		for p := range n {
+			if a.Gold[p] < 0 || a.Gold[p] > a.Map.Gold+a.GoldIssued || a.Prisoners[p] < 0 {
+				return errors.New("金币或俘虏数量无效")
+			}
+			gold += int64(a.Gold[p])
+			total += a.Prisoners[p]
+		}
+		if total > a.Map.Barbarians || gold != int64(a.Map.Gold)+int64(a.GoldIssued) {
+			return errors.New("蛮族或金币库存不守恒")
+		}
 	}
 	used := map[int]bool{}
 	knights := map[int]int{}
