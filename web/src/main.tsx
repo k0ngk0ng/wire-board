@@ -1,3 +1,4 @@
+import { CatanRiversWorldPreview } from "./catan-rivers-world-preview";
 import {
   supportsTwoCatanHelpers,
   catanTwoHelpersNote,
@@ -2822,6 +2823,14 @@ function Waiting({
           : 2);
   return (
     <div className="waiting-layout">
+      {room.kind === "catan" && room.catanScenario === "rivers-new-world" && (
+        <CatanRiversWorldPreview
+          room={room}
+          host={host}
+          busy={busy}
+          command={command}
+        />
+      )}
       {room.kind === "catan" && room.catanNewWorldMap && (
         <CatanWorldEditor
           room={room}

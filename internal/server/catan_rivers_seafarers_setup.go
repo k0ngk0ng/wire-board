@@ -39,6 +39,15 @@ func (r *Room) validateCatanRiversSea() error {
 	if r.Kind != "catan" || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil || r.CatanFishing || r.CatanFishingLakes {
 		return errors.New("河流海图暂支持独立组合与事件牌，其他叠加尚未接通")
 	}
+	if r.CatanRiversWorldMap != nil {
+		n := r.Capacity
+		if n == 2 {
+			n = 4
+		}
+		if err := game.ValidateCatanRiversWorldMap(n, r.CatanRiversWorldMap); err != nil {
+			return err
+		}
+	}
 	_, err := game.NormalizeCatanRiversSeafarersSetup(r.Capacity, setup)
 	return err
 }

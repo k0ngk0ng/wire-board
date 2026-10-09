@@ -42,6 +42,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	}
 	if r.Capacity == 2 && publicCatanFlexibleScenario(r.CatanScenario) {
 		next.CatanScenario = ""
+		next.CatanRiversWorldMap = nil
 		next.CatanOptions = game.CatanOptions{}
 		next.CatanFishing, next.CatanFishingLakes = false, false
 	}
@@ -53,6 +54,7 @@ func (r *Room) setCatanTwoScenario(scenario string) error {
 	}
 	r.Capacity, r.CatanTwoRules = next.Capacity, next.CatanTwoRules
 	r.CatanTwoScenario = next.CatanTwoScenario
+	r.CatanRiversWorldMap = next.CatanRiversWorldMap
 	r.CatanScenario = next.CatanScenario
 	r.CatanSeafarers, r.CatanNewWorldMap = next.CatanSeafarers, next.CatanNewWorldMap
 	r.CatanOptions = next.CatanOptions

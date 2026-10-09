@@ -216,6 +216,10 @@ export type Room = {
     layouts: string[];
     victoryPoints: number;
   }[];
+  catanRiversWorldMap?: {
+    hexes: CatanNewWorldMap["hexes"];
+    channels: { tiles: number[]; outlet: number }[];
+  };
   catanNewWorldMap?: CatanNewWorldMap;
   catanOptions?: CatanOptions;
   catanTwoRules?: string;

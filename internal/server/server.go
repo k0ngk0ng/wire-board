@@ -46,6 +46,7 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
+	CatanRiversWorldMap    *game.CatanRiversWorldMap      `json:"catanRiversWorldMap,omitempty"`
 	CatanEvents            string                         `json:"catanEvents,omitempty"`
 	CatanFishing           bool                           `json:"catanFishing,omitempty"`
 	CatanFishingLakes      bool                           `json:"catanFishingLakes,omitempty"`
@@ -470,7 +471,7 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
-	result := map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	result := map[string]any{"catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanFishing {
 		result["catanFishing"] = true
 		if publicCatanExplorerScenario(r.CatanScenario) {
@@ -819,6 +820,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		CatanRiversWorldMap    *game.CatanRiversWorldMap      `json:"catanRiversWorldMap"`
 		CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
 		CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors"`
 		CatanCitiesKnights     *game.CatanCitiesKnightsSetup  `json:"catanCitiesKnights"`
@@ -1003,6 +1005,31 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		err = next.setCatanSeafarers(*req.CatanSeafarers)
+	case "catan_rivers_world_map", "catan_rivers_world_shuffle", "catan_rivers_world_default":
+		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanScenario != "rivers-new-world" {
+			err = errors.New("只有房主能在河流新世界开局前确认地图")
+			break
+		}
+		layout := req.CatanRiversWorldMap
+		n := next.Capacity
+		if n == 2 {
+			n = 4
+		}
+		if req.Type == "catan_rivers_world_shuffle" {
+			layout, err = game.GenerateCatanRiversWorldMap(n)
+		}
+		if err == nil && req.Type != "catan_rivers_world_default" {
+			err = game.ValidateCatanRiversWorldMap(n, layout)
+		}
+		if err == nil {
+			next.CatanRiversWorldMap = layout
+			if req.Type == "catan_rivers_world_default" {
+				next.CatanRiversWorldMap = nil
+			}
+			for i := range next.Seats {
+				next.Seats[i].Ready = next.Seats[i].Bot
+			}
+		}
 	case "catan_world_map", "catan_world_map_shuffle":
 		// A public New World selection or internal combination provisions the map.
 		if next.Host != u.ID || next.Kind != "catan" || next.Status != "waiting" || next.CatanNewWorldMap == nil || (next.CatanCitiesKnights != nil && next.validateCatanCitiesKnightsMap() != nil) {
@@ -1245,7 +1272,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				next.Game, err = game.NewSplendor(len(next.Seats), next.SplendorOptions)
 			} else if next.Kind == "catan" {
 				if setup, ok := publicCatanRiversSeaSetup(next.CatanScenario); ok {
-					next.Game, err = game.NewCatanRiversSeafarers(len(next.Seats), setup, nil)
+					if next.CatanRiversWorldMap != nil {
+						setup.Layout = "prepared"
+					}
+					next.Game, err = game.NewCatanRiversSeafarers(len(next.Seats), setup, next.CatanRiversWorldMap)
 				} else if next.CatanTwoRules != "" || next.CatanTwoScenario != "" {
 					err = next.validateCatanTwoSetup()
 					if err == nil {
