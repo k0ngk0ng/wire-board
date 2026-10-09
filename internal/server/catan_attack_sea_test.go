@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+func TestCatanAttackShoresTwoHTTP(t *testing.T)   { runAttackShoresHTTP(t, 2) }
 func TestCatanAttackShoresHTTP(t *testing.T)      { runAttackShoresHTTP(t, 4) }
 func TestCatanAttackShoresThreeHTTP(t *testing.T) { runAttackShoresHTTP(t, 3) }
 func TestCatanAttackShoresExtendedHTTP(t *testing.T) {
@@ -26,19 +27,14 @@ func runAttackShoresHTTP(t *testing.T, n int) {
 	h := clients[0]
 	r := h.post("/api/rooms", map[string]any{"kind": "catan", "name": "蛮族新海岸", "capacity": n, "catanScenario": "attack-shores", "catanEvents": game.CatanEventCatalogue}, 201)
 	id := r["id"].(string)
-	for _, c := range clients[1:2] {
-		c.command(current(h), "join", nil, 200)
-	}
-	for _, c := range clients[:2] {
-		c.command(current(c), "ready", nil, 200)
-	}
+	h.command(current(h), "ready", nil, 200)
 	before, _ := json.Marshal(s.rooms[id])
 	h.command(current(h), "start", nil, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("rejected start mutated room")
 	}
-	for _, c := range clients[2:] {
+	for _, c := range clients[1:] {
 		c.command(current(h), "join", nil, 200)
 		c.command(current(c), "ready", nil, 200)
 	}
@@ -97,7 +93,7 @@ func TestCatanAttackShoresRoomBounds(t *testing.T) {
 	for _, n := range []int{2, 3, 4, 5, 6} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 		err := r.setCatanScenario("attack-shores")
-		if (err == nil) != (n >= 3 && n <= 6) {
+		if (err == nil) != (n >= 2 && n <= 6) {
 			t.Fatal(n, err)
 		}
 	}

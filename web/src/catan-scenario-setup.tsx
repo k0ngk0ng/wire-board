@@ -12,7 +12,7 @@ const scenarios = [
     id: "attack-shores",
     name: "蛮族进攻＋新海岸",
     description:
-      "三四人官方地图、五六人本站扩大配方，蛮族与骑士仅在主岛活动，无强盗海盗，14分获胜，可加事件牌。",
+      "三四人官方地图，双人及五六人本站配方，蛮族与骑士仅在主岛活动，无强盗海盗，14分获胜，可加事件牌。",
   },
   {
     id: "caravans-new-world",
@@ -495,6 +495,7 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  scenario === "attack-shores" ||
   scenario === "caravans-new-world" ||
   scenario === "caravans-islands" ||
   scenario === "caravans-shores" ||
@@ -562,8 +563,8 @@ export function CatanScenarioPicker({
               value={s.id}
               disabled={
                 s.id === "attack-shores"
-                  ? players < 3 ||
-                    players > 4 ||
+                  ? players < 2 ||
+                    players > 6 ||
                     helpers ||
                     knights ||
                     fishing ||

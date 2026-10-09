@@ -93,7 +93,12 @@ func (g *Catan) attackSeaKnightEdge(edge int) bool {
 	}
 	return false
 }
-func NewCatanAttackShores(n int) (*State, error) { return newCatanAttackShores(n) }
+func NewCatanAttackShores(n int) (*State, error) {
+	if n == 2 {
+		return newCatanTwoAttackShores()
+	}
+	return newCatanAttackShores(n)
+}
 
 func newCatanAttackShores(n int) (*State, error) {
 	board, m, err := newCatanAttackShoresBoard(n)

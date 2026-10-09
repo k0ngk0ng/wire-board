@@ -45,7 +45,7 @@ func publicCatanCaravanSea(s string) bool {
 }
 
 func publicCatanFlexibleScenario(scenario string) bool {
-	return scenario == "caravans-new-world" || scenario == "caravans-islands" || scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
+	return scenario == "attack-shores" || scenario == "caravans-new-world" || scenario == "caravans-islands" || scenario == "caravans-shores" || scenario == "caravans-desert" || scenario == "caravans-tribe" || publicCatanRiversSea(scenario) || publicCatanExplorerScenario(scenario) || scenario == "transport" || (publicCatanTradersCombination(scenario))
 }
 
 // Public recipes include two-to-six-player Explorer missions.
@@ -68,8 +68,8 @@ func (r *Room) validateCatanScenario() error {
 		}
 	}
 	if r.CatanScenario == "attack-shores" {
-		if r.Kind != "catan" || (r.Capacity < 3 || r.Capacity > 6) || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
-			return errors.New("蛮族新海岸支持三至六人，可叠加事件牌")
+		if r.Kind != "catan" || (r.Capacity < 2 || r.Capacity > 6) || len(r.Seats) > r.Capacity || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("蛮族新海岸支持二至六人，可叠加事件牌")
 		}
 		return nil
 	}
