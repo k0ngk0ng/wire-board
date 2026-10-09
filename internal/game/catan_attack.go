@@ -302,6 +302,12 @@ func (s *State) catanAttackView(v map[string]any, player int) {
 		public["landingSupplyRule"] = "random-last"
 	}
 	public["goldRule"] = "ledger"
+	if g.attackTransport() {
+		public["gold"] = slices.Clone(g.Transport.Gold)
+		public["goldBank"] = g.Transport.GoldBank
+		public["goldIssued"] = g.Transport.GoldIssued
+		public["bought"] = g.Transport.Bought
+	}
 	public["treasonRule"] = "as-much-as-possible"
 	conquered, buildings := []int{}, []int{}
 	for _, t := range g.Tiles {

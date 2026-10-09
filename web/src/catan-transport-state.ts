@@ -3,6 +3,7 @@ export type TransportPick = {
   edge: number | null;
   piece: number | null;
   knight?: number;
+  tile?: number;
 };
 export const emptyTransportPick = (): TransportPick => ({
   edge: null,
@@ -34,7 +35,9 @@ export function transportWagonPosition(game: CatanState, seat: number) {
         (game.hexSize || 62)) /
       62;
   const site =
-    (game.rivers?.transport || game.caravans?.transport) &&
+    (game.rivers?.transport ||
+      game.caravans?.transport ||
+      game.transport?.attack) &&
     game.transport?.map.sites.some((s) => s.center === wagon.position);
   return {
     x: vertex.x + offset,
@@ -58,7 +61,9 @@ export function transportEdges(room: Room, pick?: TransportPick): number[] {
   const t = room.game?.catan?.transport;
   if (!t || !transportCanAct(room)) return [];
   if (t.barbarianPending || (t.state.travel?.pending ?? -1) >= 0)
-    return t.choices.relocate || [];
+    return t.choices.relocateHexes
+      ? t.choices.relocateHexes.find((h) => h.tile === pick?.tile)?.edges || []
+      : t.choices.relocate || [];
   if (room.game?.phase === "catan_turn" && pick?.knight !== undefined)
     return t.choices.knightTargets || [];
   return (t.choices.steps || []).map((s) => s.edge);
@@ -103,6 +108,7 @@ export function transportSelectedAction(
         : "catan_transport_step",
     offer: t.state.sequence,
     edge: pick.edge,
+    ...(t.choices.relocateHexes ? { tile: pick.tile } : {}),
   };
 }
 

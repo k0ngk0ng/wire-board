@@ -108,7 +108,7 @@ export function CatanTransportMap({
                 </text>
               );
             })}
-            {!(g.rivers?.transport || g.caravans?.transport) && (
+            {!(g.rivers?.transport || g.caravans?.transport || t.attack) && (
               <circle
                 cx={v.x}
                 cy={v.y}
@@ -122,15 +122,17 @@ export function CatanTransportMap({
               x={tile.x}
               y={
                 tile.y +
-                (g.rivers?.transport || g.caravans?.transport ? -35 : 39) *
+                (g.rivers?.transport || g.caravans?.transport || t.attack
+                  ? -35
+                  : 39) *
                   scale
               }
               textAnchor="middle"
               className="transport-site-label"
             >
               {transportSites[site.kind]} · {t.state.supply[origin]}
-              {(g.rivers?.transport || g.caravans?.transport) &&
-                ` · 产${({ quarry: "砖", glassworks: "木", castle: "羊" } as Record<string, string>)[site.kind]}`}
+              {(g.rivers?.transport || g.caravans?.transport || t.attack) &&
+                ` · ${t.attack && site.kind === "quarry" ? "不生产" : "产" + ({ quarry: "砖", glassworks: "木", castle: "羊" } as Record<string, string>)[site.kind]}`}
             </text>
           </g>
         );
@@ -159,44 +161,47 @@ export function CatanTransportMap({
             </g>
           );
         })}
-      {t.state.barbarians.map((id, piece) => {
-        const e = g.edges[id],
-          a = g.vertices[e.a],
-          b = g.vertices[e.b],
-          selectable = can && t.barbarianPending;
-        return (
-          <g
-            key={piece}
-            className={`transport-barbarian ${selectable ? "selectable" : ""} ${selected.piece === piece ? "picked" : ""}`}
-            style={{
-              transform: `translate(${(a.x + b.x) / 2}px,${(a.y + b.y) / 2}px) scale(${scale})`,
-            }}
-            {...(selectable
-              ? button(`选择蛮族 ${piece + 1}`, () =>
-                  onSelect({ ...selected, piece }),
-                )
-              : {})}
-          >
-            <circle r="13" fill="#fff0cd" stroke="#7e6242" />
-            {assets && (
-              <image
-                href={`${assets}/catan/attack/barbarian-v1.webp`}
-                x="-9"
-                y="-19"
-                width="18"
-                height="28"
-                pointerEvents="none"
-              />
-            )}
-            <text y="21" textAnchor="middle" className="transport-site-label">
-              {piece + 1}
-            </text>
-            <title>
-              蛮族 {piece + 1} · 道路 {id + 1}
-            </title>
-          </g>
-        );
-      })}
+      {(t.sharedBarbarians?.map((p) => p.edge) || t.state.barbarians).map(
+        (id, piece) => {
+          if (id < 0 || !g.edges[id]) return null;
+          const e = g.edges[id],
+            a = g.vertices[e.a],
+            b = g.vertices[e.b],
+            selectable = can && t.barbarianPending;
+          return (
+            <g
+              key={piece}
+              className={`transport-barbarian ${selectable ? "selectable" : ""} ${selected.piece === piece ? "picked" : ""}`}
+              style={{
+                transform: `translate(${(a.x + b.x) / 2}px,${(a.y + b.y) / 2}px) scale(${scale})`,
+              }}
+              {...(selectable
+                ? button(`选择蛮族 ${piece + 1}`, () =>
+                    onSelect({ ...selected, piece }),
+                  )
+                : {})}
+            >
+              <circle r="13" fill="#fff0cd" stroke="#7e6242" />
+              {assets && (
+                <image
+                  href={`${assets}/catan/attack/barbarian-v1.webp`}
+                  x="-9"
+                  y="-19"
+                  width="18"
+                  height="28"
+                  pointerEvents="none"
+                />
+              )}
+              <text y="21" textAnchor="middle" className="transport-site-label">
+                {piece + 1}
+              </text>
+              <title>
+                蛮族 {piece + 1} · 道路 {id + 1}
+              </title>
+            </g>
+          );
+        },
+      )}
       {t.state.wagons.map((w, seat) => {
         const v = transportWagonPosition(g, seat);
         if (!v) return null;
@@ -313,11 +318,13 @@ export function CatanTransportPanel({
             ? can
               ? "你的运输行动"
               : `${room.seats[active]?.name} 正在${t.barbarianPending ? "移动蛮族" : "运输"}`
-            : g.rivers?.transport || g.caravans?.transport
-              ? `${g.caravans?.transport ? "商队" : "河流"}＋运输${t.knights ? "＋城市与骑士" : ""} · ${g.victoryTarget ?? 13}分获胜`
-              : t.knights
-                ? "运输＋城市与骑士 · 15分获胜"
-                : "运输任务 · 13分获胜"}
+            : t.attack
+              ? `蛮族进攻＋运输${t.knights ? "＋城市与骑士" : ""} · 14分获胜`
+              : g.rivers?.transport || g.caravans?.transport
+                ? `${g.caravans?.transport ? "商队" : "河流"}＋运输${t.knights ? "＋城市与骑士" : ""} · ${g.victoryTarget ?? 13}分获胜`
+                : t.knights
+                  ? "运输＋城市与骑士 · 15分获胜"
+                  : "运输任务 · 13分获胜"}
         </strong>
         <button
           aria-expanded={!collapsed}
@@ -407,10 +414,34 @@ export function CatanTransportPanel({
                 )}
               </div>
               {q.pending >= 0 ? (
-                <p>
-                  驱赶成功，请选择空边放置蛮族 {q.pending + 1}
-                  。这次移动不偷取资源。
-                </p>
+                <>
+                  <p>
+                    驱赶成功，
+                    {t.attack
+                      ? "先选择目的地块，再选其中一条可用道路"
+                      : "请选择空边"}
+                    放置蛮族 {q.pending + 1}。这次移动不偷取资源。
+                  </p>
+                  {choices.relocateHexes && (
+                    <div
+                      className="transport-buttons"
+                      aria-label="蛮族目的地块"
+                    >
+                      {choices.relocateHexes.map((h) => (
+                        <button
+                          key={h.tile}
+                          aria-pressed={selected.tile === h.tile}
+                          disabled={busy}
+                          onClick={() =>
+                            onSelect({ ...selected, tile: h.tile, edge: null })
+                          }
+                        >
+                          地块 {h.tile + 1}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
               ) : arrival ? (
                 <>
                   <p>

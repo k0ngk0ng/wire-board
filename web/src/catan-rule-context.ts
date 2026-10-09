@@ -26,14 +26,20 @@ export function catanRuleContext(room: Room) {
       ].includes(room.catanTwoScenario || room.catanScenario || "");
   const attack = game
     ? !!game.attack
-    : ["barbarian-attack", "rivers-attack", "caravans-attack"].includes(
-        room.catanTwoScenario || room.catanScenario || "",
-      );
+    : [
+        "barbarian-attack",
+        "rivers-attack",
+        "caravans-attack",
+        "attack-transport",
+      ].includes(room.catanTwoScenario || room.catanScenario || "");
   const transport = game
     ? !!game.transport
-    : ["transport", "rivers-transport", "caravans-transport"].includes(
-        room.catanTwoScenario || room.catanScenario || "",
-      );
+    : [
+        "transport",
+        "rivers-transport",
+        "caravans-transport",
+        "attack-transport",
+      ].includes(room.catanTwoScenario || room.catanScenario || "");
   const players = game ? game.players.length : room.capacity;
   const options = game ? game.options || {} : room.catanOptions || {};
   let scenario = game
@@ -233,25 +239,29 @@ export function catanRuleContext(room: Room) {
     allHelpers: !!options.allHelpers,
     target: game
       ? catanSavedVictoryTarget(game)
-      : transport
-        ? citiesKnights || caravans
-          ? 15
-          : room.catanFishing
-            ? 12
-            : 13
-        : caravans && citiesKnights
-          ? 15
-          : attack && citiesKnights
-            ? 13
-            : caravans || attack
+      : transport && attack
+        ? 14
+        : transport
+          ? citiesKnights || caravans
+            ? 15
+            : room.catanFishing
               ? 12
-              : catanVictoryTarget(scenario, citiesKnights) + (harbors ? 1 : 0),
+              : 13
+          : caravans && citiesKnights
+            ? 15
+            : attack && citiesKnights
+              ? 13
+              : caravans || attack
+                ? 12
+                : catanVictoryTarget(scenario, citiesKnights) +
+                  (harbors ? 1 : 0),
   };
 }
 
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
 export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
+  if (scenario === "attack-transport") return 14;
   if (scenario === "caravans-transport") return 15;
   if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;
   if (["barbarian-attack", "rivers-attack"].includes(scenario))
@@ -302,6 +312,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
 export function catanSavedVictoryTarget(g: CatanState) {
   if (g.victoryTarget && g.victoryTarget > 0) return g.victoryTarget;
   if (g.explorer) return g.explorer.board.target;
+  if (g.transport?.attack) return 14;
   if (g.transport)
     return g.citiesKnights || g.caravans?.transport
       ? 15

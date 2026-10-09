@@ -501,6 +501,11 @@ func (s *State) catanTransportView(v map[string]any, player int) {
 	}
 	if s.Catan.attackTransport() {
 		v["transport"].(map[string]any)["attack"] = CatanAttackTransportRules
+		if s.Catan.attackTransportKnights() {
+			v["transport"].(map[string]any)["knights"] = CatanAttackTransportKnightsRules
+		}
+		// Preserve stable piece IDs, including central/supply/captured entries.
+		v["transport"].(map[string]any)["sharedBarbarians"] = slices.Clone(s.Catan.AttackTransport.Pieces.Barbarians)
 		return
 	}
 	v["developmentNames"] = []string{"骑士", "道路建设", "快速旅程", "", "胜利点"}

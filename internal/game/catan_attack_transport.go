@@ -75,8 +75,15 @@ func (g *Catan) validateAttackTransportPieces() error {
 	return nil
 }
 
-// Internal-only admission until the complete ordinary/knights game and public
-// UI acceptance pass. It is deliberately absent from room option normalization.
+// NewCatanAttackTransport creates the shared invasion/cargo recipe.
+func NewCatanAttackTransport(n int, knights bool) (*State, error) {
+	if knights {
+		return newCatanAttackTransportKnights(n)
+	}
+	return newCatanAttackTransportState(n)
+}
+
+// Shared ordinary foundation; the cities recipe replaces its knight controller.
 func newCatanAttackTransportState(n int) (*State, error) {
 	s, err := NewCatanTransport(n)
 	if err != nil {

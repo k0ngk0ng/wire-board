@@ -39,7 +39,9 @@ export function CatanAttackSeat({
   if (!a) return null;
   return (
     <span className="attack-seat">
-      {!game.rivers && <CatanCoins count={a.gold[seat]} assets={assets} />}{" "}
+      {!game.rivers && !game.transport && (
+        <CatanCoins count={a.gold[seat]} assets={assets} />
+      )}{" "}
       <span>
         俘虏 <b>{a.prisoners[seat]}</b>（
         {Math.floor(a.prisoners[seat] / (a.city ? 3 : 2))}分）
@@ -124,7 +126,18 @@ export function CatanAttackMap({
             </g>
           );
         })}
-      {a.map.coast.map((id, order) => {
+      {(g.transport?.attack
+        ? [
+            ...a.map.coast,
+            ...g.tiles
+              .map((t) => t.id)
+              .filter(
+                (id) =>
+                  !a.map.coast.includes(id) && !a.map.castles.includes(id),
+              ),
+          ]
+        : a.map.coast
+      ).map((id, order) => {
         const t = g.tiles[id],
           n = a.barbarians[id],
           conquered = a.conquered.includes(id),
@@ -150,21 +163,30 @@ export function CatanAttackMap({
               />
             )}
             {assets &&
-              Array.from({ length: n }, (_, i) => (
-                <image
-                  key={i}
-                  data-attack-barbarian={`${id}-${i}`}
-                  href={`${assets}/catan/attack/barbarian-v1.webp`}
-                  x={t.x + ((i - (n - 1) / 2) * 17 - 7.5) * scale}
-                  y={t.y - 48 * scale}
-                  width={15 * scale}
-                  height={24 * scale}
-                  preserveAspectRatio="xMidYMid meet"
-                  pointerEvents="none"
-                />
-              ))}
+              Array.from(
+                {
+                  length: g.transport?.sharedBarbarians
+                    ? g.transport.sharedBarbarians.filter(
+                        (p) => p.tile === id && p.edge < 0,
+                      ).length
+                    : n,
+                },
+                (_, i) => (
+                  <image
+                    key={i}
+                    data-attack-barbarian={`${id}-${i}`}
+                    href={`${assets}/catan/attack/barbarian-v1.webp`}
+                    x={t.x + ((i - (n - 1) / 2) * 17 - 7.5) * scale}
+                    y={t.y - 48 * scale}
+                    width={15 * scale}
+                    height={24 * scale}
+                    preserveAspectRatio="xMidYMid meet"
+                    pointerEvents="none"
+                  />
+                ),
+              )}
             <g
-              transform={`translate(${t.x},${t.y + 27 * scale}) scale(${scale})`}
+              transform={`translate(${t.x},${t.y + (g.transport?.map.sites.some((s) => s.tile === id) ? 78 : 27) * scale}) scale(${scale})`}
               pointerEvents="none"
             >
               <rect
@@ -185,7 +207,7 @@ export function CatanAttackMap({
                 {conquered ? "已征服" : `蛮族 ${n}/3`}
               </text>
               <title>
-                沿海战斗顺序 {order + 1} · 地块 {id + 1} · {n}个蛮族
+                战斗顺序 {order + 1} · 地块 {id + 1} · {n}个蛮族
                 {conquered ? "，停止生产" : ""}
               </title>
             </g>
@@ -361,7 +383,10 @@ export function CatanAttackPanel({
     !g.players[room.you]?.eliminated &&
     !room.seats[room.you]?.autoPlay;
   const canTrade =
-    own && room.game!.turn === room.you && room.game!.phase === "catan_turn";
+    own &&
+    !g.transport?.attack &&
+    room.game!.turn === room.you &&
+    room.game!.phase === "catan_turn";
   const coinOK = (color: number, buy: boolean) =>
     canTrade &&
     (buy
