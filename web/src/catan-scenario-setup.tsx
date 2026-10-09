@@ -9,6 +9,12 @@ import { catanScenarioVictory } from "./catan-scenarios";
 
 const scenarios = [
   {
+    id: "attack-tribe",
+    name: "蛮族进攻＋遗忘部落",
+    description:
+      "二至六人，13分获胜。部落奖励使用蛮族专用牌并立即结算；同点数沿海同时登陆，可加事件牌。双人及五六人采用本站配方。",
+  },
+  {
     id: "attack-desert",
     name: "蛮族进攻＋穿越沙漠",
     description:
@@ -501,6 +507,7 @@ export const isPublicCatanExplorer = (scenario?: string) =>
   ].includes(scenario || "");
 
 export const isPublicCatanFlexible = (scenario?: string) =>
+  scenario === "attack-tribe" ||
   scenario === "attack-desert" ||
   scenario === "attack-shores" ||
   scenario === "caravans-new-world" ||
@@ -569,7 +576,7 @@ export function CatanScenarioPicker({
               key={s.id}
               value={s.id}
               disabled={
-                s.id === "attack-desert"
+                ["attack-tribe", "attack-desert"].includes(s.id)
                   ? players < 2 ||
                     players > 6 ||
                     helpers ||

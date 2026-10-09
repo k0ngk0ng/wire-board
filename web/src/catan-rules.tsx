@@ -630,6 +630,12 @@ export function CatanRules({ room }: { room: Room }) {
               "本站双人规则：起始五枚鱼筹码，停用贸易筹码；公开分数落后者鱼行动少付1鱼，每份战斗补偿改为3金币。"}
           </p>
         )}
+        {(room.game?.catan?.seafarers?.scenario === "tribe" ||
+          room.catanScenario === "attack-tribe") && (
+          <p>
+            遗忘部落组合：三四人2和12点分别在两块对应沿海地同时登陆；五六人本站配方的同点数沿海均同时登陆。探索奖励来自蛮族专用牌堆，领取后立即结算，随后处理港口或双人中立建设。13分获胜，不使用强盗或海盗。
+          </p>
+        )}
         <h4>建设、生产与蛮族登陆</h4>
         <ol>
           <li>

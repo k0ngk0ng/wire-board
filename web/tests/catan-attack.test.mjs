@@ -226,3 +226,10 @@ test("fish movement requires selected payment and authoritative five-step choice
   assert.equal(attackSelectedAction(room,{...pick,tokens:[99]}),null);
   assert.equal(attackSelectedAction(room,{...pick,target:9,tokens:[13]}),null);
 });
+
+test('barbarian tribe waiting target matches thirteen for every supported count',()=>{
+ for(const capacity of [2,3,4,5,6]) {
+ const c=catanRuleContext({kind:'catan',capacity,catanScenario:'attack-tribe'});
+ assert.equal(c.attack,true);assert.equal(c.target,13);assert.equal(c.two,capacity===2);
+ }
+});

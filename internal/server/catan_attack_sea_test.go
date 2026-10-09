@@ -22,6 +22,11 @@ func TestCatanAttackDesertHTTP(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackSeaHTTP(t, n, "attack-desert") })
 	}
 }
+func TestCatanAttackTribeHTTP(t *testing.T) {
+	for _, n := range []int{2, 3, 4, 5, 6} {
+		t.Run(fmt.Sprint(n), func(t *testing.T) { runAttackSeaHTTP(t, n, "attack-tribe") })
+	}
+}
 func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 	s, ts := setupServer(t)
 	stopBotTicker(s)
@@ -93,6 +98,15 @@ func runAttackSeaHTTP(t *testing.T, n int, scenario string) {
 	if record["catanScenario"] != scenario || record["catanRules"] != game.CatanAttackSeafarersRules {
 		t.Fatal("history")
 	}
+	if scenario == "attack-tribe" {
+		rules := record["catanExpansionRules"].(map[string]any)
+		if rules["attack_tribe_rewards"] != game.CatanAttackTribeRewardRules || record["catanLayout"] != "fixed" {
+			t.Fatal("tribe rule/layout archive")
+		}
+		if n == 2 && rules["two_attack_seafarers"] != game.CatanTwoAttackSeaRules {
+			t.Fatal("two-player archive")
+		}
+	}
 }
 
 func TestCatanAttackShoresRoomBounds(t *testing.T) {
@@ -130,6 +144,32 @@ func TestCatanAttackDesertRoomBounds(t *testing.T) {
 		e := r.setCatanScenario("attack-desert")
 		if (e == nil) != (n >= 2 && n <= 6) {
 			t.Fatal(n, e)
+		}
+	}
+}
+
+func TestCatanAttackTribeRoomSelection(t *testing.T) {
+	for _, capacity := range []int{1, 2, 3, 4, 5, 6, 7} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: capacity}
+		err := r.setCatanScenario("attack-tribe")
+		if (err == nil) != (capacity >= 2 && capacity <= 6) {
+			t.Fatal(capacity, err)
+		}
+		if err != nil && r.CatanScenario != "" {
+			t.Fatal("rejection changed room")
+		}
+	}
+	for _, change := range []func(*Room){func(r *Room) { r.CatanOptions.Helpers = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanFriendlyRobber = &game.CatanFriendlyRobberSetup{Enabled: true} }} {
+		r := &Room{Kind: "catan", Status: "waiting", Capacity: 4, CatanScenario: "attack-tribe"}
+		change(r)
+		if r.validateCatanScenario() == nil {
+			t.Fatal("unsupported nesting admitted")
+		}
+	}
+	r := &Room{Kind: "catan", Status: "waiting", Capacity: 6}
+	for _, scenario := range []string{"attack-tribe", "attack-desert", "attack-shores", "attack-tribe", "transport"} {
+		if err := r.setCatanScenario(scenario); err != nil {
+			t.Fatal(scenario, err)
 		}
 	}
 }

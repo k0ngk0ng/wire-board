@@ -236,7 +236,7 @@ func (s *State) validateTwoSeafarers() error {
 	return nil
 }
 func (g *Catan) twoSeaRouteWaiting() bool {
-	return g.GoldPending != nil || g.HelperPending != nil || (g.twoSeafarersKnights() && g.CitiesKnights.Pending != nil) || g.tribe() != nil && g.tribe().Pending != nil
+	return g.GoldPending != nil || g.HelperPending != nil || (g.twoSeafarersKnights() && g.CitiesKnights.Pending != nil) || (g.twoAttackSea() && g.Attack.TribeRoute != nil) || g.tribe() != nil && g.tribe().Pending != nil
 }
 func (g *Catan) twoNeutralShipChoices() []catanTwoNeutralChoice {
 	choices := []catanTwoNeutralChoice{}

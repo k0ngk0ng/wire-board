@@ -8,6 +8,7 @@ export function catanEventsSupported(room: Partial<Room>) {
       [
         "rivers",
         "caravans",
+        "attack-tribe",
         "attack-desert",
         "attack-shores",
         "barbarian-attack",
@@ -48,6 +49,7 @@ export function catanEventsSupported(room: Partial<Room>) {
       "caravans-new-world",
       "caravans-islands",
       "caravans-tribe",
+      "attack-tribe",
       "attack-desert",
       "attack-shores",
       "barbarian-attack",

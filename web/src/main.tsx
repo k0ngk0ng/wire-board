@@ -2176,6 +2176,7 @@ function Create({
                                         "rivers-desert",
                                         "rivers-desert-belt",
                                         "rivers-tribe",
+                                        "attack-tribe",
                                         "attack-desert",
                                         "attack-shores",
                                         "caravans-shores",
@@ -2282,6 +2283,7 @@ function Create({
               "rivers-desert",
               "rivers-desert-belt",
               "rivers-tribe",
+              "attack-tribe",
               "attack-desert",
               "attack-shores",
               "caravans-shores",
@@ -2302,7 +2304,7 @@ function Create({
               harbors={catanHarbors}
               onChange={(scenario) => {
                 setCatanScenario(scenario);
-                if (scenario === "attack-desert") {
+                if (["attack-tribe", "attack-desert"].includes(scenario)) {
                   setCapacity(Math.min(6, Math.max(2, capacity)));
                   setCatanOptions({});
                 }
@@ -2346,6 +2348,7 @@ function Create({
                     "rivers-desert",
                     "rivers-desert-belt",
                     "rivers-tribe",
+                    "attack-tribe",
                     "attack-desert",
                     "attack-shores",
                     "caravans-shores",
@@ -2377,6 +2380,7 @@ function Create({
                     "rivers-desert",
                     "rivers-desert-belt",
                     "rivers-tribe",
+                    "attack-tribe",
                     "attack-desert",
                     "attack-shores",
                     "caravans-shores",
@@ -2677,7 +2681,8 @@ function Create({
             >
               {(k === "dota"
                 ? [2, 4, 6]
-                : k === "catan" && catanScenario === "attack-desert"
+                : k === "catan" &&
+                    ["attack-tribe", "attack-desert"].includes(catanScenario)
                   ? [2, 3, 4, 5, 6]
                   : k === "catan" && catanScenario === "attack-shores"
                     ? [2, 3, 4, 5, 6]
@@ -2719,6 +2724,7 @@ function Create({
                                           "rivers-desert",
                                           "rivers-desert-belt",
                                           "rivers-tribe",
+                                          "attack-tribe",
                                           "attack-desert",
                                           "attack-shores",
                                           "caravans-shores",
@@ -2882,6 +2888,7 @@ function Waiting({
         "rivers-desert",
         "rivers-desert-belt",
         "rivers-tribe",
+        "attack-tribe",
         "attack-desert",
         "attack-shores",
         "caravans-shores",
@@ -3007,6 +3014,7 @@ function Waiting({
                                     "rivers-desert",
                                     "rivers-desert-belt",
                                     "rivers-tribe",
+                                    "attack-tribe",
                                     "attack-desert",
                                     "attack-shores",
                                     "caravans-shores",

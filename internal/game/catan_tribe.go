@@ -78,6 +78,9 @@ func (g *Catan) tribeLand(tile int) bool {
 	if g.caravansSea() && slices.Contains(g.Caravans.Map.WateringHoles, tile) {
 		return true
 	}
+	if g.Attack != nil && g.Tiles[tile].Resource == catanCastle {
+		return true
+	}
 	if g.tribe() == nil || g.Tiles[tile].Number > 0 || g.riversSea() && slices.Contains(g.Rivers.Map.Swamps, tile) {
 		return true
 	}

@@ -15,6 +15,12 @@ import {
 } from "./catan-two-seafarers";
 const scenarios = [
   {
+    id: "attack-tribe",
+    name: "蛮族进攻＋遗忘部落",
+    description:
+      "本站双人中立海岸与共享骑士，奖励蛮族牌结算后再补中立建设；13分获胜，可加事件牌。",
+  },
+  {
     id: "attack-desert",
     name: "蛮族进攻＋穿越沙漠",
     description:
