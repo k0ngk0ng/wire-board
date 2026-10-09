@@ -18,6 +18,7 @@ type CatanTribePortPending struct {
 	Helper     bool                  `json:"helper,omitempty"`
 }
 type CatanTribeState struct {
+	AttackRules   string                  `json:"attackRules,omitempty"`
 	ProgressRules string                  `json:"progressRules,omitempty"`
 	Tokens        []int                   `json:"tokens"`
 	Development   []CatanTribeDevelopment `json:"development"`

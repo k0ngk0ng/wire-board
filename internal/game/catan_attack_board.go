@@ -110,7 +110,10 @@ func (a catanAttack) validate(g *Catan) error {
 			return errors.New("每位玩家至多6名骑士")
 		}
 	}
-	counts := map[string]int{}
+	counts, err := g.attackTribeReservedCards()
+	if err != nil {
+		return err
+	}
 	if a.Pending != nil {
 		counts[a.Pending.Card]++
 	}
