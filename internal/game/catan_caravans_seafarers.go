@@ -68,7 +68,7 @@ func (g *Catan) validateCaravansDesertSea() error {
 	}
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n != 3 && n != 4) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n != 3 && n != 4) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队沙漠海图配置无效")
 	}
 	expected, err := NewCatanSeafarers(n, CatanOptions{}, CatanSeafarersSetup{Scenario: "desert", Layout: "fixed"}, nil)
@@ -96,6 +96,9 @@ func (g *Catan) validateCaravansDesertSea() error {
 		if !reflect.DeepEqual(e, w) {
 			return errors.New("商队海图路线无效")
 		}
+	}
+	if g.Robber >= 0 && !g.robberLandAllowed(g.Robber) {
+		return errors.New("商队海图强盗位置无效")
 	}
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
 		return errors.New("商队海盗位置无效")
@@ -157,6 +160,9 @@ func (g *Catan) validateCaravansTribeSea() error {
 		if !reflect.DeepEqual(e, w) {
 			return errors.New("商队部落路线无效")
 		}
+	}
+	if g.Robber >= 0 && !g.robberLandAllowed(g.Robber) {
+		return errors.New("商队海图强盗位置无效")
 	}
 	if sea.Pirate < -1 || sea.Pirate >= len(g.Tiles) || sea.Pirate >= 0 && g.Tiles[sea.Pirate].Resource != CatanSea {
 		return errors.New("商队部落海盗位置无效")
