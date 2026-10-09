@@ -1,8 +1,10 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/k0ngk0ng/wire-board/internal/game"
+	"os"
 	"testing"
 	"time"
 )
@@ -45,9 +47,42 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 			}
 			clients = ordered
 			bidTimedOut := false
+			initialRaw, marshalErr := json.Marshal(s.rooms[id].Game)
+			if marshalErr != nil {
+				t.Fatal(marshalErr)
+			}
+			var initial game.State
+			if marshalErr = json.Unmarshal(initialRaw, &initial); marshalErr != nil {
+				t.Fatal(marshalErr)
+			}
+			trace := []catanTraceAction{}
+			peak, lastGain := 0, 0
+			diagnosticRound := -1
+			diagnosticPath := ""
 			for step := 0; step < 18000 && !s.rooms[id].Game.Finished; step++ {
 				g := s.rooms[id].Game
+				total := 0
+				for _, player := range g.Catan.Players {
+					total += player.Score
+				}
+				if total > peak {
+					peak, lastGain = total, g.Round
+				}
+				if g.Round-lastGain >= 80 && g.Round != diagnosticRound {
+					saveCatanLongGame(t, &initial, g, trace)
+					diagnosticRound = g.Round
+					t.Fatalf("no new score peak for 80 rounds: round=%d score=%d peak=%d", g.Round, total, peak)
+				}
 				if scenario == "caravans-shores" && n == 2 && step%500 == 0 {
+					if step > 0 {
+						nextPath := saveCatanLongGame(t, &initial, g, trace)
+						if diagnosticPath != "" {
+							if err := os.Remove(diagnosticPath); err != nil {
+								t.Fatal(err)
+							}
+						}
+						diagnosticPath = nextPath
+					}
 					t.Log("step", step, "round", g.Round, "phase", g.Phase, "scores", g.Catan.Players[0].Score, g.Catan.Players[1].Score)
 				}
 				if events && !bidTimedOut && g.Phase == "catan_caravan_bid" {
@@ -75,9 +110,15 @@ func runCaravansSeaHTTP(t *testing.T, events bool, scenario string) {
 				if err != nil {
 					t.Fatal(err)
 				}
+				trace = append(trace, catanTraceAction{Player: p, Action: a})
 				clients[p].command(current(clients[p]), "action", a, 200)
 				if step == 83 {
 					s, ts = restartRiversHTTP(t, s, ts, clients, id)
+				}
+			}
+			if diagnosticPath != "" && s.rooms[id].Game.Finished {
+				if err := os.Remove(diagnosticPath); err != nil {
+					t.Fatal(err)
 				}
 			}
 			if events && !bidTimedOut {
