@@ -66,6 +66,9 @@ func newCatanCaravansShoresExtended(n int) (*State, error) {
 }
 
 func (g *Catan) validateCaravansShoresExtended() error {
+	if len(g.Players) == 3 {
+		return g.validateCaravansShoresThree()
+	}
 	n := len(g.Players)
 	recipeSeats := n
 	if g.twoCaravansSea() {
@@ -184,6 +187,9 @@ func (g *Catan) validateCaravansShoresExtended() error {
 }
 
 func NewCatanCaravansShoresSeafarers(n int) (*State, error) {
+	if n == 3 {
+		return newCatanCaravansShoresThree()
+	}
 	if n == 2 {
 		return newCatanTwoCaravansSea("shores")
 	}
