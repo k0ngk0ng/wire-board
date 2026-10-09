@@ -1,3 +1,4 @@
+import { CatanRiversAttackRules } from "./catan-rivers-attack-rules";
 import {
   catanTwoSeafarersNote,
   catanTwoSeafarersKnightsNote,
@@ -451,6 +452,7 @@ export function CatanRules({ room }: { room: Room }) {
           运输{info.citiesKnights ? "＋城市与骑士" : "任务"} · {info.target}分
         </h3>
         {info.citiesKnights && <CatanCitiesKnightsRules info={info} />}
+        <CatanRiversAttackRules info={info} />
         {info.citiesKnights && (
           <p>
             使用城市改良、城墙、大都会与进步牌，取消运输发展牌和最大骑士军队；蛮族船与三名道路蛮族分别运作。二至四人掷出2或12只重掷生产骰，事件骰只结算一次；炼金术请选择3至11点。激活骑士可驱赶相邻道路蛮族至空边，然后转为未激活；落点为对手道路时随机偷1张资源或商品。金币可购买普通资源，不能购买商品；商品可按交易比例换金币。本站组合说明：五六人地图同样用一块粮田替换森林，小地图炼金术仅选3至11点。
@@ -544,10 +546,14 @@ export function CatanRules({ room }: { room: Room }) {
     return (
       <>
         <p>
-          <b>蛮族进攻 · {players}人</b> · 自己回合达到12分立即获胜。
+          <b>
+            {info.rivers ? "河流＋蛮族进攻" : "蛮族进攻"} · {players}人
+          </b>{" "}
+          · 自己回合达到12分立即获胜。
         </p>
         <CatanSeaNumberRules info={info} />
         <CatanEventRules info={info} />
+        <CatanRiversAttackRules info={info} />
         {info.twoAttack && (
           <p>
             双人规则：每回合生产两次；真人建村后进行中立建设，两座村庄分别触发一次登陆。如果只能代建中立道路，则只触发真人村庄的一次登陆。
@@ -629,6 +635,7 @@ export function CatanRules({ room }: { room: Room }) {
       <>
         <CatanSeaNumberRules info={info} />
         <CatanCitiesKnightsRules info={info} />
+        <CatanRiversAttackRules info={info} />
         <CatanEventRules info={info} />
         {info.fishing && (
           <>

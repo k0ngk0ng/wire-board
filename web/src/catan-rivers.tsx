@@ -51,14 +51,18 @@ export function CatanRiverSeat({
       {(["richest", "poor"] as const)
         .filter((status) => (status === "poor" ? poor : richest))
         .map((status) => (
-          <span key={status} className={`catan-wealth ${status}`}>
+          <span key={status} className={`catan-wealth ${status}${r.poorPenalty === 0 && status === "poor" ? " no-penalty" : ""}`}>
             {assets && (
               <img
                 src={`${assets}/catan/rivers/${status === "poor" ? "poor" : "wealthiest"}-v1.webp`}
                 alt=""
               />
             )}
-            {status === "poor" ? "最贫 −2分" : "最富 +1分"}
+            {status === "poor"
+              ? r.poorPenalty === 0
+                ? "最贫 · 不扣分"
+                : "最贫 −2分"
+              : "最富 +1分"}
           </span>
         ))}
     </span>

@@ -103,8 +103,10 @@ func TestCatanFishingAttackWaitingSwitchIsolation(t *testing.T) {
 				target = "transport"
 			}
 			c.post("/api/rooms/"+id, map[string]any{"type": command, field: target, "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
-			if s.rooms[id].CatanFishing {
-				t.Fatal("base retained fishing")
+			// Transport now supports fishing; preserve the compatible toggle.
+			// Returning to the base scenario still clears it.
+			if s.rooms[id].CatanFishing != (target == "transport") {
+				t.Fatal("fishing toggle does not match destination scenario")
 			}
 		})
 	}
