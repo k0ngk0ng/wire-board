@@ -219,6 +219,8 @@ export function CatanHelpers({
   const city = g.citiesKnights;
   const cityHelpers = city?.helpers?.rules === "wire-board-helpers-knights-v1";
   const progressCards = city?.players[room.you]?.progress || [];
+  const caravanHelpers =
+    g.caravans?.helpers === "wire-board-caravans-helpers-v1";
   const fishingHelpers = g.fishing?.helpers === "wire-board-fishing-helpers-v1";
   const hand = p?.resources || [0, 0, 0, 0, 0],
     active =
@@ -522,7 +524,8 @@ export function CatanHelpers({
               {rule.id === 10 && (
                 <>
                   {(g.tiles[g.robber]?.resource === 7 ||
-                    (fishingHelpers && g.tiles[g.robber]?.resource === 9)) && (
+                    (fishingHelpers && g.tiles[g.robber]?.resource === 9) ||
+                    (caravanHelpers && g.tiles[g.robber]?.resource === 11)) && (
                     <ResourceSelect
                       label="领取资源"
                       value={color}
@@ -534,6 +537,7 @@ export function CatanHelpers({
                       g.robber < 0 ||
                       g.tiles[g.robber]?.resource === 5 ||
                       (!fishingHelpers &&
+                        !caravanHelpers &&
                         !g.tiles.some(
                           (t) =>
                             t.resource === 5 &&
@@ -555,7 +559,7 @@ export function CatanHelpers({
                       } else action({ color });
                     }}
                   >
-                    {fishingHelpers &&
+                    {(fishingHelpers || caravanHelpers) &&
                     !g.tiles.some(
                       (t) =>
                         t.resource === 5 &&
@@ -569,9 +573,12 @@ export function CatanHelpers({
               )}
               {rule.id === 11 && (
                 <>
-                  {(fishingHelpers ? [5, 7, 9] : [5, 7]).includes(
-                    g.tiles[g.robber]?.resource,
-                  ) && (
+                  {(caravanHelpers
+                    ? [5, 7, 11]
+                    : fishingHelpers
+                      ? [5, 7, 9]
+                      : [5, 7]
+                  ).includes(g.tiles[g.robber]?.resource) && (
                     <ResourceSelect
                       label="领取资源"
                       value={color}
