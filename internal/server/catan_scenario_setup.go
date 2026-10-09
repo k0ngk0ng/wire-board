@@ -67,6 +67,12 @@ func (r *Room) validateCatanScenario() error {
 			return err
 		}
 	}
+	if r.CatanScenario == "attack-shores" {
+		if r.Kind != "catan" || r.Capacity != 4 || len(r.Seats) > 4 || r.CatanOptions != (game.CatanOptions{}) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil {
+			return errors.New("蛮族新海岸当前支持四人，可叠加事件牌")
+		}
+		return nil
+	}
 	if r.CatanScenario == "" {
 		return nil
 	}

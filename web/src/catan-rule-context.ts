@@ -34,6 +34,7 @@ export function catanRuleContext(room: Room) {
   const attack = game
     ? !!game.attack
     : [
+        "attack-shores",
         "barbarian-attack",
         "rivers-attack",
         "caravans-attack",
@@ -266,32 +267,35 @@ export function catanRuleContext(room: Room) {
         : "",
     helpers: !!options.helpers,
     allHelpers: !!options.allHelpers,
-    target: game
-      ? catanSavedVictoryTarget(game)
-      : transport && attack
+    target:
+      !game && room.catanScenario === "attack-shores"
         ? 14
-        : transport
-          ? citiesKnights || caravans
-            ? 15
-            : room.catanFishing
-              ? 12
-              : 13
-          : caravans && citiesKnights
-            ? 15
-            : attack && citiesKnights
-              ? 13
-              : (caravans &&
-                    ![
-                      "caravans-shores",
-                      "caravans-desert",
-                      "caravans-new-world",
-                      "caravans-islands",
-                      "caravans-tribe",
-                    ].includes(scenario)) ||
-                  attack
-                ? 12
-                : catanVictoryTarget(scenario, citiesKnights) +
-                  (harbors ? 1 : 0),
+        : game
+          ? catanSavedVictoryTarget(game)
+          : transport && attack
+            ? 14
+            : transport
+              ? citiesKnights || caravans
+                ? 15
+                : room.catanFishing
+                  ? 12
+                  : 13
+              : caravans && citiesKnights
+                ? 15
+                : attack && citiesKnights
+                  ? 13
+                  : (caravans &&
+                        ![
+                          "caravans-shores",
+                          "caravans-desert",
+                          "caravans-new-world",
+                          "caravans-islands",
+                          "caravans-tribe",
+                        ].includes(scenario)) ||
+                      attack
+                    ? 12
+                    : catanVictoryTarget(scenario, citiesKnights) +
+                      (harbors ? 1 : 0),
   };
 }
 
@@ -312,7 +316,7 @@ export function catanVictoryTarget(scenario: string, citiesKnights: boolean) {
   if (scenario === "attack-transport") return 14;
   if (scenario === "caravans-transport") return 15;
   if (scenario === "caravans-attack") return citiesKnights ? 15 : 12;
-  if (["barbarian-attack", "rivers-attack"].includes(scenario))
+  if (["attack-shores", "barbarian-attack", "rivers-attack"].includes(scenario))
     return citiesKnights ? 13 : 12;
   if (["transport", "rivers-transport"].includes(scenario))
     return citiesKnights ? 15 : 13;
