@@ -104,7 +104,7 @@ func TestCatanRiversSeaPrintedShores(t *testing.T) {
 			}
 		})
 	}
-	for _, n := range []int{2, 5, 6} {
+	for _, n := range []int{1, 2, 7} {
 		if _, err := newCatanRiversShores(n); err == nil {
 			t.Fatal("unsupported map admitted", n)
 		}
