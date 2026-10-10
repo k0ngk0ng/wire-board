@@ -134,6 +134,7 @@ func (s *State) recordWonderLanding(source, target int) {
 	}
 	a.Landing.Rolls = append(a.Landing.Rolls, catanAttackLandingRoll{Dice: d, Tiles: tiles})
 	q.Cursor++
+	s.Catan.clearAttackConqueredMerchant()
 	s.catanScores()
 }
 
@@ -171,7 +172,7 @@ func (s *State) validateWonderLanding() error {
 		}
 		return nil
 	}
-	if !g.attackBalancedLanding() || s.Finished || g.setup() || s.Phase != "catan_attack_landing" || q.Player != s.Turn || q.Player < 0 || q.Player >= len(g.Players) || q.ID < 1 || len(q.Dice) != 3 && !(g.twoAttackSea() && len(q.Dice) == 6) || q.Cursor < 0 || q.Cursor >= len(q.Dice) || a.Pending != nil || a.EndPlan != nil || g.Trade != nil || g.CardEvent != nil || g.HelperPending != nil || g.GoldPending != nil || g.Two != nil && (g.Two.Pending != nil || g.Two.Trade != nil) {
+	if !g.attackBalancedLanding() || s.Finished || g.setup() || s.Phase != "catan_attack_landing" || q.Player != s.Turn || q.Player < 0 || q.Player >= len(g.Players) || q.ID < 1 || len(q.Dice) != 3 && !(g.twoAttackSea() && len(q.Dice) == 6) && !(g.twoAttackKnights() && len(q.Dice) == 6) || q.Cursor < 0 || q.Cursor >= len(q.Dice) || a.Pending != nil || a.EndPlan != nil || g.Trade != nil || g.CardEvent != nil || g.HelperPending != nil || g.GoldPending != nil || g.Two != nil && (g.Two.Pending != nil || g.Two.Trade != nil) {
 		return errors.New("蛮族奇迹登陆回应无效")
 	}
 	for group := 0; group < len(q.Dice); group += 3 {

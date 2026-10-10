@@ -26,7 +26,10 @@ func (s *State) validateAttackCityState() error {
 	}
 	n := len(g.Players)
 	options, _ := NormalizeCatanOptions(CatanOptions{FiveSix: n > 4, Helpers: g.tradersHelpers(), AllHelpers: g.Options.AllHelpers})
-	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil && !g.caravansAttack() || g.Rivers != nil && !g.riversAttack() || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil || g.Transport != nil && !g.attackTransportKnights() || g.BaseSetup != nil || (g.Harbors != nil || g.FriendlyRobber != nil) && !g.tradersVariants() || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil || a.Sequence != 0 || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
+	if t := g.tribe(); t != nil && t.AttackRules != "" && g.attackSeaKnights() && t.ProgressRules != "" {
+		return errors.New("蛮族海图骑士的部落奖励版本无效")
+	}
+	if n < 2 || n > 6 || s.Turn < 0 || s.Turn >= n || (n == 2 || g.Two != nil || a.TwoRules != "" || a.TwoLanding) && !g.twoAttackKnights() || a.NeutralPrisoners != 0 || g.Caravans != nil && !g.caravansAttack() || g.Rivers != nil && !g.riversAttack() || g.Fishing != nil && !g.fishingAttack() || g.Seafarers != nil && !g.attackSeaKnights() || g.Transport != nil && !g.attackTransportKnights() || g.BaseSetup != nil || (g.Harbors != nil || g.FriendlyRobber != nil) && !g.tradersVariants() || g.Options != options || (g.Paired != nil) != (n > 4) || g.Robber != -1 || g.ArmyOwner != -1 || a.Rules != catanAttackRules || a.EndPlan != nil || a.End != nil || a.EndSequence != 0 || a.Pending != nil || a.CardSequence != 0 || a.Landing != nil && !g.attackSeaKnights() || a.Sequence != 0 && !g.attackSeaKnights() || a.Bought < 0 || a.Bought > 2 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 {
 		return errors.New("蛮族城市骑士人数、组件或组合配置无效")
 	}
 	if g.riversAttack() {
@@ -112,6 +115,15 @@ func (s *State) validateAttackCityState() error {
 		}
 	}
 	phases := []string{"catan_setup_settlement", "catan_setup_city", "catan_setup_road", "catan_roll", "catan_turn", "catan_discard", "catan_steal", "catan_roads", "catan_card_event", "catan_fish_replace", "catan_helper", catanAttackCityMovePhase, catanAttackCityRetreatPhase, "catan_attack_city_treason_remove", "catan_attack_city_treason_place", "catan_caravan_bid", "catan_caravan_vote", "catan_caravan_place", "finished"}
+	if g.attackSea() {
+		phases = append(phases, "catan_attack_landing", "catan_gold")
+		if g.tribe() != nil {
+			phases = append(phases, "catan_port")
+		}
+		if g.attackPirates() {
+			phases = append(phases, "catan_fleet_reward")
+		}
+	}
 	phases = append(phases, catanTransportCityPhases...)
 	if g.attackTransport() {
 		phases = append(phases, "catan_transport_move")
@@ -186,6 +198,10 @@ func (s *State) validateAttackCityState() error {
 	return nil
 }
 func (s *State) applyAttackCity(player int, a Action) error {
+	// A conquered tile cannot keep the trade merchant; the landing path clears
+	// it when it conquers, and battles need the same cleanup before the state
+	// is validated again.
+	s.Catan.clearAttackConqueredMerchant()
 	if err := s.validateAttackCityState(); err != nil {
 		return err
 	}

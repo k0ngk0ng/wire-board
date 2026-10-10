@@ -43,6 +43,10 @@ func (g *Catan) validateTribeProgress() error {
 		}
 		return nil
 	}
+	if t.AttackRules != "" && t.ProgressRules == "" {
+		// Attack tribe maps keep their printed reward cards even with knights.
+		return nil
+	}
 	if t.ProgressRules != CatanTribeProgressRules || len(k.Players) != len(g.Players) || len(g.DevDeck)+len(g.DevDiscard) != 0 {
 		return errors.New("部落骑士奖励版本或牌组无效")
 	}

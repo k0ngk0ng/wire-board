@@ -129,7 +129,7 @@ func (m catanAttackMap) validateWondersSea(g *Catan) error {
 		}
 	}
 	sea, w := g.Seafarers, ref.Seafarers
-	if sea == nil || sea.Scenario != "wonders" || sea.Rules != w.Rules || sea.Layout != "fixed" || sea.Variable || sea.Pirate != -1 || sea.VictoryPoints != 12 || sea.IslandBonus != 1 || sea.NumberRecipe != "" || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.NewWorld != nil || sea.PirateIslands != nil || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
+	if sea == nil || sea.Scenario != "wonders" || sea.Rules != w.Rules || sea.Layout != "fixed" || sea.Variable || sea.Pirate != -1 || sea.VictoryPoints != g.attackSeaVictoryPoints(12) || sea.IslandBonus != 1 || sea.NumberRecipe != "" || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.NewWorld != nil || sea.PirateIslands != nil || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
 		return errors.New("蛮族奇迹海图配置无效")
 	}
 	if sea.Wonders == nil || !reflect.DeepEqual(sea.Wonders.Markers, w.Wonders.Markers) || !slices.Equal(sea.Wonders.SetupBlocked, w.Wonders.SetupBlocked) || len(sea.Wonders.Cards) != len(w.Wonders.Cards) {

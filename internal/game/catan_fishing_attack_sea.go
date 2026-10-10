@@ -37,6 +37,21 @@ func NewCatanFishingAttackSea(n int, scenario string) (*State, error) {
 	if err != nil {
 		return nil, err
 	}
+	return attachAttackSeaFishing(s, scenario)
+}
+
+// NewCatanFishingAttackSeaCitiesKnights is the combined nesting: printed
+// attack sea map, road knights and the lake-free coastal fishing grounds.
+func NewCatanFishingAttackSeaCitiesKnights(n int, scenario string) (*State, error) {
+	s, err := NewCatanAttackSeaCitiesKnights(n, scenario)
+	if err != nil {
+		return nil, err
+	}
+	return attachAttackSeaFishing(s, scenario)
+}
+
+func attachAttackSeaFishing(s *State, scenario string) (*State, error) {
+	n := len(s.Catan.Players)
 	g := s.Catan
 	tokens, err := newCatanFishingTokens(n)
 	if n == 2 {
@@ -49,6 +64,12 @@ func NewCatanFishingAttackSea(n int, scenario string) (*State, error) {
 	if n == 2 {
 		f.Two, f.TwoSea = CatanTwoFishingRules, CatanTwoFishingSeafarersRules
 		g.Two.Tokens, g.Two.Bank = []int{0, 0}, 0
+	}
+	if g.CitiesKnights != nil {
+		f.SeaKnights = CatanFishingSeaKnightsRules
+		if n == 2 {
+			f.TwoKnights = CatanTwoFishingKnightsRules
+		}
 	}
 	f.Map.Lakes = []catanFishingLake{}
 	f.Map.SeaRecipe = CatanFishingAttackSeaRules

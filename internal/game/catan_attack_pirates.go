@@ -135,7 +135,7 @@ func (m catanAttackMap) validatePirateSea(g *Catan) error {
 		}
 	}
 	sea, w := g.Seafarers, ref.Seafarers
-	if sea == nil || sea.Scenario != "pirate_islands" || sea.Rules != w.Rules || sea.Layout != "fixed" || sea.Variable || sea.VictoryPoints != 12 || sea.IslandBonus != 0 || len(sea.Seats) != n || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) || sea.NumberRecipe != "" || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.NewWorld != nil {
+	if sea == nil || sea.Scenario != "pirate_islands" || sea.Rules != w.Rules || sea.Layout != "fixed" || sea.Variable || sea.VictoryPoints != g.attackSeaVictoryPoints(12) || sea.IslandBonus != 0 || len(sea.Seats) != n || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) || sea.NumberRecipe != "" || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.NewWorld != nil {
 		return errors.New("蛮族海盗海图配置无效")
 	}
 	p, initial := g.pirateIslands(), ref.pirateIslands()

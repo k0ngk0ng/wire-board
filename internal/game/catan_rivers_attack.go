@@ -142,6 +142,19 @@ func (g *Catan) riverAttackCastleBlocked(index, player int) bool {
 
 // Select the immutable printed recipe; invention history is validated separately.
 func (g *Catan) attackPrintedNumbers() []int {
+	if g.attackSeaKnights() {
+		recipe := g.Seafarers.Scenario
+		if recipe == "pirate_islands" {
+			recipe = "pirates"
+		}
+		if plain, err := NewCatanAttackSea(len(g.Players), recipe); err == nil {
+			numbers := make([]int, len(plain.Catan.Tiles))
+			for i, t := range plain.Catan.Tiles {
+				numbers[i] = t.Number
+			}
+			return numbers
+		}
+	}
 	if g.attackTransport() {
 		return attackTransportRecipe(len(g.Players) > 4).numbers
 	}

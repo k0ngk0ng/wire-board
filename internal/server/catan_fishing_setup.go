@@ -35,9 +35,12 @@ func (r *Room) validateCatanFishing() error {
 		}
 		return nil
 	}
-	if _, ok := publicCatanAttackSeaSetup(r.CatanScenario); ok {
-		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil {
-			return fmt.Errorf("蛮族海图渔夫配置无效；支持二至六人，可叠加事件牌")
+	if scene, ok := publicCatanAttackSeaSetup(r.CatanScenario); ok {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil {
+			return fmt.Errorf("蛮族海图渔夫配置无效；支持二至六人，可叠加事件牌与城市骑士")
+		}
+		if r.CatanCitiesKnights != nil && scene == "pirates" {
+			return fmt.Errorf("蛮族海图骑士暂不支持海盗群岛：该图的要塞轨道需要单独适配")
 		}
 		return nil
 	}

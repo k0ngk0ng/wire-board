@@ -97,7 +97,7 @@ func (m catanAttackMap) validateTribeSea(g *Catan) error {
 		return errors.New("蛮族部落地图无效")
 	}
 	sea := g.Seafarers
-	if sea == nil || sea.Scenario != "tribe" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.VictoryPoints != 13 || sea.IslandBonus != 0 || sea.Pirate != -1 || sea.NumberRecipe != "" || len(sea.Seats) != n || !slices.Equal(sea.Islands, ref.Seafarers.Islands) || !slices.Equal(sea.StartIslands, ref.Seafarers.StartIslands) || sea.Fog != nil || sea.Cloth != nil || sea.NewWorld != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if sea == nil || sea.Scenario != "tribe" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.VictoryPoints != g.attackSeaVictoryPoints(13) || sea.IslandBonus != 0 || sea.Pirate != -1 || sea.NumberRecipe != "" || len(sea.Seats) != n || !slices.Equal(sea.Islands, ref.Seafarers.Islands) || !slices.Equal(sea.StartIslands, ref.Seafarers.StartIslands) || sea.Fog != nil || sea.Cloth != nil || sea.NewWorld != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("蛮族部落海图配置无效")
 	}
 	for i, v := range g.Vertices {
