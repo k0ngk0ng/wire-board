@@ -454,3 +454,24 @@ func TestCatanExplorerCityPreviewKnightMovesIncludeEmptySites(t *testing.T) {
 		t.Fatal("knight geometry missing or unconfirmed pirate rule offered")
 	}
 }
+
+// A helper response belongs to the player the helper asked. The explorer city
+// panel used to hand canRespond to the turn owner whenever no cities-and-knights
+// prompt was pending, so a helper call aimed at another seat offered the wrong
+// player a response.
+func TestCatanExplorerCityHelperResponseOwner(t *testing.T) {
+	s := explorerCityStateStarted(t, 6, "explorers-and-pirates")
+	s.Turn = 0
+	s.Catan.Options.Helpers = true
+	s.catanHelperAsk(CatanHelperPending{Player: 1, Kind: "resource", Resume: "catan_turn"})
+	if s.CatanPendingActor() != 1 {
+		t.Fatal("pending actor", s.CatanPendingActor())
+	}
+	for viewer := -1; viewer < 6; viewer++ {
+		x := s.View(viewer)["catan"].(map[string]any)["explorer"].(map[string]any)
+		want := viewer == 1
+		if x["canRespond"] != want {
+			t.Fatal("explorer helper response owner", viewer, x["canRespond"], want)
+		}
+	}
+}

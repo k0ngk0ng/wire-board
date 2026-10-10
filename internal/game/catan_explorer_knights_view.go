@@ -166,7 +166,9 @@ func (s *State) catanExplorerCityView(v map[string]any, player int) {
 		if field != "" {
 			x["response"] = map[string]any{"type": "catan_" + q.Kind, "field": field, "count": count, "prompt": int(g.TurnSerial)}
 		}
-	} else if player == s.Turn {
+	} else if player == actor {
+		// The turn owner only acts when nothing else is pending; a helper or
+		// fish call aimed at another seat must not offer them a response.
 		x["canRespond"] = true
 		if s.Phase == "catan_turn" {
 			// Medicine uses city geometry even when the ordinary city cost is
