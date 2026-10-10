@@ -220,7 +220,9 @@ func TestCatanCaravansSeaRejectsUnsupported(t *testing.T) {
 			t.Fatal("unsupported count", n)
 		}
 	}
-	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanOptions.AllHelpers = true }} {
+	// Fishing and city knights are separate nestings with their own admission
+	// tests; the raw option bits still have to be consistent.
+	for _, mutate := range []func(*Room){func(r *Room) { r.CatanOptions.AllHelpers = true }} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "caravans-desert"}
 		mutate(r)
 		if r.validateCatanScenario() == nil {
@@ -240,7 +242,7 @@ func TestCatanCaravansIslandsPublicBounds(t *testing.T) {
 			t.Fatal("rejected selection changed room")
 		}
 	}
-	for _, mutate := range []func(*Room){func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanOptions.AllHelpers = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }} {
+	for _, mutate := range []func(*Room){func(r *Room) { r.CatanOptions.AllHelpers = true }} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "caravans-islands"}
 		mutate(r)
 		if r.validateCatanScenario() == nil {
