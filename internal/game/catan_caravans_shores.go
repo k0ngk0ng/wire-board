@@ -75,7 +75,7 @@ func (g *Catan) validateCaravansShoresExtended() error {
 		recipeSeats = 4
 	}
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n < 4 && !g.twoCaravansSea()) || n > 6 || sea.Scenario != "shores" || sea.Layout != "variable" || !sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != caravanShoresRecipeNumber(n) || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || c.Map == nil || len(c.ExtraNumbers) != 0 {
+	if !g.caravansSea() || (n < 4 && !g.twoCaravansSea()) || n > 6 || sea.Scenario != "shores" || sea.Layout != "variable" || !sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != caravanShoresRecipeNumber(n) || sea.VictoryPoints != g.caravansSeaVictoryPoints(16) || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || c.Map == nil || len(c.ExtraNumbers) != 0 {
 		return errors.New("扩大商队新海岸配置无效")
 	}
 	// Validation needs the printed geometry and inventories, not a freshly

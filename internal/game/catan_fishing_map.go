@@ -154,6 +154,14 @@ func (g *Catan) makeFishingMap() (*catanFishingMap, error) {
 }
 
 func (f catanFishingMap) validate(g *Catan) error {
+	// Combined sea recipes own their own map checks and must be routed before
+	// the plain land combinations below.
+	if f.SeaRecipe == CatanFishingRiversSeaRules {
+		return f.validateRiversSea(g)
+	}
+	if f.SeaRecipe == CatanFishingCaravansSeaRules {
+		return f.validateCaravansSea(g)
+	}
 	if g.Transport != nil || g.Fishing != nil && g.Fishing.Transport != "" {
 		return f.validateTransport(g)
 	}
@@ -162,9 +170,6 @@ func (f catanFishingMap) validate(g *Catan) error {
 	}
 	if g.Caravans != nil || g.Fishing != nil && g.Fishing.Caravans != "" {
 		return f.validateCaravans(g)
-	}
-	if f.SeaRecipe == CatanFishingRiversSeaRules {
-		return f.validateRiversSea(g)
 	}
 	if g.Rivers != nil || g.Fishing != nil && g.Fishing.Rivers != "" {
 		return f.validateRivers(g)

@@ -8,6 +8,21 @@ import (
 
 const CatanCaravansSeafarersRules = "catan-caravans-seafarers-2025"
 
+// Knight nesting on the caravan sea maps keeps every printed recipe and raises
+// the target by the two points the sea knight conversion adds.
+const CatanCaravansSeaKnightsRules = "wire-board-caravans-sea-knights-v1"
+
+func (g *Catan) caravansSeaKnights() bool {
+	return g.caravansSea() && g.caravanKnights() && g.Caravans.SeaKnights == CatanCaravansSeaKnightsRules
+}
+
+func (g *Catan) caravansSeaVictoryPoints(base int) int {
+	if g.caravansSeaKnights() {
+		return base + 2
+	}
+	return base
+}
+
 func (g *Catan) caravansSea() bool {
 	return g.Caravans != nil && g.Caravans.Sea == CatanCaravansSeafarersRules && g.Seafarers != nil
 }
@@ -86,7 +101,7 @@ func (g *Catan) validateCaravansDesertSea() error {
 	}
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != "desert" || sea.Layout != "fixed" || sea.Rules != CatanSeafarersRules || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != g.caravansSeaVictoryPoints(16) || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队沙漠海图配置无效")
 	}
 	recipeSeats := n
@@ -180,7 +195,7 @@ func newCatanCaravansTribeSea(n int) (*State, error) {
 func (g *Catan) validateCaravansTribeSea() error {
 	n := len(g.Players)
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Tribe == nil || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != "tribe" || sea.Layout != "fixed" || sea.Variable || sea.Rules != CatanSeafarersRules || sea.NumberRecipe != "" || sea.VictoryPoints != g.caravansSeaVictoryPoints(15) || sea.IslandBonus != 0 || len(sea.Seats) != n || sea.Tribe == nil || sea.Fog != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队部落配置无效")
 	}
 	recipeSeats := n

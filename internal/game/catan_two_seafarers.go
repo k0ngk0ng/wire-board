@@ -191,6 +191,11 @@ func (s *State) validateTwoSeafarers() error {
 	if g.twoSeafarersKnights() || g.twoCaravansSea() {
 		target += 2
 	}
+	// The caravan sea recipe already raises the printed target by two; the
+	// knight nesting raises it again.
+	if g.twoCaravansSea() && g.caravansSeaKnights() {
+		target += 2
+	}
 	if g.twoAttackSea() && (sea.Scenario == "wonders" || sea.Scenario == "pirate_islands") {
 		target = 12
 	}

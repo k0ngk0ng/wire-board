@@ -1,4 +1,5 @@
 import { isPublicCatanRiversSea } from "./catan-rivers-sea-options.ts";
+import { isPublicCatanCaravanSea } from "./catan-two-helpers.ts";
 
 // Kept free of JSX so the option predicates stay unit-testable.
 export const isCatanTransportSea = (scenario = "") =>
@@ -18,6 +19,7 @@ export const supportsPublicCatanKnightsCombination = (scenario?: string) =>
   scenario === "transport" ||
   isCatanTransportSea(scenario) ||
   isPublicCatanRiversSea(scenario) ||
+  isPublicCatanCaravanSea(scenario) ||
   [
     "rivers-caravans",
     "rivers-attack",

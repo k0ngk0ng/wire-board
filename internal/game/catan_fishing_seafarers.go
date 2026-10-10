@@ -70,6 +70,9 @@ func (g *Catan) fishingSeaSupported() bool {
 	if g.riversSea() && g.fishingRiversSea() {
 		return true
 	}
+	if g.caravansSea() && g.fishingCaravansSea() {
+		return true
+	}
 	if g.transportSea() && g.fishingTransport() && g.Fishing.Map.SeaRecipe == CatanTransportSeaFishingRules {
 		return true
 	}

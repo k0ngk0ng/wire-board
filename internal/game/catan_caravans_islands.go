@@ -100,7 +100,7 @@ func (g *Catan) validateCaravansIslands() error {
 		scenario = "six_islands"
 	}
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != scenario || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 15 || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || (n < 3 && !g.twoCaravansSea() || n > 6) || sea.Scenario != scenario || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != g.caravansSeaVictoryPoints(15) || sea.IslandBonus != 2 || len(sea.Seats) != n || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("商队四岛配置无效")
 	}
 	ref, err := NewCatanSeafarers(recipeSeats, CatanOptions{FiveSix: n > 4}, CatanSeafarersSetup{Scenario: "islands", Layout: "fixed"}, nil)
