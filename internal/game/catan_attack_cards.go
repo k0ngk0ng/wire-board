@@ -160,7 +160,9 @@ func (s *State) catanAttackBuyCard(player int, action Action) error {
 func (s *State) catanAttackDrawCard(player int) error {
 	g, a := s.Catan, s.Catan.Attack
 	resume := ""
-	if s.Phase == "catan_roll" {
+	// The free-road phase also draws cards (a tribe reward on a free route),
+	// so its continuation has to be preserved as well.
+	if s.Phase == "catan_roll" || s.Phase == "catan_roads" {
 		resume = s.Phase
 	}
 	a.CardSequence++
