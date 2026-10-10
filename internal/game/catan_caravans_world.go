@@ -62,7 +62,7 @@ func newCatanCaravansWorld(n int) (*State, error) {
 func (g *Catan) validateCaravansWorld() error {
 	n := len(g.Players)
 	c, sea := g.Caravans, g.Seafarers
-	if !g.caravansSea() || n < 3 && !g.twoCaravansSea() || n > 6 || c.WorldBase == nil || sea.NewWorld == nil || sea.Rules != CatanSeafarersRules || sea.Layout != "prepared" || !sea.Variable || sea.VictoryPoints != 14 || sea.IslandBonus != 1 || len(sea.Seats) != n || len(c.ExtraNumbers) != 0 || sea.Scenario != "new_world" || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || len(sea.StartIslands) != 0 || sea.NumberRecipe != "" {
+	if !g.caravansSea() || n < 3 && !g.twoCaravansSea() || n > 6 || c.WorldBase == nil || sea.NewWorld == nil || sea.Rules != CatanSeafarersRules || sea.Layout != "prepared" || !sea.Variable || sea.VictoryPoints != g.caravansSeaVictoryPoints(14) || sea.IslandBonus != 1 || len(sea.Seats) != n || len(c.ExtraNumbers) != 0 || sea.Scenario != "new_world" || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || len(sea.StartIslands) != 0 || sea.NumberRecipe != "" {
 		return errors.New("商队新世界配置无效")
 	}
 	recipeSeats := n

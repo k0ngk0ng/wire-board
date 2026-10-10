@@ -5,6 +5,7 @@ import {
 } from "./catan-transport-sea-options";
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import { isPublicCatanRiversSea } from "./catan-rivers-sea-options";
+import { isPublicCatanCaravanSea } from "./catan-two-helpers";
 import { CatanRiversWorldPreview } from "./catan-rivers-world-preview";
 import {
   supportsTwoCatanHelpers,
@@ -2531,6 +2532,7 @@ function Create({
                 capacity === 2 && supportsTwoCatanSeafarers(catanTwoScenario)
               }
               riversSea={isPublicCatanRiversSea(variantScenario)}
+              caravansSea={isPublicCatanCaravanSea(variantScenario)}
               shores={variantScenario === "shores"}
               explorer={isPublicCatanExplorer(catanScenario)}
               extended={capacity > 4}
@@ -2563,6 +2565,7 @@ function Create({
               transportSea={isCatanTransportSea(variantScenario)}
               rivers={variantScenario === "rivers"}
               riversSea={isPublicCatanRiversSea(variantScenario)}
+              caravansSea={isPublicCatanCaravanSea(variantScenario)}
               riversCaravans={variantScenario === "rivers-caravans"}
               caravans={["caravans", "rivers-caravans"].includes(
                 variantScenario,
@@ -3275,6 +3278,7 @@ function Waiting({
               value={!!room.catanFishing}
               two={!!room.catanTwoRules}
               riversSea={isPublicCatanRiversSea(room.catanScenario)}
+              caravansSea={isPublicCatanCaravanSea(room.catanScenario)}
               shores={
                 (room.catanTwoScenario || room.catanScenario) === "shores"
               }
@@ -3323,6 +3327,7 @@ function Waiting({
                 (room.catanTwoScenario || room.catanScenario) === "rivers"
               }
               riversSea={isPublicCatanRiversSea(room.catanScenario)}
+              caravansSea={isPublicCatanCaravanSea(room.catanScenario)}
               caravans={["caravans", "rivers-caravans"].includes(
                 room.catanTwoScenario || room.catanScenario || "",
               )}

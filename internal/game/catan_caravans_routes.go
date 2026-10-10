@@ -19,6 +19,7 @@ type catanCaravans struct {
 	Rivers       string                      `json:"rivers,omitempty"`
 	ExtraNumbers []catanFishingExtraNumber   `json:"extraNumbers,omitempty"`
 	Knights      string                      `json:"knights,omitempty"`
+	SeaKnights   string                      `json:"seaKnights,omitempty"`
 	Rules        string                      `json:"rules,omitempty"`
 	Map          *catanCaravanMap            `json:"map"`
 	Wagons       []catanCaravanWagon         `json:"wagons"`

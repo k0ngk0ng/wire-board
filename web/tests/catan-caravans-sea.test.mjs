@@ -52,3 +52,17 @@ test('merchant sea helpers stay separate from the standalone merchant option',()
  // which the server accepts and plays through a complete HTTP game.
  for(const scenario of ['caravans','rivers','barbarian-attack']) assert.equal(supportsTwoCatanHelpers(scenario),true);
 });
+
+import {supportsPublicCatanKnightsCombination} from '../src/catan-knights-combination.ts';
+test('caravan sea rooms offer the third-module nestings and raise the target',()=>{
+ for(const id of ['caravans-shores','caravans-islands','caravans-desert','caravans-tribe','caravans-new-world'])
+  assert.equal(supportsPublicCatanKnightsCombination(id),true,id);
+ for(const [id,target] of [['caravans-shores',18],['caravans-islands',17],['caravans-desert',18],['caravans-tribe',17],['caravans-new-world',16]]){
+  const context=catanRuleContext({kind:'catan',capacity:3,catanScenario:id,catanCitiesKnights:{layout:'variable'}});
+  assert.equal(context.citiesKnights,true,id);
+  assert.equal(context.target,target,id);
+ }
+ // Printed targets stay unchanged without the knight option.
+ for(const [id,target] of [['caravans-shores',16],['caravans-islands',15],['caravans-desert',16],['caravans-tribe',15],['caravans-new-world',14]])
+  assert.equal(catanRuleContext({kind:'catan',capacity:3,catanScenario:id}).target,target,id);
+});

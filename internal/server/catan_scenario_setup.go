@@ -105,8 +105,14 @@ func (r *Room) validateCatanScenario() error {
 			minimum, maximum = 2, 6
 		}
 
-		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || !validCatanExplorerOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil || r.CatanFishing || r.CatanFishingLakes {
-			return errors.New("商队海图人数或组合无效；支持二至六人")
+		if r.Kind != "catan" || r.Capacity < minimum || r.Capacity > maximum || len(r.Seats) > r.Capacity || !validCatanExplorerOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || (r.CatanNewWorldMap != nil && r.CatanScenario != "caravans-new-world") || r.CatanBaseConfiguration != nil || r.CatanFishingLakes {
+			return errors.New("商队海图人数或组合无效；支持二至六人，可叠加城市骑士、渔夫与事件牌")
+		}
+		if r.CatanCitiesKnights != nil {
+			normal, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
+			if err != nil || normal != *r.CatanCitiesKnights {
+				return errors.New("商队海图骑士配置无效")
+			}
 		}
 		if r.CatanScenario == "caravans-new-world" && r.CatanNewWorldMap != nil {
 			return game.ValidateCatanCaravansWorldMap(r.Capacity, r.CatanNewWorldMap)

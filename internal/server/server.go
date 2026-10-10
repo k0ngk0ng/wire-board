@@ -1313,20 +1313,14 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					next.Game, err = game.NewCatanAttackDesert(len(next.Seats))
 				} else if next.CatanScenario == "attack-shores" {
 					next.Game, err = game.NewCatanAttackShores(len(next.Seats))
-				} else if next.CatanScenario == "caravans-new-world" {
-					if next.CatanNewWorldMap != nil {
-						next.Game, err = game.NewCatanCaravansWorldWithMap(len(next.Seats), next.CatanNewWorldMap)
+				} else if scene, ok := publicCatanCaravansSeaSetup(next.CatanScenario); ok {
+					if next.CatanFishing {
+						next.Game, err = game.NewCatanFishingCaravansSea(len(next.Seats), scene, next.CatanNewWorldMap, next.CatanCitiesKnights != nil)
+					} else if next.CatanCitiesKnights != nil {
+						next.Game, err = game.NewCatanCaravansSeaCitiesKnights(len(next.Seats), scene, next.CatanNewWorldMap)
 					} else {
-						next.Game, err = game.NewCatanCaravansWorld(len(next.Seats))
+						next.Game, err = game.NewCatanCaravansSea(len(next.Seats), scene, next.CatanNewWorldMap)
 					}
-				} else if next.CatanScenario == "caravans-islands" {
-					next.Game, err = game.NewCatanCaravansIslandsSeafarers(len(next.Seats))
-				} else if next.CatanScenario == "caravans-shores" {
-					next.Game, err = game.NewCatanCaravansShoresSeafarers(len(next.Seats))
-				} else if next.CatanScenario == "caravans-tribe" {
-					next.Game, err = game.NewCatanCaravansTribeSeafarers(len(next.Seats))
-				} else if next.CatanScenario == "caravans-desert" {
-					next.Game, err = game.NewCatanCaravansDesertSeafarers(len(next.Seats))
 				} else if setup, ok := publicCatanRiversSeaSetup(next.CatanScenario); ok {
 					if next.CatanRiversWorldMap != nil {
 						setup.Layout = "prepared"

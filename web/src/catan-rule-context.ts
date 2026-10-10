@@ -319,7 +319,10 @@ export function catanRuleContext(room: Room) {
                         ? 12
                         : 13
                     : caravans && citiesKnights
-                      ? 15
+                      ? caravanSeaScenario(scenario) ||
+                        caravanSeaScenario(room.catanScenario || "")
+                        ? catanVictoryTarget(scenario, citiesKnights)
+                        : 15
                       : attack && citiesKnights
                         ? 13
                         : (caravans &&
@@ -339,6 +342,15 @@ export function catanRuleContext(room: Room) {
 
 export type CatanRuleContext = ReturnType<typeof catanRuleContext>;
 
+export const caravanSeaScenario = (id: string) =>
+  [
+    "caravans-shores",
+    "caravans-islands",
+    "caravans-desert",
+    "caravans-tribe",
+    "caravans-new-world",
+  ].includes(id);
+
 export function catanVictoryTarget(
   scenario: string,
   citiesKnights: boolean,
@@ -349,10 +361,10 @@ export function catanVictoryTarget(
   if (["attack-pirates", "attack-wonders"].includes(scenario)) return 12;
   if (scenario === "attack-tribe") return 13;
   if (scenario === "caravans-desert" || scenario === "caravans-shores")
-    return 16;
-  if (scenario === "caravans-new-world") return 14;
+    return citiesKnights ? 18 : 16;
+  if (scenario === "caravans-new-world") return citiesKnights ? 16 : 14;
   if (scenario === "caravans-islands" || scenario === "caravans-tribe")
-    return 15;
+    return citiesKnights ? 17 : 15;
   if (
     ["rivers-shores", "rivers-desert", "rivers-desert-belt"].includes(scenario)
   )

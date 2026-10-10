@@ -1,4 +1,5 @@
 import { isCatanTransportSea } from "./catan-transport-sea-options";
+import { isPublicCatanCaravanSea } from "./catan-two-helpers";
 import {
   supportsPublicCatanKnightsCombination,
   supportsPublicExplorerKnights,
@@ -254,6 +255,7 @@ export function CatanCombinationKnightsPicker({
   attackTransport = false,
   caravans = false,
   riversSea = false,
+  caravansSea = false,
   tribe = false,
   pirateIslands = false,
   value,
@@ -278,6 +280,7 @@ export function CatanCombinationKnightsPicker({
   attackTransport?: boolean;
   caravans?: boolean;
   riversSea?: boolean;
+  caravansSea?: boolean;
   tribe?: boolean;
   pirateIslands?: boolean;
   explorer?: boolean;
@@ -313,7 +316,9 @@ export function CatanCombinationKnightsPicker({
                     ? "河流＋商队"
                     : riversSea
                       ? "河流＋航海家"
-                      : attack
+                      : caravansSea
+                        ? "商队＋航海家"
+                        : attack
                       ? "蛮族进攻"
                       : transport
                         ? "运输"
@@ -340,9 +345,11 @@ export function CatanCombinationKnightsPicker({
                   ? "本站三模块适配：13 分获胜；保留河流与桥梁，共用金币，贫穷不扣分。使用道路骑士和进步牌，不使用强盗或海上蛮族。"
                   : riversCaravans
                     ? "本站三模块适配：15 分获胜；木材／砖块出价，保留河流金币、桥梁骑士和 5 金币保城规则。"
-                      : riversSea
-                        ? "本站河流海图骑士适配：目标分在印刷目标上增加 2 分；沿用河流金币与河岸付款，加入进步牌、商品与城市改良，蛮族船取代海盗。"
-                    : attack
+                    : riversSea
+                      ? "本站河流海图骑士适配：目标分在印刷目标上增加 2 分；沿用河流金币与河岸付款，加入进步牌、商品与城市改良，蛮族船取代海盗。"
+                      : caravansSea
+                        ? "本站商队海图骑士适配：沿用印刷商队海图、水源与马车规则，出价改用木材或砖块；加入进步牌、商品与城市改良，蛮族船取代海盗，首次进攻前强盗与蛮族船都不入场，目标分在印刷目标上加 2 分。"
+                        : attack
                       ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
                       : transport
                         ? transportSea
@@ -389,6 +396,7 @@ export function CatanCombinationKnightsPicker({
 
 export const supportsPublicCatanFishingSea = (scenario?: string) =>
   isPublicCatanRiversSea(scenario) ||
+  isPublicCatanCaravanSea(scenario) ||
   [
     "shores",
     "islands",
@@ -413,6 +421,7 @@ export function CatanFishingSeaPicker({
   rivers = false,
   riversSea = false,
   caravans = false,
+  caravansSea = false,
   attack = false,
   transport = false,
   transportSea = false,
@@ -432,6 +441,7 @@ export function CatanFishingSeaPicker({
   rivers?: boolean;
   riversSea?: boolean;
   caravans?: boolean;
+  caravansSea?: boolean;
   attack?: boolean;
   transport?: boolean;
   transportSea?: boolean;
@@ -473,7 +483,11 @@ export function CatanFishingSeaPicker({
           ? "不放湖泊；2 鱼或 1 粮食让马车增加 2 移动点，每回合共用一次。12 分获胜，城市骑士组合 15 分，旧靴多需 1 分；双人以鱼替代贸易筹码。可叠加事件牌。"
           : attack
             ? "不放湖泊；2鱼在回合末延长己方骑士移动到5步，7鱼购买并立即使用专用发展卡。被征服建筑不产鱼；可叠加城市骑士与事件牌。"
-            : caravans
+            : caravansSea
+              ? knights
+                ? "本站渔夫＋商队海图＋城市与骑士：不放湖泊，渔场沿真实海岸避开港口与商队出发点；出价用木材或砖块，沿用海图骑士起始建设与目标分，鱼不算资源或商品，7鱼抽进步牌。"
+                : "本站渔夫＋商队海图：不放湖泊，渔场沿实际海岸布置并避开港口与商队出发点；马车仍可沿海边延伸，己方船与马车同边计两段最长路线，旧靴额外需要1分。"
+              : caravans
               ? "湖泊替换水源旁的森林，2和12共用地块。12分获胜，旧靴多需1分；可叠加城市骑士与事件牌，骑士组合15分。本站双人以鱼替代贸易筹码，五六人采用双湖及两组2/12。"
               : riversSea
                 ? knights

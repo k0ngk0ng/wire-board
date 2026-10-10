@@ -71,8 +71,21 @@ func (g *Catan) validateCaravanKnights() error {
 	if c.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.caravanKnights() || g.CitiesKnights.Rules != catanCitiesKnightsRules(len(g.Players)) || g.CitiesKnights.RobberStart != -1 && !g.riversCaravans() {
+	if !g.caravanKnights() || g.CitiesKnights.Rules != catanCitiesKnightsRules(len(g.Players)) || g.CitiesKnights.RobberStart != -1 && !g.riversCaravans() && !g.caravansSeaKnights() {
 		return errors.New("商队城市骑士组合标记无效")
+	}
+	if c.SeaKnights != "" && !g.caravansSeaKnights() {
+		return errors.New("商队海图骑士标记无效")
+	}
+	// The sea conversion replaces the pirate with the barbarian ship, so the
+	// printed watering-hole start is kept as the invasion entry only.
+	if g.caravansSeaKnights() {
+		if g.CitiesKnights.PirateStart < -1 || g.Seafarers.Pirate >= 0 && g.Seafarers.Pirate != g.CitiesKnights.PirateStart {
+			return errors.New("商队海图骑士的蛮族船起位无效")
+		}
+		if g.CitiesKnights.Invasions == 0 && (g.Robber != -1 || g.Seafarers.Pirate != -1) {
+			return errors.New("首次蛮族进攻前强盗与蛮族船不能入场")
+		}
 	}
 	return nil
 }

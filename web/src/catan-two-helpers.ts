@@ -1,4 +1,13 @@
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers.ts";
+export const catanCaravanSeaScenarios = [
+  "caravans-shores",
+  "caravans-islands",
+  "caravans-desert",
+  "caravans-tribe",
+  "caravans-new-world",
+];
+export const isPublicCatanCaravanSea = (s = "") =>
+  catanCaravanSeaScenarios.includes(s);
 export const supportsCaravanSeaHelpers = (s = "") =>
   [
     "caravans-shores",

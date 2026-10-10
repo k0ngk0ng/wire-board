@@ -33,7 +33,7 @@ func newCatanCaravansShoresThree() (*State, error) {
 }
 func (g *Catan) validateCaravansShoresThree() error {
 	sea, c := g.Seafarers, g.Caravans
-	if !g.caravansSea() || len(g.Players) != 3 || sea.Scenario != "shores" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != 16 || sea.IslandBonus != 2 || len(sea.Seats) != 3 || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
+	if !g.caravansSea() || len(g.Players) != 3 || sea.Scenario != "shores" || sea.Rules != CatanSeafarersRules || sea.Layout != "fixed" || sea.Variable || sea.NumberRecipe != "" || sea.VictoryPoints != g.caravansSeaVictoryPoints(16) || sea.IslandBonus != 2 || len(sea.Seats) != 3 || sea.Fog != nil || sea.Tribe != nil || sea.NewWorld != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil {
 		return errors.New("三人商队新海岸配置无效")
 	}
 	ref, err := NewCatanSeafarers(3, CatanOptions{}, CatanSeafarersSetup{Scenario: "shores", Layout: "fixed"}, nil)
