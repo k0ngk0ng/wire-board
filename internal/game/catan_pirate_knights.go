@@ -84,6 +84,17 @@ func (s *State) validatePirateKnights() error {
 	if p == nil {
 		return nil
 	}
+	if g.attackSeaKnights() {
+		if p.KnightsRules != CatanPirateKnightsRules || p.CityFleet != nil || p.Raid != nil {
+			return errors.New("蛮族海图骑士的海盗规则无效")
+		}
+		for _, n := range k.Knights {
+			if n.Vertex < 0 || n.Vertex >= len(g.Vertices) || n.Owner < 0 || n.Owner >= len(g.Players) || !g.pirateKnightSite(n.Vertex) {
+				return errors.New("海盗骑士位置或归属无效")
+			}
+		}
+		return nil
+	}
 	if k == nil {
 		if p.KnightsRules != "" || p.CityFleet != nil {
 			return errors.New("普通海盗群岛混入城市骑士规则")

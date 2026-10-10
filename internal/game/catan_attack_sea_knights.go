@@ -1,9 +1,6 @@
 package game
 
-import (
-	"errors"
-	"slices"
-)
+import "slices"
 
 // The printed attack-plus-knights page only covers the land map. The sea
 // nesting reuses those road-knight rules on the printed attack sea maps: the
@@ -23,9 +20,6 @@ func (g *Catan) attackSeaVictoryPoints(base int) int {
 }
 
 func NewCatanAttackSeaCitiesKnights(n int, scenario string) (*State, error) {
-	if scenario == "pirates" {
-		return nil, errors.New("蛮族海图骑士暂不支持海盗群岛：该图的要塞轨道需要单独适配胜负与舰队流程")
-	}
 	s, err := NewCatanAttackSea(n, scenario)
 	if err != nil {
 		return nil, err
@@ -36,7 +30,12 @@ func NewCatanAttackSeaCitiesKnights(n int, scenario string) (*State, error) {
 	if t := g.tribe(); t == nil || t.AttackRules == "" {
 		g.initTribeProgress()
 	}
-	if g.Seafarers != nil {
+	if p := g.pirateIslands(); p != nil {
+		// The printed pirate islands attack map keeps its own fortress and
+		// fleet track, so the pirate is not parked and no fleet dice roll.
+		p.KnightsRules = CatanPirateKnightsRules
+		g.CitiesKnights.PirateStart = -1
+	} else if g.Seafarers != nil {
 		g.CitiesKnights.PirateStart = g.Seafarers.Pirate
 		g.Seafarers.Pirate = -1
 	}

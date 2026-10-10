@@ -94,9 +94,6 @@ func (r *Room) validateCatanScenario() error {
 			return errors.New("蛮族海图支持二至六人，可叠加事件牌、渔夫与城市骑士")
 		}
 		if r.CatanCitiesKnights != nil {
-			if r.CatanScenario == "attack-pirates" {
-				return errors.New("蛮族海图骑士暂不支持海盗群岛：该图的要塞轨道需要单独适配")
-			}
 			normal, err := r.normalizeCatanCombinationKnights(*r.CatanCitiesKnights)
 			if err != nil || normal != *r.CatanCitiesKnights {
 				return errors.New("蛮族海图骑士配置无效")

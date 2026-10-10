@@ -314,7 +314,10 @@ func (s *State) catanVictory() {
 		}
 		return
 	}
-	if p := g.pirateIslands(); p != nil && (s.Turn >= len(p.Fortresses) || p.Fortresses[s.Turn].Strength > 0) {
+	// Pirate islands normally require liberating your fortress before points
+	// decide the game. The attack nesting replaces that track with the printed
+	// attack landings, so its points decide the game directly.
+	if p := g.pirateIslands(); p != nil && !g.attackSeaKnights() && (s.Turn >= len(p.Fortresses) || p.Fortresses[s.Turn].Strength > 0) {
 		return
 	}
 	goal := g.victoryTargetFor(s.Turn)
@@ -657,10 +660,19 @@ func (s *State) applyCatanStep(player int, a Action) error {
 	case "catan_repair_road":
 		return s.catanRepairRoad(player, a)
 	case "catan_skip_roads":
-		if s.Phase != "catan_roads" || g.hasFreeRouteAction(player) {
+		// The allowance is exhausted once no placement remains, or once the
+		// free counter already ran out. A damaged road that cannot be repaired
+		// any more must not keep the table in the free-road phase.
+		if s.Phase != "catan_roads" || g.FreeRoads > 0 && g.hasFreeRouteAction(player) {
 			return errors.New("仍有可建造或修复的免费路线")
 		}
 		g.FreeRoads = 0
+		// A missing continuation can only come from a corrupted or legacy
+		// save; end the allowance in the normal turn phase instead of leaving
+		// the table in an unresumable phase.
+		if g.ResumePhase == "" || g.ResumePhase == "catan_roads" {
+			g.ResumePhase = "catan_turn"
+		}
 		s.Phase = g.ResumePhase
 	case "catan_bank":
 		if s.Phase != "catan_turn" {

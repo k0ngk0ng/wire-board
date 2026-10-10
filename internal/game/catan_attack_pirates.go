@@ -139,7 +139,7 @@ func (m catanAttackMap) validatePirateSea(g *Catan) error {
 		return errors.New("蛮族海盗海图配置无效")
 	}
 	p, initial := g.pirateIslands(), ref.pirateIslands()
-	if p == nil || p.KnightsRules != "" || p.CityFleet != nil || !slices.Equal(p.HomeTiles, initial.HomeTiles) || !slices.Equal(p.FleetPath, initial.FleetPath) || p.SafeTile != initial.SafeTile || len(p.Fortresses) != n || !slices.Equal(p.Colors, initial.Colors[:n]) {
+	if p == nil || p.KnightsRules != "" && !g.attackSeaKnights() || p.KnightsRules == "" && g.attackSeaKnights() || p.CityFleet != nil || !slices.Equal(p.HomeTiles, initial.HomeTiles) || !slices.Equal(p.FleetPath, initial.FleetPath) || p.SafeTile != initial.SafeTile || len(p.Fortresses) != n || !slices.Equal(p.Colors, initial.Colors[:n]) {
 		return errors.New("蛮族海盗要塞或舰队无效")
 	}
 	all := true
