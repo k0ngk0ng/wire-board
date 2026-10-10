@@ -335,12 +335,6 @@ func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
 		target++
 	}
 	if sea.Scenario == "cloth" {
-		if g.Players[s.Turn].Score >= target {
-			if len(s.Winners) != 1 || winner != s.Turn {
-				t.Fatal("point victory should belong to the active player")
-			}
-			return
-		}
 		c := sea.Cloth
 		empty, bestScore, bestCloth := 0, -1, -1
 		expected := []int{}
@@ -360,7 +354,19 @@ func assertPublicSeaVictory(t *testing.T, s *game.State, winner int) {
 				expected = append(expected, p)
 			}
 		}
-		if empty < 5 || c.EmptyLimit != 5 || !reflect.DeepEqual(expected, s.Winners) {
+		// The last villages running dry ends the game by score, then cloth.
+		dried := empty >= 5 && c.EmptyLimit == 5 && reflect.DeepEqual(expected, s.Winners)
+		// Otherwise the point victory must belong to the active player against
+		// their own goal; a boot handoff can leave them one point short.
+		active := sea.VictoryPoints
+		if g.Harbors != nil {
+			active++
+		}
+		if g.Fishing != nil && g.Fishing.Tokens.BootOwner == s.Turn {
+			active++
+		}
+		points := len(s.Winners) == 1 && s.Winners[0] == s.Turn && g.Players[s.Turn].Score >= active
+		if !dried && !points {
 			t.Fatal("invalid cloth exhaustion victory", empty, expected, s.Winners)
 		}
 		return

@@ -100,6 +100,7 @@ func (s *State) catanAttackEndStep(moves []catanAttackMove, die func() int) erro
 					a.Prisoners[p] += n
 				}
 			}
+			g.clearAttackConqueredMerchant()
 		}
 		if g.twoAttack() && !g.fishingAttack() {
 			battle.Tokens = make([]int, 2)

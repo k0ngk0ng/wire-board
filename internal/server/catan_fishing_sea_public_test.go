@@ -188,8 +188,11 @@ func publicFishingClothWon(t *testing.T, s *game.State) bool {
 	if g.Fishing.Tokens.BootOwner == s.Turn {
 		target++
 	}
-	if g.Players[s.Turn].Score >= target {
-		return slices.Equal(s.Winners, []int{s.Turn})
+	// The point victory belongs to the active player against their own goal.
+	// A boot handoff can leave the last actor one point short of theirs, so the
+	// dried-up villages then decide by score and cloth instead.
+	if g.Players[s.Turn].Score >= target && slices.Equal(s.Winners, []int{s.Turn}) {
+		return true
 	}
 	empty := 0
 	for _, v := range g.Seafarers.Cloth.Villages {
@@ -214,6 +217,41 @@ func publicFishingClothWon(t *testing.T, s *game.State) bool {
 		}
 	}
 	return slices.Equal(s.Winners, winners)
+}
+
+// A village-exhaustion finish compares total score and cloth once the last
+// villages run dry, so the active player's own threshold must not decide the
+// result: after a boot handoff the last actor can be one point short of their
+// own goal while a same-score opponent holds more cloth and wins instead.
+func TestPublicClothExhaustionTiebreakAfterBootHandoff(t *testing.T) {
+	s, _, _, id := newPublicFishingSeaConfigured(t, 4, "cloth", "fixed", false, false, false, false)
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	r := s.rooms[id]
+	g := r.Game.Catan
+	c := g.Seafarers.Cloth
+	for i := range c.Villages {
+		c.Villages[i].Stock = 0
+	}
+	c.Stock, c.Held = 10, []int{10, 15, 15, 0}
+	g.Players[0].Score, g.Players[1].Score, g.Players[2].Score, g.Players[3].Score = 14, 14, 13, 12
+	r.Game.Turn, r.Game.Winners, r.Game.Finished, r.Game.Phase = 0, []int{1}, true, "finished"
+
+	// The last actor handed the boot away, so their own threshold is fourteen
+	// and the exhausted villages decide by score and cloth.
+	g.Fishing.Tokens.BootOwner = 1
+	if !publicFishingClothWon(t, r.Game) {
+		t.Fatal("village exhaustion must decide by score and cloth")
+	}
+	assertPublicSeaVictory(t, r.Game, 1)
+
+	// Holding the boot raises the last actor's own goal to fifteen, which the
+	// same exhausted table still resolves through the cloth comparison.
+	g.Fishing.Tokens.BootOwner = 0
+	if !publicFishingClothWon(t, r.Game) {
+		t.Fatal("boot holder at fourteen has not reached the point victory")
+	}
+	assertPublicSeaVictory(t, r.Game, 1)
 }
 
 func TestCatanFishingSeaPublicOpeningMatrix(t *testing.T) {
