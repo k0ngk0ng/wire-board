@@ -710,3 +710,9 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
 3. `TestCatanRiversKnightsClockAndBaseIsolation/2`（shard 5，`internal/server`）报 `game finished`。电脑可能在首次蛮族入侵前先到目标分，这是合法终局，`BotAction` 会返回 `game finished`；该时钟用例原本假设每局都会走到入侵阶段。改为在入侵前结束就重发牌桌（最多四次），仍在 3000 步内没入侵才算失败；河流与运输两处同类循环统一使用新助手 `newTradersKnightsHTTPAtPillage`。
 
 重跑：修复后重跑同一套 6 分片，结果见下一条记录。
+
+## 2026-10-11 整版分片复跑与第四处测试缺陷
+
+- 第二轮 6 分片复跑：shard 0／2／3／4／5 全绿（各片 `internal/game` 与 `internal/server` 都通过），shard 1 的 `internal/server` 通过（3011.744 秒），`internal/game` 报一例：`TestCatanExplorerFishingStartsAndNaturalTurns/4/explorers-and-pirates/citiestrue/lakesfalse`，错误 `bot catan_discard no explorer action in this phase`。
+- 定位：这不是产品缺陷。探索者 bot 本身有弃牌分支（`catanExplorerBot` 在 `s.Phase == "catan_discard" && g.DiscardDue[player] > 0` 时返回 `catan_discard`），服务端的电脑与超时托管也按欠牌座位逐个处理（`internal/server/bots.go`、`internal/server/timeout_autoplay.go`）。问题是测试选人：一次 7 点后可能多个座位欠牌而当前回合玩家不欠牌，而弃牌阶段没有 pending actor，测试用「pending actor，否则当前回合玩家」就问到无事可做的座位。改为按兄弟测试 `catan_explorer_fishing_bot_test.go` 的做法挑第一个欠牌座位。
+- 验证：`TestCatanExplorerFishingStartsAndNaturalTurns` 连跑 6 次（163.324 秒）通过；shard 1 的 game 分片用修复后的代码重跑，同时其余分片的 `internal/server` 结果沿用本轮。
