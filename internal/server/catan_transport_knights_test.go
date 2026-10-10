@@ -57,8 +57,9 @@ func TestCatanTransportKnightsNaturalHTTP(t *testing.T) {
 						if v["victoryTarget"] != float64(15) {
 							t.Fatal("target")
 						}
+						// Hands are revealed by design once the game is finished.
 						for _, raw := range v["players"].([]any) {
-							if raw.(map[string]any)["resources"] != nil {
+							if !s.rooms[id].Game.Finished && raw.(map[string]any)["resources"] != nil {
 								t.Fatal("hidden hand leaked")
 							}
 						}

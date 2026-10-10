@@ -682,3 +682,11 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
 - **卡坦 10/12**：本阶段不关闭工作包，但关闭了唯一仍在范围内的功能性缺陷。六人遗忘部落＋城市骑士偶发僵局的根因是「免费道路阶段命中遗忘部落奖励点」：奖励领取只允许普通行动阶段，于是那条唯一可行的船提交失败，而跳过又被 `hasRoute` 拒绝，形成死锁。修复：奖励领取允许在免费道路阶段进行并保留阶段续接（`catanAttackDrawCard` 的 `Resume` 增加 `catan_roads`），航路接续校验不再拒绝 `Free` 记录；另外免费次数用尽时允许结束该阶段作为防御。
 - **验证**：25 局六人遗忘部落＋骑士连续自然整局 0 次卡死（修复前约 1/20）；`go test ./internal/game -run 'TestCatanAttack|TestCatanTribe'` 通过（396.6 秒）；端到端验收 15 例重跑全部通过（`ok internal/server 662.686s`），产物已刷新。
 - **剩余**：真人整局验收（需要好友参与）；发布。按你的要求未部署。
+
+## 2026-10-11 旧断言清理（CI 恢复绿色前置）
+
+- 背景：本批把事件／Helpers／城市骑士／渔夫／友善／港口接通的组合从少数剧本扩到全部适用剧本后，早期阶段的测试仍在断言「这些组合会被拒绝」，导致 CI 分片大面积失败（不是功能回归）。
+- 处理原则：保留每个测试原本的意图（权限、人数、非法字段、非法选项仍要拒绝），把已经变成合法组合的探针替换为当时确实非法的探针（例如把 `Helpers: true` 换成不配对的 `AllHelpers: true`、把「未知剧本」换成仍然不存在的值），并修正少数确实过时的断言（如切换剧本后变体被保留、准备状态、地图编辑探针不再要求金矿格、终局后手牌按设计公开）。
+- 另修一个真实缺口：`NewCatanCaravansSea` 对双人新世界预备地图直接拒绝，现在按四人参考图正确构造双人局（`NewCatanCaravansWorldWithMap` 早已支持双人）。
+- 影响文件：`catan_attack_public_test.go`、`catan_attack_sea_test.go`、`catan_base_variants_public_test.go`、`catan_caravans_seafarers_test.go`、`catan_cloth_extended_public_test.go`、`catan_fishing_knights_public_test.go`、`catan_fishing_sea_public_test.go`、`catan_friendly_robber_setup_test.go`、`catan_harbors_public_test.go`、`catan_harbors_setup_test.go`、`catan_knights_extended_public_test.go`、`catan_land_extended_public_test.go`、`catan_rivers_knights_test.go`、`catan_scenario_public_test.go`、`catan_sea_variants_public_test.go`、`catan_seafarers_public_test.go`、`catan_transport_public_test.go`、`catan_two_caravans_setup_test.go`、`catan_two_helpers_test.go`、`catan_two_public_test.go`、`catan_two_rivers_setup_test.go`、`catan_two_variants_test.go`，以及 `internal/game/catan_caravans_sea_knights.go`。
+- 验证：上述测试逐个本地通过；正在跑 server 全量套件与 CI 二十个分片确认没有遗漏。

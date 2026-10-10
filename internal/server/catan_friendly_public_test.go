@@ -44,10 +44,13 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 	h.register("公开友善房主")
 	c.register("公开友善朋友")
 	for _, body := range []map[string]any{
-		{"kind": "splendor", "capacity": 3}, {"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
-		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
-		{"kind": "catan", "capacity": 3, "catanScenario": "rivers"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "land-ho", "catanFishing": true},
+		// Two-player rivers and the standalone merge scenarios all support the
+		// friendly robber now, so the rejected probes stay genuinely invalid.
+		{"kind": "splendor", "capacity": 3},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers", "catanOptions": game.CatanOptions{AllHelpers: true}},
+		{"kind": "catan", "capacity": 7, "catanScenario": "shores"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "unknown"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "land-ho", "catanNewWorldMap": &game.CatanNewWorldMap{}},
 	} {
 		body["name"], body["catanFriendlyRobber"] = "非法组合", game.CatanFriendlyRobberSetup{Enabled: true}
 		h.post("/api/rooms", body, 400)
@@ -102,7 +105,8 @@ func TestCatanFriendlyPublicConfiguration(t *testing.T) {
 		t.Fatal("rematch lost friendly")
 	}
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "transport", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
-	if s.rooms[id].CatanFriendlyRobber != nil || s.rooms[id].CatanHarbors != nil {
-		t.Fatal("standalone retained unsupported variant")
+	// Transport supports both variants now, so the switch keeps them.
+	if s.rooms[id].CatanFriendlyRobber == nil || s.rooms[id].CatanHarbors == nil {
+		t.Fatal("transport switch dropped supported variants")
 	}
 }

@@ -75,13 +75,14 @@ func TestCatanTwoVariantsRecipesAndRestore(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		// Both variants are supported crossings for the two-player merge games.
 		before, _ := json.Marshal(s)
-		if s.ConfigureCatanHarbors(CatanHarborsSetup{Enabled: true}) == nil || s.ConfigureCatanFriendlyRobber(CatanFriendlyRobberSetup{Enabled: true}) == nil {
-			t.Fatal("unverified crossing opened")
+		if s.ConfigureCatanHarbors(CatanHarborsSetup{Enabled: true}) != nil || s.ConfigureCatanFriendlyRobber(CatanFriendlyRobberSetup{Enabled: true}) != nil {
+			t.Fatal("supported two-player crossing rejected")
 		}
 		after, _ := json.Marshal(s)
-		if string(before) != string(after) {
-			t.Fatal("rejected setup mutated game")
+		if string(before) == string(after) {
+			t.Fatal("accepted setup did not mutate game")
 		}
 	}
 }

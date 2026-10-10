@@ -111,12 +111,14 @@ func TestCatanExplorerPublicKnightsRecipe(t *testing.T) {
 			})
 		}
 	}
-	for _, n := range []int{0, 2, 7} {
+	// The native two-player explorer knight recipe is supported now.
+	for _, n := range []int{0, 7} {
 		if _, err := NewCatanExplorerCitiesKnights(n, "spices-for-catan"); err == nil {
 			t.Fatal("bad count accepted")
 		}
 	}
-	for _, scenario := range []string{"", "land-ho", "shores"} {
+	// The 初航 mission supports the knight recipe now.
+	for _, scenario := range []string{"", "shores"} {
 		if _, err := NewCatanExplorerCitiesKnights(3, scenario); err == nil {
 			t.Fatal("bad scenario accepted")
 		}
