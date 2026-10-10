@@ -700,3 +700,13 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
 - **修复（断言）**：布匹村落耗尽的终局断言只看当前回合玩家是否到线。靴子交接后最后一个行动者可能刚好差 1 分，由同分、布匹更多的对手获胜，于是把合法终局误报为「错误终局」（CI 的 `TestCatanFishingHelpersNaturalHTTP/cloth/5/sample0`）。先写确定性回归夹具 `TestPublicClothExhaustionTiebreakAfterBootHandoff`（靴子在当前玩家与在对手两种情形），再让 `publicFishingClothWon` 与 `assertPublicSeaVictory` 的分数路径、耗尽路径各自严格校验赢家集合。
 - **修复（功能）**：地块被攻击或运输征服后归还贸易商人（`clearAttackConqueredMerchant`），消除双人运输骑士自然局里的「双人商人位置无效」状态校验失败；`go test ./internal/game -run TestCatanAttackTransportKnightsNaturalEngine -count=3` 通过（206 秒）。
 - **验证**：本地整版按 6 个分片运行，覆盖 2199 个测试名（含全部组合整局），分片结果在后续记录补记；发布状态单列，未推送、未部署。
+
+## 2026-10-11 本地整版分片发现的三处测试缺陷
+
+第一轮 6 分片（2199 个测试名）结果：shard 0／1／2／4 全绿，shard 3 与 shard 5 各报失败，三处全部定位为测试自身缺陷，产品代码没有改动：
+
+1. `TestSanguoshaWindTianxiangAndHongyan`（shard 3，`internal/game`）报 `missing card qinggang_sword`。身份局测试牌堆在开局洗牌，`sgFindGive` 按花色取费用牌时可能正好取走后面要装备的唯一青釭剑（约 1/27）。按 `sgGodState` 既有做法把身份局与国战测试牌堆排序，并让该用例先装备护甲再取费用牌。验证：单用例连跑 30 次、风／神／火子集各 5 次、全三国杀套件两轮（50.258 秒）全部通过。
+2. `TestCatanTransportKnightsNaturalHTTP/4/eventstrue`（shard 3，`internal/server`）报 `progress leaked`。观战视图在终局后按设计公开手牌与进步牌；同一步里的资源循环已排除终局，进步牌循环漏了同一条件，于是「对局刚好在采样步终局」被误报为泄漏。两条循环现在共用同一个终局标记，非终局仍然严格失败。
+3. `TestCatanRiversKnightsClockAndBaseIsolation/2`（shard 5，`internal/server`）报 `game finished`。电脑可能在首次蛮族入侵前先到目标分，这是合法终局，`BotAction` 会返回 `game finished`；该时钟用例原本假设每局都会走到入侵阶段。改为在入侵前结束就重发牌桌（最多四次），仍在 3000 步内没入侵才算失败；河流与运输两处同类循环统一使用新助手 `newTradersKnightsHTTPAtPillage`。
+
+重跑：修复后重跑同一套 6 分片，结果见下一条记录。
