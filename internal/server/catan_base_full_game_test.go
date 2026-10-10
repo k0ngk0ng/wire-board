@@ -172,7 +172,7 @@ func testCatanBaseFullHTTPGames(t *testing.T, harbors, friendly bool) {
 									p := raw.(map[string]any)
 									_, hand := p["resources"]
 									_, dev := p["dev"]
-									if hand != (viewer == i) || dev != (viewer == i) {
+									if !s.rooms[id].Game.Finished && (hand != (viewer == i) || dev != (viewer == i)) {
 										t.Fatal("hand leaked", viewer, i)
 									}
 								}

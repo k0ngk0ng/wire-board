@@ -153,7 +153,8 @@ func assertCaravansFullPrivacy(t *testing.T, clients []*testClient, state *game.
 			seat := raw.(map[string]any)
 			_, hand := seat["resources"]
 			_, dev := seat["dev"]
-			if hand != (p == other) || dev != (p == other) {
+			// A finished game publishes hands on purpose.
+			if !state.Finished && (hand != (p == other) || dev != (p == other)) {
 				t.Fatal("private cards exposed", p, other)
 			}
 		}
