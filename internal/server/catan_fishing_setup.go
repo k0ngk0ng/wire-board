@@ -17,6 +17,11 @@ func publicCatanFishingSeaExtended(scenario string) bool {
 	return publicCatanFishingSea(scenario)
 }
 
+func publicCatanAttackSea(scenario string) bool {
+	_, ok := publicCatanAttackSeaSetup(scenario)
+	return ok
+}
+
 func (r *Room) validateCatanFishing() error {
 	if r.CatanFishingLakes && (!r.CatanFishing || !publicCatanExplorerScenario(r.CatanScenario)) {
 		return fmt.Errorf("湖泊选项仅适用于探索者渔夫组合")
@@ -27,6 +32,12 @@ func (r *Room) validateCatanFishing() error {
 	if publicCatanTransportSea(r.CatanScenario) {
 		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil {
 			return fmt.Errorf("运输捕鱼海图配置无效")
+		}
+		return nil
+	}
+	if _, ok := publicCatanAttackSeaSetup(r.CatanScenario); ok {
+		if r.Kind != "catan" || r.Capacity < 2 || r.Capacity > 6 || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanFishingLakes || r.CatanSeafarers != nil || r.CatanBaseConfiguration != nil || r.CatanCitiesKnights != nil {
+			return fmt.Errorf("蛮族海图渔夫配置无效；支持二至六人，可叠加事件牌")
 		}
 		return nil
 	}
@@ -76,7 +87,7 @@ func (r *Room) validateCatanFishing() error {
 }
 
 func (r *Room) setCatanFishing(enabled bool) error {
-	if r.Kind != "catan" || r.Status != "waiting" || (!r.catanRiverRecipe() && !r.catanCaravanRecipe() && !r.catanAttackRecipe() && r.CatanScenario != "transport" && !publicCatanTransportSea(r.CatanScenario) && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario) && !publicCatanRiversSea(r.CatanScenario) && !publicCatanCaravanSea(r.CatanScenario)) {
+	if r.Kind != "catan" || r.Status != "waiting" || (!r.catanRiverRecipe() && !r.catanCaravanRecipe() && !r.catanAttackRecipe() && r.CatanScenario != "transport" && !publicCatanTransportSea(r.CatanScenario) && !r.twoCatanSeafarers() && !r.twoCatanFishingKnights() && !publicCatanSeaScenario(r.CatanScenario) && !publicCatanExplorerScenario(r.CatanScenario) && !publicCatanRiversSea(r.CatanScenario) && !publicCatanCaravanSea(r.CatanScenario) && !publicCatanAttackSea(r.CatanScenario)) {
 		return fmt.Errorf("只能在河流、商队、蛮族进攻、运输、航海家或探索者等待房间选择渔夫组合")
 	}
 	next := *r

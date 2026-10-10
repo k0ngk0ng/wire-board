@@ -90,8 +90,8 @@ func (r *Room) validateCatanScenario() error {
 		if r.CatanScenario == "attack-desert" && (r.Capacity < 2 || r.Capacity > 6) {
 			return errors.New("蛮族沙漠支持二至六人")
 		}
-		if r.Kind != "catan" || (r.Capacity < 2 || r.Capacity > 6) || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishing {
-			return errors.New("蛮族海图支持二至六人，可叠加事件牌")
+		if r.Kind != "catan" || (r.Capacity < 2 || r.Capacity > 6) || len(r.Seats) > r.Capacity || !validCatanTradersRoomOptions(r.CatanOptions) || r.CatanTwoRules != "" || r.CatanTwoScenario != "" || r.CatanSeafarers != nil || r.CatanNewWorldMap != nil || r.CatanCitiesKnights != nil || r.CatanBaseConfiguration != nil || r.CatanFishingLakes {
+			return errors.New("蛮族海图支持二至六人，可叠加事件牌与渔夫")
 		}
 		return nil
 	}

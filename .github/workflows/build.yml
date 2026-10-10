@@ -12,10 +12,10 @@ concurrency:
   cancel-in-progress: true
 jobs:
   rules:
-    name: Go rules and race checks (${{ matrix.shard }})
+    name: Go rules and privacy checks (${{ matrix.shard }})
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -35,8 +35,28 @@ jobs:
           path: web/dist
       - name: Verify test partition coverage and failure propagation
         run: python3 scripts/test_go_shard_test.py
-      - name: Test rules, privacy, persistence and concurrent requests
-        run: python3 scripts/test_go_shard.py --index ${{ matrix.shard }} --count 12 --race --timeout 90m
+      - name: Test rules, privacy, persistence and simultaneous requests
+        run: python3 scripts/test_go_shard.py --index ${{ matrix.shard }} --count 12 --timeout 30m
+  race:
+    name: Go race detector on concurrency paths
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - name: Run the race detector on commands, clocks, autoplay and persistence
+        run: go test -count=1 -timeout=40m -race -run '^(TestConcurrent.*|TestAutoPlay.*|TestTimeout.*|TestInactive.*|TestSpectator.*|TestChat.*|TestShutdown.*|TestSanguoshaConcurrent.*|TestCatanLongGameArtifact|TestBotsFinishBothGames)$' ./internal/server ./internal/game
   verify:
     name: Test and Linux amd64 binary
     runs-on: ubuntu-latest
@@ -105,7 +125,7 @@ jobs:
           if-no-files-found: error
   image:
     name: Publish Linux amd64 container
-    needs: [verify, rules]
+    needs: [verify, rules, race]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -167,7 +187,7 @@ jobs:
           curl --fail -H 'Content-Type: application/json' --data '{"name":"SmokePlayer","password":"smoke-test-only"}' http://127.0.0.1:18081/api/login
   release:
     name: Publish versioned release
-    needs: [verify, rules, image]
+    needs: [verify, rules, race, image]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:

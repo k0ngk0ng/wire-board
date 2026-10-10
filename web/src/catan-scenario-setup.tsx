@@ -394,9 +394,19 @@ export function CatanCombinationKnightsPicker({
   );
 }
 
+export const catanAttackSeaScenarios = [
+  "attack-shores",
+  "attack-desert",
+  "attack-tribe",
+  "attack-wonders",
+  "attack-pirates",
+];
+export const isPublicCatanAttackSea = (scenario?: string) =>
+  catanAttackSeaScenarios.includes(scenario || "");
 export const supportsPublicCatanFishingSea = (scenario?: string) =>
   isPublicCatanRiversSea(scenario) ||
   isPublicCatanCaravanSea(scenario) ||
+  isPublicCatanAttackSea(scenario) ||
   [
     "shores",
     "islands",
@@ -423,6 +433,7 @@ export function CatanFishingSeaPicker({
   caravans = false,
   caravansSea = false,
   attack = false,
+  attackSea = false,
   transport = false,
   transportSea = false,
   knights = false,
@@ -443,6 +454,7 @@ export function CatanFishingSeaPicker({
   caravans?: boolean;
   caravansSea?: boolean;
   attack?: boolean;
+  attackSea?: boolean;
   transport?: boolean;
   transportSea?: boolean;
   knights?: boolean;
@@ -481,7 +493,9 @@ export function CatanFishingSeaPicker({
       <p className="muted small">
         {transport
           ? "不放湖泊；2 鱼或 1 粮食让马车增加 2 移动点，每回合共用一次。12 分获胜，城市骑士组合 15 分，旧靴多需 1 分；双人以鱼替代贸易筹码。可叠加事件牌。"
-          : attack
+          : attackSea
+            ? "本站渔夫＋蛮族海图：不放湖泊，渔场沿实际海岸避开港口；被征服建筑不产鱼，2鱼在回合末延长己方骑士移动最多5步，7鱼购买并立即使用蛮族发展卡。可叠加事件牌。"
+            : attack
             ? "不放湖泊；2鱼在回合末延长己方骑士移动到5步，7鱼购买并立即使用专用发展卡。被征服建筑不产鱼；可叠加城市骑士与事件牌。"
             : caravansSea
               ? knights

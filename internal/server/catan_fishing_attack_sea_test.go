@@ -7,54 +7,46 @@ import (
 	"github.com/k0ngk0ng/wire-board/internal/game"
 )
 
-func TestCatanRiversSeaKnightsAdmission(t *testing.T) {
+func TestCatanFishingAttackSeaAdmission(t *testing.T) {
 	for n := 2; n <= 6; n++ {
-		for _, scenario := range []string{"rivers-shores", "rivers-fog", "rivers-desert", "rivers-desert-belt", "rivers-tribe", "rivers-new-world"} {
+		for _, scenario := range []string{"attack-shores", "attack-desert", "attack-tribe", "attack-wonders", "attack-pirates"} {
 			room := &Room{Kind: "catan", Status: "waiting", Capacity: n}
 			if err := room.setCatanScenario(scenario); err != nil {
 				t.Fatal(n, scenario, err)
 			}
-			setup, err := room.normalizeCatanCombinationKnights(game.CatanCitiesKnightsSetup{})
-			if err != nil {
-				t.Fatal(n, scenario, err)
-			}
-			if err = room.setPublicCatanCombinationKnights(&setup); err != nil {
-				t.Fatal(n, scenario, err)
-			}
-			if err = room.validateCatanScenario(); err != nil {
-				t.Fatal(n, scenario, err)
-			}
-			// Fishing is a separate nesting with its own admission test.
 			if err := room.setCatanFishing(true); err != nil {
+				t.Fatal(n, scenario, err)
+			}
+			if err := room.setCatanEvents(true); err != nil {
+				t.Fatal(n, scenario, err)
+			}
+			if err := room.validateCatanScenario(); err != nil {
 				t.Fatal(n, scenario, err)
 			}
 		}
 	}
 }
 
-func TestCatanRiversSeaKnightsNaturalHTTP(t *testing.T) {
+func TestCatanFishingAttackSeaNaturalHTTP(t *testing.T) {
 	for _, tc := range []struct {
 		scenario string
 		n        int
 		events   bool
 	}{
-		{"rivers-shores", 3, false},
-		{"rivers-shores", 2, true},
-		{"rivers-fog", 4, true},
-		{"rivers-desert", 5, false},
-		{"rivers-desert-belt", 6, true},
-		{"rivers-tribe", 3, true},
-		{"rivers-new-world", 6, false},
+		{"attack-shores", 3, false},
+		{"attack-desert", 2, true},
+		{"attack-tribe", 5, false},
+		{"attack-wonders", 4, true},
 	} {
-		t.Run(fmt.Sprintf("%s/%d/events%t", tc.scenario, tc.n, tc.events), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%s/%d", tc.scenario, tc.n), func(t *testing.T) {
 			s, ts := setupServer(t)
 			stopBotTicker(s)
 			clients := make([]*testClient, tc.n+1)
 			for p := range clients {
 				clients[p] = newClient(t, ts.URL)
-				clients[p].register(fmt.Sprintf("河流骑士%d", p))
+				clients[p].register(fmt.Sprintf("蛮族渔夫%d", p))
 			}
-			recipe := map[string]any{"kind": "catan", "name": "河流海图骑士", "capacity": tc.n, "catanScenario": tc.scenario, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}}
+			recipe := map[string]any{"kind": "catan", "name": "蛮族海图渔夫", "capacity": tc.n, "catanScenario": tc.scenario, "catanFishing": true}
 			if tc.events {
 				recipe["catanEvents"] = game.CatanEventCatalogue
 			}
@@ -89,7 +81,7 @@ func TestCatanRiversSeaKnightsNaturalHTTP(t *testing.T) {
 				}
 				if step%131 == 0 {
 					view := current(clients[tc.n])["game"].(map[string]any)["catan"].(map[string]any)
-					if view["rivers"] == nil || view["seafarers"] == nil || view["citiesKnights"] == nil {
+					if view["attack"] == nil || view["seafarers"] == nil || view["fishing"] == nil {
 						t.Fatal("missing public components")
 					}
 				}
