@@ -57,6 +57,8 @@ func TestCatanSeaNestingsE2E(t *testing.T) {
 		{"attack-seafarers", "attack-wonders", 2, true, false, true},
 		{"attack-seafarers", "attack-shores", 3, false, true, true},
 		{"attack-seafarers", "attack-desert", 2, true, true, true},
+		{"attack-seafarers", "attack-pirates", 2, true, false, true},
+		{"attack-seafarers", "attack-pirates", 4, true, true, false},
 	}
 	results := []seaNestingResult{}
 	for _, tc := range cases {

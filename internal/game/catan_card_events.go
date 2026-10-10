@@ -93,7 +93,7 @@ func (s *State) catanBeginCardEvent(kind string, production, red, face int) erro
 			return err
 		}
 	}
-	if g.pirateIslands() != nil && (g.EventDeck == nil || g.EventDeck.FleetRules != CatanEventFleetRules || g.EventDeck.Fleet == nil) {
+	if g.pirateIslands() != nil && !g.attackSeaKnights() && (g.EventDeck == nil || g.EventDeck.FleetRules != CatanEventFleetRules || g.EventDeck.Fleet == nil) {
 		return errors.New("海盗群岛事件牌需要独立舰队骰子")
 	}
 	if kind == "robber_flees" && g.Attack == nil && g.Transport == nil && g.pirateIslands() == nil {

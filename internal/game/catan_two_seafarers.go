@@ -171,7 +171,7 @@ func (s *State) validateTwoSeafarers() error {
 	sea := g.Seafarers
 	setup := CatanSeafarersSetup{Scenario: sea.Scenario, Layout: sea.Layout, Rules: sea.Rules}
 	normal, err := NormalizeCatanTwoSeafarersSetup(setup)
-	if g.twoAttackSea() && sea.Scenario == "pirate_islands" {
+	if (g.twoAttackSea() || g.twoAttackKnights()) && sea.Scenario == "pirate_islands" {
 		normal, err = NormalizeCatanSeafarersSetup(4, setup)
 	}
 	if g.twoTransportSea() {
@@ -246,7 +246,7 @@ func (s *State) validateTwoSeafarers() error {
 			return errors.New("双人海图中立起点被移除")
 		}
 	}
-	if (sea.Scenario == "fog") != (sea.Fog != nil) || (sea.Scenario == "tribe") != (sea.Tribe != nil) || (sea.Scenario == "cloth") != (sea.Cloth != nil) || (sea.Scenario == "wonders") != (sea.Wonders != nil) || (sea.Scenario == "new_world") != (sea.NewWorld != nil) || sea.PirateIslands != nil && !g.twoAttackSea() {
+	if (sea.Scenario == "fog") != (sea.Fog != nil) || (sea.Scenario == "tribe") != (sea.Tribe != nil) || (sea.Scenario == "cloth") != (sea.Cloth != nil) || (sea.Scenario == "wonders") != (sea.Wonders != nil) || (sea.Scenario == "new_world") != (sea.NewWorld != nil) || sea.PirateIslands != nil && !g.twoAttackSea() && !g.twoAttackKnights() {
 		return errors.New("双人海图组件不匹配")
 	}
 	if q.AfterRoute != "" {

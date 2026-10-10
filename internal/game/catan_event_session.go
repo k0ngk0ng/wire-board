@@ -307,7 +307,7 @@ func (s *State) catanDrawEventRandom(randN func(int) int) error {
 	if next.Catan.CitiesKnights != nil {
 		red, event = randN(6)+1, randN(6)
 	}
-	if next.Catan.pirateIslands() != nil {
+	if next.Catan.pirateIslands() != nil && !next.Catan.attackSeaKnights() {
 		next.Catan.EventDeck.Fleet = &CatanEventFleet{RollID: g.RollID + 1, Dice: [2]int{randN(6) + 1, randN(6) + 1}}
 	}
 	if next.Catan.Explorer != nil {

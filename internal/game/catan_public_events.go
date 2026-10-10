@@ -31,7 +31,7 @@ func (s *State) EnableCatanEvents(catalogue string) error {
 	if next.Catan.cloth() != nil {
 		next.Catan.EventDeck.ClothFallback = CatanEventClothFallbackRules
 	}
-	if next.Catan.pirateIslands() != nil {
+	if next.Catan.pirateIslands() != nil && !next.Catan.attackSeaKnights() {
 		next.Catan.EventDeck.FleetRules = CatanEventFleetRules
 	}
 	if err := next.validateCatanEventSession(); err != nil {

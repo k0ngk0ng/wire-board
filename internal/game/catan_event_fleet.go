@@ -22,6 +22,13 @@ func (s *State) validateEventFleet() error {
 		}
 		return nil
 	}
+	if g.attackSeaKnights() {
+		// The attack nesting replaces the fleet dice with its own landings.
+		if d.FleetRules != "" || d.Fleet != nil || p.Raid != nil {
+			return errors.New("蛮族海图骑士的事件存档包含舰队行动")
+		}
+		return nil
+	}
 	if d.FleetRules != CatanEventFleetRules || g.Robber != -1 {
 		return errors.New("海盗群岛事件舰队规则版本或强盗状态无效")
 	}

@@ -280,7 +280,7 @@ func (s *State) catanContinueCityEvent() error {
 	if g.Explorer != nil {
 		return s.catanExplorerCityProduction([2]int{e.Red, e.Yellow})
 	}
-	if g.pirateIslands() != nil {
+	if g.pirateIslands() != nil && !g.attackSeaKnights() {
 		return s.catanCityFleetProduction(total, e.Epidemic)
 	}
 	return s.catanRollProductionEffect(total, e.Epidemic)
