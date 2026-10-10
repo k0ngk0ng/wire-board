@@ -93,6 +93,20 @@ func TestCatanExplorerFishingStartsAndNaturalTurns(t *testing.T) {
 				if actor < 0 {
 					actor = s.Turn
 				}
+				// A seven can leave several seats owing cards while the turn
+				// player owes none, and the discard phase has no pending actor.
+				if s.Phase == "catan_discard" {
+					actor = -1
+					for p, due := range s.Catan.DiscardDue {
+						if due > 0 {
+							actor = p
+							break
+						}
+					}
+					if actor < 0 {
+						t.Fatal("discard phase without an owed seat")
+					}
+				}
 				a, err := s.BotAction(actor)
 				if err != nil {
 					t.Fatal("bot", s.Phase, err)
