@@ -129,20 +129,26 @@ func TestCatanSeafarersPublicCompleteHTTPGames(t *testing.T) {
 						if scenario == "new_world" {
 							world = &game.CatanNewWorldMap{Hexes: append([]game.CatanNewWorldHex{}, s.rooms[id].CatanNewWorldMap.Hexes...)}
 							if layout == "edited" {
-								ordinary, gold := -1, -1
+								// Swap two ordinary numbers; the plain frame has no
+								// gold tiles and red numbers must stay apart.
+								first, second := -1, -1
 								for i, h := range world.Hexes {
-									if h.Resource < 5 && h.Number != 6 && h.Number != 8 {
-										ordinary = i
+									if h.Resource >= 5 || h.Number == 0 || h.Number == 6 || h.Number == 8 {
+										continue
 									}
-									if h.Resource == game.CatanGold {
-										gold = i
+									if first < 0 {
+										first = i
+										continue
+									}
+									if h.Number != world.Hexes[first].Number {
+										second = i
+										break
 									}
 								}
-								if ordinary < 0 || gold < 0 {
+								if first < 0 || second < 0 {
 									t.Fatal("no legal map edit")
 								}
-								// Exchange terrain instead of inventing a fifth gold tile.
-								world.Hexes[ordinary].Resource, world.Hexes[gold].Resource = world.Hexes[gold].Resource, world.Hexes[ordinary].Resource
+								world.Hexes[first].Number, world.Hexes[second].Number = world.Hexes[second].Number, world.Hexes[first].Number
 								clients[0].post("/api/rooms/"+id, map[string]any{"type": "catan_world_map", "catanNewWorldMap": world, "version": current(clients[0])["version"], "nonce": randomID(12)}, 200)
 							}
 						}

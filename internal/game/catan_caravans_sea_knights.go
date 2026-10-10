@@ -46,9 +46,6 @@ func NewCatanCaravansSea(n int, scenario string, world *CatanNewWorldMap) (*Stat
 		return NewCatanCaravansTribeSeafarers(n)
 	case "new_world":
 		if world != nil {
-			if n == 2 {
-				return nil, errors.New("双人商队新世界暂不支持预备地图")
-			}
 			return NewCatanCaravansWorldWithMap(n, world)
 		}
 		return NewCatanCaravansWorld(n)

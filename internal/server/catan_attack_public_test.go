@@ -19,8 +19,9 @@ func TestCatanAttackPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 7},
-		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 6, "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 4, "catanOptions": game.CatanOptions{AllHelpers: true}},
+		// Five/six seats are supported; the extension flag with three seats is not.
+		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{FiveSix: true}},
 		{"kind": "catan", "capacity": 3, "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "invalid"}},
 		{"kind": "splendor", "capacity": 3},
 	} {

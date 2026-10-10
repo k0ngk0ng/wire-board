@@ -21,8 +21,8 @@ func TestCatanTwoPublicCreationSelectionAndRematch(t *testing.T) {
 		{"kind": "splendor", "capacity": 2, "catanTwoScenario": "rivers"},
 		{"kind": "catan", "capacity": 2, "catanTwoScenario": "unknown"},
 		{"kind": "catan", "capacity": 3, "catanTwoScenario": "barbarian-attack"},
-		{"kind": "catan", "capacity": 2, "catanTwoScenario": "barbarian-attack", "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 2, "catanTwoScenario": "barbarian-attack", "catanFishing": true},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "barbarian-attack", "catanOptions": game.CatanOptions{AllHelpers: true}},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "barbarian-attack", "catanFishingLakes": true},
 	} {
 		body["name"] = "错误配置"
 		host.post("/api/rooms", body, 400)

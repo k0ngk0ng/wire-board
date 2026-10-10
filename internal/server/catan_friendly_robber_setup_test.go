@@ -27,7 +27,9 @@ func TestCatanFriendlyRobberConfigurationHTTPPermissionsRestartAndHistory(t *tes
 	host, guest := newClient(t, ts.URL), newClient(t, ts.URL)
 	host.register("友善房主")
 	guest.register("友善客人")
-	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未接通的双人河流组合", "capacity": 2, "catanTwoScenario": "rivers", "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}}, 400)
+	// Two-player rivers with the friendly robber is supported now; allHelpers
+	// without helpers stays invalid, which keeps the rejected-creation shape.
+	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "未接通的双人河流组合", "capacity": 2, "catanTwoScenario": "rivers", "catanOptions": game.CatanOptions{AllHelpers: true}, "catanFriendlyRobber": game.CatanFriendlyRobberSetup{Enabled: true}}, 400)
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "友善设置", "capacity": 4}, 201)
 	id := raw["id"].(string)
 	if raw["catanFriendlyRobber"] != nil {

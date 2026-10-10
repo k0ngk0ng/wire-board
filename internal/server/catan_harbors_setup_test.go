@@ -27,7 +27,8 @@ func TestCatanHarborsConfigurationHTTPPermissionsRestartAndHistory(t *testing.T)
 	host, guest := newClient(t, ts.URL), newClient(t, ts.URL)
 	host.register("港口房主")
 	guest.register("港口客人")
-	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "不支持的双人", "capacity": 2, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 400)
+	// Two-player rooms support the award now; allHelpers without helpers is invalid.
+	host.post("/api/rooms", map[string]any{"kind": "catan", "name": "不支持的双人", "capacity": 2, "catanOptions": game.CatanOptions{AllHelpers: true}, "catanHarbors": game.CatanHarborsSetup{Enabled: true}}, 400)
 	raw := host.post("/api/rooms", map[string]any{"kind": "catan", "name": "港口设置", "capacity": 4}, 201)
 	id := raw["id"].(string)
 	if raw["catanHarbors"] != nil {

@@ -30,7 +30,8 @@ func TestCatanKnightsExtendedPublicConfiguration(t *testing.T) {
 	before, _ := json.Marshal(s.rooms[id])
 	change(guest, "", 400)
 	change(h, "unknown", 400)
-	options(game.CatanOptions{FiveSix: true, Helpers: true}, 400)
+	// Helpers are supported now; allHelpers without helpers is still invalid.
+	options(game.CatanOptions{FiveSix: true, AllHelpers: true}, 400)
 	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{Rules: game.CatanCitiesKnightsRules}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {

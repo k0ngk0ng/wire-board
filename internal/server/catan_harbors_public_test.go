@@ -18,11 +18,10 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 	c.register("公开港口朋友")
 	for _, body := range []map[string]any{
 		{"kind": "splendor", "capacity": 3},
-		{"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
-		{"kind": "catan", "capacity": 5, "catanScenario": "shores", "catanOptions": game.CatanOptions{}},
-		{"kind": "catan", "capacity": 3, "catanScenario": "barbarian-attack"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "transport"},
-		{"kind": "catan", "capacity": 2, "catanTwoScenario": "caravans"},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "unknown"},
+		{"kind": "catan", "capacity": 7, "catanScenario": "shores"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "unknown"},
+		{"kind": "catan", "capacity": 3, "catanScenario": "rivers", "catanOptions": game.CatanOptions{AllHelpers: true}},
 	} {
 		body["name"], body["catanHarbors"] = "非法组合", game.CatanHarborsSetup{Enabled: true}
 		h.post("/api/rooms", body, 400)
@@ -72,8 +71,8 @@ func TestCatanHarborsPublicConfiguration(t *testing.T) {
 		t.Fatal("rematch lost award")
 	}
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "rivers", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
-	if s.rooms[id].CatanHarbors != nil {
-		t.Fatal("standalone retained incompatible award")
+	if s.rooms[id].CatanHarbors == nil || !s.rooms[id].CatanHarbors.Enabled {
+		t.Fatal("river switch dropped the supported award")
 	}
 }
 

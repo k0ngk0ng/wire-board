@@ -60,14 +60,17 @@ func TestCatanRiversKnightsNaturalHTTP(t *testing.T) {
 						if v["victoryTarget"] != float64(13) {
 							t.Fatal("target")
 						}
-						for _, raw := range v["players"].([]any) {
-							if raw.(map[string]any)["resources"] != nil {
-								t.Fatal("hidden hand leaked")
+						// Hands are revealed by design once the game is finished.
+						if !s.rooms[id].Game.Finished {
+							for _, raw := range v["players"].([]any) {
+								if raw.(map[string]any)["resources"] != nil {
+									t.Fatal("hidden hand leaked")
+								}
 							}
-						}
-						for _, raw := range v["citiesKnights"].(map[string]any)["players"].([]any) {
-							if raw.(map[string]any)["progress"] != nil {
-								t.Fatal("progress leaked")
+							for _, raw := range v["citiesKnights"].(map[string]any)["players"].([]any) {
+								if raw.(map[string]any)["progress"] != nil {
+									t.Fatal("progress leaked")
+								}
 							}
 						}
 					}

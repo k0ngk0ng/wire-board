@@ -91,7 +91,8 @@ func TestCatanTwoVariantsPublicToggleRestoreRematchAndIsolation(t *testing.T) {
 		}
 		before, _ = json.Marshal(s.rooms[id])
 		set(guest, "catan_harbors", false, 400)
-		scene("rivers", 400)
+		// Rivers is a supported two-player scenario now; an unknown one is not.
+		scene("unknown", 400)
 		after, _ = json.Marshal(s.rooms[id])
 		if string(before) != string(after) {
 			t.Fatal("rejection mutated recipe/readiness")

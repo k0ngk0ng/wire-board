@@ -31,7 +31,8 @@ func TestCatanTransportPublicSelectionAndRematch(t *testing.T) {
 			before, _ := json.Marshal(s.rooms[id])
 			change(guest, "catan_scenario", "catanScenario", "transport", 400)
 			change(host, "catan_scenario", "catanScenario", "unknown-mission", 400)
-			host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+			// Helpers are a supported transport option now; allHelpers alone is not.
+			host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{AllHelpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			after, _ := json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("invalid command changed room")
@@ -88,9 +89,9 @@ func TestCatanTransportPublicRejectsUnsupportedRecipes(t *testing.T) {
 	c := newClient(t, ts.URL)
 	c.register("运输组合检查")
 	for _, body := range []map[string]any{
-		{"kind": "catan", "capacity": 2, "catanTwoScenario": "rivers"},
-		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 5, "catanOptions": game.CatanOptions{FiveSix: true}},
+		{"kind": "catan", "capacity": 2, "catanTwoScenario": "unknown"},
+		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{AllHelpers: true}},
+		{"kind": "catan", "capacity": 7},
 		{"kind": "catan", "capacity": 4, "catanCitiesKnights": game.CatanCitiesKnightsSetup{Layout: "unknown"}},
 		{"kind": "splendor", "capacity": 2},
 	} {

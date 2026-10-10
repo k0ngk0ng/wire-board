@@ -17,10 +17,8 @@ func TestCatanScenarioPublicSelectionAndRematch(t *testing.T) {
 		{"kind": "catan", "capacity": 2, "catanScenario": "rivers"},
 		{"kind": "catan", "capacity": 3, "catanScenario": "unknown"},
 		{"kind": "splendor", "capacity": 3, "catanScenario": "caravans"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "rivers", "catanOptions": game.CatanOptions{Helpers: true}},
-		{"kind": "catan", "capacity": 4, "catanScenario": "caravans", "catanOptions": game.CatanOptions{Helpers: true, AllHelpers: true}},
-		{"kind": "catan", "capacity": 5, "catanScenario": "rivers", "catanOptions": game.CatanOptions{}},
-		{"kind": "catan", "capacity": 6, "catanScenario": "caravans", "catanOptions": game.CatanOptions{}},
+		{"kind": "catan", "capacity": 3, "catanScenario": "rivers", "catanOptions": game.CatanOptions{AllHelpers: true}},
+		{"kind": "catan", "capacity": 7, "catanScenario": "rivers", "catanOptions": game.CatanOptions{}},
 	} {
 		body["name"] = "无效剧本"
 		host.post("/api/rooms", body, 400)
@@ -47,7 +45,9 @@ func TestCatanScenarioPublicSelectionAndRematch(t *testing.T) {
 		change(host, "unknown", 400)
 		change(host, nil, 400)
 		if s.rooms[id].CatanScenario != "" {
-			for _, options := range []game.CatanOptions{{Helpers: true}, {FiveSix: true, Helpers: true}} {
+			// Helpers and the five/six-seat extension are valid for the merge
+			// scenarios now; allHelpers without helpers stays invalid.
+			for _, options := range []game.CatanOptions{{AllHelpers: true}} {
 				host.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": options, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 			}
 		}
@@ -121,11 +121,8 @@ func TestCatanScenarioStartRejectsMixedSavedConfiguration(t *testing.T) {
 		func(r *Room) { r.CatanTwoScenario = "rivers" },
 		func(r *Room) { r.CatanBaseConfiguration = &game.CatanBaseConfiguration{} },
 		func(r *Room) { r.CatanSeafarers = &game.CatanSeafarersSetup{} },
-		func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} },
-		func(r *Room) { r.CatanHarbors = &game.CatanHarborsSetup{} },
-		func(r *Room) { r.CatanFriendlyRobber = &game.CatanFriendlyRobberSetup{} },
 		func(r *Room) { r.CatanNewWorldMap = &game.CatanNewWorldMap{} },
-		func(r *Room) { r.CatanOptions.Helpers = true },
+		func(r *Room) { r.CatanOptions.AllHelpers = true },
 		func(r *Room) { r.Capacity = 5; r.CatanOptions.FiveSix = true },
 	} {
 		trial := valid
