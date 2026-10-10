@@ -24,12 +24,10 @@ func TestCatanRiversSeaKnightsAdmission(t *testing.T) {
 			if err = room.validateCatanScenario(); err != nil {
 				t.Fatal(n, scenario, err)
 			}
-			// Fishing stays outside this combination.
-			room.CatanFishing = true
-			if room.validateCatanScenario() == nil {
-				t.Fatal(n, scenario, "fishing accepted")
+			// Fishing is a separate nesting with its own admission test.
+			if err := room.setCatanFishing(true); err != nil {
+				t.Fatal(n, scenario, err)
 			}
-			room.CatanFishing = false
 		}
 	}
 }

@@ -3,6 +3,7 @@ import {
   CatanTransportSeaLayout,
   CatanTransportSeaWaitingLayout,
 } from "./catan-transport-sea-options";
+import { isPublicCatanAttackSea } from "./catan-scenario-setup";
 import { supportsCatanTradersHelpers } from "./catan-traders-helpers";
 import { isPublicCatanRiversSea } from "./catan-rivers-sea-options";
 import { isPublicCatanCaravanSea } from "./catan-two-helpers";
@@ -2521,6 +2522,7 @@ function Create({
               attack={["barbarian-attack", "rivers-attack"].includes(
                 variantScenario,
               )}
+              attackSea={isPublicCatanAttackSea(variantScenario)}
               caravans={variantScenario === "caravans"}
               rivers={variantScenario === "rivers"}
               knights={
@@ -3265,6 +3267,7 @@ function Waiting({
               attack={["barbarian-attack", "rivers-attack"].includes(
                 room.catanTwoScenario || room.catanScenario || "",
               )}
+              attackSea={isPublicCatanAttackSea(room.catanScenario)}
               caravans={
                 (room.catanTwoScenario || room.catanScenario) === "caravans"
               }

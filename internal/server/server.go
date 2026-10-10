@@ -1303,16 +1303,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					setup := transportSeaRoomSetup(&next)
 					setup.Scenario = scenario
 					next.Game, err = game.NewCatanTransportSea(len(next.Seats), setup, next.CatanCitiesKnights != nil, next.CatanFishing)
-				} else if next.CatanScenario == "attack-pirates" {
-					next.Game, err = game.NewCatanAttackPirates(len(next.Seats))
-				} else if next.CatanScenario == "attack-wonders" {
-					next.Game, err = game.NewCatanAttackWonders(len(next.Seats))
-				} else if next.CatanScenario == "attack-tribe" {
-					next.Game, err = game.NewCatanAttackTribe(len(next.Seats))
-				} else if next.CatanScenario == "attack-desert" {
-					next.Game, err = game.NewCatanAttackDesert(len(next.Seats))
-				} else if next.CatanScenario == "attack-shores" {
-					next.Game, err = game.NewCatanAttackShores(len(next.Seats))
+				} else if scene, ok := publicCatanAttackSeaSetup(next.CatanScenario); ok {
+					if next.CatanFishing {
+						next.Game, err = game.NewCatanFishingAttackSea(len(next.Seats), scene)
+					} else {
+						next.Game, err = game.NewCatanAttackSea(len(next.Seats), scene)
+					}
 				} else if scene, ok := publicCatanCaravansSeaSetup(next.CatanScenario); ok {
 					if next.CatanFishing {
 						next.Game, err = game.NewCatanFishingCaravansSea(len(next.Seats), scene, next.CatanNewWorldMap, next.CatanCitiesKnights != nil)

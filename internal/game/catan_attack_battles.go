@@ -195,32 +195,35 @@ func (b *catanAttackBattle) distribute(strength []int, die func() int, neutral .
 		for _, p := range players {
 			b.Prisoners[p] = 1
 		}
-		if b.Barbarians == len(players) {
-			return nil
-		}
-		largest := 0
-		leaders := []int{}
-		for _, p := range players {
-			if strength[p] > largest {
-				largest = strength[p]
-				leaders = []int{p}
-			} else if strength[p] == largest {
-				leaders = append(leaders, p)
+		// The printed rule expects at most one surplus prisoner. Supply tiles
+		// (the Wonders deserts) can hold far more, and every defeated barbarian
+		// must end up as somebody's prisoner or the supply ledger breaks, so
+		// repeat the same strongest/contested award for each surplus.
+		for left := b.Barbarians - len(players); left > 0; left-- {
+			largest := 0
+			leaders := []int{}
+			for _, p := range players {
+				if strength[p] > largest {
+					largest = strength[p]
+					leaders = []int{p}
+				} else if strength[p] == largest {
+					leaders = append(leaders, p)
+				}
 			}
-		}
-		if len(leaders) == 1 {
-			b.Prisoners[leaders[0]]++
-			return nil
-		}
-		winners, err := b.contest(leaders, 1, die, neutral...)
-		if err != nil {
-			return err
-		}
-		for _, p := range leaders {
-			if slices.Contains(winners, p) {
-				b.Prisoners[p]++
-			} else {
-				b.Gold[p] += 3
+			if len(leaders) == 1 {
+				b.Prisoners[leaders[0]]++
+				continue
+			}
+			winners, err := b.contest(leaders, 1, die, neutral...)
+			if err != nil {
+				return err
+			}
+			for _, p := range leaders {
+				if slices.Contains(winners, p) {
+					b.Prisoners[p]++
+				} else {
+					b.Gold[p] += 3
+				}
 			}
 		}
 		return nil
