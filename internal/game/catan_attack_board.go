@@ -17,6 +17,7 @@ type catanAttack struct {
 	TribeRoute       *CatanRouteCompletion     `json:"tribeRoute,omitempty"`
 	City             *catanAttackCity          `json:"city,omitempty"`
 	TwoRules         string                    `json:"twoRules,omitempty"`
+	SeaKnights       string                    `json:"seaKnights,omitempty"`
 	TwoLanding       bool                      `json:"twoLanding,omitempty"`
 	NeutralPrisoners int                       `json:"neutralPrisoners,omitempty"`
 	GoldIssued       int                       `json:"goldIssued,omitempty"`

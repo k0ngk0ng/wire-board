@@ -1304,8 +1304,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					setup.Scenario = scenario
 					next.Game, err = game.NewCatanTransportSea(len(next.Seats), setup, next.CatanCitiesKnights != nil, next.CatanFishing)
 				} else if scene, ok := publicCatanAttackSeaSetup(next.CatanScenario); ok {
-					if next.CatanFishing {
+					if next.CatanFishing && next.CatanCitiesKnights != nil {
+						next.Game, err = game.NewCatanFishingAttackSeaCitiesKnights(len(next.Seats), scene)
+					} else if next.CatanFishing {
 						next.Game, err = game.NewCatanFishingAttackSea(len(next.Seats), scene)
+					} else if next.CatanCitiesKnights != nil {
+						next.Game, err = game.NewCatanAttackSeaCitiesKnights(len(next.Seats), scene)
 					} else {
 						next.Game, err = game.NewCatanAttackSea(len(next.Seats), scene)
 					}

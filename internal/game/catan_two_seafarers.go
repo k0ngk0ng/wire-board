@@ -150,7 +150,7 @@ func (s *State) validateTwoSeafarers() error {
 	if q.TransportSea != "" && !g.twoTransportSea() {
 		return errors.New("双人运输海图标记无效")
 	}
-	if q.AttackSea != "" && !g.twoAttackSea() {
+	if q.AttackSea != "" && !g.twoAttackSea() && !g.twoAttackKnights() {
 		return errors.New("双人蛮族海图标记无效")
 	}
 	if q.CaravansSea != "" && !g.twoCaravansSea() {
@@ -165,7 +165,7 @@ func (s *State) validateTwoSeafarers() error {
 		}
 		return nil
 	}
-	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil && !g.twoCaravansSea() || g.Attack != nil && !g.twoAttackSea() || g.Transport != nil && !g.twoTransportSea() || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() {
+	if !g.twoSeafarers() || g.Rivers != nil && !g.twoRiversSea() || g.Caravans != nil && !g.twoCaravansSea() || g.Attack != nil && !g.twoAttackSea() && !g.twoAttackKnights() || g.Transport != nil && !g.twoTransportSea() || g.Explorer != nil || g.Fishing != nil && !g.twoFishingSeafarers() || g.CitiesKnights != nil && !g.twoSeafarersKnights() && !g.twoAttackKnights() {
 		return errors.New("双人航海家版本或尚未接通的组合无效")
 	}
 	sea := g.Seafarers
@@ -198,6 +198,11 @@ func (s *State) validateTwoSeafarers() error {
 	}
 	if g.twoAttackSea() && (sea.Scenario == "wonders" || sea.Scenario == "pirate_islands") {
 		target = 12
+	}
+	// The attack sea nesting uses each printed attack target plus one.
+	if g.Two.AttackSea != "" && g.twoAttackKnights() {
+		printed := map[string]int{"shores": 14, "desert": 14, "tribe": 13, "wonders": 12, "pirate_islands": 12}[sea.Scenario]
+		target = g.attackSeaVictoryPoints(printed)
 	}
 	if g.twoTransportSea() {
 		target += 3

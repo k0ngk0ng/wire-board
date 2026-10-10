@@ -8,6 +8,15 @@ export const catanCaravanSeaScenarios = [
 ];
 export const isPublicCatanCaravanSea = (s = "") =>
   catanCaravanSeaScenarios.includes(s);
+export const catanAttackSeaScenarios = [
+  "attack-shores",
+  "attack-desert",
+  "attack-tribe",
+  "attack-wonders",
+  "attack-pirates",
+];
+export const isPublicCatanAttackSea = (s = "") =>
+  catanAttackSeaScenarios.includes(s);
 export const supportsCaravanSeaHelpers = (s = "") =>
   [
     "caravans-shores",

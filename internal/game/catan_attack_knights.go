@@ -72,7 +72,7 @@ func (c *catanAttackCity) validate(g *Catan) error {
 	}
 	total := 0
 	for tile, n := range g.Attack.Barbarians {
-		if n < 0 || n > 3 || n > 0 && !slices.Contains(g.attackBattleTiles(), tile) {
+		if n < 0 || n > 3 && !slices.Contains(g.Attack.Map.Reserves, tile) || n > 12 || n > 0 && !slices.Contains(g.attackBattleTiles(), tile) {
 			return errors.New("组合蛮族位置或数量无效")
 		}
 		total += n
@@ -222,10 +222,19 @@ func (s *State) catanAttackCityLanding(dice [2]int) ([]int, error) {
 	for _, id := range targets {
 		a.Barbarians[id]++
 	}
-	if m := g.CitiesKnights.Merchant; m != nil && a.conquered(m.Tile) {
+	g.clearAttackConqueredMerchant()
+	return targets, nil
+}
+
+// clearAttackConqueredMerchant returns the trade merchant when its tile is
+// conquered, which every path that changes conquest has to call.
+func (g *Catan) clearAttackConqueredMerchant() {
+	if g == nil || g.CitiesKnights == nil || g.Attack == nil {
+		return
+	}
+	if m := g.CitiesKnights.Merchant; m != nil && g.Attack.conquered(m.Tile) {
 		g.CitiesKnights.Merchant = nil
 	}
-	return targets, nil
 }
 
 func (g *Catan) attackCityMetropolis(vertex int) bool {

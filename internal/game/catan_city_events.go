@@ -52,7 +52,7 @@ func (s *State) catanCityRoll(red, yellow, face int) error {
 	g.RevealedEvent = nil
 	g.Dice = []int{red, yellow}
 	g.RollID++
-	if p := g.pirateIslands(); p != nil {
+	if p := g.pirateIslands(); p != nil && !g.attackSeaKnights() {
 		f := &CatanEventFleet{RollID: g.RollID, Dice: [2]int{red, yellow}}
 		if g.EventDeck != nil {
 			g.EventDeck.Fleet = f

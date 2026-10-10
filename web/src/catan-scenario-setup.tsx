@@ -1,5 +1,8 @@
 import { isCatanTransportSea } from "./catan-transport-sea-options";
-import { isPublicCatanCaravanSea } from "./catan-two-helpers";
+import {
+  isPublicCatanCaravanSea,
+  isPublicCatanAttackSea,
+} from "./catan-two-helpers";
 import {
   supportsPublicCatanKnightsCombination,
   supportsPublicExplorerKnights,
@@ -256,6 +259,7 @@ export function CatanCombinationKnightsPicker({
   caravans = false,
   riversSea = false,
   caravansSea = false,
+  attackSea = false,
   tribe = false,
   pirateIslands = false,
   value,
@@ -281,6 +285,7 @@ export function CatanCombinationKnightsPicker({
   caravans?: boolean;
   riversSea?: boolean;
   caravansSea?: boolean;
+  attackSea?: boolean;
   tribe?: boolean;
   pirateIslands?: boolean;
   explorer?: boolean;
@@ -318,7 +323,9 @@ export function CatanCombinationKnightsPicker({
                       ? "河流＋航海家"
                       : caravansSea
                         ? "商队＋航海家"
-                        : attack
+                        : attackSea
+                          ? "蛮族进攻＋航海家"
+                          : attack
                       ? "蛮族进攻"
                       : transport
                         ? "运输"
@@ -349,7 +356,9 @@ export function CatanCombinationKnightsPicker({
                       ? "本站河流海图骑士适配：目标分在印刷目标上增加 2 分；沿用河流金币与河岸付款，加入进步牌、商品与城市改良，蛮族船取代海盗。"
                       : caravansSea
                         ? "本站商队海图骑士适配：沿用印刷商队海图、水源与马车规则，出价改用木材或砖块；加入进步牌、商品与城市改良，蛮族船取代海盗，首次进攻前强盗与蛮族船都不入场，目标分在印刷目标上加 2 分。"
-                        : attack
+                        : attackSea
+                          ? "本站蛮族海图骑士适配：沿用印刷海图、登陆与城堡规则，取消城市蛮族船轨；骑士在主岛城堡边招募并按等级作战，进步牌与商品照常使用，目标分在印刷目标上加 1 分。海盗群岛暂不支持该叠加。"
+                          : attack
                       ? "二至六人，13分获胜。道路骑士在城堡招募、回合末移动；按激活骑士等级战斗，每3个俘虏计1分。船面触发沿海登陆，不使用蛮族船轨道。"
                       : transport
                         ? transportSea
@@ -394,15 +403,7 @@ export function CatanCombinationKnightsPicker({
   );
 }
 
-export const catanAttackSeaScenarios = [
-  "attack-shores",
-  "attack-desert",
-  "attack-tribe",
-  "attack-wonders",
-  "attack-pirates",
-];
-export const isPublicCatanAttackSea = (scenario?: string) =>
-  catanAttackSeaScenarios.includes(scenario || "");
+export { isPublicCatanAttackSea } from "./catan-two-helpers";
 export const supportsPublicCatanFishingSea = (scenario?: string) =>
   isPublicCatanRiversSea(scenario) ||
   isPublicCatanCaravanSea(scenario) ||

@@ -26,5 +26,5 @@ func NewCatanTwoFishingCitiesKnights(n int, options CatanOptions) (*State, error
 }
 
 func (g *Catan) twoFishingKnights() bool {
-	return g.twoFishing() && g.twoKnights() && g.Fishing.TwoKnights == CatanTwoFishingKnightsRules && (g.Seafarers == nil || g.twoSeafarersKnights())
+	return g.twoFishing() && g.twoKnights() && g.Fishing.TwoKnights == CatanTwoFishingKnightsRules && (g.Seafarers == nil || g.twoSeafarersKnights() || g.twoAttackKnights())
 }

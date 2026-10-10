@@ -173,11 +173,11 @@ func (s *State) validateTwoKnights() error {
 	if q.Knights == "" && g.CitiesKnights == nil {
 		return nil
 	}
-	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil && !g.riverKnights() || g.Caravans != nil && !g.caravanKnights() || g.Transport != nil && !g.transportKnights() && !g.attackTransportKnights() || g.Attack != nil && !g.twoAttackKnights() {
+	if !g.twoKnights() || g.Seafarers != nil && !g.twoSeafarersKnights() && !g.twoAttackKnights() || g.Fishing != nil && !g.twoFishingKnights() || g.Rivers != nil && !g.riverKnights() || g.Caravans != nil && !g.caravanKnights() || g.Transport != nil && !g.transportKnights() && !g.attackTransportKnights() || g.Attack != nil && !g.twoAttackKnights() {
 		return errors.New("双人城市骑士规则或组合无效")
 	}
 	k := g.CitiesKnights
-	if k.Rules != CatanCitiesKnightsRules || len(k.Players) != 2 || s.Turn < 0 || s.Turn >= 2 || !g.twoSeafarersKnights() && !g.twoBoardDimensions() || len(g.Bank) != 8 || k.ActionSerial == 0 || k.Invasions < 0 || k.BarbarianPosition < 0 || k.BarbarianPosition > 7 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 || q.TokensIssued != 0 {
+	if k.Rules != CatanCitiesKnightsRules || len(k.Players) != 2 || s.Turn < 0 || s.Turn >= 2 || !g.twoSeafarersKnights() && !g.twoBoardDimensions() && !g.twoAttackKnights() || len(g.Bank) != 8 || k.ActionSerial == 0 || k.Invasions < 0 || k.BarbarianPosition < 0 || k.BarbarianPosition > 7 || len(g.DevDeck) != 0 || len(g.DevDiscard) != 0 || q.TokensIssued != 0 {
 		return errors.New("双人城市骑士组件状态无效")
 	}
 	counts := map[int][3]int{}

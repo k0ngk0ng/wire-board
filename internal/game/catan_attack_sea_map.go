@@ -223,7 +223,7 @@ func (m catanAttackMap) validateSea(g *Catan) error {
 		}
 	}
 	sea, w := g.Seafarers, ref.Seafarers
-	if sea.Scenario != w.Scenario || sea.Rules != w.Rules || sea.Layout != w.Layout || sea.Variable != w.Variable || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.NewWorld != nil || sea.NumberRecipe != w.NumberRecipe || sea.Pirate != -1 || sea.VictoryPoints != 14 || sea.IslandBonus != 2 || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
+	if sea.Scenario != w.Scenario || sea.Rules != w.Rules || sea.Layout != w.Layout || sea.Variable != w.Variable || sea.Fog != nil || sea.Tribe != nil || sea.Cloth != nil || sea.Wonders != nil || sea.PirateIslands != nil || sea.NewWorld != nil || sea.NumberRecipe != w.NumberRecipe || sea.Pirate != -1 || sea.VictoryPoints != g.attackSeaVictoryPoints(14) || sea.IslandBonus != 2 || len(sea.Seats) != len(g.Players) || !slices.Equal(sea.Islands, w.Islands) || !slices.Equal(sea.StartIslands, w.StartIslands) {
 		return errors.New("蛮族海图分区无效")
 	}
 	return nil
