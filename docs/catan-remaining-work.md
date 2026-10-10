@@ -6,13 +6,13 @@
 
 用户要求的主要扩展、Helpers、人数扩充及兼容组合保持原范围；分组不代表各组工作量相同，也不是按代码行数计算的完成百分比。
 
-**阶段汇报固定口径**：每次同时列出宝石、铁路各自的完成项与剩余项，卡坦工作包进度（当前 **10/12**），以及 F12 主组合完成数（当前 **16/18，剩 2 类**）。18 类仅指[商人与蛮族主组合清单](research/catan-traders-combinations.md)，人数、地图及事件牌开关属于验证配置，不另计组合。剩余两类为河流＋航海家（五张适用海图二至六人基本配方已接公开流程）、蛮族进攻＋航海家（五张基本地图已接公开流程）；商队＋航海家与运输＋航海家的基本配方本批关闭，详见阶段记录。Helpers、友善强盗、港口霸主等额外嵌套单列完成／剩余；三模块海图嵌套已按[固定 12 项矩阵](research/catan-extra-sea-nesting-matrix.md)跟踪，当前 **12/12（满格）**，含蛮族海图骑士的五张印刷地图。发布状态单列，内部引擎阶段通过不增加主组合完成数。
+**阶段汇报固定口径**：每次同时列出宝石、铁路各自的完成项与剩余项，卡坦工作包进度（当前 **10/12**），以及 F12 主组合完成数（当前 **18/18**）。18 类仅指[商人与蛮族主组合清单](research/catan-traders-combinations.md)，人数、地图及事件牌开关属于验证配置，不另计组合。此前列为「剩 2 类」的河流＋航海家与蛮族进攻＋航海家，其城市骑士、渔夫及两者同开已随三模块海图嵌套接通并取证，18 类不再有剩余；这两类的「其他布局」经核对不存在独立印刷布局（河流海图沿用五张适用海图的固定／可变配置，攻击海图为印刷固定地图）。Helpers、友善强盗、港口霸主等额外嵌套单列完成／剩余；三模块海图嵌套已按[固定 12 项矩阵](research/catan-extra-sea-nesting-matrix.md)跟踪，当前 **12/12（满格）**，含蛮族海图骑士的五张印刷地图。发布状态单列，内部引擎阶段通过不增加主组合完成数。
 
 具体交付缺口与代码证据见 [交付进度表](catan-delivery-progress.md)。
 
 ## 百分比与额度判断口径
 
-用户要求用真实进度判断剩余额度。现有可核对的比例为：工作包完成率 **10/12 = 83.3%**；F12 已列主组合完成率 **16/18 = 88.9%**；商队海图基本配方 **25/25 = 100%**。三者均为条目计数，工作量不等，且主组合比例不包含尚未完整枚举的额外嵌套；不得称为总工作量完成率、预计剩余额度或整体交付完成率，也不能据此说只剩 11.1% 的工作。
+用户要求用真实进度判断剩余额度。现有可核对的比例为：工作包完成率 **10/12 = 83.3%**；F12 已列主组合完成率 **18/18 = 100%**；商队海图基本配方 **25/25 = 100%**。三者均为条目计数，工作量不等；不得称为总工作量完成率、预计剩余额度或整体交付完成率，也不能据此说只剩 16.7% 的工作。
 
 目前尚无可靠的全部约定功能总完成百分比。先补全 F10／F12 适用组合矩阵，将每项映射到现有证据与剩余缺口，再固定分母；不得为了得到百分比凭空指定权重、排除难项或把不支持误记为不兼容。开发、公开入口／页面、联机验证和发布分别报告，未验证不计完成。
 
@@ -33,9 +33,9 @@
 | F07 | 渔夫＋新海岸 | **已完成，未发布**：三至六人公开配置、三四人固定／可变、五六人内陆双湖、本站配方标记及界面接通。4 场自然引擎局、10 场自然 HTTP、超时托管／恢复／隐私／战绩、原版隔离和手机桌面验收通过，见[验收记录](research/catan-fishing-shores.md)。 |
 | F08 | 渔夫＋Helpers | **已完成，未发布**：独立及八种海图三至六人接通，含已开放的事件／友善／港口；无沙漠与湖泊奖励采用有标识的本站适配。72 种配置、9 场自然引擎及 9 场自然 HTTP、十二种能力、回应时钟／托管／恢复／隐私／基础隔离及手机桌面验证通过，见[验收记录](research/catan-fishing-helpers.md)。 |
 | F09 | 渔夫＋海图＋城市骑士 | **已完成，未发布**：八张捕鱼海图三至六人接通，含事件／友善／港口、起始城市、鱼／商品／进步牌和换鱼→金矿→引水渠回应。32 种配置、8 场自然引擎和 8 场自然 HTTP、时钟／托管／恢复／隐私／基础隔离与页面验收通过，见[验收记录](research/catan-fishing-sea-knights.md)。 |
-| F10 | 双人渔夫及其余双人组合 | **部分完成，仍未计数**：独立双人渔夫及事件牌已完成公开入口、完整对局、回应时钟／托管／恢复／界面，见[验收记录](research/catan-two-fishing.md)。独立双人城市骑士及事件牌完成公开流程与对应验证，见[骑士验收](research/catan-two-knights.md)。独立双人基础／渔夫／城市骑士与友善／港口及事件牌已接通，见[变体验收](research/catan-two-variants.md)。独立双人基础／渔夫 Helpers 及事件／友善／港口已接通，见[助手验收](research/catan-two-helpers.md)。**并入 C04**：探索者原生双人骑士及 Helpers／渔夫／湖泊／事件已接通，见[探索双人骑士验收](research/catan-explorer-two-knights.md)；普通双人航海家八图及 Helpers／事件／友善／港口已接通，见[双人航海验收](research/catan-two-seafarers.md)。双人渔夫航海家八图及 Helpers／事件／友善／港口已接通，见[捕鱼海图验收](research/catan-two-fishing-seafarers.md)。独立双人渔夫骑士及事件／友善／港口已接通，见[渔夫骑士验收](research/catan-two-fishing-knights.md)。双人航海家骑士八图及渔夫／事件／友善／港口已接通，见[海图骑士验收](research/catan-two-seafarers-knights.md)。双人独立／八图骑士助手及渔夫、事件、友善、港口嵌套已接通，见[骑士助手验收](research/catan-two-helpers-knights.md)。双人商队＋城市骑士及事件牌已接通，见[商队骑士验收](research/catan-caravans-knights.md)。仍剩商人与蛮族交叉前提下的其他适用双人嵌套组合。逐项见[组合跟踪](research/catan-two-combinations.md)，F11 与 F12 共用前提保持原归属。 |
+| F10 | 双人渔夫及其余双人组合 | **部分完成，仍未计数**：独立双人渔夫及事件牌已完成公开入口、完整对局、回应时钟／托管／恢复／界面，见[验收记录](research/catan-two-fishing.md)。独立双人城市骑士及事件牌完成公开流程与对应验证，见[骑士验收](research/catan-two-knights.md)。独立双人基础／渔夫／城市骑士与友善／港口及事件牌已接通，见[变体验收](research/catan-two-variants.md)。独立双人基础／渔夫 Helpers 及事件／友善／港口已接通，见[助手验收](research/catan-two-helpers.md)。**并入 C04**：探索者原生双人骑士及 Helpers／渔夫／湖泊／事件已接通，见[探索双人骑士验收](research/catan-explorer-two-knights.md)；普通双人航海家八图及 Helpers／事件／友善／港口已接通，见[双人航海验收](research/catan-two-seafarers.md)。双人渔夫航海家八图及 Helpers／事件／友善／港口已接通，见[捕鱼海图验收](research/catan-two-fishing-seafarers.md)。独立双人渔夫骑士及事件／友善／港口已接通，见[渔夫骑士验收](research/catan-two-fishing-knights.md)。双人航海家骑士八图及渔夫／事件／友善／港口已接通，见[海图骑士验收](research/catan-two-seafarers-knights.md)。双人独立／八图骑士助手及渔夫、事件、友善、港口嵌套已接通，见[骑士助手验收](research/catan-two-helpers-knights.md)。双人商队＋城市骑士及事件牌已接通，见[商队骑士验收](research/catan-caravans-knights.md)。商人与蛮族交叉前提下的双人嵌套也已接通：河流／商队／蛮族进攻＋航海家的城市骑士、渔夫与两者同开在双人侧随十二格矩阵一并验证，另有双人渔夫＋河流／商队／蛮族进攻／运输记录，逐项见[组合跟踪](research/catan-two-combinations.md)。逐项功能条目已清空，剩余为 A01–A03 的整版验证与真人整局验收；F11 与 F12 共用前提保持原归属。 |
 | F11 | 双人蛮族进攻 | **已完成，未发布**：官方双人中立骑士、双建筑登陆、固定争夺点数、免战损、金币／筹码补偿、移动蛮族及事件牌接通；公开建房、重开／基础隔离、战绩、时钟／托管／恢复、6 场自然完整 HTTP 和手机桌面验收通过。见[验收记录](research/catan-two-attack.md)。其他交叉前提仍归 F12，双人嵌套归 F10。 |
-| F12 | Helpers／骑士及其余商人与蛮族交叉组合 | **部分完成，仍不计入**：独立及九种航海家地图的三至六人骑士助手接通，含事件／友善／港口、公开配置、操作界面、时钟／隐私／恢复和战绩；采用有标识的本站规则，见[阶段验收](research/catan-helpers-knights.md)。独立及八张捕鱼海图的三至六人渔夫骑士助手已接通，含公开配置、完整对局、回应链和页面验收，见[捕鱼骑士助手验收](research/catan-fishing-helpers-knights.md)。双人骑士助手嵌套已在 F10 对应阶段完成，见[双人验收](research/catan-two-helpers-knights.md)。商队＋城市骑士二至六人及事件牌已接通，见[阶段验收](research/catan-caravans-knights.md)；商队＋航海家五张适用海图二至六人基本配方满档（25/25，含事件／Helpers／友善／港口／预备地图），见[交付记录](research/catan-caravans-seafarers.md)；已归档 18 份官方专用资料并展开[交叉组合表](research/catan-traders-combinations.md)。官方说明不足不等于禁止，缺失规则继续按授权适配。**并入 C01**：河流／商队／蛮族进攻／运输之间及与海图、骑士、Helpers、港口、友善的剩余交叉组合；已单列工作不重复计数。 |
+| F12 | Helpers／骑士及其余商人与蛮族交叉组合 | **部分完成，仍不计入**：独立及九种航海家地图的三至六人骑士助手接通，含事件／友善／港口、公开配置、操作界面、时钟／隐私／恢复和战绩；采用有标识的本站规则，见[阶段验收](research/catan-helpers-knights.md)。独立及八张捕鱼海图的三至六人渔夫骑士助手已接通，含公开配置、完整对局、回应链和页面验收，见[捕鱼骑士助手验收](research/catan-fishing-helpers-knights.md)。双人骑士助手嵌套已在 F10 对应阶段完成，见[双人验收](research/catan-two-helpers-knights.md)。商队＋城市骑士二至六人及事件牌已接通，见[阶段验收](research/catan-caravans-knights.md)；商队＋航海家五张适用海图二至六人基本配方满档（25/25，含事件／Helpers／友善／港口／预备地图），见[交付记录](research/catan-caravans-seafarers.md)；已归档 18 份官方专用资料并展开[交叉组合表](research/catan-traders-combinations.md)。官方说明不足不等于禁止，缺失规则继续按授权适配。**并入 C01**：河流／商队／蛮族进攻／运输之间及与海图、骑士、Helpers、港口、友善的交叉组合均已接通并单列取证：剧本两两组合六类、渔夫＋各剧本四类、航海家四类、三模块海图嵌套十二格。已单列工作不重复计数；逐项功能条目已清空，剩余为 A01–A03 的整版验证与真人整局验收。 |
 
 ## 已纳入 12 组的组合范围（保留追溯）
 
@@ -690,3 +690,13 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
 - 另修一个真实缺口：`NewCatanCaravansSea` 对双人新世界预备地图直接拒绝，现在按四人参考图正确构造双人局（`NewCatanCaravansWorldWithMap` 早已支持双人）。
 - 影响文件：`catan_attack_public_test.go`、`catan_attack_sea_test.go`、`catan_base_variants_public_test.go`、`catan_caravans_seafarers_test.go`、`catan_cloth_extended_public_test.go`、`catan_fishing_knights_public_test.go`、`catan_fishing_sea_public_test.go`、`catan_friendly_robber_setup_test.go`、`catan_harbors_public_test.go`、`catan_harbors_setup_test.go`、`catan_knights_extended_public_test.go`、`catan_land_extended_public_test.go`、`catan_rivers_knights_test.go`、`catan_scenario_public_test.go`、`catan_sea_variants_public_test.go`、`catan_seafarers_public_test.go`、`catan_transport_public_test.go`、`catan_two_caravans_setup_test.go`、`catan_two_helpers_test.go`、`catan_two_public_test.go`、`catan_two_rivers_setup_test.go`、`catan_two_variants_test.go`，以及 `internal/game/catan_caravans_sea_knights.go`。
 - 验证：上述测试逐个本地通过；正在跑 server 全量套件与 CI 二十个分片确认没有遗漏。
+
+
+## 2026-10-11 主组合计数更正、布匹终局断言修复与本地整版验证
+
+- **宝石**：四个主要模块（东方／城市／贸易站／要塞）及组合开关均有实现，多扩展同开已有公开组合测试；本阶段无新增，剩余为最终组合交互复核、手机动画与真人整局验收。
+- **铁路**：地图布局、摸牌、缩放拖动与超时托管已有实现；本阶段无新增，剩余为手机完整局验收（本地等价环境，随发布前统一验收）。
+- **卡坦 10/12**：本阶段不关闭工作包，逐项功能条目已清空。**F12 主组合 16/18 → 18/18**：河流＋航海家与蛮族进攻＋航海家的城市骑士、渔夫及两者同开落在[三模块海图嵌套](research/catan-extra-sea-nesting-matrix.md) 12/12 之内，`internal/server/catan_sea_nestings_e2e_test.go` 的 15 例真实建房整局（含第 83 步重启与旁观投影）为取证来源；「其他布局」经核对不存在独立印刷布局。F10 的商人与蛮族交叉前提双人嵌套也已在双人侧随十二格接通。
+- **修复（断言）**：布匹村落耗尽的终局断言只看当前回合玩家是否到线。靴子交接后最后一个行动者可能刚好差 1 分，由同分、布匹更多的对手获胜，于是把合法终局误报为「错误终局」（CI 的 `TestCatanFishingHelpersNaturalHTTP/cloth/5/sample0`）。先写确定性回归夹具 `TestPublicClothExhaustionTiebreakAfterBootHandoff`（靴子在当前玩家与在对手两种情形），再让 `publicFishingClothWon` 与 `assertPublicSeaVictory` 的分数路径、耗尽路径各自严格校验赢家集合。
+- **修复（功能）**：地块被攻击或运输征服后归还贸易商人（`clearAttackConqueredMerchant`），消除双人运输骑士自然局里的「双人商人位置无效」状态校验失败；`go test ./internal/game -run TestCatanAttackTransportKnightsNaturalEngine -count=3` 通过（206 秒）。
+- **验证**：本地整版按 6 个分片运行，覆盖 2199 个测试名（含全部组合整局），分片结果在后续记录补记；发布状态单列，未推送、未部署。
