@@ -27,7 +27,8 @@ func TestCatanBaseExtendedVariantsPublicConfiguration(t *testing.T) {
 	before, _ := json.Marshal(s.rooms[id])
 	selectCatanHarbors(guest, false, 400)
 	selectCatanFriendlyRobber(guest, false, 400)
-	h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true, Helpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+	// Helpers are a supported option now; an allHelpers flag without helpers is not.
+	h.post("/api/rooms/"+id, map[string]any{"type": "catan_options", "catanOptions": game.CatanOptions{FiveSix: true, AllHelpers: true}, "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("rejected choice changed room")

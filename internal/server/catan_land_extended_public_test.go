@@ -33,13 +33,12 @@ func TestCatanLandExtendedPublicConfiguration(t *testing.T) {
 			guest.command(current(guest), "ready", nil, 200)
 			before, _ := json.Marshal(s.rooms[id])
 			command(guest, "catan_scenario", map[string]any{"catanScenario": ""}, 400)
-			options(game.CatanOptions{FiveSix: true, Helpers: true}, 400)
+			// Helpers are supported now; allHelpers without helpers is still invalid.
+			options(game.CatanOptions{FiveSix: true, AllHelpers: true}, 400)
 			selectCatanBase(h, &game.CatanBaseConfiguration{Layout: "fixed"}, 400)
-			if scene != "fishing" {
-				selectCatanHarbors(h, true, 400)
-				selectCatanFriendlyRobber(h, true, 400)
-				selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
-			}
+			// Harbors, friendly robber and city knights are supported on these
+			// scenarios now; the explorer-only lake toggle is still invalid.
+			command(h, "catan_fishing_lakes", map[string]any{"enabled": true}, 400)
 			after, _ := json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("rejected change mutated room")

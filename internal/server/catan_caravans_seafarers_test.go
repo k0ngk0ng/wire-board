@@ -273,8 +273,10 @@ func TestCatanCaravanVariantScenarioSwitch(t *testing.T) {
 		if e := r.setCatanScenario("transport"); e != nil {
 			t.Fatal(e)
 		}
-		if r.CatanOptions.Helpers || r.CatanHarbors != nil || r.CatanFriendlyRobber != nil || r.CatanNewWorldMap != nil {
-			t.Fatal("unsupported options leaked into transport")
+		// Helpers, harbors and the friendly robber are supported by transport
+		// too; only the caravan-specific map draft has to be dropped.
+		if !r.CatanOptions.Helpers || r.CatanHarbors == nil || r.CatanFriendlyRobber == nil || r.CatanNewWorldMap != nil {
+			t.Fatal("transport switch lost supported options or kept the map")
 		}
 	}
 }

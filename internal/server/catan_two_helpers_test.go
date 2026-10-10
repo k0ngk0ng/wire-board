@@ -48,7 +48,8 @@ func TestCatanTwoHelpersPublicSelection(t *testing.T) {
 	if string(before) != string(after) {
 		t.Fatal("invalid options mutated room")
 	}
-	h.post("/api/rooms/"+id, map[string]any{"type": "catan_two_scenario", "catanTwoScenario": "rivers", "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
+	// Rivers is a supported two-player scenario now; an unknown one is not.
+	h.post("/api/rooms/"+id, map[string]any{"type": "catan_two_scenario", "catanTwoScenario": "unknown", "version": s.rooms[id].Version, "nonce": randomID(12)}, 400)
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_two_scenario", "catanTwoScenario": "fishing", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
 	h.command(current(h), "ready", nil, 200)
 	guest.command(current(guest), "ready", nil, 200)

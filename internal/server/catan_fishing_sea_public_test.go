@@ -71,7 +71,7 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 		{"kind": "catan", "capacity": 2, "catanScenario": "shores"},
 		{"kind": "catan", "capacity": 4, "catanScenario": "pirate_islands"},
 		{"kind": "catan", "capacity": 7, "catanScenario": "land-ho"},
-		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanOptions": game.CatanOptions{Helpers: true}, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
+		{"kind": "catan", "capacity": 3, "catanScenario": "fog", "catanOptions": game.CatanOptions{AllHelpers: true}, "catanCitiesKnights": game.CatanCitiesKnightsSetup{}},
 		{"kind": "catan", "capacity": 4, "catanScenario": "islands", "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "catan", "capacity": 5, "catanScenario": "cloth", "catanOptions": game.CatanOptions{}},
 		{"kind": "splendor", "capacity": 3},
@@ -135,8 +135,10 @@ func TestCatanFishingSeaPublicConfiguration(t *testing.T) {
 		t.Fatal("rematch lost combination")
 	}
 	h.post("/api/rooms/"+id, map[string]any{"type": "catan_scenario", "catanScenario": "rivers", "version": s.rooms[id].Version, "nonce": randomID(12)}, 200)
-	if s.rooms[id].CatanFishing || s.rooms[id].CatanSeafarers != nil {
-		t.Fatal("standalone retained fishing")
+	// Fishing is a supported nesting of the standalone river game, so only the
+	// sea map has to be dropped when the scenario changes.
+	if !s.rooms[id].CatanFishing || s.rooms[id].CatanSeafarers != nil {
+		t.Fatal("river switch lost fishing or kept the sea map")
 	}
 }
 

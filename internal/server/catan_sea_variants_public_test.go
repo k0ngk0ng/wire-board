@@ -56,16 +56,18 @@ func TestCatanSeaVariantsPublicResizeRestoreAndDisable(t *testing.T) {
 				}
 			}
 			before, _ = json.Marshal(s.rooms[id])
-			change(h, "catan_options", "catanOptions", game.CatanOptions{FiveSix: true, Helpers: true}, 400)
-			change(h, "catan_events", "enabled", true, 400)
+			// Helpers are supported on the sea maps now; allHelpers alone is not.
+			change(h, "catan_options", "catanOptions", game.CatanOptions{FiveSix: true, AllHelpers: true}, 400)
 			if friendly {
 				change(h, "catan_scenario", "catanScenario", "unknown", 400)
-				selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
 			}
 			after, _ = json.Marshal(s.rooms[id])
 			if string(before) != string(after) {
 				t.Fatal("incompatible combination changed room")
 			}
+			// Events are supported on the sea maps, including the extended seats.
+			change(h, "catan_events", "enabled", true, 200)
+			ready()
 			// A five-seat draft must not start the extended map with only four people.
 			for i := 0; i < 2; i++ {
 				h.command(current(h), "add_bot", nil, 200)
@@ -88,6 +90,7 @@ func TestCatanSeaVariantsPublicResizeRestoreAndDisable(t *testing.T) {
 			if friendly {
 				selectCatanFriendlyRobber(h, false, 200)
 			}
+			change(h, "catan_events", "enabled", false, 200)
 			change(h, "catan_scenario", "catanScenario", "", 200)
 			ready()
 			h.command(current(h), "start", nil, 200)

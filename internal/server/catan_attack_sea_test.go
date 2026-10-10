@@ -177,7 +177,9 @@ func TestCatanAttackTribeRoomSelection(t *testing.T) {
 			t.Fatal("rejection changed room")
 		}
 	}
-	for _, change := range []func(*Room){func(r *Room) { r.CatanOptions.Helpers = true }, func(r *Room) { r.CatanCitiesKnights = &game.CatanCitiesKnightsSetup{} }, func(r *Room) { r.CatanFishing = true }, func(r *Room) { r.CatanFriendlyRobber = &game.CatanFriendlyRobberSetup{Enabled: true} }} {
+	// Helpers, city knights, fishing and the variants are supported nestings on
+	// the attack maps now; a foreign Seafarers configuration still is not.
+	for _, change := range []func(*Room){func(r *Room) { r.CatanSeafarers = &game.CatanSeafarersSetup{Scenario: "shores"} }, func(r *Room) { r.CatanBaseConfiguration = &game.CatanBaseConfiguration{Layout: "fixed"} }} {
 		r := &Room{Kind: "catan", Status: "waiting", Capacity: 4, CatanScenario: "attack-tribe"}
 		change(r)
 		if r.validateCatanScenario() == nil {

@@ -28,18 +28,26 @@ func TestCatanClothExtendedPublicConfiguration(t *testing.T) {
 	}
 	before, _ := json.Marshal(s.rooms[id])
 	change(guest, "catan_scenario", map[string]any{"catanScenario": ""}, 400)
-	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "cloth", Layout: "variable"}, 400)
-	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "fog"}, 400)
-	selectCatanFriendlyRobber(h, true, 400)
-	selectCatanHarbors(h, true, 400)
-	change(h, "catan_fishing", map[string]any{"enabled": true}, 400)
+	// The cloth extended map accepts its variable layout and other extended
+	// maps now; an unknown layout stays invalid.
+	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "cloth", Layout: "bogus"}, 400)
+	// Friendly robber, harbors and fishing are supported on this map now;
+	// allHelpers without helpers remains invalid.
+	change(h, "catan_options", map[string]any{"catanOptions": game.CatanOptions{AllHelpers: true}}, 400)
 	after, _ := json.Marshal(s.rooms[id])
 	if string(before) != string(after) {
 		t.Fatal("invalid change mutated room")
 	}
+	// The extended seat count now advertises every supported sea map.
 	choices := current(h)["catanSeafarersChoices"].([]any)
-	if len(choices) != 1 || choices[0].(map[string]any)["id"] != "cloth" {
-		t.Fatal("unsupported extended map advertised", choices)
+	found := false
+	for _, choice := range choices {
+		if choice.(map[string]any)["id"] == "cloth" {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("cloth missing from the extended choices", choices)
 	}
 	selectSeafarers(h, &game.CatanSeafarersSetup{Scenario: "cloth"}, 200)
 	for _, seat := range s.rooms[id].Seats {
@@ -53,7 +61,8 @@ func TestCatanClothExtendedPublicConfiguration(t *testing.T) {
 			t.Fatal("changed rules retained ready")
 		}
 	}
-	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 400)
+	// City knights are supported on this map now, with or without the extension.
+	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 200)
 	options(game.CatanOptions{FiveSix: true}, 200)
 	selectCatanCitiesKnights(h, &game.CatanCitiesKnightsSetup{}, 200)
 	options(game.CatanOptions{}, 200)

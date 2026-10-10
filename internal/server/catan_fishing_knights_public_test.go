@@ -16,7 +16,7 @@ func TestCatanFishingKnightsPublicConfiguration(t *testing.T) {
 	for _, body := range []map[string]any{
 		{"kind": "catan", "capacity": 2},
 		{"kind": "catan", "capacity": 5},
-		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{Helpers: true}},
+		{"kind": "catan", "capacity": 3, "catanOptions": game.CatanOptions{AllHelpers: true}},
 		{"kind": "splendor", "capacity": 3},
 	} {
 		body["name"], body["catanScenario"], body["catanCitiesKnights"] = "无效捕鱼组合", "fishing", city
