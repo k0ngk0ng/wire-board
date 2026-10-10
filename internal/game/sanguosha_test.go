@@ -9,6 +9,10 @@ import (
 func sgTestState() *State {
 	s, _ := New("sanguosha", 4)
 	g := s.Sanguosha
+	// Tests pick cards by suit or kind, so a shuffled deck would let a helper
+	// take the single copy of a piece another step still needs. Sorted order
+	// keeps "the first spade" and similar lookups reproducible.
+	slices.Sort(g.Deck)
 	g.Selecting = false
 	g.Selected = 4
 	g.Pending = nil

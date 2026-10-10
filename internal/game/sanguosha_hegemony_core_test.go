@@ -11,6 +11,9 @@ func sgHegState(n int) *State {
 	s := &State{Kind: "sanguosha", Round: 1}
 	s.initSGHegemony(n)
 	g := s.Sanguosha
+	// Same reason as the identity base: suit and kind lookups must not depend
+	// on the shuffle, or a helper can take the only copy of a needed card.
+	slices.Sort(g.Deck)
 	g.Selecting, g.Selected, g.Pending = false, n, nil
 	g.InPlay, g.ActivePhase, g.TurnSequence = true, "play", 1
 	s.Turn, s.Phase = 0, "sg_play"
