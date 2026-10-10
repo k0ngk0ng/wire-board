@@ -89,19 +89,7 @@ func TestCatanTransportKnightsNaturalHTTP(t *testing.T) {
 func TestCatanTransportKnightsClockAndBaseIsolation(t *testing.T) {
 	for _, n := range []int{2, 6} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			s, ts, clients, id := newTradersKnightsHTTP(t, n, true, "transport")
-			for step := 0; s.rooms[id].Game.Phase != "catan_pillage"; step++ {
-				if step > 3000 {
-					t.Fatal("no invasion")
-				}
-				r := s.rooms[id]
-				p := twoHTTPActor(r.Game)
-				a, e := r.Game.BotAction(p)
-				if e != nil {
-					t.Fatal(e)
-				}
-				clients[p].command(current(clients[p]), "action", a, 200)
-			}
+			s, ts, clients, id := newTradersKnightsHTTPAtPillage(t, n, "transport")
 			r := s.rooms[id]
 			actor := twoHTTPActor(r.Game)
 			version := r.Version
