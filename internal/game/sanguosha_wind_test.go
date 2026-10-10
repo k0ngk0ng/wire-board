@@ -211,10 +211,12 @@ func TestSanguoshaWindTianxiangAndHongyan(t *testing.T) {
 		g.Players[1].General = "xiaoqiao"
 		g.Players[1].HP = 3
 		g.Players[1].MaxHP = 3
-		cost := sgFindGive(t, s, 1, func(c SGCard) bool { return c.Suit == 0 })
 		sgWear(t, s, 0, "qinggang_sword")
 		sgWear(t, s, 1, "vine")
 		sgWear(t, s, 2, "vine")
+		// Pick the cost card once the single-copy spade armor is already on the
+		// table, so this lookup can never consume the sword the test needs.
+		cost := sgFindGive(t, s, 1, func(c SGCard) bool { return c.Suit == 0 })
 		fire := sgGive(t, s, 0, "fire_slash")
 		sgDo(t, s, 0, Action{Type: "sg_play", Cards: []int{fire}, Targets: []int{1}})
 		sgDo(t, s, 1, Action{Choice: "pass"}) // decline the slash response
