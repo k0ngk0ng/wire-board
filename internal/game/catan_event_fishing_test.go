@@ -151,7 +151,16 @@ func TestCatanEventFishingReplacementThenAqueductAndAlchemy(t *testing.T) {
 				g.Vertices[i].Owner, g.Vertices[i].Level = -1, 0
 			}
 			lake := g.Fishing.Map.Lakes[0].Tile
-			g.Vertices[g.Tiles[lake].Vertices[0]].Owner, g.Vertices[g.Tiles[lake].Vertices[0]].Level = 1, 2
+			vertex := g.Tiles[lake].Vertices[0]
+			g.Vertices[vertex].Owner, g.Vertices[vertex].Level = 1, 2
+			// The aqueduct only triggers when the player receives no ordinary
+			// resource, so silence every other tile touching this corner. The
+			// map is random and would otherwise make the test flaky.
+			for i := range g.Tiles {
+				if i != lake && slices.Contains(g.Tiles[i].Vertices, vertex) {
+					g.Tiles[i].Number = 0
+				}
+			}
 			for p := range g.Players {
 				catanMove(g.Players[p].Resources, g.Bank, slices.Clone(g.Players[p].Resources))
 			}
