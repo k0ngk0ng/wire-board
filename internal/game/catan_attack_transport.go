@@ -34,6 +34,7 @@ func (g *Catan) syncAttackTransportCounts() {
 			}
 		}
 	}
+	g.clearAttackConqueredMerchant()
 }
 func (g *Catan) validateAttackTransportPieces() error {
 	if !g.attackTransport() {
