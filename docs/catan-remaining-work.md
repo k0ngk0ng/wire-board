@@ -716,3 +716,13 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
 - 第二轮 6 分片复跑：shard 0／2／3／4／5 全绿（各片 `internal/game` 与 `internal/server` 都通过），shard 1 的 `internal/server` 通过（3011.744 秒），`internal/game` 报一例：`TestCatanExplorerFishingStartsAndNaturalTurns/4/explorers-and-pirates/citiestrue/lakesfalse`，错误 `bot catan_discard no explorer action in this phase`。
 - 定位：这不是产品缺陷。探索者 bot 本身有弃牌分支（`catanExplorerBot` 在 `s.Phase == "catan_discard" && g.DiscardDue[player] > 0` 时返回 `catan_discard`），服务端的电脑与超时托管也按欠牌座位逐个处理（`internal/server/bots.go`、`internal/server/timeout_autoplay.go`）。问题是测试选人：一次 7 点后可能多个座位欠牌而当前回合玩家不欠牌，而弃牌阶段没有 pending actor，测试用「pending actor，否则当前回合玩家」就问到无事可做的座位。改为按兄弟测试 `catan_explorer_fishing_bot_test.go` 的做法挑第一个欠牌座位。
 - 验证：`TestCatanExplorerFishingStartsAndNaturalTurns` 连跑 6 次（163.324 秒）通过；shard 1 的 game 分片用修复后的代码重跑，同时其余分片的 `internal/server` 结果沿用本轮。
+
+## 2026-10-11 首次推送后的 CI 结果与两处修复
+
+- 推送到 main（`4f72edd`）后的 GitHub 20 分片：verify 与 race 通过，18 片绿，2 片失败：
+  - `TestCatanAttackKnightsNaturalHTTP/6/eventsfalse` 报 `hidden hand leaked`。与运输骑士那处同类：采样断言没有排除「终局后按设计公开手牌」的情形。
+  - `TestCatanExplorerTwoKnightsNaturalHTTP/fish-for-catan` 报 `wrong response owner 0 catan_helper true 1`。这是产品缺陷：探索者视图在「助手待响应」阶段把 `canRespond` 给了当前回合玩家（`catanExplorerCityView` 的 `else if player == s.Turn` 分支），而真正该响应的是助手请求指定的玩家；界面会显示错误的可操作面板。
+- 修复与验证：
+  - 视图改为按计算出的 actor 判定 `player == actor`；新增定向回归 `TestCatanExplorerCityHelperResponseOwner`，修复前复现失败（`explorer helper response owner 0 true false`），修复后通过。
+  - 攻击骑士自然局的两条隐私循环补上终局判断；顺带一次性排查同类采样断言，在 `catan_two_full_test.go`（手牌／发展牌、鱼、进步牌）、`catan_caravans_full_test.go`、`catan_base_full_game_test.go`、`catan_new_world_test.go`、`catan_pirate_full_game_test.go` 共 5 处补齐（牌堆顺序检查保持原样，永不受终局影响）。
+  - 探索者引擎 405.604 秒、探索者服务端 723.507 秒、攻击骑士自然局 78.601 秒、受影响的隐私断言测试族 202.467 秒全部通过；本地按 CI 的 20 分片索引复现分片 1 与 7（修复前失败的正是这两片）均通过。
