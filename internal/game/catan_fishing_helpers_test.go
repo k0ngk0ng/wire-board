@@ -438,6 +438,23 @@ func TestCatanFishingHelpersOtherAbilitiesAndPairedTurn(t *testing.T) {
 						t.Fatal("road missing")
 					}
 				case 4:
+					// The map is random, so build one own road first: a single
+					// road is always an end road that can be moved.
+					ownsRoad := false
+					for _, e := range g.Edges {
+						if e.Owner == p && !e.Ship {
+							ownsRoad = true
+							break
+						}
+					}
+					if !ownsRoad {
+						for _, e := range g.Edges {
+							if g.canRoad(p, e.ID) {
+								g.Edges[e.ID].Owner = p
+								break
+							}
+						}
+					}
 					from, to := -1, -1
 					for _, e := range g.Edges {
 						if g.helperEndRoad(p, e.ID) {
