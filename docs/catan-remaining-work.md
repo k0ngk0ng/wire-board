@@ -726,3 +726,9 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
   - 视图改为按计算出的 actor 判定 `player == actor`；新增定向回归 `TestCatanExplorerCityHelperResponseOwner`，修复前复现失败（`explorer helper response owner 0 true false`），修复后通过。
   - 攻击骑士自然局的两条隐私循环补上终局判断；顺带一次性排查同类采样断言，在 `catan_two_full_test.go`（手牌／发展牌、鱼、进步牌）、`catan_caravans_full_test.go`、`catan_base_full_game_test.go`、`catan_new_world_test.go`、`catan_pirate_full_game_test.go` 共 5 处补齐（牌堆顺序检查保持原样，永不受终局影响）。
   - 探索者引擎 405.604 秒、探索者服务端 723.507 秒、攻击骑士自然局 78.601 秒、受影响的隐私断言测试族 202.467 秒全部通过；本地按 CI 的 20 分片索引复现分片 1 与 7（修复前失败的正是这两片）均通过。
+
+## 2026-10-11 CI 分片超时与验收作业拆分
+
+- 第二次推送（`a9f9de0`）的 CI：verify、race 与 19 个分片通过，shard 12 触发 45 分钟上限。堆栈显示 `TestCatanSeaNestingsE2E` 在该片里单独跑了 28 分钟，加上同片其它用例越过预算；第一次运行里该片也用到 43 分钟，已接近上限。
+- 处理：把 15 局海图嵌套验收从规则分片移出，新增独立作业 `nestings`（设置 `WIRE_BOARD_NESTING_ACCEPTANCE=1`，50 分钟超时，并上传验收产物），镜像作业改为依赖它；该测试默认跳过，需要显式环境变量，避免再挤占分片预算。分片覆盖范围不变。
+- 验证：`WIRE_BOARD_NESTING_ACCEPTANCE=1 go test ./internal/server -run '^TestCatanSeaNestingsE2E$'` 通过（609.431 秒），不带变量时快速跳过。
