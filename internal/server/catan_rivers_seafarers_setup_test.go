@@ -38,7 +38,7 @@ func TestCatanRiversSeaAdmission(t *testing.T) {
 	}
 	r := &Room{Kind: "catan", Status: "waiting", Capacity: 3, CatanScenario: "rivers-shores", CatanOptions: game.CatanOptions{Helpers: true}}
 	if r.validateCatanScenario() == nil {
-		t.Fatal("unsupported helpers accepted")
+		t.Fatal("unnormalized helpers accepted")
 	}
 }
 
