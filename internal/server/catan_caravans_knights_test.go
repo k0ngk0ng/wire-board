@@ -12,6 +12,38 @@ func newCaravanKnightsHTTP(t *testing.T, n int, events bool) (*Server, *httptest
 	t.Helper()
 	return newTradersKnightsHTTP(t, n, events, "caravans")
 }
+
+// Bots can win on points before the first barbarian invasion, which is a
+// legal game. Deal fresh tables until one actually reaches the pillage phase
+// so the clock checks below always have the invasion they assert.
+func newTradersKnightsHTTPAtPillage(t *testing.T, n int, scenario string) (*Server, *httptest.Server, []*testClient, string) {
+	t.Helper()
+	for attempt := 0; attempt < 4; attempt++ {
+		s, ts, clients, id := newTradersKnightsHTTP(t, n, true, scenario)
+		finished := false
+		for step := 0; step < 3000; step++ {
+			r := s.rooms[id]
+			if r.Game.Finished {
+				finished = true
+				break
+			}
+			if r.Game.Phase == "catan_pillage" {
+				return s, ts, clients, id
+			}
+			p := twoHTTPActor(r.Game)
+			a, e := r.Game.BotAction(p)
+			if e != nil {
+				t.Fatal(e)
+			}
+			clients[p].command(current(clients[p]), "action", a, 200)
+		}
+		if !finished {
+			t.Fatal("no invasion")
+		}
+	}
+	t.Fatal("no invasion before the victory target in four deals")
+	return nil, nil, nil, ""
+}
 func newTradersKnightsHTTP(t *testing.T, n int, events bool, scenario string, fishing ...bool) (*Server, *httptest.Server, []*testClient, string) {
 	t.Helper()
 	s, ts := setupServer(t)
