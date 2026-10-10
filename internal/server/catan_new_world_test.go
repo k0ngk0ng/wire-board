@@ -71,7 +71,7 @@ func TestCatanNewWorldFullHTTPGames(t *testing.T) {
 								p := raw.(map[string]any)
 								_, hand := p["resources"]
 								_, dev := p["dev"]
-								if hand != (viewer == i) || dev != (viewer == i) {
+								if !state.Finished && (hand != (viewer == i) || dev != (viewer == i)) {
 									t.Fatal("private hand leaked")
 								}
 							}

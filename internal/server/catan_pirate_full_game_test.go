@@ -138,7 +138,7 @@ func testCatanPirateRecipeFullHTTP(t *testing.T, events, knights bool) {
 								}
 								for i, raw := range k["players"].([]any) {
 									_, hand := raw.(map[string]any)["progress"]
-									if hand != (viewer == i) {
+									if !s.rooms[id].Game.Finished && hand != (viewer == i) {
 										t.Fatal("private progress leaked")
 									}
 								}
@@ -147,7 +147,7 @@ func testCatanPirateRecipeFullHTTP(t *testing.T, events, knights bool) {
 								p := raw.(map[string]any)
 								_, hand := p["resources"]
 								_, dev := p["dev"]
-								if hand != (viewer == i) || dev != (viewer == i) {
+								if !s.rooms[id].Game.Finished && (hand != (viewer == i) || dev != (viewer == i)) {
 									t.Fatal("private hand leaked", viewer, i)
 								}
 							}

@@ -319,9 +319,11 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 		if v["devDeck"] != nil || v["devDiscard"] != nil {
 			t.Fatal("private deck exposed")
 		}
+		// A finished game publishes hands on purpose, and the natural loops
+		// sample right after the step that can end it.
 		for p, raw := range v["players"].([]any) {
 			seat := raw.(map[string]any)
-			if (seat["resources"] != nil) != (viewer == p) || (seat["dev"] != nil) != (viewer == p) {
+			if !s.Finished && ((seat["resources"] != nil) != (viewer == p) || (seat["dev"] != nil) != (viewer == p)) {
 				t.Fatal("private hand exposed", viewer, p)
 			}
 		}
@@ -344,7 +346,7 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 			}
 			for p, raw := range tokens["players"].([]any) {
 				h := raw.(map[string]any)
-				if p != viewer && h["tokens"] != nil {
+				if !s.Finished && p != viewer && h["tokens"] != nil {
 					t.Fatal("opponent fish exposed")
 				}
 			}
@@ -356,7 +358,7 @@ func assertTwoHTTPPrivacy(t *testing.T, clients []*testClient, s *game.State) {
 			}
 			for p, raw := range public["players"].([]any) {
 				seat := raw.(map[string]any)
-				if (seat["progress"] != nil) != (viewer == p) {
+				if !s.Finished && (seat["progress"] != nil) != (viewer == p) {
 					t.Fatal("private progress hand exposed", viewer, p)
 				}
 			}
