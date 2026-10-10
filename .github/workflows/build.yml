@@ -123,9 +123,36 @@ jobs:
             dist/wire-board-linux-amd64.tar.gz
             dist/SHA256SUMS
           if-no-files-found: error
+  nestings:
+    name: Third-module sea nesting acceptance
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - name: Play every third-module sea nesting end to end
+        env:
+          WIRE_BOARD_NESTING_ACCEPTANCE: '1'
+        run: go test ./internal/server -run '^TestCatanSeaNestingsE2E$' -count=1 -timeout 50m
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sea-nesting-acceptance
+          path: .local/catan-sea-nestings-e2e.*
+          if-no-files-found: warn
   image:
     name: Publish Linux amd64 container
-    needs: [verify, rules, race]
+    needs: [verify, rules, race, nestings]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20

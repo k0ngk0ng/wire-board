@@ -43,6 +43,12 @@ func TestCatanSeaNestingsE2E(t *testing.T) {
 	if testing.Short() {
 		t.Skip("end-to-end nesting acceptance plays full games")
 	}
+	// Fifteen full games need far more than the shard budget on CI runners
+	// (about half an hour there), so the dedicated acceptance job asks for it
+	// explicitly instead of crowding a rules shard.
+	if os.Getenv("WIRE_BOARD_NESTING_ACCEPTANCE") != "1" {
+		t.Skip("run by the dedicated nesting acceptance job")
+	}
 	cases := []seaNestingCase{
 		{"rivers-seafarers", "rivers-shores", 3, true, false, false},
 		{"rivers-seafarers", "rivers-fog", 6, true, false, true},
