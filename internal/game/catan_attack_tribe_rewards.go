@@ -67,7 +67,9 @@ func (g *Catan) attackTribeReservedCards() (map[string]int, error) {
 func (s *State) claimAttackTribeReward(player, index int) error {
 	g := s.Catan
 	tr := g.tribe()
-	if tr == nil || tr.AttackRules != CatanAttackTribeRewardRules || g.Attack == nil || g.Attack.Pending != nil || player != s.Turn || s.Phase != "catan_turn" || index < 0 || index >= len(tr.Development) {
+	// A free-road placement may also reach a tribe site, so the reward is
+	// claimable in the free-road phase as well and resumes that phase after.
+	if tr == nil || tr.AttackRules != CatanAttackTribeRewardRules || g.Attack == nil || g.Attack.Pending != nil || player != s.Turn || s.Phase != "catan_turn" && s.Phase != "catan_roads" || index < 0 || index >= len(tr.Development) {
 		return errors.New("当前不能领取蛮族部落奖励")
 	}
 	if _, err := g.attackTribeReservedCards(); err != nil {
@@ -87,7 +89,7 @@ func (s *State) validateAttackTribeRoute() error {
 	}
 	q := g.Attack.TribeRoute
 	t := g.tribe()
-	if t == nil || t.AttackRules != CatanAttackTribeRewardRules || g.Attack.Pending == nil || s.Phase != "catan_attack_card" || q.Player != s.Turn || q.Edge < 0 || q.Edge >= len(g.Edges) || !g.Edges[q.Edge].Ship || g.Edges[q.Edge].Owner != q.Player || q.Setup || q.Helper || q.Free || t.Pending != nil {
+	if t == nil || t.AttackRules != CatanAttackTribeRewardRules || g.Attack.Pending == nil || s.Phase != "catan_attack_card" || q.Player != s.Turn || q.Edge < 0 || q.Edge >= len(g.Edges) || !g.Edges[q.Edge].Ship || g.Edges[q.Edge].Owner != q.Player || q.Setup || q.Helper || t.Pending != nil {
 		return errors.New("蛮族部落奖励航路接续无效")
 	}
 	return nil

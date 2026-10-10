@@ -90,3 +90,18 @@ E2E 验收（`internal/server/catan_sea_nestings_e2e_test.go`，一次运行覆�
 2. **胜负提前返回**：`catanVictory()` 原本对海盗群岛要求先解放要塞才允许按分获胜；攻击嵌套的要塞保留在攻击流程内，因此该组合直接按印刷攻击目标分数决胜（`internal/game/catan.go`）。
 
 验证：引擎侧海盗群岛＋骑士 2／3／4／5／6 人自然完整局全部结束（20–40 回合，36–99 秒）；端到端验收新增两例——2 人「骑士＋事件」与 4 人「骑士＋渔夫」，都真实建房并打到自然结算（`.local/catan-sea-nestings-e2e.json`）。至此蛮族海图＋航海家的城市骑士、渔夫、骑士＋渔夫三格覆盖五张印刷地图 × 二至六人。
+
+### 六人遗忘部落免费道路卡点：定位与修复
+
+症状：六人遗忘部落＋城市骑士的偶发僵局，停在「免费道路」阶段，无人可行动。
+
+定位过程：临时探针连续跑 20 局复现一次，抓到现场——`phase=catan_roads`、免费次数=2、无受损道路、`hasRoute=true`，但 `canRoad=0 / canShip=1`；那条唯一可行的船在提交时被拒，错误是「当前不能领取蛮族部落奖励」，而「跳过免费道路」又因为 `hasRoute` 为真被拒。原因是该船相邻的部落奖励点会触发遗忘部落奖励，而奖励领取只允许在 `catan_turn`，免费道路阶段（`catan_roads`）被排除；于是「系统认为还有可建路线」与「实际不能建」互相矛盾，形成死锁。
+
+修复（`internal/game/catan_attack_tribe_rewards.go`）：
+
+- `claimAttackTribeReward` 允许在免费道路阶段领取；领取走原有蛮族发展卡即时结算流程，结算结束后回到原阶段（`catanAttackDrawCard` 记录 `Resume`，`catanAttackFinishCard` 恢复），因此免费道路的第二次放置与阶段收尾都能继续。
+- `validateAttackTribeRoute` 不再拒绝 `Free` 的航路接续记录：免费放置同样可能命中部落奖励点。
+
+附带把「跳过免费道路」的校验改为「免费次数用尽时允许结束」（`internal/game/catan.go`），作为同类不一致的防御性回退，避免再次出现不可恢复的阶段。
+
+验证：临时探针连续 25 局（六人遗忘部落＋骑士）观察是否再出现 STALL；`go test ./internal/game -run 'TestCatanAttack|TestCatanTribe'` 通过（378 秒），端到端验收 15 例重跑通过（含六人遗忘部落）。
