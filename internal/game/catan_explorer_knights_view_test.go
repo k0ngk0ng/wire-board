@@ -198,8 +198,20 @@ func TestCatanExplorerCityPreviewPrivateTradeAndBundles(t *testing.T) {
 	explorerDevelopmentGrant(t, s, other, 5, 1)
 	explorerCityStateAct(t, s, p, Action{Type: "catan_progress", Card: 10})
 	explorerCityStateAct(t, s, p, Action{Type: "catan_commercial_offer", Target: other, Color: 0})
-	if seen := explorerCityPreviewExecutable(t, s, other); seen["catan_commercial_harbor"] != 1 {
-		t.Fatal("commodity response preview missing", seen)
+	// Failure scenario: the preview advertises a commodity color the responder
+	// cannot pay, or hides one it can. The opening grants random starting
+	// resources, so the responder may hold several commodity colors.
+	affordable := 0
+	for color := 5; color < 8; color++ {
+		if s.Catan.Players[other].Resources[color] > 0 {
+			affordable++
+		}
+	}
+	if affordable == 0 {
+		t.Fatal("the offer needs at least one affordable commodity colour")
+	}
+	if seen := explorerCityPreviewExecutable(t, s, other); len(seen) != 1 || seen["catan_commercial_harbor"] != affordable {
+		t.Fatalf("commodity response preview %v, want %d affordable colours", seen, affordable)
 	}
 	for viewer := -1; viewer < 3; viewer++ {
 		if viewer != other && len(explorerCityViewChoices(t, s, viewer)) != 0 {
