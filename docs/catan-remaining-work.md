@@ -758,3 +758,27 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
 - 根因：`catanExplorerCityRespond` 在城市选择完成后只判断「没有城市待回应且阶段为 aqueduct」就调用 `catanExplorerCityFinishProduction()`，**没有检查渔夫回应是否仍在等待**。于是同一个动作里「城市事件收尾 → 结算生产 → 生成渔夫回应（Resume=explorer_aqueduct）」之后，紧接着把回合阶段推进为 `ready` 并开始行动，刚生成的回应立刻过期，后置校验拒绝，棋桌卡死。
 - 修复：该步骤改为在渔夫回应尚未答复前不结束生产；补偿与行动开始仍由 `catanExplorerFinishFishing` → `catanExplorerFinishProductionBonuses` 在回应全部答复后执行，顺序与规则一致。同时保留上一批的两项防御：生成回应时重新确认 C&K 非 7 点应进入的补偿阶段，以及自然局测试每步主动校验、失败时把完整状态与最近动作写入 `.local/explorer-helpers-failure.json`（CI 分片失败时上传为 artifact）。
 - 验证：探索者引擎套件 421.883 秒通过；修复前同量级（4 条循环 × 40 局 = 160 局）命中 4 次，修复后两条循环各 40 局共 80 局 **0 次命中**。
+
+## 2026-10-11 双人河流＋航海家卡死：冻结棋盘站点规则（已定位）
+
+- 现象：CI 分片 10 的 `TestCatanTwoRiversSeaNatural/shores//eventstrue` 跑到第 2027 轮仍未结束（20000 步上限）；本地按原测试复跑 120 次未复现，说明是低概率局面而非测试抖动。
+- 现场（并发自然局探针命中并落盘，见 `.local/catan-two-rivers-failures/stall-4-41.json`）：第 66 轮、比分 11:13、目标 14；两家各已建成 4 座城市和 15 条道路（含桥梁），发展牌堆已空，双方都没有合法村落位置，分数无法再变化。
+- 根因：四人印刷海图只坐两家真人时，加上两家中立势力的村镇，扩展空间可能在达到目标前用尽；官方文本没有对应规则，棋桌会一直掷骰。
+- 修复：新增站点规则 `catan-two-rivers-seafarers-dead-end-site-v1`（`internal/game/catan_two_rivers_deadend.go`），在两家都没有合法村落／城市升级／道路／船只、发展牌堆没有胜利点牌、且无人还能达到最大军队时按总分结束（同分先比胜利点牌，再比手牌）。部落剧本不纳入：部落分可以不靠建造变化。
+- 验证：`TestCatanTwoRiversSeaDeadEnd` 用落盘局面做固定夹具（`internal/game/testdata/catan-two-rivers-frozen.json`）验证冻结局在**常规回合结束路径**上结束、分数高者获胜并写入站点规则标记；新开局、发展牌堆仍有胜利点牌、以及非河流组合的普通双人航海家都不触发。`TestCatanTwoRiversSeaNatural` 增加不变式：胜利者分数低于目标时必须带站点规则标记，防止规则提前结束正常对局。
+- 仍未完成：迷雾／沙漠／部落剧本是否存在同类冻结尚未系统排查；同一夹具只覆盖 `shores`。
+
+## 2026-10-11 CI 采样隐私检查与钓鱼筹码的随机失败（已修）
+
+- 现象：CI 分片 16 的 `TestCatanCaravansKnightsNaturalHTTP/3/eventstrue` 报「spectator hand leak」；分片 11 的 `TestCatanExplorerFishingBootPassVictoryAndDeparture` 在测试助手 `fishTop` 抛 `slice bounds out of range [-1::]`。
+- 根因一：自然整局循环在采样点正好落在结束那一步，观战者看到的是按设计公开的结算视图。已在 `catan_caravans_knights_test.go` 按既有模式加 `Finished` 守卫；随后用脚本对全部 20 个自然整局循环复查，确认这类“未加守卫的采样”只剩这一处。
+- 根因二：开局生产会给落在渔场／湖泊的席位发 1 枚鱼筹码，可能正好抽到旧靴子；测试助手 `fishTop` 假定靴子仍在牌堆，遇到 1/30 概率就取 `-1` 下标。改为：靴子已被某位玩家持有时先收回牌堆，找不到其他棋子时给出明确报错。
+- 验证：`TestCatanExplorerFishingBootPassVictoryAndDeparture` 连续 60 次通过（修复前约 1/30 概率失败）；`go test ./internal/game -run 'Fishing|Sanguosha' -count=1` 871.609 秒通过；`TestCatanCaravansKnightsNaturalHTTP` 单跑通过。
+
+## 2026-10-11 三国杀 3v3 阵营策略、阵亡链与官方“其他守则”
+
+- 电脑策略按冷暖阵营识别队友、救援与攻击目标，固定战位失败场景先列明后实现（`TestSanguoshaThreeV3BotCampActions`）。
+- 阵亡链接入共用规则并覆盖存档恢复：行殇继承早于击杀奖励、断肠移除击杀者技能、武魂嵌套主帅阵亡立即结束、主帅阵亡后不再继续结算（`TestSanguoshaThreeV3DeathContinuations`）；删除了错误的“双主帅同亡”判定。
+- 按官方[其他守则](https://www.sanguosha.com/act/sgs3v3/3v3gz04.html)修正：击杀任意角色（含同阵营队员）摸三张而非两张；3v3 禁用主公技，随机落在“主公”身份的席位也不解锁；南蛮入侵、万箭齐发、桃园结义、五谷丰登可指定顺时针或逆时针结算（网页在确认出牌旁提供方向开关，默认顺时针）。
+- 验证：`TestSanguoshaThreeV3GroupTrickDirection`（默认／`cw`／`ccw` 的目标结算顺序，以及跨模式、非群体牌、未知方向值均被拒绝且不改状态）与 `TestSanguoshaThreeV3LordSkillsStayLocked` 通过；`go test ./internal/server -run 'SanguoshaThreeV3'` 通过；网页生产构建通过。
+- 仍未完成：官方竞技专用牌堆与武将范围尚未逐条核对；群体锦囊方向还缺带素材的整局页面复核。

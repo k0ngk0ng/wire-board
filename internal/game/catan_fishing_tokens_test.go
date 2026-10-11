@@ -2,6 +2,7 @@ package game
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
 	"slices"
 	"testing"
@@ -15,10 +16,19 @@ func fishingTokens(t *testing.T, n int) *catanFishingTokens {
 	}
 	return f
 }
+
+// fishTop moves the named tokens to the top of the supply in draw order. The
+// opening production hands out one token per player, so the boot may already
+// belong to a player by the time a test wants to draw it; take it back first.
 func fishTop(f *catanFishingTokens, ids ...int) {
 	for i := len(ids) - 1; i >= 0; i-- {
-		at := slices.Index(f.DrawPile, ids[i])
-		f.DrawPile = slices.Delete(f.DrawPile, at, at+1)
+		if at := slices.Index(f.DrawPile, ids[i]); at >= 0 {
+			f.DrawPile = slices.Delete(f.DrawPile, at, at+1)
+		} else if ids[i] == catanFishBoot && f.BootOwner >= 0 {
+			f.BootOwner = -1
+		} else {
+			panic(fmt.Sprintf("fishTop: token %d is not in the supply", ids[i]))
+		}
 		f.DrawPile = append(f.DrawPile, ids[i])
 	}
 }

@@ -140,14 +140,18 @@ func TestCatanCaravansKnightsNaturalHTTP(t *testing.T) {
 						if view["victoryTarget"] != float64(15) {
 							t.Fatal("target")
 						}
-						for _, raw := range view["players"].([]any) {
-							if raw.(map[string]any)["resources"] != nil {
-								t.Fatal("spectator hand leak")
+						// The sample can land on the step that ends the game, when
+						// every hand and progress card is public on purpose.
+						if !s.rooms[id].Game.Finished {
+							for _, raw := range view["players"].([]any) {
+								if raw.(map[string]any)["resources"] != nil {
+									t.Fatal("spectator hand leak")
+								}
 							}
-						}
-						for _, raw := range view["citiesKnights"].(map[string]any)["players"].([]any) {
-							if raw.(map[string]any)["progress"] != nil {
-								t.Fatal("progress leak")
+							for _, raw := range view["citiesKnights"].(map[string]any)["players"].([]any) {
+								if raw.(map[string]any)["progress"] != nil {
+									t.Fatal("progress leak")
+								}
 							}
 						}
 					}
