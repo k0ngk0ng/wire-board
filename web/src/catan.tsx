@@ -1,5 +1,6 @@
 import { treasonRemoveSites } from "./catan-progress-choice-state";
 import { CatanExplorerBoard } from "./catan-explorer";
+import { catanPirateNeedsFortress } from "./catan-results";
 import { CatanTransportMap, CatanTransportPanel } from "./catan-transport";
 import { emptyTransportPick } from "./catan-transport-state";
 import { CatanAttackMap, CatanAttackPanel } from "./catan-attack";
@@ -742,7 +743,7 @@ function CatanBaseBoard({
         <div className="catan-map-toolbar">
           <span>
             <Flag size={14} /> {setup ? "起始建设" : `第 ${game.round} 轮`} ·
-            {pirates
+            {pirates && catanPirateNeedsFortress(g)
               ? `收复要塞且${targetScore}分获胜`
               : sea?.wonders
                 ? `奇迹4级，或${targetScore}分且领先`

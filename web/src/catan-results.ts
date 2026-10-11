@@ -2,6 +2,30 @@ import { explorerScenarioLabel } from "./catan-explorer-state.ts";
 import { catanSavedVictoryTarget } from "./catan-rule-context.ts";
 import type { CatanState } from "./types";
 
+export function catanPirateNeedsFortress(g: CatanState) {
+  return !(
+    g.citiesKnights &&
+    g.attack?.seaKnights === "wire-board-attack-sea-knights-v1"
+  );
+}
+
+export function catanPirateFleetDescription(g: CatanState) {
+  if (!catanPirateNeedsFortress(g))
+    return "蛮族海图＋城市骑士：不使用城市蛮族船轨或舰队骰。";
+  if (!g.citiesKnights) return "";
+  return !g.citiesKnights.invasions
+    ? "舰队休眠 · 首次蛮族进攻后入场"
+    : (g.seafarers?.pirate ?? -1) < 0
+      ? "全部要塞收复 · 舰队已退场"
+      : "先完成城市事件，再结算舰队与生产";
+}
+
+export function catanPirateVictoryDescription(g: CatanState) {
+  const target = catanSavedVictoryTarget(g);
+  const modules = `${g.harbors ? "港口霸主＋" : ""}${g.attack ? "蛮族进攻＋" : ""}${g.citiesKnights ? "城市与骑士＋" : ""}`;
+  return `${modules}海盗群岛：达到${target}分${catanPirateNeedsFortress(g) ? "且夺回自己的要塞" : ""}，即可在自己的行动阶段获胜。${g.attack ? "每3个俘虏计1分。" : ""}本剧本不授予路线或军队奖励。`;
+}
+
 // Describe the rules of the saved game, never a room's mutable next-game draft.
 export function catanResultDescription(g: CatanState) {
   if (g.players.filter((p) => !p.eliminated).length === 1)
@@ -11,6 +35,8 @@ export function catanResultDescription(g: CatanState) {
   const harbors = g.harbors ? "港口霸主＋" : "";
   if (g.explorer)
     return `探索者与海盗·${explorerScenarioLabel(g)}：在自己的回合达到${target}分获胜。村庄1分、港口2分${g.explorer.lairs ? "，另计巢穴任务进度和领先奖励" : ""}${g.explorer.spice ? "、香料任务进度和领先奖励" : ""}${g.explorer.fish ? "、鱼群任务进度和领先奖励" : ""}，不授予最长道路或最大军队奖励。`;
+  if (sea?.pirateIslands || sea?.scenario === "pirate_islands")
+    return catanPirateVictoryDescription(g);
   if (g.transport)
     return `${g.two ? "双人卡坦＋" : ""}运输任务：在自己的回合达到${target}分立即获胜。总分包含建筑、胜利点卡、最大骑士军队、已交付货物（每件1分）与马车满级奖励（1分）。本剧本不授予最长道路。`;
   if (g.two && g.citiesKnights)
@@ -23,8 +49,6 @@ export function catanResultDescription(g: CatanState) {
     return `${harbors}${g.citiesKnights ? "城市与骑士＋" : ""}卡坦布匹：在自己的行动阶段达到${target}分获胜；回合结束时至少五座村落的布匹耗尽也会结算，比较总分，同分比较布匹数量。`;
   if (g.citiesKnights)
     return `${harbors}${g.rivers ? "河流＋" : g.caravans ? "商队＋" : ""}${g.seafarers ? "航海家＋" : ""}城市与骑士：在自己的行动阶段达到${target}分获胜。总分包含建筑、大都会、最长路线、防御者、公开进步牌和商人${g.rivers ? "，以及当前最富（＋1）／最贫（−2）的财富分数" : g.caravans ? "，以及相邻至少两辆马车的建筑奖励（每座＋1）" : g.seafarers ? "，以及本剧本的额外得分" : ""}。`;
-  if (sea?.pirateIslands || sea?.scenario === "pirate_islands")
-    return `${harbors}海盗群岛：达到${target}分且夺回自己的要塞，才能在自己的行动阶段获胜。`;
   if (sea)
     return `${harbors}航海家：在自己的行动阶段达到${target}分获胜。总分包含建筑、路线奖励、胜利点卡与本剧本的额外得分。`;
   return `${g.harbors ? "港口霸主：" : ""}在自己的行动阶段达到${target}分获胜。总分包含建筑、最长道路、最大骑士军队与胜利点卡${g.harbors ? "，以及港口霸主奖励" : ""}。`;

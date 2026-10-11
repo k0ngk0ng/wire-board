@@ -454,6 +454,7 @@ export type CatanAttackCity = {
   };
 };
 export type CatanAttack = {
+  seaKnights?: string;
   city?: CatanAttackCity;
   twoRules?: string;
   neutralPrisoners?: number;
