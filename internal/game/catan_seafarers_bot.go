@@ -119,7 +119,13 @@ func (g *Catan) seaBuildChoices(player int) []botChoice {
 	ships := g.shipCount(player)
 	for _, e := range g.Edges {
 		if roads < 15 && g.canRoad(player, e.ID) {
-			result = append(result, botChoice{Action{Type: "catan_road", Edge: e.ID}, 200 + g.seaRouteValue(player, e.ID, false)/4})
+			if g.pirateBotRoadUseful(e.ID) {
+				result = append(result, botChoice{Action{Type: "catan_road", Edge: e.ID}, 200 + g.seaRouteValue(player, e.ID, false)/4})
+			} else if g.FreeRoads > 0 {
+				// An already-played card must still complete its legal choices;
+				// prefer even auxiliary coastal ships to these offshore roads.
+				result = append(result, botChoice{Action{Type: "catan_road", Edge: e.ID}, -2000})
+			}
 		}
 		if ships < 15 && g.canShip(player, e.ID) {
 			if p := g.pirateIslands(); p != nil {
