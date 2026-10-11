@@ -3233,3 +3233,12 @@ BGA示例回放可匿名打开，不需要占用或参加他人牌桌；只转�
 - **三国杀 3v3 完成**：官方[基础配置](https://www.sanguosha.com/act/sgs3v3/3v3gz.html)的武将范围（标准 25＋风 7，除于吉与神将）与 106 张无闪电牌堆成为 3v3 默认；新增分堆阶段（32 将分 4 堆各 8 名、暗置、两位主帅各取一堆、两堆 16 名平摊）；「本站扩展」保留原有可选武将包与标准／军争牌堆；身份局不受影响；五谷丰登的电脑策略改为让本方先取牌。证据见[规则记录](research/sanguosha-3v3-rules.md)。
 - **验证**：`TestSanguoshaThreeV3OfficialConfiguration`、`TestSanguoshaThreeV3ExtensionAndIdentityStayUnrestricted`、`TestSanguoshaThreeV3PilePromptAndBots`、`TestSanguoshaThreeV3BotDrawsAllyFirst`、更新后的 `TestSanguoshaThreeV3DraftAndVictory`／`TestSanguoshaThreeV3OpeningAndRoundsHTTP`（含 120 秒取堆计时与取堆前不泄露堆内容）通过；`go test ./internal/game -run Sanguosha` 19.384 秒、`go test ./internal/server -run SanguoshaThreeV3` 3.423 秒、262 项前端测试、网页生产构建与 `go vet` 通过。
 - **发布**：本批已推送 GitHub（CI 分片矩阵重新运行），未部署到服务器。
+
+## 2026-10-11 三国杀 3v3 取堆与方向控件页面复核
+
+- **宝石完成**：本阶段无新增，东方／城市／丝绸／金矿四套扩展、动画与托管保持原状。**剩余**：组合交互与手机动画的整版复核、真人整局验收。
+- **铁路完成**：本阶段无新增。**剩余**：线上手机整局最终验收。
+- **卡坦完成**：仍为 **10/12**，F12 主组合 **18/18**、三模块海图嵌套 **12/12**、商队配方 **25/25**。本阶段无新增，剩余是 A01–A03 整版验证与发布后真人验收，以及迷雾／沙漠／部落剧本的同类冻结排查。
+- **三国杀 3v3 完成**：带素材的取堆阶段与群体锦囊方向控件完成桌面／手机页面复核：四堆暗置、已取标记、「轮到冷色方主帅取堆」、两堆取完后平摊 16 名并按 1-2-2-2-2-2-2-2-1 抓将；方向控件选「逆时针」后服务端结算顺序确实反向。修复取堆阶段 `pool` 为 `null` 导致牌桌白屏的显示问题，并修正 HTTP 轮次验收把官方「翻面前锋跳过」误判为顺序错误的问题，新增固定战位的 `TestSanguoshaThreeV3VanguardOrder`。证据见[规则记录](research/sanguosha-3v3-rules.md)。
+- **验证**：`TestSanguoshaThreeV3OpeningAndRoundsHTTP` 连续 20 次、`go test ./internal/server -run SanguoshaThreeV3 -count=3`、`go test ./internal/game -run Sanguosha`、前端 `threev3-labels` 测试与生产构建通过；复核用临时服务、房间数据、调试日志和截图外的临时文件已清理。
+- **发布**：本批已推送 GitHub（CI 分片矩阵重新运行），未部署到服务器。

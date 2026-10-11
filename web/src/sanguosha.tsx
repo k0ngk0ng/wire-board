@@ -11,7 +11,12 @@ import {
   HegemonyRules,
   hegemonyInstructions,
 } from "./sanguosha-hegemony";
-import { threeV3CampName, threeV3PromptLabels } from "./threev3-labels";
+import {
+  threeV3CampName,
+  threeV3PoolHint,
+  threeV3PoolList,
+  threeV3PromptLabels,
+} from "./threev3-labels";
 import "./sanguosha.css";
 const roles: Record<string, string> = {
   lord: "主公",
@@ -1137,10 +1142,13 @@ export function SanguoshaBoard({
             })}
           </div>
           <div className="sg-3v3-pool">
-            {g.threeV3.pool.length === 0 ? (
-              <small>选将结束，等待双方主帅分配出场武将。</small>
+            {threeV3PoolList(g.threeV3.pool).length === 0 ? (
+              <small>
+                {threeV3PoolHint(g.threeV3.stage, g.threeV3.pool) ||
+                  "两方十六名武将已全部出场。"}
+              </small>
             ) : (
-              g.threeV3.pool.map((id) => {
+              threeV3PoolList(g.threeV3.pool).map((id) => {
                 const general = g.generals.find((x) => x.id === id);
                 return (
                   <span key={id} className={`sg-3v3-pool-card kingdom-${general?.kingdom || "qun"}`}>

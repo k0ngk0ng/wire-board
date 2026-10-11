@@ -31,3 +31,25 @@ export function threeV3PromptLabels(
 export function threeV3CampName(camp?: number): string {
   return camp === 0 ? "冷色方" : "暖色方";
 }
+
+// The official 3v3 room sends no laid-out pool until both leaders have taken a
+// pile, so the table must never read `.length` of a missing list.
+export function threeV3PoolList(pool?: string[] | null): string[] {
+  return Array.isArray(pool) ? pool : [];
+}
+
+export function threeV3PoolHint(
+  stage?: string,
+  pool?: string[] | null,
+): string | null {
+  if (threeV3PoolList(pool).length > 0) {
+    return null;
+  }
+  if (stage === "piles") {
+    return "取堆阶段：两方主帅各取一堆后，平摊 16 名武将。";
+  }
+  if (stage === "pick" || stage === "assign") {
+    return "选将结束，等待双方主帅分配出场武将。";
+  }
+  return null;
+}
