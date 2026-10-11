@@ -60,6 +60,11 @@ func (s *State) sgBot(i int) (Action, error) {
 		out = append(out, s.sgGodBotLonghun(i, want)...)
 		return out
 	}
+	if q := g.Pending; q != nil && s.sgThreeV3() {
+		if a, ok := s.sgThreeBotAction(i); ok {
+			return a, nil
+		}
+	}
 	if q := g.Pending; q != nil {
 		if q.Player != i && !(q.Kind == "nullification" && !slices.Contains(q.Event.Targets, i)) {
 			return Action{}, errors.New("not responding")

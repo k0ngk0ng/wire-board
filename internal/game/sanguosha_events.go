@@ -209,6 +209,13 @@ func (s *State) sgEvent(e SGEvent) {
 			e.Actor = g.ResumeTurns[0]
 			g.ResumeTurns = nil
 		}
+		if s.sgThreeV3() {
+			if s.sgThreeContinueRight(e.Actor) {
+				return
+			}
+			s.sgThreePassRight(e.Actor)
+			return
+		}
 		next := s.sgNext(e.Actor)
 		if next <= e.Actor {
 			s.Round++
@@ -812,6 +819,10 @@ func (s *State) sgJudgeResult(e SGEvent) {
 func (s *State) sgDie(i, killer int) {
 	if s.sgHegemony() {
 		s.sgHegDie(i, killer)
+		return
+	}
+	if s.sgThreeV3() {
+		s.sgThreeDie(i, killer)
 		return
 	}
 	g := s.Sanguosha

@@ -40,7 +40,7 @@ func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
 	if len(o.Packs) == 0 {
 		o.Packs = []string{"standard"}
 	}
-	if o.Mode != "identity" {
+	if o.Mode != "identity" && o.Mode != "3v3" {
 		return o, errors.New("未知三国杀模式")
 	}
 	if o.Deck != "standard" && o.Deck != "military" {
@@ -72,6 +72,13 @@ func NewSanguosha(n int, options SGOptions) (*State, error) {
 	}
 	if o.Mode == "hegemony" {
 		s.initSGHegemony(n)
+		return s, nil
+	}
+	if o.Mode == "3v3" {
+		if n != 6 {
+			return nil, errors.New("三国杀3v3需要六名玩家")
+		}
+		s.initSGThreeV3(n, o)
 		return s, nil
 	}
 	s.Sanguosha.Options = o

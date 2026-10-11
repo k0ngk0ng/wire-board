@@ -100,6 +100,7 @@ type SGPrompt struct {
 }
 type Sanguosha struct {
 	Hegemony       *SGHegemony    `json:"hegemony,omitempty"`
+	ThreeV3        *SGThreeV3     `json:"threeV3,omitempty"`
 	TrickSequence  int            `json:"trickSequence,omitempty"`
 	RulesVersion   int            `json:"rulesVersion,omitempty"`
 	ActivePhase    string         `json:"activePhase,omitempty"`
