@@ -750,3 +750,11 @@ F12 剩余一组剧本两两组合：蛮族进攻＋运输；另有四类与航�
   3. 曾把 `Resume` 校验放宽为有界集合，但 `TestCatanExplorerFishingAlchemyAndCorruptContinuations/resume` 证明「逐字相等」本身就是损坏检测，已还原严格校验。
 - 验证：探索者引擎套件 386.819 秒通过；损坏存档用例通过。
 - 仍未完成：该低概率路径的确切触发顺序尚未定位，保留为发布后的跟踪项。
+
+## 2026-10-11 探索者城市事件与渔夫回忆的根因与修复（已定位）
+
+- 现象：CI 分片 11 的 `TestCatanExplorerHelpersNaturalMatches/6/explorers-and-pirates/citytrue` 在应用城市回应（`catan_defender_reward`、`catan_progress_discard`、`catan_pillage`）时报「探险捕鱼回应的恢复阶段无效」，随后整局无法继续。
+- 现场（本地 4 条并行循环各命中 1 次，带状态诊断）：`phase=catan_progress_discard|catan_pillage`、`turnPhase=city`、`roll=69|77|54`、`fishLastRoll=68|76|53`、`cityEvent=true`，即城市事件仍在收尾、生产刚结束的那一刻。
+- 根因：`catanExplorerCityRespond` 在城市选择完成后只判断「没有城市待回应且阶段为 aqueduct」就调用 `catanExplorerCityFinishProduction()`，**没有检查渔夫回应是否仍在等待**。于是同一个动作里「城市事件收尾 → 结算生产 → 生成渔夫回应（Resume=explorer_aqueduct）」之后，紧接着把回合阶段推进为 `ready` 并开始行动，刚生成的回应立刻过期，后置校验拒绝，棋桌卡死。
+- 修复：该步骤改为在渔夫回应尚未答复前不结束生产；补偿与行动开始仍由 `catanExplorerFinishFishing` → `catanExplorerFinishProductionBonuses` 在回应全部答复后执行，顺序与规则一致。同时保留上一批的两项防御：生成回应时重新确认 C&K 非 7 点应进入的补偿阶段，以及自然局测试每步主动校验、失败时把完整状态与最近动作写入 `.local/explorer-helpers-failure.json`（CI 分片失败时上传为 artifact）。
+- 验证：探索者引擎套件 421.883 秒通过；修复前同量级（4 条循环 × 40 局 = 160 局）命中 4 次，修复后两条循环各 40 局共 80 局 **0 次命中**。

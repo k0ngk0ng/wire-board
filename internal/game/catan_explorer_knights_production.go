@@ -53,7 +53,12 @@ func (s *State) catanExplorerCityRespond(player int, a Action) error {
 	if err := next.catanCityChoice(player, a); err != nil {
 		return err
 	}
-	if !next.Finished && next.Catan.CitiesKnights.Pending == nil && next.Catan.Explorer.Economy.Turn.Phase == "aqueduct" {
+	// Fish claims created by the production that just finished belong to the
+	// aqueduct phase. Finishing the production now would move the turn on and
+	// leave those claims with a stale resume, so wait for the answers; the
+	// compensation step below resumes from catanExplorerFinishFishing.
+	waiting := next.Catan.Fishing != nil && next.Catan.Fishing.Pending != nil
+	if !next.Finished && !waiting && next.Catan.CitiesKnights.Pending == nil && next.Catan.Explorer.Economy.Turn.Phase == "aqueduct" {
 		if err := next.catanExplorerCityFinishProduction(); err != nil {
 			return err
 		}
