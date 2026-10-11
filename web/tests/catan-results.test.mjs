@@ -1,8 +1,37 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { catanResultDescription } from "../src/catan-results.ts";
+import { catanResultDescription, catanPirateNeedsFortress, catanPirateFleetDescription } from "../src/catan-results.ts";
 
 const base = () => ({ players: [{}, {}, {}] });
+// Failure cases found in the final combined-game page: ordinary pirate C&K
+// loses its fortress requirement; attack-sea C&K inherits that requirement and
+// the impossible first-invasion hint; both claim unavailable route awards.
+test("pirate endings distinguish ordinary knights from attack-sea knights", () => {
+  for (const two of [undefined, {}]) {
+    for (const knights of [false, true]) {
+      const g = {
+        ...base(), two,
+        ...(knights ? { citiesKnights: {} } : {}),
+        seafarers: { scenario: "pirate_islands", pirateIslands: {}, victoryPoints: 13 },
+      };
+      assert.match(catanResultDescription(g), /夺回自己的要塞/);
+      assert.equal(catanPirateNeedsFortress(g), true);
+      assert.doesNotMatch(catanResultDescription(g), /最长路线|最大骑士军队/);
+      const attack = { ...g, attack: { seaKnights: knights ? "wire-board-attack-sea-knights-v1" : "" } };
+      if (knights) {
+        assert.equal(catanPirateNeedsFortress(attack), false);
+        assert.doesNotMatch(catanPirateFleetDescription(attack), /首次蛮族进攻后入场/);
+        assert.match(catanPirateFleetDescription(attack), /不使用.*舰队骰/);
+        assert.match(catanPirateFleetDescription(g), /首次蛮族进攻后入场/);
+        assert.match(catanResultDescription(attack), /蛮族进攻.*13分/);
+        assert.doesNotMatch(catanResultDescription(attack), /夺回自己的要塞|最长路线|最大骑士军队/);
+      } else {
+        assert.equal(catanPirateNeedsFortress(attack), true);
+        assert.match(catanResultDescription(attack), /夺回自己的要塞/);
+      }
+    }
+  }
+});
 test("cities and knights results explain the actual thirteen-point game and its scoring sources", () => {
   const text = catanResultDescription({ ...base(), citiesKnights: {} });
   assert.match(text, /13分/);
