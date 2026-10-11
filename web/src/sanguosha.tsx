@@ -1068,10 +1068,44 @@ export function SanguoshaBoard({
           <header>
             <strong>三国杀 3v3 抓将</strong>
             <small>
-              冷/暖各一名主帅与两名前锋 · 顺序 1-2-2-2-2-2-2-2-1 · 主帅体力上限
-              +1 · 主帅阵亡即判负
+              {g.threeV3.variant === "extended"
+                ? "本站扩展：按所选武将包平摊 16 张"
+                : "官方竞技：32 将分 4 堆各 8 名 · 106 张标准牌（无闪电）"}
+              {" · "}顺序 1-2-2-2-2-2-2-2-1 · 主帅体力上限 +1 · 主帅阵亡即判负
             </small>
           </header>
+          {(g.threeV3.pileSizes?.length || 0) > 0 && (
+            <div className="sg-3v3-piles">
+              {g.threeV3.pileSizes!.map((size, pile) => {
+                const held = (g.threeV3!.pilePicks || []).indexOf(pile);
+                const revealed = g.threeV3!.piles?.[pile];
+                return (
+                  <span
+                    key={pile}
+                    className={`sg-3v3-pile${held >= 0 ? ` held camp-${held}` : ""}`}
+                  >
+                    <strong>第 {pile + 1} 堆</strong>
+                    <small>
+                      {revealed
+                        ? revealed
+                            .map(
+                              (id) =>
+                                g.generals.find((x) => x.id === id)?.name || id,
+                            )
+                            .join("、")
+                        : `${size} 名 · 暗置`}
+                    </small>
+                    {held >= 0 && <em>{threeV3CampName(held)}已取</em>}
+                  </span>
+                );
+              })}
+              {g.threeV3.stage === "piles" && (
+                <em className="sg-3v3-pile-turn">
+                  轮到{threeV3CampName(g.threeV3.pileTurn)}主帅取堆
+                </em>
+              )}
+            </div>
+          )}
           <div className="sg-3v3-camps">
             {[0, 1].map((camp) => {
               const three = g.threeV3!;

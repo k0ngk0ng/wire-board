@@ -2,7 +2,8 @@ package game
 
 import "testing"
 
-// The legacy 3v3 mode drafts sixteen generals, adds one maximum hit point to
+// The legacy 3v3 mode splits the printed 32 general cards into four piles,
+// lays out the sixteen from the two chosen piles, adds one maximum hit point to
 // each leader, hands the action right to the camp leader and ends the moment a
 // leader dies, with the whole camp credited for the win.
 func TestSanguoshaThreeV3DraftAndVictory(t *testing.T) {
@@ -11,7 +12,7 @@ func TestSanguoshaThreeV3DraftAndVictory(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if three := s.Sanguosha.ThreeV3; three == nil || three.Rules != SGThreeV3Rules || len(three.Pool) != 16 || three.Stage != "pickFirst" {
+		if three := s.Sanguosha.ThreeV3; three == nil || three.Rules != SGThreeV3Rules || three.Variant != SGThreeOfficial || three.Stage != "piles" || len(three.Piles) != 4 || len(three.Pool) != 0 {
 			t.Fatalf("opening state %+v", three)
 		}
 		if s.Sanguosha.Players[s.Sanguosha.ThreeV3.Leaders[sgThreeCold]].Role != "" || len(s.Winners) != 0 {
@@ -19,6 +20,13 @@ func TestSanguoshaThreeV3DraftAndVictory(t *testing.T) {
 		}
 		steps := 0
 		for ; !s.Finished && steps < 20000; steps++ {
+			three := s.Sanguosha.ThreeV3
+			if steps > 4 && three.Stage == "piles" {
+				t.Fatal("the pile stage did not finish")
+			}
+			if three.Stage == "pickFirst" && len(three.Pool) != 16 {
+				t.Fatalf("the laid-out pool holds %d generals, want 16", len(three.Pool))
+			}
 			actor := s.SanguoshaActor()
 			a, err := s.BotAction(actor)
 			if err != nil {

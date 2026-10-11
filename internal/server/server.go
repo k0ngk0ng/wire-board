@@ -95,7 +95,7 @@ const turnLimit = 120 * time.Second
 
 func sanguoshaPromptLimit(kind string) time.Duration {
 	switch kind {
-	case "general", "heg_generals", "sg_3v3_first", "sg_3v3_pick", "sg_3v3_assign", "sg_3v3_first_side", "sg_3v3_side":
+	case "general", "heg_generals", "sg_3v3_pile", "sg_3v3_first", "sg_3v3_pick", "sg_3v3_assign", "sg_3v3_first_side", "sg_3v3_side":
 		return turnLimit
 	default:
 		return 20 * time.Second

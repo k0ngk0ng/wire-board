@@ -21,7 +21,9 @@ import (
 // match acceptance remains in internal/server/sanguosha_3v3_test.go.
 func sgThreeBattleState(t *testing.T) *State {
 	t.Helper()
-	s, err := NewSanguosha(6, SGOptions{Mode: "3v3", Packs: []string{"standard", "wind", "fire", "thicket", "mountain", "god"}})
+	// The battle fixtures want the whole site pool and the printed 108 card
+	// deck, so they run the extended draft and skip the four-pile stage.
+	s, err := NewSanguosha(6, SGOptions{Mode: "3v3", ThreeVariant: SGThreeExtended, Packs: []string{"standard", "wind", "fire", "thicket", "mountain", "god"}})
 	if err != nil {
 		t.Fatal(err)
 	}

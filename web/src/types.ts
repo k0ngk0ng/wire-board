@@ -1078,6 +1078,8 @@ export type SGOptions = {
   mode?: string;
   deck?: string;
   packs?: string[];
+  // 3v3 only: "official" keeps the printed 32 generals and 106 card deck.
+  threeVariant?: string;
 };
 export type SGCard = { id: number; kind: string; suit: number; rank: number };
 export type SGGeneral = {
@@ -1143,6 +1145,7 @@ export type SGPlayer = {
 };
 export type ThreeV3State = {
   rules: string;
+  variant?: string;
   stage: string;
   side: number;
   firstSide: number;
@@ -1154,6 +1157,12 @@ export type ThreeV3State = {
   picked: string[][];
   assigned: string[][];
   acted: boolean[];
+  // Official draft only: the four face-down piles, their sizes and the camp
+  // picks. `piles` reaches viewers once both leaders have taken one.
+  pileTurn?: number;
+  pilePicks?: number[];
+  pileSizes?: number[];
+  piles?: string[][];
 };
 
 export type SanguoshaState = {

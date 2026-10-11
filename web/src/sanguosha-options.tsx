@@ -11,6 +11,7 @@ export function SanguoshaOptions({
 }) {
   const hegemony = value?.mode === "hegemony";
   const three = value?.mode === "3v3";
+  const threeVariant = value?.threeVariant === "extended" ? "extended" : "official";
   const deck = value?.deck || "standard";
   const mode = three ? "3v3" : "identity";
   return (
@@ -72,6 +73,43 @@ export function SanguoshaOptions({
         <>
           <div className="sg-deck-options">
             {[
+              {
+                id: "official",
+                name: "官方竞技",
+                detail: "32 将分 4 堆 · 106 张牌（无闪电）",
+              },
+              {
+                id: "extended",
+                name: "本站扩展",
+                detail: "沿用所选武将包与牌堆",
+              },
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={threeVariant === item.id ? "selected" : ""}
+                aria-pressed={threeVariant === item.id}
+                onClick={() =>
+                  item.id === "official"
+                    ? onChange({
+                        ...value,
+                        mode: "3v3",
+                        threeVariant: "official",
+                        standardVersion: "classic",
+                        deck: "standard",
+                        packs: ["standard", "wind"],
+                      })
+                    : onChange({ ...value, mode: "3v3", threeVariant: "extended" })
+                }
+              >
+                <strong>{item.name}</strong>
+                <small>{item.detail}</small>
+              </button>
+            ))}
+          </div>
+          {threeVariant === "extended" && (
+            <div className="sg-deck-options">
+            {[
               { id: "standard", name: "经典标准", detail: "108 张牌" },
               { id: "military", name: "标准＋军争", detail: "160 张牌" },
             ].map((item) => (
@@ -86,8 +124,10 @@ export function SanguoshaOptions({
                 <small>{item.detail}</small>
               </button>
             ))}
-          </div>
-          {[
+            </div>
+          )}
+          {threeVariant === "extended" &&
+          [
             { id: "wind", label: "风包 · 经典八将" },
             { id: "fire", label: "火包 · 经典八将" },
             { id: "thicket", label: "林包 · 经典八将" },
@@ -112,8 +152,12 @@ export function SanguoshaOptions({
             </label>
           ))}
           <p>
-            旧版竞技 3v3：需要 6 人牌桌。双方各一名主帅与两名前锋，公开抓将
-            16 张（顺序 1-2-2-2-2-2-2-2-1），双方布阵后同时亮将。主帅体力上限 +1，第一回合由主帅开始；每轮每人行动一次，主帅可指定前锋先后顺序。击杀前锋摸两张牌；任意一方主帅阵亡，对方阵营获胜。
+            旧版竞技 3v3：需要 6 人牌桌。官方配置为 32 名武将（标准 25 ＋
+            风 7，不含于吉与神将）分成 4 堆各 8 名，双方主帅各取一堆，共 16
+            名平摊后按 1-2-2-2-2-2-2-2-1 抓将，布阵后同时亮将；牌堆为标准
+            106 张（无闪电）。主帅体力上限 +1，第一回合由主帅开始；每轮每人
+            行动一次，主帅可指定前锋先后顺序；禁用主公技。击杀任意角色摸三张
+            牌（含同阵营）；任意一方主帅阵亡，对方阵营获胜。
           </p>
         </>
       ) : hegemony ? (

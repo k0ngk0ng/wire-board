@@ -52,6 +52,37 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 	}
 	host.command(current(host), "start", nil, 200)
 	clients[6].post("/api/rooms/"+id+"/watch", map[string]any{}, 200)
+	// The printed 3v3 draft opens on four face-down piles of eight: the warm
+	// leader takes one, the cold leader takes from the remaining three.
+	opening := s.rooms[id].Game.Sanguosha
+	if opening.Pending == nil || opening.Pending.Kind != "sg_3v3_pile" {
+		t.Fatalf("first 3v3 prompt %+v", opening.Pending)
+	}
+	if three := opening.ThreeV3; three.Stage != "piles" || len(three.Piles) != 4 || len(three.Pool) != 0 {
+		t.Fatalf("opening draft %+v", three)
+	}
+	warmLeader := opening.ThreeV3.Leaders[1]
+	if opening.Pending.Player != warmLeader {
+		t.Fatalf("the warm leader must take the first pile, prompt %d leader %d", opening.Pending.Player, warmLeader)
+	}
+	if len(opening.Deck) != 106 {
+		t.Fatalf("the official 3v3 deck holds %d cards, want 106", len(opening.Deck))
+	}
+	for viewer := 0; viewer < 6; viewer++ {
+		if viewer == warmLeader {
+			continue
+		}
+		draft := current(clients[viewer])["game"].(map[string]any)["sanguosha"].(map[string]any)
+		three := draft["threeV3"].(map[string]any)
+		if _, seen := three["piles"]; seen {
+			t.Fatalf("viewer %d saw the face-down piles", viewer)
+		}
+		if pending, ok := draft["pending"].(map[string]any); ok {
+			if _, seen := pending["choices"]; seen && pending["canRespond"] == true {
+				t.Fatalf("viewer %d received the pile choices", viewer)
+			}
+		}
+	}
 	var turns []map[string]int
 	t.Cleanup(func() {
 		path := filepath.Join("..", "..", ".local", "3v3-opening-rounds.json")
