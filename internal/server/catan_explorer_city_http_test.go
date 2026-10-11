@@ -78,15 +78,18 @@ func assertExplorerCityHTTPPrivacy(t *testing.T, clients []*testClient, state *g
 		if lairs, ok := x["lairs"].(map[string]any); ok && (lairs["deck"] != nil || lairs["inventory"] != nil) {
 			t.Fatal("hidden lair inventory leaked", viewer)
 		}
+		// A finished game publishes hands on purpose, and the natural loops
+		// sample right after the step that can end it.
+		finished := state.Finished
 		for p, raw := range v["players"].([]any) {
 			hand, ok := raw.(map[string]any)["resources"]
-			if ok != (p == viewer) || ok && len(hand.([]any)) != 8 {
+			if !finished && (ok != (p == viewer) || ok && len(hand.([]any)) != 8) {
 				t.Fatal("wrong eight-card hand visibility", viewer, p)
 			}
 		}
 		for p, raw := range k["players"].([]any) {
 			hand, ok := raw.(map[string]any)["progress"]
-			if ok != (p == viewer) {
+			if !finished && ok != (p == viewer) {
 				t.Fatal("private progress hand leaked/omitted", viewer, p)
 			}
 			if ok && len(hand.([]any)) != len(state.Catan.CitiesKnights.Players[p].Progress) {
@@ -101,10 +104,10 @@ func assertExplorerCityHTTPPrivacy(t *testing.T, clients []*testClient, state *g
 		if state.Phase == "catan_discard" {
 			can = viewer < len(state.Catan.Players) && state.Catan.DiscardDue[viewer] > 0
 		}
-		if x["canRespond"] != can {
+		if !finished && x["canRespond"] != can {
 			t.Fatal("wrong response owner", viewer, state.Phase, x["canRespond"], actor)
 		}
-		if !can && (len(x["choices"].([]any)) > 0 || x["response"] != nil) {
+		if !finished && !can && (len(x["choices"].([]any)) > 0 || x["response"] != nil) {
 			t.Fatal("response/choices leaked to nonactor", viewer)
 		}
 		for _, raw := range x["choices"].([]any) {
