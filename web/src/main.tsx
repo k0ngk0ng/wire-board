@@ -143,6 +143,7 @@ import type {
   RailPlayer,
 } from "./types";
 import "./style.css";
+import "./room-option-cards.css";
 import "./autoplay.css";
 import { cityName } from "./cities";
 import {

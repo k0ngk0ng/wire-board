@@ -1,3 +1,4 @@
+import { ScenarioCards } from "./scenario-cards";
 import { catanRiversSeaScenarios } from "./catan-rivers-sea-options";
 import { catanTwoFishingKnightsNote } from "./catan-two-fishing-knights";
 import { catanVictoryTarget } from "./catan-rule-context";
@@ -206,35 +207,33 @@ export function CatanTwoScenarioPicker({
 }) {
   return (
     <div className="catan-two-picker">
-      <label>
-        双人卡坦剧本
-        <select
-          value={value}
-          disabled={disabled}
-          onChange={(e) => onChange(e.target.value)}
-        >
-          {scenarios.map((s) => (
-            <option
-              key={s.id}
-              value={s.id}
-              disabled={
-                (variantsEnabled && !supportsTwoCatanVariants(s.id)) ||
-                (helpersEnabled &&
-                  !supportsTwoCatanHelpers(s.id) &&
-                  ![
-                    "land-ho",
-                    "spices-for-catan",
-                    "pirate-lairs",
-                    "fish-for-catan",
-                    "explorers-and-pirates",
-                  ].includes(s.id))
-              }
-            >
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      <ScenarioCards
+        label="双人卡坦剧本"
+        value={value}
+        disabled={disabled}
+        onChange={onChange}
+      >
+        {scenarios.map((s) => (
+          <option
+            key={s.id}
+            value={s.id}
+            disabled={
+              (variantsEnabled && !supportsTwoCatanVariants(s.id)) ||
+              (helpersEnabled &&
+                !supportsTwoCatanHelpers(s.id) &&
+                ![
+                  "land-ho",
+                  "spices-for-catan",
+                  "pirate-lairs",
+                  "fish-for-catan",
+                  "explorers-and-pirates",
+                ].includes(s.id))
+            }
+          >
+            {s.name}
+          </option>
+        ))}
+      </ScenarioCards>
       {supportsTwoCatanSeafarers(value) && (
         <p className="muted small">
           {knightsEnabled
