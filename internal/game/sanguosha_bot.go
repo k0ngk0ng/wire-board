@@ -384,7 +384,13 @@ func (s *State) sgBot(i int) (Action, error) {
 				add(Action{Type: "sg_play", Cards: []int{id}})
 			}
 			if c.Kind == "ex_nihilo" || c.Kind == "amazing_grace" || c.Kind == "god_salvation" {
-				add(Action{Type: "sg_play", Cards: []int{id}})
+				a := Action{Type: "sg_play", Cards: []int{id}}
+				if c.Kind == "amazing_grace" {
+					// 五谷丰登 hands out its revealed cards in resolution order,
+					// so a 3v3 bot takes the direction that serves its camp first.
+					a.Direction = s.sgThreeAllyFirstDirection(i)
+				}
+				add(a)
 			}
 		}
 		enemies := []int{}

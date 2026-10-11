@@ -303,3 +303,49 @@ func TestSanguoshaThreeV3PilePromptAndBots(t *testing.T) {
 		t.Fatal("pile count changed", askPile)
 	}
 }
+
+// The clockwise and counter-clockwise rings both start at the user, so the bot
+// can only gain by walking the way that reaches its own camp first. 五谷丰登 is
+// the card where that order shows: its revealed cards are taken one by one.
+func TestSanguoshaThreeV3BotDrawsAllyFirst(t *testing.T) {
+	s := sgThreeBattleState(t)
+	if got := s.sgThreeAllyFirstDirection(2); got != "ccw" {
+		t.Fatalf("seat 2 direction %q, want ccw", got)
+	}
+	if got := s.sgThreeAllyFirstDirection(0); got != "" {
+		t.Fatalf("seat 0 direction %q, want the clockwise default", got)
+	}
+	s.Turn = 2
+	grace := sgGive(t, s, 2, "amazing_grace")
+	a, err := s.BotAction(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a.Type != "sg_play" || !slices.Equal(a.Cards, []int{grace}) || a.Direction != "ccw" {
+		t.Fatalf("bot 五谷丰登 action %+v", a)
+	}
+	sgDo(t, s, 2, a)
+	// Each target opens its own nullification window before choosing, so walk
+	// the whole resolution with the bot and record only the picking seats.
+	picks := []int{}
+	for steps := 0; steps < 60; steps++ {
+		q := s.Sanguosha.Pending
+		if q == nil {
+			break
+		}
+		if q.Kind == "grace" {
+			picks = append(picks, q.Player)
+		}
+		actor := s.SanguoshaActor()
+		answer, err := s.BotAction(actor)
+		if err != nil {
+			t.Fatal(err)
+		}
+		sgDo(t, s, actor, answer)
+	}
+	// Counter-clockwise from seat 2 serves the two cold seats first; the
+	// clockwise default would have started with the warm seats 3, 4 and 5.
+	if want := []int{1, 0, 5, 4, 3, 2}; !slices.Equal(picks, want) {
+		t.Fatalf("五谷丰登 pick order %v, want %v", picks, want)
+	}
+}
