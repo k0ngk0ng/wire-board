@@ -7,7 +7,12 @@ func (s *State) sgJieBotPrompt(i int, add func(Action)) {
 	q := g.Pending
 	e := q.Event
 	p := g.Players[i]
-	ally := func(who int) bool { return who == i || p.Role == "loyalist" && who == g.Lord }
+	ally := func(who int) bool {
+		if s.sgThreeV3() {
+			return s.sgTeamBotAlly(i, who)
+		}
+		return who == i || p.Role == "loyalist" && who == g.Lord
+	}
 	ids := append(clone(p.Hand), p.Equip...)
 	slices.SortStableFunc(ids, func(a, b int) int { return sgBotValue(a) - sgBotValue(b) })
 	switch q.Kind {

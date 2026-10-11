@@ -35,17 +35,23 @@ func (s *State) sgGodArmorOff(i int) bool {
 	return false
 }
 func (s *State) sgGodGameStart() {
+	s.sgGameStartFrom(s.Sanguosha.Lord)
+}
+
+// Opening effects finish for every seat before the first character takes a
+// turn. Identity and 3v3 share these effects, but choose their opener differently.
+func (s *State) sgGameStartFrom(first int) {
 	es := []SGEvent{}
-	for _, i := range s.sgOrder(s.Sanguosha.Lord) {
+	for _, i := range s.sgOrder(first) {
 		es = append(es, SGEvent{Type: "god_kingdom", Actor: i})
 	}
-	for _, i := range s.sgOrder(s.Sanguosha.Lord) {
+	for _, i := range s.sgOrder(first) {
 		es = append(es, SGEvent{Type: "huashen_init", Actor: i})
 	}
-	for _, i := range s.sgOrder(s.Sanguosha.Lord) {
+	for _, i := range s.sgOrder(first) {
 		es = append(es, SGEvent{Type: "god_initial_draw", Actor: i})
 	}
-	es = append(es, SGEvent{Type: "begin", Actor: s.Sanguosha.Lord})
+	es = append(es, SGEvent{Type: "begin", Actor: first})
 	s.sgPush(es...)
 }
 func (s *State) sgGodRoundStart(i int) {

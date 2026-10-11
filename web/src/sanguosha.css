@@ -417,6 +417,11 @@
 .sg-response-extras {
   margin-bottom: 8px;
 }
+.sg-direction-label {
+  align-self: center;
+  font-size: 12px;
+  color: var(--sg-muted, #7a6a55);
+}
 .sg-error {
   color: #ae4134;
 }
@@ -1379,12 +1384,13 @@
   border: 1px solid currentColor;
 }
 .sg-3v3-camp.camp-0 {
-  color: #4aa3ff;
+  color: #216ba0;
 }
 .sg-3v3-camp.camp-1 {
-  color: #ff7a59;
+  color: #a34829;
 }
 .sg-3v3-draft {
+	color: #f8e9cf;
   margin: 0.5rem 0;
   padding: 0.6rem 0.75rem;
   border-radius: 0.75rem;
@@ -1400,6 +1406,13 @@
 }
 .sg-3v3-draft header small {
   opacity: 0.75;
+}
+.sg-3v3-draft .muted {
+  color: #ddcdb7;
+}
+.sg-3v3-draft .sg-3v3-pool-card {
+  color: #f8e9cf;
+  background: #302c36;
 }
 .sg-3v3-camps {
   display: grid;
@@ -1448,4 +1461,41 @@
   margin: 0.35rem 0;
   font-size: 0.85rem;
   opacity: 0.85;
+}
+.sg-threev3 .sg-role {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  white-space: normal;
+}
+.sg-threev3 .sg-3v3-camp {
+  margin-left: 0;
+}
+.sg-threev3.sg-selecting .sg-health,
+.sg-threev3.sg-selecting .sg-seat-info > small {
+  display: none;
+}
+@media (max-width: 600px) {
+  .sg-threev3 .sg-seats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .sg-threev3 .sg-seat-info {
+    display: flex;
+  }
+  .sg-threev3.sg-selecting .sg-seat-target {
+    height: 36px;
+  }
+  .sg-threev3 .sg-3v3-prompt .sg-action-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .sg-threev3 .sg-3v3-prompt .sg-general-choice {
+    min-width: 0;
+    width: 100%;
+    min-height: 78px;
+  }
+  .sg-threev3 .sg-3v3-prompt button:not(.sg-general-choice) {
+    grid-column: 1 / -1;
+  }
 }

@@ -76,12 +76,8 @@ func TestSanguoshaThreeV3DraftAndVictory(t *testing.T) {
 		if !s.Sanguosha.Players[three.Leaders[loser]].Dead {
 			t.Fatal("losing leader should have fallen")
 		}
-		if !s.Sanguosha.Players[three.Leaders[camp]].Dead {
-			// A normal finish: the winner's leader survived.
-			continue
+		if s.Sanguosha.Players[three.Leaders[camp]].Dead {
+			t.Fatal("winning leader must survive; the first leader death ends resolution")
 		}
-		// Both leaders fell, so the tiebreak compared survivors and losses.
-		t.Logf("game %d ended with both leaders down: winners %v", game, s.Winners)
-		_ = steps
 	}
 }

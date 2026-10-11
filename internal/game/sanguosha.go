@@ -187,7 +187,9 @@ func (s *State) sgHas(i int, skill string) bool {
 	if s.sgHegemony() {
 		return slices.Contains(s.sgHegSkills(i, true), skill)
 	}
-	if sgLordSkill(skill) && p.Role != "lord" {
+	// 3v3 bans lord skills outright ("其他守则" 3); the camp leaders are not
+	// identity-mode lords, so the random role seat must not unlock them either.
+	if sgLordSkill(skill) && (p.Role != "lord" || s.sgThreeV3()) {
 		return false
 	}
 	return !p.SkillsLost && (skill != "" && p.AvatarSkill == skill || slices.Contains(p.Acquired, skill) || slices.Contains(p.Temporary, skill) || slices.Contains(sgGeneral(p.General).Skills, skill))
@@ -686,9 +688,23 @@ func (s *State) sgApply(i int, a Action) error {
 	if a.Skill == "heg_duoshi" {
 		g.Players[i].Used[a.Skill]++
 	}
-	return s.sgUse(i, kind, a.Cards, a.Targets, false)
+	return s.sgUseDirected(i, kind, a.Cards, a.Targets, false, a.Direction)
 }
+
 func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error {
+	return s.sgUseDirected(i, kind, ids, targets, forced, "")
+}
+
+// sgUseDirected is sgUse plus the 3v3 group-trick direction. The official 3v3
+// handbook ("其他守则" 1) lets the user of 南蛮入侵, 万箭齐发, 桃园结义 and
+// 五谷丰登 pick whether the targets resolve clockwise or counter-clockwise.
+func (s *State) sgUseDirected(i int, kind string, ids, targets []int, forced bool, direction string) error {
+	if direction != "" && (!s.sgThreeV3() || !sgThreeDirectedTrick(kind)) {
+		return errors.New("只有3v3的群体锦囊可以指定结算方向")
+	}
+	if direction != "" && direction != "cw" && direction != "ccw" {
+		return errors.New("结算方向只能是顺时针（cw）或逆时针（ccw）")
+	}
 	if err := s.sgHegUseModifiers(i, kind, ids, targets, forced); err != nil {
 		return err
 	}
@@ -783,13 +799,17 @@ func (s *State) sgUse(i int, kind string, ids, targets []int, forced bool) error
 	if kind == "lightning" && s.sgWeimu(i, i, kind, ids) {
 		return errors.New("帷幕不能成为黑色锦囊目标")
 	}
-	// Multiple targets of the same card resolve in current-turn seat order.
+	// Multiple targets of the same card resolve in current-turn seat order,
+	// which is clockwise in 3v3; counter-clockwise walks the same ring back.
 	if kind != "collateral" && len(targets) > 1 {
 		ordered := []int{}
 		for _, target := range s.sgOrder(s.Turn) {
 			if slices.Contains(targets, target) {
 				ordered = append(ordered, target)
 			}
+		}
+		if direction == "ccw" {
+			slices.Reverse(ordered)
 		}
 		targets = ordered
 	}

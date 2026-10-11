@@ -43,8 +43,8 @@ type SGThreeV3 struct {
 	Stage      string     `json:"stage"`      // pickFirst/pick/assign/firstSide/play
 	FirstSide  int        `json:"firstSide"`  // camp that holds the first action right
 	Side       int        `json:"side"`       // camp holding the action right
-	Acted      []bool     `json:"acted"`      // per player, acted in the current right
-	RightsHeld int        `json:"rightsHeld"` // rights completed, two per round
+	Acted      []bool     `json:"acted"`      // per player, acted in the current round
+	RightsHeld int        `json:"rightsHeld"` // action units completed over the game
 }
 
 func (s *State) sgThreeV3() bool {
@@ -267,19 +267,15 @@ func (s *State) sgThreeRespond(i int, a Action, q SGPrompt) (bool, error) {
 		if a.Choice != "leader" && a.Choice != "vanguards" {
 			return true, errors.New("请选择主帅行动或前锋行动")
 		}
-		t.Acted = make([]bool, len(s.Sanguosha.Players))
 		next := t.Leaders[camp]
+		if !slices.Contains(s.sgThreeRightChoices(camp), a.Choice) {
+			return true, errors.New("该行动单元本轮已完成，请选择尚未行动的角色")
+		}
 		if a.Choice == "vanguards" {
-			vanguards := []int{}
-			for _, member := range s.sgThreeAliveMembers(camp) {
-				if member != t.Leaders[camp] {
-					vanguards = append(vanguards, member)
-				}
+			if !slices.Contains(s.sgThreeReadyVanguards(camp), a.Target) {
+				return true, errors.New("请选择本方尚未行动的前锋先行")
 			}
-			if len(vanguards) == 0 {
-				return true, errors.New("本方已无前锋可以行动")
-			}
-			next = vanguards[0]
+			next = a.Target
 		}
 		s.sgLog("%s 选择%s行动", s.sgName(i), map[string]string{"leader": "主帅", "vanguards": "前锋"}[a.Choice])
 		s.sgPush(SGEvent{Type: "begin", Actor: next})
@@ -326,9 +322,6 @@ func (s *State) sgThreeStartPlay() {
 			}
 			p.HP = p.MaxHP
 		}
-		for _, id := range t.Picked[camp] {
-			_ = id // Reserve generals stay recorded for the scoreboard.
-		}
 	}
 	g.Selecting = false
 	t.Stage = "firstSide"
@@ -366,29 +359,53 @@ func (s *State) sgThreePassRight(actor int) {
 	next := 1 - camp
 	t.Side = next
 	t.RightsHeld++
-	if t.RightsHeld%2 == 0 {
+	if s.sgThreeIsRightOver(sgThreeCold) && s.sgThreeIsRightOver(sgThreeWarm) {
 		s.Round++
+		clear(t.Acted)
+	} else if s.sgThreeIsRightOver(next) {
+		next = camp
 	}
-	t.Acted = make([]bool, len(s.Sanguosha.Players))
 	s.sgThreeBeginRight(next, false)
 }
 
 func (s *State) sgThreeBeginRight(side int, first bool) {
 	t := s.Sanguosha.ThreeV3
 	t.Side = side
-	if len(s.sgThreeAliveMembers(side)) == 0 {
-		s.sgThreePassRight(t.Leaders[1-side])
+	if first {
+		s.sgGameStartFrom(t.Leaders[side])
 		return
 	}
 	if leader := t.Leaders[side]; s.sgAlive(leader) {
-		s.sgAsk(leader, "sg_3v3_side", "选择由主帅行动或两名前锋连续行动", SGEvent{})
+		s.sgAsk(leader, "sg_3v3_side", "选择本轮尚未行动的主帅或前锋；选择前锋时指定先行者", SGEvent{})
+		s.Sanguosha.Pending.Choices = s.sgThreeRightChoices(side)
+		s.Sanguosha.Pending.Targets = s.sgThreeReadyVanguards(side)
 		return
 	}
-	// A camp without its leader keeps playing with its vanguards.
-	for _, member := range s.sgThreeAliveMembers(side) {
-		s.sgPush(SGEvent{Type: "begin", Actor: member})
-		return
+	// A leader death ends the match; it never grants a vanguard-only turn.
+	s.sgThreeFinish(1 - side)
+}
+
+func (s *State) sgThreeReadyVanguards(camp int) []int {
+	t := s.Sanguosha.ThreeV3
+	ready := []int{}
+	for _, member := range s.sgThreeAliveMembers(camp) {
+		if member != t.Leaders[camp] && !t.Acted[member] {
+			ready = append(ready, member)
+		}
 	}
+	return ready
+}
+
+func (s *State) sgThreeRightChoices(camp int) []string {
+	t := s.Sanguosha.ThreeV3
+	choices := []string{}
+	if leader := t.Leaders[camp]; s.sgAlive(leader) && !t.Acted[leader] {
+		choices = append(choices, "leader")
+	}
+	if len(s.sgThreeReadyVanguards(camp)) > 0 {
+		choices = append(choices, "vanguards")
+	}
+	return choices
 }
 
 // sgThreeDie settles deaths: a fallen leader ends the game, a vanguard death
@@ -397,73 +414,43 @@ func (s *State) sgThreeDie(i, killer int) {
 	g := s.Sanguosha
 	t := g.ThreeV3
 	p := &g.Players[i]
+	duanchang, wuhun := s.sgHas(i, "duanchang"), s.sgHas(i, "wuhun")
 	p.Dead = true
 	if i == s.Turn {
 		s.sgClearSilence()
 	}
+	s.sgGodDeath(i, killer)
 	s.sgLog("%s 阵亡（%s）", s.sgName(i), sgCampLabel(s.sgThreeCamp(i)))
-	s.sgDeathClear(i)
 	camp := s.sgThreeCamp(i)
-	if i != t.Leaders[camp] {
-		if killer >= 0 && killer != i && s.sgAlive(killer) {
-			s.sgPush(SGEvent{Type: "draw", Actor: killer, Amount: 2})
-		}
-		if s.sgThreeIsRightOver(camp) {
-			s.sgThreePassRight(t.Leaders[camp])
-		}
+	if i == t.Leaders[camp] {
+		s.sgDeathClear(i)
+		s.sgThreeFinish(1 - camp)
 		return
 	}
-	other := 1 - camp
-	if g.Players[t.Leaders[other]].Dead {
-		if winner, ok := s.sgThreeTiedLeaders(); ok {
-			s.sgThreeFinish(winner)
-			return
-		}
-		s.Finished, s.Winners = true, []int{}
-		s.sgLog("双方主帅同时阵亡且无法分出胜负，本局平局")
-		return
+	// Keep the common death ordering: Wuhun before inheritance, then zone
+	// cleanup and the mode-specific reward. A nested leader death stops it all.
+	s.sgPush(SGEvent{Type: "death_loot", Actor: killer, Target: i})
+	if wuhun {
+		s.sgPush(SGEvent{Type: "wuhun", Actor: i})
 	}
-	s.sgThreeFinish(other)
+	if duanchang {
+		s.sgLoseSkills(killer)
+	}
+}
+
+// sgThreeDirectedTrick reports the group tricks whose 3v3 version lets the
+// user choose the resolution direction.
+func sgThreeDirectedTrick(kind string) bool {
+	return slices.Contains([]string{"amazing_grace", "god_salvation", "savage_assault", "archery_attack"}, kind)
 }
 
 func (s *State) sgThreeIsRightOver(camp int) bool {
-	if camp != s.Sanguosha.ThreeV3.Side {
-		return false
-	}
 	for _, member := range s.sgThreeAliveMembers(camp) {
 		if !s.Sanguosha.ThreeV3.Acted[member] {
 			return false
 		}
 	}
 	return true
-}
-
-// sgThreeTiedLeaders settles both-leaders-down by living members, then by the
-// hit points both sides have lost.
-func (s *State) sgThreeTiedLeaders() (int, bool) {
-	bestCamp, bestAlive, bestLost := -1, -1, -1
-	tied := false
-	for camp := sgThreeCold; camp <= sgThreeWarm; camp++ {
-		alive, lost := 0, 0
-		for _, i := range s.sgThreeMembers(camp) {
-			if s.sgAlive(i) {
-				alive++
-				continue
-			}
-			lost += s.Sanguosha.Players[i].MaxHP
-		}
-		if alive > bestAlive || alive == bestAlive && lost < bestLost {
-			bestCamp, bestAlive, bestLost, tied = camp, alive, lost, false
-			continue
-		}
-		if alive == bestAlive && lost == bestLost {
-			tied = true
-		}
-	}
-	if tied || bestCamp < 0 {
-		return -1, false
-	}
-	return bestCamp, true
 }
 
 func (s *State) sgThreeFinish(winner int) {
@@ -518,9 +505,8 @@ func (s *State) sgThreeBotAction(i int) (Action, bool) {
 	case "sg_3v3_first_side":
 		return Action{Choice: "cold", Prompt: q.ID}, true
 	case "sg_3v3_side":
-		alive := s.sgThreeAliveMembers(s.sgThreeCamp(i))
-		if len(alive) > 1 {
-			return Action{Choice: "vanguards", Prompt: q.ID}, true
+		if ready := s.sgThreeReadyVanguards(s.sgThreeCamp(i)); len(ready) > 0 {
+			return Action{Choice: "vanguards", Target: ready[0], Prompt: q.ID}, true
 		}
 		return Action{Choice: "leader", Prompt: q.ID}, true
 	}

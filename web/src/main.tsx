@@ -2232,7 +2232,10 @@ function Create({
           ))}
         </div>
         {k === "sanguosha" && (
-          <SanguoshaOptions value={sgOptions} onChange={setSGOptions} />
+          <SanguoshaOptions value={sgOptions} onChange={(options) => {
+            setSGOptions(options);
+            if (options.mode === "3v3") setCapacity(6);
+          }} />
         )}
         {k === "catan" && capacity === 2 && (
           <CatanTwoScenarioPicker
@@ -2818,7 +2821,9 @@ function Create({
                   );
               }}
             >
-              {(k === "dota"
+              {(k === "sanguosha" && sgOptions?.mode === "3v3"
+                ? [6]
+                : k === "dota"
                 ? [2, 4, 6]
                 : k === "catan" &&
                     [
@@ -4166,6 +4171,8 @@ function Turn({
                       ? "港口安放 120 秒"
                       : setup
                         ? "共同选牌限时"
+                        : g.sanguosha?.pending?.kind.startsWith("sg_3v3")
+                          ? "选择限时 120 秒"
                         : g.sanguosha?.pending && !g.sanguosha.selecting
                           ? "响应限时 20 秒"
                           : twoResponder(room) !== undefined

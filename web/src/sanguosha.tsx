@@ -185,6 +185,7 @@ export function SanguoshaBoard({
   const [cards, setCards] = useState<number[]>([]),
     [targets, setTargets] = useState<number[]>([]),
     [skill, setSkill] = useState(""),
+    [direction, setDirection] = useState(""),
     [declaration, setDeclaration] = useState("slash"),
     [help, setHelp] = useState(""),
     [error, setError] = useState("");
@@ -212,6 +213,7 @@ export function SanguoshaBoard({
     setCards([]);
     setTargets([]);
     setSkill("");
+    setDirection("");
     setError("");
   }, [game.turn, game.round, prompt?.id, responding]);
   const selectCard = (id: number) => {
@@ -248,6 +250,7 @@ export function SanguoshaBoard({
             : undefined,
         targets,
         skill,
+        direction: directedKind ? direction || undefined : undefined,
         choice: skill === "guhuo" ? declaration : undefined,
         prompt: prompt?.id,
         card: cards[0] || 0,
@@ -584,6 +587,20 @@ export function SanguoshaBoard({
       return cards.length !== 4 || !allIn(cards, me?.hand);
     return false;
   })();
+  // 3v3 only: the official handbook lets the user order group tricks either
+  // clockwise or counter-clockwise; the seat order is clockwise.
+  const directedKind = playing
+    ? cards.length === 1 &&
+      ["amazing_grace", "god_salvation", "savage_assault", "archery_attack"].includes(
+        getCard(cards[0]).kind,
+      )
+      ? getCard(cards[0]).kind
+      : skill === "luanji" &&
+          cards.length === 2 &&
+          cards.every((id) => getCard(id).kind === "archery_attack")
+        ? "archery_attack"
+        : ""
+    : "";
   const actionHint = skill
     ? g.skills[skill]?.text ||
       (skill === "fan" ? "选择一张普通杀，当火杀使用。" : "选择两张手牌当杀。")
@@ -592,7 +609,7 @@ export function SanguoshaBoard({
       : "选择手牌、技能和目标，再确认出牌。";
   return (
     <section
-      className={`sg-board ${g.hegemony ? "sg-hegemony" : ""} ${g.selecting ? "sg-selecting" : ""} ${extraCards.length ? "has-choice-cards" : ""}`}
+      className={`sg-board ${g.hegemony ? "sg-hegemony" : ""} ${g.threeV3 ? "sg-threev3" : ""} ${g.selecting ? "sg-selecting" : ""} ${extraCards.length ? "has-choice-cards" : ""}`}
     >
       <header className="sg-heading">
         <div>
@@ -607,7 +624,7 @@ export function SanguoshaBoard({
                 ? "公开抓将，冷暖对垒"
                 : "群雄集结"
               : g.threeV3
-                ? "主帅为尊，前锋为锋"
+                ? "冷暖对垒，主帅决胜"
                 : g.hegemony
                   ? "双将同心，四方争雄"
                   : "一桌风云，各有所谋"}
@@ -729,6 +746,8 @@ export function SanguoshaBoard({
                   {g.threeV3 && p.camp !== undefined && (
                     <span className={`sg-3v3-camp camp-${p.camp}`}>
                       {threeV3CampName(p.camp)}
+                      {g.threeV3.stage === "play" && !p.dead &&
+                        (g.threeV3.acted[i] ? " · 已行动" : " · 待行动")}
                     </span>
                   )}
                   {g.hegemony && g.first === i && (
@@ -1074,8 +1093,10 @@ export function SanguoshaBoard({
                     )}
                   </ul>
                   <small>
-                    已选 {three.picked[camp]?.length || 0}/8 · 已分配{" "}
-                    {three.assigned[camp]?.length || 0}/3
+                    已选 {three.picked[camp]?.length || 0}/8 ·{" "}
+                    {g.selecting && me?.camp !== camp
+                      ? "布阵待揭晓"
+                      : `已分配 ${three.assigned[camp]?.length || 0}/3`}
                   </small>
                 </section>
               );
@@ -1103,7 +1124,7 @@ export function SanguoshaBoard({
             </p>
           )}
           {g.threeV3.stage === "assign" && (
-            <p className="muted small">双方主帅依次为主帅、前锋A、前锋B指定出场武将。</p>
+            <p className="muted small">为主帅、前锋 A、前锋 B 指定武将；双方布阵完毕后同时亮将。</p>
           )}
         </div>
       )}
@@ -1482,7 +1503,17 @@ export function SanguoshaBoard({
                     </button>
                   );
                 })}
-              {threeV3PromptLabels(ask).map((choice) => (
+              {ask === "sg_3v3_side" && prompt?.choices?.includes("vanguards") &&
+                prompt.targets?.map((seat) => (
+                  <button key={seat} disabled={busy}
+                    onClick={() => void send({ choice: "vanguards", target: seat })}>
+                    {room.seats[seat]?.name} 先行动
+                    {prompt.targets!.length > 1 ? "，另一名前锋随后" : ""}
+                  </button>
+                ))}
+              {threeV3PromptLabels(ask).filter((choice) =>
+                choice.value !== "vanguards" && prompt?.choices?.includes(choice.value)
+              ).map((choice) => (
                 <button
                   key={choice.value}
                   disabled={busy}
@@ -1890,7 +1921,7 @@ export function SanguoshaBoard({
               )}
           </div>
         )}
-        {enabled && ask !== "general" && ask !== "heg_generals" && (
+        {enabled && ask !== "general" && ask !== "heg_generals" && !ask?.startsWith("sg_3v3") && (
           <div className="sg-action-buttons">
             {!ask?.startsWith("heg_") &&
               !(
@@ -1992,6 +2023,24 @@ export function SanguoshaBoard({
                           : "确认出牌"}
                 </button>
               )}
+            {!!g.threeV3 && !!directedKind && (
+              <>
+                <span className="sg-direction-label">结算方向</span>
+                {[
+                  { value: "", label: "顺时针" },
+                  { value: "ccw", label: "逆时针" },
+                ].map((option) => (
+                  <button
+                    key={option.label}
+                    className={direction === option.value ? "" : "outline"}
+                    disabled={busy}
+                    onClick={() => setDirection(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </>
+            )}
             {optional && (
               <button
                 className="outline"

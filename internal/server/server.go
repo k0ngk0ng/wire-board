@@ -93,13 +93,22 @@ type Room struct {
 
 const turnLimit = 120 * time.Second
 
+func sanguoshaPromptLimit(kind string) time.Duration {
+	switch kind {
+	case "general", "heg_generals", "sg_3v3_first", "sg_3v3_pick", "sg_3v3_assign", "sg_3v3_first_side", "sg_3v3_side":
+		return turnLimit
+	default:
+		return 20 * time.Second
+	}
+}
+
 func (r *Room) startTurnClock(now time.Time) {
 	if r.Status == "playing" && !r.Game.CatanExplorerSetupBlocked() {
 		r.TurnDeadline = now.Add(turnLimit).UnixMilli()
 		if r.Game != nil && r.Game.Sanguosha != nil {
 			r.SGTimeLeft = turnLimit.Milliseconds()
-			if q := r.Game.Sanguosha.Pending; q != nil && q.Kind != "general" && q.Kind != "heg_generals" {
-				r.TurnDeadline = now.Add(20 * time.Second).UnixMilli()
+			if q := r.Game.Sanguosha.Pending; q != nil {
+				r.TurnDeadline = now.Add(sanguoshaPromptLimit(q.Kind)).UnixMilli()
 			}
 		}
 	} else {
@@ -667,6 +676,9 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		req.SanguoshaOptions = o
 		minPlayers = 4
 		maxPlayers = 8
+		if o.Mode == "3v3" {
+			minPlayers, maxPlayers = 6, 6
+		}
 	} else if req.Kind == "rail" {
 		info, ok := game.RailMapInfo(req.RailMap)
 		if !ok {
@@ -1231,6 +1243,13 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.SanguoshaOptions, err = game.NormalizeSGOptions(req.SanguoshaOptions)
+		if err == nil && next.SanguoshaOptions.Mode == "3v3" {
+			if len(next.Seats) > 6 {
+				err = errors.New("3v3 需要 6 个席位，请先将玩家人数调整至 6 人以内")
+			} else {
+				next.Capacity = 6
+			}
+		}
 		if err == nil {
 			for i := range next.Seats {
 				next.Seats[i].Ready = next.Seats[i].Bot
