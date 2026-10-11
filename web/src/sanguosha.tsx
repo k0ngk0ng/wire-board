@@ -11,12 +11,15 @@ import {
   HegemonyRules,
   hegemonyInstructions,
 } from "./sanguosha-hegemony";
+import { threeV3CampName, threeV3PromptLabels } from "./threev3-labels";
 import "./sanguosha.css";
 const roles: Record<string, string> = {
   lord: "主公",
   loyalist: "忠臣",
   rebel: "反贼",
   renegade: "内奸",
+  leader: "主帅",
+  vanguard: "前锋",
   wei: "魏势力",
   shu: "蜀势力",
   wu: "吴势力",
@@ -719,6 +722,11 @@ export function SanguoshaBoard({
                     : g.hegemony
                       ? "势力未明"
                       : "身份未知"}
+                  {g.threeV3 && p.camp !== undefined && (
+                    <span className={`sg-3v3-camp camp-${p.camp}`}>
+                      {threeV3CampName(p.camp)}
+                    </span>
+                  )}
                   {g.hegemony && g.first === i && (
                     <span className="sg-first-seat">先手</span>
                   )}
@@ -1031,6 +1039,77 @@ export function SanguoshaBoard({
             );
           })}
         </div>
+      )}
+      {g.threeV3 && g.threeV3.stage !== "play" && (
+        <div className="sg-3v3-draft">
+          <header>
+            <strong>三国杀 3v3 抓将</strong>
+            <small>
+              冷/暖各一名主帅与两名前锋 · 顺序 1-2-2-2-2-2-2-2-1 · 主帅体力上限
+              +1 · 主帅阵亡即判负
+            </small>
+          </header>
+          <div className="sg-3v3-camps">
+            {[0, 1].map((camp) => {
+              const three = g.threeV3!;
+              const leader = three.leaders[camp];
+              return (
+                <section
+                  key={camp}
+                  className={`sg-3v3-camp-panel camp-${camp} ${three.pickCamp === camp && three.stage === "pick" ? "active" : ""}`}
+                >
+                  <strong>{threeV3CampName(camp)}</strong>
+                  <ul>
+                    {g.players.map((p, i) =>
+                      p.camp === camp ? (
+                        <li key={i}>
+                          {i === leader ? "主帅" : "前锋"} · {i + 1} 号位
+                          {p.dead ? "（阵亡）" : ""}
+                        </li>
+                      ) : null,
+                    )}
+                  </ul>
+                  <small>
+                    已选 {three.picked[camp]?.length || 0}/8 · 已分配{" "}
+                    {three.assigned[camp]?.length || 0}/3
+                  </small>
+                </section>
+              );
+            })}
+          </div>
+          <div className="sg-3v3-pool">
+            {g.threeV3.pool.length === 0 ? (
+              <small>选将结束，等待双方主帅分配出场武将。</small>
+            ) : (
+              g.threeV3.pool.map((id) => {
+                const general = g.generals.find((x) => x.id === id);
+                return (
+                  <span key={id} className={`sg-3v3-pool-card kingdom-${general?.kingdom || "qun"}`}>
+                    {general?.name || id}
+                    {general && <small>体力 {general.hp}</small>}
+                  </span>
+                );
+              })
+            )}
+          </div>
+          {g.threeV3.stage === "pick" && (
+            <p className="muted small">
+              现在由{threeV3CampName(g.threeV3.pickCamp)}主帅连续选择{" "}
+              {g.threeV3.pickLeft} 名武将。
+            </p>
+          )}
+          {g.threeV3.stage === "assign" && (
+            <p className="muted small">双方主帅依次为主帅、前锋A、前锋B指定出场武将。</p>
+          )}
+        </div>
+      )}
+      {g.threeV3 && g.threeV3.stage === "play" && (
+        <p className="sg-3v3-right">
+          行动权：
+          {threeV3CampName(g.threeV3.side)}
+          （主帅 {g.threeV3.leaders[g.threeV3.side] + 1} 号位 ·{" "}
+          {g.threeV3.firstSide === g.threeV3.side ? "先手方" : "后手方"}）
+        </p>
       )}
       {!g.selecting && (
         <div className="sg-center">
@@ -1377,6 +1456,38 @@ export function SanguoshaBoard({
                 </details>
               );
             })}
+          </div>
+        )}
+        {responding && ask !== undefined && ask.startsWith("sg_3v3") && (
+          <div className="sg-3v3-prompt">
+            <p>{prompt?.message}</p>
+            <div className="sg-action-buttons">
+              {(ask === "sg_3v3_pick" || ask === "sg_3v3_assign") &&
+                (prompt?.choices || []).map((id) => {
+                  const general = g.generals.find((x) => x.id === id);
+                  return (
+                    <button
+                      key={id}
+                      disabled={busy}
+                      className={`sg-general-choice kingdom-${general?.kingdom || "qun"}`}
+                      onClick={() => void send({ choice: id })}
+                    >
+                      {assets && general && <img src={generalArt(assets, id)} alt="" />}
+                      <strong>{general?.name || id}</strong>
+                      {general && <small>体力 {general.hp}</small>}
+                    </button>
+                  );
+                })}
+              {threeV3PromptLabels(ask).map((choice) => (
+                <button
+                  key={choice.value}
+                  disabled={busy}
+                  onClick={() => void send({ choice: choice.value })}
+                >
+                  {choice.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
         {responding && ask === "god_kingdom" && (
