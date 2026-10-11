@@ -13,7 +13,7 @@ func (s *State) sgView(viewer int) map[string]any {
 			continue
 		}
 		general := p.General
-		if g.Selecting && i != g.Lord && i != viewer {
+		if g.Selecting && !s.sgThreeV3() && i != g.Lord && i != viewer {
 			general = ""
 		}
 		v := map[string]any{"general": general, "marks": p.Marks, "handLimit": s.sgHandLimit(i), "flipped": p.Flipped, "buqu": p.Buqu, "chained": p.Chained, "drank": p.Drank, "hp": p.HP, "maxHP": p.MaxHP, "dead": p.Dead, "handCount": len(p.Hand), "equip": p.Equip, "judgment": p.Judgment, "used": p.Used}
@@ -48,7 +48,11 @@ func (s *State) sgView(viewer int) map[string]any {
 			v["maxHP"] = 0
 			v["handLimit"] = 0
 		}
-		if i == viewer || p.Role == "lord" || p.Dead || s.Finished {
+		if s.sgThreeV3() {
+			// Camps and leader cards are public in 3v3.
+			v["role"] = map[bool]string{true: "leader", false: "vanguard"}[s.sgThreeIsLeader(i)]
+			v["camp"] = s.sgThreeCamp(i)
+		} else if i == viewer || p.Role == "lord" || p.Dead || s.Finished {
 			v["role"] = p.Role
 		}
 		if i == viewer {
@@ -68,6 +72,15 @@ func (s *State) sgView(viewer int) map[string]any {
 		visible["first"] = g.Hegemony.First
 		visible["hegemony"] = true
 		visible["companions"] = sgHegemonyCompanions
+	}
+	if three := g.ThreeV3; three != nil {
+		visible["lord"] = -1
+		visible["threeV3"] = map[string]any{
+			"rules": three.Rules, "stage": three.Stage, "side": three.Side,
+			"firstSide": three.FirstSide, "pickFirst": three.PickFirst, "pickCamp": three.PickCamp,
+			"pickLeft": three.PickLeft, "leaders": three.Leaders, "pool": three.Pool,
+			"picked": three.Picked, "assigned": three.Assigned, "acted": three.Acted,
+		}
 	}
 	if len(g.Bluffs) > 0 {
 		b := g.Bluffs[len(g.Bluffs)-1]
@@ -91,6 +104,27 @@ func (s *State) sgView(viewer int) map[string]any {
 			prompt["count"] = e.Count
 			prompt["step"] = e.Step
 			prompt["choices"] = p.Choices
+			if three := g.ThreeV3; three != nil {
+				switch p.Kind {
+				case "sg_3v3_pick":
+					prompt["choices"] = three.Pool
+				case "sg_3v3_assign":
+					camp := min(three.AssignCamp, sgThreeWarm)
+					left := []string{}
+					for _, id := range three.Picked[camp] {
+						if !slices.Contains(three.Assigned[camp], id) {
+							left = append(left, id)
+						}
+					}
+					prompt["choices"] = left
+				case "sg_3v3_first":
+					prompt["choices"] = []string{"us", "them"}
+				case "sg_3v3_first_side":
+					prompt["choices"] = []string{"cold", "warm"}
+				case "sg_3v3_side":
+					prompt["choices"] = []string{"leader", "vanguards"}
+				}
+			}
 			if p.Kind == "jie_fanjian" || p.Kind == "jie_tieji_discard" {
 				prompt["suit"] = e.Color
 			}
