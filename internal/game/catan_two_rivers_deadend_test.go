@@ -29,6 +29,48 @@ func catanTwoRiversFrozenState(t *testing.T) *State {
 }
 
 func TestCatanTwoRiversSeaDeadEnd(t *testing.T) {
+	// Failure scenarios: held knights, including newly bought cards usable next
+	// turn, can still claim the army bonus; conversely a tied army cannot take
+	// that bonus from its current owner and must not keep a frozen table alive.
+	t.Run("held knight can still claim the army", func(t *testing.T) {
+		for _, newlyBought := range []bool{false, true} {
+			s := catanTwoRiversFrozenState(t)
+			g := s.Catan
+			at := slices.Index(g.DevDiscard, 0)
+			if at < 0 {
+				t.Fatal("fixture has no discarded knight")
+			}
+			g.DevDiscard = slices.Delete(g.DevDiscard, at, at+1)
+			g.Players[0].Knights = 2
+			g.Players[0].Dev[0] = 1
+			if newlyBought {
+				g.Players[0].NewDev[0] = 1
+			}
+			if err := s.validateTwoRiversSea(); err != nil {
+				t.Fatal(err)
+			}
+			before, _ := json.Marshal(s)
+			if s.catanTwoRiversSeaDeadEnd() {
+				t.Fatalf("held knight ignored (new=%t)", newlyBought)
+			}
+			after, _ := json.Marshal(s)
+			if string(before) != string(after) {
+				t.Fatal("nonterminal check changed state")
+			}
+		}
+	})
+	t.Run("army tie cannot unseat the current owner", func(t *testing.T) {
+		s := catanTwoRiversFrozenState(t)
+		s.Catan.Players[0].Knights = 3
+		s.Catan.Players[1].Knights = 3
+		s.Catan.ArmyOwner = 0
+		if err := s.validateTwoRiversSea(); err != nil {
+			t.Fatal(err)
+		}
+		if !s.catanTwoRiversSeaDeadEnd() {
+			t.Fatal("unchangeable army tie kept a frozen table alive")
+		}
+	})
 	t.Run("frozen table ends on points", func(t *testing.T) {
 		s := catanTwoRiversFrozenState(t)
 		if err := s.validateTwoRiversSea(); err != nil {

@@ -1153,8 +1153,8 @@ export type ThreeV3State = {
   pickCamp: number;
   pickLeft: number;
   leaders: number[];
-  // Absent until both leaders have taken a pile in the official 3v3 draft.
-  pool?: string[];
+  // Older servers may send null before both leaders have taken a pile.
+  pool?: string[] | null;
   picked: string[][];
   assigned: string[][];
   acted: boolean[];

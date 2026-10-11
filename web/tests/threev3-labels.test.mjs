@@ -54,5 +54,9 @@ test("3v3 draft pool stays render-safe before both leaders take a pile", () => {
     "选将结束，等待双方主帅分配出场武将。",
   );
   assert.equal(threeV3PoolHint("pick", ["caocao"]), null);
+  assert.equal(
+    threeV3PoolHint("firstSide", []),
+    "双方布阵完毕，等待冷色方主帅选择先手阵营。",
+  );
   assert.equal(threeV3PoolHint(undefined, null), null);
 });

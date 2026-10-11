@@ -51,5 +51,8 @@ export function threeV3PoolHint(
   if (stage === "pick" || stage === "assign") {
     return "选将结束，等待双方主帅分配出场武将。";
   }
+  if (stage === "firstSide") {
+    return "双方布阵完毕，等待冷色方主帅选择先手阵营。";
+  }
   return null;
 }

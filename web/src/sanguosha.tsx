@@ -1144,8 +1144,7 @@ export function SanguoshaBoard({
           <div className="sg-3v3-pool">
             {threeV3PoolList(g.threeV3.pool).length === 0 ? (
               <small>
-                {threeV3PoolHint(g.threeV3.stage, g.threeV3.pool) ||
-                  "两方十六名武将已全部出场。"}
+                {threeV3PoolHint(g.threeV3.stage, g.threeV3.pool)}
               </small>
             ) : (
               threeV3PoolList(g.threeV3.pool).map((id) => {
