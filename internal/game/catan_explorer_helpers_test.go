@@ -3,6 +3,8 @@ package game
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"reflect"
 	"slices"
 	"testing"
@@ -49,11 +51,35 @@ func explorerHelpersStep(t *testing.T, s *State) Action {
 	if err != nil {
 		t.Fatal(s.Phase, p, err)
 	}
+	explorerHelpersTrace = append(explorerHelpersTrace, fmt.Sprintf("p%d %s c=%s vtx=%d phase=%s", p, a.Type, a.Choice, a.Vertex, s.Phase))
+	if len(explorerHelpersTrace) > 8 {
+		explorerHelpersTrace = explorerHelpersTrace[len(explorerHelpersTrace)-8:]
+	}
 	if err = s.Apply(p, a); err != nil {
-		t.Fatal(s.Phase, p, a, err)
+		explorerHelpersFail(t, s, a, err)
+		detail := fmt.Sprintf("trace=%v phase=%s turn=%d/%d roll=%d", explorerHelpersTrace, s.Phase, s.Turn, s.CatanPendingActor(), s.Catan.RollID)
+		if x := s.Catan.Explorer; x != nil && x.Economy.Turn != nil {
+			detail += fmt.Sprintf(" turnPhase=%s", x.Economy.Turn.Phase)
+		}
+		if f := s.Catan.Fishing; f != nil {
+			detail += fmt.Sprintf(" fishPending=%+v fishLastRoll=%d fishClaims=%d", f.Pending, f.LastRollID, len(f.Tokens.Pending))
+		}
+		if k := s.Catan.CitiesKnights; k != nil {
+			detail += fmt.Sprintf(" cityPending=%+v cityEvent=%v", k.Pending, k.Event != nil)
+		}
+		detail += fmt.Sprintf(" helper=%+v", s.Catan.HelperPending)
+		t.Fatal(s.Phase, p, a, err, detail)
+	}
+	if x := s.Catan.Explorer; s.Catan.CitiesKnights != nil && x != nil && x.Economy != nil && x.Economy.Turn != nil && s.Catan.Fishing != nil {
+		if err := s.validateExplorerCityProduction(); err != nil {
+			explorerHelpersFail(t, s, a, err)
+		}
 	}
 	return a
 }
+
+// Temporary diagnostic ring buffer for the rare explorer helper stall.
+var explorerHelpersTrace []string
 
 func TestCatanExplorerHelpersRecipesAndTurns(t *testing.T) {
 	for n := 2; n <= 6; n++ {
@@ -231,4 +257,30 @@ func TestCatanExplorerHelpersNaturalMatches(t *testing.T) {
 			t.Log("round", s.Round, "actions", seen)
 		})
 	}
+}
+
+// explorerHelpersFail saves the whole failing state and the recent actions so a
+// CI shard can upload them, then reports the same detail inline.
+func explorerHelpersFail(t *testing.T, s *State, a Action, err error) {
+	t.Helper()
+	detail := fmt.Sprintf("phase=%s turn=%d/%d roll=%d", s.Phase, s.Turn, s.CatanPendingActor(), s.Catan.RollID)
+	if x := s.Catan.Explorer; x != nil && x.Economy != nil && x.Economy.Turn != nil {
+		detail += fmt.Sprintf(" turnPhase=%s noProduction=%t", x.Economy.Turn.Phase, x.Economy.Turn.NoProduction)
+	}
+	if f := s.Catan.Fishing; f != nil {
+		detail += fmt.Sprintf(" fishPending=%+v fishLastRoll=%d claims=%d", f.Pending, f.LastRollID, len(f.Tokens.Pending))
+	}
+	if k := s.Catan.CitiesKnights; k != nil {
+		detail += fmt.Sprintf(" cityPending=%+v cityEvent=%t", k.Pending, k.Event != nil)
+	}
+	detail += fmt.Sprintf(" helper=%+v", s.Catan.HelperPending)
+	path := filepath.Join("..", "..", ".local", "explorer-helpers-failure.json")
+	if raw, marshalErr := json.Marshal(s); marshalErr == nil {
+		if mkErr := os.MkdirAll(filepath.Dir(path), 0o700); mkErr == nil {
+			if writeErr := os.WriteFile(path, raw, 0o600); writeErr == nil {
+				detail += " state=" + path
+			}
+		}
+	}
+	t.Fatalf("action %s failed: %v trace=%v %s", a.Type, err, explorerHelpersTrace, detail)
 }

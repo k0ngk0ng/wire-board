@@ -232,6 +232,17 @@ func (s *State) catanExplorerFishingProduction(resources [][]int) error {
 		f.LastRollID = g.RollID
 		s.catanLogFishDraws(before)
 		if len(f.Tokens.Pending) > 0 {
+			// Cities & Knights production owes an aqueduct step. If a city
+			// response already moved the turn on while this production was in
+			// flight, restore the phase so the compensation is not skipped and
+			// the recorded resume matches it.
+			if g.CitiesKnights != nil && x.Economy.Turn.Phase != "aqueduct" && x.Economy.Turn.productionNumber() != 7 {
+				// resolveProduction already decided this; re-assert it in case
+				// a city response moved the turn on while this production was
+				// in flight, so the compensation is still owed and the recorded
+				// resume matches the phase.
+				x.Economy.Turn.Phase = "aqueduct"
+			}
 			f.Pending = &CatanFishingPending{Resume: "explorer_" + x.Economy.Turn.Phase, Received: received}
 			s.catanExplorerSyncPhase()
 			return nil
