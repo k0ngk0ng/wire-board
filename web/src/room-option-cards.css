@@ -1,0 +1,182 @@
+/* Creation and waiting-room option controls share the same card treatment. */
+.gem-expansion-options > div > button {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+}
+.gem-expansion-options > div > button > svg {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  align-self: start;
+}
+.gem-expansion-options > div > button > span {
+  min-width: 0;
+}
+
+.catan-helper-options label:has(> input[type="checkbox"]),
+.sg-options .sg-pack-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+  min-height: 48px;
+  margin: 8px 0;
+  padding: 12px 34px 12px 14px;
+  border: 2px solid #cdbb96;
+  border-radius: 10px;
+  background: #fffaf0;
+  color: #392d1e;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.5;
+  transition:
+    background-color 120ms,
+    border-color 120ms;
+}
+.catan-helper-options label > input[type="checkbox"],
+.sg-options .sg-pack-option > input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  clip-path: inset(50%);
+}
+.catan-helper-options label:has(> input:checked),
+.sg-options .sg-pack-option:has(> input:checked) {
+  border-color: #b68b2b;
+  background: #f9e8b5;
+  color: #493515;
+}
+.catan-helper-options label:has(> input:checked)::after,
+.sg-options .sg-pack-option:has(> input:checked)::after {
+  content: "✓";
+  position: absolute;
+  right: 12px;
+  color: #805a15;
+  font-size: 17px;
+  font-weight: 800;
+}
+.catan-helper-options label:has(> input:focus-visible),
+.sg-options .sg-pack-option:has(> input:focus-visible) {
+  outline: 3px solid #327764;
+  outline-offset: 2px;
+}
+.catan-helper-options label:has(> input:disabled),
+.sg-options .sg-pack-option:has(> input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sg-options .sg-pack-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.sg-options .sg-pack-option {
+  margin: 0;
+  min-height: 64px;
+}
+.sg-options .sg-pack-option strong,
+.sg-options .sg-pack-option small {
+  display: block;
+}
+.sg-options .sg-pack-option small {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #6c5737;
+}
+.sg-options .sg-deck-options + .sg-deck-options {
+  margin-top: 12px;
+}
+.sg-options .sg-deck-options button {
+  min-height: 66px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  line-height: 1.45;
+}
+.sg-options .sg-deck-options button.selected {
+  box-shadow: none;
+}
+
+.scenario-card-picker {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.scenario-card-picker > legend {
+  padding: 0;
+  margin-bottom: 9px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.scenario-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.scenario-card-grid.is-expanded {
+  max-height: 330px;
+  overflow-y: auto;
+  padding: 3px;
+  scroll-padding: 8px;
+}
+.scenario-card-grid > button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 2px solid #cdbb96;
+  border-radius: 10px;
+  background: #fffaf0;
+  color: #493d29;
+  font-size: 13px;
+  text-align: left;
+  line-height: 1.45;
+}
+.scenario-card-grid > button[aria-pressed="true"] {
+  border-color: #b68b2b;
+  background: #f9e8b5;
+  color: #493515;
+}
+.scenario-card-grid > button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.scenario-card-grid > button:focus-visible {
+  outline: 3px solid #327764;
+  outline-offset: 1px;
+}
+.scenario-card-picker > .scenario-more {
+  width: 100%;
+  padding: 9px;
+  margin-top: 6px;
+  border: 0;
+  background: transparent;
+  color: #53674c;
+  font-size: 12px;
+}
+@media (max-width: 380px) {
+  .scenario-card-grid > button {
+    padding: 9px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Keep the selected-game check from squeezing its title into a vertical line. */
+.choose-games > button { position: relative; }
+.choose-games > button > span { display: block; }
+.choose-games > button > span > svg {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px;
+  border-radius: 50%;
+  color: #fff;
+  background: #43785a;
+}

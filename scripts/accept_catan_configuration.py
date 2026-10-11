@@ -49,16 +49,29 @@ def state():
 
 def select_label(label, value):
     result = js("((label)=>{const e=[...document.querySelectorAll('.modal select')].find(e=>e.closest('label').innerText.trim().startsWith(label));if(!e)return null;e.dataset.acceptSelect='target';return [...e.options].map(o=>({value:o.value,disabled:o.disabled}));})(" + json.dumps(label) + ')')
+    if result is None:
+        # Scenario selection uses native buttons; preserve the existing card
+        # availability checks and expand only when the requested card is hidden.
+        js("((label)=>{const e=[...document.querySelectorAll('.scenario-card-picker')].find(e=>e.querySelector('legend')?.textContent===label);if(!e)throw Error(label);e.dataset.acceptPicker='yes';})(" + json.dumps(label) + ')')
+        selector = '[data-accept-picker=yes] [data-scenario-value=' + json.dumps(str(value)) + ']'
+        if not js('!!document.querySelector(' + json.dumps(selector) + ')'):
+            b('click', '[data-accept-picker=yes] .scenario-more')
+        assert js('!!document.querySelector(' + json.dumps(selector) + ') && !document.querySelector(' + json.dumps(selector) + ').matches(":disabled")')
+        click(selector)
+        js('document.querySelectorAll("[data-accept-picker]").forEach(e=>delete e.dataset.acceptPicker)')
+        return
     assert result and any((o['value'] == str(value) and (not o['disabled']) for o in result)), (label, value, result)
     b('select', '[data-accept-select="target"]', str(value))
     js('document.querySelectorAll("[data-accept-select]").forEach(e=>delete e.dataset.acceptSelect)')
     time.sleep(0.08)
 
 def check_label(prefix):
-    label = js("((prefix)=>{const e=[...document.querySelectorAll('.modal input[type=checkbox]')].find(e=>e.closest('label').innerText.trim().startsWith(prefix));if(!e)return null;e.dataset.acceptCheck='target';return {text:e.closest('label').innerText,disabled:e.matches(':disabled')};})(" + json.dumps(prefix) + ')')
+    label = js("((prefix)=>{const e=[...document.querySelectorAll('.modal input[type=checkbox]')].find(e=>e.closest('label').innerText.trim().startsWith(prefix));if(!e)return null;e.dataset.acceptCheck='target';e.closest('label').dataset.acceptCheckLabel='yes';return {text:e.closest('label').innerText,disabled:e.matches(':disabled'),checked:e.checked};})(" + json.dumps(prefix) + ')')
     assert label and (not label['disabled']), (prefix, label)
     js('document.querySelector("[data-accept-check]").scrollIntoView({block:"center"})')
-    b('check', '[data-accept-check="target"]')
+    if not label['checked']:
+        b('click', '[data-accept-check-label=yes]')
+    js('document.querySelectorAll("[data-accept-check-label]").forEach(e=>delete e.dataset.acceptCheckLabel)')
     js('document.querySelectorAll("[data-accept-check]").forEach(e=>delete e.dataset.acceptCheck)')
     time.sleep(0.08)
 
