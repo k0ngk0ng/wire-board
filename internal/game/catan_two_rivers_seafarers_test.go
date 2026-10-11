@@ -3,8 +3,12 @@ package game
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"reflect"
 	"slices"
+	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -23,11 +27,51 @@ func TestCatanTwoRiversSeaNatural(t *testing.T) {
 						t.Fatal(err)
 					}
 				}
-				double, neutral := false, false
-				for step := 0; step < 20000 && !s.Finished; step++ {
-					double = double || len(s.Catan.Two.Rolls) == 2
-					neutral = neutral || s.Phase == "catan_two_build"
-					twoSeaStep(t, s)
+				diagnostic := twoRiversSeaDiagnostic{Test: t.Name(), State: s, Actions: map[string]int{}}
+				if path := os.Getenv("WIRE_BOARD_TWO_RIVERS_REPLAY"); path != "" {
+					raw, err := os.ReadFile(path)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err = json.Unmarshal(raw, &diagnostic); err != nil {
+						t.Fatal(err)
+					}
+					if diagnostic.Test != t.Name() || diagnostic.State == nil {
+						t.Fatal("replay artifact does not match this test")
+					}
+					s = diagnostic.State
+				}
+				// Capture action errors, failed restore/conservation checks and a
+				// long-game stall alike. No production rules or limits are changed.
+				t.Cleanup(func() {
+					if t.Failed() {
+						diagnostic.save(t)
+					}
+				})
+				limit := 20000
+				if value := os.Getenv("WIRE_BOARD_TWO_RIVERS_STEPS"); value != "" {
+					limit, err = strconv.Atoi(value)
+					if err != nil || limit < 1 {
+						t.Fatal("WIRE_BOARD_TWO_RIVERS_STEPS must be a positive integer")
+					}
+				}
+				for step := 0; step < limit && !s.Finished; step++ {
+					diagnostic.DoubleRollSeen = diagnostic.DoubleRollSeen || len(s.Catan.Two.Rolls) == 2
+					diagnostic.NeutralBuildSeen = diagnostic.NeutralBuildSeen || s.Phase == "catan_two_build"
+					actor := twoFullActor(s)
+					a, err := s.BotAction(actor)
+					if err != nil {
+						t.Fatal("bot action", s.Phase, actor, err)
+					}
+					diagnostic.Steps++
+					diagnostic.Actions[a.Type]++
+					diagnostic.Recent = append(diagnostic.Recent, twoRiversSeaAction{actor, s.Phase, a})
+					if len(diagnostic.Recent) > 32 {
+						diagnostic.Recent = diagnostic.Recent[1:]
+					}
+					if err = s.Apply(actor, a); err != nil {
+						t.Fatal("apply", actor, a, err)
+					}
 					if step%79 == 0 {
 						twoSeaRestore(t, s)
 						riversSeaRestore(t, s)
@@ -35,11 +79,19 @@ func TestCatanTwoRiversSeaNatural(t *testing.T) {
 						s.View(-1)
 					}
 				}
-				if !s.Finished || !double || !neutral {
-					t.Fatal("incomplete", s.Round, s.Phase, double, neutral)
+				if !s.Finished || !diagnostic.DoubleRollSeen || !diagnostic.NeutralBuildSeen {
+					t.Fatal("incomplete", s.Round, s.Phase, diagnostic.DoubleRollSeen, diagnostic.NeutralBuildSeen)
 				}
 				if err = s.validateTwoRiversSea(); err != nil {
 					t.Fatal(err)
+				}
+				// A winner below the printed target is only legal when the
+				// logged dead-end site rule finished a frozen table.
+				if score := s.Catan.Players[s.Winners[0]].Score; score < s.Catan.victoryTargetFor(s.Winners[0]) {
+					last := s.Log[len(s.Log)-1]
+					if !strings.Contains(last, CatanTwoRiversSeaDeadEndRules) {
+						t.Fatalf("winner scored %d below the target without the dead-end rule: %s", score, last)
+					}
 				}
 				twoSeaRestore(t, s)
 				riversSeaRestore(t, s)
@@ -47,6 +99,43 @@ func TestCatanTwoRiversSeaNatural(t *testing.T) {
 			})
 		}
 	}
+}
+
+type twoRiversSeaAction struct {
+	Actor  int    `json:"actor"`
+	Phase  string `json:"phase"`
+	Action Action `json:"action"`
+}
+
+type twoRiversSeaDiagnostic struct {
+	DoubleRollSeen   bool                 `json:"doubleRollSeen"`
+	NeutralBuildSeen bool                 `json:"neutralBuildSeen"`
+	Test             string               `json:"test"`
+	Steps            int                  `json:"steps"`
+	State            *State               `json:"state"`
+	Actions          map[string]int       `json:"actions"`
+	Recent           []twoRiversSeaAction `json:"recent"`
+}
+
+func (d *twoRiversSeaDiagnostic) save(t *testing.T) {
+	t.Helper()
+	dir := filepath.Join("..", "..", ".local", "catan-two-rivers-failures")
+	if err := os.MkdirAll(dir, 0o700); err != nil {
+		t.Error("create diagnostic directory", err)
+		return
+	}
+	f, err := os.CreateTemp(dir, "failure-*.json")
+	if err != nil {
+		t.Error("create diagnostic artifact", err)
+		return
+	}
+	err = json.NewEncoder(f).Encode(d)
+	closeErr := f.Close()
+	if err != nil || closeErr != nil {
+		t.Error("write diagnostic artifact", err, closeErr)
+		return
+	}
+	t.Logf("saved state and last 32 actions: %s; actions=%v", f.Name(), d.Actions)
 }
 func TestCatanTwoRiversSeaRecipes(t *testing.T) {
 	for _, tc := range twoRiversSeaCases {

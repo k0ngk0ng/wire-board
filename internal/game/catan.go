@@ -651,7 +651,7 @@ func (s *State) applyCatanStep(player int, a Action) error {
 		if !s.Finished && s.catanBeginCaravanVote() {
 			return nil
 		}
-		if !s.Finished && !s.catanClothEnd() && !s.catanCaravansDeadEnd() {
+		if !s.Finished && !s.catanClothEnd() && !s.catanCaravansDeadEnd() && !s.catanTwoRiversSeaDeadEnd() {
 			s.catanNext()
 			s.catanVictory()
 		}
