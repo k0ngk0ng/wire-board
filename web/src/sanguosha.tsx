@@ -597,16 +597,20 @@ export function SanguoshaBoard({
       <header className="sg-heading">
         <div>
           <span className="eyebrow">
-            三国杀 · {g.hegemony ? "国战" : "身份局"}
+            三国杀 · {g.threeV3 ? "3v3 竞技" : g.hegemony ? "国战" : "身份局"}
             {g.options?.standardVersion === "breakthrough" ? " · 界限突破" : ""}
             {g.options?.deck === "military" ? " · 军争" : ""}
           </span>
           <h2>
             {g.selecting
-              ? "群雄集结"
-              : g.hegemony
-                ? "双将同心，四方争雄"
-                : "一桌风云，各有所谋"}
+              ? g.threeV3
+                ? "公开抓将，冷暖对垒"
+                : "群雄集结"
+              : g.threeV3
+                ? "主帅为尊，前锋为锋"
+                : g.hegemony
+                  ? "双将同心，四方争雄"
+                  : "一桌风云，各有所谋"}
           </h2>
         </div>
         <div className="sg-piles">
