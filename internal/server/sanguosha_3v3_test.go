@@ -69,11 +69,33 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 		t.Fatalf("the official 3v3 deck holds %d cards, want 106", len(opening.Deck))
 	}
 	for viewer := 0; viewer < 6; viewer++ {
+		draft := current(clients[viewer])["game"].(map[string]any)["sanguosha"].(map[string]any)
+		three := draft["threeV3"].(map[string]any)
+		// Failure scenario: while the piles are still face down the payload
+		// must stay render-safe. A null `pool` blanks the whole table in the
+		// browser, so every viewer has to receive an array.
+		pool, ok := three["pool"].([]any)
+		if !ok {
+			t.Fatalf("viewer %d received a non-array pool %#v", viewer, three["pool"])
+		}
+		if len(pool) != 0 {
+			t.Fatalf("viewer %d saw %d laid-out generals before both piles were taken", viewer, len(pool))
+		}
+		sizes, ok := three["pileSizes"].([]any)
+		if !ok || len(sizes) != 4 {
+			t.Fatalf("viewer %d received pileSizes %#v, want four piles", viewer, three["pileSizes"])
+		}
+		for _, size := range sizes {
+			if size != float64(8) {
+				t.Fatalf("viewer %d saw pile size %#v, want 8", viewer, size)
+			}
+		}
+		if turn, ok := three["pileTurn"].(float64); !ok || (turn != 0 && turn != 1) {
+			t.Fatalf("viewer %d received pileTurn %#v", viewer, three["pileTurn"])
+		}
 		if viewer == warmLeader {
 			continue
 		}
-		draft := current(clients[viewer])["game"].(map[string]any)["sanguosha"].(map[string]any)
-		three := draft["threeV3"].(map[string]any)
 		if _, seen := three["piles"]; seen {
 			t.Fatalf("viewer %d saw the face-down piles", viewer)
 		}
@@ -143,11 +165,20 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 		t.Errorf("first turn must begin immediately with cold leader %d, got turn=%d sequence=%d", leader, state.Turn, state.Sanguosha.TurnSequence)
 	}
 	seen := map[int]map[int]bool{}
-	lastSequence, requestedFirst, restarted := 0, -1, false
-	for step := 0; step < 300 && len(turns) < 13; step++ {
+	campOf := func(seat int) int {
+		if s.rooms[id].Game.Sanguosha.ThreeV3.Camps[seat] == "cold" {
+			return 0
+		}
+		return 1
+	}
+	lastSequence, requestedFirst, restarted, rounds := 0, -1, false, 0
+	for step := 0; step < 400 && rounds < 2; step++ {
 		state = s.rooms[id].Game
 		g := state.Sanguosha
 		if g.TurnSequence != lastSequence {
+			// One action can advance the counter twice: a flipped (翻面) seat
+			// burns its turn without ever reaching the play phase.
+			delta := g.TurnSequence - lastSequence
 			lastSequence = g.TurnSequence
 			if seen[state.Round] == nil {
 				seen[state.Round] = map[int]bool{}
@@ -158,12 +189,15 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 			seen[state.Round][state.Turn] = true
 			turns = append(turns, map[string]int{"round": state.Round, "seat": state.Turn})
 			if requestedFirst >= 0 && state.Turn != requestedFirst {
-				t.Fatalf("vanguard order ignored: requested %d got %d", requestedFirst, state.Turn)
+				// The requested vanguard may be flipped; the rules then hand
+				// the camp's unit to its partner vanguard instead.
+				partner := delta == 2 && campOf(state.Turn) == campOf(requestedFirst) &&
+					state.Turn != g.ThreeV3.Leaders[campOf(state.Turn)] && g.ThreeV3.Acted[requestedFirst]
+				if !partner {
+					t.Fatalf("vanguard order ignored: requested %d got %d", requestedFirst, state.Turn)
+				}
 			}
 			requestedFirst = -1
-		}
-		if len(turns) == 13 {
-			break
 		}
 		actor := state.SanguoshaActor()
 		var a game.Action
@@ -219,17 +253,28 @@ func TestSanguoshaThreeV3OpeningAndRoundsHTTP(t *testing.T) {
 		} else {
 			a = game.Action{Type: "sg_end"}
 		}
+		beforeActed := append([]bool{}, g.ThreeV3.Acted...)
+		beforeRound := state.Round
 		clients[actor].command(current(clients[actor]), "action", a, 200)
+		after := s.rooms[id].Game
+		if after.Round > beforeRound {
+			// A round only turns over once every living seat has been marked
+			// acted; the seat that just finished is marked during its own end.
+			for seat, acted := range beforeActed {
+				if !after.Sanguosha.Players[seat].Dead && !acted && seat != actor {
+					t.Fatalf("round %d advanced while seat %d had not acted: %v", beforeRound, seat, beforeActed)
+				}
+			}
+			rounds++
+			// The printed rule starts the new round with the camp that did not
+			// act last.
+			if campOf(actor) == after.Sanguosha.ThreeV3.Side {
+				t.Fatalf("round %d started with the camp that just acted (seat %d)", after.Round, actor)
+			}
+		}
 	}
-	if len(turns) != 13 || len(seen[1]) != 6 || len(seen[2]) != 6 || !restarted {
+	if rounds != 2 || !restarted {
 		t.Fatalf("two complete rounds not played: %v restart=%t", turns, restarted)
-	}
-	if turns[12]["round"] != 3 {
-		t.Fatal("round counter advanced before all six acted", turns)
-	}
-	three := s.rooms[id].Game.Sanguosha.ThreeV3
-	if three.Camps[turns[12]["seat"]] == three.Camps[turns[11]["seat"]] {
-		t.Fatal("new round did not pass the action right to the other camp")
 	}
 	t.Logf("HTTP draft, opening cards, two rounds, vanguard order and restart passed: %v", turns)
 }

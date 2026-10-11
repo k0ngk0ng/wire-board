@@ -82,10 +82,17 @@ func (s *State) sgView(viewer int) map[string]any {
 			}
 		}
 		visible["lord"] = -1
+		// The laid-out pool only exists once both leaders have taken a pile.
+		// Emitting a null there blanks the table in the browser, so the field
+		// always carries an array.
+		pool := three.Pool
+		if pool == nil {
+			pool = []string{}
+		}
 		draft := map[string]any{
 			"rules": three.Rules, "variant": three.Variant, "stage": three.Stage, "side": three.Side,
 			"firstSide": three.FirstSide, "pickFirst": three.PickFirst, "pickCamp": three.PickCamp,
-			"pickLeft": three.PickLeft, "leaders": three.Leaders, "pool": three.Pool,
+			"pickLeft": three.PickLeft, "leaders": three.Leaders, "pool": pool,
 			"picked": three.Picked, "assigned": assigned, "acted": three.Acted,
 		}
 		if len(three.Piles) > 0 {
@@ -99,7 +106,7 @@ func (s *State) sgView(viewer int) map[string]any {
 			draft["pileSizes"] = sizes
 			if three.Stage != "piles" {
 				draft["piles"] = three.Piles
-				draft["pool"] = three.Pool
+				draft["pool"] = pool
 			}
 		}
 		visible["threeV3"] = draft
