@@ -28,11 +28,18 @@ func (s *State) catanTwoRiversSeaDeadEnd() bool {
 			knights++
 		}
 	}
+	armyTarget := 3
+	if g.ArmyOwner >= 0 && g.ArmyOwner < len(g.Players) {
+		// An existing holder keeps the bonus on a tie.
+		armyTarget = max(armyTarget, g.Players[g.ArmyOwner].Knights+1)
+	}
 	for p, seat := range g.Players {
 		if seat.Eliminated {
 			continue
 		}
-		if seat.Knights+knights >= 3 && g.ArmyOwner != p {
+		// Dev includes newly purchased cards. They are playable on a later
+		// turn, so they also prevent declaring the whole match frozen.
+		if seat.Knights+seat.Dev[0]+knights >= armyTarget && g.ArmyOwner != p {
 			return false
 		}
 		if g.settlementPiecesLeft(p) > 0 {
