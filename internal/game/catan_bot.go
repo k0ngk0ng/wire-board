@@ -346,6 +346,11 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		if g.Seafarers != nil {
 			choices := g.seaBuildChoices(player)
+			if g.pirateIslands() != nil {
+				if safe := s.pirateBotSafeFreeRoutes(player); len(safe) > 0 {
+					choices = safe
+				}
+			}
 			choices = append(choices, botChoice{Action{Type: "catan_skip_roads"}, -99999})
 			return s.botLegal(player, choices)
 		}
@@ -443,6 +448,9 @@ func (s *State) catanBot(player int) (Action, error) {
 		}
 		for kind := 0; kind <= maxKind; kind++ {
 			if p.Dev[kind]-p.NewDev[kind] <= 0 {
+				continue
+			}
+			if kind == 1 && g.pirateIslands() != nil && !s.pirateBotSafeRoadBuilding(player) {
 				continue
 			}
 			a := Action{Type: "catan_dev", Card: kind}

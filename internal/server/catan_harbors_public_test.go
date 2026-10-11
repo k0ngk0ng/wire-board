@@ -3,6 +3,8 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"slices"
 	"testing"
 	"time"
@@ -187,6 +189,29 @@ func testCatanPublicVariantsWithHelpers(t *testing.T, friendly, harbors, helpers
 					expected--
 				}
 				steps, automatic, timeouts := 0, 0, 0
+				// Preserve a stalled natural game before changing either the bot
+				// or the rules. CI uploads .local on failure for exact replay.
+				recent := []map[string]any{}
+				t.Cleanup(func() {
+					if !t.Failed() {
+						return
+					}
+					dir := filepath.Join("..", "..", ".local", "catan-harbors-failures")
+					if err := os.MkdirAll(dir, 0700); err != nil {
+						t.Error(err)
+						return
+					}
+					file, err := os.CreateTemp(dir, "failure-*.json")
+					if err != nil {
+						t.Error(err)
+						return
+					}
+					defer file.Close()
+					if err := json.NewEncoder(file).Encode(map[string]any{"test": t.Name(), "steps": steps, "state": s.rooms[id].Game, "recent": recent}); err != nil {
+						t.Error(err)
+					}
+					t.Log("saved stalled-game diagnostic", file.Name())
+				})
 				for ; steps < 10000 && !s.rooms[id].Game.Finished; steps++ {
 					r := s.rooms[id]
 					state := r.Game
@@ -220,6 +245,11 @@ func testCatanPublicVariantsWithHelpers(t *testing.T, friendly, harbors, helpers
 						assertPublicFishSeaSpecialInventory(t, g)
 					}
 					actor := twoHTTPActor(state)
+					entry := map[string]any{"step": steps, "phase": state.Phase, "round": state.Round, "actor": actor}
+					recent = append(recent, entry)
+					if len(recent) > 32 {
+						recent = recent[len(recent)-32:]
+					}
 					if steps%53 == 0 {
 						for _, viewer := range []int{actor, n} {
 							v := current(clients[viewer])["game"].(map[string]any)["catan"].(map[string]any)
@@ -237,6 +267,7 @@ func testCatanPublicVariantsWithHelpers(t *testing.T, friendly, harbors, helpers
 					}
 					version := r.Version
 					if steps%101 == 0 {
+						entry["mode"] = "timeout"
 						s.mu.Lock()
 						s.expireSetups(time.UnixMilli(r.TurnDeadline))
 						s.mu.Unlock()
@@ -245,6 +276,7 @@ func testCatanPublicVariantsWithHelpers(t *testing.T, friendly, harbors, helpers
 							reclaimTimeoutHumans(t, s, clients, id)
 						}
 					} else if steps%19 == 0 {
+						entry["mode"] = "autoplay"
 						setAutoPlay(clients[actor], current(clients[actor]), true, 200)
 						s.mu.Lock()
 						s.rooms[id].BotAt = 0
@@ -259,6 +291,7 @@ func testCatanPublicVariantsWithHelpers(t *testing.T, friendly, harbors, helpers
 						if err != nil {
 							t.Fatal(steps, state.Phase, err)
 						}
+						entry["action"] = a
 						clients[actor].command(current(clients[actor]), "action", a, 200)
 					}
 					if s.rooms[id].Version <= version {
