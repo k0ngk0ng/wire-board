@@ -1,10 +1,14 @@
 import type { Room } from "./types";
+import { isPublicCatanRiversSea } from "./catan-rivers-sea-options.ts";
+import { isPublicCatanCaravanSea } from "./catan-two-helpers.ts";
 
 export const CATAN_EVENT_CATALOGUE = "wire-board-events-v1";
 export function catanEventsSupported(room: Partial<Room>) {
   return (
     room.kind === "catan" &&
     (!room.catanFishing ||
+      isPublicCatanRiversSea(room.catanTwoScenario || room.catanScenario) ||
+      isPublicCatanCaravanSea(room.catanTwoScenario || room.catanScenario) ||
       [
         "rivers",
         "caravans",

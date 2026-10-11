@@ -9,9 +9,9 @@ test('caravan desert waiting target and transferred token agree with rules',()=>
 });
 
 import {catanEventsSupported} from '../src/catan-event-options.ts';
-test('public caravan sea room offers event cards without admitting fishing',()=>{
+test('public caravan sea room offers events with the implemented fishing nesting',()=>{
  assert.equal(catanEventsSupported({kind:'catan',capacity:3,catanScenario:'caravans-desert'}),true);
- assert.equal(catanEventsSupported({kind:'catan',capacity:3,catanScenario:'caravans-desert',catanFishing:true}),false);
+ assert.equal(catanEventsSupported({kind:'catan',capacity:3,catanScenario:'caravans-desert',catanFishing:true}),true);
 });
 test('caravan tribe target and events are explicit',()=>{
  const room={kind:'catan',capacity:4,catanScenario:'caravans-tribe'};

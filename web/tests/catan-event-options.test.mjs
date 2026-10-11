@@ -342,3 +342,47 @@ test("fishing transport changes only its own victory target", () => {
     assert.equal(catanRuleContext(room).target, knights ? 15 : 12);
   }
 });
+
+// Public river/caravan sea factories accept events with fishing and knights;
+// the UI must not hide or clear the selected event deck for those same rooms.
+test("river and caravan sea fishing combinations retain events", () => {
+  for (const scenario of [
+    "rivers-shores",
+    "rivers-fog",
+    "rivers-desert",
+    "rivers-desert-belt",
+    "rivers-tribe",
+    "rivers-new-world",
+    "caravans-shores",
+    "caravans-islands",
+    "caravans-desert",
+    "caravans-tribe",
+    "caravans-new-world",
+  ]) {
+    for (const capacity of [2, 3, 6]) {
+      for (const knights of [false, true]) {
+        assert.equal(
+          catanEventsSupported({
+            kind: "catan",
+            capacity,
+            catanScenario: scenario,
+            catanFishing: true,
+            catanOptions: { helpers: true },
+            ...(knights ? { catanCitiesKnights: {} } : {}),
+          }),
+          true,
+          `${scenario}/${capacity}/knights=${knights}`,
+        );
+      }
+    }
+  }
+  assert.equal(
+    catanEventsSupported({
+      kind: "catan",
+      capacity: 4,
+      catanScenario: "pirate_islands",
+      catanFishing: true,
+    }),
+    false,
+  );
+});
