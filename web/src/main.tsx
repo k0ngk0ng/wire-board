@@ -1872,7 +1872,7 @@ function Lobby({
                       {r.kind === "rail" &&
                         ` · ${railMapNames[r.railMap || "usa"]}`}{" "}
                       {r.kind === "sanguosha" &&
-                        ` · ${r.sanguoshaOptions?.mode === "hegemony" ? "国战双将" : r.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "身份局"}`}{" "}
+                        ` · ${r.sanguoshaOptions?.mode === "3v3" ? "3v3竞技" : r.sanguoshaOptions?.mode === "hegemony" ? "国战双将" : r.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "身份局"}`}{" "}
                       · {r.id.toUpperCase()}
                       {invited === r.id ? " · 朋友邀请的牌桌" : ""}
                     </small>
@@ -3131,9 +3131,11 @@ function Waiting({
           {room.kind === "dota"
             ? "1v1 / 2v2 / 3v3 · 开始后分队 · 全部拆遗迹"
             : room.kind === "sanguosha"
-              ? room.sanguoshaOptions?.mode === "hegemony"
-                ? "基础国战 · 4–8 人 · 60 将 / 108 张牌"
-                : `身份局 · 4–8 人 · ${room.sanguoshaOptions?.deck === "military" ? "标准＋军争 / 160 张牌" : "标准 / 108 张牌"}`
+              ? room.sanguoshaOptions?.mode === "3v3"
+                ? "3v3 竞技 · 6 人 · 抓将与主帅阵亡判负"
+                : room.sanguoshaOptions?.mode === "hegemony"
+                  ? "基础国战 · 4–8 人 · 60 将 / 108 张牌"
+                  : `身份局 · 4–8 人 · ${room.sanguoshaOptions?.deck === "military" ? "标准＋军争 / 160 张牌" : "标准 / 108 张牌"}`
               : room.kind === "carcassonne"
                 ? "基础版 · 2–5 人 · 包含农民"
                 : room.kind === "catan"
