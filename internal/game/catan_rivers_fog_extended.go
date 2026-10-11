@@ -144,13 +144,13 @@ func (g *Catan) validateRiversFogExtended() error {
 	if err = g.validateRiverFog(b); err != nil {
 		return err
 	}
-	if !reflect.DeepEqual(r.Map, m) || !reflect.DeepEqual(g.Tiles, b.Tiles) || !reflect.DeepEqual(g.Ports, b.Ports) || !slices.Equal(sea.Islands, g.findIslands()) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || len(g.Vertices) != len(b.Vertices) || len(g.Edges) != len(b.Edges) {
+	if !reflect.DeepEqual(r.Map, m) || !sameCatanTiles(g.Tiles, b.Tiles) || !reflect.DeepEqual(g.Ports, b.Ports) || !slices.Equal(sea.Islands, g.findIslands()) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || len(g.Vertices) != len(b.Vertices) || len(g.Edges) != len(b.Edges) {
 		return errors.New("五六人河流迷雾地图无效")
 	}
 	for i, v := range g.Vertices {
 		w := b.Vertices[i]
 		v.Owner, v.Level = w.Owner, w.Level
-		if !reflect.DeepEqual(v, w) {
+		if !sameCatanVertex(v, w) {
 			return errors.New("五六人河流迷雾交点无效")
 		}
 	}

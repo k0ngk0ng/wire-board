@@ -266,7 +266,7 @@ func (g *Catan) validateRiversTribeMap() error {
 		w := board.Vertices[i]
 		v.Owner = w.Owner
 		v.Level = w.Level
-		if !reflect.DeepEqual(v, w) {
+		if !sameCatanVertex(v, w) {
 			return errors.New("河流部落交点无效")
 		}
 	}
@@ -288,7 +288,7 @@ func (g *Catan) validateRiversTribeMap() error {
 	for i, tile := range g.Tiles {
 		want := board.Tiles[i]
 		want.Resource, want.Number = tile.Resource, tile.Number
-		if !reflect.DeepEqual(tile, want) {
+		if !sameCatanTile(tile, want) {
 			return errors.New("河流部落地块几何无效")
 		}
 	}
@@ -342,7 +342,7 @@ func (g *Catan) validateRiversTribeMap() error {
 			w.Resource = t.Resource
 			w.Number = t.Number
 		}
-		if !reflect.DeepEqual(t, w) {
+		if !sameCatanTile(t, w) {
 			return errors.New("河流部落地块被更改")
 		}
 	}

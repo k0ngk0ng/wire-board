@@ -85,13 +85,13 @@ func (g *Catan) validateRiversTribeExtended() error {
 	if err != nil {
 		return err
 	}
-	if !reflect.DeepEqual(m, r.Map) || !reflect.DeepEqual(g.Tiles, b.Tiles) || !slices.Equal(sea.Islands, b.Seafarers.Islands) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || len(g.Vertices) != len(b.Vertices) || len(g.Edges) != len(b.Edges) {
+	if !reflect.DeepEqual(m, r.Map) || !sameCatanTiles(g.Tiles, b.Tiles) || !slices.Equal(sea.Islands, b.Seafarers.Islands) || !slices.Equal(sea.StartIslands, b.Seafarers.StartIslands) || len(g.Vertices) != len(b.Vertices) || len(g.Edges) != len(b.Edges) {
 		return errors.New("扩大河流部落地图无效")
 	}
 	for i, v := range g.Vertices {
 		w := b.Vertices[i]
 		v.Owner, v.Level = w.Owner, w.Level
-		if !reflect.DeepEqual(v, w) {
+		if !sameCatanVertex(v, w) {
 			return errors.New("部落交点无效")
 		}
 	}

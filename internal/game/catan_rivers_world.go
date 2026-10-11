@@ -138,13 +138,13 @@ func (g *Catan) validateRiversWorldMap() error {
 	for i := range board.Tiles {
 		board.Tiles[i].Resource = g.Tiles[i].Resource
 	}
-	if !reflect.DeepEqual(g.Tiles, board.Tiles) || len(g.Edges) != len(board.Edges) || len(g.Vertices) != len(board.Vertices) {
+	if !sameCatanTiles(g.Tiles, board.Tiles) || len(g.Edges) != len(board.Edges) || len(g.Vertices) != len(board.Vertices) {
 		return errors.New("新世界地图几何无效")
 	}
 	for i, v := range g.Vertices {
 		w := board.Vertices[i]
 		v.Owner, v.Level = w.Owner, w.Level
-		if !reflect.DeepEqual(v, w) {
+		if !sameCatanVertex(v, w) {
 			return errors.New("新世界交点无效")
 		}
 	}
