@@ -1089,6 +1089,7 @@ export type SGGeneral = {
   skills: string[];
 };
 export type SGPlayer = {
+  camp?: number;
   deputy?: string;
   shown?: [boolean, boolean];
   lost?: [boolean, boolean];
@@ -1140,7 +1141,23 @@ export type SGPlayer = {
   choices?: string[];
   used: Record<string, number>;
 };
+export type ThreeV3State = {
+  rules: string;
+  stage: string;
+  side: number;
+  firstSide: number;
+  pickFirst: number;
+  pickCamp: number;
+  pickLeft: number;
+  leaders: number[];
+  pool: string[];
+  picked: string[][];
+  assigned: string[][];
+  acted: boolean[];
+};
+
 export type SanguoshaState = {
+  threeV3?: ThreeV3State;
   hegemony?: boolean;
   first?: number;
   companions?: [string, string][];

@@ -10,15 +10,17 @@ export function SanguoshaOptions({
   disabled?: boolean;
 }) {
   const hegemony = value?.mode === "hegemony";
+  const three = value?.mode === "3v3";
   const deck = value?.deck || "standard";
+  const mode = three ? "3v3" : "identity";
   return (
     <fieldset className="sg-options" disabled={disabled}>
       <legend>三国杀规则</legend>
       <div className="sg-deck-options">
         <button
           type="button"
-          className={!hegemony ? "selected" : ""}
-          aria-pressed={!hegemony}
+          className={!hegemony && !three ? "selected" : ""}
+          aria-pressed={!hegemony && !three}
           onClick={() =>
             hegemony &&
             onChange({
@@ -48,8 +50,73 @@ export function SanguoshaOptions({
           <strong>国战</strong>
           <small>同势力双将 · 暗将与明置</small>
         </button>
+        <button
+          type="button"
+          className={three ? "selected" : ""}
+          aria-pressed={three}
+          onClick={() =>
+            !three &&
+            onChange({
+              mode: "3v3",
+              deck,
+              standardVersion: value?.standardVersion || "classic",
+              packs: value?.packs || ["standard"],
+            })
+          }
+        >
+          <strong>3v3 竞技</strong>
+          <small>6 人 · 冷水暖双阵营 · 主帅阵亡即判负</small>
+        </button>
       </div>
-      {hegemony ? (
+      {three ? (
+        <>
+          <div className="sg-deck-options">
+            {[
+              { id: "standard", name: "经典标准", detail: "108 张牌" },
+              { id: "military", name: "标准＋军争", detail: "160 张牌" },
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={deck === item.id ? "selected" : ""}
+                aria-pressed={deck === item.id}
+                onClick={() => onChange({ ...value, mode: "3v3", deck: item.id })}
+              >
+                <strong>{item.name}</strong>
+                <small>{item.detail}</small>
+              </button>
+            ))}
+          </div>
+          {[
+            { id: "wind", label: "风包 · 经典八将" },
+            { id: "fire", label: "火包 · 经典八将" },
+            { id: "thicket", label: "林包 · 经典八将" },
+            { id: "mountain", label: "山包 · 经典八将" },
+            { id: "god", label: "神将 · 经典八将" },
+          ].map((pack) => (
+            <label className="sg-pack-option" key={pack.id}>
+              <input
+                type="checkbox"
+                checked={value?.packs?.includes(pack.id) || false}
+                onChange={(e) =>
+                  onChange({
+                    ...value,
+                    mode: "3v3",
+                    packs: e.target.checked
+                      ? [...(value?.packs || ["standard"]), pack.id]
+                      : (value?.packs || ["standard"]).filter((id) => id !== pack.id),
+                  })
+                }
+              />
+              {pack.label}
+            </label>
+          ))}
+          <p>
+            旧版竞技 3v3：需要 6 人牌桌。双方各一名主帅与两名前锋，公开抓将
+            16 张（顺序 1-2-2-2-2-2-2-2-1），主帅体力上限 +1；行动权由主帅决定自己出手或两名前锋连续行动；杀死任何角色摸两张牌；任意一方主帅阵亡即判对方阵营胜利。
+          </p>
+        </>
+      ) : hegemony ? (
         <p>
           基础国战：60名专用武将、108张国战牌。每人七名私有候选，选择两名同势力武将；不混入身份局的武将包与技能版本。
         </p>
@@ -107,7 +174,7 @@ export function SanguoshaOptions({
                 onClick={() =>
                   onChange({
                     ...value,
-                    mode: "identity",
+                    mode,
                     deck: item.id,
                     packs: value?.packs || ["standard"],
                   })
