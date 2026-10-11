@@ -12,6 +12,9 @@ func (s *State) sgRespond(i int, a Action) error {
 	g.Pending = nil
 	p := &g.Players[i]
 	pass := a.Choice == "pass"
+	if handled, err := s.sgThreeRespond(i, a, prompt); handled {
+		return err
+	}
 	if handled, err := s.sgHegRespond(i, a, prompt); handled {
 		return err
 	}
