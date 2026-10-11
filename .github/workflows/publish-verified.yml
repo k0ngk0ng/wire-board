@@ -1,0 +1,125 @@
+name: Publish verified build
+on:
+  workflow_dispatch:
+    inputs:
+      source_run:
+        description: Run with a successful Test and Linux amd64 binary job
+        required: true
+        type: string
+      source_sha:
+        description: Full commit SHA built by that run
+        required: true
+        type: string
+      version:
+        description: Existing draft release version, for example v1.6.0
+        required: true
+        type: string
+permissions:
+  contents: write
+  actions: read
+  packages: write
+concurrency:
+  group: publish-verified-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify source build and release target
+        uses: actions/github-script@v7
+        env:
+          SOURCE_RUN: ${{ inputs.source_run }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          VERSION: ${{ inputs.version }}
+        with:
+          script: |
+            const {SOURCE_RUN: run, SOURCE_SHA: sha, VERSION: version} = process.env;
+            if (!/^\d+$/.test(run) || !/^[0-9a-f]{40}$/.test(sha) || !/^v\d+\.\d+\.\d+$/.test(version))
+              throw new Error('Invalid release inputs');
+            const repo = context.repo;
+            const source = (await github.rest.actions.getWorkflowRun({...repo, run_id: Number(run)})).data;
+            if (source.head_sha !== sha || source.head_branch !== 'main' || source.event !== 'push')
+              throw new Error('Source must be the specified main-branch push');
+            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {...repo, run_id: Number(run), per_page: 100});
+            if (!jobs.some(j => j.name === 'Test and Linux amd64 binary' && j.conclusion === 'success'))
+              throw new Error('Source build did not pass');
+            const releases = await github.paginate(github.rest.repos.listReleases, {...repo, per_page: 100});
+            const release = releases.find(r => r.tag_name === version);
+            if (!release?.draft || release.target_commitish !== sha)
+              throw new Error('A matching unpublished release draft is required');
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: wire-board-linux-amd64
+          path: verified-build
+          run-id: ${{ inputs.source_run }}
+          github-token: ${{ github.token }}
+      - name: Validate artifact and prepare unchanged runtime image
+        run: |
+          cd verified-build
+          sha256sum --check SHA256SUMS
+          mkdir image
+          tar -xzf wire-board-linux-amd64.tar.gz -C image ./wire-board
+          test -x image/wire-board
+          python3 - <<'PY'
+          from pathlib import Path
+          source = Path('../Dockerfile').read_text()
+          marker = 'FROM alpine:'
+          if source.count(marker) != 1:
+              raise SystemExit('Expected one Alpine runtime stage')
+          runtime = marker + source.split(marker, 1)[1]
+          original = 'COPY --from=backend /wire-board /usr/local/bin/wire-board'
+          if runtime.count(original) != 1:
+              raise SystemExit('Unexpected runtime binary layout')
+          Path('image/Dockerfile').write_text(runtime.replace(original, 'COPY wire-board /usr/local/bin/wire-board'))
+          PY
+      - uses: docker/setup-buildx-action@v3
+      - name: Package the verified binary
+        uses: docker/build-push-action@v6
+        with:
+          context: verified-build/image
+          platforms: linux/amd64
+          load: true
+          tags: wire-board-release:verified
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ inputs.source_sha }}
+            org.opencontainers.image.version=${{ inputs.version }}
+      - name: Check container startup and backup tool
+        run: |
+          docker run -d --name release-smoke -e INVITE_CODE=release-smoke-only -p 127.0.0.1:18081:8080 wire-board-release:verified
+          trap 'docker rm -f -v release-smoke' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:18081/healthz; then break; fi
+            sleep 1
+          done
+          curl --fail http://127.0.0.1:18081/healthz
+          docker exec release-smoke sqlite3 --version
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish immutable commit and version tags
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          VERSION: ${{ inputs.version }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          repo="ghcr.io/${REPOSITORY,,}"
+          for tag in "sha-${SOURCE_SHA:0:7}" "$VERSION" latest; do
+            docker tag wire-board-release:verified "$repo:$tag"
+            docker push "$repo:$tag"
+          done
+      - name: Publish the matching release and source tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          gh release upload "$VERSION" verified-build/wire-board-linux-amd64.tar.gz verified-build/SHA256SUMS --clobber
+          gh release edit "$VERSION" --draft=false --latest
