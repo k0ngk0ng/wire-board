@@ -93,13 +93,13 @@ func (g *Catan) validateRiversShoresExtended() error {
 	if err = main.Catan.validateRivers(); err != nil {
 		return err
 	}
-	if !reflect.DeepEqual(g.Tiles, b.Tiles) {
+	if !sameCatanTiles(g.Tiles, b.Tiles) {
 		return errors.New("河流新海岸外岛或地块几何无效")
 	}
 	for i, v := range g.Vertices {
 		w := b.Vertices[i]
 		v.Owner, v.Level = w.Owner, w.Level
-		if !reflect.DeepEqual(v, w) {
+		if !sameCatanVertex(v, w) {
 			return errors.New("河流新海岸交点无效")
 		}
 	}

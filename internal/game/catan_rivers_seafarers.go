@@ -188,14 +188,14 @@ func (g *Catan) validateRiversSeaMap() error {
 	if !reflect.DeepEqual(m, g.Rivers.Map) || len(g.Tiles) != len(board.Tiles) || !reflect.DeepEqual(g.Ports, board.Ports) || !reflect.DeepEqual(g.Seafarers.Islands, g.findLandRegions(sea.Scenario == "desert")) || !slices.Equal(g.Seafarers.StartIslands, board.Seafarers.StartIslands) || g.Seafarers.VictoryPoints != g.riversSeaVictoryPoints(board.Seafarers.VictoryPoints) || g.Seafarers.IslandBonus != board.Seafarers.IslandBonus {
 		return errors.New("河流海图河道、港口或岛屿配置不符")
 	}
-	if !reflect.DeepEqual(g.Tiles, board.Tiles) || len(g.Vertices) != len(board.Vertices) || len(g.Edges) != len(board.Edges) {
+	if !sameCatanTiles(g.Tiles, board.Tiles) || len(g.Vertices) != len(board.Vertices) || len(g.Edges) != len(board.Edges) {
 		return errors.New("河流海图地形数字或尺寸不符")
 	}
 	for i, v := range g.Vertices {
 		w := board.Vertices[i]
 		v.Owner = w.Owner
 		v.Level = w.Level
-		if !reflect.DeepEqual(v, w) {
+		if !sameCatanVertex(v, w) {
 			return errors.New("河流海图交点不符")
 		}
 	}
