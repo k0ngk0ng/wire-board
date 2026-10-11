@@ -22,7 +22,7 @@ export function SanguoshaOptions({
           className={!hegemony && !three ? "selected" : ""}
           aria-pressed={!hegemony && !three}
           onClick={() =>
-            hegemony &&
+            (hegemony || three) &&
             onChange({
               mode: "identity",
               deck: "standard",
@@ -58,14 +58,14 @@ export function SanguoshaOptions({
             !three &&
             onChange({
               mode: "3v3",
-              deck,
+              deck: hegemony ? "standard" : deck,
               standardVersion: value?.standardVersion || "classic",
-              packs: value?.packs || ["standard"],
+              packs: hegemony ? ["standard"] : value?.packs || ["standard"],
             })
           }
         >
           <strong>3v3 竞技</strong>
-          <small>6 人 · 冷水暖双阵营 · 主帅阵亡即判负</small>
+          <small>6 人 · 冷暖双阵营 · 主帅阵亡即判负</small>
         </button>
       </div>
       {three ? (
@@ -113,7 +113,7 @@ export function SanguoshaOptions({
           ))}
           <p>
             旧版竞技 3v3：需要 6 人牌桌。双方各一名主帅与两名前锋，公开抓将
-            16 张（顺序 1-2-2-2-2-2-2-2-1），主帅体力上限 +1；行动权由主帅决定自己出手或两名前锋连续行动；杀死任何角色摸两张牌；任意一方主帅阵亡即判对方阵营胜利。
+            16 张（顺序 1-2-2-2-2-2-2-2-1），双方布阵后同时亮将。主帅体力上限 +1，第一回合由主帅开始；每轮每人行动一次，主帅可指定前锋先后顺序。击杀前锋摸两张牌；任意一方主帅阵亡，对方阵营获胜。
           </p>
         </>
       ) : hegemony ? (

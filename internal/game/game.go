@@ -17,6 +17,7 @@ type Action struct {
 	Targets     []int      `json:"targets"`
 	Choice      string     `json:"choice"`
 	Skill       string     `json:"skill"`
+	Direction   string     `json:"direction,omitempty"`
 	Prompt      int        `json:"prompt"`
 	X           int        `json:"x"`
 	Y           int        `json:"y"`

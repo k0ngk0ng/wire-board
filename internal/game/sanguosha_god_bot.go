@@ -28,6 +28,9 @@ func (s *State) sgGodBotEnemy(i, to int) bool {
 	if i == to {
 		return false
 	}
+	if s.sgThreeV3() {
+		return !s.sgTeamBotAlly(i, to)
+	}
 	p := s.Sanguosha.Players[i]
 	return !(p.Role == "loyalist" && to == s.Sanguosha.Lord)
 }

@@ -8,6 +8,17 @@ func (s *State) sgHegBotAlly(i, target int) bool {
 	return s.sgHegFriend(i, target) || s.sgHegWouldFriend(i, target)
 }
 
+// 3v3 camps are public even after death (Wuhun still needs a team-aware choice).
+// Identity games never enter this policy, so their hidden-role heuristics stay
+// unchanged. Hegemony continues using only revealed allegiance.
+func (s *State) sgTeamBotAlly(i, target int) bool {
+	if s.sgThreeV3() {
+		camp := s.sgThreeCamp(i)
+		return camp >= 0 && camp == s.sgThreeCamp(target)
+	}
+	return s.sgHegBotAlly(i, target)
+}
+
 func (s *State) sgBotAs(i int, ids []int, skill, desired string) (string, error) {
 	if s.sgHegemony() && skill != "" && !s.sgHas(i, skill) && s.sgHegMayInvoke(i, skill) {
 		probe := clone(*s)
@@ -16,7 +27,7 @@ func (s *State) sgBotAs(i int, ids []int, skill, desired string) (string, error)
 	return s.sgAs(i, ids, skill, desired)
 }
 
-func (s *State) sgHegBotAOE(i int, kind string) bool {
+func (s *State) sgTeamBotAOE(i int, kind string) bool {
 	advantage := 0
 	for _, target := range s.sgOrder(0) {
 		if target == i || s.sgArmor(target) == "vine" || kind == "savage_assault" && (s.sgHas(target, "huoshou") || s.sgHas(target, "juxiang")) {
@@ -26,7 +37,10 @@ func (s *State) sgHegBotAOE(i int, kind string) bool {
 		if s.Sanguosha.Players[target].HP <= 1 {
 			weight = 3
 		}
-		if s.sgHegBotAlly(i, target) {
+		if s.sgTeamBotAlly(i, target) {
+			if s.sgThreeV3() && s.sgThreeIsLeader(target) && s.Sanguosha.Players[target].HP <= 1 {
+				return false
+			}
 			advantage -= weight
 		} else {
 			advantage += weight
@@ -38,9 +52,9 @@ func (s *State) sgHegBotAOE(i int, kind string) bool {
 // Shared identity heuristics still generate legal alternatives. This policy
 // keeps their faction-inappropriate candidates from taking precedence over a
 // safe pass, while mandatory target prompts retain a legal last resort.
-func (s *State) sgHegBotActionAllowed(i int, a Action) bool {
+func (s *State) sgTeamBotActionAllowed(i int, a Action) bool {
 	g := s.Sanguosha
-	ally := func(to int) bool { return s.sgHegBotAlly(i, to) }
+	ally := func(to int) bool { return s.sgTeamBotAlly(i, to) }
 	allTargets := func(friend bool) bool {
 		for _, target := range a.Targets {
 			if ally(target) != friend {
@@ -90,7 +104,7 @@ func (s *State) sgHegBotActionAllowed(i int, a Action) bool {
 				}
 				return false
 			}
-		case "fangzhu":
+		case "fangzhu", "jilve_fangzhu":
 			if len(a.Targets) == 1 {
 				return ally(a.Targets[0]) == g.Players[a.Targets[0]].Flipped
 			}
@@ -98,27 +112,31 @@ func (s *State) sgHegBotActionAllowed(i int, a Action) bool {
 			return allTargets(a.Choice == "draw_many")
 		case "fire_discard", "heg_xiaoguo", "heg_kuangfu", "lieren", "mengjin", "liegong", "tieji", "ice_sword", "kylin_bow", "double_sword", "weapon_after_jink", "xiangle":
 			return !ally(e.Target)
-		case "heg_shushen", "heg_lirang", "jieming", "fangquan_give", "yiji":
+		case "heg_shushen", "heg_lirang", "jieming", "fangquan_give", "yiji", "qingjian", "jie_rende", "jie_lianying", "jie_yiji_targets", "dawu":
 			return allTargets(true)
 		case "beige", "peach":
 			return ally(e.Target)
 		case "draw_phase":
-			if a.Choice == "tuxi" {
+			if a.Choice == "tuxi" || a.Choice == "jie_tuxi" {
 				return allTargets(false)
 			}
+		case "guhuo_question":
+			return !ally(e.Actor)
+		case "kuangfeng", "liyu":
+			return allTargets(false)
 		}
 		return true
 	}
 	if a.Type == "sg_skill" {
 		switch a.Skill {
-		case "heg_rende", "zhijian", "qingnang", "jieyin":
+		case "heg_rende", "zhijian", "qingnang", "jieyin", "rende", "jie_rende":
 			return allTargets(true)
 		case "heg_lijian", "heg_fenxun", "heg_qingcheng", "fanjian", "qiangxi", "quhu", "tianyi":
 			return allTargets(false)
 		case "dimeng":
 			return len(a.Targets) == 2 && ally(a.Targets[0]) && !ally(a.Targets[1])
-		case "luanwu":
-			return s.sgHegBotAOE(i, "luanwu")
+		case "luanwu", "shenfen":
+			return s.sgTeamBotAOE(i, "luanwu")
 		}
 	}
 	if a.Type == "sg_play" {
@@ -130,14 +148,14 @@ func (s *State) sgHegBotActionAllowed(i int, a Action) bool {
 		case "slash", "fire_slash", "thunder_slash", "duel", "snatch", "dismantlement", "indulgence", "supply_shortage", "fire_attack", "known_both":
 			return allTargets(false)
 		case "savage_assault", "archery_attack":
-			return s.sgHegBotAOE(i, kind)
+			return s.sgTeamBotAOE(i, kind)
 		}
 	}
 	return true
 }
 
-func (s *State) sgHegBotCommonPrompt(i int, add func(Action), cardsFor func(string) []Action) {
-	if !s.sgHegemony() || s.Sanguosha.Pending == nil {
+func (s *State) sgTeamBotCommonPrompt(i int, add func(Action), cardsFor func(string) []Action) {
+	if (!s.sgHegemony() && !s.sgThreeV3()) || s.Sanguosha.Pending == nil {
 		return
 	}
 	g := s.Sanguosha
@@ -147,7 +165,7 @@ func (s *State) sgHegBotCommonPrompt(i int, add func(Action), cardsFor func(stri
 	slices.SortStableFunc(all, func(a, b int) int { return sgBotValue(a) - sgBotValue(b) })
 	allies := []int{}
 	for _, to := range s.sgOrder(i) {
-		if s.sgHegBotAlly(i, to) {
+		if s.sgTeamBotAlly(i, to) {
 			allies = append(allies, to)
 		}
 	}
@@ -158,15 +176,15 @@ func (s *State) sgHegBotCommonPrompt(i int, add func(Action), cardsFor func(stri
 				add(a)
 			}
 		}
-		if s.sgHegBotAlly(i, e.Target) {
+		if s.sgTeamBotAlly(i, e.Target) {
 			for _, a := range cardsFor("peach") {
 				add(a)
 			}
 		}
 		add(Action{Choice: "pass"})
 	case "nullification":
-		friend := s.sgHegBotAlly(i, e.Target)
-		knownEnemy := s.sgHegShown(e.Target) && !friend
+		friend := s.sgTeamBotAlly(i, e.Target)
+		knownEnemy := (s.sgHegShown(e.Target) || s.sgThreeV3() && s.sgAlive(e.Target)) && !friend
 		harmful := slices.Contains([]string{"duel", "snatch", "dismantlement", "savage_assault", "archery_attack", "indulgence", "lightning", "collateral", "fire_attack", "supply_shortage", "known_both"}, e.Kind)
 		counter := friend && (harmful != e.Flag) || knownEnemy && (harmful == e.Flag)
 		if counter {
@@ -182,7 +200,7 @@ func (s *State) sgHegBotCommonPrompt(i int, add func(Action), cardsFor func(stri
 		ids := clone(p.Hand)
 		slices.SortStableFunc(ids, func(a, b int) int { return sgBotValue(a) - sgBotValue(b) })
 		for _, to := range q.Targets {
-			if s.sgHegBotAlly(i, to) {
+			if s.sgTeamBotAlly(i, to) {
 				add(Action{Cards: ids[:min(e.Amount, len(ids))], Targets: []int{to}})
 			}
 		}
@@ -221,11 +239,11 @@ func (s *State) sgHegBotCommonPrompt(i int, add func(Action), cardsFor func(stri
 			}
 		}
 	case "beige":
-		if s.sgHegBotAlly(i, e.Target) && len(all) > 0 {
+		if s.sgTeamBotAlly(i, e.Target) && len(all) > 0 {
 			add(Action{Cards: all[:1]})
 		}
 	case "guzheng":
-		if s.sgHegBotAlly(i, e.Actor) {
+		if s.sgTeamBotAlly(i, e.Actor) {
 			ids := clone(q.Cards)
 			slices.SortStableFunc(ids, func(a, b int) int { return sgBotValue(b) - sgBotValue(a) })
 			for _, id := range ids {
@@ -236,7 +254,7 @@ func (s *State) sgHegBotCommonPrompt(i int, add func(Action), cardsFor func(stri
 		if s.sgHegMayInvoke(i, "tuxi") {
 			targets := []int{}
 			for _, to := range s.sgOrder(s.sgNext(i)) {
-				if to != i && !s.sgHegBotAlly(i, to) && len(g.Players[to].Hand) > 0 {
+				if to != i && !s.sgTeamBotAlly(i, to) && len(g.Players[to].Hand) > 0 {
 					targets = append(targets, to)
 				}
 			}

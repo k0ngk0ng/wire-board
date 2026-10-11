@@ -929,6 +929,15 @@ func (s *State) sgDeathClear(i int) {
 
 }
 func (s *State) sgDeathReward(i, killer int) {
+	if s.sgThreeV3() {
+		// 3v3 reward (official 3v3 handbook, "其他守则" 2): killing any
+		// character draws three cards at once, including a teammate. A leader
+		// death ends the match, so it never reaches this reward.
+		if !s.sgThreeIsLeader(i) && killer != i && s.sgAlive(killer) {
+			s.sgDraw(killer, 3)
+		}
+		return
+	}
 	if s.sgHegemony() {
 		s.sgHegDeathReward(i, killer)
 		return

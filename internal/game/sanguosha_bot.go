@@ -15,7 +15,7 @@ func (s *State) sgBot(i int) (Action, error) {
 	p := g.Players[i]
 	candidates := []Action{}
 	add := func(a Action) {
-		if s.sgHegemony() && !s.sgHegBotActionAllowed(i, a) {
+		if (s.sgHegemony() || s.sgThreeV3()) && !s.sgTeamBotActionAllowed(i, a) {
 			return
 		}
 		if g.Pending != nil {
@@ -70,7 +70,7 @@ func (s *State) sgBot(i int) (Action, error) {
 			return Action{}, errors.New("not responding")
 		}
 		e := q.Event
-		s.sgHegBotCommonPrompt(i, add, cardsFor)
+		s.sgTeamBotCommonPrompt(i, add, cardsFor)
 		s.sgHegBotPrompt(i, add)
 		s.sgMountainBotPrompt(i, add, cardsFor)
 		s.sgGodBotPrompt(i, add)
@@ -389,7 +389,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		}
 		enemies := []int{}
 		for _, t := range s.sgOrder(s.sgNext(i)) {
-			if t == i || s.sgHegemony() && s.sgHegBotAlly(i, t) || ((p.Role == "lord" || p.Role == "loyalist") && t == g.Lord) {
+			if t == i || (s.sgHegemony() || s.sgThreeV3()) && s.sgTeamBotAlly(i, t) || ((p.Role == "lord" || p.Role == "loyalist") && t == g.Lord) {
 				continue
 			}
 			enemies = append(enemies, t)
@@ -417,6 +417,7 @@ func (s *State) sgBot(i int) (Action, error) {
 		s.sgGodBotPlay(i, enemies, add)
 		s.sgJieBotPlay(i, enemies, add)
 		s.sgHegBotPlay(i, enemies, add, cardsFor)
+		s.sgThreeBotSupport(i, add)
 		if s.sgHas(i, "luanwu") && p.Marks["luanwu"] == 0 {
 			add(Action{Type: "sg_skill", Skill: "luanwu"})
 		}
@@ -431,7 +432,7 @@ func (s *State) sgBot(i int) (Action, error) {
 					if rich == poor || len(g.Players[rich].Hand) <= len(g.Players[poor].Hand) {
 						continue
 					}
-					if p.Role != "loyalist" && rich == g.Lord || p.Role == "loyalist" && poor == g.Lord {
+					if s.sgThreeV3() && s.sgTeamBotAlly(i, poor) || !s.sgThreeV3() && (p.Role != "loyalist" && rich == g.Lord || p.Role == "loyalist" && poor == g.Lord) {
 						due := len(g.Players[rich].Hand) - len(g.Players[poor].Hand)
 						if due <= len(ids) {
 							add(Action{Type: "sg_skill", Skill: "dimeng", Cards: ids[:due], Targets: []int{poor, rich}})

@@ -74,12 +74,19 @@ func (s *State) sgView(viewer int) map[string]any {
 		visible["companions"] = sgHegemonyCompanions
 	}
 	if three := g.ThreeV3; three != nil {
+		assigned := make([][]string, 2)
+		for camp := range assigned {
+			assigned[camp] = []string{}
+			if !g.Selecting || s.sgThreeCamp(viewer) == camp {
+				assigned[camp] = slices.Clone(three.Assigned[camp])
+			}
+		}
 		visible["lord"] = -1
 		visible["threeV3"] = map[string]any{
 			"rules": three.Rules, "stage": three.Stage, "side": three.Side,
 			"firstSide": three.FirstSide, "pickFirst": three.PickFirst, "pickCamp": three.PickCamp,
 			"pickLeft": three.PickLeft, "leaders": three.Leaders, "pool": three.Pool,
-			"picked": three.Picked, "assigned": three.Assigned, "acted": three.Acted,
+			"picked": three.Picked, "assigned": assigned, "acted": three.Acted,
 		}
 	}
 	if len(g.Bluffs) > 0 {
@@ -122,7 +129,7 @@ func (s *State) sgView(viewer int) map[string]any {
 				case "sg_3v3_first_side":
 					prompt["choices"] = []string{"cold", "warm"}
 				case "sg_3v3_side":
-					prompt["choices"] = []string{"leader", "vanguards"}
+					prompt["choices"] = s.sgThreeRightChoices(three.Side)
 				}
 			}
 			if p.Kind == "jie_fanjian" || p.Kind == "jie_tieji_discard" {
