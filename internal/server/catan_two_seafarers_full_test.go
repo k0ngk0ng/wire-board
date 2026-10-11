@@ -88,7 +88,14 @@ func runTwoSeafarersCompleteHTTPGames(t *testing.T, fishing bool, knightOption .
 					clients[actor].command(old, "action", action, 200)
 					if steps%53 == 0 && !s.rooms[id].Game.Finished {
 						before, _ := json.Marshal(s.rooms[id])
-						clients[actor].command(old, "action", action, 409)
+						want := 409
+						if action.Type == "catan_discard" && s.rooms[id].Game.Phase == "catan_discard" && s.rooms[id].Game.Catan.DiscardDue[actor] == 0 {
+							// Other players still share the original discard version.
+							// This player already responded, so its repeated action
+							// fails validation rather than the shared version gate.
+							want = 400
+						}
+						clients[actor].command(old, "action", action, want)
 						after, _ := json.Marshal(s.rooms[id])
 						if string(before) != string(after) {
 							t.Fatal("stale replay mutation")

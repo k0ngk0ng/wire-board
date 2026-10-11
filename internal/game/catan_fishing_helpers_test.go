@@ -438,23 +438,22 @@ func TestCatanFishingHelpersOtherAbilitiesAndPairedTurn(t *testing.T) {
 						t.Fatal("road missing")
 					}
 				case 4:
-					// The map is random, so build one own road first: a single
-					// road is always an end road that can be moved.
-					ownsRoad := false
+					// Isolated failure scenario: the random opening can leave
+					// connected roads with no movable end. Build the intended
+					// one-road fixture explicitly; keep settlements, other seats,
+					// fishing supply and the paired-turn state unchanged.
+					for i := range g.Edges {
+						if g.Edges[i].Owner == p && !g.Edges[i].Ship {
+							g.Edges[i].Owner = -1
+						}
+					}
 					for _, e := range g.Edges {
-						if e.Owner == p && !e.Ship {
-							ownsRoad = true
+						if g.canRoad(p, e.ID) {
+							g.Edges[e.ID].Owner = p
 							break
 						}
 					}
-					if !ownsRoad {
-						for _, e := range g.Edges {
-							if g.canRoad(p, e.ID) {
-								g.Edges[e.ID].Owner = p
-								break
-							}
-						}
-					}
+					s.catanScores()
 					from, to := -1, -1
 					for _, e := range g.Edges {
 						if g.helperEndRoad(p, e.ID) {
