@@ -37,6 +37,14 @@ jobs:
         run: python3 scripts/test_go_shard_test.py
       - name: Test rules, privacy, persistence and simultaneous requests
         run: python3 scripts/test_go_shard.py --index ${{ matrix.shard }} --count 20 --timeout 45m
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-diagnostics-${{ matrix.shard }}
+          path: .local/
+          if-no-files-found: ignore
+          retention-days: 7
   race:
     name: Go race detector on concurrency paths
     needs: verify
