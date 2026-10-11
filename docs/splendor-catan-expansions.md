@@ -3224,3 +3224,12 @@ BGA示例回放可匿名打开，不需要占用或参加他人牌桌；只转�
 - **卡坦 10/12**：五六人河流新海岸内部配方和事件牌接通，4 种自然完整引擎对局、配对回合、地图／存档、桥船付款奖励、金矿选择及原玩法相关回归通过，见[阶段记录](research/catan-rivers-seafarers.md)。河流海图累计 54 种内部配置，未接通公开入口。
 - **F12 主组合 14/18，剩 4 类，本阶段新增完成 0 个**：河流＋航海家部分内部实现；商队／蛮族进攻／运输＋航海家未实现。人数、地图和事件开关不另算组合。Helpers／友善／港口等额外嵌套总数尚未完整核定，继续单列；F10 双人剩余适配仍在范围内。
 - **发布**：本批未推送、未发布。
+
+## 2026-10-11 三国杀 3v3 官方竞技配置与取堆阶段
+
+- **宝石完成**：本阶段无新增，东方／城市／丝绸／金矿四套扩展与动画、托管保持原状。**剩余**：组合交互与手机动画的整版复核、真人整局验收。
+- **铁路完成**：本阶段无新增。**剩余**：线上手机整局最终验收。
+- **卡坦完成**：仍为 **10/12**，F12 主组合 **18/18**、三模块海图嵌套 **12/12**、商队配方 **25/25**。本阶段无新增，剩余是 A01–A03 整版验证与发布后真人验收；另一项已在做的排查是迷雾／沙漠／部落剧本的同类冻结。
+- **三国杀 3v3 完成**：官方[基础配置](https://www.sanguosha.com/act/sgs3v3/3v3gz.html)的武将范围（标准 25＋风 7，除于吉与神将）与 106 张无闪电牌堆成为 3v3 默认；新增分堆阶段（32 将分 4 堆各 8 名、暗置、两位主帅各取一堆、两堆 16 名平摊）；「本站扩展」保留原有可选武将包与标准／军争牌堆；身份局不受影响；五谷丰登的电脑策略改为让本方先取牌。证据见[规则记录](research/sanguosha-3v3-rules.md)。
+- **验证**：`TestSanguoshaThreeV3OfficialConfiguration`、`TestSanguoshaThreeV3ExtensionAndIdentityStayUnrestricted`、`TestSanguoshaThreeV3PilePromptAndBots`、`TestSanguoshaThreeV3BotDrawsAllyFirst`、更新后的 `TestSanguoshaThreeV3DraftAndVictory`／`TestSanguoshaThreeV3OpeningAndRoundsHTTP`（含 120 秒取堆计时与取堆前不泄露堆内容）通过；`go test ./internal/game -run Sanguosha` 19.384 秒、`go test ./internal/server -run SanguoshaThreeV3` 3.423 秒、262 项前端测试、网页生产构建与 `go vet` 通过。
+- **发布**：本批已推送 GitHub（CI 分片矩阵重新运行），未部署到服务器。

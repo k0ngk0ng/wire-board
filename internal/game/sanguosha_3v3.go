@@ -542,6 +542,33 @@ func (s *State) sgThreeDie(i, killer int) {
 	}
 }
 
+// sgThreeAllyFirstDirection returns the group-trick direction that reaches the
+// user's own camp before the enemy camp, or "" for the clockwise default. Only
+// 五谷丰登 makes use of it: its revealed cards are taken in resolution order, so
+// the earlier seats choose first. Both rings start at the user, so the camp
+// whose first opponent sits later wins the comparison.
+func (s *State) sgThreeAllyFirstDirection(i int) string {
+	if !s.sgThreeV3() {
+		return ""
+	}
+	camp := s.sgThreeCamp(i)
+	order := s.sgOrder(i)
+	firstOpponent := func(seats []int) int {
+		for pos, seat := range seats {
+			if pos > 0 && s.sgThreeCamp(seat) != camp {
+				return pos
+			}
+		}
+		return len(seats)
+	}
+	back := slices.Clone(order)
+	slices.Reverse(back)
+	if firstOpponent(back) > firstOpponent(order) {
+		return "ccw"
+	}
+	return ""
+}
+
 // sgThreeDirectedTrick reports the group tricks whose 3v3 version lets the
 // user choose the resolution direction.
 func sgThreeDirectedTrick(kind string) bool {
