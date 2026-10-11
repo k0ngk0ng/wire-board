@@ -82,12 +82,27 @@ func (s *State) sgView(viewer int) map[string]any {
 			}
 		}
 		visible["lord"] = -1
-		visible["threeV3"] = map[string]any{
-			"rules": three.Rules, "stage": three.Stage, "side": three.Side,
+		draft := map[string]any{
+			"rules": three.Rules, "variant": three.Variant, "stage": three.Stage, "side": three.Side,
 			"firstSide": three.FirstSide, "pickFirst": three.PickFirst, "pickCamp": three.PickCamp,
 			"pickLeft": three.PickLeft, "leaders": three.Leaders, "pool": three.Pool,
 			"picked": three.Picked, "assigned": assigned, "acted": three.Acted,
 		}
+		if len(three.Piles) > 0 {
+			// Face-down piles stay hidden until both leaders have taken one.
+			sizes := make([]int, 0, len(three.Piles))
+			for _, pile := range three.Piles {
+				sizes = append(sizes, len(pile))
+			}
+			draft["pileTurn"] = three.PileTurn
+			draft["pilePicks"] = three.PilePicks
+			draft["pileSizes"] = sizes
+			if three.Stage != "piles" {
+				draft["piles"] = three.Piles
+				draft["pool"] = three.Pool
+			}
+		}
+		visible["threeV3"] = draft
 	}
 	if len(g.Bluffs) > 0 {
 		b := g.Bluffs[len(g.Bluffs)-1]
@@ -124,6 +139,9 @@ func (s *State) sgView(viewer int) map[string]any {
 						}
 					}
 					prompt["choices"] = left
+				case "sg_3v3_pile":
+					prompt["choices"] = sgThreeOpenPiles(three)
+					prompt["piles"] = len(three.Piles)
 				case "sg_3v3_first":
 					prompt["choices"] = []string{"us", "them"}
 				case "sg_3v3_first_side":

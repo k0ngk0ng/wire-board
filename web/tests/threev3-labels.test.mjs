@@ -6,7 +6,20 @@ import {
   threeV3PromptLabels,
 } from "../src/threev3-labels.ts";
 
-test("3v3 prompt labels cover the draft, first side and action right", () => {
+test("3v3 prompt labels cover the pile stage, draft, first side and action right", () => {
+  assert.deepEqual(
+    threeV3PromptLabels("sg_3v3_pile").map((x) => x.value),
+    ["1", "2", "3", "4"],
+  );
+  assert.deepEqual(
+    threeV3PromptLabels("sg_3v3_pile").map((x) => x.label),
+    [
+      "第 1 堆（8 名，暗置）",
+      "第 2 堆（8 名，暗置）",
+      "第 3 堆（8 名，暗置）",
+      "第 4 堆（8 名，暗置）",
+    ],
+  );
   assert.deepEqual(
     threeV3PromptLabels("sg_3v3_first").map((x) => x.value),
     ["us", "them"],

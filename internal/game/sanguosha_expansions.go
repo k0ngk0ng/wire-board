@@ -5,12 +5,21 @@ import (
 	"slices"
 )
 
+// The 3v3 general range: the printed competitive configuration (standard 25
+// plus the seven wind generals, without Yuji and the god pack, on the 106 card
+// standard deck without Lightning) or the site's flexible extension.
+const (
+	SGThreeOfficial = "official"
+	SGThreeExtended = "extended"
+)
+
 // Saved with the game; omitted fields in pre-expansion snapshots mean classic.
 type SGOptions struct {
 	StandardVersion string   `json:"standardVersion,omitempty"`
 	Mode            string   `json:"mode,omitempty"`
 	Deck            string   `json:"deck,omitempty"`
 	Packs           []string `json:"packs,omitempty"`
+	ThreeVariant    string   `json:"threeVariant,omitempty"`
 }
 
 func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
@@ -42,6 +51,23 @@ func NormalizeSGOptions(o SGOptions) (SGOptions, error) {
 	}
 	if o.Mode != "identity" && o.Mode != "3v3" {
 		return o, errors.New("未知三国杀模式")
+	}
+	if o.Mode != "3v3" {
+		if o.ThreeVariant != "" {
+			return o, errors.New("武将范围与牌堆选项只适用于3v3")
+		}
+	} else {
+		if o.ThreeVariant == "" {
+			o.ThreeVariant = SGThreeOfficial
+		}
+		if o.ThreeVariant != SGThreeOfficial && o.ThreeVariant != SGThreeExtended {
+			return o, errors.New("未知3v3武将范围")
+		}
+		// The printed 3v3 configuration fixes the deck and the general range,
+		// so the identity-mode deck, packs and skill version do not apply.
+		if o.ThreeVariant == SGThreeOfficial {
+			o.StandardVersion, o.Deck, o.Packs = "classic", "standard", []string{"standard", "wind"}
+		}
 	}
 	if o.Deck != "standard" && o.Deck != "military" {
 		return o, errors.New("未知三国杀牌堆")

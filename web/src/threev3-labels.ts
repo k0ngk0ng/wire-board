@@ -3,6 +3,11 @@ export function threeV3PromptLabels(
   ask?: string,
 ): { value: string; label: string }[] {
   switch (ask) {
+    case "sg_3v3_pile":
+      return [1, 2, 3, 4].map((n) => ({
+        value: String(n),
+        label: `第 ${n} 堆（8 名，暗置）`,
+      }));
     case "sg_3v3_first":
       return [
         { value: "us", label: "我方先选" },

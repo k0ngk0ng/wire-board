@@ -27,24 +27,63 @@ var sgThreeSeatRoles = [6]struct {
 
 var sgThreePickCounts = []int{1, 2, 2, 2, 2, 2, 2, 2, 1}
 
+// The printed draft splits the 32 general cards into four face-down piles of
+// eight; each leader takes one pile and those sixteen are laid out.
+const (
+	sgThreePileCount = 4
+	sgThreePileSize  = 8
+)
+
 type SGThreeV3 struct {
 	Rules      string     `json:"rules"`
-	Camps      []string   `json:"camps"`      // per player: cold/warm
-	Leaders    []int      `json:"leaders"`    // [cold, warm] player index
-	Pool       []string   `json:"pool"`       // generals still on the table
-	Picked     [][]string `json:"picked"`     // per camp, generals taken in the draft
-	PickFirst  int        `json:"pickFirst"`  // camp that picks first
-	PickCamp   int        `json:"pickCamp"`   // camp to pick now
-	PickIndex  int        `json:"pickIndex"`  // index into sgThreePickCounts
-	PickLeft   int        `json:"pickLeft"`   // generals still owed by the picking camp
-	AssignCamp int        `json:"assignCamp"` // camp assigning away its three generals
-	AssignAt   int        `json:"assignAt"`   // 0 leader, 1 vanguard A, 2 vanguard B
-	Assigned   [][]string `json:"assigned"`   // per camp, three generals in seat order
-	Stage      string     `json:"stage"`      // pickFirst/pick/assign/firstSide/play
-	FirstSide  int        `json:"firstSide"`  // camp that holds the first action right
-	Side       int        `json:"side"`       // camp holding the action right
-	Acted      []bool     `json:"acted"`      // per player, acted in the current round
-	RightsHeld int        `json:"rightsHeld"` // action units completed over the game
+	Variant    string     `json:"variant,omitempty"`   // official / extended
+	Camps      []string   `json:"camps"`               // per player: cold/warm
+	Leaders    []int      `json:"leaders"`             // [cold, warm] player index
+	Pool       []string   `json:"pool"`                // generals still on the table
+	Picked     [][]string `json:"picked"`              // per camp, generals taken in the draft
+	PickFirst  int        `json:"pickFirst"`           // camp that picks first
+	PickCamp   int        `json:"pickCamp"`            // camp to pick now
+	PickIndex  int        `json:"pickIndex"`           // index into sgThreePickCounts
+	PickLeft   int        `json:"pickLeft"`            // generals still owed by the picking camp
+	AssignCamp int        `json:"assignCamp"`          // camp assigning away its three generals
+	AssignAt   int        `json:"assignAt"`            // 0 leader, 1 vanguard A, 2 vanguard B
+	Assigned   [][]string `json:"assigned"`            // per camp, three generals in seat order
+	Stage      string     `json:"stage"`               // pickFirst/pick/assign/firstSide/play
+	FirstSide  int        `json:"firstSide"`           // camp that holds the first action right
+	Side       int        `json:"side"`                // camp holding the action right
+	Acted      []bool     `json:"acted"`               // per player, acted in the current round
+	RightsHeld int        `json:"rightsHeld"`          // action units completed over the game
+	Piles      [][]string `json:"piles,omitempty"`     // face-down piles, public once both are taken
+	PilePicks  []int      `json:"pilePicks,omitempty"` // per camp, chosen pile index or -1
+	PileTurn   int        `json:"pileTurn,omitempty"`  // camp choosing a pile now
+}
+
+// sgThreeOfficialGenerals is the printed competitive general range: the 25
+// standard generals plus the seven wind generals, without Yuji. The god pack
+// stays out even though identity rooms may enable it.
+func sgThreeOfficialGenerals() []string {
+	ids := []string{}
+	for _, general := range SGGenerals {
+		ids = append(ids, general.ID)
+	}
+	for _, general := range sgWindGenerals {
+		if general.ID != "yuji" {
+			ids = append(ids, general.ID)
+		}
+	}
+	return ids
+}
+
+// sgThreeOpenPiles lists the piles a leader may still take, as prompt choices.
+func sgThreeOpenPiles(t *SGThreeV3) []string {
+	out := []string{}
+	for i := range t.Piles {
+		if slices.Contains(t.PilePicks, i) {
+			continue
+		}
+		out = append(out, strconv.Itoa(i+1))
+	}
+	return out
 }
 
 func (s *State) sgThreeV3() bool {
@@ -109,21 +148,30 @@ func (s *State) initSGThreeV3(n int, options SGOptions) {
 	}
 	s.Sanguosha = g
 	for _, c := range sgCards {
+		// The printed 3v3 deck is the standard 108 without Lightning.
+		if options.ThreeVariant != SGThreeExtended && c.Kind == "lightning" {
+			continue
+		}
 		g.Deck = append(g.Deck, c.ID)
 	}
-	if options.Deck == "military" {
+	if options.Deck == "military" && options.ThreeVariant == SGThreeExtended {
 		for _, c := range sgMilitaryCards {
 			g.Deck = append(g.Deck, c.ID)
 		}
 	}
 	shuffle(g.Deck)
 	ids := []string{}
-	for _, x := range g.generalCatalog() {
-		ids = append(ids, x.ID)
-	}
-	shuffle(ids)
-	if len(ids) < 16 {
-		ids = append(ids, ids...)
+	if options.ThreeVariant == SGThreeExtended {
+		for _, x := range g.generalCatalog() {
+			ids = append(ids, x.ID)
+		}
+		shuffle(ids)
+		if len(ids) < 16 {
+			ids = append(ids, ids...)
+		}
+	} else {
+		ids = sgThreeOfficialGenerals()
+		shuffle(ids)
 	}
 	cold := sgThreeCold
 	if catanRandom(2) == 1 {
@@ -146,14 +194,30 @@ func (s *State) initSGThreeV3(n int, options SGOptions) {
 		}
 	}
 	g.ThreeV3 = &SGThreeV3{
-		Rules: SGThreeV3Rules, Camps: camps, Leaders: leaders, Pool: clone(ids[:16]),
+		Rules: SGThreeV3Rules, Variant: options.ThreeVariant, Camps: camps, Leaders: leaders,
 		Picked: [][]string{{}, {}}, Assigned: [][]string{{}, {}}, Stage: "pickFirst",
 		Acted: make([]bool, n), PickFirst: sgThreeWarm, PickCamp: sgThreeWarm,
+	}
+	if options.ThreeVariant == SGThreeExtended {
+		g.ThreeV3.Pool = clone(ids[:16])
+	} else {
+		piles := [][]string{}
+		for p := 0; p < sgThreePileCount; p++ {
+			piles = append(piles, clone(ids[p*sgThreePileSize:(p+1)*sgThreePileSize]))
+		}
+		g.ThreeV3.Piles = piles
+		g.ThreeV3.PilePicks = []int{-1, -1}
+		g.ThreeV3.PileTurn = sgThreeWarm
+		g.ThreeV3.Stage = "piles"
 	}
 	s.Turn, s.Phase, g.InPlay = leaders[sgThreeWarm], "sg_select", false
 	s.sgLog("三国杀3v3：冷色方主帅%s、前锋%s；暖色方主帅%s、前锋%s",
 		s.sgPlayerLabel(leaders[sgThreeCold]), s.sgSeatList(sgThreeCold),
 		s.sgPlayerLabel(leaders[sgThreeWarm]), s.sgSeatList(sgThreeWarm))
+	if g.ThreeV3.Stage == "piles" {
+		s.sgAsk(leaders[sgThreeWarm], "sg_3v3_pile", "选择本方要取走的武将堆（暗置，剩余4堆各8名）", SGEvent{})
+		return
+	}
 	s.sgAsk(leaders[sgThreeWarm], "sg_3v3_first", "选择本局先选将的一方", SGEvent{})
 }
 
@@ -182,6 +246,32 @@ func (s *State) sgThreeRespond(i int, a Action, q SGPrompt) (bool, error) {
 	}
 	t := s.Sanguosha.ThreeV3
 	switch q.Kind {
+	case "sg_3v3_pile":
+		if i != t.Leaders[t.PileTurn] {
+			return true, errors.New("只有轮到的主帅可以选择武将堆")
+		}
+		index, convErr := strconv.Atoi(a.Choice)
+		if convErr != nil || index < 1 || index > len(t.Piles) {
+			return true, errors.New("请选择有效的武将堆")
+		}
+		pick := index - 1
+		if slices.Contains(t.PilePicks, pick) {
+			return true, errors.New("该武将堆已被取走")
+		}
+		t.PilePicks[t.PileTurn] = pick
+		if t.PileTurn == sgThreeWarm {
+			t.PileTurn = sgThreeCold
+			s.sgThreeAskPile()
+			return true, nil
+		}
+		// Both piles are taken: lay their sixteen generals out for the draft.
+		t.Pool = append(clone(t.Piles[t.PilePicks[sgThreeWarm]]), t.Piles[t.PilePicks[sgThreeCold]]...)
+		t.Stage = "pickFirst"
+		s.sgLog("分堆选将：%s取第%d堆、%s取第%d堆，共16名武将平摊待选",
+			s.sgCampName(sgThreeWarm), t.PilePicks[sgThreeWarm]+1,
+			s.sgCampName(sgThreeCold), t.PilePicks[sgThreeCold]+1)
+		s.sgThreeAskFirst()
+		return true, nil
 	case "sg_3v3_first":
 		if a.Choice != "us" && a.Choice != "them" {
 			return true, errors.New("请选择我方先选或对方先选")
@@ -282,6 +372,20 @@ func (s *State) sgThreeRespond(i int, a Action, q SGPrompt) (bool, error) {
 		return true, nil
 	}
 	return false, nil
+}
+
+// sgThreeAskFirst asks the warm leader who drafts first, the printed warm
+// initiative of the selection phase.
+func (s *State) sgThreeAskFirst() {
+	s.sgAsk(s.Sanguosha.ThreeV3.Leaders[sgThreeWarm], "sg_3v3_first", "选择本局先选将的一方", SGEvent{})
+}
+
+// sgThreeAskPile asks the leader whose turn it is to take one of the remaining
+// face-down piles.
+func (s *State) sgThreeAskPile() {
+	t := s.Sanguosha.ThreeV3
+	s.sgAsk(t.Leaders[t.PileTurn], "sg_3v3_pile",
+		"选择本方要取走的武将堆（暗置，剩余"+strconv.Itoa(len(sgThreeOpenPiles(t)))+"堆）", SGEvent{})
 }
 
 func (s *State) sgThreeAskPick() {
@@ -481,6 +585,11 @@ func (s *State) sgThreeBotAction(i int) (Action, bool) {
 		return Action{}, false
 	}
 	switch q.Kind {
+	case "sg_3v3_pile":
+		if open := sgThreeOpenPiles(t); len(open) > 0 {
+			return Action{Choice: open[0], Prompt: q.ID}, true
+		}
+		return Action{}, false
 	case "sg_3v3_first":
 		return Action{Choice: "us", Prompt: q.ID}, true
 	case "sg_3v3_pick":
