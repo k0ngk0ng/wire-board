@@ -1,6 +1,10 @@
 package game
 
-import "testing"
+import (
+	"slices"
+	"strings"
+	"testing"
+)
 
 // Two-player 商队＋新海岸 with helpers, events, friendly robber and harbors once
 // ran past the shared step budget. Keep a bounded natural-game guard: every
@@ -51,10 +55,18 @@ func TestCatanTwoCaravansShoresLongGames(t *testing.T) {
 				best = player.Score
 			}
 		}
-		if best < s.Catan.victoryTarget() {
+		if caravansDeadEnded(s) {
+			t.Logf("run %d ended by the dead-end site rule at %d points", run, best)
+		} else if best < s.Catan.victoryTarget() {
 			t.Fatalf("run %d finished at %d points, target %d", run, best, s.Catan.victoryTarget())
 		}
 		t.Logf("run %d round %d steps %d score %d/%d", run, s.Round, step,
 			s.Catan.Players[0].Score, s.Catan.Players[1].Score)
 	}
+}
+
+// A frozen board ends on points by the documented site rule; any other early
+// finish below the target would be a bug.
+func caravansDeadEnded(s *State) bool {
+	return slices.ContainsFunc(s.Log, func(line string) bool { return strings.Contains(line, CatanCaravansDeadEndRules) })
 }
