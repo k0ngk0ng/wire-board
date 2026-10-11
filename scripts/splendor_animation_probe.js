@@ -1,4 +1,18 @@
 (() => {
+  const row = document.querySelector(".nobles-row");
+  const rowRect = row?.getBoundingClientRect();
+  const nobleSources = new Map(
+    Array.from(row?.querySelectorAll("[data-noble-id]") || []).map((e) => {
+      const r = e.getBoundingClientRect();
+      return [
+        e.dataset.nobleId,
+        {
+          x: r.left + r.width / 2 - rowRect.left,
+          y: r.top + r.height / 2 - rowRect.top,
+        },
+      ];
+    }),
+  );
   const result = {
     samples: 0,
     visible: 0,
@@ -9,6 +23,7 @@
     players: [],
     directions: [],
     card: 0,
+    visibleCardActions: [],
   };
   window.flightResult = result;
   let start = performance.now(),
@@ -51,7 +66,12 @@
     last = now;
     const nodes = [
       ...document.querySelectorAll("[data-token-flight], [data-card-flight]"),
-    ];
+    ].filter((node) =>
+      node.hasAttribute("data-card-flight")
+        ? Number(node.dataset.cardFlight) > (window.flightAfter?.card || 0)
+        : parseInt(node.dataset.tokenFlight, 10) >
+          (window.flightAfter?.token || 0),
+    );
     if (nodes.length && !moved) {
       moved = true;
       setTimeout(() => {
@@ -80,13 +100,27 @@
         result.players.push(player);
         if (card) {
           result.card++;
-          const source = window.flightCardSource
+          let source = window.flightCardSource
             ? point(document.querySelector(window.flightCardSource))
             : null;
+          if (window.flightFixedSource) {
+            const r = window.flightFixedSource;
+            source = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+          }
+          if (n.dataset.flightAction === "noble") {
+            const id = e.querySelector("[data-noble-id]")?.dataset.nobleId;
+            const saved = nobleSources.get(id),
+              ref = row?.getBoundingClientRect();
+            source =
+              saved && ref
+                ? { x: saved.x + ref.left, y: saved.y + ref.top }
+                : null;
+          }
           if (source && target && e.style.visibility !== "visible")
             result.errors.push({ card: true, unexpectedHidden: true, player });
           if (e.style.visibility === "visible") {
             result.visible++;
+            result.visibleCardActions.push(n.dataset.flightAction);
             const tx =
               parseFloat(e.style.left) +
               parseFloat(e.style.width) / 2 +
@@ -147,6 +181,7 @@
     else {
       result.players = [...new Set(result.players)];
       result.directions = [...new Set(result.directions)];
+      result.visibleCardActions = [...new Set(result.visibleCardActions)];
       result.done = true;
     }
   }

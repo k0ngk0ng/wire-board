@@ -78,6 +78,15 @@ func TestCatanMultiplayerDiscardTradePrivacyAndRestart(t *testing.T) {
 	initial := current(a)
 	deadline := initial["turnDeadline"]
 	a.command(initial, "action", map[string]any{"type": "catan_discard", "tokens": []int{5, 0, 0, 0, 0}}, 200)
+	// Shared discard versions remain valid for outstanding responders. A new
+	// request by someone who already discarded fails action validation (400),
+	// without changing state; it is not a stale-version conflict yet.
+	beforeReplay, _ := json.Marshal(s.rooms[id])
+	a.command(initial, "action", map[string]any{"type": "catan_discard", "tokens": []int{5, 0, 0, 0, 0}}, 400)
+	afterReplay, _ := json.Marshal(s.rooms[id])
+	if string(beforeReplay) != string(afterReplay) {
+		t.Fatal("repeated simultaneous discard changed state")
+	}
 	b.command(initial, "action", map[string]any{"type": "catan_discard", "tokens": []int{0, 5, 0, 0, 0}}, 200)
 	if current(b)["turnDeadline"] != deadline {
 		t.Fatal("partial discard reset clock")
@@ -85,6 +94,13 @@ func TestCatanMultiplayerDiscardTradePrivacyAndRestart(t *testing.T) {
 	c.command(initial, "action", map[string]any{"type": "catan_discard", "tokens": []int{0, 0, 5, 0, 0}}, 200)
 	if s.rooms[id].Game.Phase != "catan_robber" {
 		t.Fatal("discard phase")
+	}
+	// Once all responders finish, the shared version window has closed.
+	beforeReplay, _ = json.Marshal(s.rooms[id])
+	a.command(initial, "action", map[string]any{"type": "catan_discard", "tokens": []int{5, 0, 0, 0, 0}}, 409)
+	afterReplay, _ = json.Marshal(s.rooms[id])
+	if string(beforeReplay) != string(afterReplay) {
+		t.Fatal("discard after the response window changed state")
 	}
 	for s.rooms[id].Game.Phase != "catan_turn" {
 		action, e := s.rooms[id].Game.BotAction(0)
