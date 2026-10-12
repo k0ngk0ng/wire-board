@@ -563,7 +563,21 @@ func TestCatanFishingHelpersEliminationAndBotPrivacy(t *testing.T) {
 	changed := clone(*s)
 	f := &changed.Catan.Fishing.Tokens
 	slices.Reverse(f.DrawPile)
-	f.Hands[other][0], f.DrawPile[0] = f.DrawPile[0], f.Hands[other][0]
+	// The first hidden entry can be the boot. Keep this case deterministic;
+	// boots are public markers and cannot be swapped into an ordinary hand.
+	boot := slices.Index(f.DrawPile, catanFishBoot)
+	if boot < 0 {
+		t.Fatal("missing hidden boot in fixture")
+	}
+	f.DrawPile[0], f.DrawPile[boot] = f.DrawPile[boot], f.DrawPile[0]
+	at := slices.IndexFunc(f.DrawPile, func(id int) bool { return id != catanFishBoot })
+	if at < 0 {
+		t.Fatal("missing hidden fish in fixture")
+	}
+	f.Hands[other][0], f.DrawPile[at] = f.DrawPile[at], f.Hands[other][0]
+	if err := f.validate(); err != nil {
+		t.Fatal("invalid privacy test fixture", err)
+	}
 	after, err := changed.BotAction(p)
 	if err != nil || !reflect.DeepEqual(before, after) || !reflect.DeepEqual(s.View(p), changed.View(p)) {
 		t.Fatal("bot knows hidden fish", err)
