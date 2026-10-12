@@ -15,7 +15,7 @@ import (
 
 func fishingWorldExtendedResponseState(t *testing.T, n, number int) *game.State {
 	t.Helper()
-	data, err := os.ReadFile("../game/testdata/catan-new-world-five-six.json")
+	data, err := os.ReadFile("../../games/catan/server/testdata/catan-new-world-five-six.json")
 	if err != nil {
 		t.Fatal(err)
 	}
