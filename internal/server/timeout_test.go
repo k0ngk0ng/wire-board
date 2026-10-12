@@ -227,7 +227,7 @@ func TestAssetURLValidationAndCSP(t *testing.T) {
 	}
 	defer response.Body.Close()
 	csp := response.Header.Get("Content-Security-Policy")
-	if !strings.Contains(csp, "img-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "script-src 'self';") {
+	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "script-src 'self';") {
 		t.Fatal("incorrect image-only CSP", csp)
 	}
 }

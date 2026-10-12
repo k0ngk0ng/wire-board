@@ -25,8 +25,16 @@ type Match struct {
 	Actors        []int           `json:"actors"`
 	TimeoutActors []int           `json:"timeoutActors"`
 	Deadline      int64           `json:"deadline"`
-	Log           []string        `json:"log,omitempty"`
-	Result        *Result         `json:"result,omitempty"`
+	// Attention is optional: nil preserves the old Actors-based prompt; an
+	// explicit empty slice means nobody owes a decision. Preserve [] in JSON.
+	Attention []int `json:"attention"`
+	// Eliminated seats have no remaining decisions or liabilities and may leave.
+	// Their original index and identity remain in the match roster and results.
+	Eliminated []int `json:"eliminated,omitempty"`
+	// SystemDeadline invokes OnTimer, without attributing inactivity to a player.
+	SystemDeadline int64    `json:"systemDeadline,omitempty"`
+	Log            []string `json:"log,omitempty"`
+	Result         *Result  `json:"result,omitempty"`
 }
 
 // Ranks use competition ranking (1,1,3); Winners can be a whole team.
@@ -58,6 +66,9 @@ type Module struct {
 	// AcceptStale may admit an older version only after authenticating the actor.
 	// Revalidate the game's response token inside Apply as well.
 	AcceptStale func(Context, Match, json.RawMessage) bool `json:"-"`
+	// OnTimer runs with Actor == -1. Clear SystemDeadline or advance it beyond
+	// Context.Now; the host commits the event atomically with history and audit.
+	OnTimer func(Context, Match) (Match, error) `json:"-"`
 }
 
 func (m Module) Validate() error {
@@ -71,16 +82,26 @@ func (m Module) Validate() error {
 }
 
 func (m Match) Validate(players int) error {
-	if m.Schema < 0 || !json.Valid(m.Data) || string(m.Data) == "null" || m.Deadline < 0 {
+	if m.Schema < 0 || !json.Valid(m.Data) || string(m.Data) == "null" || m.Deadline < 0 || m.SystemDeadline < 0 {
 		return errors.New("invalid game snapshot")
 	}
-	for _, actors := range [][]int{m.Actors, m.TimeoutActors} {
+	for _, actors := range [][]int{m.Actors, m.TimeoutActors, m.Attention, m.Eliminated} {
 		seen := map[int]bool{}
 		for _, actor := range actors {
 			if actor < 0 || actor >= players || seen[actor] {
 				return errors.New("invalid game actor")
 			}
 			seen[actor] = true
+		}
+	}
+	for _, actor := range m.Attention {
+		if !slices.Contains(m.Actors, actor) {
+			return errors.New("attention actor cannot act")
+		}
+	}
+	for _, actor := range m.Eliminated {
+		if slices.Contains(m.Actors, actor) {
+			return errors.New("eliminated player cannot act")
 		}
 	}
 	for _, actor := range m.TimeoutActors {
@@ -95,7 +116,7 @@ func (m Match) Validate(players int) error {
 		return nil
 	}
 	r := m.Result
-	if len(r.Ranks) != players || len(r.Winners) == 0 || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 || m.Deadline != 0 || (len(r.Scores) != 0 && len(r.Scores) != players) {
+	if len(r.Ranks) != players || len(r.Winners) == 0 || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 || m.Deadline != 0 || m.SystemDeadline != 0 || (len(r.Scores) != 0 && len(r.Scores) != players) {
 		return errors.New("invalid game result")
 	}
 	for _, rank := range r.Ranks {
@@ -112,6 +133,17 @@ func (m Match) Validate(players int) error {
 	}
 	if len(r.Details) != 0 && !json.Valid(r.Details) {
 		return errors.New("invalid result details")
+	}
+	return nil
+}
+
+// ValidateMatch also checks that the host can service requested capabilities.
+func (module Module) ValidateMatch(match Match, players int) error {
+	if err := match.Validate(players); err != nil {
+		return err
+	}
+	if match.SystemDeadline > 0 && module.OnTimer == nil {
+		return errors.New("system deadline requires OnTimer")
 	}
 	return nil
 }

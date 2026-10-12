@@ -158,6 +158,9 @@ export type Act = (action: Record<string, unknown>) => Promise<void>;
 export type GameHeader = {
   data?: unknown;
   actors?: number[];
+  attention?: number[];
+  eliminated?: number[];
+  systemDeadline?: number;
   kind: string;
   turn: number;
   phase: string;

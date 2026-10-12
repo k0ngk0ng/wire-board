@@ -36,7 +36,7 @@ func TestModuleBrowserFixture(t *testing.T) {
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
-	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{acceptanceModule()}}, os.DirFS(filepath.Join(root, "web", "dist")))
+	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", Modules: []gameapi.Module{acceptanceModule()}}, os.DirFS(filepath.Join(root, "web", "dist")))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -131,13 +131,14 @@ func acceptanceModule() gameapi.Module {
 }
 
 func TestModuleRegistrationAndLifecycleE2E(t *testing.T) {
-	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{acceptanceModule()}}
+	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", Modules: []gameapi.Module{acceptanceModule()}}
 	files := fstest.MapFS{"index.html": {Data: []byte("Wire Board")}}
 	s, err := New(cfg, files)
 	if err != nil {
 		t.Fatal(err)
 	}
 	ts := httptest.NewServer(s.Handler())
+	publishModuleForTest(t, ts.URL, "acceptance")
 	t.Cleanup(func() { ts.Close(); s.Close() })
 	a, b, viewer := newClient(t, ts.URL), newClient(t, ts.URL), newClient(t, ts.URL)
 	a.register("模块房主")
@@ -247,13 +248,14 @@ func TestModuleRegistrationAndLifecycleE2E(t *testing.T) {
 }
 
 func TestModuleBotAndTimeoutE2E(t *testing.T) {
-	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", Modules: []gameapi.Module{acceptanceModule()}}
+	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", Modules: []gameapi.Module{acceptanceModule()}}
 	s, err := New(cfg, fstest.MapFS{"index.html": {Data: []byte("Wire Board")}})
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer s.Close()
 	ts := httptest.NewServer(s.Handler())
+	publishModuleForTest(t, ts.URL, "acceptance")
 	defer ts.Close()
 	a := newClient(t, ts.URL)
 	a.register("模块托管")

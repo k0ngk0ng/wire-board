@@ -207,7 +207,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 				return nil, fmt.Errorf("missing game module for saved room: %s", r.Kind)
 			}
 			if r.Module != nil {
-				if e = r.Module.Validate(len(r.Seats)); e != nil {
+				if e = s.modules[r.Kind].ValidateMatch(*r.Module, len(r.Seats)); e != nil {
 					db.Close()
 					return nil, e
 				}
@@ -268,6 +268,7 @@ func (s *Server) runTimers(ctx context.Context) {
 		case now := <-ticker.C:
 			s.mu.Lock()
 			s.expireIdleRooms(now)
+			s.expireModuleTimers(now)
 			s.expireSetups(now)
 			s.runBots(now)
 			s.mu.Unlock()
@@ -326,12 +327,12 @@ func (s *Server) Handler() http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "same-origin")
 		w.Header().Set("X-Frame-Options", "DENY")
-		imageSource := ""
+		assetSource := ""
 		if s.cfg.AssetsBaseURL != "" {
 			u, _ := url.Parse(s.cfg.AssetsBaseURL)
-			imageSource = " " + u.Scheme + "://" + u.Host
+			assetSource = " " + u.Scheme + "://" + u.Host
 		}
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+imageSource+"; connect-src 'self'; font-src 'self'; media-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+"; connect-src 'self'; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
 		if strings.HasPrefix(r.URL.Path, "/api/") {
 			w.Header().Set("Cache-Control", "no-store")
 		}
@@ -1002,12 +1003,13 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("你不在此房间")
 			break
 		}
-		if next.Status == "playing" {
+		if next.Status == "playing" && (next.Module == nil || !slices.Contains(next.Module.Eliminated, idx)) {
 			err = errors.New("游戏进行中会保留座位；房主可以结束牌桌")
 			break
 		}
 		if next.Game != nil {
 			next.Seats[idx].Left = true
+			next.Seats[idx].AutoPlay, next.Seats[idx].TimeoutAutoPlay = false, false
 		} else {
 			next.Seats = append(next.Seats[:idx], next.Seats[idx+1:]...)
 		}
@@ -1021,7 +1023,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if active == 0 {
-			next.Seats = nil
+			if next.Status == "playing" && next.Module != nil {
+				// Preserve the original roster while the remaining bots finish.
+				next.Host = ""
+			} else {
+				next.Seats = nil
+			}
 		}
 		for i := range next.Seats {
 			next.Seats[i].Ready = next.Seats[i].Bot
@@ -1616,6 +1623,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		}
 		if next.Module != nil {
 			module := s.modules[next.Kind]
+			if slices.Contains(next.Module.Eliminated, idx) {
+				err = errors.New("已出局的玩家无需托管")
+				break
+			}
 			if module.BotAction == nil {
 				err = errors.New("此游戏不支持托管")
 				break
@@ -1623,6 +1634,9 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			if !*req.Enabled && next.Seats[idx].AutoPlay && next.Module.Deadline > 0 && next.Module.Deadline <= now.UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx) {
 				var match gameapi.Match
 				match, err = module.Reclaim(moduleContext(&next, idx, req.Version, now), *next.Module)
+				if err == nil {
+					err = module.ValidateMatch(match, len(next.Seats))
+				}
 				if err == nil {
 					err = next.setModule(match)
 				}

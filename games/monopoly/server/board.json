@@ -1,0 +1,722 @@
+[
+  {
+    "id": 0,
+    "name": "起点",
+    "kind": "go",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 1,
+    "name": "旧肯特路",
+    "kind": "street",
+    "color": "#8B4513",
+    "price": 60,
+    "group": 3,
+    "rents": [
+      2,
+      10,
+      30,
+      90,
+      160,
+      250
+    ],
+    "buildingCost": 50,
+    "tax": 0
+  },
+  {
+    "id": 2,
+    "name": "公共基金",
+    "kind": "chest",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 3,
+    "name": "白教堂路",
+    "kind": "street",
+    "color": "#8B4513",
+    "price": 60,
+    "group": 3,
+    "rents": [
+      4,
+      20,
+      60,
+      180,
+      320,
+      450
+    ],
+    "buildingCost": 50,
+    "tax": 0
+  },
+  {
+    "id": 4,
+    "name": "所得税",
+    "kind": "tax",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 200
+  },
+  {
+    "id": 5,
+    "name": "国王十字车站",
+    "kind": "station",
+    "color": "#FFFFFF",
+    "price": 200,
+    "group": 1,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 6,
+    "name": "伊斯灵顿天使街",
+    "kind": "street",
+    "color": "#87CEEB",
+    "price": 100,
+    "group": 4,
+    "rents": [
+      6,
+      30,
+      90,
+      270,
+      400,
+      550
+    ],
+    "buildingCost": 50,
+    "tax": 0
+  },
+  {
+    "id": 7,
+    "name": "机会",
+    "kind": "chance",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 8,
+    "name": "尤斯顿路",
+    "kind": "street",
+    "color": "#87CEEB",
+    "price": 100,
+    "group": 4,
+    "rents": [
+      6,
+      30,
+      90,
+      270,
+      400,
+      550
+    ],
+    "buildingCost": 50,
+    "tax": 0
+  },
+  {
+    "id": 9,
+    "name": "彭顿维尔路",
+    "kind": "street",
+    "color": "#87CEEB",
+    "price": 120,
+    "group": 4,
+    "rents": [
+      8,
+      40,
+      100,
+      300,
+      450,
+      600
+    ],
+    "buildingCost": 50,
+    "tax": 0
+  },
+  {
+    "id": 10,
+    "name": "监狱／探监",
+    "kind": "visiting",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 11,
+    "name": "帕尔摩尔街",
+    "kind": "street",
+    "color": "#FF0080",
+    "price": 140,
+    "group": 5,
+    "rents": [
+      10,
+      50,
+      150,
+      450,
+      625,
+      750
+    ],
+    "buildingCost": 100,
+    "tax": 0
+  },
+  {
+    "id": 12,
+    "name": "电力公司",
+    "kind": "utility",
+    "color": "#FFFFFF",
+    "price": 150,
+    "group": 2,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 13,
+    "name": "白厅",
+    "kind": "street",
+    "color": "#FF0080",
+    "price": 140,
+    "group": 5,
+    "rents": [
+      10,
+      50,
+      150,
+      450,
+      625,
+      750
+    ],
+    "buildingCost": 100,
+    "tax": 0
+  },
+  {
+    "id": 14,
+    "name": "诺森伯兰大道",
+    "kind": "street",
+    "color": "#FF0080",
+    "price": 160,
+    "group": 5,
+    "rents": [
+      12,
+      60,
+      180,
+      500,
+      700,
+      900
+    ],
+    "buildingCost": 100,
+    "tax": 0
+  },
+  {
+    "id": 15,
+    "name": "马里波恩车站",
+    "kind": "station",
+    "color": "#FFFFFF",
+    "price": 200,
+    "group": 1,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 16,
+    "name": "弓街",
+    "kind": "street",
+    "color": "#FFA500",
+    "price": 180,
+    "group": 6,
+    "rents": [
+      14,
+      70,
+      200,
+      550,
+      750,
+      950
+    ],
+    "buildingCost": 100,
+    "tax": 0
+  },
+  {
+    "id": 17,
+    "name": "公共基金",
+    "kind": "chest",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 18,
+    "name": "马尔伯勒街",
+    "kind": "street",
+    "color": "#FFA500",
+    "price": 180,
+    "group": 6,
+    "rents": [
+      14,
+      70,
+      200,
+      550,
+      750,
+      950
+    ],
+    "buildingCost": 100,
+    "tax": 0
+  },
+  {
+    "id": 19,
+    "name": "藤街",
+    "kind": "street",
+    "color": "#FFA500",
+    "price": 200,
+    "group": 6,
+    "rents": [
+      16,
+      80,
+      220,
+      600,
+      800,
+      1000
+    ],
+    "buildingCost": 100,
+    "tax": 0
+  },
+  {
+    "id": 20,
+    "name": "免费停车",
+    "kind": "parking",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 21,
+    "name": "斯特兰德街",
+    "kind": "street",
+    "color": "#FF0000",
+    "price": 220,
+    "group": 7,
+    "rents": [
+      18,
+      90,
+      250,
+      700,
+      875,
+      1050
+    ],
+    "buildingCost": 150,
+    "tax": 0
+  },
+  {
+    "id": 22,
+    "name": "机会",
+    "kind": "chance",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 23,
+    "name": "舰队街",
+    "kind": "street",
+    "color": "#FF0000",
+    "price": 220,
+    "group": 7,
+    "rents": [
+      18,
+      90,
+      250,
+      700,
+      875,
+      1050
+    ],
+    "buildingCost": 150,
+    "tax": 0
+  },
+  {
+    "id": 24,
+    "name": "特拉法加广场",
+    "kind": "street",
+    "color": "#FF0000",
+    "price": 240,
+    "group": 7,
+    "rents": [
+      20,
+      100,
+      300,
+      750,
+      925,
+      1100
+    ],
+    "buildingCost": 150,
+    "tax": 0
+  },
+  {
+    "id": 25,
+    "name": "芬乔奇街车站",
+    "kind": "station",
+    "color": "#FFFFFF",
+    "price": 200,
+    "group": 1,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 26,
+    "name": "莱斯特广场",
+    "kind": "street",
+    "color": "#FFFF00",
+    "price": 260,
+    "group": 8,
+    "rents": [
+      22,
+      110,
+      330,
+      800,
+      975,
+      1150
+    ],
+    "buildingCost": 150,
+    "tax": 0
+  },
+  {
+    "id": 27,
+    "name": "考文垂街",
+    "kind": "street",
+    "color": "#FFFF00",
+    "price": 260,
+    "group": 8,
+    "rents": [
+      22,
+      110,
+      330,
+      800,
+      975,
+      1150
+    ],
+    "buildingCost": 150,
+    "tax": 0
+  },
+  {
+    "id": 28,
+    "name": "自来水公司",
+    "kind": "utility",
+    "color": "#FFFFFF",
+    "price": 150,
+    "group": 2,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 29,
+    "name": "皮卡迪利街",
+    "kind": "street",
+    "color": "#FFFF00",
+    "price": 280,
+    "group": 8,
+    "rents": [
+      24,
+      120,
+      360,
+      850,
+      1025,
+      1200
+    ],
+    "buildingCost": 150,
+    "tax": 0
+  },
+  {
+    "id": 30,
+    "name": "前往监狱",
+    "kind": "jail",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 31,
+    "name": "摄政街",
+    "kind": "street",
+    "color": "#008000",
+    "price": 300,
+    "group": 9,
+    "rents": [
+      26,
+      130,
+      390,
+      900,
+      1100,
+      1275
+    ],
+    "buildingCost": 200,
+    "tax": 0
+  },
+  {
+    "id": 32,
+    "name": "牛津街",
+    "kind": "street",
+    "color": "#008000",
+    "price": 300,
+    "group": 9,
+    "rents": [
+      26,
+      130,
+      390,
+      900,
+      1100,
+      1275
+    ],
+    "buildingCost": 200,
+    "tax": 0
+  },
+  {
+    "id": 33,
+    "name": "公共基金",
+    "kind": "chest",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 34,
+    "name": "邦德街",
+    "kind": "street",
+    "color": "#008000",
+    "price": 320,
+    "group": 9,
+    "rents": [
+      28,
+      150,
+      450,
+      1000,
+      1200,
+      1400
+    ],
+    "buildingCost": 200,
+    "tax": 0
+  },
+  {
+    "id": 35,
+    "name": "利物浦街车站",
+    "kind": "station",
+    "color": "#FFFFFF",
+    "price": 200,
+    "group": 1,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 36,
+    "name": "机会",
+    "kind": "chance",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 0
+  },
+  {
+    "id": 37,
+    "name": "公园巷",
+    "kind": "street",
+    "color": "#0000FF",
+    "price": 350,
+    "group": 10,
+    "rents": [
+      35,
+      175,
+      500,
+      1100,
+      1300,
+      1500
+    ],
+    "buildingCost": 200,
+    "tax": 0
+  },
+  {
+    "id": 38,
+    "name": "特别税",
+    "kind": "tax",
+    "color": "#FFFFFF",
+    "price": 0,
+    "group": 0,
+    "rents": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "buildingCost": 0,
+    "tax": 100
+  },
+  {
+    "id": 39,
+    "name": "梅费尔",
+    "kind": "street",
+    "color": "#0000FF",
+    "price": 400,
+    "group": 10,
+    "rents": [
+      50,
+      200,
+      600,
+      1400,
+      1700,
+      2000
+    ],
+    "buildingCost": 200,
+    "tax": 0
+  }
+]

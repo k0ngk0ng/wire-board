@@ -57,3 +57,8 @@ python3 scripts/upload_assets.py .local/asset-pack \
 东方牌面改用 `splendor/expansions/orient-cards-v1.webp`：一张 BGA 原始图集，1235×1715、5×5 格，每格247×343，共18种插画和三级牌背，180,960字节。彩色插画对应真实奖励颜色；复制卡获得颜色后仍保留复制插画。图集不含费用、分数和效果，继续由游戏数据覆盖显示，不加改变宝石颜色的遮罩。牌市、详情/选择弹框、预留卡与明牌飞行动画共用卡面组件，牌堆和隐藏飞牌共用牌背映射。
 
 复现：`python scripts/prepare_splendor_orient_atlas.py OUTPUT_DIR [--source ORIGINAL_ATLAS]`，依赖Pillow。来源虽以`.jpg`结尾，实际返回WebP；检查固定SHA256、编码和尺寸后原字节输出，不重编码或放大。来源、格位、摘要见 `docs/research/splendor-orient-art-sources.json`；30张牌的图位与独立BGA组件数据交叉测试。按现有素材基地址上传新的版本文件，保持旧缓存文件不变。本次素材上传不表示扩展代码已上线。
+
+
+强手棋素材使用 `monopoly/v1/images/` 和 `monopoly/v1/audio/`，共 20 张 WebP、11 个 MP3，沿用当前 `ASSETS_BASE_URL`。官方说明书图标、经典棋子插画、音频来源与成品摘要见 [强手棋素材清单](../games/monopoly/assets/sources.json)。卡牌使用类别图标和单独显示的中文文本。
+
+`scripts/upload_assets.py` 默认仍只上传 WebP；加入 `--include-audio` 后支持 MP3、Ogg 和 WAV。工具在上传前检查整个目录的文件签名并拒绝符号链接，不上传 JSON 或其他非媒体文件。实际媒体应另用图片／音频解码器检查。强手棋的制作、CDN 回读和复现命令见 [模块说明](../games/monopoly/README.md)。修改素材须提升版本，不覆盖已设置不可变缓存的对象。
