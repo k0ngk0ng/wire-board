@@ -16,7 +16,7 @@ function fixture(options={}) {
     listJobsForWorkflowRun:()=>{}, listWorkflowRunArtifacts:()=>{},
   };
   const repos={
-    getCommit:async()=>({data:{sha:options.tagSHA||SHA}}),
+    getCommit:async()=>{if(options.noTag)throw Object.assign(Error('missing tag'),{status:404});return {data:{sha:options.tagSHA||SHA}}},
     listReleases:()=>{},
     createRelease:async(args)=>{releases.push({...args,id:77,tag_name:args.tag_name});return {data:releases.at(-1)}}
   };
@@ -46,11 +46,22 @@ for(const [name,options] of Object.entries({
  'expired artifact':{artifacts:[{name:'wire-board-linux-amd64',expired:true,size_in_bytes:100}]},
  'missing artifact':{artifacts:[]},
  'published release':{releases:[{id:2,tag_name:'v1.8.0',draft:false,target_commitish:SHA}]},
- 'wrong draft target':{releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:OTHER}]},
+ 'wrong tagless draft target':{manual:true,noTag:true,releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:OTHER}]},
 })) test('rejects '+name,async()=>{await assert.rejects(resolveRelease(fixture(options)))});
 test('manual migration accepts the successful legacy tag build',async()=>{
  const f=fixture({manual:true,runs:[{id:11,head_sha:SHA,head_branch:'v1.8.0',event:'push',path:'.github/workflows/build.yml'}]});assert.equal((await resolveRelease(f)).sha,SHA);
 });
 test('manual source cannot disagree with the existing tag',async()=>{
  await assert.rejects(resolveRelease(fixture({manual:true,tagSHA:OTHER})));
+});
+
+test('existing tag creates a draft without privileged target_commitish',async()=>{
+ const f=fixture();await resolveRelease(f);assert.equal(f.releases[0].target_commitish,undefined);
+});
+test('existing tag SHA binds a draft even when GitHub stores a branch target',async()=>{
+ const f=fixture({releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:'main'}]});assert.equal((await resolveRelease(f)).sha,SHA);
+});
+test('manual tagless publication requires an author-created matching draft',async()=>{
+ await assert.rejects(resolveRelease(fixture({manual:true,noTag:true})));
+ const f=fixture({manual:true,noTag:true,releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:SHA}]});assert.equal((await resolveRelease(f)).sha,SHA);
 });
