@@ -60,6 +60,12 @@ export type GameModule<Data = unknown, Options = unknown> = {
   Options?: ComponentType<OptionsProps<Options>>;
   Rules?: ComponentType;
   Cover?: ComponentType;
+  PlayerSummary?: ComponentType<{
+    room: GameRoom;
+    data: Data;
+    seat: number;
+    assets: string;
+  }>;
   // Only the six migrated games use the existing room-protocol adapter.
   legacy?: boolean;
 };

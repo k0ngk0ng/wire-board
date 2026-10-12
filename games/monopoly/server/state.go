@@ -112,36 +112,38 @@ func (r *Random) pick(n int) int {
 }
 
 type State struct {
-	RollSerial  int        `json:"rollSerial"`
-	Options     Options    `json:"options"`
-	Players     []Player   `json:"players"`
-	Properties  []Property `json:"properties"`
-	Turn        int        `json:"turn"`
-	Phase       string     `json:"phase"`
-	NextPhase   string     `json:"nextPhase"`
-	Window      int        `json:"window"`
-	Deadline    int64      `json:"deadline"`
-	Dice        [2]int     `json:"dice"`
-	UtilityDice [2]int     `json:"utilityDice"`
-	Doubles     int        `json:"doubles"`
-	Houses      int        `json:"houses"`
-	Hotels      int        `json:"hotels"`
-	BankNet     int        `json:"bankNet"` // Signed bank receipts; player cash + BankNet = 0.
-	Auction     *Auction   `json:"auction,omitempty"`
-	Debt        *Debt      `json:"debt,omitempty"`
-	Transfer    *Transfer  `json:"transfer,omitempty"`
-	Effects     []Effect   `json:"effects,omitempty"`
-	Eliminated  []int      `json:"eliminated"`
-	Waiting     []bool     `json:"waiting"`
-	Random      Random     `json:"random"`
-	Decks       [2][]int   `json:"decks"`
-	Log         []string   `json:"log"`
-	Trades      []Trade    `json:"trades"`
-	TradeSerial int        `json:"tradeSerial"`
-	LastCard    *CardEvent `json:"lastCard,omitempty"`
-	CardSerial  int        `json:"cardSerial"`
-	TurnSerial  int        `json:"turnSerial"`
-	TradeSent   []int      `json:"tradeSent"`
+	MotionSerial int        `json:"motionSerial"`
+	Motion       []Motion   `json:"motion,omitempty"`
+	RollSerial   int        `json:"rollSerial"`
+	Options      Options    `json:"options"`
+	Players      []Player   `json:"players"`
+	Properties   []Property `json:"properties"`
+	Turn         int        `json:"turn"`
+	Phase        string     `json:"phase"`
+	NextPhase    string     `json:"nextPhase"`
+	Window       int        `json:"window"`
+	Deadline     int64      `json:"deadline"`
+	Dice         [2]int     `json:"dice"`
+	UtilityDice  [2]int     `json:"utilityDice"`
+	Doubles      int        `json:"doubles"`
+	Houses       int        `json:"houses"`
+	Hotels       int        `json:"hotels"`
+	BankNet      int        `json:"bankNet"` // Signed bank receipts; player cash + BankNet = 0.
+	Auction      *Auction   `json:"auction,omitempty"`
+	Debt         *Debt      `json:"debt,omitempty"`
+	Transfer     *Transfer  `json:"transfer,omitempty"`
+	Effects      []Effect   `json:"effects,omitempty"`
+	Eliminated   []int      `json:"eliminated"`
+	Waiting      []bool     `json:"waiting"`
+	Random       Random     `json:"random"`
+	Decks        [2][]int   `json:"decks"`
+	Log          []string   `json:"log"`
+	Trades       []Trade    `json:"trades"`
+	TradeSerial  int        `json:"tradeSerial"`
+	LastCard     *CardEvent `json:"lastCard,omitempty"`
+	CardSerial   int        `json:"cardSerial"`
+	TurnSerial   int        `json:"turnSerial"`
+	TradeSent    []int      `json:"tradeSent"`
 }
 
 func newState(n int, options Options, now time.Time) (*State, error) {

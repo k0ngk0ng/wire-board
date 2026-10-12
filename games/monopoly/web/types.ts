@@ -80,7 +80,18 @@ export type Controls = {
   bidTargets: number[];
   properties: Record<number, PropertyControls>;
 };
+export type Motion = {
+  id: number;
+  kind: "roll" | "move" | "jump";
+  player: number;
+  from: number;
+  to: number;
+  steps: number;
+  dice: number[];
+};
 export type View = {
+  motionSerial: number;
+  motion?: Motion[];
   players: Player[];
   properties: Property[];
   board: Space[];

@@ -86,6 +86,23 @@ def checkpoint(name):
     report['checks'].append(name)
     print('PASS', name, flush=True)
 
+def check_splendor_contrast():
+    # Actual computed foreground/background after all game styles load.
+    contrast = js(r"""(() => {
+      const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number);
+      const blend=(a,b,o)=>a.slice(0,3).map((v,i)=>v*o+b[i]*(1-o));
+      const lum=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
+      return ['.reserved > span','.reserved > p','.bank-actions .subtle','.bank-actions .primary','.pass-button','.wallet-caption > span','.wallet-caption small','.wallet-caption > b'].flatMap(selector=>[...document.querySelectorAll('.splendor-board '+selector)].filter(e=>e.getClientRects().length).map(e=>{
+        const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);
+        let bg=[255,255,255],opacity=1;for(const n of chain){const c=getComputedStyle(n),a=rgb(c.backgroundColor);bg=blend(a,bg,a[3]??1);opacity*=Number(c.opacity)}
+        const fg=blend(rgb(getComputedStyle(e).color),bg,opacity),a=lum(fg),b=lum(bg);
+        return {selector,text:e.textContent.trim(),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05),fg,bg};
+      }));
+    })()""")
+    (out / ('splendor-contrast-' + str(js('innerWidth')) + '.json')).write_text(json.dumps(contrast,ensure_ascii=False,indent=2))
+    assert len(contrast)>=3 and all(c['ratio']>=4.5 for c in contrast), contrast
+
+
 try:
     for name in ('url', 'stop'):
         (out / name).unlink(missing_ok=True)
@@ -114,21 +131,22 @@ try:
     assert index > 0
     b('click', f'.game-feature:nth-child({index}) button')
     b('wait', '[role=dialog]')
-    b('select', 'select[aria-label=游戏]', 'splendor')
+    index = js('[...document.querySelectorAll(".choose-games button")].findIndex(e=>e.textContent.includes("璀璨宝石"))+1')
+    b('click', f'.choose-games button:nth-child({index})')
     b('wait', '.choose-games')
     b('click', '.choose-games button:last-child')
-    b('wait', 'select[aria-label=游戏]')
+    b('wait', 'select[aria-label=座位上限]')
     b('fill', 'input[name=name]', '模块浏览器牌桌')
     b('click', '[role=dialog] button[type=submit]')
-    b('wait', '--text', '添加电脑')
-    b('find', 'text', '添加电脑', 'click', '--exact')
+    b('wait', '.waiting-actions')
+    b('find', 'role', 'button', 'click', '--name', '添加电脑玩家', '--exact')
     b('wait', '--fn', '!document.querySelector(".waiting-actions button")?.disabled')
     b('click', '.waiting-actions > button:first-child')
     b('wait', '--fn', '[...document.querySelectorAll(".waiting-actions button")].some(b=>b.textContent==="开始游戏" && !b.disabled)')
     b('click', '.waiting-actions > button:last-child')
     b('wait', '.acceptance-board')
     assert js('document.querySelector("[data-testid=private-card]").textContent') == 'private-test-card'
-    assert js('Number(document.querySelector(".turn-info p").textContent.match(/[0-9]+/)[0])') > 0, 'deadline display uses the wrong clock'
+    assert js('Number(document.querySelector(".turn-card time").getAttribute("aria-label").match(/[0-9]+/)[0])') > 0, 'deadline display uses the wrong clock'
     checkpoint('module-board-desktop')
     b('set', 'viewport', '390', '844')
     checkpoint('module-board-mobile')
@@ -151,8 +169,17 @@ try:
             command('add_bot')
         command('ready'); command('start')
         b('wait', selector)
+        if kind == 'splendor': b('wait', '.bank-actions')
         b('set', 'viewport', '1280', '900'); checkpoint(kind + '-desktop')
+        if kind == 'splendor': check_splendor_contrast()
         b('set', 'viewport', '390', '844'); checkpoint(kind + '-mobile')
+        if kind == 'splendor':
+            check_splendor_contrast()
+            b('click', '.token-button[data-bank-color="1"]')
+            b('wait', '.token-button.chosen')
+            check_splendor_contrast()
+            assert js('[...document.querySelectorAll(".market-row .dev-card")].every(e=>{const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return y<0||y>innerHeight||e.contains(document.elementFromPoint(x,y))})'), 'mobile chat covers the card market'
+            checkpoint('splendor-mobile-selected')
         assert room()['game']['kind'] == kind
         command('close'); command('leave')
     report['passed'] = True

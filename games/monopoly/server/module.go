@@ -71,7 +71,7 @@ func Module() gameapi.Module {
 			if err != nil {
 				return nil, err
 			}
-			return map[string]any{"players": s.Players, "properties": s.Properties, "board": board, "turn": s.Turn, "phase": s.Phase, "window": s.Window, "dice": s.Dice, "rollSerial": s.RollSerial, "utilityDice": s.UtilityDice, "doubles": s.Doubles, "houses": s.Houses, "hotels": s.Hotels, "auction": s.Auction, "debt": s.Debt, "transfer": s.Transfer, "eliminated": s.Eliminated, "controls": s.controls(viewer), "lastCard": s.LastCard, "cards": cards, "offers": s.tradeViews(viewer), "auctionActors": s.auctionActors()}, nil
+			return map[string]any{"players": s.Players, "properties": s.Properties, "board": board, "turn": s.Turn, "phase": s.Phase, "window": s.Window, "dice": s.Dice, "rollSerial": s.RollSerial, "motionSerial": s.MotionSerial, "motion": s.Motion, "utilityDice": s.UtilityDice, "doubles": s.Doubles, "houses": s.Houses, "hotels": s.Hotels, "auction": s.Auction, "debt": s.Debt, "transfer": s.Transfer, "eliminated": s.Eliminated, "controls": s.controls(viewer), "lastCard": s.LastCard, "cards": cards, "offers": s.tradeViews(viewer), "auctionActors": s.auctionActors()}, nil
 		},
 		AcceptStale: func(ctx gameapi.Context, match gameapi.Match, raw json.RawMessage) bool {
 			s, err := decode(match)

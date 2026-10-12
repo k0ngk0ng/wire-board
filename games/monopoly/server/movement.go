@@ -13,6 +13,7 @@ func (s *State) roll(p int, now time.Time) error {
 	s.RollSerial++
 	s.Dice = [2]int{s.Random.pick(6) + 1, s.Random.pick(6) + 1}
 	s.UtilityDice = [2]int{}
+	s.animate("roll", p, s.Players[p].Position, s.Players[p].Position, 0)
 	s.note("玩家 %d 掷出 %d、%d", p+1, s.Dice[0], s.Dice[1])
 	double := s.Dice[0] == s.Dice[1]
 	steps := s.Dice[0] + s.Dice[1]
@@ -52,6 +53,7 @@ func (s *State) roll(p int, now time.Time) error {
 }
 
 func (s *State) jail(p int) {
+	s.animate("jump", p, s.Players[p].Position, 10, 0)
 	s.Players[p].Position = 10
 	s.Players[p].Jailed = true
 	s.Players[p].JailTurns = 0
@@ -100,7 +102,9 @@ func (s *State) moveWithRent(p, steps, stationFactor, utilityFactor int, now tim
 		s.pay(-1, p, 200)
 		s.note("玩家 %d 经过起点，领取 200", p+1)
 	}
-	s.Players[p].Position = (position%40 + 40) % 40
+	destination := (position%40 + 40) % 40
+	s.animate("move", p, s.Players[p].Position, destination, steps)
+	s.Players[p].Position = destination
 	return s.landWithRent(p, stationFactor, utilityFactor, now)
 }
 

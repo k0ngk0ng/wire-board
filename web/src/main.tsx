@@ -1465,7 +1465,13 @@ function Cover(props: Parameters<typeof LegacyCover>[0]) {
 function Create(props: Parameters<typeof LegacyCreate>[0]) {
   const [kind, setKind] = useState(props.kind);
   return isIndependentGame(kind) ? (
-    <ModuleCreate {...props} key={kind} kind={kind} onGameChange={setKind} />
+    <ModuleCreate
+      {...props}
+      key={kind}
+      kind={kind}
+      onGameChange={setKind}
+      renderCover={(id) => <Cover kind={id} mini />}
+    />
   ) : (
     <LegacyCreate {...props} kind={kind} onGameChange={setKind} />
   );
