@@ -157,7 +157,7 @@ WantedBy=multi-user.target
 - 更新脚本不会改写 `.env`、Nginx 或证书配置，也不会自动更新自身。升级部署工具时，从所选 GitHub Release 取出 `update.sh` 和 `compose.yaml` 后替换。在线备份脚本需配合含 `sqlite3` 的新版镜像；不满足时会在停服前退出，自动回滚旧镜像不受此限制。
 - 二进制：先备份，停止进程，替换二进制，重新启动。
 - 当前版本只在启动时创建缺失表，不执行破坏性迁移。
-- Actions 的 `verify` 工作执行规则测试、竞态检查、前端构建、Linux 二进制构建和真实 Linux 启动检查；通过后才发布容器。
+- main 提交触发 `Check main and build`，执行规则分片、竞态检查、扩展组合验收和构建。该工作流不发布镜像。版本 tag 触发 `Publish verified build`，复用相同提交的已验证构建产物。
 
 ## 常见问题
 
@@ -170,8 +170,14 @@ WantedBy=multi-user.target
 
 ## 发布已经验证的构建产物
 
-已经完成规则验证、且同一提交的 `Test and Linux amd64 binary` 作业成功时，可以使用 `Publish verified build` 手动工作流。先为该完整提交创建版本 Release 草稿，再传入 `source_run`（成功构建所在运行）、`source_sha`（40 位提交号）和 `version`（如 `v1.6.0`）。
+完整检查只在 main 提交时运行，版本 tag 不重复执行规则分片、竞态检查或完整对局矩阵。发布约定同时记录在仓库根目录的 [AGENTS.md](../AGENTS.md)。
 
-该流程校验主分支来源、构建成功状态与草稿目标一致，下载构建产物并验证 SHA-256，沿用该提交 Dockerfile 的运行阶段打包。容器启动及 SQLite 备份工具检查通过后，发布版本、提交和 `latest` 三种镜像标签，上传原构建附件并公开 Release 与源代码 tag。它不重新编译应用，也不重复规则、并发或完整对局矩阵；功能代码的验证须在进入此流程前完成。
+正常流程：将提交推送到 main，等待该提交的 `Test and Linux amd64 binary` 作业成功，再为同一提交推送 `vX.Y.Z` tag。tag 自动触发 `Publish verified build`，查找同一 SHA 的 main 构建及未过期的 `wire-board-linux-amd64` 产物。若 tag 比构建先到，工作流会短暂等待；找不到匹配产物、构建未通过或来源存在已知失败检查时，停止发布，不重跑整套检查，也不改用其他提交。
 
-常规主分支检查保持不变；不要为了已经验证的版本同时启动另一套重复流水线。正式更新仍执行既有 `update.sh`，使用版本标签并由脚本固定到镜像 digest。
+也可手动运行 `Publish verified build`，指定 `source_run`、40 位 `source_sha` 和 `version`。这保留了旧版发布入口，并允许显式选择同一版本历史 tag 流程中已成功的构建作业，便于迁移尚未发布的版本。现有版本 tag 必须指向指定 SHA；已公开的 Release 不会被覆盖。不存在 Release 时自动创建目标为该 SHA 的草稿。
+
+发布流程下载并核验原构建附件的 SHA-256，沿用来源提交 Dockerfile 的运行阶段打包，不重新编译应用。容器启动及 SQLite 备份工具检查通过后，发布版本、提交和 `latest` 三种镜像标签，上传原附件并公开 Release。main 构建产物保留 30 天；产物过期时须先在 main 恢复对应提交的有效构建，不能让 tag 发布绕过来源校验。
+
+功能代码的验证在 main 的检查流程和开发验收中完成。发布复用成功的二进制作业，不要求再等一套由 tag 触发的矩阵；已知失败不得被当作通过。不要为了发版取消正常的 main 检查或另启重复的完整检查流水线。
+
+服务器更新执行既有 `update.sh vX.Y.Z`，由脚本在线备份数据库并固定镜像 digest。部署不得自动上架新游戏。
