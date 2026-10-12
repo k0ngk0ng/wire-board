@@ -1,0 +1,114 @@
+# 在同一仓库中开发游戏
+
+每款游戏在 `games/<id>/` 中维护。仓库继续使用一个 Go module、一个前端依赖清单、一个服务和一套 SQLite 数据库。新增游戏只需要修改自己的目录，以及后端的一个注册入口。
+
+```text
+games/<id>/
+  server/                 # 独立 Go 包：规则、状态、动作、机器人、存档编解码
+  web/
+    module.tsx            # 前端自动发现入口
+    types.ts              # 本游戏的视图和选项类型
+    ...                   # 棋盘、规则说明、选项编辑和样式
+  tests/                  # 前端测试、HTTP／浏览器验收和夹具
+  assets/public/<id>/     # 可公开、随程序发布的素材
+  README.md
+```
+
+服务器专属的数据文件和 `go:embed` 资源放在 `server/` 内。公开素材由 Vite 汇集到仓库 `.local/web-public`，构建后继续进入 `web/dist`；同名公开路径会导致构建失败。修改公开素材后重新启动 Vite 或重新构建。商业素材仍遵循现有 CDN 和来源声明约定。
+
+## 新游戏接入
+
+先列出失败场景并编写 E2E，再实现游戏。复杂功能以完整链路验收为主；小型纯函数和低风险改动可以针对性验证。禁止先实现代码再补单元测试。
+
+1. 在 `games/<id>/server` 中实现自己的类型和导出的 `Module() gameapi.Module`。接入契约位于 [internal/gameapi/module.go](../internal/gameapi/module.go)，不需要导入 `internal/game` 或 `internal/server`。
+2. 在 [games/registry.go](../games/registry.go) 中导入这个 Go 包，并将其 `Module()` 加入 `Modules()` 返回值。这是新游戏唯一需要修改的公共注册文件。
+3. 在 `games/<id>/web/module.tsx` 中默认导出 `defineGame<本游戏视图, 本游戏选项>({...})`。前端自动发现该路径，ID 必须与后端一致。`legacy` 保持未设置。
+4. 在游戏目录内编写自己的测试、玩法说明和素材声明。游戏之间不得直接导入实现，不得修改另一款游戏的源码来完成接入。
+5. 执行本页的构建、边界和接入验收；新游戏应另有自己的完整对局 E2E。
+
+可参考仅用于测试的 [后端验收模块](../internal/server/module_e2e_test.go) 和 [前端验收模块](../internal/server/testdata/module-ui.tsx)。它们演示了完全独立的动作字段、私有信息、交替行动、电脑玩家和结算，不会出现在正常生产构建中。
+
+## 后端契约
+
+| 回调或字段 | 责任 |
+| --- | --- |
+| `ID`、`Name`、人数上下限 | 游戏目录元数据；后端注册会校验重复 ID |
+| `Configure(capacity, options)` | 校验并返回规范化选项；创建、修改设置和实际人数开局都会校验 |
+| `Start(context, options)` | 返回初始 `Match`；自行创建游戏状态、随机结果和计时上下文 |
+| `Apply(context, match, action)` | 解码本游戏动作、校验玩家和响应令牌，返回下一份 `Match` |
+| `View(match, viewer)` | 返回观看者视图；`viewer == -1` 是观众；不得返回完整私有快照 |
+| `BotAction`、`Reclaim` | 两者同时提供以支持电脑／托管；前者只选择动作，后者恢复已过期的操作窗口 |
+| `AcceptStale` | 可选，允许同一响应窗口内的旧版本；平台仍拒绝未来版本、开局前版本和越权请求 |
+
+`Context.Actor` 来自已认证的房间席位，不能相信动作里的玩家编号。`Context.Now` 是本次操作时间，`Players` 是实际席位数。平台先验证身份和幂等键，再在候选快照上调用模块，数据库事务成功后才替换当前房间和广播。
+
+`Match.Data` 是游戏自己的 JSON 快照；具体类型、版本升级和随机状态由游戏维护。`Match.Schema` 可用于本游戏的格式版本。视图读取和动作执行均需要识别支持的版本，不能只靠更改字段名称升级旧对局。
+
+`Actors` 是当前可行动玩家，`TimeoutActors` 是截止时仍欠操作的玩家，两者不必相同。`Deadline` 为 Unix 毫秒，零表示没有定时窗口。游戏自行保存暂停的时间预算、并发响应令牌等信息，不把复杂规则交给通用回合引擎。若没有提供电脑／托管能力，应使用无自动接管的流程，不依赖截止时间自动推进。
+
+`Match.Result != nil` 表示完局，同时清空行动者和截止时间。结果包括最终名次、获胜席位、可选分数及公开详情。`Team` 选择现有团队计分政策；游戏决定胜负和名次，平台保存历史并执行积分政策。详情不可包含需要继续保密的数据。
+
+回调不执行数据库、网络或文件操作，也不修改输入。机器人只根据公开信息与自己的秘密决策；选择动作和读取视图不能改变对局。随机结果应存入游戏状态，E2E 如需精确重放，应保留初始快照和随机结果，或在游戏内提供测试随机源。
+
+## 前端契约
+
+[web/src/game-api/module.ts](../web/src/game-api/module.ts) 定义 `defineGame`。模块提供名称、介绍、人数范围、棋盘及可选的配置编辑、规则和封面组件。支持机器人时声明 `supportsBots: true`，并与后端能力保持一致。
+
+棋盘收到本游戏的 `data`、房间席位、当前观看者、`busy`、素材地址，以及 `act`／`command`。一般游戏行动使用 `act({ ...本游戏动作 })`；平台负责加入当前版本和幂等键。`room.game.actors` 可用于提示当前行动者，但所有合法性仍由服务端确认。
+
+新游戏的配置通过 `options` 传递。公共等待界面提供准备、开始、电脑玩家和设置保存，不需要扩展旧游戏的创建表单。个性化选项由模块的 `Options` 组件维护；保存配置会清除真人准备状态。
+
+样式使用游戏根类名或 CSS Modules，避免为游戏向全局 `style.css` 增加规则。游戏可自行维护颜色、组件、动画和日志含义；只有不含游戏知识且确实稳定的工具才进入公共 UI。
+
+## 开发和验证
+
+从仓库根目录执行。所有缓存、临时数据库、浏览器配置和产物均保存在仓库内。
+
+```sh
+. scripts/env.sh
+python3 -B scripts/check_game_boundaries.py
+npm --prefix web run build
+npm --prefix web test
+go test -run '^$' ./...
+go vet ./...
+```
+
+按游戏运行已有测试，例如：
+
+```sh
+go test -count=1 ./games/carcassonne/server
+npm --prefix web test -- catan
+```
+
+前端测试入口收集 `web/tests/*.test.mjs` 和 `games/*/tests/*.test.mjs`；指定游戏时只运行该目录，无用例会报错。Go 测试继续由 `go test ./...` 和既有分片脚本发现。现有 HTTP 集成测试仍位于 `internal/server`，可以使用准确的测试名称选择。
+
+独立接入的服务器 E2E：
+
+```sh
+mkdir -p .local/module-refactor
+go test -json -count=1 -timeout=2m \
+  -run '^TestModule(RegistrationAndLifecycle|BotAndTimeout)E2E$' \
+  ./internal/server > .local/module-refactor/module-e2e.jsonl
+```
+
+真实浏览器接入验收需要已安装 `agent-browser`：
+
+```sh
+python3 -B scripts/accept_game_modules.py
+```
+
+该命令临时增加一个测试游戏，构建真实页面并启动测试服务，验证创建、设置、玩家操作、电脑推进、完局和刷新。随后检查现有六款游戏的桌面／手机牌桌。退出时移除临时游戏，并重新构建正常前端。不要与其他前端构建同时运行。
+
+结果位于 `.local/module-refactor/browser/result.json`，同目录保留截图、页面快照和构建／服务日志。服务器 E2E 另保留 `module-lifecycle.json` 和 Go JSON 输出。CI 的 `game-module-acceptance` 产物保存服务器接入验收结果；浏览器验收当前由上述本地命令执行。
+
+每款新游戏还应覆盖观战隐私、非法动作、重复请求、多人并发、超时／取消托管、重启恢复、结算与再来一局。产物记录运行命令和场景，不能只保留一个没有上下文的「通过」。
+
+## 现有六款游戏的兼容范围
+
+六款游戏的规则、局面、动作、机器人、前端专属类型与组件，以及规则测试已按游戏拆包。`internal/game` 是旧 API 适配层，只转发到这些包，以保持现有 JSON 和房间逻辑兼容。
+
+已有复杂房间配置、计时、战绩集成仍在 `internal/server`，旧前端房间配置／展示集中在 `web/src/legacy/room-ui.tsx`。这些是尚未迁移到新契约的兼容逻辑，不是新游戏的接入模板。新游戏不添加 `game.State` 指针、全局动作字段、旧创建分支或旧牌桌分支。
+
+现有游戏的公共 Go 类型／方法变化后，可执行 `go run scripts/legacy-game-api.go` 更新旧 API 转发声明；涉及旧动作协议时还需核对 `internal/game/game.go` 的动作映射。这一步只适用于六款旧游戏，新游戏不需要运行这个生成器。
+
+保留兼容层意味着旧游戏的房间配置调整仍可能需要协调；本次没有宣称这些旧集成已全部迁完。下一款新游戏将直接使用新接口，用实际开发验证契约后，再按游戏替换旧适配逻辑，避免一次重写已有扩展规则。

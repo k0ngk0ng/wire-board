@@ -67,7 +67,7 @@ def extract(source, name):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('source',type=Path)
-    parser.add_argument('--output',type=Path,default=Path('internal/game/rail_maps'))
+    parser.add_argument('--output',type=Path,default=Path('games/rail/server/rail_maps'))
     args=parser.parse_args()
     args.output.mkdir(parents=True,exist_ok=True)
     for name in MAPS:

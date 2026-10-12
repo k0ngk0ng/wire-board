@@ -1,0 +1,423 @@
+package catan
+
+import "slices"
+
+// These are actor-only previews. Construction and movement probes use public
+// tiles and one's own resources, never Board.Hidden/Numbers or discovery awards.
+// In particular, a depleted reward bank must not make a fog destination vanish
+// depending on the secret terrain beneath it. Apply remains authoritative.
+func (s *State) catanExplorerChoices(viewer int) []Action {
+	result := []Action{}
+	g := s.Catan
+	if g == nil || g.Explorer == nil || s.Finished || viewer < 0 || viewer >= len(g.Players) || g.Players[viewer].Eliminated {
+		return result
+	}
+	if g.HelperPending != nil {
+		return s.catanExplorerHelperResponseChoices(viewer)
+	}
+	if g.Fishing != nil && g.Fishing.Pending != nil {
+		if s.CatanPendingActor() == viewer {
+			result = append(result, Action{Type: "catan_fish_keep", Prompt: int(g.TurnSerial)})
+			for _, id := range g.Fishing.Tokens.Hands[viewer] {
+				result = append(result, Action{Type: "catan_fish_replace", Card: id, Prompt: int(g.TurnSerial)})
+			}
+		}
+		return result
+	}
+	if g.CitiesKnights != nil && g.CitiesKnights.Pending != nil {
+		return s.catanExplorerCityResponseChoices(viewer)
+	}
+	if viewer != s.Turn {
+		return result
+	}
+	if actions, handled := s.catanExplorerSpecialChoices(viewer); handled {
+		return actions
+	}
+	result = append(result, s.catanExplorerHelperChoices(viewer)...)
+	result = append(result, s.catanExplorerFishingChoices(viewer)...)
+	sequence := g.TurnSerial
+	add := func(a Action) { a.Prompt = int(sequence); result = append(result, a) }
+	if g.CitiesKnights != nil && s.Phase == "catan_roads" {
+		for _, edge := range s.catanExplorerFreeRoadSites(viewer) {
+			add(Action{Type: "catan_road", Edge: edge})
+		}
+		if len(result) == 0 {
+			add(Action{Type: "catan_skip_roads"})
+		}
+		return result
+	}
+	if s.Phase == "catan_roll" {
+		add(Action{Type: "catan_roll"})
+		return result
+	}
+	if s.Phase != "catan_turn" && s.Phase != "catan_explorer_move" {
+		return result
+	}
+	x := g.Explorer
+	// Every probe owns its mutable pieces. Immutable board topology is shared;
+	// neither public tiles nor any private hidden board are ever modified here.
+	probe := func(a Action) bool {
+		base := *g
+		base.Explorer = nil
+		base.Players = slices.Clone(g.Players)
+		for i := range base.Players {
+			base.Players[i].Resources = slices.Clone(g.Players[i].Resources)
+		}
+		base.Bank = slices.Clone(g.Bank)
+		base.Vertices = slices.Clone(g.Vertices)
+		base.Edges = slices.Clone(g.Edges)
+		cargo, fleet, economy := clone(*x.Cargo), clone(*x.Fleet), clone(*x.Economy)
+		if g.CitiesKnights != nil || g.EventDeck != nil || g.Fishing != nil || g.Options.Helpers {
+			// Classification and knight restrictions need the combination flags.
+			// Keep topology/missions read-only; all mutated pieces are owned.
+			world := *x
+			world.Cargo, world.Fleet, world.Economy = &cargo, &fleet, &economy
+			base.Explorer = &world
+			if g.CitiesKnights != nil {
+				k := clone(*g.CitiesKnights)
+				base.CitiesKnights = &k
+			}
+		}
+		next := *s
+		next.Catan, next.Log = &base, slices.Clone(s.Log)
+		switch a.Type {
+		case "catan_road":
+			return cargo.buildRoad(&base, &fleet, viewer, sequence, a.Edge) == nil
+		case "catan_settlement":
+			return cargo.buildSettlement(&base, &fleet, viewer, sequence, a.Vertex) == nil
+		case "catan_explorer_harbor":
+			return cargo.buildHarbor(&base, &fleet, viewer, sequence, a.Vertex) == nil
+		case "catan_city":
+			return cargo.upgradeSettlement(&base, &fleet, viewer, sequence, a.Vertex, "city", false) == nil
+		case "catan_wall", "catan_improvement":
+			return next.catanCityBuild(viewer, a, 0) == nil
+		case "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_move":
+			return next.catanKnightAction(viewer, a) == nil
+		case "catan_explorer_ship":
+			return cargo.buildShip(&base, &fleet, viewer, sequence, a.Slot, a.Edge) == nil
+		case "catan_explorer_unit":
+			return cargo.buildUnitFreight(&base, &fleet, viewer, sequence, a.Card, catanExplorerCargoLocation{a.Choice, a.Target}, a.Cards, a.Targets, a.SpiceUnload) == nil
+		case "catan_explorer_bank":
+			if g.CitiesKnights != nil {
+				return next.catanExplorerCityBank(viewer, a) == nil
+			}
+			return economy.bankTrade(&base, &fleet, &cargo, viewer, sequence, a.Color, a.Target) == nil
+		case "catan_explorer_wool":
+			return fleet.wool(&base, viewer, sequence, a.Slot) == nil
+		case "catan_explorer_settle":
+			return cargo.settle(&base, &fleet, viewer, sequence, a.Slot, a.Vertex) == nil
+		case "catan_explorer_transfer":
+			return cargo.transferAllFreight(&base, &fleet, viewer, sequence, a.Slot, a.Vertex, a.Give, a.Take, a.Cards, a.Targets, a.SpiceLoad, a.SpiceUnload) == nil
+		}
+		return false
+	}
+	offer := func(a Action) {
+		if probe(a) {
+			add(a)
+		}
+	}
+	if s.Phase == "catan_turn" {
+		if g.CitiesKnights != nil {
+			for _, action := range s.catanExplorerCityBuildCandidates(viewer) {
+				offer(action)
+			}
+		}
+		for _, edge := range g.Edges {
+			if edge.Owner == -1 && x.Cargo.landEdge(g, viewer, edge.ID) && catanExplorerCanPay(g, viewer, []int{1, 1, 0, 0, 0}) {
+				offer(Action{Type: "catan_road", Edge: edge.ID})
+			}
+			if catanExplorerSeaEdge(g, edge.ID) && (g.Vertices[edge.A].Owner == viewer && catanExplorerHarborAt(g, edge.A) || g.Vertices[edge.B].Owner == viewer && catanExplorerHarborAt(g, edge.B)) {
+				for ship := viewer * 3; ship < (viewer+1)*3; ship++ {
+					offer(Action{Type: "catan_explorer_ship", Slot: ship, Edge: edge.ID})
+				}
+			}
+		}
+		locations := []catanExplorerCargoLocation{}
+		for _, v := range g.Vertices {
+			if catanExplorerBotSite(g, viewer, v.ID, true) && catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) {
+				offer(Action{Type: "catan_settlement", Vertex: v.ID})
+			}
+			if v.Owner == viewer && v.Level == 1 {
+				offer(Action{Type: "catan_explorer_harbor", Vertex: v.ID})
+			}
+			if v.Owner == viewer && catanExplorerHarborAt(g, v.ID) {
+				locations = append(locations, catanExplorerCargoLocation{"harbor", v.ID})
+			}
+		}
+		for ship := viewer * 3; ship < (viewer+1)*3; ship++ {
+			loc := catanExplorerCargoLocation{"ship", ship}
+			if x.Cargo.buildLocation(g, x.Fleet, viewer, loc) {
+				locations = append(locations, loc)
+			}
+		}
+		if catanExplorerCanPay(g, viewer, []int{1, 1, 1, 1, 0}) || (x.Lairs != nil || x.Spice != nil) && catanExplorerCanPay(g, viewer, []int{0, 0, 1, 0, 1}) {
+			for _, loc := range locations {
+				discards := x.Cargo.recruitReturns(loc)
+				limit := 2
+				if x.Lairs != nil || x.Spice != nil {
+					limit = 11
+				}
+				for unit := viewer * 11; unit < viewer*11+limit; unit++ {
+					for _, discard := range discards {
+						offer(Action{Type: "catan_explorer_unit", Card: unit, Choice: loc.Kind, Target: loc.Index, Cards: discard.Cards, Targets: discard.Targets, SpiceUnload: discard.SpiceUnload})
+					}
+				}
+			}
+		}
+		for give := -1; give < len(g.Bank); give++ {
+			for take := -1; take < len(g.Bank); take++ {
+				if give != take {
+					offer(Action{Type: "catan_explorer_bank", Color: give, Target: take})
+				}
+			}
+		}
+		for _, a := range s.catanExplorerSpiceChoices(viewer) {
+			add(a)
+		}
+		add(Action{Type: "catan_explorer_begin_move"})
+		return result
+	}
+	for ship := viewer * 3; ship < (viewer+1)*3; ship++ {
+		if x.Fleet.Positions[ship] < 0 {
+			continue
+		}
+		offer(Action{Type: "catan_explorer_wool", Slot: ship})
+		for _, path := range x.Fleet.destinations(g, viewer, sequence, ship) {
+			add(Action{Type: "catan_explorer_sail", Slot: ship, Targets: path})
+		}
+		edge := g.Edges[x.Fleet.Positions[ship]]
+		for _, v := range []int{edge.A, edge.B} {
+			offer(Action{Type: "catan_explorer_settle", Slot: ship, Vertex: v})
+			if !x.Cargo.docked(g, x.Fleet, viewer, ship, v) {
+				continue
+			}
+			load := explorerCargoSubsets(x.Cargo.contents(catanExplorerCargoLocation{"harbor", v}))
+			unload := explorerCargoSubsets(x.Cargo.contents(catanExplorerCargoLocation{"ship", ship}))
+			loadFish := explorerCargoSubsets(x.Cargo.fishContents(catanExplorerCargoLocation{"harbor", v}))
+			unloadFish := explorerCargoSubsets(x.Cargo.fishContents(catanExplorerCargoLocation{"ship", ship}))
+			loadSpice := explorerCargoSubsets(x.Cargo.spiceContents(catanExplorerCargoLocation{"harbor", v}))
+			unloadSpice := explorerCargoSubsets(x.Cargo.spiceContents(catanExplorerCargoLocation{"ship", ship}))
+			for _, give := range load {
+				for _, take := range unload {
+					for _, lf := range loadFish {
+						for _, uf := range unloadFish {
+							for _, ls := range loadSpice {
+								for _, us := range unloadSpice {
+									if len(give)+len(take)+len(lf)+len(uf)+len(ls)+len(us) > 0 {
+										offer(Action{Type: "catan_explorer_transfer", Slot: ship, Vertex: v, Give: give, Take: take, Cards: lf, Targets: uf, SpiceLoad: ls, SpiceUnload: us})
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	for _, a := range s.catanExplorerLandingChoices(viewer) {
+		add(a)
+	}
+	for _, a := range s.catanExplorerSpiceChoices(viewer) {
+		add(a)
+	}
+	for _, a := range s.catanExplorerFishChoices(viewer) {
+		add(a)
+	}
+	add(Action{Type: "catan_end"})
+	return result
+}
+
+func explorerCargoSubsets(units []int) [][]int {
+	out := [][]int{{}}
+	for _, unit := range units {
+		for _, subset := range slices.Clone(out) {
+			out = append(out, append(slices.Clone(subset), unit))
+		}
+	}
+	return out
+}
+
+// Keep a shortest path for each destination/toll pair. A longer toll-free
+// path must survive a shorter paid route. Occupied edges may be crossed; fog stops
+// expansion, even when the compulsory stopping edge itself is overcrowded.
+func (f catanExplorerSailing) destinations(g *Catan, player int, sequence uint64, ship int) [][]int {
+	out := [][]int{}
+	if f.allowed(g, player, sequence) != nil || ship < 0 || ship >= len(f.Positions) || ship/3 != player || f.Positions[ship] < 0 || f.Turn.Ships[ship].Closed {
+		return out
+	}
+	from := f.Positions[ship]
+	type route struct {
+		edge int
+		path []int
+		toll bool
+	}
+	queue := []route{{edge: from}}
+	pirateOwner, pirateTile, gold := -1, -1, 0
+	if g.Explorer != nil && g.Explorer.Pirate != nil {
+		pirateOwner, pirateTile, gold = g.Explorer.Pirate.Owner, g.Explorer.Pirate.Tile, g.Explorer.Economy.Gold[player]
+	}
+	seen := map[[2]int]bool{{from, 0}: true}
+	for len(queue) > 0 {
+		item := queue[0]
+		queue = queue[1:]
+		if len(item.path) >= f.Turn.Ships[ship].Remaining {
+			continue
+		}
+		for _, edge := range g.Edges {
+			if edge.ID == item.edge || !catanExplorerAdjacentEdges(g.Edges[item.edge], edge) || !catanExplorerSeaEdge(g, edge.ID) {
+				continue
+			}
+			toll := item.toll || pirateOwner >= 0 && pirateOwner != player && !f.Turn.FishPirate && !f.Turn.Ships[ship].Tribute && (slices.Contains(g.Edges[item.edge].Tiles, pirateTile) || slices.Contains(edge.Tiles, pirateTile))
+			cost := 0
+			if toll {
+				cost = 1
+			}
+			key := [2]int{edge.ID, cost}
+			if seen[key] || toll && gold == 0 {
+				continue
+			}
+			seen[key] = true
+			path := append(slices.Clone(item.path), edge.ID)
+			if _, err := f.quote(g, player, sequence, ship, path, pirateOwner, pirateTile); err == nil {
+				out = append(out, path)
+			}
+			fog := false
+			for _, tile := range g.Tiles {
+				if tile.Resource == CatanFog && catanExplorerTouches(g, edge.ID, tile.ID) {
+					fog = true
+					break
+				}
+			}
+			if !fog {
+				queue = append(queue, route{edge.ID, path, toll})
+			}
+		}
+	}
+	return out
+}
+
+// Do not send every unrelated field of the shared multi-game Action struct.
+func catanExplorerChoiceView(actions []Action) []map[string]any {
+	out := make([]map[string]any, 0, len(actions))
+	for _, a := range actions {
+		v := map[string]any{"type": a.Type, "prompt": a.Prompt}
+		if a.Skill == "helper" {
+			v["skill"], v["card"] = a.Skill, a.Card
+			if len(a.Tokens) > 0 {
+				v["tokens"] = slices.Clone(a.Tokens)
+			}
+		}
+		switch a.Type {
+		case "catan_helper_choice":
+			v["choice"], v["card"], v["color"] = a.Choice, a.Card, a.Color
+		case "catan_helper":
+			v["color"], v["target"], v["edge"] = a.Color, a.Target, a.Edge
+			if len(a.Targets) > 0 {
+				v["targets"] = slices.Clone(a.Targets)
+			}
+			if len(a.Cards) > 0 {
+				v["cards"] = slices.Clone(a.Cards)
+			}
+			if len(a.Give) > 0 {
+				v["give"] = slices.Clone(a.Give)
+			}
+			if len(a.Take) > 0 {
+				v["take"] = slices.Clone(a.Take)
+			}
+		case "catan_fish_replace":
+			v["card"] = a.Card
+		case "catan_fish_boot", "catan_fish_steal":
+			v["target"] = a.Target
+			if len(a.Tokens) > 0 {
+				v["tokens"] = slices.Clone(a.Tokens)
+			}
+		case "catan_fish_resource":
+			v["color"], v["tokens"] = a.Color, slices.Clone(a.Tokens)
+		case "catan_fish_road":
+			v["edge"], v["tokens"] = a.Edge, slices.Clone(a.Tokens)
+		case "catan_fish_ship":
+			v["slot"], v["edge"], v["tokens"] = a.Slot, a.Edge, slices.Clone(a.Tokens)
+		case "catan_fish_voyage":
+			v["slot"], v["tokens"] = a.Slot, slices.Clone(a.Tokens)
+		case "catan_fish_pirate":
+			v["tokens"] = slices.Clone(a.Tokens)
+		case "catan_explorer_setup":
+			v["choice"], v["target"] = a.Choice, a.Target
+		case "catan_explorer_pirate_place", "catan_explorer_pirate_steal", "catan_explorer_chase", "catan_explorer_resolve", "catan_explorer_battle":
+			v["target"] = a.Target
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_explorer_land", "catan_explorer_pickup":
+			v["target"], v["slot"], v["cards"] = a.Target, a.Slot, a.Cards
+		case "catan_road":
+			v["edge"] = a.Edge
+		case "catan_settlement", "catan_explorer_harbor", "catan_city", "catan_wall", "catan_knight_recruit", "catan_knight_activate", "catan_knight_promote", "catan_knight_retreat", "catan_metropolis", "catan_pillage", "catan_treason_remove":
+			v["vertex"] = a.Vertex
+		case "catan_knight_move":
+			v["vertex"], v["target"] = a.Vertex, a.Target
+		case "catan_improvement", "catan_defender_reward", "catan_commercial_harbor":
+			v["color"] = a.Color
+		case "catan_aqueduct":
+			v["color"] = a.Color
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_diplomacy":
+			v["edge"] = a.Edge
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_espionage":
+			v["card"] = a.Card
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_treason_place":
+			v["vertex"], v["color"] = a.Vertex, a.Color
+			if a.Choice != "" {
+				v["choice"] = a.Choice
+			}
+		case "catan_explorer_ship":
+			v["slot"], v["edge"] = a.Slot, a.Edge
+		case "catan_explorer_unit":
+			v["card"], v["choice"], v["target"], v["cards"] = a.Card, a.Choice, a.Target, a.Cards
+			if len(a.Targets) > 0 {
+				v["targets"] = a.Targets
+			}
+			if len(a.SpiceUnload) > 0 {
+				v["spiceUnload"] = a.SpiceUnload
+			}
+		case "catan_explorer_bank":
+			v["color"], v["target"] = a.Color, a.Target
+		case "catan_explorer_wool":
+			v["slot"] = a.Slot
+		case "catan_explorer_sail":
+			v["slot"], v["targets"] = a.Slot, a.Targets
+		case "catan_explorer_settle":
+			v["slot"], v["vertex"] = a.Slot, a.Vertex
+		case "catan_explorer_spice_gold":
+			v["card"] = a.Card
+		case "catan_explorer_spice_land":
+			v["target"], v["slot"], v["card"] = a.Target, a.Slot, a.Card
+		case "catan_explorer_fish_load", "catan_explorer_fish_deliver", "catan_explorer_spice_deliver":
+			v["slot"], v["card"] = a.Slot, a.Card
+		case "catan_explorer_transfer":
+			if len(a.SpiceLoad) > 0 {
+				v["spiceLoad"] = a.SpiceLoad
+			}
+			if len(a.SpiceUnload) > 0 {
+				v["spiceUnload"] = a.SpiceUnload
+			}
+			if len(a.Cards) > 0 {
+				v["cards"] = a.Cards
+			}
+			if len(a.Targets) > 0 {
+				v["targets"] = a.Targets
+			}
+			v["slot"], v["vertex"], v["give"], v["take"] = a.Slot, a.Vertex, a.Give, a.Take
+		}
+		out = append(out, v)
+	}
+	return out
+}

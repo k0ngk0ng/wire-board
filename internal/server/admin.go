@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/k0ngk0ng/wire-board/games"
 	"net/http"
 	"sort"
 	"strings"
@@ -15,8 +16,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var gameKinds = []string{"splendor", "rail", "catan", "carcassonne", "sanguosha", "dota"}
-var gameNames = map[string]string{"splendor": "璀璨宝石", "rail": "铁路环游", "catan": "卡坦岛", "carcassonne": "卡卡颂", "sanguosha": "三国杀", "dota": "兵线争锋"}
+var gameKinds, gameNames = legacyCatalogue()
+
+func legacyCatalogue() ([]string, map[string]string) {
+	kinds := []string{}
+	names := map[string]string{}
+	for _, entry := range games.Legacy {
+		kinds = append(kinds, entry.ID)
+		names[entry.ID] = entry.Name
+	}
+	return kinds, names
+}
 
 func validName(name string) bool {
 	if utf8.RuneCountInString(name) < 2 || utf8.RuneCountInString(name) > 20 {
@@ -153,7 +163,7 @@ func (s *Server) needAdmin(w http.ResponseWriter, r *http.Request) (User, bool) 
 }
 func (s *Server) availableGames() []string {
 	out := []string{}
-	for _, kind := range gameKinds {
+	for _, kind := range s.gameKinds {
 		if !s.hiddenGames[kind] {
 			out = append(out, kind)
 		}
@@ -252,8 +262,8 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 	}
 	sort.Slice(rooms, func(i, j int) bool { return rooms[i]["id"].(string) < rooms[j]["id"].(string) })
 	games := []map[string]any{}
-	for _, kind := range gameKinds {
-		games = append(games, map[string]any{"kind": kind, "name": gameNames[kind], "enabled": !s.hiddenGames[kind]})
+	for _, kind := range s.gameKinds {
+		games = append(games, map[string]any{"kind": kind, "name": s.gameNames[kind], "enabled": !s.hiddenGames[kind]})
 	}
 	respond(w, 200, map[string]any{"users": users, "rooms": rooms, "games": games, "serverNow": time.Now().UnixMilli(), "stats": map[string]int{"users": len(users), "online": online, "playing": playing, "waiting": waiting}})
 }
@@ -321,7 +331,7 @@ func (s *Server) adminGame(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	kind := r.PathValue("kind")
-	if gameNames[kind] == "" {
+	if s.gameNames[kind] == "" {
 		fail(w, 404, "桌游不存在")
 		return
 	}
@@ -347,7 +357,7 @@ func (s *Server) adminGame(w http.ResponseWriter, r *http.Request) {
 	if *req.Enabled {
 		name = "game_published"
 	}
-	err := s.adminCommit(u, name, kind, gameNames[kind], changed, func(tx *sql.Tx) error {
+	err := s.adminCommit(u, name, kind, s.gameNames[kind], changed, func(tx *sql.Tx) error {
 		_, err := tx.Exec("INSERT INTO game_settings(kind,enabled) VALUES(?,?) ON CONFLICT(kind) DO UPDATE SET enabled=excluded.enabled", kind, *req.Enabled)
 		return err
 	})

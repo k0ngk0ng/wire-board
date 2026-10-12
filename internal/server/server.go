@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/coder/websocket"
 	"github.com/k0ngk0ng/wire-board/internal/game"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"golang.org/x/crypto/bcrypt"
 	"io/fs"
 	"log"
@@ -28,6 +29,7 @@ import (
 )
 
 type Config struct {
+	Modules                                             []gameapi.Module
 	DataDir, InviteCode, Origin                         string
 	AssetsBaseURL                                       string
 	SecureCookie                                        bool
@@ -46,6 +48,8 @@ type Seat struct {
 	Left            bool `json:"left"`
 }
 type Room struct {
+	Options                json.RawMessage                `json:"options,omitempty"`
+	Module                 *gameapi.Match                 `json:"module,omitempty"`
 	CatanRiversWorldMap    *game.CatanRiversWorldMap      `json:"catanRiversWorldMap,omitempty"`
 	CatanEvents            string                         `json:"catanEvents,omitempty"`
 	CatanFishing           bool                           `json:"catanFishing,omitempty"`
@@ -121,6 +125,9 @@ type bucket struct {
 	Count int
 }
 type Server struct {
+	modules     map[string]gameapi.Module
+	gameKinds   []string
+	gameNames   map[string]string
 	newGame     func(string, int) (*game.State, error)
 	cancel      context.CancelFunc
 	done        chan struct{}
@@ -168,6 +175,10 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, e
 	}
 	s := &Server{newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
+	if e = s.initModules(); e != nil {
+		db.Close()
+		return nil, e
+	}
 	if e = s.initAdmin(); e != nil {
 		db.Close()
 		return nil, e
@@ -190,12 +201,25 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			db.Close()
 			return nil, e
 		}
+		if _, ok := s.modules[r.Kind]; r.Module != nil || len(r.Options) > 0 {
+			if !ok {
+				db.Close()
+				return nil, fmt.Errorf("missing game module for saved room: %s", r.Kind)
+			}
+			if r.Module != nil {
+				if e = r.Module.Validate(len(r.Seats)); e != nil {
+					db.Close()
+					return nil, e
+				}
+			}
+		}
 		s.rooms[r.ID] = &r
 		changed := r.Game != nil && r.Game.UpgradeRailSetup()
 		if changed {
 			r.SetupVersion = r.Version
 		}
-		if r.Status == "playing" && r.TurnDeadline == 0 {
+		changed = r.resumeSanguoshaResponses(time.Now()) || changed
+		if r.Status == "playing" && r.Module == nil && r.TurnDeadline == 0 {
 			r.startTurnClock(time.Now())
 			changed = true
 		}
@@ -481,6 +505,10 @@ func (s *Server) current(id string) *Room {
 	return nil
 }
 func summary(r *Room) map[string]any {
+	if len(r.Options) > 0 {
+		return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+	}
+
 	result := map[string]any{"catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	if r.CatanFishing {
 		result["catanFishing"] = true
@@ -567,6 +595,7 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	out := map[string]any{"user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "railMaps": game.RailMapList()}
+	out["modules"] = s.cfg.Modules
 	room := s.current(u.ID)
 	if room == nil {
 		room = s.watching(u.ID)
@@ -578,7 +607,16 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 		v["turnDeadline"] = room.TurnDeadline
 		v["chat"] = room.Chat
 		if room.Game != nil {
-			v["game"] = room.Game.View(seatIndex(room, u.ID))
+			if room.Module != nil {
+				view, err := s.moduleView(room, seatIndex(room, u.ID))
+				if err != nil {
+					fail(w, 500, "无法读取游戏视图")
+					return
+				}
+				v["game"] = view
+			} else {
+				v["game"] = room.Game.View(seatIndex(room, u.ID))
+			}
 			if room.Status == "finished" && room.MatchID != "" {
 				var raw []byte
 				if err := s.db.QueryRow("SELECT snapshot FROM match_history WHERE id=?", room.MatchID).Scan(&raw); err == nil {
@@ -624,6 +662,7 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		Options                json.RawMessage                `json:"options"`
 		CatanTransportSea      *game.CatanTransportSeaSetup   `json:"catanTransportSea"`
 		CatanEvents            string                         `json:"catanEvents"`
 		CatanBaseConfiguration *game.CatanBaseConfiguration   `json:"catanBaseConfiguration"`
@@ -657,6 +696,10 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	req.Name = strings.TrimSpace(req.Name)
 	if req.Name == "" || utf8.RuneCountInString(req.Name) > 40 || len(req.Password) > 72 {
 		fail(w, 400, "房间名需 1–40 字，密码最多 72 字节")
+		return
+	}
+	if module, ok := s.modules[req.Kind]; ok {
+		s.createModule(w, u, module, req.Name, req.Password, req.Capacity, req.Options)
 		return
 	}
 	maxPlayers := 4
@@ -840,6 +883,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
+		Options                json.RawMessage                `json:"options"`
+		RawAction              json.RawMessage                `json:"action"`
 		CatanRiversWorldMap    *game.CatanRiversWorldMap      `json:"catanRiversWorldMap"`
 		CatanFriendlyRobber    *game.CatanFriendlyRobberSetup `json:"catanFriendlyRobber"`
 		CatanHarbors           *game.CatanHarborsSetup        `json:"catanHarbors"`
@@ -859,11 +904,17 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		Password               string                         `json:"password"`
 		Version                int                            `json:"version"`
 		Nonce                  string                         `json:"nonce"`
-		Action                 game.Action                    `json:"action"`
+		Action                 game.Action                    `json:"-"`
 		Enabled                *bool                          `json:"enabled,omitempty"`
 	}
 	if !decode(w, r, &req) {
 		return
+	}
+	if room.Module == nil && len(req.RawAction) > 0 {
+		if err := json.Unmarshal(req.RawAction, &req.Action); err != nil {
+			fail(w, 400, "无效游戏行动")
+			return
+		}
 	}
 	if s.hiddenGames[room.Kind] && (req.Type == "join" || req.Type == "start" || req.Type == "rematch") {
 		fail(w, 403, "该桌游已下架，暂时不能加入或新开局")
@@ -889,7 +940,17 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	// Control of one's own seat is independent of board versions. In particular,
 	// a returning player must be able to cancel while the bot is taking actions.
 	seatControl := req.Type == "autoplay" && req.Version >= max(1, room.SetupVersion) && req.Version <= room.Version
-	if req.Version != room.Version && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl {
+	parallelModule := false
+	if room.Module != nil && req.Type == "action" && req.Version >= room.SetupVersion && req.Version < room.Version && room.Status == "playing" {
+		actor := seatIndex(room, u.ID)
+		if module := s.modules[room.Kind]; actor >= 0 && !room.Seats[actor].AutoPlay && module.AcceptStale != nil {
+			raw, _ := json.Marshal(room.Module)
+			var match gameapi.Match
+			_ = json.Unmarshal(raw, &match)
+			parallelModule = module.AcceptStale(moduleContext(room, actor, req.Version, time.Now()), match, req.RawAction)
+		}
+	}
+	if req.Version != room.Version && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -904,6 +965,21 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	var err error
 	switch req.Type {
+	case "options":
+		module, ok := s.modules[next.Kind]
+		if !ok || next.Host != u.ID || next.Status != "waiting" {
+			err = errors.New("只有房主能在开局前修改游戏设置")
+			break
+		}
+		next.Options, err = module.Configure(next.Capacity, req.Options)
+		if err == nil && (!json.Valid(next.Options) || string(next.Options) == "null") {
+			err = errors.New("无效游戏设置")
+		}
+		if err == nil {
+			for i := range next.Seats {
+				next.Seats[i].Ready = next.Seats[i].Bot
+			}
+		}
 	case "join":
 		if idx >= 0 {
 			break
@@ -951,6 +1027,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			next.Seats[i].Ready = next.Seats[i].Bot
 		}
 	case "add_bot":
+		if module, ok := s.modules[next.Kind]; ok && module.BotAction == nil {
+			err = errors.New("此游戏不支持电脑玩家")
+			break
+		}
 		if idx < 0 || next.Host != u.ID || next.Status != "waiting" || len(next.Seats) >= next.Capacity {
 			err = errors.New("只有房主能在未满的等待房间添加电脑玩家")
 			break
@@ -1297,6 +1377,12 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				err = errors.New("请等待所有玩家准备")
 			}
 		}
+		if _, ok := s.modules[next.Kind]; ok {
+			if err == nil {
+				err = s.startModule(&next, idx, now)
+			}
+			break
+		}
 		if err == nil {
 			err = next.validateCatanScenario()
 		}
@@ -1528,6 +1614,26 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("只能在对局中开启或取消自己的托管")
 			break
 		}
+		if next.Module != nil {
+			module := s.modules[next.Kind]
+			if module.BotAction == nil {
+				err = errors.New("此游戏不支持托管")
+				break
+			}
+			if !*req.Enabled && next.Seats[idx].AutoPlay && next.Module.Deadline > 0 && next.Module.Deadline <= now.UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx) {
+				var match gameapi.Match
+				match, err = module.Reclaim(moduleContext(&next, idx, req.Version, now), *next.Module)
+				if err == nil {
+					err = next.setModule(match)
+				}
+				if err != nil {
+					break
+				}
+			}
+			next.Seats[idx].TimeoutAutoPlay = false
+			next.Seats[idx].AutoPlay = *req.Enabled
+			break
+		}
 		if g := next.Game.Sanguosha; g != nil && g.Players[idx].Dead {
 			err = errors.New("已阵亡的角色无需托管")
 			break
@@ -1576,7 +1682,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("当前由电脑托管，请先取消托管再手动操作")
 			break
 		}
-		err = next.applyGameAction(idx, req.Action, now)
+		if next.Module != nil {
+			err = s.applyModule(&next, idx, req.Version, req.RawAction, now)
+		} else {
+			err = next.applyGameAction(idx, req.Action, now)
+		}
 	case "kick_timeout":
 		err = errors.New("超时会自动开启电脑托管，玩家保留席位并可随时取消托管")
 	case "rematch":
@@ -1585,6 +1695,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		next.Game = nil
+		next.Module = nil
 		next.TurnDeadline = 0
 		active := []Seat{}
 		for _, seat := range next.Seats {

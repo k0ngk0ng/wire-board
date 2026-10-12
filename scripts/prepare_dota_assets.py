@@ -10,7 +10,7 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path("docs/research/dota1/assets.json"))
-    parser.add_argument("--output", type=Path, default=Path("web/public/dota/v1"))
+    parser.add_argument("--output", type=Path, default=Path("games/dota/assets/public/dota/v1"))
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
     args.output.mkdir(parents=True, exist_ok=True)

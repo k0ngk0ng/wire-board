@@ -1,0 +1,773 @@
+import type { GameHeader, RoomBase } from "../../../web/src/types";
+export type CatanNewWorldMap = {
+  hexes: { resource: number; number: number }[];
+};
+export type CatanPlayer = {
+  helper?: {
+    id: number;
+    moon: boolean;
+    acquiredTurn: number;
+    usedTurn: number;
+  };
+  helperReady?: boolean;
+  resources?: number[];
+  dev?: number[];
+  newDev?: number[];
+  resourceCount: number;
+  devCount: number;
+  knights: number;
+  roadLength: number;
+  score: number;
+  publicScore: number;
+  eliminated?: boolean;
+  rates: number[];
+  roadsLeft: number;
+  bridgesLeft?: number;
+  shipsLeft?: number;
+  settlementsLeft: number;
+  citiesLeft: number;
+};
+export type CatanKnight = {
+  owner: number;
+  vertex: number;
+  strength: number;
+  active: boolean;
+  activatedAt: number;
+  promotedAt: number;
+};
+export type CatanProgressEvent = {
+  id: number;
+  kind: "draw" | "play" | "return" | "transfer";
+  player: number;
+  other: number;
+  track: number;
+  count: number;
+  card?: number;
+};
+export type CatanCitiesKnights = {
+  helpers?: { rules: string; production?: { rollId: number; player: number } };
+  progressEventId?: number;
+  progressEvents?: CatanProgressEvent[];
+  rules: string;
+  layout?: string;
+  chase?: "robber" | "pirate";
+  pirateStart?: number;
+  barbarianPosition: number;
+  eventDie: number;
+  invasions: number;
+  actionSerial: number;
+  walls: number[];
+  metropolises: number[];
+  fallenCities: number[];
+  knights: CatanKnight[];
+  progressRemaining: number[];
+  merchant?: { owner: number; tile: number };
+  tradePowers?: { player: number; fleets: number[]; harbors: number[][] };
+  players: {
+    improvements: number[];
+    progress?: number[];
+    progressCount: number;
+    publicProgress: number[];
+    defenderPoints: number;
+    progressPoints: number;
+  }[];
+  pending?: {
+    kind: string;
+    players: number[];
+    track: number;
+    target: number;
+    color: number;
+    ship?: boolean;
+    source?: string;
+    knight?: CatanKnight;
+    resources?: number[];
+    progress?: number[];
+  };
+};
+export type CatanRevealedEvent = {
+  kind: string;
+  production: number;
+  red: number;
+  face: number;
+  rollId: number;
+  productionStarted: boolean;
+};
+export type CatanWagon = { edge: number; from: number };
+export type CatanTwoChoice = { owner: number; vertex: number; edge: number };
+export type CatanAttackKnight = { player: number; edge: number };
+export type CatanAttackMove = {
+  from: number;
+  to: number;
+  wheat?: boolean;
+  fish?: boolean;
+};
+export type CatanAttackCityKnight = {
+  owner: number;
+  edge: number;
+  strength: number;
+  active: boolean;
+};
+export type CatanAttackCity = {
+  rules: string;
+  knights: CatanAttackCityKnight[];
+  plan?: {
+    id: number;
+    player: number;
+    actor: number;
+    awaitingRetreat: boolean;
+    orders: { from: number; to: number; retreat: number }[];
+  };
+  treason?: { id: number; actor: number; caster: number; owner: number };
+  choices?: {
+    recruit?: number[];
+    activate?: number[];
+    promote?: number[];
+    capture?: number[];
+    remove?: number[];
+    edge?: number;
+    ranks?: number[];
+    retreat?: number[];
+    canConfirm?: boolean;
+    canUndo?: boolean;
+    fishTokens?: { id: number; fish: number }[];
+    fishCost?: number;
+    moves?: {
+      fish?: number[];
+      from: number;
+      required: boolean;
+      move: number[];
+      displace: number[];
+    }[];
+  };
+  end?: {
+    player: number;
+    battles: {
+      tile: number;
+      barbarians: number;
+      strength: number[];
+      prisoners: number[];
+      gold: number[];
+      lossDie: number;
+      lost: CatanAttackCityKnight[];
+      downgraded: CatanAttackCityKnight[];
+    }[];
+  };
+};
+export type CatanAttack = {
+  seaKnights?: string;
+  city?: CatanAttackCity;
+  twoRules?: string;
+  neutralPrisoners?: number;
+  landingSupplyRule?: "random-last" | "ledger" | "desert-reserve";
+  reserveRemaining?: number;
+  treasonRule?: "as-much-as-possible";
+  goldRule?: "ledger";
+  goldIssued?: number;
+  rules: string;
+  map: {
+    reserves?: number[];
+    castles: number[];
+    coast: number[];
+    barbarians: number;
+    gold: number;
+    extraNumbers?: { tile: number; number: number }[];
+  };
+  barbarians: number[];
+  knights: CatanAttackKnight[];
+  prisoners: number[];
+  gold: number[];
+  goldBank: number;
+  bought: number;
+  supply: number;
+  conquered: number[];
+  conqueredBuildings: number[];
+  knightsLeft: number[];
+  devRemaining: number;
+  discard: string[];
+  canAct: boolean;
+  canBuyCard: boolean;
+  warshipEdge?: number;
+  canSkipWarship?: boolean;
+  wonderLanding?: {
+    id: number;
+    player: number;
+    remaining: number;
+    cursor: number;
+  };
+  landingSources?: number[];
+  landingTargets?: number[];
+  landingNumber?: number;
+  pending?: {
+    id: number;
+    player: number;
+    card: string;
+    neutral?: boolean;
+    warshipUsed?: boolean;
+  };
+  endPlan?: { id: number; player: number; moves?: CatanAttackMove[] };
+  moveChoices?: {
+    from: number;
+    required: boolean;
+    normal: number[];
+    wheat: number[];
+    fish?: number[];
+  }[];
+  previewKnights?: CatanAttackKnight[];
+  previewWheat?: number;
+  fishTokens?: { id: number; fish: number }[];
+  fishCost?: number;
+  canConfirm?: boolean;
+  targets?: number[];
+  edges?: number[];
+  sources?: number[];
+  destinations?: number[];
+  fromBoard?: number;
+  treasonCount?: number;
+  treasonPlans?: { sources: number[]; destinations: number[] }[];
+  end?: {
+    id: number;
+    player: number;
+    moves: CatanAttackMove[];
+    battles: {
+      tile: number;
+      barbarians: number;
+      knights: CatanAttackKnight[];
+      prisoners: number[];
+      gold: number[];
+      tokens?: number[];
+      contests?: { players: number[]; dice: number[] }[];
+      lossDie?: number;
+      lost?: CatanAttackKnight[];
+    }[];
+  };
+};
+export type CatanTransport = {
+  attack?: string;
+  sharedBarbarians?: { tile: number; edge: number; captor: number }[];
+  rules: string;
+  knights?: string;
+  deckRecipe?: string;
+  map: {
+    sea?: string;
+    extraNumbers?: { tile: number; number: number }[];
+    sites: {
+      tile: number;
+      kind: string;
+      center: number;
+      paths: number[];
+      blocked: number[];
+    }[];
+  };
+  state: {
+    wagons: {
+      position: number;
+      level: number;
+      cargo?: { id: number; origin: string; cargo: string };
+      delivered: number;
+      points: number;
+      gold: number;
+    }[];
+    supply: number[];
+    goldBank: number;
+    goldIssued?: number;
+    goldRule?: "ledger";
+    barbarians: number[];
+    active: number;
+    sequence: number;
+    arrivalResolved: boolean;
+    travel?: {
+      player: number;
+      level: number;
+      position: number;
+      points: number;
+      wheatUsed: boolean;
+      fishUsed?: boolean;
+      neutralTolls?: number;
+      attempted: boolean[];
+      pending: number;
+      arrived: number;
+      ended: boolean;
+    };
+  };
+  canAct: boolean;
+  canDeliver: boolean;
+  swift: boolean;
+  moves: number;
+  barbarianPending: boolean;
+  barbarianSequence: number;
+  bought: number;
+  choices: {
+    steps?: {
+      edge: number;
+      to: number;
+      mp: number;
+      toll: number;
+      pay: number;
+      bank?: number;
+      neutral?: boolean;
+    }[];
+    knightChases?: { vertex: number; barbarians: number[] }[];
+    knightTargets?: number[];
+    drive?: number[];
+    relocate?: number[];
+    relocateHexes?: { tile: number; edges: number[] }[];
+    canWheat?: boolean;
+    canFish?: boolean;
+    fishCost?: number;
+    fishTokens?: { id: number; fish: number }[];
+    canStop?: boolean;
+    upgradeCost?: number[];
+    canUpgrade?: boolean;
+    buy?: number[];
+    sell?: number[];
+    rates?: number[];
+  };
+};
+export type CatanState = {
+  medicineHarbors?: number[];
+  explorer?: import("./catan-explorer-state").ExplorerView;
+  transport?: CatanTransport;
+  developmentNames?: string[];
+  attack?: CatanAttack;
+  two?: {
+    seafarers?: string;
+    seaKnights?: string;
+    seaStarts?: number[];
+    afterRoute?: "road" | "ship";
+    buildingShip?: boolean;
+    buildingRoadKnight?: boolean;
+    helpers?: string;
+    afterHelper?: "road" | "settlement";
+    variants?: string;
+    rules: string;
+    tokensIssued?: number;
+    knights?: string;
+    tokenRule?: "ledger" | "none" | "finite";
+    exchangeKnights?: number[];
+    exchangeKnightEdges?: number[];
+    canExchangeKnight?: boolean;
+    rolls: number[];
+    sequence: number;
+    tokens: number[];
+    bank: number;
+    spent: boolean;
+    knightExchanged: boolean;
+    pending?: {
+      kind:
+        "road" | "ship" | "settlement" | "bridge" | "knight" | "knight_promote";
+      resume: string;
+      remaining?: string[];
+    };
+    trade?: { resume: string; drawn?: number[]; mixed?: boolean };
+    actor: number;
+    canAct: boolean;
+    cost?: number;
+    tokenWindow?: boolean;
+    choices?: CatanTwoChoice[];
+    retreatTiles?: number[];
+    retreatEdges?: number[];
+    attackMoves?: Record<string, number[]>;
+    retreatCost?: number;
+    neutralRoadLengths: number[];
+  };
+  caravans?: {
+    helpers?: string;
+    transport?: string;
+    attack?: string;
+    rivers?: string;
+    extraNumbers?: { tile: number; number: number }[];
+    rules?: string;
+    map: {
+      numberRecipe?: string;
+      wateringHoles: number[];
+      starts: CatanWagon[];
+      supply: number;
+    };
+    wagons: CatanWagon[];
+    built: boolean;
+    sequence: number;
+    remaining: number;
+    actor: number;
+    canAct: boolean;
+    choices?: CatanWagon[];
+    placementLimit?: number;
+    pending?: {
+      kind: "bid" | "vote" | "place";
+      active: number;
+      order: number[];
+      cursor: number;
+      chooser: number;
+      bids: (number[] | null)[];
+      votes: (CatanWagon | null)[];
+      two?: { start: number; first?: CatanWagon; train?: number };
+    };
+  };
+  rivers?: {
+    transport?: string;
+    attack?: string;
+    poorPenalty?: number;
+    canProtectCity?: boolean;
+    rules?: string;
+    goldRule?: "ledger";
+    goldIssued?: number;
+    map: {
+      channels: { tiles: number[]; outlet: number }[];
+      bridges: number[];
+      swamps: number[];
+      doubleNumberTile: number;
+      extraNumbers?: { tile: number; number: number }[];
+      numberRecipe?: string;
+    };
+    gold: number[];
+    bank: number;
+    bought: number;
+    richest: number;
+    poor: number[] | null;
+  };
+  fishing?: {
+    transport?: string;
+    attack?: string;
+    caravans?: string;
+    rivers?: string;
+    twoSea?: string;
+    twoKnights?: string;
+    two?: string;
+    seaKnights?: string;
+    helpers?: string;
+    worldSetup?: {
+      index: number;
+      total: number;
+      remaining: number;
+      current?: number;
+    };
+    map: {
+      numberRecipe?: string;
+      seaRecipe?: string;
+      lakes: { tile: number; numbers: number[] }[];
+      extraNumbers?: { tile: number; number: number }[];
+      grounds: {
+        number: number;
+        edges: number[];
+        vertices: number[];
+        seaTile?: number;
+      }[];
+    };
+    tokens: {
+      remaining: number;
+      discard: { id: number; fish: number }[];
+      players: { count: number; tokens?: { id: number; fish: number }[] }[];
+      bootOwner: number;
+      responder?: number;
+    };
+    victoryTargets: number[];
+    canReplace: boolean;
+    legal: {
+      costs: Record<string, number>;
+      actions: string[];
+      resources: number[];
+      targets: number[];
+      roads: number[];
+      bridges?: number[];
+      bootTargets: number[];
+      progressTracks?: number[];
+      ships?: number[];
+      voyages?: number[];
+      shipBuilds?: { slot: number; edge: number }[];
+    };
+  };
+  revealedEvent?: CatanRevealedEvent;
+  eventDeck?: {
+    cycle: number;
+    revealed: number[];
+    current?: number;
+    remaining: number;
+    untilNewYear: number;
+    catalogue: string;
+    referenceOnly: boolean;
+    explorer?: string;
+    knights?: string;
+    clothFallback?: string;
+    fleetRules?: string;
+    fleet?: { rollId: number; dice: [number, number]; resolved: boolean };
+    alchemy?: boolean;
+  };
+  cardEvent?: {
+    kind: string;
+    production: number;
+    red: number;
+    face: number;
+    players: number[];
+    targets?: number[];
+    canSkip?: boolean;
+    ownGift?: { from: number; to: number; color: number };
+  };
+  victoryTarget?: number;
+  friendlyRobber?: {
+    rules: string;
+    fallback?: string;
+    knights?: string;
+    protectedPlayers: number[];
+  };
+  harbors?: { rules: string; owner: number; points: number[] };
+  citiesKnights?: CatanCitiesKnights;
+  progressRules?: {
+    id: number;
+    name: string;
+    track: number;
+    count: number;
+    victory: boolean;
+  }[];
+  progressPlayable?: number[];
+  taxationTiles?: number[];
+  inventionTiles?: number[];
+  inventionNumbers?: { tile: number; slot: number; number: number }[];
+  smithingOptions?: number[][];
+  merchantTiles?: number[];
+  guildDuesTargets?: number[];
+  intrigueTargets?: number[];
+  diplomacyRoads?: number[];
+  diplomacyPlacements?: number[];
+  treasonPlacements?: number[];
+  knightMoves?: Record<string, number[]>;
+  seafarers?: {
+    numberRecipe?: string;
+    variable?: boolean;
+    rules?: string;
+    layout?: string;
+    newWorld?: {
+      index: number;
+      total: number;
+      remaining: number;
+      current?: number;
+    };
+    wonders?: {
+      cards: { id: number; owner: number; level: number }[];
+      markers: { card: number; vertex: number }[];
+      setupBlocked: number[];
+    };
+    pirateIslands?: {
+      knightsRules?: string;
+      cityFleet?: { rollId: number; dice: [number, number]; resolved: boolean };
+      colors: number[];
+      homeTiles: number[];
+      fleetPath: number[];
+      safeTile: number;
+      fortresses: {
+        root: number;
+        route: number[];
+        startVertex: number;
+        startShip: number;
+        beachhead: number;
+        vertex: number;
+        strength: number;
+      }[];
+      raid?: { rewards: number[]; total: number };
+      battle?: {
+        id: number;
+        player: number;
+        die: number;
+        warships: number;
+        removed: number[];
+        remaining: number;
+      };
+    };
+    islands?: number[];
+    startIslands?: number[];
+    scenario: string;
+    victoryPoints: number;
+    pirate: number;
+    islandBonus?: number;
+    movedShip?: boolean;
+    fog?: { remaining: number; startTiles: number[] };
+    cloth?: {
+      stock: number;
+      issued?: number;
+      held: number[];
+      homeTiles: number[];
+      emptyLimit: number;
+      villages: {
+        vertex: number;
+        number: number;
+        stock: number;
+        traders: number[] | null;
+      }[];
+    };
+    tribe?: {
+      attackRules?: string;
+      progressRules?: string;
+      tokens: number[] | null;
+      development: { edge: number }[];
+      ports: { edge: number; resource: number }[] | null;
+      points: number[];
+      heldPorts: (number[] | null)[];
+      pending?: { player: number; resume: string };
+    };
+    seats?: {
+      homeIslands?: number[];
+      settledIslands?: number[];
+      islandPoints?: number;
+    }[];
+  };
+  shipMoves?: Record<string, number[]>;
+  wonderRules?: {
+    id: number;
+    name: string;
+    requirement: string;
+    cost: number[];
+  }[];
+  wonderClaims?: number[];
+  wonderBuilds?: number[];
+  goldPending?: { claims: { player: number; count: number }[]; resume: string };
+  hexSize?: number;
+  startPlayer?: number;
+  paired?: { primary: number; secondary: number; second: boolean };
+  baseSetup?: {
+    layout: "fixed" | "variable";
+    rules: string;
+    colors: number[];
+    neutralColor: number;
+  };
+  options?: CatanOptions;
+  helperDisplay?: number[];
+  tradersVariants?: string;
+  tradersHelpers?: { rules: string };
+  helperAttackKnights?: number[];
+  helperRules?: {
+    id: number;
+    name: string;
+    originalName: string;
+    title: string;
+    description: string;
+  }[];
+  helperPending?: {
+    player: number;
+    kind: string;
+    resume: string;
+    cards?: number[];
+    resources?: number[];
+    target?: number;
+    optional?: boolean;
+  };
+  helperRoadMoves?: Record<string, number[]>;
+  helperKnightBuilds?: Record<
+    string,
+    { settlements: number[]; cities: number[] }
+  >;
+  tiles: {
+    id: number;
+    x: number;
+    y: number;
+    resource: number;
+    number: number;
+    vertices: number[];
+  }[];
+  vertices: {
+    harbor?: boolean;
+    id: number;
+    x: number;
+    y: number;
+    owner: number;
+    level: number;
+  }[];
+  edges: {
+    id: number;
+    a: number;
+    b: number;
+    owner: number;
+    ship?: boolean;
+    warship?: boolean;
+    bridge?: boolean;
+    damaged?: boolean;
+    tiles?: number[];
+  }[];
+  ports: { edge: number; resource: number }[];
+  players: CatanPlayer[];
+  bank: number[];
+  devRemaining: number;
+  robber: number;
+  dice: number[];
+  rollId: number;
+  setupStep: number;
+  setupLimit?: number;
+  setupVertex: number;
+  discardDue: number[];
+  victims: number[];
+  freeRoads: number;
+  playedDev: boolean;
+  longestOwner: number;
+  armyOwner: number;
+  legal: {
+    earthquakeRoads?: number[];
+    repairRoads?: number[];
+    fleeDeserts?: number[];
+    eventResources?: number[];
+    eventGifts?: number[];
+    eventTargets?: number[];
+    knightRecruit?: number[];
+    knightActivate?: number[];
+    knightWarship?: number[];
+    knightPromote?: number[];
+    knightChase?: number[];
+    knightChasePirate?: number[];
+    knightRetreat?: number[];
+    pillage?: number[];
+    settlements: number[];
+    cities: number[];
+    roads: number[];
+    bridges?: number[];
+    ships?: number[];
+    pirate?: number[];
+    robber?: number[];
+    ports?: number[];
+    fishGrounds?: number[];
+  };
+  trade?: {
+    id: number;
+    from: number;
+    give: number[];
+    take: number[];
+    responses: number[];
+    goldGive?: number;
+    goldTake?: number;
+  };
+};
+export type CatanOptions = {
+  fiveSix?: boolean;
+  rules?: string;
+  helpers?: boolean;
+  allHelpers?: boolean;
+};
+export type RoomOptions = {
+  catanFriendlyRobberAvailability?: {
+    allowed: boolean;
+    reason: string;
+    minPlayers: number;
+  };
+  catanFriendlyRobber?: { enabled: boolean; rules: string };
+  catanHarbors?: { enabled: boolean; rules: string };
+  catanCitiesKnights?: { layout: "variable"; rules: string };
+  catanBaseConfiguration?: { layout: "fixed" | "variable"; rules: string };
+  catanBaseLayouts?: string[];
+  catanSeafarers?: { scenario: string; layout: string; rules: string };
+  catanTransportSea?: { scenario: string; layout: string; rules?: string };
+  catanSeafarersChoices?: {
+    id: string;
+    name: string;
+    layouts: string[];
+    victoryPoints: number;
+  }[];
+  catanRiversWorldMap?: {
+    hexes: CatanNewWorldMap["hexes"];
+    channels: { tiles: number[]; outlet: number }[];
+  };
+  catanNewWorldMap?: CatanNewWorldMap;
+  catanOptions?: CatanOptions;
+  catanTwoRules?: string;
+  catanTwoScenario?: string;
+  catanScenario?: string;
+  catanFishing?: boolean;
+  catanFishingLakes?: boolean;
+  catanEvents?: string;
+};
+export type Game = GameHeader & { catan?: CatanState };
+export type Room = RoomBase & RoomOptions & { game?: Game };

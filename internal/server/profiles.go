@@ -20,6 +20,8 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	Details             json.RawMessage      `json:"details,omitempty"`
+	Options             json.RawMessage      `json:"options,omitempty"`
 	SplendorCatalog     string               `json:"splendorCatalog,omitempty"`
 	CatanExpansionRules map[string]string    `json:"catanExpansionRules,omitempty"`
 	CatanExpansions     []string             `json:"catanExpansions,omitempty"`
@@ -422,6 +424,12 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			}
 		}
 	}
+	if r.Module != nil {
+		record.Options = r.Options
+		if r.Module.Result != nil {
+			record.Details = r.Module.Result.Details
+		}
+	}
 	for i, seat := range r.Seats {
 		p := MatchPlayer{User: seat.User, Bot: seat.Bot}
 		if r.Status == "finished" {
@@ -442,6 +450,13 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 				if winner == i {
 					p.Won = true
 				}
+			}
+		}
+		if r.Module != nil {
+			p.Score = nil
+			if r.Status == "finished" && r.Module.Result != nil && len(r.Module.Result.Scores) > 0 {
+				score := r.Module.Result.Scores[i]
+				p.Score = &score
 			}
 		}
 		record.Players = append(record.Players, p)
@@ -498,7 +513,10 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	records := []MatchRecord{}
-	stats := map[string]map[string]int{"dota": {"played": 0, "wins": 0}, "sanguosha": {"played": 0, "wins": 0}, "splendor": {"played": 0, "wins": 0}, "rail": {"played": 0, "wins": 0}, "catan": {"played": 0, "wins": 0}, "carcassonne": {"played": 0, "wins": 0}}
+	stats := map[string]map[string]int{}
+	for _, kind := range s.gameKinds {
+		stats[kind] = map[string]int{"played": 0, "wins": 0}
+	}
 	for rows.Next() {
 		var raw []byte
 		if err = rows.Scan(&raw); err != nil {
@@ -511,6 +529,9 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 		if match.Status == "finished" {
 			for _, p := range match.Players {
 				if p.ID == id {
+					if stats[match.Kind] == nil {
+						stats[match.Kind] = map[string]int{"played": 0, "wins": 0}
+					}
 					stats[match.Kind]["played"]++
 					if p.Won {
 						stats[match.Kind]["wins"]++

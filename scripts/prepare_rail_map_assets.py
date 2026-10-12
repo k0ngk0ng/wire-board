@@ -47,7 +47,7 @@ def prepare(source, output):
                     rgba=np.array(station);grey=(np.array(station.convert('L'))*.55).astype(np.uint8)
                     rgba[:,:,:3]=grey[:,:,None];station=Image.fromarray(rgba)
                 station.save(folder/f'station-{color}.webp',lossless=True,method=6)
-        data=json.loads((Path('internal/game/rail_maps')/(name+'.json')).read_text())
+        data=json.loads((Path('games/rail/server/rail_maps')/(name+'.json')).read_text())
         atlases={}
         for t in data['tickets']:
             deck=2 if t.get('long') else 1
