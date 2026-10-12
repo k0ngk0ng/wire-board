@@ -47,6 +47,7 @@ button:disabled {
   opacity: 0.45;
 }
 .primary:disabled,
+.primary.gold:disabled,
 .outline:disabled,
 .subtle:disabled {
   opacity: 1;
@@ -110,6 +111,10 @@ button svg {
 }
 .primary.gold {
   background: var(--gold);
+  color: #3e3d29;
+}
+.primary.gold:hover:not(:disabled) {
+  background: #edc466;
   color: #3e3d29;
 }
 .outline {

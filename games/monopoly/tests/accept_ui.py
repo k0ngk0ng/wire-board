@@ -153,6 +153,7 @@ def start(scenario, create_in_ui=False):
     command('ready')
     if create_in_ui:
         assert js('document.querySelectorAll(".waiting-seat").length === 3 && !!document.querySelector(".waiting-cover .cover svg")')
+        assert js('(()=>{const b=document.querySelector(".waiting-actions .primary.gold");window.__disabledStartBackground=getComputedStyle(b).backgroundColor;return b.disabled})()')
         checkpoint('unified-waiting-room')
         browser('fill', 'input[aria-label="行动时限（秒）"]', '300')
         click('保存设置')
@@ -163,6 +164,7 @@ def start(scenario, create_in_ui=False):
         p.command('ready')
     if create_in_ui:
         wait_js('[...document.querySelectorAll(".waiting-actions button")].some(b=>b.textContent==="开始游戏"&&!b.disabled)')
+        assert js('getComputedStyle(document.querySelector(".waiting-actions .primary.gold")).backgroundColor!==window.__disabledStartBackground'), 'disabled and enabled start buttons look identical'
         click('开始游戏')
     else:
         command('start')
