@@ -14,7 +14,7 @@ import (
 
 func fishingWorldGoldResponseState(t *testing.T, n int, scarce bool) *game.State {
 	t.Helper()
-	data, err := os.ReadFile("../game/testdata/catan-new-world-gold.json")
+	data, err := os.ReadFile("../../games/catan/server/testdata/catan-new-world-gold.json")
 	if err != nil {
 		t.Fatal(err)
 	}
