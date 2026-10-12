@@ -92,10 +92,10 @@ jobs:
           path: web/dist/
           if-no-files-found: error
           retention-days: 1
-      - name: Accept independent game lifecycle
+      - name: Accept game lifecycle and relocated fixtures
         run: |
           mkdir -p .local/module-refactor
-          go test -json -count=1 -timeout=2m -run '^TestModule(RegistrationAndLifecycle|BotAndTimeout)E2E$' ./internal/server > .local/module-refactor/module-e2e.jsonl
+          go test -json -count=1 -timeout=2m -run '^(TestModule(RegistrationAndLifecycle|BotAndTimeout)E2E|TestCatanFishingNewWorld(GoldHTTPClockAndRestart|ExtendedResponseHTTP))$' ./internal/server > .local/module-refactor/module-e2e.jsonl
       - uses: actions/upload-artifact@v4
         if: always()
         with:
