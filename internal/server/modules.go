@@ -76,6 +76,11 @@ func (r *Room) setModule(match gameapi.Match) error {
 	if err := match.Validate(len(r.Seats)); err != nil {
 		return err
 	}
+	for actor, seat := range r.Seats {
+		if seat.Left && slices.Contains(match.Actors, actor) {
+			return errors.New("departed player cannot act")
+		}
+	}
 	if match.Log == nil {
 		match.Log = []string{}
 	}
@@ -111,6 +116,9 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 	if err != nil {
 		return err
 	}
+	if err = m.ValidateMatch(match, len(r.Seats)); err != nil {
+		return err
+	}
 	r.Status = "playing"
 	if err = r.setModule(match); err != nil {
 		return err
@@ -132,6 +140,9 @@ func (s *Server) applyModule(r *Room, actor, version int, action json.RawMessage
 	if err != nil {
 		return err
 	}
+	if err = s.modules[r.Kind].ValidateMatch(match, len(r.Seats)); err != nil {
+		return err
+	}
 	return r.setModule(match)
 }
 
@@ -149,7 +160,84 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
-	return map[string]any{"kind": r.Kind, "data": data, "actors": match.Actors, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}, nil
+	attention := match.Attention
+	if attention == nil {
+		attention = match.Actors
+	}
+	return map[string]any{"kind": r.Kind, "data": data, "actors": match.Actors, "attention": attention, "eliminated": match.Eliminated, "systemDeadline": match.SystemDeadline, "finished": match.Result != nil, "winners": r.Game.Winners, "log": r.Game.Log, "phase": "module", "turn": r.Game.Turn, "round": 1}, nil
+}
+
+// Called under s.mu, before player timeouts. System events neither enable
+// autoplay nor renew player activity. A failed callback or commit is retryable
+// from the unchanged persisted snapshot on the next tick.
+func (s *Server) expireModuleTimers(now time.Time) {
+	for _, room := range s.rooms {
+		if room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > now.UnixMilli() {
+			continue
+		}
+		if err := s.runModuleTimer(room, now); err != nil {
+			log.Printf("module timer room %s: %v", room.ID, err)
+		}
+	}
+}
+
+func (s *Server) runModuleTimer(room *Room, now time.Time) error {
+	m := s.modules[room.Kind]
+	if m.OnTimer == nil {
+		return errors.New("missing system timer callback")
+	}
+	raw, err := json.Marshal(room)
+	if err != nil {
+		return err
+	}
+	var next Room
+	if err = json.Unmarshal(raw, &next); err != nil {
+		return err
+	}
+	due := next.Module.SystemDeadline
+	match, err := m.OnTimer(moduleContext(&next, -1, next.Version, now), *next.Module)
+	if err != nil {
+		return err
+	}
+	if match.SystemDeadline != 0 && match.SystemDeadline <= now.UnixMilli() {
+		return errors.New("system timer must clear or advance its deadline")
+	}
+	if err = m.ValidateMatch(match, len(next.Seats)); err != nil {
+		return err
+	}
+	if err = next.setModule(match); err != nil {
+		return err
+	}
+	next.Version++
+	next.Updated, next.BotAt = now.Unix(), now.Add(900*time.Millisecond).UnixMilli()
+	snapshot, err := json.Marshal(&next)
+	if err != nil {
+		return err
+	}
+	record, err := json.Marshal(map[string]any{"type": "system_timer", "deadline": due})
+	if err != nil {
+		return err
+	}
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	if _, err = tx.Exec("UPDATE rooms SET snapshot=? WHERE id=?", snapshot, next.ID); err != nil {
+		return err
+	}
+	if err = archiveGame(tx, &next); err != nil {
+		return err
+	}
+	if _, err = tx.Exec("INSERT INTO actions VALUES(?,?,?,?,?,?)", next.ID, "", fmt.Sprintf("timer-%d", next.Version), next.Version, record, now.Unix()); err != nil {
+		return err
+	}
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+	s.rooms[next.ID] = &next
+	s.broadcast()
+	return nil
 }
 
 func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {

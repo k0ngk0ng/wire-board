@@ -1,12 +1,15 @@
 // Package games is the application's composition root, not a shared game engine.
 package games
 
-import "github.com/k0ngk0ng/wire-board/internal/gameapi"
+import (
+	monopoly "github.com/k0ngk0ng/wire-board/games/monopoly/server"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
+)
 
 // Modules registers independent games. Add the game's server.Module() here;
 // its frontend is discovered from games/<id>/web/module.tsx automatically.
 func Modules() []gameapi.Module {
-	return []gameapi.Module{}
+	return []gameapi.Module{monopoly.Module()}
 }
 
 // Legacy lists games that retain the existing room/snapshot protocol adapter.

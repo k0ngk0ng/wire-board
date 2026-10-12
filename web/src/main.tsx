@@ -208,6 +208,10 @@ function App() {
       return;
     }
     const r = state.room;
+    if (gameModule(r.kind)?.ownsSounds) {
+      previousTurn.current = "";
+      return;
+    }
     const sg = r.game!.sanguosha;
     const dota = r.game!.dota;
     const fleetActor =
@@ -277,7 +281,7 @@ function App() {
     }
     await run(async () => {
       await command(state.room!, "action", { action });
-      if (sound)
+      if (sound && !gameModule(state.room!.kind)?.ownsSounds)
         void audio.current.play(
           action.type === "take"
             ? "take"
@@ -398,6 +402,7 @@ function App() {
     room.you >= 0 &&
     !room.seats[room.you]?.left &&
     !room.game?.sanguosha?.players[room.you]?.dead &&
+    !room.game?.eliminated?.includes(room.you) &&
     (!isIndependentGame(room.kind) || !!gameModule(room.kind)?.supportsBots);
   const boardBusy = busy || autoPlay;
   return (
@@ -611,16 +616,18 @@ function App() {
                       <Copy size={16} />
                       邀请朋友
                     </button>
-                    {!room.spectating && room.status !== "playing" && (
-                      <button
-                        className="subtle"
-                        disabled={busy}
-                        onClick={() => roomCommand("leave")}
-                      >
-                        <ArrowLeft size={16} />
-                        离开房间
-                      </button>
-                    )}
+                    {!room.spectating &&
+                      (room.status !== "playing" ||
+                        room.game?.eliminated?.includes(room.you)) && (
+                        <button
+                          className="subtle"
+                          disabled={busy}
+                          onClick={() => roomCommand("leave")}
+                        >
+                          <ArrowLeft size={16} />
+                          离开房间
+                        </button>
+                      )}
                     {room.status === "playing" &&
                       !room.spectating &&
                       room.host === state.user.id && (
@@ -724,6 +731,11 @@ function App() {
                           act={act}
                           busy={boardBusy}
                           assets={state.assetsBaseURL || ""}
+                          sound={sound}
+                          clock={{
+                            serverNow: state.serverNow,
+                            receivedAt: state.receivedAt,
+                          }}
                           command={(type, extra) =>
                             run(() => command(room, type, extra))
                           }

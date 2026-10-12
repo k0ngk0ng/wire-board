@@ -101,6 +101,9 @@ try:
         time.sleep(.1)
     base = (out / 'url').read_text()
     b('open', base); browser_open = True
+    api('/api/login', {'name': 'ModuleRoot', 'password': 'module-root-test-123'})
+    api('/api/admin/games/acceptance', {'enabled': True})
+    api('/api/logout', {})
     api('/api/register', {'name': '模块浏览器验收', 'password': 'module-browser-test-only', 'invite': 'test-invite'})
     b('reload')
     b('wait', '.game-selection')

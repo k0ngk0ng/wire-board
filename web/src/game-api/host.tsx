@@ -9,12 +9,16 @@ export function GameBoard({
   command,
   busy,
   assets,
+  sound,
+  clock,
 }: {
   room: Room;
   act: Act;
   command: (type: string, extra?: Record<string, unknown>) => Promise<void>;
   busy: boolean;
   assets: string;
+  sound: boolean;
+  clock: { serverNow: number; receivedAt: number };
 }) {
   const module = gameModule(room.kind);
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;
@@ -27,6 +31,8 @@ export function GameBoard({
       command={command}
       busy={busy}
       assets={assets}
+      sound={sound}
+      clock={clock}
     />
   );
 }
@@ -228,8 +234,14 @@ export function ModulePlayers({ room }: { room: Room }) {
       {room.seats.map((seat, i) => (
         <div className="player-box" data-player-seat={i} key={seat.id}>
           <strong>{seat.name}</strong>
-          {room.game?.actors?.includes(i) && <span> · 等待行动</span>}
-          {seat.autoPlay && <span> · 托管中</span>}
+          {(room.game?.attention ?? room.game?.actors)?.includes(i) && (
+            <span> · 等待行动</span>
+          )}
+          {room.game?.eliminated?.includes(i) && <span> · 已出局</span>}
+          {seat.left && <span> · 已离桌</span>}
+          {seat.autoPlay && !room.game?.eliminated?.includes(i) && (
+            <span> · 托管中</span>
+          )}
         </div>
       ))}
     </div>
@@ -262,9 +274,13 @@ export function ModuleTurn({
       <h3>
         {room.game?.finished
           ? "本局已结束"
-          : room.game?.actors?.includes(room.you)
+          : (room.game?.attention ?? room.game?.actors)?.includes(room.you)
             ? "请行动"
-            : "等待其他玩家"}
+            : room.game?.eliminated?.includes(room.you)
+              ? "你已出局，可以观战或离桌"
+              : (room.game?.attention ?? room.game?.actors)?.length
+                ? "等待其他玩家"
+                : "对局进行中"}
       </h3>
       {!!room.turnDeadline && !room.game?.finished && (
         <p>剩余 {remaining} 秒</p>

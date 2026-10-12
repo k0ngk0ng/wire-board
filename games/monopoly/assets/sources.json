@@ -1,0 +1,609 @@
+{
+  "status": "Implemented and registered, default unpublished; media uploaded and CDN-verified. Application not deployed.",
+  "rules": {
+    "edition": "Hasbro C1009 UK, print 0622C1009780",
+    "url": "https://instructions.hasbro.com/api/download/C1009_en-us_monopoly-board-game-for-ages-8-for-2-6-players-includes-8-tokens-tokens-may-vary.pdf",
+    "sha256": "8fc0456e50b6ad872628f904ca04aad5b7a57982a90047664c8620c221daf8be",
+    "checked": "Both pages extracted, rendered and viewed; economic, auction and jail rules verified. Does not contain complete deed or event card catalogue."
+  },
+  "boardData": {
+    "source": "https://raw.githubusercontent.com/intrepidcoder/monopoly/3537fc393930f1712e8b4d6fbe2e80b25419ceed/classicedition.js",
+    "sha256": "f76b4cad878a63d43d10c61252939a2abaac1524f845eca4f1c835afec44503a",
+    "scope": "Factual price and rent table; not copying the source game's engine or event deck",
+    "mapping": "Classic UK street names mapped to corresponding C1009 board positions; Chinese names maintained by this module",
+    "officiallyCrossCheckedPositions": [
+      4,
+      5,
+      6,
+      8,
+      9,
+      12,
+      28,
+      38
+    ],
+    "remaining": "Official instructions do not reproduce every deed; remaining table entries retain the pinned classic data source. Not claimed as exhaustive same-print component verification.",
+    "rejectedComparison": {
+      "url": "https://www.monopolyland.com/monopoly-properties-list-with-prices/",
+      "reason": "Body text lists Mediterranean Avenue two-house rent as 20 and Park Place two-house rent as 600, conflicting with the established classic table (30 and 500). Not used to override rent data."
+    }
+  },
+  "artAndSound": {
+    "previousResearch": "../../../docs/research/monopoly/sources.json",
+    "requirements": "Original classic artwork where available, separate Chinese text, independently playable sound files, upload all media to Aliyun OSS and verify actual CDN URLs",
+    "prepared": [
+      {
+        "file": "images/cover.webp",
+        "mime": "image/webp",
+        "size": [
+          982,
+          900
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 1,
+          "object": 42,
+          "mask": 0
+        },
+        "bytes": 562064,
+        "sha256": "7b0d4b06bf9a139da6bc41228503fb82a4761649e7ca7375baa6fb3d2bf68e7d"
+      },
+      {
+        "file": "images/house.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 1,
+          "object": 43,
+          "mask": 199
+        },
+        "bytes": 21772,
+        "sha256": "8fd815af6b5ddbf6e311a2e92b840e3e60221ebf9684e582e3affff500c34291"
+      },
+      {
+        "file": "images/hotel.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 1,
+          "object": 44,
+          "mask": 201
+        },
+        "bytes": 21610,
+        "sha256": "9aaf8f39f782056675942d3d4adf2bcdced63d7068c08adf8403003f9fc61af2"
+      },
+      {
+        "file": "images/logo.webp",
+        "mime": "image/webp",
+        "size": [
+          1200,
+          268
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 1,
+          "object": 45,
+          "mask": 203
+        },
+        "bytes": 113438,
+        "sha256": "4cebaeca6c512cfb16736fc1fca639c29b233eb1043e19532bb97b7e8902b796"
+      },
+      {
+        "file": "images/symbol-go.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1548,
+            113,
+            1621,
+            161
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 10218,
+        "sha256": "7adb2af5729bace71ba1b98a8e4e590913a5632fcbe42bef8bdc4d8e1f1f68c4"
+      },
+      {
+        "file": "images/symbol-chance.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1548,
+            199,
+            1578,
+            252
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 16036,
+        "sha256": "e58a241735303a7ccbc808c413ac3b00afe0aa3f9c0cadb074bc70be81f2fb23"
+      },
+      {
+        "file": "images/symbol-chest.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1596,
+            214.5,
+            1632,
+            247.5
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 46050,
+        "sha256": "8c6113cabce0d2888f717a5b6f866375b1c5d71fac0ef22d1155b15d9d97d83d"
+      },
+      {
+        "file": "images/symbol-parking.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1573,
+            400,
+            1608,
+            435
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 32954,
+        "sha256": "a9b60dec0fc36c165eda7b9119189ab93888f127143a9844966fd275d4ccce8f"
+      },
+      {
+        "file": "images/symbol-visiting.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1821,
+            69,
+            1850,
+            100
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 45516,
+        "sha256": "4202d2f45d5afcad513fb0fd8a2c289b36723899280cbb41d37e46139968632d"
+      },
+      {
+        "file": "images/symbol-jail.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1822,
+            190,
+            1857,
+            225
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 39022,
+        "sha256": "c91229656165d3b8edcb67f173444c3432d7620b38290b68a6eca643c2b975cf"
+      },
+      {
+        "file": "images/symbol-tax.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1546,
+            323,
+            1579,
+            350
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 41464,
+        "sha256": "c222856379cb212c274e121b9f415fd5aab34f8fa6b9551f05be1037e054d19d"
+      },
+      {
+        "file": "images/symbol-station.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1150,
+            433,
+            1187,
+            464
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 10810,
+        "sha256": "9ae441a9ca31984cfd98c9bf1c9ab6f154cba868bb5cd9b219a02b993100c7eb"
+      },
+      {
+        "file": "images/symbol-utility.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1315,
+            426,
+            1349,
+            464
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 32678,
+        "sha256": "12af32b89d7ed77b86f148e4f0ae9d3d1409e7574be535c774d6bfc7e5e9cd50"
+      },
+      {
+        "file": "images/symbol-water.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "document": "C1009 UK 2022",
+          "page": 2,
+          "rectangle": [
+            1358,
+            429,
+            1396,
+            464
+          ],
+          "processing": "crop vector art; remove pale-green background"
+        },
+        "bytes": 21566,
+        "sha256": "95627455cd42fac6db5010ea2e9001754952787cc2ab0b06de1b9add9ee42eea"
+      },
+      {
+        "file": "images/token-1.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+          "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+          "tile": 0,
+          "description": "Third-party classic token illustration, not an official metal-token photograph"
+        },
+        "bytes": 12116,
+        "sha256": "3f637155766e04096f71d3c31ff2d809cfd5c1bd83c3ad4f2a59f522dcaa1e96"
+      },
+      {
+        "file": "images/token-2.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+          "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+          "tile": 1,
+          "description": "Third-party classic token illustration, not an official metal-token photograph"
+        },
+        "bytes": 13996,
+        "sha256": "e16a57b6b579aa398938953decbac9ac3ce67304f70f1d6087d35c9aa5fca5da"
+      },
+      {
+        "file": "images/token-3.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+          "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+          "tile": 2,
+          "description": "Third-party classic token illustration, not an official metal-token photograph"
+        },
+        "bytes": 14242,
+        "sha256": "4adb9d4ed1c0751d87c572f0571aab516c6f52a6e07097f72dff78a57a5ed210"
+      },
+      {
+        "file": "images/token-4.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+          "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+          "tile": 3,
+          "description": "Third-party classic token illustration, not an official metal-token photograph"
+        },
+        "bytes": 10674,
+        "sha256": "81bbd5a9ae6c5de7d9a515a1fab062d54eab81f0ffce2dff8632575399b3a90e"
+      },
+      {
+        "file": "images/token-5.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+          "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+          "tile": 4,
+          "description": "Third-party classic token illustration, not an official metal-token photograph"
+        },
+        "bytes": 8206,
+        "sha256": "a5ab7460faaffdfd809e887e74254350cc1fc29c1a35c6fe1939306851bd754a"
+      },
+      {
+        "file": "images/token-6.webp",
+        "mime": "image/webp",
+        "size": [
+          256,
+          256
+        ],
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/all.png",
+          "sha256": "d25c489275e45564ba86c8fc31a8f42a601eb3f878d1722fe40202a14bd29b0c",
+          "tile": 5,
+          "description": "Third-party classic token illustration, not an official metal-token photograph"
+        },
+        "bytes": 12068,
+        "sha256": "71810ef04814a5ddf5d3c8810244f00611fc369178e3741c3973cb151795dc79"
+      },
+      {
+        "file": "audio/rolling.mp3",
+        "mime": "audio/mpeg",
+        "duration": 1.4,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/rolling.mp3",
+          "sha256": "1a34e2fd6bf5a0ec1d8dce038728ae1c442842b9c5032b3276b0ea7f923b2434",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 17598,
+        "sha256": "9d708067cd662a23ac9014f27b8eedc4a879046f23a6bcf22e184a493d327d72"
+      },
+      {
+        "file": "audio/card.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.444082,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/card.mp3",
+          "sha256": "d5a4f163c133a155ec3000db421896a8fac723a8bab59d77baeeab9034682d4e",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 5999,
+        "sha256": "6a7119d38600dcd55dc8c22998cd6d99ed1d6628cb76fcdb201b65c380a7be36"
+      },
+      {
+        "file": "audio/buying.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.9,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/buying.mp3",
+          "sha256": "dbcdc38423f019de10935dbac603619cff61adc77eff6b57f335890617341ef0",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 11642,
+        "sha256": "a5c0f123a786eaca000a2cee9a126b5d4bb59b6c481c9c14c3bb46076790e858"
+      },
+      {
+        "file": "audio/moneyminus.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.470204,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/moneyminus.mp3",
+          "sha256": "dec55785d7dbc259859abcfc1096754c79d9d30ff41940091a887358742a2454",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 6313,
+        "sha256": "9109d9875b37a22bfa21c5853e268a321efa339f71c93a502a9d745682cf2abf"
+      },
+      {
+        "file": "audio/moneyplus.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.444082,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/moneyplus.mp3",
+          "sha256": "4b70a9a87a5bce7802953cdc91189b7ae29171abe89292c78dcb208934e8ae6f",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 5999,
+        "sha256": "ef829f5425db7684723520989f37431e1c57d017c304331058a4a5e12abee07a"
+      },
+      {
+        "file": "audio/jail.mp3",
+        "mime": "audio/mpeg",
+        "duration": 1.4,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/jail.mp3",
+          "sha256": "033f5b76c83652fd558820a66d719efc9c9c64c66df5b1e314a30c09a6e5c446",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 17598,
+        "sha256": "e9cd3a737482daff4a7650e4040cbcf8cb3f8b239abca0ac36a21231de8c446e"
+      },
+      {
+        "file": "audio/winning.mp3",
+        "mime": "audio/mpeg",
+        "duration": 2.340816,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/winning.mp3",
+          "sha256": "c5d9bd556fc20e020e79fa8dfc222d91b168c207251dcb72c57f6b97017b76cb",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 28883,
+        "sha256": "7fc932515f45b7b33ef6062f58e289878bb01265bad8e2ae325e442c57c58abb"
+      },
+      {
+        "file": "audio/dying.mp3",
+        "mime": "audio/mpeg",
+        "duration": 1.4,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/dying.mp3",
+          "sha256": "e9b515b6674ec96f09423e5caea5b31a22f4737e5026622eaa9f9f927b6eb6d9",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 17598,
+        "sha256": "0e632b0d15f91fff85b36998f5771cbe2cab567f7e74fe3a183a2eb5db826e11"
+      },
+      {
+        "file": "audio/notifications.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.9,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/notifications.mp3",
+          "sha256": "ba8ea42893f4c305784e8a373f9a90bcf62b3a823888ed7897288853aeb38d17",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 11642,
+        "sha256": "8493d741bb4a005201a84ded9110e58e74ddcc2055ccebad9c4a610007250f2a"
+      },
+      {
+        "file": "audio/step1.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.9,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/step1.mp3",
+          "sha256": "cd909ab60a9a688fd53adf2a131cb58377a39b481843763af51505161e3eb861",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 11642,
+        "sha256": "ad1d0246cfc0cca76feb8ac597d73e5b4ac6ee6feebb6f63ad96fe34f0a63ea3"
+      },
+      {
+        "file": "audio/click.mp3",
+        "mime": "audio/mpeg",
+        "duration": 0.182857,
+        "source": {
+          "url": "https://raw.githubusercontent.com/itaylayzer/Monopoly/be46b3c7c7ae1d1262d440a99029460fd535a85b/public/click.mp3",
+          "sha256": "4eae9bf7b4ee26ff32d1a775050a2f82ffa94e2c13e2179557f4a97dd078abd8",
+          "processing": "shortened, mono 44.1kHz, -22 LUFS, fade out"
+        },
+        "bytes": 2865,
+        "sha256": "9ab82fb0c579accb478cf777b5fbdea7d1f83f22c82a3dfb60b049440e811125"
+      }
+    ],
+    "uploaded": {
+      "baseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+      "prefix": "monopoly/v1",
+      "bucket": "stoneage-assets",
+      "endpoint": "stoneage-assets.oss-cn-shanghai.aliyuncs.com",
+      "count": 31,
+      "bytes": 1224279,
+      "verification": "Every URL fetched, byte SHA-256 and Content-Type matched, all images and MP3 files decoded; .local/monopoly/acceptance/assets/cdn/result.json"
+    },
+    "extractedCandidates": [
+      {
+        "name": "official-cover",
+        "pdfObject": 42,
+        "image": "image-003.png",
+        "size": [
+          2031,
+          1861
+        ],
+        "sha256": "3f29b56f6c74c0e96f6532c493791033076bffd39344dccf50b366ec648f93b4",
+        "status": "Prepared and uploaded"
+      },
+      {
+        "name": "official-house",
+        "pdfObject": 43,
+        "image": "image-004.png",
+        "mask": "image-005.png",
+        "size": [
+          352,
+          235
+        ],
+        "sha256": "be15bb25d2095853df89505e53eae0818ea3bbef9be017d9f134190bd3f38258",
+        "status": "Prepared and uploaded"
+      },
+      {
+        "name": "official-hotel",
+        "pdfObject": 44,
+        "image": "image-006.png",
+        "mask": "image-007.png",
+        "size": [
+          355,
+          268
+        ],
+        "sha256": "ba5b43880ad05d2b98357264b7a6c06cb7ec898def4d4cb116330b6d73139247",
+        "status": "Prepared and uploaded"
+      },
+      {
+        "name": "official-board-perspective",
+        "pdfObject": 87,
+        "image": "image-012.png",
+        "mask": "image-013.png",
+        "size": [
+          2617,
+          1684
+        ],
+        "sha256": "428b10589cdb7a4371bc05aa0ceabc0aab29e573aac385f164c7c4c0292a9483",
+        "status": "Research reference only; playable board is Chinese HTML layout using extracted original symbols"
+      }
+    ],
+    "cardArt": "Chance/chest reuse category symbols with live Chinese card text; these are not 32 full original card scans.",
+    "audioQuality": "Outputs strictly decode without errors; source MP3s include malformed padding/frames tolerated during conversion. Output level measurements retained in acceptance/assets/audio-levels.json. Native browser playback and failure recovery checked separately from acoustic listening; no claim of human listening.",
+    "rights": "Source attribution records provenance, not a new licence grant. Official artwork retains Hasbro ownership; third-party token/audio repository has no verified asset-specific licence in the inspected material."
+  },
+  "cards": {
+    "edition": "UK Chance; post-October-2021 Community Chest, corresponding to the C1009 UK 2022 rules baseline",
+    "url": "https://www.monopolyland.com/list-monopoly-chance-community-chest-cards/",
+    "sourceKind": "Secondary fan reference; explicitly separates historical, 2008-2021, and 2021-onward card lists",
+    "readOn": "2026-10-12",
+    "extractedTextSHA256": "24f98448214821af8951c92b40dd09b2f31a52e33aac33019c0a07ee79c9d12a",
+    "catalogSHA256": "e9bf6e412f414f71686142b7971823210c35f3ccb1cd3c199ab1df9a5b00a20a",
+    "verified": "All 16 UK Chance entries and all 16 post-2021 Community Chest entries read; two physical nearest-station Chance cards retained; obsolete poor-tax entry excluded. Chinese descriptions translated for this module.",
+    "limitations": "This source verifies card text and effects, not availability of full original card artwork."
+  }
+}

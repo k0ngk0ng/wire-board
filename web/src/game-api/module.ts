@@ -23,6 +23,9 @@ export type GameRoom = {
   game?: {
     data?: unknown;
     actors?: number[];
+    attention?: number[];
+    eliminated?: number[];
+    systemDeadline?: number;
     finished: boolean;
     winners: number[];
     log: string[];
@@ -35,6 +38,8 @@ export type BoardProps<Data = unknown> = {
   command: (type: string, extra?: Record<string, unknown>) => Promise<void>;
   busy: boolean;
   assets: string;
+  sound: boolean;
+  clock: { serverNow: number; receivedAt: number };
 };
 export type OptionsProps<Options = unknown> = {
   value: Options;
@@ -49,6 +54,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   minPlayers: number;
   maxPlayers: number;
   supportsBots?: boolean;
+  ownsSounds?: boolean;
   defaultOptions?: Options;
   Board: ComponentType<BoardProps<Data>>;
   Options?: ComponentType<OptionsProps<Options>>;
