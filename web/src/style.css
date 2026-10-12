@@ -46,6 +46,14 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.45;
 }
+.primary:disabled,
+.outline:disabled,
+.subtle:disabled {
+  opacity: 1;
+  background: #e1e7dc;
+  color: #4d5d47;
+  box-shadow: none;
+}
 button:not(:disabled):active {
   transform: translateY(1px);
 }
@@ -89,6 +97,10 @@ button svg {
   white-space: nowrap;
 }
 .primary {
+  /* Change foreground and background together when enabling a button. */
+  transition:
+    transform 0.16s,
+    box-shadow 0.16s;
   background: var(--green);
   color: #fff;
   box-shadow: 0 2px 0 #092c2220;
@@ -5329,5 +5341,21 @@ label small {
   }
   .rail-table .train-deck-label-short {
     display: inline;
+  }
+}
+
+/* Keep the shared chat entry clear of every game's mobile board controls. */
+@media (max-width: 850px) {
+  .table-chat {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    display: table;
+    margin: 12px 14px 16px auto;
+  }
+  .chat-panel {
+    position: fixed;
+    right: 14px;
+    bottom: 78px;
   }
 }

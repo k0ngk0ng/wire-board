@@ -36,7 +36,7 @@ func TestModuleBrowserFixture(t *testing.T) {
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
-	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", Modules: []gameapi.Module{acceptanceModule()}}, os.DirFS(filepath.Join(root, "web", "dist")))
+	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", AssetsBaseURL: os.Getenv("WIRE_BOARD_MODULE_ASSETS"), Modules: []gameapi.Module{acceptanceModule()}}, os.DirFS(filepath.Join(root, "web", "dist")))
 	if err != nil {
 		t.Fatal(err)
 	}

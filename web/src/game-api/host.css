@@ -1,0 +1,28 @@
+/* Independent modules use the same room/player/turn surfaces as existing games. */
+.module-players {
+  overflow-x: auto;
+}
+.module-players .player-panel {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 185px;
+  min-width: 185px;
+}
+.module-players .player-info strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.module-players .player-info strong small {
+  margin-left: 5px;
+}
+.module-players .player-info > small {
+  color: #52664f;
+}
+.module-players .player-extras {
+  grid-column: 1/-1;
+  justify-self: end;
+}

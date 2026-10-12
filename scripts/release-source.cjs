@@ -3,6 +3,7 @@ async function resolveRelease({github, context, inputs={}, sleep=(ms)=>new Promi
   const manual=context.eventName==='workflow_dispatch';
   const version=manual?inputs.version:context.ref.replace(/^refs\/tags\//,'');
   if(!/^v\d+\.\d+\.\d+$/.test(version||'')) throw Error('Expected a stable vX.Y.Z version tag');
+  if(manual && context.ref!==`refs/tags/${version}`) throw Error('Dispatch publication on the version tag, never main');
   if(!manual && (context.eventName!=='push'||context.ref!==`refs/tags/${version}`)) throw Error('Expected a tag push');
   if(manual && (!/^\d+$/.test(inputs.source_run||'')||! /^[0-9a-f]{40}$/.test(inputs.source_sha||''))) throw Error('Invalid manual source inputs');
   const repo=context.repo;

@@ -1,12 +1,3 @@
-.game-monopoly.playing .game-layout {
-  display: block;
-}
-.game-monopoly.playing .game-sidebar {
-  display: none;
-}
-.game-monopoly.playing > .players-strip {
-  display: none;
-}
 .monopoly-board {
   --ink: #203d32;
   --paper: #fffdf4;
@@ -871,47 +862,6 @@
 .mono-rules li {
   margin: 8px 0;
 }
-.mono-cover {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  min-height: 175px;
-  overflow: hidden;
-  background: radial-gradient(ellipse at top, #c8e1c3, #668c6c);
-  border: 8px solid #cee0ba;
-}
-.mono-cover > img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  inset: 0;
-}
-.mono-cover > div {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 9px;
-  color: #fff;
-  text-shadow: 0 1px 2px #14372480;
-}
-.mono-cover span {
-  background: #cf342e;
-  border: 2px solid white;
-  padding: 3px 10px;
-  font: bold 25px Arial;
-  transform: rotate(-6deg);
-}
-.mono-cover strong {
-  font-size: 29px;
-  letter-spacing: 4px;
-}
-.mono-cover small {
-  font-size: 11px;
-}
 @media (max-width: 1100px) {
   .mono-workspace {
     grid-template-columns: minmax(0, 1fr) 285px;
@@ -1256,9 +1206,6 @@
 .mono-board-scroll.zoomed .mono-space-price {
   font-size: 10px;
 }
-.game-monopoly .room-heading h1 {
-  text-wrap: balance;
-}
 @media (max-width: 760px) {
   .mono-board-scroll.zoomed .mono-map {
     width: 650px;
@@ -1266,16 +1213,169 @@
   .mono-board-scroll.zoomed {
     max-height: 65dvh;
   }
-  body:has(.game-monopoly.playing) .table-chat {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    display: table;
-    margin: 12px 14px 16px auto;
+}
+
+/* Game content lives inside the shared player/turn/room layout. */
+.mono-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mono-board-region,
+.mono-panel {
+  width: 100%;
+}
+.mono-panel {
+  position: static;
+  order: 0;
+}
+.mono-panel-content {
+  max-height: none;
+}
+.mono-map {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+}
+.mono-piece-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.mono-piece-layer .mono-pawn {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fffdf1;
+  box-shadow:
+    0 0 0 1px #253c32,
+    0 3px 6px #102a3255;
+  transition:
+    left 95ms linear,
+    top 95ms linear;
+}
+.mono-piece-layer .mono-pawn img {
+  width: 29px;
+  height: 29px;
+  filter: drop-shadow(0 1px 1px #fff8);
+}
+.mono-piece-layer .mono-pawn b {
+  position: absolute;
+  right: -5px;
+  top: -7px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: #203d32;
+  background: #fffdf1;
+  border: 1px solid #203d32;
+  font: 700 10px/1 system-ui;
+}
+.mono-piece-layer .mono-pawn.yours {
+  outline: 2px solid #fffdf1;
+  outline-offset: 2px;
+}
+.mono-piece-layer .mono-pawn.moving {
+  box-shadow:
+    0 0 0 4px #e9b84f,
+    0 4px 12px #203d3280;
+}
+.mono-seat-summary {
+  display: grid;
+  grid-template-columns: 28px auto;
+  column-gap: 5px;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.mono-seat-summary img {
+  width: 27px;
+  height: 27px;
+  grid-row: 1/3;
+}
+.mono-seat-summary strong {
+  font-size: 17px;
+}
+.mono-seat-summary small {
+  font-size: 10px;
+  color: #52684f;
+}
+.mono-dice.rolling .mono-die {
+  animation: mono-roll 180ms ease-in-out infinite alternate;
+}
+.mono-dice.rolling .mono-die:nth-child(2) {
+  animation-delay: -90ms;
+}
+@keyframes mono-roll {
+  from {
+    transform: translateY(-7px) rotate(-26deg) scale(0.92);
   }
-  body:has(.game-monopoly.playing) .chat-panel {
-    position: fixed;
-    right: 14px;
-    bottom: 78px;
+  to {
+    transform: translateY(3px) rotate(33deg) scale(1.07);
+  }
+}
+@media (max-width: 850px) {
+  .mono-piece-layer .mono-pawn {
+    width: 26px;
+    height: 26px;
+  }
+  .mono-piece-layer .mono-pawn img {
+    width: 23px;
+    height: 23px;
+  }
+  .mono-piece-layer .mono-pawn b {
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    right: -4px;
+    top: -5px;
+  }
+  .mono-panel {
+    order: 0;
+  }
+  .mono-map {
+    max-width: 620px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mono-piece-layer .mono-pawn {
+    transition: none;
+  }
+  .mono-dice.rolling .mono-die {
+    animation: none;
+  }
+}
+
+.mono-pawn-number {
+  position: absolute;
+  z-index: 100;
+  transform: translate(7px, -24px);
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: #203d32;
+  background: #fffdf1;
+  border: 1px solid #203d32;
+  font: 700 10px/1 system-ui;
+  transition:
+    left 95ms linear,
+    top 95ms linear;
+}
+@media (max-width: 850px) {
+  .mono-pawn-number {
+    width: 14px;
+    height: 14px;
+    font-size: 9px;
+    transform: translate(5px, -20px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mono-pawn-number {
+    transition: none;
   }
 }

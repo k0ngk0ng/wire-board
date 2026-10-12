@@ -65,3 +65,6 @@ test('manual tagless publication requires an author-created matching draft',asyn
  await assert.rejects(resolveRelease(fixture({manual:true,noTag:true})));
  const f=fixture({manual:true,noTag:true,releases:[{id:2,tag_name:'v1.8.0',draft:true,target_commitish:SHA}]});assert.equal((await resolveRelease(f)).sha,SHA);
 });
+test('manual release run must be attached to the version tag, never main',async()=>{
+ const f=fixture({manual:true});f.context.ref='refs/heads/main';await assert.rejects(resolveRelease(f),/tag/i);
+});

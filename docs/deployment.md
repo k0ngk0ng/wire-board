@@ -157,7 +157,7 @@ WantedBy=multi-user.target
 - 更新脚本不会改写 `.env`、Nginx 或证书配置，也不会自动更新自身。升级部署工具时，从所选 GitHub Release 取出 `update.sh` 和 `compose.yaml` 后替换。在线备份脚本需配合含 `sqlite3` 的新版镜像；不满足时会在停服前退出，自动回滚旧镜像不受此限制。
 - 二进制：先备份，停止进程，替换二进制，重新启动。
 - 当前版本只在启动时创建缺失表，不执行破坏性迁移。
-- main 提交触发 `Check main and build`，执行规则分片、竞态检查、扩展组合验收和构建。该工作流不发布镜像。版本 tag 触发 `Publish verified build`，复用相同提交的已验证构建产物。
+- main 提交触发 `Check main and build`，执行规则分片、竞态检查、扩展组合验收和构建。该工作流不发布镜像。版本 tag 触发 `Publish version tag`，复用相同提交的已验证构建产物。
 
 ## 常见问题
 
@@ -172,9 +172,9 @@ WantedBy=multi-user.target
 
 完整检查只在 main 提交时运行，版本 tag 不重复执行规则分片、竞态检查或完整对局矩阵。发布约定同时记录在仓库根目录的 [AGENTS.md](../AGENTS.md)。
 
-正常流程：将提交推送到 main，等待该提交的 `Test and Linux amd64 binary` 作业成功，再为同一提交推送 `vX.Y.Z` tag。tag 自动触发 `Publish verified build`，查找同一 SHA 的 main 构建及未过期的 `wire-board-linux-amd64` 产物。若 tag 比构建先到，工作流会短暂等待；找不到匹配产物、构建未通过或来源存在已知失败检查时，停止发布，不重跑整套检查，也不改用其他提交。
+正常流程：将提交推送到 main，等待该提交的 `Test and Linux amd64 binary` 作业成功，再为同一提交推送 `vX.Y.Z` tag。tag 自动触发 `Publish version tag`，Actions 运行名称为 `Release vX.Y.Z`，运行 ref 为版本 tag，查找同一 SHA 的 main 构建及未过期的 `wire-board-linux-amd64` 产物。若 tag 比构建先到，工作流会短暂等待；找不到匹配产物、构建未通过或来源存在已知失败检查时，停止发布，不重跑整套检查，也不改用其他提交。
 
-也可手动运行 `Publish verified build`，指定 `source_run`、40 位 `source_sha` 和 `version`。这保留了旧版发布入口，并允许显式选择同一版本历史 tag 流程中已成功的构建作业，便于迁移尚未发布的版本。现有版本 tag 必须指向指定 SHA；已公开的 Release 不会被覆盖。已有 tag 而没有 Release 时，按该 tag 自动创建草稿；发布内容以已核对的 tag SHA 为准。手动发布尚无 tag 的版本时，须先由发布者创建目标为完整 SHA 的草稿。
+也可在对应版本 tag 上手动运行 `Publish version tag`（禁止选择 main），指定 `source_run`、40 位 `source_sha` 和 `version`。这保留了旧版发布入口，并允许显式选择同一版本历史 tag 流程中已成功的构建作业，便于迁移尚未发布的版本。现有版本 tag 必须指向指定 SHA；已公开的 Release 不会被覆盖。已有 tag 而没有 Release 时，按该 tag 自动创建草稿；发布内容以已核对的 tag SHA 为准。手动发布尚无 tag 的版本时，须先由发布者创建目标为完整 SHA 的草稿。
 
 发布流程下载并核验原构建附件的 SHA-256，沿用来源提交 Dockerfile 的运行阶段打包，不重新编译应用。容器启动及 SQLite 备份工具检查通过后，发布版本、提交和 `latest` 三种镜像标签，上传原附件并公开 Release。main 构建产物保留 30 天；产物过期时须先在 main 恢复对应提交的有效构建，不能让 tag 发布绕过来源校验。
 

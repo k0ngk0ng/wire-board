@@ -54,7 +54,13 @@ export function useServerTime(clock: {
   return clock.serverNow + Math.max(0, now - clock.receivedAt);
 }
 
-export function Dice({ values }: { values: number[] }) {
+export function Dice({
+  values,
+  rolling = false,
+}: {
+  values: number[];
+  rolling?: boolean;
+}) {
   const dots = [
     [],
     [4],
@@ -65,7 +71,10 @@ export function Dice({ values }: { values: number[] }) {
     [0, 2, 3, 5, 6, 8],
   ];
   return (
-    <div className="mono-dice" aria-label={`骰子：${values.join("、")}`}>
+    <div
+      className={`mono-dice ${rolling ? "rolling" : ""}`}
+      aria-label={`骰子：${values.join("、")}`}
+    >
       {values.map((n, i) => (
         <span key={i} className="mono-die">
           {n ? (

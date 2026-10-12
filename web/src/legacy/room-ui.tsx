@@ -120,6 +120,7 @@ import {
 import { gemNames } from "../../../games/splendor/web/splendor-orient-state";
 import { SplendorRules } from "../../../games/splendor/web/splendor-rules";
 import { gameName, isIndependentGame } from "../game-api/registry";
+import { ModuleCover } from "../game-api/host";
 import { PlayerName } from "../profiles";
 import type {
   CatanOptions,
@@ -136,6 +137,7 @@ export function LegacyCover({
   kind: string;
   mini?: boolean;
 }) {
+  if (isIndependentGame(kind)) return <ModuleCover kind={kind} mini={mini} />;
   return (
     <div className={`cover ${kind} ${mini ? "mini" : ""}`} aria-hidden="true">
       {kind === "dota" ? (

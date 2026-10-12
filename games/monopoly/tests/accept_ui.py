@@ -109,6 +109,14 @@ def click(text):
     browser('find', 'role', 'button', 'click', '--name', text, '--exact')
 
 
+
+def click_square(square):
+    selector = f'[data-mono-square="{square}"]'
+    browser('scrollintoview', selector)
+    q = json.dumps(selector)
+    wait_js(f'(()=>{{const e=document.querySelector({q}),r=e?.getBoundingClientRect();if(!r)return false;const key=[r.x,r.y,r.width,r.height].join();const stable=window.__squareRect===key;window.__squareRect=key;return stable&&r.top>=0&&r.bottom<=innerHeight&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}})()')
+    browser('click', selector)
+
 def wait_js(expression):
     browser('wait', '--fn', expression)
 
@@ -130,21 +138,27 @@ def start(scenario, create_in_ui=False):
         assert index > 0, 'Monopoly is absent from lobby'
         browser('click', f'.game-feature:nth-child({index}) button')
         browser('wait', '[role=dialog]')
-        browser('select', '[role=dialog] select:not([aria-label])', '3')
+        assert js('!!document.querySelector(".choose-games .selected .cover svg")'), 'creation must use the common illustrated game cards'
+        checkpoint('unified-create-desktop')
+        browser('set','viewport','390','844'); checkpoint('unified-create-mobile')
+        browser('set','viewport','1440','1000')
+        browser('select', 'select[aria-label=座位上限]', '3')
         browser('fill', 'input[name=name]', '强手棋浏览器验收')
         browser('click', '[role=dialog] button[type=submit]')
-        browser('wait', '.waiting')
+        browser('wait', '.waiting-layout')
     else:
         api('/rooms', dict(kind='monopoly', name='强手棋 ' + scenario, capacity=3, options={'scenario': scenario, 'turnSeconds': 300}))
     for p in peers:
         p.command('join', room())
     command('ready')
     if create_in_ui:
+        assert js('document.querySelectorAll(".waiting-seat").length === 3 && !!document.querySelector(".waiting-cover .cover svg")')
+        checkpoint('unified-waiting-room')
         browser('fill', 'input[aria-label="行动时限（秒）"]', '300')
         click('保存设置')
         wait_js('!document.querySelector(".waiting-actions > button:first-child")?.disabled')
         assert not room()['seats'][0]['ready'], 'settings did not clear readiness'
-        click('准备')
+        click('我准备好了')
     for p in peers:
         p.command('ready')
     if create_in_ui:
@@ -217,8 +231,13 @@ try:
         wait_js('[...document.querySelectorAll("[data-monopoly-board] img")].length>=10&&[...document.querySelectorAll("[data-monopoly-board] img")].every(i=>i.complete&&i.naturalWidth>0)')
         js('window.__media=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const src=this.src;return play.call(this).then(()=>window.__media.push(src))}')
         assert js('document.querySelector("audio[data-mono-sound]")?.paused === true'), 'initial snapshot replayed sound'
+    assert js('getComputedStyle(document.querySelector(".game-sidebar")).display!=="none" && !!document.querySelector(".game-sidebar .turn-card") && document.querySelectorAll(".players-strip .player-panel").length===3'), 'common player/turn layout missing'
+    js('window.__motionSeen=[];window.__motionWatch=new MutationObserver(()=>{const p=document.querySelector("[data-mono-motion]")?.getAttribute("data-mono-motion");if(p&&p!=="idle"&&!window.__motionSeen.includes(p))window.__motionSeen.push(p)});window.__motionWatch.observe(document.querySelector("[data-monopoly-board]"),{subtree:true,attributes:true})')
     click('掷骰')
     browser('wait', '[data-mono-purchase]')
+    wait_js('document.querySelector("[data-mono-motion]")?.getAttribute("data-mono-motion")==="idle"')
+    assert js('window.__motionSeen.includes("roll") && window.__motionSeen.includes("move")'), 'dice and travel were not animated'
+    checkpoint('dice-and-piece-motion-completed')
     if media:
         wait_js('window.__media.some(s=>s.endsWith("/rolling.mp3"))')
         assert room()['game']['data']['rollSerial'] == 1
@@ -238,9 +257,12 @@ try:
         assert js('document.querySelector("audio[data-mono-sound]").paused && document.querySelector("audio[data-mono-sound]").currentTime === 0'), 'reload replayed old events'
         report['mediaBase'] = env['WIRE_BOARD_MONOPOLY_ASSETS']
         checkpoint('cdn-images-audio-mute-reload')
+    assert js('document.querySelector("[data-mono-motion]").getAttribute("data-mono-motion")==="idle"'), 'reload replayed motion'
     checkpoint('natural-desktop-reloaded')
     for width in [390, 320]:
         browser('set', 'viewport', str(width), '844' if width == 390 else '740')
+        assert js('[...document.querySelectorAll(".module-players .player-info")].every(e=>e.getBoundingClientRect().width>=85)'), 'player names squeezed into vertical text'
+        assert js('[...document.querySelectorAll(".mono-pawn")].every(e=>e.getBoundingClientRect().width>=24)'), 'mobile pieces too small'
         checkpoint('natural-mobile-' + str(width))
     assert js('[...document.querySelectorAll("[data-mono-square]")].every(e=>{const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return y<0||y>innerHeight||e.contains(document.elementFromPoint(x,y))})'), 'floating UI blocks visible board squares'
     click('放大棋盘')
@@ -249,9 +271,24 @@ try:
     click('适应屏幕')
     finish()
 
+    api('/rooms',dict(kind='monopoly',name='六人棋子辨识',capacity=6))
+    for _ in range(5): command('add_bot')
+    command('ready'); command('start'); browser('wait','[data-monopoly-board]')
+    assert js('document.querySelectorAll(".mono-pawn").length===6')
+    assert js('[...document.querySelectorAll(".mono-pawn")].every(e=>{const r=e.getBoundingClientRect(),b=document.querySelector(".mono-map").getBoundingClientRect();return r.width>=24&&r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom})'), 'crowded pieces escaped the board'
+    assert js('document.querySelectorAll(".mono-pawn-number").length===6 && [...document.querySelectorAll(".mono-pawn-number")].every((a,i,all)=>{const r=a.getBoundingClientRect();return all.every((b,j)=>{const q=b.getBoundingClientRect();return i===j||r.right<=q.left||q.right<=r.left||r.bottom<=q.top||q.bottom<=r.top})})'), 'same-square seat numbers overlap'
+    checkpoint('six-pieces-visible-mobile')
+    finish()
+    browser('set','media','light','reduced-motion')
+    start('natural')
+    click('掷骰'); browser('wait','[data-mono-purchase]')
+    assert js('document.querySelector("[data-mono-motion]").getAttribute("data-mono-motion")==="idle" && document.querySelectorAll("[data-mono-pawn]")[0].getAttribute("data-position")==="6"'), 'reduced motion must show final state immediately'
+    checkpoint('reduced-motion-final-position')
+    finish(); browser('set','media','light')
+    assert js('!matchMedia("(prefers-reduced-motion: reduce)").matches'), 'motion emulation was not restored'
     start('management')
     browser('set', 'viewport', '1440', '1000')
-    browser('click', '[data-mono-square="6"]')
+    click_square(6)
     browser('wait', '[data-mono-property-dialog]')
     if media:
         js('window.__media=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const src=this.src;return play.call(this).then(()=>window.__media.push(src))}')
@@ -262,7 +299,7 @@ try:
     click('出售一座 · 25')
     wait_cash(1475)
     click('关闭')
-    browser('click', '[data-mono-square="5"]')
+    click_square(5)
     if media: browser('network', 'route', '**/monopoly/v1/audio/moneyplus.mp3', '--abort')
     click('抵押 · 收入 100')
     wait_cash(1575)
@@ -353,7 +390,7 @@ try:
     assert room()['result'] == result
     checkpoint('finished-result-restored')
     click('再来一局')
-    browser('wait', '.waiting')
+    browser('wait', '.waiting-layout')
     assert room()['status'] == 'waiting' and not room().get('game')
     checkpoint('rematch-waiting')
     # Close waiting-room membership without starting the fixture again.
@@ -362,10 +399,30 @@ try:
         if p.api('/state').get('room'): p.command('leave')
     browser('wait', '.game-selection')
 
+    # Repeated server-paced rolls exercise the queue, then stop autoplay and
+    # compare the displayed pieces with the authoritative snapshot.
+    api('/rooms', dict(kind='monopoly', name='连续动画验收', capacity=2, options={'scenario':'full-bots','turnSeconds':300}))
+    browser('wait','.waiting-layout'); click('添加电脑玩家'); click('我准备好了'); click('开始游戏')
+    browser('wait','[data-monopoly-board]'); click('开启托管')
+    for _ in range(100):
+        if room()['game']['data']['motionSerial'] >= 14: break
+        time.sleep(.25)
+    else: raise AssertionError('continuous roll animation fixture stalled')
+    click('取消托管')
+    for _ in range(100):
+        r=room()
+        if r['game']['data']['turn']==r['you']: break
+        time.sleep(.25)
+    wait_js('document.querySelector("[data-mono-motion]").getAttribute("data-mono-motion")==="idle"')
+    r=room(); positions=[p['position'] for p in r['game']['data']['players']]
+    assert js('[...document.querySelectorAll("[data-mono-pawn]")].map(e=>Number(e.getAttribute("data-position")))') == positions, 'queued movement did not settle on server positions'
+    checkpoint('continuous-motion-settled')
+    finish()
+
     if '--skip-full' not in sys.argv:
         api('/rooms', dict(kind='monopoly', name='强手棋完整托管局', capacity=2, options={'scenario': 'full-bots', 'turnSeconds': 300}))
-        browser('wait', '.waiting')
-        click('添加电脑'); click('准备'); click('开始游戏')
+        browser('wait', '.waiting-layout')
+        click('添加电脑玩家'); click('我准备好了'); click('开始游戏')
         browser('wait', '[data-monopoly-board]')
         initial = room()['game']['data']
         assert all(p['cash'] == 1500 and p['position'] == 0 for p in initial['players'])

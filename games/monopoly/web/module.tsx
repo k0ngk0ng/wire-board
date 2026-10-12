@@ -1,24 +1,10 @@
-import { useContext } from "react";
 import { defineGame } from "../../../web/src/game-api/module";
-import { AssetsContext } from "../../../web/src/ui/board-host";
+import { Cover } from "./Cover";
 import { Board } from "./Board";
 import type { Options, View } from "./types";
 import { Art } from "./ui";
 import "./style.css";
 
-function Cover() {
-  const assets = useContext(AssetsContext);
-  return (
-    <div className="mono-cover">
-      <Art base={assets} name="cover" />
-      <div>
-        <span>MONOPOLY</span>
-        <strong>强手棋</strong>
-        <small>买下街区，建起你的城市。</small>
-      </div>
-    </div>
-  );
-}
 export default defineGame<View, Options>({
   id: "monopoly",
   name: "强手棋",
@@ -31,6 +17,22 @@ export default defineGame<View, Options>({
   defaultOptions: { auctionSeconds: 20, turnSeconds: 120, tradeSeconds: 90 },
   Board,
   Cover,
+  PlayerSummary: ({ data, seat, assets }) => (
+    <div className="mono-seat-summary">
+      <Art
+        base={assets}
+        name={`token-${seat + 1}`}
+        fallback={<span>{seat + 1}</span>}
+      />
+      <strong data-mono-cash={seat}>M {data.players[seat].cash}</strong>
+      <small>
+        {data.properties.filter((p) => p.owner === seat).length} 处地产
+      </small>
+      <span className="sr-only">
+        当前位置：{data.board[data.players[seat].position].name}
+      </span>
+    </div>
+  ),
   Options: ({ value, onChange, disabled }) => (
     <div className="mono-options">
       <label>
