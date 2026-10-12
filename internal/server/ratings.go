@@ -21,6 +21,20 @@ func rateMatch(r *Room, record *MatchRecord) {
 	if !record.Rated {
 		return
 	}
+	if r.Module != nil && r.Module.Result != nil {
+		result := r.Module.Result
+		for i := range record.Players {
+			rank := result.Ranks[i]
+			delta := -5 * max(1, rank-1)
+			if slices.Contains(result.Winners, i) {
+				rank, delta = 1, 20
+			} else if result.Team {
+				rank, delta = 2, -10
+			}
+			record.Players[i].Rank, record.Players[i].RatingDelta = rank, delta
+		}
+		return
+	}
 	type result struct {
 		winner, out            bool
 		score, tie, tie2, tie3 int

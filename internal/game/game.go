@@ -1,10 +1,14 @@
+// Package game adapts the pre-module room protocol. New games use gameapi.
 package game
 
 import (
-	"crypto/rand"
-	"encoding/json"
 	"errors"
-	"math/big"
+	carcassonne "github.com/k0ngk0ng/wire-board/games/carcassonne/server"
+	catan "github.com/k0ngk0ng/wire-board/games/catan/server"
+	dota "github.com/k0ngk0ng/wire-board/games/dota/server"
+	rail "github.com/k0ngk0ng/wire-board/games/rail/server"
+	sanguosha "github.com/k0ngk0ng/wire-board/games/sanguosha/server"
+	splendor "github.com/k0ngk0ng/wire-board/games/splendor/server"
 )
 
 type Action struct {
@@ -42,10 +46,6 @@ type Action struct {
 	Keep        []int      `json:"keep"`
 }
 type State struct {
-	Dota        *Dota        `json:"dota,omitempty"`
-	Sanguosha   *Sanguosha   `json:"sanguosha,omitempty"`
-	Carcassonne *Carcassonne `json:"carcassonne,omitempty"`
-	Catan       *Catan       `json:"catan,omitempty"`
 	Kind        string       `json:"kind"`
 	Turn        int          `json:"turn"`
 	Phase       string       `json:"phase"`
@@ -55,228 +55,317 @@ type State struct {
 	Log         []string     `json:"log"`
 	Splendor    *Splendor    `json:"splendor,omitempty"`
 	Rail        *Rail        `json:"rail,omitempty"`
+	Catan       *Catan       `json:"catan,omitempty"`
+	Carcassonne *Carcassonne `json:"carcassonne,omitempty"`
+	Sanguosha   *Sanguosha   `json:"sanguosha,omitempty"`
+	Dota        *Dota        `json:"dota,omitempty"`
 }
 
-func New(kind string, n int) (*State, error) {
-	s := &State{Kind: kind, Phase: "turn", Round: 1, Log: []string{}}
-	switch kind {
-	case "dota":
-		if n != 2 && n != 4 && n != 6 {
-			return nil, errors.New("兵线争锋需要 2、4 或 6 位玩家")
-		}
-		s.initDota(n)
-	case "sanguosha":
-		if n < 4 || n > 8 {
-			return nil, errors.New("三国杀需要 4–8 位玩家")
-		}
-		s.initSanguosha(n)
-	case "carcassonne":
-		if n < 2 || n > 5 {
-			return nil, errors.New("卡卡颂需要 2–5 位玩家")
-		}
-		s.initCarcassonne(n)
-	case "catan":
-		if n < 3 || n > 4 {
-			return nil, errors.New("卡坦岛需要 3–4 位玩家")
-		}
-		s.initCatan(n)
-	case "splendor":
-		if n < 2 || n > 4 {
-			return nil, errors.New("璀璨宝石需要 2–4 位玩家")
-		}
-		s.initSplendor(n)
-	case "rail":
-		if n < 2 || n > 5 {
-			return nil, errors.New("铁路环游需要 2–5 位玩家")
-		}
-		s.initRail(n)
-	default:
-		return nil, errors.New("未知游戏")
+func fromSplendor(s *splendor.State) *State {
+	if s == nil {
+		return nil
 	}
-	return s, nil
+	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Splendor: s.Splendor}
+}
+func (s *State) asSplendor() *splendor.State {
+	if s == nil {
+		return nil
+	}
+	return &splendor.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Splendor: s.Splendor}
+}
+func (s *State) syncSplendor(v *splendor.State) {
+	if s == nil {
+		return
+	}
+	s.Kind = v.Kind
+	s.Turn = v.Turn
+	s.Phase = v.Phase
+	s.Round = v.Round
+	s.Finished = v.Finished
+	s.Winners = v.Winners
+	s.Log = v.Log
+	s.Splendor = v.Splendor
+}
+func toSplendorAction(a Action) splendor.Action {
+	return splendor.Action{Cards: a.Cards, Choice: a.Choice, Tile: a.Tile, Target: a.Target, Take: a.Take, Type: a.Type, Card: a.Card, Tier: a.Tier, Tokens: a.Tokens, Noble: a.Noble, Color: a.Color, Slot: a.Slot}
+}
+func fromSplendorAction(a splendor.Action) Action {
+	return Action{Cards: a.Cards, Choice: a.Choice, Tile: a.Tile, Target: a.Target, Take: a.Take, Type: a.Type, Card: a.Card, Tier: a.Tier, Tokens: a.Tokens, Noble: a.Noble, Color: a.Color, Slot: a.Slot}
+}
+func fromRail(s *rail.State) *State {
+	if s == nil {
+		return nil
+	}
+	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Rail: s.Rail}
+}
+func (s *State) asRail() *rail.State {
+	if s == nil {
+		return nil
+	}
+	return &rail.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Rail: s.Rail}
+}
+func (s *State) syncRail(v *rail.State) {
+	if s == nil {
+		return
+	}
+	s.Kind = v.Kind
+	s.Turn = v.Turn
+	s.Phase = v.Phase
+	s.Round = v.Round
+	s.Finished = v.Finished
+	s.Winners = v.Winners
+	s.Log = v.Log
+	s.Rail = v.Rail
+}
+func toRailAction(a Action) rail.Action {
+	return rail.Action{Vertex: a.Vertex, Type: a.Type, Tokens: a.Tokens, Route: a.Route, Color: a.Color, Wild: a.Wild, Slot: a.Slot, Keep: a.Keep}
+}
+func fromRailAction(a rail.Action) Action {
+	return Action{Vertex: a.Vertex, Type: a.Type, Tokens: a.Tokens, Route: a.Route, Color: a.Color, Wild: a.Wild, Slot: a.Slot, Keep: a.Keep}
+}
+func fromCatan(s *catan.State) *State {
+	if s == nil {
+		return nil
+	}
+	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Catan: s.Catan}
+}
+func (s *State) asCatan() *catan.State {
+	if s == nil {
+		return nil
+	}
+	return &catan.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Catan: s.Catan}
+}
+func (s *State) syncCatan(v *catan.State) {
+	if s == nil {
+		return
+	}
+	s.Kind = v.Kind
+	s.Turn = v.Turn
+	s.Phase = v.Phase
+	s.Round = v.Round
+	s.Finished = v.Finished
+	s.Winners = v.Winners
+	s.Log = v.Log
+	s.Catan = v.Catan
+}
+func toCatanAction(a Action) catan.Action {
+	return catan.Action{SpiceLoad: a.SpiceLoad, SpiceUnload: a.SpiceUnload, GoldGive: a.GoldGive, GoldTake: a.GoldTake, Cards: a.Cards, Targets: a.Targets, Choice: a.Choice, Skill: a.Skill, Prompt: a.Prompt, X: a.X, Y: a.Y, Vertex: a.Vertex, Edge: a.Edge, Tile: a.Tile, Target: a.Target, Offer: a.Offer, Give: a.Give, Take: a.Take, Type: a.Type, Card: a.Card, Tokens: a.Tokens, Route: a.Route, Color: a.Color, Slot: a.Slot}
+}
+func fromCatanAction(a catan.Action) Action {
+	return Action{SpiceLoad: a.SpiceLoad, SpiceUnload: a.SpiceUnload, GoldGive: a.GoldGive, GoldTake: a.GoldTake, Cards: a.Cards, Targets: a.Targets, Choice: a.Choice, Skill: a.Skill, Prompt: a.Prompt, X: a.X, Y: a.Y, Vertex: a.Vertex, Edge: a.Edge, Tile: a.Tile, Target: a.Target, Offer: a.Offer, Give: a.Give, Take: a.Take, Type: a.Type, Card: a.Card, Tokens: a.Tokens, Route: a.Route, Color: a.Color, Slot: a.Slot}
+}
+func fromCarcassonne(s *carcassonne.State) *State {
+	if s == nil {
+		return nil
+	}
+	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Carcassonne: s.Carcassonne}
+}
+func (s *State) asCarcassonne() *carcassonne.State {
+	if s == nil {
+		return nil
+	}
+	return &carcassonne.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Carcassonne: s.Carcassonne}
+}
+func (s *State) syncCarcassonne(v *carcassonne.State) {
+	if s == nil {
+		return
+	}
+	s.Kind = v.Kind
+	s.Turn = v.Turn
+	s.Phase = v.Phase
+	s.Round = v.Round
+	s.Finished = v.Finished
+	s.Winners = v.Winners
+	s.Log = v.Log
+	s.Carcassonne = v.Carcassonne
+}
+func toCarcassonneAction(a Action) carcassonne.Action {
+	return carcassonne.Action{X: a.X, Y: a.Y, Rotation: a.Rotation, Feature: a.Feature, Tile: a.Tile, Type: a.Type}
+}
+func fromCarcassonneAction(a carcassonne.Action) Action {
+	return Action{X: a.X, Y: a.Y, Rotation: a.Rotation, Feature: a.Feature, Tile: a.Tile, Type: a.Type}
+}
+func fromSanguosha(s *sanguosha.State) *State {
+	if s == nil {
+		return nil
+	}
+	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Sanguosha: s.Sanguosha}
+}
+func (s *State) asSanguosha() *sanguosha.State {
+	if s == nil {
+		return nil
+	}
+	return &sanguosha.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Sanguosha: s.Sanguosha}
+}
+func (s *State) syncSanguosha(v *sanguosha.State) {
+	if s == nil {
+		return
+	}
+	s.Kind = v.Kind
+	s.Turn = v.Turn
+	s.Phase = v.Phase
+	s.Round = v.Round
+	s.Finished = v.Finished
+	s.Winners = v.Winners
+	s.Log = v.Log
+	s.Sanguosha = v.Sanguosha
+}
+func toSanguoshaAction(a Action) sanguosha.Action {
+	return sanguosha.Action{Cards: a.Cards, Targets: a.Targets, Choice: a.Choice, Skill: a.Skill, Direction: a.Direction, Prompt: a.Prompt, Target: a.Target, Take: a.Take, Type: a.Type, Card: a.Card, Color: a.Color, Slot: a.Slot}
+}
+func fromSanguoshaAction(a sanguosha.Action) Action {
+	return Action{Cards: a.Cards, Targets: a.Targets, Choice: a.Choice, Skill: a.Skill, Direction: a.Direction, Prompt: a.Prompt, Target: a.Target, Take: a.Take, Type: a.Type, Card: a.Card, Color: a.Color, Slot: a.Slot}
+}
+func fromDota(s *dota.State) *State {
+	if s == nil {
+		return nil
+	}
+	return &State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Dota: s.Dota}
+}
+func (s *State) asDota() *dota.State {
+	if s == nil {
+		return nil
+	}
+	return &dota.State{Kind: s.Kind, Turn: s.Turn, Phase: s.Phase, Round: s.Round, Finished: s.Finished, Winners: s.Winners, Log: s.Log, Dota: s.Dota}
+}
+func (s *State) syncDota(v *dota.State) {
+	if s == nil {
+		return
+	}
+	s.Kind = v.Kind
+	s.Turn = v.Turn
+	s.Phase = v.Phase
+	s.Round = v.Round
+	s.Finished = v.Finished
+	s.Winners = v.Winners
+	s.Log = v.Log
+	s.Dota = v.Dota
+}
+func toDotaAction(a Action) dota.Action {
+	return dota.Action{Dota: a.Dota, Targets: a.Targets, Choice: a.Choice, Prompt: a.Prompt, Target: a.Target, Type: a.Type, Card: a.Card}
+}
+func fromDotaAction(a dota.Action) Action {
+	return Action{Dota: a.Dota, Targets: a.Targets, Choice: a.Choice, Prompt: a.Prompt, Target: a.Target, Type: a.Type, Card: a.Card}
+}
+func New(kind string, n int) (*State, error) {
+	switch kind {
+	case "splendor":
+		v, e := splendor.New(kind, n)
+		return fromSplendor(v), e
+	case "rail":
+		v, e := rail.New(kind, n)
+		return fromRail(v), e
+	case "catan":
+		v, e := catan.New(kind, n)
+		return fromCatan(v), e
+	case "carcassonne":
+		v, e := carcassonne.New(kind, n)
+		return fromCarcassonne(v), e
+	case "sanguosha":
+		v, e := sanguosha.New(kind, n)
+		return fromSanguosha(v), e
+	case "dota":
+		v, e := dota.New(kind, n)
+		return fromDota(v), e
+	}
+	return nil, errors.New("未知游戏")
 }
 func (s *State) Apply(player int, a Action) error {
-	if s.Finished {
-		return errors.New("本局已结束")
+	if s.Splendor != nil {
+		v := s.asSplendor()
+		e := v.Apply(player, toSplendorAction(a))
+		s.syncSplendor(v)
+		return e
 	}
-	if s.Dota != nil {
-		return s.applyDota(player, a)
-	}
-	if s.Sanguosha != nil {
-		return s.applySanguosha(player, a)
-	}
-	if s.Carcassonne != nil {
-		err := s.applyCarcassonne(player, a)
-		if len(s.Log) > 80 {
-			s.Log = s.Log[len(s.Log)-80:]
-		}
-		return err
+	if s.Rail != nil {
+		v := s.asRail()
+		e := v.Apply(player, toRailAction(a))
+		s.syncRail(v)
+		return e
 	}
 	if s.Catan != nil {
-		err := s.applyCatan(player, a)
-		if err == nil && len(s.Log) > 80 {
-			s.Log = s.Log[len(s.Log)-80:]
-		}
-		return err
+		v := s.asCatan()
+		e := v.Apply(player, toCatanAction(a))
+		s.syncCatan(v)
+		return e
 	}
-	if s.Rail != nil && s.Rail.Setup {
-		return s.applyRailSetup(player, a)
+	if s.Carcassonne != nil {
+		v := s.asCarcassonne()
+		e := v.Apply(player, toCarcassonneAction(a))
+		s.syncCarcassonne(v)
+		return e
 	}
-	if player != s.Turn {
-		return errors.New("还没有轮到你")
+	if s.Sanguosha != nil {
+		v := s.asSanguosha()
+		e := v.Apply(player, toSanguoshaAction(a))
+		s.syncSanguosha(v)
+		return e
 	}
-	var err error
-	if s.Kind == "splendor" {
-		err = s.applySplendor(a)
-	} else {
-		err = s.applyRail(a)
+	if s.Dota != nil {
+		v := s.asDota()
+		e := v.Apply(player, toDotaAction(a))
+		s.syncDota(v)
+		return e
 	}
-	if len(s.Log) > 80 {
-		s.Log = s.Log[len(s.Log)-80:]
+	return errors.New("未知游戏")
+}
+func (s *State) BotAction(player int) (Action, error) {
+	if s.Splendor != nil {
+		v := s.asSplendor()
+		a, e := v.BotAction(player)
+		return fromSplendorAction(a), e
 	}
-	return err
+	if s.Rail != nil {
+		v := s.asRail()
+		a, e := v.BotAction(player)
+		return fromRailAction(a), e
+	}
+	if s.Catan != nil {
+		v := s.asCatan()
+		a, e := v.BotAction(player)
+		return fromCatanAction(a), e
+	}
+	if s.Carcassonne != nil {
+		v := s.asCarcassonne()
+		a, e := v.BotAction(player)
+		return fromCarcassonneAction(a), e
+	}
+	if s.Sanguosha != nil {
+		v := s.asSanguosha()
+		a, e := v.BotAction(player)
+		return fromSanguoshaAction(a), e
+	}
+	if s.Dota != nil {
+		v := s.asDota()
+		a, e := v.BotAction(player)
+		return fromDotaAction(a), e
+	}
+	return Action{}, errors.New("未知游戏")
 }
 func (s *State) View(player int) map[string]any {
-	if s.Dota != nil {
-		return s.dotaView(player)
+	if s.Splendor != nil {
+		v := s.asSplendor()
+		return v.View(player)
 	}
-	if s.Sanguosha != nil {
-		return s.sgView(player)
-	}
-	b, _ := json.Marshal(s)
-	var v map[string]any
-	_ = json.Unmarshal(b, &v)
-	if s.Carcassonne != nil {
-		s.carView(v, player)
-		return v
+	if s.Rail != nil {
+		v := s.asRail()
+		return v.View(player)
 	}
 	if s.Catan != nil {
-		s.catanView(v, player)
-		return v
+		v := s.asCatan()
+		return v.View(player)
 	}
-	if s.Splendor != nil {
-		g := v["splendor"].(map[string]any)
-		delete(g, "decks")
-		if player != s.Turn {
-			delete(g, "reserveChoice")
-		}
-		if s.Splendor.Options.TradingPosts {
-			g["tradingPostRules"] = GemTradingPosts()
-		}
-		if player == s.Turn && !s.Finished {
-			if s.Phase == "gem_post" {
-				g["postChoices"] = s.gemPostOptions()
-			}
-			if s.Phase == "gem_stronghold" {
-				g["strongholdActions"] = s.gemStrongholdActions()
-			}
-			if s.Phase == "gem_conquest" {
-				g["conquestCard"] = s.gemConquestCard()
-			}
-		}
-		remaining := make([]int, len(s.Splendor.Decks))
-		for i, deck := range s.Splendor.Decks {
-			remaining[i] = len(deck)
-		}
-		g["remaining"] = remaining
-		if s.Splendor.Options.Cities {
-			eligible := make([][]int, len(s.Splendor.Players))
-			for i, p := range s.Splendor.Players {
-				eligible[i] = s.Splendor.gemCitiesFor(p)
-			}
-			g["cityEligibility"] = eligible
-		}
-		if player == s.Turn && s.Phase == "gem_free_card" {
-			g["freeCardChoices"] = s.gemFreeCards(s.Splendor.Effects[0].Tier)
-		}
-		for i, p := range g["players"].([]any) {
-			if i != player && !s.Finished {
-				m := p.(map[string]any)
-				m["reservedCount"] = len(s.Splendor.Players[i].Reserved)
-				delete(m, "reserved")
-			}
-		}
-	} else {
-		g := v["rail"].(map[string]any)
-		delete(g, "deck")
-		delete(g, "ticketDeck")
-		delete(g, "discard")
-		delete(g, "setupPending")
-		g["remaining"] = len(s.Rail.Deck) + len(s.Rail.Discard)
-		g["ticketsRemaining"] = len(s.Rail.TicketDeck)
-		for i, p := range g["players"].([]any) {
-			m := p.(map[string]any)
-			m["handCount"] = sum(s.Rail.Players[i].Hand)
-			m["ticketCount"] = len(s.Rail.Players[i].Tickets)
-			if !s.Finished {
-				// Progress belongs to this viewer only. Never mutate persisted scoring
-				// fields: final scoring must still count each destination exactly once.
-				delete(m, "completed")
-				delete(m, "stationRoutes")
-				delete(m, "mandalaCount")
-				delete(m, "mandalaScore")
-				delete(m, "stationScore")
-				if i == player {
-					tickets, _, completed, stationRoutes := s.Rail.evaluateTickets(i)
-					if s.Rail.Map == "india" {
-						components := s.Rail.mandalaComponents(i)
-						for j, t := range tickets {
-							tickets[j].Mandala = t.Complete && t.A != t.B && components[t.A] == components[t.B]
-						}
-					}
-					m["tickets"] = tickets
-					m["completed"] = completed
-					m["stationRoutes"] = stationRoutes
-				}
-			}
-			if i != player {
-				delete(m, "hand")
-				if !s.Finished {
-					delete(m, "tickets")
-				}
-			}
-		}
-		info := s.Rail.info()
-		g["mapInfo"] = info
-		if player >= 0 && player < len(s.Rail.Players) && !s.Finished {
-			payments := map[int][]RailPayment{}
-			for _, r := range s.Rail.data().Routes {
-				if options := s.Rail.paymentOptions(player, r); len(options) > 0 {
-					payments[r.ID] = options
-				}
-			}
-			g["payments"] = payments
-		}
-		if s.Rail.Setup {
-			delete(g, "pending")
-			ready := make([]bool, len(s.Rail.Players))
-			for i := range ready {
-				ready[i] = len(s.Rail.SetupPending[i]) == 0
-			}
-			g["setupReady"] = ready
-			if player >= 0 && player < len(ready) && !ready[player] {
-				g["pending"] = clone(s.Rail.SetupPending[player])
-			}
-		} else if player != s.Turn {
-			delete(g, "pending")
-		}
+	if s.Carcassonne != nil {
+		v := s.asCarcassonne()
+		return v.View(player)
 	}
-	return v
+	if s.Sanguosha != nil {
+		v := s.asSanguosha()
+		return v.View(player)
+	}
+	if s.Dota != nil {
+		v := s.asDota()
+		return v.View(player)
+	}
+	return nil
 }
-func shuffle[T any](v []T) {
-	for i := len(v) - 1; i > 0; i-- {
-		j, e := rand.Int(rand.Reader, big.NewInt(int64(i+1)))
-		if e != nil {
-			panic(e)
-		}
-		v[i], v[int(j.Int64())] = v[int(j.Int64())], v[i]
-	}
-}
-func sum(v []int) int {
-	n := 0
-	for _, x := range v {
-		n += x
-	}
-	return n
-}
-func clone[T any](v T) T { b, _ := json.Marshal(v); var c T; _ = json.Unmarshal(b, &c); return c }

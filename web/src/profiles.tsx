@@ -1,10 +1,14 @@
-import { catanBaseLayoutName } from "./catan-base-layout";
-import { catanScenarioName, catanLayoutName } from "./catan-scenarios";
-import { railMapNames } from "./rail-expansions";
+import { gameName } from "./game-api/registry";
+import { catanBaseLayoutName } from "../../games/catan/web/catan-base-layout";
+import {
+  catanScenarioName,
+  catanLayoutName,
+} from "../../games/catan/web/catan-scenarios";
+import { railMapNames } from "../../games/rail/web/rail-expansions";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User, SGOptions, SplendorOptions } from "./types";
-import { splendorCityCatalogue } from "./splendor-city-state";
-import { splendorRulesLabel } from "./splendor-expansions";
+import { splendorCityCatalogue } from "../../games/splendor/web/splendor-city-state";
+import { splendorRulesLabel } from "../../games/splendor/web/splendor-expansions";
 
 export const ProfileContext = createContext<(id: string) => void>(() => {});
 export function PlayerName({
@@ -69,18 +73,7 @@ async function request(path: string, body?: unknown) {
   if (!response.ok) throw Error(data.error || "操作失败");
   return data;
 }
-const name = (kind: string) =>
-  kind === "dota"
-    ? "兵线争锋"
-    : kind === "sanguosha"
-      ? "三国杀"
-      : kind === "carcassonne"
-        ? "卡卡颂"
-        : kind === "catan"
-          ? "卡坦岛"
-          : kind === "rail"
-            ? "铁路环游"
-            : "璀璨宝石";
+const name = gameName;
 export function ProfilePage({ id, self }: { id: string; self: string }) {
   const open = useContext(ProfileContext);
   const [profile, setProfile] = useState<Profile>();

@@ -1,4 +1,4 @@
-import { cityChinese } from "./cities";
+import { cityChinese } from "../../games/rail/web/cities";
 import type { Seat } from "./types";
 
 const colors: Record<string, string> = {

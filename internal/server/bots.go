@@ -98,6 +98,10 @@ func (s *Server) runBots(now time.Time) {
 		if room.Status != "playing" || room.Game == nil || room.BotAt > now.UnixMilli() {
 			continue
 		}
+		if room.Module != nil {
+			s.runModuleBot(room, now, false)
+			continue
+		}
 		if room.Game.CatanExplorerSetupBlocked() {
 			continue
 		}

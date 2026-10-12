@@ -64,7 +64,7 @@ jobs:
           name: web-dist
           path: web/dist
       - name: Run the race detector on commands, clocks, autoplay and persistence
-        run: go test -count=1 -timeout=40m -race -run '^(TestConcurrent.*|TestAutoPlay.*|TestTimeout.*|TestInactive.*|TestSpectator.*|TestChat.*|TestShutdown.*|TestSanguoshaConcurrent.*|TestCatanLongGameArtifact|TestBotsFinishBothGames)$' ./internal/server ./internal/game
+        run: go test -count=1 -timeout=40m -race -run '^(TestConcurrent.*|TestAutoPlay.*|TestTimeout.*|TestInactive.*|TestSpectator.*|TestChat.*|TestShutdown.*|TestSanguoshaConcurrent.*|TestCatanLongGameArtifact|TestBotsFinishBothGames)$' ./internal/server ./internal/game ./games/...
   verify:
     name: Test and Linux amd64 binary
     runs-on: ubuntu-latest
@@ -80,6 +80,8 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
+      - name: Check game module boundaries
+        run: python3 -B scripts/check_game_boundaries.py
       - name: Build frontend
         run: npm --prefix web ci && npm --prefix web run build
       - name: Test frontend event replay guards
@@ -90,8 +92,19 @@ jobs:
           path: web/dist/
           if-no-files-found: error
           retention-days: 1
+      - name: Accept independent game lifecycle
+        run: |
+          mkdir -p .local/module-refactor
+          go test -json -count=1 -timeout=2m -run '^TestModule(RegistrationAndLifecycle|BotAndTimeout)E2E$' ./internal/server > .local/module-refactor/module-e2e.jsonl
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: game-module-acceptance
+          path: .local/module-refactor/*.json*
+          if-no-files-found: warn
+          retention-days: 7
       - name: Check formatting
-        run: test -z "$(gofmt -l main.go main_test.go internal)"
+        run: test -z "$(gofmt -l main.go main_test.go internal games)"
       - name: Vet
         run: go vet ./...
       - name: Validate deployment scripts

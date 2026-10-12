@@ -1,11 +1,15 @@
-import { twoResponder } from "./catan-two-state";
-import { caravanResponder, caravanPrompt } from "./catan-caravans-state";
-import { fishResponder } from "./catan-fishing-state";
+import { twoResponder } from "../../games/catan/web/catan-two-state";
+import {
+  caravanResponder,
+  caravanPrompt,
+} from "../../games/catan/web/catan-caravans-state";
+import { fishResponder } from "../../games/catan/web/catan-fishing-state";
 import { useEffect } from "react";
 import type { Room } from "./types";
 
 export function useTurnTitle(room?: Room) {
   const game = room?.game;
+  const independent = game?.phase === "module";
   const player =
     game?.splendor?.players[room?.you ?? -1] ||
     game?.rail?.players[room?.you ?? -1] ||
@@ -19,42 +23,46 @@ export function useTurnTitle(room?: Room) {
     !room.spectating &&
     !room.seats[room.you]?.autoPlay &&
     room.you >= 0 &&
-    (game.dota
+    (independent
       ? true
-      : game.sanguosha
-        ? !game.sanguosha.players[room.you]?.dead
-        : player && !player.eliminated) &&
-    (game.dota
-      ? !!game.dota.actors?.includes(room.you)
-      : game.sanguosha
-        ? game.sanguosha.pending
-          ? game.sanguosha.pending.canRespond
-          : game.turn === room.you
-        : twoResponder(room) !== undefined
-          ? twoResponder(room) === room.you
-          : caravanResponder(room) !== undefined
-            ? caravanResponder(room) === room.you
-            : fishResponder(room) !== undefined
-              ? fishResponder(room) === room.you
-              : game.catan?.cardEvent
-                ? game.catan.cardEvent.players[0] === room.you
-                : game.catan?.citiesKnights?.pending
-                  ? game.catan.citiesKnights.pending.players[0] === room.you
-                  : game.catan?.seafarers?.pirateIslands?.raid
-                    ? game.catan.seafarers.pirateIslands.raid.rewards[0] ===
-                      room.you
-                    : game.catan?.seafarers?.tribe?.pending
-                      ? game.catan.seafarers.tribe.pending.player === room.you
-                      : game.catan?.helperPending
-                        ? game.catan.helperPending.player === room.you
-                        : game.catan?.goldPending
-                          ? game.catan.goldPending.claims[0]?.player ===
-                            room.you
-                          : game.phase === "catan_discard"
-                            ? (game.catan?.discardDue[room.you] || 0) > 0
-                            : game.rail?.setup
-                              ? !game.rail.setupReady?.[room.you]
-                              : game.turn === room.you)
+      : game.dota
+        ? true
+        : game.sanguosha
+          ? !game.sanguosha.players[room.you]?.dead
+          : player && !player.eliminated) &&
+    (independent
+      ? !!game.actors?.includes(room.you)
+      : game.dota
+        ? !!game.dota.actors?.includes(room.you)
+        : game.sanguosha
+          ? game.sanguosha.pending
+            ? game.sanguosha.pending.canRespond
+            : game.turn === room.you
+          : twoResponder(room) !== undefined
+            ? twoResponder(room) === room.you
+            : caravanResponder(room) !== undefined
+              ? caravanResponder(room) === room.you
+              : fishResponder(room) !== undefined
+                ? fishResponder(room) === room.you
+                : game.catan?.cardEvent
+                  ? game.catan.cardEvent.players[0] === room.you
+                  : game.catan?.citiesKnights?.pending
+                    ? game.catan.citiesKnights.pending.players[0] === room.you
+                    : game.catan?.seafarers?.pirateIslands?.raid
+                      ? game.catan.seafarers.pirateIslands.raid.rewards[0] ===
+                        room.you
+                      : game.catan?.seafarers?.tribe?.pending
+                        ? game.catan.seafarers.tribe.pending.player === room.you
+                        : game.catan?.helperPending
+                          ? game.catan.helperPending.player === room.you
+                          : game.catan?.goldPending
+                            ? game.catan.goldPending.claims[0]?.player ===
+                              room.you
+                            : game.phase === "catan_discard"
+                              ? (game.catan?.discardDue[room.you] || 0) > 0
+                              : game.rail?.setup
+                                ? !game.rail.setupReady?.[room.you]
+                                : game.turn === room.you)
   );
   const prompt = game?.dota
     ? "请规划行动"

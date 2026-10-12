@@ -220,6 +220,21 @@ func TestSanguoshaConcurrentHTTPPassAndSharedTimeout(t *testing.T) {
 		}
 	}
 	g.Sanguosha.Players[actor].Hand = append(g.Sanguosha.Players[actor].Hand, card)
+	// This fixture tests simultaneous passes: give each participant a real counter.
+	counters := []int{}
+	for _, c := range g.View(actor)["sanguosha"].(map[string]any)["cards"].([]game.SGCard) {
+		if c.Kind == "nullification" {
+			counters = append(counters, c.ID)
+		}
+	}
+	for seat, counter := range counters {
+		g.Sanguosha.Deck = slices.DeleteFunc(g.Sanguosha.Deck, func(id int) bool { return id == counter })
+		for i := range g.Sanguosha.Players {
+			g.Sanguosha.Players[i].Hand = slices.DeleteFunc(g.Sanguosha.Players[i].Hand, func(id int) bool { return id == counter })
+		}
+		g.Sanguosha.Players[seat].Hand = append(g.Sanguosha.Players[seat].Hand, counter)
+	}
+
 	if err := r.applyGameAction(actor, game.Action{Type: "sg_play", Cards: []int{card}}, time.Now()); err != nil {
 		t.Fatal(err)
 	}

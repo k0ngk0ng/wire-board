@@ -1,0 +1,158 @@
+import type { GameHeader, RoomBase } from "../../../web/src/types";
+export type SGOptions = {
+  standardVersion?: "classic" | "breakthrough";
+  mode?: string;
+  deck?: string;
+  packs?: string[];
+  // 3v3 only: "official" keeps the printed 32 generals and 106 card deck.
+  threeVariant?: string;
+};
+export type SGCard = { id: number; kind: string; suit: number; rank: number };
+export type SGGeneral = {
+  id: string;
+  name: string;
+  kingdom: string;
+  hp: number;
+  female: boolean;
+  skills: string[];
+};
+export type SGPlayer = {
+  camp?: number;
+  deputy?: string;
+  shown?: [boolean, boolean];
+  lost?: [boolean, boolean];
+  ownSkills?: string[];
+  ownKingdom?: string;
+  canReveal?: boolean;
+  knownGenerals?: Record<string, [string, string]>;
+  companion?: boolean;
+  companionClaimed?: boolean;
+  halfHP?: boolean;
+  halfClaimed?: boolean;
+  disabledSkills?: string[];
+  silenced?: boolean;
+  handSealed?: boolean;
+  yiji?: number[];
+  yijiCount?: number;
+  qianxun?: number[];
+  qianxunCount?: number;
+  jieLuoyi?: boolean;
+  stars?: number[];
+  starCount?: number;
+  galeTargets?: number[];
+  fogTargets?: number[];
+  armorDisabled?: boolean;
+  skills?: string[];
+  skillsLost?: boolean;
+  kingdom?: string;
+  female?: boolean;
+  fields?: number[];
+  avatar?: string;
+  avatarSkill?: string;
+  avatarCount?: number;
+  avatars?: string[];
+  marks?: Record<string, number>;
+  handLimit?: number;
+  flipped?: boolean;
+  buqu?: number[];
+  chained?: boolean;
+  drank?: number;
+  general: string;
+  role?: string;
+  hp: number;
+  maxHP: number;
+  dead: boolean;
+  hand?: number[];
+  handCount: number;
+  equip: number[];
+  judgment: { card: number; kind: string }[];
+  choices?: string[];
+  used: Record<string, number>;
+};
+export type ThreeV3State = {
+  rules: string;
+  variant?: string;
+  stage: string;
+  side: number;
+  firstSide: number;
+  pickFirst: number;
+  pickCamp: number;
+  pickLeft: number;
+  leaders: number[];
+  // Older servers may send null before both leaders have taken a pile.
+  pool?: string[] | null;
+  picked: string[][];
+  assigned: string[][];
+  acted: boolean[];
+  // Official draft only: the four face-down piles, their sizes and the camp
+  // picks. `piles` reaches viewers once both leaders have taken one.
+  pileTurn?: number;
+  pilePicks?: number[];
+  pileSizes?: number[];
+  piles?: string[][];
+};
+export type SanguoshaState = {
+  threeV3?: ThreeV3State;
+  hegemony?: boolean;
+  first?: number;
+  companions?: [string, string][];
+  armor?: string;
+  guhuoKinds?: string[];
+  bluff?: {
+    player: number;
+    declared: string;
+    context: string;
+    questioned: number[] | null;
+    resolved: boolean;
+  };
+  huangtianGive?: boolean;
+  zhibaPindian?: boolean;
+  options?: SGOptions;
+  revealed?: number[];
+  players: SGPlayer[];
+  lord: number;
+  selecting: boolean;
+  remaining: number;
+  discardCount: number;
+  table: number[];
+  grace: number[];
+  generals: SGGeneral[];
+  cardTypes: Record<
+    string,
+    { name: string; text: string; slot?: string; range?: number }
+  >;
+  cards: SGCard[];
+  skills: Record<string, { name: string; text: string }>;
+  sequence: number;
+  distances?: number[];
+  range?: number;
+  pending?: {
+    general?: string;
+    factionCounter?: boolean;
+    suit?: number;
+    protectedCards?: number[];
+    required?: boolean;
+    avatarSkills?: Record<string, string[]>;
+    moves?: { card: number; targets: number[] }[];
+    id: number;
+    player: number;
+    canRespond?: boolean;
+    kind: string;
+    message?: string;
+    cards?: number[];
+    source?: number;
+    target?: number;
+    effect?: string;
+    amount?: number;
+    count?: number;
+    step?: number;
+    choices?: string[];
+    wanted?: string;
+    ignoreArmor?: boolean;
+    cancelled?: boolean;
+    targets?: number[];
+  };
+};
+export type RoomOptions = { sanguoshaOptions?: SGOptions };
+export type Game = GameHeader & { sanguosha?: SanguoshaState };
+export type Room = RoomBase & RoomOptions & { game?: Game };

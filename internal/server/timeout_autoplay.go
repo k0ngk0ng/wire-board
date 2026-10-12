@@ -50,6 +50,10 @@ func (r *Room) timeoutActors() []int {
 // the first decision in the same saved snapshot makes takeover atomic. Later
 // substeps keep using runBots, at its visible one-action-per-tick cadence.
 func (s *Server) expireToAutoplay(room *Room, now time.Time) {
+	if room.Module != nil {
+		s.runModuleBot(room, now, true)
+		return
+	}
 	actors := room.timeoutActors()
 	if len(actors) == 0 {
 		return
