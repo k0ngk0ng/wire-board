@@ -38,8 +38,14 @@ async function resolveRelease({github, context, inputs={}, sleep=(ms)=>new Promi
   if(!selected) throw Error('No matching successful main binary build; push this commit to main and wait for its build');
   const releases=await github.paginate(github.rest.repos.listReleases,{...repo,per_page:100});
   const release=releases.find(r=>r.tag_name===version);
-  if(release && (!release.draft||release.target_commitish!==sha)) throw Error('Release must be unpublished and target this exact commit');
-  if(!release) await github.rest.repos.createRelease({...repo,tag_name:version,target_commitish:sha,name:`Wire Board ${version}`,draft:true,generate_release_notes:true});
+  if(release && (!release.draft||(!tagSHA && release.target_commitish!==sha))) throw Error('Release must be unpublished and target this exact commit');
+  // For an existing tag, its resolved SHA is authoritative; GitHub ignores
+  // target_commitish for content selection. Supplying an old workflow-changing
+  // commit here can unnecessarily require privileges GITHUB_TOKEN cannot hold.
+  if(!release) {
+    if(!tagSHA) throw Error('Create the matching draft or version tag before manual publication');
+    await github.rest.repos.createRelease({...repo,tag_name:version,name:`Wire Board ${version}`,draft:true,generate_release_notes:true});
+  }
   return {run:String(selected.id),sha,version};
 }
 module.exports={resolveRelease};
