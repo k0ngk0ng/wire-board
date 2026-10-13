@@ -134,16 +134,19 @@ def login(name):
 
 def start(scenario, create_in_ui=False):
     if create_in_ui:
+        browser('fill', 'input[aria-label=搜索游戏]', '强手棋')
         index = js('[...document.querySelectorAll(".game-feature")].findIndex(e=>e.textContent.includes("强手棋"))+1')
         assert index > 0, 'Monopoly is absent from lobby'
         browser('click', f'.game-feature:nth-child({index}) button')
         browser('wait', '[role=dialog]')
+        wait_js('document.querySelector(".modal").getAnimations().every(a=>a.playState!=="running")')
         assert js('!!document.querySelector(".choose-games .selected .cover svg")'), 'creation must use the common illustrated game cards'
         checkpoint('unified-create-desktop')
         browser('set','viewport','390','844'); checkpoint('unified-create-mobile')
         browser('set','viewport','1440','1000')
         browser('select', 'select[aria-label=座位上限]', '3')
         browser('fill', 'input[name=name]', '强手棋浏览器验收')
+        browser('scrollintoview', '[role=dialog] button[type=submit]')
         browser('click', '[role=dialog] button[type=submit]')
         browser('wait', '.waiting-layout')
     else:

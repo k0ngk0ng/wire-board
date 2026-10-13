@@ -9,6 +9,7 @@ package server
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -33,10 +34,20 @@ func TestModuleBrowserFixture(t *testing.T) {
 		t.Fatal(err)
 	}
 	out := filepath.Join(root, ".local", "module-refactor", "browser")
+	modules := []gameapi.Module{acceptanceModule()}
+	if os.Getenv("WIRE_BOARD_CATALOG_BROWSER") == "1" {
+		out = filepath.Join(root, ".local", "game-filters", "browser")
+		for i := 1; i <= 30; i++ {
+			m := acceptanceModule()
+			m.ID = fmt.Sprintf("catalog-%02d", i)
+			m.Name = fmt.Sprintf("目录验收 %02d · 很长的中文游戏名称", i)
+			modules = append(modules, m)
+		}
+	}
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
-	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", AssetsBaseURL: os.Getenv("WIRE_BOARD_MODULE_ASSETS"), Modules: []gameapi.Module{acceptanceModule()}}, os.DirFS(filepath.Join(root, "web", "dist")))
+	s, err := New(Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", AssetsBaseURL: os.Getenv("WIRE_BOARD_MODULE_ASSETS"), Modules: modules}, os.DirFS(filepath.Join(root, "web", "dist")))
 	if err != nil {
 		t.Fatal(err)
 	}

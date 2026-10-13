@@ -1137,6 +1137,13 @@ function Lobby({
   busy: boolean;
 }) {
   const [filter, setFilter] = useState("all");
+  const [gameQuery, setGameQuery] = useState("");
+  const [gameLimit, setGameLimit] = useState(6);
+  const matchingGames = state.availableGames.filter((kind) =>
+    `${gameName(kind)} ${kind}`
+      .toLocaleLowerCase()
+      .includes(gameQuery.trim().toLocaleLowerCase()),
+  );
   useEffect(() => {
     if (filter !== "all" && !state.availableGames.includes(filter))
       setFilter("all");
@@ -1234,8 +1241,24 @@ function Lobby({
       {!state.availableGames.length && (
         <p className="admin-empty">桌游正在准备中，请稍后再来看看。</p>
       )}
+      <div className="catalogue-tools">
+        <label className="game-search">
+          搜索游戏
+          <input
+            type="search"
+            aria-label="搜索游戏"
+            placeholder="输入游戏名称"
+            value={gameQuery}
+            onChange={(event) => {
+              setGameQuery(event.target.value);
+              setGameLimit(6);
+            }}
+          />
+        </label>
+        <span role="status">{matchingGames.length} 款游戏</span>
+      </div>
       <section className="game-selection">
-        {state.availableGames.map((kind) =>
+        {matchingGames.slice(0, gameLimit).map((kind) =>
           isIndependentGame(kind) ? (
             <article className="game-feature" key={kind}>
               <ModuleCover kind={kind} />
@@ -1341,6 +1364,19 @@ function Lobby({
           ),
         )}
       </section>
+      {state.availableGames.length > 0 && !matchingGames.length && (
+        <p className="game-search-empty" role="status">
+          没有找到匹配的游戏，请换个名称搜索。
+        </p>
+      )}
+      {matchingGames.length > gameLimit && (
+        <button
+          className="outline catalogue-more"
+          onClick={() => setGameLimit((n) => n + 6)}
+        >
+          显示更多游戏
+        </button>
+      )}
       <section className="room-list">
         <div className="section-heading">
           <div>
@@ -1358,19 +1394,22 @@ function Lobby({
             创建房间
           </button>
         </div>
-        <div className="filter-tabs">
-          {[
-            ["all", "全部桌游"],
-            ...state.availableGames.map((kind) => [kind, gameName(kind)]),
-          ].map(([k, label]) => (
-            <button
-              className={filter === k ? "active" : ""}
-              key={k}
-              onClick={() => setFilter(k)}
+        <div className="room-filters">
+          <label>
+            桌游
+            <select
+              aria-label="按游戏筛选牌桌"
+              value={filter}
+              onChange={(event) => setFilter(event.target.value)}
             >
-              {label}
-            </button>
-          ))}
+              <option value="all">全部桌游</option>
+              {state.availableGames.map((kind) => (
+                <option key={kind} value={kind}>
+                  {gameName(kind)}
+                </option>
+              ))}
+            </select>
+          </label>
           <span className="live-dot">实时更新</span>
         </div>
         {rooms.length ? (

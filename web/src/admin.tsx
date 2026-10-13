@@ -103,6 +103,7 @@ export function AdminDashboard({
   const [data, setData] = useState<Overview>();
   const [tab, setTab] = useState("games");
   const [query, setQuery] = useState("");
+  const [gameQuery, setGameQuery] = useState("");
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
   const [busy, setBusy] = useState(false);
@@ -334,46 +335,72 @@ export function AdminDashboard({
                 <h2>开放给朋友的游戏</h2>
                 <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
               </div>
+              <label className="game-search admin-game-search">
+                搜索游戏
+                <input
+                  type="search"
+                  aria-label="搜索管理游戏"
+                  placeholder="输入游戏名称"
+                  value={gameQuery}
+                  onChange={(event) => setGameQuery(event.target.value)}
+                />
+              </label>
+              {!data.games.some((g) =>
+                `${g.name} ${g.kind}`
+                  .toLocaleLowerCase()
+                  .includes(gameQuery.trim().toLocaleLowerCase()),
+              ) && (
+                <p className="game-search-empty" role="status">
+                  没有找到匹配的游戏，请换个名称搜索。
+                </p>
+              )}
               <div className="admin-games">
-                {data.games.map((g, i) => (
-                  <article
-                    key={g.kind}
-                    className={`admin-game-card ${!g.enabled ? "unpublished" : ""}`}
-                  >
-                    <div className={`admin-game-number tone-${i}`}>
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                    <div>
-                      <span
-                        className={`admin-badge ${g.enabled ? "green" : "gray"}`}
-                      >
-                        {g.enabled ? "已上架" : "已下架"}
-                      </span>
-                      <h3>{g.name}</h3>
-                      <p>
-                        {g.enabled
-                          ? "大厅可见，可以创建牌桌"
-                          : "已从大厅和创建列表隐藏"}
-                      </p>
-                    </div>
-                    <button
-                      className={g.enabled ? "outline" : "primary"}
-                      onClick={() =>
-                        setDecision({
-                          title: `${g.enabled ? "下架" : "上架"} · ${g.name}`,
-                          text: g.enabled
-                            ? "等待开局的牌桌会关闭，用户不能新建、加入或再开一局。正在进行的对局及历史战绩保留。"
-                            : "用户将在大厅看到这款游戏，并可正常创建、加入和开始对局。",
-                          path: `/admin/games/${g.kind}`,
-                          body: { enabled: !g.enabled },
-                        })
-                      }
+                {data.games
+                  .map((g, i) => ({ g, i }))
+                  .filter(({ g }) =>
+                    `${g.name} ${g.kind}`
+                      .toLocaleLowerCase()
+                      .includes(gameQuery.trim().toLocaleLowerCase()),
+                  )
+                  .map(({ g, i }) => (
+                    <article
+                      key={g.kind}
+                      className={`admin-game-card ${!g.enabled ? "unpublished" : ""}`}
                     >
-                      {g.enabled ? <EyeOff size={16} /> : <Eye size={16} />}{" "}
-                      {g.enabled ? "下架" : "上架"}
-                    </button>
-                  </article>
-                ))}
+                      <div className={`admin-game-number tone-${i}`}>
+                        {String(i + 1).padStart(2, "0")}
+                      </div>
+                      <div>
+                        <span
+                          className={`admin-badge ${g.enabled ? "green" : "gray"}`}
+                        >
+                          {g.enabled ? "已上架" : "已下架"}
+                        </span>
+                        <h3>{g.name}</h3>
+                        <p>
+                          {g.enabled
+                            ? "大厅可见，可以创建牌桌"
+                            : "已从大厅和创建列表隐藏"}
+                        </p>
+                      </div>
+                      <button
+                        className={g.enabled ? "outline" : "primary"}
+                        onClick={() =>
+                          setDecision({
+                            title: `${g.enabled ? "下架" : "上架"} · ${g.name}`,
+                            text: g.enabled
+                              ? "等待开局的牌桌会关闭，用户不能新建、加入或再开一局。正在进行的对局及历史战绩保留。"
+                              : "用户将在大厅看到这款游戏，并可正常创建、加入和开始对局。",
+                            path: `/admin/games/${g.kind}`,
+                            body: { enabled: !g.enabled },
+                          })
+                        }
+                      >
+                        {g.enabled ? <EyeOff size={16} /> : <Eye size={16} />}{" "}
+                        {g.enabled ? "下架" : "上架"}
+                      </button>
+                    </article>
+                  ))}
               </div>
             </section>
           )}
