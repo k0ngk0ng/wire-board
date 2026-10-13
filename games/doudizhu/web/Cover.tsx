@@ -6,9 +6,14 @@ export function Cover() {
   const [failed, setFailed] = useState(false);
   return base && !failed ? (
     <img
-      src={`${base}/poker/v1/covers/doudizhu.webp`}
+      src={`${base}/poker/v2/covers/doudizhu.webp`}
       alt=""
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        background: "#eadbc0",
+      }}
       onError={() => setFailed(true)}
     />
   ) : (
