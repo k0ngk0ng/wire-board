@@ -3,6 +3,7 @@ import type { Room } from "./types";
 import { DotaBoard } from "./dota";
 export default defineGame({
   id: "dota",
+  category: "realtime",
   name: "兵线争锋",
   description: "分队选将，同时规划行动",
   minPlayers: 2,

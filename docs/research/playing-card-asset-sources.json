@@ -1,0 +1,324 @@
+{
+  "checkedAt": "2026-10-13",
+  "scope": "Research only; game rules and public source/assets were reviewed. Product implementation follows a separate ruleset contract.",
+  "confirmedProductDecisions": {
+    "games": [
+      "shengji",
+      "guandan",
+      "doudizhu"
+    ],
+    "shengji": {
+      "name": "升级",
+      "decks": [
+        1,
+        2
+      ],
+      "defaultDecks": 2,
+      "attackThreshold": {
+        "1": 40,
+        "2": 80
+      },
+      "region": "Shanghai"
+    },
+    "selfHandPosition": "bottom for every participating seat",
+    "defaultSkinDirection": "traditional English",
+    "guandan": {
+      "region": "Jiangsu",
+      "researchedBaseline": "Jiangsu 2017 simplified competition rules"
+    },
+    "doudizhu": {
+      "playerCounts": [
+        3,
+        4
+      ],
+      "modes": [
+        {
+          "id": "classic3",
+          "players": 3,
+          "decks": 1,
+          "handCards": 17,
+          "bottomCards": 3,
+          "landlordCards": 20,
+          "farmerCount": 2
+        },
+        {
+          "id": "shanghai4",
+          "region": "Shanghai",
+          "players": 4,
+          "decks": 2,
+          "handCards": 25,
+          "bottomCards": 8,
+          "landlordCards": 33,
+          "farmerCount": 3
+        }
+      ],
+      "fourPlayerRocket": {
+        "name": "王炸",
+        "cards": "two big jokers plus two small jokers",
+        "beatsEightCardBomb": true
+      },
+      "regionalDifferences": [
+        "single-straight legality in selected Shanghai preset",
+        "bomb scoring multipliers and spring variants"
+      ],
+      "implementedPreset": {
+        "allowSingleStraightByDefault": true,
+        "bombMultipliers": "four/five-card bombs do not double; six-plus and rocket double",
+        "spring": "landlord wins before any farmer plays; counter-spring after landlord plays once"
+      }
+    }
+  },
+  "assets": [
+    {
+      "id": "english-byron",
+      "author": "Byron Knoll; mirror / scripts by notpeter",
+      "sourcePage": "https://github.com/notpeter/Vector-Playing-Cards",
+      "downloadURL": "https://codeload.github.com/notpeter/Vector-Playing-Cards/zip/refs/heads/master",
+      "archiveSHA256": "169599b60c87d7077a05dde45d479e5044a4a39fa27dc2bab17b4d1500697639",
+      "archiveBytes": 3711582,
+      "license": "Public domain or WTFPL",
+      "licenseEvidence": "Archive: Vector-Playing-Cards-master/README.md",
+      "status": "selected-default",
+      "notes": "54 SVG faces verified. No card back. hayeah/playing-cards-assets is the same source family, not a second independent design.",
+      "localAuditManifest": ".local/poker-research/sources/byron-archive.json",
+      "bundledLicenseSHA256": {
+        "Vector-Playing-Cards-master/README.md": "b03decea0df2b2ab885bf3a0f469b6dac77d989d8aef6232f3082f632b9d5787"
+      }
+    },
+    {
+      "id": "sylly-rounded",
+      "author": "Andrew Tidey / Sylly",
+      "sourcePage": "https://opengameart.org/content/cards-set",
+      "downloadURL": "https://opengameart.org/sites/default/files/Cards%20Pack.zip",
+      "archiveSHA256": "de267af58f664cdae1e700a0c3569a7aa082cdfd80e6601f9344f07379ea7ce2",
+      "archiveBytes": 1204950,
+      "license": "CC0-1.0",
+      "licenseEvidence": "Archive: License.txt",
+      "status": "candidate-needs-svg-normalization",
+      "notes": "54 faces and six backs. Master SVG uses Inkscape flow text; direct rendering lost rank letters. Gallery uses original PNG exports.",
+      "localAuditManifest": ".local/poker-research/sources/sylly-archive.json",
+      "bundledLicenseSHA256": {
+        "License.txt": "267ee06d8f7f80f135db81640ea2ac2f343bdb02ae2e2c81fc524332ced02821"
+      }
+    },
+    {
+      "id": "jumbo-index",
+      "author": "Saul / saulspatz",
+      "sourcePage": "https://opengameart.org/content/jumbo-index-playing-cards",
+      "downloadURL": "https://opengameart.org/sites/default/files/Decks.zip",
+      "archiveSHA256": "c9280c83f0fb50025d201d7358744aa858f052a6f7a2c073b0197513320d163d",
+      "archiveBytes": 28633887,
+      "license": "CC0-1.0",
+      "licenseEvidence": "Creator publication page; snapshot oga-jumbo-index-playing-cards.html",
+      "status": "candidate-needs-svg-normalization",
+      "notes": "54 faces and backs; four layout/color variants in one package. Some original SVGs render incorrectly; gallery uses original PNG exports.",
+      "localAuditManifest": ".local/poker-research/sources/jumbo-archive.json",
+      "bundledLicenseSHA256": {}
+    },
+    {
+      "id": "classic-bellot",
+      "author": "David Bellot; maintained by htdebeer",
+      "sourcePage": "https://github.com/htdebeer/SVG-cards",
+      "downloadURL": "https://registry.npmjs.org/svg-cards/-/svg-cards-4.0.0.tgz",
+      "version": "4.0.0",
+      "gitCommit": "6006b7c0c87874e11cd10a205f5e85c4996b6577",
+      "archiveSHA256": "026c516296379606f55090e3f02d7815ec15f41d5408c4b00aaf2d8204574cd2",
+      "npmIntegrityVerified": true,
+      "license": "LGPL-2.1",
+      "licenseEvidence": "package/LICENSE and README.md",
+      "licenseSHA256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "status": "candidate-complete",
+      "notes": "52 normal cards, joker_black, joker_red and backs verified. Preserve author credit, license and corresponding editable sources with transformations."
+    },
+    {
+      "id": "nicu-white",
+      "author": "Nicu / nicubunu",
+      "sourcePage": "https://nicubunu.ro/graphics:playingcards",
+      "downloadURL": "https://nicubunu.ro/_media/graphics:playingcards:all_svg_nicu.tgz",
+      "archiveSHA256": "99ef30dffddb48cb71b291b57082ded86984d3d8107eeec05c8f46c2ebe6a066",
+      "archiveBytes": 925216,
+      "license": "Public-domain dedication / CC0; author also offers CC-BY-SA option",
+      "licenseEvidence": "Author page graphics:playingcards, explicit asset-specific licensing paragraph",
+      "status": "candidate-complete",
+      "notes": "54 faces and backs, four face variants. The website footer alone is not the asset license. Archive paths contain ../; audit used in-memory member reads and never extracted paths outside the workspace.",
+      "localAuditManifest": ".local/poker-research/sources/nicu-archive.json",
+      "bundledLicenseSHA256": {}
+    },
+    {
+      "id": "generic-chess",
+      "author": "SirDraco65",
+      "sourcePage": "https://opengameart.org/content/generic-playing-cards",
+      "downloadURL": "https://opengameart.org/sites/default/files/playingcards.zip",
+      "archiveSHA256": "1a44ab12722e4004fa27c1e8088e3ebc0f78c34d35a83eb65d185de13b2eb900",
+      "archiveBytes": 37283420,
+      "license": "CC0-1.0",
+      "licenseEvidence": "Creator publication page; snapshot oga-generic-playing-cards.html",
+      "status": "candidate-incomplete",
+      "notes": "52 PNG faces at 750x1050. No jokers or backs. Court art uses chess pieces.",
+      "localAuditManifest": ".local/poker-research/sources/generic-archive.json",
+      "bundledLicenseSHA256": {}
+    },
+    {
+      "id": "ironstar-modern",
+      "author": "Iron Star Media; OGA upload by ryan.dansie",
+      "sourcePage": "https://opengameart.org/content/playing-cards-0",
+      "downloadURL": "https://opengameart.org/sites/default/files/Free-Game-Assets-08-Playing-Cards.zip",
+      "archiveSHA256": "c4a4dc851298cb200b493bc78401aed34c02189b3bc2e6c74507f142fb733488",
+      "archiveBytes": 13453474,
+      "license": "CC-BY-3.0; preserve original author usage notice",
+      "licenseEvidence": "Publication page license and Attribution Instructions",
+      "status": "candidate-incomplete",
+      "notes": "52-card variants and six backs. No jokers. Credit required; original notice also says not to resell as an asset collection.",
+      "localAuditManifest": ".local/poker-research/sources/ironstar-archive.json",
+      "bundledLicenseSHA256": {}
+    },
+    {
+      "id": "kenney-pixel",
+      "author": "Kenney",
+      "sourcePage": "https://kenney.nl/assets/playing-cards-pack",
+      "downloadURL": "https://kenney.nl/media/pages/assets/playing-cards-pack/4b345a2a5a-1677495915/kenney_playing-cards-pack.zip",
+      "archiveSHA256": "b93b0313818e9c8f6acc24b008efdec1d8a6360b13afe953beed23881588be3c",
+      "archiveBytes": 191985,
+      "license": "CC0-1.0",
+      "licenseEvidence": "Archive: License.txt",
+      "status": "optional-pixel-theme",
+      "notes": "Includes normal faces, both jokers and backs. Large PNG tiles are 64x64, unsuitable as a conventional high-resolution default.",
+      "localAuditManifest": ".local/poker-research/sources/kenney-cards-archive.json",
+      "bundledLicenseSHA256": {
+        "License.txt": "008f732afaa1ebc0fc8227541899fec1f50011798431a48c2eb7afd5342521ef"
+      }
+    },
+    {
+      "id": "greywyvern-animals",
+      "author": "Brian Huisman / GreyWyvern; SVG/PySol preparation by AntumDeluge",
+      "sourcePage": "https://opengameart.org/content/greywyvern-playing-card-set",
+      "downloadURL": "https://opengameart.org/sites/default/files/greywyvern-cardset-svg.zip",
+      "archiveSHA256": "ccd24c424160687ef739eb60c578287f6ff4d0e9ab4518e280f28ce268eb9dab",
+      "archiveBytes": 1413187,
+      "license": "Public domain / CC0; optional BSD-3-Clause",
+      "licenseEvidence": "Archive: greywyvern-cardset-svg/licence.txt plus publication page",
+      "status": "optional-animal-theme",
+      "notes": "54 faces and many backs; animal artwork replaces courts. Some imagery retains bitmap-like texture.",
+      "localAuditManifest": ".local/poker-research/sources/greywyvern-archive.json",
+      "bundledLicenseSHA256": {}
+    },
+    {
+      "id": "paper-audio",
+      "author": "Kenney",
+      "sourcePage": "https://kenney.nl/assets/casino-audio",
+      "downloadURL": "https://kenney.nl/media/pages/assets/casino-audio/2472606a04-1721639069/kenney_casino-audio.zip",
+      "archiveSHA256": "f36250766ac5bc378c13708ddf12a23a8e54a3251f8d482c7536e51b5dbafa18",
+      "archiveBytes": 876839,
+      "license": "CC0-1.0",
+      "licenseEvidence": "Archive: License.txt",
+      "status": "verified-audio-source",
+      "notes": "Verified card-shuffle, card-slide-1, card-place-1 and card-fan-1 OGG clips. Source package version 1.1.",
+      "localAuditManifest": ".local/poker-research/sources/kenney-casino-audio-archive.json",
+      "bundledLicenseSHA256": {
+        "License.txt": "3d9c53acb6e236d760da14030f54bc53e1d8c2599f78470c36b96fddcde09221"
+      }
+    },
+    {
+      "id": "interface-audio",
+      "author": "Kenney",
+      "sourcePage": "https://kenney.nl/assets/interface-sounds",
+      "downloadURL": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+      "archiveSHA256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232",
+      "archiveBytes": 834536,
+      "license": "CC0-1.0",
+      "licenseEvidence": "Archive: License.txt",
+      "status": "verified-audio-source",
+      "notes": "Verified click_001 OGG and other interface clips. Source package version 1.0. Neither package supplies a licensed Chinese spoken-call set.",
+      "localAuditManifest": ".local/poker-research/sources/kenney-interface-sounds-archive.json",
+      "bundledLicenseSHA256": {
+        "License.txt": "f7966c773bbed0eca6a9c75081c44a178b38eae112724dbb5fdfbd4192d118a9"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "url": "https://www.pagat.com/kt5/tractor.html",
+      "sha256": "6606796264c60a219a93170b7d2ed149ad86781dd12c8024887df4d5cf044422",
+      "localFile": ".local/poker-research/sources/tractor.html",
+      "notes": "Tractor; multiple local variants, not a universal mandatory standard."
+    },
+    {
+      "id": "R2",
+      "url": "https://www.pagat.com/kt5/100.html",
+      "sha256": "12f481cf736c10691a977463802a912c6acd3a5240f549b82eec6faad4a42462",
+      "localFile": ".local/poker-research/sources/shengji-single.html",
+      "notes": "Single-deck 40 points; primary scoring and alternate 20-point steps."
+    },
+    {
+      "id": "R3",
+      "url": "https://web.archive.org/web/20181105052446id_/http://www.jssports.gov.cn/module/download/downfile.jsp?classid=0&filename=1704061633399213374.doc",
+      "sha256": "e4badcaa8b7ad111a69db378dcc4e24beb4e1eba9ef0beef2892a0d667463aeb",
+      "localFile": ".local/poker-research/sources/jiangsu-rules-archive.data",
+      "notes": "Original archived Jiangsu 2017 Word; title and rule text checked. Original domain did not resolve in this research."
+    },
+    {
+      "id": "R4",
+      "url": "https://www.pagat.com/climbing/guan_dan.html",
+      "sha256": "d575312928d4c64a6675a7b7e60850d7e6876b12b0e3f841f8d36a3ea40f15e1",
+      "localFile": ".local/poker-research/sources/guan-dan.html",
+      "notes": "Variant comparison; differs from Jiangsu 2017 on 1-2 promotion and tribute restrictions."
+    },
+    {
+      "id": "R5",
+      "url": "https://www.pagat.com/climbing/doudizhu.html",
+      "sha256": "221aa6a3f2e387e6d4f25a3df051d35d04f4f0c1cfe08525ab4168ebaf0d2950",
+      "localFile": ".local/poker-research/sources/doudizhu.html",
+      "notes": "Three-player baseline and four-player variation."
+    },
+    {
+      "id": "R6",
+      "url": "https://www.pagat.com/docs/landlord412005.doc",
+      "sha256": "f08ed2e6b5c5fd562f555a4254844ad0d9e9ced0027afc0768963bc906a68559",
+      "localFile": ".local/poker-research/sources/doudizhu-tournament.doc",
+      "notes": "Mirror of Word document internally titled National Sports Administration chess/card center, February 2016; not represented as a download from the current official site."
+    },
+    {
+      "id": "R7",
+      "url": "https://web.archive.org/web/20200716100309id_/http://www.twinight.org/people/dpaxson/forty_points.htm",
+      "sha256": "fd43519ee13c56b56adbaae9046fb8aad62e1061c14a7b223227dfbee5e68b03",
+      "localFile": ".local/poker-research/sources/shanghai-forty.html",
+      "notes": "Historical Shanghai single-deck rules linked explicitly as Shanghai by Pagat; not a universal current official standard."
+    },
+    {
+      "id": "R8",
+      "url": "https://www.5158wan.com/games/doudizhu4.html",
+      "sha256": "bdf35ef3e0c9861a91f3bdaab143dc61159e7479a12e57282c0745a03d1d38b5",
+      "localFile": ".local/poker-research/sources/gametea-four.html",
+      "notes": "Publisher rules; eight-card bomb can beat four jokers here, unlike Pagat. Not labelled as a universal Shanghai standard."
+    },
+    {
+      "id": "R9",
+      "url": "https://www.5158wan.com/games/shengji.html",
+      "sha256": "96fd3011d2a900911c9bc1b0cd6642fa929c76f92d3c74ac4e16698620caa4c0",
+      "localFile": ".local/poker-research/sources/gametea-upgrade.html",
+      "notes": "Publisher upgrade rules; card counts and double-deck scoring cross-check. Bottom multiplier formula typography is ambiguous."
+    }
+  ],
+  "notSelected": [
+    {
+      "url": "https://tekeye.uk/playing_cards/svg-playing-cards",
+      "reason": "Page contains an authorship/licensing dispute in comments. Not used as a default asset source."
+    },
+    {
+      "url": "https://github.com/hanhaechi/playing-cards",
+      "reason": "Asset-specific redistribution license not adequately verified; references an upstream Sketch resource."
+    },
+    {
+      "url": "https://github.com/richardschneider/cardsJS",
+      "reason": "Code licensing must not be confused with embedded Chris Aguilar artwork, whose cards/readme.txt specifies LGPL-3.0-or-later."
+    }
+  ],
+  "gallery": {
+    "interactive": ".local/poker-research/deck-gallery/index.html",
+    "overview": ".local/poker-research/deck-gallery/overview.png",
+    "packs": 9,
+    "themes": 10
+  },
+  "implementation": "docs/poker-implementation.md"
+}

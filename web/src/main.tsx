@@ -1,3 +1,4 @@
+import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import {
   ArrowLeft,
   ArrowRight,
@@ -1138,7 +1139,11 @@ function Lobby({
   const [filter, setFilter] = useState("all");
   const [gameQuery, setGameQuery] = useState("");
   const [gameLimit, setGameLimit] = useState(6);
-  const matchingGames = state.availableGames.filter((kind) =>
+  const [category, setCategory] = useState("all");
+  const categoryGames = state.availableGames.filter((kind) =>
+    matchesCategory(kind, category),
+  );
+  const matchingGames = categoryGames.filter((kind) =>
     `${gameName(kind)} ${kind}`
       .toLocaleLowerCase()
       .includes(gameQuery.trim().toLocaleLowerCase()),
@@ -1151,7 +1156,8 @@ function Lobby({
     .filter(
       (r) =>
         (r.status === "waiting" || r.status === "playing") &&
-        (filter === "all" || r.kind === filter),
+        (filter === "all" || r.kind === filter) &&
+        matchesCategory(r.kind, category),
     )
     .sort((a, b) => b.updated - a.updated);
   const invited = new URLSearchParams(location.search).get("room");
@@ -1241,6 +1247,14 @@ function Lobby({
         <p className="admin-empty">游戏正在准备中，请稍后再来看看。</p>
       )}
       <div className="catalogue-tools">
+        <CategoryFilter
+          value={category}
+          onChange={(v) => {
+            setCategory(v);
+            setGameLimit(6);
+            if (!matchesCategory(filter, v)) setFilter("all");
+          }}
+        />
         <label className="game-search">
           搜索游戏
           <input
@@ -1308,8 +1322,8 @@ function Lobby({
           </div>
           <button
             className="outline"
-            disabled={!state.availableGames.length}
-            onClick={() => onCreate(state.availableGames[0])}
+            disabled={!categoryGames.length}
+            onClick={() => onCreate(categoryGames[0])}
           >
             <Plus size={17} />
             创建房间
@@ -1324,7 +1338,7 @@ function Lobby({
               onChange={(event) => setFilter(event.target.value)}
             >
               <option value="all">全部游戏</option>
-              {state.availableGames.map((kind) => (
+              {categoryGames.map((kind) => (
                 <option key={kind} value={kind}>
                   {gameName(kind)}
                 </option>
@@ -1433,9 +1447,9 @@ function Lobby({
             <p>创建一个房间，邀请朋友一起入座。</p>
             <button
               className="subtle"
-              disabled={!state.availableGames.length}
+              disabled={!categoryGames.length}
               onClick={() =>
-                onCreate(filter === "all" ? state.availableGames[0] : filter)
+                onCreate(filter === "all" ? categoryGames[0] : filter)
               }
             >
               摆好第一张牌桌
