@@ -17,17 +17,22 @@ export default defineGame<View, Options>({
   defaultOptions: { auctionSeconds: 20, turnSeconds: 120, tradeSeconds: 90 },
   Board,
   Cover,
-  PlayerSummary: ({ data, seat, assets }) => (
+  PlayerSummary: ({ room, data, seat, assets }) => (
     <div className="mono-seat-summary">
-      <Art
-        base={assets}
-        name={`token-${seat + 1}`}
-        fallback={<span>{seat + 1}</span>}
-      />
-      <strong data-mono-cash={seat}>M {data.players[seat].cash}</strong>
-      <small>
-        {data.properties.filter((p) => p.owner === seat).length} 处地产
+      <small className="mono-cash-label">
+        {!room.spectating && room.you === seat ? "你的现金" : "现金"}
       </small>
+      <strong data-mono-cash={seat}>M {data.players[seat].cash}</strong>
+      <span className="mono-seat-holdings">
+        <Art
+          base={assets}
+          name={`token-${seat + 1}`}
+          fallback={<span>{seat + 1}</span>}
+        />
+        <small>
+          {data.properties.filter((p) => p.owner === seat).length} 处地产
+        </small>
+      </span>
       <span className="sr-only">
         当前位置：{data.board[data.players[seat].position].name}
       </span>
