@@ -173,6 +173,7 @@ export type RoomBase = {
   options?: unknown;
   result?: {
     rated: boolean;
+    cooperative?: boolean;
     players: (User & { ratingDelta?: number; rank?: number; bot?: boolean })[];
   };
   spectating?: boolean;

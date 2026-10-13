@@ -20,6 +20,7 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	Cooperative         bool                 `json:"cooperative,omitempty"`
 	Details             json.RawMessage      `json:"details,omitempty"`
 	Options             json.RawMessage      `json:"options,omitempty"`
 	SplendorCatalog     string               `json:"splendorCatalog,omitempty"`
@@ -428,6 +429,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 		record.Options = r.Options
 		if r.Module.Result != nil {
 			record.Details = r.Module.Result.Details
+			record.Cooperative = r.Module.Result.Cooperative
 		}
 	}
 	for i, seat := range r.Seats {

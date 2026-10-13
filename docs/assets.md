@@ -66,3 +66,5 @@ python3 scripts/upload_assets.py .local/asset-pack \
 平台通用提示音使用 `platform/audio/v1/{preview,take,buy,reserve,turn,finish,move}.wav`，由原有提示音旋律转换为 44.1 kHz、16 位单声道 PCM，统一通过原生媒体播放器输出。七个文件已上传 OSS，来源、时长和摘要见 [平台音效清单](platform-audio.json)。未配置素材地址或通用音频加载失败时，使用同一旋律生成的内存 WAV 作为备用，播放通道仍为媒体播放器。
 
 复现：`node --experimental-strip-types scripts/prepare_platform_audio.mjs .local/platform-audio/v1`。上传继续使用 `scripts/upload_assets.py --include-audio`，不修改共享素材基地址。静音和试听由平台统一控制，游戏只传入音效地址及事件映射。
+
+星垒采用原创 SVG 卡通插画源文件与合成音效，成品位于 `starfort/v1/`，共 45 个 WebP（含地图和图集）及 12 个 WAV。制作、透明通道／解码验证和复现命令见 [星垒素材说明](../games/starfort/assets/README.md)，逐文件 CDN 回读记录见 [发布清单](../games/starfort/assets/published.json)。图集索引随前端构建，不上传为媒体文件；未配置 CDN 或加载失败时使用同版本随包素材。

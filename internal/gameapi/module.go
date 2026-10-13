@@ -39,12 +39,15 @@ type Match struct {
 
 // Ranks use competition ranking (1,1,3); Winners can be a whole team.
 // Team selects the platform's existing team rating policy (+20 / -10).
+// Cooperative games share one outcome: all seats win, or nobody wins. They
+// never award competitive ratings and all seats retain rank 1.
 type Result struct {
-	Ranks   []int           `json:"ranks"`
-	Winners []int           `json:"winners"`
-	Scores  []int           `json:"scores,omitempty"`
-	Team    bool            `json:"team,omitempty"`
-	Details json.RawMessage `json:"details,omitempty"`
+	Ranks       []int           `json:"ranks"`
+	Winners     []int           `json:"winners"`
+	Scores      []int           `json:"scores,omitempty"`
+	Team        bool            `json:"team,omitempty"`
+	Cooperative bool            `json:"cooperative,omitempty"`
+	Details     json.RawMessage `json:"details,omitempty"`
 }
 
 // Module callbacks must not perform I/O or mutate their inputs. The host owns
@@ -59,7 +62,9 @@ type Module struct {
 	Start      func(Context, json.RawMessage) (Match, error)                        `json:"-"`
 	Apply      func(Context, Match, json.RawMessage) (Match, error)                 `json:"-"`
 	View       func(Match, int) (any, error)                                        `json:"-"`
-	BotAction  func(Context, Match) (json.RawMessage, error)                        `json:"-"`
+	// BotAction may return nil, nil when no decision is available. The host
+	// tries the remaining controlled actors without persisting an idle action.
+	BotAction func(Context, Match) (json.RawMessage, error) `json:"-"`
 	// Reclaim restores an expired decision window without extending unrelated
 	// players' windows. Omit BotAction/Reclaim together to disable autoplay.
 	Reclaim func(Context, Match) (Match, error) `json:"-"`
@@ -116,11 +121,14 @@ func (m Match) Validate(players int) error {
 		return nil
 	}
 	r := m.Result
-	if len(r.Ranks) != players || len(r.Winners) == 0 || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 || m.Deadline != 0 || m.SystemDeadline != 0 || (len(r.Scores) != 0 && len(r.Scores) != players) {
+	if len(r.Ranks) != players || (!r.Cooperative && len(r.Winners) == 0) || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 || m.Deadline != 0 || m.SystemDeadline != 0 || (len(r.Scores) != 0 && len(r.Scores) != players) {
 		return errors.New("invalid game result")
 	}
+	if r.Cooperative && (r.Team || (len(r.Winners) != 0 && len(r.Winners) != players)) {
+		return errors.New("invalid cooperative outcome")
+	}
 	for _, rank := range r.Ranks {
-		if rank < 1 || rank > players {
+		if rank < 1 || rank > players || (r.Cooperative && rank != 1) {
 			return errors.New("invalid game rank")
 		}
 	}
