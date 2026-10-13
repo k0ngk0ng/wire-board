@@ -1286,22 +1286,32 @@
 }
 .mono-seat-summary {
   display: grid;
-  grid-template-columns: 28px auto;
-  column-gap: 5px;
-  align-items: center;
+  gap: 2px;
+  color: #203d32;
   font-variant-numeric: tabular-nums;
 }
 .mono-seat-summary img {
-  width: 27px;
-  height: 27px;
-  grid-row: 1/3;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 .mono-seat-summary strong {
-  font-size: 17px;
+  font-size: 22px;
+  line-height: 1.2;
+  color: #203d32;
 }
 .mono-seat-summary small {
   font-size: 10px;
   color: #52684f;
+}
+.mono-seat-summary .mono-cash-label {
+  font-size: 11px;
+  font-weight: 600;
+}
+.mono-seat-holdings {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .mono-dice.rolling .mono-die {
   animation: mono-roll 180ms ease-in-out infinite alternate;

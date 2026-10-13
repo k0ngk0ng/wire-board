@@ -7,6 +7,8 @@ prompts; stale private proposals; mismatched building/mortgage buttons; debt not
 settled through asset controls; bankrupt player cannot leave; spectator acts. Media failures: missing CDN images,
 wrong audio MIME, muted/reloaded events replay, autoplay refusal or failed audio
 blocks game actions, failed audio never recovers, global sound plays twice.
+Cash failures: later seats clipped offscreen; own seat not distinguished;
+zero cash hidden; low-contrast or stale balances after purchase/trade/debt.
 All fixture state is declared in browser_fixture_test.go, not production code.
 """
 import http.cookiejar
@@ -124,6 +126,33 @@ def wait_js(expression):
 def wait_cash(amount, player=0):
     selector = json.dumps(f'[data-mono-cash="{player}"]')
     wait_js(f'document.querySelector({selector})?.textContent.includes("{amount}")')
+
+
+
+def check_cash_visibility(name):
+    current = room()
+    expected = [f'M {p["cash"]}' for p in current['game']['data']['players']]
+    wait_js('JSON.stringify([...document.querySelectorAll("[data-mono-cash]")].map(e=>e.textContent.trim()))===' + json.dumps(json.dumps(expected, separators=(',', ':'))))
+    browser('scrollintoview', '.module-players')
+    evidence = js(r"""(() => {
+      const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number);
+      const lum=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
+      return [...document.querySelectorAll('[data-mono-cash]')].map(e=>{
+        const rect=e.getBoundingClientRect(),card=e.closest('.player-panel'),s=getComputedStyle(e);
+        const fg=lum(rgb(s.color)),bg=lum(rgb(getComputedStyle(card).backgroundColor));
+        const visible=rect.width>0&&rect.left>=0&&rect.right<=innerWidth&&rect.top>=0&&rect.bottom<=innerHeight&&e.contains(document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2));
+        return {seat:Number(e.dataset.monoCash),text:e.textContent,visible,fontSize:parseFloat(s.fontSize),contrast:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05),label:card.textContent};
+      });
+    })()""")
+    (out / (name + '-cash.json')).write_text(json.dumps(evidence, ensure_ascii=False, indent=2))
+    assert len(evidence) == len(expected) and all(e['visible'] for e in evidence), evidence
+    assert all(e['fontSize'] >= 20 and e['contrast'] >= 4.5 and '现金' in e['label'] for e in evidence), evidence
+    you = current['you']
+    if not current.get('spectating') and you >= 0:
+        assert '你的现金' in evidence[you]['label'], evidence
+    else:
+        assert all('你的现金' not in e['label'] for e in evidence), evidence
+    checkpoint(name)
 
 
 def login(name):
@@ -264,13 +293,18 @@ try:
         report['mediaBase'] = env['WIRE_BOARD_MONOPOLY_ASSETS']
         checkpoint('cdn-images-audio-mute-reload')
     assert js('document.querySelector("[data-mono-motion]").getAttribute("data-mono-motion")==="idle"'), 'reload replayed motion'
+    check_cash_visibility('cash-desktop-after-purchase')
     checkpoint('natural-desktop-reloaded')
     for width in [390, 320]:
         browser('set', 'viewport', str(width), '844' if width == 390 else '740')
         assert js('[...document.querySelectorAll(".module-players .player-info")].every(e=>e.getBoundingClientRect().width>=85)'), 'player names squeezed into vertical text'
         assert js('[...document.querySelectorAll(".mono-pawn")].every(e=>e.getBoundingClientRect().width>=24)'), 'mobile pieces too small'
+        check_cash_visibility('cash-mobile-' + str(width))
         checkpoint('natural-mobile-' + str(width))
     assert js('[...document.querySelectorAll("[data-mono-square]")].every(e=>{const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return y<0||y>innerHeight||e.contains(document.elementFromPoint(x,y))})'), 'floating UI blocks visible board squares'
+    login(peers[1].name); browser('wait', '[data-monopoly-board]')
+    check_cash_visibility('cash-third-seat-mobile')
+    login(main_name); browser('wait', '[data-monopoly-board]')
     click('放大棋盘')
     assert js('document.querySelector(".mono-board-scroll").scrollWidth>document.querySelector(".mono-board-scroll").clientWidth'), 'zoom did not enlarge the board'
     checkpoint('natural-mobile-zoom')
@@ -283,6 +317,7 @@ try:
     assert js('document.querySelectorAll(".mono-pawn").length===6')
     assert js('[...document.querySelectorAll(".mono-pawn")].every(e=>{const r=e.getBoundingClientRect(),b=document.querySelector(".mono-map").getBoundingClientRect();return r.width>=24&&r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom})'), 'crowded pieces escaped the board'
     assert js('document.querySelectorAll(".mono-pawn-number").length===6 && [...document.querySelectorAll(".mono-pawn-number")].every((a,i,all)=>{const r=a.getBoundingClientRect();return all.every((b,j)=>{const q=b.getBoundingClientRect();return i===j||r.right<=q.left||q.right<=r.left||r.bottom<=q.top||q.bottom<=r.top})})'), 'same-square seat numbers overlap'
+    check_cash_visibility('cash-six-players-mobile')
     checkpoint('six-pieces-visible-mobile')
     finish()
     browser('set','media','light','reduced-motion')
@@ -335,10 +370,12 @@ try:
     click('接受交易')
     wait_cash(1857)
     assert room()['game']['data']['properties'][37]['owner'] == 0
+    check_cash_visibility('cash-after-trade')
     checkpoint('management-and-trade-desktop')
     spectator.api('/rooms/' + room()['id'] + '/watch', {})
     login(spectator.name); browser('wait', '[data-monopoly-board]')
     assert js('[...document.querySelectorAll(".mono-game-action")].every(b=>b.disabled)'), 'spectator can act'
+    check_cash_visibility('cash-spectator')
     checkpoint('spectator-readonly')
     login(main_name); browser('wait', '[data-monopoly-board]')
     spectator.api('/rooms/' + room()['id'] + '/watch', {'leave': True})
@@ -355,6 +392,7 @@ try:
     checkpoint('auction-mobile')
     login(peers[1].name); browser('wait', '[data-mono-auction]')
     assert not js('!!document.querySelector("input[aria-label=出价金额]")'), 'unfunded player prompted to bid'
+    check_cash_visibility('cash-zero-third-seat')
     checkpoint('auction-no-unnecessary-prompt')
     login(main_name); browser('wait', '[data-mono-auction]')
     click('退出本场竞价')
@@ -374,6 +412,7 @@ try:
     browser('click', '[data-mono-tab="action"]')
     wait_js('!document.querySelector("[data-mono-debt]")')
     assert room()['game']['data']['players'][0]['cash'] == 35
+    check_cash_visibility('cash-after-debt')
     checkpoint('debt-funded-mobile')
     finish()
 
@@ -383,6 +422,7 @@ try:
     click('确认破产')
     wait_js('document.body.textContent.includes("你已出局")')
     assert not js('[...document.querySelectorAll("button")].some(b=>b.textContent.includes("开启托管"))')
+    check_cash_visibility('cash-bankrupt')
     checkpoint('bankrupt-can-leave')
     click('离开房间')
     browser('wait', '.game-selection')
