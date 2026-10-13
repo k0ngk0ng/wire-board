@@ -202,6 +202,7 @@ try:
     else: raise RuntimeError('fixture server did not start')
     base = (out / 'url').read_text()
     browser('open', base); browser_open = True
+    browser('tab', next(t['tabId'] for t in browser('tab')['tabs'] if t['active']))
     main_name = '强手棋体验'
     api('/register', dict(name=main_name, password='monopoly-browser-test', invite='monopoly-browser'))
     peers = [Peer(base, '同桌甲'), Peer(base, '同桌乙')]
@@ -232,7 +233,7 @@ try:
     if media:
         wait_js('[...document.querySelectorAll("[data-monopoly-board] img")].length>=10&&[...document.querySelectorAll("[data-monopoly-board] img")].every(i=>i.complete&&i.naturalWidth>0)')
         js('window.__media=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const src=this.src;return play.call(this).then(()=>window.__media.push(src))}')
-        assert js('document.querySelector("audio[data-mono-sound]")?.paused === true'), 'initial snapshot replayed sound'
+        assert js('document.querySelector("audio[data-platform-audio]")?.paused === true'), 'initial snapshot replayed sound'
     assert js('getComputedStyle(document.querySelector(".game-sidebar")).display!=="none" && !!document.querySelector(".game-sidebar .turn-card") && document.querySelectorAll(".players-strip .player-panel").length===3'), 'common player/turn layout missing'
     js('window.__motionSeen=[];window.__motionWatch=new MutationObserver(()=>{const p=document.querySelector("[data-mono-motion]")?.getAttribute("data-mono-motion");if(p&&p!=="idle"&&!window.__motionSeen.includes(p))window.__motionSeen.push(p)});window.__motionWatch.observe(document.querySelector("[data-monopoly-board]"),{subtree:true,attributes:true})')
     click('掷骰')
@@ -243,20 +244,20 @@ try:
     if media:
         wait_js('window.__media.some(s=>s.endsWith("/rolling.mp3"))')
         assert room()['game']['data']['rollSerial'] == 1
-        click('关闭音效')
-        wait_js('document.querySelector("audio[data-mono-sound]").paused')
+        click('静音')
+        wait_js('document.querySelector("audio[data-platform-audio]").paused')
         sounds_before = js('window.__media.length')
     click('购买 · 100')
     wait_cash(1400)
     if media:
         assert js('window.__media.length') == sounds_before, 'muted purchase played sound'
-        click('开启音效')
+        click('取消静音')
         assert js('window.__media.length') == sounds_before, 'unmute replayed stale sound'
     before = room()['game']['data']
     browser('reload'); browser('wait', '[data-monopoly-board]')
     assert room()['game']['data'] == before
     if media:
-        assert js('document.querySelector("audio[data-mono-sound]").paused && document.querySelector("audio[data-mono-sound]").currentTime === 0'), 'reload replayed old events'
+        assert js('document.querySelector("audio[data-platform-audio]").paused && document.querySelector("audio[data-platform-audio]").currentTime === 0'), 'reload replayed old events'
         report['mediaBase'] = env['WIRE_BOARD_MONOPOLY_ASSETS']
         checkpoint('cdn-images-audio-mute-reload')
     assert js('document.querySelector("[data-mono-motion]").getAttribute("data-mono-motion")==="idle"'), 'reload replayed motion'
@@ -302,11 +303,13 @@ try:
     wait_cash(1475)
     click('关闭')
     click_square(5)
-    if media: browser('network', 'route', '**/monopoly/v1/audio/moneyplus.mp3', '--abort')
+    if media:
+        js('window.__audioErrors=[];document.querySelector("audio[data-platform-audio]").addEventListener("error",e=>window.__audioErrors.push({src:e.target.src,code:e.target.error?.code}))')
+        browser('network', 'route', '**/monopoly/v1/audio/moneyplus.mp3', '--abort')
     click('抵押 · 收入 100')
     wait_cash(1575)
     if media:
-        wait_js('document.querySelector("audio[data-mono-sound]").error !== null')
+        wait_js('window.__audioErrors.some(e=>e.src.endsWith("/moneyplus.mp3"))')
         browser('network', 'unroute', '**/monopoly/v1/audio/moneyplus.mp3')
         js('window.__media=[]')
         checkpoint('audio-failure-does-not-block-mortgage')

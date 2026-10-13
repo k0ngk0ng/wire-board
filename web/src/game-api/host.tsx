@@ -3,6 +3,7 @@ import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext, Modal } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
+import type { GameAudioPort } from "./module";
 import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
 
@@ -13,6 +14,7 @@ export function GameBoard({
   busy,
   assets,
   sound,
+  audio,
   clock,
 }: {
   room: Room;
@@ -21,6 +23,7 @@ export function GameBoard({
   busy: boolean;
   assets: string;
   sound: boolean;
+  audio: GameAudioPort;
   clock: { serverNow: number; receivedAt: number };
 }) {
   const module = gameModule(room.kind);
@@ -35,6 +38,7 @@ export function GameBoard({
       busy={busy}
       assets={assets}
       sound={sound}
+      audio={audio}
       clock={clock}
     />
   );

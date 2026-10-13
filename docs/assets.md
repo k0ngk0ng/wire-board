@@ -62,3 +62,7 @@ python3 scripts/upload_assets.py .local/asset-pack \
 强手棋素材使用 `monopoly/v1/images/` 和 `monopoly/v1/audio/`，共 20 张 WebP、11 个 MP3，沿用当前 `ASSETS_BASE_URL`。官方说明书图标、经典棋子插画、音频来源与成品摘要见 [强手棋素材清单](../games/monopoly/assets/sources.json)。卡牌使用类别图标和单独显示的中文文本。
 
 `scripts/upload_assets.py` 默认仍只上传 WebP；加入 `--include-audio` 后支持 MP3、Ogg 和 WAV。工具在上传前检查整个目录的文件签名并拒绝符号链接，不上传 JSON 或其他非媒体文件。实际媒体应另用图片／音频解码器检查。强手棋的制作、CDN 回读和复现命令见 [模块说明](../games/monopoly/README.md)。修改素材须提升版本，不覆盖已设置不可变缓存的对象。
+
+平台通用提示音使用 `platform/audio/v1/{preview,take,buy,reserve,turn,finish,move}.wav`，由原有提示音旋律转换为 44.1 kHz、16 位单声道 PCM，统一通过原生媒体播放器输出。七个文件已上传 OSS，来源、时长和摘要见 [平台音效清单](platform-audio.json)。未配置素材地址或通用音频加载失败时，使用同一旋律生成的内存 WAV 作为备用，播放通道仍为媒体播放器。
+
+复现：`node --experimental-strip-types scripts/prepare_platform_audio.mjs .local/platform-audio/v1`。上传继续使用 `scripts/upload_assets.py --include-audio`，不修改共享素材基地址。静音和试听由平台统一控制，游戏只传入音效地址及事件映射。

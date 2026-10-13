@@ -53,6 +53,7 @@ export function Board({
   act,
   assets,
   sound,
+  audio,
   clock,
 }: BoardProps<View>) {
   const motion = useMotion(room.id, data, clock.receivedAt);
@@ -112,7 +113,13 @@ export function Board({
       data-monopoly-board
       data-mono-motion={motion.stage}
     >
-      <Sound room={room} data={data} enabled={sound} assets={assets} />
+      <Sound
+        room={room}
+        data={data}
+        enabled={sound}
+        assets={assets}
+        audio={audio}
+      />
       <div className="mono-workspace">
         <div className="mono-board-region">
           <div className="mono-map-tools">

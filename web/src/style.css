@@ -5364,3 +5364,57 @@ label small {
     bottom: 78px;
   }
 }
+
+/* One visible platform control for every game's native-media audio. */
+.sound-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 8px;
+  border: 1px solid #c9d3c8;
+  border-radius: 6px;
+  color: #174e43;
+  background: #f7faf3;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.sound-toggle[aria-pressed="true"] {
+  background: #e5ebdf;
+  color: #40563d;
+}
+.sound-preview:disabled {
+  opacity: 1;
+  color: #576653;
+  cursor: not-allowed;
+}
+@media (max-width: 850px) {
+  .topbar {
+    height: auto;
+    min-height: 58px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    gap: 10px;
+  }
+  .header-right {
+    min-width: 0;
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    row-gap: 4px;
+  }
+  .sound-toggle,
+  .sound-preview {
+    font-size: 11px;
+    padding: 5px 4px;
+  }
+  .sound-toggle svg {
+    width: 16px;
+    height: 16px;
+  }
+}

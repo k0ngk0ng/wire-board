@@ -24,7 +24,7 @@ import {
   WifiOff,
   X,
 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   caravanPlacementStep,
@@ -132,7 +132,43 @@ function App() {
   const seq = useRef(0);
   const previousTurn = useRef("");
   const previousRoom = useRef<Room | undefined>(undefined);
-  const audio = useRef<GameAudio>(new GameAudio());
+  const [audio] = useState(() => new GameAudio());
+  const previewRequest = useRef(0);
+  const gameAudio = useMemo(
+    () => audio.channel(`room:${state?.room?.id || "lobby"}`),
+    [audio, state?.room?.id],
+  );
+  useEffect(() => {
+    audio.setEnabled(sound);
+    audio.mount();
+    const visibility = () => {
+      if (document.hidden) audio.stop();
+    };
+    const storage = (event: StorageEvent) => {
+      if (event.key !== "wb_sound" && event.key !== null) return;
+      const enabled = event.key === null || event.newValue !== "off";
+      previewRequest.current++;
+      audio.setEnabled(enabled);
+      setSound(enabled);
+    };
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("storage", storage);
+    return () => {
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("storage", storage);
+      audio.dispose();
+    };
+  }, [audio]);
+  useEffect(() => {
+    audio.setEnabled(sound);
+  }, [audio, sound]);
+  useEffect(() => {
+    audio.setAssetsBase(state?.assetsBaseURL || "");
+  }, [audio, state?.assetsBaseURL]);
+  useEffect(() => {
+    previewRequest.current++;
+    audio.stop();
+  }, [audio, state?.room?.id, state?.user.id]);
   useEffect(() => {
     setCloseTableRoom("");
     if (state?.room?.status === "playing") {
@@ -222,9 +258,9 @@ function App() {
       r.game!.catan?.citiesKnights?.pending?.players[0] ??
       r.game!.catan?.seafarers?.pirateIslands?.raid?.rewards[0];
     const key = `${r.id}:${r.game!.round}:${r.game!.turn}:${r.status}:${dota?.sequence || 0}:${dota?.actors?.includes(r.you) || false}:${sg?.pending?.id || 0}:${sg?.pending?.canRespond || false}:${fleetActor ?? -1}:${r.game!.catan?.two?.sequence ?? 0}:${r.game!.catan?.two?.pending ? "two_build" : r.game!.catan?.two?.trade ? "two_trade" : ""}:${r.game!.catan?.caravans?.pending?.kind ?? ""}:${r.game!.catan?.caravans?.sequence ?? 0}:${caravanPlacementStep(r.game!.catan) ?? 0}:${r.game!.catan?.citiesKnights?.pending?.kind ?? ""}:${r.game!.catan?.cardEvent?.kind ?? ""}:${r.game!.catan?.cardEvent ? r.game!.catan.rollId : 0}`;
-    if (key !== previousTurn.current && sound) {
+    if (previousTurn.current && key !== previousTurn.current && sound) {
       if ((r.game!.finished || r.status === "closed") && previousTurn.current) {
-        void audio.current.play("finish");
+        void audio.play("finish");
       } else if (
         r.status === "playing" &&
         !r.seats[r.you]?.autoPlay &&
@@ -234,7 +270,7 @@ function App() {
             ? sg.pending.canRespond
             : (fleetActor ?? r.game!.turn) === r.you)
       ) {
-        void audio.current.play("turn");
+        void audio.play("turn");
       }
     }
     previousTurn.current = key;
@@ -282,7 +318,7 @@ function App() {
     await run(async () => {
       await command(state.room!, "action", { action });
       if (sound && !gameModule(state.room!.kind)?.ownsSounds)
-        void audio.current.play(
+        void audio.play(
           action.type === "take"
             ? "take"
             : action.type === "buy"
@@ -361,15 +397,28 @@ function App() {
   const roomCommand = (type: string, extra: Record<string, unknown> = {}) =>
     void run(() => command(state!.room!, type, extra));
   const enableAudio = () => {
-    void audio.current.unlock();
+    void audio.unlock();
+  };
+  const toggleSound = () => {
+    const enabled = !audio.enabled;
+    previewRequest.current++;
+    audio.setEnabled(enabled);
+    setSound(enabled);
+    try {
+      localStorage.setItem("wb_sound", enabled ? "on" : "off");
+    } catch {
+      /* Still works for this tab when storage is unavailable. */
+    }
+    if (enabled) void audio.unlock();
   };
   const previewAudio = async () => {
-    setSound(true);
-    localStorage.setItem("wb_sound", "on");
-    const played = await audio.current.play("preview");
+    if (!audio.enabled) return;
+    const request = ++previewRequest.current;
+    const played = await audio.play("preview");
+    if (request !== previewRequest.current || !audio.enabled) return;
     setNotice(
       played
-        ? "已播放试听音效。如未听到，请检查设备音量和浏览器标签页是否静音。"
+        ? "已播放试听音效，音量由设备媒体音量控制。"
         : "浏览器未能播放音效，请检查站点声音权限后再次试听。",
     );
   };
@@ -459,26 +508,30 @@ function App() {
                   {online ? <Wifi size={15} /> : <WifiOff size={15} />}
                   <span>{online ? "已连接" : "重连中"}</span>
                 </span>
-                <button
-                  className="icon-button"
-                  aria-label={sound ? "关闭音效" : "开启音效"}
-                  title={
-                    sound ? "音效已开启，点击静音" : "音效已关闭，点击开启"
-                  }
-                  onClick={() => {
-                    setSound(!sound);
-                    localStorage.setItem("wb_sound", sound ? "off" : "on");
-                    if (!sound) void previewAudio();
-                  }}
-                >
-                  {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-                </button>
-                <button
-                  className="sound-preview"
-                  onClick={() => void previewAudio()}
-                >
-                  试听音效
-                </button>
+                <div className="sound-controls" role="group" aria-label="声音">
+                  <button
+                    className="sound-preview"
+                    disabled={!sound}
+                    title={
+                      sound ? "音量由设备媒体音量控制" : "取消静音后可试听"
+                    }
+                    onClick={() => void previewAudio()}
+                  >
+                    试听音效
+                  </button>
+                  <button
+                    className="sound-toggle"
+                    aria-label={sound ? "静音" : "取消静音"}
+                    aria-pressed={!sound}
+                    title={
+                      sound ? "静音所有游戏和提示音" : "恢复所有游戏和提示音"
+                    }
+                    onClick={toggleSound}
+                  >
+                    {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
+                    <span>{sound ? "静音" : "取消静音"}</span>
+                  </button>
+                </div>
                 <button
                   className="avatar"
                   aria-label="我的战绩与好友"
@@ -732,6 +785,7 @@ function App() {
                           busy={boardBusy}
                           assets={state.assetsBaseURL || ""}
                           sound={sound}
+                          audio={gameAudio}
                           clock={{
                             serverNow: state.serverNow,
                             receivedAt: state.receivedAt,

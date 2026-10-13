@@ -31,6 +31,10 @@ export type GameRoom = {
     log: string[];
   };
 };
+export type GameAudioPort = {
+  play: (sources: readonly string[]) => Promise<boolean>;
+  stop: () => void;
+};
 export type BoardProps<Data = unknown> = {
   room: GameRoom;
   data: Data;
@@ -39,6 +43,7 @@ export type BoardProps<Data = unknown> = {
   busy: boolean;
   assets: string;
   sound: boolean;
+  audio: GameAudioPort;
   clock: { serverNow: number; receivedAt: number };
 };
 export type OptionsProps<Options = unknown> = {
