@@ -56,6 +56,8 @@ export type GameModule<Data = unknown, Options = unknown> = {
   id: string;
   name: string;
   description: string;
+  category?: "board" | "poker" | "realtime";
+  requiresFullTable?: boolean;
   minPlayers: number;
   maxPlayers: number;
   playerCounts?: readonly number[];

@@ -1,3 +1,4 @@
+import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -104,6 +105,7 @@ export function AdminDashboard({
   const [tab, setTab] = useState("games");
   const [query, setQuery] = useState("");
   const [gameQuery, setGameQuery] = useState("");
+  const [gameCategory, setGameCategory] = useState("all");
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
   const [busy, setBusy] = useState(false);
@@ -335,6 +337,11 @@ export function AdminDashboard({
                 <h2>开放给朋友的游戏</h2>
                 <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
               </div>
+              <CategoryFilter
+                value={gameCategory}
+                onChange={setGameCategory}
+                label="管理游戏分类"
+              />
               <label className="game-search admin-game-search">
                 搜索游戏
                 <input
@@ -345,10 +352,12 @@ export function AdminDashboard({
                   onChange={(event) => setGameQuery(event.target.value)}
                 />
               </label>
-              {!data.games.some((g) =>
-                `${g.name} ${g.kind}`
-                  .toLocaleLowerCase()
-                  .includes(gameQuery.trim().toLocaleLowerCase()),
+              {!data.games.some(
+                (g) =>
+                  matchesCategory(g.kind, gameCategory) &&
+                  `${g.name} ${g.kind}`
+                    .toLocaleLowerCase()
+                    .includes(gameQuery.trim().toLocaleLowerCase()),
               ) && (
                 <p className="game-search-empty" role="status">
                   没有找到匹配的游戏，请换个名称搜索。
@@ -357,10 +366,12 @@ export function AdminDashboard({
               <div className="admin-games">
                 {data.games
                   .map((g, i) => ({ g, i }))
-                  .filter(({ g }) =>
-                    `${g.name} ${g.kind}`
-                      .toLocaleLowerCase()
-                      .includes(gameQuery.trim().toLocaleLowerCase()),
+                  .filter(
+                    ({ g }) =>
+                      matchesCategory(g.kind, gameCategory) &&
+                      `${g.name} ${g.kind}`
+                        .toLocaleLowerCase()
+                        .includes(gameQuery.trim().toLocaleLowerCase()),
                   )
                   .map(({ g, i }) => (
                     <article

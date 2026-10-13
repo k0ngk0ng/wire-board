@@ -1,3 +1,4 @@
+import { CategoryFilter, matchesCategory } from "./game-category";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { gameName } from "../game-api/registry";
@@ -17,10 +18,13 @@ export function GameChoices({
   disabled?: boolean;
 }) {
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
   const list = useRef<HTMLDivElement>(null);
   const term = query.trim().toLocaleLowerCase();
-  const visible = games.filter((id) =>
-    `${gameName(id)} ${id}`.toLocaleLowerCase().includes(term),
+  const visible = games.filter(
+    (id) =>
+      matchesCategory(id, category) &&
+      `${gameName(id)} ${id}`.toLocaleLowerCase().includes(term),
   );
   useEffect(() => {
     const grid = list.current;
@@ -32,6 +36,11 @@ export function GameChoices({
   }, [value, query]);
   return (
     <section className="game-choices" aria-label="选择游戏">
+      <CategoryFilter
+        value={category}
+        onChange={setCategory}
+        label="可选游戏分类"
+      />
       <label className="game-search">
         搜索游戏
         <input

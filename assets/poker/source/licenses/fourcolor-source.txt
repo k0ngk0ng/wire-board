@@ -1,0 +1,66 @@
+Jumbo Index Playing Cards | OpenGameArt.org
+Skip to main content
+User login
+OpenID
+What is OpenID?
+Username or e-mail *
+Password *
+Log in using OpenID
+Cancel OpenID login
+Create new account
+Request new password
+Register
+Home
+Browse
+2D Art
+3D Art
+Concept Art
+Textures
+Music
+Sound Effects
+Documents
+Featured Tutorials
+Submit Art
+Collect
+My Collections
+Art Collections
+Forums
+FAQ
+Leaderboards
+All Time
+Total Points
+Comments
+Favorites (All)
+Favorites (2D)
+Favorites (3D)
+Favorites (Concept Art)
+Favorites (Music)
+Favorites (Sound)
+Favorites (Textures)
+Weekly
+Total Points
+Comments
+Favorites (All)
+Favorites (2D)
+Favorites (3D)
+Favorites (Concept Art)
+Favorites (Music)
+Favorites (Sound)
+Favorites (Textures)
+❤ Donate
+Search
+Jumbo Index Playing Cards
+Author: saulTuesday, May 3, 2016 - 14:33Art Type: 2D ArtTags: playing cardsjumbo indexLicense(s): CC0Collections:
+Cards and Board Games (GDN)
+Playing Cards
+Public Domain Solitaire CardsFavorites: 8
+Preview:
+Four decks of jumbo-index playing cards, for easy recognition on small screens. Two decks have the suits in four different colors, and two have the traditional balck and red suits. Tow decks have the traditional corner indexes, with the rank above the suit symbol, and two have the rank and suit side-by-side. The latter are particularly suitable for solitaire games like spider, where the piles get very long, as otherwise, the jumbo index requires too big a vertical offset between the cards.
+The decks have 52 cards, two jokers, and two backs. Both individual cards and sprite sheets are providied in SVG, PNG and GIF formats.
+More information, and some python scripts for editing the suit colors and managing the decks can be found at https://github.com/saulspatz/SVGCards.
+File(s): Decks.zip 28.6 Mb [912 download(s)]
+Log in or register to post comments
+Comments
+Snabischjoined 12 years 1 month ago05/04/2016 - 01:15
+Is awesome.
+Log in or register to post comments

@@ -137,7 +137,9 @@ export function ModuleCreate({
           </label>
         </div>
         <p className="muted small">
-          至少 {module.minPlayers} 个座位即可开始，不必坐满。
+          {module.requiresFullTable
+            ? `需要坐满 ${capacity} 人后开始。`
+            : `至少 ${module.minPlayers} 个座位即可开始，不必坐满。`}
           {module.supportsBots && "一个人也可以在房间里添加电脑玩家体验。"}
         </p>
         <button className="primary wide" disabled={busy} type="submit">
@@ -269,6 +271,8 @@ export function ModuleWaiting({
                 disabled={
                   busy ||
                   room.seats.length < module.minPlayers ||
+                  (!!module.requiresFullTable &&
+                    room.seats.length !== room.capacity) ||
                   room.seats.some((s) => !s.ready)
                 }
                 onClick={() => command("start")}

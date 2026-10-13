@@ -37,3 +37,22 @@
 .module-players .player-panel:only-child {
   grid-column: 1 / -1;
 }
+.game-category {
+  display: grid;
+  gap: 6px;
+  color: #344832;
+  min-width: 0;
+  max-width: 100%;
+}
+.game-category select {
+  width: 100%;
+  min-width: 125px;
+  color: #344832;
+  background: #fffdf5;
+}
+.catalogue-tools {
+  flex-wrap: wrap;
+}
+.game-choices .game-category {
+  margin-bottom: 10px;
+}
