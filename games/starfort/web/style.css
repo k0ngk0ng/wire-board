@@ -1020,3 +1020,154 @@
     transition: none;
   }
 }
+
+/* Keep decisions in dialogs and the battlefield in the primary viewport. */
+.starfort-board {
+  gap: 8px;
+}
+.sf-overview {
+  padding: 9px 12px;
+  gap: 8px;
+}
+.sf-overview strong {
+  font-size: 21px;
+}
+.sf-wave-banner {
+  padding: 8px 12px;
+}
+.sf-wave-banner .sf-countdown {
+  display: grid;
+  gap: 1px;
+  text-align: right;
+  flex: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: #fff4d4;
+  color: #614218;
+}
+.sf-countdown > span {
+  font-size: 12px;
+  color: #614218;
+}
+.sf-countdown strong {
+  font-size: 25px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.sf-countdown small {
+  font-size: 13px;
+}
+.sf-countdown[data-urgent="true"] {
+  background: #fce6dd;
+  color: #873c24;
+  border: 2px solid #a14a2f;
+}
+.sf-countdown[data-urgent="true"] > span {
+  color: #873c24;
+}
+.sf-phase-paused .sf-countdown strong,
+.sf-phase-battle .sf-countdown strong {
+  font-size: 14px;
+}
+.sf-wave-controls {
+  padding: 7px 10px;
+  gap: 6px;
+}
+.sf-wave-controls > div:first-child {
+  font-size: 12px;
+}
+.sf-control-buttons {
+  gap: 6px;
+}
+.sf-layout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 5px;
+}
+.sf-map-caption {
+  padding: 3px 2px;
+}
+.sf-select-pad {
+  justify-self: start;
+}
+.starfort-board .sf-choice-dialog {
+  width: 920px;
+}
+.sf-choice-dialog .sf-world-choice + .sf-world-choice {
+  margin-top: 12px;
+}
+.starfort-board .sf-command-dialog {
+  width: 620px;
+}
+.sf-choice-dialog .modal-head,
+.sf-command-dialog .modal-head {
+  margin-bottom: 12px;
+}
+.sf-command-dialog .sf-command-panel {
+  padding: 0;
+  border: 0;
+}
+.sf-command-dialog .sf-build-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.sf-intelligence .sf-world-status {
+  border: 0;
+}
+@media (max-width: 560px) {
+  .sf-overview {
+    padding: 7px 9px;
+  }
+  .sf-overview strong {
+    font-size: 19px;
+  }
+  .sf-wave-banner {
+    align-items: center;
+    padding: 6px 8px;
+  }
+  .sf-wave-banner .sf-countdown {
+    padding: 5px 7px;
+    gap: 2px;
+  }
+  .sf-countdown > span {
+    font-size: 11px;
+  }
+  .sf-countdown strong {
+    font-size: 24px;
+  }
+  .sf-wave-controls > div:first-child > strong {
+    display: none;
+  }
+  .sf-wave-controls p {
+    margin: 0;
+  }
+  .sf-control-buttons {
+    width: auto;
+  }
+  .sf-control-buttons button {
+    min-height: 36px;
+    padding: 6px 8px;
+  }
+  .sf-choice-dialog,
+  .sf-command-dialog {
+    max-height: 92dvh;
+    padding: 12px;
+  }
+  .sf-choice-dialog .sf-choice-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sf-route-preview {
+    height: 115px;
+  }
+}
+
+.sf-choice-dialog .modal-head {
+  position: sticky;
+  top: -12px;
+  background: #faf9f1;
+  color: #2b4235;
+  z-index: 2;
+  padding: 8px 0;
+}
+
+.starfort-board {
+  scroll-margin-top: 90px;
+}

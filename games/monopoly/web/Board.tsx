@@ -10,6 +10,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
+import { useMapControls } from "../../../web/src/ui/map-controls";
 import { Modal } from "../../../web/src/ui/board-host";
 import { useMotion } from "./useMotion";
 import { squarePoint } from "./motion";
@@ -59,7 +60,8 @@ export function Board({
   const motion = useMotion(room.id, data, clock.receivedAt);
   const busy = hostBusy || room.status !== "playing" || motion.active;
   const isClosed = room.status === "closed";
-  const [zoomed, setZoomed] = useState(false);
+  const mapControls = useMapControls({ aspect: 1, minMobileWidth: 0 });
+  const zoomed = mapControls.zoom > 1;
   const [tab, setTab] = useState<Tab>("action");
   const [selected, setSelected] = useState<number | null>(null);
   const [assetOwner, setAssetOwner] = useState(
@@ -127,190 +129,209 @@ export function Board({
             <button
               type="button"
               aria-pressed={zoomed}
-              onClick={() => setZoomed(!zoomed)}
+              onClick={() => mapControls.zoomAt(zoomed ? 1 : 2)}
             >
               {zoomed ? "适应屏幕" : "放大棋盘"}
             </button>
           </div>
-          <div className={`mono-board-scroll ${zoomed ? "zoomed" : ""}`}>
-            <div className="mono-map" aria-label="强手棋棋盘">
-              <div className="mono-center">
-                <Art
-                  base={assets}
-                  name="logo"
-                  className="mono-logo-image"
-                  fallback={<div className="mono-logo">MONOPOLY</div>}
-                />
-                <p className="mono-tagline">强手棋 · 经典地产交易</p>
-                <Dice values={motion.dice} rolling={motion.stage === "roll"} />
-                <p className="mono-center-turn">
-                  <span
-                    className="mono-turn-dot"
-                    style={{ background: colors[data.turn % colors.length] }}
+          <div
+            className={`mono-board-scroll ${zoomed ? "zoomed" : ""}`}
+            ref={mapControls.viewport}
+            {...mapControls.handlers}
+          >
+            <div style={mapControls.canvasStyle}>
+              <div
+                className="mono-map"
+                aria-label="强手棋棋盘"
+                style={mapControls.mapStyle}
+              >
+                <div className="mono-center">
+                  <Art
+                    base={assets}
+                    name="logo"
+                    className="mono-logo-image"
+                    fallback={<div className="mono-logo">MONOPOLY</div>}
                   />
-                  {isFinished ? "本局已结束" : `${turnName}的回合`}
-                </p>
-                {data.lastCard && (
-                  <button
-                    className="mono-last-card"
-                    type="button"
-                    onClick={() => {
-                      setCardDeck(data.lastCard!.deck);
-                      setTab("cards");
-                    }}
-                  >
-                    <small>
-                      最近事件 ·{" "}
-                      {data.lastCard.deck === "chance" ? "机会" : "公共基金"}
-                    </small>
-                    <strong>{data.lastCard.title}</strong>
-                    <span>{data.lastCard.text}</span>
-                  </button>
-                )}
-                <div className="mono-bank-stock">
-                  <span>
-                    <Art base={assets} name="house" fallback={<House />} />
-                    {data.houses}
-                  </span>
-                  <span>
-                    <Art base={assets} name="hotel" fallback={<Building2 />} />
-                    {data.hotels}
-                  </span>
-                  <small>银行剩余建筑</small>
-                </div>
-              </div>
-              {data.board.map((space) => {
-                const p = data.properties[space.id];
-                return (
-                  <button
-                    type="button"
-                    data-mono-square={space.id}
-                    key={space.id}
-                    onClick={() => inspect(space.id)}
-                    className={`mono-square ${space.price ? "property" : "special"} ${space.id % 10 === 0 ? "corner" : ""} ${p.mortgaged ? "mortgaged" : ""}`}
-                    style={
-                      {
-                        ...grid(space.id),
-                        "--group": space.color,
-                        "--owner":
-                          p.owner >= 0
-                            ? colors[p.owner % colors.length]
-                            : "transparent",
-                      } as CSSProperties
-                    }
-                    aria-label={`${space.name}${space.price ? `，价格 ${space.price}，${name(p.owner)}持有` : ""}`}
-                  >
-                    {space.kind === "street" ? (
-                      <span className="mono-color-bar" />
-                    ) : (
-                      <span className="mono-square-symbol">
-                        <Art
-                          base={assets}
-                          name={`symbol-${space.id === 28 ? "water" : space.kind}`}
-                          fallback={<Symbol kind={space.kind} />}
-                        />
-                      </span>
-                    )}
-                    <span className="mono-space-name">
-                      <span className="mono-full-name">{space.name}</span>
-                      <span className="mono-short-name">
-                        {space.name.slice(0, 2)}
-                      </span>
+                  <p className="mono-tagline">强手棋 · 经典地产交易</p>
+                  <Dice
+                    values={motion.dice}
+                    rolling={motion.stage === "roll"}
+                  />
+                  <p className="mono-center-turn">
+                    <span
+                      className="mono-turn-dot"
+                      style={{ background: colors[data.turn % colors.length] }}
+                    />
+                    {isFinished ? "本局已结束" : `${turnName}的回合`}
+                  </p>
+                  {data.lastCard && (
+                    <button
+                      className="mono-last-card"
+                      type="button"
+                      onClick={() => {
+                        setCardDeck(data.lastCard!.deck);
+                        setTab("cards");
+                      }}
+                    >
+                      <small>
+                        最近事件 ·{" "}
+                        {data.lastCard.deck === "chance" ? "机会" : "公共基金"}
+                      </small>
+                      <strong>{data.lastCard.title}</strong>
+                      <span>{data.lastCard.text}</span>
+                    </button>
+                  )}
+                  <div className="mono-bank-stock">
+                    <span>
+                      <Art base={assets} name="house" fallback={<House />} />
+                      {data.houses}
                     </span>
-                    {space.price > 0 && (
-                      <span className="mono-space-price">
-                        {p.mortgaged ? "抵押" : `M${space.price}`}
-                      </span>
-                    )}
-                    {p.buildings > 0 && (
-                      <span
-                        className="mono-buildings"
-                        aria-label={
-                          p.buildings === 5 ? "旅馆" : `${p.buildings} 座房屋`
-                        }
-                      >
-                        {p.buildings === 5 ? (
+                    <span>
+                      <Art
+                        base={assets}
+                        name="hotel"
+                        fallback={<Building2 />}
+                      />
+                      {data.hotels}
+                    </span>
+                    <small>银行剩余建筑</small>
+                  </div>
+                </div>
+                {data.board.map((space) => {
+                  const p = data.properties[space.id];
+                  return (
+                    <button
+                      type="button"
+                      data-mono-square={space.id}
+                      key={space.id}
+                      onClick={() => inspect(space.id)}
+                      className={`mono-square ${space.price ? "property" : "special"} ${space.id % 10 === 0 ? "corner" : ""} ${p.mortgaged ? "mortgaged" : ""}`}
+                      style={
+                        {
+                          ...grid(space.id),
+                          "--group": space.color,
+                          "--owner":
+                            p.owner >= 0
+                              ? colors[p.owner % colors.length]
+                              : "transparent",
+                        } as CSSProperties
+                      }
+                      aria-label={`${space.name}${space.price ? `，价格 ${space.price}，${name(p.owner)}持有` : ""}`}
+                    >
+                      {space.kind === "street" ? (
+                        <span className="mono-color-bar" />
+                      ) : (
+                        <span className="mono-square-symbol">
                           <Art
                             base={assets}
-                            name="hotel"
-                            fallback={<Building2 />}
+                            name={`symbol-${space.id === 28 ? "water" : space.kind}`}
+                            fallback={<Symbol kind={space.kind} />}
                           />
-                        ) : (
-                          <>
+                        </span>
+                      )}
+                      <span className="mono-space-name">
+                        <span className="mono-full-name">{space.name}</span>
+                        <span className="mono-short-name">
+                          {space.name.slice(0, 2)}
+                        </span>
+                      </span>
+                      {space.price > 0 && (
+                        <span className="mono-space-price">
+                          {p.mortgaged ? "抵押" : `M${space.price}`}
+                        </span>
+                      )}
+                      {p.buildings > 0 && (
+                        <span
+                          className="mono-buildings"
+                          aria-label={
+                            p.buildings === 5 ? "旅馆" : `${p.buildings} 座房屋`
+                          }
+                        >
+                          {p.buildings === 5 ? (
                             <Art
                               base={assets}
-                              name="house"
-                              fallback={<House />}
+                              name="hotel"
+                              fallback={<Building2 />}
                             />
-                            <b>{p.buildings}</b>
-                          </>
-                        )}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-              <div className="mono-piece-layer" aria-hidden="true">
-                {data.players.map((player, i) => {
-                  if (player.bankrupt && motion.actor !== i) return null;
-                  const pos = motion.positions[i] ?? player.position,
-                    point = squarePoint(pos);
-                  const same = data.players
-                    .map((p, j) =>
-                      !p.bankrupt && (motion.positions[j] ?? p.position) === pos
-                        ? j
-                        : -1,
-                    )
-                    .filter((j) => j >= 0);
-                  const index = Math.max(0, same.indexOf(i));
-                  const cols = Math.min(3, same.length),
-                    rows = Math.ceil(same.length / 3);
-                  const dx =
-                    same.length > 1
-                      ? ((index % cols) - (cols - 1) / 2) * 18
-                      : 0;
-                  const dy =
-                    same.length > 1
-                      ? (Math.floor(index / 3) - (rows - 1) / 2) * 20
-                      : 0;
-                  const inset = same.length > 1 ? 36 : 23;
-                  return (
-                    <Fragment key={i}>
-                      <span
-                        data-mono-pawn={i}
-                        data-position={pos}
-                        className={`mono-pawn ${motion.actor === i ? "moving" : ""} ${room.you === i ? "yours" : ""}`}
-                        style={{
-                          ...seatStyle(i),
-                          left: `calc(clamp(${inset}px, ${point.x}%, calc(100% - ${inset}px)) + ${dx}px)`,
-                          top: `calc(clamp(${inset}px, ${point.y}%, calc(100% - ${inset}px)) + ${dy}px)`,
-                          zIndex: motion.actor === i ? 20 : 5 + i,
-                        }}
-                        title={`${name(i)} · ${data.board[pos].name}`}
-                      >
-                        <Art
-                          base={assets}
-                          name={`token-${i + 1}`}
-                          fallback={<span>{i + 1}</span>}
-                        />
-                      </span>
-                      <b
-                        className="mono-pawn-number"
-                        style={{
-                          left: `calc(clamp(${inset}px, ${point.x}%, calc(100% - ${inset}px)) + ${dx}px)`,
-                          top: `calc(clamp(${inset}px, ${point.y}%, calc(100% - ${inset}px)) + ${dy}px)`,
-                        }}
-                      >
-                        {i + 1}
-                      </b>
-                    </Fragment>
+                          ) : (
+                            <>
+                              <Art
+                                base={assets}
+                                name="house"
+                                fallback={<House />}
+                              />
+                              <b>{p.buildings}</b>
+                            </>
+                          )}
+                        </span>
+                      )}
+                    </button>
                   );
                 })}
+                <div className="mono-piece-layer" aria-hidden="true">
+                  {data.players.map((player, i) => {
+                    if (player.bankrupt && motion.actor !== i) return null;
+                    const pos = motion.positions[i] ?? player.position,
+                      point = squarePoint(pos);
+                    const same = data.players
+                      .map((p, j) =>
+                        !p.bankrupt &&
+                        (motion.positions[j] ?? p.position) === pos
+                          ? j
+                          : -1,
+                      )
+                      .filter((j) => j >= 0);
+                    const index = Math.max(0, same.indexOf(i));
+                    const cols = Math.min(3, same.length),
+                      rows = Math.ceil(same.length / 3);
+                    const dx =
+                      same.length > 1
+                        ? ((index % cols) - (cols - 1) / 2) * 18
+                        : 0;
+                    const dy =
+                      same.length > 1
+                        ? (Math.floor(index / 3) - (rows - 1) / 2) * 20
+                        : 0;
+                    const inset = same.length > 1 ? 36 : 23;
+                    return (
+                      <Fragment key={i}>
+                        <span
+                          data-mono-pawn={i}
+                          data-position={pos}
+                          className={`mono-pawn ${motion.actor === i ? "moving" : ""} ${room.you === i ? "yours" : ""}`}
+                          style={{
+                            ...seatStyle(i),
+                            left: `calc(clamp(${inset}px, ${point.x}%, calc(100% - ${inset}px)) + ${dx}px)`,
+                            top: `calc(clamp(${inset}px, ${point.y}%, calc(100% - ${inset}px)) + ${dy}px)`,
+                            zIndex: motion.actor === i ? 20 : 5 + i,
+                          }}
+                          title={`${name(i)} · ${data.board[pos].name}`}
+                        >
+                          <Art
+                            base={assets}
+                            name={`token-${i + 1}`}
+                            fallback={<span>{i + 1}</span>}
+                          />
+                        </span>
+                        <b
+                          className="mono-pawn-number"
+                          style={{
+                            left: `calc(clamp(${inset}px, ${point.x}%, calc(100% - ${inset}px)) + ${dx}px)`,
+                            top: `calc(clamp(${inset}px, ${point.y}%, calc(100% - ${inset}px)) + ${dy}px)`,
+                          }}
+                        >
+                          {i + 1}
+                        </b>
+                      </Fragment>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
           <p className="mono-map-help">
-            点选任意格子查看地产证与管理操作。<span>绿色房屋 · 红色旅馆</span>
+            滚轮缩放，拖动棋盘；点选格子查看地产证。
+            <span>绿色房屋 · 红色旅馆</span>
           </p>
         </div>
 

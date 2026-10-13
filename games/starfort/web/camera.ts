@@ -162,7 +162,10 @@ export function detailCameraAt(
 ): Camera {
   const starter = fitCamera(worldBounds({ width: 960, height: 640 }), viewport);
   return focusCamera(
-    { ...camera, zoom: Math.max(camera.zoom, starter.zoom, 0.35) },
+    {
+      ...camera,
+      zoom: Math.max(camera.zoom, starter.zoom, viewport.width / 1088, 0.35),
+    },
     point,
     worldBounds(map),
     viewport,

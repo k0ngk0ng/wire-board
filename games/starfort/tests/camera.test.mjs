@@ -142,3 +142,16 @@ test("overview focus restores playable detail while retaining the tapped world r
   );
   assert.equal(alreadyDetailed.zoom, 1);
 });
+
+// A compact desktop battlefield is wide and short: height-only fit can leave
+// the entire map visible horizontally, so a region tap cannot pan to its target.
+test("wide compact desktop overview opens the selected region at a pannable scale", () => {
+  const expanded = { width: 1920, height: 960 };
+  const desktop = { width: 1392, height: 376 };
+  const fit = fitCamera(worldBounds(expanded), desktop);
+  const point = { x: 1228, y: 364 };
+  const detail = detailCameraAt(fit, point, expanded, desktop);
+  near(detail.x, point.x);
+  near(detail.y, point.y);
+  assert.ok(cameraWindow(detail, desktop).width <= 1088);
+});

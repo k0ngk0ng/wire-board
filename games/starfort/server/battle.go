@@ -249,7 +249,7 @@ func (s *State) step(now int64) {
 		e := s.Enemies[target]
 		t.Angle = math.Atan2(e.Y-pad.Y, e.X-pad.X)
 		t.Cooldown = interval
-		s.event(Event{Type: "shot", X: pad.X, Y: pad.Y, ToX: e.X, ToY: e.Y, Kind: t.Kind, Owner: t.Owner})
+		s.event(Event{TargetID: e.ID, Type: "shot", X: pad.X, Y: pad.Y, ToX: e.X, ToY: e.Y, Kind: t.Kind, Owner: t.Owner})
 		if t.Kind == "cannon" {
 			for j := range s.Enemies {
 				if s.Enemies[j].HP > 0 && math.Hypot(s.Enemies[j].X-e.X, s.Enemies[j].Y-e.Y) <= 78 {
@@ -380,13 +380,13 @@ func (s *State) hit(index int, damage float64, t Tower) {
 	if t.Kind == "frost" {
 		e.SlowUntil = s.Tick + 8
 	}
-	s.event(Event{Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
+	s.event(Event{TargetID: e.ID, Type: "hit", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: actual})
 	if e.HP <= 0 {
 		s.Kills++
 		s.Players[t.Owner].Kills++
 		for i := range s.Players {
 			s.Players[i].Gold = min(maxValue, s.Players[i].Gold+s.rewardGold(e.Reward))
 		}
-		s.event(Event{Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
+		s.event(Event{TargetID: e.ID, Type: "death", X: e.X, Y: e.Y, Kind: e.Kind, Owner: t.Owner, Amount: float64(s.rewardGold(e.Reward))})
 	}
 }
