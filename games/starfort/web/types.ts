@@ -122,6 +122,7 @@ export type Enemy = Point & {
   abilityTick?: number;
 };
 export type Event = Point & {
+  targetId?: number;
   id: number;
   type: string;
   toX?: number;

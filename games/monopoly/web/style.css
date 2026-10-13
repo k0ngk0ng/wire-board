@@ -1389,3 +1389,22 @@
     transition: none;
   }
 }
+
+/* Shared mouse wheel / drag semantics; native touch scroll remains available. */
+.mono-board-scroll,
+.mono-board-scroll.zoomed {
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  max-height: 65dvh;
+  padding: 0;
+  cursor: grab;
+  user-select: none;
+}
+.mono-board-scroll:active {
+  cursor: grabbing;
+}
+.mono-board-scroll .mono-map {
+  max-width: none;
+  margin: 0;
+}

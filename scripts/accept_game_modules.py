@@ -26,6 +26,8 @@ for key, value in {'GOCACHE': '.local/go-build', 'GOMODCACHE': '.local/go-mod', 
     location = root / value
     location.mkdir(parents=True, exist_ok=True)
     env[key] = str(location)
+env['AGENT_BROWSER_PROFILE']=str(out/'profiles'/uuid.uuid4().hex[:8])
+Path(env['AGENT_BROWSER_PROFILE']).mkdir(parents=True,exist_ok=True)
 env.update(GOTOOLCHAIN='local', WIRE_BOARD_MODULE_BROWSER='1', AGENT_BROWSER_SESSION='module-' + uuid.uuid4().hex[:8], AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
 report = {'passed': False, 'checks': [], 'command': 'python3 -B scripts/accept_game_modules.py'}
 server = None
@@ -85,6 +87,24 @@ def checkpoint(name):
     (out / (name + '.snapshot.json')).write_text(json.dumps(b('snapshot', '-i'), ensure_ascii=False, indent=2))
     report['checks'].append(name)
     print('PASS', name, flush=True)
+
+def check_map_navigation(kind, width):
+    viewport='.car-viewport' if kind=='carcassonne' else ('.catan-map-scroll' if kind=='catan' else '.rail-board .map-scroll')
+    selector=viewport+' svg'
+    if js('[...document.querySelectorAll("button")].some(e=>e.textContent.trim()==="收起看地图")'):
+        b('find','role','button','click','--name','收起看地图','--exact')
+    b('scrollintoview',viewport)
+    r=js('document.querySelector('+json.dumps(viewport)+').getBoundingClientRect().toJSON()')
+    x,y=round(r['x']+r['width']/2),round(r['y']+r['height']/2)
+    metric='document.querySelector('+json.dumps(selector)+').viewBox.baseVal.width' if kind=='carcassonne' else 'document.querySelector('+json.dumps(selector)+').getBoundingClientRect().width'
+    before=js(metric)
+    subprocess.run(['node','scripts/browser_wheel.mjs',b('get','cdp-url')['cdpUrl'],base,str(x),str(y),'-300'],cwd=root,env=env,check=True,timeout=15)
+    b('wait','--fn',metric+('<' if kind=='carcassonne' else '>')+str(before))
+    pan='document.querySelector('+json.dumps(selector)+').getAttribute("viewBox")' if kind=='carcassonne' else 'JSON.stringify([document.querySelector('+json.dumps(viewport)+').scrollLeft,document.querySelector('+json.dumps(viewport)+').scrollTop])'
+    origin=js(pan)
+    b('mouse','move',str(x),str(y));b('mouse','down');b('mouse','move',str(x-55),str(y-20));b('mouse','up')
+    assert js(pan)!=origin, ('map did not pan',kind,width)
+    checkpoint(kind+'-wheel-drag-'+str(width))
 
 def check_splendor_contrast():
     # Actual computed foreground/background after all game styles load.
@@ -204,6 +224,7 @@ try:
         if kind == 'splendor': b('wait', '.bank-actions')
         b('set', 'viewport', '1280', '900'); checkpoint(kind + '-desktop')
         if kind == 'splendor': check_splendor_contrast()
+        if kind in ['rail','catan','carcassonne']: check_map_navigation(kind,1280)
         b('set', 'viewport', '390', '844'); checkpoint(kind + '-mobile')
         if kind == 'splendor':
             check_splendor_contrast()
@@ -212,6 +233,8 @@ try:
             check_splendor_contrast()
             assert js('[...document.querySelectorAll(".market-row .dev-card")].every(e=>{const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return y<0||y>innerHeight||e.contains(document.elementFromPoint(x,y))})'), 'mobile chat covers the card market'
             checkpoint('splendor-mobile-selected')
+        if kind in ['rail','catan','carcassonne']:
+            b('set','viewport','320','740');check_map_navigation(kind,320)
         assert room()['game']['kind'] == kind
         command('close'); command('leave')
     report['passed'] = True

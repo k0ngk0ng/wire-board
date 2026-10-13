@@ -16,6 +16,7 @@ import {
 } from "./camera";
 import type { Camera, Viewport } from "./camera";
 import "./world-camera.css";
+import { CombatTimeline, FLIGHT_MS } from "./combat-timeline";
 import {
   assetURL,
   enemyPoint,
@@ -38,7 +39,7 @@ type Art = {
   worldAtlas: Atlas | null;
   worldSheet: HTMLImageElement | null;
 };
-type Effect = Event & { born: number };
+type Effect = Event & { born: number; impact?: Point };
 const colors = ["#b34f2d", "#386da7", "#8a5196", "#4f7641"];
 const towerNames: Record<string, string> = {
   arrow: "箭塔",
@@ -52,6 +53,11 @@ const towerColors: Record<string, string> = {
   frost: "#6cb9d1",
   arcane: "#9a76c2",
 };
+// Canvas artwork and its accessible hit target share the same dimensions.
+function towerDimensions(zoom: number) {
+  const width = Math.max(66, 42 / zoom);
+  return { width, height: (width * 224) / 192 };
+}
 function loadImage(
   src: string,
   fallback: string,
@@ -577,6 +583,7 @@ export function Battlefield({
     at: performance.now(),
     duration: 1000,
   });
+  const timeline = useRef(new CombatTimeline(state.current));
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const cursor = useRef<EventCursor | null>(null),
@@ -608,20 +615,24 @@ export function Battlefield({
   };
   const focus = (point: Point) =>
     publishCamera(
-      isWorldOverview(renderMap.current, viewport.current, camera.current)
-        ? detailCameraAt(
-            camera.current,
-            point,
-            renderMap.current,
-            viewport.current,
-          )
-        : focusCamera(
-            camera.current,
-            point,
-            worldBounds(renderMap.current),
-            viewport.current,
-          ),
+      detailCameraAt(
+        camera.current,
+        point,
+        renderMap.current,
+        viewport.current,
+      ),
     );
+  const navigateMinimap = (event: ReactPointerEvent<SVGSVGElement>) => {
+    const svg = event.currentTarget,
+      point = svg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+    const matrix = svg.getScreenCTM();
+    if (matrix) {
+      const world = point.matrixTransform(matrix.inverse());
+      focus({ x: world.x, y: world.y });
+    }
+  };
   const zoom = (factor: number) =>
     publishCamera(
       zoomCamera(
@@ -797,27 +808,53 @@ export function Battlefield({
           Math.max(200, (data.tick - prior.data.tick) * 200),
         ),
       };
-    } else state.current.data = data;
+    } else state.current = { ...state.current, data };
+    const immediate =
+      !contiguous || document.hidden || data.phase === "paused" || reduced;
+    if (immediate) timeline.current.reset(state.current);
+    else
+      timeline.current.push(
+        { ...state.current, at: state.current.at + FLIGHT_MS },
+        at,
+      );
     const [next, batch] = freshEvents(cursor.current, roomID, data, at);
     cursor.current = next;
     if (!contiguous || document.hidden || data.phase === "paused")
       effects.current = [];
     if (!document.hidden && data.phase !== "paused")
-      effects.current.push(...batch.map((e) => ({ ...e, born: at })));
+      effects.current.push(
+        ...batch.map((e) => ({
+          ...e,
+          born: at + (e.type === "shot" || immediate ? 0 : FLIGHT_MS),
+        })),
+      );
     effects.current = effects.current.slice(-60);
-  }, [data, roomID]);
+  }, [data, roomID, reduced]);
   useEffect(() => {
     const node = container.current;
     if (!node) return;
     const wheel = (event: WheelEvent) => {
-      // Ordinary scrolling still scrolls the page. Ctrl/trackpad pinch zooms.
-      if (!event.ctrlKey && !event.metaKey) return;
+      // Wheel input over the battlefield zooms around the pointer. Outside it,
+      // the page retains normal scrolling.
       event.preventDefault();
       const rect = canvas.current!.getBoundingClientRect();
       publishCamera(
         zoomCamera(
           camera.current,
-          Math.exp(-event.deltaY * 0.008),
+          Math.exp(
+            -Math.max(
+              -300,
+              Math.min(
+                300,
+                event.deltaY *
+                  (event.deltaMode === 1
+                    ? 16
+                    : event.deltaMode === 2
+                      ? viewport.current.height
+                      : 1),
+              ),
+            ) * 0.002,
+          ),
           { x: event.clientX - rect.left, y: event.clientY - rect.top },
           worldBounds(renderMap.current),
           viewport.current,
@@ -833,6 +870,7 @@ export function Battlefield({
     if (!node || !wrap) return;
     const ctx = node.getContext("2d");
     if (!ctx) return;
+    let lastEnemyPositions = new Map<number, Point>();
     let frame = 0,
       lastPaint = 0;
     const resize = () => {
@@ -868,8 +906,8 @@ export function Battlefield({
       if (document.hidden || (reduced && at - lastPaint < 150)) return;
       lastPaint = at;
       if (!wrap.clientWidth || !node.width) return;
-      const current = state.current,
-        v = current.data,
+      const current = timeline.current.read(at),
+        v = { ...current.data, towers: state.current.data.towers },
         map = v.map,
         pixelScale = camera.current.zoom,
         dpr = node.width / viewport.current.width,
@@ -946,10 +984,11 @@ export function Battlefield({
       }
       for (const pad of map.pads) {
         const occupied = v.towers.find((t) => t.pad === pad.id);
+        if (occupied) continue;
         ctx.save();
         ctx.translate(pad.x, pad.y);
         ctx.scale(1, 0.45);
-        circle(ctx, 0, 0, 34, occupied ? "#7b8864" : "#dfe6bd", "#788268");
+        circle(ctx, 0, 0, 22, "#dfe6bd", "#788268");
         if (selectedRef.current === pad.id) {
           ctx.strokeStyle = "#fff5b0";
           ctx.lineWidth = 6;
@@ -957,7 +996,8 @@ export function Battlefield({
         }
         ctx.restore();
       }
-      const towerSize = Math.max(66, 42 / pixelScale);
+      const { width: towerSize, height: towerHeight } =
+        towerDimensions(pixelScale);
       for (const t of v.towers) {
         const pad = map.pads.find((p) => p.id === t.pad);
         if (!pad) continue;
@@ -974,7 +1014,7 @@ export function Battlefield({
             towerPoint.x,
             towerPoint.y,
             towerSize,
-            (towerSize * 224) / 192,
+            towerHeight,
           )
         )
           fallbackTower(ctx, towerPoint.x, towerPoint.y, towerSize, t.kind);
@@ -1056,6 +1096,7 @@ export function Battlefield({
       ctx.strokeText("星核", bx, by + 15);
       ctx.fillStyle = "#3f5143";
       ctx.fillText("星核", bx, by + 15);
+      const enemyPositions = new Map<number, Point>();
       for (const enemy of v.enemies) {
         const position = enemyPoint(
           map.routes?.find((route) => route.id === enemy.route)?.points ??
@@ -1065,6 +1106,7 @@ export function Battlefield({
           fraction,
           reduced,
         );
+        enemyPositions.set(enemy.id, position);
         const frozen = enemy.slowUntil > v.tick;
         if (enemy.kind === "boss" && (enemy.phase ?? 1) > 1) {
           const size = Math.max(100, 60 / pixelScale);
@@ -1169,16 +1211,20 @@ export function Battlefield({
       for (const e of effects.current) {
         const elapsed = at - e.born,
           t = elapsed / 900;
+        if (elapsed < 0) continue;
         if (reduced) {
           if (elapsed < 250 && (e.type === "base_hit" || e.type === "build"))
             circle(ctx, e.x, e.y, 16, "#fff4c880");
           continue;
         }
         ctx.save();
-        if (e.type === "shot" && elapsed < 520) {
-          const p = Math.min(1, elapsed / 420),
-            tx = e.toX ?? e.x,
-            ty = e.toY ?? e.y;
+        if (e.type === "shot" && elapsed < FLIGHT_MS) {
+          const target = e.targetId
+            ? enemyPositions.get(e.targetId)
+            : undefined;
+          const p = Math.min(1, elapsed / FLIGHT_MS),
+            tx = target?.x ?? e.toX ?? e.x,
+            ty = target?.y ?? e.toY ?? e.y;
           const x = e.x + (tx - e.x) * p,
             y =
               e.y +
@@ -1210,6 +1256,10 @@ export function Battlefield({
             "shortcut",
           ].includes(e.type)
         ) {
+          e.impact ??= (e.targetId
+            ? (enemyPositions.get(e.targetId) ??
+              lastEnemyPositions.get(e.targetId))
+            : undefined) ?? { x: e.x, y: e.y };
           ctx.globalAlpha = 1 - t;
           const name =
             e.type === "heal"
@@ -1229,14 +1279,14 @@ export function Battlefield({
               ctx,
               art.current,
               `effect-${name}`,
-              e.x,
-              e.y,
+              e.impact.x,
+              e.impact.y,
               size,
               size,
               "center",
             )
           )
-            circle(ctx, e.x, e.y, 8 + t * 15, "#ffefa870");
+            circle(ctx, e.impact.x, e.impact.y, 8 + t * 15, "#ffefa870");
         } else if (
           [
             "build",
@@ -1263,6 +1313,7 @@ export function Battlefield({
         }
         ctx.restore();
       }
+      lastEnemyPositions = enemyPositions;
     };
     frame = requestAnimationFrame(draw);
     return () => {
@@ -1351,59 +1402,71 @@ export function Battlefield({
           全图
         </button>
       </div>
-      <div className="sf-entry-list" aria-label="进攻入口">
-        {routes.map((route) => {
-          const enemies = data.enemies.filter(
-            (enemy) => (enemy.route ?? "main") === route.id,
-          ).length;
-          return (
-            <button
-              key={route.id}
-              className="sf-secondary"
-              data-sf-entry={route.id}
-              data-active={route.active}
-              onClick={() => focus(route.points[0] ?? base)}
-            >
-              <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
-              {route.label}
-              {enemies > 0
-                ? ` · ${enemies} 敌人`
-                : route.active
-                  ? " · 出怪"
-                  : " · 休整"}
-            </button>
-          );
-        })}
-      </div>
-      {!!data.world?.choice?.options.some((option) => option.map) && (
-        <div className="sf-map-previews" role="group" aria-label="扩展地图预览">
-          <span>虚线为新道路：</span>
-          <button
-            className="sf-secondary"
-            aria-pressed={!preview}
-            onClick={() => setPreviewID(null)}
-          >
-            当前战场
-          </button>
-          {data.world.choice.options
-            .filter((option) => option.map)
-            .map((option) => (
+      <details className="sf-entry-menu">
+        <summary>
+          进攻入口 · {routes.filter((r) => r.active).length} 路来袭
+        </summary>
+        <div className="sf-entry-list" aria-label="进攻入口">
+          {routes.map((route) => {
+            const enemies = data.enemies.filter(
+              (enemy) => (enemy.route ?? "main") === route.id,
+            ).length;
+            return (
               <button
+                key={route.id}
                 className="sf-secondary"
-                key={option.id}
-                aria-pressed={previewID === option.id}
-                data-sf-preview={option.id}
-                onClick={() => {
-                  setPreviewID(option.id);
-                  publishCamera(
-                    fitCamera(worldBounds(option.map!), viewport.current),
-                  );
-                }}
+                data-sf-entry={route.id}
+                data-active={route.active}
+                onClick={() => focus(route.points[0] ?? base)}
               >
-                预览{option.label}
+                <span aria-hidden="true">{route.active ? "●" : "○"}</span>{" "}
+                {route.label}
+                {enemies > 0
+                  ? ` · ${enemies} 敌人`
+                  : route.active
+                    ? " · 出怪"
+                    : " · 休整"}
               </button>
-            ))}
+            );
+          })}
         </div>
+      </details>
+      {!!data.world?.choice?.options.some((option) => option.map) && (
+        <details className="sf-preview-menu">
+          <summary>在战场上预览扩展方案</summary>
+          <div
+            className="sf-map-previews"
+            role="group"
+            aria-label="扩展地图预览"
+          >
+            <span>虚线为新道路：</span>
+            <button
+              className="sf-secondary"
+              aria-pressed={!preview}
+              onClick={() => setPreviewID(null)}
+            >
+              当前战场
+            </button>
+            {data.world.choice.options
+              .filter((option) => option.map)
+              .map((option) => (
+                <button
+                  className="sf-secondary"
+                  key={option.id}
+                  aria-pressed={previewID === option.id}
+                  data-sf-preview={option.id}
+                  onClick={() => {
+                    setPreviewID(option.id);
+                    publishCamera(
+                      fitCamera(worldBounds(option.map!), viewport.current),
+                    );
+                  }}
+                >
+                  预览{option.label}
+                </button>
+              ))}
+          </div>
+        </details>
       )}
       <div
         className={`sf-battlefield sf-world-viewport ${overview ? "sf-world-overview" : ""}`}
@@ -1414,6 +1477,11 @@ export function Battlefield({
         onPointerMove={pointerMove}
         onPointerUp={pointerUp}
         onPointerCancel={pointerUp}
+        onLostPointerCapture={pointerUp}
+        onPointerLeave={(event) => {
+          if (!event.currentTarget.hasPointerCapture(event.pointerId))
+            pointerUp(event);
+        }}
         onClick={(event) => {
           if (
             !isWorldOverview(
@@ -1459,17 +1527,26 @@ export function Battlefield({
           data-camera-x={view.camera.x}
           data-camera-y={view.camera.y}
           role="img"
-          aria-label={`星垒战场，第 ${data.wave} 波，${data.enemies.length} 名敌人，${data.towers.length} 座防御塔。拖动或双指缩放查看地图，建造点按钮可用键盘选择。`}
+          aria-label={`星垒战场，第 ${data.wave} 波，${data.enemies.length} 名敌人，${data.towers.length} 座防御塔。拖动或双指缩放查看地图，空地可建造，点击塔身可升级，所有按钮均可用键盘选择。`}
         />
         {data.map.pads.map((pad) => {
           const tower = data.towers.find((t) => t.pad === pad.id);
           const point = worldToScreen(pad, view.camera, view.viewport);
+          const dimensions = towerDimensions(view.camera.zoom);
+          const width = dimensions.width * view.camera.zoom;
+          const height = dimensions.height * view.camera.zoom;
+          const bottom = point.y + 14 * view.camera.zoom;
           const visible =
             !overview &&
-            point.x >= 18 &&
-            point.x <= view.viewport.width - 18 &&
-            point.y >= 18 &&
-            point.y <= view.viewport.height - 18;
+            (tower
+              ? point.x + width / 2 > 0 &&
+                point.x - width / 2 < view.viewport.width &&
+                bottom > 0 &&
+                bottom - height < view.viewport.height
+              : point.x >= 16 &&
+                point.x <= view.viewport.width - 16 &&
+                point.y >= 16 &&
+                point.y <= view.viewport.height - 16);
           return (
             <button
               key={pad.id}
@@ -1479,16 +1556,14 @@ export function Battlefield({
               className={`sf-pad ${tower ? "sf-pad-occupied" : ""} ${selected === pad.id ? "sf-pad-selected" : ""}`}
               style={{
                 left: point.x,
-                top: point.y,
-                ...(tower
-                  ? { "--sf-owner": colors[tower.owner % colors.length] }
-                  : {}),
+                top: tower ? bottom : point.y,
+                ...(tower ? { width, height } : {}),
               }}
               aria-label={`建造点 ${pad.id + 1}${pad.terrain === "highground" ? "，高台" : ""}${tower ? `，${towerNames[tower.kind]} ${tower.level} 级，玩家 ${tower.owner + 1}` : "，空地"}`}
               aria-pressed={selected === pad.id}
               onClick={() => select(pad.id)}
             >
-              <span>{pad.id + 1}</span>
+              {!tower && <span>{pad.id + 1}</span>}
             </button>
           );
         })}
@@ -1517,17 +1592,24 @@ export function Battlefield({
           data-sf-minimap
           viewBox={`${bounds.x} ${bounds.y} ${bounds.width} ${bounds.height}`}
           role="img"
-          aria-label="战场小地图，点击定位"
-          onClick={(event) => {
-            const svg = event.currentTarget;
-            const point = svg.createSVGPoint();
-            point.x = event.clientX;
-            point.y = event.clientY;
-            const matrix = svg.getScreenCTM();
-            if (matrix) {
-              const world = point.matrixTransform(matrix.inverse());
-              focus({ x: world.x, y: world.y });
-            }
+          aria-label="战场小地图，点击或拖动定位"
+          onPointerDown={(event) => {
+            if (event.button !== 0) return;
+            event.preventDefault();
+            event.currentTarget.setPointerCapture(event.pointerId);
+            navigateMinimap(event);
+          }}
+          onPointerMove={(event) => {
+            if (event.currentTarget.hasPointerCapture(event.pointerId))
+              navigateMinimap(event);
+          }}
+          onPointerUp={(event) => {
+            if (event.currentTarget.hasPointerCapture(event.pointerId))
+              event.currentTarget.releasePointerCapture(event.pointerId);
+          }}
+          onPointerCancel={(event) => {
+            if (event.currentTarget.hasPointerCapture(event.pointerId))
+              event.currentTarget.releasePointerCapture(event.pointerId);
           }}
         >
           <rect
@@ -1600,9 +1682,9 @@ export function Battlefield({
           />
         </svg>
         <p>
-          拖动战场 · 双指缩放
+          拖动战场 · 滚轮／双指缩放
           <br />
-          点击小地图或入口定位
+          小地图可拖动 · 入口可定位
           {preview ? (
             <>
               <br />

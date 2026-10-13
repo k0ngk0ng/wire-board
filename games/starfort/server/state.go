@@ -109,16 +109,17 @@ type WaveInfo struct {
 	Boss        bool   `json:"boss"`
 }
 type Event struct {
-	ID     int     `json:"id"`
-	Type   string  `json:"type"`
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	ToX    float64 `json:"toX,omitempty"`
-	ToY    float64 `json:"toY,omitempty"`
-	Kind   string  `json:"kind,omitempty"`
-	Owner  int     `json:"owner"`
-	Amount float64 `json:"amount,omitempty"`
-	Tick   int64   `json:"tick"`
+	TargetID int     `json:"targetId,omitempty"`
+	ID       int     `json:"id"`
+	Type     string  `json:"type"`
+	X        float64 `json:"x"`
+	Y        float64 `json:"y"`
+	ToX      float64 `json:"toX,omitempty"`
+	ToY      float64 `json:"toY,omitempty"`
+	Kind     string  `json:"kind,omitempty"`
+	Owner    int     `json:"owner"`
+	Amount   float64 `json:"amount,omitempty"`
+	Tick     int64   `json:"tick"`
 }
 type State struct {
 	Options        Options  `json:"options"`

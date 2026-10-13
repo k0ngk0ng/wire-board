@@ -41,6 +41,12 @@ def run(args, log):
         subprocess.run(args, cwd=root, env=env, stdout=f, stderr=subprocess.STDOUT, check=True)
 
 def b(*args):
+    if args[0] in ['click','select','fill']:
+        target=json.dumps(args[1])
+        if js('(()=>{const d=document.querySelector("[role=dialog]"),e=document.querySelector('+target+');return !!d&&!!e&&!d.contains(e)})()'):
+            b('click','[role=dialog] [aria-label="关闭"]')
+        summaries=js('(()=>{let e=document.querySelector('+target+'),a=[];for(let p=e?.parentElement;p;p=p.parentElement)if(p.tagName==="DETAILS"&&!p.open&&p.querySelector(":scope > summary")!==e){const id="accept-detail-"+a.length;p.dataset.acceptDetail=id;a.push("[data-accept-detail="+id+"] > summary")}return a.reverse()})()')
+        for summary in summaries: b('click',summary)
     if args[0]=='click':
         selector=json.dumps(args[1])
         b('wait','--fn',f'(()=>{{const e=document.querySelector({selector});return !!e&&!e.disabled}})()')

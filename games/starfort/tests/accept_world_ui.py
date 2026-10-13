@@ -20,7 +20,7 @@ import urllib.request
 import uuid
 
 ROOT = Path(__file__).resolve().parents[3]
-OUT = ROOT / '.local/starfort-world/browser'
+OUT = ROOT / os.environ.get('WIRE_BOARD_STARFORT_BROWSER_OUT', '.local/starfort-world/browser')
 OUT.mkdir(parents=True, exist_ok=True)
 ENV = dict(os.environ)
 for key, relative in {'GOCACHE': '.local/go-build', 'GOMODCACHE': '.local/go-mod', 'GOTMPDIR': '.local/tmp', 'TMPDIR': '.local/tmp', 'npm_config_cache': '.local/npm', 'AGENT_BROWSER_SOCKET_DIR': '.local/ab-starfort-world'}.items():
@@ -58,6 +58,11 @@ def run(args, log):
 
 
 def b(*args):
+    if args[0] in ['select','fill']:
+        selector=json.dumps(args[1])
+        wait('!!document.querySelector('+selector+')')
+        summaries=js('(()=>{let e=document.querySelector('+selector+'),a=[];for(let p=e.parentElement;p;p=p.parentElement)if(p.tagName==="DETAILS"&&!p.open){const id="accept-detail-"+a.length;p.dataset.acceptDetail=id;a.push("[data-accept-detail="+id+"] > summary")}return a.reverse()})()')
+        for summary in summaries: b('click',summary)
     if args[:2] == ('mouse', 'move'):
         args = ('mouse', 'move', str(round(float(args[2]))), str(round(float(args[3]))))
     started = time.monotonic()
@@ -75,8 +80,21 @@ def js(code): return b('eval', code)['result']
 def wait(code): b('wait', '--fn', code)
 
 def click(selector):
+    if ('data-sf-route-choice' in selector or 'data-sf-boon-choice' in selector) and not js('!!document.querySelector('+json.dumps(selector)+')'):
+        b('click','[data-sf-open-choice]')
+    if js('(()=>{const d=document.querySelector("[role=dialog]"),e=document.querySelector('+json.dumps(selector)+');return !!d&&!!e&&!d.contains(e)})()'):
+        b('click','[role=dialog] [aria-label="关闭"]')
     wait('(()=>{const e=document.querySelector(' + json.dumps(selector) + ');return !!e&&!e.disabled})()')
-    b('scrollintoview', selector)
+    summaries=js('(()=>{let e=document.querySelector('+json.dumps(selector)+'),a=[];for(let p=e?.parentElement;p;p=p.parentElement)if(p.tagName==="DETAILS"&&!p.open){const id="accept-detail-"+a.length;p.dataset.acceptDetail=id;a.push("[data-accept-detail="+id+"] > summary")}return a.reverse()})()')
+    for summary in summaries: b('click',summary)
+    if selector.startswith('[data-sf-pad=') and js('document.querySelector('+json.dumps(selector)+').hidden'):
+        pad_id=int(js('document.querySelector('+json.dumps(selector)+').dataset.sfPad'))
+        pad=next(p for p in data()['map']['pads'] if p['id']==pad_id)
+        b('scrollintoview','[data-sf-minimap]')
+        point=js('(()=>{const e=document.querySelector("[data-sf-minimap]"),p=e.createSVGPoint();p.x='+str(pad['x'])+';p.y='+str(pad['y'])+';const r=p.matrixTransform(e.getScreenCTM());return {x:r.x,y:r.y}})()')
+        mouse_click(point['x'],point['y'])
+        wait('!document.querySelector('+json.dumps(selector)+').hidden')
+    b('scrollintoview', '[data-starfort-canvas]' if selector.startswith('[data-sf-pad=') else selector)
     b('click', selector)
 
 
@@ -152,6 +170,7 @@ def scenario(name, players=1, mode='endless'):
 
 
 def checkpoint(name, state=True):
+    wait('[...document.querySelectorAll(".modal")].every(e=>getComputedStyle(e).opacity==="1")')
     assert not b('errors')['errors'], b('errors')
     assert js('document.documentElement.scrollWidth<=innerWidth+2'), 'horizontal overflow: ' + name
     assert js('[...document.images].every(i=>!i.complete||i.naturalWidth>0)'), 'broken images: ' + name
@@ -216,6 +235,7 @@ def preview_proof(choice):
     proof = []
     for option in choice['options']:
         selector = f'[data-sf-route-choice="{option["id"]}"]'
+        if not js('!!document.querySelector("[role=dialog]")'): click('[data-sf-open-choice]')
         found = js('(()=>{const a=document.querySelector(' + json.dumps(selector) + ').closest(".sf-choice-card");return {routes:[...a.querySelectorAll("polyline")].map(e=>e.getAttribute("points")),circles:[...a.querySelectorAll("svg circle")].map(e=>[+e.getAttribute("cx"),+e.getAttribute("cy")]),facts:a.querySelector(".sf-choice-facts").textContent}})()')
         expected = [' '.join(f'{p["x"]},{p["y"]}' for p in route['points']) for route in option['map']['routes']]
         assert found['routes'] == expected, (option['id'], found, expected)
@@ -322,6 +342,7 @@ def overview_checks(name):
 
 
 def camera_checks(name):
+    if js('!!document.querySelector("[role=dialog]")'): click('[role=dialog] [aria-label="关闭"]')
     initial_selected=js('document.querySelector(".sf-pad-selected")?.dataset.sfPad ?? null')
     b('scrollintoview', '[data-starfort-canvas]')
     click('[data-sf-fit]'); cfit = camera()
@@ -339,7 +360,7 @@ def camera_checks(name):
     assert js('document.querySelector(".sf-pad-selected")?.dataset.sfPad ?? null')==initial_selected, 'drag accidentally selected/build a pad'
     value = data(); assert len(value['towers'])>0
     # Actual mouse hit at world-transformed coordinate must select that pad.
-    visible = js('[...document.querySelectorAll("[data-sf-pad]")].filter(e=>{const r=e.getBoundingClientRect();return !e.hidden&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest("[data-sf-pad]")===e}).map(e=>({id:+e.dataset.sfPad,r:e.getBoundingClientRect().toJSON()}))')
+    visible = js('[...document.querySelectorAll("[data-sf-pad]")].filter(e=>{const r=e.getBoundingClientRect();return !e.hidden&&!e.classList.contains("sf-pad-occupied")&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest("[data-sf-pad]")===e}).map(e=>({id:+e.dataset.sfPad,r:e.getBoundingClientRect().toJSON()}))')
     assert visible, 'all pads disappeared after pan'
     hit = visible[0]; pad = next(p for p in value['map']['pads'] if p['id']==hit['id'])
     expected_x = (pad['x']-end['x'])*end['zoom']+end['width']/2+end['left']
@@ -349,19 +370,21 @@ def camera_checks(name):
     time.sleep(.35)
     mouse_click(expected_x, expected_y)
     wait('document.querySelector(".sf-pad-selected")?.dataset.sfPad===' + json.dumps(str(hit['id'])))
-    # Release a real drag over a visible pad; it must not change selection.
+    click('[role=dialog] [aria-label=关闭]')
+    # Release a real drag over a visible pad; it must not select or build.
     c = camera(); x,y=c['left']+c['width']*.6,c['top']+c['height']*.6
     b('mouse','move',x,y);b('mouse','down');b('mouse','move',x-65,y-35)
     visible = js('[...document.querySelectorAll("[data-sf-pad]")].filter(e=>!e.hidden&&e.dataset.sfPad!==' + json.dumps(str(hit['id'])) + ').map(e=>({id:e.dataset.sfPad,r:e.getBoundingClientRect().toJSON()}))')
     if visible:
         r=visible[0]['r'];b('mouse','move',r['x']+r['width']/2,r['y']+r['height']/2)
     b('mouse','up')
-    assert js('document.querySelector(".sf-pad-selected")?.dataset.sfPad')==str(hit['id']), 'drag release changed/builds selected pad'
+    assert js('document.querySelector(".sf-pad-selected")?.dataset.sfPad ?? null') is None, 'drag release selected/builds a pad'
     assert tower_identity(data())==tower_identity(value), 'drag mutated towers'
     last=value['map']['routes'][-1]
     click(f'[data-sf-entry="{last["id"]}"]'); centry=camera()
     click('[data-sf-camera-base]'); cbase=camera()
     assert math.hypot(centry['x']-cbase['x'],centry['y']-cbase['y'])>30, 'entry/base jump did not move camera'
+    click('.sf-entry-menu > summary')
     b('scrollintoview','[data-sf-minimap]')
     point = js('(()=>{const e=document.querySelector("[data-sf-minimap]"),p=e.createSVGPoint();p.x=' + str(last['points'][0]['x']) + ';p.y=' + str(last['points'][0]['y']) + ';const r=p.matrixTransform(e.getScreenCTM());return {x:r.x,y:r.y}})()')
     mouse_click(point['x'],point['y']); cmini=camera()
@@ -376,214 +399,221 @@ def camera_checks(name):
     artifact(name+'.camera-transforms.json', {'fit':cfit,'zoomIn':cin,'zoomOut':cout,'beforeDrag':start,'afterDrag':end,'padHit':hit,'entry':centry,'base':cbase,'minimap':cmini,'beforeSyntheticPinch':cp,'afterSyntheticPinch':pinch})
 
 
-try:
-    if '--skip-build' not in sys.argv: run(['npm','--prefix','web','run','build'],'build.log')
-    SOURCE_START=source_hashes()
-    for name in ['url','stop']: (OUT/name).unlink(missing_ok=True)
-    with (OUT/'server.log').open('w') as handle:
-        SERVER=subprocess.Popen(['go','test','-count=1','-timeout=20m','-run','^TestStarfortBrowserFixture$','./games/starfort/tests'],cwd=ROOT,env=ENV,stdout=handle,stderr=subprocess.STDOUT)
-    deadline=time.monotonic()+120
-    while not (OUT/'url').exists():
-        if SERVER.poll() is not None or time.monotonic()>deadline: raise RuntimeError('fixture failed: see server.log')
-        time.sleep(.1)
-    BASE=(OUT/'url').read_text()
-    PEERS=[Peer('扩展同伴'+str(index)) for index in range(1,4)]
-    SPECTATOR=Peer('扩展观战者')
-    b('open',BASE);OPENED=True
-    api('/register',{'name':MAIN,'password':'starfort-browser-test','invite':'starfort-browser'})
-    b('reload');b('wait','.game-selection')
-    assert 'starfort' not in api('/state')['availableGames']
-    api('/rooms',{'kind':'starfort','name':'默认下架','capacity':1},403)
-    login('上架管理员');label('管理后台');b('wait','input[aria-label="搜索管理游戏"]')
-    b('fill','input[aria-label="搜索管理游戏"]','星垒');click('.admin-game-card button');b('wait','[role=dialog]');label('确认操作')
-    wait('document.querySelector(".admin-game-card")?.textContent.includes("已上架")')
-    checkpoint('admin-published',False)
-    login(MAIN)
+def main():
+    global SOURCE_START, SERVER, BASE, PEERS, SPECTATOR, OPENED
+    try:
+        if '--skip-build' not in sys.argv: run(['npm','--prefix','web','run','build'],'build.log')
+        SOURCE_START=source_hashes()
+        for name in ['url','stop']: (OUT/name).unlink(missing_ok=True)
+        with (OUT/'server.log').open('w') as handle:
+            SERVER=subprocess.Popen(['go','test','-count=1','-timeout=20m','-run','^TestStarfortBrowserFixture$','./games/starfort/tests'],cwd=ROOT,env=ENV,stdout=handle,stderr=subprocess.STDOUT)
+        deadline=time.monotonic()+120
+        while not (OUT/'url').exists():
+            if SERVER.poll() is not None or time.monotonic()>deadline: raise RuntimeError('fixture failed: see server.log')
+            time.sleep(.1)
+        BASE=(OUT/'url').read_text()
+        PEERS=[Peer('扩展同伴'+str(index)) for index in range(1,4)]
+        SPECTATOR=Peer('扩展观战者')
+        b('open',BASE);OPENED=True
+        api('/register',{'name':MAIN,'password':'starfort-browser-test','invite':'starfort-browser'})
+        b('reload');b('wait','.game-selection')
+        assert 'starfort' not in api('/state')['availableGames']
+        api('/rooms',{'kind':'starfort','name':'默认下架','capacity':1},403)
+        login('上架管理员');label('管理后台');b('wait','input[aria-label="搜索管理游戏"]')
+        b('fill','input[aria-label="搜索管理游戏"]','星垒');click('.admin-game-card button');b('wait','[role=dialog]');label('确认操作')
+        wait('document.querySelector(".admin-game-card")?.textContent.includes("已上架")')
+        checkpoint('admin-published',False)
+        login(MAIN)
 
-    # Four real players choose after wave 5; inspect all previews while paused,
-    # then click each player's votes through the actual DOM on their account.
-    scenario('growth-vote',4)
-    b('wait','[data-sf-route-choice]'); original=data(); old_towers=tower_identity(original)
-    option=original['world']['choice']['options'][1]
-    click(f'[data-sf-route-choice="{option["id"]}"]');click('[data-sf-boon-choice="reach"]')
-    assert data()['world']['choice']['votes'][0]==option['id']
-    pause_all(4)
-    preview_proof(original['world']['choice'])
-    assert js('[...document.querySelectorAll("[data-sf-route-choice],[data-sf-boon-choice],[data-sf-ready]")].every(e=>e.disabled)')
-    assert '秒后出波' not in js('document.querySelector(".sf-wave-banner").textContent')
-    b('set','viewport','320','844');resources('growth-mobile');checkpoint('growth-preview-mobile')
-    paused=data();b('reload');b('wait','.starfort-board')
-    assert data()['world']['choice']['votes']==paused['world']['choice']['votes']
-    assert data()['world']['map']==paused['world']['map']
-    wait('document.querySelector("[data-sf-route-choice='+option['id']+']")?.getAttribute("aria-pressed")==="true"')
-    watched=room()['id'];SPECTATOR.api('/rooms/'+watched+'/watch',{})
-    login(SPECTATOR.name);b('wait','.starfort-board')
-    assert js('[...document.querySelectorAll("[data-sf-route-choice],[data-sf-boon-choice],[data-sf-objective]")].every(e=>e.disabled)')
-    resources('spectator-growth-mobile');checkpoint('spectator-growth-readonly')
-    login(MAIN);b('wait','.starfort-board');SPECTATOR.api('/rooms/'+watched+'/watch',{'leave':True})
-    resume_all(4)
-    assert js('document.querySelector("[data-sf-ready]").disabled')
-    for index,peer in enumerate(PEERS):
-        login(peer.name);b('wait','.starfort-board')
-        chosen=original['world']['choice']['options'][0]['id'] if index==0 else option['id']
-        click(f'[data-sf-route-choice="{chosen}"]')
-        click('[data-sf-boon-choice="'+('power' if index==0 else 'reach')+'"]')
-    expanded=data();assert expanded['world']['choice'] is None and expanded['world']['boonChoice'] is None
-    assert expanded['world']['stage']==2 and expanded['world']['boons']['reach']==1
-    assert expanded['map']['routes']==option['map']['routes']
-    assert tower_identity(expanded)==old_towers
-    assert expanded['nextAt']-expanded['serverAt']>=35000, 'choices did not renew preparation time'
-    artifact('growth-vote-proof.json',{'before':original,'paused':paused,'after':expanded})
-    login(MAIN);b('wait','.starfort-board');pause_all(4)
-    b('set','viewport','1440','1000');checkpoint('growth-majority-preserved-tower')
+        # Four real players choose after wave 5; inspect all previews while paused,
+        # then click each player's votes through the actual DOM on their account.
+        scenario('growth-vote',4)
+        b('wait','[data-sf-route-choice]'); original=data(); old_towers=tower_identity(original)
+        option=original['world']['choice']['options'][1]
+        click(f'[data-sf-route-choice="{option["id"]}"]');click('[data-sf-boon-choice="reach"]')
+        assert data()['world']['choice']['votes'][0]==option['id']
+        pause_all(4)
+        preview_proof(original['world']['choice'])
+        assert js('[...document.querySelectorAll("[data-sf-route-choice],[data-sf-boon-choice],[data-sf-ready]")].every(e=>e.disabled)')
+        assert '秒后出波' not in js('document.querySelector(".sf-wave-banner").textContent')
+        b('set','viewport','320','844');resources('growth-mobile');checkpoint('growth-preview-mobile')
+        paused=data();b('reload');b('wait','.starfort-board')
+        assert data()['world']['choice']['votes']==paused['world']['choice']['votes']
+        assert data()['world']['map']==paused['world']['map']
+        wait('document.querySelector("[data-sf-route-choice='+option['id']+']")?.getAttribute("aria-pressed")==="true"')
+        watched=room()['id'];SPECTATOR.api('/rooms/'+watched+'/watch',{})
+        login(SPECTATOR.name);b('wait','.starfort-board')
+        assert js('[...document.querySelectorAll("[data-sf-route-choice],[data-sf-boon-choice],[data-sf-objective]")].every(e=>e.disabled)')
+        resources('spectator-growth-mobile');checkpoint('spectator-growth-readonly')
+        login(MAIN);b('wait','.starfort-board');SPECTATOR.api('/rooms/'+watched+'/watch',{'leave':True})
+        resume_all(4)
+        assert js('document.querySelector("[data-sf-ready]").disabled')
+        for index,peer in enumerate(PEERS):
+            login(peer.name);b('wait','.starfort-board')
+            chosen=original['world']['choice']['options'][0]['id'] if index==0 else option['id']
+            click(f'[data-sf-route-choice="{chosen}"]')
+            click('[data-sf-boon-choice="'+('power' if index==0 else 'reach')+'"]')
+        expanded=data();assert expanded['world']['choice'] is None and expanded['world']['boonChoice'] is None
+        assert expanded['world']['stage']==2 and expanded['world']['boons']['reach']==1
+        assert expanded['map']['routes']==option['map']['routes']
+        assert tower_identity(expanded)==old_towers
+        assert expanded['nextAt']-expanded['serverAt']>=35000, 'choices did not renew preparation time'
+        artifact('growth-vote-proof.json',{'before':original,'paused':paused,'after':expanded})
+        login(MAIN);b('wait','.starfort-board');pause_all(4)
+        b('set','viewport','1440','1000');checkpoint('growth-majority-preserved-tower')
 
-    # All expanded sizes, entrances, special enemy artwork and native draws.
-    for stage,ratio in [(2,1.5),(3,2.0),(4,3.0)]:
-        state=scenario('stage'+str(stage),4)
-        actual=state['map']['width']*state['map']['height']/(960*640)
-        assert abs(actual-ratio)<.03, (stage,actual)
-        assert len(state['map']['routes'])>=stage
-        b('set','viewport','1440','1000');click('[data-sf-fit]')
-        if js('document.querySelector("[data-starfort-canvas]").dataset.overview')=='true':
-            checkpoint('stage'+str(stage)+'-desktop-overview')
-            click('[data-sf-entry=main]')
-        movement_proof('stage'+str(stage));checkpoint('stage'+str(stage)+'-desktop')
-    state=data()
-    for event in state['world']['forecast']:
-        assert event['label'] in js('document.querySelector(".sf-event-forecast").textContent')
-        assert str(event['wave']) in js('document.querySelector(".sf-event-forecast").textContent')
-    assert state['world']['event']['description'] in js('document.querySelector("[data-sf-wave-event]").textContent')
-    overview_checks('desktop')
-    camera_checks('desktop')
-    b('set','viewport','320','844');resources('stage4-mobile');overview_checks('mobile');camera_checks('mobile');checkpoint('stage4-mobile-navigate')
-    click('[data-sf-fit]');checkpoint('stage4-mobile-full-map')
-    saved=data();b('reload');b('wait','.starfort-board')
-    restored=data();assert restored['world']['seed']==saved['world']['seed'] and restored['map']==saved['map']
-    assert js('document.querySelector("[data-sf-camera-base]")&&!document.querySelector("[data-sf-camera-base]").disabled')
-    click('[data-sf-camera-base]');checkpoint('reload-expanded-world')
+        # All expanded sizes, entrances, special enemy artwork and native draws.
+        for stage,ratio in [(2,1.5),(3,2.0),(4,3.0)]:
+            state=scenario('stage'+str(stage),4)
+            actual=state['map']['width']*state['map']['height']/(960*640)
+            assert abs(actual-ratio)<.03, (stage,actual)
+            assert len(state['map']['routes'])>=stage
+            b('set','viewport','1440','1000');click('[data-sf-fit]')
+            if js('document.querySelector("[data-starfort-canvas]").dataset.overview')=='true':
+                checkpoint('stage'+str(stage)+'-desktop-overview')
+                click('[data-sf-entry=main]')
+            movement_proof('stage'+str(stage));checkpoint('stage'+str(stage)+'-desktop')
+        state=data()
+        for event in state['world']['forecast']:
+            assert event['label'] in js('document.querySelector(".sf-event-forecast").textContent')
+            assert str(event['wave']) in js('document.querySelector(".sf-event-forecast").textContent')
+        assert state['world']['event']['description'] in js('document.querySelector("[data-sf-wave-event]").textContent')
+        overview_checks('desktop')
+        camera_checks('desktop')
+        b('set','viewport','320','844');resources('stage4-mobile');overview_checks('mobile');camera_checks('mobile');checkpoint('stage4-mobile-navigate')
+        click('[data-sf-fit]');checkpoint('stage4-mobile-full-map')
+        saved=data();b('reload');b('wait','.starfort-board')
+        restored=data();assert restored['world']['seed']==saved['world']['seed'] and restored['map']==saved['map']
+        assert js('document.querySelector("[data-sf-camera-base]")&&!document.querySelector("[data-sf-camera-base]").disabled')
+        click('[data-sf-camera-base]');checkpoint('reload-expanded-world')
 
-    # Ownership and actual server-computed tower stats are presented verbatim.
-    b('set','viewport','1440','1000');click('[data-sf-entry=main]')
-    own=next(t for t in data()['towers'] if t['owner']==0)
-    click('[data-sf-pad="'+str(own['pad'])+'"]');b('select','[data-sf-target]','support')
-    wait('document.querySelector("[data-sf-target]")?.value==="support"')
-    own=next(t for t in data()['towers'] if t['id']==own['id']);assert own['priority']=='support'
-    stats=js('[...document.querySelectorAll(".sf-tower-stats dd")].map(e=>e.textContent)')
-    expected=[str(round(own['effectiveDamage'],1)).removesuffix('.0'),str(round(own['effectiveRange'],1)).removesuffix('.0'),f'{own["effectiveInterval"]/1000:.2f} 秒']
-    assert stats==expected,(stats,expected)
-    other=next(t for t in data()['towers'] if t['owner']!=0)
-    click('[data-sf-pad="'+str(other['pad'])+'"]');assert js('document.querySelector("[data-sf-target]").disabled')
-    checkpoint('tower-ownership-effective-stats')
-    watched=room()['id'];SPECTATOR.api('/rooms/'+watched+'/watch',{})
-    login(SPECTATOR.name);b('wait','.starfort-board');click('[data-sf-entry=main]');click('[data-sf-pad="'+str(own['pad'])+'"]')
-    assert js('document.querySelector("[data-sf-target]").disabled')
-    checkpoint('spectator-tower-priority-readonly')
-    login(MAIN);b('wait','.starfort-board');SPECTATOR.api('/rooms/'+watched+'/watch',{'leave':True})
+        # Ownership and actual server-computed tower stats are presented verbatim.
+        b('set','viewport','1440','1000');click('[data-sf-entry=main]')
+        own=next(t for t in data()['towers'] if t['owner']==0)
+        click('[data-sf-pad="'+str(own['pad'])+'"]');b('select','[data-sf-target]','support')
+        wait('document.querySelector("[data-sf-target]")?.value==="support"')
+        own=next(t for t in data()['towers'] if t['id']==own['id']);assert own['priority']=='support'
+        stats=js('[...document.querySelectorAll(".sf-tower-stats dd")].map(e=>e.textContent)')
+        expected=[str(round(own['effectiveDamage'],1)).removesuffix('.0'),str(round(own['effectiveRange'],1)).removesuffix('.0'),f'{own["effectiveInterval"]/1000:.2f} 秒']
+        assert stats==expected,(stats,expected)
+        other=next(t for t in data()['towers'] if t['owner']!=0)
+        click('[data-sf-pad="'+str(other['pad'])+'"]');assert js('document.querySelector("[data-sf-target]").disabled')
+        checkpoint('tower-ownership-effective-stats')
+        watched=room()['id'];SPECTATOR.api('/rooms/'+watched+'/watch',{})
+        login(SPECTATOR.name);b('wait','.starfort-board');click('[data-sf-entry=main]');click('[data-sf-pad="'+str(own['pad'])+'"]')
+        assert js('document.querySelector("[data-sf-target]").disabled')
+        checkpoint('spectator-tower-priority-readonly')
+        login(MAIN);b('wait','.starfort-board');SPECTATOR.api('/rooms/'+watched+'/watch',{'leave':True})
 
-    # Mission costs, active progress, success and failure use production actions
-    # and timers. Only preceding combat is skipped by the explicitly named fixture.
-    state=scenario('objectives',2)
-    pause_all(2)
-    assert js('[...document.querySelectorAll("[data-sf-objective]")].every(e=>e.disabled)'), 'paused objectives remain actionable'
-    resume_all(2)
-    b('select','select[aria-label="接收金币的队友"]','1')
-    b('fill','input[aria-label="赠予金币数量"]',str(state['players'][0]['gold']))
-    click('[data-sf-gift]')
-    wait('[...document.querySelectorAll("[data-sf-objective]")].every(e=>e.disabled)')
-    assert data()['players'][0]['gold']==0
-    b('set','viewport','320','844');resources('objectives-insufficient-gold')
-    checkpoint('objectives-paused-and-insufficient-gold')
-    watched=room()['id'];SPECTATOR.api('/rooms/'+watched+'/watch',{})
-    login(SPECTATOR.name);b('wait','.starfort-board')
-    assert js('[...document.querySelectorAll("[data-sf-objective]")].every(e=>e.disabled)')
-    checkpoint('spectator-objectives-readonly')
-    login(MAIN);b('wait','.starfort-board');SPECTATOR.api('/rooms/'+watched+'/watch',{'leave':True})
-    b('set','viewport','1440','1000')
-    state=scenario('objectives-clear')
-    objectives=state['world']['objectives'];assert {o['kind'] for o in objectives}>={'mine','beacon','convoy'}
-    gold=state['players'][0]['gold']
-    for objective in objectives:
-        if objective['status']!='available':continue
-        selector='[data-sf-objective="'+objective['id']+'"]'
-        assert str(objective['cost']) in js('document.querySelector('+json.dumps(selector)+').textContent')
-        click(selector);gold-=objective['cost'];assert data()['players'][0]['gold']==gold
-    assert all(o['status']=='active' for o in data()['world']['objectives'])
-    checkpoint('objectives-cost-and-active')
-    click('[data-sf-ready]');wait('document.querySelector(".starfort-board").dataset.phase==="prepare"&&document.querySelectorAll("[data-sf-objective-state=completed]").length>=2')
-    first=data();assert all(o['status']=='completed' for o in first['world']['objectives'] if o['kind']!='convoy')
-    assert next(o for o in first['world']['objectives'] if o['kind']=='convoy')['status']=='active'
-    convoy=next(o for o in first['world']['objectives'] if o['kind']=='convoy')
-    assert convoy['progress']>0 and convoy['hp']>0
-    assert '护送进度' in js('document.querySelector(".sf-objective-progress").textContent')
-    assert js('document.querySelectorAll("[data-sf-objective-health]").length')==len(first['world']['objectives'])
-    checkpoint('objectives-one-wave-progress')
-    click('[data-sf-ready]');wait('[...document.querySelectorAll("[data-sf-objective-state]")].every(e=>e.dataset.sfObjectiveState==="completed")')
-    completed=data();assert completed['baseHP']==24 and all(o['status']=='completed' for o in completed['world']['objectives'])
-    checkpoint('objectives-rewards-completed')
-    # A separate unshortened battle proves the new moving objective is drawn
-    # continuously on its server route and preserves progress on reconnect.
-    state=scenario('objectives')
-    convoy=next(o for o in state['world']['objectives'] if o['kind']=='convoy')
-    click('[data-sf-objective="'+convoy['id']+'"]');click('[data-sf-ready]')
-    wait('document.querySelector(".starfort-board").dataset.phase==="battle"')
-    click('[data-sf-entry="'+convoy['route']+'"]')
-    before=data();instrument_draws()
-    cart=json.loads((ROOT/'games/starfort/assets/public/starfort/world-v2/atlas.json').read_text())['frames']['prop-cart']
-    cart_filter='d=>d.src.includes("/world-v2/")&&d.sx==='+str(cart['x'])+'&&d.sy==='+str(cart['y'])
-    wait('(()=>{const a=window.__worldDraws.filter('+cart_filter+');return a.length>20&&new Set(a.map(d=>d.x.toFixed(3))).size>20&&Math.abs(a.at(-1).x-a[0].x)>12})()')
-    draws=js('window.__worldDraws.filter('+cart_filter+')');after=data()
-    original=next(o for o in before['world']['objectives'] if o['id']==convoy['id'])
-    current=next(o for o in after['world']['objectives'] if o['id']==convoy['id'])
-    route=next(r for r in after['map']['routes'] if r['id']==current['route'])
-    distances=[min(segment_distance((d['x']+d['w']/2,d['y']+d['h']),a,z) for a,z in zip(route['points'],route['points'][1:])) for d in draws]
-    assert max(distances)<2 and current['progress']>original['progress'], 'convoy sprite off route or server motion frozen'
-    assert len({round(d['x'],3) for d in draws})>12, 'convoy jumps between snapshots without interpolation'
-    assert any(d['right']>0 and d['bottom']>0 and d['px']<d['cw'] and d['py']<d['ch'] for d in draws)
-    if ENV.get('WIRE_BOARD_STARFORT_ASSETS'):assert all(d['src'].startswith(ENV['WIRE_BOARD_STARFORT_ASSETS']) for d in draws)
-    # Pause is intentionally available only between waves. Reconnection during
-    # battle must retain the server's advancing objective, not replay its start.
-    saved=data();b('reload');b('wait','.starfort-board')
-    reconnected=data();restored_convoy=next(o for o in reconnected['world']['objectives'] if o['id']==convoy['id'])
-    saved_convoy=next(o for o in saved['world']['objectives'] if o['id']==convoy['id'])
-    assert restored_convoy['progress']>=saved_convoy['progress'] and restored_convoy['route']==saved_convoy['route'], 'reconnect reset convoy journey'
-    artifact('convoy-native-draws.json',{'before':before,'after':after,'draws':draws,'routeDistance':distances,'saved':saved,'reconnected':reconnected})
-    checkpoint('convoy-continuous-draw-reconnect')
-    state=scenario('objectives-fail')
-    click('[data-sf-objective]');click('[data-sf-ready]')
-    wait('!!document.querySelector("[data-sf-objective-state=failed]")');checkpoint('objective-failure-visible')
-    state=scenario('endless-rotation');assert state['wave']>20 and state['world']['stage']==4
-    active=[r['id'] for r in state['map']['routes'] if r['active']]
-    rendered=js('[...document.querySelectorAll("[data-sf-entry][data-active=true]")].map(e=>e.dataset.sfEntry)')
-    assert rendered==active and len(active)>=1
-    artifact('endless-routes.json',{'world':state['world'],'enemies':state['enemies'],'renderedActive':rendered})
-    checkpoint('endless-rotated-entrances')
-    scenario('victory-ready',mode='campaign');b('wait','.results')
-    assert js('[...document.querySelectorAll("[data-sf-ready],[data-sf-route-choice],[data-sf-boon-choice],[data-sf-objective],[data-sf-gift],[data-sf-pause]")].every(e=>e.disabled)')
-    checkpoint('ended-no-action-controls')
-    REPORT['passed']=True
-except Exception as error:
-    import traceback
-    traceback.print_exc();REPORT['error']=repr(error)
-    if OPENED:
-        try:
-            REPORT['snapshot']=b('snapshot','-i');REPORT['state']=api('/state');REPORT['errors']=b('errors')
-            b('screenshot',str(OUT/'failure.png'),'--full')
-        except Exception as diagnostic:REPORT['diagnosticError']=repr(diagnostic)
-finally:
-    if OPENED:
-        try:b('close')
-        except Exception:pass
-    if SERVER:
-        (OUT/'stop').write_text('stop')
-        try:SERVER.wait(timeout=15)
-        except subprocess.TimeoutExpired:SERVER.terminate();SERVER.wait(timeout=10)
-    REPORT['commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    REPORT['sourceSHA256']=source_hashes()
-    REPORT['sourceUnchangedDuringRun']=SOURCE_START==REPORT['sourceSHA256']
-    if SOURCE_START and not REPORT['sourceUnchangedDuringRun']:
-        REPORT['passed']=False;REPORT['sourceChangedDuringRun']=True
-    built=[ROOT/'web/dist/index.html']+list((ROOT/'web/dist/assets').glob('*.js'))+list((ROOT/'web/dist/assets').glob('*.css'))
-    REPORT['buildSHA256']={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in built if path.is_file()}
-    artifact('result.json',REPORT)
-    print('Artifact:',OUT/'result.json',flush=True)
-    if not REPORT['passed']:raise SystemExit(1)
+        # Mission costs, active progress, success and failure use production actions
+        # and timers. Only preceding combat is skipped by the explicitly named fixture.
+        state=scenario('objectives',2)
+        pause_all(2)
+        assert js('[...document.querySelectorAll("[data-sf-objective]")].every(e=>e.disabled)'), 'paused objectives remain actionable'
+        resume_all(2)
+        b('select','select[aria-label="接收金币的队友"]','1')
+        b('fill','input[aria-label="赠予金币数量"]',str(state['players'][0]['gold']))
+        click('[data-sf-gift]')
+        wait('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.players[0].gold===0)')
+        wait('[...document.querySelectorAll("[data-sf-objective]")].every(e=>e.disabled)')
+        assert data()['players'][0]['gold']==0
+        b('set','viewport','320','844');resources('objectives-insufficient-gold')
+        checkpoint('objectives-paused-and-insufficient-gold')
+        watched=room()['id'];SPECTATOR.api('/rooms/'+watched+'/watch',{})
+        login(SPECTATOR.name);b('wait','.starfort-board')
+        assert js('[...document.querySelectorAll("[data-sf-objective]")].every(e=>e.disabled)')
+        checkpoint('spectator-objectives-readonly')
+        login(MAIN);b('wait','.starfort-board');SPECTATOR.api('/rooms/'+watched+'/watch',{'leave':True})
+        b('set','viewport','1440','1000')
+        state=scenario('objectives-clear')
+        objectives=state['world']['objectives'];assert {o['kind'] for o in objectives}>={'mine','beacon','convoy'}
+        gold=state['players'][0]['gold']
+        for objective in objectives:
+            if objective['status']!='available':continue
+            selector='[data-sf-objective="'+objective['id']+'"]'
+            assert str(objective['cost']) in js('document.querySelector('+json.dumps(selector)+').textContent')
+            click(selector);gold-=objective['cost'];assert data()['players'][0]['gold']==gold
+        assert all(o['status']=='active' for o in data()['world']['objectives'])
+        checkpoint('objectives-cost-and-active')
+        click('[data-sf-ready]');wait('document.querySelector(".starfort-board").dataset.phase==="prepare"&&document.querySelectorAll("[data-sf-objective-state=completed]").length>=2')
+        first=data();assert all(o['status']=='completed' for o in first['world']['objectives'] if o['kind']!='convoy')
+        assert next(o for o in first['world']['objectives'] if o['kind']=='convoy')['status']=='active'
+        convoy=next(o for o in first['world']['objectives'] if o['kind']=='convoy')
+        assert convoy['progress']>0 and convoy['hp']>0
+        assert '护送进度' in js('document.querySelector(".sf-objective-progress").textContent')
+        assert js('document.querySelectorAll("[data-sf-objective-health]").length')==len(first['world']['objectives'])
+        checkpoint('objectives-one-wave-progress')
+        click('[data-sf-ready]');wait('[...document.querySelectorAll("[data-sf-objective-state]")].every(e=>e.dataset.sfObjectiveState==="completed")')
+        completed=data();assert completed['baseHP']==24 and all(o['status']=='completed' for o in completed['world']['objectives'])
+        checkpoint('objectives-rewards-completed')
+        # A separate unshortened battle proves the new moving objective is drawn
+        # continuously on its server route and preserves progress on reconnect.
+        state=scenario('objectives')
+        convoy=next(o for o in state['world']['objectives'] if o['kind']=='convoy')
+        click('[data-sf-objective="'+convoy['id']+'"]');click('[data-sf-ready]')
+        wait('document.querySelector(".starfort-board").dataset.phase==="battle"')
+        click('[data-sf-entry="'+convoy['route']+'"]')
+        before=data();instrument_draws()
+        cart=json.loads((ROOT/'games/starfort/assets/public/starfort/world-v2/atlas.json').read_text())['frames']['prop-cart']
+        cart_filter='d=>d.src.includes("/world-v2/")&&d.sx==='+str(cart['x'])+'&&d.sy==='+str(cart['y'])
+        wait('(()=>{const a=window.__worldDraws.filter('+cart_filter+');return a.length>20&&new Set(a.map(d=>d.x.toFixed(3))).size>20&&Math.abs(a.at(-1).x-a[0].x)>12})()')
+        draws=js('window.__worldDraws.filter('+cart_filter+')');after=data()
+        original=next(o for o in before['world']['objectives'] if o['id']==convoy['id'])
+        current=next(o for o in after['world']['objectives'] if o['id']==convoy['id'])
+        route=next(r for r in after['map']['routes'] if r['id']==current['route'])
+        distances=[min(segment_distance((d['x']+d['w']/2,d['y']+d['h']),a,z) for a,z in zip(route['points'],route['points'][1:])) for d in draws]
+        assert max(distances)<2 and current['progress']>original['progress'], 'convoy sprite off route or server motion frozen'
+        assert len({round(d['x'],3) for d in draws})>12, 'convoy jumps between snapshots without interpolation'
+        assert any(d['right']>0 and d['bottom']>0 and d['px']<d['cw'] and d['py']<d['ch'] for d in draws)
+        if ENV.get('WIRE_BOARD_STARFORT_ASSETS'):assert all(d['src'].startswith(ENV['WIRE_BOARD_STARFORT_ASSETS']) for d in draws)
+        # Pause is intentionally available only between waves. Reconnection during
+        # battle must retain the server's advancing objective, not replay its start.
+        saved=data();b('reload');b('wait','.starfort-board')
+        reconnected=data();restored_convoy=next(o for o in reconnected['world']['objectives'] if o['id']==convoy['id'])
+        saved_convoy=next(o for o in saved['world']['objectives'] if o['id']==convoy['id'])
+        assert restored_convoy['progress']>=saved_convoy['progress'] and restored_convoy['route']==saved_convoy['route'], 'reconnect reset convoy journey'
+        artifact('convoy-native-draws.json',{'before':before,'after':after,'draws':draws,'routeDistance':distances,'saved':saved,'reconnected':reconnected})
+        checkpoint('convoy-continuous-draw-reconnect')
+        state=scenario('objectives-fail')
+        click('[data-sf-objective]');click('[data-sf-ready]')
+        wait('!!document.querySelector("[data-sf-objective-state=failed]")');checkpoint('objective-failure-visible')
+        state=scenario('endless-rotation');assert state['wave']>20 and state['world']['stage']==4
+        active=[r['id'] for r in state['map']['routes'] if r['active']]
+        rendered=js('[...document.querySelectorAll("[data-sf-entry][data-active=true]")].map(e=>e.dataset.sfEntry)')
+        assert rendered==active and len(active)>=1
+        artifact('endless-routes.json',{'world':state['world'],'enemies':state['enemies'],'renderedActive':rendered})
+        checkpoint('endless-rotated-entrances')
+        scenario('victory-ready',mode='campaign');b('wait','.results')
+        assert js('[...document.querySelectorAll("[data-sf-ready],[data-sf-route-choice],[data-sf-boon-choice],[data-sf-objective],[data-sf-gift],[data-sf-pause]")].every(e=>e.disabled)')
+        checkpoint('ended-no-action-controls')
+        REPORT['passed']=True
+    except Exception as error:
+        import traceback
+        traceback.print_exc();REPORT['error']=repr(error)
+        if OPENED:
+            try:
+                REPORT['snapshot']=b('snapshot','-i');REPORT['state']=api('/state');REPORT['errors']=b('errors')
+                b('screenshot',str(OUT/'failure.png'),'--full')
+            except Exception as diagnostic:REPORT['diagnosticError']=repr(diagnostic)
+    finally:
+        if OPENED:
+            try:b('close')
+            except Exception:pass
+        if SERVER:
+            (OUT/'stop').write_text('stop')
+            try:SERVER.wait(timeout=15)
+            except subprocess.TimeoutExpired:SERVER.terminate();SERVER.wait(timeout=10)
+        REPORT['commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        REPORT['sourceSHA256']=source_hashes()
+        REPORT['sourceUnchangedDuringRun']=SOURCE_START==REPORT['sourceSHA256']
+        if SOURCE_START and not REPORT['sourceUnchangedDuringRun']:
+            REPORT['passed']=False;REPORT['sourceChangedDuringRun']=True
+        built=[ROOT/'web/dist/index.html']+list((ROOT/'web/dist/assets').glob('*.js'))+list((ROOT/'web/dist/assets').glob('*.css'))
+        REPORT['buildSHA256']={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest() for path in built if path.is_file()}
+        artifact('result.json',REPORT)
+        print('Artifact:',OUT/'result.json',flush=True)
+        if not REPORT['passed']:raise SystemExit(1)
+
+
+if __name__ == "__main__":
+    main()

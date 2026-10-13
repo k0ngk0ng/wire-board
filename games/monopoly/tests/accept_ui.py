@@ -29,6 +29,8 @@ for key, relative in {'GOCACHE': '.local/go-build', 'GOMODCACHE': '.local/go-mod
     path = root / relative
     path.mkdir(parents=True, exist_ok=True)
     env[key] = str(path)
+env['AGENT_BROWSER_PROFILE'] = str(out / 'profiles' / uuid.uuid4().hex[:8])
+Path(env['AGENT_BROWSER_PROFILE']).mkdir(parents=True, exist_ok=True)
 env.update(GOTOOLCHAIN='local', WIRE_BOARD_MONOPOLY_BROWSER='1', AGENT_BROWSER_SESSION='monopoly-ui-' + uuid.uuid4().hex[:8], AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
 report = {'passed': False, 'command': 'python3 -B games/monopoly/tests/accept_ui.py', 'scope': 'Real production UI; deterministic natural setup and explicit economic fixtures; browser muted', 'checks': []}
 server = None
@@ -309,6 +311,23 @@ try:
     assert js('document.querySelector(".mono-board-scroll").scrollWidth>document.querySelector(".mono-board-scroll").clientWidth'), 'zoom did not enlarge the board'
     checkpoint('natural-mobile-zoom')
     click('适应屏幕')
+    for width in [1366, 320]:
+        browser('set','viewport',str(width),'900')
+        browser('scrollintoview','.mono-board-scroll')
+        r=js('document.querySelector(".mono-board-scroll").getBoundingClientRect().toJSON()')
+        x,y=round(r['x']+r['width']/2),round(r['y']+r['height']/2)
+        before=js('document.querySelector(".mono-map").getBoundingClientRect().width')
+        browser('mouse','move',str(x),str(y))
+        subprocess.run(['node','scripts/browser_wheel.mjs',browser('get','cdp-url')['cdpUrl'],base,str(x),str(y),'-240'],cwd=root,env=env,check=True,timeout=15)
+        browser('wait','--fn','document.querySelector(".mono-map").getBoundingClientRect().width>'+str(before))
+        assert js('document.querySelector(".mono-map").getBoundingClientRect().width')>before
+        origin=js('(()=>{const e=document.querySelector(".mono-board-scroll");return [e.scrollLeft,e.scrollTop]})()')
+        browser('mouse','down');browser('mouse','move',str(x-45),str(y-25));browser('mouse','up')
+        moved=js('(()=>{const e=document.querySelector(".mono-board-scroll");return [e.scrollLeft,e.scrollTop]})()')
+        assert abs(moved[0]-origin[0])+abs(moved[1]-origin[1])>10, (origin,moved)
+        assert not js('!!document.querySelector("[role=dialog]")'), 'drag accidentally inspected property'
+        checkpoint('wheel-drag-'+str(width))
+        click('适应屏幕')
     finish()
 
     api('/rooms',dict(kind='monopoly',name='六人棋子辨识',capacity=6))
