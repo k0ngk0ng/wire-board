@@ -26,6 +26,6 @@ python3 -B scripts/poker/verify_oss.py
 
 源包的下载地址、哈希与许可证据见 `docs/research/playing-card-asset-sources.json`。准备脚本只读取具名压缩包成员；Nicu 包中的 `../svg` 不能直接解压到工作目录。
 
-渲染使用 `.local/starfort/rasterizer/node_modules/@resvg/resvg-js` 与 `cwebp`。成品在 `web/public/poker/v1/`，按原有公共素材发布流程收入前端产物。OSS 对象前缀为 `bga/v20261002-1/poker/v1/`；若更换已发布素材须新增不可变版本目录，不覆盖现有对象。浏览器优先使用平台 `assets` 地址，失败时回退到随应用发布的本地图片；封面回退到各游戏的 SVG 组件。
+渲染使用 `.local/starfort/rasterizer/node_modules/@resvg/resvg-js` 与 `cwebp`。牌面、牌背和音效在 `web/public/poker/v1/`，新版独立构图封面在 `web/public/poker/v2/covers/`，按原有公共素材发布流程收入前端产物。OSS 对象分别使用 `bga/v20261002-1/poker/v1/` 与 `bga/v20261002-1/poker/v2/covers/`；若更换已发布素材须新增不可变版本目录，不覆盖现有对象。浏览器优先使用平台 `assets` 地址，失败时回退到随应用发布的本地图片；封面回退到各游戏的 SVG 组件。
 
 音效使用平台 `BoardProps.audio`，遵循统一静音与设备媒体音量。首版使用洗牌、滑牌、落牌、收牌音效，不使用来源不明的商业游戏语音。

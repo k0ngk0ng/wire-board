@@ -2348,9 +2348,9 @@
       "license": "Project original",
       "source": "assets/poker/source/covers/doudizhu.svg",
       "input": "games/doudizhu/web/CoverArt.tsx",
-      "output": "web/public/poker/v1/covers/doudizhu.webp",
-      "sourceSHA256": "21af14be3b2e86875ffcbef7fadeea274867b51beb1228bebfe933ad45f717fb",
-      "sha256": "86a354952a11b86e0d81951dd04773d288538ba529041981f29f94e17f70e518",
+      "output": "web/public/poker/v2/covers/doudizhu.webp",
+      "sourceSHA256": "434dc0aaa8a09eee8bd949311007dcd45d2affa68e27b1079da3f65454c8a2cf",
+      "sha256": "0dedb35b51a476fd1189f94c95af2c80b0b1931010a1e19091f6abf0ca3879b1",
       "width": 1040,
       "height": 520
     },
@@ -2361,9 +2361,9 @@
       "license": "Project original",
       "source": "assets/poker/source/covers/guandan.svg",
       "input": "games/guandan/web/CoverArt.tsx",
-      "output": "web/public/poker/v1/covers/guandan.webp",
-      "sourceSHA256": "836777baa89a0e6c1834f0a9e7ae5d3f3bec0604121bf4f8ac5f9fd9b43ecce3",
-      "sha256": "16a222392c81575559a46af20533427e63eee020108637473686a311c51f6376",
+      "output": "web/public/poker/v2/covers/guandan.webp",
+      "sourceSHA256": "969cd9aadc525ec1ae013ad207842fd8a8f5381f4c6a5b5be385368d2e02548a",
+      "sha256": "309b71eaf872271e1cc54f97fa399c77faae646ea6ebef953ed1292bc886b871",
       "width": 1040,
       "height": 520
     },
@@ -2374,9 +2374,9 @@
       "license": "Project original",
       "source": "assets/poker/source/covers/shengji.svg",
       "input": "games/shengji/web/CoverArt.tsx",
-      "output": "web/public/poker/v1/covers/shengji.webp",
-      "sourceSHA256": "4203ce2cbeca1f6d1312850619ae89a9964a4c75a01604227141bd704769d8de",
-      "sha256": "aaf91b127eaa18d016020abf7a3801b10f51d43ab74dd3504ad700efcd917aa1",
+      "output": "web/public/poker/v2/covers/shengji.webp",
+      "sourceSHA256": "fd374955e0d8fadb81397e2308d2f0dff2d790df76996410ec4259841bd1c454",
+      "sha256": "240b5dc5b8500e90f296f7cdca7949f50886cc0da1522bc60dacbe2827229acb",
       "width": 1040,
       "height": 520
     }
