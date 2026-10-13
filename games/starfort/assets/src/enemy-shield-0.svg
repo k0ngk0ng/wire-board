@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="metal" x2=".7" y2="1"><stop stop-color="#a3bbc2"/><stop offset=".5" stop-color="#607a86"/><stop offset="1" stop-color="#344c5b"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#fff7c4" stop-opacity=".9"/><stop offset="1" stop-color="#fff7c4" stop-opacity="0"/></radialGradient>
+</defs>
+<g stroke-linejoin="round" stroke-linecap="round"><ellipse cx="64" cy="111" rx="42" ry="7" fill="#244435" opacity=".20"/><g transform="translate(0 0)" stroke="#334a49" stroke-width="3"><path d="M48 96L42 108M77 95L86 107" stroke="#576b77" stroke-width="10"/><path d="M42 60L83 60L92 99Q66 111 37 98Z" fill="#e1c698"/><path d="M20 65Q20 31 59 24Q100 22 109 65Q65 81 20 65Z" fill="#839bc3"/><path d="M31 52Q36 37 53 35" stroke="#b9cee6" stroke-width="6" fill="none"/><g fill="#d6e4e1" stroke="none"><ellipse cx="68" cy="43" rx="9" ry="7"/><ellipse cx="92" cy="58" rx="7" ry="5"/><ellipse cx="39" cy="59" rx="6" ry="4"/></g><g fill="#253d3d"><ellipse cx="55" cy="86" rx="3.4" ry="5"/><ellipse cx="75" cy="86" rx="3.4" ry="5"/></g><g fill="#fff5d9"><circle cx="56" cy="84" r="1.2"/><circle cx="76" cy="84" r="1.2"/></g><path d="M61 96q4 4 8 0" stroke="#39564d" stroke-width="2" fill="none"/><path d="M29 76L53 69L54 89Q53 104 41 111Q24 103 24 91Z" fill="#8bc9de" stroke="#4e7e99"/><polygon points="40.00,81.00 42.16,86.02 47.61,86.53 43.50,90.14 44.70,95.47 40.00,92.68 35.30,95.47 36.50,90.14 32.39,86.53 37.84,86.02" fill="#e3ffff" stroke="#6f9ea9" stroke-width="1.5" stroke-linejoin="round"/></g></g></svg>

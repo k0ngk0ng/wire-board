@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="metal" x2=".7" y2="1"><stop stop-color="#a3bbc2"/><stop offset=".5" stop-color="#607a86"/><stop offset="1" stop-color="#344c5b"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#fff7c4" stop-opacity=".9"/><stop offset="1" stop-color="#fff7c4" stop-opacity="0"/></radialGradient>
+</defs>
+<g stroke-linejoin="round" stroke-linecap="round"><circle cx="34" cy="29" r="25" fill="#a986d0" opacity=".18"/><circle cx="34" cy="29" r="17" fill="url(#magic)" stroke="#73568e" stroke-width="2"/><polygon points="34.00,16.00 37.51,24.16 46.36,24.98 39.69,30.85 41.64,39.52 34.00,34.98 26.36,39.52 28.31,30.85 21.64,24.98 30.49,24.16" fill="#ffeab7" stroke="#af83b4" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 45L6 55M17 48L15 58" stroke="#c6a3d9" stroke-width="3"/></g></svg>

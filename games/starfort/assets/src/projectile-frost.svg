@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="metal" x2=".7" y2="1"><stop stop-color="#a3bbc2"/><stop offset=".5" stop-color="#607a86"/><stop offset="1" stop-color="#344c5b"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#fff7c4" stop-opacity=".9"/><stop offset="1" stop-color="#fff7c4" stop-opacity="0"/></radialGradient>
+</defs>
+<g stroke-linejoin="round" stroke-linecap="round"><path d="M16 45L29 13L46 8L52 26L30 48L13 53Z" fill="url(#ice)" stroke="#598b9e" stroke-width="2"/><path d="M15 50L39 22L46 8M29 13L39 22L52 26" fill="none" stroke="#e7ffff" stroke-width="2"/></g></svg>

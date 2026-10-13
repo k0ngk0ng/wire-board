@@ -209,7 +209,9 @@ func (s *Server) runModuleTimer(room *Room, now time.Time) error {
 		return err
 	}
 	next.Version++
-	next.Updated, next.BotAt = now.Unix(), now.Add(900*time.Millisecond).UnixMilli()
+	// A recurring system clock must not postpone an already scheduled bot.
+	// The bot scheduler keeps its own pacing after an actual player decision.
+	next.Updated = now.Unix()
 	snapshot, err := json.Marshal(&next)
 	if err != nil {
 		return err
@@ -264,19 +266,26 @@ func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 		}
 	}
 	actor := -1
+	var action json.RawMessage
 	for _, candidate := range actors {
-		if next.Seats[candidate].computerControlled() {
-			actor = candidate
-			break
+		if !next.Seats[candidate].computerControlled() {
+			continue
 		}
+		proposal, err := m.BotAction(moduleContext(&next, candidate, next.Version, now), *next.Module)
+		if err != nil {
+			log.Printf("module bot room %s: %v", room.ID, err)
+			return
+		}
+		if proposal == nil {
+			continue
+		}
+		actor, action = candidate, proposal
+		break
 	}
 	if actor < 0 {
 		return
 	}
-	action, err := m.BotAction(moduleContext(&next, actor, next.Version, now), *next.Module)
-	if err == nil {
-		err = s.applyModule(&next, actor, next.Version, action, now)
-	}
+	err = s.applyModule(&next, actor, next.Version, action, now)
 	if err != nil {
 		log.Printf("module bot room %s: %v", room.ID, err)
 		return

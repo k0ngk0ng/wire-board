@@ -2621,22 +2621,30 @@ export function Results({
         <span className="eyebrow">A GAME WELL PLAYED</span>
         <h2>
           <Crown size={25} />
-          {g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜
+          {room.result?.cooperative
+            ? g.winners.length > 0
+              ? "全队胜利"
+              : "合作挑战结束"
+            : `${g.winners.map((i) => room.seats[i]?.name).join("、")} 获胜`}
         </h2>
         <p>
-          {isIndependentGame(room.kind)
-            ? "本局已结算。"
-            : g.dota
-              ? "敌方遗迹已被摧毁，获胜队伍的所有玩家共同获胜。"
-              : g.sanguosha
-                ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
-                : g.carcassonne
-                  ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
-                  : g.catan
-                    ? catanResultDescription(g.catan)
-                    : g.splendor
-                      ? splendorResultDescription(g.splendor)
-                      : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
+          {room.result?.cooperative
+            ? g.winners.length > 0
+              ? "大家共同完成了本局目标。"
+              : "本局挑战结束，没有获胜者。可以再来一局。"
+            : isIndependentGame(room.kind)
+              ? "本局已结算。"
+              : g.dota
+                ? "敌方遗迹已被摧毁，获胜队伍的所有玩家共同获胜。"
+                : g.sanguosha
+                  ? "身份阵营结算：获胜阵营的成员共同获胜，包括已经阵亡的队友。"
+                  : g.carcassonne
+                    ? "地块用尽后结算未完成建筑与田地；总分最高者获胜，同分共同获胜。离场玩家不参与排名。"
+                    : g.catan
+                      ? catanResultDescription(g.catan)
+                      : g.splendor
+                        ? splendorResultDescription(g.splendor)
+                        : "总分 = 路线分 + 目的地净得分 + 本地图奖励。"}
         </p>
       </div>
       {room.result && (
@@ -2656,7 +2664,11 @@ export function Results({
               </span>
             ))
           ) : (
-            <p>本局不计积分（含电脑或积分上线前开始的对局）。</p>
+            <p>
+              {room.result.cooperative
+                ? "合作对局不计竞争积分，成绩已保存。"
+                : "本局不计积分（含电脑或积分上线前开始的对局）。"}
+            </p>
           )}
         </div>
       )}

@@ -1,0 +1,520 @@
+{
+  "passed": true,
+  "baseURL": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/",
+  "count": 57,
+  "files": [
+    {
+      "path": "atlas.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/atlas.webp",
+      "sha256": "7c41bf2801f4e4ecc52cc7961ad803d8b24ad5454686961ae1423d81d3b41b7a",
+      "mime": "image/webp",
+      "bytes": 522908,
+      "width": 1024,
+      "height": 1304
+    },
+    {
+      "path": "audio/arcane.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/arcane.wav",
+      "sha256": "dadac5cf8db7b0b52e612ef01ddbec4976766d19fcda730c2f7ea7c5ee69e323",
+      "mime": "audio/wav",
+      "bytes": 14156,
+      "rate": 22050,
+      "frames": 7056
+    },
+    {
+      "path": "audio/arrow.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/arrow.wav",
+      "sha256": "7f2e44aa6729a38d6dd1e5f6defa55cbbf40a409ab440ed54f7db7f899d050e1",
+      "mime": "audio/wav",
+      "bytes": 6218,
+      "rate": 22050,
+      "frames": 3087
+    },
+    {
+      "path": "audio/build.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/build.wav",
+      "sha256": "04958fad279834f96b9fc904db3c4146e57ed79901e659139e648e6ac8f216b0",
+      "mime": "audio/wav",
+      "bytes": 13716,
+      "rate": 22050,
+      "frames": 6836
+    },
+    {
+      "path": "audio/cannon.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/cannon.wav",
+      "sha256": "0a1e6a6f88c7061a1be325aff946e0b7a985e2fcb8b7a34bdef6cf1e55d2d620",
+      "mime": "audio/wav",
+      "bytes": 15920,
+      "rate": 22050,
+      "frames": 7938
+    },
+    {
+      "path": "audio/defeat.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/defeat.wav",
+      "sha256": "54ffbd4bb01c37a03e6ba26d5d1847ecd4a4645e9ad0345d4fa18c07a0b99e0a",
+      "mime": "audio/wav",
+      "bytes": 51640,
+      "rate": 22050,
+      "frames": 25798
+    },
+    {
+      "path": "audio/frost.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/frost.wav",
+      "sha256": "5bfbf4a3835fe2639661479a281c266486123547bd955460e3a533af25fb869c",
+      "mime": "audio/wav",
+      "bytes": 15038,
+      "rate": 22050,
+      "frames": 7497
+    },
+    {
+      "path": "audio/hit.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/hit.wav",
+      "sha256": "b0ea00c74aff86be4b6deaa901244600cca927cdb3c29e427fff3ba3f18d31f9",
+      "mime": "audio/wav",
+      "bytes": 4454,
+      "rate": 22050,
+      "frames": 2205
+    },
+    {
+      "path": "audio/leak.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/leak.wav",
+      "sha256": "f210f4b690dcd2ef4be8c36cdced459df41abac03ef5ede3b09df1d513d6f811",
+      "mime": "audio/wav",
+      "bytes": 20772,
+      "rate": 22050,
+      "frames": 10364
+    },
+    {
+      "path": "audio/sell.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/sell.wav",
+      "sha256": "4038d379562b062d7d41bdba0d4c7cc82609a74cf9b5c8185b7cb10d4c89e8b3",
+      "mime": "audio/wav",
+      "bytes": 18566,
+      "rate": 22050,
+      "frames": 9261
+    },
+    {
+      "path": "audio/upgrade.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/upgrade.wav",
+      "sha256": "f207ae653605c8bb22613f5398e0d737513295982faaae1edff569c5316be6af",
+      "mime": "audio/wav",
+      "bytes": 27386,
+      "rate": 22050,
+      "frames": 13671
+    },
+    {
+      "path": "audio/victory.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/victory.wav",
+      "sha256": "19327185ec5186d1af2a9d739eec32eb67293369420a41b55c037f8d2a7465e0",
+      "mime": "audio/wav",
+      "bytes": 53404,
+      "rate": 22050,
+      "frames": 26680
+    },
+    {
+      "path": "audio/wave.wav",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/audio/wave.wav",
+      "sha256": "ac8258f3c75882dc545204ae71b13240d2769fce884fae54bbdc24e615ff3f12",
+      "mime": "audio/wav",
+      "bytes": 39734,
+      "rate": 22050,
+      "frames": 19845
+    },
+    {
+      "path": "base-damaged.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/base-damaged.webp",
+      "sha256": "a14af223c220b6b410c4d844287b8905eaba02dbdcf5d34632d02cc35c17de37",
+      "mime": "image/webp",
+      "bytes": 22750,
+      "width": 224,
+      "height": 224
+    },
+    {
+      "path": "base-intact.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/base-intact.webp",
+      "sha256": "067068a96e9ce50a64947b07e6a94139304668c838464533e6f2fa228ff99634",
+      "mime": "image/webp",
+      "bytes": 20268,
+      "width": 224,
+      "height": 224
+    },
+    {
+      "path": "coin.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/coin.webp",
+      "sha256": "c0a33336939dc86c6eb13aa061fda48a1510faa5e9b5457890af65fc8eea1f14",
+      "mime": "image/webp",
+      "bytes": 4252,
+      "width": 64,
+      "height": 64
+    },
+    {
+      "path": "effect-arcane.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/effect-arcane.webp",
+      "sha256": "5cff8532000e21aabebf213ba60968d4e1866a9d00f164516c10cf1d336d21ae",
+      "mime": "image/webp",
+      "bytes": 6596,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "effect-burst.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/effect-burst.webp",
+      "sha256": "c3b263e6734e26e1aa8dfa73edfad1462a5f510378455b9470b5a1dfab1f109b",
+      "mime": "image/webp",
+      "bytes": 5888,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "effect-frost.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/effect-frost.webp",
+      "sha256": "ecf1e02c724102d78c3fa24480b6c5fef751dfc28da38dfee901acb39e7cc96f",
+      "mime": "image/webp",
+      "bytes": 4286,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-armored-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-armored-0.webp",
+      "sha256": "760aaa3a82c243b9739b1ae1469d656c8b79802d946fdbfcbe9007027c59c32e",
+      "mime": "image/webp",
+      "bytes": 10544,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-armored-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-armored-1.webp",
+      "sha256": "f209de15a49daa7d33942c45287efc4fc0c8d39f8225788eed6d4b563d0c4dcc",
+      "mime": "image/webp",
+      "bytes": 10522,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-armored-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-armored-2.webp",
+      "sha256": "fbb5829cd28afa0c435f2818987960f3ef74a687eced1e17b174e25e55b414ed",
+      "mime": "image/webp",
+      "bytes": 10556,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-boss-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-boss-0.webp",
+      "sha256": "32752972458f2f573b88d6a7860b179d146e45240d8339fd40360b4b5b723746",
+      "mime": "image/webp",
+      "bytes": 19968,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "path": "enemy-boss-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-boss-1.webp",
+      "sha256": "63141cd321392775bf0a64e8e22d4b0caca047060c859972e1d1fa42f2acd9ab",
+      "mime": "image/webp",
+      "bytes": 20172,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "path": "enemy-boss-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-boss-2.webp",
+      "sha256": "7ad67896fcd26a4888cd535a530b2058988e01412fe9bd6d095e34a3703802fd",
+      "mime": "image/webp",
+      "bytes": 19922,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "path": "enemy-elite-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-elite-0.webp",
+      "sha256": "33cf5c3f3e180794ea191e6810e0269a421469de77ee5762876d8c552a0384eb",
+      "mime": "image/webp",
+      "bytes": 13190,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-elite-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-elite-1.webp",
+      "sha256": "3ca90310b8d2c46f0c5b304ff304b539a2d441e9872c7d893958c679e4b2931c",
+      "mime": "image/webp",
+      "bytes": 13338,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-elite-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-elite-2.webp",
+      "sha256": "07b6026a9680a2807f8257969ebacc4ee1f9a6a68953b38255e7ca4963a31529",
+      "mime": "image/webp",
+      "bytes": 13216,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-runner-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-runner-0.webp",
+      "sha256": "69b1f81c2078006b6b410547fee0d77590a9a30e93015b3cd241e08dcf9fe153",
+      "mime": "image/webp",
+      "bytes": 11032,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-runner-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-runner-1.webp",
+      "sha256": "416b59b4cb7a1e60b83ef4e0e89c7afad63649f54384ed75fa19a586d2d41e4b",
+      "mime": "image/webp",
+      "bytes": 11032,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-runner-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-runner-2.webp",
+      "sha256": "b3889828f1896e265af966da240ba16ddc587259ea62569832f57a533592490b",
+      "mime": "image/webp",
+      "bytes": 10926,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-shield-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-shield-0.webp",
+      "sha256": "0182c09b3ba95f0f4c29ee098b75dcecdd486d4b5e6daba2bb8d0e839873200d",
+      "mime": "image/webp",
+      "bytes": 8800,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-shield-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-shield-1.webp",
+      "sha256": "416471a1556f451f9ed99282b3a175d39971d3c7cfa952f4f2252115577432c0",
+      "mime": "image/webp",
+      "bytes": 8870,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-shield-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-shield-2.webp",
+      "sha256": "02b636ea026912be0fec3cb642460a20d9d5f514bfaf03579e1540e82b9cf24e",
+      "mime": "image/webp",
+      "bytes": 8910,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-slime-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-slime-0.webp",
+      "sha256": "182e668f057369fce25bd7ae157a0dc39266c5ea838b327d942ed864d8b0c9bd",
+      "mime": "image/webp",
+      "bytes": 8270,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-slime-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-slime-1.webp",
+      "sha256": "2864886afc1912fdfc55f2f913c6c7e72feeb6f009ea90656779f4a0ac6eb60a",
+      "mime": "image/webp",
+      "bytes": 8598,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-slime-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-slime-2.webp",
+      "sha256": "327bc33045eee8774b5fdc727fb3e46c633dc808ccdc227c1cbdabe529fabdc8",
+      "mime": "image/webp",
+      "bytes": 8356,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-swarm-0.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-swarm-0.webp",
+      "sha256": "26d6673afd2a0cd72d1311c2c89ec55511a4f5580a71aa1828bb3c0a8f1a9cb9",
+      "mime": "image/webp",
+      "bytes": 9326,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-swarm-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-swarm-1.webp",
+      "sha256": "ee6b21317c033084aa985ea119e3fb55af259b1b412a1f77289db7a4e7f62fd6",
+      "mime": "image/webp",
+      "bytes": 9682,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "enemy-swarm-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/enemy-swarm-2.webp",
+      "sha256": "762ebe1392cdebcb42e8f9353c2ec57e3c87e08e31c31313f4ed9b2a0b6eb8ba",
+      "mime": "image/webp",
+      "bytes": 9262,
+      "width": 128,
+      "height": 128
+    },
+    {
+      "path": "map.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/map.webp",
+      "sha256": "76d48d22798f2ef1d9b1e91c2aea09413880514c08290cc1204ee8b5cfd0d3e9",
+      "mime": "image/webp",
+      "bytes": 90002,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "path": "projectile-arcane.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/projectile-arcane.webp",
+      "sha256": "20c7bd58c57f867c1174e7c19da733e17ab5688b9e80adaf8e36fa8252943c05",
+      "mime": "image/webp",
+      "bytes": 3774,
+      "width": 64,
+      "height": 64
+    },
+    {
+      "path": "projectile-arrow.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/projectile-arrow.webp",
+      "sha256": "f211c3c94755afb4a5aae9069f7f76fa6ecf279eba5cb97c364efa87a33a7b83",
+      "mime": "image/webp",
+      "bytes": 1686,
+      "width": 64,
+      "height": 64
+    },
+    {
+      "path": "projectile-cannon.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/projectile-cannon.webp",
+      "sha256": "2a4b445a0475fed4c229115ee6de608c2f221acfb6eeb21337ce147872e2016c",
+      "mime": "image/webp",
+      "bytes": 2792,
+      "width": 64,
+      "height": 64
+    },
+    {
+      "path": "projectile-frost.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/projectile-frost.webp",
+      "sha256": "6e850b7c4a9aab3a53204b8f6877d9dc4ec5d395477960bb9231c02a2dc3f066",
+      "mime": "image/webp",
+      "bytes": 2858,
+      "width": 64,
+      "height": 64
+    },
+    {
+      "path": "tower-arcane-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-arcane-1.webp",
+      "sha256": "a15890e4d7c689486dbcec4e6996b13414383eab3624d421596be379fbcda83f",
+      "mime": "image/webp",
+      "bytes": 21698,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-arcane-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-arcane-2.webp",
+      "sha256": "f41b70b7c9db93775cb41775672d68c271dde92f0874baf81653b286853b26d2",
+      "mime": "image/webp",
+      "bytes": 23494,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-arcane-3.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-arcane-3.webp",
+      "sha256": "d2150b01b408c269c8fc43508dd2df8b505743e3b742c6c42872f28a0e4b8af8",
+      "mime": "image/webp",
+      "bytes": 25942,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-arrow-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-arrow-1.webp",
+      "sha256": "5f06affbc466c6da64cbfdaf1bdd7b6ed251a9a19f9ca9483b463785a96e7ae5",
+      "mime": "image/webp",
+      "bytes": 21116,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-arrow-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-arrow-2.webp",
+      "sha256": "78ff31653efc9780f9bb145d22955dedec534022bddfd1dff2a2b8f0524081ee",
+      "mime": "image/webp",
+      "bytes": 22798,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-arrow-3.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-arrow-3.webp",
+      "sha256": "595223a6f98ca282772bf1e11d63c1cf4249325e88c5ef12b13d2df9de0d0e07",
+      "mime": "image/webp",
+      "bytes": 25186,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-cannon-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-cannon-1.webp",
+      "sha256": "8ec9b6ce93cf7dc2a7c178b66e30641e1a869645fc54770205b238ef29d5b155",
+      "mime": "image/webp",
+      "bytes": 22324,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-cannon-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-cannon-2.webp",
+      "sha256": "8daad6051925295dedd0b9eb504d04e0545ad0d17b3b323e16159b0cd081be36",
+      "mime": "image/webp",
+      "bytes": 24066,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-cannon-3.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-cannon-3.webp",
+      "sha256": "22063942df97dfa8413a5daaaa0a52fc6e7fbf2060472946fd33b5fb3004c255",
+      "mime": "image/webp",
+      "bytes": 26344,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-frost-1.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-frost-1.webp",
+      "sha256": "a84ce83f2fc434e013ab9bb0de38a7b58c63c8a9f8e007bd29b5db1088a769c9",
+      "mime": "image/webp",
+      "bytes": 20174,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-frost-2.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-frost-2.webp",
+      "sha256": "00d08084a0aa1130204f0c8e8fde8f4eb49707d0546b76ca83b9f9f70cd7a183",
+      "mime": "image/webp",
+      "bytes": 22434,
+      "width": 192,
+      "height": 224
+    },
+    {
+      "path": "tower-frost-3.webp",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/starfort/v1/tower-frost-3.webp",
+      "sha256": "19ede1d16bdb258698de42ba8e1e6df2906efb766743bc06d4e332097c80a193",
+      "mime": "image/webp",
+      "bytes": 24544,
+      "width": 192,
+      "height": 224
+    }
+  ]
+}

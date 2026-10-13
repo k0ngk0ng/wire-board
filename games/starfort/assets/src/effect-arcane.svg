@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="metal" x2=".7" y2="1"><stop stop-color="#a3bbc2"/><stop offset=".5" stop-color="#607a86"/><stop offset="1" stop-color="#344c5b"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#fff7c4" stop-opacity=".9"/><stop offset="1" stop-color="#fff7c4" stop-opacity="0"/></radialGradient>
+</defs>
+<g stroke-linejoin="round" stroke-linecap="round"><circle cx="64" cy="64" r="43" fill="none" stroke="#ac8bc9" stroke-width="6"/><circle cx="64" cy="64" r="33" fill="#c6a3e3" opacity=".22"/><polygon points="106.00,55.00 108.43,60.65 114.56,61.22 109.94,65.28 111.29,71.28 106.00,68.14 100.71,71.28 102.06,65.28 97.44,61.22 103.57,60.65" fill="#f7dfac" stroke="#a585ba" stroke-width="1.8" stroke-linejoin="round"/><polygon points="76.98,94.94 79.41,100.60 85.54,101.16 80.92,105.22 82.27,111.23 76.98,108.08 71.69,111.23 73.04,105.22 68.42,101.16 74.55,100.60" fill="#f7dfac" stroke="#a585ba" stroke-width="1.8" stroke-linejoin="round"/><polygon points="30.02,79.69 32.45,85.34 38.58,85.91 33.96,89.97 35.31,95.97 30.02,92.83 24.73,95.97 26.08,89.97 21.46,85.91 27.59,85.34" fill="#f7dfac" stroke="#a585ba" stroke-width="1.8" stroke-linejoin="round"/><polygon points="30.02,30.31 32.45,35.96 38.58,36.53 33.96,40.59 35.31,46.59 30.02,43.45 24.73,46.59 26.08,40.59 21.46,36.53 27.59,35.96" fill="#f7dfac" stroke="#a585ba" stroke-width="1.8" stroke-linejoin="round"/><polygon points="76.98,15.06 79.41,20.71 85.54,21.27 80.92,25.33 82.27,31.34 76.98,28.20 71.69,31.34 73.04,25.33 68.42,21.27 74.55,20.71" fill="#f7dfac" stroke="#a585ba" stroke-width="1.8" stroke-linejoin="round"/></g></svg>

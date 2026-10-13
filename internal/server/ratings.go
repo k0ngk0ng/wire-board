@@ -13,6 +13,9 @@ const initialRating = 1000
 // A room opts in when a new match starts, so deployment never re-rates history.
 func rateMatch(r *Room, record *MatchRecord) {
 	record.Rated = r.Rated && r.Status == "finished" && r.Game.Finished && len(r.Game.Winners) > 0
+	if r.Module != nil && r.Module.Result != nil && r.Module.Result.Cooperative {
+		record.Rated = false
+	}
 	for _, p := range r.Seats {
 		if p.Bot {
 			record.Rated = false

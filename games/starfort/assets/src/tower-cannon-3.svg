@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="224" viewBox="0 0 192 224">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="metal" x2=".7" y2="1"><stop stop-color="#a3bbc2"/><stop offset=".5" stop-color="#607a86"/><stop offset="1" stop-color="#344c5b"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#fff7c4" stop-opacity=".9"/><stop offset="1" stop-color="#fff7c4" stop-opacity="0"/></radialGradient>
+</defs>
+<g stroke-linejoin="round" stroke-linecap="round"><ellipse cx="96" cy="207" rx="70" ry="10" fill="#19382b" opacity=".2"/><g stroke="#334a49" stroke-width="3.2">
+<path d="M46 192L52 143Q94 132 139 143L147 192Q99 210 46 192Z" fill="url(#stone)"/>
+<path d="M113 143L139 143L147 192L120 199Z" fill="#968c77" opacity=".65" stroke="none"/>
+<path d="M48 176Q97 192 144 176M55 158Q99 172 141 157M75 165V183M117 161V184M94 187V201" fill="none" stroke="#827e69" stroke-width="2"/>
+<path d="M39 190Q95 208 153 190L154 201Q94 219 38 201Z" fill="#9fac84"/>
+<path d="M43 187Q94 202 149 187L153 192Q98 210 39 192Z" fill="#cfcca2"/>
+<path d="M79 181V164Q96 150 111 164V181Z" fill="#4a6361"/>
+<path d="M85 180V166Q96 158 105 166V180Z" fill="#c77d4f" stroke="none"/>
+<ellipse cx="96" cy="142" rx="52" ry="15" fill="#dcd3ac"/>
+</g><g stroke="#334a49" stroke-width="2.5"><path d="M37 153L49 146L49 185L38 189Z" fill="#c77d4f"/><path d="M143 147L155 154L154 189L144 185Z" fill="#c77d4f"/></g><polygon points="96.00,176.00 98.43,181.65 104.56,182.22 99.94,186.28 101.29,192.28 96.00,189.14 90.71,192.28 92.06,186.28 87.44,182.22 93.57,181.65" fill="#ffe99a" stroke="#aa7b42" stroke-width="1.8" stroke-linejoin="round"/><g stroke="#334a49" stroke-width="3.5">
+<path d="M45 142L49 109L59 104L69 112L81 104L93 112L106 104L118 112L131 104L143 111L146 142Q98 159 45 142Z" fill="#c77d4f"/>
+<path d="M52 127Q96 142 138 126M72 132V147M116 133V147" fill="none" stroke="#884f3d" stroke-width="2"/>
+<ellipse cx="96" cy="112" rx="38" ry="14" fill="#734f42"/>
+<circle cx="79" cy="110" r="21" fill="url(#wood)"/><circle cx="79" cy="110" r="11" fill="url(#gold)"/>
+<path d="M82 100L108 42Q119 28 143 38Q158 44 157 59L126 112Q119 124 103 117Z" fill="url(#metal)"/>
+<path d="M106 54L140 74M96 78L127 96" stroke="#c5c7ad" stroke-width="8"/>
+<ellipse cx="134" cy="49" rx="22" ry="16" transform="rotate(25 134 49)" fill="#768b8b"/>
+<ellipse cx="134" cy="49" rx="14" ry="9" transform="rotate(25 134 49)" fill="#263b42"/>
+<path d="M123 39Q137 34 149 47" stroke="#d1dfcf" stroke-width="3" fill="none"/>
+<circle cx="79" cy="110" r="6" fill="#705548"/>
+</g><g fill="#46555c" stroke="#263c44" stroke-width="2"><circle cx="45" cy="167" r="11"/><circle cx="60" cy="175" r="10"/><circle cx="43" cy="184" r="8"/></g><path d="M148 120V68L170 77L149 88" fill="#c77d4f" stroke="#334a49" stroke-width="2.5"/><polygon points="157.00,72.80 158.14,75.44 160.99,75.70 158.84,77.60 159.47,80.40 157.00,78.93 154.53,80.40 155.16,77.60 153.01,75.70 155.86,75.44" fill="#ffe99a" stroke="#aa7b42" stroke-width="1" stroke-linejoin="round"/><path d="M29 149V57L54 66L31 82" fill="#e3bc67" stroke="#334a49" stroke-width="2.5"/><polygon points="38.00,61.80 39.14,64.44 41.99,64.70 39.84,66.60 40.47,69.40 38.00,67.93 35.53,69.40 36.16,66.60 34.01,64.70 36.86,64.44" fill="#c77d4f" stroke="#334a49" stroke-width="1" stroke-linejoin="round"/><path d="M41 192L55 205M149 192L137 205" stroke="#e9c874" stroke-width="5"/><polygon points="96.00,6.00 98.70,12.28 105.51,12.91 100.37,17.42 101.88,24.09 96.00,20.60 90.12,24.09 91.63,17.42 86.49,12.91 93.30,12.28" fill="#ffe99a" stroke="#aa7b42" stroke-width="1.8" stroke-linejoin="round"/></g></svg>
