@@ -9,6 +9,7 @@ import {
   freshEvents,
   pointOnPath,
   enemyPoint,
+  objectivePoint,
   pickSound,
   assetURL,
   spritePlacement,
@@ -165,4 +166,92 @@ test("camera padding keeps top towers at their true anchors on mobile and deskto
   assert.deepEqual(placed, anchor);
   assert.ok(placed.y - (size * 224) / 192 + mobile >= 4);
   assert.equal(battlefieldTopInset(0, 960, 40), 0);
+});
+
+// World v2 failures: interpolating a side-route enemy on the original path;
+// a route reassignment pulls a unit across the map; migrated snapshots have no
+// route field; backward progress or changed geometry invents a teleport trail.
+test("interpolation follows each enemy route and never blends a reassigned route", () => {
+  const side = [
+    { x: 0, y: 200 },
+    { x: 100, y: 200 },
+    { x: 100, y: 100 },
+  ];
+  const previous = { id: 2, route: "north", x: 75, y: 200, progress: 75 };
+  const current = { id: 2, route: "north", x: 100, y: 125, progress: 175 };
+  assert.deepEqual(enemyPoint(side, previous, current, 0.5, false), {
+    x: 100,
+    y: 175,
+  });
+  assert.deepEqual(
+    enemyPoint(side, { ...previous, route: "main" }, current, 0.5, false),
+    { x: 100, y: 125 },
+  );
+  assert.deepEqual(
+    enemyPoint(side, { ...previous, progress: 190 }, current, 0.5, false),
+    { x: 100, y: 125 },
+  );
+  assert.deepEqual(enemyPoint(path, previous, current, 0.5, false), {
+    x: 100,
+    y: 125,
+  });
+});
+
+test("new world events play a single important cue without masking victory or damage", () => {
+  assert.equal(pickSound([event(1, "expand"), event(2)], 2000, 0), "expand");
+  assert.equal(
+    pickSound([event(1, "objective"), event(2, "boon")], 2000, 0),
+    "objective",
+  );
+  assert.equal(
+    pickSound([event(1, "shortcut"), event(2, "boss_phase")], 2000, 0),
+    "event",
+  );
+  assert.equal(
+    pickSound([event(1, "objective"), event(2, "win")], 2000, 0),
+    "victory",
+  );
+  assert.equal(
+    pickSound([event(1, "expand"), event(2, "base_hit")], 2000, 0),
+    "leak",
+  );
+});
+
+// Escort interpolation failures specified before code: one-second snapshots make
+// the convoy jump; it cuts a route corner; paused/reduced-motion/reconnected or
+// replaced/completed objectives keep animating; rerouting sweeps across terrain.
+test("convoy motion interpolates authoritative route progress together with its label and health anchor", () => {
+  const previous = {
+    id: "escort-2",
+    kind: "convoy",
+    status: "active",
+    route: "east",
+    progress: 75,
+    x: 75,
+    y: 0,
+  };
+  const current = { ...previous, progress: 175, x: 100, y: 75 };
+  assert.deepEqual(objectivePoint(path, previous, current, 0.5, false, true), {
+    x: 100,
+    y: 25,
+  });
+  assert.deepEqual(objectivePoint(path, previous, current, 5, false, true), {
+    x: 100,
+    y: 75,
+  });
+  for (const [prior, next, reduced, moving] of [
+    [undefined, current, false, true],
+    [previous, current, true, true],
+    [previous, current, false, false],
+    [{ ...previous, id: "old" }, current, false, true],
+    [{ ...previous, route: "west" }, current, false, true],
+    [{ ...previous, status: "available" }, current, false, true],
+    [previous, { ...current, status: "completed" }, false, true],
+    [previous, { ...current, status: "failed" }, false, true],
+    [previous, { ...current, kind: "mine" }, false, true],
+  ])
+    assert.deepEqual(objectivePoint(path, prior, next, 0.1, reduced, moving), {
+      x: next.x,
+      y: next.y,
+    });
 });

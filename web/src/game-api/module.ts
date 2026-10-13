@@ -58,6 +58,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   description: string;
   minPlayers: number;
   maxPlayers: number;
+  playerCounts?: readonly number[];
   supportsBots?: boolean;
   ownsSounds?: boolean;
   defaultOptions?: Options;

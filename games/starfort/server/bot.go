@@ -38,6 +38,49 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 			}
 		}
 	}
+	if s.Phase == "prepare" {
+		for _, kind := range []string{"route", "boon"} {
+			c := s.World.Choice
+			if kind == "boon" {
+				c = s.World.BoonChoice
+			}
+			if c != nil && c.Votes[p] == "" {
+				index := int((s.World.Seed + int64(c.Stage)) % int64(len(c.Options)))
+				if kind == "boon" {
+					index = 0
+					if s.World.Boons.Power > 0 && s.World.Boons.Power%3 == 0 && s.World.Boons.Reach < s.World.Boons.Power/3 {
+						index = 1
+					}
+				}
+				return json.Marshal(Action{Type: kind + "_vote", Choice: c.Options[index].ID, Epoch: s.Epoch})
+			}
+		}
+		if s.World.Choice != nil || s.World.BoonChoice != nil {
+			return nil, nil
+		}
+		for _, o := range s.World.Objectives {
+			if o.Status == "available" && s.Players[p].Gold >= o.Cost+160 && len(s.Towers) >= 6 {
+				return json.Marshal(Action{Type: "objective", ObjectiveID: o.ID, Epoch: s.Epoch})
+			}
+		}
+	}
+	// One accurate interceptor in each sector prioritizes healers, banners
+	// and engineers. Once assigned, leave the policy alone: bot ticks should
+	// spend resources or yield, not repeatedly write equivalent target actions.
+	if s.Wave >= 4 {
+		support := map[int]bool{}
+		for _, t := range s.Towers {
+			if (t.Kind == "arrow" || t.Kind == "arcane") && t.Priority == "support" {
+				support[s.World.Map.Pads[t.Pad].Sector] = true
+			}
+		}
+		for _, t := range s.Towers {
+			sector := s.World.Map.Pads[t.Pad].Sector
+			if t.Owner == p && (t.Kind == "arrow" || t.Kind == "arcane") && !support[sector] {
+				return json.Marshal(Action{Type: "target", TowerID: t.ID, Priority: "support", Epoch: s.Epoch})
+			}
+		}
+	}
 	if investment := s.investment(p); investment != nil {
 		investment.Epoch = s.Epoch
 		return json.Marshal(investment)
@@ -56,6 +99,52 @@ func (s *State) investment(p int) *Action {
 		counts[t.Kind]++
 		if t.Owner == p {
 			owned = append(owned, t)
+		}
+	}
+	// Every opened sector needs damage and slowing support. New roads can
+	// bypass the original kill zone, so the team builds a mixed defense rather
+	// than spending every reward on towers that can no longer cover that lane.
+	for sector := 2; sector <= s.World.Stage; sector++ {
+		count := 0
+		for _, t := range s.Towers {
+			if s.World.Map.Pads[t.Pad].Sector == sector {
+				count++
+			}
+		}
+		desired := 3
+		if s.Wave >= 25 {
+			desired = 4
+		}
+		if count >= desired {
+			continue
+		}
+		kind := []string{"arcane", "cannon", "frost", "arrow"}[count]
+		c, _ := spec(kind)
+		if s.Players[p].Gold < c.Cost {
+			continue
+		}
+		bestPad := -1
+		bestCoverage := -1.
+		for _, pad := range s.World.Map.Pads {
+			if pad.Sector != sector || occupied[pad.ID] {
+				continue
+			}
+			coverage := 0.
+			for _, r := range s.World.Map.Routes {
+				for d := 0.; d < pathDistance(r.Points); d += 50 {
+					point := pathPosition(r.Points, d)
+					if math.Hypot(point.X-pad.X, point.Y-pad.Y) <= c.Range {
+						coverage++
+					}
+				}
+			}
+			if coverage > bestCoverage {
+				bestCoverage = coverage
+				bestPad = pad.ID
+			}
+		}
+		if bestPad >= 0 {
+			return &Action{Type: "build", Pad: bestPad, Tower: kind}
 		}
 	}
 	// First establish a mixed central defense; later upgrades beat buying a
@@ -89,7 +178,7 @@ func (s *State) investment(p int) *Action {
 		if cost > s.Players[p].Gold {
 			continue
 		}
-		damage, _, interval := stats(t)
+		damage, _, interval := s.towerStats(t)
 		score := (damage / float64(interval)) / float64(cost) / math.Sqrt(float64(t.Level))
 		if t.Kind == "frost" {
 			score *= .45

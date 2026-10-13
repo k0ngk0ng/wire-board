@@ -20,6 +20,7 @@ import (
 	"testing/fstest"
 	"time"
 
+	"github.com/k0ngk0ng/wire-board/games"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
@@ -37,6 +38,7 @@ func TestModuleBrowserFixture(t *testing.T) {
 	modules := []gameapi.Module{acceptanceModule()}
 	if os.Getenv("WIRE_BOARD_CATALOG_BROWSER") == "1" {
 		out = filepath.Join(root, ".local", "game-filters", "browser")
+		modules = append(modules, games.Modules()...)
 		for i := 1; i <= 30; i++ {
 			m := acceptanceModule()
 			m.ID = fmt.Sprintf("catalog-%02d", i)

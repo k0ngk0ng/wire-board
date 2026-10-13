@@ -10,14 +10,17 @@ import (
 )
 
 type Action struct {
-	Type    string `json:"type"`
-	Epoch   int    `json:"epoch"`
-	Pad     int    `json:"pad,omitempty"`
-	Tower   string `json:"tower,omitempty"`
-	TowerID int    `json:"towerId,omitempty"`
-	Branch  string `json:"branch,omitempty"`
-	Target  int    `json:"target,omitempty"`
-	Amount  int    `json:"amount,omitempty"`
+	Type        string `json:"type"`
+	Choice      string `json:"choice,omitempty"`
+	ObjectiveID string `json:"objectiveId,omitempty"`
+	Priority    string `json:"priority,omitempty"`
+	Epoch       int    `json:"epoch"`
+	Pad         int    `json:"pad,omitempty"`
+	Tower       string `json:"tower,omitempty"`
+	TowerID     int    `json:"towerId,omitempty"`
+	Branch      string `json:"branch,omitempty"`
+	Target      int    `json:"target,omitempty"`
+	Amount      int    `json:"amount,omitempty"`
 }
 
 func strict(raw json.RawMessage, v any) error {
@@ -70,6 +73,7 @@ func Module() gameapi.Module {
 				s.Players[i].Gold = 300
 			}
 			s.describeWave()
+			s.initWorld(ctx.Now.UnixNano()%2147483647 + int64(ctx.Players)*101)
 			s.note("星核已点亮，共同守住防线")
 			return s.Envelope()
 		},
@@ -114,7 +118,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	switch a.Type {
 	case "build":
 		c, ok := spec(a.Tower)
-		if !ok || a.Pad < 0 || a.Pad >= len(board.Pads) {
+		if !ok || a.Pad < 0 || a.Pad >= len(s.World.Map.Pads) {
 			return m, errors.New("请选择有效建造点和防御塔")
 		}
 		for _, t := range s.Towers {
@@ -127,8 +131,8 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		}
 		s.Players[p].Gold -= c.Cost
 		s.TowerSerial++
-		s.Towers = append(s.Towers, Tower{ID: s.TowerSerial, Pad: a.Pad, Owner: p, Kind: a.Tower, Level: 1, Spent: c.Cost})
-		pos := board.Pads[a.Pad]
+		s.Towers = append(s.Towers, Tower{ID: s.TowerSerial, Pad: a.Pad, Owner: p, Kind: a.Tower, Level: 1, Spent: c.Cost, Priority: "first"})
+		pos := s.World.Map.Pads[a.Pad]
 		s.event(Event{Type: "build", X: pos.X, Y: pos.Y, Kind: a.Tower, Owner: p})
 		s.note("玩家 %d 建造了%s", p+1, c.Name)
 	case "upgrade", "sell":
@@ -143,7 +147,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			return m, errors.New("只能管理自己的防御塔")
 		}
 		t := &s.Towers[index]
-		pos := board.Pads[t.Pad]
+		pos := s.World.Map.Pads[t.Pad]
 		if a.Type == "sell" {
 			amount := refund(*t)
 			s.Players[p].Gold = min(maxValue, s.Players[p].Gold+amount)
@@ -165,6 +169,32 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			}
 			s.event(Event{Type: "upgrade", X: pos.X, Y: pos.Y, Kind: t.Kind, Owner: p, Amount: float64(t.Level)})
 		}
+	case "route_vote", "boon_vote":
+		kind := "route"
+		if a.Type == "boon_vote" {
+			kind = "boon"
+		}
+		if err := s.vote(kind, a.Choice, p, ctx.Now.UnixMilli()); err != nil {
+			return m, err
+		}
+	case "objective":
+		if err := s.acceptObjective(a.ObjectiveID, p); err != nil {
+			return m, err
+		}
+	case "target":
+		if !slices.Contains([]string{"first", "strong", "support"}, a.Priority) {
+			return m, errors.New("无效集火优先级")
+		}
+		found := false
+		for i := range s.Towers {
+			if s.Towers[i].ID == a.TowerID && s.Towers[i].Owner == p {
+				s.Towers[i].Priority = a.Priority
+				found = true
+			}
+		}
+		if !found {
+			return m, errors.New("只能管理自己的防御塔")
+		}
 	case "gift":
 		if a.Target < 0 || a.Target >= len(s.Players) || a.Target == p || a.Amount < 1 || a.Amount > s.Players[p].Gold || s.Players[a.Target].Gold > maxValue-a.Amount {
 			return m, errors.New("无效赠予金额或队友")
@@ -173,8 +203,8 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		s.Players[a.Target].Gold += a.Amount
 		s.event(Event{Type: "gift", Owner: p, Amount: float64(a.Amount)})
 	case "ready":
-		if s.Phase != "prepare" {
-			return m, errors.New("当前不是准备阶段")
+		if s.Phase != "prepare" || s.World.Choice != nil || s.World.BoonChoice != nil {
+			return m, errors.New("请先完成波间选择")
 		}
 		s.Players[p].Ready = !s.Players[p].Ready
 		s.Players[p].PauseVote = false
@@ -238,7 +268,10 @@ func timer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		return m, errors.New("系统事件尚未到期")
 	}
 	if s.Phase == "prepare" {
-		s.startWave(now)
+		s.resolveChoices(now)
+		if s.World.Choice == nil && s.World.BoonChoice == nil && now >= s.NextAt {
+			s.startWave(now)
+		}
 	} else if s.Phase == "battle" {
 		steps := min(int64(1000), max(int64(0), now-s.ServerAt)) / StepMS
 		s.ServerAt = now
@@ -270,14 +303,27 @@ type SellControl struct {
 	Refund  int  `json:"refund"`
 	Enabled bool `json:"enabled"`
 }
+type ObjectiveControl struct {
+	ObjectiveID string `json:"objectiveId"`
+	Cost        int    `json:"cost"`
+	Enabled     bool   `json:"enabled"`
+}
+type TargetControl struct {
+	TowerID int  `json:"towerId"`
+	Enabled bool `json:"enabled"`
+}
 type Controls struct {
-	CanAct    bool             `json:"canAct"`
-	CanReady  bool             `json:"canReady"`
-	CanPause  bool             `json:"canPause"`
-	CanResume bool             `json:"canResume"`
-	Builds    []BuildControl   `json:"builds"`
-	Upgrades  []UpgradeControl `json:"upgrades"`
-	Sells     []SellControl    `json:"sells"`
+	CanRouteVote bool               `json:"canRouteVote"`
+	CanBoonVote  bool               `json:"canBoonVote"`
+	Objectives   []ObjectiveControl `json:"objectives"`
+	Targets      []TargetControl    `json:"targets"`
+	CanAct       bool               `json:"canAct"`
+	CanReady     bool               `json:"canReady"`
+	CanPause     bool               `json:"canPause"`
+	CanResume    bool               `json:"canResume"`
+	Builds       []BuildControl     `json:"builds"`
+	Upgrades     []UpgradeControl   `json:"upgrades"`
+	Sells        []SellControl      `json:"sells"`
 }
 
 func (s *State) controls(p int) Controls {
@@ -285,8 +331,17 @@ func (s *State) controls(p int) Controls {
 	player := p >= 0 && p < len(s.Players) && !s.finished()
 	c.CanResume = player && s.Phase == "paused"
 	c.CanAct = player && s.Phase != "paused"
-	c.CanReady = c.CanAct && s.Phase == "prepare"
-	c.CanPause = c.CanReady
+	c.CanPause = c.CanAct && s.Phase == "prepare"
+	c.CanRouteVote = c.CanPause && s.World.Choice != nil
+	c.CanBoonVote = c.CanPause && s.World.BoonChoice != nil
+	c.CanReady = c.CanPause && s.World.Choice == nil && s.World.BoonChoice == nil
+	c.Objectives = []ObjectiveControl{}
+	c.Targets = []TargetControl{}
+	for _, o := range s.World.Objectives {
+		cost := o.Cost
+		afford := player && s.Players[p].Gold >= cost
+		c.Objectives = append(c.Objectives, ObjectiveControl{o.ID, cost, c.CanReady && o.Status == "available" && afford})
+	}
 	if !player {
 		return c
 	}
@@ -294,12 +349,13 @@ func (s *State) controls(p int) Controls {
 	for _, t := range s.Towers {
 		occupied[t.Pad] = true
 		if t.Owner == p {
+			c.Targets = append(c.Targets, TargetControl{t.ID, c.CanAct})
 			cost := upgradeCost(t)
 			c.Upgrades = append(c.Upgrades, UpgradeControl{t.ID, cost, c.CanAct && s.Players[p].Gold >= cost && t.Level < maxValue && t.Spent <= maxValue-cost, t.Level == 3})
 			c.Sells = append(c.Sells, SellControl{t.ID, refund(t), c.CanAct})
 		}
 	}
-	for _, pad := range board.Pads {
+	for _, pad := range s.World.Map.Pads {
 		for _, tower := range catalog {
 			c.Builds = append(c.Builds, BuildControl{pad.ID, tower.Kind, tower.Cost, c.CanAct && !occupied[pad.ID] && s.Players[p].Gold >= tower.Cost})
 		}
@@ -323,7 +379,7 @@ func view(m gameapi.Match, p int) (any, error) {
 	}
 	towers := make([]ViewTower, 0, len(s.Towers))
 	for _, tower := range s.Towers {
-		damage, radius, interval := stats(tower)
+		damage, radius, interval := s.towerStats(tower)
 		towers = append(towers, ViewTower{tower, radius, damage, interval})
 	}
 	return struct {
@@ -332,5 +388,5 @@ func view(m gameapi.Match, p int) (any, error) {
 		Map      Map         `json:"map"`
 		Catalog  []TowerSpec `json:"catalog"`
 		Controls Controls    `json:"controls"`
-	}{s, towers, board, catalog, s.controls(p)}, nil
+	}{s, towers, s.mapData(), catalog, s.controls(p)}, nil
 }

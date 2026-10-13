@@ -8,6 +8,7 @@ Uses a production build and an explicitly opted-in HTTP fixture. No UI mocks.
 Run . scripts/env.sh && WIRE_BOARD_STARFORT_ASSETS=... python3 -B games/starfort/tests/accept_ui.py
 Results/screenshots/commands: .local/starfort/browser/.
 """
+import hashlib
 import http.cookiejar
 import json
 import os
@@ -43,7 +44,9 @@ def b(*args):
     if args[0]=='click':
         selector=json.dumps(args[1])
         b('wait','--fn',f'(()=>{{const e=document.querySelector({selector});return !!e&&!e.disabled}})()')
-        b('scrollintoview',args[1])
+        # Camera pads are children of a fixed-height clipped viewport. Center
+        # that viewport, so its upper pads cannot scroll under the sticky header.
+        b('scrollintoview','[data-starfort-canvas]' if args[1].startswith('[data-sf-pad=') else args[1])
     r = subprocess.run(['agent-browser', *args, '--json'], cwd=root, env=env, capture_output=True, text=True, timeout=45)
     if r.returncode: raise RuntimeError(r.stdout + r.stderr)
     data = json.loads(r.stdout)
@@ -109,11 +112,17 @@ class Peer:
         return self.command('action',action=dict(type=kind,epoch=self.api('/state')['room']['game']['data']['epoch'],**extra))
 
 def watch_enemy_draws():
+    frames={}
+    for suffix in ['v1','world-v2']:
+        atlas=json.loads((root/'games/starfort/assets/public/starfort'/suffix/'atlas.json').read_text())
+        for key,frame in atlas['frames'].items():
+            if key.startswith('enemy-'):frames[suffix+':'+str(frame['x'])+':'+str(frame['y'])]=key
+    js('window.__sfEnemyFrames='+json.dumps(frames))
     js(r"""(() => {
       const c=document.querySelector('canvas[data-starfort-canvas]').getContext('2d');
       if(!c.__originalDraw){c.__originalDraw=c.drawImage;c.__originalClear=c.clearRect;
         c.clearRect=function(...a){window.__sfFrame=(window.__sfFrame||0)+1;return this.__originalClear(...a)};
-        c.drawImage=function(...a){if(a.length===9&&a[3]===192&&a[4]===224){const t=this.getTransform(),p=t.transformPoint({x:a[5],y:a[6]}),q=t.transformPoint({x:a[5]+a[7],y:a[6]+a[8]});window.__sfTowers.push({x:p.x,y:p.y,right:q.x,bottom:q.y,width:this.canvas.width,height:this.canvas.height});if(window.__sfTowers.length>500)window.__sfTowers.shift()}if(a.length===9&&a[3]===128&&a[4]===128&&window.__sfLast!==window.__sfFrame){window.__sfLast=window.__sfFrame;window.__sfDraws.push({frame:window.__sfFrame,x:a[5],y:a[6],sx:a[1],sy:a[2],src:a[0].src});if(window.__sfDraws.length>200)window.__sfDraws.shift()}return this.__originalDraw(...a)};
+        c.drawImage=function(...a){if(a.length===9&&a[3]===192&&a[4]===224){const t=this.getTransform(),p=t.transformPoint({x:a[5],y:a[6]}),q=t.transformPoint({x:a[5]+a[7],y:a[6]+a[8]});window.__sfTowers.push({x:p.x,y:p.y,right:q.x,bottom:q.y,width:this.canvas.width,height:this.canvas.height});if(window.__sfTowers.length>500)window.__sfTowers.shift()}if(a.length===9&&window.__sfEnemyFrames[(a[0].src.includes('/world-v2/')?'world-v2':'v1')+':'+a[1]+':'+a[2]]&&window.__sfLast!==window.__sfFrame){window.__sfLast=window.__sfFrame;window.__sfDraws.push({frame:window.__sfFrame,x:a[5],y:a[6],sx:a[1],sy:a[2],src:a[0].src});if(window.__sfDraws.length>200)window.__sfDraws.shift()}return this.__originalDraw(...a)};
       }
       window.__sfDraws=[];window.__sfTowers=[];
     })()""")
@@ -218,7 +227,10 @@ try:
     while room()['game']['data']['tick']<5:
         assert time.monotonic()<until, 'battle timer did not advance'
         time.sleep(.1)
-    watch_enemy_draws();time.sleep(1.5)
+    watch_enemy_draws()
+    # Broadcast cadence varies under concurrent Go checks; wait for actual
+    # enemy travel instead of letting a fixed sleep mistake bobbing for motion.
+    wait('window.__sfDraws.length>10&&Math.max(...window.__sfDraws.map(d=>d.x))-Math.min(...window.__sfDraws.map(d=>d.x))>4')
     draws=js('window.__sfDraws')
     (out/'enemy-animation.json').write_text(json.dumps(draws,indent=2))
     assert len(draws)>10 and max(d['x'] for d in draws)-min(d['x'] for d in draws)>1, 'enemy sprite does not travel'
@@ -239,6 +251,8 @@ try:
     for width in [1440,390,320]:
         b('set','viewport',str(width),'900' if width==1440 else '844')
         resources();checkpoint('battle-'+str(width))
+    b('click','[data-sf-fit]')
+    assert js('document.querySelector("[data-starfort-canvas]").dataset.overview==="false"'), 'stage-one full map lost construction controls'
     b('click','[data-sf-pad="12"]');b('click','[data-sf-build="arrow"]')
     watch_enemy_draws();time.sleep(.3)
     drawn=js('window.__sfTowers')
@@ -300,6 +314,10 @@ finally:
         try:server.wait(timeout=15)
         except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
     report['commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+    sources=list((root/'games/starfort').rglob('*.go'))+list((root/'games/starfort/web').glob('*'))+[Path(__file__)]
+    report['sourceSHA256']={str(path.relative_to(root)):hashlib.sha256(path.read_bytes()).hexdigest() for path in sources if path.is_file()}
+    built=[root/'web/dist/index.html']+list((root/'web/dist/assets').glob('*.js'))+list((root/'web/dist/assets').glob('*.css'))
+    report['buildSHA256']={str(path.relative_to(root)):hashlib.sha256(path.read_bytes()).hexdigest() for path in built if path.is_file()}
     (out/'result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     print('Artifact:',out/'result.json',flush=True)
     if not report['passed']:raise SystemExit(1)
