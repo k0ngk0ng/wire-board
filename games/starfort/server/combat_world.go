@@ -54,7 +54,7 @@ func (s *State) enemyAbilities() {
 				guard.AbilityTick = s.Tick
 				guard.HP = math.Max(1, e.MaxHP*.06)
 				guard.MaxHP = guard.HP
-				guard.Shield = guard.HP * .8
+				guard.Shield = guard.HP * shieldRatio
 				guard.Armor = 0
 				guard.Speed = math.Min(150, e.Speed*1.3)
 				guard.Reward = 0

@@ -61,8 +61,8 @@ const actions: Record<string, string> = {
   root_created: "创建永久管理员",
   root_promoted: "指定永久管理员",
   root_password_rotated: "轮换管理员密码",
-  game_published: "上架桌游",
-  game_unpublished: "下架桌游",
+  game_published: "上架游戏",
+  game_unpublished: "下架游戏",
   user_enable: "恢复账号",
   user_disable: "停用账号",
   user_logout: "强制退出",
@@ -215,7 +215,7 @@ export function AdminDashboard({
           : action === "password"
             ? "设置新密码后，原有登录会话全部失效。请私下把新密码告知玩家。"
             : action === "role"
-              ? "管理员可以上下架桌游、管理普通用户、查看在线情况和结束牌桌；不能修改永久管理员或其他管理员。"
+              ? "管理员可以上下架游戏、管理普通用户、查看在线情况和结束牌桌；不能修改永久管理员或其他管理员。"
               : "恢复登录资格，原有战绩与好友保持不变。";
     setDecision({
       title: `${title} · ${target.name}`,

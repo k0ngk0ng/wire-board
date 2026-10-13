@@ -25,3 +25,7 @@ python3 -B scripts/accept_game_modules.py
 ```
 
 浏览器脚本须串行运行。交互验收产物位于 `.local/starfort-interaction/browser/`：`result.json` 记录通过项与源码校验和，`native-impact-timing.json` 记录实际 Canvas 绘制中的子弹与血条时序，`tower-ink-and-hitbox.json` 比对塔身绘制与点击范围，`primary-viewport-*.png` 记录主要战场的实际视口。输入使用自有 agent-browser 会话；滚轮通过该会话的 CDP 在明确的视口坐标发送，避免 CLI 滚轮位置与鼠标移动位置不一致。双指分支使用合成 PointerEvents，不作为真机触摸验证。
+
+## PC 比例与单血条回归
+
+先列失败场景：PC 全宽配固定矮高度形成细长视口；缩短窗口或超宽屏破坏比例；调整 PC 时改变手机高度；改尺寸后导航和塔身命中偏移；护盾另画第二条；仅损护盾时单条不下降；重连改变血条满值。执行 `python3 -B games/starfort/tests/accept_layout_ui.py`，保留 `.local/starfort-layout/browser/` 的实际几何、截图及 Canvas 血条绘制记录。

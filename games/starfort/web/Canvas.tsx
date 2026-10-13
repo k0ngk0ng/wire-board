@@ -1194,18 +1194,17 @@ export function Battlefield({
         ctx.fillRect(
           x - barWidth / 2,
           barY,
-          barWidth * Math.max(0, enemy.hp / Math.max(1, enemy.maxHP)),
+          barWidth *
+            Math.max(
+              0,
+              Math.min(
+                1,
+                (enemy.health ?? enemy.hp) /
+                  Math.max(1, enemy.maxHealth ?? enemy.maxHP),
+              ),
+            ),
           barHeight,
         );
-        if (enemy.shield > 0) {
-          ctx.fillStyle = "#cef0ff";
-          ctx.fillRect(
-            x - barWidth / 2,
-            barY - barHeight - 2,
-            barWidth * Math.min(1, enemy.shield / Math.max(1, enemy.maxHP)),
-            barHeight,
-          );
-        }
       }
       effects.current = effects.current.filter((e) => at - e.born < 900);
       for (const e of effects.current) {

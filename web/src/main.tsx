@@ -480,7 +480,7 @@ function App() {
               <Logo />
               <nav>
                 <span className="nav-active">
-                  {adminOpen ? "管理后台" : room ? "游戏牌桌" : "桌游大厅"}
+                  {adminOpen ? "管理后台" : room ? "游戏牌桌" : "游戏大厅"}
                 </span>
                 <span className="nav-caption">让相聚，多一局。</span>
               </nav>
@@ -730,7 +730,7 @@ function App() {
                     <Flag size={40} />
                     <h2>
                       {room.closeReason === "unpublished"
-                        ? "这款桌游已下架"
+                        ? "这款游戏已下架"
                         : room.closeReason === "admin"
                           ? "管理员已结束牌桌"
                           : room.closeReason === "inactive"
@@ -1032,7 +1032,7 @@ function Auth({
               <TrainFront size={17} />
               探索与冒险
             </span>
-            <span>经典桌游 · 好友相聚 · 无限好时光</span>
+            <span>联机游戏 · 好友相聚 · 无限好时光</span>
           </div>
         </div>
         <small>YOUR FRIENDS. YOUR TABLE. YOUR NEXT MOVE.</small>
@@ -1043,7 +1043,7 @@ function Auth({
           <h2>{register ? "留一个你的座位" : "欢迎回来，入座吧。"}</h2>
           <p>
             {register
-              ? "使用朋友分享的邀请码，加入这间私人桌游室。"
+              ? "使用朋友分享的邀请码，加入这个私人游戏大厅。"
               : invited
                 ? "朋友在牌桌等你，登录后将自动进入邀请的房间。"
                 : "桌布铺好了，就等你和朋友们。"}
@@ -1073,7 +1073,7 @@ function Auth({
               玩家昵称
               <input
                 name="name"
-                placeholder="你的桌游昵称"
+                placeholder="你的游戏昵称"
                 required
                 minLength={2}
                 maxLength={20}
@@ -1109,13 +1109,13 @@ function Auth({
               </p>
             )}
             <button className="primary wide" disabled={busy}>
-              {busy ? "请稍候…" : register ? "创建账号，入座" : "进入桌游大厅"}
+              {busy ? "请稍候…" : register ? "创建账号，入座" : "进入游戏大厅"}
               <ArrowRight size={18} />
             </button>
           </form>
           <div className="auth-note">
             <Lock size={14} />
-            只属于你和朋友的桌游空间
+            只属于你和朋友的游戏空间
           </div>
         </div>
       </section>
@@ -1163,7 +1163,7 @@ function Lobby({
           <h1>
             好朋友，好一局<span>。</span>
           </h1>
-          <p>选一款喜欢的桌游，给朋友留个座位。</p>
+          <p>选一款喜欢的游戏，给朋友留个座位。</p>
         </div>
         <div className="welcome-stamp">
           <span>围坐 · 开局 · 尽兴</span>
@@ -1238,7 +1238,7 @@ function Lobby({
         </div>
       </section>
       {!state.availableGames.length && (
-        <p className="admin-empty">桌游正在准备中，请稍后再来看看。</p>
+        <p className="admin-empty">游戏正在准备中，请稍后再来看看。</p>
       )}
       <div className="catalogue-tools">
         <label className="game-search">
@@ -1317,13 +1317,13 @@ function Lobby({
         </div>
         <div className="room-filters">
           <label>
-            桌游
+            游戏
             <select
               aria-label="按游戏筛选牌桌"
               value={filter}
               onChange={(event) => setFilter(event.target.value)}
             >
-              <option value="all">全部桌游</option>
+              <option value="all">全部游戏</option>
               {state.availableGames.map((kind) => (
                 <option key={kind} value={kind}>
                   {gameName(kind)}
@@ -1336,7 +1336,7 @@ function Lobby({
         {rooms.length ? (
           <div className="room-table">
             <div className="table-label">
-              <span>房间 / 桌游</span>
+              <span>房间 / 游戏</span>
               <span>桌上的朋友</span>
               <span>状态</span>
               <span />

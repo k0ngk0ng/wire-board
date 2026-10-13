@@ -233,3 +233,18 @@
   outline: 2px solid #a27029;
   outline-offset: 2px;
 }
+
+/* Desktop uses a bounded landscape frame; narrow screens retain their layout. */
+@media (min-width: 851px) {
+  .sf-map-section {
+    width: min(100%, calc(clamp(360px, calc(100dvh - 400px), 640px) * 16 / 9));
+    justify-self: center;
+  }
+  .sf-battlefield.sf-world-viewport {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+  .sf-layout > .sf-select-pad {
+    justify-self: center;
+  }
+}
