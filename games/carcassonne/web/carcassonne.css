@@ -269,9 +269,6 @@
 .cover.carcassonne {
   background: #a7b85c;
 }
-.choose-games {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
 @media (max-width: 1100px) {
   .car-board {
     grid-template-columns: minmax(0, 1fr) 210px;
@@ -352,9 +349,6 @@
   }
   .car-scoring {
     padding-top: 7px;
-  }
-  .choose-games {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (prefers-reduced-motion: reduce) {

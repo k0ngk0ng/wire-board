@@ -1,3 +1,4 @@
+import { GameChoices } from "../ui/game-choices";
 import { useContext, useEffect, useState, type ReactNode } from "react";
 import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext, Modal } from "../ui/board-host";
@@ -80,23 +81,13 @@ export function ModuleCreate({
           });
         }}
       >
-        <div className="choose-games">
-          {availableGames.map((id) => (
-            <button
-              type="button"
-              key={id}
-              className={id === kind ? "selected" : ""}
-              disabled={busy}
-              onClick={() => onGameChange(id)}
-            >
-              {renderCover(id)}
-              <span>
-                {gameName(id)}
-                {id === kind && <Check size={16} />}
-              </span>
-            </button>
-          ))}
-        </div>
+        <GameChoices
+          games={availableGames}
+          value={kind}
+          onChange={onGameChange}
+          renderCover={renderCover}
+          disabled={busy}
+        />
         {Options && (
           <Options
             value={options}

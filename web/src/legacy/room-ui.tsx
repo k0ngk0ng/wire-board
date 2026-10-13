@@ -1,3 +1,4 @@
+import { GameChoices } from "../ui/game-choices";
 import {
   ArrowRight,
   Bot,
@@ -571,94 +572,85 @@ export function LegacyCreate({
           });
         }}
       >
-        <div className="choose-games">
-          {availableGames.map((x) => (
-            <button
-              type="button"
-              className={k === x ? "selected" : ""}
-              key={x}
-              onClick={() => {
-                onGameChange?.(x);
-                setK(x);
-                if (x === "catan" && capacity === 2 && !catanOptions.fiveSix)
-                  setCatanOptions({});
-                setCapacity(
-                  x === "dota"
-                    ? Math.min(6, Math.max(2, capacity - (capacity % 2)))
-                    : Math.max(
-                        x === "sanguosha"
-                          ? 4
-                          : x === "catan"
-                            ? catanOptions.fiveSix
-                              ? 5
-                              : ((catanSeaKnights || catanFishing) &&
-                                    !isPublicCatanExplorer(catanScenario)) ||
+        <GameChoices
+          games={availableGames}
+          value={k}
+          disabled={busy}
+          renderCover={(x) => <Cover kind={x} mini />}
+          onChange={(x) => {
+            onGameChange?.(x);
+            setK(x);
+            if (x === "catan" && capacity === 2 && !catanOptions.fiveSix)
+              setCatanOptions({});
+            setCapacity(
+              x === "dota"
+                ? Math.min(6, Math.max(2, capacity - (capacity % 2)))
+                : Math.max(
+                    x === "sanguosha"
+                      ? 4
+                      : x === "catan"
+                        ? catanOptions.fiveSix
+                          ? 5
+                          : ((catanSeaKnights || catanFishing) &&
+                                !isPublicCatanExplorer(catanScenario)) ||
+                              [
+                                "cities-knights",
+                                "fishing",
+                                "barbarian-attack",
+                              ].includes(catanScenario)
+                            ? 3
+                            : 2
+                        : 2,
+                    Math.min(
+                      capacity,
+                      x === "sanguosha"
+                        ? 8
+                        : x === "rail"
+                          ? map?.maxPlayers || 5
+                          : x === "carcassonne"
+                            ? 5
+                            : x === "catan" &&
+                                (catanOptions.fiveSix ||
                                   [
-                                    "cities-knights",
-                                    "fishing",
+                                    "land-ho",
+                                    "spices-for-catan",
+                                    "pirate-lairs",
+                                    "fish-for-catan",
+                                    "explorers-and-pirates",
                                     "barbarian-attack",
-                                  ].includes(catanScenario)
-                                ? 3
-                                : 2
-                            : 2,
-                        Math.min(
-                          capacity,
-                          x === "sanguosha"
-                            ? 8
-                            : x === "rail"
-                              ? map?.maxPlayers || 5
-                              : x === "carcassonne"
-                                ? 5
-                                : x === "catan" &&
-                                    (catanOptions.fiveSix ||
-                                      [
-                                        "land-ho",
-                                        "spices-for-catan",
-                                        "pirate-lairs",
-                                        "fish-for-catan",
-                                        "explorers-and-pirates",
-                                        "barbarian-attack",
-                                        "transport",
-                                        "rivers-caravans",
-                                        "rivers-attack",
-                                        "rivers-transport",
-                                        "caravans-attack",
-                                        "caravans-transport",
-                                        "attack-transport",
-                                        "rivers-shores",
-                                        "rivers-fog",
-                                        "rivers-desert",
-                                        "rivers-desert-belt",
-                                        "rivers-tribe",
-                                        "transport-shores",
-                                        "transport-desert",
-                                        "attack-pirates",
-                                        "attack-wonders",
-                                        "attack-tribe",
-                                        "attack-desert",
-                                        "attack-shores",
-                                        "caravans-shores",
-                                        "caravans-new-world",
-                                        "caravans-islands",
-                                        "caravans-tribe",
-                                        "caravans-desert",
-                                        "rivers-new-world",
-                                      ].includes(catanScenario))
-                                  ? 6
-                                  : 4,
-                        ),
-                      ),
-                );
-              }}
-            >
-              <Cover kind={x} mini />
-              <span>
-                {gameName(x)}
-                {k === x && <Check size={16} />}
-              </span>
-            </button>
-          ))}
-        </div>
+                                    "transport",
+                                    "rivers-caravans",
+                                    "rivers-attack",
+                                    "rivers-transport",
+                                    "caravans-attack",
+                                    "caravans-transport",
+                                    "attack-transport",
+                                    "rivers-shores",
+                                    "rivers-fog",
+                                    "rivers-desert",
+                                    "rivers-desert-belt",
+                                    "rivers-tribe",
+                                    "transport-shores",
+                                    "transport-desert",
+                                    "attack-pirates",
+                                    "attack-wonders",
+                                    "attack-tribe",
+                                    "attack-desert",
+                                    "attack-shores",
+                                    "caravans-shores",
+                                    "caravans-new-world",
+                                    "caravans-islands",
+                                    "caravans-tribe",
+                                    "caravans-desert",
+                                    "rivers-new-world",
+                                  ].includes(catanScenario))
+                              ? 6
+                              : 4,
+                    ),
+                  ),
+            );
+          }}
+        />
         {k === "sanguosha" && (
           <SanguoshaOptions
             value={sgOptions}

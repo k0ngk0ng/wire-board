@@ -82,12 +82,14 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
   const [busy, setBusy] = useState(false);
   const [query, setQuery] = useState("");
   const [players, setPlayers] = useState<User[]>([]);
+  const [statsLimit, setStatsLimit] = useState(6);
   const refresh = async () => {
     const data = await request(`/players/${id}`);
     setProfile(data);
     if (id === self) setFriends((await request("/friends")).friends);
   };
   useEffect(() => {
+    setStatsLimit(6);
     let alive = true;
     request(`/players/${id}`)
       .then((data) => {
@@ -189,20 +191,32 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
         <small>{profile.rating.played} 场计分对局</small>
       </div>
       <div className="profile-stats">
-        {Object.entries(profile.stats).map(([kind, stats]) => (
-          <article key={kind}>
-            <strong>{name(kind)}</strong>
-            <b>
-              {stats.wins} 胜 / {stats.played} 局
-            </b>
-            <small>
-              胜率{" "}
-              {stats.played ? Math.round((stats.wins / stats.played) * 100) : 0}
-              % · 中止不计入
-            </small>
-          </article>
-        ))}
+        {Object.entries(profile.stats)
+          .slice(0, statsLimit)
+          .map(([kind, stats]) => (
+            <article key={kind}>
+              <strong>{name(kind)}</strong>
+              <b>
+                {stats.wins} 胜 / {stats.played} 局
+              </b>
+              <small>
+                胜率{" "}
+                {stats.played
+                  ? Math.round((stats.wins / stats.played) * 100)
+                  : 0}
+                % · 中止不计入
+              </small>
+            </article>
+          ))}
       </div>
+      {Object.keys(profile.stats).length > statsLimit && (
+        <button
+          className="outline wide profile-more-games"
+          onClick={() => setStatsLimit((n) => n + 6)}
+        >
+          显示更多游戏战绩
+        </button>
+      )}
       {id === self && (
         <section className="profile-friends">
           <h3>好友与申请</h3>

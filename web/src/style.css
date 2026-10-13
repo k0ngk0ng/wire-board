@@ -457,22 +457,33 @@ nav {
 .section-heading .outline {
   font-size: 12px;
 }
-.filter-tabs {
+.room-filters {
   display: flex;
-  border-bottom: 1px solid var(--line);
-  gap: 26px;
+  gap: 16px;
   align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
 }
-.filter-tabs button {
-  padding: 11px 0;
-  font-size: 12px;
-  color: #8a9586;
-  border-bottom: 2px solid transparent;
+.room-filters label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  color: #355448;
+  font-size: 13px;
 }
-.filter-tabs button.active {
-  border-color: var(--green);
-  color: var(--green);
-  font-weight: 600;
+.room-filters select {
+  width: 240px;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 9px 12px;
+  border: 1px solid #bfcbbb;
+  border-radius: 7px;
+  background: #fffefa;
+  color: #244f40;
+  font: inherit;
 }
 .live-dot {
   margin-left: auto;
@@ -963,8 +974,15 @@ label small {
   gap: 15px;
 }
 .choose-games {
-  display: flex;
-  gap: 14px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  align-content: start;
+  gap: 12px;
+  max-height: 310px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 3px;
   margin-bottom: 24px;
 }
 .choose-games > button {
@@ -2643,12 +2661,21 @@ label small {
     padding: 9px 10px;
     font-size: 11px;
   }
-  .filter-tabs {
-    gap: 19px;
+  .room-filters label {
+    flex: 1;
   }
-  .filter-tabs button {
-    font-size: 11px;
+  .room-filters select {
+    width: 100%;
+    flex: 1;
   }
+  .room-filters .live-dot {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .choose-games {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .live-dot {
     font-size: 8px;
   }
@@ -5417,4 +5444,70 @@ label small {
     width: 16px;
     height: 16px;
   }
+}
+
+/* Catalogue size must not determine control width or squeeze game names. */
+.catalogue-tools {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 18px;
+  color: #405a48;
+}
+.catalogue-tools > span {
+  padding-bottom: 10px;
+  font-size: 13px;
+}
+.game-search {
+  display: grid;
+  gap: 7px;
+  width: min(100%, 340px);
+  min-width: 0;
+  margin: 0;
+  font-size: 13px;
+  color: #355448;
+}
+.game-search input {
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #bfcbbb;
+  border-radius: 7px;
+  background: #fffefa;
+  color: #244f40;
+  font: inherit;
+}
+.game-search input::placeholder {
+  color: #687563;
+  opacity: 1;
+}
+.game-choice-summary,
+.game-search-empty {
+  color: #405a48;
+  font-size: 13px;
+  margin: 12px 0;
+}
+.catalogue-more {
+  display: block;
+  margin: 20px auto 0;
+}
+.admin-game-search {
+  margin-bottom: 18px;
+}
+.choose-games > button {
+  min-width: 0;
+  color: #244f40;
+}
+.choose-games > button > span {
+  overflow-wrap: anywhere;
+  padding-right: 26px;
+}
+.profile-stats {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+}
+.profile-stats article {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
