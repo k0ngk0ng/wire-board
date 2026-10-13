@@ -39,7 +39,7 @@ func scenarioModule() gameapi.Module {
 			delete(v, "scenario")
 		}
 		switch scenario {
-		case "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
+		case "vitality", "impact", "natural", "battle", "victory-ready", "defeat-ready", "advanced", "zero-gold", "growth-vote", "cleared-5", "cleared-10", "cleared-15", "stage2", "stage3", "stage4", "endless-rotation", "objectives", "objectives-clear", "objectives-fail", "legacy-save":
 		default:
 			return "", nil, errors.New("unknown test scenario")
 		}
@@ -93,7 +93,7 @@ func scenarioModule() gameapi.Module {
 			}
 		}
 		switch scenario {
-		case "impact":
+		case "impact", "vitality":
 			s.Phase = "battle"
 			s.NextAt = 0
 			s.WaveInfo = starfort.WaveInfo{Title: "命中时序验收", Total: 1, Spawned: 1}
@@ -112,6 +112,11 @@ func scenarioModule() gameapi.Module {
 			s.EnemySerial = 1
 			s.Towers = []starfort.Tower{{ID: 1, Pad: 0, Owner: 0, Kind: "arrow", Level: 1, Spent: 70, Priority: "first"}}
 			s.Enemies = []starfort.Enemy{{ID: 1, Kind: "shield", X: x, Y: y, Progress: progress, HP: 80, MaxHP: 80, Shield: 10, Speed: 0.01, Reward: 10, Leak: 1, Route: route.ID}}
+			if scenario == "vitality" {
+				s.Enemies[0].HP = 800
+				s.Enemies[0].MaxHP = 800
+				s.Enemies[0].Shield = 640
+			}
 		case "battle":
 			s.Phase = "battle"
 			s.NextAt = 0

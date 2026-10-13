@@ -109,6 +109,8 @@ export type Tower = {
   effectiveInterval?: number;
 };
 export type Enemy = Point & {
+  health?: number;
+  maxHealth?: number;
   id: number;
   kind: string;
   progress: number;

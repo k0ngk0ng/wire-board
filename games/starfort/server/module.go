@@ -372,6 +372,13 @@ type ViewTower struct {
 	EffectiveInterval int     `json:"effectiveInterval"`
 }
 
+// Health is a single presentation value. Damage and armor rules remain in State.
+type ViewEnemy struct {
+	Enemy
+	Health    float64 `json:"health"`
+	MaxHealth float64 `json:"maxHealth"`
+}
+
 func view(m gameapi.Match, p int) (any, error) {
 	s, err := decode(m)
 	if err != nil {
@@ -382,11 +389,22 @@ func view(m gameapi.Match, p int) (any, error) {
 		damage, radius, interval := s.towerStats(tower)
 		towers = append(towers, ViewTower{tower, radius, damage, interval})
 	}
+	enemies := make([]ViewEnemy, 0, len(s.Enemies))
+	for _, enemy := range s.Enemies {
+		capacity := enemy.MaxHP
+		if enemy.Kind == "shield" {
+			capacity += enemy.MaxHP * shieldRatio
+		}
+		// Accommodate imported snapshots with a larger shield without overflow.
+		health := enemy.HP + enemy.Shield
+		enemies = append(enemies, ViewEnemy{enemy, health, max(capacity, health)})
+	}
 	return struct {
 		*State
+		Enemies  []ViewEnemy `json:"enemies"`
 		Towers   []ViewTower `json:"towers"`
 		Map      Map         `json:"map"`
 		Catalog  []TowerSpec `json:"catalog"`
 		Controls Controls    `json:"controls"`
-	}{s, towers, s.mapData(), catalog, s.controls(p)}, nil
+	}{s, enemies, towers, s.mapData(), catalog, s.controls(p)}, nil
 }

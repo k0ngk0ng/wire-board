@@ -5,6 +5,8 @@ import (
 	"math"
 )
 
+const shieldRatio = 0.8
+
 // Legacy helpers remain for schema-1 migration; live combat always uses the
 // route saved on each enemy, never whichever entrances are active this wave.
 func pathLength() float64             { return pathDistance(board.Path) }
@@ -172,7 +174,7 @@ func (s *State) spawn() {
 		hp *= .48
 		reward = 5
 	case "shield":
-		shield = hp * .8
+		shield = hp * shieldRatio
 		reward = 11
 	case "healer":
 		hp *= .85
