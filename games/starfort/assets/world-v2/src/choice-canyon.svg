@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="160" viewBox="0 0 256 160">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="water" x2=".4" y2="1"><stop stop-color="#baded9"/><stop offset="1" stop-color="#6ea5b0"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<linearGradient id="clay" x2=".3" y2="1"><stop stop-color="#edcdab"/><stop offset="1" stop-color="#b07f65"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe7a5" stop-opacity=".6"/><stop offset="1" stop-color="#ffe7a5" stop-opacity="0"/></radialGradient>
+</defs><g stroke-linejoin="round" stroke-linecap="round"><defs><clipPath id="card"><rect x="7" y="7" width="242" height="146" rx="19"/></clipPath></defs><g clip-path="url(#card)"><rect x="6" y="6" width="244" height="148" rx="20" fill="#e0c6a0" stroke="#70857b" stroke-width="2"/><path d="M12 110Q45 79 85 111T164 105Q215 83 244 114V135Q244 148 230 148H26Q12 148 12 135Z" fill="#d2b78e"/><path d="M27 149Q36 107 86 87T152 12" fill="none" stroke="#b08a6b" stroke-width="32"/><path d="M27 149Q36 107 86 87T152 12" fill="none" stroke="#eed8ae" stroke-width="21"/><g transform="translate(131 20) scale(.8)"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.8"><path d="M17 94L30 47L58 30L98 40L113 83L98 108L38 111Z" fill="url(#clay)"/>
+<path d="M17 94L50 90L67 60L98 40L113 83L98 108L38 111Z" fill="#a57864"/>
+<path d="M30 47L56 63L67 60M50 90L38 111M79 78L100 88" fill="none" stroke="#777e70" stroke-width="2"/>
+<path d="M33 48L59 38L86 44" fill="none" stroke="#f4deb7" stroke-width="4"/></g><path d="M27 49L48 29Q68 20 98 36L101 44Q67 65 27 49Z" fill="#a6b27a" stroke="#334a49" stroke-width="2.5"/><path d="M38 43L55 35M67 40L78 35" stroke="#d4d09a" stroke-width="3"/></g><g transform="translate(11 9) scale(.55)"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.8"><path d="M17 94L30 47L58 30L98 40L113 83L98 108L38 111Z" fill="url(#clay)"/>
+<path d="M17 94L50 90L67 60L98 40L113 83L98 108L38 111Z" fill="#a57864"/>
+<path d="M30 47L56 63L67 60M50 90L38 111M79 78L100 88" fill="none" stroke="#777e70" stroke-width="2"/>
+<path d="M33 48L59 38L86 44" fill="none" stroke="#f4deb7" stroke-width="4"/></g><path d="M27 49L48 29Q68 20 98 36L101 44Q67 65 27 49Z" fill="#a6b27a" stroke="#334a49" stroke-width="2.5"/><path d="M38 43L55 35M67 40L78 35" stroke="#d4d09a" stroke-width="3"/></g><g transform="translate(101 65) scale(.58)"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.6"><path d="M12 108L21 61L43 30L81 23L104 49L117 108Z" fill="url(#stone)"/>
+<path d="M23 58L40 66L55 47L82 49L101 69M81 23L72 37L82 49M43 30L45 47" stroke="#969b85" stroke-width="2" fill="none"/>
+<path d="M39 105V65Q62 40 91 65V109Z" fill="#34484c"/>
+<path d="M33 107V61L42 60V107M88 107V59L99 62V107M34 58L96 57L97 68L34 70Z" fill="url(#wood)"/>
+<path d="M33 110L49 84M101 110L80 83" stroke="#919fa0" stroke-width="4"/>
+<path d="M42 94H86M36 102H94" stroke="#af8860" stroke-width="4"/>
+<path d="M62 82L61 68L68 59L77 68L76 81Z" fill="url(#gold)"/>
+<path d="M53 78L45 68L47 60L55 63L59 73" fill="#94c8c1"/></g></g></g><rect x="7" y="7" width="242" height="146" rx="19" fill="none" stroke="#70857b" stroke-width="2"/></g></svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="water" x2=".4" y2="1"><stop stop-color="#baded9"/><stop offset="1" stop-color="#6ea5b0"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<linearGradient id="clay" x2=".3" y2="1"><stop stop-color="#edcdab"/><stop offset="1" stop-color="#b07f65"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe7a5" stop-opacity=".6"/><stop offset="1" stop-color="#ffe7a5" stop-opacity="0"/></radialGradient>
+</defs><g stroke-linejoin="round" stroke-linecap="round"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.5"><path d="M11 97Q61 71 117 94L116 107Q70 120 13 108Z" fill="url(#water)" stroke="#60979c"/>
+<path d="M18 88L33 37Q68 24 105 39L112 89Q95 83 89 79L85 54Q65 48 47 57L40 87Z" fill="url(#stone)"/>
+<path d="M22 75Q66 56 108 76L110 88Q64 67 20 88Z" fill="#c5b691"/>
+<path d="M34 37L28 28Q65 10 109 30L105 39Q65 24 34 37Z" fill="#eee1b3"/>
+<path d="M27 57Q65 39 106 58M51 32V44M76 29V43M93 34V50" fill="none" stroke="#9d987f" stroke-width="2"/>
+<path d="M28 28L26 43M109 30L111 44" stroke="#d8cda4" stroke-width="6"/></g>
+<path d="M24 101q13 -4 25 -1M78 104q10 -4 22 -2" stroke="#d2ebe0" stroke-width="3" fill="none"/></g></svg>

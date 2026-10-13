@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="water" x2=".4" y2="1"><stop stop-color="#baded9"/><stop offset="1" stop-color="#6ea5b0"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<linearGradient id="clay" x2=".3" y2="1"><stop stop-color="#edcdab"/><stop offset="1" stop-color="#b07f65"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe7a5" stop-opacity=".6"/><stop offset="1" stop-color="#ffe7a5" stop-opacity="0"/></radialGradient>
+</defs><g stroke-linejoin="round" stroke-linecap="round"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><ellipse cx="64" cy="104" rx="47" ry="12" fill="url(#water)" stroke="#729b93" stroke-width="2"/>
+<g stroke="#566f51" stroke-width="3" fill="none"><path d="M40 104Q43 69 35 39M62 103Q62 54 69 25M82 101Q83 69 99 49M52 103Q52 83 30 71M70 104Q69 77 86 61"/></g>
+<g stroke="#715b47" stroke-width="5"><path d="M33 29L36 45M69 15L68 31M102 38L96 55"/></g>
+<g fill="#8eab70" stroke="#66865c" stroke-width="1.5"><path d="M44 88Q28 56 23 62Q18 80 44 88M68 80Q64 55 79 45Q85 62 68 80M80 94Q95 73 110 80Q102 97 80 94"/></g></g></svg>

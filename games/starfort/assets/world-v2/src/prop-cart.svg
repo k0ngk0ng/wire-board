@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="water" x2=".4" y2="1"><stop stop-color="#baded9"/><stop offset="1" stop-color="#6ea5b0"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<linearGradient id="clay" x2=".3" y2="1"><stop stop-color="#edcdab"/><stop offset="1" stop-color="#b07f65"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe7a5" stop-opacity=".6"/><stop offset="1" stop-color="#ffe7a5" stop-opacity="0"/></radialGradient>
+</defs><g stroke-linejoin="round" stroke-linecap="round"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.8"><path d="M24 57L18 84Q60 111 103 85L108 56Z" fill="url(#wood)"/>
+<path d="M26 70L99 69M24 81L98 81M44 65V90M77 63V95" fill="none" stroke="#805d48" stroke-width="2"/>
+<path d="M21 55L107 54L108 64L20 65Z" fill="#c6aa78"/>
+<path d="M28 53L32 28Q52 13 91 31L100 54Z" fill="#92ad82"/>
+<path d="M34 29Q54 45 90 32M61 29V53" stroke="#dfcf94" stroke-width="4" fill="none"/>
+<path d="M95 86L119 96" stroke="#9e7554" stroke-width="5"/>
+<circle cx="35" cy="101" r="15" fill="#705b4c"/><circle cx="87" cy="101" r="15" fill="#705b4c"/>
+<circle cx="35" cy="101" r="8" fill="#c8a775"/><circle cx="87" cy="101" r="8" fill="#c8a775"/>
+<path d="M35 89V113M23 101H47M87 89V113M75 101H99" stroke="#d8bc87" stroke-width="2"/></g><polygon points="67.00,44.00 69.70,50.28 76.51,50.91 71.37,55.42 72.88,62.09 67.00,58.60 61.12,62.09 62.63,55.42 57.49,50.91 64.30,50.28" fill="#ffe99a" stroke="#aa7b42" stroke-width="1.6"/></g></svg>

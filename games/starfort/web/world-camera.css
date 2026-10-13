@@ -1,0 +1,142 @@
+.sf-world-camera {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+}
+.sf-camera-toolbar,
+.sf-entry-list,
+.sf-map-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+.starfort-board .sf-camera-toolbar button {
+  padding: 8px 11px;
+  min-height: 40px;
+}
+.sf-camera-toolbar output {
+  min-width: 42px;
+  text-align: center;
+  font-size: 12px;
+  color: #344b38;
+  font-variant-numeric: tabular-nums;
+}
+.starfort-board .sf-entry-list button {
+  font-size: 12px;
+  padding: 7px 9px;
+  min-height: 36px;
+  text-align: left;
+}
+.starfort-board .sf-entry-list button[data-active="true"] {
+  color: #753b28;
+  background: #f8ecda;
+  border-color: #b8946d;
+}
+.sf-map-previews {
+  font-size: 12px;
+  color: #4d4251;
+}
+.starfort-board .sf-map-previews button {
+  font-size: 12px;
+  padding: 7px 9px;
+  min-height: 36px;
+}
+.starfort-board .sf-map-previews button[aria-pressed="true"] {
+  background: #ecdfed;
+  color: #5f3565;
+  border-color: #99759c;
+}
+.sf-battlefield.sf-world-viewport {
+  height: clamp(340px, 49vw, 580px);
+  aspect-ratio: auto;
+  touch-action: none;
+  cursor: grab;
+}
+.sf-battlefield.sf-world-viewport:active {
+  cursor: grabbing;
+}
+.sf-world-viewport .sf-pad[hidden] {
+  display: none;
+}
+.starfort-board .sf-world-viewport .sf-pad {
+  width: 32px;
+  height: 32px;
+  font-size: 11px;
+}
+.starfort-board .sf-world-viewport .sf-pad-occupied {
+  width: 27px;
+  height: 27px;
+  font-size: 11px;
+}
+.sf-map-navigation {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+}
+.sf-map-navigation p {
+  color: #4a5b42;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.sf-map-navigation strong {
+  color: #693f70;
+  font-weight: 600;
+}
+.sf-minimap {
+  width: clamp(130px, 22%, 230px);
+  height: 100px;
+  flex: 0 0 auto;
+  border: 2px solid #7d8e6c;
+  border-radius: 9px;
+  background: #d8dfbd;
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+@media (max-width: 500px) {
+  .sf-battlefield.sf-world-viewport {
+    height: 380px;
+  }
+  .starfort-board .sf-camera-toolbar button {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  .sf-camera-toolbar output {
+    min-width: 35px;
+  }
+  .sf-map-navigation {
+    gap: 8px;
+  }
+  .sf-map-navigation p {
+    font-size: 11px;
+  }
+  .sf-minimap {
+    width: 125px;
+    height: 90px;
+  }
+}
+.sf-world-viewport .sf-paused-overlay {
+  pointer-events: none;
+}
+.sf-battlefield.sf-world-viewport.sf-world-overview {
+  cursor: zoom-in;
+}
+.sf-overview-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 7px 11px;
+  border: 1px solid #879d6d;
+  border-radius: 8px;
+  color: #344e35;
+  background: #fffdf1f2;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+  box-shadow: 0 2px 5px #324a2820;
+}

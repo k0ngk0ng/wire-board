@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="160" viewBox="0 0 256 160">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="water" x2=".4" y2="1"><stop stop-color="#baded9"/><stop offset="1" stop-color="#6ea5b0"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<linearGradient id="clay" x2=".3" y2="1"><stop stop-color="#edcdab"/><stop offset="1" stop-color="#b07f65"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe7a5" stop-opacity=".6"/><stop offset="1" stop-color="#ffe7a5" stop-opacity="0"/></radialGradient>
+</defs><g stroke-linejoin="round" stroke-linecap="round"><defs><clipPath id="card"><rect x="7" y="7" width="242" height="146" rx="19"/></clipPath></defs><g clip-path="url(#card)"><rect x="6" y="6" width="244" height="148" rx="20" fill="#bbd3c0" stroke="#70857b" stroke-width="2"/><path d="M12 110Q45 79 85 111T164 105Q215 83 244 114V135Q244 148 230 148H26Q12 148 12 135Z" fill="#a4c6b4"/><path d="M116 8Q152 40 126 69T148 149" stroke="#76acb2" stroke-width="29" fill="none"/><path d="M116 8Q152 40 126 69T148 149" stroke="#bedbd5" stroke-width="3" fill="none"/><path d="M21 117Q61 101 117 104L212 62" stroke="#b3a481" stroke-width="24" fill="none"/><path d="M21 117Q61 101 117 104L212 62" stroke="#ebd6a8" stroke-width="18" fill="none"/><g transform="translate(91 47) scale(.55)"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.5"><path d="M11 97Q61 71 117 94L116 107Q70 120 13 108Z" fill="url(#water)" stroke="#60979c"/>
+<path d="M18 88L33 37Q68 24 105 39L112 89Q95 83 89 79L85 54Q65 48 47 57L40 87Z" fill="url(#stone)"/>
+<path d="M22 75Q66 56 108 76L110 88Q64 67 20 88Z" fill="#c5b691"/>
+<path d="M34 37L28 28Q65 10 109 30L105 39Q65 24 34 37Z" fill="#eee1b3"/>
+<path d="M27 57Q65 39 106 58M51 32V44M76 29V43M93 34V50" fill="none" stroke="#9d987f" stroke-width="2"/>
+<path d="M28 28L26 43M109 30L111 44" stroke="#d8cda4" stroke-width="6"/></g>
+<path d="M24 101q13 -4 25 -1M78 104q10 -4 22 -2" stroke="#d2ebe0" stroke-width="3" fill="none"/></g><g transform="translate(13 17) scale(.6)"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.8"><path d="M55 105L56 65L72 63L77 107Q66 116 55 105Z" fill="url(#wood)"/>
+<path d="M63 92L48 78M68 82L82 68" fill="none" stroke="#8e7254"/>
+<path d="M23 67Q13 43 35 36Q28 17 51 19Q67 4 79 24Q103 16 104 44Q121 57 103 75Q88 88 72 78Q51 93 36 79Q22 85 23 67Z" fill="url(#leaf)"/>
+<path d="M30 53Q27 42 42 42M50 31Q62 24 70 34M84 48Q98 42 100 55" stroke="#cfdf9b" stroke-width="5" fill="none"/>
+<path d="M44 69Q56 77 64 64M79 73Q87 65 86 59" fill="none" stroke="#54866a" stroke-width="2"/></g></g><g transform="translate(166 61) scale(.55)"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><ellipse cx="64" cy="104" rx="47" ry="12" fill="url(#water)" stroke="#729b93" stroke-width="2"/>
+<g stroke="#566f51" stroke-width="3" fill="none"><path d="M40 104Q43 69 35 39M62 103Q62 54 69 25M82 101Q83 69 99 49M52 103Q52 83 30 71M70 104Q69 77 86 61"/></g>
+<g stroke="#715b47" stroke-width="5"><path d="M33 29L36 45M69 15L68 31M102 38L96 55"/></g>
+<g fill="#8eab70" stroke="#66865c" stroke-width="1.5"><path d="M44 88Q28 56 23 62Q18 80 44 88M68 80Q64 55 79 45Q85 62 68 80M80 94Q95 73 110 80Q102 97 80 94"/></g></g></g><rect x="7" y="7" width="242" height="146" rx="19" fill="none" stroke="#70857b" stroke-width="2"/></g></svg>

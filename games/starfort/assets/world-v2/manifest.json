@@ -1,0 +1,232 @@
+{
+  "version": "world-v2",
+  "original": true,
+  "license": "Original project artwork and procedurally synthesized audio; no third-party sources.",
+  "files": [
+    {
+      "path": "atlas.json",
+      "bytes": 3772,
+      "sha256": "c69e78ce3fbaaa28506483ea29189465f67564a3417cf4b54548760d900e9416"
+    },
+    {
+      "path": "atlas.webp",
+      "bytes": 390342,
+      "sha256": "fbcd7a5f137f002ff353dd7eaccba3e1e0c4d41c794801211871258876de8767"
+    },
+    {
+      "path": "audio/event.wav",
+      "bytes": 30032,
+      "sha256": "f27b8854575123489ce2520ff438d47f14d844eb16494957b6ad5b57b86d30a1"
+    },
+    {
+      "path": "audio/expand.wav",
+      "bytes": 49436,
+      "sha256": "cec7187444c3e949d2ee0f23bc9ef83093011806232eb1ea78809446c818cc00"
+    },
+    {
+      "path": "audio/objective.wav",
+      "bytes": 39734,
+      "sha256": "6027b9b4f3edf7f9d8241234c8146d5d1f43d347728f89805d4384588081ccb6"
+    },
+    {
+      "path": "choice-canyon.webp",
+      "bytes": 18990,
+      "sha256": "258d09ec8478b4647011d1db798b8e058eb7d530bea1f2e3b6d515b21682ffb9"
+    },
+    {
+      "path": "choice-forest.webp",
+      "bytes": 21284,
+      "sha256": "8227a3ff9493aa20adb77756997c2da1ecf86c63a0d0681356238df36c252932"
+    },
+    {
+      "path": "choice-marsh.webp",
+      "bytes": 16998,
+      "sha256": "caddf6c99c48178f8f6c98b8ba1949ffd8e68335584b29b0f68e5f5f7e1bc353"
+    },
+    {
+      "path": "choice-river.webp",
+      "bytes": 20496,
+      "sha256": "0e378045577e00e39b067bb55fcdd0da9a71467f9391923986140cfd99c83e8d"
+    },
+    {
+      "path": "choice-ruins.webp",
+      "bytes": 17594,
+      "sha256": "af122ec7ff9f8f75a6c2df93bcecdcb9a1303ca54861e25cfd1aa478a90ee59d"
+    },
+    {
+      "path": "choice-snow.webp",
+      "bytes": 17718,
+      "sha256": "8dddec94ed99bdd17f01e0e67695607a0f606827bbd59ec061d0c97e29b61c67"
+    },
+    {
+      "path": "effect-boss-aura.webp",
+      "bytes": 17662,
+      "sha256": "4dc8d381544eba1f9ad1ee94e20dff9a2c820ec181eaf92e7ff6f757f448a489"
+    },
+    {
+      "path": "enemy-banner-0.webp",
+      "bytes": 11370,
+      "sha256": "2eacaa403c3d7aec04d379ded7e460f6282b0cb961ce6e21193e195b04136f57"
+    },
+    {
+      "path": "enemy-banner-1.webp",
+      "bytes": 11542,
+      "sha256": "9129e99415fda272d7143007854c94b2d90041164c951c24a2fe496d07328815"
+    },
+    {
+      "path": "enemy-banner-2.webp",
+      "bytes": 11382,
+      "sha256": "388a5ca7a036ab1c42973cbddce78235c31cd2df0f9e4ceeba99679b1a46d985"
+    },
+    {
+      "path": "enemy-engineer-0.webp",
+      "bytes": 12488,
+      "sha256": "21e086be228621ffb387eee8ee1b5eb934b47b4f6372794c5eb4da5bae288496"
+    },
+    {
+      "path": "enemy-engineer-1.webp",
+      "bytes": 12668,
+      "sha256": "1f74d6cc58975fa88f7f29c47b5b8b3d629beed8e519bf616a4c3b31f6c63be4"
+    },
+    {
+      "path": "enemy-engineer-2.webp",
+      "bytes": 12314,
+      "sha256": "f09473c1d07ec0139a6a31fe4c7e61fb77aabda91b42dd857b93fa9742785fc2"
+    },
+    {
+      "path": "enemy-healer-0.webp",
+      "bytes": 12018,
+      "sha256": "2aab341555c63331b987395959e5e1ebeb0808251633253e363c2fdeedda5cb2"
+    },
+    {
+      "path": "enemy-healer-1.webp",
+      "bytes": 12112,
+      "sha256": "24bf37d2405214f465945e4ec21633307f0cb4478e53cc21cd21020c3a68ba90"
+    },
+    {
+      "path": "enemy-healer-2.webp",
+      "bytes": 11976,
+      "sha256": "be10a68d99b4a81d7390d800fc82909fc3c4b9d311296b5097c1879e4b41a41c"
+    },
+    {
+      "path": "enemy-splitter-0.webp",
+      "bytes": 9908,
+      "sha256": "051c3b0162f4a21032f1aab686628f4c44efa15fa75191d6aabc7fa2b17fd291"
+    },
+    {
+      "path": "enemy-splitter-1.webp",
+      "bytes": 10098,
+      "sha256": "e24cc3abd1d5998c4e740332b8d5bbb2308a97abcc2cac57b4c5c58533c9b96e"
+    },
+    {
+      "path": "enemy-splitter-2.webp",
+      "bytes": 9878,
+      "sha256": "b9e6aed1e08e589b9029eaaad3598b11187a14ccaa7de7e8d158219a322a9171"
+    },
+    {
+      "path": "event-fog.webp",
+      "bytes": 2800,
+      "sha256": "4fb895c2cb8e7387a9af22fc8a19be8bf3c95d54029245c7ebaa0112a5ac2cb2"
+    },
+    {
+      "path": "event-frost.webp",
+      "bytes": 3168,
+      "sha256": "07552f8e6182eda5b3058bd9d7a5dd01d41ce1588dd3fb668723c59906b7bddd"
+    },
+    {
+      "path": "event-star.webp",
+      "bytes": 3322,
+      "sha256": "f7653d9bb74fa1c32b0efa9bc1d90a3927210c5a8d9e6dda56b6954aca87e2e5"
+    },
+    {
+      "path": "event-surge.webp",
+      "bytes": 3954,
+      "sha256": "d02df2569ee45d679a9fb1675e3c53ba9900f18097b5e165fc56f2fe5f67327c"
+    },
+    {
+      "path": "prop-bridge.webp",
+      "bytes": 13388,
+      "sha256": "f0daae2c85a49387ff2567ee852b493db0e08210fd69beef8d22d3eac224eb16"
+    },
+    {
+      "path": "prop-cart.webp",
+      "bytes": 10360,
+      "sha256": "b204833e336f5741095f8a46939105ed0c3991708a61d0e91b3daa88c464d0a7"
+    },
+    {
+      "path": "prop-gate.webp",
+      "bytes": 10918,
+      "sha256": "8e056009dc94a6535e72326c49bd6ad289d466450d22fa51a324df1aeba208fd"
+    },
+    {
+      "path": "prop-highground.webp",
+      "bytes": 8176,
+      "sha256": "2dfb12b5e4c0c81c4101f780af0322380dbbb857cb52a0680ba44cda2917d99c"
+    },
+    {
+      "path": "prop-mine.webp",
+      "bytes": 10488,
+      "sha256": "15354a89b31896fc3441b566e6971e085a8e8d5e568d7f51e9381a79668d79b3"
+    },
+    {
+      "path": "prop-pine.webp",
+      "bytes": 9492,
+      "sha256": "0499ffa91faa0ce4199622d9df03fa3d5f025fe3d5aaa4d11d7909744a877ed1"
+    },
+    {
+      "path": "prop-reeds.webp",
+      "bytes": 10820,
+      "sha256": "8afc529b688e8e0b4f47b9446551ba833ce8abf3d5b431cf87caff9b0b7a1c53"
+    },
+    {
+      "path": "prop-rock.webp",
+      "bytes": 7826,
+      "sha256": "ebac169e2aa3204f464a95192325ab025e0a734c25fd8a2847dc9df1d5b38baf"
+    },
+    {
+      "path": "prop-ruins.webp",
+      "bytes": 7888,
+      "sha256": "4fe95f3b001f23ba96de92849f8f0a2a980fd1522ac6d070941252d2bb441006"
+    },
+    {
+      "path": "prop-tree.webp",
+      "bytes": 9344,
+      "sha256": "70b0c56665e36a261b95aee52d9dec80917df02163e44a0a79ea3da08cb5f4fd"
+    },
+    {
+      "path": "prop-watchtower.webp",
+      "bytes": 9318,
+      "sha256": "abf68611d30db0f892312cd67fe3fa145c77e4ff705013eeb03ac723a7d0172c"
+    },
+    {
+      "path": "tile-canyon.webp",
+      "bytes": 1148,
+      "sha256": "3b805a236e52fed5f1a7486ef82cbeaffb13d0bb479bc7abfb343f55e4b3bd99"
+    },
+    {
+      "path": "tile-forest.webp",
+      "bytes": 1128,
+      "sha256": "2fe5ab4fd42dff9e35e685c7904c7d438e23b423b35a7edc7a76d785faa3fb25"
+    },
+    {
+      "path": "tile-marsh.webp",
+      "bytes": 1370,
+      "sha256": "396769de1cad86c543dd530cd6925b68e3ed8af6d2ef59df53ee37196cdaa51c"
+    },
+    {
+      "path": "tile-river.webp",
+      "bytes": 1198,
+      "sha256": "a7b45b62d6123e7fb85b43425e40f5adad1b532b529548bef5a28ccaaffe069f"
+    },
+    {
+      "path": "tile-ruins.webp",
+      "bytes": 1832,
+      "sha256": "d7d0883f0750309a68c288bd5e1265057c371ef33e98ec854ad2f0159f872625"
+    },
+    {
+      "path": "tile-snow.webp",
+      "bytes": 1070,
+      "sha256": "c13b93b4d35ecd50d562d0a96f008539b01bd41924f560c3940b19b74296715d"
+    }
+  ]
+}

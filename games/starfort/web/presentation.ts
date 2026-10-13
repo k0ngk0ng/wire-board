@@ -1,4 +1,4 @@
-import type { Event, Point } from "./types.ts";
+import type { Event, Point, Objective } from "./types.ts";
 
 export type EventCursor = {
   room: string;
@@ -52,18 +52,52 @@ export function pointOnPath(path: Point[], distance: number): Point {
 }
 export function enemyPoint(
   path: Point[],
-  previous: (Point & { id: number; progress: number }) | undefined,
-  current: Point & { id: number; progress: number },
+  previous:
+    | (Point & { id: number | string; progress: number; route?: string })
+    | undefined,
+  current: Point & { id: number | string; progress: number; route?: string },
   fraction: number,
   reduced: boolean,
 ): Point {
-  if (reduced || !previous || previous.id !== current.id)
+  if (
+    reduced ||
+    !previous ||
+    previous.id !== current.id ||
+    previous.route !== current.route ||
+    current.progress < previous.progress
+  )
+    return { x: current.x, y: current.y };
+  const expected = pointOnPath(path, current.progress);
+  // Saved enemies may predate route expansion or have switched to a shortcut.
+  // Draw the authoritative point instead of sweeping across unrelated geometry.
+  if (Math.hypot(expected.x - current.x, expected.y - current.y) > 2)
     return { x: current.x, y: current.y };
   const t = Math.min(1, Math.max(0, fraction));
   return pointOnPath(
     path,
     previous.progress + (current.progress - previous.progress) * t,
   );
+}
+type MovingObjective = Pick<
+  Objective,
+  "id" | "kind" | "status" | "route" | "progress" | "x" | "y"
+>;
+export function objectivePoint(
+  path: Point[],
+  previous: MovingObjective | undefined,
+  current: MovingObjective,
+  fraction: number,
+  reduced: boolean,
+  moving: boolean,
+): Point {
+  if (
+    !moving ||
+    current.kind !== "convoy" ||
+    current.status !== "active" ||
+    previous?.status !== "active"
+  )
+    return { x: current.x, y: current.y };
+  return enemyPoint(path, previous, current, fraction, reduced);
 }
 export function pickSound(
   events: Event[],
@@ -74,6 +108,11 @@ export function pickSound(
     ["win", "victory"],
     ["lose", "defeat"],
     ["base_hit", "leak"],
+    ["expand", "expand"],
+    ["objective", "objective"],
+    ["boon", "objective"],
+    ["boss_phase", "event"],
+    ["shortcut", "event"],
     ["wave", "wave"],
     ["upgrade", "upgrade"],
     ["build", "build"],

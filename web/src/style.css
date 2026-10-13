@@ -324,6 +324,7 @@ nav {
   border-radius: 12px;
   overflow: hidden;
   background: #fffef9;
+  color: #293b35;
   box-shadow: 0 4px 12px #203b2810;
 }
 .cover {
@@ -347,48 +348,21 @@ nav {
   min-width: 0;
   padding: 22px 24px;
 }
-.feature-kicker {
-  font-size: 8px;
-  letter-spacing: 1.4px;
-  color: #829580;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-}
-.feature-kicker > span {
-  letter-spacing: 0;
-  background: #eff2e9;
-  padding: 4px 7px;
-  border-radius: 3px;
-  font-size: 10px;
-}
 .feature-info h2 {
   font-size: 26px;
-  margin: 7px 0 9px;
+  margin: 0 0 9px;
   font-family: "Songti SC", serif;
   letter-spacing: 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-height: 67px;
   line-height: 1.3;
-  gap: 4px;
-}
-.feature-info h2 small {
-  font-family: Georgia, serif;
-  font-weight: 400;
-  font-style: italic;
-  letter-spacing: 0;
-  color: #8b9789;
-  font-size: 16px;
+  overflow-wrap: anywhere;
 }
 .feature-info p {
   margin: 0 0 20px;
   min-height: 3.4em;
   line-height: 1.7;
-  color: #7f8b7e;
-  font-size: 12px;
+  color: #52624f;
+  font-size: 13px;
+  overflow-wrap: anywhere;
 }
 .feature-bottom {
   display: flex;
@@ -403,18 +377,8 @@ nav {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 11px;
-  color: #7f8c7e;
-}
-.feature-bottom > span {
-  flex-wrap: wrap;
-  column-gap: 12px;
-  row-gap: 6px;
-}
-.feature-bottom > span > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+  font-size: 12px;
+  color: #52624f;
   white-space: nowrap;
 }
 .feature-bottom svg {
@@ -2394,9 +2358,6 @@ label small {
   .feature-info h2 {
     font-size: 23px;
   }
-  .feature-info h2 small {
-    font-size: 13px;
-  }
   footer {
     margin-left: 32px;
     margin-right: 32px;
@@ -2489,15 +2450,11 @@ label small {
   .game-feature > .cover {
     height: 170px;
   }
-  .feature-info h2 {
-    flex-direction: column;
-    gap: 3px;
-  }
   .feature-bottom {
     gap: 8px;
   }
   .feature-bottom > span {
-    font-size: 9px;
+    font-size: 12px;
     gap: 4px;
   }
   .feature-bottom > span svg {
@@ -2619,30 +2576,17 @@ label small {
   .feature-info h2 {
     font-size: 23px;
     letter-spacing: 1px;
-    gap: 4px;
-    margin-top: 9px;
-  }
-  .feature-info h2 small {
-    font-size: 12px;
   }
   .feature-info p {
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.8;
-  }
-  .feature-kicker {
-    font-size: 6px;
-    letter-spacing: 0.7px;
-  }
-  .feature-kicker > span {
-    font-size: 8px;
-    padding: 2px 4px;
   }
   .feature-bottom {
     padding-top: 12px;
     margin-top: auto;
   }
   .feature-bottom > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .feature-bottom .primary {
     font-size: 10px;

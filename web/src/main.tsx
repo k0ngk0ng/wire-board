@@ -4,7 +4,6 @@ import {
   BookOpen,
   Bot,
   Check,
-  Clock,
   Copy,
   Eye,
   Flag,
@@ -1258,111 +1257,33 @@ function Lobby({
         <span role="status">{matchingGames.length} 款游戏</span>
       </div>
       <section className="game-selection">
-        {matchingGames.slice(0, gameLimit).map((kind) =>
-          isIndependentGame(kind) ? (
-            <article className="game-feature" key={kind}>
-              <ModuleCover kind={kind} />
+        {matchingGames.slice(0, gameLimit).map((kind) => {
+          const game = gameModule(kind)!;
+          return (
+            <article className="game-feature" key={kind} data-game={kind}>
+              <Cover kind={kind} />
               <div className="feature-info">
-                <h2>{gameName(kind)}</h2>
-                <p>{gameModule(kind)?.description}</p>
+                <h2>{game.name}</h2>
+                <p>{game.description}</p>
                 <div className="feature-bottom">
                   <span>
-                    {gameModule(kind)?.minPlayers}–
-                    {gameModule(kind)?.maxPlayers} 人
+                    <Users size={15} aria-hidden="true" />
+                    {game.playerCounts
+                      ? game.playerCounts.join(" / ")
+                      : game.minPlayers === game.maxPlayers
+                        ? game.minPlayers
+                        : `${game.minPlayers}–${game.maxPlayers}`}{" "}
+                    人
                   </span>
                   <button className="primary" onClick={() => onCreate(kind)}>
+                    <Plus size={17} aria-hidden="true" />
                     创建牌桌
                   </button>
                 </div>
               </div>
             </article>
-          ) : (
-            <article className="game-feature" key={kind}>
-              <Cover kind={kind} />
-              <div className="feature-info">
-                <div className="feature-kicker">
-                  {kind === "dota"
-                    ? "DEFEND. OUTWIT. ADVANCE."
-                    : kind === "sanguosha"
-                      ? "CHOOSE YOUR SIDE."
-                      : kind === "carcassonne"
-                        ? "ONE TILE. A WHOLE WORLD."
-                        : kind === "catan"
-                          ? "BUILD. TRADE. SETTLE."
-                          : kind === "splendor"
-                            ? "THE ART OF COLLECTING"
-                            : "EVERY ROUTE TELLS A STORY"}
-                  <span>{kind === "dota" ? "原创桌游" : "基础版"}</span>
-                </div>
-                <h2>
-                  {gameName(kind)}
-                  <small>
-                    {kind === "dota"
-                      ? "DotA · Lane Tactics"
-                      : kind === "sanguosha"
-                        ? "Sanguosha"
-                        : kind === "carcassonne"
-                          ? "Carcassonne"
-                          : kind === "catan"
-                            ? "CATAN"
-                            : kind === "splendor"
-                              ? "Splendor"
-                              : "Ticket to Ride"}
-                  </small>
-                </h2>
-                <p>
-                  {kind === "dota"
-                    ? "暗选行动，协同进军。以熟悉的英雄，赢下一场桌上遗迹之战。"
-                    : kind === "sanguosha"
-                      ? "执一手好牌，藏一重身份，与好友共赴三国风云。"
-                      : kind === "carcassonne"
-                        ? "拼接道路、城市与田野，让小小随从写下你的领地故事。"
-                        : kind === "catan"
-                          ? "掷骰收获资源，交易、铺路，在岛上建立你的城邦。"
-                          : kind === "splendor"
-                            ? "从宝石商人到财富大师，每一次选择都闪闪发光。"
-                            : "从海岸到海岸，让你的铁路连接每一个目的地。"}
-                </p>
-                <div className="feature-bottom">
-                  <span>
-                    <span>
-                      <Users size={15} />
-                      {kind === "dota"
-                        ? "2 / 4 / 6"
-                        : kind === "sanguosha"
-                          ? "4–8"
-                          : kind === "catan"
-                            ? "2–6"
-                            : kind === "splendor"
-                              ? "2–4"
-                              : "2–5"}{" "}
-                      人
-                    </span>{" "}
-                    <span>
-                      <Clock size={15} />
-                      {kind === "dota"
-                        ? "20–40"
-                        : kind === "sanguosha"
-                          ? "30–60"
-                          : kind === "carcassonne"
-                            ? "30–45"
-                            : kind === "catan"
-                              ? "45–90"
-                              : kind === "splendor"
-                                ? "30"
-                                : "45–60"}{" "}
-                      分钟
-                    </span>
-                  </span>
-                  <button className="primary" onClick={() => onCreate(kind)}>
-                    <Plus size={17} />
-                    开一桌
-                  </button>
-                </div>
-              </div>
-            </article>
-          ),
-        )}
+          );
+        })}
       </section>
       {state.availableGames.length > 0 && !matchingGames.length && (
         <p className="game-search-empty" role="status">

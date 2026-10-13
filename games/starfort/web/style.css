@@ -81,6 +81,10 @@
   padding: 10px 13px;
   min-height: 40px;
   font-weight: 650;
+  /* Change the foreground/background pair together when affordability changes. */
+  transition:
+    transform 0.16s,
+    box-shadow 0.16s;
 }
 .starfort-board button:hover:not(:disabled) {
   background: #294f37;
@@ -571,6 +575,233 @@
   margin: 8px 0;
   color: #536247;
 }
+.sf-world-status,
+.sf-world-choice,
+.sf-objectives {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #c2cdae;
+  border-radius: 12px;
+  background: #f7f7eb;
+  color: #304732;
+}
+.sf-world-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+}
+.sf-world-heading > div {
+  display: grid;
+  gap: 5px;
+}
+.sf-world-heading span {
+  font-size: 12px;
+  color: #506046;
+}
+.sf-world-event {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #eee6ce;
+  border-left: 3px solid #9b7136;
+  border-radius: 4px 8px 8px 4px;
+  color: #584221;
+}
+.sf-world-event > .sf-asset {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  object-fit: contain;
+}
+.sf-choice-title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.sf-choice-title .sf-asset {
+  width: 74px;
+  height: 46px;
+  object-fit: cover;
+  flex: none;
+  border-radius: 6px;
+}
+.sf-world-event p,
+.sf-world-choice > p,
+.sf-objectives > p,
+.sf-entry-alert,
+.sf-boons {
+  margin: 5px 0 0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.sf-entry-alert {
+  margin-top: 10px;
+  color: #75432a;
+}
+.sf-event-forecast {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.sf-event-forecast > div {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid #cdd5bd;
+  border-radius: 7px;
+  background: #fbfaf0;
+  color: #455a3d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.sf-boons {
+  padding-top: 10px;
+  color: #435331;
+}
+.sf-boons span {
+  display: block;
+  color: #56634c;
+}
+.sf-choice-grid,
+.sf-objective-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.sf-choice-card,
+.sf-objective-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #c4cdb3;
+  border-radius: 10px;
+  background: #fffdf3;
+  color: #354b36;
+}
+.sf-choice-selected {
+  border: 2px solid #79602d;
+  padding: 11px;
+  background: #fff4d5;
+  color: #4e421f;
+}
+.sf-route-preview {
+  width: 100%;
+  height: 148px;
+  display: block;
+  border-radius: 7px;
+  background: #e6ebd7;
+  margin-bottom: 9px;
+}
+.sf-choice-card h4,
+.sf-objective-card h4 {
+  font-size: 15px;
+  margin: 0;
+}
+.sf-choice-card p,
+.sf-objective-card p {
+  margin: 7px 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #506047;
+  overflow-wrap: anywhere;
+}
+.sf-choice-card .sf-voters {
+  color: #765022;
+  font-weight: 650;
+}
+.sf-choice-card button,
+.sf-objective-card button {
+  margin-top: auto;
+  width: 100%;
+}
+.sf-objective-card > div {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.sf-objective-card > div > span {
+  font-size: 11px;
+  color: #506047;
+  flex: none;
+}
+.sf-objective-card .sf-objective-reward {
+  color: #795016;
+  font-weight: 600;
+}
+.sf-objective-card .sf-objective-progress {
+  color: #315b48;
+}
+.sf-objective-health {
+  padding: 8px 0;
+  display: block !important;
+  color: #31533b;
+  font-size: 12px;
+}
+.sf-objective-health .sf-hp-track {
+  max-width: 100%;
+}
+.sf-objective-failed {
+  background: #f4eee5;
+  border-color: #cfbaaa;
+  color: #624c3e;
+}
+.sf-objective-completed {
+  background: #eaf1df;
+  color: #36543a;
+}
+.sf-tower-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #edf0e2;
+  color: #334b35;
+  margin: 12px 0;
+}
+.sf-tower-stats > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.sf-tower-stats dt {
+  font-size: 11px;
+  color: #4c5e43;
+}
+.sf-tower-stats dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.sf-target-control {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  color: #40563d;
+  font-size: 12px;
+}
+.sf-target-hint,
+.sf-terrain-note {
+  font-size: 12px;
+  color: #5f532f;
+}
+.sf-terrain-note {
+  padding: 8px 10px;
+  background: #f2ead3;
+  border-radius: 7px;
+}
 @media (min-width: 1400px) {
   .sf-layout {
     grid-template-columns: minmax(0, 1fr) 320px;
@@ -626,6 +857,24 @@
   }
 }
 @media (max-width: 560px) {
+  .sf-world-status,
+  .sf-world-choice,
+  .sf-objectives {
+    padding: 11px;
+  }
+  .sf-event-forecast {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sf-world-heading span,
+  .sf-event-forecast > div,
+  .sf-choice-card p,
+  .sf-objective-card p {
+    font-size: 12px;
+  }
+  .sf-choice-grid,
+  .sf-objective-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .starfort-board {
     gap: 10px;
     font-size: 13px;

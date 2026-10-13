@@ -34,18 +34,24 @@ type Point struct {
 	Y float64 `json:"y"`
 }
 type Pad struct {
-	ID int     `json:"id"`
-	X  float64 `json:"x"`
-	Y  float64 `json:"y"`
+	ID      int     `json:"id"`
+	X       float64 `json:"x"`
+	Y       float64 `json:"y"`
+	Terrain string  `json:"terrain"`
+	Sector  int     `json:"sector"`
 }
 type Map struct {
-	Width  int     `json:"width"`
-	Height int     `json:"height"`
-	Path   []Point `json:"path"`
-	Pads   []Pad   `json:"pads"`
+	Width    int       `json:"width"`
+	Height   int       `json:"height"`
+	Path     []Point   `json:"path"`
+	Pads     []Pad     `json:"pads"`
+	Base     Point     `json:"base"`
+	Routes   []Route   `json:"routes"`
+	Regions  []Region  `json:"regions"`
+	Features []Feature `json:"features"`
 }
 
-var board = Map{Width: 960, Height: 640, Path: []Point{{-30, 120}, {250, 120}, {250, 300}, {700, 300}, {700, 500}, {1000, 500}}, Pads: []Pad{{0, 150, 210}, {1, 340, 210}, {2, 470, 210}, {3, 590, 210}, {4, 790, 390}, {5, 610, 400}, {6, 470, 390}, {7, 340, 400}, {8, 160, 350}, {9, 810, 570}, {10, 890, 400}, {11, 610, 570}, {12, 140, 40}, {13, 340, 70}, {14, 790, 210}, {15, 900, 570}}}
+var board = Map{Width: 960, Height: 640, Path: []Point{{-30, 120}, {250, 120}, {250, 300}, {700, 300}, {700, 500}, {1000, 500}}, Pads: []Pad{{ID: 0, X: 150, Y: 210, Terrain: "plain"}, {ID: 1, X: 340, Y: 210, Terrain: "plain"}, {ID: 2, X: 470, Y: 210, Terrain: "plain"}, {ID: 3, X: 590, Y: 210, Terrain: "plain"}, {ID: 4, X: 790, Y: 390, Terrain: "plain"}, {ID: 5, X: 610, Y: 400, Terrain: "plain"}, {ID: 6, X: 470, Y: 390, Terrain: "plain"}, {ID: 7, X: 340, Y: 400, Terrain: "plain"}, {ID: 8, X: 160, Y: 350, Terrain: "plain"}, {ID: 9, X: 810, Y: 570, Terrain: "plain"}, {ID: 10, X: 890, Y: 400, Terrain: "plain"}, {ID: 11, X: 610, Y: 570, Terrain: "plain"}, {ID: 12, X: 140, Y: 40, Terrain: "plain"}, {ID: 13, X: 340, Y: 70, Terrain: "plain"}, {ID: 14, X: 790, Y: 210, Terrain: "plain"}, {ID: 15, X: 900, Y: 570, Terrain: "plain"}}}
 
 type TowerSpec struct {
 	Kind        string  `json:"kind"`
@@ -74,21 +80,25 @@ type Tower struct {
 	Angle    float64 `json:"angle"`
 	Cooldown int     `json:"cooldown"`
 	Spent    int     `json:"spent"`
+	Priority string  `json:"priority"`
 }
 type Enemy struct {
-	ID        int     `json:"id"`
-	Kind      string  `json:"kind"`
-	X         float64 `json:"x"`
-	Y         float64 `json:"y"`
-	Progress  float64 `json:"progress"`
-	HP        float64 `json:"hp"`
-	MaxHP     float64 `json:"maxHP"`
-	Shield    float64 `json:"shield"`
-	Speed     float64 `json:"speed"`
-	SlowUntil int64   `json:"slowUntil"`
-	Armor     float64 `json:"armor"`
-	Reward    int     `json:"reward"`
-	Leak      int     `json:"leak"`
+	ID          int     `json:"id"`
+	Kind        string  `json:"kind"`
+	X           float64 `json:"x"`
+	Y           float64 `json:"y"`
+	Progress    float64 `json:"progress"`
+	HP          float64 `json:"hp"`
+	MaxHP       float64 `json:"maxHP"`
+	Shield      float64 `json:"shield"`
+	Speed       float64 `json:"speed"`
+	SlowUntil   int64   `json:"slowUntil"`
+	Armor       float64 `json:"armor"`
+	Reward      int     `json:"reward"`
+	Leak        int     `json:"leak"`
+	Route       string  `json:"route"`
+	Phase       int     `json:"phase"`
+	AbilityTick int64   `json:"abilityTick"`
 }
 type WaveInfo struct {
 	Title       string `json:"title"`
@@ -112,6 +122,7 @@ type Event struct {
 }
 type State struct {
 	Options        Options  `json:"options"`
+	World          World    `json:"world"`
 	Players        []Player `json:"players"`
 	Phase          string   `json:"phase"`
 	Epoch          int      `json:"epoch"`
@@ -170,10 +181,13 @@ func (s *State) actors() []int {
 	return a
 }
 func (s *State) valid() error {
+	if err := s.validWorld(); err != nil {
+		return err
+	}
 	if len(s.Players) < 1 || len(s.Players) > 4 || !validOptions(s.Options) || !slices.Contains([]string{"prepare", "battle", "paused", "won", "lost"}, s.Phase) || s.Epoch < 1 || s.Wave < 1 || s.CompletedWaves < 0 || s.CompletedWaves > s.Wave || s.BaseMaxHP != 30 || s.BaseHP < 0 || s.BaseHP > s.BaseMaxHP || s.Cursor < 0 || s.Cursor >= len(s.Players) || s.Tick < 0 || s.ElapsedMS != s.Tick*StepMS || s.ServerAt < 0 || s.NextAt < 0 {
 		return errors.New("无效星垒存档")
 	}
-	if (s.Phase == "lost") != (s.BaseHP == 0) || (s.Phase == "won" && (s.Options.Mode != "campaign" || s.CompletedWaves != s.Options.Waves)) || len(s.Towers) > len(board.Pads) || len(s.Enemies) > MaxEnemies || len(s.Events) > MaxEvents || len(s.Log) > 40 {
+	if (s.Phase == "lost") != (s.BaseHP == 0) || (s.Phase == "won" && (s.Options.Mode != "campaign" || s.CompletedWaves != s.Options.Waves)) || len(s.Towers) > len(s.World.Map.Pads) || len(s.Enemies) > MaxEnemies || len(s.Events) > MaxEvents || len(s.Log) > 40 {
 		return errors.New("无效战场状态")
 	}
 	for _, p := range s.Players {
@@ -184,7 +198,7 @@ func (s *State) valid() error {
 	ids, pads := map[int]bool{}, map[int]bool{}
 	for _, t := range s.Towers {
 		_, ok := spec(t.Kind)
-		if !ok || t.ID < 1 || t.ID > s.TowerSerial || ids[t.ID] || t.Pad < 0 || t.Pad >= len(board.Pads) || pads[t.Pad] || t.Owner < 0 || t.Owner >= len(s.Players) || t.Level < 1 || t.Level > maxValue || t.Spent < 1 || t.Spent > maxValue || !finite(t.Angle) || t.Cooldown < 0 || t.Cooldown > 10000 || ((t.Level <= 3) && (t.Branch != "")) || ((t.Level > 3) && t.Branch != "power" && t.Branch != "speed") {
+		if !ok || !slices.Contains([]string{"first", "strong", "support"}, t.Priority) || t.ID < 1 || t.ID > s.TowerSerial || ids[t.ID] || t.Pad < 0 || t.Pad >= len(s.World.Map.Pads) || pads[t.Pad] || t.Owner < 0 || t.Owner >= len(s.Players) || t.Level < 1 || t.Level > maxValue || t.Spent < 1 || t.Spent > maxValue || !finite(t.Angle) || t.Cooldown < 0 || t.Cooldown > 10000 || ((t.Level <= 3) && (t.Branch != "")) || ((t.Level > 3) && t.Branch != "power" && t.Branch != "speed") {
 			return errors.New("无效防御塔")
 		}
 		ids[t.ID] = true
@@ -192,7 +206,7 @@ func (s *State) valid() error {
 	}
 	ids = map[int]bool{}
 	for _, e := range s.Enemies {
-		if e.ID < 1 || e.ID > s.EnemySerial || ids[e.ID] || !slices.Contains([]string{"slime", "runner", "armored", "swarm", "shield", "elite", "boss"}, e.Kind) || !finite(e.HP) || !finite(e.MaxHP) || !finite(e.Shield) || !finite(e.X) || !finite(e.Y) || !finite(e.Progress) || !finite(e.Speed) || !finite(e.Armor) || e.HP <= 0 || e.MaxHP <= 0 || e.HP > e.MaxHP || e.Shield < 0 || e.Speed <= 0 || e.Speed > 500 || e.Progress < 0 || e.Progress > pathLength() || e.Armor < 0 || e.Armor > 1 || e.Reward < 0 || e.Leak < 1 {
+		if e.ID < 1 || e.ID > s.EnemySerial || ids[e.ID] || !slices.Contains([]string{"slime", "runner", "armored", "swarm", "shield", "elite", "boss", "healer", "banner", "splitter", "engineer"}, e.Kind) || !finite(e.HP) || !finite(e.MaxHP) || !finite(e.Shield) || !finite(e.X) || !finite(e.Y) || !finite(e.Progress) || !finite(e.Speed) || !finite(e.Armor) || e.HP <= 0 || e.MaxHP <= 0 || e.HP > e.MaxHP || e.Shield < 0 || e.Speed <= 0 || e.Speed > 500 || e.Progress < 0 || e.Progress > pathDistance(s.routePath(e.Route)) || len(s.routePath(e.Route)) < 2 || e.Phase < 0 || e.Phase > 2 || e.AbilityTick < 0 || e.Armor < 0 || e.Armor > 1 || e.Reward < 0 || e.Leak < 1 {
 			return errors.New("无效敌人")
 		}
 		ids[e.ID] = true
@@ -218,7 +232,7 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	m := gameapi.Match{Schema: 1, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
+	m := gameapi.Match{Schema: 2, Data: raw, Actors: s.actors(), Attention: []int{}, TimeoutActors: []int{}, Log: append([]string{}, s.Log...)}
 	if s.finished() {
 		r := &gameapi.Result{Cooperative: true, Ranks: make([]int, len(s.Players)), Winners: []int{}, Scores: make([]int, len(s.Players))}
 		for i := range s.Players {
@@ -243,12 +257,15 @@ func (s *State) Envelope() (gameapi.Match, error) {
 	return m, m.Validate(len(s.Players))
 }
 func decode(m gameapi.Match) (*State, error) {
-	if m.Schema != 1 || len(m.Data) > 256*1024 {
+	if (m.Schema != 1 && m.Schema != 2) || len(m.Data) > 512*1024 {
 		return nil, errors.New("不支持的星垒存档")
 	}
 	var s State
 	if err := json.Unmarshal(m.Data, &s); err != nil {
 		return nil, err
+	}
+	if m.Schema == 1 {
+		s.migrateWorld()
 	}
 	if err := s.valid(); err != nil {
 		return nil, err

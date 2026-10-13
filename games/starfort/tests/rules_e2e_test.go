@@ -46,6 +46,11 @@ type rulesTower struct {
 	EffectiveInterval int     `json:"effectiveInterval"`
 }
 type rulesView struct {
+	World struct {
+		Event struct {
+			ID string `json:"id"`
+		} `json:"event"`
+	} `json:"world"`
 	Phase          string            `json:"phase"`
 	Epoch          int               `json:"epoch"`
 	Wave           int               `json:"wave"`
@@ -311,7 +316,12 @@ func TestStarfortRulesTowersAndSharedRewards(t *testing.T) {
 				t.Errorf("effective tower stats absent: %+v", tower)
 			}
 			for _, spec := range after.Catalog {
-				if spec.Kind == tower.Kind && tower.Level > 1 && tower.EffectiveRange <= spec.Range {
+				// Weather changes the baseline; upgrades must still extend it.
+				baseline := spec.Range
+				if after.World.Event.ID == "fog" {
+					baseline *= .8
+				}
+				if spec.Kind == tower.Kind && tower.Level > 1 && tower.EffectiveRange <= baseline {
 					t.Errorf("upgrade did not expand effective range: %+v", tower)
 				}
 			}

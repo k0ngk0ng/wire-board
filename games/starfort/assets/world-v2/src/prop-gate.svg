@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<defs>
+<linearGradient id="stone" x2=".2" y2="1"><stop stop-color="#f8e9be"/><stop offset="1" stop-color="#b6a48a"/></linearGradient>
+<linearGradient id="wood" x2=".3" y2="1"><stop stop-color="#e6b378"/><stop offset="1" stop-color="#9a6349"/></linearGradient>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#b1d07a"/><stop offset="1" stop-color="#54866a"/></linearGradient>
+<linearGradient id="water" x2=".4" y2="1"><stop stop-color="#baded9"/><stop offset="1" stop-color="#6ea5b0"/></linearGradient>
+<linearGradient id="ice" x2=".5" y2="1"><stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#97dfef"/><stop offset="1" stop-color="#4897c5"/></linearGradient>
+<linearGradient id="magic" x2=".2" y2="1"><stop stop-color="#ddc8f4"/><stop offset="1" stop-color="#8265ad"/></linearGradient>
+<linearGradient id="gold" x2=".4" y2="1"><stop stop-color="#fff2ab"/><stop offset=".5" stop-color="#e9bc5d"/><stop offset="1" stop-color="#b77f3f"/></linearGradient>
+<linearGradient id="clay" x2=".3" y2="1"><stop stop-color="#edcdab"/><stop offset="1" stop-color="#b07f65"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe7a5" stop-opacity=".6"/><stop offset="1" stop-color="#ffe7a5" stop-opacity="0"/></radialGradient>
+</defs><g stroke-linejoin="round" stroke-linecap="round"><ellipse cx="64" cy="111" rx="49" ry="8" fill="#244435" opacity=".17"/><g stroke="#334a49" stroke-width="2.8"><path d="M13 110L20 37L43 25L89 25L109 39L117 110L91 113L88 60Q67 42 43 60L41 113Z" fill="url(#stone)"/>
+<path d="M21 37L41 46L43 25M89 25L89 46L109 39M18 62L41 65M94 65L112 66M15 90L42 91M90 91L115 88M49 29L47 47M79 28L81 48" fill="none" stroke="#959b85" stroke-width="2"/>
+<path d="M46 49L53 35L64 43L78 31L85 47" stroke="#8e79a2" stroke-width="4" fill="none"/>
+<path d="M16 108L18 94L31 103L43 99L40 113M91 112L99 98L109 104L116 96L117 110" fill="#89a578" stroke="none"/></g><polygon points="65.00,24.00 67.43,29.65 73.56,30.22 68.94,34.28 70.29,40.28 65.00,37.14 59.71,40.28 61.06,34.28 56.44,30.22 62.57,29.65" fill="#d6c1ea" stroke="#897196" stroke-width="1.8"/></g></svg>

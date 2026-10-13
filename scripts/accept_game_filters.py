@@ -5,6 +5,9 @@ Failure cases declared before UI changes: squeezed labels/mobile overflow;
 unreachable choices with many games; search has wrong/empty results; filtering
 loses rooms; switching legacy/module creation submits the wrong game; admin
 search hides the wrong publication control. Temporary modules never ship.
+Card failures: legacy/new games use different templates; English slogans or
+edition badges remain; metadata disagrees with the game; a card opens another
+game; text is clipped, low contrast, or overflows at 320px.
 Run: . scripts/env.sh && python3 -B scripts/accept_game_filters.py
 Evidence: .local/game-filters/browser/result.json and screenshots.
 """
@@ -60,7 +63,7 @@ def shot(name):
       const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number);
       const blend=(a,b,o)=>a.slice(0,3).map((v,i)=>v*o+b[i]*(1-o));
       const lum=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
-      return [...document.querySelectorAll('.game-search,.game-search input,.room-filters select,.game-choice-summary,.choose-games > button > span')].map(e=>{
+      return [...document.querySelectorAll('.game-search,.game-search input,.room-filters select,.game-choice-summary,.choose-games > button > span,.feature-info h2,.feature-info p,.feature-bottom > span,.feature-bottom button')].map(e=>{
         const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);
         let bg=[255,255,255];for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor);bg=blend(c,bg,c[3]??1)}
         const fg=rgb(getComputedStyle(e).color),a=lum(fg),b=lum(bg);
@@ -71,6 +74,31 @@ def shot(name):
     (out / (name + '-contrast.json')).write_text(json.dumps(colors,ensure_ascii=False,indent=2))
     report['checks'].append(name)
     print('PASS', name, flush=True)
+
+def check_cards(expected):
+    cards = js(r"""[...document.querySelectorAll('.game-feature')].map(e => {
+      const info=e.querySelector('.feature-info'), cover=e.querySelector(':scope > .cover');
+      const inside=n=>{const a=n.getBoundingClientRect(),b=e.getBoundingClientRect();return a.width>0&&a.height>0&&a.left>=b.left&&a.right<=b.right+1&&a.top>=b.top&&a.bottom<=b.bottom+1&&n.scrollWidth<=n.clientWidth+1};
+      return {id:e.dataset.game??null,name:info.querySelector('h2')?.textContent.trim(),
+        description:info.querySelector('p')?.textContent.trim(),
+        players:info.querySelector('.feature-bottom > span')?.textContent.trim(),
+        cta:info.querySelector('button')?.textContent.trim(),
+        childTags:[...info.children].map(n=>n.tagName),
+        extra:!!info.querySelector('.feature-kicker,h2 small'),
+        english:/[a-z]/i.test(info.textContent),edition:/基础版|原创桌游/.test(info.textContent),
+        visible:!!cover&&[cover,...info.children,...info.querySelector('.feature-bottom').children].every(inside),
+        coverHeight:cover?.getBoundingClientRect().height};
+    })""")
+    assert len({card['coverHeight'] for card in cards}) == 1, cards
+    for card in cards:
+        assert card['childTags'] == ['H2', 'P', 'DIV'] and not card['extra'], card
+        assert not card['english'] and not card['edition'], card
+        assert card['visible'] and card['description'] and card['cta'] == '创建牌桌', card
+    assert {card['id'] for card in cards} == set(expected), cards
+    for card in cards:
+        assert card['name'] == expected[card['id']]['name'], card
+        assert card['players'] == expected[card['id']]['players'], card
+    return cards
 
 try:
     source = (root / 'internal/server/testdata/module-ui.tsx').read_text()
@@ -95,6 +123,32 @@ try:
     b('tab', next(t['tabId'] for t in b('tab')['tabs'] if t['active']))
     api('/login', {'name': 'ModuleRoot', 'password': 'module-root-test-123'})
     assert not any(k.startswith('catalog-') for k in api('/state')['availableGames'])
+    native = {
+        'splendor': {'name': '璀璨宝石', 'players': '2–4 人'},
+        'rail': {'name': '铁路环游', 'players': '2–5 人'},
+        'catan': {'name': '卡坦岛', 'players': '2–6 人'},
+        'carcassonne': {'name': '卡卡颂', 'players': '2–5 人'},
+        'sanguosha': {'name': '三国杀', 'players': '4–8 人'},
+        # Three/five players are not supported: a range would mislead users.
+        'dota': {'name': '兵线争锋', 'players': '2 / 4 / 6 人'},
+        'monopoly': {'name': '强手棋', 'players': '2–6 人'},
+        'starfort': {'name': '星垒', 'players': '1–4 人'},
+    }
+    for kind in native: api('/admin/games/' + kind, {'enabled': True})
+    b('reload'); b('wait', '.game-selection')
+    assert js('document.querySelectorAll(".game-feature").length===6')
+    b('click', '.catalogue-more')
+    for width in [1280, 320]:
+        b('set', 'viewport', str(width), '900')
+        cards = check_cards(native)
+        (out / f'uniform-cards-{width}.json').write_text(json.dumps(cards,ensure_ascii=False,indent=2))
+        shot('uniform-native-cards-' + str(width))
+    for kind, meta in native.items():
+        b('click', f'.game-feature[data-game="{kind}"] button')
+        b('wait', '[role=dialog] .choose-games .selected')
+        assert js('document.querySelector(".choose-games .selected > span").textContent.trim()') == meta['name'], kind
+        b('click', '[role=dialog] button[aria-label="关闭"]')
+    report['checks'].append('all-native-card-create-actions')
     for i in range(1, 31): api(f'/admin/games/catalog-{i:02d}', {'enabled': True})
     # Two real waiting rooms owned by separate players, never injected UI state.
     for kind in ['splendor', 'rail']:
@@ -123,6 +177,7 @@ try:
     b('fill', 'input[aria-label="搜索游戏"]', '目录验收 30')
     for width in [1280, 320]:
         b('set', 'viewport', str(width), '900')
+        check_cards({'catalog-30': {'name': '目录验收 30 · 很长的中文游戏名称', 'players': '2 人'}})
         shot('catalogue-and-filter-' + str(width))
     b('click', '.room-list .section-heading button')
     b('wait', 'input[aria-label="搜索可选游戏"]')
