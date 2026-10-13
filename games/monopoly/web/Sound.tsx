@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { GameRoom } from "../../../web/src/game-api/module";
+import type { GameRoom, GameAudioPort } from "../../../web/src/game-api/module";
 import type { View } from "./types";
 
 // Only public state differences select cues. No private decks or game rules
@@ -47,76 +47,21 @@ export function Sound({
   data,
   enabled,
   assets,
+  audio,
 }: {
   room: GameRoom;
   data: View;
   enabled: boolean;
   assets: string;
+  audio: GameAudioPort;
 }) {
-  const element = useRef<HTMLAudioElement>(null);
   const previous = useRef<{
     id: string;
     version: number;
     data: View;
     status: string;
   } | null>(null);
-  const pending = useRef<string[]>([]);
-  const allowed = useRef(false);
-  allowed.current = enabled && !!assets && room.status !== "closed";
-
-  const stop = () => {
-    pending.current = [];
-    element.current?.pause();
-  };
-  const next = () => {
-    const audio = element.current,
-      clip = pending.current.shift();
-    if (!audio || !clip || !allowed.current || document.hidden) return;
-    audio.src = `${assets.replace(/\/$/, "")}/monopoly/v1/audio/${clip}.mp3`;
-    audio.muted = false;
-    audio.volume = 0.65;
-    // CDN failure or autoplay refusal must never block a game action.
-    void audio.play().catch(() => {
-      pending.current = [];
-    });
-  };
-  useEffect(() => {
-    const audio = element.current!;
-    let unlocked = false;
-    const unlock = () => {
-      if (unlocked || !allowed.current || !audio.paused) return;
-      unlocked = true;
-      // Unlock this same media element within a real user gesture on mobile.
-      const silent =
-        "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==";
-      audio.src = silent;
-      audio.muted = true;
-      void audio
-        .play()
-        .then(() => {
-          if (audio.src === silent) {
-            audio.pause();
-            audio.removeAttribute("src");
-          }
-        })
-        .catch(() => {
-          unlocked = false;
-        });
-    };
-    const hide = () => {
-      if (document.hidden) stop();
-    };
-    document.addEventListener("pointerdown", unlock);
-    document.addEventListener("keydown", unlock);
-    document.addEventListener("visibilitychange", hide);
-    return () => {
-      document.removeEventListener("pointerdown", unlock);
-      document.removeEventListener("keydown", unlock);
-      document.removeEventListener("visibilitychange", hide);
-      pending.current = [];
-      audio.pause();
-    };
-  }, []);
+  useEffect(() => () => audio.stop(), [audio]);
   useEffect(() => {
     const prior = previous.current;
     previous.current = {
@@ -125,8 +70,8 @@ export function Sound({
       data,
       status: room.status,
     };
-    if (!allowed.current || document.hidden) {
-      stop();
+    if (!enabled || !assets || room.status === "closed" || document.hidden) {
+      audio.stop();
       return;
     }
     if (
@@ -137,20 +82,13 @@ export function Sound({
     )
       return;
     const selected = cues(prior.data, data, room);
-    if (!selected.length) return;
-    pending.current = selected;
-    element.current?.pause();
-    next();
-  }, [room.id, room.version, room.status, enabled, assets]);
-  return (
-    <audio
-      ref={element}
-      data-mono-sound
-      preload="none"
-      onEnded={next}
-      onError={() => {
-        pending.current = [];
-      }}
-    />
-  );
+    if (selected.length)
+      void audio.play(
+        selected.map(
+          (clip) =>
+            `${assets.replace(/\/$/, "")}/monopoly/v1/audio/${clip}.mp3`,
+        ),
+      );
+  }, [room.id, room.version, room.status, enabled, assets, audio]);
+  return null;
 }

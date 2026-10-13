@@ -60,7 +60,7 @@ games/<id>/
 
 ## 前端契约
 
-[web/src/game-api/module.ts](../web/src/game-api/module.ts) 定义 `defineGame`。模块提供名称、介绍、人数范围、棋盘及可选的配置编辑、规则和封面组件。支持机器人时声明 `supportsBots: true`，并与后端能力保持一致。自行播放音效的游戏声明 `ownsSounds: true`，宿主停止重复播放通用动作音；事件到音效的映射、失败处理和播放器保留在游戏目录。
+[web/src/game-api/module.ts](../web/src/game-api/module.ts) 定义 `defineGame`。模块提供名称、介绍、人数范围、棋盘及可选的配置编辑、规则和封面组件。支持机器人时声明 `supportsBots: true`，并与后端能力保持一致。自行播放音效的游戏声明 `ownsSounds: true`，宿主停止重复播放通用动作音；事件到音效的映射保留在游戏目录；通过 `BoardProps.audio.play([音效 URL])` 交给平台播放，退出时调用 `audio.stop()` 清理本游戏队列。播放器、用户交互解锁、静音、停止和失败处理由平台统一维护。游戏不得另建播放器或绕过全局静音。
 
 新游戏复用宿主的创建卡片、等待房间、玩家栏和回合提示。`Cover` 提供与既有游戏一致的 SVG 插画；`PlayerSummary` 可在公共玩家卡中补充本游戏的公开资产摘要。不得通过游戏 CSS 隐藏或另行重排宿主布局；文字与背景须成对定义并验证最终对比度，详见 [AGENTS.md](../AGENTS.md)。
 

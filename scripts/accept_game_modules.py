@@ -118,12 +118,32 @@ try:
         time.sleep(.1)
     base = (out / 'url').read_text()
     b('open', base); browser_open = True
+    main_tab = next(t['tabId'] for t in b('tab')['tabs'] if t['active'])
+    b('tab', main_tab)
     api('/api/login', {'name': 'ModuleRoot', 'password': 'module-root-test-123'})
     api('/api/admin/games/acceptance', {'enabled': True})
     api('/api/logout', {})
     api('/api/register', {'name': '模块浏览器验收', 'password': 'module-browser-test-only', 'invite': 'test-invite'})
     b('reload')
     b('wait', '.game-selection')
+    b('wait', '.sound-controls')
+    js('window.__platformPlayed=[];window.__platformFailures=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const src=this.src;return play.call(this).then(()=>{if(src.length>100||!src.startsWith("data:"))window.__platformPlayed.push({src,platform:this.hasAttribute("data-platform-audio")})},e=>{window.__platformFailures.push({src:src.slice(0,160),name:e.name,message:e.message,hidden:document.hidden});throw e})}')
+    b('find','role','button','click','--name','试听音效','--exact')
+    b('wait','--fn','window.__platformPlayed.length>0')
+    assert js('window.__platformPlayed.every(p=>p.platform)'), 'preview bypassed the platform media player'
+    b('find','role','button','click','--name','静音','--exact')
+    assert js('document.querySelector("audio[data-platform-audio]").paused && document.querySelector("audio[data-platform-audio]").muted')
+    assert js('document.querySelector(".sound-preview").disabled && localStorage.getItem("wb_sound")==="off"')
+    b('reload'); b('wait','.sound-controls')
+    assert js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true" && document.querySelector(".sound-preview").disabled'), 'mute preference lost after reload'
+    b('set','viewport','320','740'); checkpoint('platform-mute-mobile')
+    b('tab','new',base); b('wait','.sound-controls')
+    other_tab = next(t['tabId'] for t in b('tab')['tabs'] if t['active'])
+    b('find','role','button','click','--name','取消静音','--exact')
+    b('tab',main_tab); b('wait','--fn','document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="false"')
+    assert js('document.querySelector("audio[data-platform-audio]").paused'), 'cross-tab unmute replayed old audio'
+    b('tab','close',other_tab)
+    checkpoint('platform-mute-cross-tab')
     b('set', 'viewport', '1280', '900')
     assert js('[...document.querySelectorAll(".filter-tabs button")].some(b=>b.textContent==="接入验收")'), 'module missing from lobby filters'
     checkpoint('lobby-desktop')
@@ -154,10 +174,16 @@ try:
     b('wait', '.journal-dialog')
     assert js('document.querySelector(".journal-dialog").textContent.includes("牌已洗好")'), 'empty module log is not renderable'
     b('click', '[role=dialog] button[aria-label=关闭]')
+    js('window.__actionAudio=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const src=this.src;return play.call(this).then(()=>{if(src.length>100||!src.startsWith("data:"))window.__actionAudio.push(src)})}')
     b('find', 'text', '增加一次', 'click', '--exact')
     b('wait', '--fn', 'document.querySelector(".acceptance-board h2")?.textContent.includes("2")')
+    b('wait','--fn','window.__actionAudio.length>0')
+    b('find','role','button','click','--name','静音','--exact')
+    before_sounds=js('window.__actionAudio.length')
     b('find', 'text', '增加一次', 'click', '--exact')
     b('wait', '.results')
+    assert js('window.__actionAudio.length')==before_sounds, 'muted action or finish played sound'
+    b('find','role','button','click','--name','取消静音','--exact')
     result = room()['result']
     b('reload'); b('wait', '.results')
     assert room()['result'] == result
@@ -189,6 +215,9 @@ except Exception as error:
     traceback.print_exc()
     if browser_open:
         try:
+            report['audioFailures'] = js('window.__platformFailures || []')
+            report['mediaState'] = js('({hidden:document.hidden,visibility:document.visibilityState,media:[...document.querySelectorAll("audio")].map(a=>({src:a.src,paused:a.paused,muted:a.muted}))})')
+            report['tabs'] = b('tab')
             report['browserErrors'] = b('errors')
             report['failureSnapshot'] = b('snapshot', '-i')
             report['failureState'] = api('/api/state')

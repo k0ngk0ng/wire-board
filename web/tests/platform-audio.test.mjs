@@ -1,0 +1,46 @@
+// Failure scenarios before implementation: hardware-dependent Web Audio route;
+// mute leaves playing/queued sound alive; pending play revives after mute;
+// unmute replays old sound; a departed game stops preview/new-room audio;
+// a blocked media request breaks actions; common CDN cues have no fallback.
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {GameAudio} from '../src/audio.ts';
+import {soundWav, soundNames} from '../src/audio-tones.ts';
+class Media {
+ dataset={};src='';muted=false;paused=true;currentTime=0;preload='';onended=null;onerror=null;calls=[];removed=false;
+ behavior=()=>Promise.resolve();
+ play(){this.paused=false;this.calls.push(this.src);return this.behavior();}
+ pause(){this.paused=true;}
+ load(){this.currentTime=0;}
+ removeAttribute(name){if(name==='src')this.src='';}
+ remove(){this.removed=true;}
+}
+function setup(){const media=new Media();const audio=new GameAudio(()=>media);audio.mount();return {media,audio};}
+test('all common cues are valid non-silent PCM WAVs',()=>{
+ assert.equal(soundNames.length,7);
+ for(const name of soundNames){const wav=soundWav(name),v=new DataView(wav.buffer);assert.equal(new TextDecoder().decode(wav.slice(0,4)),'RIFF');assert.equal(new TextDecoder().decode(wav.slice(8,12)),'WAVE');assert.equal(v.getUint32(4,true),wav.length-8);assert.equal(v.getUint32(40,true),wav.length-44);assert.equal(v.getUint16(34,true),16);assert.ok(wav.slice(44).some(x=>x));}
+});
+test('common cues use the media player and configured CDN',async()=>{
+ const {audio,media}=setup();audio.setAssetsBase('https://cdn.example.test/base/');assert.equal(await audio.play('preview'),true);assert.match(media.src,/\/base\/platform\/audio\/v1\/preview.wav$/);assert.equal(media.muted,false);assert.equal(media.dataset.platformAudio,'');
+});
+test('mute stops current media and drops the rest of a game queue',async()=>{
+ const {audio,media}=setup(),game=audio.channel('room-a');await game.play(['one.mp3','two.mp3']);const ended=media.onended;audio.setEnabled(false);assert.equal(media.paused,true);assert.equal(media.muted,true);ended?.();assert.deepEqual(media.calls,['one.mp3']);assert.equal(await audio.play('preview'),false);audio.setEnabled(true);assert.equal(media.paused,true);assert.deepEqual(media.calls,['one.mp3']);
+});
+test('late play resolution cannot revive a muted player',async()=>{
+ const {audio,media}=setup();let finish;media.behavior=()=>new Promise(r=>finish=()=>{media.paused=false;r()});const p=audio.channel('room').play(['roll.mp3']);audio.setEnabled(false);finish();assert.equal(await p,false);assert.equal(media.paused,true);assert.equal(media.muted,true);
+});
+test('channel cleanup never stops another room or explicit preview',async()=>{
+ const {audio,media}=setup();const old=audio.channel('old'),next=audio.channel('next');await old.play(['old.mp3']);await next.play(['next.mp3']);old.stop();assert.equal(media.paused,false);assert.equal(media.src,'next.mp3');await audio.play('preview');next.stop();assert.equal(media.paused,false);
+});
+test('queued game clips share the same media element',async()=>{
+ const {audio,media}=setup();await audio.channel('room').play(['roll.mp3','card.mp3']);media.onended();await Promise.resolve();assert.deepEqual(media.calls,['roll.mp3','card.mp3']);audio.dispose();assert.equal(media.paused,true);assert.equal(media.removed,true);
+});
+test('a failed common CDN cue falls back to the same synthesized WAV',async()=>{
+ const {audio,media}=setup();audio.setAssetsBase('https://cdn.example.test');media.behavior=()=>media.src.startsWith('https:')?Promise.reject(Error('network')):Promise.resolve();assert.equal(await audio.play('take'),true);assert.equal(media.calls.length,2);assert.ok(media.src.startsWith('data:audio/wav;base64,'));
+});
+test('blocked custom audio returns false without throwing or replaying the queue',async()=>{
+ const {audio,media}=setup();media.behavior=()=>Promise.reject(Error('autoplay denied'));assert.equal(await audio.channel('room').play(['roll.mp3','card.mp3']),false);assert.equal(media.paused,true);assert.deepEqual(media.calls,['roll.mp3']);
+});
+test('explicit preview and victory are not cut off by a late action cue',async()=>{
+ const {audio,media}=setup();await audio.play('finish');const src=media.src;assert.equal(await audio.play('move'),false);assert.equal(media.src,src);audio.stop();await audio.play('preview');const preview=media.src;assert.equal(await audio.channel('room').play(['roll.mp3']),false);assert.equal(media.src,preview);
+});

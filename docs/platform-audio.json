@@ -1,0 +1,69 @@
+{
+  "source": "Original Wire Board GameAudio melodies, rendered to 44.1 kHz mono PCM WAV without Web Audio playback",
+  "prefix": "platform/audio/v1",
+  "files": [
+    {
+      "file": "preview.wav",
+      "mime": "audio/wav",
+      "bytes": 40616,
+      "sha256": "e2a2e6fced7f25002335f2e7aaa0467f8950b9d992d7bddff8a9b56bded3c8e6",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/preview.wav",
+      "duration": 0.46,
+      "verified": true
+    },
+    {
+      "file": "take.wav",
+      "mime": "audio/wav",
+      "bytes": 40616,
+      "sha256": "4f7632b3e500e0cba76cd746e52e6e80b786c20b21e2b057dcbb524000a4b7c6",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/take.wav",
+      "duration": 0.46,
+      "verified": true
+    },
+    {
+      "file": "buy.wav",
+      "mime": "audio/wav",
+      "bytes": 48556,
+      "sha256": "aa1c49889cdcf96fd880b833cf3d28f4e74c898eaaaa94ff0cc88e317f234121",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/buy.wav",
+      "duration": 0.5500226757369614,
+      "verified": true
+    },
+    {
+      "file": "reserve.wav",
+      "mime": "audio/wav",
+      "bytes": 32678,
+      "sha256": "87474ad45994c47e7bcd527975fa8fb74654b671cc45df3771d3dbc4fcf13d44",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/reserve.wav",
+      "duration": 0.37,
+      "verified": true
+    },
+    {
+      "file": "turn.wav",
+      "mime": "audio/wav",
+      "bytes": 56492,
+      "sha256": "8690817a0f8a4085337bce3705f3abf9dad926f31926fd0c72fc7cf981adecf7",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/turn.wav",
+      "duration": 0.64,
+      "verified": true
+    },
+    {
+      "file": "finish.wav",
+      "mime": "audio/wav",
+      "bytes": 100594,
+      "sha256": "394fe0a9e5e254c877c8b67eafd0b8f99f6366769998e09dc6a41cd5395c910d",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/finish.wav",
+      "duration": 1.1400226757369614,
+      "verified": true
+    },
+    {
+      "file": "move.wav",
+      "mime": "audio/wav",
+      "bytes": 32678,
+      "sha256": "032ddf4a2e1a5eeeedc0be81a41af8d67dc2ff4d93992f2ba0aaa9d131b5b445",
+      "url": "https://cdn.ichenj.com/bga/v20261002-1/platform/audio/v1/move.wav",
+      "duration": 0.37,
+      "verified": true
+    }
+  ]
+}
