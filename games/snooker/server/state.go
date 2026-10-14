@@ -50,6 +50,7 @@ type FrameResult struct {
 	Reason string `json:"reason"`
 }
 type State struct {
+	Due          []int64       `json:"due,omitempty"`
 	Concede      []bool        `json:"concede"`
 	OfferTeam    int           `json:"offerTeam"`
 	OfferTurn    int           `json:"offerTurn"`
@@ -132,6 +133,7 @@ func (s *State) setOrder() {
 	}
 }
 func (s *State) rack() {
+	s.Due = nil
 	s.Balls = InitialBalls()
 	s.Scores = [2]int{}
 	s.Target = "red"
@@ -193,6 +195,17 @@ func (s *State) match() (gameapi.Match, error) {
 			m.Attention = []int{s.Turn}
 		}
 	}
+	for _, p := range m.Attention {
+		if len(s.Due) == s.Players && s.Due[p] > 0 {
+			due := s.Due[p]
+			if m.Deadline == 0 || due < m.Deadline {
+				m.Deadline = due
+				m.TimeoutActors = []int{p}
+			} else if due == m.Deadline {
+				m.TimeoutActors = append(m.TimeoutActors, p)
+			}
+		}
+	}
 	if s.Phase == "finished" {
 		r := &gameapi.Result{Ranks: make([]int, s.Players), Scores: make([]int, s.Players), Team: s.Players == 4}
 		for p, team := range s.Teams {
@@ -223,6 +236,14 @@ func decode(m gameapi.Match) (*State, error) {
 }
 func (s *State) valid() error {
 	bad := func() error { return errors.New("斯诺克存档不完整或不一致") }
+	if len(s.Due) != 0 && len(s.Due) != s.Players {
+		return bad()
+	}
+	for _, due := range s.Due {
+		if due < 0 {
+			return bad()
+		}
+	}
 	if s.Ruleset != "snooker-wpbsa-2024-v1" || (s.Players != 2 && s.Players != 4) || s.Window < 1 || s.Frame < 1 || len(s.Balls) != 22 || len(s.Teams) != s.Players || len(s.Order) != s.Players || len(s.BestBreak) != s.Players || len(s.Ready) != s.Players || len(s.Resign) != s.Players || len(s.Concede) != s.Players || len(s.Rerack) != s.Players || s.Turn < 0 || s.Turn >= s.Players || s.TurnIndex < 0 || s.TurnIndex >= s.Players || s.Order[s.TurnIndex] != s.Turn {
 		return bad()
 	}

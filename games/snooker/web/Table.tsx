@@ -511,7 +511,12 @@ export function Table(props: Props) {
               </div>
             </div>
           )}
-          {!charging && (
+          {!charging && props.flash && (
+            <span className="snooker-respot-note" role="status">
+              已复位：{props.flash.ids.map(ballName).join("、")}
+            </span>
+          )}
+          {!charging && !props.flash && (
             <span>
               {movingView
                 ? "移动视图中，拖动只平移球桌"
@@ -701,11 +706,6 @@ export function Table(props: Props) {
             }
           }}
         />
-        {props.flash && (
-          <span className="snooker-respot-note" role="status">
-            已复位：{props.flash.ids.map(ballName).join("、")}
-          </span>
-        )}
       </div>
       <div className="snooker-camera">
         <span>

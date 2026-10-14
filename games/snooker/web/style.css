@@ -342,16 +342,11 @@
 }
 
 .snooker-respot-note {
-  position: absolute;
-  left: 50%;
-  bottom: 8px;
-  transform: translateX(-50%);
   padding: 5px 10px;
-  border-radius: 14px;
+  border-radius: 8px;
   background: #f5edc9;
   color: #624d29;
   font-size: 12px;
-  white-space: nowrap;
   pointer-events: none;
 }
 

@@ -30,7 +30,7 @@ def shot(name):
  assert js('document.documentElement.scrollWidth<=innerWidth+2'),name
  colors=js(r"""(() => {
  const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number),lum=c=>c.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
- return [...document.querySelectorAll('.snooker-status span,.snooker-status strong,.snooker-scoreboard small,.snooker-scoreboard span,.snooker-scoreboard strong,.snooker-controls label,.snooker-controls output,.snooker-charge span,.snooker-board button,.snooker-turn,.snooker-order,.snooker-public-summary strong')].filter(e=>e.getClientRects().length).map(e=>{let bg=[255,255,255];const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor),a=c[3]??1;bg=bg.map((v,i)=>v*(1-a)+(c[i]??0)*a)}const fg=rgb(getComputedStyle(e).color),a=lum(fg),b=lum(bg);return {text:e.textContent.trim().slice(0,80),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}});
+ return [...document.querySelectorAll('.snooker-status span,.snooker-status strong,.snooker-scoreboard small,.snooker-scoreboard span,.snooker-scoreboard strong,.snooker-controls label,.snooker-controls output,.snooker-charge span,.snooker-aim-readout strong,.snooker-aim-readout > span,.snooker-board button,.snooker-turn,.snooker-order,.snooker-public-summary strong')].filter(e=>e.getClientRects().length).map(e=>{let bg=[255,255,255];const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor),a=c[3]??1;bg=bg.map((v,i)=>v*(1-a)+(c[i]??0)*a)}const fg=rgb(getComputedStyle(e).color),a=lum(fg),b=lum(bg);return {text:e.textContent.trim().slice(0,80),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}});
  })()""")
  assert all(c['ratio']>=4.5 for c in colors),(name,colors)
  borders=js(r"""(() => {
@@ -84,6 +84,7 @@ try:
   browser('reload');browser('wait','.snooker-table canvas');browser('scrollintoview','.snooker-table canvas')
   assert not js('!!document.querySelector("input[type=number],.snooker-strike")'),"old menu controls remain"
   r=api('/state')['room'];initial=r['version']
+  assert r['turnDeadline']>0 and js('!!document.querySelector(".turn-clock time")'), 'missing visible automatic takeover countdown'
   rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x=round(rect['x']+rect['width']*.52);y=round(rect['y']+rect['height']*.6)
   # Regression: the old top-right lens both covered a pocket and swallowed input.
   assert_clear_table(f'normal-{width}')

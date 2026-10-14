@@ -68,6 +68,10 @@ type Module struct {
 	// Reclaim restores an expired decision window without extending unrelated
 	// players' windows. Omit BotAction/Reclaim together to disable autoplay.
 	Reclaim func(Context, Match) (Match, error) `json:"-"`
+	// Restore optionally migrates a persisted active match at server startup.
+	// It must preserve gameplay and existing deadlines, and return unchanged
+	// input when already current. The host validates and persists any change.
+	Restore func(Context, Match) (Match, error) `json:"-"`
 	// AcceptStale may admit an older version only after authenticating the actor.
 	// Revalidate the game's response token inside Apply as well.
 	AcceptStale func(Context, Match, json.RawMessage) bool `json:"-"`

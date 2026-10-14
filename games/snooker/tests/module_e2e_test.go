@@ -85,7 +85,7 @@ func TestSnookerRealModuleShotAndClockLifecycle(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			mod, ctx, m := begin(t, n)
 			s := state(t, m)
-			if len(s.Balls) != 22 || s.Phase != "aim" || s.Turn != 0 || !s.InHand || m.Deadline != 0 {
+			if len(s.Balls) != 22 || s.Phase != "aim" || s.Turn != 0 || !s.InHand || m.Deadline != ctx.Now.Add(120*time.Second).UnixMilli() {
 				t.Fatal("incorrect standard start", s)
 			}
 			if _, e := mod.Configure(3, nil); e == nil {

@@ -79,8 +79,8 @@ func TestSnookerBotsCompleteMatches(t *testing.T) {
 					if mod.BotAction == nil {
 						t.Fatal("computer players are unsupported")
 					}
-					if m.Deadline != 0 {
-						t.Fatal("introduced a human shot deadline")
+					if s.Phase != "rolling" && m.Deadline == 0 {
+						t.Fatal("missing human inactivity clock")
 					}
 					for p := -1; p <= n; p++ {
 						if p >= 0 && p < n && (s.Phase == "frame_end" && !s.Ready[p] || s.Phase != "frame_end" && s.Phase != "rolling" && p == s.Turn) {
