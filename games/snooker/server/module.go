@@ -62,10 +62,9 @@ func Module() gameapi.Module {
 			_ = json.Unmarshal(options, &o)
 			s := State{Ruleset: "snooker-wpbsa-2024-v1", Options: o, Players: ctx.Players, Teams: append([]int{}, o.Teams...), Frame: 1, Window: 1, Winner: -1, BestBreak: make([]int, ctx.Players), Results: []FrameResult{}, Logs: []string{}}
 			s.NextFirst = [2]int{s.first(0), s.first(1)}
+			s.OpeningTeam = toss()
 			s.rack()
-			s.Phase = "start_choice"
-			s.setTurn(s.first(toss()))
-			s.note("标准十五红球；抽签胜方选择开球队伍")
+			s.note("标准十五红球；随机由 %s 队开球，玩家 %d 击球", []string{"A", "B"}[s.OpeningTeam], s.Turn+1)
 			s.syncClocks("", -1, ctx.Now)
 			return s.match()
 		}, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore,
@@ -168,12 +167,14 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			return m, errors.New("请等待球停止并完成判罚")
 		}
 		shot := Strike{Angle: a.Angle, Power: a.Power, Top: a.Top, Side: a.Side, Nominate: a.Nominate, FreeBall: a.FreeBall}
-		if s.Target == "colour" && (a.Nominate < 2 || a.Nominate > 7) {
-			return m, errors.New("请选择本杆彩球")
+		if s.Target == "colour" {
+			// A player chooses the colour by playing it. Ignore old clients' hidden
+			// default nomination; the referee resolves the actual first colour.
+			shot.Nominate = 0
 		}
 		if a.FreeBall > 0 {
 			b, ok := findBall(s.Balls, a.FreeBall)
-			if !s.FreeBall || !ok || b.Down || slices.Contains(onBalls(s.context(), a.Nominate), a.FreeBall) {
+			if !s.FreeBall || !ok || b.Down || slices.Contains(onBalls(s.context(), shot.Nominate), a.FreeBall) {
 				return m, errors.New("请选择可提名的自由球")
 			}
 		}

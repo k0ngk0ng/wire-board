@@ -273,6 +273,7 @@
   .snooker-controls > .snooker-decision,
   .snooker-controls > .snooker-turn,
   .snooker-controls > .snooker-placement,
+  .snooker-controls > .snooker-spin,
   .snooker-controls > .snooker-motion-notice {
     grid-column: 1/-1;
   }
@@ -353,19 +354,19 @@
 .snooker-aim-tools {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 106px;
-  margin-bottom: 8px;
-  padding: 8px;
+  gap: 8px;
+  min-height: 0;
+  margin-bottom: 6px;
+  padding: 4px;
   border: 1px solid #9fab95;
   border-radius: 10px;
   background: #fff9df;
   color: #234b37;
 }
 .snooker-aim-preview {
-  flex: 0 0 88px;
-  width: 88px;
-  height: 88px;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
   border-radius: 8px;
   overflow: hidden;
   background: #254f40;
@@ -373,16 +374,16 @@
 }
 .snooker-aim-preview canvas {
   display: block;
-  width: 88px;
-  height: 88px;
+  width: 64px;
+  height: 64px;
 }
 .snooker-aim-readout {
   display: grid;
   flex: 1;
   min-width: 0;
-  gap: 8px;
-  font-size: 13px;
-  line-height: 1.5;
+  gap: 3px;
+  font-size: 12px;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 .snooker-charge {
@@ -425,4 +426,63 @@
 }
 .snooker-end-explanation p {
   margin: 5px 0 0;
+}
+
+.snooker-tip-control {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.snooker-board .snooker-tip-ball {
+  width: 160px;
+  height: 160px;
+  padding: 0;
+  border: 1px solid #6e8069;
+  background: #f5f4e7;
+  touch-action: none;
+  cursor: crosshair;
+}
+.snooker-tip-ball svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.snooker-tip-control p {
+  display: grid;
+  gap: 3px;
+  text-align: center;
+  font-size: 12px;
+  color: #294a39;
+}
+.snooker-tip-control p span {
+  font-size: 11px;
+  color: #435a49;
+}
+@media (max-width: 600px) {
+  .snooker-aim-preview {
+    flex-basis: 56px;
+    width: 56px;
+    height: 56px;
+  }
+  .snooker-aim-preview canvas {
+    width: 56px;
+    height: 56px;
+  }
+  .snooker-aim-tools {
+    gap: 6px;
+  }
+  .snooker-aim-readout,
+  .snooker-charge {
+    font-size: 11px;
+  }
+  .snooker-charge > div {
+    height: 7px;
+    margin-top: 3px;
+  }
+  .snooker-board .snooker-tip-ball {
+    width: 144px;
+    height: 144px;
+  }
 }

@@ -51,6 +51,19 @@ func restore(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	if e != nil {
 		return m, e
 	}
+	if s.Phase == "start_choice" {
+		// Retain an old room's drawn team, roster and deadline; reconnect does
+		// not redraw the opener or grant extra decision time.
+		s.OpeningTeam = s.Teams[s.Turn]
+		s.OpeningSeat = s.Turn
+		s.Phase = "aim"
+		s.Window++
+		s.note("由已抽中的 %s 队直接开球，玩家 %d 击球", []string{"A", "B"}[s.OpeningTeam], s.Turn+1)
+		if len(s.Due) == 0 {
+			s.syncClocks("", -1, ctx.Now)
+		}
+		return s.match()
+	}
 	if len(s.Due) > 0 || s.Phase == "finished" {
 		return m, nil
 	}

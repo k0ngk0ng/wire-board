@@ -1,3 +1,4 @@
+import { pullPower } from "./cue-input";
 import { useEffect, useRef, useState } from "react";
 import type { Ball, Vec } from "./types";
 import { ballInk, valueOf, ballName } from "./types";
@@ -19,6 +20,7 @@ type Props = {
   balls: Ball[];
   angle: number;
   power: number;
+  pullBack?: number;
   canAim: boolean;
   finished: boolean;
   assist: boolean;
@@ -238,7 +240,7 @@ function drawScene(
     ctx.translate(cue.pos.x, cue.pos.y);
     ctx.rotate(p.strikeCue?.angle ?? p.angle);
     if (p.strikeCue) ctx.translate(p.strikeCue.offset, 0);
-    if (!p.strikeCue) ctx.translate(-p.power * 0.16, 0);
+    if (!p.strikeCue) ctx.translate(-(p.pullBack ?? 0), 0);
     ctx.lineCap = "round";
     ctx.strokeStyle = "#dfc591";
     ctx.lineWidth = 0.012;
@@ -295,44 +297,56 @@ export function Table(props: Props) {
   const current = useRef(props);
   current.current = props;
   const charge = useRef<{
-    start: number;
+    origin?: Vec;
+    power: number;
+    limit: number;
     angle: number;
     pointer: number | "keyboard";
   } | null>(null);
-  const frame = useRef(0);
-  const strength = (elapsed: number) => {
-    const t = Math.max(0, elapsed - 120) % 3200;
-    return 0.02 + 0.98 * (1 - Math.abs(t - 1600) / 1600);
-  };
   const cancelCharge = () => {
     charge.current = null;
-    cancelAnimationFrame(frame.current);
+    current.current.onPower(0);
     setCharging(false);
     if (gesture.current?.mode === "shot") gesture.current.mode = "cancel";
   };
-  const startCharge = (pointer: number | "keyboard", angle: number) => {
+  const startCharge = (
+    pointer: number | "keyboard",
+    angle: number,
+    origin?: Vec,
+  ) => {
     cancelCharge();
-    charge.current = { start: performance.now(), angle, pointer };
-    setCharging(true);
-    const tick = () => {
-      const c = charge.current;
-      if (!c) return;
-      const power = strength(performance.now() - c.start);
-      setChargePower(power);
-      current.current.onPower(power);
-      frame.current = requestAnimationFrame(tick);
+    charge.current = {
+      angle,
+      pointer,
+      origin,
+      power: 0,
+      limit: Math.max(
+        80,
+        Math.min(140, Math.min(size.width, size.height) * 0.35),
+      ),
     };
-    tick();
+    setChargePower(0);
+    setCharging(true);
+  };
+  const updatePull = (point: Vec) => {
+    const c = charge.current;
+    if (!c?.origin) return;
+    c.power = pullPower(
+      c.origin,
+      point,
+      c.angle,
+      cam.current.portrait,
+      c.limit,
+    );
+    setChargePower(c.power);
+    current.current.onPower(c.power);
   };
   const releaseCharge = (pointer: number | "keyboard") => {
     const c = charge.current;
     if (!c || c.pointer !== pointer) return;
-    const elapsed = performance.now() - c.start;
-    const power = strength(elapsed);
     cancelCharge();
-    // Brief taps may aim, but must not accidentally shoot while touching UI.
-    if (elapsed >= 120 && current.current.canAim && !current.current.placing)
-      current.current.onShoot(c.angle, power);
+    if (c.power >= 0.02 && current.current.canAim && !current.current.placing)
+      current.current.onShoot(c.angle, c.power);
   };
   useEffect(() => {
     cancelCharge();
@@ -353,7 +367,7 @@ export function Table(props: Props) {
     window.addEventListener("keydown", escape);
     document.addEventListener("visibilitychange", hidden);
     return () => {
-      cancelAnimationFrame(frame.current);
+      current.current.onPower(0);
       charge.current = null;
       window.removeEventListener("blur", cancelCharge);
       window.removeEventListener("keydown", escape);
@@ -426,13 +440,23 @@ export function Table(props: Props) {
     if (el.height !== height) el.height = height;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, size.width, size.height);
-    drawScene(ctx, camera, props, art);
+    const pull = charge.current;
+    const pullPixels =
+      pull && pull.power > 0
+        ? 6 + ((pull.power - 0.02) / 0.98) * (pull.limit - 6)
+        : 0;
+    drawScene(
+      ctx,
+      camera,
+      { ...props, pullBack: pullPixels / scaleOf(camera) },
+      art,
+    );
     // The precision view has its own canvas outside the playing surface.
     // Its reserved layout space never covers a pocket or consumes table input.
     const detail = preview.current;
     if (!detail) return;
     const lensCtx = detail.getContext("2d")!;
-    const edge = 88;
+    const edge = detail.clientWidth || 64;
     const detailSize = Math.round(edge * ratio);
     if (detail.width !== detailSize) detail.width = detailSize;
     if (detail.height !== detailSize) detail.height = detailSize;
@@ -504,11 +528,11 @@ export function Table(props: Props) {
                 className="snooker-charge"
                 role="progressbar"
                 aria-label="击球力度"
-                aria-valuemin={2}
+                aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={Math.round(chargePower * 100)}
               >
-                <span>力度 {Math.round(chargePower * 100)}% · 松开击球</span>
+                <span>拉杆 {Math.round(chargePower * 100)}% · 松开击球</span>
                 <div>
                   <i style={{ width: `${chargePower * 100}%` }} />
                 </div>
@@ -528,7 +552,7 @@ export function Table(props: Props) {
                     : props.strikeCue
                       ? "正在出杆…"
                       : props.canAim
-                        ? "按住球桌瞄准蓄力，松开击球"
+                        ? "瞄准后向后拉杆，松开击球"
                         : "等待下一次瞄准"}
               </span>
             )}
@@ -544,7 +568,7 @@ export function Table(props: Props) {
         <canvas
           ref={canvas}
           tabIndex={0}
-          aria-label="斯诺克球桌，按住瞄准蓄力，松开击球；空格蓄力，方向键瞄准，Esc 取消"
+          aria-label="斯诺克球桌，移动鼠标瞄准，按住向后拉杆，松开击球；按住空格用上下键调力度，Esc 取消"
           aria-disabled={!props.canAim}
           data-angle={props.angle}
           data-cue-offset={props.strikeCue?.offset}
@@ -570,6 +594,19 @@ export function Table(props: Props) {
               props.canAim
             ) {
               e.preventDefault();
+              if (
+                charge.current?.pointer === "keyboard" &&
+                (e.key === "ArrowUp" || e.key === "ArrowDown")
+              ) {
+                const c = charge.current;
+                c.power = Math.max(
+                  0,
+                  Math.min(1, c.power + (e.key === "ArrowUp" ? 0.05 : -0.05)),
+                );
+                setChargePower(c.power);
+                props.onPower(c.power);
+                return;
+              }
               const angle =
                 e.key === "Home"
                   ? 0
@@ -619,13 +656,32 @@ export function Table(props: Props) {
                 world.x - cue.pos.x,
               );
               props.onAim(angle);
-              startCharge(e.pointerId, angle);
+              startCharge(e.pointerId, angle, p);
             }
             gesture.current = { start: p, dragged: false, mode };
           }}
           onPointerMove={(e) => {
             const old = pointers.current.get(e.pointerId);
-            if (!old) return;
+            if (!old) {
+              const cue = props.balls.find((b) => b.id === 0);
+              if (
+                e.pointerType === "mouse" &&
+                e.buttons === 0 &&
+                !pointers.current.size &&
+                !charge.current &&
+                !movingView &&
+                props.canAim &&
+                !props.placing &&
+                cue &&
+                !cue.down
+              ) {
+                const world = screenToWorld(point(e), cam.current);
+                props.onAim(
+                  Math.atan2(world.y - cue.pos.y, world.x - cue.pos.x),
+                );
+              }
+              return;
+            }
             const before = [...pointers.current.values()],
               p = point(e);
             pointers.current.set(e.pointerId, p);
@@ -658,14 +714,7 @@ export function Table(props: Props) {
             if (Math.hypot(p.x - g.start.x, p.y - g.start.y) > 5)
               g.dragged = true;
             if (g.mode === "shot" && charge.current) {
-              const cue = props.balls.find((b) => b.id === 0)!;
-              const world = screenToWorld(p, cam.current);
-              const angle = Math.atan2(
-                world.y - cue.pos.y,
-                world.x - cue.pos.x,
-              );
-              charge.current.angle = angle;
-              props.onAim(angle);
+              updatePull(p);
             } else if (g.mode === "pan" && g.dragged) {
               changeCamera(
                 clampPan({
@@ -686,15 +735,7 @@ export function Table(props: Props) {
             const inside =
               p.x >= 0 && p.y >= 0 && p.x <= size.width && p.y <= size.height;
             if (g?.mode === "shot") {
-              const cue = current.current.balls.find((b) => b.id === 0);
-              if (cue && charge.current?.pointer === e.pointerId) {
-                const world = screenToWorld(p, cam.current);
-                charge.current.angle = Math.atan2(
-                  world.y - cue.pos.y,
-                  world.x - cue.pos.x,
-                );
-                current.current.onAim(charge.current.angle);
-              }
+              updatePull(p);
               releaseCharge(e.pointerId);
             } else {
               cancelCharge();
@@ -723,7 +764,7 @@ export function Table(props: Props) {
         <span>
           {movingView
             ? "拖动平移 · 滚轮／双指缩放"
-            : "移出球桌仍可瞄准 · 松开击球 · Esc 取消"}
+            : "移动瞄准 · 向后拉杆 · 松开击球 · Esc 取消"}
         </span>
         <button
           aria-pressed={movingView}

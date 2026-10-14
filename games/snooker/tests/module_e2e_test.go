@@ -48,9 +48,25 @@ func begin(t *testing.T, n int, series ...int) (gameapi.Module, gameapi.Context,
 	if e != nil {
 		t.Fatal(e)
 	}
-	ctx.Actor = m.Actors[0]
-	m = action(t, mod, ctx, m, map[string]any{"type": "break_choice", "team": 0})
-	ctx.Actor = m.Actors[0]
+	// Rule fixtures use a fixed opener; production random opening has separate
+	// real HTTP coverage. This does not send a removed break-choice command.
+	s := state(t, m)
+	s.Phase = "aim"
+	s.OpeningTeam = 0
+	s.OpeningSeat = 0
+	s.Turn = 0
+	s.TurnIndex = 0
+	s.Due = make([]int64, n)
+	s.Due[0] = ctx.Now.Add(120 * time.Second).UnixMilli()
+	m.Data, _ = json.Marshal(s)
+	m.Actors = make([]int, n)
+	for p := range m.Actors {
+		m.Actors[p] = p
+	}
+	m.Attention = []int{0}
+	m.TimeoutActors = []int{0}
+	m.Deadline = s.Due[0]
+	ctx.Actor = 0
 	return mod, ctx, m
 }
 func finishStroke(t *testing.T, mod gameapi.Module, ctx gameapi.Context, m gameapi.Match) gameapi.Match {

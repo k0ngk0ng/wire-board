@@ -71,19 +71,30 @@ try:
    req('/rooms/'+room['id'],{'type':'join','version':api('/state')['room']['version'],'nonce':uuid.uuid4().hex})
    rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':'ready','version':rr['version'],'nonce':uuid.uuid4().hex});req.jar=jar;peers.append(req)
   command('ready');shot(f'waiting-{n}');command('start');browser('wait','.snooker-board')
-  d=api('/state')['room']['game']['data'];chooser=d['turn']
-  if chooser==0:browser('find','role','button','click','--name','A 队先开球','--exact')
-  else:
-   req=peers[chooser-1];rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':'action','version':rr['version'],'nonce':uuid.uuid4().hex,'action':{'type':'break_choice','window':d['window'],'team':0}})
+  d=api('/state')['room']['game']['data'];opener=d['turn'];opening_team=d['teams'][opener]
+  assert d['phase']=='aim','random opening still requires selection'
+  owner_cookie='; '.join(c['name']+'='+c['value'] for c in admin_cookies)
+  def owner(path,body=None):
+   request=urllib.request.Request(base+'/api'+path,data=None if body is None else json.dumps(body).encode(),headers={'Content-Type':'application/json','Cookie':owner_cookie})
+   with urllib.request.urlopen(request,timeout=25) as response:return json.load(response)
+  if opener!=0:
+   browser('cookies','clear')
+   for c in peers[opener-1].jar:browser('cookies','set',c.name,c.value,'--url',base,'--httpOnly')
+   browser('reload');browser('wait','.snooker-board')
+  active_cookies=browser('cookies','get')['cookies']
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="aim"')
   for width in [1280,390,320]:browser('set','viewport',str(width),'900');shot(f'aim-{n}-{width}')
-  for seat in range(1,n):
+  for seat in range(n):
+   if seat==opener:continue
    browser('cookies','clear')
-   for c in peers[seat-1].jar:browser('cookies','set',c.name,c.value,'--url',base,'--httpOnly')
+   if seat==0:
+    for c in admin_cookies:browser('cookies','set',c['name'],c['value'],'--url',base,'--httpOnly')
+   else:
+    for c in peers[seat-1].jar:browser('cookies','set',c.name,c.value,'--url',base,'--httpOnly')
    browser('reload');browser('wait','.snooker-board');r=api('/state')['room'];assert r['you']==seat and not r['game']['data']['controls']['canShoot']
    assert js('document.querySelector("canvas[aria-disabled]").getAttribute("aria-disabled")=="true"'),'partner can submit active player stroke';shot(f'seat-{n}-{seat}')
   browser('cookies','clear')
-  for c in admin_cookies:browser('cookies','set',c['name'],c['value'],'--url',base,'--httpOnly')
+  for c in active_cookies:browser('cookies','set',c['name'],c['value'],'--url',base,'--httpOnly')
   browser('reload');browser('wait','.snooker-board')
 
   # Native zoom / pan must change the camera, never submit a shot.
@@ -110,10 +121,10 @@ try:
   strike(0,.06);browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"')
   assert api('/state')['room']['game']['data']['scores']==[0,0]
   assert js('window.__snookerAudio.length')==0
-  browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="foul"');after=api('/state')['room'];d=after['game']['data'];assert d['scores']==[0,4]
+  browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="foul"');after=api('/state')['room'];d=after['game']['data'];assert d['scores'][opening_team]==0 and d['scores'][1-opening_team]==4
   shot(f'foul-{n}')
-  req=peers[d['turn']-1];req('/rooms/'+after['id'],{'type':'action','version':after['version'],'nonce':uuid.uuid4().hex,'action':{'type':'foul_choice','choice':'restore','window':d['window']}})
-  browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="aim"');browser('reload');browser('wait','.snooker-board');assert api('/state')['room']['game']['data']['turn']==0
+  req=owner if d['turn']==0 else peers[d['turn']-1];req('/rooms/'+after['id'],{'type':'action','version':after['version'],'nonce':uuid.uuid4().hex,'action':{'type':'foul_choice','choice':'restore','window':d['window']}})
+  browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="aim"');browser('reload');browser('wait','.snooker-board');assert api('/state')['room']['game']['data']['turn']==opener
 
   shot(f'restored-{n}')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'):browser('find','role','button','click','--name','取消静音','--exact')
@@ -125,7 +136,9 @@ try:
   report.setdefault('audio',[]).append({'players':n,'flight':flight['id'],'firstImpact':first,'attempts':attempts})
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase!=="rolling"');assert js('window.__snookerAudio.some(a=>a.src.includes("/ball-")&&a.ok)'), 'no collision media actually played';shot(f'impact-audio-{n}')
   browser('reload');browser('wait','.snooker-board')
-  command('close');command('leave');browser('wait','.room-list')
+  browser('cookies','clear')
+  for c in admin_cookies:browser('cookies','set',c['name'],c['value'],'--url',base,'--httpOnly')
+  browser('reload');browser('wait','.snooker-board');command('close');command('leave');browser('wait','.room-list')
  report['passed']=True
 except Exception as error:
  import traceback;traceback.print_exc();report['error']=repr(error)

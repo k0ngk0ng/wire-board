@@ -122,14 +122,7 @@ func TestSnookerThreeMissesWarnBeforeAwardingDoublesFrame(t *testing.T) {
 	trace(t, records)
 }
 func TestSnookerDoublesNextFrameAlternatesOpeningAndCanReorder(t *testing.T) {
-	mod := game.Module()
-	ctx := gameapi.Context{Players: 4, Now: time.Unix(100000, 0)}
-	m, e := mod.Start(ctx, json.RawMessage(`{"bestOf":3}`))
-	if e != nil {
-		t.Fatal(e)
-	}
-	ctx.Actor = m.Actors[0]
-	m = action(t, mod, ctx, m, map[string]any{"type": "break_choice", "team": 0})
+	mod, ctx, m := begin(t, 4, 3)
 	ctx.Actor = 0
 	m = onlyBlack(t, m, [2]int{})
 	m = action(t, mod, ctx, m, map[string]any{"type": "shoot", "angle": -math.Pi / 2, "power": .25})

@@ -67,7 +67,7 @@ func onBalls(c RuleContext, nominate int) []int {
 			continue
 		}
 		v := BallValue(b.ID)
-		if c.Target == "red" && v == 1 || c.Target == "colour" && v == nominate || c.Target == "clear" && v == c.Clear {
+		if c.Target == "red" && v == 1 || c.Target == "colour" && v >= 2 && (nominate == 0 || v == nominate) || c.Target == "clear" && v == c.Clear {
 			ids = append(ids, b.ID)
 		}
 	}
@@ -168,12 +168,31 @@ func directContact(bs []Ball, on []int) (any, full bool) {
 	return
 }
 func Judge(c RuleContext, shot Strike, m Motion) Ruling {
+	if c.Target == "colour" && shot.Nominate == 0 {
+		// Resolve the implicitly chosen colour from authoritative contacts, never
+		// a UI default. On a wrong first contact, a potted colour still determines
+		// the applicable penalty. No contact/pot retains all available colours.
+		for _, id := range m.First {
+			if BallValue(id) >= 2 {
+				shot.Nominate = BallValue(id)
+				break
+			}
+		}
+		if shot.Nominate == 0 {
+			for _, id := range m.Potted {
+				shot.Nominate = max(shot.Nominate, BallValue(id))
+			}
+			if shot.Nominate < 2 {
+				shot.Nominate = 0
+			}
+		}
+	}
 	r := Ruling{Target: c.Target, Clear: c.Clear, Reasons: []string{}, Respot: []int{}}
 	actual := onBalls(c, shot.Nominate)
 	allowed := append([]int{}, actual...)
 	value := 1
 	if c.Target == "colour" {
-		value = shot.Nominate
+		value = max(2, shot.Nominate)
 	} else if c.Target == "clear" {
 		value = c.Clear
 	}

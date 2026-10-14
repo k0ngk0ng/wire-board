@@ -31,20 +31,22 @@ func TestSnookerHTTPPublicationShotRestoreAndIdempotence(t *testing.T) {
 			h.AssertUnpublished()
 			h.Start(map[string]any{"bestOf": 1})
 			d := gametest.Data(h.People[0].Room())
-			chooser := int(d["turn"].(float64))
-			h.People[chooser].Action(map[string]any{"type": "break_choice", "team": 0, "window": d["window"]}, 200)
-			d = gametest.Data(h.People[0].Room())
+			shooter := int(d["turn"].(float64))
+			team := int(d["teams"].([]any)[shooter].(float64))
+			if d["phase"] != "aim" {
+				t.Fatal("opening choice remains")
+			}
 			initial := d["balls"]
-			h.People[n-1].Action(map[string]any{"type": "shoot", "angle": 0, "power": .06, "window": d["window"]}, 400)
-			request := h.People[0].ActionRequest(map[string]any{"type": "shoot", "angle": 0, "power": .06, "window": d["window"]})
+			h.People[(shooter+1)%n].Action(map[string]any{"type": "shoot", "angle": 0, "power": .06, "window": d["window"]}, 400)
+			request := h.People[shooter].ActionRequest(map[string]any{"type": "shoot", "angle": 0, "power": .06, "window": d["window"]})
 			id := h.People[0].Room()["id"].(string)
-			h.People[0].Request("POST", "/api/rooms/"+id, request, 200)
+			h.People[shooter].Request("POST", "/api/rooms/"+id, request, 200)
 			moving := h.People[0].Room()
 			md := gametest.Data(moving)
 			if md["phase"] != "rolling" || !reflect.DeepEqual(md["scores"], []any{float64(0), float64(0)}) {
 				t.Fatal("premature score")
 			}
-			h.People[0].Request("POST", "/api/rooms/"+id, request, 200)
+			h.People[shooter].Request("POST", "/api/rooms/"+id, request, 200)
 			if gametest.Data(h.People[0].Room())["flight"].(map[string]any)["id"] != float64(1) {
 				t.Fatal("duplicate stroke")
 			}
@@ -56,16 +58,16 @@ func TestSnookerHTTPPublicationShotRestoreAndIdempotence(t *testing.T) {
 			}
 			room := awaitStopped(t, h)
 			done := gametest.Data(room)
-			if done["phase"] != "foul" || done["scores"].([]any)[1] != float64(4) {
+			if done["phase"] != "foul" || done["scores"].([]any)[1-team] != float64(4) {
 				t.Fatal("missing once-only foul", done)
 			}
 			actor := int(done["turn"].(float64))
 			h.People[actor].Action(map[string]any{"type": "foul_choice", "choice": "restore", "window": done["window"]}, 200)
 			again := gametest.Data(h.People[0].Room())
-			if !reflect.DeepEqual(again["balls"], initial) || again["turn"] != float64(0) || again["scores"].([]any)[1] != float64(4) {
+			if !reflect.DeepEqual(again["balls"], initial) || again["turn"] != float64(shooter) || again["scores"].([]any)[1-team] != float64(4) {
 				t.Fatal("original offender/balls/penalty did not restore")
 			}
-			h.People[0].Request("POST", "/api/rooms/"+id, request, 200)
+			h.People[shooter].Request("POST", "/api/rooms/"+id, request, 200)
 			if !reflect.DeepEqual(again, gametest.Data(h.People[0].Room())) {
 				t.Fatal("old nonce scored again")
 			}
