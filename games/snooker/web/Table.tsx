@@ -274,7 +274,8 @@ function drawScene(
 }
 export function Table(props: Props) {
   const wrap = useRef<HTMLDivElement>(null),
-    canvas = useRef<HTMLCanvasElement>(null);
+    canvas = useRef<HTMLCanvasElement>(null),
+    preview = useRef<HTMLCanvasElement>(null);
   const [size, setSize] = useState({
       width: 600,
       height: 350,
@@ -427,17 +428,18 @@ export function Table(props: Props) {
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, size.width, size.height);
     drawScene(ctx, camera, props, art);
+    // The precision view has its own canvas outside the playing surface.
+    // Its reserved layout space never covers a pocket or consumes table input.
+    const detail = preview.current!,
+      lensCtx = detail.getContext("2d")!;
+    const edge = 88;
+    detail.width = Math.round(edge * ratio);
+    detail.height = Math.round(edge * ratio);
+    lensCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    lensCtx.fillStyle = "#254f40";
+    lensCtx.fillRect(0, 0, edge, edge);
     const cue = props.balls.find((b) => b.id === 0);
     if (props.canAim && cue && !cue.down && !props.placing) {
-      const radius = 51,
-        cx = size.width - 60,
-        cy = 60;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.fillStyle = "#254f40";
-      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
       const end = aimEnd(props.balls, props.angle);
       const focus = end.hit
         ? {
@@ -448,20 +450,26 @@ export function Table(props: Props) {
             x: cue.pos.x + Math.cos(props.angle) * 0.025,
             y: cue.pos.y + Math.sin(props.angle) * 0.025,
           };
-      const lens: Camera = {
-        ...camera,
-        zoom: 700 / scaleOf({ ...camera, zoom: 1 }),
+      const base: Camera = {
+        width: edge,
+        height: edge,
+        portrait: size.portrait,
+        zoom: 1,
         pan: { x: 0, y: 0 },
       };
+      const lens: Camera = { ...base, zoom: 700 / scaleOf(base) };
       const loc = worldToScreen(focus, lens);
-      lens.pan = { x: cx - loc.x, y: cy - loc.y };
-      drawScene(ctx, lens, { ...props, placing: false }, art);
-      ctx.restore();
-      ctx.strokeStyle = "#ded1a9";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.stroke();
+      lens.pan = { x: edge / 2 - loc.x, y: edge / 2 - loc.y };
+      drawScene(lensCtx, lens, { ...props, placing: false }, art);
+    } else {
+      lensCtx.fillStyle = "#fff7db";
+      lensCtx.font = "12px sans-serif";
+      lensCtx.textAlign = "center";
+      lensCtx.fillText(
+        props.placing ? "摆放白球" : "等待瞄准",
+        edge / 2,
+        edge / 2 + 4,
+      );
     }
   }, [
     props.balls,
@@ -482,6 +490,40 @@ export function Table(props: Props) {
   };
   return (
     <div className="snooker-viewport">
+      <div className="snooker-aim-tools">
+        <div className="snooker-aim-preview">
+          <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
+        </div>
+        <div className="snooker-aim-readout">
+          <strong>瞄准细节</strong>
+          {charging && (
+            <div
+              className="snooker-charge"
+              role="progressbar"
+              aria-label="击球力度"
+              aria-valuemin={2}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(chargePower * 100)}
+            >
+              <span>力度 {Math.round(chargePower * 100)}% · 松开击球</span>
+              <div>
+                <i style={{ width: `${chargePower * 100}%` }} />
+              </div>
+            </div>
+          )}
+          {!charging && (
+            <span>
+              {movingView
+                ? "移动视图中，拖动只平移球桌"
+                : props.placing
+                  ? "在 D 区点击摆放白球"
+                  : props.canAim
+                    ? "按住球桌瞄准蓄力，松开击球"
+                    : "轮到你时可瞄准击球"}
+            </span>
+          )}
+        </div>
+      </div>
       <div
         className="snooker-table"
         ref={wrap}
@@ -541,12 +583,6 @@ export function Table(props: Props) {
           onPointerDown={(e) => {
             if (e.button !== 0) return;
             const p = point(e);
-            if (
-              props.canAim &&
-              !props.placing &&
-              Math.hypot(p.x - (size.width - 60), p.y - 60) < 53
-            )
-              return;
             e.currentTarget.focus({ preventScroll: true });
             pointers.current.set(e.pointerId, p);
             e.currentTarget.setPointerCapture(e.pointerId);
@@ -665,21 +701,6 @@ export function Table(props: Props) {
             }
           }}
         />
-        {charging && (
-          <div
-            className="snooker-charge"
-            role="progressbar"
-            aria-label="击球力度"
-            aria-valuemin={2}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(chargePower * 100)}
-          >
-            <span>力度 {Math.round(chargePower * 100)}% · 松开击球</span>
-            <div>
-              <i style={{ width: `${chargePower * 100}%` }} />
-            </div>
-          </div>
-        )}
         {props.flash && (
           <span className="snooker-respot-note" role="status">
             已复位：{props.flash.ids.map(ballName).join("、")}

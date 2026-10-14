@@ -43,6 +43,21 @@ def shot(name):
 
  (out/(name+'-contrast.json')).write_text(json.dumps(colors,ensure_ascii=False,indent=2))
  browser('screenshot',str(out/(name+'.png')),'--full');report['checks'].append(name);print('PASS',name,flush=True)
+def assert_clear_table(label):
+ geometry=js(r"""(() => {
+ const table=document.querySelector('.snooker-table canvas'),preview=document.querySelector('.snooker-aim-preview canvas');
+ if(!preview)return {error:'missing off-table magnifier'};
+ const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}},t=rect(table),p=rect(preview);
+ const overlaps=r=>Math.min(t.right,r.right)>Math.max(t.x,r.x)&&Math.min(t.bottom,r.bottom)>Math.max(t.y,r.y);
+ const overlays=[...document.querySelectorAll('.snooker-aim-preview,.snooker-charge')].filter(e=>e.getClientRects().length).map(e=>({class:e.className,rect:rect(e),overlap:overlaps(rect(e))}));
+ return {table:t,preview:p,overlays,previewPixels:preview.getContext('2d').getImageData(0,0,preview.width,preview.height).data.some(v=>v>0)};
+ })()""")
+ assert 'error' not in geometry,(label,geometry)
+ assert geometry['preview']['width']>=80 and geometry['preview']['height']>=80,(label,geometry)
+ assert geometry['previewPixels'],(label,'empty magnifier')
+ assert not any(o['overlap'] for o in geometry['overlays']),(label,geometry)
+ report.setdefault('unobstructedTable',[]).append({'label':label,**geometry})
+
 try:
  for name in ['url','stop']:(fixture/name).unlink(missing_ok=True)
  with (out/'build.log').open('w') as f:subprocess.run(['npm','--prefix','web','run','build'],cwd=root,env=env,stdout=f,stderr=subprocess.STDOUT,check=True)
@@ -70,24 +85,32 @@ try:
   assert not js('!!document.querySelector("input[type=number],.snooker-strike")'),"old menu controls remain"
   r=api('/state')['room'];initial=r['version']
   rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x=round(rect['x']+rect['width']*.52);y=round(rect['y']+rect['height']*.6)
+  # Regression: the old top-right lens both covered a pocket and swallowed input.
+  assert_clear_table(f'normal-{width}')
+  lens_x=round(rect['right']-60);lens_y=round(rect['y']+60)
+  browser('mouse','move',str(lens_x),str(lens_y));browser('mouse','down')
+  browser('wait','--fn','!!document.querySelector(".snooker-charge")')
+  assert_clear_table(f'former-lens-hit-{width}')
+  browser('press','Escape');browser('mouse','up')
+  assert api('/state')['room']['version']==initial,'cancelled former-lens hit shot'
   # A short tap, escape, leaving the surface and wheel/pinch must never fire.
   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('press','Escape');browser('mouse','up')
   assert api('/state')['room']['version']==initial
   browser('mouse','down');browser('mouse','move',str(x),str(round(rect['y']-10)));browser('mouse','up')
   assert api('/state')['room']['version']==initial
   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('wait','--fn','Number(document.querySelector(".snooker-charge").getAttribute("aria-valuenow"))>10')
-  before_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'));browser('mouse','move',str(x+15),str(y+12));after_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'));assert abs(after_angle-before_angle)>.001,'held drag did not change direction';shot(f'charging-{width}')
+  before_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'));browser('mouse','move',str(x+15),str(y+12));after_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'));assert abs(after_angle-before_angle)>.001,'held drag did not change direction';assert_clear_table(f'charging-{width}');shot(f'charging-{width}')
   assert api('/state')['room']['version']==initial,'shot while still holding'
   endpoint=browser('get','cdp-url')['cdpUrl']
   subprocess.run(['node','scripts/browser_wheel.mjs',endpoint,base,str(x),str(y),'-220'],cwd=root,env=env,check=True,timeout=15)
-  browser('mouse','up');assert api('/state')['room']['version']==initial,'zoom released a shot'
+  browser('mouse','up');assert_clear_table(f'zoom-{width}');assert api('/state')['room']['version']==initial,'zoom released a shot'
   browser('find','role','button','click','--name','移动视图','--exact')
   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('mouse','move',str(x+30),str(y+30));browser('mouse','up')
-  assert api('/state')['room']['version']==initial,'pan released a shot'
+  assert_clear_table(f'pan-{width}');assert api('/state')['room']['version']==initial,'pan released a shot'
   browser('find','role','button','click','--name','移动视图','--exact');browser('find','role','button','click','--name','复位视图','--exact')
   browser('scrollintoview','.snooker-table canvas');rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x=round(rect['x']+rect['width']*.52);y=round(rect['y']+rect['height']*.6)
   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'pinch',str(x),str(y),str(x),str(y)],cwd=root,env=env,check=True,timeout=20)
-  assert api('/state')['room']['version']==initial,'pinch released a shot'
+  assert_clear_table(f'pinch-{width}');assert api('/state')['room']['version']==initial,'pinch released a shot'
   browser('find','role','button','click','--name','复位视图','--exact')
   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'cancel',str(x),str(y),str(x+10),str(y-10)],cwd=root,env=env,check=True,timeout=20)
   assert api('/state')['room']['version']==initial,'cancelled touch released a shot'
