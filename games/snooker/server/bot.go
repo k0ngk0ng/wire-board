@@ -95,13 +95,6 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	return json.Marshal(a)
 }
 
-func reclaim(_ gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
-	// Snooker has no human shot deadline to renew. Never reset an active flight,
-	// decision window, partner order or the table when control returns to a user.
-	_, e := decode(m)
-	return m, e
-}
-
 func botDistance(a, b Vec) float64 { return math.Hypot(a.X-b.X, a.Y-b.Y) }
 func botPathClear(a, b Vec, balls []Ball, ignore1, ignore2 int) bool {
 	dx, dy := b.X-a.X, b.Y-a.Y

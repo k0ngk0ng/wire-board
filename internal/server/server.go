@@ -21,6 +21,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strings"
 	"sync"
@@ -201,6 +202,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			db.Close()
 			return nil, e
 		}
+		moduleMigrated := false
 		if _, ok := s.modules[r.Kind]; r.Module != nil || len(r.Options) > 0 {
 			if !ok {
 				db.Close()
@@ -211,6 +213,25 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 					db.Close()
 					return nil, e
 				}
+				module := s.modules[r.Kind]
+				if r.Status == "playing" && module.Restore != nil {
+					match, err := module.Restore(moduleContext(&r, -1, r.Version, time.Now()), *r.Module)
+					if err == nil {
+						err = module.ValidateMatch(match, len(r.Seats))
+					}
+					if err != nil {
+						db.Close()
+						return nil, err
+					}
+					if !reflect.DeepEqual(match, *r.Module) {
+						if err = r.setModule(match); err != nil {
+							db.Close()
+							return nil, err
+						}
+						r.Version++
+						moduleMigrated = true
+					}
+				}
 			}
 		}
 		s.rooms[r.ID] = &r
@@ -218,6 +239,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		if changed {
 			r.SetupVersion = r.Version
 		}
+		changed = moduleMigrated || changed
 		changed = r.resumeSanguoshaResponses(time.Now()) || changed
 		if r.Status == "playing" && r.Module == nil && r.TurnDeadline == 0 {
 			r.startTurnClock(time.Now())

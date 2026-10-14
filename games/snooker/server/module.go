@@ -65,8 +65,9 @@ func Module() gameapi.Module {
 			s.Phase = "start_choice"
 			s.setTurn(s.first(toss()))
 			s.note("标准十五红球；抽签胜方选择开球队伍")
+			s.syncClocks("", -1, ctx.Now)
 			return s.match()
-		}, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim,
+		}, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore,
 		AcceptStale: func(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) bool {
 			s, e := decode(m)
 			if e != nil {
@@ -86,9 +87,11 @@ func Module() gameapi.Module {
 			if s.Phase != "rolling" || ctx.Now.UnixMilli() < s.Flight.End {
 				return m, nil
 			}
+			previousPhase, previousTurn := s.Phase, s.Turn
 			if e = s.settle(ctx.Now); e != nil {
 				return m, e
 			}
+			s.syncClocks(previousPhase, previousTurn, ctx.Now)
 			next, e := s.match()
 			if e != nil {
 				return m, e
@@ -133,7 +136,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	if !common && ctx.Actor != s.Turn {
 		return m, errors.New("请等待当前击球者完成操作")
 	}
-	previousPhase := s.Phase
+	previousPhase, previousTurn := s.Phase, s.Turn
 	advanceWindow := !independentVote(a.Type)
 	switch a.Type {
 	case "break_choice":
@@ -310,6 +313,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		}
 		s.Rerack[ctx.Actor] = true
 		if !slices.Contains(s.Rerack, false) {
+			s.Due = nil
 			advanceWindow = true
 			if s.BlackDecider {
 				for i := range s.Balls {
@@ -342,6 +346,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	if advanceWindow || s.Phase != previousPhase {
 		s.Window++
 	}
+	s.syncClocks(previousPhase, previousTurn, ctx.Now)
 	next, e := s.match()
 	if e != nil {
 		return m, e

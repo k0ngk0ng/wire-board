@@ -1,6 +1,6 @@
 # 斯诺克
 
-纯 2D 俯视、标准十五红球，支持 2 人单打和 4 人双打；可选单局决胜、三局两胜和五局三胜。游戏独立维护物理、裁判、界面及素材，沿用平台大厅、等待房间、玩家栏和音效通道。默认下架，由管理员上架后才能创建。支持电脑玩家及真人托管，不默认设置固定出杆倒计时。
+纯 2D 俯视、标准十五红球，支持 2 人单打和 4 人双打；可选单局决胜、三局两胜和五局三胜。游戏独立维护物理、裁判、界面及素材，沿用平台大厅、等待房间、玩家栏和音效通道。默认下架，由管理员上架后才能创建。支持电脑玩家及真人托管；需要操作时有 120 秒倒计时，超时自动托管，不因超时本身罚分。球运动时不计操作时间，取消托管后可继续手动操作。
 
 ## 玩法
 
@@ -64,3 +64,5 @@ python3 -B scripts/snooker/prepare-audio.py
 `go test -v -count=1 ./games/snooker/tests -run 'TestSnookerBots|TestSnookerComputerSeatsHTTP'` 验证生产策略、六种人数／赛制组合、特殊阶段和真实托管接管。完整 HTTP 对局使用 `WIRE_BOARD_SNOOKER_HTTP_FULL=1`，沿用真实系统时钟。结果写入 `.local/snooker/verification/` 和 `.local/poker/snooker/http/`。直接击球操作通过 `python3 -B scripts/snooker/check-gesture.py` 验证，截图与报告保存在 `.local/snooker/gesture/`。
 
 本次补充验收：六种人数／赛制组合共完成 18 局自然电脑对局；真实 HTTP 单打和双打各完成 1 局，包含手动接管与 SQLite 恢复。331 项前端测试通过；桌面及 320px／390px 的直接击球、原有界面和进球反馈共保留 31 个浏览器检查点。证据总表位于 `.local/snooker/computers-controls-verification.json`。
+
+超时计时按待操作席位独立保存，摆球与非阻塞投票不延长击球时间。局间已准备的玩家不再计时；取消超时托管只恢复本人的操作时间。旧版无时钟的活跃对局在加载时一次性补上倒计时，后续重启保留原期限。`TestSnookerTimeoutAutoplayHTTP` 使用真实 120 秒时钟验证自动接管，`TestSnookerLegacyClockMigrationHTTP` 验证存档迁移；证据仍保存在 `.local/poker/snooker/http/`。
