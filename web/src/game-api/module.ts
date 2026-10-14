@@ -36,6 +36,8 @@ export type GameAudioPort = {
   // Alternatives for one clip; unlike play(), these are not a playlist.
   playWithFallback: (sources: readonly string[]) => Promise<boolean>;
   stop: () => void;
+  music: (sources: readonly string[]) => Promise<boolean>;
+  stopMusic: () => void;
 };
 export type GameClock = {
   serverNow: number;
@@ -77,7 +79,7 @@ export type GameModule<Data = unknown, Options = unknown> = {
   id: string;
   name: string;
   description: string;
-  category?: "board" | "poker" | "realtime" | "sports";
+  category?: "board" | "poker" | "realtime" | "sports" | "puzzle";
   requiresFullTable?: boolean;
   minPlayers: number;
   maxPlayers: number;

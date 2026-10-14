@@ -55,3 +55,30 @@ test('a failed game CDN clip uses its local alternative once',async()=>{
 test('late game fallback cannot resume a muted or replaced action',async()=>{
  const {audio,media}=setup();let reject;media.behavior=()=>new Promise((_,r)=>reject=r);const p=audio.channel('poker').playWithFallback(['cdn.mp3','local.mp3']);audio.setEnabled(false);audio.setEnabled(true);reject(Error('late'));assert.equal(await p,false);assert.deepEqual(media.calls,['cdn.mp3']);
 });
+
+// Music migration failure inventory (before implementation): game creates its
+// own audio route; effects cancel background music; global mute or room cleanup
+// leaves music playing; denied/CDN music throws; stale room stops newer music.
+function musicSetup(){const voices=[];const audio=new GameAudio(()=>{const m=new Media();voices.push(m);return m});audio.mount();return {audio,voices};}
+test('game music uses a separate looping native platform channel, effects coexist',async()=>{
+ const {audio,voices}=musicSetup(),port=audio.channel('pairs');
+ assert.equal(await port.music(['bg.mp3','local.mp3']),true);
+ assert.equal(voices.length,2);assert.equal(voices[1].dataset.platformAudio,'');assert.equal(voices[1].loop,true);assert.equal(voices[1].volume,.15);
+ await port.play(['match.wav']);assert.equal(voices[1].paused,false);assert.equal(voices[0].src,'match.wav');
+ await port.music(['bg.mp3','local.mp3']);assert.deepEqual(voices[1].calls,['bg.mp3']);
+ port.stopMusic();assert.equal(voices[1].paused,true);assert.equal(voices[0].paused,false);
+});
+test('global mute cancels music and effects; unmute never replays either',async()=>{
+ const {audio,voices}=musicSetup(),port=audio.channel('pairs');await port.music(['bg.mp3']);await port.play(['match.wav']);audio.setEnabled(false);
+ assert.ok(voices.every(m=>m.paused&&m.muted));audio.setEnabled(true);assert.ok(voices.every(m=>m.paused));
+ audio.dispose();assert.ok(voices.every(m=>m.removed));
+});
+test('music belongs to its room and falls back to local media',async()=>{
+ const {audio,voices}=musicSetup(),old=audio.channel('old'),next=audio.channel('new');await old.music(['old.mp3']);
+ voices[1].behavior=()=>voices[1].src==='cdn.mp3'?Promise.reject(Error('cdn')):Promise.resolve();
+ assert.equal(await next.music(['cdn.mp3','local.mp3']),true);assert.equal(voices[1].src,'local.mp3');old.stop();assert.equal(voices[1].paused,false);next.stop();assert.equal(voices[1].paused,true);
+});
+test('pending music cannot return after mute',async()=>{
+ const {audio,voices}=musicSetup();await audio.channel('pairs').music(['bg.mp3']);let finish;
+ voices[1].behavior=()=>new Promise(r=>finish=r);const p=audio.channel('pairs').music(['next.mp3']);audio.setEnabled(false);finish();assert.equal(await p,false);assert.equal(voices[1].paused,true);
+});

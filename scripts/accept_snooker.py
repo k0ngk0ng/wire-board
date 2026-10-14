@@ -56,9 +56,9 @@ try:
  base=(out/'url').read_text();browser('open',base);opened=True;api('/login',{'name':'斯诺克验收管理员','password':'snooker-browser-test-only'});admin_cookies=browser('cookies','get')['cookies']
  assert 'snooker' not in api('/state')['availableGames']
  api('/rooms',{'kind':'snooker','name':'下架不能创建','capacity':2},403)
- api('/admin/games/snooker',{'enabled':True});browser('reload');browser('wait','.game-selection');browser('select','select[aria-label="游戏分类"]','sports')
+ api('/admin/games/snooker',{'enabled':True});browser('reload');browser('wait','.room-list');browser('select','select[aria-label="游戏分类"]','sports')
  for n in [2,4]:
-  browser('set','viewport','1280','960');browser('select','select[aria-label="游戏分类"]','sports');browser('click','.game-feature[data-game="snooker"] button');browser('wait','[role=dialog]')
+  browser('set','viewport','1280','960');browser('select','select[aria-label="游戏分类"]','sports');browser('click','.lobby-create');browser('wait','[role=dialog]')
   assert js('[...document.querySelectorAll("select[aria-label=座位上限] option")].map(o=>o.value)')==['2','4']
   browser('select','select[aria-label="座位上限"]',str(n));browser('fill','input[name=name]',f'斯诺克 {n} 人验收');browser('click','[role=dialog] button[type=submit]');browser('wait','.waiting-actions')
   room=api('/state')['room'];peers=[]
@@ -125,7 +125,7 @@ try:
   report.setdefault('audio',[]).append({'players':n,'flight':flight['id'],'firstImpact':first,'attempts':attempts})
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase!=="rolling"');assert js('window.__snookerAudio.some(a=>a.src.includes("/ball-")&&a.ok)'), 'no collision media actually played';shot(f'impact-audio-{n}')
   browser('reload');browser('wait','.snooker-board')
-  command('close');command('leave');browser('wait','.game-selection')
+  command('close');command('leave');browser('wait','.room-list')
  report['passed']=True
 except Exception as error:
  import traceback;traceback.print_exc();report['error']=repr(error)

@@ -249,83 +249,7 @@ nav {
 .lobby {
   max-width: 1240px;
   margin: auto;
-  padding: 47px 32px 24px;
-}
-.welcome {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-}
-.welcome h1 {
-  font-size: 42px;
-  font-family: "Songti SC", "Noto Serif CJK SC", serif;
-  font-weight: 700;
-  margin: 8px 0 13px;
-  letter-spacing: 1px;
-}
-.welcome h1 > span {
-  color: #cc785a;
-}
-.welcome p {
-  font-size: 13px;
-  color: #879186;
-  letter-spacing: 0.5px;
-}
-.welcome-stamp {
-  border-left: 1px solid var(--line);
-  padding: 0 30px;
-  text-align: center;
-  transform: rotate(-5deg);
-}
-.welcome-stamp > span {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #6d8072;
-}
-.welcome-stamp > div {
-  display: flex;
-  gap: 7px;
-  justify-content: center;
-  margin: 7px;
-}
-.welcome-stamp small {
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  color: #929c8c;
-}
-.tabletop-mark {
-  display: block;
-  width: 150px;
-  height: 64px;
-  margin: 4px auto;
-}
-.game-selection {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  gap: 24px;
-}
-@media (min-width: 1101px) {
-  .game-selection {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-@media (max-width: 700px) {
-  .game-selection {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-.game-feature {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  border: 1px solid #dbe1d4;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fffef9;
-  color: #293b35;
-  box-shadow: 0 4px 12px #203b2810;
+  padding: 28px 32px 24px;
 }
 .cover {
   line-height: 0;
@@ -337,61 +261,78 @@ nav {
   object-fit: cover;
   display: block;
 }
-.game-feature > .cover {
-  flex: none;
-  height: 190px;
-}
-.feature-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  padding: 22px 24px;
-}
-.feature-info h2 {
-  font-size: 26px;
-  margin: 0 0 9px;
-  font-family: "Songti SC", serif;
-  letter-spacing: 2px;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
-}
-.feature-info p {
-  margin: 0 0 20px;
-  min-height: 3.4em;
-  line-height: 1.7;
-  color: #52624f;
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-.feature-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #edf0e6;
-  margin-top: auto;
-  padding-top: 17px;
-  gap: 12px;
-}
-.feature-bottom > span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  color: #52624f;
-  white-space: nowrap;
-}
-.feature-bottom svg {
-  flex: none;
-}
-.feature-bottom .primary {
-  flex: none;
-  white-space: nowrap;
-  font-size: 12px;
-  padding: 10px 14px;
-}
 .room-list {
-  margin-top: 39px;
+  margin-top: 0;
+}
+.room-list .section-heading {
+  gap: 16px;
+}
+.room-list h1 {
+  font:
+    700 28px "Songti SC",
+    "Noto Serif CJK SC",
+    serif;
+}
+.room-list .section-heading p {
+  color: #52624f;
+}
+.lobby-create {
+  flex-shrink: 0;
+  min-height: 42px;
+}
+.room-results {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  color: #52624f;
+  font-size: 12px;
+}
+.room-reset {
+  color: #174e43;
+  text-decoration: underline;
+  min-height: 36px;
+}
+.room-results .live-dot {
+  color: #52624f;
+}
+.room-cover {
+  flex: none;
+  width: 60px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #e4ece0;
+}
+.room-cover .cover {
+  width: 100%;
+  height: 100%;
+}
+.room-title,
+.room-title > div {
+  min-width: 0;
+}
+.room-title h3,
+.room-title small {
+  overflow-wrap: anywhere;
+}
+.room-list .table-label,
+.room-list .room-title small,
+.room-list .seat-preview small {
+  color: #52624f;
+}
+.room-list .status.waiting {
+  color: #486a3d;
+}
+.room-list .status.playing {
+  color: #80602b;
+}
+.room-list .empty-room p {
+  color: #52624f;
+}
+.room-list .join-button:disabled {
+  color: #52624f;
+  opacity: 1;
 }
 .section-heading {
   display: flex;
@@ -422,32 +363,70 @@ nav {
   font-size: 12px;
 }
 .room-filters {
-  display: flex;
-  gap: 16px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(200px, 2fr) repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
 }
 .room-filters label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: grid;
+  gap: 6px;
   min-width: 0;
+  width: 100%;
   margin: 0;
   color: #355448;
-  font-size: 13px;
+  font-size: 12px;
 }
-.room-filters select {
-  width: 240px;
+.room-filters select,
+.room-filters input {
+  width: 100%;
   max-width: 100%;
   min-width: 0;
+  height: 40px;
   margin: 0;
-  padding: 9px 12px;
+  padding: 9px 10px;
   border: 1px solid #bfcbbb;
   border-radius: 7px;
   background: #fffefa;
   color: #244f40;
   font: inherit;
+}
+@media (max-width: 700px) {
+  .room-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .room-filters .room-search {
+    grid-column: 1 / -1;
+  }
+  .room-list h1 {
+    font-size: 24px;
+  }
+  .room-list .section-heading p {
+    font-size: 12px;
+  }
+  .room-list .section-heading {
+    align-items: flex-start;
+  }
+  .lobby-create {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .room-cover {
+    width: 40px;
+    height: 34px;
+  }
+  .room-list .room-title {
+    gap: 8px;
+  }
+  .room-list .room-title small {
+    font-size: 10px;
+  }
+  .room-list .room-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
 }
 .live-dot {
   margin-left: auto;
@@ -2352,12 +2331,6 @@ label small {
   .tickets {
     grid-template-columns: 1fr 1fr;
   }
-  .feature-info {
-    padding: 20px;
-  }
-  .feature-info h2 {
-    font-size: 23px;
-  }
   footer {
     margin-left: 32px;
     margin-right: 32px;
@@ -2447,22 +2420,6 @@ label small {
   .waiting-seat {
     width: calc(25% - 11px);
   }
-  .game-feature > .cover {
-    height: 170px;
-  }
-  .feature-bottom {
-    gap: 8px;
-  }
-  .feature-bottom > span {
-    font-size: 12px;
-    gap: 4px;
-  }
-  .feature-bottom > span svg {
-    width: 12px;
-  }
-  .feature-bottom .primary {
-    padding: 8px 10px;
-  }
   .auth-story {
     padding: 30px 9%;
   }
@@ -2548,52 +2505,11 @@ label small {
   .lobby {
     padding: 27px 17px 20px;
   }
-  .welcome {
-    margin-bottom: 24px;
-  }
-  .welcome h1 {
-    font-size: 30px;
-  }
-  .welcome p {
-    font-size: 11px;
-  }
-  .welcome-stamp {
-    display: none;
-  }
   .eyebrow {
     font-size: 8px;
   }
-  .game-selection {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .game-feature > .cover {
-    height: 150px;
-  }
-  .feature-info {
-    padding: 16px;
-  }
-  .feature-info h2 {
-    font-size: 23px;
-    letter-spacing: 1px;
-  }
-  .feature-info p {
-    font-size: 13px;
-    line-height: 1.8;
-  }
-  .feature-bottom {
-    padding-top: 12px;
-    margin-top: auto;
-  }
-  .feature-bottom > span {
-    font-size: 12px;
-  }
-  .feature-bottom .primary {
-    font-size: 10px;
-    padding: 7px 11px;
-  }
   .room-list {
-    margin-top: 30px;
+    margin-top: 0;
   }
   .section-heading h2 {
     font-size: 18px;
@@ -5391,18 +5307,6 @@ label small {
 }
 
 /* Catalogue size must not determine control width or squeeze game names. */
-.catalogue-tools {
-  display: flex;
-  align-items: end;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 0 0 18px;
-  color: #405a48;
-}
-.catalogue-tools > span {
-  padding-bottom: 10px;
-  font-size: 13px;
-}
 .game-search {
   display: grid;
   gap: 7px;
@@ -5428,14 +5332,23 @@ label small {
   opacity: 1;
 }
 .game-choice-summary,
+.game-choice-description,
 .game-search-empty {
   color: #405a48;
   font-size: 13px;
   margin: 12px 0;
 }
-.catalogue-more {
-  display: block;
-  margin: 20px auto 0;
+.game-choice-summary {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+.game-choice-players {
+  white-space: nowrap;
+}
+.game-choice-description {
+  line-height: 1.6;
 }
 .admin-game-search {
   margin-bottom: 18px;

@@ -87,7 +87,7 @@ try:
    assert before['version']==after['version'] and before['game']['data']==after['game']['data'],'rejected throw changed state'
    assert sorted(js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>+e.dataset.card)'))==sorted(ids),'rejected selection was cleared'
    assert js('window.__feedbackAudio.length')==0,'invalid throw announced as played';shot('shengji-rejected-throw')
-  command('close');command('leave');b('wait','.game-selection')
+  command('close');command('leave');b('wait','.room-list')
  report['passed']=True
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)

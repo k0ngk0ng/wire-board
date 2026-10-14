@@ -91,7 +91,7 @@ def close_room():
     if r:
         if r['status'] == 'playing': command('close')
         command('leave')
-    b('wait', '.game-selection')
+    b('wait', '.room-list')
 def scenario(name, mode='campaign', players=1):
     close_room()
     for peer in peers:
@@ -175,7 +175,7 @@ try:
     b('open',base);opened=True
     b('tab',next(t['tabId'] for t in b('tab')['tabs'] if t['active']))
     api('/register',{'name':'星垒体验','password':'starfort-browser-test','invite':'starfort-browser'})
-    b('reload');b('wait','.game-selection')
+    b('reload');b('wait','.room-list')
     assert 'starfort' not in api('/state')['availableGames']
     api('/rooms',{'kind':'starfort','name':'未上架不能创建','capacity':1},403)
     checkpoint('default-unpublished')
@@ -185,8 +185,8 @@ try:
     b('click','.admin-game-card button');b('wait','[role=dialog]');click('确认操作')
     wait('document.querySelector(".admin-game-card")?.textContent.includes("已上架")')
     checkpoint('admin-published')
-    login('星垒体验');b('wait','.game-selection')
-    b('fill','input[aria-label="搜索游戏"]','星垒');b('click','.game-feature button')
+    login('星垒体验');b('wait','.room-list')
+    b('select','select[aria-label="按游戏筛选牌桌"]','starfort');b('click','.lobby-create')
     b('wait','[role=dialog]');wait('document.querySelector(".modal").getAnimations().every(a=>a.playState!=="running")')
     assert js('!!document.querySelector(".choose-games .selected .cover svg")')
     b('select','select[aria-label=座位上限]','1')

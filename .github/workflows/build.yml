@@ -103,6 +103,21 @@ jobs:
         run: |
           mkdir -p .local/poker
           go test -json -count=1 -timeout=5m ./games/doudizhu/... ./games/guandan/... ./games/shengji/... > .local/poker/main-acceptance.jsonl
+      - name: Validate pairs source and packaged assets
+        run: python3 -B scripts/pairs/verify-assets.py --dist
+      - name: Accept pairs races, computers, timeout and persistence
+        run: |
+          mkdir -p .local/pairs
+          go test -json -count=1 -timeout=6m ./games/pairs/... > .local/pairs/main-acceptance.jsonl
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pairs-game-acceptance
+          path: |
+            .local/pairs/
+            .local/poker/pairs/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Validate snooker source and packaged assets
         run: python3 -B scripts/snooker/verify-assets.py --dist
       - name: Accept snooker physics, referee and real-time HTTP matches

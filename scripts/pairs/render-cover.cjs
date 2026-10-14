@@ -1,0 +1,18 @@
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
+const root=path.resolve(__dirname,'../..');
+const ts=require(path.join(root,'web/node_modules/typescript'));
+const React=require(path.join(root,'web/node_modules/react'));
+const {renderToStaticMarkup}=require(path.join(root,'web/node_modules/react-dom/server'));
+const {Resvg}=require(path.join(root,'.local/snooker/rasterizer/node_modules/@resvg/resvg-js'));
+const input=fs.readFileSync(path.join(root,'games/pairs/web/Cover.tsx'),'utf8');
+const art=input.slice(input.indexOf('export function CoverArt'),input.indexOf('export function Cover()')).replace('export function','function');
+const js=ts.transpile(art,{jsx:ts.JsxEmit.React,target:ts.ScriptTarget.ES2022});
+const CoverArt=new Function('React',js+';return CoverArt;')(React);
+const svg=renderToStaticMarkup(React.createElement(CoverArt)).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" ');
+const source='games/pairs/assets/source/cover.svg',output='games/pairs/assets/public/pairs/v1/cover.webp';
+fs.writeFileSync(path.join(root,source),svg+'\n');
+const png=path.join(root,'.local/pairs/cover.png');fs.writeFileSync(png,new Resvg(svg,{fitTo:{mode:'width',value:1040}}).render().asPng());
+cp.execFileSync('cwebp',['-quiet','-lossless',png,'-o',path.join(root,output)]);
+const sha=p=>require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
+const file=path.join(root,'games/pairs/assets/manifest.json');const m=JSON.parse(fs.readFileSync(file));m.entries=m.entries.filter(e=>e.urlPath!='/pairs/v1/cover.webp');m.entries.push({file:'cover.webp',source:'games/pairs/web/Cover.tsx',sourceFile:source,sourceSHA256:sha(source),output,urlPath:'/pairs/v1/cover.webp',sha256:sha(output),bytes:fs.statSync(path.join(root,output)).size,license:'Project original SVG',conversion:'SVG rendered with resvg, lossless WebP'});fs.writeFileSync(file,JSON.stringify(m,null,2)+'\n');
+console.log('Rendered original pairs cover');

@@ -10,10 +10,13 @@ type Task = {
 const SILENCE =
   "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==";
 
-// One native media element per page. All games share media-volume behavior,
+// Native effect and optional music channels share media-volume behavior,
 // gesture unlock and mute cancellation; game rules only select clip URLs.
 export class GameAudio {
   private media?: HTMLAudioElement;
+  private background?: GameAudio;
+  private backgroundOwner?: string;
+  private backgroundSources = "";
   private factory: () => HTMLAudioElement;
   private allowed = true;
   private primed = false;
@@ -65,6 +68,7 @@ export class GameAudio {
   }
   async unlock(): Promise<boolean> {
     if (!this.available()) return false;
+    void this.background?.unlock();
     if (this.primed || this.task) return true;
     const media = this.element(),
       serial = this.serial;
@@ -87,6 +91,14 @@ export class GameAudio {
     }
   }
   stop(owner?: string) {
+    this.stopEffects(owner);
+    this.background?.stop(owner);
+    if (owner === undefined || this.backgroundOwner === owner) {
+      this.backgroundOwner = undefined;
+      this.backgroundSources = "";
+    }
+  }
+  private stopEffects(owner?: string) {
     if (owner !== undefined && this.task?.owner !== owner) return;
     this.serial++;
     this.task = undefined;
@@ -101,6 +113,7 @@ export class GameAudio {
   }
   dispose() {
     this.stop();
+    this.background?.dispose();
     this.media?.remove();
     this.media = undefined;
     this.primed = false;
@@ -118,7 +131,31 @@ export class GameAudio {
           ? this.start([{ src: sources[0], fallback: sources[1] }], owner, 1)
           : Promise.resolve(false),
       stop: () => this.stop(owner),
+      music: (sources: readonly string[]) => this.startMusic(sources, owner),
+      stopMusic: () => this.background?.stop(owner),
     };
+  }
+  private startMusic(
+    sources: readonly string[],
+    owner: string,
+  ): Promise<boolean> {
+    if (!this.available() || !sources.length) return Promise.resolve(false);
+    const key = JSON.stringify(sources);
+    if (
+      this.backgroundOwner === owner &&
+      this.backgroundSources === key &&
+      this.background?.media &&
+      !this.background.media.paused
+    )
+      return Promise.resolve(true);
+    this.background ??= new GameAudio(this.factory);
+    const media = this.background.element();
+    media.dataset.platformMusic = "";
+    media.loop = true;
+    media.volume = 0.15;
+    this.backgroundOwner = owner;
+    this.backgroundSources = key;
+    return this.background.channel(owner).playWithFallback(sources);
   }
   play(sound: Sound): Promise<boolean> {
     if (!this.available()) return Promise.resolve(false);
@@ -146,7 +183,7 @@ export class GameAudio {
     if (!this.available() || !clips.length) return false;
     if (this.task && !this.media?.paused && this.task.priority > priority)
       return false;
-    this.stop();
+    this.stopEffects();
     this.playbackSession();
     const task: Task = {
       owner,
@@ -169,7 +206,7 @@ export class GameAudio {
       if (this.task === task) void this.next(task);
     };
     media.onerror = () => {
-      if (this.task === task && !task.starting) this.stop(task.owner);
+      if (this.task === task && !task.starting) this.stopEffects(task.owner);
     };
     for (const src of [clip.src, clip.fallback].filter(
       (s): s is string => !!s,
@@ -194,7 +231,7 @@ export class GameAudio {
         this.primed = false;
       }
     }
-    if (this.task === task) this.stop(task.owner);
+    if (this.task === task) this.stopEffects(task.owner);
     return false;
   }
 }

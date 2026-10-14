@@ -1158,17 +1158,23 @@ function Lobby({
   busy: boolean;
 }) {
   const [filter, setFilter] = useState("all");
-  const [gameQuery, setGameQuery] = useState("");
-  const [gameLimit, setGameLimit] = useState(6);
+  const [roomQuery, setRoomQuery] = useState("");
+  const [roomStatus, setRoomStatus] = useState("all");
   const [category, setCategory] = useState("all");
   const categoryGames = state.availableGames.filter((kind) =>
     matchesCategory(kind, category),
   );
-  const matchingGames = categoryGames.filter((kind) =>
-    `${gameName(kind)} ${kind}`
-      .toLocaleLowerCase()
-      .includes(gameQuery.trim().toLocaleLowerCase()),
-  );
+  const query = roomQuery.trim().toLocaleLowerCase();
+  const filtered =
+    filter !== "all" || category !== "all" || roomStatus !== "all" || !!query;
+  const resetFilters = () => {
+    setFilter("all");
+    setCategory("all");
+    setRoomStatus("all");
+    setRoomQuery("");
+  };
+  const createKind =
+    filter !== "all" ? filter : (categoryGames[0] ?? state.availableGames[0]);
   useEffect(() => {
     if (filter !== "all" && !state.availableGames.includes(filter))
       setFilter("all");
@@ -1178,179 +1184,49 @@ function Lobby({
       (r) =>
         (r.status === "waiting" || r.status === "playing") &&
         (filter === "all" || r.kind === filter) &&
-        matchesCategory(r.kind, category),
+        matchesCategory(r.kind, category) &&
+        (roomStatus === "all" || r.status === roomStatus) &&
+        `${r.name} ${r.id} ${gameName(r.kind)}`
+          .toLocaleLowerCase()
+          .includes(query),
     )
     .sort((a, b) => b.updated - a.updated);
   const invited = new URLSearchParams(location.search).get("room");
   return (
     <main className="lobby">
-      <section className="welcome">
-        <div>
-          <span className="eyebrow">YOUR NEXT GOOD EVENING</span>
-          <h1>
-            好朋友，好一局<span>。</span>
-          </h1>
-          <p>选一款喜欢的游戏，给朋友留个座位。</p>
-        </div>
-        <div className="welcome-stamp">
-          <span>围坐 · 开局 · 尽兴</span>
-          <svg
-            className="tabletop-mark"
-            viewBox="0 0 150 64"
-            role="img"
-            aria-label="骰子、卡牌与棋子，围桌一起玩"
-          >
-            <path
-              d="M12 54 Q75 66 138 54"
-              fill="none"
-              stroke="#d7c9ac"
-              strokeWidth="2"
-            />
-            <g transform="translate(13 12) rotate(-12 20 20)">
-              <rect width="39" height="39" rx="9" fill="#c9654e" />
-              <rect
-                x="3"
-                y="3"
-                width="33"
-                height="33"
-                rx="7"
-                fill="none"
-                stroke="#f4d7bd"
-                strokeWidth="1"
-              />
-              {[
-                [11, 11],
-                [28, 11],
-                [19.5, 19.5],
-                [11, 28],
-                [28, 28],
-              ].map(([cx, cy], i) => (
-                <circle key={i} cx={cx} cy={cy} r="3" fill="#fff5dc" />
-              ))}
-            </g>
-            <g transform="translate(64 8) rotate(9 16 22)">
-              <rect
-                x="-6"
-                y="3"
-                width="31"
-                height="43"
-                rx="4"
-                fill="#ddb45f"
-                transform="rotate(-15 10 22)"
-              />
-              <rect
-                width="31"
-                height="43"
-                rx="4"
-                fill="#fcf5e4"
-                stroke="#486e87"
-                strokeWidth="2"
-              />
-              <path d="M15.5 10 L24 21.5 L15.5 33 L7 21.5Z" fill="#486e87" />
-              <circle cx="6" cy="6" r="1.5" fill="#486e87" />
-              <circle cx="25" cy="37" r="1.5" fill="#486e87" />
-            </g>
-            <g
-              fill="#4f8066"
-              stroke="#f8f1dd"
-              strokeWidth="1.5"
-              strokeLinejoin="round"
-            >
-              <circle cx="120" cy="18" r="9" />
-              <path d="M115 26 L125 26 Q124 38 132 45 L132 49 L108 49 L108 45 Q116 38 115 26Z" />
-              <rect x="105" y="49" width="30" height="6" rx="3" />
-            </g>
-          </svg>
-          <small>MAKE TIME TO PLAY</small>
-        </div>
-      </section>
-      {!state.availableGames.length && (
-        <p className="admin-empty">游戏正在准备中，请稍后再来看看。</p>
-      )}
-      <div className="catalogue-tools">
-        <CategoryFilter
-          value={category}
-          onChange={(v) => {
-            setCategory(v);
-            setGameLimit(6);
-            if (!matchesCategory(filter, v)) setFilter("all");
-          }}
-        />
-        <label className="game-search">
-          搜索游戏
-          <input
-            type="search"
-            aria-label="搜索游戏"
-            placeholder="输入游戏名称"
-            value={gameQuery}
-            onChange={(event) => {
-              setGameQuery(event.target.value);
-              setGameLimit(6);
-            }}
-          />
-        </label>
-        <span role="status">{matchingGames.length} 款游戏</span>
-      </div>
-      <section className="game-selection">
-        {matchingGames.slice(0, gameLimit).map((kind) => {
-          const game = gameModule(kind)!;
-          return (
-            <article className="game-feature" key={kind} data-game={kind}>
-              <Cover kind={kind} />
-              <div className="feature-info">
-                <h2>{game.name}</h2>
-                <p>{game.description}</p>
-                <div className="feature-bottom">
-                  <span>
-                    <Users size={15} aria-hidden="true" />
-                    {game.playerCounts
-                      ? game.playerCounts.join(" / ")
-                      : game.minPlayers === game.maxPlayers
-                        ? game.minPlayers
-                        : `${game.minPlayers}–${game.maxPlayers}`}{" "}
-                    人
-                  </span>
-                  <button className="primary" onClick={() => onCreate(kind)}>
-                    <Plus size={17} aria-hidden="true" />
-                    创建牌桌
-                  </button>
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </section>
-      {state.availableGames.length > 0 && !matchingGames.length && (
-        <p className="game-search-empty" role="status">
-          没有找到匹配的游戏，请换个名称搜索。
-        </p>
-      )}
-      {matchingGames.length > gameLimit && (
-        <button
-          className="outline catalogue-more"
-          onClick={() => setGameLimit((n) => n + 6)}
-        >
-          显示更多游戏
-        </button>
-      )}
       <section className="room-list">
         <div className="section-heading">
           <div>
-            <h2>
-              大厅里的牌桌 <span>{state.rooms.length}</span>
-            </h2>
-            <p>朋友已经到了？找张桌子坐下吧。</p>
+            <h1>游戏大厅</h1>
+            <p>找个房间，一起开局。</p>
           </div>
           <button
-            className="outline"
-            disabled={!categoryGames.length}
-            onClick={() => onCreate(categoryGames[0])}
+            className="primary lobby-create"
+            disabled={busy || !createKind}
+            onClick={() => onCreate(createKind)}
           >
             <Plus size={17} />
             创建房间
           </button>
         </div>
         <div className="room-filters">
+          <label className="game-search room-search">
+            搜索房间
+            <input
+              type="search"
+              aria-label="搜索房间"
+              placeholder="房间名、房间号或游戏"
+              value={roomQuery}
+              onChange={(event) => setRoomQuery(event.target.value)}
+            />
+          </label>
+          <CategoryFilter
+            value={category}
+            onChange={(value) => {
+              setCategory(value);
+              if (!matchesCategory(filter, value)) setFilter("all");
+            }}
+          />
           <label>
             游戏
             <select
@@ -1366,6 +1242,26 @@ function Lobby({
               ))}
             </select>
           </label>
+          <label>
+            状态
+            <select
+              aria-label="房间状态"
+              value={roomStatus}
+              onChange={(event) => setRoomStatus(event.target.value)}
+            >
+              <option value="all">全部状态</option>
+              <option value="waiting">等待入座</option>
+              <option value="playing">游戏中</option>
+            </select>
+          </label>
+        </div>
+        <div className="room-results">
+          <span role="status">{rooms.length} 个房间</span>
+          {filtered && (
+            <button className="room-reset" onClick={resetFilters}>
+              清除筛选
+            </button>
+          )}
           <span className="live-dot">实时更新</span>
         </div>
         {rooms.length ? (
@@ -1382,12 +1278,8 @@ function Lobby({
                 key={r.id}
               >
                 <div className="room-title">
-                  <span className={`game-icon ${r.kind}`}>
-                    {r.kind === "splendor" ? (
-                      <Gem size={24} />
-                    ) : (
-                      <TrainFront size={24} />
-                    )}
+                  <span className="room-cover" aria-hidden="true">
+                    <Cover kind={r.kind} mini />
                   </span>
                   <div>
                     <h3>
@@ -1461,21 +1353,15 @@ function Lobby({
               <span />
             </div>
             <h3>
-              {filter === "all"
-                ? "今晚的第一局，由你开始"
-                : "还没有这款游戏的牌桌"}
+              {filtered ? "没有符合条件的房间" : "还没有房间，来开第一局吧"}
             </h3>
-            <p>创建一个房间，邀请朋友一起入座。</p>
-            <button
-              className="subtle"
-              disabled={!categoryGames.length}
-              onClick={() =>
-                onCreate(filter === "all" ? categoryGames[0] : filter)
-              }
-            >
-              摆好第一张牌桌
-              <ArrowRight size={16} />
-            </button>
+            <p>
+              {!state.availableGames.length
+                ? "游戏正在准备中，请稍后再来看看。"
+                : filtered
+                  ? "试试其他筛选条件，或创建一个新房间。"
+                  : "点击「创建房间」选择游戏，邀请朋友一起玩。"}
+            </p>
           </div>
         )}
       </section>

@@ -5,6 +5,7 @@ import (
 	doudizhu "github.com/k0ngk0ng/wire-board/games/doudizhu/server"
 	guandan "github.com/k0ngk0ng/wire-board/games/guandan/server"
 	monopoly "github.com/k0ngk0ng/wire-board/games/monopoly/server"
+	pairs "github.com/k0ngk0ng/wire-board/games/pairs/server"
 	shengji "github.com/k0ngk0ng/wire-board/games/shengji/server"
 	snooker "github.com/k0ngk0ng/wire-board/games/snooker/server"
 	starfort "github.com/k0ngk0ng/wire-board/games/starfort/server"
@@ -14,7 +15,7 @@ import (
 // Modules registers independent games. Add the game's server.Module() here;
 // its frontend is discovered from games/<id>/web/module.tsx automatically.
 func Modules() []gameapi.Module {
-	return []gameapi.Module{monopoly.Module(), starfort.Module(), doudizhu.Module(), guandan.Module(), shengji.Module(), snooker.Module()}
+	return []gameapi.Module{monopoly.Module(), starfort.Module(), doudizhu.Module(), guandan.Module(), shengji.Module(), snooker.Module(), pairs.Module()}
 }
 
 // Legacy lists games that retain the existing room/snapshot protocol adapter.

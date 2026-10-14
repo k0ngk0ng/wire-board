@@ -1,7 +1,7 @@
 import { CategoryFilter, matchesCategory } from "./game-category";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
-import { gameName } from "../game-api/registry";
+import { gameModule, gameName } from "../game-api/registry";
 
 /** Keep the shared illustrated choices usable as the catalogue grows. */
 export function GameChoices({
@@ -20,6 +20,7 @@ export function GameChoices({
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const list = useRef<HTMLDivElement>(null);
+  const selectedGame = gameModule(value);
   const term = query.trim().toLocaleLowerCase();
   const visible = games.filter(
     (id) =>
@@ -55,7 +56,22 @@ export function GameChoices({
           }}
         />
       </label>
-      <p className="game-choice-summary">已选：{gameName(value)}</p>
+      <p className="game-choice-summary">
+        已选：{gameName(value)}
+        {selectedGame && (
+          <span className="game-choice-players">
+            {selectedGame.playerCounts
+              ? selectedGame.playerCounts.join(" / ")
+              : selectedGame.minPlayers === selectedGame.maxPlayers
+                ? selectedGame.minPlayers
+                : `${selectedGame.minPlayers}–${selectedGame.maxPlayers}`}{" "}
+            人
+          </span>
+        )}
+      </p>
+      {selectedGame && (
+        <p className="game-choice-description">{selectedGame.description}</p>
+      )}
       <div className="choose-games" ref={list}>
         {visible.map((id) => (
           <button

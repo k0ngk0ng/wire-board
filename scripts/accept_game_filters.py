@@ -5,9 +5,9 @@ Failure cases declared before UI changes: squeezed labels/mobile overflow;
 unreachable choices with many games; search has wrong/empty results; filtering
 loses rooms; switching legacy/module creation submits the wrong game; admin
 search hides the wrong publication control. Temporary modules never ship.
-Card failures: legacy/new games use different templates; English slogans or
-edition badges remain; metadata disagrees with the game; a card opens another
-game; text is clipped, low contrast, or overflows at 320px.
+Lobby failures: cards displace rooms below the fold; search/category/status
+filters conflict; clearing filters loses rooms; creation exposes unpublished
+games or selects another game; long names overflow or have low contrast.
 Run: . scripts/env.sh && python3 -B scripts/accept_game_filters.py
 Evidence: .local/game-filters/browser/result.json and screenshots.
 """
@@ -63,7 +63,7 @@ def shot(name):
       const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number);
       const blend=(a,b,o)=>a.slice(0,3).map((v,i)=>v*o+b[i]*(1-o));
       const lum=c=>c.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
-      return [...document.querySelectorAll('.game-search,.game-search input,.room-filters select,.game-choice-summary,.choose-games > button > span,.feature-info h2,.feature-info p,.feature-bottom > span,.feature-bottom button')].map(e=>{
+      return [...document.querySelectorAll('.game-search,.game-search input,.room-filters select,.game-choice-summary,.choose-games > button > span,.game-choice-description,.game-choice-players,.room-list h1,.room-list .section-heading p,.room-title h3,.room-title small,.room-row .status,.room-row .join-button,.room-results,.room-filters label,.room-filters input,.lobby-create')].map(e=>{
         const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);
         let bg=[255,255,255];for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor);bg=blend(c,bg,c[3]??1)}
         const fg=rgb(getComputedStyle(e).color),a=lum(fg),b=lum(bg);
@@ -75,30 +75,24 @@ def shot(name):
     report['checks'].append(name)
     print('PASS', name, flush=True)
 
-def check_cards(expected):
-    cards = js(r"""[...document.querySelectorAll('.game-feature')].map(e => {
-      const info=e.querySelector('.feature-info'), cover=e.querySelector(':scope > .cover');
-      const inside=n=>{const a=n.getBoundingClientRect(),b=e.getBoundingClientRect();return a.width>0&&a.height>0&&a.left>=b.left&&a.right<=b.right+1&&a.top>=b.top&&a.bottom<=b.bottom+1&&n.scrollWidth<=n.clientWidth+1};
-      return {id:e.dataset.game??null,name:info.querySelector('h2')?.textContent.trim(),
-        description:info.querySelector('p')?.textContent.trim(),
-        players:info.querySelector('.feature-bottom > span')?.textContent.trim(),
-        cta:info.querySelector('button')?.textContent.trim(),
-        childTags:[...info.children].map(n=>n.tagName),
-        extra:!!info.querySelector('.feature-kicker,h2 small'),
-        english:/[a-z]/i.test(info.textContent),edition:/基础版|原创桌游/.test(info.textContent),
-        visible:!!cover&&[cover,...info.children,...info.querySelector('.feature-bottom').children].every(inside),
-        coverHeight:cover?.getBoundingClientRect().height};
-    })""")
-    assert len({card['coverHeight'] for card in cards}) == 1, cards
-    for card in cards:
-        assert card['childTags'] == ['H2', 'P', 'DIV'] and not card['extra'], card
-        assert not card['english'] and not card['edition'], card
-        assert card['visible'] and card['description'] and card['cta'] == '创建牌桌', card
-    assert {card['id'] for card in cards} == set(expected), cards
-    for card in cards:
-        assert card['name'] == expected[card['id']]['name'], card
-        assert card['players'] == expected[card['id']]['players'], card
-    return cards
+def check_room_viewport(width):
+    b('set', 'viewport', str(width), '740')
+    js('scrollTo(0,0)')
+    layout = js("""(() => {
+      const rect=s=>document.querySelector(s)?.getBoundingClientRect().toJSON();
+      return {heading:rect('.room-list h1'),create:rect('.lobby-create'),
+        firstRoom:rect('.room-row'),join:rect('.room-row .join-button'),
+        cards:document.querySelectorAll('.lobby .game-feature,.lobby .choose-games').length,
+        width:innerWidth,height:innerHeight};
+    })()""")
+    assert layout['cards'] == 0, 'game catalogue still displaces rooms'
+    for key in ['heading', 'create', 'firstRoom', 'join']:
+        r = layout[key]
+        assert r and r['top'] >= 0 and r['bottom'] <= layout['height'], layout
+        assert r['left'] >= 0 and r['right'] <= layout['width'], layout
+    (out / f'room-first-{width}.json').write_text(json.dumps(layout,indent=2))
+    shot('room-first-' + str(width))
+
 
 try:
     source = (root / 'internal/server/testdata/module-ui.tsx').read_text()
@@ -133,57 +127,72 @@ try:
         'dota': {'name': '兵线争锋', 'players': '2 / 4 / 6 人'},
         'monopoly': {'name': '强手棋', 'players': '2–6 人'},
         'starfort': {'name': '星垒', 'players': '1–4 人'},
+        'doudizhu': {'name': '斗地主', 'players': '4 人'},
+        'guandan': {'name': '掼蛋', 'players': '4 人'},
+        'shengji': {'name': '升级', 'players': '4 人'},
+        'snooker': {'name': '斯诺克', 'players': '2 / 4 人'},
+        'pairs': {'name': '连连看', 'players': '1–6 人'},
     }
     for kind in native: api('/admin/games/' + kind, {'enabled': True})
-    b('reload'); b('wait', '.game-selection')
-    assert js('document.querySelectorAll(".game-feature").length===6')
-    b('click', '.catalogue-more')
-    for width in [1280, 320]:
-        b('set', 'viewport', str(width), '900')
-        cards = check_cards(native)
-        (out / f'uniform-cards-{width}.json').write_text(json.dumps(cards,ensure_ascii=False,indent=2))
-        shot('uniform-native-cards-' + str(width))
-    for kind, meta in native.items():
-        b('click', f'.game-feature[data-game="{kind}"] button')
-        b('wait', '[role=dialog] .choose-games .selected')
-        assert js('document.querySelector(".choose-games .selected > span").textContent.trim()') == meta['name'], kind
-        b('click', '[role=dialog] button[aria-label="关闭"]')
-    report['checks'].append('all-native-card-create-actions')
+    b('reload'); b('wait', '.room-list')
+    # Failure inventory (before implementation): room list/CTA below fold;
+    # long names overflow; filters conflict; empty results cannot reset;
+    # hidden games appear in picker; legacy/module switch creates wrong kind.
     for i in range(1, 31): api(f'/admin/games/catalog-{i:02d}', {'enabled': True})
-    # Two real waiting rooms owned by separate players, never injected UI state.
     for kind in ['splendor', 'rail']:
         peer = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-        for path, body in [('/register', {'name': '目录' + kind, 'password': 'filter-test-only', 'invite': 'test-invite'}), ('/rooms', {'kind': kind, 'name': '筛选测试 ' + kind, 'capacity': 2})]:
+        name = '筛选测试 ' + kind + (' · 很长的房间名称用来检查手机换行' if kind == 'rail' else '')
+        for path, body in [('/register', {'name': '目录' + kind, 'password': 'filter-test-only', 'invite': 'test-invite'}), ('/rooms', {'kind': kind, 'name': name, 'capacity': 2})]:
             with peer.open(urllib.request.Request(base + '/api' + path, data=json.dumps(body).encode(), headers={'Content-Type': 'application/json'})) as r: assert 200 <= r.status < 300
-    b('reload'); b('wait', '.game-selection')
-    b('wait', 'input[aria-label="搜索游戏"]')
-    assert js('document.querySelectorAll(".game-feature").length<=6'), 'unbounded initial catalogue'
-    b('fill', 'input[aria-label="搜索游戏"]', '目录验收 30')
-    assert js('document.querySelectorAll(".game-feature").length===1 && document.querySelector(".game-feature").textContent.includes("30")')
-    b('fill', 'input[aria-label="搜索游戏"]', '不存在的游戏')
-    assert js('document.querySelectorAll(".game-feature").length===0')
-    b('wait', '--text', '没有找到匹配的游戏')
-    b('fill', 'input[aria-label="搜索游戏"]', ' ')
-    b('press', 'Backspace')
-    b('find', 'role', 'button', 'click', '--name', '显示更多游戏', '--exact')
-    assert js('document.querySelectorAll(".game-feature").length===12')
+    b('reload'); b('wait', '.room-row')
+    for width in [1280, 320]: check_room_viewport(width)
     assert js('document.querySelectorAll("select[aria-label=按游戏筛选牌桌] option").length>=37')
     b('select', 'select[aria-label="按游戏筛选牌桌"]', 'splendor')
     b('wait', '--fn', 'document.querySelectorAll(".room-row").length===1 && document.querySelector(".room-row").textContent.includes("splendor")')
-    b('select', 'select[aria-label="按游戏筛选牌桌"]', 'rail')
-    b('wait', '--fn', 'document.querySelectorAll(".room-row").length===1 && document.querySelector(".room-row").textContent.includes("rail")')
-    b('select', 'select[aria-label="按游戏筛选牌桌"]', 'all')
+    b('fill', 'input[aria-label="搜索房间"]', 'rail')
+    b('wait', '--text', '没有符合条件的房间')
+    shot('room-empty-filter-mobile')
+    b('find', 'role', 'button', 'click', '--name', '清除筛选', '--exact')
     b('wait', '--fn', 'document.querySelectorAll(".room-row").length===2')
-    b('fill', 'input[aria-label="搜索游戏"]', '目录验收 30')
-    for width in [1280, 320]:
-        b('set', 'viewport', str(width), '900')
-        check_cards({'catalog-30': {'name': '目录验收 30 · 很长的中文游戏名称', 'players': '2 人'}})
-        shot('catalogue-and-filter-' + str(width))
-    b('click', '.room-list .section-heading button')
+    b('fill', 'input[aria-label="搜索房间"]', ' RAIL ')
+    b('wait', '--fn', 'document.querySelectorAll(".room-row").length===1 && document.querySelector(".room-row").textContent.includes("rail")')
+    room_id = next(r['id'] for r in api('/state')['rooms'] if r['kind'] == 'splendor')
+    b('fill', 'input[aria-label="搜索房间"]', room_id.upper())
+    b('wait', '--fn', 'document.querySelectorAll(".room-row").length===1 && document.querySelector(".room-row").textContent.includes("splendor")')
+    b('fill', 'input[aria-label="搜索房间"]', ' '); b('press', 'Backspace')
+    b('select', 'select[aria-label="房间状态"]', 'playing')
+    b('wait', '--text', '没有符合条件的房间')
+    b('find', 'role', 'button', 'click', '--name', '清除筛选', '--exact')
+    b('select', 'select[aria-label="按游戏筛选牌桌"]', 'rail')
+    b('select', 'select[aria-label="游戏分类"]', 'realtime')
+    assert js('document.querySelector("select[aria-label=按游戏筛选牌桌]").value') == 'all'
+    b('wait', '--text', '没有符合条件的房间')
+    b('find', 'role', 'button', 'click', '--name', '清除筛选', '--exact')
+    b('click', '.lobby-create')
     b('wait', 'input[aria-label="搜索可选游戏"]')
     assert js('document.querySelector(".choose-games").scrollHeight>document.querySelector(".choose-games").clientHeight'), 'choice list must scroll'
     assert js('[...document.querySelectorAll(".choose-games > button")].every(e=>e.getBoundingClientRect().width>=100)'), 'squeezed game cards'
+    assert js('document.querySelectorAll(".choose-games > button").length') == len(api('/state')['availableGames'])
+    assert not js('document.querySelector(".choose-games").textContent.includes("接入验收")'), 'unpublished game in picker'
     shot('create-many-games-mobile')
+    for kind, meta in native.items():
+        b('fill', 'input[aria-label="搜索可选游戏"]', meta['name'])
+        b('click', '.choose-games button')
+        b('wait', '--fn', 'document.querySelector(".choose-games .selected") !== null')
+        assert js('document.querySelector(".choose-games .selected > span").textContent.trim()') == meta['name']
+        assert js('!!document.querySelector(".choose-games .selected .cover")')
+        assert js('document.querySelector(".game-choice-players").textContent.trim()') == meta['players']
+        assert js('document.querySelector(".game-choice-description").textContent.trim().length>0')
+    for width in [1280, 320]:
+        b('set', 'viewport', str(width), '740')
+        shot('create-picker-' + str(width))
+    b('fill', 'input[aria-label="搜索可选游戏"]', '没有这款游戏')
+    b('wait', '--text', '没有找到匹配的游戏')
+    assert js('document.querySelectorAll(".choose-games > button").length===0')
+    b('fill', 'input[aria-label="搜索可选游戏"]', ' '); b('press', 'Backspace')
+    b('select', 'select[aria-label="可选游戏分类"]', 'realtime')
+    assert js('[...document.querySelectorAll(".choose-games > button > span")].map(e=>e.textContent.trim())') == ['星垒']
+    b('select', 'select[aria-label="可选游戏分类"]', 'all')
     b('fill', 'input[aria-label="搜索可选游戏"]', '目录验收 30')
     b('press', 'Enter')
     assert api('/state').get('room') is None, 'search Enter accidentally created a room'
@@ -227,6 +236,16 @@ try:
     b('scrollintoview', '.profile-more-games')
     b('click', '.profile-more-games')
     assert js('document.querySelectorAll(".profile-stats article").length===12')
+    # Live unpublication must reset a removed selection and disable creation
+    # only when there are no published games; show the preparation empty state.
+    current = api('/state')['room']
+    api('/rooms/' + current['id'], {'type': 'leave', 'version': current['version'], 'nonce': uuid.uuid4().hex})
+    b('open', base); b('wait', '.room-list')
+    b('select', 'select[aria-label="按游戏筛选牌桌"]', 'rail')
+    for kind in api('/state')['availableGames']: api('/admin/games/' + kind, {'enabled': False})
+    b('wait', '--fn', 'document.querySelector(".lobby-create").disabled && document.querySelector("select[aria-label=按游戏筛选牌桌]").value==="all"')
+    b('wait', '--text', '游戏正在准备中')
+    shot('no-published-games')
     report['passed'] = True
 except Exception as e:
     import traceback
