@@ -115,9 +115,12 @@ export function ModuleCreate({
               disabled={busy}
               onChange={(e) => setCapacity(Number(e.target.value))}
             >
-              {Array.from(
-                { length: module.maxPlayers - module.minPlayers + 1 },
-                (_, i) => module.minPlayers + i,
+              {(
+                module.playerCounts ??
+                Array.from(
+                  { length: module.maxPlayers - module.minPlayers + 1 },
+                  (_, i) => module.minPlayers + i,
+                )
               ).map((n) => (
                 <option key={n} value={n}>
                   {n} 人
@@ -177,13 +180,18 @@ export function ModuleWaiting({
         <h2>{module.name}</h2>
         <p>{module.description}</p>
         <span className="tag">
-          {module.minPlayers}～{module.maxPlayers} 人 ·{" "}
-          {module.supportsBots ? "支持电脑与托管" : "好友对局"}
+          {module.playerCounts?.join(" / ") ??
+            `${module.minPlayers}～${module.maxPlayers}`}{" "}
+          人 · {module.supportsBots ? "支持电脑与托管" : "好友对局"}
         </span>
       </div>
       <div className="waiting-seats">
         <span className="eyebrow">TAKE YOUR SEAT</span>
-        <h2>朋友或电脑，到齐就开局。</h2>
+        <h2>
+          {module.supportsBots
+            ? "朋友或电脑，到齐就开局。"
+            : "好友到齐，就能开局。"}
+        </h2>
         {Options && (
           <>
             <Options
