@@ -7,11 +7,12 @@ const call=(method,params={},sessionId)=>new Promise((resolve,reject)=>{const id
 try {
  const {targetInfos}=await call('Target.getTargets');const target=targetInfos.find(t=>t.type==='page'&&t.url.startsWith(prefix));if(!target)throw Error('Owned page not found');
  const {sessionId}=await call('Target.attachToTarget',{targetId:target.targetId,flatten:true});
+ await call('Page.bringToFront',{},sessionId);
  const key=async(code,key,virtual,type)=>call('Input.dispatchKeyEvent',{type,code,key,windowsVirtualKeyCode:virtual},sessionId);
  const aim=+angle===-90?['ArrowUp','ArrowUp',38]:['Home','Home',36];
  await key(...aim,'keyDown');await key(...aim,'keyUp');
  await key('Space',' ',32,'keyDown');
- await new Promise(resolve=>setTimeout(resolve,120+(+power-.02)/.98*1600));
+ for(let i=0;i<Math.round(+power/.05);i++){await key('ArrowUp','ArrowUp',38,'keyDown');await key('ArrowUp','ArrowUp',38,'keyUp');}
  await key('Space',' ',32,'keyUp');
  await call('Target.detachFromTarget',{sessionId});
 } finally {socket.close()}

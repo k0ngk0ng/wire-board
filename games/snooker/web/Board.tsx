@@ -1,3 +1,4 @@
+import { CueTip } from "./CueTip";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
@@ -33,7 +34,6 @@ export function Board({
     [power, setPower] = useState(2),
     [top, setTop] = useState(0),
     [side, setSide] = useState(0),
-    [nominate, setNominate] = useState(7),
     [freeBall, setFreeBall] = useState(0),
     [placing, setPlacing] = useState(false),
     [error, setError] = useState(""),
@@ -109,7 +109,7 @@ export function Board({
     setPendingAge(0);
     setPendingShot({ serial, angle, power, at: performance.now() });
     try {
-      await send("shoot", { angle, power, top, side, nominate, freeBall });
+      await send("shoot", { angle, power, top, side, freeBall });
     } finally {
       if (pendingSerial.current === serial) setPendingShot(undefined);
     }
@@ -326,19 +326,8 @@ export function Board({
       d.target === "red"
         ? "红球"
         : d.target === "colour"
-          ? "自选彩球"
+          ? "任意彩球"
           : (colourNames[d.clear] ?? "清台");
-  const tip = (which: "top" | "side", n: number) => {
-    const other = which === "top" ? side : top,
-      limit = Math.sqrt(Math.max(0, 0.81 - n * n));
-    if (which === "top") {
-      setTop(n);
-      setSide(Math.max(-limit, Math.min(limit, other)));
-    } else {
-      setSide(n);
-      setTop(Math.max(-limit, Math.min(limit, other)));
-    }
-  };
   return (
     <section
       className="snooker-board"
@@ -521,7 +510,7 @@ export function Board({
                   </button>
                   {placing && (
                     <>
-                      <p>点击 D 区摆放白球，完成后按住球桌瞄准蓄力。</p>
+                      <p>点击 D 区摆放白球，完成后瞄准并向后拉杆。</p>
                       <button
                         disabled={busy}
                         onClick={() =>
@@ -535,21 +524,7 @@ export function Board({
                 </div>
               )}
               {d.target === "colour" && (
-                <label>
-                  本杆彩球
-                  <select
-                    aria-label="本杆彩球"
-                    value={nominate}
-                    disabled={!d.controls.canShoot}
-                    onChange={(e) => setNominate(+e.target.value)}
-                  >
-                    {[2, 3, 4, 5, 6, 7].map((v) => (
-                      <option key={v} value={v}>
-                        {colourNames[v]} · {v} 分
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <p>本杆可打任意彩球，按实际先碰到的彩球判定。</p>
               )}
               {d.freeBall && (
                 <label>
@@ -581,48 +556,19 @@ export function Board({
               )}
               <details className="snooker-spin">
                 <summary>击点 · 高低杆与侧旋</summary>
-                <label>
-                  高低杆{" "}
-                  <output>
-                    {top > 0 ? "高杆" : top < 0 ? "低杆" : "中杆"}{" "}
-                    {Math.abs(top).toFixed(2)}
-                  </output>
-                  <input
-                    type="range"
-                    aria-label="高低杆"
-                    min={-0.9}
-                    max={0.9}
-                    step={0.05}
-                    value={top}
-                    disabled={!d.controls.canShoot}
-                    onChange={(e) => tip("top", +e.target.value)}
-                  />
-                </label>
-                <label>
-                  侧旋{" "}
-                  <output>
-                    {side > 0 ? "右塞" : side < 0 ? "左塞" : "无侧旋"}{" "}
-                    {Math.abs(side).toFixed(2)}
-                  </output>
-                  <input
-                    type="range"
-                    aria-label="侧旋"
-                    min={-0.9}
-                    max={0.9}
-                    step={0.05}
-                    value={side}
-                    disabled={!d.controls.canShoot}
-                    onChange={(e) => tip("side", +e.target.value)}
-                  />
-                </label>
-                <button
-                  onClick={() => {
-                    setTop(0);
-                    setSide(0);
+                <CueTip
+                  top={top}
+                  side={side}
+                  disabled={
+                    !d.controls.canShoot ||
+                    busy ||
+                    !!room.seats[room.you]?.autoPlay
+                  }
+                  onChange={(value) => {
+                    setTop(value.top);
+                    setSide(value.side);
                   }}
-                >
-                  恢复中杆
-                </button>
+                />
               </details>
             </>
           )}

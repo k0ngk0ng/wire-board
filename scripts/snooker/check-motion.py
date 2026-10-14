@@ -95,10 +95,11 @@ try:
  browser('wait','.snooker-table canvas')
  if reject:
   js(r'''const previous=window.fetch;window.fetch=(url,options)=>{if(options?.body){const a=JSON.parse(options.body);if(a.type==='action'&&a.action?.type==='shoot'){a.action.window=-1;options={...options,body:JSON.stringify(a)}}}return previous(url,options)}''')
+ report['renderBaseline']=js('new Promise(resolve=>{const times=[];const tick=()=>{times.push(performance.now());if(times.length<5)requestAnimationFrame(tick);else resolve({times,hidden:document.hidden,focused:document.hasFocus()})};requestAnimationFrame(tick)})')
  if viewer:
   r=owner('/state')['room'];owner('/rooms/'+r['id'],{'type':'action','version':r['version'],'nonce':uuid.uuid4().hex,'action':{'type':'shoot','angle':-1.5707963267948966,'power':.25,'nominate':5,'window':r['game']['data']['window']}})
  elif case=='colour':
-  browser('select','select[aria-label="本杆彩球"]','5');strike(0,.5) if resume else strike(-90,.25)
+  strike(0,.5) if resume else strike(-90,.25)
  if reject:
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.shotPending==="false"&&!!document.querySelector(".toast.error")')
   observed=js('window.__motion');r=api('/state')['room']
