@@ -355,17 +355,44 @@
   pointer-events: none;
 }
 
-.snooker-charge {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
-  width: min(280px, 85%);
-  padding: 9px 12px;
-  border: 1px solid #285640;
+.snooker-aim-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 106px;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid #9fab95;
   border-radius: 10px;
   background: #fff9df;
   color: #234b37;
+}
+.snooker-aim-preview {
+  flex: 0 0 88px;
+  width: 88px;
+  height: 88px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #254f40;
+  color: #fff7db;
+}
+.snooker-aim-preview canvas {
+  display: block;
+  width: 88px;
+  height: 88px;
+}
+.snooker-aim-readout {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.snooker-charge {
+  color: #234b37;
+  background: #fff9df;
   pointer-events: none;
   font-size: 13px;
   font-weight: 700;
