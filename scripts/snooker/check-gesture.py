@@ -94,10 +94,16 @@ try:
   assert_clear_table(f'former-lens-hit-{width}')
   browser('press','Escape');browser('mouse','up')
   assert api('/state')['room']['version']==initial,'cancelled former-lens hit shot'
-  # A short tap, escape, leaving the surface and wheel/pinch must never fire.
+  # Capture continues outside the table; escape, cancellation and zoom never fire.
   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('press','Escape');browser('mouse','up')
   assert api('/state')['room']['version']==initial
-  browser('mouse','down');browser('mouse','move',str(x),str(round(rect['y']-10)));browser('mouse','up')
+  browser('mouse','down');browser('mouse','move',str(x),str(round(rect['y']-10)))
+  assert js('!!document.querySelector(".snooker-charge")'),'leaving table cancelled the held shot'
+  outside_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'))
+  browser('mouse','move',str(x-30),str(round(rect['y']-20)))
+  continued_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'))
+  assert abs(continued_angle-outside_angle)>.001,'aim froze outside the table'
+  browser('press','Escape');browser('mouse','up')
   assert api('/state')['room']['version']==initial
   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('wait','--fn','Number(document.querySelector(".snooker-charge").getAttribute("aria-valuenow"))>10')
   before_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'));browser('mouse','move',str(x+15),str(y+12));after_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'));assert abs(after_angle-before_angle)>.001,'held drag did not change direction';assert_clear_table(f'charging-{width}');shot(f'charging-{width}')
@@ -117,9 +123,9 @@ try:
   assert api('/state')['room']['version']==initial,'cancelled touch released a shot'
   # One real held mouse / touch release creates exactly one authoritative shot.
   if width==1280:
-   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('wait','--fn','Number(document.querySelector(".snooker-charge").getAttribute("aria-valuenow"))>20');browser('mouse','move',str(x+18),str(y-12));browser('mouse','up')
+   browser('mouse','move',str(x),str(y));browser('mouse','down');browser('wait','--fn','Number(document.querySelector(".snooker-charge").getAttribute("aria-valuenow"))>20');browser('mouse','move',str(round(rect['x']-8)),str(y-12));browser('mouse','up')
   else:
-   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'charge',str(x),str(y),str(x+12),str(y-12)],cwd=root,env=env,check=True,timeout=20)
+   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'charge',str(x),str(y),str(round(rect['x']-8)),str(y-12)],cwd=root,env=env,check=True,timeout=20)
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"');after=api('/state')['room']['game']['data'];assert after['flight']['id']==1
   assert .02<=after['flight']['strike']['power']<=1
   report.setdefault('shots',[]).append({'width':width,'strike':after['flight']['strike']})

@@ -37,6 +37,25 @@ export type GameAudioPort = {
   playWithFallback: (sources: readonly string[]) => Promise<boolean>;
   stop: () => void;
 };
+export type GameClock = {
+  serverNow: number;
+  receivedAt: number;
+  epoch?: number;
+};
+export type PresentationSnapshot = { room: GameRoom; clock: GameClock };
+export type PresentationFrame = PresentationSnapshot & {
+  blocked: boolean;
+  wakeAt?: number;
+};
+export type RoomPresentation = {
+  update: (
+    snapshot: PresentationSnapshot,
+    now: number,
+    reset: boolean,
+  ) => PresentationFrame;
+  sample: (now: number) => PresentationFrame;
+};
+
 export type BoardProps<Data = unknown> = {
   room: GameRoom;
   data: Data;
@@ -46,7 +65,7 @@ export type BoardProps<Data = unknown> = {
   assets: string;
   sound: boolean;
   audio: GameAudioPort;
-  clock: { serverNow: number; receivedAt: number };
+  clock: GameClock;
 };
 export type OptionsProps<Options = unknown> = {
   value: Options;
@@ -66,6 +85,9 @@ export type GameModule<Data = unknown, Options = unknown> = {
   supportsBots?: boolean;
   ownsSounds?: boolean;
   defaultOptions?: Options;
+  // Optional game-owned visual timeline. Preserve host room metadata; never
+  // modify authoritative snapshots or decide outcomes in this adapter.
+  createPresentation?: () => RoomPresentation;
   Board: ComponentType<BoardProps<Data>>;
   Options?: ComponentType<OptionsProps<Options>>;
   Rules?: ComponentType;

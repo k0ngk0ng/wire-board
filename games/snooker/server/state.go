@@ -21,15 +21,16 @@ type Options struct {
 	AimAssist string `json:"aimAssist"`
 }
 type Flight struct {
-	Integrity string      `json:"integrity"`
-	ID        int         `json:"id"`
-	Start     int64       `json:"start"`
-	End       int64       `json:"end"`
-	Seat      int         `json:"seat"`
-	Context   RuleContext `json:"context"`
-	Strike    Strike      `json:"strike"`
-	Motion    Motion      `json:"motion"`
-	Resolved  bool        `json:"resolved"`
+	Integrity   string      `json:"integrity"`
+	ID          int         `json:"id"`
+	Start       int64       `json:"start"`
+	End         int64       `json:"end"`
+	Seat        int         `json:"seat"`
+	Context     RuleContext `json:"context"`
+	Strike      Strike      `json:"strike"`
+	Motion      Motion      `json:"motion"`
+	Resolved    bool        `json:"resolved"`
+	CueDuration int64       `json:"cueDuration,omitempty"`
 }
 type Foul struct {
 	Offender      int         `json:"offender"`
@@ -339,7 +340,7 @@ func (s *State) valid() error {
 		}
 	}
 	if f := s.Flight; f != nil {
-		if f.ID < 1 || f.ID > s.ShotID || f.Seat < 0 || f.Seat >= s.Players || f.Context.Team != s.Teams[f.Seat] || !validStrike(f.Strike) || !finite(f.Motion.Duration) || f.Motion.Duration <= 0 || f.Motion.Duration > 30 || f.End != f.Start+int64(math.Ceil(f.Motion.Duration*1000)) || len(f.Motion.Balls) != 22 || len(f.Motion.Frames) < 2 || f.Integrity != flightHash(f) {
+		if f.CueDuration < 0 || f.CueDuration > 1000 || f.ID < 1 || f.ID > s.ShotID || f.Seat < 0 || f.Seat >= s.Players || f.Context.Team != s.Teams[f.Seat] || !validStrike(f.Strike) || !finite(f.Motion.Duration) || f.Motion.Duration <= 0 || f.Motion.Duration > 30 || f.End != f.Start+int64(math.Ceil(f.Motion.Duration*1000)) || len(f.Motion.Balls) != 22 || len(f.Motion.Frames) < 2 || f.Integrity != flightHash(f) {
 			return bad()
 		}
 		if s.Phase == "rolling" && (f.Seat != s.Turn || !bytes.Equal(mustJSON(f.Context), mustJSON(s.context()))) {

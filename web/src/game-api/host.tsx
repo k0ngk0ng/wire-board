@@ -4,7 +4,7 @@ import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
 import { AssetsContext, Modal } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
-import type { GameAudioPort } from "./module";
+import type { GameAudioPort, GameClock } from "./module";
 import { PlayerName } from "../profiles";
 import { gameModule, gameName } from "./registry";
 
@@ -25,7 +25,7 @@ export function GameBoard({
   assets: string;
   sound: boolean;
   audio: GameAudioPort;
-  clock: { serverNow: number; receivedAt: number };
+  clock: GameClock;
 }) {
   const module = gameModule(room.kind);
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;

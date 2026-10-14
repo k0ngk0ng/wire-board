@@ -34,7 +34,7 @@ func snookerBrowserModules() []gameapi.Module {
 			s.TurnIndex = 0
 			s.InHand = false
 			switch kind {
-			case "colour":
+			case "colour", "colour_bot":
 				s.Target = "colour"
 				s.Scores = [2]int{1, 0}
 				s.Break = 1
@@ -42,6 +42,13 @@ func snookerBrowserModules() []gameapi.Module {
 				s.Balls[0].Pos = snooker.Vec{X: snooker.TableWidth / 2, Y: .6}
 				s.Balls[19].Pos = snooker.Vec{X: snooker.TableWidth / 2, Y: .2}
 				s.Logs = append(s.Logs, "浏览器定点：彩球进袋及复位反馈，非自然完整比赛")
+				if kind == "colour_bot" {
+					s.Turn = 1
+					s.TurnIndex = 1
+					s.Scores = [2]int{0, 1}
+					s.BestBreak[0] = 0
+					s.BestBreak[1] = 1
+				}
 			case "black_foul":
 				s.Target = "clear"
 				s.Clear = 7
@@ -63,12 +70,12 @@ func snookerBrowserModules() []gameapi.Module {
 				panic("unknown snooker browser case")
 			}
 			s.Due = make([]int64, s.Players)
-			s.Due[0] = ctx.Now.Add(120 * time.Second).UnixMilli()
-			m.Deadline = s.Due[0]
-			m.TimeoutActors = []int{0}
+			s.Due[s.Turn] = ctx.Now.Add(120 * time.Second).UnixMilli()
+			m.Deadline = s.Due[s.Turn]
+			m.TimeoutActors = []int{s.Turn}
 			m.Data, _ = json.Marshal(s)
-			m.Actors = []int{0}
-			m.Attention = []int{0}
+			m.Actors = []int{s.Turn}
+			m.Attention = []int{s.Turn}
 			return m, nil
 		}
 	}

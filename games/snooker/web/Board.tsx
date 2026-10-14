@@ -1,16 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Modal } from "../../../web/src/ui/board-host";
 import { Table } from "./Table";
 import { BAULK, H, sampleFlight, recentImpacts } from "./presentation";
-import {
-  ballName,
-  colourNames,
-  valueOf,
-  type Ball,
-  type View,
-  type Vec,
-} from "./types";
+import { ballName, colourNames, valueOf, type View, type Vec } from "./types";
+import { cueLeadMs } from "./playback";
 import { soundForImpact } from "./sounds";
 import "./style.css";
 const phases: Record<string, string> = {
@@ -46,7 +40,21 @@ export function Board({
     [confirm, setConfirm] = useState<
       "resign" | "rerack" | "concede_frame" | null
     >(null),
-    [drawBalls, setDrawBalls] = useState<Ball[]>(d.balls),
+    [frame, setFrame] = useState({
+      id: d.flight?.id ?? 0,
+      elapsed: d.flight ? (clock.serverNow - d.flight.start) / 1000 : 0,
+      balls:
+        d.flight && d.phase === "rolling"
+          ? sampleFlight(
+              d.flight,
+              Math.max(0, (clock.serverNow - d.flight.start) / 1000),
+            )
+          : d.balls,
+    }),
+    [pendingShot, setPendingShot] = useState<
+      { serial: number; angle: number; power: number; at: number } | undefined
+    >(),
+    [pendingAge, setPendingAge] = useState(0),
     [respotted, setRespotted] = useState({ id: 0, ids: [] as number[], at: 0 }),
     [spotStrength, setSpotStrength] = useState(0),
     [reduced, setReduced] = useState(
@@ -54,11 +62,58 @@ export function Board({
     );
   const played = useRef({
       id: d.flight?.id ?? 0,
-      time: d.flight
-        ? Math.max(0, (clock.serverNow - d.flight.start) / 1000)
-        : 0,
+      time: d.flight ? (clock.serverNow - d.flight.start) / 1000 : 0,
     }),
     lastPhase = useRef(d.phase);
+  const frameRef = useRef(frame),
+    pendingSerial = useRef(0);
+  const scope = `${room.id}:${clock.epoch ?? 0}`;
+  const previousScope = useRef(scope);
+  useLayoutEffect(() => {
+    if (previousScope.current === scope) return;
+    previousScope.current = scope;
+    const observed = d.flight
+      ? (clock.serverNow +
+          performance.now() -
+          clock.receivedAt -
+          d.flight.start) /
+        1000
+      : 0;
+    const elapsed =
+      d.flight && frameRef.current.id === d.flight.id
+        ? Math.max(frameRef.current.elapsed, observed)
+        : observed;
+    played.current = { id: d.flight?.id ?? 0, time: elapsed };
+    lastPhase.current = d.phase;
+    frameRef.current = { id: d.flight?.id ?? 0, elapsed, balls: d.balls };
+    setFrame(frameRef.current);
+    pendingSerial.current++;
+    setPendingShot(undefined);
+    setRespotted({ id: 0, ids: [], at: 0 });
+    setSpotStrength(0);
+  }, [scope]);
+  useEffect(() => {
+    if (!pendingShot) return;
+    let request = 0;
+    const tick = () => {
+      const elapsed = (performance.now() - pendingShot.at) / 1000;
+      setPendingAge(elapsed);
+      if (elapsed < 0.2) request = requestAnimationFrame(tick);
+    };
+    tick();
+    return () => cancelAnimationFrame(request);
+  }, [pendingShot]);
+  async function shoot(angle: number, power: number) {
+    if (pendingShot || busy || !d.controls.canShoot) return;
+    const serial = ++pendingSerial.current;
+    setPendingAge(0);
+    setPendingShot({ serial, angle, power, at: performance.now() });
+    try {
+      await send("shoot", { angle, power, top, side, nominate, freeBall });
+    } finally {
+      if (pendingSerial.current === serial) setPendingShot(undefined);
+    }
+  }
   useEffect(() => {
     setPlacing(
       d.phase === "aim" && d.inHand && !!d.balls.find((b) => b.id === 0)?.down,
@@ -83,29 +138,53 @@ export function Board({
   useEffect(() => {
     const flight = d.flight;
     if (!flight || d.phase !== "rolling") {
-      setDrawBalls(d.balls);
+      const next = {
+        id: flight?.id ?? 0,
+        elapsed: flight?.motion.duration ?? 0,
+        balls: d.balls,
+      };
+      frameRef.current = next;
+      setFrame(next);
       return;
     }
     let request = 0;
-    if (played.current.id !== flight.id)
-      played.current = { id: flight.id, time: -0.001 };
+    const fresh = played.current.id !== flight.id;
+    if (fresh) {
+      played.current = { id: flight.id, time: -Infinity };
+      frameRef.current = {
+        id: flight.id,
+        elapsed: -Infinity,
+        balls: flight.motion.frames[0].balls,
+      };
+    }
     const animate = () => {
-      const elapsed = Math.max(
-        0,
+      const age =
         (clock.serverNow +
           performance.now() -
           clock.receivedAt -
           flight.start) /
-          1000,
+        1000;
+      const elapsed = Math.max(
+        frameRef.current.id === flight.id
+          ? frameRef.current.elapsed
+          : -Infinity,
+        age,
       );
-      setDrawBalls(sampleFlight(flight, elapsed));
-      const events = [
-        { time: 0, kind: "cue", ball: 0, speed: 0 },
-        ...flight.motion.events,
-      ];
+      const next = {
+        id: flight.id,
+        elapsed,
+        balls: sampleFlight(flight, Math.max(0, elapsed)),
+      };
+      frameRef.current = next;
+      setFrame(next);
       if (!document.hidden) {
-        const impacts = recentImpacts(events, played.current.time, elapsed);
-        const event = impacts.at(-1);
+        const events = [
+          { time: 0, kind: "cue", ball: 0, speed: 0 },
+          ...flight.motion.events,
+        ];
+        const event = recentImpacts(events, played.current.time, elapsed).at(
+          -1,
+        );
         if (event) {
           const name = soundForImpact(event, flight.id);
           if (name) play(name);
@@ -117,7 +196,14 @@ export function Board({
     };
     request = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(request);
-  }, [d.flight?.id, d.phase, d.balls, clock.serverNow, clock.receivedAt]);
+  }, [
+    d.flight?.id,
+    d.phase,
+    d.balls,
+    clock.serverNow,
+    clock.receivedAt,
+    scope,
+  ]);
   const skipElapsedAudio = () => {
     const flight = d.flight;
     if (flight)
@@ -184,24 +270,49 @@ export function Board({
     return () => cancelAnimationFrame(request);
   }, [respotted.id, reduced]);
   const flightAge = d.flight
-    ? Math.max(
-        0,
-        (clock.serverNow +
-          performance.now() -
-          clock.receivedAt -
-          d.flight.start) /
-          1000,
-      )
+    ? frame.id === d.flight.id
+      ? frame.elapsed
+      : (clock.serverNow - d.flight.start) / 1000
     : 1;
-  const strikeCue =
-    d.phase === "rolling" && d.flight && flightAge < 0.18 && !reduced
+  const cueSeconds = (d.flight?.cueDuration ?? cueLeadMs) / 1000;
+  const confirmedCue =
+    d.phase === "rolling" && d.flight && flightAge < 0.16
       ? {
           pos: d.flight.motion.frames[0].balls.find((b) => b.id === 0)!.pos,
           angle: d.flight.strike.angle,
           power: d.flight.strike.power,
-          progress: flightAge / 0.18,
+          offset: reduced
+            ? flightAge < 0
+              ? -d.flight.strike.power * 0.16
+              : 0.028
+            : flightAge < 0
+              ? -d.flight.strike.power * 0.16 +
+                (d.flight.strike.power * 0.16 + 0.028) *
+                  Math.max(
+                    0,
+                    Math.min(
+                      1,
+                      (flightAge + cueSeconds) / Math.max(0.001, cueSeconds),
+                    ),
+                  )
+              : 0.028 +
+                Math.min(1, flightAge / 0.16) * 0.035 * d.flight.strike.power,
         }
       : undefined;
+  const strikeCue =
+    confirmedCue ??
+    (pendingShot && d.phase === "aim"
+      ? {
+          pos: d.balls.find((b) => b.id === 0)!.pos,
+          angle: pendingShot.angle,
+          power: pendingShot.power,
+          offset:
+            -pendingShot.power * 0.16 -
+            (reduced
+              ? 0
+              : 0.04 * Math.sin(Math.min(1, pendingAge / 0.2) * Math.PI)),
+        }
+      : undefined);
   const activeTeam =
     d.phase === "finished"
       ? d.winner
@@ -229,7 +340,12 @@ export function Board({
     }
   };
   return (
-    <section className="snooker-board" data-phase={d.phase}>
+    <section
+      className="snooker-board"
+      data-phase={d.phase}
+      data-shot-pending={!!pendingShot}
+      data-flight-time={flightAge}
+    >
       <div className="snooker-scoreboard">
         {[0, 1].map((team) => (
           <div key={team} className={activeTeam === team ? "active" : ""}>
@@ -248,7 +364,10 @@ export function Board({
       </div>
       <div className="snooker-status">
         <strong>
-          第 {d.frame} 局 · {phases[d.phase]}
+          第 {d.frame} 局 ·{" "}
+          {d.phase === "rolling" && flightAge < 0
+            ? "正在出杆"
+            : phases[d.phase]}
         </strong>
         <span>
           {player(d.turn)}
@@ -271,18 +390,16 @@ export function Board({
       )}
       <div className="snooker-game-layout">
         <Table
-          balls={d.phase === "rolling" ? drawBalls : d.balls}
+          balls={d.phase === "rolling" ? frame.balls : d.balls}
           angle={(angle * Math.PI) / 180}
           power={power / 100}
           canAim={
             d.controls.canShoot && !busy && !room.seats[room.you]?.autoPlay
           }
           finished={d.phase === "finished"}
-          gestureKey={`${room.id}:${d.window}`}
+          gestureKey={`${scope}:${d.window}`}
           onPower={(p) => setPower(p * 100)}
-          onShoot={(angle, power) =>
-            void send("shoot", { angle, power, top, side, nominate, freeBall })
-          }
+          onShoot={(angle, power) => void shoot(angle, power)}
           assist={d.options.aimAssist === "line"}
           placing={placing}
           assets={assets}

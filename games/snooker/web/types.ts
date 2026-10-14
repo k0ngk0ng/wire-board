@@ -23,6 +23,16 @@ export type Flight = {
   end: number;
   seat: number;
   resolved: boolean;
+  cueDuration?: number;
+  context: {
+    balls: Ball[];
+    scores: number[];
+    target: string;
+    clear: number;
+    team: number;
+    inHand: boolean;
+    freeBall: boolean;
+  };
   strike: { angle: number; power: number; top: number; side: number };
   motion: Motion;
 };

@@ -25,7 +25,7 @@ type Props = {
   placing: boolean;
   assets: string;
   flash?: { ids: number[]; intensity: number };
-  strikeCue?: { pos: Vec; angle: number; power: number; progress: number };
+  strikeCue?: { pos: Vec; angle: number; power: number; offset: number };
   gestureKey: string;
   onShoot: (angle: number, power: number) => void;
   onPower: (power: number) => void;
@@ -237,11 +237,7 @@ function drawScene(
     ctx.save();
     ctx.translate(cue.pos.x, cue.pos.y);
     ctx.rotate(p.strikeCue?.angle ?? p.angle);
-    if (p.strikeCue)
-      ctx.translate(
-        0.028 + p.strikeCue.progress * 0.035 * p.strikeCue.power,
-        0,
-      );
+    if (p.strikeCue) ctx.translate(p.strikeCue.offset, 0);
     if (!p.strikeCue) ctx.translate(-p.power * 0.16, 0);
     ctx.lineCap = "round";
     ctx.strokeStyle = "#dfc591";
@@ -424,8 +420,10 @@ export function Table(props: Props) {
     const el = canvas.current!,
       ctx = el.getContext("2d")!;
     const ratio = Math.min(2, devicePixelRatio || 1);
-    el.width = Math.round(size.width * ratio);
-    el.height = Math.round(size.height * ratio);
+    const width = Math.round(size.width * ratio),
+      height = Math.round(size.height * ratio);
+    if (el.width !== width) el.width = width;
+    if (el.height !== height) el.height = height;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, size.width, size.height);
     drawScene(ctx, camera, props, art);
@@ -435,8 +433,9 @@ export function Table(props: Props) {
     if (!detail) return;
     const lensCtx = detail.getContext("2d")!;
     const edge = 88;
-    detail.width = Math.round(edge * ratio);
-    detail.height = Math.round(edge * ratio);
+    const detailSize = Math.round(edge * ratio);
+    if (detail.width !== detailSize) detail.width = detailSize;
+    if (detail.height !== detailSize) detail.height = detailSize;
     lensCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
     lensCtx.fillStyle = "#254f40";
     lensCtx.fillRect(0, 0, edge, edge);
@@ -526,9 +525,11 @@ export function Table(props: Props) {
                   ? "移动视图中，拖动只平移球桌"
                   : props.placing
                     ? "在 D 区点击摆放白球"
-                    : props.canAim
-                      ? "按住球桌瞄准蓄力，松开击球"
-                      : "轮到你时可瞄准击球"}
+                    : props.strikeCue
+                      ? "正在出杆…"
+                      : props.canAim
+                        ? "按住球桌瞄准蓄力，松开击球"
+                        : "等待下一次瞄准"}
               </span>
             )}
           </div>
@@ -546,6 +547,7 @@ export function Table(props: Props) {
           aria-label="斯诺克球桌，按住瞄准蓄力，松开击球；空格蓄力，方向键瞄准，Esc 取消"
           aria-disabled={!props.canAim}
           data-angle={props.angle}
+          data-cue-offset={props.strikeCue?.offset}
           onBlur={cancelCharge}
           onKeyDown={(e) => {
             if (
@@ -628,11 +630,6 @@ export function Table(props: Props) {
               p = point(e);
             pointers.current.set(e.pointerId, p);
             const after = [...pointers.current.values()];
-            if (p.x < 0 || p.y < 0 || p.x > size.width || p.y > size.height) {
-              cancelCharge();
-              if (gesture.current) gesture.current.mode = "cancel";
-              return;
-            }
             if (after.length === 2) {
               cancelCharge();
               const dist = (a: Vec[]) =>
@@ -688,8 +685,18 @@ export function Table(props: Props) {
             pointers.current.delete(e.pointerId);
             const inside =
               p.x >= 0 && p.y >= 0 && p.x <= size.width && p.y <= size.height;
-            if (g?.mode === "shot" && inside) releaseCharge(e.pointerId);
-            else {
+            if (g?.mode === "shot") {
+              const cue = current.current.balls.find((b) => b.id === 0);
+              if (cue && charge.current?.pointer === e.pointerId) {
+                const world = screenToWorld(p, cam.current);
+                charge.current.angle = Math.atan2(
+                  world.y - cue.pos.y,
+                  world.x - cue.pos.x,
+                );
+                current.current.onAim(charge.current.angle);
+              }
+              releaseCharge(e.pointerId);
+            } else {
               cancelCharge();
               if (g?.mode === "place" && !g.dragged && inside && props.canAim)
                 props.onPlace(screenToWorld(p, cam.current));
@@ -716,7 +723,7 @@ export function Table(props: Props) {
         <span>
           {movingView
             ? "拖动平移 · 滚轮／双指缩放"
-            : "按住瞄准蓄力 · 松开击球 · 移出球桌或 Esc 取消"}
+            : "移出球桌仍可瞄准 · 松开击球 · Esc 取消"}
         </span>
         <button
           aria-pressed={movingView}

@@ -1,3 +1,4 @@
+import { createPlayback } from "./playback";
 import { useEffect } from "react";
 import {
   defineGame,
@@ -98,6 +99,7 @@ export default defineGame<View, Options>({
   requiresFullTable: true,
   supportsBots: true,
   ownsSounds: true,
+  createPresentation: createPlayback,
   defaultOptions: { bestOf: 1, teams: [0, 1], aimAssist: "line" },
   Board,
   Cover,

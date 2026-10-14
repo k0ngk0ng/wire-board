@@ -26,7 +26,7 @@
 
 ## 操作与视觉反馈
 
-- 按住球桌并移动鼠标／手指调整方向，力度条往返变化，松开击球；短点按只调整方向。移出球桌或按 Esc 取消蓄力。键盘方向键调整方向，按住空格蓄力、松开击球。
+- 按住球桌并移动鼠标／手指调整方向，力度条往返变化，松开击球；短点按只调整方向。按住移出球桌后仍可瞄准蓄力，松开照常击球；按 Esc、切后台或取消手势中止。键盘方向键调整方向，按住空格蓄力、松开击球。
 - 切换「移动视图」后，鼠标或触屏拖动平移；滚轮按光标位置缩放，触屏支持双指缩放。缩放、失焦、切换回合及取消手势会取消蓄力，不提交击球。
 - 手机采用纵向球桌和局部瞄准放大镜；显示和碰撞使用同一球径比例。
 - 有出杆、滚动、碰撞、落袋和彩球复位提示；减少动态效果时取消装饰性出杆和闪烁，保留理解结果所需的球运动。
@@ -68,3 +68,22 @@ python3 -B scripts/snooker/prepare-audio.py
 超时计时按待操作席位独立保存，摆球与非阻塞投票不延长击球时间。局间已准备的玩家不再计时；取消超时托管只恢复本人的操作时间。旧版无时钟的活跃对局在加载时一次性补上倒计时，后续重启保留原期限。`TestSnookerTimeoutAutoplayHTTP` 使用真实 120 秒时钟验证自动接管，`TestSnookerLegacyClockMigrationHTTP` 验证存档迁移；证据仍保存在 `.local/poker/snooker/http/`。
 
 结束界面与对局日志会明确显示本局结束原因及适用规则，区分黑球进球、黑球阶段犯规、领先宣告、认输本局、三次解球未中判负和整场弃赛。旧版已结束的房间也能根据保存的最后一杆显示解释，不修改历史得分或胜负。
+
+本地动画使用已确认的一杆轨迹。松手先显示本地运杆反馈；确认后从出杆开始完整播放，失败则收回动作并提示，球位、得分与胜负不做本地预测。对手和观战者在线收到新击球时同样从头播放；公共玩家栏、计分、换手和结束提示等待这一杆播完。聊天与托管权限仍使用最新状态。刷新、重连、后台恢复与丢失多杆数据时同步当前进度，不重播历史击球。
+
+每杆包含 320 毫秒运杆准备阶段，服务端也为该阶段保留一杆时长，避免电脑连续击球超前。球路、碰撞音效与分数反馈共用同一本地时间轴；画布仅在实际尺寸改变时重新分配。`scripts/snooker/check-motion.py` 使用真实鼠标／键盘、250 毫秒网络延迟和四倍 CPU 降速，覆盖手动击球、电脑、观战、拒绝确认后的恢复；轨迹与声音采样保存在 `.local/snooker/motion/`。
+
+慢网验收需顺序执行（各脚本共用浏览器测试服务入口）：
+
+```sh
+source scripts/env.sh
+python3 -B scripts/snooker/check-gesture.py
+python3 -B scripts/snooker/check-motion.py
+WIRE_BOARD_SNOOKER_CASE=colour_bot python3 -B scripts/snooker/check-motion.py
+WIRE_BOARD_SNOOKER_VIEWER=1 python3 -B scripts/snooker/check-motion.py
+WIRE_BOARD_SNOOKER_REJECT=1 python3 -B scripts/snooker/check-motion.py
+WIRE_BOARD_SNOOKER_RESUME=1 python3 -B scripts/snooker/check-motion.py
+WIRE_BOARD_SNOOKER_REDUCED=1 python3 -B scripts/snooker/check-motion.py
+```
+
+减少动态效果时保留静态出杆提示，省略装饰性运杆；球路与计分仍按同一时间轴显示。
