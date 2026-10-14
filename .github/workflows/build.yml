@@ -64,7 +64,7 @@ jobs:
           name: web-dist
           path: web/dist
       - name: Run the race detector on commands, clocks, autoplay and persistence
-        run: go test -count=1 -timeout=40m -race -run '^(TestConcurrent.*|TestAutoPlay.*|TestTimeout.*|TestInactive.*|TestSpectator.*|TestChat.*|TestShutdown.*|TestSanguoshaConcurrent.*|TestCatanLongGameArtifact|TestBotsFinishBothGames)$' ./internal/server ./internal/game ./games/...
+        run: go test -count=1 -timeout=40m -race -run '^(TestConcurrent.*|TestAutoPlay.*|TestTimeout.*|TestInactive.*|TestSpectator.*|TestChat.*|TestShutdown.*|TestSanguoshaConcurrent.*|TestCatanLongGameArtifact|TestBotsFinishBothGames|TestSnooker(DoublesConcurrent.*|ConcurrentNext.*))$' ./internal/server ./internal/game ./games/...
   verify:
     if: github.ref == 'refs/heads/main'
     name: Test and Linux amd64 binary
@@ -103,6 +103,21 @@ jobs:
         run: |
           mkdir -p .local/poker
           go test -json -count=1 -timeout=5m ./games/doudizhu/... ./games/guandan/... ./games/shengji/... > .local/poker/main-acceptance.jsonl
+      - name: Validate snooker source and packaged assets
+        run: python3 -B scripts/snooker/verify-assets.py --dist
+      - name: Accept snooker physics, referee and real-time HTTP matches
+        run: |
+          mkdir -p .local/snooker
+          WIRE_BOARD_SNOOKER_HTTP_FULL=1 go test -json -count=1 -timeout=12m ./games/snooker/... > .local/snooker/main-acceptance.jsonl
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snooker-game-acceptance
+          path: |
+            .local/snooker/
+            .local/poker/snooker/
+          if-no-files-found: warn
+          retention-days: 7
       - uses: actions/upload-artifact@v4
         if: always()
         with:

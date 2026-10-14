@@ -1,0 +1,67 @@
+{
+  "sourceURL": "https://kenney.nl/assets/impact-sounds",
+  "archiveURL": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+  "archiveSHA256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+  "licenseFile": "games/snooker/assets/source/audio/Kenney-License.txt",
+  "licenseSHA256": "6fa7dfb432dc8aefe26116cf179e25407a46bdee5bae736decb5bd88d4a565d2",
+  "entries": [
+    {
+      "path": "games/snooker/assets/source/audio/impactGeneric_light_000.ogg",
+      "archiveMember": "Audio/impactGeneric_light_000.ogg",
+      "sha256": "f0e982611e97512fee5f777986b67e8b435434b601f94992ec044f7e89fb5acb",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactGeneric_light_001.ogg",
+      "archiveMember": "Audio/impactGeneric_light_001.ogg",
+      "sha256": "c3cd1c073d186ae8fa35788ba94de581f1826e7427a7bb26490b2695fac18efa",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactGeneric_light_002.ogg",
+      "archiveMember": "Audio/impactGeneric_light_002.ogg",
+      "sha256": "d0bf60905b59ff630ffe01eb0edeeacd2504eaa8fb6523aeef7d2458b78264d3",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactSoft_medium_000.ogg",
+      "archiveMember": "Audio/impactSoft_medium_000.ogg",
+      "sha256": "7d3ba0bb5e60a11b5d3e558c141303dcf494256675fbf753c0d252d2cf0481e3",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactSoft_medium_001.ogg",
+      "archiveMember": "Audio/impactSoft_medium_001.ogg",
+      "sha256": "7642a4fd43e547afe4f7adfadb3dabb681c0ff512f52c1674bae30a726841faf",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactSoft_medium_002.ogg",
+      "archiveMember": "Audio/impactSoft_medium_002.ogg",
+      "sha256": "5069e3571a77d7f7aae9ef71d0364aa245fb7d64a7c8cc9956f221d03088c089",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactWood_light_000.ogg",
+      "archiveMember": "Audio/impactWood_light_000.ogg",
+      "sha256": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    },
+    {
+      "path": "games/snooker/assets/source/audio/impactWood_medium_000.ogg",
+      "archiveMember": "Audio/impactWood_medium_000.ogg",
+      "sha256": "1723a9fd25103ed41af06054814e84e65f4a772bac86ab2dc927da93d9592ff5",
+      "author": "Kenney",
+      "license": "CC0-1.0"
+    }
+  ],
+  "licenseOriginalSHA256": "b49aa9c56b04528b95913de13e506a0f7c5e807b9925db9bfef86af1f91120db",
+  "licenseNormalization": "Line endings normalized to LF and trailing whitespace removed; licence wording unchanged. Original bytes identified by licenseOriginalSHA256 in the pinned archive."
+}

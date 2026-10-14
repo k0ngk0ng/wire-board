@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-10-14",
+  "scope": "research only; no implementation or OSS upload",
+  "sources": [
+    {
+      "id": "wpbsa-rules",
+      "type": "rules",
+      "page": "https://www.wpbsa.com/rules/",
+      "download": "https://www.wpbsa.com/wp-content/uploads/2198_WPBSA-Rulebook-2024-25.pdf",
+      "edition": "2024-25",
+      "sha256": "108d490e6415a6a449f3edc8c52f47c562cfd6703242a2304f4a489241564bbe",
+      "status": "downloaded; relevant pages extracted and visually inspected",
+      "printedPages": [
+        7,
+        11,
+        19,
+        20,
+        21,
+        28,
+        29,
+        30,
+        33,
+        34
+      ],
+      "redistributeAsGameAsset": false,
+      "sectionsForDoubles": [
+        "Section 2 Rule 5",
+        "Section 3 Rule 18"
+      ]
+    },
+    {
+      "id": "billiards-pack",
+      "type": "3d",
+      "author": "mehrasaur / Inborn Ninja",
+      "page": "https://opengameart.org/content/billiards-pack",
+      "download": "https://opengameart.org/sites/default/files/billiards_pack.zip",
+      "license": "CC0-1.0",
+      "licenseEvidence": "submission page",
+      "sha256": "a2fe9a6429d01848d4d106d347c36116599d8612a680a7578b0b37510610c063",
+      "status": "archive file listing and original preview images inspected; collision geometry not calibrated",
+      "recommended": false,
+      "sampleMembers": [
+        "dist/obj_mtl/tables/table_snooker [table].obj",
+        "dist/obj_mtl/balls/snoooker/red.obj",
+        "dist/obj_mtl/sticks/cue_stick.obj"
+      ],
+      "notes": "User chose 2D only; keep as research evidence, not a production asset candidate."
+    },
+    {
+      "id": "gameartforge-balls",
+      "type": "2d",
+      "author": "GameArtForge",
+      "page": "https://opengameart.org/content/billiard-balls-set-01",
+      "license": "CC-BY-3.0",
+      "status": "page verified; archive not inspected",
+      "notes": "PNG sizes 64,128,256,512 and Adobe Illustrator source; suitability for unnumbered snooker balls pending"
+    },
+    {
+      "id": "polyhaven",
+      "type": "materials",
+      "page": "https://polyhaven.com/license",
+      "license": "CC0-1.0",
+      "status": "asset license verified; no individual cloth/wood texture chosen",
+      "notes": "website text and example renders excluded from the blanket asset claim"
+    },
+    {
+      "id": "kenney-impact",
+      "type": "audio",
+      "author": "Kenney",
+      "page": "https://kenney.nl/assets/impact-sounds",
+      "download": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+      "license": "CC0-1.0",
+      "licenseEvidence": "License.txt inside archive and submission page",
+      "sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+      "status": "archive and license inspected; listening and final sound selection pending",
+      "notes": "130 general impact sounds; not a dedicated real billiard recording pack",
+      "sampleMembers": [
+        "Audio/impactGeneric_light_000.ogg",
+        "Audio/impactWood_light_000.ogg",
+        "Audio/impactSoft_medium_000.ogg"
+      ]
+    },
+    {
+      "id": "8ball-pixel",
+      "type": "2d",
+      "author": "Chasersgaming",
+      "page": "https://opengameart.org/content/asset-pack-8-ball-pool",
+      "license": "CC0-1.0",
+      "status": "page verified; free archive not inspected",
+      "recommended": false,
+      "notes": "free pack only; pixel art, not proposed art direction"
+    },
+    {
+      "id": "gpl-tables",
+      "type": "3d",
+      "author": "dpapavas",
+      "page": "https://opengameart.org/content/billiard-tables",
+      "license": "GPL-3.0",
+      "status": "page verified; no textures; not selected"
+    },
+    {
+      "id": "freesound-search",
+      "type": "audio-search",
+      "page": "https://freesound.org/search/?q=billiard",
+      "license": null,
+      "status": "request timed out; no recording or license validated"
+    }
+  ],
+  "confirmedDirection": {
+    "view": "2D top-down only",
+    "rules": "WPBSA standard 15-red snooker",
+    "modes": [
+      "1v1",
+      "2v2 four-handed snooker"
+    ],
+    "sixRedPreset": false
+  }
+}

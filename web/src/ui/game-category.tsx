@@ -4,6 +4,7 @@ export const categories = [
   ["board", "桌游"],
   ["poker", "扑克牌"],
   ["realtime", "即时策略"],
+  ["sports", "体育"],
 ] as const;
 export function matchesCategory(kind: string, category: string) {
   return (
