@@ -113,6 +113,10 @@ export class GameAudio {
           owner,
           1,
         ),
+      playWithFallback: (sources: readonly string[]) =>
+        sources.length
+          ? this.start([{ src: sources[0], fallback: sources[1] }], owner, 1)
+          : Promise.resolve(false),
       stop: () => this.stop(owner),
     };
   }

@@ -1,3 +1,4 @@
+import { soundFor } from "./sounds";
 import { useState } from "react";
 import type {
   BoardProps,
@@ -55,14 +56,7 @@ export type View = {
   };
   roundResults: { head: number; partnerPlace: number; promotion: number }[];
 };
-const sounds = {
-  deal: "card-shuffle",
-  play: "card-place-1",
-  tribute: "card-slide-1",
-  return: "card-slide-1",
-  partner_lead: "card-fan-1",
-  round_end: "card-fan-1",
-};
+
 const names: Record<string, string> = {
   single: "单张",
   pair: "对子",
@@ -101,7 +95,7 @@ export function Board({
       room.id,
       audio,
       assets,
-      sounds,
+      soundFor,
       clock,
     ),
     c = d.controls;
@@ -120,10 +114,6 @@ export function Board({
     setError("");
     try {
       await act({ type, window: d.window, ...extra });
-      if (type !== "preview") {
-        setSelected([]);
-        setKey("");
-      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     }

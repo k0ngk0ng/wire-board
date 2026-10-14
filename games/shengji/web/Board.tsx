@@ -1,3 +1,4 @@
+import { soundFor } from "./sounds";
 import { useState } from "react";
 import type {
   BoardProps,
@@ -69,14 +70,7 @@ export type View = {
     buryCount: number;
   };
 };
-const sounds = {
-  deal: "card-shuffle",
-  declare: "card-fan-1",
-  play: "card-place-1",
-  bury: "card-slide-1",
-  trick: "card-fan-1",
-  round_end: "card-fan-1",
-};
+
 const phases: Record<string, string> = {
   declare: "亮主／反主",
   bury: "庄家扣底",
@@ -105,7 +99,7 @@ export function Board({
       room.id,
       audio,
       assets,
-      sounds,
+      soundFor,
       clock,
     ),
     c = d.controls;
@@ -119,7 +113,6 @@ export function Board({
     setError("");
     try {
       await act({ type, window: d.window, ...extra });
-      setSelected([]);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     }
@@ -361,17 +354,6 @@ export function OptionsForm({
           ))}
         </select>
       </label>
-      <label>
-        甩牌失败罚分
-        <select
-          disabled={disabled}
-          value={v.throwPenalty}
-          onChange={(e) => onChange({ ...v, throwPenalty: +e.target.value })}
-        >
-          <option value={10}>每收回一张罚 10 分</option>
-          <option value={0}>不罚分，仍强制领出</option>
-        </select>
-      </label>
       {v.decks === 2 && (
         <label>
           抠底倍率
@@ -387,7 +369,7 @@ export function OptionsForm({
       )}
       <p>
         上海预设：无常主 2、无勾
-        J，级牌始终为主。所有其他玩家（含对家）都可破甩；首版发牌完成后集中亮主。A
+        J，级牌始终为主。甩牌由服务器校验，不能成立时拒绝出牌，不扣牌、不罚分；发牌完成后集中亮主。A
         必须坐庄打过。
       </p>
     </PokerOptions>

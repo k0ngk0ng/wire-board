@@ -1172,42 +1172,42 @@
   {
     "skin": "fourcolor",
     "id": 9,
-    "source": "assets/poker/source/fourcolor/9.png",
-    "member": "Decks/Vertical4/pngs/clubJack.png",
+    "source": "assets/poker/source/fourcolor/9.svg",
+    "member": "Decks/Vertical4/svgs/clubJack.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "c63ca30393cebd15faf4447f5dcfa89dee2de471bacd63346dec216fc38088b3"
+    "sourceSHA256": "a519a4ef227fe5f700ef4f24caef8447f8d30e3bdb9a700a0ad32e8c661e0538"
   },
   {
     "skin": "fourcolor",
     "id": 10,
-    "source": "assets/poker/source/fourcolor/10.png",
-    "member": "Decks/Vertical4/pngs/clubQueen.png",
+    "source": "assets/poker/source/fourcolor/10.svg",
+    "member": "Decks/Vertical4/svgs/clubQueen.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "d4b16573f540c8f60f2a485dc82bd239b121c541a8f68f8550bfa5475b3576ae"
+    "sourceSHA256": "760bf49d38c143608a846e98378bb7f6fbc0f3a42220f4ffe9095d67c15be04c"
   },
   {
     "skin": "fourcolor",
     "id": 11,
-    "source": "assets/poker/source/fourcolor/11.png",
-    "member": "Decks/Vertical4/pngs/clubKing.png",
+    "source": "assets/poker/source/fourcolor/11.svg",
+    "member": "Decks/Vertical4/svgs/clubKing.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "1984788da08bfb6df86d343520372d5f1e5be23512644122fb5967869b802b7c"
+    "sourceSHA256": "4d0b01fd8318d923528ded33abe97383f1d146b4393ecaa1a8e81c1e25d570b1"
   },
   {
     "skin": "fourcolor",
     "id": 12,
-    "source": "assets/poker/source/fourcolor/12.png",
-    "member": "Decks/Vertical4/pngs/clubAce.png",
+    "source": "assets/poker/source/fourcolor/12.svg",
+    "member": "Decks/Vertical4/svgs/clubAce.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "b7f81da2729f600823e74af9917536a141df60c4d4e357e5e2cc53b382b9acc8"
+    "sourceSHA256": "af58eed6875b9157ff1f83b10e197e08210f73eedce49789063ce86dc219b8f3"
   },
   {
     "skin": "fourcolor",
@@ -1302,42 +1302,42 @@
   {
     "skin": "fourcolor",
     "id": 22,
-    "source": "assets/poker/source/fourcolor/22.png",
-    "member": "Decks/Vertical4/pngs/diamondJack.png",
+    "source": "assets/poker/source/fourcolor/22.svg",
+    "member": "Decks/Vertical4/svgs/diamondJack.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "9163c5e8b9497cba10df15145811d89aab0709dfc4048b286be105f62750b56b"
+    "sourceSHA256": "58504a9fd059f249fed04098b5b6814c48de46b92aed1a1febadb0ff20a633ff"
   },
   {
     "skin": "fourcolor",
     "id": 23,
-    "source": "assets/poker/source/fourcolor/23.png",
-    "member": "Decks/Vertical4/pngs/diamondQueen.png",
+    "source": "assets/poker/source/fourcolor/23.svg",
+    "member": "Decks/Vertical4/svgs/diamondQueen.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "55a94f93cf229acd7c1affa04b818ca4601d94d8a1c5d0b514fbcff415245fde"
+    "sourceSHA256": "130abea26e7dee741144cbdea19ad7a4e5d4f705f296d7a46e320652eec4af11"
   },
   {
     "skin": "fourcolor",
     "id": 24,
-    "source": "assets/poker/source/fourcolor/24.png",
-    "member": "Decks/Vertical4/pngs/diamondKing.png",
+    "source": "assets/poker/source/fourcolor/24.svg",
+    "member": "Decks/Vertical4/svgs/diamondKing.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "0fcf46efc6116e5125ed5af9e193f3461cddbfbb789c441691c66528ee73de57"
+    "sourceSHA256": "0000a52390351234b2f9c751de2adb98419ac6fb7b922cf36116422cca99953b"
   },
   {
     "skin": "fourcolor",
     "id": 25,
-    "source": "assets/poker/source/fourcolor/25.png",
-    "member": "Decks/Vertical4/pngs/diamondAce.png",
+    "source": "assets/poker/source/fourcolor/25.svg",
+    "member": "Decks/Vertical4/svgs/diamondAce.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "682527dd660f022c62d5202018317252836e140d749b3b1ebc7126bfa5ea87f0"
+    "sourceSHA256": "b630d07e2c1cb33c78ee1cb7026708f787b39324c63a89f0a15259b994e9777d"
   },
   {
     "skin": "fourcolor",
@@ -1432,42 +1432,42 @@
   {
     "skin": "fourcolor",
     "id": 35,
-    "source": "assets/poker/source/fourcolor/35.png",
-    "member": "Decks/Vertical4/pngs/heartJack.png",
+    "source": "assets/poker/source/fourcolor/35.svg",
+    "member": "Decks/Vertical4/svgs/heartJack.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "690069ef04665487fb30771d5d014d7d8a0b9368ef0ae877455114379f8fa52f"
+    "sourceSHA256": "fd361888f89db5d7c12388ad6ee7abae530bb47979c9d7bf24d4b571b9124102"
   },
   {
     "skin": "fourcolor",
     "id": 36,
-    "source": "assets/poker/source/fourcolor/36.png",
-    "member": "Decks/Vertical4/pngs/heartQueen.png",
+    "source": "assets/poker/source/fourcolor/36.svg",
+    "member": "Decks/Vertical4/svgs/heartQueen.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "91922d45762368f198e9260069f1360234cd6de49daad4542df7cc466ea7d80f"
+    "sourceSHA256": "866d3e83599a8d683b7d4a27cc7792f378a8d44b505584f6dae95aaadb5596d6"
   },
   {
     "skin": "fourcolor",
     "id": 37,
-    "source": "assets/poker/source/fourcolor/37.png",
-    "member": "Decks/Vertical4/pngs/heartKing.png",
+    "source": "assets/poker/source/fourcolor/37.svg",
+    "member": "Decks/Vertical4/svgs/heartKing.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "237bbf24a66cd76932b75994011141a508d060592788948fba6b9254dab7261d"
+    "sourceSHA256": "5f7b59d51bf9843350e6b6ef5ef4970869c53e64a18b8373801a18112871dd93"
   },
   {
     "skin": "fourcolor",
     "id": 38,
-    "source": "assets/poker/source/fourcolor/38.png",
-    "member": "Decks/Vertical4/pngs/heartAce.png",
+    "source": "assets/poker/source/fourcolor/38.svg",
+    "member": "Decks/Vertical4/svgs/heartAce.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "9c2362c90280d2395bbbfdf07abb9d992296f941dc84cf6d3d51eb8b5fa3019d"
+    "sourceSHA256": "fdcb7863977c9b3c142f6944381237dd5b40afe757752c7c9e778bc8065700ea"
   },
   {
     "skin": "fourcolor",
@@ -1562,62 +1562,62 @@
   {
     "skin": "fourcolor",
     "id": 48,
-    "source": "assets/poker/source/fourcolor/48.png",
-    "member": "Decks/Vertical4/pngs/spadeJack.png",
+    "source": "assets/poker/source/fourcolor/48.svg",
+    "member": "Decks/Vertical4/svgs/spadeJack.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "e1e8eadeadc29732cde8d0df4bdfc0b8a1a09f7aed6c281f9d0989a91919c510"
+    "sourceSHA256": "33ab7849cddb1f2c28d9b94f04a6d7ad4efa56effe341e93da782a01a0a7f481"
   },
   {
     "skin": "fourcolor",
     "id": 49,
-    "source": "assets/poker/source/fourcolor/49.png",
-    "member": "Decks/Vertical4/pngs/spadeQueen.png",
+    "source": "assets/poker/source/fourcolor/49.svg",
+    "member": "Decks/Vertical4/svgs/spadeQueen.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "88c60a4794cd68943f51478bca12070bb3871ac97ba77c95bfcec9195878255f"
+    "sourceSHA256": "6c6c64ebb68374d4e5ff96eb7aa31dc6ea8ac16031a4c52445a12fe13468e285"
   },
   {
     "skin": "fourcolor",
     "id": 50,
-    "source": "assets/poker/source/fourcolor/50.png",
-    "member": "Decks/Vertical4/pngs/spadeKing.png",
+    "source": "assets/poker/source/fourcolor/50.svg",
+    "member": "Decks/Vertical4/svgs/spadeKing.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "124461a7f2d05363a3c68feccd818cb0aa73d282f884c2956adc6c47a8f4c6fc"
+    "sourceSHA256": "719b9583d844e38f4cfc28239e01368eadd1a31f159d1941b6f8cd1b9ee3dd56"
   },
   {
     "skin": "fourcolor",
     "id": 51,
-    "source": "assets/poker/source/fourcolor/51.png",
-    "member": "Decks/Vertical4/pngs/spadeAce.png",
+    "source": "assets/poker/source/fourcolor/51.svg",
+    "member": "Decks/Vertical4/svgs/spadeAce.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "52f3eaca7be4f05cd4dc56cbdf0b7e48d35a129e0fe96e4adeb7d23a891111fa"
+    "sourceSHA256": "bdc2c6c076a0c9c54291aae7019b89f8c9fdd3d826f3018c8e423da9c13c44a9"
   },
   {
     "skin": "fourcolor",
     "id": 52,
-    "source": "assets/poker/source/fourcolor/52.png",
-    "member": "Decks/Vertical4/pngs/blackJoker.png",
+    "source": "assets/poker/source/fourcolor/52.svg",
+    "member": "Decks/Vertical4/svgs/blackJoker.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "dba188b340b75611af83331a549a8842e58ed772502f25faa20ec92b862b420e"
+    "sourceSHA256": "73d9dfcdf32ebfb473779ebd86b8047232b986b9484192d3ddae98f7f435d26e"
   },
   {
     "skin": "fourcolor",
     "id": 53,
-    "source": "assets/poker/source/fourcolor/53.png",
-    "member": "Decks/Vertical4/pngs/redJoker.png",
+    "source": "assets/poker/source/fourcolor/53.svg",
+    "member": "Decks/Vertical4/svgs/redJoker.svg",
     "archive": "jumbo.zip",
     "sourceURL": "https://opengameart.org/content/jumbo-index-playing-cards",
     "license": "CC0-1.0",
-    "sourceSHA256": "26165080ab6162612291615832f910bc40e588d2d65bc7041ec8fa6f0c268b41"
+    "sourceSHA256": "16da3962ce52e7dde1635b2446df7cf640a823c5077ce798a62be8806c592da6"
   },
   {
     "type": "sound",

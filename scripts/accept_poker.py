@@ -13,6 +13,8 @@ env=dict(os.environ)
 for k,p in {'TMPDIR':'.local/tmp','GOTMPDIR':'.local/tmp','GOCACHE':'.local/go-build','GOMODCACHE':'.local/go-mod','npm_config_cache':'.local/npm','AGENT_BROWSER_SOCKET_DIR':'.local/poker/ab','AGENT_BROWSER_PROFILE':'.local/poker/browser/profile'}.items():
  d=root/p;d.mkdir(parents=True,exist_ok=True);env[k]=str(d)
 env.update(WIRE_BOARD_POKER_BROWSER='1',GOTOOLCHAIN='local',AGENT_BROWSER_SESSION='poker-'+uuid.uuid4().hex[:8],AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter')
+# A fresh profile avoids stale Chrome targets after an interrupted prior run.
+profile=out/env['AGENT_BROWSER_SESSION'];profile.mkdir(parents=True,exist_ok=True);env['AGENT_BROWSER_PROFILE']=str(profile)
 report={'passed':False,'checks':[],'command':'. scripts/env.sh && python3 -B scripts/accept_poker.py'};server=None;opened=False;logs=[]
 def b(*args):
  p=subprocess.run(['agent-browser',*args,'--json'],cwd=root,env=env,text=True,capture_output=True,timeout=40)
@@ -25,6 +27,8 @@ def api(path,body=None):
 def command(kind,**extra):
  r=api('/state')['room'];return api('/rooms/'+r['id'],dict(type=kind,version=r['version'],nonce=uuid.uuid4().hex,**extra))
 def shot(name):
+ b('wait','--fn','[...document.querySelectorAll(".poker-new-play")].every(e=>e.getAnimations().every(a=>a.playState!=="running"))')
+ b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete&&i.naturalWidth>0)')
  assert not b('errors')['errors'],b('errors')
  assert js('document.documentElement.scrollWidth<=innerWidth+2'),name+' overflow'
  assert js('[...document.querySelectorAll(".poker-card img")].every(i=>i.complete&&i.naturalWidth>0)'),name+' broken cards'
@@ -54,10 +58,13 @@ try:
  b('reload');b('wait','.game-selection');b('select','select[aria-label="游戏分类"]','poker')
  assert js('[...document.querySelectorAll(".game-feature")].map(e=>e.dataset.game).sort()')==['doudizhu','guandan','shengji'];shot('category-poker')
  assert js('[...document.querySelectorAll(".room-filters select option")].map(o=>o.value).filter(v=>v!=="all").sort()')==['doudizhu','guandan','shengji']
- for kind,n,decks in [('doudizhu',3,1),('doudizhu',4,2),('guandan',4,2),('shengji',4,2),('shengji',4,1)]:
+ for kind,n,decks in [('doudizhu',4,2),('guandan',4,2),('shengji',4,2),('shengji',4,1)]:
   scenario=f'{kind}-{n}-{decks}'
   b('set','viewport','1280','960');b('click',f'.game-feature[data-game="{kind}"] button');b('wait','[role=dialog]')
   b('select','select[aria-label="座位上限"]',str(n));b('select','select[aria-label="行动时限"]','120');b('fill','input[name=name]',kind+'浏览器验收')
+  if kind=='doudizhu':
+   assert js('[...document.querySelectorAll("select[aria-label=玩法规则] option")].map(o=>o.textContent)')==['上海斗地主']
+   assert js('[...document.querySelectorAll("select[aria-label=座位上限] option")].map(o=>o.value)')==['4']
   if kind=='shengji':b('select','select[aria-label="牌副数"]',str(decks))
   b('scrollintoview','[role=dialog] button[type=submit]');b('click','[role=dialog] button[type=submit]');b('wait','.waiting-actions')
   r=api('/state')['room'];assert r['kind']==kind and r['capacity']==n
@@ -83,6 +90,8 @@ try:
     if p==0:break
     seat_action(p,{'type':'bid','bid':0})
    seat_action(0,{'type':'bid','bid':3})
+   if api('/state')['room']['game']['data']['phase']=='landlord_choice':
+    b('wait','.poker-landlord-choices');b('find','role','button','click','--name','正常出牌','--exact')
    b('wait','--fn','document.querySelector(".poker-board").dataset.phase==="play"')
    assert len(api('/state')['room']['game']['data']['hand'])==(20 if n==3 else 33)
   if kind=='shengji':
@@ -111,6 +120,7 @@ try:
    # must really hit that physical card (not a neighbouring button).
    visible=js('''[...document.querySelectorAll('.poker-hand button[data-card]')].map(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e),step=Number.parseFloat(s.getPropertyValue('--step'));return {id:e.dataset.card,w:r.width,step,selected:e.getAttribute('aria-pressed'),text:e.getAttribute('aria-label')}})''')
    assert visible and all(c['w']>=44 and c['step']>=20 for c in visible),visible
+   assert js('document.querySelectorAll(".poker-index").length')==0,'CSS index overlay returned'
    shot(f'{scenario}-{width}')
   b('scrollintoview','.poker-hand');first=js('document.querySelector(".poker-hand button[data-card]").getBoundingClientRect().toJSON()');x,y=round(first['x']+8),round(first['y']+22);assert js(f'document.elementFromPoint({x},{y}).closest("button[data-card]")?.dataset.card')==js('document.querySelector(".poker-hand button[data-card]").dataset.card');b('mouse','move',str(x),str(y));b('mouse','down');b('mouse','up');selected=js('[...document.querySelectorAll(".poker-hand [aria-pressed=true]")].map(e=>e.dataset.card)');assert selected
   b('select','select[aria-label="牌面风格"]','fourcolor');b('wait','--fn','[...document.querySelectorAll(".poker-card img")].every(i=>i.complete)')

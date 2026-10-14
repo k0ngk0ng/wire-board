@@ -1,3 +1,9 @@
+import {
+  selectPokerSound,
+  type PokerSoundMapping,
+  type PokerEvent,
+} from "./audio-events";
+export type { PokerEvent } from "./audio-events";
 import { nextFeedbackEvents } from "./events";
 // Rule-free presentation only: physical card faces, preferences, gestures and
 // relative seats. Classification and legal decisions belong to each game.
@@ -86,6 +92,9 @@ export function mediaSources(base: string, path: string) {
   const local = "/poker/v1/" + path;
   return base ? [base.replace(/\/$/, "") + local, local] : [local];
 }
+export function assetSources(base: string, path: string) {
+  return base ? [base.replace(/\/$/, "") + path, path] : [path];
+}
 export function Card({
   id,
   skin,
@@ -97,38 +106,34 @@ export function Card({
   assets: string;
   back?: string;
 }) {
-  const path = id < 0 ? `backs/${back}.webp` : `${skin}/${id % 54}.webp`;
-  const sources = mediaSources(assets, path);
-  const [failed, setFailed] = useState<string[]>([]);
-  const src = sources.find((s) => !failed.includes(s));
-  const b = id % 54;
-  const suit = b < 52 ? Math.floor(b / 13) : -1;
-  const color =
+  const path =
     id < 0
-      ? "#fff"
-      : skin === "fourcolor"
-        ? (["#155da0", "#a44117", "#ad1951", "#742995"][suit] ??
-          (b === 53 ? "#a12730" : "#202b29"))
-        : suit === 1 || suit === 2 || b === 53
-          ? "#a12730"
-          : "#202b29";
+      ? `/poker/v1/backs/${back}.webp`
+      : `/poker/v4/${skin}/${id % 54}.webp`;
+  const sources = assetSources(assets, path);
+  const [failed, setFailed] = useState<string[]>([]);
+  const src = sources.find((value) => !failed.includes(value));
+  const b = id % 54,
+    suit = Math.floor(b / 13),
+    red = suit === 1 || suit === 2 || b === 53;
   return (
-    <span className="poker-card" style={{ color }} aria-hidden="true">
-      {src && (
+    <span className="poker-card" data-card-face={id} aria-hidden="true">
+      {src ? (
         <img
           src={src}
           alt=""
           draggable={false}
           onError={() => setFailed((old) => [...old, src])}
         />
-      )}{" "}
-      {id >= 0 && (
-        <span className="poker-index">
+      ) : id < 0 ? (
+        <span className="poker-back-fallback">◇</span>
+      ) : (
+        <span
+          className="poker-face-fallback"
+          style={{ color: red ? "#a12730" : "#202b29" }}
+        >
           {b >= 52 ? (
-            <>
-              <b>{b === 52 ? "小" : "大"}</b>
-              <b>王</b>
-            </>
+            <b className="poker-joker-label">JOKER</b>
           ) : (
             <>
               <b>{rankName((b % 13) + 2)}</b>
@@ -137,7 +142,6 @@ export function Card({
           )}
         </span>
       )}
-      {!src && id < 0 && <span className="poker-back-fallback">◇</span>}
     </span>
   );
 }
@@ -152,19 +156,55 @@ export function CardStrip({
   assets: string;
   back?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null),
+    [width, setWidth] = useState(160),
+    [mobile, setMobile] = useState(
+      () => typeof window !== "undefined" && innerWidth <= 600,
+    );
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new ResizeObserver(() => {
+      setWidth(el.clientWidth);
+      setMobile(innerWidth <= 600);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const size = mobile ? 44 : 52,
+    step = mobile ? 20 : 24,
+    perRow = Math.max(1, Math.floor((width - size) / step) + 1);
+  const rows = [];
+  for (let i = 0; i < ids.length; i += perRow)
+    rows.push(ids.slice(i, i + perRow));
   return (
     <div
       className="poker-card-strip"
+      ref={ref}
       aria-label={ids.map(cardLabel).join("、")}
+      style={
+        {
+          "--strip-card": size + "px",
+          "--strip-step": step + "px",
+        } as CSSProperties
+      }
     >
-      {ids.map((id, i) => (
-        <Card
-          key={id + "-" + i}
-          id={id}
-          skin={skin}
-          assets={assets}
-          back={back}
-        />
+      {rows.map((row, i) => (
+        <div
+          className="poker-strip-row"
+          key={i}
+          style={{ width: size + (row.length - 1) * step }}
+        >
+          {row.map((id, j) => (
+            <span
+              className="poker-strip-slot"
+              key={id + "-" + j}
+              style={{ left: j * step, zIndex: j }}
+            >
+              <Card id={id} skin={skin} assets={assets} back={back} />
+            </span>
+          ))}
+        </div>
       ))}
     </div>
   );
@@ -303,9 +343,6 @@ export function Hand({
               }}
             >
               <Card id={id} skin={skin} assets={assets} />
-              {highlights[id] && (
-                <small className="poker-card-mark">{highlights[id]}</small>
-              )}
             </button>
           ))}
         </div>
@@ -314,19 +351,12 @@ export function Hand({
     </div>
   );
 }
-export type PokerEvent = {
-  id: number;
-  type: string;
-  seat: number;
-  cards?: number[];
-  at: number;
-};
 export function usePokerFeedback(
   events: PokerEvent[],
   roomID: string,
   audio: GameAudioPort,
   assets: string,
-  mapping: Record<string, string>,
+  mapping: PokerSoundMapping,
   clock: { serverNow: number; receivedAt: number },
 ) {
   const last = useRef({
@@ -359,11 +389,13 @@ export function usePokerFeedback(
         .filter((e) => e.type === "play" || e.type === "deal")
         .map((e) => (e.type === "deal" ? -1 : e.seat)),
     );
-    const sound = incoming
-      .map((e) => mapping[e.type])
-      .filter(Boolean)
-      .at(-1);
-    if (sound) void audio.play(mediaSources(assets, `audio/${sound}.ogg`));
+    const sound = selectPokerSound(incoming, mapping);
+    if (sound) {
+      const sources = sound.startsWith("/")
+        ? assetSources(assets, sound)
+        : mediaSources(assets, `audio/${sound}.ogg`);
+      void audio.playWithFallback(sources);
+    }
     timer.current = setTimeout(() => setFresh([]), 700);
   }, [
     events,
@@ -535,7 +567,9 @@ export function PokerLayout({
             Jumbo Index Playing Cards，CC0。
           </p>
           <p>
-            洗牌、出牌和收牌音效：Kenney Casino Audio，CC0。牌背为本项目原创。
+            洗牌、出牌和收牌音效：Kenney Casino
+            Audio，CC0。牌背为本项目原创。中文报牌使用 Apache-2.0 许可的 Kokoro
+            中文模型预先合成，炸弹效果音由本项目生成。
           </p>
           <ul>
             <li>

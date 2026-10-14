@@ -26,6 +26,7 @@ type Play struct {
 	Combination
 }
 type Event struct {
+	Value int    `json:"value,omitempty"`
 	ID    int    `json:"id"`
 	Type  string `json:"type"`
 	Seat  int    `json:"seat"`
@@ -34,16 +35,30 @@ type Event struct {
 	At    int64  `json:"at"`
 }
 type RoundResult struct {
-	Round      int    `json:"round"`
-	Landlord   int    `json:"landlord"`
-	FirstOut   int    `json:"firstOut"`
-	Winners    []int  `json:"winners"`
-	Bid        int    `json:"bid"`
-	Multiplier int    `json:"multiplier"`
-	Spring     string `json:"spring"`
-	Scores     []int  `json:"scores"`
+	Reason      string `json:"reason,omitempty"`
+	ReportCount int    `json:"reportCount,omitempty"`
+	TouLiao     bool   `json:"touLiao,omitempty"`
+	HuangFan    bool   `json:"huangFan,omitempty"`
+	MingWang    bool   `json:"mingWang,omitempty"`
+	OpenHand    bool   `json:"openHand,omitempty"`
+	Round       int    `json:"round"`
+	Landlord    int    `json:"landlord"`
+	FirstOut    int    `json:"firstOut"`
+	Winners     []int  `json:"winners"`
+	Bid         int    `json:"bid"`
+	Multiplier  int    `json:"multiplier"`
+	Spring      string `json:"spring"`
+	Scores      []int  `json:"scores"`
 }
 type State struct {
+	Marker         int           `json:"marker"`
+	MarkerSeat     int           `json:"markerSeat"`
+	HuangFan       bool          `json:"huangFan"`
+	TouLiao        bool          `json:"touLiao"`
+	OpenHand       bool          `json:"openHand"`
+	Reports        [][]int       `json:"reports"`
+	ReportPlay     bool          `json:"reportPlay"`
+	BombCounts     []int         `json:"bombCounts"`
 	Options        Options       `json:"options"`
 	Ruleset        string        `json:"ruleset"`
 	Players        int           `json:"players"`
@@ -82,7 +97,7 @@ type State struct {
 func (s *State) actors() []int {
 	out := []int{}
 	switch s.Phase {
-	case "bid", "play", "redouble":
+	case "bid", "play", "redouble", "landlord_choice":
 		out = append(out, s.Turn)
 	case "double":
 		for p := 0; p < s.Players; p++ {
@@ -117,7 +132,20 @@ func (s *State) note(format string, args ...any) {
 }
 func (s *State) event(kind string, p int, cards []int, combo string, now time.Time) {
 	s.EventSerial++
-	s.Events = append(s.Events, Event{s.EventSerial, kind, p, append([]int(nil), cards...), combo, now.UnixMilli()})
+	value := 0
+	if kind == "bid" && p >= 0 {
+		value = s.Bids[p]
+	} else if kind == "report" {
+		value = len(s.Reports)
+	} else if kind == "play" {
+		if c, e := s.classify(cards); e == nil {
+			value = c.High
+			if value == 15 {
+				value = 2
+			}
+		}
+	}
+	s.Events = append(s.Events, Event{ID: s.EventSerial, Type: kind, Seat: p, Cards: append([]int(nil), cards...), Kind: combo, At: now.UnixMilli(), Value: value})
 	if len(s.Events) > 48 {
 		s.Events = s.Events[len(s.Events)-48:]
 	}
@@ -171,20 +199,59 @@ func (s *State) deal(now time.Time) error {
 	s.Ready = make([]bool, s.Players)
 	s.Due = make([]int64, s.Players)
 	s.BidStart = (s.BidStart + 1) % s.Players
+	if s.isHuanle() {
+		index, e := randomN(100)
+		if e != nil {
+			return e
+		}
+		s.Marker = deck[index]
+		s.MarkerSeat = index / 25
+		s.BidStart = s.MarkerSeat
+		s.TouLiao = false
+		s.OpenHand = false
+		s.Reports = [][]int{}
+		s.ReportPlay = false
+		s.BombCounts = make([]int, s.Players)
+		if s.HuangFan {
+			s.Multiplier *= 2
+		}
+		if rank(s.Marker) >= 16 {
+			s.Multiplier *= 2
+		}
+	}
 	s.Turn = s.BidStart
 	s.Phase = "bid"
 	s.DealSerial++
 	s.DealtAt = now.UnixMilli()
 	s.nextWindow(now)
 	s.event("deal", -1, nil, "", now)
-	s.note("第 %d 副：%d 人%s，开始叫分", s.Round, s.Players, map[bool]string{true: "上海斗地主", false: "经典斗地主"}[s.Players == 4])
+	if s.isHuanle() {
+		s.note("第 %d 副：上海斗地主，开始叫档%s", s.Round, map[bool]string{true: "（荒番）", false: ""}[s.HuangFan])
+	} else {
+		s.note("第 %d 副：%d 人%s，开始叫分", s.Round, s.Players, map[bool]string{true: "上海斗地主", false: "经典斗地主"}[s.Players == 4])
+	}
 	return nil
 }
 func (s *State) startPlay(now time.Time) { s.Phase = "play"; s.Turn = s.Landlord; s.nextWindow(now) }
 func (s *State) awardBottom(now time.Time) {
 	s.Hands[s.Landlord] = append(s.Hands[s.Landlord], s.Bottom...)
 	sortHand(s.Hands[s.Landlord])
-	s.event("landlord", s.Landlord, s.Bottom, "", now)
+	if s.isHuanle() {
+		s.event("landlord", s.Landlord, nil, "", now)
+	} else {
+		s.event("landlord", s.Landlord, s.Bottom, "", now)
+	}
+	if s.isHuanle() {
+		s.note("玩家 %d 叫 %d 档成为地主，取得 %d 张私有底牌", s.Landlord+1, s.Bid, len(s.Bottom))
+		if s.TouLiao || len(s.reportCandidates()) > 0 {
+			s.Phase = "landlord_choice"
+			s.Turn = s.Landlord
+			s.nextWindow(now)
+		} else {
+			s.startPlay(now)
+		}
+		return
+	}
 	s.note("玩家 %d 以 %d 分成为地主，取得 %d 张底牌", s.Landlord+1, s.Bid, len(s.Bottom))
 	if s.Options.PersonalDoubling {
 		s.Phase = "double"
@@ -196,7 +263,7 @@ func (s *State) awardBottom(now time.Time) {
 func (s *State) finishRound(first int, now time.Time) {
 	spring := ""
 	lordWins := first == s.Landlord
-	if lordWins {
+	if lordWins && !s.isHuanle() {
 		zero := true
 		for p, c := range s.PlayCounts {
 			if p != s.Landlord && c != 0 {
@@ -206,7 +273,7 @@ func (s *State) finishRound(first int, now time.Time) {
 		if zero {
 			spring = "spring"
 		}
-	} else if s.PlayCounts[s.Landlord] == 1 {
+	} else if !s.isHuanle() && s.PlayCounts[s.Landlord] == 1 {
 		spring = "counter_spring"
 	}
 	if spring != "" {
@@ -219,9 +286,12 @@ func (s *State) finishRound(first int, now time.Time) {
 			continue
 		}
 		points := s.Bid * s.Multiplier * s.DoubleFactors[p] * s.LandlordFactor
-		if lordWins {
+		if s.isHuanle() {
+			points = -s.huanleTransfer(lordWins)
+		} else if lordWins {
 			points = -points
-		} else {
+		}
+		if !lordWins {
 			winners = append(winners, p)
 		}
 		delta[p] = points
@@ -233,7 +303,20 @@ func (s *State) finishRound(first int, now time.Time) {
 	for p, v := range delta {
 		s.Scores[p] += v
 	}
-	s.RoundResults = append(s.RoundResults, RoundResult{s.Round, s.Landlord, first, winners, s.Bid, s.Multiplier, spring, delta})
+	result := RoundResult{Round: s.Round, Landlord: s.Landlord, FirstOut: first, Winners: winners, Bid: s.Bid, Multiplier: s.Multiplier, Spring: spring, Scores: delta}
+	if s.isHuanle() {
+		result.ReportCount = len(s.Reports)
+		result.TouLiao = s.TouLiao
+		result.HuangFan = s.HuangFan
+		result.MingWang = rank(s.Marker) >= 16
+		result.OpenHand = s.OpenHand
+		result.Reason = "cards_out"
+		if len(s.Reports) > 0 && !s.ReportPlay {
+			result.Reason = "report_no_play"
+			result.FirstOut = -1
+		}
+	}
+	s.RoundResults = append(s.RoundResults, result)
 	s.event("round_end", first, nil, spring, now)
 	s.note("第 %d 副结束，%s获胜", s.Round, map[bool]string{true: "地主", false: "农民方"}[lordWins])
 	s.Phase = "round_end"
@@ -312,10 +395,10 @@ func decode(m gameapi.Match) (*State, error) {
 func (s *State) valid() error {
 	bad := func() error { return errors.New("斗地主存档不完整或不一致") }
 	n := s.Players
-	if (n != 3 && n != 4) || s.Options.Rounds < 1 || s.Options.Rounds > 10 || s.Options.TurnSeconds < 10 || s.Options.TurnSeconds > 120 || s.Options.Mode != modeFor(n) || s.Ruleset != rulesetFor(n) || s.Round < 1 || s.Round > s.Options.Rounds || s.Window < 1 || s.DealSerial < 1 || s.Turn < 0 || s.Turn >= n || s.BidStart < 0 || s.BidStart >= n || s.Bid < 0 || s.Bid > 3 || s.BidSteps < 0 || s.BidSteps > n || s.Multiplier < 1 || s.Multiplier > 1<<25 || s.LandlordFactor < 1 || s.LandlordFactor > 2 || s.EventSerial < 0 {
+	if (n != 3 && n != 4) || s.Options.Rounds < 1 || s.Options.Rounds > 10 || s.Options.TurnSeconds < 10 || s.Options.TurnSeconds > 120 || s.Options.Mode != modeFor(n) || (s.Ruleset != rulesetFor(n) && !(n == 4 && s.isHuanle())) || s.Round < 1 || s.Round > s.Options.Rounds || s.Window < 1 || s.DealSerial < 1 || s.Turn < 0 || s.Turn >= n || s.BidStart < 0 || s.BidStart >= n || s.Bid < 0 || s.Bid > 3 || s.BidSteps < 0 || s.BidSteps > n || s.Multiplier < 1 || s.Multiplier > 1<<25 || s.LandlordFactor < 1 || s.LandlordFactor > 2 || s.EventSerial < 0 {
 		return bad()
 	}
-	if !slices.Contains([]string{"bid", "double", "redouble", "play", "round_end", "finished"}, s.Phase) {
+	if !slices.Contains([]string{"bid", "double", "redouble", "landlord_choice", "play", "round_end", "finished"}, s.Phase) {
 		return bad()
 	}
 	if len(s.Hands) != n || len(s.Bids) != n || len(s.BidDone) != n || len(s.PlayCounts) != n || len(s.Scores) != n || len(s.Ready) != n || len(s.Due) != n || len(s.DoubleFactors) != n || len(s.DoubleReady) != n || len(s.Events) > 48 || len(s.Logs) > 60 {
@@ -413,7 +496,7 @@ func (s *State) valid() error {
 		return bad()
 	}
 	if s.LastPlay != nil {
-		c, e := classify(s.LastPlay.Cards, n, s.Options.AllowStraight)
+		c, e := s.classify(s.LastPlay.Cards)
 		if e != nil || c != s.LastPlay.Combination || s.LastPlay.Seat < 0 || s.LastPlay.Seat >= n {
 			return bad()
 		}
@@ -422,6 +505,43 @@ func (s *State) valid() error {
 				return bad()
 			}
 		}
+	}
+	if s.isHuanle() {
+		if n != 4 || s.Marker < 0 || s.Marker >= 108 || s.MarkerSeat < 0 || s.MarkerSeat >= 4 || s.BidStart != s.MarkerSeat || len(s.BombCounts) != 4 || len(s.Reports) > 2 || s.Options.PersonalDoubling || !s.Options.AllowStraight {
+			return bad()
+		}
+		if s.Phase == "bid" && !slices.Contains(s.Hands[s.MarkerSeat], s.Marker) {
+			return bad()
+		}
+		if s.OpenHand && !s.TouLiao {
+			return bad()
+		}
+		if s.TouLiao && (s.Bid != 3 || s.BidSteps != 1) {
+			return bad()
+		}
+		if s.ReportPlay && len(s.Reports) == 0 {
+			return bad()
+		}
+		used := map[int]bool{}
+		for _, cs := range s.Reports {
+			c, e := classifyHuanle(cs)
+			if e != nil || (c.Kind != "rocket" && (c.Kind != "bomb" || c.Count < 7)) {
+				return bad()
+			}
+			for _, id := range cs {
+				if used[id] {
+					return bad()
+				}
+				used[id] = true
+			}
+		}
+		for p, n := range s.BombCounts {
+			if n < 0 || n > 27 || (s.bombLimit(p) >= 0 && n > s.bombLimit(p)) {
+				return bad()
+			}
+		}
+	} else if s.Phase == "landlord_choice" {
+		return bad()
 	}
 	for _, p := range s.actors() {
 		if s.Due[p] <= 0 {

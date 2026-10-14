@@ -17,7 +17,7 @@ import (
 
 func view(t *testing.T, m gameapi.Match, p int) map[string]any {
 	t.Helper()
-	v, e := game.Module().View(m, p)
+	v, e := legacyModule().View(m, p)
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -26,11 +26,11 @@ func view(t *testing.T, m gameapi.Match, p int) map[string]any {
 	_ = json.Unmarshal(b, &out)
 	return out
 }
-func TestNaturalMatchesE2E(t *testing.T) {
+func TestLegacyNaturalMatchesE2E(t *testing.T) {
 	for _, n := range []int{3, 4} {
 		for _, doubling := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%d/double=%v", n, doubling), func(t *testing.T) {
-				module := game.Module()
+				module := legacyModule()
 				raw := json.RawMessage(fmt.Sprintf(`{"rounds":3,"personalDoubling":%v}`, doubling))
 				opts, e := module.Configure(n, raw)
 				if e != nil {
@@ -41,7 +41,7 @@ func TestNaturalMatchesE2E(t *testing.T) {
 				if e != nil {
 					t.Fatal(e)
 				}
-				trace := []any{}
+				trace := []any{map[string]any{"initialTestSnapshot": m.Data, "scope": "legacy opening snapshot; production actions and subsequent natural deals"}}
 				steps := 0
 				for m.Result == nil && steps < 2400 {
 					if e := module.ValidateMatch(m, n); e != nil {
@@ -117,7 +117,7 @@ func TestNaturalMatchesE2E(t *testing.T) {
 	}
 }
 func TestOptionsAndPrivateDecisionBoundaryE2E(t *testing.T) {
-	module := game.Module()
+	module := legacyModule()
 	for _, raw := range []string{`{"mode":"shanghai4"}`, `{"rounds":0}`, `{"turnSeconds":1}`, `{"hands":[[]]}`, `{"rounds":1} {}`} {
 		if _, e := module.Configure(3, json.RawMessage(raw)); e == nil {
 			t.Fatal("accepted invalid options", raw)
@@ -175,7 +175,7 @@ func TestOptionsAndPrivateDecisionBoundaryE2E(t *testing.T) {
 // New restore-hardening boundary: inconsistent bidding state must be rejected
 // before it can become a negative landlord index or an impossible dealt hand.
 func TestRejectsInconsistentSavedAuctionE2E(t *testing.T) {
-	module := game.Module()
+	module := legacyModule()
 	opts, _ := module.Configure(3, json.RawMessage(`{}`))
 	m, e := module.Start(gameapi.Context{Players: 3, Now: time.Now()}, opts)
 	if e != nil {
@@ -214,7 +214,7 @@ func TestRejectsInconsistentSavedAuctionE2E(t *testing.T) {
 func TestPersonalDoublingKeepsAllFarmersWinnersE2E(t *testing.T) {
 	for _, n := range []int{3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			mod := game.Module()
+			mod := legacyModule()
 			ctx := gameapi.Context{Players: n, Actor: 1, Now: time.Unix(1700000000, 0)}
 			m, e := mod.Start(ctx, json.RawMessage(`{"rounds":1,"personalDoubling":true}`))
 			if e != nil {

@@ -11,11 +11,14 @@ import (
 )
 
 type Action struct {
-	Type   string `json:"type"`
-	Window int    `json:"window"`
-	Cards  []int  `json:"cards,omitempty"`
-	Bid    int    `json:"bid,omitempty"`
-	Double bool   `json:"double,omitempty"`
+	Reports  []int  `json:"reports,omitempty"`
+	OpenHand bool   `json:"openHand,omitempty"`
+	Continue bool   `json:"continue,omitempty"`
+	Type     string `json:"type"`
+	Window   int    `json:"window"`
+	Cards    []int  `json:"cards,omitempty"`
+	Bid      int    `json:"bid,omitempty"`
+	Double   bool   `json:"double,omitempty"`
 }
 
 func strict(raw json.RawMessage, v any) error {
@@ -30,8 +33,8 @@ func strict(raw json.RawMessage, v any) error {
 	return nil
 }
 func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
-	if n != 3 && n != 4 {
-		return nil, errors.New("斗地主需要 3 人或 4 人")
+	if n != 4 {
+		return nil, errors.New("上海斗地主需要坐满 4 人")
 	}
 	o := Options{Mode: modeFor(n), Rounds: 1, TurnSeconds: 30, AllowStraight: true}
 	if len(raw) > 0 {
@@ -40,16 +43,18 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 		}
 	}
 	if o.Mode != modeFor(n) {
-		return nil, errors.New("人数与规则不匹配：三人经典需要 3 人，四人上海需要 4 人")
+		return nil, errors.New("当前仅开放四人上海斗地主")
 	}
 	if o.Rounds < 1 || o.Rounds > 10 || o.TurnSeconds < 10 || o.TurnSeconds > 120 || (n == 3 && !o.AllowStraight) {
 		return nil, errors.New("无效局数、时限或顺子设置")
 	}
+	o.AllowStraight = true
+	o.PersonalDoubling = false
 	return json.Marshal(o)
 }
 func Module() gameapi.Module {
 	return gameapi.Module{
-		ID: "doudizhu", Name: "斗地主", MinPlayers: 3, MaxPlayers: 4, Configure: configure,
+		ID: "doudizhu", Name: "斗地主", MinPlayers: 4, MaxPlayers: 4, Configure: configure,
 		Start: func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 			normalized, e := configure(ctx.Players, raw)
 			if e != nil {
@@ -61,7 +66,7 @@ func Module() gameapi.Module {
 			if e != nil {
 				return gameapi.Match{}, e
 			}
-			s := &State{Options: o, Ruleset: rulesetFor(ctx.Players), Players: ctx.Players, Round: 1, BidStart: first - 1, Scores: make([]int, ctx.Players), RoundResults: []RoundResult{}, Events: []Event{}, Logs: []string{}}
+			s := &State{Options: o, Ruleset: huanleRuleset, Players: ctx.Players, Round: 1, BidStart: first - 1, Scores: make([]int, ctx.Players), RoundResults: []RoundResult{}, Events: []Event{}, Logs: []string{}}
 			if e = s.deal(ctx.Now); e != nil {
 				return gameapi.Match{}, e
 			}
@@ -110,7 +115,13 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	switch s.Phase {
 	case "bid":
 		if a.Type != "bid" || a.Bid < 0 || a.Bid > 3 || (a.Bid > 0 && a.Bid <= s.Bid) {
+			if s.isHuanle() {
+				return m, errors.New("请选择不叫或更高的档位")
+			}
 			return m, errors.New("请选择不叫或更高的叫分")
+		}
+		if s.isHuanle() && s.BidSteps == 0 && a.Bid == 3 {
+			s.TouLiao = true
 		}
 		s.Bids[p] = a.Bid
 		s.BidDone[p] = true
@@ -118,14 +129,23 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if a.Bid > 0 {
 			s.Bid = a.Bid
 			s.Landlord = p
-			s.note("玩家 %d 叫 %d 分", p+1, a.Bid)
+			if s.isHuanle() {
+				s.note("玩家 %d 叫 %d 档", p+1, a.Bid)
+			} else {
+				s.note("玩家 %d 叫 %d 分", p+1, a.Bid)
+			}
 		} else {
 			s.note("玩家 %d 不叫", p+1)
 		}
 		s.event("bid", p, nil, "", ctx.Now)
 		if a.Bid == 3 || s.BidSteps == s.Players {
 			if s.Bid == 0 {
-				s.note("本副无人叫分，重新洗牌发牌")
+				if s.isHuanle() {
+					s.HuangFan = true
+					s.note("四家不叫档，重发为荒番局")
+				} else {
+					s.note("本副无人叫分，重新洗牌发牌")
+				}
 				if e = s.deal(ctx.Now); e != nil {
 					return m, e
 				}
@@ -135,6 +155,13 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		} else {
 			s.Turn = (p + 1) % s.Players
 			s.nextWindow(ctx.Now)
+		}
+	case "landlord_choice":
+		if a.Type != "landlord" {
+			return m, errors.New("请选择是否摊打、报到及继续打")
+		}
+		if e = s.chooseLandlord(a, ctx.Now); e != nil {
+			return m, e
 		}
 	case "double":
 		if a.Type != "double" {
@@ -195,13 +222,17 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 				}
 				used[id] = true
 			}
-			combo, err := classify(a.Cards, s.Players, s.Options.AllowStraight)
+			combo, err := s.classify(a.Cards)
 			if err != nil {
 				return m, err
 			}
 			if s.LastPlay != nil && !beats(combo, s.LastPlay.Combination) {
 				return m, errors.New("牌型、张数不匹配，或没有压过上一手")
 			}
+			if (combo.Kind == "bomb" || combo.Kind == "rocket") && !s.canBomb(p) {
+				return m, errors.New("本局炸弹次数已用完，请选择其他牌型或不出")
+			}
+			a.Cards = s.ordered(a.Cards, combo)
 			if s.LastPlay == nil {
 				s.Table = []Play{}
 			}
@@ -212,7 +243,10 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			s.LastPlay = &play
 			s.Table = append(slices.DeleteFunc(s.Table, func(v Play) bool { return v.Seat == p }), play)
 			s.Passes = 0
-			if combo.Kind == "rocket" || (combo.Kind == "bomb" && (s.Players == 3 || combo.Count >= 6)) {
+			if s.isHuanle() && (combo.Kind == "rocket" || combo.Kind == "bomb") {
+				s.BombCounts[p]++
+			}
+			if !s.isHuanle() && (combo.Kind == "rocket" || (combo.Kind == "bomb" && (s.Players == 3 || combo.Count >= 6))) {
 				s.Multiplier *= 2
 			}
 			s.event("play", p, a.Cards, combo.Kind, ctx.Now)
@@ -234,6 +268,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		s.Due[p] = 0
 		if len(s.actors()) == 0 {
 			s.Round++
+			s.HuangFan = false
 			if e = s.deal(ctx.Now); e != nil {
 				return m, e
 			}
@@ -248,32 +283,42 @@ func combinationName(kind string) string {
 }
 
 type PlayerView struct {
-	Count   int    `json:"count"`
-	Role    string `json:"role"`
-	Score   int    `json:"score"`
-	Bid     int    `json:"bid"`
-	BidDone bool   `json:"bidDone"`
-	Double  int    `json:"double"`
-	Ready   bool   `json:"ready"`
+	BombLimit int    `json:"bombLimit"`
+	BombUsed  int    `json:"bombUsed"`
+	Count     int    `json:"count"`
+	Role      string `json:"role"`
+	Score     int    `json:"score"`
+	Bid       int    `json:"bid"`
+	BidDone   bool   `json:"bidDone"`
+	Double    int    `json:"double"`
+	Ready     bool   `json:"ready"`
 }
 type Controls struct {
-	CanAct    bool   `json:"canAct"`
-	CanPass   bool   `json:"canPass"`
-	CanBid    bool   `json:"canBid"`
-	CanDouble bool   `json:"canDouble"`
-	CanReady  bool   `json:"canReady"`
-	Bids      []int  `json:"bids"`
-	Moves     []Move `json:"moves"`
-	Deadline  int64  `json:"deadline"`
+	CanChoose     bool    `json:"canChoose"`
+	CanOpen       bool    `json:"canOpen"`
+	Reports       [][]int `json:"reports"`
+	BombRemaining int     `json:"bombRemaining"`
+	CanAct        bool    `json:"canAct"`
+	CanPass       bool    `json:"canPass"`
+	CanBid        bool    `json:"canBid"`
+	CanDouble     bool    `json:"canDouble"`
+	CanReady      bool    `json:"canReady"`
+	Bids          []int   `json:"bids"`
+	Moves         []Move  `json:"moves"`
+	Deadline      int64   `json:"deadline"`
 }
 
 func (s *State) controls(p int) Controls {
-	c := Controls{CanAct: s.canAct(p), Bids: []int{}, Moves: []Move{}}
+	c := Controls{CanAct: s.canAct(p), Bids: []int{}, Moves: []Move{}, Reports: [][]int{}, BombRemaining: -1}
 	if !c.CanAct {
 		return c
 	}
 	c.Deadline = s.Due[p]
 	switch s.Phase {
+	case "landlord_choice":
+		c.CanChoose = true
+		c.CanOpen = s.TouLiao
+		c.Reports = s.reportCandidates()
 	case "bid":
 		c.CanBid = true
 		c.Bids = append(c.Bids, 0)
@@ -286,10 +331,9 @@ func (s *State) controls(p int) Controls {
 		c.CanReady = true
 	case "play":
 		c.CanPass = s.LastPlay != nil && s.LastPlay.Seat != p
-		for _, move := range movesFor(s.Hands[p], s.Players, s.Options.AllowStraight) {
-			if s.LastPlay == nil || beats(move.Combination, s.LastPlay.Combination) {
-				c.Moves = append(c.Moves, move)
-			}
+		c.Moves = s.legalMoves(p)
+		if s.bombLimit(p) >= 0 {
+			c.BombRemaining = max(0, s.bombLimit(p)-s.bombsUsed(p))
 		}
 	}
 	return c
@@ -304,8 +348,9 @@ func project(m gameapi.Match, p int) (any, error) {
 		hand = append(hand, s.Hands[p]...)
 	}
 	bottom := []int{}
-	if s.Phase != "bid" {
+	if s.Phase != "bid" && (!s.isHuanle() || p == s.Landlord) {
 		bottom = append(bottom, s.Bottom...)
+		sortHand(bottom)
 	}
 	players := make([]PlayerView, s.Players)
 	for i := range players {
@@ -316,7 +361,12 @@ func project(m gameapi.Match, p int) (any, error) {
 				role = "landlord"
 			}
 		}
-		players[i] = PlayerView{len(s.Hands[i]), role, s.Scores[i], s.Bids[i], s.BidDone[i], s.DoubleFactors[i], s.Ready[i]}
+		players[i] = PlayerView{BombLimit: s.bombLimit(i), BombUsed: s.bombsUsed(i), Count: len(s.Hands[i]), Role: role, Score: s.Scores[i], Bid: s.Bids[i], BidDone: s.BidDone[i], Double: s.DoubleFactors[i], Ready: s.Ready[i]}
 	}
-	return map[string]any{"options": s.Options, "ruleset": s.Ruleset, "phase": s.Phase, "turn": s.Turn, "window": s.Window, "round": s.Round, "dealSerial": s.DealSerial, "dealtAt": s.DealtAt, "hand": hand, "players": players, "bottom": bottom, "landlord": s.Landlord, "bid": s.Bid, "multiplier": s.Multiplier, "landlordFactor": s.LandlordFactor, "lastPlay": s.LastPlay, "table": s.Table, "roundResults": s.RoundResults, "events": s.Events, "controls": s.controls(p)}, nil
+	landlordHand := []int{}
+	if s.isHuanle() && s.OpenHand {
+		landlordHand = append(landlordHand, s.Hands[s.Landlord]...)
+		sortHand(landlordHand)
+	}
+	return map[string]any{"marker": s.Marker, "markerSeat": s.MarkerSeat, "huangFan": s.HuangFan, "touLiao": s.TouLiao, "openHand": s.OpenHand, "landlordHand": landlordHand, "reports": s.Reports, "reportPlay": s.ReportPlay, "options": s.Options, "ruleset": s.Ruleset, "phase": s.Phase, "turn": s.Turn, "window": s.Window, "round": s.Round, "dealSerial": s.DealSerial, "dealtAt": s.DealtAt, "hand": hand, "players": players, "bottom": bottom, "landlord": s.Landlord, "bid": s.Bid, "multiplier": s.Multiplier, "landlordFactor": s.LandlordFactor, "lastPlay": displayPlay(s.LastPlay, s.isHuanle()), "table": displayTable(s.Table, s.isHuanle()), "roundResults": s.RoundResults, "events": s.Events, "controls": s.controls(p)}, nil
 }

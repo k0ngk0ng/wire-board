@@ -44,3 +44,14 @@ test('blocked custom audio returns false without throwing or replaying the queue
 test('explicit preview and victory are not cut off by a late action cue',async()=>{
  const {audio,media}=setup();await audio.play('finish');const src=media.src;assert.equal(await audio.play('move'),false);assert.equal(media.src,src);audio.stop();await audio.play('preview');const preview=media.src;assert.equal(await audio.channel('room').play(['roll.mp3']),false);assert.equal(media.src,preview);
 });
+// New channel operation: CDN and local URLs are alternatives, never two
+// consecutive copies. A delayed failure must not restart audio after mute.
+test('game fallback sources play exactly one successful clip',async()=>{
+ const {audio,media}=setup();const game=audio.channel('poker');assert.equal(await game.playWithFallback(['cdn.mp3','local.mp3']),true);media.onended();await Promise.resolve();assert.deepEqual(media.calls,['cdn.mp3']);
+});
+test('a failed game CDN clip uses its local alternative once',async()=>{
+ const {audio,media}=setup();media.behavior=()=>media.src==='cdn.mp3'?Promise.reject(Error('network')):Promise.resolve();assert.equal(await audio.channel('poker').playWithFallback(['cdn.mp3','local.mp3']),true);assert.deepEqual(media.calls,['cdn.mp3','local.mp3']);media.onended();await Promise.resolve();assert.equal(media.calls.length,2);
+});
+test('late game fallback cannot resume a muted or replaced action',async()=>{
+ const {audio,media}=setup();let reject;media.behavior=()=>new Promise((_,r)=>reject=r);const p=audio.channel('poker').playWithFallback(['cdn.mp3','local.mp3']);audio.setEnabled(false);audio.setEnabled(true);reject(Error('late'));assert.equal(await p,false);assert.deepEqual(media.calls,['cdn.mp3']);
+});

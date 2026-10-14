@@ -41,6 +41,7 @@ type Preview struct {
 	Interpretations []Combination `json:"interpretations"`
 }
 type Event struct {
+	Value   int    `json:"value,omitempty"`
 	ID      int    `json:"id"`
 	Type    string `json:"type"`
 	Seat    int    `json:"seat"`
@@ -111,7 +112,14 @@ func (s *State) note(format string, args ...any) {
 }
 func (s *State) event(kind string, seat, target int, cards []int, private bool, combo string, now time.Time) {
 	s.EventSerial++
-	s.Events = append(s.Events, Event{s.EventSerial, kind, seat, target, append([]int{}, cards...), private, combo, now.UnixMilli()})
+	value := 0
+	if kind == "play" && s.LastPlay != nil {
+		value = s.LastPlay.High
+		if value == 15 {
+			value = s.Level
+		}
+	}
+	s.Events = append(s.Events, Event{ID: s.EventSerial, Type: kind, Seat: seat, Target: target, Cards: append([]int{}, cards...), Private: private, Kind: combo, At: now.UnixMilli(), Value: value})
 	if len(s.Events) > 60 {
 		s.Events = s.Events[len(s.Events)-60:]
 	}

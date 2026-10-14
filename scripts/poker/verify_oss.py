@@ -8,8 +8,10 @@ def check(e):
  path=e['output'].removeprefix('web/public/');url=base+'/'+path
  with urllib.request.urlopen(url,timeout=45) as r:data=r.read();mime=r.headers.get_content_type()
  digest=hashlib.sha256(data).hexdigest();assert digest==e['sha256'],url
- expected='audio/ogg' if path.endswith('.ogg') else 'image/webp';assert mime==expected,(url,mime)
- assert (data[:4]==b'OggS') if path.endswith('.ogg') else (data[:4]==b'RIFF' and data[8:12]==b'WEBP'),url
+ expected={'.ogg':'audio/ogg','.mp3':'audio/mpeg','.wav':'audio/wav'}.get(Path(path).suffix,'image/webp');assert mime==expected,(url,mime)
+ if path.endswith('.mp3'):assert data[:3]==b'ID3' or (data[0]==255 and data[1]&224==224),url
+ elif path.endswith('.ogg'):assert data[:4]==b'OggS',url
+ else:assert data[:4]==b'RIFF' and data[8:12]==b'WEBP',url
  return dict(url=url,sha256=digest,mime=mime,bytes=len(data),passed=True)
 with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:results=list(pool.map(check,manifest['entries']))
 out=root/'.local/poker/oss-readback.json';out.write_text(json.dumps({'passed':True,'objects':results},indent=2)+'\n');print('Verified',len(results),'objects:',out)
