@@ -66,3 +66,5 @@ python3 -B scripts/snooker/prepare-audio.py
 本次补充验收：六种人数／赛制组合共完成 18 局自然电脑对局；真实 HTTP 单打和双打各完成 1 局，包含手动接管与 SQLite 恢复。331 项前端测试通过；桌面及 320px／390px 的直接击球、原有界面和进球反馈共保留 31 个浏览器检查点。证据总表位于 `.local/snooker/computers-controls-verification.json`。
 
 超时计时按待操作席位独立保存，摆球与非阻塞投票不延长击球时间。局间已准备的玩家不再计时；取消超时托管只恢复本人的操作时间。旧版无时钟的活跃对局在加载时一次性补上倒计时，后续重启保留原期限。`TestSnookerTimeoutAutoplayHTTP` 使用真实 120 秒时钟验证自动接管，`TestSnookerLegacyClockMigrationHTTP` 验证存档迁移；证据仍保存在 `.local/poker/snooker/http/`。
+
+结束界面与对局日志会明确显示本局结束原因及适用规则，区分黑球进球、黑球阶段犯规、领先宣告、认输本局、三次解球未中判负和整场弃赛。旧版已结束的房间也能根据保存的最后一杆显示解释，不修改历史得分或胜负。

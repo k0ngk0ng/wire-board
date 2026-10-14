@@ -359,6 +359,7 @@ func (s *State) finishFrame(team int, reason string) {
 	s.FreeBall = false
 	s.Foul = nil
 	s.MissRun = nil
+	s.note("%s", s.finishExplanation(reason))
 	s.note("第 %d 局结束，%s 队获胜（%d : %d）", s.Frame, []string{"A", "B"}[team], s.Scores[0], s.Scores[1])
 	if s.FramesWon[team] > s.Options.BestOf/2 {
 		s.Phase = "finished"

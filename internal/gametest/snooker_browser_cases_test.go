@@ -8,6 +8,7 @@ import (
 	snooker "github.com/k0ngk0ng/wire-board/games/snooker/server"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"os"
+	"time"
 )
 
 func snookerBrowserModules() []gameapi.Module {
@@ -41,6 +42,16 @@ func snookerBrowserModules() []gameapi.Module {
 				s.Balls[0].Pos = snooker.Vec{X: snooker.TableWidth / 2, Y: .6}
 				s.Balls[19].Pos = snooker.Vec{X: snooker.TableWidth / 2, Y: .2}
 				s.Logs = append(s.Logs, "浏览器定点：彩球进袋及复位反馈，非自然完整比赛")
+			case "black_foul":
+				s.Target = "clear"
+				s.Clear = 7
+				s.Scores = [2]int{1, 127}
+				for j := range s.Balls {
+					s.Balls[j].Down = s.Balls[j].ID != 0 && s.Balls[j].ID != 21
+				}
+				s.Balls[0].Pos = snooker.Vec{X: snooker.TableWidth / 2, Y: .6}
+				s.Balls[21].Pos = snooker.Vec{X: snooker.TableWidth / 2, Y: .2}
+				s.Logs = append(s.Logs, "浏览器定点：只剩黑球，验证犯规结束原因")
 			case "concede":
 				s.Scores = [2]int{200, 0}
 				s.Phase = "concede"
@@ -51,6 +62,10 @@ func snookerBrowserModules() []gameapi.Module {
 			default:
 				panic("unknown snooker browser case")
 			}
+			s.Due = make([]int64, s.Players)
+			s.Due[0] = ctx.Now.Add(120 * time.Second).UnixMilli()
+			m.Deadline = s.Due[0]
+			m.TimeoutActors = []int{0}
 			m.Data, _ = json.Marshal(s)
 			m.Actors = []int{0}
 			m.Attention = []int{0}

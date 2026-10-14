@@ -7,7 +7,7 @@ All accounts, profiles, SQLite and evidence remain inside this workspace.
 """
 import json,os,subprocess,time,uuid,urllib.request,http.cookiejar
 from pathlib import Path
-root=Path(__file__).resolve().parents[2];case=os.environ.get('WIRE_BOARD_SNOOKER_CASE','colour');assert case in ['colour','concede'];hide_event=os.environ.get('WIRE_BOARD_SNOOKER_HIDDEN')=='1';reduced=os.environ.get('WIRE_BOARD_SNOOKER_REDUCED')=='1';fallback=os.environ.get('WIRE_BOARD_SNOOKER_FALLBACK')=='1';out=root/'.local/snooker/feedback'/(case+'-hidden' if hide_event else case+'-reduced' if reduced else case+'-fallback' if fallback else case);out.mkdir(parents=True,exist_ok=True);fixture=root/'.local/snooker/browser';fixture.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[2];case=os.environ.get('WIRE_BOARD_SNOOKER_CASE','colour');assert case in ['colour','concede','black_foul'];hide_event=os.environ.get('WIRE_BOARD_SNOOKER_HIDDEN')=='1';reduced=os.environ.get('WIRE_BOARD_SNOOKER_REDUCED')=='1';fallback=os.environ.get('WIRE_BOARD_SNOOKER_FALLBACK')=='1';out=root/'.local/snooker/feedback'/(case+'-hidden' if hide_event else case+'-reduced' if reduced else case+'-fallback' if fallback else case);out.mkdir(parents=True,exist_ok=True);fixture=root/'.local/snooker/browser';fixture.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ);session='sn-'+uuid.uuid4().hex[:6]
 for key,rel in {'AGENT_BROWSER_SOCKET_DIR':'.local/ab-sn','AGENT_BROWSER_PROFILE':'.local/snooker/browser/'+session,'TMPDIR':'.local/tmp','GOTMPDIR':'.local/tmp','GOCACHE':'.local/go-build','GOMODCACHE':'.local/go-mod','npm_config_cache':'.local/npm'}.items():
  p=root/rel;p.mkdir(parents=True,exist_ok=True);env[key]=str(p)
@@ -33,7 +33,7 @@ def shot(name):
  assert js('document.documentElement.scrollWidth<=innerWidth+2'),name
  colors=js(r"""(() => {
  const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number),lum=c=>c.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
- return [...document.querySelectorAll('.snooker-status span,.snooker-status strong,.snooker-scoreboard small,.snooker-scoreboard span,.snooker-scoreboard strong,.snooker-controls label,.snooker-controls output,.snooker-board button,.snooker-turn,.snooker-order,.snooker-public-summary strong')].filter(e=>e.getClientRects().length).map(e=>{let bg=[255,255,255];const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor),a=c[3]??1;bg=bg.map((v,i)=>v*(1-a)+(c[i]??0)*a)}const fg=rgb(getComputedStyle(e).color),a=lum(fg),b=lum(bg);return {text:e.textContent.trim().slice(0,80),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}});
+ return [...document.querySelectorAll('.snooker-status span,.snooker-status strong,.snooker-scoreboard small,.snooker-scoreboard span,.snooker-scoreboard strong,.snooker-controls label,.snooker-controls output,.snooker-end-explanation p,.snooker-end-explanation strong,.snooker-board button,.snooker-turn,.snooker-order,.snooker-public-summary strong')].filter(e=>e.getClientRects().length).map(e=>{let bg=[255,255,255];const chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor),a=c[3]??1;bg=bg.map((v,i)=>v*(1-a)+(c[i]??0)*a)}const fg=rgb(getComputedStyle(e).color),a=lum(fg),b=lum(bg);return {text:e.textContent.trim().slice(0,80),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}});
  })()""")
  assert all(c['ratio']>=4.5 for c in colors),(name,colors)
  (out/(name+'-contrast.json')).write_text(json.dumps(colors,ensure_ascii=False,indent=2))
@@ -72,6 +72,18 @@ try:
   observations=js('window.__feedback');assert not any(e.get('noteOverlap') for e in observations['spot']),'respot label covered a pocket';assert any(e['src'].endswith('/pocket.mp3') for e in observations['audio'])!=hide_event,'hidden pocket sound replayed or visible sound absent';assert all(e['platform'] for e in observations['audio']);assert hide_event or any(e.get('ok') and e['src'].endswith('/pocket.mp3') for e in observations['audio']),'pocket media failed to play';assert all(e['at']>=pot_at-35 for e in observations['audio'] if e['src'].endswith('/pocket.mp3'));assert all(e['at']>=pot_at-35 for e in observations['score'] if e['value']=='6');report['timeline']={'potAt':pot_at,'observations':observations};shot('blue-respotted')
   if fallback:assert any(e.get('error') and '/missing-snooker-assets/' in e['src'] for e in observations['audio']) and any(e.get('ok') and '/missing-snooker-assets/' not in e['src'] for e in observations['audio']),'local audio fallback not exercised'
   browser('reload');browser('wait','.snooker-board');assert js('document.querySelector(".snooker-table").dataset.respot')=='','reload repeated old respot animation';shot('blue-reload');command('close')
+ elif case=='black_foul':
+  strike(0,.06);browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="finished"')
+  r=api('/state')['room'];d=r['game']['data'];assert d['scores']==[1,134]
+  assert not js('!!document.querySelector(".snooker-aim-preview")'),'finished match still offers aiming'
+  assert any(not b['down'] and b['id']==21 for b in d['balls'])
+  for width in [1280,390,320]:
+   browser('set','viewport',str(width),'940');browser('scrollintoview','.snooker-end-explanation')
+   explanation=js('document.querySelector(".snooker-end-explanation").textContent')
+   assert all(t in explanation for t in ['未先击中目标球','7 分','首次得分或犯规']),explanation
+   assert any('首次得分或犯规' in line for line in r['game']['log'])
+   shot(f'black-foul-reason-{width}')
+  browser('reload');browser('wait','.snooker-end-explanation');shot('black-foul-restored')
  else:
   shot('concession-offer');browser('find','role','button','click','--name','接受认输本局','--exact');browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="finished"');assert api('/state')['room']['status']=='finished';shot('concession-accepted')
  command('leave');report['passed']=True

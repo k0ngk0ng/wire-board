@@ -20,6 +20,7 @@ type Props = {
   angle: number;
   power: number;
   canAim: boolean;
+  finished: boolean;
   assist: boolean;
   placing: boolean;
   assets: string;
@@ -430,8 +431,9 @@ export function Table(props: Props) {
     drawScene(ctx, camera, props, art);
     // The precision view has its own canvas outside the playing surface.
     // Its reserved layout space never covers a pocket or consumes table input.
-    const detail = preview.current!,
-      lensCtx = detail.getContext("2d")!;
+    const detail = preview.current;
+    if (!detail) return;
+    const lensCtx = detail.getContext("2d")!;
     const edge = 88;
     detail.width = Math.round(edge * ratio);
     detail.height = Math.round(edge * ratio);
@@ -478,6 +480,7 @@ export function Table(props: Props) {
     props.angle,
     props.power,
     props.canAim,
+    props.finished,
     props.assist,
     props.placing,
     pose,
@@ -490,45 +493,47 @@ export function Table(props: Props) {
   };
   return (
     <div className="snooker-viewport">
-      <div className="snooker-aim-tools">
-        <div className="snooker-aim-preview">
-          <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
-        </div>
-        <div className="snooker-aim-readout">
-          <strong>瞄准细节</strong>
-          {charging && (
-            <div
-              className="snooker-charge"
-              role="progressbar"
-              aria-label="击球力度"
-              aria-valuemin={2}
-              aria-valuemax={100}
-              aria-valuenow={Math.round(chargePower * 100)}
-            >
-              <span>力度 {Math.round(chargePower * 100)}% · 松开击球</span>
-              <div>
-                <i style={{ width: `${chargePower * 100}%` }} />
+      {!props.finished && (
+        <div className="snooker-aim-tools">
+          <div className="snooker-aim-preview">
+            <canvas ref={preview} role="img" aria-label="瞄准细节放大视图" />
+          </div>
+          <div className="snooker-aim-readout">
+            <strong>瞄准细节</strong>
+            {charging && (
+              <div
+                className="snooker-charge"
+                role="progressbar"
+                aria-label="击球力度"
+                aria-valuemin={2}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(chargePower * 100)}
+              >
+                <span>力度 {Math.round(chargePower * 100)}% · 松开击球</span>
+                <div>
+                  <i style={{ width: `${chargePower * 100}%` }} />
+                </div>
               </div>
-            </div>
-          )}
-          {!charging && props.flash && (
-            <span className="snooker-respot-note" role="status">
-              已复位：{props.flash.ids.map(ballName).join("、")}
-            </span>
-          )}
-          {!charging && !props.flash && (
-            <span>
-              {movingView
-                ? "移动视图中，拖动只平移球桌"
-                : props.placing
-                  ? "在 D 区点击摆放白球"
-                  : props.canAim
-                    ? "按住球桌瞄准蓄力，松开击球"
-                    : "轮到你时可瞄准击球"}
-            </span>
-          )}
+            )}
+            {!charging && props.flash && (
+              <span className="snooker-respot-note" role="status">
+                已复位：{props.flash.ids.map(ballName).join("、")}
+              </span>
+            )}
+            {!charging && !props.flash && (
+              <span>
+                {movingView
+                  ? "移动视图中，拖动只平移球桌"
+                  : props.placing
+                    ? "在 D 区点击摆放白球"
+                    : props.canAim
+                      ? "按住球桌瞄准蓄力，松开击球"
+                      : "轮到你时可瞄准击球"}
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div
         className="snooker-table"
         ref={wrap}
