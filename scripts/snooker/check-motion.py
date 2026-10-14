@@ -51,7 +51,7 @@ try:
  base=(fixture/'url').read_text();browser('open',base);opened=True;api('/login',{'name':'斯诺克验收管理员','password':'snooker-browser-test-only'})
  assert 'snooker' not in api('/state')['availableGames']
  api('/rooms',{'kind':'snooker','name':'下架不能创建','capacity':2},403)
- api('/admin/games/snooker',{'enabled':True});browser('reload');browser('wait','.game-selection');browser('select','select[aria-label="游戏分类"]','sports')
+ api('/admin/games/snooker',{'enabled':True});browser('reload');browser('wait','.room-list');browser('select','select[aria-label="游戏分类"]','sports')
  browser('set','viewport','390','940')
  if reduced:browser('set','media','light','reduced-motion')
  room=api('/rooms',{'kind':'snooker','name':'本地动画慢网验收','capacity':2},201)

@@ -1,0 +1,403 @@
+{
+  "repository": "https://github.com/allfornaruto/ts-kyodai",
+  "commit": "4990ba00e7b796a5a366f7cea78c3bfa8248c15c",
+  "files": [
+    {
+      "file": "audio/bg.mp3",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/bg.mp3",
+      "bytes": 552481,
+      "sha256": "16ca4682884680600ccbbadc8ae63baa9776e23d28266b3fd5e3086f481c965b"
+    },
+    {
+      "file": "audio/effectAmazing.mp3",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/effectAmazing.mp3",
+      "bytes": 17521,
+      "sha256": "9922052aeb0d8251b8c8d19b193d1e8b5f19cc0aa453681d53c7b37097d730a6"
+    },
+    {
+      "file": "audio/effectGood.mp3",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/effectGood.mp3",
+      "bytes": 10849,
+      "sha256": "c74e752f4bc42236aade6c46048dc43e7a1e09f40412a0550f810a6eeaed3b00"
+    },
+    {
+      "file": "audio/effectGreat.mp3",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/effectGreat.mp3",
+      "bytes": 10849,
+      "sha256": "504ef8e2c3498b1846e2b71e1d1e726244fd482e874b2929a905410ca1da69f9"
+    },
+    {
+      "file": "audio/elec.wav",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/elec.wav",
+      "bytes": 33092,
+      "sha256": "627d3a879aa3b5704bdec977b7fb7e77805a2c09f93954fa0ab3150c01e48fe5"
+    },
+    {
+      "file": "audio/end.wav",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/end.wav",
+      "bytes": 97928,
+      "sha256": "8601f139feace3d89b3fb5c50f9906fa7c3827192824c47f62e16c40bdd3b9e4"
+    },
+    {
+      "file": "audio/itemboom.wav",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/itemboom.wav",
+      "bytes": 43606,
+      "sha256": "97f9739cbd92e70ccb2b189eef0aa235c1bca513864d9b544cd1267c65a07748"
+    },
+    {
+      "file": "audio/sel.wav",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/sel.wav",
+      "bytes": 2878,
+      "sha256": "3b4100d60ad53df644b81c3125260944b9160391a6c5e005448fb148e343a064"
+    },
+    {
+      "file": "audio/start.wav",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/resources/mp3/start.wav",
+      "bytes": 133444,
+      "sha256": "7f8be906643dac88e6daff8e4f2ff3399e380b257acb2523d218240fc1a1a8fa"
+    },
+    {
+      "file": "effects/lightning-1.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/lightning_x/lightning_x_1.png",
+      "bytes": 2699,
+      "sha256": "07d7aceb3e2398b9d4211d4ff386c5eb7f12bc08b3f7ada8c04759a608719c55"
+    },
+    {
+      "file": "effects/lightning-2.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/lightning_x/lightning_x_2.png",
+      "bytes": 2883,
+      "sha256": "0653da01e66cdf443545c700f3e31296f1af575f1634016ed69d915f8e2aafc3"
+    },
+    {
+      "file": "effects/lightning-3.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/lightning_x/lightning_x_3.png",
+      "bytes": 3051,
+      "sha256": "93af39298e34142991d4d2179aa3ce17d160793b15b546a965bf07d816fedfdf"
+    },
+    {
+      "file": "effects/lightning-4.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/lightning_x/lightning_x_4.png",
+      "bytes": 2853,
+      "sha256": "07d6406d6e9e2358cc49ec1e64fc17f1d4480037acf7f69710f83f4e42c97576"
+    },
+    {
+      "file": "effects/lightning-5.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/lightning_x/lightning_x_5.png",
+      "bytes": 3116,
+      "sha256": "8773315adc96dad1a51479ecd1775b16fa1f1fe04081a4585479b373e325cf2a"
+    },
+    {
+      "file": "icons/1.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/1.png",
+      "bytes": 3661,
+      "sha256": "b3febd5e4ffef8e5d991b7343129eabc616d75cbb57abbf1fa9536d303688187"
+    },
+    {
+      "file": "icons/10.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/10.png",
+      "bytes": 4760,
+      "sha256": "2e56c786aa785acae616bed541bda98d8a3af0e5337780465ff9f8e0ef807ffe"
+    },
+    {
+      "file": "icons/11.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/11.png",
+      "bytes": 4597,
+      "sha256": "93bab5eb8d6357dbeeae79a8692f37a98536dea4ff060c2b1f904fe59de5835a"
+    },
+    {
+      "file": "icons/12.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/12.png",
+      "bytes": 4724,
+      "sha256": "a670db053ccba4de521474f92ff6f20c039b9a9d3a22702a1095b16eef05be78"
+    },
+    {
+      "file": "icons/13.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/13.png",
+      "bytes": 4746,
+      "sha256": "f5347345214201d602bc866e067e8841cb39dba8a3b48a67b3e1d74629f379db"
+    },
+    {
+      "file": "icons/14.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/14.png",
+      "bytes": 3951,
+      "sha256": "51eb6a348595923e715fe5978d3b4eb0bde8a15d62674e517d9cc3f5c2c24b72"
+    },
+    {
+      "file": "icons/15.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/15.png",
+      "bytes": 4720,
+      "sha256": "78c2d6bdcb754bb2f6314ec6e82a70e91c047f51f75d205b08d9aa941be12b07"
+    },
+    {
+      "file": "icons/16.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/16.png",
+      "bytes": 4747,
+      "sha256": "d00148c67379e450667431d3a106243c1bd9fb3e84910fb2283e2cf741e79be0"
+    },
+    {
+      "file": "icons/17.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/17.png",
+      "bytes": 4847,
+      "sha256": "2dfefaacb20659804686204cd65818cc8689b505a454d2c9f5f89e1246d60b92"
+    },
+    {
+      "file": "icons/18.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/18.png",
+      "bytes": 4268,
+      "sha256": "46cb8f8bbf172ddcb5637ddccb0f3a78fc97711d681d11d281f5cc60a4385925"
+    },
+    {
+      "file": "icons/19.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/19.png",
+      "bytes": 4333,
+      "sha256": "3409296dd69f9234f66837a74cc41dc99542d395e739b9aa97cd5f19d00133b2"
+    },
+    {
+      "file": "icons/2.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/2.png",
+      "bytes": 4461,
+      "sha256": "6c5693033d5289117242f465524633c7afb5d066b43b700d64cf4ff5d287f383"
+    },
+    {
+      "file": "icons/20.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/20.png",
+      "bytes": 3993,
+      "sha256": "430ad0fca7cfa6130c9884951180a2c8bc86f12bb71013ed63d60d462e8be55a"
+    },
+    {
+      "file": "icons/21.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/21.png",
+      "bytes": 3980,
+      "sha256": "2c6b84d81a42214aeba92c2e122c59044f859e9411d3b5bb5ec03e926d2e33bf"
+    },
+    {
+      "file": "icons/22.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/22.png",
+      "bytes": 3949,
+      "sha256": "b72a09d054c8b267196d7182004a1355d5a8eb808db53ec99fa38f28961b4ba2"
+    },
+    {
+      "file": "icons/23.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/23.png",
+      "bytes": 3882,
+      "sha256": "0c39764ea001a1ed3e575f08dcbb8cf82e14a23c4550a03c90b477e3ed96ebd0"
+    },
+    {
+      "file": "icons/24.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/24.png",
+      "bytes": 3864,
+      "sha256": "27f2c8ffdde0d9a78c095e19b9bb6ed6e0448a41f08e54480372cf29ba902b93"
+    },
+    {
+      "file": "icons/25.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/25.png",
+      "bytes": 3368,
+      "sha256": "f54faa37dc6f4f63032ac1935cfb628bc29ee79b3759fe09cf924b0dfd5d7271"
+    },
+    {
+      "file": "icons/26.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/26.png",
+      "bytes": 4297,
+      "sha256": "ae370eab526735229947ef69ea267d685215d918941b255b830e5d8032c4fa8c"
+    },
+    {
+      "file": "icons/27.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/27.png",
+      "bytes": 4055,
+      "sha256": "4e4294b7432ea3213aade3be825b7a4abd9c83091748054b031a920bb472ab59"
+    },
+    {
+      "file": "icons/28.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/28.png",
+      "bytes": 4235,
+      "sha256": "bda8921e3d2cdf113e8efdc967252410c0b04cd6e1059de37e95a636740199d5"
+    },
+    {
+      "file": "icons/29.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/29.png",
+      "bytes": 4248,
+      "sha256": "d08b410cc4a2471812ab9a10e34676a4e5223a4a371852ee00ced277fdb02fc7"
+    },
+    {
+      "file": "icons/3.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/3.png",
+      "bytes": 4850,
+      "sha256": "11eb8e25bc274d1e574560b66c8c9d8cbc275b7a20cd343bef3a8d7d99a2126d"
+    },
+    {
+      "file": "icons/30.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/30.png",
+      "bytes": 4366,
+      "sha256": "41933f9f91e2c4ccfa7686a239a20cfdcab4a4ce01e2f57bc2ad0029428d3492"
+    },
+    {
+      "file": "icons/31.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/31.png",
+      "bytes": 4524,
+      "sha256": "3655afcec61c48372c7c13ff755e9883cb05889a8b33dec1c613fe74d6c8610e"
+    },
+    {
+      "file": "icons/32.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/32.png",
+      "bytes": 4474,
+      "sha256": "febf53069b50a39eb4d65022e66ad992b58bc0bac1e5e34d1ca7cf8dae912df3"
+    },
+    {
+      "file": "icons/33.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/33.png",
+      "bytes": 4501,
+      "sha256": "3e5f8a41d1007299a0fef7becb042fe29556b4d81630e8acd88034f448693ed4"
+    },
+    {
+      "file": "icons/34.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/34.png",
+      "bytes": 4627,
+      "sha256": "c6ec8e1121dcd5d2e62812d570ee84f2bfa7484c3fcbee21ef051bb450f32459"
+    },
+    {
+      "file": "icons/35.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/35.png",
+      "bytes": 4939,
+      "sha256": "ec991452693e06bfab60a8286c01c2e3f00b52094bd0fdc4b22cdea7321cb8f5"
+    },
+    {
+      "file": "icons/36.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/36.png",
+      "bytes": 4638,
+      "sha256": "31df117f3d8f88fba6fd26ef0dc7fabdadb3d91d96b9714dd89a7ff4bcad1ac6"
+    },
+    {
+      "file": "icons/37.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/37.png",
+      "bytes": 4506,
+      "sha256": "58b716e25a0197104ed053b20d65c6d283db18680cbae4c7edf40ef0bb25115b"
+    },
+    {
+      "file": "icons/38.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/38.png",
+      "bytes": 4484,
+      "sha256": "d7dec8d97a7d1b264dff4e79987747f848bf6a8a385ed12a37d3d383d840793b"
+    },
+    {
+      "file": "icons/39.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/39.png",
+      "bytes": 4789,
+      "sha256": "37d4633f6905484586436fb83f7a3c49efd52a622a33d1561cc93afeae77871b"
+    },
+    {
+      "file": "icons/4.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/4.png",
+      "bytes": 4915,
+      "sha256": "662fd4c8054c2ad175e882914b89b47334d0b848ff87a150ad7193b2b04f7871"
+    },
+    {
+      "file": "icons/40.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/40.png",
+      "bytes": 4504,
+      "sha256": "d6ba1d570fc2ed6f5378f82f31d25c3bdb32bd8870de49fc7c42a08adf7b7e62"
+    },
+    {
+      "file": "icons/41.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/41.png",
+      "bytes": 3933,
+      "sha256": "8801855284f2bb632d142d1ef7117798c4d72f3b4232d94c2b545b5265103768"
+    },
+    {
+      "file": "icons/42.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/42.png",
+      "bytes": 3535,
+      "sha256": "7ac006999f410f0a551df9ccb6fa5054d4bb3272e24c76c3bd7357db54ec4eae"
+    },
+    {
+      "file": "icons/43.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/43.png",
+      "bytes": 3674,
+      "sha256": "fdab4763a69d1d619572dcc63cb7595fb067c72ea243071ca09d1c517405f852"
+    },
+    {
+      "file": "icons/44.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/44.png",
+      "bytes": 4217,
+      "sha256": "635fa0346e8efc335d4bdbbeddc67abe56765c88dd088a5d6c2ecb83f890758c"
+    },
+    {
+      "file": "icons/45.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/45.png",
+      "bytes": 4016,
+      "sha256": "991bbbf60f9821d534bfc16ae8deccba1c13071f5b05ada0b04c39bb87ea66e9"
+    },
+    {
+      "file": "icons/46.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/46.png",
+      "bytes": 2929,
+      "sha256": "9d0701a10cec6a77cee20854e401ca1339d0de70b4ad013c435b5ae37c753de7"
+    },
+    {
+      "file": "icons/47.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/47.png",
+      "bytes": 2949,
+      "sha256": "aca19c4bcf488f117663d992f9cf2a7afed6ad42c09231bc638a68d869867e6b"
+    },
+    {
+      "file": "icons/48.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/48.png",
+      "bytes": 2979,
+      "sha256": "552a851c9fcd5a5f16bbeb88d5861f7071f1a6ed898d0ca58317d421216f4c8b"
+    },
+    {
+      "file": "icons/49.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/49.png",
+      "bytes": 2924,
+      "sha256": "14cd926fb2cab2de873dde3c29ce331d42f87dc8b8beea883110be780d2abc4c"
+    },
+    {
+      "file": "icons/5.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/5.png",
+      "bytes": 4786,
+      "sha256": "0f8361e027275130bcb2e3e4bb222d6c3f91c11885aec62a2668b4cbae96e21c"
+    },
+    {
+      "file": "icons/50.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/50.png",
+      "bytes": 4254,
+      "sha256": "dae147870054c28533c6d30e340f29061096383c4989b0188799e2a59245e723"
+    },
+    {
+      "file": "icons/51.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/51.png",
+      "bytes": 4156,
+      "sha256": "6712483d0aed9478c535281e66b4d001765139c8d0ba2b10535f390f09ca6bf0"
+    },
+    {
+      "file": "icons/6.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/6.png",
+      "bytes": 5196,
+      "sha256": "5bbb16424c19a68c6834e2c683d69d9c53b3aa3f4c470d37808f1269a46ea16c"
+    },
+    {
+      "file": "icons/7.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/7.png",
+      "bytes": 4760,
+      "sha256": "8112c5c772c06c026286425e400d27dfd8e3f05125d2a8c46eda7680caaa5f7d"
+    },
+    {
+      "file": "icons/8.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/8.png",
+      "bytes": 4985,
+      "sha256": "4ed5759ee06b7ffc67d20d7222aae6d2ed6a44938a45235288879ed8f097509d"
+    },
+    {
+      "file": "icons/9.png",
+      "source": "https://raw.githubusercontent.com/allfornaruto/ts-kyodai/4990ba00e7b796a5a366f7cea78c3bfa8248c15c/assets/img/block/icon/9.png",
+      "bytes": 5040,
+      "sha256": "f58e2ff12b76dd1b06cc66215d39e96a73e10985846b7102a7c6fe26034f1aff"
+    },
+    {
+      "file": "audio/bg-legacy-2015.mp3",
+      "source": "https://raw.githubusercontent.com/sexdevil/lianliankan/18d9111ebc4b6e77dc31bdb9e45c65fb00659111/sound/bg.mp3",
+      "bytes": 1380480,
+      "sha256": "22873010eeeef1f06414250abf7d6e2e3b27a7fa111d31c36723bbfeb69de72c",
+      "note": "User selected this recording on 2026-10-05; default background music since v1.1.2. Not verified against an official client."
+    }
+  ]
+}

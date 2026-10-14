@@ -49,14 +49,14 @@ try:
   time.sleep(.1)
  base=(fixture/'url').read_text();b('open',base);opened=True;api('/login',{'name':'扑克验收管理员','password':'poker-browser-test-only'})
  for kind in ['doudizhu','guandan','shengji']:api('/admin/games/'+kind,{'enabled':True})
- b('reload');b('wait','.game-selection');b('select','select[aria-label="游戏分类"]','poker')
+ b('reload');b('wait','.room-list');b('select','select[aria-label="游戏分类"]','poker')
  for width in [1280,320]:b('set','viewport',str(width),'900');shot('lobby-'+str(width))
  for kind in ['doudizhu','guandan','shengji']:
-  b('click',f'.game-feature[data-game="{kind}"] button');b('wait','[role=dialog]');b('select','select[aria-label="可选游戏分类"]','poker');shot('picker-'+kind+'-320')
+  b('select','select[aria-label="按游戏筛选牌桌"]',kind);b('click','.lobby-create');b('wait','[role=dialog]');b('select','select[aria-label="可选游戏分类"]','poker');shot('picker-'+kind+'-320')
   b('scrollintoview','[role=dialog] button[type=submit]');b('click','[role=dialog] button[type=submit]');b('wait','.waiting-actions')
   for width in [1280,320]:b('set','viewport',str(width),'900');shot('waiting-'+kind+'-'+str(width))
   b('set','viewport','1280','900');js('document.querySelector(".waiting-cover img").dispatchEvent(new Event("error"))');b('wait','.waiting-cover svg');shot('fallback-'+kind+'-1280')
-  command('leave');b('wait','.game-selection');b('set','viewport','320','900');b('select','select[aria-label="游戏分类"]','poker')
+  command('leave');b('wait','.room-list');b('set','viewport','320','900');b('select','select[aria-label="游戏分类"]','poker')
  report['passed']=True
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)

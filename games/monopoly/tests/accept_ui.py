@@ -165,10 +165,8 @@ def login(name):
 
 def start(scenario, create_in_ui=False):
     if create_in_ui:
-        browser('fill', 'input[aria-label=搜索游戏]', '强手棋')
-        index = js('[...document.querySelectorAll(".game-feature")].findIndex(e=>e.textContent.includes("强手棋"))+1')
-        assert index > 0, 'Monopoly is absent from lobby'
-        browser('click', f'.game-feature:nth-child({index}) button')
+        browser('select', 'select[aria-label="按游戏筛选牌桌"]', 'monopoly')
+        browser('click', '.lobby-create')
         browser('wait', '[role=dialog]')
         wait_js('document.querySelector(".modal").getAnimations().every(a=>a.playState!=="running")')
         assert js('!!document.querySelector(".choose-games .selected .cover svg")'), 'creation must use the common illustrated game cards'
@@ -220,7 +218,7 @@ def finish():
     for p in peers:
         if p.api('/state').get('room'):
             p.command('leave')
-    browser('wait', '.game-selection')
+    browser('wait', '.room-list')
 
 
 try:
@@ -241,10 +239,10 @@ try:
     api('/register', dict(name=main_name, password='monopoly-browser-test', invite='monopoly-browser'))
     peers = [Peer(base, '同桌甲'), Peer(base, '同桌乙')]
     spectator = Peer(base, '围观玩家')
-    browser('reload'); browser('wait', '.game-selection')
+    browser('reload'); browser('wait', '.room-list')
     browser('set', 'viewport', '1440', '1000')
     assert 'monopoly' not in api('/state')['availableGames']
-    assert not js('[...document.querySelectorAll(".game-feature")].some(e=>e.textContent.includes("强手棋"))'), 'unpublished game visible to player'
+    assert not js('[...document.querySelectorAll("select[aria-label=按游戏筛选牌桌] option")].some(e=>e.value==="monopoly")'), 'unpublished game visible to player'
     checkpoint('default-unpublished-player-lobby')
     login('上架管理员')
     browser('wait', '--text', '管理后台')
@@ -261,7 +259,7 @@ try:
     wait_js('[...document.querySelectorAll(".admin-game-card")].some(e=>e.textContent.includes("强手棋")&&e.textContent.includes("已上架"))')
     assert 'monopoly' in api('/state')['availableGames']
     checkpoint('admin-published-monopoly')
-    login(main_name); browser('open', base); browser('wait', '.game-selection')
+    login(main_name); browser('open', base); browser('wait', '.room-list')
     start('natural', True)
     media = bool(env.get('WIRE_BOARD_MONOPOLY_ASSETS'))
     if media:
@@ -444,7 +442,7 @@ try:
     check_cash_visibility('cash-bankrupt')
     checkpoint('bankrupt-can-leave')
     click('离开房间')
-    browser('wait', '.game-selection')
+    browser('wait', '.room-list')
     assert api('/state').get('room') is None
     assert len(peers[0].api('/state')['room']['seats']) == 3
     finish()
@@ -464,7 +462,7 @@ try:
     command('leave')
     for p in peers:
         if p.api('/state').get('room'): p.command('leave')
-    browser('wait', '.game-selection')
+    browser('wait', '.room-list')
 
     # Repeated server-paced rolls exercise the queue, then stop autoplay and
     # compare the displayed pieces with the authoritative snapshot.

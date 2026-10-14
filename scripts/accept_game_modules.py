@@ -145,7 +145,7 @@ try:
     api('/api/logout', {})
     api('/api/register', {'name': '模块浏览器验收', 'password': 'module-browser-test-only', 'invite': 'test-invite'})
     b('reload')
-    b('wait', '.game-selection')
+    b('wait', '.room-list')
     b('wait', '.sound-controls')
     js('window.__platformPlayed=[];window.__platformFailures=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const src=this.src;return play.call(this).then(()=>{if(src.length>100||!src.startsWith("data:"))window.__platformPlayed.push({src,platform:this.hasAttribute("data-platform-audio")})},e=>{window.__platformFailures.push({src:src.slice(0,160),name:e.name,message:e.message,hidden:document.hidden});throw e})}')
     b('find','role','button','click','--name','试听音效','--exact')
@@ -167,10 +167,7 @@ try:
     b('set', 'viewport', '1280', '900')
     assert js('[...document.querySelectorAll(".room-filters option")].some(b=>b.textContent==="接入验收")'), 'module missing from lobby filters'
     checkpoint('lobby-desktop')
-    b('fill', 'input[aria-label=搜索游戏]', '接入验收')
-    index = js('[...document.querySelectorAll(".game-feature")].findIndex(e=>e.textContent.includes("接入验收"))+1')
-    assert index > 0
-    b('click', f'.game-feature:nth-child({index}) button')
+    b('click', '.lobby-create')
     b('wait', '[role=dialog]')
     b('wait', '--fn', 'document.querySelector(".modal").getAnimations().every(a=>a.playState!=="running")')
     b('fill', 'input[aria-label=搜索可选游戏]', '璀璨宝石')

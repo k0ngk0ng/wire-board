@@ -77,7 +77,7 @@ try:
   after=api('/state')['room']['game']['data'];assert sorted(after['hand'])==[6,19,32,45]
   assert sorted(after['lastPlay']['cards'])==[7,20]
   b('set','viewport','1280','900');shot(game+'-played-kept-bomb')
-  command('close');command('leave');b('wait','.game-selection')
+  command('close');command('leave');b('wait','.room-list')
  report['passed']=True
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)

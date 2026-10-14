@@ -55,12 +55,12 @@ try:
  adminCookies=b('cookies','get')['cookies']
  state=api('/state');assert all(k not in state['availableGames'] for k in ['doudizhu','guandan','shengji'])
  for k in ['doudizhu','guandan','shengji']:api('/admin/games/'+k,{'enabled':True})
- b('reload');b('wait','.game-selection');b('select','select[aria-label="游戏分类"]','poker')
- assert js('[...document.querySelectorAll(".game-feature")].map(e=>e.dataset.game).sort()')==['doudizhu','guandan','shengji'];shot('category-poker')
- assert js('[...document.querySelectorAll(".room-filters select option")].map(o=>o.value).filter(v=>v!=="all").sort()')==['doudizhu','guandan','shengji']
+ b('reload');b('wait','.room-list');b('select','select[aria-label="游戏分类"]','poker')
+ shot('category-poker')
+ assert js('[...document.querySelectorAll("select[aria-label=按游戏筛选牌桌] option")].map(o=>o.value).filter(v=>v!=="all").sort()')==['doudizhu','guandan','shengji']
  for kind,n,decks in [('doudizhu',4,2),('guandan',4,2),('shengji',4,2),('shengji',4,1)]:
   scenario=f'{kind}-{n}-{decks}'
-  b('set','viewport','1280','960');b('click',f'.game-feature[data-game="{kind}"] button');b('wait','[role=dialog]')
+  b('set','viewport','1280','960');b('select','select[aria-label="按游戏筛选牌桌"]',kind);b('click','.lobby-create');b('wait','[role=dialog]')
   b('select','select[aria-label="座位上限"]',str(n));b('select','select[aria-label="行动时限"]','120');b('fill','input[name=name]',kind+'浏览器验收')
   if kind=='doudizhu':
    assert js('[...document.querySelectorAll("select[aria-label=玩法规则] option")].map(o=>o.textContent)')==['上海斗地主']
@@ -173,7 +173,7 @@ try:
   shot(f'{scenario}-played')
   b('reload');b('wait','.poker-board');assert js('document.querySelectorAll(".poker-new-play").length')==0
   if current!=0:login_seat(0)
-  command('close');command('leave');b('wait','.game-selection');b('select','select[aria-label="游戏分类"]','poker')
+  command('close');command('leave');b('wait','.room-list');b('select','select[aria-label="游戏分类"]','poker')
  report['passed']=True
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)

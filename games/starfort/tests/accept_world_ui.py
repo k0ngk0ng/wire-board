@@ -416,7 +416,7 @@ def main():
         SPECTATOR=Peer('扩展观战者')
         b('open',BASE);OPENED=True
         api('/register',{'name':MAIN,'password':'starfort-browser-test','invite':'starfort-browser'})
-        b('reload');b('wait','.game-selection')
+        b('reload');b('wait','.room-list')
         assert 'starfort' not in api('/state')['availableGames']
         api('/rooms',{'kind':'starfort','name':'默认下架','capacity':1},403)
         login('上架管理员');label('管理后台');b('wait','input[aria-label="搜索管理游戏"]')
