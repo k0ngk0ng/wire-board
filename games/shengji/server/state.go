@@ -43,6 +43,8 @@ type Trick struct {
 	Shape  Shape  `json:"shape"`
 }
 type Event struct {
+	Kind  string `json:"kind,omitempty"`
+	Value int    `json:"value,omitempty"`
 	ID    int    `json:"id"`
 	Type  string `json:"type"`
 	Seat  int    `json:"seat"`
@@ -134,7 +136,12 @@ func (s *State) note(format string, args ...any) {
 }
 func (s *State) event(kind string, seat int, ids []int, label string, now time.Time) {
 	s.EventSerial++
-	s.Events = append(s.Events, Event{s.EventSerial, kind, seat, append([]int{}, ids...), now.UnixMilli(), label})
+	voiceKind := ""
+	value := 0
+	if kind == "play" {
+		voiceKind, value = playSound(ids, len(s.Trick) == 1, s.rules())
+	}
+	s.Events = append(s.Events, Event{ID: s.EventSerial, Type: kind, Seat: seat, Cards: append([]int{}, ids...), At: now.UnixMilli(), Label: label, Kind: voiceKind, Value: value})
 	if len(s.Events) > 60 {
 		s.Events = s.Events[len(s.Events)-60:]
 	}
@@ -449,7 +456,9 @@ func (s *State) valid() error {
 	}
 	var opts Options
 	_ = json.Unmarshal(normalized, &opts)
-	if opts != s.Options || s.Ruleset != ruleset(s.Options.Decks) || s.Round < 1 || s.Round > 10000 || s.Window < 1 || s.DealSerial < 1 || len(s.Hands) != 4 || len(s.Levels) != 2 || s.Level < 2 || s.Level > 14 || s.Trump < -1 || s.Trump > 3 || s.Dealer < -1 || s.Dealer > 3 || s.StartSeat < 0 || s.StartSeat > 3 || s.Turn < 0 || s.Turn > 3 || len(s.Ready) != 4 || len(s.Passed) != 4 || len(s.Due) != 4 || len(s.Captured) != 2 || len(s.Events) > 60 || len(s.Logs) > 60 || s.ChallengeSeat < -1 || s.ChallengeSeat > 3 {
+	savedOptions := s.Options
+	savedOptions.ThrowPenalty = 0 // Accept archived settings without re-enabling penalties.
+	if opts != savedOptions || s.Ruleset != ruleset(s.Options.Decks) || s.Round < 1 || s.Round > 10000 || s.Window < 1 || s.DealSerial < 1 || len(s.Hands) != 4 || len(s.Levels) != 2 || s.Level < 2 || s.Level > 14 || s.Trump < -1 || s.Trump > 3 || s.Dealer < -1 || s.Dealer > 3 || s.StartSeat < 0 || s.StartSeat > 3 || s.Turn < 0 || s.Turn > 3 || len(s.Ready) != 4 || len(s.Passed) != 4 || len(s.Due) != 4 || len(s.Captured) != 2 || len(s.Events) > 60 || len(s.Logs) > 60 || s.ChallengeSeat < -1 || s.ChallengeSeat > 3 {
 		return bad()
 	}
 	for _, l := range s.Levels {

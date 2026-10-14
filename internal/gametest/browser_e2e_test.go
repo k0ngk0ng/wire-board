@@ -1,9 +1,9 @@
 package gametest_test
 
 // Opt-in browser fixture serves the production registry/build and a fresh
-// database. No forced game outcomes, private debug API or shipping test hooks.
+// database. An explicit feedback mode uses labelled test-only starting hands;
+// neither mode exposes private debug APIs or shipping test hooks.
 import (
-	"github.com/k0ngk0ng/wire-board/games"
 	"github.com/k0ngk0ng/wire-board/internal/server"
 	"net"
 	"net/http"
@@ -25,7 +25,7 @@ func TestPokerBrowserFixture(t *testing.T) {
 	if e = os.MkdirAll(out, 0755); e != nil {
 		t.Fatal(e)
 	}
-	s, e := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "poker-browser", AdminUsername: "扑克验收管理员", AdminPassword: "poker-browser-test-only", AssetsBaseURL: os.Getenv("WIRE_BOARD_POKER_ASSETS"), Modules: games.Modules()}, os.DirFS(filepath.Join(root, "web/dist")))
+	s, e := server.New(server.Config{DataDir: t.TempDir(), InviteCode: "poker-browser", AdminUsername: "扑克验收管理员", AdminPassword: "poker-browser-test-only", AssetsBaseURL: os.Getenv("WIRE_BOARD_POKER_ASSETS"), Modules: pokerBrowserModules()}, os.DirFS(filepath.Join(root, "web/dist")))
 	if e != nil {
 		t.Fatal(e)
 	}

@@ -31,7 +31,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if n != 4 {
 		return nil, errors.New("上海升级需要坐满四人")
 	}
-	o := Options{Decks: 2, Rounds: 0, StartLevel: 2, TurnSeconds: 30, ThrowPenalty: 10, BottomMode: "cards"}
+	o := Options{Decks: 2, Rounds: 0, StartLevel: 2, TurnSeconds: 30, ThrowPenalty: 0, BottomMode: "cards"}
 	if len(raw) > 0 {
 		if e := strict(raw, &o); e != nil {
 			return nil, errors.New("无效升级设置")
@@ -40,6 +40,7 @@ func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if o.Decks < 1 || o.Decks > 2 || o.Rounds < 0 || o.Rounds > 24 || o.StartLevel < 2 || o.StartLevel > 14 || o.TurnSeconds < 10 || o.TurnSeconds > 120 || (o.ThrowPenalty != 0 && o.ThrowPenalty != 10) || !slices.Contains([]string{"cards", "structure"}, o.BottomMode) {
 		return nil, errors.New("无效副数、起始级牌、时限或甩牌／抠底设置")
 	}
+	o.ThrowPenalty = 0 // Retired option: invalid submissions never charge points.
 	return json.Marshal(o)
 }
 func Module() gameapi.Module {
@@ -177,15 +178,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 				return m, err
 			}
 			if breaker >= 0 {
-				cost := (len(ids) - len(actual)) * s.Options.ThrowPenalty
-				if p%2 == s.Dealer%2 {
-					s.Penalty += cost
-				} else {
-					s.Penalty -= cost
-				}
-				s.ChallengeSeat = breaker
-				s.event("throw_failed", p, ids, fmt.Sprintf("强制领出 %d 张，收回 %d 张，罚 %d 分", len(actual), len(ids)-len(actual), cost), ctx.Now)
-				s.note("玩家 %d 甩牌失败，强制领出 %d 张，罚 %d 分", p+1, len(actual), cost)
+				return m, errors.New("这些牌不能一起甩出，请拆开选择；本次未出牌，也不计罚分")
 			}
 			ids = actual
 			shape, err := leadShape(ids, s.rules())
@@ -277,10 +270,10 @@ func project(m gameapi.Match, p int) (any, error) {
 	}
 	hand, bottom := []int{}, []int{}
 	if p >= 0 && p < 4 {
-		hand = append(hand, s.Hands[p]...)
+		hand = orderedCards(s.Hands[p], s.rules())
 	}
 	if (p == s.Dealer && s.Phase != "declare") || s.Phase == "round_end" || s.Phase == "finished" {
-		bottom = append(bottom, s.Bottom...)
+		bottom = orderedCards(s.Bottom, s.rules())
 	}
 	players := []any{}
 	for seat, h := range s.Hands {
@@ -290,5 +283,5 @@ func project(m gameapi.Match, p int) (any, error) {
 	if s.Dealer >= 0 {
 		attackPoints = s.Captured[1-s.Dealer%2] + s.Penalty
 	}
-	return map[string]any{"options": s.Options, "ruleset": s.Ruleset, "phase": s.Phase, "turn": s.Turn, "window": s.Window, "round": s.Round, "dealSerial": s.DealSerial, "dealtAt": s.DealtAt, "hand": hand, "bottom": bottom, "players": players, "level": s.Level, "levels": s.Levels, "trump": s.Trump, "dealer": s.Dealer, "declaration": s.Declaration, "revealed": s.Revealed, "rebellion": s.Rebellion, "trick": s.Trick, "lead": s.Lead, "lastTrick": s.LastTrick, "trickNumber": s.TrickNumber, "challengeSeat": s.ChallengeSeat, "captured": s.Captured, "attackPoints": attackPoints, "penalty": s.Penalty, "roundResults": s.Results, "finishReason": s.FinishReason, "events": s.Events, "controls": s.controls(p)}, nil
+	return map[string]any{"options": s.Options, "ruleset": s.Ruleset, "phase": s.Phase, "turn": s.Turn, "window": s.Window, "round": s.Round, "dealSerial": s.DealSerial, "dealtAt": s.DealtAt, "hand": hand, "bottom": bottom, "players": players, "level": s.Level, "levels": s.Levels, "trump": s.Trump, "dealer": s.Dealer, "declaration": s.Declaration, "revealed": s.Revealed, "rebellion": s.Rebellion, "trick": displayTrick(s.Trick, s.rules()), "lead": s.Lead, "lastTrick": displayLastTrick(s.LastTrick, s.rules()), "trickNumber": s.TrickNumber, "challengeSeat": s.ChallengeSeat, "captured": s.Captured, "attackPoints": attackPoints, "penalty": s.Penalty, "roundResults": s.Results, "finishReason": s.FinishReason, "events": s.Events, "controls": s.controls(p)}, nil
 }

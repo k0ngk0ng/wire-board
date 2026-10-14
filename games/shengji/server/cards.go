@@ -91,10 +91,13 @@ func sortHand(ids []int, r Rules) {
 	sort.Slice(ids, func(i, j int) bool {
 		a, b := ids[i], ids[j]
 		if suitOf(a, r) != suitOf(b, r) {
-			return suitOf(a, r) < suitOf(b, r)
+			return suitOf(a, r) > suitOf(b, r)
 		}
 		if power(a, r) != power(b, r) {
-			return power(a, r) < power(b, r)
+			return power(a, r) > power(b, r)
+		}
+		if a%54 != b%54 {
+			return a%54 < b%54
 		}
 		return a < b
 	})

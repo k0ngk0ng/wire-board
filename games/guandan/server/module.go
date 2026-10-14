@@ -209,6 +209,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			if s.LastPlay != nil && !beats(combo, s.LastPlay.Combination) {
 				return m, errors.New("所选牌型未压过上一手")
 			}
+			a.Cards = orderedPlay(a.Cards, combo, s.Level)
 			if s.LastPlay == nil {
 				s.Table = []Play{}
 			}
@@ -326,5 +327,5 @@ func project(m gameapi.Match, p int) (any, error) {
 			e.Cards = nil
 		}
 	}
-	return map[string]any{"options": s.Options, "ruleset": s.Ruleset, "phase": s.Phase, "turn": s.Turn, "window": s.Window, "round": s.Round, "dealSerial": s.DealSerial, "dealtAt": s.DealtAt, "hand": hand, "players": players, "level": s.Level, "levels": s.Levels, "dealerTeam": s.DealerTeam, "lastPlay": s.LastPlay, "table": s.Table, "finishOrder": s.FinishOrder, "exchanges": exchanges, "revealed": s.Revealed, "antiTribute": s.AntiTribute, "roundResults": s.Results, "finishReason": s.FinishReason, "events": events, "controls": s.controls(p)}, nil
+	return map[string]any{"options": s.Options, "ruleset": s.Ruleset, "phase": s.Phase, "turn": s.Turn, "window": s.Window, "round": s.Round, "dealSerial": s.DealSerial, "dealtAt": s.DealtAt, "hand": hand, "players": players, "level": s.Level, "levels": s.Levels, "dealerTeam": s.DealerTeam, "lastPlay": displayPlay(s.LastPlay, s.Level), "table": displayTable(s.Table, s.Level), "finishOrder": s.FinishOrder, "exchanges": exchanges, "revealed": s.Revealed, "antiTribute": s.AntiTribute, "roundResults": s.Results, "finishReason": s.FinishReason, "events": events, "controls": s.controls(p)}, nil
 }

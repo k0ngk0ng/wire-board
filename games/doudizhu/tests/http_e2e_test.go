@@ -8,13 +8,14 @@ import (
 	"testing"
 
 	game "github.com/k0ngk0ng/wire-board/games/doudizhu/server"
+	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 	"github.com/k0ngk0ng/wire-board/internal/gametest"
 )
 
-func TestDoudizhuRoomsAndPrivateViewsHTTP(t *testing.T) {
+func TestLegacyDoudizhuRoomsAndPrivateViewsHTTP(t *testing.T) {
 	for _, n := range []int{3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			h := gametest.NewHTTP(t, n, game.Module(), "doudizhu")
+			h := gametest.NewHTTP(t, n, legacyModule(), "doudizhu")
 			h.AssertUnpublished()
 			h.Start(map[string]any{"rounds": 1})
 			for p, c := range h.People {
@@ -39,6 +40,9 @@ func TestDoudizhuRoomsAndPrivateViewsHTTP(t *testing.T) {
 			}
 			h.Record("private auction views")
 			old := h.People[0].Room()
+			// Upgrade the running server to the real four-player-only module.
+			// Existing three-player matches must still restore and accept actions.
+			h.Config.Modules = []gameapi.Module{game.Module()}
 			h.Restart()
 			if !reflect.DeepEqual(gametest.Data(old), gametest.Data(h.People[0].Room())) {
 				t.Fatal("restart changed game")
@@ -71,10 +75,10 @@ func TestDoudizhuRoomsAndPrivateViewsHTTP(t *testing.T) {
 		})
 	}
 }
-func TestDoudizhuNaturalCompleteGamesHTTP(t *testing.T) {
+func TestLegacyDoudizhuNaturalCompleteGamesHTTP(t *testing.T) {
 	for _, n := range []int{3, 4} {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
-			h := gametest.NewHTTP(t, n, game.Module(), "doudizhu")
+			h := gametest.NewHTTP(t, n, legacyModule(), "doudizhu")
 			h.Start(map[string]any{"rounds": 1})
 			steps := 0
 			for ; steps < 500; steps++ {

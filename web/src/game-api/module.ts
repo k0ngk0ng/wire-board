@@ -33,6 +33,8 @@ export type GameRoom = {
 };
 export type GameAudioPort = {
   play: (sources: readonly string[]) => Promise<boolean>;
+  // Alternatives for one clip; unlike play(), these are not a playlist.
+  playWithFallback: (sources: readonly string[]) => Promise<boolean>;
   stop: () => void;
 };
 export type BoardProps<Data = unknown> = {

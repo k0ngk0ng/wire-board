@@ -19,6 +19,11 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	a := Action{Window: s.Window}
 	own := s.Hands[p]
 	switch s.Phase {
+	case "landlord_choice":
+		a.Type = "landlord"
+		for i := 0; i < min(2, len(s.reportCandidates())); i++ {
+			a.Reports = append(a.Reports, i)
+		}
 	case "bid":
 		a.Type = "bid"
 		power := 0
@@ -43,6 +48,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		} else if power >= 2 {
 			bid = 1
 		}
+
 		if bid > s.Bid {
 			a.Bid = bid
 		} else if s.Bid == 0 && s.BidSteps == s.Players-1 {

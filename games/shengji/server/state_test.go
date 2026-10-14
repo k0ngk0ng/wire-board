@@ -5,9 +5,9 @@ package shengji
 // failed throw can be cancelled; no-score redeal bypasses proof; wrong dealer
 // rotates after scoring; A can be skipped without defending a hand at A.
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
-	"slices"
 	"testing"
 	"time"
 )
@@ -136,20 +136,30 @@ func TestDeclarationCounterAndOwnDeadlines(t *testing.T) {
 		}
 	}
 }
-func TestFailedThrowCommitsForcedLead(t *testing.T) {
+
+// Invalid throws are refused atomically, including in restored legacy rooms.
+func TestInvalidThrowIsRejectedWithoutSideEffects(t *testing.T) {
 	s, ctx := fixture(t, 2, []string{"CA CQ CQ CJ", "CK", "D3", "H3"})
 	s.Phase = "play"
 	s.Trump = 3
 	s.Turn = 0
 	s.nextWindow(ctx.Now)
-	s = act(t, s, ctx, 0, Action{Type: "play", Cards: cards("CA CQ CQ CJ")})
-	if len(s.Trick) != 1 || len(s.Trick[0].Cards) != 1 || rank(s.Trick[0].Cards[0]) != 11 || s.Turn != 1 || s.ChallengeSeat != 1 || s.Penalty != 30 {
-		t.Fatalf("uncommitted failure: %+v", s)
+	m, e := s.envelope()
+	if e != nil {
+		t.Fatal(e)
 	}
-	if !slices.Contains(s.Hands[0], cards("CA")[0]) {
-		t.Fatal("withdrawn card disappeared")
+	before := append([]byte{}, m.Data...)
+	ctx.Actor = 0
+	raw, _ := json.Marshal(Action{Type: "play", Window: s.Window, Cards: cards("CA CQ CQ CJ")})
+	next, e := Module().Apply(ctx, m, raw)
+	if e == nil {
+		t.Fatal("invalid throw was accepted and penalized")
+	}
+	if !bytes.Equal(next.Data, before) || !bytes.Equal(m.Data, before) || next.Deadline != m.Deadline {
+		t.Fatal("rejection mutated cards, scores, clock or turn")
 	}
 }
+
 func TestRebelRequiresNoScoreCards(t *testing.T) {
 	s, ctx := fixture(t, 1, []string{"C5", "D3", "H3", "S3"})
 	m, _ := s.envelope()

@@ -13,6 +13,7 @@ func (s *State) moves(p int) []Move {
 	h := append([]int{}, s.Hands[p]...)
 	r := s.rules()
 	sortHand(h, r)
+	slices.Reverse(h) // Search cheap cards first, independently of visual order.
 	out := []Move{}
 	seen := map[string]bool{}
 	add := func(ids []int) {

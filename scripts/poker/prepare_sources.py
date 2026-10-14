@@ -28,7 +28,8 @@ with zipfile.ZipFile(research/'jumbo.zip') as z:
  for id in range(54):
   names=['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
   name=['club','diamond','heart','spade'][id//13]+names[id%13] if id<52 else ('blackJoker' if id==52 else 'redJoker')
-  member='Decks/Vertical4/pngs/'+name+'.png'
+  vector=id>=52 or id%13>=9
+  member='Decks/Vertical4/'+('svgs/' if vector else 'pngs/')+name+('.svg' if vector else '.png')
   write('fourcolor',id,member,z.read(member),'jumbo.zip','https://opengameart.org/content/jumbo-index-playing-cards','CC0-1.0')
  (source/'licenses'/'fourcolor-source.html').write_bytes((research/'oga-jumbo-index-playing-cards.html').read_bytes())
  license('fourcolor-source.txt',(research/'oga-jumbo-index-playing-cards.txt').read_bytes())

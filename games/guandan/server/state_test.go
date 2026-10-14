@@ -206,6 +206,23 @@ func TestManualWildPreviewIsPrivateAndAuthoritative(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
+	var played State
+	_ = json.Unmarshal(next.Data, &played)
+	announced := false
+	for _, event := range played.Events {
+		if event.Type == "play" {
+			want := played.LastPlay.High
+			if want == 15 {
+				want = played.Level
+			}
+			if event.Value == want {
+				announced = true
+			}
+		}
+	}
+	if !announced {
+		t.Fatal("declared rank missing from voice event")
+	}
 	if bytes.Equal(next.Data, before.Data) {
 		t.Fatal("confirmed preview did not play")
 	}

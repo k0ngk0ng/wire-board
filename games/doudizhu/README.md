@@ -1,5 +1,5 @@
 # 斗地主
 
-独立实现三人经典与四人上海模式。四人王炸固定为四个王，压过八张炸弹。规则边界和验收范围见 `docs/poker-implementation.md`。
+新房间仅提供四人「上海斗地主」，采用弈棋耍大牌欢乐三打一规则：标牌叫档、头撩摊打、报到及详细公式结算。四王称「王炸」，压过八张炸弹。旧三人／四人存档继续按原规则完成。
 
-开发先行测试：`go test ./games/doudizhu/server ./games/doudizhu/tests`。自然模块对局产物写入 `.local/poker/doudizhu/`，不把模块轨迹冒称浏览器整局。
+规则来源、结算选择与边界见 [规则核对](../../docs/research/huanle-sandayi.md)，验收见 [记录](../../docs/poker-verification.md)。
