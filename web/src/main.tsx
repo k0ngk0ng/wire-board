@@ -68,6 +68,7 @@ import {
 } from "./profiles";
 import "./room-option-cards.css";
 import "./style.css";
+import { useRoomPresentation } from "./game-api/presentation";
 import { useTurnTitle } from "./turn-title";
 import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
@@ -102,7 +103,15 @@ function App() {
     history.replaceState(null, "", url);
   };
   const [state, setState] = useState<State>();
-  useTurnTitle(state?.room);
+  const [presentationEpoch, setPresentationEpoch] = useState(0);
+  const resyncRequired = useRef(true);
+  const presented = useRoomPresentation(
+    state?.room,
+    state?.serverNow ?? 0,
+    state?.receivedAt ?? 0,
+    presentationEpoch,
+  );
+  useTurnTitle(presented.room);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -142,7 +151,10 @@ function App() {
     audio.setEnabled(sound);
     audio.mount();
     const visibility = () => {
+      resyncRequired.current = true;
+      setPresentationEpoch((v) => v + 1);
       if (document.hidden) audio.stop();
+      else void refresh();
     };
     const storage = (event: StorageEvent) => {
       if (event.key !== "wb_sound" && event.key !== null) return;
@@ -188,6 +200,10 @@ function App() {
           setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
         }
         previousRoom.current = data.room;
+        if (resyncRequired.current || document.hidden) {
+          setPresentationEpoch((v) => v + 1);
+          resyncRequired.current = false;
+        }
         setState({ ...data, receivedAt: performance.now() });
       }
     } catch (e) {
@@ -208,6 +224,7 @@ function App() {
     let socket: WebSocket;
     let timer: ReturnType<typeof setTimeout>;
     let retryDelay = 250;
+    let opened = false;
     const connect = () => {
       socket = new WebSocket(
         `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/ws`,
@@ -215,10 +232,16 @@ function App() {
       socket.onopen = () => {
         retryDelay = 250;
         setOnline(true);
+        if (opened) resyncRequired.current = true;
+        opened = true;
+        void refresh();
       };
       socket.onmessage = () => void refresh();
       socket.onclose = () => {
         setOnline(false);
+        resyncRequired.current = true;
+        setPresentationEpoch((v) => v + 1);
+        audio.stop();
         if (!stopped) {
           timer = setTimeout(connect, retryDelay + Math.random() * 150);
           retryDelay = Math.min(retryDelay * 2, 2000);
@@ -310,7 +333,7 @@ function App() {
     }
   };
   const act: Act = async (action) => {
-    if (!state?.room) return;
+    if (!state?.room || presented.blocked) return;
     if (state.room.seats[state.room.you]?.autoPlay) {
       setNotice("当前由电脑托管，取消托管后即可继续操作。");
       return;
@@ -441,19 +464,20 @@ function App() {
         }}
       />
     );
-  const room = state.room;
+  const room = presented.room;
   const canAdmin =
     state.user.role === "admin" || state.user.role === "superadmin";
   const autoPlay = !!room?.seats[room.you]?.autoPlay;
   const canAutoPlay =
     room?.status === "playing" &&
+    state.room?.status === "playing" &&
     !room.spectating &&
     room.you >= 0 &&
     !room.seats[room.you]?.left &&
     !room.game?.sanguosha?.players[room.you]?.dead &&
     !room.game?.eliminated?.includes(room.you) &&
     (!isIndependentGame(room.kind) || !!gameModule(room.kind)?.supportsBots);
-  const boardBusy = busy || autoPlay;
+  const boardBusy = busy || autoPlay || presented.blocked;
   return (
     <ProfileContext.Provider value={setProfileID}>
       <AssetsContext.Provider value={state.assetsBaseURL || ""}>
@@ -786,10 +810,7 @@ function App() {
                           assets={state.assetsBaseURL || ""}
                           sound={sound}
                           audio={gameAudio}
-                          clock={{
-                            serverNow: state.serverNow,
-                            receivedAt: state.receivedAt,
-                          }}
+                          clock={presented.clock}
                           command={(type, extra) =>
                             run(() => command(room, type, extra))
                           }

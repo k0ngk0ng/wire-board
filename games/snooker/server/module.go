@@ -7,6 +7,7 @@ import (
 	"io"
 	"math"
 	"slices"
+	"time"
 
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
@@ -181,7 +182,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			return m, e
 		}
 		s.ShotID++
-		s.Flight = &Flight{ID: s.ShotID, Start: ctx.Now.UnixMilli(), End: ctx.Now.UnixMilli() + int64(math.Ceil(motion.Duration*1000)), Seat: s.Turn, Context: s.context(), Strike: shot, Motion: motion}
+		// Include cue preparation in the authoritative turn budget so bots cannot
+		// start the next shot before clients can play the whole confirmed clip.
+		const cueDuration = 320 * time.Millisecond
+		start := ctx.Now.Add(cueDuration).UnixMilli()
+		s.Flight = &Flight{CueDuration: cueDuration.Milliseconds(), ID: s.ShotID, Start: start, End: start + int64(math.Ceil(motion.Duration*1000)), Seat: s.Turn, Context: s.context(), Strike: shot, Motion: motion}
 		s.Flight.Integrity = flightHash(s.Flight)
 		s.Phase = "rolling"
 	case "foul_choice":
