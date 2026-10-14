@@ -96,7 +96,7 @@ export default defineGame<View, Options>({
   maxPlayers: 4,
   playerCounts: [2, 4],
   requiresFullTable: true,
-  supportsBots: false,
+  supportsBots: true,
   ownsSounds: true,
   defaultOptions: { bestOf: 1, teams: [0, 1], aimAssist: "line" },
   Board,

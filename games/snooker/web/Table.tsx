@@ -25,6 +25,9 @@ type Props = {
   assets: string;
   flash?: { ids: number[]; intensity: number };
   strikeCue?: { pos: Vec; angle: number; power: number; progress: number };
+  gestureKey: string;
+  onShoot: (angle: number, power: number) => void;
+  onPower: (power: number) => void;
   onAim: (angle: number) => void;
   onPlace: (point: Vec) => void;
 };
@@ -238,6 +241,7 @@ function drawScene(
         0.028 + p.strikeCue.progress * 0.035 * p.strikeCue.power,
         0,
       );
+    if (!p.strikeCue) ctx.translate(-p.power * 0.16, 0);
     ctx.lineCap = "round";
     ctx.strokeStyle = "#dfc591";
     ctx.lineWidth = 0.012;
@@ -282,7 +286,82 @@ export function Table(props: Props) {
     cam = useRef(camera);
   cam.current = camera;
   const pointers = useRef(new Map<number, Vec>()),
-    gesture = useRef<{ start: Vec; dragged: boolean } | null>(null);
+    gesture = useRef<{
+      start: Vec;
+      dragged: boolean;
+      mode: "pan" | "place" | "shot" | "cancel";
+    } | null>(null);
+  const [movingView, setMovingView] = useState(false),
+    [charging, setCharging] = useState(false),
+    [chargePower, setChargePower] = useState(0.02);
+  const current = useRef(props);
+  current.current = props;
+  const charge = useRef<{
+    start: number;
+    angle: number;
+    pointer: number | "keyboard";
+  } | null>(null);
+  const frame = useRef(0);
+  const strength = (elapsed: number) => {
+    const t = Math.max(0, elapsed - 120) % 3200;
+    return 0.02 + 0.98 * (1 - Math.abs(t - 1600) / 1600);
+  };
+  const cancelCharge = () => {
+    charge.current = null;
+    cancelAnimationFrame(frame.current);
+    setCharging(false);
+    if (gesture.current?.mode === "shot") gesture.current.mode = "cancel";
+  };
+  const startCharge = (pointer: number | "keyboard", angle: number) => {
+    cancelCharge();
+    charge.current = { start: performance.now(), angle, pointer };
+    setCharging(true);
+    const tick = () => {
+      const c = charge.current;
+      if (!c) return;
+      const power = strength(performance.now() - c.start);
+      setChargePower(power);
+      current.current.onPower(power);
+      frame.current = requestAnimationFrame(tick);
+    };
+    tick();
+  };
+  const releaseCharge = (pointer: number | "keyboard") => {
+    const c = charge.current;
+    if (!c || c.pointer !== pointer) return;
+    const elapsed = performance.now() - c.start;
+    const power = strength(elapsed);
+    cancelCharge();
+    // Brief taps may aim, but must not accidentally shoot while touching UI.
+    if (elapsed >= 120 && current.current.canAim && !current.current.placing)
+      current.current.onShoot(c.angle, power);
+  };
+  useEffect(() => {
+    cancelCharge();
+    gesture.current = null;
+    pointers.current.clear();
+  }, [props.gestureKey, props.canAim, props.placing, size.width, size.height]);
+  useEffect(() => {
+    const hidden = () => {
+      if (document.hidden) cancelCharge();
+    };
+    const escape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && charge.current) {
+        e.preventDefault();
+        cancelCharge();
+      }
+    };
+    window.addEventListener("blur", cancelCharge);
+    window.addEventListener("keydown", escape);
+    document.addEventListener("visibilitychange", hidden);
+    return () => {
+      cancelAnimationFrame(frame.current);
+      charge.current = null;
+      window.removeEventListener("blur", cancelCharge);
+      window.removeEventListener("keydown", escape);
+      document.removeEventListener("visibilitychange", hidden);
+    };
+  }, []);
   useEffect(() => {
     const el = wrap.current!;
     const observer = new ResizeObserver(() =>
@@ -320,6 +399,7 @@ export function Table(props: Props) {
     };
   }, [props.assets]);
   const changeCamera = (c: Camera) => {
+    cancelCharge();
     cam.current = c;
     setPose({ zoom: c.zoom, pan: c.pan });
   };
@@ -388,6 +468,7 @@ export function Table(props: Props) {
     props.flash,
     props.strikeCue,
     props.angle,
+    props.power,
     props.canAim,
     props.assist,
     props.placing,
@@ -409,7 +490,54 @@ export function Table(props: Props) {
       >
         <canvas
           ref={canvas}
-          aria-label="斯诺克球桌，点击瞄准，拖动平移"
+          tabIndex={0}
+          aria-label="斯诺克球桌，按住瞄准蓄力，松开击球；空格蓄力，方向键瞄准，Esc 取消"
+          aria-disabled={!props.canAim}
+          data-angle={props.angle}
+          onBlur={cancelCharge}
+          onKeyDown={(e) => {
+            if (
+              e.key === " " &&
+              !e.repeat &&
+              props.canAim &&
+              !props.placing &&
+              !movingView
+            ) {
+              e.preventDefault();
+              startCharge("keyboard", props.angle);
+            } else if (
+              [
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowUp",
+                "ArrowDown",
+                "Home",
+              ].includes(e.key) &&
+              props.canAim
+            ) {
+              e.preventDefault();
+              const angle =
+                e.key === "Home"
+                  ? 0
+                  : e.key === "ArrowUp"
+                    ? -Math.PI / 2
+                    : e.key === "ArrowDown"
+                      ? Math.PI / 2
+                      : props.angle +
+                        ((e.key === "ArrowLeft" ? -1 : 1) *
+                          (e.shiftKey ? 0.1 : 1) *
+                          Math.PI) /
+                          180;
+              props.onAim(angle);
+              if (charge.current) charge.current.angle = angle;
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === " ") {
+              e.preventDefault();
+              releaseCharge("keyboard");
+            }
+          }}
           onPointerDown={(e) => {
             if (e.button !== 0) return;
             const p = point(e);
@@ -419,11 +547,33 @@ export function Table(props: Props) {
               Math.hypot(p.x - (size.width - 60), p.y - 60) < 53
             )
               return;
+            e.currentTarget.focus({ preventScroll: true });
             pointers.current.set(e.pointerId, p);
-            if (!gesture.current)
-              gesture.current = { start: p, dragged: false };
-            if (pointers.current.size > 1) gesture.current.dragged = true;
             e.currentTarget.setPointerCapture(e.pointerId);
+            if (pointers.current.size > 1) {
+              cancelCharge();
+              gesture.current = { start: p, dragged: true, mode: "pan" };
+              return;
+            }
+            const cue = props.balls.find((b) => b.id === 0);
+            const mode =
+              movingView || !props.canAim
+                ? "pan"
+                : props.placing
+                  ? "place"
+                  : cue && !cue.down
+                    ? "shot"
+                    : "cancel";
+            if (mode === "shot" && cue) {
+              const world = screenToWorld(p, cam.current);
+              const angle = Math.atan2(
+                world.y - cue.pos.y,
+                world.x - cue.pos.x,
+              );
+              props.onAim(angle);
+              startCharge(e.pointerId, angle);
+            }
+            gesture.current = { start: p, dragged: false, mode };
           }}
           onPointerMove={(e) => {
             const old = pointers.current.get(e.pointerId);
@@ -432,7 +582,13 @@ export function Table(props: Props) {
               p = point(e);
             pointers.current.set(e.pointerId, p);
             const after = [...pointers.current.values()];
+            if (p.x < 0 || p.y < 0 || p.x > size.width || p.y > size.height) {
+              cancelCharge();
+              if (gesture.current) gesture.current.mode = "cancel";
+              return;
+            }
             if (after.length === 2) {
+              cancelCharge();
               const dist = (a: Vec[]) =>
                   Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y),
                 mid = (a: Vec[]) => ({
@@ -454,15 +610,20 @@ export function Table(props: Props) {
               );
               return;
             }
-            if (
-              gesture.current &&
-              Math.hypot(
-                p.x - gesture.current.start.x,
-                p.y - gesture.current.start.y,
-              ) > 5
-            )
-              gesture.current.dragged = true;
-            if (gesture.current?.dragged)
+            const g = gesture.current;
+            if (!g) return;
+            if (Math.hypot(p.x - g.start.x, p.y - g.start.y) > 5)
+              g.dragged = true;
+            if (g.mode === "shot" && charge.current) {
+              const cue = props.balls.find((b) => b.id === 0)!;
+              const world = screenToWorld(p, cam.current);
+              const angle = Math.atan2(
+                world.y - cue.pos.y,
+                world.x - cue.pos.x,
+              );
+              charge.current.angle = angle;
+              props.onAim(angle);
+            } else if (g.mode === "pan" && g.dragged) {
               changeCamera(
                 clampPan({
                   ...cam.current,
@@ -472,31 +633,53 @@ export function Table(props: Props) {
                   },
                 }),
               );
+            }
           }}
           onPointerUp={(e) => {
             if (!pointers.current.has(e.pointerId)) return;
-            const p = point(e);
+            const p = point(e),
+              g = gesture.current;
             pointers.current.delete(e.pointerId);
-            if (!gesture.current?.dragged && props.canAim) {
-              const world = screenToWorld(p, cam.current);
-              if (props.placing) props.onPlace(world);
-              else {
-                const cue = props.balls.find((b) => b.id === 0);
-                if (cue)
-                  props.onAim(
-                    Math.atan2(world.y - cue.pos.y, world.x - cue.pos.x),
-                  );
-              }
+            const inside =
+              p.x >= 0 && p.y >= 0 && p.x <= size.width && p.y <= size.height;
+            if (g?.mode === "shot" && inside) releaseCharge(e.pointerId);
+            else {
+              cancelCharge();
+              if (g?.mode === "place" && !g.dragged && inside && props.canAim)
+                props.onPlace(screenToWorld(p, cam.current));
             }
             if (!pointers.current.size) gesture.current = null;
             if (e.currentTarget.hasPointerCapture(e.pointerId))
               e.currentTarget.releasePointerCapture(e.pointerId);
           }}
           onPointerCancel={(e) => {
+            cancelCharge();
             pointers.current.delete(e.pointerId);
             gesture.current = null;
           }}
+          onLostPointerCapture={(e) => {
+            if (pointers.current.has(e.pointerId)) {
+              cancelCharge();
+              pointers.current.delete(e.pointerId);
+              gesture.current = null;
+            }
+          }}
         />
+        {charging && (
+          <div
+            className="snooker-charge"
+            role="progressbar"
+            aria-label="击球力度"
+            aria-valuemin={2}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(chargePower * 100)}
+          >
+            <span>力度 {Math.round(chargePower * 100)}% · 松开击球</span>
+            <div>
+              <i style={{ width: `${chargePower * 100}%` }} />
+            </div>
+          </div>
+        )}
         {props.flash && (
           <span className="snooker-respot-note" role="status">
             已复位：{props.flash.ids.map(ballName).join("、")}
@@ -504,7 +687,20 @@ export function Table(props: Props) {
         )}
       </div>
       <div className="snooker-camera">
-        <span>点击瞄准 · 拖动平移 · 滚轮／双指缩放</span>
+        <span>
+          {movingView
+            ? "拖动平移 · 滚轮／双指缩放"
+            : "按住瞄准蓄力 · 松开击球 · 移出球桌或 Esc 取消"}
+        </span>
+        <button
+          aria-pressed={movingView}
+          onClick={() => {
+            cancelCharge();
+            setMovingView((v) => !v);
+          }}
+        >
+          移动视图
+        </button>
         <button
           onClick={() =>
             changeCamera(

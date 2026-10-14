@@ -8,6 +8,7 @@ try{const {targetInfos}=await call('Target.getTargets');const target=targetInfos
  const points=step=>mode==='pinch'?[{x:+x-25-step*4,y:+y,id:1},{x:+x+25+step*4,y:+y,id:2}]:[{x:+x+(+toX-x)*step/8,y:+y+(+toY-y)*step/8,id:1}];
  await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:points(0)},sessionId);
  if(mode!=='tap')for(let step=1;step<=8;step++)await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:points(step)},sessionId);
- await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]},sessionId);
+ if(mode==='charge'||mode==='cancel')await new Promise(resolve=>setTimeout(resolve,500));
+ await call('Input.dispatchTouchEvent',{type:mode==='cancel'?'touchCancel':'touchEnd',touchPoints:[]},sessionId);
  await call('Emulation.setTouchEmulationEnabled',{enabled:false},sessionId);await call('Target.detachFromTarget',{sessionId});
 }finally{socket.close()}
