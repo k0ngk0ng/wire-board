@@ -412,3 +412,17 @@
   outline: 3px solid #d9b75f;
   outline-offset: -3px;
 }
+
+.snooker-end-explanation {
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #9fab95;
+  border-radius: 10px;
+  background: #e9eee1;
+  color: #234b37;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.snooker-end-explanation p {
+  margin: 5px 0 0;
+}

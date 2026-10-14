@@ -44,6 +44,7 @@ export type View = {
   offerTeam: number;
   winner: number;
   finishReason?: string;
+  endExplanation?: string;
   ruleset: string;
   options: Options;
   phase: string;

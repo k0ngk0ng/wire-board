@@ -306,6 +306,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			s.Phase = "finished"
 			s.FinishReason = "resigned"
 			s.note("%s 队认输本场", []string{"A", "B"}[team])
+			s.note("%s", s.finishExplanation("resigned"))
 		}
 	case "rerack":
 		if s.Phase != "aim" {
@@ -361,7 +362,7 @@ func project(m gameapi.Match, p int) (any, error) {
 	can := p >= 0 && p < s.Players && p == s.Turn
 	// All ball positions and scores are public. Never expose a future ruling or
 	// future score while the authoritative motion is still being displayed.
-	return map[string]any{"concede": s.Concede, "offerTeam": s.OfferTeam, "winner": s.Winner, "finishReason": s.FinishReason, "ruleset": s.Ruleset, "options": s.Options, "phase": s.Phase, "window": s.Window, "balls": s.Balls, "turn": s.Turn, "nextSeat": s.nextSeat(), "teams": s.Teams, "order": s.Order, "nextFirst": s.NextFirst, "scores": s.Scores, "framesWon": s.FramesWon, "frame": s.Frame, "break": s.Break, "bestBreak": s.BestBreak, "target": s.Target, "clear": s.Clear, "inHand": s.InHand, "freeBall": s.FreeBall, "flight": s.Flight, "foul": s.Foul, "missRun": s.MissRun, "blackDecider": s.BlackDecider, "ready": s.Ready, "resign": s.Resign, "rerack": s.Rerack, "results": s.Results, "remaining": Remaining(s.context()), "controls": map[string]any{"canClaim": can && s.canClaim(), "canConcede": p >= 0 && p < s.Players && s.Phase == "aim" && absInt(s.Scores[0]-s.Scores[1]) > Remaining(s.context()), "canAct": can && s.Phase != "rolling" && s.Phase != "finished", "canShoot": can && s.Phase == "aim", "canPlace": can && s.Phase == "aim" && s.InHand}}, nil
+	return map[string]any{"endExplanation": s.endExplanation(), "concede": s.Concede, "offerTeam": s.OfferTeam, "winner": s.Winner, "finishReason": s.FinishReason, "ruleset": s.Ruleset, "options": s.Options, "phase": s.Phase, "window": s.Window, "balls": s.Balls, "turn": s.Turn, "nextSeat": s.nextSeat(), "teams": s.Teams, "order": s.Order, "nextFirst": s.NextFirst, "scores": s.Scores, "framesWon": s.FramesWon, "frame": s.Frame, "break": s.Break, "bestBreak": s.BestBreak, "target": s.Target, "clear": s.Clear, "inHand": s.InHand, "freeBall": s.FreeBall, "flight": s.Flight, "foul": s.Foul, "missRun": s.MissRun, "blackDecider": s.BlackDecider, "ready": s.Ready, "resign": s.Resign, "rerack": s.Rerack, "results": s.Results, "remaining": Remaining(s.context()), "controls": map[string]any{"canClaim": can && s.canClaim(), "canConcede": p >= 0 && p < s.Players && s.Phase == "aim" && absInt(s.Scores[0]-s.Scores[1]) > Remaining(s.context()), "canAct": can && s.Phase != "rolling" && s.Phase != "finished", "canShoot": can && s.Phase == "aim", "canPlace": can && s.Phase == "aim" && s.InHand}}, nil
 }
 
 func (s *State) canClaim() bool {

@@ -258,6 +258,12 @@ export function Board({
           单杆 {d.break} · 台面余分 {d.remaining}
         </span>
       </div>
+      {d.endExplanation && (
+        <div className="snooker-end-explanation" role="status">
+          <strong>结束原因</strong>
+          <p>{d.endExplanation}</p>
+        </div>
+      )}
       {error && (
         <p className="snooker-error" role="alert">
           {error}
@@ -271,6 +277,7 @@ export function Board({
           canAim={
             d.controls.canShoot && !busy && !room.seats[room.you]?.autoPlay
           }
+          finished={d.phase === "finished"}
           gestureKey={`${room.id}:${d.window}`}
           onPower={(p) => setPower(p * 100)}
           onShoot={(angle, power) =>
