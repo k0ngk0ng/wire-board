@@ -66,7 +66,7 @@ func Module() gameapi.Module {
 			s.setTurn(s.first(toss()))
 			s.note("标准十五红球；抽签胜方选择开球队伍")
 			return s.match()
-		}, Apply: apply, View: project,
+		}, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim,
 		AcceptStale: func(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) bool {
 			s, e := decode(m)
 			if e != nil {

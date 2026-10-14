@@ -354,3 +354,39 @@
   white-space: nowrap;
   pointer-events: none;
 }
+
+.snooker-charge {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: min(280px, 85%);
+  padding: 9px 12px;
+  border: 1px solid #285640;
+  border-radius: 10px;
+  background: #fff9df;
+  color: #234b37;
+  pointer-events: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+.snooker-charge > div {
+  height: 10px;
+  margin-top: 6px;
+  border-radius: 5px;
+  background: #d6ddc7;
+  overflow: hidden;
+}
+.snooker-charge i {
+  display: block;
+  height: 100%;
+  background: #2a6545;
+}
+.snooker-camera button[aria-pressed="true"] {
+  background: #24523d;
+  color: #fff7db;
+}
+.snooker-table canvas:focus-visible {
+  outline: 3px solid #d9b75f;
+  outline-offset: -3px;
+}

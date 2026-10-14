@@ -25,6 +25,9 @@ def api(path,body=None,status=200):
  r=js('fetch('+json.dumps('/api'+path)+opt+').then(async r=>({status:r.status,body:await r.json()}))');assert r['status']==status,r;return r['body']
 def command(kind):
  r=api('/state')['room'];return api('/rooms/'+r['id'],{'type':kind,'version':r['version'],'nonce':uuid.uuid4().hex})
+def strike(angle,power):
+ browser('scrollintoview','.snooker-table canvas');browser('focus','.snooker-table canvas')
+ subprocess.run(['node','scripts/snooker/strike.mjs',browser('get','cdp-url')['cdpUrl'],base,str(angle),str(power)],cwd=root,env=env,check=True,timeout=20)
 def shot(name):
  assert not browser('errors')['errors'],browser('errors')
  assert js('document.documentElement.scrollWidth<=innerWidth+2'),name
@@ -57,11 +60,10 @@ try:
  rr=req('/state')['room'];req('/rooms/'+rr['id'],{'type':'ready','version':rr['version'],'nonce':uuid.uuid4().hex});command('ready');command('start');browser('reload');browser('wait','.snooker-board');browser('set','viewport','390','900')
  if reduced:browser('set','media','light','reduced-motion');assert js('matchMedia("(prefers-reduced-motion: reduce)").matches')
  if case=='colour':
-  browser('select','select[aria-label="本杆彩球"]','5');browser('fill','input[aria-label="方向（度）"]','-90');browser('press','Tab');browser('focus','input[aria-label="力度"]');browser('press','Home')
-  for _ in range(23):browser('press','ArrowRight')
+  browser('select','select[aria-label="本杆彩球"]','5')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'):browser('find','role','button','click','--name','取消静音','--exact')
   js("""window.__feedback={audio:[],score:[],spot:[]};const oldPlay=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const record={src:this.src,at:Date.now(),platform:this.hasAttribute('data-platform-audio')};window.__feedback.audio.push(record);return oldPlay.call(this).then(v=>{record.ok=true;return v},e=>{record.error=e.name;throw e})};new MutationObserver(()=>window.__feedback.score.push({at:Date.now(),value:document.querySelector('[data-snooker-score="0"]').textContent})).observe(document.querySelector('[data-snooker-score="0"]'),{subtree:true,characterData:true,childList:true});new MutationObserver(()=>window.__feedback.spot.push({at:Date.now(),ids:document.querySelector('.snooker-table').dataset.respot})).observe(document.querySelector('.snooker-table'),{attributes:true,attributeFilter:['data-respot']})""")
-  shot('blue-before');browser('find','role','button','click','--name','击球','--exact');browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"')
+  shot('blue-before');strike(-90,.25);browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"')
   d=api('/state')['room']['game']['data'];flight=d['flight'];assert d['scores']==[1,0];event=next(e for e in flight['motion']['events'] if e['kind']=='pot' and e['ball']==19);pot_at=flight['start']+event['time']*1000
   if hide_event:
    result=subprocess.run(['node','scripts/snooker/visibility-window.mjs',browser('get','cdp-url')['cdpUrl'],base,str(round(pot_at-220)),str(round(pot_at+110))],cwd=root,env=env,text=True,capture_output=True,check=True,timeout=20);report['visibility']=json.loads(result.stdout)

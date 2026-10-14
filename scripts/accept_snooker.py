@@ -24,6 +24,9 @@ def api(path,body=None,status=200):
  r=js('fetch('+json.dumps('/api'+path)+opt+').then(async r=>({status:r.status,body:await r.json()}))');assert r['status']==status,r;return r['body']
 def command(kind):
  r=api('/state')['room'];return api('/rooms/'+r['id'],{'type':kind,'version':r['version'],'nonce':uuid.uuid4().hex})
+def strike(angle,power):
+ browser('scrollintoview','.snooker-table canvas');browser('focus','.snooker-table canvas')
+ subprocess.run(['node','scripts/snooker/strike.mjs',browser('get','cdp-url')['cdpUrl'],base,str(angle),str(power)],cwd=root,env=env,check=True,timeout=20)
 def shot(name):
  assert not browser('errors')['errors'],browser('errors')
  assert js('document.documentElement.scrollWidth<=innerWidth+2'),name
@@ -78,7 +81,7 @@ try:
    browser('cookies','clear')
    for c in peers[seat-1].jar:browser('cookies','set',c.name,c.value,'--url',base,'--httpOnly')
    browser('reload');browser('wait','.snooker-board');r=api('/state')['room'];assert r['you']==seat and not r['game']['data']['controls']['canShoot']
-   assert js('[...document.querySelectorAll("button")].find(e=>e.textContent.trim()==="击球").disabled'),'partner can submit active player stroke';shot(f'seat-{n}-{seat}')
+   assert js('document.querySelector("canvas[aria-disabled]").getAttribute("aria-disabled")=="true"'),'partner can submit active player stroke';shot(f'seat-{n}-{seat}')
   browser('cookies','clear')
   for c in admin_cookies:browser('cookies','set',c['name'],c['value'],'--url',base,'--httpOnly')
   browser('reload');browser('wait','.snooker-board')
@@ -88,7 +91,7 @@ try:
   rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x,y=round(rect['x']+rect['width']/2),round(rect['y']+rect['height']/2)
   subprocess.run(['node','scripts/browser_wheel.mjs',browser('get','cdp-url')['cdpUrl'],base,str(x),str(y),'-200'],cwd=root,env=env,check=True,timeout=15)
   browser('wait','--fn','Number(document.querySelector(".snooker-table").dataset.zoom)>1')
-  browser('mouse','down');browser('mouse','move',str(x+35),str(y+25));browser('mouse','up')
+  browser('find','role','button','click','--name','移动视图','--exact');browser('mouse','move',str(x),str(y));browser('mouse','down');browser('mouse','move',str(x+35),str(y+25));browser('mouse','up');browser('find','role','button','click','--name','移动视图','--exact')
   assert api('/state')['room']['version']==initial['version'],'pan/zoom submitted an action'
   browser('find','role','button','click','--name','复位视图','--exact');shot(f'camera-{n}')
   browser('scrollintoview','.snooker-table canvas');rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x,y=round(rect['x']+rect['width']/2),round(rect['y']+rect['height']/2)
@@ -98,16 +101,13 @@ try:
   assert api('/state')['room']['version']==initial['version'],'pinch submitted a shot'
   browser('find','role','button','click','--name','复位视图','--exact');browser('scrollintoview','.snooker-table canvas');rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x,y=round(rect['x']+rect['width']*.35),round(rect['y']+rect['height']*.65)
   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'tap',str(x),str(y),str(x),str(y)],cwd=root,env=env,check=True,timeout=20)
-  assert abs(float(js("document.querySelector('input[type=number]').value")))>1,'native touch did not aim'
+  assert abs(float(js("document.querySelector('.snooker-table canvas').dataset.angle")))>.01,'native touch did not aim'
   assert api('/state')['room']['version']==initial['version'],'aim tap submitted a shot';shot(f'touch-{n}')
 
   # A deliberately soft natural opening stroke misses the distant red pack.
-  browser('fill','input[aria-label="方向（度）"]','0');browser('press','Tab')
-  browser('focus','input[aria-label="力度"]');browser('press','Home')
-  for _ in range(4):browser('press','ArrowRight')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="false"'):browser('find','role','button','click','--name','静音','--exact')
   js('window.__snookerAudio=[];const oldPlay=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){window.__snookerAudio.push(this.src);return oldPlay.call(this)}')
-  browser('find','role','button','click','--name','击球','--exact');browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"')
+  strike(0,.06);browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"')
   assert api('/state')['room']['game']['data']['scores']==[0,0]
   assert js('window.__snookerAudio.length')==0
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="foul"');after=api('/state')['room'];d=after['game']['data'];assert d['scores']==[0,4]
@@ -118,8 +118,7 @@ try:
   shot(f'restored-{n}')
   if js('document.querySelector(".sound-toggle").getAttribute("aria-pressed")==="true"'):browser('find','role','button','click','--name','取消静音','--exact')
   js('window.__snookerAudio=[];const original=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(){const record={src:this.src,at:Date.now(),platform:this.hasAttribute("data-platform-audio")};window.__snookerAudio.push(record);return original.call(this).then(v=>{record.ok=true;return v},e=>{record.error=e.name;throw e})}')
-  browser('fill','input[aria-label="方向（度）"]','0');browser('press','Tab')
-  browser('find','role','button','click','--name','击球','--exact');browser('wait','--fn','window.__snookerAudio.some(a=>a.src.includes("/snooker/")&&a.src.includes("/ball-"))')
+  strike(0,.35);browser('wait','--fn','window.__snookerAudio.some(a=>a.src.includes("/snooker/")&&a.src.includes("/ball-"))')
   flight=api('/state')['room']['game']['data']['flight'];first=min(e['time'] for e in flight['motion']['events'] if e['kind']=='ball')
   attempts=js('window.__snookerAudio.filter(a=>a.src.includes("/snooker/"))');assert all(a['platform'] for a in attempts)
   assert all(a['at']>=flight['start']+first*1000-35 for a in attempts if '/ball-' in a['src']),'ball sound preceded contact'

@@ -36,7 +36,7 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const [angle, setAngle] = useState(0),
-    [power, setPower] = useState(35),
+    [power, setPower] = useState(2),
     [top, setTop] = useState(0),
     [side, setSide] = useState(0),
     [nominate, setNominate] = useState(7),
@@ -268,7 +268,14 @@ export function Board({
           balls={d.phase === "rolling" ? drawBalls : d.balls}
           angle={(angle * Math.PI) / 180}
           power={power / 100}
-          canAim={d.controls.canShoot && !busy}
+          canAim={
+            d.controls.canShoot && !busy && !room.seats[room.you]?.autoPlay
+          }
+          gestureKey={`${room.id}:${d.window}`}
+          onPower={(p) => setPower(p * 100)}
+          onShoot={(angle, power) =>
+            void send("shoot", { angle, power, top, side, nominate, freeBall })
+          }
           assist={d.options.aimAssist === "line"}
           placing={placing}
           assets={assets}
@@ -390,7 +397,7 @@ export function Board({
                   </button>
                   {placing && (
                     <>
-                      <p>点击 D 区摆放白球，再取消摆球以瞄准。</p>
+                      <p>点击 D 区摆放白球，完成后按住球桌瞄准蓄力。</p>
                       <button
                         disabled={busy}
                         onClick={() =>
@@ -448,32 +455,6 @@ export function Board({
                   </select>
                 </label>
               )}
-              <label>
-                方向（度）
-                <input
-                  type="number"
-                  aria-label="方向（度）"
-                  min={-180}
-                  max={180}
-                  step={0.05}
-                  value={angle}
-                  disabled={!d.controls.canShoot}
-                  onChange={(e) => setAngle(Number(e.target.value))}
-                />
-              </label>
-              <label>
-                力度 <output>{power}%</output>
-                <input
-                  type="range"
-                  aria-label="力度"
-                  min={2}
-                  max={100}
-                  step={1}
-                  value={power}
-                  disabled={!d.controls.canShoot}
-                  onChange={(e) => setPower(+e.target.value)}
-                />
-              </label>
               <details className="snooker-spin">
                 <summary>击点 · 高低杆与侧旋</summary>
                 <label>
@@ -519,27 +500,6 @@ export function Board({
                   恢复中杆
                 </button>
               </details>
-              <button
-                className="snooker-strike"
-                disabled={
-                  !d.controls.canShoot ||
-                  busy ||
-                  placing ||
-                  !!d.balls.find((b) => b.id === 0)?.down
-                }
-                onClick={() =>
-                  void send("shoot", {
-                    angle: (angle * Math.PI) / 180,
-                    power: power / 100,
-                    top,
-                    side,
-                    nominate,
-                    freeBall,
-                  })
-                }
-              >
-                击球
-              </button>
             </>
           )}
           {d.phase === "rolling" && (
