@@ -39,6 +39,9 @@ func fillFeedbackHands(h [][]int, counts []int, bottom int) ([][]int, []int) {
 }
 func pokerBrowserModules() []gameapi.Module {
 	modules := games.Modules()
+	if os.Getenv("WIRE_BOARD_POKER_HINTS") == "1" {
+		return pokerHintModules(modules)
+	}
 	if os.Getenv("WIRE_BOARD_POKER_FEEDBACK") != "1" {
 		return modules
 	}

@@ -1,5 +1,5 @@
 import { soundFor } from "./sounds";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type {
   BoardProps,
   OptionsProps,
@@ -94,6 +94,7 @@ export function Board({
     { selected, setSelected } = useSelection(d.hand, room.id + ":" + d.window),
     [error, setError] = useState(""),
     [hint, setHint] = useState(0);
+  useEffect(() => setHint(0), [room.id, d.window]);
   const fresh = usePokerFeedback(
       d.events,
       room.id,

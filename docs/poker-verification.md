@@ -11,6 +11,7 @@
 | 升级 | 单双副有限副数及从 2 到过 A；亮主反主、取底扣底、结构跟牌、拒绝无效甩牌且状态不变、计分分档、抠底、换庄和 HTTP 自然整局 | `.local/poker/shengji/`，`.local/shengji-http.log` |
 | 真实浏览器 | 33 个截图检查点通过；四种当前模式、所有席位、1280／390／320px、地主及取底 33 张、鼠标与原生触屏多选、皮肤保留选牌、实际出牌／预览／扣底、重载无旧动效、统一静音及最终计算样式对比度 | `.local/poker/browser/result.json`，同目录截图与 `*-contrast.json` |
 | 定点浏览器反馈 | 13 个检查点：三皮肤 Joker、手动乱序三带二／顺子／炸弹／王炸、桌面及 320px 暴露角标可见、只播放一次实际报牌 URL、静音、升级主牌顺序及无效甩牌不变 | `.local/poker-fixes/feedback/result.json`，同目录截图 |
+| 接牌提示 | 斗地主与掼蛋在对 5、持 888899 时先选对 9；保留拆牌与炸弹候选，连续提示循环，新轮次和重载重置；实际出对 9 后保留四个 8。8 个浏览器检查点通过 | `.local/poker-hints/browser/result.json`、同目录截图，规则排序回归见 `.local/poker-hints/green.log` |
 | 素材发布 | 162 张 v4 牌面、3 款牌背、3 款原创封面、4 个纸牌声和 64 个报牌音频，共 236 个当前 OSS 文件逐个回读；校验和、MIME 与格式签名通过 | `assets/poker/manifest.json`，`.local/poker/oss-readback.json` |
 | 平台回归 | 313 项前端测试通过（含延迟事件与重连反馈过滤）；平台模块生命周期、管理和合作模式针对性回归通过；`go vet ./...`、生产构建与依赖边界检查通过 | `.local/poker-fixes/web-tests-final.log`、`.local/poker-fixes/platform-final.log`、`.local/poker-fixes/vet-all-final.log` |
 
@@ -27,6 +28,7 @@ python3 -B scripts/check_game_boundaries.py
 python3 -B scripts/accept_poker.py
 WIRE_BOARD_POKER_ASSETS=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/accept_poker.py
 WIRE_BOARD_POKER_ASSETS=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/poker/check-feedback.py
+python3 -B scripts/poker/check-hints.py
 python3 -B scripts/poker/verify_oss.py
 ```
 
