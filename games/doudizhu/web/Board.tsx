@@ -105,6 +105,7 @@ export function Board({
     [reports, setReports] = useState<number[]>([]),
     [peek, setPeek] = useState<"bottom" | "open" | null>(null);
   useEffect(() => {
+    setHint(0);
     setOpen(false);
     setReports([]);
     setError("");

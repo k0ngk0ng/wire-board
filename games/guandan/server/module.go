@@ -281,6 +281,9 @@ func (s *State) controls(p int) Controls {
 				c.Moves = append(c.Moves, m)
 			}
 		}
+		if s.LastPlay != nil {
+			sortResponseHints(c.Moves, s.Hands[p], s.Level)
+		}
 	case "tribute":
 		c.Choices = s.tributeChoices(p)
 	case "return":
