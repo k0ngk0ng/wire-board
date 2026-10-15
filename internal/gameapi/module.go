@@ -2,6 +2,7 @@
 package gameapi
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,6 +10,18 @@ import (
 	"slices"
 	"time"
 )
+
+// BotSearch is an optional bounded worker. Input is a fast, pure projection
+// that MUST remove information unavailable to the acting seat. Think receives
+// only that detached projection outside the host lock, may run a local engine,
+// and must respect cancellation. BotAction remains the fast legal fallback.
+// A nil successful proposal means idle, just as for BotAction. Budget defaults
+// to one second and cannot exceed ten seconds. Search is never persisted.
+type BotSearch struct {
+	Input  func(Context, Match) (json.RawMessage, error)
+	Think  func(context.Context, json.RawMessage) (json.RawMessage, error)
+	Budget time.Duration
+}
 
 type Context struct {
 	Actor, Players            int
@@ -50,7 +63,9 @@ type Result struct {
 	Details     json.RawMessage `json:"details,omitempty"`
 }
 
-// Module callbacks must not perform I/O or mutate their inputs. The host owns
+// Module callbacks must not perform I/O or mutate their inputs, except that
+// BotSearch.Think may run a cancellable local engine outside the host lock.
+// The host owns
 // authentication, transactions, clocks, deduplication and publication. Keep all
 // game-specific types, decoding and snapshot upgrades in the game's package.
 type Module struct {
@@ -62,6 +77,8 @@ type Module struct {
 	Start      func(Context, json.RawMessage) (Match, error)                        `json:"-"`
 	Apply      func(Context, Match, json.RawMessage) (Match, error)                 `json:"-"`
 	View       func(Match, int) (any, error)                                        `json:"-"`
+	BotSearch  *BotSearch                                                           `json:"-"`
+	// BotAction is a fast pure fallback; use BotSearch for expensive computation.
 	// BotAction may return nil, nil when no decision is available. The host
 	// tries the remaining controlled actors without persisting an idle action.
 	BotAction func(Context, Match) (json.RawMessage, error) `json:"-"`
@@ -86,6 +103,9 @@ func (m Module) Validate() error {
 	}
 	if m.Configure == nil || m.Start == nil || m.Apply == nil || m.View == nil || (m.BotAction == nil) != (m.Reclaim == nil) {
 		return fmt.Errorf("incomplete game registration: %s", m.ID)
+	}
+	if b := m.BotSearch; b != nil && (m.BotAction == nil || b.Input == nil || b.Think == nil || b.Budget < 0 || b.Budget > 10*time.Second) {
+		return fmt.Errorf("invalid bot search registration: %s", m.ID)
 	}
 	return nil
 }

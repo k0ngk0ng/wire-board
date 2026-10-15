@@ -265,6 +265,26 @@ func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 			}
 		}
 	}
+	if m.BotSearch != nil {
+		// Persist timeout control before starting work, so a returning player can
+		// cancel it and Reclaim their expired window while search is pending.
+		changed := false
+		for i := range next.Seats {
+			changed = changed || next.Seats[i].AutoPlay != room.Seats[i].AutoPlay
+		}
+		if expired && changed {
+			next.Version++
+			next.Updated = now.Unix()
+			record := map[string]any{"type": "autoplay", "enabled": true, "timeout": true, "actors": actors}
+			if err := s.persistModuleBotEvent(&next, actors[0], record, now); err != nil {
+				log.Printf("save timeout bot control room %s: %v", room.ID, err)
+				return
+			}
+		}
+		if s.startModuleBotSearch(&next, now, expired) {
+			return
+		}
+	}
 	actor := -1
 	var action json.RawMessage
 	for _, candidate := range actors {
@@ -285,32 +305,49 @@ func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 	if actor < 0 {
 		return
 	}
-	err = s.applyModule(&next, actor, next.Version, action, now)
-	if err != nil {
+	if err := s.commitModuleBotDecision(&next, actor, action, now, expired); err != nil {
 		log.Printf("module bot room %s: %v", room.ID, err)
-		return
+	}
+}
+
+func (s *Server) commitModuleBotDecision(next *Room, actor int, action json.RawMessage, now time.Time, expired bool) error {
+	if err := s.applyModule(next, actor, next.Version, action, now); err != nil {
+		return err
 	}
 	next.Version++
 	next.Updated, next.BotAt = now.Unix(), now.Add(900*time.Millisecond).UnixMilli()
 	if !expired && !next.Seats[actor].TimeoutAutoPlay {
 		next.LastActive = next.Updated
 	}
-	snapshot, err := json.Marshal(&next)
+	record := map[string]any{"type": "action", "action": action, "bot": next.Seats[actor].Bot, "autoPlay": next.Seats[actor].AutoPlay}
+	return s.persistModuleBotEvent(next, actor, record, now)
+}
+
+// Caller holds s.mu. Persist control and decisions through the same transactional
+// journal, publication and archive path; idle search never reaches this function.
+func (s *Server) persistModuleBotEvent(next *Room, actor int, event any, now time.Time) error {
+	snapshot, err := json.Marshal(next)
 	if err != nil {
-		return
+		return err
 	}
-	record, err := json.Marshal(map[string]any{"type": "action", "action": json.RawMessage(action), "bot": next.Seats[actor].Bot, "autoPlay": next.Seats[actor].AutoPlay})
+	// The caller can continue preparing another candidate (notably after a
+	// timeout-control commit). Publish a detached copy of the committed bytes.
+	var stored Room
+	if err = json.Unmarshal(snapshot, &stored); err != nil {
+		return err
+	}
+	record, err := json.Marshal(event)
 	if err != nil {
-		return
+		return err
 	}
 	tx, err := s.db.Begin()
 	if err != nil {
-		return
+		return err
 	}
 	defer tx.Rollback()
 	_, err = tx.Exec("UPDATE rooms SET snapshot=? WHERE id=?", snapshot, next.ID)
 	if err == nil {
-		err = archiveGame(tx, &next)
+		err = archiveGame(tx, next)
 	}
 	if err == nil {
 		_, err = tx.Exec("INSERT INTO actions VALUES(?,?,?,?,?,?)", next.ID, next.Seats[actor].ID, fmt.Sprintf("bot-%d", next.Version), next.Version, record, now.Unix())
@@ -319,9 +356,9 @@ func (s *Server) runModuleBot(room *Room, now time.Time, expired bool) {
 		err = tx.Commit()
 	}
 	if err != nil {
-		log.Printf("save module bot room %s: %v", room.ID, err)
-		return
+		return err
 	}
-	s.rooms[next.ID] = &next
+	s.rooms[next.ID] = &stored
 	s.broadcast()
+	return nil
 }
