@@ -5368,3 +5368,6 @@ label small {
   min-width: 0;
   overflow-wrap: anywhere;
 }
+.rating-neutral {
+  color: #405a48;
+}

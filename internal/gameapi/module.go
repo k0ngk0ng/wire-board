@@ -55,6 +55,9 @@ type Match struct {
 // Cooperative games share one outcome: all seats win, or nobody wins. They
 // never award competitive ratings and all seats retain rank 1.
 type Result struct {
+	// Draw is an explicit competitive draw, never a shared victory. Every seat
+	// has rank 1, Winners is empty, and no competitive rating points are moved.
+	Draw        bool            `json:"draw,omitempty"`
 	Ranks       []int           `json:"ranks"`
 	Winners     []int           `json:"winners"`
 	Scores      []int           `json:"scores,omitempty"`
@@ -145,14 +148,17 @@ func (m Match) Validate(players int) error {
 		return nil
 	}
 	r := m.Result
-	if len(r.Ranks) != players || (!r.Cooperative && len(r.Winners) == 0) || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 || m.Deadline != 0 || m.SystemDeadline != 0 || (len(r.Scores) != 0 && len(r.Scores) != players) {
+	if len(r.Ranks) != players || (!r.Cooperative && !r.Draw && len(r.Winners) == 0) || len(m.Actors) != 0 || len(m.TimeoutActors) != 0 || m.Deadline != 0 || m.SystemDeadline != 0 || (len(r.Scores) != 0 && len(r.Scores) != players) {
 		return errors.New("invalid game result")
+	}
+	if r.Draw && (players < 2 || r.Cooperative || len(r.Winners) != 0) {
+		return errors.New("invalid drawn outcome")
 	}
 	if r.Cooperative && (r.Team || (len(r.Winners) != 0 && len(r.Winners) != players)) {
 		return errors.New("invalid cooperative outcome")
 	}
 	for _, rank := range r.Ranks {
-		if rank < 1 || rank > players || (r.Cooperative && rank != 1) {
+		if rank < 1 || rank > players || ((r.Cooperative || r.Draw) && rank != 1) {
 			return errors.New("invalid game rank")
 		}
 	}

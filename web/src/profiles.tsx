@@ -32,6 +32,7 @@ export function PlayerName({
   );
 }
 type History = {
+  draw?: boolean;
   splendorCatalog?: string;
   splendorOptions?: SplendorOptions;
   catanExpansions?: string[];
@@ -334,7 +335,13 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                   ` · ${match.sanguoshaOptions?.mode === "hegemony" ? "国战双将" : match.sanguoshaOptions?.deck === "military" ? "标准＋军争" : "身份局"}`}{" "}
                 · {match.room}
               </strong>
-              <span>{match.status === "finished" ? "已结算" : "已中止"}</span>
+              <span>
+                {match.status === "finished"
+                  ? match.draw
+                    ? "和棋"
+                    : "已结算"
+                  : "已中止"}
+              </span>
             </header>
             <time>
               {new Date(match.ended * 1000).toLocaleString("zh-CN")} ·{" "}
@@ -353,12 +360,16 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
                   {match.rated && (
                     <b
                       className={
-                        player.ratingDelta! > 0 ? "rating-gain" : "rating-loss"
+                        match.draw
+                          ? "rating-neutral"
+                          : player.ratingDelta! > 0
+                            ? "rating-gain"
+                            : "rating-loss"
                       }
                     >
                       {" "}
                       · 积分 {player.ratingDelta! > 0 ? "+" : ""}
-                      {player.ratingDelta}
+                      {player.ratingDelta ?? 0}
                     </b>
                   )}
                 </span>
