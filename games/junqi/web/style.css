@@ -1,0 +1,367 @@
+.junqi-board {
+  color: #263f34;
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+.junqi-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 4px 0 14px;
+}
+.junqi-heading h2 {
+  margin: 0;
+  font-size: 23px;
+}
+.junqi-heading p,
+.junqi-actions p {
+  color: #455a48;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 5px 0 10px;
+}
+.junqi-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 800px) minmax(240px, 310px);
+  gap: 18px;
+  justify-content: center;
+  align-items: start;
+}
+.junqi-board.duel .junqi-workspace {
+  grid-template-columns: minmax(0, 480px) minmax(240px, 310px);
+}
+.junqi-play-area {
+  min-width: 0;
+}
+.junqi-map-tools {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #3e5947;
+}
+.junqi-board button {
+  font: inherit;
+}
+.junqi-map-tools button,
+.junqi-actions button:not(.primary) {
+  padding: 8px 11px;
+  color: #244f40;
+  background: #fffef7;
+  border: 1px solid #93a58e;
+  border-radius: 7px;
+}
+.junqi-actions .primary {
+  padding: 10px;
+  color: #fff;
+  background: #285b43;
+  border: 1px solid #285b43;
+  border-radius: 7px;
+}
+.junqi-board button:disabled {
+  opacity: 1;
+  color: #52604b;
+  background: #e7ecdf;
+  cursor: not-allowed;
+}
+.junqi-board button:focus-visible {
+  outline: 3px solid #2c6b50;
+  outline-offset: 2px;
+}
+.junqi-orientation {
+  font-size: 13px;
+  margin: 9px 0;
+  color: #3c5442;
+}
+.junqi-viewport {
+  height: clamp(480px, 68vh, 780px);
+  overflow: auto;
+  background: #c8cdb6;
+  border: 1px solid #8c9a7e;
+  border-radius: 12px;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+  cursor: grab;
+}
+.junqi-viewport.dragging {
+  cursor: grabbing;
+}
+.junqi-map {
+  user-select: none;
+}
+.junqi-grid,
+.junqi-motion-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.junqi-motion-layer {
+  z-index: 8;
+}
+.junqi-board .junqi-node {
+  position: absolute;
+  min-width: 26px;
+  min-height: 24px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+  touch-action: pan-x pan-y;
+}
+.junqi-board .junqi-node:not(:disabled):active {
+  transform: translate(-50%, -50%);
+}
+.junqi-board .junqi-node:hover {
+  background: #ffffff28;
+}
+.junqi-node.selected,
+.junqi-node.target {
+  outline: 3px solid #155d3b;
+  outline-offset: 1px;
+  z-index: 4;
+}
+.junqi-piece {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-width: 24px;
+  pointer-events: none;
+}
+.junqi-piece img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.junqi-piece-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 94%;
+  height: 87%;
+  border: 2px solid var(--army-color);
+  border-radius: 5px;
+  background: #fff2d2;
+  color: var(--army-color);
+  font: bold clamp(11px, 1.5vw, 22px) serif;
+}
+.junqi-piece-fallback.back {
+  background: var(--army-color);
+  color: #fff2d2;
+}
+.junqi-destination {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #15623e;
+  border-radius: 50%;
+  border: 2px solid #eff7e8;
+  pointer-events: none;
+  z-index: 5;
+}
+.junqi-destination.capture {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 3px solid #b23c28;
+  border-radius: 8px;
+}
+.junqi-actions {
+  background: #fbfaf1;
+  color: #263f34;
+  padding: 16px;
+  border: 1px solid #a9b49e;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.junqi-actions h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.junqi-actions p {
+  margin: 0;
+}
+.junqi-actions button {
+  min-height: 38px;
+}
+.junqi-overview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #c5cfbd;
+  padding-bottom: 12px;
+}
+.junqi-overview > div {
+  flex: 1;
+  min-width: 0;
+}
+.junqi-overview strong {
+  font-size: 14px;
+}
+.junqi-minimap {
+  width: 100px;
+  max-height: 170px;
+  border: 1px solid #91a080;
+  border-radius: 5px;
+  touch-action: none;
+  cursor: crosshair;
+  flex: none;
+}
+.junqi-board.duel .junqi-minimap {
+  width: 70px;
+}
+.junqi-draw-offer {
+  display: grid;
+  gap: 8px;
+  border: 1px solid #91a88e;
+  border-radius: 8px;
+  padding: 10px;
+}
+.junqi-player-summary {
+  display: grid;
+  gap: 4px;
+}
+.junqi-player-summary strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.junqi-player-summary i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+.junqi-player-summary b {
+  font-size: 14px;
+  color: #263f34;
+}
+.junqi-player-summary small {
+  color: #43573e;
+}
+.junqi-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.junqi-options p {
+  grid-column: 1/-1;
+  margin: 0;
+  color: #43573e;
+}
+.junqi-options label {
+  display: grid;
+  gap: 6px;
+}
+.junqi-cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.junqi-cover svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@media (max-width: 760px) {
+  .junqi-workspace,
+  .junqi-board.duel .junqi-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .junqi-viewport {
+    height: 540px;
+    max-height: 70vh;
+    min-height: 420px;
+  }
+  .junqi-actions {
+    padding: 12px;
+  }
+  .junqi-heading h2 {
+    font-size: 20px;
+  }
+  .junqi-heading p {
+    font-size: 12px;
+  }
+}
+/* The phone starts with a complete overview. Compact markers only locate an
+   area; the first tap zooms in before a piece can be selected or moved. */
+.junqi-board.overview .junqi-node {
+  min-width: 0;
+  min-height: 0;
+  border-radius: 2px;
+}
+.junqi-board.overview .junqi-piece {
+  min-width: 0;
+}
+.junqi-board.teams.overview .junqi-piece img,
+.junqi-board.teams.overview .junqi-piece-fallback {
+  display: none;
+}
+.junqi-board.teams.overview .junqi-piece::after {
+  content: "";
+  display: block;
+  width: 82%;
+  height: 76%;
+  background: var(--army-color);
+  border: 1px solid #fff9e5;
+  border-radius: 2px;
+}
+.junqi-board.overview .junqi-grid text {
+  display: none;
+}
+.junqi-board.overview .junqi-destination {
+  width: 6px;
+  height: 6px;
+  border-width: 1px;
+}
+@media (max-width: 850px) {
+  .junqi-workspace,
+  .junqi-board.duel .junqi-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .junqi-viewport {
+    height: clamp(320px, 62svh, 520px);
+    min-height: 0;
+    max-height: none;
+  }
+  .junqi-board.teams .junqi-viewport {
+    height: auto;
+    aspect-ratio: 1;
+    max-height: 62svh;
+  }
+  .junqi-board.overview .junqi-overview {
+    display: none;
+  }
+}
+@media (min-width: 851px) {
+  .junqi-board.teams .junqi-viewport {
+    min-height: 560px;
+  }
+}
+@media (max-width: 1024px) {
+  .junqi-board.teams .junqi-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

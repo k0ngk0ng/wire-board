@@ -1,0 +1,414 @@
+{
+  "version": "junqi/v1",
+  "font": {
+    "repository": "google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "files": [
+      {
+        "name": "NotoSerifSC[wght].ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf",
+        "bytes": 25125512,
+        "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9"
+      },
+      {
+        "name": "OFL.txt",
+        "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/notoserifsc/OFL.txt",
+        "bytes": 4350,
+        "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+      }
+    ],
+    "license": "OFL-1.1",
+    "licenseEvidence": "games/junqi/assets/licenses/NotoSerifSC-OFL.txt"
+  },
+  "images": {
+    "source": "games/junqi/assets/art.ts",
+    "method": "Original SVG; fontTools 4.60.1 wght=700, @resvg/resvg-js 2.6.2 and lossless cwebp"
+  },
+  "audioSource": {
+    "url": "https://kenney.nl/media/pages/assets/boardgame-pack/a1656828d2-1677667644/kenney_boardgame-pack.zip",
+    "sha256": "3b6a7dd5af658d1ffa0071429d5dde10ff63121e88bd06d4904e721e60b2c398",
+    "license": "CC0-1.0",
+    "licenseEvidence": "games/junqi/assets/licenses/kenney-boardgame.txt"
+  },
+  "generator": "node --experimental-strip-types scripts/junqi/prepare-assets.mjs",
+  "files": [
+    {
+      "file": "images/0-commander.webp",
+      "bytes": 1862,
+      "sha256": "0671f178089fc96dead21b76b6dd771b9488124ab0caa01f0e27d9b4831878ae",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-general.webp",
+      "bytes": 1960,
+      "sha256": "b53dd145d5710c8cca2e034345a7a86a82f138625bdf38d4d0f9dcff1e6684a1",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-division.webp",
+      "bytes": 1860,
+      "sha256": "20537d8c4a61e277f033f45729c2179ae0c97bdad3a5e2b7b40bd6702b2fe3de",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-brigade.webp",
+      "bytes": 2304,
+      "sha256": "dec3a517f1659d9054084dc85561b7153251e519f758b590e83a0e9b2f4c99bd",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-regiment.webp",
+      "bytes": 1838,
+      "sha256": "97da14f62a259d2c98c387ce770d6e7ab09e170feb01cbb6a8bfd13643c2c036",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-battalion.webp",
+      "bytes": 1932,
+      "sha256": "4c90111318a74fbbe405a4d81ec08503d374ac590e89b0a17e4482be336a73df",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-company.webp",
+      "bytes": 2078,
+      "sha256": "d4e24f63c392044456b77b8501e3ba77b27bc8e2ffc1b52402a0e07773368561",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-platoon.webp",
+      "bytes": 1912,
+      "sha256": "61b03edd05d122ad58e58272981bf79d5d4c03ee0f96e49296b76a904469a36e",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-engineer.webp",
+      "bytes": 1534,
+      "sha256": "c7eadff15c12e494fcaf97a2f9e1a66c485f345dbf47589d911e70b3c65dee01",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-bomb.webp",
+      "bytes": 2168,
+      "sha256": "1a4133ce41e22cb6f182734937aaa0cbf0b14f2755296a00f75401d38411c97c",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-mine.webp",
+      "bytes": 1868,
+      "sha256": "5a1a2c2539f362d609c1af1be48a3cf5430ac3e8fe9f928021659fa1634695f3",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-flag.webp",
+      "bytes": 2206,
+      "sha256": "facd4e7bd6a3864568f773a633e54d0061dd308724254ab8946b8b55523b4a46",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/0-back.webp",
+      "bytes": 1396,
+      "sha256": "cf9bd85fe0692ec1e87e33f70c31f89db866041b56e08c3358a741fea4cc1956",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-commander.webp",
+      "bytes": 1864,
+      "sha256": "b86e91c067a9e64c8e75a72910d7a2524bf76bd41dd26ef14f59ea96b3e78883",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-general.webp",
+      "bytes": 1982,
+      "sha256": "f55ab85e1260021b08079eb2cf8652d70f3fe2e0aba94686306c76fee3e11907",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-division.webp",
+      "bytes": 1870,
+      "sha256": "98a3d11c2ca7ace746ea7d05d958357704be0725675a1ef197f5a016d83c0016",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-brigade.webp",
+      "bytes": 2254,
+      "sha256": "7325220a979a9bfe76768ce841447391fb6ca98f28e0016f4dd2fc8eb0962228",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-regiment.webp",
+      "bytes": 1854,
+      "sha256": "b73426898f159e90cca9160a3739336a32b3cf5f36db93bc3e55fa4e0fb745ac",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-battalion.webp",
+      "bytes": 1948,
+      "sha256": "476c3e7f3fcbb58a36c217db6ccece2d9682a754e1576082eac4c40b492a3567",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-company.webp",
+      "bytes": 2098,
+      "sha256": "36fdb84ae439063e2af98cc4455338f82b3c71fd2f977ae88091077cab70afb9",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-platoon.webp",
+      "bytes": 1922,
+      "sha256": "a94542244cf1a6246f0abad908474655fb2caf88b87aa841c4494d4962a8d10c",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-engineer.webp",
+      "bytes": 1542,
+      "sha256": "89de79859ddf49a97c118a27d9f13ad36fff94e2fcd0bddf7ae5b6e9cb7ff4c8",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-bomb.webp",
+      "bytes": 2176,
+      "sha256": "87fcf9acaa9c7c0d5ee1a4ccffa4446b008529caadda4ce7183ece3ea25cbb3f",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-mine.webp",
+      "bytes": 1878,
+      "sha256": "98200eac27d40ec118d2a2789c10362c3060bb3638a6065707cec2e180dc5ba7",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-flag.webp",
+      "bytes": 2208,
+      "sha256": "8ba0b2b23b93e50d32adc6dd271e7ce02b14dfce3bf36bb9b61a5dd3ebda26a9",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/1-back.webp",
+      "bytes": 1404,
+      "sha256": "1bb198fdfdd1852cf5b22f9ac8aff0d7cfa1c2498f98640e1b7876abf370622a",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-commander.webp",
+      "bytes": 1858,
+      "sha256": "ccd9e8a020a4ae15dc55d370fb2feb897aaa1baf8a7e8c851bad3c3aaba616db",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-general.webp",
+      "bytes": 1930,
+      "sha256": "4f3f84156e53ebb401d6d5a556f24488799e930bcecc66e26c873cff5d4af3f9",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-division.webp",
+      "bytes": 1858,
+      "sha256": "205fc50e5817a15c2723be8ff98770494f5e35f92b99e85f66393c27815bd78b",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-brigade.webp",
+      "bytes": 2300,
+      "sha256": "231b86a2cd3036b3eb981bee3f3f4fca7b8d19ef1aa12f983b0bed92c3d1bb14",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-regiment.webp",
+      "bytes": 1838,
+      "sha256": "fc9333e27c3d7452ab350bd3802521583ce8e33cd94a8b8a8aa4925b2c7fa98f",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-battalion.webp",
+      "bytes": 1932,
+      "sha256": "cc2a2a33a3435e3504e182f096f449d97c78ce6a589fc734befabcffe550c7c7",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-company.webp",
+      "bytes": 2038,
+      "sha256": "1fea3aafa7ba5a779f751b080f50e01331802e0c69af0aa507e0a988079e6aa6",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-platoon.webp",
+      "bytes": 1878,
+      "sha256": "97ed4f5d5f02fcf3448d5415f54b0e04ad6fe4faa7da263074a27df3d939e1b3",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-engineer.webp",
+      "bytes": 1522,
+      "sha256": "109d2822c48065cd263b2041b6e4cbfea77b65253b616cce83c0367c1642e488",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-bomb.webp",
+      "bytes": 2162,
+      "sha256": "e0504975ae557528d085e441cb9bf03b906c560f395580b34e6ca40056294590",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-mine.webp",
+      "bytes": 1862,
+      "sha256": "cb4a42dc797ca4d8105df5a6c17fa92da0317c6788520918ba9c168020fc165d",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-flag.webp",
+      "bytes": 2194,
+      "sha256": "027b269e230aa8942164b0ceef91a3b0aa6080e30dd265bca06679ab1a4661a3",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/2-back.webp",
+      "bytes": 1386,
+      "sha256": "0d6d2ac4d594148bef72eceda0fca57e52eaa91427c5ebbc28296a726ee3b426",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-commander.webp",
+      "bytes": 1866,
+      "sha256": "b18a06569ef6030bcaa256ec117a03f31de1d33abc95ab5c7e3587ccd0817a7c",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-general.webp",
+      "bytes": 1974,
+      "sha256": "dd2c40e1e51edb1049ccfdf5b92d2f21b10990c9fca8195d2e0118f350c265a5",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-division.webp",
+      "bytes": 1866,
+      "sha256": "751df06a9b94e35b7381a51e52132f9b444a7b197bd4085ebed966773a94c0b0",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-brigade.webp",
+      "bytes": 2260,
+      "sha256": "72f9a5de8eb42face089bc27f883e875a566fbed6442319c3c7bf7f0cf30cd69",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-regiment.webp",
+      "bytes": 1812,
+      "sha256": "6c9be31ab8735ea117dacc8133d10fb19e0da7824da2b059dcce9e30a074481e",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-battalion.webp",
+      "bytes": 1944,
+      "sha256": "2a1d384b7111294d1b1e6faeb494adb654b8e6c8f058447e0377bc1f95921d4a",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-company.webp",
+      "bytes": 2042,
+      "sha256": "e06586d1127d412469802df16e55bb0478f2e7837e507038b34fda1303d570d3",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-platoon.webp",
+      "bytes": 1920,
+      "sha256": "efe18e1caa4de1c8f44ab4fd45a30c95f4c556c7b7844a30636ff448a2091ad7",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-engineer.webp",
+      "bytes": 1538,
+      "sha256": "b6099648b7201df7623c85dbcf420d106e8e2b79bdf2d9f1eae9beba47ef345a",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-bomb.webp",
+      "bytes": 2182,
+      "sha256": "802c0e1176fad5a5c873a9794fa67997802118038b0ebd4a5b5cc353b5c909b6",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-mine.webp",
+      "bytes": 1842,
+      "sha256": "891726ac89491883f5d81c2d6d1b6e123967b6653ace68f0ddbb1729ea11925b",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-flag.webp",
+      "bytes": 2242,
+      "sha256": "303c1fce6808ba13f4155ce7c995dc6db4a39a8c5cfcca78ecbc550f65271115",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/3-back.webp",
+      "bytes": 1400,
+      "sha256": "e21f08fce328d20b7b331bec43957de8b6c3f740b245fcf1f432c6963e445f66",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/board-duel.webp",
+      "bytes": 4146,
+      "sha256": "2b515010d9809f9888f69158b2225a46e48874b8ce388edaa0c945bf7f32912e",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/board-teams.webp",
+      "bytes": 7696,
+      "sha256": "1d830dcc241ac969952aa29260192382993655cd6f0d229d1069dfc50f19a920",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "images/cover.webp",
+      "bytes": 23322,
+      "sha256": "b2aca836486af3eeca0c46e0cf26f713272476d7a806afc54ee218eeb256bcb1",
+      "source": "Original SVG: games/junqi/assets/art.ts; Noto Serif SC OFL at wght=700"
+    },
+    {
+      "file": "audio/move.wav",
+      "bytes": 22900,
+      "sha256": "8b69e0ea48711a3fa2917a6b4bfe35ce1b3e00718bb57afc316ba5aecd14b721",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide1.ogg; mono 44.1kHz PCM volume=0.7"
+    },
+    {
+      "file": "audio/capture.wav",
+      "bytes": 22900,
+      "sha256": "1869ead26b1b6f0e436de7c9590d53b0d940e2ef48df90149f89b9a2315f07c6",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide3.ogg; mono 44.1kHz PCM volume=0.7"
+    },
+    {
+      "file": "audio/reveal.wav",
+      "bytes": 56492,
+      "sha256": "8690817a0f8a4085337bce3705f3abf9dad926f31926fd0c72fc7cf981adecf7",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#turn"
+    },
+    {
+      "file": "audio/flag.wav",
+      "bytes": 48556,
+      "sha256": "aa1c49889cdcf96fd880b833cf3d28f4e74c898eaaaa94ff0cc88e317f234121",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#buy"
+    },
+    {
+      "file": "audio/win.wav",
+      "bytes": 100594,
+      "sha256": "394fe0a9e5e254c877c8b67eafd0b8f99f6366769998e09dc6a41cd5395c910d",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#finish"
+    },
+    {
+      "file": "audio/draw.wav",
+      "bytes": 32678,
+      "sha256": "87474ad45994c47e7bcd527975fa8fb74654b671cc45df3771d3dbc4fcf13d44",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#reserve"
+    },
+    {
+      "file": "audio/ready.wav",
+      "bytes": 32678,
+      "sha256": "032ddf4a2e1a5eeeedc0be81a41af8d67dc2ff4d93992f2ba0aaa9d131b5b445",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#move"
+    },
+    {
+      "file": "audio/bomb.wav",
+      "bytes": 26504,
+      "sha256": "b5afc60c994613c56e08a5a81e983e9957c90e152560855ca9e9a32a726f1545",
+      "source": "Original deterministic filtered noise and decaying sine in scripts/junqi/prepare-assets.mjs"
+    }
+  ]
+}
