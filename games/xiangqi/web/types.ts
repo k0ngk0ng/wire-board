@@ -1,0 +1,35 @@
+export type Options = { difficulty: "easy" | "standard"; turnSeconds: number };
+export type Move = { from: number; to: number };
+export type MoveEvent = Move & {
+  id: number;
+  seat: number;
+  piece: number;
+  capture: number;
+  check: boolean;
+  at: number;
+};
+export type View = {
+  options: Options;
+  round: string;
+  red: number;
+  turn: number;
+  ply: number;
+  board: number[];
+  ids: number[];
+  noCapture: number;
+  phase: string;
+  deadline: number;
+  winner: number;
+  reason: string;
+  warning: string;
+  offer: number;
+  captured: number[][];
+  last: MoveEvent;
+  moves: Move[];
+  legal: Move[];
+  checkSquare: number;
+  canMove: boolean;
+  canRespond: boolean;
+  canResign: boolean;
+  motion?: { event: MoveEvent; duration: number };
+};

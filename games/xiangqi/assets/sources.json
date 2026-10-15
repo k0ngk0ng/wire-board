@@ -1,0 +1,162 @@
+{
+  "version": "xiangqi/v1",
+  "font": {
+    "repository": "google/fonts",
+    "commit": "8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5",
+    "files": [
+      {
+        "name": "NotoSerifSC[wght].ttf",
+        "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf",
+        "bytes": 25125512,
+        "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9"
+      },
+      {
+        "name": "OFL.txt",
+        "url": "https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/notoserifsc/OFL.txt",
+        "bytes": 4350,
+        "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6"
+      }
+    ],
+    "license": "OFL-1.1",
+    "licenseEvidence": "games/xiangqi/assets/licenses/NotoSerifSC-OFL.txt"
+  },
+  "images": {
+    "source": "games/xiangqi/assets/art.ts",
+    "method": "Original SVG rendered with @resvg/resvg-js 2.6.2 using Noto Serif SC instantiated at wght=700 with fontTools 4.60.1; lossless cwebp"
+  },
+  "audioSource": {
+    "url": "https://kenney.nl/media/pages/assets/boardgame-pack/a1656828d2-1677667644/kenney_boardgame-pack.zip",
+    "sha256": "3b6a7dd5af658d1ffa0071429d5dde10ff63121e88bd06d4904e721e60b2c398",
+    "license": "CC0-1.0",
+    "licenseEvidence": "games/xiangqi/assets/licenses/kenney-boardgame.txt"
+  },
+  "generator": "node --experimental-strip-types scripts/xiangqi/prepare-assets.mjs",
+  "files": [
+    {
+      "file": "images/r1.webp",
+      "bytes": 4122,
+      "sha256": "a50562f5a3104c7190228507e1dee0c5ca6f5414c65711657396444f114f4d5d",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/r2.webp",
+      "bytes": 4022,
+      "sha256": "428e3e4622099aa96e3ecf6ce4eded0675a266f927d3595ef6f669ebf3509858",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/r3.webp",
+      "bytes": 4110,
+      "sha256": "97ebb7ebcae362b4034ace3d7f0363acc8c6187d0be4f64695ad87a638ade951",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/r4.webp",
+      "bytes": 4228,
+      "sha256": "c75f81ca27565ed495a52b819dfbc03f48c1d552d3643f85e4a22b4828d6ddd1",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/r5.webp",
+      "bytes": 4096,
+      "sha256": "e2d89b12124d44b495fc93bfa281dcc8c8a47fbeb1deadc7c649f8e7ab7cce8f",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/r6.webp",
+      "bytes": 4682,
+      "sha256": "489a1ef8a81849ae061903d65d0ce550bc9ec67066bb867701018cbaa28be812",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/r7.webp",
+      "bytes": 4174,
+      "sha256": "939f97faadf285a4bcbb7f7d58689afd7deeff4c9f14aff3d8620492e11636ec",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b1.webp",
+      "bytes": 4608,
+      "sha256": "84ca0056bbb6fa7a4e5569f361347de313c2b4566246011f6818caf888cad018",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b2.webp",
+      "bytes": 3756,
+      "sha256": "1291b8959775e04aaa52e0a527b5e35a94cb26ee9c42926e0fd8a58652472492",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b3.webp",
+      "bytes": 4710,
+      "sha256": "ab824c0b38a594e359c036c1f1277787ea2fedee326e6e6acca96ee31b2e12c0",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b4.webp",
+      "bytes": 4234,
+      "sha256": "cf5dba5cb792beb374f7ff675823bb54e6b96220c28e04c527f8c23aad70b7f7",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b5.webp",
+      "bytes": 4096,
+      "sha256": "d842c29ec360a0bd27ee6d618efc8b66c679ac821972e240c8a37322c51b1218",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b6.webp",
+      "bytes": 4696,
+      "sha256": "5eebdced79ba69d9238139adbc74e567c6b5e140d5122db9c63b8a64269a6f12",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/b7.webp",
+      "bytes": 4334,
+      "sha256": "21859fb4f395e3e9c098c2619ccaab7cf6b020f92e86811248dc9436f4903df6",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/board.webp",
+      "bytes": 5558,
+      "sha256": "d38a0f2687e542c5cfa6b24efd2899f3d20be05c3e2c1cb5afe0e7bfc38b4161",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "images/cover.webp",
+      "bytes": 28978,
+      "sha256": "fc2f1113726717fc6fa7136ff94148521b4130ee25f1b8b88850e525ef479754",
+      "source": "Original SVG: games/xiangqi/assets/art.ts; Noto Serif SC OFL Chinese glyphs"
+    },
+    {
+      "file": "audio/move.wav",
+      "bytes": 20362,
+      "sha256": "7463c05f505073a8952c9ae11e495f1243edefc3cd54b1a001c2fcaf1dc7979c",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide2.ogg; mono 44.1kHz PCM volume=0.7"
+    },
+    {
+      "file": "audio/capture.wav",
+      "bytes": 22900,
+      "sha256": "1869ead26b1b6f0e436de7c9590d53b0d940e2ef48df90149f89b9a2315f07c6",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide3.ogg; mono 44.1kHz PCM volume=0.7"
+    },
+    {
+      "file": "audio/check.wav",
+      "bytes": 56492,
+      "sha256": "8690817a0f8a4085337bce3705f3abf9dad926f31926fd0c72fc7cf981adecf7",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#turn"
+    },
+    {
+      "file": "audio/win.wav",
+      "bytes": 100594,
+      "sha256": "394fe0a9e5e254c877c8b67eafd0b8f99f6366769998e09dc6a41cd5395c910d",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#finish"
+    },
+    {
+      "file": "audio/draw.wav",
+      "bytes": 32678,
+      "sha256": "87474ad45994c47e7bcd527975fa8fb74654b671cc45df3771d3dbc4fcf13d44",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#reserve"
+    }
+  ]
+}

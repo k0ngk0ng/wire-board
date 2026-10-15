@@ -1415,6 +1415,16 @@
         "9.6 automatic fivefold and seventy-five moves"
       ],
       "testedExample": "PDF page 17 (printed p.10): h4h5 in 8/2b1k3/7p/p1p1p1p1/PpP1P1PP/1P1BK3/8/8 w - - 0 1 freezes both bishops; knight/queen replacements remain live"
+    },
+    {
+      "game": "xiangqi",
+      "title": "2018 世界象棋规则（官方中文 PDF）",
+      "url": "https://www.wxf-xiangqi.org/images/wxf-rules/2018_World_Xiangqi_Rules_Chinese_2018.pdf",
+      "sha256": "f61f5c82ddaf2abb45eb25c24d58f2b278d2c150439f391d413c32c4ce275b3e",
+      "bytes": 6278474,
+      "localDownloadedPDF": ".local/xiangqi/rules/wxf-2018.pdf",
+      "inspection": "Scanned text; rendered and reviewed PDF pages 10–13 and 27–34",
+      "implementationNotes": "xiangqi-adjudication.md"
     }
   ]
 }
