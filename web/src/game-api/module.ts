@@ -38,6 +38,14 @@ export type GameAudioPort = {
   stop: () => void;
   music: (sources: readonly string[]) => Promise<boolean>;
   stopMusic: () => void;
+  // Independently keyed continuous effects; sources are fallback alternatives.
+  // Repeated calls adjust loudness/pitch without restarting the media.
+  loop: (
+    key: string,
+    sources: readonly string[],
+    options?: { volume?: number; rate?: number },
+  ) => Promise<boolean>;
+  stopLoop: (key: string) => void;
 };
 export type GameClock = {
   serverNow: number;
@@ -86,6 +94,9 @@ export type GameModule<Data = unknown, Options = unknown> = {
   playerCounts?: readonly number[];
   supportsBots?: boolean;
   ownsSounds?: boolean;
+  // Continuous controls stay responsive while an earlier request is in flight.
+  // The module must coalesce input and validate its own sequence/epoch on server.
+  realtime?: boolean;
   defaultOptions?: Options;
   // Optional game-owned visual timeline. Preserve host room metadata; never
   // modify authoritative snapshots or decide outcomes in this adapter.

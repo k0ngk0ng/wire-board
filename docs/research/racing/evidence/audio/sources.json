@@ -1,0 +1,135 @@
+{
+  "reviewed_date": "2026-10-15",
+  "scope": "素材候选研究；未接入游戏、未上传 OSS、未发布",
+  "status": "来源与许可已核验，最终听感和游戏混音尚未验收",
+  "download_checksums_file": "downloads.json",
+  "sources": [
+    {
+      "id": "domasx2-engine",
+      "title": "racing car engine sound loops",
+      "author": "domasx2",
+      "page_url": "https://opengameart.org/content/racing-car-engine-sound-loops",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "循环引擎声候选",
+      "files": [
+        "engine-loop-0.wav",
+        "engine-loop-5.wav"
+      ],
+      "evidence": [
+        "engine-loops-page.html.txt",
+        "cc0-deed.html.txt"
+      ],
+      "notes": [
+        "页面提供六个文件，作者注明仅音高不同；本次保存最低、最高两个样品。",
+        "作者称以 pdsounds.org 的公有领域车辆录音改编，页面评论记录其已用公有领域素材重做；原始外链本次未复核。",
+        "当前下载文件分别约 0.864 秒、0.630 秒；需试听循环接缝并根据转速做音高/音量过渡。",
+        "这是实际引擎循环，不是按钮音效。"
+      ]
+    },
+    {
+      "id": "scribe-kart",
+      "title": "SuperTuxKart sound effects",
+      "author": "Scribe",
+      "page_url": "https://opengameart.org/content/supertuxkart-sound-effects",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "倒计时、轮胎、启动等短音效的备选合集",
+      "files": [
+        "kart-sfx-original.mp3"
+      ],
+      "evidence": [
+        "kart-sfx-page.html.txt",
+        "cc0-deed.html.txt"
+      ],
+      "notes": [
+        "单个约 81.9 秒 MP3 合集，并非已经拆分的音效包。",
+        "页面标签说明 countdown、squeak、tire、engine、start 等；本次未逐段试听和标注，不能把任一时间片宣称为已确认音效。",
+        "采用前需人工试听并分割；不把该合集作为可立即投入游戏的引擎循环。"
+      ]
+    },
+    {
+      "id": "tom-haigh-tire",
+      "title": "Car tire squeal skid loop",
+      "author": "audible-edge (Tom Haigh)",
+      "editor": "qubodup",
+      "page_url": "https://opengameart.org/content/car-tire-squeal-skid-loop",
+      "upstream_url": "https://freesound.org/people/audible-edge/sounds/71739/",
+      "license": "CC-BY-3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "role": "独立连续漂移轮胎声候选",
+      "files": [
+        "tire-loop.wav"
+      ],
+      "evidence": [
+        "tire-loop-page.html.txt",
+        "ccby-3-deed.html.txt"
+      ],
+      "attribution": "Car tire squeal skid loop — audible-edge (Tom Haigh), loop edited by qubodup; CC BY 3.0; https://opengameart.org/content/car-tire-squeal-skid-loop.",
+      "notes": [
+        "页面注明 3 秒、96 kHz、24 位、单声道；通过复制偏移隐藏循环接缝。",
+        "允许商业使用与改编，发布时保留作者、素材链接和许可链接，并标明后续裁剪/转码等修改。"
+      ]
+    },
+    {
+      "id": "kenney-impact",
+      "title": "Impact Sounds 1.0",
+      "author": "Kenney",
+      "page_url": "https://kenney.nl/assets/impact-sounds",
+      "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "role": "碰撞短音效",
+      "files": [
+        "impact-metal-medium.ogg",
+        "impact-soft-heavy.ogg"
+      ],
+      "archive_entries": [
+        "Audio/impactMetal_medium_000.ogg",
+        "Audio/impactSoft_heavy_000.ogg"
+      ],
+      "evidence": [
+        "impact-page.html.txt",
+        "impact-License.txt",
+        "cc0-deed.html.txt"
+      ],
+      "notes": [
+        "官网与压缩包内 License.txt 均明确 CC0；可商业使用，不强制署名。",
+        "金属样品用于护栏/车体碰撞候选，软碰撞样品用于轮胎墙候选；最终需配合强度混音。",
+        "这是通用撞击素材，不冒充车辆发动机。"
+      ]
+    },
+    {
+      "id": "qubodup-engine-alt",
+      "title": "Car Engine Loop 96kHz, 4s",
+      "author": "qubodup",
+      "page_url": "https://opengameart.org/content/car-engine-loop-96khz-4s",
+      "download_url": "https://opengameart.org/sites/default/files/engine-loop.7z",
+      "license": "CC-BY-3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "role": "实录引擎备选，未下载",
+      "files": [],
+      "evidence": [
+        "engine-ccby-page.html.txt",
+        "ccby-3-deed.html.txt"
+      ],
+      "notes": [
+        "作者说明为自己录制的汽车引擎并处理成 4 秒循环；页面同时提供 GPL 许可，这里仅考虑 CC BY 3.0 选项。",
+        "可在 CC0 候选听感不合适时下载试听；本次未下载、未声称已验收。"
+      ]
+    },
+    {
+      "id": "original-countdown-finish",
+      "title": "原创发车与过线提示音（计划）",
+      "author": "wire-board project",
+      "role": "倒计时、发车、过线提示",
+      "files": [],
+      "evidence": [],
+      "notes": [
+        "建议离线合成短提示音并输出音频文件；倒计时短音、发车长音，过线使用独立上行音型。",
+        "本次没有生成音频，不属于已下载或已验收素材。",
+        "合成文件仍交平台原生媒体通道播放，不在游戏内创建 AudioContext。"
+      ]
+    }
+  ]
+}

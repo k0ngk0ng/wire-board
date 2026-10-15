@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "path": "games/racing/assets/source/kenney/vector_objects.svg",
+      "sha256": "01feb55fb49746dc8bb9c215a95d3d8b00fd9d3a8c1af8c0bd250138cbd5eea4",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "Vector/vector_objects.svg"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/License.txt",
+      "sha256": "eb4d367a2b5024535fcfc3e65615d63d9ed9c9fa8d63bfbeb67ac907dc421683",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "License.txt"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/tree_large.png",
+      "sha256": "6b5fa943f0d0524ab63799e5bc799b09b6f409c5ffd1e25616fe758d3776ca4f",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/tree_large.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/rock1.png",
+      "sha256": "82112c2d5a26a083b7eefb455de12c105cba4c4f3c9ad689367a2953b863b733",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/rock1.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/cone_straight.png",
+      "sha256": "f0e2a9694042c906a5b666e537f2fbd833a0e981e31495c8aecd36d8199fd621",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/cone_straight.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/barrier_white.png",
+      "sha256": "b0db854269e5d7aac8b0eadd028c6111f29c98dbab64b93aa4fbec4164c56eaa",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/barrier_white.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/lights.png",
+      "sha256": "905ca1ad07d4f62acb2bc43203c3dc4998a5b2ff808fa5a2f071e6ffea6714d4",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/lights.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/tribune_full.png",
+      "sha256": "f3cc92d3eb0808f1ba7a254ee15781ea3cd726a6a476654913c4c8ee90a1dd44",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/tribune_full.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/skidmark_long_1.png",
+      "sha256": "d9a91aad52402766e84300d7cb8ca67459619e37fdca02190cb30947b4102607",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/skidmark_long_1.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Tiles/Grass/land_grass11.png",
+      "sha256": "5419ca71303edc0a86ad058607b2fd62e4cea2eb6792e9503d4832077c3c7dcb",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Tiles/Grass/land_grass11.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Tiles/Dirt/land_dirt12.png",
+      "sha256": "8da473461d89c9c6a4d3a8e899b17b2c957f9d23488d8ab4ab3a013316ecdee4",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Tiles/Dirt/land_dirt12.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Tiles/Sand/land_sand12.png",
+      "sha256": "560dd529e06059ec5632242285525aeac4d14b48a4838c027ea214adb0bed06c",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Tiles/Sand/land_sand12.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Tiles/Asphalt road/road_asphalt22.png",
+      "sha256": "dc2df40e30a4331ac1b889cf74edc08c7bf8d36df5143c215520cd4c11100f99",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Tiles/Asphalt road/road_asphalt22.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Tiles/Dirt road/road_dirt22.png",
+      "sha256": "d4f7b4e319a0abe8531cb92fb8f908a5fd5dbf6ea979571c3fd5819111a23a2a",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Tiles/Dirt road/road_dirt22.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Tiles/Sand road/road_sand22.png",
+      "sha256": "c16ec4117bd576a3f1909b37e1e13994656a6e2ba11cad591054350011d2f7be",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Tiles/Sand road/road_sand22.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/arrow_white.png",
+      "sha256": "03c7c4a06b4c540c52ece9532df29a7cfb7aafb9b759c78988b1bf89902306b1",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/arrow_white.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/tires_white.png",
+      "sha256": "70f09f26dd2730c45e29b662a1ecb485281e6254d81556ee559116b15885f0b9",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/tires_white.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/Objects/tent_blue.png",
+      "sha256": "0bf5d16a88c621518aba28a77f550a54f3936b452e2ac92dec0107634c00b91e",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "archiveMember": "PNG/Objects/tent_blue.png"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/smoke.png",
+      "sha256": "33f894c2279bee9f77874dbfa3c0e9f071a0ee5e1a7065dcc40196029d699f58",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/smoke-particles"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/smoke-particles-License.txt",
+      "sha256": "16dffa20429eccd9a6ddbffffe7870191974975d192d3934e53da5d486ed2e4f",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/smoke-particles"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/dust.png",
+      "sha256": "5b15a3986ce9be1212dda30c60f97f6a5e9e01d740950385868a6d03713c6923",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/smoke-particles"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/spark.png",
+      "sha256": "9bceb2b1a8a46d9eaffb4c77d5c4114ff7af8fcd36e586feb1f91bfe2af0e671",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/particle-pack"
+    },
+    {
+      "path": "games/racing/assets/source/kenney/particle-pack-License.txt",
+      "sha256": "f9e70b81d8cc07c4e07c9f2eff1d94fd371a06070b18cb67c651c41158ec2975",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/particle-pack"
+    },
+    {
+      "path": "games/racing/assets/source/cover.svg",
+      "sha256": "a02bbe84fe7959d23f4d525788312144e05fba2cad938af1a7a22959320788ce",
+      "author": "wire-board contributors",
+      "license": "Project original",
+      "sourceURL": "https://github.com/k0ngk0ng/wire-board/tree/main/games/racing/assets"
+    },
+    {
+      "path": "games/racing/assets/source/audio/original/engine-loop-0.wav",
+      "sha256": "69d74b106509037ce547429e4c3f9ae906b0fffe88d0bb8b3b5a8b0cfc239048",
+      "author": "domasx2",
+      "license": "CC0-1.0",
+      "sourceURL": "https://opengameart.org/content/racing-car-engine-sound-loops"
+    },
+    {
+      "path": "games/racing/assets/source/audio/original/tire-loop.wav",
+      "sha256": "2b341cfa20987388fcca9fd91d8be5056cb6c6c54abc2a97846c2be5e5a4f604",
+      "author": "audible-edge (Tom Haigh); loop edit by qubodup",
+      "license": "CC-BY-3.0",
+      "sourceURL": "https://opengameart.org/content/car-tire-squeal-skid-loop"
+    },
+    {
+      "path": "games/racing/assets/source/audio/original/impact-soft-heavy.ogg",
+      "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/impact-sounds"
+    },
+    {
+      "path": "games/racing/assets/source/audio/original/impact-metal-medium.ogg",
+      "sha256": "a96f879fec0864a8938e0c745b6996a6c5679c16a234ce31a01cc995e8401003",
+      "author": "Kenney",
+      "license": "CC0-1.0",
+      "sourceURL": "https://kenney.nl/assets/impact-sounds"
+    },
+    {
+      "path": "games/racing/assets/source/audio/countdown-master.wav",
+      "sha256": "290a0bd79ec21473bdda97b3ddb064948586aa97ccd784f717a2677856f608c4",
+      "author": "wire-board contributors",
+      "license": "Project original",
+      "sourceURL": "https://github.com/k0ngk0ng/wire-board/tree/main/scripts/racing",
+      "method": "Offline additive synthesis; sine fundamentals, second harmonic, 9 ms attack and decaying release."
+    },
+    {
+      "path": "games/racing/assets/source/audio/start-master.wav",
+      "sha256": "8367547a39be04dec54a1d1ef67a6597fef6f3cabf62e8540d5c38fff31e6897",
+      "author": "wire-board contributors",
+      "license": "Project original",
+      "sourceURL": "https://github.com/k0ngk0ng/wire-board/tree/main/scripts/racing",
+      "method": "Offline additive synthesis; sine fundamentals, second harmonic, 9 ms attack and decaying release."
+    },
+    {
+      "path": "games/racing/assets/source/audio/lap-master.wav",
+      "sha256": "9dcc1e07305fcf80ab2ff7249e677e7e1f9c5b1e1b0c554ffe02493a2066bd0a",
+      "author": "wire-board contributors",
+      "license": "Project original",
+      "sourceURL": "https://github.com/k0ngk0ng/wire-board/tree/main/scripts/racing",
+      "method": "Offline additive synthesis; sine fundamentals, second harmonic, 9 ms attack and decaying release."
+    },
+    {
+      "path": "games/racing/assets/source/audio/finish-master.wav",
+      "sha256": "13cb444baa0c8931cc0a3c24ab50610ba5d5da858405606387ad3563df87010e",
+      "author": "wire-board contributors",
+      "license": "Project original",
+      "sourceURL": "https://github.com/k0ngk0ng/wire-board/tree/main/scripts/racing",
+      "method": "Offline additive synthesis; sine fundamentals, second harmonic, 9 ms attack and decaying release."
+    },
+    {
+      "path": "games/racing/assets/source/licenses/cc0-deed.html.txt",
+      "sha256": "abb4d48fc8b85de52b377dd105532c6c549f515d492a8e1712bc99e7316a1f12",
+      "author": "Source authors / Creative Commons",
+      "license": "License evidence",
+      "sourceURL": "https://opengameart.org/"
+    },
+    {
+      "path": "games/racing/assets/source/licenses/ccby-3-deed.html.txt",
+      "sha256": "befae005d7dc8701eed58fe2080fda2889c3749272d6c8aba8e8310114112095",
+      "author": "Source authors / Creative Commons",
+      "license": "License evidence",
+      "sourceURL": "https://opengameart.org/"
+    },
+    {
+      "path": "games/racing/assets/source/licenses/tire-loop-page.html.txt",
+      "sha256": "be8099b8038c643ae5c34e3166ab814a6aad94e1588a875bfad067017a5a1262",
+      "author": "Source authors / Creative Commons",
+      "license": "License evidence",
+      "sourceURL": "https://opengameart.org/"
+    },
+    {
+      "path": "games/racing/assets/source/licenses/engine-loops-page.html.txt",
+      "sha256": "92a84aa3c0fe8a671ab444feba00d1c969ebc0b44323ff774d909f3899be08dc",
+      "author": "Source authors / Creative Commons",
+      "license": "License evidence",
+      "sourceURL": "https://opengameart.org/"
+    },
+    {
+      "path": "games/racing/assets/source/licenses/impact-License.txt",
+      "sha256": "b49aa9c56b04528b95913de13e506a0f7c5e807b9925db9bfef86af1f91120db",
+      "author": "Source authors / Creative Commons",
+      "license": "License evidence",
+      "sourceURL": "https://opengameart.org/"
+    }
+  ]
+}

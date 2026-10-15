@@ -1,0 +1,437 @@
+{
+  "version": 1,
+  "game": "racing",
+  "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+  "entries": [
+    {
+      "name": "cars",
+      "type": "image",
+      "output": "games/racing/assets/public/racing/v1/cars.webp",
+      "urlPath": "/racing/v1/cars.webp",
+      "bytes": 126380,
+      "sha256": "68d5a6efeae1d78525f2d9e99d4987491a15766b6f4189f2afce06f2a5eb1bfa",
+      "mime": "image/webp",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/kenney/vector_objects.svg",
+          "sha256": "01feb55fb49746dc8bb9c215a95d3d8b00fd9d3a8c1af8c0bd250138cbd5eea4"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "width": 1152,
+      "height": 1600
+    },
+    {
+      "name": "scenery",
+      "type": "image",
+      "output": "games/racing/assets/public/racing/v1/scenery.webp",
+      "urlPath": "/racing/v1/scenery.webp",
+      "bytes": 112106,
+      "sha256": "f1705ff58aa5be7b62b1b396ff29fae6f82099d314cf1c55acf0e8ed47f75b73",
+      "mime": "image/webp",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tree_large.png",
+          "sha256": "6b5fa943f0d0524ab63799e5bc799b09b6f409c5ffd1e25616fe758d3776ca4f"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/rock1.png",
+          "sha256": "82112c2d5a26a083b7eefb455de12c105cba4c4f3c9ad689367a2953b863b733"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/cone_straight.png",
+          "sha256": "f0e2a9694042c906a5b666e537f2fbd833a0e981e31495c8aecd36d8199fd621"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/barrier_white.png",
+          "sha256": "b0db854269e5d7aac8b0eadd028c6111f29c98dbab64b93aa4fbec4164c56eaa"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/lights.png",
+          "sha256": "905ca1ad07d4f62acb2bc43203c3dc4998a5b2ff808fa5a2f071e6ffea6714d4"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tribune_full.png",
+          "sha256": "f3cc92d3eb0808f1ba7a254ee15781ea3cd726a6a476654913c4c8ee90a1dd44"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/skidmark_long_1.png",
+          "sha256": "d9a91aad52402766e84300d7cb8ca67459619e37fdca02190cb30947b4102607"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Grass/land_grass11.png",
+          "sha256": "5419ca71303edc0a86ad058607b2fd62e4cea2eb6792e9503d4832077c3c7dcb"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Dirt/land_dirt12.png",
+          "sha256": "8da473461d89c9c6a4d3a8e899b17b2c957f9d23488d8ab4ab3a013316ecdee4"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Sand/land_sand12.png",
+          "sha256": "560dd529e06059ec5632242285525aeac4d14b48a4838c027ea214adb0bed06c"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Asphalt road/road_asphalt22.png",
+          "sha256": "dc2df40e30a4331ac1b889cf74edc08c7bf8d36df5143c215520cd4c11100f99"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Dirt road/road_dirt22.png",
+          "sha256": "d4f7b4e319a0abe8531cb92fb8f908a5fd5dbf6ea979571c3fd5819111a23a2a"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Sand road/road_sand22.png",
+          "sha256": "c16ec4117bd576a3f1909b37e1e13994656a6e2ba11cad591054350011d2f7be"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/arrow_white.png",
+          "sha256": "03c7c4a06b4c540c52ece9532df29a7cfb7aafb9b759c78988b1bf89902306b1"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tires_white.png",
+          "sha256": "70f09f26dd2730c45e29b662a1ecb485281e6254d81556ee559116b15885f0b9"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tent_blue.png",
+          "sha256": "0bf5d16a88c621518aba28a77f550a54f3936b452e2ac92dec0107634c00b91e"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/smoke.png",
+          "sha256": "33f894c2279bee9f77874dbfa3c0e9f071a0ee5e1a7065dcc40196029d699f58"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/dust.png",
+          "sha256": "5b15a3986ce9be1212dda30c60f97f6a5e9e01d740950385868a6d03713c6923"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/spark.png",
+          "sha256": "9bceb2b1a8a46d9eaffb4c77d5c4114ff7af8fcd36e586feb1f91bfe2af0e671"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "width": 1024,
+      "height": 1280
+    },
+    {
+      "name": "atlas",
+      "type": "metadata",
+      "output": "games/racing/assets/public/racing/v1/atlas.json",
+      "urlPath": "/racing/v1/atlas.json",
+      "bytes": 11039,
+      "sha256": "69d6fae91188927aad27731813abc877370631b8f2365b1da67594dc5f85427f",
+      "mime": "application/json",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/kenney/vector_objects.svg",
+          "sha256": "01feb55fb49746dc8bb9c215a95d3d8b00fd9d3a8c1af8c0bd250138cbd5eea4"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tree_large.png",
+          "sha256": "6b5fa943f0d0524ab63799e5bc799b09b6f409c5ffd1e25616fe758d3776ca4f"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/rock1.png",
+          "sha256": "82112c2d5a26a083b7eefb455de12c105cba4c4f3c9ad689367a2953b863b733"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/cone_straight.png",
+          "sha256": "f0e2a9694042c906a5b666e537f2fbd833a0e981e31495c8aecd36d8199fd621"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/barrier_white.png",
+          "sha256": "b0db854269e5d7aac8b0eadd028c6111f29c98dbab64b93aa4fbec4164c56eaa"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/lights.png",
+          "sha256": "905ca1ad07d4f62acb2bc43203c3dc4998a5b2ff808fa5a2f071e6ffea6714d4"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tribune_full.png",
+          "sha256": "f3cc92d3eb0808f1ba7a254ee15781ea3cd726a6a476654913c4c8ee90a1dd44"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/skidmark_long_1.png",
+          "sha256": "d9a91aad52402766e84300d7cb8ca67459619e37fdca02190cb30947b4102607"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Grass/land_grass11.png",
+          "sha256": "5419ca71303edc0a86ad058607b2fd62e4cea2eb6792e9503d4832077c3c7dcb"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Dirt/land_dirt12.png",
+          "sha256": "8da473461d89c9c6a4d3a8e899b17b2c957f9d23488d8ab4ab3a013316ecdee4"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Sand/land_sand12.png",
+          "sha256": "560dd529e06059ec5632242285525aeac4d14b48a4838c027ea214adb0bed06c"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Asphalt road/road_asphalt22.png",
+          "sha256": "dc2df40e30a4331ac1b889cf74edc08c7bf8d36df5143c215520cd4c11100f99"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Dirt road/road_dirt22.png",
+          "sha256": "d4f7b4e319a0abe8531cb92fb8f908a5fd5dbf6ea979571c3fd5819111a23a2a"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Tiles/Sand road/road_sand22.png",
+          "sha256": "c16ec4117bd576a3f1909b37e1e13994656a6e2ba11cad591054350011d2f7be"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/arrow_white.png",
+          "sha256": "03c7c4a06b4c540c52ece9532df29a7cfb7aafb9b759c78988b1bf89902306b1"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tires_white.png",
+          "sha256": "70f09f26dd2730c45e29b662a1ecb485281e6254d81556ee559116b15885f0b9"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/Objects/tent_blue.png",
+          "sha256": "0bf5d16a88c621518aba28a77f550a54f3936b452e2ac92dec0107634c00b91e"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/smoke.png",
+          "sha256": "33f894c2279bee9f77874dbfa3c0e9f071a0ee5e1a7065dcc40196029d699f58"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/dust.png",
+          "sha256": "5b15a3986ce9be1212dda30c60f97f6a5e9e01d740950385868a6d03713c6923"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/spark.png",
+          "sha256": "9bceb2b1a8a46d9eaffb4c77d5c4114ff7af8fcd36e586feb1f91bfe2af0e671"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py"
+    },
+    {
+      "name": "cover",
+      "type": "image",
+      "output": "games/racing/assets/public/racing/v1/cover.webp",
+      "urlPath": "/racing/v1/cover.webp",
+      "bytes": 102478,
+      "sha256": "89b7ff45eb8d331ce9439f0205600073e468ce64d98f26817c8f1a4f8c4c1f5a",
+      "mime": "image/webp",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/cover.svg",
+          "sha256": "a02bbe84fe7959d23f4d525788312144e05fba2cad938af1a7a22959320788ce"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "width": 1040,
+      "height": 640
+    },
+    {
+      "name": "engine",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/engine.mp3",
+      "urlPath": "/racing/v1/engine.mp3",
+      "bytes": 18852,
+      "sha256": "9b1ea6995bcca8d8f9fac60f3bfdc75d26b132c269a64b26f717cc103e71c7a7",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/audio/original/engine-loop-0.wav",
+          "sha256": "69d74b106509037ce547429e4c3f9ae906b0fffe88d0bb8b3b5a8b0cfc239048"
+        },
+        {
+          "path": "games/racing/assets/source/audio/engine-master.wav",
+          "sha256": "17f465a2cc0529d76c074bc6cab32134fac270cfb209cd031a5272a8e26993e5"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": true,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "tires",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/tires.mp3",
+      "urlPath": "/racing/v1/tires.mp3",
+      "bytes": 61170,
+      "sha256": "9ab305a82c4ea4d5dd7d2c9ba7320fd08a2c0f873996390ab8859203b034cfbd",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/audio/original/tire-loop.wav",
+          "sha256": "2b341cfa20987388fcca9fd91d8be5056cb6c6c54abc2a97846c2be5e5a4f604"
+        },
+        {
+          "path": "games/racing/assets/source/audio/tires-master.wav",
+          "sha256": "4c12c0b0cb8050fc07c9c955835882a679848f1a95867b7d2c173c82fc76eeff"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": true,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "collision-light",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/collision-light.mp3",
+      "urlPath": "/racing/v1/collision-light.mp3",
+      "bytes": 12060,
+      "sha256": "6b2b7419e12e49b94c6ffbe8c8d53a46abe978614e146e2e1355de22385eca8b",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/audio/original/impact-soft-heavy.ogg",
+          "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1"
+        },
+        {
+          "path": "games/racing/assets/source/audio/collision-light-master.wav",
+          "sha256": "74653f27e100a368681fa0033be5429cc2cf18ba78660f4d481636bf919bb718"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": false,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "collision-heavy",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/collision-heavy.mp3",
+      "urlPath": "/racing/v1/collision-heavy.mp3",
+      "bytes": 6835,
+      "sha256": "fe0eea06bd7c550d3b0fe3f290530b0cf6f32b30c4f013cb12d91dc10a146f1a",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/audio/original/impact-metal-medium.ogg",
+          "sha256": "a96f879fec0864a8938e0c745b6996a6c5679c16a234ce31a01cc995e8401003"
+        },
+        {
+          "path": "games/racing/assets/source/audio/collision-heavy-master.wav",
+          "sha256": "7230350890413f4a7b5938d02dee8efbaaa5ed4701425525a7dbfd7534e40a47"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": false,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "countdown",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/countdown.mp3",
+      "urlPath": "/racing/v1/countdown.mp3",
+      "bytes": 6313,
+      "sha256": "07e32fd0773bf4950113c6babf5b65b747a57698d324cc9c2b64076d8c30a483",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "scripts/racing/prepare-assets.py",
+          "sha256": "143cb80b4bd1e951847381ed643750bb2c282f4d6338d97de836eea506411d3b"
+        },
+        {
+          "path": "games/racing/assets/source/audio/countdown-master.wav",
+          "sha256": "290a0bd79ec21473bdda97b3ddb064948586aa97ccd784f717a2677856f608c4"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": false,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "start",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/start.mp3",
+      "urlPath": "/racing/v1/start.mp3",
+      "bytes": 11537,
+      "sha256": "abce8d8babeef2fc7b6db7c2f24263f6ac51ecf509f52fe0badc574343461190",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "scripts/racing/prepare-assets.py",
+          "sha256": "143cb80b4bd1e951847381ed643750bb2c282f4d6338d97de836eea506411d3b"
+        },
+        {
+          "path": "games/racing/assets/source/audio/start-master.wav",
+          "sha256": "8367547a39be04dec54a1d1ef67a6597fef6f3cabf62e8540d5c38fff31e6897"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": false,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "lap",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/lap.mp3",
+      "urlPath": "/racing/v1/lap.mp3",
+      "bytes": 13105,
+      "sha256": "9698c251b6c41bf68323a3161c527dd259fd81b748045f75d05c5a61846022ea",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "scripts/racing/prepare-assets.py",
+          "sha256": "143cb80b4bd1e951847381ed643750bb2c282f4d6338d97de836eea506411d3b"
+        },
+        {
+          "path": "games/racing/assets/source/audio/lap-master.wav",
+          "sha256": "9dcc1e07305fcf80ab2ff7249e677e7e1f9c5b1e1b0c554ffe02493a2066bd0a"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": false,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "finish",
+      "type": "audio",
+      "output": "games/racing/assets/public/racing/v1/finish.mp3",
+      "urlPath": "/racing/v1/finish.mp3",
+      "bytes": 27211,
+      "sha256": "a6a0de7c8c12b72eaebe186c5edf63723bea084d20cc4e9bbb55bf03350e48fc",
+      "mime": "audio/mpeg",
+      "sources": [
+        {
+          "path": "scripts/racing/prepare-assets.py",
+          "sha256": "143cb80b4bd1e951847381ed643750bb2c282f4d6338d97de836eea506411d3b"
+        },
+        {
+          "path": "games/racing/assets/source/audio/finish-master.wav",
+          "sha256": "13cb444baa0c8931cc0a3c24ab50610ba5d5da858405606387ad3563df87010e"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py",
+      "loop": false,
+      "sampleRate": 44100,
+      "channels": 1
+    },
+    {
+      "name": "attribution",
+      "type": "metadata",
+      "output": "games/racing/assets/public/racing/v1/attribution.json",
+      "urlPath": "/racing/v1/attribution.json",
+      "bytes": 1787,
+      "sha256": "c07deaf9ae43ad882669d2ba5e47e01c03058d126cf4752d050e7d89c756977b",
+      "mime": "application/json",
+      "sources": [
+        {
+          "path": "games/racing/assets/source/kenney/License.txt",
+          "sha256": "eb4d367a2b5024535fcfc3e65615d63d9ed9c9fa8d63bfbeb67ac907dc421683"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/smoke-particles-License.txt",
+          "sha256": "16dffa20429eccd9a6ddbffffe7870191974975d192d3934e53da5d486ed2e4f"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/smoke-particles-License.txt",
+          "sha256": "16dffa20429eccd9a6ddbffffe7870191974975d192d3934e53da5d486ed2e4f"
+        },
+        {
+          "path": "games/racing/assets/source/kenney/particle-pack-License.txt",
+          "sha256": "f9e70b81d8cc07c4e07c9f2eff1d94fd371a06070b18cb67c651c41158ec2975"
+        }
+      ],
+      "generator": "scripts/racing/prepare-assets.py"
+    }
+  ]
+}

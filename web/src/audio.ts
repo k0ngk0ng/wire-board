@@ -7,6 +7,19 @@ type Task = {
   clips: Clip[];
   starting: boolean;
 };
+type LoopOptions = { volume?: number; rate?: number };
+type LoopVoice = {
+  owner: string;
+  key: string;
+  sources: string[];
+  media: HTMLAudioElement;
+  sourceIndex: number;
+  starting: boolean;
+  pending: Promise<boolean>;
+  volume: number;
+  rate: number;
+  frame?: number;
+};
 const SILENCE =
   "data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQIAAACAgA==";
 
@@ -17,6 +30,7 @@ export class GameAudio {
   private background?: GameAudio;
   private backgroundOwner?: string;
   private backgroundSources = "";
+  private loops = new Map<string, LoopVoice>();
   private factory: () => HTMLAudioElement;
   private allowed = true;
   private primed = false;
@@ -29,16 +43,17 @@ export class GameAudio {
   get enabled() {
     return this.allowed;
   }
+  private createElement() {
+    const media = this.factory();
+    media.dataset.platformAudio = "";
+    media.preload = "none";
+    media.hidden = true;
+    media.muted = !this.allowed;
+    if (typeof document !== "undefined") document.body.append(media);
+    return media;
+  }
   private element() {
-    if (!this.media) {
-      const media = this.factory();
-      media.dataset.platformAudio = "";
-      media.preload = "none";
-      media.hidden = true;
-      media.muted = !this.allowed;
-      if (typeof document !== "undefined") document.body.append(media);
-      this.media = media;
-    }
+    this.media ??= this.createElement();
     return this.media;
   }
   mount() {
@@ -92,6 +107,8 @@ export class GameAudio {
   }
   stop(owner?: string) {
     this.stopEffects(owner);
+    for (const voice of this.loops.values())
+      if (owner === undefined || voice.owner === owner) this.releaseLoop(voice);
     this.background?.stop(owner);
     if (owner === undefined || this.backgroundOwner === owner) {
       this.backgroundOwner = undefined;
@@ -133,7 +150,167 @@ export class GameAudio {
       stop: () => this.stop(owner),
       music: (sources: readonly string[]) => this.startMusic(sources, owner),
       stopMusic: () => this.background?.stop(owner),
+      loop: (
+        key: string,
+        sources: readonly string[],
+        options: LoopOptions = {},
+      ) => this.startLoop(owner, key, sources, options),
+      stopLoop: (key: string) => {
+        const voice = this.loops.get(key);
+        if (voice?.owner === owner) this.releaseLoop(voice);
+      },
     };
+  }
+  private loopCurrent(voice: LoopVoice) {
+    return this.loops.get(voice.key) === voice && this.available();
+  }
+  private releaseLoop(voice: LoopVoice) {
+    if (this.loops.get(voice.key) === voice) this.loops.delete(voice.key);
+    if (voice.frame !== undefined) cancelAnimationFrame(voice.frame);
+    voice.frame = undefined;
+    const media = voice.media;
+    media.onended = null;
+    media.onerror = null;
+    media.muted = true;
+    media.pause();
+    media.removeAttribute("src");
+    media.load();
+    media.remove();
+  }
+  private tuneLoop(voice: LoopVoice, options: LoopOptions, immediate = false) {
+    const bounded = (
+      value: number | undefined,
+      previous: number,
+      min: number,
+      max: number,
+    ) =>
+      value !== undefined && Number.isFinite(value)
+        ? Math.max(min, Math.min(max, value))
+        : previous;
+    voice.volume = bounded(options.volume, voice.volume, 0, 1);
+    voice.rate = bounded(options.rate, voice.rate, 0.25, 4);
+    const media = voice.media;
+    if (immediate || typeof requestAnimationFrame === "undefined") {
+      media.volume = voice.volume;
+      media.playbackRate = voice.rate;
+      return;
+    }
+    if (voice.frame !== undefined) return;
+    let previous: number | undefined;
+    const ramp = (now: number) => {
+      voice.frame = undefined;
+      if (!this.loopCurrent(voice)) {
+        this.releaseLoop(voice);
+        return;
+      }
+      const elapsed = previous === undefined ? 16 : Math.max(1, now - previous);
+      previous = now;
+      const blend = 1 - Math.exp(-elapsed / 40);
+      media.volume += (voice.volume - media.volume) * blend;
+      media.playbackRate += (voice.rate - media.playbackRate) * blend;
+      if (
+        Math.abs(media.volume - voice.volume) < 0.001 &&
+        Math.abs(media.playbackRate - voice.rate) < 0.001
+      ) {
+        media.volume = voice.volume;
+        media.playbackRate = voice.rate;
+      } else voice.frame = requestAnimationFrame(ramp);
+    };
+    voice.frame = requestAnimationFrame(ramp);
+  }
+  private startLoop(
+    owner: string,
+    key: string,
+    requested: readonly string[],
+    options: LoopOptions,
+  ): Promise<boolean> {
+    if (!this.available() || !key) return Promise.resolve(false);
+    const sources = [...new Set(requested.filter(Boolean))];
+    // A channel represents the current room. Do not let a previous room's
+    // continuous sounds survive a new owner, even when it uses different keys.
+    for (const voice of this.loops.values())
+      if (voice.owner !== owner) this.releaseLoop(voice);
+    const previous = this.loops.get(key);
+    if (
+      previous &&
+      JSON.stringify(previous.sources) === JSON.stringify(sources)
+    ) {
+      this.tuneLoop(previous, options);
+      return previous.pending;
+    }
+    if (previous) this.releaseLoop(previous);
+    if (!sources.length) return Promise.resolve(false);
+    const media = this.createElement();
+    media.dataset.platformLoop = key;
+    media.loop = true;
+    // Engine rate controls pitch as well as speed, including older Safari and
+    // Firefox implementations. No Web Audio route is created.
+    const pitch = media as HTMLAudioElement & {
+      mozPreservesPitch?: boolean;
+      webkitPreservesPitch?: boolean;
+    };
+    pitch.preservesPitch = false;
+    if ("mozPreservesPitch" in pitch) pitch.mozPreservesPitch = false;
+    if ("webkitPreservesPitch" in pitch) pitch.webkitPreservesPitch = false;
+    const voice: LoopVoice = {
+      owner,
+      key,
+      sources,
+      media,
+      sourceIndex: 0,
+      starting: false,
+      pending: Promise.resolve(false),
+      volume: 0.15,
+      rate: 1,
+    };
+    this.loops.set(key, voice);
+    this.tuneLoop(voice, options, true);
+    this.playbackSession();
+    voice.pending = this.playLoopSource(voice);
+    return voice.pending;
+  }
+  private async playLoopSource(voice: LoopVoice): Promise<boolean> {
+    const media = voice.media;
+    while (voice.sourceIndex < voice.sources.length) {
+      if (!this.loopCurrent(voice)) {
+        this.releaseLoop(voice);
+        return false;
+      }
+      const index = voice.sourceIndex;
+      media.onerror = () => {
+        if (
+          !this.loopCurrent(voice) ||
+          voice.starting ||
+          voice.sourceIndex !== index
+        )
+          return;
+        voice.sourceIndex++;
+        voice.pending = this.playLoopSource(voice);
+      };
+      voice.starting = true;
+      media.src = voice.sources[index];
+      media.muted = false;
+      try {
+        await media.play();
+        if (!this.loopCurrent(voice)) {
+          // A cancelled play promise may resolve after the element was removed.
+          // This voice has its own element, so pausing it cannot affect a successor.
+          this.releaseLoop(voice);
+          return false;
+        }
+        voice.starting = false;
+        return true;
+      } catch {
+        voice.starting = false;
+        if (!this.loopCurrent(voice)) {
+          this.releaseLoop(voice);
+          return false;
+        }
+        voice.sourceIndex++;
+      }
+    }
+    this.releaseLoop(voice);
+    return false;
   }
   private startMusic(
     sources: readonly string[],

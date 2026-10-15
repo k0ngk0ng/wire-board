@@ -1,0 +1,83 @@
+{
+  "status": "research-preview-not-game",
+  "sourceZip": ".local/racing-research/images/downloads/kenney-racing-pack.zip",
+  "sourceSha256": "a5e5252082e2bcbac177402d3bde3aa161fd81aeb246a36a1ec39255d1f30480",
+  "output": "material-board.png",
+  "outputSha256": "364d0405aaad2653a7ac150c41c72a18b16c2d6775e54231e30fa97a7c88af9f",
+  "license": "CC0-1.0",
+  "derived": "sixth car recolored from blue; no gameplay stats changed or implemented",
+  "members": [
+    {
+      "member": "PNG/Cars/car_blue_1.png",
+      "sha256": "aae03c3369f00db344182e426876bd9dc59875dc51583379fded2e469e8883cb"
+    },
+    {
+      "member": "PNG/Cars/car_red_1.png",
+      "sha256": "18b02b61145659e5045404175778cd49d71a8f29fb12b4de3dcd8661c55141be"
+    },
+    {
+      "member": "PNG/Cars/car_green_1.png",
+      "sha256": "22ab853d90abd969f3eafe0acd3665d255fcd2ee0a5b02ab19e1880d74e8f1e5"
+    },
+    {
+      "member": "PNG/Cars/car_yellow_1.png",
+      "sha256": "5f67d40f787646f30befa03fa51e307d562e803ebb7450a160412bbb0ad7e937"
+    },
+    {
+      "member": "PNG/Cars/car_black_1.png",
+      "sha256": "89ca99ba9d360a2f421a733b176112370a3f4c1571d8a51ef35f2894741c81f6"
+    },
+    {
+      "member": "PNG/Cars/car_blue_1.png",
+      "sha256": "aae03c3369f00db344182e426876bd9dc59875dc51583379fded2e469e8883cb"
+    },
+    {
+      "member": "PNG/Tiles/Asphalt road/road_asphalt02.png",
+      "sha256": "3dd232e7c1b544566623aefe4afdb832ded47115a0ee9cdd47d71a35d4d31c5c"
+    },
+    {
+      "member": "PNG/Tiles/Asphalt road/road_asphalt07.png",
+      "sha256": "2d95934fdea872a1aeb735a9c4c254dc67ca8037f6eb686a8de9f7d15b86013b"
+    },
+    {
+      "member": "PNG/Tiles/Asphalt road/road_asphalt42.png",
+      "sha256": "2b4526568f8eea59f77da3cffd165b9b887e3430d7f6fc30d6c36079282343ef"
+    },
+    {
+      "member": "PNG/Tiles/Asphalt road/road_asphalt68.png",
+      "sha256": "7fb69bbf3874add71ee1abc206a889bbe30eb9f82ae9d28394d9dca3b907bce0"
+    },
+    {
+      "member": "PNG/Tiles/Dirt road/road_dirt02.png",
+      "sha256": "12dcb5a52f85747314d2926ab249138de602a3bb927c32413d2c81320549b73a"
+    },
+    {
+      "member": "PNG/Tiles/Sand road/road_sand02.png",
+      "sha256": "cada394ec4091bc55b51d7df155ad509c4c2bcc5262b0e6926c8b92ff2c30a50"
+    },
+    {
+      "member": "PNG/Objects/tree_large.png",
+      "sha256": "6b5fa943f0d0524ab63799e5bc799b09b6f409c5ffd1e25616fe758d3776ca4f"
+    },
+    {
+      "member": "PNG/Objects/cone_straight.png",
+      "sha256": "f0e2a9694042c906a5b666e537f2fbd833a0e981e31495c8aecd36d8199fd621"
+    },
+    {
+      "member": "PNG/Objects/barrier_red_race.png",
+      "sha256": "4f5a0bc44dc0b6bf3a45ec92c7167a512dc4570663973dd00c55fecb740dc146"
+    },
+    {
+      "member": "PNG/Objects/skidmark_long_1.png",
+      "sha256": "d9a91aad52402766e84300d7cb8ca67459619e37fdca02190cb30947b4102607"
+    },
+    {
+      "member": "PNG/Objects/tribune_full.png",
+      "sha256": "f3cc92d3eb0808f1ba7a254ee15781ea3cd726a6a476654913c4c8ee90a1dd44"
+    },
+    {
+      "member": "PNG/Objects/lights.png",
+      "sha256": "905ca1ad07d4f62acb2bc43203c3dc4998a5b2ff808fa5a2f071e6ffea6714d4"
+    }
+  ]
+}

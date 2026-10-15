@@ -81,12 +81,18 @@ type Module struct {
 	Apply      func(Context, Match, json.RawMessage) (Match, error)                 `json:"-"`
 	View       func(Match, int) (any, error)                                        `json:"-"`
 	BotSearch  *BotSearch                                                           `json:"-"`
+	// Realtime opts into the fast SystemDeadline clock. Each due frame submits
+	// all controlled actors through BotAction/Apply, then OnTimer, atomically.
+	// Callbacks must stay bounded; asynchronous BotSearch cannot run in a frame.
+	Realtime bool `json:"-"`
 	// BotAction is a fast pure fallback; use BotSearch for expensive computation.
 	// BotAction may return nil, nil when no decision is available. The host
 	// tries the remaining controlled actors without persisting an idle action.
 	BotAction func(Context, Match) (json.RawMessage, error) `json:"-"`
 	// Reclaim restores an expired decision window without extending unrelated
-	// players' windows. Omit BotAction/Reclaim together to disable autoplay.
+	// players' windows. Realtime modules also receive Reclaim whenever autoplay
+	// is cancelled, so they can clear the returning seat's previous bot controls.
+	// Omit BotAction/Reclaim together to disable autoplay.
 	Reclaim func(Context, Match) (Match, error) `json:"-"`
 	// Restore optionally migrates a persisted active match at server startup.
 	// It must preserve gameplay and existing deadlines, and return unchanged
@@ -109,6 +115,9 @@ func (m Module) Validate() error {
 	}
 	if b := m.BotSearch; b != nil && (m.BotAction == nil || b.Input == nil || b.Think == nil || b.Budget < 0 || b.Budget > 10*time.Second) {
 		return fmt.Errorf("invalid bot search registration: %s", m.ID)
+	}
+	if m.Realtime && (m.OnTimer == nil || m.BotSearch != nil) {
+		return fmt.Errorf("invalid realtime registration: %s", m.ID)
 	}
 	return nil
 }

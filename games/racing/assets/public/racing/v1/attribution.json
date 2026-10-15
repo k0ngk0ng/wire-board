@@ -1,0 +1,42 @@
+{
+  "game": "racing",
+  "version": 1,
+  "sources": [
+    {
+      "id": "kenney",
+      "author": "Kenney",
+      "title": "Racing Pack; Smoke Particles; Particle Pack; Impact Sounds",
+      "sourceURL": "https://kenney.nl/assets/racing-pack",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "SVG car crops rendered at 4x; six seat palettes, sprite packing, mild desaturation, audio conversion and gain."
+    },
+    {
+      "id": "domasx2-engine",
+      "author": "domasx2",
+      "title": "racing car engine sound loops",
+      "sourceURL": "https://opengameart.org/content/racing-car-engine-sound-loops",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "Mono 44.1 kHz, DC removal, peak normalization, 3 ms seam fades, MP3 encoding."
+    },
+    {
+      "id": "tom-haigh-tire",
+      "author": "audible-edge (Tom Haigh); loop edited by qubodup",
+      "title": "Car tire squeal skid loop",
+      "sourceURL": "https://opengameart.org/content/car-tire-squeal-skid-loop",
+      "upstreamURL": "https://freesound.org/people/audible-edge/sounds/71739/",
+      "license": "CC-BY-3.0",
+      "licenseURL": "https://creativecommons.org/licenses/by/3.0/",
+      "modifications": "Resampled to mono 44.1 kHz; DC removal, peak normalization, 3 ms seam fades and MP3 encoding."
+    },
+    {
+      "id": "original",
+      "author": "wire-board contributors",
+      "title": "Racing cover; countdown, start, lap and finish cues",
+      "sourceURL": "https://github.com/k0ngk0ng/wire-board/tree/main/games/racing",
+      "license": "Project original",
+      "modifications": "Original SVG drawing and offline additive audio synthesis."
+    }
+  ]
+}

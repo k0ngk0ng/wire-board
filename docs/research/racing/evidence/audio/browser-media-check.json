@@ -1,0 +1,38 @@
+[
+  {
+    "duration": 0.864082,
+    "error": null,
+    "readyState": 4,
+    "src": "engine-loop-0.wav"
+  },
+  {
+    "duration": 0.629569,
+    "error": null,
+    "readyState": 4,
+    "src": "engine-loop-5.wav"
+  },
+  {
+    "duration": 3,
+    "error": null,
+    "readyState": 4,
+    "src": "tire-loop.wav"
+  },
+  {
+    "duration": 0.271769,
+    "error": null,
+    "readyState": 4,
+    "src": "impact-metal-medium.ogg"
+  },
+  {
+    "duration": 0.505102,
+    "error": null,
+    "readyState": 4,
+    "src": "impact-soft-heavy.ogg"
+  },
+  {
+    "duration": 81.867792,
+    "error": null,
+    "readyState": 4,
+    "src": "kart-sfx-original.mp3"
+  }
+]

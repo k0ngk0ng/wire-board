@@ -172,6 +172,9 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 // from the unchanged persisted snapshot on the next tick.
 func (s *Server) expireModuleTimers(now time.Time) {
 	for _, room := range s.rooms {
+		if s.modules[room.Kind].Realtime {
+			continue // Realtime frames use the fast clock and include bot controls.
+		}
 		if room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > now.UnixMilli() {
 			continue
 		}

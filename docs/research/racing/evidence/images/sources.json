@@ -1,0 +1,414 @@
+{
+  "verified_on": "2026-10-15",
+  "scope": "Asset research only. No game implementation or OSS upload. Images remain a proposed art direction until user approval.",
+  "rights_summary": "The official pack pages and original in-archive licenses specify CC0. Commercial use, copying, modification and redistribution are permitted. Attribution is not required; retaining source and author credit is recommended. Do not imply endorsement or treat Kenney branding in preview montages as a game logo.",
+  "method": "agent-browser official page and link inspection; official ZIP download; archive listing, PNG IHDR dimensions and SHA-256 checks.",
+  "sources": [
+    {
+      "id": "racing-pack",
+      "author": "Kenney / Kenney Vleugels",
+      "page_url": "https://kenney.nl/assets/racing-pack",
+      "download_url": "https://kenney.nl/media/pages/assets/racing-pack/c4cd68480a-1677662443/kenney_racing-pack.zip",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "docs/research/racing/evidence/images/racing-pack/License.txt",
+      "page_evidence": "docs/research/racing/evidence/images/racing-pack.html",
+      "zip_path": ".local/racing-research/images/downloads/kenney-racing-pack.zip",
+      "zip_bytes": 1380632,
+      "zip_sha256": "a5e5252082e2bcbac177402d3bde3aa161fd81aeb246a36a1ec39255d1f30480",
+      "archive_listing": "docs/research/racing/evidence/images/racing-pack/archive-files.txt",
+      "png_files_total": 429,
+      "png_asset_files": 423,
+      "svg_sources": [
+        "Vector/vector_land.svg",
+        "Vector/vector_objects.svg",
+        "Vector/vector_roads.svg"
+      ],
+      "preview": "docs/research/racing/evidence/images/racing-pack-preview.png",
+      "verified": "Official page opened with agent-browser; official ZIP downloaded and inspected; in-archive license retained.",
+      "role": "Primary vehicle, road, terrain and trackside artwork",
+      "archive_content": {
+        "Cars": 50,
+        "Tiles": 312,
+        "Objects": 39,
+        "Characters": 17,
+        "Motorcycles": 5
+      },
+      "tile_content": {
+        "Asphalt road": 90,
+        "Dirt road": 90,
+        "Sand road": 90,
+        "Dirt": 14,
+        "Grass": 14,
+        "Sand": 14
+      },
+      "tile_dimensions": "All 312 tile PNGs are 128 x 128 pixels.",
+      "car_dimensions": "Standard cars: 70/71 x 116/121/131; small cars: 39/40 x 62/65/70. car_blue_1.png is 71 x 131.",
+      "car_variants": "5 colours (black, blue, green, red, yellow) x 5 body styles x 2 sizes = 50 PNGs.",
+      "suitability": "True top-down transparent sprites can be rotated continuously in Canvas. Tile set includes straight, curved, diagonal, pit/start and terrain transitions; authored routes still require explicit collision geometry, checkpoints and racing lines.",
+      "limitations": [
+        "Not a complete racing game, physics system, animation sequence or ready-made set of 3 playable circuits.",
+        "No verified snow or city building set; use existing asphalt/dirt/sand themes or create matching additions.",
+        "A sixth player colour requires a CC0-permitted recolour or clearly labelled body variant; retain equal handling and separate seat number.",
+        "PNG scale is limited; re-export from SVG for higher resolution. SVG source sheets are legacy artwork and require symbol extraction/cropping, rather than direct use as a finished sprite atlas.",
+        "Official page advertises 420 files; inspected archive contains 423 PNG asset files (429 PNGs including sheets and previews).",
+        "The archive also includes SWF source variants. The game should only consume PNG or adapted SVG, never execute SWF."
+      ],
+      "sample": "docs/research/racing/evidence/images/racing-pack-sample.png"
+    },
+    {
+      "id": "smoke-particles",
+      "author": "Kenney / Kenney Vleugels",
+      "page_url": "https://kenney.nl/assets/smoke-particles",
+      "download_url": "https://kenney.nl/media/pages/assets/smoke-particles/23249a0d35-1677695171/kenney_smoke-particles.zip",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "docs/research/racing/evidence/images/smoke-particles/License.txt",
+      "page_evidence": "docs/research/racing/evidence/images/smoke-particles.html",
+      "zip_path": ".local/racing-research/images/downloads/kenney-smoke-particles.zip",
+      "zip_bytes": 6019666,
+      "zip_sha256": "97a1d09c66e4fd6c247c8ea87f84c0cc59caaeceae19414c995afb1616a1e1c9",
+      "archive_listing": "docs/research/racing/evidence/images/smoke-particles/archive-files.txt",
+      "png_files_total": 79,
+      "png_asset_files": 77,
+      "svg_sources": [],
+      "preview": "docs/research/racing/evidence/images/smoke-particles-preview.png",
+      "verified": "Official page opened with agent-browser; official ZIP downloaded and inspected; in-archive license retained.",
+      "role": "Optional cartoon drift smoke / gravel dust",
+      "suitability": "Transparent raster smoke/puff shapes, animated by runtime emission, tint, expansion and fading. White puff shapes can be tinted as dust.",
+      "limitations": [
+        "No SVG source.",
+        "No built-in continuous drift animation; runtime particles must be authored.",
+        "Official page advertises 70 files; inspected PNG directory contains 77 PNG assets."
+      ]
+    },
+    {
+      "id": "particle-pack",
+      "author": "Kenney / Kenney Vleugels",
+      "page_url": "https://kenney.nl/assets/particle-pack",
+      "download_url": "https://kenney.nl/media/pages/assets/particle-pack/f8fe0f8cb8-1677578741/kenney_particle-pack.zip",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "docs/research/racing/evidence/images/particle-pack/License.txt",
+      "page_evidence": "docs/research/racing/evidence/images/particle-pack.html",
+      "zip_path": ".local/racing-research/images/downloads/kenney-particle-pack.zip",
+      "zip_bytes": 15001764,
+      "zip_sha256": "b631d4b07f7002549fdcf155f01141ad482f79f3440e4e301eed49ce5f1d8958",
+      "archive_listing": "docs/research/racing/evidence/images/particle-pack/archive-files.txt",
+      "png_files_total": 193,
+      "png_asset_files": 192,
+      "svg_sources": [],
+      "preview": "docs/research/racing/evidence/images/particle-pack-preview.png",
+      "verified": "Official page opened with agent-browser; official ZIP downloaded and inspected; in-archive license retained.",
+      "role": "Optional collision sparks and small particle accents",
+      "suitability": "512 x 512 transparent particle masks, including sparks and smoke. Use transparent PNG variants with Canvas tinting/compositing.",
+      "limitations": [
+        "No SVG source.",
+        "96 transparent and 96 black-background PNG variants; black-background versions should not be used as ordinary alpha sprites.",
+        "Official page advertises 80 files / version 1.0, while the archived License.txt says Particle Pack 1.1. Archive hash is the authoritative selected revision.",
+        "Unity package included but not needed for browser implementation."
+      ]
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "docs/research/racing/evidence/images/cc0-1.0-deed.txt",
+      "bytes": 4484,
+      "sha256": "c7b48e80f81b9a005803420356d722154606e25fe8f3bd54eaa4db2fdd3e09c4"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack/License.txt",
+      "bytes": 651,
+      "sha256": "f9e70b81d8cc07c4e07c9f2eff1d94fd371a06070b18cb67c651c41158ec2975"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack/PNG (Transparent)/Rotated/spark_05_rotated.png",
+      "bytes": 56533,
+      "sha256": "9bceb2b1a8a46d9eaffb4c77d5c4114ff7af8fcd36e586feb1f91bfe2af0e671",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack/PNG (Transparent)/Rotated/spark_06_rotated.png",
+      "bytes": 41431,
+      "sha256": "1c47a5d892ac1816c8eb18ebddb1ecf7769a35bbdd5a6671677b565006623936",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack/PNG (Transparent)/smoke_01.png",
+      "bytes": 97452,
+      "sha256": "e8724c219e8d35859167fc0a7e207e13c72ccf0c29704909b9bb3d3dc71c6cf7",
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack/archive-files.txt",
+      "bytes": 7157,
+      "sha256": "ba771c03b29e76958e604c74a8885ea4af94eccdbbe2fc1cc66455bf9d8626d3"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack-preview.png",
+      "bytes": 91674,
+      "sha256": "37b1b04371116a4ed3b2316056880034b0db7f59605a50c9058591de01b716e0",
+      "dimensions": [
+        918,
+        515
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/particle-pack.html",
+      "bytes": 17446,
+      "sha256": "fe87c390402e986718223d59b34a674e62135e4504027ab07a4294bbcba42e51"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/License.txt",
+      "bytes": 572,
+      "sha256": "eb4d367a2b5024535fcfc3e65615d63d9ed9c9fa8d63bfbeb67ac907dc421683"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Cars/car_blue_1.png",
+      "bytes": 2147,
+      "sha256": "aae03c3369f00db344182e426876bd9dc59875dc51583379fded2e469e8883cb",
+      "dimensions": [
+        71,
+        131
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Cars/car_green_1.png",
+      "bytes": 2155,
+      "sha256": "22ab853d90abd969f3eafe0acd3665d255fcd2ee0a5b02ab19e1880d74e8f1e5",
+      "dimensions": [
+        71,
+        131
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Cars/car_red_1.png",
+      "bytes": 2150,
+      "sha256": "18b02b61145659e5045404175778cd49d71a8f29fb12b4de3dcd8661c55141be",
+      "dimensions": [
+        71,
+        131
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Cars/car_yellow_1.png",
+      "bytes": 2170,
+      "sha256": "5f67d40f787646f30befa03fa51e307d562e803ebb7450a160412bbb0ad7e937",
+      "dimensions": [
+        71,
+        131
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Objects/cone_straight.png",
+      "bytes": 666,
+      "sha256": "f0e2a9694042c906a5b666e537f2fbd833a0e981e31495c8aecd36d8199fd621",
+      "dimensions": [
+        45,
+        44
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Objects/lights.png",
+      "bytes": 525,
+      "sha256": "905ca1ad07d4f62acb2bc43203c3dc4998a5b2ff808fa5a2f071e6ffea6714d4",
+      "dimensions": [
+        160,
+        64
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Objects/skidmark_long_1.png",
+      "bytes": 135,
+      "sha256": "d9a91aad52402766e84300d7cb8ca67459619e37fdca02190cb30947b4102607",
+      "dimensions": [
+        60,
+        192
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Objects/tree_large.png",
+      "bytes": 3445,
+      "sha256": "6b5fa943f0d0524ab63799e5bc799b09b6f409c5ffd1e25616fe758d3776ca4f",
+      "dimensions": [
+        214,
+        212
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Objects/tribune_full.png",
+      "bytes": 12832,
+      "sha256": "f3cc92d3eb0808f1ba7a254ee15781ea3cd726a6a476654913c4c8ee90a1dd44",
+      "dimensions": [
+        448,
+        223
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Tiles/Asphalt road/road_asphalt01.png",
+      "bytes": 193,
+      "sha256": "f622411a058bb8aa95febf5c2eb355ccc8d850de3abbe4722cbdd3fabf7d7028",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Tiles/Asphalt road/road_asphalt02.png",
+      "bytes": 204,
+      "sha256": "3dd232e7c1b544566623aefe4afdb832ded47115a0ee9cdd47d71a35d4d31c5c",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Tiles/Asphalt road/road_asphalt03.png",
+      "bytes": 2463,
+      "sha256": "6eb219d495fa8235fe3a2fa05ec89f82c6215ea4fb20c24b9b547ddcdaeed56e",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Tiles/Dirt road/road_dirt01.png",
+      "bytes": 204,
+      "sha256": "7640878863bd9795a47dad54df08fc97f2d8a5ac8e06db7a4430ba48f835417a",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/PNG/Tiles/Sand road/road_sand01.png",
+      "bytes": 2518,
+      "sha256": "694423c0d1e74f8e0b81572a15ec28a14690813f40de2eda230b5721b900208c",
+      "dimensions": [
+        128,
+        128
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/Vector/vector_land.svg",
+      "bytes": 103340,
+      "sha256": "a04f5be1c6907db61b96212f20ef3415c6e7a547724062d20df06a69660d74da"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/Vector/vector_objects.svg",
+      "bytes": 377984,
+      "sha256": "01feb55fb49746dc8bb9c215a95d3d8b00fd9d3a8c1af8c0bd250138cbd5eea4"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/Vector/vector_roads.svg",
+      "bytes": 470267,
+      "sha256": "237eb10c9fb9eb56b3645907d6f7346d2abe3ea4062e1b86ca0c167b163a83b5"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack/archive-files.txt",
+      "bytes": 15647,
+      "sha256": "ac8b9669f8f9ceea17f69b5b60dad8d977d559321180bfc5a195513beb5f7b8e"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack-preview.png",
+      "bytes": 71516,
+      "sha256": "93d14def0f751c31cded5139ceda12349b8966aaf2f8a6079e04fc8387ddbf40",
+      "dimensions": [
+        918,
+        515
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack-sample.png",
+      "bytes": 102441,
+      "sha256": "589d0c1ac1bee71acb644a95ce5751e23d865c7efed80b13c2a6d3f517310300",
+      "dimensions": [
+        918,
+        515
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/racing-pack.html",
+      "bytes": 17190,
+      "sha256": "76e160e58b03df3d00ba8c9e6d415ca05c205daa4ff21cbaf57136da077d7afd"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/License.txt",
+      "bytes": 486,
+      "sha256": "16dffa20429eccd9a6ddbffffe7870191974975d192d3934e53da5d486ed2e4f"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/PNG/Black smoke/blackSmoke00.png",
+      "bytes": 52454,
+      "sha256": "5d9f2b522beaa41511ef0ad1ccf2457d90b9aba8f5cac7154e3a86f8be7cc05b",
+      "dimensions": [
+        362,
+        336
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/PNG/Black smoke/blackSmoke01.png",
+      "bytes": 59756,
+      "sha256": "b5450964cdadbbb6125e4a6c5b2b0a5634cb242936d0188354f447ac781d017e",
+      "dimensions": [
+        398,
+        364
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/PNG/Black smoke/blackSmoke02.png",
+      "bytes": 54922,
+      "sha256": "257ec046b2bf0e99fac43e8603d446b7698207eb49daa70506b9e4d9196c0889",
+      "dimensions": [
+        386,
+        342
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/PNG/White puff/whitePuff00.png",
+      "bytes": 57599,
+      "sha256": "33f894c2279bee9f77874dbfa3c0e9f071a0ee5e1a7065dcc40196029d699f58",
+      "dimensions": [
+        381,
+        346
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/PNG/White puff/whitePuff01.png",
+      "bytes": 55357,
+      "sha256": "5b15a3986ce9be1212dda30c60f97f6a5e9e01d740950385868a6d03713c6923",
+      "dimensions": [
+        345,
+        374
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles/archive-files.txt",
+      "bytes": 2357,
+      "sha256": "f9e89a5bedb28cfc3641b2ab18f83f818563a45d127b1cf5eb4e1d53ba72e8eb"
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles-preview.png",
+      "bytes": 77004,
+      "sha256": "ab41f795bc7db569637b8f8dc4c4be2b6d337ca549a2040c7570ec2aedc71b03",
+      "dimensions": [
+        918,
+        515
+      ]
+    },
+    {
+      "path": "docs/research/racing/evidence/images/smoke-particles.html",
+      "bytes": 17655,
+      "sha256": "d9bbebe56af0a7a36bb0ef7eaef7507f1b8ca19e83efb53cd3852fa32db471a2"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+license.txt
+preview.png
+sample.png
+PNG/
+PNG/Black smoke/
+PNG/Black smoke/blackSmoke00.png
+PNG/Black smoke/blackSmoke01.png
+PNG/Black smoke/blackSmoke02.png
+PNG/Black smoke/blackSmoke03.png
+PNG/Black smoke/blackSmoke04.png
+PNG/Black smoke/blackSmoke05.png
+PNG/Black smoke/blackSmoke06.png
+PNG/Black smoke/blackSmoke07.png
+PNG/Black smoke/blackSmoke08.png
+PNG/Black smoke/blackSmoke09.png
+PNG/Black smoke/blackSmoke10.png
+PNG/Black smoke/blackSmoke11.png
+PNG/Black smoke/blackSmoke12.png
+PNG/Black smoke/blackSmoke13.png
+PNG/Black smoke/blackSmoke14.png
+PNG/Black smoke/blackSmoke15.png
+PNG/Black smoke/blackSmoke16.png
+PNG/Black smoke/blackSmoke17.png
+PNG/Black smoke/blackSmoke18.png
+PNG/Black smoke/blackSmoke19.png
+PNG/Black smoke/blackSmoke20.png
+PNG/Black smoke/blackSmoke21.png
+PNG/Black smoke/blackSmoke22.png
+PNG/Black smoke/blackSmoke23.png
+PNG/Black smoke/blackSmoke24.png
+PNG/Explosion/
+PNG/Explosion/explosion00.png
+PNG/Explosion/explosion01.png
+PNG/Explosion/explosion02.png
+PNG/Explosion/explosion03.png
+PNG/Explosion/explosion04.png
+PNG/Explosion/explosion05.png
+PNG/Explosion/explosion06.png
+PNG/Explosion/explosion07.png
+PNG/Explosion/explosion08.png
+PNG/Fart/
+PNG/Fart/fart00.png
+PNG/Fart/fart01.png
+PNG/Fart/fart02.png
+PNG/Fart/fart03.png
+PNG/Fart/fart04.png
+PNG/Fart/fart05.png
+PNG/Fart/fart06.png
+PNG/Fart/fart07.png
+PNG/Fart/fart08.png
+PNG/Flash/
+PNG/Flash/flash00.png
+PNG/Flash/flash01.png
+PNG/Flash/flash02.png
+PNG/Flash/flash03.png
+PNG/Flash/flash04.png
+PNG/Flash/flash05.png
+PNG/Flash/flash06.png
+PNG/Flash/flash07.png
+PNG/Flash/flash08.png
+PNG/White puff/
+PNG/White puff/whitePuff00.png
+PNG/White puff/whitePuff01.png
+PNG/White puff/whitePuff02.png
+PNG/White puff/whitePuff03.png
+PNG/White puff/whitePuff04.png
+PNG/White puff/whitePuff05.png
+PNG/White puff/whitePuff06.png
+PNG/White puff/whitePuff07.png
+PNG/White puff/whitePuff08.png
+PNG/White puff/whitePuff09.png
+PNG/White puff/whitePuff10.png
+PNG/White puff/whitePuff11.png
+PNG/White puff/whitePuff12.png
+PNG/White puff/whitePuff13.png
+PNG/White puff/whitePuff14.png
+PNG/White puff/whitePuff15.png
+PNG/White puff/whitePuff16.png
+PNG/White puff/whitePuff17.png
+PNG/White puff/whitePuff18.png
+PNG/White puff/whitePuff19.png
+PNG/White puff/whitePuff20.png
+PNG/White puff/whitePuff21.png
+PNG/White puff/whitePuff22.png
+PNG/White puff/whitePuff23.png
+PNG/White puff/whitePuff24.png
