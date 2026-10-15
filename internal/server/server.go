@@ -126,6 +126,11 @@ type bucket struct {
 	Count int
 }
 type Server struct {
+	botContext  context.Context
+	botWake     chan struct{}
+	botSlots    chan struct{}
+	botSearches map[string]*moduleBotSearch
+	botCursor   map[string]int
 	modules     map[string]gameapi.Module
 	gameKinds   []string
 	gameNames   map[string]string
@@ -270,6 +275,8 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 	s.expireIdleRooms(time.Now())
 	ctx, cancel := context.WithCancel(context.Background())
 	s.cancel, s.done = cancel, make(chan struct{})
+	s.botContext, s.botWake, s.botSlots = ctx, make(chan struct{}, 1), make(chan struct{}, 4)
+	s.botSearches, s.botCursor = make(map[string]*moduleBotSearch), make(map[string]int)
 	go s.runTimers(ctx)
 	return s, nil
 }
@@ -287,11 +294,16 @@ func (s *Server) runTimers(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			return
+		case <-s.botWake:
+			s.mu.Lock()
+			s.collectModuleBotSearches(time.Now())
+			s.mu.Unlock()
 		case now := <-ticker.C:
 			s.mu.Lock()
 			s.expireIdleRooms(now)
 			s.expireModuleTimers(now)
 			s.expireSetups(now)
+			s.collectModuleBotSearches(now)
 			s.runBots(now)
 			s.mu.Unlock()
 		}
@@ -1810,6 +1822,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	respond(w, 200, map[string]int{"version": next.Version})
 }
 func (s *Server) broadcast() {
+	s.cancelStaleBotSearches()
 	for c := range s.watchers {
 		select {
 		case c <- struct{}{}:
