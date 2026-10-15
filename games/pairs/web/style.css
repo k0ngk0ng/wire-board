@@ -232,3 +232,13 @@
     padding: 0;
   }
 }
+
+.pairs-cell.queued {
+  outline: 2px solid #6b854b;
+  outline-offset: -2px;
+  background: #e0e8bd;
+}
+/* Grid hit targets must not move under the platform's pressed-button effect. */
+.pairs-field .pairs-cell:active {
+  transform: none;
+}
