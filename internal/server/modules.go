@@ -93,7 +93,7 @@ func (r *Room) setModule(match gameapi.Match) error {
 		r.Game.Turn = match.Actors[0]
 	}
 	if match.Result != nil {
-		r.Game.Finished, r.Game.Winners = true, match.Result.Winners
+		r.Game.Finished, r.Game.Winners = true, append([]int{}, match.Result.Winners...)
 		r.Status = "finished"
 	}
 	return nil

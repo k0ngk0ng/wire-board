@@ -20,6 +20,7 @@ type MatchPlayer struct {
 	Won   bool `json:"won"`
 }
 type MatchRecord struct {
+	Draw                bool                 `json:"draw,omitempty"`
 	Cooperative         bool                 `json:"cooperative,omitempty"`
 	Details             json.RawMessage      `json:"details,omitempty"`
 	Options             json.RawMessage      `json:"options,omitempty"`
@@ -428,6 +429,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 	if r.Module != nil {
 		record.Options = r.Options
 		if r.Module.Result != nil {
+			record.Draw = r.Module.Result.Draw
 			record.Details = r.Module.Result.Details
 			record.Cooperative = r.Module.Result.Cooperative
 		}
@@ -517,7 +519,9 @@ func (s *Server) profile(w http.ResponseWriter, r *http.Request) {
 	records := []MatchRecord{}
 	stats := map[string]map[string]int{}
 	for _, kind := range s.gameKinds {
-		stats[kind] = map[string]int{"played": 0, "wins": 0}
+		if !s.hiddenGames[kind] {
+			stats[kind] = map[string]int{"played": 0, "wins": 0}
+		}
 	}
 	for rows.Next() {
 		var raw []byte
