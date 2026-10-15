@@ -172,6 +172,7 @@ export type GameHeader = {
 export type RoomBase = {
   options?: unknown;
   result?: {
+    id?: string;
     rated: boolean;
     draw?: boolean;
     cooperative?: boolean;

@@ -30,7 +30,7 @@ export function GameChoices({
   useEffect(() => {
     const grid = list.current;
     const selected = grid?.querySelector<HTMLElement>(".selected");
-    if (grid)
+    if (grid && grid.clientHeight > 0)
       grid.scrollTop = selected
         ? selected.offsetTop - grid.clientHeight / 2
         : 0;
@@ -57,7 +57,9 @@ export function GameChoices({
         />
       </label>
       <p className="game-choice-summary">
-        已选：{gameName(value)}
+        {value
+          ? `已选：${gameName(value)}`
+          : "选择游戏后，继续设置房间和规则。"}
         {selectedGame && (
           <span className="game-choice-players">
             {selectedGame.playerCounts

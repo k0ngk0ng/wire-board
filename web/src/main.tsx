@@ -70,6 +70,9 @@ import {
 import "./room-option-cards.css";
 import "./style.css";
 import { useRoomPresentation } from "./game-api/presentation";
+import { ResultOverlay } from "./ui/result-overlay";
+import { RoomHeading } from "./ui/room-heading";
+import { CreateRoom } from "./ui/create-room";
 import { useTurnTitle } from "./turn-title";
 import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
@@ -126,10 +129,9 @@ function App() {
   };
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(false);
-  const [create, setCreate] = useState("");
+  const [create, setCreate] = useState(false);
   useEffect(() => {
-    if (create && state && !state.availableGames.includes(create))
-      setCreate("");
+    if (create && state && !state.availableGames.length) setCreate(false);
   }, [state?.availableGames, create]);
   const [join, setJoin] = useState<Room>();
   const [joinMode, setJoinMode] = useState<"join" | "watch">("join");
@@ -654,7 +656,7 @@ function App() {
             ) : !room ? (
               <Lobby
                 state={state}
-                onCreate={setCreate}
+                onCreate={() => setCreate(true)}
                 onJoin={(r) => {
                   setJoinMode("join");
                   if (r.locked) setJoin(r);
@@ -671,7 +673,7 @@ function App() {
               <main
                 className={`room-page ${room.game ? "playing" : ""} game-${room.kind}`}
               >
-                <div className="room-heading">
+                <RoomHeading roomId={room.id} finished={!!room.game?.finished}>
                   <div>
                     <span className="eyebrow">
                       {gameName(room.kind)} <span> / </span> 牌桌{" "}
@@ -762,7 +764,7 @@ function App() {
                         </button>
                       )}
                   </div>
-                </div>
+                </RoomHeading>
                 {room.spectating && (
                   <div className="spectator-notice">
                     <Eye size={16} />
@@ -834,16 +836,20 @@ function App() {
                       <Players room={room} />
                     )}
                     {room.game?.finished && (
-                      <Results
-                        room={room}
-                        host={
-                          !room.spectating &&
-                          room.host === state.user.id &&
-                          state.availableGames.includes(room.kind)
-                        }
-                        busy={busy}
-                        command={roomCommand}
-                      />
+                      <ResultOverlay
+                        key={`${room.id}:${room.result?.id || "finished"}`}
+                      >
+                        <Results
+                          room={room}
+                          host={
+                            !room.spectating &&
+                            room.host === state.user.id &&
+                            state.availableGames.includes(room.kind)
+                          }
+                          busy={busy}
+                          command={roomCommand}
+                        />
+                      </ResultOverlay>
                     )}
                     <div className="game-layout">
                       <div className="game-main">
@@ -880,14 +886,13 @@ function App() {
             )}
             {create && (
               <Create
-                kind={create}
                 availableGames={state.availableGames}
                 busy={busy}
-                onClose={() => setCreate("")}
+                onClose={() => setCreate(false)}
                 onSubmit={(body) =>
                   void run(async () => {
                     await api("/rooms", body);
-                    setCreate("");
+                    setCreate(false);
                   })
                 }
               />
@@ -1441,18 +1446,27 @@ function Cover(props: Parameters<typeof LegacyCover>[0]) {
   );
 }
 
-function Create(props: Parameters<typeof LegacyCreate>[0]) {
-  const [kind, setKind] = useState(props.kind);
-  return isIndependentGame(kind) ? (
-    <ModuleCreate
-      {...props}
-      key={kind}
-      kind={kind}
-      onGameChange={setKind}
-      renderCover={(id) => <Cover kind={id} mini />}
+function Create(props: {
+  availableGames: string[];
+  busy: boolean;
+  onClose: () => void;
+  onSubmit: (body: unknown) => void;
+}) {
+  return (
+    <CreateRoom
+      availableGames={props.availableGames}
+      busy={props.busy}
+      onClose={props.onClose}
+      onSubmit={props.onSubmit}
+      renderCover={(kind) => <Cover kind={kind} mini />}
+      renderForm={(form) =>
+        isIndependentGame(form.kind) ? (
+          <ModuleCreate {...form} />
+        ) : (
+          <LegacyCreate {...form} />
+        )
+      }
     />
-  ) : (
-    <LegacyCreate {...props} kind={kind} onGameChange={setKind} />
   );
 }
 

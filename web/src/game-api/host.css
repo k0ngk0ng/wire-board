@@ -1,4 +1,11 @@
 /* Independent modules use the same room/player/turn surfaces as existing games. */
+.turn-clock-placeholder {
+  /* Playback can temporarily remove the deadline. Keep its layout slot so
+     the board below does not jump between active and neutral turn states. */
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .players-strip.module-players {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr));

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Room } from "../types";
 import type { GameClock, PresentationFrame, RoomPresentation } from "./module";
 import { gameModule } from "./registry";
+import { schedulePresentationWake } from "./presentation-wake";
 
 export function useRoomPresentation(
   room: Room | undefined,
@@ -42,11 +43,7 @@ export function useRoomPresentation(
   const wakeAt = frame?.wakeAt;
   useEffect(() => {
     if (wakeAt === undefined) return;
-    const timer = setTimeout(
-      () => tick((v) => v + 1),
-      Math.max(0, wakeAt - performance.now()),
-    );
-    return () => clearTimeout(timer);
+    return schedulePresentationWake(wakeAt, () => tick((v) => v + 1));
   }, [wakeAt]);
   return {
     room: (frame?.room ?? room) as Room | undefined,
