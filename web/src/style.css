@@ -1765,6 +1765,44 @@ label small {
   font-size: 11px;
   color: #8e855f;
 }
+.match-result-modal {
+  width: 680px;
+}
+.match-result-modal .results {
+  margin-bottom: 0;
+  padding: 16px;
+}
+.match-result-modal .results p {
+  color: #62573b;
+}
+.match-result-modal .eyebrow {
+  color: #58674a;
+}
+.match-result-modal .rating-gain {
+  color: #286447;
+}
+.match-result-modal .rating-loss {
+  color: #943c30;
+}
+.match-result-modal .score-table > div {
+  flex-wrap: wrap;
+}
+.result-reopen {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  z-index: 39;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #80662f;
+  border-radius: 24px;
+  color: #493c1c;
+  background: #f5e8b9;
+  box-shadow: 0 4px 18px #123a3c30;
+}
 .score-table {
   width: 100%;
   order: 2;
@@ -5370,4 +5408,66 @@ label small {
 }
 .rating-neutral {
   color: #405a48;
+}
+
+/* The catalogue and the chosen game's form are separate steps of one dialog. */
+.create-room-modal .create-back {
+  margin: 0 0 12px;
+}
+.create-selected-game {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: #edf1e4;
+  color: #293b35;
+  border: 1px solid #cbd6c1;
+  border-radius: 10px;
+}
+.create-selected-cover {
+  flex: 0 0 120px;
+  width: 120px;
+}
+.create-selected-cover > .cover {
+  width: 100%;
+  height: 76px;
+  min-height: 0;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.create-selected-game > div:last-child {
+  min-width: 0;
+}
+.create-selected-game strong {
+  display: block;
+  font-size: 17px;
+}
+.create-selected-game span {
+  display: block;
+  color: #4c604f;
+  font-size: 12px;
+  margin-top: 3px;
+}
+.create-selected-game p {
+  color: #4c604f;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 6px 0 0;
+}
+@media (max-width: 600px) {
+  .create-selected-game {
+    gap: 10px;
+    padding: 10px;
+  }
+  .create-selected-cover {
+    flex-basis: 80px;
+    width: 80px;
+  }
+  .create-selected-cover > .cover {
+    height: 62px;
+  }
+  .create-selected-game strong {
+    font-size: 15px;
+  }
 }

@@ -182,7 +182,9 @@ try:
         assert js('document.querySelector(".choose-games .selected > span").textContent.trim()') == meta['name']
         assert js('!!document.querySelector(".choose-games .selected .cover")')
         assert js('document.querySelector(".game-choice-players").textContent.trim()') == meta['players']
-        assert js('document.querySelector(".game-choice-description").textContent.trim().length>0')
+        assert js('document.querySelector(".create-selected-game p").textContent.trim().length>0')
+        assert js('document.querySelector("[data-create-step=setup]").hidden===false')
+        b('find','role','button','click','--name','返回选择游戏','--exact')
     for width in [1280, 320]:
         b('set', 'viewport', str(width), '740')
         shot('create-picker-' + str(width))
@@ -199,10 +201,12 @@ try:
     assert js('document.querySelectorAll("[role=dialog]").length===1')
     b('click', '.choose-games button')
     b('wait', 'select[aria-label="座位上限"]')
-    assert js('document.querySelector(".choose-games .selected").textContent.includes("30")')
+    assert js('document.querySelector(".create-selected-game").textContent.includes("30")')
+    b('find','role','button','click','--name','返回选择游戏','--exact')
     b('fill', 'input[aria-label="搜索可选游戏"]', '璀璨宝石')
     b('click', '.choose-games button')
-    b('wait', '--fn', 'document.querySelector(".choose-games .selected")?.textContent.includes("璀璨宝石")')
+    b('wait', '--fn', 'document.querySelector(".create-selected-game")?.textContent.includes("璀璨宝石")')
+    b('find','role','button','click','--name','返回选择游戏','--exact')
     b('fill', 'input[aria-label="搜索可选游戏"]', '目录验收 30')
     b('click', '.choose-games button')
     b('wait', 'select[aria-label="座位上限"]')

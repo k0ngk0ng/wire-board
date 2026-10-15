@@ -1,7 +1,7 @@
-import { GameChoices } from "../ui/game-choices";
-import { useContext, useEffect, useState, type ReactNode } from "react";
+import type { GameSetupFormProps } from "../ui/create-room";
+import { useContext, useEffect, useState } from "react";
 import { ArrowRight, Check, Clock, Crown, Plus } from "lucide-react";
-import { AssetsContext, Modal } from "../ui/board-host";
+import { AssetsContext } from "../ui/board-host";
 import type { Act, Room } from "../types";
 import "./host.css";
 import type { GameAudioPort, GameClock } from "./module";
@@ -47,110 +47,96 @@ export function GameBoard({
 
 export function ModuleCreate({
   kind,
-  availableGames,
-  onGameChange,
   busy,
-  onClose,
   onSubmit,
-  renderCover,
-}: {
-  kind: string;
-  availableGames: string[];
-  onGameChange: (kind: string) => void;
-  busy: boolean;
-  onClose: () => void;
-  onSubmit: (body: unknown) => void;
-  renderCover: (kind: string) => ReactNode;
-}) {
+  draft,
+  onDraftChange,
+}: GameSetupFormProps) {
   const module = gameModule(kind)!;
   const [capacity, setCapacity] = useState(module.minPlayers);
   const [options, setOptions] = useState<unknown>(module.defaultOptions ?? {});
   const Options = module.Options;
   return (
-    <Modal title="摆好一张新牌桌" onClose={onClose}>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          const form = new FormData(event.currentTarget);
-          onSubmit({
-            kind,
-            capacity,
-            options,
-            name: form.get("name"),
-            password: form.get("password"),
-          });
-        }}
-      >
-        <GameChoices
-          games={availableGames}
-          value={kind}
-          onChange={onGameChange}
-          renderCover={renderCover}
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        const form = new FormData(event.currentTarget);
+        onSubmit({
+          kind,
+          capacity,
+          options,
+          name: form.get("name"),
+          password: form.get("password"),
+        });
+      }}
+    >
+      <label>
+        房间名称
+        <input
+          name="name"
+          required
+          maxLength={40}
+          placeholder="例如：周五晚上的快乐"
+          value={draft.name}
           disabled={busy}
+          onChange={(e) => onDraftChange({ name: e.target.value })}
         />
-        {Options && (
-          <Options
-            value={options}
-            onChange={setOptions}
-            capacity={capacity}
-            disabled={busy}
-          />
-        )}
+      </label>
+      <div className="form-grid">
         <label>
-          房间名称
+          座位上限
+          <select
+            aria-label="座位上限"
+            value={capacity}
+            disabled={busy}
+            onChange={(e) => setCapacity(Number(e.target.value))}
+          >
+            {(
+              module.playerCounts ??
+              Array.from(
+                { length: module.maxPlayers - module.minPlayers + 1 },
+                (_, i) => module.minPlayers + i,
+              )
+            ).map((n) => (
+              <option key={n} value={n}>
+                {n} 人
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          房间密码
           <input
-            name="name"
-            required
-            maxLength={40}
-            placeholder="例如：周五晚上的快乐"
-            defaultValue="朋友们的牌桌"
+            name="password"
+            value={draft.password}
+            disabled={busy}
+            onChange={(e) => onDraftChange({ password: e.target.value })}
+            type="password"
+            maxLength={72}
+            placeholder="留空即可直接加入"
+            autoComplete="off"
           />
         </label>
-        <div className="form-grid">
-          <label>
-            座位上限
-            <select
-              aria-label="座位上限"
-              value={capacity}
-              disabled={busy}
-              onChange={(e) => setCapacity(Number(e.target.value))}
-            >
-              {(
-                module.playerCounts ??
-                Array.from(
-                  { length: module.maxPlayers - module.minPlayers + 1 },
-                  (_, i) => module.minPlayers + i,
-                )
-              ).map((n) => (
-                <option key={n} value={n}>
-                  {n} 人
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            房间密码
-            <input
-              name="password"
-              type="password"
-              maxLength={72}
-              placeholder="留空即可直接加入"
-              autoComplete="off"
-            />
-          </label>
-        </div>
-        <p className="muted small">
-          {module.requiresFullTable
-            ? `需要坐满 ${capacity} 人后开始。`
-            : `至少 ${module.minPlayers} 个座位即可开始，不必坐满。`}
-          {module.supportsBots && "一个人也可以在房间里添加电脑玩家体验。"}
-        </p>
-        <button className="primary wide" disabled={busy} type="submit">
-          创建房间
-          <ArrowRight size={18} />
-        </button>
-      </form>
-    </Modal>
+      </div>
+      {Options && (
+        <Options
+          value={options}
+          onChange={setOptions}
+          capacity={capacity}
+          disabled={busy}
+        />
+      )}
+      <p className="muted small">
+        {module.requiresFullTable
+          ? `需要坐满 ${capacity} 人后开始。`
+          : `至少 ${module.minPlayers} 个座位即可开始，不必坐满。`}
+        {module.supportsBots && "一个人也可以在房间里添加电脑玩家体验。"}
+      </p>
+      <button className="primary wide" disabled={busy} type="submit">
+        创建房间
+        <ArrowRight size={18} />
+      </button>
+    </form>
   );
 }
 
@@ -382,6 +368,7 @@ export function ModuleTurn({
         1000,
     ),
   );
+  const hasClock = !!room.turnDeadline && !room.game?.finished;
   return (
     <section
       className={`turn-card ${(room.game?.attention ?? room.game?.actors)?.includes(room.you) ? "mine" : ""}`}
@@ -398,18 +385,19 @@ export function ModuleTurn({
                 ? "等待其他玩家"
                 : "对局进行中"}
       </h3>
-      {!!room.turnDeadline && !room.game?.finished && (
-        <div className={`turn-clock ${remaining <= 20 ? "urgent" : ""}`}>
-          <div className="clock-reading">
-            <Clock size={20} />
-            <time aria-label={`本回合剩余 ${remaining} 秒`}>
-              {String(Math.floor(remaining / 60)).padStart(2, "0")}:
-              {String(remaining % 60).padStart(2, "0")}
-            </time>
-            <span>超时自动托管</span>
-          </div>
+      <div
+        className={`turn-clock ${hasClock ? (remaining <= 20 ? "urgent" : "") : "turn-clock-placeholder"}`}
+        aria-hidden={hasClock ? undefined : true}
+      >
+        <div className="clock-reading">
+          <Clock size={20} />
+          <time aria-label={`本回合剩余 ${remaining} 秒`}>
+            {String(Math.floor(remaining / 60)).padStart(2, "0")}:
+            {String(remaining % 60).padStart(2, "0")}
+          </time>
+          <span>超时自动托管</span>
         </div>
-      )}
+      </div>
     </section>
   );
 }

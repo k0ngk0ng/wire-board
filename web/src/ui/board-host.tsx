@@ -33,12 +33,23 @@ export function Modal({
     const el = ref.current;
     el?.querySelector<HTMLElement>("input,button,select")?.focus();
     function key(e: KeyboardEvent) {
-      if (e.key === "Escape" && dismissible) onClose();
+      if (e.key === "Escape" && dismissible) {
+        // Dismiss the overlay without invoking the browser's stop-loading
+        // shortcut, which can interrupt requests while reviewing a result.
+        e.preventDefault();
+        onClose();
+      }
       if (e.key === "Tab" && el) {
         const nodes = Array.from(
           el.querySelectorAll<HTMLElement>(
             'button:not(:disabled),input,select,[tabindex="0"]',
           ),
+        ).filter(
+          (node) =>
+            node.getClientRects().length > 0 &&
+            !node.matches(":disabled") &&
+            !node.closest("[inert]") &&
+            getComputedStyle(node).visibility !== "hidden",
         );
         if (!nodes.length) return;
         const first = nodes[0],

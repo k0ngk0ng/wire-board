@@ -172,6 +172,7 @@ try:
     b('wait', '--fn', 'document.querySelector(".modal").getAnimations().every(a=>a.playState!=="running")')
     b('fill', 'input[aria-label=搜索可选游戏]', '璀璨宝石')
     b('click', '.choose-games button')
+    b('find','role','button','click','--name','返回选择游戏','--exact')
     b('wait', '.choose-games')
     b('wait', '--fn', 'document.querySelector(".modal").getAnimations().every(a=>a.playState!=="running")')
     b('fill', 'input[aria-label=搜索可选游戏]', '接入验收')

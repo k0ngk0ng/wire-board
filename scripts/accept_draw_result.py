@@ -90,6 +90,7 @@ Board:({room,data,act,busy})=><section className="draw-acceptance"><p>{data.offe
     b('wait', '--text', '等待同意')
     peer_api('/rooms/' + room['id'], {'type': 'action', 'version': api('/state')['room']['version'], 'nonce': uuid.uuid4().hex, 'action': {'type': 'accept'}})
     b('wait', '.results')
+    assert js('!!document.querySelector(".results").closest("[role=dialog]")'), 'result must be an overlay'
     assert js('document.querySelector(".results h2").textContent.trim()==="本局和棋"')
     assert js('[...document.querySelectorAll(".result-ratings b")].length===2 && [...document.querySelectorAll(".result-ratings b")].every(e=>e.textContent.trim()==="0 积分")')
     assert js('document.querySelectorAll(".result-ratings .rating-loss").length===0'), 'draw labelled a rating loss'
@@ -100,6 +101,8 @@ Board:({room,data,act,busy})=><section className="draw-acceptance"><p>{data.offe
     b('reload'); b('wait', '.results')
     assert api('/state')['room']['result'] == result
     assert js('document.querySelector(".results h2").textContent.includes("和棋")')
+    # Escape closes only the overlay; subsequent profile fetches must still finish.
+    b('press', 'Escape')
     b('find', 'role', 'button', 'click', '--name', '我的战绩与好友', '--exact')
     b('wait', '.profile-history article')
     assert js('document.querySelector(".profile-history article header").textContent.includes("和棋")')
