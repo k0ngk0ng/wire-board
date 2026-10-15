@@ -34,7 +34,12 @@ class ScopeTests(unittest.TestCase):
     def test_docs_do_not_request_complete_games(self):
         self.assertEqual(self.plan('games/snooker/README.md', 'docs/research/chess-family.md', 'AGENTS.md')['games'], [])
     def test_explicit_full_and_one_game_selection(self):
-        self.assertEqual(len(self.plan(manual='all')['games']), 13)
+        # Compare the actual catalog, so adding a game does not require updating
+        # a magic count and cannot silently omit the new entry from full runs.
+        catalog = sorted(p.name for p in (ROOT/'games').iterdir()
+                         if p.is_dir() and not p.name.startswith(('.', '_')))
+        self.assertEqual(self.plan(manual='all')['games'],
+                         [{'game': game, 'backend': True} for game in catalog])
         self.assertEqual(self.plan(manual='snooker')['games'], [{'game': 'snooker', 'backend': True}])
         with self.assertRaises(ValueError): self.plan(manual='unknown')
     def test_shared_test_selection_excludes_game_full_matches(self):

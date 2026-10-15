@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""Verify Chess media hashes, signatures, local fallback and optional decoding.
+Failure cases: absent/empty/mislabelled files; stale dist; corrupt media; license
+not retained. Written before preparing the first Chess media package.
+"""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+root=Path(__file__).resolve().parents[2]
+p=argparse.ArgumentParser();p.add_argument('--dist',action='store_true');p.add_argument('--decode',action='store_true');args=p.parse_args()
+manifest=json.loads((root/'games/chess/assets/sources.json').read_text())
+source=root/'games/chess/assets/public/chess/v1'
+assert (root/manifest['audioSource']['licenseEvidence']).is_file()
+assert (root/manifest['pieces']['licenseEvidence']).is_file()
+assert (root/manifest['pieces']['copyrightEvidence']).is_file()
+checks=[]
+for item in manifest['files']:
+    data=(source/item['file']).read_bytes();assert len(data)==item['bytes'] and hashlib.sha256(data).hexdigest()==item['sha256'],item
+    assert data[:4]==b'RIFF' and data[8:12]==(b'WEBP' if item['file'].endswith('.webp') else b'WAVE'),item
+    if args.dist:assert (root/'web/dist/chess/v1'/item['file']).read_bytes()==data,item
+    if args.decode:subprocess.run(['ffmpeg','-v','error','-i',str(source/item['file']),'-f','null','-'],check=True,capture_output=True)
+    checks.append(item['file'])
+assert len(checks)==19
+out=root/'.local/chess/assets';out.mkdir(parents=True,exist_ok=True)
+(out/'verification.json').write_text(json.dumps({'passed':True,'files':checks,'dist':args.dist,'decoded':args.decode,'command':'python3 -B scripts/chess/verify-assets.py'+(' --dist' if args.dist else '')+(' --decode' if args.decode else '')},indent=2)+'\n')
+print('PASS Chess assets:',len(checks))

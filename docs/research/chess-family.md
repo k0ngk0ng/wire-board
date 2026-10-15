@@ -124,7 +124,7 @@ Stockfish、Pikafish、Rapfi 的可执行文件或 WASM 若随镜像／站点分
 
 必须实现将杀、逼和、易位限制、吃过路兵、四种升变、死局及重复局面记录。三次重复／50 步的申请和棋与五次重复／75 步的自动和棋应区分；不能只保存当前 FEN 而丢失历史。
 
-规则基准指向 [FIDE Laws of Chess](https://handbook.fide.com/chapter/E012023)。本次该官方端点在当前环境中出现 TLS 错误，未保存正文；实施前补齐固定版原文和裁定用例。Go 库或引擎的接口名称本身不证明其默认行为完全符合目标规则。
+规则基准指向 [FIDE Laws of Chess](https://handbook.fide.com/chapter/E012023)。初次调研时该端点出现 TLS 错误；实施阶段已从 FIDE 官方下载 [Arbiter Manual 2026](https://arbiters.fide.com/wp-content/uploads/Publications/Manual/Arbiter-Manual-2026.pdf)，核对其中第 5、9 条及兵墙死局示例，下载摘要和应用条款见 `sources.json` 的 `implementationRuleEvidence`。Go 库默认的重复判定与和棋结束方式不能直接代替平台裁定；实施中另行区分申请与自动和棋，并检查吃过路兵是否合法。
 
 棋钟另作为明确的产品选项。建议首版保留平台的休闲超时托管；如果开放竞技总时限／加秒，就必须单独实现超时判负等规则，不能一边标竞赛计时，一边到时自动托管。
 

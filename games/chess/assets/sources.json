@@ -1,0 +1,199 @@
+{
+  "version": "chess/v1",
+  "pieces": {
+    "repository": "LexLuengas/chessnut-pieces",
+    "commit": "2b8eaf14a31edad7e9deb53b1473e1d4857868a9",
+    "license": "Apache-2.0",
+    "licenseEvidence": "games/chess/assets/licenses/chessnut-LICENSE.txt",
+    "copyrightEvidence": "games/chess/assets/licenses/chessnut-COPYRIGHT.txt",
+    "originals": [
+      {
+        "file": "games/chess/assets/pieces/wK.svg",
+        "sha256": "e50809e91a15790c8d81d3f199bf569f0eb5a09c472a0415944e8c9e3cfcddd0",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/wK.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/wQ.svg",
+        "sha256": "2395664337bea8f13093858320cce6075d80f8086e6aa47e122ce556262b4d6b",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/wQ.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/wR.svg",
+        "sha256": "e7fb8605a9318ef50e497a97680e4722d3eabc1e9ab6e4e9f594b8f2ca2022e5",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/wR.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/wB.svg",
+        "sha256": "14cd4828240708d4d8431034537e2a5fb662d5054246fef681b172680cae9fcd",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/wB.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/wN.svg",
+        "sha256": "adc921896bb6e6547828f2a6eb3d5195dd1b7ac8e8c1d2a9085583e4d4d81b68",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/wN.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/wP.svg",
+        "sha256": "0cf9dfe2f7b3ab11a7fdb13bf350f32e7a6c94e193fc023933e129ec02eeed8d",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/wP.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/bK.svg",
+        "sha256": "220d75890b4368f0309bab0be40ac1dac6809508f5e1ecb119d35d225bf01f90",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/bK.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/bQ.svg",
+        "sha256": "0308426c9cfafabdce64600cbe90c193fc6ef7665f072b43d4dc82b5c1047670",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/bQ.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/bR.svg",
+        "sha256": "ad18856a97edf53281acc40e1e6e4f7021ed01fad380fff7e09e63465b3bb462",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/bR.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/bB.svg",
+        "sha256": "f835819861774dcacef7370ed2c23d4022ef6c2b17383a6a79c5f683d105e8b6",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/bB.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/bN.svg",
+        "sha256": "acabd5a82666927d850a9eaab6f3766ef196a999dd3c6de0f927a8f12dacd356",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/bN.svg"
+      },
+      {
+        "file": "games/chess/assets/pieces/bP.svg",
+        "sha256": "073fb7b38b2ebe66ee54854fa492da6cc04e6d92bc679c860b77c254fa1d46ce",
+        "url": "https://raw.githubusercontent.com/LexLuengas/chessnut-pieces/2b8eaf14a31edad7e9deb53b1473e1d4857868a9/bP.svg"
+      }
+    ]
+  },
+  "images": {
+    "source": "games/chess/assets/art.ts",
+    "method": "Original SVG; @resvg/resvg-js 2.6.2 and cwebp lossless"
+  },
+  "audioSource": {
+    "url": "https://kenney.nl/media/pages/assets/boardgame-pack/a1656828d2-1677667644/kenney_boardgame-pack.zip",
+    "sha256": "3b6a7dd5af658d1ffa0071429d5dde10ff63121e88bd06d4904e721e60b2c398",
+    "license": "CC0-1.0",
+    "licenseEvidence": "games/chess/assets/licenses/kenney-boardgame.txt"
+  },
+  "generator": "node --experimental-strip-types scripts/chess/prepare-assets.mjs",
+  "files": [
+    {
+      "file": "images/wK.webp",
+      "bytes": 2554,
+      "sha256": "35fc5b119e04db1c91e50d6d130f9460027fdaad2ba78b4e33cd12a4589b830d",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/wQ.webp",
+      "bytes": 3350,
+      "sha256": "72db1b32de15a9510066de6b6deee929a70a19cc48d11ecf81fe375189e5d575",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/wR.webp",
+      "bytes": 1430,
+      "sha256": "8ee5a2ec7e64fa9969db1d0ecf1e623d458fffe146779ed5fadab3ee976a7889",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/wB.webp",
+      "bytes": 2528,
+      "sha256": "d09021019f332a72fc899d1f0278022548ebb2cb4a81cf746d7b5ba33cf7ea2a",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/wN.webp",
+      "bytes": 1950,
+      "sha256": "a7941c98283bc82ffdf15bd18fbf6f9efcd21b250ad473e276c20a9c6c471d09",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/wP.webp",
+      "bytes": 1324,
+      "sha256": "0a915e802193322ad611ccaad5b60c8e623896e817554dc6f31d28af608169ba",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/bK.webp",
+      "bytes": 2902,
+      "sha256": "e070d05aa2f86081deb38ba3bfc64af9e0d416cd0cb130d11f8bbbaecea95c61",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/bQ.webp",
+      "bytes": 3634,
+      "sha256": "0f46b059a2d5e60c154e4f95b89541a676b758c198b3904b7de8803c654e6fc0",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/bR.webp",
+      "bytes": 1414,
+      "sha256": "526100ba625ce6eb3eabc3042057f558c97d52277fbf4e780388ac6ba9bf4e0f",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/bB.webp",
+      "bytes": 3112,
+      "sha256": "ddcb094985ddb4e58f81895f7fa7aa4aaef29a14ac81844d87808f0608f9be09",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/bN.webp",
+      "bytes": 1280,
+      "sha256": "21c263ead7fabb287fbeb676d41110b64dc0afeae4af84bc77bf6df24ded55f2",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/bP.webp",
+      "bytes": 1060,
+      "sha256": "8a6c44cfc7de50b3aec7668207aaae9049ccbc160ab3f435dd040c988fcc639d",
+      "source": "Chessnut Apache-2.0; original SVG rendered unchanged"
+    },
+    {
+      "file": "images/cover.webp",
+      "bytes": 14050,
+      "sha256": "e234e59886bc7a393d76842cb9f182d23cc9a4ef396773be0d01978f031979fe",
+      "source": "Original SVG: games/chess/assets/art.ts"
+    },
+    {
+      "file": "images/board.webp",
+      "bytes": 126,
+      "sha256": "57788d617664352f3d08b361493e0fcd725c5c2a8ecee0b79ac21475a9449be8",
+      "source": "Original SVG: games/chess/assets/art.ts"
+    },
+    {
+      "file": "audio/move.wav",
+      "bytes": 22900,
+      "sha256": "8b69e0ea48711a3fa2917a6b4bfe35ce1b3e00718bb57afc316ba5aecd14b721",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide1.ogg; mono 44.1kHz PCM volume=0.7"
+    },
+    {
+      "file": "audio/capture.wav",
+      "bytes": 20362,
+      "sha256": "7463c05f505073a8952c9ae11e495f1243edefc3cd54b1a001c2fcaf1dc7979c",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide2.ogg; mono 44.1kHz PCM volume=0.7"
+    },
+    {
+      "file": "audio/check.wav",
+      "bytes": 56492,
+      "sha256": "8690817a0f8a4085337bce3705f3abf9dad926f31926fd0c72fc7cf981adecf7",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#turn"
+    },
+    {
+      "file": "audio/win.wav",
+      "bytes": 100594,
+      "sha256": "394fe0a9e5e254c877c8b67eafd0b8f99f6366769998e09dc6a41cd5395c910d",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#finish"
+    },
+    {
+      "file": "audio/draw.wav",
+      "bytes": 32678,
+      "sha256": "87474ad45994c47e7bcd527975fa8fb74654b671cc45df3771d3dbc4fcf13d44",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#reserve"
+    }
+  ]
+}

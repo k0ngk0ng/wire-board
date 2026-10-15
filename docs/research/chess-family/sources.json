@@ -1396,5 +1396,25 @@
         }
       }
     }
+  ],
+  "implementationRuleEvidence": [
+    {
+      "game": "chess",
+      "title": "FIDE Arbiter Manual 2026 — Laws of Chess",
+      "url": "https://arbiters.fide.com/wp-content/uploads/Publications/Manual/Arbiter-Manual-2026.pdf",
+      "sha256": "c72990f20c80b0f6d399ecf035b1e99d007f89a0b5220acea101068f4478233b",
+      "bytes": 4319198,
+      "localDownloadedPDF": ".local/chess/dependency/Arbiter-Manual-2026.pdf",
+      "localText": ".local/chess/dependency/Arbiter-Manual-2026.txt",
+      "appliedArticles": [
+        "5.1.2 resignation and mating possibility",
+        "5.2.1 stalemate",
+        "5.2.2 dead position",
+        "9.2 legal en passant and repetition claims",
+        "9.3 fifty-move claim",
+        "9.6 automatic fivefold and seventy-five moves"
+      ],
+      "testedExample": "PDF page 17 (printed p.10): h4h5 in 8/2b1k3/7p/p1p1p1p1/PpP1P1PP/1P1BK3/8/8 w - - 0 1 freezes both bishops; knight/queen replacements remain live"
+    }
   ]
 }
