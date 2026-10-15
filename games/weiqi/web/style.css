@@ -1,0 +1,375 @@
+.weiqi-board {
+  color: #243e33;
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+}
+.weiqi-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 4px 0 14px;
+}
+.weiqi-heading h2 {
+  margin: 0 0 5px;
+  font-size: 23px;
+}
+.weiqi-heading p,
+.weiqi-actions p {
+  color: #4c604f;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 5px 0 10px;
+}
+.weiqi-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(230px, 300px);
+  gap: 18px;
+  justify-content: center;
+  align-items: start;
+}
+.weiqi-play-area {
+  min-width: 0;
+}
+.weiqi-map-tools {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #3b5748;
+}
+.weiqi-board button {
+  font: inherit;
+}
+.weiqi-map-tools button,
+.weiqi-actions button:not(.primary) {
+  padding: 8px 11px;
+  color: #244f40;
+  background: #fffef7;
+  border: 1px solid #9cae98;
+  border-radius: 7px;
+}
+.weiqi-board button:disabled {
+  opacity: 1;
+  color: #56664e;
+  background: #e9eee1;
+  cursor: not-allowed;
+}
+.weiqi-board button:focus-visible {
+  outline: 3px solid #2c6b50;
+  outline-offset: 2px;
+}
+.weiqi-viewport {
+  height: clamp(480px, 70vh, 720px);
+  max-height: 720px;
+  overflow: auto;
+  background: #c6ba96;
+  border: 1px solid #8e9277;
+  border-radius: 12px;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+  cursor: grab;
+}
+.weiqi-viewport.dragging {
+  cursor: grabbing;
+}
+.weiqi-map {
+  aspect-ratio: 1;
+}
+.weiqi-grid,
+.weiqi-win-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.weiqi-board .weiqi-cell {
+  position: absolute;
+  width: 6.25%;
+  height: 6.25%;
+  transform: translate(-50%, -50%);
+  border: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: #183a2b;
+}
+.weiqi-cell[aria-disabled="true"] {
+  cursor: default;
+}
+/* A board target must not inherit the platform button's pressed translation. */
+.weiqi-board .weiqi-cell:active {
+  transform: translate(-50%, -50%);
+}
+.weiqi-stone,
+.weiqi-preview {
+  display: block;
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  inset: 10%;
+  border-radius: 50%;
+}
+.weiqi-stone img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+.weiqi-stone.colour-1 {
+  background: #263633;
+  border: 1px solid #14291f;
+}
+.weiqi-stone.colour-2 {
+  background: #fffdf2;
+  border: 1px solid #52664f;
+}
+.weiqi-stone-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid #445349;
+}
+.weiqi-stone-fallback.colour-1,
+.weiqi-preview.colour-1 {
+  background: #263633;
+}
+.weiqi-stone-fallback.colour-2,
+.weiqi-preview.colour-2 {
+  background: #fcf8e8;
+  border: 1px solid #445349;
+}
+.weiqi-preview {
+  opacity: 0.6;
+  outline: 2px dashed #36654b;
+  outline-offset: 3px;
+  pointer-events: none;
+}
+.weiqi-stone.last::after {
+  content: "";
+  width: 16%;
+  height: 16%;
+  position: absolute;
+  left: 42%;
+  top: 42%;
+  background: #fffdf3;
+  border: 1px solid #fffdf3;
+}
+.weiqi-stone.last.colour-2::after {
+  background: #88442e;
+  border-color: #88442e;
+}
+.weiqi-stone.arriving {
+  animation: weiqi-place 160ms ease-out;
+}
+@keyframes weiqi-place {
+  from {
+    transform: scale(1.35);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.weiqi-actions {
+  background: #fffdf4;
+  color: #243e33;
+  border: 1px solid #c8d0bc;
+  border-radius: 12px;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+.weiqi-actions h3 {
+  margin: 0;
+  font-size: 17px;
+}
+.weiqi-actions > .primary {
+  width: 100%;
+  min-height: 44px;
+}
+.weiqi-minimap-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.weiqi-minimap-row > div {
+  min-width: 0;
+  flex: 1;
+}
+.weiqi-minimap {
+  flex: 0 0 108px;
+  width: 108px;
+  height: 108px;
+  border: 1px solid #8c967c;
+  border-radius: 6px;
+  touch-action: none;
+  cursor: crosshair;
+}
+.weiqi-secondary {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-top: 1px solid #d4dacb;
+  padding-top: 10px;
+}
+.weiqi-draw-offer {
+  background: #f0ead6;
+  border: 1px solid #c2b17a;
+  padding: 12px;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  color: #3c462d;
+}
+.weiqi-player-summary {
+  display: grid;
+  gap: 4px;
+  color: #244c3c;
+}
+.weiqi-player-summary strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+}
+.weiqi-player-summary small {
+  color: #52664f;
+}
+.weiqi-player-summary i {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #52664f;
+}
+.weiqi-player-summary i.black {
+  background: #263633;
+}
+.weiqi-player-summary i.white {
+  background: #fffdf2;
+}
+.weiqi-cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.weiqi-cover svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.weiqi-options {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (max-width: 850px) {
+  .weiqi-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .weiqi-viewport {
+    height: 420px;
+    max-height: 58dvh;
+  }
+  .weiqi-actions {
+    padding: 13px;
+  }
+  .weiqi-heading h2 {
+    font-size: 20px;
+  }
+  .weiqi-map-tools {
+    gap: 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .weiqi-stone.arriving {
+    animation: none;
+  }
+}
+
+.weiqi-board .weiqi-cell {
+  width: var(--weiqi-cell);
+  height: var(--weiqi-cell);
+}
+.weiqi-viewport {
+  height: auto;
+  aspect-ratio: 1;
+  max-height: 720px;
+  touch-action: pan-x pan-y;
+}
+.weiqi-stone.dead::before {
+  content: "×";
+  position: absolute;
+  inset: -3px;
+  display: grid;
+  place-items: center;
+  color: #a8281d;
+  font-size: clamp(18px, 3vw, 32px);
+  font-weight: 900;
+  text-shadow: 0 0 2px #fff;
+  background: #f9e9d5b0;
+  border-radius: 50%;
+  z-index: 1;
+}
+.weiqi-stone.removing {
+  animation: weiqi-remove 220ms ease-in forwards;
+}
+@keyframes weiqi-remove {
+  0%,
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+.weiqi-territory {
+  position: absolute;
+  inset: 35%;
+  border: 1px solid #5a654f;
+  background: #faf6e7;
+  pointer-events: none;
+}
+.weiqi-territory.black {
+  background: #263633;
+}
+.weiqi-scoring {
+  display: grid;
+  gap: 8px;
+}
+.weiqi-score-totals {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 10px;
+  background: #ede7d0;
+  color: #2d4637;
+  border-radius: 8px;
+}
+.weiqi-cell[aria-pressed="true"] {
+  outline: 2px dashed #365a43;
+  outline-offset: 1px;
+}
+@media (max-width: 850px) {
+  .weiqi-viewport {
+    height: auto;
+    max-height: none;
+    aspect-ratio: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .weiqi-stone.removing {
+    animation: none;
+  }
+}
