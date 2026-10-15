@@ -125,6 +125,7 @@ jobs:
         with:
           name: shared-platform-acceptance
           path: .local/ci/shared/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
   games:
@@ -165,6 +166,7 @@ jobs:
         with:
           name: game-${{ matrix.game }}-${{ matrix.shard }}-acceptance
           path: .local/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
   verify:
