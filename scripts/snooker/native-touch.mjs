@@ -8,7 +8,15 @@ try{const {targetInfos}=await call('Target.getTargets');const target=targetInfos
  const points=step=>mode==='pinch'?[{x:+x-25-step*4,y:+y,id:1},{x:+x+25+step*4,y:+y,id:2}]:[{x:+x+(+toX-x)*step/8,y:+y+(+toY-y)*step/8,id:1}];
  await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:points(0)},sessionId);
  if(mode!=='tap')for(let step=1;step<=8;step++)await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:points(step)},sessionId);
+ if(mode==='return')for(let step=7;step>=0;step--)await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:points(step)},sessionId);
  if(mode==='charge'||mode==='cancel')await new Promise(resolve=>setTimeout(resolve,500));
+ const held=await call('Runtime.evaluate',{expression:`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(JSON.stringify({angle:Number(document.querySelector('.snooker-table canvas')?.dataset.angle),power:Number(document.querySelector('.snooker-power-pull')?.getAttribute('aria-valuenow')),charging:!!document.querySelector('.snooker-charge')})))))`,awaitPromise:true,returnByValue:true},sessionId);
+ console.log(held.result.value);
+ if(mode==='power'){
+  await new Promise(resolve=>setTimeout(resolve,350));
+  const stable=await call('Runtime.evaluate',{expression:`Number(document.querySelector('.snooker-power-pull')?.getAttribute('aria-valuenow'))`,returnByValue:true},sessionId);
+  if(stable.result.value!==JSON.parse(held.result.value).power)throw Error('Power changed while holding still');
+ }
  await call('Input.dispatchTouchEvent',{type:mode==='cancel'?'touchCancel':'touchEnd',touchPoints:[]},sessionId);
  await call('Emulation.setTouchEmulationEnabled',{enabled:false},sessionId);await call('Target.detachFromTarget',{sessionId});
 }finally{socket.close()}

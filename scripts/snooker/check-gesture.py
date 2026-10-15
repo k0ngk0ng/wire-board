@@ -7,6 +7,10 @@ New failure inventory before the follow-up: hover does not aim or starts
 charging/shooting; pan/placement/non-turn hover changes direction; precision
 strip wastes mobile height or covers pockets; cue-ball tip control sends the
 wrong spin or exceeds the legal radius; first frame still asks who opens.
+Mobile follow-up failure inventory: touch-down locks aim; aim drag fires a shot;
+repeated taps lose aim/tip changes; independent power jumps on tap, oscillates,
+fires on cancellation/return to zero, or sends a different angle/power/spin;
+controls cover pockets, overflow 320px or expand the compact precision strip.
 All accounts, profiles, SQLite and evidence remain inside this workspace.
 """
 import json,os,subprocess,time,uuid,urllib.request,http.cookiejar,math
@@ -148,6 +152,26 @@ try:
   browser('find','role','button','click','--name','复位视图','--exact')
   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'cancel',str(x),str(y),str(x+10),str(y-10)],cwd=root,env=env,check=True,timeout=20)
   assert api('/state')['room']['version']==initial,'cancelled touch released a shot'
+  if width!=1280:
+   # Real touch can adjust repeatedly, including a drag towards the cue (which
+   # used to pull and shoot). No application state is injected.
+   angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'))
+   dx,dy=-math.sin(angle),math.cos(angle)
+   probe=subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'pull',str(x),str(y),str(x-dx*60+dy*40),str(y-dy*60-dx*40)],cwd=root,env=env,text=True,capture_output=True,check=True,timeout=20)
+   held=json.loads(probe.stdout.strip());assert not held['charging'],'touch aiming started a shot gesture'
+   assert abs(held['angle']-angle)>.01,'touch dragging did not adjust aim'
+   assert api('/state')['room']['version']==initial,'touch aiming fired a shot'
+   for ax,ay in [(x+35,y-20),(x-25,y+25)]:
+    old=float(js('document.querySelector(".snooker-table canvas").dataset.angle'))
+    subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'tap',str(ax),str(ay),str(ax),str(ay)],cwd=root,env=env,check=True,timeout=20)
+    assert abs(float(js('document.querySelector(".snooker-table canvas").dataset.angle'))-old)>.001,'repeated tap lost aim'
+   assert api('/state')['room']['version']==initial
+   browser('wait','.snooker-power-pull');js('document.querySelector(".snooker-power-pull").scrollIntoView({block:"center",behavior:"instant"})')
+   pr=js('document.querySelector(".snooker-power-pull").getBoundingClientRect().toJSON()');px=pr['x']+15;py=pr['y']+pr['height']/2
+   for mode,endx in [('tap',px),('cancel',px+60),('pull',px-10),('return',px+60)]:
+    subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,mode,str(px),str(py),str(endx),str(py)],cwd=root,env=env,check=True,timeout=20)
+    assert api('/state')['room']['version']==initial,'cancelled/zero power gesture fired a shot'
+   assert_clear_table(f'touch-aim-{width}');shot(f'touch-aim-{width}')
   # Direct cue-ball selection replaces both sliders. Upper-right means top/right spin.
   js('document.querySelector(".snooker-spin summary").scrollIntoView({block:"center",behavior:"instant"})')
   if not js('document.querySelector(".snooker-spin").open'):browser('click','.snooker-spin summary')
@@ -165,6 +189,11 @@ try:
   assert tip['top']>0 and tip['side']>0 and tip['top']**2+tip['side']**2<=.810001,tip
   assert not js('document.querySelectorAll(".snooker-spin input[type=range]").length'),'old sliders remain'
   assert api('/state')['room']['version']==initial,'selecting cue tip fired a shot'
+  if width!=1280:
+   tx=tiprect['x']+tiprect['width']*.35;ty=tiprect['y']+tiprect['height']*.65
+   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'tap',str(tx),str(ty),str(tx),str(ty)],cwd=root,env=env,check=True,timeout=20)
+   tip=js('({top:Number(document.querySelector(".snooker-tip-ball").dataset.top),side:Number(document.querySelector(".snooker-tip-ball").dataset.side)})')
+   assert tip['top']<0 and tip['side']<0,'second cue-tip tap was lost'
   shot(f'cue-tip-{width}')
   browser('scrollintoview','.snooker-table canvas');rect=js('document.querySelector(".snooker-table canvas").getBoundingClientRect().toJSON()');x=round(rect['x']+rect['width']*.52);y=round(rect['y']+rect['height']*.6)
   # One real held mouse / touch release creates exactly one authoritative shot.
@@ -175,9 +204,16 @@ try:
   if width==1280:
    browser('mouse','down');browser('mouse','move',str(endx),str(endy));browser('mouse','up')
   else:
-   subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'pull',str(x),str(y),str(endx),str(endy)],cwd=root,env=env,check=True,timeout=20)
+   js('document.querySelector(".snooker-power-pull").scrollIntoView({block:"center",behavior:"instant"})')
+   pr=js('document.querySelector(".snooker-power-pull").getBoundingClientRect().toJSON()');px=pr['x']+15;py=pr['y']+pr['height']/2
+   expected_angle=float(js('document.querySelector(".snooker-table canvas").dataset.angle'))
+   probe=subprocess.run(['node','scripts/snooker/native-touch.mjs',endpoint,base,'power',str(px),str(py),str(px+70),str(py)],cwd=root,env=env,text=True,capture_output=True,check=True,timeout=20)
+   held=json.loads(probe.stdout.strip());assert held['power']>0,held
   browser('wait','--fn','document.querySelector(".snooker-board").dataset.phase==="rolling"');after=api('/state')['room']['game']['data'];assert after['flight']['id']==1
   assert .02<=after['flight']['strike']['power']<=1
+  if width!=1280:
+   assert abs(after['flight']['strike']['angle']-expected_angle)<.001,'power slider changed aim'
+   assert abs(after['flight']['strike']['power']*100-held['power'])<=.51,('power readout differs from submitted shot',after['flight']['strike'],held)
   assert abs(after['flight']['strike']['top']-tip['top'])<.001 and abs(after['flight']['strike']['side']-tip['side'])<.001,'tip did not reach server'
   report.setdefault('shots',[]).append({'width':width,'strike':after['flight']['strike']})
   shot(f'released-{width}')

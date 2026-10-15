@@ -405,6 +405,33 @@
   height: 100%;
   background: #2a6545;
 }
+.snooker-board .snooker-power-pull {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 38px;
+  padding: 6px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  pointer-events: auto;
+  border: 1px solid #58734c;
+  background: #fff9df;
+  color: #234b37;
+  font-size: 11px;
+  transform: none;
+  opacity: 1;
+}
+.snooker-power-pull i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: -1;
+  background: #bed4a7;
+  pointer-events: none;
+}
+.snooker-power-pull span {
+  pointer-events: none;
+}
 .snooker-camera button[aria-pressed="true"] {
   background: #24523d;
   color: #fff7db;
