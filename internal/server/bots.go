@@ -95,6 +95,9 @@ func (r *Room) applyGameAction(player int, action game.Action, now time.Time) er
 // BotAt resume naturally after a process restart, without browser timers.
 func (s *Server) runBots(now time.Time) {
 	for id, room := range s.rooms {
+		if s.modules[room.Kind].Realtime {
+			continue // All controlled actors share the system frame transaction.
+		}
 		if room.Status != "playing" || room.Game == nil || room.BotAt > now.UnixMilli() {
 			continue
 		}

@@ -1,4 +1,5 @@
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
+import { refreshQueue } from "./refresh-queue";
 import {
   ArrowLeft,
   ArrowRight,
@@ -114,6 +115,15 @@ function App() {
   useTurnTitle(presented.room);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const networkFailure = useRef(false);
+  const networkMessage = "网络连接中断，正在重新连接。";
+  const reportError = (error: unknown) => {
+    if (error instanceof TypeError) {
+      networkFailure.current = true;
+      setError(networkMessage);
+    } else
+      setError(error instanceof Error ? error.message : "操作失败，请重试。");
+  };
   const [busy, setBusy] = useState(false);
   const [online, setOnline] = useState(false);
   const [create, setCreate] = useState("");
@@ -138,7 +148,8 @@ function App() {
     () => localStorage.getItem("wb_sound") !== "off",
   );
   const [notice, setNotice] = useState("");
-  const seq = useRef(0);
+  const refreshWork = useRef<() => Promise<void>>(async () => {});
+  const refresh = useMemo(() => refreshQueue(() => refreshWork.current()), []);
   const previousTurn = useRef("");
   const previousRoom = useRef<Room | undefined>(undefined);
   const [audio] = useState(() => new GameAudio());
@@ -184,33 +195,45 @@ function App() {
   useEffect(() => {
     setCloseTableRoom("");
     if (state?.room?.status === "playing") {
+      if (gameModule(state.room.kind)?.realtime) {
+        // Keep the shared room/players above, but start live games at their
+        // driving surface once. Snapshot updates never take over page scrolling.
+        const frame = requestAnimationFrame(() => {
+          document.querySelector(".game-layout")?.scrollIntoView({
+            block: "start",
+            behavior: "instant",
+          });
+        });
+        return () => cancelAnimationFrame(frame);
+      }
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   }, [state?.room?.id, state?.room?.status]);
-  const refresh = async () => {
-    const n = ++seq.current;
+  refreshWork.current = async () => {
     try {
       const data = await api("/state");
-      if (n === seq.current) {
-        if (
-          previousRoom.current?.status === "playing" &&
-          !previousRoom.current.spectating &&
-          !data.room
-        ) {
-          setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
-        }
-        previousRoom.current = data.room;
-        if (resyncRequired.current || document.hidden) {
-          setPresentationEpoch((v) => v + 1);
-          resyncRequired.current = false;
-        }
-        setState({ ...data, receivedAt: performance.now() });
+      if (networkFailure.current) {
+        networkFailure.current = false;
+        setError((message) => (message === networkMessage ? "" : message));
       }
+      if (
+        previousRoom.current?.status === "playing" &&
+        !previousRoom.current.spectating &&
+        !data.room
+      ) {
+        setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
+      }
+      previousRoom.current = data.room;
+      if (resyncRequired.current || document.hidden) {
+        setPresentationEpoch((v) => v + 1);
+        resyncRequired.current = false;
+      }
+      setState({ ...data, receivedAt: performance.now() });
     } catch (e) {
       if ((e as { status: number }).status === 401) {
         previousRoom.current = undefined;
         setState(undefined);
-      } else setError((e as Error).message);
+      } else reportError(e);
     } finally {
       setLoaded(true);
     }
@@ -306,7 +329,7 @@ function App() {
       await fn();
       await refresh();
     } catch (e) {
-      setError((e as Error).message);
+      reportError(e);
       await refresh();
     } finally {
       setBusy(false);
@@ -336,6 +359,27 @@ function App() {
     if (!state?.room || presented.blocked) return;
     if (state.room.seats[state.room.you]?.autoPlay) {
       setNotice("当前由电脑托管，取消托管后即可继续操作。");
+      return;
+    }
+    if (gameModule(state.room.kind)?.realtime) {
+      if (
+        busy ||
+        state.room.status !== "playing" ||
+        state.room.spectating ||
+        state.room.you < 0 ||
+        state.room.seats[state.room.you]?.left
+      )
+        return;
+      try {
+        // Games send coalesced controls through the same authenticated endpoint.
+        // Do not take the global UI lock or await a second network round trip.
+        await command(state.room, "action", { action });
+        void refresh();
+      } catch (e) {
+        reportError(e);
+        void refresh();
+        throw e;
+      }
       return;
     }
     await run(async () => {

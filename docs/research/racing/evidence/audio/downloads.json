@@ -1,0 +1,108 @@
+[
+  {
+    "path": "engine-loops-page.html.txt",
+    "url": "https://opengameart.org/content/racing-car-engine-sound-loops",
+    "final_url": "https://opengameart.org/content/racing-car-engine-sound-loops",
+    "bytes": 33927,
+    "sha256": "92a84aa3c0fe8a671ab444feba00d1c969ebc0b44323ff774d909f3899be08dc",
+    "http_status": 200
+  },
+  {
+    "path": "engine-ccby-page.html.txt",
+    "url": "https://opengameart.org/content/car-engine-loop-96khz-4s",
+    "final_url": "https://opengameart.org/content/car-engine-loop-96khz-4s",
+    "bytes": 30928,
+    "sha256": "829545fb10dea6a0f49c2437725ef86dd223ea9118f961e1e604e24512c3701b",
+    "http_status": 200
+  },
+  {
+    "path": "kart-sfx-page.html.txt",
+    "url": "https://opengameart.org/content/supertuxkart-sound-effects",
+    "final_url": "https://opengameart.org/content/supertuxkart-sound-effects",
+    "bytes": 33637,
+    "sha256": "057ceb1f169b708a1905d33ebc854f0c8b5656de1f9207672272948ba0e21f59",
+    "http_status": 200
+  },
+  {
+    "path": "impact-page.html.txt",
+    "url": "https://kenney.nl/assets/impact-sounds",
+    "final_url": "https://kenney.nl/assets/impact-sounds",
+    "bytes": 16954,
+    "sha256": "d4a022f49e8b83c374a7a8081feb05c6507ecc6c67bb2cac9706559e5550782b",
+    "http_status": 200
+  },
+  {
+    "path": "cc0-deed.html.txt",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "final_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "bytes": 30248,
+    "sha256": "abb4d48fc8b85de52b377dd105532c6c549f515d492a8e1712bc99e7316a1f12",
+    "http_status": 200
+  },
+  {
+    "path": "engine-loop-0.wav",
+    "url": "https://opengameart.org/sites/default/files/loop_0.wav",
+    "final_url": "https://opengameart.org/sites/default/files/loop_0.wav",
+    "bytes": 76332,
+    "sha256": "69d74b106509037ce547429e4c3f9ae906b0fffe88d0bb8b3b5a8b0cfc239048",
+    "http_status": 200
+  },
+  {
+    "path": "engine-loop-5.wav",
+    "url": "https://opengameart.org/sites/default/files/loop_5_0.wav",
+    "final_url": "https://opengameart.org/sites/default/files/loop_5_0.wav",
+    "bytes": 55648,
+    "sha256": "e0c65476764931770e46308dec744a196d8ecf996f8c7675f125805d28609b34",
+    "http_status": 200
+  },
+  {
+    "path": "kart-sfx-original.mp3",
+    "url": "https://opengameart.org/sites/default/files/sfx%20kart%20game_0.mp3",
+    "final_url": "https://opengameart.org/sites/default/files/sfx%20kart%20game_0.mp3",
+    "bytes": 1968923,
+    "sha256": "a545e0fbaecfdb60d46e7b95b881713c276e715522522101c96da652fc185725",
+    "http_status": 200
+  },
+  {
+    "path": "impact-License.txt",
+    "url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "archive_entry": "License.txt",
+    "archive_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+    "bytes": 608,
+    "sha256": "b49aa9c56b04528b95913de13e506a0f7c5e807b9925db9bfef86af1f91120db"
+  },
+  {
+    "path": "impact-metal-medium.ogg",
+    "url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "archive_entry": "Audio/impactMetal_medium_000.ogg",
+    "archive_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+    "bytes": 7117,
+    "sha256": "a96f879fec0864a8938e0c745b6996a6c5679c16a234ce31a01cc995e8401003"
+  },
+  {
+    "path": "impact-soft-heavy.ogg",
+    "url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "archive_entry": "Audio/impactSoft_heavy_000.ogg",
+    "archive_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+    "bytes": 6570,
+    "sha256": "49e7ca88743fca974bb8676ea138b751cfd8f9033b5e7af8736c2a215d6edbc1"
+  },
+  {
+    "path": "tire-loop-page.html.txt",
+    "url": "https://opengameart.org/content/car-tire-squeal-skid-loop",
+    "bytes": 31644,
+    "sha256": "be8099b8038c643ae5c34e3166ab814a6aad94e1588a875bfad067017a5a1262"
+  },
+  {
+    "path": "tire-loop.wav",
+    "url": "https://opengameart.org/sites/default/files/tires_squal_loop.wav",
+    "bytes": 864044,
+    "sha256": "2b341cfa20987388fcca9fd91d8be5056cb6c6c54abc2a97846c2be5e5a4f604"
+  },
+  {
+    "path": "ccby-3-deed.html.txt",
+    "url": "https://creativecommons.org/licenses/by/3.0/",
+    "bytes": 31824,
+    "sha256": "befae005d7dc8701eed58fe2080fda2889c3749272d6c8aba8e8310114112095"
+  }
+]

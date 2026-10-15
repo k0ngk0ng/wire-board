@@ -1,0 +1,200 @@
+PNG (Transparent)/
+PNG (Transparent)/circle_01.png
+PNG (Transparent)/circle_02.png
+PNG (Transparent)/circle_03.png
+PNG (Transparent)/circle_04.png
+PNG (Transparent)/circle_05.png
+PNG (Transparent)/dirt_01.png
+PNG (Transparent)/dirt_02.png
+PNG (Transparent)/dirt_03.png
+PNG (Transparent)/fire_01.png
+PNG (Transparent)/fire_02.png
+PNG (Transparent)/flame_01.png
+PNG (Transparent)/flame_02.png
+PNG (Transparent)/flame_03.png
+PNG (Transparent)/flame_04.png
+PNG (Transparent)/flame_05.png
+PNG (Transparent)/flame_06.png
+PNG (Transparent)/flare_01.png
+PNG (Transparent)/light_01.png
+PNG (Transparent)/light_02.png
+PNG (Transparent)/light_03.png
+PNG (Transparent)/magic_01.png
+PNG (Transparent)/magic_02.png
+PNG (Transparent)/magic_03.png
+PNG (Transparent)/magic_04.png
+PNG (Transparent)/magic_05.png
+PNG (Transparent)/muzzle_01.png
+PNG (Transparent)/muzzle_02.png
+PNG (Transparent)/muzzle_03.png
+PNG (Transparent)/muzzle_04.png
+PNG (Transparent)/muzzle_05.png
+PNG (Transparent)/Rotated/
+PNG (Transparent)/Rotated/flame_05_rotated.png
+PNG (Transparent)/Rotated/flame_06_rotated.png
+PNG (Transparent)/Rotated/muzzle_01_rotated.png
+PNG (Transparent)/Rotated/muzzle_02_rotated.png
+PNG (Transparent)/Rotated/muzzle_03_rotated.png
+PNG (Transparent)/Rotated/muzzle_04_rotated.png
+PNG (Transparent)/Rotated/muzzle_05_rotated.png
+PNG (Transparent)/Rotated/spark_05_rotated.png
+PNG (Transparent)/Rotated/spark_06_rotated.png
+PNG (Transparent)/Rotated/trace_01_rotated.png
+PNG (Transparent)/Rotated/trace_02_rotated.png
+PNG (Transparent)/Rotated/trace_03_rotated.png
+PNG (Transparent)/Rotated/trace_04_rotated.png
+PNG (Transparent)/Rotated/trace_05_rotated.png
+PNG (Transparent)/Rotated/trace_06_rotated.png
+PNG (Transparent)/Rotated/trace_07_rotated.png
+PNG (Transparent)/scorch_01.png
+PNG (Transparent)/scorch_02.png
+PNG (Transparent)/scorch_03.png
+PNG (Transparent)/scratch_01.png
+PNG (Transparent)/slash_01.png
+PNG (Transparent)/slash_02.png
+PNG (Transparent)/slash_03.png
+PNG (Transparent)/slash_04.png
+PNG (Transparent)/smoke_01.png
+PNG (Transparent)/smoke_02.png
+PNG (Transparent)/smoke_03.png
+PNG (Transparent)/smoke_04.png
+PNG (Transparent)/smoke_05.png
+PNG (Transparent)/smoke_06.png
+PNG (Transparent)/smoke_07.png
+PNG (Transparent)/smoke_08.png
+PNG (Transparent)/smoke_09.png
+PNG (Transparent)/smoke_10.png
+PNG (Transparent)/spark_01.png
+PNG (Transparent)/spark_02.png
+PNG (Transparent)/spark_03.png
+PNG (Transparent)/spark_04.png
+PNG (Transparent)/spark_05.png
+PNG (Transparent)/spark_06.png
+PNG (Transparent)/spark_07.png
+PNG (Transparent)/star_01.png
+PNG (Transparent)/star_02.png
+PNG (Transparent)/star_03.png
+PNG (Transparent)/star_04.png
+PNG (Transparent)/star_05.png
+PNG (Transparent)/star_06.png
+PNG (Transparent)/star_07.png
+PNG (Transparent)/star_08.png
+PNG (Transparent)/star_09.png
+PNG (Transparent)/symbol_01.png
+PNG (Transparent)/symbol_02.png
+PNG (Transparent)/trace_01.png
+PNG (Transparent)/trace_02.png
+PNG (Transparent)/trace_03.png
+PNG (Transparent)/trace_04.png
+PNG (Transparent)/trace_05.png
+PNG (Transparent)/trace_06.png
+PNG (Transparent)/trace_07.png
+PNG (Transparent)/twirl_01.png
+PNG (Transparent)/twirl_02.png
+PNG (Transparent)/twirl_03.png
+PNG (Transparent)/window_01.png
+PNG (Transparent)/window_02.png
+PNG (Transparent)/window_03.png
+PNG (Transparent)/window_04.png
+Unity samples/
+Unity samples/particlePack_samples.unitypackage
+License.txt
+Preview.png
+PNG (Black background)/
+PNG (Black background)/circle_01.png
+PNG (Black background)/circle_02.png
+PNG (Black background)/circle_03.png
+PNG (Black background)/circle_04.png
+PNG (Black background)/circle_05.png
+PNG (Black background)/dirt_01.png
+PNG (Black background)/dirt_02.png
+PNG (Black background)/dirt_03.png
+PNG (Black background)/fire_01.png
+PNG (Black background)/fire_02.png
+PNG (Black background)/flame_01.png
+PNG (Black background)/flame_02.png
+PNG (Black background)/flame_03.png
+PNG (Black background)/flame_04.png
+PNG (Black background)/flame_05.png
+PNG (Black background)/flame_06.png
+PNG (Black background)/flare_01.png
+PNG (Black background)/light_01.png
+PNG (Black background)/light_02.png
+PNG (Black background)/light_03.png
+PNG (Black background)/magic_01.png
+PNG (Black background)/magic_02.png
+PNG (Black background)/magic_03.png
+PNG (Black background)/magic_04.png
+PNG (Black background)/magic_05.png
+PNG (Black background)/muzzle_01.png
+PNG (Black background)/muzzle_02.png
+PNG (Black background)/muzzle_03.png
+PNG (Black background)/muzzle_04.png
+PNG (Black background)/muzzle_05.png
+PNG (Black background)/Rotated/
+PNG (Black background)/Rotated/flame_05_rotated.png
+PNG (Black background)/Rotated/flame_06_rotated.png
+PNG (Black background)/Rotated/muzzle_01_rotated.png
+PNG (Black background)/Rotated/muzzle_02_rotated.png
+PNG (Black background)/Rotated/muzzle_03_rotated.png
+PNG (Black background)/Rotated/muzzle_04_rotated.png
+PNG (Black background)/Rotated/muzzle_05_rotated.png
+PNG (Black background)/Rotated/spark_05_rotated.png
+PNG (Black background)/Rotated/spark_06_rotated.png
+PNG (Black background)/Rotated/trace_01_rotated.png
+PNG (Black background)/Rotated/trace_02_rotated.png
+PNG (Black background)/Rotated/trace_03_rotated.png
+PNG (Black background)/Rotated/trace_04_rotated.png
+PNG (Black background)/Rotated/trace_05_rotated.png
+PNG (Black background)/Rotated/trace_06_rotated.png
+PNG (Black background)/Rotated/trace_07_rotated.png
+PNG (Black background)/scorch_01.png
+PNG (Black background)/scorch_02.png
+PNG (Black background)/scorch_03.png
+PNG (Black background)/scratch_01.png
+PNG (Black background)/slash_01.png
+PNG (Black background)/slash_02.png
+PNG (Black background)/slash_03.png
+PNG (Black background)/slash_04.png
+PNG (Black background)/smoke_01.png
+PNG (Black background)/smoke_02.png
+PNG (Black background)/smoke_03.png
+PNG (Black background)/smoke_04.png
+PNG (Black background)/smoke_05.png
+PNG (Black background)/smoke_06.png
+PNG (Black background)/smoke_07.png
+PNG (Black background)/smoke_08.png
+PNG (Black background)/smoke_09.png
+PNG (Black background)/smoke_10.png
+PNG (Black background)/spark_01.png
+PNG (Black background)/spark_02.png
+PNG (Black background)/spark_03.png
+PNG (Black background)/spark_04.png
+PNG (Black background)/spark_05.png
+PNG (Black background)/spark_06.png
+PNG (Black background)/spark_07.png
+PNG (Black background)/star_01.png
+PNG (Black background)/star_02.png
+PNG (Black background)/star_03.png
+PNG (Black background)/star_04.png
+PNG (Black background)/star_05.png
+PNG (Black background)/star_06.png
+PNG (Black background)/star_07.png
+PNG (Black background)/star_08.png
+PNG (Black background)/star_09.png
+PNG (Black background)/symbol_01.png
+PNG (Black background)/symbol_02.png
+PNG (Black background)/trace_01.png
+PNG (Black background)/trace_02.png
+PNG (Black background)/trace_03.png
+PNG (Black background)/trace_04.png
+PNG (Black background)/trace_05.png
+PNG (Black background)/trace_06.png
+PNG (Black background)/trace_07.png
+PNG (Black background)/twirl_01.png
+PNG (Black background)/twirl_02.png
+PNG (Black background)/twirl_03.png
+PNG (Black background)/window_01.png
+PNG (Black background)/window_02.png
+PNG (Black background)/window_03.png
+PNG (Black background)/window_04.png

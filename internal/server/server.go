@@ -290,6 +290,8 @@ func (s *Server) runTimers(ctx context.Context) {
 	defer close(s.done)
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()
+	realtime := time.NewTicker(50 * time.Millisecond)
+	defer realtime.Stop()
 	for {
 		select {
 		case <-ctx.Done():
@@ -297,6 +299,10 @@ func (s *Server) runTimers(ctx context.Context) {
 		case <-s.botWake:
 			s.mu.Lock()
 			s.collectModuleBotSearches(time.Now())
+			s.mu.Unlock()
+		case now := <-realtime.C:
+			s.mu.Lock()
+			s.expireRealtimeModuleTimers(now)
 			s.mu.Unlock()
 		case now := <-ticker.C:
 			s.mu.Lock()
@@ -313,6 +319,9 @@ func (s *Server) runTimers(ctx context.Context) {
 // Called with s.mu held. Deadlines and takeovers do not need a connected browser.
 func (s *Server) expireSetups(now time.Time) {
 	for _, room := range s.rooms {
+		if s.modules[room.Kind].Realtime {
+			continue // Takeover and all controlled inputs commit with the next frame.
+		}
 		if room.Status != "playing" || room.Game == nil || room.Game.Finished || room.TurnDeadline == 0 || room.TurnDeadline > now.UnixMilli() || room.Game.CatanExplorerSetupBlocked() {
 			continue
 		}
@@ -975,6 +984,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	// Control of one's own seat is independent of board versions. In particular,
 	// a returning player must be able to cancel while the bot is taking actions.
 	seatControl := req.Type == "autoplay" && req.Version >= max(1, room.SetupVersion) && req.Version <= room.Version
+	// Continuous frames must not prevent a host from closing the current race
+	// or an eliminated seat from leaving. The match's start revision excludes
+	// delayed requests from waiting rooms or a previous race; permissions and
+	// elimination are still checked by the ordinary command handlers below.
+	realtimeControl := (req.Type == "close" || req.Type == "leave") && room.Status == "playing" && room.Module != nil && s.modules[room.Kind].Realtime && room.SetupVersion > 0 && req.Version >= room.SetupVersion && req.Version <= room.Version
 	parallelModule := false
 	if room.Module != nil && req.Type == "action" && req.Version >= room.SetupVersion && req.Version < room.Version && room.Status == "playing" {
 		actor := seatIndex(room, u.ID)
@@ -985,7 +999,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			parallelModule = module.AcceptStale(moduleContext(room, actor, req.Version, time.Now()), match, req.RawAction)
 		}
 	}
-	if req.Version != room.Version && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl {
+	if req.Version != room.Version && !parallelModule && !parallelSetup && !parallelCatan && !parallelSG && !parallelDota && !seatControl && !realtimeControl {
 		fail(w, 409, "局面已更新，请根据最新画面重试")
 		return
 	}
@@ -1665,7 +1679,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 				err = errors.New("此游戏不支持托管")
 				break
 			}
-			if !*req.Enabled && next.Seats[idx].AutoPlay && next.Module.Deadline > 0 && next.Module.Deadline <= now.UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx) {
+			if !*req.Enabled && next.Seats[idx].AutoPlay && (module.Realtime || (next.Module.Deadline > 0 && next.Module.Deadline <= now.UnixMilli() && slices.Contains(next.Module.TimeoutActors, idx))) {
 				var match gameapi.Match
 				match, err = module.Reclaim(moduleContext(&next, idx, req.Version, now), *next.Module)
 				if err == nil {
@@ -1818,9 +1832,36 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	} else {
 		s.rooms[next.ID] = &next
 	}
-	s.broadcast()
+	if req.Type == "action" {
+		s.broadcastGameChange(&next)
+	} else {
+		s.broadcast()
+	}
 	respond(w, 200, map[string]int{"version": next.Version})
 }
+
+// Called under s.mu after committing a game change. Realtime controls and
+// frames only wake participants who need the high-frequency snapshot. Lifecycle
+// changes and results still refresh the lobby and all other visible history.
+func (s *Server) broadcastGameChange(room *Room) {
+	if room.Status != "playing" || !s.modules[room.Kind].Realtime {
+		s.broadcast()
+		return
+	}
+	s.cancelStaleBotSearches()
+	for connection, userID := range s.connections {
+		actor := seatIndex(room, userID)
+		seated := actor >= 0 && !room.Seats[actor].Left
+		if !seated && spectatorIndex(room, userID) < 0 {
+			continue
+		}
+		select {
+		case connection <- struct{}{}:
+		default:
+		}
+	}
+}
+
 func (s *Server) broadcast() {
 	s.cancelStaleBotSearches()
 	for c := range s.watchers {

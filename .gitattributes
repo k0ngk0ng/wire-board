@@ -1,0 +1,5 @@
+# Preserve original third-party evidence byte-for-byte for its recorded SHA-256.
+# Upstream license/pages may contain CRLF or trailing spaces; do not normalize.
+docs/research/racing/evidence/** -text -whitespace
+games/racing/assets/source/kenney/** -text -whitespace
+games/racing/assets/source/licenses/** -text -whitespace
