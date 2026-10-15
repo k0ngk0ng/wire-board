@@ -1,4 +1,13 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { PairInput, type InputSnapshot } from "./input";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  useReducer,
+  type CSSProperties,
+} from "react";
 import { Hammer, Lightbulb, Shuffle } from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import type { PairEvent, View } from "./types";
@@ -14,7 +23,6 @@ export function Board({
   clock,
 }: BoardProps<View>) {
   const [spectatorSeat, setSpectatorSeat] = useState(0),
-    [selected, setSelected] = useState<number | null>(null),
     [hammer, setHammer] = useState(false),
     [notice, setNotice] = useState("");
   const [narrow, setNarrow] = useState(
@@ -34,8 +42,66 @@ export function Board({
   const transposed = !!grid && narrow && grid.cols > grid.rows,
     cols = grid ? (transposed ? grid.rows : grid.cols) : 1,
     rows = grid ? (transposed ? grid.cols : grid.rows) : 1;
-  const canAct =
-    data.canAct && !room.spectating && !room.seats[room.you]?.autoPlay && !busy;
+  const [input] = useState(() => new PairInput());
+  const [inputTick, redrawInput] = useReducer((n: number) => n + 1, 0);
+  const manual = useRef(false);
+  const gesture = useRef<{
+    id: number;
+    x: number;
+    y: number;
+    moved: boolean;
+    scope: string;
+    revision: number;
+  } | null>(null);
+  const scope = `${room.id}:${seat}:${!!room.spectating}:${data.round}:${clock.epoch ?? 0}`;
+  const playable =
+    data.canAct && !room.spectating && !room.seats[room.you]?.autoPlay;
+  const snapshot = useMemo<InputSnapshot>(
+    () => ({
+      scope,
+      round: data.round,
+      revision: player.revision,
+      stamp: clock.receivedAt,
+      playable,
+      board: grid,
+      event: player.event,
+    }),
+    [
+      scope,
+      data.round,
+      player.revision,
+      clock.receivedAt,
+      playable,
+      grid,
+      player.event,
+    ],
+  );
+  const canAct = playable && !manual.current;
+  const selected = input.selected;
+  const toolsBusy = busy || manual.current || input.hasWork;
+  useLayoutEffect(() => {
+    const before = input.version;
+    input.sync(snapshot);
+    if (before !== input.version) redrawInput();
+  }, [input, snapshot]);
+  useEffect(() => {
+    const before = input.version;
+    const request = input.next(snapshot, busy || manual.current);
+    if (before !== input.version) redrawInput();
+    if (!request) return;
+    const { token, ...action } = request;
+    void act(action).then(
+      () => {
+        input.complete(token);
+        redrawInput();
+      },
+      () => {
+        input.cancel();
+        input.complete(token);
+        redrawInput();
+      },
+    );
+  }, [input, snapshot, busy, inputTick, act]);
   const seen = useRef({
     round: data.round,
     seat,
@@ -67,9 +133,12 @@ export function Board({
     return () => clearInterval(id);
   }, [clock]);
   useEffect(() => {
-    setSelected(null);
+    gesture.current = null;
     setHammer(false);
-  }, [data.round, seat, player.revision]);
+  }, [scope, playable]);
+  useEffect(() => {
+    setHammer(false);
+  }, [player.revision]);
   useEffect(() => {
     const el = field.current;
     if (!el) return;
@@ -138,19 +207,30 @@ export function Board({
   useEffect(() => {
     const hide = () => {
       setBolt(null);
-      setSelected(null);
+      input.cancel();
+      gesture.current = null;
+      redrawInput();
     };
     document.addEventListener("visibilitychange", hide);
     return () => document.removeEventListener("visibilitychange", hide);
-  }, []);
-  const send = (type: string, a?: number, b?: number) =>
+  }, [input]);
+  const send = (type: string, a?: number, b?: number) => {
+    if (!canAct || toolsBusy) return;
+    input.cancel();
+    manual.current = true;
+    redrawInput();
+    const complete = () => {
+      manual.current = false;
+      redrawInput();
+    };
     void act({
       type,
       round: data.round,
       revision: player.revision,
       ...(a === undefined ? {} : { a }),
       ...(b === undefined ? {} : { b }),
-    });
+    }).then(complete, complete);
+  };
   const ensureMusic = () => {
     if (data.phase === "playing")
       void audio.music([
@@ -164,8 +244,8 @@ export function Board({
     return () => audio.stopMusic();
   }, [data.phase, assets, audio]);
   const choose = (index: number) => {
-    ensureMusic();
-    if (!canAct || !grid) return;
+    if (!canAct || !grid || input.reserved(index)) return;
+    input.sync(snapshot);
     const cell = grid.cells[index];
     if (!cell) return;
     if (hammer) {
@@ -184,18 +264,38 @@ export function Board({
       );
       return;
     }
-    if (selected === index) {
-      setSelected(null);
-      return;
+    input.click(index);
+    redrawInput();
+    setNotice("");
+    ensureMusic();
+    if (input.selected !== null) void play(audio, assets, "select");
+  };
+  const hitCell = (x: number, y: number) => {
+    const elements =
+      field.current?.querySelectorAll<HTMLButtonElement>(
+        ".pairs-cell:not(:disabled)",
+      ) ?? [];
+    let best: number | null = null,
+      distance = Infinity;
+    for (const el of elements) {
+      const r = el.getBoundingClientRect();
+      if (
+        x < r.left - 0.5 ||
+        x > r.right + 0.5 ||
+        y < r.top - 0.5 ||
+        y > r.bottom + 0.5
+      )
+        continue;
+      const d = Math.hypot(
+        x - (r.left + r.width / 2),
+        y - (r.top + r.height / 2),
+      );
+      if (d < distance) {
+        best = Number(el.dataset.index);
+        distance = d;
+      }
     }
-    if (selected !== null && grid.cells[selected]?.icon === cell.icon) {
-      send("match", selected, index);
-      setSelected(null);
-    } else {
-      setSelected(index);
-      setNotice("");
-      void play(audio, assets, "select");
-    }
+    return best;
   };
   const displayIndex = (x: number, y: number) =>
     grid ? (transposed ? x * grid.cols + y : y * grid.cols + x) : 0;
@@ -272,7 +372,7 @@ export function Board({
           <div className="pairs-toolbar">
             <button
               className="outline"
-              disabled={!canAct || player.tools.hint < 1}
+              disabled={!canAct || toolsBusy || player.tools.hint < 1}
               onClick={() => send("hint")}
             >
               <Lightbulb size={15} />
@@ -280,7 +380,7 @@ export function Board({
             </button>
             <button
               className="outline"
-              disabled={!canAct || player.tools.shuffle < 1}
+              disabled={!canAct || toolsBusy || player.tools.shuffle < 1}
               onClick={() => send("shuffle")}
             >
               <Shuffle size={15} />
@@ -289,10 +389,11 @@ export function Board({
             <button
               className="outline"
               aria-pressed={hammer}
-              disabled={!canAct || player.tools.hammer < 1}
+              disabled={!canAct || toolsBusy || player.tools.hammer < 1}
               onClick={() => {
                 setHammer(!hammer);
-                setSelected(null);
+                input.cancel();
+                redrawInput();
                 setNotice(hammer ? "" : "点击石块、木箱或冰层使用破障锤。");
               }}
             >
@@ -303,6 +404,57 @@ export function Board({
           <div
             className={`pairs-field ${hammer ? "hammering" : ""}`}
             ref={field}
+            onPointerDown={(e) => {
+              if (e.button !== 0 || !canAct) return;
+              if (!e.isPrimary || gesture.current) {
+                gesture.current = null;
+                return;
+              }
+              gesture.current = {
+                id: e.pointerId,
+                x: e.clientX,
+                y: e.clientY,
+                moved: false,
+                scope,
+                revision: player.revision,
+              };
+              e.currentTarget.setPointerCapture(e.pointerId);
+            }}
+            onPointerMove={(e) => {
+              const g = gesture.current;
+              if (
+                g?.id === e.pointerId &&
+                Math.hypot(e.clientX - g.x, e.clientY - g.y) > 12
+              )
+                g.moved = true;
+            }}
+            onPointerUp={(e) => {
+              const g = gesture.current;
+              gesture.current = null;
+              if (e.currentTarget.hasPointerCapture(e.pointerId))
+                e.currentTarget.releasePointerCapture(e.pointerId);
+              if (
+                !g ||
+                g.id !== e.pointerId ||
+                g.scope !== scope ||
+                g.moved ||
+                Math.hypot(e.clientX - g.x, e.clientY - g.y) > 12
+              )
+                return;
+              if (
+                g.revision !== player.revision &&
+                (player.event.recovery || player.event.type === "shuffle")
+              )
+                return;
+              const index = hitCell(e.clientX, e.clientY);
+              if (index !== null) choose(index);
+            }}
+            onPointerCancel={() => {
+              gesture.current = null;
+            }}
+            onLostPointerCapture={(e) => {
+              if (gesture.current?.id === e.pointerId) gesture.current = null;
+            }}
             style={
               {
                 "--pairs-cols": cols,
@@ -318,7 +470,7 @@ export function Board({
                 <button
                   key={index}
                   type="button"
-                  className={`pairs-cell ${c?.kind ?? "empty"} ${c?.ice ? "iced" : ""} ${selected === index ? "selected" : ""} ${highlight ? "hinted" : ""}`}
+                  className={`pairs-cell ${c?.kind ?? "empty"} ${c?.ice ? "iced" : ""} ${selected === index ? "selected" : ""} ${highlight ? "hinted" : ""} ${input.reserved(index) ? "queued" : ""}`}
                   data-index={index}
                   aria-label={
                     c
@@ -328,9 +480,17 @@ export function Board({
                       : "空格"
                   }
                   aria-pressed={selected === index}
-                  disabled={!c || !canAct}
-                  onClick={() => choose(index)}
+                  disabled={!c || !canAct || input.reserved(index)}
+                  onClick={(e) => {
+                    if (e.detail === 0) choose(index);
+                  }}
                   onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      input.cancel();
+                      gesture.current = null;
+                      redrawInput();
+                      return;
+                    }
                     let dx = 0,
                       dy = 0;
                     if (e.key === "ArrowLeft") dx = -1;

@@ -59,3 +59,7 @@ HTTP 验收通过真实账号、房间、SQLite 和系统时钟运行；覆盖 1
 浏览器验收使用真实点击、CDP 原生触屏与键盘，通过原始引擎寻找可操作的配对，不注入游戏状态；覆盖手机 320px、桌面 1280px、同步时保留选中图案、音频静音和本地素材回退。截图及 JSON 在 `.local/pairs/browser-*/`，素材证据在 `.local/pairs/oss-readback.json` 和 `.local/pairs/oss-verify.json`；HTTP 对局记录沿用公共测试工具，位于 `.local/poker/pairs/http/`。
 
 main 工作流增加素材打包检查和连连看规则／HTTP 验收；版本 tag 继续只发布同一 SHA 已验证的构建。
+
+连续点选通过游戏内输入队列处理：选择立即记录，已配对的图案按服务端确认后的最新棋盘版本依次提交；等待一组消除时仍可选择下一组。确认上一组不会清除下一组已选择的图案。触屏直接处理抬手，忽略重复的兼容点击；拖动、取消手势不产生选择，重排、接管、重连和离开页面会清除未提交的旧输入。游戏结果仍由服务端决定，不在本地预先扣除图案。
+
+快速输入回归：`. scripts/env.sh && python3 -B scripts/pairs/check-rapid.py`。使用原生鼠标和触屏，35 毫秒间隔连续选择两组并预选第三组，CDP 在输入期间持续施加 180 毫秒网络延迟；同时覆盖拖动／取消、键盘、重复点击和一次真实的过期版本拒绝。证据位于 `.local/pairs/rapid/`，修复前复现记录为 `.local/pairs/rapid-before.json`。输入状态边界用 `node --experimental-strip-types --test games/pairs/tests/input.test.mjs` 验证。
