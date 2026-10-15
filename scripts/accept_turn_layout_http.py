@@ -75,7 +75,15 @@ try:
   assert js('document.documentElement.scrollWidth<=innerWidth+1')
  b('click','.match-result-modal button[aria-label=关闭]');b('wait','15500');assert js('document.querySelector(".results")===null'),'state poll reopened dismissed result'
  b('click','.result-reopen');b('find','role','button','click','--name','再来一局','--exact');b('wait','.waiting-layout');assert js('document.querySelector(".results")===null&&document.querySelector(".result-reopen")===null')
- command('ready',True);command('ready');command('start');b('wait','.weiqi-board');r=peer_api('/state')['room'];d=r['game']['data'];peer_api('/rooms/'+r['id'],dict(type='action',version=r['version'],nonce=uuid.uuid4().hex,action=dict(type='resign',round=d['round'],ply=d['ply'],revision=d['revision'])))
+ command('ready',True);command('ready');command('start');b('wait','.weiqi-board')
+ for _ in range(2):
+  r=room();c=peer_api if r['game']['data']['turn']==1 else api;r=c('/state')['room'];d=r['game']['data'];c('/rooms/'+r['id'],dict(type='action',version=r['version'],nonce=uuid.uuid4().hex,action=dict(type='place',round=d['round'],ply=d['ply'],revision=d['revision'],pos=d['legal'][0])));b('wait','--fn','document.querySelector(".weiqi-board").dataset.ply==='+json.dumps(str(d['ply']+1))+'&&!document.querySelector(".weiqi-board").dataset.moving')
+ for _ in range(2):
+  r=room();d=r['game']['data'];command('action',other=d['turn']==1,action=dict(type='pass',round=d['round'],ply=d['ply'],revision=d['revision']))
+ b('wait','.weiqi-scoring');d=room()['game']['data'];dead=next(i for i,c in enumerate(d['board']) if c);command('action',action=dict(type='mark_dead',round=d['round'],ply=d['ply'],revision=d['revision'],pos=dead));d=room()['game']['data'];command('action',other=True,action=dict(type='confirm_score',round=d['round'],ply=d['ply'],revision=d['revision']))
+ js('(()=>{window.__finalFrames=[];window.__sampleFinal=true;const sample=()=>{if(!window.__sampleFinal)return;window.__finalFrames.push({y:document.querySelector(".game-layout").getBoundingClientRect().top+scrollY,moving:document.querySelector(".weiqi-board").dataset.moving});window.__finalRAF=requestAnimationFrame(sample)};sample()})()')
+ d=room()['game']['data'];command('action',action=dict(type='confirm_score',round=d['round'],ply=d['ply'],revision=d['revision']));b('wait','.results');js('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');frames=js('window.__sampleFinal=false;cancelAnimationFrame(window.__finalRAF);window.__finalFrames');report['animatedResult']=frames;assert any(f['moving'] for f in frames),'final removal animation not sampled';assert max(f['y'] for f in frames)-min(f['y'] for f in frames)<.5,{'animatedResultY':[min(f['y'] for f in frames),max(f['y'] for f in frames)]}
+
  b('wait','.results');assert js('!!document.querySelector(".results").closest("[role=dialog]")');report['resultOverlay']={'win':True,'widths':[1440,390,320],'closeReopenStable':True,'staysClosedAfterPoll':True,'rematchResets':True}
  assert not b('errors')['errors'];report['passed']=True
 except Exception as e:

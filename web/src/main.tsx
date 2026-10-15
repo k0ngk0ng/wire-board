@@ -673,7 +673,10 @@ function App() {
               <main
                 className={`room-page ${room.game ? "playing" : ""} game-${room.kind}`}
               >
-                <RoomHeading roomId={room.id} finished={!!room.game?.finished}>
+                <RoomHeading
+                  roomId={room.id}
+                  finished={!!state.room?.game?.finished}
+                >
                   <div>
                     <span className="eyebrow">
                       {gameName(room.kind)} <span> / </span> 牌桌{" "}
