@@ -106,10 +106,9 @@ docker compose logs -f
 npm --prefix web ci
 npm --prefix web run build
 
-python3 -B scripts/test_go_shard_test.py
-for shard in 0 1 2 3 4 5 6 7; do
-  python3 -B scripts/test_go_shard.py --index "$shard" --count 8 --race --timeout 30m || exit 1
-done
+python3 -B scripts/ci/scope.py run --game shared
+# 只验证当前开发的游戏；服务端规则改动时再增加 --backend。
+python3 -B scripts/ci/scope.py run --game snooker
 go vet ./...
 go build -o .local/wire-board .
 INVITE_CODE=local-friends ADDR=127.0.0.1:18080 DATA_DIR="$PWD/.local/data" .local/wire-board
@@ -117,7 +116,9 @@ INVITE_CODE=local-friends ADDR=127.0.0.1:18080 DATA_DIR="$PWD/.local/data" .loca
 
 前端开发：将后端监听 `127.0.0.1:8080`，运行 `npm --prefix web run dev`，通过 Vite 开发地址访问。第一次运行 Go 前需要先构建前端以满足 embed。
 
-完整 Go 验证按顶层测试名称稳定分为八片，子测试随父测试一起运行；示例和模糊测试的种子用例也包含在内。上述循环运行全部分片，不能只用一片代表全量通过。用 `--list` 可查看分片包含的用例。GitHub Actions 使用 20 个规则分片，并另设并发路径的 `-race` 任务；前端、静态检查、构建与全部分片通过后才发布镜像。
+GitHub Actions 的 main 检查始终验证公共平台，并按最近已验证的祖先构建选择变更游戏；取消或失败的前序提交不会从检查范围中消失。游戏前端修改只运行对应前端／素材检查，服务端规则及夹具修改才运行该游戏的完整规则、对局和竞态检查。卡坦岛的大型规则套件按 20 片并行，其他游戏改动不会启动这些分片。工作流摘要及 `verification-plan` 产物列出本次范围，各检查保存独立结果；全部必需检查通过后生成二进制，版本 tag 只复用产物发布。
+
+需要主动验收某款游戏时，在 main 工作流的手动入口填写游戏 ID；填写 `all` 才启动全游戏验收。本地全量 Go 验证仍可使用 `scripts/test_go_shard.py`；须运行全部分片，不能只用一片代表全量通过。
 
 测试覆盖规则边界、资源守恒、完整 2/4 人璀璨宝石、六张铁路地图各最低/最高人数与 3/4 人卡坦岛对局、最长路线中的循环、隐藏信息、身份认证、CSRF、房间密码、并发和幂等、WebSocket 通知、重启恢复与结算后离桌。
 

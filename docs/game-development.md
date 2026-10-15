@@ -90,7 +90,9 @@ go test -count=1 ./games/carcassonne/server
 npm --prefix web test -- catan
 ```
 
-前端测试入口收集 `web/tests/*.test.mjs` 和 `games/*/tests/*.test.mjs`；指定游戏时只运行该目录，无用例会报错。Go 测试继续由 `go test ./...` 和既有分片脚本发现。现有 HTTP 集成测试仍位于 `internal/server`，可以使用准确的测试名称选择。
+前端测试入口收集 `web/tests/*.test.mjs` 和 `games/*/tests/*.test.mjs`；指定游戏时只运行该目录，无用例会报错。main 的检查范围由 `scripts/ci/scope.py` 选择：公共平台始终验证，游戏前端／素材只验证对应模块，规则、规则测试及夹具改动才启动对应 Go 套件。遗留在 `internal/server` 的游戏测试按文件与测试名称归属分配；旧多游戏完整对局使用准确的游戏子测试过滤。`go test ./...` 与既有全量分片脚本保留为主动全量验收入口。
+
+本地执行 `python3 -B scripts/ci/scope.py run --game <id>` 验证单个游戏的前端和素材；服务端改动追加 `--backend`。`--game shared` 只跑公共平台 HTTP、存档与竞态检查。main 工作流摘要和 `verification-plan` 记录基线、改动文件与选择范围，`.local/ci/<id>/` 保存命令清单、结果和日志。基线采用已验证祖先构建；旧工作流迁移时可沿用已正式发布版本的匹配构建，不以尚未通过的上一条 main 提交作为基线。
 
 独立接入的服务器 E2E：
 
@@ -109,7 +111,7 @@ python3 -B scripts/accept_game_modules.py
 
 该命令临时增加一个测试游戏，构建真实页面并启动测试服务，验证创建、设置、玩家操作、电脑推进、完局和刷新。随后检查现有六款游戏的桌面／手机牌桌。退出时移除临时游戏，并重新构建正常前端。不要与其他前端构建同时运行。
 
-结果位于 `.local/module-refactor/browser/result.json`，同目录保留截图、页面快照和构建／服务日志。服务器 E2E 另保留 `module-lifecycle.json` 和 Go JSON 输出。CI 的 `game-module-acceptance` 产物保存服务器接入验收结果；浏览器验收当前由上述本地命令执行。
+结果位于 `.local/module-refactor/browser/result.json`，同目录保留截图、页面快照和构建／服务日志。服务器 E2E 另保留 `module-lifecycle.json` 和 Go JSON 输出。CI 的 `shared-platform-acceptance` 产物保存服务器接入验收日志；浏览器验收当前由上述本地命令执行。
 
 每款新游戏还应覆盖观战隐私、非法动作、重复请求、多人并发、超时／取消托管、重启恢复、结算与再来一局。产物记录运行命令和场景，不能只保留一个没有上下文的「通过」。
 
