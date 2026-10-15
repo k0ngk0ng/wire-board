@@ -114,6 +114,9 @@ try:
  assert all(player['board']['cells'][i] is None for i in pairs[1])
  report['rejection']={'rejected':pairs[0],'accepted':pairs[1],'revision':player['revision']}
  shot('rejected-pair-preserves-next-input')
+ command('close')
+ b('wait','--fn','[...document.querySelectorAll(".pairs-cell")].every(e=>e.disabled)')
+ shot('closed-room-readonly')
  report['passed']=True
 except Exception as e:
  import traceback;traceback.print_exc();report['error']=repr(e)
