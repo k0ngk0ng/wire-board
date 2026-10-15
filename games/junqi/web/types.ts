@@ -1,0 +1,80 @@
+export type Options = {
+  mode?: "duel" | "teams";
+  difficulty: "easy" | "standard";
+  turnSeconds: number;
+  setupSeconds: number;
+};
+export type Node = {
+  id: number;
+  seat: number;
+  row: number;
+  col: number;
+  x: number;
+  y: number;
+  camp: boolean;
+  hq: boolean;
+};
+export type Edge = { a: number; b: number; lines: string[]; curve: boolean };
+export type Graph = { players: number; nodes: Node[]; edges: Edge[] };
+export type Piece = {
+  id: string;
+  seat: number;
+  kind: string;
+  pos: number;
+  revealed: boolean;
+};
+export type Move = {
+  unit: string;
+  from: number;
+  to: number;
+  path: number[];
+  turned: boolean;
+};
+export type Event = {
+  id: number;
+  type: string;
+  seat: number;
+  moves: Move[];
+  outcome: string;
+  removed: string[];
+  commanders: number[];
+  flagCaptured: boolean;
+  at: number;
+};
+export type Player = {
+  seat: number;
+  team: number;
+  ready: boolean;
+  alive: boolean;
+  remaining: number;
+  flagRevealed: boolean;
+};
+export type View = {
+  options: Options;
+  players: Player[];
+  round: string;
+  phase: "deploy" | "playing" | "finished";
+  mode: "duel" | "teams";
+  turn: number;
+  ply: number;
+  pieces: Piece[];
+  graph: Graph;
+  revision: number;
+  deadlines: number[];
+  legal: Move[];
+  recent: Move[];
+  noCasualty: number;
+  offer?: { id: number; by: number; votes: boolean[] };
+  last: Event;
+  winner: number;
+  reason: string;
+  log: string[];
+  canArrange: boolean;
+  canConfirm: boolean;
+  canUnready: boolean;
+  canMove: boolean;
+  canVote: boolean;
+  canOffer: boolean;
+  canResign: boolean;
+  motion?: { event: Event; duration: number };
+};

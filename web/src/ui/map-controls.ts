@@ -11,6 +11,7 @@ export function useMapControls({
   aspect = 1,
   minMobileWidth = 620,
   fillMobileHeight = false,
+  fitMobile = false,
 } = {}) {
   const viewport = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0, mobile: false });
@@ -27,13 +28,14 @@ export function useMapControls({
   const pending = useRef<{ x: number; y: number; u: number; v: number } | null>(
     null,
   );
-  const baseWidth = size.mobile
-    ? Math.max(
-        minMobileWidth,
-        size.width,
-        fillMobileHeight ? size.height * aspect : 0,
-      )
-    : Math.min(size.width, size.height * aspect);
+  const baseWidth =
+    size.mobile && !fitMobile
+      ? Math.max(
+          minMobileWidth,
+          size.width,
+          fillMobileHeight ? size.height * aspect : 0,
+        )
+      : Math.min(size.width, size.height * aspect);
   const width = baseWidth * zoom;
   const height = width / aspect;
   const left = Math.max(0, (size.width - width) / 2);
@@ -115,6 +117,7 @@ export function useMapControls({
 
   return {
     viewport,
+    mobile: size.mobile,
     zoom,
     zoomAt,
     dragging,
