@@ -55,7 +55,10 @@ export function Board({
   } | null>(null);
   const scope = `${room.id}:${seat}:${!!room.spectating}:${data.round}:${clock.epoch ?? 0}`;
   const playable =
-    data.canAct && !room.spectating && !room.seats[room.you]?.autoPlay;
+    room.status === "playing" &&
+    data.canAct &&
+    !room.spectating &&
+    !room.seats[room.you]?.autoPlay;
   const snapshot = useMemo<InputSnapshot>(
     () => ({
       scope,

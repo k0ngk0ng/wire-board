@@ -4,7 +4,7 @@ const [endpoint,prefix,mode,input,gap='35']=process.argv.slice(2);
 const points=JSON.parse(fs.readFileSync(input,'utf8'));
 const socket=new WebSocket(endpoint);await new Promise((ok,no)=>{socket.onopen=ok;socket.onerror=no});
 let serial=0;const pending=new Map();socket.onmessage=({data})=>{const m=JSON.parse(data);if(!m.id)return;const p=pending.get(m.id);pending.delete(m.id);clearTimeout(p.timer);m.error?p.no(Error(JSON.stringify(m.error))):p.ok(m.result)};
-const call=(method,params={},sessionId)=>new Promise((ok,no)=>{const id=++serial;const timer=setTimeout(()=>{pending.delete(id);no(Error('CDP timeout: '+method))},8000);pending.set(id,{ok,no,timer});socket.send(JSON.stringify({id,method,params,sessionId}))});
+const call=(method,params={},sessionId)=>new Promise((ok,no)=>{const id=++serial;const timer=setTimeout(()=>{pending.delete(id);no(Error('CDP timeout: '+method+' '+JSON.stringify(params)))},8000);pending.set(id,{ok,no,timer});socket.send(JSON.stringify({id,method,params,sessionId}))});
 try{
  const {targetInfos}=await call('Target.getTargets');const page=targetInfos.find(p=>p.type==='page'&&p.url.startsWith(prefix));if(!page)throw Error('Owned page missing');
  const {sessionId}=await call('Target.attachToTarget',{targetId:page.targetId,flatten:true});await call('Page.bringToFront',{},sessionId);
@@ -24,5 +24,6 @@ try{
   await new Promise(r=>setTimeout(r,+gap));
  }
  await new Promise(r=>setTimeout(r,1600));
+ const observed=await call('Runtime.evaluate',{expression:'JSON.stringify({revision:document.querySelector(".pairs-board")?.dataset.revision,requests:window.__requests?.length})',returnByValue:true},sessionId);console.log('Native burst result:',observed.result.value);
  await call('Emulation.setTouchEmulationEnabled',{enabled:false},sessionId);await call('Target.detachFromTarget',{sessionId});
 }finally{socket.close()}
