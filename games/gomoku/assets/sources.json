@@ -1,0 +1,66 @@
+{
+  "version": "gomoku/v1",
+  "images": {
+    "author": "Wire Board project",
+    "source": "games/gomoku/assets/art.ts",
+    "method": "Original SVG rendered with @resvg/resvg-js 2.6.2 and cwebp lossless WebP"
+  },
+  "audioSource": {
+    "url": "https://kenney.nl/media/pages/assets/boardgame-pack/a1656828d2-1677667644/kenney_boardgame-pack.zip",
+    "sha256": "3b6a7dd5af658d1ffa0071429d5dde10ff63121e88bd06d4904e721e60b2c398",
+    "license": "CC0-1.0",
+    "licenseEvidence": "games/gomoku/assets/licenses/kenney-boardgame.txt",
+    "member": "Bonus/chipsCollide1.ogg"
+  },
+  "generator": "node --experimental-strip-types scripts/gomoku/prepare-assets.mjs",
+  "files": [
+    {
+      "file": "images/board.webp",
+      "bytes": 45336,
+      "sha256": "660af9747a99060d9b59d403eee51d8c5560a246ddf16e7a7d4ebac7dc437060",
+      "source": "Original SVG: games/gomoku/assets/art.ts"
+    },
+    {
+      "file": "images/stone-black.webp",
+      "bytes": 5904,
+      "sha256": "df778fbb53c42e025588f1919906962bef4f49a0f86f86f4d157a082017e50de",
+      "source": "Original SVG: games/gomoku/assets/art.ts"
+    },
+    {
+      "file": "images/stone-white.webp",
+      "bytes": 6984,
+      "sha256": "0f5c00c0b7d4938f99df0598e735ab738ec5025f171ff7e39065493c5781a833",
+      "source": "Original SVG: games/gomoku/assets/art.ts"
+    },
+    {
+      "file": "images/cover.webp",
+      "bytes": 19492,
+      "sha256": "73287b683caa5641a27365596d958b3895c0eb6039b20f3632ee9a6bd80a292f",
+      "source": "Original SVG: games/gomoku/assets/art.ts"
+    },
+    {
+      "file": "audio/place.wav",
+      "bytes": 22900,
+      "sha256": "8b69e0ea48711a3fa2917a6b4bfe35ce1b3e00718bb57afc316ba5aecd14b721",
+      "source": "Kenney Boardgame Pack / Bonus/chipsCollide1.ogg; mono 44.1 kHz PCM; volume=0.7"
+    },
+    {
+      "file": "audio/win.wav",
+      "bytes": 100594,
+      "sha256": "394fe0a9e5e254c877c8b67eafd0b8f99f6366769998e09dc6a41cd5395c910d",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#finish"
+    },
+    {
+      "file": "audio/draw.wav",
+      "bytes": 32678,
+      "sha256": "87474ad45994c47e7bcd527975fa8fb74654b671cc45df3771d3dbc4fcf13d44",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#reserve"
+    },
+    {
+      "file": "audio/notice.wav",
+      "bytes": 56492,
+      "sha256": "8690817a0f8a4085337bce3705f3abf9dad926f31926fd0c72fc7cf981adecf7",
+      "source": "Original Wire Board melody: web/src/audio-tones.ts#turn"
+    }
+  ]
+}
