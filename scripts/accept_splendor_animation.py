@@ -28,6 +28,8 @@ def main():
     parser.add_argument('--base-url', default='http://127.0.0.1:18099')
     parser.add_argument('--width', type=int, default=390)
     parser.add_argument('--expanded', action='store_true')
+    parser.add_argument('--scroll-board', action='store_true', help='Keep the action source visible with player avatars above the viewport')
+    parser.add_argument('--reduced-motion', action='store_true')
     parser.add_argument('--acquisition', action='store_true', help='Buy a reserved card, obtain a noble, and finish the base game')
     args = parser.parse_args()
     url = urllib.parse.urlsplit(args.base_url)
@@ -90,6 +92,7 @@ def main():
 
     def observe(label, actor, action, panel=False):
         before = room()['game']['splendor']
+        js('window.flightSeats = ' + json.dumps([seat['name'] for seat in room()['seats']]))
         js('window.flightAfter = ' + json.dumps(dict(
             card=before.get('cardEventId', 0), token=before.get('tokenEventId', 0))))
         if args.acquisition:
@@ -101,6 +104,10 @@ def main():
            str(430 if actor >= 2 else 0) +
            ';scrollTo(0,0);window.flightScrollDelta=' + str(delta))
         time.sleep(.15)
+        if args.scroll_board:
+            selector = f'.market [data-card-id="{action["card"]}"]' if action.get('card') else '.gem-bank'
+            js('document.querySelector(' + json.dumps(selector) + ').scrollIntoView({block:"start"});window.flightScrollDelta=0')
+            time.sleep(.1)
         js('window.flightFixedSource = null; window.flightCardSource = null')
         if panel:
             js('window.flightFixedSource = document.querySelector(".gem-purchase-panel [data-card-id]").getBoundingClientRect().toJSON()')
@@ -112,7 +119,12 @@ def main():
             browser('click', f'button[data-card-acquire="{action["card"]}"]')
         else:
             command(actor, 'action', action=action)
-        time.sleep(1.5)
+        if not (out / (label + '-in-flight.png')).exists():
+            time.sleep(.25)
+            browser('screenshot', str(out / (label + '-in-flight.png')))
+            time.sleep(1.3)
+        else:
+            time.sleep(1.5)
         result = js('window.flightResult')
         result['label'] = label
         report['actions'].append(result)
@@ -120,6 +132,11 @@ def main():
         assert not result['errors'], result
         assert result['samples'] or result['card'], result
         assert result['visible'] > 0, result
+        if args.reduced_motion:
+            assert result['reducedMotion'] and result['feedbackFrames'] > 0, 'Reduced-motion feedback is missing'
+            assert any(m['name'] in ['splendor-token-pulse', 'splendor-card-received-still'] for m in result['motion']), 'Reduced-motion feedback was globally disabled'
+        else:
+            assert any(m['animations'] for m in result['motion']), 'Flight exists but has no actual animation'
         assert actor in result['players'], result
         print(label, 'visible=', result['visible'], 'hidden=', result['hidden'], flush=True)
         return result
@@ -141,6 +158,8 @@ def main():
         js('fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(' +
            json.dumps(dict(name=names[0], password=password)) + ')}).then(r=>r.ok)')
         browser('set', 'viewport', str(args.width), '844')
+        if args.reduced_motion:
+            browser('set', 'media', 'light', 'reduced-motion')
         browser('open', base)
         time.sleep(.5)
         assert js('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'
@@ -176,6 +195,10 @@ def main():
                     observe('reserve', actor, dict(type='reserve', card=card['id']))
             else:
                 raise AssertionError('Return phase not reached')
+        browser('reload')
+        time.sleep(.5)
+        assert js('document.querySelectorAll("[data-card-flight],[data-token-flight],[data-flight-recipient]").length') == 0, 'Reload replayed old effects'
+        report['reloadDidNotReplay'] = True
         assert not browser('errors')['errors'], 'Browser errors'
         report['passed'] = True
     finally:

@@ -24,6 +24,9 @@
     directions: [],
     card: 0,
     visibleCardActions: [],
+    motion: [],
+    feedbackFrames: 0,
+    reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
   };
   window.flightResult = result;
   let start = performance.now(),
@@ -92,11 +95,43 @@
       for (const n of nodes) {
         const card = n.hasAttribute("data-card-flight");
         const e = card ? n.querySelector(".splendor-card-flight") : n;
+        const feedback = card ? n.querySelector('.splendor-card-arrival') : e;
+        if (feedback) {
+          const css = getComputedStyle(feedback);
+          if (css.visibility === 'visible' && Number(css.opacity) > 0 && feedback.getBoundingClientRect().width > 0)
+            result.feedbackFrames++;
+          if (card && result.motion.length < 160)
+            result.motion.push({kind: 'arrival', name: css.animationName, visibility:css.visibility,
+              opacity:css.opacity, transform:css.transform, animations:feedback.getAnimations().map(a=>({state:a.playState,time:a.currentTime}))});
+        }
+        if (e && result.motion.length < 160) {
+          const css = getComputedStyle(e);
+          result.motion.push({
+            kind: card ? "card" : "token",
+            name: css.animationName,
+            visibility: css.visibility,
+            opacity: css.opacity,
+            transform: css.transform,
+            animations: e
+              .getAnimations()
+              .map((a) => ({ state: a.playState, time: a.currentTime })),
+          });
+        }
         const player = Number(n.dataset.flightPlayer),
           color = Number(n.dataset.flightColor);
-        const target = point(
+        const avatarTarget = point(
           document.querySelector(`[data-player-seat="${player}"] .avatar`),
         );
+        const recipient = n
+          .closest(".splendor-card-animation,.splendor-token-animation")
+          ?.querySelector(`[data-flight-recipient="${player}"]`);
+        const target = avatarTarget || point(recipient);
+        if (
+          !avatarTarget &&
+          recipient &&
+          recipient.dataset.recipientName !== window.flightSeats?.[player]
+        )
+          result.errors.push({ wrongRecipient: true, player });
         result.players.push(player);
         if (card) {
           result.card++;

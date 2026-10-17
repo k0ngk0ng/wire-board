@@ -1,0 +1,36 @@
+.splendor-flight-recipient {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 146px;
+  height: 32px;
+  padding: 4px 8px;
+  box-sizing: border-box;
+  border: 1px solid #a78135;
+  border-radius: 18px;
+  background: #fff5db;
+  color: #49371c;
+  box-shadow: 0 2px 8px #172b2026;
+  visibility: hidden;
+  font-size: 12px;
+  font-weight: 700;
+}
+.splendor-flight-recipient > i {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--recipient-color, #496147);
+  color: #49371c;
+  background: #fff5db;
+  font-style: normal;
+}
+.splendor-flight-recipient > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
