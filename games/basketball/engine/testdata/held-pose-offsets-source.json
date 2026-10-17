@@ -1,0 +1,8 @@
+{
+  "scope": "original fixed-bank action selectors and integer pose offsets; independent of player handler support",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "selectors": "$ECF5..$ED5E",
+  "pointers": "$ED65",
+  "records": 106,
+  "fixtureSHA256": "81c48a51e3d5eec0e3cb21aa639909d0a7358fd614fdcdb0e11545c82c6aa98e"
+}

@@ -1,0 +1,476 @@
+[
+  {
+    "spareControllerButtons": 0,
+    "secondPress": 9,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 128,
+        "auxOwner": 255,
+        "auxCursor": 0,
+        "poseSource": 2
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": 78,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": 32,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": 32,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": 32,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": 32,
+        "playerAction": 32,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 9,
+        "held": 128,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 10,
+        "held": 128,
+        "request": 39,
+        "playerAction": 167,
+        "auxAction": 142,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 11,
+        "held": 128,
+        "request": 32,
+        "playerAction": 167,
+        "auxAction": 3,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 12,
+        "held": 128,
+        "request": 32,
+        "playerAction": 167,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 13,
+        "held": 0,
+        "request": 0,
+        "playerAction": 167,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 14,
+        "held": 0,
+        "request": 0,
+        "playerAction": 167,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 15,
+        "held": 0,
+        "request": 0,
+        "playerAction": 0,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 16,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 17,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 18,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 19,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 0,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      }
+    ],
+    "sounds": []
+  },
+  {
+    "spareControllerButtons": 65,
+    "secondPress": 9,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 128,
+        "auxOwner": 255,
+        "auxCursor": 0,
+        "poseSource": 2
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": 78,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": 32,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": 32,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": 32,
+        "playerAction": 206,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": 32,
+        "playerAction": 32,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 9,
+        "held": 128,
+        "request": 32,
+        "playerAction": 160,
+        "auxAction": 129,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 10,
+        "held": 128,
+        "request": 39,
+        "playerAction": 167,
+        "auxAction": 142,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 11,
+        "held": 128,
+        "request": 32,
+        "playerAction": 167,
+        "auxAction": 3,
+        "auxOwner": 0,
+        "auxCursor": 0,
+        "poseSource": 0
+      },
+      {
+        "tick": 12,
+        "held": 128,
+        "request": 32,
+        "playerAction": 167,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 13,
+        "held": 0,
+        "request": 0,
+        "playerAction": 167,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 14,
+        "held": 0,
+        "request": 0,
+        "playerAction": 167,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 15,
+        "held": 0,
+        "request": 0,
+        "playerAction": 0,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 16,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 17,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 18,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 19,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 131,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": 0,
+        "playerAction": 128,
+        "auxAction": 0,
+        "auxOwner": 255,
+        "auxCursor": 3,
+        "poseSource": 0
+      }
+    ],
+    "sounds": []
+  }
+]

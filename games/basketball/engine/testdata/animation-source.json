@@ -1,0 +1,14 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "0ac2a4aebf40140c2c9258f24c90ee9a85e3df118d307972499a72170ba93f82",
+  "records": 1406,
+  "scenarios": [
+    "a",
+    "b",
+    "idle",
+    "jump",
+    "left",
+    "right"
+  ],
+  "source_is_original_execution": true
+}

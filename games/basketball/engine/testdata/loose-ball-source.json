@@ -1,0 +1,13 @@
+{
+  "source_is_original_execution": true,
+  "records": 84,
+  "all_ball_phases": 1998,
+  "identical_frames": 6000,
+  "identical_screenshots": 1,
+  "sha256": "09381da673a426316f0c614390d3cb220127d4f49f2f9a81aa4f69e9ed92761f",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "7f54abd1e62b985d43791520abebde054ce9f67fa7226827c7e1b4ef5eb8bad6"
+  }
+}

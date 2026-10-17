@@ -1,0 +1,11 @@
+{
+  "source_is_original_execution": true,
+  "records": 9,
+  "trace_sha256": "aef0c939d327d52292eb21e52f1015404e63a538ba7eb828ce92af4126a6b886",
+  "sha256": "662550a138679536c945c824417df2334803f3f295f4698aabc1fb11878214c5",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 3600,
+    "scenario_sha256": "ba96bd9d36c4df24a8996e122c41dbaaa07808a3061853062a04ccf670ebf3f7"
+  }
+}

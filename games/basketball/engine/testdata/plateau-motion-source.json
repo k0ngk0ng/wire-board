@@ -1,0 +1,30 @@
+{
+  "records": 13229,
+  "objects": {
+    "0": 2000,
+    "1": 2027,
+    "2": 2017,
+    "3": 2011,
+    "4": 1998,
+    "5": 1998,
+    "6": 1178,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0
+  },
+  "source_is_original_execution": true,
+  "entry": "fixed:eeff",
+  "exit": "fixed:eff1 or ef5e",
+  "record_format": "uint32le frame, uint8 object, 2048-byte before RAM, 2048-byte after RAM",
+  "ram_matches_uninstrumented": true,
+  "trace_sha256": "26ae287d874ba1c4467c5ceee8bb446532b0e9d1f90f6c51f2a099a7c832c494",
+  "fixture_sha256": "63e761f3abd4e77cbb449f1b3d3f5e551f330098e6e19a5cf29c25c65759cf8f",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "142263bf7eb2eb76bc09e85e0e91c257cef39ca5f1f2d6fbb2928e875317f2c0"
+  }
+}

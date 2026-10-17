@@ -1,0 +1,27 @@
+{
+  "isolated_original_function_execution": true,
+  "source_is_natural_execution": false,
+  "records": 16896,
+  "entry": "bank5 AB87 including original B383 dispatch",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "threshold_bytes": [
+    112,
+    128,
+    80,
+    128,
+    48,
+    96,
+    32,
+    80,
+    16,
+    64,
+    8,
+    32,
+    8,
+    16,
+    189,
+    114
+  ],
+  "sha256": "c399b2ab5452b44be50caf9a066b16c6b6528f29f588c4e5bb97fa7cea8a3a53",
+  "uncompressed_sha256": "36c9f7ca20401719b05a80abccbfda035fb33f160c462c39c46b5f6a9394d563"
+}

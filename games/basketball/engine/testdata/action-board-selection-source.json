@@ -1,0 +1,8 @@
+{
+  "records": 1998,
+  "source_is_original_execution": true,
+  "trace_sha256": "2dab3dba353b84681dc90e4e0621f613d194a12f590b9072c2b7ee51e64b6c4b",
+  "sha256": "973676d22d87a3a9293deabb0b08e5f5778052be244d193922568e3beaf32412",
+  "address": "fixed DEA9 writes 06F6 during DE7D falling-hoop entry",
+  "evidence_id": "ev_aa459179a50b5b5cdf7e9449f36c0569739e78a72a02a0cea52805ec5402cce5"
+}

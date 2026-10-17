@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "index": 54,
+  "frame": 3670,
+  "records": 1,
+  "calls_source": "fixed D32C actor loop then D33D objects4..9; no per-call timestamps in this capture",
+  "uncompressed_sha256": "90e4fabb3a24810d6d6f05b2d7d316c67660d7624e91bd14820210044d38615b",
+  "sha256": "3569988345e0312859183b215dc1b7edbe1f2359afd872b95f518090c00abb30",
+  "trace_sha256": "c42fac4bad964719fc1b074137330570203826840484944bec295d13a0978b03",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 180,
+    "scenario_sha256": "b07ed56eb30f364576d627e1d6053fdd1cf5456257e0211dcb30d7fae0da22ba"
+  }
+}

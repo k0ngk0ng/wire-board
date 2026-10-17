@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "authority": "evidence-only-not-an-allowlist",
+  "requiredPolicyOwner": "server preparation validator",
+  "releaseReady": false,
+  "assetCoverage": {
+    "courts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "teams": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "charactersPerTeam": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "verifiedMatchBaseline": {
+    "courts": [
+      0,
+      1,
+      2
+    ],
+    "teams": [
+      0,
+      1
+    ],
+    "characters": [
+      0,
+      1,
+      0,
+      1
+    ],
+    "seed": "0x12345678",
+    "scope": "Historical content-audit baseline only; later acceptance must be supplied by the server policy owner.",
+    "source": "games/basketball/CONTENT_COVERAGE.md"
+  },
+  "requirements": [
+    "Validate the entire court/team/character/mode/equipment tuple on the authoritative server.",
+    "Do not enable a character or court because an image is present.",
+    "Keep development asset availability separate from production registration and administrator listing.",
+    "Do not derive labels, identities or gameplay support from array position or filename."
+  ]
+}

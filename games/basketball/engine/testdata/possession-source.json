@@ -1,0 +1,17 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "536d2fee2d6726387d283b8aace5daf83be46ea0b9e16d5cc2772ae312fba11a",
+  "records": 1279,
+  "source_is_original_execution": true,
+  "scenarios": [
+    "idle",
+    "walk",
+    "pass",
+    "shoot",
+    "quick-shot",
+    "jump",
+    "jump-pass",
+    "jump-shot"
+  ],
+  "source": "scripts/basketball/capture_possession.py; human action E165/E168 and ball E149/E14C"
+}

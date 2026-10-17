@@ -1,0 +1,296 @@
+{
+  "schema": 1,
+  "accepted_for_release": false,
+  "source_rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "asset_root": ".local/basketball/audio/export",
+  "effects": [
+    {
+      "id": 3,
+      "kind": "effect",
+      "wav": "sound-003.wav",
+      "capture_frames": 180,
+      "sources": [
+        "board_contact.go:191"
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "effect",
+      "wav": "sound-004.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 5,
+      "kind": "effect",
+      "wav": "sound-005.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 6,
+      "kind": "effect",
+      "wav": "sound-006.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 8,
+      "kind": "effect",
+      "wav": "sound-008.wav",
+      "capture_frames": 180,
+      "sources": [
+        "combat.go → originalCombatProfiles / heavy contact"
+      ]
+    },
+    {
+      "id": 9,
+      "kind": "effect",
+      "wav": "sound-009.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 11,
+      "kind": "effect",
+      "wav": "sound-011.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 15,
+      "kind": "effect",
+      "wav": "sound-015.wav",
+      "capture_frames": 180,
+      "sources": [
+        "board_contact.go:229",
+        "board_contact.go:232",
+        "board_contact.go:260"
+      ]
+    },
+    {
+      "id": 17,
+      "kind": "effect",
+      "wav": "sound-017.wav",
+      "capture_frames": 180,
+      "sources": [
+        "match_clock.go:63"
+      ]
+    },
+    {
+      "id": 19,
+      "kind": "effect",
+      "wav": "sound-019.wav",
+      "capture_frames": 180,
+      "sources": [
+        "combat.go → originalCombatProfiles / heavy contact"
+      ]
+    },
+    {
+      "id": 21,
+      "kind": "effect",
+      "wav": "sound-021.wav",
+      "capture_frames": 180,
+      "sources": [
+        "combat.go → originalCombatProfiles / heavy contact"
+      ]
+    },
+    {
+      "id": 23,
+      "kind": "effect",
+      "wav": "sound-023.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 27,
+      "kind": "effect",
+      "wav": "sound-027.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 31,
+      "kind": "effect",
+      "wav": "sound-031.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 32,
+      "kind": "effect",
+      "wav": "sound-032.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 33,
+      "kind": "effect",
+      "wav": "sound-033.wav",
+      "capture_frames": 180,
+      "sources": [
+        "board_contact.go:234",
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 35,
+      "kind": "effect",
+      "wav": "sound-035.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 36,
+      "kind": "effect",
+      "wav": "sound-036.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 37,
+      "kind": "effect",
+      "wav": "sound-037.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 38,
+      "kind": "effect",
+      "wav": "sound-038.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 40,
+      "kind": "effect",
+      "wav": "sound-040.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 41,
+      "kind": "effect",
+      "wav": "sound-041.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 43,
+      "kind": "effect",
+      "wav": "sound-043.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 45,
+      "kind": "effect",
+      "wav": "sound-045.wav",
+      "capture_frames": 600,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 50,
+      "kind": "effect",
+      "wav": "sound-050.wav",
+      "capture_frames": 180,
+      "sources": [
+        "board_contact.go:107",
+        "match_transition.go:255"
+      ]
+    },
+    {
+      "id": 51,
+      "kind": "effect",
+      "wav": "sound-051.wav",
+      "capture_frames": 180,
+      "sources": [
+        "attack_player.go → originalAttackSounds"
+      ]
+    },
+    {
+      "id": 55,
+      "kind": "effect",
+      "wav": "sound-055.wav",
+      "capture_frames": 600,
+      "sources": [
+        "match_clock.go:137",
+        "match_clock.go:141"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": 0,
+      "command": "reset-driver",
+      "source": "bank0:$8046/$8166",
+      "meaning": "Reset original driver state and disable channels; stop effects and music."
+    },
+    {
+      "id": 253,
+      "command": "pause-driver",
+      "source": "bank0:$804C/$8054",
+      "meaning": "Set pause flag, remember current music and disable APU; not an audio clip."
+    },
+    {
+      "id": 255,
+      "command": "resume-driver",
+      "source": "bank0:$8062..8088",
+      "meaning": "Clear pause flag, restore remembered music if needed, otherwise reapply original effect channels; do not map to a WAV."
+    }
+  ],
+  "music": [
+    {
+      "id": 66,
+      "kind": "music",
+      "wav": "music-066.wav",
+      "capture_frames": 8000,
+      "sources": [
+        "Original hoop-control-cpu-long: all 6000 video frames have $0700 = 66"
+      ],
+      "loop_status": "see export manifest for original sequence jump markers",
+      "pcm_seam_accepted": false,
+      "render_volume": 192
+    }
+  ],
+  "integration": {
+    "effects": "BoardProps.audio.playWithFallback([immutable OSS URL, local fallback])",
+    "music": "BoardProps.audio.music after original loop acceptance",
+    "controls": "Keep as protocol commands; do not enqueue as clips. Exact pause/resume semantics require platform integration work.",
+    "ownership": "One platform mute/audio session, no basketball-created player or AudioContext."
+  }
+}

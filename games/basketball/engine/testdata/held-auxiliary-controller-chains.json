@@ -1,0 +1,2523 @@
+[
+  {
+    "name": "A-ground",
+    "jumped": false,
+    "thrown": true,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": {
+          "action": 78,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 9,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 10,
+        "held": 128,
+        "request": {
+          "action": 39,
+          "pending": true
+        },
+        "playerAction": 39,
+        "auxAction": 14,
+        "owner": 0
+      },
+      {
+        "tick": 11,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 39,
+        "auxAction": 3,
+        "owner": 0
+      },
+      {
+        "tick": 12,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 39,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 13,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 39,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 14,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 39,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 15,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 16,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 17,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 18,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 19,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      }
+    ]
+  },
+  {
+    "name": "B-ground",
+    "jumped": false,
+    "thrown": true,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": {
+          "action": 78,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 9,
+        "held": 65,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 33,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 10,
+        "held": 65,
+        "request": {
+          "action": 41,
+          "pending": true
+        },
+        "playerAction": 41,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 11,
+        "held": 65,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 41,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 12,
+        "held": 65,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 41,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 13,
+        "held": 0,
+        "request": {
+          "action": 43,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 14,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 15,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 16,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 17,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 18,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 19,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 43,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 23,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 24,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 25,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 26,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 27,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 28,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 29,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 30,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 31,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 32,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 33,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 34,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 35,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 36,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 37,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 38,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 39,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 40,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 41,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 42,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 43,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 44,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 45,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 46,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 47,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 48,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 49,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 50,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 51,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 52,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 53,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 54,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 55,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 56,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 57,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 58,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      }
+    ]
+  },
+  {
+    "name": "A-air",
+    "jumped": true,
+    "thrown": true,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": {
+          "action": 78,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 9,
+        "held": 192,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 10,
+        "held": 192,
+        "request": {
+          "action": 36,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 11,
+        "held": 192,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 12,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 13,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 14,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 15,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 16,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 17,
+        "held": 128,
+        "request": {
+          "action": 40,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 14,
+        "owner": 0
+      },
+      {
+        "tick": 18,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 0
+      },
+      {
+        "tick": 19,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 23,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 24,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 25,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 40,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 26,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 6,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 27,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 6,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 28,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 6,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 29,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 6,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 30,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 31,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 32,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 33,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 34,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 35,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 36,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 37,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 38,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 39,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 3,
+        "owner": 255
+      },
+      {
+        "tick": 40,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      }
+    ]
+  },
+  {
+    "name": "B-air",
+    "jumped": true,
+    "thrown": true,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": {
+          "action": 78,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 9,
+        "held": 192,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 10,
+        "held": 192,
+        "request": {
+          "action": 36,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 11,
+        "held": 192,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 12,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 13,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 14,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 15,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 16,
+        "held": 65,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 36,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 17,
+        "held": 65,
+        "request": {
+          "action": 42,
+          "pending": true
+        },
+        "playerAction": 42,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 18,
+        "held": 65,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 42,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 19,
+        "held": 65,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 42,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": {
+          "action": 44,
+          "pending": true
+        },
+        "playerAction": 44,
+        "auxAction": 15,
+        "owner": 0
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 44,
+        "auxAction": 2,
+        "owner": 0
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 44,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 23,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 44,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 24,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 44,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 25,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 44,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 26,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 27,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 28,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 29,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 30,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 31,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 32,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 33,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 34,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 35,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 36,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 37,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 38,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 39,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 40,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 41,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 42,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 43,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 44,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 45,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 46,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 47,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 48,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 49,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 50,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 51,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 52,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 53,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 54,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 55,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 56,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 57,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 58,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 59,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 60,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 61,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 62,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 63,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 64,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 65,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 2,
+        "owner": 255
+      },
+      {
+        "tick": 66,
+        "held": 0,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      }
+    ]
+  },
+  {
+    "name": "run-jump",
+    "jumped": true,
+    "thrown": false,
+    "trace": [
+      {
+        "tick": 0,
+        "held": 128,
+        "request": {
+          "action": 0,
+          "pending": true
+        },
+        "playerAction": 0,
+        "auxAction": 0,
+        "owner": 255
+      },
+      {
+        "tick": 1,
+        "held": 128,
+        "request": {
+          "action": 78,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 2,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 3,
+        "held": 128,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 4,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 78,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 5,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 6,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 7,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 8,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 9,
+        "held": 1,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 33,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 10,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 11,
+        "held": 1,
+        "request": {
+          "action": 34,
+          "pending": true
+        },
+        "playerAction": 34,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 12,
+        "held": 1,
+        "request": {
+          "action": 34,
+          "pending": false
+        },
+        "playerAction": 34,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 13,
+        "held": 1,
+        "request": {
+          "action": 34,
+          "pending": false
+        },
+        "playerAction": 34,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 14,
+        "held": 193,
+        "request": {
+          "action": 34,
+          "pending": false
+        },
+        "playerAction": 34,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 15,
+        "held": 193,
+        "request": {
+          "action": 37,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 16,
+        "held": 193,
+        "request": {
+          "action": 33,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 17,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 18,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 19,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 20,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 21,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 22,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 23,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 24,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 25,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 26,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 27,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 28,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 29,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 30,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 37,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 31,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 38,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 32,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 38,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 33,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 34,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      },
+      {
+        "tick": 35,
+        "held": 0,
+        "request": {
+          "action": 32,
+          "pending": true
+        },
+        "playerAction": 32,
+        "auxAction": 1,
+        "owner": 0
+      }
+    ]
+  }
+]

@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "accepted_for_release": false,
+  "music": {
+    "66": {
+      "wav": "music-066-loop.wav",
+      "loop": true,
+      "sha256": "d06fe1429fdca09c0e9fd5b77687b7603bff21812e58630c58b805f12404ff87",
+      "source_manifest": "music-066-loop-source.json",
+      "processing": "original five-cycle PCM with a disclosed 32 ms raised-cosine tail bridge",
+      "listening_accepted": false,
+      "file": "music-066-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "ec143503f45925a3253e58fe6ad090feb604e453efebe33f6913350425e05584",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "60": {
+      "wav": "music-060-loop.wav",
+      "loop": true,
+      "sha256": "6f44efdd008b716088e02f02621ff9d47b2102c9bf2528cf6c104b643a93ecc4",
+      "source_manifest": "music-060-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-060-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "6d065292d421cc78d2ec22c69b0767559aff775d380742cf37aeaffcbe040986",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "64": {
+      "wav": "music-064-loop.wav",
+      "loop": true,
+      "sha256": "684baf154087b97023848a7a3211bd5936c48f4037fc409b16b3fa9663362ec1",
+      "source_manifest": "music-064-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-064-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "c82b88c15bfa58e2f7e137afc2d8d2b74cd15ee2ab46b2b6b28d435efcfef1a3",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "61": {
+      "wav": "music-061-loop.wav",
+      "loop": true,
+      "sha256": "1bb8ba63b3dbdf490e7ce17a6bb766795d5853895ec277eece7cfb2b8b6a277d",
+      "source_manifest": "music-061-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-061-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "2d5ffb78651af560c2ddd3786427c96fcdfb072ff41d556ab9ea19f6bba28a6d",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "65": {
+      "wav": "music-065-loop.wav",
+      "loop": true,
+      "sha256": "9624ad7a622b4160ad46ca72b138424a56021d971a40b9c854028611ed9b33ec",
+      "source_manifest": "music-065-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-065-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "42b80b7c8ba6ac2ed6b2819990f9cbe7c4653bca48626a1827478b63340468d7",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "59": {
+      "wav": "music-059-loop.wav",
+      "loop": true,
+      "sha256": "164f47835d825cc83c93fd0d57b02aa8ac9b3f833da710ff776f5ad05b3b9b69",
+      "source_manifest": "music-059-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-059-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "49725b9c1a00d93adf98773284ae7bd3bcdc4c8be7aa34f07554d8bdc18ee1a1",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "62": {
+      "wav": "music-062-loop.wav",
+      "loop": true,
+      "sha256": "6424d843a4e6cc93499e9582295751ba1d95d7525c656f71903794d6dd385eec",
+      "source_manifest": "music-062-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-062-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "dabd7b91b20e6ab7fc0a0d33fba07d77e2922f8739c6dc07cffb9fdb1201fec3",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "63": {
+      "wav": "music-063-loop.wav",
+      "loop": true,
+      "sha256": "e1b989ebb3d5554ce097d7e37a4a176df4d8643f2ac222625657086cdbb0809a",
+      "source_manifest": "music-063-loop-source.json",
+      "processing": "original PCM; only final1411samples use raised-cosine convex blend with corresponding pre-start original passage; unchanged complete driver-phase period",
+      "listening_accepted": false,
+      "file": "music-063-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "64febdd306948572c6665040eedf142d1c707b3d989c95d770ce61973059329c",
+      "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "75": {
+      "wav": "music-075.wav",
+      "loop": false,
+      "sha256": "f18b3dbdff1afab425994ffdb832990105fe273433f074350fe305a406b9e91d",
+      "source_manifest": "ending-music-manifest.json",
+      "processing": "source PCM prefix only; no waveform processing",
+      "listening_accepted": false,
+      "file": "music-075.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "6934b7bf03480aa9dcee0adbee9b68adb425fe6873d86f5e04d75c1524b6f684",
+      "encoding_manifest": "music-distribution-manifest.json"
+    }
+  },
+  "effects": {
+    "13": {
+      "wav": "sound-013.wav",
+      "sha256": "8cbde771c11ce8c817150b56f0c704547a05057cc8851add6acf41229a3e194b",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
+    },
+    "14": {
+      "wav": "sound-014.wav",
+      "sha256": "ed0a4ba20090876aec587a8c7e184058db5721e71e544fde7b40f1f67b0af7a2",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
+    },
+    "30": {
+      "wav": "sound-030.wav",
+      "sha256": "5b9d3e526316a26ed5ac0c0d35f1ad1ef866def76de4713e4cc232103864384c",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
+    },
+    "46": {
+      "wav": "sound-046.wav",
+      "sha256": "2dd8336ec6dc72b4473c51f9cfbe31854d7b97cb81e092aed5f2820370fe699c",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
+    },
+    "10": {
+      "wav": "sound-010.wav",
+      "sha256": "6968d96b0afd8dadfe890ac93bf818ab8e7133add723b3b4fbe8e75bb02bb814",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
+    }
+  }
+}

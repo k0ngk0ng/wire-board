@@ -1,0 +1,9 @@
+{
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "bank5:8653",
+  "method": "Original machine-code function, explicit synthetic inputs; C000 sound sink only",
+  "records": 288,
+  "target_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "sha256": "0484ec451d615e71144fef425902a4ef81f8f7b0be1477b23ab83b7141014348"
+}

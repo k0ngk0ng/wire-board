@@ -1,0 +1,15 @@
+{
+  "isolated_original_function_execution": true,
+  "source_is_natural_execution": false,
+  "records": 14112,
+  "entry": "bank5 B100, rejected opponent action57 then candidate88",
+  "initialization": {
+    "zero_page": "fixed FA8C with X=5B, as called by C9B6",
+    "list": "bank3 A0D3..A0DF, before equipment initialization",
+    "depth88": 0,
+    "xHigh88": 255
+  },
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "10619ee95e4d78948d867f0ca1b1a1aee63a50d20318f0dfa73ef9f6dff62736",
+  "uncompressed_sha256": "39a45459f341e7566562feace50039ea616635cd53d0f4b28c20d32f42790bfd"
+}

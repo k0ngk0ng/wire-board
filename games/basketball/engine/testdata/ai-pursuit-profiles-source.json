@@ -1,0 +1,7 @@
+{
+  "source_is_original_rom_data": true,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "source": "bank5:94af team/character tables",
+  "records": 32,
+  "sha256": "dd37fc123024bd077ea386cc41ab3fda90692e7e57af4c35f76cbb535b466b88"
+}

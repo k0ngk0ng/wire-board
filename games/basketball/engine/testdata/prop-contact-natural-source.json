@@ -1,0 +1,40 @@
+{
+  "source_is_original_execution": true,
+  "records": 0,
+  "entry": "bank5:8653",
+  "exit": "bank5:84be",
+  "scope": "all source players0..3 to props4/5",
+  "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "sources": [
+    {
+      "scenario": "prop-contact-198",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 420,
+        "scenario_sha256": "982de494658422bc2f30759c63b88515fcf49eb8d414f252e76cba835c631fec"
+      }
+    },
+    {
+      "scenario": "prop-contact-207",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 420,
+        "scenario_sha256": "258911f019242024597fc9d1ce2473911460abd8d1f394164a7329ddc388f8fd"
+      }
+    },
+    {
+      "scenario": "prop-contact-216",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 420,
+        "scenario_sha256": "ead8405a908619d0dbeec8822e5355f06e9664bb795296df4cfa379d9df4ce05"
+      }
+    }
+  ]
+}

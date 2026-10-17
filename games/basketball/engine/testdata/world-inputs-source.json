@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "records": 1998,
+  "phase_boundary": "fixed D32C..D345",
+  "all_records_retained": true,
+  "uncompressed_sha256": "4f898db96f7817c99148eeb9b304863c5632622ee798f6d9eac8bcee5cf9cb55",
+  "sha256": "73dd59ae9492b2a3f1d392adad7e8f5b89f2698a26c6bb1a9c1fda68e1a31235",
+  "trace_sha256": "6070bc1ac8efe3d92e433535a69fa93858ca6eb51770725fe5d7ec99cd491601",
+  "compressed_trace_sha256": "82bb80a8b6e46548be48b30fe7df4b393a78ab41fe44118b3db2656013f4c753",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "f1dd961eb0aced62df90b4339d6219c222a2fab76cb979dcd162bd622e2e5c16"
+  }
+}

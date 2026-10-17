@@ -1,0 +1,10 @@
+{
+  "records": 1596,
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "bank5:8653 -> 876F",
+  "original_instructions_unchanged": true,
+  "intercept": "C000 sound sink logs A and returns; no gameplay instructions replaced",
+  "bank5_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "sha256": "463c8d4362da46c8d4eca6da44ec755127638915a0822e7cde17cb10c5be0289"
+}

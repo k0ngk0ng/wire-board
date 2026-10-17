@@ -1,0 +1,30 @@
+{
+  "records": 68094,
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "method": "isolated py65 original 8249 with original bank4/fixed bank7; only C000 audio request sink intercepted; configured synthetic floor/side/device inputs",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixture_sha256": "792e802a0ba0ece4a4d8cb213c1a6f0e845e4913683a1a5960fc88daf09b63f8",
+  "branches": {
+    "0x8249": 68094,
+    "0x8277": 21437,
+    "0x82ec": 17654,
+    "0x831e": 29003,
+    "0x839e": 12051,
+    "0x83cc": 840,
+    "0x840b": 39451,
+    "0x8458": 50440,
+    "0x846e": 7358,
+    "0x84d6": 27560,
+    "0x85b5": 5434,
+    "0x84e4": 3458,
+    "0x863c": 13988,
+    "0x86af": 27236,
+    "0x873c": 3854,
+    "0x8857": 744,
+    "0x88ad": 26,
+    "0x88c6": 22,
+    "0x89ae": 340,
+    "0x89e6": 5557
+  }
+}

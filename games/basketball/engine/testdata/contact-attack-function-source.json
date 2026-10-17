@@ -1,0 +1,18 @@
+{
+  "source_is_natural_execution": false,
+  "isolated_original_function_execution": true,
+  "geometry_entry": "bank5 8318 -> 82E4",
+  "variant_selection_source": "bank6 A022; animation frame counts AC8F",
+  "request_audit": "fixed E18B..E1ED; bank6 9FA7..A01F",
+  "variants": 97,
+  "records": 226,
+  "selector": {
+    "action": 103,
+    "request": 29,
+    "variant": 93,
+    "handler": 41994
+  },
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "c559527304a7ecbb8e77d2a8da86d3726d96bd673a443f6930cb6b4befa7d78d",
+  "uncompressed_sha256": "4ff1154136cad5940d468d7a95674cf3d2249118844f9a57163b6cbeb02d58cd"
+}

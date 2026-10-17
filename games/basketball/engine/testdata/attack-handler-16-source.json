@@ -1,0 +1,60 @@
+{
+  "handler": 16,
+  "selections": [
+    [
+      99,
+      2,
+      0,
+      77
+    ],
+    [
+      99,
+      2,
+      3,
+      77
+    ],
+    [
+      101,
+      6,
+      0,
+      34
+    ],
+    [
+      101,
+      6,
+      3,
+      34
+    ],
+    [
+      103,
+      4,
+      1,
+      47
+    ],
+    [
+      103,
+      4,
+      3,
+      47
+    ],
+    [
+      103,
+      5,
+      1,
+      17
+    ]
+  ],
+  "records": 1536,
+  "isolated_original_execution": true,
+  "natural_gameplay": false,
+  "unchanged_original_instructions": true,
+  "entry": "bank6:9FA7 dispatcher",
+  "handlerAddress": "0xa8f8",
+  "soundBoundary": "FBCC/C000 sinks record sound ID and return without audio-driver execution",
+  "retainedVariantScope": "Continuation cursors outside the selected animation use valid variant51 to isolate retained variant/cursor semantics; not natural reachability evidence",
+  "reaEvidence": "ev_535248b0e94c2c008702b2638bdcd014b1a5ccfad5b795c1c1af22262b189e6e",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sourceRAM": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "sourceRAMSHA256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "sha256": "44164583a7bbe5242f3b70be92cc8bbae29de0ac2cb4a8c23cf49a24d916a147"
+}

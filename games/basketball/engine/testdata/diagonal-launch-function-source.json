@@ -1,0 +1,10 @@
+{
+  "isolated_original_function_execution": true,
+  "source_is_natural_execution": false,
+  "entry": "bank5:8C23",
+  "records": 576,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "e9c7b4ee329996b23c5a8f3eb2959dd26b8f2a39876d4ea57bad67214e8dc72d",
+  "source_instruction": "97C9 A5 69: LDA $0069; player seat 1 X fraction",
+  "unchanged_ROM_instructions": true
+}

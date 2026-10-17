@@ -1,0 +1,13 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:d345",
+  "exit": "fixed:d348",
+  "records": 1998,
+  "calls": 26093,
+  "sha256": "0b0a7dd11536b60539262247bb5a329c98811ebdbb9eef937adb2d67bf6f42f0",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "3f9660136f0afe2a8ad619980e5c935597407fc8df68662968f07aa378c2918f"
+  }
+}

@@ -17,6 +17,7 @@ import {
   Eye,
   Flag,
   Gem,
+  Gamepad2,
   Hand,
   Lock,
   LogOut,
@@ -81,6 +82,7 @@ import { useRoomPresentation } from "./game-api/presentation";
 import { ResultOverlay } from "./ui/result-overlay";
 import { RoomHeading } from "./ui/room-heading";
 import { CreateRoom } from "./ui/create-room";
+import { ControllerSettings } from "./controllers/Settings";
 import { useTurnTitle } from "./turn-title";
 import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
@@ -165,6 +167,8 @@ function App() {
   const [profileID, setProfileID] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [wishOpen, setWishOpen] = useState(false);
+  const [controllerSettingsOpen, setControllerSettingsOpen] = useState(false);
+  useEffect(() => setControllerSettingsOpen(false), [state?.user.id]);
   const [sound, setSound] = useState(
     () => localStorage.getItem("wb_sound") !== "off",
   );
@@ -676,11 +680,26 @@ function App() {
                 >
                   {state.user.name[0]}
                 </button>
+                <button
+                  className="icon-button"
+                  aria-label="控制器设置"
+                  title="控制器设置"
+                  onClick={() => setControllerSettingsOpen(true)}
+                >
+                  <Gamepad2 size={19} />
+                </button>
                 <span className="username">
                   <PlayerName user={state.user} />
                 </span>
               </div>
             </header>
+            {controllerSettingsOpen && (
+              <ControllerSettings
+                key={state.user.id}
+                userId={state.user.id}
+                onClose={() => setControllerSettingsOpen(false)}
+              />
+            )}
             {error && (
               <div className="toast error" role="alert">
                 {error}

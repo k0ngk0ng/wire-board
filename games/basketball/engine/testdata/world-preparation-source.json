@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:d317",
+  "exit": "fixed:d326",
+  "records": 1997,
+  "ram_matches_uninstrumented": true,
+  "record_format": "uint32le frame, uint8 sound count, sound IDs, 2048-byte before RAM, 2048-byte after RAM",
+  "trace_sha256": "545063b797248e2206a2cfb2dda0ff5bef81af5079bfd64c31c644308209a952",
+  "fixture_sha256": "1d631a8a80568f812ca4a205e098ccf7828c462a448b9bf60625d0a38fae6e3a",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "d2a453ef2b9b22b10e255562da4f98405b57e8b62f35b7fc98dabcbf72600ae4"
+  }
+}

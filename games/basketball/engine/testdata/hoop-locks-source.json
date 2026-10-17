@@ -1,0 +1,21 @@
+{
+  "source_is_original_execution": true,
+  "entry": "bank4:8ebb",
+  "exit": "bank4:8ece",
+  "records": 2116,
+  "sha256": "3d21189926bc9be0e903f69d5d924aed240a8135d9ae2d138f6ec332c881e4d6",
+  "sources": [
+    {
+      "scenario": "shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "a5fe89e5afc7ccd701ca7b895efd60899b50fdfd9fd05a98f32d002879ffe8e5"
+    },
+    {
+      "scenario": "cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "bf9aa1ec57f7e55572b4c23c7d5de5686d038ae2e8d2e18f54e6ba899066ff98"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "asset": "fc-controller.svg",
+  "sha256": "eed86d9fb83137f72ed44ccf24210c417b5ab32cef68d7f12969577dbaa3eb1f",
+  "creation": "项目内手工矢量绘制；未复制参考照片像素。",
+  "layout": "左十字、中 Select/Start、右上 Turbo B/A 与右下 B/A；游玩只显示逻辑名，配置显示个人键位。",
+  "reference": {
+    "title": "Nintendo-Famicom-Controller-I-FL.jpg",
+    "url": "https://commons.wikimedia.org/wiki/File:Nintendo-Famicom-Controller-I-FL.jpg",
+    "author": "Evan-Amos",
+    "license": "Public domain",
+    "use": "红白机红金外观与比例参考；连发位置按用户指定布局绘制。"
+  },
+  "third_party_pixels_in_asset": false
+}

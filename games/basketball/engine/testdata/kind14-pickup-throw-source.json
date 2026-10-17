@@ -1,0 +1,17 @@
+{
+  "records": 22,
+  "chains": 2,
+  "isolated_original_function_chain": true,
+  "natural_gameplay": false,
+  "entries": [
+    "bank6:805C",
+    "fixed:E18B",
+    "bank5:8318"
+  ],
+  "method": "Explicit Court3 start; only physical controller samples change after start; original input/request/action/motion functions execute; C000 sound sink only",
+  "ram_source": ".local/nes-basket/runs/court-3-reference/ram.bin",
+  "ram_frame": 1501,
+  "ram_sha256": "386db44a0ba25e434d7e5a6e6d101c36ad6c4992e501161740e934f3845f68c2",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "70c95a1fbea864be5804660e3aec73ff98d58f3cab031ca95b475c48075227c4"
+}

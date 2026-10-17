@@ -155,6 +155,8 @@ export function ModuleWaiting({
   command: (type: string, extra?: Record<string, unknown>) => void;
 }) {
   const module = gameModule(room.kind)!;
+  const assets = useContext(AssetsContext);
+  const Preparation = module.Preparation;
   const [options, setOptions] = useState<unknown>(room.options ?? {});
   const savedOptions = JSON.stringify(room.options ?? {});
   useEffect(
@@ -205,6 +207,16 @@ export function ModuleWaiting({
               </p>
             )}
           </>
+        )}
+        {Preparation && (
+          <Preparation
+            room={room}
+            options={room.options ?? module.defaultOptions ?? {}}
+            host={host}
+            busy={busy}
+            assets={assets}
+            prepare={(action) => command("prepare", { action })}
+          />
         )}
         <div className="seats-grid">
           {Array.from({ length: room.capacity }, (_, i) => {

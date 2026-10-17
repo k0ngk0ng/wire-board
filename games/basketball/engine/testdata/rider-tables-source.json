@@ -1,0 +1,71 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "support_heights": {
+    "address": "fixed EFF2",
+    "values": [
+      32,
+      32,
+      32,
+      32,
+      32,
+      32,
+      32,
+      32,
+      32,
+      32,
+      16,
+      40,
+      8,
+      8,
+      13,
+      16
+    ]
+  },
+  "rider_animation": {
+    "address": "0xab45",
+    "bytes": [
+      0,
+      255,
+      255
+    ]
+  },
+  "accepted_requests_from_riding": {
+    "table": "0xe208",
+    "values": [
+      4,
+      7,
+      9,
+      20,
+      23,
+      25,
+      36,
+      39,
+      41,
+      52,
+      55,
+      57,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      93,
+      96,
+      100
+    ]
+  },
+  "held_ball_offset": {
+    "action": 61,
+    "group": 2,
+    "address": "0xed8d",
+    "bytes": [
+      6,
+      0,
+      8,
+      1
+    ]
+  }
+}

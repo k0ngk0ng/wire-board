@@ -1,0 +1,60 @@
+{
+  "source_is_original_execution": true,
+  "selection": "all complete B100 calls that actually probe88; complete raw traces retained",
+  "records": 0,
+  "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+  "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "sources": [
+    {
+      "name": "hoop-control-cpu-long",
+      "frames": 6000,
+      "all_pursuit_calls": 197,
+      "alias88_calls": 0,
+      "initial": {
+        "depth88": 0,
+        "xHigh88": 255
+      },
+      "writes": [],
+      "trace_sha256": "6679ee8a79f23ac694cd4c7d5fc8dcdbd4b419539523a6290f69ee9c34d7cfdf",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 6000,
+        "scenario_sha256": "6cfd52c945e4314a99be7d68de8f11ad984a3d72c1142b23a05a09153993b8ca"
+      }
+    },
+    {
+      "name": "special-ball-cpu-command",
+      "frames": 18000,
+      "all_pursuit_calls": 887,
+      "alias88_calls": 0,
+      "initial": {
+        "depth88": 0,
+        "xHigh88": 255
+      },
+      "writes": [],
+      "trace_sha256": "8b04d504cad99159da5dc5414d3ac003fd200668b15f99fd8223d51f9a362159",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 18000,
+        "scenario_sha256": "fffec6ba510e265322d83ec550644b69f405afeed0c408abf737913830b710d6"
+      }
+    },
+    {
+      "name": "match-clock-complete",
+      "frames": 24000,
+      "all_pursuit_calls": 690,
+      "alias88_calls": 0,
+      "initial": {
+        "depth88": 0,
+        "xHigh88": 255
+      },
+      "writes": [],
+      "trace_sha256": "0255ee02f8f75d2ba6fb8f707861f3ce45caff8bb735b8c72ff71050786026db",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 24000,
+        "scenario_sha256": "a590b3e98c42b60fb85bb15f7a51bb4fcaf23f377428f82710493c0f064dba12"
+      }
+    }
+  ]
+}

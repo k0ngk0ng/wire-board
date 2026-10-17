@@ -1,0 +1,12 @@
+{
+  "records": 1162,
+  "captures": 32,
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "bank5 8653 -> 876F",
+  "instructions_unchanged": true,
+  "interception": "C000 sound request sink only",
+  "bank5_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "sha256": "c35a445919857bcbb96c41cbd98c78f39f1804125f61fa1615fb300505438847",
+  "rea_evidence_id": "ev_85a7bb29ede12dea40b0e12334c9754763ff0df7584b2b182200d7f250638b62"
+}

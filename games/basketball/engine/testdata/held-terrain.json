@@ -1,0 +1,122 @@
+{
+  "worldFrame": 3652,
+  "ballFrame": 3653,
+  "carrier": {
+    "action": 22,
+    "entered": false,
+    "pose": {
+      "frame": 4,
+      "mirrored": true
+    },
+    "facingLeft": true,
+    "animation": {
+      "cursor": 1,
+      "elapsed": 17,
+      "loops": 0,
+      "nextAction": 0,
+      "hasNextAction": false
+    },
+    "airborne": false,
+    "request": {
+      "action": 29,
+      "pending": true
+    },
+    "body": {
+      "position": {
+        "x": 34880,
+        "depth": 22272,
+        "height": -65536
+      },
+      "velocity": {
+        "x": 0,
+        "depth": 512,
+        "height": 0
+      },
+      "gravity": 0
+    },
+    "heading": 7,
+    "newYorkPassage": 1
+  },
+  "before": {
+    "repeatCount": 0,
+    "action": 2,
+    "deflection": 0,
+    "hoop": 0,
+    "cursor": 0,
+    "holder": 2,
+    "air": 128,
+    "attachment": 64,
+    "bounces": 0,
+    "facing": 0,
+    "request": 2,
+    "nextAction": 0,
+    "pose": 0,
+    "clock": 16,
+    "x": 34624,
+    "depth": 22016,
+    "height": 8192,
+    "vx": 0,
+    "vy": 0,
+    "vz": 0,
+    "gravity": 0,
+    "shooter": 2,
+    "shooterHeight": 16711680,
+    "character": 0,
+    "team": 1,
+    "specialFlags": 0,
+    "equipment": 255,
+    "rimFlags": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "targetX": 0,
+    "targetDepth": 0,
+    "targetHeight": 0,
+    "arcHeight": 0
+  },
+  "after": {
+    "repeatCount": 0,
+    "action": 130,
+    "deflection": 128,
+    "hoop": 0,
+    "cursor": 0,
+    "holder": 2,
+    "air": 0,
+    "attachment": 64,
+    "bounces": 0,
+    "facing": 0,
+    "request": 8,
+    "nextAction": 0,
+    "pose": 0,
+    "clock": 1,
+    "x": 34880,
+    "depth": 22016,
+    "height": 16711680,
+    "vx": 0,
+    "vy": 0,
+    "vz": 0,
+    "gravity": 0,
+    "shooter": 2,
+    "shooterHeight": 16711680,
+    "character": 0,
+    "team": 1,
+    "specialFlags": 0,
+    "equipment": 255,
+    "rimFlags": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "targetX": 0,
+    "targetDepth": 0,
+    "targetHeight": 0,
+    "arcHeight": 0
+  }
+}

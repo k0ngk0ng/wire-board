@@ -1,0 +1,186 @@
+.controller-settings {
+  width: min(640px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  background: #fffdf7;
+  color: #2f352d;
+}
+.controller-settings .modal-head {
+  position: sticky;
+  top: -25px;
+  z-index: 2;
+  padding: 14px 0;
+  background: #fffdf7;
+  color: #2f352d;
+}
+.controller-settings .controller-intro,
+.controller-settings .controller-help {
+  color: #505a4a;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.controller-help {
+  min-height: 42px;
+  margin: 12px 0;
+}
+.controller-model {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 1fr);
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+.controller-model select {
+  min-width: 0;
+  width: 100%;
+  min-height: 42px;
+  background: #fff;
+  color: #2f352d;
+  border: 1px solid #6c8063;
+  border-radius: 8px;
+  padding: 8px;
+}
+.controller-keys {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+}
+.controller-key-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  border-bottom: 1px solid #e3e6dc;
+  padding: 6px 0;
+}
+.controller-key-row > span {
+  font-size: 14px;
+  color: #303d2d;
+}
+.controller-key {
+  min-width: 84px;
+  min-height: 42px;
+  padding: 6px 10px;
+  border: 1px solid #6c8063;
+  border-radius: 8px;
+  background: #edf2e7;
+  color: #273e25;
+  font: 600 14px system-ui;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.controller-key.recording {
+  background: #24482d;
+  color: #fff;
+  border-color: #24482d;
+}
+.controller-key:focus-visible {
+  outline: 3px solid #97682b;
+  outline-offset: 2px;
+}
+.controller-turbo {
+  margin-top: 20px;
+}
+.controller-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 22px;
+}
+.controller-error {
+  background: #fff0ed;
+  color: #8f2b20;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.controller-notice {
+  background: #e9f2e5;
+  color: #24532a;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.controller-settings button:disabled {
+  opacity: 1;
+  background: #e7e9e3;
+  color: #535a4e;
+  border-color: #c4c9bf;
+  cursor: default;
+}
+@media (max-width: 520px) {
+  .controller-keys {
+    grid-template-columns: 1fr;
+  }
+  .controller-model {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .controller-actions {
+    flex-direction: column;
+  }
+  .controller-key {
+    min-width: 108px;
+  }
+  .controller-help {
+    min-height: 44px;
+  }
+}
+.controller-map-details {
+  margin-top: 16px;
+  border: 1px solid #d4cebb;
+  border-radius: 9px;
+  background: #faf7ec;
+  color: #363c30;
+}
+.controller-map-details summary {
+  padding: 11px 13px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #35472f;
+}
+.controller-map-readonly {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+  margin: 0;
+  padding: 0 13px 10px;
+}
+.controller-map-readonly > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid #e1decd;
+  padding: 8px 0;
+  min-width: 0;
+}
+.controller-map-readonly dt {
+  font-size: 13px;
+  color: #505449;
+}
+.controller-map-readonly dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+  font-weight: 600;
+  color: #2c3c27;
+}
+.controller-settings .fc-controller .fc-control:disabled {
+  background: transparent;
+  color: #f0e6ce;
+  border: 0;
+}
+@media (max-width: 420px) {
+  .controller-map-readonly {
+    grid-template-columns: 1fr;
+  }
+  .controller-settings .controller-help {
+    font-size: 13px;
+  }
+  .controller-settings .fc-controller {
+    margin: 0 -4px;
+    width: calc(100% + 8px);
+  }
+}

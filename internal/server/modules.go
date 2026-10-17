@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -69,7 +70,54 @@ func (s *Server) initModules() error {
 }
 
 func moduleContext(r *Room, actor, version int, now time.Time) gameapi.Context {
-	return gameapi.Context{Actor: actor, Players: len(r.Seats), Version: r.Version, RequestedVersion: version, Now: now}
+	automated := make([]bool, len(r.Seats))
+	for i, seat := range r.Seats {
+		automated[i] = seat.computerControlled()
+	}
+	return gameapi.Context{Actor: actor, Players: len(r.Seats), Automated: automated, Version: r.Version, RequestedVersion: version, Now: now}
+}
+
+// prepareModule only changes options and readiness on the command's detached
+// candidate room. Authentication, version/nonce and persistence remain in the
+// shared command transaction. No game-specific selection semantics live here.
+func (s *Server) prepareModule(r *Room, actor int, action json.RawMessage) error {
+	module, ok := s.modules[r.Kind]
+	if !ok || module.Prepare == nil {
+		return errors.New("此游戏不支持房间准备设置")
+	}
+	if r.Status != "waiting" || actor < 0 || actor >= len(r.Seats) || r.Seats[actor].Bot || r.Seats[actor].Left {
+		return errors.New("只有已入座玩家能在开局前修改准备设置")
+	}
+	valid := func(raw json.RawMessage) bool {
+		return json.Valid(raw) && !bytes.Equal(bytes.TrimSpace(raw), []byte("null"))
+	}
+	if !valid(action) {
+		return errors.New("无效准备操作")
+	}
+	bots := make([]bool, len(r.Seats))
+	for i, seat := range r.Seats {
+		bots[i] = seat.Bot
+	}
+	ctx := gameapi.PreparationContext{Actor: actor, Capacity: r.Capacity, Host: r.Host == r.Seats[actor].ID, Bots: bots}
+	prepared, err := module.Prepare(ctx, append(json.RawMessage(nil), r.Options...), append(json.RawMessage(nil), action...))
+	if err != nil {
+		return err
+	}
+	if !valid(prepared) {
+		return errors.New("无效游戏设置")
+	}
+	configured, err := module.Configure(r.Capacity, append(json.RawMessage(nil), prepared...))
+	if err != nil {
+		return err
+	}
+	if !valid(configured) {
+		return errors.New("无效游戏设置")
+	}
+	r.Options = append(json.RawMessage(nil), configured...)
+	for i := range r.Seats {
+		r.Seats[i].Ready = r.Seats[i].Bot
+	}
+	return nil
 }
 
 func (r *Room) setModule(match gameapi.Match) error {
@@ -123,7 +171,7 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 	if err = s.setModule(r, match); err != nil {
 		return err
 	}
-	r.MatchID, r.SetupVersion, r.Rated = randomID(12), r.Version+1, true
+	r.MatchID, r.SetupVersion, r.Rated = randomID(12), r.Version+1, !match.HasComputerPlayers
 	for _, seat := range r.Seats {
 		if seat.Bot {
 			r.Rated = false

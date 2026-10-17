@@ -1,0 +1,12 @@
+{
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "method": "Isolated original 6502 function with explicit synthetic RAM inputs",
+  "entry": "bank5:84c3",
+  "exit": "RTS to isolated sentinel",
+  "intercept": "C000 sound driver logs A and returns; CPU/gameplay function bytes unchanged",
+  "sound_intercept_scope": "gameplay projection only; audio driver scratch memory and timing excluded",
+  "records": 570,
+  "target_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "sha256": "e080abe80810323d4ffd1cff829cf25e73cc5bd4006f63795c29d321c254434d"
+}

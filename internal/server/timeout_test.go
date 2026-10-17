@@ -227,7 +227,7 @@ func TestAssetURLValidationAndCSP(t *testing.T) {
 	}
 	defer response.Body.Close()
 	csp := response.Header.Get("Content-Security-Policy")
-	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "script-src 'self';") {
-		t.Fatal("incorrect image-only CSP", csp)
+	if !strings.Contains(csp, "media-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "img-src 'self' data: https://assets.example.com;") || !strings.Contains(csp, "script-src 'self' 'wasm-unsafe-eval';") || !strings.Contains(csp, "connect-src 'self' https://assets.example.com;") || strings.Contains(csp, "'unsafe-eval'") {
+		t.Fatal("incorrect Wasm and asset-fetch CSP", csp)
 	}
 }

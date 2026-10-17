@@ -1,0 +1,19 @@
+{
+  "records": 418,
+  "kindActionMaps": [
+    "8F51",
+    "8F61",
+    "8F71",
+    "8F85",
+    "8F95"
+  ],
+  "sharedFlagMap": "93A3",
+  "entry": "bank5:8318",
+  "original_instructions_unchanged": true,
+  "method": "Shape pointer from original machine-code function; flags are original ROM source data",
+  "synthetic_inputs": true,
+  "natural_gameplay": false,
+  "dynamic_records": "auxiliary-geometry-dynamic-isolated.json",
+  "bank5_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "sha256": "95f02d7cb47380d0dcf5c8e62e8563f8ca74884c8e83606cd97ac3ae9df59807"
+}

@@ -24,15 +24,33 @@ type BotSearch struct {
 }
 
 type Context struct {
+	// Automated is detached host-derived seat metadata, not client input. The
+	// platform supplies exactly Players entries: true for an active bot or
+	// autoplay seat. Modules may define nil semantics for direct engine callers.
+	// Values reflect the current transaction: Reclaim can still see its actor
+	// automated because the host clears AutoPlay after that callback succeeds.
+	Automated                 []bool
 	Actor, Players            int
 	Version, RequestedVersion int
 	Now                       time.Time
+}
+
+// PreparationContext describes an authenticated waiting-room participant.
+// Bots contains one detached entry per occupied seat, from Seat.Bot only;
+// it is neither padded to Capacity nor inferred from client/autoplay metadata.
+type PreparationContext struct {
+	Actor, Capacity int
+	Host            bool
+	Bots            []bool
 }
 
 // Match is a persisted envelope. Data belongs exclusively to the game. Actors
 // can act now; TimeoutActors owe a decision at Deadline (Unix milliseconds).
 // These lists differ for optional responses and simultaneous actions.
 type Match struct {
+	// HasComputerPlayers includes game-owned AI characters which do not occupy
+	// platform seats. Such matches retain results/history but never earn ratings.
+	HasComputerPlayers bool            `json:"hasComputerPlayers,omitempty"`
 	// CheckpointKey changes only at game-owned critical phases/round boundaries.
 	// Realtime hosts persist these transitions before publishing them.
 	CheckpointKey string          `json:"checkpointKey,omitempty"`
@@ -83,6 +101,9 @@ type Module struct {
 	MinPlayers int                                                                  `json:"minPlayers"`
 	MaxPlayers int                                                                  `json:"maxPlayers"`
 	Configure  func(capacity int, options json.RawMessage) (json.RawMessage, error) `json:"-"`
+	// Prepare optionally transforms waiting-room options for an authenticated seat.
+	// The host re-runs Configure on its result before atomically saving it.
+	Prepare   func(PreparationContext, json.RawMessage, json.RawMessage) (json.RawMessage, error) `json:"-"`
 	Start      func(Context, json.RawMessage) (Match, error)                        `json:"-"`
 	Apply      func(Context, Match, json.RawMessage) (Match, error)                 `json:"-"`
 	View       func(Match, int) (any, error)                                        `json:"-"`

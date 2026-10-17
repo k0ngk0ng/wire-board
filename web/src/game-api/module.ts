@@ -36,7 +36,15 @@ export type GameAudioPort = {
   // Alternatives for one clip; unlike play(), these are not a playlist.
   playWithFallback: (sources: readonly string[]) => Promise<boolean>;
   stop: () => void;
-  music: (sources: readonly string[]) => Promise<boolean>;
+  // Pause preserves this owner's media positions; stop/mute/cleanup cancels them.
+  pause: () => void;
+  resume: () => Promise<boolean>;
+  music: (
+    sources: readonly string[],
+    // Offset is seconds in this delivery media. A stable playbackID prevents
+    // snapshot refreshes from restarting the same continuous track.
+    options?: { loop?: boolean; startOffset?: number; playbackID?: string },
+  ) => Promise<boolean>;
   stopMusic: () => void;
   // Independently keyed continuous effects; sources are fallback alternatives.
   // Repeated calls adjust loudness/pitch without restarting the media.
@@ -85,6 +93,14 @@ export type OptionsProps<Options = unknown> = {
   capacity: number;
   disabled: boolean;
 };
+export type PreparationProps<Options = unknown> = {
+  room: GameRoom;
+  options: Options;
+  host: boolean;
+  busy: boolean;
+  assets: string;
+  prepare: (action: Record<string, unknown>) => void;
+};
 export type GameModule<Data = unknown, Options = unknown> = {
   id: string;
   name: string;
@@ -105,6 +121,8 @@ export type GameModule<Data = unknown, Options = unknown> = {
   createPresentation?: () => RoomPresentation;
   Board: ComponentType<BoardProps<Data>>;
   Options?: ComponentType<OptionsProps<Options>>;
+  // Waiting-room extension inside the shared shell; never part of creation.
+  Preparation?: ComponentType<PreparationProps<Options>>;
   Rules?: ComponentType;
   Cover?: ComponentType;
   PlayerSummary?: ComponentType<{

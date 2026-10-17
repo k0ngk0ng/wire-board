@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "records": 57,
+  "entry": "bank5 B413",
+  "exit": "fixed FD8E",
+  "trace_sha256": "2f175e2ee12d55df0417751d9a2dd1d2931b0a905e44cb5cca850793b9a6e5eb",
+  "sha256": "af17fb603fe600a651782db47a0d7bc01f5266882422811dffee138300397a2b",
+  "uncompressed_sha256": "bbc1147b7d34c158cfb60f906489a617fabd750f6034253d212465e34be8a567",
+  "reference_ram_sha256": "580960e84bb97917beade743f877c2021d83cfcd09e93f12e9c2490d14ead0bd",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 18000,
+    "scenario_sha256": "67151693b0b6f7bea0c60d9f576d38ad1447a40dea0100417fab18c536fe862a"
+  }
+}

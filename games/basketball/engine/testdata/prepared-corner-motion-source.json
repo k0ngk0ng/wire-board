@@ -1,0 +1,11 @@
+{
+  "isolated_original_function_execution": true,
+  "source_is_natural_execution": false,
+  "entry": "fixed:EEFF",
+  "records": 2,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseline_sha256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "sha256": "638c6a94d4d70207cbc1b7cbce910854256ee22c0ce65ba4f96bbfe171411f3f",
+  "unchanged_ROM_instructions": true,
+  "inputs": "saved failing native runtime ball bodies in captured original NY context"
+}

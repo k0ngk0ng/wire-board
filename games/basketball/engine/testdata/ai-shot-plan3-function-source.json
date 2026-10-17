@@ -1,0 +1,9 @@
+{
+  "source_is_natural_execution": false,
+  "isolated_original_function_execution": true,
+  "records": 5120,
+  "entry": "bank5 B471",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "3a77ff723b5b8de61f807afe8f291e8ab8da90237b8d1f35c98456c9b5e5bc03",
+  "uncompressed_sha256": "81cd1ecbf0929aa3aed5d4276b3e4f20908fc00be94259720d38ccd88b4ca014"
+}

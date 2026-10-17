@@ -1,0 +1,706 @@
+[
+  {
+    "team": 0,
+    "character": 0,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 64,
+        "parameter": 6
+      },
+      {
+        "destination": 72,
+        "parameter": 10
+      },
+      {
+        "destination": 56,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 0,
+    "character": 1,
+    "options": [
+      {
+        "destination": 24,
+        "parameter": 0
+      },
+      {
+        "destination": 56,
+        "parameter": 1
+      },
+      {
+        "destination": 64,
+        "parameter": 3
+      },
+      {
+        "destination": 80,
+        "parameter": 6
+      }
+    ]
+  },
+  {
+    "team": 0,
+    "character": 2,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 3
+      },
+      {
+        "destination": 48,
+        "parameter": 1
+      },
+      {
+        "destination": 48,
+        "parameter": 2
+      }
+    ]
+  },
+  {
+    "team": 0,
+    "character": 3,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 6
+      },
+      {
+        "destination": 64,
+        "parameter": 11
+      },
+      {
+        "destination": 48,
+        "parameter": 3
+      },
+      {
+        "destination": 32,
+        "parameter": 2
+      }
+    ]
+  },
+  {
+    "team": 1,
+    "character": 0,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 24,
+        "parameter": 7
+      },
+      {
+        "destination": 64,
+        "parameter": 10
+      }
+    ]
+  },
+  {
+    "team": 1,
+    "character": 1,
+    "options": [
+      {
+        "destination": 48,
+        "parameter": 0
+      },
+      {
+        "destination": 64,
+        "parameter": 3
+      },
+      {
+        "destination": 96,
+        "parameter": 5
+      },
+      {
+        "destination": 80,
+        "parameter": 6
+      }
+    ]
+  },
+  {
+    "team": 1,
+    "character": 2,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 48,
+        "parameter": 6
+      },
+      {
+        "destination": 48,
+        "parameter": 2
+      },
+      {
+        "destination": 48,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 1,
+    "character": 3,
+    "options": [
+      {
+        "destination": 48,
+        "parameter": 6
+      },
+      {
+        "destination": 48,
+        "parameter": 2
+      },
+      {
+        "destination": 24,
+        "parameter": 3
+      },
+      {
+        "destination": 48,
+        "parameter": 5
+      }
+    ]
+  },
+  {
+    "team": 2,
+    "character": 0,
+    "options": [
+      {
+        "destination": 16,
+        "parameter": 4
+      },
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 48,
+        "parameter": 11
+      },
+      {
+        "destination": 16,
+        "parameter": 3
+      }
+    ]
+  },
+  {
+    "team": 2,
+    "character": 1,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 48,
+        "parameter": 2
+      },
+      {
+        "destination": 64,
+        "parameter": 10
+      },
+      {
+        "destination": 72,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 2,
+    "character": 2,
+    "options": [
+      {
+        "destination": 48,
+        "parameter": 11
+      },
+      {
+        "destination": 48,
+        "parameter": 6
+      },
+      {
+        "destination": 48,
+        "parameter": 7
+      },
+      {
+        "destination": 32,
+        "parameter": 5
+      }
+    ]
+  },
+  {
+    "team": 2,
+    "character": 3,
+    "options": [
+      {
+        "destination": 24,
+        "parameter": 3
+      },
+      {
+        "destination": 24,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 10
+      },
+      {
+        "destination": 24,
+        "parameter": 4
+      }
+    ]
+  },
+  {
+    "team": 3,
+    "character": 0,
+    "options": [
+      {
+        "destination": 16,
+        "parameter": 0
+      },
+      {
+        "destination": 48,
+        "parameter": 1
+      },
+      {
+        "destination": 32,
+        "parameter": 2
+      },
+      {
+        "destination": 80,
+        "parameter": 5
+      }
+    ]
+  },
+  {
+    "team": 3,
+    "character": 1,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 24,
+        "parameter": 4
+      },
+      {
+        "destination": 32,
+        "parameter": 10
+      },
+      {
+        "destination": 48,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 3,
+    "character": 2,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 32,
+        "parameter": 7
+      },
+      {
+        "destination": 48,
+        "parameter": 5
+      },
+      {
+        "destination": 48,
+        "parameter": 1
+      }
+    ]
+  },
+  {
+    "team": 3,
+    "character": 3,
+    "options": [
+      {
+        "destination": 48,
+        "parameter": 3
+      },
+      {
+        "destination": 24,
+        "parameter": 1
+      },
+      {
+        "destination": 24,
+        "parameter": 4
+      },
+      {
+        "destination": 40,
+        "parameter": 2
+      }
+    ]
+  },
+  {
+    "team": 4,
+    "character": 0,
+    "options": [
+      {
+        "destination": 48,
+        "parameter": 1
+      },
+      {
+        "destination": 56,
+        "parameter": 7
+      },
+      {
+        "destination": 64,
+        "parameter": 3
+      },
+      {
+        "destination": 48,
+        "parameter": 5
+      }
+    ]
+  },
+  {
+    "team": 4,
+    "character": 1,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 3
+      },
+      {
+        "destination": 48,
+        "parameter": 7
+      },
+      {
+        "destination": 32,
+        "parameter": 1
+      },
+      {
+        "destination": 24,
+        "parameter": 0
+      }
+    ]
+  },
+  {
+    "team": 4,
+    "character": 2,
+    "options": [
+      {
+        "destination": 64,
+        "parameter": 3
+      },
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 32,
+        "parameter": 2
+      },
+      {
+        "destination": 32,
+        "parameter": 6
+      }
+    ]
+  },
+  {
+    "team": 4,
+    "character": 3,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 1
+      },
+      {
+        "destination": 32,
+        "parameter": 2
+      },
+      {
+        "destination": 32,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 5,
+    "character": 0,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 48,
+        "parameter": 0
+      },
+      {
+        "destination": 64,
+        "parameter": 5
+      },
+      {
+        "destination": 56,
+        "parameter": 2
+      }
+    ]
+  },
+  {
+    "team": 5,
+    "character": 1,
+    "options": [
+      {
+        "destination": 40,
+        "parameter": 2
+      },
+      {
+        "destination": 48,
+        "parameter": 6
+      },
+      {
+        "destination": 40,
+        "parameter": 7
+      },
+      {
+        "destination": 64,
+        "parameter": 11
+      }
+    ]
+  },
+  {
+    "team": 5,
+    "character": 2,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 48,
+        "parameter": 0
+      },
+      {
+        "destination": 64,
+        "parameter": 5
+      },
+      {
+        "destination": 56,
+        "parameter": 2
+      }
+    ]
+  },
+  {
+    "team": 5,
+    "character": 3,
+    "options": [
+      {
+        "destination": 40,
+        "parameter": 2
+      },
+      {
+        "destination": 48,
+        "parameter": 6
+      },
+      {
+        "destination": 40,
+        "parameter": 7
+      },
+      {
+        "destination": 64,
+        "parameter": 11
+      }
+    ]
+  },
+  {
+    "team": 6,
+    "character": 0,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 64,
+        "parameter": 1
+      },
+      {
+        "destination": 24,
+        "parameter": 3
+      }
+    ]
+  },
+  {
+    "team": 6,
+    "character": 1,
+    "options": [
+      {
+        "destination": 40,
+        "parameter": 0
+      },
+      {
+        "destination": 48,
+        "parameter": 4
+      },
+      {
+        "destination": 64,
+        "parameter": 3
+      },
+      {
+        "destination": 80,
+        "parameter": 1
+      }
+    ]
+  },
+  {
+    "team": 6,
+    "character": 2,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 7
+      },
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 48,
+        "parameter": 5
+      }
+    ]
+  },
+  {
+    "team": 6,
+    "character": 3,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 4
+      },
+      {
+        "destination": 48,
+        "parameter": 5
+      },
+      {
+        "destination": 48,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 7,
+    "character": 0,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 64,
+        "parameter": 2
+      },
+      {
+        "destination": 56,
+        "parameter": 1
+      },
+      {
+        "destination": 80,
+        "parameter": 6
+      }
+    ]
+  },
+  {
+    "team": 7,
+    "character": 1,
+    "options": [
+      {
+        "destination": 48,
+        "parameter": 4
+      },
+      {
+        "destination": 48,
+        "parameter": 5
+      },
+      {
+        "destination": 56,
+        "parameter": 1
+      },
+      {
+        "destination": 240,
+        "parameter": 7
+      }
+    ]
+  },
+  {
+    "team": 7,
+    "character": 2,
+    "options": [
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 32,
+        "parameter": 1
+      },
+      {
+        "destination": 48,
+        "parameter": 2
+      },
+      {
+        "destination": 48,
+        "parameter": 6
+      }
+    ]
+  },
+  {
+    "team": 7,
+    "character": 3,
+    "options": [
+      {
+        "destination": 80,
+        "parameter": 7
+      },
+      {
+        "destination": 32,
+        "parameter": 0
+      },
+      {
+        "destination": 48,
+        "parameter": 10
+      },
+      {
+        "destination": 64,
+        "parameter": 11
+      }
+    ]
+  }
+]

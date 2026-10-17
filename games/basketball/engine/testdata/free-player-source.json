@@ -1,0 +1,19 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "697ec1ed55606f0d3a32c64d9a6be32f3635a98bcfca4b920eaa91580a41c461",
+  "records": 633,
+  "scenarios": [
+    "a",
+    "b",
+    "diagonal",
+    "down",
+    "idle",
+    "jump",
+    "left",
+    "right",
+    "run-brake",
+    "running-jump",
+    "up"
+  ],
+  "source_is_original_execution": true
+}

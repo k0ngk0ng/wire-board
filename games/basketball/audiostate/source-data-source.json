@@ -1,0 +1,12 @@
+{
+  "sounds": 76,
+  "headers": 73,
+  "instructions": 9209,
+  "instruments": 6,
+  "envelopes": 2,
+  "percussion": 6,
+  "sha256": "306e83d5275cfa05a948b51704df9c0c62b186464872e3a042fc41b204784539",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "generator_sha256": "8c6806d3b7fc1c268b9a65e56a502ba5d1708d8917286c45cb0452a91018f13d",
+  "scope": "parsed music command graph and instrument parameters; no runtime ROM or instruction emulator"
+}

@@ -1,0 +1,2074 @@
+{
+  "schemaVersion": 1,
+  "accepted_for_release": false,
+  "requiresAuthoritativePreparationValidation": true,
+  "usage": "room-preparation-selection",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "spriteAtlas": ".local/basketball/static-atlas/atlas.json",
+    "spriteAtlasSHA256": "31f842c4cbf53ab8f05eb6fdce01177e4fd3661d593b6598afe11d8ad6778fae",
+    "spriteDecoder": {
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "metasprite_bank": 2,
+      "kind_pointer_table": "0x8000",
+      "decoder": "fixed 0xD079 / 0xD0C6",
+      "head_mapping": "fixed 0xCF30 / 0xD12D",
+      "chr_setup": "bank 3 0x82E5..0x8303",
+      "palette_setup": "bank 4 0x9526 / 0x97AB",
+      "rgb_sha256": "da30843b331e2e4474395866bc9871fcd60a7d716b3c8ee5ce3c89ee46e8c91e"
+    },
+    "representation": "Original gameplay idle pose 0, not reconstructed character-selection menu art."
+  },
+  "courts": [
+    {
+      "id": 0,
+      "displayName": "球场 1",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-0.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "5c52c00ce8a62bc3ebd912b95ffb10d350f1b5cfe24a54339f3fb89d705594b2"
+      },
+      "source": {
+        "court": 0,
+        "palette": 1,
+        "sourceImage": ".local/basketball/courts/0/court-1.png",
+        "sourceImageSHA256": "04e917a29ffa0dba53c68421c972a87a7144515b986da6706f0c680d9a25889d",
+        "sourceManifest": ".local/basketball/courts/0/manifest.json",
+        "sourceManifestSHA256": "d564245c55aebdd5e5c0386455500e0bc628d8822dd2ee83268755fd28b27c27",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 76,
+          "palette_preset": 1,
+          "map_pointer": "0x802c",
+          "attributes_pointer": "0x806c"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "displayName": "纽约",
+      "nameVerified": true,
+      "preview": {
+        "file": "courts/court-1.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "2dfcc1803c8751f4b62f57c56d3f94b9b8590b3c7bc3757fab2e352a992200b6"
+      },
+      "source": {
+        "court": 1,
+        "palette": 2,
+        "sourceImage": ".local/basketball/courts/1/court-2.png",
+        "sourceImageSHA256": "568a23bea1cab3f6dc6a94c0a673bf278c1f0824602c293392b741ba0b64cc90",
+        "sourceManifest": ".local/basketball/courts/1/manifest.json",
+        "sourceManifestSHA256": "13917ef6afddac0cd6f0a0bc87018abd15a7dc5d7682043ff1463e47c044b90e",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 68,
+          "palette_preset": 2,
+          "map_pointer": "0x8034",
+          "attributes_pointer": "0x8074"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "displayName": "球场 3",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-2.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "c4d298aa6fce6fd300464cbc2895080ef5b0143f6b7ce5933f28e059f3d7388e"
+      },
+      "source": {
+        "court": 2,
+        "palette": 3,
+        "sourceImage": ".local/basketball/courts/2/court-3.png",
+        "sourceImageSHA256": "5ba1d21e0ff44ed658f4b798bf96bf31b014045934c70f364470cf297023bc1f",
+        "sourceManifest": ".local/basketball/courts/2/manifest.json",
+        "sourceManifestSHA256": "1023a23d10dc0c91db1e57c103f9837b508f731b9a158a3b724a2f7f92a8e6cd",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 72,
+          "palette_preset": 3,
+          "map_pointer": "0x803c",
+          "attributes_pointer": "0x807c"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "displayName": "球场 4",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-3.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "4a873fe634dafdca4774093ef5fd839b3561d27d61590ccc2c12d7b2897f1769"
+      },
+      "source": {
+        "court": 3,
+        "palette": 4,
+        "sourceImage": ".local/basketball/courts/3/court-4.png",
+        "sourceImageSHA256": "229b78e7264e026c711b70e564bce682f7f0ccd329771b9cdd1adb35f3bda976",
+        "sourceManifest": ".local/basketball/courts/3/manifest.json",
+        "sourceManifestSHA256": "56327443d733fe03d94addabde48fbd0165c3e8e73b6058ab3a02592f3cdcc40",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 92,
+          "palette_preset": 4,
+          "map_pointer": "0x8044",
+          "attributes_pointer": "0x8084"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "displayName": "球场 5",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-4.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "0822df14e82c23bb0153a8371d1014bcd0392461a42e5a4fcc3cf574100a711c"
+      },
+      "source": {
+        "court": 4,
+        "palette": 5,
+        "sourceImage": ".local/basketball/courts/4/court-5.png",
+        "sourceImageSHA256": "429cef5c6e953d0d14fe69dd983a284e4c59115895afd426a22c896234fb1f6e",
+        "sourceManifest": ".local/basketball/courts/4/manifest.json",
+        "sourceManifestSHA256": "7578cd2644a186b414220e7710c6bbcb86304575985ba95ed90476426cfe159e",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 80,
+          "palette_preset": 5,
+          "map_pointer": "0x804c",
+          "attributes_pointer": "0x808c"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "displayName": "球场 6",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-5.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "b1a3a306049c03743971feb81cd494f265db77cfcad77d21c02bebca5d77d3a3"
+      },
+      "source": {
+        "court": 5,
+        "palette": 6,
+        "sourceImage": ".local/basketball/courts/5/court-6.png",
+        "sourceImageSHA256": "46a3896344b40cce05ab7a2e84c1db71bd9d15b1ada959a4023a82e4fd9a097b",
+        "sourceManifest": ".local/basketball/courts/5/manifest.json",
+        "sourceManifestSHA256": "7d4699db64e7b3bdd0b7262418629cd784f29d3ca65739e54cf281f9cc725134",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 84,
+          "palette_preset": 6,
+          "map_pointer": "0x8054",
+          "attributes_pointer": "0x8094"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "displayName": "球场 7",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-6.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "19614d19ece64878fa8e2485dd63e8deeae1bcfb98d0e10d606382765bef6085"
+      },
+      "source": {
+        "court": 6,
+        "palette": 7,
+        "sourceImage": ".local/basketball/courts/6/court-7.png",
+        "sourceImageSHA256": "3d7e863580fbc7ba24d4c286971468639778a4cd8a8b71daeb57577398fe49cd",
+        "sourceManifest": ".local/basketball/courts/6/manifest.json",
+        "sourceManifestSHA256": "c8de5cf90adab4273c937b4cc42fea8aa4b2bf1f67083b878241380f7bf7e457",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 88,
+          "palette_preset": 7,
+          "map_pointer": "0x805c",
+          "attributes_pointer": "0x809c"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "displayName": "球场 8",
+      "nameVerified": false,
+      "preview": {
+        "file": "courts/court-7.png",
+        "width": 512,
+        "height": 288,
+        "sha256": "7ce14e4f73eed3aa87d3bd637d48fef493b1a5d3a35b1bbd6cd8dddc1409e2ec"
+      },
+      "source": {
+        "court": 7,
+        "palette": 8,
+        "sourceImage": ".local/basketball/courts/7/court-8.png",
+        "sourceImageSHA256": "d708ce37c9d55522ce162fdce6555d82751f62f669c0ed72f0b9d4e4565d0c5e",
+        "sourceManifest": ".local/basketball/courts/7/manifest.json",
+        "sourceManifestSHA256": "1369ec7d402db2cc99c0f866cc72c1a8739001ee4a4e55112f9e0abf53e1a319",
+        "crop": [
+          0,
+          144,
+          512,
+          432
+        ],
+        "originalSize": [
+          512,
+          432
+        ],
+        "originalTables": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "chr_first_page": 64,
+          "palette_preset": 8,
+          "map_pointer": "0x8064",
+          "attributes_pointer": "0x80a4"
+        }
+      }
+    }
+  ],
+  "teams": [
+    {
+      "id": 0,
+      "displayName": "球队 1",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-0-character-0",
+          "team": 0,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-0-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "486c587917679339a0ce3c5aecc2a5494d4518bd9ce2462a3e5e02d8884b54a9"
+          },
+          "portrait": {
+            "file": "players/team-0-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "02164c77910caf8f6d5329b46b9b544cb570981f31a0723cf60956703b9a669d"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-0-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "06fde7e9cb0484defd0a1b0dc97307c150fb010906ac733a90d325c770760361",
+            "team": 0,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-0-character-1",
+          "team": 0,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-0-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "281feab7b1cf95322490ccc8858cfbd4270f71c31568986d53c2aa8f18a07e27"
+          },
+          "portrait": {
+            "file": "players/team-0-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "a60f273e45595c4c93045ae96cf1c7b34c23fdba3ce9b754727c59612cd1b6b9"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-0-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "dd1656394e9cabe3b17d90e2c13651f1c5ddf86c53351b7859e52beee77ace91",
+            "team": 0,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-0-character-2",
+          "team": 0,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-0-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "bffff2517bc64efe12a3a3a9435990e153fbfd27084d7018118ce178b5235f9a"
+          },
+          "portrait": {
+            "file": "players/team-0-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "7be7769c401a72f1f1c7410577ef1861dbc88e3aa4da6d6b2c99c86899cd3ddb"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-0-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "a8fe4eb5de9be09810abd1b618cff008427354fbab3a9102a33122f625cad303",
+            "team": 0,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-0-character-3",
+          "team": 0,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-0-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "d57b1ef0883d461e1d71a5da8e93d23d907592ce0e16818e51fd7da8adcf435e"
+          },
+          "portrait": {
+            "file": "players/team-0-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "ef8488d0656b7e5ed9200358a6a0909d6fcbba66524c5eeb821bb4310fe3e015"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-0-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "53dbdeb056b59836ee0c562adf39fc080e98b20f411c71852fc5652dcd98d9b4",
+            "team": 0,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "displayName": "球队 2",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-1-character-0",
+          "team": 1,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-1-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "01bc353c561a5ea32cec8b842abc04295e3544ea0f0d8a76c7cea017097b5b93"
+          },
+          "portrait": {
+            "file": "players/team-1-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "df72c3623c3f226c34b48d6457e8084b59bfc6b6c1fdd6b6eadc7f654a323dd3"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-1-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "e395b1d59cff4e6ed8ebd14ed1d13e749ff5fefc0944ce08479026fe85092d69",
+            "team": 1,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-1-character-1",
+          "team": 1,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-1-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "bfff5c1b2f4ca48e259cf8535c1afdbd97c0bc9dfd5ed1b0558c4b7fee110020"
+          },
+          "portrait": {
+            "file": "players/team-1-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "aebb160c1dad5a1e707ae576de62a6cc67548200a2f09c189bba2daf7b27a3ae"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-1-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "336976e3edde900f75087cc781ddff957d68edfd76e2a5557a19000e7e345993",
+            "team": 1,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-1-character-2",
+          "team": 1,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-1-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "281cd2f86fa3cd69d5513e840687bc072e77fd32a1752b3bfb48de35bdb86b34"
+          },
+          "portrait": {
+            "file": "players/team-1-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "b553578a6fdaac46c5a3b30c8938c4e97ea6c94477246de1f655c9f89a9d5b80"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-1-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "6fe3985cf6dd006e6ab872b50d124d03e3d12b4b85d92bd228c4dda98fc246e8",
+            "team": 1,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-1-character-3",
+          "team": 1,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-1-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "1f2120222c36a429139076d01c4f674cc2b0dc2317d7dfa7500f36da4906b60a"
+          },
+          "portrait": {
+            "file": "players/team-1-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "9718605bc60a08e5fab9a8f594056f64b213b2e86e7d31a28c783447222f484d"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-1-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "43996e3d987f458bd12ab9a83e3ca93dacf4640906643c05c80e01c1089b8aac",
+            "team": 1,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "displayName": "球队 3",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-2-character-0",
+          "team": 2,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-2-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "18ce2c1064993c313fe734985579065eade788903028093a36764c6fc11d894a"
+          },
+          "portrait": {
+            "file": "players/team-2-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "ccfaeef0a8652f5d40d6a603303641f1107fe53474d2685c9d67319f7d5cbc6b"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-2-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "5a858a82745b1146fe01db020a4aa9a24ce7df85c0a79e516cfe7ca888197a61",
+            "team": 2,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-2-character-1",
+          "team": 2,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-2-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "6c9b74526f65d2b0449b9c643235cd9680a3cb22b09aad8c9ce08b525cc8ff1e"
+          },
+          "portrait": {
+            "file": "players/team-2-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "55587fe7c5e8ea8d0a524934cd93536a4f3997e4f9771ec962f7ae2383e83b3d"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-2-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "567fc3caff66b9a8750b37bf20b57643da3d283365aa162e20eeb2a40b15ad30",
+            "team": 2,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-2-character-2",
+          "team": 2,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-2-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "6f88a9067a305ae90a349a1f326e873570701ccbbd020c4f9c72c42eea950e61"
+          },
+          "portrait": {
+            "file": "players/team-2-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "f7a146f3adf078d561fd071fdfdfece5f6495d406bd2c684107bf7b2c9c8d2ce"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-2-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "d7e6dc010bbe64884f153c64737759e6768acf99a7952e28994d81f46b9a15a8",
+            "team": 2,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-2-character-3",
+          "team": 2,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-2-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "2fef4aa1e62b3605202c1fb4d29c59a886c205a65b23864c68977fda17bb21b9"
+          },
+          "portrait": {
+            "file": "players/team-2-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "7080fd144bad182913020fea7a2558b99b2dab6dc922d644f04058fed1b3f889"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-2-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "443617657e72dbc37bdba1996e6be1008009cd5eef714f6c94e6c50653a33504",
+            "team": 2,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "displayName": "球队 4",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-3-character-0",
+          "team": 3,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-3-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "738d4cf8d5cdf91863a96a9cd392d804a89847632813749c30d031e644deb3e2"
+          },
+          "portrait": {
+            "file": "players/team-3-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "f11030161070ee8917894d57c0ff300273fb07238654a0643334f2c63a364361"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-3-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "970c1c336cd56a5573adcb567370a8de232a5d2ad40ba5d2b45718fdadcf0d3f",
+            "team": 3,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-3-character-1",
+          "team": 3,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-3-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "a40a40671972848b2e88a60b761805e6ae730c46065ade36e2fb99dfb5487796"
+          },
+          "portrait": {
+            "file": "players/team-3-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "0edd31b06d53dd5de17bfbb54f65d636ee861bae78e84dac6cb328c2045d2b61"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-3-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "a10a9a9f166d84a738b67a818132f9e4eeed332f005d01173b8a7b6ae5f813a1",
+            "team": 3,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-3-character-2",
+          "team": 3,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-3-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "4984df6547be0b656fc3e584e0e0852ee17d471f10677cc07afc6465f275f178"
+          },
+          "portrait": {
+            "file": "players/team-3-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "f9fa9377ed30502930711fbe677d35646b2bc41f91d2fa1b068c97350f27af09"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-3-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "ed1e16f74e6b1d6d88f3de06acfdd25c30d186b169855393a1cb877a81f1b239",
+            "team": 3,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-3-character-3",
+          "team": 3,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-3-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "bd6f57bcc9108e8e090c4e8b4bb2d3bbc711f15ef33e1e39a4ed53bfb9688f0f"
+          },
+          "portrait": {
+            "file": "players/team-3-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "e38a57739a7573ba00915af1adccecc90107a73169dd97913b87d4b91e326f2b"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-3-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "d22ffe2f59a19a2e49cf9d531a7571bf4935ab8247410e93e816f215da058e10",
+            "team": 3,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "displayName": "球队 5",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-4-character-0",
+          "team": 4,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-4-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "d990834dd4c1214e8aad7abd86ef52c7ca2f09fe6251e5b2d26be1f73371832b"
+          },
+          "portrait": {
+            "file": "players/team-4-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "1c35f86a6ecbdeb68ce760237c10542f6cf57d7972d9fb571d1e7e29c21a895c"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-4-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "688cd9720e3bc7c13768bc2f54d38f56e87f6c679a9d7b53cea90e0db9da2158",
+            "team": 4,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-4-character-1",
+          "team": 4,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-4-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "ee13517d205ecc6c65b0a31975544659c5a7758153212e996790a50133d7919c"
+          },
+          "portrait": {
+            "file": "players/team-4-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "ab792f74515c000b76aaea0d22eb926fb86f807b1268a12380f5ea1f5ae247b1"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-4-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "b38047c56fba3ace072ff4a649f33969649c3101bdf31540361a0a13dda535c2",
+            "team": 4,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-4-character-2",
+          "team": 4,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-4-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "dfeff0b1246d352dc43aabf9f0120efc11189ddf2bc0e673b5bc73272cdfd7ac"
+          },
+          "portrait": {
+            "file": "players/team-4-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "807a379be9d7bc31a2beab329cc70e0178195ebf4b1bc44e5ff0c24e7a9bcd7f"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-4-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "7cd82d4a05ef1a2b259b7fbb714f08589859df36e3987a96d9e5d259b5d07d09",
+            "team": 4,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-4-character-3",
+          "team": 4,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-4-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "d8d245c207c11ad62c1f395dd530456162ef4aeb0ba7050eff4134e675fad33e"
+          },
+          "portrait": {
+            "file": "players/team-4-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "5f9857361d936d0ac6af59bd26cc45030e93a07f6dabbf22837adbb9e5420a76"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-4-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "42a2a7216f6eeeb77c959829a4b60031ce5dead7a1d84d4298c99f02a81a9053",
+            "team": 4,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "displayName": "球队 6",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-5-character-0",
+          "team": 5,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-5-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "f297233d788fc9c68d7e036418a61d8c4b95482b24f0d5758adeeb1f3820f80a"
+          },
+          "portrait": {
+            "file": "players/team-5-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "b580507a55c476ab713c40aec70d7d43f2edcb52ecd2bec66020fb07dd3d1a90"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-5-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "d48b321d16aaa9d8bddba995687ef3d122c770e7df15c96985be31f1c5df40e7",
+            "team": 5,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-5-character-1",
+          "team": 5,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-5-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "ef8ec853e84e2b13e32037915464a4281b62511d49dfa1c6da55715dd3862b20"
+          },
+          "portrait": {
+            "file": "players/team-5-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "b13b1ea7131606c322c84248b5aac07cad0797d54f464fb2c360340e8196b968"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-5-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "aad554b0eb930b63c5abdc4d79cb92d4ab5730223542d87356b1b66b7a90736d",
+            "team": 5,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-5-character-2",
+          "team": 5,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-5-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "4a1dd4de55aa99bc7e4ae0cf209cd8294544f6492ce3665bfb5ea8e79b13f948"
+          },
+          "portrait": {
+            "file": "players/team-5-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "ad573cec19e76855b4c69d70dea195e491eb818d679ca70a1fd23b04ff1b4f76"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-5-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "36520dacd1d7b2aa51ac81bec1236b247d396bdd700f350146ba2ef57dfd1f8d",
+            "team": 5,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-5-character-3",
+          "team": 5,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-5-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "f79d87aa2dce9af1a1ff0b4259cb3247f7cd6192ba92e844bdac3197a4f25fd0"
+          },
+          "portrait": {
+            "file": "players/team-5-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "2a29ce76ec2485828dc9cf7088a26e44083b29f035a832a37a428d409456bb3c"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-5-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "080f68ce5cfe94c374a91d6f39be19c5dca7e8c37f8dc8d8f73a6797948d75ca",
+            "team": 5,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "displayName": "球队 7",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-6-character-0",
+          "team": 6,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-6-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "b18679ca19f2f4983ceab4b7b1523b551fd461ce8a50f4b031168d12fbe2ddb3"
+          },
+          "portrait": {
+            "file": "players/team-6-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "6bd6889bfe3f89310824834893b2ff2cf1fe7456ce7bf7444c2aa4fba1874a5a"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-6-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "c4c3a39752b485a8f4d9663f033c664bb665e0da8a650ebc45eb98a4e8b62a6a",
+            "team": 6,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-6-character-1",
+          "team": 6,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-6-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "26d97ae4831a2f5254acfc5d2ed505fe4ae9bac849f1a4c6092065e52756e358"
+          },
+          "portrait": {
+            "file": "players/team-6-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "cb4e26bdac61a1bb43f70d33172cdf7d8526ec9bfbf6f4be6410305ac160f58a"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-6-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "8e5eed1ff61f2836bea184cbdd7ea09576115e6fab4ed42be7edabca96af182b",
+            "team": 6,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-6-character-2",
+          "team": 6,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-6-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "b11bd157ef73f0c5c2921554aba80a8a6be43426bc13660ce0108a44f6595a41"
+          },
+          "portrait": {
+            "file": "players/team-6-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "64457f33dce116ebe16b1c5c5b2e678ca355b4b79973f079fec2d232a56a5879"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-6-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "76acf79e3cda069f0d6b5c3f8c18aba2c7cfd107af51ea6899edfafa99ac7130",
+            "team": 6,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-6-character-3",
+          "team": 6,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-6-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "e918351244508943cfec5135b0652e5c734bfe148e33b620caae7ee7a57cb693"
+          },
+          "portrait": {
+            "file": "players/team-6-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "fa08e8b444736fc1fb93222c2e76ebcb3e0e3998e99e793b09c678b60efff9b5"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-6-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "a68657e82c213054ce403a154d2712c62e8aaca46abefc99a2f00197c2d774a7",
+            "team": 6,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "displayName": "球队 8",
+      "nameVerified": false,
+      "characters": [
+        {
+          "id": "team-7-character-0",
+          "team": 7,
+          "character": 0,
+          "displayName": "球员 1",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-7-character-0-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "9e638dfaaccdbeff31be77c8a8b397b9258d7a11dd178b713b5d68ecedc64ee3"
+          },
+          "portrait": {
+            "file": "players/team-7-character-0-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "6c341b01f046d2ecc715dc4f66cebe8e31ae070ce91d8fd0397480b01c1eabdf"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-7-character-0-facing-0-forward.png",
+            "sourceImageSHA256": "3b773319bc80cb4ea61aab4df9a083197926bf713487d988f672b54e4a21578f",
+            "team": 7,
+            "character": 0,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-7-character-1",
+          "team": 7,
+          "character": 1,
+          "displayName": "球员 2",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-7-character-1-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "93ce509679908ce8e1a167e1922c62b3d98b6101ded804d3399dab3883ebb9ef"
+          },
+          "portrait": {
+            "file": "players/team-7-character-1-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "50068826ca1848e2c203cd98ec96b08610fc32f44a21d456568687e86a240ca1"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-7-character-1-facing-0-forward.png",
+            "sourceImageSHA256": "c57e1917278cc1852309419ee6eac318bc42c8952ff683ab7a5af7328bce9c49",
+            "team": 7,
+            "character": 1,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-7-character-2",
+          "team": 7,
+          "character": 2,
+          "displayName": "球员 3",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-7-character-2-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "aed193b6173794e07977175743ed75fb816d6a8dbbd77913b0f51d038d01b963"
+          },
+          "portrait": {
+            "file": "players/team-7-character-2-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "1b846f9a799c676f61e4fda498202923e43e32529e3b52b1d48c2d846dc9c139"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-7-character-2-facing-0-forward.png",
+            "sourceImageSHA256": "31b5a61d3ea641a396a38b623f6946ae8f502855993eb96986cb0b575800f545",
+            "team": 7,
+            "character": 2,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        },
+        {
+          "id": "team-7-character-3",
+          "team": 7,
+          "character": 3,
+          "displayName": "球员 4",
+          "nameVerified": false,
+          "fullBody": {
+            "file": "players/team-7-character-3-body.png",
+            "width": 128,
+            "height": 160,
+            "sha256": "529ad7a9413a3db40cbf75cf3e6f158e4ef7b061716b28916c62ec88e59aac83"
+          },
+          "portrait": {
+            "file": "players/team-7-character-3-portrait.png",
+            "width": 96,
+            "height": 96,
+            "sha256": "54236977236175c53df1805168b7449a2942633de7332b660f5bff75a90be3c2"
+          },
+          "source": {
+            "atlas": ".local/basketball/static-atlas/atlas.json",
+            "sourceImage": ".local/basketball/static-atlas/team-7-character-3-facing-0-forward.png",
+            "sourceImageSHA256": "ff40e2b1e90bfc4b18470967201385dbcfd7b98a8390a5afdbdefe94cb244b3a",
+            "team": 7,
+            "character": 3,
+            "pose": 0,
+            "facing": 0,
+            "priority": "forward",
+            "frameRect": [
+              0,
+              0,
+              128,
+              128
+            ],
+            "origin": [
+              64,
+              96
+            ],
+            "bodyCrop": [
+              48,
+              61,
+              80,
+              101
+            ],
+            "portraitCrop": [
+              52,
+              61,
+              76,
+              85
+            ],
+            "scale": 4,
+            "resampling": "nearest-neighbor"
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Asset coverage is not gameplay support or permission to publish.",
+    "Only the New York court name is retained as verified; other labels are explicit numeric placeholders.",
+    "Character slots are original team-local IDs 0..3; table entry 4 is not a selectable-player claim.",
+    "All player thumbnails share the original idle pose, direction, palette and pixel scale.",
+    "Court previews crop lower scenery; they are not complete playable screenshots or IRQ/render acceptance.",
+    "Original source distribution permission and OSS publication remain unaccepted."
+  ]
+}

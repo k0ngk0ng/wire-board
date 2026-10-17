@@ -1,0 +1,215 @@
+{
+  "schema": 1,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "accepted_for_release": false,
+  "license": {
+    "source": "user-supplied 热血篮球.zip ROM",
+    "redistribution_permission": "not established",
+    "uploaded": false
+  },
+  "court_field": "$058B; not Scene/Layout $0588",
+  "court_table": {
+    "address": "fixed:$D306..D30D",
+    "reader": "fixed:$D23F..D245",
+    "ids": [
+      59,
+      66,
+      61,
+      64,
+      60,
+      62,
+      63,
+      65
+    ],
+    "source_sha256": "93666870c4a4ad7aefe7fb36f8dec9d7431e0f419275a9fbe8d6e21af798add3"
+  },
+  "courts": [
+    {
+      "court": 0,
+      "music_id": 59,
+      "name_verified": null
+    },
+    {
+      "court": 1,
+      "music_id": 66,
+      "name_verified": "New York"
+    },
+    {
+      "court": 2,
+      "music_id": 61,
+      "name_verified": null
+    },
+    {
+      "court": 3,
+      "music_id": 64,
+      "name_verified": null
+    },
+    {
+      "court": 4,
+      "music_id": 60,
+      "name_verified": null
+    },
+    {
+      "court": 5,
+      "music_id": 62,
+      "name_verified": null
+    },
+    {
+      "court": 6,
+      "music_id": 63,
+      "name_verified": null
+    },
+    {
+      "court": 7,
+      "music_id": 65,
+      "name_verified": null
+    }
+  ],
+  "result": {
+    "entry": "bank4:$BA40",
+    "evidence": ".local/basketball/rea/match-transition/batch.json",
+    "evidence_id": "ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb",
+    "natural_calls": 145,
+    "sound_id_counts": {
+      "253": 2,
+      "255": 2,
+      "8": 6,
+      "50": 4
+    },
+    "music_request_observed": false,
+    "controls": [
+      253,
+      255
+    ],
+    "effects": [
+      8,
+      50
+    ]
+  },
+  "reward": {
+    "entry": "bank4:$BD8E",
+    "status": "static-only; full reward gameplay not yet recovered",
+    "direct_requests": [
+      50
+    ],
+    "background_audio_controls": [
+      253,
+      255
+    ],
+    "new_music_request_found": false,
+    "scope": "BD8E and its DBF8 background load; downstream scene2 menus and scene7 ending are separate"
+  },
+  "current_effect_coverage": {
+    "ids": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      11,
+      13,
+      14,
+      15,
+      17,
+      19,
+      21,
+      23,
+      27,
+      30,
+      31,
+      32,
+      33,
+      35,
+      36,
+      37,
+      38,
+      40,
+      41,
+      43,
+      45,
+      46,
+      50,
+      51,
+      55
+    ],
+    "missing_result_effects": [],
+    "original_batch_ids": [
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      11,
+      15,
+      17,
+      19,
+      21,
+      23,
+      27,
+      31,
+      32,
+      33,
+      35,
+      36,
+      37,
+      38,
+      40,
+      41,
+      43,
+      45,
+      50,
+      51,
+      55
+    ],
+    "additional_effect_sources": {
+      "13": "court_animation.go",
+      "14": "court_animation.go",
+      "30": "special_ball.go",
+      "46": "court_animation.go"
+    },
+    "missing_current_effects": [],
+    "source_file_sha256": {
+      "court_animation.go": "e5a3ddcb15104e29f2cd7d3edda12267c7a1f99051c923fc88915e7d0a98ec3b",
+      "special_ball.go": "6090bfa0d3d07fd3ecaf45a17420146e49af692b94224faf450747348e4a4372",
+      "result.go": "eeafe2163aeaacc010d2ba60db6a47cee5df118b25e31dde20ac5694af81aa09",
+      "opening.go": "f6e40befa9830a0f9e7cc5b85093e569623f789fc8ae9b79c9c4006af0dedb62",
+      "attack_profiles.go": "fd60a1092af670a96974cc764fb9d126087b032997f7536e33835ee5fc81edc6",
+      "combat_profiles.go": "0ac3f130245a3dd800dff2d00b6b9f5582c498d78a63e45b6e7f70fac669f82a",
+      "board_contact.go": "5dcfd3094b91659012f9b47c2438d0a619ad43c2d1c94723f17d5e58a3362e1a",
+      "match_clock.go": "36ecadeb420ec836edff95effbc0c143e2942a336ec621eda23e53a956aa53f4",
+      "match_transition.go": "43549c92f8a64d49ac91fd3eaa394a18ce94dbde4b541a44ec69d073fb08d770"
+    }
+  },
+  "limitations": [
+    "No city labels inferred from artwork for courts other than NY=1.",
+    "Static no-request result is bounded to inspected result/reward routines, not all ending/menu scenes.",
+    "No original gameplay execution is modified for this inventory."
+  ],
+  "ending_music": {
+    "scene": 7,
+    "dispatcher": "fixed:$CAE3 → $FC83 → bank3:$8015/$B995",
+    "rea_evidence_id": "ev_33bb6f8ee44e775ab1856de49120b96ebace7f235894fef4fb2cd6684a2b56de",
+    "tracks": [
+      {
+        "id": 75,
+        "request": "bank3:$BA6C",
+        "entry": "phase0 continuation $BA5A",
+        "mode": "finite",
+        "seconds": 141.20433106575965,
+        "runtime_mapping": true
+      },
+      {
+        "id": 76,
+        "request": "bank3:$BD68",
+        "entry": "phase11 $BD27",
+        "mode": "intro then loop",
+        "timeline_preview_seconds": 332.7680952380952,
+        "runtime_mapping": false
+      }
+    ],
+    "background_load_rea": "ev_f44a23d36985468ba8d23ffae716d6d847557e0a2960f8f3725844d06f3122ad",
+    "background_load_limitation": "Ghidra stops at the interrupt wait; fixed DCB7/DCB9 resume255 confirmed by instructions and natural result captures."
+  }
+}

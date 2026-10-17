@@ -1,0 +1,722 @@
+[
+  {
+    "kind": 0,
+    "action": 0,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 1,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 1,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 1,
+    "variant": 0,
+    "cursor": 2,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 2,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 2,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 4,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 156,
+    "receiveFlags": 156
+  },
+  {
+    "kind": 0,
+    "action": 15,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 40,
+    "receiveFlags": 40
+  },
+  {
+    "kind": 0,
+    "action": 30,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 0,
+    "action": 61,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 0,
+    "action": 73,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 0,
+    "action": 73,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 0,
+    "action": 73,
+    "variant": 0,
+    "cursor": 2,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 0,
+    "action": 74,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 0,
+    "action": 74,
+    "variant": 0,
+    "cursor": 2,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 1,
+    "action": 0,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 1,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 1,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 1,
+    "variant": 0,
+    "cursor": 2,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 1,
+    "variant": 0,
+    "cursor": 3,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 2,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 2,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 92,
+    "receiveFlags": 92
+  },
+  {
+    "kind": 1,
+    "action": 96,
+    "variant": 39,
+    "cursor": 0,
+    "shape": [
+      24,
+      32,
+      26,
+      8,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 1,
+    "action": 96,
+    "variant": 39,
+    "cursor": 1,
+    "shape": [
+      128,
+      32,
+      8,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 1,
+    "action": 100,
+    "variant": 42,
+    "cursor": 0,
+    "shape": [
+      0,
+      4,
+      16,
+      0,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 1,
+    "action": 102,
+    "variant": 41,
+    "cursor": 0,
+    "shape": [
+      0,
+      23,
+      12,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 1,
+    "action": 102,
+    "variant": 41,
+    "cursor": 1,
+    "shape": [
+      0,
+      23,
+      12,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 1,
+    "action": 102,
+    "variant": 41,
+    "cursor": 2,
+    "shape": [
+      0,
+      23,
+      12,
+      248,
+      0,
+      32,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 1,
+    "action": 102,
+    "variant": 42,
+    "cursor": 0,
+    "shape": [
+      0,
+      4,
+      16,
+      0,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 56,
+    "receiveFlags": 56
+  },
+  {
+    "kind": 8,
+    "action": 2,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 8,
+    "action": 7,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 36,
+    "receiveFlags": 36
+  },
+  {
+    "kind": 8,
+    "action": 7,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 36,
+    "receiveFlags": 36
+  },
+  {
+    "kind": 8,
+    "action": 7,
+    "variant": 0,
+    "cursor": 2,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 36,
+    "receiveFlags": 36
+  },
+  {
+    "kind": 8,
+    "action": 7,
+    "variant": 0,
+    "cursor": 3,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 36,
+    "receiveFlags": 36
+  },
+  {
+    "kind": 8,
+    "action": 11,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 8,
+    "action": 11,
+    "variant": 0,
+    "cursor": 1,
+    "shape": [
+      0,
+      16,
+      8,
+      248,
+      0,
+      16,
+      8,
+      248
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 8,
+    "action": 11,
+    "variant": 0,
+    "cursor": 5,
+    "shape": [
+      128,
+      0,
+      0,
+      0,
+      128,
+      0,
+      0,
+      0
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 8,
+    "action": 11,
+    "variant": 0,
+    "cursor": 6,
+    "shape": [
+      128,
+      0,
+      0,
+      0,
+      128,
+      0,
+      0,
+      0
+    ],
+    "attackFlags": 0,
+    "receiveFlags": 0
+  },
+  {
+    "kind": 11,
+    "action": 0,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      1,
+      39,
+      8,
+      248,
+      1,
+      39,
+      8,
+      248
+    ],
+    "attackFlags": 88,
+    "receiveFlags": 88
+  },
+  {
+    "kind": 12,
+    "action": 0,
+    "variant": 0,
+    "cursor": 0,
+    "shape": [
+      128,
+      0,
+      0,
+      0,
+      128,
+      0,
+      0,
+      0
+    ],
+    "attackFlags": 88,
+    "receiveFlags": 88
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:e151",
+  "exit": "fixed:e154",
+  "records": 12702,
+  "sha256": "d9405282f9a614fc058283963c10562b4cebfaa810da43c7a21a42229aa658bb",
+  "sources": [
+    {
+      "scenario": "shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "a5fe89e5afc7ccd701ca7b895efd60899b50fdfd9fd05a98f32d002879ffe8e5"
+    },
+    {
+      "scenario": "cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "bf9aa1ec57f7e55572b4c23c7d5de5686d038ae2e8d2e18f54e6ba899066ff98"
+    }
+  ]
+}

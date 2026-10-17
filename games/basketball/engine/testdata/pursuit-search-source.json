@@ -1,0 +1,41 @@
+{
+  "source_is_original_execution": true,
+  "records": 1112,
+  "sha256": "39e47bc547aa63d873921e2e6d37cf93e41ce6af96b294914992a51a57f9a169",
+  "uncompressed_sha256": "89f40ed23a3d29d96d28e1532fe7fefdff273925872c7b53c2f72ab50cdd0a19",
+  "sources": [
+    {
+      "name": "hoop-control-cpu-long",
+      "records": 197,
+      "writes": [],
+      "trace_sha256": "6679ee8a79f23ac694cd4c7d5fc8dcdbd4b419539523a6290f69ee9c34d7cfdf",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 6000,
+        "scenario_sha256": "64c1b75117fed418c1da72c831c8a80dd5d8f443282f11d3e6a33b5ec044888a"
+      }
+    },
+    {
+      "name": "special-ball-cpu-command",
+      "records": 887,
+      "writes": [],
+      "trace_sha256": "8b04d504cad99159da5dc5414d3ac003fd200668b15f99fd8223d51f9a362159",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 18000,
+        "scenario_sha256": "651f8fcf2dcd09f3288db5a87d03f2694a094f7fc520c16c5d37a035c8843658"
+      }
+    },
+    {
+      "name": "rider-normal-reference",
+      "records": 28,
+      "writes": [],
+      "trace_sha256": "c1dd20780804cb42ca930e37b4a1539bc94779c817f7699482fc989b940774bd",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "175b8f6688771181ccd8d1953251b4f527fc53d222898036d8af59a1ed67d51f"
+      }
+    }
+  ]
+}

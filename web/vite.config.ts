@@ -2,10 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 import { preparePublicAssets } from "./scripts/public-assets.mjs";
+import { prepareBasketballRuntime } from "../games/basketball/build/runtime.mjs";
+const root = fileURLToPath(new URL("../", import.meta.url));
 export default defineConfig({
-  publicDir: preparePublicAssets(
-    fileURLToPath(new URL("../", import.meta.url)),
-  ),
+  publicDir: preparePublicAssets(root, [prepareBasketballRuntime(root)]),
   plugins: [react()],
   resolve: { dedupe: ["react", "react-dom", "lucide-react", "three"] },
   server: {

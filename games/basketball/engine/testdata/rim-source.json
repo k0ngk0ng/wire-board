@@ -1,0 +1,45 @@
+{
+  "source_is_original_execution": true,
+  "entry": "bank4:9035",
+  "exit": "bank4:9290",
+  "records": 1195,
+  "sha256": "253610ff682c6a08852576f440476619b1cb8f4682c1c62ddb9236b9a8b45027",
+  "sources": [
+    {
+      "scenario": "shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "76e827de06d71450742fccf69d189e92abb45c25ebc3e75e821f58fb19489d6d"
+    },
+    {
+      "scenario": "quick-shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "b0d671b55308f24e2efeb65e70682a5642bcf11f5685ea0600af8ad8c93d4bf1"
+    },
+    {
+      "scenario": "left-shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "81fb55be6bb9a4bcddca4e82f691e9cd5a7a4ae4227fd9bd1fcdf691af3e6f4a"
+    },
+    {
+      "scenario": "jump-shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "a8a54f310673ef476084d44f75c0603d50a2e2520b2f50e143e3d470902decd8"
+    },
+    {
+      "scenario": "pass",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "13f7314bba30cf3cf391fbc55fae669ded05097e68d2d9464610acdbcb06cd42"
+    },
+    {
+      "scenario": "cpu-match",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 1800,
+      "scenario_sha256": "f0f94e84181a3442a93a1951b64846d3d3e8939bb746e19bf3909006cdec2ad9"
+    }
+  ]
+}

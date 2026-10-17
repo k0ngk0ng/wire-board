@@ -215,6 +215,10 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		db.Close()
 		return nil, e
 	}
+	if e = s.initControllerProfiles(); e != nil {
+		db.Close()
+		return nil, e
+	}
 	rows, e := db.Query("SELECT snapshot FROM rooms")
 	if e != nil {
 		db.Close()
@@ -399,6 +403,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/agent/wishes", s.agentWishes)
 	mux.HandleFunc("POST /api/agent/wishes/{id}", s.agentWishStatus)
 	mux.HandleFunc("POST /api/agent/wishes/{id}/questions", s.agentWishQuestion)
+	mux.HandleFunc("GET /api/controllers", s.controllers)
+	mux.HandleFunc("POST /api/controllers/{model}", s.saveController)
 	mux.HandleFunc("GET /api/admin", s.adminOverview)
 	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
@@ -439,7 +445,7 @@ func (s *Server) Handler() http.Handler {
 			u, _ := url.Parse(s.cfg.WishImageBaseURL)
 			wishSource = " " + u.Scheme + "://" + u.Host
 		}
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+wishSource+"; connect-src 'self'; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+wishSource+"; connect-src 'self'"+assetSource+"; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
 		if strings.HasPrefix(r.URL.Path, "/api/") {
 			w.Header().Set("Cache-Control", "no-store")
 		}
@@ -1048,7 +1054,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	if !decode(w, r, &req) {
 		return
 	}
-	if room.Module == nil && len(req.RawAction) > 0 {
+	if _, independent := s.modules[room.Kind]; !independent && len(req.RawAction) > 0 {
 		if err := json.Unmarshal(req.RawAction, &req.Action); err != nil {
 			fail(w, 400, "无效游戏行动")
 			return
@@ -1122,6 +1128,8 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	var err error
 	switch req.Type {
+	case "prepare":
+		err = s.prepareModule(&next, idx, req.RawAction)
 	case "options":
 		module, ok := s.modules[next.Kind]
 		if !ok || next.Host != u.ID || next.Status != "waiting" {

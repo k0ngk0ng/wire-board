@@ -1,0 +1,1312 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "source_is_original_geometry_data": true,
+  "natural_gameplay": false,
+  "profiles": [
+    {
+      "kind": 10,
+      "action": 0,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 88,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 1,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 80,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 2,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 8,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 3,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 26,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37209,
+        37209
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 4,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 5,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 6,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 7,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 8,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 9,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 10,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 104,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 11,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 12,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 13,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 14,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 5,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37209,
+        37209,
+        37209,
+        37209,
+        37169
+      ]
+    },
+    {
+      "kind": 10,
+      "action": 15,
+      "action_map": 36689,
+      "flag_map": 37795,
+      "group": 0,
+      "flags": 0,
+      "frames": 8,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 0,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 88,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 1,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 80,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 2,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 8,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 3,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 27,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37217,
+        37217
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 4,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 5,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 6,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 7,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 8,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 9,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 10,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 104,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 11,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 12,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 13,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 14,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 6,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37217,
+        37217,
+        37217,
+        37217,
+        37169
+      ]
+    },
+    {
+      "kind": 11,
+      "action": 15,
+      "action_map": 36705,
+      "flag_map": 37795,
+      "group": 0,
+      "flags": 0,
+      "frames": 8,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 0,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 0,
+      "flags": 88,
+      "frames": 8,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 1,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 80,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 2,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 8,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 3,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 28,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37225,
+        37225
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 4,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 5,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 6,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 7,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 8,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 9,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 10,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 104,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 11,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 12,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 13,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 14,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 7,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37225,
+        37225,
+        37225,
+        37225,
+        37169
+      ]
+    },
+    {
+      "kind": 12,
+      "action": 15,
+      "action_map": 36721,
+      "flag_map": 37795,
+      "group": 0,
+      "flags": 0,
+      "frames": 8,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 0,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 88,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 1,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 80,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 2,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 8,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 3,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 29,
+      "flags": 40,
+      "frames": 10,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37233,
+        37233,
+        37169,
+        37169,
+        37169,
+        37241,
+        37241
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 4,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 5,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 6,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 7,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 8,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 9,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 10,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 104,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 11,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 12,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 13,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 14,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 8,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37233,
+        37233,
+        37233,
+        37233,
+        37169
+      ]
+    },
+    {
+      "kind": 13,
+      "action": 15,
+      "action_map": 36741,
+      "flag_map": 37795,
+      "group": 0,
+      "flags": 0,
+      "frames": 8,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 0,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 88,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 1,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 80,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 2,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 8,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 3,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 30,
+      "flags": 40,
+      "static_supported": false,
+      "requires_context": true,
+      "restored_context_frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "reason": "Original8318 selects current physical controller inputs or canonical world X aliases via pointers 0000/0080; no static substitute",
+      "oracle": "auxiliary-geometry-dynamic-isolated.json"
+    },
+    {
+      "kind": 14,
+      "action": 4,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 5,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 64,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 6,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 7,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 8,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 9,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 72,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 10,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 104,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 11,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 12,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 13,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 40,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 14,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 9,
+      "flags": 0,
+      "frames": 5,
+      "shape_addresses": [
+        37241,
+        37241,
+        37241,
+        37241,
+        37169
+      ]
+    },
+    {
+      "kind": 14,
+      "action": 15,
+      "action_map": 36757,
+      "flag_map": 37795,
+      "group": 0,
+      "flags": 0,
+      "frames": 8,
+      "shape_addresses": [
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169,
+        37169
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "kinds": {
+    "chr": 2083,
+    "draw": 2083,
+    "name": 4,
+    "tactic": 1020
+  },
+  "source_is_original_execution": true,
+  "sha256": "d35fe508ab32c239ff972ddaaa7b2e8291b986411be26b2d77cbf13e22818ba8",
+  "ram_sha256": "bd6eb1149238e99e1889f70990bbcb84685f7ddc8f015deba89de7e0269a7a93",
+  "ram_and_images_match": true,
+  "sources": [
+    {
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 1550,
+      "scenario_sha256": "547a46a863092f5903c337a9d43d06ebc5bb3af0561ec9bd977a77a386dafc6c"
+    },
+    {
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "9e4f6973d859e280bbe036870b3b04435d1decd4aa52eee5cf4a17864a727dbe"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "source_is_original_execution": true,
+  "entry": "bank5:9f20",
+  "exit": "bank5:9f7d",
+  "records": 1197,
+  "sha256": "9e7b23dd3c752eb33c4e932ad1f6455542d5d08a3363753484c332abab0ecbc2",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 3600,
+    "scenario_sha256": "f3f53af4404e0a1ec9775fe25936a5fff558cd7d6a94fdb0e755964194f731ed"
+  }
+}

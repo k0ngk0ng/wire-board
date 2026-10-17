@@ -1,0 +1,18 @@
+{
+  "source_is_original_execution": true,
+  "records": 1998,
+  "motion_events": 14456,
+  "tail_events_preserved": [],
+  "sha256": "b71e38d486d79d7aa473ade8bdefa04c0a5643ce90e835644d2aa793e2e4369c",
+  "uncompressed_sha256": "49f73bdf00605647eab6e5b964f33041edc0931b7ee8d735efcc1dcc410abaea",
+  "complete_action_trace_sha256": "2dab3dba353b84681dc90e4e0621f613d194a12f590b9072c2b7ee51e64b6c4b",
+  "full_action_trace_sha256": "2dab3dba353b84681dc90e4e0621f613d194a12f590b9072c2b7ee51e64b6c4b",
+  "reference_ram_sha256": "cc6481a28c031e8821f57e625df4239f0544b79024d1ef9c7bd5ab8402618bcb",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "77a09361875672485884fce1e72b781dcecdd6e95640875949c79655b822df31"
+  },
+  "physical_entries_without_surface_write": 150,
+  "skipped_entries_sha256": "6b93b7931c773a76cab0228525d1adcbab6ebb2e88acac9378725d844afdd664"
+}

@@ -1,0 +1,14 @@
+{
+  "scope": "unaltered saved Go runtime failure states, not original-ROM execution",
+  "sources": [
+    {
+      "path": ".local/basketball/rea/court-three/contact-failure-2.json",
+      "sha256": "3ed0aa1cc4822be32b5fd90d4748cd66b00ecfcace126c0425b2d20b016bf4f8"
+    },
+    {
+      "path": ".local/basketball/rea/court-three/contact-failure-14.json",
+      "sha256": "9cfc24364af295c8c1c4984a29a387ccea4a2f36b7c4edd279eb8829831bccdc"
+    }
+  ],
+  "sha256": "dcd50b941721989fa384b46850c6f0f683ab7615ab74f6fab4e01e290352a2f4"
+}

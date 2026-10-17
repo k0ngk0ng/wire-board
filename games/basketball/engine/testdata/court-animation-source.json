@@ -1,0 +1,87 @@
+{
+  "scope": "original function execution after isolated court configuration, unmodified input/gameplay; no natural-menu claim",
+  "records": 912,
+  "sha256": "9360dc115971e2f73884404f9cfabcbedc53cdf1885272e3ff18d46d315161ea",
+  "sources": [
+    {
+      "court": 0,
+      "records": 114,
+      "traceSHA256": "02c526aee7e1e7668be2a922fe952d7d57c40cf8ae451858a2b6f713df1078c8",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "e440abc2abaa6e4a102394cda49b5fbf9be2cf5af93737e7a629dbbcf695f5b7"
+      }
+    },
+    {
+      "court": 1,
+      "records": 114,
+      "traceSHA256": "4d68476591d1536cfe0654306a03c8167eaac00c584823fc2f4ccb25946d1daa",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "ea7c0a25111d5f76413be7de88ccbc27f6d8f9c5999c9e1e6c91455f8a2fbde1"
+      }
+    },
+    {
+      "court": 2,
+      "records": 114,
+      "traceSHA256": "4330d6a2f582413347a942926e387eb6b791fde30fa2bebf50054eee21bca4b2",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "696fb58e354e3c5ae580a3a77de8b6eb8c0766e245893368a550c55f9af9bc5a"
+      }
+    },
+    {
+      "court": 3,
+      "records": 114,
+      "traceSHA256": "d6aedaf04d828156374ef4d0013df955bc7d117525d541d24bb4a585e337151e",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "a2cf200d65b19cd25204ad23e6c55380c6d7a91627a46fa76370fd442075fb0f"
+      }
+    },
+    {
+      "court": 4,
+      "records": 114,
+      "traceSHA256": "60aa36fcf5bac786956133fc6ab0500471a142892503466524338c9910bc9a83",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "001329b8a09a964fa57b58f2d837e1ff1a3b03190bc725030bab399587dffb8e"
+      }
+    },
+    {
+      "court": 5,
+      "records": 114,
+      "traceSHA256": "504e5f238df43212d1af1d41c59a3817ec65f3a7b4bff8ed1a8518233e21f852",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "f12e3329d0eb0533c3c16f2060e2d615b5c812bef9d8ee018c17cdbef06b138d"
+      }
+    },
+    {
+      "court": 6,
+      "records": 114,
+      "traceSHA256": "4e0021dd0569cc37c3c18efab7cd7eff913a79ff10c569218e2a806a5b36a4cd",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "4b625e93e2371a6a75af967ec386c741d25a8cb5c2679386d96a79e31f2a469c"
+      }
+    },
+    {
+      "court": 7,
+      "records": 114,
+      "traceSHA256": "fe3248730b9303f30d046feb8586222666b5366ceb08de052546de408eb1e98e",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1750,
+        "scenario_sha256": "fadc3afd159a77f79c11906b8ab6d521835b7368f4a2a7cf1c406218552c350b"
+      }
+    }
+  ]
+}

@@ -14,7 +14,7 @@ const initialRating = 1000
 func rateMatch(r *Room, record *MatchRecord) {
 	draw := r.Module != nil && r.Module.Result != nil && r.Module.Result.Draw
 	record.Rated = r.Rated && r.Status == "finished" && r.Game.Finished && (len(r.Game.Winners) > 0 || draw)
-	if r.Module != nil && r.Module.Result != nil && r.Module.Result.Cooperative {
+	if r.Module != nil && (r.Module.HasComputerPlayers || r.Module.Result != nil && r.Module.Result.Cooperative) {
 		record.Rated = false
 	}
 	for _, p := range r.Seats {

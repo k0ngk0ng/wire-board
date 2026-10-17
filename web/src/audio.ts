@@ -1,11 +1,17 @@
 import { toneDataURL, type Sound } from "./audio-tones.ts";
 export type { Sound } from "./audio-tones.ts";
-type Clip = { src: string; fallback?: string };
+type Clip = { src: string; fallback?: string; startOffset?: number };
 type Task = {
   owner: string;
   priority: number;
   clips: Clip[];
   starting: boolean;
+  generation: number;
+};
+type MusicOptions = {
+  loop?: boolean;
+  startOffset?: number;
+  playbackID?: string;
 };
 type LoopOptions = { volume?: number; rate?: number };
 type LoopVoice = {
@@ -15,6 +21,7 @@ type LoopVoice = {
   media: HTMLAudioElement;
   sourceIndex: number;
   starting: boolean;
+  generation: number;
   pending: Promise<boolean>;
   volume: number;
   rate: number;
@@ -27,10 +34,14 @@ const SILENCE =
 // gesture unlock and mute cancellation; game rules only select clip URLs.
 export class GameAudio {
   private media?: HTMLAudioElement;
+  // A finite clip can finish and release its Task while its source remains
+  // loaded. Retain that source's owner for later room/dispose cleanup.
+  private mediaOwner?: string;
   private background?: GameAudio;
   private backgroundOwner?: string;
   private backgroundSources = "";
   private loops = new Map<string, LoopVoice>();
+  private pausedOwners = new Set<string>();
   private factory: () => HTMLAudioElement;
   private allowed = true;
   private primed = false;
@@ -88,6 +99,7 @@ export class GameAudio {
     const media = this.element(),
       serial = this.serial;
     this.playbackSession();
+    this.mediaOwner = undefined;
     media.src = SILENCE;
     media.muted = true;
     try {
@@ -105,7 +117,84 @@ export class GameAudio {
       return false;
     }
   }
+  pause(owner: string) {
+    this.pausedOwners.add(owner);
+    if (this.task?.owner === owner) {
+      this.task.generation++;
+      this.media?.pause();
+    }
+    for (const voice of this.loops.values()) {
+      if (voice.owner !== owner) continue;
+      voice.generation++;
+      voice.media.pause();
+      if (voice.frame !== undefined) cancelAnimationFrame(voice.frame);
+      voice.frame = undefined;
+    }
+    this.background?.pause(owner);
+  }
+  async resume(owner: string): Promise<boolean> {
+    if (!this.pausedOwners.delete(owner) || !this.available()) return false;
+    const pending: Promise<boolean>[] = [];
+    const task = this.task;
+    if (task?.owner === owner && this.media?.src) {
+      const media = this.media;
+      const generation = ++task.generation;
+      task.starting = false;
+      pending.push(
+        (async () => {
+          try {
+            await media.play();
+            if (
+              this.task !== task ||
+              task.generation !== generation ||
+              !this.available() ||
+              this.pausedOwners.has(owner)
+            ) {
+              if (!this.task || this.pausedOwners.has(this.task.owner))
+                media.pause();
+              return false;
+            }
+            return true;
+          } catch {
+            if (this.task === task && task.generation === generation)
+              this.stopEffects(owner);
+            return false;
+          }
+        })(),
+      );
+    }
+    for (const voice of this.loops.values()) {
+      if (voice.owner !== owner) continue;
+      const generation = ++voice.generation;
+      voice.starting = false;
+      pending.push(
+        (async () => {
+          try {
+            await voice.media.play();
+            if (
+              !this.loopCurrent(voice) ||
+              voice.generation !== generation ||
+              this.pausedOwners.has(owner)
+            ) {
+              if (!this.loopCurrent(voice) || this.pausedOwners.has(owner))
+                voice.media.pause();
+              return false;
+            }
+            this.tuneLoop(voice, {});
+            return true;
+          } catch {
+            if (voice.generation === generation) this.releaseLoop(voice);
+            return false;
+          }
+        })(),
+      );
+    }
+    if (this.background) pending.push(this.background.resume(owner));
+    return (await Promise.all(pending)).some(Boolean);
+  }
   stop(owner?: string) {
+    if (owner === undefined) this.pausedOwners.clear();
+    else this.pausedOwners.delete(owner);
     this.stopEffects(owner);
     for (const voice of this.loops.values())
       if (owner === undefined || voice.owner === owner) this.releaseLoop(voice);
@@ -116,12 +205,15 @@ export class GameAudio {
     }
   }
   private stopEffects(owner?: string) {
-    if (owner !== undefined && this.task?.owner !== owner) return;
+    if (owner !== undefined && (this.task?.owner ?? this.mediaOwner) !== owner)
+      return;
     this.serial++;
     this.task = undefined;
+    this.mediaOwner = undefined;
     if (this.media) {
       this.media.onended = null;
       this.media.onerror = null;
+      this.media.onloadedmetadata = null;
       this.media.muted = true;
       this.media.pause();
       this.media.removeAttribute("src");
@@ -148,7 +240,10 @@ export class GameAudio {
           ? this.start([{ src: sources[0], fallback: sources[1] }], owner, 1)
           : Promise.resolve(false),
       stop: () => this.stop(owner),
-      music: (sources: readonly string[]) => this.startMusic(sources, owner),
+      pause: () => this.pause(owner),
+      resume: () => this.resume(owner),
+      music: (sources: readonly string[], options: MusicOptions = {}) =>
+        this.startMusic(sources, owner, options),
       stopMusic: () => this.background?.stop(owner),
       loop: (
         key: string,
@@ -224,7 +319,8 @@ export class GameAudio {
     requested: readonly string[],
     options: LoopOptions,
   ): Promise<boolean> {
-    if (!this.available() || !key) return Promise.resolve(false);
+    if (!this.available() || this.pausedOwners.has(owner) || !key)
+      return Promise.resolve(false);
     const sources = [...new Set(requested.filter(Boolean))];
     // A channel represents the current room. Do not let a previous room's
     // continuous sounds survive a new owner, even when it uses different keys.
@@ -259,6 +355,7 @@ export class GameAudio {
       media,
       sourceIndex: 0,
       starting: false,
+      generation: 0,
       pending: Promise.resolve(false),
       volume: 0.15,
       rate: 1,
@@ -276,10 +373,12 @@ export class GameAudio {
         this.releaseLoop(voice);
         return false;
       }
+      if (this.pausedOwners.has(voice.owner)) return false;
       const index = voice.sourceIndex;
       media.onerror = () => {
         if (
           !this.loopCurrent(voice) ||
+          this.pausedOwners.has(voice.owner) ||
           voice.starting ||
           voice.sourceIndex !== index
         )
@@ -288,6 +387,7 @@ export class GameAudio {
         voice.pending = this.playLoopSource(voice);
       };
       voice.starting = true;
+      const generation = voice.generation;
       media.src = voice.sources[index];
       media.muted = false;
       try {
@@ -298,14 +398,24 @@ export class GameAudio {
           this.releaseLoop(voice);
           return false;
         }
+        if (voice.generation !== generation) {
+          if (this.pausedOwners.has(voice.owner)) media.pause();
+          return false;
+        }
         voice.starting = false;
+        if (this.pausedOwners.has(voice.owner)) {
+          media.pause();
+          return false;
+        }
         return true;
       } catch {
+        if (voice.generation !== generation) return false;
         voice.starting = false;
         if (!this.loopCurrent(voice)) {
           this.releaseLoop(voice);
           return false;
         }
+        if (this.pausedOwners.has(voice.owner)) return false;
         voice.sourceIndex++;
       }
     }
@@ -315,9 +425,20 @@ export class GameAudio {
   private startMusic(
     sources: readonly string[],
     owner: string,
+    options: MusicOptions,
   ): Promise<boolean> {
-    if (!this.available() || !sources.length) return Promise.resolve(false);
-    const key = JSON.stringify(sources);
+    if (
+      options.startOffset !== undefined &&
+      (!Number.isFinite(options.startOffset) || options.startOffset < 0)
+    )
+      return Promise.resolve(false);
+    if (!this.available() || this.pausedOwners.has(owner) || !sources.length)
+      return Promise.resolve(false);
+    const key = JSON.stringify([
+      sources,
+      options.loop ?? true,
+      options.playbackID ?? null,
+    ]);
     if (
       this.backgroundOwner === owner &&
       this.backgroundSources === key &&
@@ -328,11 +449,21 @@ export class GameAudio {
     this.background ??= new GameAudio(this.factory);
     const media = this.background.element();
     media.dataset.platformMusic = "";
-    media.loop = true;
+    media.loop = options.loop ?? true;
     media.volume = 0.15;
     this.backgroundOwner = owner;
     this.backgroundSources = key;
-    return this.background.channel(owner).playWithFallback(sources);
+    return this.background.start(
+      [
+        {
+          src: sources[0],
+          fallback: sources[1],
+          startOffset: options.startOffset,
+        },
+      ],
+      owner,
+      1,
+    );
   }
   play(sound: Sound): Promise<boolean> {
     if (!this.available()) return Promise.resolve(false);
@@ -357,7 +488,8 @@ export class GameAudio {
     owner: string,
     priority: number,
   ): Promise<boolean> {
-    if (!this.available() || !clips.length) return false;
+    if (!this.available() || this.pausedOwners.has(owner) || !clips.length)
+      return false;
     if (this.task && !this.media?.paused && this.task.priority > priority)
       return false;
     this.stopEffects();
@@ -367,12 +499,18 @@ export class GameAudio {
       priority,
       clips: clips.slice(0, 4),
       starting: false,
+      generation: 0,
     };
     this.task = task;
     return this.next(task);
   }
   private async next(task: Task): Promise<boolean> {
-    if (this.task !== task || !this.available()) return false;
+    if (
+      this.task !== task ||
+      !this.available() ||
+      this.pausedOwners.has(task.owner)
+    )
+      return false;
     const clip = task.clips.shift();
     if (!clip) {
       this.task = undefined;
@@ -390,7 +528,50 @@ export class GameAudio {
     )) {
       if (this.task !== task || !this.available()) return false;
       task.starting = true;
+      const generation = task.generation;
+      this.mediaOwner = task.owner;
       media.src = src;
+      const loadedSource = media.src;
+      media.onloadedmetadata =
+        clip.startOffset === undefined
+          ? null
+          : () => {
+              // A cancelled source's metadata must never seek a newer owner's clip.
+              // Owner pause deliberately keeps this handler: resume must retain the
+              // intended position even when metadata arrived while playback paused.
+              if (
+                this.task !== task ||
+                !this.available() ||
+                media.src !== loadedSource
+              )
+                return;
+              if (media.currentSrc && media.currentSrc !== loadedSource) return;
+              const duration = media.duration;
+              if (!Number.isFinite(duration) || duration <= 0) {
+                this.stopEffects(task.owner);
+                return;
+              }
+              if (!media.loop && clip.startOffset! >= duration) {
+                this.stopEffects(task.owner);
+                return;
+              }
+              try {
+                media.currentTime = media.loop
+                  ? clip.startOffset! % duration
+                  : clip.startOffset!;
+              } catch {
+                this.stopEffects(task.owner);
+              }
+            };
+      if (clip.startOffset !== undefined) {
+        // HTML media permits a default start position before metadata. The
+        // metadata handler performs duration-aware wrapping before audible play.
+        try {
+          media.currentTime = clip.startOffset;
+        } catch {
+          /* Seek on metadata. */
+        }
+      }
       media.muted = false;
       try {
         await media.play();
@@ -399,12 +580,25 @@ export class GameAudio {
           media.pause();
           return false;
         }
-        if (this.task !== task) return false;
+        if (this.task !== task) {
+          if (!this.task) media.pause();
+          return false;
+        }
+        if (task.generation !== generation) {
+          if (this.pausedOwners.has(task.owner)) media.pause();
+          return false;
+        }
         task.starting = false;
+        if (this.pausedOwners.has(task.owner)) {
+          media.pause();
+          return false;
+        }
         this.primed = true;
         return true;
       } catch {
-        if (this.task !== task) return false;
+        if (this.task !== task || task.generation !== generation) return false;
+        task.starting = false;
+        if (this.pausedOwners.has(task.owner)) return false;
         this.primed = false;
       }
     }

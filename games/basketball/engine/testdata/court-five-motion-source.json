@@ -1,0 +1,11 @@
+{
+  "records": 1664,
+  "deviceTriggers": 540,
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "fixed EEFF -> bank4 8249/863C",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixture_sha256": "e35fa5fc7739f689f35accfd9efa52fae21a2fb7d326f688d17b7948740718d8",
+  "unchanged_ROM_instructions": true,
+  "method": "all13 object boundary/held/entered-device/landing configured cases; MMC3 PRG writes modeled; C000 sound sink only"
+}
