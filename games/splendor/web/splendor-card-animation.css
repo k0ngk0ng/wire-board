@@ -117,7 +117,7 @@
     display: none;
   }
   .splendor-card-arrival {
-    animation-name: splendor-card-received-still;
+    animation: splendor-card-received-still 750ms linear both !important;
     animation-delay: 0ms !important;
   }
   @keyframes splendor-card-received-still {

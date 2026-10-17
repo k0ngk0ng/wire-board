@@ -1,6 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
+import {
+  SplendorFlightRecipients,
+  measureSplendorRecipient,
+  showSplendorRecipient,
+} from "./splendor-flight-recipient";
 import type { Card, Noble, Room, SplendorCardEvent } from "./types";
 
 import { visibleFlightAnchor } from "../../../web/src/flight-anchor";
@@ -131,15 +136,9 @@ export function SplendorCardAnimation({
               event.player === room.you &&
               event.card?.id === selection.card
             ) {
-              const element =
-                typeof source === "string"
-                  ? document.querySelector(source)
-                  : null;
-              const visible =
-                typeof source === "string"
-                  ? element && visibleFlightAnchor(element)
-                  : source && resolveCardOrigin(source);
-              if (!visible) source = selection.origin;
+              // The confirmed preview is the card the player just interacted
+              // with, even if its original reserved/market slot is also visible.
+              source = selection.origin;
               confirmed.current = null;
             }
             if (!source) return [];
@@ -195,9 +194,11 @@ export function SplendorCardAnimation({
           typeof flight.source === "string"
             ? anchor(flight.source)
             : resolveCardOrigin(flight.source),
-        to: anchor(flight.target),
+        recipient: measureSplendorRecipient(layer.current, flight.event.player),
       }));
-      for (const { flight, from, to } of measurements) {
+      for (const { flight, from, recipient } of measurements) {
+        showSplendorRecipient(recipient);
+        const to = recipient.point;
         const root = layer.current?.querySelector<HTMLElement>(
           `[data-card-flight="${flight.event.id}"]`,
         );
@@ -289,6 +290,10 @@ export function SplendorCardAnimation({
         } as CSSProperties
       }
     >
+      <SplendorFlightRecipients
+        room={room}
+        players={flights.map((f) => f.event.player)}
+      />
       {flights.map(({ event, style, arrivalStyle, label }) => (
         <div
           key={event.id}

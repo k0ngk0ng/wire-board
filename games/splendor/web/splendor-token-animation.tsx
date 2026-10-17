@@ -1,6 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
+import {
+  SplendorFlightRecipients,
+  measureSplendorRecipient,
+  showSplendorRecipient,
+} from "./splendor-flight-recipient";
 import type { Room } from "./types";
 
 import { visibleFlightAnchor } from "../../../web/src/flight-anchor";
@@ -88,14 +93,20 @@ export function SplendorTokenAnimation({
       };
       const measurements = flights.map((flight) => {
         const bankPoint = anchor(flight.bank);
-        const playerPoint = anchor(flight.avatar);
+        const recipient = measureSplendorRecipient(
+          layer.current,
+          flight.player,
+        );
+        const playerPoint = recipient.point;
         return {
           key: flight.key,
+          recipient,
           from: flight.returning ? playerPoint : bankPoint,
           to: flight.returning ? bankPoint : playerPoint,
         };
       });
-      for (const { key, from, to } of measurements) {
+      for (const { key, from, to, recipient } of measurements) {
+        showSplendorRecipient(recipient);
         const token = layer.current?.querySelector<HTMLElement>(
           `[data-token-flight="${key}"]`,
         );
@@ -160,6 +171,10 @@ export function SplendorTokenAnimation({
         } as CSSProperties
       }
     >
+      <SplendorFlightRecipients
+        room={room}
+        players={flights.map((f) => f.player)}
+      />
       {flights.map((flight) => (
         <span
           key={flight.key}

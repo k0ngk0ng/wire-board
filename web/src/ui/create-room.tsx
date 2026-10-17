@@ -45,11 +45,16 @@ export function CreateRoom({
   useEffect(() => {
     const panel = choosing ? choices.current : settings.current;
     panel?.closest(".modal")?.scrollTo({ top: 0 });
-    panel
-      ?.querySelector<HTMLInputElement>(
-        choosing ? 'input[type="search"]' : 'input[name="name"]',
-      )
-      ?.focus({ preventScroll: true });
+    // Keep focus inside the active step without summoning a mobile keyboard.
+    const mobile = window.matchMedia(
+      "(max-width: 600px), (pointer: coarse)",
+    ).matches;
+    const target = mobile
+      ? panel
+      : panel?.querySelector<HTMLInputElement>(
+          choosing ? 'input[type="search"]' : 'input[name="name"]',
+        );
+    target?.focus({ preventScroll: true });
   }, [choosing, kind]);
   const game = gameModule(kind);
   return (
@@ -60,6 +65,9 @@ export function CreateRoom({
     >
       <div
         ref={choices}
+        tabIndex={-1}
+        role="group"
+        aria-label="选择游戏"
         hidden={!choosing}
         inert={!choosing}
         data-create-step="choose"
@@ -79,6 +87,9 @@ export function CreateRoom({
         <div
           key={kind}
           ref={settings}
+          tabIndex={-1}
+          role="group"
+          aria-label="房间设置"
           hidden={choosing}
           inert={choosing}
           data-create-step="setup"

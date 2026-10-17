@@ -32,8 +32,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .splendor-token-animation .splendor-flying-token {
-    animation-name: splendor-token-pulse;
-    animation-duration: 450ms;
+    /* The platform disables motion globally; retain a stationary receipt fade. */
+    animation: splendor-token-pulse 450ms linear both !important;
     animation-delay: 0ms !important;
   }
   @keyframes splendor-token-pulse {
