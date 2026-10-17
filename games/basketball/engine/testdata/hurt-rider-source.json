@@ -1,0 +1,11 @@
+{
+  "scope": "controlled original9673 full calls with attachment; exact retained native runtime failure separately",
+  "records": 160,
+  "entry": "bank6 9673",
+  "prepared": "96F1",
+  "beforeMotion": "96F4",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "aa074d4bb39f26698ec26ffc63014c228c104f699a695131b963d14e755a3f62",
+  "runtimeBeforeSHA256": "d98b07aebfe2cf51ad116471f675f74dd660d4f99521fa98f0be1e5d9938a86a"
+}

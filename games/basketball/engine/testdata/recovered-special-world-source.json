@@ -1,0 +1,13 @@
+{
+  "scope": "controlled original D345..D348 whole action phase; not natural menu gameplay",
+  "actions": [
+    16,
+    17,
+    19,
+    22
+  ],
+  "calls": 16,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "985abe7aa1af178c50f0ae09922fa59cc598fbfd2bacd67bda37782aa74a5348"
+}

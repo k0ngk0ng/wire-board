@@ -1,0 +1,18 @@
+{
+  "entry": "original E149..E14C dispatch to bank6 BD23",
+  "calls": 340,
+  "chains": [
+    48,
+    45,
+    43,
+    71,
+    27,
+    58,
+    59,
+    72
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "56b259ce5510b1621484736f56b6de9f6d4254965c7ab4288d3f347569e99c61",
+  "scope": "controlled original calls and continuous chains, no natural match claim"
+}

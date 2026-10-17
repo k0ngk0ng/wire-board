@@ -256,7 +256,7 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 	clearOriginalLandingSpecialShot(a)
 	computer := ctx.Controls[actor]&128 != 0
 	profile := ctx.Profiles[actor]
-	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && p.Action != 0x68 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
+	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && p.Action != 0x68 && p.Action != 0x49 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
 		return fmt.Errorf("attached player action %02x (entered %t, link %02x) is not reconstructed", p.Action, p.Entered, s.PlayerLinks[actor])
 	}
 	heldHoop := -1
@@ -388,25 +388,8 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		}
 		appendPlayerActionSounds(result, motionSoundStart, step.SoundIDs)
 	case p.Action >= 0x47 && p.Action <= 0x4a:
-		step, err := StepHurtPlayer(HurtState{Player: *p, Endurance: a.Endurance}, HurtContext{Actor: actor, Computer: computer, RecoveryGrade: ctx.RecoveryGrades[actor], Random: s.Random, BallHolder: s.Holder, BallVelocityX: s.Ball.Body.Velocity.X, AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, HoopOwners: s.hoopOwners(), SpecialHolder: s.SpecialHolder, AssistedActor: s.Auxiliary[1].ObjectLink, LinkedActor: a.LinkedActor, Attachments: s.PlayerLinks}, court)
-		if err != nil {
+		if err := advanceWorldHurtPlayer(result, actor, ctx, court); err != nil {
 			return err
-		}
-		a.Player, a.Endurance, s.Random = step.State.Player, step.State.Endurance, step.Random
-		for _, command := range step.Objects {
-			if err := s.applyHurtObject(command); err != nil {
-				return err
-			}
-		}
-		s.Ball = ApplyBallCommand(s.Ball, step.Ball)
-		if step.ReleaseBall {
-			s.Holder = 6
-		}
-		if step.ChangeBallVelocity {
-			s.Ball.Body.Velocity.X = step.BallVelocityX
-		}
-		if step.ClearSpecialHolder {
-			s.SpecialHolder = -1
 		}
 	case worldAuxiliaryPlayerAction(*s, actor):
 		if err := advanceWorldAuxiliaryCarrier(result, actor, ctx, court); err != nil {
@@ -518,6 +501,13 @@ func advanceWorldBallStep(s *WorldActionState, ctx WorldActionContext, court Fla
 			}
 		}
 	case BallDribble, BallHeld:
+		if s.Ball.Action == BallDribble && s.Holder == 6 {
+			s.Ball, err = stepSelfReferencedDribble(s.Ball)
+			if err == nil {
+				s.PoseSource = 6
+			}
+			break
+		}
 		if s.Holder < 0 || s.Holder >= 4 {
 			return nil, fmt.Errorf("held ball has invalid player owner %d", s.Holder)
 		}
@@ -683,11 +673,20 @@ func StepWorldActions(original WorldActionState, ctx WorldActionContext) (WorldA
 		case object == 6:
 			s.Ball, err = ResolveBallRequest(s.Ball)
 			if err == nil {
-				if s.Ball.Action == 18 {
+				switch s.Ball.Action {
+				case 16:
+					err = advanceWorldBall16(&result, ctx, court)
+				case 17:
+					err = advanceWorldBall17(&result, ctx, court)
+				case 18:
 					err = advanceWorldBall18(&result, ctx, court)
-				} else if s.Ball.Action == 12 || s.Ball.Action == 14 || s.Ball.Action == 15 {
+				case 19:
+					err = advanceWorldBall19(&result, ctx, court)
+				case 22:
+					err = advanceWorldBall22(&result, ctx, court)
+				case 12, 14, 15:
 					err = advanceWorldTeamSpecialBall(&result, ctx, court)
-				} else {
+				default:
 					var sounds []uint8
 					sounds, err = advanceWorldBallStep(s, ctx, court)
 					result.SoundIDs = append(result.SoundIDs, sounds...)

@@ -119,3 +119,6 @@ All source/translation data is separate from the existing 72 preparation image
 assets. Images may now be labeled from these proven IDs, but a verified name
 never makes an unverified character action or court playable. No preparation
 options were widened and no assets were uploaded or published by this work.
+## Subsequent preparation UI integration
+
+The name-research step above did not change UI. A later integration exports the compact `labels.json` via `scripts/basketball/export_selection_labels.py` and uses those labels in `web/Preparation.tsx`. This excludes private provenance paths from the client bundle. The development UI remains restricted to courts 0–6 and default teams 0/1, character slots 0/1; source names do not unlock gameplay. Component checks (15), actual platform checks (33), build and packaging passed in `.local/basketball/engine/preparation-names-*.log`.

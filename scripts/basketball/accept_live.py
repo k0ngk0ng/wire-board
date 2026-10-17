@@ -11,12 +11,17 @@ parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--full-match',action='store_true',help='also render a cold complete match through the actual client')
 parser.add_argument('--all-computer',action='store_true',help='run the natural complete-match case with all four original computer players')
 parser.add_argument('--court',type=int,choices=[0,1,2,3,4,5,6],default=1,help='original recovered court selector; no world-state injection')
+parser.add_argument('--teams',type=int,nargs=2,help='explicit original team IDs for the cold full match')
+parser.add_argument('--characters',type=int,nargs=4,help='explicit original character slots for the cold full match')
 parser.add_argument('--carry',action='store_true',help='native pickup, carrying movement, jumping and A/B prop throws on Court3')
 parser.add_argument('--running-carry',action='store_true',help='native role-specific running B prop attacks on Court3')
 parser.add_argument('--fade',action='store_true',help='observe original opening fade through Go/Wasm and Canvas')
 parser.add_argument('--gate',action='store_true',help='reach Court3 gate with native movement and jump input')
 parser.add_argument('--spring',action='store_true',help='also reach Court2 spring using only native controller input')
 ARGS=parser.parse_args()
+if (ARGS.teams is not None or ARGS.characters is not None) and not (ARGS.full_match and ARGS.all_computer):parser.error('explicit roster requires --full-match --all-computer')
+if ARGS.teams is not None and (any(t<0 or t>7 for t in ARGS.teams) or ARGS.teams[0]==ARGS.teams[1]):parser.error('teams must be distinct original IDs 0..7')
+if ARGS.characters is not None and (any(c<0 or c>3 for c in ARGS.characters) or ARGS.characters[0]==ARGS.characters[1] or ARGS.characters[2]==ARGS.characters[3]):parser.error('characters must be 0..3 and distinct within each team')
 if ARGS.all_computer and not ARGS.full_match:parser.error('--all-computer requires --full-match')
 if ARGS.spring and ARGS.court!=2:parser.error('--spring requires --court 2')
 if ARGS.gate and ARGS.court!=3:parser.error('--gate requires --court 3')
@@ -24,6 +29,8 @@ if ARGS.carry and ARGS.court!=3:parser.error('--carry requires --court 3')
 if ARGS.running_carry and ARGS.court!=3:parser.error('--running-carry requires --court 3')
 OUT=ROOT/('.local/basketball/all-computer-full-match-browser' if ARGS.all_computer else '.local/basketball/full-match-browser' if ARGS.full_match else '.local/basketball/live-browser')
 if ARGS.court!=1:OUT=OUT.with_name(OUT.name+'-court-'+str(ARGS.court))
+if ARGS.teams is not None:OUT=OUT.with_name(OUT.name+'-teams-'+'-'.join(map(str,ARGS.teams)))
+if ARGS.characters is not None:OUT=OUT.with_name(OUT.name+'-characters-'+'-'.join(map(str,ARGS.characters)))
 OUT.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkl-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
@@ -337,8 +344,13 @@ def main():
             # Actual cold creation and original clock. No scores, positions,
             # RNG or clock fields are rewritten. All Go frames reach Canvas.
             controller_setup='config.match.Court='+str(ARGS.court)+';'+('config.match.ControllerAssignments=[-1,-1,-1,-1];' if ARGS.all_computer else '')
+            if ARGS.teams is not None:controller_setup+='config.match.Teams='+json.dumps(ARGS.teams)+';'
+            if ARGS.characters is not None:controller_setup+='config.match.Characters='+json.dumps(ARGS.characters)+';'
             js('(()=>{const call=v=>{const r=JSON.parse(window.basketballWasm(JSON.stringify(v)));if(!r.ok)throw Error(JSON.stringify(r.error));return r.data};const config=call({op:"defaults"});config.match.Seed=0x12345678;'+controller_setup+'const fresh=call({op:"create",config});live.restore({version:1,state:fresh.state});call({op:"dispose",session:fresh.session});return true})()')
             if ARGS.all_computer:expect('all four original computer slots selected',js('live.view.state.config.match.ControllerAssignments.every(slot=>slot===-1)'))
+            if ARGS.teams is not None:expect('cold match uses selected original teams',js('live.view.state.config.match.Teams')==ARGS.teams)
+            if ARGS.characters is not None:expect('cold match uses selected original characters',js('live.view.state.config.match.Characters')==ARGS.characters)
+            js('window.naturalBallActions={}')
             observe_fade=''
             if ARGS.fade:
                 js('window.naturalFades=[]')
@@ -346,6 +358,7 @@ def main():
             if ARGS.court==6:
                 js('window.naturalSlots=[];window.lastSlotKey=""')
                 observe_fade+='const p=s.playing?.world.Preparation;if(p){const a=p.Actions,row={frame:s.videoFrames,logic:s.logicSteps,progress:p.CourtScoreFlags,outcome:p.CourtOutcomeFlags??0,scores:p.Scores,palette:s.display.Visible.paletteID,reels:[...a.actors.map(a=>a.player.newYorkPassage??0),...a.auxiliary.map(a=>a.NewYorkPassage??0)]},key=JSON.stringify([row.progress,row.outcome,row.scores,row.palette,row.reels]);if(key!==lastSlotKey){lastSlotKey=key;naturalSlots.push(row);}}'
+            observe_fade+='if(s.playing){const a=s.playing.world.Preparation.Actions.ball.action;naturalBallActions[a]=(naturalBallActions[a]??0)+1;}'
             began=time.monotonic();trace=[];intermissions=0
             for batch in range(500):
                 state=js('(()=>{let s=live.view.state;for(let i=0;i<120&&!s.outcome?.confirmed;i++){if(s.awaitingNextPeriod&&s.waitVideoFrames===0)break;live.advance(1);s=live.view.state;'+observe_fade+'}return{videoFrames:s.videoFrames,logicSteps:s.logicSteps,awaiting:s.awaitingNextPeriod,wait:s.waitVideoFrames,period:s.playing?.match.Period,outcome:s.outcome}})()')
@@ -368,6 +381,7 @@ def main():
                 expect('natural complete match renders both openings, both exits and result fade',[r['level'] for r in fades]==[1,2,3,4,3,2,1,0,1,2,3,4,3,2,1,0,1,2,3,4])
                 expect('all natural fades commit two videos apart with distinct pixel output',all(len({r['pixelHash'] for r in fades[i:i+4]})==4 and all(fades[i+j]['video']-fades[i]['video']==2*j for j in range(4)) for i in range(0,20,4)))
                 expect('natural exits visibly reach black and result fades its own background',all(r['colors']==1 for r in fades if r['level']==0) and all(r['result'] for r in fades[-4:]))
+            (OUT/'natural-ball-actions.json').write_text(json.dumps(dict(scope='observed rendered video updates in this cold match; not all special actions',counts=js('naturalBallActions')),indent=2)+'\n')
             natural=js('live.save()');natural_image=js('document.querySelector("canvas").toDataURL()')
             js('live.advance(120)')
             expect('natural final state remains stable',js('live.save()')==natural and js('document.querySelector("canvas").toDataURL()')==natural_image)
@@ -375,7 +389,7 @@ def main():
             expect('natural final image survives restore',js('document.querySelector("canvas").toDataURL()')==natural_image)
             (OUT/'natural-final-state.json').write_text(json.dumps(natural,indent=2)+'\n')
             (OUT/'natural-final-canvas.png').write_bytes(base64.b64decode(natural_image.split(',')[1]))
-            (OUT/'natural-result.json').write_text(json.dumps(dict(status='passed',coldSeed=0x12345678,allComputer=ARGS.all_computer,court=ARGS.court,rewrittenWorldFields=False,intermissions=intermissions,elapsedSeconds=time.monotonic()-began,final=state,trace=trace),indent=2)+'\n')
+            (OUT/'natural-result.json').write_text(json.dumps(dict(status='passed',coldSeed=0x12345678,allComputer=ARGS.all_computer,court=ARGS.court,teams=ARGS.teams,characters=ARGS.characters,rewrittenWorldFields=False,intermissions=intermissions,elapsedSeconds=time.monotonic()-began,final=state,trace=trace),indent=2)+'\n')
             browser('screenshot',str(OUT/'natural-final-desktop.png'));browser('set','viewport','320','720');browser('screenshot',str(OUT/'natural-final-mobile.png'));browser('set','viewport','1280','900')
         # Explicit final-scene boundary; this does not stand in for natural
         # full-match acceptance in verify_video_runtime.py --full-match.
