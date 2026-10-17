@@ -25,3 +25,11 @@
 当前开发版可在等待房间选择 Court 0–4。新增 Court 4 的 16 种阵容／控制配置首轮 12 组通过，4 组暴露原 Kind10 捕获分支；修复后这 4 组完整比赛通过，合计 80 种已开放配置均有通过证据。失败记录未覆盖或删除，仍不能据此开放其余场地和人物。
 
 实际平台重新构建并通过登录、三种房间模式、准备区图片加载、第五球场选择保存、球员调整、第二人加入、准备及直接开赛，共 33 项检查。PC 和 320px 截图位于 `.local/basketball/platform-rooms/`，重复执行入口仍为 `TestBasketballBrowserPlatformRooms`。最新构建、浏览器和 Wasm 来源绑定日志为 `.local/basketball/engine/preparation-five-courts-{rebuild,browsers-after,package-after}.log`；它们对应后续四阶转场实现之前的源码，不替代后续改动验收。
+
+## 第六个球场续作
+
+Court 5 已完成四种默认控制配置的 Native／race／Wasm 完整比赛，以及新增 16 组阵容／控制配置。首轮 13 组通过，3 组在原抬起、发射链暴露缺口；原分支恢复后，这 3 组复验通过。原种子、比赛时钟和失败记录均保留，汇总为 `.local/basketball/rea/court-five/resume-summary.json`。
+
+开发版准备区现有六张场地图片卡。HTTP 验收增加 Court 5 的保存、SQLite 重启、开赛配置以及仍拒绝 Court 6；实际平台浏览器也直接以所选 Court 5 开赛。组件 13 项、完整平台 33 项检查通过；实际 Go／Wasm 全电脑 Court 5 浏览器完整比赛另通过 40 项检查。对应日志为 `.local/basketball/engine/court-five-{preparation-after,preparation-component,stable-build,stable-package,stable-browsers,browser}.log`。这是记录时构建的验证，后续规则修改仍需各自验收和新的来源绑定构建。
+
+没有开放其他球队或尚未完成的球场，也未改变生产上下架设置。

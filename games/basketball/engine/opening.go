@@ -48,7 +48,7 @@ type OpeningStep struct {
 // It does not read an observation fixture, save state, ROM or emulator memory.
 func NewOriginalMatch(c OriginalMatchConfiguration) (OpeningState, error) {
 	var s OpeningState
-	if c.Court > 5 {
+	if c.Court >= 8 {
 		return s, fmt.Errorf("opening court is not yet supported by complete motion integration")
 	}
 	for i, v := range c.ControllerAssignments {
@@ -180,7 +180,7 @@ func setOpeningBall(s *OpeningState, b Ball) {
 // calls before throwing, then runs the same restored ball physics as a match.
 // The outer loop owns RNG consumption, video ticks and draw-list reset.
 func StepOriginalRefereeOpening(original OpeningState) (OpeningStep, error) {
-	if original.Transition.Scene != 1 || original.Transition.Match.Phase != 8 || original.Transition.Court > 5 {
+	if original.Transition.Scene != 1 || original.Transition.Match.Phase != 8 || original.Transition.Court >= 8 {
 		return OpeningStep{State: original}, fmt.Errorf("referee opening requires a supported court in phase 8")
 	}
 	r := OpeningStep{State: original}
@@ -228,7 +228,7 @@ func StepOriginalRefereeOpening(original OpeningState) (OpeningStep, error) {
 	}
 	ball := openingBall(*s)
 	court := NewYorkBallCourt().withMotionSurfaceWrites(6, &r.MotionSurfaceWrites)
-	if t.Court == 0 || t.Court == 2 || t.Court == 3 || t.Court == 4 || t.Court == 5 {
+	if t.Court != 1 {
 		court = originalOpeningMotionCourt(s, &r.SoundIDs, &r.MotionSurfaceWrites)
 	}
 	switch ball.Action {

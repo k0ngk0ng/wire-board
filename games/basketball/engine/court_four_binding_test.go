@@ -178,7 +178,7 @@ func TestCourtFourDynamicKindsSurviveWorldConsumersAndRestore(t *testing.T) {
 			t.Fatal("invalid/missing conveyor kind restored", kind)
 		}
 	}
-	for _, court := range []uint8{6, 7, 255} {
+	for _, court := range []uint8{8, 255} {
 		c := s.Config
 		c.Match.Court = court
 		if _, e = NewRuntime(c); e == nil {

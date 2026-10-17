@@ -1,0 +1,9 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "98f1f6ffcd8038fa7369eee5438a1b3efad2c14df8a8bdffbbb18f8344610ecf",
+  "generatorSHA256": "4c304073dffff1d555c45ce2c0b467e92d240da1984561f1a6d858261c346592",
+  "entry": "bank5 8318 -> 82E4",
+  "tailSource": "bank6 AA2B sets animation cursor3; original running attack tail advances cursor4",
+  "scope": "40 isolated original geometry reads, not natural ROM match evidence",
+  "records": 40
+}

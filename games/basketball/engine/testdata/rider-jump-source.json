@@ -1,0 +1,16 @@
+{
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "fixed E165/E18B through E168",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "bf556216bed62687c863cec05ef6416ba0623c77eeede652723bc87431fea9a3",
+  "calls": 288,
+  "riderCalls": 72,
+  "runCalls": 48,
+  "chains": 8,
+  "chainCalls": 136,
+  "motionAttachments": [
+    0
+  ],
+  "scope": "configured original rider jump requests, continuous once-initialized jumps; FBCC sound sink only; no CPU emulator in runtime"
+}

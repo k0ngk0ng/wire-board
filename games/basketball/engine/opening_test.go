@@ -142,7 +142,7 @@ func TestNewMatchConfigurationBuildsOpeningWithoutFixtures(t *testing.T) {
 	if e != nil || profiles[0].RunSpeed != 1344 || profiles[0].JumpVelocity != 2176 || profiles[0].ShotSkill != 6 {
 		t.Fatal(profiles, e)
 	}
-	cfg.Court = 7
+	cfg.Court = 8
 	if _, e = NewOriginalMatch(cfg); e == nil {
 		t.Fatal("unsupported court opening accepted")
 	}

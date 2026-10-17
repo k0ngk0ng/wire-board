@@ -1,0 +1,11 @@
+{
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "E165/E18B\u21929E3D action3F;07 support/rider coupled loops",
+  "calls": 288,
+  "chains": 4,
+  "chainCalls": 384,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "e39a416f0649291226ee1f3db3fbf657cfe54635588175fc68c1fa1d790f44ca",
+  "scope": "configured unchanged original instructions; continuous support/rider initialized once; FBCC sound sink only"
+}

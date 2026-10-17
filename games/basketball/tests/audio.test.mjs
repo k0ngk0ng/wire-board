@@ -89,8 +89,8 @@ test('events are deduplicated and reset establishes the recovery watermark',asyn
 
 test('unsupported IDs never become guessed files and no user mute setting is touched',async()=>{
   const p=port(),a=new BasketballAudio(p);
-  const result=await a.consume([1,254,300,-1,NaN,1.5],1);
-  assert.deepEqual(result.unsupported,[1,254,300,-1,NaN,1.5]);assert.deepEqual(p.calls,[]);
+  const result=await a.consume([2,254,300,-1,NaN,1.5],1);
+  assert.deepEqual(result.unsupported,[2,254,300,-1,NaN,1.5]);assert.deepEqual(p.calls,[]);
 });
 
 test('platform failures resolve as reports and cannot break the simulation',async()=>{
@@ -138,4 +138,15 @@ test('a missing compressed rendition cannot silently fall back to a large WAV ma
     assert.deepEqual((await a.consume([66],1)).unsupported,[66]);
     assert.deepEqual(p.calls,[]);
   } finally {playback.music['66'].file=saved;}
+});
+
+test('captured running, jump and running-release original requests have explicit effect assets',async()=>{
+  const p=port(),a=new BasketballAudio(p,{localBase:'/audio'});
+  const result=await a.consume([1,23,48],1);
+  assert.deepEqual(result,{ignored:false,unsupported:[],failed:[]});
+  assert.deepEqual(p.calls,[1,23,48].map(id=>['effect',`/audio/sound-${String(id).padStart(3,'0')}.wav`]));
+  for(const id of [1,48]) {
+    assert.match(playback.effects[id].sha256,/^[a-f0-9]{64}$/);
+    assert.equal(playback.effects[id].listening_accepted,false);
+  }
 });

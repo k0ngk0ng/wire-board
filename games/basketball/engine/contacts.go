@@ -18,6 +18,7 @@ type ContactProfile struct {
 type ContactProfileKey struct{ Kind, Action, Variant, Frame uint8 }
 
 func OriginalContactProfile(key ContactProfileKey) (ContactProfile, error) {
+	originalKind := key.Kind
 	key.Action &= 127
 	// All eight player kinds share the original action geometry and flags;
 	// attack geometry is selected by the character-specific Variant instead.
@@ -29,6 +30,19 @@ func OriginalContactProfile(key ContactProfileKey) (ContactProfile, error) {
 	}
 	if key.Kind == 14 && key.Action == 3 {
 		return ContactProfile{}, fmt.Errorf("original kind14 action3 contact geometry requires current semantic context: %+v", key)
+	}
+	// Ball13's reachable animation tail crosses the adjacent geometry-array
+	// boundary. Original 8318 reads 9131 for cursors2/4 and 9159 for5/6.
+	// This is a source-defined domain, not permission for arbitrary cursors.
+	if key.Kind == 8 && key.Action == 13 {
+		flags := originalBallContactFlags[13]
+		switch key.Frame {
+		case 2, 4:
+			return ContactProfile{Shape: ContactShape{Attack: ContactBoxSpec{MinHeight: -128}, Body: ContactBoxSpec{MinHeight: 128}}, AttackFlags: flags, ReceiveFlags: flags}, nil
+		case 5, 6:
+			box := ContactBoxSpec{Enabled: true, MinX: -8, MaxX: 8, MinHeight: 1, MaxHeight: 15}
+			return ContactProfile{Shape: ContactShape{Attack: box, Body: box}, AttackFlags: flags, ReceiveFlags: flags}, nil
+		}
 	}
 	if key.Action < 96 && (key.Kind == 0 || key.Kind == 8) {
 		groups, flags := originalPlayerContactGroups[:], originalPlayerContactFlags[:]
@@ -44,6 +58,37 @@ func OriginalContactProfile(key ContactProfileKey) (ContactProfile, error) {
 		return ContactProfile{}, fmt.Errorf("original normal contact profile outside source table: %+v", key)
 	}
 	if key.Kind == 0 && key.Action >= 96 && key.Action < 106 {
+		// AA2B's A-release jumps past variant63's normal animation loop.
+		// Its reachable cursors3/4 both select bank5 shape9139, identical
+		// to cursor0. Preserve the ordinary domain for every other action.
+		if key.Action == 0x68 && key.Variant == 63 && (key.Frame == 3 || key.Frame == 4) {
+			key.Frame = 0
+		}
+		if tail, exists := originalAttackAnimationTails[key.Variant]; exists && key.Action < 104 && key.Frame >= tail.Start && int(key.Frame-tail.Start) < len(tail.Spec.Frames) {
+			selected := false
+			for character := uint8(0); character < 4; character++ {
+				selected = selected || originalAttackProfiles[key.Action-96][originalKind*4+character].Variant == key.Variant
+			}
+			// Original bank5:$8318 reads shape $9139 throughout these tails.
+			if selected {
+				if key.Variant == 24 {
+					// Source $92F1: handler31's landing-bounce tail.
+					flags := originalAttackContactFlags[key.Action-96]
+					return ContactProfile{Shape: ContactShape{Attack: ContactBoxSpec{Enabled: true, MinHeight: 0, MaxHeight: 16, MinX: -4, MaxX: 4}, Body: ContactBoxSpec{Enabled: true, MinHeight: 16, MaxHeight: 40, MinX: -8, MaxX: 8}}, AttackFlags: flags, ReceiveFlags: flags}, nil
+				}
+				if key.Variant == 15 {
+					// Source $9149: diving kick's one-frame tail.
+					flags := originalAttackContactFlags[key.Action-96]
+					return ContactProfile{Shape: ContactShape{Attack: ContactBoxSpec{Enabled: true, MinHeight: 8, MaxHeight: 16, MinX: 0, MaxX: 20}, Body: ContactBoxSpec{Enabled: true, MinHeight: 0, MaxHeight: 32, MinX: -8, MaxX: 8}}, AttackFlags: flags, ReceiveFlags: flags}, nil
+				}
+				if key.Variant == 98 {
+					// $9131 has both boxes disabled throughout this recoil.
+					flags := originalAttackContactFlags[key.Action-96]
+					return ContactProfile{Shape: ContactShape{Attack: ContactBoxSpec{MinHeight: -128}, Body: ContactBoxSpec{MinHeight: 128}}, AttackFlags: flags, ReceiveFlags: flags}, nil
+				}
+				key.Frame = 0
+			}
+		}
 		frames, ok := originalAttackContactShapes[key.Variant]
 		if !ok || int(key.Frame) >= len(frames) {
 			return ContactProfile{}, fmt.Errorf("original attack contact profile outside restored animation: %+v", key)

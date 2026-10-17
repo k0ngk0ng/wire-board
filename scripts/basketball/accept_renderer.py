@@ -9,7 +9,7 @@ from prepare_renderer_fixture import ROOT,prepare
 from prepare_result_renderer_fixture import prepare as prepare_results
 from prepare_courts_renderer_fixture import prepare as prepare_courts
 from prepare_fade_fixture import prepare as prepare_fades
-out=prepare();prepare_results();prepare_results(palette_variant=True);prepare_courts();prepare_courts(holdout=True);prepare_fades();legacy_only='--legacy-only' in sys.argv;profile=out/'profile';sockets=ROOT/'.local/bks';sockets.mkdir(exist_ok=True)
+out=prepare();prepare_results();prepare_results(palette_variant=True);prepare_results(court_six=True);prepare_courts();prepare_courts(holdout=True);prepare_fades();legacy_only='--legacy-only' in sys.argv;profile=out/'profile';sockets=ROOT/'.local/bks';sockets.mkdir(exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='bkr-'+uuid.uuid4().hex[:4],AGENT_BROWSER_SOCKET_DIR=str(sockets),TMPDIR=str(ROOT/'.local/tmp'))
 requests=[]
 class Handler(BaseHTTPRequestHandler):
@@ -18,6 +18,10 @@ class Handler(BaseHTTPRequestHandler):
   route=unquote(self.path.split('?')[0]);requests.append(route);path=None
   files={'/':ROOT/'scripts/basketball/renderer_test_page.html','/acceptance.mjs':ROOT/'scripts/basketball/renderer_acceptance.mjs','/renderer.js':out/'renderer.js','/cases.json':out/'cases.json','/result-cases.json':out/'result-cases.json','/result-palette-cases.json':out/'result-palette-cases.json','/court-cases.json':out/'court-cases.json','/irq-cases.json':out/'irq-cases.json','/fade-cases.json':out/'fade-cases.json'}
   if route in files:path=files[route]
+  elif route=='/result-court-six-cases.json':path=out/'result-court-six-cases.json'
+  elif route.startswith('/result-court-six-reference/'):
+   name=route.rsplit('/',1)[-1]
+   if name.endswith('.png') and name[:-4].isdigit():path=ROOT/'.local/nes-basket/runs/court-six-result-observed'/('frame-'+name)
   elif route.startswith('/assets/'):
    rel=Path(route.removeprefix('/assets/'))
    if rel.parts and '..' not in rel.parts and rel.parts[0] in ('court','static-atlas','static-objects','raster','results','courts'):path=ROOT/'.local/basketball'/rel
@@ -64,6 +68,8 @@ try:
   for name,data in browser('eval','window.fadeScenePNGs')['result'].items():(out/f'fade-{name}.png').write_bytes(base64.b64decode(data.split(',')[1]))
  if result.get('resultPaletteFrames'):
   data=browser('eval','window.resultPaletteScenePNG')['result'];(out/'result-palette-canvas.png').write_bytes(base64.b64decode(data.split(',')[1]))
+ if result.get('resultCourtSixFrames'):
+  data=browser('eval','window.resultCourtSixScenePNG')['result'];(out/'result-court-six-canvas.png').write_bytes(base64.b64decode(data.split(',')[1]))
  if result.get('courtFrames'):
   for court,data in browser('eval','window.courtScenePNGs')['result'].items():(out/f'court-{court}.png').write_bytes(base64.b64decode(data.split(',')[1]))
  browser('set','viewport','1280','1000')

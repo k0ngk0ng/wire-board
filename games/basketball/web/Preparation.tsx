@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import type { PreparationProps } from "../../../web/src/game-api/module";
 import type { BasketballOptions } from "./module";
+import labels from "../selection/labels.json";
 import "./preparation.css";
 
 // Only runtime-verified courts and character slots are offered. Asset extraction
 // coverage alone does not make an original court or team playable.
 const courts = [
-  { value: "court-0", id: 0, name: "球场 1" },
-  { value: "new-york", id: 1, name: "纽约" },
-  { value: "court-2", id: 2, name: "球场 3" },
-  { value: "court-3", id: 3, name: "球场 4" },
-  { value: "court-4", id: 4, name: "球场 5" },
+  { value: "court-0", id: 0, name: labels.courts[0] },
+  { value: "new-york", id: 1, name: labels.courts[1] },
+  { value: "court-2", id: 2, name: labels.courts[2] },
+  { value: "court-3", id: 3, name: labels.courts[3] },
+  { value: "court-4", id: 4, name: labels.courts[4] },
+  { value: "court-5", id: 5, name: labels.courts[5] },
+  { value: "court-6", id: 6, name: labels.courts[6] },
 ] as const;
 function SelectionImage({
   assets,
@@ -97,7 +100,9 @@ export function Preparation({
             key={side}
             aria-label={`${side === 0 ? "A" : "B"} 队阵容`}
           >
-            <h4>{side === 0 ? "A" : "B"} 队</h4>
+            <h4>
+              {side === 0 ? "A" : "B"} 队 · {labels.teams[teams[side]].name}
+            </h4>
             {[0, 1].map((position) => {
               const actor = side * 2 + position;
               const seatIndex = seatActors.indexOf(actor);
@@ -134,7 +139,7 @@ export function Preparation({
                       className="basketball-selected-body"
                       assets={assets}
                       file={`players/team-${team}-character-${current}-body.png`}
-                      alt={`${owner}当前球员 ${current + 1}`}
+                      alt={`${owner}当前球员：${labels.teams[team].characters[current]}`}
                     />
                     <div
                       className="basketball-character-choices"
@@ -146,7 +151,7 @@ export function Preparation({
                           type="button"
                           key={character}
                           data-character={character}
-                          aria-label={`球员 ${character + 1}`}
+                          aria-label={labels.teams[team].characters[character]}
                           aria-pressed={current === character}
                           disabled={
                             busy ||
@@ -172,7 +177,9 @@ export function Preparation({
                             file={`players/team-${team}-character-${character}-portrait.png`}
                             alt=""
                           />
-                          <span>球员 {character + 1}</span>
+                          <span>
+                            {labels.teams[team].characters[character]}
+                          </span>
                           <span className="basketball-selection-state">
                             {current === character ? "已选" : ""}
                           </span>

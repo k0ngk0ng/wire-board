@@ -8,7 +8,7 @@ package engine
 // the existing canonical court slots, not a second persistent animation copy.
 // Court3 shares its gate trigger and countdown with actor0/1 (06D7/06D8).
 func observeRuntimeCourtAnimation(s *RuntimeState, w *WorldLoopState, c WorldLoopContext, m MatchState) ([]uint8, error) {
-	if c.Actions.CourtID != 0 && c.Actions.CourtID != 2 && c.Actions.CourtID != 3 && c.Actions.CourtID != 4 && c.Actions.CourtID != 5 {
+	if c.Actions.CourtID != 0 && c.Actions.CourtID != 2 && c.Actions.CourtID != 3 && c.Actions.CourtID != 4 && c.Actions.CourtID != 5 && c.Actions.CourtID != 6 {
 		return nil, nil
 	}
 	a := &w.Preparation.Actions
@@ -26,8 +26,20 @@ func observeRuntimeCourtAnimation(s *RuntimeState, w *WorldLoopState, c WorldLoo
 	case 4:
 		state.PaletteFrame = a.Actors[0].Player.NewYorkPassage
 		state.PaletteReverse = a.Actors[1].Player.NewYorkPassage != 0
+	case 6:
+		for i := 0; i < 4; i++ {
+			state.ReelFrames[i] = a.Actors[i].Player.NewYorkPassage
+		}
+		state.ReelFrames[4], state.ReelFrames[5] = a.Auxiliary[0].NewYorkPassage, a.Auxiliary[1].NewYorkPassage
+		state.SlotProgress, state.OutcomeFlags = w.Preparation.CourtScoreFlags, w.Preparation.CourtOutcomeFlags
 	}
-	step, err := StepCourtAnimation(state, CourtAnimationContext{Court: c.Actions.CourtID, Active: m.Phase != 0 && m.Phase != MatchPaused, VideoFrame: w.LogicFrame, CameraX: uint8(w.Camera.DisplayedX), Random: a.Random, Scores: w.Preparation.Scores})
+	ctx := CourtAnimationContext{Court: c.Actions.CourtID, Active: m.Phase != 0 && m.Phase != MatchPaused, VideoFrame: w.LogicFrame, CameraX: uint8(w.Camera.DisplayedX), Random: a.Random, Scores: w.Preparation.Scores}
+	if c.Actions.CourtID == 6 {
+		for i, hoop := range a.Hoops {
+			ctx.HoopOwners[i], ctx.HoopLocks[i] = hoop.Owner, hoop.ScoreLock
+		}
+	}
+	step, err := StepCourtAnimation(state, ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +68,12 @@ func observeRuntimeCourtAnimation(s *RuntimeState, w *WorldLoopState, c WorldLoo
 	case 4:
 		a.Actors[0].Player.NewYorkPassage = step.State.PaletteFrame
 		// Direction is shared with device movement; preserve its actual byte.
+	case 6:
+		for i := 0; i < 4; i++ {
+			a.Actors[i].Player.NewYorkPassage = step.State.ReelFrames[i]
+		}
+		a.Auxiliary[0].NewYorkPassage, a.Auxiliary[1].NewYorkPassage = step.State.ReelFrames[4], step.State.ReelFrames[5]
+		w.Preparation.CourtScoreFlags, w.Preparation.CourtOutcomeFlags = step.State.SlotProgress, step.State.OutcomeFlags
 	}
 	a.Random = step.Random
 	w.Preparation.Scores = step.Scores

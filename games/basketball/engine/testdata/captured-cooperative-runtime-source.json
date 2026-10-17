@@ -1,0 +1,9 @@
+{
+  "source": ".local/basketball/rea/captured-player/route/cooperative-failure-state.json",
+  "original_error": "actions: object 1: rider support object 4 requires its original kind",
+  "runtime_video": 845,
+  "state_injected": false,
+  "provenance": "cold runtime Court4 seed0x12345678 controls[0,1,-1,-1], exact input route retained in CAPTURED_PLAYER_VERIFICATION.md",
+  "sha256": "de405cea3a0e8bba7f0f70ba28c420306372bcc3f7b7d4b21a283521a97e3a8d",
+  "raw_sha256": "32300aaf593c2694b47d829f7ba7bbb19f6a89e1cb598f39002eb3a9efb2abd5"
+}

@@ -1,0 +1,19 @@
+{
+  "source_is_original_execution": true,
+  "scope": "one configured court choice at original D1B5; thereafter controller inputs only, passive hooks; no natural-menu or full-Go-gameplay claim",
+  "records": 7244,
+  "nmiClearedHeadersRestoredFromObservedWrites": 593,
+  "goals": 14,
+  "randomChanged": 165,
+  "scoreChanged": 1,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "4c4a03160311ee3b53a2aaaac46577297de2e434b1757ec55347e348409286f2",
+  "goalSHA256": "bf95f063c9bbd0ca3a825fb21aaab6531a32704ac7980d075765c88b040491a9",
+  "ramAndScreenshotsMatchUninstrumented": true,
+  "referenceRAMSHA256": "2dbb6bd563fa13507b008c6ecef9aecd03bed718f7dd79b0d11b1311834cad0c",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 26000,
+    "scenario_sha256": "95a782a09bb6111db34a2997fcf59867b162aed679160902296bd568cd7e24fd"
+  }
+}

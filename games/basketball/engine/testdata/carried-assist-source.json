@@ -1,0 +1,7 @@
+{
+  "records": 1440,
+  "entry": "E165/E18B ->9852 ->9C4E ->9DCF/EEFF/EEFF/9E06",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "61024a54690a002bb5c4d78ecf6cedbe32b2dbc7b9a33184bd5a81f17295af1b",
+  "scope": "isolated source09 carried-body and attached0B world calls; supports0..5 excluding self; courts0/1/2; not natural full-game trace"
+}

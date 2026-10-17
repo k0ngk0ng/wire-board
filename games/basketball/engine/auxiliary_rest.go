@@ -76,7 +76,7 @@ func stepAuxiliaryRestOnCourt(original AuxiliaryState, ctx AuxiliaryContext, cou
 	if ctx.Object < 4 || ctx.Object > 5 {
 		return initial, errors.New("auxiliary object must be 4 or 5")
 	}
-	if ctx.Court != 1 && !((ctx.Court == 0 || ctx.Court == 2 || ctx.Court == 3 || ctx.Court == 4 || ctx.Court == 5) && court.originalMotion != nil) {
+	if ctx.Court != 1 && !((ctx.Court == 0 || ctx.Court == 2 || ctx.Court == 3 || ctx.Court == 4 || ctx.Court == 5 || ctx.Court == 6 || ctx.Court == 7) && court.originalMotion != nil) {
 		return initial, errors.New("auxiliary court requires its restored original motion binding")
 	}
 	if s.Action != 0 && s.Action != 7 && s.Action != 12 && s.Action != 13 {

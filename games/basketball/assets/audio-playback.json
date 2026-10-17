@@ -141,6 +141,18 @@
       "sha256": "6968d96b0afd8dadfe890ac93bf818ab8e7133add723b3b4fbe8e75bb02bb814",
       "source_manifest": "additional-effects-manifest.json",
       "listening_accepted": false
+    },
+    "1": {
+      "wav": "sound-001.wav",
+      "sha256": "40d3e98b3c120e07c77d65a75733a1916b45ec0a452f4ad85b2fa828d1c40e4e",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
+    },
+    "48": {
+      "wav": "sound-048.wav",
+      "sha256": "c80b939e0e2e6e97b30ecff18c8b8a5f02e0e3d73a17e515e0404c0f64c029f6",
+      "source_manifest": "additional-effects-manifest.json",
+      "listening_accepted": false
     }
   }
 }

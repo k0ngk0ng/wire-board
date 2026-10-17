@@ -253,10 +253,11 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		return err
 	}
 	*p = resolved
+	clearOriginalLandingSpecialShot(a)
 	computer := ctx.Controls[actor]&128 != 0
 	profile := ctx.Profiles[actor]
-	if s.PlayerLinks[actor]&128 != 0 && p.Action != 0x58 && p.Action != 0x68 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
-		return fmt.Errorf("attached player action is not reconstructed")
+	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && p.Action != 0x68 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
+		return fmt.Errorf("attached player action %02x (entered %t, link %02x) is not reconstructed", p.Action, p.Entered, s.PlayerLinks[actor])
 	}
 	heldHoop := -1
 	for i, h := range s.Hoops {
@@ -303,6 +304,14 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		}
 	}
 	switch {
+	case p.Action == ActionRiderLift:
+		if err := advanceWorldRiderLift(result, actor, ctx, court); err != nil {
+			return err
+		}
+	case p.Action == 0x5a || p.Action == 0x5c:
+		if err := advanceWorldLowJumpShot(result, actor, ctx, court); err != nil {
+			return err
+		}
 	case p.Action == 0x68:
 		if err := advanceWorldAuxiliaryRunningPlayer(result, actor, ctx, court); err != nil {
 			return err
@@ -315,19 +324,19 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		if err := advanceWorldAuxiliarySetDown(result, actor, ctx, court); err != nil {
 			return err
 		}
-	case p.Action == ActionLaunched:
+	case p.Action == ActionLaunched || p.Action == ActionLaunchedAtBall:
 		if err := advanceWorldLaunchedPlayer(result, actor, ctx, court); err != nil {
 			return err
 		}
 	case p.Action == ActionRiding:
 		parent := s.PlayerLinks[actor] & 15
-		if parent >= 4 {
-			return fmt.Errorf("rider support object %d requires its original kind", parent)
+		support, err := worldAuxiliarySupport(*s, ctx, parent)
+		if err != nil {
+			return err
 		}
-		support := s.Actors[parent].Player
 		step, err := StepRiderPlayer(RiderPlayerState{Player: *p, JumpPhase: a.JumpPhase}, RiderPlayerContext{
 			Actor: actor, Attachment: s.PlayerLinks[actor], Computer: computer, HasBall: carrierContext.HasBall,
-			Support:         RiderSupport{Body: support.Body, Pose: support.Pose, Kind: ctx.Teams[parent/2]},
+			Support:         *support,
 			AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner},
 		}, profile, court)
 		if err != nil {
@@ -338,12 +347,17 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		if step.ChangeSupportLink {
 			s.Actors[step.SupportObject].LinkedActor = int8(actor)
 		}
-	case p.Action == 0x58:
+	case originalDunkAction(p.Action):
 		if s.DunkTargetObject < 7 || s.DunkTargetObject >= 13 {
 			return fmt.Errorf("auxiliary dunk target %d not reconstructed", s.DunkTargetObject)
 		}
 		target := &s.Hoops[s.DunkTargetObject-7]
-		step, err := StepDunkPlayer(*p, DunkContext{Actor: actor, TargetObject: s.DunkTargetObject, TargetOwner: target.Owner, TargetDurability: target.Durability, AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, CarriedPlayer: s.CarriedPlayer, DetachedCount: s.DetachedCount, Attachment: s.PlayerLinks[actor], Ball: s.Ball, BallHolder: s.Holder, AuxiliaryRelease: s.AuxiliaryRelease, Computer: computer}, court)
+		attachment := s.PlayerLinks[actor]
+		// Original 8ED6 clears the support before EEFF loads object state.
+		if !p.Entered && attachment&128 != 0 {
+			s.PlayerLinks[actor] = 0
+		}
+		step, err := StepDunkPlayer(*p, DunkContext{Actor: actor, TargetObject: s.DunkTargetObject, TargetOwner: target.Owner, TargetDurability: target.Durability, AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, CarriedPlayer: s.CarriedPlayer, DetachedCount: s.DetachedCount, Attachment: attachment, Ball: s.Ball, BallHolder: s.Holder, AuxiliaryRelease: s.AuxiliaryRelease, Computer: computer}, court)
 		if err != nil {
 			return err
 		}
@@ -360,11 +374,14 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 			}
 		}
 	case p.Action >= 0x60 && p.Action <= 0x69:
-		step, err := StepPlayerAttack(AttackState{Player: *p, AttackVariant: a.AttackVariant, JumpPhase: a.JumpPhase}, AttackContext{Team: ctx.Teams[actor/2], Character: ctx.Characters[actor], Computer: computer, HasBall: carrierContext.HasBall, Attachment: s.PlayerLinks[actor], EnhancementEnabled: ctx.EnhancementEnabled, Enhancement: ctx.Enhancements[actor]}, profile, court)
+		step, err := StepPlayerAttack(AttackState{Player: *p, AttackVariant: a.AttackVariant, JumpPhase: a.JumpPhase}, AttackContext{HolderPosition: worldLoopPositions(*s)[s.Holder], Team: ctx.Teams[actor/2], Character: ctx.Characters[actor], Computer: computer, HasBall: carrierContext.HasBall, Attachment: s.PlayerLinks[actor], EnhancementEnabled: ctx.EnhancementEnabled, Enhancement: ctx.Enhancements[actor]}, profile, court)
 		if err != nil {
 			return err
 		}
 		a.Player, a.AttackVariant, a.JumpPhase = step.State.Player, step.State.AttackVariant, step.State.JumpPhase
+		if step.ChangeLaunchPlan {
+			s.LaunchTarget, s.LaunchArcHeight = step.LaunchTarget, step.LaunchArcHeight
+		}
 		s.Ball = ApplyBallCommand(s.Ball, step.Ball)
 		if step.Revisit {
 			s.PlayerLinks[actor] = 0
@@ -393,6 +410,10 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		}
 	case worldAuxiliaryPlayerAction(*s, actor):
 		if err := advanceWorldAuxiliaryCarrier(result, actor, ctx, court); err != nil {
+			return err
+		}
+	case p.Action == 9 || p.Action == 11:
+		if err := advanceWorldPlayerAssist(result, actor, ctx, court); err != nil {
 			return err
 		}
 	case p.Action == ActionDodge:
@@ -431,19 +452,28 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		if p.Action == ActionRun && !p.Entered || p.Request.Pending && p.Request.Action == ActionRun && freeTransition(p.Action, p.Request.Action) {
 			a.ShotCycle = 8
 		}
+		// The original jump initializer clears $0642 before EEFF. A rider
+		// request accepted by E18B must detach before this call loads motion.
+		if p.Action == ActionJump && !p.Entered {
+			if err := detachWorldJumpSupport(s, actor, ctx); err != nil {
+				return err
+			}
+			s.PlayerLinks[actor] = 0
+		}
 		step, err := StepFreePlayerAction(*p, FreePlayerContext{Computer: computer, HasBall: carrierContext.HasBall, JumpPhase: a.JumpPhase, ShotCycle: a.ShotCycle}, profile, court)
 		if err != nil {
 			return err
 		}
 		a.Player, a.ShotCycle = step.Player, step.ShotCycle
 		s.Ball = ApplyBallCommand(s.Ball, step.Ball)
+		appendPlayerActionSounds(result, motionSoundStart, step.SoundIDs)
 		if step.Revisit {
 			s.PlayerLinks[actor] = 0
 		}
 	default:
 		step, err := StepHoopCarrierAction(HoopCarrier{Player: *p, ShotCycle: a.ShotCycle, AimWindow: a.AimWindow}, HoopCarrierContext{Computer: computer, HeldHoop: heldHoop}, profile, court)
 		if err != nil {
-			return err
+			return fmt.Errorf("%w (action %02x, entered %t, held hoop %d)", err, p.Action, p.Entered, heldHoop)
 		}
 		a.Player, a.ShotCycle, a.AimWindow = step.State.Player, step.State.ShotCycle, step.State.AimWindow
 		if step.Hoop.ChangeAction {
@@ -609,7 +639,7 @@ func advanceWorldBallStep(s *WorldActionState, ctx WorldActionContext, court Fla
 func StepWorldActions(original WorldActionState, ctx WorldActionContext) (WorldActionStep, error) {
 	initial := WorldActionStep{State: original}
 	result := initial
-	if ctx.CourtID > 5 {
+	if ctx.CourtID >= 8 {
 		return initial, fmt.Errorf("world action court %d not reconstructed", ctx.CourtID)
 	}
 	for actor, profile := range ctx.Profiles {
@@ -634,7 +664,7 @@ func StepWorldActions(original WorldActionState, ctx WorldActionContext) (WorldA
 		if object >= 4 && object <= 6 {
 			court = NewYorkBallCourt()
 		}
-		if ctx.CourtID == 0 || ctx.CourtID == 2 || ctx.CourtID == 3 || ctx.CourtID == 4 || ctx.CourtID == 5 || object == 6 {
+		if ctx.CourtID != 1 || object == 6 {
 			court, err = originalWorldMotionCourt(&result, ctx, object)
 			if err != nil {
 				return initial, err
@@ -653,7 +683,9 @@ func StepWorldActions(original WorldActionState, ctx WorldActionContext) (WorldA
 		case object == 6:
 			s.Ball, err = ResolveBallRequest(s.Ball)
 			if err == nil {
-				if s.Ball.Action == 12 || s.Ball.Action == 14 || s.Ball.Action == 15 {
+				if s.Ball.Action == 18 {
+					err = advanceWorldBall18(&result, ctx, court)
+				} else if s.Ball.Action == 12 || s.Ball.Action == 14 || s.Ball.Action == 15 {
 					err = advanceWorldTeamSpecialBall(&result, ctx, court)
 				} else {
 					var sounds []uint8

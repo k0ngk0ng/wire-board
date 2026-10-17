@@ -1,0 +1,20 @@
+[
+  {
+    "handler": 28,
+    "path": "games/basketball/engine/testdata/attack-handler-28-runtime-before.json",
+    "source": ".local/basketball/characters23-priority-20261018/case-5/native/court1-teams0-4-characters0-1-2-3/before.json",
+    "sha256": "2f3fc2ca83aeaa2ff35844f82c213860e889da452d19b71930bd668f822ef7e6"
+  },
+  {
+    "handler": 31,
+    "path": "games/basketball/engine/testdata/attack-handler-31-runtime-before.json",
+    "source": ".local/basketball/characters23-priority-20261018/case-7/native/court1-teams0-6-characters0-1-2-3/before.json",
+    "sha256": "9be3285f34c8ccd978bcde826e14becf08ecd60c06ca725fb636250143d51d2e"
+  },
+  {
+    "handler": 27,
+    "path": "games/basketball/engine/testdata/attack-handler-27-runtime-before.json",
+    "source": ".local/basketball/characters23-priority-20261018/case-8/native/court1-teams0-7-characters0-1-2-3/before.json",
+    "sha256": "0340756370ac9914372b3b4bbf99d18a8590c25e835d7430173185fc918748fe"
+  }
+]

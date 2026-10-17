@@ -22,6 +22,18 @@ for v in sorted(variants):
  limit=r[at-0x8000+1] if marker==253 else 0
  lines.append('%d:{Frames:[]AnimationFrame{%s},End:%s,RepeatLimit:%d},'%(v,','.join(frames),ending,limit))
 lines+=['}']
+# Original contact-feedback skips each normal terminator and its padding byte.
+# Only source-verified follow-through branches are exported here.
+lines+=['type attackAnimationTail struct { Start uint8; Spec AnimationSpec }', 'var originalAttackAnimationTails = map[uint8]attackAnimationTail{']
+for v,start in [(15,5),(24,2),(27,4),(57,4),(87,3),(94,3),(98,2)]:
+ at=word(0xac8f+2*v)+start*2;frames=[]
+ while r[at-0x8000]<253:
+  p,t=r[at-0x8000:at-0x8000+2];assert t>0
+  frames.append('{Pose:Pose{Frame:%d,Mirrored:%s},Ticks:%d}'%(p&127,'true' if p&128 else 'false',t));at+=2
+ marker=r[at-0x8000];ending={255:'RepeatForever',254:'RepeatRemaining',253:'RepeatUntilCount'}[marker]
+ limit=r[at-0x8000+1] if marker==253 else 0
+ lines.append('%d:{Start:%d,Spec:AnimationSpec{Frames:[]AnimationFrame{%s},End:%s,RepeatLimit:%d}},'%(v,start,','.join(frames),ending,limit))
+lines+=['}']
 (ROOT/'games/basketball/engine/attack_profiles.go').write_text('\n'.join(lines)+'\n')
 (ROOT/'.local/basketball/rea/player-attack/profile-source.json').write_text(json.dumps(dict(source_sha256=hashlib.sha256(r).hexdigest(),selection_address='bank6:a022',animation_address='bank6:ac8f',sound_address='bank6:a2d8',roles=32,actions=9,variants=len(variants)),indent=2)+'\n')
 print('exported',len(variants),'variant animations')

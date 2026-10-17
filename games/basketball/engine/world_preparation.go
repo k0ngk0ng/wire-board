@@ -24,6 +24,7 @@ type WorldPreparationState struct {
 	PreviousBallAction, ObservedBallAction BallAction
 	SelectedBoard, DisplayFlags            uint8
 	CourtScoreFlags                        [2]uint8
+	CourtOutcomeFlags                      uint8 `json:",omitempty"` // original06DF slot outcome.
 }
 
 type WorldPreparationContext struct {
@@ -215,7 +216,7 @@ func prepareOriginalBoards(s *WorldPreparationState, c WorldPreparationContext) 
 // Any unsupported subphase rolls back the entire state and ordered sound list.
 func StepWorldPreparation(original WorldPreparationState, c WorldPreparationContext) (WorldPreparationStep, error) {
 	initial := WorldPreparationStep{State: original}
-	if c.Actions.CourtID > 5 {
+	if c.Actions.CourtID >= 8 {
 		return initial, fmt.Errorf("world preparation court %d is not reconstructed", c.Actions.CourtID)
 	}
 	result := initial

@@ -10,7 +10,7 @@ ROOT=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--full-match',action='store_true',help='also render a cold complete match through the actual client')
 parser.add_argument('--all-computer',action='store_true',help='run the natural complete-match case with all four original computer players')
-parser.add_argument('--court',type=int,choices=[0,1,2,3,4],default=1,help='original recovered court selector; no world-state injection')
+parser.add_argument('--court',type=int,choices=[0,1,2,3,4,5,6],default=1,help='original recovered court selector; no world-state injection')
 parser.add_argument('--carry',action='store_true',help='native pickup, carrying movement, jumping and A/B prop throws on Court3')
 parser.add_argument('--running-carry',action='store_true',help='native role-specific running B prop attacks on Court3')
 parser.add_argument('--fade',action='store_true',help='observe original opening fade through Go/Wasm and Canvas')
@@ -343,6 +343,9 @@ def main():
             if ARGS.fade:
                 js('window.naturalFades=[]')
                 observe_fade='const f=s.display.PaletteFade;if(f&&f.Frame%2===1){const p=document.querySelector("canvas").getContext("2d").getImageData(0,0,256,240).data,colors=new Set();let hash=2166136261;for(let j=0;j<p.length;j+=4){colors.add((p[j]<<16)|(p[j+1]<<8)|p[j+2]);for(let k=0;k<3;k++)hash=Math.imul(hash^p[j+k],16777619)>>>0;}naturalFades.push({video:s.videoFrames,out:f.Out,cursor:f.Frame,level:s.display.Visible.paletteLevel??4,result:!!s.display.Visible.result,palette:s.display.Visible.paletteID,colors:colors.size,pixelHash:hash});}'
+            if ARGS.court==6:
+                js('window.naturalSlots=[];window.lastSlotKey=""')
+                observe_fade+='const p=s.playing?.world.Preparation;if(p){const a=p.Actions,row={frame:s.videoFrames,logic:s.logicSteps,progress:p.CourtScoreFlags,outcome:p.CourtOutcomeFlags??0,scores:p.Scores,palette:s.display.Visible.paletteID,reels:[...a.actors.map(a=>a.player.newYorkPassage??0),...a.auxiliary.map(a=>a.NewYorkPassage??0)]},key=JSON.stringify([row.progress,row.outcome,row.scores,row.palette,row.reels]);if(key!==lastSlotKey){lastSlotKey=key;naturalSlots.push(row);}}'
             began=time.monotonic();trace=[];intermissions=0
             for batch in range(500):
                 state=js('(()=>{let s=live.view.state;for(let i=0;i<120&&!s.outcome?.confirmed;i++){if(s.awaitingNextPeriod&&s.waitVideoFrames===0)break;live.advance(1);s=live.view.state;'+observe_fade+'}return{videoFrames:s.videoFrames,logicSteps:s.logicSteps,awaiting:s.awaitingNextPeriod,wait:s.waitVideoFrames,period:s.playing?.match.Period,outcome:s.outcome}})()')
@@ -355,6 +358,11 @@ def main():
                     browser('screenshot',str(OUT/'natural-intermission.png'))
                     key('keyDown','Space',' ',32);js('live.advance(1)');key('keyUp','Space',' ',32);intermissions+=1
             expect('cold browser match reaches original confirmed outcome',state.get('outcome',{}).get('confirmed') and intermissions==1 and state['videoFrames']>=21600)
+            if ARGS.court==6:
+                slots=js('naturalSlots');(OUT/'natural-slot-events.json').write_text(json.dumps(slots,indent=2)+'\n')
+                expect('natural Court6 goals activate original slot progress',any(any(r['progress']) for r in slots))
+                expect('natural Court6 match reaches the original slot award phase',any(r['outcome']&128 for r in slots))
+                expect('original slot award commits changing palettes on Canvas',len({r['palette'] for r in slots if r['outcome']&128})>1)
             if ARGS.fade:
                 fades=js('naturalFades');(OUT/'natural-fades.json').write_text(json.dumps(fades,indent=2)+'\n')
                 expect('natural complete match renders both openings, both exits and result fade',[r['level'] for r in fades]==[1,2,3,4,3,2,1,0,1,2,3,4,3,2,1,0,1,2,3,4])

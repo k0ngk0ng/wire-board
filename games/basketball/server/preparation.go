@@ -24,6 +24,10 @@ func preparedCourt(name string) (uint8, bool) {
 		return 3, true
 	case "court-4":
 		return 4, true
+	case "court-5":
+		return 5, true
+	case "court-6":
+		return 6, true
 	default:
 		return 0, false
 	}

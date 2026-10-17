@@ -22,7 +22,7 @@ func worldLaunchedSource(s WorldActionState, c WorldActionContext, object uint8)
 func advanceWorldLaunchedPlayer(result *WorldActionStep, actor uint8, c WorldActionContext, court FlatCourt) error {
 	s := &result.State
 	a := &s.Actors[actor]
-	ctx := LaunchedPlayerContext{Actor: actor, Attachment: s.PlayerLinks[actor], Random: s.Random, Computer: c.Controls[actor]&128 != 0, HasBall: s.Holder == int8(actor), Team: c.Teams[actor/2], Character: c.Characters[actor], EnhancementEnabled: c.EnhancementEnabled, SpecialShot: a.SpecialShot, ShotCycle: a.ShotCycle, HeldButtons: c.ActorHeldButtons[actor], AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, Holder: s.Holder}
+	ctx := LaunchedPlayerContext{BallPosition: s.Ball.Body.Position, Actor: actor, Attachment: s.PlayerLinks[actor], Random: s.Random, Computer: c.Controls[actor]&128 != 0, HasBall: s.Holder == int8(actor), Team: c.Teams[actor/2], Character: c.Characters[actor], EnhancementEnabled: c.EnhancementEnabled, SpecialShot: a.SpecialShot, ShotCycle: a.ShotCycle, HeldButtons: c.ActorHeldButtons[actor], AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, Holder: s.Holder}
 	if ctx.Attachment&128 != 0 {
 		var e error
 		ctx.Source, ctx.SourceKind, e = worldLaunchedSource(*s, c, ctx.Attachment&15)
@@ -30,7 +30,7 @@ func advanceWorldLaunchedPlayer(result *WorldActionStep, actor uint8, c WorldAct
 			return e
 		}
 	}
-	if !a.Player.Entered {
+	if !a.Player.Entered && a.Player.Action == ActionLaunched {
 		if c.EnhancementEnabled && ctx.Team == 0 {
 			holder, _, e := worldLaunchedSource(*s, c, uint8(s.Holder))
 			if e != nil {

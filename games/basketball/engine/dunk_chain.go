@@ -32,12 +32,12 @@ func setCourtHalfPixel(value Fixed, pixel uint8) Fixed {
 	return (value &^ (255 * Pixel)) + Fixed(pixel)*Pixel
 }
 
-// StepDunkPlayer restores bank-6 $8E9D (action 58). Basket contacts determine
+// StepDunkPlayer restores bank-6 $8E9D (actions 58/59/5B). Basket contacts determine
 // scoring later; this step only performs the hang, release and dismount.
 func StepDunkPlayer(original Player, ctx DunkContext, court FlatCourt) (DunkStep, error) {
 	initial := DunkStep{Player: original, Ball: ctx.Ball, TargetDurability: ctx.TargetDurability, AuxiliaryRelease: ctx.AuxiliaryRelease}
 	result := initial
-	if original.Action != 0x58 || ctx.Actor >= 4 || ctx.TargetObject >= 13 {
+	if !originalDunkAction(original.Action) || ctx.Actor >= 4 || ctx.TargetObject >= 13 {
 		return initial, errors.New("invalid original dunk actor or target")
 	}
 	mount := ctx.TargetOwner & 127
@@ -80,6 +80,12 @@ func StepDunkPlayer(original Player, ctx DunkContext, court FlatCourt) (DunkStep
 		p.Pose = Pose{Frame: 58, Mirrored: p.Body.Position.X>>16 == 0}
 	}
 	spec := AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 44}, Ticks: 5}, {Pose: Pose{Frame: 45}, Ticks: 6}, {Pose: Pose{Frame: 4}, Ticks: 255}, {Pose: Pose{Frame: 4}, Ticks: 255}, {Pose: Pose{Frame: 4}, Ticks: 255}}, End: RepeatRemaining}
+	if original.Action == 0x59 {
+		spec.Frames[0] = AnimationFrame{Pose: Pose{Frame: 44, Mirrored: true}, Ticks: 3}
+		spec.Frames[1] = AnimationFrame{Pose: Pose{Frame: 44, Mirrored: true}, Ticks: 2}
+	} else if original.Action == 0x5b {
+		spec.Frames[0].Pose.Frame = 51
+	}
 	animation, err := AdvanceAnimation(spec, p.Animation, p.FacingLeft)
 	if err != nil {
 		return initial, err
@@ -88,9 +94,11 @@ func StepDunkPlayer(original Player, ctx DunkContext, court FlatCourt) (DunkStep
 	if animation.ChangeAction {
 		p.Action, p.Entered = animation.Action, false
 	}
-	if p.Animation.Cursor == 1 && p.Animation.Elapsed == 0 {
+	if p.Animation.Cursor != 0 && p.Animation.Cursor != 2 && p.Animation.Elapsed == 0 {
 		b.Action, b.Entered = 10, false
-		p.Body.Position.Height -= 16 * Pixel
+		if p.Action != 0x59 {
+			p.Body.Position.Height -= 16 * Pixel
+		}
 		if isAux {
 			speed := -2 * Pixel
 			if b.Body.Position.X>>16 == 0 {
@@ -138,6 +146,10 @@ func StepDunkPlayer(original Player, ctx DunkContext, court FlatCourt) (DunkStep
 		}
 	}
 	return result, nil
+}
+
+func originalDunkAction(action Action) bool {
+	return action == 0x58 || action == 0x59 || action == 0x5b
 }
 
 type DunkBallStep struct {

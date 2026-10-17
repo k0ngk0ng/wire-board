@@ -1,0 +1,10 @@
+{
+  "records": 576,
+  "entries": [
+    "bank6:9852",
+    "bank6:8E5E"
+  ],
+  "scope": "ordinary source09/0B calls and chains; 0569 carried-body branch excluded explicitly",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "95b62e6363ef01fcb7dd2349512c24752ffaf695be7ad11f4d298ad6080b6918"
+}

@@ -35,7 +35,14 @@ def call(cpu, actor, name):
         if cpu.pc == 0x7000:
             after = bytes(cpu.memory[:2048])
             return dict(name=name, actor=actor, before=decode(before, actor),
-                        after=decode(after, actor), sounds=sounds, instructions=instructions)
+                        after=decode(after, actor), sounds=sounds, instructions=instructions,
+                        secondPlayerX=sum(before[a] << (8*i) for i,a in enumerate((0x69,0x76,0x83))),
+                        launchTargetBefore=dict(x=(before[0x69f]+256*before[0x6a0])*256,depth=before[0x6a1]*256,height=(before[0x6a2]+256*before[0x6a3])*256),
+                        launchTargetAfter=dict(x=(after[0x69f]+256*after[0x6a0])*256,depth=after[0x6a1]*256,height=(after[0x6a2]+256*after[0x6a3])*256),
+                        arcHeightBefore=before[0x6a4]*256,arcHeightAfter=after[0x6a4]*256,
+                        holderPosition=dict(x=sum(before[a] << (8*i) for i,a in enumerate((0x68+before[0x53f],0x75+before[0x53f],0x82+before[0x53f]))),
+                                            depth=sum(before[a] << (8*i) for i,a in enumerate((0x8f+before[0x53f],0x9c+before[0x53f]))),
+                                            height=sum(before[a] << (8*i) for i,a in enumerate((0xa9+before[0x53f],0xb6+before[0x53f],0xc3+before[0x53f])))))
         if cpu.pc in (0xc000, 0xfbcc):
             sounds.append(cpu.a)
             cpu.pc = (cpu.stPopWord() + 1) & 65535
@@ -99,6 +106,30 @@ def main():
                 rows.append(row)
                 if row["after"]["action"] & 127 != selected[0]:
                     break
+    if args.handler == 27:
+        for actor, holder, fraction in itertools.product(range(4),range(7),(0,1,37,105,255)):
+            r=initial(actor,selections(27)[0],False,False,(8192,True,0),0)
+            r[0x53f]=holder;r[0x4ec+actor]=64
+            put(r,200*256+17,0x68+actor,0x75+actor,0x82+actor)
+            put(r,60*256+29,0x8f+actor,0x9c+actor)
+            put(r,220*256+43,0x68+holder,0x75+holder,0x82+holder)
+            put(r,40*256+53,0x8f+holder,0x9c+holder)
+            r[0x69]=fraction
+            rows.append(call(machine(r),actor,f'holder-diagonal-{actor}-{holder}-{fraction}'))
+    if args.handler == 25:
+        # Failures to isolate: selecting ball instead of real holder, discarded
+        # actor fractions, negative-height upper-byte clamp, and self-holder alias.
+        for actor, holder, height in itertools.product(range(4), range(7), (-65537,-257,-1,0,255,247*256+37,255*256+37,65536+37)):
+            r = initial(actor, selections(25)[0], True, False, (8192,True,513), 2)
+            r[0x53f] = holder
+            r[0x437+actor] = 1
+            r[0x444+actor] = 1
+            r[0x57a+actor] = 60
+            r[0x52c+actor] = 4
+            put(r, 333*256+197, 0x68+holder, 0x75+holder, 0x82+holder)
+            put(r, 61*256+91, 0x8f+holder, 0x9c+holder)
+            put(r, height, 0xa9+holder, 0xb6+holder, 0xc3+holder)
+            rows.append(call(machine(r), actor, f"holder-{actor}-{holder}-{height}"))
     output = ROOT / "games/basketball/engine/testdata"
     path = output / f"attack-handler-{args.handler}.json.gz"
     packed = gzip.compress((json.dumps(rows, separators=(",", ":")) + "\n").encode(), mtime=0)

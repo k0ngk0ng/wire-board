@@ -17,11 +17,12 @@ type FallingStep struct {
 }
 
 // StepFallingPlayer restores bank 6 $9749 for an ordinary actor, including a
-// ball holder. It executes exactly one action call, with no input resolution or
-// repeated world update. An error returns the original actor with no commands.
+// ball holder. Attached actors require the complete original motion binding,
+// which supplies the support body and kind. It executes exactly one action
+// call, with no input resolution or repeated world update. An error returns the original actor with no commands.
 func StepFallingPlayer(original Player, ctx FallingContext, court FlatCourt) (FallingStep, error) {
 	initial := FallingStep{Player: original}
-	if original.Action != ActionFalling || ctx.HasOtherHeldObject || ctx.Attached {
+	if original.Action != ActionFalling || ctx.HasOtherHeldObject || ctx.Attached && court.originalMotion == nil {
 		return initial, errors.New("falling action or attached/prop-holder context has not been reconstructed")
 	}
 	p := original

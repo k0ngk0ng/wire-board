@@ -1,9 +1,9 @@
-"""Export only new court/special-ball requests; do not rerender the original27."""
+"""Export supplementary original requests; reuse verified captures and never rerender the original 27."""
 from pathlib import Path
 import array,fcntl,hashlib,json,wave
 from extract_audio import BASE,OUT,ROOT,SOURCE_SHA,carrier,record
 
-SOURCES={10:'shot_team_special.go (original BB6D)',13:'court_animation.go',14:'court_animation.go',30:'special_ball.go',46:'court_animation.go'}
+SOURCES={1:'captured_player.go ActionCapturedRun (original captured-player source oracle)',48:'world_auxiliary_running.go selected.Handler8 A release; AUXILIARY_RUNNING_B.md / auxiliary-running-controller source chains',10:'shot_team_special.go (original BB6D)',13:'court_animation.go',14:'court_animation.go',30:'special_ball.go',46:'court_animation.go'}
 
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

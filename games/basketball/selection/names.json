@@ -1,0 +1,1337 @@
+{
+  "schemaVersion": 1,
+  "accepted_for_release": false,
+  "authority": "label-evidence-not-gameplay-allowlist",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sourceRecords": {
+    "natural-menu.json": "f57daf2d162a15f37f99c6f3b04fac0716f9c5bb3058ec4d69712d3f84e64f38",
+    "team-pairs.json": "4b3016787c5512ce30ac58278c1d03089c81fa8b63c40652f4453350d451ae29",
+    "member-collisions.json": "ff7aa6c99be234b9edc1dce26040a06193c9deeea2fc77970ea4259a14988763"
+  },
+  "courts": [
+    {
+      "id": 0,
+      "originalLabel": "ナイアガラ",
+      "suggestedChineseLabel": "尼亚加拉",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 0,
+        "path": ".local/nes-basket/runs/selection-names-court-0",
+        "selectedFrame": 1060,
+        "menuFrame": 750,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 0,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "3e63b795f43b09d63accf1eecb3a27ec84890b30b55073331bc603cfe7e6c8e4",
+          "ram.bin": "86dc7995f2905579cd2ad2e1a4dc5eeea245f7fce4541696410f03ca7645c596",
+          "frame-01060.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-00750.png": "ac88015f8264830d3fbe43d2d0eb63a7b30505ff45c15cefbaa17311b7051440"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "originalLabel": "ニューヨーク",
+      "suggestedChineseLabel": "纽约",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 1,
+        "path": ".local/nes-basket/runs/selection-names-court-1",
+        "selectedFrame": 1120,
+        "menuFrame": 810,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 1,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "a59395c79c5f1f510d6b7eb7f94a8e7b4b1091730862bb3e710b7c10f3b18b9f",
+          "ram.bin": "56cdb381916e84c25481585acce452f5f397f94a9fb89ff4bd041ac31143aefe",
+          "frame-01120.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-00810.png": "59cf2800435ec48542e463e1cd3ab102fed8a0b195fe35f093e0aedb8faa2c71"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "originalLabel": "サンフランシスコ",
+      "suggestedChineseLabel": "旧金山",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 6,
+        "path": ".local/nes-basket/runs/selection-names-court-6",
+        "selectedFrame": 1420,
+        "menuFrame": 1110,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 2,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "38f3d0c69a9046c44831822e5592e3061145ce0e387b33c4a9c114e69022b246",
+          "ram.bin": "554ec7959e2d0142e5d829d09b7b643cb5ce031f273765e9d7b7975e624f7c91",
+          "frame-01420.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-01110.png": "a3b25d28ec60614b9edb2f0db21328a3c6dbcb1fb8a2c4da665bbca18b86e10e"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "originalLabel": "テキサス",
+      "suggestedChineseLabel": "得克萨斯",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 4,
+        "path": ".local/nes-basket/runs/selection-names-court-4",
+        "selectedFrame": 1300,
+        "menuFrame": 990,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 3,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "f53fdc8bcd6f9696af7e47d36ca991eb25c316d9a49a4e3a0c00c7689aa53c41",
+          "ram.bin": "bff689f427917cb283254d5de49d6dc2c37625b47ebfb707e2a2d1b918259f2c",
+          "frame-01300.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-00990.png": "ae20da5afb6d8a80bf0ab19a1e3cdd9ccce105ca2cb1810f69599a72472fc4c4"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "originalLabel": "US NAVY",
+      "suggestedChineseLabel": "美国海军",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 2,
+        "path": ".local/nes-basket/runs/selection-names-court-2",
+        "selectedFrame": 1180,
+        "menuFrame": 870,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 4,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "afd4d89d1e4716d39be489c97757aa2b782407a004f5b6ba0f4c601c8f2498be",
+          "ram.bin": "d944951a17f34ec7702b41e47f6ef4d709708925a97021d9cfd79746559edc01",
+          "frame-01180.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-00870.png": "152126754f6124fdb459ab7e3fc631a90b48bec553ca04c7ed4b0885c377b065"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "originalLabel": "ハワイ",
+      "suggestedChineseLabel": "夏威夷",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 5,
+        "path": ".local/nes-basket/runs/selection-names-court-5",
+        "selectedFrame": 1360,
+        "menuFrame": 1050,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 5,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "e6a033d0453f8d83be1ff57ad823f8e1ae13c56f5ee3fc244999cb60442f6f05",
+          "ram.bin": "ceebf15ea7342660dea4468a57592d482f86646912890cf6463be5579e98208d",
+          "frame-01360.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-01050.png": "be838c9563861ee4b6d1547d01809ab6b3b784979a5e9e1813f710932a49a2ff"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "originalLabel": "ラスベガス",
+      "suggestedChineseLabel": "拉斯维加斯",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 7,
+        "path": ".local/nes-basket/runs/selection-names-court-7",
+        "selectedFrame": 1480,
+        "menuFrame": 1170,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 6,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "f6bee6d6280cb094c76e63316b7321172709c6ad5ba0be8d6c2ad0b1403c9b60",
+          "ram.bin": "66a36779610895750581604144b751c7aecfcebf247b19d0efd7c5e25f30c331",
+          "frame-01480.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-01170.png": "52e685d0926f97b013f97b52dcc395fb7c5b454a4f0249cdf8613933d624eec4"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "originalLabel": "フロリダ",
+      "suggestedChineseLabel": "佛罗里达",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "ordinal": 3,
+        "path": ".local/nes-basket/runs/selection-names-court-3",
+        "selectedFrame": 1240,
+        "menuFrame": 930,
+        "state": {
+          "teams": [
+            0,
+            4
+          ],
+          "court": 7,
+          "characters": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "evidenceSHA256": {
+          "scenario.json": "0d77bc83d71adb8fb23a658801da416bfe375aa717880d479e53db9c8c11571b",
+          "ram.bin": "9a84ef8cdb39ab1379ea51dafc401740ea31393cdf2fac341790b52991faebcd",
+          "frame-01240.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36",
+          "frame-00930.png": "fde973d899dd4d6c83145dcd1bc77d040ac26bb357e15a2d807f1a95ee4ecb78"
+        }
+      }
+    }
+  ],
+  "teams": [
+    {
+      "id": 0,
+      "originalLabel": "ねっけつ",
+      "suggestedChineseLabel": "热血",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb6b7",
+        "encodedBytes": [
+          0,
+          0,
+          0,
+          0,
+          11,
+          93,
+          83,
+          65,
+          84,
+          11,
+          0,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 0,
+          "path": ".local/nes-basket/runs/selection-names-team-0",
+          "selectedFrame": 950,
+          "state": {
+            "teams": [
+              0,
+              4
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "2137fea414bb2cffd2cc292bf0eeae1c27e5d0080f0eb36fb4a0d3ccf3f684ba",
+            "ram.bin": "12b44a6afbfa74da3fe5d5f5b7c8c9f50b1777c661c70bb211f7a1e1797f32b2",
+            "frame-00950.png": "0d685160508d90efdcda355098a828bfb1698ff15d7cfcf168d6bec8472b4b36"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-0-character-0",
+          "team": 0,
+          "character": 0,
+          "originalLabel": "くにお",
+          "suggestedChineseLabel": "国夫",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb29e",
+            "encodedBytes": [
+              63,
+              91,
+              58
+            ]
+          }
+        },
+        {
+          "id": "team-0-character-1",
+          "team": 0,
+          "character": 1,
+          "originalLabel": "りき",
+          "suggestedChineseLabel": "阿力",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2a2",
+            "encodedBytes": [
+              122,
+              61
+            ]
+          }
+        },
+        {
+          "id": "team-0-character-2",
+          "team": 0,
+          "character": 2,
+          "originalLabel": "ごだい",
+          "suggestedChineseLabel": "五代",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2a6",
+            "encodedBytes": [
+              68,
+              80,
+              52
+            ]
+          }
+        },
+        {
+          "id": "team-0-character-3",
+          "team": 0,
+          "character": 3,
+          "originalLabel": "ジョニー",
+          "suggestedChineseLabel": "约翰尼",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2aa",
+            "encodedBytes": [
+              168,
+              215,
+              187,
+              11
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "originalLabel": "ニューヨーク",
+      "suggestedChineseLabel": "纽约",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb6c5",
+        "encodedBytes": [
+          0,
+          0,
+          0,
+          11,
+          187,
+          213,
+          11,
+          216,
+          11,
+          159,
+          11,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 4,
+          "path": ".local/nes-basket/runs/selection-names-team-4",
+          "selectedFrame": 1190,
+          "state": {
+            "teams": [
+              1,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "018474e1ce8e9064ea40597865bcf04802816260cf914c174b5b18b99367c2d3",
+            "ram.bin": "13d18edc4177d1ef00781ad5181f97432a6c989f97c81f36fc42ee34245a949a",
+            "frame-01190.png": "459d9e1b578b4fddbc7a024dff09919a97d8c9d860f97ba0926c22406b10c7e3"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-1-character-0",
+          "team": 1,
+          "character": 0,
+          "originalLabel": "マイケル",
+          "suggestedChineseLabel": "迈克尔",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2ae",
+            "encodedBytes": [
+              206,
+              148,
+              161,
+              219
+            ]
+          }
+        },
+        {
+          "id": "team-1-character-1",
+          "team": 1,
+          "character": 1,
+          "originalLabel": "エディ",
+          "suggestedChineseLabel": "埃迪",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2b2",
+            "encodedBytes": [
+              152,
+              183,
+              147
+            ]
+          }
+        },
+        {
+          "id": "team-1-character-2",
+          "team": 1,
+          "character": 2,
+          "originalLabel": "セラリ",
+          "suggestedChineseLabel": "塞拉利",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2b6",
+            "encodedBytes": [
+              171,
+              217,
+              218
+            ]
+          }
+        },
+        {
+          "id": "team-1-character-3",
+          "team": 1,
+          "character": 3,
+          "originalLabel": "ルード",
+          "suggestedChineseLabel": "鲁德",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2ba",
+            "encodedBytes": [
+              219,
+              11,
+              185
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "originalLabel": "サンフランシスコ",
+      "suggestedChineseLabel": "旧金山",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb6d3",
+        "encodedBytes": [
+          0,
+          0,
+          11,
+          165,
+          227,
+          197,
+          217,
+          227,
+          167,
+          169,
+          163,
+          11,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 2,
+          "path": ".local/nes-basket/runs/selection-names-team-2",
+          "selectedFrame": 1070,
+          "state": {
+            "teams": [
+              2,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "4de7d2915599b20249098e55a295729d8e2ea27a35590ff2230833cb77d1d9c2",
+            "ram.bin": "4f1be14c2ef7d08224bcaa4e559c195d858b4033600362b45254910d58073b39",
+            "frame-01070.png": "24fe976d3b1a27f8cfd9cb7a4d47d2938d92c7cd9f05d54f542f31963ed81bf2"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-2-character-0",
+          "team": 2,
+          "character": 0,
+          "originalLabel": "ミック",
+          "suggestedChineseLabel": "米克",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2be",
+            "encodedBytes": [
+              207,
+              179,
+              159
+            ]
+          }
+        },
+        {
+          "id": "team-2-character-1",
+          "team": 2,
+          "character": 1,
+          "originalLabel": "ショーン",
+          "suggestedChineseLabel": "肖恩",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2c2",
+            "encodedBytes": [
+              167,
+              215,
+              11,
+              227
+            ]
+          }
+        },
+        {
+          "id": "team-2-character-2",
+          "team": 2,
+          "character": 2,
+          "originalLabel": "リック",
+          "suggestedChineseLabel": "里克",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2c6",
+            "encodedBytes": [
+              218,
+              179,
+              159
+            ]
+          }
+        },
+        {
+          "id": "team-2-character-3",
+          "team": 2,
+          "character": 3,
+          "originalLabel": "ライン",
+          "suggestedChineseLabel": "莱恩",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2ca",
+            "encodedBytes": [
+              217,
+              148,
+              227
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "originalLabel": "テキサス",
+      "suggestedChineseLabel": "得克萨斯",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb6e1",
+        "encodedBytes": [
+          0,
+          0,
+          0,
+          0,
+          11,
+          182,
+          157,
+          165,
+          169,
+          11,
+          0,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 3,
+          "path": ".local/nes-basket/runs/selection-names-team-3",
+          "selectedFrame": 1130,
+          "state": {
+            "teams": [
+              3,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "bac725e351c196f2ee49511be5a63aab6d2c0d584b4ed953aec3796cec9f875c",
+            "ram.bin": "755f9a8094260ea0013da2f0a282a54324cca2f47ef1b39dd13c27d584ec45be",
+            "frame-01130.png": "1026ac0ddb575b0fea32d633fea35509a150a38eec4eacf36013d19146054a24"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-3-character-0",
+          "team": 3,
+          "character": 0,
+          "originalLabel": "スナイプ",
+          "suggestedChineseLabel": "斯奈普",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2ce",
+            "encodedBytes": [
+              169,
+              186,
+              148,
+              199
+            ]
+          }
+        },
+        {
+          "id": "team-3-character-1",
+          "team": 3,
+          "character": 1,
+          "originalLabel": "ホーク",
+          "suggestedChineseLabel": "霍克",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2d2",
+            "encodedBytes": [
+              203,
+              11,
+              159
+            ]
+          }
+        },
+        {
+          "id": "team-3-character-2",
+          "team": 3,
+          "character": 2,
+          "originalLabel": "ジャガー",
+          "suggestedChineseLabel": "贾格",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2d6",
+            "encodedBytes": [
+              168,
+              211,
+              156,
+              11
+            ]
+          }
+        },
+        {
+          "id": "team-3-character-3",
+          "team": 3,
+          "character": 3,
+          "originalLabel": "ジミー",
+          "suggestedChineseLabel": "吉米",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2da",
+            "encodedBytes": [
+              168,
+              207,
+              11
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "originalLabel": "US NAVY",
+      "suggestedChineseLabel": "美国海军",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb6ef",
+        "encodedBytes": [
+          0,
+          0,
+          11,
+          37,
+          35,
+          0,
+          30,
+          17,
+          38,
+          41,
+          11,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 1,
+          "path": ".local/nes-basket/runs/selection-names-team-1",
+          "selectedFrame": 1010,
+          "state": {
+            "teams": [
+              4,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "a2bc352d4a368abe20509ffc86019280af3adcdde37e3af17128dc95b4c507db",
+            "ram.bin": "0d0990b0c8077b95c418f732f790ee0d28895e86861dcef220ffc80d30e50ea1",
+            "frame-01010.png": "674ec6034e380c64610d20be20716fd47aa92ea8a3319d483da2b0d0c8e28eaa"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-4-character-0",
+          "team": 4,
+          "character": 0,
+          "originalLabel": "アッシュ",
+          "suggestedChineseLabel": "阿什",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2de",
+            "encodedBytes": [
+              146,
+              179,
+              167,
+              213
+            ]
+          }
+        },
+        {
+          "id": "team-4-character-1",
+          "team": 4,
+          "character": 1,
+          "originalLabel": "ウルフ",
+          "suggestedChineseLabel": "沃尔夫",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2e2",
+            "encodedBytes": [
+              150,
+              219,
+              197
+            ]
+          }
+        },
+        {
+          "id": "team-4-character-2",
+          "team": 4,
+          "character": 2,
+          "originalLabel": "トライブ",
+          "suggestedChineseLabel": "特赖布",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2e6",
+            "encodedBytes": [
+              184,
+              217,
+              148,
+              198
+            ]
+          }
+        },
+        {
+          "id": "team-4-character-3",
+          "team": 4,
+          "character": 3,
+          "originalLabel": "ブレイク",
+          "suggestedChineseLabel": "布雷克",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2ea",
+            "encodedBytes": [
+              198,
+              220,
+              148,
+              159
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "originalLabel": "ハワイ",
+      "suggestedChineseLabel": "夏威夷",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb6fd",
+        "encodedBytes": [
+          0,
+          0,
+          0,
+          0,
+          11,
+          191,
+          223,
+          148,
+          11,
+          0,
+          0,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 7,
+          "path": ".local/nes-basket/runs/selection-names-team-7",
+          "selectedFrame": 1370,
+          "state": {
+            "teams": [
+              5,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "d2c668d465df0061c30e7e2480d61789aa3fc49ba8636d89880f2fa6f034b2d0",
+            "ram.bin": "561ab0521d12fd918046794b024db248b4af9c7dc9d5a299b82f15ff9d2bf74c",
+            "frame-01370.png": "9b716d6948078b73718224e4c9f8d5555e2a2d7627a2dabd3382b20b24f5e8e2"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-5-character-0",
+          "team": 5,
+          "character": 0,
+          "originalLabel": "きらうえ",
+          "suggestedChineseLabel": "基拉韦",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2ee",
+            "encodedBytes": [
+              61,
+              121,
+              54,
+              56
+            ]
+          }
+        },
+        {
+          "id": "team-5-character-1",
+          "team": 5,
+          "character": 1,
+          "originalLabel": "へっど",
+          "suggestedChineseLabel": "海德",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2f2",
+            "encodedBytes": [
+              104,
+              83,
+              89
+            ]
+          }
+        },
+        {
+          "id": "team-5-character-2",
+          "team": 5,
+          "character": 2,
+          "originalLabel": "わいいき",
+          "suggestedChineseLabel": "威基基",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2f6",
+            "encodedBytes": [
+              127,
+              52,
+              52,
+              61
+            ]
+          }
+        },
+        {
+          "id": "team-5-character-3",
+          "team": 5,
+          "character": 3,
+          "originalLabel": "ぼーん",
+          "suggestedChineseLabel": "博恩",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2fa",
+            "encodedBytes": [
+              108,
+              11,
+              131
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "originalLabel": "ラスベガス",
+      "suggestedChineseLabel": "拉斯维加斯",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb70b",
+        "encodedBytes": [
+          0,
+          0,
+          0,
+          11,
+          217,
+          169,
+          105,
+          156,
+          169,
+          11,
+          0,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 6,
+          "path": ".local/nes-basket/runs/selection-names-team-6",
+          "selectedFrame": 1310,
+          "state": {
+            "teams": [
+              6,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "5a014dee5cfc293b42ea13888cb7e33408c7303a93640ed3c6d6bbd4bee8da36",
+            "ram.bin": "2a3cbb1becfe4acab737c00d2f614ca2048655c9e9cb7d1856262436a297a1cf",
+            "frame-01310.png": "7ed364b012d7f6253b5cbc7838972e4c65ef96ce025dba0ec34b5e67da30932e"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-6-character-0",
+          "team": 6,
+          "character": 0,
+          "originalLabel": "スロット",
+          "suggestedChineseLabel": "斯洛特",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb2fe",
+            "encodedBytes": [
+              169,
+              221,
+              179,
+              184
+            ]
+          }
+        },
+        {
+          "id": "team-6-character-1",
+          "team": 6,
+          "character": 1,
+          "originalLabel": "ルーク",
+          "suggestedChineseLabel": "卢克",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb302",
+            "encodedBytes": [
+              219,
+              11,
+              159
+            ]
+          }
+        },
+        {
+          "id": "team-6-character-2",
+          "team": 6,
+          "character": 2,
+          "originalLabel": "ポーカー",
+          "suggestedChineseLabel": "波克",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb306",
+            "encodedBytes": [
+              205,
+              11,
+              155,
+              11
+            ]
+          }
+        },
+        {
+          "id": "team-6-character-3",
+          "team": 6,
+          "character": 3,
+          "originalLabel": "ギャモン",
+          "suggestedChineseLabel": "加蒙",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb30a",
+            "encodedBytes": [
+              158,
+              211,
+              210,
+              227
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "originalLabel": "フロリダ",
+      "suggestedChineseLabel": "佛罗里达",
+      "translationAuthority": "editorial-not-official",
+      "nameVerified": true,
+      "source": {
+        "bank": 3,
+        "pointer": "0xb719",
+        "encodedBytes": [
+          0,
+          0,
+          0,
+          0,
+          11,
+          197,
+          221,
+          218,
+          176,
+          11,
+          0,
+          0,
+          0
+        ],
+        "naturalMenu": {
+          "ordinal": 5,
+          "path": ".local/nes-basket/runs/selection-names-team-5",
+          "selectedFrame": 1250,
+          "state": {
+            "teams": [
+              7,
+              0
+            ],
+            "court": 0,
+            "characters": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "evidenceSHA256": {
+            "scenario.json": "ec6ebd85b791b99ecc62153cee28f6bdb7fa88fa827c72ac9c47f43c405c8cb8",
+            "ram.bin": "452ef3640a03b323c0edff0e50dfe74c3d7e1b91652d14172f6e3caedd753ac0",
+            "frame-01250.png": "a44dec1759bb42f879eb5ca5ee3ac17440c5b49c209ca0ed1d4a0805aa7af078"
+          }
+        }
+      },
+      "characters": [
+        {
+          "id": "team-7-character-0",
+          "team": 7,
+          "character": 0,
+          "originalLabel": "ピエール",
+          "suggestedChineseLabel": "皮埃尔",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb30e",
+            "encodedBytes": [
+              196,
+              152,
+              11,
+              219
+            ]
+          }
+        },
+        {
+          "id": "team-7-character-1",
+          "team": 7,
+          "character": 1,
+          "originalLabel": "ホフマン",
+          "suggestedChineseLabel": "霍夫曼",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb312",
+            "encodedBytes": [
+              203,
+              197,
+              206,
+              227
+            ]
+          }
+        },
+        {
+          "id": "team-7-character-2",
+          "team": 7,
+          "character": 2,
+          "originalLabel": "エスパ",
+          "suggestedChineseLabel": "埃斯帕",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb316",
+            "encodedBytes": [
+              152,
+              169,
+              193
+            ]
+          }
+        },
+        {
+          "id": "team-7-character-3",
+          "team": 7,
+          "character": 3,
+          "originalLabel": "グリース",
+          "suggestedChineseLabel": "格里斯",
+          "translationAuthority": "editorial-not-official",
+          "nameVerified": true,
+          "source": {
+            "bank": 4,
+            "pointer": "0xb31a",
+            "encodedBytes": [
+              160,
+              218,
+              11,
+              169
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "characterGlyphTranscriptions": {
+    "11": "ー",
+    "52": "い",
+    "54": "う",
+    "56": "え",
+    "58": "お",
+    "61": "き",
+    "63": "く",
+    "68": "ご",
+    "80": "だ",
+    "83": "っ",
+    "89": "ど",
+    "91": "に",
+    "104": "へ",
+    "108": "ぼ",
+    "121": "ら",
+    "122": "り",
+    "127": "わ",
+    "131": "ん",
+    "146": "ア",
+    "147": "ィ",
+    "148": "イ",
+    "150": "ウ",
+    "152": "エ",
+    "155": "カ",
+    "156": "ガ",
+    "158": "ギ",
+    "159": "ク",
+    "160": "グ",
+    "161": "ケ",
+    "167": "シ",
+    "168": "ジ",
+    "169": "ス",
+    "171": "セ",
+    "179": "ッ",
+    "183": "デ",
+    "184": "ト",
+    "185": "ド",
+    "186": "ナ",
+    "187": "ニ",
+    "193": "パ",
+    "196": "ピ",
+    "197": "フ",
+    "198": "ブ",
+    "199": "プ",
+    "203": "ホ",
+    "205": "ポ",
+    "206": "マ",
+    "207": "ミ",
+    "210": "モ",
+    "211": "ャ",
+    "213": "ュ",
+    "215": "ョ",
+    "217": "ラ",
+    "218": "リ",
+    "219": "ル",
+    "220": "レ",
+    "221": "ロ",
+    "227": "ン"
+  },
+  "relationships": {
+    "teamAndCourtAreSeparate": true,
+    "teamZeroCourtZeroNamesDiffer": true,
+    "versusDistinctTeams": "56 ordered distinct pairs selected through original menu; cursor skips chosen opponent",
+    "withinTeamDistinctCharacters": "all eight original team menus reject moving partner cursor from 1 upward to already selected character 0; other selected-character/multiplayer permutations not exhaustively tested",
+    "platformPolicy": "server separately controls verified playable combinations; this metadata opens nothing"
+  }
+}

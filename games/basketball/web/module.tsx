@@ -9,7 +9,14 @@ import { Preparation } from "./Preparation";
 import type { BasketballNetworkView } from "./network-scene";
 
 export type BasketballOptions = {
-  court: "new-york" | "court-0" | "court-2" | "court-3" | "court-4";
+  court:
+    | "new-york"
+    | "court-0"
+    | "court-2"
+    | "court-3"
+    | "court-4"
+    | "court-5"
+    | "court-6";
   teams?: [number, number];
   characters?: [number, number, number, number];
   mode: "solo" | "cooperative" | "versus";

@@ -1,0 +1,12 @@
+{
+  "calls": 336,
+  "chains": 8,
+  "chainCalls": 368,
+  "originalInstructionsUnchanged": true,
+  "naturalGameplay": false,
+  "entry": "fixed E165..E168, bank6 9040; preparation boundary 9064",
+  "soundScope": "FBCC sink",
+  "ROM_SHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "SHA256": "4d64b1bde3d823a7972b9877c5c0db45009e9a4d43f44cb8e7f581a83b378f99",
+  "runtimeBeforeSHA256": "589226013a91cac33afbe77ccedc9a9c2cce1bd81df55436fee7eff13ca96b0b"
+}
