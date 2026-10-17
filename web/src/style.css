@@ -1201,6 +1201,10 @@ label small {
   color: #a2bd9c;
 }
 .turn-card h3 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 19px;
   margin: 8px 0 10px;
   font-family: "Songti SC", serif;
@@ -4992,6 +4996,13 @@ label small {
 .profile-page {
   font-size: 13px;
   line-height: 1.6;
+}
+.profile-account-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #d9e0d4;
 }
 .profile-heading {
   display: flex;

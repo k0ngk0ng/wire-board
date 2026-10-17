@@ -163,6 +163,11 @@
   color: var(--table-muted);
   font-size: 11px;
 }
+.splendor-board .splendor-action-placeholder {
+  /* Preserve the same responsive layout while removing inactive controls. */
+  visibility: hidden;
+  pointer-events: none;
+}
 .splendor-board .gem-bank .bank-actions .subtle {
   color: var(--table-action);
   padding: 3px;
