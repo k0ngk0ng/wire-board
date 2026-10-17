@@ -124,3 +124,18 @@ var originalAttackAnimations = map[uint8]AnimationSpec{
 	101: {Frames: []AnimationFrame{{Pose: Pose{Frame: 87, Mirrored: false}, Ticks: 4}}, End: RepeatRemaining, RepeatLimit: 0},
 	102: {Frames: []AnimationFrame{{Pose: Pose{Frame: 78, Mirrored: false}, Ticks: 6}, {Pose: Pose{Frame: 48, Mirrored: false}, Ticks: 2}, {Pose: Pose{Frame: 47, Mirrored: false}, Ticks: 2}, {Pose: Pose{Frame: 46, Mirrored: false}, Ticks: 2}}, End: RepeatRemaining, RepeatLimit: 0},
 }
+
+type attackAnimationTail struct {
+	Start uint8
+	Spec  AnimationSpec
+}
+
+var originalAttackAnimationTails = map[uint8]attackAnimationTail{
+	15: {Start: 5, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 76, Mirrored: false}, Ticks: 255}}, End: RepeatRemaining, RepeatLimit: 0}},
+	24: {Start: 2, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 76, Mirrored: false}, Ticks: 4}}, End: RepeatForever, RepeatLimit: 0}},
+	27: {Start: 4, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 84, Mirrored: false}, Ticks: 6}}, End: RepeatRemaining, RepeatLimit: 0}},
+	57: {Start: 4, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 75, Mirrored: true}, Ticks: 2}, {Pose: Pose{Frame: 23, Mirrored: true}, Ticks: 4}, {Pose: Pose{Frame: 5, Mirrored: true}, Ticks: 3}}, End: RepeatRemaining, RepeatLimit: 0}},
+	87: {Start: 3, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 14, Mirrored: false}, Ticks: 1}, {Pose: Pose{Frame: 36, Mirrored: true}, Ticks: 1}, {Pose: Pose{Frame: 20, Mirrored: true}, Ticks: 6}}, End: RepeatRemaining, RepeatLimit: 0}},
+	94: {Start: 3, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 14, Mirrored: false}, Ticks: 1}, {Pose: Pose{Frame: 36, Mirrored: true}, Ticks: 1}, {Pose: Pose{Frame: 20, Mirrored: true}, Ticks: 6}}, End: RepeatRemaining, RepeatLimit: 0}},
+	98: {Start: 2, Spec: AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: 74, Mirrored: false}, Ticks: 1}, {Pose: Pose{Frame: 41, Mirrored: false}, Ticks: 4}, {Pose: Pose{Frame: 40, Mirrored: false}, Ticks: 255}}, End: RepeatForever, RepeatLimit: 0}},
+}

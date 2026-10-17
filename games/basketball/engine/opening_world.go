@@ -16,7 +16,7 @@ func WorldFromOriginalOpening(s OpeningState, options OpeningWorldOptions) (Worl
 	var world WorldLoopState
 	var ctx WorldLoopContext
 	t := s.Transition
-	if t.Scene != 1 || t.Match.Phase != MatchPlaying || !t.Match.Entered || t.Court > 5 {
+	if t.Scene != 1 || t.Match.Phase != MatchPlaying || !t.Match.Entered || t.Court >= 8 {
 		return world, ctx, fmt.Errorf("world handoff requires a completed supported court opening")
 	}
 	for _, v := range options.HumanTactics {
@@ -85,6 +85,8 @@ func WorldFromOriginalOpening(s OpeningState, options OpeningWorldOptions) (Worl
 		a.Hoops[i] = WorldActionHoop{Position: o.Body.Position, Velocity: o.Body.Velocity, Gravity: o.Body.Gravity, Action: HoopAction(o.Action), Entered: o.Entered, Owner: t.Owners[i+3], Durability: t.HoopDurability[i], Pose: o.Pose, FacingLeft: o.FacingLeft, Animation: o.Animation, Airborne: o.Airborne, Request: HoopRequest{Action: HoopAction(o.Request.Action), Pending: o.Request.Pending}}
 	}
 	p.Scores = t.Scores
+	p.CourtScoreFlags = [2]uint8{t.Passages[6], t.Passages[7]}
+	p.CourtOutcomeFlags = t.Passages[8]
 	p.ScoreSoundDelay = s.ScoreSoundDelay
 	p.PreviousBallAction = BallAction(uint8(t.ResultControllers[0]) & 127)
 	p.ObservedBallAction = BallAction(uint8(t.ResultControllers[1]) & 127)

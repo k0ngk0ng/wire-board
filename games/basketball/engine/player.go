@@ -246,6 +246,7 @@ func StepFreePlayerAction(original Player, ctx FreePlayerContext, profile Charac
 	initial := FreePlayerStep{Player: original, ShotCycle: ctx.ShotCycle}
 	p := original
 	shotCycle := ctx.ShotCycle
+	var sounds []uint8
 	computer := ctx.Computer
 	if p.Heading > HeadingNone || !freeAction(p.Action) || p.Request.Pending && !freeAction(p.Request.Action) && p.Request.Action != ActionCatchBall {
 		return initial, errors.New("player action/context has not been reconstructed")
@@ -268,7 +269,7 @@ func StepFreePlayerAction(original Player, ctx FreePlayerContext, profile Charac
 		if (action == ActionJump || action == ActionRunningJump) && ctx.JumpPhase < 0 {
 			p.Animation.Cursor = 1
 			launchFreeJump(&p, action, profile, ctx.JumpPhase)
-			return FreePlayerStep{Player: p, ShotCycle: shotCycle, Revisit: true}, nil
+			return FreePlayerStep{Player: p, ShotCycle: shotCycle, Revisit: true, SoundIDs: []uint8{23}}, nil
 		}
 		switch action {
 		case ActionIdle:
@@ -367,11 +368,12 @@ func StepFreePlayerAction(original Player, ctx FreePlayerContext, profile Charac
 	}
 	if (action == ActionJump || action == ActionRunningJump) && p.Animation.Cursor != 0 {
 		if p.Animation.Elapsed == 0 {
+			sounds = append(sounds, 23)
 			launchFreeJump(&p, action, profile, ctx.JumpPhase)
 		}
 		if !p.Airborne {
 			p.Action, p.Entered = ActionLand, false
 		}
 	}
-	return FreePlayerStep{Player: p, Ball: ball, ShotCycle: shotCycle, Revisit: enteredNow && (action == ActionJump || action == ActionRunningJump)}, nil
+	return FreePlayerStep{Player: p, Ball: ball, ShotCycle: shotCycle, SoundIDs: sounds, Revisit: enteredNow && (action == ActionJump || action == ActionRunningJump)}, nil
 }

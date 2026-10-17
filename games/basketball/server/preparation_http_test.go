@@ -41,16 +41,19 @@ func TestBasketballHTTPVisualPreparation(t *testing.T) {
 	act(a, map[string]any{"type": "court", "court": "court-4"}, 200)
 	act(a, map[string]any{"type": "court", "court": "court-3"}, 200)
 	act(a, map[string]any{"type": "court", "court": "court-0"}, 200)
+	act(a, map[string]any{"type": "court", "court": "court-5"}, 200)
+	act(a, map[string]any{"type": "court", "court": "court-6"}, 200)
+	act(a, map[string]any{"type": "court", "court": "court-7"}, 400)
 	h.Restart()
 	r = a.Room()
-	if r["options"].(map[string]any)["court"] != "court-0" || !reflect.DeepEqual(chars, r["options"].(map[string]any)["characters"]) {
+	if r["options"].(map[string]any)["court"] != "court-6" || !reflect.DeepEqual(chars, r["options"].(map[string]any)["characters"]) {
 		t.Fatal("restart lost selections")
 	}
 	a.Command("ready", nil, 200)
 	b.Command("ready", nil, 200)
 	a.Command("start", nil, 200)
 	v := view(t, a)
-	if v.Runtime.Config.Match.Court != 0 || v.Runtime.Config.Match.Characters != ([4]uint8{0, 1, 1, 0}) || v.Runtime.Config.Match.ControllerAssignments != ([4]int8{0, -1, 2, -1}) {
+	if v.Runtime.Config.Match.Court != 6 || v.Runtime.Config.Match.Characters != ([4]uint8{0, 1, 1, 0}) || v.Runtime.Config.Match.ControllerAssignments != ([4]int8{0, -1, 2, -1}) {
 		t.Fatal("chosen roster/court not used", v.Runtime.Config.Match)
 	}
 	act(a, map[string]any{"type": "court", "court": "new-york"}, 400)

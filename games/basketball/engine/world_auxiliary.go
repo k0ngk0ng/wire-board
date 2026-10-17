@@ -45,9 +45,8 @@ func advanceWorldAuxiliaryCarrier(result *WorldActionStep, actor uint8, c WorldA
 	if step.ChangeShotCycle {
 		a.ShotCycle = step.ShotCycle
 	}
-	if step.ClearSpecialShot {
-		a.SpecialShot = 0
-	}
+	// The shared landing entry committed ClearSpecialShot before motion.
+	// Do not replay it over world writes produced by that motion.
 	if step.ChangeAimWindow {
 		a.AimWindow = step.AimWindow
 	}

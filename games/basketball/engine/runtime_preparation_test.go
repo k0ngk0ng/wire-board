@@ -10,12 +10,13 @@ import (
 // fixed roster. Failure inventory: a permitted roster selects an unrecovered
 // AI/ball/prop path, its match never finishes, or recovery changes its trajectory.
 // The explicit gate covers only currently offered teams/slots/courts; it does
-// not stand in for all 32 characters or arbitrary human techniques.
+// not stand in for all 32 characters or arbitrary human techniques. Courts5/6 are
+// additionally gated here before the server/UI may expose its preparation choice.
 func TestRuntimePreparedConfigurationsCompleteMatchAndRestore(t *testing.T) {
 	if os.Getenv("BASKETBALL_PREPARATION_MATRIX") != "1" {
 		t.Skip("set BASKETBALL_PREPARATION_MATRIX=1 for offered preparation configurations")
 	}
-	for court := uint8(0); court < 5; court++ {
+	for court := uint8(0); court < 7; court++ {
 		for roster := 0; roster < 4; roster++ {
 			for _, mode := range []struct {
 				name        string

@@ -4,7 +4,8 @@ The original Court 4 cycle selects palettes 5/9/10, queues the built colors,
 and applies them during the next NMI palette transfer. Result initialization
 preserves the selected palette across temporary background loading. The renderer
 now supports Court 4 result palettes 5/9/10; eight original result frames retaining
-palette 9 compare exactly. This work does not implement the original fade levels.
+palette 9 compare exactly. The four-level fade implementation is now independently verified against original
+frames; see `FADE_VERIFICATION.md` and `../DISPLAY_FADE_VERIFICATION.md`.
 
 ## Sources and reusable observations
 
@@ -108,28 +109,38 @@ selection check verifies that palette 10 does not silently reuse 9 or base 5.
 Palette 10 has static original-ROM decoding/asset validation, not a claimed
 naturally reached result screenshot.
 
-The full renderer acceptance remains green: 188 frames and 11,550,720 pixels,
+The stable-frame renderer baseline covers 188 frames and 11,550,720 pixels,
 including the existing New York, eight-court and IRQ-boundary cases. Strict
 renderer/client TypeScript checks pass. The eight-frame PNG proof is
 `.local/basketball/renderer/browser/result-palette-canvas.png`; complete comparison
 records are in the same directory's `result.json`.
 
-## Fade boundary still outstanding
+## Four-level fade boundary now verified
 
-A palette ID alone cannot express fading. With `$0302=1`, `$94E0/$9526` queue four
-separate buffers and wait for their video commits. Fade-out uses thresholds
-`30,20,10,00` (last stage all color `$0F`); fade-in uses `10,20,30,40`. The original
-source buffers and NMI boundaries are retained in `samples.json`. An eight-video
-wait with a full-color image is not visual fade reproduction.
+The committed `paletteLevel` and its pending queue now preserve the original
+four-stage NES color clamp independently from sprite submissions. Fade-out uses
+thresholds `30,20,10,00`; fade-in uses `10,20,30,40`. The renderer transforms the
+composed original colors once through an exported RGB lookup table; it does not
+use CSS opacity. Source probes prove that all 64 NES indices, including duplicate
+RGB classes, preserve the index-clamp result at all five levels.
 
-The smallest separate follow-up state for these court fades is a committed
-`paletteLevel` in 0..4 plus a pending level tied to each palette queue, where the
-source threshold is `paletteLevel*0x10`. It must transform original NES palette
-indices using the source clamp rule; CSS opacity is not equivalent. Other generic
-palette-builder flags can restrict which groups are transformed or omit sprite
-palette writes; those need explicit scope if restored later. This change adds no
-fade-level fields to Go and makes no claim to cover the transition's darkened
-frames.
+Four retained original runs provide 112 observed transition frames. Their RAM
+and PNGs equal corresponding runs without the observation hooks. Five frames
+still carry the preceding menu palette and are explicitly excluded from the
+court renderer contract. The remaining **107 frames / 6,574,080 pixels** compare
+exactly, covering New York palette 2, Court4 base 5, palette 9 court/result fades,
+and a naturally reached palette 10 period exit. Palette 10 result imagery still
+has static coverage only; its period-exit observation does not establish natural
+palette 10 result coverage. Selective palette-group flags remain outside scope.
+
+Combined with the stable baseline, the fade renderer gate passes
+**295 frames / 18,124,800 pixels**, with zero mismatches. Subsequent Court6 result
+coverage adds eight frames for 303 / 18,616,320 pixels; see
+`COURT_SIX_RESULT_VERIFICATION.md`. The source provenance,
+PNG hashes, exact coverage partition, generated lookup-table identity and atlas
+hash are checked by `verify_fade_evidence.py`. Rebased-run logs are retained at
+`.local/basketball/fade/{capture-revalidated,renderer-rebased,evidence-rebased}.log`.
+The detailed evidence index is `.local/basketball/fade/evidence-verification.json`.
 
 Reproduce after `source scripts/env.sh`:
 
@@ -137,6 +148,7 @@ Reproduce after `source scripts/env.sh`:
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/analyze_palette_timing.py
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_result_assets.py .local/basketball/results
 PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/accept_renderer.py
+PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/verify_fade_evidence.py
 ```
 
 All source captures, logs and sample data remain in the workspace. No Go display

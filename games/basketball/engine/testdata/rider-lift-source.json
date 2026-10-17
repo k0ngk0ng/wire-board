@@ -1,0 +1,12 @@
+{
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "entry": "E165/E18B through92F9..9331",
+  "calls": 576,
+  "chains": 16,
+  "chainCalls": 176,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "5ec7f5b41bee3de90a43e1c9328a8cbfe5f34dc140115d56879d4eb970f8cd0c",
+  "scope": "configured source single-actor lift and continuous lift animation; no complete linked target3F action claim; FBCC sound sink only",
+  "alias": "linkedActor FF writes3F to0611 (actor0 endurance)"
+}

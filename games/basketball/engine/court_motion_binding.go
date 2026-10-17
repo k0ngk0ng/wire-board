@@ -193,7 +193,7 @@ func storeWorldFloorState(s *WorldActionState, f CourtFloorState, selected uint8
 	s.Random, s.LastShooter, s.Ball.Deflection = f.Random, int8(f.LastShooter), f.BallDeflection
 }
 func originalWorldMotionCourt(result *WorldActionStep, c WorldActionContext, object uint8) (FlatCourt, error) {
-	if c.CourtID > 5 {
+	if c.CourtID > 7 {
 		return FlatCourt{}, fmt.Errorf("world original motion binding court %d not enabled", c.CourtID)
 	}
 	b := &courtMotionBinding{object: object, court: c.CourtID, sounds: &result.SoundIDs, writes: &result.MotionSurfaceWrites}

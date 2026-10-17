@@ -336,6 +336,11 @@ func advanceOriginalShotPlan(result *AIControlDecision, view AIControlView, ctx 
 			result.Heading = HeadingLeft
 		}
 		s.Plan = 22
+	case 6:
+		// B4E3 requests a fresh standing pass and resumes possession wait.
+		// Heading, continuation plan and shot cycle are deliberately retained.
+		result.Action, result.ActionEntered = ActionPass, false
+		changeMode(AIPossessionWait)
 	case 7:
 		// 0619's grade and the existing profile's jump velocity correspond
 		// exactly through the original 7*256 + grade*128 table.

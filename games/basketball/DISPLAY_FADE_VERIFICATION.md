@@ -72,8 +72,16 @@ hashes at two-video intervals; both exits are visibly black and result entry
 fades the result background. Mid-fade and final-picture restoration pass.
 Evidence is `live-fade-full-timeline.log` and
 `.local/basketball/all-computer-full-match-browser-court-4/natural-fades.json`.
-Original screenshot pixel regression remains a separate in-progress gate;
-passing timing and browser flow alone does not prove all original pixels.
+The separate original screenshot regression now passes: 107 fade frames and
+6,574,080 pixels compare exactly. Four original runs retain 112 observed frames;
+five preceding-menu black frames are explicitly outside the court renderer.
+Coverage includes New York, Court4 base 5, palette 9 court/result transitions,
+and a naturally reached palette 10 period exit. The fade renderer baseline
+passes 295 frames / 18,124,800 pixels. Subsequent Court6 result coverage extends
+the suite to 303 frames / 18,616,320 pixels. These original-input renderer comparisons
+establish image fidelity separately from the real Go/Wasm timing test above;
+they do not establish whole-game state equivalence. See
+`web/FADE_VERIFICATION.md` for the coverage and reproducible evidence audit.
 
 ```sh
 source scripts/env.sh

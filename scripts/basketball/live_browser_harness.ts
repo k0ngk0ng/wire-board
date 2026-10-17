@@ -18,7 +18,7 @@ function renderPad(){flushSync(()=>pad.render(createElement(FCController,{profil
 renderPad();
 const manual=new URLSearchParams(location.search).has('manual');
 const court=Number(new URLSearchParams(location.search).get('court')??'1');
-if(![0,1,2,3,4].includes(court))throw Error('Court is not available in this development host');
+if(![0,1,2,3,4,5,6].includes(court))throw Error('Court is not available in this development host');
 document.querySelector('header p')!.textContent=court===1?'Go 运行验证 · 纽约场地':`Go 运行验证 · 球场 ${court}`;
 let stopped=false;
 const showError=(value:unknown)=>{stopped=true;error.textContent=String(value);};

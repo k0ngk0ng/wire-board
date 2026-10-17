@@ -64,6 +64,7 @@ func runtimeOpeningFromPlaying(p RuntimePlayingState, c RuntimeConfig) (OpeningS
 		o.Links[i+7] = p.Context.HoopLinks[i]
 	}
 	t.Passages[6], t.Passages[7] = prep.CourtScoreFlags[0], prep.CourtScoreFlags[1]
+	t.Passages[8] = prep.CourtOutcomeFlags
 	o.MountFlags = w.MountFlags
 	o.DetachedCount = w.DetachedCount
 	o.ScoreSoundDelay = prep.ScoreSoundDelay
@@ -114,6 +115,7 @@ func mergeRuntimeCarriedWorld(fresh, carry WorldLoopState) WorldLoopState {
 	result.Preparation.ObservedBallAction = fresh.Preparation.ObservedBallAction
 	result.Preparation.DisplayFlags = fresh.Preparation.DisplayFlags
 	result.Preparation.CourtScoreFlags = fresh.Preparation.CourtScoreFlags
+	result.Preparation.CourtOutcomeFlags = fresh.Preparation.CourtOutcomeFlags
 	for i := range result.Input.Memory {
 		result.Input.Memory[i].LastAttackTap = fresh.Input.Memory[i].LastAttackTap
 		result.Input.Memory[i].LastTap = fresh.Input.Memory[i].LastTap

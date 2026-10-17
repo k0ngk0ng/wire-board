@@ -55,7 +55,7 @@ try:
   wait('document.querySelector(".basketball-preparation") && [...document.querySelectorAll(".basketball-preparation img")].every(i=>i.complete&&i.naturalWidth>0)')
   expect('court labels remain below preview images in platform styles '+mode,js('[...document.querySelectorAll(".basketball-court-choices button")].every(b=>{const i=b.querySelector("img").getBoundingClientRect(),label=b.querySelector("span").getBoundingClientRect(),r=b.getBoundingClientRect();return label.top>=i.bottom-1 && i.left>=r.left && i.right<=r.right && label.right<=r.right})'))
   expect('preparation loads original court and player images '+mode,js('document.querySelectorAll(".basketball-preparation img").length>=15'))
-  expect('five verified courts appear only in waiting preparation '+mode,js('document.querySelectorAll(".basketball-preparation [data-court]").length===5'))
+  expect('seven verified courts appear only in waiting preparation '+mode,js('document.querySelectorAll(".basketball-preparation [data-court]").length===7'))
   browser('screenshot',str(OUT/(mode+'-waiting-mobile.png')),'--full')
   if mode!='versus':
    browser('find','role','button','click','--name','离开房间');wait('!document.querySelector(".waiting-seats")');continue
@@ -64,15 +64,13 @@ try:
   browser('screenshot',str(OUT/'versus-waiting-desktop.png'),'--full')
   browser('set','viewport','320','720')
   # Change choices in the real waiting room; these are actual server actions.
-  browser('scrollintoview','[data-court="court-4"]');browser('click','[data-court="court-4"]')
-  wait('document.querySelector(\'[data-court="court-4"]\')?.getAttribute("aria-pressed")==="true"')
-  expect('fifth court selection is saved by the preparation server',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.options.court==="court-4")'))
-  browser('scrollintoview','[data-court="court-0"]');browser('click','[data-court="court-0"]')
-  wait('document.querySelector(\'[data-court="court-0"]\')?.getAttribute("aria-pressed")==="true"')
+  browser('scrollintoview','[data-court="court-6"]');browser('click','[data-court="court-6"]')
+  wait('document.querySelector(\'[data-court="court-6"]\')?.getAttribute("aria-pressed")==="true"')
+  expect('seventh court selection is saved by the preparation server',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.options.court==="court-6")'))
   browser('scrollintoview','[data-actor="2"] [data-character="1"]');browser('click','[data-actor="2"] [data-character="1"]')
   wait('document.querySelector(\'[data-actor="2"] [data-character="1"]\')?.getAttribute("aria-pressed")==="true"')
   selected=js('fetch("/api/state").then(r=>r.json()).then(s=>s.room)')
-  expect('waiting selection reaches authoritative court and roster',selected['options']['court']=='court-0' and selected['options']['characters']==[0,1,1,0])
+  expect('waiting selection reaches authoritative court and roster',selected['options']['court']=='court-6' and selected['options']['characters']==[0,1,1,0])
   room=selected
   # Separate authenticated HTTP session joins and readies the second human.
   import urllib.request,http.cookiejar
@@ -86,7 +84,7 @@ try:
   browser('find','role','button','click','--name','我准备好了');wait('[...document.querySelectorAll("button")].some(b=>b.textContent.includes("开始游戏")&&!b.disabled)')
   js('[...document.querySelectorAll("button")].find(b=>b.textContent.includes("开始游戏")).scrollIntoView({block:"center"})');browser('find','role','button','click','--name','开始游戏');wait('!!document.querySelector("[data-basketball-ready=true]")')
   wait('Number(document.querySelector(".basketball-stage canvas")?.dataset.videoFrame)>=120')
-  expect('started original runtime uses prepared court and characters',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.runtime.config.match.Court===0 && JSON.stringify(s.room.game.data.runtime.config.match.Characters)==="[0,1,1,0]")'))
+  expect('started original runtime uses prepared court and characters',js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.runtime.config.match.Court===6 && JSON.stringify(s.room.game.data.runtime.config.match.Characters)==="[0,1,1,0]")'))
   expect('platform starts directly in game without original player-selection menu',js('!!document.querySelector(".basketball-stage canvas") && !!document.querySelector(".fc-play") && !document.querySelector(".basketball-error")'))
   expect('public player summaries distinguish both teams',js('document.querySelector(".players-strip").textContent.includes("A 队") && document.querySelector(".players-strip").textContent.includes("B 队")'))
   expect('phone controller remains outside the match screen',js('(()=>{const s=document.querySelector(".basketball-screen"),p=document.querySelector(".fc-play");return !s.contains(p)&&s.getBoundingClientRect().bottom<=p.getBoundingClientRect().top})()'))

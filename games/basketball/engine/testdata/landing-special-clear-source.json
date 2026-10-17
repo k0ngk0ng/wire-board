@@ -1,0 +1,22 @@
+{
+  "runtimeBeforeSHA256": "f1dfb112e822033c27680fc9ab5e36f9bd5fc2390f334c9b995569ddd7b7eba9",
+  "runtimeWorlds": {
+    "sourceSHA256": "93fd388aab383aa7a82c7bff46981266027a080cc26b8cf2146297765d9dc8a5",
+    "firstIndex": 1013,
+    "count": 60,
+    "scope": "one controlled semantic origin followed by unmodified original whole-machine play"
+  },
+  "scope": "controlled original complete shared landing handler calls; all five dispatcher aliases",
+  "records": 160,
+  "entry": "bank6 8BBD",
+  "write": "8BD7 STA 0554,X",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "2186fdc114cf8e76950f13f5f2ac6f514497723918ff51ae564c32b25948fbed",
+  "aliases": [
+    6,
+    22,
+    38,
+    54,
+    70
+  ]
+}

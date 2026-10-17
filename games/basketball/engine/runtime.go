@@ -62,7 +62,7 @@ type RuntimeStep struct {
 }
 
 func validateRuntimeConfig(c RuntimeConfig) error {
-	if c.Match.Court > 5 {
+	if c.Match.Court >= 8 {
 		return fmt.Errorf("runtime court is not yet supported by complete motion/action integration")
 	}
 	for _, team := range c.Match.Teams {

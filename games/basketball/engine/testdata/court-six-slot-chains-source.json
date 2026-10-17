@@ -1,0 +1,12 @@
+{
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "chains": 14,
+  "slotCalls": 367,
+  "rewards": 1,
+  "initial": "all14 original observed goal entries; no overwritten RNG/reels/scores",
+  "scope": "original8E33 goal then repeated9B95, external0300++ only, no intermediate state injection; C000/FCEC observed command sinks",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "goalSourceSHA256": "bc29668a01cccdfe9ac34ea84d19568406f9746b09df7fd4046cc8819acffdcc",
+  "fixtureSHA256": "ed16a804977a6efa8fb185eb4a235d603630ea1a7098d90281fbdd0bec4d4ef1"
+}

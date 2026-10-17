@@ -1,0 +1,21 @@
+{
+  "source_is_original_execution": true,
+  "scope": "passive D257..D303 after once-configured Court7; unchanged controller inputs, no natural-menu claim",
+  "records": 1,
+  "fixtureSHA256": "b9a41571345f65731ee0cdfc679dc7023a30879050855310926594578a92874d",
+  "beforeAuxKinds": [
+    9,
+    0
+  ],
+  "afterAuxKinds": [
+    13,
+    14
+  ],
+  "ramAndScreenshotsMatchUninstrumented": true,
+  "referenceRAMSHA256": "f7decddd51cd4b13d763f373387cef9d125bef33daeaf84c536d8f03787baaa9",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 1750,
+    "scenario_sha256": "8fb74f8f606a3b8b9c744f11f7ced8dcd7eb7a22f3ccd3da5ef32785d28f9a8e"
+  }
+}

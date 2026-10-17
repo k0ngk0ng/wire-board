@@ -53,12 +53,12 @@ func TestDisplayPreservesOriginalCourtSelector(t *testing.T) {
 		if restored.Submitted.Court != court || restored.Visible.Court != court {
 			t.Fatal("display restore lost court", court)
 		}
-		if court > 4 {
-			c := DefaultRuntimeConfig()
-			c.Match.Court = court
-			if _, e := NewRuntime(c); e == nil {
-				t.Fatal("display metadata unlocked unsupported runtime", court)
-			}
+	}
+	for _, court := range []uint8{8, 255} {
+		c := DefaultRuntimeConfig()
+		c.Match.Court = court
+		if _, e := NewRuntime(c); e == nil {
+			t.Fatal("display metadata unlocked unknown runtime court", court)
 		}
 	}
 }

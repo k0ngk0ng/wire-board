@@ -1,0 +1,10 @@
+{
+  "records": 18432,
+  "entry": "bank5 B4E3",
+  "source_is_natural_execution": false,
+  "isolated_original_function_execution": true,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "7e6af46d349973a6da10d1d2b1a0342aacea803f9617472956217371aaafc16c",
+  "runtime_before_path": ".local/basketball/team-roster-after-attacks-20261018/native/court1-teams0-2-characters0-1-0-1/before.json",
+  "runtime_before_sha256": "4e22f889b7a64361421eb88541de41ba09b0782da91469236aee1f26aabb408f"
+}

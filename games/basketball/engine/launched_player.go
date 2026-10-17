@@ -6,7 +6,11 @@ import "fmt"
 // source throws the actor along an original target-height trajectory.
 const ActionLaunched Action = 0x3e
 
+// ActionLaunchedAtBall shares 9E3D but targets the current ball at a 32px arc.
+const ActionLaunchedAtBall Action = 0x3f
+
 type LaunchedPlayerContext struct {
+	BallPosition       Position
 	Actor, Attachment  uint8
 	Source             Player
 	SourceKind         uint8
@@ -48,7 +52,7 @@ type LaunchedPlayerCompletion struct {
 // The world must commit these writes before the motion binding loads its state.
 func PrepareLaunchedPlayer(original Player, ctx LaunchedPlayerContext, launchContext ...PassLaunchContext) (LaunchedPlayerPreparation, error) {
 	initial := LaunchedPlayerPreparation{Player: original, Attachment: ctx.Attachment}
-	if original.Action != ActionLaunched || ctx.Actor >= 4 {
+	if (original.Action != ActionLaunched && original.Action != ActionLaunchedAtBall) || ctx.Actor >= 4 {
 		return initial, fmt.Errorf("launched player action/actor outside restored handler")
 	}
 	result := initial
@@ -73,6 +77,27 @@ func PrepareLaunchedPlayer(original Player, ctx LaunchedPlayerContext, launchCon
 	}
 	result.ChangePoseSource = true
 	result.Attachment = 64
+	if original.Action == ActionLaunchedAtBall {
+		// 9E72 copies only ball integer bytes into 069F..06A3. It bypasses
+		// E003's hoop/equipment overrides and calls FD91 with arc height32.
+		target := Position{X: Fixed(uint16(ctx.BallPosition.X>>8)) * Pixel, Depth: Fixed(uint8(ctx.BallPosition.Depth>>8)) * Pixel, Height: Fixed(uint16(ctx.BallPosition.Height>>8)) * Pixel}
+		plan := HoopThrowPlan{Target: target, ArcHeight: 32 * Pixel}
+		body, err := LaunchPass(p.Body.Position, plan.Target, plan.ArcHeight, launchContext...)
+		if err != nil {
+			return initial, err
+		}
+		p.Body = body
+		result.LaunchPlan = &plan
+		return result, nil
+	}
+	return prepareOriginalPlayerTrajectory(initial, result, source, ctx, launchContext...)
+}
+
+// prepareOriginalPlayerTrajectory restores shared E003/E078 and the launch
+// solver. Callers choose their original direction/source and commit entry
+// effects first; this helper does not choose an action, attachment or RNG.
+func prepareOriginalPlayerTrajectory(initial, result LaunchedPlayerPreparation, source Player, ctx LaunchedPlayerContext, launchContext ...PassLaunchContext) (LaunchedPlayerPreparation, error) {
+	p := &result.Player
 	height := Fixed(88) * Pixel
 	if uint8(source.Body.Position.Height>>16) != 0 || uint8(source.Body.Position.Height>>8) >= 152 {
 		height = 280 * Pixel
@@ -136,7 +161,7 @@ func PrepareLaunchedPlayer(original Player, ctx LaunchedPlayerContext, launchCon
 // even when its pending flag has already been consumed.
 func CompleteLaunchedPlayer(original Player, ctx LaunchedPlayerContext, court FlatCourt) (LaunchedPlayerCompletion, error) {
 	initial := LaunchedPlayerCompletion{Player: original}
-	if original.Action != ActionLaunched || ctx.Actor >= 4 {
+	if (original.Action != ActionLaunched && original.Action != ActionLaunchedAtBall) || ctx.Actor >= 4 {
 		return initial, fmt.Errorf("launched player completion outside restored handler")
 	}
 	p := original

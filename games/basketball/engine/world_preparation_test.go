@@ -92,7 +92,7 @@ func TestWorldPreparationEveryOriginalCompleteStage(t *testing.T) {
 func TestWorldPreparationErrorsAreAtomic(t *testing.T) {
 	r := worldPreparationFixtures(t)[1]
 	for _, change := range []func(*WorldPreparationContext){
-		func(c *WorldPreparationContext) { c.Actions.CourtID = 6 },
+		func(c *WorldPreparationContext) { c.Actions.CourtID = 255 },
 		func(c *WorldPreparationContext) { c.Kinds[0] = 255 },
 		func(c *WorldPreparationContext) { c.HumanCommands[0] = 1 },
 	} {

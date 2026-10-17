@@ -37,6 +37,7 @@ func stepFreeFalling(p Player, ctx FreePlayerContext, court FlatCourt) (Player, 
 // FreePlayerStep is one original actor action result. Revisit is a scheduler
 // signal, not another action already executed by this function.
 type FreePlayerStep struct {
+	SoundIDs  []uint8
 	Player    Player
 	Revisit   bool
 	Ball      BallCommand

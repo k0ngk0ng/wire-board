@@ -13,12 +13,16 @@ type AttackContext struct {
 	Attachment         uint8
 	EnhancementEnabled bool
 	Enhancement        uint8
+	HolderPosition     Position
 }
 type AttackStep struct {
-	State    AttackState
-	Revisit  bool
-	Ball     BallCommand
-	SoundIDs []uint8
+	State            AttackState
+	Revisit          bool
+	Ball             BallCommand
+	SoundIDs         []uint8
+	ChangeLaunchPlan bool
+	LaunchTarget     Position
+	LaunchArcHeight  Fixed
 }
 
 // StepPlayerAttack executes one original attack handler. Variant selection,
@@ -46,7 +50,7 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 		selected = originalAttackProfiles[kind][override]
 	}
 	switch selected.Handler {
-	case 0, 2, 3, 4, 5, 6, 11, 15, 16, 19, 24, 29, 30:
+	case 0, 2, 3, 4, 5, 6, 10, 11, 15, 16, 17, 19, 20, 24, 25, 27, 28, 29, 30, 31:
 	default:
 		return fail(fmt.Sprintf("handler %d is not reconstructed", selected.Handler))
 	}
@@ -80,6 +84,25 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 			}
 			p.Body.Velocity.Depth = 0
 			next(ActionIdle)
+		case 27:
+			faceHeading(p)
+			stopHorizontal(p)
+			target := Position{X: ctx.HolderPosition.X &^ 255, Depth: ctx.HolderPosition.Depth &^ 255, Height: ctx.HolderPosition.Height &^ 255}
+			body, e := court.launchPass(p.Body.Position, target, 32*Pixel)
+			if e != nil {
+				return initial, e
+			}
+			p.Body = body
+			result.ChangeLaunchPlan, result.LaunchTarget, result.LaunchArcHeight = true, target, 32*Pixel
+		case 28:
+			p.Body.Velocity.Depth = 0
+			setAttackHorizontalSpeed(p, 2*Pixel, p.FacingLeft)
+			next(ActionIdle)
+		case 25:
+			faceHeading(p)
+			stopHorizontal(p)
+			stopVertical(p)
+			next(ActionJump)
 		case 24:
 			p.Body.Velocity.Depth = 0
 			next(ActionIdle)
@@ -135,6 +158,9 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 			if p.Pose.Mirrored {
 				p.Body.Velocity.X = -6 * Pixel
 			}
+		case 10:
+			next(ActionFalling)
+			p.Body.Velocity.Depth = 0
 		case 19:
 			stopVertical(p)
 			next(ActionFalling)
@@ -155,6 +181,20 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 			if ctx.Team == 4 || ctx.Team == 5 || ctx.Team == 6 {
 				setAttackHorizontalSpeed(p, 4*Pixel, p.Pose.Mirrored)
 			}
+		case 31:
+			p.Animation.Loops = 3
+			faceHeading(p)
+			setAttackHorizontalSpeed(p, 4*Pixel, p.Pose.Mirrored)
+		case 17:
+			p.Animation.Loops = 2
+			faceHeading(p)
+			setAttackHorizontalSpeed(p, 4*Pixel, p.Pose.Mirrored)
+			stopVertical(p)
+			p.Body.Gravity = Pixel
+		case 20:
+			stopVertical(p)
+			stopHorizontal(p)
+			p.Body.Velocity.Height, p.Body.Gravity = 0xcc0, 0x1e0
 		case 29:
 			faceHeading(p)
 			setAttackHorizontalSpeed(p, 5*Pixel, p.FacingLeft)
@@ -182,7 +222,7 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 			}
 		}
 	}
-	if enteredNow || selected.Handler == 19 {
+	if enteredNow && selected.Handler != 17 && selected.Handler != 31 || selected.Handler == 19 || selected.Handler == 10 {
 		result.SoundIDs = append(result.SoundIDs, originalAttackSounds[kind][role])
 	}
 	if selected.Handler == 3 && !enteredNow && !p.Airborne {
@@ -190,14 +230,35 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 	}
 	// $A68F's entry jumps directly to motion; its first pose is retained.
 	if selected.Handler != 29 || !enteredNow {
-		animation, err := AdvanceAnimation(spec, p.Animation, p.FacingLeft)
+		animation, err := advanceAttackAnimation(result.State.AttackVariant, spec, p.Animation, p.FacingLeft)
 		if err != nil {
-			return initial, err
+			return initial, fmt.Errorf("original attack handler %d variant %d action %02x cursor %d: %w", selected.Handler, result.State.AttackVariant, action, p.Animation.Cursor, err)
 		}
 		p.Animation, p.Pose = animation.State, animation.Pose
 		if animation.ChangeAction {
 			p.Action, p.Entered = animation.Action, false
 		}
+	}
+	if selected.Handler == 20 && p.Animation.Cursor < 5 && p.Body.Velocity.Height < 0 {
+		p.Animation.Cursor, p.Animation.Elapsed = 5, 0
+		setAttackHorizontalSpeed(p, 8*Pixel, p.Pose.Mirrored)
+		stopVertical(p)
+		p.Body.Velocity.Height = -8 * Pixel
+	}
+	if selected.Handler == 25 && p.Action == ActionJump {
+		// $A493 copies only integer coordinates from the current ball holder.
+		// Its signed-height clamp clears the high byte, not the low byte.
+		holder := ctx.HolderPosition
+		p.Body.Position.X = (holder.X & 0xffff00) | (p.Body.Position.X & 255)
+		p.Body.Position.Depth = (holder.Depth & 0xff00) | (p.Body.Position.Depth & 255)
+		height := holder.Height & 0xffff00
+		if height&0x800000 != 0 {
+			height &= 0xff00
+		}
+		p.Body.Position.Height = ((height + 8*Pixel) & 0xffff00) | (p.Body.Position.Height & 255)
+		stopVertical(p)
+		p.Body.Gravity = Pixel
+		result.State.JumpPhase = -1
 	}
 	if selected.Handler == 0 || selected.Handler == 5 {
 		if p.Body.Velocity.X > 0 {
@@ -209,7 +270,7 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 	if selected.Handler == 15 && p.Action == ActionLand && !p.Entered && p.Airborne {
 		p.Action = ActionFalling
 	}
-	if selected.Handler == 19 && !p.Airborne {
+	if (selected.Handler == 19 || selected.Handler == 10) && !p.Airborne {
 		p.Action, p.Entered = ActionLand, false
 	}
 	if selected.Handler == 29 && !enteredNow && !p.Airborne {
@@ -220,8 +281,20 @@ func StepPlayerAttack(original AttackState, ctx AttackContext, profile Character
 	if err != nil {
 		return initial, err
 	}
-	if (selected.Handler == 2 || selected.Handler == 6 || selected.Handler == 11 || selected.Handler == 30) && !p.Airborne {
+	if (selected.Handler == 2 || selected.Handler == 6 || selected.Handler == 11 || selected.Handler == 30 || selected.Handler == 20 || selected.Handler == 27) && !p.Airborne {
 		p.Action, p.Entered = ActionLand, false
+	}
+	if (selected.Handler == 17 || selected.Handler == 31) && !p.Airborne {
+		if selected.Handler == 31 {
+			p.Animation.Cursor = 2
+		}
+		result.SoundIDs = append(result.SoundIDs, 23)
+		p.Body.Velocity.Height = signed16(p.Body.Velocity.Height + 0x8c0)
+		p.Body.Gravity = signed16(p.Body.Gravity + 0xe0)
+		p.Animation.Loops--
+		if int8(p.Animation.Loops) < 0 {
+			p.Action, p.Entered = ActionLand, false
+		}
 	}
 	if selected.Handler == 4 {
 		if !p.Airborne {
@@ -239,4 +312,24 @@ func setAttackHorizontalSpeed(p *Player, speed Fixed, mirrored bool) {
 		speed = -speed
 	}
 	p.Body.Velocity.X = speed
+}
+
+// A successful contact may skip the normal ending into its separate follow-through.
+// Keep the original absolute cursor so later contact lookup observes the same frame.
+func advanceAttackAnimation(variant uint8, spec AnimationSpec, state AnimationState, facing bool) (AnimationStep, error) {
+	tail, ok := originalAttackAnimationTails[variant]
+	if !ok || state.Cursor < tail.Start {
+		return AdvanceAnimation(spec, state, facing)
+	}
+	relative := state
+	relative.Cursor -= tail.Start
+	result, err := AdvanceAnimation(tail.Spec, relative, facing)
+	if err != nil {
+		return result, err
+	}
+	wrapped := int(relative.Cursor) == len(tail.Spec.Frames)-1 && result.State.Cursor == 0 && result.State.Elapsed == 0
+	if !wrapped {
+		result.State.Cursor += tail.Start
+	}
+	return result, nil
 }
