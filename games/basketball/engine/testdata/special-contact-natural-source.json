@@ -1,0 +1,98 @@
+{
+  "source_is_original_execution": true,
+  "scope": "all candidate players0..3 and ball actions13+ at 84C3..801D",
+  "records": 6,
+  "sha256": "92c8681f6aac3e0d113ca18a4bf56038359672ba61eea708f0a828564a268cb4",
+  "sources": [
+    {
+      "scenario": "special-ball-cpu-command",
+      "records": 1,
+      "trace_sha256": "dbd18ea57ced0763368095181d348a9439735aadf9a0cd8cb732a475ec355c65",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 18000,
+        "scenario_sha256": "e7bc01c12b42428c28c8f5a54bd476ddad51326cc8223d0bac78b2e124c36009"
+      }
+    },
+    {
+      "scenario": "special-run-release-left-37",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "3a89330effa591095f3d3bea92c6eb4f49de5f1af84349050fc77a8a79c2e4c2"
+      }
+    },
+    {
+      "scenario": "special-run-release-left-49",
+      "records": 2,
+      "trace_sha256": "280a9c0285a82545a9b2eb3b5507c16afae59886104779a47308b307313ecea5",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "4bdb0c74c70e023eba64c24e56ab61053b13a7bfc8d3b8ad95fa90a855b6c6ea"
+      }
+    },
+    {
+      "scenario": "special-run-release-left-61",
+      "records": 2,
+      "trace_sha256": "38b3eaa90a058aa36a33072ab23bb066a36a66c621ecb81519c06e1efdca413e",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "2f2420706898ed659d0beea09370370053310620b41459d7f7fcca6b1d1112dd"
+      }
+    },
+    {
+      "scenario": "special-run-release-left-73",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "efb5eb3184427786784e0813f1fd7d0720a0ddd8ebff55ee84918e3e5ee39048"
+      }
+    },
+    {
+      "scenario": "special-air-release-10-9",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "f0208de62cf177cd6a73e59b75351cdfb9cb08b3c85b50c01d47850559843c04"
+      }
+    },
+    {
+      "scenario": "special-air-release-10-12",
+      "records": 1,
+      "trace_sha256": "6ce08966e0055e33bd9a9ceb9dfa89669ddcf9934303c7c9711deb26bc7757ce",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "c7c71abe339c1a5ec7004fa4c4fff6d170523020ffe9c72dfe80b52084d3bf11"
+      }
+    },
+    {
+      "scenario": "special-air-release-10-15",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "26133438af43ce5cf0c7a32f79e5e5ace88fe9c216b33280b837d75eb330ba6a"
+      }
+    },
+    {
+      "scenario": "special-air-release-10-18",
+      "records": 0,
+      "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 180,
+        "scenario_sha256": "503be9e5537093482c93f33f9579da7d608b8931b395b50c613a8a86f9ffacda"
+      }
+    }
+  ]
+}

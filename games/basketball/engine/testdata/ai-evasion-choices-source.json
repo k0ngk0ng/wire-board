@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "records": 2,
+  "entry": "bank5 B840/B87F/B885",
+  "exit": "fixed FD8E",
+  "trace_sha256": "b620396c29ea90317b8956e0f38ca688bc3d43f390a6becb8572c84a1ab082fd",
+  "sha256": "3d0025feb384c54ff8a3d7d3aa445a0c5b0c87012fe282fca683ca4f614399f2",
+  "uncompressed_sha256": "42eb029aacc28bfabf80b6e43d4fba183a8c0d604229db86c27f9d9c012418b5",
+  "reference_ram_sha256": "580960e84bb97917beade743f877c2021d83cfcd09e93f12e9c2490d14ead0bd",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 18000,
+    "scenario_sha256": "773f5e42fe61ebc32aa1202b2986a9c28b8d3dd4d8d4b3cff8176bfca188a867"
+  }
+}

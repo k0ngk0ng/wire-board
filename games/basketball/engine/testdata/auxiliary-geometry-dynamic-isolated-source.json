@@ -1,0 +1,15 @@
+{
+  "records": 8,
+  "entry": "bank5:8318",
+  "bank5_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "sha256": "be3ef1caa63e6e1869038420fa24ed7cc613b1981afc7b965af422822e7f29d3",
+  "natural_gameplay": false,
+  "method": "Original instructions; explicit synthetic RAM patterns i*13+seed; original RAM-dependent pointers retained",
+  "static_profile_supported": false,
+  "restored_context_cursors": [
+    0,
+    1,
+    2,
+    3
+  ]
+}

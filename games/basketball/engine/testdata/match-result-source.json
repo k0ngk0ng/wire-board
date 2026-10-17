@@ -1,0 +1,14 @@
+{
+  "records": 145,
+  "kinds": {
+    "result": 145
+  },
+  "source_is_original_execution": true,
+  "sha256": "4f61bfa317dbebe742710673017e0693784f2a28ac78baa7fe15e48360963d1a",
+  "ram_matches_uninstrumented": true,
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 24000,
+    "scenario_sha256": "7ffff08a9495f81a410887d1b831d0cd3372404105803fdc97e1c6af36529a85"
+  }
+}

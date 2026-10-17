@@ -1,0 +1,1448 @@
+{
+  "source_is_original_geometry_data": true,
+  "source_is_natural_execution": false,
+  "rea_evidence_id": "ev_8f6ec94a9284a3c93bcce71dc0be376ee57c73f229f13970beaee02150e5a6c7",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "variant_table": 36112,
+  "shape_base_pointer": 37167,
+  "selection_table_bank6": 40994,
+  "animation_table_bank6": 44175,
+  "variants": [
+    {
+      "variant": 0,
+      "animation": 44381,
+      "frames": 2,
+      "geometry_indices_address": 36318,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 1,
+      "animation": 44386,
+      "frames": 2,
+      "geometry_indices_address": 36320,
+      "shape_indices": [
+        11,
+        1
+      ],
+      "shape_addresses": [
+        37257,
+        37177
+      ]
+    },
+    {
+      "variant": 2,
+      "animation": 44391,
+      "frames": 2,
+      "geometry_indices_address": 36322,
+      "shape_indices": [
+        10,
+        10
+      ],
+      "shape_addresses": [
+        37249,
+        37249
+      ]
+    },
+    {
+      "variant": 3,
+      "animation": 44396,
+      "frames": 2,
+      "geometry_indices_address": 36324,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 4,
+      "animation": 44402,
+      "frames": 3,
+      "geometry_indices_address": 36326,
+      "shape_indices": [
+        1,
+        3,
+        3
+      ],
+      "shape_addresses": [
+        37177,
+        37193,
+        37193
+      ]
+    },
+    {
+      "variant": 5,
+      "animation": 44410,
+      "frames": 2,
+      "geometry_indices_address": 36329,
+      "shape_indices": [
+        1,
+        17
+      ],
+      "shape_addresses": [
+        37177,
+        37305
+      ]
+    },
+    {
+      "variant": 6,
+      "animation": 44415,
+      "frames": 2,
+      "geometry_indices_address": 36331,
+      "shape_indices": [
+        11,
+        1
+      ],
+      "shape_addresses": [
+        37257,
+        37177
+      ]
+    },
+    {
+      "variant": 7,
+      "animation": 44420,
+      "frames": 4,
+      "geometry_indices_address": 36333,
+      "shape_indices": [
+        1,
+        3,
+        1,
+        3
+      ],
+      "shape_addresses": [
+        37177,
+        37193,
+        37177,
+        37193
+      ]
+    },
+    {
+      "variant": 8,
+      "animation": 44430,
+      "frames": 4,
+      "geometry_indices_address": 36337,
+      "shape_indices": [
+        13,
+        13,
+        13,
+        13
+      ],
+      "shape_addresses": [
+        37273,
+        37273,
+        37273,
+        37273
+      ]
+    },
+    {
+      "variant": 9,
+      "animation": 44440,
+      "frames": 3,
+      "geometry_indices_address": 36341,
+      "shape_indices": [
+        14,
+        14,
+        14
+      ],
+      "shape_addresses": [
+        37281,
+        37281,
+        37281
+      ]
+    },
+    {
+      "variant": 10,
+      "animation": 44448,
+      "frames": 2,
+      "geometry_indices_address": 36345,
+      "shape_indices": [
+        1,
+        18
+      ],
+      "shape_addresses": [
+        37177,
+        37313
+      ]
+    },
+    {
+      "variant": 11,
+      "animation": 44453,
+      "frames": 4,
+      "geometry_indices_address": 36347,
+      "shape_indices": [
+        31,
+        31,
+        31,
+        31
+      ],
+      "shape_addresses": [
+        37417,
+        37417,
+        37417,
+        37417
+      ]
+    },
+    {
+      "variant": 12,
+      "animation": 44463,
+      "frames": 5,
+      "geometry_indices_address": 36351,
+      "shape_indices": [
+        1,
+        25,
+        1,
+        25,
+        17
+      ],
+      "shape_addresses": [
+        37177,
+        37369,
+        37177,
+        37369,
+        37305
+      ]
+    },
+    {
+      "variant": 13,
+      "animation": 44475,
+      "frames": 2,
+      "geometry_indices_address": 36353,
+      "shape_indices": [
+        1,
+        25
+      ],
+      "shape_addresses": [
+        37177,
+        37369
+      ]
+    },
+    {
+      "variant": 14,
+      "animation": 44480,
+      "frames": 1,
+      "geometry_indices_address": 36355,
+      "shape_indices": [
+        17
+      ],
+      "shape_addresses": [
+        37305
+      ]
+    },
+    {
+      "variant": 15,
+      "animation": 44487,
+      "frames": 4,
+      "geometry_indices_address": 36359,
+      "shape_indices": [
+        13,
+        13,
+        13,
+        13
+      ],
+      "shape_addresses": [
+        37273,
+        37273,
+        37273,
+        37273
+      ]
+    },
+    {
+      "variant": 16,
+      "animation": 44500,
+      "frames": 3,
+      "geometry_indices_address": 36365,
+      "shape_indices": [
+        25,
+        25,
+        1
+      ],
+      "shape_addresses": [
+        37369,
+        37369,
+        37177
+      ]
+    },
+    {
+      "variant": 17,
+      "animation": 44508,
+      "frames": 1,
+      "geometry_indices_address": 36368,
+      "shape_indices": [
+        2
+      ],
+      "shape_addresses": [
+        37185
+      ]
+    },
+    {
+      "variant": 18,
+      "animation": 44511,
+      "frames": 4,
+      "geometry_indices_address": 36369,
+      "shape_indices": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "shape_addresses": [
+        37185,
+        37177,
+        37185,
+        37177
+      ]
+    },
+    {
+      "variant": 19,
+      "animation": 44521,
+      "frames": 3,
+      "geometry_indices_address": 36373,
+      "shape_indices": [
+        0,
+        52,
+        52
+      ],
+      "shape_addresses": [
+        37169,
+        37585,
+        37585
+      ]
+    },
+    {
+      "variant": 20,
+      "animation": 44528,
+      "frames": 2,
+      "geometry_indices_address": 36376,
+      "shape_indices": [
+        0,
+        53
+      ],
+      "shape_addresses": [
+        37169,
+        37593
+      ]
+    },
+    {
+      "variant": 21,
+      "animation": 44533,
+      "frames": 2,
+      "geometry_indices_address": 36378,
+      "shape_indices": [
+        1,
+        17
+      ],
+      "shape_addresses": [
+        37177,
+        37305
+      ]
+    },
+    {
+      "variant": 22,
+      "animation": 44538,
+      "frames": 2,
+      "geometry_indices_address": 36380,
+      "shape_indices": [
+        34,
+        34
+      ],
+      "shape_addresses": [
+        37441,
+        37441
+      ]
+    },
+    {
+      "variant": 23,
+      "animation": 44544,
+      "frames": 3,
+      "geometry_indices_address": 36384,
+      "shape_indices": [
+        1,
+        2,
+        55
+      ],
+      "shape_addresses": [
+        37177,
+        37185,
+        37609
+      ]
+    },
+    {
+      "variant": 24,
+      "animation": 44551,
+      "frames": 1,
+      "geometry_indices_address": 36387,
+      "shape_indices": [
+        56
+      ],
+      "shape_addresses": [
+        37617
+      ]
+    },
+    {
+      "variant": 25,
+      "animation": 44558,
+      "frames": 1,
+      "geometry_indices_address": 36390,
+      "shape_indices": [
+        26
+      ],
+      "shape_addresses": [
+        37377
+      ]
+    },
+    {
+      "variant": 26,
+      "animation": 44561,
+      "frames": 3,
+      "geometry_indices_address": 36391,
+      "shape_indices": [
+        44,
+        44,
+        1
+      ],
+      "shape_addresses": [
+        37521,
+        37521,
+        37177
+      ]
+    },
+    {
+      "variant": 27,
+      "animation": 44568,
+      "frames": 3,
+      "geometry_indices_address": 36395,
+      "shape_indices": [
+        1,
+        1,
+        10
+      ],
+      "shape_addresses": [
+        37177,
+        37177,
+        37249
+      ]
+    },
+    {
+      "variant": 28,
+      "animation": 44579,
+      "frames": 2,
+      "geometry_indices_address": 36400,
+      "shape_indices": [
+        10,
+        1
+      ],
+      "shape_addresses": [
+        37249,
+        37177
+      ]
+    },
+    {
+      "variant": 29,
+      "animation": 44585,
+      "frames": 2,
+      "geometry_indices_address": 36402,
+      "shape_indices": [
+        10,
+        10
+      ],
+      "shape_addresses": [
+        37249,
+        37249
+      ]
+    },
+    {
+      "variant": 30,
+      "animation": 44590,
+      "frames": 4,
+      "geometry_indices_address": 36404,
+      "shape_indices": [
+        1,
+        3,
+        3,
+        3
+      ],
+      "shape_addresses": [
+        37177,
+        37193,
+        37193,
+        37193
+      ]
+    },
+    {
+      "variant": 31,
+      "animation": 44599,
+      "frames": 2,
+      "geometry_indices_address": 36408,
+      "shape_indices": [
+        1,
+        27
+      ],
+      "shape_addresses": [
+        37177,
+        37385
+      ]
+    },
+    {
+      "variant": 32,
+      "animation": 44604,
+      "frames": 2,
+      "geometry_indices_address": 36410,
+      "shape_indices": [
+        27,
+        27
+      ],
+      "shape_addresses": [
+        37385,
+        37385
+      ]
+    },
+    {
+      "variant": 33,
+      "animation": 44610,
+      "frames": 3,
+      "geometry_indices_address": 36412,
+      "shape_indices": [
+        3,
+        3,
+        1
+      ],
+      "shape_addresses": [
+        37193,
+        37193,
+        37177
+      ]
+    },
+    {
+      "variant": 34,
+      "animation": 44621,
+      "frames": 2,
+      "geometry_indices_address": 36417,
+      "shape_indices": [
+        54,
+        54
+      ],
+      "shape_addresses": [
+        37601,
+        37601
+      ]
+    },
+    {
+      "variant": 35,
+      "animation": 44627,
+      "frames": 2,
+      "geometry_indices_address": 36419,
+      "shape_indices": [
+        1,
+        41
+      ],
+      "shape_addresses": [
+        37177,
+        37497
+      ]
+    },
+    {
+      "variant": 36,
+      "animation": 44632,
+      "frames": 3,
+      "geometry_indices_address": 36421,
+      "shape_indices": [
+        1,
+        1,
+        19
+      ],
+      "shape_addresses": [
+        37177,
+        37177,
+        37321
+      ]
+    },
+    {
+      "variant": 37,
+      "animation": 44639,
+      "frames": 4,
+      "geometry_indices_address": 36424,
+      "shape_indices": [
+        39,
+        39,
+        39,
+        39
+      ],
+      "shape_addresses": [
+        37481,
+        37481,
+        37481,
+        37481
+      ]
+    },
+    {
+      "variant": 38,
+      "animation": 44649,
+      "frames": 2,
+      "geometry_indices_address": 36428,
+      "shape_indices": [
+        48,
+        1
+      ],
+      "shape_addresses": [
+        37553,
+        37177
+      ]
+    },
+    {
+      "variant": 39,
+      "animation": 44654,
+      "frames": 2,
+      "geometry_indices_address": 36428,
+      "shape_indices": [
+        48,
+        1
+      ],
+      "shape_addresses": [
+        37553,
+        37177
+      ]
+    },
+    {
+      "variant": 40,
+      "animation": 44660,
+      "frames": 3,
+      "geometry_indices_address": 36430,
+      "shape_indices": [
+        47,
+        47,
+        47
+      ],
+      "shape_addresses": [
+        37545,
+        37545,
+        37545
+      ]
+    },
+    {
+      "variant": 41,
+      "animation": 44668,
+      "frames": 3,
+      "geometry_indices_address": 36433,
+      "shape_indices": [
+        13,
+        13,
+        13
+      ],
+      "shape_addresses": [
+        37273,
+        37273,
+        37273
+      ]
+    },
+    {
+      "variant": 42,
+      "animation": 44676,
+      "frames": 1,
+      "geometry_indices_address": 36436,
+      "shape_indices": [
+        39
+      ],
+      "shape_addresses": [
+        37481
+      ]
+    },
+    {
+      "variant": 43,
+      "animation": 44680,
+      "frames": 2,
+      "geometry_indices_address": 36437,
+      "shape_indices": [
+        1,
+        3
+      ],
+      "shape_addresses": [
+        37177,
+        37193
+      ]
+    },
+    {
+      "variant": 44,
+      "animation": 44685,
+      "frames": 1,
+      "geometry_indices_address": 36439,
+      "shape_indices": [
+        35
+      ],
+      "shape_addresses": [
+        37449
+      ]
+    },
+    {
+      "variant": 45,
+      "animation": 44688,
+      "frames": 1,
+      "geometry_indices_address": 36441,
+      "shape_indices": [
+        42
+      ],
+      "shape_addresses": [
+        37505
+      ]
+    },
+    {
+      "variant": 46,
+      "animation": 44691,
+      "frames": 1,
+      "geometry_indices_address": 36442,
+      "shape_indices": [
+        42
+      ],
+      "shape_addresses": [
+        37505
+      ]
+    },
+    {
+      "variant": 47,
+      "animation": 44694,
+      "frames": 1,
+      "geometry_indices_address": 36443,
+      "shape_indices": [
+        47
+      ],
+      "shape_addresses": [
+        37545
+      ]
+    },
+    {
+      "variant": 48,
+      "animation": 44697,
+      "frames": 2,
+      "geometry_indices_address": 36444,
+      "shape_indices": [
+        1,
+        43
+      ],
+      "shape_addresses": [
+        37177,
+        37513
+      ]
+    },
+    {
+      "variant": 49,
+      "animation": 44688,
+      "frames": 1,
+      "geometry_indices_address": 36446,
+      "shape_indices": [
+        42
+      ],
+      "shape_addresses": [
+        37505
+      ]
+    },
+    {
+      "variant": 50,
+      "animation": 44702,
+      "frames": 1,
+      "geometry_indices_address": 36447,
+      "shape_indices": [
+        14
+      ],
+      "shape_addresses": [
+        37281
+      ]
+    },
+    {
+      "variant": 51,
+      "animation": 44705,
+      "frames": 4,
+      "geometry_indices_address": 36448,
+      "shape_indices": [
+        13,
+        13,
+        13,
+        1
+      ],
+      "shape_addresses": [
+        37273,
+        37273,
+        37273,
+        37177
+      ]
+    },
+    {
+      "variant": 52,
+      "animation": 44714,
+      "frames": 2,
+      "geometry_indices_address": 36451,
+      "shape_indices": [
+        1,
+        41
+      ],
+      "shape_addresses": [
+        37177,
+        37497
+      ]
+    },
+    {
+      "variant": 53,
+      "animation": 44719,
+      "frames": 2,
+      "geometry_indices_address": 36453,
+      "shape_indices": [
+        1,
+        30
+      ],
+      "shape_addresses": [
+        37177,
+        37409
+      ]
+    },
+    {
+      "variant": 54,
+      "animation": 44724,
+      "frames": 3,
+      "geometry_indices_address": 36455,
+      "shape_indices": [
+        13,
+        13,
+        13
+      ],
+      "shape_addresses": [
+        37273,
+        37273,
+        37273
+      ]
+    },
+    {
+      "variant": 55,
+      "animation": 44731,
+      "frames": 2,
+      "geometry_indices_address": 36458,
+      "shape_indices": [
+        1,
+        22
+      ],
+      "shape_addresses": [
+        37177,
+        37345
+      ]
+    },
+    {
+      "variant": 56,
+      "animation": 44742,
+      "frames": 2,
+      "geometry_indices_address": 36460,
+      "shape_indices": [
+        1,
+        30
+      ],
+      "shape_addresses": [
+        37177,
+        37409
+      ]
+    },
+    {
+      "variant": 57,
+      "animation": 44747,
+      "frames": 3,
+      "geometry_indices_address": 36462,
+      "shape_indices": [
+        1,
+        1,
+        41
+      ],
+      "shape_addresses": [
+        37177,
+        37177,
+        37497
+      ]
+    },
+    {
+      "variant": 58,
+      "animation": 44762,
+      "frames": 2,
+      "geometry_indices_address": 36470,
+      "shape_indices": [
+        38,
+        38
+      ],
+      "shape_addresses": [
+        37473,
+        37473
+      ]
+    },
+    {
+      "variant": 59,
+      "animation": 44767,
+      "frames": 2,
+      "geometry_indices_address": 36472,
+      "shape_indices": [
+        1,
+        32
+      ],
+      "shape_addresses": [
+        37177,
+        37425
+      ]
+    },
+    {
+      "variant": 60,
+      "animation": 44772,
+      "frames": 2,
+      "geometry_indices_address": 36474,
+      "shape_indices": [
+        1,
+        1
+      ],
+      "shape_addresses": [
+        37177,
+        37177
+      ]
+    },
+    {
+      "variant": 61,
+      "animation": 44778,
+      "frames": 4,
+      "geometry_indices_address": 36476,
+      "shape_indices": [
+        1,
+        2,
+        2,
+        28
+      ],
+      "shape_addresses": [
+        37177,
+        37185,
+        37185,
+        37393
+      ]
+    },
+    {
+      "variant": 62,
+      "animation": 44787,
+      "frames": 2,
+      "geometry_indices_address": 36480,
+      "shape_indices": [
+        1,
+        29
+      ],
+      "shape_addresses": [
+        37177,
+        37401
+      ]
+    },
+    {
+      "variant": 63,
+      "animation": 44792,
+      "frames": 3,
+      "geometry_indices_address": 36482,
+      "shape_indices": [
+        1,
+        1,
+        1
+      ],
+      "shape_addresses": [
+        37177,
+        37177,
+        37177
+      ]
+    },
+    {
+      "variant": 65,
+      "animation": 44806,
+      "frames": 2,
+      "geometry_indices_address": 36492,
+      "shape_indices": [
+        1,
+        46
+      ],
+      "shape_addresses": [
+        37177,
+        37537
+      ]
+    },
+    {
+      "variant": 66,
+      "animation": 44811,
+      "frames": 5,
+      "geometry_indices_address": 36494,
+      "shape_indices": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "shape_addresses": [
+        37185,
+        37185,
+        37185,
+        37185,
+        37185
+      ]
+    },
+    {
+      "variant": 67,
+      "animation": 44823,
+      "frames": 2,
+      "geometry_indices_address": 36500,
+      "shape_indices": [
+        17,
+        17
+      ],
+      "shape_addresses": [
+        37305,
+        37305
+      ]
+    },
+    {
+      "variant": 68,
+      "animation": 44829,
+      "frames": 2,
+      "geometry_indices_address": 36502,
+      "shape_indices": [
+        20,
+        20
+      ],
+      "shape_addresses": [
+        37329,
+        37329
+      ]
+    },
+    {
+      "variant": 69,
+      "animation": 44834,
+      "frames": 1,
+      "geometry_indices_address": 36504,
+      "shape_indices": [
+        21
+      ],
+      "shape_addresses": [
+        37337
+      ]
+    },
+    {
+      "variant": 71,
+      "animation": 44842,
+      "frames": 2,
+      "geometry_indices_address": 36507,
+      "shape_indices": [
+        1,
+        23
+      ],
+      "shape_addresses": [
+        37177,
+        37353
+      ]
+    },
+    {
+      "variant": 72,
+      "animation": 44848,
+      "frames": 2,
+      "geometry_indices_address": 36509,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 73,
+      "animation": 44853,
+      "frames": 2,
+      "geometry_indices_address": 36511,
+      "shape_indices": [
+        1,
+        17
+      ],
+      "shape_addresses": [
+        37177,
+        37305
+      ]
+    },
+    {
+      "variant": 74,
+      "animation": 44858,
+      "frames": 1,
+      "geometry_indices_address": 36513,
+      "shape_indices": [
+        40
+      ],
+      "shape_addresses": [
+        37489
+      ]
+    },
+    {
+      "variant": 75,
+      "animation": 44861,
+      "frames": 1,
+      "geometry_indices_address": 36514,
+      "shape_indices": [
+        14
+      ],
+      "shape_addresses": [
+        37281
+      ]
+    },
+    {
+      "variant": 76,
+      "animation": 44864,
+      "frames": 1,
+      "geometry_indices_address": 36514,
+      "shape_indices": [
+        14
+      ],
+      "shape_addresses": [
+        37281
+      ]
+    },
+    {
+      "variant": 77,
+      "animation": 44867,
+      "frames": 2,
+      "geometry_indices_address": 36515,
+      "shape_indices": [
+        36,
+        36
+      ],
+      "shape_addresses": [
+        37457,
+        37457
+      ]
+    },
+    {
+      "variant": 78,
+      "animation": 44873,
+      "frames": 2,
+      "geometry_indices_address": 36517,
+      "shape_indices": [
+        23,
+        23
+      ],
+      "shape_addresses": [
+        37353,
+        37353
+      ]
+    },
+    {
+      "variant": 79,
+      "animation": 44878,
+      "frames": 2,
+      "geometry_indices_address": 36318,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 80,
+      "animation": 44883,
+      "frames": 3,
+      "geometry_indices_address": 36519,
+      "shape_indices": [
+        1,
+        3,
+        3
+      ],
+      "shape_addresses": [
+        37177,
+        37193,
+        37193
+      ]
+    },
+    {
+      "variant": 83,
+      "animation": 44904,
+      "frames": 4,
+      "geometry_indices_address": 36527,
+      "shape_indices": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185,
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 84,
+      "animation": 44914,
+      "frames": 2,
+      "geometry_indices_address": 36318,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 85,
+      "animation": 44919,
+      "frames": 2,
+      "geometry_indices_address": 36318,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 86,
+      "animation": 44925,
+      "frames": 3,
+      "geometry_indices_address": 36531,
+      "shape_indices": [
+        2,
+        55,
+        1
+      ],
+      "shape_addresses": [
+        37185,
+        37609,
+        37177
+      ]
+    },
+    {
+      "variant": 87,
+      "animation": 44932,
+      "frames": 2,
+      "geometry_indices_address": 36533,
+      "shape_indices": [
+        1,
+        28
+      ],
+      "shape_addresses": [
+        37177,
+        37393
+      ]
+    },
+    {
+      "variant": 89,
+      "animation": 44950,
+      "frames": 2,
+      "geometry_indices_address": 36538,
+      "shape_indices": [
+        1,
+        17
+      ],
+      "shape_addresses": [
+        37177,
+        37305
+      ]
+    },
+    {
+      "variant": 90,
+      "animation": 44955,
+      "frames": 2,
+      "geometry_indices_address": 36376,
+      "shape_indices": [
+        0,
+        53
+      ],
+      "shape_addresses": [
+        37169,
+        37593
+      ]
+    },
+    {
+      "variant": 91,
+      "animation": 44960,
+      "frames": 1,
+      "geometry_indices_address": 36540,
+      "shape_indices": [
+        33
+      ],
+      "shape_addresses": [
+        37433
+      ]
+    },
+    {
+      "variant": 92,
+      "animation": 44963,
+      "frames": 3,
+      "geometry_indices_address": 36540,
+      "shape_indices": [
+        33,
+        1,
+        33
+      ],
+      "shape_addresses": [
+        37433,
+        37177,
+        37433
+      ]
+    },
+    {
+      "variant": 93,
+      "animation": 44971,
+      "frames": 3,
+      "geometry_indices_address": 36326,
+      "shape_indices": [
+        1,
+        3,
+        3
+      ],
+      "shape_addresses": [
+        37177,
+        37193,
+        37193
+      ]
+    },
+    {
+      "variant": 94,
+      "animation": 44932,
+      "frames": 2,
+      "geometry_indices_address": 36543,
+      "shape_indices": [
+        1,
+        2
+      ],
+      "shape_addresses": [
+        37177,
+        37185
+      ]
+    },
+    {
+      "variant": 96,
+      "animation": 44984,
+      "frames": 3,
+      "geometry_indices_address": 36421,
+      "shape_indices": [
+        1,
+        1,
+        19
+      ],
+      "shape_addresses": [
+        37177,
+        37177,
+        37321
+      ]
+    },
+    {
+      "variant": 97,
+      "animation": 44992,
+      "frames": 3,
+      "geometry_indices_address": 36430,
+      "shape_indices": [
+        47,
+        47,
+        47
+      ],
+      "shape_addresses": [
+        37545,
+        37545,
+        37545
+      ]
+    },
+    {
+      "variant": 98,
+      "animation": 45000,
+      "frames": 1,
+      "geometry_indices_address": 36550,
+      "shape_indices": [
+        3
+      ],
+      "shape_addresses": [
+        37193
+      ]
+    },
+    {
+      "variant": 99,
+      "animation": 45011,
+      "frames": 1,
+      "geometry_indices_address": 36556,
+      "shape_indices": [
+        16
+      ],
+      "shape_addresses": [
+        37297
+      ]
+    },
+    {
+      "variant": 100,
+      "animation": 45014,
+      "frames": 5,
+      "geometry_indices_address": 36557,
+      "shape_indices": [
+        13,
+        13,
+        13,
+        13,
+        26
+      ],
+      "shape_addresses": [
+        37273,
+        37273,
+        37273,
+        37273,
+        37377
+      ]
+    },
+    {
+      "variant": 101,
+      "animation": 45025,
+      "frames": 1,
+      "geometry_indices_address": 36562,
+      "shape_indices": [
+        3
+      ],
+      "shape_addresses": [
+        37193
+      ]
+    },
+    {
+      "variant": 102,
+      "animation": 45028,
+      "frames": 4,
+      "geometry_indices_address": 36563,
+      "shape_indices": [
+        17,
+        1,
+        1,
+        1
+      ],
+      "shape_addresses": [
+        37305,
+        37177,
+        37177,
+        37177
+      ]
+    }
+  ],
+  "flags": [
+    56,
+    40,
+    56,
+    40,
+    56,
+    40,
+    56,
+    40,
+    8,
+    8
+  ],
+  "observed_profiles_verified": 52,
+  "geometry_availability_does_not_imply_action_implementation": true
+}

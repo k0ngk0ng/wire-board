@@ -1,0 +1,290 @@
+{
+  "idle": {
+    "name": "control-idle",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 32,
+        "keys": []
+      }
+    ],
+    "captures": [
+      1,
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "right": {
+    "name": "control-right",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 90,
+        "keys": [
+          "right"
+        ]
+      }
+    ],
+    "captures": [
+      1,
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "left": {
+    "name": "control-left",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 90,
+        "keys": [
+          "left"
+        ]
+      }
+    ],
+    "captures": [
+      1,
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "jump": {
+    "name": "control-jump",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 32,
+        "keys": [
+          "A",
+          "B"
+        ]
+      }
+    ],
+    "captures": [
+      1,
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "a": {
+    "name": "control-a",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 32,
+        "keys": [
+          "A"
+        ]
+      }
+    ],
+    "captures": [
+      1,
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "b": {
+    "name": "control-b",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 32,
+        "keys": [
+          "B"
+        ]
+      }
+    ],
+    "captures": [
+      1,
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "run-brake": {
+    "name": "control-run-brake",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 32,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 40,
+        "end": 120,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 130,
+        "end": 150,
+        "keys": [
+          "left"
+        ]
+      }
+    ],
+    "captures": [
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "running-jump": {
+    "name": "control-running-jump",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 32,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 40,
+        "end": 160,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 61,
+        "end": 62,
+        "keys": [
+          "A",
+          "B"
+        ]
+      }
+    ],
+    "captures": [
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "up": {
+    "name": "control-up",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 150,
+        "keys": [
+          "up"
+        ]
+      }
+    ],
+    "captures": [
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "down": {
+    "name": "control-down",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 150,
+        "keys": [
+          "down"
+        ]
+      }
+    ],
+    "captures": [
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  },
+  "diagonal": {
+    "name": "control-diagonal",
+    "load_slot": 5,
+    "frames": 180,
+    "segments": [
+      {
+        "start": 31,
+        "end": 150,
+        "keys": [
+          "right",
+          "up"
+        ]
+      }
+    ],
+    "captures": [
+      30,
+      45,
+      60,
+      90,
+      120,
+      150,
+      180
+    ]
+  }
+}

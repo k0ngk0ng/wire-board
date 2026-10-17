@@ -1,0 +1,155 @@
+.basketball-preparation {
+  color: #302b26;
+  background: #faf7f0;
+  border: 1px solid #c9beaa;
+  border-radius: 12px;
+  padding: 14px;
+  min-width: 0;
+}
+.basketball-selection-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin-bottom: 10px;
+}
+.basketball-selection-heading h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.basketball-selection-heading > span {
+  color: #625749;
+  font-size: 12px;
+}
+.basketball-court-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.basketball-preparation button {
+  background: #fffdf8;
+  color: #302b26;
+  border: 2px solid #b5a78f;
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 0;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.3;
+}
+.basketball-preparation button[aria-pressed="true"] {
+  background: #fff0cc;
+  color: #3e2b0f;
+  border-color: #80501d;
+}
+.basketball-preparation button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.basketball-preparation button:focus-visible {
+  outline: 3px solid #245b8e;
+  outline-offset: 2px;
+}
+.basketball-preparation img {
+  display: block;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.basketball-court-choices button {
+  display: block;
+}
+.basketball-court-choices img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.basketball-court-choices button > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 6px 3px 3px;
+  font-size: 13px;
+}
+.basketball-selection-state {
+  color: #674013;
+  font-size: 12px;
+  min-height: 16px;
+}
+.basketball-roster {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.basketball-team {
+  min-width: 0;
+}
+.basketball-team h4 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+.basketball-roster-player {
+  padding: 10px;
+  border: 1px solid #c9beaa;
+  border-radius: 8px;
+  background: #f1ebde;
+  color: #302b26;
+}
+.basketball-roster-player + .basketball-roster-player {
+  margin-top: 8px;
+}
+.basketball-player-owner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+  font-size: 13px;
+  margin-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+.basketball-player-owner > span {
+  color: #625749;
+  font-size: 12px;
+}
+.basketball-player-selection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.basketball-selected-body {
+  width: 64px;
+  height: 80px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.basketball-character-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.basketball-character-choices button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 12px;
+}
+.basketball-character-choices img {
+  width: 48px;
+  max-width: 100%;
+  aspect-ratio: 1;
+}
+@media (max-width: 540px) {
+  .basketball-preparation {
+    padding: 10px;
+  }
+  .basketball-court-choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .basketball-roster {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

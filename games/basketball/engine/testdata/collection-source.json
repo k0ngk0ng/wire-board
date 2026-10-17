@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:d32c",
+  "exit": "fixed:d348",
+  "records": 27,
+  "actor": 2,
+  "frame_start": 5450,
+  "frame_end": 5530,
+  "sha256": "0fd0be827ef2f343a15786d08b726ffab8b6145989f0b944955eb393312e6202",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "02b462a3c4e4827679beb3773dbfe009c7ec8127fb2a5f0c4f6c0c30807f6157"
+  }
+}

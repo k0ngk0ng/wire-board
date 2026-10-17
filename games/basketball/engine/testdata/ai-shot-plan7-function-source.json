@@ -1,0 +1,11 @@
+{
+  "source_is_natural_execution": false,
+  "isolated_original_function_execution": true,
+  "entry": "bank5 B4EE",
+  "termination": "sentinel return 7000; no original function patched or stubbed",
+  "records": 8192,
+  "maximum_instructions": 117,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "75834afdffb0904d650b410c1209b6b3b50f589d6108a3b65e4897138b24fba5",
+  "uncompressed_sha256": "1591eabc5153eeb6c08dab7ac29ff7e90413532fbf18d011f2b87a8a78b88ef4"
+}

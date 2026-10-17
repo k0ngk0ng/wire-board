@@ -1,0 +1,15 @@
+{
+  "source": ".local/basketball/server-http/TestBasketballHTTPComputersAndTimeoutAutoplay.json",
+  "sourceSHA256": "41232c67532a926f778e5f2700e92589cd94ab9d0167f357ef9a1d311b18c879",
+  "scope": "idle runtime replay before first platform deadline; no original-ROM claim",
+  "maximumAdditionalVideoTicks": 784,
+  "failure": {
+    "code": "rule_unavailable",
+    "detail": "video tick 160: preparation: interactions: original prop contact response 5 -> 1 not reconstructed"
+  },
+  "reproduced": true,
+  "completedAdditionalVideoTicks": 760,
+  "fixture_sha256": "2e3b5dc80ed8f0a0de133f3e1dd3921ab1b10e5f4b1537ad737ace06f401e3bd",
+  "replay_report_sha256": "73f0f8f0faea9f5f106182e46fd896238aa0f117528fa35c594d1e9cb8ca3929",
+  "natural_original_ROM_execution": false
+}

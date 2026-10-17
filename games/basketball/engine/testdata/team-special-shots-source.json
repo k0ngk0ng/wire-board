@@ -1,0 +1,14 @@
+{
+  "scope": "controlled original E149..E14C calls; chained stages do not inject later source snapshots; no natural-match claim",
+  "calls": 84,
+  "contactCalls": 32,
+  "chains": [
+    90,
+    75,
+    83,
+    83
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseRAMSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "598b2c36d5071fcb68e7de96d1d636faebbd1a0bf5e421f58ee327d47c532a9d"
+}

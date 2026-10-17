@@ -1,0 +1,12 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "acceptance_executions": 22472,
+  "acceptance_boundary": "E18B..E1ED before indirect handler",
+  "human_world_records": 58,
+  "human_trace_sha256": "be6e730f95470655f42bec2818c05969805788e4a05128c7ae7673b5b249828d",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 180,
+    "scenario_sha256": "7e5f252c3b64385e484cac9c6629ef13321e0fd4195f8fffe0353e32045d5351"
+  }
+}

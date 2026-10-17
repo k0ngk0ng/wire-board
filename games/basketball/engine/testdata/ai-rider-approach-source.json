@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "records": 0,
+  "entry": "bank5 AA2C",
+  "exit": "fixed FD8E",
+  "trace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+  "uncompressed_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "reference_ram_sha256": "580960e84bb97917beade743f877c2021d83cfcd09e93f12e9c2490d14ead0bd",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 18000,
+    "scenario_sha256": "21bf9485dd06507c46e4a82c7b88121e8ddddc0aef3cbb7616a6fc90909311fd"
+  }
+}

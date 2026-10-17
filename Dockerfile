@@ -1,12 +1,17 @@
+FROM golang:1.26-alpine AS go-toolchain
+
 FROM node:22-alpine AS frontend
+COPY --from=go-toolchain /usr/local/go /usr/local/go
+ENV PATH="/usr/local/go/bin:${PATH}"
 WORKDIR /src/web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci
 COPY web/ ./
 COPY games/ /src/games/
+COPY go.mod go.sum /src/
 RUN npm run build
 
-FROM golang:1.26-alpine AS backend
+FROM go-toolchain AS backend
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download

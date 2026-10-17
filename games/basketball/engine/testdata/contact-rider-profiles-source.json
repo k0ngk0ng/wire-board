@@ -1,0 +1,11 @@
+{
+  "source_is_original_geometry_data": true,
+  "ram_and_screenshots_match": true,
+  "records": 40,
+  "sha256": "cdbe9a5443e6e42ea75610c1b19af03c0ee6ce52e51782e47fba9c14c749aedc",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 180,
+    "scenario_sha256": "5e3827cd345a8f545561f8f3f77d96c5ee9fd5e7d444f5cb838fec07b6c8e6b1"
+  }
+}

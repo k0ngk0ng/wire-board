@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:e165",
+  "exit": "fixed:e168",
+  "records": 159,
+  "sha256": "fba519b73b2aeb41ee2f0dd00e774ae6ed9f467e6c5b5f9d461a4be109650d56",
+  "sources": [
+    {
+      "scenario": "hoop-control-cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "9a084e1f397d03f2f217bdaca8544d43ae25da7b438b138655d46993fc77f5b6"
+    }
+  ]
+}

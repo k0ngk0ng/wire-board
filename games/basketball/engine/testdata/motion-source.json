@@ -1,0 +1,19 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "original_full_nes_sha256": "4f1372eb9c2d2d7dcfdfb75827c291f9970716a5fe6ed58d33872851e1ef9968",
+  "source_bank_8k": 15,
+  "entry": "0xef5f",
+  "exit_before_collision": "0xefd5",
+  "rows": 2377,
+  "scenarios": [
+    "a",
+    "b",
+    "idle",
+    "jump",
+    "left",
+    "right"
+  ],
+  "sha256": "0d095cf00a7b404c312949f1a3f3774ca1866032707cc018d99552123870e0d8",
+  "command": "python3 -B scripts/basketball/capture_physics.py",
+  "source_is_original_execution": true
+}

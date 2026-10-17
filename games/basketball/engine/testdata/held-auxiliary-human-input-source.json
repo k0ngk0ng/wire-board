@@ -1,0 +1,14 @@
+{
+  "records": 1714,
+  "original_function": "bank6:805C",
+  "original_instructions_unchanged": true,
+  "natural_gameplay": false,
+  "scope": "Explicit held contexts and controller chains; first A picks up via original805C/E18B; only controller samples change during each chain",
+  "sound_scope": "C000/FBCC preserve the07FF sound latch and return without audio-driver execution; gameplay instructions unchanged",
+  "ram_source": ".local/nes-basket/runs/court-3-reference/ram.bin",
+  "ram_frame": 1501,
+  "ram_sha256": "386db44a0ba25e434d7e5a6e6d101c36ad6c4992e501161740e934f3845f68c2",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "9558640803269ef6b95c4f1ba94b18eab87098a0836c39aed9d76b5a0db69e16",
+  "chains_sha256": "81e3417d6c898950d60c42fb4aef2814d7acd4dfc87f2062db4fa3c7963fdea0"
+}

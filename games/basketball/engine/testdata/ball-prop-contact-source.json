@@ -1,0 +1,7 @@
+{
+  "scope": "controlled original bank5 84C3 instruction calls, not natural-match sampling",
+  "records": 3072,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseRAMSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "7ebe0e03156a8cc656dc19c23478caa166410bb9f7206ddf9f30e5b38c07c36c"
+}

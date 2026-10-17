@@ -1,0 +1,17 @@
+{
+  "scope": "isolated original instruction execution; full action routines including motion, no natural-match claim",
+  "records": 1054,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "d849b35d5cdc99f5ab29aa857ab1e763535ba7de20d26543305e015045c83356",
+  "entry": [
+    "bank6:B65F",
+    "bank6:B7EE"
+  ],
+  "coldClear": {
+    "entry": "fixed F8BD with C9CB setup A=0 X=2 Y=7",
+    "initialFill": 165,
+    "clearedRange": "0200..07FF",
+    "unownedSpecialAfter": 0,
+    "instructions": 5022
+  }
+}

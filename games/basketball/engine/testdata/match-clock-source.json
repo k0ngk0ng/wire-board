@@ -1,0 +1,26 @@
+{
+  "records": 46547,
+  "kinds": {
+    "clock": 1824,
+    "end": 7293,
+    "hud": 7293,
+    "pause": 7293,
+    "resume": 10,
+    "video": 22834
+  },
+  "source_is_original_execution": true,
+  "ram_matches_uninstrumented": true,
+  "sha256": "244394df0e9ce848ed5f01b06b94ce17f4d01d4a5c41a6bc15ae6f5fe50563a5",
+  "sources": [
+    {
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 24000,
+      "scenario_sha256": "55c7307668b72c3bad5ee9dd69bcf5fb2ec064f8ced8438992bf182144c3f156"
+    },
+    {
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 300,
+      "scenario_sha256": "ee272a4b75e9dad771d8132dbafa4ce47dcc5b1871ff7b152c63f06727c3706e"
+    }
+  ]
+}

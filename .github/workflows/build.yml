@@ -79,6 +79,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -93,6 +97,8 @@ jobs:
           npm --prefix web run build
       - name: Check shared audio, playback and card presentation
         run: node --experimental-strip-types --test web/tests/*.test.mjs
+      - name: Verify embedded basketball runtime files
+        run: node games/basketball/build/verify-runtime.mjs web/dist
       - uses: actions/upload-artifact@v4
         with:
           name: web-dist

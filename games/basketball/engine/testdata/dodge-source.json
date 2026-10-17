@@ -1,0 +1,21 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:e165",
+  "exit": "fixed:e168",
+  "records": 8,
+  "sha256": "85c1db73bce2ae2203a5a957ef94429783c0300ab9aee41db06ca0e01d645511",
+  "sources": [
+    {
+      "scenario": "hoop-control-cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "67522d80d8c60af3b60202a5eb537acd06ade9cc6c1dceece23ef61648df0fff"
+    },
+    {
+      "scenario": "ball-control-pass",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "7aa177023af3412db7714ab3dc8e530e39f0fa2a0f95157d471a6bf7b2a5d47a"
+    }
+  ]
+}

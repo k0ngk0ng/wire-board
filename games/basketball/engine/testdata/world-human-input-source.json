@@ -1,0 +1,37 @@
+{
+  "source_is_original_execution": true,
+  "records": 1117,
+  "entry": "bank6:805c",
+  "exit": "bank6:8085",
+  "all_records_retained": true,
+  "sha256": "32b15c7b563cdd73cadcde91531946f494a45839e0cf86e50c98a4cdf36f8dfe",
+  "sources": [
+    {
+      "scenario": "free",
+      "trace_sha256": "1ed4f8917ef957771d2346587d9b1575c5604441d1ff3041bd7aadb0684a5cac",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1800,
+        "scenario_sha256": "5a7f3df7d4b07bc961ac65d3112161fdf1276b31388d8b5455aa91e81a2e9c2e"
+      }
+    },
+    {
+      "scenario": "carrier",
+      "trace_sha256": "7cc536e059febe664bc4ad23bd718e132d8928d1797947e27ddaea8c0d1b417b",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 1200,
+        "scenario_sha256": "d3e30eb6de21a602b7771e82863d49ac438b88fa61a67ec2b3fb85048d78ea08"
+      }
+    },
+    {
+      "scenario": "air-carrier",
+      "trace_sha256": "ecca1205ef1213fab1234708aa940347ee221171d1f35bc6a33ba8ab95b15115",
+      "source": {
+        "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+        "frames": 360,
+        "scenario_sha256": "b5fba784467c4f4d865380693e45b496fc2c51333db7da2a286ada02179c6c6e"
+      }
+    }
+  ]
+}

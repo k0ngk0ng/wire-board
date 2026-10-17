@@ -1,0 +1,19 @@
+{
+  "records": 37,
+  "kinds": {
+    "court": 1,
+    "grades": 1,
+    "period": 1,
+    "start": 1,
+    "throw": 33
+  },
+  "source_is_original_execution": true,
+  "initial_state_sha256": "396cacb16c9e8109d9ff962e1f54c20db42fce8444552e38f9e22c130395e597",
+  "sha256": "680b518c890a21d86370c0c9d910b429db941469a093669ce00d718cd14c2e7d",
+  "ram_matches_uninstrumented": true,
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 1550,
+    "scenario_sha256": "811bb68d345ed4cc62d1ef447c40f427b0735734f1331beafa464a28262d9550"
+  }
+}

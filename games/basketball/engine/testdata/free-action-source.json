@@ -1,0 +1,12 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:e165",
+  "exit": "fixed:e168",
+  "records": 420,
+  "sha256": "d5f49ae88020382f55c431d1fb42c90b12f950f2fd6f29b50e1f0d66c646d1b7",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "e6d0771c7e62a9c9b39a0c8ea8bedd2d124f53095641776a77ba488681bc7618"
+  }
+}

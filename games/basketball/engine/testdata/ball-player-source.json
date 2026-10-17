@@ -1,0 +1,51 @@
+{
+  "source_is_original_execution": true,
+  "entry": "fixed:e165",
+  "exit": "fixed:e168",
+  "records": 2006,
+  "sha256": "7ef01fa6470b24452b9a31bd8505077c273f58fc09ce597c396fa6acbf68eb6e",
+  "sources": [
+    {
+      "scenario": "hoop-control-cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "79a141a7bf53ee5fb1c4074b985b1ce9b665d4d00bcf4a84475ed3ecbc85a867"
+    },
+    {
+      "scenario": "human-possession-baseline",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 150,
+      "scenario_sha256": "babc41e67872d87ea75c695a83102ad1c608d740b857ac69e730dd3625a531f8"
+    },
+    {
+      "scenario": "ball-control-pass",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "6fe2e723ac4defcd76d915a38cce1d2a54b66c2218f709929b956cb35b11ceb2"
+    },
+    {
+      "scenario": "ball-carry-charge",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "0110beff8a926f321d9024af05f6936992fced815ddc93c7c1de20ecdc4ccf01"
+    },
+    {
+      "scenario": "ball-carry-charge-evade",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "a008329e1eccae929d097b3edef5d2e1c22ba65db7fc57dcf7e966cbd1455dac"
+    },
+    {
+      "scenario": "ball-carry-brake",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "abc873676c2dfcaef6bb008dc9612894406f6c16610204f9d1c99d6d601f273b"
+    },
+    {
+      "scenario": "ball-carry-running-jump",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "500aa278af9cc6a3957de16a90ed9391ce04463ee4321cd88c099027c647a0af"
+    }
+  ]
+}

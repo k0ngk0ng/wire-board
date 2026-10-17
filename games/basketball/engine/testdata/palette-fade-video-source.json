@@ -1,0 +1,7 @@
+{
+  "source": ".local/nes-basket/runs/court-4-palette-complete-palette-nmi-observed/palette.jsonl",
+  "sourceSHA256": "2b693013150673200d80f2398d0a1e925a0f74a1b81a0d36dd3da6c0aae24e71",
+  "fixtureSHA256": "aa0c2a52085c0315d0e68f11adecc01e0603b51b8c2e1040061a3d8b3a826b5a",
+  "generatorSHA256": "b7ee3a829f5563fc131829fb994544de05fbd8973dc90f234e1439a334bbee8d",
+  "scope": "Four original court/result fades, actual queue/NMI intervals and color buffers; not full Go runtime timing equivalence"
+}

@@ -1,0 +1,7 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "table": "fixed:C1D8",
+  "rows": 32,
+  "sha256": "b3c2a741f8180c64b89f2e0c6438cbf458a2b7a6aff5d82bc27a93d0b6bf60ac",
+  "source": "ROM parameter bytes, not runtime observations"
+}

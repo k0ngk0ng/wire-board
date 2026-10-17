@@ -1,0 +1,14 @@
+{
+  "source_is_natural_execution": false,
+  "isolated_original_function_execution": true,
+  "entry": "bank6 B5F4, entered pass only",
+  "records": 216,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "ram_source": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ram_frame": 1,
+  "ram_sha256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "sha256": "bfd3d5d9597f6a6a1aa2e81bef01cce7d514b1e5c6a13b6989f45e48ff6b099f",
+  "unchanged_ROM_instructions": true,
+  "device_model": "MMC3 PRG registers 6/7 only; unexpected writes fail",
+  "completed_landings": 84
+}

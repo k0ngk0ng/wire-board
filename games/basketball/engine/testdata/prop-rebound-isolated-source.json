@@ -1,0 +1,11 @@
+{
+  "records": 1688,
+  "natural_gameplay": false,
+  "isolated_original_function_execution": true,
+  "entry": "bank6:B1BD",
+  "original_instructions_unchanged": true,
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "ram_source": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ram_sha256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "sha256": "beb2b4fd4a506c952986822540fd8384b968ce6aa3205c84724a8bb8ed7ce07c"
+}

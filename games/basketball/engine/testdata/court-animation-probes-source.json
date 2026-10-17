@@ -1,0 +1,7 @@
+{
+  "scope": "isolated original 6502 routine execution, observed sound/palette peripheral commands; no natural-gameplay claim",
+  "entry": "bank4:9B95",
+  "records": 13312,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "168e27aae3f2013da0fe8bbb923f3bc4f05747c85180a7e9835b3ed68e5593be"
+}

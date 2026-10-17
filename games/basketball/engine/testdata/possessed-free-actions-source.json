@@ -1,0 +1,8 @@
+{
+  "scope": "isolated original instruction execution with controlled RAM, not natural game trace",
+  "records": 116,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseRAMSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "23f4dcf4c543146fd8c314922cfe9176ad18b7bef2027ed980985a25e002708c",
+  "boundary": "fixed E165..E168 single actor; original MMC3 bank selection"
+}

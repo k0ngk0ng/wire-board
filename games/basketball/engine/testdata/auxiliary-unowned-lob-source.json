@@ -1,0 +1,11 @@
+{
+  "records": 1024,
+  "scope": "configured original BC74 background-column generation followed by B07E owner-FF launch, no natural-game claim",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sha256": "8a7e80757cbbee3b7b6e64d1710125f6a5c32067197899ea6b7e58e5f1d0bd08",
+  "unchanged_ROM_instructions": true,
+  "ownerHeightAddresses": [
+    "0135",
+    "0142"
+  ]
+}

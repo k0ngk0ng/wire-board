@@ -1,0 +1,33 @@
+{
+  "source_is_original_execution": true,
+  "entry": "bank5:bacc",
+  "exit": "original caller return address",
+  "records": 1039,
+  "sha256": "466709ee38e29f864b6803cea0b54b640532ba40c04c3d6c63a49b40aa364be4",
+  "sources": [
+    {
+      "scenario": "cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "f1c6bd95df9aa61d2e9ef69dfa7684ba6d50d857bd9253c444cfb07650e880cf"
+    },
+    {
+      "scenario": "pass",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "f72234584ac017329229ee06ff01579a55b6fb0ced99ea11080cf6420264a277"
+    },
+    {
+      "scenario": "shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "60bdac41085035d891fd4ae8a2ded74f6a2287ac92a10c04bf933757559c2d3a"
+    },
+    {
+      "scenario": "jump-shot",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "590557dedc182aee9481fdd2a380fe95fa3eb87c8c90b88b8d53a27364a32789"
+    }
+  ]
+}

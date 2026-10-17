@@ -1,0 +1,30 @@
+{
+  "records": 25961,
+  "objects": {
+    "0": 1997,
+    "1": 1997,
+    "2": 1997,
+    "3": 1997,
+    "4": 1997,
+    "5": 1997,
+    "6": 1997,
+    "7": 1997,
+    "8": 1997,
+    "9": 1997,
+    "10": 1997,
+    "11": 1997,
+    "12": 1997
+  },
+  "source_is_original_execution": true,
+  "entry": "bank4:8e33",
+  "exit": "fixed:fce9",
+  "record_format": "uint32le frame, uint8 object, 2048-byte before RAM, 2048-byte after RAM",
+  "ram_matches_uninstrumented": true,
+  "trace_sha256": "115e362d8e2b11d0e3d4aea3c7bb87d15c79a059577f86680264ec4e8e88b524",
+  "fixture_sha256": "8086bd60d10f98f996171c9e55b588c6cdeea486007a17e871143bc3fe2a84b2",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 6000,
+    "scenario_sha256": "9bb48f82fb0987120b4682c6ca82e404cd39bdd322c41d8f47edbaf7ce3e677f"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "natural_gameplay": false,
+  "isolated_original_execution": true,
+  "original_instructions_unchanged": true,
+  "entry": "bank5:A05D dispatcher and complete99F0 selection",
+  "mode_entries": {
+    "33": "ABEF",
+    "34": "AAC7",
+    "35": "AC3A"
+  },
+  "mode35_thresholds": [
+    128,
+    144,
+    160,
+    176,
+    192,
+    208,
+    255,
+    255
+  ],
+  "selection_scope": "All224 team5/team7 selections retained.80 immediately enter target modes or mode1->33 catch handoff and continue through original AI calls; remaining selections/airborne recovery waits are not silently removed or claimed as complete target-mode chains.",
+  "sound_scope": "C000 returns without audio-driver execution",
+  "ram_source": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ram_sha256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "outputs": [
+    {
+      "path": "ai-mode33-isolated.json.gz",
+      "records": 1152,
+      "sha256": "08a470cd2798c79e0a171eb9a73af04e3ae454bbf006571aa8f6ace52c32e77b"
+    },
+    {
+      "path": "ai-mode34-isolated.json.gz",
+      "records": 1600,
+      "sha256": "0c4c902976c72baec5f0df25637e70ed2773ccf095f5cdb8eec12bf4ab613a78"
+    },
+    {
+      "path": "ai-mode35-isolated.json.gz",
+      "records": 1920,
+      "sha256": "6d4d5a34ba48c345e7ebc111d6d8297857d56845600766236afb53ce6a3b25ef"
+    },
+    {
+      "path": "ai-team-special-selection-chains.json.gz",
+      "records": 224,
+      "sha256": "dfc2619c5ffb9f9643bb0afbf2776a07eaa3f47599ac644dd1065e5e973b7dc4"
+    },
+    {
+      "path": "ai-mode34-teammate-order.json.gz",
+      "records": 2,
+      "sha256": "f48030d246c351f4d88d378e1ae0522b9c0b3f48b850702b11927af15048e063"
+    }
+  ]
+}

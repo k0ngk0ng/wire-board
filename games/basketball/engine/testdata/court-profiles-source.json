@@ -1,0 +1,19 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "source_is_original_execution": true,
+  "natural_gameplay": false,
+  "method": "isolated py65 original bank4 89FB..8B1E and 8021..80C6; artificial boundary inputs; no live RAM injection",
+  "probes": 29960,
+  "bounds": 19968,
+  "rows": [
+    10,
+    12,
+    10,
+    11,
+    10,
+    11,
+    9,
+    11
+  ],
+  "fixture_sha256": "877401a8ad26132f62c6765faabe09b6b4193debe767000935a3b6a0d7884e6c"
+}

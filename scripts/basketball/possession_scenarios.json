@@ -1,0 +1,31 @@
+{
+  "baseline": {
+    "name": "human-possession-baseline",
+    "load_slot": 5,
+    "save_slot": 7,
+    "frames": 150,
+    "segments": [
+      {"start": 8, "end": 17, "keys": ["right", "down"]},
+      {"start": 18, "end": 32, "keys": ["down"]},
+      {"start": 34, "end": 38, "keys": ["right"]},
+      {"start": 34, "end": 35, "keys": ["A", "B"]}
+    ],
+    "captures": [150]
+  },
+  "cases": {
+    "idle": [],
+    "walk": [{"start": 1, "end": 18, "keys": ["right"]}],
+    "pass": [{"start": 1, "end": 9, "keys": ["A"]}],
+    "shoot": [{"start": 1, "end": 30, "keys": ["B"]}],
+    "quick-shot": [{"start": 1, "end": 3, "keys": ["B"]}],
+    "jump": [{"start": 1, "end": 9, "keys": ["A", "B"]}],
+    "jump-pass": [
+      {"start": 1, "end": 9, "keys": ["A", "B"]},
+      {"start": 16, "end": 24, "keys": ["A"]}
+    ],
+    "jump-shot": [
+      {"start": 1, "end": 9, "keys": ["A", "B"]},
+      {"start": 16, "end": 24, "keys": ["B"]}
+    ]
+  }
+}

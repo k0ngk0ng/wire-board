@@ -1,0 +1,55 @@
+{
+  "source_is_original_execution": true,
+  "records": 57,
+  "motion_events": 389,
+  "tail_events_preserved": [
+    {
+      "phase": "57",
+      "frame": "3679",
+      "object": "0",
+      "x": "60736",
+      "depth": "9856",
+      "height": "9920",
+      "surface": "0"
+    },
+    {
+      "phase": "57",
+      "frame": "3679",
+      "object": "1",
+      "x": "57024",
+      "depth": "9728",
+      "height": "0",
+      "surface": "0"
+    },
+    {
+      "phase": "57",
+      "frame": "3679",
+      "object": "2",
+      "x": "73664",
+      "depth": "10240",
+      "height": "0",
+      "surface": "0"
+    },
+    {
+      "phase": "57",
+      "frame": "3679",
+      "object": "3",
+      "x": "60800",
+      "depth": "9728",
+      "height": "0",
+      "surface": "0"
+    }
+  ],
+  "sha256": "1a0bfe17175de6eefe3d521321bd889471a271348264d186aa3766dbde9f827f",
+  "uncompressed_sha256": "f23fecb0ed4cdb1f929c034bb3b5fcf3031865886e84b319aa7b0621a16751b1",
+  "complete_action_trace_sha256": "f437bada144fa7dd451062b0a559855fc3498fa2864374ba8c2dae8a8b1dca33",
+  "full_action_trace_sha256": "d744c94fbd25c2cae6c7bff09bb290e54b743a6bb6789f2df31a69811d922651",
+  "reference_ram_sha256": "8a17a733c84ace44cded2d5428ac8216ec0c25d08fb3845d6eda2dd9100e17f2",
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 180,
+    "scenario_sha256": "5f2a49952175f6e13fa628a7a461c176126234f2db70ef2d1e0864f1d133c620"
+  },
+  "physical_entries_without_surface_write": 0,
+  "skipped_entries_sha256": "cf43c39ada9149e2eccb8dbff438329b7ca14eefcc0b56fc5f8566c7eab3c321"
+}

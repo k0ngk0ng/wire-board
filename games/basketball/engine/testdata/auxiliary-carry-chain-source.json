@@ -1,0 +1,9 @@
+{
+  "scope": "explicit original Court3 pickup and A-throw setup; input E18B handlers and motion execute unchanged; not natural-match proof",
+  "records": 92,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sourceRAM": "/Users/jason/Sources/github.com/k0ngk0ng/wire-board/.local/nes-basket/runs/court-3-reference/ram.bin",
+  "sourceFrame": 1501,
+  "sourceRAMSHA256": "386db44a0ba25e434d7e5a6e6d101c36ad6c4992e501161740e934f3845f68c2",
+  "sha256": "b30c97313550ea15ff132ec7b335952c50b988ec117ae5ee9a29c3a9d8c84ec9"
+}

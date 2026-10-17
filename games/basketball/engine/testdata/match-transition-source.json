@@ -1,0 +1,17 @@
+{
+  "records": 153,
+  "kinds": {
+    "reset": 2,
+    "result": 145,
+    "setup": 2,
+    "wait": 4
+  },
+  "source_is_original_execution": true,
+  "sha256": "0bf5240ffbcb92b76fec7380f75ed65b471e3e6aad6d4eed51f2602949209f05",
+  "ram_matches_uninstrumented": true,
+  "source": {
+    "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+    "frames": 24000,
+    "scenario_sha256": "7fbf87013527bc1514551732296d9fcd38ef9abd28e39b193705212772cbe6ea"
+  }
+}

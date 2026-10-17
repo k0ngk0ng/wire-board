@@ -1,0 +1,24 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "action_maps": [
+    36568,
+    36568,
+    36568,
+    36568,
+    36568,
+    36568,
+    36568,
+    36568
+  ],
+  "receive_maps": [
+    37665,
+    37665,
+    37665,
+    37665,
+    37665,
+    37665,
+    37665,
+    37665
+  ],
+  "attack_variant_table": "bank5 8D10; indexed by variant independent of character kind"
+}

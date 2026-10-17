@@ -1,0 +1,15 @@
+{
+  "source_is_original_execution": true,
+  "description": "Exact ball action boundary and its containing world-step owner state; one video-frame crossing",
+  "sources": [
+    {
+      "path": "games/basketball/engine/testdata/ball.json",
+      "sha256": "46979847042b57267897ce22aa82ce1fe852d6d680252a0dcf9bb0e1e9e52a40"
+    },
+    {
+      "path": "games/basketball/engine/testdata/world-actions.json.gz",
+      "sha256": "8d196422c9aef38b803ab6cf34c56e1bcd65b441a764dba3d400f3dc5835d2ab"
+    }
+  ],
+  "sha256": "1e9f1c7a093c2b1ee3fc542fdda881b0e4ae33b107cd71d7c0ca29a9fab71a53"
+}

@@ -1,0 +1,49 @@
+{
+  "source_is_original_execution": true,
+  "records": 2392,
+  "sha256": "54807e212a3950f1ba952a5e0a000924ccf817b14b6d05d9dfc0792fbb312bb5",
+  "sources": [
+    {
+      "scenario": "hoop-control-cpu-long",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 6000,
+      "scenario_sha256": "f47a9def177d6930fa1646f4eadf5c5a3952dd9b2fa0529889fa2d08df92afac"
+    },
+    {
+      "scenario": "human-possession-baseline",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 150,
+      "scenario_sha256": "91a33591225bd832a58bb5f1252e43290bda1e0bd1443e085a091a2cbc22c4ab"
+    },
+    {
+      "scenario": "ball-control-pass",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 360,
+      "scenario_sha256": "d90140a7639fbc44a473e58b17e2d37547c43d3272ee833c8dcef365d7c12a23"
+    },
+    {
+      "scenario": "control-a",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "27f39300fa7b3392e64b5f89b939cc432e3a85f9b6427b88178d1cb9d5342499"
+    },
+    {
+      "scenario": "control-b",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "8ccb4280ae6935ba09368192c10144b5d7e21379ac7d0735574fd05a1732539d"
+    },
+    {
+      "scenario": "control-run-brake",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "62c42a26f2b846c55676ac0ec94348c11a436dabb8a01e522b26440f64b2a079"
+    },
+    {
+      "scenario": "control-running-jump",
+      "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+      "frames": 180,
+      "scenario_sha256": "b31562f0d317f72c811d57799e64aa0a5166140618b6fede0595dbd2ae4c4918"
+    }
+  ]
+}

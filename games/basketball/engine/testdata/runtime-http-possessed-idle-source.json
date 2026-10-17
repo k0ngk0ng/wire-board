@@ -1,0 +1,13 @@
+{
+  "source": ".local/basketball/http-possessed-replay/result.json",
+  "sourceSHA256": "4c6748a3ad3c7a332d755d811f4b68980c6718367bb7c53abee1584274350a58",
+  "httpArchive": ".local/basketball/http-possessed-replay/evidence-7a273f450f81ee346f6cfafdc753f3366bec452cffd445b37572052a9754b7b0.json",
+  "httpArchiveSHA256": "7a273f450f81ee346f6cfafdc753f3366bec452cffd445b37572052a9754b7b0",
+  "fixtureSHA256": "7eca58eee6ecb06b63c2fed17f1dd1526ca1c8d89de497dabf06e5f47e88992b",
+  "sourceIsOriginalROM": false,
+  "scope": "fixed state from actual platform HTTP room, seed and clocks unchanged",
+  "originalReportedFailure": {
+    "code": "rule_unavailable",
+    "detail": "video tick 1: actions: object 1: possessed free-player action not reconstructed"
+  }
+}

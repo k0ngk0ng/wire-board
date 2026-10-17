@@ -1,0 +1,10 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "oracle_sha256": "30cd60ebf6644ac07f774b73071e76ddcd3860a9e7479d6db82e29c8b4d882f2",
+  "generator_sha256": "aa42deb8ef8afa945d302f1d5950fc3978fb2135fad1a73df2c14193c79b5407",
+  "cases": 87,
+  "steps": 77369,
+  "size": 862164,
+  "no_apu_state_reads": true,
+  "runtime_cpu_emulation": false
+}

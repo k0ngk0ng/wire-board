@@ -1,0 +1,87 @@
+.basketball-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  outline-offset: 3px;
+}
+.basketball-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  color: #f4eedb;
+  background: #172126;
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.basketball-controls {
+  width: min(100%, 340px);
+  align-self: center;
+}
+.basketball-board:focus-visible {
+  outline: none;
+}
+.basketball-board:focus-visible .basketball-screen {
+  outline: 2px solid #f1cc76;
+  outline-offset: 3px;
+}
+.basketball-status {
+  min-height: 22px;
+  line-height: 22px;
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: #f4eedb;
+  background: #172126;
+}
+.basketball-stage {
+  width: min(100%, 640px, calc((100svh - 250px) * 256 / 240));
+  aspect-ratio: 256/240;
+  overflow: hidden;
+  background: #0c1114;
+  border-radius: 6px;
+  touch-action: manipulation;
+}
+.basketball-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+.basketball-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #fff3de;
+  background: #6a2530;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.basketball-error button {
+  color: #352111;
+  background: #f7e5bd;
+  border: 1px solid #c4a972;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+@media (max-width: 480px) {
+  .basketball-screen {
+    padding: 6px;
+    gap: 6px;
+  }
+  .basketball-stage {
+    width: min(100%, calc((100svh - 250px) * 256 / 240));
+  }
+  .basketball-status {
+    font-size: 12px;
+  }
+}

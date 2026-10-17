@@ -1,0 +1,143 @@
+{
+  "natural_gameplay": false,
+  "isolated_original_execution": true,
+  "original_instructions_unchanged": true,
+  "entries": [
+    "bank5:A05D/A229/A8DE/B97B",
+    "bank3:B4B9..B501",
+    "bank5:99F0"
+  ],
+  "selection_scope": "Original directional selection update only; stops before rendering/wait loop",
+  "evasion_scope": "Original99F0 selects team2 carrier mode17 from possession; mode17 chooses26 from a configured forward opponent; next A8DE selects plan11. Physics is outside this chain.",
+  "evasion_team_before": {
+    "teams": [
+      {
+        "mode": 12,
+        "entered": false,
+        "counter": 27
+      },
+      {
+        "mode": 12,
+        "entered": false,
+        "counter": 27
+      }
+    ],
+    "players": [
+      {
+        "mode": 0,
+        "entered": false,
+        "plan": 0,
+        "counter": 0,
+        "planParameter": 0,
+        "trackedObject": 0,
+        "destination": 0
+      },
+      {
+        "mode": 0,
+        "entered": false,
+        "plan": 12,
+        "counter": 32,
+        "planParameter": 0,
+        "trackedObject": 2,
+        "destination": 48
+      },
+      {
+        "mode": 0,
+        "entered": false,
+        "plan": 8,
+        "counter": 9,
+        "planParameter": 4,
+        "trackedObject": 0,
+        "destination": 113
+      },
+      {
+        "mode": 0,
+        "entered": false,
+        "plan": 2,
+        "counter": 8,
+        "planParameter": 5,
+        "trackedObject": 0,
+        "destination": 96
+      }
+    ]
+  },
+  "evasion_team_after": {
+    "teams": [
+      {
+        "mode": 11,
+        "entered": true,
+        "counter": 48
+      },
+      {
+        "mode": 10,
+        "entered": true,
+        "counter": 48
+      }
+    ],
+    "players": [
+      {
+        "mode": 2,
+        "entered": false,
+        "plan": 0,
+        "counter": 0,
+        "planParameter": 0,
+        "trackedObject": 0,
+        "destination": 0
+      },
+      {
+        "mode": 4,
+        "entered": false,
+        "plan": 12,
+        "counter": 32,
+        "planParameter": 0,
+        "trackedObject": 2,
+        "destination": 48
+      },
+      {
+        "mode": 17,
+        "entered": false,
+        "plan": 8,
+        "counter": 9,
+        "planParameter": 4,
+        "trackedObject": 0,
+        "destination": 113
+      },
+      {
+        "mode": 8,
+        "entered": false,
+        "plan": 2,
+        "counter": 8,
+        "planParameter": 5,
+        "trackedObject": 0,
+        "destination": 96
+      }
+    ]
+  },
+  "sound_scope": "C000 returns without audio-driver execution; gameplay instructions are unchanged",
+  "initial_rng": "12345678",
+  "ram_source": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ram_sha256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "bank5_sha256": "025909ee6b8dcf27215d1d6b183d6e913e878141d11e985e07930a912cb722ec",
+  "outputs": [
+    {
+      "path": "ai-mode5-isolated.json.gz",
+      "records": 1584,
+      "sha256": "103fb32904e075fbd5edd0784d8137ab2e3daefc6234fd694f9ac201ab0ecfdd"
+    },
+    {
+      "path": "ai-plan11-isolated.json.gz",
+      "records": 1200,
+      "sha256": "3a9cf3636eb3ed8d36463dcd723e18cd1ce69a1f92da562b7179a6bfdb7dd9af"
+    },
+    {
+      "path": "ai-plan11-entry-chain.json.gz",
+      "records": 2,
+      "sha256": "edd0b6f44f40cf4469ec37c60ec6b3750a29b69c9aad8ec705fe053050310bcc"
+    },
+    {
+      "path": "ai-mode5-selection-chain.json",
+      "sha256": "e7ac213c80acb1257f5d2b831232691599f9806b16080f990a467337f4de046c"
+    }
+  ]
+}

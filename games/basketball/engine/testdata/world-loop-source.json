@@ -1,0 +1,22 @@
+{
+  "source_is_original_execution": true,
+  "single_initial_state": true,
+  "records": 1998,
+  "trailing_phase_records_not_in_a_complete_iteration": {
+    "actions": 0,
+    "inputs": 0,
+    "projections": 0,
+    "preparations": 0
+  },
+  "full_traces_preserved": true,
+  "external_inputs": "controller frames only; expected states are never replay inputs; video clock excluded",
+  "expected_candidate_semantics": "last preparation event result; original zero-page reuse is not persisted",
+  "sha256": "4c07ec22a346a25f8a83679c201e00bdccf440955430cc0618a92ed5ff9002b4",
+  "uncompressed_sha256": "0adebd999f9151a400e790aff10d6aa09f1b0443c18559e09242750d6c6bc55f",
+  "trace_sha256": {
+    "actions": "2dab3dba353b84681dc90e4e0621f613d194a12f590b9072c2b7ee51e64b6c4b",
+    "inputs": "6070bc1ac8efe3d92e433535a69fa93858ca6eb51770725fe5d7ec99cd491601",
+    "preparations": "545063b797248e2206a2cfb2dda0ff5bef81af5079bfd64c31c644308209a952",
+    "projection": "204807bad4d24a03c48effb18d415d93253d50a9d0f0adaa19ffcb7ed85a7e26"
+  }
+}
