@@ -27,6 +27,8 @@ type HurtObjectCommand struct {
 	SetFacing       bool
 	FacingLeft      bool
 	ClearAttachment bool
+	// Original 8B67 support operation, ordered between assisted action and link clear.
+	DetachSupport bool
 }
 type HurtStep struct {
 	State                           HurtState
@@ -55,9 +57,9 @@ func hurtAnimation(action Action) (AnimationSpec, error) {
 	return AnimationSpec{}, errors.New("hurt action is not reconstructed")
 }
 
-// StepHurtPlayer executes an already selected original injury action. Damage
-// calculation and contact ownership belong to the earlier collision phase.
-func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtStep, error) {
+// PrepareHurtPlayer ends before animation and EEFF. Commands must be committed
+// in order before motion loads the world, including the 8B67 support operation.
+func PrepareHurtPlayer(original HurtState, ctx HurtContext) (HurtStep, error) {
 	initial := HurtStep{State: original, Random: ctx.Random}
 	result := initial
 	fail := func(msg string) (HurtStep, error) { return initial, errors.New(msg) }
@@ -66,7 +68,7 @@ func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtS
 	}
 	p := &result.State.Player
 	action := p.Action
-	spec, err := hurtAnimation(action)
+	_, err := hurtAnimation(action)
 	if err != nil {
 		return initial, err
 	}
@@ -113,9 +115,6 @@ func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtS
 		}
 	}
 	if !p.Entered {
-		if action == 0x49 && ctx.Attachments[ctx.Actor]&128 != 0 {
-			return fail("hurt rider detachment action is not reconstructed")
-		}
 		if action == 0x47 && ctx.RecoveryGrade >= 8 {
 			return fail("hurt recovery grade outside original table")
 		}
@@ -153,6 +152,9 @@ func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtS
 				}
 				emit(HurtObjectCommand{Object: uint8(ctx.AssistedActor), SetAction: true, Action: 11})
 			}
+			if ctx.Attachments[ctx.Actor]&128 != 0 {
+				emit(HurtObjectCommand{Object: ctx.Actor, DetachSupport: true})
+			}
 			clearLink(ctx.Actor)
 			if ctx.LinkedActor >= 0 {
 				if ctx.LinkedActor >= 4 {
@@ -188,6 +190,24 @@ func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtS
 			result.State.Endurance = 255
 		}
 	}
+	return result, nil
+}
+
+// CompleteHurtPlayer contains animation, motion and the post-motion landing
+// branches. Preparation commands are consumed before calling this function.
+func CompleteHurtPlayer(prepared HurtStep, ctx HurtContext, court FlatCourt) (HurtStep, error) {
+	initial := prepared
+	result := prepared
+	result.Objects = nil
+	result.Ball = BallCommand{}
+	result.ReleaseBall, result.ChangeBallVelocity, result.ClearSpecialHolder = false, false, false
+	p := &result.State.Player
+	action := p.Action
+	spec, err := hurtAnimation(action)
+	if err != nil {
+		return initial, err
+	}
+
 	step, err := AdvanceAnimation(spec, p.Animation, p.FacingLeft)
 	if err != nil {
 		return initial, err
@@ -222,6 +242,34 @@ func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtS
 		if result.State.Endurance == 0 {
 			p.Action = 0x47
 		}
+	}
+	return result, nil
+}
+
+// StepHurtPlayer preserves the isolated free-player API. Attached entry needs
+// the actual world support, so callers must use the world preparation adapter.
+func StepHurtPlayer(original HurtState, ctx HurtContext, court FlatCourt) (HurtStep, error) {
+	initial := HurtStep{State: original, Random: ctx.Random}
+	prepared, e := PrepareHurtPlayer(original, ctx)
+	if e != nil {
+		return initial, e
+	}
+	for _, command := range prepared.Objects {
+		if command.DetachSupport {
+			return initial, errors.New("hurt rider detachment requires world support")
+		}
+	}
+	if prepared.ReleaseBall {
+		ctx.BallHolder = 6
+	}
+	complete, e := CompleteHurtPlayer(prepared, ctx, court)
+	if e != nil {
+		return initial, e
+	}
+	result := prepared
+	result.State = complete.State
+	if complete.Ball.Change || complete.Ball.ChangeRequest {
+		result.Ball = complete.Ball
 	}
 	return result, nil
 }

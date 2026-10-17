@@ -1,0 +1,18 @@
+{
+  "entry": "bank6 BBB9 via original E149..E14C dispatch",
+  "scope": "controlled original calls and uninterrupted chains; no world injection within chain; not natural-match evidence",
+  "calls": 816,
+  "chains": [
+    41,
+    41,
+    23,
+    24,
+    41,
+    41,
+    23,
+    24
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "55b26be0b254ee281c7e36848fbf0e74ad015c506724493fd6cf7fd9d6588f20"
+}

@@ -1,0 +1,23 @@
+{
+  "scope": "controlled original D314 preparation and D345 whole action phase from exact failing Go state; original E149 self-dribble calls; not natural original full match",
+  "calls": 24,
+  "worldCalls": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "runtimeSHA256": "12ade4366f9bd3567eaaf61959495870693cbe0c64f064525cd7470e3ac4f211",
+  "fixtureSHA256": "af11906f99671392e9fcc4cca427c771841236990a1bc63df9641c3bd47cedf1"
+}
