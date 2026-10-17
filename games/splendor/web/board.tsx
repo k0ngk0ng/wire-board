@@ -326,25 +326,28 @@ export function SplendorBoard({
             );
           })}
         </div>
-        {taking && (
-          <div className="bank-actions">
-            <span>已选择 {tokens.reduce((a, b) => a + b, 0)} 枚</span>
-            <button
-              className="subtle"
-              onClick={() => setTokens(Array(6).fill(0))}
-            >
-              重选
-            </button>
-            <button
-              className="primary"
-              disabled={busy || tokens.every((n) => n === 0)}
-              onClick={() => void act({ type: "take", tokens })}
-            >
-              拿取宝石
-              <Check size={16} />
-            </button>
-          </div>
-        )}
+        <div
+          className={`bank-actions ${taking ? "" : "splendor-action-placeholder"}`}
+          aria-hidden={!taking}
+          inert={!taking}
+        >
+          <span>已选择 {tokens.reduce((a, b) => a + b, 0)} 枚</span>
+          <button
+            className="subtle"
+            disabled={!taking || busy}
+            onClick={() => setTokens(Array(6).fill(0))}
+          >
+            重选
+          </button>
+          <button
+            className="primary"
+            disabled={!taking || busy || tokens.every((n) => n === 0)}
+            onClick={() => void act({ type: "take", tokens })}
+          >
+            拿取宝石
+            <Check size={16} />
+          </button>
+        </div>
       </div>
       {!room.spectating && (
         <div className="personal-area">
@@ -569,15 +572,15 @@ export function SplendorBoard({
           renderCost={(cost) => <Cost cost={cost} />}
         />
       )}
-      {taking && (
-        <button
-          className="pass-button"
-          disabled={busy}
-          onClick={() => void act({ type: "pass" })}
-        >
-          无合法行动时跳过回合
-        </button>
-      )}
+      <button
+        className={`pass-button ${taking ? "" : "splendor-action-placeholder"}`}
+        aria-hidden={!taking}
+        inert={!taking}
+        disabled={!taking || busy}
+        onClick={() => void act({ type: "pass" })}
+      >
+        无合法行动时跳过回合
+      </button>
       <SplendorCardAnimation
         room={room}
         assets={assets}

@@ -612,13 +612,6 @@ function App() {
                 <span className="username">
                   <PlayerName user={state.user} />
                 </span>
-                <button
-                  className="icon-button"
-                  aria-label="退出登录"
-                  onClick={() => void run(() => api("/logout", {}))}
-                >
-                  <LogOut size={17} />
-                </button>
               </div>
             </header>
             {error && (
@@ -992,6 +985,24 @@ function App() {
             )}
             {profileID && (
               <Modal title="玩家页面" onClose={() => setProfileID("")}>
+                {profileID === state.user.id && (
+                  <div className="profile-account-actions">
+                    <button
+                      className="outline"
+                      aria-label="退出登录"
+                      disabled={busy}
+                      onClick={() =>
+                        void run(async () => {
+                          await api("/logout", {});
+                          setProfileID("");
+                        })
+                      }
+                    >
+                      <LogOut size={17} />
+                      退出登录
+                    </button>
+                  </div>
+                )}
                 <ProfilePage
                   key={profileID}
                   id={profileID}
