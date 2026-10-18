@@ -1,8 +1,13 @@
 package engine
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/k0ngk0ng/wire-board/games/basketball/campaign"
+)
 
 type RuntimeConfig struct {
+	// Campaign is the immutable starting preparation snapshot, not live progress.
+	Campaign     *campaign.Progress         `json:"campaign,omitempty"`
 	Match        OriginalMatchConfiguration `json:"match"`
 	HumanTactics [2]uint8                   `json:"humanTactics"`
 }
@@ -62,6 +67,9 @@ type RuntimeStep struct {
 }
 
 func validateRuntimeConfig(c RuntimeConfig) error {
+	if err := validateCampaignConfiguration(c); err != nil {
+		return err
+	}
 	if c.Match.Court >= 8 {
 		return fmt.Errorf("runtime court is not yet supported by complete motion/action integration")
 	}
@@ -96,12 +104,20 @@ func validateRuntimeConfig(c RuntimeConfig) error {
 }
 func NewRuntime(c RuntimeConfig) (RuntimeState, error) {
 	var s RuntimeState
+	if c.Campaign != nil {
+		copy := *c.Campaign
+		c.Campaign = &copy
+	}
 	if e := validateRuntimeConfig(c); e != nil {
 		return s, e
 	}
 	opening, e := NewOriginalMatch(c.Match)
 	if e != nil {
 		return s, e
+	}
+	if c.Campaign != nil {
+		opening.Transition.Match.Period = c.Campaign.Period
+		opening.Transition.TeamWinBits = c.Campaign.WinBits
 	}
 	display, e := NewOriginalDisplay(c.Match)
 	if e != nil {
@@ -125,6 +141,10 @@ func runtimeMatch(s *RuntimeState) *MatchState {
 	return nil
 }
 func cloneRuntime(s RuntimeState) RuntimeState {
+	if s.Config.Campaign != nil {
+		copy := *s.Config.Campaign
+		s.Config.Campaign = &copy
+	}
 	if s.Outcome != nil {
 		v := *s.Outcome
 		s.Outcome = &v
@@ -224,6 +244,9 @@ func ValidateRuntimeState(s RuntimeState) error {
 		return fmt.Errorf("intermission without transition")
 	}
 	if e := validateRuntimeOutcome(s); e != nil {
+		return e
+	}
+	if e := validateCampaignMatchProgress(s); e != nil {
 		return e
 	}
 	m := runtimeMatch(&s)
@@ -409,7 +432,11 @@ func stepRuntimeOpening(r *RuntimeStep, input [4]ControllerFrame) error {
 	if !next.BeginWorldInputs {
 		return nil
 	}
-	world, ctx, err := WorldFromOriginalOpening(*o, OpeningWorldOptions{LogicFrame: s.LogicFrame, HumanTactics: s.Config.HumanTactics})
+	options := OpeningWorldOptions{LogicFrame: s.LogicFrame, HumanTactics: s.Config.HumanTactics}
+	if s.Config.Campaign != nil {
+		options.Inventory = &s.Config.Campaign.Inventory
+	}
+	world, ctx, err := WorldFromOriginalOpening(*o, options)
 	if err != nil {
 		return err
 	}

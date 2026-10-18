@@ -1,8 +1,13 @@
 package engine
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/k0ngk0ng/wire-board/games/basketball/campaign"
+)
 
 type OpeningWorldOptions struct {
+	// Nil retains the original empty inventory used by fresh single matches.
+	Inventory *[16]campaign.Item
 	// The video/scene driver owns the original outer-loop counter. Fresh
 	// platforms may start it at zero; a continued scene passes its current byte.
 	LogicFrame   uint8
@@ -37,6 +42,9 @@ func WorldFromOriginalOpening(s OpeningState, options OpeningWorldOptions) (Worl
 	// FA8C clears F4. Bank3 A0D3 fills the initial D3..E2 item list
 	// with FF; DA (slot7) is read only if the pursuit alias reaches X.
 	zeroDepth, emptyListItem := uint8(0), uint8(255)
+	if options.Inventory != nil {
+		emptyListItem = uint8(options.Inventory[7])
+	}
 	ctx.PursuitReserved = &PursuitReservedBytes{Depth88: &zeroDepth, XHigh88: &emptyListItem}
 	copy(ctx.HoopLinks[:], s.Links[7:])
 	for i, g := range s.Grades {
