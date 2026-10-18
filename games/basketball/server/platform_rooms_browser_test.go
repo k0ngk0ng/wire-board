@@ -37,7 +37,11 @@ func TestBasketballBrowserPlatformRooms(t *testing.T) {
 		if strings.HasPrefix(r.URL.Path, selectionPrefix) {
 			relative := strings.TrimPrefix(r.URL.Path, selectionPrefix)
 			if filepath.IsLocal(relative) && filepath.Ext(relative) == ".png" && (strings.HasPrefix(relative, "courts/") || strings.HasPrefix(relative, "players/")) {
-				base := filepath.Join(root, ".local/basketball/selection-assets")
+				base, baseErr := filepath.EvalSymlinks(filepath.Join(root, ".local/basketball/selection-assets"))
+				if baseErr != nil {
+					http.NotFound(w, r)
+					return
+				}
 				file, e := filepath.EvalSymlinks(filepath.Join(base, relative))
 				if e == nil && strings.HasPrefix(file, base+string(filepath.Separator)) {
 					http.ServeFile(w, r, file)
@@ -53,7 +57,11 @@ func TestBasketballBrowserPlatformRooms(t *testing.T) {
 			parts := strings.Split(rel, "/")
 			allowed := map[string]bool{"court": true, "courts": true, "static-atlas": true, "static-objects": true, "raster": true, "results": true}
 			if filepath.IsLocal(rel) && allowed[parts[0]] && (filepath.Ext(rel) == ".png" || filepath.Ext(rel) == ".json") {
-				base := filepath.Join(root, ".local/basketball", parts[0])
+				base, baseErr := filepath.EvalSymlinks(filepath.Join(root, ".local/basketball", parts[0]))
+				if baseErr != nil {
+					http.NotFound(w, r)
+					return
+				}
 				file, e := filepath.EvalSymlinks(filepath.Join(root, ".local/basketball", rel))
 				if e == nil && strings.HasPrefix(file, base+string(filepath.Separator)) {
 					http.ServeFile(w, r, file)

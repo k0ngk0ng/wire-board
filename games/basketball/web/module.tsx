@@ -9,6 +9,7 @@ import { Preparation } from "./Preparation";
 import type { BasketballNetworkView } from "./network-scene";
 
 export type BasketballOptions = {
+  campaign?: import("./campaign-types").CampaignOptions;
   court:
     | "new-york"
     | "court-0"
@@ -16,7 +17,8 @@ export type BasketballOptions = {
     | "court-3"
     | "court-4"
     | "court-5"
-    | "court-6";
+    | "court-6"
+    | "court-7";
   teams?: [number, number];
   characters?: [number, number, number, number];
   mode: "solo" | "cooperative" | "versus";
@@ -27,6 +29,10 @@ export function OptionsForm({
   capacity,
   disabled,
 }: OptionsProps<BasketballOptions>) {
+  const entry: "single" | "new" | "password" = value.campaign
+    ? (value.campaign.entry ??
+      (Object.hasOwn(value.campaign, "password") ? "password" : "new"))
+    : "single";
   const mode =
     capacity === 1
       ? "solo"
@@ -34,7 +40,20 @@ export function OptionsForm({
         ? "versus"
         : "cooperative";
   useEffect(() => {
-    if (mode !== value.mode) onChange({ ...value, mode });
+    if (mode !== value.mode || (mode === "versus" && value.campaign))
+      onChange({
+        ...value,
+        mode,
+        campaign:
+          mode !== "versus" && value.campaign
+            ? {
+                ...value.campaign,
+                preparation: undefined,
+                availableOpponents: undefined,
+                opponent: 0,
+              }
+            : undefined,
+      });
   }, [mode, value, onChange]);
   return (
     <div className="basketball-options">
@@ -45,17 +64,91 @@ export function OptionsForm({
             aria-label="比赛模式"
             value={mode}
             disabled={disabled}
-            onChange={(e) =>
+            onChange={(e) => {
+              const next = e.target.value as BasketballOptions["mode"];
               onChange({
                 ...value,
-                mode: e.target.value as BasketballOptions["mode"],
-              })
-            }
+                mode: next,
+                campaign:
+                  next === "versus"
+                    ? undefined
+                    : value.campaign
+                      ? {
+                          ...value.campaign,
+                          preparation: undefined,
+                          availableOpponents: undefined,
+                          opponent: 0,
+                        }
+                      : undefined,
+              });
+            }}
           >
             <option value="cooperative">双人合作</option>
             <option value="versus">双人对战</option>
           </select>
         </label>
+      )}
+      {mode !== "versus" && (
+        <label>
+          比赛形式
+          <select
+            aria-label="比赛形式"
+            value={entry}
+            disabled={disabled}
+            onChange={(e) => {
+              const next = e.target.value as typeof entry;
+              onChange({
+                ...value,
+                campaign:
+                  next === "single"
+                    ? undefined
+                    : {
+                        entry: next,
+                        opponent: 0,
+                        tactic: 4,
+                        ...(next === "password" ? { password: "" } : {}),
+                      },
+              });
+            }}
+          >
+            <option value="single">单场比赛</option>
+            <option value="new">新战役</option>
+            <option value="password">原密码继续</option>
+          </select>
+        </label>
+      )}
+      {entry === "password" && mode !== "versus" && (
+        <label>
+          原版密码
+          <input
+            aria-label="原版密码"
+            name="campaignPassword"
+            value={value.campaign?.password ?? ""}
+            required
+            pattern="[0-9A-Fa-f]{6}"
+            maxLength={6}
+            autoComplete="off"
+            spellCheck={false}
+            disabled={disabled}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                campaign: {
+                  entry: "password",
+                  password: e.target.value.trim().toUpperCase(),
+                  opponent: 0,
+                  tactic: 4,
+                },
+              })
+            }
+          />
+          <small>输入 6 位原版密码，人数须与当前房间一致。</small>
+        </label>
+      )}
+      {entry !== "single" && mode !== "versus" && (
+        <p>
+          热血队挑战七支球队，各进行一场主场和客场比赛。对手、球员和装备在准备阶段选择。
+        </p>
       )}
       <p>
         {mode === "solo"

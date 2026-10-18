@@ -81,3 +81,26 @@ func TestCampaignEntryRejectsForgedPreparation(t *testing.T) {
 		}
 	}
 }
+
+// Before explicit entry intent: waiting-room options are saved by a button,
+// not a native form submission. An empty password must not silently become a
+// new campaign merely because the browser's required field was bypassed.
+func TestCampaignExplicitEntryIntent(t *testing.T) {
+	for _, raw := range []string{
+		`{"mode":"solo","campaign":{"entry":"new"}}`,
+		`{"mode":"solo","campaign":{"entry":"password","password":"020010"}}`,
+	} {
+		if _, err := configure(1, json.RawMessage(raw)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, raw := range []string{
+		`{"mode":"solo","campaign":{"entry":"password","password":""}}`,
+		`{"mode":"solo","campaign":{"entry":"new","password":"020010"}}`,
+		`{"mode":"solo","campaign":{"entry":"resume"}}`,
+	} {
+		if _, err := configure(1, json.RawMessage(raw)); err == nil {
+			t.Fatal("ambiguous campaign entry accepted", raw)
+		}
+	}
+}

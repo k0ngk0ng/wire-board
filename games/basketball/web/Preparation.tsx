@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { SelectionImage } from "./SelectionImage";
+import { CampaignWaitingPreparation } from "./CampaignPreparation";
 import type { PreparationProps } from "../../../web/src/game-api/module";
 import type { BasketballOptions } from "./module";
 import labels from "../selection/labels.json";
@@ -15,33 +16,6 @@ const courts = [
   { value: "court-5", id: 5, name: labels.courts[5] },
   { value: "court-6", id: 6, name: labels.courts[6] },
 ] as const;
-function SelectionImage({
-  assets,
-  file,
-  alt,
-  className,
-}: {
-  assets: string;
-  file: string;
-  alt: string;
-  className?: string;
-}) {
-  const local = `/basketball/v1/selection/${file}`;
-  const remote = assets ? `${assets.replace(/\/$/, "")}${local}` : local;
-  const [source, setSource] = useState(remote);
-  useEffect(() => setSource(remote), [remote]);
-  return (
-    <img
-      className={className}
-      src={source}
-      alt={alt}
-      draggable={false}
-      onError={() => {
-        if (source !== local) setSource(local);
-      }}
-    />
-  );
-}
 
 export function Preparation({
   room,
@@ -51,6 +25,17 @@ export function Preparation({
   assets,
   prepare,
 }: PreparationProps<BasketballOptions>) {
+  if (options.campaign)
+    return (
+      <CampaignWaitingPreparation
+        room={room}
+        options={options}
+        host={host}
+        busy={busy}
+        assets={assets}
+        prepare={prepare}
+      />
+    );
   const seatActors =
     options.mode === "solo" ? [0] : options.mode === "versus" ? [0, 2] : [0, 1];
   const characters = options.characters ?? [0, 1, 0, 1];

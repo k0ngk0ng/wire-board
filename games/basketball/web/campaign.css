@@ -1,0 +1,270 @@
+.basketball-campaign-editor,
+.basketball-campaign-modal {
+  color: #302b26;
+  background: #faf7f0;
+}
+.basketball-campaign-editor {
+  border: 1px solid #c9beaa;
+  border-radius: 12px;
+  padding: 12px;
+  min-width: 0;
+}
+.basketball-campaign-editor h3 {
+  font-size: 16px;
+  margin: 14px 0 8px;
+}
+.basketball-campaign-editor h4 {
+  font-size: 14px;
+  margin: 8px 0;
+}
+.basketball-campaign-editor p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #514739;
+}
+.basketball-campaign-editor button,
+.basketball-campaign-actions button,
+.basketball-campaign-toolbar button {
+  min-height: 44px;
+  min-width: 44px;
+  background: #fffdf8;
+  color: #302b26;
+  border: 1px solid #a08c6e;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font: inherit;
+  cursor: pointer;
+  white-space: normal;
+}
+.basketball-campaign-editor button:disabled,
+.basketball-campaign-actions button:disabled,
+.basketball-campaign-toolbar button:disabled {
+  opacity: 1;
+  background: #eee8db;
+  color: #625749;
+  cursor: default;
+}
+.basketball-campaign-editor button[aria-pressed="true"] {
+  background: #fff0cc;
+  color: #3e2b0f;
+  border: 2px solid #80501d;
+}
+.basketball-campaign-editor button:focus-visible,
+.basketball-campaign-actions button:focus-visible,
+.basketball-campaign-toolbar button:focus-visible {
+  outline: 3px solid #245b8e;
+  outline-offset: 2px;
+}
+.basketball-campaign-editor label {
+  display: grid;
+  gap: 5px;
+  font-size: 14px;
+  color: #302b26;
+  margin: 10px 0;
+}
+.basketball-campaign-editor select {
+  width: 100%;
+  min-height: 44px;
+  background: #fffdf8;
+  color: #302b26;
+  border: 1px solid #a08c6e;
+  border-radius: 6px;
+  padding: 6px;
+}
+.basketball-campaign-opponents {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.basketball-campaign-opponents button {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+  min-width: 0;
+}
+.basketball-campaign-opponents img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+.basketball-campaign-lineup,
+.basketball-campaign-equipment {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.basketball-campaign-characters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.basketball-campaign-characters button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  min-width: 0;
+}
+.basketball-campaign-characters img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.basketball-campaign-inventory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.basketball-campaign-inventory button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  font-size: 13px;
+}
+.basketball-campaign-inventory span {
+  font-size: 12px;
+}
+.basketball-campaign-slot {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  font-size: 13px;
+}
+.basketball-campaign-slot span {
+  overflow-wrap: anywhere;
+}
+.basketball-campaign-slot button {
+  flex: 0 0 auto;
+  font-size: 12px;
+}
+.basketball-campaign-editor .basketball-campaign-notice,
+.basketball-campaign-countdown {
+  color: #51330d;
+  background: #fff0cc;
+  border: 1px solid #c19b5c;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.basketball-campaign-panel {
+  width: 100%;
+  min-width: 0;
+}
+.basketball-campaign-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 13px;
+}
+.basketball-campaign-toolbar button {
+  min-height: 32px;
+  font-size: 13px;
+}
+.modal.basketball-campaign-modal {
+  width: min(760px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  box-sizing: border-box;
+}
+.basketball-campaign-modal .modal-head {
+  color: #302b26;
+  background: #faf7f0;
+}
+.basketball-campaign-modal p {
+  line-height: 1.5;
+}
+.basketball-campaign-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.basketball-campaign-password {
+  margin-top: 12px;
+  font-size: 13px;
+}
+.basketball-campaign-password summary {
+  cursor: pointer;
+  min-height: 32px;
+}
+.basketball-campaign-password code {
+  font-size: 20px;
+  letter-spacing: 3px;
+}
+.basketball-campaign-score {
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+}
+.basketball-campaign-error {
+  background: #ffe9e4;
+  color: #78251c;
+  border: 1px solid #b35e50;
+  padding: 8px;
+  border-radius: 6px;
+}
+@media (max-width: 540px) {
+  .basketball-campaign-opponents {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .basketball-campaign-lineup,
+  .basketball-campaign-equipment {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .basketball-campaign-characters {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .basketball-campaign-characters button {
+    padding: 5px 2px;
+    font-size: 12px;
+  }
+  .basketball-campaign-characters img {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+  .basketball-campaign-editor {
+    padding: 9px;
+  }
+  .modal.basketball-campaign-modal {
+    padding: 12px;
+  }
+}
+
+/* Keep the automatic transition visible even at the bottom of a long menu. */
+.basketball-campaign-modal > .basketball-campaign-countdown {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: 0 0 10px;
+}
+@media (min-width: 700px) {
+  .basketball-campaign-opponents {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .basketball-campaign-opponents img {
+    max-height: 96px;
+  }
+}
+@media (max-width: 540px) {
+  .basketball-campaign-toolbar button {
+    min-height: 44px;
+  }
+}
+.basketball-options small {
+  display: block;
+  color: #625749;
+  background: #faf7f0;
+  line-height: 1.5;
+}
