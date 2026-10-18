@@ -166,6 +166,9 @@ func StepCarrierAction(original Carrier, ctx CarrierContext, profile CharacterPr
 			result.Revisit = true
 		case ActionDribbleIdle:
 			stopHorizontal(p)
+			// Original9089 binds this actor only on entry, before terrain.
+			result.BindBall = true
+			ctx.HasBall = true
 			result.Carrier.ShotCycle = -1
 		case ActionCarrierLand:
 			stopHorizontal(p)

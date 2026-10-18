@@ -67,15 +67,9 @@ func StepHeldBallOnCourt(original Ball, carrier Player, court FlatCourt) (Ball, 
 			b.Body.Velocity.Height, b.Body.Gravity = 0, 0
 		}
 	}
-	frame := uint8(0)
-	if b.Action == BallDribble {
-		frame = 127
-	}
-	animation, err := AdvanceAnimation(AnimationSpec{Frames: []AnimationFrame{{Pose: Pose{Frame: frame}, Ticks: 255}}, End: RepeatForever}, b.Animation, b.FacingLeft)
-	if err != nil {
+	if err := animateOriginalHeldBall(&b, carrier); err != nil {
 		return original, err
 	}
-	b.Animation, b.Pose = animation.State, animation.Pose
 	if b.Action == BallDribble {
 		b.Body.Position = carrier.Body.Position
 		return b, nil

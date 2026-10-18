@@ -19,6 +19,7 @@ func TestRuntimeTeamRosterDiagnostic(t *testing.T) {
 	}
 	var selection struct {
 		Court      *uint8  `json:"court"`
+		Mode       *uint8  `json:"mode,omitempty"`
 		Teams      []uint8 `json:"teams"`
 		Characters []uint8 `json:"characters"`
 	}
@@ -38,6 +39,12 @@ func TestRuntimeTeamRosterDiagnostic(t *testing.T) {
 	}
 	config := DefaultRuntimeConfig()
 	config.Match.Court = *selection.Court
+	if selection.Mode != nil {
+		if mode := *selection.Mode; mode != 0 && mode != 1 && mode != 128 && mode != 129 {
+			t.Fatal("diagnostic original mode must be0/1/128/129")
+		}
+		config.Match.Mode = *selection.Mode
+	}
 	copy(config.Match.Teams[:], selection.Teams)
 	copy(config.Match.Characters[:], selection.Characters)
 	config.Match.Seed = 0x12345678

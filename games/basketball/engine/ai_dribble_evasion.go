@@ -118,6 +118,96 @@ func advanceOriginalDribbleEvasion(result *AIControlDecision, view AIControlView
 		result.ShotPlan.ChangeJumpPhase, result.ShotPlan.JumpPhase = true, -1
 		s.Mode, s.Entered = AIPossessionWait, false
 		s.Plan = 17
+	case 6:
+		// B8D8 consumes a random byte only at counter zero. A8DE's
+		// ordinary random-choice table does not select this direct plan.
+		if s.Counter == 0 {
+			chooseAIAction(result, Action(0x2e))
+			var value uint8
+			result.Random, value = NextRandom(result.Random)
+			depth := zone & 15
+			if depth >= 8 {
+				return errors.New("direct evasion6 zone threshold alias not reconstructed")
+			}
+			result.Heading = HeadingDown
+			if value >= [8]uint8{64, 64, 128, 192, 192, 128, 128, 128}[depth] {
+				result.Heading = HeadingUp
+			}
+			s.Counter++
+			return nil
+		}
+		if zone&0xf0 >= 0x70 {
+			s.Mode, s.Entered = AIPause, false
+			return nil
+		}
+		if result.Action == Action(0x2e) {
+			return nil
+		}
+		chooseAIAction(result, ActionDribbleRun)
+		result.Heading = HeadingRight
+		if view.Actor >= 2 {
+			result.Heading = HeadingLeft
+		}
+		if uint8(s.Counter) >= 8 {
+			s.Plan = 17
+		} else {
+			s.Counter++
+		}
+	case 7, 8, 9:
+		// B92C compares the original high vertical-speed byte unsigned.
+		if view.ShotContext.JumpPhase < 0 && uint8(view.ShotContext.VerticalSpeed) >= 2 {
+			return nil
+		}
+		result.Heading = HeadingDown
+		if s.PlanParameter == 7 {
+			result.Heading = HeadingUpRight
+			if view.Actor >= 2 {
+				result.Heading = HeadingUpLeft
+			}
+		} else if s.PlanParameter == 8 {
+			result.Heading = HeadingRight
+			if view.Actor >= 2 {
+				result.Heading = HeadingLeft
+			}
+		}
+		if view.ShotContext.JumpPhase >= 0 {
+			result.Action, result.ActionEntered = ActionCarrierRunningJump, false
+			result.ShotPlan.ChangeJumpPhase, result.ShotPlan.JumpPhase = true, -1
+		} else {
+			result.Action, result.ActionEntered = ActionCarrierJump, false
+			s.Mode, s.Entered, s.Plan = AIPossessionWait, false, 17
+		}
+	case 10:
+		if result.Action != ActionCarrierJump {
+			result.Action, result.ActionEntered = ActionCarrierJump, false
+			result.Heading = HeadingNone
+			s.Mode, s.Entered, s.Plan = AIPossessionWait, false, 17
+		}
+	case 12:
+		chooseAIAction(result, ActionDribbleRun)
+		s.Counter++
+		if uint8(s.Counter)&7 == 0 {
+			// XOR80 maps FF to raw7F, which has no Heading representation.
+			// Do not silently reinterpret that byte as a diagonal direction.
+			if result.Heading >= HeadingNone {
+				return errors.New("direct evasion12 raw heading flip not reconstructed")
+			}
+			result.Heading = Heading((uint8(result.Heading) + 4) & 7)
+		}
+		if uint8(s.Counter) >= 32 {
+			s.Mode, s.Entered = 17, false
+		}
+	case 13:
+		if result.Action != ActionDribbleIdle {
+			result.Action, result.ActionEntered = ActionDribbleIdle, false
+			s.Counter = 0
+		} else {
+			s.Counter++
+			if uint8(s.Counter) >= 8 {
+				result.Action, result.ActionEntered = ActionDribbleRun, false
+				s.Mode, s.Entered, s.Plan = AIPause, false, 17
+			}
+		}
 	case 11:
 		// $B97B is a short vertical walking interval. It uses the original
 		// six-byte zone-depth heading table without mirroring by team.

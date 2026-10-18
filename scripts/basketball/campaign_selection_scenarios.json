@@ -1,0 +1,1102 @@
+[
+  {
+    "name": "campaign-audit-first-match-confirm",
+    "load_slot": 1,
+    "frames": 2400,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 180,
+        "end": 181,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 500,
+        "end": 501,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 760,
+        "end": 761,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1401,
+        "end": 1406,
+        "keys": [
+          "start"
+        ]
+      },
+      {
+        "start": 1501,
+        "end": 1506,
+        "keys": [
+          "start"
+        ]
+      },
+      {
+        "start": 1601,
+        "end": 1606,
+        "keys": [
+          "start"
+        ]
+      },
+      {
+        "start": 1701,
+        "end": 1706,
+        "keys": [
+          "start"
+        ]
+      }
+    ],
+    "captures": [
+      1350,
+      1800,
+      2100,
+      2400
+    ]
+  },
+  {
+    "name": "campaign-audit-coop-first-match",
+    "load_slot": 1,
+    "frames": 2000,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 180,
+        "end": 181,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 500,
+        "end": 501,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 760,
+        "end": 761,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1400,
+        "end": 1401,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1600,
+        "end": 1601,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 120,
+        "end": 121,
+        "keys": [
+          "right"
+        ]
+      }
+    ],
+    "captures": [
+      1350,
+      1550,
+      1800,
+      2000
+    ]
+  },
+  {
+    "name": "campaign-audit-tactic-labels",
+    "load_slot": 1,
+    "frames": 1800,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 180,
+        "end": 181,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 500,
+        "end": 501,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 760,
+        "end": 761,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1350,
+        "end": 1351,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1450,
+        "end": 1451,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1550,
+        "end": 1551,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1650,
+        "end": 1651,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1750,
+        "end": 1751,
+        "keys": [
+          "right"
+        ]
+      }
+    ],
+    "captures": [
+      1300,
+      1390,
+      1490,
+      1590,
+      1690,
+      1790
+    ]
+  },
+  {
+    "name": "campaign-audit-equipment-menu",
+    "load_slot": 1,
+    "frames": 1100,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 180,
+        "end": 181,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 500,
+        "end": 501,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 740,
+        "end": 741,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 800,
+        "end": 801,
+        "keys": [
+          "A"
+        ]
+      }
+    ],
+    "captures": [
+      900,
+      1100
+    ]
+  },
+  {
+    "name": "campaign-audit-password-equip-commit",
+    "load_slot": 1,
+    "frames": 2800,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 60,
+        "end": 61,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 120,
+        "end": 121,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 600,
+        "end": 601,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 650,
+        "end": 651,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 750,
+        "end": 751,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 800,
+        "end": 801,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 850,
+        "end": 851,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 900,
+        "end": 901,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 950,
+        "end": 951,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1000,
+        "end": 1001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1300,
+        "end": 1301,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1500,
+        "end": 1501,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 1550,
+        "end": 1551,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1600,
+        "end": 1601,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1900,
+        "end": 1901,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2000,
+        "end": 2001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2401,
+        "end": 2408,
+        "keys": [
+          "A"
+        ]
+      }
+    ],
+    "captures": [
+      1200,
+      1950,
+      2390,
+      2600,
+      2800
+    ]
+  },
+  {
+    "name": "campaign-audit-equipment-remove",
+    "load_slot": 1,
+    "frames": 3600,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 60,
+        "end": 61,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 120,
+        "end": 121,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 600,
+        "end": 601,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 650,
+        "end": 651,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 750,
+        "end": 751,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 800,
+        "end": 801,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 850,
+        "end": 851,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 900,
+        "end": 901,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 950,
+        "end": 951,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1000,
+        "end": 1001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1300,
+        "end": 1301,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1500,
+        "end": 1501,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 1550,
+        "end": 1551,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1600,
+        "end": 1601,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1900,
+        "end": 1901,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2000,
+        "end": 2001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2401,
+        "end": 2408,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2901,
+        "end": 2906,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 3001,
+        "end": 3006,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 3301,
+        "end": 3306,
+        "keys": [
+          "A"
+        ]
+      }
+    ],
+    "captures": [
+      2800,
+      3190,
+      3500,
+      3600
+    ]
+  },
+  {
+    "name": "campaign-audit-equipped-home-match",
+    "load_slot": 1,
+    "frames": 4700,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 60,
+        "end": 61,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 120,
+        "end": 121,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 600,
+        "end": 601,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 650,
+        "end": 651,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 750,
+        "end": 751,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 800,
+        "end": 801,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 850,
+        "end": 851,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 900,
+        "end": 901,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 950,
+        "end": 951,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1000,
+        "end": 1001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1300,
+        "end": 1301,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1500,
+        "end": 1501,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 1550,
+        "end": 1551,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1600,
+        "end": 1601,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1900,
+        "end": 1901,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2000,
+        "end": 2001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2401,
+        "end": 2408,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2901,
+        "end": 2906,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 3001,
+        "end": 3006,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 3301,
+        "end": 3306,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 3401,
+        "end": 3406,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 4001,
+        "end": 4006,
+        "keys": [
+          "start"
+        ]
+      }
+    ],
+    "captures": [
+      2800,
+      3250,
+      3800,
+      4300,
+      4700
+    ]
+  },
+  {
+    "name": "campaign-audit-equipment-swap-final",
+    "load_slot": 1,
+    "frames": 3700,
+    "segments": [
+      {
+        "start": 30,
+        "end": 31,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 60,
+        "end": 61,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 120,
+        "end": 121,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 600,
+        "end": 601,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 650,
+        "end": 651,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 700,
+        "end": 701,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 750,
+        "end": 751,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 800,
+        "end": 801,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 850,
+        "end": 851,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 900,
+        "end": 901,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 950,
+        "end": 951,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1000,
+        "end": 1001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1300,
+        "end": 1301,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1500,
+        "end": 1501,
+        "keys": [
+          "down"
+        ]
+      },
+      {
+        "start": 1550,
+        "end": 1551,
+        "keys": [
+          "right"
+        ]
+      },
+      {
+        "start": 1600,
+        "end": 1601,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 1900,
+        "end": 1901,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2000,
+        "end": 2001,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 2401,
+        "end": 2408,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 825,
+        "end": 826,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 925,
+        "end": 926,
+        "keys": [
+          "up"
+        ]
+      },
+      {
+        "start": 2701,
+        "end": 2708,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 3301,
+        "end": 3308,
+        "keys": [
+          "start"
+        ]
+      }
+    ],
+    "captures": [
+      980,
+      1200,
+      2600,
+      3500,
+      3700
+    ]
+  },
+  {
+    "name": "campaign-audit-loss-continue",
+    "load_slot": 5,
+    "frames": 26400,
+    "segments": [
+      {
+        "start": 11000,
+        "end": 11001,
+        "keys": [
+          "start"
+        ]
+      },
+      {
+        "start": 11010,
+        "end": 11011,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11040,
+        "end": 11041,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11070,
+        "end": 11071,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11100,
+        "end": 11101,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11130,
+        "end": 11131,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11160,
+        "end": 11161,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11190,
+        "end": 11191,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11220,
+        "end": 11221,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11250,
+        "end": 11251,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11280,
+        "end": 11281,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11310,
+        "end": 11311,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11340,
+        "end": 11341,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11370,
+        "end": 11371,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11400,
+        "end": 11401,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11430,
+        "end": 11431,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11460,
+        "end": 11461,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 11490,
+        "end": 11491,
+        "keys": [
+          "A"
+        ]
+      },
+      {
+        "start": 24030,
+        "end": 24035,
+        "keys": [
+          "A"
+        ]
+      }
+    ],
+    "captures": [
+      24000,
+      24500,
+      25200,
+      26400
+    ]
+  }
+]
