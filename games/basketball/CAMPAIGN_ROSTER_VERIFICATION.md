@@ -78,7 +78,7 @@ SelectOriginalCampaignRoster(mode uint8, teammates [2]uint8, random RandomState)
 
 测试覆盖原调用、自然边界、负Mode边界、非法模式／重复或越界己方角色，以及全部合法己方组合。调用时机和一次确认只调用一次由上层集成验收；本次没有修改 `campaign_runtime`、settlement或平台UI，也不把独立组件通过当作完整战役已完成。
 
-**仍未接线的实际路径：** 当前Runtime的 `AwaitingNextPeriod` → Start 分支仍沿用既有 `Characters`，没有调用本选择器。因此原Mode0／1半场成员再次确认时的敌方重新选择尚未恢复，属于后续必修；赛后settlement→下一场测试使用选择器，也不能代替这条半场路径。后续还须把选择结果与更新后的RNG、角色提交、等级重算作为同一事务验证，刷新或恢复不能重抽。
+**后续实际接线：** 带战役快照的 `AwaitingNextPeriod` → Start 默认确认现已调用本选择器，并将原清理、角色提交、等级重算和四人物更新合为事务，见 [半场确认验证](CAMPAIGN_INTERMISSION_VERIFICATION.md)。本报告上方纯组件和源采样范围不变；主动修改己方角色／装备／战术的半场界面尚未接入，不能将默认确认通过写成完整菜单已恢复。
 
 REA已解析证据为 `ev_9c7c151477c4c3be70add1a38a4bac802ebfc370cd36c27318f9a45883cbdea1`，位于 `.local/basketball/rea/campaign-opponent-roster/analysis-corrected/`。初次工具调用遇到工作树与原目录Swift模块缓存路径冲突，失败证据保留；改用已有rea.sh的规范化真实路径后完成，没有重装或修改工具配置。初次错误的872A种子位于指令参数中，没有使用其失败结果；有效默认值块从872C解析。
 

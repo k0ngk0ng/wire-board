@@ -131,7 +131,13 @@ func TestCampaignPasswordEquipmentRuntimeFlow(t *testing.T) {
 						if w.Match.Period < 2 || w.Match.Period > 3 || w.Context.Difficulty != w.Match.Period || w.TeamWinBits != f.WinBits {
 							t.Fatal("lost campaign half-period/difficulty/wins")
 						}
-						if w.Context.Actions.CourtID != 0 || w.Context.Actions.Teams != f.Config.Teams || w.Context.Actions.Characters != f.Config.Characters || w.Context.Actions.Equipment != 1 {
+						wantCharacters := f.Config.Characters
+						if w.Match.Period == 3 {
+							// Original member confirmation selects a new opponent
+							// roster; its RNG/commit is checked by intermission oracles.
+							wantCharacters = s.Config.Match.Characters
+						}
+						if w.Context.Actions.CourtID != 0 || w.Context.Actions.Teams != f.Config.Teams || w.Context.Actions.Characters != wantCharacters || w.Context.Actions.Equipment != 1 {
 							t.Fatal("home match lost team/character/equipment selection")
 						}
 						if mode == "solo" && w.Context.Actions.Controls != f.Controls {
