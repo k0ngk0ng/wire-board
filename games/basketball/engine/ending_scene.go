@@ -3,11 +3,12 @@ package engine
 // EndingSceneContext has one authoritative copy of each Scene7 source field.
 // Ending owns the actor text flags/ID, active flag and first pending upload;
 // Text owns only06AE..06B7. The second queue and0307..030A live here.
+// UploadControl bytes are ORed into PPUCTRL for their upload queue at CC23.
 type EndingSceneContext struct {
-	Ending           EndingPhaseContext `json:"ending"`
-	Text             SceneTextProgress  `json:"text"`
-	SecondUpload     EndingUpload       `json:"secondUpload"`
-	PaletteOverrides [4]uint8           `json:"paletteOverrides"`
+	Ending        EndingPhaseContext `json:"ending"`
+	Text          SceneTextProgress  `json:"text"`
+	SecondUpload  EndingUpload       `json:"secondUpload"`
+	UploadControl [4]uint8           `json:"uploadControl"`
 }
 type EndingSceneRequestKind string
 
@@ -45,8 +46,8 @@ func StepOriginalEndingScene(original OpeningState, context EndingSceneContext, 
 	}
 	c.Ending.Actor, c.Ending.TextActive, c.Text = text.Context, text.Active, text.Progress
 	c.Ending.Upload, c.SecondUpload = text.Uploads[0], text.Uploads[1]
-	if text.ClearPaletteOverrides {
-		c.PaletteOverrides = [4]uint8{}
+	if text.ClearUploadControl {
+		c.UploadControl = [4]uint8{}
 	}
 	for slot, upload := range text.Uploads {
 		if text.QueueMask&(1<<slot) != 0 {

@@ -36,7 +36,7 @@ F0/F1/F2/F6/F8 do not occur in the bounded37-stream inventory. Their handler beh
 | 06AE..06B7 | New `SceneTextProgress`: address, cursor, retained repeat byte, clock, pause, delay and line address |
 | 030B..032D | Existing `EndingPhaseContext.Upload`, supplied as `uploads[0]` |
 | 032E..0350 | Second `EndingUpload`, supplied as `uploads[1]` and retained by the caller |
-| 0307..030A | `ClearPaletteOverrides=true` records the original four zero stores on every FD0A call |
+| 0307..030A | `ClearUploadControl=true` records the original four zero stores on every FD0A call |
 
 The returned `QueueMask` identifies buffers whose header was written even when bytes repeat. It denotes pending uploads, not completed transfers. The caller owns NMI consumption, video timing and draw composition. Pass returned Actor/Active/first Upload back into the existing ending context, retain returned progress/second Upload separately, then run the ending phase and actor tail. Phase/actor requests consequently reach FD0A on the next source iteration.
 
