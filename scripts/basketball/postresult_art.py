@@ -13,8 +13,9 @@ BG_PALETTES=tuple(sorted(set(range(1,16))|{21,33,34,36}))
 SPRITE_PALETTES=tuple(sorted(set(range(2,10))|{13,14,29,30,49,50,51}))
 POSE_BOUNDS={17:(0x863a,0x872a),18:(0x872a,0x877e),19:(0xc410,0xc44e)}
 # Source phase stores plus retained gameplay/team CHR pages. These are source
-# page numbers (1 KiB), not contiguous 4 KiB sprite windows.
-SPRITE_PAGES=tuple(sorted(set(range(9))|{11,13,37,38,40,56,57,59}))
+# page numbers (1 KiB), not contiguous 4 KiB sprite windows. Page32 is the
+# actual outer Scene1 F049 selection observed during whole-console reward.
+SPRITE_PAGES=tuple(sorted(set(range(9))|{11,13,32,37,38,40,56,57,59}))
 
 
 def decode_background(rom,preset):

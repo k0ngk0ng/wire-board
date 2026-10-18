@@ -1,0 +1,13 @@
+{
+  "calls": 12745,
+  "observedCalls": 13370,
+  "observedResourceBoundaryCalls": 11,
+  "observedResetCalls": 1,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "8c35a366be2ec2c385ffe4e9ab342b78387815a5dd8392efcdbef34925e682cb",
+  "captureEventSHA256": "cdc38da2e8af2ee23c1828ffea160257e320f3c5a85f1e1f50d2e369e6b60c79",
+  "captureRAMSHA256": "387c1947eb5767e969fd6c8bb451059639edac9e60f245d486554c522f0ad418",
+  "scope": "Logical FD0A -> FC83 composition; actual capture and declared CPU kernel.\n\nWhole-console resource calls are labelled before comparison, never silently\nrepaired. The continuous kernel consumes upload header highs externally once\nper call, resets the renderer draw list, and copies camera at its boundary.\n",
+  "kernelExternalBoundary": "both upload header highbytes030B/032E=FF; camera display copy; D063 draw finalization; C000/C006/C021/C024 emitted as requests; no hidden RAM reload",
+  "capturedBoundary": "whole-console textBeginFD0A to endingEndBF3F; resource waits separately labelled; reset has no finalRAM snapshot"
+}
