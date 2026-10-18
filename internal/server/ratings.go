@@ -22,6 +22,9 @@ func rateMatch(r *Room, record *MatchRecord) {
 			record.Rated = false
 		}
 	}
+	if r.Module != nil && r.Module.Result != nil && r.Module.Result.Unrated {
+		record.Rated = false
+	}
 	if !record.Rated {
 		return
 	}

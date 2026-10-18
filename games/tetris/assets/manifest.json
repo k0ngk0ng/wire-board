@@ -1,0 +1,72 @@
+{
+  "version": "tetris/v1",
+  "prefix": "bga/v20261002-1/tetris/v1/",
+  "generator": "scripts/tetris/prepare-audio.mjs",
+  "generatorSha256": "0c4c73edd798e85cf02d3fa91e3eab430685fc6d42600823a1ef1f0800e017ce",
+  "license": "项目原创，离线合成，无外部采样",
+  "entries": [
+    {
+      "file": "start.wav",
+      "urlPath": "/tetris/v1/audio/start.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/start.wav",
+      "sha256": "9b71c8f990fccf2100fd09ae001f5f335cd80a8e140b9bf14b1eedc78712d231",
+      "bytes": 40616
+    },
+    {
+      "file": "lock.wav",
+      "urlPath": "/tetris/v1/audio/lock.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/lock.wav",
+      "sha256": "2ed1d8acc7f99f6353065ae3ecc2609ef662fed704881148b88a5a101274fb7f",
+      "bytes": 8864
+    },
+    {
+      "file": "clear.wav",
+      "urlPath": "/tetris/v1/audio/clear.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/clear.wav",
+      "sha256": "2aa232c3712bf3255e6f6f5016a7d2f3acd6b1c2dd8c125052707bc957251b17",
+      "bytes": 19448
+    },
+    {
+      "file": "tetris.wav",
+      "urlPath": "/tetris/v1/audio/tetris.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/tetris.wav",
+      "sha256": "e08a2fe48cc6991cc0fc9cc5bdc291b97a6b2aa36d2824b3f576b0df3ab09724",
+      "bytes": 40616
+    },
+    {
+      "file": "garbage.wav",
+      "urlPath": "/tetris/v1/audio/garbage.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/garbage.wav",
+      "sha256": "5da1503881123867baf0550bf91af5f8086006e7c068c06aeff0885f3377fdb2",
+      "bytes": 26504
+    },
+    {
+      "file": "level.wav",
+      "urlPath": "/tetris/v1/audio/level.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/level.wav",
+      "sha256": "a1b7651e56b1019bbed46948cf314ebfb8579e973cd186c79f13a27656bc2fe8",
+      "bytes": 24740
+    },
+    {
+      "file": "eliminate.wav",
+      "urlPath": "/tetris/v1/audio/eliminate.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/eliminate.wav",
+      "sha256": "4bfaa1052e20281d151c148f347d1ab6f606ed8a28e67aa90eb40e902d37d2fe",
+      "bytes": 45908
+    },
+    {
+      "file": "win.wav",
+      "urlPath": "/tetris/v1/audio/win.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/win.wav",
+      "sha256": "7a6363ba3671167e3e358197ff2974c38be913820ee844ebae9341c9cf0bc6cf",
+      "bytes": 63548
+    },
+    {
+      "file": "finish.wav",
+      "urlPath": "/tetris/v1/audio/finish.wav",
+      "output": "games/tetris/assets/public/tetris/v1/audio/finish.wav",
+      "sha256": "96c7fd32cb7850a24f9731e10e87b855f110a6998cc0adc90700268c805d64a4",
+      "bytes": 44144
+    }
+  ]
+}

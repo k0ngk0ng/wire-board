@@ -38,6 +38,7 @@ type History = {
   catanExpansions?: string[];
   catanLayout?: string;
   rated: boolean;
+  unrated?: boolean;
   id: string;
   room: string;
   kind: string;
@@ -345,7 +346,11 @@ export function ProfilePage({ id, self }: { id: string; self: string }) {
             </header>
             <time>
               {new Date(match.ended * 1000).toLocaleString("zh-CN")} ·{" "}
-              {match.rated ? "计分对局" : "不计积分"}
+              {match.unrated
+                ? "练习对局"
+                : match.rated
+                  ? "计分对局"
+                  : "不计积分"}
             </time>
             <div>
               {match.players.map((player) => (
