@@ -1,7 +1,8 @@
 {
   "records": 4,
   "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
-  "fixtureSHA256": "29dea17142ffb77270861af4a3af1ca2efcdafb61883c20fb418dd5f863a74ff",
+  "fixtureSHA256": "a821004dacb3ab21188ba45fb199d795ce09da63a8274a78afeab49317699209",
+  "fixtureJSONSHA256": "29dea17142ffb77270861af4a3af1ca2efcdafb61883c20fb418dd5f863a74ff",
   "scope": "four paired independent original instruction segments from retained ordinary menus; intervening waits/tactics omitted, not one continuous RNG transaction",
   "selectionEntry": "bank3 896D",
   "selectionStop": "8088 before preview rendering",

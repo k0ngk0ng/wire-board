@@ -8,7 +8,6 @@ package engine
 // their intervening presentation RNG ticks are not a combined timing oracle.
 import (
 	"encoding/json"
-	"os"
 	"reflect"
 	"testing"
 
@@ -35,13 +34,7 @@ func TestCampaignConfirmationOriginalOperations(t *testing.T) {
 			Inventory                      [16]campaign.Item
 		}
 	}
-	raw, err := os.ReadFile("testdata/campaign-confirmation.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err = json.Unmarshal(raw, &rows); err != nil {
-		t.Fatal(err)
-	}
+	readPropAttackFixture(t, "testdata/campaign-confirmation.json.gz", &rows)
 	if len(rows) != 4 {
 		t.Fatal("missing original menu confirmation and commit boundaries")
 	}
@@ -108,13 +101,7 @@ func TestOriginalCampaignRosterCommitAndTail(t *testing.T) {
 		Run                                                 string
 		CommitRawBefore, CommitRawAfter, CommitTailRawAfter []byte
 	}
-	raw, e := os.ReadFile("testdata/campaign-confirmation.json")
-	if e != nil {
-		t.Fatal(e)
-	}
-	if e = json.Unmarshal(raw, &rows); e != nil {
-		t.Fatal(e)
-	}
+	readPropAttackFixture(t, "testdata/campaign-confirmation.json.gz", &rows)
 	if len(rows) != 4 {
 		t.Fatal("missing source commit rows")
 	}
