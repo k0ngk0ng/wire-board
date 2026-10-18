@@ -23,7 +23,7 @@ Source integration will use retained whole-console boundaries where the logical 
 - `Ending`: existing `EndingPhaseContext`, including the sole actor request/ID, text-active byte and first upload buffer.
 - `Text`: `SceneTextProgress`, containing only 06AE..06B7.
 - `SecondUpload`: the sole second upload buffer beginning at032E.
-- `PaletteOverrides`: 0307..030A, cleared by the text call as in the original.
+- `UploadControl`: 0307..030A, cleared by the text call as in the original.
 
 All state is returned by value. Text, phase and actor failures return the original state/context and no requests. Queue consumption, camera/draw finalization, resource waits, input sampling and video scheduling remain explicit caller responsibilities. The component makes no outer RNG draw and does not consume pending uploads.
 

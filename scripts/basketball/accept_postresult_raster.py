@@ -4,7 +4,7 @@ Failures: wrong CHR page/palette/nametable/mirroring; OAM order/eight-sprite
 limit/priority; alpha or color conversion; accepting missing indexed art.
 Initial scope: original Scene7 final picture, not other scene bands or timing.
 """
-import functools,http.server,json,os,subprocess,threading,uuid,csv
+import functools,http.server,json,os,subprocess,threading,uuid,csv,argparse
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'.local/postresult-raster';OUT.mkdir(exist_ok=True)
@@ -17,13 +17,19 @@ def browser(*args):
     return result['data']
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--rows',action='store_true');args=parser.parse_args()
     source=ROOT/'.local/nes-basket/runs/postresult-ending-observed'
     frame=13500
     video=next(int(r['emulator_frame']) for r in csv.DictReader((source/'frames.csv').open()) if int(r['frame'])==frame)
     ppu=(source/f'ppu-{video:05d}-ppu.bin').read_bytes();oam=(source/f'ppu-{video:05d}-oam.bin').read_bytes()
     fixture=dict(expected=f'../../.local/nes-basket/runs/postresult-ending-observed/frame-{frame:05d}.png',frame=dict(nametables=list(ppu[0x2000:0x3000]),palette=list(ppu[0x3f00:0x3f20]),oam=list(oam),bands=[dict(y0=0,y1=240,nametable=0,scrollX=0,scrollY=0,backgroundCHR=[20,21,22,23],spriteCHR=[56,57,11,40],mask=30)]))
+    if args.rows:
+        from postresult_fetch import derive_frame
+        samples=json.loads((ROOT/'.local/postresult-fetch/result.json').read_text())+json.loads((ROOT/'.local/postresult-fetch/holdout-result.json').read_text())
+        fixture=dict(rows=True,cases=[dict(name=f'{r["kind"]}-{r["frame"]}',expected=f'../../.local/nes-basket/runs/postresult-{r["kind"]}-observed/frame-{r["frame"]:05d}.png',frame=derive_frame(r['kind'],r['frame']))for r in samples])
+        assert len(fixture['cases'])==16
     (OUT/'fixture.json').write_text(json.dumps(fixture,separators=(',',':')))
-    (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#111}canvas{image-rendering:pixelated;width:768px;height:720px}</style><canvas width="256" height="240"></canvas><script type="module" src="raster.js"></script>')
+    (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#111;color:white}main{display:grid;grid-template-columns:repeat(4,256px)}figure{margin:0}canvas{image-rendering:pixelated}</style><main></main><script type="module" src="raster.js"></script>')
     subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/postresult_raster_harness.ts'),'--bundle','--format=esm','--target=es2022','--outfile='+str(OUT/'raster.js')],cwd=ROOT,env=env,check=True)
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self,*args):pass
@@ -33,8 +39,8 @@ def main():
         browser('--profile',str(OUT/'profile'),'open',f'http://127.0.0.1:{server.server_port}/.local/postresult-raster/index.html');opened=True
         browser('wait','--fn','window.result !== undefined')
         result=browser('eval','window.result')['result']
-        browser('screenshot',str(OUT/'browser.png'),'--full')
-        (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
+        browser('screenshot',str(OUT/('rows-browser.png' if args.rows else 'browser.png')),'--full')
+        (OUT/('rows-result.json' if args.rows else 'result.json')).write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
         assert result.get('different')==0 and result.get('rejectsMissingPage'),result
     finally:
         if opened:browser('close')

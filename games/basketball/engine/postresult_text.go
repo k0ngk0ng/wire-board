@@ -14,12 +14,12 @@ type SceneTextProgress struct {
 	LineAddress uint16 `json:"lineAddress"`
 }
 type SceneTextStep struct {
-	Context               ResultActorContext
-	Active                uint8
-	Progress              SceneTextProgress
-	Uploads               [2]EndingUpload
-	QueueMask             uint8
-	ClearPaletteOverrides bool
+	Context            ResultActorContext
+	Active             uint8
+	Progress           SceneTextProgress
+	Uploads            [2]EndingUpload
+	QueueMask          uint8
+	ClearUploadControl bool
 }
 
 // StepOriginalSceneText restores the complete FD0A/A496 logical call. It runs
@@ -32,7 +32,7 @@ func StepOriginalSceneText(scene uint8, context ResultActorContext, active uint8
 		return initial, fmt.Errorf("unsupported text scene %d", scene)
 	}
 	r := initial
-	r.ClearPaletteOverrides = true // A496 clears0307..030A on every call.
+	r.ClearUploadControl = true // A496 clears0307..030A on every call.
 	p := &r.Progress
 	if r.Active&128 != 0 {
 		switch {

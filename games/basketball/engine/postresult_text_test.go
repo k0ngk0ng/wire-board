@@ -74,7 +74,7 @@ func TestOriginalSceneTextSourcesAndContinuousRestore(t *testing.T) {
 		}
 		if nextSeries != "" && series == nextSeries {
 			prior.QueueMask = 0
-			prior.ClearPaletteOverrides = false
+			prior.ClearUploadControl = false
 			if prior != input {
 				t.Fatal(r.Label, "continuous text input diverged")
 			}
@@ -85,7 +85,7 @@ func TestOriginalSceneTextSourcesAndContinuousRestore(t *testing.T) {
 			t.Fatal(r.Label, e)
 		}
 		want.QueueMask = postresultTextQueue(r.QueueHeaders, 0x30b)
-		want.ClearPaletteOverrides = true
+		want.ClearUploadControl = true
 		if got != want {
 			t.Fatalf("%s got %+v want %+v", r.Label, got, want)
 		}

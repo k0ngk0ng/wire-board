@@ -42,7 +42,7 @@ func endingSceneRows(t *testing.T) endingSceneOracle {
 }
 func endingSceneContextRAM(r []byte) EndingSceneContext {
 	c := EndingSceneContext{Ending: endingPhaseContextRAM(r), Text: postresultTextProgressRAM(r), SecondUpload: postresultTextUploadsRAM(r, 0x30b)[1]}
-	copy(c.PaletteOverrides[:], r[0x307:0x30b])
+	copy(c.UploadControl[:], r[0x307:0x30b])
 	return c
 }
 func TestOriginalEndingSceneContinuousSource(t *testing.T) {

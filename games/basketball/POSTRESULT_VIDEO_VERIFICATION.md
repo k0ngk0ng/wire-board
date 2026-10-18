@@ -105,7 +105,7 @@ Files are `postresult-ending-observed/frame-13500.png`, `ppu-39049-ppu.bin`, `pp
 
 The separate all-frame mirroring observer records changes at local504 (value0, vertical), local5050 (value1, horizontal), and local14018 reset (value0). Initial saved-state mapper value is1. The main raster logs preserve all selected-window writes to 2000/2001/2005/2006, MMC3 CHR selectors and IRQ registers. `before-<absolute-frame>.fcs` snapshots retain each selected frame's `TSBS`, `ICou`, `KOOK`, mapper registers and PPU state. The parser verifies `TSBS` equals that frame's observed callback cycle.
 
-**Unresolved for the seven complex sample contracts:** exact pixel-fetch changes at CHR/address/fine-scroll writes, including the two-tile fetch pipeline. Their `bands` field remains `null`; no guessed band edges are passed off as verified. Exact per-frame cycles and FCS state are available for deriving them. A single 194-pixel field crop cannot reproduce all ending phases. The older long-running court formula also must not be transplanted without checking its initial phase and blanked upload intervals.
+**Boundary at the initial capture handoff (subsequently resolved by `POSTRESULT_FETCH_VERIFICATION.md`):** exact pixel-fetch changes at CHR/address/fine-scroll writes, including the two-tile fetch pipeline. The original capture-only `raster-reference.json` keeps their `bands` field `null`; the later parser provides exact tile-row fragments separately, rather than inventing whole-line band edges. Exact per-frame cycles and FCS state are available for deriving them. A single 194-pixel field crop cannot reproduce all ending phases. The older long-running court formula also must not be transplanted without checking its initial phase and blanked upload intervals.
 
 ## Reproduction
 
@@ -124,3 +124,7 @@ PYTHONDONTWRITEBYTECODE=1 .local/board-art-env/bin/python scripts/basketball/pre
 ```
 
 Do not recreate slot91 while another capture is loading it. No new REA/FCEUX installation is involved. ROM SHA-256 remains `0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b`. All data, saved states, scripts, logs and configuration remain inside the authorized workspace. Publication and complete-game acceptance remain outstanding.
+
+## Later exact fetch derivation
+
+`POSTRESULT_FETCH_VERIFICATION.md` now records eight exact primary frames plus eight independent holdout frames, all983040 pixels equal to the original captures. Complex scenes use verified tile-row fragments, not the initial unresolved whole-line band proposal. The observed per-frame clock formula is confirmed by these comparisons; earlier concern about cumulative phase assumptions was a caution, not a measured clock drift. Actual IRQ write lines vary by scene and must remain source-driven.
