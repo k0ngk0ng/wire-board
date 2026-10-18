@@ -220,6 +220,35 @@ async function run() {
     !ending.predicting,
   );
   ending.dispose();
+  // Same-frame menu edits are server authority even without a new video tick.
+  const preparation = (await (await fetch("/campaign-preparation-views.json")).json())
+    .views as BasketballNetworkView[];
+  const preparationSounds: number[] = [];
+  const preparing = new BasketballNetworkScene({
+    engine, controller: 0, onFrame: render,
+    onSound: (_ids, sequence) => preparationSounds.push(sequence),
+  });
+  preparing.update(preparation[0], 0, 0);
+  for (let index = 1; index <= 4; index++) {
+    preparing.update(preparation[index], index, index);
+    check(`same-frame campaign preparation revision ${index} reaches Go/Wasm`,
+      preparing.predictedState?.videoFrames === preparation[0].runtime.videoFrames &&
+      JSON.stringify(preparing.predictedState?.campaignPreparation) ===
+        JSON.stringify(preparation[index].runtime.campaignPreparation));
+  }
+  preparing.update(preparation[1], 1, 5);
+  check("older network version cannot undo accepted equipment or roster",
+    JSON.stringify(preparing.predictedState?.campaignPreparation) ===
+      JSON.stringify(preparation[4].runtime.campaignPreparation));
+  check("same-frame edits do not replay old sounds", preparationSounds.length === 0);
+  for (let index = 5; index < preparation.length; index++) {
+    preparing.update(preparation[index], index, (index - 4) * 100);
+    check(`campaign confirmed replay preserves preparation at batch ${index - 4}`,
+      JSON.stringify(preparing.lastReplayState) === JSON.stringify(preparation[index].runtime));
+  }
+  check("Start commits prepared second half in browser Go/Wasm",
+    !!preparing.predictedState?.playing && !preparing.predictedState?.campaignPreparation);
+  preparing.dispose();
   const pixels = canvas.getContext("2d")!.getImageData(0, 0, 256, 240).data;
   check(
     "actual original-art canvas contains the rendered scene",

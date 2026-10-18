@@ -5,7 +5,7 @@ from urllib.parse import unquote
 import json,os,subprocess,threading,uuid
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'.local/basketball/network-scene';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkn-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'))
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkn-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 def browser(*args):
  r=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=60)
@@ -20,7 +20,7 @@ class Handler(BaseHTTPRequestHandler):
   if route=='/':
    body=b'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Basketball network scene acceptance</title><style>body{margin:16px;background:#172126;color:#f4eedb;font-family:sans-serif}canvas{display:block;width:min(100%,640px);image-rendering:pixelated;aspect-ratio:256/240}output{display:block;padding:12px 0}</style><canvas width="256" height="240"></canvas><output>Running</output><script type="module" src="/scene.js"></script>';mime='text/html'
   else:
-   files={'/scene.js':OUT/'scene.js','/host-views.json':OUT/'host-views.json','/host-result-views.json':OUT/'host-result-views.json','/runtime/wasm_exec.js':OUT/'wasm_exec.js','/runtime/basketball.wasm':OUT/'basketball.wasm'}
+   files={'/scene.js':OUT/'scene.js','/host-views.json':OUT/'host-views.json','/campaign-preparation-views.json':ROOT/'.local/campaign-host-preparation/host-views.json','/host-result-views.json':OUT/'host-result-views.json','/runtime/wasm_exec.js':OUT/'wasm_exec.js','/runtime/basketball.wasm':OUT/'basketball.wasm'}
    path=files.get(route)
    if route.startswith('/assets/'):
     rel=Path(route[8:])
@@ -33,7 +33,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
  (OUT/'result.json').write_text('{"status":"running"}\n')
- subprocess.run(['go','test','./games/basketball/server','-run','^TestHostVideoHistoryReplaysExactInputAndHandoff$|^TestHostConfirmedResultAndTeamMapping$','-count=1'],cwd=ROOT,env=env,check=True)
+ subprocess.run(['go','test','./games/basketball/server','-run','^TestHostVideoHistoryReplaysExactInputAndHandoff$|^TestHostConfirmedResultAndTeamMapping$|^TestHostCampaignPreparationCommitRestore$','-count=1'],cwd=ROOT,env=env,check=True)
  subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/network_scene_harness.ts'),'--bundle','--format=esm','--target=es2022','--outfile='+str(OUT/'scene.js')],cwd=ROOT,env=env,check=True)
  subprocess.run(['go','build','-o',str(OUT/'basketball.wasm'),'./games/basketball/cmd/browser-wasm'],cwd=ROOT,env=dict(env,GOOS='js',GOARCH='wasm'),check=True)
  goroot=subprocess.check_output(['go','env','GOROOT'],cwd=ROOT,env=env,text=True).strip();(OUT/'wasm_exec.js').write_bytes((Path(goroot)/'lib/wasm/wasm_exec.js').read_bytes())

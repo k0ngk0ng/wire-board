@@ -1,5 +1,7 @@
 # 热血篮球原版内容覆盖审计
 
+最新平台接入增量：中场装备、换人和战术操作已接入服务端权限、存档、观战和 Start 提交，并通过真实 HTTP／SQLite、race 及浏览器 Go/Wasm 同帧同步验证。战役创建界面和赛后继续仍未接入；见 [中场接入记录](server/CAMPAIGN_PREPARATION.md)。
+
 ## 本轮进展与仍在处理的范围
 
 半场准备编辑的引擎事务已接入：拥有的库存操作、换人、战术资格、版本校验、保存恢复和 Start 提交均有验证；真实换装换人后完整比赛以 18:26 结束并保留新装备，Native／Wasm 记录摘要一致，race 通过。新建战役的原单次奖励表抽取组件也已恢复，明确不在恢复／Continue 时重抽。两者均尚未接入平台服务器与界面，详见 [准备编辑](CAMPAIGN_PREPARATION_VERIFICATION.md) 与 [新战役初始化](CAMPAIGN_NEW_GAME_VERIFICATION.md)。
