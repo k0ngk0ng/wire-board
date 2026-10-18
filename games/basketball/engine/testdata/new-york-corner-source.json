@@ -1,0 +1,10 @@
+{
+  "scope": "480 controlled original E165..E168 carrier calls from the saved tactic2 B origin; not natural-menu coverage",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "originSHA256": "2f56404ba0c0efd39c642e498b6acce2f34a3903496b065fd015a0b6f2f0fbab",
+  "fixtureSHA256": "6182bc76f4e128ec3a98a897532ec55742d5b025f1defccde61427aff7dd1a6a",
+  "sourceSHA256": "e245b5cd13f85e2a2da5cc313716e100af2338303c04f487fac59c7a5c8a963e",
+  "calls": 480,
+  "originRAMSHA256": "17c592b3495accfe23f471180b260e1d4049a9311e3f5250f44143ee293f1458",
+  "generator": "scripts/basketball/verify_new_york_corner.py"
+}

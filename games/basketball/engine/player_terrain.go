@@ -81,9 +81,14 @@ func advancePlayerOnCourt(p *Player, ctx playerTerrainContext, court FlatCourt) 
 	}
 	// The entrance is reached by a side collision behind the raised area.
 	// A fall from above instead lands on the platform and is not an entrance.
-	raised := court.NewYorkPassages && previous.Depth >= 73*Pixel && (next.Position.X < court.RaisedLeftEnd || next.Position.X >= court.RaisedRightStart)
+	raised := court.NewYorkPassages && previous.Depth >= 73*Pixel && next.Position.Depth >= court.RaisedDepth && (next.Position.X < court.RaisedLeftEnd || next.Position.X >= court.RaisedRightStart)
 	if raised && next.Position.Height>>8 < court.RaisedFloor>>8 && !(next.Velocity.Height < 0 && previous.Height>>8 >= court.RaisedFloor>>8) {
 		p.Body = next
+		// The original side resolver applies the previous floor's travel
+		// attribute before entering the passage and clearing the airborne flag.
+		if !p.Airborne && courtSurface(court, previous.X, previous.Depth) > court.Floor {
+			p.Body.Position.Depth = surfaceDepth(next.Position.Depth, previous.Depth)
+		}
 		if p.Body.Velocity.Height < 0 {
 			p.Body.Velocity.X = 0
 		}
