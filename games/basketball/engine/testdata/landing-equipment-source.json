@@ -1,0 +1,15 @@
+{
+  "records": 6092,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "ddd8719e8dd7ba68d5117fb899f48332becb358b3d2838df5e41d2d04f0e2a13",
+  "scope": "declared controlled original full 8BBD calls; all instruction paths retained; no natural-game claim",
+  "stages": [
+    "8BDA before animation",
+    "8BE0 after animation/8B90",
+    "8BEA before EEFF",
+    "7000 complete return"
+  ],
+  "rngCalls": 1260,
+  "status": "original probe passed"
+}

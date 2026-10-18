@@ -1,0 +1,14 @@
+{
+  "chains": 15,
+  "calls": 1146,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "inputSHA256": "845d4c6e0e55de1d30628048bd939efebb18e030e115cf12cccb42f168b085c9",
+  "fixtureSHA256": "619cc026764e8a6d0eab1ad12ffdcaeaec48bb2abe053d52fc13f99f206ae6f2",
+  "omittedCalls": {
+    "C000": "audio driver",
+    "C021": "fade/NMI wait",
+    "C024": "background upload",
+    "C036": "message upload"
+  },
+  "scope": "Complete original reward calls, including actors/motion/projection.\n\nFailure inventory: omit confirmation actor tail; stop exit before its three\nactors; wrong sound order; lose post-animation RNG; redraw without draw-list\nreset; award on resume; clone/JSON continuation differs; outer RNG doubled.\nControlled CPU chains with explicit render-boundary resets; not video timing.\n"
+}

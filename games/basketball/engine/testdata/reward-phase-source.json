@@ -1,0 +1,7 @@
+{
+  "calls": 695,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "inputSHA256": "845d4c6e0e55de1d30628048bd939efebb18e030e115cf12cccb42f168b085c9",
+  "fixtureSHA256": "f3fecac5866d80ea070b793255c9c11b5bd2284b8357f259e16600ca2057f39b",
+  "scope": "Original BD8E phase calls up to BE63 (before three actor updates).\n\nFailure inventory: repeated award; full inventory overwrite; skipped entry;\ntimer wrap/112 exit; message order at40; RNG ordering and early input exits;\nrestoring wrong characters; changing unrelated transition/progress fields.\nThese are controlled CPU calls, not earned victories or video-timing evidence.\n"
+}

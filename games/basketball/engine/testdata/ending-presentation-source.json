@@ -1,0 +1,65 @@
+{
+  "calls": 12745,
+  "actorCalls": 50976,
+  "projectionCalls": 50976,
+  "rngCalls": 0,
+  "phases": [
+    {
+      "tick": 0,
+      "phase": 0
+    },
+    {
+      "tick": 2,
+      "phase": 1
+    },
+    {
+      "tick": 883,
+      "phase": 2
+    },
+    {
+      "tick": 885,
+      "phase": 3
+    },
+    {
+      "tick": 4478,
+      "phase": 4
+    },
+    {
+      "tick": 4480,
+      "phase": 5
+    },
+    {
+      "tick": 8449,
+      "phase": 6
+    },
+    {
+      "tick": 8450,
+      "phase": 8
+    },
+    {
+      "tick": 12739,
+      "phase": 9
+    },
+    {
+      "tick": 12741,
+      "phase": 10
+    },
+    {
+      "tick": 12743,
+      "phase": 7
+    }
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "37717009bce742b4f2a4c4c8112f6030d61843dbe6fa0311ab7a351e08a51c72",
+  "settlementCase": "0-0-1-26-empty-True",
+  "settlementSourceSHA256": "845d4c6e0e55de1d30628048bd939efebb18e030e115cf12cccb42f168b085c9",
+  "omittedCalls": {
+    "C000": "audio request",
+    "C006": "CHR request",
+    "C021": "fade request; no waits",
+    "C024": "background request",
+    "C036": "message upload request"
+  },
+  "callerBoundary": "direct camera copy039B..039E to0397..039A; exact draw-list clear041D..0428 and count041C (D063 finalization); no source RAM reload",
+  "scope": "Continuous original ending kernel with C033 motion AND C00C projection.\n\nDeclared caller boundary: displayed camera copy and renderer D063 draw-list\nfinalization. No FD0A text/render/NMI/video scheduling or outer RNG is executed.\n"
+}

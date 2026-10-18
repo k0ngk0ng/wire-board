@@ -53,6 +53,9 @@ func WorldFromOriginalOpening(s OpeningState, options OpeningWorldOptions) (Worl
 		ctx.Actions.ShotEquipment[i] = uint8(s.Equipment[t.Characters[i]][0])
 		ctx.Actions.Enhancements[i] = uint8(s.Equipment[t.Characters[i]][1])
 		ctx.JumpEnhancements[i] = uint8(s.Equipment[t.Characters[i]][2])
+		// Bank4 91BD uses the last shooter's object index (0/1 only), then
+		// its character's shoe slot. This consumer has no Mode/team gate.
+		ctx.Actions.Profiles[i].ScoringBonus = i < 2 && s.Equipment[t.Characters[i]][2] == 27
 	}
 	// The original generic arc lookup's seven pre-hoop entries alias the last
 	// seven character equipment bytes. Decode the selections, not a fixture.

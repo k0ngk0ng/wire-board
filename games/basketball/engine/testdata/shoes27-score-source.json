@@ -1,0 +1,10 @@
+{
+  "scope": "controlled original9035..9290 full rim calls; all original instructions except sound sink; no natural equipment acquisition claim",
+  "calls": 6912,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseRAMSHA256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "fixtureSHA256": "794de725b2e7570df1fd8c89a3bdc2990aded025c7a583c71b9991ee0fadecef",
+  "entry": "bank4 9035",
+  "exit": "bank4 9290",
+  "bonusSource": "91BD..91E1, indirect equipment pointer94D8 plus slot2"
+}

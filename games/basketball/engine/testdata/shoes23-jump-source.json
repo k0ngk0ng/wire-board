@@ -1,0 +1,22 @@
+{
+  "scope": "controlled complete original E165..E168 calls and once-initialized continuous chains; FBCC sound sink only; no natural-gameplay claim",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseRAMSHA256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "fixtureSHA256": "4bdffb6da8e118177aabb779874b96e8195dcb060bd8ee60f46a813a61ed492b",
+  "calls": 2112,
+  "chains": 132,
+  "chainCalls": 2352,
+  "actions": [
+    4,
+    5,
+    13,
+    20,
+    21,
+    36,
+    37,
+    52,
+    53,
+    68,
+    69
+  ]
+}
