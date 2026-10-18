@@ -1,5 +1,7 @@
 # 热血篮球原版内容覆盖审计
 
+最新属性与来源增量：战役已显示当前／换装后的五项原版等级，12,672 次原菜单函数对照通过；对战按用户确认保留无装备规则。新来源目录还核定了装备特殊效果及赛后时序，并明确记录尚未接通的跳跃／落地分支和结局调度，见 [属性验证](server/CAMPAIGN_ATTRIBUTES_VERIFICATION.md)、[特殊效果](EQUIPMENT_EFFECTS_SOURCE.md)、[赛后动画](POSTRESULT_ANIMATION_SOURCE.md)。
+
 最新界面增量：战役创建、原密码、等待／中场／下一场准备及赛后弹窗已接入。23 项组件场景、37 项真实平台页面检查及相关 race 通过；装备属性预览、原赛后动画和完整赛程仍待完成，见 [战役界面验证](web/CAMPAIGN_UI_VERIFICATION.md)。
 
 最新生命周期增量：开发模块已连接新战役／原密码、初次准备、奖励、失败继续、下一场和平台托管确认。真实 HTTP／SQLite 与 race 专项通过；前端入口、完整战役和原结局动画仍未完成，见 [生命周期记录](server/CAMPAIGN_LIFECYCLE.md)。

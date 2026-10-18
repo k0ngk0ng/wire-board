@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { PreparationProps } from "../../../web/src/game-api/module";
 import type { BasketballOptions } from "./module";
-import type { CampaignProgress } from "./campaign-types";
+import type { CampaignProgress, CampaignAttributes } from "./campaign-types";
 import labels from "../selection/labels.json";
 import campaignLabels from "../selection/campaign-labels.json";
 import { SelectionImage } from "./SelectionImage";
@@ -11,6 +11,7 @@ export const campaignItemName = (id: number) =>
   campaignLabels.items[id]?.name ?? "未装备";
 const slots = ["上衣", "短裤", "鞋子"];
 type EditorProps = {
+  attributes?: CampaignAttributes;
   progress: CampaignProgress;
   teammates: [number, number];
   tactic: number;
@@ -28,6 +29,42 @@ type EditorProps = {
 };
 export function CampaignPreparationEditor(p: EditorProps) {
   const [target, setTarget] = useState(0);
+  const [choice, setChoice] = useState<{
+    index: number;
+    item: number;
+    snapshot: string;
+  }>();
+  const selected =
+    choice?.snapshot === p.snapshotKey &&
+    p.progress.inventory[choice.index] === choice.item
+      ? p.attributes?.inventory.find(
+          (i) => i.index === choice.index && i.item === choice.item,
+        )
+      : undefined;
+  const current = p.attributes?.current[target],
+    after = selected?.after[target];
+  const gradeLabels = [
+    ["Run", "奔跑"],
+    ["Jump", "跳跃"],
+    ["Shot", "投篮"],
+    ["Recovery", "恢复"],
+    ["Attack", "攻击"],
+  ] as const;
+  const unchanged =
+    current &&
+    after &&
+    gradeLabels.every(([key]) => current[key] === after[key]);
+  const comparison = useRef<HTMLDivElement>(null);
+  const selectionKey = selected
+    ? `${p.snapshotKey}:${selected.index}:${target}`
+    : "";
+  useLayoutEffect(() => {
+    if (selectionKey)
+      comparison.current?.scrollIntoView({
+        block: "center",
+        behavior: "instant",
+      });
+  }, [selectionKey]);
   const home = !!(p.progress.period & 2);
   const full = p.progress.inventory.filter((i) => i >= 0).length === 16;
   return (
@@ -120,6 +157,84 @@ export function CampaignPreparationEditor(p: EditorProps) {
             ))}
           </select>
         </label>
+        <div ref={comparison}>
+          {current && (
+            <table
+              className="basketball-campaign-grades"
+              aria-label={`${labels.teams[0].characters[target]}的能力`}
+            >
+              <caption>
+                {labels.teams[0].characters[target]} · 能力等级（0～7）
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">能力</th>
+                  <th scope="col">当前</th>
+                  <th scope="col">换装后</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gradeLabels.map(([key, label]) => (
+                  <tr key={key} data-grade={key}>
+                    <th scope="row">{label}</th>
+                    <td data-current>{current[key]}</td>
+                    <td data-after={after?.[key]}>
+                      {after ? after[key] : "—"}
+                      {after && after[key] !== current[key] && (
+                        <span
+                          className={
+                            after[key] > current[key]
+                              ? "grade-increase"
+                              : "grade-decrease"
+                          }
+                        >
+                          {after[key] > current[key] ? "+" : ""}
+                          {after[key] - current[key]}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {selected && (
+            <div
+              className="basketball-campaign-preview"
+              key={`${p.snapshotKey}:${selected.index}:${target}`}
+            >
+              <p>
+                {labels.teams[0].characters[target]}换装：
+                {campaignItemName(selected.item)}
+              </p>
+              {unchanged && <p>本次换装的五项能力数值不变。</p>}
+              <button
+                type="button"
+                data-equip-confirm
+                disabled={p.busy || !p.canEditTeam}
+                onClick={() =>
+                  p.send({
+                    type: "equip",
+                    character: target,
+                    inventoryIndex: selected.index,
+                  })
+                }
+              >
+                确认装备{campaignItemName(selected.item)}
+              </button>
+              <button
+                type="button"
+                disabled={p.busy || !p.canEditTeam}
+                onClick={() => setChoice(undefined)}
+              >
+                取消预览
+              </button>
+            </div>
+          )}
+        </div>
+        <p className="basketball-campaign-grade-note">
+          选择库存装备可预览换装后的能力。特殊投篮与动作效果不由这五项数值表示。
+        </p>
         <div className="basketball-campaign-inventory">
           {p.progress.inventory.map((item, index) =>
             item < 0 ? null : (
@@ -129,17 +244,14 @@ export function CampaignPreparationEditor(p: EditorProps) {
                 data-inventory-index={index}
                 data-revision={p.revision}
                 title={campaignLabels.items[item]?.originalName}
-                disabled={p.busy || !p.canEditTeam}
+                aria-pressed={selected?.index === index}
+                disabled={p.busy || !p.canEditTeam || !p.attributes}
                 onClick={() =>
-                  p.send({
-                    type: "equip",
-                    character: target,
-                    inventoryIndex: index,
-                  })
+                  setChoice({ index, item, snapshot: p.snapshotKey })
                 }
               >
                 <strong>{campaignItemName(item)}</strong>
-                <span>装备给{labels.teams[0].characters[target]}</span>
+                <span>查看换装效果</span>
               </button>
             ),
           )}
@@ -226,6 +338,7 @@ export function CampaignWaitingPreparation({
   return (
     <CampaignPreparationEditor
       progress={c.preparation}
+      attributes={c.attributes}
       teammates={teammates}
       tactic={c.tactic ?? 4}
       opponent={c.opponent}

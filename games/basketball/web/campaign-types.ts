@@ -1,3 +1,18 @@
+export type CampaignCharacterGrades = {
+  Run: number;
+  Jump: number;
+  Shot: number;
+  Recovery: number;
+  Attack: number;
+};
+export type CampaignAttributes = {
+  current: CampaignCharacterGrades[];
+  inventory: {
+    index: number;
+    item: number;
+    after: CampaignCharacterGrades[];
+  }[];
+};
 export type CampaignProgress = {
   mode: number;
   period: number;
@@ -7,6 +22,7 @@ export type CampaignProgress = {
   equipment: number[][];
 };
 export type CampaignOptions = {
+  attributes?: CampaignAttributes;
   entry?: "new" | "password";
   password?: string;
   opponent?: number;
@@ -30,6 +46,7 @@ export type CampaignRoundPreparation = {
   humanTactics: [number, number];
 };
 export type CampaignView = {
+  attributes?: CampaignAttributes;
   stage: "playing" | "reward" | "defeat" | "prepare" | "complete" | "quit";
   round: number;
   revision: number;
