@@ -35,6 +35,7 @@ type MatchRecord struct {
 	SanguoshaOptions    game.SGOptions       `json:"sanguoshaOptions,omitempty"`
 	RailMap             string               `json:"railMap,omitempty"`
 	Rated               bool                 `json:"rated"`
+	Unrated             bool                 `json:"unrated,omitempty"`
 	ID                  string               `json:"id"`
 	Room                string               `json:"room"`
 	Kind                string               `json:"kind"`
@@ -432,6 +433,7 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			record.Draw = r.Module.Result.Draw
 			record.Details = r.Module.Result.Details
 			record.Cooperative = r.Module.Result.Cooperative
+			record.Unrated = r.Module.Result.Unrated
 		}
 	}
 	for i, seat := range r.Seats {
@@ -450,9 +452,11 @@ func archiveGame(tx *sql.Tx, r *Room) error {
 			if r.Game.Sanguosha == nil && r.Game.Dota == nil {
 				p.Score = &score
 			}
-			for _, winner := range r.Game.Winners {
-				if winner == i {
-					p.Won = true
+			if !record.Unrated {
+				for _, winner := range r.Game.Winners {
+					if winner == i {
+						p.Won = true
+					}
 				}
 			}
 		}

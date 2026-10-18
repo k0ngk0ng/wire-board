@@ -174,6 +174,7 @@ export type RoomBase = {
   result?: {
     id?: string;
     rated: boolean;
+    unrated?: boolean;
     draw?: boolean;
     cooperative?: boolean;
     players: (User & { ratingDelta?: number; rank?: number; bot?: boolean })[];

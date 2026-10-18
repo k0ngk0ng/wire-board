@@ -57,7 +57,10 @@ type Match struct {
 type Result struct {
 	// Draw is an explicit competitive draw, never a shared victory. Every seat
 	// has rank 1, Winners is empty, and no competitive rating points are moved.
-	Draw        bool            `json:"draw,omitempty"`
+	Draw bool `json:"draw,omitempty"`
+	// Unrated marks a practice/casual match. History and scores are preserved,
+	// but the host writes no competitive rating ledger entries.
+	Unrated     bool            `json:"unrated,omitempty"`
 	Ranks       []int           `json:"ranks"`
 	Winners     []int           `json:"winners"`
 	Scores      []int           `json:"scores,omitempty"`
