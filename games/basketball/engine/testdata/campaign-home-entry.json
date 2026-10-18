@@ -1,0 +1,97 @@
+{
+  "run": "campaign-audit-equipped-home-match",
+  "scope": "Original normal-menu password/equipment/home-match route; configuration and attributes only, not a Go-to-original full trajectory",
+  "sourceSHA256": "c7c6cffa803c4d996d86cd7b8968c5788fc953f1545f3d9d070dce96e42b7173",
+  "entryFrame": 4195,
+  "playingFrame": 4345,
+  "config": {
+    "Court": 0,
+    "Teams": [
+      0,
+      1
+    ],
+    "Characters": [
+      0,
+      1,
+      0,
+      3
+    ],
+    "ControllerAssignments": [
+      0,
+      -1,
+      -1,
+      -1
+    ],
+    "Mode": 0,
+    "Equipment": [
+      [
+        1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        -1
+      ],
+      [
+        -1,
+        -1,
+        -1
+      ]
+    ],
+    "Seed": 651989288
+  },
+  "humanTactics": [
+    4,
+    4
+  ],
+  "period": 2,
+  "winBits": [
+    1,
+    0
+  ],
+  "grades": [
+    {
+      "Run": 5,
+      "Jump": 3,
+      "Shot": 6,
+      "Recovery": 4,
+      "Attack": 3
+    },
+    {
+      "Run": 5,
+      "Jump": 3,
+      "Shot": 3,
+      "Recovery": 4,
+      "Attack": 5
+    },
+    {
+      "Run": 6,
+      "Jump": 6,
+      "Shot": 2,
+      "Recovery": 4,
+      "Attack": 3
+    },
+    {
+      "Run": 7,
+      "Jump": 6,
+      "Shot": 0,
+      "Recovery": 1,
+      "Attack": 0
+    }
+  ],
+  "controls": [
+    0,
+    128,
+    128,
+    128
+  ],
+  "entryRAMSHA256": "f76d914556124fd49faa16be31a226f5258d68ead49bfa90a0fc27025eb5df2d",
+  "playingRAMSHA256": "3e978fd5e3b07f04b4ed26754bfc6bd5d5a274eb34b85996a7a932cc296ae2df"
+}

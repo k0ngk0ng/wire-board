@@ -33,6 +33,12 @@ func validateRuntimeOpeningConfig(c RuntimeConfig, s OpeningState) error {
 	return nil
 }
 func validateRuntimePlayingConfig(c RuntimeConfig, s *RuntimePlayingState) error {
+	if c.Campaign != nil {
+		r := s.Context.PursuitReserved
+		if r == nil || r.XHigh88 == nil || *r.XHigh88 != uint8(c.Campaign.Inventory[7]) {
+			return fmt.Errorf("playing inventory alias differs from campaign preparation")
+		}
+	}
 	if c.Match.Court == 5 && (s.World.LaunchColumn == nil || s.World.LaunchColumn.Column >= 64 || s.World.LaunchColumn.Phase > 1) {
 		return fmt.Errorf("court5 has an invalid or missing generated column source")
 	}
@@ -64,7 +70,7 @@ func validateRuntimePlayingConfig(c RuntimeConfig, s *RuntimePlayingState) error
 		if a.Profiles[i].RunSpeed != run || a.Profiles[i].JumpVelocity != jump || a.Profiles[i].ShotSkill != g.Shot || a.Profiles[i].Animations == nil {
 			return fmt.Errorf("playing actor %d has an invalid character profile", i)
 		}
-		if a.Enhancements[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][1]) || s.Context.JumpEnhancements[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][2]) {
+		if a.ShotEquipment[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][0]) || a.Enhancements[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][1]) || s.Context.JumpEnhancements[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][2]) {
 			return fmt.Errorf("playing actor equipment differs from configuration")
 		}
 	}

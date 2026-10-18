@@ -1,0 +1,23 @@
+{
+  "scope": "controlled complete E165..E168 player releases and D345..D348 world action phases; no natural-shot claim",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "normalEquippedMenuSource": {
+    "path": ".local/nes-basket/runs/campaign-audit-equipped-home-match/ram.bin",
+    "frame": 4345,
+    "fullTraceSHA256": "c7c6cffa803c4d996d86cd7b8968c5788fc953f1545f3d9d070dce96e42b7173",
+    "frameSHA256": "3e978fd5e3b07f04b4ed26754bfc6bd5d5a274eb34b85996a7a932cc296ae2df"
+  },
+  "newYorkBaseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "sourceInstructionsUnchanged": true,
+  "outputs": {
+    "campaign-shot-player.json.gz": {
+      "records": 3184,
+      "sha256": "92d4a715e5ccb2ba387aca673bef8cefd7a3b3b3532d7c49d0070489f4d136bd"
+    },
+    "campaign-shot-world.json.gz": {
+      "records": 96,
+      "sha256": "240abada3ea6bb9745c4f7753e7f9935c8c3364694c58b6906c8a62cce50bffb"
+    }
+  },
+  "reusedREA": "ev_22e089841ea9f9c13f2d325c435946a52e8700cd2ee6a265d6caa7c02c223f6e"
+}
