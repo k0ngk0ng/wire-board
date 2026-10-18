@@ -57,7 +57,8 @@ func TestSelfDribbleDoesNotBroadenHeldOwner(t *testing.T) {
 	rows, _ := selfDribbleFixture(t)
 	for _, action := range []BallAction{BallDribble, BallHeld} {
 		for _, holder := range []int8{-1, 4, 5, 6, 7, 13} {
-			if action == BallDribble && holder == 6 {
+			// Both self-indexed source handlers now have independent original evidence.
+			if holder == 6 {
 				continue
 			}
 			s := rows[0].Before

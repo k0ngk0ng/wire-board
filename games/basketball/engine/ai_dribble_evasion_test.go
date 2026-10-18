@@ -87,7 +87,7 @@ func TestOriginalAIDribbleEvasionEntryAndFailure(t *testing.T) {
 			t.Fatal("human team did not use original team-zero table", got, value)
 		}
 	}
-	initial := AIControlDecision{Control: AIControlState{Mode: 26, Entered: true, PlanParameter: 13}, Random: 0x12345678}
+	initial := AIControlDecision{Control: AIControlState{Mode: 26, Entered: true, PlanParameter: 14}, Random: 0x12345678}
 	got := initial
 	if err := advanceOriginalDribbleEvasion(&got, AIControlView{}, AIEvasionContext{}); err == nil || got != initial {
 		t.Fatal("unrestored plan must fail atomically", got, err)

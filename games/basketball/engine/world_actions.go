@@ -417,10 +417,22 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		a.Player = step.Player
 		s.Ball = ApplyBallCommand(s.Ball, step.Ball)
 	case p.Action == ActionPickUp && heldHoop < 0 || p.Action != ActionPickUp && ordinaryCarrierAction(p.Action):
+		//907E binds an entering dribble-idle actor before EEFF reads ownership.
+		// Already-entered dribble must retain its original owner's state.
+		boundOnEntry := p.Action == ActionDribbleIdle && !p.Entered
+		if boundOnEntry {
+			s.Holder = int8(actor)
+			carrierContext.HasBall = true
+		}
 		origin := p.Body.Position.X &^ 255
 		step, err := StepCarrierAction(Carrier{Player: *p, ShotCycle: a.ShotCycle}, carrierContext, profile, court)
 		if err != nil {
 			return err
+		}
+		// The entry command was consumed before motion; do not replay it
+		// over a later court-side ownership write.
+		if boundOnEntry {
+			step.BindBall = false
 		}
 		applyCarrier(step)
 		if step.ShotReleased {
@@ -508,6 +520,22 @@ func advanceWorldBallStep(s *WorldActionState, ctx WorldActionContext, court Fla
 			}
 			break
 		}
+		if s.Ball.Action == BallHeld && s.Holder == 6 {
+			var clearExclusion bool
+			s.Ball, clearExclusion, err = prepareSelfReferencedHeldBall(s.Ball)
+			if err != nil {
+				break
+			}
+			if clearExclusion {
+				s.ExcludedCatcher = -1
+			}
+			s.Ball, err = completeSelfReferencedHeldBall(s.Ball, court, func() int8 { return s.Holder })
+			if err == nil {
+				s.PoseSource = 6
+			}
+			break
+		}
+
 		if s.Holder < 0 || s.Holder >= 4 {
 			return nil, fmt.Errorf("held ball has invalid player owner %d", s.Holder)
 		}

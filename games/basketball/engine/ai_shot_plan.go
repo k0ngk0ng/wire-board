@@ -43,6 +43,34 @@ var originalShotThresholds = [2][8][8]uint8{
 	{{128, 192, 255, 255, 255, 255, 255, 255}, {16, 16, 16, 176, 176, 208, 255, 255}, {16, 64, 80, 128, 128, 192, 255, 255}, {16, 32, 80, 144, 144, 192, 255, 255}, {64, 80, 112, 112, 112, 128, 255, 255}, {48, 64, 96, 160, 160, 192, 255, 255}, {32, 64, 128, 128, 128, 192, 255, 255}, {128, 160, 255, 255, 255, 255, 255, 255}},
 }
 
+// chooseOriginalWeightedShotPlan restores B6D0's one RNG draw and table lookup.
+// Callers decide whether the human/team7 exceptions bypass this selector.
+func chooseOriginalWeightedShotPlan(result *AIControlDecision, view AIControlView, zone CourtZone) error {
+	s := &result.Control
+	if view.Team >= 8 {
+		return errors.New("invalid original AI shot team")
+	}
+	region := 0
+	if zone >= 0x50 {
+		region = 1
+	}
+	var value byte
+	result.Random, value = NextRandom(result.Random)
+	value <<= 1
+	choice := 8
+	for i, threshold := range originalShotThresholds[region][view.Team] {
+		if value < threshold {
+			choice = i
+			break
+		}
+	}
+	// B711 index6 is0C (direct low-jump plan12), not plan7.
+	// Index8 is the adjacent AD byte; the original thresholds and even
+	// shifted random values never select it in the supported team domain.
+	s.PlanParameter = [9]uint8{0, 1, 2, 14, 6, 3, 12, 0, 173}[choice]
+	return nil
+}
+
 func chooseOriginalShotCycle(result *AIControlDecision, view AIControlView, ctx AIShotContext) error {
 	var threshold uint8
 	if view.TeamHasHuman {
@@ -107,8 +135,8 @@ func approachOriginalShotPlatform(result *AIControlDecision, view AIControlView,
 	}
 }
 
-// B58E is the original low-jump approach/landing setup used by plan7.
-// The caller overrides its continuation with plan22 after every invocation.
+// B58E is shared by direct plans12/13 and plan7. Only the plan7 caller
+// overrides its continuation with plan22 after every invocation.
 func advanceOriginalLowJumpShot(result *AIControlDecision, view AIControlView, ctx AIShotContext, zone CourtZone) error {
 	s := &result.Control
 	switch result.Action {
@@ -195,24 +223,9 @@ func advanceOriginalShotPlan(result *AIControlDecision, view AIControlView, ctx 
 		} else if view.Team == 7 && view.Action == ActionAimAirShot {
 			s.PlanParameter = 1
 		} else {
-			if view.Team >= 8 {
-				return errors.New("invalid original AI shot team")
+			if err := chooseOriginalWeightedShotPlan(result, view, zone); err != nil {
+				return err
 			}
-			region := 0
-			if zone >= 0x50 {
-				region = 1
-			}
-			var value byte
-			result.Random, value = NextRandom(result.Random)
-			value <<= 1
-			choice := 8
-			for i, threshold := range originalShotThresholds[region][view.Team] {
-				if value < threshold {
-					choice = i
-					break
-				}
-			}
-			s.PlanParameter = [9]uint8{0, 1, 2, 14, 6, 3, 7, 0, 0}[choice]
 		}
 	}
 	changeMode := func(mode AIMode) { s.Mode, s.Entered = mode, false }
@@ -387,6 +400,31 @@ func advanceOriginalShotPlan(result *AIControlDecision, view AIControlView, ctx 
 	case 10:
 		if uint8(ctx.VerticalSpeed) == 0 {
 			s.PlanParameter = 2
+		}
+
+	case 11:
+		// B564 retreats until the complete cached zone byte is below4F.
+		// The heading write does not alter the separate facing flag.
+		if zone >= 0x4f {
+			result.Heading = HeadingLeft
+			if view.Actor >= 2 {
+				result.Heading = HeadingRight
+			}
+			chooseAIAction(result, ActionDribbleRun)
+		} else {
+			result.Heading = HeadingRight
+			if view.Actor >= 2 {
+				result.Heading = HeadingLeft
+			}
+			result.Action, result.ActionEntered = ActionAimShot, false
+			changeMode(AIPossessionWait)
+			result.ShotPlan.ChangeShotCycle, result.ShotPlan.ShotCycle = true, 0
+		}
+	case 12, 13:
+		// B383 points both aliases directly at B58E. There is no B4FA caller
+		// tail here, so landing keeps B58E's plan17 rather than plan7's plan22.
+		if err = advanceOriginalLowJumpShot(result, view, ctx, zone); err != nil {
+			return err
 		}
 
 	case 14, 15:

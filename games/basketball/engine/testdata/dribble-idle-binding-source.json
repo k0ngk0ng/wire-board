@@ -1,0 +1,13 @@
+{
+  "scope": "original907E entries from retained first differing world5; controlled original full phase; original full-machine trace after one alignment",
+  "records": 360,
+  "entry": "bank6 907E",
+  "bindWrite": "9089 STX053F",
+  "beforeMotion": "90AD",
+  "worldRecords": 66,
+  "firstDifferentIndexBeforeFix": 6,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "4a36c64ca5e745904ca66e83193d014b7cb34df7cb87d035d99421619e2029af",
+  "traceSHA256": "c37543372dfdf618dddfb34b8f5fa16aa449b6518818275505c7c6ce1f797455",
+  "worldFixtureSHA256": "be5d10d16057df968eab75c5da9adf88a1db9739141eb2a1be71311af8e5816f"
+}

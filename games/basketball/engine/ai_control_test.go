@@ -115,7 +115,8 @@ func TestOriginalAIControlAndHoopCollection(t *testing.T) {
 }
 
 func TestUnrestoredAIStrategyDoesNotInventActions(t *testing.T) {
-	s := AIControlState{Mode: 41}
+	// Mode41 now has an original selector; mode15 remains an unresolved alias.
+	s := AIControlState{Mode: 15}
 	view := AIControlView{Action: ActionIdle, Position: Position{X: 200 * Pixel, Depth: 40 * Pixel}}
 	got, err := StepOriginalAIControl(s, view)
 	if err == nil || got.Control != s || got.Action != view.Action || got.BindHoop != -1 {

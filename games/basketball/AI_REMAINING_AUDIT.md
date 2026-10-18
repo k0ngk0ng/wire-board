@@ -2,11 +2,13 @@
 
 ## Recovery after this audit
 
-The subsequent command recovery implements personal modes 3/10/11/13/14/30/36/37/38/41 and all team strategies4–7. Current entry counts are **41/42 personal modes** (mode15 remains unsupported), **14/14 team strategies**, **13/16 direct shot plans**, and **7/14 evasion plans**. The normal A/B command consumer now applies original request/status/reply/window writes and auxiliary bindings through canonical world state. Entry counts still do not prove full gameplay coverage.
+The subsequent command recovery implements personal modes 3/10/11/13/14/30/36/37/38/41 and all team strategies4–7. Current entry counts are **41/42 personal modes** (mode15 remains unsupported), **14/14 team strategies**, **16/16 direct shot plans**, and **14/14 evasion entries** (with explicit unrecovered raw-heading/table-alias guards). The normal A/B command consumer now applies original request/status/reply/window writes and auxiliary bindings through canonical world state. Entry counts still do not prove full gameplay coverage.
 
 See [command integration](AI_TEAM_COMMAND_VERIFICATION.md) for source comparisons, ordinary-controller paths, full-match results and browser evidence. Remaining guards and unknown source domains below are not automatically resolved by the added entries.
 
 Next work is the remaining direct shot/evasion entries and their real callers, mode15/alias boundaries, and campaign/equipment semantics. Platform tactical choices and complete network acceptance remain separate from these engine entry counts.
+
+The subsequent weighted-shot audit found and fixed the ordinary table index6 mapping: original plan12 had incorrectly been mapped to plan7. This affects normal team1–6 play and has new complete-match evidence; old trajectories are not silently reused. Direct shot11/13 and the newly added evasion entries still have no demonstrated normal producer in the audited paths. Mode15 has a separate [bounded audit](AI_MODE15_BOUNDARY_AUDIT.md); neither a normal caller nor complete unreachability has been established.
 
 ## Historical pre-recovery audit
 

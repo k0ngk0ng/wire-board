@@ -1,0 +1,47 @@
+{
+  "scope": "controlled original preparation and full13-object action stage from exact Mode128 failure; independent original B585 self-indexed calls",
+  "calls": 432,
+  "tailCalls": 48,
+  "worldCalls": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "runtimeSHA256": "333d56efd8638d08b2757e00169768862a9235da60160d8f3b3b696044f892a9",
+  "fixtureSHA256": "40e9be6be963492228139eb7ed6e12551f0d36fda2b5805453587b58da926ffe",
+  "writes": [
+    {
+      "pc": 37488,
+      "actor": 0,
+      "address": 1304,
+      "before": 138,
+      "after": 2
+    },
+    {
+      "pc": 34513,
+      "actor": 6,
+      "address": 1304,
+      "before": 2,
+      "after": 130
+    },
+    {
+      "pc": 46531,
+      "actor": 6,
+      "address": 1386,
+      "before": 2,
+      "after": 6
+    }
+  ]
+}

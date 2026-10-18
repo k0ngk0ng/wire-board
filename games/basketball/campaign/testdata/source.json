@@ -1,0 +1,1304 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "isolated": true,
+  "entries": {
+    "decode": "bank1 BF52",
+    "encode": "bank1 BECD..BF3B",
+    "inventoryRestore": "bank3 A8C1",
+    "equip": "bank3 91DD..first942C",
+    "unequip": "bank3 931D..first942C/8088"
+  },
+  "sourceInstructionsUnchanged": true,
+  "renderingScope": "stop at next display call, never emulate a menu by arbitrary RAM defaults",
+  "outputs": {
+    "password-decode.json.gz": {
+      "records": 51472,
+      "sha256": "6f2416426e41508e23ba127ea8cb2855b224d79bcdb45cb220530e2654e8217f"
+    },
+    "password-encode.json.gz": {
+      "records": 51472,
+      "sha256": "211017af039e6085308821c2c9c373ee88684455713108f219a71ccc5090738f"
+    },
+    "password-invalid.json.gz": {
+      "records": 8,
+      "sha256": "7efa09ea30cffa7f1e43b85c1828d44eb3e105f93c550d7726916545c2126233"
+    },
+    "equipment-calls.json.gz": {
+      "records": 884,
+      "sha256": "b2925f6973f24837fa44390039fa449fe2326a9d64287a78b1cc23edfcb0f769"
+    },
+    "map-calls.json.gz": {
+      "records": 54,
+      "sha256": "1939d62b8d131e2cd7f722165718fa450a31350e94515581e2632fe65682d691"
+    },
+    "reward-calls.json.gz": {
+      "records": 112,
+      "sha256": "854f82f8cc25d1dba675208322d70e8ec8cdc5a2389136d15fa46060b8274e07"
+    }
+  },
+  "rawSelector4DecodeAccepted": true,
+  "normalMenuSource": "retained controller-only traces, password imports identified separately from earned wins",
+  "fullInventoryRemoval": [
+    {
+      "kind": "unequip",
+      "character": 0,
+      "index": 0,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            2,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 0,
+      "index": 1,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            13,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 0,
+      "index": 2,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            23
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 1,
+      "index": 0,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            2,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 1,
+      "index": 1,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            13,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 1,
+      "index": 2,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            23
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 2,
+      "index": 0,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            2,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 2,
+      "index": 1,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            13,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 2,
+      "index": 2,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            23
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 3,
+      "index": 0,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            2,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 3,
+      "index": 1,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            13,
+            -1
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    },
+    {
+      "kind": "unequip",
+      "character": 3,
+      "index": 2,
+      "before": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            23
+          ]
+        ]
+      },
+      "after": {
+        "mode": 0,
+        "period": 0,
+        "winBits": [
+          0,
+          0
+        ],
+        "rewardSet": 0,
+        "inventory": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "equipment": [
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1
+          ]
+        ]
+      },
+      "stop": "8088",
+      "menuPhase": 156
+    }
+  ]
+}
