@@ -1,0 +1,64 @@
+{
+  "source": "User-provided .local/spf2t extraction of Super Puzzle Fighter II Turbo (Europe 960529, CPS2, spf2t)",
+  "generator": "scripts/spf2t/prepare-assets.py",
+  "generatorSha256": "c5275c016d4548e615e1c881022a2d6d5debb5c5a935d4c745d3ad25cb336742",
+  "romsSha256": {
+    "pzf.01": "160a6963b66f9d78058fcbee25a6a5a9d09a41588935e04bf187f7be6c024e58",
+    "pzf.02": "605319e1689e37bc6f88616597873d1121d7bfcef29c66b1e122f2ff16bf28da",
+    "pzf.04": "582983161d5f902ea00d9924c729c4a1860b2652be8be64a24b4af065d8c85b0",
+    "pzf.11m": "a3c69957daa48b468db08a3fae30231090f771815703333784f670021d224412",
+    "pzf.12m": "dd65702adddfbe6f6b9e358cedde97231ac088ad5ae9df16809ec949335ed6d0",
+    "pzf.14m": "3310271258847cfe8befe03783f16d6b271d73d00b622892104f06603e8ad42d",
+    "pzf.16m": "301163c05443d2bf1483885a994af58f64bc0d5bf1434ee9e9c374091b075bb0",
+    "pzf.18m": "b84588d19cd59cf263129b34c341cb81c8e1682572102b0dee096d4563a6956c",
+    "pzf.20m": "e37cd0cab06159cdc8a2a0d848fe8f03278dad5b4168b3156dc68afd78ba21c2",
+    "pzfe.03": "c51157ce2370b6e8872e70fb7865de65ea3a69d8875480b7e845de9afe0e7109",
+    "spf2t.key": "b3b3bfc64f3a57faa25b8b54e67ce4e45299f6cbeecacf5238b45e5fc0455300"
+  },
+  "license": "User-provided commercial media. The project does not claim redistribution rights; the deployer confirms authorization. Media is uploaded to OSS and is not committed to Git.",
+  "characters": {
+    "morrigan": {
+      "name": "莫莉卡"
+    },
+    "chunli": {
+      "name": "春丽"
+    },
+    "ryu": {
+      "name": "隆"
+    },
+    "ken": {
+      "name": "肯"
+    },
+    "hsienko": {
+      "name": "泪泪"
+    },
+    "donovan": {
+      "name": "多诺万"
+    },
+    "felicia": {
+      "name": "菲莉西亚"
+    },
+    "sakura": {
+      "name": "樱"
+    }
+  },
+  "audio": {
+    "bgm": {
+      "bgm-select": "bgm_code_0001.wav",
+      "bgm-battle": "bgm_code_0002.wav"
+    },
+    "sfx": {
+      "select": "sfx_code_00b1.wav",
+      "countdown": "sfx_code_00a7.wav",
+      "lock": "sfx_code_00b0.wav",
+      "crash": "sfx_code_00b4.wav",
+      "chain": "sfx_code_00b5.wav",
+      "power": "sfx_code_00b7.wav",
+      "diamond": "sfx_code_00b8.wav",
+      "garbage": "sfx_code_00b9.wav",
+      "topout": "sfx_code_00ba.wav",
+      "win": "sfx_code_00a8.wav",
+      "lose": "sfx_code_00a9.wav"
+    }
+  }
+}

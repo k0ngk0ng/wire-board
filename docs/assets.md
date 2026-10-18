@@ -70,3 +70,5 @@ python3 scripts/upload_assets.py .local/asset-pack \
 星垒采用原创 SVG 卡通插画源文件与合成音效，成品位于 `starfort/v1/`，共 45 个 WebP（含地图和图集）及 12 个 WAV。制作、透明通道／解码验证和复现命令见 [星垒素材说明](../games/starfort/assets/README.md)，逐文件 CDN 回读记录见 [发布清单](../games/starfort/assets/published.json)。图集索引随前端构建，不上传为媒体文件；未配置 CDN 或加载失败时使用同版本随包素材。
 
 星垒扩展战场新增独立前缀 `starfort/world-v2/`，包含六种地形、分支插画、场景物件、四种功能敌人的姿态、事件图标与新增提示音；共 41 个 WebP 和 3 个 WAV。原有 `starfort/v1/` 文件保持不变。素材独立校验及确定性生成记录见 [扩展素材说明](../games/starfort/assets/world-v2/VALIDATION.md)，CDN 回读清单见 [发布记录](../games/starfort/assets/world-v2/published.json)。
+
+街霸方块素材使用 `spf2t/v1/`：8 张角色立绘、2 段 BGM 和 11 个音效；媒体不提交 Git。准备/本地回退使用 `python3 -B scripts/spf2t/prepare-assets.py --install-local`，校验使用 `scripts/spf2t/verify-assets.py --dist`（干净仓库记录 `externalOnly`），上传使用 `scripts/spf2t/publish-assets.py`，前缀为 `bga/v20261002-1/spf2t/v1`。来源与授权说明见 [素材说明](../games/spf2t/assets/README.md)。前端优先 CDN，失败时使用本地 `/spf2t/v1/`，最后回退到内置矢量/渐变宝石与首字头像。

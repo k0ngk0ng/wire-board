@@ -1,4 +1,5 @@
 .local/
+games/spf2t/assets/public/
 node_modules/
 web/dist/
 web/*.tsbuildinfo
@@ -15,3 +16,4 @@ config/secrets/
 backups/
 dist/
 .DS_Store
+__pycache__/

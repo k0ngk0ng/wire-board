@@ -35,3 +35,7 @@ Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可
 8 位英雄的头像和四个技能、17 件装备共 57 张经典 Warcraft III / DotA 图标来自 [iCCup 英雄资料](https://iccup.com/dota/heroes.html)及[装备资料](https://iccup.com/dota/items.html)。保留图标原色，转换为无损 WebP，共约 246 KiB。来源页、原始及转换后 SHA-256 见 `web/public/dota/v1/sources.json`；转换脚本为 `scripts/prepare_dota_assets.py`。网页优先使用配置的 CDN，随程序保留本地后备副本。原素材权利仍属于各自权利人。本项目的兵线争锋规则是桌游改编，不是原 DotA 电子竞技规则。
 
 璀璨宝石新版贸易站及 CATAN Helpers 人物图取自官方规则书，固定来源与哈希见 `board-expansion-rule-sources.json`。CATAN 五至六人扩充的紫、绿建筑棋子沿用既有蓝色原图的轮廓、阴影与透明通道，仅调整着色区域；转换脚本不包含部署地址。上述美术仅存于独立素材服务。
+
+## 街霸方块
+
+街霸方块使用用户提供的 `.local/spf2t` 提取素材（Super Puzzle Fighter II Turbo, Europe 960529, CPS2）。派生立绘与音频只上传到 `bga/v20261002-1/spf2t/v1/`，不提交 Git、Release 或镜像；来源 ROM SHA-256、生成器 SHA-256 和逐文件摘要见 [素材清单](../games/spf2t/assets/sources.json)。项目不声明这些商业素材的再分发许可，部署者需自行确认授权。封面是 `games/spf2t/assets/art.ts` 中的原创 SVG，不使用原版盒装封面、扫描图、Capcom Logo 或大段标题字。Super Puzzle Fighter II Turbo 及其角色名称、商标和商业美术归 Capcom 及各自权利人；本项目是独立的私人联机实现，不代表官方服务。

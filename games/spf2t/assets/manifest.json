@@ -1,0 +1,226 @@
+{
+  "version": "spf2t/v1",
+  "prefix": "bga/v20261002-1/spf2t/v1/",
+  "cdnBase": "https://cdn.ichenj.com/bga/v20261002-1",
+  "generator": "scripts/spf2t/prepare-assets.py",
+  "generatorSha256": "c5275c016d4548e615e1c881022a2d6d5debb5c5a935d4c745d3ad25cb336742",
+  "license": "User-provided commercial media. The project does not claim redistribution rights; the deployer confirms authorization. Media is uploaded to OSS and is not committed to Git.",
+  "entries": [
+    {
+      "file": "portraits/chunli.webp",
+      "urlPath": "/spf2t/v1/portraits/chunli.webp",
+      "bytes": 3076,
+      "sha256": "5680ede8bb6b4ba5f827655c7dd7f3fc5dc9f246599688a27c9ac00ef0b96854",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_01_bf6ce7985a.png",
+      "character": "chunli",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/morrigan.webp",
+      "urlPath": "/spf2t/v1/portraits/morrigan.webp",
+      "bytes": 2150,
+      "sha256": "6c0c90eec8ab92ab71160f189887f35d56c5104caeeb7fff38a569318a0f5cd7",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_02_25d33dd5eb.png",
+      "character": "morrigan",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/sakura.webp",
+      "urlPath": "/spf2t/v1/portraits/sakura.webp",
+      "bytes": 2118,
+      "sha256": "1f38cd18b503c951454c82eb522d1fc20fe17a5d31c1e45724baa6d2d268399e",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_03_125bfe4448.png",
+      "character": "sakura",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/felicia.webp",
+      "urlPath": "/spf2t/v1/portraits/felicia.webp",
+      "bytes": 2218,
+      "sha256": "9f50c18752898cdd5e9a575bfd6000dabcc5921f4d532fa2933b2fdfbd92d6cb",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_04_c346c80dc6.png",
+      "character": "felicia",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/ken.webp",
+      "urlPath": "/spf2t/v1/portraits/ken.webp",
+      "bytes": 2480,
+      "sha256": "526e108bfd550941c2c9d14d1985e8fb755ead940be5332fa6dde56c34dbd55c",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_05_8096cbe794.png",
+      "character": "ken",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/donovan.webp",
+      "urlPath": "/spf2t/v1/portraits/donovan.webp",
+      "bytes": 2104,
+      "sha256": "07087eb81eeb1eb973038e4504ff0cb81b02e91e02aee182adc0277fe5ca933b",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_06_f27bcf5238.png",
+      "character": "donovan",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/hsienko.webp",
+      "urlPath": "/spf2t/v1/portraits/hsienko.webp",
+      "bytes": 2390,
+      "sha256": "735153cede92fe629fc6d1971b0363c6605b4472fe43855cb1e8a11999599271",
+      "kind": "portrait",
+      "source": "graphics/characters/portraits/portrait_07_cfc3ea5916.png",
+      "character": "hsienko",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "portraits/ryu.webp",
+      "urlPath": "/spf2t/v1/portraits/ryu.webp",
+      "bytes": 23118,
+      "sha256": "292e3973ed6615117a9c3639d67be092bee6123878ba29dd62c8a37f899b84d2",
+      "kind": "portrait",
+      "source": ".local/spf2t/reference/evidence/p1_board_3400_4x.png",
+      "character": "ryu",
+      "width": 128,
+      "height": 112
+    },
+    {
+      "file": "audio/bgm-select.mp3",
+      "urlPath": "/spf2t/v1/audio/bgm-select.mp3",
+      "bytes": 254580,
+      "sha256": "7adb0f1b34cc086e80d33d1d2b92739602bbde77a716d77c7b231935ff3f03e2",
+      "kind": "bgm",
+      "source": "audio/music/bgm_code_0001.wav",
+      "duration": 15.84
+    },
+    {
+      "file": "audio/bgm-battle.mp3",
+      "urlPath": "/spf2t/v1/audio/bgm-battle.mp3",
+      "bytes": 258341,
+      "sha256": "75c6c4ba604ded95fedb8130b5406a5f2ff558a090545346038c743620b90e2c",
+      "kind": "bgm",
+      "source": "audio/music/bgm_code_0002.wav",
+      "duration": 16.07
+    },
+    {
+      "file": "audio/sfx-select.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-select.mp3",
+      "bytes": 9448,
+      "sha256": "7bce8a97fd80b3c13c0c5cec9ff375b49229f0d6c62ced16654f9523f937a653",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b1.wav",
+      "event": "select",
+      "duration": 0.71
+    },
+    {
+      "file": "audio/sfx-countdown.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-countdown.mp3",
+      "bytes": 7880,
+      "sha256": "f1bf8774fdf698b206c012bf8c513c0527f9e43684bd4ceac4bc0d3ab8e81c69",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00a7.wav",
+      "event": "countdown",
+      "duration": 0.59
+    },
+    {
+      "file": "audio/sfx-lock.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-lock.mp3",
+      "bytes": 8507,
+      "sha256": "debf21c4677b45c1d8379cc7970fd68d2014012649a515e48a65e154a71f2a78",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b0.wav",
+      "event": "lock",
+      "duration": 0.65
+    },
+    {
+      "file": "audio/sfx-crash.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-crash.mp3",
+      "bytes": 9134,
+      "sha256": "3ea51b74a7968560799b8af42d5f92ccd6a608b63e52376e8fd17844596c57e5",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b4.wav",
+      "event": "crash",
+      "duration": 0.69
+    },
+    {
+      "file": "audio/sfx-chain.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-chain.mp3",
+      "bytes": 8507,
+      "sha256": "ef9108ebf078055aa91d0a8107cd708b5f609c5c672dfc67feed3909f879bd25",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b5.wav",
+      "event": "chain",
+      "duration": 0.65
+    },
+    {
+      "file": "audio/sfx-power.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-power.mp3",
+      "bytes": 9448,
+      "sha256": "f0660b1c71eed0968f2e55c606b8dc963f933bdc62cb0f34299001f2c7e898d8",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b7.wav",
+      "event": "power",
+      "duration": 0.73
+    },
+    {
+      "file": "audio/sfx-diamond.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-diamond.mp3",
+      "bytes": 11328,
+      "sha256": "29fdce7967a4891e3e7c5db89798911cfe46cc983bd842aef5caab22bd7482e3",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b8.wav",
+      "event": "diamond",
+      "duration": 0.88
+    },
+    {
+      "file": "audio/sfx-garbage.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-garbage.mp3",
+      "bytes": 8507,
+      "sha256": "beacbe31ab30d8e2ad85594c198c81a19a9199c7e131bd4489b80b8d468a461e",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00b9.wav",
+      "event": "garbage",
+      "duration": 0.63
+    },
+    {
+      "file": "audio/sfx-topout.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-topout.mp3",
+      "bytes": 6313,
+      "sha256": "2adaeea8926bbf1b1850805cd441f78b9b59e253f470ee718260196dd9aca30a",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00ba.wav",
+      "event": "topout",
+      "duration": 0.47
+    },
+    {
+      "file": "audio/sfx-win.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-win.mp3",
+      "bytes": 30764,
+      "sha256": "05ff5f5ca42c881f59789db472a13bf0c60349c857b56df57727ad969919cd82",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00a8.wav",
+      "event": "win",
+      "duration": 2.506
+    },
+    {
+      "file": "audio/sfx-lose.mp3",
+      "urlPath": "/spf2t/v1/audio/sfx-lose.mp3",
+      "bytes": 31077,
+      "sha256": "d635383ef5ddf7a68fb4569b73cbd267e7bda4b08788ff5d153968fd283d2999",
+      "kind": "sfx",
+      "source": "audio/sfx/sfx_code_00a9.wav",
+      "event": "lose",
+      "duration": 2.516
+    }
+  ]
+}
