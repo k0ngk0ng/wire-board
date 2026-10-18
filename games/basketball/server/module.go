@@ -21,10 +21,11 @@ const lostInputMS int64 = 750
 const maxSequence int64 = 1<<53 - 1
 
 type Options struct {
-	Teams      [2]uint8 `json:"teams"`
-	Characters [4]uint8 `json:"characters"`
-	Mode       string   `json:"mode"`
-	Court      string   `json:"court"`
+	Campaign   *CampaignOptions `json:"campaign,omitempty"`
+	Teams      [2]uint8         `json:"teams"`
+	Characters [4]uint8         `json:"characters"`
+	Mode       string           `json:"mode"`
+	Court      string           `json:"court"`
 }
 type InputChange struct {
 	At      int64          `json:"at"`
@@ -46,6 +47,7 @@ type SoundEvent struct {
 	IDs        []int  `json:"ids"`
 }
 type State struct {
+	Campaign      *CampaignState              `json:"campaign,omitempty"`
 	Options       Options                     `json:"options"`
 	Epoch         string                      `json:"epoch"`
 	ServerAt      int64                       `json:"serverAt"`
@@ -59,6 +61,7 @@ type State struct {
 	Music         MusicState                  `json:"music"`
 }
 type View struct {
+	Campaign      *CampaignView                   `json:"campaign,omitempty"`
 	Preparation   *engine.CampaignPreparationView `json:"preparation,omitempty"`
 	CanPrepare    bool                            `json:"canPrepare"`
 	SeatActors    []int                           `json:"seatActors"`
@@ -77,6 +80,7 @@ type View struct {
 	Music         MusicView                       `json:"music"`
 }
 type action struct {
+	Campaign    *CampaignAction                   `json:"campaign,omitempty"`
 	Preparation *engine.CampaignPreparationAction `json:"preparation,omitempty"`
 	Type        string                            `json:"type"`
 	Epoch       string                            `json:"epoch"`
@@ -119,9 +123,6 @@ func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 			return nil, fmt.Errorf("无效篮球设置")
 		}
 	}
-	if _, ok := preparedCourt(o.Court); !ok {
-		return nil, fmt.Errorf("该球场尚未完成接入验收")
-	}
 	if o.Mode == "" {
 		switch players {
 		case 1:
@@ -134,6 +135,17 @@ func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 	}
 	if o.Mode == "" || len(o.seatActors()) != players || players == 0 {
 		return nil, fmt.Errorf("人数与比赛模式不一致，请等待房间席位就绪")
+	}
+	if o.Campaign != nil {
+		var err error
+		o, err = configureCampaign(o)
+		if err != nil {
+			return nil, err
+		}
+		return json.Marshal(o)
+	}
+	if _, ok := preparedCourt(o.Court); !ok {
+		return nil, fmt.Errorf("该球场尚未完成接入验收")
 	}
 	if err := validateRoster(o); err != nil {
 		return nil, err
@@ -210,13 +222,25 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 			c.Match.ControllerAssignments[i] = -1
 		}
 	}
-	r, err := engine.NewRuntime(c)
+	var r engine.RuntimeState
+	if options.Campaign != nil {
+		r, err = newCampaignMatch(options, c.Match.Seed)
+		if err == nil {
+			r, err = engine.SetRuntimeAutomation(r, flags)
+		}
+	} else {
+		r, err = engine.NewRuntime(c)
+	}
 	if err != nil {
 		return gameapi.Match{}, err
 	}
 	s := State{Epoch: hex.EncodeToString(token[4:]), ServerAt: ctx.Now.UnixMilli(), Runtime: r, Events: []SoundEvent{}}
 	if err = json.Unmarshal(o, &s.Options); err != nil {
 		return gameapi.Match{}, err
+	}
+	if options.Campaign != nil {
+		s.Campaign = &CampaignState{Stage: "playing", Round: 1}
+		s.Options.Characters = r.Config.Match.Characters
 	}
 	for i, a := range flags {
 		s.Inputs[i] = InputState{Automated: a, IdleAt: s.ServerAt + idleMS, LastPacketAt: s.ServerAt}
@@ -232,6 +256,9 @@ func decode(m gameapi.Match) (State, error) {
 		return s, err
 	}
 	court, knownCourt := preparedCourt(s.Options.Court)
+	if s.Runtime.Config.Campaign != nil && s.Options.Court == "court-7" {
+		court, knownCourt = 7, true
+	}
 	if !knownCourt || validateSavedRoster(s) != nil || s.Runtime.Config.Match.Court != court || s.Runtime.Config.Match.Teams != s.Options.Teams || s.Runtime.Config.Match.Characters != s.Options.Characters || len(s.Epoch) != 24 || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= 1000 || s.PauseAt < 0 {
 		return s, fmt.Errorf("无效篮球存档")
 	}
@@ -282,9 +309,15 @@ func decode(m gameapi.Match) (State, error) {
 	if n := len(s.VideoInputs); n > 0 && s.VideoInputs[n-1].Frame != s.Runtime.VideoFrames {
 		return s, fmt.Errorf("视频历史与当前帧不一致")
 	}
-	return s, engine.ValidateRuntimeState(s.Runtime)
+	if err := engine.ValidateRuntimeState(s.Runtime); err != nil {
+		return s, err
+	}
+	return s, s.validateCampaignState()
 }
 func (s State) phase() string {
+	if s.campaignMenu() {
+		return "campaign-" + s.Campaign.Stage
+	}
 	if s.Runtime.Outcome != nil {
 		return "result"
 	}
@@ -317,6 +350,9 @@ func (s State) match() (gameapi.Match, error) {
 		return gameapi.Match{}, err
 	}
 	m := gameapi.Match{Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, HasComputerPlayers: len(s.seatActors()) < 4, Log: []string{s.rosterDescription()}}
+	if s.campaignMenu() {
+		return s.campaignMatch(m)
+	}
 	if out := s.Runtime.Outcome; out != nil && out.Confirmed {
 		cooperative := s.Options.Mode == "solo" || s.Options.Mode == "cooperative"
 		r := &gameapi.Result{Team: !cooperative, Cooperative: cooperative, Ranks: make([]int, len(s.seatActors())), Scores: make([]int, len(s.seatActors())), Winners: []int{}}
@@ -357,6 +393,13 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (action, err
 	var a action
 	if err := strict(raw, &a); err != nil {
 		return a, fmt.Errorf("无效篮球操作")
+	}
+	if a.Type == "campaign" {
+		_, err := applyCampaignAction(ctx, s, a)
+		return a, err
+	}
+	if a.Campaign != nil || s.campaignMenu() {
+		return a, fmt.Errorf("当前不能提交控制器或中场操作")
 	}
 	if a.Type == "campaign-preparation" {
 		_, err := applyCampaignPreparation(ctx, s, a)
@@ -405,6 +448,13 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	a, err := validAction(ctx, s, raw)
 	if err != nil {
 		return m, err
+	}
+	if a.Type == "campaign" {
+		s, err = applyCampaignAction(ctx, s, a)
+		if err != nil {
+			return m, err
+		}
+		return s.match()
 	}
 	if a.Type == "campaign-preparation" {
 		s, err = applyCampaignPreparation(ctx, s, a)
@@ -495,8 +545,28 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	if err != nil {
 		return m, err
 	}
+	wasAutomatic := s.Inputs[0].Automated
 	if err = s.syncAutomation(flags); err != nil {
 		return m, err
+	}
+	if s.campaignMenu() {
+		s.ServerAt = now
+		if !s.campaignTerminal() && flags[0] && !wasAutomatic {
+			c := *s.Campaign
+			c.DecisionAt = now + 3000
+			s.Campaign = &c
+		}
+		if !s.campaignTerminal() && flags[0] && now >= s.Campaign.DecisionAt {
+			kind := "continue"
+			if s.Campaign.Stage == "prepare" {
+				kind = "start"
+			}
+			s, err = advanceCampaignMenu(ctx, s, CampaignAction{Type: kind, Revision: s.Campaign.Revision}, flags)
+			if err != nil {
+				return m, err
+			}
+		}
+		return s.match()
 	}
 	elapsed := now - s.ServerAt
 	if elapsed > 250 {
@@ -608,6 +678,9 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 			return m, err
 		}
 	}
+	if err = s.settleCampaign(); err != nil {
+		return m, err
+	}
 	return s.match()
 }
 func reclaim(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
@@ -633,6 +706,9 @@ func reclaim(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	clearTransport(i)
 	i.IdleAt = ctx.Now.UnixMilli() + idleMS
 	i.LastPacketAt = ctx.Now.UnixMilli()
+	if s.campaignMenu() {
+		return s.match()
+	}
 	s.Runtime, err = engine.ClearRuntimeInput(s.Runtime, uint8(s.actorForSeat(ctx.Actor)))
 	if err != nil {
 		return m, err
@@ -648,6 +724,9 @@ func restore(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		return m, nil
 	}
 	s.ServerAt = ctx.Now.UnixMilli()
+	if s.campaignMenu() {
+		return s.match()
+	}
 	for seat := range s.Inputs {
 		clearTransport(&s.Inputs[seat])
 		s.Runtime, err = engine.ClearRuntimeInput(s.Runtime, uint8(seat))
@@ -664,6 +743,13 @@ func project(m gameapi.Match, seat int) (any, error) {
 	}
 	actor := s.actorForSeat(seat)
 	v := View{SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
+	v.Campaign, err = s.campaignView(actor)
+	if err != nil {
+		return nil, err
+	}
+	if s.campaignMenu() {
+		v.CanInput = false
+	}
 	if s.Runtime.Config.Campaign != nil && s.Runtime.AwaitingNextPeriod {
 		p, err := engine.ViewCampaignPreparation(s.Runtime)
 		if err != nil {

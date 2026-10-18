@@ -3,6 +3,7 @@ package basketball
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/k0ngk0ng/wire-board/games/basketball/campaign"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
@@ -48,10 +49,14 @@ func validateRoster(o Options) error {
 }
 
 type preparationAction struct {
-	Type      string `json:"type"`
-	Court     string `json:"court,omitempty"`
-	Actor     *int   `json:"actor,omitempty"`
-	Character *uint8 `json:"character,omitempty"`
+	Opponent       *uint8         `json:"opponent,omitempty"`
+	Tactic         *uint8         `json:"tactic,omitempty"`
+	InventoryIndex *uint8         `json:"inventoryIndex,omitempty"`
+	Slot           *campaign.Slot `json:"slot,omitempty"`
+	Type           string         `json:"type"`
+	Court          string         `json:"court,omitempty"`
+	Actor          *int           `json:"actor,omitempty"`
+	Character      *uint8         `json:"character,omitempty"`
 }
 
 func prepare(ctx gameapi.PreparationContext, current, raw json.RawMessage) (json.RawMessage, error) {
@@ -70,6 +75,12 @@ func prepare(ctx gameapi.PreparationContext, current, raw json.RawMessage) (json
 	var a preparationAction
 	if err = strict(raw, &a); err != nil {
 		return nil, fmt.Errorf("无效准备选择")
+	}
+	if o.Campaign != nil {
+		return prepareCampaign(ctx, o, a)
+	}
+	if a.Opponent != nil || a.Tactic != nil || a.InventoryIndex != nil || a.Slot != nil {
+		return nil, fmt.Errorf("单场模式不接受战役准备选项")
 	}
 	switch a.Type {
 	case "court":
