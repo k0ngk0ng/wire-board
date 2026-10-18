@@ -1,0 +1,496 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "scope": "four independently compared original whole-machine segments from declared Go origins; full video RAM and screenshots match unobserved references; not natural original-menu or campaign completion",
+  "productionChanged": false,
+  "originalFailuresRemain": true,
+  "segments": [
+    {
+      "mode": "solo",
+      "origin": "pre-rolloff-world",
+      "capture": {
+        "scope": "one declared canonical world origin, no later gameplay writes; not natural menu coverage",
+        "mode": "solo",
+        "originGoVideo": 3272,
+        "initialUpdates": 1053,
+        "initialSemanticRoundTrip": true,
+        "referenceRAMAndScreenshotsMatch": true,
+        "worlds": 3864,
+        "stalledWorlds": 3825,
+        "firstStalls": [
+          {
+            "frame": 3625,
+            "index": 39,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3628,
+            "index": 40,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3631,
+            "index": 41,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3634,
+            "index": 42,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3637,
+            "index": 43,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastStalls": [
+          {
+            "frame": 15085,
+            "index": 3859,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15089,
+            "index": 3860,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15091,
+            "index": 3861,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15095,
+            "index": 3862,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15097,
+            "index": 3863,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastPhase": 129,
+        "lastClock": [
+          0,
+          0,
+          0,
+          47
+        ],
+        "lastScores": [
+          0,
+          3
+        ],
+        "source": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "frames": 13000,
+          "scenario_sha256": "802677a80a905fb437dba63bc86e17460996dc45abee96be5a4525fe8104d368"
+        },
+        "traceSHA256": "5e15a2913d6f82fba5cb5d627e5ea65f60cbc4c997225ed6a610c18bb0b12a2d",
+        "ramSHA256": "be8b2ee986e4aab291b325f313029fd494b39b2e9d690c15bbbd99ab37990259"
+      },
+      "comparison": {
+        "scope": "independent Go and original complete worlds after one controlled origin; reused contact scratch and rendering projection explicitly excluded",
+        "mode": "solo",
+        "worlds": 3864,
+        "strictMatches": 3864,
+        "componentMatches": {
+          "actors": 3864,
+          "ball": 3864,
+          "teamai": 3864,
+          "input": 3864
+        },
+        "differences": {},
+        "firstDifferences": {},
+        "sourceSHA256": "5e15a2913d6f82fba5cb5d627e5ea65f60cbc4c997225ed6a610c18bb0b12a2d",
+        "goSHA256": "8808af9fd1ad99540ff65654958643901f0c1fa3dd7fa12c1430104c4294df3a"
+      }
+    },
+    {
+      "mode": "solo",
+      "origin": "first-playing-world",
+      "capture": {
+        "scope": "one declared canonical world origin, no later gameplay writes; not natural menu coverage",
+        "mode": "solo",
+        "originGoVideo": 114,
+        "initialUpdates": 1,
+        "initialSemanticRoundTrip": true,
+        "referenceRAMAndScreenshotsMatch": true,
+        "worlds": 3864,
+        "stalledWorlds": 2773,
+        "firstStalls": [
+          {
+            "frame": 6781,
+            "index": 1091,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6784,
+            "index": 1092,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6787,
+            "index": 1093,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6790,
+            "index": 1094,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6793,
+            "index": 1095,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastStalls": [
+          {
+            "frame": 15085,
+            "index": 3859,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15088,
+            "index": 3860,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15091,
+            "index": 3861,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15094,
+            "index": 3862,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15097,
+            "index": 3863,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastPhase": 129,
+        "lastClock": [
+          0,
+          0,
+          0,
+          217
+        ],
+        "lastScores": [
+          0,
+          3
+        ],
+        "source": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "frames": 13000,
+          "scenario_sha256": "bf89bc702bcc4dfdbb4836701451b991442ee9e7bb35b6067d6e8f01d2c5decc"
+        },
+        "traceSHA256": "e635b45a93e2d0cde2ad3d9f5fabfbb0a2e4e25d50b84b55018a17312d9a8a65",
+        "ramSHA256": "f4aa2769b6cac4763c96119ce846266634bd9eafe41a38a51214b3be32d7ee67"
+      },
+      "comparison": {
+        "scope": "independent Go and original complete worlds after one controlled origin; reused contact scratch and rendering projection explicitly excluded",
+        "mode": "solo",
+        "worlds": 3864,
+        "strictMatches": 3864,
+        "componentMatches": {
+          "actors": 3864,
+          "ball": 3864,
+          "teamai": 3864,
+          "input": 3864
+        },
+        "differences": {},
+        "firstDifferences": {},
+        "sourceSHA256": "e635b45a93e2d0cde2ad3d9f5fabfbb0a2e4e25d50b84b55018a17312d9a8a65",
+        "goSHA256": "09a51f0b24c897471a2510684a2f87270cb100dca25a46d9422f309fdb168421"
+      }
+    },
+    {
+      "mode": "coop",
+      "origin": "pre-rolloff-world",
+      "capture": {
+        "scope": "one declared canonical world origin, no later gameplay writes; not natural menu coverage",
+        "mode": "coop",
+        "originGoVideo": 3272,
+        "initialUpdates": 1053,
+        "initialSemanticRoundTrip": true,
+        "referenceRAMAndScreenshotsMatch": true,
+        "worlds": 3864,
+        "stalledWorlds": 3825,
+        "firstStalls": [
+          {
+            "frame": 3625,
+            "index": 39,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3628,
+            "index": 40,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3631,
+            "index": 41,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3634,
+            "index": 42,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 3637,
+            "index": 43,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastStalls": [
+          {
+            "frame": 15085,
+            "index": 3859,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15089,
+            "index": 3860,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15091,
+            "index": 3861,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15095,
+            "index": 3862,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15097,
+            "index": 3863,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastPhase": 129,
+        "lastClock": [
+          0,
+          0,
+          0,
+          47
+        ],
+        "lastScores": [
+          0,
+          3
+        ],
+        "source": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "frames": 13000,
+          "scenario_sha256": "871b2f0abe608d8649257fe1ed800b6d5314d64c93c01461ff708f5d6ec87eff"
+        },
+        "traceSHA256": "6e2a6a40bef2efa0358ca09adff8ba842319d09c5f2e195e3ed85b29155f7175",
+        "ramSHA256": "c867d8ed9c18a0835858450e6a5ae8887a80ce69fcc72a3ca73fd3a09a263572"
+      },
+      "comparison": {
+        "scope": "independent Go and original complete worlds after one controlled origin; reused contact scratch and rendering projection explicitly excluded",
+        "mode": "coop",
+        "worlds": 3864,
+        "strictMatches": 3864,
+        "componentMatches": {
+          "actors": 3864,
+          "ball": 3864,
+          "teamai": 3864,
+          "input": 3864
+        },
+        "differences": {},
+        "firstDifferences": {},
+        "sourceSHA256": "6e2a6a40bef2efa0358ca09adff8ba842319d09c5f2e195e3ed85b29155f7175",
+        "goSHA256": "8808af9fd1ad99540ff65654958643901f0c1fa3dd7fa12c1430104c4294df3a"
+      }
+    },
+    {
+      "mode": "coop",
+      "origin": "first-playing-world",
+      "capture": {
+        "scope": "one declared canonical world origin, no later gameplay writes; not natural menu coverage",
+        "mode": "coop",
+        "originGoVideo": 114,
+        "initialUpdates": 1,
+        "initialSemanticRoundTrip": true,
+        "referenceRAMAndScreenshotsMatch": true,
+        "worlds": 3864,
+        "stalledWorlds": 2773,
+        "firstStalls": [
+          {
+            "frame": 6781,
+            "index": 1091,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6784,
+            "index": 1092,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6787,
+            "index": 1093,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6790,
+            "index": 1094,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 6793,
+            "index": 1095,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastStalls": [
+          {
+            "frame": 15085,
+            "index": 3859,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15088,
+            "index": 3860,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15091,
+            "index": 3861,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15094,
+            "index": 3862,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          },
+          {
+            "frame": 15097,
+            "index": 3863,
+            "x": 65930,
+            "depth": 18415,
+            "height": 8192
+          }
+        ],
+        "lastPhase": 129,
+        "lastClock": [
+          0,
+          0,
+          0,
+          217
+        ],
+        "lastScores": [
+          0,
+          3
+        ],
+        "source": {
+          "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+          "frames": 13000,
+          "scenario_sha256": "c1a48d5e55ab2a8ccd812c7bdb66f42f80f30d9daf44e8b275bfe76c54172d69"
+        },
+        "traceSHA256": "ae2a9bbd8e2ad1d83d31fa098ed906eb9f61c6ab32c8d8e51586537e04057d48",
+        "ramSHA256": "c33b9b80b4e47b9990596623ede60a244bef65c8c7f6876c94fb264b7e86935d"
+      },
+      "comparison": {
+        "scope": "independent Go and original complete worlds after one controlled origin; reused contact scratch and rendering projection explicitly excluded",
+        "mode": "coop",
+        "worlds": 3864,
+        "strictMatches": 3864,
+        "componentMatches": {
+          "actors": 3864,
+          "ball": 3864,
+          "teamai": 3864,
+          "input": 3864
+        },
+        "differences": {},
+        "firstDifferences": {},
+        "sourceSHA256": "ae2a9bbd8e2ad1d83d31fa098ed906eb9f61c6ab32c8d8e51586537e04057d48",
+        "goSHA256": "09a51f0b24c897471a2510684a2f87270cb100dca25a46d9422f309fdb168421"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "ee5d305d54f2d33e3ce5e5fbc4cc0bbf15c13f1cddf603e339b7802795c71bb8",
+  "counts": {
+    "text": 10141,
+    "commands": 10,
+    "messages": 124
+  },
+  "scope": "controlled unchanged original instructions; FD0A/A496 returns normally; BE6E stops at BEBC before explicit NMI wait; isolated original text command cases declared",
+  "streamCount": 37,
+  "messageCount": 31,
+  "sourceRange": "bank4 A496..A6B3, A6B4 stream pointers, C03F glyph marks, BE6E..BEC2, message tables BEC3/BFB7/BFD6",
+  "omitted": "C036 message NMI wait only; no skipped FD0A text instructions; no main-loop/video emulation"
+}
