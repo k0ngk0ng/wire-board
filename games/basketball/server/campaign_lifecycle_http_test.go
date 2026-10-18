@@ -1,7 +1,9 @@
 package basketball
 
 import (
+	"bytes"
 	"encoding/json"
+	"net/http"
 	"reflect"
 	"testing"
 	"time"
@@ -67,7 +69,26 @@ func TestCampaignLifecycleHTTP(t *testing.T) {
 	if v.Epoch != epoch || !reflect.DeepEqual(*v.Campaign.Settlement, want) {
 		t.Fatal("restored reward changed")
 	}
-	h.Spectator.Action(send("continue", nil), 400)
+	// The live timer can advance the room version between a spectator's read
+	// and POST, especially with -race. Both protocol conflict and permission
+	// rejection must leave the authoritative settlement unchanged.
+	packet := h.Spectator.ActionRequest(send("continue", nil))
+	body, err := json.Marshal(packet)
+	if err != nil {
+		t.Fatal(err)
+	}
+	response, err := h.Spectator.HTTP.Post(h.Spectator.Base+"/api/rooms/"+a.Room()["id"].(string), "application/json", bytes.NewReader(body))
+	if err != nil {
+		t.Fatal(err)
+	}
+	response.Body.Close()
+	if response.StatusCode != http.StatusBadRequest && response.StatusCode != http.StatusConflict {
+		t.Fatal("spectator action was not rejected", response.StatusCode)
+	}
+	afterRejected := view(a)
+	if afterRejected.Campaign.Stage != "reward" || !reflect.DeepEqual(*afterRejected.Campaign.Settlement, want) {
+		t.Fatal("rejected spectator request changed campaign")
+	}
 	a.Action(send("continue", nil), 200)
 	a.Action(send("equip", map[string]any{"character": 1, "inventoryIndex": 0}), 200)
 	a.Action(send("opponent", map[string]any{"opponent": 4}), 200)

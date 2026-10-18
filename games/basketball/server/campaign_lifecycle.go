@@ -31,11 +31,12 @@ type CampaignRoundPreparation struct {
 }
 type CampaignView struct {
 	CampaignState
-	CanAct          bool   `json:"canAct"`
-	CanChooseTactic bool   `json:"canChooseTactic"`
-	Password        string `json:"password,omitempty"`
-	Opponents       []int  `json:"opponents"`
-	AutomaticAt     int64  `json:"automaticAt"`
+	Attributes      *CampaignAttributes `json:"attributes,omitempty"`
+	CanAct          bool                `json:"canAct"`
+	CanChooseTactic bool                `json:"canChooseTactic"`
+	Password        string              `json:"password,omitempty"`
+	Opponents       []int               `json:"opponents"`
+	AutomaticAt     int64               `json:"automaticAt"`
 }
 type CampaignAction struct {
 	Type           string        `json:"type"`
@@ -200,6 +201,11 @@ func (s State) campaignView(actor int) (*CampaignView, error) {
 	}
 	if c.Preparation != nil {
 		p = c.Preparation.Progress
+		attributes, err := campaignAttributes(p)
+		if err != nil {
+			return nil, err
+		}
+		v.Attributes = &attributes
 	}
 	if p.Period < 28 {
 		var err error

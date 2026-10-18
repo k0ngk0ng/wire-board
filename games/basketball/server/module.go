@@ -61,6 +61,7 @@ type State struct {
 	Music         MusicState                  `json:"music"`
 }
 type View struct {
+	Attributes    *CampaignAttributes             `json:"attributes,omitempty"`
 	Campaign      *CampaignView                   `json:"campaign,omitempty"`
 	Preparation   *engine.CampaignPreparationView `json:"preparation,omitempty"`
 	CanPrepare    bool                            `json:"canPrepare"`
@@ -756,6 +757,11 @@ func project(m gameapi.Match, seat int) (any, error) {
 			return nil, err
 		}
 		v.Preparation = &p
+		attributes, err := campaignAttributes(p.Progress)
+		if err != nil {
+			return nil, err
+		}
+		v.Attributes = &attributes
 		v.CanPrepare = actor == 0 && v.CanInput
 	}
 	return v, nil

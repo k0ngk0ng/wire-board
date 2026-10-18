@@ -165,6 +165,7 @@ export function CampaignPanel({
           {preparation && (
             <CampaignPreparationEditor
               progress={preparation.progress}
+              attributes={half ? data.attributes : menu?.attributes}
               teammates={preparation.teammates}
               tactic={preparation.humanTactics[0]}
               assets={assets}

@@ -12,12 +12,13 @@ import (
 // CampaignOptions describes an explicit room entry. Password import rebuilds
 // the original inventory once; persisted rounds never re-read this entry code.
 type CampaignOptions struct {
-	Entry              string             `json:"entry,omitempty"`
-	Password           string             `json:"password,omitempty"`
-	Opponent           uint8              `json:"opponent"`
-	Tactic             uint8              `json:"tactic"`
-	Preparation        *campaign.Progress `json:"preparation,omitempty"`
-	AvailableOpponents []int              `json:"availableOpponents"`
+	Attributes         *CampaignAttributes `json:"attributes,omitempty"`
+	Entry              string              `json:"entry,omitempty"`
+	Password           string              `json:"password,omitempty"`
+	Opponent           uint8               `json:"opponent"`
+	Tactic             uint8               `json:"tactic"`
+	Preparation        *campaign.Progress  `json:"preparation,omitempty"`
+	AvailableOpponents []int               `json:"availableOpponents"`
 }
 
 func campaignEntryKind(c CampaignOptions) (string, error) {
@@ -142,6 +143,11 @@ func configureCampaign(o Options) (Options, error) {
 		return o, err
 	}
 	c.Preparation = &p
+	attributes, err := campaignAttributes(p)
+	if err != nil {
+		return o, err
+	}
+	c.Attributes = &attributes
 	o.Teams = [2]uint8{0, c.Opponent}
 	o.Court = campaignCourtName(court)
 	// Opponents are selected by the original roster draw at confirmation.

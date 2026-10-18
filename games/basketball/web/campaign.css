@@ -268,3 +268,57 @@
   background: #faf7f0;
   line-height: 1.5;
 }
+.basketball-campaign-grades {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  color: #302b26;
+  background: #fffdf8;
+  font-size: 13px;
+  margin: 10px 0;
+}
+.basketball-campaign-grades caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 6px 0;
+  color: #302b26;
+  background: #faf7f0;
+}
+.basketball-campaign-grades th,
+.basketball-campaign-grades td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #d6cbb9;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+.basketball-campaign-grades span {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 0 3px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.basketball-campaign-grades .grade-increase {
+  color: #20552f;
+  background: #e9f3e8;
+}
+.basketball-campaign-grades .grade-decrease {
+  color: #812d24;
+  background: #fff0e9;
+}
+.basketball-campaign-preview {
+  border: 1px solid #a08c6e;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff0cc;
+  color: #3e2b0f;
+  margin: 8px 0;
+}
+.basketball-campaign-preview button {
+  margin: 4px 8px 4px 0;
+}
+.basketball-campaign-editor .basketball-campaign-grade-note {
+  font-size: 12px;
+  color: #625749;
+  background: #faf7f0;
+}

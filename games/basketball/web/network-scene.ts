@@ -10,6 +10,7 @@ export type RecordedVideoInput = {
   automated: boolean[];
 };
 export type BasketballNetworkView = {
+  attributes?: import("./campaign-types").CampaignAttributes;
   campaign?: import("./campaign-types").CampaignView;
   preparation?: import("./campaign-types").CampaignPreparationView;
   canPrepare?: boolean;
