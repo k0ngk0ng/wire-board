@@ -105,6 +105,7 @@ type AIControlView struct {
 // The actor phase applies those commands; the decision cannot assign positions,
 // hits, scores or other physics outcomes.
 type AIControlDecision struct {
+	AuxiliaryCommand   AIAuxiliaryControlCommand
 	TeammateControl    AITeammateControlCommand
 	ClearCommandStatus bool
 	Control            AIControlState
@@ -243,6 +244,22 @@ func StepOriginalAIControl(original AIControlState, view AIControlView) (AIContr
 		s.Entered = true
 		if view.Action == ActionIdle {
 			changeMode(s.Plan)
+		}
+	case AIMode(3), AIMode(13), AIMode(14):
+		if err := advanceOriginalAuxiliaryCooperation(&result, view); err != nil {
+			return initial, err
+		}
+	case AIMode(10), AIMode(11), AIMode(30):
+		if err := advanceOriginalCommandPass(&result, view); err != nil {
+			return initial, err
+		}
+	case AIMode(36), AIMode(37), AIMode(38):
+		if err := advanceOriginalCommandAttack(&result, view); err != nil {
+			return initial, err
+		}
+	case AIMode(41):
+		if err := selectOriginalCommandOpponent(&result, view); err != nil {
+			return initial, err
 		}
 	case AIMode(32):
 		if err := advanceOriginalScoreStrategy(&result, view); err != nil {

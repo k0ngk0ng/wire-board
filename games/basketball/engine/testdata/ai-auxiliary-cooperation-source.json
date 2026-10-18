@@ -1,0 +1,13 @@
+{
+  "scope": "isolated unmodified original handlers, not natural menu or complete world evidence",
+  "entries": {
+    "3": "bank5 A187",
+    "13": "bank5 A557",
+    "14": "bank5 A599"
+  },
+  "records": 8248,
+  "worldInputCalls": 16,
+  "worldInputSHA256": "227f568777185da713786c62c6a21b3d61857ab3c09286d5a6c208b081ace94a",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "0ea0234a606e4540e68c94244b4bb5d961f87dbe373b13184d0c0370fb385495"
+}

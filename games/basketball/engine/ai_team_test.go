@@ -34,9 +34,9 @@ func (o observedTeamAI) state() TeamAIState {
 }
 
 func (o observedTeamAI) context() TeamAIContext {
-	v := TeamAIContext{Teams: o.Teams, HasHuman: o.HasHuman, HumanTactics: o.HumanTactics, HumanCommands: o.HumanCommands, Holder: o.Holder, PreviousHolder: o.PreviousHolder, ScoreDifference: o.ScoreDifference, CourtID: o.Court, Objects: o.Objects, Airborne: o.Airborne, Attachments: o.Attachments}
-	for i := range v.HumanStatus {
-		v.HumanStatus[i] = int8(o.HumanStatus[i])
+	v := TeamAIContext{Teams: o.Teams, HasHuman: o.HasHuman, HumanTactics: o.HumanTactics, Holder: o.Holder, PreviousHolder: o.PreviousHolder, ScoreDifference: o.ScoreDifference, CourtID: o.Court, Objects: o.Objects, Airborne: o.Airborne, Attachments: o.Attachments}
+	for i := range v.Human {
+		v.Human[i].Request, v.Human[i].Status = o.HumanCommands[i], int8(o.HumanStatus[i])
 	}
 	for i, h := range o.Hoops {
 		v.Hoops[i] = AIHoopView{Position: h.Position, Action: HoopAction(h.Action & 127), Owner: int8(h.Owner)}
@@ -106,11 +106,11 @@ func TestOriginalTeamAIRolesAndRefresh(t *testing.T) {
 	}
 }
 
-func TestOriginalTeamAIUnsupportedCommandIsAtomic(t *testing.T) {
+func TestOriginalTeamAIInvalidCommandIsAtomic(t *testing.T) {
 	initial := TeamAIState{Teams: [2]TeamStrategyState{{Mode: 12}, {Mode: 13}}}
-	ctx := TeamAIContext{Holder: 6, PreviousHolder: 6, HasHuman: [2]bool{false, true}, HumanCommands: [2]uint8{0, 1}}
+	ctx := TeamAIContext{Holder: 6, PreviousHolder: 6, HasHuman: [2]bool{false, true}, Human: [2]HumanCommandState{{}, {Request: 3}}}
 	got, err := StepOriginalTeamAI(initial, ctx)
 	if err == nil || got.State != initial {
-		t.Fatal("unrestored cooperation must retain the complete input state", got, err)
+		t.Fatal("invalid cooperation must retain the complete input state", got, err)
 	}
 }

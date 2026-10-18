@@ -1,0 +1,17 @@
+{
+  "scope": "single controlled initialization, unchanged original contact reset + full input + full action phases, no reinjection between steps; not full-world/menu evidence",
+  "chains": 8,
+  "steps": [
+    14,
+    14,
+    18,
+    18,
+    7,
+    7,
+    11,
+    11
+  ],
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "c3b78e11bf161bf7d4eda59945e3f77010a581bd3268bd4384d655e9146d64a5"
+}

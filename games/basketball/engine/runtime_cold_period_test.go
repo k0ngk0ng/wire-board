@@ -34,6 +34,10 @@ func TestRuntimeAllComputerCompleteMatchAndRestore(t *testing.T) {
 
 func verifyColdVideoRuntime(t *testing.T, config RuntimeConfig, completeMatch bool) {
 	t.Helper()
+	verifyColdVideoRuntimeWithInput(t, config, completeMatch, nil)
+}
+func verifyColdVideoRuntimeWithInput(t *testing.T, config RuntimeConfig, completeMatch bool, extraInput func(RuntimeState, int) [4]Buttons) {
+	t.Helper()
 	maximumVideoFrames := 24000
 	if completeMatch {
 		maximumVideoFrames = 48000
@@ -69,6 +73,9 @@ func verifyColdVideoRuntime(t *testing.T, config RuntimeConfig, completeMatch bo
 				t.Fatalf("runtime cold seed 12345678 repeat %d video %d/%d logic %d: %v\nbefore=%s", repeat, frame, maximumVideoFrames, state.LogicSteps, reason, before)
 			}
 			var held [4]Buttons
+			if extraInput != nil {
+				held = extraInput(state, repeat)
+			}
 			// The only user action is to confirm the original intermission.
 			if state.AwaitingNextPeriod && state.WaitVideoFrames == 0 {
 				held[0] = ButtonStart
