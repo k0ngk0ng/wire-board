@@ -31,11 +31,11 @@ type CampaignRoundPreparation struct {
 }
 type CampaignView struct {
 	CampaignState
-	CanAct          bool    `json:"canAct"`
-	CanChooseTactic bool    `json:"canChooseTactic"`
-	Password        string  `json:"password,omitempty"`
-	Opponents       []uint8 `json:"opponents"`
-	AutomaticAt     int64   `json:"automaticAt"`
+	CanAct          bool   `json:"canAct"`
+	CanChooseTactic bool   `json:"canChooseTactic"`
+	Password        string `json:"password,omitempty"`
+	Opponents       []int  `json:"opponents"`
+	AutomaticAt     int64  `json:"automaticAt"`
 }
 type CampaignAction struct {
 	Type           string        `json:"type"`
@@ -190,7 +190,7 @@ func (s State) campaignView(actor int) (*CampaignView, error) {
 		return nil, nil
 	}
 	c := s.Campaign
-	v := &CampaignView{CampaignState: *c, CanAct: actor == 0 && !s.Inputs[0].Automated && s.campaignMenu() && !s.campaignTerminal(), Opponents: []uint8{}}
+	v := &CampaignView{CampaignState: *c, CanAct: actor == 0 && !s.Inputs[0].Automated && s.campaignMenu() && !s.campaignTerminal(), Opponents: []int{}}
 	if s.campaignMenu() && !s.campaignTerminal() && s.Inputs[0].Automated {
 		v.AutomaticAt = c.DecisionAt
 	}
@@ -207,7 +207,7 @@ func (s State) campaignView(actor int) (*CampaignView, error) {
 		if err != nil {
 			return nil, err
 		}
-		v.Opponents, err = campaign.AvailableOpponents(p)
+		v.Opponents, err = campaignOpponentIDs(p)
 		if err != nil {
 			return nil, err
 		}

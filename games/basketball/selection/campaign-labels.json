@@ -1,0 +1,608 @@
+{
+  "schemaVersion": 1,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "sourceSHA256": "1cde2ad3c9fa84de4be755cb01db7b1de2d6a22483c4613066687ec2aebb037a",
+  "translationAuthority": "editorial-not-official",
+  "scope": "original menu names and equipment slots only; no inferred effects or acquisition claims",
+  "items": [
+    {
+      "id": 0,
+      "slot": 0,
+      "name": "闪亮球衣",
+      "originalName": "ピカピカのシャツ",
+      "sourcePointer": "C308",
+      "encodedGlyphs": [
+        196,
+        155,
+        196,
+        155,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 1,
+      "slot": 0,
+      "name": "火箭球衣",
+      "originalName": "ロケットシャツ",
+      "sourcePointer": "C311",
+      "encodedGlyphs": [
+        221,
+        161,
+        179,
+        184,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 2,
+      "slot": 0,
+      "name": "布鲁斯球衣",
+      "originalName": "ブルースのシャツ",
+      "sourcePointer": "C319",
+      "encodedGlyphs": [
+        198,
+        219,
+        11,
+        169,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 3,
+      "slot": 0,
+      "name": "钢铁球衣",
+      "originalName": "コウテツシャツ",
+      "sourcePointer": "C322",
+      "encodedGlyphs": [
+        163,
+        150,
+        182,
+        180,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 4,
+      "slot": 0,
+      "name": "二层球衣",
+      "originalName": "2だんめのシャツ",
+      "sourcePointer": "C32A",
+      "encodedGlyphs": [
+        3,
+        80,
+        131,
+        113,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 5,
+      "slot": 0,
+      "name": "太阳球衣",
+      "originalName": "たいようのシャツ",
+      "sourcePointer": "C333",
+      "encodedGlyphs": [
+        79,
+        52,
+        120,
+        54,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 6,
+      "slot": 0,
+      "name": "滑溜球衣",
+      "originalName": "ヌメヌメのシャツ",
+      "sourcePointer": "C33C",
+      "encodedGlyphs": [
+        188,
+        209,
+        188,
+        209,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 7,
+      "slot": 0,
+      "name": "扣将球衣",
+      "originalName": "ダンカーのシャツ",
+      "sourcePointer": "C345",
+      "encodedGlyphs": [
+        176,
+        227,
+        155,
+        11,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 8,
+      "slot": 0,
+      "name": "羽毛球衣",
+      "originalName": "うもうのシャツ",
+      "sourcePointer": "C34E",
+      "encodedGlyphs": [
+        54,
+        114,
+        54,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 9,
+      "slot": 0,
+      "name": "幻影球衣",
+      "originalName": "まぼろしのシャツ",
+      "sourcePointer": "C356",
+      "encodedGlyphs": [
+        110,
+        108,
+        125,
+        71,
+        94,
+        167,
+        211,
+        180
+      ]
+    },
+    {
+      "id": 10,
+      "slot": 1,
+      "name": "闪亮短裤",
+      "originalName": "ピカピカのパンツ",
+      "sourcePointer": "C35F",
+      "encodedGlyphs": [
+        196,
+        155,
+        196,
+        155,
+        94,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 11,
+      "slot": 1,
+      "name": "火箭短裤",
+      "originalName": "ロケットパンツ",
+      "sourcePointer": "C368",
+      "encodedGlyphs": [
+        221,
+        161,
+        179,
+        184,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 12,
+      "slot": 1,
+      "name": "万能短裤",
+      "originalName": "ばんのうパンツ",
+      "sourcePointer": "C370",
+      "encodedGlyphs": [
+        96,
+        131,
+        94,
+        54,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 13,
+      "slot": 1,
+      "name": "羽毛短裤",
+      "originalName": "うもうのパンツ",
+      "sourcePointer": "C378",
+      "encodedGlyphs": [
+        54,
+        114,
+        54,
+        94,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 14,
+      "slot": 1,
+      "name": "马赫短裤",
+      "originalName": "まっはパンツ",
+      "sourcePointer": "C380",
+      "encodedGlyphs": [
+        110,
+        83,
+        95,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 15,
+      "slot": 1,
+      "name": "丁字短裤",
+      "originalName": "Tバックパンツ",
+      "sourcePointer": "C387",
+      "encodedGlyphs": [
+        36,
+        192,
+        179,
+        159,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 16,
+      "slot": 1,
+      "name": "布鲁斯短裤",
+      "originalName": "ブルースのパンツ",
+      "sourcePointer": "C38F",
+      "encodedGlyphs": [
+        198,
+        219,
+        11,
+        169,
+        94,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 17,
+      "slot": 1,
+      "name": "皱皱短裤",
+      "originalName": "しわしわパンツ",
+      "sourcePointer": "C398",
+      "encodedGlyphs": [
+        71,
+        127,
+        71,
+        127,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 18,
+      "slot": 1,
+      "name": "鬼纹短裤",
+      "originalName": "オニのパンツ",
+      "sourcePointer": "C3A0",
+      "encodedGlyphs": [
+        154,
+        187,
+        94,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 19,
+      "slot": 1,
+      "name": "斑渍短裤",
+      "originalName": "しみつきぱんつ",
+      "sourcePointer": "C3A7",
+      "encodedGlyphs": [
+        71,
+        111,
+        84,
+        61,
+        97,
+        131,
+        84
+      ]
+    },
+    {
+      "id": 20,
+      "slot": 1,
+      "name": "幻影短裤",
+      "originalName": "まぼろしのパンツ",
+      "sourcePointer": "C3AF",
+      "encodedGlyphs": [
+        110,
+        108,
+        125,
+        71,
+        94,
+        193,
+        227,
+        180
+      ]
+    },
+    {
+      "id": 21,
+      "slot": 2,
+      "name": "闪亮球鞋",
+      "originalName": "ピカピカシューズ",
+      "sourcePointer": "C3B8",
+      "encodedGlyphs": [
+        196,
+        155,
+        196,
+        155,
+        167,
+        213,
+        11,
+        170
+      ]
+    },
+    {
+      "id": 22,
+      "slot": 2,
+      "name": "火箭球鞋",
+      "originalName": "ロケットシューズ",
+      "sourcePointer": "C3C1",
+      "encodedGlyphs": [
+        221,
+        161,
+        179,
+        184,
+        167,
+        213,
+        11,
+        170
+      ]
+    },
+    {
+      "id": 23,
+      "slot": 2,
+      "name": "气垫球鞋",
+      "originalName": "エアシューズ",
+      "sourcePointer": "C3CA",
+      "encodedGlyphs": [
+        152,
+        146,
+        167,
+        213,
+        11,
+        170
+      ]
+    },
+    {
+      "id": 24,
+      "slot": 2,
+      "name": "布鲁斯球鞋",
+      "originalName": "ブルースのくつ",
+      "sourcePointer": "C3D1",
+      "encodedGlyphs": [
+        198,
+        219,
+        11,
+        169,
+        94,
+        63,
+        84
+      ]
+    },
+    {
+      "id": 25,
+      "slot": 2,
+      "name": "科技球鞋",
+      "originalName": "テクノシューズ",
+      "sourcePointer": "C3D9",
+      "encodedGlyphs": [
+        182,
+        159,
+        190,
+        167,
+        213,
+        11,
+        170
+      ]
+    },
+    {
+      "id": 26,
+      "slot": 2,
+      "name": "独齿木屐",
+      "originalName": "いっぽんあしのゲタ",
+      "sourcePointer": "C3E1",
+      "encodedGlyphs": [
+        52,
+        83,
+        109,
+        131,
+        50,
+        71,
+        94,
+        162,
+        175
+      ]
+    },
+    {
+      "id": 27,
+      "slot": 2,
+      "name": "富豪球鞋",
+      "originalName": "ナリキンシューズ",
+      "sourcePointer": "C3EA",
+      "encodedGlyphs": [
+        186,
+        218,
+        157,
+        227,
+        167,
+        213,
+        11,
+        170
+      ]
+    },
+    {
+      "id": 28,
+      "slot": 2,
+      "name": "羽毛球鞋",
+      "originalName": "うもうのくつ",
+      "sourcePointer": "C3F3",
+      "encodedGlyphs": [
+        54,
+        114,
+        54,
+        94,
+        63,
+        84
+      ]
+    },
+    {
+      "id": 29,
+      "slot": 2,
+      "name": "驹形木屐",
+      "originalName": "こまげた",
+      "sourcePointer": "C3FA",
+      "encodedGlyphs": [
+        67,
+        110,
+        66,
+        79
+      ]
+    },
+    {
+      "id": 30,
+      "slot": 2,
+      "name": "舞蹈球鞋",
+      "originalName": "ダンシングシューズ",
+      "sourcePointer": "C3FF",
+      "encodedGlyphs": [
+        176,
+        227,
+        167,
+        227,
+        160,
+        167,
+        213,
+        11,
+        170
+      ]
+    },
+    {
+      "id": 31,
+      "slot": 2,
+      "name": "幻影球鞋",
+      "originalName": "まぼろしのくつ",
+      "sourcePointer": "C408",
+      "encodedGlyphs": [
+        110,
+        108,
+        125,
+        71,
+        94,
+        63,
+        84
+      ]
+    }
+  ],
+  "tactics": [
+    {
+      "profile": 1,
+      "name": "积极进攻",
+      "originalName": "ガンガンせめろ！",
+      "sourcePointer": "bank3:B733",
+      "encodedGlyphs": [
+        156,
+        227,
+        156,
+        227,
+        75,
+        113,
+        125,
+        45
+      ]
+    },
+    {
+      "profile": 2,
+      "name": "盯人防守",
+      "originalName": "マークしろ！",
+      "sourcePointer": "bank3:B73C",
+      "encodedGlyphs": [
+        206,
+        11,
+        159,
+        71,
+        125,
+        45
+      ]
+    },
+    {
+      "profile": 3,
+      "name": "花式配合",
+      "originalName": "みせるプレーだ！",
+      "sourcePointer": "bank3:B745",
+      "encodedGlyphs": [
+        111,
+        75,
+        123,
+        199,
+        220,
+        11,
+        80,
+        45
+      ]
+    },
+    {
+      "profile": 4,
+      "name": "自由发挥",
+      "originalName": "おまかせ",
+      "sourcePointer": "bank3:B74E",
+      "encodedGlyphs": [
+        58,
+        110,
+        59,
+        75
+      ]
+    },
+    {
+      "profile": 5,
+      "name": "严密防守",
+      "originalName": "ビシビシぼうぎょ！",
+      "sourcePointer": "bank3:B757",
+      "encodedGlyphs": [
+        195,
+        167,
+        195,
+        167,
+        108,
+        54,
+        62,
+        119,
+        45
+      ]
+    }
+  ]
+}

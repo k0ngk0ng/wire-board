@@ -12,11 +12,43 @@ import (
 // CampaignOptions describes an explicit room entry. Password import rebuilds
 // the original inventory once; persisted rounds never re-read this entry code.
 type CampaignOptions struct {
+	Entry              string             `json:"entry,omitempty"`
 	Password           string             `json:"password,omitempty"`
 	Opponent           uint8              `json:"opponent"`
 	Tactic             uint8              `json:"tactic"`
 	Preparation        *campaign.Progress `json:"preparation,omitempty"`
-	AvailableOpponents []uint8            `json:"availableOpponents"`
+	AvailableOpponents []int              `json:"availableOpponents"`
+}
+
+func campaignEntryKind(c CampaignOptions) (string, error) {
+	kind := c.Entry
+	if kind == "" {
+		kind = "new"
+		if c.Password != "" {
+			kind = "password"
+		}
+	}
+	if kind != "new" && kind != "password" {
+		return "", fmt.Errorf("请选择新战役或原密码继续")
+	}
+	if kind == "new" && c.Password != "" {
+		return "", fmt.Errorf("新战役不能同时输入原密码")
+	}
+	return kind, nil
+}
+
+// Public JSON lists must remain arrays: encoding/json treats []uint8 as bytes
+// and emits a base64 string. The source leaf retains its original byte IDs.
+func campaignOpponentIDs(p campaign.Progress) ([]int, error) {
+	original, err := campaign.AvailableOpponents(p)
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]int, len(original))
+	for i, id := range original {
+		ids[i] = int(id)
+	}
+	return ids, nil
 }
 
 func campaignMode(mode string) (uint8, error) {
@@ -32,12 +64,16 @@ func campaignMode(mode string) (uint8, error) {
 // Preview has no RNG: empty new-game inventory cannot depend on the future
 // reward table. Only actual Start invokes the original one-time reward draw.
 func campaignEntryProgress(o Options) (campaign.Progress, error) {
+	kind, err := campaignEntryKind(*o.Campaign)
+	if err != nil {
+		return campaign.Progress{}, err
+	}
 	mode, err := campaignMode(o.Mode)
 	if err != nil {
 		return campaign.Progress{}, err
 	}
 	p, err := campaign.New(mode, 0)
-	if o.Campaign.Password != "" {
+	if kind == "password" {
 		p, err = campaign.DecodePassword(o.Campaign.Password)
 	}
 	if err != nil {
@@ -73,6 +109,11 @@ func campaignCourtName(court uint8) string {
 func configureCampaign(o Options) (Options, error) {
 	c := *o.Campaign
 	o.Campaign = &c
+	var err error
+	c.Entry, err = campaignEntryKind(c)
+	if err != nil {
+		return o, err
+	}
 	if c.Tactic == 0 {
 		c.Tactic = 4
 	}
@@ -86,7 +127,7 @@ func configureCampaign(o Options) (Options, error) {
 	if err != nil {
 		return o, err
 	}
-	c.AvailableOpponents, err = campaign.AvailableOpponents(p)
+	c.AvailableOpponents, err = campaignOpponentIDs(p)
 	if err != nil {
 		return o, err
 	}
@@ -94,7 +135,7 @@ func configureCampaign(o Options) (Options, error) {
 		if len(c.AvailableOpponents) == 0 {
 			return o, fmt.Errorf("该战役已经结束")
 		}
-		c.Opponent = c.AvailableOpponents[0]
+		c.Opponent = uint8(c.AvailableOpponents[0])
 	}
 	court, err := campaign.CourtForOpponent(p, c.Opponent)
 	if err != nil {

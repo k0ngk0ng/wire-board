@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,os,subprocess,uuid
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/platform-rooms';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkb-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
@@ -33,6 +33,32 @@ try:
  browser('fill','input[name=name]','牌局管理员');browser('fill','input[name=password]','poker-test-password');browser('click','.auth-form button[type=submit], .auth-form button.primary')
  wait('!!document.querySelector(".lobby") || document.body.innerText.includes("创建房间")')
  js('window.platformRequests=[];const originalFetch=window.fetch;window.fetch=async(...args)=>{const response=await originalFetch(...args);if(args[1]?.method==="POST")platformRequests.push({url:args[0],body:args[1]?.body,status:response.status,data:await response.clone().json()});return response};window.platformErrors=[];window.addEventListener("error",e=>platformErrors.push(e.message));window.addEventListener("unhandledrejection",e=>platformErrors.push(String(e.reason)))')
+ # Campaign uses the same production game picker and waiting room.
+ browser('find','role','button','click','--name','创建房间')
+ browser('fill','[aria-label="搜索可选游戏"]','热血篮球');browser('click','.choose-games button')
+ browser('select','[aria-label="座位上限"]','1')
+ browser('select','[aria-label="比赛形式"]','password')
+ browser('fill','[aria-label="原版密码"]','020010')
+ browser('fill','[data-create-step=setup] input[name=name]','热血战役准备')
+ browser('click','[data-create-step=setup] button[type=submit]')
+ wait('!!document.querySelector(".basketball-campaign-editor")')
+ wait('[...document.querySelectorAll(".basketball-campaign-editor img")].every(i=>i.complete&&i.naturalWidth>0)')
+ expect('campaign password entry uses the standard waiting room',js('!!document.querySelector(".waiting-seats")&&document.body.innerText.includes("火箭球衣")'))
+ browser('select','[aria-label="装备给哪位球员"]','2')
+ browser('click','[data-inventory-index="0"]');wait('!document.querySelector("[data-inventory-index]")')
+ browser('click','[data-campaign-position="0"] [data-character="2"]')
+ wait('document.querySelector(\'[data-campaign-position="0"] [data-character="2"]\')?.getAttribute("aria-pressed")==="true"')
+ browser('click','[data-opponent="4"]');wait('document.querySelector(\'[data-opponent="4"]\')?.getAttribute("aria-pressed")==="true"')
+ campaign=js('fetch("/api/state").then(r=>r.json()).then(s=>s.room.options)')
+ expect('native campaign choices reach authenticated source preparation',campaign['campaign']['password']=='020010' and campaign['characters'][0]==2 and campaign['campaign']['preparation']['equipment'][2][0]==1 and campaign['teams']==[0,4] and campaign['court']=='court-0')
+ browser('set','viewport','320','720')
+ contrast=js('(()=>{const rgb=s=>s.match(/[\\d.]+/g).slice(0,3).map(Number),lum=c=>c.map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4}).reduce((s,n,i)=>s+n*[.2126,.7152,.0722][i],0);return [...document.querySelectorAll(".basketball-campaign-editor button,.basketball-campaign-editor p,.basketball-campaign-editor h3,.basketball-campaign-editor h4,.basketball-campaign-editor label,.basketball-options small,.basketball-options p")].filter(e=>e.textContent.trim()).map(e=>{let b=e;while(b&&getComputedStyle(b).backgroundColor==="rgba(0, 0, 0, 0)")b=b.parentElement;const fg=lum(rgb(getComputedStyle(e).color)),bg=lum(rgb(getComputedStyle(b).backgroundColor));return{text:e.textContent,ratio:(Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05)}})})()')
+ expect('production campaign text contrast is at least 4.5:1',all(row['ratio']>=4.5 for row in contrast))
+ (OUT/'campaign-contrast.json').write_text(json.dumps(contrast,ensure_ascii=False,indent=2)+'\n')
+ expect('campaign waiting room does not overflow 320px',js('document.documentElement.scrollWidth<=innerWidth'))
+ browser('screenshot',str(OUT/'campaign-waiting-mobile.png'),'--full')
+ browser('set','viewport','1280','900');browser('screenshot',str(OUT/'campaign-waiting-desktop.png'),'--full')
+ browser('find','role','button','click','--name','离开房间');wait('!document.querySelector(".waiting-seats")')
  for mode,capacity in [('solo',1),('cooperative',2),('versus',2)]:
   browser('find','role','button','click','--name','创建房间')
   browser('fill','[aria-label="搜索可选游戏"]','热血篮球')

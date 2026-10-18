@@ -6,6 +6,7 @@ import type {
   ControllerProfile,
   ControllerSettingsData,
 } from "../../../web/src/controllers/input";
+import { CampaignPanel } from "./CampaignPanel";
 import { BasketballNetworkClient } from "./network-client";
 import type { BasketballNetworkView } from "./network-scene";
 import "./network.css";
@@ -21,6 +22,9 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     [error, setError] = useState(""),
     [connected, setConnected] = useState(true),
     [retry, setRetry] = useState(0);
+  const [campaignOpen, setCampaignOpen] = useState(false);
+  const campaignOpenRef = useRef(campaignOpen);
+  campaignOpenRef.current = campaignOpen;
   const { room, data } = props;
   const watching = !!room.spectating || room.you < 0;
   const userID = watching ? "spectator" : (room.seats[room.you]?.id ?? "");
@@ -28,6 +32,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
   const identity = `${room.id}:${data.epoch}:${room.you}:${localActor}:${userID}`;
   const ready = readyIdentity === identity;
   const enabled = (value: BoardProps<BasketballNetworkView>) =>
+    !campaignOpenRef.current &&
     value.room.status === "playing" &&
     !value.room.spectating &&
     value.room.you >= 0 &&
@@ -132,9 +137,16 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
       console.error("Basketball snapshot", e);
       setError("对局画面暂时无法同步，请重新连接。");
     }
-  }, [data, room.version, props.busy]);
-  const phase =
-    data.phase === "paused"
+  }, [data, room.version, props.busy, campaignOpen]);
+  const phase = data.phase.startsWith("campaign-")
+    ? data.campaign?.stage === "prepare"
+      ? "下一场准备"
+      : data.campaign?.stage === "complete"
+        ? "战役已通关"
+        : data.campaign?.stage === "quit"
+          ? "战役已结束"
+          : "本场结束 · 战役确认"
+    : data.phase === "paused"
       ? "比赛暂停 · 第一席按 START 继续"
       : data.phase === "intermission"
         ? "中场休息 · 第一席按 START 开始下半场"
@@ -161,6 +173,14 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
               ? "连接中断，正在等待同步…"
               : phase}
         </p>
+        <CampaignPanel
+          data={data}
+          assets={props.assets}
+          busy={props.busy}
+          act={props.act}
+          clock={props.clock}
+          onOpenChange={setCampaignOpen}
+        />
         {error && (
           <div className="basketball-error" role="alert">
             {error}
