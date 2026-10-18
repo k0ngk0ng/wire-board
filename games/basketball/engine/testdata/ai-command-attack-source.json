@@ -1,0 +1,14 @@
+{
+  "entry": "bank5 original A05D dispatcher, A63D/AD17 and subsequent mode7 A2E9",
+  "calls": 6552,
+  "chains": 36,
+  "chainCalls": 72,
+  "natural_gameplay": false,
+  "original_instructions_unchanged": true,
+  "scope": "controlled dispatch calls and two-call AI handoff chains; no physics or full-match claim",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "ramSource": ".local/nes-basket/runs/ball-pass/ram.bin",
+  "ramSHA256": "80944347155c86accf2b9dba3f9b38e8ed37b1f4f3f839154c570ca7fb9143f2",
+  "fixtureSHA256": "f0d866ab0887348008cc966d8bdd1c065b629241de4538a2a32dc71c3beb73a4",
+  "reusedREA": "ev_eef21fb30302a3ec59b8b3dc097be9a7fa2a559339d598963a8489a9d646759d"
+}

@@ -19,8 +19,10 @@ type TeamAIContext struct {
 	Teams                  [2]uint8
 	HasHuman               [2]bool
 	HumanTactics           [2]uint8
-	HumanCommands          [2]uint8
-	HumanStatus            [2]int8
+	Human                  [2]HumanCommandState
+	PlayerActions          [4]Action
+	CachedZones            [4]CourtZone
+	Auxiliary              [2]AuxiliaryState
 	Holder, PreviousHolder uint8
 	ScoreDifference        uint8
 	CourtID                uint8
@@ -32,7 +34,10 @@ type TeamAIContext struct {
 	HoopEntered [6]bool
 }
 
-type TeamAIStep struct{ State TeamAIState }
+type TeamAIStep struct {
+	State TeamAIState
+	Human [2]HumanCommandState
+}
 
 func originalTeamRoleOrder(team uint8, ctx TeamAIContext) (uint8, uint8) {
 	first := team * 2
@@ -179,7 +184,7 @@ func advanceOriginalComputerTeam(state *TeamAIState, team uint8, ctx TeamAIConte
 // It does not advance physics, consume random numbers, or update PreviousHolder;
 // the original caller commits that last field only after this phase returns.
 func StepOriginalTeamAI(original TeamAIState, ctx TeamAIContext) (TeamAIStep, error) {
-	initial := TeamAIStep{State: original}
+	initial := TeamAIStep{State: original, Human: ctx.Human}
 	result := initial
 	if ctx.Holder >= 7 || ctx.PreviousHolder >= 7 {
 		return initial, errors.New("invalid original team ball holder")
@@ -187,12 +192,8 @@ func StepOriginalTeamAI(original TeamAIState, ctx TeamAIContext) (TeamAIStep, er
 	for team := uint8(0); team < 2; team++ {
 		s := &result.State.Teams[team]
 		if ctx.HasHuman[team] {
-			if ctx.HumanCommands[team] != 0 || ctx.HumanStatus[team] != 0 {
-				return initial, errors.New("original human-team cooperation request is not reconstructed")
-			}
-			desired := originalHumanTeamModes[team*8+ctx.Holder]
-			if ctx.Holder != ctx.PreviousHolder || s.Mode != desired {
-				s.Mode, s.Entered = desired, false
+			if err := selectOriginalHumanTeamStrategy(&result, team, ctx); err != nil {
+				return initial, err
 			}
 		} else if ctx.Holder != ctx.PreviousHolder {
 			s.Mode, s.Entered = originalComputerTeamModes[team*8+ctx.Holder], false
@@ -204,6 +205,10 @@ func StepOriginalTeamAI(original TeamAIState, ctx TeamAIContext) (TeamAIStep, er
 		case 0:
 		case 1, 10, 11, 12:
 			if err := advanceOriginalComputerTeam(&result.State, team, ctx); err != nil {
+				return initial, err
+			}
+		case 4, 5, 6, 7:
+			if err := advanceOriginalTeamCommand(&result, team, ctx); err != nil {
 				return initial, err
 			}
 		case 2, 3, 8, 9, 13:

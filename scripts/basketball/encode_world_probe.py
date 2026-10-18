@@ -47,7 +47,7 @@ def encode_world_probe(snapshot):
  seq(0x4e0,inp['held'],'held');seq(0x4e4,inp['pressed'],'pressed')
  for j,h in enumerate(inp['human']):
   i=j*2
-  for address,key in [(0x657,'evenstatus'),(0x653,'request'),(0x658,'status')]:b(address+i,h.get(key,0),'human.'+key)
+  for address,key in [(0x657,'evenstatus'),(0x653,'request'),(0x658,'status'),(0x68a,'accepted')]:b(address+i,h.get(key,0),'human.'+key)
   for address,key in [(0x65b,'buttonwindows'),(0x65f,'timers'),(0x6c6,'messages'),(0x68e,'overrides')]:seq(address+i,h[key],'human.'+key)
  camera=w['camera']
  for address,key in [(0x397,'displayedx'),(0x39b,'x'),(0x39d,'y')]:integer([address,address+1],camera[key],'camera.'+key)

@@ -1,0 +1,14 @@
+{
+  "scope": "controlled original functions plus A05D dispatcher; not natural match or human input chain",
+  "records": 6304,
+  "chains": 4,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "35ade53c7523d3a7ff6033ece2f29ee7d6d7ab6d501b2cd1cd5ffe49ca63f284",
+  "fixtureSHA256": "8a70778f6b91cebb683ebd72096ffd0afb1a87883d8f5399935002ae566eaf60",
+  "entries": {
+    "10": 42081,
+    "11": 42102,
+    "28": 43359,
+    "30": 41480
+  }
+}

@@ -52,7 +52,10 @@ func (r worldPreparationFixture) context(t *testing.T) WorldPreparationContext {
 	if err := json.Unmarshal(r.Context.Actions, &action.Context); err != nil {
 		t.Fatal(err)
 	}
-	c := WorldPreparationContext{Actions: action.context(t), Kinds: r.Context.Kinds, Suppressed: r.Context.Suppressed, AttackGrades: r.Context.AttackGrades, HumanTactics: r.Context.HumanTactics, HumanCommands: r.Context.HumanCommands, HumanStatus: r.Context.HumanStatus, BackboardStrength: r.Context.BackboardStrength}
+	c := WorldPreparationContext{Actions: action.context(t), Kinds: r.Context.Kinds, Suppressed: r.Context.Suppressed, AttackGrades: r.Context.AttackGrades, HumanTactics: r.Context.HumanTactics, BackboardStrength: r.Context.BackboardStrength}
+	for i := range c.Human {
+		c.Human[i].Request, c.Human[i].Status = r.Context.HumanCommands[i], r.Context.HumanStatus[i]
+	}
 	for i := range c.Actions.Profiles {
 		c.Actions.Profiles[i].ScoringBonus = r.Context.ScoringBonuses[i]
 	}
@@ -94,7 +97,7 @@ func TestWorldPreparationErrorsAreAtomic(t *testing.T) {
 	for _, change := range []func(*WorldPreparationContext){
 		func(c *WorldPreparationContext) { c.Actions.CourtID = 255 },
 		func(c *WorldPreparationContext) { c.Kinds[0] = 255 },
-		func(c *WorldPreparationContext) { c.HumanCommands[0] = 1 },
+		func(c *WorldPreparationContext) { c.Human[0].Request = 3 },
 	} {
 		c := r.context(t)
 		change(&c)

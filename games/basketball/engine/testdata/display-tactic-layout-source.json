@@ -1,0 +1,32 @@
+{
+  "scope": "isolated original B074 panel and continuous AFF3 scheduler execution, no instruction modifications and no PPU/NMI emulation",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "panelCalls": 78,
+  "schedulerCalls": 12,
+  "tableOffsets": [
+    0,
+    7,
+    0,
+    7
+  ],
+  "cacheWriteCount": 0,
+  "slots": [
+    1,
+    3,
+    1,
+    3,
+    1,
+    3,
+    1,
+    3,
+    1,
+    3,
+    1,
+    3
+  ],
+  "outputs": {
+    "panel-calls.json": "5fefad0fc7a0a026ddf5ae58a0769f739411be3afde1ee60d98d6fb458bd3517",
+    "scheduler-chain.json": "07c88c3eaa6734f1f55d21b4314b474b026a2ffb7af345347c4b04be80986e58"
+  },
+  "fixtureSHA256": "3f4c9d57a6115c076f0c8f9f5d39ad0d53347def60af599cdc016bcb3010c43f"
+}

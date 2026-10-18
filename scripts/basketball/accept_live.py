@@ -1,5 +1,5 @@
 """Go/Wasm + original Canvas + native keyboard/touch browser acceptance."""
-import argparse,hashlib,json,os,re,subprocess,threading,uuid,base64,time
+import argparse,hashlib,json,os,re,subprocess,threading,uuid,base64,time,gzip
 from pathlib import Path
 from http.server import ThreadingHTTPServer,BaseHTTPRequestHandler
 from urllib.parse import unquote
@@ -13,6 +13,7 @@ parser.add_argument('--all-computer',action='store_true',help='run the natural c
 parser.add_argument('--court',type=int,choices=[0,1,2,3,4,5,6],default=1,help='original recovered court selector; no world-state injection')
 parser.add_argument('--teams',type=int,nargs=2,help='explicit original team IDs for the cold full match')
 parser.add_argument('--characters',type=int,nargs=4,help='explicit original character slots for the cold full match')
+parser.add_argument('--commands',action='store_true',help='native keyboard/touch teammate commands for all six original tactics')
 parser.add_argument('--carry',action='store_true',help='native pickup, carrying movement, jumping and A/B prop throws on Court3')
 parser.add_argument('--running-carry',action='store_true',help='native role-specific running B prop attacks on Court3')
 parser.add_argument('--fade',action='store_true',help='observe original opening fade through Go/Wasm and Canvas')
@@ -31,6 +32,7 @@ OUT=ROOT/('.local/basketball/all-computer-full-match-browser' if ARGS.all_comput
 if ARGS.court!=1:OUT=OUT.with_name(OUT.name+'-court-'+str(ARGS.court))
 if ARGS.teams is not None:OUT=OUT.with_name(OUT.name+'-teams-'+'-'.join(map(str,ARGS.teams)))
 if ARGS.characters is not None:OUT=OUT.with_name(OUT.name+'-characters-'+'-'.join(map(str,ARGS.characters)))
+if ARGS.commands:OUT=OUT.with_name(OUT.name+'-commands')
 OUT.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkl-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
@@ -340,6 +342,46 @@ def main():
                 expect('running attack leaves no stuck native input '+label,rows[-1]['held']==0)
                 browser('screenshot',str(OUT/('running-final-'+label.replace(' ','-')+'.png')))
             browser('set','viewport','1280','900')
+        if ARGS.commands:
+            command_results=[]
+            source_layouts=json.loads(gzip.decompress((ROOT/'games/basketball/engine/testdata/display-tactic-layout.json.gz').read_bytes()))
+            reply_layouts={f"{r['main']}-{r['reply']}":{'upper':r['upperUpload']['glyphs'],'lower':r['lowerUpload']['glyphs']} for r in source_layouts if r['slot']==1}
+            scenarios=[(t,b,False) for t in range(6) for b in ('a','b')]+[(0,'a',True),(3,'b',True)]
+            for tactic,button,mobile in scenarios:
+                label=f'tactic{tactic}-{button}-'+('touch' if mobile else 'keyboard')
+                browser('set','viewport',*(['320','720'] if mobile else ['1280','900']))
+                cdp('Emulation.setTouchEmulationEnabled',dict(enabled=mobile,maxTouchPoints=3))
+                js('(()=>{const call=v=>{const r=JSON.parse(basketballWasm(JSON.stringify(v)));if(!r.ok)throw Error(JSON.stringify(r.error));return r.data};const config=call({op:"defaults"});config.match.Court=1;config.match.Seed=0x12345678;config.humanTactics=['+str(tactic)+',0];const fresh=call({op:"create",config});live.restore({version:1,state:fresh.state});call({op:"dispose",session:fresh.session});document.querySelector("#game").focus();window.commandTrace=[];window.commandObserve=()=>{const s=live.view.state;if(!s.playing)return;const w=s.playing.world;commandTrace.push({video:s.videoFrames,mode:w.Preparation.TeamAI.players[1].mode,human:structuredClone(w.Input.Human[0]),held:s.held[0]});};window.commandAdvance=n=>{for(let i=0;i<n;i++){live.advance(1);commandObserve();}};for(let i=0;i<600;i++){const s=live.view.state;if(s.playing&&s.playing.world.Preparation.Actions.Holder!==0)break;live.advance(1);}return live.view.state.playing?.world.Preparation.Actions.Holder!==0})()')
+                # Native input only. Go clocks, positions and AI are untouched.
+                if mobile:
+                    point=js('(()=>{const r=document.querySelector("[data-controller-button='+button+']").getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()')
+                    expect('touch command button is visible '+label,0<=point['x']<=320 and 0<=point['y']<=720)
+                    cdp('Input.dispatchTouchEvent',dict(type='touchStart',touchPoints=[dict(id=1,**point)]))
+                else:key('keyDown','KeyK' if button=='a' else 'KeyJ',button=='a' and 'k' or 'j',75 if button=='a' else 74)
+                js('commandAdvance(18)')
+                if mobile:cdp('Input.dispatchTouchEvent',dict(type='touchEnd',touchPoints=[]))
+                else:key('keyUp','KeyK' if button=='a' else 'KeyJ',button=='a' and 'k' or 'j',75 if button=='a' else 74)
+                # Compare committed glyph rows with original B074 uploads:
+                # six command glyphs, one blank, two response glyphs.
+                visible_reply='(()=>{const s=live.view.state,h=s.playing.world.Input.Human[0],lines=s.display.Visible.hud.panels[0].lines,table='+json.dumps(reply_layouts)+';const expected=table[h.Messages[0]+"-"+h.Messages[1]];return h.Messages[1]===1&&expected&&JSON.stringify(lines[1])===JSON.stringify(expected.upper)&&JSON.stringify(lines[2])===JSON.stringify(expected.lower)})()'
+                for _ in range(60):
+                    if js(visible_reply):break
+                    js('commandAdvance(1)')
+                expect('complete original command and reply reach visible HUD '+label,js(visible_reply))
+                browser('screenshot',str(OUT/('command-accepted-'+label+'.png')))
+                for _ in range(10):js('commandAdvance(120)')
+                rows=js('commandTrace');last=rows[-1];want=36 if button=='a' else [37,37,30,13,38,37][tactic]
+                expect('native command reaches original acceptance '+label,any(r['human']['Messages'][1]==1 for r in rows))
+                expect('native command selects original tactic mode '+label,any(r['mode']==want for r in rows))
+                if tactic==3 and button=='b':expect('auxiliary command follows original pickup and carry '+label,all(any(r['mode']==m for r in rows) for m in [13,3,14]))
+                expect('command releases busy state and native input '+label,last['human']['Status']==0 and last['human']['Request']==0 and last['held']==0)
+                checkpoint=js('live.save()');pixels=js('document.querySelector("canvas").toDataURL()');js('live.restore('+json.dumps(checkpoint)+')')
+                expect('command completion survives checkpoint restore '+label,js('live.save()')==checkpoint and js('document.querySelector("canvas").toDataURL()')==pixels)
+                (OUT/('command-'+label+'.json')).write_text(json.dumps(rows,indent=2)+'\n')
+                command_results.append(dict(tactic=tactic,button=button,mobile=mobile,worldFieldsRewritten=False,accepted=True,mode=want,video=last['video']))
+            (OUT/'commands-result.json').write_text(json.dumps(dict(status='passed',scope='cold Go/Wasm/client/Canvas with native input; not an original-machine trace or multiplayer network',scenarios=command_results),indent=2)+'\n')
+            browser('set','viewport','1280','900')
+            cdp('Emulation.setTouchEmulationEnabled',dict(enabled=False))
         if ARGS.full_match:
             # Actual cold creation and original clock. No scores, positions,
             # RNG or clock fields are rewritten. All Go frames reach Canvas.

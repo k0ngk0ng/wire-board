@@ -1,5 +1,15 @@
 # Remaining original AI coverage audit
 
+## Recovery after this audit
+
+The subsequent command recovery implements personal modes 3/10/11/13/14/30/36/37/38/41 and all team strategies4–7. Current entry counts are **41/42 personal modes** (mode15 remains unsupported), **14/14 team strategies**, **13/16 direct shot plans**, and **7/14 evasion plans**. The normal A/B command consumer now applies original request/status/reply/window writes and auxiliary bindings through canonical world state. Entry counts still do not prove full gameplay coverage.
+
+See [command integration](AI_TEAM_COMMAND_VERIFICATION.md) for source comparisons, ordinary-controller paths, full-match results and browser evidence. Remaining guards and unknown source domains below are not automatically resolved by the added entries.
+
+Next work is the remaining direct shot/evasion entries and their real callers, mode15/alias boundaries, and campaign/equipment semantics. Platform tactical choices and complete network acceptance remain separate from these engine entry counts.
+
+## Historical pre-recovery audit
+
 Audit date: 2026-10-18. This is a read-only implementation/source audit, not a new gameplay acceptance result. Only this report was written. No AI behavior, product configuration, source fixtures, or coverage headline was changed, and no unrelated game tests were run.
 
 The current implementation has **31 of the original 42 personal mode entries**, **10 of 14 team strategy entries**, **13 of 16 direct shot-plan entries**, and **7 of 14 direct evasion-plan entries**. These are dispatch counts, not percentages of gameplay completed: implemented entries retain important guards, and some missing entries are original aliases or have no demonstrated ordinary caller.

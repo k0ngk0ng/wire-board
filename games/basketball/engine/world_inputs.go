@@ -5,6 +5,7 @@ import "fmt"
 // HumanCommandState keeps the original teammate-command windows and message
 // timers. It is separate from controller chord memory and team AI strategy.
 type HumanCommandState struct {
+	Accepted uint8 `json:"accepted,omitempty"`
 	// The even-seat byte adjacent to Status in original 0657..065A.
 	EvenStatus          int8 `json:"evenStatus,omitempty"`
 	Request             uint8
@@ -213,6 +214,15 @@ func advanceWorldComputerInput(s *WorldInputState, actor uint8, ctx WorldInputCo
 	}
 	if decision.TeammateControl.Change && decision.TeammateControl.Actor >= 4 {
 		return fmt.Errorf("AI teammate command is outside player seats")
+	}
+	if command := decision.AuxiliaryCommand; command.Bind {
+		if command.Object < 4 || command.Object > 5 {
+			return fmt.Errorf("AI auxiliary target %d outside original slots", command.Object)
+		}
+		w.Auxiliary[command.Object-4].Owner = int8(actor)
+	}
+	if decision.AuxiliaryCommand.SetMessage {
+		s.Human[actor/2].Messages[actor%2] = decision.AuxiliaryCommand.Message
 	}
 	if decision.ClearCommandStatus {
 		if actor&1 == 0 {

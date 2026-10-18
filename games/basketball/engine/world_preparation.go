@@ -28,17 +28,18 @@ type WorldPreparationState struct {
 }
 
 type WorldPreparationContext struct {
-	PhysicalControllers         *[4]ControllerFrame
-	Actions                     WorldActionContext
-	Kinds                       [7]uint8
-	Suppressed                  [7]bool
-	AttackGrades                [4]uint8
-	HumanTactics, HumanCommands [2]uint8
-	HumanStatus                 [2]int8
-	BackboardStrength           uint8
+	PhysicalControllers *[4]ControllerFrame
+	Actions             WorldActionContext
+	Kinds               [7]uint8
+	Suppressed          [7]bool
+	AttackGrades        [4]uint8
+	HumanTactics        [2]uint8
+	Human               [2]HumanCommandState
+	BackboardStrength   uint8
 }
 
 type WorldPreparationStep struct {
+	Human    [2]HumanCommandState
 	State    WorldPreparationState
 	SoundIDs []uint8
 }
@@ -136,15 +137,16 @@ func prepareOriginalInteractions(s *WorldPreparationState, c WorldPreparationCon
 	return sounds, nil
 }
 
-func prepareOriginalTeams(s *WorldPreparationState, c WorldPreparationContext) error {
+func prepareOriginalTeams(s *WorldPreparationState, c WorldPreparationContext) ([2]HumanCommandState, error) {
 	a := &s.Actions
-	ctx := TeamAIContext{Teams: c.Actions.Teams, HumanTactics: c.HumanTactics, HumanCommands: c.HumanCommands, HumanStatus: c.HumanStatus,
+	ctx := TeamAIContext{Teams: c.Actions.Teams, HumanTactics: c.HumanTactics, Human: c.Human, CachedZones: s.Zones, Auxiliary: a.Auxiliary,
 		Holder: uint8(a.Holder), PreviousHolder: uint8(s.PreviousHolder), ScoreDifference: s.ScoreDifference, CourtID: c.Actions.CourtID, Attachments: a.PlayerLinks}
 	for team := range ctx.HasHuman {
 		ctx.HasHuman[team] = c.Actions.Controls[team*2]&c.Actions.Controls[team*2+1]&128 == 0
 	}
 	for i, p := range a.Actors {
 		ctx.Objects[i] = p.Player.Body.Position
+		ctx.PlayerActions[i] = p.Player.Action
 		ctx.Airborne[i] = p.Player.Airborne
 	}
 	for i, p := range a.Auxiliary {
@@ -157,12 +159,12 @@ func prepareOriginalTeams(s *WorldPreparationState, c WorldPreparationContext) e
 	}
 	got, err := StepOriginalTeamAI(s.TeamAI, ctx)
 	if err != nil {
-		return err
+		return c.Human, err
 	}
 	s.TeamAI = got.State
 	// Original $8026 commits only after the team phase consumed the old holder.
 	s.PreviousHolder = a.Holder
-	return nil
+	return got.Human, nil
 }
 
 func prepareOriginalBoards(s *WorldPreparationState, c WorldPreparationContext) ([]uint8, error) {
@@ -215,7 +217,7 @@ func prepareOriginalBoards(s *WorldPreparationState, c WorldPreparationContext) 
 // components. It owns neither camera/HUD ticks nor input/AI/action execution.
 // Any unsupported subphase rolls back the entire state and ordered sound list.
 func StepWorldPreparation(original WorldPreparationState, c WorldPreparationContext) (WorldPreparationStep, error) {
-	initial := WorldPreparationStep{State: original}
+	initial := WorldPreparationStep{State: original, Human: c.Human}
 	if c.Actions.CourtID >= 8 {
 		return initial, fmt.Errorf("world preparation court %d is not reconstructed", c.Actions.CourtID)
 	}
@@ -246,7 +248,7 @@ func StepWorldPreparation(original WorldPreparationState, c WorldPreparationCont
 		}
 	}
 	s.ScoreDifference = OriginalScoreDifference(s.Scores)
-	if err = prepareOriginalTeams(s, c); err != nil {
+	if result.Human, err = prepareOriginalTeams(s, c); err != nil {
 		return initial, fmt.Errorf("team strategy: %w", err)
 	}
 	sounds, err = prepareOriginalBoards(s, c)

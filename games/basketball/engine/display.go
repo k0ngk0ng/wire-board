@@ -261,14 +261,18 @@ func ObserveDisplayHUD(original DisplayState, before, after MatchState, tactics 
 			return original, fmt.Errorf("invalid display HUD slot")
 		}
 		p := &s.HUD.Panels[side]
-		for player := 0; player < 2; player++ {
-			label, e := OriginalTacticHUDLabel(tactics[int(side)*2+player])
+		// B17A places the team's main message at 0 and its response at 7.
+		// B074 uploads only nine glyphs: six message cells, a blank, then
+		// two response cells. These are messages, not per-player labels.
+		for message, offset := range [2]int{0, 7} {
+			label, e := OriginalTacticHUDLabel(tactics[int(side)*2+message])
 			if e != nil {
 				return original, e
 			}
-			copy(p.Lines[1][player*3:], label.Upper[:])
-			copy(p.Lines[2][player*3:], label.Lower[:])
+			copy(p.Lines[1][offset:], label.Upper[:])
+			copy(p.Lines[2][offset:], label.Lower[:])
 		}
+		p.Lines[1][6], p.Lines[2][6] = 0, 0
 		score := after.DisplayedScores[side]
 		s.HUD.Scores[side] = uint16(score[0])*100 + uint16(score[1])*10 + uint16(score[2])
 	}

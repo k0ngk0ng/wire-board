@@ -15,6 +15,8 @@ def decode_world_input_state(r):
     team=dict(teams=[dict(mode=r[0x663+i]&127,entered=bool(r[0x663+i]&128),counter=signed(r[0x668+i])) for i in range(2)],players=[control(r,i) for i in range(4)])
     memory=[dict(tapWindow=r[0x4f9+i],lastTap=r[0x509+i],attackTapWindow=r[0x4fd+i],lastAttackTap=r[0x505+i],buttonDelay=r[0x501+i],pendingButtons=r[0x50d+i]) for i in range(4)]
     human=[dict(evenStatus=signed(r[0x657+i]),request=r[0x653+i],status=signed(r[0x658+i]),buttonWindows=list(r[0x65b+i:0x65d+i]),timers=[signed(v) for v in r[0x65f+i:0x661+i]],messages=list(r[0x6c6+i:0x6c8+i]),overrides=list(r[0x68e+i:0x690+i])) for i in (0,2)]
+    for t in range(2):
+        if r[0x68a+2*t]:human[t]['accepted']=r[0x68a+2*t]
     return dict(world=decode_world_action_state(r),team=team,memory=memory,held=list(r[0x4e0:0x4e4]),pressed=list(r[0x4e4:0x4e8]),human=human)
 
 

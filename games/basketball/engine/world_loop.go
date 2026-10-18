@@ -142,14 +142,13 @@ func StepWorldLoop(original WorldLoopState, input WorldLoopInput, ctx WorldLoopC
 		for i := range pc.Suppressed {
 			pc.Suppressed[i] = uint16(s.Projection.Projected[i].X)>>8 != 0
 		}
-		for i, h := range s.Input.Human {
-			pc.HumanCommands[i], pc.HumanStatus[i] = h.Request, h.Status
-		}
+		pc.Human = s.Input.Human
 		prepared, err := StepWorldPreparation(s.Preparation, pc)
 		if err != nil {
 			return initial, fmt.Errorf("preparation: %w", err)
 		}
 		s.Preparation = prepared.State
+		s.Input.Human = prepared.Human
 		result.SoundIDs = append(result.SoundIDs, prepared.SoundIDs...)
 		result.HUD = &HUDWorldSnapshot{LogicFrame: s.LogicFrame, Scores: s.Preparation.Scores}
 		for team, h := range s.Input.Human {
