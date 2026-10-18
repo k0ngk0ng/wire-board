@@ -2,7 +2,7 @@
 
 本夹具为半场事务接线提供原选人／清理、角色提交／等级计算及后续四人物更新的独立证据。它复用4条已有正常菜单记录，执行未改写的原指令；没有重跑整场，也没有修改生产代码或编写替代规则。
 
-文件为 `engine/testdata/campaign-confirmation.json`（4行数组）和 `campaign-confirmation-source.json`。生成器为 `scripts/basketball/verify_campaign_confirmation.py`。
+文件为 `engine/testdata/campaign-confirmation.json.gz`（4行数组）和 `campaign-confirmation-source.json`。生成器为 `scripts/basketball/verify_campaign_confirmation.py`。
 
 ## 记录范围
 
