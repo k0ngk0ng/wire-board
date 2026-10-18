@@ -6,7 +6,8 @@ import (
 )
 
 type RuntimeConfig struct {
-	// Campaign is the immutable starting preparation snapshot, not live progress.
+	// Campaign is the committed preparation snapshot, not live period progress.
+	// An explicit halftime confirmation may replace its owned loadout.
 	Campaign     *campaign.Progress         `json:"campaign,omitempty"`
 	Match        OriginalMatchConfiguration `json:"match"`
 	HumanTactics [2]uint8                   `json:"humanTactics"`
@@ -40,12 +41,13 @@ type RuntimeTransitionState struct {
 // Exactly one stage pointer is active. Completed stage objects are discarded;
 // they are never a second authoritative copy of the playing world.
 type RuntimeState struct {
-	Outcome    *RuntimeOutcome         `json:"outcome,omitempty"`
-	Config     RuntimeConfig           `json:"config"`
-	Display    DisplayState            `json:"display"`
-	Opening    *OpeningState           `json:"opening,omitempty"`
-	Playing    *RuntimePlayingState    `json:"playing,omitempty"`
-	Transition *RuntimeTransitionState `json:"transition,omitempty"`
+	CampaignPreparation *CampaignPreparation    `json:"campaignPreparation,omitempty"`
+	Outcome             *RuntimeOutcome         `json:"outcome,omitempty"`
+	Config              RuntimeConfig           `json:"config"`
+	Display             DisplayState            `json:"display"`
+	Opening             *OpeningState           `json:"opening,omitempty"`
+	Playing             *RuntimePlayingState    `json:"playing,omitempty"`
+	Transition          *RuntimeTransitionState `json:"transition,omitempty"`
 	// Frozen preceding-period fields that the original reset deliberately keeps.
 	// It is consumed at handoff and is never an active playing world.
 	Carry              *WorldLoopState `json:"carry,omitempty"`
@@ -141,6 +143,10 @@ func runtimeMatch(s *RuntimeState) *MatchState {
 	return nil
 }
 func cloneRuntime(s RuntimeState) RuntimeState {
+	if s.CampaignPreparation != nil {
+		copy := *s.CampaignPreparation
+		s.CampaignPreparation = &copy
+	}
 	if s.Config.Campaign != nil {
 		copy := *s.Config.Campaign
 		s.Config.Campaign = &copy
@@ -245,6 +251,9 @@ func ValidateRuntimeState(s RuntimeState) error {
 	}
 	if s.Config.Campaign != nil && s.AwaitingNextPeriod && (s.Carry == nil || s.Outcome != nil || s.Transition.Scene.Transition.Match.Period&1 == 0) {
 		return fmt.Errorf("campaign intermission requires its retained world and an unfinished odd half-period")
+	}
+	if err := validatePendingCampaignPreparation(s); err != nil {
+		return err
 	}
 	if e := validateRuntimeOutcome(s); e != nil {
 		return e
@@ -548,11 +557,27 @@ func stepRuntimeTransition(r *RuntimeStep, input [4]ControllerFrame) error {
 			return nil
 		}
 		if s.Config.Campaign != nil {
-			config, opening, err := confirmCampaignIntermission(s.Config, *o)
+			preparation, err := ViewCampaignPreparation(*s)
+			if err != nil {
+				return err
+			}
+			config, selected := s.Config, *o
+			progress := preparation.Progress
+			config.Campaign = &progress
+			config.HumanTactics = preparation.HumanTactics
+			config.Match.Characters[0], config.Match.Characters[1] = preparation.Teammates[0], preparation.Teammates[1]
+			for character, slots := range progress.Equipment {
+				for slot, item := range slots {
+					config.Match.Equipment[character][slot] = int8(item)
+				}
+			}
+			selected.Equipment = config.Match.Equipment
+			config, opening, err := confirmCampaignIntermission(config, selected)
 			if err != nil {
 				return err
 			}
 			s.Config = config
+			s.CampaignPreparation = nil
 			s.Opening = &opening
 			s.Transition = nil
 			s.AwaitingNextPeriod = false

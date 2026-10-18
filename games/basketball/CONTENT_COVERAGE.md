@@ -2,6 +2,8 @@
 
 ## 本轮进展与仍在处理的范围
 
+半场准备编辑的引擎事务已接入：拥有的库存操作、换人、战术资格、版本校验、保存恢复和 Start 提交均有验证；真实换装换人后完整比赛以 18:26 结束并保留新装备，Native／Wasm 记录摘要一致，race 通过。新建战役的原单次奖励表抽取组件也已恢复，明确不在恢复／Continue 时重抽。两者均尚未接入平台服务器与界面，详见 [准备编辑](CAMPAIGN_PREPARATION_VERIFICATION.md) 与 [新战役初始化](CAMPAIGN_NEW_GAME_VERIFICATION.md)。
+
 默认战役半场确认已补齐原选人、完整提交清理和四人物尾更新，源核心／尾段与真实 Start、保存恢复均通过；新整场 Native／Wasm 各两场轨迹一致，比分 24:23，旧 18:12 记录仅为历史结果。详情见 [半场确认](CAMPAIGN_INTERMISSION_VERIFICATION.md)。半场主动修改己方选择的服务器／界面、完整战役及结局仍待接入，第一节的两个托管悬空球失败仍保留。
 
 赛后数据接线继续推进：新增 `SettleCampaignRuntime`，720 组原结算数据在 Native／race／Wasm 全部对齐；真实装备比赛获胜后，已验证原奖励入库、原敌方选人和下一场 Court4／Period4 进入 Playing。新的选人组件有原调用及正常菜单边界证据，但原半场确认路径尚未接入该组件和完整清理事务。服务器／平台界面、完整战役、结局与卡局策略仍未完成，详见 [赛后接线](CAMPAIGN_SETTLEMENT_INTEGRATION.md)。

@@ -17,8 +17,9 @@ type CampaignMatchSelection struct {
 
 // NewCampaignRuntime starts the selected match from owned preparation state.
 // It does not decode a password again, draw a reward or advance the random stream.
-// The immutable starting progress remains in Config across saves; live half-period
-// and win masks belong to the existing match stages until the result is committed.
+// The committed preparation remains in Config across saves. Explicit halftime
+// confirmation can replace its loadout; live half-period and win masks belong
+// to the existing match stages until the result is committed.
 func NewCampaignRuntime(progress campaign.Progress, selection CampaignMatchSelection) (RuntimeState, error) {
 	court, err := campaign.CourtForOpponent(progress, selection.Opponent)
 	if err != nil {

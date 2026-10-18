@@ -1,0 +1,17 @@
+{
+  "records": 64,
+  "source": ".local/basketball/rea/campaign-new-game/calls.json",
+  "sourceSHA256": "08836c0a95cf13a9319f65506efd721f57b3bab34adfc360db67773ac7342c03",
+  "fixtureSHA256": "bfde7ed3f32a586cdf1c2c33ecfa4707f2852afefd9d9a0dce785c13c8bcfa95",
+  "factoryBoundary": "already initialized random register immediately before A205 inner draw; excludes CABC outer draw",
+  "normalModes": [
+    0,
+    1
+  ],
+  "reusedREA": [
+    "ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889edf15118919bd",
+    "ev_efaf6f5b71e4d47395c79ea8a9a16de695c11c8f081322e086bd9b7b108fdc1c"
+  ],
+  "bootSeedScope": "bootstrap RAM dependency deliberately outside factory; no hardcoded observed seed",
+  "normalBoundaryLimitation": "legacy capture has scenario/RAM/hash artifacts but no newer source.json; visible8KBpages checked against pinned ROM"
+}
