@@ -1,0 +1,36 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "resultBase": {
+    "fixture": "match-transition.ram.gz",
+    "record": 8,
+    "frame": 25593,
+    "sourceSHA256": "0bf5240ffbcb92b76fec7380f75ed65b471e3e6aad6d4eed51f2602949209f05"
+  },
+  "reuseRewardFixture": {
+    "path": "games/basketball/campaign/testdata/reward-calls.json.gz",
+    "sha256": "854f82f8cc25d1dba675208322d70e8ec8cdc5a2389136d15fa46060b8274e07"
+  },
+  "cases": 720,
+  "byStage": {
+    "prepare": 560,
+    "defeat": 128,
+    "complete": 32
+  },
+  "choices": 6,
+  "fullInventoryRewardCases": 112,
+  "fixtureSHA256": "845d4c6e0e55de1d30628048bd939efebb18e030e115cf12cccb42f168b085c9",
+  "scope": "controlled original result-confirm and reward-entry logical mutations; presentation calls explicitly omitted; repeated-entered sample kept separate; quit stops before machine reset",
+  "unchangedOriginalInstructions": true,
+  "presentationCalls": {
+    "C000": "sound request",
+    "C021": "palette fade/wait",
+    "C024": "background upload",
+    "C036": "message upload",
+    "BCF0": "result scoreboard glyph upload/NMI wait"
+  },
+  "reusedREA": [
+    "ev_7945a86e38a813fa472f9a63045cf673ae9f0c3702f1a79b6c8a17e20eebeefb",
+    "ev_37af32e9b034716efaee6f2adaafab2a2553752baa05f1e2889edf15118919bd"
+  ],
+  "normalLossContinueSHA256": "c89d7deef5254893d10e815edaa2e14625198fbb9fde804a85bfb5d70728b7bc"
+}

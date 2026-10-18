@@ -1,0 +1,23 @@
+{
+  "scope": "controlled original896D through89AC plus read-only exact retained natural menu boundaries; no complete match rerun",
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "baseSHA256": "9d29d3721168b95c28114d8618851eb8e10fab97808a19bf15b033f7ec71ee38",
+  "entry": "bank3 896D",
+  "tableAddress": "8986",
+  "table": [
+    1,
+    2,
+    3,
+    1
+  ],
+  "normalCalls": 392,
+  "boundaryCalls": 64,
+  "naturalBoundaries": 4,
+  "fixtureSHA256": "bee3be3097cfe8db8bb201f72b773b01fd7d5076648f9f10028e48d70318122e",
+  "sourceRuns": {
+    "campaign-audit-first-match-confirm": "17f4bd2dba7c39931dbae5daf67602258b3d01b0493d1be54763a677002a67c7",
+    "campaign-audit-coop-first-match": "f12e69214960237137066d108be3f2a6b2e45ac0f039feb22de81146d3d82532",
+    "campaign-audit-equipped-home-match": "c7c6cffa803c4d996d86cd7b8968c5788fc953f1545f3d9d070dce96e42b7173",
+    "campaign-audit-loss-continue": "c89d7deef5254893d10e815edaa2e14625198fbb9fde804a85bfb5d70728b7bc"
+  }
+}
