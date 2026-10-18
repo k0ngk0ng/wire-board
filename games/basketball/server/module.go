@@ -59,29 +59,32 @@ type State struct {
 	Music         MusicState                  `json:"music"`
 }
 type View struct {
-	SeatActors    []int                       `json:"seatActors"`
-	LocalActor    int                         `json:"localActor"`
-	Options       Options                     `json:"options"`
-	Epoch         string                      `json:"epoch"`
-	ServerAt      int64                       `json:"serverAt"`
-	Phase         string                      `json:"phase"`
-	Runtime       engine.RuntimeState         `json:"runtime"`
-	Inputs        [4]InputState               `json:"inputs"`
-	Events        []SoundEvent                `json:"events"`
-	SoundSequence uint64                      `json:"soundSequence"`
-	Scores        [2]uint16                   `json:"scores"`
-	CanInput      bool                        `json:"canInput"`
-	VideoInputs   []engine.RecordedVideoInput `json:"videoInputs"`
-	Music         MusicView                   `json:"music"`
+	Preparation   *engine.CampaignPreparationView `json:"preparation,omitempty"`
+	CanPrepare    bool                            `json:"canPrepare"`
+	SeatActors    []int                           `json:"seatActors"`
+	LocalActor    int                             `json:"localActor"`
+	Options       Options                         `json:"options"`
+	Epoch         string                          `json:"epoch"`
+	ServerAt      int64                           `json:"serverAt"`
+	Phase         string                          `json:"phase"`
+	Runtime       engine.RuntimeState             `json:"runtime"`
+	Inputs        [4]InputState                   `json:"inputs"`
+	Events        []SoundEvent                    `json:"events"`
+	SoundSequence uint64                          `json:"soundSequence"`
+	Scores        [2]uint16                       `json:"scores"`
+	CanInput      bool                            `json:"canInput"`
+	VideoInputs   []engine.RecordedVideoInput     `json:"videoInputs"`
+	Music         MusicView                       `json:"music"`
 }
 type action struct {
-	Type     string         `json:"type"`
-	Epoch    string         `json:"epoch"`
-	Sequence int64          `json:"sequence"`
-	Buttons  engine.Buttons `json:"buttons"`
-	Seat     *int           `json:"seat,omitempty"`
-	BasedOn  *int64         `json:"basedOn,omitempty"`
-	Events   []inputEvent   `json:"events,omitempty"`
+	Preparation *engine.CampaignPreparationAction `json:"preparation,omitempty"`
+	Type        string                            `json:"type"`
+	Epoch       string                            `json:"epoch"`
+	Sequence    int64                             `json:"sequence"`
+	Buttons     engine.Buttons                    `json:"buttons"`
+	Seat        *int                              `json:"seat,omitempty"`
+	BasedOn     *int64                            `json:"basedOn,omitempty"`
+	Events      []inputEvent                      `json:"events,omitempty"`
 }
 
 // RuntimeAdvanceError retains the exact failing input for developer diagnostics.
@@ -229,7 +232,7 @@ func decode(m gameapi.Match) (State, error) {
 		return s, err
 	}
 	court, knownCourt := preparedCourt(s.Options.Court)
-	if !knownCourt || validateRoster(s.Options) != nil || s.Runtime.Config.Match.Court != court || s.Runtime.Config.Match.Teams != s.Options.Teams || s.Runtime.Config.Match.Characters != s.Options.Characters || len(s.Epoch) != 24 || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= 1000 || s.PauseAt < 0 {
+	if !knownCourt || validateSavedRoster(s) != nil || s.Runtime.Config.Match.Court != court || s.Runtime.Config.Match.Teams != s.Options.Teams || s.Runtime.Config.Match.Characters != s.Options.Characters || len(s.Epoch) != 24 || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= 1000 || s.PauseAt < 0 {
 		return s, fmt.Errorf("无效篮球存档")
 	}
 	if _, err := hex.DecodeString(s.Epoch); err != nil {
@@ -355,6 +358,13 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (action, err
 	if err := strict(raw, &a); err != nil {
 		return a, fmt.Errorf("无效篮球操作")
 	}
+	if a.Type == "campaign-preparation" {
+		_, err := applyCampaignPreparation(ctx, s, a)
+		return a, err
+	}
+	if a.Preparation != nil {
+		return a, fmt.Errorf("控制器输入不能同时修改中场准备")
+	}
 	flags, err := automated(ctx, s.Options)
 	if err != nil {
 		return a, err
@@ -395,6 +405,13 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	a, err := validAction(ctx, s, raw)
 	if err != nil {
 		return m, err
+	}
+	if a.Type == "campaign-preparation" {
+		s, err = applyCampaignPreparation(ctx, s, a)
+		if err != nil {
+			return m, err
+		}
+		return s.match()
 	}
 	if a.Type == "inputs" {
 		if a.Sequence <= s.Inputs[s.actorForSeat(ctx.Actor)].Sequence {
@@ -535,6 +552,11 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 			return m, &RuntimeAdvanceError{Before: s.Runtime, Held: held, Cause: e}
 		}
 		s.Runtime = step.State
+		if s.Runtime.Config.Campaign != nil {
+			// Original halftime confirmation can select a new opponent roster
+			// as well as commit the captain's own pair. Persist both atomically.
+			s.Options.Characters = s.Runtime.Config.Match.Characters
+		}
 		s.VideoInputs = append(s.VideoInputs, input)
 		if len(s.VideoInputs) > 120 {
 			s.VideoInputs = s.VideoInputs[len(s.VideoInputs)-120:]
@@ -641,7 +663,16 @@ func project(m gameapi.Match, seat int) (any, error) {
 		return nil, err
 	}
 	actor := s.actorForSeat(seat)
-	return View{SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}, nil
+	v := View{SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
+	if s.Runtime.Config.Campaign != nil && s.Runtime.AwaitingNextPeriod {
+		p, err := engine.ViewCampaignPreparation(s.Runtime)
+		if err != nil {
+			return nil, err
+		}
+		v.Preparation = &p
+		v.CanPrepare = actor == 0 && v.CanInput
+	}
+	return v, nil
 }
 
 func (s State) rosterDescription() string {
