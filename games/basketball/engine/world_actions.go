@@ -253,10 +253,9 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		return err
 	}
 	*p = resolved
-	clearOriginalLandingSpecialShot(a)
 	computer := ctx.Controls[actor]&128 != 0
 	profile := ctx.Profiles[actor]
-	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && p.Action != 0x68 && p.Action != 0x49 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
+	if s.PlayerLinks[actor]&128 != 0 && !originalDunkAction(p.Action) && !originalWorldJumpAction(p.Action) && p.Action != 0x68 && p.Action != 0x49 && p.Action != ActionRiding && p.Action != ActionReceiveBall && p.Action != ActionLaunched && p.Action != ActionLaunchedAtBall && p.Action != ActionRiderLift && p.Action != ActionRun && p.Action != ActionFalling && !(p.Action == ActionJump && !p.Entered) && !(p.Action == 9 && s.CarriedPlayer == int8(actor)) && p.Action != 11 && !capturedAction(p.Action) && !worldAuxiliaryPlayerAction(*s, actor) {
 		return fmt.Errorf("attached player action %02x (entered %t, link %02x) is not reconstructed", p.Action, p.Entered, s.PlayerLinks[actor])
 	}
 	heldHoop := -1
@@ -304,6 +303,14 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 		}
 	}
 	switch {
+	case originalWorldJumpAction(p.Action):
+		if err := advanceWorldJump(result, actor, ctx, court); err != nil {
+			return err
+		}
+	case originalLandingAction(p.Action):
+		if err := advanceWorldLandingPlayer(result, actor, ctx, court); err != nil {
+			return err
+		}
 	case p.Action == ActionRiderLift:
 		if err := advanceWorldRiderLift(result, actor, ctx, court); err != nil {
 			return err

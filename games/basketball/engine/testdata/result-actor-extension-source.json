@@ -1,0 +1,57 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "actorCalls": 2168,
+  "handlerCalls": 64,
+  "actions": [
+    0,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    18,
+    20,
+    36,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101
+  ],
+  "fixtureSHA256": "8851dfb356fb67336c54e68ee9c3e906092cbb82f208b4942a07d19bffc59582",
+  "scope": "controlled source C033 complete actor calls and declared isolated original handler calls; not natural menu/ending histories",
+  "actorCall": {
+    "entry": "bank3 9598",
+    "stop": "RTS sentinel7000",
+    "omitted": {
+      "C000": "audio driver request only; ordered IDs retained"
+    },
+    "projection": "C00C/CD3C/D0D9 executed unchanged; no projection bypass"
+  },
+  "handlerCall": {
+    "operands": "declared RAM0180 operand bytes, original ROM instructions unchanged",
+    "cursor": "already incremented one slot by original dispatcher",
+    "stops": "95D4 before next fetch, or95BF after self-action change"
+  },
+  "sourceREA": [
+    "ev_f0ce6b1dbcabba1133dc39a0adf0773ec895a3f8489b27b31893fe9bf045a4e8",
+    "ev_93cedbb127d764b97aff2143de421dba36068fe4f8fb1f7be5cfbe0251cbfe78"
+  ]
+}

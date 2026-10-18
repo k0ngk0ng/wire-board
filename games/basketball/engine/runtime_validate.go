@@ -70,6 +70,9 @@ func validateRuntimePlayingConfig(c RuntimeConfig, s *RuntimePlayingState) error
 		if a.Profiles[i].RunSpeed != run || a.Profiles[i].JumpVelocity != jump || a.Profiles[i].ShotSkill != g.Shot || a.Profiles[i].Animations == nil {
 			return fmt.Errorf("playing actor %d has an invalid character profile", i)
 		}
+		if a.Profiles[i].ScoringBonus != (i < 2 && c.Match.Equipment[c.Match.Characters[i]][2] == 27) {
+			return fmt.Errorf("playing actor %d scoring bonus differs from configured shoes", i)
+		}
 		if a.ShotEquipment[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][0]) || a.Enhancements[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][1]) || s.Context.JumpEnhancements[i] != uint8(c.Match.Equipment[c.Match.Characters[i]][2]) {
 			return fmt.Errorf("playing actor equipment differs from configuration")
 		}
