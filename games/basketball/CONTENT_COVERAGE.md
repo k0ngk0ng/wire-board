@@ -2,6 +2,8 @@
 
 ## 本轮进展与仍在处理的范围
 
+默认战役半场确认已补齐原选人、完整提交清理和四人物尾更新，源核心／尾段与真实 Start、保存恢复均通过；新整场 Native／Wasm 各两场轨迹一致，比分 24:23，旧 18:12 记录仅为历史结果。详情见 [半场确认](CAMPAIGN_INTERMISSION_VERIFICATION.md)。半场主动修改己方选择的服务器／界面、完整战役及结局仍待接入，第一节的两个托管悬空球失败仍保留。
+
 赛后数据接线继续推进：新增 `SettleCampaignRuntime`，720 组原结算数据在 Native／race／Wasm 全部对齐；真实装备比赛获胜后，已验证原奖励入库、原敌方选人和下一场 Court4／Period4 进入 Playing。新的选人组件有原调用及正常菜单边界证据，但原半场确认路径尚未接入该组件和完整清理事务。服务器／平台界面、完整战役、结局与卡局策略仍未完成，详见 [赛后接线](CAMPAIGN_SETTLEMENT_INTEGRATION.md)。
 
 战役接线新增进度：`NewCampaignRuntime` 已接通 `020010`→拥有物品装备→Court0／Period2 的真实比赛，正常单人路线 Native／Wasm 各两场通过；完整战役、服务器／准备界面与赛后继续尚未接通。全电脑的单人／合作场景均新增可重复的 32 像素高台悬空球失败，测试明确保留。装备 1 的 3,184 次原释放和 96 次完整调度已对齐，详见 [战役运行时接线](CAMPAIGN_RUNTIME_INTEGRATION.md)。通道修复后的扩展阵容复验仍为 12／16 通过，结果在独立工作树 `.local/roster-after-corner-mode128/`；本轮没有发布。

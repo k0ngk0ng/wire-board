@@ -243,6 +243,9 @@ func ValidateRuntimeState(s RuntimeState) error {
 	if s.Transition == nil && s.AwaitingNextPeriod {
 		return fmt.Errorf("intermission without transition")
 	}
+	if s.Config.Campaign != nil && s.AwaitingNextPeriod && (s.Carry == nil || s.Outcome != nil || s.Transition.Scene.Transition.Match.Period&1 == 0) {
+		return fmt.Errorf("campaign intermission requires its retained world and an unfinished odd half-period")
+	}
 	if e := validateRuntimeOutcome(s); e != nil {
 		return e
 	}
@@ -542,6 +545,17 @@ func stepRuntimeTransition(r *RuntimeStep, input [4]ControllerFrame) error {
 		// Original Scene 2 menus are represented by the platform's committed
 		// selections. Start confirms them; no automatic next-period countdown.
 		if input[0].Pressed&ButtonStart == 0 {
+			return nil
+		}
+		if s.Config.Campaign != nil {
+			config, opening, err := confirmCampaignIntermission(s.Config, *o)
+			if err != nil {
+				return err
+			}
+			s.Config = config
+			s.Opening = &opening
+			s.Transition = nil
+			s.AwaitingNextPeriod = false
 			return nil
 		}
 		t.Scene = 1
