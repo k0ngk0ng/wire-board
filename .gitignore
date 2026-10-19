@@ -1,5 +1,6 @@
 .local/
 games/spf2t/assets/public/
+games/battlecity/assets/public/
 node_modules/
 web/dist/
 web/*.tsbuildinfo

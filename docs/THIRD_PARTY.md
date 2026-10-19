@@ -39,3 +39,7 @@ Carcassonne / 卡卡颂的名称、商标和商业美术归各自权利人。可
 ## 街霸方块
 
 街霸方块使用用户提供的 `.local/spf2t` 提取素材（Super Puzzle Fighter II Turbo, Europe 960529, CPS2）。派生立绘与音频只上传到 `bga/v20261002-1/spf2t/v1/`，不提交 Git、Release 或镜像；来源 ROM SHA-256、生成器 SHA-256 和逐文件摘要见 [素材清单](../games/spf2t/assets/sources.json)。项目不声明这些商业素材的再分发许可，部署者需自行确认授权。封面是 `games/spf2t/assets/art.ts` 中的原创 SVG，不使用原版盒装封面、扫描图、Capcom Logo 或大段标题字。Super Puzzle Fighter II Turbo 及其角色名称、商标和商业美术归 Capcom 及各自权利人；本项目是独立的私人联机实现，不代表官方服务。
+
+## 坦克大战
+
+坦克大战使用用户提供的 `Battle City (J).nes`（24,592 bytes，SHA-256 `a869aead5b6957fc62002ff9636e048cc34baf0100d629b07dc51aa18f220c0c`，mapper 0 NROM-128）。派生图像、音乐和音效只上传到 `bga/v20261002-1/battlecity/v1/`，不提交 Git、Release 或镜像；来源 ROM/归档摘要、生成器 SHA-256、逐文件字节数和摘要记录在 `games/battlecity/assets/sources.json` 与 `manifest.json`。项目不声明这些商业素材的再分发许可，部署者需自行确认授权。封面是 `games/battlecity/web/Cover.tsx` 中的原创 SVG，不使用原版标题画面、盒装封面、Namco Logo 或大段标题字。Battle City 及其名称、商标和商业美术归 Namco 及各自权利人；本项目是独立的私人联机实现，不代表官方服务。
