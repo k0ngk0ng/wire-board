@@ -100,6 +100,7 @@ docker compose logs -f
 | `WISH_IMAGE_BASE_URL` | `https://cdn.ichenj.com` | 许愿图片的公开 CDN 根地址 |
 | `WISH_IMAGE_PREFIX` | `bga/wishes` | 许愿图片的 OSS 对象前缀 |
 | `WISH_AGENT_TOKEN` | 空 | 本地制作 agent 令牌（读取＋受限状态推进），至少 16 字节；留空关闭代理接口 |
+| `WIRE_BOARD_VERSION` | `dev` | 大厅和页面显示的版本号；Compose／`update.sh` 自动写入部署 tag |
 
 健康检查：`GET /healthz`。反向代理必须支持 `/api/ws` 的 WebSocket Upgrade，并保留原始 Host。示例见 [部署说明](docs/deployment.md)。
 

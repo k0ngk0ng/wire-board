@@ -82,7 +82,7 @@ class UpdateTests(unittest.TestCase):
         shutil.copy(ROOT / 'scripts/update.sh', self.path / 'update.sh')
         shutil.copy(ROOT / 'compose.yaml', self.path / 'compose.yaml')
         (self.path / '.env').write_text('INVITE_CODE=test-secret\n')
-        (self.path / '.image.env').write_text('WIRE_BOARD_IMAGE=previous\n')
+        (self.path / '.image.env').write_text('WIRE_BOARD_IMAGE=previous\nWIRE_BOARD_VERSION=v0.0.0\n')
         (self.path / 'volume').mkdir()
         self.db = sqlite3.connect(self.path / 'volume' / 'wire-board.db')
         self.addCleanup(self.db.close)
@@ -129,12 +129,12 @@ class UpdateTests(unittest.TestCase):
         result = self.run_update('pull-failure')
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn('"stop"', (self.path / 'calls').read_text())
-        self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\n')
+        self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\nWIRE_BOARD_VERSION=v0.0.0\n')
 
     def test_initial_deployment_pins_digest(self):
         result = self.run_update('initial', 'v1.0.2')
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.path / '.image.env').read_text(), f'WIRE_BOARD_IMAGE={DIGEST}\n')
+        self.assertEqual((self.path / '.image.env').read_text(), f'WIRE_BOARD_IMAGE={DIGEST}\nWIRE_BOARD_VERSION=v1.0.2\n')
         self.assertFalse((self.path / 'backups').exists())
 
     def test_upgrade_backs_up_committed_wal_before_switch(self):
@@ -166,15 +166,15 @@ class UpdateTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 calls = [json.loads(line) for line in (self.path / 'calls').read_text().splitlines()]
                 self.assertFalse(any('stop' in a or 'up' in a for a in calls))
-                self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\n')
+                self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\nWIRE_BOARD_VERSION=v0.0.0\n')
                 self.assertFalse(list((self.path / 'backups').glob('*.tar.gz')))
 
     def test_unhealthy_upgrade_restarts_previous_image(self):
         result = self.run_update('startup-failure')
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual((self.path / 'images').read_text().splitlines(),
-                         [f'WIRE_BOARD_IMAGE={DIGEST}', 'WIRE_BOARD_IMAGE=sha256:old-image'])
-        self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\n')
+                         [f'WIRE_BOARD_IMAGE={DIGEST}', 'WIRE_BOARD_VERSION=latest', 'WIRE_BOARD_IMAGE=sha256:old-image', 'WIRE_BOARD_VERSION=v0.0.0'])
+        self.assertEqual((self.path / '.image.env').read_text(), 'WIRE_BOARD_IMAGE=previous\nWIRE_BOARD_VERSION=v0.0.0\n')
         self.assertTrue(list((self.path / 'backups').glob('*.tar.gz')))
 
 

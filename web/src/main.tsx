@@ -556,7 +556,12 @@ function App() {
                 <span className="nav-active">
                   {adminOpen ? "管理后台" : room ? "游戏牌桌" : "游戏大厅"}
                 </span>
-                <span className="nav-caption">让相聚，多一局。</span>
+                <span className="nav-caption">
+                  让相聚，多一局。
+                  <em className="app-version">
+                    v{state.version || "dev"}
+                  </em>
+                </span>
               </nav>
               <div className="header-right">
                 {canAdmin && (
@@ -1458,6 +1463,7 @@ function Lobby({
           <Users size={16} />
           好友相聚，不必排队
         </span>
+        <small className="lobby-version">v{state.version || "dev"}</small>
       </div>
     </main>
   );

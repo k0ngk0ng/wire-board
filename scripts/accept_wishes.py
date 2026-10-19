@@ -156,6 +156,7 @@ env = dict(
     WISH_IMAGE_BASE_URL=oss_base,
     WISH_IMAGE_PREFIX="bga/wishes",
     WISH_AGENT_TOKEN=AGENT_TOKEN,
+    WIRE_BOARD_VERSION="v-wishes-e2e",
     GOTOOLCHAIN="local",
 )
 app = None
@@ -266,6 +267,11 @@ try:
     check("register player", registered is True, registered)
     b("reload")
     b("wait", ".wish-nav-button")
+    check(
+        "version shown in lobby",
+        "v-wishes-e2e" in js('document.querySelector(".app-version")?.textContent || ""')
+        and "v-wishes-e2e" in js('document.querySelector(".lobby-version")?.textContent || ""'),
+    )
     b("click", ".wish-nav-button")
     b("wait", ".wish-modal")
     check("wish dialog opens", js('!!document.querySelector(".wish-modal textarea")'))
