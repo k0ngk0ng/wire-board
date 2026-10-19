@@ -47,4 +47,4 @@ python3 -B scripts/battlecity/check-browser.py --build
 
 源 ROM 为用户提供的 `Battle City (J).nes`（SHA-256 `a869aead…f220c0c`）。派生商业媒体只放 `.local` 与 OSS 不可变前缀 `bga/v20261002-1/battlecity/v1/`，不提交 Git。素材提取、校验和上传说明见 `assets/README.md` 与 `docs/battlecity-verification.md`。
 
-游戏默认下架；部署/发布不会自动上架，需要管理员在后台显式开启。
+游戏默认上架；管理员可在后台显式下架，部署/发布保留设置。

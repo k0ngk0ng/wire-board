@@ -86,6 +86,7 @@ const actions: Record<string, string> = {
   user_role: "调整权限",
   room_closed: "结束牌桌",
   wish_approved: "通过许愿",
+  wish_question: "AI 追问许愿",
   wish_in_progress: "开始实现许愿",
   wish_implemented: "完成许愿",
   wish_rejected: "驳回许愿",
@@ -434,11 +435,6 @@ export function AdminDashboard({
                           {g.enabled ? "已上架" : "已下架"}
                         </span>
                         <h3>{g.name}</h3>
-                        <p>
-                          {g.enabled
-                            ? "大厅可见，可以创建牌桌"
-                            : "已从大厅和创建列表隐藏"}
-                        </p>
                       </div>
                       <button
                         className={g.enabled ? "outline" : "primary"}
@@ -521,6 +517,26 @@ export function AdminDashboard({
                       >
                         <img src={wish.imageUrl} alt="许愿参考图" loading="lazy" />
                       </a>
+                    )}
+                    {!!wish.questions?.length && (
+                      <div className="admin-wish-qa">
+                        <small>
+                          AI 已追问 {wish.questionCount} / 2 次
+                          {wish.needsAnswer ? " · 等待玩家回答" : ""}
+                        </small>
+                        {wish.questions.map((question) => (
+                          <div className="admin-wish-question" key={question.id}>
+                            <p>
+                              <b>AI 追问</b>
+                              {question.question}
+                            </p>
+                            <p>
+                              <b>玩家回答</b>
+                              {question.answer || "尚未回答"}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     )}
                     {wish.note && (
                       <div className="admin-wish-note">审核备注：{wish.note}</div>

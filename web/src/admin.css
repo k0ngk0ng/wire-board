@@ -729,3 +729,34 @@
     flex: 1;
   }
 }
+
+/* Wish AI clarification */
+.admin-wish-qa {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #ddd6c3;
+  border-radius: 9px;
+  background: #fbf7ec;
+}
+.admin-wish-qa > small {
+  color: #5f5a45;
+  font-size: 11px;
+}
+.admin-wish-question {
+  display: grid;
+  gap: 3px;
+}
+.admin-wish-question p {
+  margin: 0;
+  color: #3b4133;
+  font-size: 12px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.admin-wish-question b {
+  margin-right: 6px;
+  color: #6d4316;
+  font-weight: 650;
+}
