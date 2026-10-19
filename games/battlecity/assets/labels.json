@@ -1,0 +1,50 @@
+{
+  "teams": {
+    "0": "上方队伍",
+    "1": "下方队伍"
+  },
+  "classes": {
+    "balanced": {
+      "name": "均衡坦克"
+    },
+    "basic": {
+      "name": "基础坦克"
+    },
+    "fast": {
+      "name": "快速坦克"
+    },
+    "power": {
+      "name": "火力坦克"
+    },
+    "armor": {
+      "name": "装甲坦克"
+    }
+  },
+  "maps": {
+    "classic-01": "中央大道",
+    "classic-02": "双桥",
+    "classic-03": "砖墙迷宫",
+    "classic-04": "冰封湖面",
+    "classic-05": "林间伏击",
+    "classic-06": "钢铁防线",
+    "classic-07": "水泽要塞",
+    "classic-08": "十字路口",
+    "classic-09": "环形堡垒",
+    "classic-10": "废墟街区",
+    "classic-11": "双子走廊",
+    "classic-12": "开阔战场"
+  },
+  "audio": {
+    "bgm-battle": "audio/bgm-battle.mp3",
+    "bgm-start": "audio/bgm-start.mp3",
+    "sfx-base": "audio/sfx-base.mp3",
+    "sfx-brick": "audio/sfx-brick.mp3",
+    "sfx-explode": "audio/sfx-explode.mp3",
+    "sfx-fire": "audio/sfx-fire.mp3",
+    "sfx-lose": "audio/sfx-lose.mp3",
+    "sfx-powerup": "audio/sfx-powerup.mp3",
+    "sfx-shield": "audio/sfx-shield.mp3",
+    "sfx-steel": "audio/sfx-steel.mp3",
+    "sfx-win": "audio/sfx-win.mp3"
+  }
+}

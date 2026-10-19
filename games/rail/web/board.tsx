@@ -65,6 +65,7 @@ export const playerColors = [
   "#42956b",
   "#d4a833",
   "#414753",
+  "#8a5a9e",
 ];
 export function TrainCard({
   color,

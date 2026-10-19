@@ -1,0 +1,126 @@
+{
+  "version": "battlecity/v1",
+  "prefix": "bga/v20261002-1/battlecity/v1/",
+  "cdnBase": "https://cdn.ichenj.com/bga/v20261002-1",
+  "generator": "scripts/battlecity/prepare_assets.py",
+  "generatorSha256": "4d0b88739bfcf03f5785b502b5a58216f81ea455af57bf217bd3c4d8cdae3604",
+  "license": "User-provided commercial media from Battle City (J).nes. The project does not claim redistribution rights; the deployer confirms authorization. Media is uploaded to OSS and is not committed to Git, Releases or images.",
+  "entries": [
+    {
+      "file": "atlas.webp",
+      "urlPath": "/battlecity/v1/atlas.webp",
+      "bytes": 3698,
+      "sha256": "e3ec54dfa9fa4131faa81625e545dab8ff1f59f73c177f32dde660fda84fc551",
+      "kind": "atlas",
+      "width": 502,
+      "height": 70,
+      "frames": 101
+    },
+    {
+      "file": "atlas.json",
+      "urlPath": "/battlecity/v1/atlas.json",
+      "bytes": 44859,
+      "sha256": "12d35161299b051c71f2fbf834ab7cc3d53a9ad4e2c53b3e77bb78a085f2c1c2",
+      "kind": "atlas-meta"
+    },
+    {
+      "file": "audio/bgm-battle.mp3",
+      "urlPath": "/battlecity/v1/audio/bgm-battle.mp3",
+      "bytes": 246638,
+      "sha256": "0082af8e08f285bb755732efe3d4cfeacaba265b90851f303551be3dcece563c",
+      "kind": "bgm",
+      "duration": 15.347,
+      "event": "bgm-battle"
+    },
+    {
+      "file": "audio/bgm-start.mp3",
+      "urlPath": "/battlecity/v1/audio/bgm-start.mp3",
+      "bytes": 69842,
+      "sha256": "7755f373d56a8a193a438feb0713a3e45d105c799717591f854608db634c436f",
+      "kind": "bgm",
+      "duration": 4.306,
+      "event": "bgm-start"
+    },
+    {
+      "file": "audio/sfx-base.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-base.mp3",
+      "bytes": 9761,
+      "sha256": "34629cf13f7419e037ffe45e8907975fadb8894b099e469d9a561dd2c3b1d5c2",
+      "kind": "sfx",
+      "duration": 0.749,
+      "event": "sfx-base"
+    },
+    {
+      "file": "audio/sfx-brick.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-brick.mp3",
+      "bytes": 3805,
+      "sha256": "fe1cc84a887a883f5b2160c908f458894b6adbc32de206b735afc97ac440c80f",
+      "kind": "sfx",
+      "duration": 0.259,
+      "event": "sfx-brick"
+    },
+    {
+      "file": "audio/sfx-explode.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-explode.mp3",
+      "bytes": 9761,
+      "sha256": "807cb56017dc908674c96faa6d6d9f5264b838f7dbe8d8ef742e6fcfdc540431",
+      "kind": "sfx",
+      "duration": 0.749,
+      "event": "sfx-explode"
+    },
+    {
+      "file": "audio/sfx-fire.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-fire.mp3",
+      "bytes": 5686,
+      "sha256": "3ec1384218a47607c1dd80eca355141186894bc6b866cad7d49f93a8601aa4ff",
+      "kind": "sfx",
+      "duration": 0.417,
+      "event": "sfx-fire"
+    },
+    {
+      "file": "audio/sfx-lose.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-lose.mp3",
+      "bytes": 22613,
+      "sha256": "2ab8eb7e52d833dd7a11a9b3d35885337c667443ffa7859ef42e9cd0d60dba49",
+      "kind": "sfx",
+      "duration": 1.804,
+      "event": "sfx-lose"
+    },
+    {
+      "file": "audio/sfx-powerup.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-powerup.mp3",
+      "bytes": 29196,
+      "sha256": "cb85c4123427d262223b7274b9d41116fbc50899d7d998e873189d828bd45099",
+      "kind": "sfx",
+      "duration": 2.367,
+      "event": "sfx-powerup"
+    },
+    {
+      "file": "audio/sfx-shield.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-shield.mp3",
+      "bytes": 8507,
+      "sha256": "d45ba7dde2ed4f7919f35f02eadf291d465775230edafe30fbce41fa79ef25f5",
+      "kind": "sfx",
+      "duration": 0.652,
+      "event": "sfx-shield"
+    },
+    {
+      "file": "audio/sfx-steel.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-steel.mp3",
+      "bytes": 5059,
+      "sha256": "42260d9105abc81f688ec324bf77b7ffb93527e0f3a5686a924d67d28615ab0f",
+      "kind": "sfx",
+      "duration": 0.351,
+      "event": "sfx-steel"
+    },
+    {
+      "file": "audio/sfx-win.mp3",
+      "urlPath": "/battlecity/v1/audio/sfx-win.mp3",
+      "bytes": 22927,
+      "sha256": "8a78e3c086761243c4e5c6e97b282ecd65895fcf93f0701d605467d2205253bb",
+      "kind": "sfx",
+      "duration": 1.833,
+      "event": "sfx-win"
+    }
+  ]
+}
