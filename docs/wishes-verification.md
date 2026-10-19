@@ -55,3 +55,12 @@ python3 -B scripts/check_game_boundaries.py
 - 已有游戏设置保留；管理员此前已上架的 `battlecity` 保持上架，未做任何自动上/下架。
 - 保留本次更新前与上一份备份 `data-20261019T101526Z-664607.tar.gz`、`data-20261019T073207Z-307786.tar.gz`（均通过 `quick_check`）；更旧备份已删除。历史镜像已清理，保留 `v1.18.0` 当前镜像和 `v1.17.0` 回滚镜像。
 - 本地代理令牌保存在 `.local/wishes/agent-token`（已 Git 忽略）。调用示例见 [许愿池说明](wishes.md)。
+
+## v1.18.1
+
+- main 提交 `52d82f7a` 的 `Check main and build` 运行 `39239500736` 全绿；`v1.18.1` Release 运行 `39240777557` 复用同一已验证构建。
+- 服务器运行 `ghcr.io/k0ngk0ng/wire-board@sha256:5f44c0401778328ff998eaae616eb05127f25901e655033c9807fb28ebc428df`，OCI revision `52d82f7a`、version `v1.18.1`，`/healthz` 正常。
+- 新增 `POST /api/agent/wishes/{id}`：生产环境已验证无令牌 401、未知操作 400、不存在 ID 404；本地 E2E 验证 `approved → in_progress → implemented`、非法转换 409 与审计记录。
+- 管理后台五个列表页的独立刷新按钮已进入线上 bundle，浏览器验收共 56 项通过。
+- 已有游戏设置保持；`battlecity` 继续上架。
+- 保留本次更新前与上一份备份 `data-20261019T105535Z-753854.tar.gz`、`data-20261019T101526Z-664607.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留当前 `v1.18.1` 和上一版 `v1.18.0` 回滚镜像。
