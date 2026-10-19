@@ -23,7 +23,7 @@ func publishModuleForTest(t *testing.T, base, kind string) {
 	admin.post("/api/admin/games/"+kind, map[string]bool{"enabled": true}, 200)
 }
 
-func TestNewModuleRequiresAdminPublicationE2E(t *testing.T) {
+func TestNewModuleDefaultsToPublishedE2E(t *testing.T) {
 	cfg := Config{DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123", Modules: []gameapi.Module{acceptanceModule()}}
 	files := fstest.MapFS{"index.html": {Data: []byte("ok")}}
 	s, err := New(cfg, files)
@@ -65,23 +65,22 @@ func TestNewModuleRequiresAdminPublicationE2E(t *testing.T) {
 			t.Error(err)
 		}
 	})
-	if listed("acceptance") || visible(player, "acceptance") || visible(root, "acceptance") {
-		t.Fatal("new module was auto-published")
+	if !listed("acceptance") || !visible(player, "acceptance") || !visible(root, "acceptance") {
+		t.Fatal("new module was not published by default")
 	}
 	if !visible(player, "splendor") {
 		t.Fatal("legacy default unexpectedly changed")
 	}
-	player.post("/api/rooms", map[string]any{"kind": "acceptance", "name": "不能创建", "capacity": 2}, 403)
-	root.post("/api/rooms", map[string]any{"kind": "acceptance", "name": "管理员也需先上架", "capacity": 2}, 403)
-	player.post("/api/admin/games/acceptance", map[string]bool{"enabled": true}, 403)
-	trace = append(trace, map[string]any{"newModuleVisible": false, "playerPublishRejected": true})
-	root.post("/api/admin/games/acceptance", map[string]bool{"enabled": true}, 200)
-	root.post("/api/admin/games/splendor", map[string]bool{"enabled": false}, 200)
-	if !visible(player, "acceptance") || !listed("acceptance") {
-		t.Fatal("admin publication failed")
-	}
-	r := player.post("/api/rooms", map[string]any{"kind": "acceptance", "name": "已上架", "capacity": 2}, 201)
+	r := player.post("/api/rooms", map[string]any{"kind": "acceptance", "name": "默认可创建", "capacity": 2}, 201)
 	player.command(r, "leave", nil, 200)
+	player.post("/api/admin/games/acceptance", map[string]bool{"enabled": true}, 403)
+	trace = append(trace, map[string]any{"newModuleVisible": true, "playerPublishRejected": true})
+	root.post("/api/admin/games/acceptance", map[string]bool{"enabled": false}, 200)
+	root.post("/api/admin/games/splendor", map[string]bool{"enabled": false}, 200)
+	if visible(player, "acceptance") || listed("acceptance") {
+		t.Fatal("admin unpublication failed")
+	}
+	player.post("/api/rooms", map[string]any{"kind": "acceptance", "name": "已下架", "capacity": 2}, 403)
 	ts.Close()
 	s.Close()
 	second := acceptanceModule()
@@ -94,10 +93,10 @@ func TestNewModuleRequiresAdminPublicationE2E(t *testing.T) {
 	}
 	ts = httptest.NewServer(s.Handler())
 	root.base, player.base = ts.URL, ts.URL
-	if !visible(player, "acceptance") || visible(player, "second_module") || listed("second_module") || visible(player, "splendor") {
+	if visible(player, "acceptance") || !visible(player, "second_module") || !listed("second_module") || visible(player, "splendor") {
 		t.Fatal("restart/new registration changed publication decisions")
 	}
-	root.post("/api/admin/games/acceptance", map[string]bool{"enabled": false}, 200)
+	root.post("/api/admin/games/acceptance", map[string]bool{"enabled": true}, 200)
 	ts.Close()
 	s.Close()
 	s, err = New(cfg, files)
@@ -106,15 +105,15 @@ func TestNewModuleRequiresAdminPublicationE2E(t *testing.T) {
 	}
 	ts = httptest.NewServer(s.Handler())
 	root.base, player.base = ts.URL, ts.URL
-	if visible(player, "acceptance") {
-		t.Fatal("restart republished hidden module")
+	if !visible(player, "acceptance") {
+		t.Fatal("restart did not preserve explicit publication")
 	}
-	trace = append(trace, map[string]any{"explicitPublicationPersisted": true, "laterModuleDefaultHidden": true, "explicitUnpublicationPersisted": true, "legacyChoicePreserved": true})
+	trace = append(trace, map[string]any{"explicitUnpublicationPersisted": true, "laterModuleDefaultPublished": true, "explicitPublicationPersisted": true, "legacyChoicePreserved": true})
 }
 
-// Composition check: shipping the module must not silently publish it. After
-// the administrator enables it, the production registry must run the real game.
-func TestProductionMonopolyDefaultOffE2E(t *testing.T) {
+// Composition check: the production registry publishes newly registered games
+// by default and the real module runs without an administrator publication step.
+func TestProductionMonopolyDefaultsPublishedE2E(t *testing.T) {
 	s, err := New(Config{Modules: games.Modules(), DataDir: t.TempDir(), InviteCode: "test-invite", AdminUsername: "ModuleRoot", AdminPassword: "module-root-test-123"}, fstest.MapFS{"index.html": {Data: []byte("ok")}})
 	if err != nil {
 		t.Fatal(err)
@@ -129,8 +128,8 @@ func TestProductionMonopolyDefaultOffE2E(t *testing.T) {
 		game := entry.(map[string]any)
 		if game["kind"] == "monopoly" {
 			found = true
-			if game["enabled"].(bool) {
-				t.Fatal("production monopoly starts published")
+			if !game["enabled"].(bool) {
+				t.Fatal("production monopoly is not published by default")
 			}
 		}
 	}
@@ -140,8 +139,6 @@ func TestProductionMonopolyDefaultOffE2E(t *testing.T) {
 	a, b := newClient(t, ts.URL), newClient(t, ts.URL)
 	a.register("正式棋手甲")
 	b.register("正式棋手乙")
-	a.post("/api/rooms", map[string]any{"kind": "monopoly", "name": "未上架强手棋", "capacity": 2}, 403)
-	root.post("/api/admin/games/monopoly", map[string]bool{"enabled": true}, 200)
 	r := a.post("/api/rooms", map[string]any{"kind": "monopoly", "name": "正式强手棋", "capacity": 2}, 201)
 	b.command(r, "join", nil, 200)
 	r = a.state()["room"].(map[string]any)

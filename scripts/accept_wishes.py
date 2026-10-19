@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Real-browser acceptance for the game wish pool.
 
-Starts a throw-away Wire Board with a fake OSS endpoint, submits a text + image
-wish from a 320px phone viewport, approves it in the admin UI, verifies the
-player-visible result and the read-only agent feed, and saves screenshots.
+Starts a throw-away Wire Board with a fake OSS endpoint, submits a text +
+pasted-screenshot wish, exercises AI clarification and player answers, lets the
+agent start a pending wish, completes it in the admin UI, verifies statuses and
+saves screenshots.
 """
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
@@ -157,9 +159,12 @@ env = dict(
     GOTOOLCHAIN="local",
 )
 app = None
+socket_dir = ROOT / ".local/ab3"
+if len(str(socket_dir)) > 70:
+    socket_dir = Path("/tmp/wb-ab3")
 browser_env = dict(
     os.environ,
-    AGENT_BROWSER_SOCKET_DIR=str(ROOT / ".local/ab3"),
+    AGENT_BROWSER_SOCKET_DIR=str(socket_dir),
     AGENT_BROWSER_SESSION="wishes-" + RUN,
     AGENT_BROWSER_PROFILE=str(OUT / "profile"),
     AGENT_BROWSER_ARGS="--mute-audio,--disable-breakpad,--disable-crash-reporter",
@@ -266,7 +271,18 @@ try:
     check("wish dialog opens", js('!!document.querySelector(".wish-modal textarea")'))
 
     b("fill", ".wish-modal textarea", TEXT)
-    b("upload", '.wish-modal input[type="file"]', str(png))
+    check("upload control present", js('!!document.querySelector(\'.wish-modal input[type="file"]\')'))
+    pasted = js(
+        "(()=>{const raw=atob("
+        + json.dumps(base64.b64encode(PNG).decode())
+        + ");const bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);"
+        "const file=new File([bytes],'screenshot.png',{type:'image/png'});"
+        "const dt=new DataTransfer();dt.items.add(file);"
+        "const ev=new ClipboardEvent('paste',{bubbles:true,cancelable:true});"
+        "Object.defineProperty(ev,'clipboardData',{value:dt});"
+        "return document.querySelector('.wish-modal textarea').dispatchEvent(ev)})()"
+    )
+    check("paste event dispatched", pasted is True or pasted is False, pasted)
     wait_js('!!document.querySelector(".wish-preview img")')
     preview = js(
         '(()=>{const i=document.querySelector(".wish-preview img");'
@@ -317,6 +333,81 @@ try:
         {"status": status, "bytes": len(image), "mime": mime},
     )
 
+    agent_headers = {"Authorization": "Bearer " + AGENT_TOKEN}
+    status, asked = fetch_json(
+        base + "/api/agent/wishes/" + first_id + "/questions",
+        headers=agent_headers,
+        body={"question": "更希望单人还是多人？需要剧情吗？"},
+        method="POST",
+    )
+    check("agent asks clarification", status == 200 and asked.get("questionCount") == 1, asked)
+    status, feed = fetch_json(
+        base + "/api/agent/wishes?status=pending", headers=agent_headers
+    )
+    check(
+        "agent sees unanswered question",
+        status == 200 and feed["wishes"][0]["needsAnswer"] is True,
+        feed,
+    )
+    b("click", '.wish-modal .icon-button[aria-label="关闭许愿池"]')
+    b("click", ".wish-nav-button")
+    wait_js('!!document.querySelector(".wish-question")')
+    question_text = js('document.querySelector(".wish-question p")?.textContent || ""')
+    check("player sees AI question", "单人还是多人" in question_text, question_text)
+    b("fill", ".wish-answer textarea", "希望 2 人合作，加一点轻松剧情")
+    b("scrollintoview", ".wish-answer button")
+    b("click", ".wish-answer button")
+    try:
+        wait_js('!!document.querySelector(".wish-answer-text")')
+    except Exception:
+        try:
+            b("screenshot", str(OUT / "answer-debug.png"))
+        except Exception:
+            pass
+        report["debug"] = js(
+            '(()=>({error:document.querySelector(".wish-answer .admin-message")?.textContent||"",'
+            'value:document.querySelector(".wish-answer textarea")?.value||"",'
+            'disabled:document.querySelector(".wish-answer button")?.disabled,'
+            'html:document.querySelector(".wish-answer")?.outerHTML||"",'
+            'wishItem:document.querySelector(".wish-item")?.outerHTML||"",'
+            'body:document.body.innerText.slice(0,1500)}))()'
+        )
+        try:
+            report["debug"]["feed"] = js('fetch("/api/wishes").then(r=>r.json())')
+        except Exception as error:
+            report["debug"]["feedError"] = str(error)
+        try:
+            report["debug"]["requests"] = b("network", "requests")
+        except Exception as error:
+            report["debug"]["requestError"] = str(error)
+        raise
+    check("player answer shown", True)
+    status, feed = fetch_json(
+        base + "/api/agent/wishes?status=pending", headers=agent_headers
+    )
+    check(
+        "agent sees answer",
+        status == 200
+        and feed["wishes"][0]["needsAnswer"] is False
+        and "2 人合作" in feed["wishes"][0]["questions"][0]["answer"],
+        feed,
+    )
+    status, started = fetch_json(
+        base + "/api/agent/wishes/" + first_id,
+        headers=agent_headers,
+        body={"action": "start", "note": "追问已答复，开始实现"},
+        method="POST",
+    )
+    check(
+        "agent starts pending wish",
+        status == 200 and started.get("status") == "in_progress",
+        started,
+    )
+    b("click", '.wish-modal .icon-button[aria-label="关闭许愿池"]')
+    b("click", ".wish-nav-button")
+    wait_js('!!document.querySelector(".wish-status.in-progress")')
+    check("player sees in-progress after pending start", True)
+
     b("set", "viewport", "320", "844")
     b("reload")
     b("wait", ".wish-nav-button")
@@ -347,6 +438,11 @@ try:
         check("admin tab " + label, clicked is True)
         wait_js('!!document.querySelector(".admin-list-refresh")')
         check("admin refresh " + label, True)
+        if label == "游戏上架":
+            check(
+                "admin game cards stay concise",
+                js('document.querySelectorAll(".admin-game-card p").length') == 0,
+            )
     clicked = js(
         '(()=>{const x=[...document.querySelectorAll(".admin-tabs button")].find(b=>b.textContent.includes("许愿审核"));if(!x)return false;x.click();return true})()'
     )
@@ -364,12 +460,22 @@ try:
             'return !!i&&i.complete&&i.naturalWidth>0})()'
         ),
     )
+    check(
+        "admin sees Q&A",
+        js(
+            '(()=>{const q=document.querySelector(".admin-wish-question");'
+            'return !!q&&q.textContent.includes("更希望单人还是多人")&&q.textContent.includes("2 人合作")})()'
+        ),
+    )
+    wait_js('!!document.querySelector(".admin-wish-card .wish-status.in-progress")')
+    check("admin sees pending AI work as in-progress", True)
     b("set", "viewport", "1280", "900")
-    b("screenshot", str(OUT / "admin-wish-pending.png"))
+    b("screenshot", str(OUT / "admin-wish-in-progress.png"))
     ratios = contrast_check([
         [".admin-wish-text", ".admin-wish-card"],
         [".admin-wish-card header small", ".admin-wish-card"],
-        [".wish-status.pending", ".wish-status.pending"],
+        [".wish-status.in-progress", ".wish-status.in-progress"],
+        [".admin-wish-question p", ".admin-wish-qa"],
         [".admin-wish-actions .primary", ".admin-wish-actions .primary"],
     ])
     check(
@@ -377,31 +483,6 @@ try:
         all(item.get("ratio", 0) >= 4.5 for item in ratios),
         ratios,
     )
-    b("click", ".admin-wish-actions .primary")
-    b("wait", ".admin-confirm textarea")
-    b("fill", '.admin-confirm textarea[name="note"]', NOTE)
-    b("click", ".admin-confirm button.primary")
-    wait_js('!!document.querySelector(".admin-wish-card .wish-status.approved")')
-    check("admin approved", True)
-    b("screenshot", str(OUT / "admin-wish-approved.png"))
-    status, feed = fetch_json(
-        base + "/api/agent/wishes?status=approved",
-        headers={"Authorization": "Bearer " + AGENT_TOKEN},
-    )
-    check("agent sees approved wish", status == 200 and len(feed.get("wishes", [])) == 1, feed)
-    check("agent gets approved status", feed["wishes"][0]["status"] == "approved", feed)
-
-    status, started = fetch_json(
-        base + "/api/agent/wishes/" + first_id,
-        headers={"Authorization": "Bearer " + AGENT_TOKEN},
-        body={"action": "start", "note": NOTE_START},
-        method="POST",
-    )
-    check("agent starts implementation", status == 200 and started.get("status") == "in_progress", started)
-    wait_js('!!document.querySelector(".admin-wish-card .wish-status.in-progress")')
-    check("admin sees implementation started", True)
-    ratios = contrast_check([[".wish-status.in-progress", ".wish-status.in-progress"]])
-    check("in-progress contrast", ratios[0]["ratio"] >= 4.5, ratios)
     status, feed = fetch_json(
         base + "/api/agent/wishes?status=in_progress",
         headers={"Authorization": "Bearer " + AGENT_TOKEN},
@@ -462,6 +543,9 @@ try:
     check("agent rejects wrong token", status == 401, status)
 
     report["passed"] = True
+except Exception as error:
+    report["error"] = f"{type(error).__name__}: {error}"
+    raise
 finally:
     try:
         b("close")

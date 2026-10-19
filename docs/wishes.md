@@ -1,22 +1,25 @@
 # 游戏许愿池
 
-玩家可以在大厅顶栏打开「许愿池」，用文字描述想实现的游戏，并可附一张参考图。管理员在「围桌管理室 → 许愿审核」中通过或驳回。通过后的许愿会出现在只读代理接口中，供本地制作 agent 领取。
+玩家可以在大厅顶栏打开「许愿池」，用文字描述想实现的游戏，并可上传或直接粘贴一张参考图。AI 制作代理可以直接处理待审核许愿：需求含糊时最多向提交者追问 2 次，问满或信息足够后开始实现；管理员仍可在「围桌管理室 → 许愿审核」通过、驳回或下架条目。
 
-## 状态
+## 状态与追问
 
 | 状态 | 含义 |
 | --- | --- |
-| `pending` | 已提交，等待管理员审核 |
-| `approved` | 已通过，等待开始制作 |
+| `pending` | 已提交，等待管理员审核或 AI 直接领取 |
+| `approved` | 管理员已通过，等待开始制作 |
 | `in_progress` | 正在实现，本地代理可识别为已开工 |
 | `implemented` | 已实现并完成验收 |
 | `rejected` | 已驳回；审核备注会显示给提交者 |
 
-管理员可以把已通过条目推进到「正在实现」和「已实现」，也可以重新审核已驳回条目。每次状态变化都会写入 `admin_audit`，操作记录中显示为「通过许愿」「开始实现许愿」「完成许愿」或「驳回许愿」。审核时间按秒严格递增，代理使用 `since` 增量轮询时不会漏掉同一秒内的连续状态变化。
+AI 追问不改变主状态，单独记录在 `wish_questions` 中。每个许愿最多 2 个问题；同一时间只能有一个未回答的问题。玩家回答后 AI 才能继续追问或开始实现。未回答的追问会让代理跳过该条目，避免重复提问。
+
+管理员和代理的状态变化都会写入 `admin_audit`，操作记录中显示为「通过许愿」「AI 追问许愿」「开始实现许愿」「完成许愿」或「驳回许愿」。审核时间按秒严格递增，代理使用 `since` 增量轮询时不会漏掉同一秒内的连续状态变化。新游戏现在默认上架，管理员可随时下架。
 
 ## 图片
 
-- 可选，支持 PNG、JPEG、WebP、GIF，最大 5 MB；按文件内容识别类型，不信任扩展名。
+- 可选，支持 PNG、JPEG、WebP、GIF，最大 5 MB；可以点「添加参考图」选择文件，也可以直接在输入框粘贴截图。
+- 按文件内容识别类型，不信任扩展名。
 - 不接收 SVG（避免在 CDN 上执行主动内容）。
 - 图片写入 OSS 不可变对象前缀，例如 `bga/wishes/20261019/<random>.png`，公开地址为 `https://cdn.ichenj.com/bga/wishes/...`。
 - 服务端使用 `x-oss-forbid-overwrite` 和内容 MD5，避免覆盖既有对象。
@@ -61,48 +64,65 @@ WISH_IMAGE_PREFIX=bga/wishes
 
 ### 本地制作代理
 
-代理接口只读，需在服务器配置 `WISH_AGENT_TOKEN`（至少 16 字节）：
+代理使用服务器配置的 `WISH_AGENT_TOKEN`（至少 16 字节）读取、追问和推进许愿：
 
 ```sh
 curl -fsS \
   -H "Authorization: Bearer $WISH_AGENT_TOKEN" \
-  "https://board.example.com/api/agent/wishes?status=approved"
+  "https://board.example.com/api/agent/wishes"
 ```
 
-- 默认返回 `approved`、`in_progress`、`implemented` 三种已审核条目，按审核时间升序；代理可据此区分待制作、正在实现和已完成。
-- `status=approved|in_progress|implemented` 只返回对应状态。
-- `since=<unix-seconds>` 只返回审核时间晚于该时刻的条目，适合轮询。
+- 默认返回 `pending`、`approved`、`in_progress`、`implemented` 条目，按创建/审核时间升序。
+- `status=pending|approved|in_progress|implemented` 只返回对应状态；`rejected` 不向代理开放。
+- 每条包含 `questions`、`questionCount`、`needsAnswer`。`needsAnswer=true` 时表示已有未回答追问，代理必须等待，不能重复提问或开始实现。
+- `since=<unix-seconds>` 只返回创建（pending）或最近审核时间晚于该时刻的条目，适合轮询。
 - `limit=1..200`，默认 100。
-- 也接受 `X-Wish-Token` 请求头。
-- 未配置令牌时返回 503；令牌错误返回 401。
-- 返回字段：`id`、`userName`、`text`、`imageUrl`、`status`、`note`、`createdAt`、`reviewedAt`、`approvedAt`、`reviewedByName`。`approvedAt` 只在当前状态为 `approved` 时给出；进入「正在实现」或「已实现」后，以 `status` 和最近一次 `reviewedAt` 为准。
+- 也接受 `X-Wish-Token` 请求头；未配置令牌返回 503，令牌错误返回 401。
+- 返回字段：`id`、`userName`、`text`、`imageUrl`、`status`、`note`、`createdAt`、`reviewedAt`、`approvedAt`、`reviewedByName`、`questions`。`approvedAt` 只在当前状态为 `approved` 时给出；后续状态以 `status` 和最近一次 `reviewedAt` 为准。
 
-代理也可以推进自己领取的已通过许愿，而不需要管理员账号：
+追问（最多 2 次，且上一个问题必须已回答）：
 
 ```sh
 curl -fsS -X POST \
   -H "Authorization: Bearer $WISH_AGENT_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"action":"start","note":"已开始实现"}' \
+  -d '{"question":"更希望单人还是多人？"}' \
+  "https://board.example.com/api/agent/wishes/<wish-id>/questions"
+```
+
+玩家在自己的许愿池中回答后，代理继续读取；问满 2 次或信息足够即可开始：
+
+```sh
+curl -fsS -X POST \
+  -H "Authorization: Bearer $WISH_AGENT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"action":"start","note":"需求已确认，开始实现"}' \
   "https://board.example.com/api/agent/wishes/<wish-id>"
 ```
 
-- `start`：仅允许 `approved` → `in_progress`。
+- `start`：允许 `approved`，或没有未回答追问的 `pending` → `in_progress`。未审批许愿也可以直接开始，无需管理员操作。
 - `implement`：允许 `approved` 或 `in_progress` → `implemented`。
-- 备注最多 500 字；省略时写入默认说明。
-- 非法状态转换返回 409；操作以「本地制作代理」写入管理操作记录，不会授予其他管理权限。
+- 有未回答追问时 `start` 返回 409；最多追问 2 次；备注最多 500 字。
 - 代理不能通过该接口通过或驳回待审核许愿；审批仍只能由管理员完成。
+- 操作以「本地制作代理」写入管理操作记录。
 
-示例轮询脚本：
+玩家回答接口：
 
 ```sh
-last=0
-while true; do
-  curl -fsS -H "Authorization: Bearer $WISH_AGENT_TOKEN" \
-    "https://board.example.com/api/agent/wishes?since=$last" |
-    jq -c '.wishes[] | {id,status,text,imageUrl,note}' >> wishes.jsonl
-  now=$(date +%s); last=$now; sleep 300
-done
+curl -fsS -X POST \
+  -H "Cookie: wb_session=..." -H "Content-Type: application/json" \
+  -d '{"answer":"希望 2 人合作"}' \
+  "https://board.example.com/api/wishes/<wish-id>/answer"
 ```
 
-本地 agent 根据 `text` 和 `imageUrl` 自行决定是否制作；服务端不会自动修改游戏或上架新游戏。制作完成后仍需按仓库流程实现、验收和发布。
+- 只有许愿提交者可以回答；一个问题只能回答一次。
+- 回答长度 1–1000 字；未回答时 `needsAnswer=true`。
+
+本仓库提供持久化启动脚本：
+
+```sh
+./scripts/wish-loop.sh          # 启动 Claude Code 并每 5 分钟执行
+./scripts/wish-loop.sh --dry-run # 只看将要执行的 /loop 指令
+```
+
+脚本读取本地 `.local/wishes/agent-token`，并把 `scripts/wish-loop-prompt.txt` 作为 `/loop` 指令；换机器时重新配置令牌即可。本地 agent 根据 `text`、问答和 `imageUrl` 自行决定玩法；服务端不会自动创建或下架游戏。制作完成后按仓库流程实现、验收和发布，再回写 `implemented`。

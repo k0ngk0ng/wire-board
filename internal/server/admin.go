@@ -51,9 +51,9 @@ INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 	if err != nil {
 		return err
 	}
-	// Preserve the six games shipped before the default-off policy. This is a
-	// fixed migration list, not the evolving registry: every newly added ID must
-	// be explicitly published by an administrator. Never overwrite a decision.
+	// Preserve the six games shipped before publication settings existed, and
+	// publish newly registered games by default. Existing rows (including an
+	// administrator's explicit unpublication) are never overwritten.
 	tx, err := s.db.Begin()
 	if err != nil {
 		return err
@@ -64,7 +64,7 @@ INSERT OR IGNORE INTO user_controls(user_id) SELECT id FROM users;`)
 		return err
 	}
 	for _, kind := range s.gameKinds {
-		if _, err = tx.Exec("INSERT OR IGNORE INTO game_settings(kind,enabled) VALUES(?,0)", kind); err != nil {
+		if _, err = tx.Exec("INSERT OR IGNORE INTO game_settings(kind,enabled) VALUES(?,1)", kind); err != nil {
 			tx.Rollback()
 			return err
 		}

@@ -1,15 +1,30 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ClipboardEvent,
+  type FormEvent,
+} from "react";
 import {
   CheckCircle2,
   Clock3,
   Hammer,
   ImagePlus,
+  MessageCircleQuestion,
   Send,
   Sparkles,
   Trophy,
   X,
   XCircle,
 } from "lucide-react";
+
+export type WishQuestion = {
+  id: number;
+  question: string;
+  answer?: string;
+  askedAt: number;
+  answeredAt?: number;
+};
 
 export type Wish = {
   id: string;
@@ -22,6 +37,9 @@ export type Wish = {
   reviewedAt?: number;
   approvedAt?: number;
   reviewedByName?: string;
+  questions?: WishQuestion[];
+  questionCount: number;
+  needsAnswer: boolean;
 };
 
 const statuses: Record<
@@ -50,6 +68,14 @@ function date(value: number) {
 }
 
 export function WishStatus({ wish }: { wish: Wish }) {
+  if (wish.status === "pending" && wish.needsAnswer) {
+    return (
+      <span className="wish-status clarify">
+        <MessageCircleQuestion size={14} />
+        待回复
+      </span>
+    );
+  }
   const status = statuses[wish.status];
   const Icon = status.icon;
   return (
@@ -57,6 +83,72 @@ export function WishStatus({ wish }: { wish: Wish }) {
       <Icon size={14} />
       {status.label}
     </span>
+  );
+}
+
+export function WishAnswer({
+  wish,
+  onAnswered,
+}: {
+  wish: Wish;
+  onAnswered: () => Promise<void>;
+}) {
+  const [answer, setAnswer] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  if (!wish.needsAnswer) return null;
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    const value = answer.trim();
+    if (!value || busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/wishes/${wish.id}/answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: value }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "回答未保存");
+      setAnswer("");
+      await onAnswered();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <form className="wish-answer" onSubmit={(event) => void submit(event)}>
+      <label>
+        回答 AI 的追问
+        <textarea
+          value={answer}
+          rows={2}
+          maxLength={1000}
+          required
+          placeholder="补充玩法、人数、参考或期望，AI 会据此继续"
+          onChange={(event) => {
+            setAnswer(event.target.value);
+            setError("");
+          }}
+        />
+      </label>
+      {error && (
+        <div className="admin-message error" role="alert">
+          {error}
+        </div>
+      )}
+      <button
+        className="outline"
+        type="submit"
+        disabled={busy || !answer.trim()}
+      >
+        <Send size={15} />
+        {busy ? "正在提交…" : "提交回答"}
+      </button>
+    </form>
   );
 }
 
@@ -149,6 +241,20 @@ export function WishDialog({
     setFile(next);
   }
 
+  function paste(event: ClipboardEvent<HTMLTextAreaElement>) {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (!item.type.startsWith("image/")) continue;
+      const pasted = item.getAsFile();
+      if (!pasted) continue;
+      event.preventDefault();
+      setNotice("");
+      pick(pasted);
+      return;
+    }
+  }
+
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (busy) return;
@@ -203,7 +309,7 @@ export function WishDialog({
               <Sparkles size={22} />
               游戏许愿池
             </h2>
-            <p>写下想玩的游戏，也可以附上一张参考图。</p>
+            <p>写下想实现的新游戏，可以附参考图或直接粘贴截图。</p>
           </div>
           <button
             className="icon-button"
@@ -224,6 +330,7 @@ export function WishDialog({
               rows={5}
               required
               placeholder="例如：一款 2v2 潜艇对战，能选择不同潜艇，地图里有深海热泉和随机补给……"
+              onPaste={paste}
               onChange={(event) => {
                 setText(event.target.value);
                 setError("");
@@ -247,7 +354,9 @@ export function WishDialog({
                 aria-label="上传许愿参考图"
                 onChange={(event) => pick(event.target.files?.[0])}
               />
-              <small>可选，PNG／JPEG／WebP／GIF，最大 5 MB</small>
+              <small>
+                可选，PNG／JPEG／WebP／GIF，最大 5 MB；也可直接粘贴截图
+              </small>
             </div>
             <span className="wish-counter">{text.length} / 2000</span>
           </div>
@@ -286,7 +395,9 @@ export function WishDialog({
         <section className="wish-history" aria-label="我的许愿">
           <div className="wish-history-head">
             <h3>我的许愿</h3>
-            <small>只有管理员能看到全部许愿；这里仅显示你自己的记录。</small>
+            <small>
+              只有管理员能看到全部许愿；AI 如有疑问最多追问 2 次，之后会开始实现。
+            </small>
           </div>
           {loadError && (
             <div className="admin-message error" role="alert">
@@ -315,6 +426,36 @@ export function WishDialog({
                     >
                       <img src={wish.imageUrl} alt="许愿参考图" loading="lazy" />
                     </a>
+                  )}
+                  {!!wish.questions?.length && (
+                    <div className="wish-qa">
+                      {wish.questions.map((question) => (
+                        <div className="wish-question" key={question.id}>
+                          <p>
+                            <b>AI 追问</b>
+                            {question.question}
+                          </p>
+                          {question.answer ? (
+                            <p className="wish-answer-text">
+                              <b>你的回答</b>
+                              {question.answer}
+                            </p>
+                          ) : (
+                            <small>等待你的回答</small>
+                          )}
+                        </div>
+                      ))}
+                      {wish.questionCount >= 2 && !wish.needsAnswer && (
+                        <small>已追问 2 次，AI 会据此开始实现。</small>
+                      )}
+                      <WishAnswer
+                        wish={wish}
+                        onAnswered={async () => {
+                          await load();
+                          await onChanged();
+                        }}
+                      />
+                    </div>
                   )}
                   {wish.note && (
                     <div className="wish-note">管理员备注：{wish.note}</div>
