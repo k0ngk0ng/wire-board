@@ -34,7 +34,12 @@ python3 -B scripts/bubbleparty/check-browser.py
 - 采用 15×13 格子、单命淘汰、3 分钟后收缩安全区；不同时实现原作的全部道具/角色。
 - 机器人以有限 BFS 和炸弹规避为主，保证可完成对局与托管；不追求竞技强度。
 
-## 待发布验证
+## 发布与部署
 
-- 需要在 main CI 通过后复用已验证构建发布；tag 后部署，确认新游戏默认下架并保留已有游戏设置。
-- 发布后再由管理员决定是否上架；不自动上架。
+- main 提交 `fd784037` 的 `Check main and build` 运行 `39245613959` 全绿，包含 `Game bubbleparty (0)`、shared 检查和 `Test and Linux amd64 binary`。
+- `v1.19.0` 指向同一提交；Release 运行 `39246891742` 复用已验证构建，未重新编译应用。
+- 服务器运行 `ghcr.io/k0ngk0ng/wire-board@sha256:6cc6a1d870b6cde129ba3f123c15c15d8444c537378cd75ed42bc84451c9a2ae`，OCI revision `fd784037`、version `v1.19.0`，`/healthz` 正常。
+- 线上 bundle 包含「泡泡大作战」；本地回退音频 `/bubbleparty/v1/audio/place.wav` 返回 200 `audio/wav`。
+- 新游戏保持 `bubbleparty=0`，已有 `battlecity=1`、`spf2t=1` 等设置不变；需管理员在后台显式上架。
+- 保留本次更新前与上一份备份 `data-20261019T114631Z-865536.tar.gz`、`data-20261019T105535Z-753854.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留当前 `v1.19.0` 与上一版 `v1.18.1` 回滚镜像。
+- 许愿已通过代理接口回写为「已实现」，备注包含版本和默认下架说明。
