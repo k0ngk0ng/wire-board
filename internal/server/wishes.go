@@ -335,7 +335,7 @@ func (s *Server) listWishes(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) adminWishes() ([]wish, map[string]int, error) {
 	rows, err := s.db.Query(`SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
-ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END,created_at DESC,id DESC LIMIT ?`, wishAdminListLimit)
+ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 WHEN 'in_progress' THEN 2 WHEN 'implemented' THEN 3 ELSE 4 END,created_at DESC,id DESC LIMIT ?`, wishAdminListLimit)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -355,7 +355,7 @@ ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END,cre
 	if err := rows.Close(); err != nil {
 		return nil, nil, err
 	}
-	stats := map[string]int{"pending": 0, "approved": 0, "rejected": 0}
+	stats := map[string]int{"pending": 0, "approved": 0, "in_progress": 0, "implemented": 0, "rejected": 0}
 	counts, err := s.db.Query("SELECT status,COUNT(*) FROM wishes GROUP BY status")
 	if err != nil {
 		return nil, nil, err
@@ -401,10 +401,14 @@ func (s *Server) adminWish(w http.ResponseWriter, r *http.Request) {
 	switch req.Action {
 	case "approve":
 		status = "approved"
+	case "start":
+		status = "in_progress"
+	case "implement":
+		status = "implemented"
 	case "reject":
 		status = "rejected"
 	default:
-		fail(w, 400, "审核操作只能是通过或驳回")
+		fail(w, 400, "未知许愿状态操作")
 		return
 	}
 	note := strings.TrimSpace(req.Note)
@@ -421,7 +425,10 @@ func (s *Server) adminWish(w http.ResponseWriter, r *http.Request) {
 		detail += " · " + note
 	}
 	err := s.adminCommit(actor, "wish_"+status, id, detail, nil, func(tx *sql.Tx) error {
-		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=? WHERE id=?", status, note, actor.ID, actor.Name, now, id)
+		// Keep review timestamps strictly increasing even when an admin advances
+		// through several states within one second, so the agent's since cursor
+		// cannot miss a transition.
+		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=MAX(?,reviewed_at+1) WHERE id=?", status, note, actor.ID, actor.Name, now, id)
 		if err != nil {
 			return err
 		}
@@ -454,8 +461,9 @@ func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
 		fail(w, 401, "许愿代理令牌无效")
 		return
 	}
-	if status := r.URL.Query().Get("status"); status != "" && status != "approved" {
-		fail(w, 400, "代理只读取已审核通过的许愿")
+	status := r.URL.Query().Get("status")
+	if status != "" && status != "approved" && status != "in_progress" && status != "implemented" {
+		fail(w, 400, "代理只读取已通过、正在实现或已实现的许愿")
 		return
 	}
 	var since int64
@@ -476,10 +484,17 @@ func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
 		}
 		limit = v
 	}
-	rows, err := s.db.Query(`SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
-WHERE status='approved' AND reviewed_at>? ORDER BY reviewed_at,id LIMIT ?`, since, limit)
+	query := `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
+WHERE reviewed_at>? AND status IN ('approved','in_progress','implemented') ORDER BY reviewed_at,id LIMIT ?`
+	args := []any{since, limit}
+	if status != "" {
+		query = `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
+WHERE reviewed_at>? AND status=? ORDER BY reviewed_at,id LIMIT ?`
+		args = []any{since, status, limit}
+	}
+	rows, err := s.db.Query(query, args...)
 	if err != nil {
-		fail(w, 500, "无法读取已通过的许愿")
+		fail(w, 500, "无法读取已审核的许愿")
 		return
 	}
 	defer rows.Close()
@@ -487,13 +502,13 @@ WHERE status='approved' AND reviewed_at>? ORDER BY reviewed_at,id LIMIT ?`, sinc
 	for rows.Next() {
 		item, err := scanWish(rows)
 		if err != nil {
-			fail(w, 500, "无法读取已通过的许愿")
+			fail(w, 500, "无法读取已审核的许愿")
 			return
 		}
 		list = append(list, item)
 	}
 	if err := rows.Err(); err != nil {
-		fail(w, 500, "无法读取已通过的许愿")
+		fail(w, 500, "无法读取已审核的许愿")
 		return
 	}
 	respond(w, 200, map[string]any{"wishes": list, "serverNow": time.Now().Unix()})
