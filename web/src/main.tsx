@@ -17,6 +17,7 @@ import {
   RotateCcw,
   ScrollText,
   ShieldCheck,
+  Sparkles,
   TrainFront,
   Users,
   Volume2,
@@ -76,6 +77,7 @@ import { CreateRoom } from "./ui/create-room";
 import { useTurnTitle } from "./turn-title";
 import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
+import { WishDialog } from "./wishes";
 
 const statusName: Record<string, string> = {
   waiting: "等待入座",
@@ -146,6 +148,7 @@ function App() {
   const [closeTableRoom, setCloseTableRoom] = useState("");
   const [profileID, setProfileID] = useState("");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [wishOpen, setWishOpen] = useState(false);
   const [sound, setSound] = useState(
     () => localStorage.getItem("wb_sound") !== "off",
   );
@@ -566,6 +569,14 @@ function App() {
                   </button>
                 )}
                 <button
+                  className="subtle wish-nav-button"
+                  aria-label="打开游戏许愿池"
+                  onClick={() => setWishOpen(true)}
+                >
+                  <Sparkles size={16} />
+                  许愿池
+                </button>
+                <button
                   className="subtle"
                   onClick={() => setShowLeaderboard(true)}
                 >
@@ -982,6 +993,12 @@ function App() {
               >
                 <Leaderboard />
               </Modal>
+            )}
+            {wishOpen && (
+              <WishDialog
+                onClose={() => setWishOpen(false)}
+                onChanged={refresh}
+              />
             )}
             {profileID && (
               <Modal title="玩家页面" onClose={() => setProfileID("")}>

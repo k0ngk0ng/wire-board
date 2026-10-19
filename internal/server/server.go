@@ -35,6 +35,10 @@ type Config struct {
 	AssetsBaseURL                                       string
 	SecureCookie                                        bool
 	AdminUsername, AdminPassword, AdminExistingUsername string
+	OSSEndpoint, OSSBucket                              string
+	OSSAccessKeyID, OSSAccessKeySecret                  string
+	WishImageBaseURL, WishImagePrefix                   string
+	WishAgentToken                                      string
 }
 type User struct {
 	ID   string `json:"id"`
@@ -157,6 +161,9 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		}
 		cfg.AssetsBaseURL = strings.TrimRight(cfg.AssetsBaseURL, "/")
 	}
+	if err := normalizeWishConfig(&cfg); err != nil {
+		return nil, err
+	}
 	if cfg.InviteCode == "" {
 		return nil, errors.New("请设置 INVITE_CODE 注册邀请码")
 	}
@@ -175,7 +182,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		return nil, e
 	}
 	db.SetMaxOpenConns(1)
-	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS rating_ledger(match_id TEXT NOT NULL,user_id TEXT NOT NULL,delta INTEGER NOT NULL,rank INTEGER NOT NULL,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS rating_user ON rating_ledger(user_id); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce));`)
+	_, e = db.Exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,password TEXT NOT NULL); CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user_id TEXT NOT NULL,expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS rooms(id TEXT PRIMARY KEY,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_history(id TEXT PRIMARY KEY,ended INTEGER NOT NULL,snapshot BLOB NOT NULL); CREATE TABLE IF NOT EXISTS match_members(match_id TEXT,user_id TEXT,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS match_members_user ON match_members(user_id); CREATE TABLE IF NOT EXISTS friendships(a TEXT,b TEXT,requester TEXT NOT NULL,status TEXT NOT NULL,PRIMARY KEY(a,b)); CREATE TABLE IF NOT EXISTS rating_ledger(match_id TEXT NOT NULL,user_id TEXT NOT NULL,delta INTEGER NOT NULL,rank INTEGER NOT NULL,PRIMARY KEY(match_id,user_id)); CREATE INDEX IF NOT EXISTS rating_user ON rating_ledger(user_id); CREATE TABLE IF NOT EXISTS actions(room_id TEXT,user_id TEXT,nonce TEXT,version INTEGER,action BLOB,created INTEGER,PRIMARY KEY(room_id,user_id,nonce)); CREATE TABLE IF NOT EXISTS wishes(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,user_name TEXT NOT NULL,text TEXT NOT NULL,image_url TEXT NOT NULL DEFAULT '',status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','rejected')),review_note TEXT NOT NULL DEFAULT '',reviewed_by TEXT NOT NULL DEFAULT '',reviewed_by_name TEXT NOT NULL DEFAULT '',created_at INTEGER NOT NULL,reviewed_at INTEGER NOT NULL DEFAULT 0); CREATE INDEX IF NOT EXISTS wishes_status ON wishes(status,created_at); CREATE INDEX IF NOT EXISTS wishes_user ON wishes(user_id,created_at);`)
 	if e != nil {
 		db.Close()
 		return nil, e
@@ -341,11 +348,15 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/login", s.auth)
 	mux.HandleFunc("POST /api/logout", s.logout)
 	mux.HandleFunc("GET /api/state", s.state)
+	mux.HandleFunc("GET /api/wishes", s.listWishes)
+	mux.HandleFunc("POST /api/wishes", s.createWish)
+	mux.HandleFunc("GET /api/agent/wishes", s.agentWishes)
 	mux.HandleFunc("GET /api/admin", s.adminOverview)
 	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
 	mux.HandleFunc("POST /api/admin/users/{id}", s.adminManageUser)
 	mux.HandleFunc("POST /api/admin/rooms/{id}/close", s.adminCloseRoom)
+	mux.HandleFunc("POST /api/admin/wishes/{id}", s.adminWish)
 	mux.HandleFunc("GET /api/players", s.players)
 	mux.HandleFunc("GET /api/players/{id}", s.profile)
 	mux.HandleFunc("GET /api/friends", s.friends)
@@ -375,7 +386,12 @@ func (s *Server) Handler() http.Handler {
 			u, _ := url.Parse(s.cfg.AssetsBaseURL)
 			assetSource = " " + u.Scheme + "://" + u.Host
 		}
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+"; connect-src 'self'; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
+		wishSource := ""
+		if ossConfigured(s.cfg) {
+			u, _ := url.Parse(s.cfg.WishImageBaseURL)
+			wishSource = " " + u.Scheme + "://" + u.Host
+		}
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+wishSource+"; connect-src 'self'; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
 		if strings.HasPrefix(r.URL.Path, "/api/") {
 			w.Header().Set("Cache-Control", "no-store")
 		}
@@ -384,7 +400,11 @@ func (s *Server) Handler() http.Handler {
 				fail(w, 403, "请求来源不匹配")
 				return
 			}
-			r.Body = http.MaxBytesReader(w, r.Body, 32768)
+			limit := int64(32768)
+			if r.Method == "POST" && r.URL.Path == "/api/wishes" {
+				limit = wishBodyLimit
+			}
+			r.Body = http.MaxBytesReader(w, r.Body, limit)
 		}
 		mux.ServeHTTP(w, r)
 	})
