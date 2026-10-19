@@ -39,7 +39,17 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	app, err := server.New(server.Config{Modules: games.Modules(), DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"), Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"), SecureCookie: os.Getenv("COOKIE_SECURE") == "true", AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"), AdminExistingUsername: os.Getenv("ADMIN_EXISTING_USERNAME")}, files)
+	app, err := server.New(server.Config{
+		Modules: games.Modules(), DataDir: dir, InviteCode: os.Getenv("INVITE_CODE"),
+		Origin: os.Getenv("PUBLIC_ORIGIN"), AssetsBaseURL: os.Getenv("ASSETS_BASE_URL"),
+		SecureCookie:  os.Getenv("COOKIE_SECURE") == "true",
+		AdminUsername: os.Getenv("ADMIN_USERNAME"), AdminPassword: os.Getenv("ADMIN_PASSWORD"),
+		AdminExistingUsername: os.Getenv("ADMIN_EXISTING_USERNAME"),
+		OSSEndpoint:           os.Getenv("OSS_ENDPOINT"), OSSBucket: os.Getenv("OSS_BUCKET"),
+		OSSAccessKeyID: os.Getenv("OSS_ACCESS_KEY_ID"), OSSAccessKeySecret: os.Getenv("OSS_ACCESS_KEY_SECRET"),
+		WishImageBaseURL: os.Getenv("WISH_IMAGE_BASE_URL"), WishImagePrefix: os.Getenv("WISH_IMAGE_PREFIX"),
+		WishAgentToken: os.Getenv("WISH_AGENT_TOKEN"),
+	}, files)
 	if err != nil {
 		return err
 	}
