@@ -269,8 +269,9 @@ try:
     b("wait", ".wish-nav-button")
     check(
         "version shown in lobby",
-        "v-wishes-e2e" in js('document.querySelector(".app-version")?.textContent || ""')
-        and "v-wishes-e2e" in js('document.querySelector(".lobby-version")?.textContent || ""'),
+        js('document.querySelector(".app-version")?.textContent.trim()') == "v-wishes-e2e"
+        and js('document.querySelector(".lobby-version")?.textContent.trim()')
+        == "v-wishes-e2e",
     )
     b("click", ".wish-nav-button")
     b("wait", ".wish-modal")
