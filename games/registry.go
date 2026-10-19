@@ -3,6 +3,7 @@ package games
 
 import (
 	battlecity "github.com/k0ngk0ng/wire-board/games/battlecity/server"
+	bubbleparty "github.com/k0ngk0ng/wire-board/games/bubbleparty/server"
 	chess "github.com/k0ngk0ng/wire-board/games/chess/server"
 	doudizhu "github.com/k0ngk0ng/wire-board/games/doudizhu/server"
 	gomoku "github.com/k0ngk0ng/wire-board/games/gomoku/server"
@@ -24,7 +25,7 @@ import (
 // Modules registers independent games. Add the game's server.Module() here;
 // its frontend is discovered from games/<id>/web/module.tsx automatically.
 func Modules() []gameapi.Module {
-	return []gameapi.Module{monopoly.Module(), starfort.Module(), doudizhu.Module(), guandan.Module(), shengji.Module(), snooker.Module(), pairs.Module(), gomoku.Module(), junqi.Module(), chess.Module(), xiangqi.Module(), weiqi.Module(), racing.Module(), tetris.Module(), spf2t.Module(), battlecity.Module()}
+	return []gameapi.Module{monopoly.Module(), starfort.Module(), doudizhu.Module(), guandan.Module(), shengji.Module(), snooker.Module(), pairs.Module(), gomoku.Module(), junqi.Module(), chess.Module(), xiangqi.Module(), weiqi.Module(), racing.Module(), tetris.Module(), spf2t.Module(), battlecity.Module(), bubbleparty.Module()}
 }
 
 // Legacy lists games that retain the existing room/snapshot protocol adapter.
