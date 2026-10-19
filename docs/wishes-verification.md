@@ -41,3 +41,15 @@ python3 -B scripts/check_game_boundaries.py
 - `WISH_AGENT_TOKEN` 至少 16 字节；未配置时代理接口返回 503，不影响玩家提交纯文字许愿。
 - 图片写入 `bga/wishes/YYYYMMDD/<random>.<ext>` 不可变对象；媒体不进 Git。
 - 新功能不改变游戏上下架状态，也不自动创建或上架游戏。
+
+## 发布与部署
+
+- main 提交 `e0b2a528` 的 `Check main and build` 运行 `39234703806` 全绿（shared 计划/构建/HTTP 持久化与 race、`Test and Linux amd64 binary`）。
+- `v1.18.0` 指向同一提交；`Publish version tag` 运行 `39235969348` 复用已验证构建，Release 已发布。
+- 服务器运行 `ghcr.io/k0ngk0ng/wire-board@sha256:8de33e069b9eacfeba56e0625bf57ff7854468b3816848f7d4127868e96163b1`，OCI revision `e0b2a528`、version `v1.18.0`，`/healthz` 正常。
+- `.env` 已配置 OSS 四项、`WISH_IMAGE_BASE_URL=https://cdn.ichenj.com`、`WISH_IMAGE_PREFIX=bga/wishes` 和 `WISH_AGENT_TOKEN`；Nginx `bga.ichenj.com` 增加 `client_max_body_size 6m;` 并已 `nginx -t`、reload。
+- 生产冒烟：临时账号经 `https://bga.ichenj.com` 提交带图许愿，图片写入 OSS 后从 CDN 回读字节一致；随后删除该用户、许愿和 OSS 临时对象，数据库中无残留。
+- 代理接口：带令牌读取返回 200（当前为空列表），无令牌返回 401。
+- 已有游戏设置保留；管理员此前已上架的 `battlecity` 保持上架，未做任何自动上/下架。
+- 保留本次更新前与上一份备份 `data-20261019T101526Z-664607.tar.gz`、`data-20261019T073207Z-307786.tar.gz`（均通过 `quick_check`）；更旧备份已删除。历史镜像已清理，保留 `v1.18.0` 当前镜像和 `v1.17.0` 回滚镜像。
+- 本地代理令牌保存在 `.local/wishes/agent-token`（已 Git 忽略）。调用示例见 [许愿池说明](wishes.md)。
