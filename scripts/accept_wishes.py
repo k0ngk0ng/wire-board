@@ -288,6 +288,10 @@ try:
     )
     b("click", ".wish-submit .primary")
     wait_js('!!document.querySelector(".wish-item")')
+    first_id = js(
+        'fetch("/api/wishes").then(r=>r.json()).then(d=>d.wishes[0].id)'
+    )
+    check("wish id available", bool(first_id), first_id)
     check("wish submitted", True)
     check("wish pending", js('!!document.querySelector(".wish-item .wish-status.pending")'))
 
@@ -375,12 +379,15 @@ try:
     check("agent sees approved wish", status == 200 and len(feed.get("wishes", [])) == 1, feed)
     check("agent gets approved status", feed["wishes"][0]["status"] == "approved", feed)
 
-    b("click", ".admin-wish-actions .primary")
-    b("wait", ".admin-confirm textarea")
-    b("fill", '.admin-confirm textarea[name="note"]', NOTE_START)
-    b("click", ".admin-confirm button.primary")
+    status, started = fetch_json(
+        base + "/api/agent/wishes/" + first_id,
+        headers={"Authorization": "Bearer " + AGENT_TOKEN},
+        body={"action": "start", "note": NOTE_START},
+        method="POST",
+    )
+    check("agent starts implementation", status == 200 and started.get("status") == "in_progress", started)
     wait_js('!!document.querySelector(".admin-wish-card .wish-status.in-progress")')
-    check("admin started implementation", True)
+    check("admin sees implementation started", True)
     ratios = contrast_check([[".wish-status.in-progress", ".wish-status.in-progress"]])
     check("in-progress contrast", ratios[0]["ratio"] >= 4.5, ratios)
     status, feed = fetch_json(

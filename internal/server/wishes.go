@@ -448,16 +448,23 @@ func (s *Server) adminWish(w http.ResponseWriter, r *http.Request) {
 	respond(w, 200, map[string]any{"ok": true})
 }
 
-func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
+func (s *Server) agentAuthorized(r *http.Request) bool {
 	if s.cfg.WishAgentToken == "" {
-		fail(w, 503, "尚未配置许愿代理令牌")
-		return
+		return false
 	}
 	token := strings.TrimSpace(r.Header.Get("X-Wish-Token"))
 	if auth := r.Header.Get("Authorization"); strings.HasPrefix(strings.ToLower(auth), "bearer ") {
 		token = strings.TrimSpace(auth[len("Bearer "):])
 	}
-	if subtle.ConstantTimeCompare([]byte(token), []byte(s.cfg.WishAgentToken)) != 1 {
+	return subtle.ConstantTimeCompare([]byte(token), []byte(s.cfg.WishAgentToken)) == 1
+}
+
+func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
+	if s.cfg.WishAgentToken == "" {
+		fail(w, 503, "尚未配置许愿代理令牌")
+		return
+	}
+	if !s.agentAuthorized(r) {
 		fail(w, 401, "许愿代理令牌无效")
 		return
 	}
@@ -512,4 +519,91 @@ WHERE reviewed_at>? AND status=? ORDER BY reviewed_at,id LIMIT ?`
 		return
 	}
 	respond(w, 200, map[string]any{"wishes": list, "serverNow": time.Now().Unix()})
+}
+
+// agentWishStatus lets the local build agent advance an approved wish without
+// granting it the full admin surface. Only forward transitions are accepted.
+func (s *Server) agentWishStatus(w http.ResponseWriter, r *http.Request) {
+	if s.cfg.WishAgentToken == "" {
+		fail(w, 503, "尚未配置许愿代理令牌")
+		return
+	}
+	if !s.agentAuthorized(r) {
+		fail(w, 401, "许愿代理令牌无效")
+		return
+	}
+	var req struct {
+		Action string `json:"action"`
+		Note   string `json:"note"`
+	}
+	if !decode(w, r, &req) {
+		return
+	}
+	target := ""
+	switch req.Action {
+	case "start":
+		target = "in_progress"
+	case "implement":
+		target = "implemented"
+	default:
+		fail(w, 400, "代理操作只能是 start 或 implement")
+		return
+	}
+	note := strings.TrimSpace(req.Note)
+	if utf8.RuneCountInString(note) > wishNoteMaxRunes {
+		fail(w, 400, "备注最多 500 字")
+		return
+	}
+	if note == "" {
+		if target == "in_progress" {
+			note = "本地制作代理开始实现"
+		} else {
+			note = "本地制作代理已完成"
+		}
+	}
+
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	id := r.PathValue("id")
+	var owner, text, current string
+	if err := s.db.QueryRow("SELECT user_name,text,status FROM wishes WHERE id=?", id).Scan(&owner, &text, &current); err != nil {
+		fail(w, 404, "许愿不存在")
+		return
+	}
+	allowed := false
+	switch req.Action {
+	case "start":
+		allowed = current == "approved"
+	case "implement":
+		allowed = current == "in_progress" || current == "approved"
+	}
+	if !allowed {
+		fail(w, 409, "当前状态不能执行该操作")
+		return
+	}
+	detail := owner + "：" + text
+	if utf8.RuneCountInString(detail) > 100 {
+		detail = string([]rune(detail)[:100]) + "…"
+	}
+	detail += " · " + note
+	actor := User{ID: "wish-agent", Name: "本地制作代理"}
+	err := s.adminCommit(actor, "wish_"+target, id, detail, nil, func(tx *sql.Tx) error {
+		res, err := tx.Exec("UPDATE wishes SET status=?,review_note=?,reviewed_by=?,reviewed_by_name=?,reviewed_at=MAX(?,reviewed_at+1) WHERE id=?", target, note, actor.ID, actor.Name, time.Now().Unix(), id)
+		if err != nil {
+			return err
+		}
+		n, err := res.RowsAffected()
+		if err != nil {
+			return err
+		}
+		if n != 1 {
+			return fmt.Errorf("wish %s disappeared", id)
+		}
+		return nil
+	})
+	if err != nil {
+		fail(w, 500, "状态未保存，请重试")
+		return
+	}
+	respond(w, 200, map[string]any{"ok": true, "status": target})
 }
