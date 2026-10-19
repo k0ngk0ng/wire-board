@@ -1,0 +1,86 @@
+{
+  "version": "bubbleparty/v1",
+  "prefix": "bga/v20261002-1/bubbleparty/v1/",
+  "generator": "scripts/bubbleparty/prepare-audio.mjs",
+  "generatorSha256": "851ab1759d6bef5c8914d19a6a3ce64186009810e24937bedd6b23c51f7596b6",
+  "license": "项目原创，离线合成，无外部采样",
+  "entries": [
+    {
+      "file": "countdown.wav",
+      "urlPath": "/bubbleparty/v1/audio/countdown.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/countdown.wav",
+      "sha256": "dbd320eefba6e12981818231c353cdd4578ecd689796d2457ef4b386e90fa7b7",
+      "bytes": 15920
+    },
+    {
+      "file": "start.wav",
+      "urlPath": "/bubbleparty/v1/audio/start.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/start.wav",
+      "sha256": "66bdc4a0765577c10af5a045d0cbc9e4376e61db179988a5200ff368771cc2a4",
+      "bytes": 48554
+    },
+    {
+      "file": "place.wav",
+      "urlPath": "/bubbleparty/v1/audio/place.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/place.wav",
+      "sha256": "9496b7abf57a77eedf1956d4c78a57a9b6ebeae6181fed0410e33586087f4422",
+      "bytes": 12392
+    },
+    {
+      "file": "explode.wav",
+      "urlPath": "/bubbleparty/v1/audio/explode.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/explode.wav",
+      "sha256": "c604b893b1eaeabd4059994a5526db2fe866f6116ca513b2625b20efd2c86785",
+      "bytes": 44144
+    },
+    {
+      "file": "item.wav",
+      "urlPath": "/bubbleparty/v1/audio/item.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/item.wav",
+      "sha256": "d6403214c70bc75e0bc4a11eec12ae5151a4296dba6a19ff428479ab3156d6d2",
+      "bytes": 24740
+    },
+    {
+      "file": "shield.wav",
+      "urlPath": "/bubbleparty/v1/audio/shield.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/shield.wav",
+      "sha256": "f861cd0bcecbb57b9fcfa23c5a36fc9bc4c3d1984398bb9e5f81eacbc5f32e22",
+      "bytes": 30914
+    },
+    {
+      "file": "eliminate.wav",
+      "urlPath": "/bubbleparty/v1/audio/eliminate.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/eliminate.wav",
+      "sha256": "627f99aa4ad40999c1ec1602d776f49afff9075d932560c8904aada1e18f9613",
+      "bytes": 37088
+    },
+    {
+      "file": "sudden.wav",
+      "urlPath": "/bubbleparty/v1/audio/sudden.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/sudden.wav",
+      "sha256": "a49727e0e1b7f7920b15a4a986e1ce927f5ced04b145532e1d7ea4d1824869fd",
+      "bytes": 66194
+    },
+    {
+      "file": "win.wav",
+      "urlPath": "/bubbleparty/v1/audio/win.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/win.wav",
+      "sha256": "e28c78b9da2570b87049818a82479b9ea6dad79437d4d1f60bbaecc4694cc1cc",
+      "bytes": 79424
+    },
+    {
+      "file": "lose.wav",
+      "urlPath": "/bubbleparty/v1/audio/lose.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/lose.wav",
+      "sha256": "056ff0a1cfd8ea87e27757f5b827a2231c6b8db0da85616bba395e28c6147022",
+      "bytes": 70604
+    },
+    {
+      "file": "battle.wav",
+      "urlPath": "/bubbleparty/v1/audio/battle.wav",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v1/audio/battle.wav",
+      "sha256": "070a704b79483af35b079feaf404955c4b472351bf09b211b86033a92e8a8770",
+      "bytes": 705644
+    }
+  ]
+}
