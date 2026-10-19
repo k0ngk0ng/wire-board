@@ -15,8 +15,12 @@ import {
   Activity,
   ScrollText,
   CircleStop,
+  Sparkles,
+  Check,
+  XCircle,
 } from "lucide-react";
 import type { Room, User } from "./types";
+import { WishStatus, type Wish } from "./wishes";
 import "./admin.css";
 
 type ManagedUser = User & {
@@ -35,6 +39,8 @@ type Overview = {
   users: ManagedUser[];
   rooms: Room[];
   games: Game[];
+  wishes: Wish[];
+  wishStats: { pending: number; approved: number; rejected: number };
   stats: { users: number; online: number; playing: number; waiting: number };
   serverNow: number;
 };
@@ -52,6 +58,7 @@ type Decision = {
   path: string;
   body: Record<string, unknown>;
   password?: boolean;
+  note?: boolean;
 };
 const roles: Record<string, string> = {
   superadmin: "永久管理员",
@@ -70,6 +77,8 @@ const actions: Record<string, string> = {
   user_password: "重置密码",
   user_role: "调整权限",
   room_closed: "结束牌桌",
+  wish_approved: "通过许愿",
+  wish_rejected: "驳回许愿",
 };
 const date = (value: number) =>
   value
@@ -106,6 +115,7 @@ export function AdminDashboard({
   const [query, setQuery] = useState("");
   const [gameQuery, setGameQuery] = useState("");
   const [gameCategory, setGameCategory] = useState("all");
+  const [wishFilter, setWishFilter] = useState("all");
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [decision, setDecision] = useState<Decision>();
   const [busy, setBusy] = useState(false);
@@ -154,13 +164,15 @@ export function AdminDashboard({
   useEffect(() => {
     if (!decision) return;
     const previous = document.activeElement as HTMLElement;
-    dialog.current?.querySelector<HTMLElement>("input,button")?.focus();
+    dialog.current
+      ?.querySelector<HTMLElement>("input,textarea,button")
+      ?.focus();
     const key = (e: KeyboardEvent) => {
       if (e.key === "Escape" && !busy) setDecision(undefined);
       if (e.key === "Tab") {
         const nodes = Array.from(
           dialog.current?.querySelectorAll<HTMLElement>(
-            "input,button:not(:disabled)",
+            "input,textarea,button:not(:disabled)",
           ) || [],
         );
         const first = nodes[0],
@@ -180,7 +192,7 @@ export function AdminDashboard({
       previous?.focus();
     };
   }, [decision, busy]);
-  async function submit(password?: string) {
+  async function submit(password?: string, note?: string) {
     if (!decision || busy) return;
     setBusy(true);
     setError("");
@@ -189,6 +201,7 @@ export function AdminDashboard({
       await request(decision.path, {
         ...decision.body,
         ...(password ? { password } : {}),
+        ...(note !== undefined ? { note } : {}),
       });
       setNotice(`${decision.title}，已生效`);
       setDecision(undefined);
@@ -232,6 +245,9 @@ export function AdminDashboard({
       password: action === "password",
     });
   }
+  const filteredWishes = (data?.wishes || []).filter(
+    (wish) => wishFilter === "all" || wish.status === wishFilter,
+  );
   const filtered = (data?.users || [])
     .filter(
       (u) =>
@@ -313,6 +329,11 @@ export function AdminDashboard({
           <nav className="admin-tabs" aria-label="管理分类">
             {[
               ["games", "游戏上架", Layers3],
+              [
+                "wishes",
+                `许愿审核${data.wishStats.pending ? ` · ${data.wishStats.pending}` : ""}`,
+                Sparkles,
+              ],
               ["users", "用户与在线", Users],
               ["rooms", "牌桌管理", Activity],
               ["audit", "操作记录", ScrollText],
@@ -413,6 +434,109 @@ export function AdminDashboard({
                     </article>
                   ))}
               </div>
+            </section>
+          )}
+          {tab === "wishes" && (
+            <section>
+              <div className="admin-section-head">
+                <h2>游戏许愿审核</h2>
+                <p>
+                  通过后，本地制作代理可以通过只读接口领取；驳回时请写明原因，玩家会在「我的许愿」中看到。
+                </p>
+              </div>
+              <div className="admin-wish-summary" role="status">
+                <span>待审核 {data.wishStats.pending}</span>
+                <span>已通过 {data.wishStats.approved}</span>
+                <span>已驳回 {data.wishStats.rejected}</span>
+              </div>
+              <div className="admin-wish-filter" role="group" aria-label="筛选许愿状态">
+                {[
+                  ["all", "全部"],
+                  ["pending", "待审核"],
+                  ["approved", "已通过"],
+                  ["rejected", "已驳回"],
+                ].map(([value, label]) => (
+                  <button
+                    key={value}
+                    className={wishFilter === value ? "active" : ""}
+                    aria-pressed={wishFilter === value}
+                    onClick={() => setWishFilter(value)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="admin-wish-list">
+                {filteredWishes.map((wish) => (
+                  <article className="admin-wish-card" key={wish.id}>
+                    <header>
+                      <WishStatus wish={wish} />
+                      <small>
+                        {wish.userName} · {date(wish.createdAt)}
+                        {wish.reviewedByName
+                          ? ` · ${wish.reviewedByName} 审核`
+                          : ""}
+                      </small>
+                    </header>
+                    <p className="admin-wish-text">{wish.text}</p>
+                    {wish.imageUrl && (
+                      <a
+                        className="admin-wish-image"
+                        href={wish.imageUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="查看许愿参考图"
+                      >
+                        <img src={wish.imageUrl} alt="许愿参考图" loading="lazy" />
+                      </a>
+                    )}
+                    {wish.note && (
+                      <div className="admin-wish-note">审核备注：{wish.note}</div>
+                    )}
+                    <div className="admin-wish-actions">
+                      {wish.status !== "approved" && (
+                        <button
+                          className="primary"
+                          onClick={() =>
+                            setDecision({
+                              title: `通过许愿 · ${wish.userName}`,
+                              text: "通过后，这条许愿会出现在本地代理的已审核列表中。可以附上排期或实现说明。",
+                              path: `/admin/wishes/${wish.id}`,
+                              body: { action: "approve" },
+                              note: true,
+                            })
+                          }
+                        >
+                          <Check size={16} />
+                          通过
+                        </button>
+                      )}
+                      {wish.status !== "rejected" && (
+                        <button
+                          className="outline danger"
+                          onClick={() =>
+                            setDecision({
+                              title: `驳回许愿 · ${wish.userName}`,
+                              text: "请写下驳回原因，玩家会在自己的许愿记录中看到。之后仍可重新通过。",
+                              path: `/admin/wishes/${wish.id}`,
+                              body: { action: "reject" },
+                              note: true,
+                            })
+                          }
+                        >
+                          <XCircle size={16} />
+                          驳回
+                        </button>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+              {!filteredWishes.length && (
+                <p className="admin-empty">
+                  没有符合条件的许愿。切换筛选或等待玩家提交。
+                </p>
+              )}
             </section>
           )}
           {tab === "users" && (
@@ -661,8 +785,10 @@ export function AdminDashboard({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                const fields = new FormData(e.currentTarget);
                 void submit(
-                  new FormData(e.currentTarget).get("password")?.toString(),
+                  fields.get("password")?.toString(),
+                  fields.get("note")?.toString(),
                 );
               }}
             >
@@ -677,6 +803,17 @@ export function AdminDashboard({
                     maxLength={72}
                     autoComplete="new-password"
                     placeholder="至少 12 字节，最长 72 字节"
+                  />
+                </label>
+              )}
+              {decision.note && (
+                <label>
+                  审核备注（可选）
+                  <textarea
+                    name="note"
+                    rows={3}
+                    maxLength={500}
+                    placeholder="写给玩家的说明或驳回原因"
                   />
                 </label>
               )}

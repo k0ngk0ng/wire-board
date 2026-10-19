@@ -286,7 +286,12 @@ func (s *Server) adminOverview(w http.ResponseWriter, r *http.Request) {
 	for _, kind := range s.gameKinds {
 		games = append(games, map[string]any{"kind": kind, "name": s.gameNames[kind], "enabled": !s.hiddenGames[kind]})
 	}
-	respond(w, 200, map[string]any{"users": users, "rooms": rooms, "games": games, "serverNow": time.Now().UnixMilli(), "stats": map[string]int{"users": len(users), "online": online, "playing": playing, "waiting": waiting}})
+	wishes, wishStats, err := s.adminWishes()
+	if err != nil {
+		fail(w, 500, "无法读取许愿单")
+		return
+	}
+	respond(w, 200, map[string]any{"users": users, "rooms": rooms, "games": games, "wishes": wishes, "wishStats": wishStats, "serverNow": time.Now().UnixMilli(), "stats": map[string]int{"users": len(users), "online": online, "playing": playing, "waiting": waiting}})
 }
 
 // Metadata, room changes and their audit record commit together. In-memory state
