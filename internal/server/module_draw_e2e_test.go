@@ -183,6 +183,9 @@ func TestModuleHiddenProfileHTTP(t *testing.T) {
 	a := newClient(t, ts.URL)
 	a.register("未上架棋类验收")
 	id := a.state()["user"].(map[string]any)["id"].(string)
+	admin := newClient(t, ts.URL)
+	admin.post("/api/login", map[string]string{"name": "ModuleRoot", "password": "module-root-test-123"}, 200)
+	admin.post("/api/admin/games/drawcheck", map[string]bool{"enabled": false}, 200)
 	_, profile := a.request("GET", "/api/players/"+id, nil)
 	if _, found := profile["stats"].(map[string]any)["drawcheck"]; found {
 		t.Fatal("unpublished game displayed in empty stats")
