@@ -153,6 +153,7 @@ export type State = {
   serverNow: number;
   receivedAt: number;
   assetsBaseURL?: string;
+  version?: string;
 };
 export type Act = (action: Record<string, unknown>) => Promise<void>;
 export type GameHeader = {

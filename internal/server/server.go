@@ -39,6 +39,7 @@ type Config struct {
 	OSSAccessKeyID, OSSAccessKeySecret                  string
 	WishImageBaseURL, WishImagePrefix                   string
 	WishAgentToken                                      string
+	Version                                             string
 }
 type User struct {
 	ID   string `json:"id"`
@@ -160,6 +161,16 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 			return nil, errors.New("ASSETS_BASE_URL 必须是 HTTPS 素材目录地址")
 		}
 		cfg.AssetsBaseURL = strings.TrimRight(cfg.AssetsBaseURL, "/")
+	}
+	cfg.Version = strings.TrimSpace(cfg.Version)
+	if cfg.Version == "" || len(cfg.Version) > 64 {
+		cfg.Version = "dev"
+	}
+	for _, c := range cfg.Version {
+		if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '.' || c == '-' || c == '_' || c == '+') {
+			cfg.Version = "dev"
+			break
+		}
 	}
 	if err := normalizeWishConfig(&cfg); err != nil {
 		return nil, err
@@ -661,7 +672,7 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 			rooms = append(rooms, summary(room))
 		}
 	}
-	out := map[string]any{"user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "railMaps": game.RailMapList()}
+	out := map[string]any{"user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
 	out["modules"] = s.cfg.Modules
 	room := s.current(u.ID)
 	if room == nil {

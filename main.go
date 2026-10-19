@@ -49,6 +49,7 @@ func run() error {
 		OSSAccessKeyID: os.Getenv("OSS_ACCESS_KEY_ID"), OSSAccessKeySecret: os.Getenv("OSS_ACCESS_KEY_SECRET"),
 		WishImageBaseURL: os.Getenv("WISH_IMAGE_BASE_URL"), WishImagePrefix: os.Getenv("WISH_IMAGE_PREFIX"),
 		WishAgentToken: os.Getenv("WISH_AGENT_TOKEN"),
+		Version:        os.Getenv("WIRE_BOARD_VERSION"),
 	}, files)
 	if err != nil {
 		return err

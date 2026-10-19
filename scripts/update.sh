@@ -69,7 +69,8 @@ finish() {
     trap - EXIT INT TERM
     if [[ $switching == true && $committed == false && -n $old_image ]]; then
         echo "Update failed; restarting the previous image. Data backup is retained." >&2
-        printf 'WIRE_BOARD_IMAGE=%s\n' "$old_image" > "$candidate"
+        previous_version=$(sed -n 's/^WIRE_BOARD_VERSION=//p' .image.env 2>/dev/null || true)
+        printf 'WIRE_BOARD_IMAGE=%s\nWIRE_BOARD_VERSION=%s\n' "$old_image" "${previous_version:-rollback}" > "$candidate"
         if ! compose up -d --no-build --pull never --wait --wait-timeout 90; then
             echo "Rollback failed; inspect docker compose logs and backups/." >&2
         fi
@@ -87,7 +88,7 @@ echo "Pulling $repo:$tag from GitHub Container Registry..."
 docker pull "$repo:$tag"
 digest=$(docker image inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$repo:$tag" | awk -v prefix="$repo@sha256:" 'index($0,prefix)==1 {print; exit}')
 [[ $digest =~ ^ghcr\.io/k0ngk0ng/wire-board@sha256:[a-f0-9]{64}$ ]] || die "Cannot resolve published image digest"
-printf 'WIRE_BOARD_IMAGE=%s\n' "$digest" > "$candidate"
+printf 'WIRE_BOARD_IMAGE=%s\nWIRE_BOARD_VERSION=%s\n' "$digest" "$tag" > "$candidate"
 # Reject invalid Compose/environment settings before touching the running service.
 compose config --quiet
 container=$(compose ps --all --quiet wire-board)
