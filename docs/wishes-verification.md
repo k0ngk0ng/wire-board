@@ -87,3 +87,11 @@ python3 -B scripts/check_game_boundaries.py
 - 已有游戏设置保留：`battlecity=1`、`bubbleparty=1`、`fortressblue=1`（管理员已上架）、`dota=0`。
 - 保留本次更新前与上一份备份 `data-20261019T135707Z-1130207.tar.gz`、`data-20261019T120740Z-912688.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留当前 `v1.21.0` 与上一版 `v1.20.0` 回滚镜像。
 - 用户要求停止自动许愿循环；会话 cron 已删除。持久化入口仍为 `scripts/wish-loop.sh`，需要时手动启动。
+
+## v1.21.1
+
+- `v1.21.1` 指向 main 提交 `944c0793`；该提交已有的 `Check main and build` 运行 `39265789454` 全绿，tag 运行 `39268941780` 复用已验证构建，未重新运行 CI。
+- 服务器运行 `ghcr.io/k0ngk0ng/wire-board@sha256:9740ee75d18e3ed8cb39d6f89fe88429800bb98b2f37d1b0d2c86079e133bc3f`，OCI revision `944c0793`、version `v1.21.1`，`/healthz` 正常。
+- 页头和大厅页脚显示 `v1.21.1`；`/api/state.version` 返回 `v1.21.1`，`.image.env` 同时记录镜像与版本；临时验证账号已清理。
+- 保留更新前与上一份备份 `data-20261019T142744Z-1220702.tar.gz`、`data-20261019T135707Z-1130207.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留 `v1.21.1` 与 `v1.21.0` 回滚镜像。
+- 许愿自动循环保持停止；未合并的 `feat/wish-agent-approval` 分支已删除。
