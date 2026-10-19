@@ -34,6 +34,8 @@ ADMIN_PASSWORD = "wish-admin-password-123"
 AGENT_TOKEN = "wish-agent-token-acceptance-123"
 TEXT = "想做一款 2v2 深海潜艇对战，有热泉、随机补给和可破坏的珊瑚礁。"
 NOTE = "已排入下个制作周期"
+NOTE_START = "本周开始制作"
+NOTE_DONE = "已完成并部署"
 def make_png(size: int = 64) -> bytes:
     def chunk(kind: bytes, payload: bytes) -> bytes:
         return (
@@ -366,6 +368,36 @@ try:
     wait_js('!!document.querySelector(".admin-wish-card .wish-status.approved")')
     check("admin approved", True)
     b("screenshot", str(OUT / "admin-wish-approved.png"))
+    status, feed = fetch_json(
+        base + "/api/agent/wishes?status=approved",
+        headers={"Authorization": "Bearer " + AGENT_TOKEN},
+    )
+    check("agent sees approved wish", status == 200 and len(feed.get("wishes", [])) == 1, feed)
+    check("agent gets approved status", feed["wishes"][0]["status"] == "approved", feed)
+
+    b("click", ".admin-wish-actions .primary")
+    b("wait", ".admin-confirm textarea")
+    b("fill", '.admin-confirm textarea[name="note"]', NOTE_START)
+    b("click", ".admin-confirm button.primary")
+    wait_js('!!document.querySelector(".admin-wish-card .wish-status.in-progress")')
+    check("admin started implementation", True)
+    ratios = contrast_check([[".wish-status.in-progress", ".wish-status.in-progress"]])
+    check("in-progress contrast", ratios[0]["ratio"] >= 4.5, ratios)
+    status, feed = fetch_json(
+        base + "/api/agent/wishes?status=in_progress",
+        headers={"Authorization": "Bearer " + AGENT_TOKEN},
+    )
+    check("agent sees in-progress wish", status == 200 and len(feed.get("wishes", [])) == 1 and feed["wishes"][0]["status"] == "in_progress", feed)
+
+    b("click", ".admin-wish-actions .primary")
+    b("wait", ".admin-confirm textarea")
+    b("fill", '.admin-confirm textarea[name="note"]', NOTE_DONE)
+    b("click", ".admin-confirm button.primary")
+    wait_js('!!document.querySelector(".admin-wish-card .wish-status.implemented")')
+    check("admin marked implemented", True)
+    b("screenshot", str(OUT / "admin-wish-implemented.png"))
+    ratios = contrast_check([[".wish-status.implemented", ".wish-status.implemented"]])
+    check("implemented contrast", ratios[0]["ratio"] >= 4.5, ratios)
 
     js('fetch("/api/logout",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}).then(()=>true)')
     browser_login("许愿玩家" + RUN, "wish-player-password")
@@ -373,29 +405,40 @@ try:
     b("wait", ".wish-nav-button")
     b("click", ".wish-nav-button")
     b("wait", ".wish-item")
-    check("player sees approved", js('!!document.querySelector(".wish-item .wish-status.approved")'))
+    check("player sees implemented", js('!!document.querySelector(".wish-item .wish-status.implemented")'))
     note = js('document.querySelector(".wish-item .wish-note")?.textContent || ""')
-    check("player sees review note", NOTE in note, note)
+    check("player sees final note", NOTE_DONE in note, note)
     ratios = contrast_check([
-        [".wish-status.approved", ".wish-status.approved"],
+        [".wish-status.implemented", ".wish-status.implemented"],
         [".wish-note", ".wish-note"],
     ])
     check(
-        "approved wish contrast",
+        "implemented wish contrast",
         all(item.get("ratio", 0) >= 4.5 for item in ratios),
         ratios,
     )
-    b("screenshot", str(OUT / "player-wish-approved.png"))
+    b("screenshot", str(OUT / "player-wish-implemented.png"))
 
     status, feed = fetch_json(
         base + "/api/agent/wishes?status=approved",
         headers={"Authorization": "Bearer " + AGENT_TOKEN},
     )
+    check("agent no longer sees approved", status == 200 and len(feed.get("wishes", [])) == 0, feed)
+    status, feed = fetch_json(
+        base + "/api/agent/wishes",
+        headers={"Authorization": "Bearer " + AGENT_TOKEN},
+    )
     check("agent feed status", status == 200, feed)
     items = feed.get("wishes", [])
-    check("agent sees approved wish", len(items) == 1 and items[0]["text"] == TEXT, items)
-    check("agent gets note", items[0]["note"] == NOTE, items[0])
+    check("agent sees implemented wish", len(items) == 1 and items[0]["text"] == TEXT, items)
+    check("agent gets final status", items[0]["status"] == "implemented", items[0])
+    check("agent gets note", items[0]["note"] == NOTE_DONE, items[0])
     check("agent gets image", items[0]["imageUrl"] == image_url, items[0])
+    status, feed = fetch_json(
+        base + "/api/agent/wishes?status=in_progress",
+        headers={"Authorization": "Bearer " + AGENT_TOKEN},
+    )
+    check("agent no longer sees in-progress", status == 200 and len(feed.get("wishes", [])) == 0, feed)
     status, _ = fetch_json(base + "/api/agent/wishes", headers={"Authorization": "Bearer wrong-token"})
     check("agent rejects wrong token", status == 401, status)
 

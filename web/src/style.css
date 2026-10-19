@@ -5648,6 +5648,14 @@ label small {
   background: #dcecdd;
   color: #245c37;
 }
+.wish-status.in-progress {
+  background: #dce8f2;
+  color: #1f4f73;
+}
+.wish-status.implemented {
+  background: #e7e2f4;
+  color: #493a78;
+}
 .wish-status.rejected {
   background: #f4ddd7;
   color: #8a3324;

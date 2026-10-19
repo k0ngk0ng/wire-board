@@ -144,6 +144,27 @@ func (c *testClient) wishes(t *testing.T) []any {
 	return list
 }
 
+func agentFeed(t *testing.T, base, query, token string) (int, map[string]any) {
+	t.Helper()
+	req, err := http.NewRequest("GET", base+"/api/agent/wishes"+query, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer res.Body.Close()
+	var feed map[string]any
+	if err = json.NewDecoder(res.Body).Decode(&feed); err != nil {
+		t.Fatal(err)
+	}
+	return res.StatusCode, feed
+}
+
 func wishID(t *testing.T, v map[string]any) string {
 	t.Helper()
 	w, _ := v["wish"].(map[string]any)
@@ -314,8 +335,9 @@ func TestWishReviewAuditAndAgentFeed(t *testing.T) {
 	root.post("/api/admin/wishes/"+second, map[string]string{"action": "reject", "note": "暂不考虑经营类"}, 200)
 	data = overview(t, root)
 	stats := data["wishStats"].(map[string]any)
-	if stats["pending"] != float64(0) || stats["approved"] != float64(1) || stats["rejected"] != float64(1) {
-		t.Fatalf("bad wish stats: %v", stats)
+	if stats["pending"] != float64(0) || stats["approved"] != float64(1) || stats["in_progress"] != float64(0) ||
+		stats["implemented"] != float64(0) || stats["rejected"] != float64(1) {
+		t.Fatalf("bad wish stats after review: %v", stats)
 	}
 	own := alice.wishes(t)
 	statuses := map[string]string{}
@@ -325,6 +347,68 @@ func TestWishReviewAuditAndAgentFeed(t *testing.T) {
 	}
 	if statuses[first] != "approved" || statuses[second] != "rejected" {
 		t.Fatalf("decision not reflected in owner list: %v", statuses)
+	}
+
+	if code, _ := agentFeed(t, f.ts.URL, "", ""); code != 401 {
+		t.Fatalf("missing agent token got %d", code)
+	}
+	if code, _ := agentFeed(t, f.ts.URL, "", "wrong-token"); code != 401 {
+		t.Fatalf("wrong agent token got %d", code)
+	}
+	code, feed := agentFeed(t, f.ts.URL, "?status=approved", "agent-token-for-wishes-only")
+	if code != 200 || len(feed["wishes"].([]any)) != 1 {
+		t.Fatalf("approved agent feed: %d %v", code, feed)
+	}
+	approved := feed["wishes"].([]any)[0].(map[string]any)
+	if approved["id"] != first || approved["text"] != "想做一款双人潜艇游戏" || approved["note"] != "适合排期" ||
+		approved["status"] != "approved" {
+		t.Fatalf("bad approved item: %v", approved)
+	}
+	if int64(approved["approvedAt"].(float64)) <= 0 {
+		t.Fatalf("missing approval time: %v", approved)
+	}
+
+	root.post("/api/admin/wishes/"+first, map[string]string{"action": "start", "note": "本周开工"}, 200)
+	data = overview(t, root)
+	stats = data["wishStats"].(map[string]any)
+	if stats["approved"] != float64(0) || stats["in_progress"] != float64(1) || stats["implemented"] != float64(0) {
+		t.Fatalf("wish did not become in_progress: %v", stats)
+	}
+	code, feed = agentFeed(t, f.ts.URL, "?status=in_progress", "agent-token-for-wishes-only")
+	if code != 200 || len(feed["wishes"].([]any)) != 1 {
+		t.Fatalf("in-progress agent feed: %d %v", code, feed)
+	}
+
+	root.post("/api/admin/wishes/"+first, map[string]string{"action": "implement", "note": "已上线"}, 200)
+	data = overview(t, root)
+	stats = data["wishStats"].(map[string]any)
+	if stats["in_progress"] != float64(0) || stats["implemented"] != float64(1) {
+		t.Fatalf("wish did not become implemented: %v", stats)
+	}
+	if code, feed = agentFeed(t, f.ts.URL, "?status=approved", "agent-token-for-wishes-only"); code != 200 || len(feed["wishes"].([]any)) != 0 {
+		t.Fatalf("implemented wish still approved: %d %v", code, feed)
+	}
+	code, feed = agentFeed(t, f.ts.URL, "", "agent-token-for-wishes-only")
+	if code != 200 || len(feed["wishes"].([]any)) != 1 {
+		t.Fatalf("default agent feed: %d %v", code, feed)
+	}
+	implemented := feed["wishes"].([]any)[0].(map[string]any)
+	if implemented["status"] != "implemented" || implemented["note"] != "已上线" {
+		t.Fatalf("bad implemented item: %v", implemented)
+	}
+	reviewedAt := int64(implemented["reviewedAt"].(float64))
+	if reviewedAt <= 0 {
+		t.Fatalf("missing review time: %v", implemented)
+	}
+
+	own = alice.wishes(t)
+	statuses = map[string]string{}
+	for _, item := range own {
+		w := item.(map[string]any)
+		statuses[w["id"].(string)] = w["status"].(string)
+	}
+	if statuses[first] != "implemented" || statuses[second] != "rejected" {
+		t.Fatalf("final status not reflected in owner list: %v", statuses)
 	}
 
 	entries := []any{}
@@ -338,59 +422,14 @@ func TestWishReviewAuditAndAgentFeed(t *testing.T) {
 			entries = append(entries, entry)
 		}
 	}
-	if len(entries) != 2 {
-		t.Fatalf("wish decisions not audited: %v", audit)
+	if len(entries) != 4 {
+		t.Fatalf("wish transitions not audited: %v", audit)
 	}
 
-	agent := newClient(t, f.ts.URL)
-	if code, _ := agent.request("GET", "/api/agent/wishes", nil); code != 401 {
-		t.Fatalf("missing agent token got %d", code)
-	}
-	req, _ := http.NewRequest("GET", f.ts.URL+"/api/agent/wishes", nil)
-	req.Header.Set("Authorization", "Bearer wrong-token")
-	res, err := agent.client.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	res.Body.Close()
-	if res.StatusCode != 401 {
-		t.Fatalf("wrong agent token got %d", res.StatusCode)
-	}
-	req, _ = http.NewRequest("GET", f.ts.URL+"/api/agent/wishes?status=approved", nil)
-	req.Header.Set("Authorization", "Bearer agent-token-for-wishes-only")
-	res, err = agent.client.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var feed map[string]any
-	if err = json.NewDecoder(res.Body).Decode(&feed); err != nil {
-		t.Fatal(err)
-	}
-	res.Body.Close()
-	if res.StatusCode != 200 || len(feed["wishes"].([]any)) != 1 {
-		t.Fatalf("agent feed: %d %v", res.StatusCode, feed)
-	}
-	approved := feed["wishes"].([]any)[0].(map[string]any)
-	if approved["id"] != first || approved["text"] != "想做一款双人潜艇游戏" || approved["note"] != "适合排期" {
-		t.Fatalf("bad approved item: %v", approved)
-	}
-	approvedAt := int64(approved["approvedAt"].(float64))
-	if approvedAt <= 0 {
-		t.Fatalf("missing approval time: %v", approved)
-	}
-
-	// Polling after the latest approval returns nothing; since is exclusive.
-	req, _ = http.NewRequest("GET", f.ts.URL+"/api/agent/wishes?since="+strconv.FormatInt(approvedAt, 10), nil)
-	req.Header.Set("Authorization", "Bearer agent-token-for-wishes-only")
-	res, err = agent.client.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	feed = map[string]any{}
-	_ = json.NewDecoder(res.Body).Decode(&feed)
-	res.Body.Close()
-	if len(feed["wishes"].([]any)) != 0 {
-		t.Fatalf("since did not filter: %v", feed)
+	// Polling after the latest transition returns nothing; since is exclusive.
+	code, feed = agentFeed(t, f.ts.URL, "?since="+strconv.FormatInt(reviewedAt, 10), "agent-token-for-wishes-only")
+	if code != 200 || len(feed["wishes"].([]any)) != 0 {
+		t.Fatalf("since did not filter: %d %v", code, feed)
 	}
 	if f.s.cfg.WishAgentToken != "agent-token-for-wishes-only" {
 		t.Fatal("agent token not loaded")
