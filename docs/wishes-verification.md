@@ -71,7 +71,7 @@ python3 -B scripts/check_game_boundaries.py
 
 - `go test -run 'TestWish|TestAgent' ./internal/server` 通过，覆盖：pending 许愿可直接开始、最多 2 次追问、未回答时禁止再次追问/开始、回答只能由提交者完成、管理后台和代理均能看到问答与 `needsAnswer`、追问写入操作记录。
 - 真实浏览器验收 63 项通过：截图图片可通过粘贴进入上传预览；AI 追问显示在玩家「我的许愿」；玩家回答后代理读取到回答并将 pending 许愿推进为正在实现；管理员看到问答和状态并完成；桌面/320 布局、对比度和刷新按钮保持通过。
-- 本次运行：`.local/wishes-e2e/f4a3b5e2/result.json`（62/62）；增加大厅版本显示后为 63/63。
+- 本次运行：`.local/wishes-e2e/640c1470/result.json`（63/63，含大厅版本显示）。
 - 新游戏默认上架：`TestNewModuleDefaultsToPublishedE2E` 验证注册即可见、可直接创建；管理员显式下架后创建被拒绝，重启保留下架决定；重启时新增模块默认上架。共享 HTTP 夹具的 `AssertUnpublished` 现在先由管理员显式下架，再验证隐藏行为；`TestModuleHiddenProfileHTTP` 同样先下架再检查空战绩。
 - 管理后台游戏卡片移除「大厅可见，可以创建牌桌」冗余说明，浏览器检查卡片内不再有该段落。
 - 大厅顶部和页脚显示部署版本（`WIRE_BOARD_VERSION`），浏览器验收 63/63 通过。
