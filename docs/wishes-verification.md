@@ -95,3 +95,12 @@ python3 -B scripts/check_game_boundaries.py
 - 页头和大厅页脚显示 `v1.21.1`；`/api/state.version` 返回 `v1.21.1`，`.image.env` 同时记录镜像与版本；临时验证账号已清理。
 - 保留更新前与上一份备份 `data-20261019T142744Z-1220702.tar.gz`、`data-20261019T135707Z-1130207.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留 `v1.21.1` 与 `v1.21.0` 回滚镜像。
 - 许愿自动循环保持停止；未合并的 `feat/wish-agent-approval` 分支已删除。
+
+## v1.21.2（直接修复部署）
+
+- 修复页头/页脚重复 `v` 前缀：版本标签统一规范化，`v1.21.1` 不再显示为 `vv1.21.1`。
+- 浏览器验收 63/63 通过，版本检查改为精确匹配 `v-wishes-e2e`。
+- 按用户要求未运行新的 CI，也未创建 GitHub Release/tag；本地构建 `linux/amd64` 镜像并加载到服务器部署。
+- 服务器运行本地镜像 `sha256:7988fe408b4d7700ee23857644e1bbf5cdd6db27e5a47ee44489d09f53333d8e`，`WIRE_BOARD_VERSION=v1.21.2`；`/api/state.version` 返回 `v1.21.2`，`/healthz` 正常。
+- 部署前 SQLite 在线备份 `data-20261019T144149Z.tar.gz` 与上一份 `data-20261019T142744Z-1220702.tar.gz` 均通过 `quick_check`，已保留；更旧备份已删除。
+- 镜像清理保留当前 v1.21.2 与 v1.21.1 回滚镜像；`update.sh`、`compose.yaml` 已更新，后续正常发版会继续写入版本号。
