@@ -98,7 +98,21 @@
   box-shadow: 0 2px 5px #243f2014;
 }
 .admin-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
   margin: 22px 0 18px;
+}
+.admin-section-head > div {
+  min-width: 0;
+  flex: 1;
+}
+.admin-list-refresh {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-size: 12px;
 }
 .admin-section-head h2 {
   font-size: 22px;
