@@ -1,0 +1,478 @@
+.fortressblue-cover {
+  overflow: hidden;
+  line-height: 0;
+  border-radius: 12px;
+}
+.fortressblue-cover svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.fortressblue-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.fortressblue-options p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #526654;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.fortressblue-rules {
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #405a48;
+}
+.fortressblue-rules p {
+  margin: 0;
+}
+.fortressblue-rules details {
+  color: #526654;
+}
+.fortressblue-player {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.fortressblue-player strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font-size: 12px;
+}
+.fortressblue-player strong i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.fortressblue-player strong em {
+  font-style: normal;
+  font-size: 10px;
+  color: #66786a;
+}
+.fortressblue-player > span {
+  color: #5b6d5f;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.fortressblue-player.current strong {
+  color: #8a5a17;
+}
+.fortressblue-player.dead strong,
+.fortressblue-player.dead > span {
+  color: #8a9388;
+}
+
+.fortressblue-board {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 16px;
+  border-radius: 14px;
+  background: #22312a;
+  color: #f3efdf;
+  border: 1px solid #405247;
+  box-shadow: 0 12px 35px #0d1a1322;
+}
+.fb-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.fb-head h2 {
+  margin: 3px 0 0;
+  color: #f6f0da;
+  font-size: 22px;
+}
+.fb-head .eyebrow {
+  color: #bdcbbd;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.fb-head-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.fb-wind,
+.fb-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 5px 9px;
+  border: 1px solid #566b5d;
+  border-radius: 8px;
+  background: #2e4137;
+  color: #e8e4d1;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.fb-wind strong {
+  color: #f3d27e;
+  font-size: 13px;
+}
+.fb-timer b {
+  color: #f3d27e;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+.fb-timer.urgent {
+  border-color: #c27b5f;
+  background: #4a3028;
+}
+.fb-teams {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.fb-team {
+  min-width: 0;
+  padding: 8px 9px;
+  border-radius: 9px;
+  background: #2b3a31;
+  border: 1px solid #46594b;
+}
+.fb-team-1 {
+  background: #2b3743;
+  border-color: #43586a;
+}
+.fb-team h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 5px;
+  color: #efe9d3;
+  font-size: 12px;
+}
+.fb-team h3 i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.fb-team h3 small {
+  margin-left: auto;
+  color: #bdc8b9;
+  font-size: 10px;
+  font-weight: 400;
+}
+.fb-tank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 42px;
+  grid-template-areas:
+    "name class hp"
+    "bar bar hp";
+  align-items: center;
+  gap: 1px 5px;
+  min-width: 0;
+  padding: 3px 4px;
+  border-radius: 5px;
+  color: #e7e4d6;
+  font-size: 10px;
+}
+.fb-tank-row.current {
+  background: #4b4631;
+  box-shadow: inset 2px 0 #e3c36e;
+}
+.fb-tank-row.dead {
+  color: #a6b0a2;
+}
+.fb-tank-name {
+  grid-area: name;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fb-tank-class {
+  grid-area: class;
+  color: #c1ccbd;
+  white-space: nowrap;
+}
+.fb-hp-track {
+  grid-area: bar;
+  display: block;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #17221c;
+}
+.fb-hp-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+.fb-tank-row > strong {
+  grid-area: hp;
+  text-align: right;
+  color: #f0d99b;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fb-field-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #4d6354;
+  background: #b8c9be;
+}
+.fb-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  touch-action: manipulation;
+}
+.fb-select-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow: auto;
+  padding: 12px;
+  background: #182720df;
+  backdrop-filter: blur(2px);
+}
+.fb-select-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.fb-select-head h3 {
+  margin: 0;
+  color: #f4efdb;
+  font-size: 15px;
+}
+.fb-select-head span {
+  color: #e8d79d;
+  font-size: 11px;
+}
+.fb-classes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+.fb-class-card {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px 7px;
+  border: 1px solid #849383;
+  border-radius: 8px;
+  background: #f4f1e4;
+  color: #2d4036;
+  text-align: left;
+  align-content: start;
+}
+.fb-class-card:hover:not(:disabled) {
+  border-color: #e2c46e;
+}
+.fb-class-card.chosen {
+  border-color: #e8c968;
+  background: #fff6d8;
+  box-shadow: 0 0 0 2px #e8c96855;
+}
+.fb-class-card i {
+  width: 20px;
+  height: 8px;
+  border-radius: 3px;
+}
+.fb-class-card strong {
+  font-size: 12px;
+}
+.fb-class-card span,
+.fb-class-card small,
+.fb-class-card em {
+  font-size: 9px;
+  line-height: 1.35;
+  color: #506456;
+  font-style: normal;
+}
+.fb-class-card em {
+  color: #7b5a1d;
+}
+.fb-controls {
+  display: grid;
+  gap: 8px;
+  margin-top: 9px;
+}
+.fb-turn-note {
+  min-height: 20px;
+  color: #ecdfae;
+  font-size: 12px;
+}
+.fb-weapons {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.fb-weapons button {
+  padding: 7px 11px;
+  border: 1px solid #607668;
+  border-radius: 7px;
+  background: #2f4237;
+  color: #efe9d6;
+  font-size: 11px;
+}
+.fb-weapons button.active {
+  background: #e3c36e;
+  border-color: #e3c36e;
+  color: #302810;
+}
+.fb-weapons button:disabled {
+  opacity: 1;
+  color: #a9b3a8;
+  background: #26332b;
+}
+.fb-sliders {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+.fb-sliders label {
+  min-width: 0;
+  margin: 0;
+  color: #e9e4d1;
+  font-size: 11px;
+}
+.fb-sliders label span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.fb-sliders label b {
+  color: #f0d27c;
+  font-variant-numeric: tabular-nums;
+}
+.fb-sliders input[type="range"] {
+  width: 100%;
+  min-height: 24px;
+  margin: 0;
+  padding: 0;
+  accent-color: #e3c36e;
+}
+.fb-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 7px;
+}
+.fb-actions button {
+  min-height: 44px;
+  font-size: 12px;
+}
+.fb-fire {
+  font-weight: 700;
+}
+.fb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  color: #bac6b9;
+  font-size: 10px;
+}
+.fb-finished {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid #e3c36e;
+  background: #2c3b31;
+  color: #efe6c9;
+  font-size: 12px;
+  line-height: 1.6;
+}
+@media (max-width: 700px) {
+  .fortressblue-board {
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .fb-head h2 {
+    font-size: 18px;
+  }
+  .fb-teams {
+    gap: 5px;
+  }
+  .fb-team {
+    padding: 6px;
+  }
+  .fb-tank-row {
+    grid-template-columns: minmax(0, 1fr) 34px;
+    grid-template-areas:
+      "name hp"
+      "bar hp";
+  }
+  .fb-tank-class {
+    display: none;
+  }
+  .fb-classes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fb-class-card:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+  .fb-select-overlay {
+    padding: 8px;
+  }
+  .fb-sliders {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fb-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fb-fire {
+    grid-column: 1 / -1;
+  }
+  .fb-meta span:last-child {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .fortressblue-board {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 6px;
+    border-radius: 0;
+  }
+  .fb-head-status {
+    gap: 5px;
+  }
+  .fb-wind,
+  .fb-timer {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+  .fb-team h3 small {
+    display: none;
+  }
+  .fb-controls {
+    gap: 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb-class-card,
+  .fortressblue-board {
+    transition: none;
+  }
+}
+.fb-class-card:disabled {
+  opacity: 1;
+  background: #e4e2d5;
+  color: #4d5d47;
+  border-color: #aab3a5;
+}
+.fb-class-card.chosen:disabled {
+  background: #fff6d8;
+  color: #2d4036;
+  border-color: #e8c968;
+}
