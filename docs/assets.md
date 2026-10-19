@@ -71,4 +71,6 @@ python3 scripts/upload_assets.py .local/asset-pack \
 
 星垒扩展战场新增独立前缀 `starfort/world-v2/`，包含六种地形、分支插画、场景物件、四种功能敌人的姿态、事件图标与新增提示音；共 41 个 WebP 和 3 个 WAV。原有 `starfort/v1/` 文件保持不变。素材独立校验及确定性生成记录见 [扩展素材说明](../games/starfort/assets/world-v2/VALIDATION.md)，CDN 回读清单见 [发布记录](../games/starfort/assets/world-v2/published.json)。
 
-街霸方块素材使用 `spf2t/v1/`：8 张角色立绘、2 段 BGM 和 11 个音效；媒体不提交 Git。准备/本地回退使用 `python3 -B scripts/spf2t/prepare-assets.py --install-local`，校验使用 `scripts/spf2t/verify-assets.py --dist`（干净仓库记录 `externalOnly`），上传使用 `scripts/spf2t/publish-assets.py`，前缀为 `bga/v20261002-1/spf2t/v1`。来源与授权说明见 [素材说明](../games/spf2t/assets/README.md)。前端优先 CDN，失败时使用本地 `/spf2t/v1/`，最后回退到内置矢量/渐变宝石与首字头像。
+街霸方块素材使用 `spf2t/v1/`：8 张角色立绘、2 段 BGM 和 11 个音效；媒体不提交 Git。准备/本地回退使用 `python3 -B scripts/spf2t/prepare_assets.py --install-local`，校验使用 `scripts/spf2t/verify-assets.py --dist`（干净仓库记录 `externalOnly`），上传使用 `scripts/spf2t/publish-assets.py`，前缀为 `bga/v20261002-1/spf2t/v1`。来源与授权说明见 [素材说明](../games/spf2t/assets/README.md)。前端优先 CDN，失败时使用本地 `/spf2t/v1/`，最后回退到内置矢量/渐变宝石与首字头像。
+
+坦克大战素材使用 `battlecity/v1/`：`atlas.webp` + `atlas.json`（地形、基地、5 类坦克双方配色、子弹、爆炸、护盾、六种道具）和 `audio/`（战斗 BGM、开局短曲、开火/砖块/钢铁/爆炸/道具/护盾/基地/胜负音效）。商业媒体不提交 Git，只保存于 OSS 与本地回退。准备/校验/上传脚本为 `scripts/battlecity/prepare_assets.py`、`verify-assets.py`、`publish-assets.py`；上传前缀为 `bga/v20261002-1/battlecity/v1`，使用不可变缓存和 `x-oss-forbid-overwrite`。来源与授权说明见 [素材说明](../games/battlecity/assets/README.md)。前端优先 CDN，失败时使用 `/battlecity/v1/`，最后回退到 Canvas 矢量坦克/地形。
