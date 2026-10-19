@@ -351,6 +351,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/wishes", s.listWishes)
 	mux.HandleFunc("POST /api/wishes", s.createWish)
 	mux.HandleFunc("GET /api/agent/wishes", s.agentWishes)
+	mux.HandleFunc("POST /api/agent/wishes/{id}", s.agentWishStatus)
 	mux.HandleFunc("GET /api/admin", s.adminOverview)
 	mux.HandleFunc("GET /api/admin/audit", s.adminAudit)
 	mux.HandleFunc("POST /api/admin/games/{kind}", s.adminGame)
