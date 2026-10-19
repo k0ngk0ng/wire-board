@@ -77,6 +77,22 @@ curl -fsS \
 - 未配置令牌时返回 503；令牌错误返回 401。
 - 返回字段：`id`、`userName`、`text`、`imageUrl`、`status`、`note`、`createdAt`、`reviewedAt`、`approvedAt`、`reviewedByName`。`approvedAt` 只在当前状态为 `approved` 时给出；进入「正在实现」或「已实现」后，以 `status` 和最近一次 `reviewedAt` 为准。
 
+代理也可以推进自己领取的已通过许愿，而不需要管理员账号：
+
+```sh
+curl -fsS -X POST \
+  -H "Authorization: Bearer $WISH_AGENT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"action":"start","note":"已开始实现"}' \
+  "https://board.example.com/api/agent/wishes/<wish-id>"
+```
+
+- `start`：仅允许 `approved` → `in_progress`。
+- `implement`：允许 `approved` 或 `in_progress` → `implemented`。
+- 备注最多 500 字；省略时写入默认说明。
+- 非法状态转换返回 409；操作以「本地制作代理」写入管理操作记录，不会授予其他管理权限。
+- 代理不能通过该接口通过或驳回待审核许愿；审批仍只能由管理员完成。
+
 示例轮询脚本：
 
 ```sh

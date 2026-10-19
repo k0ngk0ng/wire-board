@@ -436,6 +436,73 @@ func TestWishReviewAuditAndAgentFeed(t *testing.T) {
 	}
 }
 
+func TestAgentCanAdvanceApprovedWish(t *testing.T) {
+	f := newWishFixture(t, nil)
+	root := newClient(t, f.ts.URL)
+	root.post("/api/login", map[string]string{"name": "WishRoot", "password": "wish-root-password-123"}, 200)
+	alice := newClient(t, f.ts.URL)
+	alice.register("WishAgentFlow")
+	id := wishID(t, alice.post("/api/wishes", map[string]any{"text": "想做一款深海采矿游戏"}, 200))
+	root.post("/api/admin/wishes/"+id, map[string]string{"action": "approve", "note": "可以开工"}, 200)
+
+	call := func(token string, body map[string]any) (int, map[string]any) {
+		t.Helper()
+		raw, _ := json.Marshal(body)
+		req, _ := http.NewRequest("POST", f.ts.URL+"/api/agent/wishes/"+id, bytes.NewReader(raw))
+		req.Header.Set("Content-Type", "application/json")
+		if token != "" {
+			req.Header.Set("Authorization", "Bearer "+token)
+		}
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer res.Body.Close()
+		var out map[string]any
+		_ = json.NewDecoder(res.Body).Decode(&out)
+		return res.StatusCode, out
+	}
+	if code, _ := call("", map[string]any{"action": "start"}); code != 401 {
+		t.Fatalf("anonymous transition got %d", code)
+	}
+	if code, _ := call("wrong-token", map[string]any{"action": "start"}); code != 401 {
+		t.Fatalf("wrong token transition got %d", code)
+	}
+	if code, out := call("agent-token-for-wishes-only", map[string]any{"action": "start", "note": "代理已领取"}); code != 200 || out["status"] != "in_progress" {
+		t.Fatalf("start transition: %d %v", code, out)
+	}
+	if code, feed := agentFeed(t, f.ts.URL, "?status=in_progress", "agent-token-for-wishes-only"); code != 200 || len(feed["wishes"].([]any)) != 1 {
+		t.Fatalf("in-progress feed after start: %d %v", code, feed)
+	}
+	if code, out := call("agent-token-for-wishes-only", map[string]any{"action": "implement", "note": "已完成并部署"}); code != 200 || out["status"] != "implemented" {
+		t.Fatalf("implement transition: %d %v", code, out)
+	}
+	if code, _ := call("agent-token-for-wishes-only", map[string]any{"action": "implement"}); code != 409 {
+		t.Fatalf("repeat implement got %d", code)
+	}
+	if code, _ := call("agent-token-for-wishes-only", map[string]any{"action": "start"}); code != 409 {
+		t.Fatalf("start after implement got %d", code)
+	}
+	feedCode, feed := agentFeed(t, f.ts.URL, "?status=implemented", "agent-token-for-wishes-only")
+	if feedCode != 200 || len(feed["wishes"].([]any)) != 1 || feed["wishes"].([]any)[0].(map[string]any)["note"] != "已完成并部署" {
+		t.Fatalf("implemented feed after agent transition: %d %v", feedCode, feed)
+	}
+	code, audit := root.request("GET", "/api/admin/audit", nil)
+	if code != 200 {
+		t.Fatal(code, audit)
+	}
+	seen := map[string]string{}
+	for _, raw := range audit["entries"].([]any) {
+		entry := raw.(map[string]any)
+		if strings.HasPrefix(entry["action"].(string), "wish_") {
+			seen[entry["action"].(string)] = entry["actor"].(string)
+		}
+	}
+	if seen["wish_in_progress"] != "本地制作代理" || seen["wish_implemented"] != "本地制作代理" {
+		t.Fatalf("agent transitions not audited: %v", seen)
+	}
+}
+
 func TestAgentFeedDisabledAndStatusGuard(t *testing.T) {
 	f := newWishFixture(t, func(cfg *Config) { cfg.WishAgentToken = "" })
 	req, _ := http.NewRequest("GET", f.ts.URL+"/api/agent/wishes", nil)
