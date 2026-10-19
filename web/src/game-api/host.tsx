@@ -295,6 +295,8 @@ const seatColors = [
   "#368161",
   "#8656a5",
   "#cb752c",
+  "#4f8f7d",
+  "#8a6f4d",
 ];
 
 export function ModulePlayers({ room }: { room: Room }) {
