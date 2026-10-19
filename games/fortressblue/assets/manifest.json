@@ -1,0 +1,79 @@
+{
+  "version": "fortressblue/v1",
+  "prefix": "bga/v20261002-1/fortressblue/v1/",
+  "generator": "scripts/fortressblue/prepare-audio.mjs",
+  "generatorSha256": "cbfcbac572649a7d224e564d80c96f55468129f3b96cbb4c52cd28d7fed18857",
+  "license": "项目原创，离线合成，无外部采样",
+  "entries": [
+    {
+      "file": "battle.wav",
+      "urlPath": "/fortressblue/v1/audio/battle.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/battle.wav",
+      "sha256": "e770878a303c0838a81e85586a840931afae0ace8be26740f83c16eb141d47be",
+      "bytes": 705644
+    },
+    {
+      "file": "shot.wav",
+      "urlPath": "/fortressblue/v1/audio/shot.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/shot.wav",
+      "sha256": "e2640935ec66eaef77e52ee5ff86f537dfaf9be6df97e8618d33bf74c5559a6a",
+      "bytes": 17684
+    },
+    {
+      "file": "explode.wav",
+      "urlPath": "/fortressblue/v1/audio/explode.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/explode.wav",
+      "sha256": "6c15e5c5e526be3395a7fc87e63d3faf1cddb3fd8bb6c5f544689ed030294d16",
+      "bytes": 48554
+    },
+    {
+      "file": "hit.wav",
+      "urlPath": "/fortressblue/v1/audio/hit.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/hit.wav",
+      "sha256": "81ce168b57753a4e0ced64cae4cc92d98b52e399f3110221265bf6b569cc796b",
+      "bytes": 15920
+    },
+    {
+      "file": "death.wav",
+      "urlPath": "/fortressblue/v1/audio/death.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/death.wav",
+      "sha256": "927a1461d51be5a6877e6a15b0b850a2ef853bb538f8affa68be9d206e06c52f",
+      "bytes": 52964
+    },
+    {
+      "file": "select.wav",
+      "urlPath": "/fortressblue/v1/audio/select.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/select.wav",
+      "sha256": "8f84c06446d9240714b3586d7fab04c9192ed15c723cb8f3bd0ad2d8e35821d8",
+      "bytes": 15920
+    },
+    {
+      "file": "turn.wav",
+      "urlPath": "/fortressblue/v1/audio/turn.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/turn.wav",
+      "sha256": "96c5d5a16ec93881e8999bd47d24db8728ccbd7d90c1478fa6106a723c7aa526",
+      "bytes": 24740
+    },
+    {
+      "file": "sudden.wav",
+      "urlPath": "/fortressblue/v1/audio/sudden.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/sudden.wav",
+      "sha256": "76c7531f4af7306d06d8446a0f30321f4a169e985c9fad2098fb7e825141c10f",
+      "bytes": 48554
+    },
+    {
+      "file": "win.wav",
+      "urlPath": "/fortressblue/v1/audio/win.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/win.wav",
+      "sha256": "e2e789ac61ff1560317e6b500f87cbaa2baa3bb7195772b172ee7f8540b52f67",
+      "bytes": 79424
+    },
+    {
+      "file": "lose.wav",
+      "urlPath": "/fortressblue/v1/audio/lose.wav",
+      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/lose.wav",
+      "sha256": "f3d1cb12564debfec118af2ec35adf5be20feff696d717ae780f01c3df7fa367",
+      "bytes": 79424
+    }
+  ]
+}
