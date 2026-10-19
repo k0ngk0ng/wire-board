@@ -165,6 +165,27 @@ func agentFeed(t *testing.T, base, query, token string) (int, map[string]any) {
 	return res.StatusCode, feed
 }
 
+func agentPost(t *testing.T, base, path, token string, body any) (int, map[string]any) {
+	t.Helper()
+	raw, _ := json.Marshal(body)
+	req, err := http.NewRequest("POST", base+path, bytes.NewReader(raw))
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	if token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer res.Body.Close()
+	var out map[string]any
+	_ = json.NewDecoder(res.Body).Decode(&out)
+	return res.StatusCode, out
+}
+
 func wishID(t *testing.T, v map[string]any) string {
 	t.Helper()
 	w, _ := v["wish"].(map[string]any)
@@ -503,6 +524,94 @@ func TestAgentCanAdvanceApprovedWish(t *testing.T) {
 	}
 }
 
+func TestWishClarificationQuestionsAndPendingStart(t *testing.T) {
+	f := newWishFixture(t, nil)
+	alice := newClient(t, f.ts.URL)
+	alice.register("WishClarify")
+	id := wishID(t, alice.post("/api/wishes", map[string]any{"text": "想做一个节奏游戏，但还没想好几人玩"}, 200))
+	path := "/api/agent/wishes/" + id + "/questions"
+
+	if code, _ := agentPost(t, f.ts.URL, path, "", map[string]any{"question": "想要几人模式？"}); code != 401 {
+		t.Fatalf("anonymous question got %d", code)
+	}
+	if code, _ := agentPost(t, f.ts.URL, path, "agent-token-for-wishes-only", map[string]any{"question": ""}); code != 400 {
+		t.Fatalf("empty question got %d", code)
+	}
+	if code, out := agentPost(t, f.ts.URL, path, "agent-token-for-wishes-only", map[string]any{"question": "更希望单人还是多人？"}); code != 200 || out["questionCount"] != float64(1) {
+		t.Fatalf("first question: %d %v", code, out)
+	}
+	code, feed := agentFeed(t, f.ts.URL, "?status=pending", "agent-token-for-wishes-only")
+	if code != 200 || len(feed["wishes"].([]any)) != 1 {
+		t.Fatalf("pending feed: %d %v", code, feed)
+	}
+	item := feed["wishes"].([]any)[0].(map[string]any)
+	if item["needsAnswer"] != true || item["questionCount"] != float64(1) {
+		t.Fatalf("pending feed missing question: %v", item)
+	}
+	if qs := item["questions"].([]any); len(qs) != 1 || qs[0].(map[string]any)["question"] != "更希望单人还是多人？" {
+		t.Fatalf("bad questions: %v", qs)
+	}
+	if code, _ := agentPost(t, f.ts.URL, "/api/agent/wishes/"+id, "agent-token-for-wishes-only", map[string]any{"action": "start"}); code != 409 {
+		t.Fatalf("start with unanswered question got %d", code)
+	}
+	if code, _ := agentPost(t, f.ts.URL, path, "agent-token-for-wishes-only", map[string]any{"question": "再问一次？"}); code != 409 {
+		t.Fatalf("second unanswered question got %d", code)
+	}
+
+	bob := newClient(t, f.ts.URL)
+	bob.register("WishClarifyOther")
+	if code, _ := bob.request("POST", "/api/wishes/"+id+"/answer", map[string]any{"answer": "不该允许"}); code != 403 {
+		t.Fatalf("other user answered: %d", code)
+	}
+	if code, out := alice.request("POST", "/api/wishes/"+id+"/answer", map[string]any{"answer": "希望 2 人合作"}); code != 200 {
+		t.Fatalf("answer: %d %v", code, out)
+	}
+	code, feed = agentFeed(t, f.ts.URL, "?status=pending", "agent-token-for-wishes-only")
+	item = feed["wishes"].([]any)[0].(map[string]any)
+	if item["needsAnswer"] != false || item["questions"].([]any)[0].(map[string]any)["answer"] != "希望 2 人合作" {
+		t.Fatalf("answer not in feed: %v", item)
+	}
+	if code, out := agentPost(t, f.ts.URL, path, "agent-token-for-wishes-only", map[string]any{"question": "希望有剧情吗？"}); code != 200 || out["questionCount"] != float64(2) {
+		t.Fatalf("second question: %d %v", code, out)
+	}
+	if code, _ := alice.request("POST", "/api/wishes/"+id+"/answer", map[string]any{"answer": "不需要"}); code != 200 {
+		t.Fatal("second answer failed")
+	}
+	if code, _ := agentPost(t, f.ts.URL, path, "agent-token-for-wishes-only", map[string]any{"question": "第三次？"}); code != 409 {
+		t.Fatalf("third question got %d", code)
+	}
+	if code, out := agentPost(t, f.ts.URL, "/api/agent/wishes/"+id, "agent-token-for-wishes-only", map[string]any{"action": "start", "note": "问题已问完，开始实现"}); code != 200 || out["status"] != "in_progress" {
+		t.Fatalf("pending start after questions: %d %v", code, out)
+	}
+	list := alice.wishes(t)
+	item = list[0].(map[string]any)
+	if item["status"] != "in_progress" || len(item["questions"].([]any)) != 2 || item["questions"].([]any)[1].(map[string]any)["answer"] != "不需要" {
+		t.Fatalf("owner view missing Q&A: %v", item)
+	}
+
+	admin := newClient(t, f.ts.URL)
+	admin.post("/api/login", map[string]string{"name": "WishRoot", "password": "wish-root-password-123"}, 200)
+	data := overview(t, admin)
+	card := data["wishes"].([]any)[0].(map[string]any)
+	if len(card["questions"].([]any)) != 2 || card["questionCount"] != float64(2) {
+		t.Fatalf("admin view missing Q&A: %v", card)
+	}
+	code, audit := admin.request("GET", "/api/admin/audit", nil)
+	if code != 200 {
+		t.Fatal(code, audit)
+	}
+	questions := 0
+	for _, raw := range audit["entries"].([]any) {
+		entry := raw.(map[string]any)
+		if entry["action"] == "wish_question" {
+			questions++
+		}
+	}
+	if questions != 2 {
+		t.Fatalf("question audit missing: %v", audit)
+	}
+}
+
 func TestAgentFeedDisabledAndStatusGuard(t *testing.T) {
 	f := newWishFixture(t, func(cfg *Config) { cfg.WishAgentToken = "" })
 	req, _ := http.NewRequest("GET", f.ts.URL+"/api/agent/wishes", nil)
@@ -515,15 +624,11 @@ func TestAgentFeedDisabledAndStatusGuard(t *testing.T) {
 		t.Fatalf("disabled agent feed got %d", res.StatusCode)
 	}
 	f = newWishFixture(t, nil)
-	req, _ = http.NewRequest("GET", f.ts.URL+"/api/agent/wishes?status=pending", nil)
-	req.Header.Set("Authorization", "Bearer agent-token-for-wishes-only")
-	res, err = http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatal(err)
+	if code, _ := agentFeed(t, f.ts.URL, "?status=pending", "agent-token-for-wishes-only"); code != 200 {
+		t.Fatalf("pending agent feed got %d", code)
 	}
-	res.Body.Close()
-	if res.StatusCode != 400 {
-		t.Fatalf("pending agent feed got %d", res.StatusCode)
+	if code, _ := agentFeed(t, f.ts.URL, "?status=rejected", "agent-token-for-wishes-only"); code != 400 {
+		t.Fatalf("rejected agent feed got %d", code)
 	}
 }
 

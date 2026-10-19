@@ -42,4 +42,4 @@ python3 -B scripts/fortressblue/check-browser.py
 参考游戏仅用于玩法灵感。本项目无法在本机取得/运行参考游戏，因此没有复制任何参考游戏图片、音频或名称：
 封面是手绘式原创 SVG，坦克与地形由 Canvas 实时绘制，音效和战斗音乐由
 `scripts/fortressblue/prepare-audio.mjs` 离线合成。来源、生成方式和 SHA-256 见
-`assets/README.md` 与 `assets/manifest.json`。游戏默认下架，发布不会自动上架。
+`assets/README.md` 与 `assets/manifest.json`。游戏默认上架；管理员可随时下架。

@@ -209,10 +209,9 @@ func TestStarfortPublicationAndCapacityHTTP(t *testing.T) {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			tb := newHost(t, n, starfort.Module())
 			a := tb.people[0]
-			if contains(a.state()["availableGames"], "starfort") {
-				t.Fatal("new game published by default")
+			if !contains(a.state()["availableGames"], "starfort") {
+				t.Fatal("new game not published by default")
 			}
-			a.request("POST", "/api/rooms", map[string]any{"kind": "starfort", "name": "默认下架", "capacity": n}, 403)
 			tb.spectator.request("POST", "/api/admin/games/starfort", map[string]bool{"enabled": true}, 403)
 			a.request("POST", "/api/admin/games/starfort", map[string]bool{"enabled": true}, 200)
 			for _, opts := range []map[string]any{{"scenario": "battle"}, {"mode": "invalid"}, {"waves": 3}, {"difficulty": "impossible"}, {"prepSeconds": 1}, {"gold": 99999}} {

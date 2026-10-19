@@ -2,7 +2,7 @@
 
 经典 Monopoly 独立模块，规则、电脑策略、界面、素材清单及验收脚本均位于本目录。后端只依赖 `internal/gameapi`，通过 `games/registry.go` 注册；前端自动发现 `web/module.tsx`。
 
-**默认下架。** 部署后须由管理员在「管理后台 → 游戏上架 → 强手棋 → 上架」中确认，玩家大厅和创建列表才会显示。服务端同时阻止直接创建未上架游戏。重启保留管理后台的选择；本次开发未部署应用或在生产环境上架。
+**默认上架。** 注册后玩家大厅和创建列表直接显示；管理员可在「管理后台 → 游戏上架 → 强手棋」下架，下架后服务端拒绝创建。重启保留管理后台的选择。
 
 ## 玩法与界面
 
@@ -37,7 +37,7 @@ mkdir -p .local/monopoly/acceptance/final
 go test -json -count=1 -timeout=3m ./games/monopoly/tests \
   > .local/monopoly/acceptance/final/server.jsonl
 go test -json -count=1 -timeout=2m \
-  -run 'Test(NewModuleRequiresAdminPublication|ProductionMonopolyDefaultOff|ModuleSystemEvent|ModuleLastHumanDeparture|AssetURLValidationAndCSP)' \
+  -run 'Test(NewModuleDefaultsToPublished|ProductionMonopolyDefaultsPublished|ModuleSystemEvent|ModuleLastHumanDeparture|AssetURLValidationAndCSP)' \
   ./internal/server > .local/monopoly/acceptance/final/host.jsonl
 python3 -B scripts/check_game_boundaries.py
 WIRE_BOARD_MONOPOLY_ASSETS=https://cdn.ichenj.com/bga/v20261002-1 \
