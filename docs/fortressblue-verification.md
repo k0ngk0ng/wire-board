@@ -43,3 +43,13 @@ python3 -B scripts/fortressblue/check-browser.py
 - 10 人共享玩家栏在手机上会占据较高区域，战场需向下滚动；游戏内队伍 HUD、坦克血条和全部 10 席状态仍完整可见，没有横向裁切。共享玩家栏未用游戏 CSS 隐藏或重排。
 - 音效为原创合成，通过平台 `BoardProps.audio` 播放；没有使用参考游戏的原声音乐/音效，也没有在游戏内创建播放器或 `AudioContext`。
 - 新游戏保持默认下架，部署后需管理员在后台显式上架；不自动上架。
+
+## 发布与部署
+
+- main 提交 `fb8687e3` 的 `Check main and build` 运行 `39248309310` 全绿，包含 `Game fortressblue (0)`、shared 检查和 `Test and Linux amd64 binary`。
+- `v1.20.0` 指向同一提交；Release 运行 `39249427330` 复用已验证构建，未重新编译应用。
+- 服务器运行 `ghcr.io/k0ngk0ng/wire-board@sha256:2c4b86688d87ef7345dea1838f9ab5b462e9e6b202e83c4dfb9c47abbfb12c52`，OCI revision `fb8687e3`、version `v1.20.0`，`/healthz` 正常。
+- 线上 bundle 同时包含「疯狂坦克」和「泡泡大作战」；本地回退音频 `/fortressblue/v1/audio/shot.wav` 返回 200 `audio/wav`。
+- 新游戏保持 `fortressblue=0`；管理员此前已上架的 `bubbleparty=1`、`battlecity=1`、`spf2t=1` 等设置保持不变，未做自动上下架。
+- 保留本次更新前与上一份备份 `data-20261019T120740Z-912688.tar.gz`、`data-20261019T114631Z-865536.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留当前 `v1.20.0` 与上一版 `v1.19.0` 回滚镜像。
+- 许愿已通过代理接口回写为「已实现」，备注包含版本和默认下架说明。
