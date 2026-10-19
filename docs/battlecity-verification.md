@@ -39,8 +39,11 @@
 - 素材契约（帧名/音频键）见 `games/battlecity/CONTRACT.md` 第 11 节。
 - 上传前缀：`https://cdn.ichenj.com/bga/v20261002-1/battlecity/v1/`；禁止覆盖已有不可变对象。
 
-## 待完成
+## 发布与部署
 
-1. 生成干净 main 构建并运行发布前范围检查。
-2. 版本 tag/Release/服务器更新，默认保持 `battlecity=0`。
-3. 发布完成后由管理员在后台显式上架；不自动上架。
+- main 提交 `eae0a2aa`（Merge PR #2）的 `Check main and build` 运行 `39215088393` 全绿：shared 计划/构建/HTTP 持久化与 race、`Game battlecity (0)`、`Game rail (0)`、`Test and Linux amd64 binary` 均成功。
+- 版本 `v1.17.0` 指向同一提交；`Publish version tag` 运行 `39216375345` 复用该次构建产物，未重新编译应用，Release 已发布 `wire-board-linux-amd64.tar.gz` 与 `SHA256SUMS`。
+- 服务器已更新到 `v1.17.0`：运行镜像 `ghcr.io/k0ngk0ng/wire-board@sha256:40b2d9044b1df734ad0b725a91321089dc6f9b37e810881fc498b52ae29c7d93`，OCI revision `eae0a2aa`、version `v1.17.0`；`/healthz` 返回 `{"ok":true}`，容器健康。
+- 部署保留已有上下架设置，新游戏 `battlecity=0`；`spf2t`、`tetris`、`racing` 等原有设置未变。管理员需在后台显式上架后才对玩家开放。
+- 更新前已生成在线 SQLite 备份并保留最近两份：`data-20261019T073207Z-307786.tar.gz`（本次更新前）与 `data-20261018T173853Z-2684835.tar.gz`；两者均通过 `PRAGMA quick_check`，更旧备份已按约定删除。
+- `update.sh clean` 清理了历史镜像，保留当前镜像与上一版 `v1.16.0` 回滚镜像；未执行全局 Docker prune，服务健康和磁盘空间已复核。
