@@ -1,0 +1,2632 @@
+{
+  "version": 1,
+  "image": "atlas.webp",
+  "width": 502,
+  "height": 70,
+  "image_bytes": 3698,
+  "image_sha256": "e3ec54dfa9fa4131faa81625e545dab8ff1f59f73c177f32dde660fda84fc551",
+  "frames": {
+    "base-bottom": {
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "base",
+      "opaque": true,
+      "palette": [
+        15,
+        23,
+        6,
+        0
+      ],
+      "tiles": [
+        200,
+        202,
+        201,
+        203
+      ]
+    },
+    "base-destroyed": {
+      "x": 18,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "base",
+      "opaque": true,
+      "palette": [
+        15,
+        23,
+        6,
+        0
+      ],
+      "tiles": [
+        204,
+        206,
+        205,
+        207
+      ]
+    },
+    "base-top": {
+      "x": 36,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "base",
+      "opaque": true,
+      "palette": [
+        15,
+        23,
+        6,
+        0
+      ],
+      "tiles": [
+        200,
+        202,
+        201,
+        203
+      ]
+    },
+    "brick": {
+      "x": 180,
+      "y": 54,
+      "w": 8,
+      "h": 8,
+      "category": "terrain",
+      "opaque": true,
+      "palette": [
+        15,
+        23,
+        6,
+        0
+      ],
+      "tiles": [
+        15
+      ]
+    },
+    "bullet-bottom": {
+      "x": 230,
+      "y": 54,
+      "w": 6,
+      "h": 6,
+      "category": "bullet",
+      "team": "bottom",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "tiles": [
+        176,
+        177
+      ]
+    },
+    "bullet-top": {
+      "x": 238,
+      "y": 54,
+      "w": 6,
+      "h": 6,
+      "category": "bullet",
+      "team": "top",
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "tiles": [
+        176,
+        177
+      ]
+    },
+    "explosion-0": {
+      "x": 54,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "explosion",
+      "opaque": false,
+      "palette": [
+        15,
+        4,
+        22,
+        32
+      ],
+      "tiles": [
+        240,
+        241,
+        242,
+        243
+      ]
+    },
+    "explosion-1": {
+      "x": 72,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "explosion",
+      "opaque": false,
+      "palette": [
+        15,
+        4,
+        22,
+        32
+      ],
+      "tiles": [
+        244,
+        245,
+        246,
+        247
+      ]
+    },
+    "explosion-2": {
+      "x": 90,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "explosion",
+      "opaque": false,
+      "palette": [
+        15,
+        4,
+        22,
+        32
+      ],
+      "tiles": [
+        248,
+        249,
+        250,
+        251
+      ]
+    },
+    "ice": {
+      "x": 190,
+      "y": 54,
+      "w": 8,
+      "h": 8,
+      "category": "terrain",
+      "opaque": true,
+      "palette": [
+        15,
+        0,
+        16,
+        32
+      ],
+      "tiles": [
+        33
+      ]
+    },
+    "powerup-clock": {
+      "x": 108,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "powerup",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        132,
+        133,
+        134,
+        135
+      ]
+    },
+    "powerup-grenade": {
+      "x": 126,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "powerup",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        144,
+        145,
+        146,
+        147
+      ]
+    },
+    "powerup-helmet": {
+      "x": 144,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "powerup",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        128,
+        129,
+        130,
+        131
+      ]
+    },
+    "powerup-shovel": {
+      "x": 162,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "powerup",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        136,
+        137,
+        138,
+        139
+      ]
+    },
+    "powerup-star": {
+      "x": 180,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "powerup",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        140,
+        141,
+        142,
+        143
+      ]
+    },
+    "powerup-tank": {
+      "x": 198,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "powerup",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        148,
+        149,
+        150,
+        151
+      ]
+    },
+    "shield-0": {
+      "x": 216,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "shield",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    "shield-1": {
+      "x": 234,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "shield",
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        16,
+        32
+      ],
+      "tiles": [
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    "steel": {
+      "x": 200,
+      "y": 54,
+      "w": 8,
+      "h": 8,
+      "category": "terrain",
+      "opaque": true,
+      "palette": [
+        15,
+        0,
+        16,
+        32
+      ],
+      "tiles": [
+        16
+      ]
+    },
+    "tank-armor-bottom-down-0": {
+      "x": 252,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        224,
+        225,
+        226,
+        227
+      ]
+    },
+    "tank-armor-bottom-down-1": {
+      "x": 270,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        228,
+        229,
+        230,
+        231
+      ]
+    },
+    "tank-armor-bottom-left-0": {
+      "x": 288,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        216,
+        217,
+        218,
+        219
+      ]
+    },
+    "tank-armor-bottom-left-1": {
+      "x": 306,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        220,
+        221,
+        222,
+        223
+      ]
+    },
+    "tank-armor-bottom-right-0": {
+      "x": 324,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        216,
+        217,
+        218,
+        219
+      ]
+    },
+    "tank-armor-bottom-right-1": {
+      "x": 342,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        220,
+        221,
+        222,
+        223
+      ]
+    },
+    "tank-armor-bottom-up-0": {
+      "x": 360,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        224,
+        225,
+        226,
+        227
+      ]
+    },
+    "tank-armor-bottom-up-1": {
+      "x": 378,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        228,
+        229,
+        230,
+        231
+      ]
+    },
+    "tank-armor-top-down-0": {
+      "x": 396,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        224,
+        225,
+        226,
+        227
+      ]
+    },
+    "tank-armor-top-down-1": {
+      "x": 414,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        228,
+        229,
+        230,
+        231
+      ]
+    },
+    "tank-armor-top-left-0": {
+      "x": 432,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        216,
+        217,
+        218,
+        219
+      ]
+    },
+    "tank-armor-top-left-1": {
+      "x": 450,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        220,
+        221,
+        222,
+        223
+      ]
+    },
+    "tank-armor-top-right-0": {
+      "x": 468,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        216,
+        217,
+        218,
+        219
+      ]
+    },
+    "tank-armor-top-right-1": {
+      "x": 486,
+      "y": 0,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        220,
+        221,
+        222,
+        223
+      ]
+    },
+    "tank-armor-top-up-0": {
+      "x": 0,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        224,
+        225,
+        226,
+        227
+      ]
+    },
+    "tank-armor-top-up-1": {
+      "x": 18,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "armor",
+      "team": "top",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        228,
+        229,
+        230,
+        231
+      ]
+    },
+    "tank-balanced-bottom-down-0": {
+      "x": 36,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "tank-balanced-bottom-down-1": {
+      "x": 54,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        36,
+        37,
+        38,
+        39
+      ]
+    },
+    "tank-balanced-bottom-left-0": {
+      "x": 72,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    "tank-balanced-bottom-left-1": {
+      "x": 90,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    "tank-balanced-bottom-right-0": {
+      "x": 108,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    "tank-balanced-bottom-right-1": {
+      "x": 126,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    "tank-balanced-bottom-up-0": {
+      "x": 144,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "tank-balanced-bottom-up-1": {
+      "x": 162,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        36,
+        37,
+        38,
+        39
+      ]
+    },
+    "tank-balanced-top-down-0": {
+      "x": 180,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "tank-balanced-top-down-1": {
+      "x": 198,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        36,
+        37,
+        38,
+        39
+      ]
+    },
+    "tank-balanced-top-left-0": {
+      "x": 216,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    "tank-balanced-top-left-1": {
+      "x": 234,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    "tank-balanced-top-right-0": {
+      "x": 252,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    "tank-balanced-top-right-1": {
+      "x": 270,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    "tank-balanced-top-up-0": {
+      "x": 288,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "tank-balanced-top-up-1": {
+      "x": 306,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "balanced",
+      "team": "top",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        36,
+        37,
+        38,
+        39
+      ]
+    },
+    "tank-basic-bottom-down-0": {
+      "x": 324,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        176,
+        177,
+        178,
+        179
+      ]
+    },
+    "tank-basic-bottom-down-1": {
+      "x": 342,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        180,
+        181,
+        182,
+        183
+      ]
+    },
+    "tank-basic-bottom-left-0": {
+      "x": 360,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        168,
+        169,
+        170,
+        171
+      ]
+    },
+    "tank-basic-bottom-left-1": {
+      "x": 378,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        172,
+        173,
+        174,
+        175
+      ]
+    },
+    "tank-basic-bottom-right-0": {
+      "x": 396,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        168,
+        169,
+        170,
+        171
+      ]
+    },
+    "tank-basic-bottom-right-1": {
+      "x": 414,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        172,
+        173,
+        174,
+        175
+      ]
+    },
+    "tank-basic-bottom-up-0": {
+      "x": 432,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        176,
+        177,
+        178,
+        179
+      ]
+    },
+    "tank-basic-bottom-up-1": {
+      "x": 450,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        180,
+        181,
+        182,
+        183
+      ]
+    },
+    "tank-basic-top-down-0": {
+      "x": 468,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        176,
+        177,
+        178,
+        179
+      ]
+    },
+    "tank-basic-top-down-1": {
+      "x": 486,
+      "y": 18,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        180,
+        181,
+        182,
+        183
+      ]
+    },
+    "tank-basic-top-left-0": {
+      "x": 0,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        168,
+        169,
+        170,
+        171
+      ]
+    },
+    "tank-basic-top-left-1": {
+      "x": 18,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        172,
+        173,
+        174,
+        175
+      ]
+    },
+    "tank-basic-top-right-0": {
+      "x": 36,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        168,
+        169,
+        170,
+        171
+      ]
+    },
+    "tank-basic-top-right-1": {
+      "x": 54,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        172,
+        173,
+        174,
+        175
+      ]
+    },
+    "tank-basic-top-up-0": {
+      "x": 72,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        176,
+        177,
+        178,
+        179
+      ]
+    },
+    "tank-basic-top-up-1": {
+      "x": 90,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "basic",
+      "team": "top",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        180,
+        181,
+        182,
+        183
+      ]
+    },
+    "tank-fast-bottom-down-0": {
+      "x": 108,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        192,
+        193,
+        194,
+        195
+      ]
+    },
+    "tank-fast-bottom-down-1": {
+      "x": 126,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        196,
+        197,
+        198,
+        199
+      ]
+    },
+    "tank-fast-bottom-left-0": {
+      "x": 144,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        184,
+        185,
+        186,
+        187
+      ]
+    },
+    "tank-fast-bottom-left-1": {
+      "x": 162,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        188,
+        189,
+        190,
+        191
+      ]
+    },
+    "tank-fast-bottom-right-0": {
+      "x": 180,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        184,
+        185,
+        186,
+        187
+      ]
+    },
+    "tank-fast-bottom-right-1": {
+      "x": 198,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        188,
+        189,
+        190,
+        191
+      ]
+    },
+    "tank-fast-bottom-up-0": {
+      "x": 216,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        192,
+        193,
+        194,
+        195
+      ]
+    },
+    "tank-fast-bottom-up-1": {
+      "x": 234,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        196,
+        197,
+        198,
+        199
+      ]
+    },
+    "tank-fast-top-down-0": {
+      "x": 252,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        192,
+        193,
+        194,
+        195
+      ]
+    },
+    "tank-fast-top-down-1": {
+      "x": 270,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        196,
+        197,
+        198,
+        199
+      ]
+    },
+    "tank-fast-top-left-0": {
+      "x": 288,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        184,
+        185,
+        186,
+        187
+      ]
+    },
+    "tank-fast-top-left-1": {
+      "x": 306,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        188,
+        189,
+        190,
+        191
+      ]
+    },
+    "tank-fast-top-right-0": {
+      "x": 324,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        184,
+        185,
+        186,
+        187
+      ]
+    },
+    "tank-fast-top-right-1": {
+      "x": 342,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        188,
+        189,
+        190,
+        191
+      ]
+    },
+    "tank-fast-top-up-0": {
+      "x": 360,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        192,
+        193,
+        194,
+        195
+      ]
+    },
+    "tank-fast-top-up-1": {
+      "x": 378,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "fast",
+      "team": "top",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        196,
+        197,
+        198,
+        199
+      ]
+    },
+    "tank-power-bottom-down-0": {
+      "x": 396,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        208,
+        209,
+        210,
+        211
+      ]
+    },
+    "tank-power-bottom-down-1": {
+      "x": 414,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        212,
+        213,
+        214,
+        215
+      ]
+    },
+    "tank-power-bottom-left-0": {
+      "x": 432,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        200,
+        201,
+        202,
+        203
+      ]
+    },
+    "tank-power-bottom-left-1": {
+      "x": 450,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        204,
+        205,
+        206,
+        207
+      ]
+    },
+    "tank-power-bottom-right-0": {
+      "x": 468,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        200,
+        201,
+        202,
+        203
+      ]
+    },
+    "tank-power-bottom-right-1": {
+      "x": 486,
+      "y": 36,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        204,
+        205,
+        206,
+        207
+      ]
+    },
+    "tank-power-bottom-up-0": {
+      "x": 0,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        208,
+        209,
+        210,
+        211
+      ]
+    },
+    "tank-power-bottom-up-1": {
+      "x": 18,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "bottom",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        12,
+        18,
+        33
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        212,
+        213,
+        214,
+        215
+      ]
+    },
+    "tank-power-top-down-0": {
+      "x": 36,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "down",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        208,
+        209,
+        210,
+        211
+      ]
+    },
+    "tank-power-top-down-1": {
+      "x": 54,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "down",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "vertical",
+      "tiles": [
+        212,
+        213,
+        214,
+        215
+      ]
+    },
+    "tank-power-top-left-0": {
+      "x": 72,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "left",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        200,
+        201,
+        202,
+        203
+      ]
+    },
+    "tank-power-top-left-1": {
+      "x": 90,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "left",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        204,
+        205,
+        206,
+        207
+      ]
+    },
+    "tank-power-top-right-0": {
+      "x": 108,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "right",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        200,
+        201,
+        202,
+        203
+      ]
+    },
+    "tank-power-top-right-1": {
+      "x": 126,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "right",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "horizontal",
+      "tiles": [
+        204,
+        205,
+        206,
+        207
+      ]
+    },
+    "tank-power-top-up-0": {
+      "x": 144,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "up",
+      "frame": 0,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        208,
+        209,
+        210,
+        211
+      ]
+    },
+    "tank-power-top-up-1": {
+      "x": 162,
+      "y": 54,
+      "w": 16,
+      "h": 16,
+      "category": "tank",
+      "class": "power",
+      "team": "top",
+      "direction": "up",
+      "frame": 1,
+      "opaque": false,
+      "palette": [
+        15,
+        6,
+        23,
+        39
+      ],
+      "chr_bank": 0,
+      "flip": "none",
+      "tiles": [
+        212,
+        213,
+        214,
+        215
+      ]
+    },
+    "trees": {
+      "x": 210,
+      "y": 54,
+      "w": 8,
+      "h": 8,
+      "category": "terrain",
+      "opaque": true,
+      "palette": [
+        15,
+        41,
+        9,
+        11
+      ],
+      "tiles": [
+        34
+      ]
+    },
+    "water": {
+      "x": 220,
+      "y": 54,
+      "w": 8,
+      "h": 8,
+      "category": "terrain",
+      "opaque": true,
+      "palette": [
+        15,
+        18,
+        60,
+        18
+      ],
+      "tiles": [
+        18
+      ]
+    }
+  },
+  "teams": {
+    "top": [
+      15,
+      6,
+      23,
+      39
+    ],
+    "bottom": [
+      15,
+      12,
+      18,
+      33
+    ]
+  },
+  "palette": {
+    "name": "FCEUX.pal",
+    "sha256": "bbb0355bcadc4be771efeb81930b09b17d97dcb8c70167a652902a789158c5f8"
+  },
+  "source": {
+    "rom_sha256": "a869aead5b6957fc62002ff9636e048cc34baf0100d629b07dc51aa18f220c0c",
+    "chr_offset": 16400,
+    "chr_bytes": 8192,
+    "generator": "scripts/battlecity/prepare_assets.py",
+    "generator_sha256": "4d0b88739bfcf03f5785b502b5a58216f81ea455af57bf217bd3c4d8cdae3604",
+    "layout": "TL=base, TR=base+2, BL=base+1, BR=base+3 (8x16 pairs)",
+    "tank_base": "class_base + direction_offset + frame*4; group strides 0x00/0x80/0xA0/0xC0/0xE0"
+  },
+  "audio": {
+    "bgm-battle": {
+      "file": "bgm-battle.mp3",
+      "bytes": 246638,
+      "sha256": "0082af8e08f285bb755732efe3d4cfeacaba265b90851f303551be3dcece563c",
+      "duration_s": 15.347,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "128k",
+      "channels": 2
+    },
+    "bgm-start": {
+      "file": "bgm-start.mp3",
+      "bytes": 69842,
+      "sha256": "7755f373d56a8a193a438feb0713a3e45d105c799717591f854608db634c436f",
+      "duration_s": 4.306,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "128k",
+      "channels": 2
+    },
+    "sfx-fire": {
+      "file": "sfx-fire.mp3",
+      "bytes": 5686,
+      "sha256": "3ec1384218a47607c1dd80eca355141186894bc6b866cad7d49f93a8601aa4ff",
+      "duration_s": 0.417,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-brick": {
+      "file": "sfx-brick.mp3",
+      "bytes": 3805,
+      "sha256": "fe1cc84a887a883f5b2160c908f458894b6adbc32de206b735afc97ac440c80f",
+      "duration_s": 0.259,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-steel": {
+      "file": "sfx-steel.mp3",
+      "bytes": 5059,
+      "sha256": "42260d9105abc81f688ec324bf77b7ffb93527e0f3a5686a924d67d28615ab0f",
+      "duration_s": 0.351,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-explode": {
+      "file": "sfx-explode.mp3",
+      "bytes": 9761,
+      "sha256": "807cb56017dc908674c96faa6d6d9f5264b838f7dbe8d8ef742e6fcfdc540431",
+      "duration_s": 0.749,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-powerup": {
+      "file": "sfx-powerup.mp3",
+      "bytes": 29196,
+      "sha256": "cb85c4123427d262223b7274b9d41116fbc50899d7d998e873189d828bd45099",
+      "duration_s": 2.367,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-shield": {
+      "file": "sfx-shield.mp3",
+      "bytes": 8507,
+      "sha256": "d45ba7dde2ed4f7919f35f02eadf291d465775230edafe30fbce41fa79ef25f5",
+      "duration_s": 0.652,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-base": {
+      "file": "sfx-base.mp3",
+      "bytes": 9761,
+      "sha256": "34629cf13f7419e037ffe45e8907975fadb8894b099e469d9a561dd2c3b1d5c2",
+      "duration_s": 0.749,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-win": {
+      "file": "sfx-win.mp3",
+      "bytes": 22927,
+      "sha256": "8a78e3c086761243c4e5c6e97b282ecd65895fcf93f0701d605467d2205253bb",
+      "duration_s": 1.833,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    },
+    "sfx-lose": {
+      "file": "sfx-lose.mp3",
+      "bytes": 22613,
+      "sha256": "2ab8eb7e52d833dd7a11a9b3d35885337c667443ffa7859ef42e9cd0d60dba49",
+      "duration_s": 1.804,
+      "source_channels": 1,
+      "source_rate": 44100,
+      "bitrate": "96k",
+      "channels": 1
+    }
+  }
+}

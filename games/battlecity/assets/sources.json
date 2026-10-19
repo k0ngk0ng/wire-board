@@ -1,0 +1,53 @@
+{
+  "source": "User-provided Battle City (J).nes extraction (NROM-128)",
+  "archive": {
+    "path": "/Users/jason/Documents/nes/roms/02/坦克大战(打坦克，Battle City).zip",
+    "sha256": "eeffcf3d376770e4265264dfe04a649babd00c49355fc8a6bbbf69dfd66e3d90"
+  },
+  "rom": {
+    "path": ".local/battlecity/rom/Battle City (J).nes",
+    "sha256": "a869aead5b6957fc62002ff9636e048cc34baf0100d629b07dc51aa18f220c0c",
+    "bytes": 24592
+  },
+  "generator": {
+    "atlas": "scripts/battlecity/prepare_assets.py",
+    "atlasSha256": "4d0b88739bfcf03f5785b502b5a58216f81ea455af57bf217bd3c4d8cdae3604",
+    "audio": "scripts/battlecity/render_nsf_slot.py / render_nsf_music.py",
+    "audioSha256": {
+      "render_nsf_slot.py": "2d363bb86ad64e5e0dfaadcb04f534c10697dc4c93be9d4ba8acde2cc2eb021c",
+      "render_nsf_music.py": "b49e65619b2478ae59ec16e4afb231a58c22a215a23a887667b64a86dea919b3",
+      "render_audio.py": "2cdcedee318dc4d17c45af16be3a44482c0c1f2bf6fe35c417d895842daabd17"
+    },
+    "palette": {
+      "name": "FCEUX.pal",
+      "sha256": "bbb0355bcadc4be771efeb81930b09b17d97dcb8c70167a652902a789158c5f8"
+    }
+  },
+  "license": "User-provided commercial media from Battle City (J).nes. The project does not claim redistribution rights; the deployer confirms authorization. Media is uploaded to OSS and is not committed to Git, Releases or images.",
+  "audio": {
+    "method": "Original $AA51 INIT / $AA7E PLAY sound engine in a 32KB NROM-mirrored NSF; queue snapshots copied into $0300-$03FF; no game code or synthesis.",
+    "queueSnapshots": [
+      "queue-frame365.bin",
+      "queue-frame460.bin",
+      "queue-frame504.bin",
+      "queue-frame541.bin",
+      "queue-frame602.bin",
+      "queue-frame614.bin",
+      "queue-frame638.bin",
+      "queue-frame1245.bin"
+    ],
+    "mapping": {
+      "bgm-start": "music queue at frame 365 (stage start)",
+      "bgm-battle": "music queue at frame 460 (stage battle loop capture)",
+      "sfx-fire": "slot 15 at frame 504",
+      "sfx-brick": "slot 13 at frame 602",
+      "sfx-steel": "slot 12 at frame 614",
+      "sfx-explode": "slots 7+11 at frame 638, mixed",
+      "sfx-powerup": "slot 17 at frame 541",
+      "sfx-shield": "slot 11 at frame 638",
+      "sfx-base": "slot 7 at frame 638",
+      "sfx-win": "slot 25 at frame 1245",
+      "sfx-lose": "slot 24 at frame 1245"
+    }
+  }
+}
