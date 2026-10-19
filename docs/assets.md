@@ -76,3 +76,5 @@ python3 scripts/upload_assets.py .local/asset-pack \
 坦克大战素材使用 `battlecity/v1/`：`atlas.webp` + `atlas.json`（地形、基地、5 类坦克双方配色、子弹、爆炸、护盾、六种道具）和 `audio/`（战斗 BGM、开局短曲、开火/砖块/钢铁/爆炸/道具/护盾/基地/胜负音效）。商业媒体不提交 Git，只保存于 OSS 与本地回退。准备/校验/上传脚本为 `scripts/battlecity/prepare_assets.py`、`verify-assets.py`、`publish-assets.py`；上传前缀为 `bga/v20261002-1/battlecity/v1`，使用不可变缓存和 `x-oss-forbid-overwrite`。来源与授权说明见 [素材说明](../games/battlecity/assets/README.md)。前端优先 CDN，失败时使用 `/battlecity/v1/`，最后回退到 Canvas 矢量坦克/地形。
 
 疯狂坦克使用项目原创素材：封面和坦克由 SVG/Canvas 绘制，10 个 WAV 音效与战斗循环由 `scripts/fortressblue/prepare-audio.mjs` 离线合成。成品位于 `fortressblue/v1/audio/`，随前端构建提供本地回退；可选上传到 `bga/v20261002-1/fortressblue/v1/`。生成方式、许可和逐文件 SHA-256 见 [素材说明](../games/fortressblue/assets/README.md)。没有使用参考游戏的商业图像或音频。
+
+泡泡大作战素材全部为项目原创：角色、地图和封面由 Canvas/SVG 绘制，11 个音效由 `scripts/bubbleparty/prepare-audio.mjs` 确定性离线合成，提交在 `games/bubbleparty/assets/public/bubbleparty/v1/audio/`，清单见 `games/bubbleparty/assets/manifest.json`。前端优先素材基地址下的 `bubbleparty/v1/audio/`，失败时回退到本地同路径；不使用商业游戏图片或音效。

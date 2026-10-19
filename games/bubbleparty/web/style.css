@@ -1,0 +1,360 @@
+.bubble-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.bubble-options {
+  display: grid;
+  gap: 10px;
+}
+.bubble-options p,
+.bubble-rules p {
+  color: #405a48;
+  line-height: 1.75;
+  font-size: 13px;
+}
+.bubble-rules {
+  max-height: 56vh;
+  overflow: auto;
+  padding-right: 4px;
+}
+.bubble-board {
+  width: min(100%, 800px);
+  margin: 0 auto;
+  padding: 12px;
+  border-radius: 16px;
+  background: #173b36;
+  color: #eef4e6;
+  border: 1px solid #2e5a4e;
+  box-shadow: 0 18px 45px #102a2433;
+}
+.bubble-status {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 6px 8px;
+  font-size: 13px;
+}
+.bubble-status > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.bubble-status strong {
+  font-size: 14px;
+  color: #f3f7e9;
+}
+.bubble-status small {
+  color: #b8cbb8;
+  font-size: 11px;
+}
+.bubble-presence {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8aa094;
+  flex-shrink: 0;
+}
+.bubble-presence.active {
+  background: #9ed39c;
+  box-shadow: 0 0 0 4px #9ed39c22;
+}
+.bubble-clock {
+  font-variant-numeric: tabular-nums;
+  color: #f0e3b4;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.bubble-sudden {
+  margin: 0 4px 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #6a392b;
+  color: #ffe6c2;
+  font-size: 12px;
+  text-align: center;
+  font-weight: 650;
+}
+.bubble-teams {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.bubble-team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: #244a42;
+  border: 1px solid #346356;
+}
+.bubble-team strong {
+  font-size: 13px;
+}
+.bubble-team span {
+  color: #cfddcb;
+}
+.bubble-team.team-0 {
+  border-left: 4px solid #c77565;
+}
+.bubble-team.team-1 {
+  border-left: 4px solid #78a9c4;
+}
+.bubble-stage {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #9db78f;
+  border: 1px solid #345b4e;
+  touch-action: none;
+}
+.bubble-stage canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 360 / 312;
+}
+.bubble-countdown {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #fdf8e7;
+  background: #14312cb0;
+  line-height: 1.2;
+  pointer-events: none;
+}
+.bubble-countdown span {
+  font-size: clamp(48px, 12vw, 90px);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 4px 18px #0b211d;
+}
+.bubble-countdown small {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.bubble-mine {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 5px 14px;
+  min-height: 22px;
+  padding: 8px 5px 2px;
+  color: #d9e5d4;
+  font-size: 12px;
+}
+.bubble-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 8px 4px 4px;
+}
+.bubble-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(3, 52px);
+  gap: 4px;
+  touch-action: none;
+}
+.bubble-dpad button {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid #7d9a88;
+  background: #e9f0e2;
+  color: #20473c;
+  font-size: 22px;
+  font-weight: 700;
+  touch-action: none;
+}
+.bubble-dpad button:disabled {
+  background: #c8d3c3;
+  color: #586a58;
+  border-color: #92a58e;
+}
+.bubble-dpad .up {
+  grid-column: 2;
+  grid-row: 1;
+}
+.bubble-dpad .left {
+  grid-column: 1;
+  grid-row: 2;
+}
+.bubble-dpad .hub {
+  grid-column: 2;
+  grid-row: 2;
+  border-radius: 50%;
+  margin: 12px;
+  background: #4e7263;
+}
+.bubble-dpad .right {
+  grid-column: 3;
+  grid-row: 2;
+}
+.bubble-dpad .down {
+  grid-column: 2;
+  grid-row: 3;
+}
+.bubble-bomb {
+  width: 108px;
+  min-height: 76px;
+  flex-direction: column;
+  gap: 3px;
+  border-radius: 16px;
+  border: 1px solid #d8b992;
+  background: #b9685c;
+  color: #fff8ec;
+  font-weight: 750;
+  font-size: 15px;
+  box-shadow: 0 5px 0 #7b4038;
+  touch-action: none;
+}
+.bubble-bomb:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #7b4038;
+}
+.bubble-bomb:disabled {
+  background: #6d7c73;
+  box-shadow: 0 5px 0 #4d5a53;
+  color: #e2e8df;
+}
+.bubble-bomb small {
+  font-size: 10px;
+  font-weight: 500;
+  color: #f4dfd6;
+}
+.bubble-hint {
+  margin: 8px 4px 0;
+  color: #b9cbb8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.bubble-error {
+  margin: 8px 4px 0;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: #60362f;
+  color: #ffe2d7;
+  font-size: 12px;
+}
+.bubble-log {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 6px 4px 0;
+  color: #aebfae;
+  font-size: 11px;
+}
+.bubble-loading {
+  color: #dbe6d7;
+  text-align: center;
+  padding: 24px;
+}
+.bubble-player-summary {
+  display: grid;
+  gap: 2px;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.bubble-player-summary strong {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.bubble-player-summary i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c77565;
+}
+.bubble-player-summary.team-1 i {
+  background: #78a9c4;
+}
+.bubble-player-summary span {
+  color: #5c6e60;
+}
+.bubble-player-summary.team-0 strong {
+  color: #7c433b;
+}
+.bubble-player-summary.team-1 strong {
+  color: #36566e;
+}
+@media (max-width: 600px) {
+  .bubble-board {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: 6px 3px 10px;
+  }
+  .bubble-status {
+    padding: 2px 6px 6px;
+  }
+  .bubble-teams {
+    margin: 0 3px 6px;
+  }
+  .bubble-stage {
+    border-radius: 4px;
+  }
+  .bubble-controls {
+    gap: 10px;
+    padding: 7px 4px 2px;
+  }
+  .bubble-dpad {
+    grid-template-columns: repeat(3, 48px);
+    grid-template-rows: repeat(3, 48px);
+    gap: 3px;
+  }
+  .bubble-dpad button {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 20px;
+  }
+  .bubble-bomb {
+    width: 102px;
+    min-height: 70px;
+  }
+  .bubble-hint,
+  .bubble-log {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+}
+@media (max-width: 360px) {
+  .bubble-dpad {
+    grid-template-columns: repeat(3, 44px);
+    grid-template-rows: repeat(3, 44px);
+  }
+  .bubble-dpad button {
+    width: 44px;
+    height: 44px;
+  }
+  .bubble-bomb {
+    width: 94px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bubble-board * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
