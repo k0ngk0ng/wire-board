@@ -5482,3 +5482,224 @@ label small {
     font-size: 15px;
   }
 }
+
+/* Game wish pool */
+.wish-nav-button svg {
+  color: #7d6429;
+}
+.wish-modal {
+  width: min(680px, 100%);
+}
+.wish-modal .modal-head {
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.wish-modal .modal-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #174e43;
+}
+.wish-modal .modal-head p {
+  margin: 6px 0 0;
+  color: #526654;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.wish-form {
+  display: grid;
+  gap: 13px;
+}
+.wish-form > label {
+  margin-bottom: 0;
+}
+.wish-text-label {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #355448;
+}
+.wish-text-label textarea {
+  width: 100%;
+  min-height: 126px;
+  resize: vertical;
+  padding: 12px 14px;
+  border: 1px solid #b9c8b6;
+  border-radius: 9px;
+  background: #fffefa;
+  color: #263f34;
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.7;
+}
+.wish-text-label textarea:focus {
+  outline: 2px solid #3c7a60;
+  outline-offset: 1px;
+}
+.wish-form-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.wish-upload {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.wish-upload input[type="file"] {
+  display: none;
+}
+.wish-upload small,
+.wish-counter,
+.wish-history-head small {
+  color: #5d6e5e;
+  font-size: 11px;
+}
+.wish-counter {
+  font-variant-numeric: tabular-nums;
+}
+.wish-preview {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 0;
+  padding: 10px;
+  border: 1px dashed #bccbb8;
+  border-radius: 10px;
+  background: #fffefa;
+}
+.wish-preview img {
+  max-width: min(280px, 65%);
+  max-height: 170px;
+  border-radius: 7px;
+  object-fit: contain;
+  background: #eef1e9;
+}
+.wish-submit {
+  display: flex;
+  justify-content: flex-end;
+}
+.wish-history {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #dde2d6;
+}
+.wish-history-head {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.wish-history-head h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #294c3e;
+}
+.wish-list {
+  display: grid;
+  gap: 10px;
+  max-height: 260px;
+  overflow: auto;
+  padding-right: 3px;
+}
+.wish-item {
+  padding: 13px 14px;
+  border: 1px solid #e0e3d8;
+  border-radius: 10px;
+  background: #fffefa;
+}
+.wish-item header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+.wish-item header small {
+  color: #5d6e5e;
+  font-size: 11px;
+}
+.wish-item p {
+  margin: 0;
+  color: #2d4036;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.wish-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.wish-status.pending {
+  background: #f6e8c6;
+  color: #6b4a0d;
+}
+.wish-status.approved {
+  background: #dcecdd;
+  color: #245c37;
+}
+.wish-status.rejected {
+  background: #f4ddd7;
+  color: #8a3324;
+}
+.wish-image-link {
+  display: inline-block;
+  margin-top: 9px;
+}
+.wish-image-link img {
+  display: block;
+  max-width: 100%;
+  max-height: 170px;
+  border-radius: 7px;
+  border: 1px solid #dfe4d8;
+  object-fit: contain;
+  background: #eef1e9;
+}
+.wish-note {
+  margin-top: 9px;
+  padding: 8px 10px;
+  border-left: 3px solid #cfb36a;
+  background: #f7f1df;
+  color: #5d4a1c;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+@media (max-width: 600px) {
+  .wish-backdrop {
+    padding: 10px;
+    align-items: flex-start;
+  }
+  .wish-modal {
+    padding: 18px 16px;
+    max-height: calc(100vh - 20px);
+  }
+  .wish-form-foot {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .wish-submit button {
+    width: 100%;
+  }
+  .wish-list {
+    max-height: none;
+  }
+  .wish-preview img {
+    max-width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wish-modal {
+    animation: none;
+  }
+}
