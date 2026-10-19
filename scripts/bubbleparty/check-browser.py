@@ -174,12 +174,11 @@ try:
     b("open", base)
     opened = True
     api("/login", {"name": "泡泡验收管理员", "password": "bubbleparty-browser-test-only"})
-    assert "bubbleparty" not in api("/state")["availableGames"], "new game was automatically listed"
-    api("/rooms", {"kind": "bubbleparty", "name": "未上架", "capacity": 2}, 403)
+    assert "bubbleparty" in api("/state")["availableGames"], "new game was not published by default"
     api("/admin/games/bubbleparty", {"enabled": True})
     b("reload")
     b("wait", ".room-list")
-    check("default-unlisted-admin-only")
+    check("default-published")
 
     b("set", "viewport", "1280", "900")
     b("click", ".lobby-create")

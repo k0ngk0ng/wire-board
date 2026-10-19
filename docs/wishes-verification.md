@@ -64,3 +64,15 @@ python3 -B scripts/check_game_boundaries.py
 - 管理后台五个列表页的独立刷新按钮已进入线上 bundle，浏览器验收共 56 项通过。
 - 已有游戏设置保持；`battlecity` 继续上架。
 - 保留本次更新前与上一份备份 `data-20261019T105535Z-753854.tar.gz`、`data-20261019T101526Z-664607.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留当前 `v1.18.1` 和上一版 `v1.18.0` 回滚镜像。
+
+## 追问、粘贴截图与默认上架
+
+2026-10-19 增补：
+
+- `go test -run 'TestWish|TestAgent' ./internal/server` 通过，覆盖：pending 许愿可直接开始、最多 2 次追问、未回答时禁止再次追问/开始、回答只能由提交者完成、管理后台和代理均能看到问答与 `needsAnswer`、追问写入操作记录。
+- 真实浏览器验收 62 项通过：截图图片可通过粘贴进入上传预览；AI 追问显示在玩家「我的许愿」；玩家回答后代理读取到回答并将 pending 许愿推进为正在实现；管理员看到问答和状态并完成；桌面/320 布局、对比度和刷新按钮保持通过。
+- 本次运行：`.local/wishes-e2e/f4a3b5e2/result.json`（62/62）。
+- 新游戏默认上架：`TestNewModuleDefaultsToPublishedE2E` 验证注册即可见、可直接创建；管理员显式下架后创建被拒绝，重启保留下架决定；重启时新增模块默认上架。`games/*/tests` 的 HTTP 夹具改为 `AssertPublished`。
+- 管理后台游戏卡片移除「大厅可见，可以创建牌桌」冗余说明，浏览器检查卡片内不再有该段落。
+- 持久化入口：`scripts/wish-loop.sh` 读取 `scripts/wish-loop-prompt.txt` 并启动 Claude Code 的 `/loop 5m`；`--dry-run` 只打印将执行的指令。代理令牌仍在 `.local/wishes/agent-token`。
+- 策略调整：新游戏默认上架，管理员可显式下架；已存在的显式设置（包括 `dota=0` 和此前 `fortressblue=0`）不会被启动迁移覆盖。

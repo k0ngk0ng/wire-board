@@ -166,15 +166,36 @@ func (h *HTTP) Record(label string) {
 	}
 	h.trace = append(h.trace, map[string]any{"label": label, "views": views, "spectator": h.Spectator.State()["room"]})
 }
+func (h *HTTP) AssertPublished() {
+	h.T.Helper()
+	for _, c := range []*Client{h.People[0], h.Spectator} {
+		found := false
+		for _, id := range c.State()["availableGames"].([]any) {
+			if id == h.Game {
+				found = true
+				break
+			}
+		}
+		if !found {
+			h.T.Fatal("registered game was not published by default")
+		}
+	}
+	h.Spectator.Request("POST", "/api/admin/games/"+h.Game, map[string]bool{"enabled": true}, 403)
+}
+
+// AssertUnpublished keeps the long-standing hidden-game HTTP scenarios
+// explicit after new games became published by default. The administrator
+// unpublishes first, then the helper verifies player visibility and creation.
 func (h *HTTP) AssertUnpublished() {
 	h.T.Helper()
+	h.People[0].Request("POST", "/api/admin/games/"+h.Game, map[string]bool{"enabled": false}, 200)
 	for _, c := range []*Client{h.People[0], h.Spectator} {
 		for _, id := range c.State()["availableGames"].([]any) {
 			if id == h.Game {
-				h.T.Fatal("new game published without admin action")
+				h.T.Fatal("unpublished game is still visible")
 			}
 		}
-		c.Request("POST", "/api/rooms", map[string]any{"kind": h.Game, "name": "默认下架检查", "capacity": len(h.People)}, 403)
+		c.Request("POST", "/api/rooms", map[string]any{"kind": h.Game, "name": "下架检查", "capacity": len(h.People)}, 403)
 	}
 	h.Spectator.Request("POST", "/api/admin/games/"+h.Game, map[string]bool{"enabled": true}, 403)
 }

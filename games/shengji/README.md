@@ -14,4 +14,4 @@ python3 -B scripts/accept_poker.py
 
 自然整场记录在 `.local/poker/shengji/natural-*.json`；单双副真实 HTTP 房间、隐私、取底扣底、自然结算及 SQLite 恢复记录在 `.local/poker/shengji/http/`。牌型边界和错误路径先于实现编写。
 
-默认下架，由管理员上架。规则不导入另外两款扑克游戏；仅共享牌面、手势与相对座位呈现。素材见 [素材清单](../../assets/poker/README.md)。
+默认上架，管理员可随时下架。规则不导入另外两款扑克游戏；仅共享牌面、手势与相对座位呈现。素材见 [素材清单](../../assets/poker/README.md)。

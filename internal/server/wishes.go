@@ -31,19 +31,33 @@ const (
 	wishListLimit      = 100
 	wishAdminListLimit = 200
 	wishAgentLimit     = 200
+	wishQuestionMax    = 2
+	wishQuestionRunes  = 500
+	wishAnswerRunes    = 1000
 )
 
+type wishQuestion struct {
+	ID         int64  `json:"id"`
+	Question   string `json:"question"`
+	Answer     string `json:"answer,omitempty"`
+	AskedAt    int64  `json:"askedAt"`
+	AnsweredAt int64  `json:"answeredAt,omitempty"`
+}
+
 type wish struct {
-	ID             string `json:"id"`
-	UserName       string `json:"userName"`
-	Text           string `json:"text"`
-	ImageURL       string `json:"imageUrl"`
-	Status         string `json:"status"`
-	Note           string `json:"note"`
-	CreatedAt      int64  `json:"createdAt"`
-	ReviewedAt     int64  `json:"reviewedAt,omitempty"`
-	ApprovedAt     int64  `json:"approvedAt,omitempty"`
-	ReviewedByName string `json:"reviewedByName,omitempty"`
+	ID             string         `json:"id"`
+	UserName       string         `json:"userName"`
+	Text           string         `json:"text"`
+	ImageURL       string         `json:"imageUrl"`
+	Status         string         `json:"status"`
+	Note           string         `json:"note"`
+	CreatedAt      int64          `json:"createdAt"`
+	ReviewedAt     int64          `json:"reviewedAt,omitempty"`
+	ApprovedAt     int64          `json:"approvedAt,omitempty"`
+	ReviewedByName string         `json:"reviewedByName,omitempty"`
+	Questions      []wishQuestion `json:"questions,omitempty"`
+	QuestionCount  int            `json:"questionCount"`
+	NeedsAnswer    bool           `json:"needsAnswer"`
 }
 
 func validWishURL(raw string) (*url.URL, bool) {
@@ -316,21 +330,61 @@ func (s *Server) listWishes(w http.ResponseWriter, r *http.Request) {
 		fail(w, 500, "无法读取许愿")
 		return
 	}
-	defer rows.Close()
 	list := []wish{}
 	for rows.Next() {
 		item, err := scanWish(rows)
 		if err != nil {
+			rows.Close()
 			fail(w, 500, "无法读取许愿")
 			return
 		}
 		list = append(list, item)
 	}
 	if err := rows.Err(); err != nil {
+		rows.Close()
 		fail(w, 500, "无法读取许愿")
 		return
 	}
+	if err := rows.Close(); err != nil {
+		fail(w, 500, "无法读取许愿")
+		return
+	}
+	if err := s.attachQuestions(list); err != nil {
+		fail(w, 500, "无法读取追问")
+		return
+	}
 	respond(w, 200, map[string]any{"wishes": list})
+}
+
+func (s *Server) attachQuestions(list []wish) error {
+	for i := range list {
+		rows, err := s.db.Query("SELECT id,question,answer,asked_at,answered_at FROM wish_questions WHERE wish_id=? ORDER BY id", list[i].ID)
+		if err != nil {
+			return err
+		}
+		questions := []wishQuestion{}
+		for rows.Next() {
+			var q wishQuestion
+			if err := rows.Scan(&q.ID, &q.Question, &q.Answer, &q.AskedAt, &q.AnsweredAt); err != nil {
+				rows.Close()
+				return err
+			}
+			if q.Answer == "" {
+				list[i].NeedsAnswer = true
+			}
+			questions = append(questions, q)
+		}
+		if err := rows.Err(); err != nil {
+			rows.Close()
+			return err
+		}
+		if err := rows.Close(); err != nil {
+			return err
+		}
+		list[i].Questions = questions
+		list[i].QuestionCount = len(questions)
+	}
+	return nil
 }
 
 func (s *Server) adminWishes() ([]wish, map[string]int, error) {
@@ -353,6 +407,9 @@ ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 WHEN 'in_progr
 		return nil, nil, err
 	}
 	if err := rows.Close(); err != nil {
+		return nil, nil, err
+	}
+	if err := s.attachQuestions(list); err != nil {
 		return nil, nil, err
 	}
 	stats := map[string]int{"pending": 0, "approved": 0, "in_progress": 0, "implemented": 0, "rejected": 0}
@@ -469,8 +526,8 @@ func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	status := r.URL.Query().Get("status")
-	if status != "" && status != "approved" && status != "in_progress" && status != "implemented" {
-		fail(w, 400, "代理只读取已通过、正在实现或已实现的许愿")
+	if status != "" && status != "pending" && status != "approved" && status != "in_progress" && status != "implemented" {
+		fail(w, 400, "代理只读取待处理、已通过、正在实现或已实现的许愿")
 		return
 	}
 	var since int64
@@ -492,12 +549,12 @@ func (s *Server) agentWishes(w http.ResponseWriter, r *http.Request) {
 		limit = v
 	}
 	query := `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
-WHERE reviewed_at>? AND status IN ('approved','in_progress','implemented') ORDER BY reviewed_at,id LIMIT ?`
-	args := []any{since, limit}
+WHERE status IN ('pending','approved','in_progress','implemented') AND (reviewed_at>? OR (status='pending' AND created_at>?)) ORDER BY created_at,id LIMIT ?`
+	args := []any{since, since, limit}
 	if status != "" {
 		query = `SELECT id,user_name,text,image_url,status,review_note,created_at,reviewed_at,COALESCE(reviewed_by_name,'') FROM wishes
-WHERE reviewed_at>? AND status=? ORDER BY reviewed_at,id LIMIT ?`
-		args = []any{since, status, limit}
+WHERE status=? AND (reviewed_at>? OR (status='pending' AND created_at>?)) ORDER BY created_at,id LIMIT ?`
+		args = []any{status, since, since, limit}
 	}
 	rows, err := s.db.Query(query, args...)
 	if err != nil {
@@ -516,6 +573,14 @@ WHERE reviewed_at>? AND status=? ORDER BY reviewed_at,id LIMIT ?`
 	}
 	if err := rows.Err(); err != nil {
 		fail(w, 500, "无法读取已审核的许愿")
+		return
+	}
+	if err := rows.Close(); err != nil {
+		fail(w, 500, "无法读取已审核的许愿")
+		return
+	}
+	if err := s.attachQuestions(list); err != nil {
+		fail(w, 500, "无法读取追问")
 		return
 	}
 	respond(w, 200, map[string]any{"wishes": list, "serverNow": time.Now().Unix()})
@@ -573,13 +638,22 @@ func (s *Server) agentWishStatus(w http.ResponseWriter, r *http.Request) {
 	allowed := false
 	switch req.Action {
 	case "start":
-		allowed = current == "approved"
+		allowed = current == "approved" || current == "pending"
 	case "implement":
 		allowed = current == "in_progress" || current == "approved"
 	}
 	if !allowed {
 		fail(w, 409, "当前状态不能执行该操作")
 		return
+	}
+	if current == "pending" || current == "approved" {
+		if _, unanswered, err := s.wishQuestionState(id); err != nil {
+			fail(w, 500, "无法读取追问")
+			return
+		} else if unanswered {
+			fail(w, 409, "请先等待玩家回答追问")
+			return
+		}
 	}
 	detail := owner + "：" + text
 	if utf8.RuneCountInString(detail) > 100 {
@@ -606,4 +680,127 @@ func (s *Server) agentWishStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	respond(w, 200, map[string]any{"ok": true, "status": target})
+}
+
+func (s *Server) wishQuestionState(wishID string) (count int, unanswered bool, err error) {
+	var pending int
+	err = s.db.QueryRow("SELECT COUNT(*),COALESCE(SUM(CASE WHEN answer='' THEN 1 ELSE 0 END),0) FROM wish_questions WHERE wish_id=?", wishID).Scan(&count, &pending)
+	return count, pending > 0, err
+}
+
+func (s *Server) agentWishQuestion(w http.ResponseWriter, r *http.Request) {
+	if s.cfg.WishAgentToken == "" {
+		fail(w, 503, "尚未配置许愿代理令牌")
+		return
+	}
+	if !s.agentAuthorized(r) {
+		fail(w, 401, "许愿代理令牌无效")
+		return
+	}
+	var req struct {
+		Question string `json:"question"`
+	}
+	if !decode(w, r, &req) {
+		return
+	}
+	question := strings.TrimSpace(req.Question)
+	if utf8.RuneCountInString(question) < 2 || utf8.RuneCountInString(question) > wishQuestionRunes {
+		fail(w, 400, "追问需 2–500 字")
+		return
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	id := r.PathValue("id")
+	var owner, text, status string
+	if err := s.db.QueryRow("SELECT user_name,text,status FROM wishes WHERE id=?", id).Scan(&owner, &text, &status); err != nil {
+		fail(w, 404, "许愿不存在")
+		return
+	}
+	if status != "pending" && status != "approved" {
+		fail(w, 409, "当前状态不能追问")
+		return
+	}
+	count, unanswered, err := s.wishQuestionState(id)
+	if err != nil {
+		fail(w, 500, "无法读取追问")
+		return
+	}
+	if unanswered {
+		fail(w, 409, "请先等待玩家回答上一个问题")
+		return
+	}
+	if count >= wishQuestionMax {
+		fail(w, 409, "最多追问 2 次，请开始实现")
+		return
+	}
+	actor := User{ID: "wish-agent", Name: "本地制作代理"}
+	now := time.Now().Unix()
+	var questionID int64
+	detail := owner + "：" + text
+	if utf8.RuneCountInString(detail) > 80 {
+		detail = string([]rune(detail)[:80]) + "…"
+	}
+	detail += " · 追问：" + question
+	err = s.adminCommit(actor, "wish_question", id, detail, nil, func(tx *sql.Tx) error {
+		res, err := tx.Exec("INSERT INTO wish_questions(wish_id,question,asked_at) VALUES(?,?,?)", id, question, now)
+		if err != nil {
+			return err
+		}
+		questionID, err = res.LastInsertId()
+		return err
+	})
+	if err != nil {
+		fail(w, 500, "追问未保存，请重试")
+		return
+	}
+	respond(w, 200, map[string]any{"ok": true, "questionCount": count + 1, "question": wishQuestion{ID: questionID, Question: question, AskedAt: now}})
+}
+
+func (s *Server) answerWish(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	u, ok := s.needUser(w, r)
+	if !ok {
+		return
+	}
+	id := r.PathValue("id")
+	var owner, status string
+	if err := s.db.QueryRow("SELECT user_id,status FROM wishes WHERE id=?", id).Scan(&owner, &status); err != nil {
+		fail(w, 404, "许愿不存在")
+		return
+	}
+	if owner != u.ID {
+		fail(w, 403, "只能回答自己的许愿")
+		return
+	}
+	if status != "pending" && status != "approved" {
+		fail(w, 409, "当前状态不能回答追问")
+		return
+	}
+	var req struct {
+		Answer string `json:"answer"`
+	}
+	if !decode(w, r, &req) {
+		return
+	}
+	answer := strings.TrimSpace(req.Answer)
+	if utf8.RuneCountInString(answer) < 1 || utf8.RuneCountInString(answer) > wishAnswerRunes {
+		fail(w, 400, "回答需 1–1000 字")
+		return
+	}
+	var questionID int64
+	err := s.db.QueryRow("SELECT id FROM wish_questions WHERE wish_id=? AND answer='' ORDER BY id DESC LIMIT 1", id).Scan(&questionID)
+	if errors.Is(err, sql.ErrNoRows) {
+		fail(w, 409, "当前没有待回答的追问")
+		return
+	}
+	if err != nil {
+		fail(w, 500, "无法读取追问")
+		return
+	}
+	if _, err = s.db.Exec("UPDATE wish_questions SET answer=?,answered_at=? WHERE id=?", answer, time.Now().Unix(), questionID); err != nil {
+		fail(w, 500, "回答未保存，请重试")
+		return
+	}
+	respond(w, 200, map[string]any{"ok": true})
 }
