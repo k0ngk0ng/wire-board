@@ -79,6 +79,11 @@ import type { Act, Room, State } from "./types";
 import { AssetsContext, Modal, api } from "./ui/board-host";
 import { WishDialog } from "./wishes";
 
+const versionLabel = (version?: string) => {
+  const value = (version || "dev").trim();
+  return value.startsWith("v") ? value : `v${value}`;
+};
+
 const statusName: Record<string, string> = {
   waiting: "等待入座",
   playing: "游戏中",
@@ -559,7 +564,7 @@ function App() {
                 <span className="nav-caption">
                   让相聚，多一局。
                   <em className="app-version">
-                    v{state.version || "dev"}
+                    {versionLabel(state.version)}
                   </em>
                 </span>
               </nav>
@@ -1463,7 +1468,7 @@ function Lobby({
           <Users size={16} />
           好友相聚，不必排队
         </span>
-        <small className="lobby-version">v{state.version || "dev"}</small>
+        <small className="lobby-version">{versionLabel(state.version)}</small>
       </div>
     </main>
   );
