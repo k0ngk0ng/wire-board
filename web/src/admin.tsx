@@ -17,6 +17,8 @@ import {
   CircleStop,
   Sparkles,
   Check,
+  Hammer,
+  Trophy,
   XCircle,
 } from "lucide-react";
 import type { Room, User } from "./types";
@@ -40,7 +42,13 @@ type Overview = {
   rooms: Room[];
   games: Game[];
   wishes: Wish[];
-  wishStats: { pending: number; approved: number; rejected: number };
+  wishStats: {
+    pending: number;
+    approved: number;
+    in_progress: number;
+    implemented: number;
+    rejected: number;
+  };
   stats: { users: number; online: number; playing: number; waiting: number };
   serverNow: number;
 };
@@ -78,6 +86,8 @@ const actions: Record<string, string> = {
   user_role: "调整权限",
   room_closed: "结束牌桌",
   wish_approved: "通过许愿",
+  wish_in_progress: "开始实现许愿",
+  wish_implemented: "完成许愿",
   wish_rejected: "驳回许愿",
 };
 const date = (value: number) =>
@@ -447,6 +457,8 @@ export function AdminDashboard({
               <div className="admin-wish-summary" role="status">
                 <span>待审核 {data.wishStats.pending}</span>
                 <span>已通过 {data.wishStats.approved}</span>
+                <span>正在实现 {data.wishStats.in_progress}</span>
+                <span>已实现 {data.wishStats.implemented}</span>
                 <span>已驳回 {data.wishStats.rejected}</span>
               </div>
               <div className="admin-wish-filter" role="group" aria-label="筛选许愿状态">
@@ -454,6 +466,8 @@ export function AdminDashboard({
                   ["all", "全部"],
                   ["pending", "待审核"],
                   ["approved", "已通过"],
+                  ["in_progress", "正在实现"],
+                  ["implemented", "已实现"],
                   ["rejected", "已驳回"],
                 ].map(([value, label]) => (
                   <button
@@ -494,13 +508,14 @@ export function AdminDashboard({
                       <div className="admin-wish-note">审核备注：{wish.note}</div>
                     )}
                     <div className="admin-wish-actions">
-                      {wish.status !== "approved" && (
+                      {(wish.status === "pending" ||
+                        wish.status === "rejected") && (
                         <button
                           className="primary"
                           onClick={() =>
                             setDecision({
                               title: `通过许愿 · ${wish.userName}`,
-                              text: "通过后，这条许愿会出现在本地代理的已审核列表中。可以附上排期或实现说明。",
+                              text: "通过后，这条许愿会出现在本地代理的「已通过」列表中。可以附上排期或实现说明。",
                               path: `/admin/wishes/${wish.id}`,
                               body: { action: "approve" },
                               note: true,
@@ -508,10 +523,46 @@ export function AdminDashboard({
                           }
                         >
                           <Check size={16} />
-                          通过
+                          {wish.status === "rejected" ? "重新通过" : "通过"}
                         </button>
                       )}
-                      {wish.status !== "rejected" && (
+                      {wish.status === "approved" && (
+                        <button
+                          className="primary"
+                          onClick={() =>
+                            setDecision({
+                              title: `开始实现 · ${wish.userName}`,
+                              text: "标记为「正在实现」，本地代理可以据此识别并避免重复开工。",
+                              path: `/admin/wishes/${wish.id}`,
+                              body: { action: "start" },
+                              note: true,
+                            })
+                          }
+                        >
+                          <Hammer size={16} />
+                          开始实现
+                        </button>
+                      )}
+                      {wish.status === "in_progress" && (
+                        <button
+                          className="primary"
+                          onClick={() =>
+                            setDecision({
+                              title: `标记已实现 · ${wish.userName}`,
+                              text: "标记为「已实现」，本地代理和玩家都会看到最终状态。",
+                              path: `/admin/wishes/${wish.id}`,
+                              body: { action: "implement" },
+                              note: true,
+                            })
+                          }
+                        >
+                          <Trophy size={16} />
+                          标记已实现
+                        </button>
+                      )}
+                      {(wish.status === "pending" ||
+                        wish.status === "approved" ||
+                        wish.status === "in_progress") && (
                         <button
                           className="outline danger"
                           onClick={() =>
