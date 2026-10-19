@@ -99,6 +99,18 @@ const date = (value: number) =>
         minute: "2-digit",
       })
     : "暂无记录";
+function ListRefresh({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      className="outline admin-list-refresh"
+      type="button"
+      onClick={onClick}
+    >
+      <RefreshCw size={15} />
+      刷新
+    </button>
+  );
+}
 async function request(path: string, body?: unknown) {
   const r = await fetch("/api" + path, {
     method: body === undefined ? "GET" : "POST",
@@ -365,8 +377,11 @@ export function AdminDashboard({
           {tab === "games" && (
             <section>
               <div className="admin-section-head">
-                <h2>开放给朋友的游戏</h2>
-                <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
+                <div>
+                  <h2>开放给朋友的游戏</h2>
+                  <p>下架会隐藏入口、关闭等待牌桌；已经开始的对局可以继续。</p>
+                </div>
+                <ListRefresh onClick={() => void refresh()} />
               </div>
               <CategoryFilter
                 value={gameCategory}
@@ -449,10 +464,13 @@ export function AdminDashboard({
           {tab === "wishes" && (
             <section>
               <div className="admin-section-head">
-                <h2>游戏许愿审核</h2>
-                <p>
-                  通过后，本地制作代理可以通过只读接口领取；驳回时请写明原因，玩家会在「我的许愿」中看到。
-                </p>
+                <div>
+                  <h2>游戏许愿审核</h2>
+                  <p>
+                    通过后，本地制作代理可以领取并推进状态；驳回时请写明原因，玩家会在「我的许愿」中看到。
+                  </p>
+                </div>
+                <ListRefresh onClick={() => void refresh()} />
               </div>
               <div className="admin-wish-summary" role="status">
                 <span>待审核 {data.wishStats.pending}</span>
@@ -593,11 +611,14 @@ export function AdminDashboard({
           {tab === "users" && (
             <section>
               <div className="admin-section-head">
-                <h2>玩家与在线情况</h2>
-                <p>
-                  每 5
-                  秒刷新。多个标签页按同一个玩家统计；离线玩家的托管状态也会保留显示。
-                </p>
+                <div>
+                  <h2>玩家与在线情况</h2>
+                  <p>
+                    每 5
+                    秒自动刷新。多个标签页按同一个玩家统计；离线玩家的托管状态也会保留显示。
+                  </p>
+                </div>
+                <ListRefresh onClick={() => void refresh()} />
               </div>
               <div className="admin-filter">
                 <label className="admin-search">
@@ -714,8 +735,13 @@ export function AdminDashboard({
           {tab === "rooms" && (
             <section>
               <div className="admin-section-head">
-                <h2>所有活动牌桌</h2>
-                <p>包括已下架游戏中尚未结束的牌桌。管理界面仅展示公开信息。</p>
+                <div>
+                  <h2>所有活动牌桌</h2>
+                  <p>
+                    包括已下架游戏中尚未结束的牌桌。管理界面仅展示公开信息。
+                  </p>
+                </div>
+                <ListRefresh onClick={() => void refresh()} />
               </div>
               <div className="admin-room-grid">
                 {data.rooms.map((room) => (
@@ -768,13 +794,11 @@ export function AdminDashboard({
           {tab === "audit" && (
             <section>
               <div className="admin-section-head">
-                <h2>管理操作记录</h2>
-                <p>
-                  记录操作人、时间与对象；不会记录密码内容。
-                  <button className="subtle" onClick={() => void audit()}>
-                    刷新记录
-                  </button>
-                </p>
+                <div>
+                  <h2>管理操作记录</h2>
+                  <p>记录操作人、时间与对象；不会记录密码内容。</p>
+                </div>
+                <ListRefresh onClick={() => void audit()} />
               </div>
               <div className="admin-audit">
                 {logs.map((log) => (
