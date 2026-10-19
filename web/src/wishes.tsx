@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   CheckCircle2,
   Clock3,
+  Hammer,
   ImagePlus,
   Send,
   Sparkles,
+  Trophy,
   X,
   XCircle,
 } from "lucide-react";
@@ -14,7 +16,7 @@ export type Wish = {
   userName: string;
   text: string;
   imageUrl: string;
-  status: "pending" | "approved" | "rejected";
+  status: "pending" | "approved" | "in_progress" | "implemented" | "rejected";
   note: string;
   createdAt: number;
   reviewedAt?: number;
@@ -28,6 +30,8 @@ const statuses: Record<
 > = {
   pending: { label: "待审核", icon: Clock3, className: "pending" },
   approved: { label: "已通过", icon: CheckCircle2, className: "approved" },
+  in_progress: { label: "正在实现", icon: Hammer, className: "in-progress" },
+  implemented: { label: "已实现", icon: Trophy, className: "implemented" },
   rejected: { label: "已驳回", icon: XCircle, className: "rejected" },
 };
 
