@@ -1,89 +1,347 @@
-import type { View } from "./types";
+import type { Player, View } from "./types";
+import { frameRect, getSprite, spriteFrames, type SpriteName } from "./sprites";
 
 export const CELL = 24;
 export const COLS = 15;
 export const ROWS = 13;
 export const WIDTH = COLS * CELL;
 export const HEIGHT = ROWS * CELL;
-
 export type DrawPoint = { x: number; y: number };
-
-type Theme = {
-  sky: string;
-  ground: string;
-  groundAlt: string;
-  path: string;
-  wall: string;
-  wallTop: string;
-  crate: string;
-  crateDark: string;
-  accent: string;
+const TAU = Math.PI * 2;
+const directions: Record<string, number> = {
+  up: 0,
+  down: 1,
+  left: 2,
+  right: 3,
 };
-
-const themes: Record<string, Theme> = {
-  community10: {
-    sky: "#c8d9c1",
-    ground: "#a9c29b",
-    groundAlt: "#9db78f",
-    path: "#d8ceb0",
-    wall: "#8d8171",
-    wallTop: "#b0705e",
-    crate: "#b98f5b",
-    crateDark: "#8f6a3e",
-    accent: "#e9dfbf",
-  },
-  waterpark: {
-    sky: "#bcd7dd",
-    ground: "#9bc4c7",
-    groundAlt: "#8db8bd",
-    path: "#e2d5b4",
-    wall: "#6f8f98",
-    wallTop: "#9b7d67",
-    crate: "#c09a68",
-    crateDark: "#94724a",
-    accent: "#e7f2ef",
-  },
-  forest: {
-    sky: "#c5d7bb",
-    ground: "#92af87",
-    groundAlt: "#85a279",
-    path: "#c3b58f",
-    wall: "#6c7e62",
-    wallTop: "#7d6554",
-    crate: "#b38a54",
-    crateDark: "#876438",
-    accent: "#dde7c7",
-  },
-  desert: {
-    sky: "#e1d2b4",
-    ground: "#cfb583",
-    groundAlt: "#c3a875",
-    path: "#ead9b6",
-    wall: "#9a7b5b",
-    wallTop: "#a66b4e",
-    crate: "#b98d56",
-    crateDark: "#8d6638",
-    accent: "#f3e4c3",
-  },
+const tileSprites: Record<number, SpriteName> = {
+  2: "hedge",
+  3: "tree",
+  4: "houseRed",
+  5: "houseBlue",
+  6: "houseYellow",
+  7: "brickRed",
+  8: "brickOrange",
+  9: "crate",
+  10: "houseRed",
 };
+const seatColors = [
+  "#b52e35",
+  "#175fac",
+  "#b36209",
+  "#813caa",
+  "#17774b",
+  "#a52e72",
+  "#225767",
+  "#624625",
+];
 
-const themeFor = (id: string): Theme => themes[id] ?? themes.community10;
-
-function roundRect(
+function circle(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  w: number,
-  h: number,
   r: number,
+  fill: string,
+  stroke?: string,
 ) {
   ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
+  ctx.arc(x, y, r, 0, TAU);
+  ctx.fillStyle = fill;
+  ctx.fill();
+  if (stroke) {
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+}
+function sprite(
+  ctx: CanvasRenderingContext2D,
+  name: SpriteName,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  col = 0,
+  row = 0,
+) {
+  const image = getSprite(name);
+  if (!image) return false;
+  const f = frameRect(name, col, row);
+  ctx.drawImage(image, f.sx, f.sy, f.sw, f.sh, x, y, width, height);
+  return true;
+}
+function tileCode(view: View, i: number) {
+  return (
+    view.tiles?.[i] ??
+    (view.cells[i] === 1 || view.cells[i] === 3
+      ? 10
+      : view.cells[i] === 2
+        ? 9
+        : 0)
+  );
+}
+function ground(ctx: CanvasRenderingContext2D, view: View) {
+  ctx.fillStyle = "#82b747";
+  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+  for (let y = 0; y < ROWS; y++)
+    for (let x = 0; x < COLS; x++) {
+      const road =
+        tileCode(view, y * COLS + x) === 1 ||
+        (view.mapId === "community10" && x >= 6 && x <= 8);
+      const px = x * CELL,
+        py = y * CELL;
+      const col = road ? 2 : (x + y) % 2;
+      if (!sprite(ctx, "ground", px, py, CELL, CELL, col)) {
+        ctx.fillStyle = road ? "#969a98" : (x + y) % 2 ? "#8dbf51" : "#a1ca63";
+        ctx.fillRect(px, py, CELL, CELL);
+        ctx.strokeStyle = road ? "#777e7b" : "#739845";
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(px, py, CELL, CELL);
+      }
+      if (road && x === 7 && y % 3 === 0) {
+        ctx.fillStyle = "#f2f0db";
+        ctx.fillRect(px + 10, py + 6, 3, 10);
+      }
+    }
+}
+function obstacle(
+  ctx: CanvasRenderingContext2D,
+  code: number,
+  x: number,
+  y: number,
+  solid: boolean,
+) {
+  const name = tileSprites[code];
+  if (!name) return;
+  const px = x * CELL,
+    foot = (y + 1) * CELL;
+  // Walkable hedges are kept low so they cannot hide characters or imply a tall wall.
+  const height =
+    code === 2 ? 20 : Math.min(spriteFrames[name].height * 0.6, foot);
+  if (sprite(ctx, name, px, foot - height, CELL, height)) return;
+  if (code === 2 || code === 3) {
+    ctx.fillStyle = "#62512d";
+    ctx.fillRect(px + 10, foot - 12, 4, 10);
+    circle(ctx, px + 12, foot - 13, code === 2 ? 9 : 11, "#3b833d", "#20572b");
+  } else if ((code >= 4 && code <= 6) || code === 10) {
+    ctx.fillStyle = "#f1dfad";
+    ctx.fillRect(px + 2, foot - 19, 20, 19);
+    ctx.fillStyle = code === 5 ? "#427eb8" : code === 6 ? "#dfae32" : "#bb5140";
+    ctx.beginPath();
+    ctx.moveTo(px, foot - 17);
+    ctx.lineTo(px + 12, foot - 27);
+    ctx.lineTo(px + 24, foot - 17);
+    ctx.fill();
+    ctx.fillStyle = "#36483c";
+    ctx.fillRect(px + 9, foot - 10, 6, 10);
+  } else {
+    ctx.fillStyle = code === 7 ? "#d45e3c" : "#d5a14d";
+    ctx.fillRect(px + 1, foot - 23, 22, 22);
+    ctx.strokeStyle = "#735429";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(px + 2, foot - 22, 20, 20);
+    if (code === 9) {
+      ctx.beginPath();
+      ctx.moveTo(px + 4, foot - 20);
+      ctx.lineTo(px + 20, foot - 4);
+      ctx.moveTo(px + 20, foot - 20);
+      ctx.lineTo(px + 4, foot - 4);
+      ctx.stroke();
+    }
+  }
+  if (!solid && code === 3) {
+    ctx.fillStyle = "#6a9b43";
+    ctx.fillRect(px + 8, foot - 2, 8, 2);
+  }
+}
+function water(
+  ctx: CanvasRenderingContext2D,
+  view: View,
+  now: number,
+  reduced: boolean,
+) {
+  const live = view.blasts.filter((b) => b.at <= now && b.endAt > now);
+  const cells = new Set(live.map((b) => `${b.x},${b.y}`));
+  for (const b of live) {
+    const px = b.x * CELL,
+      py = b.y * CELL;
+    const up = cells.has(`${b.x},${b.y - 1}`),
+      down = cells.has(`${b.x},${b.y + 1}`);
+    const left = cells.has(`${b.x - 1},${b.y}`),
+      right = cells.has(`${b.x + 1},${b.y}`);
+    const center = (up || down) && (left || right);
+    const age = Math.max(0, now - b.at);
+    const frame = reduced ? 8 : 6 + Math.min(7, Math.floor(age / 55));
+    const row = center
+      ? 4
+      : up && down
+        ? 0
+        : left && right
+          ? 2
+          : down
+            ? 0
+            : up
+              ? 1
+              : right
+                ? 2
+                : 3;
+    const col = center ? (reduced ? 1 : Math.floor(age / 70) % 4) : frame;
+    // Every confirmed blast occupies the full cell; adjacent arms meet without gaps.
+    ctx.fillStyle = "#a4eaf8";
+    ctx.fillRect(px + 5, py + 5, 14, 14);
+    if (up) ctx.fillRect(px + 5, py, 14, 12);
+    if (down) ctx.fillRect(px + 5, py + 12, 14, 12);
+    if (left) ctx.fillRect(px, py + 5, 12, 14);
+    if (right) ctx.fillRect(px + 12, py + 5, 12, 14);
+    if (!sprite(ctx, "blast", px, py, CELL, CELL, col, row)) {
+      ctx.strokeStyle = "#2373ab";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(px + 5, py + 5, 14, 14);
+      ctx.fillStyle = "#f1ffff";
+      ctx.fillRect(px + 9, py + 3, 6, 18);
+      ctx.fillRect(px + 3, py + 9, 18, 6);
+    }
+  }
+}
+function drawPlayer(
+  ctx: CanvasRenderingContext2D,
+  p: Player,
+  view: View,
+  pos: DrawPoint,
+  now: number,
+  reduced: boolean,
+) {
+  const px = pos.x * CELL + CELL / 2,
+    py = pos.y * CELL + CELL / 2;
+  const color = seatColors[p.seat % seatColors.length];
+  const type = p.team === 0 ? 1 : 2;
+  const death = [...view.events]
+    .reverse()
+    .find((e) => e.type === "eliminate" && e.seat === p.seat && e.at <= now);
+  const deathAge = death ? now - death.at : Infinity;
+  if (!p.alive && (reduced || deathAge > 1000)) {
+    circle(ctx, px, py, 8, "#eee4d0", "#665b4c");
+    ctx.strokeStyle = "#665b4c";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(px - 3, py - 3);
+    ctx.lineTo(px + 3, py + 3);
+    ctx.moveTo(px + 3, py - 3);
+    ctx.lineTo(px - 3, py + 3);
+    ctx.stroke();
+    return;
+  }
+  ctx.fillStyle = "#46643a66";
+  ctx.beginPath();
+  ctx.ellipse(px, py + 9, 13, 4, 0, 0, TAU);
+  ctx.fill();
+  ctx.strokeStyle = p.seat === view.you ? "#fff9cb" : color;
+  ctx.lineWidth = p.seat === view.you ? 2.5 : 2;
+  ctx.beginPath();
+  ctx.ellipse(px, py + 8, 14, 5, 0, 0, TAU);
+  ctx.stroke();
+  const trapped = p.alive && p.trappedUntil > 0;
+  const moving = p.applied.move !== "none" && p.applied.move !== "" && !trapped;
+  const name: SpriteName = !p.alive
+    ? `death${type}`
+    : trapped
+      ? `trapped${type}`
+      : `role${type}`;
+  const frame = !p.alive
+    ? Math.min(10, Math.floor(deathAge / 90))
+    : trapped
+      ? reduced
+        ? 0
+        : Math.floor(now / 160) % 2
+      : moving && !reduced
+        ? Math.floor(now / 75) % 6
+        : 0;
+  const w = type === 1 ? 32 : 34;
+  const h = (spriteFrames[name].height * w) / spriteFrames[name].width;
+  const x = Math.max(0, Math.min(WIDTH - w, px - w / 2));
+  const y = Math.max(0, Math.min(HEIGHT - h, py + 12 - h));
+  if (
+    !sprite(
+      ctx,
+      name,
+      x,
+      y,
+      w,
+      h,
+      frame,
+      trapped || !p.alive ? 0 : (directions[p.dir] ?? 1),
+    )
+  ) {
+    circle(ctx, px, Math.max(15, py - 3), 15, color, "#263944");
+    circle(ctx, px, Math.max(17, py), 9, "#ffe7bf");
+    circle(ctx, px - 3, Math.max(15, py - 2), 1.5, "#253543");
+    circle(ctx, px + 3, Math.max(15, py - 2), 1.5, "#253543");
+  }
+  if (trapped) {
+    const bw = 42,
+      bx = Math.max(0, Math.min(WIDTH - bw, px - bw / 2)),
+      by = Math.max(0, py - 27);
+    if (
+      !sprite(
+        ctx,
+        "bigBubble",
+        bx,
+        by,
+        bw,
+        bw,
+        reduced ? 3 : 2 + (Math.floor(now / 180) % 2),
+      )
+    ) {
+      circle(ctx, px, Math.max(20, py - 5), 20, "#9cdcf366", "#1167a5");
+    }
+    const text = `${Math.max(1, Math.ceil((p.trappedUntil - now) / 1000))}`;
+    ctx.fillStyle = "#143a56";
+    ctx.fillRect(
+      Math.max(0, Math.min(WIDTH - 20, px - 10)),
+      Math.max(0, py - 30),
+      20,
+      13,
+    );
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 10px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      text,
+      Math.max(10, Math.min(WIDTH - 10, px)),
+      Math.max(10, py - 20),
+    );
+  }
+  if (p.shield || p.invulnerableUntil > now) {
+    ctx.strokeStyle = "#fff2a3";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(px, Math.max(20, py - 6), 19, 22, 0, 0, TAU);
+    ctx.stroke();
+  }
+  const rescue = view.events.find(
+    (e) =>
+      e.type === "rescue" &&
+      e.seat === p.seat &&
+      e.at <= now &&
+      now - e.at < 650,
+  );
+  if (rescue) {
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    const radius = reduced ? 18 : 13 + (now - rescue.at) / 45;
+    ctx.beginPath();
+    ctx.arc(px, py, radius, 0, TAU);
+    ctx.stroke();
+  }
+  const sx = Math.max(7, Math.min(WIDTH - 7, px + 12)),
+    sy = Math.max(8, Math.min(HEIGHT - 8, py + 8));
+  circle(ctx, sx, sy, 6.5, color, "#fff9e8");
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 8px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(String(p.seat + 1), sx, sy + 0.5);
+  ctx.textBaseline = "alphabetic";
 }
 
 export function drawBoard(
@@ -93,214 +351,108 @@ export function drawBoard(
   now: number,
   reduced: boolean,
 ) {
-  const theme = themeFor(view.mapId);
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  const dpr = 2;
-  ctx.scale(dpr, dpr);
-  const bg = ctx.createLinearGradient(0, 0, 0, HEIGHT);
-  bg.addColorStop(0, theme.sky);
-  bg.addColorStop(1, theme.groundAlt);
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      const px = x * CELL;
-      const py = y * CELL;
-      ctx.fillStyle = (x + y) % 2 === 0 ? theme.ground : theme.groundAlt;
-      ctx.globalAlpha = 0.55;
-      ctx.fillRect(px, py, CELL, CELL);
-      ctx.globalAlpha = 1;
-      if (view.mapId === "community10" && (y === 4 || y === 8) && x > 0 && x < COLS - 1) {
-        ctx.fillStyle = theme.path;
-        ctx.globalAlpha = 0.32;
-        ctx.fillRect(px, py + CELL - 5, CELL, 5);
-        ctx.globalAlpha = 1;
-      }
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.scale(ctx.canvas.width / WIDTH, ctx.canvas.height / HEIGHT);
+  ctx.imageSmoothingEnabled = true;
+  ctx.globalAlpha = 1;
+  ground(ctx, view);
+  for (const item of view.items) {
+    const x = item.x * CELL,
+      y = item.y * CELL;
+    const name: SpriteName | undefined = (
+      { bomb: "itemBomb", speed: "itemSpeed", range: "itemRange" } as Record<
+        string,
+        SpriteName
+      >
+    )[item.type];
+    if (
+      !name ||
+      !sprite(
+        ctx,
+        name,
+        x - 1,
+        y - 3,
+        26,
+        28,
+        reduced ? 1 : Math.floor(now / 180) % 3,
+      )
+    ) {
+      circle(ctx, x + 12, y + 12, 9, "#fff1c0", "#80572c");
+      ctx.fillStyle = "#3e4e33";
+      ctx.textAlign = "center";
+      ctx.font = "bold 10px system-ui, sans-serif";
+      ctx.fillText(
+        (
+          {
+            shield: "盾",
+            needle: "针",
+            speed: "速",
+            bomb: "泡",
+            range: "水",
+          } as Record<string, string>
+        )[item.type] ?? "宝",
+        x + 12,
+        y + 16,
+      );
     }
   }
-
-  for (let y = 0; y < ROWS; y++) {
+  water(ctx, view, now, reduced);
+  const objects: { y: number; draw: () => void }[] = [];
+  for (let y = 0; y < ROWS; y++)
     for (let x = 0; x < COLS; x++) {
-      const value = view.cells[y * COLS + x];
-      const px = x * CELL;
-      const py = y * CELL;
-      if (value === 1) {
-        ctx.fillStyle = theme.wall;
-        roundRect(ctx, px + 1, py + 3, CELL - 2, CELL - 3, 3);
-        ctx.fill();
-        ctx.fillStyle = theme.wallTop;
-        roundRect(ctx, px, py, CELL, 8, 3);
-        ctx.fill();
-        ctx.fillStyle = "rgba(255,255,255,.15)";
-        ctx.fillRect(px + 3, py + 11, 5, CELL - 16);
-        if (view.mapId === "community10") {
-          ctx.fillStyle = theme.accent;
-          ctx.fillRect(px + 14, py + 13, 7, 8);
-        }
-      } else if (value === 2) {
-        ctx.fillStyle = theme.crate;
-        roundRect(ctx, px + 2, py + 2, CELL - 4, CELL - 4, 3);
-        ctx.fill();
-        ctx.strokeStyle = theme.crateDark;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(px + 5, py + 5);
-        ctx.lineTo(px + CELL - 5, py + CELL - 5);
-        ctx.moveTo(px + CELL - 5, py + 5);
-        ctx.lineTo(px + 5, py + CELL - 5);
-        ctx.stroke();
-      }
+      const i = y * COLS + x,
+        code = tileCode(view, i);
+      if (code >= 2)
+        objects.push({
+          y: y + 0.4,
+          draw: () => obstacle(ctx, code, x, y, view.cells[i] !== 0),
+        });
     }
+  for (const b of view.bombs)
+    if (b.explodeAt > now)
+      objects.push({
+        y: b.y + 0.5,
+        draw: () => {
+          const x = b.x * CELL,
+            y = b.y * CELL;
+          if (
+            !sprite(
+              ctx,
+              "bubble",
+              x - 1,
+              y - 2,
+              26.4,
+              24.6,
+              reduced ? 1 : Math.floor((now - b.at) / 180) % 3,
+            )
+          ) {
+            circle(ctx, x + 12, y + 12, 10, "#73c6eb", "#1c5c8b");
+            circle(ctx, x + 8, y + 8, 3, "#e5faff");
+          }
+        },
+      });
+  for (const p of view.players) {
+    const pos = display.get(p.seat) ?? { x: p.px ?? p.x, y: p.py ?? p.y };
+    objects.push({
+      y: pos.y + 0.6,
+      draw: () => drawPlayer(ctx, p, view, pos, now, reduced),
+    });
   }
-
+  objects.sort((a, b) => a.y - b.y).forEach((o) => o.draw());
   if (view.sudden && view.safeInset > 0) {
     const inset = view.safeInset * CELL;
-    ctx.fillStyle = "rgba(33,45,43,.48)";
+    ctx.fillStyle = "#19364d66";
     ctx.fillRect(0, 0, WIDTH, inset);
     ctx.fillRect(0, HEIGHT - inset, WIDTH, inset);
     ctx.fillRect(0, inset, inset, HEIGHT - inset * 2);
     ctx.fillRect(WIDTH - inset, inset, inset, HEIGHT - inset * 2);
-    ctx.strokeStyle = "rgba(255,220,140,.8)";
+    ctx.strokeStyle = "#fff1ad";
     ctx.lineWidth = 2;
-    ctx.setLineDash([6, 5]);
-    ctx.strokeRect(inset, inset, WIDTH - inset * 2, HEIGHT - inset * 2);
-    ctx.setLineDash([]);
+    ctx.strokeRect(inset, inset, WIDTH - 2 * inset, HEIGHT - 2 * inset);
   }
-
-  for (const item of view.items) {
-    const px = item.x * CELL + CELL / 2;
-    const py = item.y * CELL + CELL / 2 + Math.sin(now / 280 + item.id) * 1.5;
-    const colors: Record<string, string> = {
-      speed: "#6fa6c7",
-      bomb: "#b58ab8",
-      range: "#d09a5d",
-      shield: "#7fae83",
-    };
-    ctx.fillStyle = colors[item.type] ?? "#9aa";
-    ctx.beginPath();
-    ctx.arc(px, py, 7, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(255,255,255,.7)";
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold 8px system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const letter: Record<string, string> = {
-      speed: "速",
-      bomb: "弹",
-      range: "程",
-      shield: "盾",
-    };
-    ctx.fillText(letter[item.type] ?? "?", px, py + 0.5);
-  }
-
-  for (const bomb of view.bombs) {
-    const px = bomb.x * CELL + CELL / 2;
-    const py = bomb.y * CELL + CELL / 2;
-    const left = Math.max(0, bomb.explodeAt - now);
-    const pulse = reduced ? 1 : 1 + Math.sin((bomb.explodeAt - now) / 80) * 0.08;
-    ctx.fillStyle = "rgba(55,91,114,.28)";
-    ctx.beginPath();
-    ctx.ellipse(px, py + 9, 9, 3, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = left < 500 ? "#d58c88" : "#7fb9d1";
-    ctx.strokeStyle = "#476d83";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(px, py - 1, 8 * pulse, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = "rgba(255,255,255,.65)";
-    ctx.beginPath();
-    ctx.arc(px - 3, py - 4, 2.2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#8a714b";
-    ctx.beginPath();
-    ctx.moveTo(px + 5, py - 8);
-    ctx.quadraticCurveTo(px + 9, py - 13, px + 7, py - 16);
-    ctx.stroke();
-  }
-
-  for (const blast of view.blasts) {
-    const px = blast.x * CELL + CELL / 2;
-    const py = blast.y * CELL + CELL / 2;
-    const life = Math.max(0, Math.min(1, (blast.endAt - now) / 420));
-    ctx.globalAlpha = 0.35 + life * 0.4;
-    ctx.fillStyle = "#cfe9ee";
-    ctx.beginPath();
-    ctx.arc(px, py, 4 + (1 - life) * 8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#79adc1";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.globalAlpha = 1;
-  }
-
-  for (const p of view.players) {
-    const pos = display.get(p.seat) ?? { x: p.x, y: p.y };
-    const px = pos.x * CELL + CELL / 2;
-    const py = pos.y * CELL + CELL / 2;
-    if (!p.alive) {
-      ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = "#5b4e48";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(px - 6, py - 6);
-      ctx.lineTo(px + 6, py + 6);
-      ctx.moveTo(px + 6, py - 6);
-      ctx.lineTo(px - 6, py + 6);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-      continue;
-    }
-    const color = p.team === 0 ? "#b85f52" : "#5d8cae";
-    const dark = p.team === 0 ? "#703b34" : "#35566e";
-    ctx.fillStyle = "rgba(46,61,56,.26)";
-    ctx.beginPath();
-    ctx.ellipse(px, py + 10, 11, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = color;
-    ctx.strokeStyle = dark;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(px, py - 2, 14, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = "#f7f1e2";
-    ctx.beginPath();
-    ctx.arc(px - 4.2, py - 5, 2, 0, Math.PI * 2);
-    ctx.arc(px + 4.2, py - 5, 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = dark;
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.arc(px, py + 1, 5, 0.15, Math.PI - 0.15);
-    ctx.stroke();
-    if (p.shield) {
-      ctx.strokeStyle = "rgba(238,221,139,.9)";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(px, py - 2, 18, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.fillStyle = "rgba(30,45,40,.72)";
-    ctx.beginPath();
-    ctx.arc(px + 12, py - 14, 7, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold 8px system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(String(p.seat + 1), px + 12, py - 14);
-  }
-
   if (view.phase === "countdown") {
-    ctx.fillStyle = "rgba(24,45,43,.28)";
+    ctx.fillStyle = "#17395533";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
   }
 }
@@ -310,25 +462,18 @@ export function drawPreview(
   cells: number[],
   mapId: string,
 ) {
-  const theme = themeFor(mapId);
+  const view = { cells, mapId } as View;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  ctx.fillStyle = theme.ground;
-  ctx.fillRect(0, 0, WIDTH, HEIGHT);
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      const v = cells[y * COLS + x];
-      const px = x * CELL;
-      const py = y * CELL;
-      if (v === 1) {
-        ctx.fillStyle = theme.wall;
-        ctx.fillRect(px + 1, py + 1, CELL - 2, CELL - 2);
-        ctx.fillStyle = theme.wallTop;
-        ctx.fillRect(px, py, CELL, 7);
-      } else if (v === 2) {
-        ctx.fillStyle = theme.crate;
-        ctx.fillRect(px + 3, py + 3, CELL - 6, CELL - 6);
-      }
-    }
-  }
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.scale(ctx.canvas.width / WIDTH, ctx.canvas.height / HEIGHT);
+  ground(ctx, view);
+  for (let y = 0; y < ROWS; y++)
+    for (let x = 0; x < COLS; x++)
+      obstacle(
+        ctx,
+        tileCode(view, y * COLS + x),
+        x,
+        y,
+        cells[y * COLS + x] !== 0,
+      );
 }

@@ -13,6 +13,11 @@ export type Player = {
   y: number;
   dir: string;
   alive: boolean;
+  px?: number;
+  py?: number;
+  speedMs?: number;
+  trappedUntil: number;
+  invulnerableUntil: number;
   shield: boolean;
   maxBombs: number;
   range: number;
@@ -32,8 +37,20 @@ export type Bomb = {
   explodeAt: number;
 };
 
-export type Blast = { x: number; y: number; seat: number; at: number; endAt: number };
-export type Item = { id: number; x: number; y: number; type: string; at: number };
+export type Blast = {
+  x: number;
+  y: number;
+  seat: number;
+  at: number;
+  endAt: number;
+};
+export type Item = {
+  id: number;
+  x: number;
+  y: number;
+  type: string;
+  at: number;
+};
 export type GameEvent = {
   id: number;
   type: string;
@@ -60,6 +77,7 @@ export type View = {
   players: Player[];
   teamSize: number;
   cells: number[];
+  tiles: number[];
   bombs: Bomb[];
   blasts: Blast[];
   items: Item[];
@@ -87,10 +105,24 @@ export const itemNames: Record<string, string> = {
 
 export const teamNames = ["红队", "蓝队"] as const;
 
+const classicSounds: Record<string, string> = {
+  "place.wav": "BombIgnite.wav",
+  "explode.wav": "BombExplode.wav",
+  "trap.wav": "LockedIn.wav",
+  "rescue.wav": "Release.wav",
+  "eliminate.wav": "Die.wav",
+  "item.wav": "ItemEaten.wav",
+  "shield.wav": "Release.wav",
+  "sudden.wav": "TimerExpired_0.wav",
+  "win.wav": "Win.wav",
+  "lose.wav": "Lose.wav",
+  "draw.wav": "Draw.wav",
+  "start.wav": "GameStart_0.wav",
+  "countdown.wav": "TimerGo.wav",
+  "battle.wav": "Village.mp3",
+};
 export const assetURL = (base: string, file: string) =>
-  `${base.replace(/\/$/, "")}/bubbleparty/v1/audio/${file}`;
+  `${base.replace(/\/$/, "")}/bubbleparty/v2/audio/${classicSounds[file] ?? file}`;
 
 export const sources = (base: string, file: string) =>
-  base
-    ? [assetURL(base, file), assetURL("", file)]
-    : [assetURL("", file)];
+  base ? [assetURL(base, file), assetURL("", file)] : [assetURL("", file)];

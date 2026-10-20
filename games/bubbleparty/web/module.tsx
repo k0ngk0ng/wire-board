@@ -40,8 +40,8 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
         </select>
       </label>
       <p>
-        2／4／6／8 人分成红蓝两队，最多 4v4。水泡会连爆、破坏木箱并淘汰对手；
-        3 分钟后安全区开始收缩。
+        2／4／6／8 人分成红蓝两队，最多 4v4。水泡会连爆、破坏木箱并困住对手；
+        触碰被困队友可以救援，触碰被困对手可将其击破。
       </p>
     </div>
   );
@@ -49,9 +49,9 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
 
 export default defineGame<View, Options>({
   id: "bubbleparty",
-  name: "泡泡大作战",
+  name: "泡泡堂",
   description:
-    "在小区草坪上放下水泡，连锁爆破、收集道具，和队友一起把对手全部淘汰。",
+    "在小区草坪上放下水泡，连锁爆破、收集道具，救出被困队友，击破对手水泡。",
   category: "realtime",
   minPlayers: 2,
   maxPlayers: 8,
@@ -67,24 +67,29 @@ export default defineGame<View, Options>({
   Rules: () => (
     <div className="bubble-rules">
       <p>
-        2／4／6／8 人的实时水泡对战。座位前半为红队、后半为蓝队；一方全员淘汰即获胜。
-        时间到时按存活人数判定，人数相同为和局。
+        2／4／6／8
+        人的实时水泡对战。座位前半为红队、后半为蓝队；一方全员淘汰即获胜。
+        时间到时双方仍有人存活则为和局。
       </p>
       <p>
         WASD／方向键移动，空格或 J 放水泡。水泡约 2.2 秒后沿十字方向爆开，
-        可以连爆；木箱会挡住爆炸并被摧毁。离开水泡所在格前它也会挡住移动。
+        可以连爆；木箱会挡住爆炸并被摧毁。放下水泡后可以离开，但不能返回穿过水泡。
+      </p>
+      <p>
+        水柱命中会把角色困在水泡中；队友触碰可救援，对手触碰会击破淘汰。
+        困泡倒计时结束仍未获救则淘汰，救援后有短暂保护。
       </p>
       <p>
         木箱中会掉落速度、炸弹容量、射程和护盾。护盾抵挡一次爆炸。
-        3 分钟后进入突然死亡，安全区每 3 秒向内收缩一圈；停留在安全区外会被淘汰。
+        新对局没有缩圈；可以在房间选择 3、4 或 5 分钟时限。
       </p>
       <p>
         手机：左侧方向键拖动移动，右侧「放水泡」；按钮均不小于 44 px。
         刷新或断线会恢复同一局，不会重播旧爆炸。电脑玩家会寻路、放水泡和躲避爆炸，支持托管。
       </p>
       <p>
-        素材说明：泡泡堂玩法为灵感来源；本作的角色、地图、封面和音效均为项目原创，
-        不使用商业游戏素材。小区10 是原创住宅小区主题地图。
+        小区10 按历史地图参考重建；其他三张地图为自定义场地。
+        本项目为围桌内的玩法还原，与官方运营服务无关联。
       </p>
     </div>
   ),
@@ -101,7 +106,8 @@ export default defineGame<View, Options>({
       >
         <strong>
           <i aria-hidden="true" />
-          {teamNames[player.team]} · {player.alive ? "存活" : "淘汰"}
+          {teamNames[player.team]} ·{" "}
+          {player.trappedUntil ? "困泡" : player.alive ? "存活" : "淘汰"}
           {room.you === seat && !room.spectating ? " · 你" : ""}
         </strong>
         <span>

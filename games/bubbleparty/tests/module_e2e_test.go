@@ -97,7 +97,7 @@ func TestBotMatchesAllMaps(t *testing.T) {
 		t.Skip("full map matrix runs without -race")
 	}
 	for _, id := range []string{"waterpark", "forest", "desert"} {
-		for _, players := range []int{2, 4, 8} {
+		for _, players := range []int{2, 4, 6, 8} {
 			checkResult(t, players, runBotMatch(t, players, id))
 		}
 	}

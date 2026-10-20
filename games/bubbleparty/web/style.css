@@ -217,7 +217,7 @@
   gap: 3px;
   border-radius: 16px;
   border: 1px solid #d8b992;
-  background: #b9685c;
+  background: #9c4e43;
   color: #fff8ec;
   font-weight: 750;
   font-size: 15px;
@@ -357,4 +357,98 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* Keep the whole arena and pointer controls together on desktop. The map keeps
+   its 15:13 geometry; extra width belongs to controls, never a stretched map. */
+@media (min-width: 601px) {
+  .bubble-board {
+    width: min(100%, max(540px, calc((100dvh - 550px) * 1.154 + 178px)), 820px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 142px;
+    column-gap: 12px;
+  }
+  .bubble-status {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .bubble-teams {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .bubble-stage {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+  }
+  .bubble-controls {
+    grid-column: 2;
+    grid-row: 3;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    gap: 24px;
+  }
+  .bubble-dpad {
+    grid-template-columns: repeat(3, 44px);
+    grid-template-rows: repeat(3, 44px);
+    gap: 3px;
+  }
+  .bubble-dpad button {
+    width: 44px;
+    height: 44px;
+    border-radius: 9px;
+    font-size: 19px;
+  }
+  .bubble-dpad .hub {
+    margin: 10px;
+  }
+  .bubble-bomb {
+    width: 116px;
+    min-height: 72px;
+  }
+  .bubble-mine {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+  .bubble-hint,
+  .bubble-error,
+  .bubble-log,
+  .bubble-sudden {
+    grid-column: 1 / -1;
+  }
+}
+.bubble-trapped {
+  color: #fff3bd;
+  background: #5a4423;
+  border: 1px solid #a58b50;
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 12px;
+}
+.bubble-status > div:first-child {
+  min-height: 32px;
+}
+.bubble-bomb small {
+  color: #fff4eb;
+}
+/* Normal, trapped and spectator hints share one stable row. */
+.bubble-status {
+  height: 64px;
+  min-height: 64px;
+}
+/* A disabled action still needs readable labels; override the shared button
+   opacity locally, preserving the common room and player layout. */
+.bubble-dpad button:disabled {
+  opacity: 1;
+  background: #c8d3c3;
+  color: #344b3c;
+}
+.bubble-bomb:disabled {
+  opacity: 1;
+  background: #53655a;
+  color: #ffffff;
+}
+.bubble-bomb:disabled small {
+  color: #ffffff;
 }

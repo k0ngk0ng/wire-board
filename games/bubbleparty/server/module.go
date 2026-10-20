@@ -20,7 +20,7 @@ type Action struct {
 
 func Module() gameapi.Module {
 	return gameapi.Module{
-		ID: "bubbleparty", Name: "泡泡大作战", MinPlayers: 2, MaxPlayers: 8,
+		ID: "bubbleparty", Name: "泡泡堂", MinPlayers: 2, MaxPlayers: 8,
 		Realtime: true, Configure: configure, Start: start, Apply: apply,
 		View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore,
 		AcceptStale: acceptStale, OnTimer: onTimer,
@@ -57,7 +57,7 @@ func startWithSeed(ctx gameapi.Context, raw json.RawMessage, seed uint64) (gamea
 	}
 	now := ctx.Now.UnixMilli()
 	s := &State{
-		Schema: 1, Options: o, Phase: PhaseCountdown, Epoch: hex.EncodeToString(token[:]),
+		RulesVersion: ClassicRulesVersion, Schema: 1, Options: o, Phase: PhaseCountdown, Epoch: hex.EncodeToString(token[:]),
 		Seed: seed, ServerAt: now, StartAt: now + Countdown, MapID: o.Map,
 		Players: make([]Player, ctx.Players), TeamSize: ctx.Players / 2,
 		Cells: mapCells(o.Map, seed), Events: []Event{}, Bombs: []Bomb{}, Items: []Item{},
@@ -68,10 +68,13 @@ func startWithSeed(ctx gameapi.Context, raw json.RawMessage, seed uint64) (gamea
 		seconds = 300
 	}
 	s.MatchEndsAt = s.StartAt + seconds*1000
-	s.SuddenAt = s.StartAt + seconds*600
+	s.SuddenAt = 0
 	for team := 0; team < 2; team++ {
-		spawns := spawnsFor(s.TeamSize, team)
+		spawns := mapSpawnsFor(s.MapID, s.TeamSize, team)
 		for i, sp := range spawns {
+			if s.MapID == "community10" {
+				clearDistrictSpawnExit(s.Cells, sp[0], sp[1])
+			}
 			seat := team*s.TeamSize + i
 			s.Players[seat] = Player{
 				Seat: seat, Team: team, X: sp[0], Y: sp[1], Dir: map[int]string{0: "right", 1: "left"}[team],
@@ -121,7 +124,13 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	if err != nil {
 		return m, err
 	}
+	if s.RulesVersion == ClassicRulesVersion {
+		s.advance(ctx.Now.UnixMilli())
+	}
 	p := &s.Players[ctx.Actor]
+	if s.Result != nil || !p.Alive {
+		return s.match()
+	}
 	s.applyInput(p, a, ctx.Now.UnixMilli())
 	return s.match()
 }
@@ -159,6 +168,18 @@ func restore(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		return m, err
 	}
 	repaired := false
+	// Old saves may have lost bomb occupancy when the owner moved away.
+	for i, c := range s.Cells {
+		if c == CellBomb {
+			s.Cells[i] = CellEmpty
+		}
+	}
+	for _, b := range s.Bombs {
+		if b.X < 0 || b.X >= Cols || b.Y < 0 || b.Y >= Rows {
+			return m, errors.New("水泡位置无效")
+		}
+		s.setCell(b.X, b.Y, CellBomb)
+	}
 	for i := range s.Players {
 		p := &s.Players[i]
 		if p.Seq < 0 || p.Seq >= MaxSeq {
