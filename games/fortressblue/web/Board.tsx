@@ -1076,7 +1076,7 @@ export function Board(props: BoardProps<View>) {
             </div>
           </div>
         </div>
-        <div className="fb-control-row">
+        <div className="fb-control-row" data-game-controls>
           <div className="fb-angle-controls">
             <label htmlFor="fb-angle">角度</label>
             <button

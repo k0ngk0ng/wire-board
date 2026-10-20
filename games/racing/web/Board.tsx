@@ -549,6 +549,7 @@ export function Board(props: BoardProps<View>) {
         <>
           <div
             className={`racing-controls ${mobile ? "is-touch" : ""}`}
+            data-game-controls
             data-steer={drive.steer}
             data-throttle={drive.throttle}
             data-brake={drive.brake}

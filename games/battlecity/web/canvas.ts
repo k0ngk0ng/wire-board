@@ -300,7 +300,7 @@ export function drawBattlefield(
         ? { ...t, ...localTank }
         : interpolatedTank(t, prevTanks.get(t.seat), alpha, viewer);
     const frame = Math.floor(serverNow / 130 + t.seat) % 2;
-    const name = `tank-${t.class ?? "balanced"}-${t.team === 0 ? "top" : "bottom"}-${["up", "right", "down", "left"][t.dir]}-${frame}`;
+    const name = `tank-${t.class ?? "balanced"}-${t.team === 0 ? "top" : "bottom"}-${["up", "right", "down", "left"][tank.dir]}-${frame}`;
     if (!drawFrame(ctx, atlas, name, tank.x, tank.y, CELL, CELL))
       drawFallbackTank(ctx, tank, t.team);
     if (serverNow < t.shieldUntil) {

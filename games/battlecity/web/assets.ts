@@ -14,7 +14,12 @@ export const assetSources = (base: string, path: string): string[] => {
   return [`${prefix}/battlecity/v1/${path}`, local];
 };
 
-export const atlasSources = (base: string) => assetSources(base, "atlas.webp");
+export const atlasSources = (base: string): string[] => {
+  const local = "/battlecity/v2/atlas.webp";
+  return base
+    ? [`${base.replace(/\/+$/, "")}/battlecity/v2/atlas.webp`, local]
+    : [local];
+};
 
 export const soundSources = (base: string, file: string): string[] =>
   assetSources(base, `audio/${file}.mp3`);

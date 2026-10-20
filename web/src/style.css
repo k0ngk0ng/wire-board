@@ -28,6 +28,14 @@ input,
 select {
   -webkit-tap-highlight-color: transparent;
 }
+/* Long presses operate controls; text fields and surrounding copy stay selectable. */
+button,
+[role="button"],
+[data-game-controls] {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
 button {
   cursor: pointer;
   display: inline-flex;

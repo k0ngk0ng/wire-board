@@ -720,7 +720,12 @@ func (s *State) spawnItem(x, y int, at int64, seat int) {
 	if len(s.Items) >= MaxItems {
 		return
 	}
-	types := []string{ItemSpeed, ItemBomb, ItemRange, ItemShield}
+	types := []string{ItemSpeed, ItemBomb, ItemRange}
+	// Original shields are timed consumables, not passive crate upgrades.
+	// Keep the historical drop pool only for version-0 saved matches.
+	if s.RulesVersion == 0 {
+		types = append(types, ItemShield)
+	}
 	s.ItemID++
 	t := types[int(hash64(s.Seed+uint64(at)+uint64(seat), fmt.Sprintf("item:%d:%d:%d", x, y, s.ItemID))%uint64(len(types)))]
 	s.Items = append(s.Items, Item{ID: s.ItemID, X: x, Y: y, Type: t, At: at})

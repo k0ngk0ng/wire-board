@@ -54,16 +54,19 @@ def mime_for(kind: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--execute", action="store_true", help="perform immutable uploads")
+    parser.add_argument("--atlas-v2", action="store_true", help="publish corrected atlas only")
     args = parser.parse_args()
-    manifest = json.loads(MANIFEST.read_text())
-    assert manifest["prefix"] == PREFIX + "/battlecity/v1/"
+    version = "v2" if args.atlas_v2 else "v1"
+    manifest = json.loads((MANIFEST.with_name("manifest-v2.json") if args.atlas_v2 else MANIFEST).read_text())
+    pack = PACK.parent / version
+    assert manifest["prefix"] == PREFIX + "/battlecity/" + version + "/"
     # Confirm bucket and credentials against an existing immutable object.
     known = json.loads((ROOT / "games/snooker/assets/manifest.json").read_text())["entries"][0]
     with request("GET", PREFIX + known["urlPath"]) as response:
         assert hashlib.sha256(response.read()).hexdigest() == known["sha256"]
     results = []
     for entry in manifest["entries"]:
-        source = PACK / entry["file"]
+        source = pack / entry["file"]
         data = source.read_bytes()
         assert hashlib.sha256(data).hexdigest() == entry["sha256"], f"local hash {entry['file']}"
         assert len(data) == entry["bytes"], f"local size {entry['file']}"
@@ -90,7 +93,8 @@ def main() -> None:
                 assert response.headers.get_content_type() == mime
         results.append({"path": entry["urlPath"], "sha256": entry["sha256"], "bytes": len(data), "status": status})
         print(status, entry["urlPath"], flush=True)
-    outside = ROOT / ".local/battlecity" / ("oss-publish.json" if args.execute else "oss-plan.json")
+    report_prefix = "oss-v2" if args.atlas_v2 else "oss"
+    outside = ROOT / ".local/battlecity" / f"{report_prefix}-{'publish' if args.execute else 'plan'}.json"
     outside.parent.mkdir(parents=True, exist_ok=True)
     outside.write_text(json.dumps({"executed": args.execute, "objects": results}, indent=2) + "\n")
     print(f"{'published' if args.execute else 'planned'} {len(results)} immutable objects")
