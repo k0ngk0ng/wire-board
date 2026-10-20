@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	fbmaps "github.com/k0ngk0ng/wire-board/games/fortressblue/maps"
 	fortressblue "github.com/k0ngk0ng/wire-board/games/fortressblue/server"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
@@ -22,7 +23,7 @@ func runBotMatch(t *testing.T, players int, mapID string) {
 	actions := 0
 	for m.Result == nil {
 		actions++
-		if actions > 5000 {
+		if actions > 8000 {
 			t.Fatalf("%d-player %s bot game did not finish; log=%v", players, mapID, m.Log)
 		}
 		evolved := false
@@ -35,7 +36,7 @@ func runBotMatch(t *testing.T, players int, mapID string) {
 			if raw != nil {
 				next, err := module.Apply(gameapi.Context{Players: players, Actor: actor, Now: now, Version: actions}, m, raw)
 				if err != nil {
-					t.Fatalf("%d-player %s apply after %d actions: %v", players, mapID, actions, err)
+					t.Fatalf("%d-player %s apply after %d actions: %v\nlog=%v", players, mapID, actions, err, m.Log)
 				}
 				if err := next.Validate(players); err != nil {
 					t.Fatalf("invalid match: %v", err)
@@ -56,8 +57,6 @@ func runBotMatch(t *testing.T, players int, mapID string) {
 			evolved = true
 		}
 		if !evolved {
-			// The host would schedule the next deadline/bot; advance the clock so
-			// timeouts and sudden death are exercised.
 			now = now.Add(5 * time.Second)
 			continue
 		}
@@ -75,10 +74,8 @@ func runBotMatch(t *testing.T, players int, mapID string) {
 				t.Fatal("draw rank")
 			}
 		}
-	} else {
-		if len(m.Result.Winners) != players/2 {
-			t.Fatalf("team winners %d", len(m.Result.Winners))
-		}
+	} else if len(m.Result.Winners) != players/2 {
+		t.Fatalf("team winners %d", len(m.Result.Winners))
 	}
 	if err := m.Validate(players); err != nil {
 		t.Fatal(err)
@@ -87,11 +84,33 @@ func runBotMatch(t *testing.T, players int, mapID string) {
 }
 
 func TestAllBotGamesFinish(t *testing.T) {
-	maps := []string{"hills", "canyon", "islands", "snow", "volcano"}
-	for i, players := range []int{2, 4, 6, 8, 10} {
-		players, mapID := players, maps[i]
-		t.Run(fmt.Sprintf("%s-%d", mapID, players), func(t *testing.T) {
-			runBotMatch(t, players, mapID)
+	cases := []struct {
+		players int
+		mapID   string
+	}{
+		{2, "stage-16"},
+		{4, "stage-1"},
+		{6, "stage-7"},
+		{8, "stage-17"},
+		{8, "stage-13"},
+	}
+	for _, tc := range cases {
+		tc := tc
+		t.Run(fmt.Sprintf("%s-%d", tc.mapID, tc.players), func(t *testing.T) {
+			runBotMatch(t, tc.players, tc.mapID)
+		})
+	}
+}
+
+func TestAllOriginalMapsBotMatches(t *testing.T) {
+	catalog, err := fbmaps.All()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, m := range catalog.Maps {
+		m := m
+		t.Run(m.ID, func(t *testing.T) {
+			runBotMatch(t, 8, m.ID)
 		})
 	}
 }

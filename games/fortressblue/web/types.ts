@@ -1,5 +1,8 @@
+import clientCatalog from "../maps/client.json" with { type: "json" };
+import tankData from "../data/tanks.json" with { type: "json" };
+
 export type Options = {
-  map: "hills" | "canyon" | "islands" | "snow" | "volcano" | "random";
+  map: string;
   turnSeconds: number;
 };
 
@@ -12,16 +15,24 @@ export type Blast = {
   seat: number;
   victim: number;
   damage: number;
-  heal?: number;
+  kind?: string;
   terrain?: boolean;
 };
+export type Crater = { x: number; y: number; r: number; seat: number };
 export type Shot = {
   id: number;
   seat: number;
   weapon: string;
   arcs: Arc[];
   blasts: Blast[];
+  craters?: Crater[];
   at: number;
+};
+export type Status = {
+  kind: string;
+  turns: number;
+  damage: number;
+  source: number;
 };
 export type Event = {
   id: number;
@@ -37,7 +48,7 @@ export type Event = {
 export type Tank = {
   seat: number;
   team: number;
-  class: string;
+  tankId: number;
   selected: boolean;
   x: number;
   y: number;
@@ -46,17 +57,22 @@ export type Tank = {
   maxHp: number;
   fuel: number;
   special: number;
-  shield: number;
+  alive: boolean;
   damage: number;
   kills: number;
   deaths: number;
-  alive: boolean;
+  statuses?: Status[];
+  current: boolean;
 };
 export type View = {
   options: Options;
   epoch: string;
   phase: "select" | "playing" | "finished";
-  mapId: Exclude<Options["map"], "random">;
+  mapId: string;
+  mapName: string;
+  mapWidth: number;
+  mapHeight: number;
+  mapOffY: number;
   selectUntil: number;
   startAt: number;
   suddenAt: number;
@@ -69,7 +85,7 @@ export type View = {
   order: number[];
   teamSize: number;
   tanks: Tank[];
-  heights: number[];
+  craters?: Crater[];
   lastShot?: Shot;
   events: Event[];
   log: string[];
@@ -77,76 +93,86 @@ export type View = {
   canSelect: boolean;
   canMove: boolean;
   canFire: boolean;
-  selected?: string;
+  selectedTank?: number;
 };
 
-export const mapNames: Record<Options["map"], string> = {
-  hills: "层叠丘陵",
-  canyon: "回声峡谷",
-  islands: "浮岛浅滩",
-  snow: "雪原斜面",
-  volcano: "火山口",
-  random: "随机地图",
+export type Sprite = { url: string; w: number; h: number; ax: number; ay: number };
+export type TankInfo = {
+  id: number;
+  name: string;
+  hp: number;
+  defense: number;
+  speed: number;
+  primary: number;
+  special: number;
+  angle: number;
+  range: number;
+  skills: number[];
+  skillName: string | null;
+  sprites: Record<string, Sprite>;
+  bullet: Sprite | null;
+};
+export type MapInfo = {
+  id: string;
+  name: string;
+  nameEn: string;
+  stage: number;
+  width: number;
+  height: number;
+  offY: number;
+  fg: string;
+  fg2: string | null;
+  bg: string | null;
+  thumb: string;
+  music: string | null;
 };
 
-export const classInfo: Record<
-  string,
-  { name: string; maxHp: number; move: number; special: string; color: string }
-> = {
-  balanced: {
-    name: "均衡",
-    maxHp: 100,
-    move: 42,
-    special: "双联炮",
-    color: "#4d7f72",
-  },
-  heavy: {
-    name: "重装",
-    maxHp: 145,
-    move: 27,
-    special: "重锤",
-    color: "#8b6048",
-  },
-  scout: {
-    name: "侦察",
-    maxHp: 82,
-    move: 66,
-    special: "三连发",
-    color: "#c49b4a",
-  },
-  sniper: {
-    name: "狙击",
-    maxHp: 88,
-    move: 31,
-    special: "穿甲弹",
-    color: "#6d7598",
-  },
-  support: {
-    name: "支援",
-    maxHp: 112,
-    move: 37,
-    special: "维修弹",
-    color: "#81755b",
-  },
+export const worldHeight = clientCatalog.worldHeight;
+export const maps: MapInfo[] = clientCatalog.maps as MapInfo[];
+export const mapById = new Map(maps.map((m) => [m.id, m]));
+export const tanks: TankInfo[] = Object.values(tankData.tanks as Record<string, TankInfo>).sort(
+  (a, b) => a.id - b.id,
+);
+export const tankById = new Map(tanks.map((t) => [t.id, t]));
+export const tankPortraits: Record<string, Sprite> = tankData.portraits as Record<string, Sprite>;
+export const explosion = tankData.explosion as {
+  url: string;
+  cellW: number;
+  cellH: number;
+  count: number;
 };
+export const sounds: Record<string, string> = tankData.audio as Record<string, string>;
 
-export const classOrder = [
-  "balanced",
-  "heavy",
-  "scout",
-  "sniper",
-  "support",
-];
-
-export const teamColors = ["#b65b4d", "#527fa8"];
+export const defaultMap = "stage-1";
+export const teamColors = ["#b6473c", "#4b79a8"];
 export const teamNames = ["红队", "蓝队"];
 
-export const local = (file: string) => `/fortressblue/v1/audio/${file}`;
-export const sources = (base: string, file: string) =>
-  base
-    ? [`${base.replace(/\/$/, "")}/fortressblue/v1/audio/${file}`, local(file)]
-    : [local(file)];
+export const local = (path: string) => path;
+export const sourceList = (base: string, path: string) => {
+  if (!base) return [local(path)];
+  return [`${base.replace(/\/$/, "")}${path}`, local(path)];
+};
 
 export function clamp(value: number, low: number, high: number) {
   return Math.max(low, Math.min(high, value));
+}
+
+export function tankInfo(tankId: number): TankInfo | undefined {
+  return tankById.get(tankId);
+}
+
+export function tankName(tankId: number) {
+  return tankById.get(tankId)?.name ?? "坦克";
+}
+
+export function skillName(tankId: number) {
+  return tankById.get(tankId)?.skillName ?? "特殊弹";
+}
+
+export function statusText(status: Status) {
+  return status.kind === "poison"
+    ? `中毒 ${status.turns}`
+    : status.kind === "burn"
+      ? `燃烧 ${status.turns}`
+      : status.kind;
 }

@@ -1,6 +1,7 @@
 .local/
 games/spf2t/assets/public/
 games/battlecity/assets/public/
+games/fortressblue/assets/public/fortressblue/v2/
 node_modules/
 web/dist/
 web/*.tsbuildinfo

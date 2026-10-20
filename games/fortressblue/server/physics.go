@@ -2,260 +2,175 @@ package fortressblue
 
 import (
 	"math"
+
+	fbmaps "github.com/k0ngk0ng/wire-board/games/fortressblue/maps"
 )
 
-func clamp(v, lo, hi float64) float64 {
-	return max(lo, min(hi, v))
+func clamp(v, lo, hi float64) float64 { return max(lo, min(hi, v)) }
+
+func cellAt(m fbmaps.Map, x, y float64) (int, int) {
+	cx := int(math.Floor(x / float64(fbmaps.Cell())))
+	cy := int(math.Floor(y / float64(fbmaps.Cell())))
+	return cx, cy
 }
 
-func colAt(x float64) int {
-	c := int(x / ColumnWidth)
-	if c < 0 {
-		return 0
-	}
-	if c >= Columns {
-		return Columns - 1
-	}
-	return c
-}
-
-// groundAt returns the y coordinate of the terrain surface at x. Heights are
-// measured upwards from the bottom of the field.
-func groundAt(heights []float64, x float64) float64 {
-	if len(heights) == 0 {
-		return FieldHeight
-	}
-	c := colAt(x)
-	if c >= len(heights) {
-		c = len(heights) - 1
-	}
-	return FieldHeight - clamp(heights[c], 0, FieldHeight)
-}
-
-func groundHeight(heights []float64, x float64) float64 {
-	return FieldHeight - groundAt(heights, x)
-}
-
-func generateHeights(seed uint64, mapID string) []float64 {
-	h := make([]float64, Columns)
-	jitter := func(i int, mul float64) float64 {
-		v := hashString(seedString(seed), mapID, string(rune(i)))
-		return (float64(v%1000)/1000 - 0.5) * mul
-	}
-	for i := 0; i < Columns/2; i++ {
-		x := float64(i)
-		var value float64
-		switch mapID {
-		case "canyon":
-			value = 82 - 48*math.Exp(-math.Pow((x-80)/16, 2)) + 6*math.Sin(x/7)
-		case "islands":
-			value = 34 + 17*math.Sin(x/11) + 11*math.Sin(x/3.2+0.4)
-			if i > 54 && i < 106 {
-				value -= 14
-			}
-		case "snow":
-			value = 70 + 17*math.Sin(x/19) + 5*math.Sin(x/5+0.8)
-		case "volcano":
-			value = 42 + 66*math.Exp(-math.Pow((x-80)/22, 2)) + 8*math.Sin(x/6)
-		default: // hills
-			value = 55 + 18*math.Sin(x/13) + 8*math.Sin(x/4.5+0.7)
-		}
-		value += jitter(i, 1.8)
-		h[i] = clamp(value, 8, 150)
-		h[Columns-1-i] = h[i]
-	}
-	return h
-}
-
-func seedString(seed uint64) string {
-	const digits = "0123456789"
-	if seed == 0 {
-		return "0"
-	}
-	var buf [24]byte
-	i := len(buf)
-	for seed > 0 {
-		i--
-		buf[i] = digits[seed%10]
-		seed /= 10
-	}
-	return string(buf[i:])
-}
-
-func spawnX(teamSize, team, index int) float64 {
-	center := 70.0
-	if team == TeamBlue {
-		center = FieldWidth - 70
-	}
-	spacing := 30.0
-	switch teamSize {
-	case 1:
-		spacing = 0
-	case 2:
-		spacing = 36
-	case 3:
-		spacing = 32
-	case 4:
-		spacing = 30
-	case 5:
-		spacing = 28
-	}
-	return center + (float64(index)-float64(teamSize-1)/2)*spacing
-}
-
-func spawnYs(heights []float64, players int) [][2]float64 {
-	t := players / 2
-	out := make([][2]float64, players)
-	for team := 0; team < 2; team++ {
-		for i := 0; i < t; i++ {
-			x := spawnX(t, team, i)
-			out[team*t+i] = [2]float64{x, groundAt(heights, x)}
-		}
-	}
-	return out
-}
-
-func flattenSpawns(h []float64, players int) {
-	t := players / 2
-	for team := 0; team < 2; team++ {
-		for i := 0; i < t; i++ {
-			x := spawnX(t, team, i)
-			c := colAt(x)
-			value := h[c]
-			if value < 36 {
-				value = 36
-			}
-			for d := -6; d <= 6; d++ {
-				j := c + d
-				if j >= 0 && j < Columns {
-					h[j] = value
-					h[Columns-1-j] = value
-				}
-			}
-		}
-	}
-}
-
-func heightsValid(h []float64) bool {
-	if len(h) != Columns {
+func solid(m fbmaps.Map, mask []byte, x, y float64) bool {
+	if x < 0 || y < 0 || x >= float64(m.Width) || y >= float64(m.Height) {
 		return false
 	}
-	for _, v := range h {
-		if math.IsNaN(v) || math.IsInf(v, 0) || v < 0 || v > FieldHeight {
-			return false
-		}
-	}
-	return true
-}
-
-func heightsSymmetric(h []float64) bool {
-	if len(h) != Columns {
+	cx, cy := cellAt(m, x, y)
+	if cx < 0 || cy < 0 || cx >= m.MaskCols || cy >= m.MaskRows {
 		return false
 	}
-	for i, v := range h {
-		if v != h[Columns-1-i] {
-			return false
-		}
-	}
-	return true
+	idx := cy*m.MaskCols + cx
+	return mask[idx>>3]&(1<<(7-(idx&7))) != 0
 }
 
-// simulateArc is pure: it never mutates the state and is used by both the
-// server shot resolution and the bot's candidate search.
-func simulateArc(heights []float64, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, wind int, limit int) Arc {
-	speed := 80 + clamp(power, 20, 100)*1.6
-	rad := clamp(angle, 5, 85) * math.Pi / 180
-	vx := math.Cos(rad) * speed * float64(facing)
-	vy := -math.Sin(rad) * speed
-	x, y := startX+float64(facing)*9, startY-9
-	path := make([]Point, 0, min(limit, MaxPath))
-	path = append(path, Point{X: x, Y: y})
-	dt := 1.0 / 120.0
-	windAcc := float64(wind) * WindAcc
-	travel := 0.0
-	lastX, lastY := x, y
-	for step := 0; step < 1500 && len(path) < limit; step++ {
-		lastX, lastY = x, y
-		vx += windAcc * dt
-		vy += Gravity * dt
-		x += vx * dt
-		y += vy * dt
-		travel += math.Hypot(vx*dt, vy*dt)
-		if step%2 == 0 || x < -20 || x > FieldWidth+20 {
-			path = append(path, Point{X: x, Y: y})
-		}
-		if x < -30 || x > FieldWidth+30 || y > FieldHeight+30 || y < -240 {
-			return Arc{Path: path, Impact: Point{X: clamp(x, -30, FieldWidth+30), Y: clamp(y, -40, FieldHeight+30)}, Hit: -1}
-		}
-		for i := range tanks {
-			t := &tanks[i]
-			if !t.Alive {
-				continue
-			}
-			if i == shooter && travel < 15 {
-				continue
-			}
-			if math.Hypot(x-t.X, y-(t.Y-7)) <= 9.5 {
-				path = append(path, Point{X: x, Y: y})
-				return Arc{Path: path, Impact: Point{X: x, Y: y}, Hit: i}
-			}
-		}
-		if y >= groundAt(heights, x) {
-			gy := groundAt(heights, x)
-			path = append(path, Point{X: x, Y: gy})
-			return Arc{Path: path, Impact: Point{X: x, Y: gy}, Hit: -1}
-		}
+func maskFor(m fbmaps.Map, craters []Crater) []byte {
+	mask := fbmaps.BaseMask(m)
+	for _, c := range craters {
+		carveMask(m, mask, c.X, c.Y, c.R)
 	}
-	if len(path) == 0 {
-		path = append(path, Point{X: lastX, Y: lastY})
-	}
-	return Arc{Path: path, Impact: path[len(path)-1], Hit: -1}
+	return mask
 }
 
-func carveTerrain(heights []float64, cx, cy, radius float64) bool {
+func carveMask(m fbmaps.Map, mask []byte, cx, cy, radius float64) bool {
+	if radius <= 0 {
+		return false
+	}
+	cell := float64(fbmaps.Cell())
+	fromX := max(0, int((cx-radius)/cell))
+	toX := min(m.MaskCols-1, int((cx+radius)/cell)+1)
+	fromY := max(0, int((cy-radius)/cell))
+	toY := min(m.MaskRows-1, int((cy+radius)/cell)+1)
 	changed := false
-	from := colAt(cx - radius)
-	to := colAt(cx + radius)
-	for c := from; c <= to; c++ {
-		dx := math.Abs(float64(c)*ColumnWidth + ColumnWidth/2 - cx)
-		if dx > radius {
-			continue
-		}
-		bottom := cy + math.Sqrt(max(0, radius*radius-dx*dx))
-		surface := groundAt(heights, float64(c)*ColumnWidth+ColumnWidth/2)
-		if bottom <= surface {
-			continue
-		}
-		newHeight := clamp(FieldHeight-bottom, 0, FieldHeight)
-		if newHeight < heights[c] {
-			heights[c] = newHeight
-			changed = true
+	for gy := fromY; gy <= toY; gy++ {
+		for gx := fromX; gx <= toX; gx++ {
+			px := float64(gx)*cell + cell/2
+			py := float64(gy)*cell + cell/2
+			if math.Hypot(px-cx, py-cy) > radius {
+				continue
+			}
+			idx := gy*m.MaskCols + gx
+			if mask[idx>>3]&(1<<(7-(idx&7))) != 0 {
+				mask[idx>>3] &^= 1 << (7 - (idx & 7))
+				changed = true
+			}
 		}
 	}
 	return changed
 }
 
+// groundY returns the top of the first solid cell at or below y. When no
+// ground exists it returns the world bottom so callers can treat the tank as
+// falling out of the map.
+func groundY(m fbmaps.Map, mask []byte, x, y float64) float64 {
+	if x < 0 || x >= float64(m.Width) {
+		return -1
+	}
+	cx := int(x / float64(fbmaps.Cell()))
+	if cx < 0 || cx >= m.MaskCols {
+		return -1
+	}
+	start := max(0, int(y/float64(fbmaps.Cell())))
+	for cy := start; cy < m.MaskRows; cy++ {
+		idx := cy*m.MaskCols + cx
+		if mask[idx>>3]&(1<<(7-(idx&7))) != 0 {
+			return float64(cy * fbmaps.Cell())
+		}
+	}
+	return float64(m.Height) + 200
+}
+
+func tankCenter(t Tank) Point { return Point{X: t.X, Y: t.Y - 18} }
+
+// simulateArc is pure and shared by server shot resolution and the bot search.
+func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, rangeScale float64, wind int, limit int) Arc {
+	speed := (120 + clamp(power, 20, 100)*3.2) * clamp(rangeScale, 0.7, 1.3)
+	rad := clamp(angle, 0, 90) * math.Pi / 180
+	vx := math.Cos(rad) * speed * float64(facing)
+	vy := -math.Sin(rad) * speed
+	x := startX + float64(facing)*10
+	y := startY - 26
+	path := make([]Point, 0, min(limit, MaxPath))
+	path = append(path, Point{X: x, Y: y})
+	dt := 1.0 / 240.0
+	windAcc := float64(wind) * WindAcc
+	travel := 0.0
+	for step := 0; step < 1800 && len(path) < limit; step++ {
+		vx += windAcc * dt
+		vy += Gravity * dt
+		nx := x + vx*dt
+		ny := y + vy*dt
+		travel += math.Hypot(nx-x, ny-y)
+		// Swept sampling prevents fast shells from tunnelling through a 4 px cell.
+		sub := max(1, int(math.Ceil(math.Hypot(nx-x, ny-y)/2)))
+		for s := 1; s <= sub; s++ {
+			t := float64(s) / float64(sub)
+			px := x + (nx-x)*t
+			py := y + (ny-y)*t
+			if px < -60 || px > float64(m.Width)+60 || py > float64(m.Height)+320 || py < -240 {
+				path = append(path, Point{X: px, Y: py})
+				return Arc{Path: path, Impact: Point{X: clamp(px, -60, float64(m.Width)+60), Y: clamp(py, -80, float64(m.Height)+80)}, Hit: -1}
+			}
+			for i := range tanks {
+				if !tanks[i].Alive || (i == shooter && travel < 24) {
+					continue
+				}
+				c := tankCenter(tanks[i])
+				if math.Hypot(px-c.X, py-c.Y) <= 20 {
+					path = append(path, Point{X: px, Y: py})
+					return Arc{Path: path, Impact: Point{X: px, Y: py}, Hit: i}
+				}
+			}
+			if solid(m, mask, px, py) {
+				path = append(path, Point{X: px, Y: py})
+				return Arc{Path: path, Impact: Point{X: px, Y: py}, Hit: -1}
+			}
+		}
+		x, y = nx, ny
+		if step%4 == 0 {
+			path = append(path, Point{X: x, Y: y})
+		}
+	}
+	if len(path) == 0 {
+		path = append(path, Point{X: x, Y: y})
+	}
+	return Arc{Path: path, Impact: path[len(path)-1], Hit: -1}
+}
+
 func moveTank(s *State, seat int, dir int, at int64) bool {
-	t := &s.Tanks[seat]
-	if t.Fuel <= 0 || !t.Alive {
+	if dir != -1 && dir != 1 {
 		return false
 	}
-	step := math.Min(9, t.Fuel)
-	startX := t.X
+	m, ok := fbmaps.ByID(s.MapID)
+	if !ok {
+		return false
+	}
+	t := &s.Tanks[seat]
+	if !t.Alive || t.Fuel <= 0 {
+		return false
+	}
+	mask := maskFor(m, s.Craters)
+	step := math.Min(10, t.Fuel)
 	moved := 0.0
+	blocked := false
 	for moved < step {
-		next := t.X + float64(dir)*0.7
-		if next < 7 || next > FieldWidth-7 {
+		nx := t.X + float64(dir)*1.5
+		if nx < 4 || nx > float64(m.Width)-4 {
 			break
 		}
-		nextY := groundAt(s.Heights, next)
-		if nextY-t.Y < -4.5 {
-			break // too steep to climb
+		ny := groundY(m, mask, nx, t.Y-8)
+		if ny < 0 || ny > float64(m.Height) {
+			break
 		}
-		blocked := false
+		if ny-t.Y < -8 { // too steep to climb
+			blocked = true
+			break
+		}
 		for i := range s.Tanks {
 			o := &s.Tanks[i]
-			if i != seat && o.Alive && math.Abs(o.X-next) < 15 && math.Abs(o.Y-nextY) < 20 {
+			if i != seat && o.Alive && math.Abs(o.X-nx) < 26 && math.Abs(o.Y-ny) < 30 {
 				blocked = true
 				break
 			}
@@ -263,51 +178,156 @@ func moveTank(s *State, seat int, dir int, at int64) bool {
 		if blocked {
 			break
 		}
-		t.X, t.Y = next, nextY
-		moved += 0.7
+		t.X, t.Y = nx, ny
+		moved += 1.5
 	}
+	if moved <= 0 {
+		return false
+	}
+	t.Facing = dir
 	t.Fuel = math.Max(0, t.Fuel-moved)
-	if moved > 0.01 {
-		t.Facing = dir
-		s.emit("move", seat, -1, t.X, t.Y, int(moved+0.5), "", at)
-		return true
-	}
-	_ = startX
-	return false
+	s.emit("move", seat, -1, t.X, t.Y, int(moved+0.5), "", at)
+	return true
 }
 
-func settleTanks(s *State, killer *Tank, at int64) {
-	water := 0.0
-	if spec, ok := mapByID(s.MapID); ok {
-		water = spec.Water
+func settleTanks(s *State, at int64) {
+	m, ok := fbmaps.ByID(s.MapID)
+	if !ok {
+		return
 	}
+	mask := maskFor(m, s.Craters)
 	for i := range s.Tanks {
 		t := &s.Tanks[i]
 		if !t.Alive {
 			continue
 		}
-		ground := groundAt(s.Heights, t.X)
+		ground := groundY(m, mask, t.X, t.Y-10)
+		if ground < 0 || ground > float64(m.Height) {
+			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
+			s.emit("death", i, i, t.X, t.Y, 0, "坠入深渊", at)
+			continue
+		}
 		if ground > t.Y {
 			fall := ground - t.Y
 			t.Y = ground
-			if fall > 18 {
-				hurt := int((fall - 18) * 0.9)
+			if fall > 36 {
+				hurt := int((fall - 36) * 0.9)
 				if hurt > 0 {
 					t.HP -= hurt
-					t.Damage += 0
+					s.DamageTotal[i] += 0 // self-inflicted fall damage does not score
 					s.emit("fall", i, i, t.X, t.Y, hurt, "", at)
-					if killer != nil {
-						killer.Damage += hurt
-					}
 				}
 			}
 		}
-		if groundHeight(s.Heights, t.X) < water {
-			t.HP = 0
+		if t.HP <= 0 {
+			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
+			s.emit("death", i, i, t.X, t.Y, 0, "", at)
+		}
+	}
+}
+
+func blastRadius(weapon Weapon) float64 {
+	r := 36 + weapon.Blast
+	return clamp(r, 28, 90)
+}
+
+func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at int64, direct int) Blast {
+	mapSpec, _ := fbmaps.ByID(s.MapID)
+	center.X = clamp(center.X, 0, float64(mapSpec.Width))
+	center.Y = clamp(center.Y, 0, float64(mapSpec.Height)+40)
+	radius := blastRadius(weapon)
+	blast := Blast{X: center.X, Y: center.Y, R: radius, Seat: seat, Kind: kind}
+	shooter := &s.Tanks[seat]
+	for i := range s.Tanks {
+		t := &s.Tanks[i]
+		if !t.Alive || (t.Team == shooter.Team && i != seat) {
+			continue
+		}
+		c := tankCenter(*t)
+		dist := math.Hypot(center.X-c.X, center.Y-c.Y)
+		if dist > radius {
+			continue
+		}
+		damage := int(math.Round(weapon.Damage * (1 - 0.5*dist/radius) * 100 / (100 + float64(tankDefense(*t))*0.6)))
+		if kind == "lightning" && i == direct {
+			damage = int(float64(damage) * 1.3)
+		}
+		if s.Sudden {
+			damage *= 2
+		}
+		damage = max(1, damage)
+		t.HP -= damage
+		t.Damage += damage
+		shooter.Damage += damage
+		s.DamageTotal[seat] += damage
+		blast.Victim, blast.Damage = i, damage
+		s.emit("hit", seat, i, t.X, t.Y, damage, kind, at)
+		if kind == "poison" {
+			addStatus(t, Status{Kind: "poison", Turns: 3, Damage: 25, Source: seat})
+		} else if kind == "fire" {
+			addStatus(t, Status{Kind: "burn", Turns: 3, Damage: 18, Source: seat})
 		}
 		if t.HP <= 0 && t.Alive {
 			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
-			s.emit("death", i, i, t.X, t.Y, 0, "沉没", at)
+			if i != seat {
+				shooter.Kills++
+			}
+			s.emit("death", seat, i, t.X, t.Y, 0, "", at)
 		}
 	}
+	s.Craters = append(s.Craters, Crater{X: center.X, Y: center.Y, R: radius, Seat: seat})
+	if len(s.Craters) > MaxCraters {
+		s.Craters = append([]Crater(nil), s.Craters[len(s.Craters)-MaxCraters:]...)
+	}
+	blast.Terrain = true
+	return blast
+}
+
+func addStatus(t *Tank, st Status) {
+	for i := range t.Statuses {
+		if t.Statuses[i].Kind == st.Kind {
+			t.Statuses[i] = st
+			return
+		}
+	}
+	if len(t.Statuses) < MaxStatuses {
+		t.Statuses = append(t.Statuses, st)
+	}
+}
+
+func tickStatuses(s *State, at int64) {
+	for i := range s.Tanks {
+		t := &s.Tanks[i]
+		if !t.Alive || len(t.Statuses) == 0 {
+			continue
+		}
+		next := t.Statuses[:0]
+		for _, st := range t.Statuses {
+			if st.Turns <= 0 {
+				continue
+			}
+			t.HP -= st.Damage
+			if st.Source >= 0 && st.Source < len(s.Tanks) {
+				s.DamageTotal[st.Source] += st.Damage
+				s.Tanks[st.Source].Damage += st.Damage
+			}
+			s.emit("status", st.Source, i, t.X, t.Y, st.Damage, st.Kind, at)
+			st.Turns--
+			if st.Turns > 0 {
+				next = append(next, st)
+			}
+		}
+		t.Statuses = next
+		if t.HP <= 0 && t.Alive {
+			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
+			s.emit("death", -1, i, t.X, t.Y, 0, "状态伤害", at)
+		}
+	}
+}
+
+func tankDefense(t Tank) int {
+	if spec, ok := tankSpec(t.TankID); ok {
+		return spec.Defense
+	}
+	return 100
 }

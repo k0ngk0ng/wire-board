@@ -1,57 +1,78 @@
 # 疯狂坦克（fortressblue）验收记录
 
-> 2026-10-19 后续策略调整：新游戏改为默认上架，管理员可显式下架。本记录中「默认下架」描述的是当时发布验收状态。
+日期：2026-10-20。实现来源：用户要求重做「疯狂坦克」，使用《Fortress 2 BLUE》原版素材、地图与玩法。
+素材取自官方网页客户端公开资源包，经用户明确授权仅在本私有平台使用；原始媒体不进入 Git。
+解码方法、来源哈希与许可见 `games/fortressblue/assets/README.md`、`sources.json` 和 `manifest.json`。
 
-日期：2026-10-19。实现来源：已审核许愿「复刻一个疯狂坦克的游戏，最多 5v5」。参考游戏仅作为玩法灵感；本机不能取得/运行参考游戏，未使用其商业图片、音频或名称，素材全部原创。
+## 范围
 
-## 自动化范围
+- 2／4／6／8 人，红蓝两队各半；最多 4v4。
+- 17 张原版地图（前景层碰撞、背景层、缩略图、原版音乐）。
+- 14 种原版坦克（官方大厅属性：HP、防御、速度、主炮/特殊弹攻击、最大角度、射程）。
+- 位图可破坏地形、风力、角度/力度、朝向、特殊弹、坠落、突然死亡、电脑/托管、观战、恢复。
+- 原版坦克、炮弹、28 帧爆炸、地图与音效通过平台 `BoardProps.audio` 播放；CDN 优先、
+  同源 `/fortressblue/v2/` 回退。
+
+## 自动化检查
 
 ```sh
-go test -count=1 ./games/fortressblue/server
-go test -count=1 ./games/fortressblue/tests
-go test -count=1 ./games/fortressblue/... ./games
+go test -count=1 ./games/fortressblue/...
+go test -race -count=1 -timeout=10m ./games/fortressblue/...
 go vet ./games/fortressblue/...
 npm --prefix web run build
 npm --prefix web test -- fortressblue
 python3 -B scripts/check_game_boundaries.py
-python3 -B scripts/fortressblue/verify-assets.py --dist
+python3 -B scripts/fortressblue/verify-assets.py --dist --oss
 python3 -B scripts/fortressblue/check-browser.py
 ```
 
 结果：
 
-- 服务端规则测试通过：2/4/6/8/10 人配置、地图对称与出生台地、红蓝交替顺序、选角超时自动补齐、移动燃料/碰撞、错误 epoch/turn/席位/角度/力度/特殊弹拒绝、风力确定性、爆炸伤害与地形破坏、坠落/沉没、队灭胜负、同时全灭与时间到同生命和局、突然死亡、View 控制权限、坏存档拒绝。
-- 模块 E2E：2／4／6／8／10 人全电脑对局分别在地图 hills／canyon／islands／snow／volcano 完成；校验 `Team=true`、胜方全队 Winners、Ranks/Scores 和结果合法性；无死循环。
-- HTTP/SQLite E2E：新游戏默认下架；管理员上架；10 人房间、9 名电脑、选坦克、真实回合、错误操作/观众拒绝；服务重启后地图、地形、生命、回合、epoch 和最后炮弹保持一致；2v2 随机地图和 4 人房间可正常选角/移动；独立低生命夹具验证团队结果、历史记录与结算字段。
-- 前端 3 项纯控制/元数据测试通过；构建通过；23 款游戏边界检查通过。
-- 原创音频 10 个 WAV 通过 SHA-256、44.1 kHz/16-bit/单声道、时长与非静音/削波校验，且本地和 `web/dist` 副本一致。
+- 服务端规则：原版目录 17 张地图/14 种坦克、4×4 碰撞格、炮弹扫掠碰撞与地形停止、
+  爆炸伤害/弹坑/掩码变化、红蓝顺序、选角超时、回合推进/超时、毒/火/爆炸/雷特殊弹、
+  同时全灭、时间到同生命和局、坏存档/非法弹坑/错误队伍拒绝、电脑合法动作、快照后弹坑保持。
+- 模块 E2E：2／4／6／8 人全电脑对局完成；额外对 **17 张地图逐一进行 8 人全电脑对局**，
+  全部自然结束（队灭或时间到判定），无死循环。
+- HTTP/SQLite E2E：新游戏默认上架；8 人房 + 7 名电脑、选坦克、移动、开火、错误席位/
+  epoch/turn/角度/力度拒绝、服务重启保持对局；2v2 随机地图；团队结果、历史记录。
+- 前端：3 项目录/控制/素材 URL 测试通过；构建通过；24 款游戏边界检查通过。
+- 素材：178 个原版 WebP/MP3 文件通过字节数、SHA-256、WebP/MP3 头、时长校验；本地、
+  `web/dist` 和 `https://cdn.ichenj.com/bga/v20261002-1/fortressblue/v2/` 三处字节一致。
+- 竞态：`go test -race` 通过（服务端 + 模块/HTTP E2E）。
 
 ## 真实浏览器验收
 
-`python3 -B scripts/fortressblue/check-browser.py` 启动临时生产式服务，真实注册/登录、创建 10 人房、添加 9 名电脑、开始选坦克，共 18 项通过：
+`python3 -B scripts/fortressblue/check-browser.py` 启动临时生产式服务，真实登录、创建 8 人房、
+添加 7 名电脑、从共享等待房间点击「开始游戏」、在选坦克界面选择原版坦克并完成移动和开火。
+本地回退运行：`.local/fortressblue/browser/7772b038/result.json`（30/30 通过）。CDN 运行：
+`CHECK_ASSETS_BASE=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/fortressblue/check-browser.py`，
+结果 `.local/fortressblue/browser/19b5684f/result.json`（30/30 通过）。
 
-- 创建后进入共享等待/对局框架；共享玩家栏含 10 个席位。
-- 5 张坦克卡可选，卡片和标题对比度通过；点击「重装」后进入 playing，Canvas 战场可见。
-- 游戏内倒计时显示 0:19，不是错误归零；风力显示正常。
-- 计算样式对比度：标题、队伍标题、坦克行、回合提示、开火按钮均 ≥ 4.5:1。
-- 点击向左移动后服务器返回的座位 x 坐标确实变小。
-- 设置角度 55°、力度 72 后开火，服务器返回 shot id，炮弹动画结束；刷新后 `animating=0`，不重播旧动作。
-- 320×844：无横向溢出，Canvas 实际宽度 ≥300px，10 行坦克状态和开火按钮存在，截图保留。
-- 截图与结果：`.local/fortressblue/browser/<run>/desktop-select.png`、`desktop-board.png`、`desktop-after-shot.png`、`mobile-320.png`、`result.json`。本次运行：`.local/fortressblue/browser/c80adab0/result.json`（18/18）。
+覆盖：
+
+- 共享玩家栏 8 席；地图名「热血之都」；14 张原版坦克卡；原版立绘实际加载。
+- 选坦克卡/标题/说明与战场 HUD/开火按钮对比度 ≥ 4.5:1。
+- 原版地图前景、背景、爆炸图集、坦克 idle 精灵由本地 `/fortressblue/v2/` 实际加载；
+  Canvas 像素多样性检查证明不是空白或纯矢量占位。
+- 服务器倒计时按 `serverNow + performance.now() - receivedAt` 计算，不归零。
+- 点击向右移动后玩家栏 `data-x` 对应的服务器位置增加。
+- 角度 55°/力度 72 开火，服务器返回 shot id，动画结束后 `data-craters > 0`，证明爆炸真实
+  擦除了原版前景地形。
+- 刷新后 `animating=0`，不重播旧炮弹。
+- 320×844：无横向溢出，Canvas 实际宽度 ≥280 px，8 席玩家栏、开火按钮与触屏控件存在；
+  坦克按 1.4× 原画缩放并随镜头跟随，手机可辨认。
+- 截图：`.local/fortressblue/browser/7772b038/desktop-select.png`、`desktop-board.png`、
+  `desktop-after-shot.png`、`mobile-320.png`；CDN 运行截图见 `19b5684f/`。
 
 ## 已知边界
 
-- 浏览器时间盒只验证到一发炮弹和刷新恢复；完整队灭/和局结果由模块 E2E 与 HTTP 房间生命周期覆盖。平台结果浮层为共享组件，本游戏不单独复制。
-- 10 人共享玩家栏在手机上会占据较高区域，战场需向下滚动；游戏内队伍 HUD、坦克血条和全部 10 席状态仍完整可见，没有横向裁切。共享玩家栏未用游戏 CSS 隐藏或重排。
-- 音效为原创合成，通过平台 `BoardProps.audio` 播放；没有使用参考游戏的原声音乐/音效，也没有在游戏内创建播放器或 `AudioContext`。
-- 新游戏保持默认下架，部署后需管理员在后台显式上架；不自动上架。
+- 队伍模型固定为红/蓝两队且人数相等；原版的 A–H 多队自由组合不在本期范围。2/4/6/8 人的
+  1v1、2v2、3v3、4v4 均由平台席位自动分队。
+- 原版道具拾取、商店、账号成长、语音和观战聊天不重做；保留核心炮战与特殊弹。
+- 共享玩家栏在手机上占据较高区域，战场与控制面板需向下滚动；未用游戏 CSS 隐藏或重排公共界面。
+- 结果浮层使用平台共享组件；棋盘保留最终局面，游戏不插入自定义横条。
+- 原版媒体不提交 Git；本记录中的 CDN 对象为不可变版本，修改素材必须创建新前缀。
 
 ## 发布与部署
 
-- main 提交 `fb8687e3` 的 `Check main and build` 运行 `39248309310` 全绿，包含 `Game fortressblue (0)`、shared 检查和 `Test and Linux amd64 binary`。
-- `v1.20.0` 指向同一提交；Release 运行 `39249427330` 复用已验证构建，未重新编译应用。
-- 服务器运行 `ghcr.io/k0ngk0ng/wire-board@sha256:2c4b86688d87ef7345dea1838f9ab5b462e9e6b202e83c4dfb9c47abbfb12c52`，OCI revision `fb8687e3`、version `v1.20.0`，`/healthz` 正常。
-- 线上 bundle 同时包含「疯狂坦克」和「泡泡大作战」；本地回退音频 `/fortressblue/v1/audio/shot.wav` 返回 200 `audio/wav`。
-- 新游戏保持 `fortressblue=0`；管理员此前已上架的 `bubbleparty=1`、`battlecity=1`、`spf2t=1` 等设置保持不变，未做自动上下架。
-- 保留本次更新前与上一份备份 `data-20261019T120740Z-912688.tar.gz`、`data-20261019T114631Z-865536.tar.gz`（均通过 `quick_check`）；更旧备份已删除。镜像清理后保留当前 `v1.20.0` 与上一版 `v1.19.0` 回滚镜像。
-- 许愿已通过代理接口回写为「已实现」，备注包含版本和默认下架说明。
+（待本次发布完成后补充 tag、构建作业、镜像 digest、健康检查、上下架设置、备份与清理结果。）

@@ -5,8 +5,14 @@ import {
 import { Board } from "./Board";
 import { Cover } from "./Cover";
 import {
-  classInfo,
-  mapNames,
+  defaultMap,
+  mapById,
+  maps,
+  sourceList,
+  statusText,
+  tankById,
+  tankName,
+  tankPortraits,
   teamColors,
   teamNames,
   type Options,
@@ -15,6 +21,7 @@ import {
 import "./style.css";
 
 function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
+  const selected = mapById.get(value.map) ?? maps[0];
   return (
     <div className="fortressblue-options">
       <label>
@@ -23,13 +30,12 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           aria-label="疯狂坦克地图"
           disabled={disabled}
           value={value.map}
-          onChange={(event) =>
-            onChange({ ...value, map: event.target.value as Options["map"] })
-          }
+          onChange={(event) => onChange({ ...value, map: event.target.value })}
         >
-          {Object.entries(mapNames).map(([id, name]) => (
-            <option key={id} value={id}>
-              {name}
+          <option value="random">随机地图</option>
+          {maps.map((map) => (
+            <option key={map.id} value={map.id}>
+              {map.name}
             </option>
           ))}
         </select>
@@ -40,9 +46,7 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           aria-label="每回合时限"
           disabled={disabled}
           value={value.turnSeconds}
-          onChange={(event) =>
-            onChange({ ...value, turnSeconds: Number(event.target.value) })
-          }
+          onChange={(event) => onChange({ ...value, turnSeconds: Number(event.target.value) })}
         >
           {[15, 20, 25, 30, 40].map((seconds) => (
             <option key={seconds} value={seconds}>
@@ -51,9 +55,17 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           ))}
         </select>
       </label>
+      <div className="fb-map-preview">
+        <img src={selected.thumb} alt="" />
+        <div>
+          <strong>{selected.name}</strong>
+          <span>{selected.nameEn}</span>
+          <small>2～8 人 · 4v4 团队炮战 · 原版可破坏地形</small>
+        </div>
+      </div>
       <p>
-        2～10 人，红蓝两队各占一半；每人选择一种坦克，轮流计算角度、力度和风向开火。
-        地形可被炸毁，坦克可能被击落或沉入低地。
+        红蓝两队轮流行动。利用角度、力度和风向击中对手；爆炸会永久改变地形，
+        落石与坠落同样会造成伤害。
       </p>
     </div>
   );
@@ -64,45 +76,57 @@ export default defineGame<View, Options>({
   name: "疯狂坦克",
   category: "sports",
   description:
-    "红蓝两队驾驶坦克轮流开火，计算角度、力度与风力，炸开地形，把对手打进深谷。",
+    "原版《Fortress 2 BLUE》回合制坦克炮战：17 张地图、14 种坦克、可破坏地形与风向。",
   minPlayers: 2,
-  maxPlayers: 10,
-  playerCounts: [2, 4, 6, 8, 10],
+  maxPlayers: 8,
+  playerCounts: [2, 4, 6, 8],
   requiresFullTable: true,
   supportsBots: true,
   ownsSounds: true,
-  defaultOptions: { map: "hills", turnSeconds: 25 },
+  defaultOptions: { map: defaultMap, turnSeconds: 30 },
   Board,
   Cover,
   Options: OptionsForm,
-  PlayerSummary: ({ data, seat, room }) => {
+  PlayerSummary: ({ data, seat, room, assets }) => {
     const tank = data.tanks?.[seat];
     if (!tank) return null;
-    const info = classInfo[tank.class];
+    const info = tankById.get(tank.tankId);
+    const portrait = tankPortraits[String(tank.tankId)];
     const current = data.current === seat && data.phase === "playing";
+    const pct = Math.max(0, Math.min(100, (tank.hp / Math.max(1, tank.maxHp)) * 100));
     return (
       <div
         className={`fortressblue-player ${current ? "current" : ""} ${tank.alive ? "" : "dead"}`}
         data-fortressblue-seat={seat}
         data-hp={tank.hp}
+        data-x={tank.x}
+        data-y={tank.y}
+        data-team={tank.team}
         data-alive={tank.alive ? "1" : "0"}
       >
-        <strong>
-          <i
-            aria-hidden="true"
-            style={{ background: teamColors[tank.team] }}
-          />
-          {tank.selected ? info?.name ?? tank.class : "选坦克中"}
-          <em>{teamNames[tank.team]}</em>
-          {room.you === seat && !room.spectating ? " · 你" : ""}
-        </strong>
+        <div className="fb-player-head">
+          <img src={sourceList(assets, portrait?.url ?? info?.sprites.idle?.url ?? "")[0]} alt="" />
+          <strong>
+            <i aria-hidden="true" style={{ background: teamColors[tank.team] }} />
+            {tank.selected ? tankName(tank.tankId) : "选坦克中"}
+            <em>{teamNames[tank.team]}</em>
+            {room.you === seat && !room.spectating ? " · 你" : ""}
+          </strong>
+        </div>
+        <div className="fb-player-hp">
+          <i style={{ width: `${pct}%`, background: teamColors[tank.team] }} />
+        </div>
         <span>
           {tank.alive ? (
+            data.phase === "select" ? (
+              "待开局"
+            ) : (
             <>
-              HP {tank.hp}/{tank.maxHp}
-              {tank.special > 0 ? ` · 特殊弹 ${tank.special}` : ""}
+              HP {tank.hp}/{tank.maxHp} · 特殊弹 {tank.special}
+              {tank.statuses?.length ? ` · ${tank.statuses.map(statusText).join(" ")}` : ""}
               {current ? " · 行动中" : ""}
             </>
+            )
           ) : (
             "已被击毁"
           )}
@@ -113,27 +137,24 @@ export default defineGame<View, Options>({
   Rules: () => (
     <div className="fortressblue-rules">
       <p>
-        2～10 人的回合制坦克炮战，红蓝两队各占一半席位。选坦克后红队先手，双方按
-        「红蓝交替」行动。每回合可以移动一次或多次（消耗移动力），再调整角度、力度和弹种开火；开火后轮到下一辆存活坦克。
+        2／4／6／8 人，红蓝两队各占一半。每回合可以先用移动力左右移动，再调整角度、力度、
+        朝向与弹种开火；开火后轮到下一辆存活坦克。爆炸会破坏地形，坦克可能因坠落受伤或掉出地图。
       </p>
       <p>
-        炮弹受重力和风力影响，命中坦克或地形后爆炸。爆炸会削掉地形；坦克落到新地面会受伤，落入深水或低洼地带可能直接沉没。每局 8
-        分钟后进入突然死亡，伤害翻倍、风力增强；12 分钟时按双方剩余总生命判定，相同则和局。
+        14 种原版坦克各有 HP、防御、移动力、主炮和特殊弹。特殊弹每局 2 发，附带爆炸、毒、火或雷
+        效果；没有技能的坦克使用高伤害特殊弹。每回合有时限，8 分钟后进入突然死亡，12
+        分钟按剩余总生命判定。
       </p>
       <p>
-        五种坦克：均衡（双联炮）、重装（重锤）、侦察（三连发）、狙击（穿甲弹）、支援（维修弹）。特殊弹数量有限；支援弹会治疗爆炸范围内的队友，不造成伤害。
-      </p>
-      <p>
-        PC：W／S 调整角度，A／D 移动，←／→ 调整力度，空格开火，Q／E
-        切换弹种。手机：拖动角度和力度滑杆，使用左右移动与开火按钮。所有结果由服务器判定；刷新或重连不会重播旧炮弹。
+        PC：W／S 调角度，←／→ 调力度，A／D 移动，Q／E 切换弹种，空格开火。手机：拖动角度与力度滑杆，
+        使用左右移动、朝向、弹种与开火按钮；所有结果由服务器判定，刷新或重连不会重播旧炮弹。
       </p>
       <details>
         <summary>素材与许可</summary>
         <p>
-          全部坦克、地形、封面与音效由本项目原创制作：封面为手绘式矢量
-          SVG，坦克和地形由 Canvas 实时绘制，音效与战斗音乐由
-          <code>scripts/fortressblue/prepare-audio.mjs</code>
-          离线合成，无外部采样。没有使用参考游戏的商业图片、音频或名称。
+          坦克、地图、炮弹和爆炸动画来自用户提供的官方《Fortress 2 BLUE》网页客户端资源；
+          版权归 CCR / 原权利方所有，仅经用户授权在本私有平台使用，原始媒体不进入 Git。
+          素材经 LH5 解压和逐行 span 解码恢复，地图碰撞由原版前景层生成。封面为本项目原创手绘矢量插画。
         </p>
       </details>
     </div>

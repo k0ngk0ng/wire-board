@@ -1,44 +1,51 @@
 # 疯狂坦克素材
 
-本目录只包含项目原创内容。参考游戏仅用于玩法灵感；本机不能取得/运行参考游戏，因此没有复制参考游戏的图片、音频、名称或盒装封面。
+本目录记录原版《Fortress 2 BLUE》媒体包与其来源、校验与发布方式。原始媒体位于
+`assets/public/fortressblue/v2/`（Git 忽略），不提交到仓库。
+
+## 来源与许可
+
+- 来源：官方网页客户端 `https://game.fortress2blue.com/` 的公开资源包
+  `tankclient_emsc.c906c.data.00-02`、`Download/` 资源与 Cocos 大厅配置。
+- 获取日期：2026-10-20。
+- 版权：归 CCR / 原权利方所有。仅经用户明确授权用于本私有平台；不对外再分发。
+- 原始包 SHA-256 与提取方法见 `sources.json`；媒体文件只通过 OSS 不可变目录发布。
+- 封面仍为本项目原创手绘 SVG，未使用原版盒装封面或标题画面。
+
+## 解码链
+
+1. 拆开 Emscripten file package（`tankclient_emsc.c906c.data.00-02`）。
+2. `.i16` 帧数据使用 **LH5（LHA）** 解压。
+3. 类型 0 帧再按逐行 span RLE 解出 16-bit RGB565；透明色 `#F81F`。
+4. 地图前景层的 alpha 生成 4×4 px 权威碰撞位图；原始图用于客户端渲染与弹坑擦除。
+5. 原版 MIDI 使用包内 `timidity.cfg` / `instruments` 渲染；MP3 仅作游戏播放。
 
 ## 生成
 
 ```sh
-node scripts/fortressblue/prepare-audio.mjs
+python3 -B scripts/fortressblue/prepare-original-assets.py
 python3 -B scripts/fortressblue/verify-assets.py --dist
 ```
 
-- 作者／许可：wire-board contributors，项目原创。
-- 音效：确定性正弦／方波／噪声包络合成，44.1 kHz、16 位、单声道 PCM WAV。
-- 封面和坦克：`web/Cover.tsx` 的 SVG 与 `web/Board.tsx` 的 Canvas 矢量绘制，不依赖外部图片。
-- `manifest.json` 记录生成器 SHA-256、每个文件的相对路径、字节数和 SHA-256。
+生成器读取本机已获取的 `.local/fortressblue-original/`，输出：
 
-## 文件
+- `assets/public/fortressblue/v2/maps/`：17 张地图背景、前景、缩略图和音乐。
+- `assets/public/fortressblue/v2/tanks/`：14 种坦克的 idle/fire/die/move 与立绘。
+- `assets/public/fortressblue/v2/projectiles/`、`effects/explosion.webp`。
+- `assets/public/fortressblue/v2/audio/`：原版音效与地图音乐。
+- `maps/catalog.json`（服务端含碰撞位图）、`maps/client.json`（前端轻量目录）。
+- `data/tanks.json`（坦克属性、技能、媒体路径）。
+- `assets/manifest.json`（178 个媒体文件的 SHA-256、字节数与 CDN 路径）。
 
-| 文件 | 用途 |
-| --- | --- |
-| `select.wav` | 选择坦克 |
-| `shot.wav` | 火炮发射 |
-| `explode.wav` | 炮弹落地/命中爆炸 |
-| `hit.wav` | 造成伤害或治疗 |
-| `death.wav` | 坦克被击毁/沉没 |
-| `turn.wav` | 轮到下一辆坦克 |
-| `sudden.wav` | 进入突然死亡 |
-| `win.wav` / `lose.wav` | 结算 |
-| `battle.wav` | 8 秒原创战斗循环音乐 |
-
-本地回退位于 `public/fortressblue/v1/audio/` 并随前端构建进入 `web/dist/`；配置
-`ASSETS_BASE_URL` 时优先从 `${ASSETS_BASE_URL}/fortressblue/v1/audio/` 加载。音效只通过平台
-`BoardProps.audio` 播放，游戏不创建播放器或 `AudioContext`。
-
-可选上传（前缀不可覆盖已有对象）：
+## 发布
 
 ```sh
-python3 -B scripts/upload_assets.py games/fortressblue/assets/public/fortressblue/v1 \
+python3 -B scripts/upload_assets.py games/fortressblue/assets/public/fortressblue/v2 \
   --include-audio --bucket stoneage-assets \
   --endpoint stoneage-assets.oss-cn-shanghai.aliyuncs.com \
-  --prefix bga/v20261002-1/fortressblue/v1
+  --prefix bga/v20261002-1/fortressblue/v2
+python3 -B scripts/fortressblue/verify-assets.py --dist --oss
 ```
 
-已发布到 OSS 的文件不得覆盖；修改素材时使用新的版本目录并保留新的 SHA-256 清单。
+不可变前缀为 `bga/v20261002-1/fortressblue/v2/`；修改素材时使用新版本目录并更新清单，
+不得覆盖已发布对象。前端优先 CDN，失败时回退到同源 `/fortressblue/v2/` 本地副本。

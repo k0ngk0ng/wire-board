@@ -1,79 +1,1433 @@
 {
-  "version": "fortressblue/v1",
-  "prefix": "bga/v20261002-1/fortressblue/v1/",
-  "generator": "scripts/fortressblue/prepare-audio.mjs",
-  "generatorSha256": "cbfcbac572649a7d224e564d80c96f55468129f3b96cbb4c52cd28d7fed18857",
-  "license": "项目原创，离线合成，无外部采样",
+  "version": "fortressblue/v2",
+  "prefix": "bga/v20261002-1/fortressblue/v2/",
+  "generator": "scripts/fortressblue/prepare-original-assets.py",
+  "generatorSha256": "1f7d357c6de6bc01d8e91342ed1baeb9c7ad26bb51c3a743fc595d869ef29049",
+  "license": "原版素材来自官方网页客户端公开资源包；版权归 CCR / 原权利方所有，仅经用户授权在私有平台使用，原始媒体不进入 Git。",
   "entries": [
     {
-      "file": "battle.wav",
-      "urlPath": "/fortressblue/v1/audio/battle.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/battle.wav",
-      "sha256": "e770878a303c0838a81e85586a840931afae0ace8be26740f83c16eb141d47be",
-      "bytes": 705644
+      "file": "audio/explode.mp3",
+      "urlPath": "/fortressblue/v2/audio/explode.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/explode.mp3",
+      "sha256": "986931f4ead02843fcc99671dcebcedbe0cd469a563d88de0b0df2bc439d4a85",
+      "bytes": 17598,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "shot.wav",
-      "urlPath": "/fortressblue/v1/audio/shot.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/shot.wav",
-      "sha256": "e2640935ec66eaef77e52ee5ff86f537dfaf9be6df97e8618d33bf74c5559a6a",
-      "bytes": 17684
+      "file": "audio/fire.mp3",
+      "urlPath": "/fortressblue/v2/audio/fire.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/fire.mp3",
+      "sha256": "f8f623fe1063175597826515b80e274db839d3f78abfeb927e70f294cc97f9e5",
+      "bytes": 12896,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "explode.wav",
-      "urlPath": "/fortressblue/v1/audio/explode.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/explode.wav",
-      "sha256": "6c15e5c5e526be3395a7fc87e63d3faf1cddb3fd8bb6c5f544689ed030294d16",
-      "bytes": 48554
+      "file": "audio/hit.mp3",
+      "urlPath": "/fortressblue/v2/audio/hit.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/hit.mp3",
+      "sha256": "4b6db99e2607247c93dd81b5c54d49d3cbe88c46295a01f140e705ded46d1401",
+      "bytes": 18852,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "hit.wav",
-      "urlPath": "/fortressblue/v1/audio/hit.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/hit.wav",
-      "sha256": "81ce168b57753a4e0ced64cae4cc92d98b52e399f3110221265bf6b569cc796b",
-      "bytes": 15920
+      "file": "audio/lose.mp3",
+      "urlPath": "/fortressblue/v2/audio/lose.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/lose.mp3",
+      "sha256": "8ef833c2986095f12e136d46169d89fe80e905abfeb57e49c2c0eb7b790cd79b",
+      "bytes": 22927,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "death.wav",
-      "urlPath": "/fortressblue/v1/audio/death.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/death.wav",
-      "sha256": "927a1461d51be5a6877e6a15b0b850a2ef853bb538f8affa68be9d206e06c52f",
-      "bytes": 52964
+      "file": "audio/maps/01.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/01.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/01.mp3",
+      "sha256": "acddab6aef048a59b8580302b86a968b973318b54cfd6ef0e853b2c5b3fc6353",
+      "bytes": 1822555,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "select.wav",
-      "urlPath": "/fortressblue/v1/audio/select.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/select.wav",
-      "sha256": "8f84c06446d9240714b3586d7fab04c9192ed15c723cb8f3bd0ad2d8e35821d8",
-      "bytes": 15920
+      "file": "audio/maps/02.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/02.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/02.mp3",
+      "sha256": "67b51e535f6257a159170d4c2426d75573e5c5597cf5ed616f7570d9749a2447",
+      "bytes": 4056651,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "turn.wav",
-      "urlPath": "/fortressblue/v1/audio/turn.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/turn.wav",
-      "sha256": "96c5d5a16ec93881e8999bd47d24db8728ccbd7d90c1478fa6106a723c7aa526",
-      "bytes": 24740
+      "file": "audio/maps/03.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/03.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/03.mp3",
+      "sha256": "cc5b7d743fcf104842a2abed728cd14e3474a1a9acb18da79059563cf59c1784",
+      "bytes": 3201193,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "sudden.wav",
-      "urlPath": "/fortressblue/v1/audio/sudden.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/sudden.wav",
-      "sha256": "76c7531f4af7306d06d8446a0f30321f4a169e985c9fad2098fb7e825141c10f",
-      "bytes": 48554
+      "file": "audio/maps/04.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/04.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/04.mp3",
+      "sha256": "0c4401ce3bb82de82e38893e6b6db04cb6e151ce18728f0e70f5b523a42df7cb",
+      "bytes": 1754532,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "win.wav",
-      "urlPath": "/fortressblue/v1/audio/win.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/win.wav",
-      "sha256": "e2e789ac61ff1560317e6b500f87cbaa2baa3bb7195772b172ee7f8540b52f67",
-      "bytes": 79424
+      "file": "audio/maps/05.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/05.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/05.mp3",
+      "sha256": "a87c8e5f3d9e79228c5d8ba8d891c95be5f3c2cf877120583abfe31add55fabe",
+      "bytes": 3581431,
+      "mime": "audio/mpeg"
     },
     {
-      "file": "lose.wav",
-      "urlPath": "/fortressblue/v1/audio/lose.wav",
-      "output": "games/fortressblue/assets/public/fortressblue/v1/audio/lose.wav",
-      "sha256": "f3d1cb12564debfec118af2ec35adf5be20feff696d717ae780f01c3df7fa367",
-      "bytes": 79424
+      "file": "audio/maps/06.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/06.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/06.mp3",
+      "sha256": "29a6331ecca6bbc7326c6cfb581355c965993b3980b45679bb0efae5eb603652",
+      "bytes": 2985839,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/07.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/07.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/07.mp3",
+      "sha256": "345209242006aab0938aedc7d8449ce77099b56a89ad25f84b7bbc467c866509",
+      "bytes": 4410871,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/08.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/08.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/08.mp3",
+      "sha256": "3c3878ddf5c0368cad27c6c9a7e7776d9519a1fea5d0d96903c83d70dc3b7948",
+      "bytes": 2399338,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/09.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/09.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/09.mp3",
+      "sha256": "9074193180289169102e8838ef2e275442b62f6164f42fc80d9d331f3b1be486",
+      "bytes": 3887064,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/10.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/10.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/10.mp3",
+      "sha256": "bad3f52b7cc769b6ec74374b0f83ed7865a6bb3e1b4271bd50aa50528dc21dab",
+      "bytes": 2317523,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/11.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/11.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/11.mp3",
+      "sha256": "fca3993631b725b693804d54e23cbaadc4d87093147629ea3a06b4f4f088a4b6",
+      "bytes": 3572654,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/12.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/12.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/12.mp3",
+      "sha256": "b6bd1626acd12dd3a7fa1f91630a3b788b0ff62af8084034734d1f221f415683",
+      "bytes": 4318711,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/13.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/13.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/13.mp3",
+      "sha256": "dc421afa6a482c3168e1c4f7b3eee0e683ee318c67c778e2a409143186bc86d8",
+      "bytes": 2889604,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/14.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/14.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/14.mp3",
+      "sha256": "4816a590e5b5657d40586d8559be292504be0ecc55a8be1337ab576a9b239948",
+      "bytes": 3864808,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/15.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/15.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/15.mp3",
+      "sha256": "1fd3678807df745e3119b98dcf46e22ba5af978a3b8707bec5a91cd9efbc05b1",
+      "bytes": 1489964,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/16.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/16.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/16.mp3",
+      "sha256": "1fd3678807df745e3119b98dcf46e22ba5af978a3b8707bec5a91cd9efbc05b1",
+      "bytes": 1489964,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/maps/17.mp3",
+      "urlPath": "/fortressblue/v2/audio/maps/17.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/maps/17.mp3",
+      "sha256": "985cbf6261c4a3a8b222aa5cd2f8fcde81701803d225429b87a2c57255bce4f2",
+      "bytes": 2463286,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/move.mp3",
+      "urlPath": "/fortressblue/v2/audio/move.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/move.mp3",
+      "sha256": "15e2ae78081ff8276c9beb8a7a87968039cba8678c43bc87fe2e5c4ba6a121d2",
+      "bytes": 11015,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/select.mp3",
+      "urlPath": "/fortressblue/v2/audio/select.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/select.mp3",
+      "sha256": "89409bdcd74fe75138bc296aa3530dd846c36e94d18a0775586faa9d78cac48c",
+      "bytes": 3178,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/turn.mp3",
+      "urlPath": "/fortressblue/v2/audio/turn.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/turn.mp3",
+      "sha256": "a1b3f519d58e2ed00ce6b3aa6a77a071cf386fe91a96c143d62f128418ae57eb",
+      "bytes": 6313,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/unmove.mp3",
+      "urlPath": "/fortressblue/v2/audio/unmove.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/unmove.mp3",
+      "sha256": "e9e50478927793f176adf0dd7299b0918ddc90dbcb964f685bfa3f57320d91b9",
+      "bytes": 5162,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "audio/win.mp3",
+      "urlPath": "/fortressblue/v2/audio/win.mp3",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/audio/win.mp3",
+      "sha256": "0ec3704e7ca82c63bf287e2da3203ce5ffbdc17ac52921390af0ce6206a4eb9d",
+      "bytes": 3805,
+      "mime": "audio/mpeg"
+    },
+    {
+      "file": "effects/explosion.webp",
+      "urlPath": "/fortressblue/v2/effects/explosion.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/effects/explosion.webp",
+      "sha256": "9e466cdca9167e69720e5bb7114d9f70cbf719923ebbd24ff6d472c594fe4899",
+      "bytes": 54480,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-1-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-1-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-1-bg.webp",
+      "sha256": "c6fc2b2202630178d691f2eea1fcfd0ef0da1cc667cf1019e568a9b8d22427b2",
+      "bytes": 245540,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-1-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-1-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-1-fg.webp",
+      "sha256": "bd6aa6e6d446d44ff0a8b354a0143676c32db9110d95c54dee4d4439933e66d0",
+      "bytes": 65016,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-1-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-1-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-1-fg2.webp",
+      "sha256": "461b446b23f8fe34d29546c760978e33188f4c733685b6610d9bb9d6b9825351",
+      "bytes": 1028,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-1-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-1-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-1-thumb.webp",
+      "sha256": "15ba45582b6a322c10fabe6a0aea7acfbe7f728e49626b7873fe901326a1678c",
+      "bytes": 39036,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-10-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-10-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-10-bg.webp",
+      "sha256": "f9331d12c34f9fbef2d1a3085db635fde27a181fff6c67438941e96702ce7d35",
+      "bytes": 296494,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-10-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-10-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-10-fg.webp",
+      "sha256": "4f8b2d9b78040ccf8446ea1e79243278165efed4704bc4351f9fcc4d1717151c",
+      "bytes": 45820,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-10-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-10-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-10-fg2.webp",
+      "sha256": "f1ec8e165a6c6e7ae7308e4c40c7c8c4b248764cba4dc296faa0bd335d74272e",
+      "bytes": 7090,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-10-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-10-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-10-thumb.webp",
+      "sha256": "f06c04814a642174e993a30a62afa3dcf92a1cf4a43e394428cdc293503d27ee",
+      "bytes": 41454,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-11-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-11-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-11-bg.webp",
+      "sha256": "937fa0362b89e88a0b6b7a0f63eb47d41726b19cb5d2a1493acf4b776cbcca09",
+      "bytes": 210500,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-11-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-11-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-11-fg.webp",
+      "sha256": "fb2c1c6f6d6d991cb299c54c09e26a9853c2424f3c4838540a811ba91903009b",
+      "bytes": 79098,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-11-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-11-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-11-fg2.webp",
+      "sha256": "33de869319e57ce2fea0100da8c5ba490743d2b4b7c00bf2f902a8958e7ed9c2",
+      "bytes": 614,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-11-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-11-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-11-thumb.webp",
+      "sha256": "510c510f659e8f00da5ce7e725563c87dc3a342666cfece28f94e0b4ce684d3c",
+      "bytes": 33604,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-12-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-12-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-12-bg.webp",
+      "sha256": "2868abb1c9116ee02d561dfa88d8ee9295a91d585de0fb0f12e166609d7c07f2",
+      "bytes": 93884,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-12-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-12-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-12-fg.webp",
+      "sha256": "0793b5bd1eba0f69aef88fa26749004dba85cffc17dd11f01e4a9550d53b6822",
+      "bytes": 87142,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-12-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-12-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-12-fg2.webp",
+      "sha256": "c05770a459119ce4c2c738080f30ac80b5c5693713d7dafa12f7d7d0a0dd6373",
+      "bytes": 1250,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-12-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-12-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-12-thumb.webp",
+      "sha256": "7371f3b271cca644394fdf3317ca03b27c787ae9fffb855dc3988cdf06a99b22",
+      "bytes": 16394,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-13-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-13-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-13-bg.webp",
+      "sha256": "c6fc2b2202630178d691f2eea1fcfd0ef0da1cc667cf1019e568a9b8d22427b2",
+      "bytes": 245540,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-13-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-13-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-13-fg.webp",
+      "sha256": "b4bddd243121cd8ce5883438272b06540ff051129924c0af4f601500527235be",
+      "bytes": 55154,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-13-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-13-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-13-fg2.webp",
+      "sha256": "0092f1b74dc05321daf17501a14817b97b4cff13257f2fce903d2c9874a0eaee",
+      "bytes": 2014,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-13-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-13-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-13-thumb.webp",
+      "sha256": "76c537e24075df6e51111511c5d0442455495945090bceaf563b9981aaca0068",
+      "bytes": 36814,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-14-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-14-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-14-bg.webp",
+      "sha256": "8077413a17a31092976f24eafd4c2123d8267ac28688189bb789dd76d7d7475b",
+      "bytes": 204194,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-14-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-14-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-14-fg.webp",
+      "sha256": "796511134d1e91c54d8a178db79378a9ca47cfa3ef0026c2075e2c7e6ccec78c",
+      "bytes": 136660,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-14-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-14-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-14-fg2.webp",
+      "sha256": "b5960f0023e5c3513074b4ebaaee9add66918ccc52b6f5661d36dde41d36e49f",
+      "bytes": 1290,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-14-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-14-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-14-thumb.webp",
+      "sha256": "8ef9e561e5a5132d76764ee104e0f30e888797e841351141be4f267ba27ef369",
+      "bytes": 17122,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-15-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-15-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-15-bg.webp",
+      "sha256": "f2c4374611b465b73d147e30a895b40f913baccc1578582495e1c2a60e563b44",
+      "bytes": 176316,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-15-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-15-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-15-fg.webp",
+      "sha256": "cec53b7a66f1fac35e0fdc17e2cfbe23563602d2f48f6dad0fe271192492ce7c",
+      "bytes": 52752,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-15-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-15-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-15-fg2.webp",
+      "sha256": "2be095fbbf2b944f086c98429d1444558e60765d6df6d4a5e590be7af9552d49",
+      "bytes": 806,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-15-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-15-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-15-thumb.webp",
+      "sha256": "e2126d7cbb873dc5ab35076ecdc6e6c851a7fa09c7dd3660b662d9e13bf76f1a",
+      "bytes": 35222,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-16-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-16-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-16-bg.webp",
+      "sha256": "85fa74957e184bb4d6356e33f495b7562e44e3003ddc3825c495e3ad71d748aa",
+      "bytes": 154742,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-16-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-16-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-16-fg.webp",
+      "sha256": "c273a81bad4a456fa1f307f9baa022dd73f0b04b3df2903d87da3b32606299f2",
+      "bytes": 128268,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-16-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-16-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-16-fg2.webp",
+      "sha256": "a016c6cf7f1b78dcdcf21ac45e1444db1aa061259a0d80e7cbb13a8559e93c0c",
+      "bytes": 2236,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-16-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-16-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-16-thumb.webp",
+      "sha256": "e53854ea3a73a2b6a83d4480882ddde65bf73b7442c729770dfbe1825a22cd81",
+      "bytes": 30720,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-17-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-17-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-17-bg.webp",
+      "sha256": "0fb009dba83598f00b3ddc2b97ed5920d073caedeefecd631e46ae60a5e4e6db",
+      "bytes": 185800,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-17-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-17-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-17-fg.webp",
+      "sha256": "9abbb19bde5bc9561af016bcdd118c58da7cd259f68ee9f27e65d0fa1bb60d09",
+      "bytes": 109784,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-17-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-17-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-17-fg2.webp",
+      "sha256": "e1ca8cbde7ce097d1aade9983d73cbb0265155372c10ea596fc1d3d6fab3d2a7",
+      "bytes": 1432,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-17-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-17-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-17-thumb.webp",
+      "sha256": "d39b98f98ebf62c7dfdb42efea1fed3ec8e1b12ebe3981b42c57979c8ad68096",
+      "bytes": 37212,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-2-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-2-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-2-bg.webp",
+      "sha256": "c3680029907d12fd57ffa48238a229e8f54e064e6fd04687a7686370907f22af",
+      "bytes": 289556,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-2-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-2-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-2-fg.webp",
+      "sha256": "cffebf4df51c0d875b01688b5828847637fd53cf82eb3ba5ea1423716e8591d0",
+      "bytes": 58776,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-2-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-2-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-2-fg2.webp",
+      "sha256": "0ee671e47ee7b94754a41106e3138d4bf88654433d0e271c39ff5ae4d517043a",
+      "bytes": 2016,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-2-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-2-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-2-thumb.webp",
+      "sha256": "e25958c964077d7ea7291cd7e7e59a86a536b89ae32f85884dd73253b765d4c1",
+      "bytes": 45280,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-3-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-3-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-3-bg.webp",
+      "sha256": "6833735298988e4d58e15e57b02951d3771a40c4c8cab4972447ddf55ff0c4f8",
+      "bytes": 251292,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-3-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-3-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-3-fg.webp",
+      "sha256": "b3939ac5ce6834ac87b7c9611e7656e7d89ac3ca8fce890f8db95560ebd77f3d",
+      "bytes": 99772,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-3-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-3-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-3-fg2.webp",
+      "sha256": "d53c6f56b20e90a66c0578784a2f662a9897d5de4946589c366047de19b14305",
+      "bytes": 2100,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-3-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-3-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-3-thumb.webp",
+      "sha256": "6e317bd752595d2766f6a0346172a48f5b632cead001a813431201b5ce45508f",
+      "bytes": 45184,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-4-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-4-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-4-bg.webp",
+      "sha256": "16c040a8e2201a0429d4fe3c2cb1413c65b0eb7d4a0ceb36bdaf8ec7f29672a2",
+      "bytes": 304236,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-4-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-4-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-4-fg.webp",
+      "sha256": "83c58fe77de0547ebfb169432d1b142962bc19c63966359d5df7898c7068747f",
+      "bytes": 93078,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-4-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-4-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-4-fg2.webp",
+      "sha256": "e408220a0b501b9018f6549c6545664914d94fc333369358f6604e8990067b3b",
+      "bytes": 49576,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-4-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-4-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-4-thumb.webp",
+      "sha256": "568817202c7e91a52d714e7ac639b0616cd925363b79b07fdce8500fce9dbe2e",
+      "bytes": 42962,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-5-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-5-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-5-bg.webp",
+      "sha256": "32a4d77dacec492cc953504c223f7f00aaefe9ae0ee22bb2ade1e3aac05c760a",
+      "bytes": 156294,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-5-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-5-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-5-fg.webp",
+      "sha256": "70b5bf1cd79abef8524ed08cf11778963416b8de29f73a19ef91a5117ea2b4a7",
+      "bytes": 90662,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-5-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-5-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-5-fg2.webp",
+      "sha256": "c58d8a33ba5d855f02fd6ab1830f7eacb930baada4f9fe9abd32c822fc356779",
+      "bytes": 1028,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-5-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-5-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-5-thumb.webp",
+      "sha256": "314f36a2dd5ed08a52a176a202026bedd91144f6a969bbe4009d71bc5a0159e7",
+      "bytes": 29788,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-6-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-6-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-6-bg.webp",
+      "sha256": "e3318cc4bcf0b844bc69b04aaf568c2b31b00421fe2aa0d4543117024604e5b4",
+      "bytes": 334130,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-6-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-6-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-6-fg.webp",
+      "sha256": "3594a8dc0428ead0e45a8cbaafd59110d1d848dcb322496d05f03207abb367a4",
+      "bytes": 143156,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-6-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-6-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-6-fg2.webp",
+      "sha256": "6290b1eca92df6223ee7b5bc0daf9c319112d64aba98dd22a2ab28404687c63c",
+      "bytes": 1196,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-6-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-6-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-6-thumb.webp",
+      "sha256": "6d22e60f61ebb273f03e09cf7c030fba5a3f96be1707ab7085b0faf8309bc398",
+      "bytes": 33934,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-7-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-7-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-7-bg.webp",
+      "sha256": "85a86f562f293b2fdeded29caf0908544c157d365d016042f59e06fb22ae1428",
+      "bytes": 215950,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-7-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-7-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-7-fg.webp",
+      "sha256": "8e7b9fca6d4d374bf2530a5e05425a383c6d56b4173078f5ca2827a1a6c788c8",
+      "bytes": 55328,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-7-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-7-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-7-fg2.webp",
+      "sha256": "bd23c1804e48dc582e3710e81abc4b7583a21fcbc2a4850712425d2668be1304",
+      "bytes": 1146,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-7-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-7-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-7-thumb.webp",
+      "sha256": "24da33eebf99ac4b4a14a250e73b3615b220cfb997c5ad016a95a99432ef798b",
+      "bytes": 22048,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-8-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-8-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-8-bg.webp",
+      "sha256": "80014c64e7e91af1f5b15ee7047e7689d9defee41b566d1aa06305ea814d96b0",
+      "bytes": 186788,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-8-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-8-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-8-fg.webp",
+      "sha256": "304566a46de829f2d6da3c52c9e6e053d50d7c2649b0f07ee91a717bd65584f1",
+      "bytes": 75568,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-8-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-8-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-8-fg2.webp",
+      "sha256": "f13613044b16bc0e3d0075e4842dd1659c16a38ad8772a194f50caaf28cedaee",
+      "bytes": 808,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-8-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-8-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-8-thumb.webp",
+      "sha256": "e998df35bbd7411be72bddb709a3d3cc4096551bffc1f1fb72b68e49dd250bf4",
+      "bytes": 28048,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-9-bg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-9-bg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-9-bg.webp",
+      "sha256": "aec288e0fcfd1657c0511246073f174340c6be1a3f4fea99d722d6aa34d7570e",
+      "bytes": 265612,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-9-fg.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-9-fg.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-9-fg.webp",
+      "sha256": "5bc37a29a331bc517299abd6bedd22c866b8add9ac9c9f720af641fa01626555",
+      "bytes": 149166,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-9-fg2.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-9-fg2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-9-fg2.webp",
+      "sha256": "f941dbf8fc6d2995efdcb883b84afd0e1935d42a19c4f8182f42c3c3b235f5a9",
+      "bytes": 1342,
+      "mime": "image/webp"
+    },
+    {
+      "file": "maps/stage-9-thumb.webp",
+      "urlPath": "/fortressblue/v2/maps/stage-9-thumb.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/maps/stage-9-thumb.webp",
+      "sha256": "98c0bdfeae2661b63e374bdc578b14f47f41772b46b4886605f21ff5165648b5",
+      "bytes": 41836,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/1.webp",
+      "urlPath": "/fortressblue/v2/projectiles/1.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/1.webp",
+      "sha256": "d666089c6abf4855c29ba9f8624c979fb37954f3eeebcdd33661ef629e54bc7c",
+      "bytes": 300,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/10.webp",
+      "urlPath": "/fortressblue/v2/projectiles/10.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/10.webp",
+      "sha256": "3e66301f6d86fe2fe6014774345bc88fc7f870a77e02b52a6a910c2af9d20de6",
+      "bytes": 142,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/11.webp",
+      "urlPath": "/fortressblue/v2/projectiles/11.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/11.webp",
+      "sha256": "fb893ef6c5cc5445bdd9397f0d37b301ee01f0a4008833aa7e9fe51efaa7cad8",
+      "bytes": 448,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/12.webp",
+      "urlPath": "/fortressblue/v2/projectiles/12.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/12.webp",
+      "sha256": "b7428c437cd59769ae4afcede8b1e3a18e91920d4c0c092a23124512e853f8b3",
+      "bytes": 284,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/13.webp",
+      "urlPath": "/fortressblue/v2/projectiles/13.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/13.webp",
+      "sha256": "766498935a7d2028f039ef131a30a1270247d8dff87f8d804d01effd7a90a658",
+      "bytes": 312,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/14.webp",
+      "urlPath": "/fortressblue/v2/projectiles/14.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/14.webp",
+      "sha256": "2d2e52bc9da7491322a00a66415ec050ccc9d875defd9288715ad2ed468c39f7",
+      "bytes": 590,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/2.webp",
+      "urlPath": "/fortressblue/v2/projectiles/2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/2.webp",
+      "sha256": "2a8408dc4bd35e2fa9d4808ed17f9d3938c449c0fdee4639ff23b9f64cb001f3",
+      "bytes": 146,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/3.webp",
+      "urlPath": "/fortressblue/v2/projectiles/3.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/3.webp",
+      "sha256": "76bbec747affecbd67d9fd18c843d5125cb0f5c2ce6bfcb0d7bc65c44577544d",
+      "bytes": 162,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/4.webp",
+      "urlPath": "/fortressblue/v2/projectiles/4.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/4.webp",
+      "sha256": "49792ff15fc0079f865dab9653d75d07a7bde56605ca3fe6eb8a4434519e5281",
+      "bytes": 324,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/5.webp",
+      "urlPath": "/fortressblue/v2/projectiles/5.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/5.webp",
+      "sha256": "b79704e10aa2d112dde5f6e2fb3a37245683054484f257e48445fa4ca4f2baaf",
+      "bytes": 320,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/6.webp",
+      "urlPath": "/fortressblue/v2/projectiles/6.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/6.webp",
+      "sha256": "9b637fb1bfac50c6e81bf03968114c2d501595a994040e12dc2c626164362fca",
+      "bytes": 426,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/7.webp",
+      "urlPath": "/fortressblue/v2/projectiles/7.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/7.webp",
+      "sha256": "79e93c52905b9b7d4e82e55b3deebd6d087797b1ec7aad228fe96d5ff6b7ca41",
+      "bytes": 348,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/8.webp",
+      "urlPath": "/fortressblue/v2/projectiles/8.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/8.webp",
+      "sha256": "21c1011e6d3b9b69325429bb3c7dbb3b57ee13db64550baf8f03bb82aa7a8f74",
+      "bytes": 170,
+      "mime": "image/webp"
+    },
+    {
+      "file": "projectiles/9.webp",
+      "urlPath": "/fortressblue/v2/projectiles/9.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/projectiles/9.webp",
+      "sha256": "bfda408dad223b84c035ca3f2639c86e6d33a53732a0f0f04949882984e0bdb1",
+      "bytes": 206,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/1-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/1-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/1-die.webp",
+      "sha256": "5f6d00a22f65bcbf81909b05510a8053139c1db040820e51a22db1a4640fb4d8",
+      "bytes": 976,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/1-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/1-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/1-fire.webp",
+      "sha256": "aff9ebd70fc1a95aac9fe692bec18296f75085208cf80af9868f82771decd303",
+      "bytes": 922,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/1-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/1-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/1-idle.webp",
+      "sha256": "a673f6482100bd6e8a351f436bfef8b5559f3ab382cceeb15255775667102c9b",
+      "bytes": 534,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/1-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/1-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/1-move.webp",
+      "sha256": "c0242df666a9aea9357fcb27a856de40cfd2c2bfc63407a1b1787fe624ef6d25",
+      "bytes": 500,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/1-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/1-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/1-portrait.webp",
+      "sha256": "5930f9fd30eaf6526f4ad7ab2c856f7e348544dc94ed7ab066831e8b0e7dd1b9",
+      "bytes": 3266,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/10-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/10-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/10-die.webp",
+      "sha256": "024f9c838e2704c798c71a0798ca30d6614048a18629d173b61539a50e204717",
+      "bytes": 472,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/10-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/10-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/10-fire.webp",
+      "sha256": "c464525fcafa338fccfbd5a7d7d09be8a3003880a511f584143425761c8d7c6f",
+      "bytes": 830,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/10-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/10-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/10-idle.webp",
+      "sha256": "0d3277b621eabe6731d0c949cd8035f3cb06c816b4ae5ed4716902c6d3175e7c",
+      "bytes": 476,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/10-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/10-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/10-move.webp",
+      "sha256": "219eca396f0aa6e0d670ec9d2c36654bdb0b62d0fc4f72ef951e67dde850880c",
+      "bytes": 430,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/10-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/10-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/10-portrait.webp",
+      "sha256": "18d867f7e44267e04368b4704e3a47ce7ba1245664c70e2f358dbca5680e4bfb",
+      "bytes": 3840,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/11-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/11-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/11-die.webp",
+      "sha256": "3192b59c939cf4acfa7511951cfa52ab98eed27ea222f34cf5245d2837548feb",
+      "bytes": 792,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/11-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/11-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/11-fire.webp",
+      "sha256": "f28110c75dba7ddae20d28fce6ccdc4203852d0e90f510c6f6301c5d3c19c7e3",
+      "bytes": 522,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/11-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/11-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/11-idle.webp",
+      "sha256": "2484c3c427e33d49670b7f97858b110b5eb849bb304be817ccee661da4a5cfac",
+      "bytes": 408,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/11-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/11-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/11-move.webp",
+      "sha256": "d71063cdaee92fe650250018df61a1ca56534143c319f60cd46e071ffd38d387",
+      "bytes": 424,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/11-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/11-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/11-portrait.webp",
+      "sha256": "e2ee178aa9193b765893c3ed3859128e8d78f0ed33d958a5e7c49d5fa484bb39",
+      "bytes": 3354,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/12-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/12-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/12-die.webp",
+      "sha256": "fd906b03372adf197a993b0829da57d45eb0e99fd98c3baa0aaf3559dc64ccd3",
+      "bytes": 1474,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/12-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/12-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/12-fire.webp",
+      "sha256": "ba096ac26628813c1a0b5f43778ac85ca614e29636cef9338503e88c8bff1bb7",
+      "bytes": 544,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/12-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/12-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/12-idle.webp",
+      "sha256": "071a45861e4a626a44278b16c4dbf389592c5db22f0ce2ff501623bacf4e46b1",
+      "bytes": 594,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/12-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/12-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/12-move.webp",
+      "sha256": "88841939ab2afc652c6a50eb984a9bb3226b8e0ac27291475507db5208d69ac6",
+      "bytes": 574,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/12-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/12-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/12-portrait.webp",
+      "sha256": "c39d66a317e7324a8f24bb995edd2f93e3c8d572bb1c3adc487ecaabd2001101",
+      "bytes": 3444,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/13-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/13-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/13-die.webp",
+      "sha256": "618d8dfb4963e23dc36b9db90218672ae85a65830db4b4f4026a836d62cfdee3",
+      "bytes": 580,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/13-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/13-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/13-fire.webp",
+      "sha256": "2a38abe785f04b4d90b57a16c1919baf9b35c043b359b546dfc5651e2392f837",
+      "bytes": 566,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/13-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/13-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/13-idle.webp",
+      "sha256": "41d8bc4768deaad1150f609a6e31ca25fc6da440af2f38d596a7d46f592da86e",
+      "bytes": 578,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/13-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/13-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/13-move.webp",
+      "sha256": "e09f543c8d6517e05342951bd4b4a58ef19296e2bcff800cbc31a573662b8a73",
+      "bytes": 540,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/13-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/13-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/13-portrait.webp",
+      "sha256": "bbaadc346fab82d0b01ed2f5c1ce61a5b070452af16fc94574cdd7462187c08b",
+      "bytes": 3342,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/14-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/14-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/14-die.webp",
+      "sha256": "849c03c9e202abf4e5246b20da1d702509f3d735b33b159e5796c07c89ce28d2",
+      "bytes": 702,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/14-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/14-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/14-fire.webp",
+      "sha256": "3cf32c001aec55599bf810689839771a3d29d7b1395f9b20ef42ca1e6c24ac79",
+      "bytes": 742,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/14-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/14-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/14-idle.webp",
+      "sha256": "7db2ab799f05f2d86f57e9b1f6f44aa204bdda8a17da460d3ceeab6251b99a4f",
+      "bytes": 722,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/14-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/14-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/14-move.webp",
+      "sha256": "f6b5ce3f45950f53a668092c52397cdfa5c0ac226fea39667c7899c0cc5f77da",
+      "bytes": 736,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/2-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/2-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/2-die.webp",
+      "sha256": "f9b73420fc13f7f8ad6659863007175b866e4043a4c5ce63a465ffdfda4f0345",
+      "bytes": 764,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/2-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/2-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/2-fire.webp",
+      "sha256": "8b33f8832327daf608eac29afeaca42e1fd871aac319f83a819d16ecbd6a754f",
+      "bytes": 548,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/2-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/2-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/2-idle.webp",
+      "sha256": "85b8084d78b294eb57eaaa489a2f8aff01cfd5f3b5a436ee13193e4d1447029b",
+      "bytes": 416,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/2-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/2-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/2-move.webp",
+      "sha256": "3b203618514f47f1f63916b40b7e094565635347fc718caf0ee11e98587dd478",
+      "bytes": 434,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/2-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/2-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/2-portrait.webp",
+      "sha256": "5ee2117088b17f3b0952a5d40a0990bb4c048461ebc92bae8797fd1d4fbbfd21",
+      "bytes": 3554,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/3-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/3-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/3-die.webp",
+      "sha256": "3b26d335625b288dbf0e00fc74036009283ee2eac0771f664be21cc80c1634cd",
+      "bytes": 526,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/3-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/3-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/3-fire.webp",
+      "sha256": "7aaca5d1eb180a65da144a9276ade89cee5ddaa7a44ded9ae7ac465407232b8e",
+      "bytes": 872,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/3-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/3-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/3-idle.webp",
+      "sha256": "858a0c5d83dac0168fce9480bc8099b6c1c4a5f5054725db0069287c423d40a9",
+      "bytes": 448,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/3-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/3-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/3-move.webp",
+      "sha256": "e413c982fa3e167a509b36442fb3d977d6aaa97960d4113bcc3b96f3eab1143f",
+      "bytes": 366,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/3-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/3-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/3-portrait.webp",
+      "sha256": "73ff023f8615f76893a89967f2ee74ab3ad9345613bb408bf972b192d44ebc2f",
+      "bytes": 3452,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/4-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/4-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/4-die.webp",
+      "sha256": "3b6d5af7a50d1fda82b77c6e84a01d16d50457c14dd3151dee67166fa585b47b",
+      "bytes": 502,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/4-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/4-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/4-fire.webp",
+      "sha256": "73c477e37ca298fae8a596ab0ccbd170ad1e3bee53cbda47b0631fa69f43181b",
+      "bytes": 498,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/4-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/4-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/4-idle.webp",
+      "sha256": "89aafeb2f071b0a1a7b406e57b84b36ac68b3f806584245ea870d8b58fefb863",
+      "bytes": 434,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/4-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/4-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/4-move.webp",
+      "sha256": "250c06a93ce39da197b40e61a5c3bce49bd39448e9a28fcc66b7cbff06c0cee5",
+      "bytes": 464,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/4-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/4-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/4-portrait.webp",
+      "sha256": "dc0afeddda284aa5dbad820aed5802947729d04b22e1dfd41cb101659e2af119",
+      "bytes": 2874,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/5-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/5-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/5-die.webp",
+      "sha256": "8154c62f6dd695693a78188fbf84f28c854f6c3e65b176685541a6c147d0ccac",
+      "bytes": 666,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/5-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/5-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/5-fire.webp",
+      "sha256": "20088dfd5892dbb0440dededdfeafd78baa40783e59f95f17225b1b7902e50eb",
+      "bytes": 696,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/5-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/5-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/5-idle.webp",
+      "sha256": "c04521c78b0177c4ede4462677fcc80f1d248fb1ac6b17a0f2ce56f5203def71",
+      "bytes": 474,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/5-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/5-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/5-move.webp",
+      "sha256": "c7faa4da9675588a1a23a3f89c2257d4212e7bcc1a0d1e378370e24409bd1979",
+      "bytes": 402,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/5-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/5-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/5-portrait.webp",
+      "sha256": "a488dfab2efa582b36e2746e43d8d4a9b8e0d4d612ecbf77567e7109cd53db09",
+      "bytes": 3462,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/6-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/6-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/6-die.webp",
+      "sha256": "1a69b25293f895e13e799690f28fe8cb931d1e2e2ed038bbad4c4f45b0d9c530",
+      "bytes": 576,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/6-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/6-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/6-fire.webp",
+      "sha256": "17a9dbeca6b5d552318431b5a8ee1f0e174f685651c3f8fba4118ba3872de569",
+      "bytes": 476,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/6-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/6-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/6-idle.webp",
+      "sha256": "c27c6350553e7570954344e54871c0698f0b34a0301004d229aba96267568a45",
+      "bytes": 710,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/6-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/6-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/6-move.webp",
+      "sha256": "1425beb3df46ac6b4430acc3e434a3eefbd601b87f18efe8df359e8926f2a33c",
+      "bytes": 1066,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/6-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/6-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/6-portrait.webp",
+      "sha256": "b0dec733e052febbee1232c8a53ff7639a4fba48cc3d85d5738d015ed8a2103a",
+      "bytes": 4140,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/7-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/7-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/7-die.webp",
+      "sha256": "d599c2fd872534839f66967771b3f3246f2002bade72a87fe1d82d68e42ca1c1",
+      "bytes": 784,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/7-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/7-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/7-fire.webp",
+      "sha256": "89e843640aa86ba682cc8d55635aa8a429ed6a7d59d1b4c8ca016a1178d48194",
+      "bytes": 540,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/7-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/7-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/7-idle.webp",
+      "sha256": "6fafb79aa14acb18f3d0a586bebf452e04c13532f67c4a000f7a9432a68b9e8f",
+      "bytes": 496,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/7-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/7-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/7-move.webp",
+      "sha256": "898a20c2c1ad554257af1b208f44999c8e6d7eafdf9652bbf3119d1c2742defd",
+      "bytes": 516,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/7-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/7-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/7-portrait.webp",
+      "sha256": "af06707f44881c37a74ff5ff614d9776d441c41e5e70bf0e8874d8d655970002",
+      "bytes": 3322,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/8-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/8-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/8-die.webp",
+      "sha256": "2ac3b0ce69997298de6614e670c7164c56454b1e8101b31a79bc3219b9ad09fe",
+      "bytes": 556,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/8-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/8-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/8-fire.webp",
+      "sha256": "d15726f9f52e22c77a1f67bf045615548b150c20b18def73136c81187ac6b2d7",
+      "bytes": 482,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/8-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/8-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/8-idle.webp",
+      "sha256": "d5cddf337dd35484ce6075e8996e0be86a1bc440e22d4e48f286307849bf9b3e",
+      "bytes": 480,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/8-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/8-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/8-move.webp",
+      "sha256": "35407abff62d6fa286b4ccec8d17b709b0da7a6676a27355ed9efdc78d23dcc1",
+      "bytes": 704,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/8-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/8-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/8-portrait.webp",
+      "sha256": "9811f5a4ae2c7146d4463f8104eff1016d9632f45430924dc30e136778c5f356",
+      "bytes": 3694,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/9-die.webp",
+      "urlPath": "/fortressblue/v2/tanks/9-die.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/9-die.webp",
+      "sha256": "68c795b3d68ced05df99295237f27f995cf8a6ecabe12b01f4bf43c9c05f7264",
+      "bytes": 534,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/9-fire.webp",
+      "urlPath": "/fortressblue/v2/tanks/9-fire.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/9-fire.webp",
+      "sha256": "9978f3a38852152137f0e7f2f192ddcce547409f845b6662695e473f0b3cdbc7",
+      "bytes": 870,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/9-idle.webp",
+      "urlPath": "/fortressblue/v2/tanks/9-idle.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/9-idle.webp",
+      "sha256": "4f78737a7bf8b557941cef3dbd2dab46d445ebacc292483cad218564dbb928da",
+      "bytes": 456,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/9-move.webp",
+      "urlPath": "/fortressblue/v2/tanks/9-move.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/9-move.webp",
+      "sha256": "ef3e62104dd6894885da6197958be24818253997a23e31dfdb9f5ef2043fd65d",
+      "bytes": 444,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/9-portrait.webp",
+      "urlPath": "/fortressblue/v2/tanks/9-portrait.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/tanks/9-portrait.webp",
+      "sha256": "77f99f28da801b3714b5bcbfa6455300e0dcd3c2dea48b4882b0d63e95051dc1",
+      "bytes": 3220,
+      "mime": "image/webp"
     }
   ]
 }
