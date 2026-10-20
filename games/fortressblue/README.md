@@ -38,6 +38,7 @@ games/fortressblue/
   assets/       来源、生成器、SHA-256 清单与本地回退媒体（Git 忽略）
 scripts/fortressblue/
   prepare-original-assets.py   从本机已获取的官方网页客户端资源生成媒体包
+  verify-original-source.py    从原始 .i16 重新解码并逐字节比对发布媒体
   verify-assets.py             本地/dist/CDN 字节与媒体校验
   check-browser.py             真实浏览器验收
 ```
@@ -49,6 +50,7 @@ go test -count=1 ./games/fortressblue/...
 npm --prefix web run build
 python3 -B scripts/check_game_boundaries.py
 python3 -B scripts/fortressblue/verify-assets.py --dist
+python3 -B scripts/fortressblue/verify-original-source.py  # 需要本地原版客户端
 python3 -B scripts/fortressblue/check-browser.py
 ```
 
