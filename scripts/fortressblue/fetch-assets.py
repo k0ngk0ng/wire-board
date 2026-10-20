@@ -12,6 +12,7 @@ import concurrent.futures
 import hashlib
 import json
 import sys
+import time
 import urllib.request
 from pathlib import Path
 
@@ -22,6 +23,20 @@ BASE = "https://cdn.ichenj.com/bga/v20261002-1"
 
 def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def fetch(url: str) -> bytes:
+    last = None
+    for attempt in range(4):
+        try:
+            request = urllib.request.Request(url, headers={"User-Agent": "wire-board-asset-fetch/1"})
+            with urllib.request.urlopen(request, timeout=45) as response:
+                return response.read()
+        except Exception as error:  # noqa: BLE001 - retry timeouts and transient 5xx
+            last = error
+            if attempt < 3:
+                time.sleep(1 + attempt * 2)
+    raise RuntimeError(f"fetch failed after retries: {url}: {last}")
 
 
 def main() -> None:
@@ -36,15 +51,14 @@ def main() -> None:
             if len(data) == entry["bytes"] and sha(data) == entry["sha256"]:
                 return False
         url = BASE + entry["urlPath"]
-        with urllib.request.urlopen(url, timeout=60) as response:
-            data = response.read()
+        data = fetch(url)
         if len(data) != entry["bytes"] or sha(data) != entry["sha256"]:
             raise RuntimeError(f"asset mismatch: {url}")
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)
         return True
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         downloaded = sum(1 for changed in pool.map(ensure, entries) if changed)
     print(f"fallback media ready: {len(entries)} objects, downloaded {downloaded}")
 
