@@ -82,6 +82,19 @@ TANK_STATS = {
 }
 SKILL_NAMES = {1: "爆炸", 2: "毒", 3: "火", 4: "雷"}
 
+# Original item list frames (itemlist!.i16) and their server-side effects.
+# id, name, description, effect, amount, turns, frame index
+ITEM_ROWS = [
+    (0, "小补丸", "恢复 180 生命", "heal_self", 180, 0, 0),
+    (1, "大补丸", "恢复 300 生命", "heal_self", 300, 0, 1),
+    (2, "能量补充弹", "恢复 70 移动力", "fuel", 70, 0, 2),
+    (3, "团补丸", "全体队友恢复 120 生命", "heal_team", 120, 0, 3),
+    (4, "防护罩", "2 回合内受到的爆炸伤害减半", "shield_self", 0, 2, 4),
+    (25, "威力增强弹", "下一发炮弹伤害提高 40%", "power_self", 40, 1, 25),
+    (26, "风向转换器", "立即反转当前风向", "reverse_wind", 0, 0, 26),
+    (35, "穿风弹", "下一发炮弹不受风力影响", "no_wind", 0, 1, 35),
+]
+
 
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
@@ -435,6 +448,37 @@ def build_audio():
     return out
 
 
+def build_items():
+    src = LOCAL / "extracted/package/Asset/itemlist!.i16"
+    if not src.exists():
+        raise SystemExit(f"missing item list: {src}")
+    sheets = frames(src)
+    out_dir = OUT / "items"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    items = []
+    for item_id, name, description, effect, amount, turns, frame in ITEM_ROWS:
+        if frame >= len(sheets):
+            raise SystemExit(f"item frame {frame} missing for {name}")
+        image = sheets[frame]["image"]
+        out = out_dir / f"{item_id}.webp"
+        save_webp(image, out, quality=95, lossless=True)
+        items.append({
+            "id": item_id,
+            "name": name,
+            "description": description,
+            "effect": effect,
+            "amount": amount,
+            "turns": turns,
+            "icon": f"/fortressblue/v2/items/{item_id}.webp",
+            "w": image.width,
+            "h": image.height,
+        })
+    (ROOT / "games/fortressblue/data/items.json").write_text(
+        json.dumps({"items": items}, ensure_ascii=False, indent=1) + "\n"
+    )
+    return items
+
+
 def main():
     if not LOCAL.exists():
         raise SystemExit(f"source assets not found: {LOCAL}")
@@ -469,6 +513,7 @@ def main():
     explosion = build_explosion()
     audio = build_audio()
     portraits = build_portraits()
+    items = build_items()
     TANKS_JSON.write_text(json.dumps({"tanks": tanks, "portraits": portraits, "explosion": explosion, "audio": audio}, ensure_ascii=False, indent=1) + "\n")
     (MAPS_DIR / "catalog.json").write_text(json.dumps({"version": 2, "worldHeight": WORLD_HEIGHT, "cell": CELL, "maps": maps}, ensure_ascii=False) + "\n")
     # The client needs the same public collision mask to draw an accurate aim
@@ -506,7 +551,7 @@ def main():
         },
     }
     (ASSETS / "sources.json").write_text(json.dumps(sources, ensure_ascii=False, indent=2) + "\n")
-    print("wrote", len(maps), "maps,", len(tanks), "tanks,", len(entries), "assets", flush=True)
+    print("wrote", len(maps), "maps,", len(tanks), "tanks,", len(items), "items,", len(entries), "assets", flush=True)
 
 
 if __name__ == "__main__":

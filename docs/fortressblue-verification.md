@@ -17,7 +17,7 @@ Emscripten file packager 分块 → LH5 解压 → 逐行 span RLE → RGB565 �
 前景层 alpha 生成。该路线得到的原版资源与 Steam 版共用同一套 CCR 素材。
 
 `python3 -B scripts/fortressblue/verify-original-source.py` 会重新运行与素材生成相同的解码器，
-从本地原始 `.i16` 重新生成全部媒体并逐项比对：**233 项通过**，包括 5 个官方客户端源文件的
+从本地原始 `.i16` 重新生成全部媒体并逐项比对：**250 项通过**，包括 5 个官方客户端源文件的
 SHA-256、17 张地图的碰撞位图/出生点/前景/背景/叠加层/缩略图，以及 14 种坦克的
 idle/fire/die/move、炮弹尺寸与字节哈希。结果保存在 `.local/fortressblue/asset-redecode.json`，
 证明线上媒体确实来自下载的原版客户端，而不是新绘或合成占位。
@@ -27,7 +27,9 @@ idle/fire/die/move、炮弹尺寸与字节哈希。结果保存在 `.local/fortr
 - 2／4／6／8 人，红蓝两队各半；最多 4v4。
 - 17 张原版地图（前景层碰撞、背景层、缩略图、原版音乐）。
 - 14 种原版坦克（官方大厅属性：HP、防御、速度、主炮/特殊弹攻击、最大角度、射程）。
-- 位图可破坏地形、风力、角度/力度、朝向、特殊弹、坠落、突然死亡、电脑/托管、观战、恢复。
+- 8 种原版道具（`itemlist!.i16` 图标）：小补丸、大补丸、能量补充弹、团补丸、防护罩、
+  威力增强弹、风向转换器、穿风弹；每局每人 2 件，使用道具不结束回合。
+- 位图可破坏地形、风力、角度/力度、朝向、特殊弹、道具、坠落、突然死亡、电脑/托管、观战、恢复。
 - PC 鼠标瞄准/滚轮力度/点击开火、方向键移动与瞄准、空格开火；手机滑杆和按钮。
 - 与服务器一致的落点预览、2.4× 坦克绘制、1200 世界像素取景、屏幕边缘敌人指示和小地图。
 - 地图选择按 stage 排序；等待房间地图/规则修改必须保存，未保存时禁止开始。
@@ -58,13 +60,15 @@ python3 -B scripts/fortressblue/check-browser.py
   全部自然结束（队灭或时间到判定），无死循环。
 - HTTP/SQLite E2E：新游戏默认上架；8 人房 + 7 名电脑、选坦克、移动、开火、错误席位/
   epoch/turn/角度/力度拒绝、服务重启保持对局；2v2 随机地图；团队结果、历史记录。
-- 前端：8 项疯狂坦克目录/瞄准/弹道预览/碰撞位图镜像/素材 URL 测试通过；全部 459 项前端测试通过；
-  构建通过；24 款游戏边界检查通过。
-- 素材：178 个原版 WebP/MP3 文件通过字节数、SHA-256、WebP/MP3 头、时长校验；本地、
+- 前端：9 项疯狂坦克目录/道具目录/瞄准/弹道预览/碰撞位图镜像/素材 URL 测试通过；全部
+  460 项前端测试通过；构建通过；24 款游戏边界检查通过。
+- 素材：186 个原版 WebP/MP3 文件通过字节数、SHA-256、WebP/MP3 头、时长校验；本地、
   `web/dist` 和 `https://cdn.ichenj.com/bga/v20261002-1/fortressblue/v2/` 三处字节一致。
 - 来源复现：官方客户端 5 个源文件 SHA-256 与 `sources.json` 一致；从原始 `.i16` 重新解码
-  17 张地图与 14 种坦克的 233 项媒体/碰撞/出生点结果与 manifest、catalog、tanks.json
+  17 张地图、14 种坦克和 8 种道具的 250 项媒体/碰撞/出生点结果与 manifest、catalog、tanks.json、items.json
   逐字节一致（`asset-redecode.json`，0 失败）。
+- 道具：8 种原版道具目录、每席 2 件不重复、补血/团补/补给/护盾/强化/反风/穿风、
+  道具不结束回合、越界/错误回合/额外字段拒绝、电脑先使用道具再开火、恢复存档保留道具。
 - 竞态：`go test -race` 通过（服务端 + 模块/HTTP E2E）。
 
 ## 真实浏览器验收
@@ -72,10 +76,11 @@ python3 -B scripts/fortressblue/check-browser.py
 `python3 -B scripts/fortressblue/check-browser.py` 启动临时生产式服务，通过共享「创建房间」
 弹窗选择「疯狂坦克」和 stage-4「钢铁工厂」，设置 8 席后创建房间；在等待房间修改地图，
 验证未保存时不能开始、保存后服务器收到新地图；随后添加 7 名电脑、开始游戏、选择原版坦克，
-并用键盘、鼠标瞄准、滚轮力度、空格和点击战场完成开火。本地回退运行：
-`.local/fortressblue/browser/4cb91ae6/result.json`（55/55 通过）。CDN 运行：
+并用键盘、鼠标瞄准、滚轮力度、空格和点击战场完成开火；同时验证原版道具图标、使用道具
+不结束回合。本地回退运行：`.local/fortressblue/browser/ec0ae7be/result.json`（60/60 通过）。
+CDN 运行：
 `CHECK_ASSETS_BASE=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/fortressblue/check-browser.py`，
-结果 `.local/fortressblue/browser/07133c45/result.json`（55/55 通过）。
+结果 `.local/fortressblue/browser/aaf16f35/result.json`（60/60 通过）。
 
 覆盖：
 
@@ -85,6 +90,7 @@ python3 -B scripts/fortressblue/check-browser.py
 - 等待房间修改地图为 stage-2 时显示「地图或规则尚未保存」，开始按钮禁用；保存后服务器
   options 变为 stage-2；改回 stage-4 并保存后开局实际使用 stage-4。
 - 共享玩家栏 8 席；14 张原版坦克卡；原版立绘实际加载。
+- 战场左上角显示 2 张原版道具卡；图标由本地或 CDN 实际加载；点击后数量减 1、回合不结束。
 - 选坦克卡/标题/说明与战场 HUD/开火按钮对比度 ≥ 4.5:1；桌面操作区宽度不超出棋盘。
 - 原版地图前景、背景、爆炸图集、坦克 idle 精灵由本地或 CDN 实际加载；
   Canvas 像素多样性检查证明不是空白或纯矢量占位。
@@ -103,9 +109,9 @@ python3 -B scripts/fortressblue/check-browser.py
   只做等比缩放和裁切。
 - 320×844：无横向溢出，Canvas 实际宽度 ≥280 px（16:10 高 178.75 px），8 席玩家栏存在；
   滚动到操作区后开火按钮完整位于视口内（高 48 px），坦克仍可辨认。
-- 截图：`.local/fortressblue/browser/4cb91ae6/desktop-select.png`、`desktop-board.png`、
+- 截图：`.local/fortressblue/browser/ec0ae7be/desktop-select.png`、`desktop-board.png`、
   `desktop-first-shot.png`、`desktop-after-shot.png`、`mobile-320.png`、`mobile-controls.png`；
-  CDN 运行截图见 `07133c45/`。
+  CDN 运行截图见 `aaf16f35/`。
 
 ## 可玩性热修复（2026-10-20）
 
@@ -124,6 +130,27 @@ python3 -B scripts/fortressblue/check-browser.py
 回归测试新增：首发射击必须出现 `animating=1` 且 Canvas `data-projectile=sprite`；
 桌面取景宽度 ≥1500；地图预览宽高比 25:16；人类回合在电脑连射后返回。
 本地与 CDN 浏览器检查均 **55/55** 通过。
+
+## 原版道具
+
+从原版 `itemlist!.i16` 的 36 帧中选取 8 帧，保持 79×74 原图像素，生成
+`/fortressblue/v2/items/<id>.webp` 并记录到 `data/items.json` 与 manifest。每局开始每名玩家
+获得 2 件不重复道具：
+
+| ID | 道具 | 效果 |
+| --- | --- | --- |
+| 0 | 小补丸 | 恢复 180 HP |
+| 1 | 大补丸 | 恢复 300 HP |
+| 2 | 能量补充弹 | 恢复 70 移动力 |
+| 3 | 团补丸 | 全体队友恢复 120 HP |
+| 4 | 防护罩 | 2 回合内爆炸伤害减半 |
+| 25 | 威力增强弹 | 下一发伤害 +40% |
+| 26 | 风向转换器 | 立即反转当前风向 |
+| 35 | 穿风弹 | 下一发忽略风力 |
+
+道具使用不结束回合，玩家仍可移动/开火；电脑在残血、强风或持有强化类道具时按确定性规则
+先用道具再开火。服务端校验下标、回合、字段和剩余道具；View 公开道具 ID，客户端用原版
+图标在战场左上角渲染。
 
 ## 已知边界
 

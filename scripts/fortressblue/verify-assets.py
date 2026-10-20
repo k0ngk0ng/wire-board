@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "games/fortressblue/assets/manifest.json"
 CATALOG = ROOT / "games/fortressblue/maps/catalog.json"
 TANKS = ROOT / "games/fortressblue/data/tanks.json"
+ITEMS = ROOT / "games/fortressblue/data/items.json"
 LOCAL = ROOT / "games/fortressblue/assets/public"
 DIST = ROOT / "web/dist"
 CDN = "https://cdn.ichenj.com/bga/v20261002-1"
@@ -66,6 +67,10 @@ def catalog_check():
     for tank in tanks["tanks"].values():
         assert tank["hp"] > 0 and tank["primary"] > 0 and tank["sprites"].get("idle"), tank
         assert tank["bullet"] and tank["bullet"]["url"].endswith(".webp"), tank
+    items = json.loads(ITEMS.read_text())["items"]
+    assert [item["id"] for item in items] == [0, 1, 2, 3, 4, 25, 26, 35]
+    for item in items:
+        assert item["name"] and item["effect"] and item["icon"].endswith(".webp"), item
 
 
 def main():

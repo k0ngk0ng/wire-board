@@ -1,5 +1,6 @@
 import clientCatalog from "../maps/client.json" with { type: "json" };
 import tankData from "../data/tanks.json" with { type: "json" };
+import itemData from "../data/items.json" with { type: "json" };
 
 export type Options = {
   map: string;
@@ -62,6 +63,7 @@ export type Tank = {
   kills: number;
   deaths: number;
   statuses?: Status[];
+  items?: number[];
   current: boolean;
 };
 export type View = {
@@ -112,6 +114,18 @@ export type TankInfo = {
   sprites: Record<string, Sprite>;
   bullet: Sprite | null;
 };
+export type ItemInfo = {
+  id: number;
+  name: string;
+  description: string;
+  effect: string;
+  amount: number;
+  turns: number;
+  icon: string;
+  w: number;
+  h: number;
+};
+
 export type MapInfo = {
   id: string;
   name: string;
@@ -141,6 +155,8 @@ export const tanks: TankInfo[] = Object.values(tankData.tanks as Record<string, 
 );
 export const tankById = new Map(tanks.map((t) => [t.id, t]));
 export const tankPortraits: Record<string, Sprite> = tankData.portraits as Record<string, Sprite>;
+export const items: ItemInfo[] = itemData.items as ItemInfo[];
+export const itemById = new Map(items.map((item) => [item.id, item]));
 export const explosion = tankData.explosion as {
   url: string;
   cellW: number;
@@ -176,9 +192,18 @@ export function skillName(tankId: number) {
 }
 
 export function statusText(status: Status) {
-  return status.kind === "poison"
-    ? `中毒 ${status.turns}`
-    : status.kind === "burn"
-      ? `燃烧 ${status.turns}`
-      : status.kind;
+  switch (status.kind) {
+    case "poison":
+      return `中毒 ${status.turns}`;
+    case "burn":
+      return `燃烧 ${status.turns}`;
+    case "shield":
+      return `护盾 ${status.turns}`;
+    case "power":
+      return `强化 ${status.turns}`;
+    case "nowind":
+      return `穿风 ${status.turns}`;
+    default:
+      return status.kind;
+  }
 }

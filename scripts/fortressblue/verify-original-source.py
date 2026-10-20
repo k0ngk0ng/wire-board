@@ -25,6 +25,7 @@ PREPARE = ROOT / "scripts/fortressblue/prepare-original-assets.py"
 MANIFEST_PATH = ROOT / "games/fortressblue/assets/manifest.json"
 CATALOG_PATH = ROOT / "games/fortressblue/maps/catalog.json"
 TANKS_PATH = ROOT / "games/fortressblue/data/tanks.json"
+ITEMS_PATH = ROOT / "games/fortressblue/data/items.json"
 SOURCES_PATH = ROOT / "games/fortressblue/assets/sources.json"
 OUT = ROOT / ".local/fortressblue/asset-redecode.json"
 
@@ -44,6 +45,7 @@ def main() -> int:
     manifest = json.loads(MANIFEST_PATH.read_text())
     catalog = json.loads(CATALOG_PATH.read_text())
     tanks = json.loads(TANKS_PATH.read_text())
+    items = json.loads(ITEMS_PATH.read_text())["items"]
     sources = json.loads(SOURCES_PATH.read_text())["hashes"]
     prepare = load_prepare()
     if not prepare.LOCAL.is_dir():
@@ -106,6 +108,13 @@ def main() -> int:
         if bullet:
             rel = f"projectiles/{tank_id}.webp"
             check(f"bullet {tank_id}", digest(tmp / rel), by_file[rel]["sha256"])
+
+    built_items = prepare.build_items()
+    check("item count", len(built_items), len(items))
+    for item in built_items:
+        rel = f"items/{item['id']}.webp"
+        check(f"item {item['id']}", digest(tmp / rel), by_file[rel]["sha256"])
+        check(f"item {item['id']} meta", item, next(i for i in items if i["id"] == item["id"]))
 
     shutil.rmtree(tmp, ignore_errors=True)
     failed = [item for item in checks if not item["ok"]]

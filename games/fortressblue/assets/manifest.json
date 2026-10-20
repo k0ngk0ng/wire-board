@@ -2,7 +2,7 @@
   "version": "fortressblue/v2",
   "prefix": "bga/v20261002-1/fortressblue/v2/",
   "generator": "scripts/fortressblue/prepare-original-assets.py",
-  "generatorSha256": "1f7d357c6de6bc01d8e91342ed1baeb9c7ad26bb51c3a743fc595d869ef29049",
+  "generatorSha256": "456ab8030eff00be55b2ac90e26a9e33a2d0c27ec1e16c04943e047e54662974",
   "license": "原版素材来自官方网页客户端公开资源包；版权归 CCR / 原权利方所有，仅经用户授权在私有平台使用，原始媒体不进入 Git。",
   "entries": [
     {
@@ -219,6 +219,70 @@
       "output": "games/fortressblue/assets/public/fortressblue/v2/effects/explosion.webp",
       "sha256": "9e466cdca9167e69720e5bb7114d9f70cbf719923ebbd24ff6d472c594fe4899",
       "bytes": 54480,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/0.webp",
+      "urlPath": "/fortressblue/v2/items/0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/0.webp",
+      "sha256": "1a5148ee987c2a8aaa4089d880832a4b0ef6b00abf849d7850c55cc64b3759a2",
+      "bytes": 502,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/1.webp",
+      "urlPath": "/fortressblue/v2/items/1.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/1.webp",
+      "sha256": "79f56026f27b9b176bca80d183d3fe15f137c3c49f1ae8d38a1f5414d7537d20",
+      "bytes": 658,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/2.webp",
+      "urlPath": "/fortressblue/v2/items/2.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/2.webp",
+      "sha256": "29dea58ad30f53efc81ecf85403a6d094d72bcc726e1a2bdfa03e33a79df1b9f",
+      "bytes": 816,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/25.webp",
+      "urlPath": "/fortressblue/v2/items/25.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/25.webp",
+      "sha256": "7a169770daf54f16564c719526476cb2d092c8bf19e877eb677864b9aa84ad5a",
+      "bytes": 946,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/26.webp",
+      "urlPath": "/fortressblue/v2/items/26.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/26.webp",
+      "sha256": "ebe21682640244a85708ef795cd522df02ac485b6419381b17c0bbc09172a9f2",
+      "bytes": 738,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/3.webp",
+      "urlPath": "/fortressblue/v2/items/3.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/3.webp",
+      "sha256": "7e24388a856e632edf49215dc7d03277929e875f0120bc07200b8db88958183a",
+      "bytes": 792,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/35.webp",
+      "urlPath": "/fortressblue/v2/items/35.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/35.webp",
+      "sha256": "8e7300f1cd26cfed992856a5efd5c2a7b16c9f845ea68df0ca82295fa05cc5e9",
+      "bytes": 834,
+      "mime": "image/webp"
+    },
+    {
+      "file": "items/4.webp",
+      "urlPath": "/fortressblue/v2/items/4.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v2/items/4.webp",
+      "sha256": "376a8561854be75e190eec1323e87ec3d413b5897f01f26823bd460f57996b2e",
+      "bytes": 892,
       "mime": "image/webp"
     },
     {

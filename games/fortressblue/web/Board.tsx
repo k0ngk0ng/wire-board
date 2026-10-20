@@ -18,6 +18,7 @@ import {
   cellSize,
   clamp,
   explosion,
+  itemById,
   mapById,
   maps,
   sourceList,
@@ -792,6 +793,14 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     setFacing(next);
   }, []);
 
+  const useItem = useCallback(
+    (slot: number) => {
+      if (!canAct || phase !== "playing") return;
+      void act({ type: "item", epoch: data.epoch, turn: data.turn, slot });
+    },
+    [act, canAct, data.epoch, data.turn, phase],
+  );
+
   const aimAtEvent = useCallback(
     (event: ReactPointerEvent<HTMLCanvasElement>) => {
       pointerType.current = event.pointerType;
@@ -987,6 +996,33 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
         </div>
       )}
 
+        <div className="fb-items" aria-label="道具">
+          <span className="fb-items-label">道具</span>
+          {(own?.items ?? []).length === 0 ? (
+            <span className="fb-item-empty">本局道具已用完</span>
+          ) : (
+            (own?.items ?? []).map((id, slot) => {
+              const item = itemById.get(id);
+              if (!item) return null;
+              return (
+                <button
+                  type="button"
+                  key={`${id}-${slot}`}
+                  data-fortressblue-item={id}
+                  data-slot={slot}
+                  disabled={!canAct}
+                  title={item.description}
+                  aria-label={`使用${item.name}：${item.description}`}
+                  onClick={() => useItem(slot)}
+                >
+                  <img src={sourceList(assets, item.icon)[0]} alt="" />
+                  <span>{item.name}</span>
+                </button>
+              );
+            })
+          )}
+        </div>
+
       {phase === "select" && (
         <div className="fb-draft" role="dialog" aria-label="选择坦克">
           <div className="fb-draft-head">
@@ -1140,7 +1176,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
         <div className="fb-tip">
           {phase === "playing"
             ? canAct
-              ? `移动力 ${Math.round(own?.fuel ?? 0)} · 鼠标瞄准／滚轮力度／点击开火 · ←→ 移动 · ↑↓ 角度 · Z/X 力度 · Q/E 弹种 · 空格开火`
+              ? `移动力 ${Math.round(own?.fuel ?? 0)} · 鼠标瞄准／滚轮力度／点击或空格开火 · 道具可在开火前使用`
               : "等待其他玩家行动"
             : phase === "select"
               ? "选择坦克后自动开始"

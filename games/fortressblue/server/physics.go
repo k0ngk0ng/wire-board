@@ -255,7 +255,7 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 		if s.Sudden {
 			damage *= 2
 		}
-		damage = max(1, damage)
+		damage = shieldedDamage(t, damage)
 		t.HP -= damage
 		t.Damage += damage
 		shooter.Damage += damage
@@ -283,6 +283,13 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 	return blast
 }
 
+func shieldedDamage(t *Tank, damage int) int {
+	if hasStatus(t, "shield") {
+		damage = max(1, int(math.Round(float64(damage)*0.5)))
+	}
+	return max(1, damage)
+}
+
 func addStatus(t *Tank, st Status) {
 	for i := range t.Statuses {
 		if t.Statuses[i].Kind == st.Kind {
@@ -306,12 +313,14 @@ func tickStatuses(s *State, at int64) {
 			if st.Turns <= 0 {
 				continue
 			}
-			t.HP -= st.Damage
-			if st.Source >= 0 && st.Source < len(s.Tanks) {
-				s.DamageTotal[st.Source] += st.Damage
-				s.Tanks[st.Source].Damage += st.Damage
+			if st.Damage > 0 {
+				t.HP -= st.Damage
+				if st.Source >= 0 && st.Source < len(s.Tanks) {
+					s.DamageTotal[st.Source] += st.Damage
+					s.Tanks[st.Source].Damage += st.Damage
+				}
+				s.emit("status", st.Source, i, t.X, t.Y, st.Damage, st.Kind, at)
 			}
-			s.emit("status", st.Source, i, t.X, t.Y, st.Damage, st.Kind, at)
 			st.Turns--
 			if st.Turns > 0 {
 				next = append(next, st)

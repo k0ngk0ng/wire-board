@@ -85,6 +85,15 @@ func TestFortressBlueEightSeatHTTPAndTeamResult(t *testing.T) {
 	h.People[s.Current].Action(bad, 400)
 	bad = map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": 45, "power": 101, "facing": 1, "weapon": "primary"}
 	h.People[s.Current].Action(bad, 400)
+	if len(s.Tanks[s.Current].Items) != fortressblue.StartingItems {
+		t.Fatalf("items not assigned: %+v", s.Tanks[s.Current].Items)
+	}
+	h.People[s.Current].Action(map[string]any{"type": "item", "epoch": s.Epoch, "turn": s.Turn, "slot": 99}, 400)
+	h.People[s.Current].Action(map[string]any{"type": "item", "epoch": s.Epoch, "turn": s.Turn, "slot": 0}, 200)
+	afterItem := state(h.People[0])
+	if afterItem.Turn != s.Turn || afterItem.Current != s.Current || len(afterItem.Tanks[s.Current].Items) != fortressblue.StartingItems-1 {
+		t.Fatalf("HTTP item use ended turn or lost item: %+v", afterItem)
+	}
 	fire := map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": 45, "power": 60, "facing": 1, "weapon": "primary"}
 	h.People[s.Current].Action(fire, 200)
 	after := state(h.People[0])
