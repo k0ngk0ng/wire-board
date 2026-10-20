@@ -34,7 +34,8 @@
 }
 .fb-map-preview img {
   width: 132px;
-  height: 74px;
+  height: auto;
+  aspect-ratio: 25 / 16;
   flex: 0 0 auto;
   object-fit: cover;
   border-radius: 6px;
@@ -42,7 +43,8 @@
 }
 .fb-map-collage {
   width: 132px;
-  height: 74px;
+  height: auto;
+  aspect-ratio: 25 / 16;
   flex: 0 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -282,6 +284,20 @@
   color: #ffe08a;
   font-style: normal;
   white-space: nowrap;
+}
+.fb-aimhint {
+  position: absolute;
+  top: calc(18px + 78px);
+  left: 18px;
+  z-index: 3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(35, 24, 7, 0.84);
+  border: 1px solid #c9a45c;
+  color: #ffe6a6;
+  font-size: 11px;
+  text-shadow: 0 1px 2px #000;
+  pointer-events: none;
 }
 
 /* Draft */
@@ -698,6 +714,13 @@
     left: 10px;
     font-size: 9px;
   }
+  .fb-aimhint {
+    top: calc(10px + 66px);
+    left: 10px;
+    max-width: 82%;
+    padding: 3px 6px;
+    font-size: 9px;
+  }
   .fb-tank-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -743,9 +766,11 @@
   .fortressblue-options {
     grid-template-columns: minmax(0, 1fr);
   }
-  .fb-map-preview img {
+  .fb-map-preview img,
+  .fb-map-collage {
     width: 96px;
-    height: 54px;
+    height: auto;
+    aspect-ratio: 25 / 16;
   }
 }
 

@@ -49,8 +49,8 @@ type ImageMap = Record<string, HTMLImageElement | null>;
 
 const ART_SCALE = 2.4;
 const MOBILE_VIEW = 560;
-const MID_VIEW = 900;
-const DESKTOP_VIEW = 1200;
+const MID_VIEW = 1100;
+const DESKTOP_VIEW = 1500;
 
 const imageCache = new Map<string, Promise<HTMLImageElement | null>>();
 
@@ -226,6 +226,7 @@ function drawTank(
   info: { sprites: Record<string, { ax: number; ay: number; w: number; h: number; url: string }> } | undefined,
   now: number,
   anim: Animation | null,
+  screenScale: number,
 ) {
   if (!tank.selected) return;
   const sprite = info?.sprites.idle;
@@ -267,26 +268,28 @@ function drawTank(
   }
   ctx.restore();
   if (!useDie) {
-    const width = 74;
+    // Keep the name/HP plate a constant on-screen size while the camera zooms.
+    const ui = 1 / Math.max(0.35, screenScale);
+    const width = 66 * ui;
     const x = tank.x - width / 2;
-    const y = tank.y - 104;
+    const y = tank.y - 72 * ui;
     ctx.fillStyle = "rgba(12,18,24,.82)";
-    ctx.fillRect(x - 2, y - 2, width + 4, 10);
+    ctx.fillRect(x - 2 * ui, y - 2 * ui, width + 4 * ui, 10 * ui);
     ctx.fillStyle = teamColors[tank.team] ?? "#888";
-    ctx.fillRect(x, y, width * clamp(tank.hp / Math.max(1, tank.maxHp), 0, 1), 6);
+    ctx.fillRect(x, y, width * clamp(tank.hp / Math.max(1, tank.maxHp), 0, 1), 6 * ui);
     ctx.fillStyle = "#f7f3e6";
-    ctx.font = "bold 13px system-ui, sans-serif";
+    ctx.font = `bold ${12 * ui}px system-ui, sans-serif`;
     ctx.textAlign = "center";
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 3 * ui;
     ctx.strokeStyle = "rgba(5,15,25,.9)";
-    ctx.strokeText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7);
-    ctx.fillText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7);
+    ctx.strokeText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7 * ui);
+    ctx.fillText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7 * ui);
     if (tank.statuses?.length) {
       ctx.fillStyle = "#f0d58c";
-      ctx.font = "11px system-ui, sans-serif";
+      ctx.font = `${10 * ui}px system-ui, sans-serif`;
       const status = tank.statuses.map(statusText).join(" ");
-      ctx.strokeText(status, tank.x, y - 21);
-      ctx.fillText(status, tank.x, y - 21);
+      ctx.strokeText(status, tank.x, y - 21 * ui);
+      ctx.fillText(status, tank.x, y - 21 * ui);
     }
   }
 }
@@ -307,9 +310,9 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
   const [power, setPower] = useState(65);
   const [facing, setFacing] = useState(1);
   const [weapon, setWeapon] = useState<"primary" | "special">("primary");
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => performance.now());
   const lastView = useRef<View | null>(null);
-  const seenShot = useRef<number | null>(null);
+  const seenShot = useRef<number>(0);
   const seenEpoch = useRef<string>("");
   const lastEvent = useRef<number>(0);
   const eventEpoch = useRef<string>("");
@@ -404,17 +407,14 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     if (seenEpoch.current !== data.epoch) {
       seenEpoch.current = data.epoch;
       lastView.current = data;
-      seenShot.current = data.lastShot?.id ?? null;
+      // A fresh mount with no shot yet must still animate the first shot. Only
+      // an already existing shot id is treated as played after refresh/reconnect.
+      seenShot.current = data.lastShot?.id ?? 0;
       setAnim(null);
       return;
     }
     const shot = data.lastShot;
     if (!shot) {
-      lastView.current = data;
-      return;
-    }
-    if (seenShot.current === null) {
-      seenShot.current = shot.id;
       lastView.current = data;
       return;
     }
@@ -449,7 +449,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
 
   // Update the displayed clock and finish animations.
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 120);
+    const timer = window.setInterval(() => setNow(performance.now()), 120);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -544,6 +544,9 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    canvas.dataset.projectile = "";
+    // Animate from the live clock; the 120 ms React clock is only for UI text.
+    const frameNow = performance.now();
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const cw = size.w;
     const ch = size.h;
@@ -552,7 +555,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     const scale = cw / worldViewW;
     const worldViewH = ch / scale;
     const focus = anim
-      ? pathPoint(anim.shot.arcs[0], clamp((now - anim.start) / Math.max(1, anim.impactAt), 0, 1))
+      ? pathPoint(anim.shot.arcs[0], clamp((frameNow - anim.start) / Math.max(1, anim.impactAt), 0, 1))
       : currentTank ?? { x: map.width / 2, y: map.height * 0.7 };
     const camX = clamp(
       focus.x - worldViewW / 2,
@@ -604,32 +607,53 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
       ctx.stroke();
       ctx.restore();
     }
-    const renderTanks = anim && now < anim.impactAt ? anim.beforeTanks : tanks;
+    const renderTanks = anim && frameNow < anim.impactAt ? anim.beforeTanks : tanks;
     for (const tank of renderTanks) {
       const info = tankInfo(tank.tankId);
       const sprite = tank.alive ? info?.sprites.idle : info?.sprites.die;
       const key = sprite ? sourceList(assets, sprite.url).join("|") : "";
-      drawTank(ctx, data, tank, images[key] ?? null, info, now, anim);
+      drawTank(ctx, data, tank, images[key] ?? null, info, frameNow, anim, scale);
     }
     if (anim) {
-      const elapsed = now - anim.start;
+      const elapsed = frameNow - anim.start;
       if (elapsed <= anim.impactAt) {
-        const p = pathPoint(anim.shot.arcs[0], elapsed / Math.max(1, anim.impactAt));
+        const progress = elapsed / Math.max(1, anim.impactAt);
+        const p = pathPoint(anim.shot.arcs[0], progress);
         const shooter = tankInfo(tanks[anim.shot.seat]?.tankId ?? 0);
         const bullet = shooter?.bullet;
+        const team = teamColors[tanks[anim.shot.seat]?.team ?? 0] ?? "#ffe7a2";
+        // Flight trail keeps the shell visible even when the sprite is small.
+        const trail = pathPoint(anim.shot.arcs[0], clamp(progress - 0.05, 0, 1));
+        ctx.save();
+        ctx.strokeStyle = team;
+        ctx.globalAlpha = 0.55;
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(trail.x, trail.y);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+        ctx.globalAlpha = 0.3;
+        ctx.fillStyle = team;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
         if (bullet) {
           const img = images[sourceList(assets, bullet.url).join("|")];
           if (img) {
+            canvas.dataset.projectile = "sprite";
             ctx.save();
             ctx.translate(p.x, p.y);
             ctx.rotate(Math.abs(p.angle) > Math.PI / 2 ? p.angle + Math.PI : p.angle);
-            const s = 1.0;
+            const s = 1.9;
             ctx.drawImage(img, -img.width * s / 2, -img.height * s / 2, img.width * s, img.height * s);
             ctx.restore();
           } else {
+            canvas.dataset.projectile = "dot";
             ctx.fillStyle = "#ffe7a2";
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
             ctx.fill();
           }
         }
@@ -957,6 +981,11 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
           <span>{phase === "select" ? "选择你的坦克" : "对局结束"}</span>
         )}
       </div>
+      {canAct && (
+        <div className="fb-aimhint">
+          鼠标瞄准 · 滚轮力度 · 点击战场或按空格开火
+        </div>
+      )}
 
       {phase === "select" && (
         <div className="fb-draft" role="dialog" aria-label="选择坦克">
