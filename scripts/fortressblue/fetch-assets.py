@@ -8,6 +8,7 @@ left untouched.
 """
 from __future__ import annotations
 
+import concurrent.futures
 import hashlib
 import json
 import sys
@@ -28,21 +29,23 @@ def main() -> None:
     entries = manifest["entries"]
     if not entries:
         raise SystemExit("empty asset manifest")
-    downloaded = 0
-    for entry in entries:
+    def ensure(entry):
         target = ROOT / entry["output"]
         if target.is_file():
             data = target.read_bytes()
             if len(data) == entry["bytes"] and sha(data) == entry["sha256"]:
-                continue
+                return False
         url = BASE + entry["urlPath"]
-        with urllib.request.urlopen(url, timeout=90) as response:
+        with urllib.request.urlopen(url, timeout=60) as response:
             data = response.read()
         if len(data) != entry["bytes"] or sha(data) != entry["sha256"]:
-            raise SystemExit(f"asset mismatch: {url}")
+            raise RuntimeError(f"asset mismatch: {url}")
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)
-        downloaded += 1
+        return True
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+        downloaded = sum(1 for changed in pool.map(ensure, entries) if changed)
     print(f"fallback media ready: {len(entries)} objects, downloaded {downloaded}")
 
 
