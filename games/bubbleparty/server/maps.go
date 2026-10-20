@@ -7,7 +7,7 @@ type mapDef struct {
 }
 
 var mapDefs = []mapDef{
-	{"community10", 48, [][2]int{{4, 3}, {5, 3}, {4, 4}, {10, 9}, {9, 9}, {10, 8}}},
+	{"community10", 0, nil},
 	{"waterpark", 40, [][2]int{{2, 6}, {3, 6}, {12, 6}, {11, 6}}},
 	{"forest", 56, [][2]int{{5, 2}, {5, 3}, {9, 10}, {9, 9}}},
 	{"desert", 44, [][2]int{{3, 7}, {4, 7}, {11, 5}, {10, 5}}},
@@ -74,6 +74,9 @@ func minInt2(a, b int) int {
 }
 
 func mapCells(id string, seed uint64) []byte {
+	if id == "community10" {
+		return districtCells()
+	}
 	def, ok := mapByID(id)
 	if !ok {
 		def, _ = mapByID("community10")
@@ -156,4 +159,133 @@ func reachable(cells []byte, x, y int) bool {
 		}
 	}
 	return true
+}
+
+// Public decoration codes are independent of collision cells. The district
+// layout follows the official screenshot transcription; collision semantics
+// remain provisional until verified against the original runtime.
+const (
+	TileGround = iota
+	TileRoad
+	TileHedge
+	TileTree
+	TileHouseRed
+	TileHouseBlue
+	TileHouseYellow
+	TileBrickRed
+	TileBrickOrange
+	TileCrate
+	TileWall
+)
+
+var districtRows = []string{
+	".ORORT..CTHRH.H",
+	".HCHCTC..TRO...",
+	".OROOT.CCTHCHCH",
+	"CHCHCTC..TOROOO",
+	"OORORT..CTHCHCH",
+	"OHOHOTCC.TORORO",
+	"TTTTT...C.TTTTT",
+	"OORORTC..TOHOHR",
+	"HCHCHT.CCTOOROO",
+	"OORORTC..TCHCHC",
+	"H.HCHT..CTOROR.",
+	"..OORTCC.TCHCH.",
+	"H.HRHT..CTOOO..",
+}
+
+func districtCells() []byte {
+	cells := make([]byte, Cols*Rows)
+	for y, row := range districtRows {
+		for x, c := range row {
+			switch c {
+			case 'H':
+				cells[y*Cols+x] = CellWall
+			case 'R', 'O', 'C':
+				cells[y*Cols+x] = CellCrate
+			}
+		}
+	}
+	return cells
+}
+
+var districtSpawns = [2][][2]int{
+	{{0, 0}, {1, 11}, {6, 6}, {7, 1}},
+	{{14, 12}, {13, 1}, {8, 7}, {7, 10}},
+}
+
+func mapSpawnsFor(id string, teamSize, team int) [][2]int {
+	if id != "community10" {
+		return spawnsFor(teamSize, team)
+	}
+	return append([][2]int(nil), districtSpawns[team][:teamSize]...)
+}
+
+// Only the first four corner spawns require openings. These seven soft blocks
+// are the explicit, documented safety adjustments to the visual reference.
+func clearDistrictSpawnExit(cells []byte, x, y int) {
+	var clear [][2]int
+	switch [2]int{x, y} {
+	case [2]int{0, 0}:
+		clear = [][2]int{{0, 3}}
+	case [2]int{14, 12}:
+		clear = [][2]int{{14, 9}}
+	case [2]int{1, 11}:
+		clear = [][2]int{{1, 9}, {1, 8}}
+	case [2]int{13, 1}:
+		clear = [][2]int{{13, 2}, {13, 3}, {13, 4}}
+	}
+	for _, p := range clear {
+		if cells[p[1]*Cols+p[0]] == CellCrate {
+			cells[p[1]*Cols+p[0]] = CellEmpty
+		}
+	}
+}
+
+func mapTiles(id string, cells []byte) []int {
+	tiles := make([]int, len(cells))
+	for y := 0; y < Rows; y++ {
+		for x := 0; x < Cols; x++ {
+			idx := y*Cols + x
+			base := TileGround
+			var mark byte
+			if id == "community10" {
+				mark = districtRows[y][x]
+				if x >= 6 && x <= 8 {
+					base = TileRoad
+				}
+			}
+			tile := base
+			switch cells[idx] {
+			case CellWall:
+				tile = TileWall
+				if mark == 'H' {
+					tile = TileHouseRed
+					if x < 5 && y >= 7 {
+						tile = TileHouseBlue
+					}
+					if x >= 10 && y < 6 {
+						tile = TileHouseYellow
+					}
+				}
+			case CellCrate:
+				tile = TileCrate
+				if mark == 'R' {
+					tile = TileBrickRed
+				}
+				if mark == 'O' {
+					tile = TileBrickOrange
+				}
+			default:
+				if mark == 'T' {
+					tile = TileHedge
+					if y == 6 && x%2 == 0 || (x == 5 || x == 9) && y%2 == 0 {
+						tile = TileTree
+					}
+				}
+			}
+			tiles[idx] = tile
+		}
+	}
+	return tiles
 }

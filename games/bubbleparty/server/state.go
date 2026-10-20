@@ -1,5 +1,5 @@
 // Package bubbleparty implements a server-authoritative real-time team battle
-// with water balloons, destructible crates and a shrinking sudden-death zone.
+// with water balloons, destructible scenery and rescue-based team combat.
 package bubbleparty
 
 import (
@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"io"
+	"math"
 
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
@@ -23,24 +24,30 @@ const (
 	BombFuseMS = int64(2200)
 	BlastMS    = int64(420)
 	ShrinkMS   = int64(3000)
-	IdleMS     = int64(2500)
+	IdleMS     = int64(60000)
 	LostMS     = int64(700)
 	DefaultMS  = int64(300000)
 
-	MaxPlayers      = 8
-	MaxBombs        = 64
-	MaxItems        = 40
-	MaxEvents       = 64
-	MaxLog          = 80
-	MaxPending      = 32
-	MaxActionSize   = 8 * 1024
-	MaxSeq          = int64(1<<31 - 1)
-	MaxSeqJump      = int64(2048)
-	MaxBombCapacity = 5
-	MaxBombRange    = 6
-	MinMoveMS       = 70
-	BaseMoveMS      = 150
-	BaseBombRange   = 2
+	// Provisional tuning pending runtime evidence from the original game.
+	TrapMS             = int64(5000)
+	RescueProtectionMS = int64(1000)
+
+	ClassicRulesVersion = 2
+	MaxPlayers          = 8
+	MaxBombs            = 64
+	MaxItems            = 40
+	MaxEvents           = 64
+	MaxLog              = 80
+	MaxPending          = 32
+	MaxActionSize       = 8 * 1024
+	MaxSeq              = int64(1<<31 - 1)
+	MaxSeqJump          = int64(2048)
+	MaxBombCapacity     = 5
+	MaxBombRange        = 6
+	MinMoveMS           = 70
+	BaseMoveMS          = 150
+	BaseBombRange       = 2
+	PlayerRadius        = 0.28
 )
 
 const (
@@ -81,26 +88,31 @@ type Input struct {
 }
 
 type Player struct {
-	Seat         int     `json:"seat"`
-	Team         int     `json:"team"`
-	X            int     `json:"x"`
-	Y            int     `json:"y"`
-	Dir          string  `json:"dir"`
-	Alive        bool    `json:"alive"`
-	Shield       bool    `json:"shield"`
-	SpeedMS      int     `json:"speedMs"`
-	MaxBombs     int     `json:"maxBombs"`
-	Range        int     `json:"range"`
-	Eliminations int     `json:"eliminations"`
-	Crates       int     `json:"crates"`
-	Seq          int64   `json:"seq"`
-	LastInputAt  int64   `json:"lastInputAt"`
-	IdleAt       int64   `json:"idleAt"`
-	NextMoveAt   int64   `json:"nextMoveAt"`
-	NextBombAt   int64   `json:"nextBombAt"`
-	BombReq      bool    `json:"bombReq"`
-	Applied      Input   `json:"applied"`
-	Pending      []Input `json:"pending,omitempty"`
+	Seat              int     `json:"seat"`
+	Team              int     `json:"team"`
+	X                 int     `json:"x"`
+	Y                 int     `json:"y"`
+	OffsetX           float64 `json:"offsetX,omitempty"`
+	OffsetY           float64 `json:"offsetY,omitempty"`
+	Dir               string  `json:"dir"`
+	Alive             bool    `json:"alive"`
+	TrappedUntil      int64   `json:"trappedUntil"`
+	InvulnerableUntil int64   `json:"invulnerableUntil"`
+	TrappedBy         int     `json:"trappedBy"`
+	Shield            bool    `json:"shield"`
+	SpeedMS           int     `json:"speedMs"`
+	MaxBombs          int     `json:"maxBombs"`
+	Range             int     `json:"range"`
+	Eliminations      int     `json:"eliminations"`
+	Crates            int     `json:"crates"`
+	Seq               int64   `json:"seq"`
+	LastInputAt       int64   `json:"lastInputAt"`
+	IdleAt            int64   `json:"idleAt"`
+	NextMoveAt        int64   `json:"nextMoveAt"`
+	NextBombAt        int64   `json:"nextBombAt"`
+	BombReq           bool    `json:"bombReq"`
+	Applied           Input   `json:"applied"`
+	Pending           []Input `json:"pending,omitempty"`
 }
 
 type Bomb struct {
@@ -142,71 +154,79 @@ type Event struct {
 }
 
 type State struct {
-	Schema      int             `json:"schema"`
-	Options     Options         `json:"options"`
-	Phase       string          `json:"phase"`
-	Epoch       string          `json:"epoch"`
-	Seed        uint64          `json:"seed"`
-	ServerAt    int64           `json:"serverAt"`
-	StartAt     int64           `json:"startAt"`
-	MatchEndsAt int64           `json:"matchEndsAt"`
-	SuddenAt    int64           `json:"suddenAt"`
-	Sudden      bool            `json:"sudden"`
-	SafeInset   int             `json:"safeInset"`
-	MapID       string          `json:"mapId"`
-	Players     []Player        `json:"players"`
-	TeamSize    int             `json:"teamSize"`
-	Cells       []byte          `json:"cells"`
-	Bombs       []Bomb          `json:"bombs"`
-	Blasts      []Blast         `json:"blasts"`
-	Items       []Item          `json:"items"`
-	Events      []Event         `json:"events"`
-	EventID     int             `json:"eventId"`
-	BombID      int             `json:"bombId"`
-	ItemID      int             `json:"itemId"`
-	Log         []string        `json:"log"`
-	Result      *gameapi.Result `json:"result,omitempty"`
+	RulesVersion int             `json:"rulesVersion,omitempty"`
+	Schema       int             `json:"schema"`
+	Options      Options         `json:"options"`
+	Phase        string          `json:"phase"`
+	Epoch        string          `json:"epoch"`
+	Seed         uint64          `json:"seed"`
+	ServerAt     int64           `json:"serverAt"`
+	StartAt      int64           `json:"startAt"`
+	MatchEndsAt  int64           `json:"matchEndsAt"`
+	SuddenAt     int64           `json:"suddenAt"`
+	Sudden       bool            `json:"sudden"`
+	SafeInset    int             `json:"safeInset"`
+	MapID        string          `json:"mapId"`
+	Players      []Player        `json:"players"`
+	TeamSize     int             `json:"teamSize"`
+	Cells        []byte          `json:"cells"`
+	Bombs        []Bomb          `json:"bombs"`
+	Blasts       []Blast         `json:"blasts"`
+	Items        []Item          `json:"items"`
+	Events       []Event         `json:"events"`
+	EventID      int             `json:"eventId"`
+	BombID       int             `json:"bombId"`
+	ItemID       int             `json:"itemId"`
+	Log          []string        `json:"log"`
+	Result       *gameapi.Result `json:"result,omitempty"`
 }
 
 type PlayerView struct {
-	Seat         int    `json:"seat"`
-	Seq          int64  `json:"seq"`
-	Team         int    `json:"team"`
-	X            int    `json:"x"`
-	Y            int    `json:"y"`
-	Dir          string `json:"dir"`
-	Alive        bool   `json:"alive"`
-	Shield       bool   `json:"shield"`
-	MaxBombs     int    `json:"maxBombs"`
-	Range        int    `json:"range"`
-	Eliminations int    `json:"eliminations"`
-	Crates       int    `json:"crates"`
-	Applied      Input  `json:"applied"`
+	Seat              int     `json:"seat"`
+	Seq               int64   `json:"seq"`
+	Team              int     `json:"team"`
+	X                 int     `json:"x"`
+	Y                 int     `json:"y"`
+	PX                float64 `json:"px"`
+	PY                float64 `json:"py"`
+	SpeedMS           int     `json:"speedMs"`
+	Dir               string  `json:"dir"`
+	Alive             bool    `json:"alive"`
+	TrappedUntil      int64   `json:"trappedUntil"`
+	InvulnerableUntil int64   `json:"invulnerableUntil"`
+	Shield            bool    `json:"shield"`
+	MaxBombs          int     `json:"maxBombs"`
+	Range             int     `json:"range"`
+	Eliminations      int     `json:"eliminations"`
+	Crates            int     `json:"crates"`
+	Applied           Input   `json:"applied"`
 }
 
 type View struct {
-	Schema      int          `json:"schema"`
-	Options     Options      `json:"options"`
-	Phase       string       `json:"phase"`
-	Epoch       string       `json:"epoch"`
-	ServerAt    int64        `json:"serverAt"`
-	StartAt     int64        `json:"startAt"`
-	MatchEndsAt int64        `json:"matchEndsAt"`
-	SuddenAt    int64        `json:"suddenAt"`
-	Sudden      bool         `json:"sudden"`
-	SafeInset   int          `json:"safeInset"`
-	MapID       string       `json:"mapId"`
-	Players     []PlayerView `json:"players"`
-	TeamSize    int          `json:"teamSize"`
-	Cells       []byte       `json:"cells"`
-	Bombs       []Bomb       `json:"bombs"`
-	Blasts      []Blast      `json:"blasts"`
-	Items       []Item       `json:"items"`
-	Events      []Event      `json:"events"`
-	Log         []string     `json:"log"`
-	You         int          `json:"you"`
-	CanAct      bool         `json:"canAct"`
-	Spectator   bool         `json:"spectator"`
+	RulesVersion int          `json:"rulesVersion"`
+	Schema       int          `json:"schema"`
+	Options      Options      `json:"options"`
+	Phase        string       `json:"phase"`
+	Epoch        string       `json:"epoch"`
+	ServerAt     int64        `json:"serverAt"`
+	StartAt      int64        `json:"startAt"`
+	MatchEndsAt  int64        `json:"matchEndsAt"`
+	SuddenAt     int64        `json:"suddenAt"`
+	Sudden       bool         `json:"sudden"`
+	SafeInset    int          `json:"safeInset"`
+	MapID        string       `json:"mapId"`
+	Players      []PlayerView `json:"players"`
+	TeamSize     int          `json:"teamSize"`
+	Cells        []int        `json:"cells"`
+	Tiles        []int        `json:"tiles"`
+	Bombs        []Bomb       `json:"bombs"`
+	Blasts       []Blast      `json:"blasts"`
+	Items        []Item       `json:"items"`
+	Events       []Event      `json:"events"`
+	Log          []string     `json:"log"`
+	You          int          `json:"you"`
+	CanAct       bool         `json:"canAct"`
+	Spectator    bool         `json:"spectator"`
 }
 
 func strict(raw json.RawMessage, v any) error {
@@ -226,7 +246,7 @@ func strict(raw json.RawMessage, v any) error {
 
 func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 	if players != 2 && players != 4 && players != 6 && players != 8 {
-		return nil, errors.New("泡泡大作战支持 2、4、6 或 8 人")
+		return nil, errors.New("泡泡堂支持 2、4、6 或 8 人")
 	}
 	o := Options{Map: "community10", RoundSeconds: 300}
 	if len(raw) > 0 {
@@ -246,10 +266,13 @@ func configure(players int, raw json.RawMessage) (json.RawMessage, error) {
 func decode(m gameapi.Match) (*State, error) {
 	var s State
 	if m.Schema != 1 {
-		return nil, errors.New("不支持的泡泡大作战存档版本")
+		return nil, errors.New("不支持的泡泡堂存档版本")
 	}
 	if err := json.Unmarshal(m.Data, &s); err != nil {
 		return nil, err
+	}
+	if s.RulesVersion != 0 && s.RulesVersion != ClassicRulesVersion {
+		return nil, errors.New("不支持的泡泡堂规则版本")
 	}
 	if s.Schema != 1 || len(s.Players) == 0 || len(s.Players) > MaxPlayers || len(s.Players)%2 != 0 {
 		return nil, errors.New("无效对局人数")
@@ -282,7 +305,7 @@ func decode(m gameapi.Match) (*State, error) {
 		if p.Seat != i || p.Team != i/s.TeamSize {
 			return nil, errors.New("席位或队伍无效")
 		}
-		if p.X < 0 || p.X >= Cols || p.Y < 0 || p.Y >= Rows {
+		if p.X < 0 || p.X >= Cols || p.Y < 0 || p.Y >= Rows || math.Abs(p.OffsetX) > 0.500001 || math.Abs(p.OffsetY) > 0.500001 {
 			return nil, errors.New("玩家位置无效")
 		}
 		if p.SpeedMS < MinMoveMS || p.SpeedMS > BaseMoveMS || p.MaxBombs < 1 || p.MaxBombs > MaxBombCapacity || p.Range < 1 || p.Range > MaxBombRange {
@@ -296,7 +319,7 @@ func decode(m gameapi.Match) (*State, error) {
 		}
 	}
 	if s.Phase == PhasePlaying {
-		if s.StartAt <= 0 || s.MatchEndsAt <= s.StartAt || s.SuddenAt < s.StartAt || s.SuddenAt > s.MatchEndsAt || s.ServerAt < s.StartAt {
+		if s.StartAt <= 0 || s.MatchEndsAt <= s.StartAt || (s.RulesVersion != ClassicRulesVersion && (s.SuddenAt < s.StartAt || s.SuddenAt > s.MatchEndsAt)) || s.ServerAt < s.StartAt {
 			return nil, errors.New("对局时钟无效")
 		}
 	}
@@ -379,18 +402,23 @@ func (s *State) match() (gameapi.Match, error) {
 
 func (s *State) project(seat int) View {
 	v := View{
-		Schema: 1, Options: s.Options, Phase: s.Phase, Epoch: s.Epoch,
+		RulesVersion: s.RulesVersion, Schema: 1, Options: s.Options, Phase: s.Phase, Epoch: s.Epoch,
 		ServerAt: s.ServerAt, StartAt: s.StartAt, MatchEndsAt: s.MatchEndsAt,
 		SuddenAt: s.SuddenAt, Sudden: s.Sudden, SafeInset: s.SafeInset,
-		MapID: s.MapID, TeamSize: s.TeamSize, Cells: append([]byte{}, s.Cells...),
+		MapID: s.MapID, TeamSize: s.TeamSize, Cells: make([]int, len(s.Cells)), Tiles: mapTiles(s.MapID, s.Cells),
 		Bombs: append([]Bomb{}, s.Bombs...), Blasts: append([]Blast{}, s.Blasts...),
 		Items: append([]Item{}, s.Items...), Events: append([]Event{}, s.Events...),
 		Log: append([]string{}, s.Log...), Players: []PlayerView{}, You: seat, Spectator: seat < 0 || seat >= len(s.Players),
+	}
+	for i, c := range s.Cells {
+		v.Cells[i] = int(c)
 	}
 	for i := range s.Players {
 		p := &s.Players[i]
 		v.Players = append(v.Players, PlayerView{
 			Seat: p.Seat, Seq: p.Seq, Team: p.Team, X: p.X, Y: p.Y, Dir: p.Dir, Alive: p.Alive,
+			PX: float64(p.X) + p.OffsetX, PY: float64(p.Y) + p.OffsetY, SpeedMS: p.SpeedMS,
+			TrappedUntil: p.TrappedUntil, InvulnerableUntil: p.InvulnerableUntil,
 			Shield: p.Shield, MaxBombs: p.MaxBombs, Range: p.Range,
 			Eliminations: p.Eliminations, Crates: p.Crates, Applied: p.Applied,
 		})
@@ -459,7 +487,7 @@ func (s *State) canWalk(p *Player, x, y int) bool {
 }
 
 func (s *State) placeBomb(p *Player, at int64) bool {
-	if p == nil || !p.Alive || p.MaxBombs <= 0 {
+	if p == nil || !p.Alive || p.TrappedUntil > 0 || p.MaxBombs <= 0 {
 		return false
 	}
 	if s.cell(p.X, p.Y) == CellWall || s.cell(p.X, p.Y) == CellCrate || s.cell(p.X, p.Y) == CellBomb {
@@ -487,7 +515,7 @@ func (s *State) placeBomb(p *Player, at int64) bool {
 func (s *State) pickupItems(at int64) {
 	for i := 0; i < len(s.Players); i++ {
 		p := &s.Players[i]
-		if !p.Alive {
+		if !p.Alive || p.TrappedUntil > 0 {
 			continue
 		}
 		for j := 0; j < len(s.Items); j++ {
@@ -523,17 +551,92 @@ func (s *State) eliminate(p *Player, at int64, by int) {
 	if p == nil || !p.Alive {
 		return
 	}
-	if p.Shield {
+	if s.RulesVersion == 0 && p.Shield {
 		p.Shield = false
 		s.emit("shield", p.Seat, p.X, p.Y, "", by, at)
 		return
 	}
 	p.Alive = false
+	p.TrappedUntil = 0
+	p.Applied = Input{At: at, Move: "none"}
+	p.Pending = nil
+	p.BombReq = false
 	s.emit("eliminate", p.Seat, p.X, p.Y, "", by, at)
 	if killer := s.player(by); killer != nil && killer.Team != p.Team {
 		killer.Eliminations++
 	}
 	s.log(fmt.Sprintf("%d 号被水泡淘汰", p.Seat+1))
+}
+
+func stopPlayerControls(p *Player, at int64) {
+	p.Applied = Input{At: at, Move: "none"}
+	p.Pending = nil
+	p.BombReq = false
+}
+
+// Classic water traps first. Existing version-0 saves retain direct damage.
+func (s *State) hitWater(p *Player, at int64, by int) {
+	if s.RulesVersion == 0 {
+		s.eliminate(p, at, by)
+		return
+	}
+	if p == nil || !p.Alive || p.TrappedUntil > 0 || p.InvulnerableUntil > at {
+		return
+	}
+	if p.Shield {
+		p.Shield = false
+		p.InvulnerableUntil = at + RescueProtectionMS
+		s.emit("shield", p.Seat, p.X, p.Y, "", by, at)
+		return
+	}
+	p.TrappedUntil = at + TrapMS
+	p.TrappedBy = by
+	stopPlayerControls(p, at)
+	s.emit("trap", p.Seat, p.X, p.Y, "", by, at)
+}
+
+func (s *State) resolveWaterAndContacts(at int64) {
+	// Legacy damage is applied once by blastCell when the water is created.
+	// Rechecking it every substep would consume an old shield twice.
+	if s.RulesVersion == 0 {
+		return
+	}
+	for i := range s.Players {
+		p := &s.Players[i]
+		if !p.Alive {
+			continue
+		}
+		if p.TrappedUntil > 0 && p.TrappedUntil <= at {
+			s.eliminate(p, at, p.TrappedBy)
+			continue
+		}
+		for _, b := range s.Blasts {
+			if b.EndAt > at && p.X == b.X && p.Y == b.Y {
+				s.hitWater(p, at, b.Seat)
+			}
+		}
+	}
+	for i := range s.Players {
+		p := &s.Players[i]
+		if !p.Alive || p.TrappedUntil == 0 {
+			continue
+		}
+		for j := range s.Players {
+			q := &s.Players[j]
+			if i == j || !q.Alive || q.TrappedUntil > 0 || math.Hypot(float64(q.X-p.X)+q.OffsetX-p.OffsetX, float64(q.Y-p.Y)+q.OffsetY-p.OffsetY) > 2*PlayerRadius {
+				continue
+			}
+			if q.Team != p.Team {
+				s.eliminate(p, at, q.Seat)
+			} else {
+				p.TrappedUntil = 0
+				p.InvulnerableUntil = at + RescueProtectionMS
+				stopPlayerControls(p, at)
+				s.emit("rescue", p.Seat, p.X, p.Y, "", q.Seat, at)
+			}
+			break
+		}
+	}
 }
 
 func (s *State) blastCell(x, y int, seat int, at int64) {
@@ -546,7 +649,7 @@ func (s *State) blastCell(x, y int, seat int, at int64) {
 	for i := range s.Players {
 		p := &s.Players[i]
 		if p.Alive && p.X == x && p.Y == y {
-			s.eliminate(p, at, seat)
+			s.hitWater(p, at, seat)
 		}
 	}
 }
@@ -621,18 +724,27 @@ func (s *State) stepPlayer(p *Player, at int64) {
 	if at-p.LastInputAt > LostMS {
 		p.Applied.Move = "none"
 	}
+	if p.TrappedUntil > 0 {
+		stopPlayerControls(p, at)
+		return
+	}
 	if p.Applied.Bomb {
 		p.BombReq = true
 		p.Applied.Bomb = false
 	}
-	if p.BombReq && at >= p.NextBombAt {
-		s.placeBomb(p, at)
+	if p.BombReq {
+		// Bomb is an edge, not a promise to place later when capacity/cooldown
+		// eventually permits it. Every edge gets exactly one attempt.
+		p.BombReq = false
+		if at >= p.NextBombAt {
+			s.placeBomb(p, at)
+		}
 	}
 	move := p.Applied.Move
 	if move == "" {
 		move = "none"
 	}
-	if move != "none" && at >= p.NextMoveAt {
+	if move != "none" {
 		dx, dy := 0, 0
 		switch move {
 		case "up":
@@ -645,21 +757,128 @@ func (s *State) stepPlayer(p *Player, at int64) {
 			dx = 1
 		}
 		if dx != 0 || dy != 0 {
-			x, y := p.X+dx, p.Y+dy
-			if s.canWalk(p, x, y) {
-				s.setCell(p.X, p.Y, CellEmpty)
-				p.X, p.Y = x, y
-				p.Dir = move
-				p.NextMoveAt = at + int64(p.SpeedMS)
-				s.emit("move", p.Seat, x, y, move, 0, at)
+			if s.RulesVersion == 0 {
+				s.movePlayerLegacy(p, dx, dy, at, move)
 			} else {
-				p.NextMoveAt = at + 50
+				s.movePlayer(p, dx, dy, float64(StepMS)/float64(p.SpeedMS), at, move)
 			}
 		}
 	}
+
+}
+
+func (s *State) movePlayerLegacy(p *Player, dx, dy int, at int64, dir string) {
+	if at < p.NextMoveAt {
+		return
+	}
+	x, y := p.X+dx, p.Y+dy
+	if s.canWalk(p, x, y) {
+		// Preserve a balloon's occupancy after departure (common collision fix).
+		p.X, p.Y = x, y
+		p.Dir = dir
+		p.NextMoveAt = at + int64(p.SpeedMS)
+		s.emit("move", p.Seat, x, y, dir, 0, at)
+	} else {
+		p.NextMoveAt = at + 50
+	}
+}
+
+// Move in grid units, using relative offsets so schema-1 saves lacking them
+// naturally restore at the old integer cell center.
+func (s *State) movePlayer(p *Player, dx, dy int, distance float64, at int64, dir string) {
+	px, py := float64(p.X)+p.OffsetX, float64(p.Y)+p.OffsetY
+	oldX, oldY := p.X, p.Y
+	// A turn first reaches the current row/column center; this keeps a round
+	// body from cutting a solid corner and preserves the distance budget.
+	if dx != 0 && math.Abs(p.OffsetY) > 0.000001 {
+		target := py + math.Copysign(math.Min(distance, math.Abs(p.OffsetY)), -p.OffsetY)
+		next := s.moveAxis(p, px, py, target, false)
+		distance -= math.Abs(next - py)
+		py = next
+		if math.Abs(py-float64(p.Y)) > 0.000001 {
+			distance = 0
+		}
+	}
+	if dy != 0 && math.Abs(p.OffsetX) > 0.000001 {
+		target := px + math.Copysign(math.Min(distance, math.Abs(p.OffsetX)), -p.OffsetX)
+		next := s.moveAxis(p, px, py, target, true)
+		distance -= math.Abs(next - px)
+		px = next
+		if math.Abs(px-float64(p.X)) > 0.000001 {
+			distance = 0
+		}
+	}
+	if distance > 0 {
+		if dx != 0 {
+			px = s.moveAxis(p, px, py, px+float64(dx)*distance, true)
+		}
+		if dy != 0 {
+			py = s.moveAxis(p, px, py, py+float64(dy)*distance, false)
+		}
+	}
+	p.X, p.Y = int(math.Floor(px+0.5)), int(math.Floor(py+0.5))
+	p.OffsetX, p.OffsetY = px-float64(p.X), py-float64(p.Y)
+	if math.Abs(p.OffsetX) < 0.000001 {
+		p.OffsetX = 0
+	}
+	if math.Abs(p.OffsetY) < 0.000001 {
+		p.OffsetY = 0
+	}
+	p.Dir = dir
+	if p.X != oldX || p.Y != oldY {
+		s.emit("move", p.Seat, p.X, p.Y, dir, 0, at)
+	}
+}
+
+func (s *State) moveAxis(p *Player, px, py, target float64, horizontal bool) float64 {
+	old, across := px, py
+	if !horizontal {
+		old, across = py, px
+	}
+	if math.Abs(target-old) < 0.000001 {
+		return old
+	}
+	positive := target > old
+	for y := p.Y - 1; y <= p.Y+1; y++ {
+		for x := p.X - 1; x <= p.X+1; x++ {
+			c := s.cell(x, y)
+			if c != CellWall && c != CellCrate && c != CellBomb {
+				continue
+			}
+			center, cross := float64(x), float64(y)
+			if !horizontal {
+				center, cross = float64(y), float64(x)
+			}
+			if math.Abs(across-cross) >= 0.5+PlayerRadius-0.000001 {
+				continue
+			}
+			low, high := center-0.5-PlayerRadius, center+0.5+PlayerRadius
+			if old > low+0.000001 && old < high-0.000001 {
+				// Players may choose any exit while still in the original balloon
+				// cell. After crossing its cell boundary they may only move away.
+				if c == CellBomb && (p.X == x && p.Y == y || positive && old >= center || !positive && old <= center) {
+					continue
+				}
+				if target > low && target < high {
+					target = old
+				}
+				continue
+			}
+			if positive && old <= low+0.000001 && target > low {
+				target = low
+			}
+			if !positive && old >= high-0.000001 && target < high {
+				target = high
+			}
+		}
+	}
+	return target
 }
 
 func (s *State) shrinkZone(at int64) {
+	if s.RulesVersion == ClassicRulesVersion {
+		return
+	}
 	if !s.Sudden && at >= s.SuddenAt {
 		s.Sudden = true
 		s.emit("sudden", -1, 0, 0, "", 0, at)
@@ -708,6 +927,7 @@ func (s *State) step(at int64) {
 		}
 		i++
 	}
+	s.resolveWaterAndContacts(at)
 	s.pickupItems(at)
 	s.shrinkZone(at)
 }
@@ -740,6 +960,10 @@ func (s *State) evaluate(at int64) {
 		return
 	}
 	if at >= s.MatchEndsAt {
+		if s.RulesVersion == ClassicRulesVersion {
+			s.finish(true, -1, "时间到，双方仍有队员存活")
+			return
+		}
 		switch {
 		case a > b:
 			s.finish(false, 0, "时间到，红队存活人数更多")
@@ -799,6 +1023,9 @@ func (s *State) beginPlaying(at int64) {
 	}
 	s.MatchEndsAt = at + seconds*1000
 	s.SuddenAt = at + seconds*600
+	if s.RulesVersion == ClassicRulesVersion {
+		s.SuddenAt = 0
+	}
 	for i := range s.Players {
 		p := &s.Players[i]
 		p.Alive = true
@@ -830,17 +1057,27 @@ func (s *State) advance(until int64) {
 	if until > s.MatchEndsAt {
 		until = s.MatchEndsAt
 	}
-	for s.Result == nil && s.ServerAt+FrameMS <= until {
-		for step := 0; step < 5; step++ {
+	if s.RulesVersion == 0 {
+		// Keep the old frame cadence and saved NextMoveAt contract intact.
+		for s.Result == nil && s.ServerAt+FrameMS <= until {
+			for step := int64(0); step < FrameMS/StepMS; step++ {
+				at := s.ServerAt + StepMS
+				s.step(at)
+				s.ServerAt = at
+			}
+			s.evaluate(s.ServerAt)
+		}
+	} else {
+		// Classic inputs may arrive between snapshot deadlines. Advancing each
+		// complete substep prevents a short press/release collapsing to no motion.
+		for s.Result == nil && s.ServerAt+StepMS <= until {
 			at := s.ServerAt + StepMS
 			s.step(at)
 			s.ServerAt = at
-			if s.Result != nil {
-				return
-			}
+			s.evaluate(at)
 		}
-		s.evaluate(s.ServerAt)
 	}
+
 	if s.Result == nil && (s.ServerAt >= s.MatchEndsAt || until >= s.MatchEndsAt) {
 		s.evaluate(s.MatchEndsAt)
 	}
@@ -872,6 +1109,12 @@ func (s *State) onTimer(now int64) {
 
 func (s *State) applyInput(p *Player, a Action, now int64) {
 	p.Seq = a.Seq
+	if p.TrappedUntil > 0 {
+		p.LastInputAt = now
+		p.IdleAt = now + IdleMS
+		stopPlayerControls(p, now)
+		return
+	}
 	in := Input{At: now, Move: a.Move, Bomb: a.Bomb}
 	if len(p.Pending) > 0 && p.Pending[len(p.Pending)-1].At == now {
 		p.Pending[len(p.Pending)-1] = in

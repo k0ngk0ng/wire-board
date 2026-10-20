@@ -1,13 +1,23 @@
-import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import {
   LatestInput,
+  HeldDirections,
+  padDirection,
   NEUTRAL,
   isBombKey,
   keyMove,
   type Move,
 } from "./input";
 import { HEIGHT, WIDTH, drawBoard, type DrawPoint } from "./canvas";
+import { loadSprites } from "./sprites";
+import { animationNow } from "./clock";
 import { itemNames, mapNames, sources, teamNames, type View } from "./types";
 import "./style.css";
 
@@ -21,27 +31,64 @@ function useNow(interval = 200) {
 }
 
 function clockNow(view: View, clock: BoardProps["clock"]) {
-  return view.serverAt + Math.max(0, performance.now() - (clock.receivedAt || performance.now()));
+  return animationNow(view.serverAt, clock, performance.now());
 }
 
 export function Board(props: BoardProps<View>) {
   const { room, data: view, act, assets, sound, audio, clock } = props;
   const me = view && room.you >= 0 ? view.players[room.you] : undefined;
-  const enabled = !!view && view.canAct && !room.spectating && !!me?.alive;
+  const trapped = !!me?.trappedUntil;
+  const controlled = !!room.seats[room.you]?.autoPlay;
+  const enabled =
+    !!view &&
+    view.canAct &&
+    !room.spectating &&
+    !!me?.alive &&
+    !trapped &&
+    !controlled;
   const [error, setError] = useState("");
   const input = useRef(new LatestInput());
   const sending = useRef(false);
   const latest = useRef(props);
   latest.current = props;
   const currentMove = useRef<Move>("none");
+  const heldKeys = useRef(new HeldDirections());
+  const padPointer = useRef<number | null>(null);
   const display = useRef(new Map<number, DrawPoint>());
   const canvas = useRef<HTMLCanvasElement>(null);
+  const boardElement = useRef<HTMLElement>(null);
   const seen = useRef(new Set<number>());
   const initialized = useRef("");
   const phaseSeen = useRef("");
   const musicOn = useRef(false);
-  const bombTimer = useRef<number | undefined>(undefined);
   useNow();
+
+  useEffect(() => {
+    void loadSprites(assets);
+  }, [assets]);
+
+  // Enter the arena once on a narrow screen. Keep the shared player panels in
+  // their normal place above it; snapshots must never keep scrolling the page.
+  useEffect(() => {
+    if (!view?.epoch || !window.matchMedia("(max-width: 600px)").matches)
+      return;
+    const frame = requestAnimationFrame(() =>
+      boardElement.current?.scrollIntoView({
+        block: "start",
+        behavior: "instant",
+      }),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [room.id, view?.epoch]);
+
+  useEffect(() => {
+    if (!enabled) {
+      currentMove.current = "none";
+      heldKeys.current.clear();
+      padPointer.current = null;
+      input.current.release();
+    }
+  }, [enabled]);
 
   const sendOne = useCallback((force: boolean) => {
     const p = latest.current;
@@ -97,34 +144,44 @@ export function Board(props: BoardProps<View>) {
     if (!enabled) return;
     input.current.set({ move: currentMove.current, bomb: true });
     sendOne(true);
-    if (bombTimer.current) window.clearTimeout(bombTimer.current);
-    bombTimer.current = window.setTimeout(() => {
-      input.current.set({ move: currentMove.current, bomb: false });
-      sendOne(true);
-    }, 130);
+    input.current.set({ move: currentMove.current, bomb: false });
   }, [enabled, sendOne]);
 
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
-      if (!enabled) return;
+      if (
+        !enabled ||
+        (event.target instanceof HTMLElement &&
+          event.target.closest(
+            "input,textarea,select,[contenteditable=true],[role=dialog]",
+          ))
+      )
+        return;
       const move = keyMove(event.key);
       if (move) {
         event.preventDefault();
-        setMove(move);
+        setMove(heldKeys.current.press(event.key));
         return;
       }
       if (isBombKey(event.key)) {
+        if (
+          event.target instanceof HTMLElement &&
+          event.target.closest("button,a") &&
+          !event.target.closest(".bubble-controls")
+        )
+          return;
         event.preventDefault();
         if (!event.repeat) placeBomb();
       }
     };
     const up = (event: KeyboardEvent) => {
       const move = keyMove(event.key);
-      if (!move || currentMove.current !== move) return;
-      setMove("none");
+      if (!move) return;
+      setMove(heldKeys.current.release(event.key));
     };
     const release = () => {
-      if (bombTimer.current) window.clearTimeout(bombTimer.current);
+      heldKeys.current.clear();
+      padPointer.current = null;
       currentMove.current = "none";
       input.current.release();
       input.current.set({ ...NEUTRAL });
@@ -135,6 +192,7 @@ export function Board(props: BoardProps<View>) {
     window.addEventListener("blur", release);
     document.addEventListener("visibilitychange", release);
     return () => {
+      heldKeys.current.clear();
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
       window.removeEventListener("blur", release);
@@ -144,28 +202,43 @@ export function Board(props: BoardProps<View>) {
 
   useEffect(() => {
     let raf = 0;
-    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    let lastFrame = performance.now();
     const frame = () => {
+      const frameNow = performance.now();
+      const blend = 1 - Math.exp(-Math.min(100, frameNow - lastFrame) / 35);
+      lastFrame = frameNow;
       const current = latest.current.data;
       const ctx = canvas.current?.getContext("2d");
       if (current && ctx) {
         if (!initialized.current) {
-          for (const p of current.players) display.current.set(p.seat, { x: p.x, y: p.y });
+          for (const p of current.players)
+            display.current.set(p.seat, { x: p.px ?? p.x, y: p.py ?? p.y });
         }
         for (const p of current.players) {
           const at = display.current.get(p.seat);
           if (!at || reduced) {
-            display.current.set(p.seat, { x: p.x, y: p.y });
+            display.current.set(p.seat, { x: p.px ?? p.x, y: p.py ?? p.y });
           } else {
-            at.x += (p.x - at.x) * 0.28;
-            at.y += (p.y - at.y) * 0.28;
-            if (Math.abs(p.x - at.x) + Math.abs(p.y - at.y) < 0.02) {
-              at.x = p.x;
-              at.y = p.y;
+            const x = p.px ?? p.x,
+              y = p.py ?? p.y;
+            at.x += (x - at.x) * blend;
+            at.y += (y - at.y) * blend;
+            if (Math.abs(x - at.x) + Math.abs(y - at.y) < 0.005) {
+              at.x = x;
+              at.y = y;
             }
           }
         }
-        drawBoard(ctx, current, display.current, clockNow(current, latest.current.clock), !!reduced);
+        drawBoard(
+          ctx,
+          current,
+          display.current,
+          clockNow(current, latest.current.clock),
+          !!reduced,
+        );
       }
       raf = requestAnimationFrame(frame);
     };
@@ -180,12 +253,17 @@ export function Board(props: BoardProps<View>) {
       initialized.current = scope;
       seen.current = new Set(view.events.map((event) => event.id));
       phaseSeen.current = view.phase;
-      display.current = new Map(view.players.map((p) => [p.seat, { x: p.x, y: p.y }]));
+      display.current = new Map(
+        view.players.map((p) => [p.seat, { x: p.px ?? p.x, y: p.py ?? p.y }]),
+      );
       currentMove.current = "none";
       input.current.reset(me?.seq ?? 0);
       return;
     }
-    if (!sound || document.hidden) return;
+    if (!sound || document.hidden) {
+      for (const event of view.events) seen.current.add(event.id);
+      return;
+    }
     let explosions = 0;
     for (const event of view.events) {
       if (seen.current.has(event.id)) continue;
@@ -195,7 +273,14 @@ export function Board(props: BoardProps<View>) {
           void audio.playWithFallback(sources(assets, "place.wav"));
           break;
         case "explode":
-          if (explosions++ < 2) void audio.playWithFallback(sources(assets, "explode.wav"));
+          if (explosions++ < 2)
+            void audio.playWithFallback(sources(assets, "explode.wav"));
+          break;
+        case "trap":
+          void audio.playWithFallback(sources(assets, "trap.wav"));
+          break;
+        case "rescue":
+          void audio.playWithFallback(sources(assets, "rescue.wav"));
           break;
         case "eliminate":
           void audio.playWithFallback(sources(assets, "eliminate.wav"));
@@ -212,7 +297,12 @@ export function Board(props: BoardProps<View>) {
           void audio.playWithFallback(sources(assets, "sudden.wav"));
           break;
         case "finish": {
-          const winners = me?.team === event.value ? "win.wav" : "lose.wav";
+          const winners =
+            room.game?.winners?.length === 0
+              ? "draw.wav"
+              : me?.team === event.value
+                ? "win.wav"
+                : "lose.wav";
           void audio.playWithFallback(sources(assets, winners));
           audio.stopMusic();
           break;
@@ -222,15 +312,19 @@ export function Board(props: BoardProps<View>) {
   }, [view, room.id, assets, sound, audio, me?.team, me?.seq]);
 
   useEffect(() => {
-    if (!view || !sound) return;
-    const scope = `${room.id}:${view.epoch}:${view.phase}`;
-    if (phaseSeen.current === view.phase) return;
+    if (!view) return;
     const previous = phaseSeen.current;
     phaseSeen.current = view.phase;
-    if (view.phase === "countdown") {
+    if (!sound || document.hidden) {
+      audio.stopMusic();
+      musicOn.current = false;
+      return;
+    }
+    if (view.phase === "countdown" && previous !== "countdown") {
       void audio.playWithFallback(sources(assets, "countdown.wav"));
-    } else if (view.phase === "playing" && previous === "countdown") {
-      void audio.playWithFallback(sources(assets, "start.wav"));
+    } else if (view.phase === "playing") {
+      if (previous === "countdown")
+        void audio.playWithFallback(sources(assets, "start.wav"));
       if (!musicOn.current) {
         musicOn.current = true;
         void audio.music(sources(assets, "battle.wav"));
@@ -243,7 +337,6 @@ export function Board(props: BoardProps<View>) {
 
   useEffect(
     () => () => {
-      if (bombTimer.current) window.clearTimeout(bombTimer.current);
       audio.stop();
       audio.stopMusic();
       musicOn.current = false;
@@ -252,7 +345,7 @@ export function Board(props: BoardProps<View>) {
   );
 
   if (!view) {
-    return <p className="bubble-loading">正在铺设小区草坪…</p>;
+    return <p className="bubble-loading">正在加载泡泡堂战场…</p>;
   }
 
   const alive = [0, 1].map(
@@ -271,22 +364,39 @@ export function Board(props: BoardProps<View>) {
       ? "对局结束"
       : view.spectator
         ? "观战中"
-        : view.canAct
-          ? "可以行动"
-          : "等待其他玩家";
+        : !me?.alive
+          ? "已淘汰 · 观战中"
+          : trapped
+            ? "被水泡困住 · 等待队友救援"
+            : controlled
+              ? "电脑托管中"
+              : view.canAct
+                ? "可以行动"
+                : "等待其他玩家";
 
-  const press = (move: Move) => (event: ReactPointerEvent<HTMLButtonElement>) => {
+  const releasePad = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (padPointer.current !== event.pointerId) return;
     event.preventDefault();
-    event.currentTarget.setPointerCapture?.(event.pointerId);
-    setMove(move);
+    padPointer.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId))
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    setMove("none");
   };
-  const release = (event: ReactPointerEvent<HTMLButtonElement>) => {
+  const movePad = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!enabled || padPointer.current !== event.pointerId) return;
     event.preventDefault();
-    if (currentMove.current !== "none") setMove("none");
+    const rect = event.currentTarget.getBoundingClientRect();
+    const inside =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+    setMove(inside ? padDirection(event.clientX, event.clientY, rect) : "none");
   };
 
   return (
     <main
+      ref={boardElement}
       className="bubble-board"
       data-bubbleparty-phase={view.phase}
       data-bubbleparty-epoch={view.epoch}
@@ -334,9 +444,21 @@ export function Board(props: BoardProps<View>) {
           </div>
         )}
       </div>
-      <div className="bubble-mine">
+      <div className="bubble-mine" aria-live="polite">
+        {trapped && (
+          <strong className="bubble-trapped">
+            救援剩余{" "}
+            {Math.max(
+              0,
+              Math.ceil(((me?.trappedUntil ?? 0) - serverNow) / 1000),
+            )}{" "}
+            秒
+          </strong>
+        )}
         <span>
-          {me ? `你 · ${teamNames[me.team]} · ${me.alive ? "存活" : "已淘汰"}` : "观战"}
+          {me
+            ? `你 · ${teamNames[me.team]} · ${trapped ? "困泡中" : me.alive ? "存活" : "已淘汰"}`
+            : "观战"}
         </span>
         {me && me.alive && (
           <span>
@@ -349,50 +471,32 @@ export function Board(props: BoardProps<View>) {
       </div>
       {!view.spectator && (
         <div className="bubble-controls" aria-label="操作">
-          <div className="bubble-dpad" data-bubbleparty-dpad>
-            <button
-              className="up"
-              disabled={!enabled}
-              aria-label="向上"
-              onPointerDown={press("up")}
-              onPointerUp={release}
-              onPointerCancel={release}
-              onPointerLeave={release}
-            >
+          <div
+            className="bubble-dpad"
+            data-bubbleparty-dpad
+            onPointerDown={(event) => {
+              if (!enabled || padPointer.current !== null || event.button !== 0)
+                return;
+              padPointer.current = event.pointerId;
+              event.currentTarget.setPointerCapture(event.pointerId);
+              movePad(event);
+            }}
+            onPointerMove={movePad}
+            onPointerUp={releasePad}
+            onPointerCancel={releasePad}
+            onLostPointerCapture={releasePad}
+          >
+            <button className="up" disabled={!enabled} aria-label="向上">
               ↑
             </button>
-            <button
-              className="left"
-              disabled={!enabled}
-              aria-label="向左"
-              onPointerDown={press("left")}
-              onPointerUp={release}
-              onPointerCancel={release}
-              onPointerLeave={release}
-            >
+            <button className="left" disabled={!enabled} aria-label="向左">
               ←
             </button>
             <span className="hub" aria-hidden="true" />
-            <button
-              className="right"
-              disabled={!enabled}
-              aria-label="向右"
-              onPointerDown={press("right")}
-              onPointerUp={release}
-              onPointerCancel={release}
-              onPointerLeave={release}
-            >
+            <button className="right" disabled={!enabled} aria-label="向右">
               →
             </button>
-            <button
-              className="down"
-              disabled={!enabled}
-              aria-label="向下"
-              onPointerDown={press("down")}
-              onPointerUp={release}
-              onPointerCancel={release}
-              onPointerLeave={release}
-            >
+            <button className="down" disabled={!enabled} aria-label="向下">
               ↓
             </button>
           </div>
@@ -413,7 +517,7 @@ export function Board(props: BoardProps<View>) {
       <p className="bubble-hint">
         {view.spectator
           ? "观战只读；你可以发表情和聊天。"
-          : "WASD／方向键移动，空格或 J 放水泡。水泡会连爆并破坏木箱；掉进爆心会被淘汰。"}
+          : "WASD／方向键移动，空格或 J 放水泡。水柱命中后困泡，触碰队友救援，触碰对手击破。"}
       </p>
       {error && (
         <div className="bubble-error" role="alert">

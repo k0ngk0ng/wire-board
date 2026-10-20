@@ -74,3 +74,44 @@ test("D-pad rejects the dead zone and selects the dominant axis", () => {
   assert.equal(padDirection(50, 5, rect), "up");
   assert.equal(padDirection(50, 95, rect), "down");
 });
+
+// Refactor failure cases: a short bomb press erased while another request is
+// pending; held bomb replayed as multiple edges; releasing a newer direction
+// forgets an older held key; opposite-key ordering and blur leave movement stuck.
+test("bomb edge survives release behind an in-flight movement", () => {
+  const q = new LatestInput();
+  q.sync({ scope: "room", epoch: "a", seq: 0, enabled: true });
+  q.set({ move: "right", bomb: false });
+  const moving = q.next(0);
+  q.set({ move: "right", bomb: true });
+  q.set({ move: "right", bomb: false });
+  q.complete(moving.token);
+  assert.equal(q.next(160)?.bomb, true, "a tap must survive request latency");
+});
+
+test("one held bomb press emits one edge, not a repeated bomb heartbeat", () => {
+  const q = new LatestInput();
+  q.sync({ scope: "room", epoch: "a", seq: 0, enabled: true });
+  q.set({ move: "right", bomb: true });
+  const first = q.next(0);
+  q.complete(first.token);
+  const heartbeat = q.next(300);
+  assert.equal(heartbeat?.bomb, false);
+});
+
+test("releasing the newest direction resumes the previous held key; blur clears all", async () => {
+  const { HeldDirections } = await import("../web/input.ts");
+  const keys = new HeldDirections();
+  assert.equal(keys.press("ArrowRight"), "right");
+  assert.equal(keys.press("ArrowUp"), "up");
+  assert.equal(
+    keys.press("ArrowRight"),
+    "up",
+    "OS key repeats must not steal direction",
+  );
+  assert.equal(keys.release("ArrowUp"), "right");
+  assert.equal(keys.press("a"), "left");
+  assert.equal(keys.release("a"), "right");
+  keys.clear();
+  assert.equal(keys.release("ArrowRight"), "none");
+});

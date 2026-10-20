@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -21,7 +22,18 @@ func TestBubblepartyBrowserFixture(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	out := filepath.Join(root, ".local/bubbleparty/browser")
+	out := os.Getenv("WIRE_BOARD_BUBBLEPARTY_BROWSER_OUT")
+	if out == "" {
+		out = filepath.Join(root, ".local/bubbleparty/browser")
+	}
+	out, err = filepath.Abs(out)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rel, err := filepath.Rel(root, out)
+	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(os.PathSeparator)) || rel == "." {
+		t.Fatal("browser output must be a dedicated directory inside the repository")
+	}
 	if err = os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}

@@ -1,0 +1,114 @@
+[
+  {
+    "file": "article-121317.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newscontent.asp?Type=json&Article=121317&ApplicationCode=28",
+    "accessed": "2026-10-20",
+    "sha256": "f322b68d7c69d28e0375494814c43deb689dbec69126814165a60db2c3119af2",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "article-121355.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newscontent.asp?Type=json&Article=121355&ApplicationCode=28",
+    "accessed": "2026-10-20",
+    "sha256": "7bda5e8a3f023360e29574a80f9bc3bcb457c4bfe6c17e4e7756e8dd33920318",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "article-121375.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newscontent.asp?Type=json&Article=121375&ApplicationCode=28",
+    "accessed": "2026-10-20",
+    "sha256": "6d2abafbc06926019a31ef8b9c3a8794d9fdae388a5683ff204c41e539084b80",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "category-2941.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newslist.asp?Type=json&CategoryCode=2941&pageSize=100&pageIndex=0",
+    "accessed": "2026-10-20",
+    "sha256": "08e5f8d9cb7de4699f3372f4dd9ee811bc7b44b21ebda088eed68ca1eee05381",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "category-2995.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newslist.asp?Type=json&CategoryCode=2995&pageSize=100&pageIndex=0",
+    "accessed": "2026-10-20",
+    "sha256": "21f0d41f07662b1e932a9ac324d5eda15759a650370037836037e33db7d9dad2",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "category-3018.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newslist.asp?Type=json&CategoryCode=3018&pageSize=100&pageIndex=0",
+    "accessed": "2026-10-20",
+    "sha256": "5c240b3655300ca904b571d857720a85b7a793645e074bb9201da1ba336d6276",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "category-3019.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newslist.asp?Type=json&CategoryCode=3019&pageSize=100&pageIndex=0",
+    "accessed": "2026-10-20",
+    "sha256": "b4d4bae4186de0a95fd9d638ec9b714d2fb6584246e6fdb9c727c2490a621fcc",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "category-3043.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newslist.asp?Type=json&CategoryCode=3043&pageSize=100&pageIndex=0",
+    "accessed": "2026-10-20",
+    "sha256": "58eda860e6a9749dc5f16811de1e8bd2a3bd6174d2af8bd287600b4f28c4daea",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "district-10-visual-grid.json",
+    "url": "derived:official-district-example.jpg",
+    "accessed": "2026-10-20",
+    "sha256": "acdd6dc0a5bfee402a39eec48bc7cf8fa498575c34dbb53e806a72bccc4b0d62",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "official-controls.jpg",
+    "url": "https://pic.web.sdo.com/bnb/bnb/web4/news/img_newer_operat1.jpg",
+    "accessed": "2026-10-20",
+    "sha256": "e811150865f695813e2cbfeecae778dddde48bf2f0602af45400d1d6e4f9d76a",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "official-district-example.jpg",
+    "url": "https://pic.web.sdo.com/bnb/bnb/web4/intro/map/district/map11.jpg",
+    "accessed": "2026-10-20",
+    "sha256": "5c5d68c2982617f1ac164002f9973ad91982f2a9188651df0103b7b4b1f97d1e",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "wikipedia-20261020.txt",
+    "url": "https://zh.wikipedia.org/w/index.php?title=爆爆王&oldid=93873578",
+    "accessed": "2026-10-20",
+    "sha256": "b0c8db843d7292928808cb5f06d812ae860ad4e986b9db5d01b54cbc20631e01",
+    "purpose": "research evidence only; no game runtime use",
+    "redistribution_license": "CC BY-SA 4.0 for text; see source"
+  },
+  {
+    "file": "category-3031.json",
+    "url": "https://news-my.web.sdo.com/UniInterface/news/newslist.asp?Type=json&CategoryCode=3031&pageSize=100&pageIndex=0",
+    "accessed": "2026-10-20",
+    "sha256": "2a14187ce67b4fca0c704d07c17fdf4006b4b4fc77bd4b2205213758792f10c7",
+    "purpose": "research evidence only",
+    "redistribution_license": "unverified"
+  },
+  {
+    "file": "github-remake-search.json",
+    "url": "https://api.github.com/search/repositories",
+    "accessed": "2026-10-20",
+    "sha256": "ddd424e98b83196990d9930a675b91fd3c5ef002cd4ad7b71777ce965a2f628f",
+    "purpose": "research evidence only",
+    "redistribution_license": "unverified"
+  }
+]

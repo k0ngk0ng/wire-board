@@ -1,0 +1,587 @@
+{
+  "version": "bubbleparty/v2",
+  "licenseStatus": "Original asset redistribution permission unverified",
+  "acquired": "2026-10-20",
+  "generator": "byte-for-byte copy from source archive",
+  "entries": [
+    {
+      "file": "Role1.png",
+      "sourcePath": "Pic/Role1.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Role1.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Role1.png",
+      "urlPath": "/bubbleparty/v2/sprites/Role1.png",
+      "sha256": "aa557af9dd5bbe778ec02682e8449559a23b6fa9b2001cdba1c4404567130dad",
+      "sourceSha256": "aa557af9dd5bbe778ec02682e8449559a23b6fa9b2001cdba1c4404567130dad",
+      "bytes": 13261,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        288,
+        256
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Role2.png",
+      "sourcePath": "Pic/Role2.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Role2.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Role2.png",
+      "urlPath": "/bubbleparty/v2/sprites/Role2.png",
+      "sha256": "544e8752c566722e3e53d269dc685fe11dc73943db5d49803793ec32b98b6055",
+      "sourceSha256": "544e8752c566722e3e53d269dc685fe11dc73943db5d49803793ec32b98b6055",
+      "bytes": 18787,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        336,
+        268
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Role1Ani.png",
+      "sourcePath": "Pic/Role1Ani.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Role1Ani.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Role1Ani.png",
+      "urlPath": "/bubbleparty/v2/sprites/Role1Ani.png",
+      "sha256": "fa39de919732d60cf6f3df5a9c3aaab000cb511267340ff0452b66e7c9e35f57",
+      "sourceSha256": "fa39de919732d60cf6f3df5a9c3aaab000cb511267340ff0452b66e7c9e35f57",
+      "bytes": 5671,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        384,
+        64
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Role2Ani.png",
+      "sourcePath": "Pic/Role2Ani.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Role2Ani.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Role2Ani.png",
+      "urlPath": "/bubbleparty/v2/sprites/Role2Ani.png",
+      "sha256": "8e30e74c3435696ffea72527bb33a1dcf6da3822fe2a6ac1ffc73c741c54ee9c",
+      "sourceSha256": "8e30e74c3435696ffea72527bb33a1dcf6da3822fe2a6ac1ffc73c741c54ee9c",
+      "bytes": 6756,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        448,
+        70
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Role1Die.png",
+      "sourcePath": "Pic/Role1Die.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Role1Die.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Role1Die.png",
+      "urlPath": "/bubbleparty/v2/sprites/Role1Die.png",
+      "sha256": "b180806a366c806b29a24997535656d48a2135b46434f3f8d59b2ff240941a2f",
+      "sourceSha256": "b180806a366c806b29a24997535656d48a2135b46434f3f8d59b2ff240941a2f",
+      "bytes": 5082,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        528,
+        100
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Role2Die.png",
+      "sourcePath": "Pic/Role2Die.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Role2Die.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Role2Die.png",
+      "urlPath": "/bubbleparty/v2/sprites/Role2Die.png",
+      "sha256": "018a3facfa64aadb68cd243a708fb7e5b01db91c87f3aff7389260f3076feb3a",
+      "sourceSha256": "018a3facfa64aadb68cd243a708fb7e5b01db91c87f3aff7389260f3076feb3a",
+      "bytes": 5642,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        616,
+        98
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Popo.png",
+      "sourcePath": "Pic/Popo.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Popo.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Popo.png",
+      "urlPath": "/bubbleparty/v2/sprites/Popo.png",
+      "sha256": "c7f17313822c0d982b9d08873bf2db2b965ebfe3e3f0f3233b0b23d15ec55ef1",
+      "sourceSha256": "c7f17313822c0d982b9d08873bf2db2b965ebfe3e3f0f3233b0b23d15ec55ef1",
+      "bytes": 2592,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        132,
+        41
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "BigPopo.png",
+      "sourcePath": "Pic/BigPopo.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/BigPopo.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/BigPopo.png",
+      "urlPath": "/bubbleparty/v2/sprites/BigPopo.png",
+      "sha256": "e37b1450b5eb61cc42b00e95f8f94f6a01965d621a9cda6d01cd31bc8cc4fe32",
+      "sourceSha256": "e37b1450b5eb61cc42b00e95f8f94f6a01965d621a9cda6d01cd31bc8cc4fe32",
+      "bytes": 55059,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        648,
+        72
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Explosion.png",
+      "sourcePath": "Pic/Explosion.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Explosion.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Explosion.png",
+      "urlPath": "/bubbleparty/v2/sprites/Explosion.png",
+      "sha256": "e7df38d6d38d734f15c64e9f3f2c5074d35c3b6d7726f173fe2e519cca752d9e",
+      "sourceSha256": "e7df38d6d38d734f15c64e9f3f2c5074d35c3b6d7726f173fe2e519cca752d9e",
+      "bytes": 28811,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        560,
+        200
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownGround.png",
+      "sourcePath": "Pic/TownGround.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownGround.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownGround.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownGround.png",
+      "sha256": "dbec65a8f78b4e7cc359705c870a5d00702b71c51800d69cbc020339c65c797a",
+      "sourceSha256": "dbec65a8f78b4e7cc359705c870a5d00702b71c51800d69cbc020339c65c797a",
+      "bytes": 1596,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        280,
+        40
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownHouseRed.png",
+      "sourcePath": "Pic/TownHouseRed.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownHouseRed.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownHouseRed.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownHouseRed.png",
+      "sha256": "9818505ef82f93a1538f927226a3219de3c32ebf590774bb7d78d58a79a4af7e",
+      "sourceSha256": "9818505ef82f93a1538f927226a3219de3c32ebf590774bb7d78d58a79a4af7e",
+      "bytes": 1750,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        57
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownHouseBlue.png",
+      "sourcePath": "Pic/TownHouseBlue.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownHouseBlue.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownHouseBlue.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownHouseBlue.png",
+      "sha256": "213713e0af94baeda9b67c4ea56409099418daf9d311517b19beba2f0ccec8f2",
+      "sourceSha256": "213713e0af94baeda9b67c4ea56409099418daf9d311517b19beba2f0ccec8f2",
+      "bytes": 1735,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        57
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownHouseYellow.png",
+      "sourcePath": "Pic/TownHouseYellow.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownHouseYellow.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownHouseYellow.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownHouseYellow.png",
+      "sha256": "d20453a800388472f15ed2fee401ad286d634cf1385a8f372153b36ff260331e",
+      "sourceSha256": "d20453a800388472f15ed2fee401ad286d634cf1385a8f372153b36ff260331e",
+      "bytes": 1742,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        57
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownTree.png",
+      "sourcePath": "Pic/TownTree.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownTree.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownTree.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownTree.png",
+      "sha256": "19b7ea0b112316f19add9145101e0572a2153b66b89faf65aa2c6aebc348e20d",
+      "sourceSha256": "19b7ea0b112316f19add9145101e0572a2153b66b89faf65aa2c6aebc348e20d",
+      "bytes": 2154,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        67
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownBush.png",
+      "sourcePath": "Pic/TownBush.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownBush.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownBush.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownBush.png",
+      "sha256": "6e547138ceb69e31b6b04357be5240737bf4da7c9faa1c061c99140f785f25da",
+      "sourceSha256": "6e547138ceb69e31b6b04357be5240737bf4da7c9faa1c061c99140f785f25da",
+      "bytes": 2122,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        57
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownBlockRed.png",
+      "sourcePath": "Pic/TownBlockRed.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownBlockRed.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownBlockRed.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownBlockRed.png",
+      "sha256": "c3fa02c72dde4f3eef23c2a61879515299395414f7b6de13c4df2859922f28ec",
+      "sourceSha256": "c3fa02c72dde4f3eef23c2a61879515299395414f7b6de13c4df2859922f28ec",
+      "bytes": 1198,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        44
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownBlockYellow.png",
+      "sourcePath": "Pic/TownBlockYellow.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownBlockYellow.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownBlockYellow.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownBlockYellow.png",
+      "sha256": "439e47f07f1bf51b004be08b6797938f7154624f4bb0be4b489e183df0c09f64",
+      "sourceSha256": "439e47f07f1bf51b004be08b6797938f7154624f4bb0be4b489e183df0c09f64",
+      "bytes": 1190,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        44
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "TownBox.png",
+      "sourcePath": "Pic/TownBox.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/TownBox.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/TownBox.png",
+      "urlPath": "/bubbleparty/v2/sprites/TownBox.png",
+      "sha256": "3ffd3f6c517e75d6b288442e8a96709434441c9ef219dc422bc751c1864db0e4",
+      "sourceSha256": "3ffd3f6c517e75d6b288442e8a96709434441c9ef219dc422bc751c1864db0e4",
+      "bytes": 1201,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        40,
+        44
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Gift1.png",
+      "sourcePath": "Pic/Gift1.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Gift1.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Gift1.png",
+      "urlPath": "/bubbleparty/v2/sprites/Gift1.png",
+      "sha256": "d0ea1cb4fc20de71253c685d7047456824358015a1ddf15f74316f81cb4533a7",
+      "sourceSha256": "d0ea1cb4fc20de71253c685d7047456824358015a1ddf15f74316f81cb4533a7",
+      "bytes": 2282,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        126,
+        45
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Gift2.png",
+      "sourcePath": "Pic/Gift2.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Gift2.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Gift2.png",
+      "urlPath": "/bubbleparty/v2/sprites/Gift2.png",
+      "sha256": "895410539e2a0f1ac6c6603a22841734742db6f19f29170a113e790ea3380206",
+      "sourceSha256": "895410539e2a0f1ac6c6603a22841734742db6f19f29170a113e790ea3380206",
+      "bytes": 2314,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        126,
+        45
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Gift3.png",
+      "sourcePath": "Pic/Gift3.png",
+      "sourceUrl": "https://raw.githubusercontent.com/visolleon/bnb/7070051995a5feab0ca83eabc708cdecda1e0e74/Pic/Gift3.png",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/sprites/Gift3.png",
+      "urlPath": "/bubbleparty/v2/sprites/Gift3.png",
+      "sha256": "4e1e580535a59190b85cb195a5004acda6ec110c382bd5a426a16b8b1bd2b256",
+      "sourceSha256": "4e1e580535a59190b85cb195a5004acda6ec110c382bd5a426a16b8b1bd2b256",
+      "bytes": 2081,
+      "conversion": "byte-for-byte copy",
+      "dimensions": [
+        126,
+        45
+      ],
+      "sourceType": "third-party HTML5 demo sprite sheet; original image provenance unverified",
+      "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74"
+    },
+    {
+      "file": "Village.mp3",
+      "sourcePath": "MP3/Village",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 9238767,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/Village.mp3",
+      "urlPath": "/bubbleparty/v2/audio/Village.mp3",
+      "sha256": "e3d6ddfc12fff17ec17854107f4f53de046bf9291601ea278bad3b3f44ce1818",
+      "sourceSha256": "e3d6ddfc12fff17ec17854107f4f53de046bf9291601ea278bad3b3f44ce1818",
+      "bytes": 240207,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "BombExplode.wav",
+      "sourcePath": "Wave/BombExplode",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 14353119,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/BombExplode.wav",
+      "urlPath": "/bubbleparty/v2/audio/BombExplode.wav",
+      "sha256": "fe5c8b14af4ea1c341e27ff66022acd778ac62e3b16112a48e1ccdc356bd8e4b",
+      "sourceSha256": "fe5c8b14af4ea1c341e27ff66022acd778ac62e3b16112a48e1ccdc356bd8e4b",
+      "bytes": 11084,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "BombIgnite.wav",
+      "sourcePath": "Wave/BombIgnite",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 14364203,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/BombIgnite.wav",
+      "urlPath": "/bubbleparty/v2/audio/BombIgnite.wav",
+      "sha256": "f786fabe22ed993c3db5fd2f80507367367368e400e34d7e86d0e064e421c720",
+      "sourceSha256": "f786fabe22ed993c3db5fd2f80507367367368e400e34d7e86d0e064e421c720",
+      "bytes": 2444,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "Die.wav",
+      "sourcePath": "Wave/Die",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 14460481,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/Die.wav",
+      "urlPath": "/bubbleparty/v2/audio/Die.wav",
+      "sha256": "a1eca78bb06c7ee2b38de320f753c2f8f37b6ae3cf29312bc4ace74866e306e6",
+      "sourceSha256": "a1eca78bb06c7ee2b38de320f753c2f8f37b6ae3cf29312bc4ace74866e306e6",
+      "bytes": 9864,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "Draw.wav",
+      "sourcePath": "Wave/Draw",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 14470345,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/Draw.wav",
+      "urlPath": "/bubbleparty/v2/audio/Draw.wav",
+      "sha256": "fd61a02b539b14f410aaed429c8bb5981aabf21fc0fab1607889bf80b90b32c4",
+      "sourceSha256": "fd61a02b539b14f410aaed429c8bb5981aabf21fc0fab1607889bf80b90b32c4",
+      "bytes": 34812,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "GameStart_0.wav",
+      "sourcePath": "Wave/GameStart_0",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 14505157,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/GameStart_0.wav",
+      "urlPath": "/bubbleparty/v2/audio/GameStart_0.wav",
+      "sha256": "b11e2639857ba7a2f752315f754613f589b1b4c9f4c330904588959bbd88bdac",
+      "sourceSha256": "b11e2639857ba7a2f752315f754613f589b1b4c9f4c330904588959bbd88bdac",
+      "bytes": 12236,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "ItemEaten.wav",
+      "sourcePath": "Wave/ItemEaten",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 14553245,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/ItemEaten.wav",
+      "urlPath": "/bubbleparty/v2/audio/ItemEaten.wav",
+      "sha256": "6ef6b62b7f4544aae67e84176c8ac8986fcbf39aac066d644a71d1cdb19ea562",
+      "sourceSha256": "6ef6b62b7f4544aae67e84176c8ac8986fcbf39aac066d644a71d1cdb19ea562",
+      "bytes": 21452,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "LockedIn.wav",
+      "sourcePath": "Wave/LockedIn",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 15037069,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/LockedIn.wav",
+      "urlPath": "/bubbleparty/v2/audio/LockedIn.wav",
+      "sha256": "1f8cdeddf1e8238f46e22de668a35bed26be894f1f0c7e95fa010cca01f377c6",
+      "sourceSha256": "1f8cdeddf1e8238f46e22de668a35bed26be894f1f0c7e95fa010cca01f377c6",
+      "bytes": 13916,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "Lose.wav",
+      "sourcePath": "Wave/Lose",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 15050985,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/Lose.wav",
+      "urlPath": "/bubbleparty/v2/audio/Lose.wav",
+      "sha256": "0b1e6032cf26c2d47a8188baa5de4ec17ce62fa59ccfd80bec04efd56aede44b",
+      "sourceSha256": "0b1e6032cf26c2d47a8188baa5de4ec17ce62fa59ccfd80bec04efd56aede44b",
+      "bytes": 67200,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "Release.wav",
+      "sourcePath": "Wave/Release",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 15136025,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/Release.wav",
+      "urlPath": "/bubbleparty/v2/audio/Release.wav",
+      "sha256": "2de04bd9939bb8ba8b3c7564840ddefa01d0e4ff4d7a75805a178b07500d1b26",
+      "sourceSha256": "2de04bd9939bb8ba8b3c7564840ddefa01d0e4ff4d7a75805a178b07500d1b26",
+      "bytes": 5436,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "TimerExpired_0.wav",
+      "sourcePath": "Wave/TimerExpired_0",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 15199603,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/TimerExpired_0.wav",
+      "urlPath": "/bubbleparty/v2/audio/TimerExpired_0.wav",
+      "sha256": "c76524be95deb79b89f54be624facef5cf3b4bb90651bd6fffa099bf5248454f",
+      "sourceSha256": "c76524be95deb79b89f54be624facef5cf3b4bb90651bd6fffa099bf5248454f",
+      "bytes": 17996,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "TimerGo.wav",
+      "sourcePath": "Wave/TimerGo",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 15230411,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/TimerGo.wav",
+      "urlPath": "/bubbleparty/v2/audio/TimerGo.wav",
+      "sha256": "fbc749eea5a5134852b2340152bff701738ec16248496e0a066c8f19c7a08aa0",
+      "sourceSha256": "fbc749eea5a5134852b2340152bff701738ec16248496e0a066c8f19c7a08aa0",
+      "bytes": 23180,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    },
+    {
+      "file": "Win.wav",
+      "sourcePath": "Wave/Win",
+      "sourceUrl": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+      "archiveMember": "Fx.idd",
+      "indexOffset": 15270435,
+      "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+      "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+      "output": "games/bubbleparty/assets/public/bubbleparty/v2/audio/Win.wav",
+      "urlPath": "/bubbleparty/v2/audio/Win.wav",
+      "sha256": "5f41bed844a40bf3eb617c4308308d0be0231df1ad0f56f2163731e4a16e3051",
+      "sourceSha256": "5f41bed844a40bf3eb617c4308308d0be0231df1ad0f56f2163731e4a16e3051",
+      "bytes": 36524,
+      "conversion": "byte-for-byte copy",
+      "sourceType": "2002 official client archive; decoded index and unmodified audio payload"
+    }
+  ],
+  "audioSource": {
+    "url": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+    "archiveSha256": "326c9b89b17e3404e192073261f54f34e27e5225d3f955e39bc8d97204405ae6",
+    "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+    "dataSha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+    "extractor": "scripts/bubbleparty/extract-classic-audio.py",
+    "reaEvidence": "ev_0811e32c3a8d2fb2fef08c77afdc64ef07612a8357e91110e329b039e7936136"
+  },
+  "imageSource": {
+    "source": "https://github.com/visolleon/bnb",
+    "sourceCommit": "7070051995a5feab0ca83eabc708cdecda1e0e74",
+    "sourceArchiveSha256": "536ca0f8f7f05faf88fddeddc37cda6e676d75013e126fd2a5e59e6109ed24b4",
+    "sourceDescription": "Third-party HTML5 demo; not an official client extraction; repository provides no LICENSE"
+  }
+}

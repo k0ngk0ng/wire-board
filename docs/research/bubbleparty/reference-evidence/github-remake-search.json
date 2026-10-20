@@ -1,0 +1,152 @@
+[
+  {
+    "query": "泡泡堂 language:JavaScript",
+    "results": [
+      {
+        "repo": "cirosantilli/cirosantilli",
+        "description": "小粉红小朋友们，新issue 在这儿开： https://github.com/cirosantilli/china-dictatorship/issues # 21世纪新政宣言（2020年4月5曰笫四次修改稿)（2020年6月19曰第七次修改，以下“【】”内文字为非正文内容的说明）20世纪苏联的消亡和东欧的大变革，使这21世纪初的现中国大陆成为世界关注的最",
+        "homepage": "https://github.com/cirosantilli/china-dictatorship/issues",
+        "branch": "master",
+        "size": 2355
+      },
+      {
+        "repo": "SineYuan/BnBonline",
+        "description": "H5泡泡堂在线版",
+        "homepage": null,
+        "branch": "master",
+        "size": 3931
+      },
+      {
+        "repo": "tpoisonooo/BnB",
+        "description": "盛大泡泡堂之 Kimi K3 满血复刻",
+        "homepage": "https://h3aajdlti6teq.kimi.site/",
+        "branch": "master",
+        "size": 37603
+      },
+      {
+        "repo": "dxxia/Bubble",
+        "description": "【CocosCreator】网络版泡泡堂Demo",
+        "homepage": null,
+        "branch": "master",
+        "size": 801
+      },
+      {
+        "repo": "visolleon/bnb",
+        "description": "HTML5泡泡堂游戏DEMO",
+        "homepage": null,
+        "branch": "gh-pages",
+        "size": 3816
+      },
+      {
+        "repo": "mifeng135/cocosCreator",
+        "description": "cocos creator 泡泡堂",
+        "homepage": "",
+        "branch": "master",
+        "size": 8815
+      },
+      {
+        "repo": "Spoonkeeper/bubble-bomb-arena",
+        "description": "💣 炸爽彬彬堂 — 4位英雄×3张地图的泡泡炸弹对战 | Phaser 3 | 支持 PWA / APK",
+        "homepage": "https://spoonkeeper.github.io/bubble-bomb-arena/",
+        "branch": "main",
+        "size": 22183
+      },
+      {
+        "repo": "caidie1978/ppth5",
+        "description": "为了曾经的泡泡堂",
+        "homepage": "",
+        "branch": "master",
+        "size": 6148
+      },
+      {
+        "repo": "jjh-ai-coder/paopao-tang-game",
+        "description": "泡泡堂 HTML5 Canvas 复刻 - 在线可玩",
+        "homepage": "https://jjh-ai-coder.github.io/paopao-tang-game/",
+        "branch": "main",
+        "size": 159
+      },
+      {
+        "repo": "shijinlei123/paopaotang",
+        "description": "简易泡泡堂游戏 - 双人对战炸弹人游戏",
+        "homepage": null,
+        "branch": "main",
+        "size": 7
+      }
+    ]
+  },
+  {
+    "query": "crazy arcade language:JavaScript",
+    "results": [
+      {
+        "repo": "Ark-Point/crazy-arcade",
+        "description": "크레이지 아케이드 스타일 웹 멀티플레이 물풍선 게임 — 비개발자 CEO + AI Native Tech Lead가 Claude Code로 하루 만에 제작",
+        "homepage": null,
+        "branch": "main",
+        "size": 1851
+      },
+      {
+        "repo": "PranitThorat/RootArcade",
+        "description": "🎮 RootArcade: Mr.Root’s neon game portal! 🌟 Play classic & crazy games instantly in your browser – no downloads, just fun! ⚡ Compete, save scores, and challenge friends. Ready to p",
+        "homepage": "https://mr-root-game-paradise.netlify.app/",
+        "branch": "main",
+        "size": 1330
+      },
+      {
+        "repo": "gogoringhye/CrazyArcade",
+        "description": "None",
+        "homepage": null,
+        "branch": "master",
+        "size": 19366
+      },
+      {
+        "repo": "hanseul9/CrazyArcade",
+        "description": "None",
+        "homepage": null,
+        "branch": "main",
+        "size": 60102
+      },
+      {
+        "repo": "sungwoni9/Crazy-Arcade",
+        "description": "Crazy Arcade mini-project",
+        "homepage": null,
+        "branch": "main",
+        "size": 6088
+      },
+      {
+        "repo": "jjontteok/CrazyArcadeNodeServer",
+        "description": "None",
+        "homepage": null,
+        "branch": "master",
+        "size": 11
+      },
+      {
+        "repo": "seyoungJoo-cpu/crazy-arcade",
+        "description": "None",
+        "homepage": null,
+        "branch": "main",
+        "size": 1686
+      },
+      {
+        "repo": "chungtsai/Crazy-Arcade",
+        "description": "None",
+        "homepage": null,
+        "branch": "master",
+        "size": 436
+      },
+      {
+        "repo": "brej123jace-coder/crazy-arcade",
+        "description": "None",
+        "homepage": null,
+        "branch": "main",
+        "size": 20
+      },
+      {
+        "repo": "Francesyfy/Crazy_Arcade",
+        "description": "None",
+        "homepage": null,
+        "branch": "master",
+        "size": 3195
+      }
+    ]
+  }
+]

@@ -12,8 +12,8 @@ const same = (a: Control, b: Control) => a.move === b.move && a.bomb === b.bomb;
 
 type Sync = { scope: string; epoch: string; seq: number; enabled: boolean };
 
-// One in-flight intent at a time. Continuous direction is coalesced; the bomb
-// flag is an edge that the caller clears immediately after sending.
+// Movement is coalesced, but a bomb edge stays queued until a request carries
+// it. Releasing a short tap must not erase it behind an in-flight request.
 export class LatestInput {
   value: Control = { ...NEUTRAL };
   private snapshot?: Sync;
@@ -25,7 +25,11 @@ export class LatestInput {
 
   sync(next: Sync) {
     const previous = this.snapshot;
-    if (!previous || next.scope !== previous.scope || next.epoch !== previous.epoch) {
+    if (
+      !previous ||
+      next.scope !== previous.scope ||
+      next.epoch !== previous.epoch
+    ) {
       this.value = { ...NEUTRAL };
       this.sent = undefined;
       this.pending = undefined;
@@ -43,7 +47,7 @@ export class LatestInput {
 
   set(value: Control) {
     if (!this.snapshot?.enabled) return;
-    this.value = { move: value.move, bomb: !!value.bomb };
+    this.value = { move: value.move, bomb: this.value.bomb || !!value.bomb };
   }
 
   next(now: number, force = false): InputRequest | null {
@@ -51,7 +55,8 @@ export class LatestInput {
     const changed = !this.sent || !same(this.sent, this.value);
     const released = changed && same(this.value, NEUTRAL);
     if (!changed && same(this.value, NEUTRAL)) return null;
-    if (!force && !released && now - this.at < (changed ? 100 : 280)) return null;
+    if (!force && !released && now - this.at < (changed ? 40 : 200))
+      return null;
     this.sent = { ...this.value };
     this.at = now;
     this.pending = {
@@ -61,6 +66,7 @@ export class LatestInput {
       seq: ++this.seq,
       token: ++this.token,
     };
+    this.value = { ...this.value, bomb: false };
     return this.pending;
   }
 
@@ -78,6 +84,28 @@ export class LatestInput {
 
   release() {
     this.value = { ...NEUTRAL };
+  }
+}
+
+// Track physical keys, not just the last direction. A turn released while a
+// previous key is still held resumes that key; OS repeat does not reorder it.
+export class HeldDirections {
+  private held = new Map<string, Move>();
+  press(key: string): Move {
+    const move = keyMove(key);
+    key = key.toLowerCase();
+    if (move && !this.held.has(key)) this.held.set(key, move);
+    return this.current();
+  }
+  release(key: string): Move {
+    this.held.delete(key.toLowerCase());
+    return this.current();
+  }
+  clear() {
+    this.held.clear();
+  }
+  private current(): Move {
+    return [...this.held.values()].at(-1) ?? "none";
   }
 }
 

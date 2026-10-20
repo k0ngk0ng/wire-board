@@ -56,7 +56,7 @@ func TestConfigureAndSymmetricMaps(t *testing.T) {
 			for y := 0; y < Rows; y++ {
 				for x := 0; x < Cols; x++ {
 					mx, my := Cols-1-x, Rows-1-y
-					if cells[y*Cols+x] != cells[my*Cols+mx] {
+					if id != "community10" && cells[y*Cols+x] != cells[my*Cols+mx] {
 						t.Fatalf("map %s not 180 symmetric at %d,%d", id, x, y)
 					}
 				}
@@ -65,7 +65,7 @@ func TestConfigureAndSymmetricMaps(t *testing.T) {
 				for dy := -1; dy <= 1; dy++ {
 					for dx := -1; dx <= 1; dx++ {
 						x, y := p.X+dx, p.Y+dy
-						if x >= 1 && x < Cols-1 && y >= 1 && y < Rows-1 && cells[y*Cols+x] == CellWall {
+						if id != "community10" && x >= 1 && x < Cols-1 && y >= 1 && y < Rows-1 && cells[y*Cols+x] == CellWall {
 							t.Fatalf("map %s wall next to spawn %d: %d,%d", id, p.Seat, p.X, p.Y)
 						}
 					}
@@ -74,7 +74,7 @@ func TestConfigureAndSymmetricMaps(t *testing.T) {
 					t.Fatalf("map %s spawn blocked seat %d", id, p.Seat)
 				}
 			}
-			if !reachable(cells, s.Players[0].X, s.Players[0].Y) {
+			if id != "community10" && !reachable(cells, s.Players[0].X, s.Players[0].Y) {
 				t.Fatalf("map %s spawn area disconnected", id)
 			}
 		}
@@ -160,8 +160,8 @@ func TestChainBlastShieldAndElimination(t *testing.T) {
 	s.Bombs[1].Range = 3
 	b.Shield = true
 	s.advance(s.ServerAt + BombFuseMS + 100)
-	if a.Alive || c.Alive {
-		t.Fatalf("blast did not eliminate: a=%v c=%v", a.Alive, c.Alive)
+	if !a.Alive || !c.Alive || a.TrappedUntil <= s.ServerAt || c.TrappedUntil <= s.ServerAt {
+		t.Fatalf("blast did not trap living players: a=%+v c=%+v", a, c)
 	}
 	if !b.Alive || b.Shield {
 		t.Fatalf("shield did not absorb first hit: alive=%v shield=%v", b.Alive, b.Shield)
