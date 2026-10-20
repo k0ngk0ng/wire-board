@@ -23,22 +23,23 @@ type Spawn struct {
 }
 
 type Map struct {
-	ID       string  `json:"id"`
-	Name     string  `json:"name"`
-	NameEn   string  `json:"nameEn"`
-	Stage    int     `json:"stage"`
-	Width    int     `json:"width"`
-	Height   int     `json:"height"`
-	OffY     int     `json:"offY"`
-	FG       string  `json:"fg"`
-	FG2      string  `json:"fg2"`
-	BG       string  `json:"bg"`
-	Thumb    string  `json:"thumb"`
-	Music    string  `json:"music"`
-	MaskCols int     `json:"maskCols"`
-	MaskRows int     `json:"maskRows"`
-	Mask     string  `json:"mask"`
-	Spawns   []Spawn `json:"spawns"`
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
+	NameEn     string  `json:"nameEn"`
+	Stage      int     `json:"stage"`
+	Width      int     `json:"width"`
+	Height     int     `json:"height"`
+	OffY       int     `json:"offY"`
+	FG         string  `json:"fg"`
+	FG2        string  `json:"fg2"`
+	BG         string  `json:"bg"`
+	Thumb      string  `json:"thumb"`
+	Music      string  `json:"music"`
+	MaskCols   int     `json:"maskCols"`
+	MaskRows   int     `json:"maskRows"`
+	Mask       string  `json:"mask"`
+	BulletMask string  `json:"bulletMask"`
+	Spawns     []Spawn `json:"spawns"`
 }
 
 type Catalog struct {
@@ -70,13 +71,14 @@ type ClientCatalog struct {
 }
 
 var (
-	once     sync.Once
-	catalog  Catalog
-	client   ClientCatalog
-	loadErr  error
-	maskByID map[string][]byte
-	worldH   int
-	cellSize int
+	once           sync.Once
+	catalog        Catalog
+	client         ClientCatalog
+	loadErr        error
+	maskByID       map[string][]byte
+	bulletMaskByID map[string][]byte
+	worldH         int
+	cellSize       int
 )
 
 func load() {
@@ -95,6 +97,7 @@ func load() {
 		}
 		worldH, cellSize = catalog.WorldHeight, catalog.Cell
 		maskByID = make(map[string][]byte, len(catalog.Maps))
+		bulletMaskByID = make(map[string][]byte, len(catalog.Maps))
 		for _, m := range catalog.Maps {
 			if m.ID == "" || m.Width <= 0 || m.MaskCols <= 0 || m.MaskRows <= 0 || m.Height != worldH {
 				loadErr = fmt.Errorf("maps: invalid map %q", m.ID)
@@ -105,11 +108,17 @@ func load() {
 				loadErr = fmt.Errorf("maps: invalid mask %q", m.ID)
 				return
 			}
+			bullet, err := base64.StdEncoding.DecodeString(m.BulletMask)
+			if err != nil || len(bullet) != len(bits) {
+				loadErr = fmt.Errorf("maps: invalid bullet mask %q", m.ID)
+				return
+			}
 			if len(m.Spawns) != 8 {
 				loadErr = fmt.Errorf("maps: missing spawns %q", m.ID)
 				return
 			}
 			maskByID[m.ID] = bits
+			bulletMaskByID[m.ID] = bullet
 		}
 	})
 }
@@ -132,6 +141,12 @@ func ByID(id string) (Map, bool) {
 		}
 	}
 	return Map{}, false
+}
+
+func BaseBulletMask(m Map) []byte {
+	load()
+	bits := bulletMaskByID[m.ID]
+	return append([]byte(nil), bits...)
 }
 
 func BaseMask(m Map) []byte {

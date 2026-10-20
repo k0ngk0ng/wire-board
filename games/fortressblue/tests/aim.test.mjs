@@ -108,6 +108,28 @@ test("trajectory preview stops on destructible terrain and honors wind", () => {
   assert.equal(decodeMask(btoa("\x80\x00")).length, 2);
 });
 
+test("max power can cross a wide map", () => {
+  const cols = 512;
+  const rows = 240;
+  const path = previewPath({
+    width: 2048,
+    height: 960,
+    mask: new Uint8Array((cols * rows + 7) / 8),
+    maskCols: cols,
+    maskRows: rows,
+    cell: 4,
+    startX: 200,
+    startY: 700,
+    angle: 45,
+    power: 100,
+    facing: 1,
+    rangeScale: 0.9,
+    wind: 0,
+  });
+  const impact = path[path.length - 1];
+  assert.ok(impact.x - 200 > 1400, impact);
+});
+
 test("craters carve the same cells the preview uses", () => {
   const bits = (mask) =>
     mask.reduce((total, value) => {
@@ -147,6 +169,7 @@ test("original catalog exposes all 17 maps and 14 tanks", () => {
     assert.ok(map.thumb.startsWith("/fortressblue/v2/maps/"));
     assert.ok(map.fg.startsWith("/fortressblue/v2/maps/"));
     assert.ok(map.mask.length > 100);
+    assert.equal(map.bulletMask.length, map.mask.length);
     assert.ok(map.maskCols > 0 && map.maskRows > 0);
     assert.ok(mapById.get(map.id));
   }
@@ -176,6 +199,7 @@ test("client collision masks mirror the server catalog", () => {
     const server = serverCatalog.maps.find((item) => item.id === map.id);
     assert.ok(server, map.id);
     assert.equal(map.mask, server.mask, map.id);
+    assert.equal(map.bulletMask, server.bulletMask, map.id);
     assert.equal(map.maskCols, server.maskCols, map.id);
     assert.equal(map.maskRows, server.maskRows, map.id);
   }

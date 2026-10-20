@@ -59,6 +59,8 @@ def catalog_check():
     for item in catalog["maps"]:
         bits = base64.b64decode(item["mask"])
         assert len(bits) == (item["maskCols"] * item["maskRows"] + 7) // 8, item["id"]
+        bullet = base64.b64decode(item["bulletMask"])
+        assert len(bullet) == len(bits) and any(bullet), item["id"]
         assert len(item["spawns"]) == 8, item["id"]
         for spawn in item["spawns"]:
             assert 0 <= spawn["x"] < item["width"] and 0 <= spawn["y"] <= item["height"], (item["id"], spawn)

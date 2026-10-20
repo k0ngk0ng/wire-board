@@ -140,6 +140,7 @@ export type MapInfo = {
   thumb: string;
   music: string | null;
   mask: string;
+  bulletMask: string;
   maskCols: number;
   maskRows: number;
 };

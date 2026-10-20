@@ -419,7 +419,7 @@ func resolveShot(s *State, seat int, weapon Weapon, kind string, angle, power fl
 		weapon.Damage *= 1.4
 	}
 	m, _ := fbmaps.ByID(s.MapID)
-	mask := maskFor(m, s.Craters)
+	mask := bulletMaskFor(m, s.Craters)
 	shotID := int64(1)
 	if s.LastShot != nil {
 		shotID = s.LastShot.ID + 1

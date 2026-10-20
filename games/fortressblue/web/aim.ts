@@ -111,7 +111,7 @@ export function solidAt(
  */
 export function previewPath(input: PreviewInput): Point[] {
   const speed =
-    (120 + clamp(input.power, 20, 100) * 3.2) * clamp(input.rangeScale, 0.7, 1.3);
+    (120 + clamp(input.power, 20, 100) * 7.0) * clamp(input.rangeScale, 0.7, 1.3);
   const rad = (clamp(input.angle, 0, 90) * Math.PI) / 180;
   const facing = input.facing < 0 ? -1 : 1;
   let vx = Math.cos(rad) * speed * facing;

@@ -48,7 +48,7 @@ import {
 
 type ImageMap = Record<string, HTMLImageElement | null>;
 
-const ART_SCALE = 2.4;
+const ART_SCALE = 2.2;
 const MOBILE_VIEW = 560;
 const MID_VIEW = 1100;
 const DESKTOP_VIEW = 1500;
@@ -344,7 +344,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
   const own = tanks[data.you];
   const myInfo = tankInfo(own?.tankId ?? 0);
   const maxAngle = Math.max(5, myInfo?.angle ?? 45);
-  const baseMask = useMemo(() => decodeMask(map.mask), [map]);
+  const baseMask = useMemo(() => decodeMask(map.bulletMask), [map]);
   const craterSignature = useMemo(
     () => craters.map((crater) => `${Math.round(crater.x)},${Math.round(crater.y)},${Math.round(crater.r)}`).join(";"),
     [craters],
@@ -433,7 +433,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     const path = shot.arcs[0]?.path ?? [];
     let length = 0;
     for (let i = 1; i < path.length; i++) length += Math.hypot(path[i].x - path[i - 1].x, path[i].y - path[i - 1].y);
-    const duration = clamp(length * 4.5, 520, 2200);
+    const duration = clamp(length * 2.4, 700, 3200);
     seenShot.current = shot.id;
     setAnim({
       shot,
@@ -628,7 +628,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
         ctx.save();
         ctx.strokeStyle = team;
         ctx.globalAlpha = 0.55;
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2;
         ctx.lineCap = "round";
         ctx.beginPath();
         ctx.moveTo(trail.x, trail.y);
@@ -637,7 +637,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
         ctx.globalAlpha = 0.3;
         ctx.fillStyle = team;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
         if (bullet) {
@@ -647,7 +647,7 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
             ctx.save();
             ctx.translate(p.x, p.y);
             ctx.rotate(Math.abs(p.angle) > Math.PI / 2 ? p.angle + Math.PI : p.angle);
-            const s = 1.9;
+            const s = 0.55;
             ctx.drawImage(img, -img.width * s / 2, -img.height * s / 2, img.width * s, img.height * s);
             ctx.restore();
           } else {
@@ -938,6 +938,8 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
       data-fortressblue-power={Math.round(power)}
       data-fortressblue-facing={facing}
       data-fortressblue-preview={aimPreview.length}
+      data-fortressblue-aim-x={aimPreview.length ? Math.round(aimPreview[aimPreview.length - 1].x) : 0}
+      data-fortressblue-aim-y={aimPreview.length ? Math.round(aimPreview[aimPreview.length - 1].y) : 0}
       data-fortressblue-art-scale={ART_SCALE}
     >
       <canvas
