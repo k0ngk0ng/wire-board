@@ -175,3 +175,25 @@ python3 -B scripts/fortressblue/check-browser.py
   `data-20261019T144149Z.tar.gz`。
 - `update.sh clean` 删除历史 `v1.21.2`，保留当前 `v1.22.1`、回滚 `v1.22.0` 与
   `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%），备份目录 3.5M。
+
+### v1.22.2 首发射击与炮弹可见性修复
+
+针对「按空格不能开火、没看到炮弹、地图比例不对、没法玩」的反馈，修复首发射击被跳过、
+动画时钟混用导致炮弹不绘制、取景/预览比例和标签缩放；验收见上文 55/55 浏览器检查。
+
+- 发布提交：`b5e1740f`，tag `v1.22.2`。
+- main 检查：Actions run [39368731421](https://github.com/k0ngk0ng/wire-board/actions/runs/39368731421)
+  成功（共享平台、fortressblue、前端构建与 Linux amd64 产物）。
+- tag 发布：Actions run [39369606838](https://github.com/k0ngk0ng/wire-board/actions/runs/39369606838)
+  成功，复用同一提交的已验证产物；Release：
+  <https://github.com/k0ngk0ng/wire-board/releases/tag/v1.22.2>。
+- 部署镜像：`ghcr.io/k0ngk0ng/wire-board@sha256:9dbd9652c6d2ddbdb4fe6146b6b3658ad52a512f49b6affa3971569d2651411a`，
+  容器 `WIRE_BOARD_VERSION=v1.22.2`，健康状态 `healthy`，`/healthz` 返回 `{"ok":true}`。
+- 线上 bundle 已确认包含「鼠标瞄准」「点击战场或按空格开火」；`fortressblue=1`、
+  `battlecity=1`、`bubbleparty=1`、`dota=0` 保持不变。
+- 更新前备份 `backups/data-20261020T042845Z-3057628.tar.gz`（数据库 14,819,328 字节，
+  `quick_check` 为 `ok`，13 个用户、5 个房间）；保留上一份
+  `data-20261020T025620Z-2855209.tar.gz`（14,544,896 字节，同样通过 `quick_check`），
+  删除更早的 `data-20261020T020910Z-2750517.tar.gz`。
+- `update.sh clean` 删除历史 `v1.22.0`，保留当前 `v1.22.2`、回滚 `v1.22.1` 与
+  `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%），备份目录 3.6M。
