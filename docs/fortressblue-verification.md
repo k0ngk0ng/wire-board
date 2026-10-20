@@ -109,3 +109,26 @@ python3 -B scripts/fortressblue/check-browser.py
   `data-20261019T142744Z-1220702.tar.gz`。
 - 镜像清理：`update.sh clean` 删除历史 `v1.21.1`，保留当前 `v1.22.0`、回滚 `v1.21.2`
   及 `wire-tv` 等其他服务镜像。清理后服务健康；磁盘 40G 中已用 25G（67%），备份目录 3.5M。
+
+### v1.22.1 可玩性修复发布
+
+针对「不能键盘控制、角度不能鼠标控制、画面奇怪、选了地图不对、按钮难看」的反馈，
+修复了瞄准/操作、取景比例、地图选择确认和操作面板样式；验收见上文 50/50 浏览器检查。
+
+- 发布提交：`91942d31db3397b1aca14116e67c98a8c91a5ef1`，tag `v1.22.1`。
+- main 检查：Actions run [39360579713](https://github.com/k0ngk0ng/wire-board/actions/runs/39360579713)
+  成功（共享平台、fortressblue、前端构建与 Linux amd64 产物）。
+- tag 发布：Actions run [39361452048](https://github.com/k0ngk0ng/wire-board/actions/runs/39361452048)
+  成功，复用同一提交的已验证产物；Release：
+  <https://github.com/k0ngk0ng/wire-board/releases/tag/v1.22.1>。
+- 部署镜像：`ghcr.io/k0ngk0ng/wire-board@sha256:c1b3618296024af2f381669763c04530fd98fb6735feff7364914108e2fd6d6e`，
+  容器 `WIRE_BOARD_VERSION=v1.22.1`，健康状态 `healthy`，`/healthz` 返回 `{"ok":true}`。
+- 线上 bundle 已确认包含「鼠标瞄准」「随机地图」「地图或规则尚未保存」；stage-4 前景/背景
+  回退素材均返回 200；最近 10 分钟日志无 error/panic。
+- 上下架设置保持：`fortressblue=1`、`battlecity=1`、`bubbleparty=1`、`dota=0`。
+- 更新前备份 `backups/data-20261020T025620Z-2855209.tar.gz`（数据库 14,544,896 字节，
+  `quick_check` 为 `ok`，13 个用户、5 个房间）；保留上一份
+  `data-20261020T020910Z-2750517.tar.gz`（同样 `quick_check` 通过），删除更早的
+  `data-20261019T144149Z.tar.gz`。
+- `update.sh clean` 删除历史 `v1.21.2`，保留当前 `v1.22.1`、回滚 `v1.22.0` 与
+  `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%），备份目录 3.5M。
