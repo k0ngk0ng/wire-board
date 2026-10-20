@@ -226,3 +226,25 @@ CDN 运行：
   删除更早的 `data-20261020T020910Z-2750517.tar.gz`。
 - `update.sh clean` 删除历史 `v1.22.0`，保留当前 `v1.22.2`、回滚 `v1.22.1` 与
   `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%），备份目录 3.6M。
+
+### v1.22.3 原版道具发布
+
+从原版 `itemlist!.i16` 增加 8 种道具、每席 2 件、战场道具卡和电脑使用逻辑；
+验收见上文 60/60 浏览器检查。
+
+- 发布提交：`87c4f155`，tag `v1.22.3`。
+- main 检查：Actions run [39374857159](https://github.com/k0ngk0ng/wire-board/actions/runs/39374857159)
+  成功（共享平台、fortressblue、前端构建与 Linux amd64 产物）。
+- tag 发布：Actions run [39375746588](https://github.com/k0ngk0ng/wire-board/actions/runs/39375746588)
+  成功，复用同一提交的已验证产物；Release：
+  <https://github.com/k0ngk0ng/wire-board/releases/tag/v1.22.3>。
+- 部署镜像：`ghcr.io/k0ngk0ng/wire-board@sha256:04a72c53f7f35415009e242ac2485ce728b8f02f29c5385ad3c6fcc9df1adcd2`，
+  容器 `WIRE_BOARD_VERSION=v1.22.3`，健康状态 `healthy`，`/healthz` 返回 `{"ok":true}`。
+- 线上道具回退素材 `/fortressblue/v2/items/0.webp`、`/items/25.webp` 均返回 200；
+  `fortressblue=1`、`battlecity=1`、`bubbleparty=1`、`dota=0` 保持不变。
+- 更新前备份 `backups/data-20261020T053840Z-3212456.tar.gz`（数据库 14,819,328 字节，
+  `quick_check` 为 `ok`，13 个用户、5 个房间）；保留上一份
+  `data-20261020T042845Z-3057628.tar.gz`（14,819,328 字节，同样通过 `quick_check`），
+  删除更早的 `data-20261020T025620Z-2855209.tar.gz`。
+- `update.sh clean` 删除历史 `v1.22.1`，保留当前 `v1.22.3`、回滚 `v1.22.2` 与
+  `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%），备份目录 3.6M。
