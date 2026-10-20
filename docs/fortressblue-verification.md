@@ -250,3 +250,25 @@ CDN 运行：
   删除更早的 `data-20261020T025620Z-2855209.tar.gz`。
 - `update.sh clean` 删除历史 `v1.22.1`，保留当前 `v1.22.3`、回滚 `v1.22.2` 与
   `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%），备份目录 3.6M。
+
+### v1.22.4 射程与比例校准
+
+针对「满力只能打 1/3 屏、地图/坦克和炮弹比例不对」的反馈，重调炮弹速度曲线并新增炮弹专用
+接地碰撞掩码，浮空装饰护栏不再挡住炮弹；坦克仍与完整前景碰撞。浏览器实测满力 25° 预览
+从 x=52 延伸到 x=1560（跨 1508 世界像素），与服务器速度曲线一致。
+
+- 发布提交：`95035602`，tag `v1.22.4`。
+- main 检查：Actions run [39379428630](https://github.com/k0ngk0ng/wire-board/actions/runs/39379428630)
+  成功（共享平台、fortressblue、前端构建与 Linux amd64 产物）。
+- tag 发布：Actions run [39380357426](https://github.com/k0ngk0ng/wire-board/actions/runs/39380357426)
+  成功，复用同一提交的已验证产物；Release：
+  <https://github.com/k0ngk0ng/wire-board/releases/tag/v1.22.4>。
+- 部署镜像：`ghcr.io/k0ngk0ng/wire-board@sha256:1b70b1c753292be75ea2f20e4153fa19c2046119d05dcd4bf28627bb48a53d95`，
+  容器 `WIRE_BOARD_VERSION=v1.22.4`，健康状态 `healthy`，`/healthz` 返回 `{"ok":true}`。
+- `fortressblue=1`、`battlecity=1`、`bubbleparty=1`、`dota=0` 保持不变。
+- 更新前备份 `backups/data-20261020T062821Z-3321061.tar.gz`（数据库 14,848,000 字节，
+  `quick_check` 为 `ok`，13 个用户、3 个房间）；保留上一份
+  `data-20261020T053840Z-3212456.tar.gz`（14,819,328 字节，同样通过 `quick_check`），
+  删除更早的 `data-20261020T042845Z-3057628.tar.gz`。
+- `update.sh clean` 删除历史 `v1.22.2`，保留当前 `v1.22.4`、回滚 `v1.22.3` 与
+  `wire-tv`；清理后服务健康，磁盘 40G 中已用 25G（67%）。
