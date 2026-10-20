@@ -70,7 +70,11 @@ def main():
     catalog_check()
     for entry in entries:
         rel = entry["output"].removeprefix("games/fortressblue/assets/public/")
-        media_check(LOCAL / rel, entry)
+        local = LOCAL / rel
+        if local.is_file():
+            media_check(local, entry)
+        elif not args.dist:
+            raise FileNotFoundError(local)
         if args.dist:
             media_check(DIST / rel, entry)
         if args.oss:
