@@ -51,3 +51,7 @@ python3 -B scripts/battlecity/verify-assets.py
 - 新图集 SHA-256：`640c854f1a4b561e07c51a557dffaeaeed267526eeb0a34033136aa7f7d7dc83`。两对象合计 45,518 bytes，清单 `games/battlecity/assets/manifest-v2.json`。
 
 本次只修改素材与前端朝向，不修改服务端规则或物理。主任务已完成统一构建、320px／390px 原生触屏验收、OSS 不可变上传与源站／CDN 回读（`.local/battlecity/oss-v2-publish.json`）。tag／Release／生产结果统一记录在本轮发布记录。
+
+## CI 依赖修正
+
+首次 main 检查的 `directions.test.mjs` 因独立游戏作业未安装 esbuild 而失败，原版像素对照和游戏实现没有失败。前述隔离检查只验证素材脚本，不代表 Node 绘制测试也无需依赖。现仅对坦克大战第 0 分片先执行锁定依赖的 `npm --prefix web ci`，再运行相同绘制测试；使用新的干净目录验证 17 项测试通过。其他游戏作业不因此安装依赖或扩大规则矩阵。

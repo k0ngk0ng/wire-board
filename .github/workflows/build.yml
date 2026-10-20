@@ -153,6 +153,9 @@ jobs:
         with:
           name: web-dist
           path: web/dist
+      - name: Install dependencies for tank Canvas rendering checks
+        if: matrix.game == 'battlecity' && matrix.shard == 0
+        run: npm --prefix web ci
       - name: Validate this game only
         env:
           GAME_ID: ${{ matrix.game }}
