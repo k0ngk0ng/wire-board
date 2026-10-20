@@ -292,7 +292,7 @@ try:
 
     check(
         "desktop tank art scale is readable",
-        float(js('document.querySelector(".fortressblue-board").dataset.fortressblueArtScale')) >= 2.4,
+        float(js('document.querySelector(".fortressblue-board").dataset.fortressblueArtScale')) >= 2.2,
     )
     framing = js(
         '(()=>{const c=document.querySelector("[data-fortressblue-canvas]");'
@@ -317,6 +317,32 @@ try:
     check("using an item keeps the turn", items_before - 1 == int(js('document.querySelectorAll("[data-fortressblue-item]").length')))
     wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueMyTurn === "1"', 10)
     check("item use keeps the human turn", True)
+
+    # Max power at a low angle must reach across the 1500 px map; the client
+    # preview uses the same speed curve as the server.
+    js(
+        '(()=>{const set=(sel,value)=>{const el=document.querySelector(sel);'
+        'const native=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set;'
+        'native.call(el,String(value));el.dispatchEvent(new Event("input",{bubbles:true}));};'
+        'set(\'input[aria-label="角度"]\',25);set(\'input[aria-label="力度"]\',100);return true})()'
+    )
+    wait_js('Number(document.querySelector(".fortressblue-board").dataset.fortressblueAimX) > 1000', 5)
+    range_info = json.loads(
+        js(
+            r"""(async()=>{
+              const b=document.querySelector(".fortressblue-board");
+              const s=await fetch('/api/state').then(r=>r.json());
+              const data=s.room.game.data;
+              const x=data.tanks.find(t=>t.seat===data.you).x;
+              return JSON.stringify({tankX:x,aimX:Number(b.dataset.fortressblueAimX),aimY:Number(b.dataset.fortressblueAimY)});
+            })()"""
+        )
+    )
+    check(
+        "max power preview crosses the map",
+        range_info["aimX"] - range_info["tankX"] > 1000,
+        range_info,
+    )
 
     # The very first shot of a fresh match must animate and draw a projectile;
     # this used to be swallowed because no previous shot id existed yet.
@@ -382,6 +408,7 @@ try:
     check("mouse aim flips to the left", left["facing"] == -1 and left["angle"] < 45, left)
 
     # Re-aim up-right and fire by clicking the battlefield itself.
+    craters_before = int(js('document.querySelector(".fortressblue-board").dataset.fortressblueCraters || "0"'))
     js(r"""(async()=>{
       const c=document.querySelector("[data-fortressblue-canvas]");
       c.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,pointerType:'mouse',pointerId:7,isPrimary:true,clientX:Number(%s),clientY:Number(%s)}));
@@ -391,11 +418,13 @@ try:
     })()""" % (json.dumps(aim["sx"] + 120), json.dumps(aim["sy"] - 220)))
     wait_js('Number(document.querySelector(".fortressblue-board").dataset.fortressblueShot) > 0', 20)
     check("clicking the battlefield fires", True)
-    # Bots keep firing after the human; wait for the next human turn, then for
-    # the last animation in the chain to settle instead of sampling a transient
-    # animation-free moment between two bot shots.
-    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueMyTurn === "1"', 120)
-    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueAnimating === "0"', 30)
+    # Bots keep firing after the human and the human may be eliminated. Wait
+    # for the clicked shot (or a following bot shot) to carve the terrain
+    # instead of requiring another human turn.
+    wait_js(
+        'Number(document.querySelector(".fortressblue-board").dataset.fortressblueCraters || "0") > %d' % craters_before,
+        60,
+    )
     check("click-fired shot resolves", True)
     craters = int(js('document.querySelector(".fortressblue-board").dataset.fortressblueCraters || "0"'))
     check("explosion carved original terrain", craters > 0, craters)

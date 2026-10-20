@@ -81,6 +81,7 @@ def main() -> int:
         }
         built = prepare.build_map(item)
         check(f"map mask {meta['id']}", built["mask"], meta["mask"])
+        check(f"map bullet mask {meta['id']}", built["bulletMask"], meta["bulletMask"])
         check(f"map spawns {meta['id']}", built["spawns"], meta["spawns"])
         for suffix in ("fg", "bg", "fg2", "thumb"):
             rel = f"maps/{meta['id']}-{suffix}.webp"

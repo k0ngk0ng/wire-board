@@ -17,7 +17,7 @@ Emscripten file packager 分块 → LH5 解压 → 逐行 span RLE → RGB565 �
 前景层 alpha 生成。该路线得到的原版资源与 Steam 版共用同一套 CCR 素材。
 
 `python3 -B scripts/fortressblue/verify-original-source.py` 会重新运行与素材生成相同的解码器，
-从本地原始 `.i16` 重新生成全部媒体并逐项比对：**250 项通过**，包括 5 个官方客户端源文件的
+从本地原始 `.i16` 重新生成全部媒体并逐项比对：**267 项通过**，包括 5 个官方客户端源文件的
 SHA-256、17 张地图的碰撞位图/出生点/前景/背景/叠加层/缩略图，以及 14 种坦克的
 idle/fire/die/move、炮弹尺寸与字节哈希。结果保存在 `.local/fortressblue/asset-redecode.json`，
 证明线上媒体确实来自下载的原版客户端，而不是新绘或合成占位。
@@ -31,7 +31,7 @@ idle/fire/die/move、炮弹尺寸与字节哈希。结果保存在 `.local/fortr
   威力增强弹、风向转换器、穿风弹；每局每人 2 件，使用道具不结束回合。
 - 位图可破坏地形、风力、角度/力度、朝向、特殊弹、道具、坠落、突然死亡、电脑/托管、观战、恢复。
 - PC 鼠标瞄准/滚轮力度/点击开火、方向键移动与瞄准、空格开火；手机滑杆和按钮。
-- 与服务器一致的落点预览、2.4× 坦克绘制、1200 世界像素取景、屏幕边缘敌人指示和小地图。
+- 与服务器一致的落点预览、2.2× 坦克绘制、1500 世界像素取景、屏幕边缘敌人指示和小地图。
 - 地图选择按 stage 排序；等待房间地图/规则修改必须保存，未保存时禁止开始。
 - 原版坦克、炮弹、28 帧爆炸、地图与音效通过平台 `BoardProps.audio` 播放；CDN 优先、
   同源 `/fortressblue/v2/` 回退。
@@ -61,11 +61,11 @@ python3 -B scripts/fortressblue/check-browser.py
 - HTTP/SQLite E2E：新游戏默认上架；8 人房 + 7 名电脑、选坦克、移动、开火、错误席位/
   epoch/turn/角度/力度拒绝、服务重启保持对局；2v2 随机地图；团队结果、历史记录。
 - 前端：9 项疯狂坦克目录/道具目录/瞄准/弹道预览/碰撞位图镜像/素材 URL 测试通过；全部
-  460 项前端测试通过；构建通过；24 款游戏边界检查通过。
+  461 项前端测试通过；构建通过；24 款游戏边界检查通过。
 - 素材：186 个原版 WebP/MP3 文件通过字节数、SHA-256、WebP/MP3 头、时长校验；本地、
   `web/dist` 和 `https://cdn.ichenj.com/bga/v20261002-1/fortressblue/v2/` 三处字节一致。
 - 来源复现：官方客户端 5 个源文件 SHA-256 与 `sources.json` 一致；从原始 `.i16` 重新解码
-  17 张地图、14 种坦克和 8 种道具的 250 项媒体/碰撞/出生点结果与 manifest、catalog、tanks.json、items.json
+  17 张地图、14 种坦克和 8 种道具的 267 项媒体/碰撞/出生点结果与 manifest、catalog、tanks.json、items.json
   逐字节一致（`asset-redecode.json`，0 失败）。
 - 道具：8 种原版道具目录、每席 2 件不重复、补血/团补/补给/护盾/强化/反风/穿风、
   道具不结束回合、越界/错误回合/额外字段拒绝、电脑先使用道具再开火、恢复存档保留道具。
@@ -77,10 +77,10 @@ python3 -B scripts/fortressblue/check-browser.py
 弹窗选择「疯狂坦克」和 stage-4「钢铁工厂」，设置 8 席后创建房间；在等待房间修改地图，
 验证未保存时不能开始、保存后服务器收到新地图；随后添加 7 名电脑、开始游戏、选择原版坦克，
 并用键盘、鼠标瞄准、滚轮力度、空格和点击战场完成开火；同时验证原版道具图标、使用道具
-不结束回合。本地回退运行：`.local/fortressblue/browser/ec0ae7be/result.json`（60/60 通过）。
+不结束回合。本地回退运行：`.local/fortressblue/browser/d7a58fb9/result.json`（61/61 通过）。
 CDN 运行：
 `CHECK_ASSETS_BASE=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/fortressblue/check-browser.py`，
-结果 `.local/fortressblue/browser/aaf16f35/result.json`（60/60 通过）。
+结果 `.local/fortressblue/browser/e8085975/result.json`（61/61 通过）。
 
 覆盖：
 
@@ -101,17 +101,19 @@ CDN 运行：
 - 键盘 ↑ 改变角度、→ 使服务器位置增加；方向键在游戏回合内被正确接管。
 - 鼠标移动到坦克右上方后角度约 59°、朝向为右，落点预览有 136 个采样点；
   移到左下方后朝向变左、角度约 9°；滚轮增加力度且页面不滚动；点击战场由服务器返回 shot id。
-- 炮弹以 1.9× 原画绘制，并带玩家颜色尾迹和光晕；动画结束后 `data-craters > 0`，
+- 炮弹按 0.55× 原画比例绘制，并带玩家颜色尾迹和光晕；满力低角度预览实测跨 1508 世界像素；动画结束后 `data-craters > 0`，
   证明爆炸真实擦除了原版前景地形；刷新后 `animating=0`，不重播旧炮弹。
-- 坦克按 2.4× 原画绘制，桌面取景宽度 1500 世界像素；stage-4 开局 8 辆坦克全部在画面内，
+- 坦克按 2.2× 原画绘制，桌面取景宽度 1500 世界像素；stage-4 开局 8 辆坦克全部在画面内，
   屏幕边缘仍显示其他敌人方向，小地图标记全部存活坦克。
 - 地图选择预览保持原版 25:16 画幅（实测 1.5627）；战场按 16:9 取景但不拉伸地图，
   只做等比缩放和裁切。
+- 满力、25° 的客户端预览从 P1 的 x=52 延伸到 x=1560（跨 1508 世界像素），
+  与服务器速度曲线一致；炮弹飞行 700～3200 ms，镜头跟随。
 - 320×844：无横向溢出，Canvas 实际宽度 ≥280 px（16:10 高 178.75 px），8 席玩家栏存在；
   滚动到操作区后开火按钮完整位于视口内（高 48 px），坦克仍可辨认。
-- 截图：`.local/fortressblue/browser/ec0ae7be/desktop-select.png`、`desktop-board.png`、
+- 截图：`.local/fortressblue/browser/d7a58fb9/desktop-select.png`、`desktop-board.png`、
   `desktop-first-shot.png`、`desktop-after-shot.png`、`mobile-320.png`、`mobile-controls.png`；
-  CDN 运行截图见 `aaf16f35/`。
+  CDN 运行截图见 `e8085975/`。
 
 ## 可玩性热修复（2026-10-20）
 
@@ -122,7 +124,7 @@ CDN 运行：
    现改为 `seenShot = 0`，只有刷新时已存在的 shot id 才跳过。
 2. **炮弹永远看不到**：`now` 使用 `Date.now()`，动画 `start` 使用 `performance.now()`，
    `elapsed` 变成巨大的正数，绘制直接进入爆炸分支并瞬间跳过飞行。现统一使用
-   `performance.now()`；炮弹按 1.9× 原画绘制，并增加玩家颜色尾迹和光晕。
+   `performance.now()`；炮弹增加玩家颜色尾迹和光晕。
 3. **地图取景与预览比例**：桌面取景从 1200 世界像素放宽到 1500，stage-4 开局 8 辆坦克
    全部可见；地图选择预览从 16:9 裁切改为原版 25:16；坦克标签改为屏幕恒定尺寸，
    缩放后仍可读。

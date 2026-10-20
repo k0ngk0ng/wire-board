@@ -96,6 +96,15 @@ func TestStartTeamSpawns(t *testing.T) {
 	}
 }
 
+func TestMaxPowerCrossesWideMap(t *testing.T) {
+	m := fbmaps.Map{Width: 2048, Height: 960, MaskCols: 512, MaskRows: 240}
+	mask := make([]byte, (m.MaskCols*m.MaskRows+7)/8)
+	arc := simulateArc(m, mask, []Tank{{Seat: 0, Alive: true, X: 200, Y: 700}}, 0, 200, 700, 45, 100, 1, 0.9, 0, MaxPath)
+	if arc.Impact.X < 1400 {
+		t.Fatalf("max-power shot only reached %.1f of a 2048 map", arc.Impact.X)
+	}
+}
+
 func TestTerrainMaskAndProjectile(t *testing.T) {
 	m, ok := fbmaps.ByID("stage-16")
 	if !ok {
@@ -109,7 +118,7 @@ func TestTerrainMaskAndProjectile(t *testing.T) {
 	if solid(m, mask, 54, 40) {
 		t.Fatal("expected air at the top")
 	}
-	arc := simulateArc(m, mask, []Tank{{Seat: 0, Alive: true, X: 300, Y: 700}}, 0, 300, 700, 45, 70, 1, 1, 0, MaxPath)
+	arc := simulateArc(m, mask, []Tank{{Seat: 0, Alive: true, X: 300, Y: 700}}, 0, 300, 700, 45, 45, 1, 1, 0, MaxPath)
 	if len(arc.Path) < 10 || arc.Impact.X <= 300 {
 		t.Fatalf("arc did not travel: %+v", arc)
 	}
@@ -252,7 +261,19 @@ func TestBotReturnsLegalActions(t *testing.T) {
 		t.Fatalf("bot fire: %v %s", err, raw)
 	}
 	var a Action
-	if err := json.Unmarshal(raw, &a); err != nil || a.Type != "fire" || a.Angle < 0 || a.Angle > 90 || a.Power < 20 || a.Power > 100 {
+	_ = json.Unmarshal(raw, &a)
+	if a.Type == "item" {
+		m, err = apply(ctx(2, s.Current, now), m, raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		raw, err = botAction(ctx(2, s.Current, now), m)
+		if err != nil || raw == nil {
+			t.Fatalf("bot fire after item: %v %s", err, raw)
+		}
+		_ = json.Unmarshal(raw, &a)
+	}
+	if a.Type != "fire" || a.Angle < 0 || a.Angle > 90 || a.Power < 20 || a.Power > 100 {
 		t.Fatalf("illegal bot action: %s %+v", raw, a)
 	}
 }

@@ -246,6 +246,49 @@ def build_mask(fg: Image.Image, off_y: int):
     return cols, rows, base64.b64encode(bytes(bits)).decode("ascii")
 
 
+def derive_bullet_mask(src_bits: bytes, cols: int, rows: int) -> bytes:
+    """Keep only foreground components that reach the lower quarter of the map.
+
+    The original foreground layer contains floating rails and platforms. Tanks
+    collide with all of them, but treating every decorative rail as shell
+    cover made most shots stop after a quarter of the map. Shells use this
+    ground-like subset; tank movement and spawns keep the full mask.
+    """
+    def get(idx: int) -> bool:
+        return src_bits[idx >> 3] & (1 << (7 - (idx & 7))) != 0
+
+    split = int(rows * 0.72)
+    out = bytearray(len(src_bits))
+    seen = bytearray(cols * rows)
+    for sy in range(rows):
+        for sx in range(cols):
+            start = sy * cols + sx
+            if seen[start] or not get(start):
+                continue
+            queue = [start]
+            seen[start] = 1
+            cells = []
+            low = 0
+            while queue:
+                idx = queue.pop()
+                cells.append(idx)
+                x, y = idx % cols, idx // cols
+                low = max(low, y)
+                for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+                    if nx < 0 or ny < 0 or nx >= cols or ny >= rows:
+                        continue
+                    ni = ny * cols + nx
+                    if not seen[ni] and get(ni):
+                        seen[ni] = 1
+                        queue.append(ni)
+            if low >= split:
+                for idx in cells:
+                    out[idx >> 3] |= 1 << (7 - (idx & 7))
+    if not any(out):
+        return src_bits
+    return bytes(out)
+
+
 def safe_ground(mask_bits: bytes, cols: int, rows: int, x: int, want_team: int):
     """Find a column with solid ground and enough headroom."""
     order = [x]
@@ -329,6 +372,7 @@ def build_map(m: dict):
     save_webp(thumb, thumb_out, quality=85)
     mask_cols, mask_rows, mask_b64 = build_mask(fg, off_y)
     mask_bits = base64.b64decode(mask_b64)
+    bullet_b64 = base64.b64encode(derive_bullet_mask(mask_bits, mask_cols, mask_rows)).decode("ascii")
     spawns = spawn_points(mask_bits, mask_cols, mask_rows, 8)
     music = LOCAL / "analysis" / "music" / f"stage{stage:02d}.wav"
     if not music.exists():
@@ -359,6 +403,7 @@ def build_map(m: dict):
         "maskCols": mask_cols,
         "maskRows": mask_rows,
         "mask": mask_b64,
+        "bulletMask": bullet_b64,
         "spawns": spawns,
         "fgSha256": sha256(fg_out),
         "bgSha256": sha256(bg_out) if bg is not None else None,

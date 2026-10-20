@@ -53,7 +53,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		weapon = "special"
 	}
 	stage, _ := fbmaps.ByID(s.MapID)
-	mask := maskFor(stage, s.Craters)
+	mask := bulletMaskFor(stage, s.Craters)
 	bestAngle, bestPower := 45.0, 70.0
 	bestScore := math.Inf(1)
 	maxAngle := float64(spec.Angle)

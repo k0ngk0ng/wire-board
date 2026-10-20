@@ -93,7 +93,7 @@ python3 -m http.server 18233 --bind 127.0.0.1
 ## 原版素材复现结果
 
 `python3 -B scripts/fortressblue/verify-original-source.py` 从原始 `.i16` 重新生成并逐项比较：
-**250/250 通过**，覆盖 17 张地图的碰撞位图/出生点/前景/背景/叠加层/缩略图，14 种坦克的
+**267/267 通过**，覆盖 17 张地图的碰撞位图/出生点/前景/背景/叠加层/缩略图，14 种坦克的
 idle/fire/die/move 和炮弹，以及 8 种 `itemlist!.i16` 道具图标与元数据。结果保存在 `.local/fortressblue/asset-redecode.json`。
 
 ## 重做范围

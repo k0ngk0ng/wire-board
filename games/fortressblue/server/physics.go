@@ -34,6 +34,14 @@ func maskFor(m fbmaps.Map, craters []Crater) []byte {
 	return mask
 }
 
+func bulletMaskFor(m fbmaps.Map, craters []Crater) []byte {
+	mask := fbmaps.BaseBulletMask(m)
+	for _, c := range craters {
+		carveMask(m, mask, c.X, c.Y, c.R)
+	}
+	return mask
+}
+
 func carveMask(m fbmaps.Map, mask []byte, cx, cy, radius float64) bool {
 	if radius <= 0 {
 		return false
@@ -86,7 +94,7 @@ func tankCenter(t Tank) Point { return Point{X: t.X, Y: t.Y - 18} }
 
 // simulateArc is pure and shared by server shot resolution and the bot search.
 func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, rangeScale float64, wind int, limit int) Arc {
-	speed := (120 + clamp(power, 20, 100)*3.2) * clamp(rangeScale, 0.7, 1.3)
+	speed := (120 + clamp(power, 20, 100)*7.0) * clamp(rangeScale, 0.7, 1.3)
 	rad := clamp(angle, 0, 90) * math.Pi / 180
 	vx := math.Cos(rad) * speed * float64(facing)
 	vy := -math.Sin(rad) * speed
