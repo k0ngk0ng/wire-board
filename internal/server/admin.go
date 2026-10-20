@@ -327,6 +327,7 @@ func (s *Server) adminCommit(actor User, action, target, detail string, rooms []
 	}
 	for _, room := range rooms {
 		s.rooms[room.ID] = room
+		s.realtimeSaved(room)
 	}
 	s.broadcast()
 	return nil

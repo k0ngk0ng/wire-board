@@ -9,8 +9,7 @@ export type InputRequest = Control & {
 
 export const NEUTRAL: Control = { move: "none", fire: false };
 
-const same = (a: Control, b: Control) =>
-  a.move === b.move && a.fire === b.fire;
+const same = (a: Control, b: Control) => a.move === b.move && a.fire === b.fire;
 
 type Sync = {
   scope: string;
@@ -19,29 +18,33 @@ type Sync = {
   enabled: boolean;
 };
 
-// Keep at most one platform action in flight and coalesce continuous input.
+// Bound in-flight inputs by the transport window and coalesce unsent intent.
 // Only the control intent is queued; positions and hits never leave the client.
 export class LatestInput {
   value: Control = { ...NEUTRAL };
   private snapshot?: Sync;
   private sent?: Control;
-  private pending?: InputRequest;
+  private pending = new Map<number, InputRequest>();
   private at = -Infinity;
   private seq = 0;
   private token = 0;
 
   sync(next: Sync) {
     const previous = this.snapshot;
-    if (!previous || next.scope !== previous.scope || next.epoch !== previous.epoch) {
+    if (
+      !previous ||
+      next.scope !== previous.scope ||
+      next.epoch !== previous.epoch
+    ) {
       this.value = { ...NEUTRAL };
       this.sent = undefined;
-      this.pending = undefined;
+      this.pending.clear();
       this.at = -Infinity;
       this.seq = Math.max(0, next.seq);
     } else if (next.enabled !== previous.enabled) {
       this.value = { ...NEUTRAL };
       this.sent = undefined;
-      this.pending = undefined;
+      this.pending.clear();
       this.at = -Infinity;
     }
     this.seq = Math.max(this.seq, next.seq);
@@ -56,8 +59,12 @@ export class LatestInput {
     };
   }
 
-  next(now: number, force = false): InputRequest | null {
-    if (!this.snapshot?.enabled || this.pending) return null;
+  next(now: number, force = false, window = 1): InputRequest | null {
+    if (
+      !this.snapshot?.enabled ||
+      this.pending.size >= Math.max(1, Math.min(8, window))
+    )
+      return null;
     const changed = !this.sent || !same(this.sent, this.value);
     const released = changed && same(this.value, NEUTRAL);
     if (!changed && same(this.value, NEUTRAL)) return null;
@@ -65,24 +72,25 @@ export class LatestInput {
       return null;
     this.sent = { ...this.value };
     this.at = now;
-    this.pending = {
+    const request: InputRequest = {
       ...this.value,
       type: "input",
       epoch: this.snapshot.epoch,
       seq: ++this.seq,
       token: ++this.token,
     };
-    return this.pending;
+    this.pending.set(request.token, request);
+    return request;
   }
 
   complete(token: number) {
-    if (this.pending?.token === token) this.pending = undefined;
+    this.pending.delete(token);
   }
 
   reset(seq = 0) {
     this.value = { ...NEUTRAL };
     this.sent = undefined;
-    this.pending = undefined;
+    this.pending.clear();
     this.at = -Infinity;
     this.seq = Math.max(0, seq);
   }

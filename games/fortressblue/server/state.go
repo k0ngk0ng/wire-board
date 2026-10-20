@@ -73,24 +73,26 @@ type Status struct {
 }
 
 type Tank struct {
-	Seat     int      `json:"seat"`
-	Team     int      `json:"team"`
-	TankID   int      `json:"tankId"`
-	Selected bool     `json:"selected"`
-	X        float64  `json:"x"`
-	Y        float64  `json:"y"`
-	Facing   int      `json:"facing"`
-	HP       int      `json:"hp"`
-	MaxHP    int      `json:"maxHp"`
-	Fuel     float64  `json:"fuel"`
-	Special  int      `json:"special"`
-	Alive    bool     `json:"alive"`
-	Damage   int      `json:"damage"`
-	Kills    int      `json:"kills"`
-	Deaths   int      `json:"deaths"`
-	Statuses []Status `json:"statuses,omitempty"`
-	Items    []int    `json:"items,omitempty"`
-	ItemTurn int      `json:"itemTurn,omitempty"`
+	SpecialUnlimited  bool     `json:"specialUnlimited,omitempty"`
+	PendingShotEffect string   `json:"pendingShotEffect,omitempty"`
+	Seat              int      `json:"seat"`
+	Team              int      `json:"team"`
+	TankID            int      `json:"tankId"`
+	Selected          bool     `json:"selected"`
+	X                 float64  `json:"x"`
+	Y                 float64  `json:"y"`
+	Facing            int      `json:"facing"`
+	HP                int      `json:"hp"`
+	MaxHP             int      `json:"maxHp"`
+	Fuel              float64  `json:"fuel"`
+	Special           int      `json:"special"`
+	Alive             bool     `json:"alive"`
+	Damage            int      `json:"damage"`
+	Kills             int      `json:"kills"`
+	Deaths            int      `json:"deaths"`
+	Statuses          []Status `json:"statuses,omitempty"`
+	Items             []int    `json:"items,omitempty"`
+	ItemTurn          int      `json:"itemTurn,omitempty"`
 }
 
 type Crater struct {
@@ -101,12 +103,23 @@ type Crater struct {
 }
 
 type Arc struct {
-	Path   []Point `json:"path"`
-	Impact Point   `json:"impact"`
-	Hit    int     `json:"hit"`
+	PathTimes   []float64 `json:"pathTimes,omitempty"`
+	ImpactAt    int64     `json:"impactAt,omitempty"`
+	OutOfBounds bool      `json:"outOfBounds,omitempty"`
+	Path        []Point   `json:"path"`
+	Impact      Point     `json:"impact"`
+	Hit         int       `json:"hit"`
+}
+
+type Hit struct {
+	Healing int    `json:"healing,omitempty"`
+	Victim  int    `json:"victim"`
+	Damage  int    `json:"damage"`
+	Kind    string `json:"kind,omitempty"`
 }
 
 type Blast struct {
+	Hits    []Hit   `json:"hits,omitempty"`
 	X       float64 `json:"x"`
 	Y       float64 `json:"y"`
 	R       float64 `json:"r"`
@@ -118,13 +131,17 @@ type Blast struct {
 }
 
 type Shot struct {
-	ID      int64    `json:"id"`
-	Seat    int      `json:"seat"`
-	Weapon  string   `json:"weapon"`
-	Arcs    []Arc    `json:"arcs"`
-	Blasts  []Blast  `json:"blasts"`
-	Craters []Crater `json:"craters,omitempty"`
-	At      int64    `json:"at"`
+	CancelledAt int64    `json:"cancelledAt,omitempty"`
+	LaunchAt    int64    `json:"launchAt,omitempty"`
+	ImpactAt    int64    `json:"impactAt,omitempty"`
+	SettleAt    int64    `json:"settleAt,omitempty"`
+	ID          int64    `json:"id"`
+	Seat        int      `json:"seat"`
+	Weapon      string   `json:"weapon"`
+	Arcs        []Arc    `json:"arcs"`
+	Blasts      []Blast  `json:"blasts"`
+	Craters     []Crater `json:"craters,omitempty"`
+	At          int64    `json:"at"`
 }
 
 type Event struct {
@@ -139,7 +156,54 @@ type Event struct {
 	Text   string  `json:"text,omitempty"`
 }
 
+type Fall struct {
+	Seat   int     `json:"seat"`
+	FromX  float64 `json:"fromX"`
+	FromY  float64 `json:"fromY"`
+	ToX    float64 `json:"toX"`
+	ToY    float64 `json:"toY"`
+	At     int64   `json:"at"`
+	EndAt  int64   `json:"endAt"`
+	Landed bool    `json:"landed,omitempty"`
+}
+
+type Resolution struct {
+	LaunchAt int64  `json:"launchAt,omitempty"`
+	Stage    string `json:"stage"`
+	ShotID   int64  `json:"shotId"`
+	At       int64  `json:"at"`
+	ImpactAt int64  `json:"impactAt"`
+	SettleAt int64  `json:"settleAt"`
+	Falls    []Fall `json:"falls,omitempty"`
+}
+
+type PendingShot struct {
+	Launched bool   `json:"launched,omitempty"`
+	Weapon   Weapon `json:"weapon"`
+	Kind     string `json:"kind,omitempty"`
+}
+
+type Hazard struct {
+	ID         int64   `json:"id"`
+	Kind       string  `json:"kind"`
+	X          float64 `json:"x"`
+	Y          float64 `json:"y"`
+	R          float64 `json:"r"`
+	At         int64   `json:"at"`
+	EndAt      int64   `json:"endAt"`
+	NextTickAt int64   `json:"nextTickAt"`
+	Source     int     `json:"source"`
+}
+
 type State struct {
+	Hazards        []Hazard `json:"hazards,omitempty"`
+	needsAdvance   bool
+	resumeMovement bool
+
+	MoveRemainingMS int64        `json:"moveRemainingMs,omitempty"`
+	Resolution      *Resolution  `json:"resolution,omitempty"`
+	PendingShot     *PendingShot `json:"pendingShot,omitempty"`
+
 	Options     Options  `json:"options"`
 	Epoch       string   `json:"epoch"`
 	Seed        uint64   `json:"seed"`
@@ -169,56 +233,60 @@ type State struct {
 }
 
 type TankView struct {
-	Seat     int      `json:"seat"`
-	Team     int      `json:"team"`
-	TankID   int      `json:"tankId"`
-	Selected bool     `json:"selected"`
-	X        float64  `json:"x"`
-	Y        float64  `json:"y"`
-	Facing   int      `json:"facing"`
-	HP       int      `json:"hp"`
-	MaxHP    int      `json:"maxHp"`
-	Fuel     float64  `json:"fuel"`
-	Special  int      `json:"special"`
-	Alive    bool     `json:"alive"`
-	Damage   int      `json:"damage"`
-	Kills    int      `json:"kills"`
-	Deaths   int      `json:"deaths"`
-	Statuses []Status `json:"statuses,omitempty"`
-	Items    []int    `json:"items,omitempty"`
-	Current  bool     `json:"current"`
+	SpecialUnlimited  bool     `json:"specialUnlimited,omitempty"`
+	PendingShotEffect string   `json:"pendingShotEffect,omitempty"`
+	Seat              int      `json:"seat"`
+	Team              int      `json:"team"`
+	TankID            int      `json:"tankId"`
+	Selected          bool     `json:"selected"`
+	X                 float64  `json:"x"`
+	Y                 float64  `json:"y"`
+	Facing            int      `json:"facing"`
+	HP                int      `json:"hp"`
+	MaxHP             int      `json:"maxHp"`
+	Fuel              float64  `json:"fuel"`
+	Special           int      `json:"special"`
+	Alive             bool     `json:"alive"`
+	Damage            int      `json:"damage"`
+	Kills             int      `json:"kills"`
+	Deaths            int      `json:"deaths"`
+	Statuses          []Status `json:"statuses,omitempty"`
+	Items             []int    `json:"items,omitempty"`
+	Current           bool     `json:"current"`
 }
 
 type View struct {
-	Options     Options    `json:"options"`
-	Epoch       string     `json:"epoch"`
-	Phase       string     `json:"phase"`
-	MapID       string     `json:"mapId"`
-	MapName     string     `json:"mapName"`
-	MapWidth    int        `json:"mapWidth"`
-	MapHeight   int        `json:"mapHeight"`
-	MapOffY     int        `json:"mapOffY"`
-	SelectUntil int64      `json:"selectUntil"`
-	StartAt     int64      `json:"startAt"`
-	SuddenAt    int64      `json:"suddenAt"`
-	MatchEndsAt int64      `json:"matchEndsAt"`
-	Deadline    int64      `json:"deadline"`
-	Sudden      bool       `json:"sudden"`
-	Turn        int        `json:"turn"`
-	Current     int        `json:"current"`
-	Wind        int        `json:"wind"`
-	Order       []int      `json:"order"`
-	TeamSize    int        `json:"teamSize"`
-	Tanks       []TankView `json:"tanks"`
-	Craters     []Crater   `json:"craters,omitempty"`
-	LastShot    *Shot      `json:"lastShot,omitempty"`
-	Events      []Event    `json:"events"`
-	Log         []string   `json:"log"`
-	You         int        `json:"you"`
-	CanSelect   bool       `json:"canSelect"`
-	CanMove     bool       `json:"canMove"`
-	CanFire     bool       `json:"canFire"`
-	Selected    int        `json:"selectedTank,omitempty"`
+	Hazards     []Hazard    `json:"hazards,omitempty"`
+	Resolution  *Resolution `json:"resolution,omitempty"`
+	Options     Options     `json:"options"`
+	Epoch       string      `json:"epoch"`
+	Phase       string      `json:"phase"`
+	MapID       string      `json:"mapId"`
+	MapName     string      `json:"mapName"`
+	MapWidth    int         `json:"mapWidth"`
+	MapHeight   int         `json:"mapHeight"`
+	MapOffY     int         `json:"mapOffY"`
+	SelectUntil int64       `json:"selectUntil"`
+	StartAt     int64       `json:"startAt"`
+	SuddenAt    int64       `json:"suddenAt"`
+	MatchEndsAt int64       `json:"matchEndsAt"`
+	Deadline    int64       `json:"deadline"`
+	Sudden      bool        `json:"sudden"`
+	Turn        int         `json:"turn"`
+	Current     int         `json:"current"`
+	Wind        int         `json:"wind"`
+	Order       []int       `json:"order"`
+	TeamSize    int         `json:"teamSize"`
+	Tanks       []TankView  `json:"tanks"`
+	Craters     []Crater    `json:"craters,omitempty"`
+	LastShot    *Shot       `json:"lastShot,omitempty"`
+	Events      []Event     `json:"events"`
+	Log         []string    `json:"log"`
+	You         int         `json:"you"`
+	CanSelect   bool        `json:"canSelect"`
+	CanMove     bool        `json:"canMove"`
+	CanFire     bool        `json:"canFire"`
+	Selected    int         `json:"selectedTank,omitempty"`
 }
 
 func teamSize(players int) int {
@@ -292,7 +360,7 @@ func windFor(seed uint64, turn int, sudden bool) int {
 }
 
 func (s *State) canAct(seat int) bool {
-	return s.Phase == PhasePlaying && !s.Finished && seat >= 0 && seat < len(s.Tanks) && seat == s.Current && s.Tanks[seat].Alive
+	return s.Phase == PhasePlaying && s.Resolution == nil && !s.Finished && seat >= 0 && seat < len(s.Tanks) && seat == s.Current && s.Tanks[seat].Alive
 }
 
 func (s *State) teamAlive(team int) int {
@@ -424,7 +492,7 @@ func (s *State) envelope() (gameapi.Match, error) {
 		m.Deadline = s.SelectUntil
 		m.SystemDeadline = s.SelectUntil
 	case PhasePlaying:
-		if s.Current >= 0 {
+		if s.Current >= 0 && s.Resolution == nil {
 			m.Actors = []int{s.Current}
 			m.Attention = []int{s.Current}
 			m.TimeoutActors = []int{s.Current}
@@ -456,20 +524,24 @@ func (s *State) systemDeadline() int64 {
 	if s.Phase != PhasePlaying {
 		return 0
 	}
-	if !s.Sudden {
-		if s.SuddenAt > 0 {
-			return s.SuddenAt
-		}
-		return s.MatchEndsAt
+	next := s.MatchEndsAt
+	if !s.Sudden && s.SuddenAt > 0 {
+		next = s.SuddenAt
 	}
-	return s.MatchEndsAt
+	if s.Resolution != nil {
+		next = s.resolutionDeadline()
+	}
+	if hazard := s.hazardDeadline(); hazard > 0 && (next == 0 || hazard < next) {
+		next = hazard
+	}
+	return next
 }
 
 func (s *State) project(seat int) View {
 	m, _ := fbmaps.ByID(s.MapID)
 	teamSize := len(s.Tanks) / 2
 	v := View{
-		Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, MapID: s.MapID, MapName: m.Name,
+		Hazards: append([]Hazard(nil), s.Hazards...), Resolution: s.Resolution, Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, MapID: s.MapID, MapName: m.Name,
 		MapWidth: m.Width, MapHeight: m.Height, MapOffY: m.OffY,
 		SelectUntil: s.SelectUntil, StartAt: s.StartAt, SuddenAt: s.SuddenAt,
 		MatchEndsAt: s.MatchEndsAt, Deadline: s.Deadline, Sudden: s.Sudden,
@@ -480,7 +552,7 @@ func (s *State) project(seat int) View {
 		Log: append([]string(nil), s.Log...), You: seat,
 	}
 	for i, t := range s.Tanks {
-		v.Tanks[i] = TankView{Seat: t.Seat, Team: t.Team, TankID: t.TankID, Selected: t.Selected, X: t.X, Y: t.Y, Facing: t.Facing, HP: t.HP, MaxHP: t.MaxHP, Fuel: t.Fuel, Special: t.Special, Alive: t.Alive, Damage: t.Damage, Kills: t.Kills, Deaths: t.Deaths, Statuses: append([]Status(nil), t.Statuses...), Items: append([]int(nil), t.Items...), Current: s.Phase == PhasePlaying && i == s.Current}
+		v.Tanks[i] = TankView{SpecialUnlimited: t.SpecialUnlimited, PendingShotEffect: t.PendingShotEffect, Seat: t.Seat, Team: t.Team, TankID: t.TankID, Selected: t.Selected, X: t.X, Y: t.Y, Facing: t.Facing, HP: t.HP, MaxHP: t.MaxHP, Fuel: t.Fuel, Special: t.Special, Alive: t.Alive, Damage: t.Damage, Kills: t.Kills, Deaths: t.Deaths, Statuses: append([]Status(nil), t.Statuses...), Items: append([]int(nil), t.Items...), Current: s.Phase == PhasePlaying && s.Resolution == nil && i == s.Current}
 	}
 	if seat >= 0 && seat < len(s.Tanks) {
 		t := s.Tanks[seat]

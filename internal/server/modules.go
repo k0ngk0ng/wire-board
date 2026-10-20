@@ -120,7 +120,7 @@ func (s *Server) startModule(r *Room, actor int, now time.Time) error {
 		return err
 	}
 	r.Status = "playing"
-	if err = r.setModule(match); err != nil {
+	if err = s.setModule(r, match); err != nil {
 		return err
 	}
 	r.MatchID, r.SetupVersion, r.Rated = randomID(12), r.Version+1, true
@@ -140,10 +140,15 @@ func (s *Server) applyModule(r *Room, actor, version int, action json.RawMessage
 	if err != nil {
 		return err
 	}
+	// An accepted input may advance game physics, but must not postpone an
+	// already scheduled room frame (and starve controlled seats indefinitely).
+	if s.modules[r.Kind].Realtime && match.Result == nil && r.Module.SystemDeadline > 0 && match.SystemDeadline > r.Module.SystemDeadline {
+		match.SystemDeadline = r.Module.SystemDeadline
+	}
 	if err = s.modules[r.Kind].ValidateMatch(match, len(r.Seats)); err != nil {
 		return err
 	}
-	return r.setModule(match)
+	return s.setModule(r, match)
 }
 
 func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
@@ -171,8 +176,12 @@ func (s *Server) moduleView(r *Room, viewer int) (map[string]any, error) {
 // autoplay nor renew player activity. A failed callback or commit is retryable
 // from the unchanged persisted snapshot on the next tick.
 func (s *Server) expireModuleTimers(now time.Time) {
+	s.expireModuleTimersAtCadence(now, false)
+}
+
+func (s *Server) expireModuleTimersAtCadence(now time.Time, precise bool) {
 	for _, room := range s.rooms {
-		if s.modules[room.Kind].Realtime {
+		if s.modules[room.Kind].Realtime || s.modules[room.Kind].PreciseTimers != precise {
 			continue // Realtime frames use the fast clock and include bot controls.
 		}
 		if room.Status != "playing" || room.Module == nil || room.Module.Result != nil || room.Module.SystemDeadline == 0 || room.Module.SystemDeadline > now.UnixMilli() {
@@ -208,7 +217,7 @@ func (s *Server) runModuleTimer(room *Room, now time.Time) error {
 	if err = m.ValidateMatch(match, len(next.Seats)); err != nil {
 		return err
 	}
-	if err = next.setModule(match); err != nil {
+	if err = s.setModule(&next, match); err != nil {
 		return err
 	}
 	next.Version++

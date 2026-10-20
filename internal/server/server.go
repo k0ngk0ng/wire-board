@@ -131,27 +131,35 @@ type bucket struct {
 	Count int
 }
 type Server struct {
-	botContext  context.Context
-	botWake     chan struct{}
-	botSlots    chan struct{}
-	botSearches map[string]*moduleBotSearch
-	botCursor   map[string]int
-	modules     map[string]gameapi.Module
-	gameKinds   []string
-	gameNames   map[string]string
-	newGame     func(string, int) (*game.State, error)
-	cancel      context.CancelFunc
-	done        chan struct{}
-	mu          sync.Mutex
-	db          *sql.DB
-	cfg         Config
-	rooms       map[string]*Room
-	watchers    map[chan struct{}]bool
-	limits      map[string]bucket
-	files       fs.FS
-	hiddenGames map[string]bool
-	presence    map[string]time.Time
-	connections map[chan struct{}]string
+	instance            string
+	realtimeCheckpoints map[string]*realtimeCheckpoint
+	inputMu             sync.Mutex
+	inputWG             sync.WaitGroup
+	inputQueues         map[string]*realtimeInputQueue
+	inputClosing        bool
+	inputBatchDelay     time.Duration
+	botContext          context.Context
+	botWake             chan struct{}
+	botSlots            chan struct{}
+	botSearches         map[string]*moduleBotSearch
+	botCursor           map[string]int
+	modules             map[string]gameapi.Module
+	gameKinds           []string
+	gameNames           map[string]string
+	newGame             func(string, int) (*game.State, error)
+	cancel              context.CancelFunc
+	done                chan struct{}
+	mu                  sync.Mutex
+	db                  *sql.DB
+	cfg                 Config
+	rooms               map[string]*Room
+	watchers            map[chan struct{}]bool
+	limits              map[string]bucket
+	files               fs.FS
+	hiddenGames         map[string]bool
+	presence            map[string]time.Time
+	connections         map[chan struct{}]string
+	streamFrames        map[chan struct{}]chan struct{}
 }
 
 func New(cfg Config, files fs.FS) (*Server, error) {
@@ -198,7 +206,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 		db.Close()
 		return nil, e
 	}
-	s := &Server{newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
+	s := &Server{instance: randomID(16), newGame: game.New, db: db, cfg: cfg, rooms: map[string]*Room{}, watchers: map[chan struct{}]bool{}, limits: map[string]bucket{}, files: files, hiddenGames: map[string]bool{}, presence: map[string]time.Time{}, connections: map[chan struct{}]string{}}
 	if e = s.initModules(); e != nil {
 		db.Close()
 		return nil, e
@@ -247,7 +255,7 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 						return nil, err
 					}
 					if !reflect.DeepEqual(match, *r.Module) {
-						if err = r.setModule(match); err != nil {
+						if err = s.setModule(&r, match); err != nil {
 							db.Close()
 							return nil, err
 						}
@@ -257,7 +265,17 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 				}
 			}
 		}
+		realtimeMigrated, err := s.migrateRealtimeControl(&r)
+		if err != nil {
+			db.Close()
+			return nil, err
+		}
+		if realtimeMigrated {
+			r.Version++
+			moduleMigrated = true
+		}
 		s.rooms[r.ID] = &r
+		s.realtimeSaved(&r)
 		changed := r.Game != nil && r.Game.UpgradeRailSetup()
 		if changed {
 			r.SetupVersion = r.Version
@@ -299,17 +317,29 @@ func New(cfg Config, files fs.FS) (*Server, error) {
 	return s, nil
 }
 func (s *Server) Close() error {
+	s.inputMu.Lock()
+	s.inputClosing = true
+	s.inputMu.Unlock()
 	s.cancel()
 	<-s.done
-	return s.db.Close()
+	s.inputWG.Wait()
+	s.mu.Lock()
+	err := s.flushRealtimeCheckpoints(time.Now())
+	s.mu.Unlock()
+	if err != nil {
+		log.Printf("save realtime checkpoints on shutdown: %v", err)
+	}
+	return errors.Join(err, s.db.Close())
 }
 
 func (s *Server) runTimers(ctx context.Context) {
 	defer close(s.done)
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()
-	realtime := time.NewTicker(50 * time.Millisecond)
-	defer realtime.Stop()
+	// System deadlines include short animation nodes in turn-based modules.
+	// Player timeouts, idle rooms and bot pacing keep their separate slow clock.
+	systemClock := time.NewTicker(50 * time.Millisecond)
+	defer systemClock.Stop()
 	for {
 		select {
 		case <-ctx.Done():
@@ -318,9 +348,10 @@ func (s *Server) runTimers(ctx context.Context) {
 			s.mu.Lock()
 			s.collectModuleBotSearches(time.Now())
 			s.mu.Unlock()
-		case now := <-realtime.C:
+		case now := <-systemClock.C:
 			s.mu.Lock()
 			s.expireRealtimeModuleTimers(now)
+			s.expireModuleTimersAtCadence(now, true)
 			s.mu.Unlock()
 		case now := <-ticker.C:
 			s.mu.Lock()
@@ -329,6 +360,9 @@ func (s *Server) runTimers(ctx context.Context) {
 			s.expireSetups(now)
 			s.collectModuleBotSearches(now)
 			s.runBots(now)
+			if err := s.flushRealtimeCheckpoints(now); err != nil {
+				log.Printf("save realtime checkpoints: %v", err)
+			}
 			s.mu.Unlock()
 		}
 	}
@@ -584,7 +618,7 @@ func (s *Server) current(id string) *Room {
 }
 func summary(r *Room) map[string]any {
 	if len(r.Options) > 0 {
-		return map[string]any{"id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
+		return map[string]any{"setupVersion": r.SetupVersion, "id": r.ID, "name": r.Name, "kind": r.Kind, "options": r.Options, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
 	}
 
 	result := map[string]any{"catanRiversWorldMap": r.CatanRiversWorldMap, "id": r.ID, "name": r.Name, "kind": r.Kind, "railMap": r.RailMap, "sanguoshaOptions": r.SanguoshaOptions, "splendorOptions": r.SplendorOptions, "catanOptions": r.CatanOptions, "catanSeafarers": r.CatanSeafarers, "catanTransportSea": r.CatanTransportSea, "catanBaseConfiguration": r.CatanBaseConfiguration, "catanCitiesKnights": r.CatanCitiesKnights, "catanHarbors": r.CatanHarbors, "catanFriendlyRobber": r.CatanFriendlyRobber, "catanNewWorldMap": r.CatanNewWorldMap, "host": r.Host, "capacity": r.Capacity, "seats": r.Seats, "status": r.Status, "closeReason": r.CloseReason, "locked": r.Password != "", "version": r.Version, "updated": r.Updated, "spectatorCount": len(r.Spectators)}
@@ -658,12 +692,25 @@ func summary(r *Room) map[string]any {
 	}
 	return result
 }
+
+// Encode a detached response under the state lock, then perform network I/O
+// after releasing it. A slow HTTP reader must not stall unrelated rooms.
 func (s *Server) state(w http.ResponseWriter, r *http.Request) {
+	status, raw := s.statePayload(r)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(status)
+	_, _ = w.Write(raw)
+}
+func stateError(status int, message string) (int, []byte) {
+	raw, _ := json.Marshal(map[string]string{"error": message})
+	return status, raw
+}
+func (s *Server) statePayload(r *http.Request) (int, []byte) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	u, ok := s.needUser(w, r)
-	if !ok {
-		return
+	u, err := s.user(r)
+	if err != nil {
+		return stateError(401, "请先登录")
 	}
 	s.seen(u.ID)
 	rooms := []any{}
@@ -672,7 +719,7 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 			rooms = append(rooms, summary(room))
 		}
 	}
-	out := map[string]any{"user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
+	out := map[string]any{"serverInstance": s.instance, "user": map[string]any{"id": u.ID, "name": u.Name, "role": s.role(u.ID)}, "availableGames": s.availableGames(), "rooms": rooms, "serverNow": time.Now().UnixMilli(), "assetsBaseURL": s.cfg.AssetsBaseURL, "version": s.cfg.Version, "railMaps": game.RailMapList()}
 	out["modules"] = s.cfg.Modules
 	room := s.current(u.ID)
 	if room == nil {
@@ -688,8 +735,7 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 			if room.Module != nil {
 				view, err := s.moduleView(room, seatIndex(room, u.ID))
 				if err != nil {
-					fail(w, 500, "无法读取游戏视图")
-					return
+					return stateError(500, "无法读取游戏视图")
 				}
 				v["game"] = view
 			} else {
@@ -707,7 +753,11 @@ func (s *Server) state(w http.ResponseWriter, r *http.Request) {
 		}
 		out["room"] = v
 	}
-	respond(w, 200, out)
+	raw, err := json.Marshal(out)
+	if err != nil {
+		return stateError(500, "无法读取游戏视图")
+	}
+	return http.StatusOK, raw
 }
 func (s *Server) save(r *Room) error {
 	b, e := json.Marshal(r)
@@ -726,7 +776,11 @@ func (s *Server) save(r *Room) error {
 		_ = tx.Rollback()
 		return e
 	}
-	return tx.Commit()
+	if e = tx.Commit(); e != nil {
+		return e
+	}
+	s.realtimeSaved(r)
+	return nil
 }
 func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
@@ -948,7 +1002,12 @@ func (s *Server) create(w http.ResponseWriter, r *http.Request) {
 }
 func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
-	defer s.mu.Unlock()
+	locked := true
+	defer func() {
+		if locked {
+			s.mu.Unlock()
+		}
+	}()
 	s.expireIdleRooms(time.Now())
 	s.expireSetups(time.Now())
 	u, ok := s.needUser(w, r)
@@ -981,6 +1040,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 		Target                 string                         `json:"target,omitempty"`
 		Password               string                         `json:"password"`
 		Version                int                            `json:"version"`
+		ServerInstance         string                         `json:"serverInstance"`
 		Nonce                  string                         `json:"nonce"`
 		Action                 game.Action                    `json:"-"`
 		Enabled                *bool                          `json:"enabled,omitempty"`
@@ -1000,6 +1060,20 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	}
 	if len(req.Nonce) < 8 || len(req.Nonce) > 100 {
 		fail(w, 400, "缺少有效操作编号")
+		return
+	}
+	if req.Type == "action" && room.Module != nil && s.modules[room.Kind].Realtime {
+		// Release the host lock while the room collects concurrent inputs. The
+		// batch revalidates session, seat, control, epoch/sequence and version.
+		input := streamInput{ServerInstance: req.ServerInstance, Type: "input", RoomID: room.ID, Version: req.Version, Nonce: req.Nonce, Action: req.RawAction}
+		locked = false
+		s.mu.Unlock()
+		ack := s.submitRealtimeInput(r, u.ID, input)
+		if ack.Status == 200 {
+			respond(w, 200, map[string]any{"version": ack.Version, "durable": ack.Durable})
+		} else {
+			fail(w, ack.Status, ack.Error)
+		}
 		return
 	}
 	var prior int
@@ -1720,7 +1794,7 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 					err = module.ValidateMatch(match, len(next.Seats))
 				}
 				if err == nil {
-					err = next.setModule(match)
+					err = s.setModule(&next, match)
 				}
 				if err != nil {
 					break
@@ -1784,7 +1858,11 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = next.applyGameAction(idx, req.Action, now)
 		}
 	case "kick_timeout":
-		err = errors.New("超时会自动开启电脑托管，玩家保留席位并可随时取消托管")
+		if s.modules[next.Kind].Realtime {
+			err = errors.New("实时游戏不使用超时托管，可手动开启或取消托管")
+		} else {
+			err = errors.New("超时会自动开启电脑托管，玩家保留席位并可随时取消托管")
+		}
 	case "rematch":
 		if next.Host != u.ID || (next.Status != "finished" && next.Status != "closed") {
 			err = errors.New("只有房主能在结束后再开一局")
@@ -1863,8 +1941,10 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 	}
 	if len(next.Seats) == 0 {
 		delete(s.rooms, next.ID)
+		delete(s.realtimeCheckpoints, next.ID)
 	} else {
 		s.rooms[next.ID] = &next
+		s.realtimeSaved(&next)
 	}
 	if req.Type == "action" {
 		s.broadcastGameChange(&next)
@@ -1889,8 +1969,12 @@ func (s *Server) broadcastGameChange(room *Room) {
 		if !seated && spectatorIndex(room, userID) < 0 {
 			continue
 		}
+		target := connection
+		if frames := s.streamFrames[connection]; frames != nil {
+			target = frames
+		}
 		select {
-		case connection <- struct{}{}:
+		case target <- struct{}{}:
 		default:
 		}
 	}
@@ -1912,6 +1996,10 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
 	}
 	u, ok := s.needUser(w, r)
 	if !ok {
+		return
+	}
+	if r.URL.Query().Get("stream") == "1" {
+		s.streamSocket(w, r, u)
 		return
 	}
 	conn, e := websocket.Accept(w, r, &websocket.AcceptOptions{})

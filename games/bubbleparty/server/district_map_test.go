@@ -46,6 +46,10 @@ func TestDistrictReferenceLayout(t *testing.T) {
 				want = CellWall
 			case 'R', 'O', 'C':
 				want = CellCrate
+			case 'T':
+				if referencePines[[2]int{x, y}] {
+					want = CellWall
+				}
 			}
 			if got := cells[y*Cols+x]; got != want {
 				t.Fatalf("reference (%d,%d) %c: collision %d want %d", x, y, c, got, want)
@@ -113,7 +117,7 @@ func TestDistrictTilesProjectAndDestruction(t *testing.T) {
 	if len(decoded.Tiles) != Cols*Rows {
 		t.Fatalf("missing public tile metadata: %d", len(decoded.Tiles))
 	}
-	checks := map[[2]int]int{{7, 0}: 1, {5, 0}: 3, {5, 1}: 2, {9, 2}: 3, {9, 11}: 2, {9, 12}: 3, {0, 6}: 3, {1, 1}: 4, {0, 8}: 5, {10, 0}: 6, {2, 0}: 7, {1, 0}: 8, {8, 0}: 9}
+	checks := map[[2]int]int{{7, 0}: 1, {5, 0}: 2, {5, 1}: 2, {9, 2}: 2, {9, 11}: 2, {9, 12}: 2, {0, 6}: 3, {1, 1}: 4, {0, 8}: 5, {10, 0}: 6, {2, 0}: 7, {1, 0}: 8, {8, 0}: 9}
 	for pos, want := range checks {
 		if got := decoded.Tiles[pos[1]*Cols+pos[0]]; got != want {
 			t.Fatalf("tile %v=%d want%d", pos, got, want)

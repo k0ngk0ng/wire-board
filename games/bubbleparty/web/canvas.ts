@@ -1,4 +1,9 @@
 import type { Player, View } from "./types";
+import {
+  avatarDeathDuration,
+  drawAvatarArt,
+  drawAvatarFallback,
+} from "./avatar-art";
 import { frameRect, getSprite, spriteFrames, type SpriteName } from "./sprites";
 
 export const CELL = 24;
@@ -6,14 +11,13 @@ export const COLS = 15;
 export const ROWS = 13;
 export const WIDTH = COLS * CELL;
 export const HEIGHT = ROWS * CELL;
-export type DrawPoint = { x: number; y: number };
+// Room for tall characters above the first row; physics coordinates stay on
+// the original 15x13 grid and sprites remain anchored to their feet.
+export const DRAW_WIDTH = WIDTH + 24;
+export const DRAW_HEIGHT = HEIGHT + 52;
+export type DrawPoint = { x: number; y: number; move?: string; dir?: string };
 const TAU = Math.PI * 2;
-const directions: Record<string, number> = {
-  up: 0,
-  down: 1,
-  left: 2,
-  right: 3,
-};
+
 const tileSprites: Record<number, SpriteName> = {
   2: "hedge",
   3: "tree",
@@ -25,16 +29,7 @@ const tileSprites: Record<number, SpriteName> = {
   9: "crate",
   10: "houseRed",
 };
-const seatColors = [
-  "#b52e35",
-  "#175fac",
-  "#b36209",
-  "#813caa",
-  "#17774b",
-  "#a52e72",
-  "#225767",
-  "#624625",
-];
+const teamColors = ["#b52e35", "#175fac"];
 
 function circle(
   ctx: CanvasRenderingContext2D,
@@ -109,15 +104,14 @@ function obstacle(
   code: number,
   x: number,
   y: number,
-  solid: boolean,
 ) {
   const name = tileSprites[code];
   if (!name) return;
   const px = x * CELL,
     foot = (y + 1) * CELL;
-  // Walkable hedges are kept low so they cannot hide characters or imply a tall wall.
-  const height =
-    code === 2 ? 20 : Math.min(spriteFrames[name].height * 0.6, foot);
+  // Fruit herbs keep their original silhouette; depth, not flattening the
+  // image, lets a character move behind their foliage.
+  const height = spriteFrames[name].height * 0.6;
   if (sprite(ctx, name, px, foot - height, CELL, height)) return;
   if (code === 2 || code === 3) {
     ctx.fillStyle = "#62512d";
@@ -148,10 +142,6 @@ function obstacle(
       ctx.lineTo(px + 4, foot - 4);
       ctx.stroke();
     }
-  }
-  if (!solid && code === 3) {
-    ctx.fillStyle = "#6a9b43";
-    ctx.fillRect(px + 8, foot - 2, 8, 2);
   }
 }
 function water(
@@ -210,18 +200,18 @@ function drawPlayer(
   pos: DrawPoint,
   now: number,
   reduced: boolean,
+  assets: string,
 ) {
   const px = pos.x * CELL + CELL / 2,
     py = pos.y * CELL + CELL / 2;
-  const color = seatColors[p.seat % seatColors.length];
-  const type = p.team === 0 ? 1 : 2;
+  const color = teamColors[p.team] ?? teamColors[0];
   const death = [...view.events]
     .reverse()
     .find((e) => e.type === "eliminate" && e.seat === p.seat && e.at <= now);
   const deathAge = death ? now - death.at : Infinity;
-  if (!p.alive && (reduced || deathAge > 1000)) {
-    circle(ctx, px, py, 8, "#eee4d0", "#665b4c");
-    ctx.strokeStyle = "#665b4c";
+  if (!p.alive && (reduced || deathAge > avatarDeathDuration(p.avatar))) {
+    circle(ctx, px, py, 8, p.team === 1 ? "#d8e8f5" : "#efd7d5", color);
+    ctx.strokeStyle = color;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(px - 3, py - 3);
@@ -241,46 +231,34 @@ function drawPlayer(
   ctx.ellipse(px, py + 8, 14, 5, 0, 0, TAU);
   ctx.stroke();
   const trapped = p.alive && p.trappedUntil > 0;
-  const moving = p.applied.move !== "none" && p.applied.move !== "" && !trapped;
-  const name: SpriteName = !p.alive
-    ? `death${type}`
-    : trapped
-      ? `trapped${type}`
-      : `role${type}`;
-  const frame = !p.alive
-    ? Math.min(10, Math.floor(deathAge / 90))
-    : trapped
-      ? reduced
-        ? 0
-        : Math.floor(now / 160) % 2
-      : moving && !reduced
-        ? Math.floor(now / 75) % 6
-        : 0;
-  const w = type === 1 ? 32 : 34;
-  const h = (spriteFrames[name].height * w) / spriteFrames[name].width;
-  const x = Math.max(0, Math.min(WIDTH - w, px - w / 2));
-  const y = Math.max(0, Math.min(HEIGHT - h, py + 12 - h));
+  const move = pos.move ?? p.applied.move;
+  const moving = move !== "none" && move !== "" && !trapped;
   if (
-    !sprite(
+    !drawAvatarArt(
       ctx,
-      name,
-      x,
-      y,
-      w,
-      h,
-      frame,
-      trapped || !p.alive ? 0 : (directions[p.dir] ?? 1),
+      assets,
+      {
+        avatar: p.avatar,
+        team: p.team,
+        dir: pos.dir ?? (moving ? move : p.dir),
+        moving,
+        trapped,
+        dead: !p.alive,
+        deathAge,
+        now,
+        reduced,
+      },
+      px,
+      py + 12,
     )
   ) {
-    circle(ctx, px, Math.max(15, py - 3), 15, color, "#263944");
-    circle(ctx, px, Math.max(17, py), 9, "#ffe7bf");
-    circle(ctx, px - 3, Math.max(15, py - 2), 1.5, "#253543");
-    circle(ctx, px + 3, Math.max(15, py - 2), 1.5, "#253543");
+    drawAvatarFallback(ctx, p.avatar, p.team, px, py + 12);
   }
+
   if (trapped) {
     const bw = 42,
-      bx = Math.max(0, Math.min(WIDTH - bw, px - bw / 2)),
-      by = Math.max(0, py - 27);
+      bx = px - bw / 2,
+      by = py - 27;
     if (
       !sprite(
         ctx,
@@ -292,30 +270,21 @@ function drawPlayer(
         reduced ? 3 : 2 + (Math.floor(now / 180) % 2),
       )
     ) {
-      circle(ctx, px, Math.max(20, py - 5), 20, "#9cdcf366", "#1167a5");
+      circle(ctx, px, py - 5, 20, "#9cdcf366", "#1167a5");
     }
     const text = `${Math.max(1, Math.ceil((p.trappedUntil - now) / 1000))}`;
     ctx.fillStyle = "#143a56";
-    ctx.fillRect(
-      Math.max(0, Math.min(WIDTH - 20, px - 10)),
-      Math.max(0, py - 30),
-      20,
-      13,
-    );
+    ctx.fillRect(px - 10, py - 30, 20, 13);
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 10px system-ui, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(
-      text,
-      Math.max(10, Math.min(WIDTH - 10, px)),
-      Math.max(10, py - 20),
-    );
+    ctx.fillText(text, px, py - 20);
   }
   if (p.shield || p.invulnerableUntil > now) {
     ctx.strokeStyle = "#fff2a3";
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.ellipse(px, Math.max(20, py - 6), 19, 22, 0, 0, TAU);
+    ctx.ellipse(px, py - 6, 19, 22, 0, 0, TAU);
     ctx.stroke();
   }
   const rescue = view.events.find(
@@ -333,15 +302,6 @@ function drawPlayer(
     ctx.arc(px, py, radius, 0, TAU);
     ctx.stroke();
   }
-  const sx = Math.max(7, Math.min(WIDTH - 7, px + 12)),
-    sy = Math.max(8, Math.min(HEIGHT - 8, py + 8));
-  circle(ctx, sx, sy, 6.5, color, "#fff9e8");
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 8px system-ui, sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(String(p.seat + 1), sx, sy + 0.5);
-  ctx.textBaseline = "alphabetic";
 }
 
 export function drawBoard(
@@ -350,10 +310,14 @@ export function drawBoard(
   display: Map<number, DrawPoint>,
   now: number,
   reduced: boolean,
+  assets = "",
 ) {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  ctx.scale(ctx.canvas.width / WIDTH, ctx.canvas.height / HEIGHT);
+  ctx.scale(ctx.canvas.width / DRAW_WIDTH, ctx.canvas.height / DRAW_HEIGHT);
+  ctx.fillStyle = "#9db78f";
+  ctx.fillRect(0, 0, DRAW_WIDTH, DRAW_HEIGHT);
+  ctx.translate(12, 44);
   ctx.imageSmoothingEnabled = true;
   ctx.globalAlpha = 1;
   ground(ctx, view);
@@ -405,8 +369,8 @@ export function drawBoard(
         code = tileCode(view, i);
       if (code >= 2)
         objects.push({
-          y: y + 0.4,
-          draw: () => obstacle(ctx, code, x, y, view.cells[i] !== 0),
+          y: y + (code === 2 ? 0.85 : 0.4),
+          draw: () => obstacle(ctx, code, x, y),
         });
     }
   for (const b of view.bombs)
@@ -436,7 +400,7 @@ export function drawBoard(
     const pos = display.get(p.seat) ?? { x: p.px ?? p.x, y: p.py ?? p.y };
     objects.push({
       y: pos.y + 0.6,
-      draw: () => drawPlayer(ctx, p, view, pos, now, reduced),
+      draw: () => drawPlayer(ctx, p, view, pos, now, reduced, assets),
     });
   }
   objects.sort((a, b) => a.y - b.y).forEach((o) => o.draw());
@@ -469,11 +433,5 @@ export function drawPreview(
   ground(ctx, view);
   for (let y = 0; y < ROWS; y++)
     for (let x = 0; x < COLS; x++)
-      obstacle(
-        ctx,
-        tileCode(view, y * COLS + x),
-        x,
-        y,
-        cells[y * COLS + x] !== 0,
-      );
+      obstacle(ctx, tileCode(view, y * COLS + x), x, y);
 }

@@ -1,4 +1,5 @@
 import { drawFrame, type Atlas } from "./assets";
+import type { TankPose } from "./prediction";
 import {
   POWERUP_NAMES,
   SUB_COLS,
@@ -37,7 +38,8 @@ function interpolatedTank(
   viewer: number,
 ): TankView {
   if (!prev || cur.seat === viewer) return cur;
-  if (Math.abs(cur.x - prev.x) > 40 || Math.abs(cur.y - prev.y) > 40) return cur;
+  if (Math.abs(cur.x - prev.x) > 40 || Math.abs(cur.y - prev.y) > 40)
+    return cur;
   return {
     ...cur,
     x: lerp(prev.x, cur.x, alpha),
@@ -124,9 +126,6 @@ function drawFallbackTank(
     ctx.fillRect(4, 3, 8, 10 - (10 * tank.hp) / tank.maxHp);
   }
   ctx.restore();
-  ctx.fillStyle = "rgba(255,255,255,0.85)";
-  ctx.font = "6px monospace";
-  ctx.fillText(String((tank.seat % 3) + 1), x + 1, y + 6);
 }
 
 function drawBase(
@@ -203,6 +202,7 @@ export function drawBattlefield(
   atlas: Atlas | null,
   viewer: number,
   serverNow: number,
+  localTank?: TankPose,
 ) {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, SIZE, SIZE);
@@ -236,9 +236,19 @@ export function drawBattlefield(
                   : code === 5
                     ? "ice"
                     : null;
-          if (frame && drawFrame(ctx, atlas, frame, sx * SUB, sy * SUB, SUB, SUB))
+          if (
+            frame &&
+            drawFrame(ctx, atlas, frame, sx * SUB, sy * SUB, SUB, SUB)
+          )
             continue;
-          drawFallbackTerrain(ctx, steel ? 2 : code, sx * SUB, sy * SUB, SUB, SUB);
+          drawFallbackTerrain(
+            ctx,
+            steel ? 2 : code,
+            sx * SUB,
+            sy * SUB,
+            SUB,
+            SUB,
+          );
         }
       }
     }
@@ -260,7 +270,17 @@ export function drawBattlefield(
       x = lerp(prev.x, b.x, alpha);
       y = lerp(prev.y, b.y, alpha);
     }
-    if (!drawFrame(ctx, atlas, `bullet-${b.team === 0 ? "top" : "bottom"}`, x - 3, y - 3, 6, 6)) {
+    if (
+      !drawFrame(
+        ctx,
+        atlas,
+        `bullet-${b.team === 0 ? "top" : "bottom"}`,
+        x - 3,
+        y - 3,
+        6,
+        6,
+      )
+    ) {
       ctx.fillStyle = TEAM_COLORS[b.team] ?? "#eee";
       ctx.beginPath();
       ctx.arc(x, y, 2.4, 0, Math.PI * 2);
@@ -275,7 +295,10 @@ export function drawBattlefield(
   );
   for (const t of view.tanks) {
     if (!t.alive) continue;
-    const tank = interpolatedTank(t, prevTanks.get(t.seat), alpha, viewer);
+    const tank =
+      t.seat === viewer && localTank
+        ? { ...t, ...localTank }
+        : interpolatedTank(t, prevTanks.get(t.seat), alpha, viewer);
     const frame = Math.floor(serverNow / 130 + t.seat) % 2;
     const name = `tank-${t.class ?? "balanced"}-${t.team === 0 ? "top" : "bottom"}-${["up", "right", "down", "left"][t.dir]}-${frame}`;
     if (!drawFrame(ctx, atlas, name, tank.x, tank.y, CELL, CELL))

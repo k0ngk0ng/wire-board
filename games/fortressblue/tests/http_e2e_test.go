@@ -97,15 +97,45 @@ func TestFortressBlueEightSeatHTTPAndTeamResult(t *testing.T) {
 	fire := map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": 45, "power": 60, "facing": 1, "weapon": "primary"}
 	h.People[s.Current].Action(fire, 200)
 	after := state(h.People[0])
-	if after.Turn != s.Turn+1 || after.Current == s.Current || after.LastShot == nil {
-		t.Fatalf("HTTP fire did not advance: %+v", after)
+	if after.Turn != s.Turn || after.Current != s.Current || after.LastShot == nil {
+		t.Fatalf("HTTP fire did not preserve flying turn: %+v", after)
 	}
 	beforeRestart := state(h.People[0])
 	h.Restart()
 	restored := state(h.People[0])
-	if !reflect.DeepEqual(beforeRestart, restored) {
-		t.Fatal("restart changed live state")
+	// This fixture restores while the first projectile is still airborne.
+	// Precise system timers may cross its launch node during SQLite reopening;
+	// that single event is progress at the ORIGINAL deadline, not a state reset.
+	observedAt := time.Now().UnixMilli()
+	expected := beforeRestart
+	expected.Events = append([]fortressblue.Event(nil), beforeRestart.Events...)
+	if len(restored.Events) < len(beforeRestart.Events) || !reflect.DeepEqual(restored.Events[:len(beforeRestart.Events)], beforeRestart.Events) {
+		t.Fatal("restore removed or rewrote committed events")
 	}
+	lastID := int64(0)
+	launched := 0
+	for _, event := range beforeRestart.Events {
+		lastID = max(lastID, event.ID)
+		if event.Type == "shot" {
+			launched++
+		}
+	}
+	for _, event := range restored.Events[len(beforeRestart.Events):] {
+		if event.Type != "shot" || event.At != beforeRestart.LastShot.LaunchAt || event.At > observedAt || event.ID != lastID+1 || event.Seat != beforeRestart.LastShot.Seat {
+			t.Fatalf("restore added an event not justified by original launch clock: event=%+v launch=%d impact=%d observed=%d", event, beforeRestart.LastShot.LaunchAt, beforeRestart.LastShot.ImpactAt, observedAt)
+		}
+		launched++
+		lastID = event.ID
+		expected.Events = append(expected.Events, event)
+	}
+	if launched > 1 {
+		t.Fatal("restore replayed launch")
+	}
+	if !reflect.DeepEqual(expected, restored) {
+		t.Fatalf("restore changed pre-impact state outside the due launch event: before resolution=%+v after=%+v observed=%d impact=%d", beforeRestart.Resolution, restored.Resolution, observedAt, beforeRestart.LastShot.ImpactAt)
+	}
+	t.Logf("SQLite restore preserved epoch/turn/tanks/path and shot %d absolute times (%d,%d,%d,%d); launch events=%d observed=%d", restored.LastShot.ID, restored.LastShot.At, restored.LastShot.LaunchAt, restored.LastShot.ImpactAt, restored.LastShot.SettleAt, launched, observedAt)
+
 	if h.People[0].Room()["status"] != "playing" {
 		t.Fatal("HTTP room did not stay in play")
 	}
@@ -177,6 +207,14 @@ func TestFortressBlueHTTPResultAndHistory(t *testing.T) {
 		"type": "fire", "epoch": s.Epoch, "turn": 1, "angle": 45, "power": 60, "facing": 1, "weapon": "primary",
 	}, 200)
 	room := h.People[0].Room()
+	if room["status"] == "finished" {
+		t.Fatal("shot finished before impact")
+	}
+	until := time.Now().Add(12 * time.Second)
+	for room["status"] != "finished" && time.Now().Before(until) {
+		time.Sleep(30 * time.Millisecond)
+		room = h.People[0].Room()
+	}
 	if room["status"] != "finished" {
 		t.Fatalf("fixture did not finish: %v", room)
 	}

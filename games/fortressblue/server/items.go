@@ -50,22 +50,22 @@ func useItem(s *State, seat, slot int, at int64) error {
 	t.ItemTurn = s.Turn
 	switch item.Effect {
 	case "heal_self":
-		t.HP = min(t.MaxHP, t.HP+item.Amount)
+		t.HP = min(t.MaxHP, t.HP+t.MaxHP*item.Amount/100)
 	case "heal_team":
 		for i := range s.Tanks {
 			ally := &s.Tanks[i]
 			if ally.Team == t.Team && ally.Alive {
-				ally.HP = min(ally.MaxHP, ally.HP+item.Amount)
+				ally.HP = min(ally.MaxHP, ally.HP+ally.MaxHP*item.Amount/100)
 			}
 		}
-	case "fuel":
-		t.Fuel = min(200.0, t.Fuel+float64(item.Amount))
+	case "heal_shell":
+		t.PendingShotEffect = "heal"
 	case "shield_self":
 		addStatus(t, Status{Kind: "shield", Turns: max(1, item.Turns), Source: seat})
 	case "power_self":
 		addStatus(t, Status{Kind: "power", Turns: max(1, item.Turns), Source: seat})
-	case "no_wind":
-		addStatus(t, Status{Kind: "nowind", Turns: max(1, item.Turns), Source: seat})
+	case "piercing":
+		addStatus(t, Status{Kind: "piercing", Turns: 1, Source: seat})
 	case "reverse_wind":
 		s.Wind = -s.Wind
 	default:
@@ -121,16 +121,16 @@ func botItem(s *State, seat int) (int, bool) {
 			if !hasStatus(tank, "power") && hashString(s.Epoch, "power", fmt.Sprint(seat), fmt.Sprint(s.Turn))%3 == 0 {
 				return slot, true
 			}
-		case "no_wind":
-			if s.Wind != 0 && !hasStatus(tank, "nowind") {
+		case "piercing":
+			if !hasStatus(tank, "piercing") {
 				return slot, true
 			}
 		case "reverse_wind":
 			if absInt(s.Wind) >= 4 {
 				return slot, true
 			}
-		case "fuel":
-			if tank.Fuel < 12 {
+		case "heal_shell":
+			if hpRatio < 0.55 && tank.PendingShotEffect == "" {
 				return slot, true
 			}
 		}

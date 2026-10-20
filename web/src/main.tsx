@@ -1,6 +1,12 @@
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { refreshQueue } from "./refresh-queue";
 import {
+  mergeStreamState,
+  mergeStreamGame,
+  StreamInputs,
+  type GamePacket,
+} from "./realtime-stream";
+import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
@@ -114,6 +120,10 @@ function App() {
     history.replaceState(null, "", url);
   };
   const [state, setState] = useState<State>();
+  const [streamInputs] = useState(() => new StreamInputs());
+  const serverInstance = useRef<string | undefined>(undefined);
+  const snapshotGeneration = useRef(0);
+  const acceptState = useRef<(data: State) => void>(() => {});
   const [presentationEpoch, setPresentationEpoch] = useState(0);
   const resyncRequired = useRef(true);
   const presented = useRoomPresentation(
@@ -219,26 +229,36 @@ function App() {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   }, [state?.room?.id, state?.room?.status]);
+  acceptState.current = (data: State) => {
+    if (serverInstance.current !== data.serverInstance) {
+      snapshotGeneration.current++;
+      serverInstance.current = data.serverInstance;
+      resyncRequired.current = true;
+    }
+    if (networkFailure.current) {
+      networkFailure.current = false;
+      setError((message) => (message === networkMessage ? "" : message));
+    }
+    if (
+      previousRoom.current?.status === "playing" &&
+      !previousRoom.current.spectating &&
+      !data.room
+    ) {
+      setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
+    }
+    previousRoom.current = data.room;
+    if (resyncRequired.current || document.hidden) {
+      setPresentationEpoch((v) => v + 1);
+      resyncRequired.current = false;
+    }
+    setState((previous) => mergeStreamState(previous, data, performance.now()));
+    setLoaded(true);
+  };
   refreshWork.current = async () => {
     try {
+      const generation = snapshotGeneration.current;
       const data = await api("/state");
-      if (networkFailure.current) {
-        networkFailure.current = false;
-        setError((message) => (message === networkMessage ? "" : message));
-      }
-      if (
-        previousRoom.current?.status === "playing" &&
-        !previousRoom.current.spectating &&
-        !data.room
-      ) {
-        setNotice("你已离开这张牌桌，可以创建或加入其他房间。");
-      }
-      previousRoom.current = data.room;
-      if (resyncRequired.current || document.hidden) {
-        setPresentationEpoch((v) => v + 1);
-        resyncRequired.current = false;
-      }
-      setState({ ...data, receivedAt: performance.now() });
+      if (generation === snapshotGeneration.current) acceptState.current(data);
     } catch (e) {
       if ((e as { status: number }).status === 401) {
         previousRoom.current = undefined;
@@ -259,18 +279,44 @@ function App() {
     let retryDelay = 250;
     let opened = false;
     const connect = () => {
-      socket = new WebSocket(
-        `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/ws`,
+      const connection = new WebSocket(
+        `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/ws?stream=1`,
       );
+      socket = connection;
       socket.onopen = () => {
+        if (stopped || socket !== connection) return;
         retryDelay = 250;
         setOnline(true);
         if (opened) resyncRequired.current = true;
         opened = true;
-        void refresh();
       };
-      socket.onmessage = () => void refresh();
+      socket.onmessage = (event) => {
+        if (stopped || socket !== connection) return;
+        try {
+          const packet = JSON.parse(event.data);
+          if (packet.type === "state") {
+            if (!streamInputs.connected) streamInputs.attach(socket);
+            acceptState.current(packet.state);
+          } else if (packet.type === "game") {
+            setState((previous) =>
+              mergeStreamGame(
+                previous,
+                packet as GamePacket,
+                performance.now(),
+              ),
+            );
+          } else if (packet.type === "ack") {
+            streamInputs.ack(packet);
+          } else {
+            void refresh();
+          }
+        } catch {
+          socket.close();
+        }
+      };
       socket.onclose = () => {
+        if (socket !== connection) return;
+        streamInputs.close();
         setOnline(false);
         resyncRequired.current = true;
         setPresentationEpoch((v) => v + 1);
@@ -280,16 +326,19 @@ function App() {
           retryDelay = Math.min(retryDelay * 2, 2000);
         }
       };
-      socket.onerror = () => socket.close();
+      socket.onerror = () => connection.close();
     };
     connect();
-    const poll = setInterval(() => void refresh(), 15000);
+    const poll = setInterval(() => {
+      if (!streamInputs.connected) void refresh();
+    }, 15000);
     const focus = () => void refresh();
     window.addEventListener("focus", focus);
     return () => {
       stopped = true;
       clearTimeout(timer);
       clearInterval(poll);
+      streamInputs.close();
       socket?.close();
       window.removeEventListener("focus", focus);
     };
@@ -381,10 +430,18 @@ function App() {
       )
         return;
       try {
-        // Games send coalesced controls through the same authenticated endpoint.
-        // Do not take the global UI lock or await a second network round trip.
-        await command(state.room, "action", { action });
-        void refresh();
+        if (streamInputs.connected) {
+          await streamInputs.send({
+            serverInstance: state.serverInstance,
+            roomId: state.room.id,
+            version: state.room.version,
+            nonce: crypto.randomUUID(),
+            action,
+          });
+        } else {
+          await command(state.room, "action", { action, serverInstance: state.serverInstance });
+          void refresh();
+        }
       } catch (e) {
         reportError(e);
         void refresh();
@@ -563,9 +620,7 @@ function App() {
                 </span>
                 <span className="nav-caption">
                   让相聚，多一局。
-                  <em className="app-version">
-                    {versionLabel(state.version)}
-                  </em>
+                  <em className="app-version">{versionLabel(state.version)}</em>
                 </span>
               </nav>
               <div className="header-right">
@@ -871,12 +926,14 @@ function App() {
                     <div className="game-layout">
                       <div className="game-main">
                         <GameBoard
+                          key={`${room.id}:${state.serverInstance ?? ""}`}
                           room={room}
                           act={act}
                           busy={boardBusy}
                           assets={state.assetsBaseURL || ""}
                           sound={sound}
                           audio={gameAudio}
+                          inputWindow={streamInputs.connected ? 8 : 1}
                           clock={presented.clock}
                           command={(type, extra) =>
                             run(() => command(room, type, extra))

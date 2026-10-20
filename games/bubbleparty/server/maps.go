@@ -162,8 +162,9 @@ func reachable(cells []byte, x, y int) bool {
 }
 
 // Public decoration codes are independent of collision cells. The district
-// layout follows the official screenshot transcription; collision semantics
-// remain provisional until verified against the original runtime.
+// layout follows the official screenshot. Pine versus fruit-herb classification
+// is documented in geometry-original-evidence.md; precise runtime collision
+// radii remain an implementation choice, not a recovered original constant.
 const (
 	TileGround = iota
 	TileRoad
@@ -194,6 +195,12 @@ var districtRows = []string{
 	"H.HRHT..CTOOO..",
 }
 
+// The official image has six conifers on the horizontal middle row. The tall
+// overlapping fruit shrubs in columns 5 and 9 are passable herbs, not conifers.
+func districtTree(x, y int) bool {
+	return y == 6 && (x == 0 || x == 2 || x == 4 || x == 10 || x == 12 || x == 14)
+}
+
 func districtCells() []byte {
 	cells := make([]byte, Cols*Rows)
 	for y, row := range districtRows {
@@ -201,6 +208,10 @@ func districtCells() []byte {
 			switch c {
 			case 'H':
 				cells[y*Cols+x] = CellWall
+			case 'T':
+				if districtTree(x, y) {
+					cells[y*Cols+x] = CellWall
+				}
 			case 'R', 'O', 'C':
 				cells[y*Cols+x] = CellCrate
 			}
@@ -259,6 +270,9 @@ func mapTiles(id string, cells []byte) []int {
 			switch cells[idx] {
 			case CellWall:
 				tile = TileWall
+				if mark == 'T' && districtTree(x, y) {
+					tile = TileTree
+				}
 				if mark == 'H' {
 					tile = TileHouseRed
 					if x < 5 && y >= 7 {
@@ -276,12 +290,11 @@ func mapTiles(id string, cells []byte) []int {
 				if mark == 'O' {
 					tile = TileBrickOrange
 				}
+				// Old saves retain their collision cells. Do not draw a solid tree
+			// over a legacy walkable cell or add a wall beneath an active player.
 			default:
 				if mark == 'T' {
 					tile = TileHedge
-					if y == 6 && x%2 == 0 || (x == 5 || x == 9) && y%2 == 0 {
-						tile = TileTree
-					}
 				}
 			}
 			tiles[idx] = tile

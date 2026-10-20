@@ -13,11 +13,7 @@ import {
 import { animationFor, nextEvents, soundFor, type Seen } from "./events";
 import { progressText, timeText } from "./format";
 import { ghostY, predict } from "./prediction";
-import {
-  HIDDEN_ROWS,
-  VISIBLE_ROWS,
-  shapeCells,
-} from "./shapes";
+import { HIDDEN_ROWS, VISIBLE_ROWS, shapeCells } from "./shapes";
 import {
   SPRINT_TARGET,
   modeNames,
@@ -68,9 +64,7 @@ const BoardGrid = memo(function BoardGrid({
   const activeCells = active ? visibleCells(active) : new Map<string, Kind>();
   const ghostCells = useMemo(() => {
     if (!active || ghost === undefined) return new Set<string>();
-    return new Set(
-      visibleCells({ ...active, y: ghost }).keys(),
-    );
+    return new Set(visibleCells({ ...active, y: ghost }).keys());
   }, [active?.kind, active?.rot, active?.x, ghost]);
   return (
     <div
@@ -115,9 +109,7 @@ function MiniPiece({ kind, dim = false }: { kind: Kind; dim?: boolean }) {
   const cells = shapeCells(kind, 0);
   const minX = Math.min(...cells.map((p) => p.x));
   const minY = Math.min(...cells.map((p) => p.y));
-  const filled = new Set(
-    cells.map((p) => cellKey(p.x - minX, p.y - minY)),
-  );
+  const filled = new Set(cells.map((p) => cellKey(p.x - minX, p.y - minY)));
   return (
     <span
       className={`tetris-mini-piece${dim ? " is-dim" : ""}`}
@@ -127,10 +119,7 @@ function MiniPiece({ kind, dim = false }: { kind: Kind; dim?: boolean }) {
         const x = i % 4;
         const y = Math.floor(i / 4);
         return (
-          <i
-            key={i}
-            className={filled.has(cellKey(x, y)) ? `c${kind}` : ""}
-          />
+          <i key={i} className={filled.has(cellKey(x, y)) ? `c${kind}` : ""} />
         );
       })}
     </span>
@@ -191,12 +180,7 @@ function Rival({
         </strong>
         <span>{player.alive ? "存活" : "已出局"}</span>
       </header>
-      <BoardGrid
-        board={player.board}
-        active={player.active}
-        fx={fx}
-        small
-      />
+      <BoardGrid board={player.board} active={player.active} fx={fx} small />
       <div className="tetris-rival-stats">
         <span>{progressText(mode, player.lines)}</span>
         <span>{player.score} 分</span>
@@ -216,10 +200,7 @@ const actionError = (error: unknown) =>
       ? error.message
       : String(error);
 
-const keyMap: Record<
-  string,
-  { kind: InputKind; held: boolean }
-> = {
+const keyMap: Record<string, { kind: InputKind; held: boolean }> = {
   ArrowLeft: { kind: "left", held: true },
   KeyA: { kind: "left", held: true },
   ArrowRight: { kind: "right", held: true },
@@ -339,7 +320,7 @@ export function Board(props: BoardProps<View>) {
       if (
         !enabledRef.current ||
         suspendedRef.current ||
-        sending.current ||
+        (sending.current && (latest.current.inputWindow ?? 1) <= 1) ||
         document.hidden
       )
         return;
@@ -358,9 +339,10 @@ export function Board(props: BoardProps<View>) {
         })
         .catch((reason) => {
           if (scopeRef.current !== sentScope) return;
+          const current = latest.current;
           queue.current.reset(
-            p.room.you >= 0
-              ? (p.data.players[p.room.you]?.seq ?? 0)
+            current.room.you >= 0
+              ? (current.data.players[current.room.you]?.seq ?? 0)
               : 0,
           );
           setQueueVersion((value) => value + 1);
@@ -401,8 +383,7 @@ export function Board(props: BoardProps<View>) {
 
   const wake = () => {
     const p = latest.current;
-    const seq =
-      p.room.you >= 0 ? (p.data.players[p.room.you]?.seq ?? 0) : 0;
+    const seq = p.room.you >= 0 ? (p.data.players[p.room.you]?.seq ?? 0) : 0;
     queue.current.reset(seq);
     setQueueVersion((value) => value + 1);
     suspendedRef.current = false;
@@ -430,8 +411,7 @@ export function Board(props: BoardProps<View>) {
       for (const [code, state] of held.current) {
         const map = keyMap[code];
         if (!map?.held) continue;
-        const delay =
-          map.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
+        const delay = map.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
         const interval =
           map.kind === "softDrop" ? SOFT_DROP_INTERVAL : DAS_INTERVAL;
         const due = repeatTimes(state.since, time, delay, interval);
@@ -440,8 +420,7 @@ export function Board(props: BoardProps<View>) {
       }
       const touch = touchHold.current;
       if (touch) {
-        const delay =
-          touch.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
+        const delay = touch.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
         const interval =
           touch.kind === "softDrop" ? SOFT_DROP_INTERVAL : DAS_INTERVAL;
         const due = repeatTimes(touch.since, time, delay, interval);
@@ -507,8 +486,7 @@ export function Board(props: BoardProps<View>) {
     if (sound && !document.hidden) {
       for (const event of result.events) {
         const file = soundFor(event, you, spectator);
-        if (file)
-          void audio.playWithFallback(sources(assets, `${file}.wav`));
+        if (file) void audio.playWithFallback(sources(assets, `${file}.wav`));
       }
     }
     if (reduced) return;
@@ -623,7 +601,10 @@ export function Board(props: BoardProps<View>) {
           <strong>{own?.pendingCount ?? "—"}</strong>
         </div>
       </div>
-      <div className={`tetris-status${suspended ? " is-suspended" : ""}`} role="status">
+      <div
+        className={`tetris-status${suspended ? " is-suspended" : ""}`}
+        role="status"
+      >
         <span>{status}</span>
         {suspended && (
           <button type="button" onClick={wake}>
@@ -637,7 +618,9 @@ export function Board(props: BoardProps<View>) {
             <Rival
               key={player.seat}
               player={player}
-              roomName={room.seats[player.seat]?.name ?? `玩家 ${player.seat + 1}`}
+              roomName={
+                room.seats[player.seat]?.name ?? `玩家 ${player.seat + 1}`
+              }
               mode={d.options.mode}
               fx={fx[player.seat]}
               you={-1}
@@ -668,11 +651,7 @@ export function Board(props: BoardProps<View>) {
                 kinds={own?.hold ? [own.hold] : []}
                 empty="—"
               />
-              <Preview
-                label="下一个"
-                kinds={own?.queue ?? []}
-                empty="—"
-              />
+              <Preview label="下一个" kinds={own?.queue ?? []} empty="—" />
               <div className="tetris-target">
                 <span>攻击目标</span>
                 <strong>
@@ -720,9 +699,7 @@ export function Board(props: BoardProps<View>) {
         </p>
       )}
       {!spectator && eliminated && (
-        <p className="tetris-eliminated-note">
-          你已出局，可以继续观战或离桌。
-        </p>
+        <p className="tetris-eliminated-note">你已出局，可以继续观战或离桌。</p>
       )}
     </section>
   );

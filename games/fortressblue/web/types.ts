@@ -8,7 +8,32 @@ export type Options = {
 };
 
 export type Point = { x: number; y: number };
-export type Arc = { path: Point[]; impact: Point; hit: number };
+export type Arc = {
+  path: Point[];
+  pathTimes?: number[];
+  impact: Point;
+  hit: number;
+  impactAt?: number;
+  outOfBounds?: boolean;
+};
+export type Fall = {
+  seat: number;
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
+  at: number;
+  endAt: number;
+};
+export type Resolution = {
+  stage: "flying" | "settling";
+  shotId: number;
+  at: number;
+  impactAt: number;
+  launchAt?: number;
+  settleAt: number;
+  falls?: Fall[];
+};
 export type Blast = {
   x: number;
   y: number;
@@ -18,6 +43,7 @@ export type Blast = {
   damage: number;
   kind?: string;
   terrain?: boolean;
+  hits?: { victim: number; damage: number; healing?: number; kind?: string }[];
 };
 export type Crater = { x: number; y: number; r: number; seat: number };
 export type Shot = {
@@ -28,6 +54,10 @@ export type Shot = {
   blasts: Blast[];
   craters?: Crater[];
   at: number;
+  impactAt?: number;
+  launchAt?: number;
+  cancelledAt?: number;
+  settleAt?: number;
 };
 export type Status = {
   kind: string;
@@ -58,6 +88,8 @@ export type Tank = {
   maxHp: number;
   fuel: number;
   special: number;
+  specialUnlimited?: boolean;
+  pendingShotEffect?: "heal";
   alive: boolean;
   damage: number;
   kills: number;
@@ -65,6 +97,17 @@ export type Tank = {
   statuses?: Status[];
   items?: number[];
   current: boolean;
+};
+export type Hazard = {
+  id: number;
+  kind: "fire" | "poison";
+  x: number;
+  y: number;
+  r: number;
+  at: number;
+  endAt: number;
+  nextTickAt: number;
+  source: number;
 };
 export type View = {
   options: Options;
@@ -89,6 +132,8 @@ export type View = {
   tanks: Tank[];
   craters?: Crater[];
   lastShot?: Shot;
+  resolution?: Resolution;
+  hazards?: Hazard[];
   events: Event[];
   log: string[];
   you: number;
@@ -98,7 +143,13 @@ export type View = {
   selectedTank?: number;
 };
 
-export type Sprite = { url: string; w: number; h: number; ax: number; ay: number };
+export type Sprite = {
+  url: string;
+  w: number;
+  h: number;
+  ax: number;
+  ay: number;
+};
 export type TankInfo = {
   id: number;
   name: string;
@@ -108,6 +159,8 @@ export type TankInfo = {
   primary: number;
   special: number;
   angle: number;
+  minAngle?: number;
+  maxAngle?: number;
   range: number;
   skills: number[];
   skillName: string | null;
@@ -151,11 +204,12 @@ export const maps: MapInfo[] = (clientCatalog.maps as MapInfo[]).sort(
   (a, b) => a.stage - b.stage,
 );
 export const mapById = new Map(maps.map((m) => [m.id, m]));
-export const tanks: TankInfo[] = Object.values(tankData.tanks as Record<string, TankInfo>).sort(
-  (a, b) => a.id - b.id,
-);
+export const tanks: TankInfo[] = Object.values(
+  tankData.tanks as Record<string, TankInfo>,
+).sort((a, b) => a.id - b.id);
 export const tankById = new Map(tanks.map((t) => [t.id, t]));
-export const tankPortraits: Record<string, Sprite> = tankData.portraits as Record<string, Sprite>;
+export const tankPortraits: Record<string, Sprite> =
+  tankData.portraits as Record<string, Sprite>;
 export const items: ItemInfo[] = itemData.items as ItemInfo[];
 export const itemById = new Map(items.map((item) => [item.id, item]));
 export const explosion = tankData.explosion as {
@@ -164,7 +218,10 @@ export const explosion = tankData.explosion as {
   cellH: number;
   count: number;
 };
-export const sounds: Record<string, string> = tankData.audio as Record<string, string>;
+export const sounds: Record<string, string> = tankData.audio as Record<
+  string,
+  string
+>;
 
 export const defaultMap = "stage-1";
 export const teamColors = ["#b6473c", "#4b79a8"];
@@ -199,9 +256,11 @@ export function statusText(status: Status) {
     case "burn":
       return `燃烧 ${status.turns}`;
     case "shield":
-      return `护盾 ${status.turns}`;
+      return "防护罩";
     case "power":
       return `强化 ${status.turns}`;
+    case "piercing":
+      return "穿风强化";
     case "nowind":
       return `穿风 ${status.turns}`;
     default:

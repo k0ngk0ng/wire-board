@@ -18,7 +18,7 @@ export class LatestInput {
   value: Control = { ...NEUTRAL };
   private snapshot?: Sync;
   private sent?: Control;
-  private pending?: InputRequest;
+  private pending = new Map<number, InputRequest>();
   private at = -Infinity;
   private seq = 0;
   private token = 0;
@@ -32,13 +32,13 @@ export class LatestInput {
     ) {
       this.value = { ...NEUTRAL };
       this.sent = undefined;
-      this.pending = undefined;
+      this.pending.clear();
       this.at = -Infinity;
       this.seq = Math.max(0, next.seq);
     } else if (next.enabled !== previous.enabled) {
       this.value = { ...NEUTRAL };
       this.sent = undefined;
-      this.pending = undefined;
+      this.pending.clear();
       this.at = -Infinity;
     }
     this.seq = Math.max(this.seq, next.seq);
@@ -50,8 +50,12 @@ export class LatestInput {
     this.value = { move: value.move, bomb: this.value.bomb || !!value.bomb };
   }
 
-  next(now: number, force = false): InputRequest | null {
-    if (!this.snapshot?.enabled || this.pending) return null;
+  next(now: number, force = false, window = 1): InputRequest | null {
+    if (
+      !this.snapshot?.enabled ||
+      this.pending.size >= Math.max(1, Math.min(8, window))
+    )
+      return null;
     const changed = !this.sent || !same(this.sent, this.value);
     const released = changed && same(this.value, NEUTRAL);
     if (!changed && same(this.value, NEUTRAL)) return null;
@@ -59,7 +63,7 @@ export class LatestInput {
       return null;
     this.sent = { ...this.value };
     this.at = now;
-    this.pending = {
+    const request: InputRequest = {
       ...this.value,
       type: "input",
       epoch: this.snapshot.epoch,
@@ -67,17 +71,18 @@ export class LatestInput {
       token: ++this.token,
     };
     this.value = { ...this.value, bomb: false };
-    return this.pending;
+    this.pending.set(request.token, request);
+    return request;
   }
 
   complete(token: number) {
-    if (this.pending?.token === token) this.pending = undefined;
+    this.pending.delete(token);
   }
 
   reset(seq = 0) {
     this.value = { ...NEUTRAL };
     this.sent = undefined;
-    this.pending = undefined;
+    this.pending.clear();
     this.at = -Infinity;
     this.seq = Math.max(0, seq);
   }

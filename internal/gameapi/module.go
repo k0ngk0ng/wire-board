@@ -33,6 +33,9 @@ type Context struct {
 // can act now; TimeoutActors owe a decision at Deadline (Unix milliseconds).
 // These lists differ for optional responses and simultaneous actions.
 type Match struct {
+	// CheckpointKey changes only at game-owned critical phases/round boundaries.
+	// Realtime hosts persist these transitions before publishing them.
+	CheckpointKey string          `json:"checkpointKey,omitempty"`
 	Schema        int             `json:"schema"`
 	Data          json.RawMessage `json:"data"`
 	Actors        []int           `json:"actors"`
@@ -84,6 +87,9 @@ type Module struct {
 	Apply      func(Context, Match, json.RawMessage) (Match, error)                 `json:"-"`
 	View       func(Match, int) (any, error)                                        `json:"-"`
 	BotSearch  *BotSearch                                                           `json:"-"`
+	// PreciseTimers opts non-realtime SystemDeadline events into the 50ms clock.
+	// Player timeouts and bot scheduling retain their ordinary cadence.
+	PreciseTimers bool `json:"-"`
 	// Realtime opts into the fast SystemDeadline clock. Each due frame submits
 	// all controlled actors through BotAction/Apply, then OnTimer, atomically.
 	// Callbacks must stay bounded; asynchronous BotSearch cannot run in a frame.

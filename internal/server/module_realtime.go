@@ -37,9 +37,9 @@ func (s *Server) expireRealtimeModuleTimers(now time.Time) {
 	}
 }
 
-// A single detached frame includes timeout ownership, every currently legal
+// A single detached frame includes every currently legal
 // controlled actor's ordinary Apply action, and the authoritative system timer.
-// Failure anywhere rolls back both gameplay and ownership. Holding s.mu also
+// Callback or critical-commit failure publishes no partial frame. Holding s.mu also
 // serializes cancellation/closure/reconnect against input collection and commit;
 // no stale bot proposal survives a returning player's Reclaim.
 func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
@@ -56,15 +56,6 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 		return err
 	}
 	event := realtimeFrame{Type: "realtime_frame", Deadline: next.Module.SystemDeadline, Timeouts: []int{}, Inputs: []realtimeInput{}}
-	if module.BotAction != nil && next.Module.Deadline > 0 && next.Module.Deadline <= now.UnixMilli() {
-		for _, actor := range next.Module.TimeoutActors {
-			seat := &next.Seats[actor]
-			if !seat.Left && !seat.Bot && !seat.AutoPlay {
-				seat.AutoPlay, seat.TimeoutAutoPlay = true, true
-				event.Timeouts = append(event.Timeouts, actor)
-			}
-		}
-	}
 	// Snapshot the candidate list: a previous input can remove an actor, but
 	// cannot make the same actor run twice or reorder the loop underneath us.
 	actors := slices.Clone(next.Module.Actors)
@@ -102,13 +93,19 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 		if err = module.ValidateMatch(match, len(next.Seats)); err != nil {
 			return err
 		}
-		if err = next.setModule(match); err != nil {
+		if err = s.setModule(&next, match); err != nil {
 			return err
 		}
 		event.Timer = true
 	}
 	next.Version++
 	next.Updated = now.Unix()
+	s.realtimeCheckpoint(room)
+	if !realtimeCritical(room, &next) {
+		s.rooms[next.ID] = &next
+		s.broadcastGameChange(&next)
+		return nil
+	}
 	snapshot, err := json.Marshal(&next)
 	if err != nil {
 		return err
@@ -117,24 +114,16 @@ func (s *Server) runRealtimeModuleFrame(room *Room, now time.Time) error {
 	if err != nil {
 		return err
 	}
-	tx, err := s.db.Begin()
-	if err != nil {
+	entry := realtimeJournalEntry{
+		job:     &queuedRealtimeInput{input: streamInput{Nonce: fmt.Sprintf("frame-%d", next.Version)}},
+		version: next.Version, record: record, at: now.Unix(),
+	}
+	if err = s.persistRealtimeInputBatch(room, &next, snapshot, []realtimeJournalEntry{entry}); err != nil {
 		return err
 	}
-	defer tx.Rollback()
-	if _, err = tx.Exec("UPDATE rooms SET snapshot=? WHERE id=?", snapshot, next.ID); err != nil {
-		return err
-	}
-	if err = archiveGame(tx, &next); err != nil {
-		return err
-	}
-	if _, err = tx.Exec("INSERT INTO actions VALUES(?,?,?,?,?,?)", next.ID, "", fmt.Sprintf("frame-%d", next.Version), next.Version, record, now.Unix()); err != nil {
-		return err
-	}
-	if err = tx.Commit(); err != nil {
-		return err
-	}
+
 	s.rooms[next.ID] = &next
+	s.realtimeSaved(&next)
 	s.broadcastGameChange(&next)
 	return nil
 }

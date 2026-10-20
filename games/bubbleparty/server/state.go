@@ -87,7 +87,10 @@ type Input struct {
 	Bomb bool   `json:"bomb"`
 }
 
+const AvatarCount = 4
+
 type Player struct {
+	Avatar            int     `json:"avatar,omitempty"`
 	Seat              int     `json:"seat"`
 	Team              int     `json:"team"`
 	X                 int     `json:"x"`
@@ -182,6 +185,7 @@ type State struct {
 }
 
 type PlayerView struct {
+	Avatar            int     `json:"avatar"`
 	Seat              int     `json:"seat"`
 	Seq               int64   `json:"seq"`
 	Team              int     `json:"team"`
@@ -302,6 +306,9 @@ func decode(m gameapi.Match) (*State, error) {
 	}
 	for i := range s.Players {
 		p := &s.Players[i]
+		if p.Avatar < 0 || p.Avatar >= AvatarCount {
+			return nil, errors.New("人物造型无效")
+		}
 		if p.Seat != i || p.Team != i/s.TeamSize {
 			return nil, errors.New("席位或队伍无效")
 		}
@@ -364,12 +371,19 @@ func (s *State) match() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	m := gameapi.Match{Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, Log: append([]string(nil), s.Log...), Result: s.Result}
+	var appearance uint32
+	for i, p := range s.Players {
+		appearance |= uint32(p.Avatar) << uint(i*2)
+	}
+	m := gameapi.Match{CheckpointKey: fmt.Sprintf("%s:%x", s.Phase, appearance), Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, Log: append([]string(nil), s.Log...), Result: s.Result}
 	if s.Result != nil {
 		return m, nil
 	}
 	switch s.Phase {
 	case PhaseCountdown:
+		for i := range s.Players {
+			m.Actors = append(m.Actors, i)
+		}
 		m.SystemDeadline = s.StartAt
 	case PhasePlaying:
 		for i := range s.Players {
@@ -416,7 +430,7 @@ func (s *State) project(seat int) View {
 	for i := range s.Players {
 		p := &s.Players[i]
 		v.Players = append(v.Players, PlayerView{
-			Seat: p.Seat, Seq: p.Seq, Team: p.Team, X: p.X, Y: p.Y, Dir: p.Dir, Alive: p.Alive,
+			Avatar: p.Avatar, Seat: p.Seat, Seq: p.Seq, Team: p.Team, X: p.X, Y: p.Y, Dir: p.Dir, Alive: p.Alive,
 			PX: float64(p.X) + p.OffsetX, PY: float64(p.Y) + p.OffsetY, SpeedMS: p.SpeedMS,
 			TrappedUntil: p.TrappedUntil, InvulnerableUntil: p.InvulnerableUntil,
 			Shield: p.Shield, MaxBombs: p.MaxBombs, Range: p.Range,

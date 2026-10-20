@@ -35,11 +35,9 @@ func maskFor(m fbmaps.Map, craters []Crater) []byte {
 }
 
 func bulletMaskFor(m fbmaps.Map, craters []Crater) []byte {
-	mask := fbmaps.BaseBulletMask(m)
-	for _, c := range craters {
-		carveMask(m, mask, c.X, c.Y, c.R)
-	}
-	return mask
+	// Use the same visible, destructible terrain as tank support. The legacy
+	// bulletMask removed floating platforms by an arbitrary height heuristic.
+	return maskFor(m, craters)
 }
 
 func carveMask(m fbmaps.Map, mask []byte, cx, cy, radius float64) bool {
@@ -94,7 +92,7 @@ func tankCenter(t Tank) Point { return Point{X: t.X, Y: t.Y - 18} }
 
 // simulateArc is pure and shared by server shot resolution and the bot search.
 func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, rangeScale float64, wind int, limit int) Arc {
-	speed := (120 + clamp(power, 20, 100)*7.0) * clamp(rangeScale, 0.7, 1.3)
+	speed := (120 + clamp(power, 0, 100)*7.0) * clamp(rangeScale, 0.7, 1.3)
 	rad := clamp(angle, 0, 90) * math.Pi / 180
 	vx := math.Cos(rad) * speed * float64(facing)
 	vy := -math.Sin(rad) * speed
@@ -102,6 +100,7 @@ func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, s
 	y := startY - 26
 	path := make([]Point, 0, min(limit, MaxPath))
 	path = append(path, Point{X: x, Y: y})
+	times := []float64{0}
 	dt := 1.0 / 240.0
 	windAcc := float64(wind) * WindAcc
 	travel := 0.0
@@ -117,9 +116,10 @@ func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, s
 			t := float64(s) / float64(sub)
 			px := x + (nx-x)*t
 			py := y + (ny-y)*t
-			if px < -60 || px > float64(m.Width)+60 || py > float64(m.Height)+320 || py < -240 {
+			if px < 0 || px >= float64(m.Width) || py > float64(m.Height)+320 || py < -240 {
 				path = append(path, Point{X: px, Y: py})
-				return Arc{Path: path, Impact: Point{X: clamp(px, -60, float64(m.Width)+60), Y: clamp(py, -80, float64(m.Height)+80)}, Hit: -1}
+				times = append(times, (float64(step)+t)*dt*1000)
+				return Arc{Path: path, PathTimes: times, OutOfBounds: true, Impact: Point{X: px, Y: py}, Hit: -1}
 			}
 			for i := range tanks {
 				if !tanks[i].Alive || (i == shooter && travel < 24) {
@@ -128,23 +128,26 @@ func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, s
 				c := tankCenter(tanks[i])
 				if math.Hypot(px-c.X, py-c.Y) <= 20 {
 					path = append(path, Point{X: px, Y: py})
-					return Arc{Path: path, Impact: Point{X: px, Y: py}, Hit: i}
+					times = append(times, (float64(step)+t)*dt*1000)
+					return Arc{Path: path, PathTimes: times, Impact: Point{X: px, Y: py}, Hit: i}
 				}
 			}
 			if solid(m, mask, px, py) {
 				path = append(path, Point{X: px, Y: py})
-				return Arc{Path: path, Impact: Point{X: px, Y: py}, Hit: -1}
+				times = append(times, (float64(step)+t)*dt*1000)
+				return Arc{Path: path, PathTimes: times, Impact: Point{X: px, Y: py}, Hit: -1}
 			}
 		}
 		x, y = nx, ny
 		if step%4 == 0 {
 			path = append(path, Point{X: x, Y: y})
+			times = append(times, float64(step+1)*dt*1000)
 		}
 	}
 	if len(path) == 0 {
 		path = append(path, Point{X: x, Y: y})
 	}
-	return Arc{Path: path, Impact: path[len(path)-1], Hit: -1}
+	return Arc{Path: path, PathTimes: times, OutOfBounds: true, Impact: path[len(path)-1], Hit: -1}
 }
 
 func moveTank(s *State, seat int, dir int, at int64) bool {
@@ -164,16 +167,13 @@ func moveTank(s *State, seat int, dir int, at int64) bool {
 	moved := 0.0
 	blocked := false
 	for moved < step {
-		nx := t.X + float64(dir)*1.5
+		stride := math.Min(1.5, step-moved)
+		nx := t.X + float64(dir)*stride
 		if nx < 4 || nx > float64(m.Width)-4 {
 			break
 		}
-		ny := groundY(m, mask, nx, t.Y-8)
-		if ny < 0 || ny > float64(m.Height) {
-			break
-		}
-		if ny-t.Y < -8 { // too steep to climb
-			blocked = true
+		ny, walkable := walkGround(m, mask, t.X, t.Y, nx)
+		if !walkable {
 			break
 		}
 		for i := range s.Tanks {
@@ -186,8 +186,14 @@ func moveTank(s *State, seat int, dir int, at int64) bool {
 		if blocked {
 			break
 		}
-		t.X, t.Y = nx, ny
-		moved += 1.5
+		t.X = nx
+		moved += stride
+		if ny-t.Y > 8 {
+			s.MoveRemainingMS = max(1, s.Deadline-at)
+			beginFalls(s, at, 0, at)
+			break
+		}
+		t.Y = ny
 	}
 	if moved <= 0 {
 		return false
@@ -196,42 +202,6 @@ func moveTank(s *State, seat int, dir int, at int64) bool {
 	t.Fuel = math.Max(0, t.Fuel-moved)
 	s.emit("move", seat, -1, t.X, t.Y, int(moved+0.5), "", at)
 	return true
-}
-
-func settleTanks(s *State, at int64) {
-	m, ok := fbmaps.ByID(s.MapID)
-	if !ok {
-		return
-	}
-	mask := maskFor(m, s.Craters)
-	for i := range s.Tanks {
-		t := &s.Tanks[i]
-		if !t.Alive {
-			continue
-		}
-		ground := groundY(m, mask, t.X, t.Y-10)
-		if ground < 0 || ground > float64(m.Height) {
-			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
-			s.emit("death", i, i, t.X, t.Y, 0, "坠入深渊", at)
-			continue
-		}
-		if ground > t.Y {
-			fall := ground - t.Y
-			t.Y = ground
-			if fall > 36 {
-				hurt := int((fall - 36) * 0.9)
-				if hurt > 0 {
-					t.HP -= hurt
-					s.DamageTotal[i] += 0 // self-inflicted fall damage does not score
-					s.emit("fall", i, i, t.X, t.Y, hurt, "", at)
-				}
-			}
-		}
-		if t.HP <= 0 {
-			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
-			s.emit("death", i, i, t.X, t.Y, 0, "", at)
-		}
-	}
 }
 
 func blastRadius(weapon Weapon) float64 {
@@ -244,7 +214,7 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 	center.X = clamp(center.X, 0, float64(mapSpec.Width))
 	center.Y = clamp(center.Y, 0, float64(mapSpec.Height)+40)
 	radius := blastRadius(weapon)
-	blast := Blast{X: center.X, Y: center.Y, R: radius, Seat: seat, Kind: kind}
+	blast := Blast{X: center.X, Y: center.Y, R: radius, Seat: seat, Victim: -1, Kind: kind}
 	shooter := &s.Tanks[seat]
 	for i := range s.Tanks {
 		t := &s.Tanks[i]
@@ -263,18 +233,23 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 		if s.Sudden {
 			damage *= 2
 		}
-		damage = shieldedDamage(t, damage)
-		t.HP -= damage
-		t.Damage += damage
-		shooter.Damage += damage
-		s.DamageTotal[seat] += damage
-		blast.Victim, blast.Damage = i, damage
-		s.emit("hit", seat, i, t.X, t.Y, damage, kind, at)
-		if kind == "poison" {
-			addStatus(t, Status{Kind: "poison", Turns: 3, Damage: 25, Source: seat})
-		} else if kind == "fire" {
-			addStatus(t, Status{Kind: "burn", Turns: 3, Damage: 18, Source: seat})
+		if i != seat {
+			damage = shieldedDamage(t, damage)
 		}
+		damage = min(damage, t.HP)
+		t.HP -= damage
+		if i != seat {
+			shooter.Damage += damage
+			s.DamageTotal[seat] += damage
+		}
+		blast.Victim, blast.Damage = i, damage
+		blast.Hits = append(blast.Hits, Hit{Victim: i, Damage: damage, Kind: kind})
+		if damage > 0 {
+			s.emit("hit", seat, i, t.X, t.Y, damage, kind, at)
+		} else {
+			s.emit("shield", seat, i, t.X, t.Y, 0, "", at)
+		}
+
 		if t.HP <= 0 && t.Alive {
 			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
 			if i != seat {
@@ -292,8 +267,8 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 }
 
 func shieldedDamage(t *Tank, damage int) int {
-	if hasStatus(t, "shield") {
-		damage = max(1, int(math.Round(float64(damage)*0.5)))
+	if consumeStatus(t, "shield") {
+		return 0
 	}
 	return max(1, damage)
 }
@@ -310,10 +285,10 @@ func addStatus(t *Tank, st Status) {
 	}
 }
 
-func tickStatuses(s *State, at int64) {
+func tickStatuses(s *State, seat int, at int64) {
 	for i := range s.Tanks {
 		t := &s.Tanks[i]
-		if !t.Alive || len(t.Statuses) == 0 {
+		if i != seat || !t.Alive || len(t.Statuses) == 0 {
 			continue
 		}
 		next := t.Statuses[:0]
@@ -321,13 +296,24 @@ func tickStatuses(s *State, at int64) {
 			if st.Turns <= 0 {
 				continue
 			}
+			// One-use protection/weapon modifiers expire on their trigger, not a turn.
+			if st.Kind == "shield" || st.Kind == "power" || st.Kind == "piercing" || st.Kind == "nowind" {
+				next = append(next, st)
+				continue
+			}
 			if st.Damage > 0 {
-				t.HP -= st.Damage
-				if st.Source >= 0 && st.Source < len(s.Tanks) {
-					s.DamageTotal[st.Source] += st.Damage
-					s.Tanks[st.Source].Damage += st.Damage
+				hurt := min(t.HP, st.Damage)
+				t.HP -= hurt
+				if st.Source >= 0 && st.Source < len(s.Tanks) && st.Source != i {
+					s.DamageTotal[st.Source] += hurt
+					s.Tanks[st.Source].Damage += hurt
+					if t.HP == 0 && hurt > 0 {
+						s.Tanks[st.Source].Kills++
+					}
 				}
-				s.emit("status", st.Source, i, t.X, t.Y, st.Damage, st.Kind, at)
+				if hurt > 0 {
+					s.emit("status", st.Source, i, t.X, t.Y, hurt, st.Kind, at)
+				}
 			}
 			st.Turns--
 			if st.Turns > 0 {

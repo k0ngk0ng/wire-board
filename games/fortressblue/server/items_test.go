@@ -63,7 +63,7 @@ func TestUseHealFuelAndTeamHeal(t *testing.T) {
 		t.Fatal(err)
 	}
 	s, _ = decode(m)
-	if s.Tanks[0].HP != 280 {
+	if s.Tanks[0].HP != 100+s.Tanks[0].MaxHP/5 {
 		t.Fatalf("heal hp = %d", s.Tanks[0].HP)
 	}
 	if s.Turn != 1 || s.Current != 0 {
@@ -75,7 +75,7 @@ func TestUseHealFuelAndTeamHeal(t *testing.T) {
 		t.Fatal(err)
 	}
 	s, _ = decode(m)
-	if s.Tanks[0].Fuel != 73 {
+	if s.Tanks[0].Fuel != 3 {
 		t.Fatalf("fuel = %v", s.Tanks[0].Fuel)
 	}
 
@@ -84,12 +84,12 @@ func TestUseHealFuelAndTeamHeal(t *testing.T) {
 		t.Fatal(err)
 	}
 	s, _ = decode(m)
-	if s.Tanks[0].HP != 400 || s.Tanks[1].HP != 320 {
+	if s.Tanks[0].HP != 100+s.Tanks[0].MaxHP*2/5 || s.Tanks[1].HP != 200+s.Tanks[1].MaxHP/5 {
 		t.Fatalf("team heal hp = %d/%d", s.Tanks[0].HP, s.Tanks[1].HP)
 	}
 }
 
-func TestShieldHalvesBlastDamage(t *testing.T) {
+func TestShieldBlocksOneAttack(t *testing.T) {
 	s, _ := playingMatch(t, 2)
 	weapon := Weapon{Name: "主炮", Damage: 100, Blast: 14}
 	target := &s.Tanks[1]
@@ -98,12 +98,16 @@ func TestShieldHalvesBlastDamage(t *testing.T) {
 	s.Tanks[1].HP = s.Tanks[1].MaxHP
 	addStatus(target, Status{Kind: "shield", Turns: 2, Source: 1})
 	shielded := applyBlast(s, 0, weapon, center, "", 2, 1)
-	if shielded.Damage >= plain.Damage || shielded.Damage > plain.Damage/2+2 {
-		t.Fatalf("shield damage = %d, plain = %d", shielded.Damage, plain.Damage)
+	if shielded.Damage != 0 || hasStatus(target, "shield") {
+		t.Fatalf("one-hit shield damage = %d, plain = %d", shielded.Damage, plain.Damage)
+	}
+	again := applyBlast(s, 0, weapon, center, "", 3, 1)
+	if again.Damage <= 0 {
+		t.Fatal("shield blocked more than one attack")
 	}
 }
 
-func TestPowerNoWindAndWindReverse(t *testing.T) {
+func TestPowerPiercingAndWindReverse(t *testing.T) {
 	s, m := playingMatch(t, 2)
 	now := time.Unix(1700000003, 0)
 	s.Tanks[0].Items = []int{25, 35, 26}
@@ -117,7 +121,7 @@ func TestPowerNoWindAndWindReverse(t *testing.T) {
 		}
 		s, _ = decode(m)
 	}
-	if !hasStatus(&s.Tanks[0], "power") || !hasStatus(&s.Tanks[0], "nowind") {
+	if !hasStatus(&s.Tanks[0], "power") || !hasStatus(&s.Tanks[0], "piercing") {
 		t.Fatalf("statuses = %+v", s.Tanks[0].Statuses)
 	}
 	if s.Wind != -8 {
@@ -129,7 +133,7 @@ func TestPowerNoWindAndWindReverse(t *testing.T) {
 		t.Fatal(err)
 	}
 	s, _ = decode(m)
-	if hasStatus(&s.Tanks[0], "power") || hasStatus(&s.Tanks[0], "nowind") {
+	if hasStatus(&s.Tanks[0], "power") || hasStatus(&s.Tanks[0], "piercing") {
 		t.Fatalf("shot did not consume statuses: %+v", s.Tanks[0].Statuses)
 	}
 	if s.LastShot == nil {
@@ -155,7 +159,7 @@ func TestItemValidation(t *testing.T) {
 	}
 }
 
-func TestBotUsesItemThenFires(t *testing.T) {
+func TestBotUsesItemThenActs(t *testing.T) {
 	s, m := playingMatch(t, 2)
 	s.Tanks[0].Items = []int{0}
 	s.Tanks[0].HP = 40
@@ -185,7 +189,7 @@ func TestBotUsesItemThenFires(t *testing.T) {
 	}
 	var second Action
 	_ = json.Unmarshal(raw, &second)
-	if second.Type != "fire" {
+	if second.Type != "fire" && second.Type != "move" {
 		t.Fatalf("bot second action = %+v", second)
 	}
 }

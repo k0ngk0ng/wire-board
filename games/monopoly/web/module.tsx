@@ -27,7 +27,7 @@ export default defineGame<View, Options>({
         <Art
           base={assets}
           name={`token-${seat + 1}`}
-          fallback={<span>{seat + 1}</span>}
+          fallback={<span aria-hidden="true">♟</span>}
         />
         <small>
           {data.properties.filter((p) => p.owner === seat).length} 处地产

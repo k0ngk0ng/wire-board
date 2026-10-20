@@ -246,7 +246,7 @@ func (s *State) envelope() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	m := gameapi.Match{
+	m := gameapi.Match{CheckpointKey: s.Phase,
 		Schema:    SchemaVersion,
 		Data:      data,
 		Actors:    []int{},

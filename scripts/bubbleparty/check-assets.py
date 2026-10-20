@@ -27,3 +27,7 @@ for entry in manifest['entries']:
         with wave.open(str(p)) as wav:
             assert wav.getnframes()>0 and wav.getframerate()>0,p
 print(json.dumps({'status':'passed','files':len(manifest['entries']),'version':'bubbleparty/v2'},ensure_ascii=False))
+
+# Native selectable characters are a separate immutable version.
+import subprocess, sys
+subprocess.run([sys.executable, "-B", str(ROOT / "scripts/bubbleparty/check-avatar-assets.py")], cwd=ROOT, check=True)

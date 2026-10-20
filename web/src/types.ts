@@ -150,6 +150,7 @@ export type State = {
   user: User;
   rooms: Room[];
   room?: Room;
+  serverInstance?: string;
   serverNow: number;
   receivedAt: number;
   assetsBaseURL?: string;
@@ -171,6 +172,7 @@ export type GameHeader = {
   log: string[];
 };
 export type RoomBase = {
+  setupVersion?: number;
   options?: unknown;
   result?: {
     id?: string;

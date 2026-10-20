@@ -255,13 +255,6 @@ function carBody(
   }
   ctx.shadowColor = "transparent";
   ctx.restore();
-  const r = 10 / scale;
-  dot(ctx, c.x, c.y - 35, r, "#183b40");
-  ctx.fillStyle = "#fff8e8";
-  ctx.font = `700 ${12 / scale}px system-ui`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(`${c.seat + 1}`, c.x, c.y - 35 + 0.5 / scale);
 }
 export function TrackCanvas(props: Props) {
   const canvas = useRef<HTMLCanvasElement>(null),

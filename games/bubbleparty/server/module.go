@@ -11,11 +11,12 @@ import (
 )
 
 type Action struct {
-	Type  string `json:"type"`
-	Epoch string `json:"epoch"`
-	Seq   int64  `json:"seq"`
-	Move  string `json:"move"`
-	Bomb  bool   `json:"bomb"`
+	Avatar int    `json:"avatar"`
+	Type   string `json:"type"`
+	Epoch  string `json:"epoch"`
+	Seq    int64  `json:"seq"`
+	Move   string `json:"move"`
+	Bomb   bool   `json:"bomb"`
 }
 
 func Module() gameapi.Module {
@@ -77,7 +78,7 @@ func startWithSeed(ctx gameapi.Context, raw json.RawMessage, seed uint64) (gamea
 			}
 			seat := team*s.TeamSize + i
 			s.Players[seat] = Player{
-				Seat: seat, Team: team, X: sp[0], Y: sp[1], Dir: map[int]string{0: "right", 1: "left"}[team],
+				Avatar: seat % AvatarCount, Seat: seat, Team: team, X: sp[0], Y: sp[1], Dir: map[int]string{0: "right", 1: "left"}[team],
 				Alive: true, SpeedMS: BaseMoveMS, MaxBombs: 1, Range: BaseBombRange,
 				LastInputAt: now, IdleAt: s.StartAt + IdleMS, NextMoveAt: s.StartAt, NextBombAt: s.StartAt,
 				Applied: Input{At: now, Move: "none"},
@@ -100,6 +101,18 @@ func validAction(ctx gameapi.Context, s *State, raw json.RawMessage) (Action, er
 		return a, errors.New("当前不能操作角色")
 	}
 	p := &s.Players[ctx.Actor]
+	if a.Type == "avatar" {
+		if s.Result != nil || !p.Alive || (s.Phase != PhaseCountdown && s.Phase != PhasePlaying) {
+			return a, errors.New("当前不能更换人物")
+		}
+		if a.Avatar < 0 || a.Avatar >= AvatarCount || a.Seq != 0 || a.Move != "" || a.Bomb {
+			return a, errors.New("无效人物选择")
+		}
+		return a, nil
+	}
+	if a.Avatar != 0 {
+		return a, errors.New("移动操作不能更换人物")
+	}
 	if a.Type != "input" {
 		return a, errors.New("未知水泡操作")
 	}
@@ -123,6 +136,10 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	a, err := validAction(ctx, s, raw)
 	if err != nil {
 		return m, err
+	}
+	if a.Type == "avatar" {
+		s.Players[ctx.Actor].Avatar = a.Avatar
+		return s.match()
 	}
 	if s.RulesVersion == ClassicRulesVersion {
 		s.advance(ctx.Now.UnixMilli())

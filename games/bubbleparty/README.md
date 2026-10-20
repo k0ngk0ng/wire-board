@@ -42,3 +42,9 @@ python3 -B scripts/bubbleparty/check-refactor.py
 实现前失败场景分别在 `tests/REFACTOR_SCENARIOS.md`、`tests/BROWSER_REFACTOR_SCENARIOS.md` 和 `tests/SPRITE_SCENARIOS.md`。旧版验收记录只表示历史执行，不能替代本轮重构验收。
 
 本次结果、截图路径与清理范围见 [重构验收记录](../../docs/bubbleparty-refactor-verification.md)。
+
+## 人物与队色
+
+对局中的「人物」按钮可选择泡泡帽、飞行帽、熊耳帽、条纹帽。四套均来自旧客户端原包分层图，红队固定红色、蓝队固定蓝色，换人物只改外观。选择会保存到席位，刷新／重连／托管后保留；同一浏览器的新局沿用该账号偏好。没有人物编号角标。
+
+小区 10 的六棵杉树是实心障碍；纵向果实灌木可进入，并遮挡部分角色。资料与具体边界见 `docs/research/bubbleparty/geometry-original-evidence.md`，新增人物的源 SHA、原帧及生成方式见 `assets/manifest-v3.json`。

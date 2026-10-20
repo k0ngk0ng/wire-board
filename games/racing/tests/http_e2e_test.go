@@ -201,8 +201,21 @@ func TestRacingHTTPPublicationConfigurationAndInputIsolation(t *testing.T) {
 			before := httpRaceState(t, c)
 			h.Restart()
 			restored := httpRaceState(t, c)
-			if restored.Epoch != before.Epoch || restored.StartAt != before.StartAt || restored.MaxRaceAt != before.MaxRaceAt || restored.Options != before.Options || !reflect.DeepEqual(restored.Cars, before.Cars) {
+			if restored.Epoch != before.Epoch || restored.StartAt != before.StartAt || restored.MaxRaceAt != before.MaxRaceAt || restored.Options != before.Options {
 				t.Fatalf("countdown recovery changed race: before %+v after %+v", before, restored)
+			}
+			for p, car := range restored.Cars {
+				expected := before.Cars[p]
+				if car.Throttle != 0 || car.LastInputAt < expected.LastInputAt {
+					t.Fatal("restart revived held throttle or rolled back control time", car)
+				}
+				// Match progress/cosmetics/sequence stay exact; startup neutralizes
+				// held human control and refreshes only its input timestamps.
+				expected.Throttle = 0
+				expected.LastInputAt, expected.IdleAt = car.LastInputAt, car.IdleAt
+				if !reflect.DeepEqual(car, expected) {
+					t.Fatal("restart changed race progress", car, expected)
+				}
 			}
 			record("admin publication, supported room options, concurrent stale revisions, rejected replay/forgery, observer read-only and real SQLite recovery")
 		})
@@ -343,7 +356,7 @@ func TestRacingHTTPComputerTakeoverAndRestore(t *testing.T) {
 	}
 }
 
-func TestRacingHTTPDroppedInputTimeoutAndReclaim(t *testing.T) {
+func TestRacingHTTPDroppedInputIdleAndAutoPlayReclaim(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, game.Module(), "racing")
 	record := httpRaceEvidence(t, h)
 	h.Start(map[string]any{"track": "woodland", "laps": 1})
@@ -375,22 +388,27 @@ func TestRacingHTTPDroppedInputTimeoutAndReclaim(t *testing.T) {
 	for time.Now().Before(until) {
 		other.Action(httpDrive(httpRaceState(t, other), 1, 0), 200)
 		r := c.Room()
-		seats := r["seats"].([]any)
-		if seats[0].(map[string]any)["autoPlay"] == true {
-			if seats[1].(map[string]any)["autoPlay"] == true {
-				t.Fatal("active opponent was also timed out")
+		for _, seat := range r["seats"].([]any) {
+			if seat.(map[string]any)["autoPlay"] == true {
+				t.Fatal("idle real-time player was automatically taken over")
 			}
-			before := httpRaceState(t, c)
-			c.Command("autoplay", map[string]any{"enabled": false}, 200)
-			after := httpRaceState(t, c)
-			if after.Epoch != before.Epoch || after.StartAt != before.StartAt || after.Cars[1].LastInputAt != before.Cars[1].LastInputAt || after.Cars[1].IdleAt != before.Cars[1].IdleAt || after.Cars[0].Throttle != 0 {
-				t.Fatal("reclaim reset race, retained throttle or changed opponent input deadline")
-			}
-			c.Action(httpDrive(after, 0, .5), 200)
-			record("real inactivity timeout enabled autoplay only for idle seat; manual reclaim preserved opponent deadlines")
-			return
+		}
+		if r["turnDeadline"] != float64(0) {
+			t.Fatal("real-time action countdown remains", r["turnDeadline"])
 		}
 		time.Sleep(200 * time.Millisecond)
 	}
-	t.Fatal("15 second inactivity never enabled platform autoplay")
+	record("idle human stays manual beyond the former 15 second timeout")
+	c.Command("autoplay", map[string]any{"enabled": true}, 200)
+	if c.Room()["seats"].([]any)[0].(map[string]any)["autoPlay"] != true {
+		t.Fatal("manual autoplay unavailable")
+	}
+	before := httpRaceState(t, c)
+	c.Command("autoplay", map[string]any{"enabled": false}, 200)
+	after := httpRaceState(t, c)
+	if after.Epoch != before.Epoch || after.StartAt != before.StartAt || after.Cars[1].LastInputAt != before.Cars[1].LastInputAt || after.Cars[1].IdleAt != before.Cars[1].IdleAt || after.Cars[0].Throttle != 0 {
+		t.Fatal("manual reclaim reset race, retained throttle or changed opponent input deadline")
+	}
+	c.Action(httpDrive(after, 0, .5), 200)
+	record("manual autoplay and reclaim preserve the race and opponent deadlines")
 }
