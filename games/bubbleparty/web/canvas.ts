@@ -324,6 +324,29 @@ export function drawBoard(
   for (const item of view.items) {
     const x = item.x * CELL,
       y = item.y * CELL;
+    // Saved matches may still contain the old passive shield. It has no
+    // verified original sprite: keep a shield-shaped fallback, not a text coin.
+    if (item.type === "shield") {
+      ctx.beginPath();
+      ctx.moveTo(x + 12, y + 2);
+      ctx.lineTo(x + 21, y + 5);
+      ctx.lineTo(x + 20, y + 13);
+      ctx.quadraticCurveTo(x + 19, y + 18, x + 12, y + 22);
+      ctx.quadraticCurveTo(x + 5, y + 18, x + 4, y + 13);
+      ctx.lineTo(x + 3, y + 5);
+      ctx.closePath();
+      ctx.fillStyle = "#b9dcec";
+      ctx.fill();
+      ctx.strokeStyle = "#28566d";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x + 12, y + 5);
+      ctx.lineTo(x + 12, y + 18);
+      ctx.strokeStyle = "#f4fbff";
+      ctx.stroke();
+      continue;
+    }
     const name: SpriteName | undefined = (
       { bomb: "itemBomb", speed: "itemSpeed", range: "itemRange" } as Record<
         string,
@@ -349,7 +372,6 @@ export function drawBoard(
       ctx.fillText(
         (
           {
-            shield: "盾",
             needle: "针",
             speed: "速",
             bomb: "泡",

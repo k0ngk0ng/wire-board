@@ -68,7 +68,12 @@ export function Controls({ disabled, onInput }: Props) {
   );
 
   return (
-    <div className="spf2t-controls" role="group" aria-label="街霸方块操作">
+    <div
+      className="spf2t-controls"
+      role="group"
+      aria-label="街霸方块操作"
+      data-game-controls
+    >
       {button("left", "左移", "←", true)}
       {button("right", "右移", "→", true)}
       {button("rotateCCW", "逆时针", "↺")}

@@ -31,6 +31,7 @@ export function Controls({
   return (
     <div
       className={`tetris-controls ${autoPlay ? "is-auto" : ""}`}
+      data-game-controls
       aria-label={autoPlay ? "电脑托管中" : "俄罗斯方块操作"}
     >
       <div className="tetris-control-row">
@@ -94,7 +95,9 @@ export function Controls({
       >
         硬降<small>空格</small>
       </button>
-      {autoPlay && <p className="tetris-auto-note">电脑托管中，可在上方取消托管</p>}
+      {autoPlay && (
+        <p className="tetris-auto-note">电脑托管中，可在上方取消托管</p>
+      )}
     </div>
   );
 }

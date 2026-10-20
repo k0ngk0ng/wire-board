@@ -1,10 +1,10 @@
 {
-  "version": 1,
+  "version": 2,
   "image": "atlas.webp",
   "width": 502,
   "height": 70,
-  "image_bytes": 3698,
-  "image_sha256": "e3ec54dfa9fa4131faa81625e545dab8ff1f59f73c177f32dde660fda84fc551",
+  "image_bytes": 4032,
+  "image_sha256": "640c854f1a4b561e07c51a557dffaeaeed267526eeb0a34033136aa7f7d7dc83",
   "frames": {
     "base-bottom": {
       "x": 0,
@@ -393,12 +393,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        224,
-        225,
-        226,
-        227
+        240,
+        241,
+        242,
+        243
       ]
     },
     "tank-armor-bottom-down-1": {
@@ -419,12 +419,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        228,
-        229,
-        230,
-        231
+        244,
+        245,
+        246,
+        247
       ]
     },
     "tank-armor-bottom-left-0": {
@@ -447,10 +447,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        216,
-        217,
-        218,
-        219
+        232,
+        233,
+        234,
+        235
       ]
     },
     "tank-armor-bottom-left-1": {
@@ -473,10 +473,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        220,
-        221,
-        222,
-        223
+        236,
+        237,
+        238,
+        239
       ]
     },
     "tank-armor-bottom-right-0": {
@@ -497,12 +497,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        216,
-        217,
-        218,
-        219
+        248,
+        249,
+        250,
+        251
       ]
     },
     "tank-armor-bottom-right-1": {
@@ -523,12 +523,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        220,
-        221,
-        222,
-        223
+        252,
+        253,
+        254,
+        255
       ]
     },
     "tank-armor-bottom-up-0": {
@@ -601,12 +601,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        224,
-        225,
-        226,
-        227
+        240,
+        241,
+        242,
+        243
       ]
     },
     "tank-armor-top-down-1": {
@@ -627,12 +627,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        228,
-        229,
-        230,
-        231
+        244,
+        245,
+        246,
+        247
       ]
     },
     "tank-armor-top-left-0": {
@@ -655,10 +655,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        216,
-        217,
-        218,
-        219
+        232,
+        233,
+        234,
+        235
       ]
     },
     "tank-armor-top-left-1": {
@@ -681,10 +681,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        220,
-        221,
-        222,
-        223
+        236,
+        237,
+        238,
+        239
       ]
     },
     "tank-armor-top-right-0": {
@@ -705,12 +705,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        216,
-        217,
-        218,
-        219
+        248,
+        249,
+        250,
+        251
       ]
     },
     "tank-armor-top-right-1": {
@@ -731,12 +731,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        220,
-        221,
-        222,
-        223
+        252,
+        253,
+        254,
+        255
       ]
     },
     "tank-armor-top-up-0": {
@@ -809,12 +809,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        32,
-        33,
-        34,
-        35
+        48,
+        49,
+        50,
+        51
       ]
     },
     "tank-balanced-bottom-down-1": {
@@ -835,12 +835,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        36,
-        37,
-        38,
-        39
+        52,
+        53,
+        54,
+        55
       ]
     },
     "tank-balanced-bottom-left-0": {
@@ -913,12 +913,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        40,
-        41,
-        42,
-        43
+        56,
+        57,
+        58,
+        59
       ]
     },
     "tank-balanced-bottom-right-1": {
@@ -939,12 +939,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        44,
-        45,
-        46,
-        47
+        60,
+        61,
+        62,
+        63
       ]
     },
     "tank-balanced-bottom-up-0": {
@@ -1017,12 +1017,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        32,
-        33,
-        34,
-        35
+        48,
+        49,
+        50,
+        51
       ]
     },
     "tank-balanced-top-down-1": {
@@ -1043,12 +1043,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        36,
-        37,
-        38,
-        39
+        52,
+        53,
+        54,
+        55
       ]
     },
     "tank-balanced-top-left-0": {
@@ -1121,12 +1121,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        40,
-        41,
-        42,
-        43
+        56,
+        57,
+        58,
+        59
       ]
     },
     "tank-balanced-top-right-1": {
@@ -1147,12 +1147,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        44,
-        45,
-        46,
-        47
+        60,
+        61,
+        62,
+        63
       ]
     },
     "tank-balanced-top-up-0": {
@@ -1225,12 +1225,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        176,
-        177,
-        178,
-        179
+        144,
+        145,
+        146,
+        147
       ]
     },
     "tank-basic-bottom-down-1": {
@@ -1251,12 +1251,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        180,
-        181,
-        182,
-        183
+        148,
+        149,
+        150,
+        151
       ]
     },
     "tank-basic-bottom-left-0": {
@@ -1279,10 +1279,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        168,
-        169,
-        170,
-        171
+        136,
+        137,
+        138,
+        139
       ]
     },
     "tank-basic-bottom-left-1": {
@@ -1305,10 +1305,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        172,
-        173,
-        174,
-        175
+        140,
+        141,
+        142,
+        143
       ]
     },
     "tank-basic-bottom-right-0": {
@@ -1329,12 +1329,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        168,
-        169,
-        170,
-        171
+        152,
+        153,
+        154,
+        155
       ]
     },
     "tank-basic-bottom-right-1": {
@@ -1355,12 +1355,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        172,
-        173,
-        174,
-        175
+        156,
+        157,
+        158,
+        159
       ]
     },
     "tank-basic-bottom-up-0": {
@@ -1383,10 +1383,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        176,
-        177,
-        178,
-        179
+        128,
+        129,
+        130,
+        131
       ]
     },
     "tank-basic-bottom-up-1": {
@@ -1409,10 +1409,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        180,
-        181,
-        182,
-        183
+        132,
+        133,
+        134,
+        135
       ]
     },
     "tank-basic-top-down-0": {
@@ -1433,12 +1433,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        176,
-        177,
-        178,
-        179
+        144,
+        145,
+        146,
+        147
       ]
     },
     "tank-basic-top-down-1": {
@@ -1459,12 +1459,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        180,
-        181,
-        182,
-        183
+        148,
+        149,
+        150,
+        151
       ]
     },
     "tank-basic-top-left-0": {
@@ -1487,10 +1487,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        168,
-        169,
-        170,
-        171
+        136,
+        137,
+        138,
+        139
       ]
     },
     "tank-basic-top-left-1": {
@@ -1513,10 +1513,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        172,
-        173,
-        174,
-        175
+        140,
+        141,
+        142,
+        143
       ]
     },
     "tank-basic-top-right-0": {
@@ -1537,12 +1537,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        168,
-        169,
-        170,
-        171
+        152,
+        153,
+        154,
+        155
       ]
     },
     "tank-basic-top-right-1": {
@@ -1563,12 +1563,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        172,
-        173,
-        174,
-        175
+        156,
+        157,
+        158,
+        159
       ]
     },
     "tank-basic-top-up-0": {
@@ -1591,10 +1591,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        176,
-        177,
-        178,
-        179
+        128,
+        129,
+        130,
+        131
       ]
     },
     "tank-basic-top-up-1": {
@@ -1617,10 +1617,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        180,
-        181,
-        182,
-        183
+        132,
+        133,
+        134,
+        135
       ]
     },
     "tank-fast-bottom-down-0": {
@@ -1641,12 +1641,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        192,
-        193,
-        194,
-        195
+        176,
+        177,
+        178,
+        179
       ]
     },
     "tank-fast-bottom-down-1": {
@@ -1667,12 +1667,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        196,
-        197,
-        198,
-        199
+        180,
+        181,
+        182,
+        183
       ]
     },
     "tank-fast-bottom-left-0": {
@@ -1695,10 +1695,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        184,
-        185,
-        186,
-        187
+        168,
+        169,
+        170,
+        171
       ]
     },
     "tank-fast-bottom-left-1": {
@@ -1721,10 +1721,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        188,
-        189,
-        190,
-        191
+        172,
+        173,
+        174,
+        175
       ]
     },
     "tank-fast-bottom-right-0": {
@@ -1745,7 +1745,7 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
         184,
         185,
@@ -1771,7 +1771,7 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
         188,
         189,
@@ -1799,10 +1799,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        192,
-        193,
-        194,
-        195
+        160,
+        161,
+        162,
+        163
       ]
     },
     "tank-fast-bottom-up-1": {
@@ -1825,10 +1825,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        196,
-        197,
-        198,
-        199
+        164,
+        165,
+        166,
+        167
       ]
     },
     "tank-fast-top-down-0": {
@@ -1849,12 +1849,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        192,
-        193,
-        194,
-        195
+        176,
+        177,
+        178,
+        179
       ]
     },
     "tank-fast-top-down-1": {
@@ -1875,12 +1875,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
-        196,
-        197,
-        198,
-        199
+        180,
+        181,
+        182,
+        183
       ]
     },
     "tank-fast-top-left-0": {
@@ -1903,10 +1903,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        184,
-        185,
-        186,
-        187
+        168,
+        169,
+        170,
+        171
       ]
     },
     "tank-fast-top-left-1": {
@@ -1929,10 +1929,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        188,
-        189,
-        190,
-        191
+        172,
+        173,
+        174,
+        175
       ]
     },
     "tank-fast-top-right-0": {
@@ -1953,7 +1953,7 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
         184,
         185,
@@ -1979,7 +1979,7 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
         188,
         189,
@@ -2007,10 +2007,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        192,
-        193,
-        194,
-        195
+        160,
+        161,
+        162,
+        163
       ]
     },
     "tank-fast-top-up-1": {
@@ -2033,10 +2033,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        196,
-        197,
-        198,
-        199
+        164,
+        165,
+        166,
+        167
       ]
     },
     "tank-power-bottom-down-0": {
@@ -2057,7 +2057,7 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
         208,
         209,
@@ -2083,7 +2083,7 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
         212,
         213,
@@ -2161,12 +2161,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        200,
-        201,
-        202,
-        203
+        216,
+        217,
+        218,
+        219
       ]
     },
     "tank-power-bottom-right-1": {
@@ -2187,12 +2187,12 @@
         33
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        204,
-        205,
-        206,
-        207
+        220,
+        221,
+        222,
+        223
       ]
     },
     "tank-power-bottom-up-0": {
@@ -2215,10 +2215,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        208,
-        209,
-        210,
-        211
+        192,
+        193,
+        194,
+        195
       ]
     },
     "tank-power-bottom-up-1": {
@@ -2241,10 +2241,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        212,
-        213,
-        214,
-        215
+        196,
+        197,
+        198,
+        199
       ]
     },
     "tank-power-top-down-0": {
@@ -2265,7 +2265,7 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
         208,
         209,
@@ -2291,7 +2291,7 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "vertical",
+      "flip": "none",
       "tiles": [
         212,
         213,
@@ -2369,12 +2369,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        200,
-        201,
-        202,
-        203
+        216,
+        217,
+        218,
+        219
       ]
     },
     "tank-power-top-right-1": {
@@ -2395,12 +2395,12 @@
         39
       ],
       "chr_bank": 0,
-      "flip": "horizontal",
+      "flip": "none",
       "tiles": [
-        204,
-        205,
-        206,
-        207
+        220,
+        221,
+        222,
+        223
       ]
     },
     "tank-power-top-up-0": {
@@ -2423,10 +2423,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        208,
-        209,
-        210,
-        211
+        192,
+        193,
+        194,
+        195
       ]
     },
     "tank-power-top-up-1": {
@@ -2449,10 +2449,10 @@
       "chr_bank": 0,
       "flip": "none",
       "tiles": [
-        212,
-        213,
-        214,
-        215
+        196,
+        197,
+        198,
+        199
       ]
     },
     "trees": {
@@ -2513,120 +2513,8 @@
     "chr_offset": 16400,
     "chr_bytes": 8192,
     "generator": "scripts/battlecity/prepare_assets.py",
-    "generator_sha256": "4d0b88739bfcf03f5785b502b5a58216f81ea455af57bf217bd3c4d8cdae3604",
+    "generator_sha256": "a92998f704d9e818f61bd1ab929e6bad2ab33139f11a090993ea1cab0e14a88e",
     "layout": "TL=base, TR=base+2, BL=base+1, BR=base+3 (8x16 pairs)",
-    "tank_base": "class_base + direction_offset + frame*4; group strides 0x00/0x80/0xA0/0xC0/0xE0"
-  },
-  "audio": {
-    "bgm-battle": {
-      "file": "bgm-battle.mp3",
-      "bytes": 246638,
-      "sha256": "0082af8e08f285bb755732efe3d4cfeacaba265b90851f303551be3dcece563c",
-      "duration_s": 15.347,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "128k",
-      "channels": 2
-    },
-    "bgm-start": {
-      "file": "bgm-start.mp3",
-      "bytes": 69842,
-      "sha256": "7755f373d56a8a193a438feb0713a3e45d105c799717591f854608db634c436f",
-      "duration_s": 4.306,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "128k",
-      "channels": 2
-    },
-    "sfx-fire": {
-      "file": "sfx-fire.mp3",
-      "bytes": 5686,
-      "sha256": "3ec1384218a47607c1dd80eca355141186894bc6b866cad7d49f93a8601aa4ff",
-      "duration_s": 0.417,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-brick": {
-      "file": "sfx-brick.mp3",
-      "bytes": 3805,
-      "sha256": "fe1cc84a887a883f5b2160c908f458894b6adbc32de206b735afc97ac440c80f",
-      "duration_s": 0.259,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-steel": {
-      "file": "sfx-steel.mp3",
-      "bytes": 5059,
-      "sha256": "42260d9105abc81f688ec324bf77b7ffb93527e0f3a5686a924d67d28615ab0f",
-      "duration_s": 0.351,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-explode": {
-      "file": "sfx-explode.mp3",
-      "bytes": 9761,
-      "sha256": "807cb56017dc908674c96faa6d6d9f5264b838f7dbe8d8ef742e6fcfdc540431",
-      "duration_s": 0.749,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-powerup": {
-      "file": "sfx-powerup.mp3",
-      "bytes": 29196,
-      "sha256": "cb85c4123427d262223b7274b9d41116fbc50899d7d998e873189d828bd45099",
-      "duration_s": 2.367,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-shield": {
-      "file": "sfx-shield.mp3",
-      "bytes": 8507,
-      "sha256": "d45ba7dde2ed4f7919f35f02eadf291d465775230edafe30fbce41fa79ef25f5",
-      "duration_s": 0.652,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-base": {
-      "file": "sfx-base.mp3",
-      "bytes": 9761,
-      "sha256": "34629cf13f7419e037ffe45e8907975fadb8894b099e469d9a561dd2c3b1d5c2",
-      "duration_s": 0.749,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-win": {
-      "file": "sfx-win.mp3",
-      "bytes": 22927,
-      "sha256": "8a78e3c086761243c4e5c6e97b282ecd65895fcf93f0701d605467d2205253bb",
-      "duration_s": 1.833,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    },
-    "sfx-lose": {
-      "file": "sfx-lose.mp3",
-      "bytes": 22613,
-      "sha256": "2ab8eb7e52d833dd7a11a9b3d35885337c667443ffa7859ef42e9cd0d60dba49",
-      "duration_s": 1.804,
-      "source_channels": 1,
-      "source_rate": 44100,
-      "bitrate": "96k",
-      "channels": 1
-    }
+    "tank_base": "class_base + direction_offset + frame*4; bases 0x20/0x80/0xA0/0xC0/0xE0; native directions up/left/down/right * 8"
   }
 }

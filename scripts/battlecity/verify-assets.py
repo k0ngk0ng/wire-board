@@ -129,6 +129,32 @@ def main() -> None:
                      "powerup-star", "tank-balanced-top-up-0", "tank-armor-bottom-left-1"):
             assert name in meta["frames"], f"missing frame {name}"
 
+    # Corrected native four-direction atlas is independent of unchanged v1 audio.
+    v2 = json.loads((META.parent / "manifest-v2.json").read_text())
+    assert v2["version"] == "battlecity/v2"
+    assert v2["generatorSha256"] == sha((ROOT / v2["generator"]).read_bytes())
+    corrected = json.loads((META.parent / "atlas.json").read_text())
+    assert corrected["version"] == 2 and len(corrected["frames"]) == 101
+    v2_present = 0
+    for entry in v2["entries"]:
+        assert entry["urlPath"] == "/battlecity/v2/" + entry["file"]
+        paths = [ROOT / ".local/battlecity-pack/battlecity/v2" / entry["file"],
+                 ROOT / "games/battlecity/assets/public" / entry["urlPath"].lstrip("/")]
+        if args.dist:
+            paths.append(ROOT / "web/dist" / entry["urlPath"].lstrip("/"))
+        found = [path for path in paths if path.exists()]
+        v2_present += bool(found)
+        for path in found:
+            assert path.stat().st_size == entry["bytes"] and sha(path.read_bytes()) == entry["sha256"], path
+            media_signature(path, entry["kind"])
+        if args.oss:
+            with urllib.request.urlopen(CDN + entry["urlPath"], timeout=45) as response:
+                data = response.read()
+                assert len(data) == entry["bytes"] and sha(data) == entry["sha256"], entry["urlPath"]
+                assert response.headers.get_content_type() == {"atlas": "image/webp", "atlas-meta": "application/json"}[entry["kind"]]
+    assert v2_present in (0, 2), "partial v2 atlas fallback"
+    assert sha((META.parent / "atlas.json").read_bytes()) == next(e["sha256"] for e in v2["entries"] if e["kind"] == "atlas-meta")
+
     external_only = local_present == 0
     if args.dist and 0 < local_present < len(manifest["entries"]):
         raise AssertionError("partial local fallback; install the complete pack or none")
@@ -138,6 +164,7 @@ def main() -> None:
     (out / name).write_text(json.dumps({
         "passed": True, "dist": args.dist, "oss": args.oss,
         "externalOnly": external_only, "entries": len(manifest["entries"]), "bytes": total,
+        "correctedAtlasEntries": len(v2["entries"]), "correctedAtlasLocalEntries": v2_present,
     }, indent=2) + "\n")
     print(f"Verified {len(manifest['entries'])} objects, {total} bytes (externalOnly={external_only})")
 

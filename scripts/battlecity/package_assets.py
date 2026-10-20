@@ -6,6 +6,7 @@ in .local and in the gitignored local fallback directory.
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import shutil
@@ -39,7 +40,34 @@ def ffprobe_duration(path: Path) -> float:
     return round(float(out.stdout.strip()), 3)
 
 
+def package_atlas_v2() -> None:
+    pack = ROOT / ".local/battlecity-pack/battlecity/v2"
+    atlas = json.loads((pack / "atlas.json").read_text())
+    assert atlas["version"] == 2 and len(atlas["frames"]) == 101
+    manifest = {"version": "battlecity/v2", "prefix": "bga/v20261002-1/battlecity/v2/",
+                "cdnBase": CDN, "license": LICENSE, "source": {"romSha256": ROM_SHA},
+                "generator": "scripts/battlecity/prepare_assets.py",
+                "generatorSha256": sha(ROOT / "scripts/battlecity/prepare_assets.py"),
+                "entries": []}
+    for filename, kind in (("atlas.webp", "atlas"), ("atlas.json", "atlas-meta")):
+        path = pack / filename
+        manifest["entries"].append({"file": filename, "urlPath": "/battlecity/v2/" + filename,
+            "kind": kind, "sha256": sha(path), "bytes": path.stat().st_size})
+    (META / "manifest-v2.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    shutil.copyfile(pack / "atlas.json", META / "atlas.json")
+    # Coordinates and dimensions stay stable; verify the committed browser table.
+    previous = json.loads((ROOT / ".local/battlecity-pack/battlecity/v1/atlas.json").read_text())
+    assert {k: {f: v[f] for f in ("x", "y", "w", "h")} for k,v in atlas["frames"].items()} == {k: {f: v[f] for f in ("x", "y", "w", "h")} for k,v in previous["frames"].items()}
+    print(json.dumps({"version": "battlecity/v2", "entries": 2, "bytes": sum(e["bytes"] for e in manifest["entries"])}))
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--atlas-v2", action="store_true", help="package corrected atlas only; retain v1 audio")
+    args = parser.parse_args()
+    if args.atlas_v2:
+        package_atlas_v2()
+        return
     atlas = json.loads((PACK / "atlas.json").read_text())
     audio = atlas.get("audio", {})
     if len(audio) != 11:

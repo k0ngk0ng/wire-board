@@ -25,8 +25,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_ROM = ROOT / ".local/battlecity/rom/Battle City (J).nes"
-DEFAULT_OUT = ROOT / ".local/battlecity-pack/battlecity/v1"
-INSTALL = ROOT / "games/battlecity/assets/public/battlecity/v1"
+DEFAULT_OUT = ROOT / ".local/battlecity-pack/battlecity/v2"
+INSTALL = ROOT / "games/battlecity/assets/public/battlecity/v2"
 ROM_SHA256 = "a869aead5b6957fc62002ff9636e048cc34baf0100d629b07dc51aa18f220c0c"
 CHR_OFFSET = 0x4010
 FCEUX_PALETTE_SHA256 = "bbb0355bcadc4be771efeb81930b09b17d97dcb8c70167a652902a789158c5f8"
@@ -73,16 +73,10 @@ BASE_TILES = {
     "base-bottom": ((0xC8, 0xCA, 0xC9, 0xCB), BG0),
     "base-destroyed": ((0xCC, 0xCE, 0xCD, 0xCF), BG0),
 }
-# Each class owns 16 CHR tiles: two orientations x two tread frames. The
-# 8x16 OAM pair uses TL=base, TR=base+2, BL=base+1, BR=base+3. The original
-# game flips these two orientations for the opposite directions.
-CLASSES = {
-    "balanced": {"up": 0x20, "left": 0x28},
-    "basic": {"left": 0xA8, "up": 0xB0},
-    "fast": {"left": 0xB8, "up": 0xC0},
-    "power": {"left": 0xC8, "up": 0xD0},
-    "armor": {"left": 0xD8, "up": 0xE0},
-}
+# Native $DFEB-$DFFF/$DA73: class base + direction*8 + tread frame*4.
+# Each class owns all four independently authored orientations (32 CHR tiles).
+CLASSES = {"balanced": 0x20, "basic": 0x80, "fast": 0xA0, "power": 0xC0, "armor": 0xE0}
+NATIVE_DIRECTION = {"up": 0, "left": 1, "down": 2, "right": 3}
 DIRECTIONS = ("up", "right", "down", "left")
 POWERUPS = {
     "powerup-helmet": 128,
@@ -174,52 +168,18 @@ def build_frames(chr_data: bytes) -> dict[str, tuple[Image.Image, dict]]:
             base16(chr_data, tiles, palette),
             {"category": "base", "opaque": True, "palette": palette, "tiles": list(tiles)},
         )
-    for cls, bases in CLASSES.items():
+    for cls, class_base in CLASSES.items():
         for team, palette in (("top", TEAM_TOP), ("bottom", TEAM_BOTTOM)):
-            up = {
-                frame: sprite16(chr_data, bases["up"] + frame * 4, palette, bank=0)
-                for frame in (0, 1)
-            }
-            left = {
-                frame: sprite16(chr_data, bases["left"] + frame * 4, palette, bank=0)
-                for frame in (0, 1)
-            }
-            oriented = {
-                "up": up,
-                "down": {
-                    frame: up[frame].transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-                    for frame in (0, 1)
-                },
-                "left": left,
-                "right": {
-                    frame: left[frame].transpose(Image.Transpose.FLIP_LEFT_RIGHT)
-                    for frame in (0, 1)
-                },
-            }
             for direction in DIRECTIONS:
-                source = bases["up"] if direction in ("up", "down") else bases["left"]
                 for frame in (0, 1):
-                    base = source + frame * 4
+                    base = class_base + NATIVE_DIRECTION[direction] * 8 + frame * 4
                     name = f"tank-{cls}-{team}-{direction}-{frame}"
                     frames[name] = (
-                        # Tank OAM bytes are even, selecting pattern table $0000
-                        # (CHR bank 0); effects/items use odd bytes (bank 1).
-                        oriented[direction][frame],
-                        {
-                            "category": "tank",
-                            "class": cls,
-                            "team": team,
-                            "direction": direction,
-                            "frame": frame,
-                            "opaque": False,
-                            "palette": palette,
-                            "chr_bank": 0,
-                            "flip": {
-                                "up": "none", "down": "vertical",
-                                "left": "none", "right": "horizontal",
-                            }[direction],
-                            "tiles": [base, base + 1, base + 2, base + 3],
-                        },
+                        sprite16(chr_data, base, palette, bank=0),
+                        {"category": "tank", "class": cls, "team": team,
+                         "direction": direction, "frame": frame, "opaque": False,
+                         "palette": palette, "chr_bank": 0, "flip": "none",
+                         "tiles": [base, base + 1, base + 2, base + 3]},
                     )
     for team, palette in (("top", TEAM_TOP), ("bottom", TEAM_BOTTOM)):
         frames[f"bullet-{team}"] = (
@@ -351,7 +311,7 @@ def main() -> None:
                   "w": image.width, "h": image.height, **meta}
         records[name] = record
     metadata = {
-        "version": 1,
+        "version": 2,
         "image": atlas_path.name,
         "width": atlas.width,
         "height": atlas.height,
@@ -367,7 +327,7 @@ def main() -> None:
             "generator": "scripts/battlecity/prepare_assets.py",
             "generator_sha256": sha256(Path(__file__).read_bytes()),
             "layout": "TL=base, TR=base+2, BL=base+1, BR=base+3 (8x16 pairs)",
-            "tank_base": "class_base + direction_offset + frame*4; group strides 0x00/0x80/0xA0/0xC0/0xE0",
+            "tank_base": "class_base + direction_offset + frame*4; bases 0x20/0x80/0xA0/0xC0/0xE0; native directions up/left/down/right * 8",
         },
     }
     if args.masters:

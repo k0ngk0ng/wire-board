@@ -291,7 +291,7 @@ function TouchPad({
   };
   const firePointer = useRef<number | null>(null);
   return (
-    <div className="bc-touch-controls" aria-label="触屏操作">
+    <div className="bc-touch-controls" aria-label="触屏操作" data-game-controls>
       <div
         className="bc-dpad"
         role="group"

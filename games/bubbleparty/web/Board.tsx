@@ -631,7 +631,7 @@ export function Board(props: BoardProps<View>) {
         />
       )}
       {!view.spectator && (
-        <div className="bubble-controls" aria-label="操作">
+        <div className="bubble-controls" aria-label="操作" data-game-controls>
           <div
             className="bubble-dpad"
             data-bubbleparty-dpad
@@ -678,7 +678,7 @@ export function Board(props: BoardProps<View>) {
       <p className="bubble-hint">
         {view.spectator
           ? "观战只读；你可以发表情和聊天。"
-          : "WASD／方向键移动，空格或 J 放水泡。水柱命中后困泡，触碰队友救援，触碰对手击破。"}
+          : "WASD／方向键移动，空格或 J 放水泡。触碰敌方困泡可击破、队友可救援；冲进未消退的水柱也会被困。"}
       </p>
       {error && (
         <div className="bubble-error" role="alert">
