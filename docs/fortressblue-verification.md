@@ -76,4 +76,21 @@ python3 -B scripts/fortressblue/check-browser.py
 
 ## 发布与部署
 
-（待本次发布完成后补充 tag、构建作业、镜像 digest、健康检查、上下架设置、备份与清理结果。）
+- 发布提交：`dd0914c6884f22c280a26305540ebebbbfb23621`，tag `v1.22.0`。
+- main 检查：Actions run [39356191736](https://github.com/k0ngk0ng/wire-board/actions/runs/39356191736)
+  成功，覆盖模块计划、前端、共享与 `Test and Linux amd64 binary` 构建。
+- tag 发布：Actions run [39357127144](https://github.com/k0ngk0ng/wire-board/actions/runs/39357127144)
+  成功，复用同一提交已验证的 Linux amd64 产物；Release：
+  <https://github.com/k0ngk0ng/wire-board/releases/tag/v1.22.0>。
+- 部署镜像：`ghcr.io/k0ngk0ng/wire-board@sha256:d771c87af2cb4aabb297fb1dfe84ba2c9a4c28de7ff0e6e3329a36ba09bbb6d5`
+  （本地镜像 ID `sha256:a041090f…`），容器 `WIRE_BOARD_VERSION=v1.22.0`，健康状态 `healthy`。
+- 生产检查：`/healthz` 返回 `{"ok":true}`；同源回退素材
+  `/fortressblue/v2/maps/stage-1-fg.webp` 与 `/fortressblue/v2/tanks/1-idle.webp` 均返回 200。
+- 上下架设置保持原样：`fortressblue=1`、`battlecity=1`、`bubbleparty=1`、`dota=0`；其余游戏
+  设置未改动。`cdn.ichenj.com` 素材基址与 OSS 配置沿用既有 `.env`。
+- 更新前在线备份：`backups/data-20261020T020910Z-2750517.tar.gz`；解包数据库
+  14,512,128 字节，`PRAGMA quick_check` 为 `ok`（13 个用户、4 个房间）。保留紧邻上一份
+  `backups/data-20261019T144149Z.tar.gz`，同样通过 `quick_check`；删除更早的
+  `data-20261019T142744Z-1220702.tar.gz`。
+- 镜像清理：`update.sh clean` 删除历史 `v1.21.1`，保留当前 `v1.22.0`、回滚 `v1.21.2`
+  及 `wire-tv` 等其他服务镜像。清理后服务健康；磁盘 40G 中已用 25G（67%），备份目录 3.5M。
