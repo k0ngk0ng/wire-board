@@ -45,6 +45,7 @@ export class InputQueue {
   }
 
   acknowledge(serverSeq: number) {
+    this.nextSeq = Math.max(this.nextSeq, serverSeq + 1);
     this.sentBatches = this.sentBatches.filter(
       (batch) => batch.seq > serverSeq,
     );

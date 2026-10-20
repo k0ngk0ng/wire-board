@@ -1,6 +1,6 @@
 # 泡泡堂素材来源
 
-当前对局使用 `public/bubbleparty/v2/`。图片来自已在本地运行的第三方网页还原 Demo；音频来自存档中的 2002 年官方客户端。两类来源分开记录，不能将第三方图集称为本项目原创或本次从官方客户端提取的图片。原作素材的再发布授权尚未核实，仓库记录该状态；本次没有向 OSS 上传。
+当前地图／水泡使用 `public/bubbleparty/v2/`，可选人物使用 `public/bubbleparty/v3/avatars/`。v2 图片来自第三方网页 Demo；v3 人物和音频来自已提取的 2002 年官方客户端。来源分别记录，不能将第三方图集称为原包提取图。原作素材的再发布授权尚未核实，仓库记录该状态；v2 和 v3 已于 2026-10-21 按清单上传至现有 CDN 的不可变版本路径，并逐对象核对 SHA-256。
 
 ## v2 图片
 
@@ -30,3 +30,18 @@ node --test games/bubbleparty/tests/sprites.test.mjs
 ## v1 历史资产
 
 `public/bubbleparty/v1/audio/` 和 `manifest.json` 保留旧版的项目合成音效与生成器摘要。本次没有改变 v1 字节。原先「所有角色、地图和音频均为原创」的说明不再适用于 v2。封面沿用平台的 SVG 插画规范，与对局图集分开维护。
+
+## v3 可选人物
+
+4 套人物来自 `Fx.idd` 的 `Character/C00`～`C03`，每套含四向行走、眨眼、困泡与死亡引用帧。使用中性外观名称「泡泡帽／飞行帽／熊耳帽／条纹帽」，没有把开发编号画到人物上。人物外观与阵营分离，红蓝两队各有完整 4 套。
+
+`prepare-avatars.py` 校验原 `Fx.idx/Fx.idd` SHA，按索引解析 RGB565 RLE 和真实帧矩形，并从 ObjectTable 读取帧序列；不执行客户端。Static 先铺底，再由 Adjust 覆盖，蓝队仅交换 Adjust 层 R/B 通道。C00 右向 Static 本身含红衣像素，逆序合成会使蓝队右转变红，已用全状态逐像素核查排除。命名、队色变换、显示时基（原始权重每单位按 20 ms 展示）和地面锚点是本项目接入选择，不冒称原引擎已验证参数。
+
+生成 48 张图集，源偏移、源层 SHA、原始帧字段与输出 SHA 保存在 `manifest-v3.json`；前端使用 `avatars-v3.json`。困泡引用 Die 前两帧，死亡图集中有不同高度的帧，必须按矩形取样。脸部由原始非着色层保留；读取失败时回退为同队色、可辨造型的 Canvas 人物。
+
+```sh
+python3 -B scripts/bubbleparty/prepare-avatars.py --client-dir .local/bubbleparty-original/client-2002
+python3 -B scripts/bubbleparty/check-assets.py
+```
+
+图像仍采用 CDN 不可变 v3 路径与同源本地回退；48 张 v3 图集及 34 份 v2 素材已上传并核对 OSS／CDN 字节；本地回退同时保留，生产版本以 GitHub Release 记录为准。原包授权状态沿用来源清单，未改写为原创或已获再发布许可。

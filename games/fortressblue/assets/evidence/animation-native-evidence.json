@@ -1,0 +1,281 @@
+{
+  "source": ".local/fortressblue-original/game/tankclient_emsc.eeb2b.wasm",
+  "sourceSHA256": "35974c0d7a06cf86f1f028b0ee1fc46c324921f6d829ce4db684f776199e489d",
+  "rtti": {
+    "memoryAddress": 91444,
+    "size": 25,
+    "sha256": "a3afeaf264bc39eeb102417810c98701f8f1b76e2226272fc979e212c517f773",
+    "fileRanges": [
+      {
+        "memoryAddress": 91444,
+        "fileOffset": 2591333,
+        "size": 25,
+        "segment": 19
+      }
+    ],
+    "zeroInitializedBytes": 0
+  },
+  "vtable": {
+    "memoryAddress": 91424,
+    "size": 16,
+    "sha256": "c5dacd3da2b9be2cf87b41fccb9d674e5d890cbdfe1400a25c40afc4fb3fd30d",
+    "fileRanges": [
+      {
+        "memoryAddress": 91424,
+        "fileOffset": 2591313,
+        "size": 16,
+        "segment": 19
+      }
+    ],
+    "zeroInitializedBytes": 0
+  },
+  "starts": {
+    "memoryAddress": 567968,
+    "size": 52,
+    "sha256": "c3d42fe3052139550c06e1571d054783b52bc46ae1d93ec9280222c524bce553",
+    "fileRanges": [
+      {
+        "memoryAddress": 567972,
+        "fileOffset": 3040120,
+        "size": 48,
+        "segment": 1245
+      }
+    ],
+    "zeroInitializedBytes": 4
+  },
+  "counts": {
+    "memoryAddress": 568704,
+    "size": 52,
+    "sha256": "1328a5f30e88a7757689f2b6115c3e717fad184b29f33e393f05707a126ae9fd",
+    "fileRanges": [
+      {
+        "memoryAddress": 568704,
+        "fileOffset": 3040850,
+        "size": 52,
+        "segment": 1246
+      }
+    ],
+    "zeroInitializedBytes": 0
+  },
+  "slopeFlags": {
+    "memoryAddress": 569440,
+    "size": 52,
+    "sha256": "c48a258a38b1a4effef7a18ada00cd46620360cb943a63b0974861c524bc4cdc",
+    "fileRanges": [
+      {
+        "memoryAddress": 569440,
+        "fileOffset": 3041582,
+        "size": 1,
+        "segment": 1247
+      },
+      {
+        "memoryAddress": 569452,
+        "fileOffset": 3041590,
+        "size": 1,
+        "segment": 1248
+      },
+      {
+        "memoryAddress": 569468,
+        "fileOffset": 3041598,
+        "size": 24,
+        "segment": 1249
+      }
+    ],
+    "zeroInitializedBytes": 26
+  },
+  "functions": {
+    "f287": {
+      "watLine": 1270,
+      "lines": 22,
+      "sha256": "11c5df94a841f31a330676b00036218dffa765fab3d6feb293ab421b742a7b34"
+    },
+    "f291": {
+      "watLine": 1488,
+      "lines": 276,
+      "sha256": "daaf48ec52b9a143ad7bfe30ca608ee7bed2eed09182b6cf052518f8024407cf"
+    },
+    "f292": {
+      "watLine": 1764,
+      "lines": 22,
+      "sha256": "6ea00c8de777f637378b876c4b28a7cf4d8baef4df21f3d10103b86de1f0619c"
+    },
+    "f398": {
+      "watLine": 24908,
+      "lines": 185,
+      "sha256": "b14f118066d5c9fae92f16b17352da3a3123564e26f6a66fce2b15efbd553103"
+    },
+    "f421": {
+      "watLine": 31781,
+      "lines": 419,
+      "sha256": "506a86a7d348d7e7bd579703b9aadbd3f4335a4c11d6a1da47f5234d369e42b5"
+    },
+    "f455": {
+      "watLine": 36355,
+      "lines": 125,
+      "sha256": "5068a51123789862b4ad917c5b670899eb3732b962eff9d2b37f69c951e3da7d"
+    },
+    "f1580": {
+      "watLine": 341658,
+      "lines": 1004,
+      "sha256": "d6f147cf6b57f8de55933898814e5a5e16aef6c8ab0e11bdcf58434aa87ea4dd"
+    },
+    "f1849": {
+      "watLine": 456182,
+      "lines": 160,
+      "sha256": "1ec055d0e7deed302c55a96896dd0588409f5d766b094e77497ad3ddffdf5590"
+    },
+    "se": {
+      "watLine": 625251,
+      "lines": 12327,
+      "sha256": "2b8673b8bad3ace8125a706ad6602450c3ae6dca30b9686a19fc04e11fe8e0cf"
+    },
+    "f2413": {
+      "watLine": 691373,
+      "lines": 3489,
+      "sha256": "4fe40af3c83b8e7e91eb763a35c5d0daaa5aa65c3d8030359bb480f3f573ae25"
+    },
+    "f3303": {
+      "watLine": 898297,
+      "lines": 7050,
+      "sha256": "94f402695fe4398a50511ac058e4ac284beafca32204bb548902626f001ac666"
+    },
+    "f3321": {
+      "watLine": 911107,
+      "lines": 2238,
+      "sha256": "c8f13c88f3d6a823e3ecbe02770d4c74e156650e95cf1e846a471ade36119b75"
+    },
+    "f3328": {
+      "watLine": 920647,
+      "lines": 4,
+      "sha256": "f8ddd70edea0327ab9e8fb88b96168d9e3fec2e729005e8ef4fb6aaffc157117"
+    }
+  },
+  "actions": [
+    {
+      "state": 0,
+      "name": "Stand",
+      "first": 0,
+      "frames": 1,
+      "slopes": 5,
+      "last": 4
+    },
+    {
+      "state": 1,
+      "name": "Idle1",
+      "first": 5,
+      "frames": 10,
+      "slopes": 1,
+      "last": 14
+    },
+    {
+      "state": 2,
+      "name": "Idle2",
+      "first": 15,
+      "frames": 10,
+      "slopes": 1,
+      "last": 24
+    },
+    {
+      "state": 3,
+      "name": "Fire",
+      "first": 25,
+      "frames": 10,
+      "slopes": 5,
+      "last": 74
+    },
+    {
+      "state": 4,
+      "name": "AFire",
+      "first": 75,
+      "frames": 5,
+      "slopes": 1,
+      "last": 79
+    },
+    {
+      "state": 5,
+      "name": "Damage",
+      "first": 80,
+      "frames": 10,
+      "slopes": 1,
+      "last": 89
+    },
+    {
+      "state": 6,
+      "name": "Item",
+      "first": 90,
+      "frames": 10,
+      "slopes": 1,
+      "last": 99
+    },
+    {
+      "state": 7,
+      "name": "Posion",
+      "first": 100,
+      "frames": 5,
+      "slopes": 5,
+      "last": 124
+    },
+    {
+      "state": 8,
+      "name": "MoveC",
+      "first": 125,
+      "frames": 10,
+      "slopes": 5,
+      "last": 174
+    },
+    {
+      "state": 9,
+      "name": "MoveX",
+      "first": 175,
+      "frames": 10,
+      "slopes": 5,
+      "last": 224
+    },
+    {
+      "state": 10,
+      "name": "Drop",
+      "first": 225,
+      "frames": 1,
+      "slopes": 1,
+      "last": 225
+    },
+    {
+      "state": 11,
+      "name": "Die",
+      "first": 226,
+      "frames": 10,
+      "slopes": 5,
+      "last": 275
+    },
+    {
+      "state": 12,
+      "name": "Dead",
+      "first": 276,
+      "frames": 20,
+      "slopes": 1,
+      "last": 295
+    }
+  ],
+  "verifiedCharacterIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "limitations": [
+    "Static analysis only; no gameplay execution was performed by this script.",
+    "No server source, authoritative turn-order algorithm, or exact update frequency recovered.",
+    "Actions names follow shipped TSV columns and their runtime load/copy path, not debug symbols."
+  ],
+  "reaEvidenceId": "ev_a4ea0d6d01a0797c956a3038051b6400bc587e641e76b76c2ee581284b0e73cc"
+}

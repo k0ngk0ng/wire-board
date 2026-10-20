@@ -1,5 +1,4 @@
 import {
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -7,1189 +6,1305 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
-  Bomb,
   ChevronLeft,
   ChevronRight,
   Crosshair,
-  FlipHorizontal,
+  Minus,
+  Plus,
+  RotateCcw,
 } from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import {
-  cellSize,
   clamp,
   explosion,
   itemById,
   mapById,
   maps,
   sourceList,
-  statusText,
   tankInfo,
+  tankName,
   tankPortraits,
   tanks as tankCatalog,
-  tankName,
-  teamColors,
-  type Arc,
-  type Crater,
-  type Event as GameEvent,
-  type MapInfo,
-  type Shot,
-  type Tank,
+  sounds,
   type View,
 } from "./types";
+import { aimFromPoint, pointerWorld, type Camera } from "./aim";
+import { centeredCamera, panCamera, zoomAt } from "./camera";
 import {
-  aimFromPoint,
-  carveCraters,
-  decodeMask,
-  pointerWorld,
-  previewPath,
-  stepPower,
-  type Camera,
-} from "./aim";
+  beginCharge,
+  cancelCharge,
+  chargePower,
+  releaseCharge,
+  finishFullCharge,
+  CHARGE_HZ,
+  acceptsGameKeys,
+  type Charge,
+} from "./controls";
+import { arcAt, renderableShot } from "./timeline";
+import { shouldRevealBoard } from "./reveal";
+import {
+  animations,
+  drawScene,
+  miniRect,
+  paintTerrain,
+  type Images,
+  type Motion,
+} from "./render";
 
-type ImageMap = Record<string, HTMLImageElement | null>;
-
-const ART_SCALE = 2.2;
-const MOBILE_VIEW = 560;
-const MID_VIEW = 1100;
-const DESKTOP_VIEW = 1500;
-
-const imageCache = new Map<string, Promise<HTMLImageElement | null>>();
-
-function loadFirst(sources: string[]): Promise<HTMLImageElement | null> {
-  if (!sources.length) return Promise.resolve(null);
-  const key = sources.join("|");
-  const existing = imageCache.get(key);
-  if (existing) return existing;
+const cache = new Map<string, Promise<HTMLImageElement | null>>();
+function loadImage(base: string, path: string) {
+  if (!path) return Promise.resolve(null);
+  const sources = sourceList(base, path),
+    key = sources.join("|");
+  if (cache.has(key)) return cache.get(key)!;
   const promise = new Promise<HTMLImageElement | null>((resolve) => {
     const img = new Image();
     img.decoding = "async";
-    let index = 0;
-    const fail = () => {
-      index++;
-      if (index >= sources.length) {
-        resolve(null);
-        return;
-      }
-      img.src = sources[index];
-    };
+    let i = 0;
     img.onload = () => resolve(img);
-    img.onerror = fail;
+    img.onerror = () => {
+      if (++i < sources.length) img.src = sources[i];
+      else resolve(null);
+    };
     img.src = sources[0];
   });
-  imageCache.set(key, promise);
+  cache.set(key, promise);
   return promise;
 }
-
-function useImage(sources: string[]): HTMLImageElement | null {
-  const key = sources.join("|");
-  const [image, setImage] = useState<HTMLImageElement | null>(null);
+function useAssets(base: string, paths: string[]) {
+  const [images, setImages] = useState<Images>({});
+  const key = paths.join("|");
   useEffect(() => {
-    let live = true;
-    if (!sources.length) {
-      setImage(null);
-      return;
-    }
-    loadFirst(sources).then((img) => {
-      if (live) setImage(img);
-    });
+    let alive = true;
+    setImages({});
+    for (const path of paths)
+      void loadImage(base, path).then((img) => {
+        if (alive) setImages((current) => ({ ...current, [path]: img }));
+      });
     return () => {
-      live = false;
+      alive = false;
     };
-  }, [key]);
-  return image;
-}
-
-function useImages(list: string[][]): ImageMap {
-  const keys = list.map((sources) => sources.join("|"));
-  const [images, setImages] = useState<ImageMap>({});
-  useEffect(() => {
-    let live = true;
-    const pending = list.map((sources, i) => loadFirst(sources).then((img) => [keys[i], img] as const));
-    Promise.all(pending).then((entries) => {
-      if (!live) return;
-      const next: ImageMap = {};
-      for (const [key, img] of entries) next[key] = img;
-      setImages(next);
-    });
-    return () => {
-      live = false;
-    };
-  }, [keys.join(";")]);
+  }, [base, key]);
   return images;
 }
-
-function assetMap(base: string, map: MapInfo) {
-  return {
-    bg: map.bg ? sourceList(base, map.bg) : [],
-    fg: sourceList(base, map.fg),
-    fg2: map.fg2 ? sourceList(base, map.fg2) : [],
-  };
+function FallbackImage({
+  base,
+  path,
+  ...props
+}: {
+  base: string;
+  path: string;
+  alt: string;
+  className?: string;
+}) {
+  const sources = sourceList(base, path);
+  return (
+    <img
+      {...props}
+      src={sources[0]}
+      onError={(event) => {
+        const el = event.currentTarget;
+        const next = Number(el.dataset.fallback ?? 0) + 1;
+        if (next < sources.length) {
+          el.dataset.fallback = String(next);
+          el.src = sources[next];
+        }
+      }}
+    />
+  );
 }
-
-type Animation = {
-  shot: Shot;
-  start: number;
-  duration: number;
-  impactAt: number;
-  beforeCraters: Crater[];
-  beforeTanks: Tank[];
-  beforeEvents: GameEvent[];
-  impactPlayed: boolean;
-};
-
-const FALLBACK_BG = "#2c3948";
-
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduced(media.matches);
-    update();
-    media.addEventListener?.("change", update);
-    return () => media.removeEventListener?.("change", update);
-  }, []);
-  return reduced;
-}
-
-function serverNow(clock: BoardProps<View>["clock"]) {
+function nowAt(clock: BoardProps<View>["clock"]) {
   return clock.serverNow + Math.max(0, performance.now() - clock.receivedAt);
 }
+const seconds = (ms: number) => Math.max(0, Math.ceil(ms / 1000));
+const newCharge = (): Charge => ({ start: null, token: "", source: "" });
+type Pointer = {
+  x: number;
+  y: number;
+  startX: number;
+  startY: number;
+  dragged: boolean;
+  mini: boolean;
+};
 
-function fmtSeconds(ms: number) {
-  return Math.max(0, Math.ceil(ms / 1000));
-}
-
-function eventName(view: View, seat: number) {
-  return view.tanks[seat]?.seat === seat ? `P${seat + 1}` : `P${seat + 1}`;
-}
-
-function pathPoint(arc: Arc, progress: number) {
-  const path = arc.path;
-  if (!path.length) return { x: 0, y: 0, angle: 0 };
-  if (path.length === 1) return { x: path[0].x, y: path[0].y, angle: 0 };
-  const lengths: number[] = [];
-  let total = 0;
-  for (let i = 1; i < path.length; i++) {
-    const d = Math.hypot(path[i].x - path[i - 1].x, path[i].y - path[i - 1].y);
-    lengths.push(d);
-    total += d;
-  }
-  let target = clamp(progress, 0, 1) * total;
-  for (let i = 1; i < path.length; i++) {
-    if (target <= lengths[i - 1] || i === path.length - 1) {
-      const prev = path[i - 1];
-      const next = path[i];
-      const t = lengths[i - 1] > 0 ? clamp(target / lengths[i - 1], 0, 1) : 0;
-      return {
-        x: prev.x + (next.x - prev.x) * t,
-        y: prev.y + (next.y - prev.y) * t,
-        angle: Math.atan2(next.y - prev.y, next.x - prev.x),
-      };
-    }
-    target -= lengths[i - 1];
-  }
-  const last = path[path.length - 1];
-  return { x: last.x, y: last.y, angle: 0 };
-}
-
-function drawTerrain(
-  canvas: HTMLCanvasElement,
-  map: MapInfo,
-  fg: HTMLImageElement | null,
-  fg2: HTMLImageElement | null,
-  craters: Crater[],
-) {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.globalCompositeOperation = "source-over";
-  if (fg) ctx.drawImage(fg, 0, map.offY);
-  if (fg2) {
-    ctx.globalAlpha = 0.55;
-    ctx.drawImage(fg2, 0, map.offY);
-    ctx.globalAlpha = 1;
-  }
-  ctx.globalCompositeOperation = "destination-out";
-  for (const c of craters) {
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalCompositeOperation = "source-over";
-}
-
-function drawTank(
-  ctx: CanvasRenderingContext2D,
-  view: View,
-  tank: Tank,
-  img: HTMLImageElement | null,
-  info: { sprites: Record<string, { ax: number; ay: number; w: number; h: number; url: string }> } | undefined,
-  now: number,
-  anim: Animation | null,
-  screenScale: number,
-) {
-  if (!tank.selected) return;
-  const sprite = info?.sprites.idle;
-  const die = info?.sprites.die;
-  const useDie = !tank.alive && die;
-  const source = useDie ? img : img;
-  if (!source) {
-    ctx.fillStyle = teamColors[tank.team] ?? "#888";
-    ctx.fillRect(tank.x - 14, tank.y - 28, 28, 26);
-    return;
-  }
-  const spriteMeta = useDie ? die : sprite;
-  if (!spriteMeta) return;
-  const current = tank.current && view.phase === "playing";
-  const hitRecent =
-    anim && now >= anim.impactAt && now < anim.impactAt + 260 && anim.shot.blasts.some((b) => b.victim === tank.seat);
-  ctx.save();
-  // Team marker under the tank.
-  ctx.globalAlpha = useDie ? 0.55 : 1;
-  ctx.fillStyle = teamColors[tank.team] ?? "#888";
-  ctx.beginPath();
-  ctx.ellipse(tank.x, tank.y + 1, 34, 10, 0, 0, Math.PI * 2);
-  ctx.fill();
-  if (current) {
-    ctx.strokeStyle = "#f4dc8a";
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    ctx.ellipse(tank.x, tank.y + 1, 42 + Math.sin(now / 180) * 2, 12, 0, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-  ctx.translate(tank.x, tank.y);
-  ctx.scale(tank.facing < 0 ? -1 : 1, 1);
-  const artScale = useDie ? ART_SCALE * 0.78 : ART_SCALE;
-  ctx.drawImage(source, -spriteMeta.ax * artScale, -spriteMeta.ay * artScale, source.width * artScale, source.height * artScale);
-  if (hitRecent) {
-    ctx.globalCompositeOperation = "source-atop";
-    ctx.fillStyle = "rgba(255,255,255,.65)";
-    ctx.fillRect(-spriteMeta.ax * artScale, -spriteMeta.ay * artScale, source.width * artScale, source.height * artScale);
-  }
-  ctx.restore();
-  if (!useDie) {
-    // Keep the name/HP plate a constant on-screen size while the camera zooms.
-    const ui = 1 / Math.max(0.35, screenScale);
-    const width = 66 * ui;
-    const x = tank.x - width / 2;
-    const y = tank.y - 72 * ui;
-    ctx.fillStyle = "rgba(12,18,24,.82)";
-    ctx.fillRect(x - 2 * ui, y - 2 * ui, width + 4 * ui, 10 * ui);
-    ctx.fillStyle = teamColors[tank.team] ?? "#888";
-    ctx.fillRect(x, y, width * clamp(tank.hp / Math.max(1, tank.maxHp), 0, 1), 6 * ui);
-    ctx.fillStyle = "#f7f3e6";
-    ctx.font = `bold ${12 * ui}px system-ui, sans-serif`;
-    ctx.textAlign = "center";
-    ctx.lineWidth = 3 * ui;
-    ctx.strokeStyle = "rgba(5,15,25,.9)";
-    ctx.strokeText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7 * ui);
-    ctx.fillText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7 * ui);
-    if (tank.statuses?.length) {
-      ctx.fillStyle = "#f0d58c";
-      ctx.font = `${10 * ui}px system-ui, sans-serif`;
-      const status = tank.statuses.map(statusText).join(" ");
-      ctx.strokeText(status, tank.x, y - 21 * ui);
-      ctx.fillText(status, tank.x, y - 21 * ui);
-    }
-  }
-}
-
-function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProps<View>) {
-  const tanks: Tank[] = Array.isArray(data?.tanks) ? data.tanks : [];
-  const craters: Crater[] = Array.isArray(data?.craters) ? data.craters : [];
-  const events: GameEvent[] = Array.isArray(data?.events) ? data.events : [];
-  const log: string[] = Array.isArray(data?.log) ? data.log : [];
-  const phase = data?.phase ?? "";
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const terrainRef = useRef<HTMLCanvasElement | null>(null);
-  const cameraRef = useRef<Camera>({ x: 0, y: 0, worldViewW: DESKTOP_VIEW, worldViewH: 600 });
-  const pointerType = useRef("mouse");
-  const [size, setSize] = useState({ w: 960, h: 560 });
-  const [anim, setAnim] = useState<Animation | null>(null);
-  const [angle, setAngle] = useState(45);
-  const [power, setPower] = useState(65);
-  const [facing, setFacing] = useState(1);
-  const [weapon, setWeapon] = useState<"primary" | "special">("primary");
-  const [now, setNow] = useState(() => performance.now());
-  const lastView = useRef<View | null>(null);
-  const seenShot = useRef<number>(0);
-  const seenEpoch = useRef<string>("");
-  const lastEvent = useRef<number>(0);
-  const eventEpoch = useRef<string>("");
-  const eventReady = useRef(false);
-  const lastTurn = useRef<string>("");
-
-  const reducedMotion = useReducedMotion();
-  const map = mapById.get(data.mapId ?? "") ?? maps[0];
-  const mapAssets = useMemo(() => assetMap(assets, map), [assets, map]);
-  const bgImage = useImage(mapAssets.bg);
-  const fgImage = useImage(mapAssets.fg);
-  const fg2Image = useImage(mapAssets.fg2);
-  const explosionImage = useImage(sourceList(assets, explosion.url));
-  const tankKeys = useMemo(
-    () =>
-      tankCatalog.flatMap((info) => [
-        sourceList(assets, info.sprites.idle?.url ?? ""),
-        sourceList(assets, info.sprites.die?.url ?? ""),
-        info.bullet ? sourceList(assets, info.bullet.url) : [],
-      ]),
-    [assets],
-  );
-  const images = useImages(tankKeys);
-
-  const currentTank = tanks[data.current] ?? tanks[data.you] ?? tanks.find((t) => t.alive);
-  const myTurn = phase === "playing" && data.you >= 0 && data.you === data.current && !busy;
-  const canAct = myTurn && !anim;
-  const own = tanks[data.you];
-  const myInfo = tankInfo(own?.tankId ?? 0);
-  const maxAngle = Math.max(5, myInfo?.angle ?? 45);
-  const baseMask = useMemo(() => decodeMask(map.bulletMask), [map]);
-  const craterSignature = useMemo(
-    () => craters.map((crater) => `${Math.round(crater.x)},${Math.round(crater.y)},${Math.round(crater.r)}`).join(";"),
-    [craters],
-  );
-  const terrainMask = useMemo(
-    () => carveCraters(baseMask, map.maskCols, map.maskRows, cellSize, craters),
-    [baseMask, map, craterSignature],
-  );
-  const aimPreview = useMemo(() => {
-    if (!canAct || phase !== "playing" || !own?.alive || !own.selected) return [];
-    return previewPath({
-      width: map.width,
-      height: map.height,
-      mask: terrainMask,
-      maskCols: map.maskCols,
-      maskRows: map.maskRows,
-      cell: cellSize,
-      startX: own.x,
-      startY: own.y,
-      angle,
-      power,
-      facing,
-      rangeScale: (myInfo?.range ?? 50) / 50,
-      wind: data.wind,
-      limit: 220,
-    });
-  }, [
+export function Board(props: BoardProps<View>) {
+  const { data, room, act, busy, assets, sound, audio, clock } = props;
+  const map = mapById.get(data.mapId) ?? maps[0];
+  const own = data.tanks.find((t) => t.seat === data.you);
+  const active = data.tanks.find((t) => t.seat === data.current);
+  const info = tankInfo(own?.tankId ?? 0);
+  const minAngle = info?.minAngle ?? 0,
+    maxAngle = info?.maxAngle ?? info?.angle ?? 80;
+  const [angle, setAngle] = useState(45),
+    [facing, setFacing] = useState(1),
+    [weapon, setWeapon] = useState<"primary" | "special">("primary");
+  const [power, setPower] = useState(0),
+    [lastPower, setLastPower] = useState<number | null>(null),
+    [charging, setCharging] = useState(false);
+  const [tick, setTick] = useState(0),
+    [size, setSize] = useState({ w: 800, h: 450 });
+  const [reduced, setReduced] = useState(false);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const revealedGames = useRef(new Set<string>());
+  const canvasRef = useRef<HTMLCanvasElement>(null),
+    terrainRef = useRef<HTMLCanvasElement>(null);
+  const cameraRef = useRef<Camera>({
+    x: 0,
+    y: 0,
+    worldViewW: 800,
+    worldViewH: 450,
+  });
+  const initialized = useRef(""),
+    manualCamera = useRef(false),
+    lastFrame = useRef(0);
+  const charge = useRef(newCharge()),
+    moveDir = useRef(0),
+    requestInFlight = useRef(false),
+    firedTurn = useRef("");
+  const pointers = useRef(new Map<number, Pointer>()),
+    gestureWasPinch = useRef(false);
+  const motions = useRef(new Map<number, Motion>()),
+    previous = useRef<View | null>(null);
+  const audioCursor = useRef({ epoch: "", id: 0 }),
+    music = useRef("");
+  const turnToken = `${data.epoch}:${data.turn}:${data.current}`;
+  const permitted =
+    data.phase === "playing" &&
+    data.you === data.current &&
+    !data.resolution &&
+    !room.seats[data.you]?.autoPlay &&
+    !!own?.alive;
+  const canFire =
+    permitted && data.canFire && !busy && firedTurn.current !== turnToken;
+  const canMove = permitted && data.canMove && !busy;
+  const latest = useRef({
+    props,
     angle,
-    canAct,
-    data.wind,
     facing,
-    map,
-    myInfo?.range,
-    own,
-    phase,
-    power,
-    terrainMask,
-  ]);
-
-  // Keep the control values legal when the selected tank changes.
+    weapon,
+    minAngle,
+    maxAngle,
+    turnToken,
+    permitted,
+    canFire,
+    canMove,
+  });
+  latest.current = {
+    props,
+    angle,
+    facing,
+    weapon,
+    minAngle,
+    maxAngle,
+    turnToken,
+    permitted,
+    canFire,
+    canMove,
+  };
+  const assetPaths = useMemo(
+    () =>
+      [
+        map.bg ?? "",
+        map.fg,
+        map.fg2 ?? "",
+        explosion.url,
+        ...data.tanks.flatMap((t) => [
+          ...(animations[String(t.tankId)]?.atlases ?? []),
+          tankInfo(t.tankId)?.bullet?.url ?? "",
+        ]),
+      ].filter((p, i, a) => p && a.indexOf(p) === i),
+    [map, data.tanks.map((t) => t.tankId).join(",")],
+  );
+  const images = useAssets(assets, assetPaths);
+  const fg = images[map.fg] ?? null,
+    fg2 = map.fg2 ? (images[map.fg2] ?? null) : null,
+    bg = map.bg ? (images[map.bg] ?? null) : null;
+  const craterKey = JSON.stringify(data.craters ?? []);
   useEffect(() => {
-    const key = `${data.epoch}:${data.turn}:${data.current}`;
-    if (lastTurn.current === key) return;
-    lastTurn.current = key;
-    if (data.you >= 0 && data.current === data.you && phase === "playing") {
-      const self = tanks[data.you];
-      const foes = tanks.filter((t) => t.alive && t.team !== self.team);
-      const aimAt = foes.sort(
-        (a, b) => Math.abs(a.x - self.x) - Math.abs(b.x - self.x),
-      )[0];
-      setFacing(aimAt && aimAt.x < self.x ? -1 : 1);
-      setAngle(Math.min(maxAngle, 45));
-      setPower(65);
-      setWeapon("primary");
-    }
-  }, [data.epoch, data.turn, data.current, data.you, data.phase, tanks, maxAngle]);
+    if (terrainRef.current)
+      paintTerrain(terrainRef.current, map, fg, fg2, data.craters ?? []);
+  }, [map, fg, fg2, craterKey]);
 
-  // Detect a new shot and animate it once. On a fresh mount the newest shot is
-  // treated as already played, so refresh/reconnect never replays old actions.
+  function cancelInputs() {
+    cancelCharge(charge.current);
+    moveDir.current = 0;
+    setCharging(false);
+  }
+  function startCharge(source: string) {
+    if (
+      !latest.current.canFire ||
+      requestInFlight.current ||
+      firedTurn.current === latest.current.turnToken
+    )
+      return;
+    if (
+      beginCharge(
+        charge.current,
+        performance.now(),
+        latest.current.turnToken,
+        source,
+        tankInfo(
+          latest.current.props.data.tanks.find(
+            (t) => t.seat === latest.current.props.data.you,
+          )?.tankId ?? 0,
+        )?.range ?? 45,
+      )
+    ) {
+      moveDir.current = 0;
+      setPower(0);
+      setCharging(true);
+    }
+  }
+  function endCharge(source: string) {
+    const current = latest.current;
+    const value = releaseCharge(
+      charge.current,
+      performance.now(),
+      current.turnToken,
+      source,
+    );
+    if (value !== null) firePower(value);
+  }
+  function firePower(value: number) {
+    const current = latest.current;
+    setCharging(false);
+    if (
+      !current.canFire ||
+      requestInFlight.current ||
+      document.hidden ||
+      firedTurn.current === current.turnToken
+    )
+      return;
+    firedTurn.current = current.turnToken;
+    setPower(value);
+    setLastPower(value);
+    requestInFlight.current = true;
+    void current.props
+      .act({
+        type: "fire",
+        epoch: current.props.data.epoch,
+        turn: current.props.data.turn,
+        angle: clamp(current.angle, current.minAngle, current.maxAngle),
+        power: value,
+        facing: current.facing,
+        weapon: current.weapon,
+      })
+      .catch(() => {
+        if (firedTurn.current === current.turnToken) firedTurn.current = "";
+      })
+      .finally(() => {
+        requestInFlight.current = false;
+        setTick((n) => n + 1);
+      });
+  }
+  function changeAngle(value: number) {
+    const n = clamp(value, latest.current.minAngle, latest.current.maxAngle);
+    latest.current.angle = n;
+    setAngle(n);
+  }
+  function changeFacing(value: number) {
+    latest.current.facing = value;
+    setFacing(value);
+  }
+  function setMove(dir: number) {
+    if (latest.current.permitted && charge.current.start === null) {
+      moveDir.current = dir;
+      changeFacing(dir);
+    }
+  }
+  function resetCamera() {
+    manualCamera.current = false;
+    initialized.current = "";
+  }
+  function zoom(factor: number, anchor = { x: 0.5, y: 0.5 }) {
+    manualCamera.current = true;
+    cameraRef.current = zoomAt(
+      cameraRef.current,
+      factor,
+      anchor,
+      map.width,
+      map.height,
+    );
+  }
+
+  // Enter the playable board once per room/match, without moving the selection
+  // overlay or fighting the player's scrolling on subsequent snapshots.
   useEffect(() => {
-    if (seenEpoch.current !== data.epoch) {
-      seenEpoch.current = data.epoch;
-      lastView.current = data;
-      // A fresh mount with no shot yet must still animate the first shot. Only
-      // an already existing shot id is treated as played after refresh/reconnect.
-      seenShot.current = data.lastShot?.id ?? 0;
-      setAnim(null);
-      return;
-    }
-    const shot = data.lastShot;
-    if (!shot) {
-      lastView.current = data;
-      return;
-    }
-    if (shot.id <= seenShot.current) {
-      lastView.current = data;
-      return;
-    }
-    const before = lastView.current ?? data;
-    if (reducedMotion) {
-      seenShot.current = shot.id;
-      lastView.current = data;
-      setAnim(null);
-      return;
-    }
-    const path = shot.arcs[0]?.path ?? [];
-    let length = 0;
-    for (let i = 1; i < path.length; i++) length += Math.hypot(path[i].x - path[i - 1].x, path[i].y - path[i - 1].y);
-    const duration = clamp(length * 2.4, 700, 3200);
-    seenShot.current = shot.id;
-    setAnim({
-      shot,
-      start: performance.now(),
-      duration,
-      impactAt: duration * 0.86,
-      beforeCraters: before.craters ?? [],
-      beforeTanks: before.tanks,
-      beforeEvents: before.events,
-      impactPlayed: false,
+    if (data.phase !== "playing") return;
+    const key = `${room.id}:${data.epoch}`;
+    if (revealedGames.current.has(key)) return;
+    const frame = requestAnimationFrame(() => {
+      const board = boardRef.current;
+      if (!board) return;
+      const rect = board.getBoundingClientRect();
+      const height = window.visualViewport?.height ?? window.innerHeight;
+      const reveal = shouldRevealBoard(
+        rect,
+        height,
+        data.phase,
+        revealedGames.current.has(key),
+      );
+      revealedGames.current.add(key);
+      board.dataset.autoReveal = reveal ? "1" : "0";
+      if (reveal)
+        board.scrollIntoView({
+          block: "center",
+          inline: "nearest",
+          behavior: "auto",
+        });
     });
-    lastView.current = data;
-  }, [data, reducedMotion]);
+    return () => cancelAnimationFrame(frame);
+  }, [room.id, data.epoch, data.phase]);
 
-  // Update the displayed clock and finish animations.
+  // Preserve angle between the player's own turns; clamp only for a changed tank.
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(performance.now()), 120);
-    return () => window.clearInterval(timer);
+    setFacing(own?.facing ?? 1);
+  }, [data.epoch, own?.tankId]);
+  useEffect(() => {
+    setAngle((a) => clamp(a, minAngle, maxAngle));
+  }, [minAngle, maxAngle]);
+  useEffect(() => {
+    cancelInputs();
+  }, [turnToken, data.resolution?.stage, data.canFire, own?.alive, permitted]);
+  useEffect(() => {
+    if (!own?.specialUnlimited && own?.special === 0) setWeapon("primary");
+  }, [own?.special, own?.specialUnlimited]);
+  useEffect(() => {
+    firedTurn.current = "";
+    setLastPower(null);
+    setWeapon("primary");
+    manualCamera.current = false;
+  }, [data.epoch]);
+  useEffect(() => {
+    const media = matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
   }, []);
-
-  useEffect(() => {
-    if (!anim) return;
-    const total = anim.duration + 900;
-    const timer = window.setTimeout(() => setAnim(null), total);
-    return () => window.clearTimeout(timer);
-  }, [anim]);
-
-  // Audio: keep one cursor so refresh does not replay. Music follows the map.
-  const musicStarted = useRef("");
-  useEffect(() => {
-    if (!sound || !map.music) return;
-    const key = `${data.epoch}:${map.id}`;
-    if (musicStarted.current === key) return;
-    musicStarted.current = key;
-    void audio.music(sourceList(assets, map.music));
-  }, [audio, assets, data.epoch, map.id, map.music, sound]);
-
-  useEffect(() => {
-    if (!sound) {
-      lastEvent.current = Math.max(0, ...events.map((e) => e.id));
-      eventReady.current = true;
-      eventEpoch.current = data.epoch;
-      return;
-    }
-    if (!eventReady.current || eventEpoch.current !== data.epoch) {
-      lastEvent.current = Math.max(0, ...events.map((e) => e.id));
-      eventEpoch.current = data.epoch;
-      eventReady.current = true;
-      return;
-    }
-    const fresh = events.filter((e) => e.id > lastEvent.current);
-    lastEvent.current = Math.max(lastEvent.current, ...events.map((e) => e.id));
-    for (const event of fresh) {
-      const sources =
-        event.type === "shot"
-          ? sourceList(assets, "/fortressblue/v2/audio/fire.mp3")
-          : event.type === "hit" || event.type === "explode"
-            ? sourceList(assets, "/fortressblue/v2/audio/explode.mp3")
-            : event.type === "death"
-              ? sourceList(assets, "/fortressblue/v2/audio/hit.mp3")
-              : event.type === "turn"
-                ? sourceList(assets, "/fortressblue/v2/audio/turn.mp3")
-                : event.type === "finish"
-                  ? sourceList(assets, "/fortressblue/v2/audio/win.mp3")
-                  : [];
-      if (sources.length) void audio.playWithFallback(sources);
-    }
-  }, [audio, assets, events, sound]);
-
-  // Canvas size follows its container; the world camera uses CSS pixels.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      const w = Math.max(320, Math.round(rect.width));
-      const h = Math.max(220, Math.round(rect.height));
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      setSize({ w, h });
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      canvas.width = Math.round(r.width * dpr);
+      canvas.height = Math.round(r.height * dpr);
+      setSize({ w: r.width, h: r.height });
+      initialized.current = "";
     };
     resize();
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
-    return () => observer.disconnect();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    return () => ro.disconnect();
   }, []);
-
-  const displayCraters = useMemo(() => {
-    if (!anim) return craters ?? [];
-    const elapsed = now - anim.start;
-    if (elapsed < anim.impactAt) return anim.beforeCraters;
-    return craters ?? [];
-  }, [anim, craters, now]);
-
-  // Terrain is cached and only repainted when the map or crater set changes.
-  const terrainKey = `${map.id}:${displayCraters.map((c) => `${Math.round(c.x)},${Math.round(c.y)},${Math.round(c.r)}`).join(";")}`;
-  const terrainKeyRef = useRef("");
   useEffect(() => {
-    const canvas = terrainRef.current;
-    if (!canvas) return;
-    if (terrainKeyRef.current === terrainKey) return;
-    terrainKeyRef.current = terrainKey;
-    drawTerrain(canvas, map, fgImage, fg2Image, displayCraters);
-  }, [terrainKey, map, fgImage, fg2Image, displayCraters]);
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.dataset.projectile = "";
-    // Animate from the live clock; the 120 ms React clock is only for UI text.
-    const frameNow = performance.now();
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const cw = size.w;
-    const ch = size.h;
-    const mobile = cw < 620;
-    const worldViewW = Math.min(map.width, mobile ? MOBILE_VIEW : cw < 1000 ? MID_VIEW : DESKTOP_VIEW);
-    const scale = cw / worldViewW;
-    const worldViewH = ch / scale;
-    const focus = anim
-      ? pathPoint(anim.shot.arcs[0], clamp((frameNow - anim.start) / Math.max(1, anim.impactAt), 0, 1))
-      : currentTank ?? { x: map.width / 2, y: map.height * 0.7 };
-    const camX = clamp(
-      focus.x - worldViewW / 2,
-      0,
-      Math.max(0, map.width - worldViewW),
-    );
-    const camY = clamp(
-      focus.y - worldViewH * 0.58,
-      0,
-      Math.max(0, map.height - worldViewH),
-    );
-    cameraRef.current = { x: camX, y: camY, worldViewW, worldViewH };
-    canvas.dataset.cameraX = String(camX);
-    canvas.dataset.cameraY = String(camY);
-    canvas.dataset.viewW = String(worldViewW);
-    canvas.dataset.viewH = String(worldViewH);
-    canvas.dataset.scale = String(scale);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = FALLBACK_BG;
-    ctx.fillRect(0, 0, cw, ch);
-    ctx.save();
-    ctx.setTransform(dpr * scale, 0, 0, dpr * scale, -camX * dpr * scale, -camY * dpr * scale);
-    if (bgImage) ctx.drawImage(bgImage, 0, 0, map.width, map.height);
-    else {
-      ctx.fillStyle = "#50657a";
-      ctx.fillRect(0, 0, map.width, map.height);
-    }
-    if (terrainRef.current) ctx.drawImage(terrainRef.current, 0, 0);
-    else if (fgImage) ctx.drawImage(fgImage, 0, map.offY);
-    if (canAct && aimPreview.length > 1) {
-      ctx.save();
-      ctx.strokeStyle = "rgba(255,232,150,.62)";
-      ctx.lineWidth = 1.6 / scale;
-      ctx.setLineDash([3 / scale, 7 / scale]);
-      ctx.beginPath();
-      ctx.moveTo(aimPreview[0].x, aimPreview[0].y);
-      for (const point of aimPreview.slice(1)) ctx.lineTo(point.x, point.y);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      const impact = aimPreview[aimPreview.length - 1];
-      ctx.strokeStyle = "rgba(255,240,180,.92)";
-      ctx.lineWidth = 1.5 / scale;
-      ctx.beginPath();
-      ctx.arc(impact.x, impact.y, 9, 0, Math.PI * 2);
-      ctx.moveTo(impact.x - 15, impact.y);
-      ctx.lineTo(impact.x + 15, impact.y);
-      ctx.moveTo(impact.x, impact.y - 15);
-      ctx.lineTo(impact.x, impact.y + 15);
-      ctx.stroke();
-      ctx.restore();
-    }
-    const renderTanks = anim && frameNow < anim.impactAt ? anim.beforeTanks : tanks;
-    for (const tank of renderTanks) {
-      const info = tankInfo(tank.tankId);
-      const sprite = tank.alive ? info?.sprites.idle : info?.sprites.die;
-      const key = sprite ? sourceList(assets, sprite.url).join("|") : "";
-      drawTank(ctx, data, tank, images[key] ?? null, info, frameNow, anim, scale);
-    }
-    if (anim) {
-      const elapsed = frameNow - anim.start;
-      if (elapsed <= anim.impactAt) {
-        const progress = elapsed / Math.max(1, anim.impactAt);
-        const p = pathPoint(anim.shot.arcs[0], progress);
-        const shooter = tankInfo(tanks[anim.shot.seat]?.tankId ?? 0);
-        const bullet = shooter?.bullet;
-        const team = teamColors[tanks[anim.shot.seat]?.team ?? 0] ?? "#ffe7a2";
-        // Flight trail keeps the shell visible even when the sprite is small.
-        const trail = pathPoint(anim.shot.arcs[0], clamp(progress - 0.05, 0, 1));
-        ctx.save();
-        ctx.strokeStyle = team;
-        ctx.globalAlpha = 0.55;
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
-        ctx.beginPath();
-        ctx.moveTo(trail.x, trail.y);
-        ctx.lineTo(p.x, p.y);
-        ctx.stroke();
-        ctx.globalAlpha = 0.3;
-        ctx.fillStyle = team;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-        if (bullet) {
-          const img = images[sourceList(assets, bullet.url).join("|")];
-          if (img) {
-            canvas.dataset.projectile = "sprite";
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(Math.abs(p.angle) > Math.PI / 2 ? p.angle + Math.PI : p.angle);
-            const s = 0.55;
-            ctx.drawImage(img, -img.width * s / 2, -img.height * s / 2, img.width * s, img.height * s);
-            ctx.restore();
-          } else {
-            canvas.dataset.projectile = "dot";
-            ctx.fillStyle = "#ffe7a2";
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-      } else {
-        const impact = anim.shot.blasts[0] ?? { x: anim.shot.arcs[0]?.impact.x ?? 0, y: anim.shot.arcs[0]?.impact.y ?? 0 };
-        const progress = clamp((elapsed - anim.impactAt) / 900, 0, 1);
-        const frame = Math.min(explosion.count - 1, Math.floor(progress * explosion.count));
-        if (explosionImage) {
-          const sheet = explosionImage;
-          const cellW = explosion.cellW;
-          const cellH = explosion.cellH;
-          const sx = frame * cellW;
-          const sy = 0;
-          ctx.globalAlpha = 1 - progress * 0.35;
-          const blastRadius = Math.max(32, anim.shot.blasts[0]?.r ?? 48);
-          const drawW = blastRadius * 2.6;
-          const drawH = drawW * (cellH / cellW);
-          ctx.drawImage(sheet, sx, sy, cellW, cellH, impact.x - drawW / 2, impact.y - drawH * 0.5, drawW, drawH);
-          ctx.globalAlpha = 1;
+    const old = previous.current;
+    const at = nowAt(clock);
+    if (old?.epoch === data.epoch) {
+      for (const tank of data.tanks) {
+        const before = old.tanks.find((t) => t.seat === tank.seat);
+        if (
+          before &&
+          (before.x !== tank.x || before.y !== tank.y) &&
+          !data.resolution?.falls?.some((f) => f.seat === tank.seat) &&
+          !old.resolution?.falls?.some((f) => f.seat === tank.seat)
+        ) {
+          const prior = motions.current.get(tank.seat);
+          const t = prior ? clamp((at - prior.at) / 180, 0, 1) : 1;
+          motions.current.set(tank.seat, {
+            fromX: prior ? prior.fromX + (prior.x - prior.fromX) * t : before.x,
+            fromY: prior ? prior.fromY + (prior.y - prior.fromY) * t : before.y,
+            x: tank.x,
+            y: tank.y,
+            at,
+          });
         }
       }
-    }
-    ctx.restore();
-
-    if (phase === "playing" && own?.selected) {
-      ctx.save();
-      for (const tank of renderTanks) {
-        if (!tank.alive || tank.team === own.team) continue;
-        const sx = (tank.x - camX) * scale;
-        const sy = (tank.y - camY) * scale;
-        if (sx >= 14 && sx <= cw - 14 && sy >= 14 && sy <= ch - 14) continue;
-        const ex = clamp(sx, 18, cw - 18);
-        const ey = clamp(sy, 18, ch - 18);
-        ctx.save();
-        ctx.translate(ex, ey);
-        ctx.rotate(Math.atan2(sy - ey, sx - ex));
-        ctx.fillStyle = teamColors[tank.team] ?? "#fff";
-        ctx.beginPath();
-        ctx.moveTo(10, 0);
-        ctx.lineTo(-4, -6);
-        ctx.lineTo(-4, 6);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-        ctx.fillStyle = "#102230";
-        ctx.font = "bold 11px system-ui, sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText(`P${tank.seat + 1}`, ex, ey + 4);
-      }
-      ctx.restore();
-    }
-
-    // Screen-space minimap and wind bracket.
-    const mmW = mobile ? 108 : 176;
-    const mmH = Math.round((mmW * map.height) / map.width);
-    const mmX = cw - mmW - 10;
-    const mmY = 10;
-    ctx.save();
-    ctx.fillStyle = "rgba(8,16,26,.68)";
-    ctx.fillRect(mmX - 3, mmY - 3, mmW + 6, mmH + 6);
-    if (bgImage) ctx.drawImage(bgImage, mmX, mmY, mmW, mmH);
-    else ctx.fillStyle = "#24394d", ctx.fillRect(mmX, mmY, mmW, mmH);
-    if (terrainRef.current) ctx.drawImage(terrainRef.current, mmX, mmY, mmW, mmH);
-    for (const tank of renderTanks) {
-      if (!tank.selected || !tank.alive) continue;
-      const x = mmX + (tank.x / map.width) * mmW;
-      const y = mmY + (tank.y / map.height) * mmH;
-      ctx.fillStyle = teamColors[tank.team] ?? "#fff";
-      ctx.beginPath();
-      ctx.arc(x, y, tank.current ? 4 : 3, 0, Math.PI * 2);
-      ctx.fill();
-      if (tank.current) {
-        ctx.strokeStyle = "#ffe6a1";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      }
-    }
-    const viewX = mmX + (camX / map.width) * mmW;
-    const viewW = (worldViewW / map.width) * mmW;
-    const viewY = mmY + (camY / map.height) * mmH;
-    const viewH = (worldViewH / map.height) * mmH;
-    ctx.strokeStyle = "rgba(255,236,164,.8)";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(viewX, viewY, viewW, viewH);
-    ctx.restore();
-  }, [aimPreview, anim, assets, bgImage, canAct, currentTank, data, explosionImage, fgImage, images, map, now, own, size, terrainRef]);
-
+    } else motions.current.clear();
+    if (data.lastShot && data.lastShot.id !== old?.lastShot?.id)
+      motions.current.delete(data.lastShot.seat);
+    previous.current = data;
+  }, [data]);
   useEffect(() => {
-    draw();
-  }, [draw]);
-
-  useEffect(() => {
-    if (!anim) return;
-    let raf = 0;
-    const loop = () => {
-      draw();
-      if (performance.now() < anim.start + anim.duration + 920) raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [anim, draw]);
-
-  const aimRef = useRef({ angle, power, facing });
-  useEffect(() => {
-    aimRef.current = { angle, power, facing };
-  }, [angle, facing, power]);
-
-  const sendFire = useCallback(
-    (aim?: { angle: number; facing: number }) => {
-      if (!canAct || phase !== "playing") return;
-      const current = aim ?? aimRef.current;
-      void act({
-        type: "fire",
-        epoch: data.epoch,
-        turn: data.turn,
-        angle: clamp(current.angle, 0, maxAngle),
-        power: clamp(aimRef.current.power, 20, 100),
-        facing: current.facing,
-        weapon,
-      });
-    },
-    [act, canAct, data.epoch, data.turn, maxAngle, phase, weapon],
-  );
-
-  const move = useCallback(
-    (dir: number) => {
-      if (!canAct || phase !== "playing") return;
-      void act({ type: "move", epoch: data.epoch, turn: data.turn, dir });
-    },
-    [act, canAct, data.epoch, data.turn, phase],
-  );
-
-  const toggleFacing = useCallback(() => {
-    const next = aimRef.current.facing > 0 ? -1 : 1;
-    aimRef.current = { ...aimRef.current, facing: next };
-    setFacing(next);
-  }, []);
-
-  const useItem = useCallback(
-    (slot: number) => {
-      if (!canAct || phase !== "playing") return;
-      void act({ type: "item", epoch: data.epoch, turn: data.turn, slot });
-    },
-    [act, canAct, data.epoch, data.turn, phase],
-  );
-
-  const aimAtEvent = useCallback(
-    (event: ReactPointerEvent<HTMLCanvasElement>) => {
-      pointerType.current = event.pointerType;
-      if (!canAct || phase !== "playing" || !own) return;
-      const rect = event.currentTarget.getBoundingClientRect();
-      const point = pointerWorld(
-        event.clientX,
-        event.clientY,
-        rect,
-        cameraRef.current,
-      );
-      const next = aimFromPoint(
-        { x: own.x, y: own.y },
-        point,
-        maxAngle,
-        26,
-      );
-      const angleValue = Math.round(next.angle);
-      aimRef.current = {
-        ...aimRef.current,
-        angle: angleValue,
-        facing: next.facing,
-      };
-      setAngle(angleValue);
-      setFacing(next.facing);
-    },
-    [canAct, maxAngle, own, phase],
-  );
-
-  // Native wheel listener: React's root wheel listener is passive, so the
-  // page would scroll while the player tries to tune power.
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const onWheel = (event: WheelEvent) => {
-      if (!canAct || phase !== "playing") return;
-      event.preventDefault();
-      const next = stepPower(aimRef.current.power, event.deltaY);
-      aimRef.current = { ...aimRef.current, power: next };
-      setPower(next);
-    };
-    canvas.addEventListener("wheel", onWheel, { passive: false });
-    return () => canvas.removeEventListener("wheel", onWheel);
-  }, [canAct, phase]);
-
-  const choose = useCallback(
-    (tankId: number) => {
-      if (phase !== "select" || !data.canSelect || busy) return;
-      void act({ type: "select", epoch: data.epoch, tank: tankId });
-    },
-    [act, busy, data.canSelect, data.epoch, data.phase],
-  );
-
-  // Keyboard controls follow the original arcade layout: arrows move and aim,
-  // while Z/X tune power. The game claims browser keys only during its turn.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (!canAct || phase !== "playing") return;
-      const target = event.target as HTMLElement | null;
-      const tag = target?.tagName ?? "";
+    const timer = window.setInterval(() => {
+      setTick((n) => n + 1);
+      const state = latest.current;
       if (
-        target?.isContentEditable ||
-        tag === "TEXTAREA" ||
-        (tag === "INPUT" && (target as HTMLInputElement).type !== "range")
-      ) {
+        !moveDir.current ||
+        !state.canMove ||
+        requestInFlight.current ||
+        document.hidden
+      )
+        return;
+      const dir = moveDir.current;
+      requestInFlight.current = true;
+      void state.props
+        .act({
+          type: "move",
+          epoch: state.props.data.epoch,
+          turn: state.props.data.turn,
+          dir,
+        })
+        .catch(() => {
+          moveDir.current = 0;
+        })
+        .finally(() => {
+          requestInFlight.current = false;
+        });
+    }, 65);
+    const chargeTimer = window.setInterval(() => {
+      if (charge.current.start === null) return;
+      if (!latest.current.canFire || document.hidden) {
+        cancelInputs();
         return;
       }
-      const key = event.key.toLowerCase();
-      const claimed = [
-        "arrowup",
-        "arrowdown",
-        "arrowleft",
-        "arrowright",
-        " ",
-        "enter",
-        "w",
-        "s",
-        "a",
-        "d",
-        "q",
-        "e",
-        "z",
-        "x",
-      ];
-      if (claimed.includes(key)) event.preventDefault();
-      if (key === "w" || key === "arrowup") {
-        const next = clamp(aimRef.current.angle + 2, 0, maxAngle);
-        aimRef.current = { ...aimRef.current, angle: next };
-        setAngle(next);
+      const now = performance.now();
+      setPower(chargePower(charge.current.start, now, charge.current.maxTicks));
+      const full = finishFullCharge(
+        charge.current,
+        now,
+        latest.current.turnToken,
+      );
+      if (full !== null) firePower(full);
+    }, 1000 / CHARGE_HZ);
+    const cancel = () => cancelInputs();
+    const visibility = () => {
+      if (document.hidden) {
+        cancel();
+        audioCursor.current = {
+          epoch: latest.current.props.data.epoch,
+          id: Math.max(
+            0,
+            ...(latest.current.props.data.events ?? []).map((e) => e.id),
+          ),
+        };
       }
-      if (key === "s" || key === "arrowdown") {
-        const next = clamp(aimRef.current.angle - 2, 0, maxAngle);
-        aimRef.current = { ...aimRef.current, angle: next };
-        setAngle(next);
-      }
-      if (key === "x") {
-        const next = stepPower(aimRef.current.power, -1);
-        aimRef.current = { ...aimRef.current, power: next };
-        setPower(next);
-      }
-      if (key === "z") {
-        const next = stepPower(aimRef.current.power, 1);
-        aimRef.current = { ...aimRef.current, power: next };
-        setPower(next);
-      }
-      if (key === "arrowleft" || key === "a") void move(-1);
-      if (key === "arrowright" || key === "d") void move(1);
-      if (key === "q" || key === "e") {
-        setWeapon((current) => (current === "primary" ? "special" : "primary"));
-      }
-      if (key === " " || key === "enter") sendFire();
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [canAct, maxAngle, move, phase, sendFire]);
+    const focus = (event: FocusEvent) => {
+      if (!acceptsGameKeys(event.target as HTMLElement)) cancel();
+    };
+    window.addEventListener("blur", cancel);
+    document.addEventListener("visibilitychange", visibility);
+    document.addEventListener("focusin", focus);
+    return () => {
+      clearInterval(timer);
+      clearInterval(chargeTimer);
+      window.removeEventListener("blur", cancel);
+      document.removeEventListener("visibilitychange", visibility);
+      document.removeEventListener("focusin", focus);
+    };
+  }, []);
+  useEffect(() => {
+    const down = (event: KeyboardEvent) => {
+      const state = latest.current;
+      if (
+        !state.permitted ||
+        !acceptsGameKeys(event.target as HTMLElement) ||
+        document.querySelector('[role="dialog"][aria-modal="true"]')
+      )
+        return;
+      const k = event.key.toLowerCase();
+      if (
+        ![
+          " ",
+          "arrowup",
+          "arrowdown",
+          "arrowleft",
+          "arrowright",
+          "w",
+          "s",
+          "a",
+          "d",
+          "q",
+          "e",
+          "escape",
+        ].includes(k)
+      )
+        return;
+      event.preventDefault();
+      if (k === "escape") {
+        cancelInputs();
+        return;
+      }
+      if (k === " ") {
+        if (!event.repeat) startCharge("key");
+        return;
+      }
+      if (charge.current.start !== null) return;
+      if (k === "arrowup" || k === "w") changeAngle(state.angle + 1);
+      if (k === "arrowdown" || k === "s") changeAngle(state.angle - 1);
+      if (k === "arrowleft" || k === "a") setMove(-1);
+      if (k === "arrowright" || k === "d") setMove(1);
+      if ((k === "q" || k === "e") && !event.repeat) {
+        const self = state.props.data.tanks.find(
+          (t) => t.seat === state.props.data.you,
+        );
+        setWeapon((w) =>
+          w === "primary" &&
+          (self?.specialUnlimited || (self?.special ?? 0) !== 0)
+            ? "special"
+            : "primary",
+        );
+      }
+    };
+    const up = (event: KeyboardEvent) => {
+      const k = event.key.toLowerCase();
+      if (k === " ") {
+        if (charge.current.source === "key") {
+          event.preventDefault();
+          if (acceptsGameKeys(event.target as HTMLElement)) endCharge("key");
+          else cancelInputs();
+        }
+      }
+      if (["arrowleft", "arrowright", "a", "d"].includes(k))
+        moveDir.current = 0;
+    };
+    window.addEventListener("keydown", down);
+    window.addEventListener("keyup", up);
+    return () => {
+      window.removeEventListener("keydown", down);
+      window.removeEventListener("keyup", up);
+    };
+  }, []);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const wheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const r = canvas.getBoundingClientRect();
+      zoom(Math.exp(clamp(event.deltaY, -160, 160) * 0.002), {
+        x: (event.clientX - r.left) / r.width,
+        y: (event.clientY - r.top) / r.height,
+      });
+    };
+    canvas.addEventListener("wheel", wheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", wheel);
+  }, [map]);
 
-  const remaining = phase === "playing" ? data.deadline - serverNow(clock) : 0;
-  const selectRemaining = phase === "select" ? data.selectUntil - serverNow(clock) : 0;
-  const activeTank = tanks[data.current];
-  const hpPercent = own ? clamp((own.hp / Math.max(1, own.maxHp)) * 100, 0, 100) : 0;
-  const selectedIds = tanks.filter((t) => t.selected).map((t) => t.tankId);
+  useEffect(() => {
+    const events = data.events ?? [],
+      max = Math.max(0, ...events.map((e) => e.id)),
+      cursor = audioCursor.current;
+    if (cursor.epoch !== data.epoch) {
+      cursor.epoch = data.epoch;
+      cursor.id = max;
+      return;
+    }
+    const now = nowAt(clock);
+    if (!sound || document.hidden) {
+      cursor.id = max;
+      return;
+    }
+    for (const e of events
+      .filter((e) => e.id > cursor.id)
+      .sort((a, b) => a.id - b.id)) {
+      if (e.at > now) break;
+      cursor.id = e.id;
+      // A missed old event does not start a delayed soundtrack after reconnect.
+      if (now - e.at > 800) continue;
+      const key =
+        e.type === "shot"
+          ? "fire"
+          : e.type === "explode"
+            ? "explode"
+            : e.type === "death"
+              ? "hit"
+              : e.type === "heal"
+                ? "select"
+                : e.type === "turn"
+                  ? "turn"
+                  : e.type === "finish"
+                    ? "win"
+                    : "";
+      const path = sounds[key];
+      if (path) void audio.playWithFallback(sourceList(assets, path));
+    }
+  }, [data.events, data.epoch, sound, tick, assets, audio]);
+  useEffect(() => {
+    if (sound && map.music && music.current !== `${data.epoch}:${map.id}`) {
+      music.current = `${data.epoch}:${map.id}`;
+      void audio.music(sourceList(assets, map.music));
+    }
+  }, [data.epoch, map, assets, sound, audio]);
 
+  const drawState = useRef({
+    data,
+    map,
+    images,
+    bg,
+    size,
+    angle,
+    facing,
+    canFire,
+    reduced,
+    room,
+    clock,
+  });
+  drawState.current = {
+    data,
+    map,
+    images,
+    bg,
+    size,
+    angle,
+    facing,
+    canFire,
+    reduced,
+    room,
+    clock,
+  };
+  useEffect(() => {
+    let raf = 0;
+    const frame = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const s = drawState.current,
+        now = nowAt(s.clock),
+        dt = Math.min(50, performance.now() - lastFrame.current);
+      lastFrame.current = performance.now();
+      const current = s.data.tanks.find((t) => t.seat === s.data.current) ??
+        s.data.tanks.find((t) => t.alive) ?? {
+          x: s.map.width / 2,
+          y: s.map.height / 2,
+        };
+      let target = { x: current.x, y: current.y };
+      const shot = renderableShot(s.data.lastShot);
+      if (s.data.resolution?.shotId && shot) {
+        const p = shot.arcs
+          .map((a) =>
+            arcAt(
+              { ...a, impactAt: a.impactAt ?? shot.impactAt },
+              shot.at,
+              now,
+              shot.launchAt ?? shot.at,
+            ),
+          )
+          .find(Boolean);
+        // Remain with the impact through the server's fall/settle interval.
+        // A delayed snapshot cannot pull the camera back before the hit arrives.
+        const last = shot.arcs[shot.arcs.length - 1];
+        if (p) target = p;
+        else if (last && now >= (shot.launchAt ?? shot.at))
+          target = last.impact;
+      }
+      const key = `${s.data.epoch}:${s.map.id}:${s.size.w}:${s.size.h}`;
+      if (initialized.current !== key) {
+        cameraRef.current = centeredCamera(
+          s.size.w,
+          s.size.h,
+          Math.min(800, s.size.w * 1.25),
+          target,
+          s.map.width,
+          s.map.height,
+        );
+        initialized.current = key;
+      } else if (!manualCamera.current) {
+        const c = cameraRef.current,
+          dest = centeredCamera(
+            s.size.w,
+            s.size.h,
+            c.worldViewW,
+            target,
+            s.map.width,
+            s.map.height,
+          );
+        const blend = s.reduced ? 1 : 1 - Math.exp(-dt / 160);
+        cameraRef.current = {
+          ...c,
+          x: c.x + (dest.x - c.x) * blend,
+          y: c.y + (dest.y - c.y) * blend,
+        };
+      }
+      drawScene({
+        canvas,
+        terrain: terrainRef.current,
+        map: s.map,
+        view: s.data,
+        camera: cameraRef.current,
+        images: s.images,
+        bg: s.bg,
+        now,
+        angle: s.angle,
+        facing: s.facing,
+        canAim: s.canFire,
+        names: s.room.seats.map((seat) => seat?.name ?? ""),
+        motions: motions.current,
+        reduced: s.reduced,
+      });
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  function moveMini(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const r = event.currentTarget.getBoundingClientRect(),
+      mm = miniRect(r.width, map),
+      c = cameraRef.current;
+    const x = clamp((event.clientX - r.left - mm.x) / mm.w, 0, 1) * map.width,
+      y = clamp((event.clientY - r.top - mm.y) / mm.h, 0, 1) * map.height;
+    cameraRef.current = panCamera(
+      c,
+      x - c.worldViewW / 2 - c.x,
+      y - c.worldViewH / 2 - c.y,
+      map.width,
+      map.height,
+    );
+    manualCamera.current = true;
+  }
+  function pointerDown(event: ReactPointerEvent<HTMLCanvasElement>) {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    event.currentTarget.focus({ preventScroll: true });
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const r = event.currentTarget.getBoundingClientRect(),
+      mm = miniRect(r.width, map),
+      x = event.clientX - r.left,
+      y = event.clientY - r.top;
+    const mini =
+      x >= mm.x - 3 &&
+      x <= mm.x + mm.w + 3 &&
+      y >= mm.y - 3 &&
+      y <= mm.y + mm.h + 3;
+    pointers.current.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY,
+      startX: event.clientX,
+      startY: event.clientY,
+      dragged: false,
+      mini,
+    });
+    if (pointers.current.size > 1) {
+      gestureWasPinch.current = true;
+      for (const p of pointers.current.values()) p.dragged = true;
+    }
+    if (mini) moveMini(event);
+  }
+  function pointerMove(event: ReactPointerEvent<HTMLCanvasElement>) {
+    const pointer = pointers.current.get(event.pointerId);
+    if (!pointer) return;
+    const r = event.currentTarget.getBoundingClientRect(),
+      other = [...pointers.current.entries()].find(
+        ([id]) => id !== event.pointerId,
+      )?.[1];
+    if (other) {
+      const before = Math.hypot(pointer.x - other.x, pointer.y - other.y),
+        after = Math.hypot(event.clientX - other.x, event.clientY - other.y);
+      if (before > 2 && after > 2) {
+        zoom(before / after, {
+          x: ((pointer.x + other.x) / 2 - r.left) / r.width,
+          y: ((pointer.y + other.y) / 2 - r.top) / r.height,
+        });
+        const c = cameraRef.current;
+        cameraRef.current = panCamera(
+          c,
+          (-(event.clientX - pointer.x) / 2 / r.width) * c.worldViewW,
+          (-(event.clientY - pointer.y) / 2 / r.height) * c.worldViewH,
+          map.width,
+          map.height,
+        );
+      }
+    } else if (pointer.mini) moveMini(event);
+    else if (
+      pointer.dragged ||
+      Math.hypot(
+        event.clientX - pointer.startX,
+        event.clientY - pointer.startY,
+      ) > 5
+    ) {
+      pointer.dragged = true;
+      manualCamera.current = true;
+      const c = cameraRef.current;
+      cameraRef.current = panCamera(
+        c,
+        (-(event.clientX - pointer.x) / r.width) * c.worldViewW,
+        (-(event.clientY - pointer.y) / r.height) * c.worldViewH,
+        map.width,
+        map.height,
+      );
+    }
+    pointer.x = event.clientX;
+    pointer.y = event.clientY;
+  }
+  function pointerEnd(
+    event: ReactPointerEvent<HTMLCanvasElement>,
+    cancelled = false,
+  ) {
+    const pointer = pointers.current.get(event.pointerId);
+    pointers.current.delete(event.pointerId);
+    if (
+      pointer &&
+      !cancelled &&
+      !pointer.dragged &&
+      !pointer.mini &&
+      !gestureWasPinch.current &&
+      canFire &&
+      own
+    ) {
+      const p = pointerWorld(
+          event.clientX,
+          event.clientY,
+          event.currentTarget.getBoundingClientRect(),
+          cameraRef.current,
+        ),
+        aim = aimFromPoint(own, p, maxAngle, 26);
+      changeAngle(Math.round(aim.angle));
+      changeFacing(aim.facing);
+    }
+    if (!pointers.current.size) gestureWasPinch.current = false;
+  }
+  const now = nowAt(clock),
+    remaining = data.resolution ? null : seconds(data.deadline - now);
+  const isSelect = data.phase === "select";
+  const currentName = active
+    ? (room.seats[active.seat]?.name ?? `P${active.seat + 1}`)
+    : "";
+  const shown = own ?? active;
+  const order = data.order.filter(
+    (seat) => data.tanks.find((t) => t.seat === seat)?.alive,
+  );
+  const currentIndex = order.indexOf(data.current),
+    next =
+      currentIndex < 0
+        ? order
+        : [...order.slice(currentIndex + 1), ...order.slice(0, currentIndex)];
+  const status = isSelect
+    ? "选择坦克"
+    : data.phase === "finished"
+      ? "对局结束"
+      : data.resolution?.stage === "flying"
+        ? now < (data.lastShot?.launchAt ?? 0)
+          ? "准备发射"
+          : "炮弹飞行中"
+        : data.resolution
+          ? "等待落地"
+          : data.you === data.current
+            ? "轮到你了"
+            : `${currentName} 行动中`;
   return (
     <div
+      ref={boardRef}
       className="fortressblue-board"
       data-fortressblue-phase={data.phase}
       data-fortressblue-turn={data.turn}
       data-fortressblue-shot={data.lastShot?.id ?? 0}
-      data-fortressblue-animating={anim ? "1" : "0"}
-      data-fortressblue-craters={craters.length}
+      data-fortressblue-animating={data.resolution ? "1" : "0"}
+      data-fortressblue-craters={data.craters?.length ?? 0}
       data-fortressblue-epoch={data.epoch}
       data-fortressblue-map={map.id}
-      data-fortressblue-my-turn={canAct ? "1" : "0"}
+      data-fortressblue-my-turn={canFire ? "1" : "0"}
       data-fortressblue-angle={Math.round(angle)}
-      data-fortressblue-power={Math.round(power)}
+      data-fortressblue-power={power}
       data-fortressblue-facing={facing}
-      data-fortressblue-preview={aimPreview.length}
-      data-fortressblue-aim-x={aimPreview.length ? Math.round(aimPreview[aimPreview.length - 1].x) : 0}
-      data-fortressblue-aim-y={aimPreview.length ? Math.round(aimPreview[aimPreview.length - 1].y) : 0}
-      data-fortressblue-art-scale={ART_SCALE}
+      data-fortressblue-preview="0"
+      data-fortressblue-art-scale="1"
+      data-fortressblue-charging={charging ? "1" : "0"}
+      data-fortressblue-charge-ticks={info?.range ?? 45}
+      data-fortressblue-charge-hz={CHARGE_HZ}
+      data-fortressblue-pending-shot={own?.pendingShotEffect ?? ""}
     >
-      <canvas
-        ref={canvasRef}
-        className={`fb-canvas ${canAct ? "aiming" : ""}`}
-        data-fortressblue-canvas
-        aria-label={`${map.name} 战场：鼠标瞄准，滚轮调整力度，点击开火`}
-        onPointerMove={aimAtEvent}
-        onPointerDown={(event) => {
-          pointerType.current = event.pointerType;
-          if (event.pointerType !== "touch") aimAtEvent(event);
-        }}
-        onClick={() => {
-          if (pointerType.current === "touch") return;
-          sendFire();
-        }}
-      />
-      <canvas ref={terrainRef} className="fb-terrain" width={map.width} height={map.height} aria-hidden="true" />
-      <div className="fb-top">
-        <div className="fb-mapname">
+      <div className="fb-battlefield">
+        <canvas
+          ref={canvasRef}
+          className="fb-canvas"
+          data-fortressblue-canvas
+          tabIndex={0}
+          aria-label={`${map.name}战场。拖动平移，滚轮缩放，点击调整瞄准；按住空格蓄力，松开发射。`}
+          onPointerDown={pointerDown}
+          onPointerMove={pointerMove}
+          onPointerUp={(event) => pointerEnd(event)}
+          onPointerCancel={(event) => pointerEnd(event, true)}
+          onLostPointerCapture={(event) => pointerEnd(event, true)}
+        />
+        <canvas ref={terrainRef} className="fb-terrain" aria-hidden="true" />
+        <div className="fb-map-caption">
           <strong>{map.name}</strong>
-          <span>{map.nameEn}</span>
+          <span>第 {data.turn} 回合</span>
+          {data.sudden && <span>决胜阶段</span>}
         </div>
-        <div className="fb-turninfo">
-          {phase === "select" ? (
-            <span>选择坦克 · {fmtSeconds(selectRemaining)}s</span>
-          ) : (
-            <>
-              <span>第 {data.turn} 回合</span>
-              <span className={remaining <= 5000 ? "fb-timer urgent" : "fb-timer"} data-fortressblue-timer>
-                {fmtSeconds(remaining)}s
-              </span>
-              <span className="fb-wind" title="风向">
-                {data.wind === 0 ? "风 0" : `风 ${data.wind > 0 ? "→" : "←"} ${Math.abs(data.wind)}`}
-              </span>
-              {data.sudden && <span className="fb-sudden">突然死亡</span>}
-            </>
-          )}
+        <div className="fb-camera-tools" aria-label="地图视野">
+          <button onClick={() => zoom(0.8)} aria-label="放大地图">
+            <Plus size={16} />
+          </button>
+          <button onClick={() => zoom(1.25)} aria-label="缩小地图">
+            <Minus size={16} />
+          </button>
+          <button onClick={resetCamera} aria-label="跟随当前坦克">
+            <Crosshair size={16} />
+          </button>
         </div>
       </div>
-      <div className="fb-active">
-        {phase === "playing" && activeTank ? (
-          <>
-            <i style={{ background: teamColors[activeTank.team] }} />
-            <strong>{room.seats[activeTank.seat]?.name ?? `P${activeTank.seat + 1}`}</strong>
-            <span>{tankName(activeTank.tankId)}</span>
-            {activeTank.seat === data.you ? <em>你的回合</em> : <em>等待行动</em>}
-          </>
-        ) : (
-          <span>{phase === "select" ? "选择你的坦克" : "对局结束"}</span>
-        )}
-      </div>
-      {canAct && (
-        <div className="fb-aimhint">
-          鼠标瞄准 · 滚轮力度 · 点击战场或按空格开火
+      <div className="fb-console">
+        <div className="fb-dial-area">
+          <svg
+            className="fb-angle-dial"
+            viewBox="0 0 130 114"
+            aria-label={`炮角 ${Math.round(angle)} 度，朝${facing > 0 ? "右" : "左"}`}
+          >
+            <defs>
+              <radialGradient id="fb-dial-glass">
+                <stop offset="0" stopColor="#172d3c" />
+                <stop offset="1" stopColor="#020c14" />
+              </radialGradient>
+            </defs>
+            <circle
+              cx="65"
+              cy="57"
+              r="53"
+              fill="#36668c"
+              stroke="#8cb4cb"
+              strokeWidth="3"
+            />
+            <circle
+              cx="65"
+              cy="57"
+              r="46"
+              fill="url(#fb-dial-glass)"
+              stroke="#0a1c2b"
+              strokeWidth="3"
+            />
+            {[0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180].map(
+              (a) => (
+                <line
+                  key={a}
+                  x1={65 + Math.cos((a * Math.PI) / 180) * 39}
+                  y1={57 - Math.sin((a * Math.PI) / 180) * 39}
+                  x2={65 + Math.cos((a * Math.PI) / 180) * 44}
+                  y2={57 - Math.sin((a * Math.PI) / 180) * 44}
+                  stroke="#a9c7d4"
+                  strokeWidth="1"
+                />
+              ),
+            )}
+            <line x1="20" y1="57" x2="110" y2="57" stroke="#9babb3" />
+            {[minAngle, maxAngle].map((a, i) => (
+              <line
+                key={i}
+                x1="65"
+                y1="57"
+                x2={65 + facing * Math.cos((a * Math.PI) / 180) * 42}
+                y2={57 - Math.sin((a * Math.PI) / 180) * 42}
+                stroke="#ed6e47"
+                strokeWidth="1.5"
+              />
+            ))}
+            <line
+              x1="65"
+              y1="57"
+              x2={65 + facing * Math.cos((angle * Math.PI) / 180) * 40}
+              y2={57 - Math.sin((angle * Math.PI) / 180) * 40}
+              stroke="#ffdf79"
+              strokeWidth="3"
+            />
+            <circle cx="65" cy="57" r="5" fill="#79adc1" />
+            <text
+              x="65"
+              y="84"
+              textAnchor="middle"
+              fill="#ffdf79"
+              fontSize="19"
+              fontFamily="monospace"
+            >
+              {Math.round(angle)}°
+            </text>
+          </svg>
+          <span className="fb-wind">
+            风{" "}
+            {data.wind === 0
+              ? "· 0"
+              : `${data.wind > 0 ? "→" : "←"} ${Math.abs(data.wind)}`}
+          </span>
         </div>
-      )}
-
-        <div className="fb-items" aria-label="道具">
-          <span className="fb-items-label">道具</span>
-          {(own?.items ?? []).length === 0 ? (
-            <span className="fb-item-empty">本局道具已用完</span>
-          ) : (
-            (own?.items ?? []).map((id, slot) => {
-              const item = itemById.get(id);
-              if (!item) return null;
-              return (
+        <div className="fb-instruments">
+          <div className="fb-turn-strip">
+            <strong>{status}</strong>
+            <span>
+              {own?.pendingShotEffect === "heal"
+                ? "待发回血弹"
+                : shown
+                  ? tankName(shown.tankId)
+                  : "等待选择"}
+            </span>
+            <b className="fb-timer" data-fortressblue-timer>
+              {isSelect
+                ? `${seconds(data.selectUntil - now)} 秒`
+                : data.phase === "finished"
+                  ? "结束"
+                  : remaining === null
+                    ? "—"
+                    : `${remaining} 秒`}
+            </b>
+          </div>
+          <div className="fb-gauges">
+            <div className="fb-gauge">
+              <span>生命</span>
+              <div>
+                <i
+                  className="fb-life-fill"
+                  style={{
+                    width: `${shown ? clamp((shown.hp / Math.max(1, shown.maxHp)) * 100, 0, 100) : 0}%`,
+                  }}
+                />
+              </div>
+              <b>{shown ? `${shown.hp}/${shown.maxHp}` : "—"}</b>
+            </div>
+            <div className="fb-gauge">
+              <span>力度</span>
+              <div>
+                <i className="fb-power-fill" style={{ width: `${power}%` }} />
+                {lastPower !== null && (
+                  <em
+                    style={{ left: `${lastPower}%` }}
+                    title={`上一发力度 ${lastPower}`}
+                  />
+                )}
+              </div>
+              <b>{power}</b>
+            </div>
+            <div className="fb-gauge">
+              <span>移动力</span>
+              <div>
+                <i
+                  className="fb-fuel-fill"
+                  style={{
+                    width: `${shown ? clamp((shown.fuel / Math.max(1, tankInfo(shown.tankId)?.speed ?? 100)) * 100, 0, 100) : 0}%`,
+                  }}
+                />
+              </div>
+              <b>{shown ? Math.round(shown.fuel) : "—"}</b>
+            </div>
+          </div>
+        </div>
+        <div className="fb-control-row">
+          <div className="fb-angle-controls">
+            <label htmlFor="fb-angle">角度</label>
+            <button
+              disabled={!canFire || charging}
+              onClick={() => changeAngle(angle - 1)}
+              aria-label="降低炮角"
+            >
+              −
+            </button>
+            <input
+              id="fb-angle"
+              aria-label="角度"
+              type="range"
+              min={minAngle}
+              max={maxAngle}
+              value={angle}
+              disabled={!canFire || charging}
+              onChange={(e) => changeAngle(Number(e.target.value))}
+            />
+            <button
+              disabled={!canFire || charging}
+              onClick={() => changeAngle(angle + 1)}
+              aria-label="抬高炮角"
+            >
+              ＋
+            </button>
+          </div>
+          <div className="fb-move-controls">
+            {[-1, 1].map((dir) => (
+              <button
+                key={dir}
+                disabled={!canMove || charging}
+                aria-label={dir < 0 ? "向左移动" : "向右移动"}
+                data-fortressblue-move={dir}
+                onPointerDown={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.setPointerCapture(e.pointerId);
+                  setMove(dir);
+                }}
+                onPointerUp={() => (moveDir.current = 0)}
+                onPointerCancel={() => (moveDir.current = 0)}
+                onLostPointerCapture={() => (moveDir.current = 0)}
+                onKeyDown={(e) => {
+                  if (e.key === " " || e.key === "Enter") {
+                    e.preventDefault();
+                    setMove(dir);
+                  }
+                }}
+                onKeyUp={() => (moveDir.current = 0)}
+              >
+                {dir < 0 ? (
+                  <ChevronLeft size={18} />
+                ) : (
+                  <ChevronRight size={18} />
+                )}
+              </button>
+            ))}
+            <button
+              aria-label="切换朝向"
+              disabled={!canFire || charging}
+              onClick={() => changeFacing(-facing)}
+            >
+              <RotateCcw size={14} />
+              <span>{facing < 0 ? "向左" : "向右"}</span>
+            </button>
+          </div>
+          <div className="fb-weapon-controls">
+            {(["primary", "special"] as const).map((value, i) => (
+              <button
+                key={value}
+                data-fortressblue-weapon={value}
+                aria-pressed={weapon === value}
+                disabled={
+                  !canFire ||
+                  charging ||
+                  (value === "special" &&
+                    !own?.specialUnlimited &&
+                    own?.special === 0)
+                }
+                onClick={() => setWeapon(value)}
+              >
+                {i + 1} 号弹
+                {value === "special" &&
+                !own?.specialUnlimited &&
+                (own?.special ?? -1) >= 0
+                  ? ` · ${own?.special}`
+                  : ""}
+              </button>
+            ))}
+          </div>
+          <button
+            className={`fb-fire ${charging ? "charging" : ""}`}
+            data-fortressblue-fire
+            title="按住蓄力，松开或满力自动发射"
+            disabled={!canFire}
+            onPointerDown={(e) => {
+              e.preventDefault();
+              e.currentTarget.setPointerCapture(e.pointerId);
+              startCharge(`pointer:${e.pointerId}`);
+            }}
+            onPointerUp={(e) => endCharge(`pointer:${e.pointerId}`)}
+            onPointerCancel={cancelInputs}
+            onLostPointerCapture={() => {
+              if (charge.current.source.startsWith("pointer:")) cancelInputs();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                if (!e.repeat) startCharge("button-key");
+              }
+            }}
+            onKeyUp={(e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                endCharge("button-key");
+              }
+            }}
+          >
+            {charging
+              ? "松开发射"
+              : own?.pendingShotEffect === "heal"
+                ? "蓄力回血弹"
+                : "按住蓄力"}
+          </button>
+        </div>
+        <div className="fb-lower-strip">
+          <div className="fb-items" aria-label="道具">
+            {Array.from({ length: 4 }, (_, slot) => {
+              const id = own?.items?.[slot],
+                item = id !== undefined ? itemById.get(id) : null;
+              return item ? (
                 <button
-                  type="button"
-                  key={`${id}-${slot}`}
-                  data-fortressblue-item={id}
-                  data-slot={slot}
-                  disabled={!canAct}
-                  title={item.description}
+                  key={slot}
+                  disabled={!canFire || charging}
                   aria-label={`使用${item.name}：${item.description}`}
-                  onClick={() => useItem(slot)}
+                  title={item.description}
+                  data-fortressblue-item={item.id}
+                  onClick={() => {
+                    if (!latest.current.canFire || requestInFlight.current)
+                      return;
+                    requestInFlight.current = true;
+                    void act({
+                      type: "item",
+                      epoch: data.epoch,
+                      turn: data.turn,
+                      slot,
+                    }).finally(() => {
+                      requestInFlight.current = false;
+                    });
+                  }}
                 >
-                  <img src={sourceList(assets, item.icon)[0]} alt="" />
+                  <FallbackImage base={assets} path={item.icon} alt="" />
                   <span>{item.name}</span>
                 </button>
+              ) : (
+                <span
+                  key={slot}
+                  className="fb-empty-slot"
+                  aria-label="空道具槽"
+                >
+                  —
+                </span>
               );
-            })
-          )}
+            })}
+          </div>
+          <div className="fb-order">
+            <span>后续顺序</span>
+            <b>
+              {next.length
+                ? next.map((seat) => `P${seat + 1}`).join(" → ")
+                : "—"}
+            </b>
+          </div>
         </div>
-
-      {phase === "select" && (
+      </div>
+      <p className="fb-help">
+        方向键移动／调角 · Q／E 换弹 · 按住空格蓄力，松开或满力发射 ·
+        拖图与滚轮缩放
+      </p>
+      <div className="fb-live" aria-live="polite">
+        {data.log?.at(-1) ?? "观察风向，调整角度和力度。"}
+      </div>
+      {isSelect && (
         <div className="fb-draft" role="dialog" aria-label="选择坦克">
           <div className="fb-draft-head">
             <div>
               <h2>选择坦克</h2>
-              <p>全部选定或 {fmtSeconds(selectRemaining)} 秒后自动开局，可重复选择同款坦克。</p>
+              <p>
+                全部选定或 {seconds(data.selectUntil - now)}{" "}
+                秒后开战；同款坦克可重复选择。
+              </p>
             </div>
-            <span className="fb-draft-count">
-              {selectedIds.length}/{tanks.length}
-            </span>
+            <b>
+              {data.tanks.filter((t) => t.selected).length}/{data.tanks.length}
+            </b>
           </div>
           <div className="fb-tank-grid">
-            {tankCatalog.map((info) => {
-              const portrait = tankPortraits[String(info.id)] ?? info.sprites.idle;
-              const count = selectedIds.filter((id) => id === info.id).length;
-              const mine = data.selectedTank === info.id;
+            {tankCatalog.map((t) => {
+              const portrait = tankPortraits[String(t.id)] ?? t.sprites.idle;
               return (
                 <button
-                  type="button"
-                  key={info.id}
-                  className={`fb-tank-card ${mine ? "selected" : ""} ${count ? "taken" : ""}`}
+                  key={t.id}
+                  className={`fb-tank-card ${data.selectedTank === t.id ? "selected" : ""}`}
                   disabled={!data.canSelect || busy}
-                  onClick={() => choose(info.id)}
-                  data-fortressblue-tank={info.id}
+                  onClick={() =>
+                    void act({ type: "select", epoch: data.epoch, tank: t.id })
+                  }
+                  data-fortressblue-tank={t.id}
                 >
-                  <img
-                    src={sourceList(assets, portrait?.url ?? "")[0]}
+                  <FallbackImage
+                    base={assets}
+                    path={portrait?.url ?? ""}
                     alt=""
-                    onError={(event) => {
-                      const img = event.currentTarget;
-                      const sources = sourceList(assets, portrait?.url ?? "");
-                      const idx = Number(img.dataset.fallback ?? "0");
-                      if (idx + 1 < sources.length) {
-                        img.dataset.fallback = String(idx + 1);
-                        img.src = sources[idx + 1];
-                      }
-                    }}
                   />
-                  <span className="fb-card-name">{info.name}</span>
-                  <span className="fb-card-stats">
-                    HP {info.hp} · 攻 {info.primary} · 角 {info.angle}
+                  <strong>{t.name}</strong>
+                  <span>
+                    生命 {t.hp} · 炮角 {t.minAngle ?? 0}–{t.maxAngle ?? t.angle}
+                    °
                   </span>
-                  <span className="fb-card-skill">{info.skillName ? `${info.skillName}特殊弹` : "高伤特殊弹"}</span>
-                  {count > 0 && <b className="fb-taken">{count > 1 ? `×${count}` : "已选"}</b>}
+                  <small>
+                    {t.skillName ? `${t.skillName}特殊弹` : "双弹种炮击"}
+                  </small>
                 </button>
               );
             })}
           </div>
         </div>
       )}
-
-      <div className="fb-controls">
-        <div className="fb-resource">
-          <span>HP</span>
-          <div className="fb-hpbar">
-            <i style={{ width: `${hpPercent}%`, background: own ? teamColors[own.team] : "#888" }} />
-          </div>
-          <b>{own?.hp ?? "—"}/{own?.maxHp ?? "—"}</b>
-        </div>
-        <div className="fb-knobs">
-          <div className="fb-dial" aria-hidden="true">
-            <i style={{ transform: `rotate(${facing > 0 ? 90 - angle : angle - 90}deg)` }} />
-            <b>{Math.round(angle)}°</b>
-            <span>{facing > 0 ? "右" : "左"}</span>
-          </div>
-          <div className="fb-knob-sliders">
-            <label>
-              <span>角度 <b>{Math.round(angle)}°</b></span>
-              <input
-                aria-label="角度"
-                type="range"
-                min={0}
-                max={maxAngle}
-                value={angle}
-                disabled={!canAct}
-                onChange={(event) => {
-                  const next = Number(event.target.value);
-                  aimRef.current = { ...aimRef.current, angle: next };
-                  setAngle(next);
-                }}
-              />
-            </label>
-            <label>
-              <span>力度 <b>{Math.round(power)}</b></span>
-              <input
-                aria-label="力度"
-                type="range"
-                min={20}
-                max={100}
-                value={power}
-                disabled={!canAct}
-                onChange={(event) => {
-                  const next = Number(event.target.value);
-                  aimRef.current = { ...aimRef.current, power: next };
-                  setPower(next);
-                }}
-              />
-            </label>
-          </div>
-        </div>
-        <div className="fb-actions">
-          <button
-            type="button"
-            className="fb-move"
-            onClick={() => move(-1)}
-            disabled={!canAct || !data.canMove}
-            aria-label="向左移动"
-          >
-            <ChevronLeft size={22} />
-          </button>
-          <button
-            type="button"
-            className="fb-facing"
-            onClick={toggleFacing}
-            disabled={!canAct}
-            aria-label="切换朝向"
-          >
-            <FlipHorizontal size={18} />
-            <span>{facing > 0 ? "朝右" : "朝左"}</span>
-          </button>
-          <button
-            type="button"
-            className="fb-move"
-            onClick={() => move(1)}
-            disabled={!canAct || !data.canMove}
-            aria-label="向右移动"
-          >
-            <ChevronRight size={22} />
-          </button>
-          <button
-            type="button"
-            className={weapon === "special" ? "fb-special active" : "fb-special"}
-            onClick={() => setWeapon((v) => (v === "primary" ? "special" : "primary"))}
-            disabled={!canAct}
-            aria-label="切换弹种"
-          >
-            <Bomb size={18} />
-            <span>{weapon === "special" ? `特殊弹 ${own?.special ?? 0}` : "主炮"}</span>
-          </button>
-          <button
-            type="button"
-            className="fb-fire"
-            onClick={() => sendFire()}
-            disabled={!canAct || !data.canFire}
-            aria-label="开火"
-          >
-            <Crosshair size={20} />
-            开火
-          </button>
-        </div>
-        <div className="fb-tip">
-          {phase === "playing"
-            ? canAct
-              ? `移动力 ${Math.round(own?.fuel ?? 0)} · 鼠标瞄准／滚轮力度／点击或空格开火 · 道具可在开火前使用`
-              : "等待其他玩家行动"
-            : phase === "select"
-              ? "选择坦克后自动开始"
-              : "对局结束"}
-        </div>
-      </div>
-      <div className="fb-live" aria-live="polite">
-        {log.slice(-1)[0]}
-      </div>
     </div>
   );
 }
-
-export { Board };

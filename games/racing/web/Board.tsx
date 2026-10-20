@@ -189,7 +189,7 @@ export function Board(props: BoardProps<View>) {
         suspendInput(true);
         setError("赛况同步中断，操作已暂停；连接恢复后请重新操作。");
       }
-      const r = queue.current.next(time);
+      const r = queue.current.next(time, p.inputWindow ?? 1);
       if (!r) return;
       const { token, ...action } = r;
       const sentScope = `${p.room.id}:${p.data.epoch}:${p.clock.epoch ?? 0}:${p.room.you}`;

@@ -165,7 +165,7 @@ try {
  ({sessionId}=await call('Target.attachToTarget',{targetId:t.targetId,flatten:true}));
  const touch=steps.some(s=>s.touch);if(touch)await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5},sessionId);
  for(const step of steps){
-  if(step.blockSprites){await call('Network.enable',{},sessionId);await call('Network.setCacheDisabled',{cacheDisabled:true},sessionId);await call('Network.setBlockedURLs',{urls:['*bubbleparty/v2/sprites/*']},sessionId);await call('Page.reload',{ignoreCache:true},sessionId);await new Promise(r=>setTimeout(r,1200));}
+  if(step.blockSprites){await call('Network.enable',{},sessionId);await call('Network.setCacheDisabled',{cacheDisabled:true},sessionId);await call('Network.setBlockedURLs',{urls:['*bubbleparty/v2/sprites/*','*bubbleparty/v3/avatars/*']},sessionId);await call('Page.reload',{ignoreCache:true},sessionId);await new Promise(r=>setTimeout(r,1200));}
   if(step.key){lastInputAt=Date.now();const code=step.key===' '?'Space':step.key;const vk={'ArrowLeft':37,'ArrowUp':38,'ArrowRight':39,'ArrowDown':40,' ':32}[step.key];await call('Input.dispatchKeyEvent',{type:step.up?'keyUp':'keyDown',key:step.key,code,windowsVirtualKeyCode:vk,nativeVirtualKeyCode:vk},sessionId)}
   if(step.mouse){lastInputAt=Date.now();await call('Input.dispatchMouseEvent',{type:step.mouse,x:step.x,y:step.y,button:'left',buttons:step.mouse==='mouseReleased'?0:1,clickCount:1},sessionId);}
   if(step.touch){lastInputAt=Date.now();await call('Input.dispatchTouchEvent',{type:step.touch,touchPoints:step.touch==='touchEnd'||step.touch==='touchCancel'?[]:[{x:step.x,y:step.y,id:1}]},sessionId);}
@@ -180,7 +180,7 @@ try {
   }
  }
  if(touch)await call('Emulation.setTouchEmulationEnabled',{enabled:false},sessionId);
- if(steps.some(s=>s.blockSprites))evidence.push({label:'blocked-sprites-network',events:networkEvents.filter(e=>e.method==='Network.loadingFailed'||e.params.request?.url.includes('/bubbleparty/v2/sprites/'))});
+ if(steps.some(s=>s.blockSprites))evidence.push({label:'blocked-sprites-network',events:networkEvents.filter(e=>e.method==='Network.loadingFailed'||(e.params.request?.url.includes('/bubbleparty/v2/sprites/')||e.params.request?.url.includes('/bubbleparty/v3/avatars/')))});
  console.log(JSON.stringify(evidence));
 }finally{if(sessionId)await call('Target.detachFromTarget',{sessionId});ws.close()}
 '''
@@ -200,7 +200,7 @@ def key(key, duration=150):
 
 
 def dead_patch():
-    return js("""(async()=>{const v=(await(await fetch('/api/state')).json()).room.game.data,p=v.players[0],c=document.querySelector('[data-bubbleparty-canvas]'),sx=c.width/360,sy=c.height/312,x=Math.max(0,Math.floor(((p.px??p.x)*24+12-20)*sx)),y=Math.max(0,Math.floor(((p.py??p.y)*24+12-60)*sy)),w=Math.min(c.width-x,Math.floor(40*sx)),h=Math.min(c.height-y,Math.floor(82*sy));const data=c.getContext('2d').getImageData(x,y,w,h).data,hash=await crypto.subtle.digest('SHA-256',data);return {alive:p.alive,epoch:v.epoch,rect:{x,y,w,h},sha256:Array.from(new Uint8Array(hash),b=>b.toString(16).padStart(2,'0')).join('')}})()""")
+    return js("""(async()=>{const v=(await(await fetch('/api/state')).json()).room.game.data,p=v.players[0],c=document.querySelector('[data-bubbleparty-canvas]'),transform=c.getContext('2d').getTransform(),sx=transform.a,sy=transform.d,x=Math.max(0,Math.floor(((p.px??p.x)*24+12-20)*sx+transform.e)),y=Math.max(0,Math.floor(((p.py??p.y)*24+12-60)*sy+transform.f)),w=Math.min(c.width-x,Math.floor(40*sx)),h=Math.min(c.height-y,Math.floor(82*sy));const data=c.getContext('2d').getImageData(x,y,w,h).data,hash=await crypto.subtle.digest('SHA-256',data);return {alive:p.alive,epoch:v.epoch,rect:{x,y,w,h},sha256:Array.from(new Uint8Array(hash),b=>b.toString(16).padStart(2,'0')).join('')}})()""")
 
 
 def record(name, value):
@@ -281,7 +281,7 @@ try:
 
     # Compare actual pixel patches for each public map class. A number-array
     # assertion alone cannot detect a broken or absent renderer.
-    pixels = js('''(async()=>{const s=(await(await fetch('/api/state')).json()).room.game.data,c=document.querySelector('[data-bubbleparty-canvas]'),ctx=c.getContext('2d');return [0,1,2].map(type=>{const i=s.cells.findIndex((v,i)=>v===type&&i%15>2&&i%15<12&&Math.floor(i/15)>2&&Math.floor(i/15)<10);if(i<0)throw Error('missing map class');const x=i%15,y=Math.floor(i/15),a=ctx.getImageData(Math.floor((x+.3)*c.width/15),Math.floor((y+.3)*c.height/13),Math.max(1,Math.floor(c.width/15*.4)),Math.max(1,Math.floor(c.height/13*.4))).data;const rgb=[0,0,0];for(let j=0;j<a.length;j+=4)for(let k=0;k<3;k++)rgb[k]+=a[j+k];return {type,x,y,average:rgb.map(v=>v/(a.length/4)),colors:new Set(Array.from({length:a.length/4},(_,j)=>Array.from(a.slice(j*4,j*4+3)).join(','))).size}})})()''')
+    pixels = js('''(async()=>{const s=(await(await fetch('/api/state')).json()).room.game.data,c=document.querySelector('[data-bubbleparty-canvas]'),ctx=c.getContext('2d'),transform=ctx.getTransform();return [0,1,2].map(type=>{const i=s.cells.findIndex((v,i)=>v===type&&i%15>2&&i%15<12&&Math.floor(i/15)>2&&Math.floor(i/15)<10);if(i<0)throw Error('missing map class');const x=i%15,y=Math.floor(i/15),a=ctx.getImageData(Math.floor((x+.3)*24*transform.a+transform.e),Math.floor((y+.3)*24*transform.d+transform.f),Math.max(1,Math.floor(24*transform.a*.4)),Math.max(1,Math.floor(24*transform.d*.4))).data;const rgb=[0,0,0];for(let j=0;j<a.length;j+=4)for(let k=0;k<3;k++)rgb[k]+=a[j+k];return {type,x,y,average:rgb.map(v=>v/(a.length/4)),colors:new Set(Array.from({length:a.length/4},(_,j)=>Array.from(a.slice(j*4,j*4+3)).join(','))).size}})})()''')
     for a in pixels:
         for b in pixels:
             if a['type'] != b['type']:
@@ -418,7 +418,12 @@ try:
     check('320-trapped-status-keeps-board-position', before=layout_positions[320], trapped=trapped_top)
     shot('trapped-320')
     record('trapped-state', restored)
+    browser('click','[data-bubbleparty-avatar-open]')
+    browser('wait','[role=dialog][aria-label=选择人物]')
     wait(lambda: js('!!document.querySelector(".match-result-modal")'), timeout=12, label='real trap expiry result modal')
+    wait(lambda:js('!document.querySelector("[role=dialog][aria-label=选择人物]")'),label='appearance closed on match end')
+    assert js('!!document.activeElement?.closest(".match-result-modal")'), 'result modal lost focus to the board'
+    check('appearance-to-result-keeps-focus-inside-result')
     result_top = js('document.querySelector("[data-bubbleparty-canvas]").getBoundingClientRect().top+scrollY')
     shot('result-320')
     browser('click', '.modal-head button[aria-label=关闭]')
@@ -535,7 +540,7 @@ try:
     # substituted: the same public snapshot must remain playable/renderable.
     before = view()
     blocked_evidence = native([{'blockSprites':True},{'read':'image-failure-view'}])
-    sprite_request_ids = {e['params']['requestId'] for e in blocked_evidence[-1]['events'] if e['method'] == 'Network.requestWillBeSent' and '/bubbleparty/v2/sprites/' in e['params']['request']['url']}
+    sprite_request_ids = {e['params']['requestId'] for e in blocked_evidence[-1]['events'] if e['method'] == 'Network.requestWillBeSent' and ('/bubbleparty/v2/sprites/' in e['params']['request']['url'] or '/bubbleparty/v3/avatars/' in e['params']['request']['url'])}
     failures = [e for e in blocked_evidence[-1]['events'] if e['method'] == 'Network.loadingFailed' and e['params']['requestId'] in sprite_request_ids]
     assert len(failures) == len(sprite_request_ids) >= 20 and all(e['params'].get('blockedReason') == 'inspector' for e in failures), blocked_evidence
     record('blocked-sprite-requests', blocked_evidence)

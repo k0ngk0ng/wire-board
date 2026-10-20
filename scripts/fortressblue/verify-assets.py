@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import importlib.util
 import json
 import shutil
 import subprocess
@@ -84,6 +85,10 @@ def main():
     entries = manifest["entries"]
     assert entries and manifest["license"].startswith("原版素材")
     catalog_check()
+    v3_spec = importlib.util.spec_from_file_location("verify_v3", ROOT / "scripts/fortressblue/verify-v3-assets.py")
+    v3_module = importlib.util.module_from_spec(v3_spec)
+    v3_spec.loader.exec_module(v3_module)
+    v3_result = v3_module.verify(dist=args.dist)
     for entry in entries:
         rel = entry["output"].removeprefix("games/fortressblue/assets/public/")
         local = LOCAL / rel
@@ -102,9 +107,9 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     (out / "assets-verify.json").write_text(
         json.dumps({"passed": True, "entries": len(entries), "bytes": sum(e["bytes"] for e in entries),
-                    "dist": args.dist, "oss": args.oss}, indent=2) + "\n"
+                    "dist": args.dist, "oss": args.oss, "v3": v3_result}, indent=2) + "\n"
     )
-    print(f"verified {len(entries)} original media files; total {sum(e['bytes'] for e in entries) // 1024} KiB")
+    print(f"verified {len(entries)} published v2 media files and {v3_result['entries']} v3 atlases / {v3_result['frames']} frames")
 
 
 if __name__ == "__main__":

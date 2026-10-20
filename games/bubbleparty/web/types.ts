@@ -6,6 +6,7 @@ export type Options = {
 export type Input = { at: number; move: string; bomb: boolean };
 
 export type Player = {
+  avatar?: number;
   seat: number;
   seq: number;
   team: number;
@@ -63,6 +64,7 @@ export type GameEvent = {
 };
 
 export type View = {
+  rulesVersion?: number;
   schema: number;
   options: Options;
   phase: "countdown" | "playing" | "finished";

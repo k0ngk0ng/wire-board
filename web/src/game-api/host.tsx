@@ -17,6 +17,7 @@ export function GameBoard({
   sound,
   audio,
   clock,
+  inputWindow,
 }: {
   room: Room;
   act: Act;
@@ -26,6 +27,7 @@ export function GameBoard({
   sound: boolean;
   audio: GameAudioPort;
   clock: GameClock;
+  inputWindow?: number;
 }) {
   const module = gameModule(room.kind);
   if (!module) return <p role="alert">尚未安装此游戏的界面：{room.kind}</p>;
@@ -35,6 +37,7 @@ export function GameBoard({
       room={room}
       data={room.game?.data}
       act={act}
+      inputWindow={inputWindow}
       command={command}
       busy={busy}
       assets={assets}

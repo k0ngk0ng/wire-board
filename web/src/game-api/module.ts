@@ -70,6 +70,8 @@ export type BoardProps<Data = unknown> = {
   room: GameRoom;
   data: Data;
   act: (action: Record<string, unknown>) => Promise<void>;
+  // Bounded reliable input pipeline; HTTP fallback remains one request.
+  inputWindow?: number;
   command: (type: string, extra?: Record<string, unknown>) => Promise<void>;
   busy: boolean;
   assets: string;

@@ -22,20 +22,32 @@ type Sprite struct {
 	AY  int    `json:"ay"`
 }
 
+// OriginalTank preserves every source column, including duplicate Character headers.
+// A1Round/A2Round are retained as source data; their gameplay meaning is unverified.
+type OriginalTank struct {
+	Columns      []string `json:"columns"`
+	Values       []int    `json:"values"`
+	RoundMeaning string   `json:"roundMeaning"`
+	Source       string   `json:"source"`
+	SourceSHA256 string   `json:"sourceSha256"`
+}
+
 type Tank struct {
-	ID      int               `json:"id"`
-	Name    string            `json:"name"`
-	HP      int               `json:"hp"`
-	Defense int               `json:"defense"`
-	Speed   int               `json:"speed"`
-	Primary int               `json:"primary"`
-	Special int               `json:"special"`
-	Angle   int               `json:"angle"`
-	Range   int               `json:"range"`
-	Skills  []int             `json:"skills"`
-	Skill   string            `json:"skillName"`
-	Sprites map[string]Sprite `json:"sprites"`
-	Bullet  *Sprite           `json:"bullet"`
+	ID       int               `json:"id"`
+	Name     string            `json:"name"`
+	HP       int               `json:"hp"`
+	Defense  int               `json:"defense"`
+	Speed    int               `json:"speed"`
+	Primary  int               `json:"primary"`
+	Special  int               `json:"special"`
+	Angle    int               `json:"angle"`
+	MinAngle int               `json:"minAngle"`
+	Original OriginalTank      `json:"original"`
+	Range    int               `json:"range"`
+	Skills   []int             `json:"skills"`
+	Skill    string            `json:"skillName"`
+	Sprites  map[string]Sprite `json:"sprites"`
+	Bullet   *Sprite           `json:"bullet"`
 }
 
 type Explosion struct {

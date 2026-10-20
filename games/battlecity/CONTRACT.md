@@ -74,7 +74,7 @@
 - 100 ms 帧、5 个 20 ms 子步；`OnTimer` 从 `ServerAt+100` 追赶至当前时刻（自然受 10 分钟上限约束），保证返回的 `SystemDeadline` 仍在未来。
 - 上限：子弹 32、道具 4、事件 64、日志 80、坦克 6。
 - `View` 不暴露 RNG、未来掉落、待处理输入；观战 `viewer=-1` 无控制。
-- `envelope`：select 只把未选角席位放入 Actors/Attention、`Deadline=0`、`SystemDeadline=SelectUntil`；countdown 无 Actors；playing Actors 为全席、Attention 显式空、Deadline 最早 IdleAt；finished 清空期限并返回 Result。
+- `envelope`：select 只把未选角席位放入 Actors/Attention、`Deadline=0`、`SystemDeadline=SelectUntil`；countdown 无 Actors；playing Actors 为全席、Attention 显式空；平台清零实时操作 Deadline、清空 TimeoutActors，不因空闲自动托管；finished 清空期限并返回 Result。
 - `AcceptStale` 校验 epoch/seq/阶段/席位；`Restore` 只修复越界/不可能序号；`Reclaim` 只清空该席控制并刷新 IdleAt。
 
 ## 8. 前端
@@ -92,7 +92,7 @@
 
 - BotAction 使用与真人相同的 action；只读公开视图；选坦克用确定性哈希；导航 A*（砖可破、水/钢不可过），会破砖、守家、追敌、捡道具；计算缓存且有界。
 - 必须覆盖 1v1、2v2、3v3，全电脑、人机混合、托管/取消托管、恢复存档、12 张地图、自然摧毁基地或 10 分钟和局。
-- 断线/刷新/服务重启保留地图、坦克、基地、子弹、道具、重生/护盾/铲子计时、科技和输入序号；不重播旧动画/音效。
+- 断线／刷新读取最新内存状态；正常关闭保存最新状态，异常重启恢复检查点中的地图、坦克、基地、子弹、道具、重生／护盾／铲子计时、科技和输入序号，并清理真人旧控制；不重播旧动画／音效。
 
 ## 10. 失败场景（先写测试）
 
@@ -140,3 +140,9 @@ python3 -B scripts/battlecity/check-browser.py
 python3 -B scripts/ci/scope.py run --game battlecity --backend
 python3 -B scripts/ci/scope.py run --game shared
 ```
+
+## 实时状态保存
+
+普通输入与物理帧在内存中推进，不逐条写动作日志或房间快照。平台每秒保存发生变化的房间；开局、结算、托管切换、关闭及 `CheckpointKey` 标记的关键阶段立即事务保存。正常断线重连读取内存最新状态，正常服务关闭保存剩余变化；异常崩溃在存储健康时可能回退约一个保存周期，保存失败时按最后成功检查点恢复。
+
+输入确认的 `durable: false` 表示服务器已处理，不能作为落盘凭证。新实例通过 `serverInstance` 通知客户端接受恢复版本，拒绝旧实例控制，并清理手动席位的旧方向／按键。电脑及手动托管保留；比赛身份、结果与系统期限仍由服务器维护。

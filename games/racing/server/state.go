@@ -146,7 +146,7 @@ func (s *State) match() (gameapi.Match, error) {
 	if e != nil {
 		return gameapi.Match{}, e
 	}
-	m := gameapi.Match{Schema: 1, Data: b, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, Log: append([]string{}, s.Log...), Result: s.Result}
+	m := gameapi.Match{CheckpointKey: s.Phase, Schema: 1, Data: b, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, Log: append([]string{}, s.Log...), Result: s.Result}
 	if s.Result != nil {
 		return m, nil
 	}

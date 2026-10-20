@@ -1,0 +1,5347 @@
+{
+  "version": "bubbleparty/v3/avatars",
+  "source": {
+    "url": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+    "sha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+    "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+    "objectTable": {
+      "name": "ObjectTable/ObjectTable",
+      "offset": 9660680,
+      "size": 92459,
+      "sha256": "fdbe1882059172463f2cc903cc7eb57722562211dd121c7b4d858ebbd440bb84"
+    },
+    "reaEvidence": "ev_0811e32c3a8d2fb2fef08c77afdc64ef07612a8357e91110e329b039e7936136"
+  },
+  "generator": "scripts/bubbleparty/prepare-avatars.py",
+  "generatorSha256": "596be590eab0e80a16fa8418a4a8ea74ac79a4605760d93cf2327cee1e8bd5b0",
+  "palette": "Static below Adjust; blue swaps R/B of Adjust only. Project palette, not a claimed original engine algorithm.",
+  "licenseStatus": "Original asset redistribution permission unverified",
+  "entries": [
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-up-red.png",
+      "sha256": "2487d7197ed95e4629af07699e0bb2560fb5296d0043216933a8ca6b2d4deb81",
+      "bytes": 2915,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "red",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkUpLayerStatic",
+          "offset": 1493530,
+          "size": 1727,
+          "sha256": "7a55fe24cf4001f62f557c3c60c6811cd8dcb83f257a8cec11a68ef74763530b"
+        },
+        {
+          "name": "Character/C00-WalkUpLayerAdjust",
+          "offset": 1488336,
+          "size": 5194,
+          "sha256": "770b6f546000085c06613c5429fa8ce143a6474a592a5287cea24199fe1117a7"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-up-blue.png",
+      "sha256": "3f2d535239ffc22415e0d3093375f86b6d082abd1f8ddb5243c3b9bfbe3b9143",
+      "bytes": 2879,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "blue",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkUpLayerStatic",
+          "offset": 1493530,
+          "size": 1727,
+          "sha256": "7a55fe24cf4001f62f557c3c60c6811cd8dcb83f257a8cec11a68ef74763530b"
+        },
+        {
+          "name": "Character/C00-WalkUpLayerAdjust",
+          "offset": 1488336,
+          "size": 5194,
+          "sha256": "770b6f546000085c06613c5429fa8ce143a6474a592a5287cea24199fe1117a7"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-down-red.png",
+      "sha256": "7a660d7fef8891c42c6676f28e5424dc25b923fb74cbb12cce11e83ee516bc92",
+      "bytes": 3499,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "red",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkDownLayerStatic",
+          "offset": 1466245,
+          "size": 3551,
+          "sha256": "4055e1929aa1266983c6b504702d80e3d07e78c2b65a2e95592c75e53cbb3b98"
+        },
+        {
+          "name": "Character/C00-WalkDownLayerAdjust",
+          "offset": 1461047,
+          "size": 5198,
+          "sha256": "85dc167bb18e12b603d4d4de6b080020db465a0eb36f2ce2c4e6974097acc6e0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-down-blue.png",
+      "sha256": "221396fa3199778964fb4875b0c89804da6f119eb45b05a4da0321d40fba77e2",
+      "bytes": 3431,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "blue",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkDownLayerStatic",
+          "offset": 1466245,
+          "size": 3551,
+          "sha256": "4055e1929aa1266983c6b504702d80e3d07e78c2b65a2e95592c75e53cbb3b98"
+        },
+        {
+          "name": "Character/C00-WalkDownLayerAdjust",
+          "offset": 1461047,
+          "size": 5198,
+          "sha256": "85dc167bb18e12b603d4d4de6b080020db465a0eb36f2ce2c4e6974097acc6e0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-left-red.png",
+      "sha256": "c0ee3d3862be77593f035652793551219026da4546dd443ecd73a294c7d2dc79",
+      "bytes": 3040,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "red",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkLeftLayerStatic",
+          "offset": 1474540,
+          "size": 2793,
+          "sha256": "f80b4e508ae7a1be764f798d84cefd90817db1e339666bfe63bf54da9e01d540"
+        },
+        {
+          "name": "Character/C00-WalkLeftLayerAdjust",
+          "offset": 1469796,
+          "size": 4744,
+          "sha256": "ed94dc49027efb5dc4548f45f44deebff93595c2f1a9b7917cd61f9fe165c911"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-left-blue.png",
+      "sha256": "97c6adf5df7e894c5e0aa541e2cbb597d0066443e5960d766648ba54570b28c0",
+      "bytes": 2959,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "blue",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkLeftLayerStatic",
+          "offset": 1474540,
+          "size": 2793,
+          "sha256": "f80b4e508ae7a1be764f798d84cefd90817db1e339666bfe63bf54da9e01d540"
+        },
+        {
+          "name": "Character/C00-WalkLeftLayerAdjust",
+          "offset": 1469796,
+          "size": 4744,
+          "sha256": "ed94dc49027efb5dc4548f45f44deebff93595c2f1a9b7917cd61f9fe165c911"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-right-red.png",
+      "sha256": "de464a98226914e058f0c2a4be62a23da1a5584c3f154711c7a0a8441b18075f",
+      "bytes": 3139,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "red",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkRightLayerStatic",
+          "offset": 1481760,
+          "size": 6576,
+          "sha256": "895fafe4ecb96e0a62250255758c9ea157f9d7cccceaf988e6c923143abc294f"
+        },
+        {
+          "name": "Character/C00-WalkRightLayerAdjust",
+          "offset": 1477333,
+          "size": 4427,
+          "sha256": "6472f40521511e2160385a0097fde23ae1d7e0cb0f3e873a6f194d8efc9eba45"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-right-blue.png",
+      "sha256": "9b776aad99ac84281a3d683b01ae391958b18e2778cf0f9192617656075f7717",
+      "bytes": 3095,
+      "width": 174,
+      "height": 138,
+      "avatar": 0,
+      "team": "blue",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-WalkRightLayerStatic",
+          "offset": 1481760,
+          "size": 6576,
+          "sha256": "895fafe4ecb96e0a62250255758c9ea157f9d7cccceaf988e6c923143abc294f"
+        },
+        {
+          "name": "Character/C00-WalkRightLayerAdjust",
+          "offset": 1477333,
+          "size": 4427,
+          "sha256": "6472f40521511e2160385a0097fde23ae1d7e0cb0f3e873a6f194d8efc9eba45"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-idle-red.png",
+      "sha256": "248c2995b3c6263b2817a4fff60aac4972639104d674b4daf42b6a701e4ec696",
+      "bytes": 1466,
+      "width": 174,
+      "height": 69,
+      "avatar": 0,
+      "team": "red",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-BlinkLayerStatic",
+          "offset": 1334702,
+          "size": 2191,
+          "sha256": "bc681ae8d9f9cc62c758b2bac5c9436d89acfe4222f93a933778880722ca44f8"
+        },
+        {
+          "name": "Character/C00-BlinkLayerAdjust",
+          "offset": 1331471,
+          "size": 3231,
+          "sha256": "0c267a74a335c8ef3f5a1b77b4fbef6980dce6c97a7b4246270e8a019239c2c4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-idle-blue.png",
+      "sha256": "9bb61da3d57e316552492e3c5647f6b74e057386a9dc4e32a5a77d66b5494f22",
+      "bytes": 1449,
+      "width": 174,
+      "height": 69,
+      "avatar": 0,
+      "team": "blue",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-BlinkLayerStatic",
+          "offset": 1334702,
+          "size": 2191,
+          "sha256": "bc681ae8d9f9cc62c758b2bac5c9436d89acfe4222f93a933778880722ca44f8"
+        },
+        {
+          "name": "Character/C00-BlinkLayerAdjust",
+          "offset": 1331471,
+          "size": 3231,
+          "sha256": "0c267a74a335c8ef3f5a1b77b4fbef6980dce6c97a7b4246270e8a019239c2c4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-death-red.png",
+      "sha256": "15529bb1206cbf94d9be072f194639017aa8a10e110a6f86a2f3f7b1c0232a9c",
+      "bytes": 8408,
+      "width": 348,
+      "height": 414,
+      "avatar": 0,
+      "team": "red",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-DieLayerStatic",
+          "offset": 1351130,
+          "size": 10057,
+          "sha256": "6b92f1830672af49ad5cebe58b3a1dd348b4f537a7972d2b8013b7c0d708c399"
+        },
+        {
+          "name": "Character/C00-DieLayerAdjust",
+          "offset": 1336893,
+          "size": 14237,
+          "sha256": "dfa5fe30fd21b690763bc3351290837f07fa60b7660543b5c9a69d30a566c9fa"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-0-death-blue.png",
+      "sha256": "4e39148df6c3a19ab2ad9a0cda06d7ae39afe36771f5eb3ebb36be7992e87b33",
+      "bytes": 8302,
+      "width": 348,
+      "height": 414,
+      "avatar": 0,
+      "team": "blue",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C00-DieLayerStatic",
+          "offset": 1351130,
+          "size": 10057,
+          "sha256": "6b92f1830672af49ad5cebe58b3a1dd348b4f537a7972d2b8013b7c0d708c399"
+        },
+        {
+          "name": "Character/C00-DieLayerAdjust",
+          "offset": 1336893,
+          "size": 14237,
+          "sha256": "dfa5fe30fd21b690763bc3351290837f07fa60b7660543b5c9a69d30a566c9fa"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-up-red.png",
+      "sha256": "cfcdcf86da092ed7897217c0809465d7c96774cf9b98f06eb2415e7f1ef7d216",
+      "bytes": 2952,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "red",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkUpLayerStatic",
+          "offset": 1655240,
+          "size": 2235,
+          "sha256": "771f17119fcc7f2a2bdd6adcfbabf51c290c2f782885fda8e629f00c90dfec7b"
+        },
+        {
+          "name": "Character/C01-WalkUpLayerAdjust",
+          "offset": 1650017,
+          "size": 5223,
+          "sha256": "e4ab858890fa6704f7f18857eeaf02c04f149b3fd5c5d8667ff727c8e42b7eb5"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-up-blue.png",
+      "sha256": "8766e739ab725d3bea0c717ec7cfd26f34b55ebd79a1f92232bf0f6cb3513ce5",
+      "bytes": 2903,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "blue",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkUpLayerStatic",
+          "offset": 1655240,
+          "size": 2235,
+          "sha256": "771f17119fcc7f2a2bdd6adcfbabf51c290c2f782885fda8e629f00c90dfec7b"
+        },
+        {
+          "name": "Character/C01-WalkUpLayerAdjust",
+          "offset": 1650017,
+          "size": 5223,
+          "sha256": "e4ab858890fa6704f7f18857eeaf02c04f149b3fd5c5d8667ff727c8e42b7eb5"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-down-red.png",
+      "sha256": "28b7bf43f47e50327f14ae2b9fde06760af08ac156956eb11e58be2bb1fe33dc",
+      "bytes": 3588,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "red",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkDownLayerStatic",
+          "offset": 1631499,
+          "size": 4251,
+          "sha256": "ab02151176602c54bdd57d95c5168db15ca125a92bb1b2bebb8a8a6ffebdb693"
+        },
+        {
+          "name": "Character/C01-WalkDownLayerAdjust",
+          "offset": 1626172,
+          "size": 5327,
+          "sha256": "c6ae7b33a1a57480724dd317033de5e9327bcfe48c81eac88499f8d2a1566699"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-down-blue.png",
+      "sha256": "1f500ef7475148762d59c2ca5ddc347ec6a6dde738cdc1c5e05812cabf1d4f3c",
+      "bytes": 3518,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "blue",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkDownLayerStatic",
+          "offset": 1631499,
+          "size": 4251,
+          "sha256": "ab02151176602c54bdd57d95c5168db15ca125a92bb1b2bebb8a8a6ffebdb693"
+        },
+        {
+          "name": "Character/C01-WalkDownLayerAdjust",
+          "offset": 1626172,
+          "size": 5327,
+          "sha256": "c6ae7b33a1a57480724dd317033de5e9327bcfe48c81eac88499f8d2a1566699"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-left-red.png",
+      "sha256": "9ef7541eae7dcaebed9aecb2e6ac1563f5b877fdf2d10e7f08cea653baab92f0",
+      "bytes": 3050,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "red",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkLeftLayerStatic",
+          "offset": 1639960,
+          "size": 2885,
+          "sha256": "86e1f6013a8fd5f9575f2f67d18630740529fc58a5dddad1b1e8ded601fc75f2"
+        },
+        {
+          "name": "Character/C01-WalkLeftLayerAdjust",
+          "offset": 1635750,
+          "size": 4210,
+          "sha256": "fb6da0be4ae778d716a3bdec83c66b4d5eb4c807af15b8ea0a406a4523c6b75d"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-left-blue.png",
+      "sha256": "f8f5507e5d3cdfa0cef06459eb563eea1a789a5d9ad211c4e921ca4b619b1a60",
+      "bytes": 2989,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "blue",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkLeftLayerStatic",
+          "offset": 1639960,
+          "size": 2885,
+          "sha256": "86e1f6013a8fd5f9575f2f67d18630740529fc58a5dddad1b1e8ded601fc75f2"
+        },
+        {
+          "name": "Character/C01-WalkLeftLayerAdjust",
+          "offset": 1635750,
+          "size": 4210,
+          "sha256": "fb6da0be4ae778d716a3bdec83c66b4d5eb4c807af15b8ea0a406a4523c6b75d"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-right-red.png",
+      "sha256": "7f52a264d42d68799c177eddba10faff27bb567ed7f5f3b0689f569156ab068b",
+      "bytes": 3093,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "red",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkRightLayerStatic",
+          "offset": 1647155,
+          "size": 2862,
+          "sha256": "90dda75765c2ce99ca20e68b2f8a6635408cec93cda6e7c807ca463ef5bcdb24"
+        },
+        {
+          "name": "Character/C01-WalkRightLayerAdjust",
+          "offset": 1642845,
+          "size": 4310,
+          "sha256": "d0b6d9de04fdd97e91f7d77fd6a71824db8f99706df7cc244fe139f3a2095f82"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-right-blue.png",
+      "sha256": "61d9e42853b5131ea68fa96c1da00a569a8d30189a6e2b66477c0e30ba8ca315",
+      "bytes": 3052,
+      "width": 174,
+      "height": 138,
+      "avatar": 1,
+      "team": "blue",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-WalkRightLayerStatic",
+          "offset": 1647155,
+          "size": 2862,
+          "sha256": "90dda75765c2ce99ca20e68b2f8a6635408cec93cda6e7c807ca463ef5bcdb24"
+        },
+        {
+          "name": "Character/C01-WalkRightLayerAdjust",
+          "offset": 1642845,
+          "size": 4310,
+          "sha256": "d0b6d9de04fdd97e91f7d77fd6a71824db8f99706df7cc244fe139f3a2095f82"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-idle-red.png",
+      "sha256": "f0c29ac9b53d54b7312d203d134c9785ff95fcc07f668e5c3ddbeaa1c5f9d151",
+      "bytes": 1605,
+      "width": 174,
+      "height": 69,
+      "avatar": 1,
+      "team": "red",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-BlinkLayerStatic",
+          "offset": 1498395,
+          "size": 2566,
+          "sha256": "d7b8a5f771a330ed9736dbf669918ffcda86962efa3f953031de0d15b30b3fb9"
+        },
+        {
+          "name": "Character/C01-BlinkLayerAdjust",
+          "offset": 1495257,
+          "size": 3138,
+          "sha256": "47481589c3dc84aa6ed360dc51030a67645108d4e2666efc0fc95a81ea2759df"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-idle-blue.png",
+      "sha256": "24b3e4857c1f9cfe0477c8a33861c2a3863af18ae64b61f8dd5e22cee27a1bbd",
+      "bytes": 1586,
+      "width": 174,
+      "height": 69,
+      "avatar": 1,
+      "team": "blue",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-BlinkLayerStatic",
+          "offset": 1498395,
+          "size": 2566,
+          "sha256": "d7b8a5f771a330ed9736dbf669918ffcda86962efa3f953031de0d15b30b3fb9"
+        },
+        {
+          "name": "Character/C01-BlinkLayerAdjust",
+          "offset": 1495257,
+          "size": 3138,
+          "sha256": "47481589c3dc84aa6ed360dc51030a67645108d4e2666efc0fc95a81ea2759df"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-death-red.png",
+      "sha256": "0c31d3deac7741ae6a8d648b733da394b60a2801753872bd627a1bbcaf4e2182",
+      "bytes": 8560,
+      "width": 348,
+      "height": 414,
+      "avatar": 1,
+      "team": "red",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-DieLayerStatic",
+          "offset": 1513839,
+          "size": 11224,
+          "sha256": "b35dfebc52b2c5788009a5f923c7ca481f9abc45e4118686f341986fe7684c48"
+        },
+        {
+          "name": "Character/C01-DieLayerAdjust",
+          "offset": 1500961,
+          "size": 12878,
+          "sha256": "ee85794e7aedf0d9236e6c51c661e6def098672b2b9cfe9f6126fb5055ceb3d5"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-1-death-blue.png",
+      "sha256": "fceef42e4a6c2fd270c0d52c537db2679a16d3f48be11842c0e7df466f7e2519",
+      "bytes": 8515,
+      "width": 348,
+      "height": 414,
+      "avatar": 1,
+      "team": "blue",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C01-DieLayerStatic",
+          "offset": 1513839,
+          "size": 11224,
+          "sha256": "b35dfebc52b2c5788009a5f923c7ca481f9abc45e4118686f341986fe7684c48"
+        },
+        {
+          "name": "Character/C01-DieLayerAdjust",
+          "offset": 1500961,
+          "size": 12878,
+          "sha256": "ee85794e7aedf0d9236e6c51c661e6def098672b2b9cfe9f6126fb5055ceb3d5"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-up-red.png",
+      "sha256": "db8ebdd22089ac661b46f227c4809d0f86e487e30deea3acb37599c84bb53055",
+      "bytes": 4169,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "red",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkUpLayerStatic",
+          "offset": 1855386,
+          "size": 7913,
+          "sha256": "8e506a58f9e451e5d285bf3749a4bcfedd4d6eace1620ef2337447af991d19a5"
+        },
+        {
+          "name": "Character/C02-WalkUpLayerAdjust",
+          "offset": 1851889,
+          "size": 3497,
+          "sha256": "2b437dd793d22eb18cd70d1614d6a68c7873a1ac9e8b2eaa20e655e08f526998"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-up-blue.png",
+      "sha256": "eea7b828a1e939e3be4a21fa7c1501a06eab39a0c0133f867bdea68ed6addcd0",
+      "bytes": 4172,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "blue",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkUpLayerStatic",
+          "offset": 1855386,
+          "size": 7913,
+          "sha256": "8e506a58f9e451e5d285bf3749a4bcfedd4d6eace1620ef2337447af991d19a5"
+        },
+        {
+          "name": "Character/C02-WalkUpLayerAdjust",
+          "offset": 1851889,
+          "size": 3497,
+          "sha256": "2b437dd793d22eb18cd70d1614d6a68c7873a1ac9e8b2eaa20e655e08f526998"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-down-red.png",
+      "sha256": "d8912d5ff2b2a68707b9f4531852bcad2e6ee776ce28f896296ac6f0cfb8f143",
+      "bytes": 4564,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "red",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkDownLayerStatic",
+          "offset": 1823470,
+          "size": 8597,
+          "sha256": "6e8d94b8f5b0aec7771ac47a9867fbef457b9300182d308c17fe88309359cf0f"
+        },
+        {
+          "name": "Character/C02-WalkDownLayerAdjust",
+          "offset": 1819425,
+          "size": 4045,
+          "sha256": "1a81d0c62d4b57a5fb9a21804210fa0a3257f617893a0f5552a387e838380661"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-down-blue.png",
+      "sha256": "23a366e5408423d7be86935655db4898166124ba7779472db08a15c970e9e695",
+      "bytes": 4522,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "blue",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkDownLayerStatic",
+          "offset": 1823470,
+          "size": 8597,
+          "sha256": "6e8d94b8f5b0aec7771ac47a9867fbef457b9300182d308c17fe88309359cf0f"
+        },
+        {
+          "name": "Character/C02-WalkDownLayerAdjust",
+          "offset": 1819425,
+          "size": 4045,
+          "sha256": "1a81d0c62d4b57a5fb9a21804210fa0a3257f617893a0f5552a387e838380661"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-left-red.png",
+      "sha256": "ac273eb85ca7d1b92f9340e7b7ea64f217d04ac07ccc62cbb784316d81503dd6",
+      "bytes": 4258,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "red",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkLeftLayerStatic",
+          "offset": 1835783,
+          "size": 6229,
+          "sha256": "33db2eab3d84e2984fca1a82ec0fdc1dff92388d62a5f4fff14a5464fd1f1b21"
+        },
+        {
+          "name": "Character/C02-WalkLeftLayerAdjust",
+          "offset": 1832067,
+          "size": 3716,
+          "sha256": "fb21410afd52c7f6a499224655d5a10fe305b098b518909a68114aa463ad6c82"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-left-blue.png",
+      "sha256": "f6735f57afc62dab8f6ba229bde59ab3c5f45eed36405b4608dcbf07493d1bff",
+      "bytes": 4230,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "blue",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkLeftLayerStatic",
+          "offset": 1835783,
+          "size": 6229,
+          "sha256": "33db2eab3d84e2984fca1a82ec0fdc1dff92388d62a5f4fff14a5464fd1f1b21"
+        },
+        {
+          "name": "Character/C02-WalkLeftLayerAdjust",
+          "offset": 1832067,
+          "size": 3716,
+          "sha256": "fb21410afd52c7f6a499224655d5a10fe305b098b518909a68114aa463ad6c82"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-right-red.png",
+      "sha256": "2d1401d973cded64f74d429c77f8ba9a88d0b797add6ea3c98d8805484b23c30",
+      "bytes": 4119,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "red",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkRightLayerStatic",
+          "offset": 1845648,
+          "size": 6241,
+          "sha256": "c7f4e3f29c904770cf146a90e7d3ec8dff9e81aea6f3fcb23f740128317faf01"
+        },
+        {
+          "name": "Character/C02-WalkRightLayerAdjust",
+          "offset": 1842012,
+          "size": 3636,
+          "sha256": "f7fe41bdf8c3efc72c09d9e2ab8b49265e6c4a17e6fdcc359a8a978633ea59ed"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-right-blue.png",
+      "sha256": "dbb44ecc1568c72c332c34c0f1951eef3b342b59523a2f2c3234ca1856eb17ea",
+      "bytes": 4099,
+      "width": 174,
+      "height": 138,
+      "avatar": 2,
+      "team": "blue",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-WalkRightLayerStatic",
+          "offset": 1845648,
+          "size": 6241,
+          "sha256": "c7f4e3f29c904770cf146a90e7d3ec8dff9e81aea6f3fcb23f740128317faf01"
+        },
+        {
+          "name": "Character/C02-WalkRightLayerAdjust",
+          "offset": 1842012,
+          "size": 3636,
+          "sha256": "f7fe41bdf8c3efc72c09d9e2ab8b49265e6c4a17e6fdcc359a8a978633ea59ed"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-idle-red.png",
+      "sha256": "581a215314da141efa43306b83be3cf7a6955002acdfad254e999fd83e6898c5",
+      "bytes": 2132,
+      "width": 174,
+      "height": 69,
+      "avatar": 2,
+      "team": "red",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-BlinkLayerStatic",
+          "offset": 1659824,
+          "size": 5374,
+          "sha256": "b5ba7714ef590a3773c271095113873feb5516e7f272e0680a7597761cc96145"
+        },
+        {
+          "name": "Character/C02-BlinkLayerAdjust",
+          "offset": 1657475,
+          "size": 2349,
+          "sha256": "19536510a7f891f9c57a5ec52aecb6a1df93f5b818c380b7742061443f75b11e"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-idle-blue.png",
+      "sha256": "df7fb085d033377475e6f751de0529e7c072d9541caa2e6425d425e06be2d743",
+      "bytes": 2129,
+      "width": 174,
+      "height": 69,
+      "avatar": 2,
+      "team": "blue",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-BlinkLayerStatic",
+          "offset": 1659824,
+          "size": 5374,
+          "sha256": "b5ba7714ef590a3773c271095113873feb5516e7f272e0680a7597761cc96145"
+        },
+        {
+          "name": "Character/C02-BlinkLayerAdjust",
+          "offset": 1657475,
+          "size": 2349,
+          "sha256": "19536510a7f891f9c57a5ec52aecb6a1df93f5b818c380b7742061443f75b11e"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-death-red.png",
+      "sha256": "cb8f2ac49bcf80814d04ebaa39d5d784940606848778af3fd26e1405d882b1cc",
+      "bytes": 9130,
+      "width": 348,
+      "height": 414,
+      "avatar": 2,
+      "team": "red",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-DieLayerStatic",
+          "offset": 1673621,
+          "size": 16554,
+          "sha256": "e9e4276eb6fb9b3d0f615e5958b91ac85fb50fa554702c8800986cf335943860"
+        },
+        {
+          "name": "Character/C02-DieLayerAdjust",
+          "offset": 1665198,
+          "size": 8423,
+          "sha256": "4710e2e171298dacbddd7da4d4c9e106fd547e43ac8640ce7050563bae3defb0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-2-death-blue.png",
+      "sha256": "95ee916da2d9d5ef216f75abb3969efa1f67985db469ea91fb44f3bc1c2ef96e",
+      "bytes": 9130,
+      "width": 348,
+      "height": 414,
+      "avatar": 2,
+      "team": "blue",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C02-DieLayerStatic",
+          "offset": 1673621,
+          "size": 16554,
+          "sha256": "e9e4276eb6fb9b3d0f615e5958b91ac85fb50fa554702c8800986cf335943860"
+        },
+        {
+          "name": "Character/C02-DieLayerAdjust",
+          "offset": 1665198,
+          "size": 8423,
+          "sha256": "4710e2e171298dacbddd7da4d4c9e106fd547e43ac8640ce7050563bae3defb0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-up-red.png",
+      "sha256": "ec0e352596352344d21184075d9276d99f785d17681fd09bc3c58eb60c36bcda",
+      "bytes": 4002,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "red",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkUpLayerStatic",
+          "offset": 2069025,
+          "size": 4837,
+          "sha256": "98ac8b47573339190380e4489d8904b9042aec5e7075bbfa7f8a4c51e671830c"
+        },
+        {
+          "name": "Character/C03-WalkUpLayerAdjust",
+          "offset": 2063445,
+          "size": 5580,
+          "sha256": "16e44dfa104bfdecc2da5a240cb8114f9aa41bf7db434346b9784198223cb69c"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-up-blue.png",
+      "sha256": "1df2cba51da738b1374f3ab612d3be45b3c9988b147297512a1cce0036552591",
+      "bytes": 3973,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "blue",
+      "state": "up",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkUpLayerStatic",
+          "offset": 2069025,
+          "size": 4837,
+          "sha256": "98ac8b47573339190380e4489d8904b9042aec5e7075bbfa7f8a4c51e671830c"
+        },
+        {
+          "name": "Character/C03-WalkUpLayerAdjust",
+          "offset": 2063445,
+          "size": 5580,
+          "sha256": "16e44dfa104bfdecc2da5a240cb8114f9aa41bf7db434346b9784198223cb69c"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-down-red.png",
+      "sha256": "35ba85082e9e448c71bb82c7e99bb600d6794c4a80e2d9093c3f4f4a57cab3c6",
+      "bytes": 4468,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "red",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkDownLayerStatic",
+          "offset": 2034375,
+          "size": 6740,
+          "sha256": "9ee8745c2369ff139495a793a02811fc2ae51c50da058f44d5257f4310a79087"
+        },
+        {
+          "name": "Character/C03-WalkDownLayerAdjust",
+          "offset": 2028815,
+          "size": 5560,
+          "sha256": "8126918b26104db7f6e206fb23253089d8c90bfb844b00cbea012174bbaca517"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-down-blue.png",
+      "sha256": "ec46119e79083beabad8adda95274b03d7cf6cac2156c16dda1414b74ae370a4",
+      "bytes": 4426,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "blue",
+      "state": "down",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkDownLayerStatic",
+          "offset": 2034375,
+          "size": 6740,
+          "sha256": "9ee8745c2369ff139495a793a02811fc2ae51c50da058f44d5257f4310a79087"
+        },
+        {
+          "name": "Character/C03-WalkDownLayerAdjust",
+          "offset": 2028815,
+          "size": 5560,
+          "sha256": "8126918b26104db7f6e206fb23253089d8c90bfb844b00cbea012174bbaca517"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-left-red.png",
+      "sha256": "4cf04479819160f3ef4cb885b61220c4dcfb5faa027511c0b38a36e1acb8db4e",
+      "bytes": 4369,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "red",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkLeftLayerStatic",
+          "offset": 2046241,
+          "size": 5980,
+          "sha256": "66276bf763189d0597a24dc71bf9ed76f17fe810e93c04a3fd789372bf1722e7"
+        },
+        {
+          "name": "Character/C03-WalkLeftLayerAdjust",
+          "offset": 2041115,
+          "size": 5126,
+          "sha256": "ecf1ff55fe6ced85dd64be36648e36a9f7ddd11abdec9d0a29f352508de7e131"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-left-blue.png",
+      "sha256": "4004e18fe72abb37102dbdbf955fca6c01cc08566cfe40c6ddf7e36cfa07e1f0",
+      "bytes": 4325,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "blue",
+      "state": "left",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkLeftLayerStatic",
+          "offset": 2046241,
+          "size": 5980,
+          "sha256": "66276bf763189d0597a24dc71bf9ed76f17fe810e93c04a3fd789372bf1722e7"
+        },
+        {
+          "name": "Character/C03-WalkLeftLayerAdjust",
+          "offset": 2041115,
+          "size": 5126,
+          "sha256": "ecf1ff55fe6ced85dd64be36648e36a9f7ddd11abdec9d0a29f352508de7e131"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-right-red.png",
+      "sha256": "12ea1afa723c269a0e76abeaefd97d33c4387192d6a2712083c577e903bbac68",
+      "bytes": 4337,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "red",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkRightLayerStatic",
+          "offset": 2057357,
+          "size": 6088,
+          "sha256": "b72175efd3113b10322338c2953718767ecc7e7a9f2962af9578ab50fa884e29"
+        },
+        {
+          "name": "Character/C03-WalkRightLayerAdjust",
+          "offset": 2052221,
+          "size": 5136,
+          "sha256": "055e26119531a8ebc72b30a03b927c88725dd1691e07454c6e8929b5134828c8"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-right-blue.png",
+      "sha256": "04a92141e16a1b8aa6525ad312d5e0d8a08b6ba953ea67b4daf79852970faf35",
+      "bytes": 4318,
+      "width": 174,
+      "height": 138,
+      "avatar": 3,
+      "team": "blue",
+      "state": "right",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-WalkRightLayerStatic",
+          "offset": 2057357,
+          "size": 6088,
+          "sha256": "b72175efd3113b10322338c2953718767ecc7e7a9f2962af9578ab50fa884e29"
+        },
+        {
+          "name": "Character/C03-WalkRightLayerAdjust",
+          "offset": 2052221,
+          "size": 5136,
+          "sha256": "055e26119531a8ebc72b30a03b927c88725dd1691e07454c6e8929b5134828c8"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          1,
+          70,
+          57,
+          137,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          70,
+          115,
+          137,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-idle-red.png",
+      "sha256": "3404ee1df1473bd73cdcca62413f44da14aa43d280727d461570b6d30c61641d",
+      "bytes": 2100,
+      "width": 174,
+      "height": 69,
+      "avatar": 3,
+      "team": "red",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-BlinkLayerStatic",
+          "offset": 1866650,
+          "size": 4579,
+          "sha256": "15b23dfb5202a2e9bbb224cc36a009eb7b52a19fe2c739aa7e3f9a55ef4e83eb"
+        },
+        {
+          "name": "Character/C03-BlinkLayerAdjust",
+          "offset": 1863299,
+          "size": 3351,
+          "sha256": "3b2740518f5af56dbf41d28f61725a9e0293ad54d89db56feb09a544188c9c57"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-idle-blue.png",
+      "sha256": "61ba780ddada87bbcfd0512884dfa9614bebae26dc030d0081d7cefca9ea0aee",
+      "bytes": 2088,
+      "width": 174,
+      "height": 69,
+      "avatar": 3,
+      "team": "blue",
+      "state": "idle",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-BlinkLayerStatic",
+          "offset": 1866650,
+          "size": 4579,
+          "sha256": "15b23dfb5202a2e9bbb224cc36a009eb7b52a19fe2c739aa7e3f9a55ef4e83eb"
+        },
+        {
+          "name": "Character/C03-BlinkLayerAdjust",
+          "offset": 1863299,
+          "size": 3351,
+          "sha256": "3b2740518f5af56dbf41d28f61725a9e0293ad54d89db56feb09a544188c9c57"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          68,
+          8,
+          66,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          68,
+          8,
+          66,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-death-red.png",
+      "sha256": "aad6871ee33433c3af45cc6952de70a96e2554dc01af8ccc1d9ad1c6452e6cee",
+      "bytes": 8947,
+      "width": 348,
+      "height": 414,
+      "avatar": 3,
+      "team": "red",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-DieLayerStatic",
+          "offset": 1882540,
+          "size": 14459,
+          "sha256": "98e48a22bea2f01b5fd70ad3cfe5485be38c66a0ea1cdbac6cbc01850c6eab64"
+        },
+        {
+          "name": "Character/C03-DieLayerAdjust",
+          "offset": 1871229,
+          "size": 11311,
+          "sha256": "b225635138a17950854b4f13271e03120bae080b0dda8f288a7cb3cd9eae964f"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    },
+    {
+      "urlPath": "/bubbleparty/v3/avatars/avatar-3-death-blue.png",
+      "sha256": "9dc6b05edc981144449a272e88ef40c293b522781e96335670538901b88b7075",
+      "bytes": 8874,
+      "width": 348,
+      "height": 414,
+      "avatar": 3,
+      "team": "blue",
+      "state": "death",
+      "sourceLayers": [
+        {
+          "name": "Character/C03-DieLayerStatic",
+          "offset": 1882540,
+          "size": 14459,
+          "sha256": "98e48a22bea2f01b5fd70ad3cfe5485be38c66a0ea1cdbac6cbc01850c6eab64"
+        },
+        {
+          "name": "Character/C03-DieLayerAdjust",
+          "offset": 1871229,
+          "size": 11311,
+          "sha256": "b225635138a17950854b4f13271e03120bae080b0dda8f288a7cb3cd9eae964f"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          57,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          59,
+          1,
+          115,
+          71,
+          8,
+          69,
+          -1
+        ],
+        [
+          117,
+          1,
+          173,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          1,
+          231,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          1,
+          289,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          1,
+          347,
+          137,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          139,
+          57,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          139,
+          115,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          117,
+          139,
+          173,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          175,
+          139,
+          231,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          233,
+          139,
+          289,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          291,
+          139,
+          347,
+          275,
+          8,
+          135,
+          -1
+        ],
+        [
+          1,
+          277,
+          57,
+          413,
+          8,
+          135,
+          -1
+        ],
+        [
+          59,
+          277,
+          115,
+          413,
+          8,
+          135,
+          -1
+        ]
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "source": {
+        "name": "Character/C00",
+        "offsetInObjectTable": 13947,
+        "size": 2947,
+        "sha256": "08b702966ca9e5d467ff7e599caf1417724b31d68ed256695459af39326f20c7"
+      },
+      "states": {
+        "21 Walk Up": {
+          "resource": "Character/C00-WalkUp",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "23 Walk Down": {
+          "resource": "Character/C00-WalkDown",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "20 Walk Left": {
+          "resource": "Character/C00-WalkLeft",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "22 Walk Right": {
+          "resource": "Character/C00-WalkRight",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "00 Blink": {
+          "resource": "Character/C00-Blink",
+          "sequence": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              15
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        },
+        "01 Die": {
+          "resource": "Character/C00-Die",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ]
+          ]
+        },
+        "25 Locked In": {
+          "resource": "Character/C00-Die",
+          "sequence": [
+            [
+              0,
+              32767
+            ],
+            [
+              1,
+              32767
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Character/C01",
+        "offsetInObjectTable": 17211,
+        "size": 2947,
+        "sha256": "981954746c728836f6ad340b3453a69f82bc6cf9398dea96912ad46a8d473f7b"
+      },
+      "states": {
+        "21 Walk Up": {
+          "resource": "Character/C01-WalkUp",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "23 Walk Down": {
+          "resource": "Character/C01-WalkDown",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "20 Walk Left": {
+          "resource": "Character/C01-WalkLeft",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "22 Walk Right": {
+          "resource": "Character/C01-WalkRight",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "00 Blink": {
+          "resource": "Character/C01-Blink",
+          "sequence": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              15
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        },
+        "01 Die": {
+          "resource": "Character/C01-Die",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ]
+          ]
+        },
+        "25 Locked In": {
+          "resource": "Character/C01-Die",
+          "sequence": [
+            [
+              0,
+              32767
+            ],
+            [
+              1,
+              32767
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Character/C02",
+        "offsetInObjectTable": 20475,
+        "size": 2947,
+        "sha256": "9c7b65f98d92a95b05e77e14b3ec56e836b40b55511254416311b2774688b447"
+      },
+      "states": {
+        "21 Walk Up": {
+          "resource": "Character/C02-WalkUp",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "23 Walk Down": {
+          "resource": "Character/C02-WalkDown",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "20 Walk Left": {
+          "resource": "Character/C02-WalkLeft",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "22 Walk Right": {
+          "resource": "Character/C02-WalkRight",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "00 Blink": {
+          "resource": "Character/C02-Blink",
+          "sequence": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              15
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        },
+        "01 Die": {
+          "resource": "Character/C02-Die",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ]
+          ]
+        },
+        "25 Locked In": {
+          "resource": "Character/C02-Die",
+          "sequence": [
+            [
+              0,
+              32767
+            ],
+            [
+              1,
+              32767
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Character/C03",
+        "offsetInObjectTable": 23739,
+        "size": 2947,
+        "sha256": "e73db7a5b5c62cccd09a3bb15120453e2b821bccb5c1de9a81cb71627cd0d933"
+      },
+      "states": {
+        "21 Walk Up": {
+          "resource": "Character/C03-WalkUp",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "23 Walk Down": {
+          "resource": "Character/C03-WalkDown",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "20 Walk Left": {
+          "resource": "Character/C03-WalkLeft",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "22 Walk Right": {
+          "resource": "Character/C03-WalkRight",
+          "sequence": [
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ]
+          ]
+        },
+        "00 Blink": {
+          "resource": "Character/C03-Blink",
+          "sequence": [
+            [
+              0,
+              25
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              1,
+              15
+            ],
+            [
+              0,
+              75
+            ]
+          ]
+        },
+        "01 Die": {
+          "resource": "Character/C03-Die",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              7,
+              4
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              12,
+              2
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              13,
+              1
+            ]
+          ]
+        },
+        "25 Locked In": {
+          "resource": "Character/C03-Die",
+          "sequence": [
+            [
+              0,
+              32767
+            ],
+            [
+              1,
+              32767
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}

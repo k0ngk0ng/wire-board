@@ -224,7 +224,14 @@ func TestModuleRealtimeAtomicFrameHTTP(t *testing.T) {
 		t.Run(mode, func(t *testing.T) {
 			trace := []any{}
 			realtimeReport(t, &trace)
-			f := newRealtimeTable(t, realtimeFixture(true, time.Hour, 0, mode), false)
+			module := realtimeFixture(true, time.Hour, 0, mode)
+			timer := module.OnTimer
+			module.OnTimer = func(c gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
+				next, err := timer(c, m)
+				next.CheckpointKey = "critical-stage"
+				return next, err
+			}
+			f := newRealtimeTable(t, module, false)
 			before := current(f.a)
 			var persisted []byte
 			if err := f.s.db.QueryRow("SELECT snapshot FROM rooms WHERE id=?", f.id).Scan(&persisted); err != nil {
@@ -321,12 +328,13 @@ func TestModuleRealtimeControlRestoreAndClosureHTTP(t *testing.T) {
 	f.a.command(current(f.a), "action", map[string]any{"drive": 1, "timeout": true}, 200)
 	f.frame(time.UnixMilli(due + 200))
 	room := current(f.a)
-	if room["seats"].([]any)[0].(map[string]any)["autoPlay"] != true || !f.s.rooms[f.id].Seats[0].TimeoutAutoPlay {
-		t.Fatal("expired human not taken over atomically")
+	if room["seats"].([]any)[0].(map[string]any)["autoPlay"] == true || f.s.rooms[f.id].Seats[0].TimeoutAutoPlay || f.s.rooms[f.id].Module.Deadline != 0 {
+		t.Fatal("idle realtime human was taken over")
 	}
-	setAutoPlay(f.a, room, false, 200)
-	if f.s.rooms[f.id].Seats[0].AutoPlay || f.s.rooms[f.id].Module.Deadline < time.Now().UnixMilli() || realtimeData(t, current(f.a)).Drive[0] != 0 {
-		t.Fatal("timeout cancellation did not reclaim")
+	setAutoPlay(f.a, room, true, 200)
+	setAutoPlay(f.a, current(f.a), false, 200)
+	if f.s.rooms[f.id].Seats[0].AutoPlay || f.s.rooms[f.id].Module.Deadline != 0 || realtimeData(t, current(f.a)).Drive[0] != 0 {
+		t.Fatal("manual cancellation did not reclaim without a turn clock")
 	}
 	// Restart the real persisted room; the next deadline is in the future and
 	// no fixture state is injected. HTTP sessions survive the reopened database.

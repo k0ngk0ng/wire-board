@@ -1,10 +1,5 @@
 export type InputKind =
-  | "left"
-  | "right"
-  | "rotateCW"
-  | "rotateCCW"
-  | "softDrop"
-  | "hardDrop";
+  "left" | "right" | "rotateCW" | "rotateCCW" | "softDrop" | "hardDrop";
 
 export type InputEvent = { kind: InputKind };
 export type Batch = { seq: number; events: InputEvent[] };
@@ -44,7 +39,10 @@ export class InputQueue {
   }
 
   acknowledge(serverSeq: number) {
-    this.sentBatches = this.sentBatches.filter((batch) => batch.seq > serverSeq);
+    this.nextSeq = Math.max(this.nextSeq, serverSeq + 1);
+    this.sentBatches = this.sentBatches.filter(
+      (batch) => batch.seq > serverSeq,
+    );
   }
 
   reset(serverSeq: number) {

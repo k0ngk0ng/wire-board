@@ -1,0 +1,120 @@
+{
+  "version": 3,
+  "license": "原版素材：权利归原权利方；按本会话授权提取与转换，非原创素材。",
+  "conversion": "Existing I16 LH5/RGB565 span decoder; both native facing blocks; no crop, resize, mirror, recolor or timing inference; lossless WebP atlas.",
+  "pixelScale": 1,
+  "entries": [
+    {
+      "file": "tanks/1-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/1-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/1-atlas-0.webp",
+      "sha256": "0c1e231774f59899a26973fb931af8a19412c04a570d2863d325d5cc8bebf68b",
+      "bytes": 78918,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/10-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/10-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/10-atlas-0.webp",
+      "sha256": "7631d464a4e77d736117156da25d5e7ee7067669af4cb9a65e32c9425a9e6c2c",
+      "bytes": 69612,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/11-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/11-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/11-atlas-0.webp",
+      "sha256": "eb3c6e89bda7561da6db973f81534e91f705e6a028cba2ee9464e87ced96cf61",
+      "bytes": 87700,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/12-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/12-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/12-atlas-0.webp",
+      "sha256": "dfebea2788e9e7f32bd73fbe375a5ceb89b3dc7e1f6dd6954923a9d953f54c47",
+      "bytes": 96194,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/13-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/13-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/13-atlas-0.webp",
+      "sha256": "8d60f10e846c8891615dfda682c3f18c2190cfc25285ad7491d446c8209c7ffc",
+      "bytes": 92898,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/14-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/14-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/14-atlas-0.webp",
+      "sha256": "979ad854dc633a1db871cb6879380664677b472199b04537c96893827d17b049",
+      "bytes": 140396,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/2-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/2-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/2-atlas-0.webp",
+      "sha256": "520bb6c5e761355ad22a5b31be8b88e097fa405ddf69e7f5099e7065396e7aea",
+      "bytes": 66674,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/3-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/3-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/3-atlas-0.webp",
+      "sha256": "8225969c236654d38a8b61027fecbd9a26a15c1e70d1ad7010c41a35a84fcb14",
+      "bytes": 65670,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/4-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/4-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/4-atlas-0.webp",
+      "sha256": "5b860167d93490519e07e29f7b95918371864bd9398b5538cde6104a5663fc22",
+      "bytes": 55500,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/5-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/5-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/5-atlas-0.webp",
+      "sha256": "85001261a53bf5989abe64eb40e11459c58f619747d468c86c6fbb2fd9231d16",
+      "bytes": 91496,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/6-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/6-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/6-atlas-0.webp",
+      "sha256": "07573038a783e58dc8ca0816fc5cc7331b04b6c5173d4309961ad1eb59d818ba",
+      "bytes": 114698,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/7-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/7-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/7-atlas-0.webp",
+      "sha256": "88529451fd62961d881448ac4770e5555d90e58f7b329f218d1e836ce1968afa",
+      "bytes": 79778,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/8-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/8-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/8-atlas-0.webp",
+      "sha256": "708ff4adfd9b6206e5a7bb96b7234d7ce525576573c76bf63d591623cb2c722e",
+      "bytes": 67174,
+      "mime": "image/webp"
+    },
+    {
+      "file": "tanks/9-atlas-0.webp",
+      "urlPath": "/fortressblue/v3/tanks/9-atlas-0.webp",
+      "output": "games/fortressblue/assets/public/fortressblue/v3/tanks/9-atlas-0.webp",
+      "sha256": "1ef1ca0cbcfbbcf6d8773eb6af51678ed246b13cccc2d1657ee5b8b05ca8cdc9",
+      "bytes": 74510,
+      "mime": "image/webp"
+    }
+  ]
+}

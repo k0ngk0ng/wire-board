@@ -6,8 +6,10 @@ files, decodes the original LH5 + per-row span sprite codec, writes immutable
 WebP/OGG media under the gitignored public directory, and emits the committed
 map catalog / asset manifest / provenance records.
 
-Run from the repository root:
-    python3 -B scripts/fortressblue/prepare-original-assets.py
+Frozen v2 builder. Existing v2/v3 data is never overwritten by main.
+Restore published media with fetch-assets.py; generate current tank animations
+with prepare-animation-assets.py. verify-original-source.py imports these
+legacy codec/build functions into a repository-local temporary directory.
 """
 from __future__ import annotations
 
@@ -518,13 +520,13 @@ def build_items():
             "w": image.width,
             "h": image.height,
         })
-    (ROOT / "games/fortressblue/data/items.json").write_text(
-        json.dumps({"items": items}, ensure_ascii=False, indent=1) + "\n"
-    )
+    # Pure media builder: provenance checks redirect OUT and must not mutate active rules.
     return items
 
 
 def main():
+    if (ASSETS / "manifest.json").exists() or (ROOT / "games/fortressblue/data/animations.json").exists() or (OUT.exists() and any(OUT.iterdir())):
+        raise SystemExit("v2 is immutable and active data may be v3; use fetch-assets.py for published v2, prepare-animation-assets.py for v3, or verify-original-source.py for isolated provenance checks")
     if not LOCAL.exists():
         raise SystemExit(f"source assets not found: {LOCAL}")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -559,6 +561,7 @@ def main():
     audio = build_audio()
     portraits = build_portraits()
     items = build_items()
+    (ROOT / "games/fortressblue/data/items.json").write_text(json.dumps({"items": items}, ensure_ascii=False, indent=1) + "\n")
     TANKS_JSON.write_text(json.dumps({"tanks": tanks, "portraits": portraits, "explosion": explosion, "audio": audio}, ensure_ascii=False, indent=1) + "\n")
     (MAPS_DIR / "catalog.json").write_text(json.dumps({"version": 2, "worldHeight": WORLD_HEIGHT, "cell": CELL, "maps": maps}, ensure_ascii=False) + "\n")
     # The client needs the same public collision mask to draw an accurate aim

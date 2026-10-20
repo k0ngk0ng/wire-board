@@ -34,13 +34,13 @@ type Request = Drive & {
   seq: number;
   token: number;
 };
-// This queue retains intent, never game state. At most one platform act is in
-// flight and every newer gesture replaces the unsent state (including release).
+// Retain only control intent. HTTP uses a single request; an ordered stream
+// admits a bounded window so releases need not wait for a prior network ACK.
 export class LatestDrive {
   value: Drive = { ...neutral };
   private snapshot?: Sync;
   private sent?: Drive;
-  private pending?: Request;
+  private pending = new Map<number, Request>();
   private at = -Infinity;
   private seq = 0;
   private token = 0;
@@ -52,7 +52,7 @@ export class LatestDrive {
     ) {
       this.value = { ...neutral };
       this.sent = undefined;
-      this.pending = undefined;
+      this.pending.clear();
       this.at = -Infinity;
       if (
         !this.snapshot ||
@@ -73,24 +73,29 @@ export class LatestDrive {
       drift: !!v.drift,
     };
   }
-  next(now: number): Request | null {
-    if (!this.snapshot?.enabled || this.pending) return null;
+  next(now: number, window = 1): Request | null {
+    if (
+      !this.snapshot?.enabled ||
+      this.pending.size >= Math.max(1, Math.min(8, window))
+    )
+      return null;
     const changed = !this.sent || !same(this.sent, this.value);
     const released = changed && same(this.value, neutral);
     if (!changed && same(this.value, neutral)) return null;
     if (!released && now - this.at < (changed ? 100 : 300)) return null;
     this.sent = { ...this.value };
     this.at = now;
-    this.pending = {
+    const request: Request = {
       ...this.value,
       type: "drive",
       epoch: this.snapshot.epoch,
       seq: ++this.seq,
       token: ++this.token,
     };
-    return this.pending;
+    this.pending.set(request.token, request);
+    return request;
   }
   complete(token: number) {
-    if (this.pending?.token === token) this.pending = undefined;
+    this.pending.delete(token);
   }
 }

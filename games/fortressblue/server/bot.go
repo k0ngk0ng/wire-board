@@ -39,49 +39,129 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if slot, ok := botItem(s, ctx.Actor); ok {
 		return json.Marshal(Action{Type: "item", Epoch: s.Epoch, Turn: s.Turn, Slot: slot})
 	}
-	foe := &s.Tanks[target]
-	facing := 1
-	if foe.X < tank.X {
-		facing = -1
+	if tank.PendingShotEffect == "heal" {
+		target = ctx.Actor
+		missing := tank.MaxHP - tank.HP
+		for i, t := range s.Tanks {
+			if t.Alive && t.Team == tank.Team && t.MaxHP-t.HP > missing {
+				target, missing = i, t.MaxHP-t.HP
+			}
+		}
 	}
 	spec, ok := tankSpec(tank.TankID)
 	if !ok {
 		return nil, nil
 	}
 	weapon := "primary"
-	if tank.Special > 0 && hashString(s.Epoch, "special", string(rune(ctx.Actor)), string(rune(s.Turn)))%4 == 0 {
+	if (tank.SpecialUnlimited || tank.Special > 0) && hashString(s.Epoch, "special", string(rune(ctx.Actor)), string(rune(s.Turn)))%4 == 0 {
 		weapon = "special"
 	}
-	stage, _ := fbmaps.ByID(s.MapID)
-	mask := bulletMaskFor(stage, s.Craters)
-	bestAngle, bestPower := 45.0, 70.0
-	bestScore := math.Inf(1)
-	maxAngle := float64(spec.Angle)
-	if maxAngle < 15 {
-		maxAngle = 15
-	}
-	for angle := 5.0; angle <= maxAngle; angle += 5 {
-		for power := 25.0; power <= 100; power += 5 {
-			rangeScale := float64(spec.Range) / 50
-			arc := simulateArc(stage, mask, s.Tanks, ctx.Actor, tank.X, tank.Y, angle, power, facing, rangeScale, s.Wind, MaxPath)
-			c := tankCenter(*foe)
-			score := math.Hypot(arc.Impact.X-c.X, arc.Impact.Y-c.Y)
-			if arc.Hit == target {
-				score -= 1000
+	best := botAimFor(s, ctx.Actor, target, spec)
+	// A blocked shot is not the only legal action. Explore safe movements through
+	// the same public movement rules, and never choose a move that starts a fall.
+	risk := botGroundRisk(s, ctx.Actor, ctx.Now.UnixMilli())
+	if (best.Score > 60 || risk > 0) && tank.Fuel > 0 {
+		preferred := best.Facing
+		if tank.Fuel < float64(spec.Speed) {
+			preferred = tank.Facing
+		}
+		bestDir := 0
+		bestScore := best.Score - 3
+		bestRisk := risk
+		fallback := 0
+		for _, dir := range []int{preferred, -preferred} {
+			candidate := *s
+			candidate.Tanks = append([]Tank(nil), s.Tanks...)
+			candidate.Events = nil
+			if !moveTank(&candidate, ctx.Actor, dir, ctx.Now.UnixMilli()) || candidate.Resolution != nil {
+				continue
 			}
-			// Prefer shots that land on the target's side and stay inside the map.
-			if arc.Impact.X < 0 || arc.Impact.X > float64(stage.Width) {
-				score += 500
+			candidateRisk := botGroundRisk(&candidate, ctx.Actor, ctx.Now.UnixMilli())
+			if candidateRisk > risk {
+				continue
 			}
-			if score < bestScore {
-				bestScore, bestAngle, bestPower = score, angle, power
+			if risk > 0 {
+				if candidateRisk < bestRisk {
+					bestRisk, bestDir = candidateRisk, dir
+				}
+				continue
 			}
+			if fallback == 0 {
+				fallback = dir
+			}
+			aim := botAimFor(&candidate, ctx.Actor, target, spec)
+			if aim.Score < bestScore {
+				bestScore, bestDir = aim.Score, dir
+			}
+		}
+		if bestDir == 0 && best.Score > 120 {
+			bestDir = fallback
+		}
+		if bestDir != 0 {
+			return json.Marshal(Action{Type: "move", Epoch: s.Epoch, Turn: s.Turn, Dir: bestDir})
 		}
 	}
 	jitter := float64(hashString(s.Epoch, "aim", string(rune(ctx.Actor)), string(rune(s.Turn)))%5) - 2
-	bestAngle = clamp(bestAngle+jitter, 1, maxAngle)
-	bestPower = clamp(bestPower, 20, 100)
-	return json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: bestAngle, Power: bestPower, Facing: facing, Weapon: weapon})
+	best.Angle = clamp(best.Angle+jitter, float64(spec.MinAngle), float64(spec.Angle))
+	return json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: best.Angle, Power: best.Power, Facing: best.Facing, Weapon: weapon})
+}
+
+type botAim struct {
+	Angle, Power, Score float64
+	Facing              int
+}
+
+func botAimFor(s *State, seat, target int, spec fbdata.Tank) botAim {
+	tank, foe := s.Tanks[seat], s.Tanks[target]
+	facing := 1
+	if foe.X < tank.X {
+		facing = -1
+	}
+	stage, _ := fbmaps.ByID(s.MapID)
+	mask := bulletMaskFor(stage, s.Craters)
+	best := botAim{Angle: float64(spec.MinAngle), Power: 70, Score: math.Inf(1), Facing: facing}
+	// Include the actual minimum rather than assuming every tank starts at 5°.
+	for angle := float64(spec.MinAngle); angle <= float64(spec.Angle); angle += 5 {
+		for power := 0.0; power <= 100; power += 5 {
+			arc := simulateArc(stage, mask, s.Tanks, seat, tank.X, tank.Y, angle, power, facing, float64(spec.Range)/50, s.Wind, MaxPath)
+			center := tankCenter(foe)
+			score := math.Hypot(arc.Impact.X-center.X, arc.Impact.Y-center.Y)
+			if arc.Hit == target {
+				score -= 1000
+			}
+			if arc.OutOfBounds {
+				score += 500
+			}
+			if arc.Hit == seat {
+				score += 1500
+			} else if arc.Hit >= 0 && s.Tanks[arc.Hit].Team == tank.Team {
+				score += 500
+			}
+			if tank.PendingShotEffect == "heal" {
+				score = math.Hypot(arc.Impact.X-center.X, arc.Impact.Y-center.Y)
+				if arc.OutOfBounds {
+					score += 500
+				} else {
+					for _, other := range s.Tanks {
+						c := tankCenter(other)
+						if !other.Alive || math.Hypot(c.X-arc.Impact.X, c.Y-arc.Impact.Y) > 50 {
+							continue
+						}
+						gain := float64(min(other.MaxHP-other.HP, other.MaxHP*30/100))
+						if other.Team == tank.Team {
+							score -= gain * 5
+						} else {
+							score += gain * 5
+						}
+					}
+				}
+			}
+			if score < best.Score {
+				best.Angle, best.Power, best.Score = angle, power, score
+			}
+		}
+	}
+	return best
 }
 
 func botTarget(s *State, seat int) int {
@@ -97,4 +177,16 @@ func botTarget(s *State, seat int) int {
 		}
 	}
 	return best
+}
+
+func botGroundRisk(s *State, seat int, at int64) float64 {
+	point := tankPositionAt(s, seat, at)
+	risk := 0.0
+	for _, h := range s.Hazards {
+		if at < h.At || at >= h.EndAt || point.Y < h.Y-24 || point.Y > h.Y+12 {
+			continue
+		}
+		risk += math.Max(0, h.R-math.Abs(point.X-h.X)+1)
+	}
+	return risk
 }

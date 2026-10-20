@@ -2,15 +2,19 @@ package bubbleparty_test
 
 // Real browser fixture: production registry, HTTP/auth, SQLite and host timers.
 import (
+	"encoding/json"
 	"net"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/k0ngk0ng/wire-board/games"
+	"github.com/k0ngk0ng/wire-board/internal/nettest"
 	"github.com/k0ngk0ng/wire-board/internal/server"
 )
 
@@ -55,7 +59,50 @@ func TestBubblepartyBrowserFixture(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	srv := &http.Server{Handler: s.Handler(), ReadHeaderTimeout: 5 * time.Second}
+	latencyMS, _ := strconv.Atoi(os.Getenv("WIRE_BOARD_REALTIME_RTT_MS"))
+	if latencyMS < 0 || latencyMS > 1000 {
+		t.Fatal("test RTT must be 0..1000ms")
+	}
+	// Opt-in test-only transport fault: close actual hijacked TCP sockets.
+	// This endpoint is compiled only into this local acceptance fixture.
+	control := os.Getenv("WIRE_BOARD_REALTIME_NETWORK_CONTROL") == "1"
+	var connMu sync.Mutex
+	connections := map[net.Conn]bool{}
+	drop := func() int {
+		connMu.Lock()
+		list := []net.Conn{}
+		for c := range connections {
+			list = append(list, c)
+			delete(connections, c)
+		}
+		connMu.Unlock()
+		for _, c := range list {
+			_ = c.Close()
+		}
+		return len(list)
+	}
+	defer drop()
+	delayed := nettest.Delay(s.Handler(), time.Duration(latencyMS)*time.Millisecond)
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if control && r.Method == "POST" && r.URL.Path == "/_test/disconnect" {
+			w.Header().Set("Content-Type", "application/json")
+			_ = json.NewEncoder(w).Encode(map[string]int{"closed": drop()})
+			return
+		}
+		delayed.ServeHTTP(w, r)
+	})
+	srv := &http.Server{Handler: handler, ReadHeaderTimeout: 5 * time.Second, ConnState: func(c net.Conn, state http.ConnState) {
+		if !control {
+			return
+		}
+		connMu.Lock()
+		defer connMu.Unlock()
+		if state == http.StateHijacked {
+			connections[c] = true
+		} else if state == http.StateClosed {
+			delete(connections, c)
+		}
+	}}
 	defer srv.Close()
 	go srv.Serve(listener)
 	if err = os.WriteFile(filepath.Join(out, "url"), []byte("http://"+listener.Addr().String()), 0600); err != nil {

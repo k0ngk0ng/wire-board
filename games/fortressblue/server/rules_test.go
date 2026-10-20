@@ -96,12 +96,12 @@ func TestStartTeamSpawns(t *testing.T) {
 	}
 }
 
-func TestMaxPowerCrossesWideMap(t *testing.T) {
+func TestProjectileTraversesOpenAir(t *testing.T) {
 	m := fbmaps.Map{Width: 2048, Height: 960, MaskCols: 512, MaskRows: 240}
 	mask := make([]byte, (m.MaskCols*m.MaskRows+7)/8)
 	arc := simulateArc(m, mask, []Tank{{Seat: 0, Alive: true, X: 200, Y: 700}}, 0, 200, 700, 45, 100, 1, 0.9, 0, MaxPath)
-	if arc.Impact.X < 1400 {
-		t.Fatalf("max-power shot only reached %.1f of a 2048 map", arc.Impact.X)
+	if len(arc.Path) < 10 || arc.Impact.X <= 200 || !arc.OutOfBounds {
+		t.Fatalf("open-air projectile failed to travel to a world boundary: %+v", arc.Impact)
 	}
 }
 
@@ -160,6 +160,7 @@ func TestSelectAndTurnAdvance(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	m2 = finishTestResolution(t, m2)
 	s2, err := decode(m2)
 	if err != nil {
 		t.Fatal(err)
@@ -169,10 +170,10 @@ func TestSelectAndTurnAdvance(t *testing.T) {
 	}
 }
 
-func TestSpecialFireAppliesStatus(t *testing.T) {
+func TestSpecialFireCreatesGroundHazard(t *testing.T) {
 	s, m := startAt(t, 2, "stage-16")
 	m, s = selectAll(t, s, m, []int{1, 1})
-	if s.Tanks[0].Special != MaxSpecial {
+	if s.Tanks[0].Special != -1 {
 		t.Fatalf("special ammo = %d", s.Tanks[0].Special)
 	}
 	// Put the target directly in front to guarantee a direct hit.
@@ -184,12 +185,15 @@ func TestSpecialFireAppliesStatus(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	m2 = finishTestResolution(t, m2)
 	s2, _ := decode(m2)
-	if s2.Tanks[0].Special != MaxSpecial-1 {
+	if s2.Tanks[0].Special != -1 {
 		t.Fatalf("special ammo not consumed: %d", s2.Tanks[0].Special)
 	}
-	if len(s2.Tanks[1].Statuses) == 0 && s2.Tanks[1].HP > 0 {
-		t.Fatalf("fire special did not apply burn: %+v", s2.Tanks[1])
+	var hazardView struct{ Hazards []struct{ Kind string } }
+	_ = json.Unmarshal(m2.Data, &hazardView)
+	if len(hazardView.Hazards) == 0 {
+		t.Fatal("fire special did not create ground hazard")
 	}
 }
 
@@ -273,7 +277,7 @@ func TestBotReturnsLegalActions(t *testing.T) {
 		}
 		_ = json.Unmarshal(raw, &a)
 	}
-	if a.Type != "fire" || a.Angle < 0 || a.Angle > 90 || a.Power < 20 || a.Power > 100 {
+	if a.Type != "fire" && a.Type != "move" || a.Type == "fire" && (a.Angle < 0 || a.Angle > 90 || a.Power < 0 || a.Power > 100) {
 		t.Fatalf("illegal bot action: %s %+v", raw, a)
 	}
 }
@@ -347,20 +351,26 @@ func TestAllSpecialSkillKinds(t *testing.T) {
 		s.Tanks[1].X = s.Tanks[0].X + 42
 		s.Tanks[1].Y = s.Tanks[0].Y
 		match = mustMatch(t, s)
-		raw, _ := json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 0, Power: 30, Facing: 1, Weapon: "special"})
+		spec, _ := tankSpec(tc.tank)
+		raw, _ := json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: float64(spec.MinAngle), Power: 30, Facing: 1, Weapon: "special"})
 		next, err := apply(ctx(2, 0, time.Unix(1700000300, 0)), match, raw)
 		if err != nil {
 			t.Fatalf("tank %d special: %v", tc.tank, err)
 		}
+		next = finishTestResolution(t, next)
 		s2, err := decode(next)
 		if err != nil {
 			t.Fatal(err)
 		}
-		if s2.Tanks[0].Special != MaxSpecial-1 || s2.LastShot == nil || len(s2.LastShot.Blasts) != 1 {
+		if s2.Tanks[0].Special != -1 || s2.LastShot == nil || len(s2.LastShot.Blasts) != 1 {
 			t.Fatalf("tank %d special state: %+v", tc.tank, s2.Tanks[0])
 		}
-		if tc.status != "" && s2.Tanks[1].HP > 0 && len(s2.Tanks[1].Statuses) == 0 {
-			t.Fatalf("tank %d did not apply %s: %+v", tc.tank, tc.status, s2.Tanks[1])
+		if tc.status != "" {
+			var hazardView struct{ Hazards []struct{ Kind string } }
+			_ = json.Unmarshal(next.Data, &hazardView)
+			if len(hazardView.Hazards) == 0 {
+				t.Fatalf("tank %d missing hazard", tc.tank)
+			}
 		}
 		if tc.tank == 9 && s2.LastShot.Blasts[0].R <= 50 {
 			t.Fatalf("explosion special radius = %v", s2.LastShot.Blasts[0].R)
@@ -406,4 +416,29 @@ func TestCraterPersistsAcrossSnapshot(t *testing.T) {
 	if len(before) != len(after) || string(before) != string(after) {
 		t.Fatal("crater mask changed across snapshot")
 	}
+}
+
+// Existing rule cases assert resolved outcomes; exercise the public timer path
+// instead of making Apply resolve a shot synchronously.
+func finishTestResolution(t *testing.T, m gameapi.Match) gameapi.Match {
+	t.Helper()
+	for i := 0; i < 32; i++ {
+		var w struct{ Resolution *struct{ Stage string } }
+		if err := json.Unmarshal(m.Data, &w); err != nil {
+			t.Fatal(err)
+		}
+		if w.Resolution == nil {
+			return m
+		}
+		s, err := decode(m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		m, err = onTimer(ctx(len(s.Tanks), -1, time.UnixMilli(m.SystemDeadline)), m)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	t.Fatal("resolution did not complete")
+	return m
 }

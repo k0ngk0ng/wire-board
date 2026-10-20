@@ -9,6 +9,7 @@ import {
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { soundSources, useAtlas, type Atlas } from "./assets";
 import { drawBattlefield, drawTankIcon } from "./canvas";
+import { TankMotion, type TankWorld, type TankPose } from "./prediction";
 import {
   LatestInput,
   NEUTRAL,
@@ -21,6 +22,8 @@ import {
 import { MapPreview } from "./MapPreview";
 import {
   MAPS,
+  mapById,
+  decodeBroken,
   TANK_NAMES,
   TANK_ORDER,
   TANK_STATS,
@@ -108,7 +111,10 @@ function TeamHud({
       data-battlecity-team={team}
     >
       <div className="bc-team-title">
-        <span className="bc-team-dot" style={{ background: TEAM_COLORS[team] }} />
+        <span
+          className="bc-team-dot"
+          style={{ background: TEAM_COLORS[team] }}
+        />
         {TEAM_LABEL[team]}队伍
         <span className="bc-team-size">{size} 人</span>
       </div>
@@ -143,7 +149,11 @@ function TeamHud({
                 <span className="bc-hp">{hpPips(tank)}</span>
               </div>
               <div className="bc-player-stats">
-                <span>{tank.alive ? `装甲 ${tank.hp}/${tank.maxHp}` : `重生 ${respawn}s`}</span>
+                <span>
+                  {tank.alive
+                    ? `装甲 ${tank.hp}/${tank.maxHp}`
+                    : `重生 ${respawn}s`}
+                </span>
                 <span>击杀 {tank.kills}</span>
               </div>
             </div>
@@ -189,7 +199,9 @@ function SelectPanel({
       <div className="bc-select-main">
         <div className="bc-select-head">
           <strong>选择坦克</strong>
-          <span>{myTank?.selected ? "已选择，等待队友" : "双方可重复选择"}</span>
+          <span>
+            {myTank?.selected ? "已选择，等待队友" : "双方可重复选择"}
+          </span>
         </div>
         <div className="bc-tank-cards">
           {TANK_ORDER.map((tankClass) => {
@@ -215,7 +227,9 @@ function SelectPanel({
                 <span className="bc-tank-meta">
                   速度 {spec.speed} · 装甲 {spec.hp} · 弹速 {spec.bullet}
                 </span>
-                <span className="bc-tank-count">已选 {counts.get(tankClass) ?? 0}</span>
+                <span className="bc-tank-count">
+                  已选 {counts.get(tankClass) ?? 0}
+                </span>
               </button>
             );
           })}
@@ -345,6 +359,8 @@ export function Board(props: BoardProps<View>) {
   const atlas = useAtlas(assets);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef(new LatestInput());
+  const motion = useRef(new TankMotion());
+  const world = useRef<TankWorld | null>(null);
   const sending = useRef(false);
   const latest = useRef(props);
   latest.current = props;
@@ -359,7 +375,9 @@ export function Board(props: BoardProps<View>) {
   const touchFire = useRef(false);
   const touchTimers = useRef<number[]>([]);
   const suspendedRef = useRef(false);
-  const scope = view ? `${room.id}:${view.epoch}:${seat}` : "";
+  const scope = view
+    ? `${room.id}:${view.epoch}:${clock.epoch ?? 0}:${seat}`
+    : "";
   const scopeRef = useRef(scope);
   scopeRef.current = scope;
   const enabled =
@@ -384,12 +402,21 @@ export function Board(props: BoardProps<View>) {
     prevView.current = curView.current;
     curView.current = view;
     receivedAt.current = performance.now();
+    world.current = {
+      cells: mapById(view.mapId)?.cells ?? [],
+      broken: decodeBroken(view.broken),
+      shovelUntil: view.shovelUntil,
+      tanks: view.tanks,
+      speed: TANK_STATS[view.tanks[seat]?.class ?? "balanced"].speed,
+    };
   }, [view]);
 
   useEffect(() => {
     if (!view) return;
     inputRef.current.reset(myTank?.seq ?? 0);
     heldMoves.current = [];
+    touchTimers.current.forEach(clearTimeout);
+    touchTimers.current = [];
     keysFire.current.clear();
     touchMove.current = "none";
     touchFire.current = false;
@@ -421,11 +448,15 @@ export function Board(props: BoardProps<View>) {
     if (
       !enabledRef.current ||
       suspendedRef.current ||
-      sending.current ||
+      (sending.current && (latest.current.inputWindow ?? 1) <= 1) ||
       document.hidden
     )
       return;
-    const request = inputRef.current.next(performance.now(), force);
+    const request = inputRef.current.next(
+      performance.now(),
+      force,
+      latest.current.inputWindow ?? 1,
+    );
     if (!request) return;
     sending.current = true;
     const sentScope = scopeRef.current;
@@ -565,7 +596,9 @@ export function Board(props: BoardProps<View>) {
 
   useEffect(() => {
     let raf = 0;
-    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const frame = () => {
       const current = curView.current;
       const ctx = canvasRef.current?.getContext("2d");
@@ -576,6 +609,26 @@ export function Board(props: BoardProps<View>) {
         const now =
           (latest.current.data as View | undefined)?.serverAt ??
           latest.current.clock.serverNow;
+        const props = latest.current,
+          own = current.tanks[props.room.you];
+        let local: TankPose | undefined;
+        if (own && world.current && !props.room.spectating) {
+          local = motion.current.frame(
+            current,
+            props.room.you,
+            inputRef.current.value.move,
+            world.current,
+            performance.now(),
+            `${props.room.id}:${current.epoch}:${props.clock.epoch ?? 0}:${props.room.you}`,
+            enabledRef.current && !document.hidden,
+          );
+          if (canvasRef.current) {
+            canvasRef.current.dataset.renderX = String(local.x);
+            canvasRef.current.dataset.renderY = String(local.y);
+            canvasRef.current.dataset.serverX = String(own.x);
+            canvasRef.current.dataset.serverY = String(own.y);
+          }
+        }
         drawBattlefield(
           ctx,
           current,
@@ -583,7 +636,9 @@ export function Board(props: BoardProps<View>) {
           alpha,
           atlas,
           latest.current.room.you,
-          now + Math.max(0, performance.now() - latest.current.clock.receivedAt),
+          now +
+            Math.max(0, performance.now() - latest.current.clock.receivedAt),
+          local,
         );
       }
       raf = requestAnimationFrame(frame);
@@ -638,7 +693,10 @@ export function Board(props: BoardProps<View>) {
     resultSeen.current = key;
     if (game.winners.length === 0) return;
     void audio.playWithFallback(
-      soundSources(assets, game.winners.includes(seat) ? "sfx-win" : "sfx-lose"),
+      soundSources(
+        assets,
+        game.winners.includes(seat) ? "sfx-win" : "sfx-lose",
+      ),
     );
   }, [room.game, room.id, sound, spectator, seat, assets, audio, view]);
 
@@ -731,7 +789,10 @@ export function Board(props: BoardProps<View>) {
                 data-battlecity-canvas="1"
               />
               {view.phase === "countdown" && (
-                <div className="bc-overlay" data-battlecity-countdown={countdown}>
+                <div
+                  className="bc-overlay"
+                  data-battlecity-countdown={countdown}
+                >
                   <strong>{countdown > 0 ? `${countdown}` : "开战"}</strong>
                   <span>准备战斗</span>
                 </div>
@@ -763,14 +824,14 @@ export function Board(props: BoardProps<View>) {
                 键盘：WASD／方向键移动 · 空格／J 开火
                 {mySeat?.autoPlay ? " · 当前由电脑托管" : ""}
               </div>
-              <TouchPad
-                enabled={enabled}
-                onMove={setMove}
-                onFire={setFire}
-              />
+              <TouchPad enabled={enabled} onMove={setMove} onFire={setFire} />
             </div>
           )}
-          {spectator && <p className="bc-spectator-note">你正在观战，操作只对参赛席开放。</p>}
+          {spectator && (
+            <p className="bc-spectator-note">
+              你正在观战，操作只对参赛席开放。
+            </p>
+          )}
         </>
       )}
       {error && (

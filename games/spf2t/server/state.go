@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strconv"
 
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
@@ -636,7 +637,7 @@ func (s *State) envelope() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	m := gameapi.Match{
+	m := gameapi.Match{CheckpointKey: s.Phase + ":" + strconv.Itoa(s.Round),
 		Schema:    SchemaVersion,
 		Data:      data,
 		Actors:    []int{},

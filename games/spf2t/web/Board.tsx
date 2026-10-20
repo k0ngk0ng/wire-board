@@ -10,7 +10,13 @@ import {
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { Controls } from "./Controls";
 import { characterMeta, portraitSources } from "./characters";
-import { fxFor, nextEvents, soundFor, type Seen, type SoundKey } from "./events";
+import {
+  fxFor,
+  nextEvents,
+  soundFor,
+  type Seen,
+  type SoundKey,
+} from "./events";
 import {
   ATLAS_CELL,
   GEM_COLORS,
@@ -205,15 +211,12 @@ function GemFace({
   );
 }
 
-const Gem = memo(function Gem({
-  gem,
-  atlas,
-}: {
-  gem: GemView;
-  atlas: Atlas;
-}) {
+const Gem = memo(function Gem({ gem, atlas }: { gem: GemView; atlas: Atlas }) {
   if (gem.kind === "power" && gem.color) {
-    const cells = Array.from({ length: Math.max(1, gem.w * gem.h) }, (_, i) => i);
+    const cells = Array.from(
+      { length: Math.max(1, gem.w * gem.h) },
+      (_, i) => i,
+    );
     return (
       <span
         className={`spf2t-power ${atlas.ok ? "has-atlas" : ""}`}
@@ -255,7 +258,14 @@ const Gem = memo(function Gem({
   return (
     <span
       className="spf2t-cell-wrap"
-      style={gemStyle(gem.x, gem.y, gem.w, gem.h, gemTile(gem.kind, gem.color), atlas)}
+      style={gemStyle(
+        gem.x,
+        gem.y,
+        gem.w,
+        gem.h,
+        gemTile(gem.kind, gem.color),
+        atlas,
+      )}
       data-kind={gem.kind}
       data-color={gem.color}
       title={gemLabel(gem)}
@@ -428,16 +438,19 @@ function BoardPanel({
               <span
                 key={`active-${active.id}-${index}`}
                 className="spf2t-cell-wrap is-active"
-                style={gemStyle(cell.x, cell.y, 1, 1, gemTile(cell.kind, cell.color), atlas)}
+                style={gemStyle(
+                  cell.x,
+                  cell.y,
+                  1,
+                  1,
+                  gemTile(cell.kind, cell.color),
+                  atlas,
+                )}
                 data-kind={cell.kind}
                 data-color={cell.color}
                 aria-hidden="true"
               >
-                <GemFace
-                  kind={cell.kind}
-                  color={cell.color}
-                  atlas={atlas}
-                />
+                <GemFace kind={cell.kind} color={cell.color} atlas={atlas} />
               </span>
             ))
           : null}
@@ -507,7 +520,10 @@ function Center({
   names: string[];
   assets: string;
 }) {
-  const winner = data.phase === "round_break" ? data.players.find((p) => !p.lost) : undefined;
+  const winner =
+    data.phase === "round_break"
+      ? data.players.find((p) => !p.lost)
+      : undefined;
   return (
     <section className="spf2t-center" aria-label="对局信息">
       {data.players.map((player, index) => (
@@ -517,17 +533,25 @@ function Center({
         >
           <Portrait
             id={player.character}
-            name={player.selected ? characterName(data, player.character) : names[index]}
+            name={
+              player.selected
+                ? characterName(data, player.character)
+                : names[index]
+            }
             assets={assets}
             className="is-large"
           />
-          <strong>{player.selected ? characterName(data, player.character) : "选角中"}</strong>
+          <strong>
+            {player.selected ? characterName(data, player.character) : "选角中"}
+          </strong>
           <span>{names[index]}</span>
           <PatternStrip pattern={player.pattern} />
         </div>
       ))}
       {data.phase === "round_break" && winner ? (
-        <p className="spf2t-center-note">第 {data.round} 回合 · {names[winner.seat]} 获胜</p>
+        <p className="spf2t-center-note">
+          第 {data.round} 回合 · {names[winner.seat]} 获胜
+        </p>
       ) : null}
     </section>
   );
@@ -561,18 +585,30 @@ function SelectOverlay({
     );
   };
   return (
-    <div className="spf2t-overlay spf2t-select" role="dialog" aria-label="选择角色">
+    <div
+      className="spf2t-overlay spf2t-select"
+      role="dialog"
+      aria-label="选择角色"
+    >
       <div className="spf2t-overlay-card">
         <header>
-          <strong>{spectating ? "观战 · 双方选角" : self?.selected ? "已选择，等待对手" : "选择角色"}</strong>
+          <strong>
+            {spectating
+              ? "观战 · 双方选角"
+              : self?.selected
+                ? "已选择，等待对手"
+                : "选择角色"}
+          </strong>
           <span aria-live="polite">剩余 {remaining} 秒</span>
         </header>
         <div className="spf2t-picks" aria-live="polite">
           <span>
-            {spectating ? "蓝方" : "你"}：{self?.selected ? characterName(data, self.character) : "未选择"}
+            {spectating ? "蓝方" : "你"}：
+            {self?.selected ? characterName(data, self.character) : "未选择"}
           </span>
           <span>
-            对手：{data.players[1 - (room.you < 0 ? 0 : room.you)]?.selected
+            对手：
+            {data.players[1 - (room.you < 0 ? 0 : room.you)]?.selected
               ? characterName(data, data.players[1 - room.you]?.character)
               : "未选择"}
           </span>
@@ -580,7 +616,8 @@ function SelectOverlay({
         <div className="spf2t-cards">
           {data.characters.map((character) => {
             const meta = characterMeta(character.id);
-            const picked = self?.character === character.id || pending === character.id;
+            const picked =
+              self?.character === character.id || pending === character.id;
             const rivalPicked = data.players.some(
               (p) => p.seat !== room.you && p.character === character.id,
             );
@@ -596,7 +633,11 @@ function SelectOverlay({
                 onClick={() => choose(character.id)}
                 aria-pressed={picked}
               >
-                <Portrait id={character.id} name={character.name} assets={assets} />
+                <Portrait
+                  id={character.id}
+                  name={character.name}
+                  assets={assets}
+                />
                 <strong>{character.name}</strong>
                 <PatternStrip pattern={character.pattern} />
                 {rivalPicked ? <small>对手已选</small> : null}
@@ -621,7 +662,15 @@ function CountdownOverlay({ data, now }: { data: View; now: number }) {
   );
 }
 
-function RoundBreakOverlay({ data, names, now }: { data: View; names: string[]; now: number }) {
+function RoundBreakOverlay({
+  data,
+  names,
+  now,
+}: {
+  data: View;
+  names: string[];
+  now: number;
+}) {
   const remaining = Math.max(0, Math.ceil((data.breakUntil - now) / 1000));
   const lost = data.players.filter((p) => p.lost);
   const text =
@@ -635,7 +684,10 @@ function RoundBreakOverlay({ data, names, now }: { data: View; names: string[]; 
       <div>
         <strong>第 {data.round} 回合</strong>
         <span>{text}</span>
-        <small>{remaining} 秒后继续 · {data.players[0].roundWins} : {data.players[1].roundWins}</small>
+        <small>
+          {remaining} 秒后继续 · {data.players[0].roundWins} :{" "}
+          {data.players[1].roundWins}
+        </small>
       </div>
     </div>
   );
@@ -668,15 +720,30 @@ const ignoredTarget = (target: EventTarget | null) => {
   );
 };
 
-export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
+export function Board({
+  room,
+  data,
+  act,
+  busy,
+  assets,
+  audio,
+  clock,
+  inputWindow = 1,
+}: Props) {
   const atlas = useAtlas(assets);
   const self = room.you >= 0 ? data.players[room.you] : undefined;
   const selfSeq = self?.seq ?? 0;
   const hosted = !!room.seats[room.you]?.autoPlay;
   const canPlay =
-    !!self && data.controls.canPlay && data.phase === "playing" && !hosted && !busy;
+    !!self &&
+    data.controls.canPlay &&
+    data.phase === "playing" &&
+    !hosted &&
+    !busy;
   const now = useServerNow(clock, data.phase !== "finished");
-  const scope = scopeKey(room.id, data, room.you);
+  const scope = `${scopeKey(room.id, data, room.you)}:${clock.epoch ?? 0}`;
+  const inputScope = useRef({ scope, seq: selfSeq });
+  inputScope.current = { scope, seq: selfSeq };
   const queue = useRef<InputQueue>(new InputQueue(selfSeq));
   const sending = useRef(false);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -686,6 +753,7 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
 
   useEffect(() => {
     queue.current.reset(selfSeq);
+    sending.current = false;
     setSendError(null);
     setFx([]);
   }, [scope]);
@@ -701,10 +769,11 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
   useEffect(() => {
     if (!canPlay) return;
     const id = setInterval(() => {
-      if (sending.current || document.hidden) return;
+      if ((sending.current && inputWindow <= 1) || document.hidden) return;
       const batch = queue.current.take();
       if (!batch) return;
       sending.current = true;
+      const sentScope = scope;
       void act({
         type: "inputs",
         epoch: data.epoch,
@@ -712,7 +781,8 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
         events: batch.events,
       })
         .catch((error: unknown) => {
-          queue.current.reset(selfSeq);
+          if (inputScope.current.scope !== sentScope) return;
+          queue.current.reset(inputScope.current.seq);
           setSendError(
             error instanceof TypeError
               ? "网络连接中断，正在恢复操作"
@@ -722,11 +792,11 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
           );
         })
         .finally(() => {
-          sending.current = false;
+          if (inputScope.current.scope === sentScope) sending.current = false;
         });
     }, 40);
     return () => clearInterval(id);
-  }, [canPlay, data.epoch, selfSeq, act]);
+  }, [canPlay, scope, data.epoch, selfSeq, act, inputWindow]);
 
   useEffect(() => {
     if (!canPlay) return;
@@ -747,8 +817,7 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
       if (event.repeat) return;
       queue.current.push(mapped.kind);
       if (mapped.held) {
-        const delay =
-          mapped.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
+        const delay = mapped.kind === "softDrop" ? SOFT_DROP_DELAY : DAS_DELAY;
         held.set(event.code, {
           kind: mapped.kind,
           since: performance.now() + delay,
@@ -782,12 +851,18 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
       window.removeEventListener("blur", clear);
       document.removeEventListener("visibilitychange", clear);
       clearInterval(timer);
+      held.clear();
     };
-  }, [canPlay]);
+  }, [canPlay, scope]);
 
   useEffect(() => {
     const file = data.phase === "select" ? BGM_FILES.select : BGM_FILES.battle;
-    if (data.phase === "select" || data.phase === "countdown" || data.phase === "playing" || data.phase === "round_break") {
+    if (
+      data.phase === "select" ||
+      data.phase === "countdown" ||
+      data.phase === "playing" ||
+      data.phase === "round_break"
+    ) {
       void audio.music(soundSources(assets, file));
     } else {
       audio.stopMusic();
@@ -810,13 +885,24 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
       const effect = fxFor(event);
       if (effect) {
         setFx((previous) =>
-          [...previous, { key: event.id, seat: event.seat, ...effect }].slice(-10),
+          [...previous, { key: event.id, seat: event.seat, ...effect }].slice(
+            -10,
+          ),
         );
       }
     }
     if (fxTimer.current) clearTimeout(fxTimer.current);
     fxTimer.current = setTimeout(() => setFx([]), 280);
-  }, [data.events, data.epoch, scope, room.you, room.spectating, room.game?.winners, assets, audio]);
+  }, [
+    data.events,
+    data.epoch,
+    scope,
+    room.you,
+    room.spectating,
+    room.game?.winners,
+    assets,
+    audio,
+  ]);
 
   useEffect(
     () => () => {
@@ -835,7 +921,10 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
   );
 
   const names = useMemo(
-    () => data.players.map((player) => room.seats[player.seat]?.name ?? `玩家 ${player.seat + 1}`),
+    () =>
+      data.players.map(
+        (player) => room.seats[player.seat]?.name ?? `玩家 ${player.seat + 1}`,
+      ),
     [data.players, room.seats],
   );
   const matchLeft = data.matchEndsAt > 0 ? data.matchEndsAt - now : 0;
@@ -854,7 +943,9 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
       <header className="spf2t-hud">
         <div>
           <h2>街霸方块</h2>
-          <span>{formatLabel(format)} · 第 {data.round} 回合</span>
+          <span>
+            {formatLabel(format)} · 第 {data.round} 回合
+          </span>
         </div>
         <div className="spf2t-hud-right">
           {spectator ? <span className="spf2t-badge">观战 · 只读</span> : null}
@@ -905,7 +996,9 @@ export function Board({ room, data, act, busy, assets, audio, clock }: Props) {
           now={now}
         />
       ) : null}
-      {phase === "countdown" ? <CountdownOverlay data={data} now={now} /> : null}
+      {phase === "countdown" ? (
+        <CountdownOverlay data={data} now={now} />
+      ) : null}
       {phase === "round_break" ? (
         <RoundBreakOverlay data={data} names={names} now={now} />
       ) : null}

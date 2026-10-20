@@ -4,8 +4,8 @@
 This is a local provenance check, not a CI step: the official client media is
 not committed. It reads `.local/fortressblue-original` (downloaded client and
 the extracted `.i16` sprites), runs the same decoder as the asset builder, and
-verifies that every map, tank, bullet and source-client hash matches the
-committed catalog, tank data and manifest byte-for-byte.
+verifies original map/tank/bullet/item pixels against the immutable v2 manifest.
+Active v3 rules and model metadata are intentionally validated separately.
 
 Run from the repository root:
     python3 -B scripts/fortressblue/verify-original-source.py
@@ -24,8 +24,6 @@ ROOT = Path(__file__).resolve().parents[2]
 PREPARE = ROOT / "scripts/fortressblue/prepare-original-assets.py"
 MANIFEST_PATH = ROOT / "games/fortressblue/assets/manifest.json"
 CATALOG_PATH = ROOT / "games/fortressblue/maps/catalog.json"
-TANKS_PATH = ROOT / "games/fortressblue/data/tanks.json"
-ITEMS_PATH = ROOT / "games/fortressblue/data/items.json"
 SOURCES_PATH = ROOT / "games/fortressblue/assets/sources.json"
 OUT = ROOT / ".local/fortressblue/asset-redecode.json"
 
@@ -44,8 +42,6 @@ def load_prepare():
 def main() -> int:
     manifest = json.loads(MANIFEST_PATH.read_text())
     catalog = json.loads(CATALOG_PATH.read_text())
-    tanks = json.loads(TANKS_PATH.read_text())
-    items = json.loads(ITEMS_PATH.read_text())["items"]
     sources = json.loads(SOURCES_PATH.read_text())["hashes"]
     prepare = load_prepare()
     if not prepare.LOCAL.is_dir():
@@ -55,7 +51,9 @@ def main() -> int:
         )
 
     by_file = {entry["file"]: entry for entry in manifest["entries"]}
-    tmp = Path(tempfile.mkdtemp(prefix="fb-redecode-"))
+    workspace = ROOT / ".local/fortressblue"
+    workspace.mkdir(parents=True, exist_ok=True)
+    tmp = Path(tempfile.mkdtemp(prefix="fb-redecode-", dir=workspace))
     prepare.OUT = tmp
     checks: list[dict] = []
 
@@ -69,55 +67,47 @@ def main() -> int:
             }
         )
 
-    for name, want in sources.items():
-        check(f"source {name}", digest(prepare.LOCAL / "game" / name), want)
+    try:
+        for name, want in sources.items():
+            check(f"source {name}", digest(prepare.LOCAL / "game" / name), want)
 
-    for meta in catalog["maps"]:
-        item = {
-            "id": meta["id"],
-            "name": meta["name"],
-            "nameEn": meta["nameEn"],
-            "stage": meta["stage"],
-        }
-        built = prepare.build_map(item)
-        check(f"map mask {meta['id']}", built["mask"], meta["mask"])
-        check(f"map bullet mask {meta['id']}", built["bulletMask"], meta["bulletMask"])
-        check(f"map spawns {meta['id']}", built["spawns"], meta["spawns"])
-        for suffix in ("fg", "bg", "fg2", "thumb"):
-            rel = f"maps/{meta['id']}-{suffix}.webp"
-            ours = tmp / "maps" / f"{meta['id']}-{suffix}.webp"
-            if rel in by_file:
-                check(f"{meta['id']} {suffix}", digest(ours), by_file[rel]["sha256"])
-            else:
-                check(f"{meta['id']} {suffix} absent", ours.exists(), False)
+        for meta in catalog["maps"]:
+            item = {
+                "id": meta["id"],
+                "name": meta["name"],
+                "nameEn": meta["nameEn"],
+                "stage": meta["stage"],
+            }
+            built = prepare.build_map(item)
+            for suffix in ("fg", "bg", "fg2", "thumb"):
+                rel = f"maps/{meta['id']}-{suffix}.webp"
+                ours = tmp / "maps" / f"{meta['id']}-{suffix}.webp"
+                if rel in by_file:
+                    check(f"{meta['id']} {suffix}", digest(ours), by_file[rel]["sha256"])
+                else:
+                    check(f"{meta['id']} {suffix} absent", ours.exists(), False)
 
-    for tank in tanks["tanks"].values():
-        tank_id = tank["id"]
-        built = prepare.build_tank(tank_id)
-        if not built:
-            check(f"tank {tank_id} source", False, True)
-            continue
-        states, bullet = built
-        for state, sprite in states.items():
-            rel = f"tanks/{tank_id}-{state}.webp"
-            check(f"tank {tank_id} {state}", digest(tmp / rel), by_file[rel]["sha256"])
-            check(
-                f"tank {tank_id} {state} dims",
-                [sprite["w"], sprite["h"]],
-                [tank["sprites"][state]["w"], tank["sprites"][state]["h"]],
-            )
-        if bullet:
-            rel = f"projectiles/{tank_id}.webp"
-            check(f"bullet {tank_id}", digest(tmp / rel), by_file[rel]["sha256"])
+        for tank_id in range(1, 15):
+            built = prepare.build_tank(tank_id)
+            if not built:
+                check(f"tank {tank_id} source", False, True)
+                continue
+            states, bullet = built
+            for state, sprite in states.items():
+                rel = f"tanks/{tank_id}-{state}.webp"
+                check(f"tank {tank_id} {state}", digest(tmp / rel), by_file[rel]["sha256"])
+            if bullet:
+                rel = f"projectiles/{tank_id}.webp"
+                check(f"bullet {tank_id}", digest(tmp / rel), by_file[rel]["sha256"])
 
-    built_items = prepare.build_items()
-    check("item count", len(built_items), len(items))
-    for item in built_items:
-        rel = f"items/{item['id']}.webp"
-        check(f"item {item['id']}", digest(tmp / rel), by_file[rel]["sha256"])
-        check(f"item {item['id']} meta", item, next(i for i in items if i["id"] == item["id"]))
+        built_items = prepare.build_items()
+        check("item count", len(built_items), len([e for e in by_file if e.startswith("items/")]))
+        for item in built_items:
+            rel = f"items/{item['id']}.webp"
+            check(f"item {item['id']}", digest(tmp / rel), by_file[rel]["sha256"])
 
-    shutil.rmtree(tmp, ignore_errors=True)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
     failed = [item for item in checks if not item["ok"]]
     result = {"passed": not failed, "checks": len(checks), "failed": failed}
     OUT.parent.mkdir(parents=True, exist_ok=True)

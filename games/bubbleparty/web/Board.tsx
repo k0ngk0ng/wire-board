@@ -15,7 +15,11 @@ import {
   keyMove,
   type Move,
 } from "./input";
-import { HEIGHT, WIDTH, drawBoard, type DrawPoint } from "./canvas";
+import { DRAW_HEIGHT, DRAW_WIDTH, drawBoard, type DrawPoint } from "./canvas";
+import { PlayerMotion } from "./prediction";
+import { AvatarPicker } from "./AvatarPicker";
+import { avatarName } from "./avatar-art";
+import { normalizeAvatar } from "./avatar-animation";
 import { loadSprites } from "./sprites";
 import { animationNow } from "./clock";
 import { itemNames, mapNames, sources, teamNames, type View } from "./types";
@@ -39,24 +43,51 @@ export function Board(props: BoardProps<View>) {
   const me = view && room.you >= 0 ? view.players[room.you] : undefined;
   const trapped = !!me?.trappedUntil;
   const controlled = !!room.seats[room.you]?.autoPlay;
-  const enabled =
+  const [avatarOpen, setAvatarOpen] = useState(false);
+  const [avatarSaving, setAvatarSaving] = useState(false);
+  const preferenceSent = useRef("");
+  const canControl =
     !!view &&
     view.canAct &&
     !room.spectating &&
     !!me?.alive &&
     !trapped &&
     !controlled;
+  const enabled = canControl && !avatarOpen;
+  const canChoose =
+    !!view &&
+    view.phase !== "finished" &&
+    !!me?.alive &&
+    !room.spectating &&
+    !controlled;
+  useEffect(() => {
+    if (!canChoose) setAvatarOpen(false);
+  }, [canChoose]);
+  const preferenceKey = `bubbleparty.avatar:${room.seats[room.you]?.id ?? ""}`;
+  const scope = `${room.id}:${view?.epoch ?? ""}:${clock.epoch ?? 0}:${room.you}`;
+  const motion = useRef(new PlayerMotion());
   const [error, setError] = useState("");
   const input = useRef(new LatestInput());
   const sending = useRef(false);
   const latest = useRef(props);
   latest.current = props;
   const currentMove = useRef<Move>("none");
+  const currentFacing = useRef(me?.dir ?? "down");
   const heldKeys = useRef(new HeldDirections());
   const padPointer = useRef<number | null>(null);
   const display = useRef(new Map<number, DrawPoint>());
   const canvas = useRef<HTMLCanvasElement>(null);
   const boardElement = useRef<HTMLElement>(null);
+  const avatarWasOpen = useRef(false);
+  useEffect(() => {
+    if (
+      avatarWasOpen.current &&
+      !avatarOpen &&
+      !document.querySelector('[role="dialog"]')
+    )
+      canvas.current?.focus({ preventScroll: true });
+    avatarWasOpen.current = avatarOpen;
+  }, [avatarOpen]);
   const seen = useRef(new Set<number>());
   const initialized = useRef("");
   const phaseSeen = useRef("");
@@ -66,6 +97,33 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     void loadSprites(assets);
   }, [assets]);
+
+  useEffect(() => {
+    setAvatarOpen(false);
+  }, [room.id, view?.epoch]);
+  useEffect(() => {
+    if (!view || view.phase !== "countdown" || !canChoose) return;
+    const identity = `${room.id}:${view.epoch}:${room.you}`;
+    if (preferenceSent.current === identity) return;
+    preferenceSent.current = identity;
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(preferenceKey);
+    } catch {}
+    if (
+      saved === null ||
+      !Number.isInteger(Number(saved)) ||
+      Number(saved) < 0 ||
+      Number(saved) > 3
+    )
+      return;
+    if (Number(saved) !== (me?.avatar ?? 0))
+      void act({
+        type: "avatar",
+        epoch: view.epoch,
+        avatar: Number(saved),
+      }).catch((e) => setError(String(e instanceof Error ? e.message : e)));
+  }, [view?.epoch, view?.phase, canChoose, room.id, room.you, preferenceKey]);
 
   // Enter the arena once on a narrow screen. Keep the shared player panels in
   // their normal place above it; snapshots must never keep scrolling the page.
@@ -82,6 +140,7 @@ export function Board(props: BoardProps<View>) {
   }, [room.id, view?.epoch]);
 
   useEffect(() => {
+    currentFacing.current = me?.dir ?? "down";
     if (!enabled) {
       currentMove.current = "none";
       heldKeys.current.clear();
@@ -92,15 +151,31 @@ export function Board(props: BoardProps<View>) {
 
   const sendOne = useCallback((force: boolean) => {
     const p = latest.current;
-    if (sending.current || document.hidden || !p.data) return;
-    const request = input.current.next(performance.now(), force);
+    if (
+      (sending.current && (p.inputWindow ?? 1) <= 1) ||
+      document.hidden ||
+      !p.data
+    )
+      return;
+    const request = input.current.next(
+      performance.now(),
+      force,
+      p.inputWindow ?? 1,
+    );
     if (!request) return;
     const { token, ...action } = request;
     sending.current = true;
+    const sentScope = `${p.room.id}:${p.data.epoch}:${p.clock.epoch ?? 0}:${p.room.you}`;
     void p
       .act(action)
       .then(() => input.current.complete(token))
       .catch(() => {
+        const now = latest.current;
+        if (
+          sentScope !==
+          `${now.room.id}:${now.data?.epoch}:${now.clock.epoch ?? 0}:${now.room.you}`
+        )
+          return;
         const current = latest.current.data;
         const seq =
           latest.current.room.you >= 0
@@ -118,12 +193,12 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     if (!view) return;
     input.current.sync({
-      scope: room.id,
+      scope,
       epoch: view.epoch,
       seq: me?.seq ?? 0,
-      enabled,
+      enabled: canControl,
     });
-  }, [room.id, view?.epoch, me?.seq, enabled, view]);
+  }, [scope, view?.epoch, me?.seq, canControl, view]);
 
   useEffect(() => {
     const id = window.setInterval(() => sendOne(false), 40);
@@ -134,6 +209,7 @@ export function Board(props: BoardProps<View>) {
     (move: Move) => {
       if (!enabled) return;
       currentMove.current = move;
+      if (move !== "none") currentFacing.current = move;
       input.current.set({ move, bomb: false });
       sendOne(true);
     },
@@ -218,6 +294,34 @@ export function Board(props: BoardProps<View>) {
             display.current.set(p.seat, { x: p.px ?? p.x, y: p.py ?? p.y });
         }
         for (const p of current.players) {
+          const props = latest.current;
+          const own = p.seat === props.room.you && !props.room.spectating;
+          if (own) {
+            const active =
+              current.canAct &&
+              !props.room.seats[p.seat]?.autoPlay &&
+              !document.hidden;
+            const point = motion.current.frame(
+              current,
+              p.seat,
+              currentMove.current,
+              frameNow,
+              `${props.room.id}:${current.epoch}:${props.clock.epoch ?? 0}:${p.seat}`,
+              active,
+            );
+            display.current.set(p.seat, {
+              ...point,
+              move: active ? currentMove.current : "none",
+              dir: active ? currentFacing.current : p.dir,
+            });
+            if (canvas.current) {
+              canvas.current.dataset.renderX = String(point.x);
+              canvas.current.dataset.renderY = String(point.y);
+              canvas.current.dataset.serverX = String(p.px ?? p.x);
+              canvas.current.dataset.serverY = String(p.py ?? p.y);
+            }
+            continue;
+          }
           const at = display.current.get(p.seat);
           if (!at || reduced) {
             display.current.set(p.seat, { x: p.px ?? p.x, y: p.py ?? p.y });
@@ -238,6 +342,7 @@ export function Board(props: BoardProps<View>) {
           display.current,
           clockNow(current, latest.current.clock),
           !!reduced,
+          latest.current.assets,
         );
       }
       raf = requestAnimationFrame(frame);
@@ -248,7 +353,6 @@ export function Board(props: BoardProps<View>) {
 
   useEffect(() => {
     if (!view) return;
-    const scope = `${room.id}:${view.epoch}`;
     if (initialized.current !== scope) {
       initialized.current = scope;
       seen.current = new Set(view.events.map((event) => event.id));
@@ -257,6 +361,9 @@ export function Board(props: BoardProps<View>) {
         view.players.map((p) => [p.seat, { x: p.px ?? p.x, y: p.py ?? p.y }]),
       );
       currentMove.current = "none";
+      heldKeys.current.clear();
+      currentFacing.current = me?.dir ?? "down";
+      padPointer.current = null;
       input.current.reset(me?.seq ?? 0);
       return;
     }
@@ -309,7 +416,7 @@ export function Board(props: BoardProps<View>) {
         }
       }
     }
-  }, [view, room.id, assets, sound, audio, me?.team, me?.seq]);
+  }, [view, scope, room.id, assets, sound, audio, me?.team, me?.seq]);
 
   useEffect(() => {
     if (!view) return;
@@ -344,6 +451,35 @@ export function Board(props: BoardProps<View>) {
     [audio],
   );
 
+  const openAvatars = () => {
+    currentMove.current = "none";
+    heldKeys.current.clear();
+    padPointer.current = null;
+    input.current.release();
+    input.current.set({ ...NEUTRAL });
+    sendOne(true);
+    setError("");
+    setAvatarOpen(true);
+  };
+  const chooseAvatar = async (avatar: number) => {
+    if (!view || !canChoose || avatarSaving) return;
+    const epoch = view.epoch;
+    setAvatarSaving(true);
+    setError("");
+    try {
+      await act({ type: "avatar", epoch, avatar });
+      if (latest.current.data?.epoch !== epoch) return;
+      try {
+        localStorage.setItem(preferenceKey, String(avatar));
+      } catch {}
+      setAvatarOpen(false);
+    } catch (e) {
+      if (latest.current.data?.epoch === epoch)
+        setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setAvatarSaving(false);
+    }
+  };
   if (!view) {
     return <p className="bubble-loading">正在加载泡泡堂战场…</p>;
   }
@@ -432,8 +568,9 @@ export function Board(props: BoardProps<View>) {
       <div className="bubble-stage">
         <canvas
           ref={canvas}
-          width={WIDTH * 2}
-          height={HEIGHT * 2}
+          tabIndex={-1}
+          width={DRAW_WIDTH * 2}
+          height={DRAW_HEIGHT * 2}
           aria-label={`${mapNames[view.mapId] ?? view.mapId}水泡战场`}
           data-bubbleparty-canvas
         />
@@ -469,6 +606,30 @@ export function Board(props: BoardProps<View>) {
           </span>
         )}
       </div>
+      {me && !view.spectator && view.phase !== "finished" && (
+        <div className="bubble-appearance">
+          <button
+            type="button"
+            data-bubbleparty-avatar-open
+            aria-label="选择人物"
+            disabled={!canChoose}
+            onClick={openAvatars}
+          >
+            人物 · {avatarName(me.avatar)}
+          </button>
+        </div>
+      )}
+      {avatarOpen && me && (
+        <AvatarPicker
+          team={me.team}
+          selected={normalizeAvatar(me.avatar)}
+          assets={assets}
+          saving={avatarSaving || !canChoose}
+          error={error}
+          onChoose={chooseAvatar}
+          onClose={() => setAvatarOpen(false)}
+        />
+      )}
       {!view.spectator && (
         <div className="bubble-controls" aria-label="操作">
           <div
