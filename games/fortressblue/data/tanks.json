@@ -1,0 +1,830 @@
+{
+ "tanks": {
+  "1": {
+   "id": 1,
+   "name": "大碗",
+   "hp": 950,
+   "defense": 100,
+   "speed": 50,
+   "primary": 300,
+   "special": 150,
+   "angle": 90,
+   "range": 45,
+   "skills": [
+    3
+   ],
+   "skillName": "火",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/1-idle.webp",
+     "w": 38,
+     "h": 39,
+     "ax": 27,
+     "ay": 33
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/1-fire.webp",
+     "w": 84,
+     "h": 61,
+     "ax": 28,
+     "ay": 60
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/1-die.webp",
+     "w": 121,
+     "h": 68,
+     "ax": 19,
+     "ay": 67
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/1-move.webp",
+     "w": 37,
+     "h": 30,
+     "ax": 13,
+     "ay": 25
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/1.webp",
+    "w": 38,
+    "h": 30,
+    "ax": 19,
+    "ay": 15
+   }
+  },
+  "2": {
+   "id": 2,
+   "name": "叉叉",
+   "hp": 940,
+   "defense": 99,
+   "speed": 57,
+   "primary": 330,
+   "special": 100,
+   "angle": 80,
+   "range": 47,
+   "skills": [
+    2
+   ],
+   "skillName": "毒",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/2-idle.webp",
+     "w": 30,
+     "h": 34,
+     "ax": 19,
+     "ay": 27
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/2-fire.webp",
+     "w": 100,
+     "h": 42,
+     "ax": 11,
+     "ay": 41
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/2-die.webp",
+     "w": 87,
+     "h": 42,
+     "ax": 11,
+     "ay": 40
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/2-move.webp",
+     "w": 36,
+     "h": 26,
+     "ax": 10,
+     "ay": 20
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/2.webp",
+    "w": 36,
+    "h": 6,
+    "ax": 33,
+    "ay": 3
+   }
+  },
+  "3": {
+   "id": 3,
+   "name": "老土",
+   "hp": 920,
+   "defense": 89,
+   "speed": 48,
+   "primary": 140,
+   "special": 420,
+   "angle": 45,
+   "range": 43,
+   "skills": [],
+   "skillName": null,
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/3-idle.webp",
+     "w": 28,
+     "h": 40,
+     "ax": 18,
+     "ay": 32
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/3-fire.webp",
+     "w": 121,
+     "h": 59,
+     "ax": 19,
+     "ay": 58
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/3-die.webp",
+     "w": 42,
+     "h": 34,
+     "ax": 19,
+     "ay": 33
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/3-move.webp",
+     "w": 35,
+     "h": 28,
+     "ax": 15,
+     "ay": 27
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/3.webp",
+    "w": 13,
+    "h": 15,
+    "ax": 6,
+    "ay": 8
+   }
+  },
+  "4": {
+   "id": 4,
+   "name": "甲壳虫",
+   "hp": 1000,
+   "defense": 118,
+   "speed": 60,
+   "primary": 230,
+   "special": 150,
+   "angle": 40,
+   "range": 47,
+   "skills": [],
+   "skillName": null,
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/4-idle.webp",
+     "w": 32,
+     "h": 34,
+     "ax": 22,
+     "ay": 26
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/4-fire.webp",
+     "w": 40,
+     "h": 37,
+     "ax": 15,
+     "ay": 35
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/4-die.webp",
+     "w": 48,
+     "h": 37,
+     "ax": 20,
+     "ay": 35
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/4-move.webp",
+     "w": 35,
+     "h": 29,
+     "ax": 11,
+     "ay": 24
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/4.webp",
+    "w": 50,
+    "h": 19,
+    "ax": 46,
+    "ay": 9
+   }
+  },
+  "5": {
+   "id": 5,
+   "name": "公爵",
+   "hp": 1000,
+   "defense": 123,
+   "speed": 60,
+   "primary": 240,
+   "special": 153,
+   "angle": 40,
+   "range": 49,
+   "skills": [
+    2
+   ],
+   "skillName": "毒",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/5-idle.webp",
+     "w": 29,
+     "h": 32,
+     "ax": 20,
+     "ay": 23
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/5-fire.webp",
+     "w": 75,
+     "h": 44,
+     "ax": 19,
+     "ay": 43
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/5-die.webp",
+     "w": 35,
+     "h": 56,
+     "ax": 19,
+     "ay": 55
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/5-move.webp",
+     "w": 37,
+     "h": 24,
+     "ax": 13,
+     "ay": 19
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/5.webp",
+    "w": 57,
+    "h": 14,
+    "ax": 53,
+    "ay": 7
+   }
+  },
+  "6": {
+   "id": 6,
+   "name": "飞火",
+   "hp": 1100,
+   "defense": 117,
+   "speed": 57,
+   "primary": 120,
+   "special": 90,
+   "angle": 45,
+   "range": 60,
+   "skills": [],
+   "skillName": null,
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/6-idle.webp",
+     "w": 37,
+     "h": 38,
+     "ax": 26,
+     "ay": 31
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/6-fire.webp",
+     "w": 119,
+     "h": 63,
+     "ax": 17,
+     "ay": 62
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/6-die.webp",
+     "w": 84,
+     "h": 29,
+     "ax": 15,
+     "ay": 28
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/6-move.webp",
+     "w": 50,
+     "h": 35,
+     "ax": 30,
+     "ay": 30
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/6.webp",
+    "w": 48,
+    "h": 19,
+    "ax": 42,
+    "ay": 11
+   }
+  },
+  "7": {
+   "id": 7,
+   "name": "流星",
+   "hp": 1050,
+   "defense": 115,
+   "speed": 55,
+   "primary": 175,
+   "special": 60,
+   "angle": 50,
+   "range": 53,
+   "skills": [],
+   "skillName": null,
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/7-idle.webp",
+     "w": 36,
+     "h": 41,
+     "ax": 26,
+     "ay": 31
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/7-fire.webp",
+     "w": 63,
+     "h": 32,
+     "ax": 35,
+     "ay": 31
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/7-die.webp",
+     "w": 64,
+     "h": 114,
+     "ax": 34,
+     "ay": 113
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/7-move.webp",
+     "w": 41,
+     "h": 35,
+     "ax": 12,
+     "ay": 28
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/7.webp",
+    "w": 61,
+    "h": 13,
+    "ax": 58,
+    "ay": 6
+   }
+  },
+  "8": {
+   "id": 8,
+   "name": "小妖",
+   "hp": 990,
+   "defense": 95,
+   "speed": 80,
+   "primary": 220,
+   "special": 99,
+   "angle": 36,
+   "range": 50,
+   "skills": [
+    4
+   ],
+   "skillName": "雷",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/8-idle.webp",
+     "w": 39,
+     "h": 31,
+     "ax": 31,
+     "ay": 29
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/8-fire.webp",
+     "w": 42,
+     "h": 31,
+     "ax": 24,
+     "ay": 34
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/8-die.webp",
+     "w": 59,
+     "h": 27,
+     "ax": 16,
+     "ay": 30
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/8-move.webp",
+     "w": 46,
+     "h": 34,
+     "ax": 22,
+     "ay": 29
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/8.webp",
+    "w": 23,
+    "h": 15,
+    "ax": 12,
+    "ay": 6
+   }
+  },
+  "9": {
+   "id": 9,
+   "name": "雷霆",
+   "hp": 1150,
+   "defense": 115,
+   "speed": 56,
+   "primary": 220,
+   "special": 320,
+   "angle": 40,
+   "range": 48,
+   "skills": [
+    1
+   ],
+   "skillName": "爆炸",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/9-idle.webp",
+     "w": 32,
+     "h": 35,
+     "ax": 21,
+     "ay": 28
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/9-fire.webp",
+     "w": 43,
+     "h": 85,
+     "ax": 23,
+     "ay": 84
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/9-die.webp",
+     "w": 41,
+     "h": 36,
+     "ax": 25,
+     "ay": 34
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/9-move.webp",
+     "w": 34,
+     "h": 32,
+     "ax": 11,
+     "ay": 27
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/9.webp",
+    "w": 18,
+    "h": 17,
+    "ax": 9,
+    "ay": 8
+   }
+  },
+  "10": {
+   "id": 10,
+   "name": "闪灵",
+   "hp": 970,
+   "defense": 91,
+   "speed": 70,
+   "primary": 200,
+   "special": 270,
+   "angle": 55,
+   "range": 60,
+   "skills": [
+    4
+   ],
+   "skillName": "雷",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/10-idle.webp",
+     "w": 35,
+     "h": 28,
+     "ax": 19,
+     "ay": 27
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/10-fire.webp",
+     "w": 132,
+     "h": 32,
+     "ax": 14,
+     "ay": 31
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/10-die.webp",
+     "w": 34,
+     "h": 30,
+     "ax": 14,
+     "ay": 34
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/10-move.webp",
+     "w": 32,
+     "h": 30,
+     "ax": 13,
+     "ay": 29
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/10.webp",
+    "w": 31,
+    "h": 9,
+    "ax": 26,
+    "ay": 4
+   }
+  },
+  "11": {
+   "id": 11,
+   "name": "水鬼",
+   "hp": 1000,
+   "defense": 105,
+   "speed": 54,
+   "primary": 230,
+   "special": 190,
+   "angle": 50,
+   "range": 47,
+   "skills": [
+    2
+   ],
+   "skillName": "毒",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/11-idle.webp",
+     "w": 38,
+     "h": 31,
+     "ax": 26,
+     "ay": 30
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/11-fire.webp",
+     "w": 71,
+     "h": 38,
+     "ax": 21,
+     "ay": 41
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/11-die.webp",
+     "w": 59,
+     "h": 48,
+     "ax": 25,
+     "ay": 51
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/11-move.webp",
+     "w": 34,
+     "h": 36,
+     "ax": 11,
+     "ay": 36
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/11.webp",
+    "w": 64,
+    "h": 38,
+    "ax": 32,
+    "ay": 19
+   }
+  },
+  "12": {
+   "id": 12,
+   "name": "海怪",
+   "hp": 985,
+   "defense": 92,
+   "speed": 80,
+   "primary": 220,
+   "special": 166,
+   "angle": 40,
+   "range": 55,
+   "skills": [
+    4
+   ],
+   "skillName": "雷",
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/12-idle.webp",
+     "w": 42,
+     "h": 41,
+     "ax": 31,
+     "ay": 31
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/12-fire.webp",
+     "w": 32,
+     "h": 33,
+     "ax": 16,
+     "ay": 32
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/12-die.webp",
+     "w": 95,
+     "h": 65,
+     "ax": 19,
+     "ay": 63
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/12-move.webp",
+     "w": 40,
+     "h": 37,
+     "ax": 16,
+     "ay": 33
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/12.webp",
+    "w": 25,
+    "h": 21,
+    "ax": 13,
+    "ay": 10
+   }
+  },
+  "13": {
+   "id": 13,
+   "name": "暗影",
+   "hp": 990,
+   "defense": 98,
+   "speed": 62,
+   "primary": 210,
+   "special": 140,
+   "angle": 50,
+   "range": 50,
+   "skills": [],
+   "skillName": null,
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/13-idle.webp",
+     "w": 34,
+     "h": 36,
+     "ax": 22,
+     "ay": 29
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/13-fire.webp",
+     "w": 36,
+     "h": 32,
+     "ax": 15,
+     "ay": 31
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/13-die.webp",
+     "w": 73,
+     "h": 35,
+     "ax": 17,
+     "ay": 34
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/13-move.webp",
+     "w": 38,
+     "h": 35,
+     "ax": 13,
+     "ay": 29
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/13.webp",
+    "w": 57,
+    "h": 12,
+    "ax": 51,
+    "ay": 6
+   }
+  },
+  "14": {
+   "id": 14,
+   "name": "萨满",
+   "hp": 1010,
+   "defense": 104,
+   "speed": 60,
+   "primary": 220,
+   "special": 150,
+   "angle": 50,
+   "range": 50,
+   "skills": [],
+   "skillName": null,
+   "sprites": {
+    "idle": {
+     "url": "/fortressblue/v2/tanks/14-idle.webp",
+     "w": 43,
+     "h": 42,
+     "ax": 33,
+     "ay": 30
+    },
+    "fire": {
+     "url": "/fortressblue/v2/tanks/14-fire.webp",
+     "w": 48,
+     "h": 36,
+     "ax": 24,
+     "ay": 35
+    },
+    "die": {
+     "url": "/fortressblue/v2/tanks/14-die.webp",
+     "w": 48,
+     "h": 42,
+     "ax": 24,
+     "ay": 41
+    },
+    "move": {
+     "url": "/fortressblue/v2/tanks/14-move.webp",
+     "w": 42,
+     "h": 43,
+     "ax": 11,
+     "ay": 32
+    }
+   },
+   "bullet": {
+    "url": "/fortressblue/v2/projectiles/14.webp",
+    "w": 24,
+    "h": 26,
+    "ax": 19,
+    "ay": 14
+   }
+  }
+ },
+ "portraits": {
+  "1": {
+   "url": "/fortressblue/v2/tanks/1-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "2": {
+   "url": "/fortressblue/v2/tanks/2-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "3": {
+   "url": "/fortressblue/v2/tanks/3-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "4": {
+   "url": "/fortressblue/v2/tanks/4-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "5": {
+   "url": "/fortressblue/v2/tanks/5-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "6": {
+   "url": "/fortressblue/v2/tanks/6-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "7": {
+   "url": "/fortressblue/v2/tanks/7-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "8": {
+   "url": "/fortressblue/v2/tanks/8-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "9": {
+   "url": "/fortressblue/v2/tanks/9-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "10": {
+   "url": "/fortressblue/v2/tanks/10-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "11": {
+   "url": "/fortressblue/v2/tanks/11-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "12": {
+   "url": "/fortressblue/v2/tanks/12-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  },
+  "13": {
+   "url": "/fortressblue/v2/tanks/13-portrait.webp",
+   "w": 240,
+   "h": 162,
+   "ax": 0,
+   "ay": 0
+  }
+ },
+ "explosion": {
+  "url": "/fortressblue/v2/effects/explosion.webp",
+  "cellW": 132,
+  "cellH": 107,
+  "count": 28
+ },
+ "audio": {
+  "fire": "/fortressblue/v2/audio/fire.mp3",
+  "explode": "/fortressblue/v2/audio/explode.mp3",
+  "move": "/fortressblue/v2/audio/move.mp3",
+  "unmove": "/fortressblue/v2/audio/unmove.mp3",
+  "select": "/fortressblue/v2/audio/select.mp3",
+  "turn": "/fortressblue/v2/audio/turn.mp3",
+  "win": "/fortressblue/v2/audio/win.mp3",
+  "lose": "/fortressblue/v2/audio/lose.mp3",
+  "hit": "/fortressblue/v2/audio/hit.mp3"
+ }
+}

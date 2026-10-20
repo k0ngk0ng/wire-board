@@ -34,41 +34,38 @@ func actionOf(s fortressblue.State, kind string) map[string]any {
 
 func selectAll(t *testing.T, h *gametest.HTTP) fortressblue.State {
 	t.Helper()
-	s := state(h.People[0])
-	classes := []string{"balanced", "heavy", "scout", "sniper", "support"}
 	for i := range h.People {
-		if state(h.People[0]).Tanks[i].Selected {
+		s := state(h.People[0])
+		if s.Tanks[i].Selected {
 			continue
 		}
 		a := actionOf(s, "select")
-		a["class"] = classes[i%len(classes)]
+		a["tank"] = 1 + i%12
 		h.People[i].Action(a, 200)
 	}
-	s = state(h.People[0])
+	s := state(h.People[0])
 	if s.Phase != fortressblue.PhasePlaying {
 		t.Fatalf("phase after all selections: %s", s.Phase)
 	}
 	return s
 }
 
-func TestFortressBlueTenSeatHTTPAndTeamResult(t *testing.T) {
-	h := gametest.NewHTTP(t, 10, fortressblue.Module(), "fortressblue")
+func TestFortressBlueEightSeatHTTPAndTeamResult(t *testing.T) {
+	h := gametest.NewHTTP(t, 8, fortressblue.Module(), "fortressblue")
 	h.AssertUnpublished()
 	h.People[0].Request("POST", "/api/admin/games/fortressblue", map[string]bool{"enabled": true}, 200)
 	h.People[0].Request("POST", "/api/rooms", map[string]any{"kind": "fortressblue", "name": "人数错误", "capacity": 3}, 400)
-	h.Start(map[string]any{"map": "hills", "turnSeconds": 20})
+	h.Start(map[string]any{"map": "stage-16", "turnSeconds": 20})
 	s := state(h.People[0])
-	if s.Phase != fortressblue.PhaseSelect || len(s.Tanks) != 10 {
+	if s.Phase != fortressblue.PhaseSelect || len(s.Tanks) != 8 || s.MapID != "stage-16" {
 		t.Fatalf("bad select state: %+v", s)
 	}
 	if h.Spectator.State()["room"].(map[string]any)["spectating"] != true {
 		t.Fatal("spectator not watching")
 	}
-	// Spectator and non-current actors cannot act.
 	a := actionOf(s, "select")
-	a["class"] = "heavy"
+	a["tank"] = 1
 	h.Spectator.Action(a, 400)
-	// A player can select; a second select from the same seat is rejected.
 	h.People[0].Action(a, 200)
 	h.People[0].Action(a, 400)
 	s = state(h.People[0])
@@ -76,16 +73,15 @@ func TestFortressBlueTenSeatHTTPAndTeamResult(t *testing.T) {
 		t.Fatal("draft ended early")
 	}
 	s = selectAll(t, h)
-	if s.Current != s.Order[0] || s.Turn != 1 || s.Tanks[0].Team != fortressblue.TeamRed || s.Tanks[5].Team != fortressblue.TeamBlue {
+	if s.Current != s.Order[0] || s.Turn != 1 || s.Tanks[0].Team != fortressblue.TeamRed || s.Tanks[4].Team != fortressblue.TeamBlue {
 		t.Fatalf("bad playing state: %+v", s)
 	}
-	// Wrong seat and stale turn are rejected.
 	other := (s.Current + 1) % len(s.Tanks)
 	wrong := map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": 45, "power": 60, "facing": 1, "weapon": "primary"}
 	h.People[other].Action(wrong, 400)
 	stale := map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn - 1, "angle": 45, "power": 60, "facing": 1, "weapon": "primary"}
 	h.People[s.Current].Action(stale, 400)
-	bad := map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": 4, "power": 60, "facing": 1, "weapon": "primary"}
+	bad := map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": -1, "power": 60, "facing": 1, "weapon": "primary"}
 	h.People[s.Current].Action(bad, 400)
 	bad = map[string]any{"type": "fire", "epoch": s.Epoch, "turn": s.Turn, "angle": 45, "power": 101, "facing": 1, "weapon": "primary"}
 	h.People[s.Current].Action(bad, 400)
@@ -104,7 +100,7 @@ func TestFortressBlueTenSeatHTTPAndTeamResult(t *testing.T) {
 	if h.People[0].Room()["status"] != "playing" {
 		t.Fatal("HTTP room did not stay in play")
 	}
-	h.Record("ten-seat draft, fire and restart")
+	h.Record("eight-seat original draft, fire and restart")
 }
 
 func TestFortressBlueHTTPReselectAndMapValidation(t *testing.T) {
@@ -117,7 +113,6 @@ func TestFortressBlueHTTPReselectAndMapValidation(t *testing.T) {
 	if s.Phase != fortressblue.PhaseSelect || s.MapID == "" || s.MapID == "random" {
 		t.Fatalf("random map not resolved: %+v", s)
 	}
-	// All four seats pick; playing state exposes 2v2 control.
 	s = selectAll(t, h)
 	if s.Tanks[0].Team != s.Tanks[1].Team || s.Tanks[2].Team != fortressblue.TeamBlue {
 		t.Fatal("2v2 team split")
@@ -140,8 +135,8 @@ func resultFixture() gameapi.Module {
 		}
 		for i := range s.Tanks {
 			t := &s.Tanks[i]
-			t.Selected, t.Class, t.MaxHP, t.HP = true, "balanced", 100, 100
-			t.Fuel, t.Special, t.Alive = 40, 2, true
+			t.Selected, t.TankID, t.MaxHP, t.HP = true, 1, 950, 950
+			t.Fuel, t.Special, t.Alive = 50, 2, true
 		}
 		s.Tanks[1].Alive, s.Tanks[1].HP = false, 0
 		s.Phase = fortressblue.PhasePlaying
@@ -164,7 +159,7 @@ func resultFixture() gameapi.Module {
 
 func TestFortressBlueHTTPResultAndHistory(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, resultFixture(), "fortressblue")
-	h.Start(map[string]any{"map": "hills", "turnSeconds": 20})
+	h.Start(map[string]any{"map": "stage-16", "turnSeconds": 20})
 	s := state(h.People[0])
 	if s.Phase != fortressblue.PhasePlaying {
 		t.Fatalf("fixture did not start: %+v", s)

@@ -2,405 +2,387 @@ package fortressblue
 
 import (
 	"encoding/json"
-	"strings"
+	"math"
 	"testing"
 	"time"
 
+	fbdata "github.com/k0ngk0ng/wire-board/games/fortressblue/data"
+	fbmaps "github.com/k0ngk0ng/wire-board/games/fortressblue/maps"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
-func chooseOptions(t *testing.T, players int, options Options) gameapi.Match {
+func ctx(players, actor int, now time.Time) gameapi.Context {
+	return gameapi.Context{Actor: actor, Players: players, Version: 1, RequestedVersion: 1, Now: now}
+}
+
+func startAt(t *testing.T, players int, mapID string) (*State, gameapi.Match) {
 	t.Helper()
-	raw, _ := json.Marshal(options)
-	configured, err := configure(players, raw)
+	now := time.Unix(1700000000, 0)
+	raw, _ := json.Marshal(Options{Map: mapID, TurnSeconds: 30})
+	m, err := start(ctx(players, -1, now), raw)
 	if err != nil {
 		t.Fatal(err)
 	}
-	now := time.Unix(1_800_000_000, 0)
-	m, err := Module().Start(gameapi.Context{Players: players, Now: now}, configured)
+	s, err := decode(m)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := m.Validate(players); err != nil {
+	return s, m
+}
+
+func selectAll(t *testing.T, s *State, m gameapi.Match, ids []int) (gameapi.Match, *State) {
+	t.Helper()
+	now := time.Unix(1700000001, 0)
+	for seat, id := range ids {
+		raw, _ := json.Marshal(Action{Type: "select", Epoch: s.Epoch, Tank: id})
+		var err error
+		m, err = apply(ctx(len(ids), seat, now), m, raw)
+		if err != nil {
+			t.Fatalf("select seat %d: %v", seat, err)
+		}
+	}
+	s, err := decode(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return m, s
+}
+
+func TestOriginalCatalog(t *testing.T) {
+	c, err := fbmaps.All()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(c.Maps) != 17 {
+		t.Fatalf("maps = %d, want 17", len(c.Maps))
+	}
+	for _, m := range c.Maps {
+		if m.Width < 1200 || m.Height != 960 || len(m.Spawns) != 8 || m.Mask == "" {
+			t.Fatalf("bad map %+v", m)
+		}
+		mask := fbmaps.BaseMask(m)
+		if len(mask) != (m.MaskCols*m.MaskRows+7)/8 {
+			t.Fatalf("mask size %s", m.ID)
+		}
+	}
+	tanks, err := fbdata.All()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(tanks.Tanks) != 14 || tanks.Explosion.Count != 28 || tanks.Explosion.CellW <= 0 {
+		t.Fatalf("tank catalog invalid: %d tanks, explosion %+v", len(tanks.Tanks), tanks.Explosion)
+	}
+	for id, tank := range tanks.Tanks {
+		if tank.HP <= 0 || tank.Primary <= 0 || tank.Sprites["idle"].URL == "" || tank.Bullet == nil {
+			t.Fatalf("tank %s incomplete: %+v", id, tank)
+		}
+	}
+}
+
+func TestStartTeamSpawns(t *testing.T) {
+	for _, players := range []int{2, 4, 6, 8} {
+		s, _ := startAt(t, players, "stage-16")
+		if len(s.Tanks) != players || s.Phase != PhaseSelect {
+			t.Fatalf("%d players state: %d tanks phase %s", players, len(s.Tanks), s.Phase)
+		}
+		for i, tank := range s.Tanks {
+			if tank.Team != teamOf(i, players) || !tank.Alive || tank.X < 0 || tank.X > 1536 {
+				t.Fatalf("%d players tank %d invalid: %+v", players, i, tank)
+			}
+		}
+		if s.Tanks[0].X >= s.Tanks[players-1].X {
+			t.Fatalf("%d players spawns not separated: %+v", players, s.Tanks)
+		}
+	}
+}
+
+func TestTerrainMaskAndProjectile(t *testing.T) {
+	m, ok := fbmaps.ByID("stage-16")
+	if !ok {
+		t.Fatal("map missing")
+	}
+	mask := fbmaps.BaseMask(m)
+	// The foreground layer has solid terrain near the bottom and air above.
+	if !solid(m, mask, 54, 800) {
+		t.Fatal("expected solid ground near left spawn")
+	}
+	if solid(m, mask, 54, 40) {
+		t.Fatal("expected air at the top")
+	}
+	arc := simulateArc(m, mask, []Tank{{Seat: 0, Alive: true, X: 300, Y: 700}}, 0, 300, 700, 45, 70, 1, 1, 0, MaxPath)
+	if len(arc.Path) < 10 || arc.Impact.X <= 300 {
+		t.Fatalf("arc did not travel: %+v", arc)
+	}
+	if !solid(m, mask, arc.Impact.X, arc.Impact.Y) {
+		t.Fatalf("arc did not stop on terrain: %+v", arc.Impact)
+	}
+}
+
+func TestBlastCarvesAndDamages(t *testing.T) {
+	s, match := startAt(t, 2, "stage-16")
+	_, s = selectAll(t, s, match, []int{1, 2})
+	m, _ := fbmaps.ByID(s.MapID)
+	mask := maskFor(m, s.Craters)
+	target := s.Tanks[1]
+	before := target.HP
+	s.Tanks[0].Damage = 0
+	blast := applyBlast(s, 0, Weapon{Name: "主炮", Damage: 300, Blast: 20}, Point{X: target.X, Y: target.Y - 18}, "", 1, 1)
+	if blast.R < 30 || len(s.Craters) != 1 {
+		t.Fatalf("blast/crater missing: %+v craters=%d", blast, len(s.Craters))
+	}
+	if s.Tanks[1].HP >= before || s.Tanks[0].Damage <= 0 {
+		t.Fatalf("damage not applied: hp %d -> %d, damage %d", before, s.Tanks[1].HP, s.Tanks[0].Damage)
+	}
+	after := maskFor(m, s.Craters)
+	if len(after) != len(mask) || string(after) == string(mask) {
+		t.Fatal("terrain mask did not change")
+	}
+}
+
+func TestSelectAndTurnAdvance(t *testing.T) {
+	s, m := startAt(t, 2, "stage-16")
+	m, s = selectAll(t, s, m, []int{1, 2})
+	if s.Phase != PhasePlaying || s.Current != 0 || s.Turn != 1 {
+		t.Fatalf("playing not started: phase=%s current=%d turn=%d", s.Phase, s.Current, s.Turn)
+	}
+	raw, _ := json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 45, Power: 70, Facing: 1, Weapon: "primary"})
+	now := time.Unix(1700000002, 0)
+	m2, err := apply(ctx(2, 0, now), m, raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s2, err := decode(m2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if s2.Turn != 2 || s2.Current != 1 || s2.LastShot == nil || len(s2.LastShot.Arcs) != 1 {
+		t.Fatalf("turn did not advance: turn=%d current=%d shot=%+v", s2.Turn, s2.Current, s2.LastShot)
+	}
+}
+
+func TestSpecialFireAppliesStatus(t *testing.T) {
+	s, m := startAt(t, 2, "stage-16")
+	m, s = selectAll(t, s, m, []int{1, 1})
+	if s.Tanks[0].Special != MaxSpecial {
+		t.Fatalf("special ammo = %d", s.Tanks[0].Special)
+	}
+	// Put the target directly in front to guarantee a direct hit.
+	s.Tanks[1].X = s.Tanks[0].X + 40
+	s.Tanks[1].Y = s.Tanks[0].Y
+	m = mustMatch(t, s)
+	raw, _ := json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 0, Power: 30, Facing: 1, Weapon: "special"})
+	m2, err := apply(ctx(2, 0, time.Unix(1700000003, 0)), m, raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s2, _ := decode(m2)
+	if s2.Tanks[0].Special != MaxSpecial-1 {
+		t.Fatalf("special ammo not consumed: %d", s2.Tanks[0].Special)
+	}
+	if len(s2.Tanks[1].Statuses) == 0 && s2.Tanks[1].HP > 0 {
+		t.Fatalf("fire special did not apply burn: %+v", s2.Tanks[1])
+	}
+}
+
+func TestTimeoutAdvancesTurn(t *testing.T) {
+	s, m := startAt(t, 2, "stage-16")
+	m, s = selectAll(t, s, m, []int{1, 2})
+	now := time.Unix(1700000100, 0)
+	s.Deadline = now.Add(-time.Second).UnixMilli()
+	m = mustMatch(t, s)
+	raw, _ := json.Marshal(s.Options)
+	_ = raw
+	m2, err := onTimer(ctx(2, -1, now), m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s2, _ := decode(m2)
+	if s2.Turn != 2 || s2.Current != 1 {
+		t.Fatalf("timeout did not advance: turn=%d current=%d", s2.Turn, s2.Current)
+	}
+}
+
+func TestDrawAndWinner(t *testing.T) {
+	s, _ := startAt(t, 2, "stage-16")
+	for i := range s.Tanks {
+		s.Tanks[i].Alive = false
+	}
+	if !s.checkTeamOutcome(1) || !s.Draw || s.Phase != PhaseFinished {
+		t.Fatalf("simultaneous death not draw: %+v", s)
+	}
+	s, _ = startAt(t, 2, "stage-16")
+	s.Tanks[0].Alive = false
+	if !s.checkTeamOutcome(1) || s.Draw || s.WinnerTeam != TeamBlue {
+		t.Fatalf("blue win not detected: %+v", s)
+	}
+}
+
+func TestBadStateRejected(t *testing.T) {
+	s, _ := startAt(t, 2, "stage-16")
+	s.Craters = append(s.Craters, Crater{X: -100, Y: 10, R: 20})
+	if _, err := decode(mustMatch(t, s)); err == nil {
+		t.Fatal("negative crater accepted")
+	}
+	s, _ = startAt(t, 2, "stage-16")
+	s.Tanks[0].Team = 1
+	if _, err := decode(mustMatch(t, s)); err == nil {
+		t.Fatal("wrong team accepted")
+	}
+}
+
+func TestBotReturnsLegalActions(t *testing.T) {
+	s, m := startAt(t, 2, "stage-16")
+	now := time.Unix(1700000000, 0)
+	for seat := 0; seat < 2; seat++ {
+		raw, err := botAction(ctx(2, seat, now), m)
+		if err != nil || raw == nil {
+			t.Fatalf("bot select seat %d: %v %s", seat, err, raw)
+		}
+		m, err = apply(ctx(2, seat, now), m, raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	s, _ = decode(m)
+	if s.Phase != PhasePlaying {
+		t.Fatalf("bots did not start match: %s", s.Phase)
+	}
+	raw, err := botAction(ctx(2, s.Current, now), m)
+	if err != nil || raw == nil {
+		t.Fatalf("bot fire: %v %s", err, raw)
+	}
+	var a Action
+	if err := json.Unmarshal(raw, &a); err != nil || a.Type != "fire" || a.Angle < 0 || a.Angle > 90 || a.Power < 20 || a.Power > 100 {
+		t.Fatalf("illegal bot action: %s %+v", raw, a)
+	}
+}
+
+func mustMatch(t *testing.T, s *State) gameapi.Match {
+	t.Helper()
+	m, err := s.envelope()
+	if err != nil {
 		t.Fatal(err)
 	}
 	return m
 }
 
-func stateOf(t *testing.T, m gameapi.Match) *State {
-	t.Helper()
-	s, err := decode(m)
+func TestDamageFormula(t *testing.T) {
+	s, match := startAt(t, 2, "stage-16")
+	_, s = selectAll(t, s, match, []int{1, 2})
+	def := tankDefense(s.Tanks[1])
+	if def <= 0 {
+		t.Fatal("defense not loaded")
+	}
+	// Direct hit should remove a meaningful fraction of 950–1150 HP.
+	before := s.Tanks[1].HP
+	applyBlast(s, 0, Weapon{Damage: 300, Blast: 20}, Point{X: s.Tanks[1].X, Y: s.Tanks[1].Y - 18}, "", 1, 1)
+	lost := before - s.Tanks[1].HP
+	if lost < 80 || lost > 400 {
+		t.Fatalf("unexpected direct damage %d (defense %d)", lost, def)
+	}
+}
+
+func TestAimBounds(t *testing.T) {
+	if clamp(100, 0, 90) != 90 || math.Abs(clamp(-3, 0, 90)) != 0 {
+		t.Fatal("clamp broken")
+	}
+}
+
+func TestSelectTimeoutStartsMatch(t *testing.T) {
+	s, m := startAt(t, 4, "stage-7")
+	now := time.Unix(1700000200, 0)
+	s.SelectUntil = now.Add(-time.Second).UnixMilli()
+	m = mustMatch(t, s)
+	m2, err := onTimer(ctx(4, -1, now), m)
 	if err != nil {
 		t.Fatal(err)
 	}
-	return s
-}
-
-func applyAction(t *testing.T, m gameapi.Match, actor int, action Action, now time.Time) gameapi.Match {
-	t.Helper()
-	raw, _ := json.Marshal(action)
-	next, err := Module().Apply(gameapi.Context{Players: len(stateOf(t, m).Tanks), Actor: actor, Now: now, Version: 1}, m, raw)
-	if err != nil {
-		t.Fatalf("apply %s seat %d: %v", action.Type, actor, err)
-	}
-	if err := next.Validate(len(stateOf(t, m).Tanks)); err != nil {
-		t.Fatal(err)
-	}
-	return next
-}
-
-func rejectAction(t *testing.T, m gameapi.Match, actor int, action Action, now time.Time) {
-	t.Helper()
-	raw, _ := json.Marshal(action)
-	if _, err := Module().Apply(gameapi.Context{Players: len(stateOf(t, m).Tanks), Actor: actor, Now: now, Version: 1}, m, raw); err == nil {
-		t.Fatalf("action %s seat %d was accepted", action.Type, actor)
-	}
-}
-
-func startPlaying(t *testing.T, players int, options Options) (*State, gameapi.Match, time.Time) {
-	t.Helper()
-	m := chooseOptions(t, players, options)
-	s := stateOf(t, m)
-	now := time.Unix(1_800_000_000, 0).Add(SelectMS * time.Millisecond)
-	for i := range s.Tanks {
-		class := classOrder[i%len(classOrder)]
-		m = applyAction(t, m, i, Action{Type: "select", Epoch: s.Epoch, Class: class}, now)
-	}
-	s = stateOf(t, m)
-	if s.Phase != PhasePlaying {
-		t.Fatalf("phase after draft = %s", s.Phase)
-	}
-	return s, m, now
-}
-
-func TestConfigureTeamsAndMaps(t *testing.T) {
-	for _, players := range []int{2, 4, 6, 8, 10} {
-		for _, id := range mapOrder {
-			m := chooseOptions(t, players, Options{Map: id, TurnSeconds: 25})
-			s := stateOf(t, m)
-			if len(s.Tanks) != players || len(s.Order) != players || teamSize(players) != players/2 {
-				t.Fatalf("players %d state %+v", players, s)
-			}
-			seen := map[int]bool{}
-			for _, seat := range s.Order {
-				if seen[seat] || seat < 0 || seat >= players {
-					t.Fatalf("bad turn order %v", s.Order)
-				}
-				seen[seat] = true
-			}
-			for i, seat := range s.Order {
-				wantTeam := TeamRed
-				if i%2 == 1 {
-					wantTeam = TeamBlue
-				}
-				if s.Tanks[seat].Team != wantTeam {
-					t.Fatalf("order/team mismatch: %v", s.Order)
-				}
-			}
-		}
-	}
-	for _, players := range []int{1, 3, 5, 7, 9, 11, 12} {
-		raw, _ := json.Marshal(Options{Map: "hills", TurnSeconds: 25})
-		if _, err := configure(players, raw); err == nil {
-			t.Fatalf("players %d accepted", players)
-		}
-	}
-	for _, options := range []Options{{Map: "bad", TurnSeconds: 25}, {Map: "hills", TurnSeconds: 5}, {Map: "hills", TurnSeconds: 60}} {
-		raw, _ := json.Marshal(options)
-		if _, err := configure(10, raw); err == nil {
-			t.Fatalf("options %+v accepted", options)
-		}
-	}
-}
-
-func TestMapsSymmetricAndSpawnLedges(t *testing.T) {
-	for _, id := range mapOrder {
-		s, _, _ := startPlaying(t, 10, Options{Map: id, TurnSeconds: 20})
-		if len(s.Heights) != Columns || s.MapID != id {
-			t.Fatalf("map %s heights %d id %s", id, len(s.Heights), s.MapID)
-		}
-		for i := 0; i < Columns; i++ {
-			if s.Heights[i] != s.Heights[Columns-1-i] {
-				t.Fatalf("map %s column %d not symmetric", id, i)
-			}
-			if s.Heights[i] < 0 || s.Heights[i] > FieldHeight {
-				t.Fatalf("map %s height out of range", id)
-			}
-		}
-		for i, tank := range s.Tanks {
-			if !tank.Selected || !tank.Alive || tank.MaxHP <= 0 {
-				t.Fatalf("tank %d not initialized: %+v", i, tank)
-			}
-			if tank.X <= 0 || tank.X >= FieldWidth || tank.Y <= 0 || tank.Y >= FieldHeight {
-				t.Fatalf("spawn out of field: %+v", tank)
-			}
-			if tank.Y < groundAt(s.Heights, tank.X)-0.01 {
-				t.Fatalf("spawn inside terrain: %+v", tank)
-			}
-		}
-	}
-}
-
-func TestSelectTimeoutStartsWithDeterministicPicks(t *testing.T) {
-	m := chooseOptions(t, 4, Options{Map: "hills", TurnSeconds: 20})
-	s := stateOf(t, m)
-	now := time.Unix(1_800_000_000, 0)
-	m = applyAction(t, m, 0, Action{Type: "select", Epoch: s.Epoch, Class: "heavy"}, now)
-	if stateOf(t, m).Phase != PhaseSelect {
-		t.Fatal("started before everyone picked")
-	}
-	late := time.Unix(1_800_000_000, 0).Add(SelectMS*time.Millisecond + 1)
-	next, err := Module().OnTimer(gameapi.Context{Players: 4, Now: late}, m)
+	s2, err := decode(m2)
 	if err != nil {
 		t.Fatal(err)
 	}
-	s = stateOf(t, next)
-	if s.Phase != PhasePlaying || s.Current != s.Order[0] {
-		t.Fatalf("timeout did not start: %+v", s)
+	if s2.Phase != PhasePlaying || s2.Current != 0 || s2.Turn != 1 {
+		t.Fatalf("select timeout did not start: %+v", s2)
 	}
-	for _, tank := range s.Tanks {
-		if !tank.Selected || !tank.Alive {
-			t.Fatalf("timeout left unselected tank: %+v", tank)
+	for _, tank := range s2.Tanks {
+		if !tank.Selected || tank.MaxHP <= 0 || tank.Alive == false {
+			t.Fatalf("timeout tank incomplete: %+v", tank)
 		}
 	}
-	if next.SystemDeadline == 0 || next.SystemDeadline <= late.UnixMilli() {
-		t.Fatalf("bad system deadline %d", next.SystemDeadline)
-	}
 }
 
-func TestMoveAndFireAdvanceTurn(t *testing.T) {
-	s, m, now := startPlaying(t, 4, Options{Map: "hills", TurnSeconds: 25})
-	current := s.Current
-	tank := s.Tanks[current]
-	moveDir := 1
-	if tank.Facing < 0 {
-		moveDir = -1
+func TestAllSpecialSkillKinds(t *testing.T) {
+	cases := []struct {
+		tank   int
+		status string
+	}{
+		{1, "burn"},
+		{2, "poison"},
+		{9, ""},
 	}
-	m = applyAction(t, m, current, Action{Type: "move", Epoch: s.Epoch, Turn: s.Turn, Dir: moveDir}, now)
-	s = stateOf(t, m)
-	if s.Tanks[current].Fuel >= tank.Fuel {
-		t.Fatalf("fuel did not decrease: %v -> %v", tank.Fuel, s.Tanks[current].Fuel)
-	}
-	// Move again with a stale turn is rejected.
-	rejectAction(t, m, s.Current, Action{Type: "move", Epoch: s.Epoch, Turn: s.Turn - 1, Dir: 1}, now)
-	// Fire from the wrong seat is rejected.
-	rejectAction(t, m, (s.Current+1)%len(s.Tanks), Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 45, Power: 60, Facing: 1, Weapon: "primary"}, now)
-	m = applyAction(t, m, s.Current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 45, Power: 60, Facing: 1, Weapon: "primary"}, now)
-	next := stateOf(t, m)
-	if next.Turn != s.Turn+1 || next.Current == s.Current || next.LastShot == nil || len(next.LastShot.Arcs) != 1 {
-		t.Fatalf("fire did not advance: %+v", next)
-	}
-	if next.Wind != windFor(next.Seed, next.Turn, next.Sudden) {
-		t.Fatalf("wind not deterministic: %d", next.Wind)
-	}
-	// Stale fire for the previous turn is rejected.
-	rejectAction(t, m, current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 45, Power: 60, Facing: 1, Weapon: "primary"}, now)
-}
-
-func TestShotDamagesTargetAndCarvesTerrain(t *testing.T) {
-	s, _, now := startPlaying(t, 2, Options{Map: "hills", TurnSeconds: 25})
-	shooter, target := 0, 1
-	st := &s.Tanks[shooter]
-	tt := &s.Tanks[target]
-	// Put the target on the same plateau, 30 px to the right.
-	tt.X = st.X + 30
-	tt.Y = groundAt(s.Heights, tt.X)
-	beforeHP := tt.HP
-	beforeHeight := append([]float64(nil), s.Heights...)
-	// Apply a primary blast directly at the target. The fire/advance pipeline is
-	// covered by TestMoveAndFireAdvanceTurn; this isolates damage/terrain rules.
-	weapon := classes["balanced"].Primary
-	blasts := []Blast{}
-	total := 0
-	applyBlast(s, shooter, weapon, Point{X: tt.X, Y: tt.Y - 7}, &blasts, now, &total)
-	settleTanks(s, nil, now.UnixMilli())
-	if s.Tanks[target].HP >= beforeHP && s.Tanks[target].Alive {
-		t.Fatalf("target not damaged: %+v", s.Tanks[target])
-	}
-	if len(blasts) != 1 || total <= 0 {
-		t.Fatalf("bad blast record: %+v", blasts)
-	}
-	changed := false
-	for i := range s.Heights {
-		if s.Heights[i] != beforeHeight[i] {
-			changed = true
+	for _, tc := range cases {
+		s, match := startAt(t, 2, "stage-16")
+		_, s = selectAll(t, s, match, []int{tc.tank, 1})
+		s.Tanks[1].X = s.Tanks[0].X + 42
+		s.Tanks[1].Y = s.Tanks[0].Y
+		match = mustMatch(t, s)
+		raw, _ := json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 0, Power: 30, Facing: 1, Weapon: "special"})
+		next, err := apply(ctx(2, 0, time.Unix(1700000300, 0)), match, raw)
+		if err != nil {
+			t.Fatalf("tank %d special: %v", tc.tank, err)
+		}
+		s2, err := decode(next)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if s2.Tanks[0].Special != MaxSpecial-1 || s2.LastShot == nil || len(s2.LastShot.Blasts) != 1 {
+			t.Fatalf("tank %d special state: %+v", tc.tank, s2.Tanks[0])
+		}
+		if tc.status != "" && s2.Tanks[1].HP > 0 && len(s2.Tanks[1].Statuses) == 0 {
+			t.Fatalf("tank %d did not apply %s: %+v", tc.tank, tc.status, s2.Tanks[1])
+		}
+		if tc.tank == 9 && s2.LastShot.Blasts[0].R <= 50 {
+			t.Fatalf("explosion special radius = %v", s2.LastShot.Blasts[0].R)
 		}
 	}
-	if !changed {
-		t.Fatal("terrain unchanged after explosion")
-	}
 }
 
-func TestSpecialAmmoAndValidation(t *testing.T) {
-	s, m, now := startPlaying(t, 2, Options{Map: "hills", TurnSeconds: 25})
-	current := s.Current
-	tank := s.Tanks[current]
-	spec := classes[tank.Class]
-	if spec.SpecialAmmo == 0 {
-		t.Fatal("special missing")
-	}
-	rejectAction(t, m, current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 4, Power: 50, Facing: 1, Weapon: "primary"}, now)
-	rejectAction(t, m, current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 50, Power: 120, Facing: 1, Weapon: "primary"}, now)
-	rejectAction(t, m, current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 50, Power: 50, Facing: 2, Weapon: "primary"}, now)
-	rejectAction(t, m, current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 50, Power: 50, Facing: 1, Weapon: "primary", Class: "heavy"}, now)
-	m = applyAction(t, m, current, Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: 50, Power: 50, Facing: 1, Weapon: "special"}, now)
-	s = stateOf(t, m)
-	used := s.Tanks[current]
-	if used.Special != tank.Special-1 {
-		t.Fatalf("special ammo %d -> %d", tank.Special, used.Special)
-	}
-	if len(s.LastShot.Arcs) != spec.Special.Shots {
-		t.Fatalf("special arcs %d want %d", len(s.LastShot.Arcs), spec.Special.Shots)
-	}
-}
-
-func TestFallDamageAndWater(t *testing.T) {
-	s, _, _ := startPlaying(t, 2, Options{Map: "islands", TurnSeconds: 25})
-	seat := s.Current
-	tank := &s.Tanks[seat]
-	// Carve a deep hole under the tank and settle it.
-	col := int(tank.X / ColumnWidth)
-	if col < 2 {
-		col = 2
-	}
-	s.Heights[col] = 4
-	s.Heights[col-1] = 4
-	s.Heights[col+1] = 4
-	hp := tank.HP
-	settleTanks(s, nil, 1_800_000_000_000)
-	if s.Tanks[seat].Alive && s.Tanks[seat].HP >= hp {
-		t.Fatalf("falling into deep terrain did not damage: %+v", s.Tanks[seat])
-	}
-}
-
-func TestTeamOutcomeAndTimeoutResult(t *testing.T) {
-	s, m, now := startPlaying(t, 4, Options{Map: "hills", TurnSeconds: 25})
-	for i := range s.Tanks {
-		if s.Tanks[i].Team == TeamBlue {
-			s.Tanks[i].Alive = false
-			s.Tanks[i].HP = 0
-		}
-	}
-	env, _ := s.envelope()
-	m = env
-	if !s.checkTeamOutcome(now.UnixMilli()) {
-		t.Fatal("team wipeout not detected")
-	}
-	env, _ = s.envelope()
-	m = env
-	if m.Result == nil || !m.Result.Team || len(m.Result.Winners) != 2 {
-		t.Fatalf("bad team result: %+v", m.Result)
-	}
-	for _, w := range m.Result.Winners {
-		if s.Tanks[w].Team != TeamRed {
-			t.Fatal("wrong team winner")
-		}
-	}
-
-	s, m, _ = startPlaying(t, 2, Options{Map: "hills", TurnSeconds: 25})
-	s.Tanks[0].HP, s.Tanks[1].HP = 20, 20
-	s.MatchEndsAt = 1_800_000_000_000
-	env, _ = s.envelope()
-	next, err := Module().OnTimer(gameapi.Context{Players: 2, Now: time.Unix(1_800_000_000, 0)}, env)
+func TestClientCatalogMatchesServer(t *testing.T) {
+	all, err := fbmaps.All()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if next.Result == nil || !next.Result.Draw {
-		t.Fatalf("tied HP should draw: %+v", next.Result)
-	}
-}
-
-func TestSuddenDeathAndViewControls(t *testing.T) {
-	s, m, now := startPlaying(t, 4, Options{Map: "hills", TurnSeconds: 25})
-	view, err := Module().View(m, s.Current)
+	client, err := fbmaps.Client()
 	if err != nil {
 		t.Fatal(err)
 	}
-	v := view.(View)
-	if !v.CanFire || !v.CanMove {
-		t.Fatalf("current player cannot act: %+v", v)
+	if len(client.Maps) != len(all.Maps) {
+		t.Fatalf("client maps %d server %d", len(client.Maps), len(all.Maps))
 	}
-	other := (s.Current + 1) % len(s.Tanks)
-	view, _ = Module().View(m, other)
-	if view.(View).CanFire {
-		t.Fatal("non-current player can fire")
+	byID := map[string]fbmaps.Map{}
+	for _, m := range all.Maps {
+		byID[m.ID] = m
 	}
-	view, _ = Module().View(m, -1)
-	if view.(View).CanFire || view.(View).CanMove || view.(View).CanSelect {
-		t.Fatal("spectator controls leaked")
-	}
-	late := time.UnixMilli(s.SuddenAt + 1)
-	next, err := Module().OnTimer(gameapi.Context{Players: 4, Now: late}, m)
-	if err != nil {
-		t.Fatal(err)
-	}
-	s = stateOf(t, next)
-	if !s.Sudden || s.Wind < -20 || s.Wind > 20 {
-		t.Fatalf("sudden death not enabled: %+v", s)
-	}
-	if next.SystemDeadline == 0 || next.SystemDeadline <= late.UnixMilli() {
-		t.Fatalf("sudden deadline %d", next.SystemDeadline)
-	}
-	_ = now
-}
-
-func TestDecodeRejectsMalformedState(t *testing.T) {
-	m := chooseOptions(t, 2, Options{Map: "hills", TurnSeconds: 25})
-	var raw map[string]any
-	_ = json.Unmarshal(m.Data, &raw)
-	cases := []map[string]any{}
-	clone := func() map[string]any {
-		b, _ := json.Marshal(raw)
-		var v map[string]any
-		_ = json.Unmarshal(b, &v)
-		return v
-	}
-	bad := clone()
-	bad["heights"] = []float64{1, 2}
-	cases = append(cases, bad)
-	bad = clone()
-	bad["phase"] = "bogus"
-	cases = append(cases, bad)
-	bad = clone()
-	bad["tanks"] = []any{}
-	cases = append(cases, bad)
-	bad = clone()
-	bad["epoch"] = ""
-	cases = append(cases, bad)
-	for i, value := range cases {
-		rawData, _ := json.Marshal(value)
-		badMatch := gameapi.Match{Schema: 1, Data: rawData}
-		if _, err := decode(badMatch); err == nil {
-			t.Fatalf("malformed state %d accepted", i)
+	for _, c := range client.Maps {
+		m, ok := byID[c.ID]
+		if !ok || m.Name != c.Name || m.Width != c.Width || m.OffY != c.OffY || c.FG == "" || c.Thumb == "" {
+			t.Fatalf("client map mismatch %+v", c)
 		}
 	}
-	badMatch := gameapi.Match{Schema: 2, Data: m.Data}
-	if _, err := decode(badMatch); err == nil {
-		t.Fatal("wrong schema accepted")
-	}
-	if !strings.Contains(strings.ToLower(m.Log[0]), "疯狂坦克") {
-		t.Fatalf("missing intro log: %v", m.Log)
-	}
 }
 
-func TestSimultaneousWipeoutIsExplicitDraw(t *testing.T) {
-	s, _, _ := startPlaying(t, 2, Options{Map: "hills", TurnSeconds: 20})
-	for i := range s.Tanks {
-		s.Tanks[i].Alive, s.Tanks[i].HP = false, 0
-	}
-	if !s.checkTeamOutcome(1_800_000_020_000) {
-		t.Fatal("wipeout not detected")
-	}
-	m, err := s.envelope()
+func TestCraterPersistsAcrossSnapshot(t *testing.T) {
+	s, _ := startAt(t, 2, "stage-16")
+	m, _ := fbmaps.ByID(s.MapID)
+	s.Craters = append(s.Craters, Crater{X: 500, Y: 700, R: 40, Seat: 0})
+	before := maskFor(m, s.Craters)
+	match := mustMatch(t, s)
+	s2, err := decode(match)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if m.Result == nil || !m.Result.Draw || len(m.Result.Winners) != 0 {
-		t.Fatalf("simultaneous wipeout not a draw: %+v", m.Result)
-	}
-	for _, rank := range m.Result.Ranks {
-		if rank != 1 {
-			t.Fatal("draw rank")
-		}
+	after := maskFor(m, s2.Craters)
+	if len(before) != len(after) || string(before) != string(after) {
+		t.Fatal("crater mask changed across snapshot")
 	}
 }

@@ -1,0 +1,13 @@
+{
+  "source": "https://game.fortress2blue.com/（官方网页客户端 tankclient_emsc.c906c.data.00-02 + Download/ 资源）",
+  "acquired": "2026-10-20",
+  "method": "Emscripten file package 拆分；LH5 解压；逐行 span RLE 解出 16-bit RGB565；官方 Cocos 大厅配置与运行时下载资源补齐",
+  "license": "版权归 CCR / 原权利方所有。仅按用户明确授权用于本私有平台；原始媒体不提交 Git，不再分发。",
+  "hashes": {
+    "tankclient_emsc.c906c.data.00": "e9f5ff8817e59516bb95e7ec95548c4567749ea762cfc5322ec0bcc8dfc67415",
+    "tankclient_emsc.c906c.data.01": "71b4130dd2206e744e21f07e7e05c5f7575c01ad64824f72534df2ed07439773",
+    "tankclient_emsc.c906c.data.02": "1d75e86388ca7fc76b34119139b6ab290c81493496993a36c2d1f83dca75322f",
+    "tankclient_emsc.eeb2b.wasm": "35974c0d7a06cf86f1f028b0ee1fc46c324921f6d829ce4db684f776199e489d",
+    "tankclient_emsc.9485d.js": "0b283d4c4e09f0fa01e0ed0a2eaf3ac39cf1fc57517859e1d94f2de8f3102e27"
+  }
+}

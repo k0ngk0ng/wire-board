@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"math"
 
+	fbdata "github.com/k0ngk0ng/wire-board/games/fortressblue/data"
+	fbmaps "github.com/k0ngk0ng/wire-board/games/fortressblue/maps"
 	"github.com/k0ngk0ng/wire-board/internal/gameapi"
 )
 
@@ -19,8 +21,12 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		if s.Tanks[ctx.Actor].Selected {
 			return nil, nil
 		}
-		class := classOrder[(ctx.Actor+int(s.Seed%uint64(len(classOrder))))%len(classOrder)]
-		return json.Marshal(Action{Type: "select", Epoch: s.Epoch, Class: class})
+		ids := fbdata.IDs()
+		if len(ids) == 0 {
+			return nil, nil
+		}
+		id := ids[(ctx.Actor+int(hashString(s.Epoch, "select", string(rune(ctx.Actor)))%uint64(len(ids))))%len(ids)]
+		return json.Marshal(Action{Type: "select", Epoch: s.Epoch, Tank: id})
 	}
 	if !s.canAct(ctx.Actor) {
 		return nil, nil
@@ -35,35 +41,43 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if foe.X < tank.X {
 		facing = -1
 	}
+	spec, ok := tankSpec(tank.TankID)
+	if !ok {
+		return nil, nil
+	}
 	weapon := "primary"
-	spec, _ := classByID(tank.Class)
-	useSpecial := tank.Special > 0 && spec.Special.Shots > 0 && hashString(s.Epoch, "special", string(rune(ctx.Actor)), string(rune(s.Turn)))%5 == 0
-	if useSpecial {
+	if tank.Special > 0 && hashString(s.Epoch, "special", string(rune(ctx.Actor)), string(rune(s.Turn)))%4 == 0 {
 		weapon = "special"
 	}
+	stage, _ := fbmaps.ByID(s.MapID)
+	mask := maskFor(stage, s.Craters)
 	bestAngle, bestPower := 45.0, 70.0
-	bestDistance := math.Inf(1)
-	bestHit := false
-	for angle := 18.0; angle <= 82; angle += 6 {
-		for power := 32.0; power <= 100; power += 6 {
-			arc := simulateArc(s.Heights, s.Tanks, ctx.Actor, tank.X, tank.Y, angle, power, facing, s.Wind, MaxPath)
-			distance := math.Hypot(arc.Impact.X-foe.X, arc.Impact.Y-(foe.Y-7))
-			hit := arc.Hit == target
-			if hit {
-				distance -= 100
+	bestScore := math.Inf(1)
+	maxAngle := float64(spec.Angle)
+	if maxAngle < 15 {
+		maxAngle = 15
+	}
+	for angle := 5.0; angle <= maxAngle; angle += 5 {
+		for power := 25.0; power <= 100; power += 5 {
+			rangeScale := float64(spec.Range) / 50
+			arc := simulateArc(stage, mask, s.Tanks, ctx.Actor, tank.X, tank.Y, angle, power, facing, rangeScale, s.Wind, MaxPath)
+			c := tankCenter(*foe)
+			score := math.Hypot(arc.Impact.X-c.X, arc.Impact.Y-c.Y)
+			if arc.Hit == target {
+				score -= 1000
 			}
-			if distance < bestDistance {
-				bestDistance, bestAngle, bestPower, bestHit = distance, angle, power, hit
+			// Prefer shots that land on the target's side and stay inside the map.
+			if arc.Impact.X < 0 || arc.Impact.X > float64(stage.Width) {
+				score += 500
+			}
+			if score < bestScore {
+				bestScore, bestAngle, bestPower = score, angle, power
 			}
 		}
 	}
-	if !bestHit {
-		bestAngle, bestPower = 45, 82
-	}
-	// Deterministic tiny spread makes repeated bot matches less sterile without
-	// ever changing legality.
 	jitter := float64(hashString(s.Epoch, "aim", string(rune(ctx.Actor)), string(rune(s.Turn)))%5) - 2
-	bestAngle = math.Max(5, math.Min(85, bestAngle+jitter))
+	bestAngle = clamp(bestAngle+jitter, 1, maxAngle)
+	bestPower = clamp(bestPower, 20, 100)
 	return json.Marshal(Action{Type: "fire", Epoch: s.Epoch, Turn: s.Turn, Angle: bestAngle, Power: bestPower, Facing: facing, Weapon: weapon})
 }
 
