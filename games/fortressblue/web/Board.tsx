@@ -1,20 +1,32 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
+import {
+  Bomb,
+  ChevronLeft,
+  ChevronRight,
+  Crosshair,
+  FlipHorizontal,
+} from "lucide-react";
 import type { BoardProps } from "../../../web/src/game-api/module";
 import {
+  cellSize,
   clamp,
   explosion,
   mapById,
   maps,
   sourceList,
   statusText,
-  tankById,
   tankInfo,
   tankPortraits,
   tanks as tankCatalog,
   tankName,
   teamColors,
-  teamNames,
-  worldHeight,
   type Arc,
   type Crater,
   type Event as GameEvent,
@@ -23,8 +35,22 @@ import {
   type Tank,
   type View,
 } from "./types";
+import {
+  aimFromPoint,
+  carveCraters,
+  decodeMask,
+  pointerWorld,
+  previewPath,
+  stepPower,
+  type Camera,
+} from "./aim";
 
 type ImageMap = Record<string, HTMLImageElement | null>;
+
+const ART_SCALE = 2.4;
+const MOBILE_VIEW = 560;
+const MID_VIEW = 900;
+const DESKTOP_VIEW = 1200;
 
 const imageCache = new Map<string, Promise<HTMLImageElement | null>>();
 
@@ -221,18 +247,18 @@ function drawTank(
   ctx.globalAlpha = useDie ? 0.55 : 1;
   ctx.fillStyle = teamColors[tank.team] ?? "#888";
   ctx.beginPath();
-  ctx.ellipse(tank.x, tank.y + 1, 22, 7, 0, 0, Math.PI * 2);
+  ctx.ellipse(tank.x, tank.y + 1, 34, 10, 0, 0, Math.PI * 2);
   ctx.fill();
   if (current) {
     ctx.strokeStyle = "#f4dc8a";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.ellipse(tank.x, tank.y + 1, 27 + Math.sin(now / 180) * 2, 9, 0, 0, Math.PI * 2);
+    ctx.ellipse(tank.x, tank.y + 1, 42 + Math.sin(now / 180) * 2, 12, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
   ctx.translate(tank.x, tank.y);
   ctx.scale(tank.facing < 0 ? -1 : 1, 1);
-  const artScale = useDie ? 0.95 : 1.4;
+  const artScale = useDie ? ART_SCALE * 0.78 : ART_SCALE;
   ctx.drawImage(source, -spriteMeta.ax * artScale, -spriteMeta.ay * artScale, source.width * artScale, source.height * artScale);
   if (hitRecent) {
     ctx.globalCompositeOperation = "source-atop";
@@ -241,21 +267,26 @@ function drawTank(
   }
   ctx.restore();
   if (!useDie) {
-    const width = 44;
+    const width = 74;
     const x = tank.x - width / 2;
-    const y = tank.y - 68;
-    ctx.fillStyle = "rgba(12,18,24,.78)";
-    ctx.fillRect(x - 2, y - 2, width + 4, 8);
+    const y = tank.y - 104;
+    ctx.fillStyle = "rgba(12,18,24,.82)";
+    ctx.fillRect(x - 2, y - 2, width + 4, 10);
     ctx.fillStyle = teamColors[tank.team] ?? "#888";
-    ctx.fillRect(x, y, width * clamp(tank.hp / Math.max(1, tank.maxHp), 0, 1), 4);
+    ctx.fillRect(x, y, width * clamp(tank.hp / Math.max(1, tank.maxHp), 0, 1), 6);
     ctx.fillStyle = "#f7f3e6";
-    ctx.font = "11px system-ui, sans-serif";
+    ctx.font = "bold 13px system-ui, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 5);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "rgba(5,15,25,.9)";
+    ctx.strokeText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7);
+    ctx.fillText(`P${tank.seat + 1} ${tank.hp}`, tank.x, y - 7);
     if (tank.statuses?.length) {
-      ctx.fillStyle = "#d7c98a";
-      ctx.font = "9px system-ui, sans-serif";
-      ctx.fillText(tank.statuses.map(statusText).join(" "), tank.x, y - 17);
+      ctx.fillStyle = "#f0d58c";
+      ctx.font = "11px system-ui, sans-serif";
+      const status = tank.statuses.map(statusText).join(" ");
+      ctx.strokeText(status, tank.x, y - 21);
+      ctx.fillText(status, tank.x, y - 21);
     }
   }
 }
@@ -268,6 +299,8 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
   const phase = data?.phase ?? "";
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const terrainRef = useRef<HTMLCanvasElement | null>(null);
+  const cameraRef = useRef<Camera>({ x: 0, y: 0, worldViewW: DESKTOP_VIEW, worldViewH: 600 });
+  const pointerType = useRef("mouse");
   const [size, setSize] = useState({ w: 960, h: 560 });
   const [anim, setAnim] = useState<Animation | null>(null);
   const [angle, setAngle] = useState(45);
@@ -303,8 +336,49 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
 
   const currentTank = tanks[data.current] ?? tanks[data.you] ?? tanks.find((t) => t.alive);
   const myTurn = phase === "playing" && data.you >= 0 && data.you === data.current && !busy;
-  const myInfo = tankInfo(tanks[data.you]?.tankId ?? 0);
+  const canAct = myTurn && !anim;
+  const own = tanks[data.you];
+  const myInfo = tankInfo(own?.tankId ?? 0);
   const maxAngle = Math.max(5, myInfo?.angle ?? 45);
+  const baseMask = useMemo(() => decodeMask(map.mask), [map]);
+  const craterSignature = useMemo(
+    () => craters.map((crater) => `${Math.round(crater.x)},${Math.round(crater.y)},${Math.round(crater.r)}`).join(";"),
+    [craters],
+  );
+  const terrainMask = useMemo(
+    () => carveCraters(baseMask, map.maskCols, map.maskRows, cellSize, craters),
+    [baseMask, map, craterSignature],
+  );
+  const aimPreview = useMemo(() => {
+    if (!canAct || phase !== "playing" || !own?.alive || !own.selected) return [];
+    return previewPath({
+      width: map.width,
+      height: map.height,
+      mask: terrainMask,
+      maskCols: map.maskCols,
+      maskRows: map.maskRows,
+      cell: cellSize,
+      startX: own.x,
+      startY: own.y,
+      angle,
+      power,
+      facing,
+      rangeScale: (myInfo?.range ?? 50) / 50,
+      wind: data.wind,
+      limit: 220,
+    });
+  }, [
+    angle,
+    canAct,
+    data.wind,
+    facing,
+    map,
+    myInfo?.range,
+    own,
+    phase,
+    power,
+    terrainMask,
+  ]);
 
   // Keep the control values legal when the selected tank changes.
   useEffect(() => {
@@ -474,12 +548,28 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     const cw = size.w;
     const ch = size.h;
     const mobile = cw < 620;
-    const worldViewW = Math.min(map.width, mobile ? 620 : cw < 1000 ? 1080 : 1480);
+    const worldViewW = Math.min(map.width, mobile ? MOBILE_VIEW : cw < 1000 ? MID_VIEW : DESKTOP_VIEW);
     const scale = cw / worldViewW;
     const worldViewH = ch / scale;
-    const cameraTank = anim ? tanks[anim.shot.seat] ?? currentTank : currentTank;
-    const camX = map.width > worldViewW ? clamp((cameraTank?.x ?? map.width / 2) - worldViewW / 2, 0, map.width - worldViewW) : (map.width - worldViewW) / 2;
-    const camY = clamp(map.height - worldViewH, 0, Math.max(0, map.height - worldViewH));
+    const focus = anim
+      ? pathPoint(anim.shot.arcs[0], clamp((now - anim.start) / Math.max(1, anim.impactAt), 0, 1))
+      : currentTank ?? { x: map.width / 2, y: map.height * 0.7 };
+    const camX = clamp(
+      focus.x - worldViewW / 2,
+      0,
+      Math.max(0, map.width - worldViewW),
+    );
+    const camY = clamp(
+      focus.y - worldViewH * 0.58,
+      0,
+      Math.max(0, map.height - worldViewH),
+    );
+    cameraRef.current = { x: camX, y: camY, worldViewW, worldViewH };
+    canvas.dataset.cameraX = String(camX);
+    canvas.dataset.cameraY = String(camY);
+    canvas.dataset.viewW = String(worldViewW);
+    canvas.dataset.viewH = String(worldViewH);
+    canvas.dataset.scale = String(scale);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.fillStyle = FALLBACK_BG;
     ctx.fillRect(0, 0, cw, ch);
@@ -492,23 +582,34 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     }
     if (terrainRef.current) ctx.drawImage(terrainRef.current, 0, 0);
     else if (fgImage) ctx.drawImage(fgImage, 0, map.offY);
+    if (canAct && aimPreview.length > 1) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(255,232,150,.62)";
+      ctx.lineWidth = 1.6 / scale;
+      ctx.setLineDash([3 / scale, 7 / scale]);
+      ctx.beginPath();
+      ctx.moveTo(aimPreview[0].x, aimPreview[0].y);
+      for (const point of aimPreview.slice(1)) ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const impact = aimPreview[aimPreview.length - 1];
+      ctx.strokeStyle = "rgba(255,240,180,.92)";
+      ctx.lineWidth = 1.5 / scale;
+      ctx.beginPath();
+      ctx.arc(impact.x, impact.y, 9, 0, Math.PI * 2);
+      ctx.moveTo(impact.x - 15, impact.y);
+      ctx.lineTo(impact.x + 15, impact.y);
+      ctx.moveTo(impact.x, impact.y - 15);
+      ctx.lineTo(impact.x, impact.y + 15);
+      ctx.stroke();
+      ctx.restore();
+    }
     const renderTanks = anim && now < anim.impactAt ? anim.beforeTanks : tanks;
     for (const tank of renderTanks) {
       const info = tankInfo(tank.tankId);
       const sprite = tank.alive ? info?.sprites.idle : info?.sprites.die;
       const key = sprite ? sourceList(assets, sprite.url).join("|") : "";
       drawTank(ctx, data, tank, images[key] ?? null, info, now, anim);
-      if (tank.alive && phase === "playing" && data.current === tank.seat && data.you === data.current) {
-        const rad = (angle * Math.PI) / 180;
-        ctx.strokeStyle = "rgba(247,230,168,.9)";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([6, 5]);
-        ctx.beginPath();
-        ctx.moveTo(tank.x + facing * 8, tank.y - 24);
-        ctx.lineTo(tank.x + Math.cos(rad) * 55 * facing, tank.y - 24 - Math.sin(rad) * 55);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
     }
     if (anim) {
       const elapsed = now - anim.start;
@@ -553,6 +654,34 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     }
     ctx.restore();
 
+    if (phase === "playing" && own?.selected) {
+      ctx.save();
+      for (const tank of renderTanks) {
+        if (!tank.alive || tank.team === own.team) continue;
+        const sx = (tank.x - camX) * scale;
+        const sy = (tank.y - camY) * scale;
+        if (sx >= 14 && sx <= cw - 14 && sy >= 14 && sy <= ch - 14) continue;
+        const ex = clamp(sx, 18, cw - 18);
+        const ey = clamp(sy, 18, ch - 18);
+        ctx.save();
+        ctx.translate(ex, ey);
+        ctx.rotate(Math.atan2(sy - ey, sx - ex));
+        ctx.fillStyle = teamColors[tank.team] ?? "#fff";
+        ctx.beginPath();
+        ctx.moveTo(10, 0);
+        ctx.lineTo(-4, -6);
+        ctx.lineTo(-4, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        ctx.fillStyle = "#102230";
+        ctx.font = "bold 11px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(`P${tank.seat + 1}`, ex, ey + 4);
+      }
+      ctx.restore();
+    }
+
     // Screen-space minimap and wind bracket.
     const mmW = mobile ? 108 : 176;
     const mmH = Math.round((mmW * map.height) / map.width);
@@ -580,11 +709,13 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     }
     const viewX = mmX + (camX / map.width) * mmW;
     const viewW = (worldViewW / map.width) * mmW;
+    const viewY = mmY + (camY / map.height) * mmH;
+    const viewH = (worldViewH / map.height) * mmH;
     ctx.strokeStyle = "rgba(255,236,164,.8)";
     ctx.lineWidth = 1;
-    ctx.strokeRect(viewX, mmY, viewW, mmH);
+    ctx.strokeRect(viewX, viewY, viewW, viewH);
     ctx.restore();
-  }, [angle, anim, assets, bgImage, currentTank, data, explosionImage, facing, fgImage, images, map, now, size, terrainRef]);
+  }, [aimPreview, anim, assets, bgImage, canAct, currentTank, data, explosionImage, fgImage, images, map, now, own, size, terrainRef]);
 
   useEffect(() => {
     draw();
@@ -601,26 +732,86 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     return () => cancelAnimationFrame(raf);
   }, [anim, draw]);
 
-  const fire = useCallback(() => {
-    if (!myTurn || busy || phase !== "playing") return;
-    void act({
-      type: "fire",
-      epoch: data.epoch,
-      turn: data.turn,
-      angle: clamp(angle, 0, maxAngle),
-      power: clamp(power, 20, 100),
-      facing,
-      weapon,
-    });
-  }, [act, angle, busy, data.epoch, data.phase, data.turn, facing, maxAngle, myTurn, power, weapon]);
+  const aimRef = useRef({ angle, power, facing });
+  useEffect(() => {
+    aimRef.current = { angle, power, facing };
+  }, [angle, facing, power]);
+
+  const sendFire = useCallback(
+    (aim?: { angle: number; facing: number }) => {
+      if (!canAct || phase !== "playing") return;
+      const current = aim ?? aimRef.current;
+      void act({
+        type: "fire",
+        epoch: data.epoch,
+        turn: data.turn,
+        angle: clamp(current.angle, 0, maxAngle),
+        power: clamp(aimRef.current.power, 20, 100),
+        facing: current.facing,
+        weapon,
+      });
+    },
+    [act, canAct, data.epoch, data.turn, maxAngle, phase, weapon],
+  );
 
   const move = useCallback(
     (dir: number) => {
-      if (!myTurn || busy || phase !== "playing") return;
+      if (!canAct || phase !== "playing") return;
       void act({ type: "move", epoch: data.epoch, turn: data.turn, dir });
     },
-    [act, busy, data.epoch, data.phase, data.turn, myTurn],
+    [act, canAct, data.epoch, data.turn, phase],
   );
+
+  const toggleFacing = useCallback(() => {
+    const next = aimRef.current.facing > 0 ? -1 : 1;
+    aimRef.current = { ...aimRef.current, facing: next };
+    setFacing(next);
+  }, []);
+
+  const aimAtEvent = useCallback(
+    (event: ReactPointerEvent<HTMLCanvasElement>) => {
+      pointerType.current = event.pointerType;
+      if (!canAct || phase !== "playing" || !own) return;
+      const rect = event.currentTarget.getBoundingClientRect();
+      const point = pointerWorld(
+        event.clientX,
+        event.clientY,
+        rect,
+        cameraRef.current,
+      );
+      const next = aimFromPoint(
+        { x: own.x, y: own.y },
+        point,
+        maxAngle,
+        26,
+      );
+      const angleValue = Math.round(next.angle);
+      aimRef.current = {
+        ...aimRef.current,
+        angle: angleValue,
+        facing: next.facing,
+      };
+      setAngle(angleValue);
+      setFacing(next.facing);
+    },
+    [canAct, maxAngle, own, phase],
+  );
+
+  // Native wheel listener: React's root wheel listener is passive, so the
+  // page would scroll while the player tries to tune power.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const onWheel = (event: WheelEvent) => {
+      if (!canAct || phase !== "playing") return;
+      event.preventDefault();
+      const next = stepPower(aimRef.current.power, event.deltaY);
+      aimRef.current = { ...aimRef.current, power: next };
+      setPower(next);
+    };
+    canvas.addEventListener("wheel", onWheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", onWheel);
+  }, [canAct, phase]);
 
   const choose = useCallback(
     (tankId: number) => {
@@ -630,32 +821,72 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
     [act, busy, data.canSelect, data.epoch, data.phase],
   );
 
-  // Keyboard controls. Arrow keys are also used by the platform for page
-  // navigation, so the game only claims them while it owns the turn.
+  // Keyboard controls follow the original arcade layout: arrows move and aim,
+  // while Z/X tune power. The game claims browser keys only during its turn.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (!myTurn || phase !== "playing") return;
-      const key = event.key.toLowerCase();
-      if (["arrowup", "arrowdown", "arrowleft", "arrowright", " ", "w", "s", "a", "d", "q", "e"].includes(key)) {
-        event.preventDefault();
+      if (!canAct || phase !== "playing") return;
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName ?? "";
+      if (
+        target?.isContentEditable ||
+        tag === "TEXTAREA" ||
+        (tag === "INPUT" && (target as HTMLInputElement).type !== "range")
+      ) {
+        return;
       }
-      if (key === "w" || key === "arrowup") setAngle((v) => clamp(v + 2, 0, maxAngle));
-      if (key === "s" || key === "arrowdown") setAngle((v) => clamp(v - 2, 0, maxAngle));
-      if (key === "arrowright") setPower((v) => clamp(v + 2, 20, 100));
-      if (key === "arrowleft") setPower((v) => clamp(v - 2, 20, 100));
-      if (key === "a") void move(-1);
-      if (key === "d") void move(1);
-      if (key === "q" || key === "e") setWeapon((w) => (w === "primary" ? "special" : "primary"));
-      if (key === " ") fire();
+      const key = event.key.toLowerCase();
+      const claimed = [
+        "arrowup",
+        "arrowdown",
+        "arrowleft",
+        "arrowright",
+        " ",
+        "enter",
+        "w",
+        "s",
+        "a",
+        "d",
+        "q",
+        "e",
+        "z",
+        "x",
+      ];
+      if (claimed.includes(key)) event.preventDefault();
+      if (key === "w" || key === "arrowup") {
+        const next = clamp(aimRef.current.angle + 2, 0, maxAngle);
+        aimRef.current = { ...aimRef.current, angle: next };
+        setAngle(next);
+      }
+      if (key === "s" || key === "arrowdown") {
+        const next = clamp(aimRef.current.angle - 2, 0, maxAngle);
+        aimRef.current = { ...aimRef.current, angle: next };
+        setAngle(next);
+      }
+      if (key === "x") {
+        const next = stepPower(aimRef.current.power, -1);
+        aimRef.current = { ...aimRef.current, power: next };
+        setPower(next);
+      }
+      if (key === "z") {
+        const next = stepPower(aimRef.current.power, 1);
+        aimRef.current = { ...aimRef.current, power: next };
+        setPower(next);
+      }
+      if (key === "arrowleft" || key === "a") void move(-1);
+      if (key === "arrowright" || key === "d") void move(1);
+      if (key === "q" || key === "e") {
+        setWeapon((current) => (current === "primary" ? "special" : "primary"));
+      }
+      if (key === " " || key === "enter") sendFire();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [data.phase, fire, maxAngle, move, myTurn]);
+  }, [canAct, maxAngle, move, phase, sendFire]);
 
   const remaining = phase === "playing" ? data.deadline - serverNow(clock) : 0;
   const selectRemaining = phase === "select" ? data.selectUntil - serverNow(clock) : 0;
   const activeTank = tanks[data.current];
-  const own = tanks[data.you];
   const hpPercent = own ? clamp((own.hp / Math.max(1, own.maxHp)) * 100, 0, 100) : 0;
   const selectedIds = tanks.filter((t) => t.selected).map((t) => t.tankId);
 
@@ -668,8 +899,29 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
       data-fortressblue-animating={anim ? "1" : "0"}
       data-fortressblue-craters={craters.length}
       data-fortressblue-epoch={data.epoch}
+      data-fortressblue-map={map.id}
+      data-fortressblue-my-turn={canAct ? "1" : "0"}
+      data-fortressblue-angle={Math.round(angle)}
+      data-fortressblue-power={Math.round(power)}
+      data-fortressblue-facing={facing}
+      data-fortressblue-preview={aimPreview.length}
+      data-fortressblue-art-scale={ART_SCALE}
     >
-      <canvas ref={canvasRef} className="fb-canvas" data-fortressblue-canvas aria-label={`${map.name} 战场`} />
+      <canvas
+        ref={canvasRef}
+        className={`fb-canvas ${canAct ? "aiming" : ""}`}
+        data-fortressblue-canvas
+        aria-label={`${map.name} 战场：鼠标瞄准，滚轮调整力度，点击开火`}
+        onPointerMove={aimAtEvent}
+        onPointerDown={(event) => {
+          pointerType.current = event.pointerType;
+          if (event.pointerType !== "touch") aimAtEvent(event);
+        }}
+        onClick={() => {
+          if (pointerType.current === "touch") return;
+          sendFire();
+        }}
+      />
       <canvas ref={terrainRef} className="fb-terrain" width={map.width} height={map.height} aria-hidden="true" />
       <div className="fb-top">
         <div className="fb-mapname">
@@ -766,58 +1018,100 @@ function Board({ room, data, act, busy, assets, sound, audio, clock }: BoardProp
           <b>{own?.hp ?? "—"}/{own?.maxHp ?? "—"}</b>
         </div>
         <div className="fb-knobs">
-          <label>
-            <span>角度 <b>{Math.round(angle)}°</b></span>
-            <input
-              aria-label="角度"
-              type="range"
-              min={0}
-              max={maxAngle}
-              value={angle}
-              disabled={!myTurn}
-              onChange={(event) => setAngle(Number(event.target.value))}
-            />
-          </label>
-          <label>
-            <span>力度 <b>{Math.round(power)}</b></span>
-            <input
-              aria-label="力度"
-              type="range"
-              min={20}
-              max={100}
-              value={power}
-              disabled={!myTurn}
-              onChange={(event) => setPower(Number(event.target.value))}
-            />
-          </label>
+          <div className="fb-dial" aria-hidden="true">
+            <i style={{ transform: `rotate(${facing > 0 ? 90 - angle : angle - 90}deg)` }} />
+            <b>{Math.round(angle)}°</b>
+            <span>{facing > 0 ? "右" : "左"}</span>
+          </div>
+          <div className="fb-knob-sliders">
+            <label>
+              <span>角度 <b>{Math.round(angle)}°</b></span>
+              <input
+                aria-label="角度"
+                type="range"
+                min={0}
+                max={maxAngle}
+                value={angle}
+                disabled={!canAct}
+                onChange={(event) => {
+                  const next = Number(event.target.value);
+                  aimRef.current = { ...aimRef.current, angle: next };
+                  setAngle(next);
+                }}
+              />
+            </label>
+            <label>
+              <span>力度 <b>{Math.round(power)}</b></span>
+              <input
+                aria-label="力度"
+                type="range"
+                min={20}
+                max={100}
+                value={power}
+                disabled={!canAct}
+                onChange={(event) => {
+                  const next = Number(event.target.value);
+                  aimRef.current = { ...aimRef.current, power: next };
+                  setPower(next);
+                }}
+              />
+            </label>
+          </div>
         </div>
         <div className="fb-actions">
-          <button type="button" onClick={() => move(-1)} disabled={!myTurn || !data.canMove} aria-label="向左移动">
-            ◀
+          <button
+            type="button"
+            className="fb-move"
+            onClick={() => move(-1)}
+            disabled={!canAct || !data.canMove}
+            aria-label="向左移动"
+          >
+            <ChevronLeft size={22} />
           </button>
-          <button type="button" onClick={() => setFacing((v) => -v)} disabled={!myTurn} aria-label="切换朝向">
-            {facing > 0 ? "朝右" : "朝左"}
+          <button
+            type="button"
+            className="fb-facing"
+            onClick={toggleFacing}
+            disabled={!canAct}
+            aria-label="切换朝向"
+          >
+            <FlipHorizontal size={18} />
+            <span>{facing > 0 ? "朝右" : "朝左"}</span>
           </button>
-          <button type="button" onClick={() => move(1)} disabled={!myTurn || !data.canMove} aria-label="向右移动">
-            ▶
+          <button
+            type="button"
+            className="fb-move"
+            onClick={() => move(1)}
+            disabled={!canAct || !data.canMove}
+            aria-label="向右移动"
+          >
+            <ChevronRight size={22} />
           </button>
           <button
             type="button"
             className={weapon === "special" ? "fb-special active" : "fb-special"}
             onClick={() => setWeapon((v) => (v === "primary" ? "special" : "primary"))}
-            disabled={!myTurn}
+            disabled={!canAct}
             aria-label="切换弹种"
           >
-            {weapon === "special" ? `特殊弹 ${own?.special ?? 0}` : "主炮"}
+            <Bomb size={18} />
+            <span>{weapon === "special" ? `特殊弹 ${own?.special ?? 0}` : "主炮"}</span>
           </button>
-          <button type="button" className="fb-fire" onClick={fire} disabled={!myTurn || !data.canFire} aria-label="开火">
+          <button
+            type="button"
+            className="fb-fire"
+            onClick={() => sendFire()}
+            disabled={!canAct || !data.canFire}
+            aria-label="开火"
+          >
+            <Crosshair size={20} />
             开火
           </button>
         </div>
         <div className="fb-tip">
           {phase === "playing"
-            ? myTurn
-              ? `移动力 ${Math.round(own?.fuel ?? 0)} · W/S 角度 · ←/→ 力度 · A/D 移动 · 空格开火`
+            ? canAct
+              ? `移动力 ${Math.round(own?.fuel ?? 0)} · 鼠标瞄准／滚轮力度／点击开火 · ←→ 移动 · ↑↓ 角度 · Z/X 力度 · Q/E 弹种 · 空格开火`
               : "等待其他玩家行动"
             : phase === "select"
               ? "选择坦克后自动开始"

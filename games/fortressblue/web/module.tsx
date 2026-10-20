@@ -21,7 +21,8 @@ import {
 import "./style.css";
 
 function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
-  const selected = mapById.get(value.map) ?? maps[0];
+  const random = value.map === "random";
+  const selected = random ? null : mapById.get(value.map) ?? maps[0];
   return (
     <div className="fortressblue-options">
       <label>
@@ -35,7 +36,7 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           <option value="random">随机地图</option>
           {maps.map((map) => (
             <option key={map.id} value={map.id}>
-              {map.name}
+              {map.stage}. {map.name}
             </option>
           ))}
         </select>
@@ -55,17 +56,29 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
           ))}
         </select>
       </label>
-      <div className="fb-map-preview">
-        <img src={selected.thumb} alt="" />
+      <div className={`fb-map-preview ${random ? "random" : ""}`}>
+        {random ? (
+          <div className="fb-map-collage" aria-hidden="true">
+            {maps.slice(0, 4).map((map) => (
+              <img key={map.id} src={map.thumb} alt="" />
+            ))}
+          </div>
+        ) : (
+          <img src={selected?.thumb} alt="" />
+        )}
         <div>
-          <strong>{selected.name}</strong>
-          <span>{selected.nameEn}</span>
+          <strong>{random ? "随机地图" : selected?.name}</strong>
+          <span>
+            {random
+              ? `开局从 ${maps.length} 张原版地图中随机选择`
+              : selected?.nameEn}
+          </span>
           <small>2～8 人 · 4v4 团队炮战 · 原版可破坏地形</small>
         </div>
       </div>
       <p>
         红蓝两队轮流行动。利用角度、力度和风向击中对手；爆炸会永久改变地形，
-        落石与坠落同样会造成伤害。
+        落石与坠落同样会造成伤害。对局中可用鼠标瞄准、滚轮调力度、点击开火。
       </p>
     </div>
   );
@@ -146,7 +159,8 @@ export default defineGame<View, Options>({
         分钟按剩余总生命判定。
       </p>
       <p>
-        PC：W／S 调角度，←／→ 调力度，A／D 移动，Q／E 切换弹种，空格开火。手机：拖动角度与力度滑杆，
+        PC：鼠标指向战场即可瞄准，滚轮调力度，点击战场开火；也可用 ←／→ 移动、↑／↓ 或 W／S
+        调角度、Z／X 调力度、Q／E 切换弹种、空格开火。手机：拖动角度与力度滑杆，
         使用左右移动、朝向、弹种与开火按钮；所有结果由服务器判定，刷新或重连不会重播旧炮弹。
       </p>
       <details>

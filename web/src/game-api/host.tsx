@@ -159,6 +159,7 @@ export function ModuleWaiting({
     [room.id, savedOptions],
   );
   const Options = module.Options;
+  const optionsDirty = !!Options && JSON.stringify(options) !== savedOptions;
   return (
     <div className="waiting-layout">
       <div className="waiting-cover">
@@ -189,11 +190,16 @@ export function ModuleWaiting({
             {host && (
               <button
                 className="outline"
-                disabled={busy || JSON.stringify(options) === savedOptions}
+                disabled={busy || !optionsDirty}
                 onClick={() => command("options", { options })}
               >
                 保存设置
               </button>
+            )}
+            {host && optionsDirty && (
+              <p className="muted small" role="status">
+                地图或规则尚未保存，保存后才能开始。
+              </p>
             )}
           </>
         )}
@@ -264,6 +270,7 @@ export function ModuleWaiting({
                 className="primary gold"
                 disabled={
                   busy ||
+                  optionsDirty ||
                   room.seats.length < module.minPlayers ||
                   (!!module.requiresFullTable &&
                     room.seats.length !== room.capacity) ||
@@ -281,7 +288,9 @@ export function ModuleWaiting({
           {room.spectating
             ? "等待玩家准备下一局。"
             : host
-              ? "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
+              ? optionsDirty
+                ? "先保存地图与规则设置，才能开始游戏。"
+                : "电脑自动准备。你准备好后即可开始，也可以继续邀请朋友。"
               : "准备好后，等待房主开始游戏。"}
         </p>
       </div>
