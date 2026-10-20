@@ -3,6 +3,8 @@
 日期：2026-10-20。实现来源：用户要求重做「疯狂坦克」，使用《Fortress 2 BLUE》原版素材、地图与玩法。
 素材取自官方网页客户端公开资源包，经用户明确授权仅在本私有平台使用；原始媒体不进入 Git。
 解码方法、来源哈希与许可见 `games/fortressblue/assets/README.md`、`sources.json` 和 `manifest.json`。
+Steam 许可尝试、官方网页客户端下载、REA 分析证据和原版客户端本地启动记录见
+[原版素材获取与本地运行记录](fortressblue-original-acquisition.md)。
 
 ## 素材取得与来源复现
 

@@ -60,4 +60,6 @@ python3 -B scripts/fortressblue/check-browser.py
 仅经用户明确授权在本私有平台使用；原始媒体不提交 Git。解码链为 Emscripten 包拆分 →
 LH5 解压 → 逐行 span RLE；地图碰撞由原版前景层 alpha 生成。来源、方法、许可与逐文件
 SHA-256 见 [assets/README.md](assets/README.md)、`assets/sources.json` 和 `assets/manifest.json`。
+Steam 许可限制、官方网页客户端下载、REA 分析证据与本地启动记录见
+[原版素材获取与本地运行记录](../../docs/fortressblue-original-acquisition.md)。
 封面为本项目原创手绘 SVG。游戏默认上架；管理员可随时下架。
