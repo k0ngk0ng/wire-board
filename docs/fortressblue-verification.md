@@ -4,6 +4,22 @@
 素材取自官方网页客户端公开资源包，经用户明确授权仅在本私有平台使用；原始媒体不进入 Git。
 解码方法、来源哈希与许可见 `games/fortressblue/assets/README.md`、`sources.json` 和 `manifest.json`。
 
+## 素材取得与来源复现
+
+Steam 免费客户端需要账号许可和安装，匿名下载无法取得安装包；因此改从官方网页客户端
+`https://game.fortress2blue.com/` 下载 Emscripten 资源包
+（`tankclient_emsc.c906c.data.00`～`.02`、`.wasm`、`.js`，共约 57 MB），并拆出
+`Download/` 与 `Asset/` 中的原版 `.i16` 精灵、地图层和音乐来源。REA provider 未配置，
+没有可用的 Steam 安装包可导入，所以直接对官方 Cocos/Emscripten/LH5 资源做格式逆向：
+Emscripten file packager 分块 → LH5 解压 → 逐行 span RLE → RGB565 像素，地图碰撞由原版
+前景层 alpha 生成。该路线得到的原版资源与 Steam 版共用同一套 CCR 素材。
+
+`python3 -B scripts/fortressblue/verify-original-source.py` 会重新运行与素材生成相同的解码器，
+从本地原始 `.i16` 重新生成全部媒体并逐项比对：**233 项通过**，包括 5 个官方客户端源文件的
+SHA-256、17 张地图的碰撞位图/出生点/前景/背景/叠加层/缩略图，以及 14 种坦克的
+idle/fire/die/move、炮弹尺寸与字节哈希。结果保存在 `.local/fortressblue/asset-redecode.json`，
+证明线上媒体确实来自下载的原版客户端，而不是新绘或合成占位。
+
 ## 范围
 
 - 2／4／6／8 人，红蓝两队各半；最多 4v4。
@@ -27,6 +43,7 @@ npm --prefix web test -- fortressblue
 python3 -B scripts/check_game_boundaries.py
 python3 -B scripts/fortressblue/fetch-assets.py
 python3 -B scripts/fortressblue/verify-assets.py --dist --oss
+python3 -B scripts/fortressblue/verify-original-source.py   # 需要本地原版客户端资源
 python3 -B scripts/fortressblue/check-browser.py
 ```
 
@@ -43,6 +60,9 @@ python3 -B scripts/fortressblue/check-browser.py
   构建通过；24 款游戏边界检查通过。
 - 素材：178 个原版 WebP/MP3 文件通过字节数、SHA-256、WebP/MP3 头、时长校验；本地、
   `web/dist` 和 `https://cdn.ichenj.com/bga/v20261002-1/fortressblue/v2/` 三处字节一致。
+- 来源复现：官方客户端 5 个源文件 SHA-256 与 `sources.json` 一致；从原始 `.i16` 重新解码
+  17 张地图与 14 种坦克的 233 项媒体/碰撞/出生点结果与 manifest、catalog、tanks.json
+  逐字节一致（`asset-redecode.json`，0 失败）。
 - 竞态：`go test -race` 通过（服务端 + 模块/HTTP E2E）。
 
 ## 真实浏览器验收
