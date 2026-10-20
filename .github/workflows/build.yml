@@ -84,6 +84,8 @@ jobs:
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
+      - name: Restore published game fallbacks
+        run: python3 -B scripts/fortressblue/fetch-assets.py
       - name: Check game boundaries and compile application
         run: |
           python3 -B scripts/check_game_boundaries.py
