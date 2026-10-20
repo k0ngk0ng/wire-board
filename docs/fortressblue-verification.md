@@ -22,6 +22,7 @@ go vet ./games/fortressblue/...
 npm --prefix web run build
 npm --prefix web test -- fortressblue
 python3 -B scripts/check_game_boundaries.py
+python3 -B scripts/fortressblue/fetch-assets.py
 python3 -B scripts/fortressblue/verify-assets.py --dist --oss
 python3 -B scripts/fortressblue/check-browser.py
 ```
