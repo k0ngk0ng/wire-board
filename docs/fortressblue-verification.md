@@ -70,10 +70,10 @@ python3 -B scripts/fortressblue/check-browser.py
 `python3 -B scripts/fortressblue/check-browser.py` 启动临时生产式服务，通过共享「创建房间」
 弹窗选择「疯狂坦克」和 stage-4「钢铁工厂」，设置 8 席后创建房间；在等待房间修改地图，
 验证未保存时不能开始、保存后服务器收到新地图；随后添加 7 名电脑、开始游戏、选择原版坦克，
-并用键盘、鼠标瞄准、滚轮力度和点击战场完成开火。本地回退运行：
-`.local/fortressblue/browser/941e868b/result.json`（50/50 通过）。CDN 运行：
+并用键盘、鼠标瞄准、滚轮力度、空格和点击战场完成开火。本地回退运行：
+`.local/fortressblue/browser/4cb91ae6/result.json`（55/55 通过）。CDN 运行：
 `CHECK_ASSETS_BASE=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/fortressblue/check-browser.py`，
-结果 `.local/fortressblue/browser/181e568a/result.json`（50/50 通过）。
+结果 `.local/fortressblue/browser/07133c45/result.json`（55/55 通过）。
 
 覆盖：
 
@@ -87,18 +87,41 @@ python3 -B scripts/fortressblue/check-browser.py
 - 原版地图前景、背景、爆炸图集、坦克 idle 精灵由本地或 CDN 实际加载；
   Canvas 像素多样性检查证明不是空白或纯矢量占位。
 - 服务器倒计时按 `serverNow + performance.now() - receivedAt` 计算，不归零。
+- **进入对局后的第一发**用空格发射：服务器 shot id 增加、`animating=1`，飞行期间
+  Canvas 的 `data-projectile` 为 `sprite`，证明首发射击动画与炮弹贴图都实际绘制；
+  随后等待电脑回合结束，人类回合正常返回。
 - 键盘 ↑ 改变角度、→ 使服务器位置增加；方向键在游戏回合内被正确接管。
-- 鼠标移动到坦克右上方后角度约 58°、朝向为右，落点预览有 123 个采样点；
-  移到左下方后朝向变左、角度约 6°；滚轮增加力度且页面不滚动；点击战场由服务器返回 shot id。
-- 动画结束后 `data-craters > 0`，证明爆炸真实擦除了原版前景地形；刷新后
-  `animating=0`，不重播旧炮弹。
-- 坦克按 2.4× 原画绘制，桌面取景宽度 1200 世界像素，当前坦克与最近敌人同时可见；
-  屏幕边缘显示其他敌人方向，小地图标记全部存活坦克。
+- 鼠标移动到坦克右上方后角度约 59°、朝向为右，落点预览有 136 个采样点；
+  移到左下方后朝向变左、角度约 9°；滚轮增加力度且页面不滚动；点击战场由服务器返回 shot id。
+- 炮弹以 1.9× 原画绘制，并带玩家颜色尾迹和光晕；动画结束后 `data-craters > 0`，
+  证明爆炸真实擦除了原版前景地形；刷新后 `animating=0`，不重播旧炮弹。
+- 坦克按 2.4× 原画绘制，桌面取景宽度 1500 世界像素；stage-4 开局 8 辆坦克全部在画面内，
+  屏幕边缘仍显示其他敌人方向，小地图标记全部存活坦克。
+- 地图选择预览保持原版 25:16 画幅（实测 1.5627）；战场按 16:9 取景但不拉伸地图，
+  只做等比缩放和裁切。
 - 320×844：无横向溢出，Canvas 实际宽度 ≥280 px（16:10 高 178.75 px），8 席玩家栏存在；
   滚动到操作区后开火按钮完整位于视口内（高 48 px），坦克仍可辨认。
-- 截图：`.local/fortressblue/browser/941e868b/desktop-select.png`、`desktop-board.png`、
-  `desktop-after-shot.png`、`mobile-320.png`、`mobile-controls.png`；CDN 运行截图见
-  `181e568a/`。
+- 截图：`.local/fortressblue/browser/4cb91ae6/desktop-select.png`、`desktop-board.png`、
+  `desktop-first-shot.png`、`desktop-after-shot.png`、`mobile-320.png`、`mobile-controls.png`；
+  CDN 运行截图见 `07133c45/`。
+
+## 可玩性热修复（2026-10-20）
+
+针对「按空格不能开火、看不到炮弹、地图比例不对、按钮难看」的反馈，定位到三个实现缺陷：
+
+1. **首发射击没有动画**：进入对局时 `seenShot` 为 `null`，客户端把服务器返回的第一发
+   （shot id 1）当成“刷新前已经播放过”，因此第一次按空格只更新了棋盘，没有炮弹动画。
+   现改为 `seenShot = 0`，只有刷新时已存在的 shot id 才跳过。
+2. **炮弹永远看不到**：`now` 使用 `Date.now()`，动画 `start` 使用 `performance.now()`，
+   `elapsed` 变成巨大的正数，绘制直接进入爆炸分支并瞬间跳过飞行。现统一使用
+   `performance.now()`；炮弹按 1.9× 原画绘制，并增加玩家颜色尾迹和光晕。
+3. **地图取景与预览比例**：桌面取景从 1200 世界像素放宽到 1500，stage-4 开局 8 辆坦克
+   全部可见；地图选择预览从 16:9 裁切改为原版 25:16；坦克标签改为屏幕恒定尺寸，
+   缩放后仍可读。
+
+回归测试新增：首发射击必须出现 `animating=1` 且 Canvas `data-projectile=sprite`；
+桌面取景宽度 ≥1500；地图预览宽高比 25:16；人类回合在电脑连射后返回。
+本地与 CDN 浏览器检查均 **55/55** 通过。
 
 ## 已知边界
 

@@ -186,6 +186,10 @@ try:
     check("stage 4 and eight seats selected", picked == {"map": "stage-4", "capacity": "8"}, picked)
     wait_js('document.querySelector(".fb-map-preview strong")?.textContent === "钢铁工厂"', 5)
     check("map preview follows the dropdown", True)
+    preview_ratio = js(
+        '(()=>{const r=document.querySelector(".fb-map-preview img").getBoundingClientRect();return r.width/r.height})()'
+    )
+    check("map preview keeps the original 25:16 aspect", abs(float(preview_ratio) - 25 / 16) < 0.06, preview_ratio)
     check(
         "room created through shared modal",
         js('(()=>{const f=document.querySelector("[data-create-step=setup] form");if(!f)return false;f.requestSubmit();return true})()'),
@@ -289,6 +293,31 @@ try:
         "desktop tank art scale is readable",
         float(js('document.querySelector(".fortressblue-board").dataset.fortressblueArtScale')) >= 2.4,
     )
+    framing = js(
+        '(()=>{const c=document.querySelector("[data-fortressblue-canvas]");'
+        'return {viewW:Number(c.dataset.viewW),scale:Number(c.dataset.scale),w:c.clientWidth,h:c.clientHeight}})()'
+    )
+    check(
+        "desktop framing shows the original map width",
+        framing["viewW"] >= 1500 and framing["w"] / framing["h"] > 1.7,
+        framing,
+    )
+
+    # The very first shot of a fresh match must animate and draw a projectile;
+    # this used to be swallowed because no previous shot id existed yet.
+    b("press", "Space")
+    wait_js('Number(document.querySelector(".fortressblue-board").dataset.fortressblueShot) > 0', 10)
+    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueAnimating === "1"', 5)
+    wait_js('!!document.querySelector("[data-fortressblue-canvas]").dataset.projectile', 5)
+    projectile = js('document.querySelector("[data-fortressblue-canvas]").dataset.projectile')
+    check("first Space shot animates", True)
+    check("first Space shot draws a projectile", projectile in ("sprite", "dot"), projectile)
+    b("screenshot", str(OUT / "desktop-first-shot.png"))
+    # Bots may chain shots; wait for the human turn first, then for the last
+    # bot animation to finish before allowing input.
+    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueMyTurn === "1"', 120)
+    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueAnimating === "0"', 30)
+    check("human turn returns after bots", True)
 
     # Original arcade keyboard layout: up/down aims, left/right moves.
     angle_before = float(js('document.querySelector(".fortressblue-board").dataset.fortressblueAngle'))
@@ -347,8 +376,12 @@ try:
     })()""" % (json.dumps(aim["sx"] + 120), json.dumps(aim["sy"] - 220)))
     wait_js('Number(document.querySelector(".fortressblue-board").dataset.fortressblueShot) > 0', 20)
     check("clicking the battlefield fires", True)
-    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueAnimating === "0"', 25)
-    check("shot animation ends", True)
+    # Bots keep firing after the human; wait for the next human turn, then for
+    # the last animation in the chain to settle instead of sampling a transient
+    # animation-free moment between two bot shots.
+    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueMyTurn === "1"', 120)
+    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueAnimating === "0"', 30)
+    check("click-fired shot resolves", True)
     craters = int(js('document.querySelector(".fortressblue-board").dataset.fortressblueCraters || "0"'))
     check("explosion carved original terrain", craters > 0, craters)
     b("screenshot", str(OUT / "desktop-after-shot.png"))
