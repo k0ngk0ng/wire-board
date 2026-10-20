@@ -11,6 +11,9 @@ import (
 //go:embed tanks.json
 var raw []byte
 
+//go:embed items.json
+var itemsRaw []byte
+
 type Sprite struct {
 	URL string `json:"url"`
 	W   int    `json:"w"`
@@ -49,10 +52,29 @@ type Catalog struct {
 	Audio     map[string]string `json:"audio"`
 }
 
+type Item struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Effect      string `json:"effect"`
+	Amount      int    `json:"amount"`
+	Turns       int    `json:"turns"`
+	Icon        string `json:"icon"`
+	W           int    `json:"w"`
+	H           int    `json:"h"`
+}
+
+type itemCatalog struct {
+	Items []Item `json:"items"`
+}
+
 var (
-	once sync.Once
-	cat  Catalog
-	err  error
+	once      sync.Once
+	cat       Catalog
+	err       error
+	itemsOnce sync.Once
+	items     []Item
+	itemsErr  error
 )
 
 func All() (Catalog, error) {
@@ -94,4 +116,53 @@ func TankByID(id int) (Tank, bool) {
 	}
 	t, ok := c.Tanks[fmt.Sprint(id)]
 	return t, ok
+}
+
+func Items() ([]Item, error) {
+	itemsOnce.Do(func() {
+		var catalog itemCatalog
+		if e := json.Unmarshal(itemsRaw, &catalog); e != nil {
+			itemsErr = fmt.Errorf("item data: %w", e)
+			return
+		}
+		if len(catalog.Items) == 0 {
+			itemsErr = fmt.Errorf("item data: empty")
+			return
+		}
+		seen := make(map[int]bool, len(catalog.Items))
+		for _, item := range catalog.Items {
+			if item.ID < 0 || item.Name == "" || item.Effect == "" || item.Icon == "" || seen[item.ID] {
+				itemsErr = fmt.Errorf("item data: invalid item %d", item.ID)
+				return
+			}
+			seen[item.ID] = true
+		}
+		items = catalog.Items
+	})
+	return items, itemsErr
+}
+
+func ItemByID(id int) (Item, bool) {
+	list, e := Items()
+	if e != nil {
+		return Item{}, false
+	}
+	for _, item := range list {
+		if item.ID == id {
+			return item, true
+		}
+	}
+	return Item{}, false
+}
+
+func ItemIDs() []int {
+	list, e := Items()
+	if e != nil {
+		return nil
+	}
+	ids := make([]int, len(list))
+	for i, item := range list {
+		ids[i] = item.ID
+	}
+	return ids
 }

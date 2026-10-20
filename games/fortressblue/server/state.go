@@ -27,13 +27,15 @@ const (
 	SuddenAfterMS = 8 * 60 * 1000
 	MatchLimitMS  = 12 * 60 * 1000
 
-	MaxPath     = 400
-	MaxEvents   = 64
-	MaxLog      = 80
-	MaxCraters  = 512
-	MaxSpecial  = 2
-	MaxAction   = 4096
-	MaxStatuses = 8
+	MaxPath       = 400
+	MaxEvents     = 64
+	MaxLog        = 80
+	MaxCraters    = 512
+	MaxSpecial    = 2
+	MaxAction     = 4096
+	MaxStatuses   = 8
+	MaxItems      = 4
+	StartingItems = 2
 
 	Gravity    = 260.0
 	WindAcc    = 14.0
@@ -55,6 +57,7 @@ type Action struct {
 	Power  float64 `json:"power"`
 	Facing int     `json:"facing"`
 	Weapon string  `json:"weapon"`
+	Slot   int     `json:"slot"`
 }
 
 type Point struct {
@@ -86,6 +89,8 @@ type Tank struct {
 	Kills    int      `json:"kills"`
 	Deaths   int      `json:"deaths"`
 	Statuses []Status `json:"statuses,omitempty"`
+	Items    []int    `json:"items,omitempty"`
+	ItemTurn int      `json:"itemTurn,omitempty"`
 }
 
 type Crater struct {
@@ -180,6 +185,7 @@ type TankView struct {
 	Kills    int      `json:"kills"`
 	Deaths   int      `json:"deaths"`
 	Statuses []Status `json:"statuses,omitempty"`
+	Items    []int    `json:"items,omitempty"`
 	Current  bool     `json:"current"`
 }
 
@@ -474,7 +480,7 @@ func (s *State) project(seat int) View {
 		Log: append([]string(nil), s.Log...), You: seat,
 	}
 	for i, t := range s.Tanks {
-		v.Tanks[i] = TankView{Seat: t.Seat, Team: t.Team, TankID: t.TankID, Selected: t.Selected, X: t.X, Y: t.Y, Facing: t.Facing, HP: t.HP, MaxHP: t.MaxHP, Fuel: t.Fuel, Special: t.Special, Alive: t.Alive, Damage: t.Damage, Kills: t.Kills, Deaths: t.Deaths, Statuses: append([]Status(nil), t.Statuses...), Current: s.Phase == PhasePlaying && i == s.Current}
+		v.Tanks[i] = TankView{Seat: t.Seat, Team: t.Team, TankID: t.TankID, Selected: t.Selected, X: t.X, Y: t.Y, Facing: t.Facing, HP: t.HP, MaxHP: t.MaxHP, Fuel: t.Fuel, Special: t.Special, Alive: t.Alive, Damage: t.Damage, Kills: t.Kills, Deaths: t.Deaths, Statuses: append([]Status(nil), t.Statuses...), Items: append([]int(nil), t.Items...), Current: s.Phase == PhasePlaying && i == s.Current}
 	}
 	if seat >= 0 && seat < len(s.Tanks) {
 		t := s.Tanks[seat]

@@ -246,6 +246,7 @@ try:
     check("map background loaded", js(f'performance.getEntriesByType("resource").some(e=>e.name.startsWith({prefix}) && e.name.includes("stage-4-bg.webp"))' if ASSETS_BASE else 'performance.getEntriesByType("resource").some(e=>e.name.includes("stage-4-bg.webp"))'))
     check("explosion sheet loaded", js(f'performance.getEntriesByType("resource").some(e=>e.name.startsWith({prefix}) && e.name.includes("effects/explosion.webp"))' if ASSETS_BASE else 'performance.getEntriesByType("resource").some(e=>e.name.includes("effects/explosion.webp"))'))
     check("tank sprite loaded", js(f'performance.getEntriesByType("resource").some(e=>e.name.startsWith({prefix}) && e.name.includes("/tanks/1-idle.webp"))' if ASSETS_BASE else 'performance.getEntriesByType("resource").some(e=>e.name.includes("/tanks/1-idle.webp"))'))
+    check("item sprite loaded", js(f'performance.getEntriesByType("resource").some(e=>e.name.startsWith({prefix}) && e.name.includes("/items/"))' if ASSETS_BASE else 'performance.getEntriesByType("resource").some(e=>e.name.includes("/items/"))'))
     if ASSETS_BASE:
         # CDN images are intentionally loaded without crossOrigin so production
         # display does not depend on a per-origin CORS allowlist. Canvas
@@ -302,6 +303,20 @@ try:
         framing["viewW"] >= 1500 and framing["w"] / framing["h"] > 1.7,
         framing,
     )
+
+    # Each player starts with two original item cards. Using one must not end
+    # the turn, so the first Space shot can still follow.
+    items_before = int(js('document.querySelectorAll("[data-fortressblue-item]").length'))
+    check("two original items are offered", items_before >= 2, items_before)
+    check(
+        "item icon loaded",
+        js('(()=>{const i=document.querySelector("[data-fortressblue-item] img");return !!i&&i.complete&&i.naturalWidth>0})()'),
+    )
+    js('(()=>{const b=document.querySelector("[data-fortressblue-item]");if(!b)return false;b.click();return true})()')
+    wait_js('document.querySelectorAll("[data-fortressblue-item]").length === %d' % (items_before - 1), 10)
+    check("using an item keeps the turn", items_before - 1 == int(js('document.querySelectorAll("[data-fortressblue-item]").length')))
+    wait_js('document.querySelector(".fortressblue-board").dataset.fortressblueMyTurn === "1"', 10)
+    check("item use keeps the human turn", True)
 
     # The very first shot of a fresh match must animate and draw a projectile;
     # this used to be swallowed because no previous shot id existed yet.

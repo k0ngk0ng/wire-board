@@ -36,6 +36,9 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if target < 0 {
 		return nil, nil
 	}
+	if slot, ok := botItem(s, ctx.Actor); ok {
+		return json.Marshal(Action{Type: "item", Epoch: s.Epoch, Turn: s.Turn, Slot: slot})
+	}
 	foe := &s.Tanks[target]
 	facing := 1
 	if foe.X < tank.X {

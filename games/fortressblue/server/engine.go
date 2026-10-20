@@ -140,6 +140,9 @@ func beginPlaying(s *State, at time.Time) {
 		t.MaxHP, t.HP = spec.HP, spec.HP
 		t.Fuel, t.Special = float64(spec.Speed), MaxSpecial
 		t.Damage, t.Kills, t.Deaths, t.Alive, t.Statuses = 0, 0, 0, true, nil
+		if len(t.Items) == 0 {
+			t.Items = startingItems(s.Epoch, i)
+		}
 		m, _ := fbmaps.ByID(s.MapID)
 		mask := maskFor(m, s.Craters)
 		if g := groundY(m, mask, t.X, t.Y-8); g >= 0 && g <= float64(m.Height) {
@@ -255,6 +258,14 @@ func decode(m gameapi.Match) (*State, error) {
 				return nil, errors.New("无效疯狂坦克类型")
 			}
 		}
+		if len(t.Items) > MaxItems || t.ItemTurn < 0 || t.ItemTurn > s.Turn+1 {
+			return nil, errors.New("无效疯狂坦克道具")
+		}
+		for _, itemID := range t.Items {
+			if _, ok := fbdata.ItemByID(itemID); !ok {
+				return nil, errors.New("无效疯狂坦克道具")
+			}
+		}
 	}
 	if s.Wind < -20 || s.Wind > 20 || s.Turn < 0 {
 		return nil, errors.New("无效疯狂坦克风力或回合")
@@ -318,7 +329,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 	}
 	switch a.Type {
 	case "select":
-		if s.Phase != PhaseSelect || s.Finished || s.Tanks[ctx.Actor].Selected || a.Turn != 0 || a.Dir != 0 || a.Angle != 0 || a.Power != 0 || a.Facing != 0 || a.Weapon != "" {
+		if s.Phase != PhaseSelect || s.Finished || s.Tanks[ctx.Actor].Selected || a.Turn != 0 || a.Dir != 0 || a.Angle != 0 || a.Power != 0 || a.Facing != 0 || a.Weapon != "" || a.Slot != 0 {
 			return m, errors.New("当前不能选择坦克")
 		}
 		if _, ok := tankSpec(a.Tank); !ok {
@@ -339,7 +350,7 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 			beginPlaying(s, ctx.Now)
 		}
 	case "move":
-		if a.Tank != 0 || a.Angle != 0 || a.Power != 0 || a.Facing != 0 || a.Weapon != "" {
+		if a.Tank != 0 || a.Angle != 0 || a.Power != 0 || a.Facing != 0 || a.Weapon != "" || a.Slot != 0 {
 			return m, errors.New("无效移动操作")
 		}
 		if !s.canAct(ctx.Actor) || a.Turn != s.Turn {
@@ -348,8 +359,18 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if !moveTank(s, ctx.Actor, a.Dir, ctx.Now.UnixMilli()) {
 			return m, errors.New("移动力不足或前方不可通行")
 		}
+	case "item":
+		if a.Tank != 0 || a.Dir != 0 || a.Angle != 0 || a.Power != 0 || a.Facing != 0 || a.Weapon != "" {
+			return m, errors.New("无效道具操作")
+		}
+		if a.Turn != s.Turn {
+			return m, errors.New("还没轮到你使用道具")
+		}
+		if err := useItem(s, ctx.Actor, a.Slot, ctx.Now.UnixMilli()); err != nil {
+			return m, err
+		}
 	case "fire":
-		if a.Tank != 0 || a.Dir != 0 || (a.Facing != -1 && a.Facing != 1) || (a.Weapon != "primary" && a.Weapon != "special") {
+		if a.Tank != 0 || a.Dir != 0 || a.Slot != 0 || (a.Facing != -1 && a.Facing != 1) || (a.Weapon != "primary" && a.Weapon != "special") {
 			return m, errors.New("无效开火参数")
 		}
 		spec, ok := tankSpec(s.Tanks[ctx.Actor].TankID)
@@ -390,6 +411,13 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 
 func resolveShot(s *State, seat int, weapon Weapon, kind string, angle, power float64, facing int, at time.Time) {
 	shooter := &s.Tanks[seat]
+	wind := s.Wind
+	if consumeStatus(shooter, "nowind") {
+		wind = 0
+	}
+	if consumeStatus(shooter, "power") {
+		weapon.Damage *= 1.4
+	}
 	m, _ := fbmaps.ByID(s.MapID)
 	mask := maskFor(m, s.Craters)
 	shotID := int64(1)
@@ -399,7 +427,7 @@ func resolveShot(s *State, seat int, weapon Weapon, kind string, angle, power fl
 	shot := &Shot{ID: shotID, Seat: seat, Weapon: weapon.Name, At: at.UnixMilli()}
 	spec, _ := tankSpec(shooter.TankID)
 	rangeScale := float64(spec.Range) / 50
-	arc := simulateArc(m, mask, s.Tanks, seat, shooter.X, shooter.Y, angle, power, facing, rangeScale, s.Wind, MaxPath)
+	arc := simulateArc(m, mask, s.Tanks, seat, shooter.X, shooter.Y, angle, power, facing, rangeScale, wind, MaxPath)
 	shot.Arcs = []Arc{arc}
 	s.emit("shot", seat, -1, shooter.X, shooter.Y, int(weapon.Damage), weapon.Name, at.UnixMilli())
 	blast := applyBlast(s, seat, weapon, arc.Impact, kind, at.UnixMilli(), arc.Hit)
@@ -439,6 +467,7 @@ func applyDirectDamage(s *State, seat, victim, damage int, kind string, at int64
 	if !t.Alive {
 		return
 	}
+	damage = shieldedDamage(t, damage)
 	t.HP -= damage
 	s.Tanks[seat].Damage += damage
 	s.DamageTotal[seat] += damage

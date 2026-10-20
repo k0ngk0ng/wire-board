@@ -19,6 +19,7 @@ import {
 } from "../web/aim.ts";
 import serverCatalog from "../maps/catalog.json" with { type: "json" };
 import clientCatalog from "../maps/client.json" with { type: "json" };
+import itemData from "../data/items.json" with { type: "json" };
 
 test("aim and movement controls stay inside server ranges", () => {
   assert.equal(clamp(3, 0, 90), 3);
@@ -153,6 +154,19 @@ test("original catalog exposes all 17 maps and 14 tanks", () => {
     assert.ok(tank.hp > 0 && tank.primary > 0 && tank.angle > 0);
     assert.ok(tank.sprites.idle && tank.bullet);
     assert.ok(tankById.get(tank.id));
+  }
+});
+
+test("original item catalog exposes the eight usable items", () => {
+  assert.equal(itemData.items.length, 8);
+  assert.deepEqual(
+    itemData.items.map((item) => item.id),
+    [0, 1, 2, 3, 4, 25, 26, 35],
+  );
+  for (const item of itemData.items) {
+    assert.ok(item.name && item.description && item.effect);
+    assert.match(item.icon, /^\/fortressblue\/v2\/items\/\d+\.webp$/);
+    assert.ok(item.w > 0 && item.h > 0);
   }
 });
 
