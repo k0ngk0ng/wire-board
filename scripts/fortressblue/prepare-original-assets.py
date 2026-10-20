@@ -471,8 +471,11 @@ def main():
     portraits = build_portraits()
     TANKS_JSON.write_text(json.dumps({"tanks": tanks, "portraits": portraits, "explosion": explosion, "audio": audio}, ensure_ascii=False, indent=1) + "\n")
     (MAPS_DIR / "catalog.json").write_text(json.dumps({"version": 2, "worldHeight": WORLD_HEIGHT, "cell": CELL, "maps": maps}, ensure_ascii=False) + "\n")
-    client_maps = [{k: v for k, v in m.items() if k not in ("mask", "maskCols", "maskRows", "fgSha256", "bgSha256")} for m in maps]
-    (MAPS_DIR / "client.json").write_text(json.dumps({"version": 2, "worldHeight": WORLD_HEIGHT, "maps": client_maps}, ensure_ascii=False, indent=1) + "\n")
+    # The client needs the same public collision mask to draw an accurate aim
+    # preview. It is not hidden information: the server derives it from the
+    # visible foreground layer and sends every crater after each explosion.
+    client_maps = [{k: v for k, v in m.items() if k not in ("fgSha256", "bgSha256")} for m in maps]
+    (MAPS_DIR / "client.json").write_text(json.dumps({"version": 2, "worldHeight": WORLD_HEIGHT, "cell": CELL, "maps": client_maps}, ensure_ascii=False, indent=1) + "\n")
     # Emit a manifest for the uploader/verifier.
     entries = []
     for p in sorted(OUT.rglob("*")):

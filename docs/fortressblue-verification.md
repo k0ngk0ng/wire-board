@@ -10,6 +10,9 @@
 - 17 张原版地图（前景层碰撞、背景层、缩略图、原版音乐）。
 - 14 种原版坦克（官方大厅属性：HP、防御、速度、主炮/特殊弹攻击、最大角度、射程）。
 - 位图可破坏地形、风力、角度/力度、朝向、特殊弹、坠落、突然死亡、电脑/托管、观战、恢复。
+- PC 鼠标瞄准/滚轮力度/点击开火、方向键移动与瞄准、空格开火；手机滑杆和按钮。
+- 与服务器一致的落点预览、2.4× 坦克绘制、1200 世界像素取景、屏幕边缘敌人指示和小地图。
+- 地图选择按 stage 排序；等待房间地图/规则修改必须保存，未保存时禁止开始。
 - 原版坦克、炮弹、28 帧爆炸、地图与音效通过平台 `BoardProps.audio` 播放；CDN 优先、
   同源 `/fortressblue/v2/` 回退。
 
@@ -36,34 +39,46 @@ python3 -B scripts/fortressblue/check-browser.py
   全部自然结束（队灭或时间到判定），无死循环。
 - HTTP/SQLite E2E：新游戏默认上架；8 人房 + 7 名电脑、选坦克、移动、开火、错误席位/
   epoch/turn/角度/力度拒绝、服务重启保持对局；2v2 随机地图；团队结果、历史记录。
-- 前端：3 项目录/控制/素材 URL 测试通过；构建通过；24 款游戏边界检查通过。
+- 前端：8 项疯狂坦克目录/瞄准/弹道预览/碰撞位图镜像/素材 URL 测试通过；全部 459 项前端测试通过；
+  构建通过；24 款游戏边界检查通过。
 - 素材：178 个原版 WebP/MP3 文件通过字节数、SHA-256、WebP/MP3 头、时长校验；本地、
   `web/dist` 和 `https://cdn.ichenj.com/bga/v20261002-1/fortressblue/v2/` 三处字节一致。
 - 竞态：`go test -race` 通过（服务端 + 模块/HTTP E2E）。
 
 ## 真实浏览器验收
 
-`python3 -B scripts/fortressblue/check-browser.py` 启动临时生产式服务，真实登录、创建 8 人房、
-添加 7 名电脑、从共享等待房间点击「开始游戏」、在选坦克界面选择原版坦克并完成移动和开火。
-本地回退运行：`.local/fortressblue/browser/7772b038/result.json`（30/30 通过）。CDN 运行：
+`python3 -B scripts/fortressblue/check-browser.py` 启动临时生产式服务，通过共享「创建房间」
+弹窗选择「疯狂坦克」和 stage-4「钢铁工厂」，设置 8 席后创建房间；在等待房间修改地图，
+验证未保存时不能开始、保存后服务器收到新地图；随后添加 7 名电脑、开始游戏、选择原版坦克，
+并用键盘、鼠标瞄准、滚轮力度和点击战场完成开火。本地回退运行：
+`.local/fortressblue/browser/941e868b/result.json`（50/50 通过）。CDN 运行：
 `CHECK_ASSETS_BASE=https://cdn.ichenj.com/bga/v20261002-1 python3 -B scripts/fortressblue/check-browser.py`，
-结果 `.local/fortressblue/browser/19b5684f/result.json`（30/30 通过）。
+结果 `.local/fortressblue/browser/181e568a/result.json`（50/50 通过）。
 
 覆盖：
 
-- 共享玩家栏 8 席；地图名「热血之都」；14 张原版坦克卡；原版立绘实际加载。
-- 选坦克卡/标题/说明与战场 HUD/开火按钮对比度 ≥ 4.5:1。
-- 原版地图前景、背景、爆炸图集、坦克 idle 精灵由本地 `/fortressblue/v2/` 实际加载；
+- 共享「创建房间」两步弹窗真实创建房间；地图下拉按 stage 1～17 排序，选择「随机地图」时
+  只显示「随机地图」和 17 张可选说明，不冒充某张固定地图；选择 stage-4 后预览、
+  等待房间和开局 `data-map-id` 都是 `stage-4`。
+- 等待房间修改地图为 stage-2 时显示「地图或规则尚未保存」，开始按钮禁用；保存后服务器
+  options 变为 stage-2；改回 stage-4 并保存后开局实际使用 stage-4。
+- 共享玩家栏 8 席；14 张原版坦克卡；原版立绘实际加载。
+- 选坦克卡/标题/说明与战场 HUD/开火按钮对比度 ≥ 4.5:1；桌面操作区宽度不超出棋盘。
+- 原版地图前景、背景、爆炸图集、坦克 idle 精灵由本地或 CDN 实际加载；
   Canvas 像素多样性检查证明不是空白或纯矢量占位。
 - 服务器倒计时按 `serverNow + performance.now() - receivedAt` 计算，不归零。
-- 点击向右移动后玩家栏 `data-x` 对应的服务器位置增加。
-- 角度 55°/力度 72 开火，服务器返回 shot id，动画结束后 `data-craters > 0`，证明爆炸真实
-  擦除了原版前景地形。
-- 刷新后 `animating=0`，不重播旧炮弹。
-- 320×844：无横向溢出，Canvas 实际宽度 ≥280 px，8 席玩家栏、开火按钮与触屏控件存在；
-  坦克按 1.4× 原画缩放并随镜头跟随，手机可辨认。
-- 截图：`.local/fortressblue/browser/7772b038/desktop-select.png`、`desktop-board.png`、
-  `desktop-after-shot.png`、`mobile-320.png`；CDN 运行截图见 `19b5684f/`。
+- 键盘 ↑ 改变角度、→ 使服务器位置增加；方向键在游戏回合内被正确接管。
+- 鼠标移动到坦克右上方后角度约 58°、朝向为右，落点预览有 123 个采样点；
+  移到左下方后朝向变左、角度约 6°；滚轮增加力度且页面不滚动；点击战场由服务器返回 shot id。
+- 动画结束后 `data-craters > 0`，证明爆炸真实擦除了原版前景地形；刷新后
+  `animating=0`，不重播旧炮弹。
+- 坦克按 2.4× 原画绘制，桌面取景宽度 1200 世界像素，当前坦克与最近敌人同时可见；
+  屏幕边缘显示其他敌人方向，小地图标记全部存活坦克。
+- 320×844：无横向溢出，Canvas 实际宽度 ≥280 px（16:10 高 178.75 px），8 席玩家栏存在；
+  滚动到操作区后开火按钮完整位于视口内（高 48 px），坦克仍可辨认。
+- 截图：`.local/fortressblue/browser/941e868b/desktop-select.png`、`desktop-board.png`、
+  `desktop-after-shot.png`、`mobile-320.png`、`mobile-controls.png`；CDN 运行截图见
+  `181e568a/`。
 
 ## 已知边界
 

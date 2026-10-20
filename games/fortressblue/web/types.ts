@@ -125,10 +125,16 @@ export type MapInfo = {
   bg: string | null;
   thumb: string;
   music: string | null;
+  mask: string;
+  maskCols: number;
+  maskRows: number;
 };
 
 export const worldHeight = clientCatalog.worldHeight;
-export const maps: MapInfo[] = clientCatalog.maps as MapInfo[];
+export const cellSize = clientCatalog.cell;
+export const maps: MapInfo[] = (clientCatalog.maps as MapInfo[]).sort(
+  (a, b) => a.stage - b.stage,
+);
 export const mapById = new Map(maps.map((m) => [m.id, m]));
 export const tanks: TankInfo[] = Object.values(tankData.tanks as Record<string, TankInfo>).sort(
   (a, b) => a.id - b.id,
