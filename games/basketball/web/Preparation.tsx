@@ -5,8 +5,8 @@ import type { BasketballOptions } from "./module";
 import labels from "../selection/labels.json";
 import "./preparation.css";
 
-// Only runtime-verified courts and character slots are offered. Asset extraction
-// coverage alone does not make an original court or team playable.
+// Original single-match menu: eight courts and eight distinct team choices.
+// Each team has four characters; server preparation owns legal selection.
 const courts = [
   { value: "court-0", id: 0, name: labels.courts[0] },
   { value: "new-york", id: 1, name: labels.courts[1] },
@@ -15,6 +15,7 @@ const courts = [
   { value: "court-4", id: 4, name: labels.courts[4] },
   { value: "court-5", id: 5, name: labels.courts[5] },
   { value: "court-6", id: 6, name: labels.courts[6] },
+  { value: "court-7", id: 7, name: labels.courts[7] },
 ] as const;
 
 export function Preparation({
@@ -88,6 +89,31 @@ export function Preparation({
             <h4>
               {side === 0 ? "A" : "B"} 队 · {labels.teams[teams[side]].name}
             </h4>
+            <label className="basketball-team-selection">
+              <span>{side === 0 ? "A" : "B"} 队球队</span>
+              <select
+                data-team-side={side}
+                aria-label={`${side === 0 ? "A" : "B"} 队球队`}
+                value={teams[side]}
+                disabled={busy || !host || !participating}
+                onChange={(event) => {
+                  const team = Number(event.target.value);
+                  if (team !== teams[side] && team !== teams[side ^ 1])
+                    prepare({ type: "team", side, team });
+                }}
+              >
+                {labels.teams.map((team, index) => (
+                  <option
+                    key={index}
+                    value={index}
+                    disabled={index === teams[side ^ 1]}
+                  >
+                    {team.name}
+                    {index === teams[side ^ 1] ? "（对方已选）" : ""}
+                  </option>
+                ))}
+              </select>
+            </label>
             {[0, 1].map((position) => {
               const actor = side * 2 + position;
               const seatIndex = seatActors.indexOf(actor);
@@ -131,7 +157,7 @@ export function Preparation({
                       role="group"
                       aria-label={`${side === 0 ? "A" : "B"} 队${position + 1}号位球员`}
                     >
-                      {[0, 1].map((character) => (
+                      {[0, 1, 2, 3].map((character) => (
                         <button
                           type="button"
                           key={character}

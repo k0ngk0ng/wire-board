@@ -1,7 +1,8 @@
-package basketball
+package basketball_test
 
 import (
 	"encoding/json"
+	game "github.com/k0ngk0ng/wire-board/games/basketball/server"
 	"reflect"
 	"testing"
 	"time"
@@ -15,35 +16,35 @@ import (
 // SQLite. Start alone is wrapped to install a naturally generated engine half;
 // this does not claim an available campaign creation UI or a full HTTP match.
 func TestCampaignPreparationHTTPPersistence(t *testing.T) {
-	_, fixture := campaignHostHalftime(t)
-	var saved State
+	_, fixture := game.ExportCampaignHostHalftime(t)
+	var saved game.State
 	if err := json.Unmarshal(fixture.Data, &saved); err != nil {
 		t.Fatal(err)
 	}
-	module := Module()
+	module := game.Module()
 	originalStart := module.Start
 	module.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		m, e := originalStart(ctx, raw)
 		if e != nil {
 			return m, e
 		}
-		s, e := decode(m)
+		s, e := game.ExportDecode(m)
 		if e != nil {
 			return m, e
 		}
 		s.Runtime = saved.Runtime
 		s.Options = saved.Options
-		return s.match()
+		return game.ExportStateMatch(s)
 	}
 	h := gametest.NewHTTP(t, 1, module, "basketball")
 	h.Start(map[string]any{"mode": "solo", "court": "court-0"})
 	a := h.People[0]
-	read := func(c *gametest.Client) View {
+	read := func(c *gametest.Client) game.View {
 		raw, e := json.Marshal(gametest.Data(c.Room()))
 		if e != nil {
 			t.Fatal(e)
 		}
-		var v View
+		var v game.View
 		if e = json.Unmarshal(raw, &v); e != nil {
 			t.Fatal(e)
 		}

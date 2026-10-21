@@ -14,7 +14,7 @@ socket.addEventListener('message',event=>{
 });
 await new Promise((resolve,reject)=>{socket.addEventListener('open',resolve,{once:true});socket.addEventListener('error',reject,{once:true});});
 const call=(method,params={})=>new Promise((resolve,reject)=>{
- const key=++id,timeout=setTimeout(()=>{pending.delete(key);reject(Error('CDP request timed out: '+method));},5000);
+ const key=++id,timeout=setTimeout(()=>{pending.delete(key);reject(Error('CDP request timed out: '+method));},Math.max(5000,(params.timeout??0)+1000));
  pending.set(key,{resolve,reject,timeout});socket.send(JSON.stringify({id:key,method,params}));
 });
 await call('Page.bringToFront');

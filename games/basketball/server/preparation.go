@@ -29,17 +29,19 @@ func preparedCourt(name string) (uint8, bool) {
 		return 5, true
 	case "court-6":
 		return 6, true
+	case "court-7":
+		return 7, true
 	default:
 		return 0, false
 	}
 }
 func validateRoster(o Options) error {
-	if o.Teams != ([2]uint8{0, 1}) {
-		return fmt.Errorf("该球队阵容尚未开放")
+	if o.Teams[0] >= 8 || o.Teams[1] >= 8 || o.Teams[0] == o.Teams[1] {
+		return fmt.Errorf("请选择两支不同的球队")
 	}
 	for _, v := range o.Characters {
-		if v > 1 {
-			return fmt.Errorf("该球员尚未开放")
+		if v > 3 {
+			return fmt.Errorf("无效球员")
 		}
 	}
 	if o.Characters[0] == o.Characters[1] || o.Characters[2] == o.Characters[3] {
@@ -49,6 +51,8 @@ func validateRoster(o Options) error {
 }
 
 type preparationAction struct {
+	Side           *int           `json:"side,omitempty"`
+	Team           *uint8         `json:"team,omitempty"`
 	Opponent       *uint8         `json:"opponent,omitempty"`
 	Tactic         *uint8         `json:"tactic,omitempty"`
 	InventoryIndex *uint8         `json:"inventoryIndex,omitempty"`
@@ -77,12 +81,26 @@ func prepare(ctx gameapi.PreparationContext, current, raw json.RawMessage) (json
 		return nil, fmt.Errorf("无效准备选择")
 	}
 	if o.Campaign != nil {
+		if a.Side != nil || a.Team != nil {
+			return nil, fmt.Errorf("战役不能修改所属球队")
+		}
 		return prepareCampaign(ctx, o, a)
 	}
 	if a.Opponent != nil || a.Tactic != nil || a.InventoryIndex != nil || a.Slot != nil {
 		return nil, fmt.Errorf("单场模式不接受战役准备选项")
 	}
+	if a.Type != "team" && (a.Side != nil || a.Team != nil) {
+		return nil, fmt.Errorf("准备操作包含无效球队字段")
+	}
 	switch a.Type {
+	case "team":
+		if !ctx.Host || a.Side == nil || a.Team == nil || *a.Side < 0 || *a.Side > 1 || *a.Team >= 8 || a.Actor != nil || a.Character != nil || a.Court != "" {
+			return nil, fmt.Errorf("只有房主能选择有效球队")
+		}
+		if o.Teams[*a.Side^1] == *a.Team {
+			return nil, fmt.Errorf("两队不能选择相同球队")
+		}
+		o.Teams[*a.Side] = *a.Team
 	case "court":
 		if !ctx.Host || a.Actor != nil || a.Character != nil {
 			return nil, fmt.Errorf("只有房主能选择场地")
@@ -92,7 +110,7 @@ func prepare(ctx gameapi.PreparationContext, current, raw json.RawMessage) (json
 		}
 		o.Court = a.Court
 	case "character":
-		if a.Actor == nil || a.Character == nil || a.Court != "" || *a.Actor < 0 || *a.Actor >= 4 || *a.Character > 1 {
+		if a.Actor == nil || a.Character == nil || a.Court != "" || *a.Actor < 0 || *a.Actor >= 4 || *a.Character > 3 {
 			return nil, fmt.Errorf("无效球员选择")
 		}
 		actor := *a.Actor

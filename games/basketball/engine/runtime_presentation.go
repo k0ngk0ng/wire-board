@@ -6,9 +6,10 @@ import "fmt"
 // During the exit fade Video is nil and Transition owns the scene. Activation
 // transfers that scene into Video and discards Transition/Carry.
 type RuntimePresentationState struct {
-	PendingResult CampaignMatchResult   `json:"pendingResult"`
-	Video         *PostResultVideoState `json:"video,omitempty"`
-	Complete      bool                  `json:"complete"`
+	PendingResult CampaignMatchResult             `json:"pendingResult"`
+	Video         *PostResultVideoState           `json:"video,omitempty"`
+	Display       *OriginalPostResultDisplayState `json:"display,omitempty"`
+	Complete      bool                            `json:"complete"`
 }
 
 func RuntimeFinished(s RuntimeState) bool {
@@ -36,6 +37,9 @@ func activateRuntimePresentation(r *RuntimeStep) error {
 		return e
 	}
 	s.Presentation.Video = &video
+	if e := initializeRuntimePresentationDisplay(s); e != nil {
+		return e
+	}
 	s.Transition = nil
 	s.Carry = nil
 	s.AwaitingNextPeriod = false
@@ -44,13 +48,16 @@ func activateRuntimePresentation(r *RuntimeStep) error {
 	r.PresentationStarted = true
 	raster := postResultRaster(video)
 	r.PresentationRaster = &raster
-	return nil
+	return publishRuntimePresentationDisplay(s)
 }
 func stepRuntimePresentation(r *RuntimeStep) error {
 	s := &r.State
 	p := s.Presentation
 	if p == nil || p.Video == nil || p.Complete {
 		return fmt.Errorf("inactive presentation video")
+	}
+	if e := initializeRuntimePresentationDisplay(s); e != nil {
+		return e
 	}
 	var input [4]ControllerFrame
 	for i := range input {
@@ -60,6 +67,11 @@ func stepRuntimePresentation(r *RuntimeStep) error {
 	if e != nil {
 		return e
 	}
+	display, e := ApplyOriginalPostResultDisplayEffects(*p.Display, step.Effects)
+	if e != nil {
+		return e
+	}
+	p.Display = &display
 	p.Video = &step.State
 	s.LogicFrame = step.State.LogicByte
 	if step.DispatchStarted {
@@ -81,5 +93,5 @@ func stepRuntimePresentation(r *RuntimeStep) error {
 		}
 		p.Complete = true
 	}
-	return nil
+	return publishRuntimePresentationDisplay(s)
 }

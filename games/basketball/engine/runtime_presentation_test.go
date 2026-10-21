@@ -42,6 +42,7 @@ func runtimePresentationSourceShell(t *testing.T, ending bool) RuntimeState {
 				o.Transition = transitionRAM(phase.RawAfter)
 			}
 		}
+		o.Projection = resetOriginalWorldDrawList(o.Projection)
 		// Original controlled confirmation boundary, completed actor tail; the
 		// surrounding configuration/grades remain a semantic runtime shell.
 		for actor := uint8(0); actor < 4; actor++ {

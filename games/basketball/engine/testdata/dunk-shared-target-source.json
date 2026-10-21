@@ -1,0 +1,13 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "calls": 420,
+  "chains": 48,
+  "chainCalls": 720,
+  "entry": "fixed E165..E168 / bank6 8E9D",
+  "scope": "Original entered dunk after another actor reuses shared target byte056E.\nNo patched original instructions; complete E165..E168 includes source motion.\nEntry with a non-hoop target is intentionally not asserted as legal.\n",
+  "fixtureSHA256": "7a3ccf6042ee7c2fdb643fe79a5c86729bcc7ae139215da69490dfba093b712e",
+  "skippedCalls": [
+    "FBCC sound sink only"
+  ],
+  "targetAliases": "0577+target0..2 = actor1..3 jumpPhase; target3..6 = actor0..3 attackVariant"
+}

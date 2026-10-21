@@ -55,7 +55,7 @@ func (s State) campaignTerminal() bool {
 }
 
 func (s *State) settleCampaign() error {
-	if s.Campaign == nil || s.Campaign.Stage != "playing" || s.Runtime.Outcome == nil || !s.Runtime.Outcome.Confirmed {
+	if s.Campaign == nil || s.Campaign.Stage != "playing" || !engine.RuntimeFinished(s.Runtime) {
 		return nil
 	}
 	result, err := engine.SettleCampaignRuntime(s.Runtime)
@@ -73,6 +73,16 @@ func (s *State) settleCampaign() error {
 	switch result.NextStage {
 	case engine.CampaignPrepare:
 		c.Stage = "reward"
+		// The original reward movie already supplies the confirmation flow.
+		// Legacy saves without a movie retain their existing Continue screen.
+		if s.Runtime.Presentation != nil && s.Runtime.Presentation.Complete {
+			choices, e := campaign.AvailableOpponents(result.Progress)
+			if e != nil || len(choices) == 0 {
+				return fmt.Errorf("没有可选择的下一场比赛")
+			}
+			c.Stage = "prepare"
+			c.Preparation = &CampaignRoundPreparation{Progress: result.Progress, Random: result.Random, Opponent: choices[0], Teammates: [2]uint8{s.Runtime.Config.Match.Characters[0], s.Runtime.Config.Match.Characters[1]}, HumanTactics: s.Runtime.Config.HumanTactics}
+		}
 	case engine.CampaignDefeat:
 		c.Stage = "defeat"
 	case engine.CampaignComplete:
@@ -144,7 +154,7 @@ func (s State) validateCampaignState() error {
 		return fmt.Errorf("无效战役会话")
 	}
 	if c.Stage == "playing" {
-		if c.Settlement != nil || c.Preparation != nil || c.DecisionAt != 0 || s.Runtime.Outcome != nil && s.Runtime.Outcome.Confirmed {
+		if c.Settlement != nil || c.Preparation != nil || c.DecisionAt != 0 || engine.RuntimeFinished(s.Runtime) {
 			return fmt.Errorf("活动比赛与战役阶段不一致")
 		}
 		return nil
@@ -377,9 +387,5 @@ func (s State) campaignMatch(m gameapi.Match) (gameapi.Match, error) {
 	m.Actors = []int{0}
 	m.Attention = []int{0}
 	m.SystemDeadline = s.ServerAt + frameMS
-	if !s.Inputs[0].Automated {
-		m.Deadline = s.Inputs[0].IdleAt
-		m.TimeoutActors = []int{0}
-	}
 	return m, nil
 }

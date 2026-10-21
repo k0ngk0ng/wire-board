@@ -82,6 +82,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         postResult: !!data.campaign,
         audio: props.audio,
         audioOptions: { assetsBase: base },
+        inputWindow: () => latest.current.inputWindow ?? 1,
         send: (action) => {
           const current = latest.current;
           const currentUser =
@@ -140,7 +141,13 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
       setError("对局画面暂时无法同步，请重新连接。");
     }
   }, [data, room.version, props.busy, campaignOpen]);
-  const phase = data.phase.startsWith("campaign-")
+  const phase = data.phase === "ending-confirm"
+    ? "结局播放完毕 · 第一席按 START 确认"
+    : data.phase === "ending"
+      ? "正在播放通关结局"
+      : data.phase === "reward-video"
+        ? "正在展示比赛奖励"
+        : data.phase.startsWith("campaign-")
     ? data.campaign?.stage === "prepare"
       ? "下一场准备"
       : data.campaign?.stage === "complete"

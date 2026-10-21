@@ -40,20 +40,21 @@ type RenderResult struct {
 	WinningTeam uint8       `json:"winningTeam"`
 }
 type BasketballRenderSnapshot struct {
-	PaletteID      uint8            `json:"paletteID,omitempty"`
-	PaletteLevel   *uint8           `json:"paletteLevel,omitempty"` // nil: legacy full colors; 0: original black palette.
-	Court          uint8            `json:"court"`
-	Result         *RenderResult    `json:"result,omitempty"`
-	Objects        [13]RenderObject `json:"objects"`
-	DrawOrder      []int            `json:"drawOrder"`
-	Teams          [2]uint8         `json:"teams"`
-	Camera         RenderCamera     `json:"camera"`
-	ReverseSprites bool             `json:"reverseSprites"`
-	BallCHR        uint8            `json:"ballCHR"`
-	BallSource     uint8            `json:"ballSource"`
-	Phase          uint8            `json:"phase"`
-	HUD            RenderHUD        `json:"hud"`
-	Controllers    [4]int8          `json:"controllers"`
+	PostResult     *PostResultRenderSnapshot `json:"postResult,omitempty"`
+	PaletteID      uint8                     `json:"paletteID,omitempty"`
+	PaletteLevel   *uint8                    `json:"paletteLevel,omitempty"` // nil: legacy full colors; 0: original black palette.
+	Court          uint8                     `json:"court"`
+	Result         *RenderResult             `json:"result,omitempty"`
+	Objects        [13]RenderObject          `json:"objects"`
+	DrawOrder      []int                     `json:"drawOrder"`
+	Teams          [2]uint8                  `json:"teams"`
+	Camera         RenderCamera              `json:"camera"`
+	ReverseSprites bool                      `json:"reverseSprites"`
+	BallCHR        uint8                     `json:"ballCHR"`
+	BallSource     uint8                     `json:"ballSource"`
+	Phase          uint8                     `json:"phase"`
+	HUD            RenderHUD                 `json:"hud"`
+	Controllers    [4]int8                   `json:"controllers"`
 }
 type CourtColumnCommit struct {
 	Column uint8 `json:"column"`

@@ -43,7 +43,7 @@ func TestBasketballHTTPVisualPreparation(t *testing.T) {
 	act(a, map[string]any{"type": "court", "court": "court-0"}, 200)
 	act(a, map[string]any{"type": "court", "court": "court-5"}, 200)
 	act(a, map[string]any{"type": "court", "court": "court-6"}, 200)
-	act(a, map[string]any{"type": "court", "court": "court-7"}, 400)
+	act(a, map[string]any{"type": "court", "court": "court-8"}, 400)
 	h.Restart()
 	r = a.Room()
 	if r["options"].(map[string]any)["court"] != "court-6" || !reflect.DeepEqual(chars, r["options"].(map[string]any)["characters"]) {
@@ -58,4 +58,65 @@ func TestBasketballHTTPVisualPreparation(t *testing.T) {
 	}
 	act(a, map[string]any{"type": "court", "court": "new-york"}, 400)
 	h.Record("prepared visible court and independent player roster persist and initialize original match")
+}
+
+// Original menu evidence: all eight courts, ordered distinct team pairs and
+// four characters per team. Failures: historical development gates survive;
+// invalid/same teams accepted; unauthorized team switch; mixed fields; accepted
+// selection loses readiness, save identity, or player-to-controller mapping.
+func TestBasketballHTTPCompleteOriginalSelection(t *testing.T) {
+	h := gametest.NewHTTP(t, 2, game.Module(), "basketball")
+	a, b := h.People[0], h.People[1]
+	h.AssertPublished()
+	r := a.Request("POST", "/api/rooms", map[string]any{"kind": "basketball", "name": "完整原版选择", "capacity": 2, "options": map[string]any{"mode": "versus"}}, 201)
+	b.Request("POST", "/api/rooms/"+r["id"].(string), map[string]any{"type": "join", "version": a.Room()["version"], "nonce": "full-original-select-join"}, 200)
+	choose := func(c *gametest.Client, action map[string]any, status int) {
+		c.Command("prepare", map[string]any{"action": action}, status)
+	}
+	a.Command("ready", nil, 200)
+	b.Command("ready", nil, 200)
+	before := a.Room()["options"]
+	choose(b, map[string]any{"type": "team", "side": 0, "team": 7}, 400)
+	for _, action := range []map[string]any{
+		{"type": "team", "side": 2, "team": 7},
+		{"type": "team", "side": 0, "team": 8},
+		{"type": "team", "side": 0, "team": 1},
+		{"type": "team", "side": 0, "team": 7, "character": 3},
+		{"type": "court", "court": "court-7", "team": 7},
+	} {
+		choose(a, action, 400)
+	}
+	if !reflect.DeepEqual(before, a.Room()["options"]) {
+		t.Fatal("rejected team selection changed draft")
+	}
+	choose(a, map[string]any{"type": "team", "side": 0, "team": 7}, 200)
+	choose(a, map[string]any{"type": "team", "side": 1, "team": 6}, 200)
+	choose(a, map[string]any{"type": "court", "court": "court-7"}, 200)
+	choose(a, map[string]any{"type": "character", "actor": 0, "character": 3}, 200)
+	choose(b, map[string]any{"type": "character", "actor": 2, "character": 2}, 200)
+	for _, seat := range a.Room()["seats"].([]any) {
+		if seat.(map[string]any)["ready"] == true {
+			t.Fatal("changed selections retained readiness")
+		}
+	}
+	want := a.Room()["options"]
+	h.Restart()
+	if !reflect.DeepEqual(want, a.Room()["options"]) {
+		t.Fatal("restore lost full original choices")
+	}
+	a.Command("ready", nil, 200)
+	b.Command("ready", nil, 200)
+	a.Command("start", nil, 200)
+	v := view(t, a)
+	if v.Runtime.Config.Match.Court != 7 || v.Runtime.Config.Match.Teams != ([2]uint8{7, 6}) || v.Runtime.Config.Match.Characters != ([4]uint8{3, 1, 2, 1}) || v.Runtime.Config.Match.ControllerAssignments != ([4]int8{0, -1, 2, -1}) {
+		t.Fatal("full selection not used by match", v.Runtime.Config.Match)
+	}
+	for _, slots := range v.Runtime.Config.Match.Equipment {
+		for _, item := range slots {
+			if item != -1 {
+				t.Fatal("versus gained equipment")
+			}
+		}
+	}
+	h.Record("original eighth court, distinct teams and characters2/3; permissions/readiness; persistence; unchanged controller mapping; no versus equipment")
 }

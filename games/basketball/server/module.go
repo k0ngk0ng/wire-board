@@ -1,5 +1,5 @@
 // Package basketball hosts the recovered engine in the platform's room/timer
-// contract. It is not yet included in the production game registry.
+// contract. All game rules and original AI remain in its own Go engine.
 package basketball
 
 import (
@@ -36,7 +36,7 @@ type InputState struct {
 	Buttons        engine.Buttons `json:"buttons"`
 	Pending        engine.Buttons `json:"pending"`
 	LastPacketAt   int64          `json:"lastPacketAt"`
-	IdleAt         int64          `json:"idleAt"`
+	IdleAt         int64          `json:"idleAt"` // Legacy snapshot metadata; never schedules takeover.
 	Automated      bool           `json:"automated"`
 	AppliedButtons engine.Buttons `json:"appliedButtons"`
 	Changes        []InputChange  `json:"changes,omitempty"`
@@ -47,38 +47,40 @@ type SoundEvent struct {
 	IDs        []int  `json:"ids"`
 }
 type State struct {
-	Campaign      *CampaignState              `json:"campaign,omitempty"`
-	Options       Options                     `json:"options"`
-	Epoch         string                      `json:"epoch"`
-	ServerAt      int64                       `json:"serverAt"`
-	Remainder     int64                       `json:"remainder"`
-	PauseAt       int64                       `json:"pauseAt"`
-	Runtime       engine.RuntimeState         `json:"runtime"`
-	Inputs        [4]InputState               `json:"inputs"`
-	Events        []SoundEvent                `json:"events"`
-	SoundSequence uint64                      `json:"soundSequence"`
-	VideoInputs   []engine.RecordedVideoInput `json:"videoInputs,omitempty"`
-	Music         MusicState                  `json:"music"`
+	PresentationConfirmAt int64                       `json:"presentationConfirmAt,omitempty"`
+	Campaign              *CampaignState              `json:"campaign,omitempty"`
+	Options               Options                     `json:"options"`
+	Epoch                 string                      `json:"epoch"`
+	ServerAt              int64                       `json:"serverAt"`
+	Remainder             int64                       `json:"remainder"`
+	PauseAt               int64                       `json:"pauseAt"`
+	Runtime               engine.RuntimeState         `json:"runtime"`
+	Inputs                [4]InputState               `json:"inputs"`
+	Events                []SoundEvent                `json:"events"`
+	SoundSequence         uint64                      `json:"soundSequence"`
+	VideoInputs           []engine.RecordedVideoInput `json:"videoInputs,omitempty"`
+	Music                 MusicState                  `json:"music"`
 }
 type View struct {
-	Attributes    *CampaignAttributes             `json:"attributes,omitempty"`
-	Campaign      *CampaignView                   `json:"campaign,omitempty"`
-	Preparation   *engine.CampaignPreparationView `json:"preparation,omitempty"`
-	CanPrepare    bool                            `json:"canPrepare"`
-	SeatActors    []int                           `json:"seatActors"`
-	LocalActor    int                             `json:"localActor"`
-	Options       Options                         `json:"options"`
-	Epoch         string                          `json:"epoch"`
-	ServerAt      int64                           `json:"serverAt"`
-	Phase         string                          `json:"phase"`
-	Runtime       engine.RuntimeState             `json:"runtime"`
-	Inputs        [4]InputState                   `json:"inputs"`
-	Events        []SoundEvent                    `json:"events"`
-	SoundSequence uint64                          `json:"soundSequence"`
-	Scores        [2]uint16                       `json:"scores"`
-	CanInput      bool                            `json:"canInput"`
-	VideoInputs   []engine.RecordedVideoInput     `json:"videoInputs"`
-	Music         MusicView                       `json:"music"`
+	PresentationAutomaticAt int64                           `json:"presentationAutomaticAt,omitempty"`
+	Attributes              *CampaignAttributes             `json:"attributes,omitempty"`
+	Campaign                *CampaignView                   `json:"campaign,omitempty"`
+	Preparation             *engine.CampaignPreparationView `json:"preparation,omitempty"`
+	CanPrepare              bool                            `json:"canPrepare"`
+	SeatActors              []int                           `json:"seatActors"`
+	LocalActor              int                             `json:"localActor"`
+	Options                 Options                         `json:"options"`
+	Epoch                   string                          `json:"epoch"`
+	ServerAt                int64                           `json:"serverAt"`
+	Phase                   string                          `json:"phase"`
+	Runtime                 engine.RuntimeState             `json:"runtime"`
+	Inputs                  [4]InputState                   `json:"inputs"`
+	Events                  []SoundEvent                    `json:"events"`
+	SoundSequence           uint64                          `json:"soundSequence"`
+	Scores                  [2]uint16                       `json:"scores"`
+	CanInput                bool                            `json:"canInput"`
+	VideoInputs             []engine.RecordedVideoInput     `json:"videoInputs"`
+	Music                   MusicView                       `json:"music"`
 }
 type action struct {
 	Campaign    *CampaignAction                   `json:"campaign,omitempty"`
@@ -260,7 +262,7 @@ func decode(m gameapi.Match) (State, error) {
 	if s.Runtime.Config.Campaign != nil && s.Options.Court == "court-7" {
 		court, knownCourt = 7, true
 	}
-	if !knownCourt || validateSavedRoster(s) != nil || s.Runtime.Config.Match.Court != court || s.Runtime.Config.Match.Teams != s.Options.Teams || s.Runtime.Config.Match.Characters != s.Options.Characters || len(s.Epoch) != 24 || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= 1000 || s.PauseAt < 0 {
+	if !knownCourt || validateSavedRoster(s) != nil || s.Runtime.Config.Match.Court != court || s.Runtime.Config.Match.Teams != s.Options.Teams || s.Runtime.Config.Match.Characters != s.Options.Characters || len(s.Epoch) != 24 || s.ServerAt < 0 || s.Remainder < 0 || s.Remainder >= 1000 || s.PauseAt < 0 || s.PresentationConfirmAt < 0 {
 		return s, fmt.Errorf("无效篮球存档")
 	}
 	if _, err := hex.DecodeString(s.Epoch); err != nil {
@@ -319,6 +321,15 @@ func (s State) phase() string {
 	if s.campaignMenu() {
 		return "campaign-" + s.Campaign.Stage
 	}
+	if engine.RuntimePresentationActive(s.Runtime) {
+		if engine.RuntimePresentationNeedsConfirm(s.Runtime) {
+			return "ending-confirm"
+		}
+		if s.Runtime.Presentation.PendingResult.NextStage == engine.CampaignComplete {
+			return "ending"
+		}
+		return "reward-video"
+	}
 	if s.Runtime.Outcome != nil {
 		return "result"
 	}
@@ -350,11 +361,11 @@ func (s State) match() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
-	m := gameapi.Match{Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, HasComputerPlayers: len(s.seatActors()) < 4, Log: []string{s.rosterDescription()}}
+	m := gameapi.Match{CheckpointKey: s.checkpointKey(), Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, HasComputerPlayers: len(s.seatActors()) < 4, Log: []string{s.rosterDescription()}}
 	if s.campaignMenu() {
 		return s.campaignMatch(m)
 	}
-	if out := s.Runtime.Outcome; out != nil && out.Confirmed {
+	if out := s.Runtime.Outcome; engine.RuntimeFinished(s.Runtime) {
 		cooperative := s.Options.Mode == "solo" || s.Options.Mode == "cooperative"
 		r := &gameapi.Result{Team: !cooperative, Cooperative: cooperative, Ranks: make([]int, len(s.seatActors())), Scores: make([]int, len(s.seatActors())), Winners: []int{}}
 		for seat, actor := range s.seatActors() {
@@ -373,20 +384,8 @@ func (s State) match() (gameapi.Match, error) {
 		return m, nil
 	}
 	m.SystemDeadline = s.ServerAt + frameMS
-	for seat, actor := range s.seatActors() {
-		input := s.Inputs[actor]
+	for seat := range s.seatActors() {
 		m.Actors = append(m.Actors, seat)
-		if !input.Automated && s.phase() != "paused" && s.Runtime.Outcome == nil && (m.Deadline == 0 || input.IdleAt < m.Deadline) {
-			m.Deadline = input.IdleAt
-		}
-	}
-	if m.Deadline > 0 {
-		for seat, actor := range s.seatActors() {
-			input := s.Inputs[actor]
-			if !input.Automated && input.IdleAt == m.Deadline {
-				m.TimeoutActors = append(m.TimeoutActors, seat)
-			}
-		}
 	}
 	return m, nil
 }
@@ -413,7 +412,7 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (action, err
 	if err != nil {
 		return a, err
 	}
-	if ctx.Actor < 0 || s.actorForSeat(ctx.Actor) < 0 || flags[s.actorForSeat(ctx.Actor)] || s.Runtime.Outcome != nil && s.Runtime.Outcome.Confirmed {
+	if ctx.Actor < 0 || s.actorForSeat(ctx.Actor) < 0 || flags[s.actorForSeat(ctx.Actor)] || engine.RuntimeFinished(s.Runtime) {
 		return a, fmt.Errorf("当前席位不能操作")
 	}
 	if a.Epoch != s.Epoch || a.Sequence <= 0 || a.Sequence > maxSequence || a.Sequence-s.Inputs[s.actorForSeat(ctx.Actor)].Sequence > 1024 {
@@ -579,6 +578,9 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	s.Remainder = accumulator % 1000
 	s.ServerAt = now
 	startAutomatic := s.Inputs[0].Automated
+	if !startAutomatic {
+		s.PresentationConfirmAt = 0
+	}
 	for seat := range s.Inputs {
 		i := &s.Inputs[seat]
 		if !i.Automated && now-i.LastPacketAt > lostInputMS {
@@ -590,7 +592,7 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		}
 	}
 	for tick := int64(0); tick < ticks; tick++ {
-		if s.Runtime.Outcome != nil && s.Runtime.Outcome.Confirmed {
+		if engine.RuntimeFinished(s.Runtime) {
 			break
 		}
 		// Apply accepted changes at their actual server-receipt position on
@@ -610,6 +612,14 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 				i.AppliedButtons = change.Buttons
 			}
 			held[seat] = i.AppliedButtons
+		}
+		if engine.RuntimePresentationNeedsConfirm(s.Runtime) && startAutomatic {
+			if s.PresentationConfirmAt == 0 {
+				s.PresentationConfirmAt = now + 3000
+			}
+			if tickAt/60 >= s.PresentationConfirmAt {
+				s.Runtime.PendingPressed[0] |= engine.ButtonStart
+			}
 		}
 		if startAutomatic && (s.Runtime.AwaitingNextPeriod && s.Runtime.WaitVideoFrames == 0 || s.phase() == "paused") {
 			s.Runtime.PendingPressed[0] |= engine.ButtonStart
@@ -673,11 +683,14 @@ func onTimer(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		}
 		s.PauseAt = 0
 	}
-	if s.Runtime.Outcome != nil && s.Runtime.Outcome.Confirmed {
+	if engine.RuntimeFinished(s.Runtime) && s.Runtime.Presentation == nil {
 		s.Runtime.Display, err = engine.CommitDisplayVideo(s.Runtime.Display, 0, 0)
 		if err != nil {
 			return m, err
 		}
+	}
+	if !engine.RuntimePresentationNeedsConfirm(s.Runtime) {
+		s.PresentationConfirmAt = 0
 	}
 	if err = s.settleCampaign(); err != nil {
 		return m, err
@@ -700,6 +713,9 @@ func reclaim(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 		flags[seat] = input.Automated
 	}
 	flags[s.actorForSeat(ctx.Actor)] = false
+	if s.actorForSeat(ctx.Actor) == 0 {
+		s.PresentationConfirmAt = 0
+	}
 	if err = s.syncAutomation(flags); err != nil {
 		return m, err
 	}
@@ -724,7 +740,7 @@ func restore(ctx gameapi.Context, m gameapi.Match) (gameapi.Match, error) {
 	if m.Result != nil {
 		return m, nil
 	}
-	s.ServerAt = ctx.Now.UnixMilli()
+	// Keep the persisted simulation boundary; the first live tick caps catch-up.
 	if s.campaignMenu() {
 		return s.match()
 	}
@@ -744,6 +760,9 @@ func project(m gameapi.Match, seat int) (any, error) {
 	}
 	actor := s.actorForSeat(seat)
 	v := View{SeatActors: s.seatActors(), LocalActor: actor, Options: s.Options, Epoch: s.Epoch, ServerAt: s.ServerAt, Phase: s.phase(), Runtime: s.Runtime, Inputs: s.Inputs, Events: s.Events, SoundSequence: s.SoundSequence, Scores: s.scores(), CanInput: actor >= 0 && !s.Inputs[actor].Automated && m.Result == nil, VideoInputs: s.VideoInputs, Music: s.Music.view(s.ServerAt)}
+	if s.Inputs[0].Automated && engine.RuntimePresentationNeedsConfirm(s.Runtime) {
+		v.PresentationAutomaticAt = s.PresentationConfirmAt
+	}
 	v.Campaign, err = s.campaignView(actor)
 	if err != nil {
 		return nil, err

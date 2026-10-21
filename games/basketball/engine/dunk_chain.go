@@ -41,7 +41,7 @@ func StepDunkPlayer(original Player, ctx DunkContext, court FlatCourt) (DunkStep
 		return initial, errors.New("invalid original dunk actor or target")
 	}
 	mount := ctx.TargetOwner & 127
-	if mount < 7 || mount > 12 {
+	if !original.Entered && (mount < 7 || mount > 12) {
 		return initial, errors.New("dunk target has no reconstructed hoop mount")
 	}
 	p := &result.Player

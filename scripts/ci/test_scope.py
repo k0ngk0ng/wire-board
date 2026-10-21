@@ -58,6 +58,14 @@ class ScopeTests(unittest.TestCase):
         self.assertIn('TestRailHiddenTasksThroughAPI', flat)
         self.assertIn('^TestBotsFinishBothGames$/^rail-', flat)
         self.assertNotIn('TestCatan', flat)
+    def test_basketball_full_acceptance_only_for_backend_changes(self):
+        # Failure inventory: full game gates silently stay skipped in main;
+        # asset/frontend changes or shared checks start expensive game runs.
+        expected = {'BASKETBALL_PREPARATION_MATRIX', 'BASKETBALL_SELECTION_ADMISSION', 'BASKETBALL_FULL_HTTP'}
+        self.assertTrue(all(scope.verification_env('basketball', True, {})[key] == '1' for key in expected))
+        for game, backend in [('basketball', False), ('shared', True), ('racing', True)]:
+            self.assertFalse(expected.intersection(scope.verification_env(game, backend, {})))
+
     def test_changed_range_covers_old_and_new_paths(self):
         self.assertEqual(scope.changed_names(b'games/pairs/web/Old.tsx\0games/snooker/web/New.tsx\0'), ['games/pairs/web/Old.tsx', 'games/snooker/web/New.tsx'])
     def test_workflow_binary_waits_for_all_selected_checks(self):

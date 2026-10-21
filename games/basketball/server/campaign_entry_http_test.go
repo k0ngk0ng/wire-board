@@ -1,4 +1,4 @@
-package basketball
+package basketball_test
 
 // Before preparation implementation: reject unearned items/masks/reward tables;
 // preserve source inventory order when moving equipment; keep equipment tied
@@ -6,6 +6,7 @@ package basketball
 // persist selections through actual SQLite and use them at Start, not defaults.
 import (
 	"encoding/json"
+	game "github.com/k0ngk0ng/wire-board/games/basketball/server"
 	"reflect"
 	"testing"
 
@@ -14,13 +15,13 @@ import (
 )
 
 func TestCampaignEntryPreparationHTTP(t *testing.T) {
-	h := gametest.NewHTTP(t, 1, Module(), "basketball")
+	h := gametest.NewHTTP(t, 1, game.Module(), "basketball")
 	a := h.People[0]
 	a.Request("POST", "/api/admin/games/basketball", map[string]bool{"enabled": true}, 200)
 	a.Request("POST", "/api/rooms", map[string]any{"kind": "basketball", "capacity": 1, "name": "战役准备", "options": map[string]any{"mode": "solo", "campaign": map[string]any{"password": "020010", "opponent": 4}}}, 201)
-	read := func() Options {
+	read := func() game.Options {
 		raw, _ := json.Marshal(a.Room()["options"])
-		var o Options
+		var o game.Options
 		if e := json.Unmarshal(raw, &o); e != nil {
 			t.Fatal(e)
 		}
@@ -46,7 +47,7 @@ func TestCampaignEntryPreparationHTTP(t *testing.T) {
 	a.Command("ready", nil, 200)
 	a.Command("start", nil, 200)
 	raw, _ := json.Marshal(gametest.Data(a.Room()))
-	var v View
+	var v game.View
 	json.Unmarshal(raw, &v)
 	if v.Runtime.Config.Match.Court != 0 || v.Runtime.Config.Match.Teams != ([2]uint8{0, 5}) || v.Runtime.Config.Match.Characters[0] != 2 || v.Runtime.Config.Match.Equipment[2][0] != 1 || v.Runtime.Config.HumanTactics[0] != 2 || v.Runtime.Config.Campaign.Period != 2 {
 		t.Fatal("campaign Start lost waiting-room selections")
@@ -55,12 +56,12 @@ func TestCampaignEntryPreparationHTTP(t *testing.T) {
 }
 
 func TestCampaignEntryRejectsForgedPreparation(t *testing.T) {
-	raw, e := configure(1, json.RawMessage(`{"mode":"solo","campaign":{"password":"020010","opponent":1}}`))
+	raw, e := game.Module().Configure(1, json.RawMessage(`{"mode":"solo","campaign":{"password":"020010","opponent":1}}`))
 	if e != nil {
 		t.Fatal(e)
 	}
 	for _, kind := range []string{"inventory", "equipment", "reward", "wins", "mode"} {
-		var o Options
+		var o game.Options
 		json.Unmarshal(raw, &o)
 		switch kind {
 		case "inventory":
@@ -76,7 +77,7 @@ func TestCampaignEntryRejectsForgedPreparation(t *testing.T) {
 			o.Campaign.Preparation.Mode = 1
 		}
 		bad, _ := json.Marshal(o)
-		if _, e = configure(1, bad); e == nil {
+		if _, e = game.Module().Configure(1, bad); e == nil {
 			t.Fatal("forged preparation accepted", kind)
 		}
 	}
@@ -90,7 +91,7 @@ func TestCampaignExplicitEntryIntent(t *testing.T) {
 		`{"mode":"solo","campaign":{"entry":"new"}}`,
 		`{"mode":"solo","campaign":{"entry":"password","password":"020010"}}`,
 	} {
-		if _, err := configure(1, json.RawMessage(raw)); err != nil {
+		if _, err := game.Module().Configure(1, json.RawMessage(raw)); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -99,7 +100,7 @@ func TestCampaignExplicitEntryIntent(t *testing.T) {
 		`{"mode":"solo","campaign":{"entry":"new","password":"020010"}}`,
 		`{"mode":"solo","campaign":{"entry":"resume"}}`,
 	} {
-		if _, err := configure(1, json.RawMessage(raw)); err == nil {
+		if _, err := game.Module().Configure(1, json.RawMessage(raw)); err == nil {
 			t.Fatal("ambiguous campaign entry accepted", raw)
 		}
 	}

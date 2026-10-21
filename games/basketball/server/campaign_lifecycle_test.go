@@ -130,7 +130,7 @@ func campaignFinishedHost(t *testing.T, edited bool) (gameapi.Context, gameapi.M
 			s.Runtime = step.State
 		}
 	}
-	for n := 0; n < 48000 && (s.Runtime.Outcome == nil || !s.Runtime.Outcome.Confirmed); n++ {
+	for n := 0; n < 48000 && !engine.RuntimeFinished(s.Runtime); n++ {
 		var held [4]engine.Buttons
 		if s.Runtime.AwaitingNextPeriod && s.Runtime.WaitVideoFrames == 0 {
 			held[0] = engine.ButtonStart
@@ -141,7 +141,7 @@ func campaignFinishedHost(t *testing.T, edited bool) (gameapi.Context, gameapi.M
 		}
 		s.Runtime = step.State
 	}
-	if s.Runtime.Outcome == nil || !s.Runtime.Outcome.Confirmed {
+	if !engine.RuntimeFinished(s.Runtime) {
 		t.Fatal("normal match did not finish")
 	}
 	if (s.Runtime.Outcome.WinningTeam == 0) == edited {
@@ -216,9 +216,11 @@ func TestCampaignResultContinueAndNextMatch(t *testing.T) {
 			}
 			ctx.Actor = 0
 			request := campaignRequest(t, m, "continue", nil)
-			m, e = apply(ctx, m, request)
-			if e != nil {
-				t.Fatal(e)
+			if s.Campaign.Stage != "prepare" {
+				m, e = apply(ctx, m, request)
+				if e != nil {
+					t.Fatal(e)
+				}
 			}
 			if _, e = apply(ctx, m, request); e == nil {
 				t.Fatal("old result confirmation repeated")

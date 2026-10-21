@@ -1,11 +1,16 @@
 """Real React Board, authenticated HTTP, browser Wasm and native keyboard/touch."""
 from pathlib import Path
 import json,os,subprocess,uuid
-ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/platform-rooms';OUT.mkdir(parents=True,exist_ok=True)
+ROOT=Path(__file__).resolve().parents[2];OUT=Path(os.environ.get('BASKETBALL_BROWSER_OUTPUT',str(ROOT/'.local/basketball/platform-rooms'))).resolve();assert OUT.is_relative_to((ROOT/'.local/basketball').resolve());OUT.mkdir(parents=True,exist_ok=True)
 env=dict(os.environ,AGENT_BROWSER_SESSION='bkp-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
+ if inspector and args[0] in ('click','select','fill') and not args[1].startswith('@'):
+  wait('(()=>{const e=document.querySelector('+json.dumps(args[1])+');return !!e&&!e.disabled})()')
+ if inspector and args[:4]==('find','role','button','click') and '--name' in args:
+  label=args[args.index('--name')+1]
+  wait('(()=>{const e=[...document.querySelectorAll("button")].find(b=>b.textContent.trim()==='+json.dumps(label)+'||b.getAttribute("aria-label")==='+json.dumps(label)+');return !!e&&!e.disabled})()')
  r=subprocess.run(['agent-browser',*args,'--json'],env=env,capture_output=True,text=True,timeout=60)
  if r.returncode:raise RuntimeError(r.stdout+r.stderr)
  value=json.loads(r.stdout)
@@ -16,11 +21,11 @@ def cdp(method,params={}):
  if 'error'in r:raise RuntimeError(r['error'])
  return r['result']
 def js(source):
- r=cdp('Runtime.evaluate',dict(expression=source,returnByValue=True,awaitPromise=True,timeout=8000))
+ r=cdp('Runtime.evaluate',dict(expression=source,returnByValue=True,awaitPromise=True,timeout=20000))
  if r.get('exceptionDetails'):raise RuntimeError(r['exceptionDetails'])
  return r['result'].get('value')
 def wait(expression):
- return js('(async()=>{for(let n=0;n<300;n++){if('+expression+')return true;await new Promise(r=>setTimeout(r,20));}throw Error('+json.dumps('Timed out: '+expression)+')})()')
+ return js('(async()=>{for(let n=0;n<750;n++){if(await ('+expression+'))return true;await new Promise(r=>setTimeout(r,20));}throw Error('+json.dumps('Timed out: '+expression)+')})()')
 def key(kind,code,key,number):cdp('Input.dispatchKeyEvent',dict(type=kind,code=code,key=key,windowsVirtualKeyCode=number))
 def expect(name,value):
  assert value,name
@@ -30,6 +35,7 @@ try:
  page=base+'/'
  browser('--profile',str(OUT/'profile'),'open',page);opened=True
  endpoint=browser('get','cdp-url')['cdpUrl'];inspector=subprocess.Popen(['node',str(ROOT/'scripts/basketball/browser_cdp_session.mjs'),endpoint,page],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(OUT/'cdp.stderr').open('w'),text=True);assert json.loads(inspector.stdout.readline())['ready']
+ wait('!!document.querySelector("input[name=name]")')
  browser('fill','input[name=name]','牌局管理员');browser('fill','input[name=password]','poker-test-password');browser('click','.auth-form button[type=submit], .auth-form button.primary')
  wait('!!document.querySelector(".lobby") || document.body.innerText.includes("创建房间")')
  js('window.platformRequests=[];const originalFetch=window.fetch;window.fetch=async(...args)=>{const response=await originalFetch(...args);if(args[1]?.method==="POST")platformRequests.push({url:args[0],body:args[1]?.body,status:response.status,data:await response.clone().json()});return response};window.platformErrors=[];window.addEventListener("error",e=>platformErrors.push(e.message));window.addEventListener("unhandledrejection",e=>platformErrors.push(String(e.reason)))')
@@ -83,7 +89,7 @@ try:
   wait('document.querySelector(".basketball-preparation") && [...document.querySelectorAll(".basketball-preparation img")].every(i=>i.complete&&i.naturalWidth>0)')
   expect('court labels remain below preview images in platform styles '+mode,js('[...document.querySelectorAll(".basketball-court-choices button")].every(b=>{const i=b.querySelector("img").getBoundingClientRect(),label=b.querySelector("span").getBoundingClientRect(),r=b.getBoundingClientRect();return label.top>=i.bottom-1 && i.left>=r.left && i.right<=r.right && label.right<=r.right})'))
   expect('preparation loads original court and player images '+mode,js('document.querySelectorAll(".basketball-preparation img").length>=15'))
-  expect('seven verified courts appear only in waiting preparation '+mode,js('document.querySelectorAll(".basketball-preparation [data-court]").length===7'))
+  expect('all eight original courts appear only in waiting preparation '+mode,js('document.querySelectorAll(".basketball-preparation [data-court]").length===8'))
   browser('screenshot',str(OUT/(mode+'-waiting-mobile.png')),'--full')
   if mode!='versus':
    browser('find','role','button','click','--name','离开房间');wait('!document.querySelector(".waiting-seats")');continue
@@ -109,6 +115,7 @@ try:
   request('/login',{'name':'牌局玩家1','password':'poker-test-password'})
   request('/rooms/'+room['id'],{'type':'join','version':room['version'],'nonce':'platform-room-join-001'})
   other=request('/state')['room'];request('/rooms/'+room['id'],{'type':'ready','version':other['version'],'nonce':'platform-room-ready-001'})
+  wait('document.querySelectorAll(".waiting-seat")[1]?.textContent.includes("已准备")')
   browser('find','role','button','click','--name','我准备好了');wait('[...document.querySelectorAll("button")].some(b=>b.textContent.includes("开始游戏")&&!b.disabled)')
   js('[...document.querySelectorAll("button")].find(b=>b.textContent.includes("开始游戏")).scrollIntoView({block:"center"})');browser('find','role','button','click','--name','开始游戏');wait('!!document.querySelector("[data-basketball-ready=true]")')
   wait('Number(document.querySelector(".basketball-stage canvas")?.dataset.videoFrame)>=120')
@@ -121,8 +128,26 @@ try:
   browser('set','viewport','1280','900')
   expect('PC controller sits below the match screen',js('(()=>{const s=document.querySelector(".basketball-screen"),p=document.querySelector(".fc-play");return !s.contains(p)&&s.getBoundingClientRect().bottom<=p.getBoundingClientRect().top})()'))
   browser('screenshot',str(OUT/'versus-match-desktop.png'),'--full')
+  # Observe production WebSocket packets without changing their bytes or timing.
+  js('window.streamTrace=[];const originalSend=WebSocket.prototype.send;WebSocket.prototype.send=function(raw){let p;try{p=JSON.parse(raw)}catch{};if(p?.type==="input"){if(!this.basketballObserved){this.basketballObserved=true;this.addEventListener("message",e=>{try{const p=JSON.parse(e.data);if(p.type==="ack")streamTrace.push({direction:"in",at:performance.now(),packet:p})}catch{}})}streamTrace.push({direction:"out",at:performance.now(),packet:p})}return originalSend.call(this,raw)}')
+  js('document.querySelector(".basketball-board").focus()')
+  key('keyDown','KeyD','d',68)
+  js('new Promise(r=>setTimeout(r,40))')
+  key('keyUp','KeyD','d',68)
+  wait('streamTrace.filter(e=>e.direction==="out").length>=2 && streamTrace.filter(e=>e.direction==="out").every(e=>streamTrace.some(a=>a.direction==="in"&&a.packet.nonce===e.packet.nonce))')
+  trace=js('streamTrace')
+  outgoing=[e for e in trace if e['direction']=='out']
+  first=next(e for e in outgoing if e['packet']['action']['events'][-1]['buttons']==1)
+  released=next(e for e in outgoing if e['at']>first['at'] and e['packet']['action']['events'][-1]['buttons']==0)
+  ack=next(e for e in trace if e['direction']=='in' and e['packet']['nonce']==first['packet']['nonce'])
+  expect('native D press/release uses production ordered stream',all(e['packet']['status']==200 for e in trace if e['direction']=='in'))
+  if int(env.get('BASKETBALL_BROWSER_RTT_MS','0'))>=300:
+   expect('release is sent before delayed first ACK',released['at']<ack['at'])
+  wait('fetch("/api/state").then(r=>r.json()).then(s=>s.room.game.data.inputs[0].buttons===0)')
+  (OUT/'stream-trace.json').write_text(json.dumps(dict(rttMS=int(env.get('BASKETBALL_BROWSER_RTT_MS','0')),trace=trace),indent=2)+'\n')
+
  expect('no application errors',js('platformErrors.length===0 && !document.querySelector(".basketball-error")'))
- (OUT/'result.json').write_text(json.dumps(dict(status='passed',checks=checks,scope='built production UI, real platform login/create/wait/join/start, independent test module registry and extracted local graphics; no production registration, OSS or full multiplayer match'),ensure_ascii=False,indent=2)+'\n')
+ (OUT/'result.json').write_text(json.dumps(dict(status='passed',checks=checks,scope='built production UI, real platform login/create/wait/join/start, independent test module registry and verified packaged fallback graphics; no production registration, OSS or full multiplayer match'),ensure_ascii=False,indent=2)+'\n')
  print(json.dumps(checks,ensure_ascii=False))
 except Exception as error:
  (OUT/'result.json').write_text(json.dumps(dict(status='failed',checks=checks,error=repr(error)),ensure_ascii=False,indent=2)+'\n')

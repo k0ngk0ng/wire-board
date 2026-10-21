@@ -155,6 +155,10 @@ func runtimeMatch(s *RuntimeState) *MatchState {
 func cloneRuntime(s RuntimeState) RuntimeState {
 	if s.Presentation != nil {
 		p := *s.Presentation
+		if p.Display != nil {
+			d := *p.Display
+			p.Display = &d
+		}
 		if p.Video != nil {
 			v := *p.Video
 			p.Video = &v
