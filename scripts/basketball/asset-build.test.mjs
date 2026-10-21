@@ -89,3 +89,16 @@ test("music76 accepts only its exact intro-loop delivery filename", t => {
     writeFileSync(f.pinFile, encode(pin)); assert.throws(() => loadBasketballAssetPin(f.dir), name);
   }
 });
+
+test('application artifact verifies the separately pinned cover and rejects extra media', async t => {
+  const f=fixture(t), output=await materializeBasketballAssets(f.dir,{packageDirectory:f.pkg});
+  const image=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a6z8AAAAASUVORK5CYII=','base64');
+  const digest=sha(image), localPath='/basketball/v1/cover/heroes-'+digest+'.png';
+  const cover={schema:1,game:'basketball',sha256:digest,bytes:image.length,mime:'image/png',width:1,height:1,localPath,url:'https://cdn.ichenj.com/bga/basketball/cover-'+digest+'/heroes.png'};
+  writeFileSync(path.join(f.dir,'games/basketball/assets/cover-manifest.json'),JSON.stringify(cover));
+  assert.throws(()=>verifyBasketballPublicFiles(f.dir,output,{exact:false}));
+  const target=path.join(output,localPath);mkdirSync(path.dirname(target),{recursive:true});writeFileSync(target,image);
+  verifyBasketballPublicFiles(f.dir,output,{exact:false});
+  writeFileSync(path.join(path.dirname(target),'unlisted.png'),image);
+  assert.throws(()=>verifyBasketballPublicFiles(f.dir,output,{exact:false}));
+});

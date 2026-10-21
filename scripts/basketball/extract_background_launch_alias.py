@@ -3,7 +3,7 @@
 Owner FF in auxiliary B07E becomes Y=127 in DFF8; its height reads 0135/0142,
 the most recently prepared lower tile row19 and upper attribute row2.
 """
-import gzip,hashlib,json,sys
+import gzip,hashlib,json,sys,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'.local/basketball/python'))
 from py65.devices.mpu6502 import MPU
@@ -34,6 +34,7 @@ def main():
     lines += ['{'+','.join(map(str,row))+'},' for row in tiles];lines+=['}','var originalLaunchColumnAttributes = [8][2][8]uint8{']
     lines += ['{'+','.join('{'+','.join(map(str,page))+'}' for page in row)+'},' for row in attributes];lines+=['}','']
     (out/'background_launch_tables.go').write_text('\n'.join(lines))
+    subprocess.run(['gofmt','-w',str(out/'background_launch_tables.go')],check=True)
     packed=gzip.compress(json.dumps(rows,separators=(',',':')).encode(),mtime=0);(out/'testdata/background-launch-alias.json.gz').write_bytes(packed)
     manifest=dict(records=len(rows),source_is_original_execution=True,natural_gameplay=False,entry='bank1 BC74',rom_sha256=digest,fixture_sha256=hashlib.sha256(packed).hexdigest(),table_sha256=hashlib.sha256((out/'background_launch_tables.go').read_bytes()).hexdigest(),unchanged_ROM_instructions=True)
     (out/'testdata/background-launch-alias-source.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps(manifest))

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "game": "basketball",
+  "sha256": "7a36d48d27c6cfa876fc926b98c2b2f1def312d918692ab102019678aec7de32",
+  "bytes": 105229,
+  "mime": "image/png",
+  "width": 237,
+  "height": 264,
+  "localPath": "/basketball/v1/cover/heroes-7a36d48d27c6cfa876fc926b98c2b2f1def312d918692ab102019678aec7de32.png",
+  "url": "https://cdn.ichenj.com/bga/basketball/cover-7a36d48d27c6cfa876fc926b98c2b2f1def312d918692ab102019678aec7de32/heroes.png",
+  "source": {
+    "game": "超热血高校躲避球部",
+    "page": "https://www.kuniokun.jp/dodge/charactor/",
+    "image": "https://www.kuniokun.jp/dodge/charactor/chara01.jpg",
+    "sha256": "81997c1c7961cb4c92a07be4ec209f706a617c4b9c029a1072e3b44de25a14f6",
+    "copyright": "(C) Million co.,Ltd. / ARC SYSTEM WORKS",
+    "license": "Official copyrighted artwork; no open redistribution license found.",
+    "originalDimensions": [
+      237,
+      264
+    ],
+    "adaptation": "Removed outer background, retained the character silhouettes and original occlusion, recolored and redrew the held ball as a basketball; separate original SVG court composition. Not 1993 basketball key art."
+  }
+}
