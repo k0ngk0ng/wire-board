@@ -66,6 +66,13 @@ class ScopeTests(unittest.TestCase):
         for game, backend in [('basketball', False), ('shared', True), ('racing', True)]:
             self.assertFalse(expected.intersection(scope.verification_env(game, backend, {})))
 
+    def test_basketball_race_checks_include_stream_restore_and_presentation(self):
+        flat = '\n'.join(' '.join(c) for c in scope.go_commands(ROOT, 'basketball', race=True))
+        for name in ['TestBasketballRealtimeStreamAndRestore', 'TestCampaignEndingConfirmationDeadline', 'TestRuntimePresentationDisplayLifecycle']:
+            self.assertIn(name, flat)
+        self.assertNotIn('TestRuntimeOriginalSelectionAdmissionMatrix', flat)
+        self.assertNotIn('TestBasketballHTTPCompletePreparedMatch', flat)
+
     def test_changed_range_covers_old_and_new_paths(self):
         self.assertEqual(scope.changed_names(b'games/pairs/web/Old.tsx\0games/snooker/web/New.tsx\0'), ['games/pairs/web/Old.tsx', 'games/snooker/web/New.tsx'])
     def test_workflow_binary_waits_for_all_selected_checks(self):
