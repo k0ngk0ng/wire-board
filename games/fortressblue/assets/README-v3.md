@@ -11,6 +11,8 @@ python3 -B scripts/fortressblue/verify-animation-assets.py
 
 生成器沿用仓库内的原版解码依赖，路径为 `.local/fortressblue-original/tools/py`。输入为官方网页客户端 `Download/char01.i16` 至 `char14.i16`，本地副本位于 `.local/fortressblue-original/downloaded/`。
 
+主图块实际朝左，另一个图块朝右；图集保持主图块在偶数项、另一图块在奇数项的原始顺序。`animations.json` 的 `left` 指向偶数项，`right` 指向奇数项。方向修正只更新元数据及坡面帧选择，已发布图集像素、矩形、锚点及 SHA-256 保持不变。
+
 每个文件有 296 条记录。每条记录含 RGB565/LH5 图像、原始锚点及可选的另一个朝向图像。只有一个朝向的记录复用原图，并在 `sharedFacing` 标明，不自行镜像。
 
 输出包括：

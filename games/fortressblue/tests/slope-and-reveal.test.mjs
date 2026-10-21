@@ -27,19 +27,19 @@ test("slope follows nearby solid support, including current crater holes", () =>
 test("native slope frame keeps direction, group, and original anchor", () => {
   const frames = Array.from({ length: 10 }, (_, i) => ({
     sourceIndex: 25 + Math.floor(i / 2),
-    facing: i % 2 ? "left" : "right",
+    facing: i % 2 ? "right" : "left",
     ax: i,
     ay: 20 + i,
   }));
-  assert.equal(selectSlopeFrame(frames, 4, 2, 1, 5), frames[0]);
-  assert.equal(selectSlopeFrame(frames, 5, 2, -1, 5), frames[9]);
-  assert.equal(selectSlopeFrame(frames, 4, -2, 1, 5), frames[8]);
+  assert.equal(selectSlopeFrame(frames, 4, 2, -1, 5), frames[0]);
+  assert.equal(selectSlopeFrame(frames, 5, 2, 1, 5), frames[9]);
+  assert.equal(selectSlopeFrame(frames, 4, -2, -1, 5), frames[8]);
   assert.equal(selectSlopeFrame(frames, 4, 2, 1, 1), frames[4]);
   const broken = frames.map((f) => ({ ...f }));
   broken[0].sourceIndex = 30;
-  assert.equal(selectSlopeFrame(broken, 4, 2, 1, 5), broken[4]);
-  broken[0] = { ...frames[0], facing: "left" };
-  assert.equal(selectSlopeFrame(broken, 4, 2, 1, 5), broken[4]);
+  assert.equal(selectSlopeFrame(broken, 4, 2, -1, 5), broken[4]);
+  broken[0] = { ...frames[0], facing: "right" };
+  assert.equal(selectSlopeFrame(broken, 4, 2, -1, 5), broken[4]);
 });
 test("entering play reveals a fitting board at most once, never the select overlay", () => {
   const rect = { top: 400, bottom: 1080, height: 680 };

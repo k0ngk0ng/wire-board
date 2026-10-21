@@ -39,7 +39,7 @@ def main():
         assert len(tank['frames']) == len(raw) * 2
         for idx, frame in enumerate(tank['frames']):
             src = raw[frame['sourceIndex']]
-            im, ox, oy = (src['image'], src['ox'], src['oy']) if frame['facing'] == 'right' else (src['other'] or (src['image'], src['ox'], src['oy']))
+            im, ox, oy = (src['image'], src['ox'], src['oy']) if frame['facing'] == 'left' else (src['other'] or (src['image'], src['ox'], src['oy']))
             assert (frame['w'], frame['h'], frame['ax'], frame['ay']) == (im.width, im.height, -ox, -oy), (tid, idx, 'anchor')
             sheet = sheets[frame['atlas']]
             x, y, w, h = (frame[k] for k in ('x', 'y', 'w', 'h'))

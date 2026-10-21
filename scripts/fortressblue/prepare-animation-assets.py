@@ -31,8 +31,10 @@ def pack_tank(tid):
     sheet = Image.new('RGBA', (2048, 2048))
     x = y = row_height = used_width = 0
     for index, frame in enumerate(raw):
-        for facing in ('right', 'left'):
-            im, ox, oy = (frame['image'], frame['ox'], frame['oy']) if facing == 'right' else (frame['other'] or (frame['image'], frame['ox'], frame['oy']))
+        # I16 primary pixels face left; the alternate block faces right.
+        # Preserve physical atlas order and native anchors, never mirror pixels.
+        for facing in ('left', 'right'):
+            im, ox, oy = (frame['image'], frame['ox'], frame['oy']) if facing == 'left' else (frame['other'] or (frame['image'], frame['ox'], frame['oy']))
             w, h = im.size
             if x+w > 2048:
                 x = 0
@@ -43,7 +45,7 @@ def pack_tank(tid):
                 sheet = Image.new('RGBA',(2048,2048))
                 x = y = row_height = used_width = 0
             sheet.paste(im,(x,y))
-            frames.append(dict(atlas=len(sheets),x=x,y=y,w=w,h=h,ax=-ox,ay=-oy,sourceIndex=index,facing=facing,sharedFacing=(facing == 'left' and frame['other'] is None)))
+            frames.append(dict(atlas=len(sheets),x=x,y=y,w=w,h=h,ax=-ox,ay=-oy,sourceIndex=index,facing=facing,sharedFacing=(facing == 'right' and frame['other'] is None)))
             x += w+1
             row_height = max(row_height,h)
             used_width = max(used_width,x-1)
@@ -69,8 +71,8 @@ def main():
         mapping = sequences.get('overrides',{}).get(str(tid),sequences['actions'])
         for name, action in mapping.items():
             tank['actions'][name] = {k:v for k,v in action.items() if k != 'sourceIndices'}
-            tank['actions'][name]['left'] = [i*2+1 for i in action['sourceIndices']]
-            tank['actions'][name]['right'] = [i*2 for i in action['sourceIndices']]
+            tank['actions'][name]['left'] = [i*2 for i in action['sourceIndices']]
+            tank['actions'][name]['right'] = [i*2+1 for i in action['sourceIndices']]
         animation['tanks'][str(tid)] = tank
         values = list(map(int,lines[tid].split('\t')))
         metadata = tanks['tanks'][str(tid)]

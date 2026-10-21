@@ -1,0 +1,35 @@
+{
+  "scope": "Native source pixel comparison and real production application browser acceptance",
+  "reports": [
+    {
+      "path": ".local/fortress-facing/frontend.txt",
+      "sha256": "8b68cd3ce0c034167313d69bd66013de3a0090ac9400eb35e2a16b12323e0f29",
+      "bytes": 1898
+    },
+    {
+      "path": ".local/fortress-facing/source-pixels.txt",
+      "sha256": "235a5f640de4aa2195b5da86dbdd12ff1a8b5cb1468830955d27b410f05c6901",
+      "bytes": 114
+    },
+    {
+      "path": ".local/fortress-facing/assets-dist.txt",
+      "sha256": "c2e35d74d2beaaf2184dd49cf3865d9c8311cf88a67aec2154a3d33f7a312df9",
+      "bytes": 70
+    },
+    {
+      "path": ".local/fortress-facing/facing-acceptance/report.json",
+      "sha256": "e511dbad2294fb7f6f16bf1b8afe4b24c52c6fa0748b94f79f3509691583048a",
+      "bytes": 15340
+    },
+    {
+      "path": ".local/fortress-facing/declared-directions.png",
+      "sha256": "370c42cf7a1d52aaa3ce4fc3a7fffaee32741a52b96ba6e57206714109db609c",
+      "bytes": 64294
+    },
+    {
+      "path": ".local/fortress-facing/native-slopes.png",
+      "sha256": "139cd2aacb93e3ae7e7dabe3526a2ad773ecca87cdfef3b1f1fe972d2acd3d1c",
+      "bytes": 14574
+    }
+  ]
+}
