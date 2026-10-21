@@ -1,3 +1,4 @@
+import { MAX_ROAD_SPEED } from "./dynamics";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type {
   PointerEvent as ReactPointerEvent,
@@ -39,7 +40,6 @@ const timeText = (ms: number) => {
 export function Board(props: BoardProps<View>) {
   const { room, data: d, act, busy, clock, assets, audio, sound } = props;
   const [mobile, setMobile] = useState(isTouch),
-    [auto, setAuto] = useState(isTouch),
     [suspended, setSuspended] = useState(false),
     [drive, setDrive] = useState<Drive>({ ...neutral }),
     [error, setError] = useState(""),
@@ -84,11 +84,9 @@ export function Board(props: BoardProps<View>) {
     }),
     latest = useRef(props),
     paused = useRef(false),
-    autoRef = useRef(auto),
     activeRef = useRef(false),
     skinSent = useRef("");
   latest.current = props;
-  autoRef.current = auto;
   const car = d.cars.find((c) => c.seat === room.you),
     spectating = !!room.spectating || room.you < 0;
   const enabled =
@@ -146,8 +144,7 @@ export function Board(props: BoardProps<View>) {
           (held.has("ArrowLeft") || held.has("KeyA") ? 1 : 0),
       throttle:
         !braking &&
-        (autoRef.current ||
-          throttles.current.size > 0 ||
+        (throttles.current.size > 0 ||
           pedalKeys.current.throttle.size > 0 ||
           held.has("ArrowUp") ||
           held.has("KeyW"))
@@ -198,8 +195,6 @@ export function Board(props: BoardProps<View>) {
     });
     if (touch && !mobile) {
       setMobile(true);
-      setAuto(true);
-      autoRef.current = true;
     }
     if (paused.current) {
       paused.current = lifecycle.current.wake();
@@ -210,9 +205,6 @@ export function Board(props: BoardProps<View>) {
     release();
     compute();
   }, [scope, enabled]);
-  useEffect(() => {
-    compute();
-  }, [auto]);
   useEffect(() => {
     const query = matchMedia("(prefers-reduced-motion: reduce)"),
       change = () => setReduced(query.matches);
@@ -419,7 +411,7 @@ export function Board(props: BoardProps<View>) {
       audio.stopLoop("racing-tires");
       return;
     }
-    const speed = Math.min(1, followed.speed / 310);
+    const speed = Math.min(1, followed.speed / MAX_ROAD_SPEED);
     void audio.loop("racing-engine", sources(assets, "engine.mp3"), {
       volume: 0.12 + speed * 0.16,
       rate: 0.72 + speed * 0.7,
@@ -779,18 +771,6 @@ export function Board(props: BoardProps<View>) {
               <small>滑动转向</small>
             </div>
             <div className="racing-drive-info">
-              <label className="racing-auto">
-                <input
-                  type="checkbox"
-                  checked={auto}
-                  disabled={!enabled}
-                  onChange={(e) => {
-                    wake();
-                    setAuto(e.target.checked);
-                  }}
-                />
-                自动加速
-              </label>
               <span className="racing-key-hint">
                 WASD／方向键
                 <br />
@@ -798,16 +778,6 @@ export function Board(props: BoardProps<View>) {
               </span>
             </div>
             <div className="racing-pedals">
-              <button
-                type="button"
-                aria-label="油门"
-                aria-pressed={drive.throttle > 0}
-                className={drive.throttle > 0 ? "pressed" : ""}
-                disabled={!enabled}
-                {...heldButton("throttle")}
-              >
-                油门<small>W／↑</small>
-              </button>
               <button
                 type="button"
                 className={`racing-drift ${drive.drift ? "pressed" : ""}`}
@@ -827,6 +797,16 @@ export function Board(props: BoardProps<View>) {
                 {...heldButton("brake")}
               >
                 刹车<small>S／↓</small>
+              </button>
+              <button
+                type="button"
+                aria-label="油门"
+                aria-pressed={drive.throttle > 0}
+                className={drive.throttle > 0 ? "pressed" : ""}
+                disabled={!enabled}
+                {...heldButton("throttle")}
+              >
+                油门<small>W／↑</small>
               </button>
             </div>
           </div>

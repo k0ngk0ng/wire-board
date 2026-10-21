@@ -2,7 +2,7 @@
 """Real HTTP/browser acceptance. Failure inventory: racing-remake/PLAN.md."""
 import argparse,base64,hashlib,http.cookiejar,json,os,shutil,subprocess,time,traceback,urllib.request,urllib.error,uuid
 from pathlib import Path
-parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--maps-only',action='store_true');parser.add_argument('--skip-maps',action='store_true');parser.add_argument('--tracks',default='metro,harbor,woodland,coast,canyon');parser.add_argument('--models',action='store_true');parser.add_argument('--fallback',action='store_true');parser.add_argument('--players',type=int,default=2);parser.add_argument('--extended',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--maps-only',action='store_true');parser.add_argument('--skip-maps',action='store_true');parser.add_argument('--tracks',default='metro,harbor,woodland,coast,canyon');parser.add_argument('--models',action='store_true');parser.add_argument('--fallback',action='store_true');parser.add_argument('--players',type=int,default=2);parser.add_argument('--extended',action='store_true');parser.add_argument('--position-only',action='store_true');parser.add_argument('--speed-check',action='store_true');parser.add_argument('--laps',type=int,choices=[1,3,5],default=1);args=parser.parse_args()
 root=Path(__file__).resolve().parents[2];out=(root/args.out).resolve();assert out.is_relative_to(root) and not out.exists();out.mkdir(parents=True)
 run='rc'+uuid.uuid4().hex[:5];temp=out/'temporary';sockets=root/'.s'/run;env=dict(os.environ)
 for k,v in {'TMPDIR':temp/'tmp','GOTMPDIR':temp/'tmp','GOCACHE':root/'.local/go-build','GOMODCACHE':root/'.local/go-mod','npm_config_cache':root/'.local/npm','AGENT_BROWSER_SOCKET_DIR':sockets,'AGENT_BROWSER_PROFILE':temp/'profile'}.items():v.mkdir(parents=True,exist_ok=True);env[k]=str(v)
@@ -45,6 +45,12 @@ def contrast(name):
  })()""")
  record(name,ratios);assert ratios and all(r['ratio']>=4.5 and r['opacity']=='1' for r in ratios),ratios;check(name)
 
+def pedals(name):
+ rows=js('[...document.querySelectorAll(".racing-pedals button")].map(e=>{const r=e.getBoundingClientRect();return {label:e.getAttribute("aria-label"),left:r.left,right:r.right,width:r.width,top:r.top,height:r.height}})')
+ record(name,rows);assert [r['label'] for r in rows]==['手刹','刹车','油门'],rows
+ assert all(r['width']>=40 and r['height']>=44 for r in rows) and rows[0]['right']<=rows[1]['left'] and rows[1]['right']<=rows[2]['left'],rows
+ check(name)
+
 def map_gestures():
  for width,mode in [(1280,'camera'),(320,'pinch')]:
   browser('set','viewport',str(width),'1000' if width==1280 else '844');browser('click','button[aria-label="查看赛道地图"]');browser('wait','canvas[aria-label="赛车赛道"]')
@@ -63,8 +69,20 @@ try:
  log=(out/'server.log').open('w');server=subprocess.Popen(['go','test','-count=1','-timeout=15m','-run','^TestBubblepartyBrowserFixture$','./games/bubbleparty/tests'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
  wait(lambda:(out/'url').exists(),120);base=(out/'url').read_text();browser('open',base);opened=True;browser('set','viewport','1280','1000')
  api('/login',{'name':'泡泡验收管理员','password':'bubbleparty-browser-test-only'});browser('reload');browser('wait','.room-list')
+ if args.position_only:
+  for kind in ['tetris','bubbleparty','battlecity','spf2t','fortressblue','gomoku']:
+   for width in [1280,320]:
+    browser('set','viewport',str(width),'844');api('/rooms',{'kind':kind,'name':'开局自动定位验收','capacity':2});cmd('add_bot');cmd('ready');cmd('start');browser('wait','.game-main');time.sleep(.6)
+    layout=js('(()=>{const r=document.querySelector(".game-main").getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height,scrollY,viewport:innerHeight,width:innerWidth,scrollHeight:document.documentElement.scrollHeight}})()')
+    parts=js('[...document.querySelectorAll(".game-main [data-game-controls]")].filter(e=>e.getClientRects().length).map(e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}})')
+    layout['controls']=parts
+    record(kind+'-'+str(width)+'-entry',layout)
+    if kind in ['tetris','bubbleparty','battlecity','spf2t']:
+     assert all(r['top']>=0 and r['bottom']<=layout['viewport'] for r in parts),layout
+    assert layout['top']>=-1 and (layout['top']<=16 or layout['scrollY']+layout['viewport']>=layout['scrollHeight']-2),layout
+    shot(kind+'-'+str(width)+'-entry');browser('scroll','up','10000');time.sleep(.6);assert js('scrollY<2');check(kind+' '+str(width)+' entry reveals board and snapshots preserve manual scroll',layout=layout);close()
  # Reproduce the reported waiting-room map switch with an already-ready bot.
- for name in ([] if args.skip_maps else ['waterpark','forest','desert']):
+ for name in ([] if args.skip_maps or args.position_only else ['waterpark','forest','desert']):
   api('/rooms',{'kind':'bubbleparty','name':'换地图与电脑开局验收','capacity':2,'options':{'map':'community10','roundSeconds':180}});cmd('add_bot');cmd('ready');browser('wait','.waiting-layout')
   browser('select','select[aria-label="水泡战场地图"]',name);browser('find','role','button','click','--name','保存并准备','--exact')
   wait(lambda:room()['options']['map']==name);r=room();assert r['seats'][1]['bot'] and r['seats'][1]['ready'] and r['seats'][0]['ready'],r['seats']
@@ -77,16 +95,16 @@ try:
    assert center['applied']['move']=='none' and moving['px']>center['px'] and released['applied']['move']=='none',(center,moving,released)
    assert any(p.get('type')=='input' and p['action'].get('bomb') and p['action'].get('move')=='right' for p in trace['packets']);assert not samples['released']['selected'];check('320px joystick dead zone, drag, second-finger bomb and cancellation')
   close();browser('set','viewport','1280','1000')
- if not args.maps_only:
+ if not args.maps_only and not args.position_only:
   for track in args.tracks.split(','):
    if args.extended and track=='metro':
     browser('click','.lobby-create');browser('wait','[role=dialog]');browser('fill','input[aria-label="搜索可选游戏"]','极品飞车');browser('click','.choose-games button');browser('wait','select[aria-label="赛道"]')
     assert js('document.querySelector(".create-selected-game strong").textContent')=='极品飞车'
     assert set(js('[...document.querySelectorAll("select[aria-label=赛道] option")].map(e=>e.value)'))=={'metro','harbor','woodland','coast','canyon'}
-    browser('select','select[aria-label="座位上限"]',str(args.players));browser('select','select[aria-label="比赛圈数"]','1');browser('fill','input[name=name]','极品飞车完整验收');shot('create-classic-racer');browser('click','[role=dialog] button[type=submit]');browser('wait','.waiting-layout');check('shared create flow, renamed game and all five track choices')
+    browser('select','select[aria-label="座位上限"]',str(args.players));browser('select','select[aria-label="比赛圈数"]',str(args.laps));browser('fill','input[name=name]','极品飞车完整验收');shot('create-classic-racer');browser('click','[role=dialog] button[type=submit]');browser('wait','.waiting-layout');check('shared create flow, renamed game and all five track choices')
     browser('set','viewport','320','844')
    else:
-    api('/rooms',{'kind':'racing','name':'极品飞车追逐视角验收','capacity':args.players,'options':{'track':track,'laps':1}})
+    api('/rooms',{'kind':'racing','name':'极品飞车追逐视角验收','capacity':args.players,'options':{'track':track,'laps':args.laps}})
    for _ in range(args.players-1):cmd('add_bot')
    cmd('ready');cmd('start');browser('wait','.racing-board')
    wait(lambda:room().get('game',{}).get('data',{}).get('phase')=='racing');wait(lambda:js('document.querySelector(".racing-chase")?.dataset.renderer==='+json.dumps('canvas' if args.fallback else 'webgl')),60)
@@ -98,12 +116,18 @@ try:
    browser('set','viewport','1280','1000');js('document.querySelector(".racing-chase").scrollIntoView({block:"center"})');time.sleep(.7);shot(track+'-desktop')
    pose=js('JSON.parse(document.querySelector(".racing-chase").dataset.camera)');check(track+' '+('canvas' if args.fallback else 'WebGL')+' chase',camera=pose,fps=js('document.querySelector(".racing-chase").dataset.fps'))
    if track=='metro':
-    contrast('desktop-contrast')
+    contrast('desktop-contrast');pedals('desktop-pedal-order')
     if args.models:
      for skin in range(6):
       browser('select','.racing-settings select',str(skin));wait(lambda:room()['game']['data']['cars'][0]['skin']==skin);js('document.querySelector(".racing-chase").scrollIntoView({block:"center"})');time.sleep(.2);shot('model-'+str(skin)+'-rear')
       browser('focus','.racing-chase');native('model-'+str(skin)+'-front',[{'key':'b','down':True},{'wait':150},{'shot':'model-'+str(skin)+'-front'},{'key':'b','down':False}])
      check('six classic models selected through actual UI, front and rear screenshots')
+    if args.speed_check:
+     browser('focus','.racing-chase')
+     samples,_=native('real-road-speed',[{'key':'w','down':True},{'wait':1000},{'key':'d','down':True},{'wait':250},{'key':'d','down':False},{'wait':1500},{'read':'fast'},{'shot':'real-road-speed'},{'key':'w','down':False},{'wait':200},{'read':'coast'}])
+     speed=samples['fast']['room']['game']['data']['cars'][0]['speed'];assert speed>330,speed
+     assert samples['coast']['controls']['throttle']=='0' and samples['coast']['room']['game']['data']['cars'][0]['throttle']==0
+     check('real keyboard acceleration exceeds old cap and release reaches server',speedKmh=speed*.36)
     samples,trace=native('keyboard-rear',[{'key':'w','down':True},{'wait':450},{'motion':True},{'read':'moving'},{'key':'b','down':True},{'wait':150},{'read':'rear'},{'shot':'metro-rear'},{'key':'b','down':False},{'wait':150},{'read':'front'},{'key':'w','down':False},{'key':' ','down':True},{'wait':150},{'read':'handbrake'},{'key':' ','down':False},{'wait':150}])
     assert samples['rear']['canvas']['rear']=='true' and samples['front']['canvas']['rear']=='false';assert samples['handbrake']['controls']['drift']=='true';assert samples['after']['controls']['drift']=='false';assert trace['packets'];check('native W + B rear view and Space handbrake')
     assert any(a['snapshot']==b['snapshot'] and ((a['x']-b['x'])**2+(a['y']-b['y'])**2)>.01 for a,b in zip(trace['motion'],trace['motion'][1:])),trace['motion'];check('opponents move smoothly between authoritative snapshots')
@@ -117,6 +141,13 @@ try:
     assert samples['rear']['canvas']['rear']=='true' and samples['released']['canvas']['rear']=='false';assert not samples['released']['selected'];check('320px long touch rear view releases without text selection')
     browser('click','button[aria-label="查看赛道地图"]');browser('wait','[role=dialog]');shot('metro-map-320');browser('press','Escape');wait(lambda:not js('!!document.querySelector("[role=dialog]")'));check('shared map dialog opens and closes')
     assert js('document.activeElement?.classList.contains("racing-chase")'), 'map close left keyboard focus on the map button'
+    pedals('mobile-pedal-order')
+    assert not js('!!document.querySelector(".racing-auto input")');js('document.querySelector(".racing-controls").scrollIntoView({block:"center"})')
+    samples,trace=native('touch-pedals',[{'touch':'touchStart','points':[{'selector':'button[aria-label=油门]','id':1}]},{'wait':700},{'read':'gas'},{'touch':'touchEnd','points':[]},{'wait':200},{'read':'coast'},{'touch':'touchStart','points':[{'selector':'[aria-label=方向盘]','id':4}]},{'wait':150},{'read':'wheel-only'},{'touch':'touchEnd','points':[]},{'touch':'touchStart','points':[{'selector':'button[aria-label=油门]','id':1},{'selector':'button[aria-label=刹车]','id':2}]},{'wait':200},{'read':'brake'},{'touch':'touchCancel','points':[]},{'wait':200},{'read':'released'},{'touch':'touchStart','points':[{'selector':'button[aria-label=手刹]','id':3}]},{'wait':150},{'read':'hand'},{'touch':'touchEnd','points':[]},{'wait':150}],320,True)
+    assert samples['coast']['controls']['throttle']=='0' and samples['wheel-only']['controls']['throttle']=='0'
+    assert samples['gas']['controls']['throttle']=='1' and samples['brake']['controls']['brake']=='true' and samples['brake']['controls']['throttle']=='0'
+    assert samples['released']['controls']['throttle']=='0' and samples['released']['controls']['brake']=='false' and samples['hand']['controls']['drift']=='true' and samples['after']['controls']['drift']=='false'
+    assert not samples['after']['selected'];shot('pedals-320');check('native touch right throttle, middle brake priority, left handbrake and cancellation')
     if args.extended:
      contrast('mobile-contrast');map_gestures()
      epoch=room()['game']['data']['epoch'];cmd('autoplay',enabled=True);wait(lambda:room()['seats'][0].get('autoPlay'));assert js('document.querySelector("button[aria-label=油门]").disabled');time.sleep(.3);cmd('autoplay',enabled=False);wait(lambda:not room()['seats'][0].get('autoPlay'));assert room()['game']['data']['epoch']==epoch;check('manual takeover and reclaim keep the same race')
@@ -138,7 +169,7 @@ try:
      browser('reload');browser('wait','.racing-board');wait(lambda:not room().get('spectating'))
      browser('click','button[aria-label="查看赛道地图"]');browser('wait','[role=dialog][aria-label="赛道地图"]')
      print('Waiting for real natural race finish with all seats controlled',flush=True)
-     wait(lambda:js('document.querySelector(".racing-board")?.dataset.phase==="finished"'),150)
+     wait(lambda:js('document.querySelector(".racing-board")?.dataset.phase==="finished"'),240)
      wait(lambda:js('!!document.querySelector(".match-result-modal")&&!document.querySelector("[aria-label=赛道地图]")'))
      assert js('!!document.activeElement?.closest(".match-result-modal")');shot('real-result-320');check('real finish closes map and preserves result modal focus',result=room()['game'].get('winners'))
      browser('click','.match-result-modal button[aria-label="关闭"]');wait(lambda:not js('!!document.querySelector(".match-result-modal")'));time.sleep(.5);assert not js('!!document.querySelector(".match-result-modal")');shot('final-scene-320');check('closed result stays closed with final scene visible')

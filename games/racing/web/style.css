@@ -336,25 +336,6 @@
   justify-content: space-between;
   gap: 16px;
 }
-.racing-auto {
-  margin: 0;
-  min-height: 24px;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  white-space: nowrap;
-  color: #d5e5ef;
-  font-size: 12px;
-}
-.racing-auto input {
-  margin: 0;
-  padding: 0;
-  min-height: 16px;
-  flex: 0 0 16px;
-  accent-color: #63ccd2;
-  width: 16px;
-  height: 16px;
-}
 .racing-key-hint {
   color: #b4c6d2;
   font-size: 11px;

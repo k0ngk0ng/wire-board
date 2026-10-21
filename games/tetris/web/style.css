@@ -236,6 +236,12 @@
   background: var(--tetris-panel-deep);
 }
 
+/* Keep the HUD, own well and touch controls together on the entry viewport.
+   Preserve the well's 1:2 aspect ratio and a readable minimum on short screens. */
+.tetris-self > .tetris-grid {
+  max-width: max(160px, calc((100dvh - 440px) / 2));
+}
+
 .tetris-grid.is-small {
   width: 100%;
   max-width: 104px;

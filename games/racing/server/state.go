@@ -14,7 +14,7 @@ const maxSequenceJump int64 = 1024
 const frameMS int64 = 100
 const stepMS int64 = 20
 const CarRadius = 13.0
-const MaxSpeed = 310.0
+const MaxSpeed = 900.0
 const idleMS int64 = 15000
 const lostInputMS int64 = 750
 

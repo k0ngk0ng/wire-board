@@ -28,7 +28,7 @@ func stepCar(c *Car, t Track, ms, at int64) {
 	cs, sn := math.Cos(c.Angle), math.Sin(c.Angle)
 	forward = c.VX*cs + c.VY*sn
 	side := -c.VX*sn + c.VY*cs
-	drag, grip, limit := .55, 9., MaxSpeed
+	drag, grip, limit := .2, 9., MaxSpeed
 	if drift {
 		grip = 1.35
 	}
