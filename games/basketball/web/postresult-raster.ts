@@ -69,7 +69,7 @@ export function unpackPostResultRasterRows(packed: PackedPostResultRows, oam: nu
 
 /** Render resolved tile-row references. Fetch timing is resolved upstream;
  * this path consumes no bus events, machine state or reference screenshots. */
-export function rasterizePostResultRows(assets: PostResultRasterAssets, frame: PostResultRasterRows): Uint8ClampedArray {
+export function rasterizePostResultRows(assets: PostResultRasterAssets, frame: PostResultRasterRows): Uint8ClampedArray<ArrayBuffer> {
   if (assets.indices.length !== assets.pages.length * 512 * 8 * 4 || assets.rgb.length !== 64 || new Set(assets.pages).size !== assets.pages.length) throw new Error("Invalid scene index atlas");
   if (frame.palette.length !== 32 || frame.oam.length !== 256 || frame.rows.length !== 240) throw new Error("Invalid scene row frame");
   frame.palette.forEach(v => integer(v, 0, 63, "palette"));
@@ -146,7 +146,7 @@ export function rasterizePostResultRows(assets: PostResultRasterAssets, frame: P
   return output;
 }
 
-export function rasterizePostResult(assets: PostResultRasterAssets, frame: PostResultRasterFrame): Uint8ClampedArray {
+export function rasterizePostResult(assets: PostResultRasterAssets, frame: PostResultRasterFrame): Uint8ClampedArray<ArrayBuffer> {
   if (frame.nametables.length !== 4096) throw new Error("Invalid scene nametables");
   frame.nametables.forEach(v => integer(v, 0, 255, "nametables"));
   const rows: PostResultRasterRows["rows"] = [];

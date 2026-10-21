@@ -357,20 +357,21 @@ func advanceWorldPlayer(result *WorldActionStep, actor uint8, ctx WorldActionCon
 			s.Actors[step.SupportObject].LinkedActor = int8(actor)
 		}
 	case originalDunkAction(p.Action):
-		if s.DunkTargetObject < 7 || s.DunkTargetObject >= 13 {
+		if s.DunkTargetObject >= 13 {
 			return fmt.Errorf("auxiliary dunk target %d not reconstructed", s.DunkTargetObject)
 		}
-		target := &s.Hoops[s.DunkTargetObject-7]
+		targetOwner, targetDurability := originalDunkTargetBytes(s, ctx, s.DunkTargetObject)
 		attachment := s.PlayerLinks[actor]
 		// Original 8ED6 clears the support before EEFF loads object state.
 		if !p.Entered && attachment&128 != 0 {
 			s.PlayerLinks[actor] = 0
 		}
-		step, err := StepDunkPlayer(*p, DunkContext{Actor: actor, TargetObject: s.DunkTargetObject, TargetOwner: target.Owner, TargetDurability: target.Durability, AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, CarriedPlayer: s.CarriedPlayer, DetachedCount: s.DetachedCount, Attachment: attachment, Ball: s.Ball, BallHolder: s.Holder, AuxiliaryRelease: s.AuxiliaryRelease, Computer: computer}, court)
+		step, err := StepDunkPlayer(*p, DunkContext{Actor: actor, TargetObject: s.DunkTargetObject, TargetOwner: targetOwner, TargetDurability: targetDurability, AuxiliaryOwners: [2]int8{s.Auxiliary[0].Owner, s.Auxiliary[1].Owner}, CarriedPlayer: s.CarriedPlayer, DetachedCount: s.DetachedCount, Attachment: attachment, Ball: s.Ball, BallHolder: s.Holder, AuxiliaryRelease: s.AuxiliaryRelease, Computer: computer}, court)
 		if err != nil {
 			return err
 		}
-		a.Player, s.Ball, target.Durability, s.AuxiliaryRelease = step.Player, step.Ball, step.TargetDurability, step.AuxiliaryRelease
+		a.Player, s.Ball, s.AuxiliaryRelease = step.Player, step.Ball, step.AuxiliaryRelease
+		setOriginalDunkTargetDurability(s, s.DunkTargetObject, step.TargetDurability)
 		if step.SetActiveDunker {
 			s.LastShooter = int8(step.ActiveDunker)
 		}

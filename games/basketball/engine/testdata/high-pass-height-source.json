@@ -1,0 +1,8 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "10b8515b89f595ffa81178d4d2273f74e505a6e9c667cb94340b6531564d8e68",
+  "records": 19950,
+  "entry": "bank5:8C23 unmodified full launch",
+  "scope": "Original complete8C23 for source/receiver heights through03FF, no Go oracle.\nObserved admission producer: Court3 teams4/7 slot2 at height626px.\n",
+  "normalization": "all calls returned; no instruction skip, score/AI/seed write"
+}

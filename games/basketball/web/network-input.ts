@@ -28,6 +28,8 @@ type Queued = Omit<BasketballInputEvent, "offsetMS"> & { at: number };
 type Flight = { sequence: number; priority: boolean; generation: number };
 type Options = {
   send: (action: BasketballInputBatch) => Promise<void>;
+  /** Host ordered-stream window; HTTP fallback remains one normal flight. */
+  inputWindow?: () => number;
   /** Must clear physical sources without recursively calling cancel(). */
   onReset: (reason: ResetReason) => void;
   now?: () => number;
@@ -237,8 +239,12 @@ export class BasketballNetworkInput {
   private flush(priority = false): void {
     if (!this.connected || !this.queue.length || this.now() < this.retryAt)
       return;
-    if ([...this.flights].some((flight) => flight.priority === priority))
-      return;
+    const requested = this.options.inputWindow?.() ?? 1;
+    const window = Number.isSafeInteger(requested) && requested > 0
+      ? Math.min(requested, 8) : 1;
+    const occupied = [...this.flights].filter(flight => flight.priority === priority).length;
+    // Keep a single cancellation lane for HTTP fallback and saturated streams.
+    if (occupied >= (priority ? 1 : window)) return;
     const last = this.queue[this.queue.length - 1];
     // Do not issue a second identical cancellation as an ordinary request.
     if ([...this.flights].some((flight) => flight.sequence >= last.sequence))

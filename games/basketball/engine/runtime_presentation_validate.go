@@ -1,6 +1,9 @@
 package engine
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func validateRuntimePresentation(s RuntimeState) error {
 	p := s.Presentation
@@ -9,6 +12,9 @@ func validateRuntimePresentation(s RuntimeState) error {
 	}
 	if p.PendingResult.NextStage != CampaignPrepare && p.PendingResult.NextStage != CampaignComplete {
 		return fmt.Errorf("unsupported presentation destination")
+	}
+	if e := validateRuntimePresentationDisplay(s); e != nil {
+		return e
 	}
 	var t MatchTransitionState
 	if p.Video == nil {
@@ -178,6 +184,46 @@ func validateRuntimePresentationResource(v PostResultVideoState) error {
 		}
 	default:
 		return fmt.Errorf("unknown presentation resource")
+	}
+	return nil
+}
+
+func validateRuntimePresentationDisplay(s RuntimeState) error {
+	p := s.Presentation
+	if p.Display == nil {
+		if p.Video != nil && p.Video.Clock.VideoTicks != 0 {
+			return fmt.Errorf("missing committed presentation display")
+		}
+		if s.Display.Visible.PostResult != nil {
+			return fmt.Errorf("presentation render without display owner")
+		}
+		return nil
+	}
+	if p.Video == nil {
+		return fmt.Errorf("presentation display before result fade")
+	}
+	d := p.Display
+	if d.Surface.Mirroring > 1 || d.Mask&224 != 0 {
+		return fmt.Errorf("invalid presentation display registers")
+	}
+	for _, color := range d.Surface.Palette {
+		if color >= 64 {
+			return fmt.Errorf("invalid presentation display palette")
+		}
+	}
+	for _, pages := range [][]uint8{d.FieldCHR[:], d.VisibleFieldCHR[:], d.SpriteCHR[:]} {
+		for _, page := range pages {
+			if page >= 128 {
+				return fmt.Errorf("invalid presentation display CHR")
+			}
+		}
+	}
+	expected, e := RuntimePostResultRender(s)
+	if e != nil {
+		return e
+	}
+	if !reflect.DeepEqual(expected, s.Display.Visible.PostResult) {
+		return fmt.Errorf("presentation render differs from committed display")
 	}
 	return nil
 }

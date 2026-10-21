@@ -34,7 +34,7 @@ func TestNegativeReceiverHeightUnsupportedDomains(t *testing.T) {
 		{"zero-source-arc-still-negative", 0, -256 * Pixel, 255 * Pixel},
 		{"negative-launch-source", -1, -Pixel, 0},
 		{"receiver-below-FF-domain", 30 * Pixel, -256*Pixel - 1, 0},
-		{"unchanged-positive-upper-bound", 30 * Pixel, 512 * Pixel, 0},
+		{"unproved-positive-upper-bound", 30 * Pixel, 1024 * Pixel, 0},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			position := Position{X: 189*Pixel + 104, Depth: 86*Pixel + 4, Height: tc.source}

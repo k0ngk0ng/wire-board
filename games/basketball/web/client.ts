@@ -4,10 +4,12 @@ import { BasketballInput, type BasketballButton } from './input';
 import { BasketballAudio, type BasketballAudioOptions } from './audio';
 import { BasketballRenderer, loadBasketballAssets, type BasketballRenderSnapshot, type CourtColumnCommit, type CourtTilePatch } from './renderer';
 import { loadBasketballWasm, type BasketballWasm } from './wasm';
+import type { PackedPostResultRows } from './postresult-raster';
 
 export interface BasketballRuntimeConfig {
   match: { Seed: number; [field: string]: unknown };
   humanTactics: [number,number];
+  campaign?: unknown;
 }
 export interface BasketballRuntimeState {
   videoFrames: number;
@@ -15,9 +17,9 @@ export interface BasketballRuntimeState {
   opening?: unknown;
   playing?: { match: { Phase: number; Period: number }; [field: string]: unknown };
   transition?: unknown;
-  /** The single-match session parks after confirmation. The original
-   * campaign/menu destination is metadata for the host, not an executed route. */
+  /** Confirmation fixes the score; an owned reward/ending can still be playing. */
   outcome?: { winningTeam: number; scores: [number,number]; confirmed: boolean; nextScene: number; nextPhase: number };
+  presentation?: { complete: boolean; [field: string]: unknown };
   awaitingNextPeriod: boolean;
   display: {
     HasVisible: boolean;
@@ -29,6 +31,12 @@ export interface BasketballRuntimeState {
   };
   [field: string]: unknown;
 }
+/** Matches engine.RuntimeFinished: legacy/versus results park immediately,
+ * campaign presentations run until their explicit terminal handoff. */
+export function basketballRuntimeFinished(state: BasketballRuntimeState): boolean {
+  return !!state.outcome?.confirmed && (!state.presentation || state.presentation.complete);
+}
+
 export interface BasketballRuntimeView {
   session: number;
   state: BasketballRuntimeState;
@@ -63,11 +71,11 @@ export class BasketballClient {
   private imageKey='';
 
   static async create(options: BasketballClientOptions): Promise<BasketballClient> {
-    const [engine,assets]=await Promise.all([loadBasketballWasm(options.runtimeURL),loadBasketballAssets(options.assetsURL)]);
+    const [engine,assets]=await Promise.all([loadBasketballWasm(options.runtimeURL),loadBasketballAssets(options.assetsURL,{postResult:!!options.config?.campaign})]);
     const config=options.config ? structuredClone(options.config) : engine.request<BasketballRuntimeConfig>({op:'defaults'});
     if(options.seed !== undefined)config.match.Seed=options.seed;
     else if(!options.config){const seed=crypto.getRandomValues(new Uint32Array(1))[0];config.match.Seed=seed||1;}
-    const renderer=new BasketballRenderer(options.canvas,assets);
+    const renderer=new BasketballRenderer(options.canvas,assets,projection=>engine.request<PackedPostResultRows>({op:"projectPresentation",projection}));
     return new BasketballClient(engine,renderer,config,options);
   }
 

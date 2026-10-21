@@ -143,3 +143,35 @@ test('partial device cancellation preserves the other held source and queued edg
   at(40);input.sample(1);assert.equal(requests.length,3);
   at(300);input.sample(1);assert.equal(requests.at(-1).action.events[0].buttons,1);
 });
+
+// Realtime migration failure inventory: stream RTT blocks release/turbo; sends
+// grow without a bound; fallback keeps eight requests in flight; old ACKs erase
+// later edges; an invalid host window accidentally permits unlimited sending.
+test('ordered stream sends release before ACK and bounds unresolved flights',async()=>{
+  let window=8,time=0;
+  const requests=[];
+  const input=new BasketballNetworkInput({now:()=>time,inputWindow:()=>window,onReset:()=>{},send:action=>new Promise(resolve=>requests.push({action,resolve}))});
+  input.update(binding());
+  for(let n=0;n<10;n++){time=n*20;input.sample(n%2 ? 0 : 64);}
+  assert.equal(requests.length,8);
+  assert.equal(requests[1].action.events.at(-1).buttons,0);
+  assert.equal(requests[1].action.sequence,2);
+  requests[0].resolve();await settle();
+  assert.equal(requests.length,9);
+  assert.equal(requests[8].action.sequence,10);
+  window=1;time=210;input.sample(1);
+  requests[1].resolve();await settle();
+  assert.equal(requests.length,9);
+  for(const request of requests.slice(2,9))request.resolve();await settle();
+  assert.equal(requests.length,10);
+  assert.equal(requests[9].action.sequence,11);
+});
+
+test('invalid input windows use the safe single-request fallback',()=>{
+  for(const window of [NaN,Infinity,-1,0,1.5]){
+    const requests=[];
+    const input=new BasketballNetworkInput({inputWindow:()=>window,onReset:()=>{},send:action=>{requests.push(action);return new Promise(()=>{});}});
+    input.update(binding());input.sample(64);input.sample(0);
+    assert.equal(requests.length,1);
+  }
+});

@@ -50,7 +50,7 @@ type PreparationContext struct {
 type Match struct {
 	// HasComputerPlayers includes game-owned AI characters which do not occupy
 	// platform seats. Such matches retain results/history but never earn ratings.
-	HasComputerPlayers bool            `json:"hasComputerPlayers,omitempty"`
+	HasComputerPlayers bool `json:"hasComputerPlayers,omitempty"`
 	// CheckpointKey changes only at game-owned critical phases/round boundaries.
 	// Realtime hosts persist these transitions before publishing them.
 	CheckpointKey string          `json:"checkpointKey,omitempty"`
@@ -104,10 +104,10 @@ type Module struct {
 	// Prepare optionally transforms waiting-room options for an authenticated seat.
 	// The host re-runs Configure on its result before atomically saving it.
 	Prepare   func(PreparationContext, json.RawMessage, json.RawMessage) (json.RawMessage, error) `json:"-"`
-	Start      func(Context, json.RawMessage) (Match, error)                        `json:"-"`
-	Apply      func(Context, Match, json.RawMessage) (Match, error)                 `json:"-"`
-	View       func(Match, int) (any, error)                                        `json:"-"`
-	BotSearch  *BotSearch                                                           `json:"-"`
+	Start     func(Context, json.RawMessage) (Match, error)                                       `json:"-"`
+	Apply     func(Context, Match, json.RawMessage) (Match, error)                                `json:"-"`
+	View      func(Match, int) (any, error)                                                       `json:"-"`
+	BotSearch *BotSearch                                                                          `json:"-"`
 	// PreciseTimers opts non-realtime SystemDeadline events into the 50ms clock.
 	// Player timeouts and bot scheduling retain their ordinary cadence.
 	PreciseTimers bool `json:"-"`

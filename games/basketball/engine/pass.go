@@ -34,7 +34,7 @@ type PassLaunchContext struct {
 // This does not resolve catches, contact, baskets or the rest of a world step.
 func LaunchPass(position, target Position, arcHeight Fixed, context ...PassLaunchContext) (Body, error) {
 	original := Body{Position: position}
-	if position.Height < 0 || target.Height < -256*Pixel || arcHeight < 0 || position.Height > 511*Pixel || target.Height > 511*Pixel || arcHeight > 255*Pixel {
+	if position.Height < 0 || target.Height < -256*Pixel || arcHeight < 0 || position.Height > 1023*Pixel || target.Height > 1023*Pixel || arcHeight > 255*Pixel {
 		return original, errors.New("pass height lies outside reconstructed court range")
 	}
 	dx := int32(target.X/Pixel - position.X/Pixel)

@@ -1,4 +1,4 @@
-import type { BasketballRuntimeState, BasketballRuntimeView } from "./client";
+import { basketballRuntimeFinished, type BasketballRuntimeState, type BasketballRuntimeView } from "./client";
 import type { BasketballWasm } from "./wasm";
 import type { BasketballMusicState } from "./audio";
 
@@ -10,6 +10,7 @@ export type RecordedVideoInput = {
   automated: boolean[];
 };
 export type BasketballNetworkView = {
+  presentationAutomaticAt?: number;
   attributes?: import("./campaign-types").CampaignAttributes;
   campaign?: import("./campaign-types").CampaignView;
   preparation?: import("./campaign-types").CampaignPreparationView;
@@ -215,7 +216,7 @@ export class BasketballNetworkScene {
       try {
         while (
           this.predicted.state.videoFrames < until &&
-          !this.predicted.state.outcome?.confirmed
+          !basketballRuntimeFinished(this.predicted.state)
         ) {
           const frame = this.predicted.state.videoFrames + 1;
           this.advancePrediction(
@@ -285,7 +286,7 @@ export class BasketballNetworkScene {
           throw Error("Invalid prediction buttons");
         if (
           this.predicted &&
-          !this.predicted.state.outcome?.confirmed &&
+          !basketballRuntimeFinished(this.predicted.state) &&
           !this.waitingForSnapshot &&
           now - this.receivedAt <= 250 &&
           this.predicted.state.videoFrames <

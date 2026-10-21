@@ -37,6 +37,7 @@ export type BasketballNetworkClientOptions = {
   audio: GameAudioPort;
   audioOptions?: BasketballAudioOptions;
   send: (action: BasketballInputBatch) => Promise<void>;
+  inputWindow?: () => number;
   onError: (error: unknown) => void;
   onConnection?: (connected: boolean) => void;
 };
@@ -135,6 +136,7 @@ export class BasketballNetworkClient {
     });
     this.transport = new BasketballNetworkInput({
       send: options.send,
+      inputWindow: options.inputWindow,
       onReset: () => {
         this.inputGeneration++;
         this.input?.cancelLocal();

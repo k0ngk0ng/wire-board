@@ -36,3 +36,12 @@ go test -race ./games/basketball/engine -run '^(TestNegativeReceiverHeight.*|Tes
 ```
 
 This resolves the receiver-height launch boundary, not every possible source alias or the origin of every negative actor height. Wider negative receiver/source-height domains remain unsupported until their original producers and arithmetic are recovered.
+
+## Subsequent positive-height admission
+
+The later original selection audit recovered the source/receiver03FF positive
+height domain after a natural cold game produced a626px receiver. The19,950-call
+source matrix and minimal guard extension are recorded in
+[selection admission](SELECTION_ADMISSION_VERIFICATION.md). The earlier511px
+limit above is historical; negative FF behavior and nonprogressing-loop rejection
+remain unchanged.

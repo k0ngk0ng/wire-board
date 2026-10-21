@@ -1,8 +1,9 @@
-package basketball
+package basketball_test
 
 import (
 	"bytes"
 	"encoding/json"
+	game "github.com/k0ngk0ng/wire-board/games/basketball/server"
 	"net/http"
 	"reflect"
 	"testing"
@@ -16,19 +17,19 @@ import (
 // match boundary. No result, clock, AI or inventory is fabricated by this test.
 // The start wrapper is explicit: this is not a full natural HTTP campaign.
 func TestCampaignLifecycleHTTP(t *testing.T) {
-	_, finished := campaignFinishedHost(t, false)
-	var checkpoint State
+	_, finished := game.ExportCampaignFinishedHost(t, false)
+	var checkpoint game.State
 	if e := json.Unmarshal(finished.Data, &checkpoint); e != nil {
 		t.Fatal(e)
 	}
-	m := Module()
+	m := game.Module()
 	originalStart := m.Start
 	m.Start = func(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		initial, e := originalStart(ctx, raw)
 		if e != nil {
 			return initial, e
 		}
-		s, e := decode(initial)
+		s, e := game.ExportDecode(initial)
 		if e != nil {
 			return initial, e
 		}
@@ -37,14 +38,14 @@ func TestCampaignLifecycleHTTP(t *testing.T) {
 		c := *checkpoint.Campaign
 		c.DecisionAt = s.ServerAt + 3000
 		s.Campaign = &c
-		return s.match()
+		return game.ExportStateMatch(s)
 	}
 	h := gametest.NewHTTP(t, 1, m, "basketball")
 	h.Start(map[string]any{"mode": "solo", "campaign": map[string]any{"password": "020010", "opponent": 1}})
 	a := h.People[0]
-	view := func(c *gametest.Client) View {
+	view := func(c *gametest.Client) game.View {
 		raw, _ := json.Marshal(gametest.Data(c.Room()))
-		var v View
+		var v game.View
 		if e := json.Unmarshal(raw, &v); e != nil {
 			t.Fatal(e)
 		}
@@ -52,7 +53,7 @@ func TestCampaignLifecycleHTTP(t *testing.T) {
 	}
 	v := view(a)
 	epoch := v.Epoch
-	if a.Room()["status"] != "playing" || v.Campaign.Stage != "reward" || v.Campaign.Settlement.Reward != 0 || v.CanInput || !v.Campaign.CanAct {
+	if a.Room()["status"] != "playing" || v.Campaign.Stage != "prepare" || v.Campaign.Settlement.Reward != 0 || v.CanInput || !v.Campaign.CanAct {
 		t.Fatal("intermediate victory prematurely finished room")
 	}
 	send := func(kind string, fields map[string]any) map[string]any {
@@ -86,10 +87,9 @@ func TestCampaignLifecycleHTTP(t *testing.T) {
 		t.Fatal("spectator action was not rejected", response.StatusCode)
 	}
 	afterRejected := view(a)
-	if afterRejected.Campaign.Stage != "reward" || !reflect.DeepEqual(*afterRejected.Campaign.Settlement, want) {
+	if afterRejected.Campaign.Stage != "prepare" || !reflect.DeepEqual(*afterRejected.Campaign.Settlement, want) {
 		t.Fatal("rejected spectator request changed campaign")
 	}
-	a.Action(send("continue", nil), 200)
 	a.Action(send("equip", map[string]any{"character": 1, "inventoryIndex": 0}), 200)
 	a.Action(send("opponent", map[string]any{"opponent": 4}), 200)
 	prepared := view(a)

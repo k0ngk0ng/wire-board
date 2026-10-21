@@ -118,25 +118,27 @@ func TestBasketballHTTPModeCapacity(t *testing.T) {
 	c.Command("start", nil, 200)
 }
 
-func TestBasketballHTTPVersusTimeout(t *testing.T) {
+func TestBasketballHTTPVersusIdleAndManualControl(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, game.Module(), "basketball")
 	h.Start(map[string]any{"mode": "versus"})
 	c := h.People[1]
 	v := view(t, c)
 	epoch := v.Epoch
-	for deadline := time.Now().Add(18 * time.Second); time.Now().Before(deadline) && !v.Inputs[2].Automated; {
+	for deadline := time.Now().Add(18 * time.Second); time.Now().Before(deadline); {
 		time.Sleep(100 * time.Millisecond)
 		v = view(t, c)
 	}
 	seat := c.Room()["seats"].([]any)[1].(map[string]any)
-	if !v.Inputs[2].Automated || seat["autoPlay"] != true || seat["timeoutAutoPlay"] != true {
-		t.Fatal("second platform seat did not time out into actor2 AI")
+	if v.Inputs[2].Automated || seat["autoPlay"] == true || seat["timeoutAutoPlay"] == true {
+		t.Fatal("idle second seat unexpectedly transferred to AI")
 	}
+	c.Command("autoplay", map[string]any{"enabled": true}, 200)
+	v = await(t, c, func(v game.View) bool { return v.Inputs[2].Automated })
 	frames := v.Runtime.VideoFrames
 	c.Command("autoplay", map[string]any{"enabled": false}, 200)
 	v = view(t, c)
 	if v.Epoch != epoch || v.Runtime.VideoFrames < frames || v.Inputs[2].Automated || v.Runtime.Config.Match.ControllerAssignments[2] != 2 || !v.Inputs[1].Automated || !v.Inputs[3].Automated {
 		t.Fatal("timeout reclaim changed character mapping")
 	}
-	h.Record("real deadline autoplays seat1 as actor2; reclaim preserves fixed computer characters")
+	h.Record("idle retains manual seat1; explicit autoplay uses actor2; reclaim preserves fixed computers")
 }

@@ -28,6 +28,7 @@
   margin-bottom: 20px;
 }
 .basketball-preparation button {
+  min-height: 44px;
   background: #fffdf8;
   color: #302b26;
   border: 2px solid #b5a78f;
@@ -152,4 +153,28 @@
   .basketball-roster {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.basketball-team-selection {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 10px;
+  color: #302b26;
+  font-size: 13px;
+}
+.basketball-team-selection select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid #9a8971;
+  border-radius: 8px;
+  color: #302b26;
+  background: #fffdf8;
+  font: inherit;
+  opacity: 1;
+}
+.basketball-team-selection select:focus-visible {
+  outline: 3px solid #245b8e;
+  outline-offset: 2px;
 }

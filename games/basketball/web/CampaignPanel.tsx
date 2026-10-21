@@ -44,7 +44,7 @@ export function CampaignPanel({
   useEffect(() => {
     setError("");
   }, [key]);
-  const automaticAt = menu?.automaticAt ?? 0;
+  const automaticAt = menu?.automaticAt || data.presentationAutomaticAt || 0;
   useEffect(() => {
     if (!automaticAt) return;
     setNow(performance.now());
@@ -65,7 +65,7 @@ export function CampaignPanel({
       role="status"
     >
       {seconds > 0
-        ? `电脑将在 ${seconds} 秒后${menu?.stage === "prepare" ? "开始下一场" : "继续战役"}`
+        ? `电脑将在 ${seconds} 秒后${data.presentationAutomaticAt ? "确认结局" : menu?.stage === "prepare" ? "开始下一场" : "继续战役"}`
         : "电脑正在确认…"}
     </p>
   ) : null;

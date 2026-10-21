@@ -47,16 +47,10 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 		}
 		const prefix = "/basketball/v1/graphics/"
 		if strings.HasPrefix(r.URL.Path, prefix) {
-			rel := strings.TrimPrefix(r.URL.Path, prefix)
-			parts := strings.Split(rel, "/")
-			allowed := map[string]bool{"court": true, "courts": true, "static-atlas": true, "static-objects": true, "raster": true, "results": true}
-			if filepath.IsLocal(rel) && allowed[parts[0]] && (filepath.Ext(rel) == ".png" || filepath.Ext(rel) == ".json") {
-				base := filepath.Join(root, ".local/basketball", parts[0])
-				file, e := filepath.EvalSymlinks(filepath.Join(root, ".local/basketball", rel))
-				if e == nil && strings.HasPrefix(file, base+string(filepath.Separator)) {
-					http.ServeFile(w, r, file)
-					return
-				}
+			rel := strings.TrimPrefix(r.URL.Path, "/")
+			if filepath.IsLocal(rel) && (filepath.Ext(rel) == ".png" || filepath.Ext(rel) == ".json") {
+				http.ServeFile(w, r, filepath.Join(root, "web/dist", rel))
+				return
 			}
 		}
 		http.NotFound(w, r)

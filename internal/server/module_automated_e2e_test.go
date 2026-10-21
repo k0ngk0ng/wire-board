@@ -129,12 +129,18 @@ func TestModuleAutomatedSeatContextHTTP(t *testing.T) {
 	check(before, manual, "Apply")
 	before = len(snapshot())
 	f.frame(time.UnixMilli(due + 200))
+	check(before, manual, "BotAction", "OnTimer")
+	// Realtime idle deadlines never transfer a human seat. Only an explicit
+	// platform request may change the host-derived automation metadata.
+	setAutoPlay(f.a, current(f.a), true, 200)
+	before = len(snapshot())
+	f.frame(time.UnixMilli(due + 300))
 	check(before, []bool{true, false, true, true}, "BotAction", "OnTimer")
 	before = len(snapshot())
 	setAutoPlay(f.a, current(f.a), false, 200)
 	check(before, []bool{true, false, true, true}, "Reclaim")
 	before = len(snapshot())
-	f.frame(time.UnixMilli(due + 300))
+	f.frame(time.UnixMilli(due + 400))
 	check(before, manual, "OnTimer")
 	setAutoPlay(b, current(b), true, 200)
 	saved := current(f.a)
@@ -162,7 +168,7 @@ func TestModuleAutomatedSeatContextHTTP(t *testing.T) {
 		t.Fatal("restore changed authoritative room")
 	}
 	before = len(snapshot())
-	f.frame(time.UnixMilli(due + 400))
+	f.frame(time.UnixMilli(due + 500))
 	check(before, controlledB, "BotAction", "OnTimer")
 	mu.Lock()
 	defer mu.Unlock()

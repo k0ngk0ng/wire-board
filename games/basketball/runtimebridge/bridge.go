@@ -1,7 +1,7 @@
 // Package runtimebridge exposes a single-match protocol to browser Wasm and
 // native acceptance tools. Game rules and clock advancement remain in engine.
-// A confirmed result parks the session. Its original menu/reward destination
-// remains visible in Outcome, but is not executed by this single-match host.
+// A confirmed result keeps advancing its owned reward/ending presentation.
+// The session parks only at the original terminal handoff.
 package runtimebridge
 
 import (
@@ -197,7 +197,7 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 	copy(held[:], request.Held)
 	view := View{Session: request.Session, State: state}
 	for i := 0; i < ticks; i++ {
-		if view.State.Outcome != nil && view.State.Outcome.Confirmed {
+		if engine.RuntimeFinished(view.State) {
 			break
 		}
 		step, err := engine.StepVideo(view.State, held)
@@ -212,9 +212,10 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 			view.LogicUpdates++
 		}
 	}
-	if view.State.Outcome != nil && view.State.Outcome.Confirmed {
-		// The confirming logic step staged the last result image before its
-		// destination changed. Flush only that submission; another StepVideo
+	if engine.RuntimeFinished(view.State) && view.State.Presentation == nil {
+		// Legacy and versus sessions have no post-result route. Confirmation
+		// staged the last result image before changing destination. Flush only
+		// that submission; another StepVideo
 		// would start the original menu/reward route and may discard the batch.
 		// This commit is idempotent and emits neither input nor sound events.
 		display, err := engine.CommitDisplayVideo(view.State.Display, 0, 0)

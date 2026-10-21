@@ -1,0 +1,7 @@
+{
+  "rom_sha256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixture_sha256": "13cda400b9bb382124fa51df6deccbd7c54572a115f3b7733707a05397c427a0",
+  "source": "CPU executed DC15..DC96 result presets99/101..108; bank1 800C/801C court rows/attributes, BC74/BCFF retained stream composition; bank4 BD82 digit tiles",
+  "cases": 8,
+  "limitation": "Static source/semantic court history; not earned whole-console result capture"
+}

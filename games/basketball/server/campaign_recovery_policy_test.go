@@ -48,9 +48,11 @@ func TestCampaignRecoveryPolicyPersistsAcrossContinue(t *testing.T) {
 					t.Fatal(err)
 				}
 				ctx.Actor = 0
-				match, err = apply(ctx, match, campaignRequest(t, match, "continue", nil))
-				if err != nil {
-					t.Fatal(err)
+				if state.Campaign.Stage != "prepare" {
+					match, err = apply(ctx, match, campaignRequest(t, match, "continue", nil))
+					if err != nil {
+						t.Fatal(err)
+					}
 				}
 				state, err = decode(match)
 				if err != nil {

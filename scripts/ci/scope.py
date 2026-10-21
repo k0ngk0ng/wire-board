@@ -99,6 +99,14 @@ def go_commands(root, game, index=0, count=1, race=False):
     commands += [base + ['-run', pattern, package] for package, pattern in special]
     return commands
 
+def verification_env(game, backend, base=None):
+    env = dict(os.environ if base is None else base)
+    if backend and game == 'snooker': env['WIRE_BOARD_SNOOKER_HTTP_FULL'] = '1'
+    if backend and game == 'catan': env['WIRE_BOARD_NESTING_ACCEPTANCE'] = '1'
+    if backend and game == 'basketball':
+        env.update(BASKETBALL_PREPARATION_MATRIX='1', BASKETBALL_SELECTION_ADMISSION='1', BASKETBALL_FULL_HTTP='1')
+    return env
+
 def run(args):
     output = ROOT/'.local/ci'/args.game
     output.mkdir(parents=True, exist_ok=True)
@@ -115,9 +123,7 @@ def run(args):
         if args.backend:
             commands += go_commands(ROOT, args.game, args.shard, args.count)
             commands += go_commands(ROOT, args.game, args.shard, args.count, race=True)
-    env = dict(os.environ)
-    if args.backend and args.game == 'snooker': env['WIRE_BOARD_SNOOKER_HTTP_FULL'] = '1'
-    if args.backend and args.game == 'catan': env['WIRE_BOARD_NESTING_ACCEPTANCE'] = '1'
+    env = verification_env(args.game, args.backend)
     manifest = {'game': args.game, 'backend': args.backend, 'shard': args.shard, 'commands': commands, 'passed': False}
     destination = output/f'result-{args.shard}.json'
     destination.write_text(json.dumps(manifest, indent=2) + '\n')

@@ -252,7 +252,7 @@ func TestBasketballHTTPHandoffAndRestore(t *testing.T) {
 	record("restored through real server restart", v)
 }
 
-func TestBasketballHTTPComputersAndTimeoutAutoplay(t *testing.T) {
+func TestBasketballHTTPComputersAndManualAutoplay(t *testing.T) {
 	h := gametest.NewHTTP(t, 1, observedModule(t), "basketball")
 	record := evidence(t)
 	c := h.People[0]
@@ -272,19 +272,20 @@ func TestBasketballHTTPComputersAndTimeoutAutoplay(t *testing.T) {
 	record("one human and three platform computers", v)
 	epoch := v.Epoch
 	frames := v.Runtime.VideoFrames
-	for deadline := time.Now().Add(18 * time.Second); time.Now().Before(deadline) && !v.Inputs[0].Automated && !t.Failed(); {
+	for deadline := time.Now().Add(18 * time.Second); time.Now().Before(deadline) && !t.Failed(); {
 		time.Sleep(100 * time.Millisecond)
 		v = view(t, c)
 	}
-	record("latest state at timeout verification", v)
-	if !v.Inputs[0].Automated || v.Runtime.Config.Match.ControllerAssignments != ([4]int8{-1, -1, -1, -1}) || v.Runtime.VideoFrames <= frames {
-		t.Fatal("real host timeout did not transfer the human seat to original AI")
+	if v.Inputs[0].Automated || v.Runtime.Config.Match.ControllerAssignments[0] != 0 || v.Runtime.VideoFrames <= frames {
+		t.Fatal("idle human was taken over or simulation stopped")
 	}
+	c.Command("autoplay", map[string]any{"enabled": true}, 200)
+	v = await(t, c, func(v game.View) bool { return v.Inputs[0].Automated })
 	seat := c.Room()["seats"].([]any)[0].(map[string]any)
-	if seat["autoPlay"] != true || seat["timeoutAutoPlay"] != true {
-		t.Fatal("game bypassed platform autoplay metadata", seat)
+	if seat["autoPlay"] != true || seat["timeoutAutoPlay"] == true {
+		t.Fatal("explicit autoplay metadata", seat)
 	}
-	record("host deadline selected original AI", v)
+	record("idle remains human; explicit handoff selects original AI", v)
 	frames = v.Runtime.VideoFrames
 	c.Command("autoplay", map[string]any{"enabled": false}, 200)
 	v = view(t, c)

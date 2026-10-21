@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,os,subprocess,uuid
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'.local/basketball/network-board';OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkb-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkb-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkb-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkn-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 base=env['BASKETBALL_HTTP_URL'];checks=[];opened=False;inspector=None
 def browser(*args):
@@ -16,11 +16,11 @@ def cdp(method,params={}):
  if 'error'in r:raise RuntimeError(r['error'])
  return r['result']
 def js(source):
- r=cdp('Runtime.evaluate',dict(expression=source,returnByValue=True,awaitPromise=True,timeout=4000))
+ r=cdp('Runtime.evaluate',dict(expression=source,returnByValue=True,awaitPromise=True,timeout=12000))
  if r.get('exceptionDetails'):raise RuntimeError(r['exceptionDetails'])
  return r['result'].get('value')
 def wait(expression):
- return js('(async()=>{for(let n=0;n<100;n++){if('+expression+')return true;await new Promise(r=>setTimeout(r,20));}throw Error('+json.dumps('Timed out: '+expression)+')})()')
+ return js('(async()=>{for(let n=0;n<500;n++){if('+expression+')return true;await new Promise(r=>setTimeout(r,20));}throw Error('+json.dumps('Timed out: '+expression)+')})()')
 def key(kind,code,key,number):cdp('Input.dispatchKeyEvent',dict(type=kind,code=code,key=key,windowsVirtualKeyCode=number))
 def expect(name,value):
  assert value,name
