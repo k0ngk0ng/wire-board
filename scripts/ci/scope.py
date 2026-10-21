@@ -139,6 +139,42 @@ def run(args):
     destination.write_text(json.dumps(manifest, indent=2) + '\n')
     print(f'PASS {args.game}: {len(commands)} scoped checks', flush=True)
 
+def test_blocks(source):
+    # Mask Go comments/string literals before matching braces or declarations.
+    # Original bodies are retained for comparison, including literal changes.
+    literals = re.compile(r"//[^\n]*|/\*[\s\S]*?\*/|`[^`]*`|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'")
+    masked = literals.sub(lambda match: re.sub(r'[^\n]', ' ', match.group()), source)
+    blocks, spans = {}, []
+    for match in re.finditer(r'^func ((?:Test|Example|Fuzz)\w*)\(', masked, re.M):
+        if spans and match.start() < spans[-1][1]: continue
+        start = masked.find('{', match.end())
+        if start < 0: return None
+        depth, end = 0, None
+        for index in range(start, len(masked)):
+            if masked[index] == '{': depth += 1
+            elif masked[index] == '}':
+                depth -= 1
+                if depth == 0:
+                    end = index + 1
+                    break
+        if end is None: return None
+        blocks[match.group(1)] = source[match.start():end]
+        while end < len(source) and source[end].isspace(): end += 1
+        spans.append((match.start(), end))
+    outside, cursor = [], 0
+    for start, end in spans:
+        outside.append(source[cursor:start])
+        cursor = end
+    outside.append(source[cursor:])
+    return blocks, ''.join(outside).strip()
+
+def changed_test_source(before, after):
+    old, new = test_blocks(before), test_blocks(after)
+    # Imports, helpers and fixtures can affect every test in a mixed file.
+    if old is None or new is None or old[1] != new[1]: return before + '\n' + after
+    names = sorted(name for name in old[0].keys() | new[0].keys() if old[0].get(name) != new[0].get(name))
+    return '\n'.join('func ' + name + '(' for name in names)
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
@@ -163,10 +199,11 @@ def main():
     legacy_sources = {}
     for path in paths:
         if path.startswith('internal/') and path.endswith('_test.go'):
-            source = (ROOT/path).read_text() if (ROOT/path).exists() else ''
+            current = subprocess.run(['git', 'show', args.head + ':' + path], cwd=ROOT, text=True, capture_output=True)
+            source = current.stdout if current.returncode == 0 else ''
             if args.base:
                 old = subprocess.run(['git', 'show', args.base + ':' + path], cwd=ROOT, text=True, capture_output=True)
-                if old.returncode == 0: source += '\n' + old.stdout
+                source = changed_test_source(old.stdout if old.returncode == 0 else '', source)
             legacy_sources[path] = source
     result = plan(paths, game_names(ROOT), args.manual, legacy_sources)
     result.update(base=args.base, head=args.head, paths=changed_names(raw))
