@@ -25,9 +25,9 @@ func strict(raw json.RawMessage, v any) error {
 }
 func configure(n int, raw json.RawMessage) (json.RawMessage, error) {
 	if n < 2 || n > 6 {
-		return nil, errors.New("逐风赛车支持 2～6 人")
+		return nil, errors.New("极品飞车支持 2～6 人")
 	}
-	o := Options{Track: "woodland", Laps: 3}
+	o := Options{Track: "metro", Laps: 3}
 	if len(raw) > 0 {
 		if e := strict(raw, &o); e != nil {
 			return nil, errors.New("无效赛车设置")
@@ -54,7 +54,7 @@ type Action struct {
 }
 
 func Module() gameapi.Module {
-	return gameapi.Module{ID: "racing", Name: "逐风赛车", MinPlayers: 2, MaxPlayers: 6, Realtime: true, Configure: configure, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
+	return gameapi.Module{ID: "racing", Name: "极品飞车", MinPlayers: 2, MaxPlayers: 6, Realtime: true, Configure: configure, Start: start, Apply: apply, View: project, BotAction: botAction, Reclaim: reclaim, Restore: restore, AcceptStale: acceptStale, OnTimer: onTimer}
 }
 func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 	oRaw, e := configure(ctx.Players, raw)
@@ -69,12 +69,12 @@ func start(ctx gameapi.Context, raw json.RawMessage) (gameapi.Match, error) {
 		return gameapi.Match{}, e
 	}
 	now := ctx.Now.UnixMilli()
-	s := State{Options: o, Phase: "countdown", Epoch: hex.EncodeToString(token[:]), ServerAt: now, StartAt: now + 3000, MaxRaceAt: now + 483000, Track: t, Cars: make([]Car, ctx.Players), Events: []Event{}, Log: []string{"逐风赛车：3 秒后发车，首车完赛后保留 30 秒冲线时间"}}
+	s := State{Options: o, Phase: "countdown", Epoch: hex.EncodeToString(token[:]), ServerAt: now, StartAt: now + 3000, MaxRaceAt: now + 1203000, Track: t, Cars: make([]Car, ctx.Players), Events: []Event{}, Log: []string{"极品飞车：3 秒后发车，首车完赛后保留 30 秒冲线时间"}}
 	p, v := t.Points[0], tangent(t, 0)
 	for i := range s.Cars {
 		behind := 50. + float64(i/2)*55
 		side := float64(i%2*2-1) * 22
-		c := Car{Seat: i, X: p.X - v.X*behind - v.Y*side, Y: p.Y - v.Y*behind + v.X*side, Angle: math.Atan2(v.Y, v.X), Checkpoint: 0, Gate: -1, Progress: -behind, Rank: i/2 + 1, LastInputAt: now, IdleAt: now + idleMS, Skin: i % 5, Applied: Input{At: now, Brake: true}}
+		c := Car{Seat: i, X: p.X - v.X*behind - v.Y*side, Y: p.Y - v.Y*behind + v.X*side, Angle: math.Atan2(v.Y, v.X), Checkpoint: 0, Gate: -1, Progress: -behind, Rank: i/2 + 1, LastInputAt: now, IdleAt: now + idleMS, Skin: i % 6, Applied: Input{At: now, Brake: true}}
 		s.Cars[i] = c
 	}
 	rank(&s)
@@ -102,7 +102,7 @@ func validAction(ctx gameapi.Context, s State, raw json.RawMessage) (Action, err
 			return a, errors.New("请减速后复位，复位冷却 5 秒")
 		}
 	case "skin":
-		if a.Skin < 0 || a.Skin > 4 {
+		if a.Skin < 0 || a.Skin > 5 {
 			return a, errors.New("请选择有效车身")
 		}
 	default:

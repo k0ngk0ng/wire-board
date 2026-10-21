@@ -6,9 +6,11 @@ import "math"
 // gates, off-road detection and AI all consume this same sampled geometry.
 func Tracks() []Track {
 	return []Track{
-		makeTrack("woodland", "林间环道", 2400, 1700, 170, []Point{{420, 350}, {1100, 250}, {1900, 400}, {2100, 900}, {1700, 1400}, {700, 1350}, {300, 950}}),
-		makeTrack("coast", "海岸曲线", 2600, 1800, 154, []Point{{450, 400}, {1050, 250}, {1900, 300}, {2250, 650}, {1700, 850}, {2170, 1180}, {1700, 1500}, {1100, 1430}, {650, 1200}, {300, 950}}),
-		makeTrack("canyon", "赤岩回廊", 2800, 2000, 158, []Point{{450, 350}, {1300, 250}, {2200, 350}, {2380, 650}, {1800, 810}, {1500, 620}, {1100, 760}, {1130, 1150}, {1900, 1120}, {2350, 1340}, {2180, 1660}, {1000, 1720}, {430, 1380}, {300, 800}}),
+		makeTrack("metro", "霓虹城区", 6200, 4400, 200, []Point{{850, 650}, {2700, 450}, {5000, 650}, {5500, 1450}, {4400, 1900}, {5100, 3100}, {4200, 3750}, {2500, 3550}, {1400, 3800}, {650, 2750}, {1000, 1700}}),
+		makeTrack("harbor", "工业港湾", 6600, 4700, 190, []Point{{900, 750}, {2500, 550}, {5200, 650}, {5700, 1450}, {4750, 1900}, {5500, 2800}, {5100, 3850}, {3450, 4050}, {3300, 2900}, {2200, 2650}, {1500, 3650}, {650, 2900}, {650, 1600}}),
+		makeTrack("woodland", "林间山道", 5200, 3800, 174, []Point{{900, 750}, {2400, 550}, {4200, 850}, {4550, 1950}, {3700, 3100}, {1500, 3000}, {650, 2050}}),
+		makeTrack("coast", "滨海公路", 5700, 4000, 186, []Point{{950, 850}, {2300, 550}, {4200, 650}, {4900, 1400}, {3750, 1850}, {4750, 2580}, {3750, 3300}, {2400, 3150}, {1400, 2650}, {650, 2050}}),
+		makeTrack("canyon", "赤岩峡谷", 5500, 4000, 178, []Point{{850, 650}, {2500, 500}, {4300, 650}, {4650, 1250}, {3500, 1580}, {2900, 1200}, {2100, 1500}, {2180, 2250}, {3700, 2180}, {4600, 2600}, {4250, 3250}, {1900, 3400}, {850, 2700}, {600, 1550}}),
 	}
 }
 func makeTrack(id, name string, w, h, r float64, knots []Point) Track {
@@ -29,7 +31,7 @@ func makeTrack(id, name string, w, h, r float64, knots []Point) Track {
 	for i, p := range dense {
 		length += dist(p, dense[(i+1)%len(dense)])
 	}
-	count := int(math.Ceil(length / 45))
+	count := int(math.Ceil(length / 75))
 	spacing := length / float64(count)
 	points := make([]Point, 0, count)
 	segment := 0
@@ -41,14 +43,16 @@ func makeTrack(id, name string, w, h, r float64, knots []Point) Track {
 			l := dist(a, b)
 			if along+l >= target {
 				u := (target - along) / l
-				points = append(points, Point{a.X + (b.X-a.X)*u, a.Y + (b.Y-a.Y)*u})
+				points = append(points, Point{math.Round((a.X+(b.X-a.X)*u)*10) / 10, math.Round((a.Y+(b.Y-a.Y)*u)*10) / 10})
 				break
 			}
 			along += l
 			segment++
 		}
 	}
-	return Track{ID: id, Name: name, Width: w, Height: h, RoadWidth: r, Points: points}
+	t := Track{ID: id, Name: name, Width: w, Height: h, RoadWidth: r, Points: points}
+	t.Props = roadside(t)
+	return t
 }
 func trackByID(id string) (Track, bool) {
 	for _, t := range Tracks() {
@@ -92,4 +96,50 @@ func pathLengths(t Track) ([]float64, float64) {
 		total += dist(p, t.Points[(i+1)%len(t.Points)])
 	}
 	return arcs, total
+}
+
+// These same footprints are sent to the renderer; decorative solid structures
+// never occupy road space or silently allow cars to drive through their mesh.
+func roadside(t Track) []Scenery {
+	out := []Scenery{}
+	stride := len(t.Points) / 32
+	if stride < 1 {
+		stride = 1
+	}
+	for i := 2; i < len(t.Points); i += stride {
+		p, v := t.Points[i], tangent(t, i)
+		for _, side := range []float64{-1, 1} {
+			kind, radius, height := "tree", 16., 65.+float64(i%9)*4
+			switch t.ID {
+			case "metro":
+				kind, radius, height = "building", 40.+float64(i%4)*6, 120.+float64(i%7)*45
+			case "harbor":
+				kind, radius, height = "container", 35, 35.+float64(i%3)*22
+			case "canyon":
+				kind, radius, height = "rock", 28.+float64(i%5)*5, 60.+float64(i%7)*16
+			case "coast":
+				kind, radius, height = "palm", 14, 85
+			}
+			offset := t.RoadWidth/2 + radius + 65 + float64(i%5)*20
+			prop := Scenery{X: math.Round(p.X - v.Y*offset*side), Y: math.Round(p.Y + v.X*offset*side), Radius: radius, Height: height, Kind: kind}
+			if prop.X < radius || prop.Y < radius || prop.X > t.Width-radius || prop.Y > t.Height-radius {
+				continue
+			}
+			_, _, distance, _ := nearest(t, Point{prop.X, prop.Y})
+			if distance < t.RoadWidth/2+radius+25 {
+				continue
+			}
+			clear := true
+			for _, q := range out {
+				if dist(Point{q.X, q.Y}, Point{prop.X, prop.Y}) < q.Radius+radius+15 {
+					clear = false
+					break
+				}
+			}
+			if clear {
+				out = append(out, prop)
+			}
+		}
+	}
+	return out
 }

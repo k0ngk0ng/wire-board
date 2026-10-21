@@ -160,3 +160,31 @@ func TestAllCarsTiedUsesDraw(t *testing.T) {
 		t.Fatal("all-tied race was rated as shared victory", s.Result)
 	}
 }
+
+// Handbrake is a braking control as well as an oversteer aid; holding Space
+// on a straight must slow down, while the service brake remains stronger.
+func TestHandbrakeSlowsStraightCar(t *testing.T) {
+	track := Track{Width: 1000, Height: 1000, RoadWidth: 180, Points: []Point{{100, 100}, {900, 100}, {900, 900}, {100, 900}}}
+	coast := Car{X: 400, Y: 100, VX: 220, Speed: 220, LastInputAt: 1000}
+	hand, service := coast, coast
+	hand.Drift = true
+	service.Brake = true
+	for at := int64(1020); at <= 1600; at += 20 {
+		stepCar(&coast, track, 20, at)
+		stepCar(&hand, track, 20, at)
+		stepCar(&service, track, 20, at)
+	}
+	if hand.Speed >= coast.Speed*.7 || service.Speed >= hand.Speed {
+		t.Fatalf("handbrake is not an intermediate braking force: coast %.2f hand %.2f service %.2f", coast.Speed, hand.Speed, service.Speed)
+	}
+}
+
+// Automatic throttle must not keep pushing the car while the brake is held.
+func TestServiceBrakeOverridesAutomaticThrottle(t *testing.T) {
+	track := Track{Width: 1000, Height: 1000, RoadWidth: 180, Points: []Point{{100, 100}, {900, 100}, {900, 900}, {100, 900}}}
+	car := Car{X: 400, Y: 100, Throttle: 1, Brake: true, LastInputAt: 1000}
+	stepCar(&car, track, 20, 1020)
+	if car.Speed != 0 || car.X != 400 {
+		t.Fatalf("brake accelerates a stopped car: %+v", car)
+	}
+}

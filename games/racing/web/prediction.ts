@@ -44,8 +44,9 @@ export function predictCar(
     forward = c.vx * cos + c.vy * sin;
     let side = -c.vx * sin + c.vy * cos;
     c.offroad = roadDistance(track, c) > track.roadWidth / 2;
-    forward += input.throttle * 245 * dt;
+    forward += (input.brake ? 0 : input.throttle) * 245 * dt;
     forward *= Math.exp(-(c.offroad ? 2.5 : 0.55) * dt);
+    if (input.drift) forward *= Math.exp(-1.2 * dt);
     if (input.brake) forward *= Math.exp(-6 * dt);
     const limit = c.offroad ? 110 : 310;
     forward = clamp(forward, 0, limit);
@@ -59,7 +60,33 @@ export function predictCar(
     }
     c.x = clamp(c.x + c.vx * dt, 13, track.width - 13);
     c.y = clamp(c.y + c.vy * dt, 13, track.height - 13);
+    for (const o of track.props ?? []) {
+      let dx = o.x - c.x,
+        dy = o.y - c.y;
+      if (Math.hypot(dx, dy) > o.radius + 23) continue;
+      const along = clamp(dx * cos + dy * sin, -10, 10);
+      dx = c.x + cos * along - o.x;
+      dy = c.y + sin * along - o.y;
+      const distance = Math.hypot(dx, dy),
+        depth = o.radius + 13 - distance;
+      if (depth <= 0) continue;
+      const nx = distance > 0.00001 ? dx / distance : -cos,
+        ny = distance > 0.00001 ? dy / distance : -sin;
+      c.x += nx * depth;
+      c.y += ny * depth;
+      const inward = c.vx * nx + c.vy * ny;
+      if (inward < 0) {
+        c.vx -= inward * nx * 1.1;
+        c.vy -= inward * ny * 1.1;
+      }
+    }
     c.speed = Math.hypot(c.vx, c.vy);
   }
-  return c;
+  return {
+    ...c,
+    steer: input.steer,
+    throttle: input.throttle,
+    brake: input.brake,
+    drift: input.drift,
+  };
 }

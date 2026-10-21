@@ -1,0 +1,55 @@
+{
+  "scope": "Local acceptance reports. Reproduce with scripts recorded in VALIDATION.md.",
+  "reports": [
+    {
+      "path": ".local/racing-remake/browser-release/report.json",
+      "sha256": "1dbf29ef4bfd4a5bfe149cd2a48342d93efbf17e92eea312c15043fa0b2ae764",
+      "bytes": 7018
+    },
+    {
+      "path": ".local/racing-remake/browser-compatible/report.json",
+      "sha256": "3b5691f1d7c10d58e4226a9cc3427e00602dd2aa7a7aae58de8e26d54e7133d6",
+      "bytes": 2144
+    },
+    {
+      "path": ".local/racing-remake/browser-final-six/report.json",
+      "sha256": "0cb30cc2881e84dfe91588a9acfadffca9df9dacacc5d3ab6e2c85b4f5ea52df",
+      "bytes": 4523
+    },
+    {
+      "path": ".local/racing-remake/bubble-joystick-final/result.json",
+      "sha256": "ae888825462e9de06007649811302c2ba658085199e3d3c32b26ec6baeb7e755",
+      "bytes": 19474
+    },
+    {
+      "path": ".local/racing-remake/racing-complete-brake-final.txt",
+      "sha256": "f2da180dea27bf4744f300435c439924bac3b27a82b3555dc9021d0a8d79f482",
+      "bytes": 127
+    },
+    {
+      "path": ".local/racing-remake/racing-race-final.txt",
+      "sha256": "2b9fb13711f373f70864ce3a656577b8842959723715fb1b29f3166e3a5aed6c",
+      "bytes": 126
+    },
+    {
+      "path": ".local/racing-remake/front-final.txt",
+      "sha256": "ae766cf3e8bb2b3e634f32beafc05edded08cd18b1f5b11de813ec6c03f028ca",
+      "bytes": 13166
+    },
+    {
+      "path": ".local/racing-remake/assets/oss-readback.json",
+      "sha256": "7d8f70e5ec444e26691bb43efb0cb9c3df0e095889ed67a6bf17591644deeac5",
+      "bytes": 3642
+    },
+    {
+      "path": ".local/ci/shared/result-0.json",
+      "sha256": "54d1f1dab09f1edbf852931a073aece688779739c74d4e145a81662fcffcc1b0",
+      "bytes": 5416
+    },
+    {
+      "path": ".local/ci/shared/0-3.log",
+      "sha256": "aeffab87f25e0c4b5697c751347d0784007129aa0351b8a38adfbbf8214f33be",
+      "bytes": 143123
+    }
+  ]
+}

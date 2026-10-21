@@ -1529,6 +1529,32 @@ func (s *Server) command(w http.ResponseWriter, r *http.Request) {
 			err = errors.New("无法设置准备状态")
 			break
 		}
+		if len(req.Options) > 0 && string(req.Options) != "null" {
+			module, ok := s.modules[next.Kind]
+			if !ok || next.Host != u.ID {
+				err = errors.New("只有房主能保存游戏设置并准备")
+				break
+			}
+			var options json.RawMessage
+			options, err = module.Configure(next.Capacity, req.Options)
+			if err != nil {
+				break
+			}
+			if !json.Valid(options) || string(options) == "null" {
+				err = errors.New("无效游戏设置")
+				break
+			}
+			if string(options) != string(next.Options) {
+				next.Options = options
+				for i := range next.Seats {
+					next.Seats[i].Ready = next.Seats[i].Bot
+				}
+			}
+			// Confirm the host's new setup in the same transaction. Bots are
+			// always ready; other humans still approve changed rules themselves.
+			next.Seats[idx].Ready = true
+			break
+		}
 		next.Seats[idx].Ready = !next.Seats[idx].Ready
 	case "start":
 		if next.Host != u.ID || next.Status != "waiting" {

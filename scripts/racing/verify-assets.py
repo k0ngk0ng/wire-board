@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[2]
 ASSETS = ROOT / 'games/racing/assets'
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--dist', action='store_true')
+p.add_argument('--remake', action='store_true', help='Also verify procedural artwork provenance and Three.js license')
 p.add_argument('--oss', action='store_true')
 p.add_argument('--decode-audio', action='store_true')
 args = p.parse_args()
@@ -42,7 +43,7 @@ for f in public.rglob('*'):
 def check(e):
     file = ROOT / e['output']; data = file.read_bytes()
     assert file.relative_to(ASSETS / 'public').as_posix() == e['urlPath'].lstrip('/')
-    assert e['urlPath'].startswith('/racing/v1/') and sha(data) == e['sha256'] and len(data) == e['bytes'], e['name']
+    assert e['urlPath'].startswith(('/racing/v1/', '/racing/v2/')) and sha(data) == e['sha256'] and len(data) == e['bytes'], e['name']
     for source in e['sources']:
         assert sha((ROOT / source['path']).read_bytes()) == source['sha256'], source['path']
     result = {'name': e['name'], 'path': e['urlPath'], 'sha256': sha(data), 'bytes': len(data), 'passed': True}
@@ -69,9 +70,18 @@ def check(e):
         result['cdnVerified'] = True
     return result
 
+if args.remake:
+    remake = json.loads((ASSETS / 'manifest-v2.json').read_text())
+    assert remake['game'] == 'racing' and remake['version'] == 2
+    metadata = json.loads((ASSETS / 'public/racing/v2/attribution.json').read_text())
+    assert metadata['rendering']['license'] == 'MIT'
+    assert 'Permission is hereby granted' in (ASSETS / 'public/racing/v2/three-license.txt').read_text()
+    for entry in metadata['originalArtwork']['sources']:
+        assert sha((ROOT / entry['path']).read_bytes()) == entry['sha256'], entry['path']
+    m['entries'] += remake['entries']
 with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
     results = list(pool.map(check, m['entries']))
-out = ROOT / '.local/racing/verification'; out.mkdir(parents=True, exist_ok=True)
+out = ROOT / ('.local/racing-remake/assets' if args.remake else '.local/racing/verification'); out.mkdir(parents=True, exist_ok=True)
 target = out / ('oss-readback.json' if args.oss else 'assets.json')
 target.write_text(json.dumps({'passed': True, 'dist': args.dist, 'decodeAudio': args.decode_audio, 'sources': len(sources['entries']), 'cars': 30, 'scenery': len(names), 'objects': results}, indent=2) + '\n')
 print('Verified', len(results), 'racing objects:', target)

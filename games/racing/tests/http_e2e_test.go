@@ -136,14 +136,14 @@ func httpRejectDrive(t *testing.T, c *gametest.Client, action map[string]any) {
 }
 
 func TestRacingHTTPPublicationConfigurationAndInputIsolation(t *testing.T) {
-	tracks := []string{"woodland", "coast", "canyon"}
+	tracks := []string{"metro", "harbor", "woodland", "coast", "canyon"}
 	laps := []int{1, 3, 5}
 	for n := 2; n <= 6; n++ {
 		t.Run(fmt.Sprint(n), func(t *testing.T) {
 			h := gametest.NewHTTP(t, n, game.Module(), "racing")
 			record := httpRaceEvidence(t, h)
 			h.AssertUnpublished()
-			track, lapCount := tracks[(n-2)%3], laps[(n-2)%3]
+			track, lapCount := tracks[(n-2)%len(tracks)], laps[(n-2)%3]
 			options := map[string]any{"track": track, "laps": lapCount}
 			if n == 2 {
 				options, lapCount = map[string]any{}, 3

@@ -94,3 +94,23 @@ test("offroad sideways velocity is capped and reverse impacts do not produce rev
   );
   assert.ok(backwards.vx >= 0);
 });
+
+test('visible roadside scenery constrains the cosmetic prediction without mutating the authority',()=>{
+ const t={...track,props:[{x:250,y:200,radius:25,height:50,kind:'rock'}]};
+ const car={...c,x:210,y:200,vx:200,vy:0,angle:0,speed:200,finishAt:0,resetUntil:0};
+ const before=structuredClone(car),p=predictCar(car,{steer:0,throttle:1,brake:false,drift:false},t,200,1000);
+ assert.ok(p.x<=202.01,JSON.stringify(p));assert.deepEqual(car,before);
+});
+
+test('handbrake preview slows the car as well as releasing lateral grip',()=>{
+ const car={...c,x:500,y:100,vx:220,vy:0,angle:0,speed:220,finishAt:0,resetUntil:0};
+ const coast=predictCar(car,{steer:0,throttle:0,brake:false,drift:false},track,250,1000);
+ const hand=predictCar(car,{steer:0,throttle:0,brake:false,drift:true},track,250,1000);
+ assert.ok(hand.speed<coast.speed*.8,{coast:coast.speed,hand:hand.speed});
+});
+
+test('automatic throttle cannot accelerate through the service brake',()=>{
+ const car={...c,x:500,y:100,vx:0,vy:0,angle:0,speed:0,finishAt:0,resetUntil:0};
+ const p=predictCar(car,{steer:0,throttle:1,brake:true,drift:false},track,250,1000);
+ assert.equal(p.speed,0);assert.equal(p.x,500);
+});

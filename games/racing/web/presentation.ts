@@ -18,7 +18,7 @@ export function zoomAt(
   factor: number,
 ): Camera {
   const point = screenToWorld(c, v, p),
-    scale = clamp(c.scale * factor, 0.35, 2.4);
+    scale = clamp(c.scale * factor, 0.05, 2.4);
   return {
     x: point.x - (p.x - v.width / 2) / scale,
     y: point.y - (p.y - v.height / 2) / scale,

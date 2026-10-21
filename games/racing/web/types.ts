@@ -1,10 +1,19 @@
+import { CAR_MODELS } from "./car-definitions";
 import atlas from "../assets/public/racing/v1/atlas.json";
 export type Point = { x: number; y: number };
 export type Options = {
-  track: "woodland" | "coast" | "canyon";
+  track: "metro" | "harbor" | "woodland" | "coast" | "canyon";
   laps: 1 | 3 | 5;
 };
+export type Scenery = {
+  x: number;
+  y: number;
+  radius: number;
+  height: number;
+  kind: "building" | "container" | "tree" | "palm" | "rock";
+};
 export type Track = {
+  props?: Scenery[];
   id: string;
   name: string;
   width: number;
@@ -55,11 +64,13 @@ export type View = {
   controls: { canDrive: boolean; canReset: boolean; canSkin: boolean };
 };
 export const seatColors = atlas.cars.seatColors;
-export const skinNames = atlas.cars.bodyNames;
+export const skinNames = CAR_MODELS.map((car) => car.name);
 export const trackNames = {
-  woodland: "林间环道",
-  coast: "海岸曲线",
-  canyon: "赤岩回廊",
+  metro: "霓虹城区",
+  harbor: "工业港湾",
+  woodland: "林间山道",
+  coast: "滨海公路",
+  canyon: "赤岩峡谷",
 };
 export const assetURL = (base: string, file: string) =>
   `${base.replace(/\/$/, "")}/racing/v1/${file}`;

@@ -134,12 +134,19 @@ def visible(selector, min_size=0):
     return data
 
 
+def joystick_zone(direction):
+    rect=visible('.bubble-joystick',100)
+    x=rect['x']+rect['width']*({'left':.2,'right':.8}.get(direction,.5))
+    y=rect['y']+rect['height']*({'up':.2,'down':.8}.get(direction,.5))
+    return {'x':x-22,'y':y-22,'width':44,'height':44}
+
+
 def contrast():
     return js(r"""(()=>{
       const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number);
       const lum=c=>c.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
       const bg=e=>{let b=[255,255,255],chain=[];for(let n=e;n;n=n.parentElement)chain.unshift(n);for(const n of chain){const c=rgb(getComputedStyle(n).backgroundColor),a=c[3]??1;b=b.map((v,i)=>v*(1-a)+(c[i]??0)*a)}return b};
-      return ['.bubble-status strong','.bubble-mine','.bubble-team span','.bubble-hint','.bubble-player-summary span','.bubble-dpad button','.bubble-bomb','.bubble-bomb small'].map(selector=>{const e=document.querySelector(selector);if(!e)throw Error('missing contrast target '+selector);const s=getComputedStyle(e),a=lum(rgb(s.color)),b=lum(bg(e));return {selector,foreground:s.color,background:bg(e),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}})
+      return ['.bubble-status strong','.bubble-mine','.bubble-team span','.bubble-hint','.bubble-player-summary span','.bubble-stick-caption','.bubble-bomb','.bubble-bomb small'].map(selector=>{const e=document.querySelector(selector);if(!e)throw Error('missing contrast target '+selector);const s=getComputedStyle(e),a=lum(rgb(s.color)),b=lum(bg(e));return {selector,foreground:s.color,background:bg(e),ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}})
     })()""")
 
 
@@ -148,7 +155,7 @@ def disabled_contrast():
       const rgb=s=>(s.match(/[\d.]+/g)||[]).map(Number);
       const over=(front,back,opacity=1)=>back.map((v,i)=>v*(1-(front[3]??1)*opacity)+(front[i]??0)*(front[3]??1)*opacity);
       const lum=c=>c.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0);
-      return ['.bubble-dpad .up','.bubble-bomb','.bubble-bomb small'].map(selector=>{const e=document.querySelector(selector),button=e.closest('button'),s=getComputedStyle(e),bs=getComputedStyle(button),opacity=Number(bs.opacity);let backdrop=[255,255,255],chain=[];for(let n=button.parentElement;n;n=n.parentElement)chain.unshift(n);for(const n of chain)backdrop=over(rgb(getComputedStyle(n).backgroundColor),backdrop);const bg=over(rgb(bs.backgroundColor),backdrop,opacity),fg=over(rgb(s.color),backdrop,opacity),a=lum(bg),b=lum(fg);return {selector,opacity,foreground:fg,background:bg,ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}})
+      return ['.bubble-stick-caption','.bubble-bomb','.bubble-bomb small'].map(selector=>{const e=document.querySelector(selector),button=e.closest('button,.bubble-joystick'),s=getComputedStyle(e),bs=getComputedStyle(button),opacity=Number(bs.opacity);let backdrop=[255,255,255],chain=[];for(let n=button.parentElement;n;n=n.parentElement)chain.unshift(n);for(const n of chain)backdrop=over(rgb(getComputedStyle(n).backgroundColor),backdrop);const bg=over(rgb(bs.backgroundColor),backdrop,opacity),fg=over(rgb(s.color),backdrop,opacity),a=lum(bg),b=lum(fg);return {selector,opacity,foreground:fg,background:bg,ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}})
     })()""")
 
 
@@ -275,7 +282,7 @@ try:
         assert 1.05 <= canvas['width'] / canvas['height'] <= 1.4, canvas
         shot('playing-' + str(width))
         browser('scrollintoview', '.bubble-controls')
-        controls = {s: visible(s, 44) for s in ['.bubble-dpad .left', '.bubble-dpad .right', '[data-bubbleparty-bomb]']}
+        controls = {s: visible(s, 44) for s in ['.bubble-joystick', '[data-bubbleparty-bomb]']}
         shot('controls-' + str(width))
         check('actual-visible-' + str(width), canvas=canvas, controls=controls)
 
@@ -322,10 +329,9 @@ try:
 
     browser('set', 'viewport', '320', '1000')
     browser('scrollintoview', '.bubble-controls')
-    selector = '.bubble-dpad .' + reverse.replace('Arrow','').lower()
-    rect = visible(selector, 44)
+    rect = joystick_zone(reverse.replace('Arrow','').lower())
     before = pos()
-    opposite_rect = visible('.bubble-dpad .' + forward.replace('Arrow','').lower(), 44)
+    opposite_rect = joystick_zone(forward.replace('Arrow','').lower())
     evidence = native([{'touch':'touchStart','x':rect['x']+rect['width']/2,'y':rect['y']+rect['height']/2},
                        {'read':'touch-held','until':{'move':reverse.replace('Arrow','').lower(),'axis':coordinate,'origin':before[axis],'sign':-sign}},
                        {'touch':'touchMove','x':opposite_rect['x']+opposite_rect['width']/2,'y':opposite_rect['y']+opposite_rect['height']/2},
@@ -350,7 +356,7 @@ try:
     mouse_forward, _, mouse_axis, mouse_sign = free_direction(mouse_view)
     mouse_coordinate = ['px','py'][mouse_axis]
     mouse_before = pos(mouse_view)
-    mouse_rect = visible('.bubble-dpad .' + mouse_forward.replace('Arrow','').lower(),44)
+    mouse_rect = joystick_zone(mouse_forward.replace('Arrow','').lower())
     mouse_x, mouse_y = mouse_rect['x']+mouse_rect['width']/2, mouse_rect['y']+mouse_rect['height']/2
     mouse_evidence = native([{'mouse':'mousePressed','x':mouse_x,'y':mouse_y},
                              {'read':'mouse-held','until':{'move':mouse_forward.replace('Arrow','').lower(),'axis':mouse_coordinate,'origin':mouse_before[mouse_axis],'sign':mouse_sign}},
@@ -399,7 +405,7 @@ try:
           departed=pos(departed), blocked=pos(blocked))
     trapped = wait(lambda: (lambda v: v if me(v)['trappedUntil'] > v['serverAt'] else None)(view()), timeout=5, label='real water bomb traps human')
     assert me(trapped)['alive'], trapped
-    assert js('document.querySelector(".bubble-status")?.textContent.includes("困")'), 'trapped state absent from visible status'
+    wait(lambda:js('document.querySelector(".bubble-status")?.textContent.includes("困")'), timeout=2, label="trapped state reaches visible status")
     disabled = disabled_contrast()
     record('disabled-control-contrast', disabled)
     assert all(r['ratio'] >= 4.5 for r in disabled), disabled
@@ -473,7 +479,7 @@ try:
     command('start')
     wait(lambda: view()['phase'] == 'playing', label='eight-seat round playing')
     initial_canvas = visible('[data-bubbleparty-canvas]')
-    initial_controls = {s:visible(s,44) for s in ['.bubble-dpad .up','.bubble-dpad .down','.bubble-dpad .left','.bubble-dpad .right','[data-bubbleparty-bomb]']}
+    initial_controls = {s:visible(s,44) for s in ['.bubble-joystick','[data-bubbleparty-bomb]']}
     initial_scroll = js('scrollY')
     shot('eight-player-initial-playable-320x844',full=False)
     time.sleep(.5)

@@ -7,6 +7,9 @@ import type {
 import type { BoardProps } from "../../../web/src/game-api/module";
 import { LatestDrive, neutral, wheelSteer, type Drive } from "./input";
 import { TrackCanvas } from "./TrackCanvas";
+import { RaceMap } from "./RaceMap";
+import { RearViewHold } from "./chase-camera";
+import { Modal } from "../../../web/src/ui/board-host";
 import { ControlLifecycle } from "./lifecycle";
 import { soundDelay, RaceAudioQueue } from "./timeline";
 import { sources, skinNames, type View } from "./types";
@@ -21,7 +24,7 @@ const readSkin = () => {
   try {
     return Math.max(
       0,
-      Math.min(4, Number(localStorage.getItem("racing.skin")) || 0),
+      Math.min(5, Number(localStorage.getItem("racing.skin")) || 0),
     );
   } catch {
     return 0;
@@ -43,17 +46,42 @@ export function Board(props: BoardProps<View>) {
     [now, setNow] = useState(performance.now()),
     [skin, setSkin] = useState(readSkin),
     [watch, setWatch] = useState(0),
+    [rear, setRear] = useState(false),
+    [mapOpen, setMapOpen] = useState(false),
     [reduced, setReduced] = useState(
       () => matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
+  const boardElement = useRef<HTMLElement>(null);
+  const mapWasOpen = useRef(false);
+  useEffect(() => {
+    if (d.phase === "finished") setMapOpen(false);
+  }, [d.phase]);
+  useEffect(() => {
+    if (
+      mapWasOpen.current &&
+      !mapOpen &&
+      !document.querySelector('[role="dialog"]')
+    )
+      boardElement.current
+        ?.querySelector<HTMLCanvasElement>(".racing-chase")
+        ?.focus({ preventScroll: true });
+    mapWasOpen.current = mapOpen;
+  }, [mapOpen]);
+
+  const rearHold = useRef(new RearViewHold());
   const queue = useRef(new LatestDrive()),
     lifecycle = useRef(new ControlLifecycle()),
     input = useRef<Drive>({ ...neutral }),
     keys = useRef(new Set<string>()),
     wheel = useRef<{ id: number; steer: number } | null>(null),
+    throttles = useRef(new Set<number>()),
     brakes = useRef(new Set<number>()),
     drifts = useRef(new Set<number>()),
-    pedalKeys = useRef({ brake: new Set<string>(), drift: new Set<string>() }),
+    pedalKeys = useRef({
+      throttle: new Set<string>(),
+      brake: new Set<string>(),
+      drift: new Set<string>(),
+    }),
     latest = useRef(props),
     paused = useRef(false),
     autoRef = useRef(auto),
@@ -66,6 +94,7 @@ export function Board(props: BoardProps<View>) {
   const enabled =
     room.status === "playing" &&
     !spectating &&
+    !mapOpen &&
     !room.seats[room.you]?.autoPlay &&
     !busy &&
     d.controls.canDrive &&
@@ -105,18 +134,26 @@ export function Board(props: BoardProps<View>) {
       return;
     }
     const held = keys.current;
+    const braking =
+      brakes.current.size > 0 ||
+      pedalKeys.current.brake.size > 0 ||
+      held.has("ArrowDown") ||
+      held.has("KeyS");
     setInput({
       steer:
         wheel.current?.steer ??
         (held.has("ArrowRight") || held.has("KeyD") ? 1 : 0) -
           (held.has("ArrowLeft") || held.has("KeyA") ? 1 : 0),
       throttle:
-        autoRef.current || held.has("ArrowUp") || held.has("KeyW") ? 1 : 0,
-      brake:
-        brakes.current.size > 0 ||
-        pedalKeys.current.brake.size > 0 ||
-        held.has("ArrowDown") ||
-        held.has("KeyS"),
+        !braking &&
+        (autoRef.current ||
+          throttles.current.size > 0 ||
+          pedalKeys.current.throttle.size > 0 ||
+          held.has("ArrowUp") ||
+          held.has("KeyW"))
+          ? 1
+          : 0,
+      brake: braking,
       drift:
         drifts.current.size > 0 ||
         pedalKeys.current.drift.size > 0 ||
@@ -125,6 +162,10 @@ export function Board(props: BoardProps<View>) {
   };
   const release = () => {
     keys.current.clear();
+    rearHold.current.clear();
+    setRear(false);
+    throttles.current.clear();
+    pedalKeys.current.throttle.clear();
     wheel.current = null;
     brakes.current.clear();
     drifts.current.clear();
@@ -224,9 +265,24 @@ export function Board(props: BoardProps<View>) {
     ]);
     const ignored = (target: EventTarget | null) =>
       target instanceof HTMLElement &&
-      (target.matches("input,select,textarea") || target.isContentEditable);
+      (!!target.closest("input,select,textarea,[role=dialog]") ||
+        target.isContentEditable);
     const down = (e: KeyboardEvent) => {
-      if (!activeRef.current || ignored(e.target)) return;
+      if (ignored(e.target) || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.repeat && (paused.current || !keys.current.has(e.code))) {
+        if (keyboard.has(e.code) || e.code === "KeyB" || e.code === "KeyR")
+          e.preventDefault();
+        return;
+      }
+      if (e.code === "KeyB") {
+        if (mapOpen) return;
+        e.preventDefault();
+        keys.current.add("KeyB");
+        rearHold.current.press("KeyB");
+        setRear(rearHold.current.active);
+        return;
+      }
+      if (!activeRef.current) return;
       if (e.code === "KeyR" && !e.repeat) {
         e.preventDefault();
         void reset();
@@ -235,11 +291,20 @@ export function Board(props: BoardProps<View>) {
       if (!keyboard.has(e.code)) return;
       if (e.code === "Space" && e.target instanceof HTMLButtonElement) return;
       e.preventDefault();
+      if(e.target instanceof HTMLButtonElement && !e.target.closest('[data-game-controls]')) {
+        boardElement.current?.querySelector<HTMLCanvasElement>('.racing-chase')?.focus({preventScroll:true});
+      }
       wake();
       keys.current.add(e.code);
       compute();
     };
     const up = (e: KeyboardEvent) => {
+      if (e.code === "KeyB") {
+        keys.current.delete("KeyB");
+        rearHold.current.release("KeyB");
+        setRear(rearHold.current.active);
+        return;
+      }
       if (!keyboard.has(e.code)) return;
       keys.current.delete(e.code);
       compute();
@@ -260,7 +325,7 @@ export function Board(props: BoardProps<View>) {
       window.removeEventListener("blur", suspend);
       document.removeEventListener("visibilitychange", visibility);
     };
-  }, [scope, enabled, mobile]);
+  }, [scope, enabled, mobile, mapOpen]);
   useEffect(() => {
     if (!enabled || !d.controls.canSkin || skinSent.current === scope) return;
     skinSent.current = scope;
@@ -389,11 +454,12 @@ export function Board(props: BoardProps<View>) {
     wheel.current = null;
     compute();
   };
-  const heldButton = (which: "brake" | "drift") => ({
+  const heldButton = (which: "throttle" | "brake" | "drift") => ({
     onKeyDown: (e: ReactKeyboardEvent<HTMLButtonElement>) => {
       if (!enabled || (e.code !== "Space" && e.code !== "Enter")) return;
       e.preventDefault();
       e.stopPropagation();
+      if (e.repeat && !pedalKeys.current[which].has(e.code)) return;
       wake();
       pedalKeys.current[which].add(e.code);
       compute();
@@ -414,19 +480,39 @@ export function Board(props: BoardProps<View>) {
       e.preventDefault();
       wake(e.pointerType === "touch");
       e.currentTarget.setPointerCapture(e.pointerId);
-      (which === "brake" ? brakes : drifts).current.add(e.pointerId);
+      (which === "throttle"
+        ? throttles
+        : which === "brake"
+          ? brakes
+          : drifts
+      ).current.add(e.pointerId);
       compute();
     },
     onPointerUp: (e: ReactPointerEvent<HTMLButtonElement>) => {
-      (which === "brake" ? brakes : drifts).current.delete(e.pointerId);
+      (which === "throttle"
+        ? throttles
+        : which === "brake"
+          ? brakes
+          : drifts
+      ).current.delete(e.pointerId);
       compute();
     },
     onPointerCancel: (e: ReactPointerEvent<HTMLButtonElement>) => {
-      (which === "brake" ? brakes : drifts).current.delete(e.pointerId);
+      (which === "throttle"
+        ? throttles
+        : which === "brake"
+          ? brakes
+          : drifts
+      ).current.delete(e.pointerId);
       compute();
     },
     onLostPointerCapture: (e: ReactPointerEvent<HTMLButtonElement>) => {
-      (which === "brake" ? brakes : drifts).current.delete(e.pointerId);
+      (which === "throttle"
+        ? throttles
+        : which === "brake"
+          ? brakes
+          : drifts
+      ).current.delete(e.pointerId);
       compute();
     },
   });
@@ -446,11 +532,14 @@ export function Board(props: BoardProps<View>) {
               ? "正在观战"
               : room.seats[room.you]?.autoPlay
                 ? "电脑正在托管"
-                : suspended
-                  ? "操作已释放，点击方向盘或按键继续"
-                  : "比赛进行中";
+                : car && car.resetUntil > serverNow
+                  ? `重置中 · ${Math.ceil((car.resetUntil - serverNow) / 1000)} 秒后起步`
+                  : suspended
+                    ? "操作已释放，点击方向盘或按键继续"
+                    : "比赛进行中";
   return (
     <section
+      ref={boardElement}
       className="racing-board"
       data-phase={d.phase}
       data-epoch={d.epoch}
@@ -514,6 +603,11 @@ export function Board(props: BoardProps<View>) {
           driving={enabled && !suspended}
           reduced={reduced}
           watch={watch}
+          rear={rear}
+          onOpenMap={() => {
+            release();
+            setMapOpen(true);
+          }}
         />
         {d.phase === "countdown" && (
           <div
@@ -529,6 +623,83 @@ export function Board(props: BoardProps<View>) {
             <small>准备起步</small>
           </div>
         )}
+      </div>
+      {mapOpen && d.phase !== "finished" && (
+        <Modal
+          title="赛道地图"
+          className="racing-map-modal"
+          onClose={() => setMapOpen(false)}
+        >
+          <p className="racing-map-note">
+            比赛继续进行。拖动平移，滚轮或双指缩放。
+          </p>
+          <RaceMap
+            data={d}
+            clock={clock}
+            seat={spectating ? -1 : room.you}
+            assets={assets}
+            input={input}
+            driving={false}
+            reduced={reduced}
+            watch={watch}
+          />
+        </Modal>
+      )}
+      <div className="racing-view-controls" data-game-controls>
+        <button
+          type="button"
+          aria-label="向后看"
+          aria-pressed={rear}
+          onPointerDown={(e) => {
+            e.preventDefault();
+            e.currentTarget.setPointerCapture(e.pointerId);
+            rearHold.current.press(`pointer:${e.pointerId}`);
+            setRear(rearHold.current.active);
+          }}
+          onPointerUp={(e) => {
+            rearHold.current.release(`pointer:${e.pointerId}`);
+            setRear(rearHold.current.active);
+          }}
+          onPointerCancel={(e) => {
+            rearHold.current.release(`pointer:${e.pointerId}`);
+            setRear(rearHold.current.active);
+          }}
+          onLostPointerCapture={(e) => {
+            rearHold.current.release(`pointer:${e.pointerId}`);
+            setRear(rearHold.current.active);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === " " || e.key === "Enter") {
+              e.preventDefault();
+              rearHold.current.press("button");
+              setRear(true);
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === " " || e.key === "Enter") {
+              rearHold.current.release("button");
+              setRear(rearHold.current.active);
+            }
+          }}
+          onBlur={() => {
+            rearHold.current.release("button");
+            setRear(rearHold.current.active);
+          }}
+        >
+          向后看 <kbd>B</kbd>
+        </button>
+        <span>自动挡 · 无需换挡</span>
+        <button
+          type="button"
+          aria-label="重置赛车"
+          disabled={!d.controls.canReset || !enabled}
+          onClick={() => void reset()}
+        >
+          {car && car.resetUntil > 0 && car.resetUntil + 3000 > serverNow
+            ? `重置 ${Math.ceil((car.resetUntil + 3000 - serverNow) / 1000)}秒`
+            : "重置"}{" "}
+          <kbd>R</kbd>
+        </button>
       </div>
       {spectating ? (
         <label className="racing-watch">
@@ -608,10 +779,6 @@ export function Board(props: BoardProps<View>) {
               <small>滑动转向</small>
             </div>
             <div className="racing-drive-info">
-              <strong>
-                {Math.round(car?.speed ?? 0)}
-                <small>速度</small>
-              </strong>
               <label className="racing-auto">
                 <input
                   type="checkbox"
@@ -627,19 +794,29 @@ export function Board(props: BoardProps<View>) {
               <span className="racing-key-hint">
                 WASD／方向键
                 <br />
-                空格漂移 · R 救援
+                空格手刹 · B 后视 · R 重置
               </span>
             </div>
             <div className="racing-pedals">
               <button
                 type="button"
+                aria-label="油门"
+                aria-pressed={drive.throttle > 0}
+                className={drive.throttle > 0 ? "pressed" : ""}
+                disabled={!enabled}
+                {...heldButton("throttle")}
+              >
+                油门<small>W／↑</small>
+              </button>
+              <button
+                type="button"
                 className={`racing-drift ${drive.drift ? "pressed" : ""}`}
-                aria-label="漂移"
+                aria-label="手刹"
                 aria-pressed={drive.drift}
                 disabled={!enabled}
                 {...heldButton("drift")}
               >
-                漂移<small>空格</small>
+                手刹<small>空格</small>
               </button>
               <button
                 type="button"
@@ -683,15 +860,8 @@ export function Board(props: BoardProps<View>) {
                 ))}
               </select>
             </label>
-            <button
-              type="button"
-              aria-label="救援赛车"
-              disabled={!d.controls.canReset || busy}
-              onClick={() => void reset()}
-            >
-              救援
-            </button>
-            <span>车型性能相同 · 救援先减速</span>
+
+            <span>车型性能相同 · 重置前先减速</span>
           </div>
         </>
       )}
@@ -706,24 +876,6 @@ export function Board(props: BoardProps<View>) {
             正在同步赛况，松开操作可安全减速。
           </p>
         )}
-      {d.phase === "finished" && (
-        <ol className="racing-results" aria-label="比赛名次">
-          {[...d.cars]
-            .sort((a, b) => a.rank - b.rank)
-            .map((c) => (
-              <li key={c.seat}>
-                <strong>
-                  第 {c.rank} 名 · {room.seats[c.seat]?.name}
-                </strong>
-                <span>
-                  {c.finishAt
-                    ? timeText(c.finishAt - d.startAt)
-                    : `${c.lap} 圈 · 未完赛`}
-                </span>
-              </li>
-            ))}
-        </ol>
-      )}
     </section>
   );
 }
