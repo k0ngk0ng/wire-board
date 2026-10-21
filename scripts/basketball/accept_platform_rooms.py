@@ -70,7 +70,7 @@ try:
  for mode,capacity in [('solo',1),('cooperative',2),('versus',2)]:
   browser('find','role','button','click','--name','创建房间')
   browser('fill','[aria-label="搜索可选游戏"]','热血篮球')
-  expect('basketball illustrated cover in standard game picker '+mode,js('document.querySelectorAll(".choose-games button").length===1 && !!document.querySelector(".choose-games svg[aria-label=街头球场上跃起扣篮的球员]")'))
+  expect('basketball illustrated cover in standard game picker '+mode,js('document.querySelectorAll(".choose-games button").length===1 && !!document.querySelector(".choose-games svg[role=img]")'))
   browser('click','.choose-games button')
   browser('select','[aria-label="座位上限"]',str(capacity))
   if capacity==2:
