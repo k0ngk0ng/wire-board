@@ -74,6 +74,14 @@ func TestBasketballRealtimeStreamAndRestore(t *testing.T) {
 	v := view(t, a)
 	var first map[string]any
 	for n := int64(1); n <= 8; n++ {
+		// Keep the stream open longer than one snapshot freshness window.
+		time.Sleep(150 * time.Millisecond)
+		// The browser keeps receiving authority snapshots while inputs are in
+		// flight. Refresh through authenticated HTTP here so this fixture can
+		// deliberately leave all WebSocket ACKs unread without freezing time.
+		// Keep the original room version below: AcceptStale must still admit
+		// current input clocks against a newer authoritative room version.
+		v = view(t, a)
 		buttons := 0
 		if n%2 == 1 {
 			buttons = 1
@@ -115,6 +123,15 @@ func TestBasketballRealtimeStreamAndRestore(t *testing.T) {
 	if next["serverInstance"] == state["serverInstance"] {
 		t.Fatal("restart did not change instance")
 	}
+	// Keep these negative requests otherwise current, so an expired input
+	// clock cannot mask a missing server-instance or spectator check.
+	freshAction := func() map[string]any {
+		current := view(t, a)
+		sequence := current.Inputs[0].Sequence + 1
+		return map[string]any{"type": "inputs", "epoch": current.Epoch, "seat": 0, "basedOn": current.ServerAt, "sequence": sequence, "events": []any{map[string]any{"sequence": sequence, "buttons": 0, "offsetMS": 0, "release": false}}}
+	}
+	first["action"] = freshAction()
+	first["version"] = next["room"].(map[string]any)["version"]
 	first["nonce"] = "stale-instance-after-restart"
 	basketballSend(t, conn, first)
 	if ack := basketballPacket(t, conn, "ack"); ack["status"] == float64(200) {
@@ -124,6 +141,7 @@ func TestBasketballRealtimeStreamAndRestore(t *testing.T) {
 	basketballPacket(t, watcher, "state")
 	first["serverInstance"] = next["serverInstance"]
 	first["nonce"] = "spectator-input"
+	first["action"] = freshAction()
 	basketballSend(t, watcher, first)
 	if ack := basketballPacket(t, watcher, "ack"); ack["status"] == float64(200) {
 		t.Fatal("spectator controlled player")
