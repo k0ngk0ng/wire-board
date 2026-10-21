@@ -63,6 +63,7 @@ func basketballSend(t *testing.T, c *websocket.Conn, packet any) {
 func TestBasketballRealtimeStreamAndRestore(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, observedModule(t), "basketball")
 	h.Start(map[string]any{"mode": "versus"})
+	basketballReadyHTTP(t, h)
 	a, b := h.People[0], h.People[1]
 	await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	b.Command("autoplay", map[string]any{"enabled": true}, 200)

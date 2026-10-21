@@ -29,11 +29,10 @@ try:
  (OUT/'result.json').write_text('{"status":"running"}\n')
  (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Basketball network Board</title><style>body{margin:0;background:#172126;color:#f4eedb;font-family:sans-serif}main{max-width:900px;margin:auto;padding:12px}h1{font-size:18px;margin:0 0 8px}button{font:inherit}.modal-backdrop{position:fixed;inset:0;background:#0008;display:grid;place-items:center;z-index:50}.modal{max-height:90svh;overflow:auto;background:#f5f0df;color:#222;padding:16px;max-width:600px;width:calc(100% - 48px)}</style><link rel="stylesheet" href="/board.css"><div id="root"></div><script type="module" src="/board.js"></script>')
  subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/network_board_harness.tsx'),'--bundle','--format=esm','--jsx=automatic','--loader:.svg=dataurl','--target=es2022','--outfile='+str(OUT/'board.js')],cwd=ROOT,env=env,check=True)
- subprocess.run(['go','build','-o',str(OUT/'basketball.wasm'),'./games/basketball/cmd/browser-wasm'],cwd=ROOT,env=dict(env,GOOS='js',GOARCH='wasm'),check=True)
- goroot=subprocess.check_output(['go','env','GOROOT'],cwd=ROOT,env=env,text=True).strip();(OUT/'wasm_exec.js').write_bytes((Path(goroot)/'lib/wasm/wasm_exec.js').read_bytes())
  page=base+'/'
  browser('--profile',str(OUT/'profile'),'open',page);opened=True
  endpoint=browser('get','cdp-url')['cdpUrl'];inspector=subprocess.Popen(['node',str(ROOT/'scripts/basketball/browser_cdp_session.mjs'),endpoint,page],env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(OUT/'cdp.stderr').open('w'),text=True);assert json.loads(inspector.stdout.readline())['ready']
+ mirror=(ROOT/'scripts/basketball/browser_oss_mirror.js').read_text();cdp('Page.enable');cdp('Page.addScriptToEvaluateOnNewDocument',dict(source=mirror));browser('reload')
  wait('document.querySelector("[data-basketball-ready=true]")')
  browser('click','#room-options-preview summary')
  expect('solo creation defaults to original computer teammates',js('JSON.parse(document.querySelector("#mode-config").textContent).mode==="solo" && document.querySelector("#room-options-preview").textContent.includes("电脑")'))

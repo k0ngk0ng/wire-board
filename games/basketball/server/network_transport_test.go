@@ -22,6 +22,7 @@ func TestBasketballHTTPJavaScriptTransport(t *testing.T) {
 	}
 	h := gametest.NewHTTP(t, 4, observedModule(t), "basketball")
 	h.Start(map[string]any{})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	a.Action(buttons(v, 0, engine.ButtonStart), 200)

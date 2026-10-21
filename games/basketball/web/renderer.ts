@@ -1,4 +1,5 @@
 /** Original-art Canvas presentation. This module has no game rules or ROM runtime. */
+import type { LoadingProgress } from "./loading";
 import { rasterizePostResultRows, unpackPostResultRasterRows, type PackedPostResultRows, type PostResultRasterAssets } from "./postresult-raster";
 
 /** The logical raster plan is interpreted and validated by Go/Wasm. */
@@ -45,6 +46,7 @@ interface ResultManifest {source:{rom_sha256:string};actorProfiles:Fragment[][];
 interface CourtPalette {courtTiles: Pixels; courtTexture: Pixels; hudGlyphs: Pixels; hudTemplate: Pixels}
 interface CourtArt { palettes: Record<number,CourtPalette>; initialRing: Ring; columns: {initialization:ColumnPacket[];gameplay:ColumnPacket[]} }
 export interface BasketballAssets {
+  ensureCourt?: (court: number) => Promise<void>;
   postResult?: PostResultRasterAssets;
   courts: CourtArt[];
   results: { actorProfiles: Fragment[][]; courts: Array<Record<number,ResultImages>> };
@@ -56,11 +58,11 @@ const integer = (n: number, min: number, max: number, label: string) => {
   if (!Number.isInteger(n) || n < min || n > max) throw new Error(`Invalid ${label}: ${n}`);
 };
 async function json<T>(url: string): Promise<T> {
-  const response = await fetch(url); if (!response.ok) throw new Error(`Asset unavailable: ${url}`);
+  const response = await fetch(url, {signal: AbortSignal.timeout(45000)}); if (!response.ok) throw new Error(`Asset unavailable: ${url}`);
   return response.json() as Promise<T>;
 }
 async function image(url: string, digest?: string): Promise<Pixels> {
-  const response = await fetch(url); if (!response.ok) throw new Error(`Image unavailable: ${url}`);
+  const response = await fetch(url, {signal: AbortSignal.timeout(45000)}); if (!response.ok) throw new Error(`Image unavailable: ${url}`);
   const bytes = await response.arrayBuffer();
   if (digest) {
     const actual = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(v => v.toString(16).padStart(2, '0')).join('');
@@ -73,7 +75,9 @@ async function image(url: string, digest?: string): Promise<Pixels> {
   return { width: canvas.width, height: canvas.height, data: context.getImageData(0, 0, canvas.width, canvas.height).data };
 }
 /** baseURL serves only exported image/JSON assets; no original executable is fetched. */
-export async function loadBasketballAssets(baseURL: string, options: {postResult?: boolean} = {}): Promise<BasketballAssets> {
+export async function loadBasketballAssets(baseURL: string, options: {postResult?: boolean;court?: number;onProgress?:(p:LoadingProgress)=>void} = {}): Promise<BasketballAssets> {
+  const report=options.onProgress ?? (()=>{});
+  report({percent:0,label:"加载球场清单"});
   const base = baseURL.replace(/\/$/, '');
   const [raster, players, objects, resultManifest, courtsManifest] = await Promise.all([
     json<RasterManifest>(`${base}/raster/manifest.json`),
@@ -85,29 +89,42 @@ export async function loadBasketballAssets(baseURL: string, options: {postResult
   if ([players,objects,resultManifest,courtsManifest].some(m=>m.source.rom_sha256!==raster.source.rom_sha256)) throw new Error('Mixed original-art versions');
   for (let k = 0; k < 15; k++) if (raster.profiles[k]?.length !== (k < 8 ? players.pose_counts[k] : objects.pose_counts[k - 8])) throw new Error('Fragment/sheet pose coverage differs');
   const spriteTiles=await image(`${base}/raster/${raster.atlas.file}`,raster.atlas.sha256);
-  const courts=await Promise.all(courtsManifest.courts.map(async(record,index)=>{
-    if(record.court!==index)throw new Error('Court assets are not indexed by original court');
-    const manifest=await json<{court:number;palettes:number[];assets:Record<string,{sha256:string}>}>(`${base}/courts/${record.manifest}`);
-    if(manifest.court!==index)throw new Error('Court manifest identity differs');
-    const root=`${base}/courts/${index}`;
-    const [initialRing,columns]=await Promise.all([json<Ring>(`${root}/initial-ring.json`),json<CourtArt['columns']>(`${root}/stream-columns.json`)]);
-    const pairs=await Promise.all(manifest.palettes.map(async id=>{
-      const names=[`court-tiles-${id}.png`,`court-${id}.png`,`hud-glyphs-${id}.png`,`hud-template-${id}.png`];
-      const [courtTiles,courtTexture,hudGlyphs,hudTemplate]=await Promise.all(names.map(name=>image(`${root}/${name}`,manifest.assets[name].sha256)));
-      return [id,{courtTiles,courtTexture,hudGlyphs,hudTemplate}] as const;
-    }));
-    return {initialRing,columns,palettes:Object.fromEntries(pairs)};
-  }));
-  const resultCourts = await Promise.all(resultManifest.courts.map(async (c,index) => {
-    if(c.court!==index)throw new Error('Result assets differ from court index');
-    const palettes=[{...c,paletteID:c.court+1},...(c.paletteVariants??[])];
-    const pairs=await Promise.all(palettes.map(async p=>{
-      const [background,hud,digits,hudTiles]=await Promise.all([p.background,p.hud,p.digits,p.hudTiles].map(a=>image(`${base}/results/${a.file}`,a.sha256)));
-      return [p.paletteID,{background,hud,digits,hudTiles}] as const;
-    }));
-    return Object.fromEntries(pairs);
-  }));
-  if(courts.length!==8||resultCourts.length!==8||resultManifest.actorProfiles.length!==120)throw new Error('Court asset coverage differs');
+  const courts: CourtArt[]=new Array(8);
+  const resultCourts: Array<Record<number,ResultImages>>=new Array(8);
+  const courtJobs=new Map<number,Promise<void>>();
+  const ensureCourt=(index:number):Promise<void>=>{
+    integer(index,0,7,'court');
+    const cached=courtJobs.get(index);if(cached)return cached;
+    const job=(async()=>{
+      report({percent:0,label:'加载当前球场'});
+      const record=courtsManifest.courts[index],c=resultManifest.courts[index];
+      if(record?.court!==index||c?.court!==index)throw Error('Court asset identity differs');
+      const manifest=await json<{court:number;palettes:number[];assets:Record<string,{sha256:string}>}>(`${base}/courts/${record.manifest}`);
+      if(manifest.court!==index)throw new Error('Court manifest identity differs');
+      const root=`${base}/courts/${index}`;
+      const palettes=[{...c,paletteID:c.court+1},...(c.paletteVariants??[])];
+      const total=2+manifest.palettes.length*4+palettes.length*4;let done=0;
+      const track=async<T,>(task:Promise<T>):Promise<T>=>{const value=await task;done++;report({percent:10+85*done/total,label:`加载球场图片 ${done}/${total}`});return value};
+      const [initialRing,columns,pairs,resultPairs]=await Promise.all([
+        track(json<Ring>(`${root}/initial-ring.json`)),track(json<CourtArt['columns']>(`${root}/stream-columns.json`)),
+        Promise.all(manifest.palettes.map(async id=>{
+          const names=[`court-tiles-${id}.png`,`court-${id}.png`,`hud-glyphs-${id}.png`,`hud-template-${id}.png`];
+          const [courtTiles,courtTexture,hudGlyphs,hudTemplate]=await Promise.all(names.map(name=>track(image(`${root}/${name}`,manifest.assets[name].sha256))));
+          return [id,{courtTiles,courtTexture,hudGlyphs,hudTemplate}] as const;
+        })),
+        Promise.all(palettes.map(async p=>{
+          const [background,hud,digits,hudTiles]=await Promise.all([p.background,p.hud,p.digits,p.hudTiles].map(a=>track(image(`${base}/results/${a.file}`,a.sha256))));
+          return [p.paletteID,{background,hud,digits,hudTiles}] as const;
+        }))
+      ]);
+      courts[index]={initialRing,columns,palettes:Object.fromEntries(pairs)};
+      resultCourts[index]=Object.fromEntries(resultPairs);
+    })().catch(error=>{courtJobs.delete(index);throw error});
+    courtJobs.set(index,job);return job;
+  };
+  if(courtsManifest.courts.length!==8||resultManifest.courts.length!==8||resultManifest.actorProfiles.length!==120)throw new Error('Court asset coverage differs');
+  const initialCourt=options.court ?? 1;
+  await Promise.all(options.court===undefined ? Array.from({length:8},(_,i)=>ensureCourt(i)) : [ensureCourt(initialCourt)]);
   // Legacy research consumers can still inspect the original New York default.
   let postResult: PostResultRasterAssets | undefined;
   if(options.postResult){
@@ -118,11 +135,12 @@ export async function loadBasketballAssets(baseURL: string, options: {postResult
     if(texture.width!==512||texture.height!==atlas.pages.length*8)throw new Error('Post-result index atlas dimensions differ');
     postResult={pages:atlas.pages,indices:texture.data,rgb:manifest.rgbPalette};
   }
-  const ny=courts[1];return { raster, spriteTiles, courts,...ny.palettes[2],initialRing:ny.initialRing,columns:ny.columns,results:{actorProfiles:resultManifest.actorProfiles,courts:resultCourts},postResult };
+  report({percent:100,label:"球场已就绪"});
+  const ny=courts[initialCourt];return { ensureCourt, raster, spriteTiles, courts,...ny.palettes[initialCourt+1],initialRing:ny.initialRing,columns:ny.columns,results:{actorProfiles:resultManifest.actorProfiles,courts:resultCourts},postResult };
 }
 /** Retry a complete verified bundle, so one broken CDN image cannot leave a
  * partial mixture of remote and fallback scene resources in a running board. */
-export async function loadBasketballAssetsWithFallback(baseURL: string, localBaseURL = "/basketball/v1/graphics", options: {postResult?: boolean} = {}): Promise<BasketballAssets> {
+export async function loadBasketballAssetsWithFallback(baseURL: string, localBaseURL = baseURL, options: {postResult?: boolean} = {}): Promise<BasketballAssets> {
   const errors: unknown[] = [];
   const roots = [...new Set([baseURL, localBaseURL].map(value => value.replace(/\/$/, "")))];
   for (const root of roots) {
@@ -155,6 +173,8 @@ export class BasketballRenderer {
     const context = canvas.getContext('2d', { willReadFrequently: true }); if (!context) throw new Error('Canvas 2D unavailable');
     this.context = context; context.imageSmoothingEnabled = false; this.ring = structuredClone(assets.initialRing);
   }
+  hasCourt(court: number): boolean { return !!this.assets.courts[court] && !!this.assets.results.courts[court]; }
+  ensureCourt(court: number): Promise<void> { return this.assets.ensureCourt?.(court) ?? Promise.resolve(); }
   resetCourt(court = 1): void { integer(court,0,7,'court'); this.court=court;this.paletteID=court+1;this.ring = structuredClone(this.art.initialRing); }
   /** Call at the display commit boundary, separately from simulation/camera decisions. */
   commitCourtColumns(commits: CourtColumnCommit[]): void { this.commitCourtEvents(commits); }

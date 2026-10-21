@@ -38,6 +38,7 @@ func TestCampaignPreparationHTTPPersistence(t *testing.T) {
 	}
 	h := gametest.NewHTTP(t, 1, module, "basketball")
 	h.Start(map[string]any{"mode": "solo", "court": "court-0"})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	read := func(c *gametest.Client) game.View {
 		raw, e := json.Marshal(gametest.Data(c.Room()))

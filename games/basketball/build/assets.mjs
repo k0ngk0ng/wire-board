@@ -1,4 +1,3 @@
-import { loadCoverPin, verifyCover } from "./cover.mjs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { closeSync, copyFileSync, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readdirSync, readSync, realpathSync, renameSync, rmSync, writeFileSync, writeSync } from "node:fs";
@@ -71,22 +70,17 @@ function publicInventory(directory, prefix = "") {
 }
 export function verifyBasketballPublicFiles(directory, publicDirectory, { exact = true } = {}) {
   const root = realpathSync(directory), pin = loadBasketballAssetPin(root), publicRoot = within(root, publicDirectory);
+  if (!exact) {
+    const basketball = path.join(publicRoot, "basketball");
+    const unexpected = existsSync(basketball) ? publicInventory(basketball).filter(p => !p.startsWith("v1/runtime/")) : [];
+    assert(unexpected.length === 0, "Basketball media must stay on OSS, not in the application artifact: " + unexpected.join(", "));
+    return pin;
+  }
   for (const e of pin.entries) {
     const p = within(root, path.join(publicRoot, relativeAsset(e.urlPath))); assert(lstatSync(p).isFile(), "Asset is not a regular file");
     const got = hashFile(p); assert(got.bytes === e.bytes && got.sha256 === e.sha256, "Public asset differs: " + e.urlPath);
   }
   if (exact) assert(JSON.stringify(publicInventory(publicRoot)) === JSON.stringify(pin.entries.map(e => e.urlPath.slice(1))), "Unlisted or missing public assets");
-  else {
-    // A complete application dist also contains other games and this game's
-    // separately verified Wasm runtime. Every basketball media file is pinned.
-    const actual = publicInventory(path.join(publicRoot, "basketball/v1")).filter(p => !p.startsWith("runtime/")).map(p => "basketball/v1/" + p);
-    const expected = pin.entries.map(e => e.urlPath.slice(1));
-    if (existsSync(within(root, "games/basketball/assets/cover-manifest.json"))) {
-      verifyCover(root, publicRoot);
-      expected.push(loadCoverPin(root).localPath.slice(1));
-    }
-    assert(JSON.stringify(actual) === JSON.stringify(expected.sort()), "Unlisted basketball media in application artifact");
-  }
   return pin;
 }
 export function verifyBasketballAssets(directory, suppliedPublicRoot) {

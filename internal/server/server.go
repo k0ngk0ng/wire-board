@@ -440,6 +440,11 @@ func (s *Server) Handler() http.Handler {
 			u, _ := url.Parse(s.cfg.AssetsBaseURL)
 			assetSource = " " + u.Scheme + "://" + u.Host
 		}
+		// Built-in immutable resources keep their official origin even when a
+		// deployment has no asset override or points other games at a mirror.
+		if assetSource != " https://cdn.ichenj.com" {
+			assetSource += " https://cdn.ichenj.com"
+		}
 		wishSource := ""
 		if ossConfigured(s.cfg) {
 			u, _ := url.Parse(s.cfg.WishImageBaseURL)

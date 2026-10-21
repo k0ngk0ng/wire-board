@@ -1,3 +1,4 @@
+import release from "../assets/release-manifest.json" with {type:"json"};
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import catalog from '../assets/audio-catalog.json' with { type: 'json' };
@@ -61,17 +62,17 @@ test('opening resume with no current music is a no-op, while a failed real music
   assert.deepEqual((await a.consume([253,255],2)).failed,[255]);
 });
 
-test('all 27 original effects use one platform fallback request per ID',async()=>{
+test('all 27 original effects use one platform OSS request per ID',async()=>{
   const p=port(),a=new BasketballAudio(p,{assetsBase:'https://assets.example.test/release/',localBase:'/research/basketball/audio/'});
   const ids=catalog.effects.map(e=>e.id),result=await a.consume(ids,1);
   assert.equal(ids.length,27);assert.deepEqual(result,{ignored:false,unsupported:[],failed:[]});
-  assert.deepEqual(p.calls,ids.map(id=>['effect',`https://assets.example.test/release/basketball/v1/audio/sound-${String(id).padStart(3,'0')}.wav`,`/research/basketball/audio/sound-${String(id).padStart(3,'0')}.wav`]));
+  assert.deepEqual(p.calls,ids.map(id=>['effect',`https://assets.example.test/release/basketball/v1/audio/sound-${String(id).padStart(3,'0')}.wav`]));
 });
 
 test('controls keep order and resume never starts music again',async()=>{
   const p=port(),a=new BasketballAudio(p);
   await a.consume([66,19,253,255,253,255,0],1);
-  assert.deepEqual(p.calls,[['music',['/basketball/v1/audio/music-066-loop.mp3'],{loop:true}],['effect','/basketball/v1/audio/sound-019.wav'],['pause'],['resume'],['pause'],['resume'],['stop']]);
+  assert.deepEqual(p.calls,[['music',[release.assetsBaseURL+'/basketball/v1/audio/music-066-loop.mp3'],{loop:true}],['effect',release.assetsBaseURL+'/basketball/v1/audio/sound-019.wav'],['pause'],['resume'],['pause'],['resume'],['stop']]);
 });
 
 test('events are deduplicated and reset establishes the recovery watermark',async()=>{
@@ -97,7 +98,7 @@ test('platform failures resolve as reports and cannot break the simulation',asyn
   const p=port();p.playWithFallback=()=>{throw Error('blocked');};p.resume=async()=>{throw Error('cancelled');};
   const a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([19,255,66],1),{ignored:false,unsupported:[],failed:[19,255]});
-  assert.deepEqual(p.calls,[['music',['/basketball/v1/audio/music-066-loop.mp3'],{loop:true}]]);
+  assert.deepEqual(p.calls,[['music',[release.assetsBaseURL+'/basketball/v1/audio/music-066-loop.mp3'],{loop:true}]]);
 });
 
 test('all calls issue synchronously without a slow media promise delaying later controls',async()=>{
@@ -112,20 +113,20 @@ test('each original Court selects its own verified continuous music',async()=>{
     const p=port(),a=new BasketballAudio(p,{assetsBase:'https://assets.example.test/immutable',localBase:'/local/audio'});
     assert.deepEqual(await a.consume([id],1),{ignored:false,unsupported:[],failed:[]});
     const file=`music-${String(id).padStart(3,'0')}-loop.mp3`;
-    assert.deepEqual(p.calls,[['music',[`https://assets.example.test/immutable/basketball/v1/audio/${file}`,`/local/audio/${file}`],{loop:true}]]);
+    assert.deepEqual(p.calls,[['music',[`https://assets.example.test/immutable/basketball/v1/audio/${file}`],{loop:true}]]);
   }
 });
 
 test('the finite original ending75 plays once',async()=>{
   const p=port(),a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([75],1),{ignored:false,unsupported:[],failed:[]});
-  assert.deepEqual(p.calls,[['music',['/basketball/v1/audio/music-075.mp3'],{loop:false}]]);
+  assert.deepEqual(p.calls,[['music',[release.assetsBaseURL+'/basketball/v1/audio/music-075.mp3'],{loop:false}]]);
 });
 
 test('restored court animations and special balls use their original extra effects',async()=>{
   const p=port(),a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([13,14,30,46],1),{ignored:false,unsupported:[],failed:[]});
-  assert.deepEqual(p.calls,[13,14,30,46].map(id=>['effect',`/basketball/v1/audio/sound-${String(id).padStart(3,'0')}.wav`]));
+  assert.deepEqual(p.calls,[13,14,30,46].map(id=>['effect',`${release.assetsBaseURL}/basketball/v1/audio/sound-${String(id).padStart(3,'0')}.wav`]));
 });
 
 test('a missing compressed rendition cannot silently fall back to a large WAV master',async()=>{
@@ -156,7 +157,7 @@ test('original ending76 uses one verified MP3 and the platform suffix option',as
   const entry=playback.music['76'];assert.ok(entry,'verified76 delivery entry missing');
   const p=port(),a=new BasketballAudio(p,{assetsBase:'/cdn',localBase:'/audio'});
   assert.deepEqual(await a.consume([76],1),{ignored:false,unsupported:[],failed:[]});
-  assert.deepEqual(p.calls,[['music',[`/cdn/basketball/v1/audio/${entry.file}`,`/audio/${entry.file}`],{loop:true,loopStartSeconds:entry.loop_start_sample/entry.sample_rate}]]);
+  assert.deepEqual(p.calls,[['music',[`/cdn/basketball/v1/audio/${entry.file}`],{loop:true,loopStartSeconds:entry.loop_start_sample/entry.sample_rate}]]);
   assert.equal(entry.loop_end_sample-entry.loop_start_sample,entry.loop_samples);
   assert.equal(entry.loop_end_sample,entry.decoded_samples);
 });

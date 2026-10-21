@@ -97,8 +97,10 @@ jobs:
           npm --prefix web run build
       - name: Check shared audio, playback and card presentation
         run: node --experimental-strip-types --test web/tests/*.test.mjs
-      - name: Verify embedded basketball runtime files
-        run: node games/basketball/build/verify-runtime.mjs web/dist
+      - name: Verify OSS runtime binding and exclude basketball media
+        run: |
+          node games/basketball/build/verify-runtime.mjs web/dist
+          node games/basketball/build/verify-assets.mjs web/dist
       - uses: actions/upload-artifact@v4
         with:
           name: web-dist

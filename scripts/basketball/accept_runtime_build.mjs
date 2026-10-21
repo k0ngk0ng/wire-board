@@ -53,6 +53,7 @@ try {
   const real = inspect(publicRoot);
   const env = JSON.parse(
     execFileSync("go", ["env", "-json", "GOROOT", "GOVERSION"], {
+      env: {...process.env,GOTOOLCHAIN:"go"+readFileSync(path.join(root,"go.mod"),"utf8").match(/^go (\S+)/m)[1]},
       encoding: "utf8",
     }),
   );

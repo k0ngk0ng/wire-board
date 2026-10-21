@@ -9,7 +9,8 @@ import {
   type BasketballAudioOptions,
   type BasketballMusicState,
 } from "./audio";
-import { BasketballRenderer, loadBasketballAssetsWithFallback } from "./renderer";
+import { BasketballRenderer, loadBasketballAssets } from "./renderer";
+import type { LoadingProgress } from "./loading";
 import type { PackedPostResultRows } from "./postresult-raster";
 import { loadBasketballWasm } from "./wasm";
 import {
@@ -34,6 +35,8 @@ export type BasketballNetworkClientOptions = {
   runtimeURL: string;
   assetsURL: string;
   postResult?: boolean;
+  court?: number;
+  onProgress?: (p: LoadingProgress) => void;
   audio: GameAudioPort;
   audioOptions?: BasketballAudioOptions;
   send: (action: BasketballInputBatch) => Promise<void>;
@@ -67,17 +70,47 @@ export class BasketballNetworkClient {
   private lastViewAt = 0;
   private viewVersion = -1;
   private hasAuthority = false;
+  private pendingCourt?: {
+    view: BasketballNetworkView;
+    version: number;
+    enabled: boolean;
+    clock?: GameClock;
+  };
+  private courtLoading = false;
 
   static async create(
     options: BasketballNetworkClientOptions,
   ): Promise<BasketballNetworkClient> {
+    let engineProgress = 0,
+      artProgress = 0,
+      initial = true;
+    const report = (part: "engine" | "art", p: LoadingProgress) => {
+      if (part === "engine") engineProgress = p.percent;
+      else artProgress = p.percent;
+      options.onProgress?.({
+        ...p,
+        percent: initial
+          ? Math.min(98, engineProgress * 0.55 + artProgress * 0.43)
+          : p.percent,
+      });
+    };
     const [engine, assets] = await Promise.all([
-      loadBasketballWasm(options.runtimeURL),
-      loadBasketballAssetsWithFallback(options.assetsURL, undefined, {postResult: options.postResult}),
+      loadBasketballWasm(options.runtimeURL, (p) => report("engine", p)),
+      loadBasketballAssets(options.assetsURL, {
+        postResult: options.postResult,
+        court: options.court,
+        onProgress: (p) => report("art", p),
+      }),
     ]);
+    initial = false;
     return new BasketballNetworkClient(
       options,
-      new BasketballRenderer(options.canvas, assets, projection => engine.request<PackedPostResultRows>({op: "projectPresentation", projection})),
+      new BasketballRenderer(options.canvas, assets, (projection) =>
+        engine.request<PackedPostResultRows>({
+          op: "projectPresentation",
+          projection,
+        }),
+      ),
       engine,
     );
   }
@@ -169,7 +202,45 @@ export class BasketballNetworkClient {
     enabled: boolean,
     clock?: GameClock,
   ): void {
-    if (this.closed || version < this.viewVersion) return;
+    if (
+      this.closed ||
+      version < this.viewVersion ||
+      (this.pendingCourt && version < this.pendingCourt.version)
+    )
+      return;
+    const court = (view.runtime.config as { match: { Court: number } }).match
+      .Court;
+    if (!this.renderer.hasCourt(court) || this.courtLoading) {
+      this.pendingCourt = { view, version, enabled, clock };
+      this.enabled = false;
+      this.input.setEnabled(false);
+      this.scene.cancel();
+      if (!this.courtLoading) {
+        this.courtLoading = true;
+        void this.renderer
+          .ensureCourt(court)
+          .then(() => {
+            this.courtLoading = false;
+            if (this.closed) return;
+            const pending = this.pendingCourt;
+            this.pendingCourt = undefined;
+            if (pending)
+              this.update(
+                pending.view,
+                pending.version,
+                pending.enabled,
+                pending.clock,
+              );
+            if (!this.courtLoading)
+              this.options.onProgress?.({ percent: 100, label: "球场已就绪" });
+          })
+          .catch((error) => {
+            this.courtLoading = false;
+            if (!this.closed) this.options.onError(error);
+          });
+      }
+      return;
+    }
     this.hasAuthority = true;
     this.viewVersion = version;
     this.lastViewAt = performance.now();
@@ -226,12 +297,13 @@ export class BasketballNetworkClient {
   private tick = () => {
     if (this.closed) return;
     try {
-      this.scene.tick(performance.now(), () => {
-        const generation = this.inputGeneration,
-          held = this.input.sample();
-        this.transport.sample(held);
-        return generation === this.inputGeneration ? held : 0;
-      });
+      if (!this.courtLoading)
+        this.scene.tick(performance.now(), () => {
+          const generation = this.inputGeneration,
+            held = this.input.sample();
+          this.transport.sample(held);
+          return generation === this.inputGeneration ? held : 0;
+        });
       const connected = !this.enabled || this.transport.connected;
       if (connected !== this.connection) {
         this.connection = connected;

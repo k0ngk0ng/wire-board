@@ -173,6 +173,7 @@ func TestBasketballHTTPPublicationAndIndependentInputs(t *testing.T) {
 	record := evidence(t)
 	h.AssertUnpublished()
 	h.Start(map[string]any{})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	record("original opening completed", v)
@@ -220,6 +221,7 @@ func TestBasketballHTTPHandoffAndRestore(t *testing.T) {
 	h := gametest.NewHTTP(t, 4, observedModule(t), "basketball")
 	record := evidence(t)
 	h.Start(map[string]any{})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	// Freeze original play through Start, so persistence can be compared while
@@ -264,6 +266,7 @@ func TestBasketballHTTPComputersAndManualAutoplay(t *testing.T) {
 	}
 	c.Command("ready", nil, 200)
 	c.Command("start", nil, 200)
+	basketballReadyHTTP(t, h)
 	h.Spectator.Request("POST", "/api/rooms/"+r["id"].(string)+"/watch", map[string]any{}, 200)
 	v := await(t, c, func(v game.View) bool { return v.Runtime.Playing != nil })
 	if v.Inputs[0].Automated || v.Runtime.Config.Match.ControllerAssignments != ([4]int8{0, -1, -1, -1}) {
@@ -307,6 +310,7 @@ func TestBasketballHTTPReliableInputBatches(t *testing.T) {
 	h := gametest.NewHTTP(t, 4, observedModule(t), "basketball")
 	record := evidence(t)
 	h.Start(map[string]any{})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	batch := func(v game.View, seat int, seq int64, events ...map[string]any) map[string]any {
@@ -340,4 +344,14 @@ func TestBasketballHTTPReliableInputBatches(t *testing.T) {
 		t.Fatal("cancellation leaked into another authenticated seat", v.Inputs)
 	}
 	record("cancellation is isolated across real authenticated seats", v)
+}
+
+func basketballReadyHTTP(t *testing.T, h *gametest.HTTP) {
+	t.Helper()
+	for _, p := range h.People {
+		v := view(t, p)
+		if v.Loading != nil && v.LocalActor >= 0 && !v.Inputs[v.LocalActor].Automated {
+			p.Action(map[string]any{"type": "loaded", "epoch": v.Epoch}, 200)
+		}
+	}
 }

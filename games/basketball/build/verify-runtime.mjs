@@ -1,3 +1,5 @@
+import { verifyRuntimePin } from "./runtime-delivery.mjs";
+import { prepareBasketballRuntime } from "./runtime.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, realpathSync } from "node:fs";
@@ -20,7 +22,6 @@ assert.deepEqual(manifest.flags, [
   "-ldflags=-s -w",
 ]);
 assert.deepEqual(readdirSync(directory).sort(), [
-  "basketball.wasm",
   "build.json",
   "wasm_exec.js",
 ]);
@@ -64,8 +65,10 @@ assert.ok(
     seen.has("games/basketball/cmd/browser-wasm/main_js.go"),
 );
 assert.equal(hash(JSON.stringify(manifest.inputs)), manifest.sourceSHA256);
+verifyRuntimePin(manifest,manifest.wasm);
+const compiled=path.join(prepareBasketballRuntime(root),"basketball/v1/runtime");
 for (const file of ["basketball.wasm", "wasm_exec.js"]) {
-  const data = readFileSync(path.join(directory, file));
+  const data = readFileSync(path.join(file === "basketball.wasm" ? compiled : directory, file));
   assert.equal(
     hash(data),
     manifest.files[file].sha256,
@@ -78,7 +81,7 @@ for (const file of ["basketball.wasm", "wasm_exec.js"]) {
 const go = JSON.parse(
   execFileSync("go", ["env", "-json", "GOROOT", "GOVERSION"], {
     cwd: root,
-    env: { ...process.env, GOTOOLCHAIN: "local" },
+    env: { ...process.env, GOTOOLCHAIN: "go" + readFileSync(path.join(root,"go.mod"),"utf8").match(/^go (\S+)/m)[1] },
     encoding: "utf8",
   }),
 );

@@ -30,7 +30,9 @@ export function prepareBasketballRuntime(directory) {
     GOARCH: "wasm",
     CGO_ENABLED: "0",
     GOWORK: "off",
-    GOTOOLCHAIN: "local",
+    // Match the exact compiler selected by main CI, independently of the
+    // developer machine's installed patch version.
+    GOTOOLCHAIN: "go" + readFileSync(path.join(root,"go.mod"),"utf8").match(/^go (\S+)/m)[1],
     GOENV: "off",
     GOFLAGS: "",
     GOEXPERIMENT: "",

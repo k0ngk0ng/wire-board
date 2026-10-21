@@ -3,10 +3,10 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { resolveBasketballAssetsBase } from "../../games/basketball/web/asset-base.ts";
 
-test("basketball pin changes only the known production host, preserving local and mirrors", () => {
+test("basketball pin changes only the known production host, preserving explicit mirrors", () => {
   const pin = JSON.parse(readFileSync(new URL("../../games/basketball/assets/release-manifest.json", import.meta.url)));
-  assert.equal(resolveBasketballAssetsBase(""), "");
-  assert.equal(resolveBasketballAssetsBase("/"), "");
+  assert.equal(resolveBasketballAssetsBase(""), pin.assetsBaseURL);
+  assert.equal(resolveBasketballAssetsBase("/"), pin.assetsBaseURL);
   assert.equal(resolveBasketballAssetsBase("https://cdn.ichenj.com/bga/v20261002-1/"), pin.assetsBaseURL);
   assert.equal(resolveBasketballAssetsBase("https://cdn.ichenj.com/another-game"), pin.assetsBaseURL);
   assert.equal(resolveBasketballAssetsBase("http://127.0.0.1:9911/fixture/"), "http://127.0.0.1:9911/fixture");

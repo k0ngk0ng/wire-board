@@ -10,6 +10,7 @@ import { CampaignPanel } from "./CampaignPanel";
 import { resolveBasketballAssetsBase } from "./asset-base";
 import { BasketballNetworkClient } from "./network-client";
 import type { BasketballNetworkView } from "./network-scene";
+import type { LoadingProgress } from "./loading";
 import "./network.css";
 
 export function Board(props: BoardProps<BasketballNetworkView>) {
@@ -23,6 +24,10 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     [error, setError] = useState(""),
     [connected, setConnected] = useState(true),
     [retry, setRetry] = useState(0);
+  const [progress, setProgress] = useState<LoadingProgress>({
+    percent: 0,
+    label: "加载控制器设置",
+  });
   const [campaignOpen, setCampaignOpen] = useState(false);
   const campaignOpenRef = useRef(campaignOpen);
   campaignOpenRef.current = campaignOpen;
@@ -47,6 +52,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
     let changedProfile: ControllerProfile | undefined;
     setReadyIdentity("");
     setError("");
+    setProgress({ percent: 0, label: "加载控制器设置" });
     setProfile(undefined);
     const model = "classic-2";
     const changed = (event: Event) => {
@@ -80,6 +86,11 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         runtimeURL: "/basketball/v1/runtime",
         assetsURL: base + "/basketball/v1/graphics",
         postResult: !!data.campaign,
+        court: (data.runtime.config as { match: { Court: number } }).match
+          .Court,
+        onProgress: (p) => {
+          if (alive) setProgress(p);
+        },
         audio: props.audio,
         audioOptions: { assetsBase: base },
         inputWindow: () => latest.current.inputWindow ?? 1,
@@ -123,6 +134,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         current.clock,
       );
       setReadyIdentity(identity);
+      setProgress({ percent: 100, label: "本机加载完成" });
     })().catch((e) => {
       if (alive) setError(e instanceof Error ? e.message : "无法加载比赛画面");
     });
@@ -141,31 +153,73 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
       setError("对局画面暂时无法同步，请重新连接。");
     }
   }, [data, room.version, props.busy, campaignOpen]);
-  const phase = data.phase === "ending-confirm"
-    ? "结局播放完毕 · 第一席按 START 确认"
-    : data.phase === "ending"
-      ? "正在播放通关结局"
-      : data.phase === "reward-video"
-        ? "正在展示比赛奖励"
-        : data.phase.startsWith("campaign-")
-    ? data.campaign?.stage === "prepare"
-      ? "下一场准备"
-      : data.campaign?.stage === "complete"
-        ? "战役已通关"
-        : data.campaign?.stage === "quit"
-          ? "战役已结束"
-          : "本场结束 · 战役确认"
-    : data.phase === "paused"
-      ? "比赛暂停 · 第一席按 START 继续"
-      : data.phase === "intermission"
-        ? "中场休息 · 第一席按 START 开始下半场"
-        : data.phase === "result"
-          ? "比赛结束"
-          : watching
-            ? "正在观战"
-            : room.seats[room.you]?.autoPlay
-              ? "电脑正在托管"
-              : "比赛进行中";
+  const needsAck =
+    !!data.loading &&
+    !watching &&
+    !room.seats[room.you]?.autoPlay &&
+    !data.loading.ready[localActor];
+  useEffect(() => {
+    if (!ready || !needsAck) return;
+    let alive = true;
+    let timer: ReturnType<typeof setTimeout>;
+    const confirm = async () => {
+      const current = latest.current;
+      if (
+        !alive ||
+        current.data.phase !== "loading" ||
+        current.data.loading?.ready[localActor]
+      )
+        return;
+      if (current.busy) {
+        timer = setTimeout(confirm, 300);
+        return;
+      }
+      try {
+        await current.act({ type: "loaded", epoch: current.data.epoch });
+      } catch {
+        if (alive) setError("加载已完成，但开赛确认失败，请重新连接。");
+      }
+      if (alive) timer = setTimeout(confirm, 1500);
+    };
+    void confirm();
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, [ready, needsAck, identity]);
+  const waitingNames = (data.seatActors ?? []).flatMap((actor, seat) =>
+    data.loading && !data.loading.ready[actor] && !data.inputs[actor].automated
+      ? [room.seats[seat]?.name ?? "玩家"]
+      : [],
+  );
+  const phase =
+    data.phase === "loading"
+      ? "等待玩家加载完成"
+      : data.phase === "ending-confirm"
+        ? "结局播放完毕 · 第一席按 START 确认"
+        : data.phase === "ending"
+          ? "正在播放通关结局"
+          : data.phase === "reward-video"
+            ? "正在展示比赛奖励"
+            : data.phase.startsWith("campaign-")
+              ? data.campaign?.stage === "prepare"
+                ? "下一场准备"
+                : data.campaign?.stage === "complete"
+                  ? "战役已通关"
+                  : data.campaign?.stage === "quit"
+                    ? "战役已结束"
+                    : "本场结束 · 战役确认"
+              : data.phase === "paused"
+                ? "比赛暂停 · 第一席按 START 继续"
+                : data.phase === "intermission"
+                  ? "中场休息 · 第一席按 START 开始下半场"
+                  : data.phase === "result"
+                    ? "比赛结束"
+                    : watching
+                      ? "正在观战"
+                      : room.seats[room.you]?.autoPlay
+                        ? "电脑正在托管"
+                        : "比赛进行中";
   return (
     <div
       ref={root}
@@ -200,6 +254,30 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           className="basketball-stage"
           onPointerDown={() => root.current?.focus({ preventScroll: true })}
         >
+          {(!ready || progress.percent < 100 || data.phase === "loading") && (
+            <div className="basketball-loading" aria-live="polite">
+              <strong>
+                {error
+                  ? "加载遇到问题"
+                  : progress.percent < 100
+                    ? progress.label
+                    : "本机加载完成"}
+              </strong>
+              <progress
+                aria-label="篮球加载进度"
+                max={100}
+                value={Math.floor(progress.percent)}
+              />
+              <span>{Math.floor(progress.percent)}%</span>
+              {ready && data.phase === "loading" && (
+                <span>
+                  {waitingNames.length
+                    ? `等待：${waitingNames.join("、")}`
+                    : "正在确认开赛…"}
+                </span>
+              )}
+            </div>
+          )}
           <canvas
             ref={canvas}
             width={256}

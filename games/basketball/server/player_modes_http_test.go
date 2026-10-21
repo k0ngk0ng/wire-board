@@ -24,6 +24,7 @@ func TestBasketballHTTPPlayerModes(t *testing.T) {
 			h := gametest.NewHTTP(t, len(tc.actors), game.Module(), "basketball")
 			h.AssertUnpublished()
 			h.Start(map[string]any{"mode": tc.mode})
+			basketballReadyHTTP(t, h)
 			c := h.People[0]
 			v := await(t, c, func(v game.View) bool { return v.Runtime.Playing != nil })
 			if v.Runtime.Config.Match.ControllerAssignments != tc.controls || !reflect.DeepEqual(v.SeatActors, tc.actors) {
@@ -121,6 +122,7 @@ func TestBasketballHTTPModeCapacity(t *testing.T) {
 func TestBasketballHTTPVersusIdleAndManualControl(t *testing.T) {
 	h := gametest.NewHTTP(t, 2, game.Module(), "basketball")
 	h.Start(map[string]any{"mode": "versus"})
+	basketballReadyHTTP(t, h)
 	c := h.People[1]
 	v := view(t, c)
 	epoch := v.Epoch

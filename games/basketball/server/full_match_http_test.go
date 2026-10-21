@@ -25,6 +25,7 @@ func TestBasketballHTTPCompletePreparedMatch(t *testing.T) {
 	a, b := h.People[0], h.People[1]
 	began := time.Now()
 	h.Start(map[string]any{"mode": "versus", "court": "court-3", "characters": []int{1, 0, 1, 0}})
+	basketballReadyHTTP(t, h)
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	cold := v.Runtime.Config
 	epoch := v.Epoch

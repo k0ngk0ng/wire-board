@@ -365,6 +365,9 @@ func startNextCampaign(ctx gameapi.Context, original State, flags [4]bool) (Stat
 	digest := sha256.Sum256([]byte(fmt.Sprintf("%s/campaign/%d", original.Epoch, c.Round+1)))
 	s := State{Options: o, Epoch: hex.EncodeToString(digest[:12]), ServerAt: ctx.Now.UnixMilli(), Runtime: r, Events: []SoundEvent{}, Campaign: &CampaignState{Stage: "playing", Round: c.Round + 1}}
 	for actor, automatic := range flags {
+		if !automatic {
+			s.Loading = &LoadingState{}
+		}
 		s.Inputs[actor] = InputState{Automated: automatic, IdleAt: s.ServerAt + idleMS, LastPacketAt: s.ServerAt}
 	}
 	return s, nil

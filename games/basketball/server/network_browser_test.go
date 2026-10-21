@@ -24,6 +24,7 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 	}
 	h := gametest.NewHTTP(t, 2, observedModule(t), "basketball")
 	h.Start(map[string]any{"mode": "versus"})
+	basketballReadyHTTP(t, h)
 	a := h.People[0]
 	v := await(t, a, func(v game.View) bool { return v.Runtime.Playing != nil })
 	a.Action(buttons(v, 0, engine.ButtonStart), 200)
@@ -39,6 +40,8 @@ func TestBasketballBrowserNetworkBoard(t *testing.T) {
 	}
 	mux := http.NewServeMux()
 	mux.Handle("/api/", h.Host.Handler())
+	mux.Handle("/__oss/", basketballOSSMirror(t, root))
+	mux.Handle("/basketball/v1/runtime/", http.FileServer(http.Dir(filepath.Join(root, "web/dist"))))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		files := map[string]string{"/": "index.html", "/board.js": "board.js", "/board.css": "board.css", "/basketball/v1/runtime/wasm_exec.js": "wasm_exec.js", "/basketball/v1/runtime/basketball.wasm": "basketball.wasm"}
 		if file, ok := files[r.URL.Path]; ok {

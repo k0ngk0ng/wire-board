@@ -1,18 +1,12 @@
-import { useContext, useId, useState } from "react";
+import { useContext, useId } from "react";
 import { AssetsContext } from "../../../web/src/ui/board-host";
 import cover from "../assets/cover-manifest.json";
 
 export function Cover() {
   const id = useId();
   const assets = useContext(AssetsContext).replace(/\/+$/, "");
-  const [fallback, setFallback] = useState(false);
   const officialCDN = /^https:\/\/cdn\.ichenj\.com(?:\/|$)/.test(assets);
-  const heroes =
-    !assets || fallback
-      ? cover.localPath
-      : officialCDN
-        ? cover.url
-        : assets + cover.localPath;
+  const heroes = !assets || officialCDN ? cover.url : assets + cover.localPath;
   return (
     <svg
       viewBox="0 0 640 380"
@@ -142,7 +136,6 @@ export function Cover() {
         />
         <image
           href={heroes}
-          onError={() => setFallback(true)}
           x="148"
           y="17"
           width="320"
