@@ -31,7 +31,7 @@ func fortressBrowserOpening(ctx gameapi.Context, module gameapi.Module, m gameap
 	for i := range s.Tanks {
 		tankID := 1
 		if scenario == "poison" && i == 0 {
-			tankID = 2
+			tankID = 5
 		}
 		a, _ := json.Marshal(fb.Action{Type: "select", Epoch: s.Epoch, Tank: tankID})
 		c := ctx

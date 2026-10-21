@@ -93,6 +93,10 @@ def main():
     v4_module = importlib.util.module_from_spec(v4_spec)
     v4_spec.loader.exec_module(v4_module)
     v4_result = v4_module.verify(dist=args.dist)
+    v5_spec = importlib.util.spec_from_file_location("verify_projectiles", ROOT / "scripts/fortressblue/verify-projectile-assets.py")
+    v5_module = importlib.util.module_from_spec(v5_spec)
+    v5_spec.loader.exec_module(v5_module)
+    v5_result = v5_module.verify(dist=args.dist)
     for entry in entries:
         rel = entry["output"].removeprefix("games/fortressblue/assets/public/")
         local = LOCAL / rel
@@ -111,7 +115,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     (out / "assets-verify.json").write_text(
         json.dumps({"passed": True, "entries": len(entries), "bytes": sum(e["bytes"] for e in entries),
-                    "dist": args.dist, "oss": args.oss, "v3": v3_result, "v4": v4_result}, indent=2) + "\n"
+                    "dist": args.dist, "oss": args.oss, "v3": v3_result, "v4": v4_result, "v5": v5_result}, indent=2) + "\n"
     )
     print(f"verified {len(entries)} published v2 media files and {v3_result['entries']} v3 atlases / {v3_result['frames']} frames; supply v4 {v4_result['atlases']} atlases")
 

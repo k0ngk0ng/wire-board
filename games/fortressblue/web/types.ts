@@ -23,6 +23,11 @@ export type Supply = {
 };
 export type Point = { x: number; y: number };
 export type Arc = {
+  launchAt?: number;
+  resolved?: boolean;
+  effect?: string;
+  lockAt?: number;
+  lockPoint?: Point;
   path: Point[];
   pathTimes?: number[];
   impact: Point;
@@ -49,6 +54,7 @@ export type Resolution = {
   falls?: Fall[];
 };
 export type Blast = {
+  at?: number;
   x: number;
   y: number;
   r: number;
@@ -61,6 +67,7 @@ export type Blast = {
 };
 export type Crater = { x: number; y: number; r: number; seat: number };
 export type Shot = {
+  mode?: "primary" | "special";
   id: number;
   seat: number;
   weapon: string;
@@ -123,7 +130,19 @@ export type Hazard = {
   nextTickAt: number;
   source: number;
 };
+export type Mine = {
+  id: number;
+  source: number;
+  team: number;
+  x: number;
+  y: number;
+  damage: number;
+  at: number;
+  triggerAt?: number;
+};
 export type View = {
+  mines?: Mine[];
+  mineBlasts?: Blast[];
   supplies?: Supply[];
   options: Options;
   epoch: string;
@@ -270,6 +289,8 @@ export function statusText(status: Status) {
       return `中毒 ${status.turns}`;
     case "burn":
       return `燃烧 ${status.turns}`;
+    case "immobile":
+      return `移动受限 ${status.turns}`;
     case "shield":
       return "防护罩";
     case "power":

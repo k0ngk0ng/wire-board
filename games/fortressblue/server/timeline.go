@@ -107,23 +107,78 @@ func impactShot(s *State) {
 		return
 	}
 	at := r.ImpactAt
-	for _, arc := range shot.Arcs {
+	next := int64(0)
+	for i := range shot.Arcs {
+		arc := &shot.Arcs[i]
+		if arc.Resolved {
+			continue
+		}
+		due := arc.ImpactAt
+		if due == 0 {
+			due = shot.ImpactAt
+		}
+		if due > at {
+			if next == 0 || due < next {
+				next = due
+			}
+			continue
+		}
+		arc.Resolved = true
 		if arc.OutOfBounds {
 			continue
 		}
-		if pending.Kind == "heal" {
-			shot.Blasts = append(shot.Blasts, applyHealingBlast(s, shot.Seat, pending.Weapon, arc.Impact, at))
+		effect := arc.Effect
+		if effect == "" {
+			effect = pending.Kind
+		}
+		if effect == "ion_marker" {
 			continue
 		}
-		blast := applyBlast(s, shot.Seat, pending.Weapon, arc.Impact, pending.Kind, at, arc.Hit)
+		if effect == "mine" && arc.Hit < 0 {
+			plantMine(s, shot.Seat, arc.Impact, pending.Weapon.Damage, at)
+			tickMines(s, at)
+			continue
+		}
+		if effect == "heal" {
+			blast := applyHealingBlast(s, shot.Seat, pending.Weapon, arc.Impact, at)
+			blast.At = at
+			shot.Blasts = append(shot.Blasts, blast)
+			continue
+		}
+		if effect == "team_heal" {
+			shot.Blasts = append(shot.Blasts, applyTeamHealingBlast(s, shot.Seat, pending.Weapon, arc.Impact, at))
+			continue
+		}
+		blast := applyBlast(s, shot.Seat, pending.Weapon, arc.Impact, effect, at, arc.Hit)
 		shot.Blasts = append(shot.Blasts, blast)
 		shot.Craters = append(shot.Craters, Crater{X: blast.X, Y: blast.Y, R: blast.R, Seat: shot.Seat})
-		s.emit("explode", shot.Seat, -1, blast.X, blast.Y, 0, pending.Kind, at)
+		s.emit("explode", shot.Seat, -1, blast.X, blast.Y, 0, effect, at)
 		extinguishUnsupportedHazards(s)
-		if pending.Kind == "fire" || pending.Kind == "poison" {
-			addGroundHazard(s, shot.Seat, pending.Kind, arc.Impact, at)
+		if effect == "fire" || effect == "poison" {
+			addGroundHazard(s, shot.Seat, effect, arc.Impact, at)
 		}
-		if pending.Kind == "lightning" && arc.Hit >= 0 {
+		if effect == "poison_status" || effect == "immobile" {
+			for seat := range s.Tanks {
+				tank := &s.Tanks[seat]
+				p := tankCenter(*tank)
+				if !tank.Alive || math.Hypot(p.X-arc.Impact.X, p.Y-arc.Impact.Y) > blast.R {
+					continue
+				}
+				kind := effect
+				damage := 0
+				if effect == "poison_status" {
+					kind = "poison"
+					damage = 25
+				}
+				addStatus(tank, Status{Kind: kind, Turns: 3, Damage: damage, Source: shot.Seat})
+				if kind == "immobile" {
+					tank.Fuel = 0
+				}
+				s.emit("debuff", shot.Seat, seat, tank.X, tank.Y, 0, kind, at)
+			}
+		}
+		// Old persisted lightning shells retain their historical behavior.
+		if effect == "lightning" && arc.Hit >= 0 {
 			if chain := nearestEnemy(s, shot.Seat, arc.Hit, arc.Impact, 90); chain >= 0 {
 				before := s.Tanks[chain].HP
 				applyDirectDamage(s, shot.Seat, chain, 55, "lightning", at)
@@ -131,6 +186,11 @@ func impactShot(s *State) {
 				last.Hits = append(last.Hits, Hit{Victim: chain, Damage: before - s.Tanks[chain].HP, Kind: "lightning"})
 			}
 		}
+		tickMines(s, at)
+	}
+	if next > 0 {
+		r.ImpactAt = next
+		return
 	}
 	beginFalls(s, at, shot.ID, shot.At)
 	s.PendingShot = nil
@@ -202,11 +262,13 @@ func processResolution(s *State, now time.Time) {
 	// timestamp, including ground hazards, has been applied.
 	s.needsAdvance = true
 	s.resumeMovement = shotID == 0 && s.Tanks[s.Current].Alive
+	probeMineContacts(s, r.SettleAt)
+	tickMines(s, r.SettleAt)
 
 }
 
 func applyHealingBlast(s *State, seat int, weapon Weapon, center Point, at int64) Blast {
-	blast := Blast{X: center.X, Y: center.Y, R: blastRadius(weapon), Seat: seat, Victim: -1, Kind: "heal", Terrain: false}
+	blast := Blast{At: at, X: center.X, Y: center.Y, R: blastRadius(weapon), Seat: seat, Victim: -1, Kind: "heal", Terrain: false}
 	for i := range s.Tanks {
 		target := &s.Tanks[i]
 		c := tankCenter(*target)

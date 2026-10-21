@@ -5819,3 +5819,23 @@ label small {
     text-align: center;
   }
 }
+
+/* Update notices never shift a live board or force a navigation. */
+.version-update-notice, .version-update-chip {
+  position: fixed;
+  z-index: 40;
+  top: 88px;
+  right: 12px;
+  max-width: calc(100vw - 24px);
+  border: 1px solid #8d9e90;
+  border-radius: 10px;
+  background: #fffdf5;
+  color: #293b35;
+  box-shadow: 0 6px 25px #26382226;
+  padding: 14px;
+}
+.version-update-notice { width: 360px; }
+.version-update-notice p { margin: 8px 0 12px; font-size: 13px; line-height: 1.5; }
+.version-update-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.version-update-actions button { min-height: 40px; }
+.version-update-chip { font-size: 13px; min-height: 40px; }

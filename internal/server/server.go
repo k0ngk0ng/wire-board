@@ -397,6 +397,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/login", s.auth)
 	mux.HandleFunc("POST /api/logout", s.logout)
 	mux.HandleFunc("GET /api/state", s.state)
+	mux.HandleFunc("GET /api/version", s.version)
 	mux.HandleFunc("GET /api/wishes", s.listWishes)
 	mux.HandleFunc("POST /api/wishes", s.createWish)
 	mux.HandleFunc("POST /api/wishes/{id}/answer", s.answerWish)
@@ -451,7 +452,7 @@ func (s *Server) Handler() http.Handler {
 			wishSource = " " + u.Scheme + "://" + u.Host
 		}
 		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"+assetSource+wishSource+"; connect-src 'self'"+assetSource+"; font-src 'self'; media-src 'self' data:"+assetSource+"; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")
-		if strings.HasPrefix(r.URL.Path, "/api/") {
+		if strings.HasPrefix(r.URL.Path, "/api/") || r.URL.Path == "/" || r.URL.Path == "/index.html" {
 			w.Header().Set("Cache-Control", "no-store")
 		}
 		if r.Method != "GET" && r.Method != "HEAD" {

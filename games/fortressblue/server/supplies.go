@@ -7,7 +7,7 @@ import (
 	"math"
 )
 
-// Delivery graphics/contact come from the original client. The 2–4 turn cadence,
+// Delivery graphics/contact come from the original client. The 8–12 turn cadence,
 // item pool and flight milliseconds are explicit platform reconstruction values;
 // the original server chooses the drop packet and is not in the retained client.
 type Supply struct {
@@ -31,7 +31,7 @@ func scheduleSupply(s *State, at int64) {
 		return
 	}
 	random := hashString(s.Epoch, "supply", fmt.Sprint(s.Turn))
-	s.NextSupplyTurn = s.Turn + 2 + int(random%3)
+	s.NextSupplyTurn = s.Turn + 8 + int(random%5)
 	if len(s.Supplies) >= maxSupplies {
 		return
 	}
@@ -123,28 +123,32 @@ func processSupplies(s *State, at int64) {
 		}
 
 		picked := false
-		eligible := func(seat int) bool {
-			if seat < 0 || seat >= len(s.Tanks) || s.Resolution != nil {
+		canReceive := func(seat int) bool {
+			return seat >= 0 && seat < len(s.Tanks) && s.Tanks[seat].Alive && len(s.Tanks[seat].Items) < MaxItems
+		}
+		touching := func(seat int) bool {
+			if !canReceive(seat) || s.Resolution != nil {
 				return false
 			}
 			t := s.Tanks[seat]
-			return t.Alive && len(t.Items) < MaxItems && math.Abs(t.X-d.X) <= 26 && t.Y >= d.Y-8 && t.Y <= d.Y+2
+			return math.Abs(t.X-d.X) <= 26 && t.Y >= d.Y-8 && t.Y <= d.Y+2
 		}
-		if d.PickupAt > 0 && !eligible(d.PickupSeat) {
+		if d.PickupAt > 0 && !canReceive(d.PickupSeat) {
 			d.PickupAt = 0
 			d.PickupSeat = 0
 		}
 		if d.PickupAt == 0 {
 			for seat := range s.Tanks {
-				if eligible(seat) {
+				if touching(seat) {
 					d.PickupSeat = seat
 					d.PickupAt = at + 180
 					break
 				}
 			}
 		}
-		// Match the existing 180ms tank interpolation before inventory changes.
-		if d.PickupAt > 0 && at >= d.PickupAt && eligible(d.PickupSeat) {
+		// Contact is latched immediately. The 180ms delay only synchronizes the
+		// inventory with movement rendering; leaving the box cannot undo a touch.
+		if d.PickupAt > 0 && at >= d.PickupAt && canReceive(d.PickupSeat) {
 			seat := d.PickupSeat
 			t := &s.Tanks[seat]
 			t.Items = append(t.Items, d.ItemID)

@@ -4,7 +4,11 @@
 // frame groups; missing media hides reward; original direction is mirrored.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { supplyPose, supplySpriteFrame } from "../web/supplies.ts";
+import {
+  drawSupplies,
+  supplyPose,
+  supplySpriteFrame,
+} from "../web/supplies.ts";
 const drop = {
   id: 1,
   itemId: 0,
@@ -45,4 +49,44 @@ test("all frame selections preserve source rectangles and freeze only animation 
   }
   assert.equal(supplySpriteFrame("crate", 9999, true, false).index, 0);
   assert.equal(supplySpriteFrame("helicopter", 9999, true).index, 0);
+});
+
+// Presentation failure: native or fallback boxes retain a Chinese caption.
+test("landed and airborne supplies remain recognizable without text labels", () => {
+  for (const loaded of [false, true]) {
+    for (const now of [3000, 4500]) {
+      const texts = [],
+        paints = [],
+        borders = [];
+      const ctx = new Proxy(
+        {
+          strokeRect: (...args) => borders.push(args),
+          fillText: (...args) => texts.push(args),
+          drawImage: (...args) => paints.push(args),
+          fillRect: (...args) => paints.push(args),
+        },
+        { get: (target, key) => (key in target ? target[key] : () => {}) },
+      );
+      const images = loaded
+        ? Object.fromEntries(
+            ["crate", "helicopter"].map((kind) => [
+              supplySpriteFrame(kind, 0, false).path,
+              {},
+            ]),
+          )
+        : {};
+      const drawn = drawSupplies(ctx, [drop], images, now, false);
+      assert.equal(drawn.length, 1);
+      assert.ok(paints.length > 0);
+      assert.ok(
+        !borders.some(([, , w, h]) => w === 26 && h === 23),
+        "no extra outline around the original crate",
+      );
+      assert.deepEqual(
+        texts,
+        [],
+        "supply art must not carry a redundant caption",
+      );
+    }
+  }
 });

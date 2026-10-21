@@ -1,3 +1,8 @@
+import {
+  projectilePaths,
+  projectileEffectPaths,
+  secondaryDescription,
+} from "./projectiles";
 import { supplyPaths, supplyPose } from "./supplies";
 import pickerFrames from "../assets/picker-frames.json";
 import {
@@ -88,7 +93,7 @@ function useAssets(base: string, paths: string[]) {
   }, [base, key]);
   return images;
 }
-function FallbackImage({
+export function FallbackImage({
   base,
   path,
   ...props
@@ -98,10 +103,12 @@ function FallbackImage({
   alt: string;
   className?: string;
 }) {
+  if (!path) return null;
   const sources = sourceList(base, path);
   return (
     <img
       {...props}
+      key={sources.join("|")}
       src={sources[0]}
       onError={(event) => {
         const el = event.currentTarget;
@@ -109,7 +116,7 @@ function FallbackImage({
         if (next < sources.length) {
           el.dataset.fallback = String(next);
           el.src = sources[next];
-        }
+        } else el.hidden = true;
       }}
     />
   );
@@ -273,9 +280,11 @@ export function Board(props: BoardProps<View>) {
         map.fg2 ?? "",
         explosion.url,
         ...supplyPaths,
+        ...projectileEffectPaths,
         ...data.tanks.flatMap((t) => [
           ...(animations[String(t.tankId)]?.atlases ?? []),
           tankInfo(t.tankId)?.bullet?.url ?? "",
+          ...projectilePaths(t.tankId),
         ]),
       ].filter((p, i, a) => p && a.indexOf(p) === i),
     [map, data.tanks.map((t) => t.tankId).join(",")],
@@ -748,10 +757,15 @@ export function Board(props: BoardProps<View>) {
           .find(Boolean);
         // Remain with the impact through the server's fall/settle interval.
         // A delayed snapshot cannot pull the camera back before the hit arrives.
-        const last = shot.arcs[shot.arcs.length - 1];
+        const lastImpact = [...shot.arcs]
+          .filter((arc) => (arc.impactAt ?? shot.impactAt ?? Infinity) <= now)
+          .sort(
+            (a, b) =>
+              (b.impactAt ?? shot.impactAt ?? 0) -
+              (a.impactAt ?? shot.impactAt ?? 0),
+          )[0];
         if (p) target = p;
-        else if (last && now >= (shot.launchAt ?? shot.at))
-          target = last.impact;
+        else if (lastImpact) target = lastImpact.impact;
       }
       if (!s.data.resolution) {
         const delivery = s.data.supplies?.find(
@@ -1376,9 +1390,7 @@ export function Board(props: BoardProps<View>) {
                     生命 {t.hp} · 炮角 {t.minAngle ?? 0}–{t.maxAngle ?? t.angle}
                     °
                   </span>
-                  <small>
-                    {t.skillName ? `${t.skillName}特殊弹` : "双弹种炮击"}
-                  </small>
+                  <small>2号弹 · {secondaryDescription(t.id)}</small>
                 </button>
               );
             })}

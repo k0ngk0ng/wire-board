@@ -2,13 +2,12 @@ import {
   defineGame,
   type OptionsProps,
 } from "../../../web/src/game-api/module";
-import { Board } from "./Board";
+import { Board, FallbackImage } from "./Board";
 import { Cover } from "./Cover";
 import {
   defaultMap,
   mapById,
   maps,
-  sourceList,
   statusText,
   tankById,
   tankName,
@@ -145,13 +144,10 @@ export default defineGame<View, Options>({
         data-alive={tank.alive ? "1" : "0"}
       >
         <div className="fb-player-head">
-          <img
-            src={
-              sourceList(
-                assets,
-                portrait?.url ?? info?.sprites.idle?.url ?? "",
-              )[0]
-            }
+          <FallbackImage
+            key={`${assets}:${tank.tankId}`}
+            base={assets}
+            path={portrait?.url ?? info?.sprites.idle?.url ?? ""}
             alt=""
           />
           <strong>

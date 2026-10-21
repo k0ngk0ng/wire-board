@@ -92,10 +92,17 @@ func tankCenter(t Tank) Point { return Point{X: t.X, Y: t.Y - 18} }
 
 // simulateArc is pure and shared by server shot resolution and the bot search.
 func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, rangeScale float64, wind int, limit int) Arc {
+	return simulateProjectile(m, mask, tanks, shooter, startX, startY, angle, power, facing, rangeScale, wind, limit, projectileMotion{})
+}
+func simulateProjectile(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, startY, angle, power float64, facing int, rangeScale float64, wind int, limit int, motion projectileMotion) (result Arc) {
+	var lock *Point
+	lockAt := int64(0)
+	defer func() { result.LockPoint = lock; result.LockAt = lockAt }()
+
 	speed := (120 + clamp(power, 0, 100)*7.0) * clamp(rangeScale, 0.7, 1.3)
 	rad := clamp(angle, 0, 90) * math.Pi / 180
-	vx := math.Cos(rad) * speed * float64(facing)
-	vy := -math.Sin(rad) * speed
+	vx := math.Cos(rad)*speed*float64(facing) + motion.VX
+	vy := -math.Sin(rad)*speed + motion.VY
 	x := startX + float64(facing)*10
 	y := startY - 26
 	path := make([]Point, 0, min(limit, MaxPath))
@@ -104,11 +111,38 @@ func simulateArc(m fbmaps.Map, mask []byte, tanks []Tank, shooter int, startX, s
 	dt := 1.0 / 240.0
 	windAcc := float64(wind) * WindAcc
 	travel := 0.0
+	gravity := Gravity
+	wavePrevious := 0.0
 	for step := 0; step < 1800 && len(path) < limit; step++ {
+		if motion.Motion == "homing" && lock == nil && vy > 0 && step > 0 {
+			predicted := Point{X: x + vx*.3, Y: y + vy*.3}
+			if target, ok := homingTarget(predicted, tanks, 150); ok {
+				lock = &target
+				lockAt = int64(float64(step) * dt * 1000)
+				factor := 3.0
+				if math.Abs(target.X-x)+math.Abs(target.Y-y) < 70 {
+					factor = 6
+				}
+				vx = (target.X - x) * factor
+				vy = (target.Y - y) * factor
+				windAcc = 0
+				gravity = 0
+			}
+		}
 		vx += windAcc * dt
-		vy += Gravity * dt
+		vy += gravity * dt
 		nx := x + vx*dt
 		ny := y + vy*dt
+		if motion.Motion == "wave" {
+			phase := math.Mod(float64(step+1)*dt/.03, 12)
+			triangle := phase
+			if phase > 6 {
+				triangle = 12 - phase
+			}
+			wave := float64(motion.Wave) * 6 * triangle
+			ny += wave - wavePrevious
+			wavePrevious = wave
+		}
 		travel += math.Hypot(nx-x, ny-y)
 		// Swept sampling prevents fast shells from tunnelling through a 4 px cell.
 		sub := max(1, int(math.Ceil(math.Hypot(nx-x, ny-y)/2)))
@@ -206,6 +240,9 @@ func moveTank(s *State, seat int, dir int, at int64) bool {
 
 func blastRadius(weapon Weapon) float64 {
 	r := 36 + weapon.Blast
+	if weapon.Radius > 0 {
+		r = weapon.Radius
+	}
 	return clamp(r, 28, 90)
 }
 
@@ -214,11 +251,11 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 	center.X = clamp(center.X, 0, float64(mapSpec.Width))
 	center.Y = clamp(center.Y, 0, float64(mapSpec.Height)+40)
 	radius := blastRadius(weapon)
-	blast := Blast{X: center.X, Y: center.Y, R: radius, Seat: seat, Victim: -1, Kind: kind}
+	blast := Blast{At: at, X: center.X, Y: center.Y, R: radius, Seat: seat, Victim: -1, Kind: kind}
 	shooter := &s.Tanks[seat]
 	for i := range s.Tanks {
 		t := &s.Tanks[i]
-		if !t.Alive || (t.Team == shooter.Team && i != seat) {
+		if !t.Alive || (t.Team == shooter.Team && i != seat && !weapon.FriendlyFire) {
 			continue
 		}
 		c := tankCenter(*t)
@@ -238,7 +275,7 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 		}
 		damage = min(damage, t.HP)
 		t.HP -= damage
-		if i != seat {
+		if i != seat && t.Team != shooter.Team {
 			shooter.Damage += damage
 			s.DamageTotal[seat] += damage
 		}
@@ -252,7 +289,7 @@ func applyBlast(s *State, seat int, weapon Weapon, center Point, kind string, at
 
 		if t.HP <= 0 && t.Alive {
 			t.HP, t.Alive, t.Deaths = 0, false, t.Deaths+1
-			if i != seat {
+			if i != seat && t.Team != shooter.Team {
 				shooter.Kills++
 			}
 			s.emit("death", seat, i, t.X, t.Y, 0, "", at)
@@ -304,7 +341,7 @@ func tickStatuses(s *State, seat int, at int64) {
 			if st.Damage > 0 {
 				hurt := min(t.HP, st.Damage)
 				t.HP -= hurt
-				if st.Source >= 0 && st.Source < len(s.Tanks) && st.Source != i {
+				if st.Source >= 0 && st.Source < len(s.Tanks) && st.Source != i && s.Tanks[st.Source].Team != t.Team {
 					s.DamageTotal[st.Source] += hurt
 					s.Tanks[st.Source].Damage += hurt
 					if t.HP == 0 && hurt > 0 {
