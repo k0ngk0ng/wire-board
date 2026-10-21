@@ -7,7 +7,7 @@ export default defineConfig({
     fileURLToPath(new URL("../", import.meta.url)),
   ),
   plugins: [react()],
-  resolve: { dedupe: ["react", "react-dom", "lucide-react"] },
+  resolve: { dedupe: ["react", "react-dom", "lucide-react", "three"] },
   server: {
     proxy: {
       "/api": { target: "http://127.0.0.1:8080", ws: true },

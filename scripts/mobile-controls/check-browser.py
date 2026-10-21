@@ -46,7 +46,7 @@ try{
  ({sessionId}=await call('Target.attachToTarget',{targetId:target.targetId,flatten:true}));
  const send=(m,p)=>call(m,p,sessionId),evaluate=async expression=>(await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true})).result.value;
  await send('Network.enable',{});await send('Emulation.setDeviceMetricsOverride',{width:o.width,height:844,deviceScaleFactor:1,mobile:true});await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
- const points=await evaluate(`(()=>{const group=document.querySelector(${JSON.stringify(o.group)});group.scrollIntoView({block:'center'});getSelection().removeAllRanges();window.__touchAudit={events:[],selections:[]};for(const name of ['pointerup','pointercancel','contextmenu','selectstart'])group.addEventListener(name,e=>window.__touchAudit.events.push({type:e.type,text:e.target.textContent,prevented:e.defaultPrevented}));document.addEventListener('selectionchange',()=>{const s=getSelection().toString();if(s)window.__touchAudit.selections.push(s)});return ${JSON.stringify(o.keys)}.map(selector=>{const e=document.querySelector(selector);if(!e||e.disabled)throw Error('missing/disabled '+selector);const r=e.getBoundingClientRect();return {x:r.x+r.width*.5,y:r.y+r.height*.5,radiusX:3,radiusY:3,force:1}})})()`);
+ const points=await evaluate(`(()=>{const group=document.querySelector(${JSON.stringify(o.group)});group.scrollIntoView({block:'center'});getSelection().removeAllRanges();window.__touchAudit={events:[],selections:[]};for(const name of ['pointerup','pointercancel','contextmenu','selectstart'])group.addEventListener(name,e=>window.__touchAudit.events.push({type:e.type,text:e.target.textContent,prevented:e.defaultPrevented}));document.addEventListener('selectionchange',()=>{const s=getSelection().toString();if(s)window.__touchAudit.selections.push(s)});return ${JSON.stringify(o.keys)}.map(selector=>{const e=document.querySelector(selector);if(!e||e.disabled)throw Error('missing/disabled '+selector);const r=e.getBoundingClientRect();return {x:r.x+r.width*(e.hasAttribute('data-bubbleparty-dpad')?.8:.5),y:r.y+r.height*.5,radiusX:3,radiusY:3,force:1}})})()`);
  if(!points)throw Error('touch target missing');const point=(i,id)=>({...points[i],id});const pause=ms=>new Promise(r=>setTimeout(r,ms));const touch=(type,touchPoints)=>send('Input.dispatchTouchEvent',{type,touchPoints});
  await touch('touchStart',[point(0,1)]);await pause(1200);const held=await evaluate('({selected:getSelection().toString(),scrollY,viewport:innerWidth})');
  await touch('touchMove',[{...point(0,1),x:points[0].x+18}]);await pause(100);await touch('touchEnd',[]);await pause(250);
@@ -60,7 +60,7 @@ try{
 }finally{if(sessionId)await call('Target.detachFromTarget',{sessionId});ws.close()}
 '''
 CONFIG={
- 'bubbleparty':('.bubble-controls',['.bubble-dpad .right','[data-bubbleparty-bomb]'],True),
+ 'bubbleparty':('.bubble-controls',['[data-bubbleparty-dpad]','[data-bubbleparty-bomb]'],True),
  'battlecity':('.bc-touch-controls',['.bc-dpad','[data-battlecity-fire]'],True),
  'racing':('.racing-controls',['.racing-wheel','button[aria-label="刹车"]'],True),
  'tetris':('.tetris-controls',['button[aria-label="向左移动"]','button[aria-label="顺时针旋转"]'],False),

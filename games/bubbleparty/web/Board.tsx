@@ -9,7 +9,6 @@ import type { BoardProps } from "../../../web/src/game-api/module";
 import {
   LatestInput,
   HeldDirections,
-  padDirection,
   NEUTRAL,
   isBombKey,
   keyMove,
@@ -17,6 +16,7 @@ import {
 } from "./input";
 import { DRAW_HEIGHT, DRAW_WIDTH, drawBoard, type DrawPoint } from "./canvas";
 import { PlayerMotion } from "./prediction";
+import { joystickIntent } from "./joystick";
 import { AvatarPicker } from "./AvatarPicker";
 import { avatarName } from "./avatar-art";
 import { normalizeAvatar } from "./avatar-animation";
@@ -44,6 +44,7 @@ export function Board(props: BoardProps<View>) {
   const trapped = !!me?.trappedUntil;
   const controlled = !!room.seats[room.you]?.autoPlay;
   const [avatarOpen, setAvatarOpen] = useState(false);
+  const [stick, setStick] = useState({ x: 0, y: 0 });
   const [avatarSaving, setAvatarSaving] = useState(false);
   const preferenceSent = useRef("");
   const canControl =
@@ -145,6 +146,7 @@ export function Board(props: BoardProps<View>) {
       currentMove.current = "none";
       heldKeys.current.clear();
       padPointer.current = null;
+      setStick({ x: 0, y: 0 });
       input.current.release();
     }
   }, [enabled]);
@@ -258,6 +260,7 @@ export function Board(props: BoardProps<View>) {
     const release = () => {
       heldKeys.current.clear();
       padPointer.current = null;
+      setStick({ x: 0, y: 0 });
       currentMove.current = "none";
       input.current.release();
       input.current.set({ ...NEUTRAL });
@@ -364,6 +367,7 @@ export function Board(props: BoardProps<View>) {
       heldKeys.current.clear();
       currentFacing.current = me?.dir ?? "down";
       padPointer.current = null;
+      setStick({ x: 0, y: 0 });
       input.current.reset(me?.seq ?? 0);
       return;
     }
@@ -455,6 +459,7 @@ export function Board(props: BoardProps<View>) {
     currentMove.current = "none";
     heldKeys.current.clear();
     padPointer.current = null;
+    setStick({ x: 0, y: 0 });
     input.current.release();
     input.current.set({ ...NEUTRAL });
     sendOne(true);
@@ -514,6 +519,7 @@ export function Board(props: BoardProps<View>) {
     if (padPointer.current !== event.pointerId) return;
     event.preventDefault();
     padPointer.current = null;
+    setStick({ x: 0, y: 0 });
     if (event.currentTarget.hasPointerCapture(event.pointerId))
       event.currentTarget.releasePointerCapture(event.pointerId);
     setMove("none");
@@ -522,12 +528,14 @@ export function Board(props: BoardProps<View>) {
     if (!enabled || padPointer.current !== event.pointerId) return;
     event.preventDefault();
     const rect = event.currentTarget.getBoundingClientRect();
-    const inside =
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right &&
-      event.clientY >= rect.top &&
-      event.clientY <= rect.bottom;
-    setMove(inside ? padDirection(event.clientX, event.clientY, rect) : "none");
+    const intent = joystickIntent(
+      event.clientX - rect.left - rect.width / 2,
+      event.clientY - rect.top - rect.height / 2,
+      rect.width * 0.34,
+      currentMove.current,
+    );
+    setStick({ x: intent.x, y: intent.y });
+    setMove(intent.move);
   };
 
   return (
@@ -633,11 +641,16 @@ export function Board(props: BoardProps<View>) {
       {!view.spectator && (
         <div className="bubble-controls" aria-label="操作" data-game-controls>
           <div
-            className="bubble-dpad"
+            className="bubble-dpad bubble-joystick"
+            role="group"
+            aria-label="拖动摇杆移动，松手停止"
+            aria-disabled={!enabled}
+            data-active={padPointer.current !== null}
             data-bubbleparty-dpad
             onPointerDown={(event) => {
               if (!enabled || padPointer.current !== null || event.button !== 0)
                 return;
+              event.preventDefault();
               padPointer.current = event.pointerId;
               event.currentTarget.setPointerCapture(event.pointerId);
               movePad(event);
@@ -647,19 +660,25 @@ export function Board(props: BoardProps<View>) {
             onPointerCancel={releasePad}
             onLostPointerCapture={releasePad}
           >
-            <button className="up" disabled={!enabled} aria-label="向上">
-              ↑
-            </button>
-            <button className="left" disabled={!enabled} aria-label="向左">
-              ←
-            </button>
-            <span className="hub" aria-hidden="true" />
-            <button className="right" disabled={!enabled} aria-label="向右">
-              →
-            </button>
-            <button className="down" disabled={!enabled} aria-label="向下">
-              ↓
-            </button>
+            <svg
+              className="bubble-stick-guides"
+              viewBox="0 0 100 100"
+              aria-hidden="true"
+            >
+              <path d="M45 17l5-5 5 5M45 83l5 5 5-5M17 45l-5 5 5 5M83 45l5 5-5 5" />
+            </svg>
+            <span
+              className="bubble-stick-thumb"
+              aria-hidden="true"
+              style={{
+                transform: `translate(${stick.x * 38}px,${stick.y * 38}px)`,
+              }}
+            >
+              <i />
+            </span>
+            <span className="bubble-stick-caption" aria-hidden="true">
+              摇杆
+            </span>
           </div>
           <button
             className="bubble-bomb"

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Publish verified racing media immutably; verify both OSS and public CDN bytes."""
-import base64, hashlib, hmac, json, subprocess, urllib.error, urllib.request
+import argparse, base64, hashlib, hmac, json, subprocess, urllib.error, urllib.request
 from email.utils import formatdate
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-subprocess.run(['python3', str(ROOT / 'scripts/racing/verify-assets.py'), '--decode-audio'], check=True)
-m = json.loads((ROOT / 'games/racing/assets/manifest.json').read_text())
+parser = argparse.ArgumentParser(); parser.add_argument('--remake', action='store_true'); args = parser.parse_args()
+subprocess.run(['python3', str(ROOT / 'scripts/racing/verify-assets.py'), '--decode-audio'] + (['--remake'] if args.remake else []), check=True)
+m = json.loads((ROOT / ('games/racing/assets/manifest-v2.json' if args.remake else 'games/racing/assets/manifest.json')).read_text())
 bucket = 'stoneage-assets'; endpoint = f'https://{bucket}.oss-cn-shanghai.aliyuncs.com'
 prefix = 'bga/v20261002-1'
 assert m['assetsBaseURL'] == 'https://cdn.ichenj.com/' + prefix
@@ -43,6 +44,6 @@ for e in m['entries']:
         assert response.headers.get_content_type() == e['mime']
     results.append({'path': path, 'sha256': e['sha256'], 'bytes': len(data), 'cdnVerified': True})
     print('Verified', e['urlPath'], flush=True)
-target = ROOT / '.local/racing/verification/oss-publish.json'
+target = ROOT / ('.local/racing-remake/assets/oss-publish.json' if args.remake else '.local/racing/verification/oss-publish.json')
 target.write_text(json.dumps({'passed': True, 'objects': results}, indent=2) + '\n')
 print('Published and read back', len(results), 'immutable objects:', target)

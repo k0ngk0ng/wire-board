@@ -58,7 +58,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		a := tangent(t, (near+k)%n)
 		b := tangent(t, (near+k+1)%n)
 		bend := math.Abs(angle(math.Atan2(b.Y, b.X) - math.Atan2(a.Y, a.X)))
-		curve := bend / 45
+		curve := bend / math.Max(1, dist(t.Points[(near+k)%n], t.Points[(near+k+1)%n]))
 		if curve > .0001 {
 			limit := math.Sqrt(95 / curve)
 			targetSpeed = math.Min(targetSpeed, limit+float64(k-1)*7)

@@ -64,3 +64,9 @@ test("remote extrapolation is bounded and finish or rescue never invents motion"
     b = car({ x: 900, y: 500, resetUntil: 2000 });
   assert.equal(interpolateCar(a, b, 0.5).x, 900);
 });
+
+test('long circuits can zoom out to overview without losing the cursor anchor',()=>{
+ const camera={x:3100,y:2200,scale:.15},view={width:1000,height:600},pointer={x:760,y:240};
+ const before=screenToWorld(camera,view,pointer),after=zoomAt(camera,view,pointer,.5);
+ assert.ok(after.scale<.15);assert.deepEqual(screenToWorld(after,view,pointer),before);
+});

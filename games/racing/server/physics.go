@@ -10,6 +10,9 @@ func stepCar(c *Car, t Track, ms, at int64) {
 	_, _, distance, _ := nearest(t, Point{c.X, c.Y})
 	c.Offroad = distance > t.RoadWidth/2
 	steer, throttle, brake, drift := c.Steer, c.Throttle, c.Brake, c.Drift
+	if brake {
+		throttle = 0
+	}
 	if at-c.LastInputAt > lostInputMS || at < c.ResetUntil {
 		steer = 0
 		throttle = 0
@@ -35,6 +38,9 @@ func stepCar(c *Car, t Track, ms, at int64) {
 		limit = 110
 	}
 	forward = (forward + throttle*245*dt) * math.Exp(-drag*dt)
+	if drift {
+		forward *= math.Exp(-1.2 * dt)
+	}
 	if brake {
 		forward *= math.Exp(-6 * dt)
 	}
@@ -60,6 +66,31 @@ func stepCar(c *Car, t Track, ms, at int64) {
 	if c.Y < CarRadius || c.Y > t.Height-CarRadius {
 		c.Y = clamp(c.Y, CarRadius, t.Height-CarRadius)
 		c.VY *= -.3
+	}
+	// Circle obstacles use the visible object's footprint against the car capsule.
+	for _, obstacle := range t.Props {
+		dx, dy := obstacle.X-c.X, obstacle.Y-c.Y
+		if math.Hypot(dx, dy) > obstacle.Radius+CarRadius+10 {
+			continue
+		}
+		along := clamp(dx*cs+dy*sn, -10, 10)
+		dx, dy = c.X+cs*along-obstacle.X, c.Y+sn*along-obstacle.Y
+		distance := math.Hypot(dx, dy)
+		depth := obstacle.Radius + CarRadius - distance
+		if depth <= 0 {
+			continue
+		}
+		nx, ny := -cs, -sn
+		if distance > 0.00001 {
+			nx, ny = dx/distance, dy/distance
+		}
+		c.X += nx * depth
+		c.Y += ny * depth
+		inward := c.VX*nx + c.VY*ny
+		if inward < 0 {
+			c.VX -= inward * nx * 1.1
+			c.VY -= inward * ny * 1.1
+		}
 	}
 	c.Speed = math.Hypot(c.VX, c.VY)
 }

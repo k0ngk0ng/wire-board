@@ -26,13 +26,21 @@ type Point struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`
 }
+type Scenery struct {
+	X      float64 `json:"x"`
+	Y      float64 `json:"y"`
+	Radius float64 `json:"radius"`
+	Height float64 `json:"height"`
+	Kind   string  `json:"kind"`
+}
 type Track struct {
-	ID        string  `json:"id"`
-	Name      string  `json:"name"`
-	Width     float64 `json:"width"`
-	Height    float64 `json:"height"`
-	RoadWidth float64 `json:"roadWidth"`
-	Points    []Point `json:"points"`
+	Props     []Scenery `json:"props,omitempty"`
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Width     float64   `json:"width"`
+	Height    float64   `json:"height"`
+	RoadWidth float64   `json:"roadWidth"`
+	Points    []Point   `json:"points"`
 }
 type Input struct {
 	At       int64   `json:"at"`

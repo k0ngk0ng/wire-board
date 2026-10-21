@@ -96,7 +96,7 @@ func tick(t *testing.T, mod gameapi.Module, ctx *gameapi.Context, m gameapi.Matc
 	return next
 }
 func TestRacingCompleteNaturalRaces(t *testing.T) {
-	for _, track := range []string{"woodland", "coast", "canyon"} {
+	for _, track := range []string{"metro", "harbor", "woodland", "coast", "canyon"} {
 		for n := 2; n <= 6; n++ {
 			for _, laps := range []int{1, 3, 5} {
 				t.Run(fmt.Sprintf("%s-%d-seats-%d-laps", track, n, laps), func(t *testing.T) {
@@ -108,7 +108,7 @@ func TestRacingCompleteNaturalRaces(t *testing.T) {
 					}
 					records := []any{map[string]any{"scope": "production Module Start/BotAction/Apply/OnTimer; natural complete race; accelerated clock only", "initial": initial}}
 					defer func() { trace(t, records) }()
-					for steps := 0; steps < 4800 && m.Result == nil; steps++ {
+					for steps := 0; int64(steps)*100 < initial.MaxRaceAt-initial.ServerAt+1000 && m.Result == nil; steps++ {
 						m = tick(t, mod, &ctx, m, bots)
 						if steps%100 == 0 {
 							v := view(t, mod, m, -1)
@@ -223,7 +223,7 @@ func TestRacingOptions(t *testing.T) {
 	}
 	var o game.Options
 	_ = json.Unmarshal(b, &o)
-	if o.Track != "woodland" || o.Laps != 3 {
+	if o.Track != "metro" || o.Laps != 3 {
 		t.Fatal(o)
 	}
 }
@@ -310,4 +310,29 @@ func TestRacingSkinDuringRaceIsCosmetic(t *testing.T) {
 		t.Fatal("cosmetic skin altered race", before, after)
 	}
 	trace(t, view(t, mod, changed, 0))
+}
+
+// Additional requested classic models: all six choices remain cosmetic, retain
+// progress and input state, and reject unlisted IDs through the real module API.
+func TestRacingSixClassicModelsRemainCosmetic(t *testing.T) {
+	mod, ctx, m := begin(t, 2, 1, "metro")
+	ctx.Actor = 0
+	before := view(t, mod, m, 0)
+	for skin := 0; skin < 6; skin++ {
+		changed, err := mod.Apply(ctx, m, raw(map[string]any{"type": "skin", "epoch": before.Epoch, "skin": skin}))
+		if err != nil {
+			t.Fatalf("model %d rejected: %v", skin, err)
+		}
+		after := view(t, mod, changed, 0)
+		if after.Cars[0].Skin != skin {
+			t.Fatal("model not selected")
+		}
+		after.Cars[0].Skin = before.Cars[0].Skin
+		if !reflect.DeepEqual(before, after) {
+			t.Fatal("model changed physics, controls or race state")
+		}
+	}
+	if _, err := mod.Apply(ctx, m, raw(map[string]any{"type": "skin", "epoch": before.Epoch, "skin": 6})); err == nil {
+		t.Fatal("unknown classic model accepted")
+	}
 }

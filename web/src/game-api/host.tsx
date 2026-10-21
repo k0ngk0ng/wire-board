@@ -201,7 +201,7 @@ export function ModuleWaiting({
             )}
             {host && optionsDirty && (
               <p className="muted small" role="status">
-                地图或规则尚未保存，保存后才能开始。
+                地图或规则已修改，准备时会一并保存。
               </p>
             )}
           </>
@@ -261,11 +261,23 @@ export function ModuleWaiting({
                 </button>
               )}
             <button
-              className={room.seats[room.you]?.ready ? "outline" : "primary"}
+              className={
+                host && optionsDirty
+                  ? "primary"
+                  : room.seats[room.you]?.ready
+                    ? "outline"
+                    : "primary"
+              }
               disabled={busy}
-              onClick={() => command("ready")}
+              onClick={() =>
+                command("ready", host && optionsDirty ? { options } : undefined)
+              }
             >
-              {room.seats[room.you]?.ready ? "取消准备" : "我准备好了"}
+              {host && optionsDirty
+                ? "保存并准备"
+                : room.seats[room.you]?.ready
+                  ? "取消准备"
+                  : "我准备好了"}
               <Check size={18} />
             </button>
             {host && (

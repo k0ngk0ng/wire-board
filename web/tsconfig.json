@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -17,28 +13,15 @@
     "jsx": "react-jsx",
     "strict": true,
     "paths": {
-      "react": [
-        "./node_modules/@types/react"
-      ],
-      "react/*": [
-        "./node_modules/@types/react/*"
-      ],
-      "react-dom": [
-        "./node_modules/@types/react-dom"
-      ],
-      "react-dom/*": [
-        "./node_modules/@types/react-dom/*"
-      ],
-      "lucide-react": [
-        "./node_modules/lucide-react"
-      ]
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "react-dom": ["./node_modules/@types/react-dom"],
+      "react-dom/*": ["./node_modules/@types/react-dom/*"],
+      "lucide-react": ["./node_modules/lucide-react"],
+      "three": ["./node_modules/@types/three"],
+      "three/examples/jsm/*": ["./node_modules/@types/three/examples/jsm/*"]
     },
-    "types": [
-      "vite/client"
-    ]
+    "types": ["vite/client"]
   },
-  "include": [
-    "src",
-    "../games/*/web"
-  ]
+  "include": ["src", "../games/*/web"]
 }

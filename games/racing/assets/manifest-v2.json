@@ -1,0 +1,29 @@
+{
+  "game": "racing",
+  "version": 2,
+  "assetsBaseURL": "https://cdn.ichenj.com/bga/v20261002-1",
+  "entries": [
+    {
+      "name": "attribution",
+      "type": "metadata",
+      "output": "games/racing/assets/public/racing/v2/attribution.json",
+      "urlPath": "/racing/v2/attribution.json",
+      "bytes": 1694,
+      "sha256": "b98e653a0619b97eda6869ac14c5515d3072471183f952f52ab136bbe00d5711",
+      "mime": "application/json",
+      "sources": [],
+      "generator": "Original source inventory and verbatim Three.js MIT license"
+    },
+    {
+      "name": "three-license",
+      "type": "metadata",
+      "output": "games/racing/assets/public/racing/v2/three-license.txt",
+      "urlPath": "/racing/v2/three-license.txt",
+      "bytes": 1081,
+      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+      "mime": "text/plain",
+      "sources": [],
+      "generator": "Original source inventory and verbatim Three.js MIT license"
+    }
+  ]
+}

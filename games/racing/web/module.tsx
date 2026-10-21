@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   defineGame,
   type OptionsProps,
@@ -6,6 +7,9 @@ import { Board } from "./Board";
 import { Cover } from "./Cover";
 import { trackNames, seatColors, type Options, type View } from "./types";
 function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
+  useEffect(() => {
+    void import("./chase-renderer").catch(() => {});
+  }, []);
   return (
     <div className="racing-options">
       <label>
@@ -49,8 +53,9 @@ function OptionsForm({ value, onChange, disabled }: OptionsProps<Options>) {
 }
 export default defineGame<View, Options>({
   id: "racing",
-  name: "逐风赛车",
-  description: "驾车穿过林间、海岸与峡谷，掌握刹车与漂移，争夺终点。",
+  name: "极品飞车",
+  description:
+    "从霓虹街区驶向海岸与峡谷，在五条长赛道上追逐对手，掌握弯道与手刹。",
   category: "sports",
   minPlayers: 2,
   maxPlayers: 6,
@@ -58,7 +63,7 @@ export default defineGame<View, Options>({
   supportsBots: true,
   ownsSounds: true,
   realtime: true,
-  defaultOptions: { track: "woodland", laps: 3 },
+  defaultOptions: { track: "metro", laps: 3 },
   Board,
   Cover,
   Options: OptionsForm,
@@ -84,28 +89,30 @@ export default defineGame<View, Options>({
   Rules: () => (
     <div className="racing-rules">
       <p>
-        2～6 人的俯视竞速。3 秒发车灯后同时起步，按所选的 1、3 或 5
-        圈比赛，按最终过线先后排名。五款车身性能、抓地力与碰撞尺寸完全相同。
+        2～6 人的追车视角竞速，全自动挡。3 秒发车灯后同时起步，按所选的 1、3 或
+        5
+        圈比赛，按最终过线先后排名。六款经典车型的性能、抓地力与碰撞尺寸相同，选择只改变外观。
       </p>
       <p>
         必须沿赛道正向依次通过检查点；逆穿终点和抄近路不会增加圈数。草地、砂地和道路外区域会明显减速。车身可以相撞，没有攻击或防御道具。
       </p>
       <p>
-        首车冲线后，其他车辆有 30 秒完赛；比赛总时限为 8
+        首车冲线后，其他车辆有 30 秒完赛；比赛总时限为 20
         分钟。未完赛者按有效赛道进度排序，完全没有进度时为和局。计时与圈数由服务器判定。
       </p>
       <p>
-        电脑：W／↑ 加速，S／↓ 刹车，A／D 或 ←／→ 转向，空格漂移，R
-        救援。手机：默认自动加速，滑动方向盘转向，可同时按住漂移或刹车。离开页面会释放操作；空闲不会自动托管，可随时手动开启托管。
+        电脑：W／↑ 加速，S／↓ 刹车，A／D 或 ←／→ 转向，空格手刹，按住 B
+        向后看，R
+        重置。手机：默认自动加速，滑动方向盘转向，可同时按住油门、手刹或刹车。离开页面会释放操作；空闲不会自动托管，可随时手动开启托管。
       </p>
       <p>
-        救援须先减速，回到最近有效检查点，并等待 2 秒重新起步；每次救援后冷却 5
-        秒。拖动赛道查看地图，滚轮或双指缩放，「跟车」恢复驾驶镜头；小地图支持拖动定位。
+        重置须先减速，回到最近有效检查点，并等待 2 秒重新起步；每次重置后冷却 5
+        秒。点开赛道图后可拖动、滚轮或双指缩放，小地图支持拖动定位。
       </p>
       <details>
         <summary>素材与许可</summary>
         <p>
-          车辆、场景来自{" "}
+          赛道与立体车辆为项目绘制，地图总览沿用{" "}
           <a
             href="https://kenney.nl/assets/racing-pack"
             target="_blank"
@@ -113,13 +120,13 @@ export default defineGame<View, Options>({
           >
             Kenney Racing Pack
           </a>
-          （CC0），封面原创；赛车引擎为 domasx2 的 CC0 素材，轮胎声为 Tom
+          （CC0）；封面原创；赛车引擎为 domasx2 的 CC0 素材，轮胎声为 Tom
           Haigh／qubodup 的 CC BY 3.0
           素材，经过裁剪和音量调整。全部音效由平台统一静音控制。
         </p>
         <p>
           <a
-            href="/racing/v1/attribution.json"
+            href="/racing/v2/attribution.json"
             target="_blank"
             rel="noreferrer"
           >

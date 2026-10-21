@@ -1,0 +1,43 @@
+{
+  "game": "racing",
+  "version": 2,
+  "rendering": {
+    "name": "Three.js",
+    "version": "0.180.0",
+    "sourceURL": "https://github.com/mrdoob/three.js/tree/r180",
+    "license": "MIT",
+    "licensePath": "/racing/v2/three-license.txt"
+  },
+  "originalArtwork": {
+    "author": "wire-board contributors",
+    "method": "Original procedural TypeScript meshes, Canvas perspective renderer and inline SVG cover. Classic model names identify stylized body profiles; no manufacturer or Need for Speed assets are included.",
+    "sources": [
+      {
+        "path": "games/racing/web/car-definitions.ts",
+        "sha256": "b51b7d9621335f7eedea42bfc4a6675e39930ad401f5072f3fe22974d4094aab"
+      },
+      {
+        "path": "games/racing/web/vehicle-model.ts",
+        "sha256": "090f463a37fd3eef01763a0d02fdbeab4ce74708da0ea74d41106b9f4971330a"
+      },
+      {
+        "path": "games/racing/web/chase-renderer.ts",
+        "sha256": "f70b985a46314424f25e2d32621b22b195647a95f597eb26afb719e163b63a26"
+      },
+      {
+        "path": "games/racing/web/chase-fallback.ts",
+        "sha256": "2b176d0d0be038d204a63a633c64c5edd68eabb326f7fe482e2a347aa4d1d77d"
+      },
+      {
+        "path": "games/racing/web/scene-theme.ts",
+        "sha256": "7bf52f044b7c0575e8e8934961d2bc77c5ce74fd46e07373cfaa66b689b6540a"
+      },
+      {
+        "path": "games/racing/web/Cover.tsx",
+        "sha256": "accd92c4dc22c51772d5c0dba0f8f43ff0ca3a6dae88f805e0c8b2bc06818ee1"
+      }
+    ]
+  },
+  "existingMediaAttribution": "/racing/v1/attribution.json",
+  "referenceOnly": "Official Need for Speed Heat screenshots were consulted for chase perspective and lighting; they are not included in product assets."
+}
