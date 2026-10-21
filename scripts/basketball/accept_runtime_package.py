@@ -11,6 +11,7 @@ OUT = ROOT / '.local/basketball/runtime-package'
 OUT.mkdir(parents=True, exist_ok=True)
 env = dict(os.environ)
 checks = []
+public_origin = os.environ.get("BASKETBALL_PUBLIC_ORIGIN", "https://bga.ichenj.com")
 app = None
 data = OUT / ('data-' + uuid.uuid4().hex[:8])
 
@@ -61,10 +62,10 @@ try:
                 status = error.code
             check('application does not serve excluded file: ' + route, status == 404)
         pin = manifest['wasm']
-        with urlopen(Request(pin['url'], headers={'Origin': 'https://sa.ichenj.com'}), timeout=30) as response:
+        with urlopen(Request(pin['url'], headers={'Origin': public_origin}), timeout=30) as response:
             content = response.read()
             check('OSS Wasm matches source-bound hash and length', hashlib.sha256(content).hexdigest() == pin['sha256'] and len(content) == pin['bytes'])
-            check('OSS MIME and production CORS permit Wasm fetch', response.headers.get_content_type() == 'application/wasm' and response.headers.get('Access-Control-Allow-Origin') in ['*', 'https://sa.ichenj.com'])
+            check('OSS MIME and production CORS permit Wasm fetch', response.headers.get_content_type() == 'application/wasm' and response.headers.get('Access-Control-Allow-Origin') in ['*', public_origin])
         (OUT / 'result.json').write_text(json.dumps(dict(status='passed', checks=checks, runtime=pin, applicationBytes=(OUT / 'wire-board').stat().st_size, scope='native application embedding and remote object integrity/MIME/CORS; browser execution is covered separately'), ensure_ascii=False, indent=2) + '\n')
         print(json.dumps(dict(status='passed', checks=len(checks))))
 except Exception as error:

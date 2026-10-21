@@ -270,6 +270,12 @@ func TestCampaignResultContinueAndNextMatch(t *testing.T) {
 			if e = m.Validate(1); e != nil {
 				t.Fatal(e)
 			}
+			ctx.Actor = 0
+			loaded, _ := json.Marshal(map[string]any{"type": "loaded", "epoch": s.Epoch})
+			m, e = apply(ctx, m, loaded)
+			if e != nil {
+				t.Fatal(e)
+			}
 			for n := 0; n < 40 && s.Runtime.Playing == nil; n++ {
 				ctx.Now = ctx.Now.Add(100 * time.Millisecond)
 				ctx.Actor = -1
