@@ -85,7 +85,11 @@ def go_commands(root, game, index=0, count=1, race=False):
             owners = owner(relative, name, games)
             if (game == 'shared' and owners) or (game != 'shared' and game not in owners): continue
             if int.from_bytes(hashlib.sha256(name.encode()).digest()[:8], 'big') % count != index: continue
-            if race and game != 'shared' and not re.search(r'Concurrent|AutoPlay|Timeout|Spectator|LongGameArtifact', name): continue
+            if race and game != 'shared':
+                selected_race = bool(re.search(r'Concurrent|AutoPlay|Timeout|Spectator|LongGameArtifact', name))
+                if game == 'basketball':
+                    selected_race = selected_race or name.startswith(('TestBasketballRealtime', 'TestCampaignPresentation', 'TestCampaignEnding', 'TestRuntimePresentation', 'TestDunkSharedTarget', 'TestHighPassHeight')) or name == 'TestBasketballHTTPCompleteOriginalSelection'
+                if not selected_race: continue
             package = './' + relative.parent.as_posix() if relative.parent.as_posix() != '.' else '.'
             if name in MULTI:
                 suffix = '-' if name == 'TestBotsFinishBothGames' else '$'
