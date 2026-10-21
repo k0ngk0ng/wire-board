@@ -4,7 +4,7 @@ Failures: wrong CHR page/palette/nametable/mirroring; OAM order/eight-sprite
 limit/priority; alpha or color conversion; accepting missing indexed art.
 Initial scope: original Scene7 final picture, not other scene bands or timing.
 """
-import functools,http.server,json,os,subprocess,threading,uuid,csv,argparse
+import functools,http.server,json,os,subprocess,threading,uuid,csv,argparse,gzip
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'.local/postresult-raster';OUT.mkdir(exist_ok=True)
@@ -17,7 +17,9 @@ def browser(*args):
     return result['data']
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--rows',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--rows',action='store_true');parser.add_argument('--wasm',action='store_true');parser.add_argument('--renderer',action='store_true');args=parser.parse_args()
+    if args.renderer:args.wasm=True
+    if args.wasm:args.rows=True
     source=ROOT/'.local/nes-basket/runs/postresult-ending-observed'
     frame=13500
     video=next(int(r['emulator_frame']) for r in csv.DictReader((source/'frames.csv').open()) if int(r['frame'])==frame)
@@ -28,6 +30,22 @@ def main():
         samples=json.loads((ROOT/'.local/postresult-fetch/result.json').read_text())+json.loads((ROOT/'.local/postresult-fetch/holdout-result.json').read_text())
         fixture=dict(rows=True,cases=[dict(name=f'{r["kind"]}-{r["frame"]}',expected=f'../../.local/nes-basket/runs/postresult-{r["kind"]}-observed/frame-{r["frame"]:05d}.png',frame=derive_frame(r['kind'],r['frame']))for r in samples])
         assert len(fixture['cases'])==16
+    if args.wasm:
+        fixture['wasm']=True
+        cases=json.loads(gzip.decompress((ROOT/'games/basketball/engine/testdata/postresult-raster-rows.json.gz').read_bytes()))
+        source={(r['kind'],r['frame']):r for r in cases}
+        for item,sample in zip(fixture['cases'],samples):
+            original=source[sample['kind'],sample['frame']]
+            item['projection']=dict(surface=original['surface'],plan=original['plan'])
+            item['frame']=dict(oam=item['frame']['oam'])
+        runtime=OUT/'runtime';runtime.mkdir(exist_ok=True)
+        subprocess.run(['go','build','-o',str(runtime/'basketball.wasm'),'./games/basketball/cmd/browser-wasm'],cwd=ROOT,env=dict(env,GOOS='js',GOARCH='wasm'),check=True)
+        goroot=Path(subprocess.check_output(['go','env','GOROOT'],cwd=ROOT,env=env,text=True).strip())
+        (runtime/'wasm_exec.js').write_bytes((goroot/'lib/wasm/wasm_exec.js').read_bytes())
+    if args.renderer:
+        pin=json.loads((ROOT/'games/basketball/assets/release-manifest.json').read_text())
+        fixture['renderer']=True
+        fixture['assetsBase']=f'../../.local/basketball-asset-build/{pin["contentSHA256"]}/public/basketball/v1/graphics'
     (OUT/'fixture.json').write_text(json.dumps(fixture,separators=(',',':')))
     (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><style>body{margin:0;background:#111;color:white}main{display:grid;grid-template-columns:repeat(4,256px)}figure{margin:0}canvas{image-rendering:pixelated}</style><main></main><script type="module" src="raster.js"></script>')
     subprocess.run([str(ROOT/'web/node_modules/.bin/esbuild'),str(ROOT/'scripts/basketball/postresult_raster_harness.ts'),'--bundle','--format=esm','--target=es2022','--outfile='+str(OUT/'raster.js')],cwd=ROOT,env=env,check=True)
@@ -39,8 +57,9 @@ def main():
         browser('--profile',str(OUT/'profile'),'open',f'http://127.0.0.1:{server.server_port}/.local/postresult-raster/index.html');opened=True
         browser('wait','--fn','window.result !== undefined')
         result=browser('eval','window.result')['result']
-        browser('screenshot',str(OUT/('rows-browser.png' if args.rows else 'browser.png')),'--full')
-        (OUT/('rows-result.json' if args.rows else 'result.json')).write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
+        prefix='renderer-' if args.renderer else 'wasm-' if args.wasm else 'rows-' if args.rows else ''
+        browser('screenshot',str(OUT/(prefix+'browser.png')),'--full')
+        (OUT/(prefix+'result.json')).write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
         assert result.get('different')==0 and result.get('rejectsMissingPage'),result
     finally:
         if opened:browser('close')

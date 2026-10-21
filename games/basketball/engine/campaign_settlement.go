@@ -37,16 +37,31 @@ func SettleCampaignRuntime(s RuntimeState) (CampaignMatchResult, error) {
 	if err := ValidateRuntimeState(s); err != nil {
 		return CampaignMatchResult{}, err
 	}
-	t := s.Transition.Scene.Transition
-	result := CampaignMatchResult{Progress: *s.Config.Campaign, Reward: campaign.Empty, NextStage: CampaignPrepare, Random: t.Random}
+	if s.Presentation != nil {
+		result := s.Presentation.PendingResult
+		if s.Presentation.Complete {
+			result.Progress = s.Presentation.Video.Progress
+			result.Random = s.Presentation.Video.Scene.Transition.Random
+		}
+		return result, nil
+	}
+	return campaignResultFromConfirmed(s.Config, s.Transition.Scene.Transition, *s.Outcome)
+}
+
+// Pure expected settlement; callers choose when live BD8E inventory changes.
+func campaignResultFromConfirmed(config RuntimeConfig, t MatchTransitionState, outcome RuntimeOutcome) (CampaignMatchResult, error) {
+	if config.Campaign == nil {
+		return CampaignMatchResult{}, fmt.Errorf("missing campaign progress")
+	}
+	result := CampaignMatchResult{Progress: *config.Campaign, Reward: campaign.Empty, NextStage: CampaignPrepare, Random: t.Random}
 	result.Progress.Period, result.Progress.WinBits = t.Match.Period, t.TeamWinBits
 	switch {
-	case s.Outcome.WinningTeam != 0:
+	case outcome.WinningTeam != 0:
 		result.NextStage = CampaignDefeat
 	case result.Progress.Period == 28:
 		result.NextStage = CampaignComplete
 	default:
-		item, err := campaign.RewardItem(result.Progress.RewardSet, s.Config.Match.Teams[1], result.Progress.Period)
+		item, err := campaign.RewardItem(result.Progress.RewardSet, config.Match.Teams[1], result.Progress.Period)
 		if err != nil {
 			return CampaignMatchResult{}, err
 		}

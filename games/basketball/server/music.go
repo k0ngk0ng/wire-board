@@ -50,7 +50,10 @@ func (s MusicState) validate(maxSound uint64) error {
 	if s.TrackID != 0 && !isMusic(s.TrackID) {
 		return fmt.Errorf("未知音乐时间线")
 	}
-	if s.TrackID != 0 && s.TrackID != 76 {
+	// Legacy unversioned76 checkpoints remain unbound; only a new original
+	// music request selects the verified delivery. The frontend rejects empty
+	// revisions rather than guessing a migration or replaying an intro.
+	if s.TrackID != 0 && !(s.TrackID == 76 && s.AssetSHA256 == "") {
 		if len(s.AssetSHA256) != 64 {
 			return fmt.Errorf("音乐版本缺失")
 		}
@@ -87,13 +90,9 @@ func (s *MusicState) Apply(ids []int, sequence uint64, at int64) error {
 			}
 			next.ControlSequence = sequence
 		case isMusic(id):
-			var revision string
-			if id != 76 {
-				var err error
-				revision, err = assets.MusicRevision(id)
-				if err != nil {
-					return err
-				}
+			revision, err := assets.MusicRevision(id)
+			if err != nil {
+				return err
 			}
 			// Original $80E7 clears pause bit $40 in $07E5 for new music.
 			next = MusicState{Epoch: next.Epoch + 1, TrackID: id, AssetSHA256: revision, ControlSequence: sequence, StartedAt: at}

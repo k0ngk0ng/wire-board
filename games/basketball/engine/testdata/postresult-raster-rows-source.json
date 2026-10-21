@@ -1,0 +1,6 @@
+{
+  "cases": 16,
+  "sourcePixels": 983040,
+  "fixtureSHA256": "8b4c8fd280df2012c90adc3a1c833767047929be573d367047fdf0a208b2dc36",
+  "scope": "Test-only original raster observations for pure Go tile-row projection.\nRecorded event clocks are explicit observed-input fixtures, not a production\nIRQ schedule. Expected rows have independently matched every source pixel.\n"
+}

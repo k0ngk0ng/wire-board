@@ -116,11 +116,10 @@ test('each original Court selects its own verified continuous music',async()=>{
   }
 });
 
-test('the finite original ending75 plays once; the unresolved intro-loop76 is not guessed',async()=>{
+test('the finite original ending75 plays once',async()=>{
   const p=port(),a=new BasketballAudio(p);
   assert.deepEqual(await a.consume([75],1),{ignored:false,unsupported:[],failed:[]});
   assert.deepEqual(p.calls,[['music',['/basketball/v1/audio/music-075.mp3'],{loop:false}]]);
-  assert.deepEqual((await a.consume([76],2)).unsupported,[76]);
 });
 
 test('restored court animations and special balls use their original extra effects',async()=>{
@@ -148,5 +147,33 @@ test('captured running, jump and running-release original requests have explicit
   for(const id of [1,48]) {
     assert.match(playback.effects[id].sha256,/^[a-f0-9]{64}$/);
     assert.equal(playback.effects[id].listening_accepted,false);
+  }
+});
+
+// Music76 failures recorded before registration: missing/invalid central loop
+// metadata, intro restart on recovery, stale revision, and unversioned saves.
+test('original ending76 uses one verified MP3 and the platform suffix option',async()=>{
+  const entry=playback.music['76'];assert.ok(entry,'verified76 delivery entry missing');
+  const p=port(),a=new BasketballAudio(p,{assetsBase:'/cdn',localBase:'/audio'});
+  assert.deepEqual(await a.consume([76],1),{ignored:false,unsupported:[],failed:[]});
+  assert.deepEqual(p.calls,[['music',[`/cdn/basketball/v1/audio/${entry.file}`,`/audio/${entry.file}`],{loop:true,loopStartSeconds:entry.loop_start_sample/entry.sample_rate}]]);
+  assert.equal(entry.loop_end_sample-entry.loop_start_sample,entry.loop_samples);
+  assert.equal(entry.loop_end_sample,entry.decoded_samples);
+});
+test('music76 restore keeps cumulative media wall time and rejects unversioned history',async()=>{
+  const entry=playback.music['76'];assert.ok(entry);
+  const p=port(),a=new BasketballAudio(p);a.reset(40);
+  const state={epoch:7,trackID:76,assetSHA256:entry.distribution_sha256,controlSequence:40,positionMS:1900000,at:1000,paused:false};
+  assert.equal(await a.restoreMusic(state,1500),true);
+  assert.equal(p.calls[1][2].startOffset,1900.5);assert.equal(p.calls[1][2].loopStartSeconds,entry.loop_start_sample/entry.sample_rate);
+  const n=p.calls.length;assert.equal(await a.restoreMusic({...state,assetSHA256:''}),false);assert.equal(p.calls.length,n);
+  assert.equal(await a.restoreMusic({...state,paused:true},901000),true);assert.equal(p.calls.at(-2)[2].startOffset,1900);assert.equal(p.calls.at(-1)[0],'pause');
+});
+test('invalid76 loop sample metadata never becomes a guessed playback mapping',async()=>{
+  const entry=playback.music['76'];assert.ok(entry);const saved={...entry};
+  for(const [field,value]of [['sample_rate',0],['loop_start_sample',-1],['loop_end_sample',entry.loop_start_sample],['loop_samples',1],['decoded_samples',1]]){
+    Object.assign(entry,saved);entry[field]=value;
+    try{const {BasketballAudio:Invalid}=await import(`../web/audio.ts?invalid76-${field}`);const p=port();assert.deepEqual((await new Invalid(p).consume([76],1)).unsupported,[76]);assert.deepEqual(p.calls,[]);}
+    finally{Object.assign(entry,saved);}
   }
 });

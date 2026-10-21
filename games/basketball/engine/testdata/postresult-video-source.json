@@ -1,0 +1,22 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "5f6e8e0ac29698fd95433c8a141f362db6c2240754f16a65ea15709f1221f371",
+  "chains": [
+    {
+      "kind": "reward",
+      "startFrame": 26052,
+      "videoFrames": 358,
+      "eventsSHA256": "623305e54a50d9dbf2ef6442c37a00c863e103fb73a6c202f45446f47e0673d2",
+      "ramSHA256": "e7dd0adc1ac1f46c19720b35dc125c9020d0b7c47fdd4a641f430a525558501c"
+    },
+    {
+      "kind": "ending",
+      "startFrame": 26052,
+      "videoFrames": 13509,
+      "eventsSHA256": "cdc38da2e8af2ee23c1828ffea160257e320f3c5a85f1e1f50d2e369e6b60c79",
+      "ramSHA256": "80a8f1d21f76bfe5430cb27355529156366289260d9cf6cc99151bdd5edd7b0c"
+    }
+  ],
+  "scope": "actual whole-console per-video source, controlled result score/progress injection; initial after original confirmation tail; final reset after-RAM lies outside controller boundary",
+  "omissions": "no per-video rows omitted; final reset validates event only, subsequent machine reset instructions are outside component"
+}

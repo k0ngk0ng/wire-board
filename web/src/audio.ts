@@ -1,17 +1,24 @@
 import { toneDataURL, type Sound } from "./audio-tones.ts";
 export type { Sound } from "./audio-tones.ts";
-type Clip = { src: string; fallback?: string; startOffset?: number };
+type Clip = {
+  src: string;
+  fallback?: string;
+  startOffset?: number;
+  loopStartSeconds?: number;
+};
 type Task = {
   owner: string;
   priority: number;
   clips: Clip[];
   starting: boolean;
   generation: number;
+  pendingLoopRestart?: number;
 };
 type MusicOptions = {
   loop?: boolean;
   startOffset?: number;
   playbackID?: string;
+  loopStartSeconds?: number;
 };
 type LoopOptions = { volume?: number; rate?: number };
 type LoopVoice = {
@@ -143,6 +150,7 @@ export class GameAudio {
       pending.push(
         (async () => {
           try {
+            this.seekPendingLoopRestart(task, media);
             await media.play();
             if (
               this.task !== task ||
@@ -432,12 +440,21 @@ export class GameAudio {
       (!Number.isFinite(options.startOffset) || options.startOffset < 0)
     )
       return Promise.resolve(false);
+    if (
+      options.loopStartSeconds !== undefined &&
+      (!Number.isFinite(options.loopStartSeconds) ||
+        options.loopStartSeconds < 0 ||
+        options.loop === false)
+    )
+      return Promise.resolve(false);
     if (!this.available() || this.pausedOwners.has(owner) || !sources.length)
       return Promise.resolve(false);
+    const loopStart = options.loopStartSeconds ?? 0;
     const key = JSON.stringify([
       sources,
       options.loop ?? true,
       options.playbackID ?? null,
+      loopStart,
     ]);
     if (
       this.backgroundOwner === owner &&
@@ -449,7 +466,7 @@ export class GameAudio {
     this.background ??= new GameAudio(this.factory);
     const media = this.background.element();
     media.dataset.platformMusic = "";
-    media.loop = options.loop ?? true;
+    media.loop = (options.loop ?? true) && loopStart === 0;
     media.volume = 0.15;
     this.backgroundOwner = owner;
     this.backgroundSources = key;
@@ -459,6 +476,7 @@ export class GameAudio {
           src: sources[0],
           fallback: sources[1],
           startOffset: options.startOffset,
+          loopStartSeconds: loopStart > 0 ? loopStart : undefined,
         },
       ],
       owner,
@@ -504,6 +522,44 @@ export class GameAudio {
     this.task = task;
     return this.next(task);
   }
+  private seekPendingLoopRestart(task: Task, media: HTMLAudioElement) {
+    if (task.pendingLoopRestart === undefined) return;
+    media.currentTime = task.pendingLoopRestart;
+    task.pendingLoopRestart = undefined;
+  }
+  private async restartMusicSuffix(task: Task, media: HTMLAudioElement) {
+    if (
+      this.task !== task ||
+      task.pendingLoopRestart === undefined ||
+      !this.available() ||
+      this.pausedOwners.has(task.owner)
+    )
+      return false;
+    const generation = ++task.generation;
+    task.starting = true;
+    try {
+      this.seekPendingLoopRestart(task, media);
+      await media.play();
+      if (this.task !== task) {
+        if (!this.task) media.pause();
+        return false;
+      }
+      if (task.generation !== generation) {
+        if (this.pausedOwners.has(task.owner)) media.pause();
+        return false;
+      }
+      task.starting = false;
+      if (!this.available() || this.pausedOwners.has(task.owner)) {
+        media.pause();
+        return false;
+      }
+      return true;
+    } catch {
+      if (this.task === task && task.generation === generation)
+        this.stopEffects(task.owner);
+      return false;
+    }
+  }
   private async next(task: Task): Promise<boolean> {
     if (
       this.task !== task ||
@@ -518,7 +574,13 @@ export class GameAudio {
     }
     const media = this.element();
     media.onended = () => {
-      if (this.task === task) void this.next(task);
+      if (this.task !== task || task.starting) return;
+      if (clip.loopStartSeconds !== undefined) {
+        // Native loop would repeat the intro. Keep this source/owner loaded and
+        // return only to its verified suffix; pause retains a pending boundary.
+        task.pendingLoopRestart = clip.loopStartSeconds;
+        void this.restartMusicSuffix(task, media);
+      } else void this.next(task);
     };
     media.onerror = () => {
       if (this.task === task && !task.starting) this.stopEffects(task.owner);
@@ -533,7 +595,7 @@ export class GameAudio {
       media.src = src;
       const loadedSource = media.src;
       media.onloadedmetadata =
-        clip.startOffset === undefined
+        clip.startOffset === undefined && clip.loopStartSeconds === undefined
           ? null
           : () => {
               // A cancelled source's metadata must never seek a newer owner's clip.
@@ -547,18 +609,32 @@ export class GameAudio {
                 return;
               if (media.currentSrc && media.currentSrc !== loadedSource) return;
               const duration = media.duration;
-              if (!Number.isFinite(duration) || duration <= 0) {
+              const loopStart = clip.loopStartSeconds;
+              if (
+                !Number.isFinite(duration) ||
+                duration <= 0 ||
+                (loopStart !== undefined && loopStart >= duration)
+              ) {
                 this.stopEffects(task.owner);
                 return;
               }
-              if (!media.loop && clip.startOffset! >= duration) {
+              const offset = clip.startOffset ?? 0;
+              if (
+                !media.loop &&
+                loopStart === undefined &&
+                offset >= duration
+              ) {
                 this.stopEffects(task.owner);
                 return;
               }
               try {
-                media.currentTime = media.loop
-                  ? clip.startOffset! % duration
-                  : clip.startOffset!;
+                media.currentTime =
+                  loopStart !== undefined && offset >= loopStart
+                    ? loopStart +
+                      ((offset - loopStart) % (duration - loopStart))
+                    : media.loop
+                      ? offset % duration
+                      : offset;
               } catch {
                 this.stopEffects(task.owner);
               }

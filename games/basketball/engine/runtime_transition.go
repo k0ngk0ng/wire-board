@@ -133,6 +133,9 @@ func mergeRuntimeCarriedWorld(fresh, carry WorldLoopState) WorldLoopState {
 // Result destinations deliberately retain the original mutated selections.
 // Validate those exact mutations instead of relaxing all configuration checks.
 func validateRuntimeOutcome(s RuntimeState) error {
+	if s.Presentation != nil {
+		return validateRuntimePresentation(s)
+	}
 	if s.Outcome == nil {
 		return nil
 	}

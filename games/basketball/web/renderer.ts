@@ -1,4 +1,9 @@
 /** Original-art Canvas presentation. This module has no game rules or ROM runtime. */
+import { rasterizePostResultRows, unpackPostResultRasterRows, type PackedPostResultRows, type PostResultRasterAssets } from "./postresult-raster";
+
+/** The logical raster plan is interpreted and validated by Go/Wasm. */
+export interface PostResultProjectionInput { surface: Record<string, unknown>; plan: Record<string, unknown> }
+export interface PostResultRenderSnapshot extends PostResultProjectionInput { oam: number[] }
 export interface RenderObject {
   id: number; kind: number; character: number; pose: number;
   projected: { x: number; y: number };
@@ -10,6 +15,7 @@ export interface RenderHUD { clockLabel?: number[]; clock: { minutes: number; se
 export interface RenderResult { court: number; digits: number[][]; winningTeam: number }
 export interface HudFetchTiming { addressResetFetch: number; fineScrollResetFetch: number }
 export interface BasketballRenderSnapshot {
+  postResult?: PostResultRenderSnapshot;
   court: number; paletteID?: number;
   /** Original full-group palette clamp; absent is full color, explicit zero is black. */
   paletteLevel?: number;
@@ -39,6 +45,7 @@ interface ResultManifest {source:{rom_sha256:string};actorProfiles:Fragment[][];
 interface CourtPalette {courtTiles: Pixels; courtTexture: Pixels; hudGlyphs: Pixels; hudTemplate: Pixels}
 interface CourtArt { palettes: Record<number,CourtPalette>; initialRing: Ring; columns: {initialization:ColumnPacket[];gameplay:ColumnPacket[]} }
 export interface BasketballAssets {
+  postResult?: PostResultRasterAssets;
   courts: CourtArt[];
   results: { actorProfiles: Fragment[][]; courts: Array<Record<number,ResultImages>> };
   raster: RasterManifest; spriteTiles: Pixels; courtTiles: Pixels; courtTexture: Pixels;
@@ -66,7 +73,7 @@ async function image(url: string, digest?: string): Promise<Pixels> {
   return { width: canvas.width, height: canvas.height, data: context.getImageData(0, 0, canvas.width, canvas.height).data };
 }
 /** baseURL serves only exported image/JSON assets; no original executable is fetched. */
-export async function loadBasketballAssets(baseURL: string): Promise<BasketballAssets> {
+export async function loadBasketballAssets(baseURL: string, options: {postResult?: boolean} = {}): Promise<BasketballAssets> {
   const base = baseURL.replace(/\/$/, '');
   const [raster, players, objects, resultManifest, courtsManifest] = await Promise.all([
     json<RasterManifest>(`${base}/raster/manifest.json`),
@@ -102,7 +109,27 @@ export async function loadBasketballAssets(baseURL: string): Promise<BasketballA
   }));
   if(courts.length!==8||resultCourts.length!==8||resultManifest.actorProfiles.length!==120)throw new Error('Court asset coverage differs');
   // Legacy research consumers can still inspect the original New York default.
-  const ny=courts[1];return { raster, spriteTiles, courts,...ny.palettes[2],initialRing:ny.initialRing,columns:ny.columns,results:{actorProfiles:resultManifest.actorProfiles,courts:resultCourts} };
+  let postResult: PostResultRasterAssets | undefined;
+  if(options.postResult){
+    const manifest=await json<{format:number;source:{rom_sha256:string};indexAtlas:{file:string;pages:number[];tileSize:number;tilesPerPage:number};rgbPalette:number[][];assets:Array<{file:string;sha256:string}>}>(`${base}/postresult/manifest.json`);
+    const atlas=manifest.indexAtlas,record=manifest.assets.find(a=>a.file===atlas.file);
+    if(manifest.format!==1||manifest.source.rom_sha256!==raster.source.rom_sha256||atlas.tileSize!==8||atlas.tilesPerPage!==64||!record)throw new Error('Post-result artwork identity differs');
+    const texture=await image(`${base}/postresult/${atlas.file}`,record.sha256);
+    if(texture.width!==512||texture.height!==atlas.pages.length*8)throw new Error('Post-result index atlas dimensions differ');
+    postResult={pages:atlas.pages,indices:texture.data,rgb:manifest.rgbPalette};
+  }
+  const ny=courts[1];return { raster, spriteTiles, courts,...ny.palettes[2],initialRing:ny.initialRing,columns:ny.columns,results:{actorProfiles:resultManifest.actorProfiles,courts:resultCourts},postResult };
+}
+/** Retry a complete verified bundle, so one broken CDN image cannot leave a
+ * partial mixture of remote and fallback scene resources in a running board. */
+export async function loadBasketballAssetsWithFallback(baseURL: string, localBaseURL = "/basketball/v1/graphics", options: {postResult?: boolean} = {}): Promise<BasketballAssets> {
+  const errors: unknown[] = [];
+  const roots = [...new Set([baseURL, localBaseURL].map(value => value.replace(/\/$/, "")))];
+  for (const root of roots) {
+    try { return await loadBasketballAssets(root, options); }
+    catch (error) { errors.push(error); }
+  }
+  throw new AggregateError(errors, "无法加载篮球图片素材");
 }
 interface Piece { x: number; y: number; tile: number; attr: number }
 export interface RenderDiagnostics { spritePieces: number; capacityReached: boolean; overflowingScanlines: number }
@@ -116,7 +143,7 @@ export class BasketballRenderer {
   private get art(): CourtArt { return this.assets.courts[this.court]; }
   private get palette(): CourtPalette { return this.art.palettes[this.paletteID]; }
   private frame = new ImageData(256, 240);
-  constructor(canvas: HTMLCanvasElement, private assets: BasketballAssets) {
+  constructor(canvas: HTMLCanvasElement, private assets: BasketballAssets, private projectPostResult?: (input: PostResultProjectionInput) => PackedPostResultRows) {
     if(!assets.raster.paletteFade?.entries.length)throw new Error('Original fade palette data is missing');
     for(const entry of assets.raster.paletteFade.entries){
       if(entry.rgb.length!==3||entry.levels.length!==5||entry.levels.some(c=>c.length!==3))throw new Error('Invalid fade color table');
@@ -320,6 +347,21 @@ export class BasketballRenderer {
     }
   }
   render(snapshot: BasketballRenderSnapshot): RenderDiagnostics {
+    if(snapshot.postResult){
+      if(!this.assets.postResult||!this.projectPostResult)throw new Error('Post-result presentation is unavailable');
+      const {surface,plan,oam}=snapshot.postResult;
+      const rows=unpackPostResultRasterRows(this.projectPostResult({surface,plan}),oam);
+      const pixels=rasterizePostResultRows(this.assets.postResult,rows);
+      this.context.putImageData(new ImageData(pixels,256,240),0,0);
+      const spritePieces=oam.filter((value,index)=>index%4===0&&value<239).length;
+      let overflowingScanlines=0;
+      for(const row of rows.rows){
+        if(!(row.mask&16))continue;
+        let count=0;for(let n=0;n<64;n++)if(row.y>oam[n*4]&&row.y<=oam[n*4]+8)count++;
+        if(count>8)overflowingScanlines++;
+      }
+      return {spritePieces,capacityReached:spritePieces===64,overflowingScanlines};
+    }
     this.validate(snapshot);this.paletteID=snapshot.paletteID??snapshot.court+1;const { pieces, full } = this.pieces(snapshot);
     if(snapshot.result != null)this.resultBackground(snapshot);else{this.background(snapshot);this.hud(snapshot.hud);this.hudBoundary(snapshot)} let overflowingScanlines = 0;
     for (let y = 0; y < 240; y++) {

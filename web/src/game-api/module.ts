@@ -41,9 +41,15 @@ export type GameAudioPort = {
   resume: () => Promise<boolean>;
   music: (
     sources: readonly string[],
-    // Offset is seconds in this delivery media. A stable playbackID prevents
-    // snapshot refreshes from restarting the same continuous track.
-    options?: { loop?: boolean; startOffset?: number; playbackID?: string },
+    // Offset is elapsed media seconds. With loopStartSeconds, the prefix plays
+    // once and elapsed positions wrap only within the suffix. A stable
+    // playbackID prevents snapshot refreshes from restarting the same track.
+    options?: {
+      loop?: boolean;
+      startOffset?: number;
+      playbackID?: string;
+      loopStartSeconds?: number;
+    },
   ) => Promise<boolean>;
   stopMusic: () => void;
   // Independently keyed continuous effects; sources are fallback alternatives.

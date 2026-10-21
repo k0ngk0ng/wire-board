@@ -75,6 +75,11 @@ func validateCampaignConfiguration(c RuntimeConfig) error {
 }
 
 func validateCampaignMatchProgress(s RuntimeState) error {
+	// Presentation owns its source phase and reset-period aliases; its validator
+	// binds final progress to the immutable settlement instead.
+	if s.Presentation != nil {
+		return nil
+	}
 	if s.Config.Campaign == nil {
 		return nil
 	}

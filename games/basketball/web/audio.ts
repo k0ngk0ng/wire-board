@@ -20,25 +20,56 @@ const effects = new Map(catalog.effects.map((entry) => [entry.id, entry.wav]));
 for (const [id, rendition] of Object.entries(playback.effects)) {
   effects.set(Number(id), rendition.wav);
 }
-const music = new Map<
-  number,
-  { file: string; loop: boolean; revision: string }
->();
-// Other courts have independent original captures and verified playback
-// derivatives; they must never inherit New York's ID or source URL.
+type MusicRendition = {
+  file: string;
+  loop: boolean;
+  revision: string;
+  loopStartSeconds?: number;
+};
+const music = new Map<number, MusicRendition>();
+// The same integer sample metadata is embedded by the server. Never infer a
+// loop region from a filename, the preview, or the source scene's video clock.
 for (const [id, rendition] of Object.entries(playback.music)) {
-  // WAV is retained as source evidence only. A missing delivery rendition
-  // must not put a multi-hundred-MB master back on the network fallback path.
+  const entry = rendition as Record<string, unknown>;
   if (
-    typeof rendition.file === "string" &&
-    rendition.mime_type === "audio/mpeg"
-  ) {
-    music.set(Number(id), {
-      file: rendition.file,
-      loop: rendition.loop === true,
-      revision: rendition.distribution_sha256,
-    });
+    typeof entry.file !== "string" ||
+    entry.mime_type !== "audio/mpeg" ||
+    typeof entry.distribution_sha256 !== "string" ||
+    !/^[a-f0-9]{64}$/.test(entry.distribution_sha256)
+  )
+    continue;
+  let loopStartSeconds: number | undefined;
+  if (Number(id) === 76 || entry.loop_start_sample !== undefined) {
+    const fields = [
+      entry.sample_rate,
+      entry.loop_start_sample,
+      entry.loop_end_sample,
+      entry.loop_samples,
+      entry.decoded_samples,
+    ];
+    if (
+      !fields.every(
+        (v) => typeof v === "number" && Number.isSafeInteger(v) && v > 0,
+      )
+    )
+      continue;
+    const [rate, start, end, period, count] = fields as number[];
+    if (
+      entry.loop !== true ||
+      rate !== 44100 ||
+      start >= end ||
+      end !== count ||
+      end - start !== period
+    )
+      continue;
+    loopStartSeconds = start / rate;
   }
+  music.set(Number(id), {
+    file: entry.file,
+    loop: entry.loop === true,
+    revision: entry.distribution_sha256,
+    loopStartSeconds,
+  });
 }
 
 export type BasketballMusicState = {
@@ -128,6 +159,9 @@ export class BasketballAudio {
           this.currentMusic = id;
           played = this.port.music(this.sources(track.file), {
             loop: track.loop,
+            ...(track.loopStartSeconds === undefined
+              ? {}
+              : { loopStartSeconds: track.loopStartSeconds }),
           });
         } else {
           report.unsupported.push(id);
@@ -190,6 +224,9 @@ export class BasketballAudio {
       this.currentMusic = state.trackID;
       const played = this.port.music(this.sources(track.file), {
         loop: track.loop,
+        ...(track.loopStartSeconds === undefined
+          ? {}
+          : { loopStartSeconds: track.loopStartSeconds }),
         startOffset: offset,
         playbackID: `${state.epoch}:${state.assetSHA256}`,
       });

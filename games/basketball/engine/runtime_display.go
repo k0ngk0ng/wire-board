@@ -7,6 +7,9 @@ import "fmt"
 // never be submitted to the court renderer. D1B5 supplies the next court's
 // camera only after unentered Scene 1/phase 0 completes.
 func runtimeHasCourtDisplaySource(s RuntimeState) bool {
+	if s.Presentation != nil {
+		return false
+	}
 	if s.Playing != nil {
 		return true
 	}

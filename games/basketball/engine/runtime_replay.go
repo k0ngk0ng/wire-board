@@ -18,7 +18,7 @@ type RecordedVideoInput struct {
 // local playback protocol and is never accepted as a player HTTP action.
 func StepRecordedVideo(original RuntimeState, input RecordedVideoInput) (RuntimeStep, error) {
 	failure := RuntimeStep{State: original}
-	if input.Frame != original.VideoFrames+1 || original.Outcome != nil && original.Outcome.Confirmed {
+	if input.Frame != original.VideoFrames+1 || RuntimeFinished(original) {
 		return failure, fmt.Errorf("nonconsecutive or completed video replay")
 	}
 	s := original
@@ -34,7 +34,7 @@ func StepRecordedVideo(original RuntimeState, input RecordedVideoInput) (Runtime
 	if err != nil {
 		return failure, err
 	}
-	if step.State.Outcome != nil && step.State.Outcome.Confirmed {
+	if RuntimeFinished(step.State) && step.State.Presentation == nil {
 		step.State.Display, err = CommitDisplayVideo(step.State.Display, 0, 0)
 		if err != nil {
 			return failure, err

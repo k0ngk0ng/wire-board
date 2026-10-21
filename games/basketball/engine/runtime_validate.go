@@ -50,6 +50,9 @@ func validateRuntimePlayingConfig(c RuntimeConfig, s *RuntimePlayingState) error
 		}
 	}
 	a := s.Context.Actions
+	if a.RecoverUnsupportedBall != c.RecoverUnsupportedBall {
+		return fmt.Errorf("playing ball recovery policy differs from configuration")
+	}
 	if a.EnhancementEnabled != (c.Match.Mode&128 == 0) || a.Equipment != uint8(c.Match.Equipment[0][0]) {
 		return fmt.Errorf("playing equipment mode differs from configuration")
 	}

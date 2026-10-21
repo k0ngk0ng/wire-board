@@ -1,0 +1,9 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "9fbee1040918c31d51824aadca8c55b057b778dad01465d109d589760006811a",
+  "records": 6,
+  "source": "three unchanged original complete E149 rolloff calls and three stalled calls from retained Go states; prior whole-machine source agreement documented separately",
+  "originalInstructionsUnmodified": true,
+  "repairImplementedInOracle": false,
+  "runtimeSHA256": "fe1aa12d5c272c9b72b8f42ab890d8313a536b5bdde91cdf32eb69c653f7813a"
+}

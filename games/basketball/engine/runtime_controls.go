@@ -10,6 +10,11 @@ func SetRuntimeAutomation(original RuntimeState, automated [4]bool) (RuntimeStat
 	if err := ValidateRuntimeState(original); err != nil {
 		return original, err
 	}
+	// The host may toggle ownership during the movie; accepted source samples and
+	// the finished match configuration stay frozen.
+	if RuntimePresentationActive(original) {
+		return original, nil
+	}
 	var assignments [4]int8
 	var changed [4]bool
 	anyChange := false

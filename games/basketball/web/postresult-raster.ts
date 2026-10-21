@@ -36,6 +36,37 @@ export interface PostResultRasterRows {
   rows: Array<{ y: number; segments: PostResultTileSegment[]; spriteCHR: number[]; mask: number }>;
 }
 
+export interface PackedPostResultRows {
+  format: number;
+  palette: number[];
+  rows: string;
+}
+
+/** Decode the local Wasm projection protocol; scene rules and projection stay
+ * in Go, while the browser supplies indexed artwork and paints the pixels. */
+export function unpackPostResultRasterRows(packed: PackedPostResultRows, oam: number[]): PostResultRasterRows {
+  if (packed.format !== 1 || typeof packed.rows !== "string") throw new Error("Unknown presentation projection format");
+  const bytes = Uint8Array.from(atob(packed.rows), value => value.charCodeAt(0));
+  let at = 0;
+  const read = () => {
+    if (at >= bytes.length) throw new Error("Truncated presentation projection");
+    return bytes[at++];
+  };
+  const rows: PostResultRasterRows["rows"] = [];
+  for (let y = 0; y < 240; y++) {
+    const spriteCHR = [read(), read(), read(), read()], mask = read();
+    const count = read() | (read() << 8);
+    if (count < 1 || count > 256) throw new Error("Invalid presentation segment count");
+    const segments: PostResultTileSegment[] = [];
+    for (let i = 0; i < count; i++) segments.push({
+      x: read(), length: read(), page: read(), tile: read(), row: read(), column: read(), palette: read(), mask: read(),
+    });
+    rows.push({ y, spriteCHR, mask, segments });
+  }
+  if (at !== bytes.length) throw new Error("Unexpected presentation projection bytes");
+  return { palette: packed.palette, oam, rows };
+}
+
 /** Render resolved tile-row references. Fetch timing is resolved upstream;
  * this path consumes no bus events, machine state or reference screenshots. */
 export function rasterizePostResultRows(assets: PostResultRasterAssets, frame: PostResultRasterRows): Uint8ClampedArray {
@@ -58,23 +89,34 @@ export function rasterizePostResultRows(assets: PostResultRasterAssets, frame: P
   const output = new Uint8ClampedArray(256 * 240 * 4);
   for (let y = 0; y < 240; y++) {
     const row = frame.rows[y];
-    if (row.y !== y || row.spriteCHR.length !== 4 || row.spriteCHR.some(p => !pages.has(p))) throw new Error("Invalid scene raster row");
-    integer(row.mask, 0, 255, "display mask");
+    if (row.y !== y || row.spriteCHR.length !== 4) throw new Error("Invalid scene raster row");
+    integer(row.mask, 0, 31, "display mask");
+    const effectiveColor = (index: number) => assets.rgb[row.mask & 1 ? index & 0x30 : index];
+    const backdrop = effectiveColor(frame.palette[0]);
+    // Source background uploads briefly map compressed resource pages while
+    // the screen is black/disabled. Those bytes cannot affect visible pixels.
+    const uniform = frame.palette.every(index => effectiveColor(index).every((v, i) => v === backdrop[i]));
+    const noTextures = uniform || (!(row.mask & 16) && row.segments.every(segment => !(segment.mask & 8)));
+    for (const page of row.spriteCHR) {
+      integer(page, 0, 127, "CHR page");
+      if (!noTextures && !pages.has(page)) throw new Error("Missing scene CHR page");
+    }
     const background = new Uint8Array(256), sprites: number[] = [];
     let end = 0;
     for (const segment of row.segments) {
-      if (segment.x !== end || !pages.has(segment.page)) throw new Error("Invalid scene tile coverage or page");
+      integer(segment.page, 0, 127, "CHR page");
+      if (segment.x !== end || (!noTextures && !pages.has(segment.page))) throw new Error("Invalid scene tile coverage or page");
       integer(segment.length, 1, 8, "segment length");
       integer(segment.column, 0, 8 - segment.length, "tile column");
       integer(segment.row, 0, 7, "tile row");
       integer(segment.tile, 0, 63, "tile");
       integer(segment.palette, 0, 3, "palette group");
-      integer(segment.mask, 0, 255, "display mask");
+      integer(segment.mask, 0, 31, "display mask");
       end += segment.length;
       if (end > 256) throw new Error("Scene tile row overflow");
       for (let dx = 0; dx < segment.length; dx++) {
         const x = segment.x + dx;
-        if (!(segment.mask & 8) || (x < 8 && !(segment.mask & 2))) continue;
+        if (noTextures || !(segment.mask & 8) || (x < 8 && !(segment.mask & 2))) continue;
         const index = pixel(segment.page, segment.tile, segment.row, segment.column + dx);
         if (index) background[x] = segment.palette * 4 + index;
       }
@@ -86,7 +128,7 @@ export function rasterizePostResultRows(assets: PostResultRasterAssets, frame: P
     }
     for (let x = 0; x < 256; x++) {
       let paletteIndex = background[x];
-      if ((row.mask & 16) && (x >= 8 || (row.mask & 4))) for (const at of sprites) {
+      if (!noTextures && (row.mask & 16) && (x >= 8 || (row.mask & 4))) for (const at of sprites) {
         const left = frame.oam[at + 3];
         if (x < left || x >= left + 8) continue;
         const attr = frame.oam[at + 2], tile = frame.oam[at + 1], dx = x - left, dy = y - frame.oam[at] - 1;
