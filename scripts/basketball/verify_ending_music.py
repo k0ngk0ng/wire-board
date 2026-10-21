@@ -1,4 +1,4 @@
-"""Verify finite ending75 and bounded original timeline76 without a fake loop."""
+"""Verify finite75 and preserved preview76, separately from compound76 delivery."""
 from pathlib import Path
 import array
 import hashlib
@@ -33,8 +33,20 @@ def main():
             assert a==0 and b*2==len(original) and 332<len(output)/2/44100<334
     playback=json.loads((ROOT/'games/basketball/assets/audio-playback.json').read_text())['music']
     assert playback['75']['wav']=='music-075.wav' and playback['75']['loop'] is False
-    assert '76' not in playback
-    result={'status':'passed','finite_music':[75],'timeline_preview_only':[76],'accepted_for_release':False,'listening_accepted':False}
+    compound=playback['76'];preview=next(e for e in manifest['tracks'] if e['id']==76)
+    delivery=json.loads((OUT/'music76-delivery-manifest.json').read_text())
+    assert compound['file']==delivery['file']=='music-076-intro-loop.mp3' and compound['loop'] is True
+    assert compound['wav']==delivery['master']=='music-076-intro-loop.wav' and compound['wav']!=preview['wav']
+    assert compound['distribution_sha256']==delivery['sha256']!=preview['sha256']
+    assert compound['sha256']==delivery['master_sha256'] and compound['source_manifest']=='music76-delivery-manifest.json'
+    assert hashlib.sha256((OUT/compound['file']).read_bytes()).hexdigest()==compound['distribution_sha256']
+    for key in ['sample_rate','loop_start_sample','loop_end_sample','loop_samples','decoded_samples']:assert compound[key]==delivery[key]
+    assert compound['loop_start_sample']>0 and compound['loop_end_sample']==compound['decoded_samples']
+    assert compound['loop_samples']==compound['loop_end_sample']-compound['loop_start_sample']
+    result={'status':'passed','finite_music':[75],'preserved_timeline_preview':[76],
+            'preview76_runtime_registered':False,'separate_compound76_runtime_registered':True,
+            'scope':'finite75 and unchanged333-second preview76; distinct verified compound76 binding, not browser acceptance',
+            'accepted_for_release':False,'listening_accepted':False}
     (OUT/'ending-music-verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 
 

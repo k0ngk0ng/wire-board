@@ -10,10 +10,11 @@ ROOT=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--full-match',action='store_true',help='also render a cold complete match through the actual client')
 parser.add_argument('--all-computer',action='store_true',help='run the natural complete-match case with all four original computer players')
-parser.add_argument('--court',type=int,choices=[0,1,2,3,4,5,6],default=1,help='original recovered court selector; no world-state injection')
+parser.add_argument('--court',type=int,choices=[0,1,2,3,4,5,6,7],default=1,help='original recovered court selector; no world-state injection')
 parser.add_argument('--teams',type=int,nargs=2,help='explicit original team IDs for the cold full match')
 parser.add_argument('--characters',type=int,nargs=4,help='explicit original character slots for the cold full match')
 parser.add_argument('--match-mode',type=int,choices=[0,1,128,129],help='explicit original mode for the cold full match (platform single matches use128)')
+parser.add_argument('--observe-rolloff',action='store_true',help='require approved unsupported-ball recovery and visible original falling continuation in the cold complete match')
 parser.add_argument('--observe-plan12',action='store_true',help='require the original ordinary low-jump choice and rendered player action in a cold full match')
 parser.add_argument('--commands',action='store_true',help='native keyboard/touch teammate commands for all six original tactics')
 parser.add_argument('--carry',action='store_true',help='native pickup, carrying movement, jumping and A/B prop throws on Court3')
@@ -26,6 +27,7 @@ if (ARGS.teams is not None or ARGS.characters is not None) and not (ARGS.full_ma
 if ARGS.teams is not None and (any(t<0 or t>7 for t in ARGS.teams) or ARGS.teams[0]==ARGS.teams[1]):parser.error('teams must be distinct original IDs 0..7')
 if ARGS.characters is not None and (any(c<0 or c>3 for c in ARGS.characters) or ARGS.characters[0]==ARGS.characters[1] or ARGS.characters[2]==ARGS.characters[3]):parser.error('characters must be 0..3 and distinct within each team')
 if ARGS.match_mode is not None and not ARGS.full_match:parser.error('--match-mode requires --full-match')
+if ARGS.observe_rolloff and not (ARGS.full_match and ARGS.all_computer):parser.error('--observe-rolloff requires --full-match --all-computer')
 if ARGS.observe_plan12 and not (ARGS.full_match and ARGS.all_computer):parser.error('--observe-plan12 requires --full-match --all-computer')
 if ARGS.all_computer and not ARGS.full_match:parser.error('--all-computer requires --full-match')
 if ARGS.spring and ARGS.court!=2:parser.error('--spring requires --court 2')
@@ -37,10 +39,11 @@ if ARGS.court!=1:OUT=OUT.with_name(OUT.name+'-court-'+str(ARGS.court))
 if ARGS.teams is not None:OUT=OUT.with_name(OUT.name+'-teams-'+'-'.join(map(str,ARGS.teams)))
 if ARGS.characters is not None:OUT=OUT.with_name(OUT.name+'-characters-'+'-'.join(map(str,ARGS.characters)))
 if ARGS.commands:OUT=OUT.with_name(OUT.name+'-commands')
+if ARGS.observe_rolloff:OUT=OUT.with_name(OUT.name+'-rolloff-recovery')
 if ARGS.observe_plan12:OUT=OUT.with_name(OUT.name+'-plan12')
 if ARGS.match_mode is not None:OUT=OUT.with_name(OUT.name+'-mode'+str(ARGS.match_mode))
 OUT.mkdir(parents=True,exist_ok=True)
-env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str(ROOT/'.local/bkl-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
+env=dict(os.environ,AGENT_BROWSER_SESSION='bkl-'+uuid.uuid4().hex[:6],AGENT_BROWSER_SOCKET_DIR=str((ROOT/'.local/basketball').resolve()/'bkl-sockets'),TMPDIR=str(ROOT/'.local/tmp'),NODE_PATH=str(ROOT/'web/node_modules'))
 Path(env['AGENT_BROWSER_SOCKET_DIR']).mkdir(exist_ok=True)
 requests=[]
 audio_catalog=json.loads((ROOT/'games/basketball/assets/audio-catalog.json').read_text())
@@ -401,9 +404,13 @@ def main():
             if ARGS.characters is not None:expect('cold match uses selected original characters',js('live.view.state.config.match.Characters')==ARGS.characters)
             js('window.naturalBallActions={};window.naturalShotPlans={};window.naturalLowJump=[];window.lowJumpSeen=new Set()')
             observe_fade=''
+            if ARGS.observe_rolloff:
+                js('window.rolloffEvents=[];window.rolloffPrevious=null')
+                observe_fade+='if(s.playing){const w=s.playing.world.Preparation.Actions,b=w.ball;if(rolloffPrevious&&[0,5,6].includes(rolloffPrevious.action)&&b.action===10&&!b.entered&&w.Holder===6&&b.airborne&&b.body.gravity===0&&b.body.velocity.height===0&&b.body.position.height>0){rolloffEvents.push({video:s.videoFrames,before:rolloffPrevious,after:structuredClone(b),checkpoint:rolloffEvents.length===0?live.save():null});}rolloffPrevious=structuredClone(b);}'
+
             if ARGS.fade:
                 js('window.naturalFades=[]')
-                observe_fade='const f=s.display.PaletteFade;if(f&&f.Frame%2===1){const p=document.querySelector("canvas").getContext("2d").getImageData(0,0,256,240).data,colors=new Set();let hash=2166136261;for(let j=0;j<p.length;j+=4){colors.add((p[j]<<16)|(p[j+1]<<8)|p[j+2]);for(let k=0;k<3;k++)hash=Math.imul(hash^p[j+k],16777619)>>>0;}naturalFades.push({video:s.videoFrames,out:f.Out,cursor:f.Frame,level:s.display.Visible.paletteLevel??4,result:!!s.display.Visible.result,palette:s.display.Visible.paletteID,colors:colors.size,pixelHash:hash});}'
+                observe_fade+='const f=s.display.PaletteFade;if(f&&f.Frame%2===1){const p=document.querySelector("canvas").getContext("2d").getImageData(0,0,256,240).data,colors=new Set();let hash=2166136261;for(let j=0;j<p.length;j+=4){colors.add((p[j]<<16)|(p[j+1]<<8)|p[j+2]);for(let k=0;k<3;k++)hash=Math.imul(hash^p[j+k],16777619)>>>0;}naturalFades.push({video:s.videoFrames,out:f.Out,cursor:f.Frame,level:s.display.Visible.paletteLevel??4,result:!!s.display.Visible.result,palette:s.display.Visible.paletteID,colors:colors.size,pixelHash:hash});}'
             if ARGS.court==6:
                 js('window.naturalSlots=[];window.lastSlotKey=""')
                 observe_fade+='const p=s.playing?.world.Preparation;if(p){const a=p.Actions,row={frame:s.videoFrames,logic:s.logicSteps,progress:p.CourtScoreFlags,outcome:p.CourtOutcomeFlags??0,scores:p.Scores,palette:s.display.Visible.paletteID,reels:[...a.actors.map(a=>a.player.newYorkPassage??0),...a.auxiliary.map(a=>a.NewYorkPassage??0)]},key=JSON.stringify([row.progress,row.outcome,row.scores,row.palette,row.reels]);if(key!==lastSlotKey){lastSlotKey=key;naturalSlots.push(row);}}'
@@ -422,6 +429,9 @@ def main():
                     browser('screenshot',str(OUT/'natural-intermission.png'))
                     key('keyDown','Space',' ',32);js('live.advance(1)');key('keyUp','Space',' ',32);intermissions+=1
             expect('cold browser match reaches original confirmed outcome',state.get('outcome',{}).get('confirmed') and intermissions==1 and state['videoFrames']>=21600)
+            if ARGS.observe_rolloff:
+                events=js('rolloffEvents');expect('cold full match naturally reaches approved roll-off recovery',len(events)>0)
+                (OUT/'natural-rolloff-events.json').write_text(json.dumps(events,indent=2)+'\n')
             if ARGS.court==6:
                 slots=js('naturalSlots');(OUT/'natural-slot-events.json').write_text(json.dumps(slots,indent=2)+'\n')
                 expect('natural Court6 goals activate original slot progress',any(any(r['progress']) for r in slots))
@@ -450,6 +460,24 @@ def main():
             (OUT/'natural-final-canvas.png').write_bytes(base64.b64decode(natural_image.split(',')[1]))
             (OUT/'natural-result.json').write_text(json.dumps(dict(status='passed',coldSeed=0x12345678,allComputer=ARGS.all_computer,court=ARGS.court,originalMode=natural['state']['config']['match']['Mode'],teams=ARGS.teams,characters=ARGS.characters,rewrittenWorldFields=False,intermissions=intermissions,elapsedSeconds=time.monotonic()-began,final=state,trace=trace),indent=2)+'\n')
             browser('screenshot',str(OUT/'natural-final-desktop.png'));browser('set','viewport','320','720');browser('screenshot',str(OUT/'natural-final-mobile.png'));browser('set','viewport','1280','900')
+            if ARGS.observe_rolloff:
+                replay=[]
+                for label,width,height in [('desktop',1280,900),('mobile',320,720)]:
+                    browser('set','viewport',str(width),str(height))
+                    js('live.restore('+json.dumps(events[0]['checkpoint'])+')')
+                    frames=[]
+                    for n in range(48):
+                        row=js('(()=>{live.advance(1);const s=live.view.state,b=s.playing.world.Preparation.Actions.ball,v=s.display.Visible,o=v.objects.find(o=>o.id===6);return{video:s.videoFrames,ball:b,visible:!!o&&v.drawOrder.includes(6)&&o.projected.x>=0&&o.projected.x<256&&o.projected.y>=0&&o.projected.y<240,object:o,canvas:document.querySelector("canvas").toDataURL()}})()')
+                        if n in [0,5,11,23,47]:(OUT/f'rolloff-{label}-{n:02d}.png').write_bytes(base64.b64decode(row['canvas'].split(',')[1]))
+                        row.pop('canvas');frames.append(row)
+                    expect('original falling continuation visibly descends '+label,any(r['visible'] and r['ball']['body']['position']['height']<events[0]['after']['body']['position']['height'] for r in frames))
+                    expect('release initializes original half-pixel gravity '+label,any(r['ball']['action']==10 and r['ball']['body']['gravity']==128 for r in frames))
+                    browser('screenshot',str(OUT/f'rolloff-{label}-layout.png'))
+                    replay.append(dict(viewport=label,frames=frames))
+                expect('desktop/mobile restored roll-off trajectory is identical',replay[0]['frames']==replay[1]['frames'])
+                (OUT/'rolloff-rendered-continuation.json').write_text(json.dumps(dict(scope='same authentic cold-match checkpoint restored for viewport checks; no world edits',events=len(events),replay=replay),indent=2)+'\n')
+                js('live.restore('+json.dumps(natural)+')');browser('set','viewport','1280','900')
+
         # Explicit final-scene boundary; this does not stand in for natural
         # full-match acceptance in verify_video_runtime.py --full-match.
         js('(()=>{const call=v=>{const r=JSON.parse(window.basketballWasm(JSON.stringify(v)));if(!r.ok)throw Error(JSON.stringify(r.error));return r.data};const config=call({op:"defaults"});config.match.Court='+str(ARGS.court)+';const fresh=call({op:"create",config});const s=fresh.state,o=s.opening,previous=live.save().state;s.display=previous.display;const camera=previous.display.Visible.camera;o.Transition.CameraScroll=[camera.x,camera.y,camera.x,camera.y];o.Transition.Match.Phase=6;o.Transition.Match.Period=2;o.Transition.Scores=[0,12];o.Transition.Objects.forEach(object=>object.Pose={frame:127,mirrored:false});o.Transition.Match.DisplayedScores=[[0,0,0],[0,1,2]];o.Projection.drawOrder.fill(255,0,12);o.Projection.drawCount=0;delete s.opening;s.transition={scene:o};s.logicSteps=1;call({op:"dispose",session:fresh.session});live.restore({version:1,state:s});for(let i=0;i<5;i++)live.advance(120);return true})()')

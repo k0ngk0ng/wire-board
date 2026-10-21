@@ -1,0 +1,12 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "cases": 3533,
+  "originalFrames": 16,
+  "fullCE09Calls": 3533,
+  "fullF002Calls": 3533,
+  "pieces": 37247,
+  "capacityCases": 1,
+  "fixtureSHA256": "5028128d8476255d2acb60c516b4f206be43d97351e3c2a685c3e46ca5909114",
+  "skippedCalls": [],
+  "scope": "Full original CE09/F002 oracle; all source instructions are executed.\nCases distinguish captured DMA lineage from isolated pose/edge/capacity probes.\n"
+}

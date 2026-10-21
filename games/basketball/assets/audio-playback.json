@@ -109,6 +109,24 @@
       "mime_type": "audio/mpeg",
       "distribution_sha256": "6934b7bf03480aa9dcee0adbee9b68adb425fe6873d86f5e04d75c1524b6f684",
       "encoding_manifest": "music-distribution-manifest.json"
+    },
+    "76": {
+      "wav": "music-076-intro-loop.wav",
+      "sha256": "cc6a513c5246031c63e71a04190760f226241ce20ddf90029dd5930050721fac",
+      "loop": true,
+      "source_manifest": "music76-delivery-manifest.json",
+      "file": "music-076-intro-loop.mp3",
+      "mime_type": "audio/mpeg",
+      "distribution_sha256": "7e0eb8fcaa8cbc9c426b93fc19d63ac06451874cd9008aecd11d4cb99e733469",
+      "encoding_manifest": "music76-delivery-manifest.json",
+      "processing": "unchanged original prefix and full original period; final1411samples raised-cosine convex blend with corresponding source pre-anchor passage",
+      "accepted_for_release": false,
+      "listening_accepted": false,
+      "sample_rate": 44100,
+      "loop_start_sample": 5465255,
+      "loop_end_sample": 32515748,
+      "loop_samples": 27050493,
+      "decoded_samples": 32515748
     }
   },
   "effects": {

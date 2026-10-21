@@ -1,0 +1,7 @@
+{
+  "cases": 720,
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "8dc0ba80c168b73eed9d6b7f17290a51568dd88cd7c8f2ab4b02122257247fb8",
+  "skippedCalls": [],
+  "scope": "Original complete CB0E upload processing with declared PPU memory mapping.\nThe CPU executes queue ordering/increment selection; the adapter models two\nphysical nametables and standard palette aliases, not a video/CPU runtime.\n"
+}

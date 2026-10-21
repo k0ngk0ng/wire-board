@@ -3,9 +3,10 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 import { preparePublicAssets } from "./scripts/public-assets.mjs";
 import { prepareBasketballRuntime } from "../games/basketball/build/runtime.mjs";
+import { prepareBasketballAssets } from "../games/basketball/build/assets.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 export default defineConfig({
-  publicDir: preparePublicAssets(root, [prepareBasketballRuntime(root)]),
+  publicDir: preparePublicAssets(root, [prepareBasketballRuntime(root), prepareBasketballAssets(root)]),
   plugins: [react()],
   resolve: { dedupe: ["react", "react-dom", "lucide-react", "three"] },
   server: {

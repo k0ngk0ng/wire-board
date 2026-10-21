@@ -66,3 +66,8 @@ go run ./scripts/basketball/replay_world_segment .local/basketball/rea/campaign-
 ```
 
 For cooperative mode use `coop` and failure snapshot `equipment-runtime-regression-1.json`. Both complete command sequences were executed. Source ROM identity, per-segment RAM/world hashes and comparison results are retained in `engine/testdata/campaign-home-stall-source.json`. The capture scripts use the existing workspace-contained FCEUX tooling; no new emulator or REA setup is required.
+
+
+## 后续：已获授权的修复
+
+用户随后明确选择修复原版卡死问题。新对局通过持久化策略启用原动作10下落路径；旧快照缺省仍保留原行为。本文中的原版缺陷与失败证据保持原样。实现、真实触发、浏览器动画、原源兼容与旧存档续跑结果见 [修复验收](SUSPENDED_BALL_RECOVERY_VERIFICATION.md)。这不等于完整战役或所有球场模式已通过最终发布验收。

@@ -7,6 +7,7 @@ import type {
   ControllerSettingsData,
 } from "../../../web/src/controllers/input";
 import { CampaignPanel } from "./CampaignPanel";
+import { resolveBasketballAssetsBase } from "./asset-base";
 import { BasketballNetworkClient } from "./network-client";
 import type { BasketballNetworkView } from "./network-scene";
 import "./network.css";
@@ -67,7 +68,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
           : fetched;
       if (!saved) throw Error("未找到当前用户的控制器设置");
       setProfile(saved);
-      const base = props.assets.replace(/\/+$/, "");
+      const base = resolveBasketballAssetsBase(props.assets);
       const created = await BasketballNetworkClient.create({
         root: root.current!,
         canvas: canvas.current!,
@@ -78,6 +79,7 @@ export function Board(props: BoardProps<BasketballNetworkView>) {
         controller: watching ? undefined : localActor,
         runtimeURL: "/basketball/v1/runtime",
         assetsURL: base + "/basketball/v1/graphics",
+        postResult: !!data.campaign,
         audio: props.audio,
         audioOptions: { assetsBase: base },
         send: (action) => {

@@ -335,6 +335,9 @@ func startNextCampaign(ctx gameapi.Context, original State, flags [4]bool) (Stat
 	if err != nil {
 		return original, err
 	}
+	// Continue preserves the saved campaign's policy. A new campaign or
+	// password entry still uses the current platform default.
+	r.Config.RecoverUnsupportedBall = original.Runtime.Config.RecoverUnsupportedBall
 	r, err = engine.SetRuntimeAutomation(r, flags)
 	if err != nil {
 		return original, err

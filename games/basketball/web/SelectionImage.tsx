@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { resolveBasketballAssetsBase } from "./asset-base";
 
 export function SelectionImage({
   assets,
@@ -12,7 +13,8 @@ export function SelectionImage({
   className?: string;
 }) {
   const local = `/basketball/v1/selection/${file}`;
-  const remote = assets ? `${assets.replace(/\/$/, "")}${local}` : local;
+  const base = resolveBasketballAssetsBase(assets);
+  const remote = base ? `${base}${local}` : local;
   const [source, setSource] = useState(remote);
   useEffect(() => setSource(remote), [remote]);
   return (

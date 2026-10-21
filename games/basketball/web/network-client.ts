@@ -9,7 +9,8 @@ import {
   type BasketballAudioOptions,
   type BasketballMusicState,
 } from "./audio";
-import { BasketballRenderer, loadBasketballAssets } from "./renderer";
+import { BasketballRenderer, loadBasketballAssetsWithFallback } from "./renderer";
+import type { PackedPostResultRows } from "./postresult-raster";
 import { loadBasketballWasm } from "./wasm";
 import {
   BasketballNetworkInput,
@@ -32,6 +33,7 @@ export type BasketballNetworkClientOptions = {
   controller?: number;
   runtimeURL: string;
   assetsURL: string;
+  postResult?: boolean;
   audio: GameAudioPort;
   audioOptions?: BasketballAudioOptions;
   send: (action: BasketballInputBatch) => Promise<void>;
@@ -70,11 +72,11 @@ export class BasketballNetworkClient {
   ): Promise<BasketballNetworkClient> {
     const [engine, assets] = await Promise.all([
       loadBasketballWasm(options.runtimeURL),
-      loadBasketballAssets(options.assetsURL),
+      loadBasketballAssetsWithFallback(options.assetsURL, undefined, {postResult: options.postResult}),
     ]);
     return new BasketballNetworkClient(
       options,
-      new BasketballRenderer(options.canvas, assets),
+      new BasketballRenderer(options.canvas, assets, projection => engine.request<PackedPostResultRows>({op: "projectPresentation", projection})),
       engine,
     );
   }

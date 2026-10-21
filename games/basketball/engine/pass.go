@@ -34,7 +34,7 @@ type PassLaunchContext struct {
 // This does not resolve catches, contact, baskets or the rest of a world step.
 func LaunchPass(position, target Position, arcHeight Fixed, context ...PassLaunchContext) (Body, error) {
 	original := Body{Position: position}
-	if position.Height < 0 || target.Height < 0 || arcHeight < 0 || position.Height > 511*Pixel || target.Height > 511*Pixel || arcHeight > 255*Pixel {
+	if position.Height < 0 || target.Height < -256*Pixel || arcHeight < 0 || position.Height > 511*Pixel || target.Height > 511*Pixel || arcHeight > 255*Pixel {
 		return original, errors.New("pass height lies outside reconstructed court range")
 	}
 	dx := int32(target.X/Pixel - position.X/Pixel)
@@ -72,8 +72,16 @@ func LaunchPass(position, target Position, arcHeight Fixed, context ...PassLaunc
 		ny = -ny
 	}
 	travelDistance := major * (256 + extra) >> 8
-	rise := int32((target.Height / Pixel) - (position.Height / Pixel) + (arcHeight / Pixel))
+	// Original $06A2/$06A3 receiver bytes are signed in the rise calculation.
+	// An observed receiver at FF00 (-256 pixels) is valid. This bounded FF
+	// domain retains the original whole-byte read for negative fractions.
+	rise := int32((target.Height >> 8) - (position.Height / Pixel) + (arcHeight / Pixel))
 	drop := int32(arcHeight / Pixel)
+	if rise < 0 && position.Height/Pixel == 0 {
+		// Bank5 8C6D would keep adding zero forever. Reject this unproductive
+		// source path explicitly rather than hang or invent a launch arc.
+		return original, errors.New("original pass arc normalization cannot advance from zero source height")
+	}
 	for rise < 0 {
 		drop = int32(position.Height / Pixel)
 		rise += drop

@@ -21,15 +21,16 @@ type Checkpoint struct {
 	State   engine.RuntimeState `json:"state"`
 }
 type Request struct {
-	Op         string                      `json:"op"`
-	Session    uint64                      `json:"session,omitempty"`
-	Config     *engine.RuntimeConfig       `json:"config,omitempty"`
-	Held       []engine.Buttons            `json:"held,omitempty"`
-	Ticks      *int                        `json:"ticks,omitempty"`
-	Checkpoint *Checkpoint                 `json:"checkpoint,omitempty"`
-	Controller *uint8                      `json:"controller,omitempty"`
-	Buttons    *engine.Buttons             `json:"buttons,omitempty"`
-	Inputs     []engine.RecordedVideoInput `json:"inputs,omitempty"`
+	Projection *PresentationProjectionRequest `json:"projection,omitempty"`
+	Op         string                         `json:"op"`
+	Session    uint64                         `json:"session,omitempty"`
+	Config     *engine.RuntimeConfig          `json:"config,omitempty"`
+	Held       []engine.Buttons               `json:"held,omitempty"`
+	Ticks      *int                           `json:"ticks,omitempty"`
+	Checkpoint *Checkpoint                    `json:"checkpoint,omitempty"`
+	Controller *uint8                         `json:"controller,omitempty"`
+	Buttons    *engine.Buttons                `json:"buttons,omitempty"`
+	Inputs     []engine.RecordedVideoInput    `json:"inputs,omitempty"`
 }
 type Failure struct {
 	Code   string `json:"code"`
@@ -98,6 +99,15 @@ func (b *Bridge) Handle(raw []byte) (result Response) {
 		return failed("bad_request", fmt.Errorf("request must contain one JSON object"))
 	}
 	switch request.Op {
+	case "projectPresentation":
+		if request.Projection == nil {
+			return failed("bad_projection", fmt.Errorf("presentation projection is required"))
+		}
+		data, err := projectPresentation(*request.Projection)
+		if err != nil {
+			return failed("bad_projection", err)
+		}
+		return success(data)
 	case "defaults":
 		return success(engine.DefaultRuntimeConfig())
 	case "create":

@@ -1,0 +1,8 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "cases": 78,
+  "irqCalls": 228,
+  "fixtureSHA256": "6f2e2739a846d71bc08ad1f542386e6c5063d26f0ae45aed878f18ea6207cd06",
+  "scope": "Execute complete original NMI/IRQ functions for typed display-program proof.\n\nControlled inactive upload queues and silent audio state. All instructions run;\nPPU/MMC3/APU writes are recorded. CPU instruction cycles are exact; DMA hardware\nstall cycles are not emulated. NMI display offsets begin after DMA/queue work at\nF18F(Scene7) orF206(Scene1); IRQ effects precede audio work atselector1.\n",
+  "skippedCalls": []
+}

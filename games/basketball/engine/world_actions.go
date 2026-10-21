@@ -106,6 +106,8 @@ type WorldActionState struct {
 }
 
 type WorldActionContext struct {
+	// Explicit platform repair policy; zero retains original source behavior.
+	RecoverUnsupportedBall bool `json:"recoverUnsupportedBall,omitempty"`
 	// Owner FF's source is the last generated background column, before actions.
 	BackgroundLaunchHeight *Fixed `json:"-"`
 	// Original third equipment slot ($06E6 + 3*character), explicitly sourced.
@@ -654,6 +656,9 @@ func advanceWorldBallStep(s *WorldActionState, ctx WorldActionContext, court Fla
 
 	default:
 		return nil, fmt.Errorf("ball action %d not reconstructed", s.Ball.Action)
+	}
+	if err == nil && ctx.RecoverUnsupportedBall {
+		err = recoverUnsupportedLooseBall(s, ctx.CourtID)
 	}
 	return sounds, err
 }

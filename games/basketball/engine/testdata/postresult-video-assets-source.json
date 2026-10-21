@@ -1,0 +1,54 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "files": {
+    "games/basketball/engine/testdata/postresult-video-assets.json.gz": "95b8f2526df2750a4b0c0b17aea2b5d931018b011473b2e0a33e8d971a4ffab9",
+    "games/basketball/engine/postresult_video_assets_generated.go": "062ffe22553b32d888ae701f59c9a90b4386be8c0858677de20b54ae4dee28cd"
+  },
+  "scope": "static source resources generated from ROM, never replay fixtures;1900 unchanged9526 palette calls;9 originalDC15..DCB0 decoded outputs and source cycle costs",
+  "ranges": [
+    "fixed D8C4 descriptor pointers, DB8B base presets",
+    "bank3 compressed streams or selected CHR page data",
+    "bank4 962F/97AB palettes",
+    "fixed DC15..DCB0 disabled upload work",
+    "bank4 BBA3 result fieldCHR table; bank3 82ED..8320 teamCHR/palette initialization"
+  ],
+  "handoffSource": [
+    {
+      "bank": 3,
+      "start": "82ED",
+      "endExclusive": "8320",
+      "hex": "a9008551ad86051869018552ad87051869018553a9208554ad86051869028d0503ad87051869028d0603a000a90099d7069912"
+    },
+    {
+      "bank": 4,
+      "start": "BBA3",
+      "endExclusive": "BBAB",
+      "hex": "4c44485c50545840"
+    },
+    {
+      "bank": 4,
+      "start": "BA40",
+      "endExclusive": "BA56",
+      "hex": "ad890510034cabbb09808d8905a55729f985578d0120"
+    },
+    {
+      "bank": 4,
+      "start": "BCC1",
+      "endExclusive": "BCC5",
+      "hex": "a90d8554"
+    },
+    {
+      "bank": 7,
+      "start": "C9D7",
+      "endExclusive": "C9E5",
+      "hex": "a90885568d0020a90685578d0120"
+    },
+    {
+      "bank": 7,
+      "start": "F29D",
+      "endExclusive": "F2D4",
+      "hex": "ad0220a9008d06208d0620ad0220ad97038d0520ad99038d0520ad980329018508ad9a030a050829038508a55629fc050885568d002060"
+    }
+  ],
+  "generatorSHA256": "4a2e42e5078f29f97024d448ad0d0b5309475074e1ffbac772157164235165fb"
+}

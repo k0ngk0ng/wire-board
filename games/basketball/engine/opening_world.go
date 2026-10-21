@@ -6,6 +6,7 @@ import (
 )
 
 type OpeningWorldOptions struct {
+	RecoverUnsupportedBall bool
 	// Nil retains the original empty inventory used by fresh single matches.
 	Inventory *[16]campaign.Item
 	// The video/scene driver owns the original outer-loop counter. Fresh
@@ -34,6 +35,7 @@ func WorldFromOriginalOpening(s OpeningState, options OpeningWorldOptions) (Worl
 		return world, ctx, err
 	}
 	ctx = WorldLoopContext{Actions: WorldActionContext{CourtID: t.Court, Profiles: profiles, Controls: t.PlayerControls, Characters: t.Characters, Teams: t.Teams, Equipment: uint8(s.Equipment[0][0]), EnhancementEnabled: t.Mode&128 == 0}, ObjectKinds: t.Kinds, HumanTactics: options.HumanTactics, Difficulty: t.Match.Period, LayoutID: t.Scene, TrackedObject: t.TrackedObject}
+	ctx.Actions.RecoverUnsupportedBall = options.RecoverUnsupportedBall
 	// The pursuit carry quirk reads original $055C and $00E6. C9B6/F8BD
 	// clears the former and FA8C clears the latter before a cold match.
 	// Explicit zero differs from nil (unknown); no observed fixture is loaded.

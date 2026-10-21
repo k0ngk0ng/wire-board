@@ -56,7 +56,7 @@ def main():
     ledger['ending_music']={'scene':7,'dispatcher':'fixed:$CAE3 → $FC83 → bank3:$8015/$B995',
         'rea_evidence_id':'ev_33bb6f8ee44e775ab1856de49120b96ebace7f235894fef4fb2cd6684a2b56de',
         'tracks':[{'id':75,'request':'bank3:$BA6C','entry':'phase0 continuation $BA5A','mode':'finite','seconds':tracks[0]['seconds'],'runtime_mapping':True},
-                  {'id':76,'request':'bank3:$BD68','entry':'phase11 $BD27','mode':'intro then loop','timeline_preview_seconds':tracks[1]['seconds'],'runtime_mapping':False}],
+                  {'id':76,'request':'bank3:$BD68','entry':'phase8 $BD27','mode':'intro then loop','timeline_preview_seconds':tracks[1]['seconds'],'runtime_mapping':bool(playback['music'].get('76',{}).get('file'))}],
         'background_load_rea':'ev_f44a23d36985468ba8d23ffae716d6d847557e0a2960f8f3725844d06f3122ad',
         'background_load_limitation':'Ghidra stops at the interrupt wait; fixed DCB7/DCB9 resume255 confirmed by instructions and natural result captures.'}
     ledger.pop('separate_music_outside_scope',None)

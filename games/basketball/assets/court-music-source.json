@@ -203,10 +203,12 @@
       {
         "id": 76,
         "request": "bank3:$BD68",
-        "entry": "phase11 $BD27",
+        "entry": "phase8 $BD27",
         "mode": "intro then loop",
         "timeline_preview_seconds": 332.7680952380952,
-        "runtime_mapping": false
+        "runtime_mapping": true,
+        "source_manifest": "music76-delivery-manifest.json",
+        "delivery_file": "music-076-intro-loop.mp3"
       }
     ],
     "background_load_rea": "ev_f44a23d36985468ba8d23ffae716d6d847557e0a2960f8f3725844d06f3122ad",

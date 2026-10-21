@@ -1,0 +1,37 @@
+{
+  "romSHA256": "0fa28f60abb8d2ccbbeee90e79e3fa160a5cf32feb90f47ebf1a89168cff569b",
+  "fixtureSHA256": "fddd1b3e14d50d168cf4bae2e95e96b337f96408990160c163fc6112ce09ebe6",
+  "records": 4125,
+  "excludedZeroSourceNegativeRise": 489,
+  "boundedSourceTraps": [
+    {
+      "target": -256,
+      "arc": 0,
+      "returned": false,
+      "pc": "8C7F",
+      "normalization": 101,
+      "instructions": 2000
+    },
+    {
+      "target": -1,
+      "arc": 0,
+      "returned": false,
+      "pc": "8C7F",
+      "normalization": 101,
+      "instructions": 2000
+    },
+    {
+      "target": -256,
+      "arc": 255,
+      "returned": false,
+      "pc": "8C7F",
+      "normalization": 101,
+      "instructions": 2000
+    }
+  ],
+  "source": ".local/nes-basket/runs/negative-pass-height-observed/pass-ram.bin",
+  "sourceSHA256": "381712b2ab41f5adcaa946fbfdffc95a7e768895898fe35e6cb1c9af3ebf8ee6",
+  "entry": "bank5:8C23 complete unmodified launch",
+  "scope": "one controlled whole-world producer call plus isolated signed-FF receiver matrix; no Go output as oracle, no full-match acceptance",
+  "originalInstructionsUnmodified": true
+}

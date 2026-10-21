@@ -6,6 +6,9 @@ import (
 )
 
 type RuntimeConfig struct {
+	// New platform matches repair the original unsupported-ball roll-off.
+	// Missing in a stored configuration means original compatibility behavior.
+	RecoverUnsupportedBall bool `json:"recoverUnsupportedBall,omitempty"`
 	// Campaign is the committed preparation snapshot, not live period progress.
 	// An explicit halftime confirmation may replace its owned loadout.
 	Campaign     *campaign.Progress         `json:"campaign,omitempty"`
@@ -14,7 +17,7 @@ type RuntimeConfig struct {
 }
 
 func DefaultRuntimeConfig() RuntimeConfig {
-	return RuntimeConfig{Match: DefaultOriginalMatchConfiguration()}
+	return RuntimeConfig{Match: DefaultOriginalMatchConfiguration(), RecoverUnsupportedBall: true}
 }
 
 type RuntimePlayingState struct {
@@ -41,13 +44,14 @@ type RuntimeTransitionState struct {
 // Exactly one stage pointer is active. Completed stage objects are discarded;
 // they are never a second authoritative copy of the playing world.
 type RuntimeState struct {
-	CampaignPreparation *CampaignPreparation    `json:"campaignPreparation,omitempty"`
-	Outcome             *RuntimeOutcome         `json:"outcome,omitempty"`
-	Config              RuntimeConfig           `json:"config"`
-	Display             DisplayState            `json:"display"`
-	Opening             *OpeningState           `json:"opening,omitempty"`
-	Playing             *RuntimePlayingState    `json:"playing,omitempty"`
-	Transition          *RuntimeTransitionState `json:"transition,omitempty"`
+	Presentation        *RuntimePresentationState `json:"presentation,omitempty"`
+	CampaignPreparation *CampaignPreparation      `json:"campaignPreparation,omitempty"`
+	Outcome             *RuntimeOutcome           `json:"outcome,omitempty"`
+	Config              RuntimeConfig             `json:"config"`
+	Display             DisplayState              `json:"display"`
+	Opening             *OpeningState             `json:"opening,omitempty"`
+	Playing             *RuntimePlayingState      `json:"playing,omitempty"`
+	Transition          *RuntimeTransitionState   `json:"transition,omitempty"`
 	// Frozen preceding-period fields that the original reset deliberately keeps.
 	// It is consumed at handoff and is never an active playing world.
 	Carry              *WorldLoopState `json:"carry,omitempty"`
@@ -61,11 +65,14 @@ type RuntimeState struct {
 	AwaitingNextPeriod bool            `json:"awaitingNextPeriod"`
 }
 type RuntimeStep struct {
-	State           RuntimeState `json:"state"`
-	SoundIDs        []uint8      `json:"soundIDs,omitempty"`
-	LogicAdvanced   bool         `json:"logicAdvanced"`
-	FadeIn, FadeOut bool
-	Backgrounds     []uint8 `json:"backgrounds,omitempty"`
+	PresentationEffects []PostResultVideoEffect         `json:"presentationEffects,omitempty"`
+	PresentationRaster  *OriginalPostResultRasterSource `json:"presentationRaster,omitempty"`
+	PresentationStarted bool                            `json:"presentationStarted,omitempty"`
+	State               RuntimeState                    `json:"state"`
+	SoundIDs            []uint8                         `json:"soundIDs,omitempty"`
+	LogicAdvanced       bool                            `json:"logicAdvanced"`
+	FadeIn, FadeOut     bool
+	Backgrounds         []uint8 `json:"backgrounds,omitempty"`
 }
 
 func validateRuntimeConfig(c RuntimeConfig) error {
@@ -131,6 +138,9 @@ func NewRuntime(c RuntimeConfig) (RuntimeState, error) {
 	return s, nil
 }
 func runtimeMatch(s *RuntimeState) *MatchState {
+	if s.Presentation != nil && s.Presentation.Video != nil {
+		return &s.Presentation.Video.Scene.Transition.Match
+	}
 	if s.Opening != nil {
 		return &s.Opening.Transition.Match
 	}
@@ -143,6 +153,14 @@ func runtimeMatch(s *RuntimeState) *MatchState {
 	return nil
 }
 func cloneRuntime(s RuntimeState) RuntimeState {
+	if s.Presentation != nil {
+		p := *s.Presentation
+		if p.Video != nil {
+			v := *p.Video
+			p.Video = &v
+		}
+		s.Presentation = &p
+	}
 	if s.CampaignPreparation != nil {
 		copy := *s.CampaignPreparation
 		s.CampaignPreparation = &copy
@@ -180,6 +198,9 @@ func ValidateRuntimeState(s RuntimeState) error {
 		return e
 	}
 	count := 0
+	if s.Presentation != nil && s.Presentation.Video != nil {
+		count++
+	}
 	if s.Opening != nil {
 		count++
 	}
@@ -212,6 +233,8 @@ func ValidateRuntimeState(s RuntimeState) error {
 		if s.AwaitingNextPeriod != (t.Scene == 2 && (s.Outcome == nil || !s.Outcome.Confirmed)) {
 			return fmt.Errorf("invalid intermission stage")
 		}
+	} else if s.Presentation != nil && s.Presentation.Video != nil {
+		t = &s.Presentation.Video.Scene.Transition
 	} else {
 		p := s.Playing
 		if p.Match.Entered != (p.Match.Phase == MatchPlaying) {
@@ -276,6 +299,9 @@ func StepVideo(original RuntimeState, held [4]Buttons) (RuntimeStep, error) {
 	if e := ValidateRuntimeState(original); e != nil {
 		return initial, e
 	}
+	if RuntimeFinished(original) {
+		return initial, nil
+	}
 	if original.VideoFrames >= 1<<53-1 {
 		return initial, fmt.Errorf("video counter exhausted")
 	}
@@ -284,6 +310,16 @@ func StepVideo(original RuntimeState, held [4]Buttons) (RuntimeStep, error) {
 	for i, h := range held {
 		s.PendingPressed[i] |= h &^ s.Held[i]
 		s.Held[i] = h
+	}
+	if s.Presentation != nil && s.Presentation.Video != nil {
+		r := RuntimeStep{State: s}
+		if e := stepRuntimePresentation(&r); e != nil {
+			return initial, e
+		}
+		if e := ValidateRuntimeState(r.State); e != nil {
+			return initial, fmt.Errorf("presentation postcondition: %w", e)
+		}
+		return r, nil
 	}
 	m := runtimeMatch(&s)
 	*m = AdvanceMatchVideoTick(*m).State
@@ -295,7 +331,16 @@ func StepVideo(original RuntimeState, held [4]Buttons) (RuntimeStep, error) {
 	s.Display = display
 	if s.WaitVideoFrames > 0 {
 		s.WaitVideoFrames--
-		return RuntimeStep{State: s}, nil
+		r := RuntimeStep{State: s}
+		if s.WaitVideoFrames == 0 && RuntimePresentationActive(s) {
+			if e := activateRuntimePresentation(&r); e != nil {
+				return initial, e
+			}
+		}
+		if e := ValidateRuntimeState(r.State); e != nil {
+			return initial, e
+		}
+		return r, nil
 	}
 	if s.FramesUntilLogic > 0 {
 		s.FramesUntilLogic--
@@ -309,7 +354,7 @@ func StepVideo(original RuntimeState, held [4]Buttons) (RuntimeStep, error) {
 		// held for this one logic update, even if already physically released.
 		frames[i] = ControllerFrame{Held: s.Held[i] | s.PendingPressed[i], Pressed: s.PendingPressed[i]}
 	}
-	step, e := StepLogic(s, frames)
+	step, e := stepRuntimeLogic(s, frames, true)
 	if e != nil {
 		return initial, e
 	}
@@ -330,9 +375,15 @@ func runtimeWorldInput(c RuntimeConfig, input [4]ControllerFrame) WorldLoopInput
 
 // StepLogic is also a replay/testing entry point. It never advances video time.
 func StepLogic(original RuntimeState, input [4]ControllerFrame) (RuntimeStep, error) {
+	return stepRuntimeLogic(original, input, false)
+}
+func stepRuntimeLogic(original RuntimeState, input [4]ControllerFrame, allowPresentation bool) (RuntimeStep, error) {
 	initial := RuntimeStep{State: original}
 	if e := ValidateRuntimeState(original); e != nil {
 		return initial, e
+	}
+	if original.Presentation != nil {
+		return initial, fmt.Errorf("postresult presentation requires video stepping")
 	}
 	if original.WaitVideoFrames != 0 {
 		return initial, fmt.Errorf("logical update requested during an explicit presentation wait")
@@ -365,7 +416,7 @@ func StepLogic(original RuntimeState, input [4]ControllerFrame) (RuntimeStep, er
 	} else if s.Playing != nil {
 		e = stepRuntimePlaying(&result, input)
 	} else {
-		e = stepRuntimeTransition(&result, input)
+		e = stepRuntimeTransition(&result, input, allowPresentation)
 	}
 	if e != nil {
 		return initial, e
@@ -444,7 +495,7 @@ func stepRuntimeOpening(r *RuntimeStep, input [4]ControllerFrame) error {
 	if !next.BeginWorldInputs {
 		return nil
 	}
-	options := OpeningWorldOptions{LogicFrame: s.LogicFrame, HumanTactics: s.Config.HumanTactics}
+	options := OpeningWorldOptions{LogicFrame: s.LogicFrame, HumanTactics: s.Config.HumanTactics, RecoverUnsupportedBall: s.Config.RecoverUnsupportedBall}
 	if s.Config.Campaign != nil {
 		options.Inventory = &s.Config.Campaign.Inventory
 	}
@@ -500,7 +551,9 @@ func stepRuntimePlaying(r *RuntimeStep, input [4]ControllerFrame) error {
 	end := CheckMatchPeriodEnd(p.Match, MatchContext{Holder: uint8(p.World.Preparation.Actions.Holder), BallAirborne: p.World.Preparation.Actions.Ball.Airborne})
 	p.Match = end.State
 	r.SoundIDs = append(r.SoundIDs, end.SoundIDs...)
-	worldStep, err := StepWorldLoop(p.World, runtimeWorldInput(s.Config, input), p.Context)
+	context := p.Context
+	context.Actions.RecoverUnsupportedBall = s.Config.RecoverUnsupportedBall && p.Match.Phase == MatchPlaying
+	worldStep, err := StepWorldLoop(p.World, runtimeWorldInput(s.Config, input), context)
 	if err != nil {
 		return err
 	}
@@ -540,7 +593,7 @@ func stepRuntimePlaying(r *RuntimeStep, input [4]ControllerFrame) error {
 	}
 	return nil
 }
-func stepRuntimeTransition(r *RuntimeStep, input [4]ControllerFrame) error {
+func stepRuntimeTransition(r *RuntimeStep, input [4]ControllerFrame, allowPresentation bool) error {
 	s := &r.State
 	o := &s.Transition.Scene
 	t := &o.Transition
@@ -634,6 +687,14 @@ func stepRuntimeTransition(r *RuntimeStep, input [4]ControllerFrame) error {
 				s.Outcome.Confirmed = true
 				s.Outcome.NextScene = t.Scene
 				s.Outcome.NextPhase = t.Match.Phase
+				if allowPresentation && s.Config.Campaign != nil && next.WinningTeam == 0 && (t.Scene == 1 && t.Match.Phase == 7 || t.Scene == 7 && t.Match.Phase == 0 && t.Match.Period == 28) {
+					expected, e := campaignResultFromConfirmed(s.Config, *t, *s.Outcome)
+					if e != nil {
+						return e
+					}
+					s.Presentation = &RuntimePresentationState{PendingResult: expected}
+					s.FramesUntilLogic = 0
+				}
 			}
 		}
 	default:
@@ -654,7 +715,7 @@ func stepRuntimeTransition(r *RuntimeStep, input [4]ControllerFrame) error {
 	if next.FadeOut {
 		// The platform retains the final result instead of leaving for an
 		// original menu. Do not darken that retained image after confirmation.
-		if s.Outcome == nil || !s.Outcome.Confirmed {
+		if s.Outcome == nil || !s.Outcome.Confirmed || RuntimePresentationActive(*s) {
 			display, e := QueueDisplayFade(s.Display, true)
 			if e != nil {
 				return e
