@@ -102,3 +102,32 @@ test('application artifact verifies the separately pinned cover and rejects extr
   writeFileSync(path.join(path.dirname(target),'unlisted.png'),image);
   assert.throws(()=>verifyBasketballPublicFiles(f.dir,output,{exact:false}));
 });
+
+test('transient connection, interrupted body and service errors retry pinned bytes only', async t => {
+  for(const failure of ['connection','body','service']) {
+    const f=fixture(t), counts=new Map();
+    const output=await materializeBasketballAssets(f.dir,{fetchImpl:async url=>{
+      const n=(counts.get(url)??0)+1;counts.set(url,n);
+      const [data,mime]=f.files.get(url.slice(f.pin.assetsBaseURL.length));
+      if(n===1){
+        if(failure==='connection')throw new TypeError('fetch failed');
+        if(failure==='service')return new Response('temporary',{status:503});
+        let read=0;return new Response(new ReadableStream({pull(controller){if(read++===0)controller.enqueue(data.subarray(0,1));else controller.error(new TypeError('terminated'));}}),{headers:{'Content-Type':mime}});
+      }
+      return new Response(data,{headers:{'Content-Type':mime}});
+    }});
+    verifyBasketballAssets(f.dir,output);assert.ok([...counts.values()].every(n=>n===2));
+  }
+});
+test('integrity failures do not retry or return a verified artifact',async t=>{
+  const f=fixture(t),counts=new Map();
+  await assert.rejects(materializeBasketballAssets(f.dir,{fetchImpl:async url=>{
+    counts.set(url,(counts.get(url)??0)+1);const [data,mime]=f.files.get(url.slice(f.pin.assetsBaseURL.length));return new Response(Buffer.alloc(data.length),{headers:{'Content-Type':mime}});
+  }}));
+  assert.ok([...counts.values()].every(n=>n===1));assert.throws(()=>verifyBasketballAssets(f.dir));
+});
+test('exhausted network retries remain bounded and fail without fallback',async t=>{
+  const f=fixture(t),counts=new Map();
+  await assert.rejects(materializeBasketballAssets(f.dir,{fetchImpl:async url=>{counts.set(url,(counts.get(url)??0)+1);throw new TypeError('fetch failed');}}));
+  assert.ok([...counts.values()].every(n=>n===3));assert.throws(()=>verifyBasketballAssets(f.dir));
+});
