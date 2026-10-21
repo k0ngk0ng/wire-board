@@ -1,3 +1,4 @@
+import { loadCoverPin, verifyCover } from "./cover.mjs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { closeSync, copyFileSync, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readdirSync, readSync, realpathSync, renameSync, rmSync, writeFileSync, writeSync } from "node:fs";
@@ -79,7 +80,12 @@ export function verifyBasketballPublicFiles(directory, publicDirectory, { exact 
     // A complete application dist also contains other games and this game's
     // separately verified Wasm runtime. Every basketball media file is pinned.
     const actual = publicInventory(path.join(publicRoot, "basketball/v1")).filter(p => !p.startsWith("runtime/")).map(p => "basketball/v1/" + p);
-    assert(JSON.stringify(actual) === JSON.stringify(pin.entries.map(e => e.urlPath.slice(1))), "Unlisted basketball media in application artifact");
+    const expected = pin.entries.map(e => e.urlPath.slice(1));
+    if (existsSync(within(root, "games/basketball/assets/cover-manifest.json"))) {
+      verifyCover(root, publicRoot);
+      expected.push(loadCoverPin(root).localPath.slice(1));
+    }
+    assert(JSON.stringify(actual) === JSON.stringify(expected.sort()), "Unlisted basketball media in application artifact");
   }
   return pin;
 }
