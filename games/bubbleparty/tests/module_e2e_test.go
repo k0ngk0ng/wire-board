@@ -32,7 +32,7 @@ func runBotMatch(t *testing.T, players int, mapID string) gameapi.Result {
 			if err != nil {
 				t.Fatal(err)
 			}
-		case bubbleparty.PhasePlaying:
+		case bubbleparty.PhaseSelect, bubbleparty.PhasePlaying:
 			now = time.UnixMilli(v.ServerAt + 100)
 			for seat := 0; seat < players; seat++ {
 				act, err := mod.BotAction(gameapi.Context{Actor: seat, Players: players, Now: now}, m)

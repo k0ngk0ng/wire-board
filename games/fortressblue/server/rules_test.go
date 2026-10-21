@@ -18,7 +18,7 @@ func ctx(players, actor int, now time.Time) gameapi.Context {
 func startAt(t *testing.T, players int, mapID string) (*State, gameapi.Match) {
 	t.Helper()
 	now := time.Unix(1700000000, 0)
-	raw, _ := json.Marshal(Options{Map: mapID, TurnSeconds: 30})
+	raw, _ := json.Marshal(Options{Map: mapID, TurnSeconds: 30, BotDifficulty: "hard"})
 	m, err := start(ctx(players, -1, now), raw)
 	if err != nil {
 		t.Fatal(err)

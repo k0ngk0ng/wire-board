@@ -165,6 +165,10 @@ export function ModuleWaiting({
   );
   const Options = module.Options;
   const optionsDirty = !!Options && JSON.stringify(options) !== savedOptions;
+  // Ready confirmations belong to the saved rules. A host previewing a new
+  // draft must not carry human confirmations over to that draft; bots remain
+  // ready, just as they do when the server saves the changed options.
+  const draftNeedsReady = host && optionsDirty;
   return (
     <div className="waiting-layout">
       <div className="waiting-cover">
@@ -201,9 +205,10 @@ export function ModuleWaiting({
                 保存设置
               </button>
             )}
-            {host && optionsDirty && (
+            {draftNeedsReady && (
               <p className="muted small" role="status">
-                地图或规则已修改，准备时会一并保存。
+                地图或规则尚未保存；保存后真人需重新准备。
+                {module.supportsBots && "电脑保持准备。"}
               </p>
             )}
           </>
@@ -240,7 +245,7 @@ export function ModuleWaiting({
                 </h3>
                 <span>
                   {seat
-                    ? seat.ready
+                    ? seat.ready && (!draftNeedsReady || seat.bot)
                       ? "✓ 已准备"
                       : "等待准备"
                     : "邀请一位朋友"}
@@ -274,7 +279,7 @@ export function ModuleWaiting({
               )}
             <button
               className={
-                host && optionsDirty
+                draftNeedsReady
                   ? "primary"
                   : room.seats[room.you]?.ready
                     ? "outline"
@@ -282,10 +287,10 @@ export function ModuleWaiting({
               }
               disabled={busy}
               onClick={() =>
-                command("ready", host && optionsDirty ? { options } : undefined)
+                command("ready", draftNeedsReady ? { options } : undefined)
               }
             >
-              {host && optionsDirty
+              {draftNeedsReady
                 ? "保存并准备"
                 : room.seats[room.you]?.ready
                   ? "取消准备"

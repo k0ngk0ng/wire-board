@@ -50,3 +50,11 @@ v3 图集共约 1.2 MiB，随源码保存，确保干净检出包含本地副本
 `python3 -B scripts/fortressblue/verify-assets.py --dist` 同时检查 v2 媒体和 v3 图集、当前坦克原参数、原生动作分组及构建目录中的资源。v3 检查只读取已提交的证据与媒体，不依赖 `.local` 原包、Pillow 或解码库；可独立运行 `python3 -B scripts/fortressblue/verify-v3-assets.py --dist`。
 
 旧 `prepare-original-assets.py` 在存在已发布 v2 清单或当前 v3 数据时拒绝覆盖。恢复 v2 文件使用 `fetch-assets.py`。`verify-original-source.py` 仅在仓库内临时目录重建旧媒体并比较 v2 清单 SHA，不写入当前坦克、道具或地图规则数据；结束后清理临时重建目录。
+
+## 选择坦克预览
+
+选车卡片直接使用 v3 图集的彩色 `idle.right[0]` 原生帧，保留当前方向元数据，不镜像、不重着色。旧 v2 `*-portrait.webp` 来自 `Asset/tank.i16`，前 13 张图像本身含蓝色调和英文标题，不能用于表达普通可选状态。旧对象保持原样，不覆盖其内容或 SHA-256。
+
+预览沿用 CDN 失败转同源的加载顺序；v3 均不可用时使用已有 v2 `*-idle.webp` 彩色战场帧。全部媒体失败时显示无编号的可见坦克占位，中文名称、参数和选中边框仍可用。桌面和手机均使用一致的画幅及居中比例，不通过透明度或 CSS 滤镜改变原始色彩。重复验收入口见 `tests/PICKER_COLOR_SCENARIOS.md`。
+
+`picker-frames.json` 仅记录 idle 帧的透明边界和原图 SHA-256，让包括透明留白较多的萨满在内的 14 辆车保持相近的预览尺寸；不修改原始锚点或战场绘制。可用 `python3 -B scripts/fortressblue/prepare-picker-frames.py --check` 逐像素重算并核对，去掉 `--check` 可重新生成元数据。验收同时要求 320px 下每辆车实际不透明区域的宽、高均至少 30px。

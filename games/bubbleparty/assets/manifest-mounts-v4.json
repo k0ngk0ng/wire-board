@@ -1,0 +1,8067 @@
+{
+  "version": "bubbleparty/v4/mounts",
+  "source": {
+    "url": "https://archive.org/download/crazy_arcade_setups/2002.03.13./Crazy%20Arcade.zip",
+    "sha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2",
+    "indexSha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c",
+    "objectTable": {
+      "name": "ObjectTable/ObjectTable",
+      "offset": 9660680,
+      "size": 92459,
+      "sha256": "fdbe1882059172463f2cc903cc7eb57722562211dd121c7b4d858ebbd440bb84"
+    },
+    "itemAttr": {
+      "name": "Attr/ItemAttr",
+      "offset": 570,
+      "size": 2099,
+      "sha256": "ceedb2a396c54d7a9bb139941d791b91ab8dcffb827e0d0fb83f57fca847bb06"
+    }
+  },
+  "generator": "scripts/bubbleparty/prepare-mounts.py",
+  "generatorSha256": "9a244568032558e96acbd2197b0e444a63b54bc62b0f01d559e910a71a80eef1",
+  "licenseStatus": "Original asset redistribution permission unverified",
+  "entries": [
+    {
+      "file": "airship-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-left.png",
+      "sha256": "e79d1b4d4cf6b52d6982319d187406572749930851c4fc11eeff2e61ef4c1c0c",
+      "bytes": 1224,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship00-Left",
+          "offset": 10460513,
+          "size": 5136,
+          "sha256": "c648dbd177de89ba2053debea8b56c3221e20ac2d5e3035318cc9e09e56c9d46"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-up.png",
+      "sha256": "82f004833af4acda61fc6339636a88fde94d9d6f4b26e4bcebadae4dd0fca097",
+      "bytes": 1158,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship00-Up",
+          "offset": 10470869,
+          "size": 5224,
+          "sha256": "1413aaff4d826245bad99eada097bcef4f7a34ebb43d9f1a97b041baf45b6823"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-right.png",
+      "sha256": "95b7a74f5d521c5233207639edac43d6ebff2b87044fd1eed9e8785a28a56d4c",
+      "bytes": 1236,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship00-Right",
+          "offset": 10465649,
+          "size": 5220,
+          "sha256": "f7ec3e5b96f045e617f58512bf4b6b39c8037d4ad62fa701c5da20f5656c9d58"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-down.png",
+      "sha256": "cd6278de517a95e0898adacc23b835902da9ab0d0de1992385361db0a02e0657",
+      "bytes": 1234,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship00-Down",
+          "offset": 10455479,
+          "size": 5034,
+          "sha256": "4d189513d12735b07a16b6cb4b509fc00885bc8f992e2499c0e0da78a4100ad1"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-icon.png",
+      "sha256": "a65db2de964f63de96876840abe556a854305833062889d7bc0f55c53ba18c71",
+      "bytes": 874,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemAirship",
+          "offset": 5546191,
+          "size": 1586,
+          "sha256": "101a5c7320b84c5e8bc739fc4888360ae91cca92e526f8bf4a05c44ac1c9e4ce"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "owl-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/owl-left.png",
+      "sha256": "4e292dfaf9b64a5864ff77d6b57bb42aaf8f6d96ce36fa5f5a60daf572a4529a",
+      "bytes": 1453,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship01-Left",
+          "offset": 10482434,
+          "size": 5551,
+          "sha256": "4a3fef44fe1a6005712af10ff0a3972330ef474cb637a3f7c1f610ade102b437"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "owl-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/owl-up.png",
+      "sha256": "2a9f642e3358bfc0f623922143cec11f00fc3427cc4b1ad70951852621b7b8b6",
+      "bytes": 1268,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship01-Up",
+          "offset": 10493142,
+          "size": 5512,
+          "sha256": "13445985f60b4888f55961d45aba902fde6766b79cac9d160afd28941e272f93"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "owl-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/owl-right.png",
+      "sha256": "ed51bad4ee81ff27506ae6bf135498b3d9f3406380a804923cfb857a06cb53b5",
+      "bytes": 1360,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship01-Right",
+          "offset": 10487985,
+          "size": 5157,
+          "sha256": "8ba0990115f62ab313450c1736ae59b9f3d7d129759afbf2fe7577eb6772cd5c"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "owl-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/owl-down.png",
+      "sha256": "55c156e3776367ca3a7ad1cc8e0622f4e3739f644e10e4948dd4fb7859073774",
+      "bytes": 1516,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship01-Down",
+          "offset": 10476093,
+          "size": 6341,
+          "sha256": "9668226cba03e5891a979349bcdcf9a9be4e5322a5b53d63a73c55da8a7650e9"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "owl-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/owl-icon.png",
+      "sha256": "d7933d94af6c71b8b3ca55e58987ccd0cebfbf78da1764285be6951df870e9a5",
+      "bytes": 963,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemOwl",
+          "offset": 5565033,
+          "size": 1724,
+          "sha256": "d265ed0997dc35fc0a2b5663a3f7b18bd51f555b992966cd4d0fbf3fc005af01"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "turtle-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-left.png",
+      "sha256": "b08e0fcea76379b4036b748d5ab1cbbce61bd5d611ef145b6dc4e8181b00547b",
+      "bytes": 1452,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship02-Left",
+          "offset": 10504089,
+          "size": 6050,
+          "sha256": "93904e74d4464b181cb5bc18772012b0bf2278117c74d24e84d1638ce3aa399d"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-up.png",
+      "sha256": "2b593bd1fcac620e75e54882955f5b32c692417b684b50c2f068c4dc4c147e7b",
+      "bytes": 1098,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship02-Up",
+          "offset": 10516161,
+          "size": 5213,
+          "sha256": "e47145e4e89d7977e42923dd6a2858115c5e9de09da9b8ea216053b3e3275339"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-right.png",
+      "sha256": "1a7cbe5387c7c807f93774abb33bf6d86ab37b09b302bf632d16909d1cc3e514",
+      "bytes": 1414,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship02-Right",
+          "offset": 10510139,
+          "size": 6022,
+          "sha256": "f8ebd185f763ff9844d510acfcfe24194658d52b29e1a7ee8f65335bcf6a51b7"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-down.png",
+      "sha256": "f50aa0d8c8c179a72864c81ea618f02d40b3f83a966af2f0774de3e21289f2c0",
+      "bytes": 1258,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship02-Down",
+          "offset": 10498654,
+          "size": 5435,
+          "sha256": "069d51ba819b04471c750ccee41876603a519ab64098d125d1c40d907114f57c"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-icon.png",
+      "sha256": "6484a9268d6641da316701bec369d266beed467bfc37c68ccb53e56068ae6a41",
+      "bytes": 902,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemTurtle0",
+          "offset": 5598909,
+          "size": 1684,
+          "sha256": "915b8cf289324dcf4d1987d6b8bbf243e2c65924421775df6e4f386fbe90146e"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "turtle-fast-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-fast-left.png",
+      "sha256": "a038a1f26485a0bd0256e6b42e2f1377a7f5431fa6abe8e2ada029c693cbbe42",
+      "bytes": 1481,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship03-Left",
+          "offset": 10526883,
+          "size": 6040,
+          "sha256": "b7ecd1478f70a06debb1a47071de47c0a19dd9750a96ccc751d8c57fce60fd80"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-fast-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-fast-up.png",
+      "sha256": "97f23cf09a4cf6cc50f357379b1ceaac80cda7af0bc53a9bbc200e142c47c3a4",
+      "bytes": 1111,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship03-Up",
+          "offset": 10538976,
+          "size": 5213,
+          "sha256": "e5eca61fe68fde40ba42df354a9b382360d212e04cc23ee65a09ba5db47821de"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-fast-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-fast-right.png",
+      "sha256": "a154804e8a39efb0356d85af5e678bb3fcb307d9790f47f5dbf0a3653c173159",
+      "bytes": 1487,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship03-Right",
+          "offset": 10532923,
+          "size": 6053,
+          "sha256": "8740d8b5af5e1bd93f72812be6f52658a0cd75f367dd52aea03e14e23b0092da"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-fast-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-fast-down.png",
+      "sha256": "bf5fbfa0c6cea490bb84eb86aefe97f6f00d09ab0ab5dfecb3812cfeddd95dce",
+      "bytes": 1318,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship03-Down",
+          "offset": 10521374,
+          "size": 5509,
+          "sha256": "9e516cbb8334718e9afe0c5ca39456262c508439a7a40cf403a5209c7f198cd8"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "turtle-fast-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/turtle-fast-icon.png",
+      "sha256": "6484a9268d6641da316701bec369d266beed467bfc37c68ccb53e56068ae6a41",
+      "bytes": 902,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemTurtle1",
+          "offset": 5600593,
+          "size": 1684,
+          "sha256": "915b8cf289324dcf4d1987d6b8bbf243e2c65924421775df6e4f386fbe90146e"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "airship-broken-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-broken-left.png",
+      "sha256": "20d3771c32c96e38ce946aec0b52683679411c1140efe36114f3519f78f9ec50",
+      "bytes": 2453,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship04_left",
+          "offset": 10549816,
+          "size": 5597,
+          "sha256": "9f7023ee5a2d35788b1e86e61edc8b16bdbee01a2a6a7465134f93f25188872f"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-broken-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-broken-up.png",
+      "sha256": "9c367b2712bf67d2827028e028baacbb5c5889995cb3cf1db22ab1da7f2cdaa3",
+      "bytes": 2152,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship04_up",
+          "offset": 10561018,
+          "size": 5698,
+          "sha256": "f572968c76f81bbf1c6902f0927736bf5e5477e3652aafdfcd057eb4501f76c6"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-broken-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-broken-right.png",
+      "sha256": "3edcbf6618055d907d095339f1bc7e41787dfc22d192f014656fe32e9dc00da0",
+      "bytes": 2418,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship04_right",
+          "offset": 10555413,
+          "size": 5605,
+          "sha256": "7ddb9dc9bd55bbf61556417dbd1ac45740dfe2b16ff46648f7b61c871f6b9ed3"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-broken-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-broken-down.png",
+      "sha256": "6c5f9141466d07d08d4cfd4fc295b7f5dcce65e305456fab10c0ac92d7252b19",
+      "bytes": 2411,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship04_down",
+          "offset": 10544189,
+          "size": 5627,
+          "sha256": "cce2bc9ed52491c672e05ea8ea957271c7c69ac4d654c8bbed2a5825bddf7b2b"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "airship-broken-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/airship-broken-icon.png",
+      "sha256": "a65db2de964f63de96876840abe556a854305833062889d7bc0f55c53ba18c71",
+      "bytes": 874,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemAirshipBroken",
+          "offset": 5547777,
+          "size": 1586,
+          "sha256": "101a5c7320b84c5e8bc739fc4888360ae91cca92e526f8bf4a05c44ac1c9e4ce"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "octopus-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-left.png",
+      "sha256": "aa740cf505c840b51dec23d513c32c3285d538e87d7690cfed7d0f684d5337c3",
+      "bytes": 1332,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship05_Left",
+          "offset": 10572407,
+          "size": 5346,
+          "sha256": "1eff530cc40d959f7c130ed6df79571f3b342e58914480026b689ff25e1ff300"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-up.png",
+      "sha256": "e632bc611117e0fc5873756c9eb192416ca7b39b42d4c8998ac74f58ae94c388",
+      "bytes": 1272,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship05_Up",
+          "offset": 10583099,
+          "size": 5103,
+          "sha256": "9543076aeb72818005e6e8ed8d361f8c2ef435e58b99198dd87a017b8062efc8"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-right.png",
+      "sha256": "8b84e734762b0251904f4eebdf72ff16f67b3ba7cf795b880d3cfd1c99a4f805",
+      "bytes": 1338,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship05_Right",
+          "offset": 10577753,
+          "size": 5346,
+          "sha256": "1c099d9c8019b932d4dea54fac29e17186950fd1cf5d0ae8eb9399c903e19ffe"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-down.png",
+      "sha256": "63d8f5fa744dbc350586aa15cb531f135f31467edd5d1b36ff453586471cce47",
+      "bytes": 1246,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship05_down",
+          "offset": 10566716,
+          "size": 5691,
+          "sha256": "7dac5d771edf383af3d402bd585a6f5b8c6ac63fe1b93346f065425701c6eafb"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-icon.png",
+      "sha256": "1f3cbf49e798237661548bf716d426078008d49a618751732070f25cda690be4",
+      "bytes": 638,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemOctopus0",
+          "offset": 5562117,
+          "size": 1458,
+          "sha256": "fe3e7f2076254369fe56363bc548ac6be006e43607dedb28a490dcd454606506"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "octopus-fast-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-fast-left.png",
+      "sha256": "2c2bc243e2407576f7b1076136f7e81932ad2f011185175c3c61f7ff7d47521b",
+      "bytes": 1324,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship06_Left",
+          "offset": 10593979,
+          "size": 5370,
+          "sha256": "63870e317aece4d3d8bbfe3805dbef2ac521e43cebb4833948dd0aa0c441e2a7"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-fast-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-fast-up.png",
+      "sha256": "b540e802e95886ff44866b761be45632d4edbb99d5a0a70cc201e5f729525072",
+      "bytes": 1256,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship06_Up",
+          "offset": 10604695,
+          "size": 5103,
+          "sha256": "707c5c2ef6d9af3a8ad1224fde130a1a29f5af906e62664f177d9375bb30f261"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-fast-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-fast-right.png",
+      "sha256": "c229f14cbaffd1a2513fc187d8097f5eba53ccf86d4cae9b5084f02847e21d63",
+      "bytes": 1325,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship06_Right",
+          "offset": 10599349,
+          "size": 5346,
+          "sha256": "0464ccc8724cc4f2dc8e3c5709b6841da61167670acb2e415794ecbf7912d614"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-fast-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-fast-down.png",
+      "sha256": "0855502d9948b50d651d9a97382b7f62f18f06746654c3817501b6be90203c7e",
+      "bytes": 1298,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship06_down",
+          "offset": 10588202,
+          "size": 5777,
+          "sha256": "00479545e456c5b343ac735da656ccbdd88fd7ccf456a7ee0f3b5fbc5df1b404"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "octopus-fast-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/octopus-fast-icon.png",
+      "sha256": "1f3cbf49e798237661548bf716d426078008d49a618751732070f25cda690be4",
+      "bytes": 638,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemOctopus1",
+          "offset": 5563575,
+          "size": 1458,
+          "sha256": "fe3e7f2076254369fe56363bc548ac6be006e43607dedb28a490dcd454606506"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "railcar-left.png",
+      "urlPath": "/bubbleparty/v4/mounts/railcar-left.png",
+      "sha256": "039aff163c3b7e47d2de31da4ec8048428c33e53b6c5d01018c4acc8082f0709",
+      "bytes": 2016,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship07-Left",
+          "offset": 10617682,
+          "size": 8792,
+          "sha256": "ed6d3d85e76ae3a5076bfd3ab7beebda8c6d5b981bafafc9fe868c50992b3019"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "railcar-up.png",
+      "urlPath": "/bubbleparty/v4/mounts/railcar-up.png",
+      "sha256": "aa1d8299c0834ab251706e6aca830dbdc1b800f623ed64d3d12ae180d406b8b5",
+      "bytes": 2118,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship07-Up",
+          "offset": 10635213,
+          "size": 7553,
+          "sha256": "362c5ed4857a220039935fc8e64d89398c5f0f344f5cca8540dfeaaea917d635"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "railcar-right.png",
+      "urlPath": "/bubbleparty/v4/mounts/railcar-right.png",
+      "sha256": "fe201cf32695d3cbca70b82f769fe9d019e7014e494a2ab216d7a213c5d577ac",
+      "bytes": 2001,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship07-Right",
+          "offset": 10626474,
+          "size": 8739,
+          "sha256": "ed46474a4b0c7300ccc087bdbe87b144bf9c7c0d5e7037ed46c38b8214ad04a6"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "railcar-down.png",
+      "urlPath": "/bubbleparty/v4/mounts/railcar-down.png",
+      "sha256": "5984dd790b31953249eb007e5bc8a95b2d5995bb6a54930f4ff8994c1963c595",
+      "bytes": 1713,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Ship/Ship07-Down",
+          "offset": 10609798,
+          "size": 7884,
+          "sha256": "172cb6821f5d4719cf2e56f70fc2eef71a8425c62292add0877926dc100e3c0d"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "railcar-icon.png",
+      "urlPath": "/bubbleparty/v4/mounts/railcar-icon.png",
+      "sha256": "8bbe76b2e93e932d7c81616bd6fb5c1054f18a501bafde81c91948f9d5732221",
+      "bytes": 632,
+      "width": 42,
+      "height": 69,
+      "sources": [
+        {
+          "name": "Item/ItemRailCar",
+          "offset": 5569639,
+          "size": 1410,
+          "sha256": "bd1475a2f73802193c55170be677e13f0df94e0f8609e4b423c435d5a6a2df19"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          41,
+          68,
+          0,
+          66,
+          7
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-left-red.png",
+      "sha256": "9ab55fb3edf2d3e56ef6960296a297d899a76861fc0e7a8990ee899fe87aff4f",
+      "bytes": 1304,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideLeftLayerStatic",
+          "offset": 1390586,
+          "size": 2585,
+          "sha256": "69493c04213d4084861d8e22a3f7e0277ec74a43b952afa59fe098a8804288d7"
+        },
+        {
+          "name": "Character/C00-RideLeftLayerAdjust",
+          "offset": 1386672,
+          "size": 3914,
+          "sha256": "73c8a9775ff8c584ecea80bf72b246b859034759769fe61aabad1a0cc0869121"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-left-blue.png",
+      "sha256": "d12b923e962b358e2efe4768bf43b40f6aed69e931849cd8702ded534abbcd8f",
+      "bytes": 1273,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideLeftLayerStatic",
+          "offset": 1390586,
+          "size": 2585,
+          "sha256": "69493c04213d4084861d8e22a3f7e0277ec74a43b952afa59fe098a8804288d7"
+        },
+        {
+          "name": "Character/C00-RideLeftLayerAdjust",
+          "offset": 1386672,
+          "size": 3914,
+          "sha256": "73c8a9775ff8c584ecea80bf72b246b859034759769fe61aabad1a0cc0869121"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-up-red.png",
+      "sha256": "fd2fc6cc6f5acf0f81591e8bde80dae33bc87996c1587a8cf65e50c1fd411784",
+      "bytes": 1270,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideUpLayerStatic",
+          "offset": 1403612,
+          "size": 1396,
+          "sha256": "b8de65c02b9b105a19b12fb39ac632ee70df0ff98802ca7177e468182eeb13bd"
+        },
+        {
+          "name": "Character/C00-RideUpLayerAdjust",
+          "offset": 1399374,
+          "size": 4238,
+          "sha256": "8c607173f6f15e8602542dc5e8b9b52dc1879edd85f5a7c9690e67906c74b671"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-up-blue.png",
+      "sha256": "05ec13c4c7d4f6036a24f539e9a1ddc57c2ae0da400f8e2902d73fa897212f2d",
+      "bytes": 1239,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideUpLayerStatic",
+          "offset": 1403612,
+          "size": 1396,
+          "sha256": "b8de65c02b9b105a19b12fb39ac632ee70df0ff98802ca7177e468182eeb13bd"
+        },
+        {
+          "name": "Character/C00-RideUpLayerAdjust",
+          "offset": 1399374,
+          "size": 4238,
+          "sha256": "8c607173f6f15e8602542dc5e8b9b52dc1879edd85f5a7c9690e67906c74b671"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-right-red.png",
+      "sha256": "eed7a572d501f65c5ac4e49e35c6c1a3a8a4e004c0d4a430019beee798f86b77",
+      "bytes": 1294,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideRightLayerStatic",
+          "offset": 1396729,
+          "size": 2645,
+          "sha256": "38369559f4418218d846b014bbd9d2b9990a4f4d735a056a77425acf3c8807e2"
+        },
+        {
+          "name": "Character/C00-RideRightLayerAdjust",
+          "offset": 1393171,
+          "size": 3558,
+          "sha256": "f6dd9dc2ad4e29bd53e0e2a5d65f4544c61c63cb03c218303752603ee545fa23"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-right-blue.png",
+      "sha256": "e11a7a404b9f7f87f19fc4c47dae07d35a3021f2b07fe2b16fae7b0994f1c57a",
+      "bytes": 1275,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideRightLayerStatic",
+          "offset": 1396729,
+          "size": 2645,
+          "sha256": "38369559f4418218d846b014bbd9d2b9990a4f4d735a056a77425acf3c8807e2"
+        },
+        {
+          "name": "Character/C00-RideRightLayerAdjust",
+          "offset": 1393171,
+          "size": 3558,
+          "sha256": "f6dd9dc2ad4e29bd53e0e2a5d65f4544c61c63cb03c218303752603ee545fa23"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-down-red.png",
+      "sha256": "60c28ccc10c630e442711d10aa20a8d48cdffb7f6174ea1fa0d42dde68010e33",
+      "bytes": 1426,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideDownLayerStatic",
+          "offset": 1383848,
+          "size": 2824,
+          "sha256": "7a017eb732d1a383004417e535d8d78541881232fb51852d66843507a59dc590"
+        },
+        {
+          "name": "Character/C00-RideDownLayerAdjust",
+          "offset": 1379410,
+          "size": 4438,
+          "sha256": "dec789d83d860fc354e78b85684b8ca3ba2db6391c9203135dd6f6a6ddd57180"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-0-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-0-down-blue.png",
+      "sha256": "fb09efc58744c94c9b599ae37b2f2a848cdb5f75746950861b0a40c55cf1df9d",
+      "bytes": 1376,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C00-RideDownLayerStatic",
+          "offset": 1383848,
+          "size": 2824,
+          "sha256": "7a017eb732d1a383004417e535d8d78541881232fb51852d66843507a59dc590"
+        },
+        {
+          "name": "Character/C00-RideDownLayerAdjust",
+          "offset": 1379410,
+          "size": 4438,
+          "sha256": "dec789d83d860fc354e78b85684b8ca3ba2db6391c9203135dd6f6a6ddd57180"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-left-red.png",
+      "sha256": "9ea132366d90d803749ae077139988ed448df41bcb2f71f6e784d4cfbea15a08",
+      "bytes": 1322,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideLeftLayerStatic",
+          "offset": 1556209,
+          "size": 2350,
+          "sha256": "384a3709e1a93dbe25fd035ddbf2a75414fa53943ec67fcfa6a5ad1fca0782e4"
+        },
+        {
+          "name": "Character/C01-RideLeftLayerAdjust",
+          "offset": 1552547,
+          "size": 3662,
+          "sha256": "5f588b16b9e50023b492cbb4c0dc803d06f37d2425d1f0685ddfe25a98bc4cad"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-left-blue.png",
+      "sha256": "84d7017260c5ff880585fbf2cdc9739592e2b21acfe091c466b0e56f669f2788",
+      "bytes": 1304,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideLeftLayerStatic",
+          "offset": 1556209,
+          "size": 2350,
+          "sha256": "384a3709e1a93dbe25fd035ddbf2a75414fa53943ec67fcfa6a5ad1fca0782e4"
+        },
+        {
+          "name": "Character/C01-RideLeftLayerAdjust",
+          "offset": 1552547,
+          "size": 3662,
+          "sha256": "5f588b16b9e50023b492cbb4c0dc803d06f37d2425d1f0685ddfe25a98bc4cad"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-up-red.png",
+      "sha256": "1b3c0817b3b238876efde06aa35ff71cb5b96a36c43d098e78c987912be8c68e",
+      "bytes": 1218,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideUpLayerStatic",
+          "offset": 1568734,
+          "size": 1871,
+          "sha256": "8174f74083c134a9d4bce01b0bc67e8d0a5feab5331f4c131f6c6e62b3118c4a"
+        },
+        {
+          "name": "Character/C01-RideUpLayerAdjust",
+          "offset": 1564616,
+          "size": 4118,
+          "sha256": "2c0bf601e79d228d04b85044a641518e3b341f2cb0bfbc6b0e78a472bae46612"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-up-blue.png",
+      "sha256": "1ea1e8c94505a4e93adadd2c1adf4c62de8212503034c7d1c104d144417a6dae",
+      "bytes": 1192,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideUpLayerStatic",
+          "offset": 1568734,
+          "size": 1871,
+          "sha256": "8174f74083c134a9d4bce01b0bc67e8d0a5feab5331f4c131f6c6e62b3118c4a"
+        },
+        {
+          "name": "Character/C01-RideUpLayerAdjust",
+          "offset": 1564616,
+          "size": 4118,
+          "sha256": "2c0bf601e79d228d04b85044a641518e3b341f2cb0bfbc6b0e78a472bae46612"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-right-red.png",
+      "sha256": "2d23862a761a08a9832c0fa85db6d4fb71da8374a7b6de4e620544afb7a7f9a4",
+      "bytes": 1281,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideRightLayerStatic",
+          "offset": 1562253,
+          "size": 2363,
+          "sha256": "cabec1c707763005e2bf77dff6f11457ce4bbf1b142efcf31d8ee32292694257"
+        },
+        {
+          "name": "Character/C01-RideRightLayerAdjust",
+          "offset": 1558559,
+          "size": 3694,
+          "sha256": "0c0739f506b74feee4cc4b4c5260d02ec457b85daff56a6169a63ac16674bbe6"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-right-blue.png",
+      "sha256": "8022fb8b4d5e92878fee77a88da4fe95002fe99bec87fb2663af5af17e86979c",
+      "bytes": 1277,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideRightLayerStatic",
+          "offset": 1562253,
+          "size": 2363,
+          "sha256": "cabec1c707763005e2bf77dff6f11457ce4bbf1b142efcf31d8ee32292694257"
+        },
+        {
+          "name": "Character/C01-RideRightLayerAdjust",
+          "offset": 1558559,
+          "size": 3694,
+          "sha256": "0c0739f506b74feee4cc4b4c5260d02ec457b85daff56a6169a63ac16674bbe6"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-down-red.png",
+      "sha256": "beb8a16c1f9306cb91204d3ee648bb54cb5e64e08016c0c6451e331c37ec6dae",
+      "bytes": 1536,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideDownLayerStatic",
+          "offset": 1548946,
+          "size": 3601,
+          "sha256": "c0b2cea048c38610cc665152adf626b55f463f24502643a92a5de0ee00e2a568"
+        },
+        {
+          "name": "Character/C01-RideDownLayerAdjust",
+          "offset": 1544556,
+          "size": 4390,
+          "sha256": "b12bff8e4313897dfb0b4593a9a41ba2d463116a60dab8e5e769a8cd01d6e9e4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-1-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-1-down-blue.png",
+      "sha256": "a696c30644aad4528547be67dddbd562656179c433dddf9b72cf2519d64c0df1",
+      "bytes": 1507,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C01-RideDownLayerStatic",
+          "offset": 1548946,
+          "size": 3601,
+          "sha256": "c0b2cea048c38610cc665152adf626b55f463f24502643a92a5de0ee00e2a568"
+        },
+        {
+          "name": "Character/C01-RideDownLayerAdjust",
+          "offset": 1544556,
+          "size": 4390,
+          "sha256": "b12bff8e4313897dfb0b4593a9a41ba2d463116a60dab8e5e769a8cd01d6e9e4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-left-red.png",
+      "sha256": "13742f1b4cc075481394bf77bfb88840db1f58660e8236c6efc2966988f5207e",
+      "bytes": 1582,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideLeftLayerStatic",
+          "offset": 1727446,
+          "size": 5289,
+          "sha256": "7d7f2d07e0f2b36b440b01b1a0cd4d1d6ff01677b76be87db63509a05940ee25"
+        },
+        {
+          "name": "Character/C02-RideLeftLayerAdjust",
+          "offset": 1724680,
+          "size": 2766,
+          "sha256": "e99b91a8b8b8695ccfaeeb026e167e64dbf979d68e8f13ccea3ff0fceb1ad808"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-left-blue.png",
+      "sha256": "ecf1eacbc009781004ee26bdd63f83632f90b8c58dcc42f00a0c1f31282718c8",
+      "bytes": 1581,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideLeftLayerStatic",
+          "offset": 1727446,
+          "size": 5289,
+          "sha256": "7d7f2d07e0f2b36b440b01b1a0cd4d1d6ff01677b76be87db63509a05940ee25"
+        },
+        {
+          "name": "Character/C02-RideLeftLayerAdjust",
+          "offset": 1724680,
+          "size": 2766,
+          "sha256": "e99b91a8b8b8695ccfaeeb026e167e64dbf979d68e8f13ccea3ff0fceb1ad808"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-up-red.png",
+      "sha256": "d1ac73d74efb5517f31b1034e423d5dfbb7751ac02241b84da3cb24fdd2f581e",
+      "bytes": 1660,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideUpLayerStatic",
+          "offset": 1743580,
+          "size": 6451,
+          "sha256": "27138dc63564bf9941b2868fce0648f78594089629a003e647d598848f542107"
+        },
+        {
+          "name": "Character/C02-RideUpLayerAdjust",
+          "offset": 1740711,
+          "size": 2869,
+          "sha256": "71b87750c953cea7bf1b2e9e4e370f8751856d86b24e44e694b491e59a419512"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-up-blue.png",
+      "sha256": "bf79bf029e860388ad60b9af54bcf7c04be4e129898d6b5d74fafd62bee4dd9b",
+      "bytes": 1652,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideUpLayerStatic",
+          "offset": 1743580,
+          "size": 6451,
+          "sha256": "27138dc63564bf9941b2868fce0648f78594089629a003e647d598848f542107"
+        },
+        {
+          "name": "Character/C02-RideUpLayerAdjust",
+          "offset": 1740711,
+          "size": 2869,
+          "sha256": "71b87750c953cea7bf1b2e9e4e370f8751856d86b24e44e694b491e59a419512"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-right-red.png",
+      "sha256": "eba999aa088275c7a1af30d1645516664b17d51c186f7b9452ee32b60bb10d2f",
+      "bytes": 1599,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideRightLayerStatic",
+          "offset": 1735394,
+          "size": 5317,
+          "sha256": "2eac1871cf05c5cda3e226a3c8f72886fe6fa81cf0d81230a32f3233fa8d3a70"
+        },
+        {
+          "name": "Character/C02-RideRightLayerAdjust",
+          "offset": 1732735,
+          "size": 2659,
+          "sha256": "65e8862944317f4298b6c3891fdba1b84575de9e9c3f5870b4c47b1851b5f773"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-right-blue.png",
+      "sha256": "c8036b644fb89bba6998ef87a7586d0f23194a680f3aeac5ab385adda8036bdf",
+      "bytes": 1594,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideRightLayerStatic",
+          "offset": 1735394,
+          "size": 5317,
+          "sha256": "2eac1871cf05c5cda3e226a3c8f72886fe6fa81cf0d81230a32f3233fa8d3a70"
+        },
+        {
+          "name": "Character/C02-RideRightLayerAdjust",
+          "offset": 1732735,
+          "size": 2659,
+          "sha256": "65e8862944317f4298b6c3891fdba1b84575de9e9c3f5870b4c47b1851b5f773"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-down-red.png",
+      "sha256": "017aa9754021178ab6ed1e32a22ab4c16669d85559ac367dd5c25ffc4a65ea50",
+      "bytes": 1751,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideDownLayerStatic",
+          "offset": 1717641,
+          "size": 7039,
+          "sha256": "ea548b75ae7cd0463638da94d0c4e885cdd8664337ecfadd6733db581144a8bc"
+        },
+        {
+          "name": "Character/C02-RideDownLayerAdjust",
+          "offset": 1714164,
+          "size": 3477,
+          "sha256": "6f837d29ac6a63f322ea8413806d79131ffc84260e07fbd52a44f172faa68ab0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-2-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-2-down-blue.png",
+      "sha256": "8427fe9959e3e87eb1c3cbacdbfd1f71e60d5e7698b5860a0a102fc2ebae6e0c",
+      "bytes": 1737,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C02-RideDownLayerStatic",
+          "offset": 1717641,
+          "size": 7039,
+          "sha256": "ea548b75ae7cd0463638da94d0c4e885cdd8664337ecfadd6733db581144a8bc"
+        },
+        {
+          "name": "Character/C02-RideDownLayerAdjust",
+          "offset": 1714164,
+          "size": 3477,
+          "sha256": "6f837d29ac6a63f322ea8413806d79131ffc84260e07fbd52a44f172faa68ab0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-left-red.png",
+      "sha256": "e3960986cd13f5801f20f89bce628d2a2682a1803a2b9da9ef5dcf01b1957cd3",
+      "bytes": 1618,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideLeftLayerStatic",
+          "offset": 1935119,
+          "size": 4839,
+          "sha256": "60689b355ccca4ddeb79bf9d4dce51984a507c003af989f37b94ab3fe186eb12"
+        },
+        {
+          "name": "Character/C03-RideLeftLayerAdjust",
+          "offset": 1931239,
+          "size": 3880,
+          "sha256": "36a5cdd68848ff0af25b80ace0fcad7303cfe4b335a6a519f721566813505043"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-left-blue.png",
+      "sha256": "717fc414b3c08ad62dfa9581cf0e5941391770eb9d7874cdaecba8031638997d",
+      "bytes": 1603,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideLeftLayerStatic",
+          "offset": 1935119,
+          "size": 4839,
+          "sha256": "60689b355ccca4ddeb79bf9d4dce51984a507c003af989f37b94ab3fe186eb12"
+        },
+        {
+          "name": "Character/C03-RideLeftLayerAdjust",
+          "offset": 1931239,
+          "size": 3880,
+          "sha256": "36a5cdd68848ff0af25b80ace0fcad7303cfe4b335a6a519f721566813505043"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-up-red.png",
+      "sha256": "29ef44d8e30141e6c0445e09574410fb336547b213184702cfb9ff2ff4e40ca6",
+      "bytes": 1604,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideUpLayerStatic",
+          "offset": 1953481,
+          "size": 3776,
+          "sha256": "c753b29b1371500b525a92f209b21ee638e832d23da06af99e6bc7a3544a74e8"
+        },
+        {
+          "name": "Character/C03-RideUpLayerAdjust",
+          "offset": 1948628,
+          "size": 4853,
+          "sha256": "e2d87362b969006d8fd3944661079463fdae23ec8596b41a9786c88e1529e18d"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-up-blue.png",
+      "sha256": "e706800099e99819f0ff8edd0487fa20d68edc0120d06741ff303bc189093c99",
+      "bytes": 1593,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideUpLayerStatic",
+          "offset": 1953481,
+          "size": 3776,
+          "sha256": "c753b29b1371500b525a92f209b21ee638e832d23da06af99e6bc7a3544a74e8"
+        },
+        {
+          "name": "Character/C03-RideUpLayerAdjust",
+          "offset": 1948628,
+          "size": 4853,
+          "sha256": "e2d87362b969006d8fd3944661079463fdae23ec8596b41a9786c88e1529e18d"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-right-red.png",
+      "sha256": "79d2de0d2bd768253fd9cc7ccb83781506e6c9ccfe3a050a221fc047620da4b7",
+      "bytes": 1614,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideRightLayerStatic",
+          "offset": 1943778,
+          "size": 4850,
+          "sha256": "8e2b49c6955808ce61a6057645bf19e5ebdcbbff93e23b46eb2bf2d15f154fcd"
+        },
+        {
+          "name": "Character/C03-RideRightLayerAdjust",
+          "offset": 1939958,
+          "size": 3820,
+          "sha256": "4b8e6ec81ad0cf1b7e0dff012a22c8517cc4277fe35fa5ef41b08fbf0e236a21"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-right-blue.png",
+      "sha256": "2e5d8e6fc0f2212fda4511f75a99666fb0d2394a7e6d9790e8696449cc2588ad",
+      "bytes": 1602,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideRightLayerStatic",
+          "offset": 1943778,
+          "size": 4850,
+          "sha256": "8e2b49c6955808ce61a6057645bf19e5ebdcbbff93e23b46eb2bf2d15f154fcd"
+        },
+        {
+          "name": "Character/C03-RideRightLayerAdjust",
+          "offset": 1939958,
+          "size": 3820,
+          "sha256": "4b8e6ec81ad0cf1b7e0dff012a22c8517cc4277fe35fa5ef41b08fbf0e236a21"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-down-red.png",
+      "sha256": "3038fa90292021a2e1297eab18dad58230fc36e8789624466608548a50ca5236",
+      "bytes": 1828,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideDownLayerStatic",
+          "offset": 1925494,
+          "size": 5745,
+          "sha256": "1b72d2c49a4dc8782749bceb69f7ad8754f2384128c9c1f9520a7102a90ac53b"
+        },
+        {
+          "name": "Character/C03-RideDownLayerAdjust",
+          "offset": 1920629,
+          "size": 4865,
+          "sha256": "9e8c943f5860cef358e883efe4ebb1f40e463503e3f7fae3c28c34cc57946f6e"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-3-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-3-down-blue.png",
+      "sha256": "f7890cc373fce417367c3775a8c47caea2ed58afd14cc5a3bc7b3adec0d77f23",
+      "bytes": 1810,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C03-RideDownLayerStatic",
+          "offset": 1925494,
+          "size": 5745,
+          "sha256": "1b72d2c49a4dc8782749bceb69f7ad8754f2384128c9c1f9520a7102a90ac53b"
+        },
+        {
+          "name": "Character/C03-RideDownLayerAdjust",
+          "offset": 1920629,
+          "size": 4865,
+          "sha256": "9e8c943f5860cef358e883efe4ebb1f40e463503e3f7fae3c28c34cc57946f6e"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-left-red.png",
+      "sha256": "1ce7a682e6049436a4477a9acaa0aa5f00d8846e7b4ebd676299e0523b03dea8",
+      "bytes": 1551,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideLeftLayerStatic",
+          "offset": 2147757,
+          "size": 2729,
+          "sha256": "dd1846717383d070c35c3c7baf18e45e5dbcb4a0fe66a0bfa26beb46ac73f2a4"
+        },
+        {
+          "name": "Character/C04-RideLeftLayerAdjust",
+          "offset": 2142819,
+          "size": 4938,
+          "sha256": "cfa930a48ff9d3dd2c209eae69e9b68e787a75ff0a295e11810bd67e965820d8"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-left-blue.png",
+      "sha256": "b1770e88a86e53ad7208117d5a24fc2ebccca8bd02b75d866a0043d2b5f87e58",
+      "bytes": 1534,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideLeftLayerStatic",
+          "offset": 2147757,
+          "size": 2729,
+          "sha256": "dd1846717383d070c35c3c7baf18e45e5dbcb4a0fe66a0bfa26beb46ac73f2a4"
+        },
+        {
+          "name": "Character/C04-RideLeftLayerAdjust",
+          "offset": 2142819,
+          "size": 4938,
+          "sha256": "cfa930a48ff9d3dd2c209eae69e9b68e787a75ff0a295e11810bd67e965820d8"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-up-red.png",
+      "sha256": "a9140249c5f35838ae86c7f36911163131fa3898d54bb458c434185f201f9456",
+      "bytes": 1437,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideUpLayerStatic",
+          "offset": 2164119,
+          "size": 2311,
+          "sha256": "c248c01369cb286862b12f08fd26da09a47e02798c089c645ba5d31c0c3af6e0"
+        },
+        {
+          "name": "Character/C04-RideUpLayerAdjust",
+          "offset": 2158514,
+          "size": 5605,
+          "sha256": "9f15a0c0618db541523a235d8d79cbd52b1c52427bf3fba837ecfe765d5a4c13"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-up-blue.png",
+      "sha256": "c008574a6164c394f801e8cf8ee2836244c62f4780fc1c0f8429cf63a1e3b7e9",
+      "bytes": 1418,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideUpLayerStatic",
+          "offset": 2164119,
+          "size": 2311,
+          "sha256": "c248c01369cb286862b12f08fd26da09a47e02798c089c645ba5d31c0c3af6e0"
+        },
+        {
+          "name": "Character/C04-RideUpLayerAdjust",
+          "offset": 2158514,
+          "size": 5605,
+          "sha256": "9f15a0c0618db541523a235d8d79cbd52b1c52427bf3fba837ecfe765d5a4c13"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-right-red.png",
+      "sha256": "a280853f7f5872aaeb54da3cd81aca4000a59341eb1d6e2ddccd9133045f2787",
+      "bytes": 1552,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideRightLayerStatic",
+          "offset": 2155709,
+          "size": 2805,
+          "sha256": "8509417172359bca4b6d48e533e4451a9afab965b0c8ea9475997e18eced9a17"
+        },
+        {
+          "name": "Character/C04-RideRightLayerAdjust",
+          "offset": 2150486,
+          "size": 5223,
+          "sha256": "804ad3ed3714c4fc63c90afa2532d73276fc76f8cda625c64f0298c7cc7b3c2f"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-right-blue.png",
+      "sha256": "1663dfd019e8d099828e2a84c4da3ac0094feb6d8ca76badcc2b2d575e4fe133",
+      "bytes": 1542,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideRightLayerStatic",
+          "offset": 2155709,
+          "size": 2805,
+          "sha256": "8509417172359bca4b6d48e533e4451a9afab965b0c8ea9475997e18eced9a17"
+        },
+        {
+          "name": "Character/C04-RideRightLayerAdjust",
+          "offset": 2150486,
+          "size": 5223,
+          "sha256": "804ad3ed3714c4fc63c90afa2532d73276fc76f8cda625c64f0298c7cc7b3c2f"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-down-red.png",
+      "sha256": "820faf0ea7d04f2da0de8f3e5b71c231c836bdfc20f27e0eb0b16fd3f900e073",
+      "bytes": 1786,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideDownLayerStatic",
+          "offset": 2138783,
+          "size": 4036,
+          "sha256": "530902cadd0d46602718a6316adae13107f0315d7360ab17610524218b85fcf5"
+        },
+        {
+          "name": "Character/C04-RideDownLayerAdjust",
+          "offset": 2132092,
+          "size": 6691,
+          "sha256": "64aad19cdfc20dbe3fad721397251a866b38efdca860951085b96f6d6d083c83"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-4-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-4-down-blue.png",
+      "sha256": "bf9fd3547ae4baae2ff34d6a99ae6245b1940cc8cf1944a2c874b5f9bfa436d9",
+      "bytes": 1771,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C04-RideDownLayerStatic",
+          "offset": 2138783,
+          "size": 4036,
+          "sha256": "530902cadd0d46602718a6316adae13107f0315d7360ab17610524218b85fcf5"
+        },
+        {
+          "name": "Character/C04-RideDownLayerAdjust",
+          "offset": 2132092,
+          "size": 6691,
+          "sha256": "64aad19cdfc20dbe3fad721397251a866b38efdca860951085b96f6d6d083c83"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-left-red.png",
+      "sha256": "2e496b4c614036b49960deeb217b56008cd20c15d3d5b0122e6edc8584339c32",
+      "bytes": 1516,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideLeftLayerStatic",
+          "offset": 2352088,
+          "size": 2677,
+          "sha256": "e33a1be2f3854235eb26bec37b18d9e48439b5d3bc053d7e3e2da1d9f5214a0a"
+        },
+        {
+          "name": "Character/C05-RideLeftLayerAdjust",
+          "offset": 2347040,
+          "size": 5048,
+          "sha256": "bef2119aa2fc0403ca9aeb5fbf430bf9988c262260dc84977fd40d4562a4a412"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-left-blue.png",
+      "sha256": "ac6780fc63f586f2a374e5b498529f201befc4886f74169d001b2215945b1bb3",
+      "bytes": 1496,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideLeftLayerStatic",
+          "offset": 2352088,
+          "size": 2677,
+          "sha256": "e33a1be2f3854235eb26bec37b18d9e48439b5d3bc053d7e3e2da1d9f5214a0a"
+        },
+        {
+          "name": "Character/C05-RideLeftLayerAdjust",
+          "offset": 2347040,
+          "size": 5048,
+          "sha256": "bef2119aa2fc0403ca9aeb5fbf430bf9988c262260dc84977fd40d4562a4a412"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-up-red.png",
+      "sha256": "8a4f86dcdeb840f0bddc42c893f88032f034abe729decf8c316ed69321f5e1d4",
+      "bytes": 1355,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideUpLayerStatic",
+          "offset": 2368083,
+          "size": 2217,
+          "sha256": "32c74ca55e9181cce3bfcfd24854dbba08d129788717c4bf2421e9dc056dd710"
+        },
+        {
+          "name": "Character/C05-RideUpLayerAdjust",
+          "offset": 2362779,
+          "size": 5304,
+          "sha256": "5e1080c2773d5d3f14d58563cfc4d082f3dbf3cb937c2a9e596bfc98398148e3"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-up-blue.png",
+      "sha256": "02e8d6077d0878f412573f921a0c10f8b71407d90b55d1007235b13200c3454a",
+      "bytes": 1333,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideUpLayerStatic",
+          "offset": 2368083,
+          "size": 2217,
+          "sha256": "32c74ca55e9181cce3bfcfd24854dbba08d129788717c4bf2421e9dc056dd710"
+        },
+        {
+          "name": "Character/C05-RideUpLayerAdjust",
+          "offset": 2362779,
+          "size": 5304,
+          "sha256": "5e1080c2773d5d3f14d58563cfc4d082f3dbf3cb937c2a9e596bfc98398148e3"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-right-red.png",
+      "sha256": "08b55b80dc3636f0a1c10d21141df840bae72d6832d960f37205e0f8d37d2db2",
+      "bytes": 1542,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideRightLayerStatic",
+          "offset": 2360122,
+          "size": 2657,
+          "sha256": "e2dbc19713140be8d7f2fdae3b23eac5c17774c711120180e0ce82560927d268"
+        },
+        {
+          "name": "Character/C05-RideRightLayerAdjust",
+          "offset": 2354765,
+          "size": 5357,
+          "sha256": "2e5dcc4366bb2b20ab5074d88450e49c1183cc6066ec5f17afef65e50c0228c4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-right-blue.png",
+      "sha256": "3bb5ef05715ef6950003fe8d623a923864ac7763936127313a7711c226c26b71",
+      "bytes": 1529,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideRightLayerStatic",
+          "offset": 2360122,
+          "size": 2657,
+          "sha256": "e2dbc19713140be8d7f2fdae3b23eac5c17774c711120180e0ce82560927d268"
+        },
+        {
+          "name": "Character/C05-RideRightLayerAdjust",
+          "offset": 2354765,
+          "size": 5357,
+          "sha256": "2e5dcc4366bb2b20ab5074d88450e49c1183cc6066ec5f17afef65e50c0228c4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-down-red.png",
+      "sha256": "9d1bed523d9e95a8be39bc2b37f98dcd1fe5b57ef4579c49965fb01775b25076",
+      "bytes": 1738,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideDownLayerStatic",
+          "offset": 2343517,
+          "size": 3523,
+          "sha256": "8dcc1180b51cff81d89a0803906eea2141d2e67ca159ab958944f3595104b5b6"
+        },
+        {
+          "name": "Character/C05-RideDownLayerAdjust",
+          "offset": 2336697,
+          "size": 6820,
+          "sha256": "ab1e8759665fa41336e834c6b1e12c5cdc91d97fb5c319984d576ae1cb5d7602"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-5-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-5-down-blue.png",
+      "sha256": "7fd5dab673609c410fe3b756360e4f0d4fe558638698e8a0bde81e47f3aff994",
+      "bytes": 1743,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C05-RideDownLayerStatic",
+          "offset": 2343517,
+          "size": 3523,
+          "sha256": "8dcc1180b51cff81d89a0803906eea2141d2e67ca159ab958944f3595104b5b6"
+        },
+        {
+          "name": "Character/C05-RideDownLayerAdjust",
+          "offset": 2336697,
+          "size": 6820,
+          "sha256": "ab1e8759665fa41336e834c6b1e12c5cdc91d97fb5c319984d576ae1cb5d7602"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-left-red.png",
+      "sha256": "2842fa91bddad6ea2c2eb35935928de3e2cd6a668d6a15f4e69eae9be5564bc3",
+      "bytes": 1797,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideLeftLayerStatic",
+          "offset": 2565082,
+          "size": 2983,
+          "sha256": "63d348776ab0e0e0caa33983167fb31c0fc614bc56e4fbe75b09237cb7937369"
+        },
+        {
+          "name": "Character/C06-RideLeftLayerAdjust",
+          "offset": 2557879,
+          "size": 7203,
+          "sha256": "5f041b3e075352ba4b05c3a8a427f4a2a7fb9da19bc69a9236b478c17aeae8a9"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-left-blue.png",
+      "sha256": "055fb12ea2bf8b3c0fa0cea9b377d7d2421fd2948338cfe783449c84778013a5",
+      "bytes": 1789,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideLeftLayerStatic",
+          "offset": 2565082,
+          "size": 2983,
+          "sha256": "63d348776ab0e0e0caa33983167fb31c0fc614bc56e4fbe75b09237cb7937369"
+        },
+        {
+          "name": "Character/C06-RideLeftLayerAdjust",
+          "offset": 2557879,
+          "size": 7203,
+          "sha256": "5f041b3e075352ba4b05c3a8a427f4a2a7fb9da19bc69a9236b478c17aeae8a9"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-up-red.png",
+      "sha256": "07bce82dd931f2e78601c7146dc68343d39252ce6e9294516a331491235dc6a0",
+      "bytes": 1655,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideUpLayerStatic",
+          "offset": 2586494,
+          "size": 1836,
+          "sha256": "29ab42f63dd480fb4b2c4953a7b1dc8b35e2b72b5b32152873e963f3c64d36e4"
+        },
+        {
+          "name": "Character/C06-RideUpLayerAdjust",
+          "offset": 2578339,
+          "size": 8155,
+          "sha256": "9b7b276798ceda7bd5ffb4ab90c75acf605205ba35105ef09474734d8610a618"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-up-blue.png",
+      "sha256": "e3a5ced35d287e80d13f5d13a7e019431ac1a722158c998f66c79fe08e514038",
+      "bytes": 1663,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideUpLayerStatic",
+          "offset": 2586494,
+          "size": 1836,
+          "sha256": "29ab42f63dd480fb4b2c4953a7b1dc8b35e2b72b5b32152873e963f3c64d36e4"
+        },
+        {
+          "name": "Character/C06-RideUpLayerAdjust",
+          "offset": 2578339,
+          "size": 8155,
+          "sha256": "9b7b276798ceda7bd5ffb4ab90c75acf605205ba35105ef09474734d8610a618"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-right-red.png",
+      "sha256": "c396caee4db3179c55d28365e0ce281a17543ba59ec0c465c74aa8d1d16f3d2d",
+      "bytes": 1763,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideRightLayerStatic",
+          "offset": 2575360,
+          "size": 2979,
+          "sha256": "6fe07619a4e0be81e3d589a14a49a4a63ecebee611238c6cd599edfc722d311d"
+        },
+        {
+          "name": "Character/C06-RideRightLayerAdjust",
+          "offset": 2568065,
+          "size": 7295,
+          "sha256": "70b4b9faa27c0105a6e587522dc83a32f2ebad92f375562bd6cb3bd072be72a4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-right-blue.png",
+      "sha256": "af524df2bd4673bfd0681affff6955de31ff26dd2d7454fcb879cc8ec73ef46c",
+      "bytes": 1735,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideRightLayerStatic",
+          "offset": 2575360,
+          "size": 2979,
+          "sha256": "6fe07619a4e0be81e3d589a14a49a4a63ecebee611238c6cd599edfc722d311d"
+        },
+        {
+          "name": "Character/C06-RideRightLayerAdjust",
+          "offset": 2568065,
+          "size": 7295,
+          "sha256": "70b4b9faa27c0105a6e587522dc83a32f2ebad92f375562bd6cb3bd072be72a4"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-down-red.png",
+      "sha256": "86e64583e8df68ce2c10cc2c90091b410482431cdba5b36bd3889cccb565da36",
+      "bytes": 1970,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideDownLayerStatic",
+          "offset": 2554751,
+          "size": 3128,
+          "sha256": "4bb514637962dfc3e3994f1f513b8a4b04708bae5916f580e7ae8eee9306b39d"
+        },
+        {
+          "name": "Character/C06-RideDownLayerAdjust",
+          "offset": 2545532,
+          "size": 9219,
+          "sha256": "7ae15b00bd7fb3318b8ac34cac909f3fc8a0223de7097086816ca8a95e802807"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-6-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-6-down-blue.png",
+      "sha256": "f6728b416f1f5f36f56c552ab5a034993841134051317763110068cdc983aefe",
+      "bytes": 1967,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C06-RideDownLayerStatic",
+          "offset": 2554751,
+          "size": 3128,
+          "sha256": "4bb514637962dfc3e3994f1f513b8a4b04708bae5916f580e7ae8eee9306b39d"
+        },
+        {
+          "name": "Character/C06-RideDownLayerAdjust",
+          "offset": 2545532,
+          "size": 9219,
+          "sha256": "7ae15b00bd7fb3318b8ac34cac909f3fc8a0223de7097086816ca8a95e802807"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-left-red.png",
+      "sha256": "24bc34adcbf993a15024f73a5d9ad243536036ecfe92117db25c9545098e21f4",
+      "bytes": 1676,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideLeftLayerStatic",
+          "offset": 2803631,
+          "size": 3181,
+          "sha256": "bd18363a21819f28c669e1d03b0bd768987adf7fff2d1f95484d8a669808cba1"
+        },
+        {
+          "name": "Character/C07-RideLeftLayerAdjust",
+          "offset": 2797594,
+          "size": 6037,
+          "sha256": "06cb7d17b8c76b64bc1ed0fe00f3a05ea2be426c7a2f61d07d2b5566f6b86365"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-left-blue.png",
+      "sha256": "75f5da55c83c9770ed102734932ec44392ef87bc6746bc24b6a99ae4db308caf",
+      "bytes": 1652,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideLeftLayerStatic",
+          "offset": 2803631,
+          "size": 3181,
+          "sha256": "bd18363a21819f28c669e1d03b0bd768987adf7fff2d1f95484d8a669808cba1"
+        },
+        {
+          "name": "Character/C07-RideLeftLayerAdjust",
+          "offset": 2797594,
+          "size": 6037,
+          "sha256": "06cb7d17b8c76b64bc1ed0fe00f3a05ea2be426c7a2f61d07d2b5566f6b86365"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-up-red.png",
+      "sha256": "d4a303782fda7f89411fac29bc66ff553fcfa9157857250d0799b6a1dc781478",
+      "bytes": 1525,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideUpLayerStatic",
+          "offset": 2823891,
+          "size": 1889,
+          "sha256": "645984882ccf96426760a5851bcfcb2174e6e497d09b71b0a3db9906c8dee5c5"
+        },
+        {
+          "name": "Character/C07-RideUpLayerAdjust",
+          "offset": 2816406,
+          "size": 7485,
+          "sha256": "8298a960c9323cb38977889a9134c68b4c8024edce6f968a346dbcfcd87e2d77"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-up-blue.png",
+      "sha256": "0e0800c6b7d0847ff8f56c5b58e85a7f041be955d4a77609f3a5bcd8f65bb608",
+      "bytes": 1506,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideUpLayerStatic",
+          "offset": 2823891,
+          "size": 1889,
+          "sha256": "645984882ccf96426760a5851bcfcb2174e6e497d09b71b0a3db9906c8dee5c5"
+        },
+        {
+          "name": "Character/C07-RideUpLayerAdjust",
+          "offset": 2816406,
+          "size": 7485,
+          "sha256": "8298a960c9323cb38977889a9134c68b4c8024edce6f968a346dbcfcd87e2d77"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-right-red.png",
+      "sha256": "1fe0e122e44825e24452b161057014b3350c8cbe3e2b4da872596a6136a72253",
+      "bytes": 1673,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideRightLayerStatic",
+          "offset": 2813437,
+          "size": 2969,
+          "sha256": "6b0cf8e765e87a33958dcf6f8fcc0a7bbdbc53a7ca7e140fa5a6d9fc060ac811"
+        },
+        {
+          "name": "Character/C07-RideRightLayerAdjust",
+          "offset": 2806812,
+          "size": 6625,
+          "sha256": "a99df4eb2d91742e19b7f259a75543d4dd2ddd72eff785826a5738d31424f37c"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-right-blue.png",
+      "sha256": "d01fe8bb6772527c7b323fe59851574f7579a3ba1c16755b2ee6fdd3375737ae",
+      "bytes": 1652,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideRightLayerStatic",
+          "offset": 2813437,
+          "size": 2969,
+          "sha256": "6b0cf8e765e87a33958dcf6f8fcc0a7bbdbc53a7ca7e140fa5a6d9fc060ac811"
+        },
+        {
+          "name": "Character/C07-RideRightLayerAdjust",
+          "offset": 2806812,
+          "size": 6625,
+          "sha256": "a99df4eb2d91742e19b7f259a75543d4dd2ddd72eff785826a5738d31424f37c"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-down-red.png",
+      "sha256": "d90bc1f401c1514b0ee205b81b02126cdad19280e8b920f6a703b08e270f41f5",
+      "bytes": 1931,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideDownLayerStatic",
+          "offset": 2793809,
+          "size": 3785,
+          "sha256": "7ba9217721489feb79f82aa3e3b10b6913d981b9412127bddb7040a85e7b0b6c"
+        },
+        {
+          "name": "Character/C07-RideDownLayerAdjust",
+          "offset": 2786472,
+          "size": 7337,
+          "sha256": "b5a04a44e9522b5cf9f8303d55d526a75743beefb3477746c47fdaa98b20114a"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-7-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-7-down-blue.png",
+      "sha256": "ed8d04bd2ec8b2f4c3e415a5af69a85625285660285349ba3b10749bfcc33980",
+      "bytes": 1912,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C07-RideDownLayerStatic",
+          "offset": 2793809,
+          "size": 3785,
+          "sha256": "7ba9217721489feb79f82aa3e3b10b6913d981b9412127bddb7040a85e7b0b6c"
+        },
+        {
+          "name": "Character/C07-RideDownLayerAdjust",
+          "offset": 2786472,
+          "size": 7337,
+          "sha256": "b5a04a44e9522b5cf9f8303d55d526a75743beefb3477746c47fdaa98b20114a"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-left-red.png",
+      "sha256": "638bee197a8504af350a89677c98e64f31c9ee4f4ac844f82bb22c767577315c",
+      "bytes": 1892,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideLeftLayerStatic",
+          "offset": 3048933,
+          "size": 6682,
+          "sha256": "719f2156db00313713b0923c021facb5705c61c6d50725e1753218a077d1429d"
+        },
+        {
+          "name": "Character/C08-RideLeftLayerAdjust",
+          "offset": 3045184,
+          "size": 3749,
+          "sha256": "7c752a863f836239050c4291f9668a12e2a576b2bd977ad777e4b11348558cb6"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-left-blue.png",
+      "sha256": "4e8207b89548e54db852d8d13d536ecf58220c72caad1dffc08a523a0313e7e7",
+      "bytes": 1871,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideLeftLayerStatic",
+          "offset": 3048933,
+          "size": 6682,
+          "sha256": "719f2156db00313713b0923c021facb5705c61c6d50725e1753218a077d1429d"
+        },
+        {
+          "name": "Character/C08-RideLeftLayerAdjust",
+          "offset": 3045184,
+          "size": 3749,
+          "sha256": "7c752a863f836239050c4291f9668a12e2a576b2bd977ad777e4b11348558cb6"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-up-red.png",
+      "sha256": "36adc23a79da4d55c27639f6c2e4a61210efabaf19297f8d61df501fd654ae61",
+      "bytes": 1782,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideUpLayerStatic",
+          "offset": 3070487,
+          "size": 5998,
+          "sha256": "a3c65a2874756841875fcbb428fa985f39da447aa9ab73eadea1c256fcdf7d47"
+        },
+        {
+          "name": "Character/C08-RideUpLayerAdjust",
+          "offset": 3065842,
+          "size": 4645,
+          "sha256": "029b682385e578de264ddd10ce5937ab3998e7e5139789edc4b7a3c968ca4968"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-up-blue.png",
+      "sha256": "d044dc3c5257f1583eb9b86ce2b330571c253532274b8e2f1c02c9ecd053c7db",
+      "bytes": 1783,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideUpLayerStatic",
+          "offset": 3070487,
+          "size": 5998,
+          "sha256": "a3c65a2874756841875fcbb428fa985f39da447aa9ab73eadea1c256fcdf7d47"
+        },
+        {
+          "name": "Character/C08-RideUpLayerAdjust",
+          "offset": 3065842,
+          "size": 4645,
+          "sha256": "029b682385e578de264ddd10ce5937ab3998e7e5139789edc4b7a3c968ca4968"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-right-red.png",
+      "sha256": "ec29b2c97644a94c3b7f612f4a75a1eeca953f8732ff8754bf654bb2f2d161c9",
+      "bytes": 1890,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideRightLayerStatic",
+          "offset": 3059275,
+          "size": 6567,
+          "sha256": "ee43b4efcac3e343219b3cd2242f28bcc880c7298c9c82e24095ad6ebd73b7c7"
+        },
+        {
+          "name": "Character/C08-RideRightLayerAdjust",
+          "offset": 3055615,
+          "size": 3660,
+          "sha256": "926fc3e59a814ccb90e23a0224f2a0d09e498950d9b9630b2e40c0a846e17faf"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-right-blue.png",
+      "sha256": "a9bc7bd43e147c8a70475e61819ac22623ebebe6a416fb3ec0877db733a64115",
+      "bytes": 1881,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideRightLayerStatic",
+          "offset": 3059275,
+          "size": 6567,
+          "sha256": "ee43b4efcac3e343219b3cd2242f28bcc880c7298c9c82e24095ad6ebd73b7c7"
+        },
+        {
+          "name": "Character/C08-RideRightLayerAdjust",
+          "offset": 3055615,
+          "size": 3660,
+          "sha256": "926fc3e59a814ccb90e23a0224f2a0d09e498950d9b9630b2e40c0a846e17faf"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-down-red.png",
+      "sha256": "68d2ebadf8f9c668473c08ceef11d571b56225a3125fce4069298650ebff2aed",
+      "bytes": 2276,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideDownLayerStatic",
+          "offset": 3036256,
+          "size": 8928,
+          "sha256": "1e43f911ad46af21c67030a7f41ce3ed162874375447b557355f85f48031b917"
+        },
+        {
+          "name": "Character/C08-RideDownLayerAdjust",
+          "offset": 3031119,
+          "size": 5137,
+          "sha256": "87482d0069064d90169f04cd759269e3c9b80f4ed6fddd955b36bc2f479daf92"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-8-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-8-down-blue.png",
+      "sha256": "40f50f18d022a96758944dac41d25d68458c2793fa33989360478aa863ad9a4e",
+      "bytes": 2258,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C08-RideDownLayerStatic",
+          "offset": 3036256,
+          "size": 8928,
+          "sha256": "1e43f911ad46af21c67030a7f41ce3ed162874375447b557355f85f48031b917"
+        },
+        {
+          "name": "Character/C08-RideDownLayerAdjust",
+          "offset": 3031119,
+          "size": 5137,
+          "sha256": "87482d0069064d90169f04cd759269e3c9b80f4ed6fddd955b36bc2f479daf92"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-left-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-left-red.png",
+      "sha256": "1b95f38f09634a5f65b9b0558bc166ed304ead5faa34205503bf8d19c372c254",
+      "bytes": 1612,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideLeftLayerStatic",
+          "offset": 3286806,
+          "size": 4570,
+          "sha256": "3dd0b542f8fb40de5cc8d3bf542e569709f67cedb5a488fe3023f8180266bb12"
+        },
+        {
+          "name": "Character/C09-RideLeftLayerAdjust",
+          "offset": 3283635,
+          "size": 3171,
+          "sha256": "a446ef68664d43879cd9f764b60ebc8edd5f826154042d188ae3ce3ad035ab58"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-left-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-left-blue.png",
+      "sha256": "78ca25563033d5ad10a2882fce80dd673bf77abaaa9d07a9cc097849d4be4558",
+      "bytes": 1596,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideLeftLayerStatic",
+          "offset": 3286806,
+          "size": 4570,
+          "sha256": "3dd0b542f8fb40de5cc8d3bf542e569709f67cedb5a488fe3023f8180266bb12"
+        },
+        {
+          "name": "Character/C09-RideLeftLayerAdjust",
+          "offset": 3283635,
+          "size": 3171,
+          "sha256": "a446ef68664d43879cd9f764b60ebc8edd5f826154042d188ae3ce3ad035ab58"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-up-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-up-red.png",
+      "sha256": "f41830ac1530daa39e83809fbea45bfbf89fe9eed873e509c3c6d7779833a99d",
+      "bytes": 1478,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideUpLayerStatic",
+          "offset": 3305654,
+          "size": 4325,
+          "sha256": "81b27efeb073c843addaf9f7831f4657815a47434aee0cac649fd028cfa6b4c0"
+        },
+        {
+          "name": "Character/C09-RideUpLayerAdjust",
+          "offset": 3302490,
+          "size": 3164,
+          "sha256": "5f58e77463955e9a7813621391821adebce1791e54d08e5872a71624713a59c1"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-up-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-up-blue.png",
+      "sha256": "397416755a3ae59dd7718376796a9f8da9628bb5d64c87b3432d7444862742f7",
+      "bytes": 1469,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideUpLayerStatic",
+          "offset": 3305654,
+          "size": 4325,
+          "sha256": "81b27efeb073c843addaf9f7831f4657815a47434aee0cac649fd028cfa6b4c0"
+        },
+        {
+          "name": "Character/C09-RideUpLayerAdjust",
+          "offset": 3302490,
+          "size": 3164,
+          "sha256": "5f58e77463955e9a7813621391821adebce1791e54d08e5872a71624713a59c1"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-right-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-right-red.png",
+      "sha256": "326ac70c769635d5c3a15f8513681e9eecba6a09bd2c4fece0247f1ce7a6b362",
+      "bytes": 1616,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideRightLayerStatic",
+          "offset": 3297772,
+          "size": 4718,
+          "sha256": "ab65d5c93c76ae0e550339c569b12614b7bc0a5e71b3529f0a2c8d3f9b5c868c"
+        },
+        {
+          "name": "Character/C09-RideRightLayerAdjust",
+          "offset": 3294574,
+          "size": 3198,
+          "sha256": "cc40ecc3f2fd92131d910ded7c797db062361e9c9c7f8946765f7b7e7060bee9"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-right-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-right-blue.png",
+      "sha256": "b28b268efb09909a708b772c1376f1d9cadcd85a7cd45289913ef87e4f8f28f7",
+      "bytes": 1613,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideRightLayerStatic",
+          "offset": 3297772,
+          "size": 4718,
+          "sha256": "ab65d5c93c76ae0e550339c569b12614b7bc0a5e71b3529f0a2c8d3f9b5c868c"
+        },
+        {
+          "name": "Character/C09-RideRightLayerAdjust",
+          "offset": 3294574,
+          "size": 3198,
+          "sha256": "cc40ecc3f2fd92131d910ded7c797db062361e9c9c7f8946765f7b7e7060bee9"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-down-red.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-down-red.png",
+      "sha256": "77d6179dcc97c00b65a78492e50e234ed0d52d67131a396a8599e340579ae42d",
+      "bytes": 1733,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideDownLayerStatic",
+          "offset": 3277706,
+          "size": 5929,
+          "sha256": "c0f624682b91098fc4a2d83da96fb49ddc150b0506560cb679a79ec24527a147"
+        },
+        {
+          "name": "Character/C09-RideDownLayerAdjust",
+          "offset": 3274276,
+          "size": 3430,
+          "sha256": "126e60691f5265a1cfb77d5bae32cc06cce98d127700ac5588857e06b13059e0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    },
+    {
+      "file": "rider-9-down-blue.png",
+      "urlPath": "/bubbleparty/v4/mounts/rider-9-down-blue.png",
+      "sha256": "5859cc7c467b0ee78d5d02898636783b57edac30866f3ea1b4687f8e28624bbe",
+      "bytes": 1723,
+      "width": 240,
+      "height": 92,
+      "sources": [
+        {
+          "name": "Character/C09-RideDownLayerStatic",
+          "offset": 3277706,
+          "size": 5929,
+          "sha256": "c0f624682b91098fc4a2d83da96fb49ddc150b0506560cb679a79ec24527a147"
+        },
+        {
+          "name": "Character/C09-RideDownLayerAdjust",
+          "offset": 3274276,
+          "size": 3430,
+          "sha256": "126e60691f5265a1cfb77d5bae32cc06cce98d127700ac5588857e06b13059e0"
+        }
+      ],
+      "framesRaw": [
+        [
+          1,
+          1,
+          59,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          61,
+          1,
+          119,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          121,
+          1,
+          179,
+          91,
+          9,
+          89,
+          -1
+        ],
+        [
+          181,
+          1,
+          239,
+          91,
+          9,
+          89,
+          -1
+        ]
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "source": {
+        "name": "Ship/Ship00",
+        "offsetInObjectTable": 58262,
+        "size": 544,
+        "sha256": "99fa47b85af03049d794c7445c7a32d191e080dbb1a3ea0b1def227d272c9b4f"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship00-Left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship00-Up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship00-Right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship00-Down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship00-Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship00-Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship00-Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship00-Down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship01",
+        "offsetInObjectTable": 58806,
+        "size": 544,
+        "sha256": "86966f9cd00e90d4045d19675926c96f2d1065c8cfa554f24677ddce818983af"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship01-Left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship01-Up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship01-Right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship01-Down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship01-Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship01-Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship01-Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship01-Down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship02",
+        "offsetInObjectTable": 59350,
+        "size": 544,
+        "sha256": "25b614633ba24b0c4296f8b7b59ad2625a06e2a104f9a3422b7d129c28e53315"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship02-Left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship02-Up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship02-Right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship02-Down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship02-Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship02-Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship02-Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship02-Down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship03",
+        "offsetInObjectTable": 59894,
+        "size": 544,
+        "sha256": "2345eb5d4d472fa9093619a565055bc4d37b68e32531b67b8caa200279833198"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship03-Left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship03-Up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship03-Right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship03-Down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship03-Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship03-Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship03-Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship03-Down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship04",
+        "offsetInObjectTable": 60438,
+        "size": 544,
+        "sha256": "9d25eda8bf577f1af44146d08c1d5f6fed7b62a032086ca4ec26c7b77d094ead"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship04_left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship04_up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship04_right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship04_down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship04_left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship04_up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship04_right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship04_down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship05",
+        "offsetInObjectTable": 60982,
+        "size": 544,
+        "sha256": "5cc257d9d77f5bf37c452e868bf181b6e53ffcd795fc774059d17cbd57ca9d30"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship05_Left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship05_Up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship05_Right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship05_down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship05_Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship05_Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship05_Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship05_down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship06",
+        "offsetInObjectTable": 61526,
+        "size": 544,
+        "sha256": "d2dcd7ab0a5cfb8560d50049b0e7b4cdb38b1fe3d629ee7f06c46bacd5d62eae"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship06_Left",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship06_Up",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship06_Right",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship06_down",
+          "sequence": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship06_Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship06_Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship06_Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship06_down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "source": {
+        "name": "Ship/Ship07",
+        "offsetInObjectTable": 62070,
+        "size": 544,
+        "sha256": "0d8f4e9bf3ddb1c494f0787ba055815a08db9b27c23d823935dbc235d5653f4f"
+      },
+      "states": {
+        "00 Move Left": {
+          "resource": "Ship/Ship07-Left",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "01 Move Up": {
+          "resource": "Ship/Ship07-Up",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "02 Move Right": {
+          "resource": "Ship/Ship07-Right",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "03 Move Down": {
+          "resource": "Ship/Ship07-Down",
+          "sequence": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "04 Stop Left": {
+          "resource": "Ship/Ship07-Left",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "05 Stop Up": {
+          "resource": "Ship/Ship07-Up",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "06 Stop Right": {
+          "resource": "Ship/Ship07-Right",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "07 Stop Down": {
+          "resource": "Ship/Ship07-Down",
+          "sequence": [
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}

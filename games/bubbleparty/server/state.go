@@ -33,8 +33,10 @@ const (
 	RescueProtectionMS = int64(1000)
 
 	ClassicRulesVersion = 2
+	NativeRulesVersion  = 3
+	CharacterSelectMS   = int64(20000)
 	MaxPlayers          = 8
-	MaxBombs            = 64
+	MaxBombs            = 80
 	MaxItems            = 40
 	MaxEvents           = 64
 	MaxLog              = 80
@@ -51,6 +53,7 @@ const (
 )
 
 const (
+	PhaseSelect    = "select"
 	PhaseCountdown = "countdown"
 	PhasePlaying   = "playing"
 	PhaseFinished  = "finished"
@@ -61,6 +64,7 @@ const (
 	CellWall
 	CellCrate
 	CellBomb
+	CellPushCrate
 )
 
 const (
@@ -90,6 +94,11 @@ type Input struct {
 const AvatarCount = 4
 
 type Player struct {
+	TeleportUntil     int64   `json:"teleportUntil,omitempty"`
+	Character         int     `json:"character,omitempty"`
+	NativeSpeed       int     `json:"nativeSpeed,omitempty"`
+	Selected          bool    `json:"selected,omitempty"`
+	Mount             string  `json:"mount,omitempty"`
 	Avatar            int     `json:"avatar,omitempty"`
 	Seat              int     `json:"seat"`
 	Team              int     `json:"team"`
@@ -116,6 +125,16 @@ type Player struct {
 	BombReq           bool    `json:"bombReq"`
 	Applied           Input   `json:"applied"`
 	Pending           []Input `json:"pending,omitempty"`
+}
+
+type BoxMotion struct {
+	FromX    int   `json:"fromX"`
+	FromY    int   `json:"fromY"`
+	X        int   `json:"x"`
+	Y        int   `json:"y"`
+	At       int64 `json:"at"`
+	EndAt    int64 `json:"endAt"`
+	ObjectID int   `json:"objectId"`
 }
 
 type Bomb struct {
@@ -157,34 +176,41 @@ type Event struct {
 }
 
 type State struct {
-	RulesVersion int             `json:"rulesVersion,omitempty"`
-	Schema       int             `json:"schema"`
-	Options      Options         `json:"options"`
-	Phase        string          `json:"phase"`
-	Epoch        string          `json:"epoch"`
-	Seed         uint64          `json:"seed"`
-	ServerAt     int64           `json:"serverAt"`
-	StartAt      int64           `json:"startAt"`
-	MatchEndsAt  int64           `json:"matchEndsAt"`
-	SuddenAt     int64           `json:"suddenAt"`
-	Sudden       bool            `json:"sudden"`
-	SafeInset    int             `json:"safeInset"`
-	MapID        string          `json:"mapId"`
-	Players      []Player        `json:"players"`
-	TeamSize     int             `json:"teamSize"`
-	Cells        []byte          `json:"cells"`
-	Bombs        []Bomb          `json:"bombs"`
-	Blasts       []Blast         `json:"blasts"`
-	Items        []Item          `json:"items"`
-	Events       []Event         `json:"events"`
-	EventID      int             `json:"eventId"`
-	BombID       int             `json:"bombId"`
-	ItemID       int             `json:"itemId"`
-	Log          []string        `json:"log"`
-	Result       *gameapi.Result `json:"result,omitempty"`
+	SelectUntil   int64           `json:"selectUntil,omitempty"`
+	NativeObjects []int           `json:"nativeObjects,omitempty"`
+	BoxMotions    []BoxMotion     `json:"boxMotions,omitempty"`
+	RulesVersion  int             `json:"rulesVersion,omitempty"`
+	Schema        int             `json:"schema"`
+	Options       Options         `json:"options"`
+	Phase         string          `json:"phase"`
+	Epoch         string          `json:"epoch"`
+	Seed          uint64          `json:"seed"`
+	ServerAt      int64           `json:"serverAt"`
+	StartAt       int64           `json:"startAt"`
+	MatchEndsAt   int64           `json:"matchEndsAt"`
+	SuddenAt      int64           `json:"suddenAt"`
+	Sudden        bool            `json:"sudden"`
+	SafeInset     int             `json:"safeInset"`
+	MapID         string          `json:"mapId"`
+	Players       []Player        `json:"players"`
+	TeamSize      int             `json:"teamSize"`
+	Cells         []byte          `json:"cells"`
+	Bombs         []Bomb          `json:"bombs"`
+	Blasts        []Blast         `json:"blasts"`
+	Items         []Item          `json:"items"`
+	Events        []Event         `json:"events"`
+	EventID       int             `json:"eventId"`
+	BombID        int             `json:"bombId"`
+	ItemID        int             `json:"itemId"`
+	Log           []string        `json:"log"`
+	Result        *gameapi.Result `json:"result,omitempty"`
 }
 
 type PlayerView struct {
+	Character         int     `json:"character"`
+	NativeSpeed       int     `json:"nativeSpeed"`
+	Selected          bool    `json:"selected"`
+	Mount             string  `json:"mount,omitempty"`
 	Avatar            int     `json:"avatar"`
 	Seat              int     `json:"seat"`
 	Seq               int64   `json:"seq"`
@@ -193,7 +219,7 @@ type PlayerView struct {
 	Y                 int     `json:"y"`
 	PX                float64 `json:"px"`
 	PY                float64 `json:"py"`
-	SpeedMS           int     `json:"speedMs"`
+	SpeedMS           float64 `json:"speedMs"`
 	Dir               string  `json:"dir"`
 	Alive             bool    `json:"alive"`
 	TrappedUntil      int64   `json:"trappedUntil"`
@@ -207,30 +233,33 @@ type PlayerView struct {
 }
 
 type View struct {
-	RulesVersion int          `json:"rulesVersion"`
-	Schema       int          `json:"schema"`
-	Options      Options      `json:"options"`
-	Phase        string       `json:"phase"`
-	Epoch        string       `json:"epoch"`
-	ServerAt     int64        `json:"serverAt"`
-	StartAt      int64        `json:"startAt"`
-	MatchEndsAt  int64        `json:"matchEndsAt"`
-	SuddenAt     int64        `json:"suddenAt"`
-	Sudden       bool         `json:"sudden"`
-	SafeInset    int          `json:"safeInset"`
-	MapID        string       `json:"mapId"`
-	Players      []PlayerView `json:"players"`
-	TeamSize     int          `json:"teamSize"`
-	Cells        []int        `json:"cells"`
-	Tiles        []int        `json:"tiles"`
-	Bombs        []Bomb       `json:"bombs"`
-	Blasts       []Blast      `json:"blasts"`
-	Items        []Item       `json:"items"`
-	Events       []Event      `json:"events"`
-	Log          []string     `json:"log"`
-	You          int          `json:"you"`
-	CanAct       bool         `json:"canAct"`
-	Spectator    bool         `json:"spectator"`
+	SelectUntil   int64        `json:"selectUntil,omitempty"`
+	NativeObjects []int        `json:"nativeObjects,omitempty"`
+	BoxMotions    []BoxMotion  `json:"boxMotions,omitempty"`
+	RulesVersion  int          `json:"rulesVersion"`
+	Schema        int          `json:"schema"`
+	Options       Options      `json:"options"`
+	Phase         string       `json:"phase"`
+	Epoch         string       `json:"epoch"`
+	ServerAt      int64        `json:"serverAt"`
+	StartAt       int64        `json:"startAt"`
+	MatchEndsAt   int64        `json:"matchEndsAt"`
+	SuddenAt      int64        `json:"suddenAt"`
+	Sudden        bool         `json:"sudden"`
+	SafeInset     int          `json:"safeInset"`
+	MapID         string       `json:"mapId"`
+	Players       []PlayerView `json:"players"`
+	TeamSize      int          `json:"teamSize"`
+	Cells         []int        `json:"cells"`
+	Tiles         []int        `json:"tiles"`
+	Bombs         []Bomb       `json:"bombs"`
+	Blasts        []Blast      `json:"blasts"`
+	Items         []Item       `json:"items"`
+	Events        []Event      `json:"events"`
+	Log           []string     `json:"log"`
+	You           int          `json:"you"`
+	CanAct        bool         `json:"canAct"`
+	Spectator     bool         `json:"spectator"`
 }
 
 func strict(raw json.RawMessage, v any) error {
@@ -275,7 +304,7 @@ func decode(m gameapi.Match) (*State, error) {
 	if err := json.Unmarshal(m.Data, &s); err != nil {
 		return nil, err
 	}
-	if s.RulesVersion != 0 && s.RulesVersion != ClassicRulesVersion {
+	if s.RulesVersion != 0 && s.RulesVersion != ClassicRulesVersion && s.RulesVersion != NativeRulesVersion {
 		return nil, errors.New("不支持的泡泡堂规则版本")
 	}
 	if s.Schema != 1 || len(s.Players) == 0 || len(s.Players) > MaxPlayers || len(s.Players)%2 != 0 {
@@ -287,7 +316,7 @@ func decode(m gameapi.Match) (*State, error) {
 	if _, err := configure(len(s.Players), mustJSON(s.Options)); err != nil {
 		return nil, err
 	}
-	if s.Phase != PhaseCountdown && s.Phase != PhasePlaying && s.Phase != PhaseFinished {
+	if s.Phase != PhaseSelect && s.Phase != PhaseCountdown && s.Phase != PhasePlaying && s.Phase != PhaseFinished {
 		return nil, errors.New("对局阶段无效")
 	}
 	if s.MapID == "" || !validMap(s.MapID) || s.Epoch == "" {
@@ -296,8 +325,23 @@ func decode(m gameapi.Match) (*State, error) {
 	if len(s.Cells) != Cols*Rows {
 		return nil, errors.New("地图状态长度无效")
 	}
+	if len(s.NativeObjects) != 0 && len(s.NativeObjects) != Cols*Rows {
+		return nil, errors.New("原版地形状态无效")
+	}
+	if len(s.BoxMotions) > maxBoxMotions {
+		return nil, errors.New("移动箱体数量超限")
+	}
+	for _, motion := range s.BoxMotions {
+		if !nativeInBounds(motion.FromX, motion.FromY) || !nativeInBounds(motion.X, motion.Y) || absInt(motion.X-motion.FromX)+absInt(motion.Y-motion.FromY) != 1 || motion.EndAt-motion.At != PushMoveMS {
+			return nil, errors.New("移动箱体状态无效")
+		}
+	}
+	if s.Phase == PhaseSelect && (s.RulesVersion < NativeRulesVersion || s.SelectUntil <= 0) {
+		return nil, errors.New("选角状态无效")
+	}
+
 	for _, c := range s.Cells {
-		if c > CellBomb {
+		if c > CellPushCrate {
 			return nil, errors.New("地图状态无效")
 		}
 	}
@@ -315,7 +359,7 @@ func decode(m gameapi.Match) (*State, error) {
 		if p.X < 0 || p.X >= Cols || p.Y < 0 || p.Y >= Rows || math.Abs(p.OffsetX) > 0.500001 || math.Abs(p.OffsetY) > 0.500001 {
 			return nil, errors.New("玩家位置无效")
 		}
-		if p.SpeedMS < MinMoveMS || p.SpeedMS > BaseMoveMS || p.MaxBombs < 1 || p.MaxBombs > MaxBombCapacity || p.Range < 1 || p.Range > MaxBombRange {
+		if !validPlayerAbilities(s.RulesVersion, p) {
 			return nil, errors.New("玩家属性无效")
 		}
 		if p.Seq < 0 || p.Seq > MaxSeq || len(p.Pending) > MaxPending {
@@ -326,7 +370,7 @@ func decode(m gameapi.Match) (*State, error) {
 		}
 	}
 	if s.Phase == PhasePlaying {
-		if s.StartAt <= 0 || s.MatchEndsAt <= s.StartAt || (s.RulesVersion != ClassicRulesVersion && (s.SuddenAt < s.StartAt || s.SuddenAt > s.MatchEndsAt)) || s.ServerAt < s.StartAt {
+		if s.StartAt <= 0 || s.MatchEndsAt <= s.StartAt || (s.RulesVersion < ClassicRulesVersion && (s.SuddenAt < s.StartAt || s.SuddenAt > s.MatchEndsAt)) || s.ServerAt < s.StartAt {
 			return nil, errors.New("对局时钟无效")
 		}
 	}
@@ -342,12 +386,8 @@ func validMap(id string) bool {
 	if id == "random" {
 		return true
 	}
-	for _, v := range mapIDs() {
-		if v == id {
-			return true
-		}
-	}
-	return false
+	_, ok := mapByID(id)
+	return ok
 }
 
 func randomMap(seed uint64) string {
@@ -371,15 +411,31 @@ func (s *State) match() (gameapi.Match, error) {
 	if err != nil {
 		return gameapi.Match{}, err
 	}
+	var choices uint64
+	for i, p := range s.Players {
+		bits := uint64(p.Character)
+		if p.Selected {
+			bits |= 16
+		}
+		choices |= bits << uint(i*5)
+	}
 	var appearance uint32
 	for i, p := range s.Players {
 		appearance |= uint32(p.Avatar) << uint(i*2)
 	}
-	m := gameapi.Match{CheckpointKey: fmt.Sprintf("%s:%x", s.Phase, appearance), Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, Log: append([]string(nil), s.Log...), Result: s.Result}
+	m := gameapi.Match{CheckpointKey: fmt.Sprintf("%s:%x:%x", s.Phase, appearance, choices), Schema: 1, Data: data, Actors: []int{}, TimeoutActors: []int{}, Attention: []int{}, Log: append([]string(nil), s.Log...), Result: s.Result}
 	if s.Result != nil {
 		return m, nil
 	}
 	switch s.Phase {
+	case PhaseSelect:
+		for i, p := range s.Players {
+			m.Actors = append(m.Actors, i)
+			if !p.Selected {
+				m.Attention = append(m.Attention, i)
+			}
+		}
+		m.SystemDeadline = min(s.SelectUntil, s.ServerAt+FrameMS)
 	case PhaseCountdown:
 		for i := range s.Players {
 			m.Actors = append(m.Actors, i)
@@ -416,6 +472,7 @@ func (s *State) match() (gameapi.Match, error) {
 
 func (s *State) project(seat int) View {
 	v := View{
+		SelectUntil: s.SelectUntil, NativeObjects: append([]int(nil), s.NativeObjects...), BoxMotions: append([]BoxMotion(nil), s.BoxMotions...),
 		RulesVersion: s.RulesVersion, Schema: 1, Options: s.Options, Phase: s.Phase, Epoch: s.Epoch,
 		ServerAt: s.ServerAt, StartAt: s.StartAt, MatchEndsAt: s.MatchEndsAt,
 		SuddenAt: s.SuddenAt, Sudden: s.Sudden, SafeInset: s.SafeInset,
@@ -430,8 +487,8 @@ func (s *State) project(seat int) View {
 	for i := range s.Players {
 		p := &s.Players[i]
 		v.Players = append(v.Players, PlayerView{
-			Avatar: p.Avatar, Seat: p.Seat, Seq: p.Seq, Team: p.Team, X: p.X, Y: p.Y, Dir: p.Dir, Alive: p.Alive,
-			PX: float64(p.X) + p.OffsetX, PY: float64(p.Y) + p.OffsetY, SpeedMS: p.SpeedMS,
+			Character: p.Character, NativeSpeed: p.NativeSpeed, Selected: p.Selected, Mount: p.Mount, Avatar: p.Avatar, Seat: p.Seat, Seq: p.Seq, Team: p.Team, X: p.X, Y: p.Y, Dir: p.Dir, Alive: p.Alive,
+			PX: float64(p.X) + p.OffsetX, PY: float64(p.Y) + p.OffsetY, SpeedMS: s.moveMS(p),
 			TrappedUntil: p.TrappedUntil, InvulnerableUntil: p.InvulnerableUntil,
 			Shield: p.Shield, MaxBombs: p.MaxBombs, Range: p.Range,
 			Eliminations: p.Eliminations, Crates: p.Crates, Applied: p.Applied,
@@ -455,6 +512,8 @@ func (s *State) emit(kind string, seat, x, y int, extra string, value int, at in
 		s.Events = append([]Event(nil), s.Events[len(s.Events)-MaxEvents:]...)
 	}
 }
+
+func isBox(c byte) bool { return c == CellCrate || c == CellPushCrate }
 
 func (s *State) cell(x, y int) byte {
 	if x < 0 || x >= Cols || y < 0 || y >= Rows {
@@ -491,7 +550,7 @@ func (s *State) canWalk(p *Player, x, y int) bool {
 		return false
 	}
 	c := s.cell(x, y)
-	if c == CellWall || c == CellCrate {
+	if c == CellWall || (isBox(c) && !mountPassesBoxes(p.Mount)) {
 		return false
 	}
 	if c == CellBomb && !(p.X == x && p.Y == y) {
@@ -500,11 +559,11 @@ func (s *State) canWalk(p *Player, x, y int) bool {
 	return true
 }
 
-func (s *State) placeBomb(p *Player, at int64) bool {
+func (s *State) canPlaceBomb(p *Player, at int64) bool {
 	if p == nil || !p.Alive || p.TrappedUntil > 0 || p.MaxBombs <= 0 {
 		return false
 	}
-	if s.cell(p.X, p.Y) == CellWall || s.cell(p.X, p.Y) == CellCrate || s.cell(p.X, p.Y) == CellBomb {
+	if s.cell(p.X, p.Y) == CellWall || isBox(s.cell(p.X, p.Y)) || s.cell(p.X, p.Y) == CellBomb {
 		return false
 	}
 	n := 0
@@ -513,7 +572,19 @@ func (s *State) placeBomb(p *Player, at int64) bool {
 			n++
 		}
 	}
-	if n >= p.MaxBombs {
+	if n >= p.MaxBombs || len(s.Bombs) >= MaxBombs {
+		return false
+	}
+	for _, m := range s.BoxMotions {
+		if m.EndAt > at && ((m.FromX == p.X && m.FromY == p.Y) || (m.X == p.X && m.Y == p.Y)) {
+			return false
+		}
+	}
+	return true
+}
+
+func (s *State) placeBomb(p *Player, at int64) bool {
+	if !s.canPlaceBomb(p, at) {
 		return false
 	}
 	s.BombID++
@@ -527,9 +598,9 @@ func (s *State) placeBomb(p *Player, at int64) bool {
 }
 
 func (s *State) pickupItems(at int64) {
-	for i := 0; i < len(s.Players); i++ {
+	for i := range s.Players {
 		p := &s.Players[i]
-		if !p.Alive || p.TrappedUntil > 0 {
+		if !p.Alive || p.TrappedUntil > 0 || !mountCanPickup(p.Mount) {
 			continue
 		}
 		for j := 0; j < len(s.Items); j++ {
@@ -537,22 +608,46 @@ func (s *State) pickupItems(at int64) {
 			if it.X != p.X || it.Y != p.Y {
 				continue
 			}
-			switch it.Type {
-			case ItemSpeed:
-				p.SpeedMS -= 12
-				if p.SpeedMS < MinMoveMS {
-					p.SpeedMS = MinMoveMS
+			if mount := mountKind(it.Type); mount != "" {
+				if p.Mount != "" {
+					continue
 				}
-			case ItemBomb:
-				if p.MaxBombs < MaxBombCapacity {
-					p.MaxBombs++
+				p.Mount = mount
+			} else if s.RulesVersion >= NativeRulesVersion {
+				profile, _ := characterProfile(p.Character)
+				switch it.Type {
+				case ItemSpeed:
+					p.NativeSpeed = minInt(p.NativeSpeed+1, profile.MaximumSpeed)
+					p.SpeedMS = characterMoveMS(p.NativeSpeed)
+				case ItemBomb:
+					p.MaxBombs = minInt(p.MaxBombs+1, profile.MaximumBombs)
+				case ItemRange:
+					p.Range = minInt(p.Range+1, profile.MaximumRange)
+				case ItemShield:
+					p.Shield = true
+				default:
+					continue
 				}
-			case ItemRange:
-				if p.Range < MaxBombRange {
-					p.Range++
+			} else {
+				switch it.Type {
+				case ItemSpeed:
+					p.SpeedMS -= 12
+					if p.SpeedMS < MinMoveMS {
+						p.SpeedMS = MinMoveMS
+					}
+				case ItemBomb:
+					if p.MaxBombs < MaxBombCapacity {
+						p.MaxBombs++
+					}
+				case ItemRange:
+					if p.Range < MaxBombRange {
+						p.Range++
+					}
+				case ItemShield:
+					p.Shield = true
+				default:
+					continue
 				}
-			case ItemShield:
-				p.Shield = true
 			}
 			s.Items = append(s.Items[:j], s.Items[j+1:]...)
 			j--
@@ -571,6 +666,7 @@ func (s *State) eliminate(p *Player, at int64, by int) {
 		return
 	}
 	p.Alive = false
+	p.Mount = ""
 	p.TrappedUntil = 0
 	p.Applied = Input{At: at, Move: "none"}
 	p.Pending = nil
@@ -601,6 +697,9 @@ func (s *State) hitWater(p *Player, at int64, by int) {
 		p.Shield = false
 		p.InvulnerableUntil = at + RescueProtectionMS
 		s.emit("shield", p.Seat, p.X, p.Y, "", by, at)
+		return
+	}
+	if s.absorbMountHit(p, at, by) {
 		return
 	}
 	p.TrappedUntil = at + TrapMS
@@ -654,6 +753,9 @@ func (s *State) resolveWaterAndContacts(at int64) {
 }
 
 func (s *State) blastCell(x, y int, seat int, at int64) {
+	if fields := s.nativeObjectFields(x, y); len(fields) > 5 && fields[0] == 3 && fields[5] == 0 {
+		s.clearNativeObject(x, y)
+	}
 	for i := range s.Blasts {
 		if s.Blasts[i].X == x && s.Blasts[i].Y == y && s.Blasts[i].EndAt > at {
 			return
@@ -691,11 +793,15 @@ func (s *State) explodeBombs(at int64) {
 			for step := 1; step <= b.Range; step++ {
 				x, y := b.X+d[0]*step, b.Y+d[1]*step
 				c := s.cell(x, y)
-				if c == CellWall {
+				if c == CellWall || !s.nativePassage(x-d[0], y-d[1], d[0], d[1], true) {
 					break
 				}
-				if c == CellCrate {
+				if isBox(c) {
 					s.setCell(x, y, CellEmpty)
+					s.clearNativeObject(x, y)
+					if s.RulesVersion >= NativeRulesVersion {
+						s.blastCell(x, y, b.Seat, at)
+					}
 					if p := s.player(b.Seat); p != nil {
 						p.Crates++
 					}
@@ -721,6 +827,14 @@ func (s *State) spawnItem(x, y int, at int64, seat int) {
 		return
 	}
 	types := []string{ItemSpeed, ItemBomb, ItemRange}
+	if s.RulesVersion >= NativeRulesVersion {
+		// Rates are platform tuning; the original client does not establish the server's default loot probabilities.
+		types = make([]string, 0, 44)
+		for i := 0; i < 12; i++ {
+			types = append(types, ItemSpeed, ItemBomb, ItemRange)
+		}
+		types = append(types, "turtle", "turtle-fast", "owl", "airship", "airship-broken", "octopus", "octopus-fast", "railcar")
+	}
 	// Original shields are timed consumables, not passive crate upgrades.
 	// Keep the historical drop pool only for version-0 saved matches.
 	if s.RulesVersion == 0 {
@@ -759,6 +873,11 @@ func (s *State) stepPlayer(p *Player, at int64) {
 			s.placeBomb(p, at)
 		}
 	}
+	if s.RulesVersion >= NativeRulesVersion {
+		if dx, dy, distance := s.nativeConveyorMotion(p); distance > 0 {
+			s.movePlayer(p, dx, dy, distance, at, directionName([2]int{dx, dy}))
+		}
+	}
 	move := p.Applied.Move
 	if move == "" {
 		move = "none"
@@ -779,7 +898,7 @@ func (s *State) stepPlayer(p *Player, at int64) {
 			if s.RulesVersion == 0 {
 				s.movePlayerLegacy(p, dx, dy, at, move)
 			} else {
-				s.movePlayer(p, dx, dy, float64(StepMS)/float64(p.SpeedMS), at, move)
+				s.movePlayer(p, dx, dy, float64(StepMS)/s.moveMS(p), at, move)
 			}
 		}
 	}
@@ -811,7 +930,7 @@ func (s *State) movePlayer(p *Player, dx, dy int, distance float64, at int64, di
 	// body from cutting a solid corner and preserves the distance budget.
 	if dx != 0 && math.Abs(p.OffsetY) > 0.000001 {
 		target := py + math.Copysign(math.Min(distance, math.Abs(p.OffsetY)), -p.OffsetY)
-		next := s.moveAxis(p, px, py, target, false)
+		next := s.moveAxis(p, px, py, target, false, at)
 		distance -= math.Abs(next - py)
 		py = next
 		if math.Abs(py-float64(p.Y)) > 0.000001 {
@@ -820,7 +939,7 @@ func (s *State) movePlayer(p *Player, dx, dy int, distance float64, at int64, di
 	}
 	if dy != 0 && math.Abs(p.OffsetX) > 0.000001 {
 		target := px + math.Copysign(math.Min(distance, math.Abs(p.OffsetX)), -p.OffsetX)
-		next := s.moveAxis(p, px, py, target, true)
+		next := s.moveAxis(p, px, py, target, true, at)
 		distance -= math.Abs(next - px)
 		px = next
 		if math.Abs(px-float64(p.X)) > 0.000001 {
@@ -829,10 +948,34 @@ func (s *State) movePlayer(p *Player, dx, dy int, distance float64, at int64, di
 	}
 	if distance > 0 {
 		if dx != 0 {
-			px = s.moveAxis(p, px, py, px+float64(dx)*distance, true)
+			target := px + float64(dx)*distance
+			next := s.moveAxis(p, px, py, target, true, at)
+			if math.Abs(next-target) > 1e-6 && p.Applied.Move == dir {
+				probe := *p
+				probe.X = int(math.Floor(next + .5))
+				probe.Y = int(math.Floor(py + .5))
+				probe.OffsetX = next - float64(probe.X)
+				probe.OffsetY = py - float64(probe.Y)
+				if s.tryPushBox(&probe, dx, 0, at) {
+					next = s.moveAxis(p, px, py, target, true, at)
+				}
+			}
+			px = next
 		}
 		if dy != 0 {
-			py = s.moveAxis(p, px, py, py+float64(dy)*distance, false)
+			target := py + float64(dy)*distance
+			next := s.moveAxis(p, px, py, target, false, at)
+			if math.Abs(next-target) > 1e-6 && p.Applied.Move == dir {
+				probe := *p
+				probe.X = int(math.Floor(px + .5))
+				probe.Y = int(math.Floor(next + .5))
+				probe.OffsetX = px - float64(probe.X)
+				probe.OffsetY = next - float64(probe.Y)
+				if s.tryPushBox(&probe, 0, dy, at) {
+					next = s.moveAxis(p, px, py, target, false, at)
+				}
+			}
+			py = next
 		}
 	}
 	p.X, p.Y = int(math.Floor(px+0.5)), int(math.Floor(py+0.5))
@@ -849,45 +992,94 @@ func (s *State) movePlayer(p *Player, dx, dy int, distance float64, at int64, di
 	}
 }
 
-func (s *State) moveAxis(p *Player, px, py, target float64, horizontal bool) float64 {
+func (s *State) moveAxis(p *Player, px, py, target float64, horizontal bool, times ...int64) float64 {
+	at := s.ServerAt
+	if len(times) > 0 {
+		at = times[0]
+	}
 	old, across := px, py
 	if !horizontal {
 		old, across = py, px
 	}
-	if math.Abs(target-old) < 0.000001 {
+	if math.Abs(target-old) < 1e-6 {
 		return old
 	}
 	positive := target > old
-	for y := p.Y - 1; y <= p.Y+1; y++ {
-		for x := p.X - 1; x <= p.X+1; x++ {
+	clip := func(center, cross float64, exitBomb bool) {
+		if math.Abs(across-cross) >= .5+PlayerRadius-1e-6 {
+			return
+		}
+		low, high := center-.5-PlayerRadius, center+.5+PlayerRadius
+		if old > low+1e-6 && old < high-1e-6 {
+			if exitBomb {
+				return
+			}
+			if target > low && target < high {
+				target = old
+			}
+			return
+		}
+		if positive && old <= low+1e-6 && target > low {
+			target = low
+		}
+		if !positive && old >= high-1e-6 && target < high {
+			target = high
+		}
+	}
+	fx, fy := int(math.Floor(px+.5)), int(math.Floor(py+.5))
+	dx, dy := 0, 0
+	if horizontal {
+		dx = 1
+		if !positive {
+			dx = -1
+		}
+	} else {
+		dy = 1
+		if !positive {
+			dy = -1
+		}
+	}
+	for y := fy - 1; y <= fy+1; y++ {
+		for x := fx - 1; x <= fx+1; x++ {
 			c := s.cell(x, y)
-			if c != CellWall && c != CellCrate && c != CellBomb {
+			solid := c == CellWall || isBox(c) || c == CellBomb
+			if isBox(c) && mountPassesBoxes(p.Mount) {
+				solid = false
+			}
+			if c == CellPushCrate {
+				for _, m := range s.BoxMotions {
+					if m.X == x && m.Y == y && m.EndAt > at {
+						solid = false
+						break
+					}
+				}
+			}
+			if x == fx+dx && y == fy+dy && !s.nativePassage(fx, fy, dx, dy, false) {
+				solid = true
+			}
+			if !solid {
 				continue
 			}
 			center, cross := float64(x), float64(y)
 			if !horizontal {
-				center, cross = float64(y), float64(x)
+				center, cross = cross, center
 			}
-			if math.Abs(across-cross) >= 0.5+PlayerRadius-0.000001 {
+			exit := c == CellBomb && ((p.X == x && p.Y == y) || (positive && old >= center) || (!positive && old <= center))
+			clip(center, cross, exit)
+		}
+	}
+	if !mountPassesBoxes(p.Mount) {
+		for _, m := range s.BoxMotions {
+			if m.EndAt <= at || s.cell(m.X, m.Y) != CellPushCrate {
 				continue
 			}
-			low, high := center-0.5-PlayerRadius, center+0.5+PlayerRadius
-			if old > low+0.000001 && old < high-0.000001 {
-				// Players may choose any exit while still in the original balloon
-				// cell. After crossing its cell boundary they may only move away.
-				if c == CellBomb && (p.X == x && p.Y == y || positive && old >= center || !positive && old <= center) {
-					continue
-				}
-				if target > low && target < high {
-					target = old
-				}
-				continue
-			}
-			if positive && old <= low+0.000001 && target > low {
-				target = low
-			}
-			if !positive && old >= high-0.000001 && target < high {
-				target = high
+			f := math.Max(0, math.Min(1, float64(at-m.At)/float64(m.EndAt-m.At)))
+			x := float64(m.FromX) + float64(m.X-m.FromX)*f
+			y := float64(m.FromY) + float64(m.Y-m.FromY)*f
+			if horizontal {
+				clip(x, y, false)
+			} else {
+				clip(y, x, false)
 			}
 		}
 	}
@@ -895,7 +1087,7 @@ func (s *State) moveAxis(p *Player, px, py, target float64, horizontal bool) flo
 }
 
 func (s *State) shrinkZone(at int64) {
-	if s.RulesVersion == ClassicRulesVersion {
+	if s.RulesVersion >= ClassicRulesVersion {
 		return
 	}
 	if !s.Sudden && at >= s.SuddenAt {
@@ -935,8 +1127,18 @@ func minInt(a, b int) int {
 }
 
 func (s *State) step(at int64) {
+	kept := s.BoxMotions[:0]
+	for _, m := range s.BoxMotions {
+		if m.EndAt > at && s.cell(m.X, m.Y) == CellPushCrate {
+			kept = append(kept, m)
+		}
+	}
+	s.BoxMotions = kept
 	for i := range s.Players {
 		s.stepPlayer(&s.Players[i], at)
+		if s.RulesVersion >= NativeRulesVersion {
+			s.nativeTransport(&s.Players[i], at)
+		}
 	}
 	s.explodeBombs(at)
 	for i := 0; i < len(s.Blasts); {
@@ -979,7 +1181,7 @@ func (s *State) evaluate(at int64) {
 		return
 	}
 	if at >= s.MatchEndsAt {
-		if s.RulesVersion == ClassicRulesVersion {
+		if s.RulesVersion >= ClassicRulesVersion {
 			s.finish(true, -1, "时间到，双方仍有队员存活")
 			return
 		}
@@ -1042,7 +1244,7 @@ func (s *State) beginPlaying(at int64) {
 	}
 	s.MatchEndsAt = at + seconds*1000
 	s.SuddenAt = at + seconds*600
-	if s.RulesVersion == ClassicRulesVersion {
+	if s.RulesVersion >= ClassicRulesVersion {
 		s.SuddenAt = 0
 	}
 	for i := range s.Players {
@@ -1061,6 +1263,12 @@ func (s *State) beginPlaying(at int64) {
 }
 
 func (s *State) advance(until int64) {
+	if s.Phase == PhaseSelect {
+		if until < s.SelectUntil {
+			return
+		}
+		s.lockCharacters(s.SelectUntil)
+	}
 	if s.Result != nil {
 		return
 	}
@@ -1107,6 +1315,13 @@ func (s *State) onTimer(now int64) {
 		return
 	}
 	switch s.Phase {
+	case PhaseSelect:
+		if now >= s.SelectUntil {
+			s.lockCharacters(s.SelectUntil)
+			s.advance(now)
+		} else if now > s.ServerAt {
+			s.ServerAt = now
+		}
 	case PhaseCountdown:
 		if now >= s.StartAt {
 			s.beginPlaying(s.StartAt)

@@ -14,7 +14,7 @@ import (
 
 func TestContactAuditDirectionalApproach(t *testing.T) {
 	for _, enemy := range []bool{false, true} {
-		for _, speed := range []int{150, 70} {
+		for _, speed := range []int{4, 7} {
 			for _, offset := range []float64{-.45, 0, .45} {
 				for _, direction := range []struct {
 					name string
@@ -33,7 +33,7 @@ func TestContactAuditDirectionalApproach(t *testing.T) {
 							p.TrappedBy = 3
 							q := &s.Players[actor]
 							q.X, q.Y = 5+direction.x*2, 5+direction.y*2
-							q.SpeedMS = speed
+							q.NativeSpeed = speed
 						})
 						at := refactorRead(t, m, 0).ServerAt
 						// Public reclaim must preserve trap lifetime and allow fresh controls.
@@ -46,7 +46,7 @@ func TestContactAuditDirectionalApproach(t *testing.T) {
 							t.Fatal("reclaim changed trap deadline")
 						}
 						m = refactorInput(t, m, actor, direction.name, false)
-						for elapsed := int64(20); elapsed <= 500; elapsed += 20 {
+						for elapsed := int64(20); elapsed <= 800; elapsed += 20 {
 							m = refactorTick(t, m, at+elapsed)
 							p := refactorRead(t, m, 0).Players[0]
 							if !p.Alive || p.TrappedUntil == 0 {

@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "method": "Extract original resources twice into independent repository-contained output directories; compare catalog and every PNG byte-for-byte. Verify all member bounds, complete consumption, object/animation references and output digests in strict extractor.",
+  "command": "python3 -B scripts/bubbleparty/extract-classic-maps.py --out .local/bubble-classic-maps/reproduction/classic-2002.json --assets .local/bubble-classic-maps/reproduction/assets/sprites",
+  "scriptSha256": "1521d930f23eca5a6db0a8df0fd5cd2e3e83881d70d92f8e59f249e62c30e348",
+  "catalogSha256": "3b2798044f8e860d8ee06561b916947d15f8fbb950f42fb9a61fb0cde040a0b5",
+  "sourceFiles": [
+    {
+      "path": "client-2002/Fx.idd",
+      "size": 15306959,
+      "sha256": "3554b3cda62313366d07776c48c203ddc95092b18b753b4d0986fab19ed664b2"
+    },
+    {
+      "path": "client-2002/Fx.idx",
+      "size": 36776,
+      "sha256": "6be28522015c5a4b0f4b8ab86a989819d1b0b83f676566d4b99cc4c8d15aba7c"
+    },
+    {
+      "path": "client-2002/CA.exe",
+      "size": 1605060,
+      "sha256": "194a86b9e95ff9c2f18eff19030c3f726aa62df3dddbce1dcc4df87ed8fd5b8a"
+    },
+    {
+      "path": "2002-fx-index.json",
+      "size": 99242,
+      "sha256": "c4eb4ef9b5ae88f6d640db29af7cb5a262d19531905ab4b0cac087ce973bf4b4"
+    }
+  ],
+  "mapCount": 112,
+  "referencedTileCount": 367,
+  "spriteSheetCount": 366,
+  "previewCount": 112,
+  "comparedFiles": 479,
+  "familyCounts": {
+    "Desert": 10,
+    "Factory": 13,
+    "Forest": 14,
+    "Ice": 9,
+    "Mine": 15,
+    "Ocean": 16,
+    "Patrit": 14,
+    "Village": 10,
+    "Xmas": 11
+  },
+  "dimensions": [
+    {
+      "width": 15,
+      "height": 13,
+      "count": 111
+    },
+    {
+      "width": 13,
+      "height": 11,
+      "count": 1
+    }
+  ],
+  "spawnCountDistribution": {
+    "8": 84,
+    "4": 11,
+    "6": 15,
+    "2": 1,
+    "5": 1
+  },
+  "runtimeExecuted": false,
+  "cleanup": [
+    "Removed only .local/bubble-classic-maps/reproduction after byte-identical verification; retained source evidence and preview contact sheet."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "license": "Original Fortress assets; rights remain with original owners; extraction authorized in this session.",
+  "conversion": "Original I16 decoder; native rectangles/anchors, visible RGBA and alpha preserved; lossless WebP may normalize fully transparent RGB.",
+  "entries": [
+    {
+      "urlPath": "/fortressblue/v4/crate.webp",
+      "bytes": 6636,
+      "sha256": "800c19e02a6622ae23f751cd30f9a20f3b25070d054752522300923d99c63db0"
+    },
+    {
+      "urlPath": "/fortressblue/v4/helicopter.webp",
+      "bytes": 3954,
+      "sha256": "b007d8a50bab716095003f21a9f6071b907e77bc6b2701e7e3e39a8b61b2241b"
+    }
+  ]
+}

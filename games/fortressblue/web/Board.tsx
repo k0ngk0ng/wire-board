@@ -1,3 +1,5 @@
+import { supplyPaths, supplyPose } from "./supplies";
+import pickerFrames from "../assets/picker-frames.json";
 import {
   useEffect,
   useMemo,
@@ -23,7 +25,6 @@ import {
   sourceList,
   tankInfo,
   tankName,
-  tankPortraits,
   tanks as tankCatalog,
   sounds,
   type View,
@@ -110,6 +111,69 @@ function FallbackImage({
           el.src = sources[next];
         }
       }}
+    />
+  );
+}
+// Lobby portraits from tank.i16 are baked blue and include English labels.
+// Show the same untouched, correctly oriented native idle frame as the battlefield.
+function TankPortrait({ base, id }: { base: string; id: number }) {
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const sheet = animations[String(id)];
+  const frame = sheet?.frames[sheet.actions.idle.right[0]];
+  const bounds = pickerFrames[String(id) as keyof typeof pickerFrames];
+  const atlas = frame ? sheet.atlases[frame.atlas] : "";
+  const idle = tankInfo(id)?.sprites.idle?.url ?? "";
+  const images = useAssets(base, [atlas, idle].filter(Boolean));
+  useEffect(() => {
+    const el = canvas.current,
+      ctx = el?.getContext("2d");
+    if (!el || !ctx) return;
+    ctx.clearRect(0, 0, el.width, el.height);
+    ctx.imageSmoothingEnabled = false;
+    const image = images[atlas] ?? images[idle];
+    if (image) {
+      const original = !!images[atlas] && frame;
+      const x = original ? frame.x + bounds.x : 0,
+        y = original ? frame.y + bounds.y : 0;
+      const w = original ? bounds.w : image.naturalWidth;
+      const h = original ? bounds.h : image.naturalHeight;
+      const scale = Math.min(2, (el.width - 16) / w, (el.height - 8) / h);
+      ctx.drawImage(
+        image,
+        x,
+        y,
+        w,
+        h,
+        Math.round((el.width - w * scale) / 2),
+        Math.round((el.height - h * scale) / 2),
+        w * scale,
+        h * scale,
+      );
+      el.dataset.portraitState = original ? "atlas" : "idle";
+    } else {
+      // A visible, unnumbered placeholder; the adjacent name identifies the tank.
+      ctx.fillStyle = "#e2b76b";
+      ctx.fillRect(39, 25, 50, 20);
+      ctx.fillRect(49, 15, 25, 15);
+      ctx.fillRect(70, 18, 23, 7);
+      ctx.fillStyle = "#96a9b6";
+      ctx.fillRect(34, 42, 60, 12);
+      ctx.fillStyle = "#21394a";
+      for (const x of [43, 57, 71, 85]) {
+        ctx.beginPath();
+        ctx.arc(x, 48, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      el.dataset.portraitState = "fallback";
+    }
+  }, [images, atlas, idle, frame, bounds]);
+  return (
+    <canvas
+      ref={canvas}
+      className="fb-tank-portrait"
+      width={128}
+      height={65}
+      aria-hidden="true"
     />
   );
 }
@@ -208,6 +272,7 @@ export function Board(props: BoardProps<View>) {
         map.fg,
         map.fg2 ?? "",
         explosion.url,
+        ...supplyPaths,
         ...data.tanks.flatMap((t) => [
           ...(animations[String(t.tankId)]?.atlases ?? []),
           tankInfo(t.tankId)?.bullet?.url ?? "",
@@ -608,9 +673,9 @@ export function Board(props: BoardProps<View>) {
           ? "fire"
           : e.type === "explode"
             ? "explode"
-            : e.type === "death"
+            : e.type === "death" || e.type === "supply_land"
               ? "hit"
-              : e.type === "heal"
+              : e.type === "heal" || e.type === "supply_pickup"
                 ? "select"
                 : e.type === "turn"
                   ? "turn"
@@ -687,6 +752,13 @@ export function Board(props: BoardProps<View>) {
         if (p) target = p;
         else if (last && now >= (shot.launchAt ?? shot.at))
           target = last.impact;
+      }
+      if (!s.data.resolution) {
+        const delivery = s.data.supplies?.find(
+          (d) => !d.landed && now < d.landAt,
+        );
+        const pose = delivery && supplyPose(delivery, now);
+        if (pose) target = pose.crate ?? pose.helicopter ?? target;
       }
       const key = `${s.data.epoch}:${s.map.id}:${s.size.w}:${s.size.h}`;
       if (initialized.current !== key) {
@@ -854,8 +926,10 @@ export function Board(props: BoardProps<View>) {
     }
     if (!pointers.current.size) gestureWasPinch.current = false;
   }
+  const transporting = data.supplies?.some((d) => !d.landed) ?? false;
   const now = nowAt(clock),
-    remaining = data.resolution ? null : seconds(data.deadline - now);
+    remaining =
+      data.resolution || transporting ? null : seconds(data.deadline - now);
   const isSelect = data.phase === "select";
   const currentName = active
     ? (room.seats[active.seat]?.name ?? `P${active.seat + 1}`)
@@ -873,20 +947,23 @@ export function Board(props: BoardProps<View>) {
     ? "选择坦克"
     : data.phase === "finished"
       ? "对局结束"
-      : data.resolution?.stage === "flying"
-        ? now < (data.lastShot?.launchAt ?? 0)
-          ? "准备发射"
-          : "炮弹飞行中"
-        : data.resolution
-          ? "等待落地"
-          : data.you === data.current
-            ? "轮到你了"
-            : `${currentName} 行动中`;
+      : transporting
+        ? "补给运输中"
+        : data.resolution?.stage === "flying"
+          ? now < (data.lastShot?.launchAt ?? 0)
+            ? "准备发射"
+            : "炮弹飞行中"
+          : data.resolution
+            ? "等待落地"
+            : data.you === data.current
+              ? "轮到你了"
+              : `${currentName} 行动中`;
   return (
     <div
       ref={boardRef}
       className="fortressblue-board"
       data-fortressblue-phase={data.phase}
+      data-fortressblue-transporting={transporting ? "1" : "0"}
       data-fortressblue-turn={data.turn}
       data-fortressblue-shot={data.lastShot?.id ?? 0}
       data-fortressblue-animating={data.resolution ? "1" : "0"}
@@ -1257,6 +1334,14 @@ export function Board(props: BoardProps<View>) {
         拖图与滚轮缩放
       </p>
       <div className="fb-live" aria-live="polite">
+        {(data.supplies?.length ?? 0) > 0 && (
+          <span data-fortressblue-supplies>
+            {data.supplies!.some((s) => !s.landed)
+              ? "补给运输中 · "
+              : "地面补给可拾取 · "}
+            {"小地图金色标记 · "}
+          </span>
+        )}
         {data.log?.at(-1) ?? "观察风向，调整角度和力度。"}
       </div>
       {isSelect && (
@@ -1275,7 +1360,6 @@ export function Board(props: BoardProps<View>) {
           </div>
           <div className="fb-tank-grid">
             {tankCatalog.map((t) => {
-              const portrait = tankPortraits[String(t.id)] ?? t.sprites.idle;
               return (
                 <button
                   key={t.id}
@@ -1286,11 +1370,7 @@ export function Board(props: BoardProps<View>) {
                   }
                   data-fortressblue-tank={t.id}
                 >
-                  <FallbackImage
-                    base={assets}
-                    path={portrait?.url ?? ""}
-                    alt=""
-                  />
+                  <TankPortrait base={assets} id={t.id} />
                   <strong>{t.name}</strong>
                   <span>
                     生命 {t.hp} · 炮角 {t.minAngle ?? 0}–{t.maxAngle ?? t.angle}

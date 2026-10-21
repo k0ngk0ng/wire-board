@@ -63,6 +63,7 @@ func bubbleSend(t *testing.T, c *websocket.Conn, packet any) {
 func TestBubblepartyEightHumanStreamTabsAndReconnect(t *testing.T) {
 	h := gametest.NewHTTP(t, 8, bubbleparty.Module(), "bubbleparty")
 	h.Start(map[string]any{"map": "community10", "roundSeconds": 300})
+	confirmCharacters(t, h.People)
 	initial := waitPlaying(t, h.People[0], 6*time.Second)
 	sockets := make([]*websocket.Conn, 8)
 	requests := make([]map[string]any, 8)
@@ -119,6 +120,7 @@ func TestBubblepartyEightHumanStreamTabsAndReconnect(t *testing.T) {
 func TestBubblepartyHTTPPineCollisionAndHerbPassage(t *testing.T) {
 	h := gametest.NewHTTP(t, 8, bubbleparty.Module(), "bubbleparty")
 	h.Start(map[string]any{"map": "community10", "roundSeconds": 300})
+	confirmCharacters(t, h.People)
 	c := h.People[2]
 	v := waitPlaying(t, c, 6*time.Second)
 	if v.Players[2].X != 6 || v.Players[2].Y != 6 {

@@ -17,10 +17,18 @@ import {
 import { DRAW_HEIGHT, DRAW_WIDTH, drawBoard, type DrawPoint } from "./canvas";
 import { PlayerMotion } from "./prediction";
 import { joystickIntent } from "./joystick";
+import { shouldPlayPickup } from "./pickup-audio";
 import { AvatarPicker } from "./AvatarPicker";
+import { CharacterSelection } from "./CharacterSelection";
 import { avatarName } from "./avatar-art";
 import { normalizeAvatar } from "./avatar-animation";
 import { loadSprites } from "./sprites";
+import { loadCharacter } from "./character-art";
+import {
+  loadClassicSprites,
+  classicSpritePaths,
+  type ClassicImages,
+} from "./classic-terrain";
 import { animationNow } from "./clock";
 import { itemNames, mapNames, sources, teamNames, type View } from "./types";
 import "./style.css";
@@ -44,18 +52,22 @@ export function Board(props: BoardProps<View>) {
   const trapped = !!me?.trappedUntil;
   const controlled = !!room.seats[room.you]?.autoPlay;
   const [avatarOpen, setAvatarOpen] = useState(false);
+  const [characterOpen, setCharacterOpen] = useState(false);
+  const originalCharacters = (view?.rulesVersion ?? 0) >= 3;
   const [stick, setStick] = useState({ x: 0, y: 0 });
   const [avatarSaving, setAvatarSaving] = useState(false);
   const preferenceSent = useRef("");
   const canControl =
     !!view &&
     view.canAct &&
+    view.phase === "playing" &&
     !room.spectating &&
     !!me?.alive &&
     !trapped &&
     !controlled;
-  const enabled = canControl && !avatarOpen;
+  const enabled = canControl && !avatarOpen && !characterOpen;
   const canChoose =
+    !originalCharacters &&
     !!view &&
     view.phase !== "finished" &&
     !!me?.alive &&
@@ -78,17 +90,38 @@ export function Board(props: BoardProps<View>) {
   const padPointer = useRef<number | null>(null);
   const display = useRef(new Map<number, DrawPoint>());
   const canvas = useRef<HTMLCanvasElement>(null);
+  const classicMedia = useRef<{
+    mapId: string;
+    base: string;
+    images: ClassicImages;
+    loaded: number;
+    requested: number;
+    failed: string[];
+  }>({
+    mapId: "",
+    base: "",
+    images: {},
+    requested: 0,
+    loaded: 0,
+    failed: [],
+  });
+  const characterIdentity = originalCharacters
+    ? (view?.players ?? [])
+        .map((p) => `${p.character ?? 0}:${p.team}`)
+        .join(",")
+    : "";
   const boardElement = useRef<HTMLElement>(null);
   const avatarWasOpen = useRef(false);
+  const anyPickerOpen = avatarOpen || characterOpen;
   useEffect(() => {
     if (
       avatarWasOpen.current &&
-      !avatarOpen &&
+      !anyPickerOpen &&
       !document.querySelector('[role="dialog"]')
     )
       canvas.current?.focus({ preventScroll: true });
-    avatarWasOpen.current = avatarOpen;
-  }, [avatarOpen]);
+    avatarWasOpen.current = anyPickerOpen;
+  }, [anyPickerOpen]);
   const seen = useRef(new Set<number>());
   const initialized = useRef("");
   const phaseSeen = useRef("");
@@ -98,6 +131,33 @@ export function Board(props: BoardProps<View>) {
   useEffect(() => {
     void loadSprites(assets);
   }, [assets]);
+
+  useEffect(() => {
+    const mapId = view?.mapId ?? "";
+    const controller = new AbortController();
+    const requested = classicSpritePaths(mapId).length;
+    classicMedia.current = {
+      mapId,
+      base: assets,
+      images: {},
+      requested,
+      loaded: 0,
+      failed: [],
+    };
+    void loadClassicSprites(mapId, assets, controller.signal).then((result) => {
+      if (!controller.signal.aborted)
+        classicMedia.current = { mapId, base: assets, requested, ...result };
+    });
+    return () => controller.abort();
+  }, [view?.mapId, assets]);
+
+  useEffect(() => {
+    if (!originalCharacters || !characterIdentity) return;
+    for (const identity of new Set(characterIdentity.split(","))) {
+      const [id, team] = identity.split(":").map(Number);
+      void loadCharacter(assets, id, team);
+    }
+  }, [characterIdentity, originalCharacters, assets]);
 
   useEffect(() => {
     setAvatarOpen(false);
@@ -142,7 +202,8 @@ export function Board(props: BoardProps<View>) {
     if (
       (sending.current && (p.inputWindow ?? 1) <= 1) ||
       document.hidden ||
-      !p.data
+      !p.data ||
+      p.data.phase !== "playing"
     )
       return;
     const request = input.current.next(
@@ -308,6 +369,7 @@ export function Board(props: BoardProps<View>) {
               canvas.current.dataset.renderY = String(point.y);
               canvas.current.dataset.serverX = String(p.px ?? p.x);
               canvas.current.dataset.serverY = String(p.py ?? p.y);
+              canvas.current.dataset.predictionMode = motion.current.mode();
             }
             continue;
           }
@@ -325,14 +387,35 @@ export function Board(props: BoardProps<View>) {
             }
           }
         }
-        drawBoard(
+        const media = classicMedia.current;
+        const currentMedia =
+          media.mapId === current.mapId && media.base === latest.current.assets;
+        const diagnostics = drawBoard(
           ctx,
           current,
           display.current,
           clockNow(current, latest.current.clock),
           !!reduced,
           latest.current.assets,
+          currentMedia ? media.images : {},
         );
+        if (canvas.current) {
+          const d = canvas.current.dataset;
+          d.terrain = diagnostics.terrain;
+          d.nativeSpritesRequested = String(currentMedia ? media.requested : 0);
+          d.nativeSpritesLoaded = String(currentMedia ? media.loaded : 0);
+          d.nativeSpritesFailed = String(
+            currentMedia ? media.failed.length : 0,
+          );
+          d.nativeObjectsDrawn = String(diagnostics.nativeObjectsDrawn);
+          d.nativeObjectsFallback = String(diagnostics.nativeObjectsFallback);
+          d.playersNative = String(diagnostics.playersNative);
+          d.playersFallback = String(diagnostics.playersFallback);
+          d.mountedNative = String(diagnostics.mountedNative);
+          d.mountedFallback = String(diagnostics.mountedFallback);
+          d.mountItemsNative = String(diagnostics.mountItemsNative);
+          d.boxMotionsDrawn = JSON.stringify(diagnostics.movingBoxes);
+        }
       }
       raf = requestAnimationFrame(frame);
     };
@@ -382,9 +465,9 @@ export function Board(props: BoardProps<View>) {
         case "eliminate":
           void audio.playWithFallback(sources(assets, "eliminate.wav"));
           break;
-        case "drop":
         case "item":
-          void audio.playWithFallback(sources(assets, "item.wav"));
+          if (shouldPlayPickup(event, room.you, !!room.spectating))
+            void audio.playWithFallback(sources(assets, "item.wav"));
           break;
         case "shield":
           void audio.playWithFallback(sources(assets, "shield.wav"));
@@ -406,7 +489,18 @@ export function Board(props: BoardProps<View>) {
         }
       }
     }
-  }, [view, scope, room.id, assets, sound, audio, me?.team, me?.seq]);
+  }, [
+    view,
+    scope,
+    room.id,
+    room.you,
+    room.spectating,
+    assets,
+    sound,
+    audio,
+    me?.team,
+    me?.seq,
+  ]);
 
   useEffect(() => {
     if (!view) return;
@@ -487,19 +581,21 @@ export function Board(props: BoardProps<View>) {
   const minutes = Math.floor(left / 60);
   const seconds = String(left % 60).padStart(2, "0");
   const status =
-    view.phase === "finished"
-      ? "对局结束"
-      : view.spectator
-        ? "观战中"
-        : !me?.alive
-          ? "已淘汰 · 观战中"
-          : trapped
-            ? "被水泡困住 · 等待队友救援"
-            : controlled
-              ? "电脑托管中"
-              : view.canAct
-                ? "可以行动"
-                : "等待其他玩家";
+    view.phase === "select"
+      ? "选择角色 · 尚未开战"
+      : view.phase === "finished"
+        ? "对局结束"
+        : view.spectator
+          ? "观战中"
+          : !me?.alive
+            ? "已淘汰 · 观战中"
+            : trapped
+              ? "被水泡困住 · 等待队友救援"
+              : controlled
+                ? "电脑托管中"
+                : view.canAct
+                  ? "可以行动"
+                  : "等待其他玩家";
 
   const releasePad = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (padPointer.current !== event.pointerId) return;
@@ -539,11 +635,13 @@ export function Board(props: BoardProps<View>) {
           <small>{mapNames[view.mapId] ?? view.mapId}</small>
         </div>
         <div className="bubble-clock">
-          {view.phase === "countdown"
-            ? `${countdown} 秒后开始`
-            : view.phase === "playing"
-              ? `${minutes}:${seconds}`
-              : "已结束"}
+          {view.phase === "select"
+            ? "选角阶段"
+            : view.phase === "countdown"
+              ? `${countdown} 秒后开始`
+              : view.phase === "playing"
+                ? `${minutes}:${seconds}`
+                : "已结束"}
         </div>
       </section>
       {view.sudden && view.phase === "playing" && (
@@ -559,6 +657,28 @@ export function Board(props: BoardProps<View>) {
           </div>
         ))}
       </div>
+      {originalCharacters && view.phase !== "finished" && (
+        <CharacterSelection
+          epoch={view.epoch}
+          phase={view.phase}
+          character={me?.character ?? 0}
+          confirmed={!!me?.selected}
+          team={me?.team ?? 0}
+          assets={assets}
+          selectUntil={view.selectUntil ?? 0}
+          now={serverNow}
+          selectedCount={view.players.filter((p) => p.selected).length}
+          playerCount={view.players.length}
+          canChoose={
+            !!me && !room.spectating && !controlled && view.phase === "select"
+          }
+          open={characterOpen}
+          onOpenChange={setCharacterOpen}
+          onChoose={(character, confirm) =>
+            act({ type: "character", epoch: view.epoch, character, confirm })
+          }
+        />
+      )}
       <div className="bubble-stage">
         <canvas
           ref={canvas}
@@ -600,19 +720,22 @@ export function Board(props: BoardProps<View>) {
           </span>
         )}
       </div>
-      {me && !view.spectator && view.phase !== "finished" && (
-        <div className="bubble-appearance">
-          <button
-            type="button"
-            data-bubbleparty-avatar-open
-            aria-label="选择人物"
-            disabled={!canChoose}
-            onClick={openAvatars}
-          >
-            人物 · {avatarName(me.avatar)}
-          </button>
-        </div>
-      )}
+      {!originalCharacters &&
+        me &&
+        !view.spectator &&
+        view.phase !== "finished" && (
+          <div className="bubble-appearance">
+            <button
+              type="button"
+              data-bubbleparty-avatar-open
+              aria-label="选择人物"
+              disabled={!canChoose}
+              onClick={openAvatars}
+            >
+              人物 · {avatarName(me.avatar)}
+            </button>
+          </div>
+        )}
       {avatarOpen && me && (
         <AvatarPicker
           team={me.team}

@@ -47,6 +47,16 @@ func rejected(t *testing.T, c *gametest.Client, action map[string]any) {
 	}
 }
 
+func confirmCharacters(t *testing.T, people []*gametest.Client) {
+	t.Helper()
+	for _, c := range people {
+		v := httpView(t, c)
+		if v.Phase == bubbleparty.PhaseSelect {
+			c.Action(map[string]any{"type": "character", "epoch": v.Epoch, "character": 0, "confirm": true}, 200)
+		}
+	}
+}
+
 func waitPlaying(t *testing.T, c *gametest.Client, timeout time.Duration) bubbleparty.View {
 	t.Helper()
 	deadline := time.Now().Add(timeout)
@@ -67,6 +77,7 @@ func TestBubblepartyHTTPLifecycle(t *testing.T) {
 			h := gametest.NewHTTP(t, players, bubbleparty.Module(), "bubbleparty")
 			h.AssertUnpublished()
 			h.Start(map[string]any{"map": "community10", "roundSeconds": 180})
+			confirmCharacters(t, h.People)
 			view := httpView(t, h.People[0])
 			if view.Phase != bubbleparty.PhaseCountdown || len(view.Players) != players || view.TeamSize != players/2 || view.Epoch == "" {
 				t.Fatalf("bad countdown view: %+v", view)
@@ -124,6 +135,7 @@ func TestBubblepartyHTTPHumanBotRealtime(t *testing.T) {
 	admin.Command("add_bot", nil, 200)
 	admin.Command("ready", nil, 200)
 	admin.Command("start", nil, 200)
+	confirmCharacters(t, h.People)
 	view := waitPlaying(t, admin, 6*time.Second)
 	before := view.Players[0].Seq
 	admin.Action(map[string]any{"type": "input", "epoch": view.Epoch, "seq": before + 1, "move": "down", "bomb": false}, 200)

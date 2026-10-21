@@ -28,13 +28,21 @@ input,
 select {
   -webkit-tap-highlight-color: transparent;
 }
-/* Long presses operate controls; text fields and surrounding copy stay selectable. */
-button,
-[role="button"],
-[data-game-controls] {
+/* Apply callout protection to painted descendants as well as control roots.
+   Do not disable pointer defaults: games own hold, drag and release behavior. */
+:is(button, [role="button"], [data-game-controls], input[type="button"], input[type="submit"], input[type="reset"], input[type="image"]),
+:is(button, [role="button"], [data-game-controls]) * {
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+}
+/* Editors retain selection and the native copy/paste menu even inside controls. */
+:is(button, [role="button"], [data-game-controls]):is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]), textarea, select, [contenteditable]:not([contenteditable="false"])),
+:is(button, [role="button"], [data-game-controls]) :is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]), textarea, select, [contenteditable]:not([contenteditable="false"])),
+:is(button, [role="button"], [data-game-controls]) [contenteditable]:not([contenteditable="false"]) * {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
 }
 button {
   cursor: pointer;

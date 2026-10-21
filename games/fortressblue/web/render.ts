@@ -1,3 +1,4 @@
+import { drawSupplies } from "./supplies";
 import animationData from "../data/animations.json" with { type: "json" };
 import {
   cellSize,
@@ -190,6 +191,13 @@ export function drawScene(input: {
   ctx.scale(scale, scale);
   ctx.translate(-c.x, -c.y);
   if (terrain) ctx.drawImage(terrain, 0, 0);
+  const renderedSupplies = drawSupplies(
+    ctx,
+    view.supplies ?? [],
+    images,
+    now,
+    reduced,
+  );
   let mask = terrainMasks.get(view);
   if (!mask) {
     let base = collisionMasks.get(map.id);
@@ -595,6 +603,16 @@ export function drawScene(input: {
     );
     ctx.fill();
   }
+  for (const supply of view.supplies ?? []) {
+    if (now < supply.at) continue;
+    ctx.fillStyle = "#ffe395";
+    ctx.fillRect(
+      mm.x + (supply.x / map.width) * mm.w - 2,
+      mm.y + (supply.y / map.height) * mm.h - 2,
+      4,
+      4,
+    );
+  }
   ctx.strokeStyle = "#fff1a8";
   ctx.lineWidth = 1.5;
   ctx.strokeRect(
@@ -605,6 +623,7 @@ export function drawScene(input: {
       map.height) *
       mm.h,
   );
+  canvas.dataset.renderedSupplies = JSON.stringify(renderedSupplies);
   canvas.dataset.renderedTanks = JSON.stringify(renderedTanks);
   canvas.dataset.renderedProjectiles = JSON.stringify(renderedProjectiles);
   canvas.dataset.renderedFeedback = JSON.stringify(renderedFeedback);

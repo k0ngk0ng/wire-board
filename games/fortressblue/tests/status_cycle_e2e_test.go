@@ -20,6 +20,7 @@ func TestStatusesAdvanceOnlyWhenOwnerReceivesTurn(t *testing.T) {
 			before := s.Tanks[0].HP
 			m.Data, _ = json.Marshal(s)
 			for turn := 1; turn <= players; turn++ {
+				m = completeSupplyTransport(t, mod, m)
 				s, _ = timeline(t, m)
 				m = timerAt(t, mod, m, s.Deadline)
 				s, _ = timeline(t, m)

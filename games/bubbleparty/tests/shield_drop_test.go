@@ -21,10 +21,7 @@ func TestClassicCrateDropsExcludeCustomPassiveShield(t *testing.T) {
 			for seed := uint64(1); seed <= 64; seed++ {
 				m := refactorArena(t, func(s *bubbleparty.State) {
 					s.Seed = seed
-					if legacy {
-						s.RulesVersion = 0
-						s.SuddenAt = s.StartAt + 180000
-					}
+					s.SuddenAt = s.StartAt + 180000
 					for _, xy := range [][2]int{{5, 4}, {5, 6}, {4, 5}, {6, 5}} {
 						s.Cells[xy[1]*bubbleparty.Cols+xy[0]] = bubbleparty.CellCrate
 					}
@@ -36,6 +33,9 @@ func TestClassicCrateDropsExcludeCustomPassiveShield(t *testing.T) {
 					s.Bombs = []bubbleparty.Bomb{{ID: 1, Seat: 0, Team: 0, X: 5, Y: 5, Range: 1, At: s.ServerAt - 2000, ExplodeAt: s.ServerAt + 20}}
 					s.Cells[5*bubbleparty.Cols+5] = bubbleparty.CellBomb
 				})
+				if legacy {
+					m = classicLegacy(t, m)
+				}
 				m = refactorTick(t, m, refactorRead(t, m, 0).ServerAt+100)
 				var state bubbleparty.State
 				if err := json.Unmarshal(m.Data, &state); err != nil {

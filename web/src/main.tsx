@@ -1,3 +1,4 @@
+import { installControlContextMenuGuard } from "./control-context-menu";
 import { revealGameOnEntry } from "./game-entry-scroll";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { refreshQueue } from "./refresh-queue";
@@ -112,6 +113,7 @@ function Logo() {
 }
 
 function App() {
+  useEffect(() => installControlContextMenuGuard(document), []);
   const [adminOpen, setAdminOpen] = useState(
     () => new URLSearchParams(location.search).get("admin") === "1",
   );

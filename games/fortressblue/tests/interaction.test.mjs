@@ -40,9 +40,9 @@ test("camera zoom keeps the pointer world anchor, panning is bounded", () => {
     centeredCamera(800, 450, 800, { x: 50, y: 800 }, 1500, 960).worldViewW,
     800,
   );
-  // The server permits shots up to y=-240; automatic tracking must show them.
+  // Shells may fly above the map; camera tracking stops at the original top edge.
   const sky = centeredCamera(800, 450, 800, { x: 500, y: -220 }, 1500, 960);
-  assert.ok(sky.y <= -220 && sky.y + sky.worldViewH >= -220);
+  assert.equal(sky.y, 0);
 });
 test("absolute timeline resumes at the actual flight and fall position", () => {
   const arc = {

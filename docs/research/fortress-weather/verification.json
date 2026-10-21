@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "sourceSHA256": "35974c0d7a06cf86f1f028b0ee1fc46c324921f6d829ce4db684f776199e489d",
+  "derivedSHA256": "7bfac26d68736f5242c7a10b008727f63e9610a0162688e2ced1e0baf64eecb8",
+  "retainedFunctionCount": 26,
+  "byteIdenticalToOriginal": true,
+  "otherBodiesAreUnreachableStubs": true,
+  "reaEvidenceID": "ev_c1d72b458cd9648f4b40c9da03b04073df17033188ac56404dcc1a9e0d7c7f88",
+  "runtimeExecuted": false,
+  "sourceTextsAndSnowflakePreviewDigestsVerified": true
+}

@@ -17,6 +17,10 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if err != nil {
 		return nil, err
 	}
+	if ctx.Actor >= 0 && ctx.Actor < len(s.Players) && s.Phase == PhaseSelect && !s.Players[ctx.Actor].Selected {
+		return json.Marshal(Action{Type: "character", Epoch: s.Epoch, Character: s.Players[ctx.Actor].Character, Confirm: true})
+	}
+
 	if ctx.Actor < 0 || ctx.Actor >= len(s.Players) || s.Phase != PhasePlaying || s.Result != nil {
 		return nil, nil
 	}
@@ -46,12 +50,30 @@ func botDecision(s *State, p *Player, now int64) (string, bool) {
 	if move := trappedTargetMove(s, p, danger, false); move != "" {
 		return move, false
 	}
+	if s.RulesVersion >= NativeRulesVersion && !danger[p.Y*Cols+p.X] {
+		for _, d := range directions {
+			x, y := p.X+d[0], p.Y+d[1]
+			if s.cell(x, y) != CellPushCrate || danger[y*Cols+x] || !nativeInBounds(x+d[0], y+d[1]) || danger[(y+d[1])*Cols+x+d[0]] {
+				continue
+			}
+			probe := *p
+			px, py := float64(x)-float64(d[0])*(.5+PlayerRadius), float64(y)-float64(d[1])*(.5+PlayerRadius)
+			probe.X = int(math.Floor(px + .5))
+			probe.Y = int(math.Floor(py + .5))
+			probe.OffsetX = px - float64(probe.X)
+			probe.OffsetY = py - float64(probe.Y)
+			if s.canPushBox(&probe, x, y, d[0], d[1]) && s.nativePassage(p.X, p.Y, d[0], d[1], false) {
+				return directionName(d), false
+			}
+		}
+	}
+
 	enemyAdjacent := false
 	crateAdjacent := false
 	for _, d := range directions {
 		x, y := p.X+d[0], p.Y+d[1]
 		c := s.cell(x, y)
-		if c == CellCrate {
+		if isBox(c) {
 			crateAdjacent = true
 		}
 		for i := range s.Players {
@@ -61,13 +83,13 @@ func botDecision(s *State, p *Player, now int64) (string, bool) {
 			}
 		}
 	}
-	if (crateAdjacent || enemyAdjacent) && s.cell(p.X, p.Y) != CellBomb && bombCount(s, p.Seat) < p.MaxBombs && now >= p.NextBombAt && canEscapePlacedBomb(s, p, now) {
+	if (crateAdjacent || enemyAdjacent) && s.canPlaceBomb(p, now) && now >= p.NextBombAt && canEscapePlacedBomb(s, p, now) {
 		return "none", true
 	}
 	if move := pathMove(s, p, danger); move != "" {
 		return move, false
 	}
-	if now >= p.NextBombAt && bombCount(s, p.Seat) < p.MaxBombs && hash64(s.Seed+uint64(now)+uint64(p.Seat), "botbomb")%100 < 18 && canEscapePlacedBomb(s, p, now) {
+	if now >= p.NextBombAt && s.canPlaceBomb(p, now) && hash64(s.Seed+uint64(now)+uint64(p.Seat), "botbomb")%100 < 18 && canEscapePlacedBomb(s, p, now) {
 		return "none", true
 	}
 	order := [][2]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
@@ -75,7 +97,7 @@ func botDecision(s *State, p *Player, now int64) (string, bool) {
 	for k := 0; k < 4; k++ {
 		d := order[(start+k)%4]
 		x, y := p.X+d[0], p.Y+d[1]
-		if s.canWalk(p, x, y) && !danger[y*Cols+x] && insideSafe(s, x, y) {
+		if s.canWalk(p, x, y) && s.nativePassage(p.X, p.Y, d[0], d[1], false) && !danger[y*Cols+x] && insideSafe(s, x, y) {
 			return directionName(d), false
 		}
 	}
@@ -123,11 +145,11 @@ func bombDanger(s *State, now int64, horizon int64) map[int]bool {
 			for step := 1; step <= b.Range; step++ {
 				x, y := b.X+dir[0]*step, b.Y+dir[1]*step
 				c := s.cell(x, y)
-				if c == CellWall {
+				if c == CellWall || !s.nativePassage(x-dir[0], y-dir[1], dir[0], dir[1], true) {
 					break
 				}
 				d[y*Cols+x] = true
-				if c == CellCrate || c == CellBomb {
+				if isBox(c) || c == CellBomb {
 					break
 				}
 			}
@@ -176,11 +198,11 @@ func escapeMove(s *State, p *Player, danger map[int]bool) string {
 				continue
 			}
 			idx := y*Cols + x
-			if seen[idx] || !s.canWalk(p, x, y) || active[idx] {
+			if seen[idx] || !s.canWalk(p, x, y) || !s.nativePassage(n.x, n.y, d[0], d[1], false) || active[idx] {
 				continue
 			}
 			steps := n.steps + 1
-			if s.ServerAt+int64(steps*p.SpeedMS)+FrameMS >= deadline {
+			if s.ServerAt+int64(float64(steps)*s.moveMS(p))+FrameMS >= deadline {
 				continue
 			}
 			dir := n.dir
@@ -254,7 +276,7 @@ func trappedTargetMove(s *State, p *Player, danger map[int]bool, ally bool) stri
 				dir = directionName(d)
 			}
 			steps := n.steps + 1
-			if until, ok := targets[idx]; ok && s.ServerAt+int64(steps*p.SpeedMS) < until {
+			if until, ok := targets[idx]; ok && s.ServerAt+int64(float64(steps)*s.moveMS(p)) < until {
 				return dir
 			}
 			queue = append(queue, node{x, y, steps, dir})
@@ -278,7 +300,7 @@ func pathMove(s *State, p *Player, danger map[int]bool) string {
 		if n.dir != "" {
 			for _, d := range directions {
 				x, y := n.x+d[0], n.y+d[1]
-				if s.cell(x, y) == CellCrate {
+				if isBox(s.cell(x, y)) {
 					return n.dir
 				}
 				for i := range s.Players {
@@ -296,7 +318,7 @@ func pathMove(s *State, p *Player, danger map[int]bool) string {
 				continue
 			}
 			idx := y*Cols + x
-			if seen[idx] || danger[idx] || s.cell(x, y) == CellWall || s.cell(x, y) == CellCrate || s.cell(x, y) == CellBomb {
+			if seen[idx] || danger[idx] || !s.canWalk(p, x, y) || !s.nativePassage(n.x, n.y, d[0], d[1], false) {
 				continue
 			}
 			dir := n.dir

@@ -43,8 +43,9 @@ const (
 )
 
 type Options struct {
-	Map         string `json:"map"`
-	TurnSeconds int    `json:"turnSeconds"`
+	BotDifficulty string `json:"botDifficulty,omitempty"`
+	Map           string `json:"map"`
+	TurnSeconds   int    `json:"turnSeconds"`
 }
 
 type Action struct {
@@ -196,9 +197,12 @@ type Hazard struct {
 }
 
 type State struct {
+	Supplies       []Supply `json:"supplies,omitempty"`
+	NextSupplyTurn int      `json:"nextSupplyTurn,omitempty"`
 	Hazards        []Hazard `json:"hazards,omitempty"`
 	needsAdvance   bool
 	resumeMovement bool
+	resumeSupply   bool
 
 	MoveRemainingMS int64        `json:"moveRemainingMs,omitempty"`
 	Resolution      *Resolution  `json:"resolution,omitempty"`
@@ -256,6 +260,7 @@ type TankView struct {
 }
 
 type View struct {
+	Supplies    []Supply    `json:"supplies,omitempty"`
 	Hazards     []Hazard    `json:"hazards,omitempty"`
 	Resolution  *Resolution `json:"resolution,omitempty"`
 	Options     Options     `json:"options"`
@@ -360,7 +365,7 @@ func windFor(seed uint64, turn int, sudden bool) int {
 }
 
 func (s *State) canAct(seat int) bool {
-	return s.Phase == PhasePlaying && s.Resolution == nil && !s.Finished && seat >= 0 && seat < len(s.Tanks) && seat == s.Current && s.Tanks[seat].Alive
+	return s.Phase == PhasePlaying && s.Resolution == nil && !s.supplyInFlight() && !s.Finished && seat >= 0 && seat < len(s.Tanks) && seat == s.Current && s.Tanks[seat].Alive
 }
 
 func (s *State) teamAlive(team int) int {
@@ -492,7 +497,7 @@ func (s *State) envelope() (gameapi.Match, error) {
 		m.Deadline = s.SelectUntil
 		m.SystemDeadline = s.SelectUntil
 	case PhasePlaying:
-		if s.Current >= 0 && s.Resolution == nil {
+		if s.Current >= 0 && s.Resolution == nil && !s.supplyInFlight() {
 			m.Actors = []int{s.Current}
 			m.Attention = []int{s.Current}
 			m.TimeoutActors = []int{s.Current}
@@ -531,8 +536,14 @@ func (s *State) systemDeadline() int64 {
 	if s.Resolution != nil {
 		next = s.resolutionDeadline()
 	}
+	if s.supplyInFlight() {
+		next = s.supplyDeadline()
+	}
 	if hazard := s.hazardDeadline(); hazard > 0 && (next == 0 || hazard < next) {
 		next = hazard
+	}
+	if supply := s.supplyDeadline(); supply > 0 && (next == 0 || supply < next) {
+		next = supply
 	}
 	return next
 }
@@ -541,7 +552,7 @@ func (s *State) project(seat int) View {
 	m, _ := fbmaps.ByID(s.MapID)
 	teamSize := len(s.Tanks) / 2
 	v := View{
-		Hazards: append([]Hazard(nil), s.Hazards...), Resolution: s.Resolution, Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, MapID: s.MapID, MapName: m.Name,
+		Supplies: append([]Supply(nil), s.Supplies...), Hazards: append([]Hazard(nil), s.Hazards...), Resolution: s.Resolution, Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, MapID: s.MapID, MapName: m.Name,
 		MapWidth: m.Width, MapHeight: m.Height, MapOffY: m.OffY,
 		SelectUntil: s.SelectUntil, StartAt: s.StartAt, SuddenAt: s.SuddenAt,
 		MatchEndsAt: s.MatchEndsAt, Deadline: s.Deadline, Sudden: s.Sudden,
