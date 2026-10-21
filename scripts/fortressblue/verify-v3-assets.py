@@ -52,7 +52,7 @@ def verify(dist=False):
     for tid,tank in catalog['tanks'].items():
         assert len(tank['frames']) == 592 and set(tank['actions']) == set(ACTION_STATES)
         for i,frame in enumerate(tank['frames']):
-            assert frame['sourceIndex'] == i//2 and frame['facing'] == ('right' if i%2 == 0 else 'left')
+            assert frame['sourceIndex'] == i//2 and frame['facing'] == ('left' if i%2 == 0 else 'right')
             width,height = dimensions[tank['atlases'][frame['atlas']]]
             assert frame['w'] > 0 and frame['h'] > 0 and frame['x'] >= 0 and frame['y'] >= 0
             assert frame['x']+frame['w'] <= width and frame['y']+frame['h'] <= height

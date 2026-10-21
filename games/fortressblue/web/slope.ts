@@ -37,10 +37,10 @@ export function selectSlopeFrame<T extends SlopeFrame>(
 ): T | undefined {
   const base = frames[baseIndex];
   if (!base || slopeVariants !== 5) return base;
-  // Canvas y grows downward; native source 0 leans downward in its own
-  // facing direction. Both original facing blocks must keep the same slope.
+  // Canvas y grows downward. Primary (left-facing) source 0 slopes down
+  // toward screen-right; alternate (right-facing) source 4 does the same.
   const slope =
-    -Math.max(-2, Math.min(2, Math.round(worldSlope))) * (facing < 0 ? -1 : 1);
+    Math.max(-2, Math.min(2, Math.round(worldSlope))) * (facing < 0 ? -1 : 1);
   const candidate = frames[baseIndex + 2 * slope];
   if (
     !candidate ||

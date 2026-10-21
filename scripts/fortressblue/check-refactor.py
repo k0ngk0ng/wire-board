@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import socket
 import subprocess
 import time
 import traceback
@@ -19,7 +20,7 @@ import uuid
 parser = argparse.ArgumentParser()
 parser.add_argument('--build', action='store_true')
 parser.add_argument('--out', default='')
-parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel'], default='all')
+parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing'], default='all')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 run = 'f' + uuid.uuid4().hex[:6]
@@ -246,7 +247,7 @@ def leave():
     if current: other_command('leave')
 
 
-def start(scenario='normal', map_id='stage-16', bots=0, ui=False):
+def start(scenario='normal', map_id='stage-16', bots=0, ui=False, tank_id=1):
     leave();(out/'scenario').write_text(scenario)
     if ui:
         browser('wait','.lobby-create');browser('click','.lobby-create');browser('fill','input[aria-label=搜索可选游戏]','疯狂坦克');browser('wait','.choose-games button');browser('click','.choose-games button');browser('wait','[data-create-step=setup]:not([hidden])')
@@ -264,7 +265,7 @@ def start(scenario='normal', map_id='stage-16', bots=0, ui=False):
     if scenario=='normal':
         wait(lambda: js('!!document.querySelector("[data-fortressblue-tank]")'))
         assert js('document.querySelectorAll("[data-fortressblue-tank]").length')==14
-        browser('click','[data-fortressblue-tank="1"]')
+        browser('click','[data-fortressblue-tank="'+str(tank_id)+'"]')
         if not bots:
             v=other('/state')['room']['game']['data'];other_command('action',action={'type':'select','epoch':v['epoch'],'tank':1})
     wait(lambda: view()['phase']=='playing',timeout=30)
@@ -272,6 +273,28 @@ def start(scenario='normal', map_id='stage-16', bots=0, ui=False):
     epoch=view()['epoch']
     wait(lambda:js('document.querySelector(".fortressblue-board")?.dataset.fortressblueEpoch')==epoch)
     return view()
+
+
+def facing_pixels(tank_id,direction,name):
+    # Independently verified native primary block faces left; alternate faces right.
+    # Compare actual world-canvas pixels, not just labels or selected indices.
+    tank=json.loads((root/'games/fortressblue/data/animations.json').read_text())['tanks'][str(tank_id)]
+    expression=r"""(async()=>{
+      const frames=FRAMES,paths=PATHS;
+      const images=await Promise.all(paths.map(src=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=src})));
+      const c=document.querySelector('[data-fortressblue-canvas]'),t=JSON.parse(c.dataset.renderedTanks).find(t=>t.seat===0);
+      const frame=frames[t.sourceIndex*2+BLOCK],ref=document.createElement('canvas');ref.width=frame.w;ref.height=frame.h;const rc=ref.getContext('2d');rc.drawImage(images[frame.atlas],frame.x,frame.y,frame.w,frame.h,0,0,frame.w,frame.h);
+      const expected=rc.getImageData(0,0,frame.w,frame.h).data,cc=c.getContext('2d'),scale=c.width/Number(c.dataset.worldViewWidth),cx=Number(c.dataset.cameraX),cy=Number(c.dataset.cameraY);let count=0,matched=0;
+      const left=(t.x-frame.ax-cx)*scale,top=(t.y-frame.ay-cy)*scale;
+      for(let sy=Math.max(0,Math.floor(top));sy<Math.min(c.height,Math.ceil(top+frame.h*scale));sy++)for(let sx=Math.max(0,Math.floor(left));sx<Math.min(c.width,Math.ceil(left+frame.w*scale));sx++){
+       const x=Math.floor((sx+.5-left)/scale),y=Math.floor((sy+.5-top)/scale);if(x<0||y<0||x>=frame.w||y>=frame.h)continue;
+       const i=(y*frame.w+x)*4;if(expected[i+3]!==255)continue;
+       const pixel=cc.getImageData(sx,sy,1,1).data;count++;if([0,1,2].every(k=>Math.abs(pixel[k]-expected[i+k])<=12))matched++;
+      }
+      return {tankId:TANK,direction:DIRECTION,sourceIndex:t.sourceIndex,artReady:t.artReady,count,matched,ratio:matched/Math.max(1,count),slope:t.slope};
+    })()""".replace('FRAMES',json.dumps(tank['frames'])).replace('PATHS',json.dumps(tank['atlases'])).replace('BLOCK','0' if direction<0 else '1').replace('TANK',str(tank_id)).replace('DIRECTION',str(direction))
+    result=js(expression);record(name,result);assert result['artReady'] and result['count']>=50 and result['ratio']>.85,result
+    return result
 
 
 def current_shot(): return view().get('lastShot',{}).get('id',0)
@@ -484,16 +507,62 @@ try:
     assert (root/'web/dist/index.html').exists(),'Build frontend first'
     (out/'scenario').write_text('normal')
     log=(out/'server.log').open('w')
-    server=subprocess.Popen(['go','test','-count=1','-timeout=27m','-run','^TestFortressBlueBrowserFixture$','./games/fortressblue/tests'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
-    deadline=time.monotonic()+180
-    while not (out/'url').exists():
-        assert server.poll() is None,'fixture exited; inspect server.log'
-        assert time.monotonic()<deadline,'fixture start timeout'
-        time.sleep(.1)
+    if args.only=='facing':
+        # Use the production binary with its real CDN/local-fallback settings;
+        # no opening fixture or response rewriting is needed for direction tests.
+        executable=temp/'server';subprocess.run(['go','build','-o',str(executable),'.'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+        with socket.socket() as listener:listener.bind(('127.0.0.1',0));port=listener.getsockname()[1]
+        base='http://127.0.0.1:'+str(port)
+        env.update(ADDR='127.0.0.1:'+str(port),DATA_DIR=str(temp/'data'),INVITE_CODE='fortress-browser',ADMIN_USERNAME='坦克验收管理员',ADMIN_PASSWORD='fortress-browser-test-only',ADMIN_EXISTING_USERNAME='',COOKIE_SECURE='false',PUBLIC_ORIGIN=base,ASSETS_BASE_URL='https://cdn.ichenj.com/bga/v20261002-1')
+        server=subprocess.Popen([str(executable)],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+        deadline=time.monotonic()+30
+        while True:
+            assert server.poll() is None,'server exited; inspect server.log'
+            try:
+                with urllib.request.urlopen(base+'/healthz',timeout=1) as response:
+                    if response.status==200:break
+            except (OSError,urllib.error.URLError):pass
+            assert time.monotonic()<deadline,'server startup timeout';time.sleep(.1)
+        (out/'url').write_text(base)
+        report['scope']='Production binary/HTTP/SQLite/clock and CDN-local fallback; native browser input; no game-state fixtures'
+    else:
+        server=subprocess.Popen(['go','test','-count=1','-timeout=27m','-run','^TestFortressBlueBrowserFixture$','./games/fortressblue/tests'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT)
+        deadline=time.monotonic()+180
+        while not (out/'url').exists():
+            assert server.poll() is None,'fixture exited; inspect server.log'
+            assert time.monotonic()<deadline,'fixture start timeout'
+            time.sleep(.1)
     base=(out/'url').read_text();browser('open',base);opened=True
     api('/login',{'name':'坦克验收管理员','password':'fortress-browser-test-only'})
     other('/register',{'name':'坦克静止对手','password':'fortress-browser-test-only','invite':'fortress-browser'})
     browser('reload');browser('set','viewport','1280','1000')
+    if args.only=='facing':
+        browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
+        assert api('/state')['assetsBaseURL']=='https://cdn.ichenj.com/bga/v20261002-1'
+        for tank_id in [4,*[i for i in range(1,15) if i!=4]]:
+            browser('set','viewport','1280','1000');start(tank_id=tank_id);ensure_own_turn()
+            wait(lambda:all(t['artReady'] for t in json.loads(measure()['canvas']['renderedTanks'])))
+            for direction in [-1,1]:
+                if int(js('document.querySelector(".fortressblue-board").dataset.fortressblueFacing'))!=direction:browser('click','button[aria-label="切换朝向"]')
+                time.sleep(.12);name='tank-'+str(tank_id)+('-left' if direction<0 else '-right');evidence=facing_pixels(tank_id,direction,name);shot(name);check(name+' actual native sprite direction',pixels=evidence)
+        start(tank_id=4);ensure_own_turn()
+        requests=js("performance.getEntriesByType('resource').map(r=>r.name)");record('direction-local-fallback-requests',requests)
+        assert any('cdn.ichenj.com' in url and 'fortressblue/v3/' in url for url in requests)
+        assert any(url.startswith(base+'/fortressblue/v3/') for url in requests)
+        wait(lambda:all(t['artReady'] for t in json.loads(measure()['canvas']['renderedTanks'])))
+        if int(js('document.querySelector(".fortressblue-board").dataset.fortressblueFacing'))!=-1:browser('click','button[aria-label="切换朝向"]')
+        time.sleep(.1);facing_pixels(4,-1,'local-fallback-pixels');shot('local-fallback');check('CDN failure uses local atlas with the same visible direction')
+        for width,direction,weapon in [(1280,-1,'primary'),(320,1,'special')]:
+            browser('set','viewport',str(width),'844' if width==320 else '1000');start(tank_id=4);ensure_own_turn();browser('focus','[data-fortressblue-canvas]');before=view()['tanks'][0]['x'];key='ArrowLeft' if direction<0 else 'ArrowRight'
+            data=native([{'sample':True},{'key':key},{'wait':200,'read':'moving'},{'key':key,'up':True},{'wait':200,'read':'stopped'}],'move-'+str(width));after=view()['tanks'][0]
+            assert (after['x']-before)*direction>0 and after['facing']==direction,(before,after)
+            facing_pixels(4,direction,'moved-pixels-'+str(width));check('native movement, visible sprite and server facing agree '+str(width))
+            browser('click','[data-fortressblue-weapon="'+weapon+'"]');browser('scrollintoview','[data-fortressblue-fire]');point=center('[data-fortressblue-fire]')
+            down={'touch':'touchStart',**point} if width==320 else {'mouse':'mousePressed',**point};up={'touch':'touchEnd'} if width==320 else {'mouse':'mouseReleased',**point}
+            data=native([{'sample':True},down,{'wait':500},up,{'wait':220,'read':'windup','capture':'fire-'+str(width)},{'wait':650,'read':'flight'}],'fire-direction-'+str(width));shot_data=view()['lastShot'];path=shot_data['arcs'][0]['path']
+            assert (path[1]['x']-path[0]['x'])*direction>0 and shot_data['weapon']=={'primary':'主炮','special':'特殊弹'}[weapon],shot_data
+            assert any(any(t['seat']==0 and t['action'] in ['fire','special'] for t in json.loads(f['canvas'].get('renderedTanks','[]'))) for f in data['frames'] if f.get('canvas'))
+            check('native '+weapon+' shot and Fire animation agree '+str(width),direction=direction,pathStart=path[:2]);shot('flight-'+str(width))
     if args.only in ('all','interaction'):
         start(ui=True)
         wait(lambda:len(measure()['pixels'])>=8)
@@ -591,6 +660,7 @@ finally:
         except Exception:pass
     (out/'stop').write_text('stop')
     if server:
+        if args.only=='facing':server.terminate()
         try:server.wait(timeout=15)
         except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
     if log:log.close()
