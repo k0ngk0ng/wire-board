@@ -104,8 +104,14 @@ function verifiedPackage(c, input) {
   const entries = c.pin.entries.map(e => ({ ...e, output: "public" + e.urlPath })); assert(hash(encode(entries)) === hash(encode(record.entries)), "Candidate public object list differs");
   verifyBasketballPublicFiles(c.root, path.join(pkg, "public")); return pkg;
 }
-async function download(c, entry, target, fetchImpl) {
+async function downloadOnce(c, entry, target, fetchImpl) {
   const response = await fetchImpl(c.pin.assetsBaseURL + entry.urlPath, { redirect: "error", signal: AbortSignal.timeout(60_000) });
+  if (response.status === 429 || response.status >= 500) {
+    await response.body?.cancel().catch(() => {});
+    const error = new Error("Temporary asset service response " + response.status);
+    error.retryableAssetTransfer = true;
+    throw error;
+  }
   assert(response.ok && response.status === 200 && response.body, "Pinned asset download failed: " + entry.urlPath);
   assert((response.headers.get("content-type") ?? "").split(";")[0].trim().toLowerCase() === entry.mime, "Downloaded asset MIME differs: " + entry.urlPath);
   // Fetch exposes decoded bytes while Content-Length may describe compressed
@@ -121,6 +127,21 @@ async function download(c, entry, target, fetchImpl) {
     }
     assert(bytes === entry.bytes && digest.digest("hex") === entry.sha256, "Downloaded asset hash/length differs: " + entry.urlPath);
   } finally { closeSync(fd); await reader.cancel().catch(() => {}); }
+}
+async function download(c, entry, target, fetchImpl) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try { return await downloadOnce(c, entry, target, fetchImpl); }
+    catch (error) {
+      // Each attempt creates its own file exclusively. Drop partial bytes before
+      // retrying the same immutable object; never retry an integrity mismatch.
+      rmSync(target, { force: true });
+      const transient = error instanceof TypeError || ["AbortError", "TimeoutError"].includes(error.name) || error.retryableAssetTransfer === true;
+      if (!transient || attempt === 2) {
+        throw new Error("Pinned asset " + entry.urlPath + ": " + error.message + (error.cause?.code ? " (" + error.cause.code + ")" : ""), { cause: error });
+      }
+      await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
+    }
+  }
 }
 export async function materializeBasketballAssets(directory, { packageDirectory, fetchImpl = fetch } = {}) {
   const c = context(directory), pkg = packageDirectory ? verifiedPackage(c, packageDirectory) : undefined;
