@@ -188,3 +188,40 @@ func TestServiceBrakeOverridesAutomaticThrottle(t *testing.T) {
 		t.Fatalf("brake accelerates a stopped car: %+v", car)
 	}
 }
+
+// Failure inventory: racing-speed-controls/PLAN.md, before tuning the equations.
+func TestReachableSportsCarTopSpeedAndHighSpeedBraking(t *testing.T) {
+	track := Track{Width: 30000, Height: 1000, RoadWidth: 180, Points: []Point{{100, 500}, {29000, 500}}}
+	car := Car{X: 200, Y: 500, Throttle: 1}
+	for i := 0; i < 500; i++ {
+		car.LastInputAt = int64(i * 20)
+		stepCar(&car, track, 20, car.LastInputAt)
+		if !finite(car.Speed) || car.Speed > 900.001 {
+			t.Fatalf("invalid speed %.3f", car.Speed)
+		}
+	}
+	if car.Speed < 899.9 {
+		t.Fatalf("road top speed is not actually reachable: %.3f world units/s (%.1f km/h)", car.Speed, car.Speed*.36)
+	}
+	start := car.X
+	for i := 0; i < 50; i++ {
+		car.LastInputAt = 10000 + int64(i*20)
+		stepCar(&car, track, 20, car.LastInputAt)
+	}
+	if car.X-start < 899 {
+		t.Fatal("speed display does not match actual travel", car.X-start)
+	}
+	service, hand, grass := car, car, car
+	service.Brake = true
+	hand.Drift = true
+	grass.Y = 100
+	for i := 0; i < 50; i++ {
+		for _, c := range []*Car{&service, &hand, &grass} {
+			c.LastInputAt = 11000 + int64(i*20)
+			stepCar(c, track, 20, c.LastInputAt)
+		}
+	}
+	if service.Speed >= hand.Speed || hand.Speed >= car.Speed || grass.Speed > 110.01 {
+		t.Fatalf("high-speed braking/surface limits: service %.1f hand %.1f grass %.1f", service.Speed, hand.Speed, grass.Speed)
+	}
+}

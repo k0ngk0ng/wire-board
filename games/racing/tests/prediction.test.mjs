@@ -114,3 +114,14 @@ test('automatic throttle cannot accelerate through the service brake',()=>{
  const p=predictCar(car,{steer:0,throttle:1,brake:true,drift:false},track,250,1000);
  assert.equal(p.speed,0);assert.equal(p.x,500);
 });
+
+// Failure inventory recorded before changes: actual faster travel, same cap and braking as server.
+test('sports-car prediction retains 324 km/h road speed and decelerates on grass',()=>{
+ const straight={...track,width:30000,points:[{x:100,y:500},{x:29000,y:500}]};
+ const fast={...c,x:200,y:500,vx:900,vy:0,speed:900};
+ const result=predictCar(fast,input,straight,200,1000);
+ assert.ok(result.speed>=899.9&&result.speed<=900.001,result.speed);
+ assert.ok(Math.abs(result.x-fast.x-180)<.01,result.x);
+ assert.ok(predictCar({...fast,y:100},input,straight,200,1000).speed<=110.01);
+ assert.ok(predictCar(fast,{...input,brake:true},straight,200,1000).speed<300);
+});

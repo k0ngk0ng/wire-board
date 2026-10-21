@@ -336,3 +336,32 @@ func TestRacingSixClassicModelsRemainCosmetic(t *testing.T) {
 		t.Fatal("unknown classic model accepted")
 	}
 }
+
+// Before AI tuning: do not merely raise a car cap while bots keep cruising at
+// the old speed; stronger drivers must still use ordinary inputs and finish.
+func TestRacingBotUsesSportsCarSpeed(t *testing.T) {
+	mod, ctx, m := begin(t, 2, 1, "metro")
+	fastest := 0.0
+	for step := 0; step < 1500 && m.Result == nil; step++ {
+		m = tick(t, mod, &ctx, m, []int{0, 1})
+		v := view(t, mod, m, -1)
+		for _, car := range v.Cars {
+			if car.Speed > fastest {
+				fastest = car.Speed
+			}
+		}
+	}
+	v := view(t, mod, m, -1)
+	trace(t, map[string]any{"fastest": fastest, "final": v})
+	if fastest < 500 {
+		t.Fatalf("computer still cruises at the old pace: %.1f", fastest)
+	}
+	if m.Result == nil {
+		t.Fatal("faster computer did not complete the race")
+	}
+	for _, car := range v.Cars {
+		if car.FinishAt == 0 {
+			t.Fatal("computer failed to finish naturally")
+		}
+	}
+}

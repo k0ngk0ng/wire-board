@@ -1,0 +1,39 @@
+{
+  "reports": [
+    {
+      "path": ".local/racing-speed-controls/racing-full-first.txt",
+      "sha256": "d94c60ef4c4bbfe99348098c08699c887092465e424d1893bd12d37c07c3b1b9",
+      "bytes": 20998
+    },
+    {
+      "path": ".local/racing-speed-controls/race-final.txt",
+      "sha256": "4d02b9864b7f617a0de71712fcb39321eb82937341e23264ca750420feae219c",
+      "bytes": 126
+    },
+    {
+      "path": ".local/racing-speed-controls/frontend-final.txt",
+      "sha256": "4ae455f9cbcc0e1f6f404bb4f582b0ea5e66b31be15cad81c05b3c3a4af2643e",
+      "bytes": 13333
+    },
+    {
+      "path": ".local/racing-speed-controls/tetris-frontend.txt",
+      "sha256": "d0a5eb93c6bbb4415422eb970201772f183a9f81ecac18dc9c1641289d3f7c3e",
+      "bytes": 1124
+    },
+    {
+      "path": ".local/racing-speed-controls/racing-browser/report.json",
+      "sha256": "a97e789f73a8292c7540034048a0f91e701ad410f1c342e98f356c34afd1e0a1",
+      "bytes": 4793
+    },
+    {
+      "path": ".local/racing-speed-controls/road-speed-steering/report.json",
+      "sha256": "9cd1031e7b79960eb76edca65b5a5ae4954d3f7c1ce24c63a9a413613a34526e",
+      "bytes": 2591
+    },
+    {
+      "path": ".local/racing-speed-controls/position-final/report.json",
+      "sha256": "c8b0cc36e8af6caa3385403a54cf62c77aebbde0e865eee260c04b6d5c160616",
+      "bytes": 5568
+    }
+  ]
+}

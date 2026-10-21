@@ -126,20 +126,6 @@ export function Board(props: BoardProps<View>) {
       }).catch((e) => setError(String(e instanceof Error ? e.message : e)));
   }, [view?.epoch, view?.phase, canChoose, room.id, room.you, preferenceKey]);
 
-  // Enter the arena once on a narrow screen. Keep the shared player panels in
-  // their normal place above it; snapshots must never keep scrolling the page.
-  useEffect(() => {
-    if (!view?.epoch || !window.matchMedia("(max-width: 600px)").matches)
-      return;
-    const frame = requestAnimationFrame(() =>
-      boardElement.current?.scrollIntoView({
-        block: "start",
-        behavior: "instant",
-      }),
-    );
-    return () => cancelAnimationFrame(frame);
-  }, [room.id, view?.epoch]);
-
   useEffect(() => {
     currentFacing.current = me?.dir ?? "down";
     if (!enabled) {

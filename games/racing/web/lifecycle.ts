@@ -7,7 +7,7 @@ type State = {
   snapshotAge?: number;
 };
 // Losing input authority or the transport releases the car. Reconnecting does
-// not count as a new user gesture, even with automatic acceleration selected.
+// not count as a new press of the accelerator.
 export class ControlLifecycle {
   private previous?: State;
   private paused = true;

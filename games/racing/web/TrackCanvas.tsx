@@ -1,3 +1,4 @@
+import { MAX_ROAD_SPEED } from "./dynamics";
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import type { GameClock } from "../../../web/src/game-api/module";
 import { automaticGear } from "./chase-camera";
@@ -203,7 +204,7 @@ export function TrackCanvas(props: TrackCanvasProps) {
           canvas.dataset.speed = String(car.speed);
           host.style.setProperty(
             "--race-speed",
-            String(Math.min(1, car.speed / 310)),
+            String(Math.min(1, car.speed / MAX_ROAD_SPEED)),
           );
           const speed = host.querySelector("[data-racing-speed]"),
             gear = host.querySelector("[data-racing-gear]");

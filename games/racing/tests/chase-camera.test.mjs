@@ -41,3 +41,9 @@ test('near-plane clipping keeps roads beneath the camera instead of dropping the
  assert.equal(clipped.length,4);assert.ok(clipped.every(p=>projectPoint(p,pose,320,400)));assert.deepEqual(points,old);
  assert.equal(clipPolygon(points.map(p=>({...p,x:-p.x})),pose).length,0);
 });
+
+test('automatic gears and camera span the new road speed range',()=>{
+ assert.equal(automaticGear(310),3);
+ assert.equal(automaticGear(900),6);
+ assert.ok(chasePose({...car,speed:600},false,16/9).fov < chasePose({...car,speed:900},false,16/9).fov);
+});

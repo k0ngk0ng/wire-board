@@ -1,3 +1,4 @@
+import { MAX_ROAD_SPEED } from "./dynamics.ts";
 import type { Car } from "./types";
 export type Vec3 = { x: number; y: number; z: number };
 export type ChasePose = { eye: Vec3; target: Vec3; fov: number; near: number };
@@ -8,7 +9,7 @@ export function chasePose(
   aspect: number,
 ): ChasePose {
   const heading = finite(car.angle),
-    speed = Math.max(0, Math.min(310, finite(car.speed))) / 310;
+    speed = Math.max(0, Math.min(MAX_ROAD_SPEED, finite(car.speed))) / MAX_ROAD_SPEED;
   const sign = rear ? -1 : 1,
     dx = Math.cos(heading) * sign,
     dz = Math.sin(heading) * sign;
@@ -57,7 +58,7 @@ export function projectPoint(
 }
 export function automaticGear(speed: number): number {
   const s = Math.max(0, finite(speed));
-  return 1 + [50, 105, 165, 225, 280].filter((n) => s >= n).length;
+  return 1 + [140, 280, 440, 610, 780].filter((n) => s >= n).length;
 }
 export class RearViewHold {
   private held = new Set<string>();

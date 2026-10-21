@@ -1,3 +1,4 @@
+import { revealGameOnEntry } from "./game-entry-scroll";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
 import { refreshQueue } from "./refresh-queue";
 import {
@@ -215,18 +216,8 @@ function App() {
   useEffect(() => {
     setCloseTableRoom("");
     if (state?.room?.status === "playing") {
-      if (gameModule(state.room.kind)?.realtime) {
-        // Keep the shared room/players above, but start live games at their
-        // driving surface once. Snapshot updates never take over page scrolling.
-        const frame = requestAnimationFrame(() => {
-          document.querySelector(".game-layout")?.scrollIntoView({
-            block: "start",
-            behavior: "instant",
-          });
-        });
-        return () => cancelAnimationFrame(frame);
-      }
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      const surface = document.querySelector<HTMLElement>(".game-main");
+      if (surface) return revealGameOnEntry(surface);
     }
   }, [state?.room?.id, state?.room?.status]);
   acceptState.current = (data: State) => {

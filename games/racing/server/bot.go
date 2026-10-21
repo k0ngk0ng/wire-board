@@ -23,7 +23,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	t := s.Track
 	n := len(t.Points)
 	_, near, off, f := nearest(t, Point{c.X, c.Y})
-	look := clamp(35+c.Speed*.2, 45, 90)
+	look := clamp(35+c.Speed*.22, 45, 200)
 	start := near
 	distance := 0.
 	target := t.Points[(near+1)%n]
@@ -53,7 +53,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	}
 	diff := angle(math.Atan2(target.Y-c.Y, target.X-c.X) - c.Angle)
 	steer := clamp(diff*2.1, -1, 1)
-	targetSpeed := 250.
+	targetSpeed := 700.
 	for k := 1; k <= 5; k++ {
 		a := tangent(t, (near+k)%n)
 		b := tangent(t, (near+k+1)%n)
@@ -81,7 +81,7 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		dx, dy := other.X-c.X, other.Y-c.Y
 		along := dx*math.Cos(c.Angle) + dy*math.Sin(c.Angle)
 		lateral := -dx*math.Sin(c.Angle) + dy*math.Cos(c.Angle)
-		if along > 0 && along < 90 && math.Abs(lateral) < 32 && other.Speed < c.Speed+20 {
+		if along > 0 && along < math.Max(90, c.Speed*.35) && math.Abs(lateral) < 32 && other.Speed < c.Speed+20 {
 			avoid := -.24
 			if lateral < 0 {
 				avoid = .24
