@@ -1,0 +1,92 @@
+{
+  "version": 5,
+  "license": "原版素材，权利属于原权利方；本会话授权提取。",
+  "conversion": "Native I16 main images, original rectangles and anchors; lossless exact-RGBA WebP atlas, no resizing/recoloring/mirroring.",
+  "entries": [
+    {
+      "urlPath": "/fortressblue/v5/projectile-1.webp",
+      "bytes": 10824,
+      "sha256": "6a83555e505575be9882e9ea90f2a9a3be4faa6a9f5e78216ab700fbcf361db7"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-2.webp",
+      "bytes": 2446,
+      "sha256": "d64de11f5cae9cbd356f60ce87f047eb9b91c13a1317a5297b2a5fe09a06a838"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-3.webp",
+      "bytes": 706,
+      "sha256": "22797685ab001e8d725d6170198af51b4509da0b6a4bad26814e7c5b85c72922"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-4.webp",
+      "bytes": 11954,
+      "sha256": "4b0120a893d3c381411ef381cc0220f686bfd51e18e8cd6d45b896ec6ab28ca4"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-5.webp",
+      "bytes": 12130,
+      "sha256": "05f0c8383964aaf4d140d7cde9c5ff7b8fc01bb8bb50a3861a8e8685f5cfe0b7"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-6.webp",
+      "bytes": 13622,
+      "sha256": "046f2b477206ff481d9f7eaaf93540ba96cc0d96649f2f23b71a8cda49704258"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-7.webp",
+      "bytes": 12068,
+      "sha256": "f58e658b6635effdc1a735236e2c50d2d4f23b47985741fd667d3306bc6f59b6"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-8.webp",
+      "bytes": 3892,
+      "sha256": "b0ccbc2e420894195b061b3a3abaa9f2ca8ab1de1ed3f621e198f5e91c474a50"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-9.webp",
+      "bytes": 798,
+      "sha256": "c06e73950ea6833de14afaac8398381e84e9cb700aa33bb1fcdf4a6e7153a537"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-10.webp",
+      "bytes": 6616,
+      "sha256": "162486ed8d937aba128a93597b21b264718b1755523a5f2f032d3dbdcd1e4c97"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-11.webp",
+      "bytes": 2534,
+      "sha256": "31e3f9c3e3005c22ab456159173a0ebb445494e552939be0b8b1d17c03f9061f"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-12.webp",
+      "bytes": 1792,
+      "sha256": "07d5fd38e0ae931c2970bbb5b7a72a7049d36166e86dd7d797eaf0b171f8944d"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-13.webp",
+      "bytes": 11784,
+      "sha256": "52872727563ce0f65d4bdd03f65414380b18913703676e472857417d3ad45af6"
+    },
+    {
+      "urlPath": "/fortressblue/v5/projectile-14.webp",
+      "bytes": 20258,
+      "sha256": "0dbd628c88940da47286c3908ef97b9ccb9c411a90415f5138708407da96003c"
+    },
+    {
+      "urlPath": "/fortressblue/v5/mine.webp",
+      "bytes": 210,
+      "sha256": "bd6c7449cd7614c2176108072059bdd5bf43054c0aa58310512a0b25ebc17dd2"
+    },
+    {
+      "urlPath": "/fortressblue/v5/homming.webp",
+      "bytes": 1250,
+      "sha256": "67e3d1d5b2ad6e62ad6ca80320dfa6e568a26ce1e02e6eb82de4ff94fc5ae18d"
+    },
+    {
+      "urlPath": "/fortressblue/v5/ion.webp",
+      "bytes": 2442,
+      "sha256": "bb17cb04730dda662531a3a0d315548b38ec263f7403f8e0b1be089a3ca83c1d"
+    }
+  ]
+}

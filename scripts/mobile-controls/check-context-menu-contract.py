@@ -35,7 +35,7 @@ try:
  shutil.copyfile(root/'web/src/style.css',temp/'style.css')
  (temp/'index.html').write_text('''<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css"><style>main{padding:16px;max-width:600px}section{margin:12px 0}button,[role=button]{padding:12px;background:#e4ece0;color:#183c31}input,textarea{width:100%;margin:4px 0}svg{width:20px;height:20px}</style><main>
  <h1 data-probe="heading">长按控件验收</h1>
- <section><button data-probe="button"><span data-probe="button-label">保持按住</span><svg><path data-probe="button-svg" d="M2 2L18 18" stroke="currentColor"/></svg></button><input type="button" data-probe="input-button" value="原生按钮"></section>
+ <section><button data-probe="button" data-game-hold-control><span data-probe="button-label">保持按住</span><svg><path data-probe="button-svg" d="M2 2L18 18" stroke="currentColor"/></svg></button><input type="button" data-probe="input-button" value="原生按钮"></section>
  <section><div role="button" tabindex="0" data-probe="role"><span data-probe="role-label">自定义按键</span></div></section>
  <section data-game-controls data-probe="controls"><span data-probe="control-label">摇杆与蓄力区域</span><input data-probe="input" value="聊天文字可以复制"><textarea data-probe="textarea">可编辑文本</textarea><select data-probe="select"><option>下拉选项</option></select><div contenteditable="true" data-probe="editor"><span data-probe="editor-child">可编辑区域</span></div></section>
  <p data-probe="copy">普通文字仍可选择和复制。</p></main>
@@ -58,6 +58,13 @@ try:
  js('window.removeGuard()');assert all(not r['prevented'] for r in js(code))
  js('window.installGuard();window.installGuard()');assert sum(r['prevented'] for r in js(code))==len(protected)
  report['lifecycle']='cleanup removes guard; remount restores exactly scoped behavior'
+ # WebKit can start selection/callout without a cancellable contextmenu event.
+ # Only pointer-driven hold controls may cancel native touch defaults; ordinary
+ # click buttons and editors must keep their normal browser behavior.
+ touch=js("""(()=>{const button=document.querySelector('button'),outside=document.querySelector('[data-probe=copy]'),editor=document.querySelector('textarea');const touch=new Touch({identifier:7,target:button,clientX:10,clientY:10});const send=(target,type,points)=>{const e=new TouchEvent(type,{bubbles:true,cancelable:true,touches:points,targetTouches:points,changedTouches:[touch]});target.dispatchEvent(e);return e.defaultPrevented};const range=document.createRange();range.selectNodeContents(outside);getSelection().removeAllRanges();getSelection().addRange(range);const started=send(button,'touchstart',[touch]),existingSelectionCleared=getSelection().toString()==='',moved=send(outside,'touchmove',[touch]);const selection=new Event('selectstart',{bubbles:true,cancelable:true});outside.dispatchEvent(selection);send(button,'touchend',[]);const released=new Event('selectstart',{bubbles:true,cancelable:true});outside.dispatchEvent(released);const input=new Touch({identifier:8,target:editor,clientX:10,clientY:10});const editable=new TouchEvent('touchstart',{bubbles:true,cancelable:true,touches:[input],changedTouches:[input]});editor.dispatchEvent(editable);return {started,moved,existingSelectionCleared,selection:selection.defaultPrevented,released:released.defaultPrevented,editor:editable.defaultPrevented}})()""")
+ assert touch=={'started':True,'moved':True,'existingSelectionCleared':True,'selection':True,'released':False,'editor':False},touch
+ report['holdTouchDefaults']=touch
+
  button=js("(()=>{const r=document.querySelector('button').getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()")
  browser('mouse','move',str(round(button['x'])),str(round(button['y'])));browser('mouse','down')
  assert js('window.audit.held')

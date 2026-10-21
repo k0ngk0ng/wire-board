@@ -18,11 +18,14 @@ import (
 )
 
 type Weapon struct {
-	Name   string
-	Damage float64
-	Blast  float64
-	Kind   string
-	Ammo   bool
+	Mode         string  `json:"mode,omitempty"`
+	Radius       float64 `json:"radius,omitempty"`
+	FriendlyFire bool    `json:"friendlyFire,omitempty"`
+	Name         string
+	Damage       float64
+	Blast        float64
+	Kind         string
+	Ammo         bool
 }
 
 func strict(raw json.RawMessage, v any) error {
@@ -158,7 +161,7 @@ func beginPlaying(s *State, at time.Time) error {
 	s.SuddenAt = s.StartAt + SuddenAfterMS
 	s.MatchEndsAt = s.StartAt + MatchLimitMS
 	s.Turn = 1
-	s.NextSupplyTurn = 3
+	s.NextSupplyTurn = 8
 	s.Current = s.Order[0]
 	s.Wind = windFor(s.Seed, s.Turn, false)
 	s.Deadline = at.Add(time.Duration(s.Options.TurnSeconds) * time.Second).UnixMilli()
@@ -192,6 +195,7 @@ func advanceTurn(s *State, at time.Time) {
 		return
 	}
 	next := -1
+	moveSuppressed := false
 	from := s.Current
 	for attempt := 0; attempt < len(s.Tanks); attempt++ {
 		next = nextAlive(s, from)
@@ -200,11 +204,13 @@ func advanceTurn(s *State, at time.Time) {
 		}
 		// Project semantics: a status cycle belongs to the affected tank's next
 		// action opportunity, not to every other player's action or flying shell.
+		locked := hasStatus(&s.Tanks[next], "immobile")
 		tickStatuses(s, next, at.UnixMilli())
 		if s.checkTeamOutcome(at.UnixMilli()) {
 			return
 		}
 		if s.Tanks[next].Alive {
+			moveSuppressed = locked
 			break
 		}
 		from = next
@@ -223,6 +229,9 @@ func advanceTurn(s *State, at time.Time) {
 	s.Wind = windFor(s.Seed, s.Turn, s.Sudden)
 	if spec, ok := tankSpec(s.Tanks[next].TankID); ok {
 		s.Tanks[next].Fuel = float64(spec.Speed)
+		if moveSuppressed {
+			s.Tanks[next].Fuel = 0
+		}
 	}
 	s.Deadline = at.Add(time.Duration(s.Options.TurnSeconds) * time.Second).UnixMilli()
 	s.emit("turn", next, -1, 0, 0, 0, "", at.UnixMilli())
@@ -316,7 +325,7 @@ func decode(m gameapi.Match) (*State, error) {
 		return nil, errors.New("无效疯狂坦克选择期限")
 	}
 	if s.LastShot != nil {
-		if len(s.LastShot.Arcs) == 0 || len(s.LastShot.Arcs) > 8 || len(s.LastShot.Blasts) > 16 {
+		if len(s.LastShot.Arcs) == 0 || len(s.LastShot.Arcs) > 16 || len(s.LastShot.Blasts) > 32 {
 			return nil, errors.New("无效疯狂坦克弹道")
 		}
 		total := 0
@@ -338,7 +347,7 @@ func decode(m gameapi.Match) (*State, error) {
 				return nil, errors.New("无效疯狂坦克弹道")
 			}
 		}
-		if total > MaxPath {
+		if total > MaxPath*16 {
 			return nil, errors.New("弹道点数超出上限")
 		}
 	}
@@ -347,7 +356,7 @@ func decode(m gameapi.Match) (*State, error) {
 		if s.Phase != PhasePlaying || s.Deadline != 0 || r.At <= 0 || r.ImpactAt < r.At || r.SettleAt < r.ImpactAt || (r.Stage != "flying" && r.Stage != "settling") || len(r.Falls) > players {
 			return nil, errors.New("无效疯狂坦克动作时间轴")
 		}
-		if r.ShotID > 0 && (s.LastShot == nil || s.LastShot.ID != r.ShotID || s.LastShot.ImpactAt != r.ImpactAt || s.LastShot.SettleAt != r.SettleAt) {
+		if r.ShotID > 0 && (s.LastShot == nil || s.LastShot.ID != r.ShotID || (r.Stage == "settling" && s.LastShot.ImpactAt > r.ImpactAt) || (r.Stage == "flying" && r.ImpactAt > s.LastShot.ImpactAt) || s.LastShot.SettleAt != r.SettleAt) {
 			return nil, errors.New("炮弹时间轴不一致")
 		}
 		if r.Stage == "flying" && (r.ShotID <= 0 || s.PendingShot == nil || len(r.Falls) > 0) {
@@ -392,6 +401,16 @@ func decode(m gameapi.Match) (*State, error) {
 			return nil, errors.New("无效补给内容或轨迹")
 		}
 		supplyIDs[d.ID] = true
+	}
+	if len(s.Mines) > 32 || len(s.MineBlasts) > 32 {
+		return nil, errors.New("地雷状态过多")
+	}
+	mineIDs := map[int64]bool{}
+	for _, d := range s.Mines {
+		if d.ID <= 0 || mineIDs[d.ID] || d.Source < 0 || d.Source >= players || d.Team != s.Tanks[d.Source].Team || math.IsNaN(d.X) || math.IsNaN(d.Y) || d.X < 0 || d.X >= float64(mapSpec.Width) || d.Y < 0 || d.Y >= float64(mapSpec.Height) || d.At <= 0 || d.Damage < 0 || d.Damage > 2000 || d.TriggerAt < 0 {
+			return nil, errors.New("无效地雷状态")
+		}
+		mineIDs[d.ID] = true
 	}
 	if len(s.Events) > MaxEvents || len(s.Log) > MaxLog {
 		return nil, errors.New("疯狂坦克事件过多")
@@ -453,9 +472,11 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if !s.canAct(ctx.Actor) || a.Turn != s.Turn {
 			return m, errors.New("还没轮到你移动")
 		}
+		from := Point{X: s.Tanks[ctx.Actor].X, Y: s.Tanks[ctx.Actor].Y}
 		if !moveTank(s, ctx.Actor, a.Dir, ctx.Now.UnixMilli()) {
 			return m, errors.New("移动力不足或前方不可通行")
 		}
+		latchMineContact(s, ctx.Actor, from, Point{X: s.Tanks[ctx.Actor].X, Y: s.Tanks[ctx.Actor].Y}, ctx.Now.UnixMilli())
 	case "item":
 		if a.Tank != 0 || a.Dir != 0 || a.Angle != 0 || a.Power != 0 || a.Facing != 0 || a.Weapon != "" {
 			return m, errors.New("无效道具操作")
@@ -477,32 +498,35 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 		if !s.canAct(ctx.Actor) || a.Turn != s.Turn {
 			return m, errors.New("还没轮到你开火")
 		}
-		weapon := Weapon{Name: "主炮", Damage: float64(spec.Primary), Blast: 14}
+
+		weapon := Weapon{Name: "主炮", Mode: a.Weapon, Damage: float64(spec.Primary), Blast: 14}
 		kind := ""
 		if s.Tanks[ctx.Actor].PendingShotEffect == "heal" {
-			weapon = Weapon{Name: "healing", Blast: 14}
+			weapon = Weapon{Name: "healing", Mode: "primary", Blast: 14}
 			kind = "heal"
 			s.Tanks[ctx.Actor].PendingShotEffect = ""
-		} else if a.Weapon == "special" {
-			if !s.Tanks[ctx.Actor].SpecialUnlimited && s.Tanks[ctx.Actor].Special <= 0 {
-				return m, errors.New("特殊炮弹已用完")
-			}
-			if !s.Tanks[ctx.Actor].SpecialUnlimited {
-				s.Tanks[ctx.Actor].Special--
-			}
-			weapon = Weapon{Name: "特殊弹", Damage: float64(spec.Special), Blast: 22}
-			if len(spec.Skills) > 0 {
-				switch spec.Skills[0] {
-				case 1:
-					kind, weapon.Blast = "explosion", weapon.Blast*1.25
-					weapon.Damage *= 1.1
-				case 2:
-					kind = "poison"
-				case 3:
-					kind, weapon.Blast = "fire", weapon.Blast*1.15
-				case 4:
-					kind = "lightning"
+		} else {
+			profile := nativeWeapon(spec.ID, a.Weapon)
+			kind = profile.Kind
+			if a.Weapon == "special" {
+				if !s.Tanks[ctx.Actor].SpecialUnlimited && s.Tanks[ctx.Actor].Special <= 0 {
+					return m, errors.New("特殊炮弹已用完")
 				}
+				if !s.Tanks[ctx.Actor].SpecialUnlimited {
+					s.Tanks[ctx.Actor].Special--
+				}
+				weapon.Name = "特殊弹"
+				weapon.Damage = float64(spec.Special)
+				weapon.Blast = 22
+			}
+			// f421 copies A1Round/A2Round into projectile +108, used as native
+			// terrain/blast radius. Preserve old pending Weapon without Radius.
+			index := 9
+			if a.Weapon == "special" {
+				index = 11
+			}
+			if len(spec.Original.Values) > index {
+				weapon.Radius = float64(spec.Original.Values[index])
 			}
 		}
 		resolveShot(s, ctx.Actor, weapon, kind, a.Angle, a.Power, a.Facing, ctx.Now)
@@ -515,7 +539,6 @@ func apply(ctx gameapi.Context, m gameapi.Match, raw json.RawMessage) (gameapi.M
 
 func resolveShot(s *State, seat int, weapon Weapon, kind string, angle, power float64, facing int, at time.Time) {
 	shooter := &s.Tanks[seat]
-	wind := s.Wind
 	// Old snapshots may contain the former no-wind modifier; consume it without
 	// removing ordinary wind, which the original piercing item does not negate.
 	consumeStatus(shooter, "nowind")
@@ -526,33 +549,53 @@ func resolveShot(s *State, seat int, weapon Weapon, kind string, angle, power fl
 			weapon.Damage *= 1.5
 		}
 	}
-	m, _ := fbmaps.ByID(s.MapID)
-	mask := bulletMaskFor(m, s.Craters)
+
 	shotID := int64(1)
 	if s.LastShot != nil {
 		shotID = s.LastShot.ID + 1
 	}
-	shot := &Shot{ID: shotID, Seat: seat, Weapon: weapon.Name, At: at.UnixMilli(), Blasts: []Blast{}}
-	spec, _ := tankSpec(shooter.TankID)
-	arc := simulateArc(m, mask, s.Tanks, seat, shooter.X, shooter.Y, angle, power, facing, float64(spec.Range)/50, wind, MaxPath)
-	flight := arc.PathTimes[len(arc.PathTimes)-1]
-	duration := math.Max(180, flight)
-	if flight > 0 {
-		for i := range arc.PathTimes {
-			arc.PathTimes[i] *= duration / flight
+	mode := weapon.Mode
+	if mode == "" {
+		mode = "primary"
+		if weapon.Name == "特殊弹" {
+			mode = "special"
 		}
 	}
-	shot.LaunchAt = shot.At + 334
-	for i := range arc.PathTimes {
-		arc.PathTimes[i] += 334
+	shot := &Shot{ID: shotID, Seat: seat, Mode: mode, Weapon: weapon.Name, At: at.UnixMilli(), LaunchAt: at.UnixMilli() + 334, Blasts: []Blast{}}
+	shot.Arcs = weaponArcs(s, seat, mode, angle, power, facing, kind)
+	first := int64(0)
+	for i := range shot.Arcs {
+		arc := &shot.Arcs[i]
+		flight := arc.PathTimes[len(arc.PathTimes)-1]
+		duration := math.Max(180, flight)
+		for j := range arc.PathTimes {
+			if flight > 0 {
+				arc.PathTimes[j] *= duration / flight
+			}
+			arc.PathTimes[j] += 334
+		}
+		arc.LaunchAt = shot.LaunchAt
+		arc.ImpactAt = shot.LaunchAt + int64(math.Ceil(duration))
+		if arc.LockPoint != nil {
+			arc.LockAt += shot.LaunchAt
+		}
+		if first == 0 || arc.ImpactAt < first {
+			first = arc.ImpactAt
+		}
+		shot.ImpactAt = max(shot.ImpactAt, arc.ImpactAt)
 	}
-	arc.ImpactAt = shot.LaunchAt + int64(math.Ceil(duration))
-	shot.ImpactAt, shot.SettleAt = arc.ImpactAt, arc.ImpactAt+450
-	shot.Arcs = []Arc{arc}
+	if kind == "ion" && !shot.Arcs[0].OutOfBounds {
+		marker := shot.Arcs[0]
+		launch := marker.ImpactAt + 350
+		ray := Arc{Effect: "ion_beam", LaunchAt: launch, ImpactAt: launch + 200, Path: []Point{{X: marker.Impact.X, Y: 0}, marker.Impact}, PathTimes: []float64{float64(launch - shot.At), float64(launch - shot.At + 200)}, Impact: marker.Impact, Hit: marker.Hit}
+		shot.Arcs = append(shot.Arcs, ray)
+		shot.ImpactAt = ray.ImpactAt
+	}
+	shot.SettleAt = shot.ImpactAt + 450
 	shooter.Facing = facing
 	s.LastShot = shot
 	s.PendingShot = &PendingShot{Weapon: weapon, Kind: kind}
-	s.Resolution = &Resolution{Stage: "flying", LaunchAt: shot.LaunchAt, ShotID: shotID, At: shot.At, ImpactAt: shot.ImpactAt, SettleAt: shot.SettleAt}
+	s.Resolution = &Resolution{Stage: "flying", LaunchAt: shot.LaunchAt, ShotID: shotID, At: shot.At, ImpactAt: first, SettleAt: shot.SettleAt}
 	s.Deadline = 0
 	s.emit("fire_ready", seat, -1, shooter.X, shooter.Y, 0, weapon.Name, shot.At)
 

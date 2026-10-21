@@ -756,6 +756,7 @@ export function Board(props: BoardProps<View>) {
             aria-disabled={!enabled}
             data-active={padPointer.current !== null}
             data-bubbleparty-dpad
+            data-game-hold-control
             onPointerDown={(event) => {
               if (!enabled || padPointer.current !== null || event.button !== 0)
                 return;
@@ -792,6 +793,7 @@ export function Board(props: BoardProps<View>) {
           <button
             className="bubble-bomb"
             data-bubbleparty-bomb
+            data-game-hold-control
             disabled={!enabled}
             onPointerDown={(event) => {
               event.preventDefault();

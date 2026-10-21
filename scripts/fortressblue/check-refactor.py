@@ -20,7 +20,8 @@ import uuid
 parser = argparse.ArgumentParser()
 parser.add_argument('--build', action='store_true')
 parser.add_argument('--out', default='')
-parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing','portraits','supplies'], default='all')
+parser.add_argument('--only', choices=['all','interaction','timeline','effects','bots','reveal','terrain','cancel','facing','portraits','supplies','projectiles'], default='all')
+parser.add_argument('--tanks', nargs='+', type=int, choices=range(1,15), default=list(range(1,15)))
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 run = 'f' + uuid.uuid4().hex[:6]
@@ -35,6 +36,7 @@ for name, path in {'AGENT_BROWSER_SOCKET_DIR': sockets, 'AGENT_BROWSER_PROFILE':
     env[name] = str(path)
 env.update(AGENT_BROWSER_SESSION=run, AGENT_BROWSER_ARGS='--mute-audio,--disable-breakpad,--disable-crash-reporter', WIRE_BOARD_FORTRESSBLUE_BROWSER='1', WIRE_BOARD_FORTRESSBLUE_BROWSER_OUT=str(out), GOTOOLCHAIN='local')
 report = {'selection': args.only, 'passed': False, 'checks': [], 'screenshots': [], 'command': 'python3 scripts/fortressblue/check-refactor.py --only '+args.only+(' --build' if args.build else ''), 'scope': 'Fortress only; production HTTP/SQLite/clock; native CDP inputs; labelled opening fixtures only'}
+if args.only=='projectiles':report['command']+=' --tanks '+' '.join(map(str,args.tanks))
 report['sources']={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for folder,pattern in [('games/fortressblue/server','*.go'),('games/fortressblue/web','*.ts*'),('games/fortressblue/data','*.json')] for p in (root/folder).glob(pattern)}
 for rel in ['internal/server/server.go','internal/server/modules.go','internal/server/module_realtime.go','internal/gameapi/module.go','games/fortressblue/tests/browser_fixture_test.go','scripts/fortressblue/check-refactor.py','games/fortressblue/web/style.css','games/fortressblue/assets/picker-frames.json','scripts/fortressblue/prepare-picker-frames.py']:
     source=root/rel
@@ -169,7 +171,7 @@ try{
 def native(steps, name=None):
     import base64
     endpoint = browser('get', 'cdp-url')['cdpUrl']
-    p = subprocess.run(['node', '--input-type=module', '-', endpoint, base, json.dumps(steps), MEASURE, str(out), 'browser' if args.only=='supplies' else 'cdp'], input=CDP, cwd=root, env=env, text=True, capture_output=True, timeout=60)
+    p = subprocess.run(['node', '--input-type=module', '-', endpoint, base, json.dumps(steps), MEASURE, str(out), 'browser' if args.only in ('supplies','projectiles') else 'cdp'], input=CDP, cwd=root, env=env, text=True, capture_output=True, timeout=60)
     if p.returncode:
         (out/((name or 'native')+'-failure.txt')).write_text(p.stderr)
         if p.stdout: (out/((name or 'native')+'.json')).write_text(p.stdout)
@@ -509,7 +511,7 @@ try:
     assert (root/'web/dist/index.html').exists(),'Build frontend first'
     (out/'scenario').write_text('normal')
     log=(out/'server.log').open('w')
-    if args.only in ('facing','portraits','supplies'):
+    if args.only in ('facing','portraits','supplies','projectiles'):
         # Use the production binary with its real CDN/local-fallback settings;
         # no opening fixture or response rewriting is needed for direction tests.
         executable=temp/'server';subprocess.run(['go','build','-o',str(executable),'.'],cwd=root,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
@@ -538,6 +540,56 @@ try:
     api('/login',{'name':'坦克验收管理员','password':'fortress-browser-test-only'})
     other('/register',{'name':'坦克静止对手','password':'fortress-browser-test-only','invite':'fortress-browser'})
     browser('reload');browser('set','viewport','1280','1000')
+    if args.only=='projectiles':
+        browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
+        for tank_id in args.tanks:
+            for mode in ['primary','special']:
+                width=320 if mode=='special' and tank_id in (7,10,13,14) else 1280
+                browser('set','viewport',str(width),'844' if width==320 else '1000')
+                start(tank_id=tank_id)
+                wait(lambda:js('[...document.querySelectorAll(".fb-player-head img")].every(i=>i.complete&&i.naturalWidth>0)'))
+                browser('click','[data-fortressblue-weapon="'+mode+'"]')
+                wait(lambda:js('document.querySelector('+json.dumps('[data-fortressblue-weapon="'+mode+'"]')+').getAttribute("aria-pressed")')=='true')
+                browser('focus','[data-fortressblue-canvas]')
+                name='projectile-'+str(tank_id)+'-'+mode
+                steps=[{'sample':True},{'key':' '},{'wait':50 if tank_id==6 and mode=='special' and len(args.tanks)<14 else 700},{'key':' ','up':True},{'wait':450,'read':'flying'}]
+                if mode=='special' and tank_id in (1,7,8,9,10,13,14):steps[-1]['capture']=name
+                data=native(steps)
+                current=view();shot_data=current['lastShot'];assert shot_data.get('mode')==mode,shot_data
+                count=({4:3,7:9,8:3,9:2,12:2,13:9}.get(tank_id,1) if mode=='special' else (3 if tank_id in (7,13) else 1))
+                if tank_id==10 and mode=='special' and not shot_data['arcs'][0].get('outOfBounds'):count=2
+                assert len(shot_data['arcs'])==count,(tank_id,mode,len(shot_data['arcs']))
+                tail_steps=[{'sample':True}]
+                if mode=='special' and tank_id==10 and len(shot_data['arcs'])>1:
+                    tail_steps.append({'waitUntil':shot_data['arcs'][1]['launchAt']+80,'read':'ion-beam','capture':'ion-beam-native'})
+                if mode=='special' and tank_id==6 and len(args.tanks)<14:
+                    lock_at=shot_data['arcs'][0].get('lockAt');assert lock_at,'low-power descending shot should lock own visible tank'
+                    tail_steps.append({'waitUntil':lock_at+30,'read':'lock','capture':'homing-native'})
+                tail_steps.extend([{'waitUntil':max(a['impactAt'] for a in shot_data['arcs'])+200},{'read':'settled'}])
+                if mode=='special' and tank_id==9:tail_steps[-1]['capture']='mines-native'
+                tail=native(tail_steps)
+                frames=data['frames']+tail['frames'];painted=[];brief=[]
+                for f in frames:
+                    canvas=f.get('canvas') or {};now=float(canvas.get('renderedAt',0));drawn=json.loads(canvas.get('renderedProjectiles','[]'));blasts=json.loads(canvas.get('renderedBlasts','[]'))
+                    for q in drawn:
+                        assert q['launchAt']<=now<q['impactAt'],(q,now)
+                        if q.get('effect')!='ion_beam':
+                            assert q['mode']==mode and q['path']=='/fortressblue/v5/projectile-'+str(tank_id)+'.webp',q
+                            assert (32<=q['frame']<64) if mode=='special' else (0<=q['frame']<32),q
+                        if q.get('artReady'):painted.append(q)
+                    assert all(b['at']<=now for b in blasts)
+                    brief.append({'at':f['at'],'renderedAt':now,'projectiles':drawn,'blasts':blasts,'hp':[r['hp'] for r in f.get('rows',[])],'cameraY':canvas.get('cameraY'),'overflow':f.get('overflow'),'mines':json.loads(canvas.get('renderedMines','[]')),'locks':json.loads(canvas.get('renderedLocks','[]'))})
+                assert len(painted)>=2,(tank_id,mode,'native projectile not actually drawn')
+                if mode=='special' and tank_id==9:
+                    assert any(m['artReady'] for f in brief for m in f['mines']),'mine image was never drawn'
+                if mode=='special' and tank_id==10 and len(shot_data['arcs'])>1:
+                    assert any(q.get('effect')=='ion_beam' and q['artReady'] for q in painted),'delayed native ion beam was never drawn'
+                if mode=='special' and tank_id==6 and len(args.tanks)<14:
+                    assert any(m['artReady'] for f in brief for m in f['locks']),'native target lock reticle was never drawn'
+                assert not any(f['overflow'] for f in brief)
+                if count>2:assert max(len(f['projectiles']) for f in brief)>=count,(tank_id,mode,'volley truncated')
+                record(name,{'tank':tank_id,'mode':mode,'width':width,'shot':shot_data,'frames':brief})
+                check('native projectile '+str(tank_id)+' '+mode,arcs=count,nativeFrames=len(painted),width=width)
     if args.only=='supplies':
         browser('network','route','https://cdn.ichenj.com/bga/v20261002-1/fortressblue/**','--abort')
         start(ui=True)
@@ -547,7 +599,10 @@ try:
             if seat==0:action(payload)
             else:other_command('action',action=payload)
             wait(lambda:not view().get('resolution'),timeout=15,label='actual shell completes')
-        harmless_fire();harmless_fire()
+        for _ in range(7):
+            assert not view().get('supplies'), 'supply appeared before turn eight'
+            harmless_fire()
+        assert view()['turn']==8
         delivery=wait(lambda:(view().get('supplies') or [None])[0],label='scheduled original-style supply')
         record('supply-original-schedule',delivery)
         data=native([{'sample':True},{'wait':500,'read':'transport','capture':'supply-transport'},{'wait':1150,'read':'falling','capture':'supply-falling'},{'reload':True},{'wait':2400,'read':'landed','capture':'supply-landed-after-reload'}],'supply-flight')
@@ -572,14 +627,28 @@ try:
             payload={'type':'move','epoch':current['epoch'],'turn':current['turn'],'dir':1 if live['x']>tank['x'] else -1}
             if target==0:action(payload)
             else:other_command('action',action=payload)
-        wait(lambda:not any(d['id']==live['id'] for d in view().get('supplies',[])),timeout=5,label='real movement/contact pickup')
+        # Touch and immediately reverse, rather than parking for the 180ms
+        # presentation delay. This reproduces a quick pass through the edge.
+        touched=view();collector=touched['tanks'][target]
+        pending=next(d for d in touched['supplies'] if d['id']==live['id'])
+        assert pending.get('pickupAt',0)>0 and len(collector['items'])==inventory
+        away=-1 if collector['x']<live['x'] else 1
+        payload={'type':'move','epoch':touched['epoch'],'turn':touched['turn'],'dir':away}
+        if target==0:action(payload)
+        else:other_command('action',action=payload)
+        escaped=view();assert abs(escaped['tanks'][target]['x']-live['x'])>26
+        record('supply-quick-contact',{'touched':collector,'away':escaped['tanks'][target],'scheduledPickup':pending})
+        wait(lambda:not any(d['id']==live['id'] for d in view().get('supplies',[])),timeout=5,label='quick contact pickup after moving away')
         after=view();tank=after['tanks'][target];assert len(tank['items'])==inventory+1 and tank['hp']==hp
         pickup=next(e for e in after['events'] if e['type']=='supply_pickup' and e['seat']==target)
         assert pickup['at']>=delivery['landAt']+180
         time.sleep(.4);assert len(view()['tanks'][target]['items'])==inventory+1
-        shot('supply-picked-up');record('supply-pickup',{'before':before,'after':tank,'event':pickup});check('same public movement adds one inventory item after visible contact, no automatic heal',seat=target)
+        shot('supply-picked-up');record('supply-pickup',{'before':before,'after':tank,'event':pickup});check('quick contact stays latched after moving away and adds one item without healing',seat=target)
         browser('set','viewport','320','844');start()
-        harmless_fire();harmless_fire()
+        for _ in range(7):
+            assert not view().get('supplies'), 'mobile supply appeared before turn eight'
+            harmless_fire()
+        assert view()['turn']==8
         mobile_delivery=wait(lambda:(view().get('supplies') or [None])[0])
         mobile=native([{'sample':True},{'wait':550,'read':'transport','capture':'supply-mobile-transport'},{'wait':1000,'read':'falling','capture':'supply-mobile-falling'},{'wait':2500,'read':'landed','capture':'supply-mobile-landed'}],'supply-mobile-flight')
         in_flight=[f for f in mobile['frames'] if f.get('root',{}).get('fortressblueTransporting')=='1']
@@ -760,7 +829,7 @@ finally:
         except Exception:pass
     (out/'stop').write_text('stop')
     if server:
-        if args.only in ('facing','portraits','supplies'):server.terminate()
+        if args.only in ('facing','portraits','supplies','projectiles'):server.terminate()
         try:server.wait(timeout=15)
         except subprocess.TimeoutExpired:server.terminate();server.wait(timeout=10)
     if log:log.close()

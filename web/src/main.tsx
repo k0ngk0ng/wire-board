@@ -1,3 +1,4 @@
+import { VersionUpdateNotice } from "./VersionUpdateNotice";
 import { installControlContextMenuGuard } from "./control-context-menu";
 import { revealGameOnEntry } from "./game-entry-scroll";
 import { CategoryFilter, matchesCategory } from "./ui/game-category";
@@ -1546,6 +1547,7 @@ function Lobby({
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
+    <VersionUpdateNotice />
   </React.StrictMode>,
 );
 

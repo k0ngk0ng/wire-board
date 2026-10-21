@@ -64,7 +64,26 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 	if (tank.SpecialUnlimited || tank.Special > 0) && hashString(s.Epoch, "special", string(rune(ctx.Actor)), string(rune(s.Turn)))%4 == 0 {
 		weapon = "special"
 	}
-	best := botAimFor(s, ctx.Actor, target, spec)
+	aimState := s
+	if tank.TankID == 14 && tank.PendingShotEffect == "" {
+		ally, missing := -1, 0
+		for i, t := range s.Tanks {
+			if t.Alive && t.Team == tank.Team && t.MaxHP-t.HP > missing {
+				ally, missing = i, t.MaxHP-t.HP
+			}
+		}
+		if ally < 0 {
+			weapon = "primary"
+		} else if tank.SpecialUnlimited || tank.Special > 0 {
+			weapon = "special"
+			target = ally
+			copyState := *s
+			copyState.Tanks = append([]Tank(nil), s.Tanks...)
+			copyState.Tanks[ctx.Actor].PendingShotEffect = "heal"
+			aimState = &copyState
+		}
+	}
+	best := botAimFor(aimState, ctx.Actor, target, spec)
 	// A blocked shot is not the only legal action. Explore safe movements through
 	// the same public movement rules, and never choose a move that starts a fall.
 	risk := botGroundRisk(s, ctx.Actor, ctx.Now.UnixMilli())
@@ -78,8 +97,8 @@ func botAction(ctx gameapi.Context, m gameapi.Match) (json.RawMessage, error) {
 		bestRisk := risk
 		fallback := 0
 		for _, dir := range []int{preferred, -preferred} {
-			candidate := *s
-			candidate.Tanks = append([]Tank(nil), s.Tanks...)
+			candidate := *aimState
+			candidate.Tanks = append([]Tank(nil), aimState.Tanks...)
 			candidate.Events = nil
 			if !moveTank(&candidate, ctx.Actor, dir, ctx.Now.UnixMilli()) || candidate.Resolution != nil {
 				continue

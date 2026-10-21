@@ -6,6 +6,7 @@ export function arcAt(
   now: number,
   launchAt = shotAt,
 ): (Point & { angle: number }) | null {
+  launchAt = arc.launchAt ?? launchAt;
   const path = arc.path;
   const end = arc.impactAt;
   if (!path.length || !end || now < launchAt || now >= end) return null;

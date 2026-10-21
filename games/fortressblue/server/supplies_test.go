@@ -239,3 +239,123 @@ func TestSupplyDeadlineCrossesSuddenAndMatchEndWithoutPastTimer(t *testing.T) {
 		}
 	}
 }
+
+// Cadence failure scenarios: the first drop still interrupts the opening at
+// turn 3; subsequent gaps remain 2–4; player count changes the intended action-
+// turn unit; a persisted next drop is rerolled on restore.
+func TestSupplyReducedCadence(t *testing.T) {
+	for _, players := range []int{2, 4, 6, 8} {
+		s, m := startAt(t, players, "stage-16")
+		ids := make([]int, players)
+		for i := range ids {
+			ids[i] = 1
+		}
+		_, s = selectAll(t, s, m, ids)
+		if s.NextSupplyTurn != 8 {
+			t.Fatalf("players=%d first drop=%d, want 8", players, s.NextSupplyTurn)
+		}
+		for turn := 2; turn < 8; turn++ {
+			s.Turn = turn
+			scheduleSupply(s, s.StartAt+int64(turn)*1000)
+			if len(s.Supplies) != 0 {
+				t.Fatal("opening interrupted by early delivery", players, turn)
+			}
+		}
+		for i := 0; i < 32; i++ {
+			s.Turn = s.NextSupplyTurn
+			s.Supplies = nil
+			scheduleSupply(s, s.StartAt+int64(s.Turn)*1000)
+			gap := s.NextSupplyTurn - s.Turn
+			if gap < 8 || gap > 12 {
+				t.Fatalf("players=%d gap=%d", players, gap)
+			}
+			if len(s.Supplies) != 1 {
+				t.Fatal("due delivery missing", players, s.Turn)
+			}
+		}
+	}
+}
+
+// A contact can be shorter than the rendering delay: moving away, reversing,
+// or firing must not undo an already confirmed touch. Restore must preserve
+// the pending award; death/full inventory must still prevent invalid awards.
+func TestSupplyQuickContactSurvivesMovingAwayAndRestore(t *testing.T) {
+	s := supplyState(t)
+	stage, _ := fbmaps.ByID(s.MapID)
+	mask := maskFor(stage, s.Craters)
+	found := false
+	for x := 20.0; x < float64(stage.Width)-120; x += 4 {
+		y := groundY(stage, mask, x, 0)
+		flat := y < float64(stage.Height)
+		for dx := 0.0; dx <= 100; dx += 2 {
+			if groundY(stage, mask, x+dx, 0) != y {
+				flat = false
+				break
+			}
+		}
+		if flat {
+			s.Tanks[0].X = x + 40
+			s.Tanks[0].Y = y
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatal("missing flat native fixture")
+	}
+	s.Tanks[0].Items = nil
+	at := s.StartAt + 1000
+	s.Supplies = []Supply{{ID: 1, ItemID: 0, X: s.Tanks[0].X + 25, Y: s.Tanks[0].Y, FromX: s.Tanks[0].X + 25, At: s.StartAt, DropAt: s.StartAt + 1, LandAt: s.StartAt + 2, Landed: true}}
+	processSupplies(s, at)
+	if s.Supplies[0].PickupAt != at+180 {
+		t.Fatal("contact not registered")
+	}
+	m, _ := s.envelope()
+	raw, _ := json.Marshal(Action{Type: "move", Epoch: s.Epoch, Turn: s.Turn, Dir: -1})
+	m, err := apply(ctx(2, 0, time.UnixMilli(at+40)), m, raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m, err = restore(ctx(2, 0, time.UnixMilli(at+40)), m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	moved, _ := decode(m)
+	if moved.Tanks[0].X >= s.Tanks[0].X || len(moved.Tanks[0].Items) != 0 {
+		t.Fatal("fixture did not move away before visual award")
+	}
+	m, err = onTimer(ctx(2, 0, time.UnixMilli(at+180)), m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, _ := decode(m)
+	if len(got.Supplies) != 0 || len(got.Tanks[0].Items) != 1 {
+		t.Fatal("quick contact lost its pickup after moving away", got.Supplies, got.Tanks[0].Items)
+	}
+}
+
+func TestSupplyPendingPickupRechecksCapacityAndLife(t *testing.T) {
+	for _, full := range []bool{false, true} {
+		s := supplyState(t)
+		s.Tanks[0].Items = nil
+		at := s.StartAt + 1000
+		s.Supplies = []Supply{{ID: 1, ItemID: 0, X: s.Tanks[0].X, Y: s.Tanks[0].Y, FromX: s.Tanks[0].X, At: s.StartAt, DropAt: s.StartAt + 1, LandAt: s.StartAt + 2, Landed: true}}
+		processSupplies(s, at)
+		if full {
+			s.Tanks[0].Items = []int{0, 0, 0, 0}
+		} else {
+			s.Tanks[0].Alive = false
+		}
+		processSupplies(s, at+180)
+		if len(s.Supplies) != 1 || s.Supplies[0].PickupAt != 0 {
+			t.Fatal("invalid collector retained pickup", full)
+		}
+		want := 0
+		if full {
+			want = 4
+		}
+		if len(s.Tanks[0].Items) != want {
+			t.Fatal("invalid inventory award", full)
+		}
+	}
+}

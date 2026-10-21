@@ -108,17 +108,6 @@ export function drawSupplies(
     }
     if (pose.crate) {
       const p = pose.crate;
-      ctx.strokeStyle = "#ffe395";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(p.x - 13, p.y - 21, 26, 23);
-      if (!p.airborne) {
-        ctx.fillStyle = "#122d3b";
-        ctx.fillRect(p.x - 17, p.y - 38, 34, 15);
-        ctx.fillStyle = "#fff0b7";
-        ctx.font = "bold 11px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("补给", p.x, p.y - 27);
-      }
       drawn.push({
         id: supply.id,
         x: p.x,

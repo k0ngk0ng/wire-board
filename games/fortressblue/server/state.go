@@ -104,6 +104,11 @@ type Crater struct {
 }
 
 type Arc struct {
+	LaunchAt    int64     `json:"launchAt,omitempty"`
+	Resolved    bool      `json:"resolved,omitempty"`
+	Effect      string    `json:"effect,omitempty"`
+	LockAt      int64     `json:"lockAt,omitempty"`
+	LockPoint   *Point    `json:"lockPoint,omitempty"`
 	PathTimes   []float64 `json:"pathTimes,omitempty"`
 	ImpactAt    int64     `json:"impactAt,omitempty"`
 	OutOfBounds bool      `json:"outOfBounds,omitempty"`
@@ -120,6 +125,7 @@ type Hit struct {
 }
 
 type Blast struct {
+	At      int64   `json:"at,omitempty"`
 	Hits    []Hit   `json:"hits,omitempty"`
 	X       float64 `json:"x"`
 	Y       float64 `json:"y"`
@@ -132,6 +138,7 @@ type Blast struct {
 }
 
 type Shot struct {
+	Mode        string   `json:"mode,omitempty"`
 	CancelledAt int64    `json:"cancelledAt,omitempty"`
 	LaunchAt    int64    `json:"launchAt,omitempty"`
 	ImpactAt    int64    `json:"impactAt,omitempty"`
@@ -197,6 +204,8 @@ type Hazard struct {
 }
 
 type State struct {
+	Mines          []Mine   `json:"mines,omitempty"`
+	MineBlasts     []Blast  `json:"mineBlasts,omitempty"`
 	Supplies       []Supply `json:"supplies,omitempty"`
 	NextSupplyTurn int      `json:"nextSupplyTurn,omitempty"`
 	Hazards        []Hazard `json:"hazards,omitempty"`
@@ -260,6 +269,8 @@ type TankView struct {
 }
 
 type View struct {
+	Mines       []Mine      `json:"mines,omitempty"`
+	MineBlasts  []Blast     `json:"mineBlasts,omitempty"`
 	Supplies    []Supply    `json:"supplies,omitempty"`
 	Hazards     []Hazard    `json:"hazards,omitempty"`
 	Resolution  *Resolution `json:"resolution,omitempty"`
@@ -545,21 +556,38 @@ func (s *State) systemDeadline() int64 {
 	if supply := s.supplyDeadline(); supply > 0 && (next == 0 || supply < next) {
 		next = supply
 	}
+	if mine := s.mineDeadline(); mine > 0 && (next == 0 || mine < next) {
+		next = mine
+	}
 	return next
 }
 
 func (s *State) project(seat int) View {
 	m, _ := fbmaps.ByID(s.MapID)
 	teamSize := len(s.Tanks) / 2
+	visibleMines := []Mine{}
+	for _, d := range s.Mines {
+		if s.Finished || (seat >= 0 && seat < len(s.Tanks) && s.Tanks[seat].Team == d.Team) {
+			visibleMines = append(visibleMines, d)
+		}
+	}
+	visibleEvents := []Event{}
+	for _, e := range s.Events {
+		if e.Type == "mine_plant" && !s.Finished && (seat < 0 || seat >= len(s.Tanks) || e.Seat < 0 || s.Tanks[seat].Team != s.Tanks[e.Seat].Team) {
+			continue
+		}
+		visibleEvents = append(visibleEvents, e)
+	}
+
 	v := View{
-		Supplies: append([]Supply(nil), s.Supplies...), Hazards: append([]Hazard(nil), s.Hazards...), Resolution: s.Resolution, Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, MapID: s.MapID, MapName: m.Name,
+		MineBlasts: append([]Blast(nil), s.MineBlasts...), Supplies: append([]Supply(nil), s.Supplies...), Hazards: append([]Hazard(nil), s.Hazards...), Resolution: s.Resolution, Options: s.Options, Epoch: s.Epoch, Phase: s.Phase, MapID: s.MapID, MapName: m.Name,
 		MapWidth: m.Width, MapHeight: m.Height, MapOffY: m.OffY,
 		SelectUntil: s.SelectUntil, StartAt: s.StartAt, SuddenAt: s.SuddenAt,
 		MatchEndsAt: s.MatchEndsAt, Deadline: s.Deadline, Sudden: s.Sudden,
 		Turn: s.Turn, Current: s.Current, Wind: s.Wind, Order: append([]int(nil), s.Order...),
 		TeamSize: teamSize, Tanks: make([]TankView, len(s.Tanks)),
-		Craters:  append([]Crater(nil), s.Craters...),
-		LastShot: s.LastShot, Events: append([]Event(nil), s.Events...),
+		Craters: append([]Crater(nil), s.Craters...),
+		Mines:   visibleMines, LastShot: s.LastShot, Events: visibleEvents,
 		Log: append([]string(nil), s.Log...), You: seat,
 	}
 	for i, t := range s.Tanks {

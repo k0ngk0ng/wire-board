@@ -1,3 +1,4 @@
+import { projectileFrame, effectFrame, blastTimestamp } from "./projectiles";
 import { drawSupplies } from "./supplies";
 import animationData from "../data/animations.json" with { type: "json" };
 import {
@@ -312,7 +313,33 @@ export function drawScene(input: {
     screenLeft: number;
     screenTop: number;
   }[] = [];
-  const renderedProjectiles: { x: number; y: number }[] = [];
+  const renderedProjectiles: {
+    x: number;
+    y: number;
+    arc: number;
+    mode?: string;
+    effect?: string;
+    path?: string;
+    frame?: number;
+    artReady: boolean;
+    launchAt: number;
+    impactAt: number;
+  }[] = [];
+  const renderedLocks: {
+    x: number;
+    y: number;
+    at: number;
+    frame: number;
+    artReady: boolean;
+  }[] = [];
+  const renderedBlasts: { x: number; y: number; at: number; kind?: string }[] =
+    [];
+  const renderedMines: {
+    id: number;
+    x: number;
+    y: number;
+    artReady: boolean;
+  }[] = [];
   const renderedFeedback: {
     type: string;
     target: number;
@@ -323,6 +350,30 @@ export function drawScene(input: {
     screenX: number;
     screenY: number;
   }[] = [];
+  for (const mine of view.mines ?? []) {
+    if (now < mine.at) continue;
+    const frame = effectFrame("mine", now - mine.at, reduced);
+    const img = frame ? images[frame.path] : null;
+    if (img && frame)
+      ctx.drawImage(
+        img,
+        frame.x,
+        frame.y,
+        frame.w,
+        frame.h,
+        mine.x - frame.ax,
+        mine.y - frame.ay,
+        frame.w,
+        frame.h,
+      );
+    else {
+      ctx.fillStyle = "#7e9083";
+      ctx.fillRect(mine.x - 5, mine.y - 5, 10, 5);
+      ctx.fillStyle = "#d55438";
+      ctx.fillRect(mine.x - 2, mine.y - 9, 4, 4);
+    }
+    renderedMines.push({ id: mine.id, x: mine.x, y: mine.y, artReady: !!img });
+  }
   for (const original of view.tanks) {
     if (!original.selected) continue;
     const tank = { ...original };
@@ -443,107 +494,195 @@ export function drawScene(input: {
     }
   }
   if (shot) {
-    const bullet = tankInfo(
-      view.tanks.find((t) => t.seat === shot.seat)?.tankId ?? 0,
-    )?.bullet;
-    for (const arc of shot.arcs) {
+    const tankId = view.tanks.find((t) => t.seat === shot.seat)?.tankId ?? 0;
+    const bullet = tankInfo(tankId)?.bullet;
+    for (const [index, arc] of shot.arcs.entries()) {
+      const launchAt = arc.launchAt ?? shot.launchAt ?? shot.at;
       const p = arcAt(
         { ...arc, impactAt: arc.impactAt ?? shot.impactAt },
         shot.at,
         now,
-        shot.launchAt ?? shot.at,
+        launchAt,
       );
-      if (p) {
-        projectileCount++;
-        renderedProjectiles.push({ x: p.x, y: p.y });
+      if (!p) continue;
+      projectileCount++;
+      const frame = shot.mode
+        ? projectileFrame(tankId, shot.mode, p.angle, now - launchAt, reduced)
+        : null;
+      const img = frame ? images[frame.path] : null;
+      const ion =
+        arc.effect === "ion_beam"
+          ? effectFrame("ion", now - launchAt, reduced, true)
+          : null;
+      const ionImage = ion ? images[ion.path] : null;
+      renderedProjectiles.push({
+        x: p.x,
+        y: p.y,
+        arc: index,
+        mode: shot.mode,
+        effect: arc.effect,
+        path: ion?.path ?? frame?.path,
+        frame: ion?.index ?? frame?.index,
+        artReady: !!(ion ? ionImage : img),
+        launchAt,
+        impactAt: arc.impactAt ?? shot.impactAt ?? 0,
+      });
+      if (arc.effect === "ion_beam") {
+        for (let y = Math.max(c.y, arc.path[0]?.y ?? 0); y < p.y; y += 24) {
+          if (ion && ionImage)
+            ctx.drawImage(
+              ionImage,
+              ion.x,
+              ion.y,
+              ion.w,
+              ion.h,
+              p.x - ion.ax,
+              y,
+              ion.w,
+              Math.min(ion.h, p.y - y),
+            );
+          else {
+            ctx.fillStyle = "#b7efff";
+            ctx.fillRect(p.x - 3, y, 6, Math.min(24, p.y - y));
+          }
+        }
+      } else if (frame && img) {
+        // Native frames already contain eight directions. Never rotate them a
+        // second time or mirror their original anchors.
+        ctx.drawImage(
+          img,
+          frame.x,
+          frame.y,
+          frame.w,
+          frame.h,
+          p.x - frame.ax,
+          p.y - frame.ay,
+          frame.w,
+          frame.h,
+        );
+      } else {
+        const legacy = bullet ? images[bullet.url] : null;
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle);
-        const img = bullet ? images[bullet.url] : null;
-        if (img && bullet)
-          ctx.drawImage(img, -bullet.ax, -bullet.ay, bullet.w, bullet.h);
+        if (!shot.mode && legacy && bullet)
+          ctx.drawImage(legacy, -bullet.ax, -bullet.ay, bullet.w, bullet.h);
         else {
-          ctx.fillStyle = "#ffe28d";
-          ctx.strokeStyle = "#80462c";
+          ctx.fillStyle = shot.mode === "special" ? "#bdc7ff" : "#ffe28d";
+          ctx.strokeStyle = "#433a53";
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.ellipse(0, 0, 7, 5, 0, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         }
-        if (shot.weapon === "healing") {
-          ctx.strokeStyle = "#b1ffce";
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.arc(0, 0, 17, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.fillStyle = "#e0ffe9";
-          ctx.fillRect(-6, -2, 12, 4);
-          ctx.fillRect(-2, -6, 4, 12);
-        }
         ctx.restore();
       }
-    }
-    for (const blast of shot.blasts ?? []) {
-      const event = [...view.events]
-        .reverse()
-        .find(
-          (e) =>
-            e.type === "explode" &&
-            Math.abs((e.x ?? 0) - blast.x) < 2 &&
-            Math.abs((e.y ?? 0) - blast.y) < 2,
-        );
-      const at = event?.at ?? shot.impactAt ?? 0,
-        elapsed = now - at;
-      if (elapsed < 0 || elapsed > 700) continue;
-      const img = images[explosion.url];
-      if (blast.kind === "heal") {
-        ctx.strokeStyle = "#a9ffd1";
-        ctx.fillStyle = "#9cffc12e";
+      if (shot.weapon === "healing") {
+        ctx.strokeStyle = "#b1ffce";
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(
-          blast.x,
-          blast.y,
-          Math.max(8, blast.r * (reduced ? 1 : 0.5 + elapsed / 1400)),
-          0,
-          Math.PI * 2,
-        );
-        ctx.fill();
+        ctx.arc(p.x, p.y, 17, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.fillStyle = "#d1ffe3";
-        ctx.fillRect(blast.x - 10, blast.y - 3, 20, 6);
-        ctx.fillRect(blast.x - 3, blast.y - 10, 6, 20);
-      } else if (img && !reduced) {
-        const frame = Math.min(
-          explosion.count - 1,
-          Math.floor((elapsed / 700) * explosion.count),
-        );
-        const size = Math.max(70, blast.r * 2);
-        ctx.drawImage(
-          img,
-          frame * explosion.cellW,
-          0,
-          explosion.cellW,
-          explosion.cellH,
-          blast.x - size / 2,
-          blast.y - size / 2,
-          size,
-          size,
-        );
-      } else {
-        ctx.strokeStyle = "#ffeab1";
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.arc(
-          blast.x,
-          blast.y,
-          Math.max(5, blast.r * (0.3 + elapsed / 700)),
-          0,
-          Math.PI * 2,
-        );
-        ctx.stroke();
+        ctx.fillStyle = "#e0ffe9";
+        ctx.fillRect(p.x - 6, p.y - 2, 12, 4);
+        ctx.fillRect(p.x - 2, p.y - 6, 4, 12);
       }
+      if (arc.lockPoint && arc.lockAt && now >= arc.lockAt) {
+        const lock = effectFrame("homming", now - arc.lockAt, reduced);
+        const lockImage = lock ? images[lock.path] : null;
+        if (lock)
+          renderedLocks.push({
+            x: arc.lockPoint.x,
+            y: arc.lockPoint.y,
+            at: arc.lockAt,
+            frame: lock.index,
+            artReady: !!lockImage,
+          });
+        if (lock && lockImage)
+          ctx.drawImage(
+            lockImage,
+            lock.x,
+            lock.y,
+            lock.w,
+            lock.h,
+            arc.lockPoint.x - lock.ax,
+            arc.lockPoint.y - lock.ay,
+            lock.w,
+            lock.h,
+          );
+      }
+    }
+  }
+  for (const blast of [...(shot?.blasts ?? []), ...(view.mineBlasts ?? [])]) {
+    const at = blastTimestamp(blast, shot, view.events),
+      elapsed = now - at;
+    if (elapsed < 0 || elapsed > 700) continue;
+    renderedBlasts.push({ x: blast.x, y: blast.y, at, kind: blast.kind });
+    const img = images[explosion.url];
+    const ion =
+      blast.kind === "ion_beam" || blast.kind === "ion"
+        ? effectFrame("ion", elapsed, reduced)
+        : null;
+    const ionImage = ion ? images[ion.path] : null;
+    if (ion && ionImage) {
+      ctx.drawImage(
+        ionImage,
+        ion.x,
+        ion.y,
+        ion.w,
+        ion.h,
+        blast.x - ion.ax,
+        blast.y - ion.ay,
+        ion.w,
+        ion.h,
+      );
+    } else if (blast.kind === "heal") {
+      ctx.strokeStyle = "#a9ffd1";
+      ctx.fillStyle = "#9cffc12e";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(
+        blast.x,
+        blast.y,
+        Math.max(8, blast.r * (reduced ? 1 : 0.5 + elapsed / 1400)),
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#d1ffe3";
+      ctx.fillRect(blast.x - 10, blast.y - 3, 20, 6);
+      ctx.fillRect(blast.x - 3, blast.y - 10, 6, 20);
+    } else if (img && !reduced) {
+      const frame = Math.min(
+        explosion.count - 1,
+        Math.floor((elapsed / 700) * explosion.count),
+      );
+      const size = Math.max(70, blast.r * 2);
+      ctx.drawImage(
+        img,
+        frame * explosion.cellW,
+        0,
+        explosion.cellW,
+        explosion.cellH,
+        blast.x - size / 2,
+        blast.y - size / 2,
+        size,
+        size,
+      );
+    } else {
+      ctx.strokeStyle = "#ffeab1";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(
+        blast.x,
+        blast.y,
+        Math.max(5, blast.r * (0.3 + elapsed / 700)),
+        0,
+        Math.PI * 2,
+      );
+      ctx.stroke();
     }
   }
   for (const event of view.events ?? []) {
@@ -624,6 +763,9 @@ export function drawScene(input: {
       mm.h,
   );
   canvas.dataset.renderedSupplies = JSON.stringify(renderedSupplies);
+  canvas.dataset.renderedMines = JSON.stringify(renderedMines);
+  canvas.dataset.renderedLocks = JSON.stringify(renderedLocks);
+  canvas.dataset.renderedBlasts = JSON.stringify(renderedBlasts);
   canvas.dataset.renderedTanks = JSON.stringify(renderedTanks);
   canvas.dataset.renderedProjectiles = JSON.stringify(renderedProjectiles);
   canvas.dataset.renderedFeedback = JSON.stringify(renderedFeedback);

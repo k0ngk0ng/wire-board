@@ -342,7 +342,7 @@ func TestAllSpecialSkillKinds(t *testing.T) {
 		status string
 	}{
 		{1, "burn"},
-		{2, "poison"},
+		{5, "poison"},
 		{9, ""},
 	}
 	for _, tc := range cases {
@@ -362,7 +362,7 @@ func TestAllSpecialSkillKinds(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if s2.Tanks[0].Special != -1 || s2.LastShot == nil || len(s2.LastShot.Blasts) != 1 {
+		if s2.Tanks[0].Special != -1 || s2.LastShot == nil || (tc.tank != 9 && len(s2.LastShot.Blasts) != 1) {
 			t.Fatalf("tank %d special state: %+v", tc.tank, s2.Tanks[0])
 		}
 		if tc.status != "" {
@@ -372,9 +372,10 @@ func TestAllSpecialSkillKinds(t *testing.T) {
 				t.Fatalf("tank %d missing hazard", tc.tank)
 			}
 		}
-		if tc.tank == 9 && s2.LastShot.Blasts[0].R <= 50 {
-			t.Fatalf("explosion special radius = %v", s2.LastShot.Blasts[0].R)
+		if tc.tank == 9 && (len(s2.LastShot.Arcs) != 2 || len(s2.Mines)+len(s2.LastShot.Blasts)+len(s2.MineBlasts) == 0) {
+			t.Fatal("two native mine projectiles must leave mines or impact effects")
 		}
+
 	}
 }
 
